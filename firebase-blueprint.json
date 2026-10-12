@@ -1,0 +1,71 @@
+{
+  "entities": {
+    "users": {
+      "title": "User",
+      "description": "User profile and data privacy settings",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "craftLevel": { "type": "string", "enum": ["hobbyist", "perfumer", "master_lab"] },
+        "craftLevelLabelAr": { "type": "string" },
+        "regionId": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "lastLogin": { "type": "string" },
+        "formulaCount": { "type": "number" },
+        "privacyPolicyAccepted": { "type": "boolean" },
+        "clientEncryptionEnabled": { "type": "boolean" },
+        "autoPurgeThirtyDays": { "type": "boolean" }
+      },
+      "required": ["id", "email", "name", "craftLevel", "regionId"]
+    },
+    "formulas": {
+      "title": "UserFormula",
+      "description": "Saved perfume formulation created by the user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "author": { "type": "string" },
+        "bottleVolumeMl": { "type": "number" },
+        "concentrationPercent": { "type": "number" },
+        "alcoholStrength": { "type": "number" },
+        "density": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "regionContext": { "type": "string" }
+      },
+      "required": ["id", "userId", "title"]
+    },
+    "chatHistory": {
+      "title": "ChatHistory",
+      "description": "Saved chat dialogues with the Master Perfumer Shahin with 30-day auto-purge",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "question": { "type": "string" },
+        "answer": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "expiresAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "question", "answer"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/users" },
+      "description": "Store user accounts with privacy and regional settings"
+    },
+    "/users/{userId}/formulas/{formulaId}": {
+      "schema": { "$ref": "#/entities/formulas" },
+      "description": "Store individual formulas saved by each user"
+    },
+    "/users/{userId}/chats/{chatId}": {
+      "schema": { "$ref": "#/entities/chatHistory" },
+      "description": "Store user conversation history with 30-day purge"
+    }
+  }
+}
