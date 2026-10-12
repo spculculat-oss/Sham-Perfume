@@ -13,18 +13,23 @@ import {
 } from 'lucide-react';
 import { UserProfile } from '../types/auth';
 import { exportAllUserData, wipeAllUserData } from '../utils/authStorage';
+import { SupportedLanguage } from '../types/i18n';
+import { isRTL } from '../utils/localizedContent';
 
 interface DataPrivacyModalProps {
+  currentLang?: SupportedLanguage;
   currentUser: UserProfile | null;
   onUserDataWiped: () => void;
   onClose: () => void;
 }
 
 export const DataPrivacyModal: React.FC<DataPrivacyModalProps> = ({
+  currentLang = 'ar',
   currentUser,
   onUserDataWiped,
   onClose,
 }) => {
+  const rtl = isRTL(currentLang);
   const [confirmWipe, setConfirmWipe] = useState(false);
   const [exportSuccess, setExportSuccess] = useState(false);
 

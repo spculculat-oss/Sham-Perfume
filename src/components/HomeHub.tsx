@@ -64,6 +64,7 @@ import { FormulationState, PyramidNote, SavedFormula } from '../types/perfume';
 import { UserEnvironmentProfile } from '../utils/environmentAdapter';
 import { UserDetailedAddress } from '../types/address';
 import { UserProfile } from '../types/auth';
+import { STATS_BADGE_EN, PORTAL_NEWS_EN } from '../utils/localizedHub';
 
 interface PortalNewsItem {
   id: string;
@@ -122,6 +123,21 @@ export const HomeHub: React.FC<HomeHubProps> = ({
   onOpenSpecModal,
 }) => {
   const isRtl = currentLang === 'ar' || currentLang === 'fa';
+
+  const SUBTITLE_EN_MAP: Record<string, string> = {
+    portal_concentration: 'Gravimetric molecular weight calculation at 0.01g precision',
+    portal_news: 'Exclusive reports from Milan, Paris, and Dubai exhibitions',
+    portal_world_perfumes: 'Analyzing formulas of 8 world iconic fragrances with exact ratios',
+    portal_raw_materials: 'Detailed catalog of 28+ pure ingredients with CAS numbers & safety',
+    portal_pyramid: 'Three-layer pyramid structure with molecular evaporation simulation',
+    portal_alcohol: 'Accurate dilution with distilled water to prevent clouding',
+    portal_costing: 'Bottle unit pricing, ingredient costs, and ROI margin estimation',
+    portal_master_ai: 'Multi-AI synthesis (Gemini + DeepSeek + ChatGPT + Claude) in one lab',
+    portal_library: 'Secure storage, cloud sync, and printable manufacturing specs',
+    portal_guide: 'Cold maceration protocol, filtration, and longevity science',
+    portal_environment: 'Worldwide coverage adapting formula to local temperature & humidity',
+    portal_privacy: 'Full encryption of formulas, instant export, and GDPR compliance',
+  };
 
   // Global state for auto-rotation
   const [isAutoCycling, setIsAutoCycling] = useState(true);
@@ -861,47 +877,47 @@ export const HomeHub: React.FC<HomeHubProps> = ({
             
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 text-amber-300 text-xs font-semibold border border-amber-500/30">
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>البوابة الرئيسية المتكاملة لجميع أقسام المعمل ومنصات العطور</span>
+              <span>{isRtl ? 'البوابة الرئيسية المتكاملة لجميع أقسام المعمل ومنصات العطور' : 'Integrated Master Command Suite for All Laboratory & Perfume Portals'}</span>
             </div>
 
             <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight font-serif-luxury text-white leading-tight">
-              صمم عطرك مع شام
+              {isRtl ? 'صمم عطرك مع شام' : 'Design Your Perfume with Sham'}
               <span className="block text-lg sm:text-2xl text-amber-400 font-sans font-medium mt-1">
-                نوافذ احترافية حية تجمع كافة منافذ وأقسام الموقع
+                {isRtl ? 'نوافذ احترافية حية تجمع كافة منافذ وأقسام الموقع' : 'Live Interactive Windows Connecting All 12 Laboratory Portals'}
               </span>
             </h1>
 
             <p className="text-stone-300 text-xs sm:text-sm leading-relaxed max-w-2xl font-light">
-              مرحباً بك في المركز القيادي الموحد. استعرض أدناه نوافذ الأقسام الاثني عشر التفاعلية؛ حيث تتغير الأيقونات
-              والمحتويات تلقائياً داخل كل نافذة لتعرض لك آخر الأخبار، الحسابات اللحظية، وتحديثات المعمل كأنه خبر متجدد
-              مباشر عن كل منفذ.
+              {isRtl
+                ? 'مرحباً بك في المركز القيادي الموحد. استعرض أدناه نوافذ الأقسام الاثني عشر التفاعلية؛ حيث تتغير الأيقونات والمحتويات تلقائياً داخل كل نافذة لتعرض لك آخر الأخبار، الحسابات اللحظية، وتحديثات المعمل كأنه خبر متجدد مباشر عن كل منفذ.'
+                : 'Welcome to your unified command lab. Explore the 12 dynamic interactive portals below with continuous updates, real-time molecular calculations, and industry insights.'}
             </p>
 
             {/* Quick Live Stats Strip */}
             <div className="pt-2 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-stone-300">
               <div className="flex items-center gap-1.5">
                 <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-                <span className="text-stone-400">حالة التحديث:</span>
-                <span className="font-bold text-white">بث أخبار حي ومستمر</span>
+                <span className="text-stone-400">{isRtl ? 'حالة التحديث:' : 'Live Status:'}</span>
+                <span className="font-bold text-white">{isRtl ? 'بث أخبار حي ومستمر' : 'Continuous Live Feed'}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="text-stone-400">البلد والمناخ:</span>
+                <span className="text-stone-400">{isRtl ? 'البلد والمناخ:' : 'Country & Climate:'}</span>
                 <button
                   onClick={onOpenEnvironmentModal}
                   className="font-bold text-amber-300 hover:underline flex items-center gap-1 cursor-pointer"
                 >
                   <span>{currentEnvironment.countryFlag}</span>
-                  <span>{currentEnvironment.countryNameAr.split('(')[0]}</span>
+                  <span>{isRtl ? currentEnvironment.countryNameAr.split('(')[0] : currentEnvironment.countryNameEn}</span>
                 </button>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="text-stone-400">الوصفات المحفوظة:</span>
-                <span className="font-bold text-white">{savedFormulas.length} تركيبة</span>
+                <span className="text-stone-400">{isRtl ? 'الوصفات المحفوظة:' : 'Saved Formulas:'}</span>
+                <span className="font-bold text-white">{savedFormulas.length} {isRtl ? 'تركيبة' : 'Formulas'}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="text-stone-400">المستخدم:</span>
+                <span className="text-stone-400">{isRtl ? 'المستخدم:' : 'User:'}</span>
                 <span className="font-bold text-amber-200">
-                  {currentUser ? currentUser.name : 'ضيف المعمل'}
+                  {currentUser ? currentUser.name : (isRtl ? 'ضيف المعمل' : 'Lab Guest')}
                 </span>
               </div>
             </div>
@@ -913,7 +929,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
                 className="flex items-center gap-2 px-5 py-2.5 text-xs sm:text-sm font-bold text-stone-950 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 hover:from-amber-300 hover:to-amber-200 rounded-xl shadow-lg shadow-amber-900/30 transition-all hover:scale-[1.02] cursor-pointer"
               >
                 <FlaskConical className="w-4 h-4 text-stone-900" />
-                <span>دخول حاسبة المعمل الفورية</span>
+                <span>{isRtl ? 'دخول حاسبة المعمل الفورية' : 'Open Lab Calculator'}</span>
                 {isRtl ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
               </button>
 
@@ -922,7 +938,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
                 className="flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold text-stone-200 bg-stone-800/90 hover:bg-stone-700/90 border border-stone-700 rounded-xl transition-all cursor-pointer"
               >
                 <Newspaper className="w-4 h-4 text-amber-400" />
-                <span>أحدث أخبار العطور بالعالم</span>
+                <span>{isRtl ? 'أحدث أخبار العطور بالعالم' : 'Global Fragrance Trends'}</span>
               </button>
 
               <button
@@ -930,7 +946,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
                 className="flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold text-stone-200 bg-stone-800/90 hover:bg-stone-700/90 border border-stone-700 rounded-xl transition-all cursor-pointer"
               >
                 <Bot className="w-4 h-4 text-emerald-400" />
-                <span>مجلس الخبير شاهين AI</span>
+                <span>{isRtl ? 'مجلس الخبير شاهين AI' : 'Consult Master Shahin AI'}</span>
               </button>
             </div>
           </div>
@@ -948,11 +964,13 @@ export const HomeHub: React.FC<HomeHubProps> = ({
                 <div className="flex items-center gap-2 mb-1">
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
                   <span className="text-[11px] font-bold text-amber-300 tracking-wider">
-                    شبكة منافذ منصة شام الحرفية
+                    {isRtl ? 'شبكة منافذ منصة شام الحرفية' : 'Sham Artisanal Portals Network'}
                   </span>
                 </div>
                 <p className="text-xs sm:text-sm font-medium text-stone-200 font-serif-luxury">
-                  «12 منفذاً تخصصياً يجمع كل ما يحتاجه صانع العطور من الحسابات الرياضية الدقيقة إلى الأخبار العالمية وأسرار الصنعة»
+                  {isRtl
+                    ? '«12 منفذاً تخصصياً يجمع كل ما يحتاجه صانع العطور من الحسابات الرياضية الدقيقة إلى الأخبار العالمية وأسرار الصنعة»'
+                    : '«12 specialized portals uniting precision compounding mathematics, world industry reports, and artisan secrets»'}
                 </p>
               </div>
             </div>
@@ -967,10 +985,10 @@ export const HomeHub: React.FC<HomeHubProps> = ({
         <div className="flex items-center gap-3 shrink-0">
           <span className="px-2.5 py-1 rounded-lg bg-gradient-to-r from-amber-600 to-amber-700 text-white text-[11px] font-bold tracking-wider flex items-center gap-1.5 shadow-xs">
             <Flame className="w-3.5 h-3.5 fill-white text-white" />
-            <span>نشرة منافذ المعمل</span>
+            <span>{isRtl ? 'نشرة منافذ المعمل' : 'Lab Portals Dispatch'}</span>
           </span>
           <span className="text-xs text-amber-400 font-semibold hidden sm:inline">
-            تحديث دوري كل 4 ثوانٍ:
+            {isRtl ? 'تحديث دوري كل 4 ثوانٍ:' : 'Live updates every 4s:'}
           </span>
         </div>
 
@@ -978,11 +996,16 @@ export const HomeHub: React.FC<HomeHubProps> = ({
         <div className="flex-1 overflow-hidden min-w-0 py-0.5">
           <div className="text-xs text-stone-200 font-medium truncate flex items-center gap-2">
             <span className="text-amber-400 font-bold shrink-0">
-              [{portals[portalIndexes['portal_concentration'] || 0]?.titleAr}]:
+              [{isRtl ? portals[portalIndexes['portal_concentration'] || 0]?.titleAr : (portals[portalIndexes['portal_concentration'] || 0]?.titleEn || portals[portalIndexes['portal_concentration'] || 0]?.titleAr)}]:
             </span>
             <span className="truncate">
-              {portals[0]?.news[portalIndexes['portal_concentration'] || 0]?.title} ·{' '}
-              {portals[1]?.news[portalIndexes['portal_news'] || 0]?.title}
+              {(() => {
+                const n0 = portals[0]?.news[portalIndexes['portal_concentration'] || 0];
+                const n1 = portals[1]?.news[portalIndexes['portal_news'] || 0];
+                const t0 = !isRtl && n0 && PORTAL_NEWS_EN[n0.id] ? PORTAL_NEWS_EN[n0.id].title : n0?.title;
+                const t1 = !isRtl && n1 && PORTAL_NEWS_EN[n1.id] ? PORTAL_NEWS_EN[n1.id].title : n1?.title;
+                return `${t0} · ${t1}`;
+              })()}
             </span>
           </div>
         </div>
@@ -996,17 +1019,17 @@ export const HomeHub: React.FC<HomeHubProps> = ({
                 ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 hover:bg-amber-500/30'
                 : 'bg-stone-800 text-stone-400 border-stone-700 hover:text-white'
             }`}
-            title={isAutoCycling ? 'إيقاف التدوير التلقائي' : 'تشغيل التدوير التلقائي'}
+            title={isAutoCycling ? (isRtl ? 'إيقاف التدوير التلقائي' : 'Pause Auto-Cycle') : (isRtl ? 'تشغيل التدوير التلقائي' : 'Resume Auto-Cycle')}
           >
             {isAutoCycling ? (
               <>
                 <Pause className="w-3.5 h-3.5 text-amber-400" />
-                <span>إيقاف البث</span>
+                <span>{isRtl ? 'إيقاف البث' : 'Pause Feed'}</span>
               </>
             ) : (
               <>
                 <Play className="w-3.5 h-3.5 text-emerald-400" />
-                <span>تشغيل البث</span>
+                <span>{isRtl ? 'تشغيل البث' : 'Resume Feed'}</span>
               </>
             )}
           </button>
@@ -1018,24 +1041,26 @@ export const HomeHub: React.FC<HomeHubProps> = ({
         
         <div>
           <h2 className="text-xl sm:text-2xl font-bold font-serif-luxury text-stone-900 flex items-center gap-2">
-            <span>نوافذ أقسام المعمل ومنافذ المنصة</span>
+            <span>{isRtl ? 'نوافذ أقسام المعمل ومنافذ المنصة' : 'Laboratory & Platform Portals'}</span>
             <span className="text-xs font-sans font-semibold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-300">
-              12 نافذة متجددة
+              {isRtl ? '12 نافذة متجددة' : '12 Live Portals'}
             </span>
           </h2>
           <p className="text-xs text-stone-500 mt-0.5">
-            كل نافذة تعرض أيقونات وأخباراً ومعلومات متغيرة آلياً تمثل النبض الحي لذلك القسم
+            {isRtl
+              ? 'كل نافذة تعرض أيقونات وأخباراً ومعلومات متغيرة آلياً تمثل النبض الحي لذلك القسم'
+              : 'Each portal dynamically displays icons, metrics, and real-time updates representing that department.'}
           </p>
         </div>
 
         {/* Clean Segmented Filter Tabs (Zero-Pill discipline) */}
         <div className="flex items-center gap-1 p-1 bg-stone-200/80 rounded-xl overflow-x-auto max-w-full">
           {[
-            { id: 'all', label: 'كافة المنافذ (12)' },
-            { id: 'lab', label: 'المعمل والحسابات (4)' },
-            { id: 'knowledge', label: 'المعرفة والوصفات (3)' },
-            { id: 'business', label: 'التجارة والمقر (2)' },
-            { id: 'ai_news', label: 'الذكاء والأخبار (3)' },
+            { id: 'all', label: isRtl ? 'كافة المنافذ (12)' : 'All Portals (12)' },
+            { id: 'lab', label: isRtl ? 'المعمل والحسابات (4)' : 'Lab & Compounding (4)' },
+            { id: 'knowledge', label: isRtl ? 'المعرفة والوصفات (3)' : 'Knowledge & Formulas (3)' },
+            { id: 'business', label: isRtl ? 'التجارة والمقر (2)' : 'Business & Facility (2)' },
+            { id: 'ai_news', label: isRtl ? 'الذكاء والأخبار (3)' : 'AI & Trends (3)' },
           ].map((cat) => (
             <button
               key={cat.id}
@@ -1056,7 +1081,15 @@ export const HomeHub: React.FC<HomeHubProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredPortals.map((portal) => {
           const currentNewsIdx = portalIndexes[portal.id] || 0;
-          const currentNews = portal.news[currentNewsIdx] || portal.news[0];
+          const rawNews = portal.news[currentNewsIdx] || portal.news[0];
+          const currentNews =
+            !isRtl && PORTAL_NEWS_EN[rawNews.id]
+              ? { ...rawNews, ...PORTAL_NEWS_EN[rawNews.id] }
+              : rawNews;
+          const statsBadge =
+            !isRtl && STATS_BADGE_EN[portal.id]
+              ? STATS_BADGE_EN[portal.id]
+              : portal.statsBadge;
           
           // Current changing icon index
           const iconIdx = currentNewsIdx % portal.icons.length;
@@ -1091,11 +1124,11 @@ export const HomeHub: React.FC<HomeHubProps> = ({
                   {/* Top Stats Tag & Portal Number */}
                   <div className="flex flex-col items-end gap-1">
                     <span className="text-[10px] font-bold text-stone-500 bg-stone-100 px-2 py-0.5 rounded-md border border-stone-200">
-                      {portal.statsBadge}
+                      {statsBadge}
                     </span>
                     <span className="text-[10px] text-amber-700 font-semibold flex items-center gap-1">
                       <Radio className="w-2.5 h-2.5 text-emerald-500" />
-                      <span>متصل بالمعمل</span>
+                      <span>{isRtl ? 'متصل بالمعمل' : 'Live Sync'}</span>
                     </span>
                   </div>
                 </div>
@@ -1103,10 +1136,10 @@ export const HomeHub: React.FC<HomeHubProps> = ({
                 {/* Portal Title & Subtitle */}
                 <div>
                   <h3 className="text-base sm:text-lg font-bold font-serif-luxury text-stone-900 group-hover:text-amber-800 transition-colors">
-                    {portal.titleAr}
+                    {isRtl ? portal.titleAr : (portal.titleEn || portal.titleAr)}
                   </h3>
                   <p className="text-[11px] text-stone-500 line-clamp-1 mt-0.5 font-light">
-                    {portal.subtitleAr}
+                    {isRtl ? portal.subtitleAr : (SUBTITLE_EN_MAP[portal.id] || portal.subtitleAr)}
                   </p>
                 </div>
               </div>
@@ -1149,7 +1182,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
                       <button
                         onClick={(e) => handlePortalStep(portal.id, 'prev', e)}
                         className="w-5 h-5 rounded-md bg-stone-200/70 hover:bg-stone-300 text-stone-700 flex items-center justify-center transition-colors cursor-pointer"
-                        title="الخبر السابق عن المنفذ"
+                        title={isRtl ? 'الخبر السابق عن المنفذ' : 'Previous update'}
                       >
                         {isRtl ? <ChevronRight className="w-3 h-3" /> : <ChevronLeft className="w-3 h-3" />}
                       </button>
@@ -1162,7 +1195,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
                       <button
                         onClick={(e) => handlePortalStep(portal.id, 'next', e)}
                         className="w-5 h-5 rounded-md bg-stone-200/70 hover:bg-stone-300 text-stone-700 flex items-center justify-center transition-colors cursor-pointer"
-                        title="الخبر التالي عن المنفذ"
+                        title={isRtl ? 'الخبر التالي عن المنفذ' : 'Next update'}
                       >
                         {isRtl ? <ChevronLeft className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
                       </button>
@@ -1178,7 +1211,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
                 </span>
 
                 <div className="flex items-center gap-1.5 text-xs font-bold text-amber-700 group-hover:text-amber-900 group-hover:translate-x-[-3px] transition-transform">
-                  <span>دخول المنفذ</span>
+                  <span>{isRtl ? 'دخول المنفذ' : 'Enter Portal'}</span>
                   {isRtl ? <ArrowLeft className="w-3.5 h-3.5" /> : <ArrowRight className="w-3.5 h-3.5" />}
                 </div>
               </div>
@@ -1192,14 +1225,15 @@ export const HomeHub: React.FC<HomeHubProps> = ({
         <div className="space-y-2 text-center md:text-right">
           <div className="inline-flex items-center gap-2 text-amber-400 text-xs font-bold">
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>معيار شام الذهبي لصناعة العطور الفاخرة</span>
+            <span>{isRtl ? 'معيار شام الذهبي لصناعة العطور الفاخرة' : 'Sham Golden Standard for Haute Parfumerie'}</span>
           </div>
           <h3 className="text-lg sm:text-xl font-bold font-serif-luxury text-stone-100">
-            «العطر ليس مجرد رائحة، بل هو ميزان كيميائي ونوتات متناغمة وهوية لا تُنسى»
+            {isRtl ? '«العطر ليس مجرد رائحة، بل هو ميزان كيميائي ونوتات متناغمة وهوية لا تُنسى»' : '«A fragrance is not merely a scent; it is chemical equilibrium, harmonious notes, and an unforgettable identity»'}
           </h3>
           <p className="text-xs text-stone-300 max-w-2xl font-light">
-            استفد من الدمج بين ميزان المعمل التحليلي، حاسبة الكحول، ومكتبة الوصفات العالمية للحصول على تركيبة مطابقة
-            لأعلى معايير الإيفرا العالمية.
+            {isRtl
+              ? 'استفد من الدمج بين ميزان المعمل التحليلي، حاسبة الكحول، ومكتبة الوصفات العالمية للحصول على تركيبة مطابقة لأعلى معايير الإيفرا العالمية.'
+              : 'Leverage the synergy between analytical scales, alcohol dilution calculators, and the iconic formula library for compliance with IFRA standards.'}
           </p>
         </div>
 
@@ -1208,13 +1242,13 @@ export const HomeHub: React.FC<HomeHubProps> = ({
             onClick={() => onNavigate('concentration')}
             className="px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold text-xs shadow-md transition-all cursor-pointer"
           >
-            بدء تصميم عطر جديد
+            {isRtl ? 'بدء تصميم عطر جديد' : 'Start New Formulation'}
           </button>
           <button
             onClick={onOpenSpecModal}
             className="px-4 py-3 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700 font-semibold text-xs transition-all cursor-pointer"
           >
-            طباعة بطاقة التصنيع
+            {isRtl ? 'طباعة بطاقة التصنيع' : 'Print Manufacturing Spec Sheet'}
           </button>
         </div>
       </section>

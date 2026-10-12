@@ -24,12 +24,17 @@ import { PERFUME_NEWS_DATA, PerfumeNewsItem } from '../data/perfumeNews';
 import { PyramidNote } from '../types/perfume';
 import { ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
 
+import { SupportedLanguage } from '../types/i18n';
+import { getLocalizedNewsArticle, getCommonLabel, isRTL } from '../utils/localizedContent';
+
 interface WorldPerfumeNewsProps {
+  currentLang?: SupportedLanguage;
   onApplyNewsNotesToCalculator: (formula: ExtractedAIPerfume) => void;
   onAddNoteToPyramid: (note: PyramidNote) => void;
 }
 
 export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
+  currentLang = 'ar',
   onApplyNewsNotesToCalculator,
   onAddNoteToPyramid,
 }) => {
@@ -39,6 +44,8 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [bookmarkedIds, setBookmarkedIds] = useState<string[]>([]);
   const [transferSuccessId, setTransferSuccessId] = useState<string | null>(null);
+
+  const rtl = isRTL(currentLang);
 
   const openArticleReader = (article: PerfumeNewsItem) => {
     setSelectedArticle(article);
@@ -69,27 +76,29 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
   }, []);
 
   const categories = [
-    { id: 'all', label: 'جميع الأخبار والتقارير' },
-    { id: 'trends', label: 'صيحات وتقارير السوق' },
-    { id: 'exhibitions', label: 'المعارض الدولية الكبرى' },
-    { id: 'harvests', label: 'مواسم الحصاد والمواد الخام' },
-    { id: 'ifra', label: 'لوائح وتحديثات IFRA' },
-    { id: 'niche', label: 'ابتكارات النيش والكيمياء' },
+    { id: 'all', label: rtl ? 'جميع الأخبار والتقارير' : 'All News & Reports' },
+    { id: 'trends', label: rtl ? 'صيحات وتقارير السوق' : 'Market Trends & Analytics' },
+    { id: 'exhibitions', label: rtl ? 'المعارض الدولية الكبرى' : 'International Exhibitions' },
+    { id: 'harvests', label: rtl ? 'مواسم الحصاد والمواد الخام' : 'Botanical Harvests & Crops' },
+    { id: 'ifra', label: rtl ? 'لوائح وتحديثات IFRA' : 'IFRA Regulations & Updates' },
+    { id: 'niche', label: rtl ? 'ابتكارات النيش والكيمياء' : 'Niche Perfumery & Chemistry' },
   ];
 
   // Filtering
   const filteredNews = PERFUME_NEWS_DATA.filter((item) => {
+    const loc = getLocalizedNewsArticle(item, currentLang);
     const matchesCategory =
       selectedCategory === 'all' || item.category === selectedCategory;
     const matchesSearch =
-      item.titleAr.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      loc.titleAr.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.summaryAr.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
 
   const handleCopySummary = (item: PerfumeNewsItem) => {
-    const text = `📰 [أخبار العطور العالمية - صمم عطرك مع شام]\n${item.titleAr}\n📅 ${item.date} | 🏛️ المصدر: ${item.source}\n\n${item.summaryAr}\n\nرأي الخبير: ${item.expertVerdict}`;
+    const loc = getLocalizedNewsArticle(item, currentLang);
+    const text = `📰 [${rtl ? 'أخبار العطور العالمية - صمم عطرك مع شام' : 'World Perfume News - Sham Atelier'}]\n${loc.titleAr}\n📅 ${item.date} | 🏛️ ${rtl ? 'المصدر:' : 'Source:'} ${item.source}\n\n${item.summaryAr}\n\n${rtl ? 'رأي الخبير:' : 'Master Verdict:'} ${item.expertVerdict}`;
     navigator.clipboard.writeText(text);
     setCopiedId(item.id);
     setTimeout(() => setCopiedId(null), 2500);
@@ -103,24 +112,25 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
 
   const handleTransferToWorkbench = (item: PerfumeNewsItem) => {
     if (!item.keyNotes || item.keyNotes.length === 0) return;
+    const loc = getLocalizedNewsArticle(item, currentLang);
 
     const transformedNotes: PyramidNote[] = item.keyNotes.map((k, index) => ({
       id: `news-note-${item.id}-${index}`,
-      nameAr: k.nameAr,
+      nameAr: rtl ? k.nameAr : k.nameEn,
       nameEn: k.nameEn,
       category: k.type,
       percentageOfOil: k.percentageHint,
-      description: `مستوحى من تقرير: ${item.titleAr}`,
+      description: `${rtl ? 'مستوحى من تقرير:' : 'Inspired by:'} ${loc.titleAr}`,
     }));
 
     const formula: ExtractedAIPerfume = {
-      title: `توليفة تقرير: ${item.titleAr.slice(0, 32)}...`,
-      author: 'تقرير أخبار العطور العالمية (شام)',
+      title: `${rtl ? 'توليفة تقرير:' : 'Report Accord:'} ${loc.titleAr.slice(0, 32)}...`,
+      author: rtl ? 'تقرير أخبار العطور العالمية (شام)' : 'World Perfume Trends (Sham)',
       bottleVolumeMl: 50,
       concentrationPercent: 20,
       concentrationType: 'edp',
       macerationDays: 35,
-      summary: `توليفة حديثة مبنية على توجهات السوق العالمية في ${item.titleAr}.\n${item.expertVerdict}`,
+      summary: `${rtl ? 'توليفة حديثة مبنية على توجهات السوق العالمية في' : 'Modern formula based on global market trends in'} ${loc.titleAr}.\n${item.expertVerdict}`,
       pyramidNotes: transformedNotes,
     };
 
@@ -129,7 +139,8 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
     setTimeout(() => setTransferSuccessId(null), 3000);
   };
 
-  const featuredHotNews = PERFUME_NEWS_DATA.find((n) => n.isHot) || PERFUME_NEWS_DATA[0];
+  const rawFeatured = PERFUME_NEWS_DATA.find((n) => n.isHot) || PERFUME_NEWS_DATA[0];
+  const featuredHotNews = getLocalizedNewsArticle(rawFeatured, currentLang);
 
   return (
     <div className="space-y-10">
@@ -314,13 +325,13 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
 
         {/* Search Input */}
         <div className="relative min-w-[260px]">
-          <Search className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400" />
+          <Search className={`w-4 h-4 absolute ${rtl ? 'right-3.5' : 'left-3.5'} top-1/2 -translate-y-1/2 text-stone-400`} />
           <input
             type="text"
-            placeholder="ابحث في الأخبار، المعارض، أو المكونات..."
+            placeholder={rtl ? 'ابحث في الأخبار، المعارض، أو المكونات...' : 'Search trends, exhibitions, or notes...'}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-4 pr-10 py-2 bg-white border border-stone-200 rounded-xl text-xs text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-amber-700 shadow-xs"
+            className={`w-full ${rtl ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4 text-left'} py-2 bg-white border border-stone-200 rounded-xl text-xs text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-amber-700 shadow-xs`}
           />
         </div>
       </div>
@@ -328,6 +339,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
       {/* Articles Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredNews.map((item) => {
+          const loc = getLocalizedNewsArticle(item, currentLang);
           const isBookmarked = bookmarkedIds.includes(item.id);
           const isCopied = copiedId === item.id;
           const isTransferred = transferSuccessId === item.id;
@@ -342,13 +354,13 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                 <div className="relative aspect-[16/10] overflow-hidden bg-stone-100">
                   <img
                     src={item.imageUrl}
-                    alt={item.titleAr}
+                    alt={loc.titleAr}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-md bg-stone-900/80 backdrop-blur-xs text-amber-300 text-[10px] font-semibold">
-                    {item.categoryLabelAr}
+                  <div className={`absolute top-2.5 ${rtl ? 'right-2.5' : 'left-2.5'} px-2.5 py-1 rounded-md bg-stone-900/80 backdrop-blur-xs text-amber-300 text-[10px] font-semibold`}>
+                    {loc.categoryLabelAr}
                   </div>
-                  <div className="absolute bottom-2.5 left-2.5 px-2 py-0.5 rounded bg-black/60 backdrop-blur-xs text-white text-[10px] flex items-center gap-1 font-mono-numbers">
+                  <div className={`absolute bottom-2.5 ${rtl ? 'left-2.5' : 'right-2.5'} px-2 py-0.5 rounded bg-black/60 backdrop-blur-xs text-white text-[10px] flex items-center gap-1 font-mono-numbers`}>
                     <Clock className="w-3 h-3 text-stone-300" />
                     <span>{item.readTime}</span>
                   </div>
@@ -370,7 +382,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                     onClick={() => openArticleReader(item)}
                     className="text-base font-bold font-serif-luxury text-stone-950 group-hover:text-amber-900 transition-colors line-clamp-2 cursor-pointer leading-snug"
                   >
-                    {item.titleAr}
+                    {loc.titleAr}
                   </h4>
 
                   <p className="text-stone-600 text-xs line-clamp-3 leading-relaxed">
@@ -385,7 +397,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                           key={idx}
                           className="px-2 py-0.5 rounded bg-stone-50 text-stone-700 text-[10px] font-medium border border-stone-200"
                         >
-                          {note.nameAr}
+                          {rtl ? note.nameAr : note.nameEn}
                         </span>
                       ))}
                       {item.keyNotes.length > 3 && (
@@ -407,12 +419,12 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                   {isTransferred ? (
                     <>
                       <Check className="w-3.5 h-3.5 text-emerald-300" />
-                      <span>تم النقل للمعمل</span>
+                      <span>{rtl ? 'تم النقل للمعمل' : 'Transferred'}</span>
                     </>
                   ) : (
                     <>
                       <FlaskConical className="w-3.5 h-3.5 text-amber-300" />
-                      <span>تطبيق في المعمل</span>
+                      <span>{rtl ? 'تطبيق في المعمل' : 'Apply in Lab'}</span>
                     </>
                   )}
                 </button>
@@ -421,14 +433,14 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                   <button
                     onClick={() => openArticleReader(item)}
                     className="p-1.5 text-stone-600 hover:text-stone-950 hover:bg-stone-200 rounded-lg text-xs font-medium cursor-pointer"
-                    title="قراءة كاملة"
+                    title={rtl ? 'قراءة كاملة' : 'Read Full Report'}
                   >
                     <BookOpen className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleCopySummary(item)}
                     className="p-1.5 text-stone-500 hover:text-stone-900 hover:bg-stone-200 rounded-lg cursor-pointer"
-                    title="نسخ ملخص"
+                    title={rtl ? 'نسخ ملخص' : 'Copy Summary'}
                   >
                     {isCopied ? (
                       <Check className="w-4 h-4 text-emerald-600" />
@@ -443,7 +455,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                         ? 'text-amber-700 bg-amber-100'
                         : 'text-stone-500 hover:text-stone-900 hover:bg-stone-200'
                     }`}
-                    title="حفظ"
+                    title={rtl ? 'حفظ' : 'Bookmark'}
                   >
                     <Bookmark className="w-4 h-4" />
                   </button>
@@ -460,21 +472,23 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
           <div className="flex items-center gap-2.5">
             <TrendingUp className="w-5 h-5 text-amber-400" />
             <h3 className="text-lg font-bold font-serif-luxury text-white">
-              لوحة مؤشرات سوق العطور العالمية (Global Fragrance Pulse 2026)
+              {rtl ? 'لوحة مؤشرات سوق العطور العالمية (Global Fragrance Pulse 2026)' : 'Global Fragrance Pulse & Market Indicators 2026'}
             </h3>
           </div>
           <span className="text-xs text-stone-400 hidden sm:inline">
-            تحليل دوري معتمد لمصممي العطور والمعامل
+            {rtl ? 'تحليل دوري معتمد لمصممي العطور والمعامل' : 'Certified periodic intelligence for perfumers & compounding labs'}
           </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
           <div className="p-4 rounded-2xl bg-stone-800/60 border border-stone-700/60 space-y-2">
             <div className="text-amber-400 font-bold text-sm flex items-center gap-1.5">
-              <span>🔥 النوتات الأسرع صعوداً في الطلب</span>
+              <span>{rtl ? '🔥 النوتات الأسرع صعوداً في الطلب' : '🔥 Fastest Growing Fragrance Notes'}</span>
             </div>
             <p className="text-stone-300 leading-relaxed">
-              شاي أولونغ الصيني (+45%)، الفستق الحلبي المحمص (+60%)، دهن العود المستدام المعالج بيولوجياً (+38%).
+              {rtl
+                ? 'شاي أولونغ الصيني (+45%)، الفستق الحلبي المحمص (+60%)، دهن العود المستدام المعالج بيولوجياً (+38%).'
+                : 'Chinese Oolong Tea (+45%), Roasted Pistachio (+60%), Bio-distilled Sustainable Oud (+38%).'}
             </p>
           </div>
 
@@ -483,141 +497,148 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
               <span>⚖️ الامتثال لمعايير IFRA 51</span>
             </div>
             <p className="text-stone-300 leading-relaxed">
-              حظر مادة الليليال بات إلزامياً دولياً؛ الاعتماد الكلي على الهيديون النقي والفلورالوزون كبدائل آمنة في النوتات الزهرية.
+              {rtl
+                ? 'حظر مادة الليليال بات إلزامياً دولياً؛ الاعتماد الكلي على الهيديون النقي والفلورالوزون كبدائل آمنة في النوتات الزهرية.'
+                : 'Lilial ban is strictly enforced globally; total reliance on pure Hedione and Floralozone for transparent florals.'}
             </p>
           </div>
 
           <div className="p-4 rounded-2xl bg-stone-800/60 border border-stone-700/60 space-y-2">
             <div className="text-amber-400 font-bold text-sm flex items-center gap-1.5">
-              <span>💡 نصيحة «معمل شام» للمصممين</span>
+              <span>{rtl ? '💡 نصيحة «معمل شام» للمصممين' : '💡 Master Sham Atelier Verdict'}</span>
             </div>
             <p className="text-stone-300 leading-relaxed">
-              «التوليفات الهجينة بين الانتعاش الحمضي الغربي والقواعد البخورية الشرقية هي الاتجاه الأكثر ربحية وانتشاراً عالمياً حالياً».
+              {rtl
+                ? '«التوليفات الهجينة بين الانتعاش الحمضي الغربي والقواعد البخورية الشرقية هي الاتجاه الأكثر ربحية وانتشاراً عالمياً حالياً».'
+                : '«Hybrid creations merging crisp Western citrus brilliance with rich Oriental incense anchors offer the highest global market traction.»'}
             </p>
           </div>
         </div>
       </div>
 
       {/* Full Article Reader Modal */}
-      {selectedArticle && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-stone-200 overflow-hidden my-8 animate-in fade-in zoom-in-95">
-            {/* Header Image */}
-            <div className="relative aspect-[16/9] w-full">
-              <img
-                src={selectedArticle.imageUrl}
-                alt={selectedArticle.titleAr}
-                className="w-full h-full object-cover"
-              />
-              <button
-                onClick={closeArticleReader}
-                className="absolute top-4 left-4 p-2 rounded-full bg-black/60 hover:bg-black text-white transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
-              <div className="absolute bottom-4 right-4 px-3 py-1 rounded-lg bg-stone-900/90 text-amber-300 text-xs font-semibold">
-                {selectedArticle.categoryLabelAr}
-              </div>
-            </div>
-
-            {/* Modal Body */}
-            <div className="p-6 sm:p-8 space-y-5 text-stone-800">
-              <div className="flex items-center gap-3 text-xs text-stone-500">
-                <span className="flex items-center gap-1">
-                  <Calendar className="w-3.5 h-3.5" />
-                  <span>{selectedArticle.date}</span>
-                </span>
-                <span>·</span>
-                <span>المصدر: {selectedArticle.source}</span>
-                <span>·</span>
-                <span>وقت القراءة: {selectedArticle.readTime}</span>
-              </div>
-
-              <h3 className="text-xl sm:text-2xl font-bold font-serif-luxury text-stone-950 leading-snug">
-                {selectedArticle.titleAr}
-              </h3>
-
-              <div className="prose text-xs sm:text-sm text-stone-700 leading-relaxed whitespace-pre-line">
-                {selectedArticle.contentAr}
-              </div>
-
-              {/* Expert Verdict Box */}
-              <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 space-y-2">
-                <span className="text-xs font-bold text-amber-900 flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-amber-700" />
-                  <span>رأي خبير المعمل وتأثيره الصناعي</span>
-                </span>
-                <p className="text-xs text-amber-950 leading-relaxed italic">
-                  {selectedArticle.expertVerdict}
-                </p>
-                <div className="text-[11px] text-amber-800 pt-1 font-medium">
-                  📊 أثر السوق: {selectedArticle.marketImpact}
-                </div>
-              </div>
-
-              {/* Mentioned Key Notes breakdown with button */}
-              {selectedArticle.keyNotes && selectedArticle.keyNotes.length > 0 && (
-                <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-stone-900">
-                      النوتات الموصى بها في هذا التقرير:
-                    </span>
-                    <span className="text-[10px] text-stone-500">
-                      جاهزة للتصدير المباشر
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    {selectedArticle.keyNotes.map((note, idx) => (
-                      <div
-                        key={idx}
-                        className="p-2.5 rounded-xl bg-white border border-stone-200 flex items-center justify-between"
-                      >
-                        <div>
-                          <div className="font-semibold text-stone-900">{note.nameAr}</div>
-                          <div className="text-[10px] text-stone-400 font-mono">{note.nameEn}</div>
-                        </div>
-                        <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-900 font-mono-numbers text-xs font-bold">
-                          {note.percentageHint}%
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <button
-                    onClick={() => {
-                      handleTransferToWorkbench(selectedArticle);
-                      closeArticleReader();
-                    }}
-                    className="w-full py-3 rounded-xl bg-amber-800 hover:bg-amber-900 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
-                  >
-                    <FlaskConical className="w-4 h-4 text-amber-300" />
-                    <span>تطبيق هذه التوليفة بالكامل في حاسبة العطور والمعمل</span>
-                  </button>
-                </div>
-              )}
-
-              {/* Bottom modal close */}
-              <div className="pt-2 flex items-center justify-between">
-                <button
-                  onClick={() => handleCopySummary(selectedArticle)}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-xs font-medium text-stone-700 cursor-pointer"
-                >
-                  <Copy className="w-3.5 h-3.5" />
-                  <span>نسخ ملخص التقرير</span>
-                </button>
-
+      {selectedArticle && (() => {
+        const modalLoc = getLocalizedNewsArticle(selectedArticle, currentLang);
+        return (
+          <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-stone-200 overflow-hidden my-8 animate-in fade-in zoom-in-95">
+              {/* Header Image */}
+              <div className="relative aspect-[16/9] w-full">
+                <img
+                  src={selectedArticle.imageUrl}
+                  alt={modalLoc.titleAr}
+                  className="w-full h-full object-cover"
+                />
                 <button
                   onClick={closeArticleReader}
-                  className="px-5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold cursor-pointer"
+                  className={`absolute top-4 ${rtl ? 'left-4' : 'right-4'} p-2 rounded-full bg-black/60 hover:bg-black text-white transition-colors cursor-pointer`}
                 >
-                  إغلاق
+                  <X className="w-5 h-5" />
                 </button>
+                <div className={`absolute bottom-4 ${rtl ? 'right-4' : 'left-4'} px-3 py-1 rounded-lg bg-stone-900/90 text-amber-300 text-xs font-semibold`}>
+                  {modalLoc.categoryLabelAr}
+                </div>
+              </div>
+
+              {/* Modal Body */}
+              <div className="p-6 sm:p-8 space-y-5 text-stone-800">
+                <div className="flex items-center gap-3 text-xs text-stone-500">
+                  <span className="flex items-center gap-1">
+                    <Calendar className="w-3.5 h-3.5" />
+                    <span>{selectedArticle.date}</span>
+                  </span>
+                  <span>·</span>
+                  <span>{rtl ? 'المصدر:' : 'Source:'} {selectedArticle.source}</span>
+                  <span>·</span>
+                  <span>{rtl ? 'وقت القراءة:' : 'Read Time:'} {selectedArticle.readTime}</span>
+                </div>
+
+                <h3 className="text-xl sm:text-2xl font-bold font-serif-luxury text-stone-950 leading-snug">
+                  {modalLoc.titleAr}
+                </h3>
+
+                <div className="prose text-xs sm:text-sm text-stone-700 leading-relaxed whitespace-pre-line">
+                  {selectedArticle.contentAr}
+                </div>
+
+                {/* Expert Verdict Box */}
+                <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 space-y-2">
+                  <span className="text-xs font-bold text-amber-900 flex items-center gap-1.5">
+                    <Sparkles className="w-4 h-4 text-amber-700" />
+                    <span>{rtl ? 'رأي خبير المعمل وتأثيره الصناعي' : 'Master Perfumer Laboratory Verdict & Impact'}</span>
+                  </span>
+                  <p className="text-xs text-amber-950 leading-relaxed italic">
+                    {selectedArticle.expertVerdict}
+                  </p>
+                  <div className="text-[11px] text-amber-800 pt-1 font-medium">
+                    📊 {rtl ? 'أثر السوق:' : 'Market Impact:'} {selectedArticle.marketImpact}
+                  </div>
+                </div>
+
+                {/* Mentioned Key Notes breakdown with button */}
+                {selectedArticle.keyNotes && selectedArticle.keyNotes.length > 0 && (
+                  <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-stone-900">
+                        {rtl ? 'النوتات الموصى بها في هذا التقرير:' : 'Recommended Notes in This Report:'}
+                      </span>
+                      <span className="text-[10px] text-stone-500">
+                        {rtl ? 'جاهزة للتصدير المباشر' : 'Export Ready'}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      {selectedArticle.keyNotes.map((note, idx) => (
+                        <div
+                          key={idx}
+                          className="p-2.5 rounded-xl bg-white border border-stone-200 flex items-center justify-between"
+                        >
+                          <div>
+                            <div className="font-semibold text-stone-900">{rtl ? note.nameAr : note.nameEn}</div>
+                            <div className="text-[10px] text-stone-400 font-mono">{note.nameEn}</div>
+                          </div>
+                          <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-900 font-mono-numbers text-xs font-bold">
+                            {note.percentageHint}%
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        handleTransferToWorkbench(selectedArticle);
+                        closeArticleReader();
+                      }}
+                      className="w-full py-3 rounded-xl bg-amber-800 hover:bg-amber-900 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
+                    >
+                      <FlaskConical className="w-4 h-4 text-amber-300" />
+                      <span>{rtl ? 'تطبيق هذه التوليفة بالكامل في حاسبة العطور والمعمل' : 'Apply Full Accord to Formulation Scale'}</span>
+                    </button>
+                  </div>
+                )}
+
+                {/* Bottom modal close */}
+                <div className="pt-2 flex items-center justify-between">
+                  <button
+                    onClick={() => handleCopySummary(selectedArticle)}
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-xs font-medium text-stone-700 cursor-pointer"
+                  >
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>{rtl ? 'نسخ ملخص التقرير' : 'Copy Summary'}</span>
+                  </button>
+
+                  <button
+                    onClick={closeArticleReader}
+                    className="px-5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold cursor-pointer"
+                  >
+                    {rtl ? 'إغلاق' : 'Close'}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
     </div>
   );

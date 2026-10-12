@@ -16,18 +16,23 @@ import {
 import { UserProfile } from '../types/auth';
 import { loginUser, registerUser } from '../utils/authStorage';
 import { WORLD_COUNTRIES } from '../data/worldCountries';
+import { SupportedLanguage } from '../types/i18n';
+import { isRTL } from '../utils/localizedContent';
 
 interface AuthModalProps {
+  currentLang?: SupportedLanguage;
   onSuccess: (user: UserProfile) => void;
   onOpenPrivacyPolicy: () => void;
   onClose: () => void;
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({
+  currentLang = 'ar',
   onSuccess,
   onOpenPrivacyPolicy,
   onClose,
 }) => {
+  const rtl = isRTL(currentLang);
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -130,10 +135,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </div>
             <div>
               <h3 className="text-lg font-bold font-serif-luxury">
-                {mode === 'login' ? 'تسجيل الدخول إلى معملك' : 'إنشاء حساب مصمم عطور جديد'}
+                {mode === 'login'
+                  ? (rtl ? 'تسجيل الدخول إلى معملك' : 'Sign in to Your Atelier')
+                  : (rtl ? 'إنشاء حساب مصمم عطور جديد' : 'Create Master Perfumer Account')}
               </h3>
               <p className="text-[11px] text-stone-300">
-                منصة صمم عطرك مع شام · حفظ وحماية الخلطات والبيانات
+                {rtl ? 'منصة صمم عطرك مع شام · حفظ وحماية الخلطات والبيانات' : 'Sham Haute Parfumerie · Formula Vault & Privacy Protection'}
               </p>
             </div>
           </div>
@@ -159,7 +166,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 : 'text-stone-500 hover:text-stone-800'
             }`}
           >
-            تسجيل الدخول
+            {rtl ? 'تسجيل الدخول' : 'Sign In'}
           </button>
           <button
             onClick={() => {
@@ -172,7 +179,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 : 'text-stone-500 hover:text-stone-800'
             }`}
           >
-            إنشاء حساب جديد
+            {rtl ? 'إنشاء حساب جديد' : 'Create Account'}
           </button>
         </div>
 

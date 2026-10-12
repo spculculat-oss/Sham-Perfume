@@ -793,6 +793,7 @@ export default function App() {
 
       {/* Floating Interactive Master Perfumer AI Chatbot with Transfer Bridge */}
       <PerfumerAIChatbot
+        currentLang={currentLang}
         onApplyToConcentrationCalculator={handleApplyToConcentrationCalculator}
         onApplyToPyramidCalculator={handleApplyToPyramidCalculator}
         onRecordToRecipeLibrary={handleRecordToRecipeLibrary}
@@ -927,6 +928,7 @@ export default function App() {
           pyramidNotes={pyramidNotes}
           calculationResult={calculationResult}
           detailedAddress={detailedAddress}
+          currentLang={currentLang}
           onClose={handleCloseSpecModal}
         />
       )}
@@ -934,6 +936,7 @@ export default function App() {
       {/* User Authentication & Account Modal */}
       {isAuthModalOpen && (
         <AuthModal
+          currentLang={currentLang}
           onSuccess={handleAuthSuccess}
           onOpenPrivacyPolicy={() => {
             handleCloseAuthModal();
@@ -964,6 +967,7 @@ export default function App() {
       {/* User Data Protection & GDPR Privacy Modal */}
       {isPrivacyModalOpen && (
         <DataPrivacyModal
+          currentLang={currentLang}
           currentUser={currentUser}
           onUserDataWiped={handleUserDataWiped}
           onClose={handleClosePrivacyModal}

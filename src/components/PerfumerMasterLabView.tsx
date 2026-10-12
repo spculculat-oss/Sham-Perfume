@@ -33,8 +33,11 @@ import {
   exportChatTranscriptToFile,
   DEFAULT_WELCOME_MESSAGE,
 } from '../utils/chatStorage';
+import { SupportedLanguage } from '../types/i18n';
+import { isRTL } from '../utils/localizedContent';
 
 interface PerfumerMasterLabViewProps {
+  currentLang?: SupportedLanguage;
   onApplyToConcentrationCalculator: (formula: ExtractedAIPerfume) => void;
   onApplyToPyramidCalculator: (formula: ExtractedAIPerfume) => void;
   onRecordToRecipeLibrary: (formula: ExtractedAIPerfume) => void;
@@ -51,12 +54,14 @@ const MASTER_PROMPTS = [
 ];
 
 export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
+  currentLang = 'ar',
   onApplyToConcentrationCalculator,
   onApplyToPyramidCalculator,
   onRecordToRecipeLibrary,
   onCalculateCosting,
   onPrintSpecSheet,
 }) => {
+  const rtl = isRTL(currentLang);
   // Load persisted session with 30-day (1 month) expiration check
   const [sessionData, setSessionData] = useState(() => loadStoredChatSession());
   const [messages, setMessages] = useState<ChatMessage[]>(() => sessionData.messages);
@@ -284,15 +289,15 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-base sm:text-lg font-bold text-stone-900 font-serif-luxury">
-                مجلس الخبير شاهين · شيخ العطارين
+                {rtl ? 'مجلس الخبير شاهين · شيخ العطارين' : 'Master Perfumer Shahin AI Council'}
               </h2>
               {/* 30-Day Auto-Purge Persistence Badge */}
               <div
                 className="flex items-center gap-1 text-[10px] bg-emerald-50 border border-emerald-200 text-emerald-900 px-2 py-0.5 rounded-full font-medium"
-                title="يتم حفظ المحادثة كاملة في جهازك وتُمسح تلقائياً بعد 30 يوماً من بدئها"
+                title={rtl ? 'يتم حفظ المحادثة كاملة في جهازك وتُمسح تلقائياً بعد 30 يوماً من بدئها' : 'Chat session stored encrypted locally and auto-purged after 30 days'}
               >
                 <Clock className="w-3 h-3 text-emerald-700" />
-                <span>محفوظة بالكامل (تُمسح بعد {daysRemaining} يوماً)</span>
+                <span>{rtl ? `محفوظة بالكامل (تُمسح بعد ${daysRemaining} يوماً)` : `Active Vault (${daysRemaining}d remaining)`}</span>
               </div>
             </div>
             <div className="text-xs text-stone-500 mt-0.5">
@@ -301,7 +306,9 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                   🧪 {compoundingPhrases[compoundingStep]}
                 </span>
               ) : (
-                'تفاعل مباشر وحفظ تلقائي لكامل الجلسة لمدة شهر كامل مع إمكانية التصدير'
+                rtl
+                  ? 'تفاعل مباشر وحفظ تلقائي لكامل الجلسة لمدة شهر كامل مع إمكانية التصدير'
+                  : 'Multi-AI formulation synthesis co-pilot with one-month persistent cache'
               )}
             </div>
           </div>
@@ -311,36 +318,45 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
         <div className="flex items-center gap-2">
           {/* Scale Display */}
           <div className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-900 text-white rounded-lg text-xs font-mono-numbers">
-            <span className="text-stone-400 text-[10px]">الميزان:</span>
+            <span className="text-stone-400 text-[10px]">{rtl ? 'الميزان:' : 'Scale:'}</span>
             <span className="text-amber-400 font-bold">{scaleWeight} g</span>
           </div>
 
           <button
             onClick={handleManualDrop}
             className="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-950 rounded-lg text-xs font-medium flex items-center gap-1 cursor-pointer transition-colors"
-            title="إضافة قطرة عطرية للمركب"
+            title={rtl ? 'إضافة قطرة عطرية للمركب' : 'Add aroma drop to scale'}
           >
             <Droplet className="w-3.5 h-3.5 text-amber-700" />
-            <span className="hidden sm:inline">إضافة قطرة</span>
+            <span className="hidden sm:inline">{rtl ? 'إضافة قطرة' : '+1 Drop'}</span>
           </button>
 
           {/* Download TXT Transcript */}
           <button
             onClick={() => exportChatTranscriptToFile(messages, daysRemaining)}
             className="px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
-            title="تنزيل نسخة احتياطية من المحادثة كملف نصي TXT"
+            title={rtl ? 'تنزيل نسخة احتياطية من المحادثة كملف نصي TXT' : 'Download chat transcript as TXT'}
           >
             <Download className="w-3.5 h-3.5 text-amber-800" />
-            <span className="hidden sm:inline">تنزيل نسخة TXT</span>
+            <span className="hidden sm:inline">{rtl ? 'تنزيل نسخة TXT' : 'Export TXT'}</span>
           </button>
 
           <button
             onClick={handleCopyEntireChat}
             className="px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
-            title="نسخ المحادثة بالكامل"
+            title={rtl ? 'نسخ المحادثة بالكامل' : 'Copy entire transcript'}
           >
-            {copiedAll ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-            <span>{copiedAll ? 'تم النسخ' : 'نسخ الكل'}</span>
+            {copiedAll ? (
+              <>
+                <Check className="w-3.5 h-3.5 text-emerald-600" />
+                <span className="hidden sm:inline">{rtl ? 'تم النسخ!' : 'Copied!'}</span>
+              </>
+            ) : (
+              <>
+                <Copy className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">{rtl ? 'نسخ المحادثة' : 'Copy All'}</span>
+              </>
+            )}
           </button>
 
           {/* Manual Clear Session Button */}

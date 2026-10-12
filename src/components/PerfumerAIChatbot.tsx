@@ -35,8 +35,11 @@ import {
   exportChatTranscriptToFile,
   DEFAULT_WELCOME_MESSAGE,
 } from '../utils/chatStorage';
+import { SupportedLanguage } from '../types/i18n';
+import { isRTL } from '../utils/localizedContent';
 
 interface PerfumerAIChatbotProps {
+  currentLang?: SupportedLanguage;
   onApplyToConcentrationCalculator: (formula: ExtractedAIPerfume) => void;
   onApplyToPyramidCalculator: (formula: ExtractedAIPerfume) => void;
   onRecordToRecipeLibrary: (formula: ExtractedAIPerfume) => void;
@@ -53,12 +56,14 @@ const PRESET_QUESTIONS = [
 ];
 
 export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
+  currentLang = 'ar',
   onApplyToConcentrationCalculator,
   onApplyToPyramidCalculator,
   onRecordToRecipeLibrary,
   onCalculateCosting,
   onPrintSpecSheet,
 }) => {
+  const rtl = isRTL(currentLang);
   const [isOpen, setIsOpen] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
 
@@ -297,17 +302,17 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   return (
     <>
       {/* Floating Trigger Button */}
-      <div className="fixed bottom-6 right-6 z-40 no-print flex items-center gap-3">
+      <div className={`fixed bottom-6 ${rtl ? 'right-6' : 'left-6'} z-40 no-print flex items-center gap-3`}>
         <AnimatePresence>
           {!isOpen && (
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: rtl ? 20 : -20 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
+              exit={{ opacity: 0, x: rtl ? 20 : -20 }}
               className="hidden sm:flex items-center gap-2 bg-stone-900/90 backdrop-blur-md text-amber-300 text-xs py-2 px-3.5 rounded-full shadow-lg border border-amber-500/30 font-medium"
             >
               <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-              <span>الخبير شاهين يقطر مركباً في معمله.. اسأله عن أي تركيبة!</span>
+              <span>{rtl ? 'الخبير شاهين يقطر مركباً في معمله.. اسأله عن أي تركيبة!' : 'Master Perfumer Shahin is at work.. Ask him anything!'}</span>
             </motion.div>
           )}
         </AnimatePresence>
@@ -315,19 +320,19 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="relative group p-1 rounded-full bg-gradient-to-tr from-amber-900 via-stone-900 to-amber-700 shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer border border-amber-400/40"
-          title="شات بوت خبير تركيب العطور (شاهين)"
+          title={rtl ? 'شات بوت خبير تركيب العطور (شاهين)' : 'Master Perfumer AI Chatbot'}
         >
           <span className="absolute -inset-1 rounded-full bg-amber-500/20 blur-md group-hover:bg-amber-500/40 transition-all animate-pulse" />
           
           <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-amber-300/80">
             <img
               src={perfumerImg}
-              alt="الخبير شاهين صانع العطور"
+              alt={rtl ? 'الخبير شاهين صانع العطور' : 'Master Perfumer Shahin'}
               className="w-full h-full object-cover object-top"
             />
           </div>
 
-          <span className="absolute -bottom-1 -left-1 w-5 h-5 bg-amber-500 text-stone-950 rounded-full flex items-center justify-center text-[10px] font-bold shadow-md border border-white">
+          <span className={`absolute -bottom-1 ${rtl ? '-left-1' : '-right-1'} w-5 h-5 bg-amber-500 text-stone-950 rounded-full flex items-center justify-center text-[10px] font-bold shadow-md border border-white`}>
             🧪
           </span>
         </button>
@@ -348,7 +353,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
             className={`fixed z-50 bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden flex flex-col no-print transition-all ${
               isFullScreen
                 ? 'inset-3 sm:inset-6'
-                : 'bottom-20 right-3 sm:right-6 w-[calc(100vw-1.5rem)] sm:w-[640px] lg:w-[780px] h-[86vh]'
+                : `bottom-20 ${rtl ? 'right-3 sm:right-6' : 'left-3 sm:left-6'} w-[calc(100vw-1.5rem)] sm:w-[640px] lg:w-[780px] h-[86vh]`
             }`}
           >
             {/* 1. Compact Slim Header with Expiry Info */}
@@ -368,21 +373,21 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-sm text-stone-100 font-serif-luxury">
-                      الخبير شاهين
+                      {rtl ? 'الخبير شاهين' : 'Master Shahin AI'}
                     </span>
                     {/* Auto-Purge Expiration Badge */}
                     <span
                       className="px-2 py-0.2 bg-emerald-950 border border-emerald-500/40 text-emerald-300 rounded-full text-[9px] flex items-center gap-1 font-mono-numbers"
-                      title="يتم حفظ المحادثة كاملة وتُمسح تلقائياً بعد 30 يوماً من بدئها"
+                      title={rtl ? 'يتم حفظ المحادثة كاملة وتُمسح تلقائياً بعد 30 يوماً من بدئها' : 'Stored locally for 30 days'}
                     >
                       <Clock className="w-2.5 h-2.5 text-emerald-400" />
-                      <span>تُمسح بعد {daysRemaining} يوماً</span>
+                      <span>{rtl ? `تُمسح بعد ${daysRemaining} يوماً` : `${daysRemaining}d left`}</span>
                     </span>
                   </div>
                   <div className="text-[10px] text-amber-300/80 flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
                     <span>
-                      {isLoading ? compoundingMessages[compoundingStep] : 'الميزان الرقمي: ' + currentScaleWeight + 'g'}
+                      {isLoading ? compoundingMessages[compoundingStep] : (rtl ? `الميزان الرقمي: ${currentScaleWeight}g` : `Digital Scale: ${currentScaleWeight}g`)}
                     </span>
                   </div>
                 </div>
@@ -394,7 +399,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                 <button
                   onClick={() => exportChatTranscriptToFile(messages, daysRemaining)}
                   className="p-1.5 text-stone-400 hover:text-white rounded-lg transition-colors cursor-pointer"
-                  title="تنزيل نسخة نصية TXT"
+                  title={rtl ? 'تنزيل نسخة نصية TXT' : 'Export TXT transcript'}
                 >
                   <Download className="w-3.5 h-3.5 text-amber-400" />
                 </button>
@@ -402,10 +407,10 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                 <button
                   onClick={handleCopyAll}
                   className="px-2 py-1 bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white rounded-lg text-xs transition-colors flex items-center gap-1 cursor-pointer"
-                  title="نسخ كامل المحادثة"
+                  title={rtl ? 'نسخ كامل المحادثة' : 'Copy entire chat'}
                 >
                   {copiedAll ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
-                  <span className="hidden sm:inline text-[11px]">{copiedAll ? 'تم النسخ' : 'نسخ الكل'}</span>
+                  <span className="hidden sm:inline text-[11px]">{copiedAll ? (rtl ? 'تم النسخ' : 'Copied') : (rtl ? 'نسخ الكل' : 'Copy All')}</span>
                 </button>
 
                 {/* Clear Button */}
