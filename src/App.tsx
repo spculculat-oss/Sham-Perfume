@@ -39,7 +39,13 @@ import {
   getInitialUserEnvironment,
 } from './utils/environmentAdapter';
 import { loadDetailedAddress } from './utils/addressStorage';
-import { detectUserCountryAndLanguage } from './utils/geoDetector';
+import {
+  detectUserCountryAndLanguage,
+  detectUserLocationAsync,
+  forceRedetectLocation,
+  USER_LANGUAGE_MANUAL_OVERRIDE_KEY,
+  saveUserCountryCode,
+} from './utils/geoDetector';
 import { UserProfile } from './types/auth';
 import { getCurrentUserSession, logoutUser } from './utils/authStorage';
 import { Check, X, BookmarkPlus } from 'lucide-react';
@@ -349,18 +355,33 @@ export default function App() {
 
   // Auto-detect country and language based on the country where the site was opened
   useEffect(() => {
+    // 1. Immediate sync check with synchronous detector
     try {
-      const storedLang = localStorage.getItem('sham_perfume_ui_language');
-      if (!storedLang) {
-        const geo = detectUserCountryAndLanguage();
-        if (geo.detectedLanguage && geo.detectedLanguage !== currentLang) {
-          setCurrentLang(geo.detectedLanguage);
-          saveLanguage(geo.detectedLanguage);
+      const hasOverride = localStorage.getItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY);
+      if (!hasOverride) {
+        const syncGeo = detectUserCountryAndLanguage();
+        if (syncGeo.detectedLanguage && syncGeo.detectedLanguage !== currentLang) {
+          setCurrentLang(syncGeo.detectedLanguage);
+          saveLanguage(syncGeo.detectedLanguage);
         }
       }
     } catch (e) {
       // ignore
     }
+
+    // 2. High-precision Async IP-based location detection
+    detectUserLocationAsync()
+      .then((geo) => {
+        const hasOverride = localStorage.getItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY);
+        if (!hasOverride && geo.detectedLanguage && geo.detectedLanguage !== currentLang) {
+          setCurrentLang(geo.detectedLanguage);
+          saveLanguage(geo.detectedLanguage);
+          if (geo.detectedCountry) {
+            saveUserCountryCode(geo.detectedCountry.code);
+          }
+        }
+      })
+      .catch(() => {});
   }, []);
 
   // Sync document direction and language code whenever language changes
@@ -368,11 +389,23 @@ export default function App() {
     saveLanguage(currentLang);
   }, [currentLang]);
 
+  // Client manually requested a specific language
   const handleSelectLanguage = (lang: SupportedLanguage) => {
+    try {
+      localStorage.setItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY, 'true');
+    } catch (e) {}
     setCurrentLang(lang);
     saveLanguage(lang);
     const langInfo = SUPPORTED_LANGUAGES.find((l) => l.code === lang);
     showToast(`🌐 تم تغيير لغة المنصة بنجاح إلى: ${langInfo?.flag || ''} «${langInfo?.nativeName || lang}» (${langInfo?.dir.toUpperCase() || 'RTL'})`);
+  };
+
+  // Re-run location detection by client request
+  const handleAutoDetectLanguage = async () => {
+    const geo = await forceRedetectLocation();
+    setCurrentLang(geo.detectedLanguage);
+    saveLanguage(geo.detectedLanguage);
+    showToast(`📍 تم تحديد موقعك: ${geo.detectedCountry.flag} ${geo.detectedCountry.nameAr.split('(')[0]} — لغة المنصة: ${geo.detectedLanguage.toUpperCase()}`);
   };
 
   const handleUpdateEnvironment = (profile: UserEnvironmentProfile) => {
@@ -619,6 +652,7 @@ export default function App() {
           onOpenPrintModal={handleOpenSpecModal}
           currentLang={currentLang}
           onSelectLanguage={handleSelectLanguage}
+          onAutoDetectLanguage={handleAutoDetectLanguage}
           currentUser={currentUser}
           onOpenAuthModal={handleOpenAuthModal}
           onLogout={handleLogout}
@@ -687,6 +721,7 @@ export default function App() {
 
         {activeTab === 'perfume_news' && (
           <WorldPerfumeNews
+            currentLang={currentLang}
             onApplyNewsNotesToCalculator={handleApplyToConcentrationCalculator}
             onAddNoteToPyramid={handleAddMaterialToPyramid}
           />
@@ -694,6 +729,7 @@ export default function App() {
 
         {activeTab === 'world_perfumes' && (
           <WorldPerfumesLibrary
+            currentLang={currentLang}
             onLoadWorldFormula={handleLoadWorldFormula}
             onPrintWorldFormula={handlePrintWorldFormula}
           />
@@ -701,12 +737,14 @@ export default function App() {
 
         {activeTab === 'raw_materials' && (
           <RawMaterialsEncyclopedia
+            currentLang={currentLang}
             onAddMaterialToPyramid={handleAddMaterialToPyramid}
           />
         )}
 
         {activeTab === 'pyramid' && (
           <PyramidCalculator
+            currentLang={currentLang}
             formulation={formulation}
             pyramidNotes={pyramidNotes}
             setPyramidNotes={setPyramidNotes}
@@ -715,11 +753,12 @@ export default function App() {
         )}
 
         {activeTab === 'alcohol' && (
-          <AlcoholDilutionCalculator />
+          <AlcoholDilutionCalculator currentLang={currentLang} />
         )}
 
         {activeTab === 'costing' && (
           <CostCalculator
+            currentLang={currentLang}
             formulation={formulation}
             calculationResult={calculationResult}
             currentCurrencyCode={currentEnvironment.currencyCode}
@@ -728,6 +767,7 @@ export default function App() {
 
         {activeTab === 'library' && (
           <FormulaLibrary
+            currentLang={currentLang}
             savedFormulas={savedFormulas}
             onLoadFormula={handleLoadFormula}
             onDeleteFormula={handleDeleteFormula}
@@ -737,6 +777,7 @@ export default function App() {
 
         {activeTab === 'master_ai' && (
           <PerfumerMasterLabView
+            currentLang={currentLang}
             onApplyToConcentrationCalculator={handleApplyToConcentrationCalculator}
             onApplyToPyramidCalculator={handleApplyToPyramidCalculator}
             onRecordToRecipeLibrary={handleRecordToRecipeLibrary}
@@ -746,7 +787,7 @@ export default function App() {
         )}
 
         {activeTab === 'guide' && (
-          <AgingAndFixativesGuide />
+          <AgingAndFixativesGuide currentLang={currentLang} />
         )}
       </main>
 

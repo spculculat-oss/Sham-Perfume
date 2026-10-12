@@ -1,0 +1,322 @@
+import { SupportedLanguage } from '../types/i18n';
+import { WORLD_COUNTRIES, WorldCountryData, findCountryByCode } from '../data/worldCountries';
+
+export interface GeoDetectionResult {
+  detectedCountry: WorldCountryData;
+  detectedLanguage: SupportedLanguage;
+  detectionSource: 'stored' | 'ip' | 'timezone' | 'locale' | 'default';
+}
+
+export const USER_COUNTRY_STORAGE_KEY = 'sham_perfume_user_country_code';
+export const USER_AUTO_DETECTED_FLAG_KEY = 'sham_perfume_geo_autodetected_once';
+export const USER_LANGUAGE_MANUAL_OVERRIDE_KEY = 'sham_perfume_user_override_lang';
+
+/**
+ * Maps standard IANA timezones to ISO country codes
+ */
+const TIMEZONE_TO_COUNTRY: Record<string, string> = {
+  // Arab World
+  'Asia/Riyadh': 'SA',
+  'Asia/Dubai': 'AE',
+  'Africa/Cairo': 'EG',
+  'Asia/Kuwait': 'KW',
+  'Asia/Qatar': 'QA',
+  'Asia/Bahrain': 'BH',
+  'Asia/Muscat': 'OM',
+  'Asia/Damascus': 'SY',
+  'Asia/Beirut': 'LB',
+  'Asia/Amman': 'JO',
+  'Asia/Baghdad': 'IQ',
+  'Africa/Casablanca': 'MA',
+  'Africa/Algiers': 'DZ',
+  'Africa/Tunis': 'TN',
+  'Africa/Tripoli': 'LY',
+  'Africa/Khartoum': 'SD',
+  'Asia/Aden': 'YE',
+  'Asia/Gaza': 'PS',
+  'Asia/Hebron': 'PS',
+  'Asia/Jerusalem': 'PS',
+
+  // Europe
+  'Europe/Paris': 'FR',
+  'Europe/Rome': 'IT',
+  'Europe/Berlin': 'DE',
+  'Europe/Madrid': 'ES',
+  'Europe/London': 'GB',
+  'Europe/Zurich': 'CH',
+  'Europe/Istanbul': 'TR',
+  'Europe/Moscow': 'RU',
+
+  // Americas
+  'America/New_York': 'US',
+  'America/Chicago': 'US',
+  'America/Los_Angeles': 'US',
+  'America/Denver': 'US',
+  'America/Toronto': 'CA',
+  'America/Vancouver': 'CA',
+  'America/Sao_Paulo': 'BR',
+  'America/Mexico_City': 'MX',
+
+  // Asia
+  'Asia/Tokyo': 'JP',
+  'Asia/Shanghai': 'CN',
+  'Asia/Seoul': 'KR',
+  'Asia/Kolkata': 'IN',
+  'Asia/Tehran': 'IR',
+  'Australia/Sydney': 'AU',
+  'Australia/Melbourne': 'AU',
+};
+
+/**
+ * Maps browser language tags (e.g., 'fr-FR', 'ar-EG') to country code if timezone is generic
+ */
+function getCountryFromBrowserLocale(): string | null {
+  try {
+    const langs = navigator.languages || [navigator.language];
+    for (const lang of langs) {
+      if (!lang) continue;
+      const parts = lang.split('-');
+      if (parts.length > 1 && parts[1]) {
+        const potentialCode = parts[1].toUpperCase();
+        if (findCountryByCode(potentialCode)) {
+          return potentialCode;
+        }
+      }
+    }
+  } catch (e) {
+    // ignore
+  }
+  return null;
+}
+
+/**
+ * Detect country code from TimeZone
+ */
+function getCountryFromTimezone(): string | null {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (tz && TIMEZONE_TO_COUNTRY[tz]) {
+      return TIMEZONE_TO_COUNTRY[tz];
+    }
+    // Partial matches
+    if (tz.includes('Riyadh')) return 'SA';
+    if (tz.includes('Dubai')) return 'AE';
+    if (tz.includes('Cairo')) return 'EG';
+    if (tz.includes('Kuwait')) return 'KW';
+    if (tz.includes('Qatar')) return 'QA';
+    if (tz.includes('Damascus')) return 'SY';
+    if (tz.includes('Beirut')) return 'LB';
+    if (tz.includes('Amman')) return 'JO';
+    if (tz.includes('Baghdad')) return 'IQ';
+    if (tz.includes('Casablanca')) return 'MA';
+    if (tz.includes('Algiers')) return 'DZ';
+    if (tz.includes('Tunis')) return 'TN';
+    if (tz.includes('Paris')) return 'FR';
+    if (tz.includes('Rome')) return 'IT';
+    if (tz.includes('Berlin')) return 'DE';
+    if (tz.includes('Madrid')) return 'ES';
+    if (tz.includes('London')) return 'GB';
+    if (tz.includes('Istanbul')) return 'TR';
+    if (tz.includes('Tehran')) return 'IR';
+    if (tz.includes('Moscow')) return 'RU';
+    if (tz.includes('Shanghai') || tz.includes('Beijing')) return 'CN';
+    if (tz.includes('Tokyo')) return 'JP';
+    if (tz.includes('New_York') || tz.includes('Los_Angeles')) return 'US';
+  } catch (e) {
+    // ignore
+  }
+  return null;
+}
+
+/**
+ * Detect the user's country and initial language based on the country where the site was opened.
+ */
+export function detectUserCountryAndLanguage(): GeoDetectionResult {
+  // 1. Check if user already has a saved country in localStorage
+  try {
+    const savedCode = localStorage.getItem(USER_COUNTRY_STORAGE_KEY);
+    if (savedCode) {
+      const match = findCountryByCode(savedCode);
+      if (match) {
+        return {
+          detectedCountry: match,
+          detectedLanguage: match.primaryLanguage,
+          detectionSource: 'stored',
+        };
+      }
+    }
+  } catch (e) {
+    // ignore
+  }
+
+  // 2. Detect from TimeZone
+  const tzCountryCode = getCountryFromTimezone();
+  if (tzCountryCode) {
+    const match = findCountryByCode(tzCountryCode);
+    if (match) {
+      return {
+        detectedCountry: match,
+        detectedLanguage: match.primaryLanguage,
+        detectionSource: 'timezone',
+      };
+    }
+  }
+
+  // 3. Detect from Navigator Locale
+  const localeCountryCode = getCountryFromBrowserLocale();
+  if (localeCountryCode) {
+    const match = findCountryByCode(localeCountryCode);
+    if (match) {
+      return {
+        detectedCountry: match,
+        detectedLanguage: match.primaryLanguage,
+        detectionSource: 'locale',
+      };
+    }
+  }
+
+  // 4. Fallback: Check primary language from browser
+  try {
+    const primaryLang = (navigator.language || 'ar').split('-')[0].toLowerCase();
+    if (primaryLang === 'ar') {
+      return {
+        detectedCountry: findCountryByCode('SA')!,
+        detectedLanguage: 'ar',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'fr') {
+      return {
+        detectedCountry: findCountryByCode('FR')!,
+        detectedLanguage: 'fr',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'es') {
+      return {
+        detectedCountry: findCountryByCode('ES')!,
+        detectedLanguage: 'es',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'it') {
+      return {
+        detectedCountry: findCountryByCode('IT')!,
+        detectedLanguage: 'it',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'de') {
+      return {
+        detectedCountry: findCountryByCode('DE')!,
+        detectedLanguage: 'de',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'ru') {
+      return {
+        detectedCountry: findCountryByCode('RU')!,
+        detectedLanguage: 'ru',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'zh') {
+      return {
+        detectedCountry: findCountryByCode('CN')!,
+        detectedLanguage: 'zh',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'tr') {
+      return {
+        detectedCountry: findCountryByCode('TR')!,
+        detectedLanguage: 'tr',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'fa') {
+      return {
+        detectedCountry: findCountryByCode('IR')!,
+        detectedLanguage: 'fa',
+        detectionSource: 'default',
+      };
+    }
+  } catch (e) {
+    // ignore
+  }
+
+  // Default to Saudi Arabia / Arabic
+  const defaultCountry = findCountryByCode('SA') || WORLD_COUNTRIES[0];
+  return {
+    detectedCountry: defaultCountry,
+    detectedLanguage: 'ar',
+    detectionSource: 'default',
+  };
+}
+
+/**
+ * Save user chosen country code
+ */
+export function saveUserCountryCode(code: string): void {
+  try {
+    localStorage.setItem(USER_COUNTRY_STORAGE_KEY, code.toUpperCase());
+    localStorage.setItem(USER_AUTO_DETECTED_FLAG_KEY, 'true');
+  } catch (e) {
+    console.error('Failed to save country code', e);
+  }
+}
+
+/**
+ * Asynchronously detects user country using IP-based lookup with fallback to timezone and browser language.
+ * Honors manual client language override if previously set.
+ */
+export async function detectUserLocationAsync(): Promise<GeoDetectionResult> {
+  // 1. If user previously manually chose their language, respect their choice
+  try {
+    const hasManualOverride = localStorage.getItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY);
+    const savedCode = localStorage.getItem(USER_COUNTRY_STORAGE_KEY);
+    if (hasManualOverride && savedCode) {
+      const match = findCountryByCode(savedCode);
+      if (match) {
+        return {
+          detectedCountry: match,
+          detectedLanguage: match.primaryLanguage,
+          detectionSource: 'stored',
+        };
+      }
+    }
+  } catch (e) {
+    // ignore
+  }
+
+  // 2. Try online IP-based country detection (fast timeout of 1200ms)
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 1200);
+    const res = await fetch('https://api.country.is/', { signal: controller.signal });
+    clearTimeout(timeoutId);
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.country) {
+        const match = findCountryByCode(data.country);
+        if (match) {
+          saveUserCountryCode(match.code);
+          return {
+            detectedCountry: match,
+            detectedLanguage: match.primaryLanguage,
+            detectionSource: 'ip',
+          };
+        }
+      }
+    }
+  } catch (e) {
+    // Network error or timeout, proceed to local detection
+  }
+
+  // 3. Fallback to synchronous Timezone and Locale detection
+  return detectUserCountryAndLanguage();
+}
+
+/**
+ * Force re-detects the user's location and language, clearing any manual overrides.
+ */
+export async function forceRedetectLocation(): Promise<GeoDetectionResult> {
+  try {
+    localStorage.removeItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY);
+  } catch (e) {
+    // ignore
+  }
+  return detectUserLocationAsync();
+}
