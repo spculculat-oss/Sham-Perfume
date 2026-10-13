@@ -41,8 +41,8 @@ export const FormulaLibrary: React.FC<FormulaLibraryProps> = ({
   const filtered = savedFormulas.filter((f) => {
     const matchesQuery =
       f.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      f.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      f.batchCode.toLowerCase().includes(searchQuery.toLowerCase());
+      (f.author || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (f.batchCode || '').toLowerCase().includes(searchQuery.toLowerCase());
 
     const isPreset = CURATED_FORMULA_PRESETS.some((p) => p.id === f.id);
     if (activeCategory === 'custom') return matchesQuery && !isPreset;

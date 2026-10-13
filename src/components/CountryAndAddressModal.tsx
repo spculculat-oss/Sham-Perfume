@@ -156,9 +156,7 @@ export const CountryAndAddressModal: React.FC<CountryAndAddressModalProps> = ({
   const handleSelectLabCurrency = (curr: WorldCurrency) => {
     const updated = updateProfileCurrency(
       currentProfile,
-      curr.code,
-      curr.symbolAr,
-      curr.symbolEn
+      curr.code
     );
     onUpdateProfile(updated);
     setCalcFromCurrency(curr.code);
@@ -176,17 +174,19 @@ export const CountryAndAddressModal: React.FC<CountryAndAddressModalProps> = ({
 
   const handleSelectCountry = (country: WorldCountryData) => {
     setSelectedCountryCode(country.code);
-    const newProfile = saveUserEnvironment(country.code);
+    const newProfile = createEnvironmentProfileFromCountry(country);
+    saveUserEnvironment(newProfile);
     onUpdateProfile(newProfile);
 
     // Sync country with address form
+    const phone = addressForm.phoneNumber || addressForm.phone || '';
     const updatedAddress: UserDetailedAddress = {
       ...addressForm,
       countryCode: country.code,
       countryNameAr: country.nameAr,
       countryNameEn: country.nameEn,
-      phoneNumber: addressForm.phoneNumber.startsWith('+')
-        ? addressForm.phoneNumber
+      phoneNumber: phone.startsWith('+')
+        ? phone
         : `${country.phoneCode} `,
     };
     setAddressForm(updatedAddress);
@@ -194,7 +194,7 @@ export const CountryAndAddressModal: React.FC<CountryAndAddressModalProps> = ({
 
   const handleSaveAddress = async (e: React.FormEvent) => {
     e.preventDefault();
-    await saveDetailedAddress(addressForm, currentUser?.id);
+    saveDetailedAddress(addressForm);
     onUpdateAddress(addressForm);
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 3000);
@@ -204,14 +204,14 @@ export const CountryAndAddressModal: React.FC<CountryAndAddressModalProps> = ({
     const formatted = `═══════════════════════════════════════════════════
 بيانات مقر المعمل والعنوان التفصيلي · منصة صمم عطرك مع شام
 ═══════════════════════════════════════════════════
-المنشأة العطرية: ${addressForm.labOrFacilityName || 'مختبر تركيب العطور'}
+المنشأة العطرية: ${addressForm.labOrFacilityName || addressForm.facilityName || 'مختبر تركيب العطور'}
 نوع المنشأة: ${FACILITY_TYPE_LABELS[addressForm.facilityType]?.ar || 'معمل تركيب'}
 الدولة: ${selectedCountry.flag} ${addressForm.countryNameAr} (${addressForm.countryCode})
-المدينة / المحافظة: ${addressForm.city || 'غير محدد'}
-الحي / المنطقة: ${addressForm.district || 'غير محدد'}
-الشارع / رقم المعمل: ${addressForm.street || 'غير محدد'}
+المدينة / المحافظة: ${addressForm.city || addressForm.cityName || 'غير محدد'}
+الحي / المنطقة: ${addressForm.district || addressForm.districtName || 'غير محدد'}
+الشارع / رقم المعمل: ${addressForm.street || addressForm.streetAddress || 'غير محدد'}
 الرمز البريدي: ${addressForm.postalCode || 'غير محدد'}
-هاتف التواصل: ${addressForm.phoneNumber || 'غير محدد'}
+هاتف التواصل: ${addressForm.phoneNumber || addressForm.phone || 'غير محدد'}
 ملاحظات الشحن والتخزين: ${addressForm.additionalNotes || 'لا توجد'}
 ═══════════════════════════════════════════════════`;
 
@@ -221,7 +221,8 @@ export const CountryAndAddressModal: React.FC<CountryAndAddressModalProps> = ({
   };
 
   const handleApplyRegionalFormula = () => {
-    const transformedNotes: PyramidNote[] = activeProfile.traditionalNotes.map((n, i) => ({
+    const rawNotes = activeProfile.traditionalNotes || [];
+    const transformedNotes: PyramidNote[] = rawNotes.map((n: any, i: number) => ({
       id: `regional-note-${activeProfile.countryCode}-${i}`,
       nameAr: n.nameAr,
       nameEn: n.nameEn,
@@ -236,9 +237,16 @@ export const CountryAndAddressModal: React.FC<CountryAndAddressModalProps> = ({
       bottleVolumeMl: 50,
       concentrationPercent: activeProfile.recommendedConcentrationPercent,
       concentrationType: activeProfile.recommendedConcentrationType,
+      alcoholPercentage: 96,
+      waterPercent: 0,
+      fixativePercent: activeProfile.recommendedFixativePercent,
       macerationDays: activeProfile.climateType === 'hot_arid' ? 40 : 30,
       summary: `${activeProfile.climateAdviceAr} - مخصصة لبيئة ومناخ ${activeProfile.countryNameAr}.`,
-      pyramidNotes: transformedNotes,
+      pyramidNotes: transformedNotes.length > 0 ? transformedNotes : [
+        { id: 'tn-1', nameAr: 'برغموت منعش', nameEn: 'Bergamot', category: 'top', percentageOfOil: 20 },
+        { id: 'hn-1', nameAr: 'ياسمين وزهور', nameEn: 'Jasmine', category: 'heart', percentageOfOil: 40 },
+        { id: 'bn-1', nameAr: 'صندل وعنبر', nameEn: 'Sandalwood', category: 'base', percentageOfOil: 40 },
+      ],
     };
 
     onApplyRegionalFormulaToWorkbench(formula);

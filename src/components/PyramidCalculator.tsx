@@ -210,7 +210,7 @@ export const PyramidCalculator: React.FC<PyramidCalculatorProps> = ({
               onClick={() => handleLoadPreset(preset.id)}
               className="px-3 py-1.5 text-xs rounded-md bg-stone-50 hover:bg-amber-50 hover:border-amber-400 border border-stone-200 text-stone-700 font-medium transition-all cursor-pointer"
             >
-              {rtl ? preset.title.split('(')[0] : (preset.titleEn || preset.title.split('(')[0])}
+              {rtl ? preset.title.split('(')[0] : ((preset as any).titleEn || preset.title.split('(')[0])}
             </button>
           ))}
         </div>

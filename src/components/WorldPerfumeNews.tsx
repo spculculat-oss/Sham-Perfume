@@ -92,7 +92,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
     const matchesSearch =
       loc.titleAr.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.summaryAr.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
+      (item.tags ? item.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase())) : false);
     return matchesCategory && matchesSearch;
   });
 
@@ -114,12 +114,12 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
     if (!item.keyNotes || item.keyNotes.length === 0) return;
     const loc = getLocalizedNewsArticle(item, currentLang);
 
-    const transformedNotes: PyramidNote[] = item.keyNotes.map((k, index) => ({
+    const transformedNotes: PyramidNote[] = (item.keyNotes || []).map((k: any, index: number) => ({
       id: `news-note-${item.id}-${index}`,
-      nameAr: rtl ? k.nameAr : k.nameEn,
-      nameEn: k.nameEn,
-      category: k.type,
-      percentageOfOil: k.percentageHint,
+      nameAr: (rtl ? k.nameAr : (k.nameEn || k.nameAr)) || 'نوتة عطرية',
+      nameEn: k.nameEn || k.nameAr || 'Aromatic Note',
+      category: (k.type === 'top' || k.type === 'heart' || k.type === 'base' ? k.type : 'heart') as 'top' | 'heart' | 'base',
+      percentageOfOil: k.percentageHint || 25,
       description: `${rtl ? 'مستوحى من تقرير:' : 'Inspired by:'} ${loc.titleAr}`,
     }));
 
@@ -129,8 +129,11 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
       bottleVolumeMl: 50,
       concentrationPercent: 20,
       concentrationType: 'edp',
+      alcoholPercentage: 96,
+      waterPercent: 0,
+      fixativePercent: 1.5,
       macerationDays: 35,
-      summary: `${rtl ? 'توليفة حديثة مبنية على توجهات السوق العالمية في' : 'Modern formula based on global market trends in'} ${loc.titleAr}.\n${item.expertVerdict}`,
+      summary: `${rtl ? 'توليفة حديثة مبنية على توجهات السوق العالمية في' : 'Modern formula based on global market trends in'} ${loc.titleAr}.\n${item.expertVerdict || ''}`,
       pyramidNotes: transformedNotes,
     };
 

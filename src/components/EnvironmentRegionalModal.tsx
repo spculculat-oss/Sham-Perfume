@@ -39,12 +39,14 @@ export const EnvironmentRegionalModal: React.FC<EnvironmentRegionalModalProps> =
 
   const handleSelectAndSave = (id: string) => {
     setSelectedRegionId(id);
-    const updated = saveUserEnvironment(id);
+    const updated = REGIONAL_ENVIRONMENTS[id] || currentProfile;
+    saveUserEnvironment(updated);
     onUpdateProfile(updated);
   };
 
   const handleApplyRegionalFormula = () => {
-    const transformedNotes: PyramidNote[] = activeProfile.traditionalNotes.map((n, i) => ({
+    const rawNotes = activeProfile.traditionalNotes || [];
+    const transformedNotes: PyramidNote[] = rawNotes.map((n: any, i: number) => ({
       id: `regional-note-${activeProfile.regionId}-${i}`,
       nameAr: n.nameAr,
       nameEn: n.nameEn,
@@ -59,9 +61,16 @@ export const EnvironmentRegionalModal: React.FC<EnvironmentRegionalModalProps> =
       bottleVolumeMl: 50,
       concentrationPercent: activeProfile.recommendedConcentrationPercent,
       concentrationType: activeProfile.recommendedConcentrationType,
+      alcoholPercentage: 96,
+      waterPercent: 0,
+      fixativePercent: activeProfile.recommendedFixativePercent,
       macerationDays: activeProfile.climateType === 'hot_arid' ? 40 : 30,
       summary: `${activeProfile.climateAdviceAr} - مخصصة لبيئة ومناخ ${activeProfile.countryNameAr}.`,
-      pyramidNotes: transformedNotes,
+      pyramidNotes: transformedNotes.length > 0 ? transformedNotes : [
+        { id: 'tn-1', nameAr: 'برغموت منعش', nameEn: 'Bergamot', category: 'top', percentageOfOil: 20 },
+        { id: 'hn-1', nameAr: 'ياسمين وزهور', nameEn: 'Jasmine', category: 'heart', percentageOfOil: 40 },
+        { id: 'bn-1', nameAr: 'صندل وعنبر', nameEn: 'Sandalwood', category: 'base', percentageOfOil: 40 },
+      ],
     };
 
     onApplyRegionalFormulaToWorkbench(formula);
@@ -183,7 +192,7 @@ export const EnvironmentRegionalModal: React.FC<EnvironmentRegionalModalProps> =
                 الأكوردات والنوتات التراثية الأكثر أصالة في هذه البيئة:
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {activeProfile.traditionalNotes.map((note, idx) => (
+                {(activeProfile.traditionalNotes || []).map((note: any, idx: number) => (
                   <div
                     key={idx}
                     className="p-2.5 rounded-xl bg-white border border-stone-200 flex items-center justify-between text-xs"

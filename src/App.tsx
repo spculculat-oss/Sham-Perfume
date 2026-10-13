@@ -553,8 +553,8 @@ export default function App() {
   const handleLoadFormula = (formula: SavedFormula) => {
     setFormulation(formula.formulation);
     setFormulaTitle(formula.title);
-    setFormulaAuthor(formula.author);
-    setBatchCode(formula.batchCode);
+    setFormulaAuthor(formula.author || '');
+    setBatchCode(formula.batchCode || '');
     setFormulaNotes(formula.notes || '');
     setMacerationDays(formula.macerationDays || 30);
     setPyramidNotes(formula.pyramidNotes || []);
@@ -625,10 +625,10 @@ export default function App() {
   const handlePrintFormula = (formula: SavedFormula) => {
     setFormulation(formula.formulation);
     setFormulaTitle(formula.title);
-    setFormulaAuthor(formula.author);
-    setBatchCode(formula.batchCode);
-    setFormulaNotes(formula.notes);
-    setMacerationDays(formula.macerationDays);
+    setFormulaAuthor(formula.author || '');
+    setBatchCode(formula.batchCode || '');
+    setFormulaNotes(formula.notes || '');
+    setMacerationDays(formula.macerationDays || 30);
     setPyramidNotes(formula.pyramidNotes);
     handleOpenSpecModal();
   };
@@ -716,6 +716,7 @@ export default function App() {
               setPyramidNotes={setPyramidNotes}
               onNavigateToTab={(tab) => navigateToTab(tab)}
               currentLang={currentLang}
+              currencyCode={currentEnvironment.currencyCode}
             />
           )}
 

@@ -35,6 +35,7 @@ import { formatNum } from '../utils/calculations';
 import { useLanguage } from '../context/LanguageContext';
 import { FragrancePyramidGraphic } from './FragrancePyramidGraphic';
 import { CalculatorCriteriaGuide } from './CalculatorCriteriaGuide';
+import { VisualScaleSimulator } from './VisualScaleSimulator';
 
 interface ConcentrationCalculatorProps {
   formulation: FormulationState;
@@ -46,6 +47,7 @@ interface ConcentrationCalculatorProps {
   setPyramidNotes?: React.Dispatch<React.SetStateAction<PyramidNote[]>>;
   onNavigateToTab?: (tab: string) => void;
   currentLang?: SupportedLanguage;
+  currencyCode?: string;
 }
 
 export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = ({
@@ -58,15 +60,83 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
   setPyramidNotes,
   onNavigateToTab,
   currentLang: propLang,
+  currencyCode: propCurrency,
 }) => {
   const { currentLang: ctxLang, t } = useLanguage();
   const effectiveLang = propLang || ctxLang || 'ar';
   const isRTL = effectiveLang === 'ar' || effectiveLang === 'fa';
+  const activeCurrency = propCurrency || formulation.currency || 'SAR';
 
-  // Navigation inside the calculator: formulation, graphic pyramid, or criteria guide
-  const [activeView, setActiveView] = useState<'formulation' | 'pyramid_graphic' | 'criteria_guide'>('formulation');
+  // Navigation inside the calculator: formulation, graphic pyramid, criteria guide, or visual scale simulator
+  const [activeView, setActiveView] = useState<
+    'formulation' | 'pyramid_graphic' | 'criteria_guide' | 'scale_simulator'
+  >('formulation');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [copiedSummary, setCopiedSummary] = useState(false);
+  const [showPriceConfig, setShowPriceConfig] = useState(false);
+  const [isLiveScaleTared, setIsLiveScaleTared] = useState(false);
+
+  // Raw Materials Benchmark Pricing (Live Real-Time Cost Calculation)
+  const [oilPricePerKg, setOilPricePerKg] = useState<number>(() => {
+    try {
+      const saved = localStorage.getItem('miyaar_perfume_default_oil_price');
+      return saved ? parseFloat(saved) || 250 : 250;
+    } catch {
+      return 250;
+    }
+  });
+  const [alcoholPricePerLiter, setAlcoholPricePerLiter] = useState<number>(() => {
+    try {
+      const saved = localStorage.getItem('miyaar_perfume_default_alc_price');
+      return saved ? parseFloat(saved) || 35 : 35;
+    } catch {
+      return 35;
+    }
+  });
+  const [fixativePricePerKg, setFixativePricePerKg] = useState<number>(() => {
+    try {
+      const saved = localStorage.getItem('miyaar_perfume_default_fix_price');
+      return saved ? parseFloat(saved) || 85 : 85;
+    } catch {
+      return 85;
+    }
+  });
+  const [waterPricePerLiter, setWaterPricePerLiter] = useState<number>(() => {
+    try {
+      const saved = localStorage.getItem('miyaar_perfume_default_water_price');
+      return saved ? parseFloat(saved) || 5 : 5;
+    } catch {
+      return 5;
+    }
+  });
+
+  const handleUpdatePrice = (
+    key: 'oil' | 'alcohol' | 'fixative' | 'water',
+    val: number
+  ) => {
+    const num = Math.max(0, val);
+    if (key === 'oil') {
+      setOilPricePerKg(num);
+      try { localStorage.setItem('miyaar_perfume_default_oil_price', num.toString()); } catch {}
+    } else if (key === 'alcohol') {
+      setAlcoholPricePerLiter(num);
+      try { localStorage.setItem('miyaar_perfume_default_alc_price', num.toString()); } catch {}
+    } else if (key === 'fixative') {
+      setFixativePricePerKg(num);
+      try { localStorage.setItem('miyaar_perfume_default_fix_price', num.toString()); } catch {}
+    } else if (key === 'water') {
+      setWaterPricePerLiter(num);
+      try { localStorage.setItem('miyaar_perfume_default_water_price', num.toString()); } catch {}
+    }
+  };
+
+  // Real-time raw material costs derived instantly from current formulation state
+  const rawCostOil = (result.oilWeightGrams / 1000) * oilPricePerKg;
+  const rawCostAlcohol = (result.alcoholVolumeMl / 1000) * alcoholPricePerLiter;
+  const rawCostFixative = (result.fixativeWeightGrams / 1000) * fixativePricePerKg;
+  const rawCostWater = (result.waterVolumeMl / 1000) * waterPricePerLiter;
+  const rawCostTotalSingle = rawCostOil + rawCostAlcohol + rawCostFixative + rawCostWater;
+  const rawCostTotalBatch = rawCostTotalSingle * Math.max(1, formulation.batchCount || 1);
 
   // Quick accordion explanations for each input criterion
   const [expandedCriteria, setExpandedCriteria] = useState<Record<string, boolean>>({});
@@ -167,8 +237,63 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
             <BookOpen className="w-3.5 h-3.5 text-amber-500" />
             <span>{t('calc_tab_criteria', '📚 شرح جميع معايير الحاسبة')}</span>
           </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveView('scale_simulator')}
+            className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeView === 'scale_simulator'
+                ? 'bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-xs font-bold'
+                : 'text-stone-600 hover:text-stone-900'
+            }`}
+          >
+            <Scale className="w-3.5 h-3.5 text-amber-400" />
+            <span>{isRTL ? '⚖️ محاكاة وزن المواد والميزان' : '⚖️ Visual Scale Simulator'}</span>
+          </button>
         </div>
       </div>
+
+      {/* VIEW: VISUAL SCALE SIMULATOR */}
+      {activeView === 'scale_simulator' && (
+        <div className="space-y-6 animate-in fade-in">
+          <div className="bg-gradient-to-r from-stone-900 via-amber-950 to-stone-900 p-4 sm:p-5 rounded-2xl text-white flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm border border-amber-600/30">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-lg border border-amber-500/40">
+                ⚖️
+              </div>
+              <div>
+                <h3 className="font-bold text-sm sm:text-base text-amber-100">
+                  {isRTL
+                    ? 'المحاكي البصري لوزن المواد الخام وميزان المعمل الرقمي (0.01g)'
+                    : 'Visual Laboratory Balance & Raw Materials Compounding Simulator'}
+                </h3>
+                <p className="text-xs text-stone-300 mt-0.5">
+                  {isRTL
+                    ? 'محاكاة حية لميزان المعمل، وزن الزيوت والكحول والمثبتات بالجرام والقطرات خطوة بخطوة مع تعبئة المخبار.'
+                    : 'Real-time step-by-step weighing walkthrough on digital balance pan (0.01g) with liquid beaker simulation.'}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setActiveView('formulation')}
+                className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer border border-white/10"
+              >
+                {isRTL ? 'العودة لحاسبة التركيب ←' : 'Back to Formulation ←'}
+              </button>
+            </div>
+          </div>
+
+          <VisualScaleSimulator
+            formulation={formulation}
+            result={result}
+            pyramidNotes={pyramidNotes}
+            currentLang={effectiveLang}
+          />
+        </div>
+      )}
 
       {/* VIEW 1: GRAPHIC FRAGRANCE PYRAMID & SPRAY EVOLUTION */}
       {activeView === 'pyramid_graphic' && (
@@ -445,6 +570,84 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                     }
                     className="w-full accent-amber-800 cursor-pointer"
                   />
+                </div>
+
+                {/* Visual Real-Time Raw Materials Weight Simulation Banner */}
+                <div className="mt-3 p-3.5 bg-gradient-to-br from-amber-50 to-stone-50 border border-amber-200/90 rounded-xl space-y-2.5 shadow-2xs">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-bold text-amber-950 flex items-center gap-1.5">
+                      <Scale className="w-4 h-4 text-amber-700 animate-pulse" />
+                      <span>{isRTL ? 'محاكاة وزن المواد الخام اللحظية (دقة 0.01g)' : 'Live Raw Materials Scale Simulation (0.01g)'}</span>
+                    </span>
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100/90 text-[10px] font-mono-numbers font-bold text-amber-900 border border-amber-300/70">
+                      <span>{isRTL ? 'صافي الزجاجة:' : 'Net:'}</span>
+                      <strong className="text-amber-950 font-extrabold">{formatNum(result.totalWeightGrams)} g</strong>
+                    </span>
+                  </div>
+
+                  {/* Real-time Weight Chips per Material */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+                    <div className="p-2.5 rounded-lg bg-white border border-amber-200/90 shadow-2xs">
+                      <div className="text-[10px] font-bold text-amber-800 flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-amber-600 inline-block" />
+                        <span>{isRTL ? 'الزيت العطري' : 'Oil Mass'}</span>
+                      </div>
+                      <div className="font-mono-numbers font-black text-amber-950 text-sm mt-0.5">
+                        {formatNum(result.oilWeightGrams)} g
+                      </div>
+                      <div className="text-[10px] text-amber-700/80 font-mono-numbers">
+                        {formatNum(result.oilVolumeMl)} ml · ~{Math.round(result.oilWeightGrams * 24)} {isRTL ? 'قطرة' : 'drops'}
+                      </div>
+                    </div>
+
+                    <div className="p-2.5 rounded-lg bg-white border border-stone-200 shadow-2xs">
+                      <div className="text-[10px] font-bold text-stone-700 flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-stone-400 inline-block" />
+                        <span>{isRTL ? 'الكحول الإيثيلي' : 'Ethanol Mass'}</span>
+                      </div>
+                      <div className="font-mono-numbers font-black text-stone-900 text-sm mt-0.5">
+                        {formatNum(result.alcoholWeightGrams)} g
+                      </div>
+                      <div className="text-[10px] text-stone-500 font-mono-numbers">
+                        {formatNum(result.alcoholVolumeMl)} ml
+                      </div>
+                    </div>
+
+                    {result.fixativeWeightGrams > 0 ? (
+                      <div className="p-2.5 rounded-lg bg-white border border-emerald-200 shadow-2xs">
+                        <div className="text-[10px] font-bold text-emerald-800 flex items-center gap-1">
+                          <span className="w-2 h-2 rounded-full bg-emerald-600 inline-block" />
+                          <span>{isRTL ? 'المثبت العطري' : 'Fixative Mass'}</span>
+                        </div>
+                        <div className="font-mono-numbers font-black text-emerald-950 text-sm mt-0.5">
+                          {formatNum(result.fixativeWeightGrams)} g
+                        </div>
+                        <div className="text-[10px] text-emerald-600/80 font-mono-numbers">
+                          {formatNum(result.fixativeVolumeMl)} ml
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="p-2 rounded-lg bg-stone-100/70 border border-stone-200 text-stone-400 flex flex-col justify-center text-[10px]">
+                        <span className="font-semibold">{isRTL ? 'المثبت: 0 جم' : 'Fixative: 0g'}</span>
+                        <span className="text-[9px] text-stone-400">{isRTL ? '(اختياري)' : '(Optional)'}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="pt-1 flex items-center justify-between border-t border-amber-200/50">
+                    <span className="text-[10px] text-stone-500">
+                      {isRTL
+                        ? 'تحديث لحظي لجرامات المواد مع سحب مؤشر النسبة'
+                        : 'Real-time gram adjustment as concentration changes'}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setActiveView('scale_simulator')}
+                      className="text-[11px] text-amber-800 font-bold hover:text-amber-950 hover:underline flex items-center gap-1 cursor-pointer"
+                    >
+                      <span>{isRTL ? 'المحاكي التفاعلي الموسع ⚖️' : 'Full Simulator ⚖️'}</span>
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -894,6 +1097,364 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                     </div>
                   </div>
                 )}
+
+                {/* ======================================================== */}
+                {/* 1. AUTOMATIC REAL-TIME RAW MATERIALS COST DISPLAY        */}
+                {/* ======================================================== */}
+                <div className="p-4 sm:p-5 bg-gradient-to-br from-amber-500/10 via-amber-50 to-stone-50 border-2 border-amber-300/80 rounded-2xl space-y-4 shadow-sm">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-amber-700 text-white flex items-center justify-center font-bold text-sm shadow-2xs">
+                        <DollarSign className="w-4 h-4 text-amber-100" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-amber-950 flex items-center gap-2">
+                          <span>{isRTL ? 'إجمالي تكلفة المواد الخام التلقائية' : 'Live Raw Materials Total Cost'}</span>
+                          <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 animate-pulse">
+                            {isRTL ? 'تحديث لحظي' : 'Live'}
+                          </span>
+                        </h4>
+                        <span className="text-[10px] text-stone-500">
+                          {isRTL
+                            ? `محسوبة تلقائياً بأسعار الخامات الافتراضية (${activeCurrency})`
+                            : `Calculated dynamically from benchmark prices (${activeCurrency})`}
+                        </span>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setShowPriceConfig(!showPriceConfig)}
+                      className="px-2.5 py-1 text-[11px] rounded-lg bg-white border border-amber-200 text-amber-900 font-semibold hover:bg-amber-100 transition-colors flex items-center gap-1 cursor-pointer shadow-2xs"
+                    >
+                      <Sliders className="w-3 h-3 text-amber-700" />
+                      <span>{showPriceConfig ? (isRTL ? 'إخفاء الأسعار ▲' : 'Hide Prices ▲') : (isRTL ? 'تعديل الأسعار ⚙️' : 'Adjust Prices ⚙️')}</span>
+                    </button>
+                  </div>
+
+                  {/* Primary Total Cost Highlights */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="bg-white p-3.5 rounded-xl border border-amber-200/90 shadow-2xs">
+                      <div className="text-[11px] font-medium text-stone-500 mb-0.5">
+                        {isRTL ? 'تكلفة المواد للزجاجة الواحدة:' : 'Raw Cost per Single Bottle:'}
+                      </div>
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-xl font-extrabold text-amber-950 font-mono-numbers">
+                          {formatNum(rawCostTotalSingle, 2)}
+                        </span>
+                        <span className="text-xs font-bold text-amber-800">
+                          {activeCurrency}
+                        </span>
+                        <span className="text-[10px] text-stone-400 font-mono-numbers">
+                          / {formulation.bottleVolumeMl} ml
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="bg-white p-3.5 rounded-xl border border-amber-200/90 shadow-2xs">
+                      <div className="text-[11px] font-medium text-stone-500 mb-0.5">
+                        {isRTL
+                          ? `تكلفة التشغيلة (${formulation.batchCount} عبوة):`
+                          : `Total Batch Cost (${formulation.batchCount} units):`}
+                      </div>
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-xl font-extrabold text-stone-900 font-mono-numbers">
+                          {formatNum(rawCostTotalBatch, 2)}
+                        </span>
+                        <span className="text-xs font-bold text-amber-800">
+                          {activeCurrency}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Itemized Cost Breakdown */}
+                  <div className="space-y-1.5 pt-1 text-xs">
+                    <div className="text-[11px] font-bold text-stone-700 flex items-center justify-between">
+                      <span>{isRTL ? 'تفصيل تكلفة المواد لكل عبوة:' : 'Itemized Cost per Bottle:'}</span>
+                      <span className="font-mono-numbers text-stone-400 text-[10px]">
+                        100% {isRTL ? 'من تكلفة الخامات' : 'of materials'}
+                      </span>
+                    </div>
+
+                    <div className="bg-white rounded-xl border border-stone-200 divide-y divide-stone-100 overflow-hidden text-[11px]">
+                      {/* Oil Cost */}
+                      <div className="p-2.5 flex items-center justify-between">
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2.5 h-2.5 rounded-xs bg-amber-600 inline-block" />
+                          <span className="font-semibold text-stone-800">
+                            {isRTL ? 'الزيت العطري الخام' : 'Fragrance Oil'}
+                          </span>
+                          <span className="text-[10px] text-stone-400 font-mono-numbers">
+                            ({formatNum(result.oilWeightGrams, 2)}g @ {oilPricePerKg} {activeCurrency}/kg)
+                          </span>
+                        </div>
+                        <div className="text-left font-mono-numbers font-bold text-amber-900">
+                          {formatNum(rawCostOil, 2)} {activeCurrency}
+                          <span className="text-[9px] text-stone-400 font-normal ml-1">
+                            ({rawCostTotalSingle > 0 ? Math.round((rawCostOil / rawCostTotalSingle) * 100) : 0}%)
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Alcohol Cost */}
+                      <div className="p-2.5 flex items-center justify-between">
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2.5 h-2.5 rounded-xs bg-stone-400 inline-block" />
+                          <span className="font-semibold text-stone-800">
+                            {isRTL ? 'الكحول الإيثيلي' : 'Ethyl Alcohol'}
+                          </span>
+                          <span className="text-[10px] text-stone-400 font-mono-numbers">
+                            ({formatNum(result.alcoholVolumeMl, 1)}ml @ {alcoholPricePerLiter} {activeCurrency}/L)
+                          </span>
+                        </div>
+                        <div className="text-left font-mono-numbers font-bold text-stone-900">
+                          {formatNum(rawCostAlcohol, 2)} {activeCurrency}
+                          <span className="text-[9px] text-stone-400 font-normal ml-1">
+                            ({rawCostTotalSingle > 0 ? Math.round((rawCostAlcohol / rawCostTotalSingle) * 100) : 0}%)
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Fixative Cost */}
+                      {result.fixativeWeightGrams > 0 && (
+                        <div className="p-2.5 flex items-center justify-between">
+                          <div className="flex items-center gap-1.5">
+                            <span className="w-2.5 h-2.5 rounded-xs bg-emerald-600 inline-block" />
+                            <span className="font-semibold text-emerald-950">
+                              {isRTL ? 'المثبت العطري' : 'Fixative'}
+                            </span>
+                            <span className="text-[10px] text-stone-400 font-mono-numbers">
+                              ({formatNum(result.fixativeWeightGrams, 2)}g @ {fixativePricePerKg} {activeCurrency}/kg)
+                            </span>
+                          </div>
+                          <div className="text-left font-mono-numbers font-bold text-emerald-900">
+                            {formatNum(rawCostFixative, 2)} {activeCurrency}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Water Cost */}
+                      {result.waterVolumeMl > 0 && (
+                        <div className="p-2.5 flex items-center justify-between">
+                          <div className="flex items-center gap-1.5">
+                            <span className="w-2.5 h-2.5 rounded-xs bg-sky-400 inline-block" />
+                            <span className="font-semibold text-sky-950">
+                              {isRTL ? 'الماء المقطر' : 'Distilled Water'}
+                            </span>
+                            <span className="text-[10px] text-stone-400 font-mono-numbers">
+                              ({formatNum(result.waterVolumeMl, 1)}ml @ {waterPricePerLiter} {activeCurrency}/L)
+                            </span>
+                          </div>
+                          <div className="text-left font-mono-numbers font-bold text-sky-900">
+                            {formatNum(rawCostWater, 2)} {activeCurrency}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Customizable Benchmark Pricing Drawer */}
+                  {showPriceConfig && (
+                    <div className="p-3.5 bg-white rounded-xl border border-amber-200/90 space-y-3 animate-in fade-in">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-stone-900 flex items-center gap-1">
+                          <Sliders className="w-3.5 h-3.5 text-amber-700" />
+                          <span>{isRTL ? 'تخصيص أسعار شراء المواد الافتراضية' : 'Customize Benchmark Raw Material Prices'}</span>
+                        </span>
+                        <span className="text-[10px] text-stone-400 font-medium">
+                          {isRTL ? 'تُحفظ تلقائياً وتحدث الإجمالي' : 'Auto-saved & Live Updated'}
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div>
+                          <label className="text-[11px] font-medium text-stone-600 block mb-1">
+                            {isRTL ? `سعر كيلو الزيت (${activeCurrency}/kg)` : `Oil Price (${activeCurrency}/kg)`}
+                          </label>
+                          <input
+                            type="number"
+                            min="10"
+                            step="5"
+                            value={oilPricePerKg}
+                            onChange={(e) => handleUpdatePrice('oil', parseFloat(e.target.value) || 0)}
+                            className="w-full p-2 bg-stone-50 border border-stone-200 rounded-lg font-mono-numbers font-bold text-stone-900 focus:outline-none"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-medium text-stone-600 block mb-1">
+                            {isRTL ? `سعر لتر الكحول (${activeCurrency}/L)` : `Ethanol Price (${activeCurrency}/L)`}
+                          </label>
+                          <input
+                            type="number"
+                            min="5"
+                            step="2"
+                            value={alcoholPricePerLiter}
+                            onChange={(e) => handleUpdatePrice('alcohol', parseFloat(e.target.value) || 0)}
+                            className="w-full p-2 bg-stone-50 border border-stone-200 rounded-lg font-mono-numbers font-bold text-stone-900 focus:outline-none"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-medium text-stone-600 block mb-1">
+                            {isRTL ? `سعر كيلو المثبت (${activeCurrency}/kg)` : `Fixative Price (${activeCurrency}/kg)`}
+                          </label>
+                          <input
+                            type="number"
+                            min="10"
+                            step="5"
+                            value={fixativePricePerKg}
+                            onChange={(e) => handleUpdatePrice('fixative', parseFloat(e.target.value) || 0)}
+                            className="w-full p-2 bg-stone-50 border border-stone-200 rounded-lg font-mono-numbers font-bold text-stone-900 focus:outline-none"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-medium text-stone-600 block mb-1">
+                            {isRTL ? `سعر لتر الماء المقطر (${activeCurrency}/L)` : `Distilled Water (${activeCurrency}/L)`}
+                          </label>
+                          <input
+                            type="number"
+                            min="1"
+                            step="1"
+                            value={waterPricePerLiter}
+                            onChange={(e) => handleUpdatePrice('water', parseFloat(e.target.value) || 0)}
+                            className="w-full p-2 bg-stone-50 border border-stone-200 rounded-lg font-mono-numbers font-bold text-stone-900 focus:outline-none"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* ======================================================== */}
+                {/* 2. VISUAL REAL-TIME SCALE & BEAKER SIMULATOR PREVIEW     */}
+                {/* ======================================================== */}
+                <div className="p-4 sm:p-5 bg-stone-900 text-white rounded-2xl border border-stone-800 shadow-md space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-sm border border-amber-500/30">
+                        <Scale className="w-4 h-4 text-amber-400" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-stone-100 flex items-center gap-2">
+                          <span>{isRTL ? 'محاكي وزن المواد والميزان البصري' : 'Visual Scale & Balance Simulator'}</span>
+                          <span className="text-[9px] font-mono-numbers px-1.5 py-0.5 rounded bg-amber-900/60 text-amber-300 border border-amber-700/50">
+                            ± 0.01 g
+                          </span>
+                        </h4>
+                        <span className="text-[10px] text-stone-400">
+                          {isRTL ? 'محاكاة بصرية حية لوزن كل مادة بالجرام والقطرات وتعبئة المخبار' : 'Live gravimetric scale readout & liquid beaker visualization'}
+                        </span>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setActiveView('scale_simulator')}
+                      className="px-2.5 py-1 text-[11px] rounded-lg bg-amber-600 hover:bg-amber-500 text-stone-950 font-bold transition-colors flex items-center gap-1 cursor-pointer"
+                    >
+                      <span>{isRTL ? 'المحاكي الكامل 🔬' : 'Full Lab View 🔬'}</span>
+                    </button>
+                  </div>
+
+                  {/* Digital Balance Pan & LCD Display */}
+                  <div className="bg-stone-950 p-4 rounded-xl border border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    {/* Visual Beaker with layered liquids */}
+                    <div className="flex items-center gap-3">
+                      <div className="relative w-16 h-28 bg-stone-900/90 rounded-b-xl border-2 border-stone-600/60 overflow-hidden flex flex-col justify-end shadow-inner">
+                        {/* Graduated Markings */}
+                        <div className="absolute inset-y-0 right-1 flex flex-col justify-between py-2 text-[8px] font-mono-numbers text-stone-500 pointer-events-none select-none">
+                          <span>-</span>
+                          <span>-</span>
+                          <span>-</span>
+                          <span>-</span>
+                        </div>
+
+                        {/* Liquid Layers */}
+                        {result.waterPercent > 0 && (
+                          <div
+                            style={{ height: `${result.waterPercent}%` }}
+                            className="w-full bg-sky-400/80 transition-all duration-300 border-b border-sky-300/40"
+                            title={`Distilled Water: ${formatNum(result.waterWeightGrams)}g`}
+                          />
+                        )}
+                        {result.fixativePercent > 0 && (
+                          <div
+                            style={{ height: `${result.fixativePercent}%` }}
+                            className="w-full bg-emerald-500/80 transition-all duration-300 border-b border-emerald-300/40"
+                            title={`Fixative: ${formatNum(result.fixativeWeightGrams)}g`}
+                          />
+                        )}
+                        <div
+                          style={{ height: `${result.alcoholPercent}%` }}
+                          className="w-full bg-cyan-600/70 transition-all duration-300 border-b border-cyan-400/40"
+                          title={`Ethanol Alcohol: ${formatNum(result.alcoholWeightGrams)}g`}
+                        />
+                        <div
+                          style={{ height: `${result.oilPercent}%` }}
+                          className="w-full bg-amber-500/90 transition-all duration-300 shadow-sm"
+                          title={`Fragrance Oil: ${formatNum(result.oilWeightGrams)}g`}
+                        />
+                      </div>
+
+                      <div className="space-y-1.5 text-xs">
+                        <div className="text-[11px] font-bold text-amber-300 flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-amber-500" />
+                          <span>{isRTL ? 'الزيت:' : 'Oil:'}</span>
+                          <span className="font-mono-numbers text-white font-extrabold">{formatNum(result.oilWeightGrams)} g</span>
+                          <span className="text-[10px] text-stone-400 font-mono-numbers">({formatNum(result.oilVolumeMl)} ml · ~{Math.round(result.oilWeightGrams * 24)} {isRTL ? 'قطرة' : 'drops'})</span>
+                        </div>
+                        <div className="text-[11px] font-bold text-cyan-300 flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-cyan-400" />
+                          <span>{isRTL ? 'الكحول:' : 'Ethanol:'}</span>
+                          <span className="font-mono-numbers text-white font-extrabold">{formatNum(result.alcoholWeightGrams)} g</span>
+                          <span className="text-[10px] text-stone-400 font-mono-numbers">({formatNum(result.alcoholVolumeMl)} ml)</span>
+                        </div>
+                        {result.fixativeWeightGrams > 0 && (
+                          <div className="text-[11px] font-bold text-emerald-300 flex items-center gap-1.5">
+                            <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                            <span>{isRTL ? 'المثبت:' : 'Fixative:'}</span>
+                            <span className="font-mono-numbers text-white">{formatNum(result.fixativeWeightGrams)} g</span>
+                          </div>
+                        )}
+                        {result.waterWeightGrams > 0 && (
+                          <div className="text-[11px] font-bold text-sky-300 flex items-center gap-1.5">
+                            <span className="w-2 h-2 rounded-full bg-sky-400" />
+                            <span>{isRTL ? 'الماء:' : 'Water:'}</span>
+                            <span className="font-mono-numbers text-white">{formatNum(result.waterWeightGrams)} g</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* LCD Balance Screen with Tare Button */}
+                    <div className="bg-black/90 p-3.5 rounded-xl border border-stone-700/80 text-center space-y-2 min-w-[140px] shadow-inner">
+                      <div className="text-[9px] text-emerald-400 font-mono flex items-center justify-between px-1">
+                        <span>STABLE</span>
+                        <span>0.01g</span>
+                      </div>
+                      <div className="font-mono-numbers text-2xl font-black text-emerald-400 tracking-wider">
+                        {isLiveScaleTared ? '0.00' : formatNum(result.totalWeightGrams)}
+                        <span className="text-xs text-emerald-600 font-bold ml-1">g</span>
+                      </div>
+                      <div className="flex items-center justify-center gap-2 pt-1 border-t border-stone-800">
+                        <button
+                          type="button"
+                          onClick={() => setIsLiveScaleTared(!isLiveScaleTared)}
+                          className={`px-2.5 py-0.5 rounded text-[10px] font-bold font-mono transition-colors cursor-pointer ${
+                            isLiveScaleTared
+                              ? 'bg-emerald-600 text-white'
+                              : 'bg-stone-800 hover:bg-stone-700 text-stone-300'
+                          }`}
+                        >
+                          TARE (تصفير)
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
                 {/* Direct Action Buttons */}
                 <div className="space-y-2 pt-2">
