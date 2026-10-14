@@ -45,6 +45,22 @@ export const LOCALE_MAP: Record<SupportedLanguage, string> = {
   he: 'he-IL',
   ur: 'ur-PK',
   ps: 'ps-AF',
+  // Extended languages — batch 3 (LTR)
+  sv: 'sv-SE',
+  da: 'da-DK',
+  fi: 'fi-FI',
+  no: 'nb-NO',
+  hu: 'hu-HU',
+  sk: 'sk-SK',
+  sl: 'sl-SI',
+  hr: 'hr-HR',
+  sr: 'sr-Latn-RS',
+  bg: 'bg-BG',
+  lt: 'lt-LT',
+  lv: 'lv-LV',
+  et: 'et-EE',
+  ka: 'ka-GE',
+  hy: 'hy-AM',
 };
 
 /**
