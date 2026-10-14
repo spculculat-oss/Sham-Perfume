@@ -21,6 +21,31 @@ import {
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
 import { t } from '../utils/i18n';
+import { LText, makeT } from '../utils/localize';
+
+
+const S = {
+  aging_sim_full: { ar: 'محاكي التعتيق الزمني', en: 'Maceration Simulator', fr: 'Simulateur de maturation', es: 'Simulador de maceración', it: 'Simulatore di maturazione', de: 'Mazerationssimulator', ru: 'Симулятор настаивания', zh: '熟成模拟器', tr: 'Maserasyon simülatörü', fa: 'شبیه‌ساز تعریف' },
+  ql_concentration: { ar: 'حاسبة التراكيز', en: 'Concentration', fr: 'Concentration', es: 'Concentración', it: 'Concentrazione', de: 'Konzentration', ru: 'Концентрация', zh: '浓度计算', tr: 'Konsantrasyon', fa: 'ماشین‌حساب غلظت' },
+  ql_maceration: { ar: 'محاكي التعتيق', en: 'Aging Simulator', fr: 'Maturation', es: 'Maceración', it: 'Maturazione', de: 'Reifung', ru: 'Настаивание', zh: '熟成', tr: 'Maserasyon', fa: 'شبیه‌ساز تعریف' },
+  ql_pyramid: { ar: 'الهرم العطري', en: 'Pyramid', fr: 'Pyramide', es: 'Pirámide', it: 'Piramide', de: 'Pyramide', ru: 'Пирамида', zh: '香调金字塔', tr: 'Piramit', fa: 'هرم عطری' },
+  ql_alcohol: { ar: 'تخفيف الكحول', en: 'Alcohol', fr: 'Alcool', es: 'Alcohol', it: 'Alcol', de: 'Alkohol', ru: 'Спирт', zh: '酒精稀释', tr: 'Alkol', fa: 'رقیق‌سازی الکل' },
+  ql_costing: { ar: 'التكاليف والأرباح', en: 'Costing', fr: 'Coûts', es: 'Costes', it: 'Costi', de: 'Kosten', ru: 'Себестоимость', zh: '成本与利润', tr: 'Maliyet', fa: 'هزینه و سود' },
+  ql_news: { ar: 'أخبار العطور', en: 'News', fr: 'Actualités', es: 'Noticias', it: 'Notizie', de: 'News', ru: 'Новости', zh: '香水资讯', tr: 'Haberler', fa: 'اخبار عطر' },
+  ql_world: { ar: 'العطور العالمية', en: 'World Iconic', fr: 'Parfums iconiques', es: 'Perfumes icónicos', it: 'Profumi iconici', de: 'Weltweite Ikonen', ru: 'Мировые ароматы', zh: '世界名香', tr: 'Dünya ikonları', fa: 'عطرهای مشهور جهان' },
+  ql_raw: { ar: 'المواد الخام', en: 'Raw Materials', fr: 'Matières premières', es: 'Materias primas', it: 'Materie prime', de: 'Rohstoffe', ru: 'Сырьё', zh: '原料', tr: 'Hammaddeler', fa: 'مواد اولیه' },
+  ql_ai: { ar: 'خبير العطور AI', en: 'AI Master', fr: 'Maître IA', es: 'Maestro IA', it: 'Maestro IA', de: 'KI-Meister', ru: 'ИИ-мастер', zh: 'AI 调香大师', tr: 'YZ Ustası', fa: 'استاد AI عطر' },
+  ql_library: { ar: 'دفتر الوصفات', en: 'My Formulas', fr: 'Mes formules', es: 'Mis fórmulas', it: 'Le mie formule', de: 'Meine Formeln', ru: 'Мои формулы', zh: '我的配方', tr: 'Formüllerim', fa: 'دفتر فرمول‌ها' },
+  ql_guide: { ar: 'دليل التعتيق', en: 'Aging Guide', fr: 'Guide de maturation', es: 'Guía de maceración', it: 'Guida alla maturazione', de: 'Reifungsleitfaden', ru: 'Руководство', zh: '熟成指南', tr: 'Maserasyon rehberi', fa: 'راهنمای تعریف' },
+  home_tooltip: { ar: 'العودة إلى الصفحة الرئيسية للمنصة', en: 'Back to Home', fr: 'Retour à l’accueil', es: 'Volver al inicio', it: 'Torna alla home', de: 'Zurück zur Startseite', ru: 'На главную', zh: '返回首页', tr: 'Ana sayfaya dön', fa: 'بازگشت به صفحه اصلی' },
+  home_btn: { ar: 'العودة للرئيسية', en: 'Home', fr: 'Accueil', es: 'Inicio', it: 'Home', de: 'Start', ru: 'Главная', zh: '首页', tr: 'Ana Sayfa', fa: 'خانه' },
+  back_tooltip: { ar: 'رجوع للقسم السابق', en: 'Back to previous section', fr: 'Retour à la section précédente', es: 'Volver a la sección anterior', it: 'Torna alla sezione precedente', de: 'Zurück zum vorherigen Bereich', ru: 'К предыдущему разделу', zh: '返回上一板块', tr: 'Önceki bölüme dön', fa: 'بازگشت به بخش قبلی' },
+  back_btn: { ar: 'رجوع', en: 'Back', fr: 'Retour', es: 'Atrás', it: 'Indietro', de: 'Zurück', ru: 'Назад', zh: '返回', tr: 'Geri', fa: 'بازگشت' },
+  home_trail: { ar: 'الرئيسية', en: 'Home', fr: 'Accueil', es: 'Inicio', it: 'Home', de: 'Start', ru: 'Главная', zh: '首页', tr: 'Ana Sayfa', fa: 'خانه' },
+  print_tooltip: { ar: 'طباعة بطاقة مواصفات تصنيع العطر', en: 'Print Manufacturing Spec Sheet', fr: 'Imprimer la fiche de fabrication', es: 'Imprimir hoja de especificaciones', it: 'Stampa la scheda di produzione', de: 'Produktionsblatt drucken', ru: 'Печать производственной карты', zh: '打印生产规格表', tr: 'Üretim föyünü yazdır', fa: 'چاپ برگه مشخصات تولید' },
+  print_btn: { ar: 'طباعة بطاقة التصنيع', en: 'Print Spec Sheet', fr: 'Imprimer la fiche', es: 'Imprimir especificaciones', it: 'Stampa scheda', de: 'Föy drucken', ru: 'Печать карты', zh: '打印规格表', tr: 'Föyü yazdır', fa: 'چاپ کارت تولید' },
+  jump_to: { ar: 'انتقال سريع:', en: 'Jump to:', fr: 'Accès rapide :', es: 'Ir a:', it: 'Vai a:', de: 'Schnellzugriff:', ru: 'Быстрый переход:', zh: '快速跳转：', tr: 'Hızlı geçiş:', fa: 'دسترسی سریع:' },
+} satisfies Record<string, LText>;
 
 interface NavigationBreadcrumbsProps {
   activeTab: string;
@@ -42,6 +67,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
   onOpenPrintModal,
 }) => {
   const isRtl = currentLang === 'ar' || currentLang === 'fa';
+  const L = makeT(currentLang, S);
   const BackIcon = isRtl ? ArrowRight : ArrowLeft;
   const Separator = isRtl ? ChevronLeft : ChevronRight;
 
@@ -55,7 +81,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
     alcohol: { label: t('nav_alcohol', currentLang), icon: Hourglass },
     costing: { label: t('nav_costing', currentLang), icon: DollarSign },
     master_ai: { label: t('nav_ai_master', currentLang), icon: Bot },
-    maceration_simulator: { label: isRtl ? 'محاكي التعتيق الزمني' : 'Maceration Simulator', icon: Hourglass },
+    maceration_simulator: { label: L('aging_sim_full'), icon: Hourglass },
     library: { label: t('nav_library', currentLang), icon: BookMarked },
     guide: { label: t('nav_guide', currentLang), icon: BookOpen },
   };
@@ -64,17 +90,17 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
   const TabIcon = currentConfig.icon;
 
   const quickLinks = [
-    { id: 'concentration', label: isRtl ? 'حاسبة التراكيز' : 'Concentration', icon: FlaskConical },
-    { id: 'maceration_simulator', label: isRtl ? 'محاكي التعتيق' : 'Aging Simulator', icon: Hourglass },
-    { id: 'pyramid', label: isRtl ? 'الهرم العطري' : 'Pyramid', icon: Layers },
-    { id: 'alcohol', label: isRtl ? 'تخفيف الكحول' : 'Alcohol', icon: Hourglass },
-    { id: 'costing', label: isRtl ? 'التكاليف والأرباح' : 'Costing', icon: DollarSign },
-    { id: 'perfume_news', label: isRtl ? 'أخبار العطور' : 'News', icon: Newspaper },
-    { id: 'world_perfumes', label: isRtl ? 'العطور العالمية' : 'World Iconic', icon: Compass },
-    { id: 'raw_materials', label: isRtl ? 'المواد الخام' : 'Raw Materials', icon: Scale },
-    { id: 'master_ai', label: isRtl ? 'خبير العطور AI' : 'AI Master', icon: Bot },
-    { id: 'library', label: isRtl ? 'دفتر الوصفات' : 'My Formulas', icon: BookMarked },
-    { id: 'guide', label: isRtl ? 'دليل التعتيق' : 'Aging Guide', icon: BookOpen },
+    { id: 'concentration', label: L('ql_concentration'), icon: FlaskConical },
+    { id: 'maceration_simulator', label: L('ql_maceration'), icon: Hourglass },
+    { id: 'pyramid', label: L('ql_pyramid'), icon: Layers },
+    { id: 'alcohol', label: L('ql_alcohol'), icon: Hourglass },
+    { id: 'costing', label: L('ql_costing'), icon: DollarSign },
+    { id: 'perfume_news', label: L('ql_news'), icon: Newspaper },
+    { id: 'world_perfumes', label: L('ql_world'), icon: Compass },
+    { id: 'raw_materials', label: L('ql_raw'), icon: Scale },
+    { id: 'master_ai', label: L('ql_ai'), icon: Bot },
+    { id: 'library', label: L('ql_library'), icon: BookMarked },
+    { id: 'guide', label: L('ql_guide'), icon: BookOpen },
   ];
 
   if (activeTab === 'home') return null;
@@ -87,10 +113,10 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
           <button
             onClick={() => onNavigate('home')}
             className="px-3.5 py-2 bg-stone-900 hover:bg-amber-900 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-xs transition-all cursor-pointer group"
-            title={isRtl ? 'العودة إلى الصفحة الرئيسية للمنصة' : 'Back to Home'}
+            title={L('home_tooltip')}
           >
             <Home className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
-            <span>{isRtl ? 'العودة للرئيسية' : 'Home'}</span>
+            <span>{L('home_btn')}</span>
           </button>
 
           {/* Back Button */}
@@ -98,10 +124,10 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
             <button
               onClick={onGoBack}
               className="px-3 py-2 bg-stone-100 hover:bg-stone-200 text-stone-800 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer border border-stone-200"
-              title={isRtl ? 'رجوع للقسم السابق' : 'Back to previous section'}
+              title={L('back_tooltip')}
             >
               <BackIcon className="w-3.5 h-3.5 text-stone-600" />
-              <span>{isRtl ? 'رجوع' : 'Back'}</span>
+              <span>{L('back_btn')}</span>
               {previousTabLabel && (
                 <span className="hidden md:inline text-stone-500 text-[11px]">
                   ({previousTabLabel})
@@ -116,7 +142,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
               onClick={() => onNavigate('home')}
               className="hover:text-amber-800 cursor-pointer flex items-center gap-1"
             >
-              <span>{isRtl ? 'الرئيسية' : 'Home'}</span>
+              <span>{L('home_trail')}</span>
             </button>
             <Separator className="w-3.5 h-3.5 text-stone-400" />
             <div className="flex items-center gap-1.5 font-bold text-stone-900 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200/60">
@@ -132,10 +158,10 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
             <button
               onClick={onOpenPrintModal}
               className="px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-colors border border-stone-200 cursor-pointer"
-              title={isRtl ? 'طباعة بطاقة مواصفات تصنيع العطر' : 'Print Manufacturing Spec Sheet'}
+              title={L('print_tooltip')}
             >
               <Printer className="w-3.5 h-3.5 text-amber-800" />
-              <span>{isRtl ? 'طباعة بطاقة التصنيع' : 'Print Spec Sheet'}</span>
+              <span>{L('print_btn')}</span>
             </button>
           </div>
         )}
@@ -144,7 +170,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
       {/* Jump To Bar */}
       <div className="mt-3 pt-2.5 border-t border-stone-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-xs">
         <span className="text-[11px] font-bold text-stone-400 shrink-0 ml-1">
-          {isRtl ? 'انتقال سريع:' : 'Jump to:'}
+          {L('jump_to')}
         </span>
         {quickLinks.map((link) => {
           const Icon = link.icon;

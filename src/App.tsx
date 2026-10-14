@@ -35,6 +35,7 @@ import { ExtractedAIPerfume } from './utils/aiFormulaExtractor';
 import { SupportedLanguage, SUPPORTED_LANGUAGES } from './types/i18n';
 import { getInitialLanguage, saveLanguage } from './utils/i18n';
 import { LanguageProvider } from './context/LanguageContext';
+import { LText, makeT, fmt, pickArEn } from './utils/localize';
 import {
   UserEnvironmentProfile,
   getInitialUserEnvironment,
@@ -52,6 +53,39 @@ import { getCurrentUserSession, logoutUser } from './utils/authStorage';
 import { Check, X, BookmarkPlus } from 'lucide-react';
 
 const LOCAL_STORAGE_KEY = 'miyaar_perfume_saved_formulas';
+
+
+const S = {
+  toast_home_back: { ar: 'أنت الآن في الصفحة الرئيسية. اضغط زر الرجوع مجدداً لمغادرة المنصة.', en: 'You are on the home page. Press back again to leave the platform.', fr: 'Vous êtes sur l’accueil. Appuyez à nouveau sur retour pour quitter.', es: 'Estás en el inicio. Pulsa atrás de nuevo para salir.', it: 'Sei nella home. Premi di nuovo indietro per uscire.', de: 'Sie sind auf der Startseite. Drücken Sie erneut „Zurück“, um zu verlassen.', ru: 'Вы на главной странице. Нажмите «Назад» ещё раз, чтобы выйти.', zh: '您正在首页。再次点击返回即可离开平台。', tr: 'Ana sayfadasınız. Ayrılmak için geriye tekrar basın.', fa: 'شما در صفحه اصلی هستید. برای خروج دوباره دکمه بازگشت را بزنید.' },
+  toast_lang_tpl: { ar: '🌐 تم تغيير لغة المنصة بنجاح إلى: {flag} «{native}» ({dir})', en: '🌐 Platform language changed to: {flag} «{native}» ({dir})', fr: '🌐 Langue changée : {flag} « {native} » ({dir})', es: '🌐 Idioma cambiado a: {flag} «{native}» ({dir})', it: '🌐 Lingua cambiata: {flag} «{native}» ({dir})', de: '🌐 Sprache geändert: {flag} „{native}“ ({dir})', ru: '🌐 Язык платформы изменён: {flag} «{native}» ({dir})', zh: '🌐 平台语言已切换为：{flag}「{native}」（{dir}）', tr: '🌐 Dil değiştirildi: {flag} «{native}» ({dir})', fa: '🌐 زبان پلتفرم به {flag} «{native}» ({dir}) تغییر کرد' },
+  toast_geo_tpl: { ar: '📍 تم تحديد موقعك: {flag} {country} — لغة المنصة: {lang}', en: '📍 Location detected: {flag} {country} — Platform language: {lang}', fr: '📍 Position détectée : {flag} {country} — Langue : {lang}', es: '📍 Ubicación detectada: {flag} {country} — Idioma: {lang}', it: '📍 Posizione rilevata: {flag} {country} — Lingua: {lang}', de: '📍 Standort erkannt: {flag} {country} — Sprache: {lang}', ru: '📍 Ваше местоположение: {flag} {country} — Язык: {lang}', zh: '📍 已检测到您的位置：{flag} {country} — 平台语言：{lang}', tr: '📍 Konum algılandı: {flag} {country} — Dil: {lang}', fa: '📍 موقعیت شما شناسایی شد: {flag} {country} — زبان پلتفرم: {lang}' },
+  toast_env_tpl: { ar: '🌍 تم ضبط بلد المعمل: {flag} «{country}» وعملة {currency}!', en: '🌍 Lab country set: {flag} «{country}» with currency {currency}!', fr: '🌍 Pays du laboratoire : {flag} « {country} », devise {currency} !', es: '🌍 País del laboratorio: {flag} «{country}», moneda {currency}!', it: '🌍 Paese del laboratorio: {flag} «{country}», valuta {currency}!', de: '🌍 Laberland festgelegt: {flag} „{country}“, Währung {currency}!', ru: '🌍 Страна лаборатории: {flag} «{country}», валюта {currency}!', zh: '🌍 实验室国家已设置：{flag}「{country}」，货币 {currency}！', tr: '🌍 Laboratuvar ülkesi: {flag} «{country}», para birimi {currency}!', fa: '🌍 کشور آزمایشگاه تنظیم شد: {flag} «{country}» با ارز {currency}!' },
+  toast_welcome_tpl: { ar: '👤 مرحباً بك يا {name} في معملك الخاص!', en: '👤 Welcome {name} to your private lab!', fr: '👤 Bienvenue {name} dans votre laboratoire !', es: '👤 ¡Bienvenido {name} a tu laboratorio!', it: '👤 Benvenuto {name} nel tuo laboratorio!', de: '👤 Willkommen {name} in Ihrem Labor!', ru: '👤 Добро пожаловать, {name}, в вашу лабораторию!', zh: '👤 欢迎 {name} 来到您的私人实验室！', tr: '👤 {name}, özel laboratuvarınıza hoş geldiniz!', fa: '👤 {name} عزیز، به آزمایشگاه شخصی‌تان خوش آمدید!' },
+  toast_logout: { ar: '👋 تم تسجيل الخروج بنجاح', en: '👋 Logged out successfully', fr: '👋 Déconnecté avec succès', es: '👋 Sesión cerrada con éxito', it: '👋 Disconnesso con successo', de: '👋 Erfolgreich abgemeldet', ru: '👋 Вы вышли из аккаунта', zh: '👋 已成功退出登录', tr: '👋 Başarıyla çıkış yapıldı', fa: '👋 با موفقیت از حساب خارج شدید' },
+  toast_wiped: { ar: '🛡️ تم مسح كافة بياناتك وسجلاتك الشخصية نهائياً بنجاح (GDPR Cleared)', en: '🛡️ All your personal data and records permanently wiped (GDPR Cleared)', fr: '🛡️ Toutes vos données ont été effacées (RGPD)', es: '🛡️ Todos tus datos han sido borrados (GDPR)', it: '🛡️ Tutti i tuoi dati sono stati cancellati (GDPR)', de: '🛡️ Alle Ihre Daten wurden endgültig gelöscht (DSGVO)', ru: '🛡️ Все ваши данные окончательно удалены (GDPR)', zh: '🛡️ 您的所有个人数据已彻底清除（GDPR）', tr: '🛡️ Tüm verileriniz kalıcı olarak silindi (GDPR)', fa: '🛡️ همه داده‌های شخصی شما برای همیشه پاک شد (GDPR)' },
+  toast_apply_lab_tpl: { ar: '🧪 تم تطبيق تركيبة «{title}» في حاسبة التركيب والمعمل بنجاح!', en: '🧪 Formula «{title}» applied to the compounding calculator!', fr: '🧪 Formule « {title} » appliquée au calculateur !', es: '🧪 ¡Fórmula «{title}» aplicada a la calculadora!', it: '🧪 Formula «{title}» applicata al calcolatore!', de: '🧪 Formel „{title}“ in den Rechner übernommen!', ru: '🧪 Формула «{title}» применена в калькуляторе!', zh: '🧪 配方「{title}」已成功应用到调配计算器！', tr: '🧪 «{title}» formülü hesaplayıcıya uygulandı!', fa: '🧪 فرمول «{title}» با موفقیت در ماشین‌حساب اعمال شد!' },
+  toast_apply_pyramid_tpl: { ar: '🔺 تم نقل نوتات «{title}» إلى حاسبة الهرم العطري بنجاح!', en: '🔺 Notes of «{title}» transferred to the pyramid calculator!', fr: '🔺 Notes de « {title} » transférées au calculateur de pyramide !', es: '🔺 ¡Notas de «{title}» transferidas a la pirámide olfativa!', it: '🔺 Note di «{title}» trasferite al calcolatore della piramide!', de: '🔺 Noten von „{title}“ in den Pyramidenrechner übertragen!', ru: '🔺 Ноты «{title}» перенесены в калькулятор пирамиды!', zh: '🔺 「{title}」的香材已成功转移到金字塔计算器！', tr: '🔺 «{title}» notaları piramit hesaplayıcısına aktarıldı!', fa: '🔺 نت‌های «{title}» به ماشین‌حساب هرم منتقل شد!' },
+  toast_saved_lib_tpl: { ar: '📝 تم تدوين وحفظ «{title}» في دفتر الوصفات تلقائياً!', en: '📝 «{title}» recorded into the recipe library automatically!', fr: '📝 « {title} » enregistrée dans le carnet de recettes !', es: '📝 ¡«{title}» guardada en la libreta de recetas!', it: '📝 «{title}» salvata nella libreria delle ricette!', de: '📝 „{title}“ automatisch im Rezeptbuch gespeichert!', ru: '📝 «{title}» автоматически сохранена в книге рецептов!', zh: '📝 「{title}」已自动记入配方库！', tr: '📝 «{title}» tarif defterine kaydedildi!', fa: '📝 «{title}» به‌طور خودکار در دفتر فرمول‌ها ثبت شد!' },
+  toast_costing_tpl: { ar: '💰 تم الانتقال لحاسبة التكاليف والأرباح لتسعير تركيبة «{title}»!', en: '💰 Moved to the costing calculator to price «{title}»!', fr: '💰 Passage au calculateur de coûts pour tarifer « {title} » !', es: '💰 ¡Ve a la calculadora de costes para tarificar «{title}»!', it: '💰 Passato al calcolatore dei costi per prezzi «{title}»!', de: '💰 Zum Kostenrechner gewechselt, um „{title}“ zu bepreisen!', ru: '💰 Переход к калькулятору себестоимости для «{title}»!', zh: '💰 已转到成本计算器为「{title}」定价！', tr: '💰 «{title}» için maliyet hesaplayıcısına geçildi!', fa: '💰 برای قیمت‌گذاری «{title}» به ماشین‌حساب هزینه منتقل شدید!' },
+  toast_loaded_lab_tpl: { ar: 'تم تحميل التركيبة "{title}" بنجاح في المعمل', en: 'Formula "{title}" loaded into the lab', fr: 'Formule « {title} » chargée dans le laboratoire', es: 'Fórmula "{title}" cargada en el laboratorio', it: 'Formula "{title}" caricata nel laboratorio', de: 'Formel „{title}“ ins Labor geladen', ru: 'Формула «{title}» загружена в лабораторию', zh: '配方“{title}”已成功载入实验室', tr: '"{title}" formülü laboratuvara yüklendi', fa: 'فرمول «{title}» با موفقیت در آزمایشگاه بارگذاری شد' },
+  toast_loaded_world_tpl: { ar: 'تم تحميل تركيبة «{title}» في حاسبة المعمل بنجاح!', en: 'Formula «{title}» loaded into the lab calculator!', fr: 'Formule « {title} » chargée dans le calculateur !', es: '¡Fórmula «{title}» cargada en la calculadora!', it: 'Formula «{title}» caricata nel calcolatore!', de: 'Formel „{title}“ in den Lab-rechner geladen!', ru: 'Формула «{title}» загружена в калькулятор!', zh: '配方「{title}」已成功载入实验室计算器！', tr: '«{title}» formülü hesaplayıcıya yüklendi!', fa: 'فرمول «{title}» با موفقیت در ماشین‌حساب بارگذاری شد!' },
+  toast_note_added_tpl: { ar: 'تمت إضافة «{name}» إلى الهرم العطري بنجاح', en: '«{name}» added to the fragrance pyramid', fr: '« {name} » ajoutée à la pyramide olfactive', es: '«{name}» añadida a la pirámide olfativa', it: '«{name}» aggiunta alla piramide olfattiva', de: '„{name}“ zur Duftpyramide hinzugefügt', ru: '«{name}» добавлена в пирамиду', zh: '「{name}」已成功加入香调金字塔', tr: '«{name}» koku piramidine eklendi', fa: '«{name}» با موفقیت به هرم عطری اضافه شد' },
+  toast_formula_saved_tpl: { ar: 'تم حفظ التركيبة "{title}" في مكتبة الوصفات!', en: 'Formula "{title}" saved to the library!', fr: 'Formule « {title} » enregistrée !', es: '¡Fórmula "{title}" guardada en la biblioteca!', it: 'Formula "{title}" salvata nella libreria!', de: 'Formel „{title}“ in der Bibliothek gespeichert!', ru: 'Формула «{title}» сохранена в библиотеке!', zh: '配方“{title}”已保存到配方库！', tr: '"{title}" formülü kütüphaneye kaydedildi!', fa: 'فرمول «{title}» در کتابخانه ذخیره شد!' },
+  toast_formula_deleted: { ar: 'تم حذف التركيبة من المكتبة', en: 'Formula deleted from the library', fr: 'Formule supprimée de la bibliothèque', es: 'Fórmula eliminada de la biblioteca', it: 'Formula eliminata dalla libreria', de: 'Formel aus der Bibliothek gelöscht', ru: 'Формула удалена из библиотеки', zh: '配方已从库中删除', tr: 'Formül kütüphaneden silindi', fa: 'فرمول از کتابخانه حذف شد' },
+  toast_addr_saved_tpl: { ar: '📍 تم حفظ وتحديث مقر المعمل: {name}', en: '📍 Lab facility saved & updated: {name}', fr: '📍 Établissement enregistré : {name}', es: '📍 Instalación guardada y actualizada: {name}', it: '📍 Struttura salvata e aggiornata: {name}', de: '📍 Standort gespeichert & aktualisiert: {name}', ru: '📍 Лаборатория сохранена: {name}', zh: '📍 实验室信息已保存并更新：{name}', tr: '📍 Tesis kaydedildi ve güncellendi: {name}', fa: '📍 مقر آزمایشگاه ذخیره و به‌روزرسانی شد: {name}' },
+  expert_tip_lbl: { ar: 'نصيحة الخبير:', en: 'Expert tip:', fr: 'Conseil d’expert :', es: 'Consejo del experto:', it: 'Consiglio dell’esperto:', de: 'Expertentipp:', ru: 'Совет эксперта:', zh: '专家提示：', tr: 'Uzman tavsiyesi:', fa: 'توصیه متخصص:' },
+  default_title: { ar: 'عطر مخصص جديد', en: 'New Custom Perfume', fr: 'Nouveau parfum personnalisé', es: 'Nuevo perfume personalizado', it: 'Nuovo profumo personalizzato', de: 'Neues Eigenparfüm', ru: 'Новый авторский аромат', zh: '新自定义香水', tr: 'Yeni Özel Parfüm', fa: 'عطر سفارشی جدید' },
+  default_author: { ar: 'مصمم العطور', en: 'Perfume Designer', fr: 'Parfumeur créateur', es: 'Diseñador de perfumes', it: 'Profumiere', de: 'Parfümdesigner', ru: 'Парфюмер', zh: '调香师', tr: 'Parfüm Tasarımcısı', fa: 'طراح عطر' },
+  save_modal_title: { ar: 'حفظ التركيبة في مكتبة الوصفات', en: 'Save formula to the recipe library', fr: 'Enregistrer la formule dans la bibliothèque', es: 'Guardar fórmula en la biblioteca', it: 'Salva la formula nella libreria', de: 'Formel in der Bibliothek speichern', ru: 'Сохранить формулу в библиотеку', zh: '将配方保存到配方库', tr: 'Formülü kütüphaneye kaydet', fa: 'ذخیره فرمول در کتابخانه دستورها' },
+  lbl_name: { ar: 'اسم العطر / التركيبة', en: 'Perfume / formula name', fr: 'Nom du parfum', es: 'Nombre del perfume', it: 'Nome del profumo', de: 'Parfümname', ru: 'Название аромата', zh: '香水/配方名称', tr: 'Parfüm adı', fa: 'نام عطر / فرمول' },
+  lbl_author: { ar: 'المصمم / الدار', en: 'Designer / house', fr: 'Créateur / maison', es: 'Diseñador / casa', it: 'Creatore / maison', de: 'Designer / Haus', ru: 'Автор / дом', zh: '设计师/品牌', tr: 'Tasarımcı / marka', fa: 'طراح / برند' },
+  lbl_batch: { ar: 'كود التشغيلة (Batch ID)', en: 'Batch ID', fr: 'N° de lot', es: 'ID de lote', it: 'ID lotto', de: 'Chargen-ID', ru: 'Код партии', zh: '批次编号（Batch ID）', tr: 'Parti kodu', fa: 'کد بچ (Batch ID)' },
+  lbl_maceration: { ar: 'فترة التعتيق المقترحة (بالأيام)', en: 'Recommended maceration period (days)', fr: 'Maturation conseillée (jours)', es: 'Maceración recomendada (días)', it: 'Maturazione consigliata (giorni)', de: 'Empfohlene Mazeration (Tage)', ru: 'Рекомендуемое настаивание (дней)', zh: '建议熟成期（天）', tr: 'Önerilen maserasyon süresi (gün)', fa: 'دوره تعریف پیشنهادی (روز)' },
+  lbl_notes: { ar: 'ملاحظات التركيبة والشعور العطري', en: 'Formula notes & olfactory feel', fr: 'Notes de formule et ressenti', es: 'Notas de fórmula y sensación', it: 'Note della formula e sensazione', de: 'Formelnotizen & Duftgefühl', ru: 'Заметки о формуле и характере', zh: '配方与香气感受备注', tr: 'Formül notları ve koku hissi', fa: 'یادداشت فرمول و حس بویایی' },
+  cancel: { ar: 'إلغاء', en: 'Cancel', fr: 'Annuler', es: 'Cancelar', it: 'Annulla', de: 'Abbrechen', ru: 'Отмена', zh: '取消', tr: 'Vazgeç', fa: 'انصراف' },
+  confirm_save: { ar: 'تأكيد الحفظ', en: 'Confirm Save', fr: 'Confirmer', es: 'Confirmar guardado', it: 'Conferma salvataggio', de: 'Speichern bestätigen', ru: 'Сохранить', zh: '确认保存', tr: 'Kaydet', fa: 'تأیید ذخیره' },
+} satisfies Record<string, LText>;
+
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -260,7 +294,7 @@ export default function App() {
         const now = Date.now();
         if (now - lastExitAttemptRef.current > 2500) {
           lastExitAttemptRef.current = now;
-          showToast('أنت الآن في الصفحة الرئيسية. اضغط زر الرجوع مجدداً لمغادرة المنصة.');
+          showToast(L('toast_home_back'));
           try {
             window.history.pushState({ tab: 'home', isInitial: false }, '', '#home');
           } catch {}
@@ -309,8 +343,8 @@ export default function App() {
   });
 
   // Current formula metadata
-  const [formulaTitle, setFormulaTitle] = useState('خلطة شام الفاخرة');
-  const [formulaAuthor, setFormulaAuthor] = useState('مصمم عطور شام');
+  const [formulaTitle, setFormulaTitle] = useState('خلطة شام الفاخرة'); // default shown until user edits; localized label below
+  const [formulaAuthor, setFormulaAuthor] = useState('مصمم عطور شام'); // default; localized label below
   const [batchCode, setBatchCode] = useState('MYR-B01');
   const [formulaNotes, setFormulaNotes] = useState('تركيبة متوازنة شرقية غربية معتقة.');
   const [macerationDays, setMacerationDays] = useState(30);
@@ -339,6 +373,7 @@ export default function App() {
 
   // Global Language & Internationalization State
   const [currentLang, setCurrentLang] = useState<SupportedLanguage>(() => getInitialLanguage());
+  const L = makeT(currentLang, S);
 
   // Regional Environment & Climate Adaptation State
   const [currentEnvironment, setCurrentEnvironment] = useState<UserEnvironmentProfile>(() =>
@@ -399,7 +434,7 @@ export default function App() {
     setCurrentLang(lang);
     saveLanguage(lang);
     const langInfo = SUPPORTED_LANGUAGES.find((l) => l.code === lang);
-    showToast(`🌐 تم تغيير لغة المنصة بنجاح إلى: ${langInfo?.flag || ''} «${langInfo?.nativeName || lang}» (${langInfo?.dir.toUpperCase() || 'RTL'})`);
+    showToast(fmt(L('toast_lang_tpl'), { flag: langInfo?.flag || '', native: langInfo?.nativeName || lang, dir: (langInfo?.dir || 'rtl').toUpperCase() }));
   };
 
   // Re-run location detection by client request
@@ -407,7 +442,7 @@ export default function App() {
     const geo = await forceRedetectLocation();
     setCurrentLang(geo.detectedLanguage);
     saveLanguage(geo.detectedLanguage);
-    showToast(`📍 تم تحديد موقعك: ${geo.detectedCountry.flag} ${geo.detectedCountry.nameAr.split('(')[0]} — لغة المنصة: ${geo.detectedLanguage.toUpperCase()}`);
+    showToast(fmt(L('toast_geo_tpl'), { flag: geo.detectedCountry.flag, country: pickArEn(currentLang, geo.detectedCountry.nameAr, geo.detectedCountry.nameEn).split('(')[0], lang: geo.detectedLanguage.toUpperCase() }));
   };
 
   const handleUpdateEnvironment = (profile: UserEnvironmentProfile) => {
@@ -424,7 +459,7 @@ export default function App() {
       countryNameAr: profile.countryNameAr,
       countryNameEn: profile.countryNameEn,
     }));
-    showToast(`🌍 تم ضبط بلد المعمل: ${profile.countryFlag || ''} «${profile.countryNameAr.split('(')[0]}» وعملة ${profile.currencyCode}!`);
+    showToast(fmt(L('toast_env_tpl'), { flag: profile.countryFlag || '', country: pickArEn(currentLang, profile.countryNameAr, profile.countryNameEn).split('(')[0], currency: profile.currencyCode }));
   };
 
   const handleAuthSuccess = (user: UserProfile) => {
@@ -432,19 +467,19 @@ export default function App() {
     if (user.regionId && user.regionId !== currentEnvironment.regionId) {
       handleUpdateEnvironment(getInitialUserEnvironment());
     }
-    showToast(`👤 مرحباً بك يا ${user.name} في معملك الخاص!`);
+    showToast(fmt(L('toast_welcome_tpl'), { name: user.name }));
   };
 
   const handleLogout = () => {
     logoutUser();
     setCurrentUser(null);
-    showToast('👋 تم تسجيل الخروج بنجاح');
+    showToast(L('toast_logout'));
   };
 
   const handleUserDataWiped = () => {
     setCurrentUser(null);
     setSavedFormulas(CURATED_FORMULA_PRESETS);
-    showToast('🛡️ تم مسح كافة بياناتك وسجلاتك الشخصية نهائياً بنجاح (GDPR Cleared)');
+    showToast(L('toast_wiped'));
   };
 
   // Save to LocalStorage whenever savedFormulas changes
@@ -477,7 +512,7 @@ export default function App() {
       setPyramidNotes(formula.pyramidNotes);
     }
     navigateToTab('concentration');
-    showToast(`🧪 تم تطبيق تركيبة «${formula.title}» في حاسبة التركيب والمعمل بنجاح!`);
+    showToast(fmt(L('toast_apply_lab_tpl'), { title: formula.title }));
   };
 
   // 2. Transfer chat formula directly to Pyramid Calculator
@@ -493,7 +528,7 @@ export default function App() {
       setPyramidNotes(formula.pyramidNotes);
     }
     navigateToTab('pyramid');
-    showToast(`🔺 تم نقل نوتات «${formula.title}» إلى حاسبة الهرم العطري بنجاح!`);
+    showToast(fmt(L('toast_apply_pyramid_tpl'), { title: formula.title }));
   };
 
   // 3. Record & Save chat formula directly into Recipe Library Notebook
@@ -501,7 +536,7 @@ export default function App() {
     const newEntry: SavedFormula = {
       id: 'ai-recipe-' + Date.now(),
       title: formula.title,
-      author: formula.author || 'الخبير شاهين (معمل عطور شام)',
+      author: formula.author || pickArEn(currentLang, 'الخبير شاهين (معمل عطور شام)', 'Master Shahin (Sham Perfume Lab)'),
       dateCreated: new Date().toISOString().split('T')[0],
       batchCode: 'REC-' + Math.floor(Math.random() * 900 + 100),
       notes: formula.summary,
@@ -516,7 +551,7 @@ export default function App() {
     };
 
     setSavedFormulas((prev) => [newEntry, ...prev]);
-    showToast(`📝 تم تدوين وحفظ «${formula.title}» في دفتر الوصفات تلقائياً!`);
+    showToast(fmt(L('toast_saved_lib_tpl'), { title: formula.title }));
   };
 
   // 4. Transfer to Costing Calculator
@@ -529,7 +564,7 @@ export default function App() {
     }));
     setFormulaTitle(formula.title);
     navigateToTab('costing');
-    showToast(`💰 تم الانتقال لحاسبة التكاليف والأرباح لتسعير تركيبة «${formula.title}»!`);
+    showToast(fmt(L('toast_costing_tpl'), { title: formula.title }));
   };
 
   // 5. Open Spec Sheet for Chat Formula
@@ -561,7 +596,7 @@ export default function App() {
     setMacerationDays(formula.macerationDays || 30);
     setPyramidNotes(formula.pyramidNotes || []);
     navigateToTab('concentration');
-    showToast(`تم تحميل التركيبة "${formula.title}" بنجاح في المعمل`);
+    showToast(fmt(L('toast_loaded_lab_tpl'), { title: formula.title }));
   };
 
   const handleLoadWorldFormula = (recipe: WorldPerfumeRecipe) => {
@@ -570,14 +605,14 @@ export default function App() {
       concentrationPercent: recipe.targetConcentration,
       concentrationType: recipe.concentrationType,
     }));
-    setFormulaTitle(recipe.nameAr);
+    setFormulaTitle(pickArEn(currentLang, recipe.nameAr, recipe.nameEn));
     setFormulaAuthor(recipe.brand);
     setBatchCode('WRLD-' + recipe.id.slice(0, 5).toUpperCase());
-    setFormulaNotes(`${recipe.descriptionAr}\nنصيحة الخبير: ${recipe.compoundingTips}`);
+    setFormulaNotes(`${recipe.descriptionAr}\n${L('expert_tip_lbl')} ${recipe.compoundingTips}`);
     setMacerationDays(recipe.macerationDays);
     setPyramidNotes(recipe.pyramidNotes);
     navigateToTab('concentration');
-    showToast(`تم تحميل تركيبة «${recipe.nameAr}» في حاسبة المعمل بنجاح!`);
+    showToast(fmt(L('toast_loaded_world_tpl'), { title: pickArEn(currentLang, recipe.nameAr, recipe.nameEn) }));
   };
 
   const handlePrintWorldFormula = (recipe: WorldPerfumeRecipe) => {
@@ -597,15 +632,15 @@ export default function App() {
 
   const handleAddMaterialToPyramid = (note: PyramidNote) => {
     setPyramidNotes((prev) => [...prev, note]);
-    showToast(`تمت إضافة «${note.nameAr}» إلى الهرم العطري بنجاح`);
+    showToast(fmt(L('toast_note_added_tpl'), { name: pickArEn(currentLang, note.nameAr, note.nameEn || note.nameAr) }));
   };
 
   const handleSaveActiveFormula = (e: React.FormEvent) => {
     e.preventDefault();
     const newFormula: SavedFormula = {
       id: 'formula-' + Date.now(),
-      title: formulaTitle.trim() || 'عطر مخصص جديد',
-      author: formulaAuthor.trim() || 'مصمم العطور',
+      title: formulaTitle.trim() || L('default_title'),
+      author: formulaAuthor.trim() || L('default_author'),
       dateCreated: new Date().toISOString().split('T')[0],
       batchCode: batchCode.trim() || 'BATCH-' + Math.floor(Math.random() * 900 + 100),
       notes: formulaNotes.trim(),
@@ -616,12 +651,12 @@ export default function App() {
 
     setSavedFormulas((prev) => [newFormula, ...prev]);
     handleCloseSaveModal();
-    showToast(`تم حفظ التركيبة "${newFormula.title}" في مكتبة الوصفات!`);
+    showToast(fmt(L('toast_formula_saved_tpl'), { title: newFormula.title }));
   };
 
   const handleDeleteFormula = (id: string) => {
     setSavedFormulas((prev) => prev.filter((f) => f.id !== id));
-    showToast('تم حذف التركيبة من المكتبة');
+    showToast(L('toast_formula_deleted'));
   };
 
   const handlePrintFormula = (formula: SavedFormula) => {
@@ -851,7 +886,7 @@ export default function App() {
             <div className="p-4 bg-stone-900 text-white flex items-center justify-between">
               <span className="text-sm font-bold flex items-center gap-2">
                 <BookmarkPlus className="w-4 h-4 text-amber-400" />
-                <span>حفظ التركيبة في مكتبة الوصفات</span>
+                <span>{L('save_modal_title')}</span>
               </span>
               <button
                 onClick={handleCloseSaveModal}
@@ -864,7 +899,7 @@ export default function App() {
             <form onSubmit={handleSaveActiveFormula} className="p-6 space-y-4 text-xs">
               <div>
                 <label className="font-semibold text-stone-800 block mb-1">
-                  اسم العطر / التركيبة
+                  {L('lbl_name')}
                 </label>
                 <input
                   type="text"
@@ -878,7 +913,7 @@ export default function App() {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="font-semibold text-stone-800 block mb-1">
-                    المصمم / الدار
+                    {L('lbl_author')}
                   </label>
                   <input
                     type="text"
@@ -889,7 +924,7 @@ export default function App() {
                 </div>
                 <div>
                   <label className="font-semibold text-stone-800 block mb-1">
-                    كود التشغيلة (Batch ID)
+                    {L('lbl_batch')}
                   </label>
                   <input
                     type="text"
@@ -902,7 +937,7 @@ export default function App() {
 
               <div>
                 <label className="font-semibold text-stone-800 block mb-1">
-                  فترة التعتيق المقترحة (بالأيام)
+                  {L('lbl_maceration')}
                 </label>
                 <input
                   type="number"
@@ -916,7 +951,7 @@ export default function App() {
 
               <div>
                 <label className="font-semibold text-stone-800 block mb-1">
-                  ملاحظات التركيبة والشعور العطري
+                  {L('lbl_notes')}
                 </label>
                 <textarea
                   rows={3}
@@ -932,13 +967,13 @@ export default function App() {
                   onClick={handleCloseSaveModal}
                   className="px-4 py-2 text-stone-600 hover:bg-stone-100 rounded-lg font-medium cursor-pointer"
                 >
-                  إلغاء
+                  {L('cancel')}
                 </button>
                 <button
                   type="submit"
                   className="px-5 py-2 bg-amber-800 hover:bg-amber-900 text-white font-semibold rounded-lg shadow-sm cursor-pointer"
                 >
-                  تأكيد الحفظ
+                  {L('confirm_save')}
                 </button>
               </div>
             </form>
@@ -985,7 +1020,7 @@ export default function App() {
           onUpdateProfile={handleUpdateEnvironment}
           onUpdateAddress={(newAddr) => {
             setDetailedAddress(newAddr);
-            showToast(`📍 تم حفظ وتحديث مقر المعمل: ${newAddr.labOrFacilityName || newAddr.city}`);
+            showToast(fmt(L('toast_addr_saved_tpl'), { name: newAddr.labOrFacilityName || newAddr.city || '' }));
           }}
           onApplyRegionalFormulaToWorkbench={handleApplyToConcentrationCalculator}
           onClose={handleCloseEnvironmentModal}

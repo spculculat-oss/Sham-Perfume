@@ -19,6 +19,22 @@ import { t } from '../utils/i18n';
 import { LanguageSelector } from './LanguageSelector';
 import { UserProfile } from '../types/auth';
 import { UserEnvironmentProfile } from '../utils/environmentAdapter';
+import { LText, makeT, pickArEn } from '../utils/localize';
+
+
+const S = {
+  home_tooltip: { ar: 'العودة للصفحة الرئيسية', en: 'Back to Home', fr: 'Retour à l’accueil', es: 'Volver al inicio', it: 'Torna alla home', de: 'Zurück zur Startseite', ru: 'На главную', zh: '返回首页', tr: 'Ana sayfaya dön', fa: 'بازگشت به صفحه اصلی' },
+  home_btn: { ar: 'الرئيسية ⌂', en: 'Home ⌂', fr: 'Accueil ⌂', es: 'Inicio ⌂', it: 'Home ⌂', de: 'Start ⌂', ru: 'Главная ⌂', zh: '首页 ⌂', tr: 'Ana Sayfa ⌂', fa: 'خانه ⌂' },
+  country_tooltip: { ar: 'تحديد البلد والمقر والعنوان التفصيلي للمعمل', en: 'Set country, facility, and detailed address', fr: 'Définir pays, établissement et adresse', es: 'Configurar país, instalación y dirección', it: 'Imposta paese, struttura e indirizzo', de: 'Land, Standort und Adresse festlegen', ru: 'Указать страну и адрес лаборатории', zh: '设置国家、实验室与详细地址', tr: 'Ülke, tesis ve adresi belirle', fa: 'تعیین کشور، مقر و نشانی تفصیلی' },
+  privacy_tooltip: { ar: 'حماية وخصوصية بيانات المستخدم (GDPR)', en: 'User data protection & privacy (GDPR)', fr: 'Protection des données (RGPD)', es: 'Protección de datos (GDPR)', it: 'Protezione dei dati (GDPR)', de: 'Datenschutz (DSGVO)', ru: 'Защита данных (GDPR)', zh: '用户数据保护与隐私（GDPR）', tr: 'Veri koruma ve gizlilik (GDPR)', fa: 'حفاظت و حریم خصوصی داده‌ها (GDPR)' },
+  privacy_btn: { ar: 'الخصوصية', en: 'Privacy', fr: 'Confidentialité', es: 'Privacidad', it: 'Privacy', de: 'Datenschutz', ru: 'Приватность', zh: '隐私', tr: 'Gizlilik', fa: 'حریم خصوصی' },
+  menu_data_backup: { ar: 'حماية البيانات والنسخ الاحتياطي', en: 'Data protection & backup', fr: 'Protection et sauvegarde des données', es: 'Protección y respaldo de datos', it: 'Protezione e backup dei dati', de: 'Datenschutz & Backup', ru: 'Защита и резервное копирование', zh: '数据保护与备份', tr: 'Veri koruma ve yedekleme', fa: 'حفاظت داده و پشتیبان‌گیری' },
+  menu_country: { ar: 'تحديد البلد والعنوان ومقر المعمل', en: 'Set country, address & facility', fr: 'Pays, adresse et établissement', es: 'País, dirección e instalación', it: 'Paese, indirizzo e struttura', de: 'Land, Adresse & Standort', ru: 'Страна, адрес и лаборатория', zh: '设置国家、地址与实验室', tr: 'Ülke, adres ve tesis', fa: 'تعیین کشور، نشانی و مقر' },
+  logout: { ar: 'تسجيل الخروج', en: 'Log out', fr: 'Déconnexion', es: 'Cerrar sesión', it: 'Esci', de: 'Abmelden', ru: 'Выйти', zh: '退出登录', tr: 'Çıkış yap', fa: 'خروج از حساب' },
+  login: { ar: 'تسجيل الدخول', en: 'Log in', fr: 'Connexion', es: 'Iniciar sesión', it: 'Accedi', de: 'Anmelden', ru: 'Войти', zh: '登录', tr: 'Giriş yap', fa: 'ورود' },
+  print_tooltip: { ar: 'طباعة بطاقة تصنيع العطر', en: 'Print manufacturing spec sheet', fr: 'Imprimer la fiche de fabrication', es: 'Imprimir hoja de fabricación', it: 'Stampa scheda di produzione', de: 'Produktionsblatt drucken', ru: 'Печать производственной карты', zh: '打印生产规格表', tr: 'Üretim föyünü yazdır', fa: 'چاپ کارت تولید عطر' },
+  print_btn: { ar: 'طباعة', en: 'Print', fr: 'Imprimer', es: 'Imprimir', it: 'Stampa', de: 'Drucken', ru: 'Печать', zh: '打印', tr: 'Yazdır', fa: 'چاپ' },
+} satisfies Record<string, LText>;
 
 interface HeaderProps {
   activeTab: string;
@@ -51,6 +67,7 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const L = makeT(currentLang, S);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -103,10 +120,10 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               onClick={() => setActiveTab('home')}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-800 hover:bg-amber-900 text-white text-xs font-bold shadow-xs transition-all cursor-pointer mr-1 animate-in fade-in"
-              title="العودة للصفحة الرئيسية"
+              title={L('home_tooltip')}
             >
               <Home className="w-3.5 h-3.5 text-amber-300" />
-              <span className="inline text-[11px]">الرئيسية ⌂</span>
+              <span className="inline text-[11px]">{L('home_btn')}</span>
             </button>
           )}
         </div>
@@ -159,16 +176,16 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={onOpenEnvironmentModal}
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-amber-300 bg-amber-50/90 hover:bg-amber-100 text-stone-900 text-xs font-semibold transition-all shadow-2xs cursor-pointer"
-            title="تحديد البلد والمقر والعنوان التفصيلي للمعمل"
+            title={L('country_tooltip')}
           >
             <span className="text-base leading-none">
               {currentEnvironment.countryFlag || '🌍'}
             </span>
             <span className="hidden md:inline truncate max-w-[120px] font-bold">
-              {currentEnvironment.countryNameAr.split('(')[0].trim()}
+              {pickArEn(currentLang, currentEnvironment.countryNameAr, currentEnvironment.countryNameEn).split('(')[0].trim()}
             </span>
             <span className="px-1.5 py-0.5 rounded bg-amber-200/80 text-[10px] font-mono font-bold text-amber-950">
-              {currentEnvironment.currencySymbolAr}
+              {pickArEn(currentLang, currentEnvironment.currencySymbolAr, currentEnvironment.currencySymbolEn)}
             </span>
           </button>
 
@@ -176,10 +193,10 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={onOpenPrivacyModal}
             className="p-1.5 sm:px-2 sm:py-1.5 rounded-lg border border-stone-200 hover:bg-stone-100 text-stone-600 text-xs transition-all shadow-2xs cursor-pointer flex items-center gap-1"
-            title="حماية وخصوصية بيانات المستخدم (GDPR)"
+            title={L('privacy_tooltip')}
           >
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span className="hidden lg:inline text-[11px] font-medium">الخصوصية</span>
+            <span className="hidden lg:inline text-[11px] font-medium">{L('privacy_btn')}</span>
           </button>
 
           {/* 4. User Profile & Login System */}
@@ -217,7 +234,7 @@ export const Header: React.FC<HeaderProps> = ({
                     >
                       <span className="flex items-center gap-2">
                         <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                        <span>حماية البيانات والنسخ الاحتياطي</span>
+                        <span>{L('menu_data_backup')}</span>
                       </span>
                     </button>
                     <button
@@ -229,7 +246,7 @@ export const Header: React.FC<HeaderProps> = ({
                     >
                       <span className="flex items-center gap-2">
                         <MapPin className="w-4 h-4 text-amber-700" />
-                        <span>تحديد البلد والعنوان ومقر المعمل</span>
+                        <span>{L('menu_country')}</span>
                       </span>
                     </button>
                   </div>
@@ -243,7 +260,7 @@ export const Header: React.FC<HeaderProps> = ({
                       className="w-full px-4 py-2 text-right text-red-600 hover:bg-red-50 flex items-center gap-2 font-semibold cursor-pointer"
                     >
                       <LogOut className="w-4 h-4" />
-                      <span>تسجيل الخروج</span>
+                      <span>{L('logout')}</span>
                     </button>
                   </div>
                 </div>
@@ -255,7 +272,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-amber-800 hover:bg-amber-900 rounded-xl transition-all shadow-sm cursor-pointer shrink-0"
             >
               <User className="w-3.5 h-3.5 text-amber-200" />
-              <span>تسجيل الدخول</span>
+              <span>{L('login')}</span>
             </button>
           )}
 
@@ -263,10 +280,10 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={onOpenPrintModal}
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-stone-700 bg-stone-100 hover:bg-stone-200/80 rounded-xl transition-all cursor-pointer border border-stone-200 shrink-0"
-            title="طباعة بطاقة تصنيع العطر"
+            title={L('print_tooltip')}
           >
             <Printer className="w-3.5 h-3.5 text-amber-700" />
-            <span className="hidden xl:inline">طباعة</span>
+            <span className="hidden xl:inline">{L('print_btn')}</span>
           </button>
 
         </div>

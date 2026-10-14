@@ -25,7 +25,7 @@ export function getCurrentUserSession(): { user: UserProfile | null } {
 export async function loginUser(email: string, password: string): Promise<AuthResponse> {
   try {
     if (!email || !password) {
-      return { success: false, error: 'يرجى إدخال البريد الإلكتروني وكلمة المرور' };
+      return { success: false, error: 'err_missing_fields' };
     }
 
     const rawUsers = localStorage.getItem(REGISTERED_USERS_KEY);
@@ -34,7 +34,7 @@ export async function loginUser(email: string, password: string): Promise<AuthRe
     const existing = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
     if (existing) {
       if (existing.password && existing.password !== password) {
-        return { success: false, error: 'كلمة المرور غير صحيحة' };
+        return { success: false, error: 'err_wrong_password' };
       }
       const { password: _, ...cleanUser } = existing;
       localStorage.setItem(USER_AUTH_STORAGE_KEY, JSON.stringify(cleanUser));
@@ -54,7 +54,7 @@ export async function loginUser(email: string, password: string): Promise<AuthRe
     localStorage.setItem(USER_AUTH_STORAGE_KEY, JSON.stringify(newUser));
     return { success: true, user: newUser };
   } catch (e: any) {
-    return { success: false, error: e.message || 'حدث خطأ أثناء تسجيل الدخول' };
+    return { success: false, error: 'err_login_failed' };
   }
 }
 
@@ -71,7 +71,7 @@ export async function registerUser(
 
     const existing = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
     if (existing) {
-      return { success: false, error: 'البريد الإلكتروني مسجل بالفعل، يرجى تسجيل الدخول' };
+      return { success: false, error: 'err_email_exists' };
     }
 
     const newUser: UserProfile = {
@@ -88,7 +88,7 @@ export async function registerUser(
     localStorage.setItem(USER_AUTH_STORAGE_KEY, JSON.stringify(newUser));
     return { success: true, user: newUser };
   } catch (e: any) {
-    return { success: false, error: e.message || 'حدث خطأ أثناء إنشاء الحساب' };
+    return { success: false, error: 'err_register_failed' };
   }
 }
 

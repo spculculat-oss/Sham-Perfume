@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { SupportedLanguage } from '../types/i18n';
+import { LText, makeT, pickArEn } from '../utils/localize';
 
 export interface CriterionExplanation {
   id: string;
@@ -382,6 +383,29 @@ export const CRITERIA_EXPLANATIONS: CriterionExplanation[] = [
   },
 ];
 
+
+const S = {
+  header_title: { ar: 'دليل شرح معايير ومعادلات حاسبة العطور المعملية', en: 'Fragrance Formulation Laboratory Criteria & Chemistry Guide', fr: 'Guide des critères et formules du calculateur de parfum', es: 'Guía de criterios y fórmulas de la calculadora de perfumes', it: 'Guida ai criteri e alle formule del calcolatore di profumi', de: 'Leitfaden zu Kriterien und Formeln des Parfümrechners', ru: 'Руководство по критериям и формулам калькулятора парфюмерии', zh: '香水计算器准则与公式指南', tr: 'Parfüm hesaplayıcı kriterleri ve formülleri rehberi', fa: 'راهنمای معیارها و فرمول‌های ماشین‌حساب عطر' },
+  back_to_calc_tooltip: { ar: 'العودة للحاسبة', en: 'Back to calculator', fr: 'Retour au calculateur', es: 'Volver a la calculadora', it: 'Torna al calcolatore', de: 'Zurück zum Rechner', ru: 'Вернуться к калькулятору', zh: '返回计算器', tr: 'Hesaplayıcıya dön', fa: 'بازگشت به ماشین‌حساب' },
+  close_return: { ar: '✕ إغلاق الدليل والعودة للحاسبة', en: '✕ Close & Return to Calculator', fr: '✕ Fermer et revenir au calculateur', es: '✕ Cerrar y volver a la calculadora', it: '✕ Chiudi e torna al calcolatore', de: '✕ Schließen & zum Rechner zurück', ru: '✕ Закрыть и вернуться к калькулятору', zh: '✕ 关闭并返回计算器', tr: '✕ Kapat ve hesaplayıcıya dön', fa: '✕ بستن راهنما و بازگشت به ماشین‌حساب' },
+  tab_all: { ar: 'جميع المعايير', en: 'All Criteria', fr: 'Tous les critères', es: 'Todos los criterios', it: 'Tutti i criteri', de: 'Alle Kriterien', ru: 'Все критерии', zh: '全部准则', tr: 'Tüm kriterler', fa: 'همه معیارها' },
+  tab_core: { ar: 'المعايير الأساسية', en: 'Core Metrics', fr: 'Critères essentiels', es: 'Criterios esenciales', it: 'Criteri essenziali', de: 'Kernkriterien', ru: 'Основные критерии', zh: '核心指标', tr: 'Temel ölçütler', fa: 'معیارهای اصلی' },
+  tab_chemistry: { ar: 'المذيبات والكيمياء', en: 'Solvents & Chemistry', fr: 'Solvants et chimie', es: 'Disolventes y química', it: 'Solventi e chimica', de: 'Lösemittel & Chemie', ru: 'Растворители и химия', zh: '溶剂与化学', tr: 'Çözücüler ve kimya', fa: 'حلال‌ها و شیمی' },
+  tab_production: { ar: 'التشغيل والإنتاج', en: 'Batch Production', fr: 'Production en lot', es: 'Producción por lote', it: 'Produzione a lotto', de: 'Chargenproduktion', ru: 'Серийное производство', zh: '批量生产', tr: 'Parti üretimi', fa: 'تولید دسته‌ای' },
+  search_ph: { ar: 'ابحث في المعايير (كحول، فراغ، مثبت)...', en: 'Search criteria (alcohol, fixative, headspace)...', fr: 'Rechercher (alcool, fixateur, headspace)...', es: 'Buscar criterios (alcohol, fijador, headspace)...', it: 'Cerca criteri (alcol, fissativo, headspace)...', de: 'Kriterien suchen (Alkohol, Fixativ, headspace)...', ru: 'Поиск по критериям (спирт, фиксатор, headspace)...', zh: '搜索准则（酒精、固定剂、顶空）……', tr: 'Kriter ara (alkol, sabitleyici, hava boşluğu)...', fa: 'جستجوی معیارها (الکل، ثابت‌کننده، فضای خالی)...' },
+  no_results: { ar: 'لا توجد نتائج مطابقة لبحثك.', en: 'No criteria matching your search query.', fr: 'Aucun critère ne correspond à votre recherche.', es: 'Ningún criterio coincide con tu búsqueda.', it: 'Nessun criterio corrisponde alla tua ricerca.', de: 'Keine Kriterien stimmen mit Ihrer Suche überein.', ru: 'Нет критериев, соответствующих вашему запросу.', zh: '没有符合搜索的准则。', tr: 'Aramanızla eşleşen kriter yok.', fa: 'معیاری مطابق جستجوی شما یافت نشد.' },
+  collapse: { ar: 'طي الشرح ▲', en: 'Collapse ▲', fr: 'Réduire ▲', es: 'Contraer ▲', it: 'Comprimi ▲', de: 'Einklappen ▲', ru: 'Свернуть ▲', zh: '收起 ▲', tr: 'Daralt ▲', fa: 'جمع‌کردن ▲' },
+  read_full: { ar: 'قراءة الشرح الكامل ▼', en: 'Read Full Guide ▼', fr: 'Lire le guide complet ▼', es: 'Leer la guía completa ▼', it: 'Leggi la guida completa ▼', de: 'Vollständige Anleitung ▼', ru: 'Читать полностью ▼', zh: '阅读完整指南 ▼', tr: 'Tam rehberi oku ▼', fa: 'خواندن راهنمای کامل ▼' },
+  range_lbl: { ar: 'النطاق والقيم النموذجية الموصى بها:', en: 'Recommended Lab Benchmark Range:', fr: 'Plage de référence recommandée :', es: 'Rango de referencia recomendado:', it: 'Intervallo di riferimento consigliato:', de: 'Empfohlener Labor-Richtwert:', ru: 'Рекомендуемый лабораторный диапазон:', zh: '推荐实验室基准范围：', tr: 'Önerilen laboratuvar aralığı:', fa: 'محدوده مرجع توصیه‌شده آزمایشگاهی:' },
+  definition_lbl: { ar: 'التعريف العلمي والمعملي للمعيار:', en: 'Scientific Definition & Formulation Physics:', fr: 'Définition scientifique et physique :', es: 'Definición científica y física:', it: 'Definizione scientifica e fisica:', de: 'Wissenschaftliche Definition & Physik:', ru: 'Научное определение и физика:', zh: '科学定义与配方物理：', tr: 'Bilimsel tanım ve formülasyon fiziği:', fa: 'تعریف علمی و فیزیک فرمولاسیون:' },
+  impact_lbl: { ar: 'أثر المعيار على العطر (الثبات والفوحان):', en: 'Practical Olfactory Impact (Longevity & Sillage):', fr: 'Impact olfactif pratique (tenue et sillage) :', es: 'Impacto olfativo práctico (fijación y estela):', it: 'Impatto olfattivo pratico (persistenza e scia):', de: 'Praktische Duftwirkung (Haltbarkeit & Sillage):', ru: 'Практическое влияние (стойкость и шлейф):', zh: '实际嗅觉影响（持久度与扩散）：', tr: 'Pratik koku etkisi (kalıcılık ve iz):', fa: 'اثر عملی بویایی (ماندگاری و انتشار):' },
+  rule_lbl: { ar: 'قاعدة ونصيحة الخبير الكيميائي (Master Rule):', en: 'Master Perfumer Laboratory Rule:', fr: 'Règle du maître parfumeur :', es: 'Regla del perfumista maestro:', it: 'Regola del maestro profumiere:', de: 'Regel des Meisterparfümeurs:', ru: 'Правило мастера-парфюмера:', zh: '调香大师守则：', tr: 'Usta parfümör kuralı:', fa: 'قانون عطرساز حرفه‌ای:' },
+  mistakes_lbl: { ar: 'أخطاء شائعة يقع فيها الكثيرون يجب تجنبها:', en: 'Common Formulating Pitfalls to Avoid:', fr: 'Erreurs courantes à éviter :', es: 'Errores comunes que conviene evitar:', it: 'Errori comuni da evitare:', de: 'Häufige Fehler, die es zu vermeiden gilt:', ru: 'Распространённые ошибки, которых следует избегать:', zh: '应避免的常见配方误区：', tr: 'Kaçınılması gereken yaygın hatalar:', fa: 'خطاهای رایجی که باید از آن‌ها پرهیز کرد:' },
+  formula_lbl: { ar: 'المعادلة المعملية:', en: 'Lab Formula:', fr: 'Formule de laboratoire :', es: 'Fórmula de laboratorio:', it: 'Formula di laboratorio:', de: 'Laborformel:', ru: 'Лабораторная формула:', zh: '实验室公式：', tr: 'Laboratuvar formülü:', fa: 'فرمول آزمایشگاهی:' },
+  footer_validated: { ar: 'تمت مراجعة جميع المعايير وفقاً لدساتير العطور العالمية ومعايير IFRA الدولية.', en: 'All criteria validated according to international IFRA safety standards and haute perfumery codex.', fr: 'Tous les critères validés selon les normes IFRA et le codex de la haute parfumerie.', es: 'Todos los criterios validados según las normas IFRA y el códice de la alta perfumería.', it: 'Tutti i criteri convalidati secondo le norme IFRA e il codice dell’alta profumeria.', de: 'Alle Kriterien geprüft nach IFRA-Normen und dem Codex der Haute Parfumerie.', ru: 'Все критерии проверены по стандартам IFRA и кодексу высокой парфюмерии.', zh: '所有准则均依据国际 IFRA 安全标准与高级香水准则审核。', tr: 'Tüm kriterler IFRA standartlarına göre doğrulandı.', fa: 'همه معیارها مطابق استانداردهای IFRA و قانون‌نامه عطرسازی حرفه‌ای بازبینی شده‌اند.' },
+  return_to_calc: { ar: 'تطبيق المعايير في الحاسبة ←', en: 'Return to Formulation Calculator ←', fr: 'Revenir au calculateur ←', es: 'Volver a la calculadora ←', it: 'Torna al calcolatore ←', de: 'Zum Formulierungsrechner ←', ru: 'Вернуться к калькулятору ←', zh: '返回配方计算器 ←', tr: 'Formül hesaplayıcıya dön ←', fa: 'بازگشت به ماشین‌حساب فرمولاسیون ←' },
+} satisfies Record<string, LText>;
+
 interface CalculatorCriteriaGuideProps {
   onClose?: () => void;
   currentLang?: SupportedLanguage;
@@ -394,6 +418,7 @@ export const CalculatorCriteriaGuide: React.FC<CalculatorCriteriaGuideProps> = (
   const { currentLang: ctxLang, t } = useLanguage();
   const effectiveLang = propLang || ctxLang || 'ar';
   const isRTL = effectiveLang === 'ar' || effectiveLang === 'fa';
+  const L = makeT(effectiveLang, S);
 
   const [activeCategory, setActiveCategory] = useState<'all' | 'core' | 'chemistry' | 'pyramid' | 'production'>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -422,9 +447,7 @@ export const CalculatorCriteriaGuide: React.FC<CalculatorCriteriaGuideProps> = (
             <span>{t('guide_title', 'دليل المعايير الكيميائية والتصنيعية لحاسبة العطور')}</span>
           </div>
           <h2 className="text-xl sm:text-3xl font-extrabold font-serif-luxury text-white">
-            {isRTL
-              ? 'دليل شرح معايير ومعادلات حاسبة العطور المعملية'
-              : 'Fragrance Formulation Laboratory Criteria & Chemistry Guide'}
+            {L('header_title')}
           </h2>
           <p className="text-stone-300 text-xs sm:text-sm leading-relaxed">
             {t('guide_subtitle', 'شرح معملي وعلمي وتطبيقي شامل لكل معيار وخانة يتم إدخالها داخل الحاسبة لمساعدة العطار والمصمم.')}
@@ -436,9 +459,9 @@ export const CalculatorCriteriaGuide: React.FC<CalculatorCriteriaGuideProps> = (
             <button
               onClick={onClose}
               className="px-4 py-2.5 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 shadow-md cursor-pointer transition-all hover:scale-105 active:scale-95 border border-amber-400/30"
-              title="العودة للحاسبة"
+              title={L('back_to_calc_tooltip')}
             >
-              <span>{isRTL ? '✕ إغلاق الدليل والعودة للحاسبة' : '✕ Close & Return to Calculator'}</span>
+              <span>{L('close_return')}</span>
             </button>
           </div>
         )}
@@ -458,7 +481,7 @@ export const CalculatorCriteriaGuide: React.FC<CalculatorCriteriaGuideProps> = (
                   : 'text-stone-600 hover:text-stone-900'
               }`}
             >
-              {isRTL ? 'جميع المعايير' : 'All Criteria'} ({CRITERIA_EXPLANATIONS.length})
+              {L('tab_all')} ({CRITERIA_EXPLANATIONS.length})
             </button>
             <button
               onClick={() => setActiveCategory('core')}
@@ -468,7 +491,7 @@ export const CalculatorCriteriaGuide: React.FC<CalculatorCriteriaGuideProps> = (
                   : 'text-stone-600 hover:text-stone-900'
               }`}
             >
-              {isRTL ? 'المعايير الأساسية' : 'Core Metrics'}
+              {L('tab_core')}
             </button>
             <button
               onClick={() => setActiveCategory('chemistry')}
@@ -478,7 +501,7 @@ export const CalculatorCriteriaGuide: React.FC<CalculatorCriteriaGuideProps> = (
                   : 'text-stone-600 hover:text-stone-900'
               }`}
             >
-              {isRTL ? 'المذيبات والكيمياء' : 'Solvents & Chemistry'}
+              {L('tab_chemistry')}
             </button>
             <button
               onClick={() => setActiveCategory('production')}
@@ -488,7 +511,7 @@ export const CalculatorCriteriaGuide: React.FC<CalculatorCriteriaGuideProps> = (
                   : 'text-stone-600 hover:text-stone-900'
               }`}
             >
-              {isRTL ? 'التشغيل والإنتاج' : 'Batch Production'}
+              {L('tab_production')}
             </button>
           </div>
 
@@ -499,7 +522,7 @@ export const CalculatorCriteriaGuide: React.FC<CalculatorCriteriaGuideProps> = (
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={isRTL ? 'ابحث في المعايير (كحول، فراغ، مثبت)...' : 'Search criteria (alcohol, fixative, headspace)...'}
+              placeholder={L('search_ph')}
               className="w-full pl-9 pr-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs text-stone-800 focus:outline-none focus:border-amber-600"
             />
           </div>
@@ -510,21 +533,21 @@ export const CalculatorCriteriaGuide: React.FC<CalculatorCriteriaGuideProps> = (
       <div className="px-6 pb-6 space-y-3">
         {filteredCriteria.length === 0 ? (
           <div className="text-center py-12 text-stone-400 text-xs">
-            {isRTL ? 'لا توجد نتائج مطابقة لبحثك.' : 'No criteria matching your search query.'}
+            {L('no_results')}
           </div>
         ) : (
           filteredCriteria.map((item) => {
             const isExpanded = expandedId === item.id;
-            const title = isRTL ? item.nameAr : item.nameEn;
+            const title = pickArEn(effectiveLang, item.nameAr, item.nameEn);
             const subtitle = isRTL ? item.nameEn : item.nameAr;
-            const summary = isRTL ? item.summaryAr : item.summaryEn;
-            const importance = isRTL ? item.importanceLevelAr : item.importanceLevelEn;
-            const range = isRTL ? item.recommendedRangeAr : item.recommendedRangeEn;
-            const definition = isRTL ? item.scientificDefinitionAr : item.scientificDefinitionEn;
-            const impact = isRTL ? item.practicalImpactAr : item.practicalImpactEn;
-            const expertRule = isRTL ? item.expertRuleAr : item.expertRuleEn;
+            const summary = pickArEn(effectiveLang, item.summaryAr, item.summaryEn);
+            const importance = pickArEn(effectiveLang, item.importanceLevelAr, item.importanceLevelEn);
+            const range = pickArEn(effectiveLang, item.recommendedRangeAr, item.recommendedRangeEn);
+            const definition = pickArEn(effectiveLang, item.scientificDefinitionAr, item.scientificDefinitionEn);
+            const impact = pickArEn(effectiveLang, item.practicalImpactAr, item.practicalImpactEn);
+            const expertRule = pickArEn(effectiveLang, item.expertRuleAr, item.expertRuleEn);
             const commonMistakes = isRTL ? item.commonMistakesAr : item.commonMistakesEn;
-            const formula = isRTL ? item.formulaOrExampleAr : item.formulaOrExampleEn;
+            const formula = pickArEn(effectiveLang, item.formulaOrExampleAr, item.formulaOrExampleEn ?? '');
 
             return (
               <div
@@ -567,7 +590,7 @@ export const CalculatorCriteriaGuide: React.FC<CalculatorCriteriaGuideProps> = (
 
                   <div className="shrink-0 flex items-center gap-2 pt-1 sm:pt-0">
                     <span className="text-xs text-amber-800 font-semibold hidden md:inline">
-                      {isExpanded ? (isRTL ? 'طي الشرح ▲' : 'Collapse ▲') : (isRTL ? 'قراءة الشرح الكامل ▼' : 'Read Full Guide ▼')}
+                      {isExpanded ? L('collapse') : L('read_full')}
                     </span>
                     <div className="w-6 h-6 rounded-full bg-stone-100 flex items-center justify-center text-stone-500 text-xs">
                       {isExpanded ? '▲' : '▼'}
@@ -584,7 +607,7 @@ export const CalculatorCriteriaGuide: React.FC<CalculatorCriteriaGuideProps> = (
                       <div className="flex items-center gap-2">
                         <Compass className="w-4 h-4 text-amber-800 shrink-0" />
                         <span className="font-bold text-amber-950">
-                          {isRTL ? 'النطاق والقيم النموذجية الموصى بها:' : 'Recommended Lab Benchmark Range:'}
+                          {L('range_lbl')}
                         </span>
                       </div>
                       <span className="font-mono-numbers font-bold text-stone-900 bg-white px-3 py-1 rounded-lg border border-amber-200 text-xs">
@@ -597,7 +620,7 @@ export const CalculatorCriteriaGuide: React.FC<CalculatorCriteriaGuideProps> = (
                       <div className="bg-stone-50 p-4 rounded-xl border border-stone-200/70 space-y-1.5">
                         <div className="font-bold text-stone-900 flex items-center gap-2 text-xs">
                           <Beaker className="w-3.5 h-3.5 text-indigo-600" />
-                          <span>{isRTL ? 'التعريف العلمي والمعملي للمعيار:' : 'Scientific Definition & Formulation Physics:'}</span>
+                          <span>{L('definition_lbl')}</span>
                         </div>
                         <p className="text-stone-600 leading-relaxed text-[11px]">
                           {definition}
@@ -608,7 +631,7 @@ export const CalculatorCriteriaGuide: React.FC<CalculatorCriteriaGuideProps> = (
                       <div className="bg-stone-50 p-4 rounded-xl border border-stone-200/70 space-y-1.5">
                         <div className="font-bold text-stone-900 flex items-center gap-2 text-xs">
                           <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                          <span>{isRTL ? 'أثر المعيار على العطر (الثبات والفوحان):' : 'Practical Olfactory Impact (Longevity & Sillage):'}</span>
+                          <span>{L('impact_lbl')}</span>
                         </div>
                         <p className="text-stone-600 leading-relaxed text-[11px] whitespace-pre-line">
                           {impact}
@@ -620,7 +643,7 @@ export const CalculatorCriteriaGuide: React.FC<CalculatorCriteriaGuideProps> = (
                     <div className="bg-emerald-50/60 p-4 rounded-xl border border-emerald-200/70 space-y-1.5">
                       <div className="font-bold text-emerald-950 flex items-center gap-2 text-xs">
                         <Lightbulb className="w-4 h-4 text-emerald-600" />
-                        <span>{isRTL ? 'قاعدة ونصيحة الخبير الكيميائي (Master Rule):' : 'Master Perfumer Laboratory Rule:'}</span>
+                        <span>{L('rule_lbl')}</span>
                       </div>
                       <p className="text-emerald-900 leading-relaxed text-[11px] whitespace-pre-line font-medium">
                         {expertRule}
@@ -631,7 +654,7 @@ export const CalculatorCriteriaGuide: React.FC<CalculatorCriteriaGuideProps> = (
                     <div className="bg-rose-50/60 p-4 rounded-xl border border-rose-200/70 space-y-2">
                       <div className="font-bold text-rose-950 flex items-center gap-2 text-xs">
                         <AlertTriangle className="w-4 h-4 text-rose-600" />
-                        <span>{isRTL ? 'أخطاء شائعة يقع فيها الكثيرون يجب تجنبها:' : 'Common Formulating Pitfalls to Avoid:'}</span>
+                        <span>{L('mistakes_lbl')}</span>
                       </div>
                       <ul className="space-y-1 text-rose-900 text-[11px]">
                         {commonMistakes.map((mistake, mIdx) => (
@@ -646,7 +669,7 @@ export const CalculatorCriteriaGuide: React.FC<CalculatorCriteriaGuideProps> = (
                     {/* Formula */}
                     {formula && (
                       <div className="p-3 bg-stone-900 text-amber-200 rounded-xl font-mono text-[11px] flex items-center justify-between">
-                        <span className="text-stone-400">{isRTL ? 'المعادلة المعملية:' : 'Lab Formula:'}</span>
+                        <span className="text-stone-400">{L('formula_lbl')}</span>
                         <span className="font-bold">{formula}</span>
                       </div>
                     )}
@@ -663,9 +686,7 @@ export const CalculatorCriteriaGuide: React.FC<CalculatorCriteriaGuideProps> = (
         <div className="flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
           <span>
-            {isRTL
-              ? 'تمت مراجعة جميع المعايير وفقاً لدساتير العطور العالمية ومعايير IFRA الدولية.'
-              : 'All criteria validated according to international IFRA safety standards and haute perfumery codex.'}
+            {L('footer_validated')}
           </span>
         </div>
         {onClose && (
@@ -673,7 +694,7 @@ export const CalculatorCriteriaGuide: React.FC<CalculatorCriteriaGuideProps> = (
             onClick={onClose}
             className="px-4 py-2 bg-stone-900 text-white hover:bg-stone-800 rounded-xl font-semibold transition-colors cursor-pointer"
           >
-            {isRTL ? 'تطبيق المعايير في الحاسبة ←' : 'Return to Formulation Calculator ←'}
+            {L('return_to_calc')}
           </button>
         )}
       </div>

@@ -2,6 +2,118 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Globe, Check, ChevronDown, Search, Sparkles, Languages, MapPin } from 'lucide-react';
 import { SupportedLanguage, SUPPORTED_LANGUAGES, LanguageConfig } from '../types/i18n';
 import { getCommonLabel, isRTL } from '../utils/localizedContent';
+import { LText, makeT } from '../utils/localize';
+
+const S = {
+  trigger_label: {
+    ar: 'اللغة',
+    en: 'Language',
+    fr: 'Langue',
+    es: 'Idioma',
+    it: 'Lingua',
+    de: 'Sprache',
+    ru: 'Язык',
+    zh: '语言',
+    tr: 'Dil',
+    fa: 'زبان',
+  },
+  tooltip: {
+    ar: 'خانة تغيير لغة المنصة',
+    en: 'Change Platform Language',
+    fr: 'Changer la langue de la plateforme',
+    es: 'Cambiar idioma de la plataforma',
+    it: 'Cambia lingua della piattaforma',
+    de: 'Plattform-Sprache wechseln',
+    ru: 'Изменить язык платформы',
+    zh: '切换平台语言',
+    tr: 'Platform dilini değiştir',
+    fa: 'تغییر زبان پلتفرم',
+  },
+  header_title: {
+    ar: 'خانة تغيير لغة المنصة',
+    en: 'Change Platform Language',
+    fr: 'Changer la langue de la plateforme',
+    es: 'Cambiar idioma de la plataforma',
+    it: 'Cambia lingua della piattaforma',
+    de: 'Plattform-Sprache wechseln',
+    ru: 'Изменить язык платформы',
+    zh: '切换平台语言',
+    tr: 'Platform dilini değiştir',
+    fa: 'تغییر زبان پلتفرم',
+  },
+  header_sub: {
+    ar: 'اختر لغتك المفضلة (10 لغات عالمية)',
+    en: 'Select your language (10 world languages)',
+    fr: 'Choisissez votre langue (10 langues)',
+    es: 'Elija su idioma (10 idiomas)',
+    it: 'Scegli la tua lingua (10 lingue)',
+    de: 'Wählen Sie Ihre Sprache (10 Sprachen)',
+    ru: 'Выберите язык (10 языков)',
+    zh: '选择您的语言（10 种世界语言）',
+    tr: 'Dilinizi seçin (10 dünya dili)',
+    fa: 'زبان خود را انتخاب کنید (۱۰ زبان جهانی)',
+  },
+  no_match: {
+    ar: 'لم يتم العثور على لغة مطابقة للبحث',
+    en: 'No matching languages found',
+    fr: 'Aucune langue correspondante',
+    es: 'No se encontraron idiomas',
+    it: 'Nessuna lingua trovata',
+    de: 'Keine passenden Sprachen gefunden',
+    ru: 'Совпадающих языков не найдено',
+    zh: '未找到匹配的语言',
+    tr: 'Eşleşen dil bulunamadı',
+    fa: 'زبانی مطابق جستجو یافت نشد',
+  },
+  active: {
+    ar: 'مفعلة',
+    en: 'Active',
+    fr: 'Active',
+    es: 'Activo',
+    it: 'Attiva',
+    de: 'Aktiv',
+    ru: 'Активен',
+    zh: '使用中',
+    tr: 'Aktif',
+    fa: 'فعال',
+  },
+  select: {
+    ar: 'اختيار',
+    en: 'Select',
+    fr: 'Choisir',
+    es: 'Elegir',
+    it: 'Scegli',
+    de: 'Wählen',
+    ru: 'Выбрать',
+    zh: '选择',
+    tr: 'Seç',
+    fa: 'انتخاب',
+  },
+  saved_auto: {
+    ar: 'يتم حفظ اللغة تلقائياً في المتصفح',
+    en: 'Language preference saved automatically',
+    fr: 'Préférence de langue enregistrée automatiquement',
+    es: 'Preferencia de idioma guardada automáticamente',
+    it: 'Preferenza lingua salvata automaticamente',
+    de: 'Spracheinstellung wird automatisch gespeichert',
+    ru: 'Язык сохраняется автоматически',
+    zh: '语言偏好将自动保存',
+    tr: 'Dil tercihi otomatik kaydedilir',
+    fa: 'زبان انتخابی به‌طور خودکار ذخیره می‌شود',
+  },
+  langs_count: {
+    ar: 'لغات',
+    en: 'Langs',
+    fr: 'langues',
+    es: 'idiomas',
+    it: 'lingue',
+    de: 'Sprachen',
+    ru: 'языков',
+    zh: '种语言',
+    tr: 'dil',
+    fa: 'زبان',
+  },
+} satisfies Record<string, LText>;
 
 interface LanguageSelectorProps {
   currentLang: SupportedLanguage;
@@ -23,6 +135,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   const activeConfig =
     SUPPORTED_LANGUAGES.find((l) => l.code === currentLang) || SUPPORTED_LANGUAGES[0];
   const rtl = isRTL(currentLang);
+  const L = makeT(currentLang, S);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -64,8 +177,8 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
             ? 'bg-amber-50/90 border-amber-400 ring-2 ring-amber-300/40 text-stone-900'
             : 'bg-white hover:bg-stone-50 border-stone-200 hover:border-amber-300 text-stone-800'
         } ${compactMobile ? 'text-[11px] py-1 px-2' : 'text-xs'}`}
-        title="خانة تغيير لغة المنصة / Change Platform Language"
-        aria-label="خانة تغيير اللغة"
+        title={`${L('tooltip')} / Change Platform Language`}
+        aria-label={L('tooltip')}
         aria-expanded={isOpen}
       >
         <div className="flex items-center gap-1.5">
@@ -74,7 +187,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
           </div>
           
           <span className="font-extrabold text-[11px] text-amber-900 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200/60 hidden md:inline">
-            {currentLang === 'ar' ? 'اللغة' : currentLang.toUpperCase()}
+            {L('trigger_label')}
           </span>
 
           <span className="text-sm leading-none" role="img" aria-label={activeConfig.name}>
@@ -105,10 +218,10 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
               </div>
               <div>
                 <div className="font-bold text-sm text-amber-200">
-                  {currentLang === 'ar' ? 'خانة تغيير لغة المنصة' : 'Change Platform Language'}
+                  {L('header_title')}
                 </div>
                 <div className="text-[10px] text-stone-300">
-                  {currentLang === 'ar' ? 'اختر لغتك المفضلة (10 لغات عالمية)' : 'Select language (10 world languages)'}
+                  {L('header_sub')}
                 </div>
               </div>
             </div>
@@ -139,7 +252,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
               <Search className={`w-3.5 h-3.5 text-stone-400 absolute ${rtl ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 pointer-events-none`} />
               <input
                 type="text"
-                placeholder={getCommonLabel('search', currentLang) + ' (العربية, English, Français)...'}
+                placeholder={`${getCommonLabel('search', currentLang)} (${SUPPORTED_LANGUAGES.map(l => l.nativeName).slice(0, 3).join(', ')})...`}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className={`w-full ${rtl ? 'pr-8 pl-3 text-right' : 'pl-8 pr-3 text-left'} py-1.5 bg-white border border-stone-200 rounded-xl text-xs text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-500 transition-all`}
@@ -152,7 +265,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
           <div className="max-h-72 overflow-y-auto py-1.5 divide-y divide-stone-100/60">
             {filteredLanguages.length === 0 ? (
               <div className="py-6 text-center text-stone-400 text-xs">
-                {currentLang === 'ar' ? 'لم يتم العثور على لغة مطابقة للبحث' : 'No matching languages found'}
+                {L('no_match')}
               </div>
             ) : (
               filteredLanguages.map((lang: LanguageConfig) => {
@@ -201,11 +314,11 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
                     {isSelected ? (
                       <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-200/80 text-amber-950 text-[10px] font-bold">
                         <Check className="w-3.5 h-3.5 text-amber-900 stroke-[3]" />
-                        <span>{currentLang === 'ar' ? 'مفعلة' : 'Active'}</span>
+                        <span>{L('active')}</span>
                       </div>
                     ) : (
                       <span className="text-[10px] text-stone-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                        {currentLang === 'ar' ? 'اختيار' : 'Select'}
+                        {L('select')}
                       </span>
                     )}
                   </button>
@@ -218,9 +331,9 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
           <div className="px-3.5 py-2 border-t border-stone-100 bg-stone-50 text-[10px] text-stone-500 flex items-center justify-between">
             <span className="flex items-center gap-1">
               <Sparkles className="w-3 h-3 text-amber-700" />
-              <span>{currentLang === 'ar' ? 'يتم حفظ اللغة تلقائياً في المتصفح' : 'Language preference saved automatically'}</span>
+              <span>{L('saved_auto')}</span>
             </span>
-            <span className="font-mono text-stone-400">10 {currentLang === 'ar' ? 'لغات' : 'Langs'}</span>
+            <span className="font-mono text-stone-400">{SUPPORTED_LANGUAGES.length} {L('langs_count')}</span>
           </div>
         </div>
       )}
