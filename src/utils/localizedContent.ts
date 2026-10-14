@@ -602,6 +602,22 @@ const READ_TIME_TPL: Record<SupportedLanguage, string> = {
   he: '{n} דק׳',
   ur: '{n} منٹ',
   ps: '{n} دقیقې',
+  // Extended languages — batch 3 (LTR)
+  sv: '{n} min',
+  da: '{n} min',
+  fi: '{n} min',
+  no: '{n} min',
+  hu: '{n} perc',
+  sk: '{n} min',
+  sl: '{n} min',
+  hr: '{n} min',
+  sr: '{n} min',
+  bg: '{n} мин',
+  lt: '{n} min',
+  lv: '{n} min',
+  et: '{n} min',
+  ka: '{n} წუთი',
+  hy: '{n} րոպե',
 };
 
 export const getLocalizedNewsArticle = (article: PerfumeNewsItem, lang: SupportedLanguage) => {
