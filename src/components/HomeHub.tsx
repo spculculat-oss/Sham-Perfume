@@ -56,7 +56,7 @@ import {
 
 import heroImg from '../assets/images/hero_luxury_perfume_1791692409081.jpg';
 import labImg from '../assets/images/perfume_lab_compounding_1791692420116.jpg';
-import newsImg from '../assets/images/luxury_perfume_exhibition_1791696134494.jpg';
+import newsImg from '../assets/images/niche_perfume_reveal_1791968798991.jpg';
 import pyramidImg from '../assets/images/perfume_ingredients_pyramid_1791692429360.jpg';
 
 import { SupportedLanguage } from '../types/i18n';
@@ -172,7 +172,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
 
   const SUBTITLE_EN_MAP: Record<string, string> = {
     portal_concentration: 'Gravimetric molecular weight calculation at 0.01g precision',
-    portal_news: 'Exclusive reports from Milan, Paris, and Dubai exhibitions',
+    portal_news: 'Master Shahin’s daily illustrated briefing from Milan, Paris & Dubai fairs',
     portal_world_perfumes: 'Analyzing formulas of 8 world iconic fragrances with exact ratios',
     portal_raw_materials: 'Detailed catalog of 28+ pure ingredients with CAS numbers & safety',
     portal_pyramid: 'Three-layer pyramid structure with molecular evaporation simulation',
@@ -257,11 +257,11 @@ export const HomeHub: React.FC<HomeHubProps> = ({
       category: 'ai_news',
       titleAr: 'أخبار وصيحات العطور العالمية',
       titleEn: 'World Perfume News & Trends',
-      subtitleAr: 'تقارير حصرية من معارض ميلانو، باريس، وبيوتي وورلد دبي',
+      subtitleAr: 'نشرة يومية مصورة معتمدة من الخبير شاهين من معارض ميلانو وباريس ودبي',
       accentColor: 'from-orange-600 to-amber-600 text-orange-500 bg-orange-500/10',
       borderGlow: 'hover:border-orange-500/50 hover:shadow-orange-900/10',
       icons: [Newspaper, Flame, Globe, TrendingUp],
-      statsBadge: 'عاجل · 2026 Trends',
+      statsBadge: '👑 رصد الخبير شاهين اليومي المصور',
       imageThumbnail: newsImg,
       news: [
         {
