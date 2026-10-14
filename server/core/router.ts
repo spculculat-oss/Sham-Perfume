@@ -19,13 +19,36 @@ export interface RouteResult {
   entities: { ref?: string; phone?: string; email?: string; volumeMl?: number; percent?: number; name?: string };
 }
 
-/** Matches at word starts only: "طلب" matches "طلبي" but not "مطلوب". `text` is space-padded. */
-const has = (text: string, words: string[]) => words.some((w) => text.includes(` ${normalize(w)}`));
+/**
+ * Whole-word keyword match that tolerates real inflections only (text is normalised + space-padded):
+ * - prefixes: ال، و، وال، بال، لل  ("الموظف" ⇒ موظف)
+ * - suffixes: plural/verb endings + pronouns, incl. Egyptian dative ("موظفين"، "طلباتي"، "اطلبلي"، "طلبت")
+ * but NOT arbitrary continuations: "بشري" no longer matches "بشريط", "طلب" does not match "مطلوب".
+ * A keyword written with a trailing space ("hi ") must match exactly.
+ */
+const PREFIXES = ['', 'ال', 'و', 'وال', 'بال', 'لل'];
+const AR_SUFFIX = /^(?:ين|ون|ات|ان|وا|و|ت|تي|تم|تو|يه)?(?:ي|ك|ه|ها|هم|هن|كم|كن|نا|لي|لك|لنا|لكم|له|لها)?$/;
+const EN_SUFFIX = /^(?:s|es|ed|ing|d)?$/;
+export function matchesKeyword(text: string, word: string): boolean {
+  const exact = word.endsWith(' ');
+  const key = normalize(word);
+  if (!key) return false;
+  const latin = /^[a-z0-9 ]+$/.test(key);
+  for (const prefix of latin ? [''] : PREFIXES) {
+    const needle = ` ${prefix}${key}`;
+    for (let i = text.indexOf(needle); i >= 0; i = text.indexOf(needle, i + 1)) {
+      const rest = (text.slice(i + needle.length).match(/^\S*/) || [''])[0];
+      if (exact ? rest === '' : (latin ? EN_SUFFIX : AR_SUFFIX).test(rest)) return true;
+    }
+  }
+  return false;
+}
+const has = (text: string, words: string[]) => words.some((w) => matchesKeyword(text, w));
 
 const GREETING = ['السلام عليكم', 'سلام عليكم', 'مرحبا', 'اهلا', 'هاي', 'صباح الخير', 'مساء الخير', 'hello', 'hi ', 'hey', 'good morning', 'good evening'];
 const THANKS = ['شكرا', 'متشكر', 'تسلم', 'جزاك الله', 'thanks', 'thank you', 'thx'];
 const SERVICES_LIST = ['خدمات', 'خدماتكم', 'بتقدموا ايه', 'تقدمون', 'تعمل ايه', 'تقدر تعمل', 'services', 'what can you do', 'what do you offer'];
-const TRACK = ['تتبع', 'حاله الطلب', 'حالة طلبي', 'طلبي فين', 'وصل فين', 'رقم الطلب', 'track', 'order status', 'where is my order'];
+const TRACK = ['تتبع', 'حاله الطلب', 'حالة طلبي', 'طلبي فين', 'فين طلب', 'فين الطلب', 'وصل فين', 'رقم الطلب', 'موصلش', 'مجاش', 'ماوصل', 'لم يصل', 'track', 'order status', 'where is my order'];
 const HANDOFF = ['موظف', 'شخص حقيقي', 'انسان', 'بشري', 'خدمه العملاء', 'اكلم حد', 'كلم حد', 'human', 'real person', 'agent', 'representative'];
 const ORDER_VERBS = ['اطلب', 'طلب', 'احجز', 'حجز', 'اشتري', 'سجل', 'قدم', 'ابعت عرض', 'عرض سعر', 'عايز', 'عاوز', 'محتاج', 'اريد', 'ابغي', 'اسوي',
   'order', 'request', 'book', 'quote', 'apply', 'purchase', 'i want', 'i need', 'i would like', 'looking for'];
@@ -84,8 +107,9 @@ export function route(message: string, services: ServiceDef[]): RouteResult {
     if (browse) return result('browse_products', 0.75, bestService.id);
     if (bestService.kind !== 'info' && (wantsAction || best[1] >= 2)) return result('service_request', Math.min(0.95, 0.55 + best[1] * 0.1), bestService.id);
   }
-  if (has(text, BROWSE) && services.some((s) => s.kind === 'store')) return result('browse_products', 0.6, services.find((s) => s.kind === 'store')!.id);
+  // "ايه الخدمات اللي عندكم" asks for the menu, not for stock — check it before the generic availability cue.
   if (has(text, SERVICES_LIST)) return result('list_services', 0.8);
+  if (has(text, BROWSE) && services.some((s) => s.kind === 'store')) return result('browse_products', 0.6, services.find((s) => s.kind === 'store')!.id);
   if (has(text, EXPERT) && !bestService) return result('perfume_expert', 0.6);
 
   const short = tokens.size <= 3;
@@ -94,4 +118,12 @@ export function route(message: string, services: ServiceDef[]): RouteResult {
   if (short && has(text, THANKS)) return result('thanks', 0.9);
   if (bestService) return result('question', 0.5, bestService.id);
   return result('question', 0.3);
+}
+
+/**
+ * Removes a self-introduction ("اسمي منى،" / "my name is Sara,") so it does not pollute knowledge
+ * search and is not copied into admin-facing analytics such as knowledge gaps.
+ */
+export function stripIntro(message: string): string {
+  return message.replace(/(?:^|\s)(?:(?:انا|أنا)\s+)?(?:اسمي|my name is)\s+[\p{L}]{2,20}\s*[،,.!؛:-]*\s*/iu, ' ').replace(/\s+/g, ' ').trim();
 }

@@ -13,7 +13,7 @@ export interface AssistantConfig { assistantName: { ar: string; en: string }; we
 export interface ChatReply { conversationId: string; messageId: string; steps: PublicStep[]; suggestions: string[]; reply: string; engine: { id: string; name: string }; intent: string; actions: ActionCard[]; citations: Citation[]; status: 'open' | 'handoff' | 'closed'; trace?: { stage: string; detail: string; ms?: number }[] }
 export interface UiMessage {
   id?: string; role: 'user' | 'assistant'; text: string; at: string; engine?: string; actions?: ActionCard[]; citations?: Citation[];
-  steps?: PublicStep[]; suggestions?: string[]; feedback?: { rating: 'up' | 'down' }; streaming?: boolean;
+  steps?: PublicStep[]; suggestions?: string[]; feedback?: { rating: 'up' | 'down' }; streaming?: boolean; stopped?: boolean;
 }
 export type StreamEvent =
   | { type: 'step'; step: PublicStep } | { type: 'delta'; text: string } | { type: 'reset' }
@@ -38,8 +38,8 @@ export function visitorId(): string {
 
 export const assistantApi = {
   config: () => requestApi<AssistantConfig>('/api/assistant/config', undefined, 15000),
-  chat: (message: string, language: SupportedLanguage, conversationId?: string, signal?: AbortSignal) =>
-    requestApi<ChatReply>('/api/assistant/chat', { ...json({ message, language, conversationId, visitorId: visitorId() }), signal }, 40000),
+  chat: (message: string, language: SupportedLanguage, conversationId?: string, signal?: AbortSignal, rewind?: string) =>
+    requestApi<ChatReply>('/api/assistant/chat', { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined }), signal }, 40000),
   conversation: (id: string) =>
     requestApi<{ id: string; status: ChatReply['status']; messages: UiMessage[] }>(`/api/assistant/conversations/${encodeURIComponent(id)}?visitorId=${encodeURIComponent(visitorId())}`, undefined, 15000),
   submitRequest: (body: { serviceId: string; contact: { name: string; phone?: string; email?: string }; fields: Record<string, string>; items?: { productId: string; quantity: number }[]; conversationId?: string }) =>
@@ -56,9 +56,9 @@ export const assistantApi = {
  * the final reply. Throws before the first event if streaming is unavailable, so callers can
  * fall back to the plain JSON endpoint.
  */
-export async function streamChat(message: string, language: SupportedLanguage, conversationId: string | undefined, onEvent: (event: StreamEvent) => void, signal?: AbortSignal): Promise<ChatReply> {
+export async function streamChat(message: string, language: SupportedLanguage, conversationId: string | undefined, onEvent: (event: StreamEvent) => void, signal?: AbortSignal, rewind?: string): Promise<ChatReply> {
   if (isStaticHosting) throw new ApiUnavailableError();
-  const response = await fetch('/api/assistant/chat/stream', { ...json({ message, language, conversationId, visitorId: visitorId() }), signal });
+  const response = await fetch('/api/assistant/chat/stream', { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined }), signal });
   if (!response.ok) {
     let code: string | undefined;
     try { code = (await response.json())?.code; } catch { /* not JSON */ }

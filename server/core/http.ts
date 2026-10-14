@@ -274,13 +274,10 @@ export function createShamCore(options: CoreOptions = {}) {
     res.json({ item: conversation });
   }));
   admin.post('/conversations/:id/reply', wrap(async (req, res) => {
-    const conversation = await repo.conversation(String(req.params.id));
-    if (!conversation) throw new ValidationError('NOT_FOUND', 'Conversation not found', 404);
     const text = typeof req.body?.text === 'string' ? req.body.text.trim().slice(0, 4000) : '';
     if (!text) throw new ValidationError('INVALID_MESSAGE', 'Reply text is required');
-    conversation.messages.push({ role: 'assistant', text, at: new Date().toISOString(), engine: 'human' });
-    conversation.updatedAt = new Date().toISOString();
-    await repo.saveConversation(conversation);
+    const conversation = await orchestrator.addHumanReply(String(req.params.id), text);
+    if (!conversation) throw new ValidationError('NOT_FOUND', 'Conversation not found', 404);
     res.json({ item: conversation });
   }));
   admin.patch('/conversations/:id', wrap(async (req, res) => {

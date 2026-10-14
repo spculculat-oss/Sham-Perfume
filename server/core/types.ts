@@ -110,6 +110,8 @@ export interface ConversationMessage {
   steps?: PublicStep[];
   suggestions?: string[];
   feedback?: MessageFeedback;
+  /** The visitor pressed "stop": `text` is exactly what they saw before stopping. */
+  stopped?: boolean;
 }
 
 export interface Conversation {

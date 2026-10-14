@@ -10,6 +10,9 @@
 import type { Repository } from './repository';
 import { callEngine, engineStatuses } from './engines';
 import { normalize } from './text';
+import { INTENT_LABEL } from './orchestrator';
+
+const REQUEST_TYPE: Record<string, string> = { order: 'طلبات متجر', custom_formula: 'عطور مخصصة', b2b_quote: 'عروض جملة', consultation: 'استشارات', support: 'دعم', service: 'خدمات أخرى' };
 import type { EngineId } from './types';
 
 export type AdminTask = 'pending_requests' | 'handoffs' | 'low_stock' | 'knowledge_gaps' | 'satisfaction' | 'sales' | 'intents';
@@ -126,7 +129,7 @@ export async function runAdminAgent(repo: Repository, message: string, options: 
         metrics: { current: current.length, previous: previous.length },
         lines: [
           `${current.length} طلب هذا الأسبوع مقابل ${previous.length} الأسبوع السابق (${delta >= 0 ? '+' : ''}${delta}).`,
-          Object.keys(byType).length ? `حسب النوع: ${Object.entries(byType).map(([k, n]) => `${k}: ${n}`).join('، ')}` : 'لا توجد طلبات هذا الأسبوع.',
+          Object.keys(byType).length ? `حسب النوع: ${Object.entries(byType).map(([k, n]) => `${REQUEST_TYPE[k] || k}: ${n}`).join('، ')}` : 'لا توجد طلبات هذا الأسبوع.',
           Object.keys(v).length ? `قيمة طلبات المتجر غير الملغاة: ${Object.entries(v).map(([c, n]) => `${n} ${c}`).join('، ')}` : '',
         ].filter(Boolean),
       };
@@ -140,7 +143,7 @@ export async function runAdminAgent(repo: Repository, message: string, options: 
       const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 5);
       return {
         severity: 'ok', tab: 'overview', metrics: { messages },
-        lines: top.length ? [`${messages} رسالة من الزوار. الأكثر طلباً:`, ...top.map(([k, n]) => `• ${k}: ${n}`)] : ['لا توجد رسائل خلال آخر 7 أيام.'],
+        lines: top.length ? [`${messages} رسالة من الزوار. الأكثر طلباً:`, ...top.map(([k, n]) => `• ${(INTENT_LABEL.ar as Record<string, string>)[k] || k}: ${n}`)] : ['لا توجد رسائل خلال آخر 7 أيام.'],
       };
     },
   };

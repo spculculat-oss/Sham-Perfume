@@ -76,20 +76,23 @@ export class Bm25Index {
     this.avgLength = this.docs.reduce((sum, d) => sum + d.length, 0) / (this.docs.length || 1);
   }
 
-  search(query: string, limit = 4, minScore = 0.5): { doc: IndexedDoc; score: number }[] {
+  search(query: string, limit = 4, minScore = 0.5): { doc: IndexedDoc; score: number; matched: Record<string, number> }[] {
     const terms = [...new Set(tokenize(query))];
     if (!terms.length) return [];
     const n = this.docs.length;
     const results = this.docs.map(({ doc, tf, length }) => {
       let score = 0;
+      const matched: Record<string, number> = {};
       for (const term of terms) {
         const f = tf.get(term) || 0;
         if (!f) continue;
         const df = this.df.get(term) || 0;
         const idf = Math.log(1 + (n - df + 0.5) / (df + 0.5));
-        score += idf * ((f * (this.k1 + 1)) / (f + this.k1 * (1 - this.b + this.b * (length / (this.avgLength || 1)))));
+        const weight = idf * ((f * (this.k1 + 1)) / (f + this.k1 * (1 - this.b + this.b * (length / (this.avgLength || 1)))));
+        matched[term] = weight;
+        score += weight;
       }
-      return { doc, score };
+      return { doc, score, matched };
     });
     return results.filter((r) => r.score >= minScore).sort((a, b) => b.score - a.score).slice(0, limit);
   }

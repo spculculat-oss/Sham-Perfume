@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
-  CheckCircle2, ChevronDown, ExternalLink, Headset, Loader2, MessageCircle, Mic, MicOff, PackageSearch, RotateCcw, Send, ShieldCheck,
-  ShoppingBag, Sparkles, ThumbsDown, ThumbsUp, Trash2, Volume2, VolumeX, X,
+  Check, CheckCircle2, ChevronDown, Copy, ExternalLink, Headset, Loader2, MessageCircle, Mic, MicOff, PackageSearch, Pencil, RefreshCw, RotateCcw, Send,
+  ShieldCheck, ShoppingBag, Sparkles, Square, ThumbsDown, ThumbsUp, Trash2, Volume2, VolumeX, X,
 } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { SUPPORTED_LANGUAGES } from '../types/i18n';
@@ -67,6 +67,15 @@ const S = {
   forget: { ar: 'امسح محادثاتي وذاكرتي', en: 'Erase my conversations & memory' },
   forget_confirm: { ar: 'متأكد؟ سيتم حذف محادثاتك وذاكرة المساعد نهائياً (طلباتك المسجلة تبقى لدى فريق شام).', en: 'Are you sure? Your conversations and memory will be deleted permanently (submitted requests stay with the Sham team).' },
   forgotten: { ar: 'تم الحذف. بدأنا من جديد.', en: 'Erased. Starting fresh.' },
+  stop: { ar: 'إيقاف الرد', en: 'Stop generating' },
+  stopped: { ar: 'تم إيقاف الرد', en: 'Response stopped' },
+  regenerate: { ar: 'إعادة توليد الرد', en: 'Regenerate response' },
+  edit: { ar: 'تعديل الرسالة', en: 'Edit message' },
+  save_edit: { ar: 'حفظ وإرسال', en: 'Save & send' },
+  cancel: { ar: 'إلغاء', en: 'Cancel' },
+  copy: { ar: 'نسخ الرد', en: 'Copy' },
+  copied: { ar: 'تم النسخ', en: 'Copied' },
+  cannot_rewind: { ar: 'لا يمكن إعادة التوليد بعد رد فريق شام.', en: 'Cannot regenerate after a reply from the Sham team.' },
 } satisfies Record<string, LText>;
 
 export const STATUS_TEXT: Record<string, LText> = {
@@ -100,9 +109,12 @@ const SERVICE_ICON: Record<string, React.ReactNode> = {
 
 interface Props { currentLang: SupportedLanguage }
 
+const lastUserIndex = (list: UiMessage[]) => list.map((m) => m.role).lastIndexOf('user');
+
 function errorText(lang: SupportedLanguage, error: unknown) {
   if (error instanceof ApiUnavailableError) return loc(lang, S.static);
   if (error instanceof ApiError && error.status === 429) return loc(lang, S.rate);
+  if (error instanceof ApiError && error.code === 'CANNOT_REWIND') return loc(lang, S.cannot_rewind);
   return loc(lang, S.error);
 }
 
@@ -173,14 +185,18 @@ export function ShamAssistant({ currentLang }: Props) {
     return () => window.removeEventListener('open-sham-assistant', handler);
   }, []);
 
-  const send = useCallback(async (text: string) => {
+  /** `replaces` = text of the latest user message being regenerated/edited (ChatGPT-style rewind). */
+  const send = useCallback(async (text: string, replaces?: string) => {
     const message = text.trim();
     if (!message || busy) return;
     setError(''); setNotice('');
-    setInput('');
+    if (replaces === undefined) setInput('');
     const draftId = `draft-${Date.now()}`;
     const at = new Date().toISOString();
-    setMessages((m) => [...m, { role: 'user', text: message, at }, { id: draftId, role: 'assistant', text: '', at, steps: [], streaming: true }]);
+    setMessages((m) => {
+      const base = replaces !== undefined && lastUserIndex(m) >= 0 ? m.slice(0, lastUserIndex(m)) : m;
+      return [...base, { role: 'user', text: message, at }, { id: draftId, role: 'assistant', text: '', at, steps: [], streaming: true }];
+    });
     const patch = (fn: (m: UiMessage) => UiMessage) => setMessages((all) => all.map((x) => (x.id === draftId ? fn(x) : x)));
     setBusy(true);
     const controller = new AbortController();
@@ -195,13 +211,13 @@ export function ShamAssistant({ currentLang }: Props) {
           if (event.type === 'step') patch((x) => ({ ...x, steps: [...(x.steps || []), event.step] }));
           else if (event.type === 'delta') patch((x) => ({ ...x, text: x.text + event.text }));
           else if (event.type === 'reset') patch((x) => ({ ...x, text: '' }));
-        }, controller.signal);
+        }, controller.signal, replaces);
       } catch (e) {
         const terminal = streamed || controller.signal.aborted || e instanceof ApiUnavailableError || (e instanceof ApiError && e.status < 500 && e.status !== 404);
         if (terminal) throw e;
-        reply = await assistantApi.chat(message, currentLang, conversationId, controller.signal);
+        reply = await assistantApi.chat(message, currentLang, conversationId, controller.signal, replaces);
       }
-      if (controller.signal.aborted) return;
+      if (controller.signal.aborted) throw new DOMException('Stopped', 'AbortError');
       setConversationId(reply.conversationId);
       setStatus(reply.status);
       patch((x) => ({
@@ -209,12 +225,20 @@ export function ShamAssistant({ currentLang }: Props) {
         steps: reply.steps?.length ? reply.steps : x.steps, suggestions: reply.suggestions, streaming: false,
       }));
     } catch (e) {
-      setMessages((all) => all.filter((x) => x.id !== draftId));
-      if (!controller.signal.aborted) setError(errorText(currentLang, e));
+      if (controller.signal.aborted) {
+        // Stopped by the visitor: keep what was already written (the server stores the same text).
+        patch((x) => ({ ...x, streaming: false, stopped: true, text: x.text.trim() || loc(currentLang, S.stopped) }));
+      } else {
+        setMessages((all) => all.filter((x) => x.id !== draftId));
+        setError(errorText(currentLang, e));
+      }
     } finally {
       if (abortRef.current === controller) { abortRef.current = null; setBusy(false); }
     }
   }, [busy, conversationId, currentLang]);
+
+  const stop = () => abortRef.current?.abort();
+  const [editing, setEditing] = useState<string | null>(null);
 
   const stopSpeaking = () => { if (canSpeak) window.speechSynthesis.cancel(); setSpeakingId(null); };
   const speak = (m: UiMessage, key: string) => {
@@ -350,9 +374,25 @@ export function ShamAssistant({ currentLang }: Props) {
               {messages.map((m, i) => (
                 <div key={m.id || `${m.at}-${i}`} className="space-y-2">
                   {m.role === 'assistant' && m.steps && m.steps.length > 0 && <Steps steps={m.steps} live={Boolean(m.streaming)} lang={currentLang} />}
-                  {m.streaming && !m.text ? null : <Bubble role={m.role} text={m.text} engine={m.engine} lang={currentLang} streaming={m.streaming} />}
-                  {m.role === 'assistant' && !m.streaming && m.id && !m.id.startsWith('draft-') && m.engine !== 'human' && m.engine !== 'system' && conversationId && (
+                  {m.role === 'user' && editing !== null && i === lastUserIndex(messages) ? (
+                    <form className="flex flex-col items-end gap-1.5" onSubmit={(e) => { e.preventDefault(); const next = editing.trim(); setEditing(null); if (next && next !== m.text) void send(next, m.text); }}>
+                      <textarea autoFocus value={editing} onChange={(e) => setEditing(e.target.value.slice(0, 2000))} rows={3} aria-label={L('edit')}
+                        className="w-[88%] rounded-2xl border border-amber-400 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" />
+                      <div className="flex gap-1.5">
+                        <button type="button" onClick={() => setEditing(null)} className="text-[11px] rounded-lg border border-stone-300 px-2.5 py-1">{L('cancel')}</button>
+                        <button className="text-[11px] font-bold rounded-lg bg-stone-900 text-amber-100 px-2.5 py-1">{L('save_edit')}</button>
+                      </div>
+                    </form>
+                  ) : m.streaming && !m.text ? null : <Bubble role={m.role} text={m.text} engine={m.engine} lang={currentLang} streaming={m.streaming} stopped={m.stopped} />}
+                  {m.role === 'user' && i === lastUserIndex(messages) && editing === null && !busy && status === 'open' && !isStaticHosting && (
+                    <div className="flex justify-end px-1 -mt-1">
+                      <button type="button" onClick={() => setEditing(m.text)} aria-label={L('edit')} title={L('edit')} className="p-1 rounded-md text-stone-400 hover:text-stone-700 hover:bg-stone-200"><Pencil className="w-3 h-3" /></button>
+                    </div>
+                  )}
+                  {m.role === 'assistant' && !m.streaming && m.engine !== 'human' && m.engine !== 'system' && conversationId && (m.stopped || (m.id && !m.id.startsWith('draft-'))) && (
                     <MessageTools message={m} lang={currentLang} canSpeak={canSpeak} speaking={speakingId === (m.id || String(i))}
+                      canRate={Boolean(m.id && !m.id.startsWith('draft-'))}
+                      onRegenerate={i === lastAssistantIndex && !busy && status === 'open' && lastUserIndex(messages) >= 0 && lastUserIndex(messages) < i ? () => { const last = messages[lastUserIndex(messages)].text; void send(last, last); } : undefined}
                       onSpeak={() => speak(m, m.id || String(i))} onRate={(rating, reason) => void rate(m, rating, reason)} />
                   )}
                   {m.citations && m.citations.length > 0 && (
@@ -383,7 +423,10 @@ export function ShamAssistant({ currentLang }: Props) {
                 <textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value.slice(0, 2000))}
-                  onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void send(input); } }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Escape' && busy) { e.preventDefault(); stop(); return; }
+                    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void send(input); }
+                  }}
                   rows={1}
                   placeholder={L('placeholder')}
                   aria-label={L('placeholder')}
@@ -396,10 +439,17 @@ export function ShamAssistant({ currentLang }: Props) {
                     {listening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
                   </button>
                 )}
-                <button type="submit" disabled={busy || !input.trim() || isStaticHosting} aria-label={L('send')}
-                  className="h-10 w-10 shrink-0 rounded-full bg-stone-900 text-amber-200 flex items-center justify-center disabled:opacity-40">
-                  {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className={`w-4 h-4 ${rtl ? 'rotate-180' : ''}`} />}
-                </button>
+                {busy ? (
+                  <button type="button" onClick={stop} aria-label={L('stop')} title={L('stop')}
+                    className="h-10 w-10 shrink-0 rounded-full bg-stone-900 text-amber-200 flex items-center justify-center ring-2 ring-amber-300/60">
+                    <Square className="w-3.5 h-3.5 fill-current" />
+                  </button>
+                ) : (
+                  <button type="submit" disabled={!input.trim() || isStaticHosting} aria-label={L('send')}
+                    className="h-10 w-10 shrink-0 rounded-full bg-stone-900 text-amber-200 flex items-center justify-center disabled:opacity-40">
+                    <Send className={`w-4 h-4 ${rtl ? 'rotate-180' : ''}`} />
+                  </button>
+                )}
               </div>
               <p className="mt-1.5 text-[10px] text-stone-400">{L('no_card')}</p>
             </form>
@@ -410,7 +460,7 @@ export function ShamAssistant({ currentLang }: Props) {
   );
 }
 
-function Bubble({ role, text, engine, lang = 'ar', streaming }: { role: 'user' | 'assistant'; text: string; engine?: string; lang?: SupportedLanguage; streaming?: boolean }) {
+function Bubble({ role, text, engine, lang = 'ar', streaming, stopped }: { role: 'user' | 'assistant'; text: string; engine?: string; lang?: SupportedLanguage; streaming?: boolean; stopped?: boolean }) {
   const user = role === 'user';
   const label = engine === 'human' ? loc(lang, S.human) : engine && engine !== 'system' ? (engine === 'sham_local' ? 'Sham Core' : `Sham Core · ${engine}`) : '';
   return (
@@ -418,6 +468,7 @@ function Bubble({ role, text, engine, lang = 'ar', streaming }: { role: 'user' |
       <div className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-wrap shadow-sm ${user ? 'bg-stone-900 text-white rounded-ee-sm' : engine === 'human' ? 'bg-emerald-50 border border-emerald-200 text-stone-900 rounded-es-sm' : 'bg-white border border-stone-200 text-stone-800 rounded-es-sm'}`}>
         {text}
         {streaming && <span className="inline-block w-1.5 h-4 align-middle ms-0.5 bg-amber-500 animate-pulse rounded-sm" aria-hidden />}
+        {stopped && <span className="block mt-1.5 text-[10px] font-semibold text-amber-700">⏹ {loc(lang, S.stopped)}</span>}
         {label && !streaming && <span className="block mt-1.5 text-[10px] text-stone-400">{label}</span>}
       </div>
     </div>
@@ -451,11 +502,16 @@ function Steps({ steps, live, lang }: { steps: PublicStep[]; live: boolean; lang
 }
 
 /** Per-message controls: read aloud + thumbs up/down with optional reason (feeds the admin quality loop). */
-function MessageTools({ message, lang, canSpeak, speaking, onSpeak, onRate }: {
-  message: UiMessage; lang: SupportedLanguage; canSpeak: boolean; speaking: boolean; onSpeak: () => void; onRate: (rating: 'up' | 'down', reason?: string) => void;
+function MessageTools({ message, lang, canSpeak, speaking, canRate, onSpeak, onRate, onRegenerate }: {
+  message: UiMessage; lang: SupportedLanguage; canSpeak: boolean; speaking: boolean; canRate: boolean;
+  onSpeak: () => void; onRate: (rating: 'up' | 'down', reason?: string) => void; onRegenerate?: () => void;
 }) {
   const L = makeT(lang, S);
   const [asking, setAsking] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try { await navigator.clipboard.writeText(message.text); setCopied(true); setTimeout(() => setCopied(false), 1500); } catch { /* clipboard blocked */ }
+  };
   const [reason, setReason] = useState('');
   const rated = message.feedback?.rating;
   const btn = 'p-1 rounded-md hover:bg-stone-200 text-stone-400 hover:text-stone-700 disabled:hover:bg-transparent';
@@ -467,12 +523,20 @@ function MessageTools({ message, lang, canSpeak, speaking, onSpeak, onRate }: {
             {speaking ? <VolumeX className="w-3.5 h-3.5 text-amber-700" /> : <Volume2 className="w-3.5 h-3.5" />}
           </button>
         )}
+        <button type="button" onClick={() => void copy()} className={btn} aria-label={copied ? L('copied') : L('copy')} title={copied ? L('copied') : L('copy')}>
+          {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+        </button>
+        {onRegenerate && (
+          <button type="button" onClick={onRegenerate} className={btn} aria-label={L('regenerate')} title={L('regenerate')}><RefreshCw className="w-3.5 h-3.5" /></button>
+        )}
+        {canRate && <>
         <button type="button" disabled={Boolean(rated)} onClick={() => onRate('up')} className={btn} aria-label={L('helpful')} title={L('helpful')} aria-pressed={rated === 'up'}>
           <ThumbsUp className={`w-3.5 h-3.5 ${rated === 'up' ? 'text-emerald-600 fill-emerald-100' : ''}`} />
         </button>
         <button type="button" disabled={Boolean(rated)} onClick={() => setAsking((v) => !v)} className={btn} aria-label={L('not_helpful')} title={L('not_helpful')} aria-pressed={rated === 'down'}>
           <ThumbsDown className={`w-3.5 h-3.5 ${rated === 'down' ? 'text-red-600 fill-red-100' : ''}`} />
         </button>
+        </>}
         {rated && <span className="text-[10px] text-stone-400 ms-1">{L('thanks_feedback')}</span>}
       </div>
       {asking && !rated && (

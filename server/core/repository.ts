@@ -10,6 +10,7 @@ import type {
 } from './types';
 import { defaultKnowledge, defaultServices, defaultSettings, demoProducts } from './seed';
 import { Bm25Index, tokenize, type IndexedDoc } from './text';
+import { stripIntro } from './router';
 
 export class ValidationError extends Error {
   constructor(public code: string, message: string, public status = 400) { super(message); }
@@ -253,7 +254,7 @@ export class Repository {
     await this.saveConversation(conversation);
     if (input.rating === 'down' && previous !== 'down') {
       const question = [...conversation.messages.slice(0, index)].reverse().find((m) => m.role === 'user')?.text;
-      if (question) await this.recordGap({ question, source: 'negative_feedback', lastAnswer: message.text, reason, conversationId: conversation.id });
+      if (question) await this.recordGap({ question: stripIntro(question) || question, source: 'negative_feedback', lastAnswer: message.text, reason, conversationId: conversation.id });
     }
     return message.feedback;
   }

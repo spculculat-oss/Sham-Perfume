@@ -11,7 +11,7 @@
  */
 import { randomUUID } from 'node:crypto';
 import type { Repository } from './repository';
-import { route, type RouteResult } from './router';
+import { route, stripIntro, type RouteResult } from './router';
 import { tools, type ToolResult } from './tools';
 import { callEngine, engineStatuses, type EngineTurn } from './engines';
 import { detectScriptLanguage } from './text';
@@ -22,7 +22,14 @@ export class AssistantError extends Error {
   constructor(public status: number, public code: string, message: string) { super(message); }
 }
 
-export interface ChatInput { message: string; visitorId: string; conversationId?: string; language: Lang }
+export interface ChatInput {
+  message: string; visitorId: string; conversationId?: string; language: Lang;
+  /**
+   * Regenerate / edit: the text of the visitor's latest message being replaced. If it matches the
+   * stored latest exchange, that exchange is dropped first and `message` is answered in its place.
+   */
+  rewind?: string;
+}
 export interface ChatOutput {
   conversationId: string;
   messageId: string;
@@ -45,7 +52,7 @@ export type StreamEvent =
   | { type: 'done'; output: ChatOutput }
   | { type: 'error'; code: string; message: string };
 
-const INTENT_LABEL = {
+export const INTENT_LABEL = {
   ar: { greeting: 'تحية', thanks: 'شكر', list_services: 'استعراض الخدمات', track_order: 'تتبع طلب', browse_products: 'تصفح المنتجات', service_request: 'طلب خدمة', handoff: 'التحويل لموظف', calculate: 'عملية حسابية', perfume_expert: 'سؤال عن التركيب', question: 'سؤال عام', memory_view: 'عرض ما أتذكره', forget: 'حذف البيانات' },
   en: { greeting: 'greeting', thanks: 'thanks', list_services: 'services overview', track_order: 'order tracking', browse_products: 'browsing products', service_request: 'service request', handoff: 'human handoff', calculate: 'calculation', perfume_expert: 'formulation question', question: 'general question', memory_view: 'memory', forget: 'data deletion' },
 } as const;
@@ -101,7 +108,10 @@ export function validateChatInput(body: unknown): ChatInput {
   if (typeof visitorId !== 'string' || !ID.test(visitorId)) throw new AssistantError(400, 'INVALID_VISITOR', 'visitorId is required');
   if (conversationId !== undefined && (typeof conversationId !== 'string' || !ID.test(conversationId))) throw new AssistantError(400, 'INVALID_CONVERSATION', 'Invalid conversationId');
   if (!SUPPORTED_LANGUAGES.some((l) => l.code === language)) throw new AssistantError(400, 'INVALID_LANGUAGE', 'Unsupported language');
-  return { message: message.trim(), visitorId, conversationId: conversationId as string | undefined, language: language as Lang };
+  const rawRewind = (body as Record<string, unknown>).rewind;
+  if (rawRewind !== undefined && (typeof rawRewind !== 'string' || rawRewind.length > 2000)) throw new AssistantError(400, 'INVALID_REWIND', 'rewind must be the replaced message text');
+  const rewind = typeof rawRewind === 'string' && rawRewind.trim() ? rawRewind.trim() : undefined;
+  return { message: message.trim(), visitorId, conversationId: conversationId as string | undefined, language: language as Lang, ...(rewind ? { rewind } : {}) };
 }
 
 const STATUS_LABEL = {
@@ -112,10 +122,41 @@ const STATUS_LABEL = {
 export class Orchestrator {
   constructor(private repo: Repository, private options: { env?: Record<string, string | undefined>; fetch?: typeof fetch; engineTimeoutMs?: number; totalTimeoutMs?: number } = {}) {}
 
+  /** Per-conversation queue: concurrent requests on one conversation (double submit, stop + regenerate) never overwrite each other. */
+  private locks = new Map<string, Promise<unknown>>();
+
   async chat(input: ChatInput, opts: { debug?: boolean; signal?: AbortSignal; onEvent?: (event: StreamEvent) => void } = {}): Promise<ChatOutput> {
+    return input.conversationId ? this.exclusive(input.conversationId, () => this.run(input, opts)) : this.run(input, opts);
+  }
+
+  private async exclusive<T>(key: string, task: () => Promise<T>): Promise<T> {
+    const previous = this.locks.get(key) || Promise.resolve();
+    const current = previous.catch(() => undefined).then(task);
+    this.locks.set(key, current);
+    try { return await current; } finally { if (this.locks.get(key) === current) this.locks.delete(key); }
+  }
+
+  /** Staff reply from the dashboard — queued with visitor messages so neither overwrites the other. */
+  async addHumanReply(conversationId: string, text: string): Promise<Conversation | undefined> {
+    return this.exclusive(conversationId, async () => {
+      const conversation = await this.repo.conversation(conversationId);
+      if (!conversation) return undefined;
+      const at = new Date().toISOString();
+      conversation.messages.push({ id: randomUUID().slice(0, 12), role: 'assistant', text, at, engine: 'human' });
+      conversation.updatedAt = at;
+      await this.repo.saveConversation(conversation);
+      return conversation;
+    });
+  }
+
+  private async run(input: ChatInput, opts: { debug?: boolean; signal?: AbortSignal; onEvent?: (event: StreamEvent) => void }): Promise<ChatOutput> {
     const trace: TraceStep[] = [];
     const steps: PublicStep[] = [];
-    const emit = (event: StreamEvent) => { try { opts.onEvent?.(event); } catch { /* client gone */ } };
+    let shown = ''; // what the visitor has actually seen so far (needed when they press "stop")
+    const emit = (event: StreamEvent) => {
+      if (event.type === 'delta') shown += event.text; else if (event.type === 'reset') shown = '';
+      try { opts.onEvent?.(event); } catch { /* client gone */ }
+    };
     const clock = () => { const s = Date.now(); return () => Date.now() - s; };
 
     // 1) Guard: never store payment card numbers typed in chat.
@@ -133,6 +174,19 @@ export class Orchestrator {
       const profile = await this.repo.visitor(input.visitorId);
       conversation = { id: randomUUID(), visitorId: input.visitorId, language: input.language, status: 'open', messages: [], memory: { ...(profile?.memory || {}) }, startedAt: now, updatedAt: now };
     }
+    if (input.rewind && conversation.messages.length) {
+      // Regenerate / edit (ChatGPT-style) — only the latest exchange, and never over a staff reply.
+      const lastUser = conversation.messages.map((m) => m.role).lastIndexOf('user');
+      const tail = conversation.messages.slice(lastUser + 1);
+      if (conversation.status !== 'open' || tail.some((m) => m.engine === 'human')) {
+        throw new AssistantError(409, 'CANNOT_REWIND', 'Only the latest assistant answer can be regenerated');
+      }
+      // Only drop it if it is the exchange the visitor sees (a stopped request may never have been stored).
+      if (lastUser >= 0 && conversation.messages[lastUser].text === input.rewind.replace(CARD, '[redacted-card]')) {
+        conversation.messages = conversation.messages.slice(0, lastUser);
+        trace.push({ stage: 'guard', detail: 'rewound the last exchange (regenerate/edit)', ms: 0 });
+      }
+    }
     conversation.language = input.language;
     const lang: 'ar' | 'en' = detectScriptLanguage(redacted) === 'ar' || (input.language === 'ar' || input.language === 'fa') && !/[A-Za-z]{3}/.test(redacted) ? 'ar' : 'en';
     const step = (stage: PublicStep['stage'], ar: string, en: string) => { const s = { stage, label: lang === 'ar' ? ar : en }; steps.push(s); emit({ type: 'step', step: s }); };
@@ -148,7 +202,8 @@ export class Orchestrator {
     step('intent', `فهم الطلب: ${INTENT_LABEL.ar[routed.intent]}${serviceName ? ` ← ${serviceName}` : ''}`, `Understanding: ${INTENT_LABEL.en[routed.intent]}${serviceName ? ` → ${serviceName}` : ''}`);
 
     // 4) Plan + 5) Act
-    const plan = this.plan(routed, service, conversation, redacted);
+    const query = stripIntro(redacted) || redacted;
+    const plan = this.plan(routed, service, conversation, query);
     trace.push({ stage: 'plan', detail: plan.map((p) => p.tool).join(' → ') || 'respond', ms: 0 });
     const results: { tool: string; result: ToolResult }[] = [];
     for (const planned of plan) {
@@ -169,12 +224,18 @@ export class Orchestrator {
     if (catalogEmpty) actions = actions.filter((a) => !(a.type === 'request_form' && a.serviceId === service?.id && service?.kind === 'store'));
     if (routed.intent === 'perfume_expert') actions.push({ type: 'open_tab', tab: 'master_ai' });
     if (routed.intent === 'handoff') actions.push({ type: 'handoff' });
-    if (routed.intent === 'memory_view' || routed.intent === 'forget') actions.push({ type: 'privacy', memory: { ...conversation.memory } });
+    if (routed.intent === 'memory_view' || routed.intent === 'forget') {
+      // Show people-readable values (service names, not internal ids).
+      const memory = { ...conversation.memory };
+      const last = memory.lastService && services.find((s) => s.id === memory.lastService);
+      if (last) memory.lastService = lang === 'ar' ? last.nameAr : last.nameEn || last.nameAr;
+      actions.push({ type: 'privacy', memory });
+    }
     const citations = results.flatMap((r) => r.result.citations || []).filter((c, i, all) => all.findIndex((x) => x.id === c.id) === i).slice(0, 5);
 
     // Learning loop: questions Sham's data cannot answer become "knowledge gaps" for the admin.
     const unanswered = (routed.intent === 'question' || routed.intent === 'perfume_expert') && results.some((r) => r.tool === 'retrieve_knowledge' && r.result.observation === 'NO_RESULTS');
-    if (unanswered) await this.repo.recordGap({ question: redacted, source: 'no_answer', conversationId: conversation.id });
+    if (unanswered) await this.repo.recordGap({ question: query, source: 'no_answer', conversationId: conversation.id });
 
     // 6) Render with engine policy (streams tokens when the caller listens)
     const local = this.composeLocal(lang, routed, service, results, settings, services, conversation);
@@ -203,11 +264,17 @@ export class Orchestrator {
         } catch {
           trace.push({ stage: 'engine', detail: `${id}: failed/timeout`, ms: tick() });
         }
+        if (opts.signal?.aborted) break; // the visitor pressed "stop": keep what they saw, no failover
         // A provider failed mid-answer: tell the client to discard the partial text before failover.
         if (streamed) emit({ type: 'reset' });
       }
     }
-    if (engine === 'sham_local') {
+    const stopped = Boolean(opts.signal?.aborted);
+    if (stopped) {
+      // The visitor pressed "stop": keep exactly what they saw, like the big chat apps do.
+      reply = shown.trim() || (lang === 'ar' ? '(تم إيقاف الرد)' : '(response stopped)');
+      trace.push({ stage: 'engine', detail: 'stopped by visitor', ms: 0 });
+    } else if (engine === 'sham_local') {
       trace.push({ stage: 'engine', detail: 'sham_local composer', ms: 0 });
       if (opts.onEvent) for (const chunk of reply.match(/[^\s]+\s*/g) || [reply]) emit({ type: 'delta', text: chunk });
     }
@@ -220,7 +287,9 @@ export class Orchestrator {
     const at = new Date().toISOString();
     const messageId = randomUUID().slice(0, 12);
     const userMessage: ConversationMessage = { id: randomUUID().slice(0, 12), role: 'user', text: redacted, at, intent: routed.intent };
-    const assistantMessage: ConversationMessage = { id: messageId, role: 'assistant', text: reply, at, engine, intent: routed.intent, citations, actions, trace, steps, suggestions };
+    const assistantMessage: ConversationMessage = {
+      id: messageId, role: 'assistant', text: reply, at, engine, intent: routed.intent, citations, actions, trace, steps, suggestions, ...(stopped ? { stopped } : {}),
+    };
     conversation.messages.push(userMessage, assistantMessage);
     conversation.serviceId = service?.id || conversation.serviceId;
     conversation.updatedAt = at;

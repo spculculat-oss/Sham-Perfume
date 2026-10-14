@@ -27,7 +27,15 @@ export const tools = {
       const index = await repo.searchIndex();
       // Relative + absolute thresholds: weak lexical overlaps are dropped instead of shown as answers.
       const raw = index.search(args.query, 6, 1.2).filter((h) => h.doc.kind !== 'product');
-      const hits = raw.filter((h) => h.score >= raw[0].score * 0.45).slice(0, 3);
+      // Coverage-based selection: the best passage always; each extra passage must answer a *significant*
+      // part of the question (query terms the stronger passages did not cover, weighted by BM25).
+      const covered = new Set<string>();
+      const hits = raw.filter((h, i) => {
+        const fresh = Object.entries(h.matched).filter(([t]) => !covered.has(t)).reduce((sum, [, w]) => sum + w, 0);
+        if (i > 0 && (h.score < raw[0].score * 0.45 || fresh < raw[0].score * 0.4)) return false;
+        Object.keys(h.matched).forEach((t) => covered.add(t));
+        return true;
+      }).slice(0, 3);
       const docs = await repo.knowledge();
       const services = await repo.services();
       const passages = hits.map((h) => {
