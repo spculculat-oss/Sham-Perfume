@@ -82,6 +82,22 @@ const TIMEZONE_TO_COUNTRY: Record<string, string> = {
   // Extended language batch 2 (RTL)
   'Asia/Karachi': 'PK',
   'Asia/Kabul': 'AF',
+  // Extended language batch 3 (Nordic, Balkans, Baltics, Caucasus)
+  'Europe/Stockholm': 'SE',
+  'Europe/Copenhagen': 'DK',
+  'Europe/Helsinki': 'FI',
+  'Europe/Oslo': 'NO',
+  'Europe/Budapest': 'HU',
+  'Europe/Bratislava': 'SK',
+  'Europe/Ljubljana': 'SI',
+  'Europe/Zagreb': 'HR',
+  'Europe/Belgrade': 'RS',
+  'Europe/Sofia': 'BG',
+  'Europe/Vilnius': 'LT',
+  'Europe/Riga': 'LV',
+  'Europe/Tallinn': 'EE',
+  'Asia/Tbilisi': 'GE',
+  'Asia/Yerevan': 'AM',
 };
 
 /**
@@ -355,6 +371,96 @@ export function detectUserCountryAndLanguage(): GeoDetectionResult {
       return {
         detectedCountry: findCountryByCode('AF')!,
         detectedLanguage: 'ps',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'sv') {
+      return {
+        detectedCountry: findCountryByCode('SE')!,
+        detectedLanguage: 'sv',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'da') {
+      return {
+        detectedCountry: findCountryByCode('DK')!,
+        detectedLanguage: 'da',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'fi') {
+      return {
+        detectedCountry: findCountryByCode('FI')!,
+        detectedLanguage: 'fi',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'no' || primaryLang === 'nb' || primaryLang === 'nn') {
+      return {
+        detectedCountry: findCountryByCode('NO')!,
+        detectedLanguage: 'no',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'hu') {
+      return {
+        detectedCountry: findCountryByCode('HU')!,
+        detectedLanguage: 'hu',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'sk') {
+      return {
+        detectedCountry: findCountryByCode('SK')!,
+        detectedLanguage: 'sk',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'sl') {
+      return {
+        detectedCountry: findCountryByCode('SI')!,
+        detectedLanguage: 'sl',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'hr') {
+      return {
+        detectedCountry: findCountryByCode('HR')!,
+        detectedLanguage: 'hr',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'sr') {
+      return {
+        detectedCountry: findCountryByCode('RS')!,
+        detectedLanguage: 'sr',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'bg') {
+      return {
+        detectedCountry: findCountryByCode('BG')!,
+        detectedLanguage: 'bg',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'lt') {
+      return {
+        detectedCountry: findCountryByCode('LT')!,
+        detectedLanguage: 'lt',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'lv') {
+      return {
+        detectedCountry: findCountryByCode('LV')!,
+        detectedLanguage: 'lv',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'et') {
+      return {
+        detectedCountry: findCountryByCode('EE')!,
+        detectedLanguage: 'et',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'ka') {
+      return {
+        detectedCountry: findCountryByCode('GE')!,
+        detectedLanguage: 'ka',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'hy') {
+      return {
+        detectedCountry: findCountryByCode('AM')!,
+        detectedLanguage: 'hy',
         detectionSource: 'default',
       };
     }

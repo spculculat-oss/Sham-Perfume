@@ -28,7 +28,23 @@ export type SupportedLanguage =
   // Extended languages — batch 2 (RTL)
   | 'he'
   | 'ur'
-  | 'ps';
+  | 'ps'
+  // Extended languages — batch 3 (LTR: Nordics, Balkans, Baltics, Caucasus)
+  | 'sv'
+  | 'da'
+  | 'fi'
+  | 'no'
+  | 'hu'
+  | 'sk'
+  | 'sl'
+  | 'hr'
+  | 'sr'
+  | 'bg'
+  | 'lt'
+  | 'lv'
+  | 'et'
+  | 'ka'
+  | 'hy';
 
 export interface LanguageConfig {
   code: SupportedLanguage;
@@ -69,6 +85,22 @@ export const SUPPORTED_LANGUAGES: LanguageConfig[] = [
   { code: 'he', name: 'Hebrew', nativeName: 'עברית', dir: 'rtl', flag: '🇮🇱' },
   { code: 'ur', name: 'Urdu', nativeName: 'اردو', dir: 'rtl', flag: '🇵🇰' },
   { code: 'ps', name: 'Pashto', nativeName: 'پښتو', dir: 'rtl', flag: '🇦🇫' },
+  // Extended languages — batch 3 (LTR: Nordics, Balkans, Baltics, Caucasus)
+  { code: 'sv', name: 'Swedish', nativeName: 'Svenska', dir: 'ltr', flag: '🇸🇪' },
+  { code: 'da', name: 'Danish', nativeName: 'Dansk', dir: 'ltr', flag: '🇩🇰' },
+  { code: 'fi', name: 'Finnish', nativeName: 'Suomi', dir: 'ltr', flag: '🇫🇮' },
+  { code: 'no', name: 'Norwegian', nativeName: 'Norsk', dir: 'ltr', flag: '🇳🇴' },
+  { code: 'hu', name: 'Hungarian', nativeName: 'Magyar', dir: 'ltr', flag: '🇭🇺' },
+  { code: 'sk', name: 'Slovak', nativeName: 'Slovenčina', dir: 'ltr', flag: '🇸🇰' },
+  { code: 'sl', name: 'Slovenian', nativeName: 'Slovenščina', dir: 'ltr', flag: '🇸🇮' },
+  { code: 'hr', name: 'Croatian', nativeName: 'Hrvatski', dir: 'ltr', flag: '🇭🇷' },
+  { code: 'sr', name: 'Serbian', nativeName: 'Srpski', dir: 'ltr', flag: '🇷🇸' },
+  { code: 'bg', name: 'Bulgarian', nativeName: 'Български', dir: 'ltr', flag: '🇧🇬' },
+  { code: 'lt', name: 'Lithuanian', nativeName: 'Lietuvių', dir: 'ltr', flag: '🇱🇹' },
+  { code: 'lv', name: 'Latvian', nativeName: 'Latviešu', dir: 'ltr', flag: '🇱🇻' },
+  { code: 'et', name: 'Estonian', nativeName: 'Eesti', dir: 'ltr', flag: '🇪🇪' },
+  { code: 'ka', name: 'Georgian', nativeName: 'ქართული', dir: 'ltr', flag: '🇬🇪' },
+  { code: 'hy', name: 'Armenian', nativeName: 'Հայերեն', dir: 'ltr', flag: '🇦🇲' },
 ];
 
 export type TranslationKey = string;
