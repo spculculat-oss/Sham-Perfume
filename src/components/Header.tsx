@@ -176,53 +176,48 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Zone 2: Navigation links - Smart grouped navigation with dropdowns */}
-        <div className="hidden xl:block relative">
+        <div className="hidden xl:block relative flex items-center gap-3 py-1 w-full">
           {/* Gradient fade left edge */}
-          <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-white/95 to-transparent pointer-events-none z-10"></div>
+          <div className="absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-white/95 to-transparent pointer-events-none z-10"></div>
           {/* Gradient fade right edge */}
-          <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white/95 to-transparent pointer-events-none z-10"></div>
-          
-          <nav className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth py-1">
+          <div className="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white/95 to-transparent pointer-events-none z-10"></div>
+          <div className="flex items-center gap-3 relative z-20 flex-1 justify-start">
             {navGroups.map((group) => (
               group.type === 'single' ? (
                 <button
                   key={group.id}
                   onClick={() => setActiveTab(group.id)}
-                  className={`whitespace-nowrap shrink-0 transition-all py-1.5 px-2.5 rounded-lg flex items-center gap-1.5 cursor-pointer ${
+                  className={`whitespace-nowrap transition-all py-1.5 px-3 rounded-lg flex items-center gap-2 cursor-pointer ${
                     activeTab === group.id
                       ? 'text-stone-950 font-bold bg-stone-100 shadow-2xs border border-stone-200/80'
                       : 'hover:text-stone-900 hover:bg-stone-50'
                   }`}
                   title={group.fullLabel}
                 >
-                  <group.icon className={`w-3.5 h-3.5 ${group.iconColor} shrink-0`} />
-                  <span className="xl:text-xs text-[11px] hidden lg:inline">{group.label}</span>
-                  <span className="xl:inline hidden text-[11px]">{group.fullLabel}</span>
+                  <group.icon className={`w-4 h-4 ${group.iconColor} shrink-0`} />
+                  <span className="hidden md:inline text-xs font-medium text-stone-700">{group.label}</span>
                 </button>
               ) : (
-                <div key={group.id} className="relative shrink-0">
-                  {/* Group button with dropdown */}
+                <div key={group.id} className="relative">
                   <button
-                    data-group-menu
+                    data-group-menu="true"
                     onClick={() => setIsGroupMenuOpen(group.id, !isGroupMenuOpen(group.id))}
-                    className={`whitespace-nowrap shrink-0 transition-all py-1.5 px-2.5 rounded-lg flex items-center gap-1.5 cursor-pointer ${
+                    className={`whitespace-nowrap transition-all py-1.5 px-3 rounded-lg flex items-center gap-2 cursor-pointer ${
                       isGroupMenuOpen(group.id)
                         ? 'text-stone-950 font-bold bg-stone-100 shadow-2xs border border-stone-200/80'
                         : 'hover:text-stone-900 hover:bg-stone-50'
                     }`}
                     title={group.fullLabel}
                   >
-                    <group.icon className={`w-3.5 h-3.5 ${group.iconColor} shrink-0`} />
-                    <span className="xl:text-xs text-[11px] hidden lg:inline">{group.label}</span>
-                    <span className="px-1.5 py-0.2 rounded bg-stone-100 text-[10px] font-medium text-stone-600 border border-stone-200/60 shrink-0">
+                    <group.icon className={`w-4 h-4 ${group.iconColor} shrink-0`} />
+                    <span className="hidden md:inline text-xs font-medium text-stone-700">{group.label}</span>
+                    <span className="px-1.5 py-0.2 rounded bg-stone-100 text-[11px] font-medium text-stone-600 border border-stone-200/60 shrink-0">
                       {group.items?.length}
                     </span>
-                    <ChevronDown className="w-3 h-3 text-stone-400 ml-0.5 shrink-0" />
+                    <ChevronDown className="w-3.5 h-3.5 text-stone-400 ml-0.5 shrink-0" />
                   </button>
-                  
-                  {/* Dropdown menu */}
                   {isGroupMenuOpen(group.id) && (
-                    <div className="absolute top-full mt-2 left-0 z-50 min-w-[220px] rounded-xl bg-white border border-stone-200 shadow-xl overflow-hidden animate-in fade-in zoom-in-95">
+                    <div className="absolute top-full mt-2 left-0 z-50 min-w-[260px] rounded-xl bg-white border border-stone-200 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 p-1">
                       {group.items?.map((item) => (
                         <button
                           key={item.id}
@@ -230,10 +225,10 @@ export const Header: React.FC<HeaderProps> = ({
                             setActiveTab(item.id);
                             setIsGroupMenuOpen(group.id, false);
                           }}
-                          className={`w-full px-4 py-2 text-left flex items-center gap-2 transition-colors cursor-pointer ${
+                          className={`w-full px-3 py-2 text-left flex items-center gap-2 transition-colors cursor-pointer ${
                             activeTab === item.id
-                              ? 'bg-amber-50 text-amber-900 font-semibold'
-                              : 'hover:bg-stone-50 text-stone-700'
+                              ? 'bg-amber-50 text-amber-900 font-semibold border-l-2 border-amber-500 rounded-l-lg'
+                              : 'hover:bg-stone-50 text-stone-700 rounded-lg'
                           }`}
                         >
                           {item.isNew && (
@@ -241,8 +236,8 @@ export const Header: React.FC<HeaderProps> = ({
                               NEW
                             </span>
                           )}
-                          <item.icon className="w-3.5 h-3.5 text-stone-500 shrink-0" />
-                          <span>{item.fullLabel}</span>
+                          <item.icon className="w-4 h-4 text-stone-500 shrink-0" />
+                          <span className="text-sm">{item.fullLabel}</span>
                         </button>
                       ))}
                     </div>
@@ -250,7 +245,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
               )
             ))}
-          </nav>
+          </div>
         </div>
 
         {/* Zone 3: Global Controls (Language, Environment/Homeland, User Auth, Privacy, Print) */}
