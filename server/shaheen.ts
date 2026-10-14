@@ -114,7 +114,11 @@ export async function executeChat(input: ChatRequest, options: {
     try {
       const response = await request(url, { method: 'POST', headers, body: JSON.stringify(body), signal });
       if (!response.ok) continue;
-      const data = await response.json();
+      const data = await response.json() as {
+        candidates?: { content?: { parts?: { thought?: boolean; text?: string }[] } }[];
+        content?: { type: string; text: string }[];
+        choices?: { message?: { content?: unknown } }[];
+      };
       const reply = provider === 'gemini'
         ? data.candidates?.[0]?.content?.parts?.filter((part: { thought?: boolean }) => !part.thought).map((part: { text?: string }) => part.text || '').join('')
         : provider === 'claude'

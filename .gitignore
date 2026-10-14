@@ -6,3 +6,6 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Vercel build output and local project linking state
+.vercel/
