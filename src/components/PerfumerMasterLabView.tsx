@@ -35,7 +35,9 @@ import {
 } from '../utils/chatStorage';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../utils/localizedContent';
-import { LText, makeT, fmt, LOCALE_MAP } from '../utils/localize';
+import { LText, makeT, fmt, loc, LOCALE_MAP } from '../utils/localize';
+import { isStaticHosting, requestApi, type ChatResponse } from '../utils/api';
+import { StaticHostingNotice, API_ERROR_NOTICE } from './StaticHostingNotice';
 
 interface PerfumerMasterLabViewProps {
   currentLang?: SupportedLanguage;
@@ -389,7 +391,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
     overrideModel?: 'auto' | 'gemini' | 'deepseek' | 'openai' | 'claude'
   ) => {
     const text = (customText || input).trim();
-    if (!text || isLoading) return;
+    if (!text || isLoading || isStaticHosting) return;
 
     const activeModelChoice = overrideModel || selectedModel;
 
@@ -423,7 +425,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
     setDripping(true);
 
     try {
-      const res = await fetch('/api/chat', {
+      const data = await requestApi<ChatResponse>('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -432,7 +434,9 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
           conversationHistory: messages.map((m) => ({ role: m.role, text: m.text })),
         }),
       });
-      const data = await res.json();
+      if (typeof data.reply !== 'string' || !data.reply.trim()) {
+        throw new Error('Chat response is empty');
+      }
       const reply = data.reply || L('retry_later');
 
       setMessages((prev) => [
@@ -453,7 +457,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
         {
           id: 'err-' + Date.now(),
           role: 'assistant',
-          text: L('fallback_welcome'),
+          text: loc(currentLang, API_ERROR_NOTICE),
           timestamp: new Date().toLocaleTimeString(LOCALE_MAP[currentLang], { hour: '2-digit', minute: '2-digit' }),
           aiEngine: {
             id: 'ensemble',
@@ -500,6 +504,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
 
   return (
     <div className="space-y-4">
+      <StaticHostingNotice currentLang={currentLang} />
       {/* 1. Compact Slim Header with Expiry Info & Controls */}
       <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200/90 shadow-2xs flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
@@ -1028,7 +1033,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
             <button
               key={idx}
               onClick={() => handleSend(prompt)}
-              disabled={isLoading}
+              disabled={isLoading || isStaticHosting}
               className="whitespace-nowrap px-3 py-1.5 rounded-full bg-white hover:bg-amber-50 border border-stone-200 text-stone-700 hover:text-amber-900 text-xs transition-colors cursor-pointer shrink-0 shadow-2xs font-medium"
             >
               {prompt}
@@ -1050,12 +1055,12 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
             placeholder={L('input_ph')}
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            disabled={isLoading}
+            disabled={isLoading || isStaticHosting}
             className="flex-1 px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl text-xs sm:text-sm text-stone-900 focus:outline-none focus:border-amber-700 focus:bg-white transition-all shadow-inner"
           />
           <button
             type="submit"
-            disabled={!input.trim() || isLoading}
+            disabled={!input.trim() || isLoading || isStaticHosting}
             className="px-6 py-3 bg-amber-800 hover:bg-amber-900 disabled:opacity-40 text-white rounded-xl font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer shrink-0 shadow-xs"
           >
             <span>{L('send')}</span>
