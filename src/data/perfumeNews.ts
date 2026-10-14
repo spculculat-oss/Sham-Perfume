@@ -20,6 +20,7 @@ export interface PerfumeNewsItem {
   category: "trends" | "exhibitions" | "harvests" | "ifra" | "niche";
   categoryLabelAr: string;
   isHot?: boolean;
+  isDailyRefreshed?: boolean;
   summaryAr: string;
   contentAr?: string;
   date?: string;
