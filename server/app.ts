@@ -2,10 +2,15 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { GoogleGenAI } from '@google/genai';
 import { ChatError, executeChat, getChatModels, validateChatRequest } from './shaheen';
+import { createShamCore } from './core/http';
 
 dotenv.config();
 
 const app = express();
+
+// Rate limits use the client IP; trust exactly the configured number of proxy hops (Vercel = 1).
+const trustProxy = process.env.SHAM_TRUST_PROXY ?? (process.env.VERCEL ? '1' : '');
+if (trustProxy) app.set('trust proxy', /^\d+$/.test(trustProxy) ? Number(trustProxy) : trustProxy);
 
 app.use(express.json({ limit: '128kb' }));
 app.use((error: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -261,6 +266,11 @@ app.post('/api/news/refresh', async (req, res) => {
     });
   }
 });
+
+// Sham Core: provider-independent services assistant + management API.
+const shamCore = createShamCore();
+app.use('/api/assistant', shamCore.assistant);
+app.use('/api/admin', shamCore.admin);
 
 app.use('/api', (_req, res) => {
   res.status(404).json({ error: 'API route not found' });

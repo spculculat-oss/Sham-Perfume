@@ -9,3 +9,6 @@ coverage/
 
 # Vercel build output and local project linking state
 .vercel/
+
+# Sham Core local data (conversations, requests, catalog) — never commit customer data
+.data/

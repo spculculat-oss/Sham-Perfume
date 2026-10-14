@@ -29,6 +29,7 @@ before(async () => {
     env: {
       ...process.env, NODE_ENV: 'production', NODE_PATH: '',
       GEMINI_API_KEY: '', DEEPSEEK_API_KEY: '', OPENAI_API_KEY: '', ANTHROPIC_API_KEY: '',
+      SHAM_LLM_BASE_URL: '', SHAM_STORE: '', SHAM_ADMIN_TOKEN: '', VERCEL: '1',
     },
     stdio: ['ignore', 'pipe', 'pipe'],
   });
@@ -74,7 +75,7 @@ test('Vercel config builds explicit full-stack output instead of Vite-only dist'
 test('all API methods/paths route before the filesystem and SPA fallback', () => {
   const route = config.routes[0];
   const pattern = new RegExp(`^(?:${route.src})$`);
-  for (const url of ['/api', '/api/health', '/api/models', '/api/chat', '/api/news', '/api/news/refresh', '/api/missing']) {
+  for (const url of ['/api', '/api/health', '/api/models', '/api/chat', '/api/news', '/api/news/refresh', '/api/assistant/chat', '/api/admin/overview', '/api/missing']) {
     assert.ok(pattern.test(url), url);
   }
   for (const url of ['/', '/home', '/apiary', '/assets/index.js']) assert.equal(pattern.test(url), false, url);
@@ -134,6 +135,23 @@ test('news GET and refresh POST do not fabricate content without a key', async (
   }
 });
 
+test('Sham Core assistant answers without any provider key; admin stays closed without a token', async () => {
+  const config = await (await fetch(`${baseUrl}/api/assistant/config`)).json();
+  assert.ok(config.services.length >= 6);
+  assert.equal(config.modelEnhanced, false);
+  const response = await fetch(`${baseUrl}/api/assistant/chat`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: 'بتقدموا خدمات ايه؟', visitorId: 'visitor-vercel-01', language: 'ar' }),
+  });
+  assert.equal(response.status, 200);
+  const data = await response.json();
+  assert.equal(data.engine.id, 'sham_local');
+  assert.equal(data.intent, 'list_services');
+  const admin = await fetch(`${baseUrl}/api/admin/overview`, { headers: { Authorization: 'Bearer anything-long-enough' } });
+  assert.equal(admin.status, 503);
+  assert.equal((await admin.json()).code, 'ADMIN_NOT_CONFIGURED');
+});
+
 test('unknown API routes cannot return the React page or a successful response', async () => {
   for (const url of ['/api', '/api/missing']) {
     const response = await fetch(`${baseUrl}${url}`);
@@ -147,7 +165,7 @@ test('static React assets do not contain server SDK or handler code', async () =
   assert.match(html, /src="\/assets\//);
   const asset = html.match(/src="(\/assets\/[^\"]+\.js)"/)[1];
   const js = await readFile(path.join(output, 'static', asset), 'utf8');
-  assert.doesNotMatch(js, /x-goog-api-key|express\.json|function executeChat|PROVIDER_NOT_CONFIGURED.*The configured AI providers/);
+  assert.doesNotMatch(js, /x-goog-api-key|express\.json|function executeChat|PROVIDER_NOT_CONFIGURED.*The configured AI providers|SHAM_ADMIN_TOKEN|timingSafeEqual/);
   const bundle = await readFile(path.join(output, 'functions/api.func/index.cjs'), 'utf8');
   assert.doesNotMatch(bundle, /createViteServer|vite\/dist\/node|vite\/client/);
 });
