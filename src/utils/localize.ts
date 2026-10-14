@@ -2,22 +2,16 @@ import { SupportedLanguage } from '../types/i18n';
 
 /**
  * A localized text value. `ar` and `en` are mandatory baselines;
- * every other language is optional and degrades gracefully:
+ * every other supported language is optional and degrades gracefully:
  *   - fa falls back to ar (RTL sibling)
- *   - any missing LTR language falls back to en
+ *   - any missing language falls back to en
+ * The optional part is derived from SupportedLanguage, so newly enabled
+ * languages are automatically accepted here without editing this type.
  */
 export type LText = {
   ar: string;
   en: string;
-  fr?: string;
-  es?: string;
-  it?: string;
-  de?: string;
-  ru?: string;
-  zh?: string;
-  tr?: string;
-  fa?: string;
-};
+} & Partial<Record<SupportedLanguage, string>>;
 
 /** Map each supported platform language to its canonical BCP-47 locale. */
 export const LOCALE_MAP: Record<SupportedLanguage, string> = {
@@ -31,6 +25,22 @@ export const LOCALE_MAP: Record<SupportedLanguage, string> = {
   zh: 'zh-CN',
   tr: 'tr-TR',
   fa: 'fa-IR',
+  // Extended languages — batch 1 (LTR)
+  hi: 'hi-IN',
+  pt: 'pt-BR',
+  id: 'id-ID',
+  ja: 'ja-JP',
+  ko: 'ko-KR',
+  vi: 'vi-VN',
+  th: 'th-TH',
+  pl: 'pl-PL',
+  nl: 'nl-NL',
+  uk: 'uk-UA',
+  el: 'el-GR',
+  ms: 'ms-MY',
+  bn: 'bn-BD',
+  cs: 'cs-CZ',
+  ro: 'ro-RO',
 };
 
 /**
