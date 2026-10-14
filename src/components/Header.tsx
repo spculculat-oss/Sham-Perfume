@@ -80,18 +80,18 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   const navItems = [
-    { id: 'home', label: t('nav_home', currentLang), isHome: true },
-    { id: 'concentration', label: t('nav_calc', currentLang) },
-    { id: 'perfume_news', label: t('nav_news', currentLang), isNew: true },
-    { id: 'world_perfumes', label: t('nav_world_perfumes', currentLang) },
-    { id: 'raw_materials', label: t('nav_raw_materials', currentLang) },
-    { id: 'pyramid', label: t('nav_pyramid', currentLang) },
-    { id: 'alcohol', label: t('nav_alcohol', currentLang) },
-    { id: 'costing', label: t('nav_costing', currentLang) },
-    { id: 'master_ai', label: t('nav_ai_master', currentLang) },
-    { id: 'maceration_simulator', label: t('nav_maceration', currentLang, 'محاكي التعتيق الزمني') },
-    { id: 'library', label: t('nav_library', currentLang) },
-    { id: 'guide', label: t('nav_guide', currentLang) },
+    { id: 'home', label: t('nav_home', currentLang), shortLabel: t('nav_home_short', currentLang), isHome: true },
+    { id: 'concentration', label: t('nav_calc', currentLang), shortLabel: t('nav_calc_short', currentLang) },
+    { id: 'perfume_news', label: t('nav_news', currentLang), shortLabel: t('nav_news_short', currentLang), isNew: true },
+    { id: 'world_perfumes', label: t('nav_world_perfumes', currentLang), shortLabel: t('nav_world_perfumes_short', currentLang) },
+    { id: 'raw_materials', label: t('nav_raw_materials', currentLang), shortLabel: t('nav_raw_materials_short', currentLang) },
+    { id: 'pyramid', label: t('nav_pyramid', currentLang), shortLabel: t('nav_pyramid_short', currentLang) },
+    { id: 'alcohol', label: t('nav_alcohol', currentLang), shortLabel: t('nav_alcohol_short', currentLang) },
+    { id: 'costing', label: t('nav_costing', currentLang), shortLabel: t('nav_costing_short', currentLang) },
+    { id: 'master_ai', label: t('nav_ai_master', currentLang), shortLabel: t('nav_ai_master_short', currentLang) },
+    { id: 'maceration_simulator', label: t('nav_maceration', currentLang, 'محاكي التعتيق الزمني'), shortLabel: t('nav_maceration_short', currentLang, 'محاكي التعتيق') },
+    { id: 'library', label: t('nav_library', currentLang), shortLabel: t('nav_library_short', currentLang) },
+    { id: 'guide', label: t('nav_guide', currentLang), shortLabel: t('nav_guide_short', currentLang) },
   ];
 
   return (
@@ -128,39 +128,75 @@ export const Header: React.FC<HeaderProps> = ({
           )}
         </div>
 
-        {/* Zone 2: Navigation links */}
-        <nav className="hidden xl:flex items-center gap-2 xl:gap-2.5 text-xs font-medium text-stone-600">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`whitespace-nowrap shrink-0 transition-all py-1.5 px-2 rounded-lg relative flex items-center gap-1.5 cursor-pointer ${
-                activeTab === item.id
-                  ? 'text-stone-950 font-bold bg-stone-100 shadow-2xs border border-stone-200/80'
-                  : 'hover:text-stone-900 hover:bg-stone-50'
-              }`}
-            >
-              {item.isHome && (
-                <Home className="w-3.5 h-3.5 text-amber-700" />
-              )}
-              {item.id === 'perfume_news' && (
-                <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30">
-                  NEW
+        {/* Zone 2: Navigation links - Horizontally scrollable with gradient fade */}
+        <div className="hidden xl:block relative">
+          {/* Gradient fade left edge */}
+          <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-white/95 to-transparent pointer-events-none z-10 xl:hidden"></div>
+          {/* Gradient fade right edge */}
+          <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white/95 to-transparent pointer-events-none z-10 xl:hidden"></div>
+          
+          <nav className="flex items-center gap-1.5 xl:gap-2 text-xs font-medium text-stone-600 overflow-x-auto no-scrollbar scroll-smooth">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={`whitespace-nowrap shrink-0 transition-all py-1.5 px-2.5 rounded-lg relative flex items-center gap-1.5 cursor-pointer ${
+                  activeTab === item.id
+                    ? 'text-stone-950 font-bold bg-stone-100 shadow-2xs border border-stone-200/80'
+                    : 'hover:text-stone-900 hover:bg-stone-50'
+                }`}
+                title={item.label}
+              >
+                {/* Smart icons based on item type */}
+                {item.isHome && (
+                  <Home className="w-3.5 h-3.5 text-amber-700 shrink-0" />
+                )}
+                {item.id === 'perfume_news' && (
+                  <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30 shrink-0">
+                    NEW
+                  </span>
+                )}
+                {item.id === 'master_ai' && (
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                )}
+                {item.id === 'maceration_simulator' && (
+                  <FlaskConical className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                )}
+                {item.id === 'world_perfumes' && (
+                  <Compass className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                )}
+                {item.id === 'raw_materials' && (
+                  <Database className="w-3.5 h-3.5 text-stone-600 shrink-0" />
+                )}
+                {item.id === 'pyramid' && (
+                  <Compass className="w-3.5 h-3.5 text-stone-600 rotate-45 shrink-0" />
+                )}
+                {item.id === 'alcohol' && (
+                  <FlaskConical className="w-3.5 h-3.5 text-stone-600 shrink-0" />
+                )}
+                {item.id === 'costing' && (
+                  <Newspaper className="w-3.5 h-3.5 text-stone-600 shrink-0" />
+                )}
+                {item.id === 'library' && (
+                  <Database className="w-3.5 h-3.5 text-stone-600 shrink-0" />
+                )}
+                {item.id === 'guide' && (
+                  <Newspaper className="w-3.5 h-3.5 text-stone-600 shrink-0" />
+                )}
+                
+                {/* Label: show short label on smaller XL, full label on large XL */}
+                <span className="hidden sm:inline">
+                  <span className="xl:text-xs text-[11px]">
+                    {item.shortLabel}
+                  </span>
                 </span>
-              )}
-              {item.id === 'master_ai' && (
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              )}
-              {item.id === 'maceration_simulator' && (
-                <span className="text-[10px] text-amber-500 font-bold">⏳</span>
-              )}
-              {item.id === 'world_perfumes' && (
-                <span className="text-[10px] text-amber-600 font-bold">★</span>
-              )}
-              <span>{item.label}</span>
-            </button>
-          ))}
-        </nav>
+                <span className="xl:inline hidden text-[11px]">
+                  {item.label}
+                </span>
+              </button>
+            ))}
+          </nav>
+        </div>
 
         {/* Zone 3: Global Controls (Language, Environment/Homeland, User Auth, Privacy, Print) */}
         <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
@@ -304,22 +340,50 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id)}
-            className={`whitespace-nowrap px-3 py-1 rounded-lg transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${
+            className={`whitespace-nowrap px-3 py-1 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer shrink-0 ${
               activeTab === item.id
                 ? 'bg-amber-900 text-white font-bold shadow-xs'
                 : 'text-stone-700 hover:text-stone-900 bg-stone-100/90 font-medium'
             }`}
+            title={item.label}
           >
+            {/* Icons for mobile */}
             {item.isHome && (
-              <Home className="w-3.5 h-3.5 text-amber-300" />
+              <Home className="w-3.5 h-3.5 text-amber-300 shrink-0" />
             )}
             {item.id === 'perfume_news' && (
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping" />
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping shrink-0" />
             )}
             {item.id === 'master_ai' && (
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <Sparkles className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
             )}
-            <span>{item.label}</span>
+            {item.id === 'maceration_simulator' && (
+              <FlaskConical className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+            )}
+            {item.id === 'world_perfumes' && (
+              <Compass className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+            )}
+            {item.id === 'raw_materials' && (
+              <Database className="w-3.5 h-3.5 text-stone-600 shrink-0" />
+            )}
+            {item.id === 'pyramid' && (
+              <Compass className="w-3.5 h-3.5 text-stone-600 rotate-45 shrink-0" />
+            )}
+            {item.id === 'alcohol' && (
+              <FlaskConical className="w-3.5 h-3.5 text-stone-600 shrink-0" />
+            )}
+            {item.id === 'costing' && (
+              <Newspaper className="w-3.5 h-3.5 text-stone-600 shrink-0" />
+            )}
+            {item.id === 'library' && (
+              <Database className="w-3.5 h-3.5 text-stone-600 shrink-0" />
+            )}
+            {item.id === 'guide' && (
+              <Newspaper className="w-3.5 h-3.5 text-stone-600 shrink-0" />
+            )}
+            
+            {/* Short label for mobile */}
+            <span className="text-[11px] font-medium whitespace-nowrap">{item.shortLabel}</span>
           </button>
         ))}
       </div>
