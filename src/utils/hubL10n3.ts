@@ -5,7 +5,7 @@ import { NewsL10N } from './hubL10n';
 // Covers: concentration c4, costing co1-co4,
 // master AI ai1-ai4, country cnt1-cnt4,
 // privacy pr1-pr4. With these, every HomeHub
-// news card is localized in all 10 languages.
+// news card is localized in all supported languages.
 // Live values via {placeholders} resolved
 // from hubVars in HomeHub.
 // =========================================

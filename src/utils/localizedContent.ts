@@ -1,15 +1,25 @@
-import { SupportedLanguage } from '../types/i18n';
+import { SupportedLanguage, SUPPORTED_LANGUAGES } from '../types/i18n';
 import { WORLD_PERFUMES, WorldPerfumeRecipe } from '../data/worldPerfumes';
 import { RAW_MATERIALS_DATABASE, RawMaterialItem } from '../data/rawMaterials';
 import { PERFUME_NEWS_DATA, PerfumeNewsItem, NEWS_EN_FALLBACK } from '../data/perfumeNews';
 import { fmt, localeDate } from './localize';
+import { COMMON_LABELS_EXT } from './commonLabelsExt';
 
-export const isRTL = (lang: SupportedLanguage): boolean => lang === 'ar' || lang === 'fa';
+/**
+ * Direction of a language, derived from the single source of truth
+ * (SUPPORTED_LANGUAGES dir field) so every newly enabled RTL language
+ * (he, ur, ps, ...) is picked up automatically.
+ */
+export const isRTL = (lang: SupportedLanguage): boolean =>
+  SUPPORTED_LANGUAGES.find((l) => l.code === lang)?.dir === 'rtl';
 
 // ==========================================
 // 1. COMMON UI STRINGS DICTIONARY
 // ==========================================
-export const COMMON_LABELS: Record<SupportedLanguage, Record<string, string>> = {
+export const COMMON_LABELS_BASE: Record<
+  'ar' | 'en' | 'fr' | 'es' | 'it' | 'de' | 'ru' | 'zh' | 'tr' | 'fa',
+  Record<string, string>
+> = {
   ar: {
     search: 'بحث...',
     all: 'الكل',
@@ -352,6 +362,11 @@ export const COMMON_LABELS: Record<SupportedLanguage, Record<string, string>> = 
   },
 };
 
+export const COMMON_LABELS: Record<SupportedLanguage, Record<string, string>> = {
+  ...COMMON_LABELS_BASE,
+  ...COMMON_LABELS_EXT,
+};
+
 export const getCommonLabel = (key: string, lang: SupportedLanguage): string => {
   return COMMON_LABELS[lang]?.[key] || COMMON_LABELS.en?.[key] || COMMON_LABELS.ar?.[key] || key;
 };
@@ -567,6 +582,26 @@ const READ_TIME_TPL: Record<SupportedLanguage, string> = {
   zh: '{n} 分钟',
   tr: '{n} dk',
   fa: '{n} دقیقه',
+  // Extended languages — batch 1 (LTR)
+  hi: '{n} मिनट',
+  pt: '{n} min',
+  id: '{n} menit',
+  ja: '{n}分',
+  ko: '{n}분',
+  vi: '{n} phút',
+  th: '{n} นาที',
+  pl: '{n} min',
+  nl: '{n} min',
+  uk: '{n} хв',
+  el: '{n} λεπτά',
+  ms: '{n} minit',
+  bn: '{n} মিনিট',
+  cs: '{n} min',
+  ro: '{n} min',
+  // Extended languages — batch 2 (RTL)
+  he: '{n} דק׳',
+  ur: '{n} منٹ',
+  ps: '{n} دقیقې',
 };
 
 export const getLocalizedNewsArticle = (article: PerfumeNewsItem, lang: SupportedLanguage) => {
