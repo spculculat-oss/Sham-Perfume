@@ -5,11 +5,11 @@
 import { randomBytes, randomUUID } from 'node:crypto';
 import type { Store } from './store';
 import type {
-  Conversation, CoreSettings, KnowledgeDoc, OrderItem, Product, PublicRequestView, RequestStatus,
-  RequestType, ServiceDef, ServiceRequest,
+  Conversation, CoreSettings, KnowledgeDoc, KnowledgeGap, OrderItem, Product, PublicRequestView, RequestStatus,
+  RequestType, ServiceDef, ServiceRequest, VisitorProfile,
 } from './types';
 import { defaultKnowledge, defaultServices, defaultSettings, demoProducts } from './seed';
-import { Bm25Index, type IndexedDoc } from './text';
+import { Bm25Index, tokenize, type IndexedDoc } from './text';
 
 export class ValidationError extends Error {
   constructor(public code: string, message: string, public status = 400) { super(message); }
@@ -208,6 +208,87 @@ export class Repository {
     // Bounded history keeps storage documents small (Firestore limit is 1 MiB).
     if (conversation.messages.length > 200) conversation.messages = conversation.messages.slice(-200);
     await this.store.put('conversations', conversation.id, conversation);
+  }
+
+  // ---------- visitor memory ----------
+  async visitor(id: string): Promise<VisitorProfile | undefined> { await this.ready(); return this.store.get('visitors', id); }
+
+  /** Upserts visitor memory and links the conversation, so memory follows the visitor to new chats. */
+  async touchVisitor(id: string, conversationId: string, memory: Record<string, string>): Promise<VisitorProfile> {
+    const t = new Date().toISOString();
+    const existing = await this.store.get('visitors', id);
+    const profile: VisitorProfile = existing || { id, memory: {}, conversationIds: [], firstSeen: t, lastSeen: t };
+    profile.memory = { ...profile.memory, ...memory };
+    if (!profile.conversationIds.includes(conversationId)) profile.conversationIds = [...profile.conversationIds, conversationId].slice(-100);
+    profile.lastSeen = t;
+    await this.store.put('visitors', id, profile);
+    return profile;
+  }
+
+  /** "Forget me": removes the visitor profile and all of their conversations. Business requests are kept. */
+  async deleteVisitorData(id: string): Promise<{ conversations: number }> {
+    await this.ready();
+    const profile = await this.store.get('visitors', id);
+    let conversations = 0;
+    for (const conversationId of profile?.conversationIds || []) {
+      const conversation = await this.store.get('conversations', conversationId);
+      if (conversation?.visitorId === id && await this.store.delete('conversations', conversationId)) conversations++;
+    }
+    if (profile) await this.store.delete('visitors', id);
+    return { conversations };
+  }
+
+  // ---------- feedback & knowledge gaps (learning loop) ----------
+  async setFeedback(input: { conversationId?: unknown; visitorId?: unknown; messageId?: unknown; rating?: unknown; reason?: unknown }) {
+    await this.ready();
+    if (input.rating !== 'up' && input.rating !== 'down') throw new ValidationError('INVALID_RATING', 'Rating must be up or down');
+    const conversation = typeof input.conversationId === 'string' ? await this.store.get('conversations', input.conversationId) : undefined;
+    if (!conversation || conversation.visitorId !== input.visitorId) throw new ValidationError('NOT_FOUND', 'Conversation not found', 404);
+    const index = conversation.messages.findIndex((m) => m.id && m.id === input.messageId && m.role === 'assistant');
+    if (index < 0) throw new ValidationError('NOT_FOUND', 'Message not found', 404);
+    const message = conversation.messages[index];
+    const reason = str(input.reason, 500) || undefined;
+    const previous = message.feedback?.rating;
+    message.feedback = { rating: input.rating, reason, at: new Date().toISOString() };
+    await this.saveConversation(conversation);
+    if (input.rating === 'down' && previous !== 'down') {
+      const question = [...conversation.messages.slice(0, index)].reverse().find((m) => m.role === 'user')?.text;
+      if (question) await this.recordGap({ question, source: 'negative_feedback', lastAnswer: message.text, reason, conversationId: conversation.id });
+    }
+    return message.feedback;
+  }
+
+  async recordGap(input: { question: string; source: KnowledgeGap['source']; lastAnswer?: string; reason?: string; conversationId?: string }) {
+    const tokens = [...new Set(tokenize(input.question))].sort();
+    if (!tokens.length) return undefined;
+    const key = `${input.source}:${tokens.join(' ')}`;
+    const t = new Date().toISOString();
+    const gaps = await this.store.list('gaps');
+    const existing = gaps.find((g) => g.key === key && g.status === 'open');
+    const gap: KnowledgeGap = existing
+      ? { ...existing, count: existing.count + 1, lastAt: t, lastAnswer: input.lastAnswer?.slice(0, 2000) ?? existing.lastAnswer, reason: input.reason || existing.reason, conversationId: input.conversationId || existing.conversationId }
+      : { id: randomUUID(), key, question: input.question.slice(0, 500), source: input.source, count: 1, status: 'open', lastAnswer: input.lastAnswer?.slice(0, 2000), reason: input.reason, conversationId: input.conversationId, firstAt: t, lastAt: t };
+    await this.store.put('gaps', gap.id, gap);
+    return gap;
+  }
+
+  async gaps() { await this.ready(); return this.store.list('gaps'); }
+
+  /** Closing the loop: the admin's answer becomes a knowledge document the assistant cites next time. */
+  async resolveGap(id: string, input: { status?: unknown; title?: unknown; content?: unknown }) {
+    await this.ready();
+    const gap = await this.store.get('gaps', id);
+    if (!gap) throw new ValidationError('NOT_FOUND', 'Gap not found', 404);
+    if (input.status === 'ignored' || input.status === 'open') {
+      gap.status = input.status;
+    } else {
+      const doc = await this.saveKnowledge({ title: str(input.title, 200) || gap.question, content: str(input.content, 20000), tags: ['from-gap'] });
+      gap.status = 'resolved';
+      gap.resolvedDocId = doc.id;
+    }
+    gap.lastAt = new Date().toISOString();
+    await this.store.put('gaps', gap.id, gap);
+    return gap;
   }
 
   // ---------- requests (orders, quotes, tickets) ----------

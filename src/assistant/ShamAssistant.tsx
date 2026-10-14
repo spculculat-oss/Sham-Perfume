@@ -1,15 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
-  CheckCircle2, ExternalLink, Headset, Loader2, MessageCircle, PackageSearch, RotateCcw, Send, ShoppingBag, Sparkles, X,
+  CheckCircle2, ChevronDown, ExternalLink, Headset, Loader2, MessageCircle, Mic, MicOff, PackageSearch, RotateCcw, Send, ShieldCheck,
+  ShoppingBag, Sparkles, ThumbsDown, ThumbsUp, Trash2, Volume2, VolumeX, X,
 } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { SUPPORTED_LANGUAGES } from '../types/i18n';
 import { ApiError, ApiUnavailableError, isStaticHosting } from '../utils/api';
 import { loc, makeT, type LText } from '../utils/localize';
 import {
-  assistantApi, CONVERSATION_KEY, type ActionCard, type AssistantConfig, type FormField, type ProductCard,
-  type PublicService, type RequestView, type UiMessage,
+  assistantApi, CONVERSATION_KEY, streamChat, type ActionCard, type AssistantConfig, type ChatReply, type FormField, type ProductCard,
+  type PublicService, type PublicStep, type RequestView, type UiMessage,
 } from './client';
 
 const S = {
@@ -47,6 +48,25 @@ const S = {
   not_found: { ar: 'لا يوجد طلب مطابق لهذا الرقم وبيانات التواصل.', en: 'No request matches this reference and contact.' },
   no_card: { ar: 'لا تكتب بيانات بطاقات بنكية أو كلمات مرور في المحادثة.', en: 'Never type card details or passwords in chat.' },
   thinking: { ar: 'المساعد يعمل على طلبك…', en: 'Working on it…' },
+  steps: { ar: 'خطوات المعالجة', en: 'How I handled this' },
+  helpful: { ar: 'رد مفيد', en: 'Helpful' },
+  not_helpful: { ar: 'رد غير مفيد', en: 'Not helpful' },
+  thanks_feedback: { ar: 'شكراً، تقييمك بيحسّن المساعد.', en: 'Thanks — your feedback improves the assistant.' },
+  why: { ar: 'إيه المشكلة؟ (اختياري)', en: 'What went wrong? (optional)' },
+  r_wrong: { ar: 'معلومة غير دقيقة', en: 'Inaccurate' },
+  r_missed: { ar: 'لم يجب سؤالي', en: 'Did not answer' },
+  r_long: { ar: 'طويل أو غير واضح', en: 'Too long / unclear' },
+  send_feedback: { ar: 'إرسال التقييم', en: 'Send feedback' },
+  read_aloud: { ar: 'اقرأ الرد بصوت', en: 'Read aloud' },
+  stop_reading: { ar: 'إيقاف القراءة', en: 'Stop reading' },
+  mic: { ar: 'تحدث بدلاً من الكتابة', en: 'Speak instead of typing' },
+  mic_stop: { ar: 'إيقاف الاستماع', en: 'Stop listening' },
+  privacy: { ar: 'خصوصيتي: ماذا تتذكر عني؟', en: 'Privacy: what do you remember?' },
+  memory_title: { ar: 'ذاكرة المساعد عنك', en: 'What the assistant remembers' },
+  memory_empty: { ar: 'لا يوجد شيء محفوظ عنك.', en: 'Nothing is stored about you.' },
+  forget: { ar: 'امسح محادثاتي وذاكرتي', en: 'Erase my conversations & memory' },
+  forget_confirm: { ar: 'متأكد؟ سيتم حذف محادثاتك وذاكرة المساعد نهائياً (طلباتك المسجلة تبقى لدى فريق شام).', en: 'Are you sure? Your conversations and memory will be deleted permanently (submitted requests stay with the Sham team).' },
+  forgotten: { ar: 'تم الحذف. بدأنا من جديد.', en: 'Erased. Starting fresh.' },
 } satisfies Record<string, LText>;
 
 export const STATUS_TEXT: Record<string, LText> = {
@@ -58,6 +78,20 @@ const OPTION_TEXT: Record<string, LText> = {
   cash_on_delivery: { ar: 'الدفع عند الاستلام', en: 'Cash on delivery' }, bank_transfer: { ar: 'تحويل بنكي', en: 'Bank transfer' }, wallet: { ar: 'محفظة إلكترونية', en: 'Mobile wallet' },
   oriental: { ar: 'شرقي', en: 'Oriental' }, woody: { ar: 'خشبي', en: 'Woody' }, floral: { ar: 'زهري', en: 'Floral' }, citrus: { ar: 'حمضي', en: 'Citrus' },
   fresh: { ar: 'منعش', en: 'Fresh' }, gourmand: { ar: 'جورماند', en: 'Gourmand' }, oud: { ar: 'عود', en: 'Oud' }, unsure: { ar: 'غير متأكد', en: 'Not sure' },
+};
+
+const MEMORY_LABEL: Record<string, LText> = {
+  name: { ar: 'الاسم', en: 'Name' }, lastService: { ar: 'آخر خدمة', en: 'Last service' }, lastRequestRef: { ar: 'آخر رقم طلب', en: 'Last request' },
+};
+const PRIVACY_PROMPT: LText = { ar: 'ماذا تعرف عني؟', en: 'What do you know about me?' };
+const speechLang = (lang: SupportedLanguage) => (lang === 'ar' ? 'ar-EG' : lang);
+
+// Minimal typing for the (prefixed) Web Speech recognition API, which is not in lib.dom for all browsers.
+interface Recognition { lang: string; interimResults: boolean; continuous: boolean; start(): void; stop(): void; onresult: ((e: { results: ArrayLike<ArrayLike<{ transcript: string }> & { isFinal: boolean }> }) => void) | null; onend: (() => void) | null; onerror: (() => void) | null }
+const RecognitionCtor = (): (new () => Recognition) | undefined => {
+  if (typeof window === 'undefined') return undefined;
+  const w = window as unknown as { SpeechRecognition?: new () => Recognition; webkitSpeechRecognition?: new () => Recognition };
+  return w.SpeechRecognition || w.webkitSpeechRecognition;
 };
 
 const SERVICE_ICON: Record<string, React.ReactNode> = {
@@ -83,19 +117,29 @@ export function ShamAssistant({ currentLang }: Props) {
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [listening, setListening] = useState(false);
+  const [speakingId, setSpeakingId] = useState<string | null>(null);
+  const [notice, setNotice] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const recognitionRef = useRef<Recognition | null>(null);
+  const canListen = useMemo(() => Boolean(RecognitionCtor()), []);
+  const canSpeak = typeof window !== 'undefined' && 'speechSynthesis' in window;
 
   // Restore the visitor's last conversation (local copy; the server is the source of truth).
   useEffect(() => {
     try {
       const saved = JSON.parse(localStorage.getItem(CONVERSATION_KEY) || 'null');
-      if (saved?.id && Array.isArray(saved.messages)) { setConversationId(saved.id); setMessages(saved.messages); setStatus(saved.status || 'open'); }
+      if (saved?.id && Array.isArray(saved.messages)) {
+        setConversationId(saved.id);
+        setMessages((saved.messages as UiMessage[]).filter((m) => !m.streaming));
+        setStatus(saved.status || 'open');
+      }
     } catch { /* ignore corrupted cache */ }
   }, []);
   useEffect(() => {
     try {
-      if (conversationId) localStorage.setItem(CONVERSATION_KEY, JSON.stringify({ id: conversationId, status, messages: messages.slice(-60) }));
+      if (conversationId) localStorage.setItem(CONVERSATION_KEY, JSON.stringify({ id: conversationId, status, messages: messages.filter((m) => !m.streaming).slice(-60) }));
     } catch { /* storage full or disabled */ }
   }, [conversationId, messages, status]);
 
@@ -132,32 +176,106 @@ export function ShamAssistant({ currentLang }: Props) {
   const send = useCallback(async (text: string) => {
     const message = text.trim();
     if (!message || busy) return;
-    setError('');
+    setError(''); setNotice('');
     setInput('');
-    setMessages((m) => [...m, { role: 'user', text: message, at: new Date().toISOString() }]);
+    const draftId = `draft-${Date.now()}`;
+    const at = new Date().toISOString();
+    setMessages((m) => [...m, { role: 'user', text: message, at }, { id: draftId, role: 'assistant', text: '', at, steps: [], streaming: true }]);
+    const patch = (fn: (m: UiMessage) => UiMessage) => setMessages((all) => all.map((x) => (x.id === draftId ? fn(x) : x)));
     setBusy(true);
     const controller = new AbortController();
     abortRef.current = controller;
     try {
-      const reply = await assistantApi.chat(message, currentLang, conversationId, controller.signal);
+      // Streaming first (live steps + tokens, like the big chat apps); plain JSON as a fallback.
+      let streamed = false;
+      let reply: ChatReply;
+      try {
+        reply = await streamChat(message, currentLang, conversationId, (event) => {
+          streamed = true;
+          if (event.type === 'step') patch((x) => ({ ...x, steps: [...(x.steps || []), event.step] }));
+          else if (event.type === 'delta') patch((x) => ({ ...x, text: x.text + event.text }));
+          else if (event.type === 'reset') patch((x) => ({ ...x, text: '' }));
+        }, controller.signal);
+      } catch (e) {
+        const terminal = streamed || controller.signal.aborted || e instanceof ApiUnavailableError || (e instanceof ApiError && e.status < 500 && e.status !== 404);
+        if (terminal) throw e;
+        reply = await assistantApi.chat(message, currentLang, conversationId, controller.signal);
+      }
       if (controller.signal.aborted) return;
       setConversationId(reply.conversationId);
       setStatus(reply.status);
-      setMessages((m) => [...m, { role: 'assistant', text: reply.reply, at: new Date().toISOString(), engine: reply.engine.id, actions: reply.actions, citations: reply.citations }]);
+      patch((x) => ({
+        ...x, id: reply.messageId || draftId, text: reply.reply, engine: reply.engine.id, actions: reply.actions, citations: reply.citations,
+        steps: reply.steps?.length ? reply.steps : x.steps, suggestions: reply.suggestions, streaming: false,
+      }));
     } catch (e) {
+      setMessages((all) => all.filter((x) => x.id !== draftId));
       if (!controller.signal.aborted) setError(errorText(currentLang, e));
     } finally {
       if (abortRef.current === controller) { abortRef.current = null; setBusy(false); }
     }
   }, [busy, conversationId, currentLang]);
 
+  const stopSpeaking = () => { if (canSpeak) window.speechSynthesis.cancel(); setSpeakingId(null); };
+  const speak = (m: UiMessage, key: string) => {
+    if (!canSpeak) return;
+    if (speakingId === key) { stopSpeaking(); return; }
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(m.text.replace(/[*_#`>]/g, ''));
+    utterance.lang = speechLang(currentLang);
+    utterance.onend = () => setSpeakingId((id) => (id === key ? null : id));
+    utterance.onerror = utterance.onend;
+    setSpeakingId(key);
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const toggleMic = () => {
+    if (listening) { recognitionRef.current?.stop(); return; }
+    const Ctor = RecognitionCtor();
+    if (!Ctor) return;
+    const recognition = new Ctor();
+    recognition.lang = speechLang(currentLang);
+    recognition.interimResults = true;
+    recognition.continuous = false;
+    const base = input ? `${input.trim()} ` : '';
+    recognition.onresult = (event) => {
+      const transcript = Array.from(event.results).map((r) => r[0]?.transcript || '').join('');
+      setInput((base + transcript).slice(0, 2000));
+    };
+    recognition.onend = () => { setListening(false); recognitionRef.current = null; };
+    recognition.onerror = recognition.onend;
+    recognitionRef.current = recognition;
+    setListening(true);
+    recognition.start();
+  };
+  useEffect(() => () => { recognitionRef.current?.stop(); if (typeof window !== 'undefined' && 'speechSynthesis' in window) window.speechSynthesis.cancel(); }, []);
+  useEffect(() => { if (!open) { recognitionRef.current?.stop(); stopSpeaking(); } }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const reset = () => {
     abortRef.current?.abort();
     abortRef.current = null;
+    stopSpeaking();
     setBusy(false);
-    setMessages([]); setConversationId(undefined); setStatus('open'); setError('');
+    setMessages([]); setConversationId(undefined); setStatus('open'); setError(''); setNotice('');
     try { localStorage.removeItem(CONVERSATION_KEY); } catch { /* ignore */ }
   };
+
+  const forgetEverything = async () => {
+    try {
+      await assistantApi.forget();
+      reset();
+      setNotice(L('forgotten'));
+    } catch (e) { setError(errorText(currentLang, e)); }
+  };
+
+  const rate = async (m: UiMessage, rating: 'up' | 'down', reason?: string) => {
+    if (!conversationId || !m.id) return;
+    setMessages((all) => all.map((x) => (x.id === m.id ? { ...x, feedback: { rating } } : x)));
+    try { await assistantApi.feedback(conversationId, m.id, rating, reason); }
+    catch (e) { setMessages((all) => all.map((x) => (x.id === m.id ? { ...x, feedback: undefined } : x))); setError(errorText(currentLang, e)); }
+  };
+
+  const lastAssistantIndex = messages.reduce((last, m, i) => (m.role === 'assistant' ? i : last), -1);
 
   const name = config ? loc(currentLang, config.assistantName) : L('open');
   const welcome = config ? loc(currentLang, config.welcome) : '';
@@ -200,6 +318,7 @@ export function ShamAssistant({ currentLang }: Props) {
                 <h2 className="font-bold text-sm truncate">{name}</h2>
                 <p className="text-[10px] text-stone-300 truncate">Sham Core · {config?.modelEnhanced ? 'AI+' : L('own_engine')}</p>
               </div>
+              <button type="button" onClick={() => void send(loc(currentLang, PRIVACY_PROMPT))} disabled={busy || isStaticHosting} title={L('privacy')} aria-label={L('privacy')} className="p-2 rounded-lg hover:bg-white/10 disabled:opacity-40"><ShieldCheck className="w-4 h-4" /></button>
               <button type="button" onClick={reset} title={L('reset')} aria-label={L('reset')} className="p-2 rounded-lg hover:bg-white/10"><RotateCcw className="w-4 h-4" /></button>
               <button type="button" onClick={() => setOpen(false)} title={L('close')} aria-label={L('close')} className="p-2 rounded-lg hover:bg-white/10"><X className="w-4 h-4" /></button>
             </header>
@@ -227,20 +346,35 @@ export function ShamAssistant({ currentLang }: Props) {
                   </div>
                 </div>
               )}
+              {notice && <p role="status" className="text-xs rounded-xl border border-emerald-200 bg-emerald-50 p-2.5 text-emerald-900">{notice}</p>}
               {messages.map((m, i) => (
-                <div key={`${m.at}-${i}`} className="space-y-2">
-                  <Bubble role={m.role} text={m.text} engine={m.engine} lang={currentLang} />
+                <div key={m.id || `${m.at}-${i}`} className="space-y-2">
+                  {m.role === 'assistant' && m.steps && m.steps.length > 0 && <Steps steps={m.steps} live={Boolean(m.streaming)} lang={currentLang} />}
+                  {m.streaming && !m.text ? null : <Bubble role={m.role} text={m.text} engine={m.engine} lang={currentLang} streaming={m.streaming} />}
+                  {m.role === 'assistant' && !m.streaming && m.id && !m.id.startsWith('draft-') && m.engine !== 'human' && m.engine !== 'system' && conversationId && (
+                    <MessageTools message={m} lang={currentLang} canSpeak={canSpeak} speaking={speakingId === (m.id || String(i))}
+                      onSpeak={() => speak(m, m.id || String(i))} onRate={(rating, reason) => void rate(m, rating, reason)} />
+                  )}
                   {m.citations && m.citations.length > 0 && (
                     <p className="text-[10px] text-stone-500 px-2">{L('sources')}: {m.citations.map((c) => c.title).join(' · ')}</p>
                   )}
                   {m.actions?.map((a, j) => (
                     <Action key={j} action={a} lang={currentLang} services={config?.services || []} conversationId={conversationId}
                       productsInMessage={m.actions?.find((x) => x.type === 'products')?.products}
+                      onForget={forgetEverything}
                       onSubmitted={(request) => setMessages((all) => [...all, { role: 'assistant', text: `✅ ${loc(currentLang, S.submitted)} ${request.ref}`, at: new Date().toISOString(), engine: 'system', actions: [{ type: 'order_status', request }] }])} />
                   ))}
+                  {i === lastAssistantIndex && !busy && !m.streaming && m.suggestions && m.suggestions.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 px-1">
+                      {m.suggestions.map((sug) => (
+                        <button key={sug} type="button" onClick={() => void send(sug)}
+                          className="text-[11px] font-semibold rounded-full border border-amber-300 bg-amber-50/60 px-2.5 py-1 text-stone-800 hover:bg-amber-100">{sug}</button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
-              {busy && <div className="flex items-center gap-2 text-xs text-stone-500 px-2"><Loader2 className="w-4 h-4 animate-spin" />{L('thinking')}</div>}
+              {busy && !messages.some((m) => m.streaming && (m.text || m.steps?.length)) && <div className="flex items-center gap-2 text-xs text-stone-500 px-2"><Loader2 className="w-4 h-4 animate-spin" />{L('thinking')}</div>}
               {error && <p role="alert" className="text-xs rounded-xl border border-red-200 bg-red-50 p-2.5 text-red-800">{error}</p>}
             </div>
 
@@ -256,6 +390,12 @@ export function ShamAssistant({ currentLang }: Props) {
                   disabled={isStaticHosting}
                   className="flex-1 resize-none max-h-28 rounded-2xl border border-stone-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
                 />
+                {canListen && (
+                  <button type="button" onClick={toggleMic} disabled={isStaticHosting} aria-pressed={listening} aria-label={listening ? L('mic_stop') : L('mic')} title={listening ? L('mic_stop') : L('mic')}
+                    className={`h-10 w-10 shrink-0 rounded-full border flex items-center justify-center disabled:opacity-40 ${listening ? 'bg-red-600 border-red-600 text-white animate-pulse' : 'border-stone-300 text-stone-600 hover:bg-stone-100'}`}>
+                    {listening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                  </button>
+                )}
                 <button type="submit" disabled={busy || !input.trim() || isStaticHosting} aria-label={L('send')}
                   className="h-10 w-10 shrink-0 rounded-full bg-stone-900 text-amber-200 flex items-center justify-center disabled:opacity-40">
                   {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className={`w-4 h-4 ${rtl ? 'rotate-180' : ''}`} />}
@@ -270,15 +410,116 @@ export function ShamAssistant({ currentLang }: Props) {
   );
 }
 
-function Bubble({ role, text, engine, lang = 'ar' }: { role: 'user' | 'assistant'; text: string; engine?: string; lang?: SupportedLanguage }) {
+function Bubble({ role, text, engine, lang = 'ar', streaming }: { role: 'user' | 'assistant'; text: string; engine?: string; lang?: SupportedLanguage; streaming?: boolean }) {
   const user = role === 'user';
   const label = engine === 'human' ? loc(lang, S.human) : engine && engine !== 'system' ? (engine === 'sham_local' ? 'Sham Core' : `Sham Core · ${engine}`) : '';
   return (
     <div className={`flex ${user ? 'justify-end' : 'justify-start'}`}>
       <div className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-wrap shadow-sm ${user ? 'bg-stone-900 text-white rounded-ee-sm' : engine === 'human' ? 'bg-emerald-50 border border-emerald-200 text-stone-900 rounded-es-sm' : 'bg-white border border-stone-200 text-stone-800 rounded-es-sm'}`}>
         {text}
-        {label && <span className="block mt-1.5 text-[10px] text-stone-400">{label}</span>}
+        {streaming && <span className="inline-block w-1.5 h-4 align-middle ms-0.5 bg-amber-500 animate-pulse rounded-sm" aria-hidden />}
+        {label && !streaming && <span className="block mt-1.5 text-[10px] text-stone-400">{label}</span>}
       </div>
+    </div>
+  );
+}
+
+/** Live "thinking" timeline (inspired by agent apps): open while streaming, collapsible afterwards. */
+function Steps({ steps, live, lang }: { steps: PublicStep[]; live: boolean; lang: SupportedLanguage }) {
+  const L = makeT(lang, S);
+  const [expanded, setExpanded] = useState(false);
+  const show = live || expanded;
+  return (
+    <div className="px-1">
+      <button type="button" onClick={() => setExpanded((v) => !v)} disabled={live} aria-expanded={show}
+        className="inline-flex items-center gap-1 text-[10px] font-semibold text-stone-500 hover:text-stone-800 disabled:cursor-default">
+        {live ? <Loader2 className="w-3 h-3 animate-spin" /> : <ChevronDown className={`w-3 h-3 transition ${show ? 'rotate-180' : ''}`} />}
+        {L('steps')} ({steps.length})
+      </button>
+      {show && (
+        <ol className="mt-1 ms-1.5 border-s border-amber-300 ps-2.5 space-y-0.5">
+          {steps.map((step, i) => (
+            <li key={`${step.stage}-${i}`} className="text-[10px] text-stone-500 flex items-center gap-1">
+              {live && i === steps.length - 1 ? <Loader2 className="w-2.5 h-2.5 animate-spin text-amber-600" /> : <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" />}
+              {step.label}
+            </li>
+          ))}
+        </ol>
+      )}
+    </div>
+  );
+}
+
+/** Per-message controls: read aloud + thumbs up/down with optional reason (feeds the admin quality loop). */
+function MessageTools({ message, lang, canSpeak, speaking, onSpeak, onRate }: {
+  message: UiMessage; lang: SupportedLanguage; canSpeak: boolean; speaking: boolean; onSpeak: () => void; onRate: (rating: 'up' | 'down', reason?: string) => void;
+}) {
+  const L = makeT(lang, S);
+  const [asking, setAsking] = useState(false);
+  const [reason, setReason] = useState('');
+  const rated = message.feedback?.rating;
+  const btn = 'p-1 rounded-md hover:bg-stone-200 text-stone-400 hover:text-stone-700 disabled:hover:bg-transparent';
+  return (
+    <div className="px-1 space-y-1.5">
+      <div className="flex items-center gap-0.5">
+        {canSpeak && (
+          <button type="button" onClick={onSpeak} className={btn} aria-label={speaking ? L('stop_reading') : L('read_aloud')} title={speaking ? L('stop_reading') : L('read_aloud')}>
+            {speaking ? <VolumeX className="w-3.5 h-3.5 text-amber-700" /> : <Volume2 className="w-3.5 h-3.5" />}
+          </button>
+        )}
+        <button type="button" disabled={Boolean(rated)} onClick={() => onRate('up')} className={btn} aria-label={L('helpful')} title={L('helpful')} aria-pressed={rated === 'up'}>
+          <ThumbsUp className={`w-3.5 h-3.5 ${rated === 'up' ? 'text-emerald-600 fill-emerald-100' : ''}`} />
+        </button>
+        <button type="button" disabled={Boolean(rated)} onClick={() => setAsking((v) => !v)} className={btn} aria-label={L('not_helpful')} title={L('not_helpful')} aria-pressed={rated === 'down'}>
+          <ThumbsDown className={`w-3.5 h-3.5 ${rated === 'down' ? 'text-red-600 fill-red-100' : ''}`} />
+        </button>
+        {rated && <span className="text-[10px] text-stone-400 ms-1">{L('thanks_feedback')}</span>}
+      </div>
+      {asking && !rated && (
+        <form className="rounded-xl border border-stone-200 bg-white p-2 space-y-1.5" onSubmit={(e) => { e.preventDefault(); onRate('down', reason.trim() || undefined); setAsking(false); }}>
+          <div className="flex flex-wrap gap-1">
+            {(['r_wrong', 'r_missed', 'r_long'] as const).map((key) => (
+              <button key={key} type="button" onClick={() => setReason(L(key))}
+                className={`text-[10px] rounded-full border px-2 py-0.5 ${reason === L(key) ? 'border-red-300 bg-red-50 text-red-800' : 'border-stone-200 text-stone-600'}`}>{L(key)}</button>
+            ))}
+          </div>
+          <input value={reason} onChange={(e) => setReason(e.target.value.slice(0, 300))} placeholder={L('why')} aria-label={L('why')} className="w-full rounded-lg border border-stone-200 px-2 py-1 text-xs" />
+          <button className="text-[11px] font-bold rounded-lg bg-stone-900 text-amber-100 px-3 py-1">{L('send_feedback')}</button>
+        </form>
+      )}
+    </div>
+  );
+}
+
+function PrivacyCard({ memory, lang, onForget }: { memory: Record<string, string>; lang: SupportedLanguage; onForget: () => Promise<void> }) {
+  const L = makeT(lang, S);
+  const [confirming, setConfirming] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const entries = Object.entries(memory).filter(([, v]) => v);
+  return (
+    <div className="rounded-2xl border border-emerald-200 bg-white p-3 text-xs space-y-2">
+      <p className="font-bold text-stone-900 flex items-center gap-1.5"><ShieldCheck className="w-4 h-4 text-emerald-700" />{L('memory_title')}</p>
+      {entries.length ? (
+        <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
+          {entries.map(([k, v]) => (
+            <React.Fragment key={k}><dt className="text-stone-500">{MEMORY_LABEL[k] ? loc(lang, MEMORY_LABEL[k]) : k}</dt><dd className="font-semibold text-stone-800 break-words">{v}</dd></React.Fragment>
+          ))}
+        </dl>
+      ) : <p className="text-stone-500">{L('memory_empty')}</p>}
+      {confirming ? (
+        <div className="rounded-xl bg-red-50 border border-red-200 p-2 space-y-2">
+          <p className="text-red-900">{L('forget_confirm')}</p>
+          <div className="flex gap-2">
+            <button type="button" disabled={busy} onClick={async () => { setBusy(true); await onForget(); setBusy(false); }}
+              className="flex-1 rounded-lg bg-red-700 text-white py-1.5 font-bold disabled:opacity-50">{busy ? <Loader2 className="w-3.5 h-3.5 animate-spin mx-auto" /> : L('forget')}</button>
+            <button type="button" onClick={() => setConfirming(false)} className="rounded-lg border border-stone-300 px-3">{L('close')}</button>
+          </div>
+        </div>
+      ) : (
+        <button type="button" onClick={() => setConfirming(true)} className="inline-flex items-center gap-1.5 rounded-lg border border-red-200 text-red-800 px-2.5 py-1.5 font-semibold hover:bg-red-50">
+          <Trash2 className="w-3.5 h-3.5" />{L('forget')}
+        </button>
+      )}
     </div>
   );
 }
@@ -286,10 +527,11 @@ function Bubble({ role, text, engine, lang = 'ar' }: { role: 'user' | 'assistant
 const fieldLabel = (lang: SupportedLanguage, f: FormField) => (lang === 'ar' || lang === 'fa' ? f.labelAr : f.labelEn) || f.labelAr || f.labelEn;
 const inputClass = 'w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400';
 
-function Action({ action, lang, services, conversationId, productsInMessage, onSubmitted }: {
-  action: ActionCard; lang: SupportedLanguage; services: PublicService[]; conversationId?: string; productsInMessage?: ProductCard[]; onSubmitted: (r: RequestView) => void;
+function Action({ action, lang, services, conversationId, productsInMessage, onSubmitted, onForget }: {
+  action: ActionCard; lang: SupportedLanguage; services: PublicService[]; conversationId?: string; productsInMessage?: ProductCard[]; onSubmitted: (r: RequestView) => void; onForget: () => Promise<void>;
 }) {
   const L = makeT(lang, S);
+  if (action.type === 'privacy') return <PrivacyCard memory={action.memory || {}} lang={lang} onForget={onForget} />;
   if (action.type === 'open_tab' && action.tab) {
     return (
       <button type="button" onClick={() => { window.location.hash = `#${action.tab}`; }}

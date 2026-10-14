@@ -1,25 +1,31 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Activity, ArrowRight, BookOpen, Bot, Boxes, ClipboardList, Cpu, Database, Download, FlaskConical, Headset, KeyRound,
-  LayoutDashboard, Loader2, LogOut, MessagesSquare, Plus, RefreshCw, Save, Send, Settings2, Trash2,
+  BellRing, CheckCircle2, CircleAlert, EyeOff, LayoutDashboard, Lightbulb, Loader2, LogOut, MessagesSquare, Plus, RefreshCw, Save, Send,
+  Settings2, ThumbsDown, ThumbsUp, Trash2, TriangleAlert, Wand2,
 } from 'lucide-react';
 import type {
-  Conversation, CoreSettings, EngineId, KnowledgeDoc, Product, RequestStatus, ServiceDef, ServiceRequest,
+  Conversation, CoreSettings, EngineId, KnowledgeDoc, KnowledgeGap, Product, RequestStatus, ServiceDef, ServiceRequest,
 } from '../../server/core/types';
+import type { AgentResult } from '../../server/core/adminAgent';
 import { AdminApiError, adminRequest, getToken, send, setToken } from './adminApi';
 import { isStaticHosting } from '../utils/api';
 
-type Tab = 'overview' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'sandbox';
+type Tab = 'overview' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'sandbox';
 interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: string }
 interface Overview {
   storage: { kind: string; persistent: boolean; error?: string };
   engines: EngineStatus[]; policy: EngineId[];
   counts: Record<string, number>;
   byStatus: Record<string, number>; byType: Record<string, number>; intents: Record<string, number>; engineUsage: Record<string, number>; pipelineValue: Record<string, number>;
+  notifications?: { configured: boolean };
 }
+interface FeedbackItem { conversationId: string; messageId?: string; rating: 'up' | 'down'; reason?: string; at: string; question: string; answer: string; engine?: string; intent?: string }
 
 const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'overview', label: 'نظرة عامة', icon: <LayoutDashboard className="w-4 h-4" /> },
+  { id: 'agent', label: 'المساعد الإداري', icon: <Wand2 className="w-4 h-4" /> },
+  { id: 'quality', label: 'الجودة والتعلّم', icon: <Lightbulb className="w-4 h-4" /> },
   { id: 'requests', label: 'الطلبات والعروض', icon: <ClipboardList className="w-4 h-4" /> },
   { id: 'conversations', label: 'المحادثات', icon: <MessagesSquare className="w-4 h-4" /> },
   { id: 'products', label: 'المنتجات', icon: <Boxes className="w-4 h-4" /> },
@@ -31,7 +37,7 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
 
 const STATUS: Record<RequestStatus, string> = { new: 'جديد', in_progress: 'قيد التنفيذ', quoted: 'عرض سعر', confirmed: 'مؤكد', completed: 'مكتمل', cancelled: 'ملغي' };
 const TYPE: Record<string, string> = { order: 'طلب متجر', custom_formula: 'عطر مخصص', b2b_quote: 'عرض جملة', consultation: 'استشارة', support: 'دعم', service: 'خدمة' };
-const INTENT: Record<string, string> = { greeting: 'تحية', thanks: 'شكر', list_services: 'عرض الخدمات', track_order: 'تتبع', browse_products: 'تصفح منتجات', service_request: 'طلب خدمة', handoff: 'تحويل لموظف', calculate: 'حساب', perfume_expert: 'سؤال خبير', question: 'سؤال عام' };
+const INTENT: Record<string, string> = { greeting: 'تحية', thanks: 'شكر', list_services: 'عرض الخدمات', track_order: 'تتبع', browse_products: 'تصفح منتجات', service_request: 'طلب خدمة', handoff: 'تحويل لموظف', calculate: 'حساب', perfume_expert: 'سؤال خبير', question: 'سؤال عام', memory_view: 'عرض الذاكرة', forget: 'حذف البيانات' };
 const ENGINE_LABEL: Record<string, string> = { self_hosted: 'نموذج مفتوح مستضاف ذاتياً', gemini: 'Gemini', openai: 'OpenAI', claude: 'Claude', deepseek: 'DeepSeek', sham_local: 'محرك شام الذاتي', human: 'موظف', system: 'النظام' };
 
 const card = 'rounded-2xl border border-stone-200 bg-white p-4 shadow-sm';
@@ -107,6 +113,8 @@ export default function AdminApp() {
         </aside>
         <main className="flex-1 p-4 lg:p-6 min-w-0">
           {tab === 'overview' && <OverviewPanel go={setTab} />}
+          {tab === 'agent' && <AgentPanel go={setTab} />}
+          {tab === 'quality' && <QualityPanel />}
           {tab === 'requests' && <RequestsPanel />}
           {tab === 'conversations' && <ConversationsPanel />}
           {tab === 'products' && <ProductsPanel />}
@@ -175,6 +183,9 @@ function OverviewPanel({ go }: { go: (t: Tab) => void }) {
               ['تحويلات لموظف مفتوحة', data.counts.handoffsOpen, 'conversations', 'text-emerald-700'],
               ['محادثات آخر 24 ساعة', data.counts.conversations24h, 'conversations', 'text-stone-800'],
               ['منتجات مخزونها منخفض', data.counts.lowStock, 'products', 'text-red-700'],
+              ['أسئلة بلا إجابة (فجوات)', data.counts.gapsOpen ?? 0, 'quality', 'text-orange-700'],
+              ['تقييمات إيجابية 👍', data.counts.feedbackUp ?? 0, 'quality', 'text-emerald-700'],
+              ['تقييمات سلبية 👎', data.counts.feedbackDown ?? 0, 'quality', 'text-red-700'],
             ].map(([label, value, target, color]) => (
               <button key={label as string} onClick={() => go(target as Tab)} className={`${card} text-start hover:border-amber-400`}>
                 <p className="text-xs text-stone-500">{label}</p><p className={`text-3xl font-bold mt-1 ${color}`}>{value as number}</p>
@@ -200,7 +211,9 @@ function OverviewPanel({ go }: { go: (t: Tab) => void }) {
                 <li>المحادثات: <b>{data.counts.conversations}</b> · الطلبات: <b>{data.counts.requests}</b></li>
                 <li>المعرفة: <b>{data.counts.knowledge}</b> مستند · الخدمات: <b>{data.counts.services}</b> · المنتجات: <b>{data.counts.products}</b></li>
                 <li>المحركات المهيأة: {data.engines.filter((e) => e.configured).map((e) => ENGINE_LABEL[e.id]).join('، ')}</li>
+                <li>إشعارات Webhook: {data.notifications?.configured ? '✅ مفعلة' : <>غير مفعلة — اضبط <code dir="ltr">SHAM_WEBHOOK_URL</code></>}</li>
               </ul>
+              {data.notifications?.configured && <NotifyTest />}
             </div>
           </div>
         </div>
@@ -622,6 +635,197 @@ function SandboxPanel() {
             )}
           </div>
         ))}
+      </div>
+    </>
+  );
+}
+
+function NotifyTest() {
+  const [state, setState] = useState<'idle' | 'busy' | 'ok' | 'fail'>('idle');
+  return (
+    <button type="button" disabled={state === 'busy'} onClick={async () => {
+      setState('busy');
+      try { const r = await adminRequest<{ delivered: boolean }>('/notifications/test', send('POST', {})); setState(r.delivered ? 'ok' : 'fail'); }
+      catch { setState('fail'); }
+    }} className={`${btn} mt-3 bg-stone-100 border border-stone-300 text-xs`}>
+      {state === 'busy' ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <BellRing className="w-3.5 h-3.5" />}
+      {state === 'ok' ? 'تم إرسال إشعار تجريبي ✅' : state === 'fail' ? 'فشل الإرسال — راجع الرابط' : 'إرسال إشعار تجريبي'}
+    </button>
+  );
+}
+
+const AGENT_PRESETS = ['تقرير اليوم الكامل', 'إيه الطلبات المتأخرة؟', 'المخزون اللي قرب يخلص', 'الزوار سألوا عن إيه ومالقوش إجابة؟', 'رضا العملاء عامل إزاي؟', 'المبيعات والقيمة المتوقعة'];
+const SEVERITY: Record<AgentResult['sections'][number]['severity'], { cls: string; icon: React.ReactNode }> = {
+  ok: { cls: 'border-emerald-200 bg-emerald-50/50', icon: <CheckCircle2 className="w-4 h-4 text-emerald-600" /> },
+  warn: { cls: 'border-amber-300 bg-amber-50/60', icon: <TriangleAlert className="w-4 h-4 text-amber-600" /> },
+  alert: { cls: 'border-red-300 bg-red-50/60', icon: <CircleAlert className="w-4 h-4 text-red-600" /> },
+};
+const TAB_IDS = new Set<string>(TABS.map((t) => t.id));
+
+/** Manus-style operations agent: plan → run read-only tools → report with next actions. */
+function AgentPanel({ go }: { go: (t: Tab) => void }) {
+  const [message, setMessage] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const [result, setResult] = useState<AgentResult | null>(null);
+  const [asked, setAsked] = useState('');
+  const run = async (text: string) => {
+    const q = text.trim() || 'تقرير اليوم الكامل';
+    setBusy(true); setError(''); setAsked(q);
+    try { setResult(await adminRequest<AgentResult>('/agent', send('POST', { message: q }))); }
+    catch (e) { setError(e instanceof Error ? e.message : 'فشل التشغيل'); }
+    finally { setBusy(false); }
+  };
+  return (
+    <>
+      <Header title="المساعد الإداري" subtitle="وكيل عمليات يخطط وينفذ أدوات قراءة فقط على بيانات شام ثم يكتب تقريراً بخطوات قابلة للتنفيذ. لا يعدّل أي بيانات بنفسه." />
+      <form className={`${card} space-y-3`} onSubmit={(e) => { e.preventDefault(); void run(message); }}>
+        <div className="flex gap-2">
+          <input className={input} value={message} onChange={(e) => setMessage(e.target.value.slice(0, 1000))} placeholder="اطلب تقريراً… مثال: إيه اللي محتاج انتباهي النهارده؟" aria-label="طلب للمساعد الإداري" />
+          <button disabled={busy} className={`${btn} bg-stone-900 text-amber-100 shrink-0`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}تشغيل</button>
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {AGENT_PRESETS.map((p) => <button key={p} type="button" disabled={busy} onClick={() => { setMessage(p); void run(p); }} className="text-xs rounded-full border border-amber-300 bg-amber-50 px-3 py-1 hover:bg-amber-100 disabled:opacity-50">{p}</button>)}
+        </div>
+      </form>
+      {error && <p role="alert" className="mt-3 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p>}
+      {busy && <div className="mt-4 flex items-center gap-2 text-sm text-stone-500"><Loader2 className="w-4 h-4 animate-spin" />الوكيل يخطط وينفذ المهام…</div>}
+      {result && !busy && (
+        <div className="mt-4 grid lg:grid-cols-[260px_1fr] gap-4">
+          <div className={card}>
+            <h2 className="font-bold text-sm mb-1">الخطة المنفذة</h2>
+            <p className="text-[11px] text-stone-500 mb-3">«{asked}»</p>
+            <ol className="border-s-2 border-amber-300 ps-3 space-y-2">
+              {result.plan.map((step, i) => (
+                <li key={step.task} className="text-xs flex items-start gap-1.5">
+                  {step.status === 'done' ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 mt-0.5 shrink-0" /> : <CircleAlert className="w-3.5 h-3.5 text-red-600 mt-0.5 shrink-0" />}
+                  <span><b>{i + 1}.</b> {step.title} <span className="text-stone-400" dir="ltr">{step.ms}ms</span></span>
+                </li>
+              ))}
+            </ol>
+            <p className="text-[10px] text-stone-400 mt-3">صياغة الملخص: {ENGINE_LABEL[result.engine] || result.engine}</p>
+          </div>
+          <div className="space-y-3">
+            <div className={`${card} border-amber-300`}>
+              <h2 className="font-bold text-sm mb-2 flex items-center gap-1.5"><Wand2 className="w-4 h-4 text-amber-700" />الملخص</h2>
+              <p className="text-sm leading-relaxed whitespace-pre-wrap">{result.summary}</p>
+              {result.nextActions.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {result.nextActions.map((a) => (
+                    <button key={a.text} type="button" onClick={() => TAB_IDS.has(a.tab) && go(a.tab as Tab)} className={`${btn} text-xs bg-stone-900 text-amber-100`}>{a.text} ←</button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="grid md:grid-cols-2 gap-3">
+              {result.sections.map((section) => (
+                <div key={section.task} className={`rounded-2xl border p-4 ${SEVERITY[section.severity].cls}`}>
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <h3 className="font-bold text-sm flex items-center gap-1.5">{SEVERITY[section.severity].icon}{section.title}</h3>
+                    {TAB_IDS.has(section.tab) && <button type="button" onClick={() => go(section.tab as Tab)} className="text-[11px] text-stone-600 hover:underline">فتح ←</button>}
+                  </div>
+                  <ul className="text-xs space-y-1 text-stone-700 list-disc ps-4">{section.lines.map((line, i) => <li key={i}>{line}</li>)}</ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+/** The learning loop: unanswered questions + rated answers → new knowledge-base documents. */
+function QualityPanel() {
+  const gaps = useLoad<{ items: KnowledgeGap[] }>('/gaps');
+  const feedback = useLoad<{ items: FeedbackItem[] }>('/feedback');
+  const [view, setView] = useState<'open' | 'all'>('open');
+  const [editing, setEditing] = useState<string | null>(null);
+  const [draft, setDraft] = useState({ title: '', content: '' });
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const items = (gaps.data?.items || []).filter((g) => view === 'all' || g.status === 'open');
+  const ups = feedback.data?.items.filter((f) => f.rating === 'up').length || 0;
+  const downs = feedback.data?.items.filter((f) => f.rating === 'down').length || 0;
+  const rate = ups + downs ? Math.round((ups / (ups + downs)) * 100) : null;
+
+  const patch = async (id: string, body: unknown) => {
+    setBusy(true); setError('');
+    try { await adminRequest(`/gaps/${encodeURIComponent(id)}`, send('PATCH', body)); setEditing(null); gaps.reload(); }
+    catch (e) { setError(e instanceof Error ? e.message : 'فشل الحفظ'); }
+    finally { setBusy(false); }
+  };
+
+  return (
+    <>
+      <Header title="الجودة والتعلّم" subtitle="كل سؤال لم يجد إجابة أو رد قيّمه زائر سلبياً يتحول لفجوة. اكتب الإجابة مرة واحدة فتُضاف لقاعدة المعرفة ويستخدمها المساعد فوراً."
+        actions={<button onClick={() => { gaps.reload(); feedback.reload(); }} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" />تحديث</button>} />
+      <div className="grid grid-cols-3 gap-3 mb-4">
+        <div className={card}><p className="text-xs text-stone-500">فجوات مفتوحة</p><p className="text-3xl font-bold text-orange-700">{gaps.data?.items.filter((g) => g.status === 'open').length ?? '…'}</p></div>
+        <div className={card}><p className="text-xs text-stone-500">نسبة الرضا</p><p className="text-3xl font-bold text-emerald-700">{rate === null ? '—' : `${rate}%`}</p></div>
+        <div className={card}><p className="text-xs text-stone-500">التقييمات</p><p className="text-lg font-bold mt-2"><span className="text-emerald-700">👍 {ups}</span> · <span className="text-red-700">👎 {downs}</span></p></div>
+      </div>
+      {error && <p role="alert" className="mb-3 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p>}
+      <div className="grid xl:grid-cols-2 gap-4">
+        <section className={card}>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-bold text-sm flex items-center gap-1.5"><Lightbulb className="w-4 h-4 text-amber-600" />فجوات المعرفة</h2>
+            <div className="flex text-xs rounded-lg border border-stone-200 overflow-hidden">
+              {(['open', 'all'] as const).map((v) => <button key={v} type="button" onClick={() => setView(v)} className={`px-2.5 py-1 ${view === v ? 'bg-stone-900 text-white' : ''}`}>{v === 'open' ? 'المفتوحة' : 'الكل'}</button>)}
+            </div>
+          </div>
+          <Feedback error={gaps.error} loading={gaps.loading && !gaps.data} />
+          {gaps.data && !items.length && <p className="text-xs text-stone-400 py-4 text-center">لا توجد فجوات {view === 'open' ? 'مفتوحة' : ''} — ممتاز.</p>}
+          <ul className="space-y-2">
+            {items.map((g) => (
+              <li key={g.id} className="rounded-xl border border-stone-200 p-3 text-sm">
+                <div className="flex items-start justify-between gap-2">
+                  <p className="font-semibold">{g.question}</p>
+                  <span className="shrink-0 text-[11px] rounded-full bg-stone-100 px-2 py-0.5">×{g.count}</span>
+                </div>
+                <p className="text-[11px] text-stone-500 mt-1">
+                  {g.source === 'no_answer' ? 'لم يجد المساعد إجابة' : `تقييم سلبي${g.reason ? `: ${g.reason}` : ''}`} · آخر مرة {fmtDate(g.lastAt)}
+                  {g.status !== 'open' && <b className="ms-1">{g.status === 'resolved' ? '· تم الحل ✅' : '· متجاهلة'}</b>}
+                </p>
+                {g.lastAnswer && <p className="mt-1.5 text-[11px] text-stone-500 line-clamp-2 bg-stone-50 rounded-lg p-1.5">رد المساعد: {g.lastAnswer}</p>}
+                {editing === g.id ? (
+                  <form className="mt-2 space-y-2" onSubmit={(e) => { e.preventDefault(); void patch(g.id, draft); }}>
+                    <input className={input} required value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} placeholder="عنوان المستند" aria-label="عنوان المستند" />
+                    <textarea className={input} required rows={4} value={draft.content} onChange={(e) => setDraft({ ...draft, content: e.target.value })} placeholder="الإجابة الصحيحة كما يجب أن يقولها المساعد" aria-label="الإجابة" />
+                    <div className="flex gap-2">
+                      <button disabled={busy} className={`${btn} bg-emerald-700 text-white`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}حفظ في قاعدة المعرفة</button>
+                      <button type="button" onClick={() => setEditing(null)} className={`${btn} border border-stone-300`}>إلغاء</button>
+                    </div>
+                  </form>
+                ) : g.status === 'open' ? (
+                  <div className="mt-2 flex gap-2">
+                    <button type="button" onClick={() => { setEditing(g.id); setDraft({ title: g.question.slice(0, 120), content: '' }); }} className={`${btn} text-xs bg-stone-900 text-amber-100`}><BookOpen className="w-3.5 h-3.5" />أضف الإجابة</button>
+                    <button type="button" disabled={busy} onClick={() => void patch(g.id, { status: 'ignored' })} className={`${btn} text-xs border border-stone-300`}><EyeOff className="w-3.5 h-3.5" />تجاهل</button>
+                  </div>
+                ) : g.status === 'ignored' ? (
+                  <button type="button" disabled={busy} onClick={() => void patch(g.id, { status: 'open' })} className="mt-2 text-[11px] text-stone-600 hover:underline">إعادة فتح</button>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </section>
+        <section className={card}>
+          <h2 className="font-bold text-sm mb-3">آخر التقييمات</h2>
+          <Feedback error={feedback.error} loading={feedback.loading && !feedback.data} />
+          {feedback.data && !feedback.data.items.length && <p className="text-xs text-stone-400 py-4 text-center">لم يقيّم الزوار أي رد بعد.</p>}
+          <ul className="space-y-2 max-h-[70vh] overflow-y-auto">
+            {feedback.data?.items.map((f) => (
+              <li key={`${f.conversationId}-${f.messageId}`} className={`rounded-xl border p-3 text-xs ${f.rating === 'down' ? 'border-red-200' : 'border-emerald-200'}`}>
+                <div className="flex items-center gap-1.5 font-semibold">
+                  {f.rating === 'up' ? <ThumbsUp className="w-3.5 h-3.5 text-emerald-600" /> : <ThumbsDown className="w-3.5 h-3.5 text-red-600" />}
+                  <span className="truncate">{f.question || '—'}</span>
+                </div>
+                <p className="mt-1 text-stone-600 line-clamp-3">{f.answer}</p>
+                <p className="mt-1 text-[10px] text-stone-400">{fmtDate(f.at)} · {ENGINE_LABEL[f.engine || ''] || f.engine} {f.intent ? `· ${INTENT[f.intent] || f.intent}` : ''}{f.reason ? ` · السبب: ${f.reason}` : ''}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
       </div>
     </>
   );

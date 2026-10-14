@@ -76,7 +76,7 @@ export interface TraceStep {
 }
 
 export interface ActionCard {
-  type: 'request_form' | 'products' | 'order_status' | 'open_tab' | 'handoff';
+  type: 'request_form' | 'products' | 'order_status' | 'open_tab' | 'handoff' | 'privacy';
   serviceId?: string;
   title?: string;
   fields?: FormField[];
@@ -85,11 +85,20 @@ export interface ActionCard {
   /** Prefilled reference for the tracking form. */
   ref?: string;
   tab?: string;
+  /** privacy card: what the assistant remembers about this visitor. */
+  memory?: Record<string, string>;
 }
 
 export interface Citation { id: string; title: string; kind: 'knowledge' | 'product' | 'service' }
 
+export interface MessageFeedback { rating: 'up' | 'down'; reason?: string; at: string }
+
+/** Visitor-safe progress step (the "thinking/steps" panel), localised, no internal scores. */
+export interface PublicStep { stage: TraceStep['stage']; label: string }
+
 export interface ConversationMessage {
+  /** Stable id so visitors can rate a specific answer. Older messages may not have one. */
+  id?: string;
   role: 'user' | 'assistant';
   text: string;
   at: string;
@@ -98,6 +107,9 @@ export interface ConversationMessage {
   citations?: Citation[];
   actions?: ActionCard[];
   trace?: TraceStep[];
+  steps?: PublicStep[];
+  suggestions?: string[];
+  feedback?: MessageFeedback;
 }
 
 export interface Conversation {
@@ -147,6 +159,31 @@ export interface PublicRequestView {
   updatedAt: string;
 }
 
+/** Questions the assistant could not answer from Sham data, or answers visitors rated down. */
+export interface KnowledgeGap {
+  id: string;
+  key: string;
+  question: string;
+  source: 'no_answer' | 'negative_feedback';
+  count: number;
+  status: 'open' | 'resolved' | 'ignored';
+  lastAnswer?: string;
+  reason?: string;
+  conversationId?: string;
+  resolvedDocId?: string;
+  firstAt: string;
+  lastAt: string;
+}
+
+/** Visitor-level memory shared across conversations (like assistant "memory"), deletable by the visitor. */
+export interface VisitorProfile {
+  id: string;
+  memory: Record<string, string>;
+  conversationIds: string[];
+  firstSeen: string;
+  lastSeen: string;
+}
+
 export type EngineId = 'self_hosted' | 'gemini' | 'openai' | 'claude' | 'deepseek' | 'sham_local';
 
 export interface CoreSettings {
@@ -171,5 +208,7 @@ export interface Collections {
   conversations: Conversation;
   requests: ServiceRequest;
   settings: CoreSettings & { id: string };
+  gaps: KnowledgeGap;
+  visitors: VisitorProfile;
 }
 export type CollectionName = keyof Collections;

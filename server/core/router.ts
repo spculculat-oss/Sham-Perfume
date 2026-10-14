@@ -8,7 +8,8 @@ import type { ServiceDef } from './types';
 
 export type Intent =
   | 'greeting' | 'thanks' | 'list_services' | 'track_order' | 'browse_products'
-  | 'service_request' | 'handoff' | 'calculate' | 'perfume_expert' | 'question';
+  | 'service_request' | 'handoff' | 'calculate' | 'perfume_expert' | 'question'
+  | 'memory_view' | 'forget';
 
 export interface RouteResult {
   intent: Intent;
@@ -28,6 +29,8 @@ const TRACK = ['تتبع', 'حاله الطلب', 'حالة طلبي', 'طلبي
 const HANDOFF = ['موظف', 'شخص حقيقي', 'انسان', 'بشري', 'خدمه العملاء', 'اكلم حد', 'كلم حد', 'human', 'real person', 'agent', 'representative'];
 const ORDER_VERBS = ['اطلب', 'طلب', 'احجز', 'حجز', 'اشتري', 'سجل', 'قدم', 'ابعت عرض', 'عرض سعر', 'عايز', 'عاوز', 'محتاج', 'اريد', 'ابغي', 'اسوي',
   'order', 'request', 'book', 'quote', 'apply', 'purchase', 'i want', 'i need', 'i would like', 'looking for'];
+const FORGET = ['امسح بياناتي', 'احذف بياناتي', 'امسح ذاكرتك', 'انسي كل', 'انساني', 'امسح محادثاتي', 'احذف محادثاتي', 'delete my data', 'forget me', 'erase my data', 'delete my conversations'];
+const MEMORY = ['ماذا تتذكر', 'بتفتكر ايه', 'فاكر ايه', 'تعرف ايه عني', 'تعرف عني', 'ماذا تعرف عني', 'ايه اللي تعرفه عني', 'بياناتي', 'what do you remember', 'what do you know about me', 'my data'];
 const BROWSE = ['منتجات', 'المنتجات', 'كتالوج', 'متوفر', 'متاح', 'سعر', 'اسعار', 'بكام', 'عندكم', 'products', 'catalog', 'price', 'available', 'in stock'];
 const EXPERT = ['نوته', 'نوتات', 'تركيبه عطر', 'مكونات', 'فواحه', 'ثبات', 'فوحان', 'مسك', 'عنبر', 'عود', 'فانيليا', 'accord', 'notes', 'longevity', 'sillage', 'formula'];
 
@@ -70,6 +73,8 @@ export function route(message: string, services: ServiceDef[]): RouteResult {
   const bestService = best ? services.find((s) => `service:${s.id}` === best[0]) : undefined;
   const result = (intent: Intent, confidence: number, serviceId?: string): RouteResult => ({ intent, confidence, serviceId, scores, entities });
 
+  if (has(text, FORGET)) return result('forget', 0.9);
+  if (has(text, MEMORY)) return result('memory_view', 0.85);
   if (entities.ref || has(text, TRACK)) return result('track_order', entities.ref ? 0.95 : 0.8);
   if (has(text, HANDOFF)) return result('handoff', 0.9, services.find((s) => s.kind === 'support')?.id);
   if (entities.volumeMl && entities.percent) return result('calculate', 0.85, services.find((s) => s.kind === 'info')?.id);

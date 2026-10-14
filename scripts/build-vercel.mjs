@@ -24,7 +24,7 @@ await build({
   logLevel: 'info',
 });
 await writeFile(new URL('.vc-config.json', functionDirectory), JSON.stringify({
-  runtime: 'nodejs22.x', handler: 'index.cjs', launcherType: 'Nodejs', maxDuration: 60,
+  runtime: 'nodejs22.x', handler: 'index.cjs', launcherType: 'Nodejs', maxDuration: 60, supportsResponseStreaming: true,
 }, null, 2));
 await writeFile(new URL('config.json', output), JSON.stringify({
   version: 3,

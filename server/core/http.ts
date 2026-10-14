@@ -6,7 +6,9 @@
 import express from 'express';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { Repository, ValidationError, publicView } from './repository';
-import { AssistantError, Orchestrator, validateChatInput } from './orchestrator';
+import { AssistantError, Orchestrator, validateChatInput, type ChatOutput, type StreamEvent } from './orchestrator';
+import { createNotifier } from './notify';
+import { runAdminAgent } from './adminAgent';
 import { createStore, type Store } from './store';
 import { engineStatuses } from './engines';
 import type { CollectionName, RequestStatus } from './types';
@@ -54,6 +56,16 @@ export function createShamCore(options: CoreOptions = {}) {
   }
   const repo = new Repository(store, env);
   const orchestrator = new Orchestrator(repo, { env, fetch: options.fetch });
+  const notifier = createNotifier(env, options.fetch);
+  const feedbackLimiter = new RateLimiter(60, 10 * 60_000);
+  const privacyLimiter = new RateLimiter(10, 10 * 60_000);
+  const VISITOR = /^[A-Za-z0-9_-]{8,80}$/;
+
+  const afterChat = async (output: ChatOutput) => {
+    if (output.intent === 'handoff') {
+      await notifier.send('conversation.handoff', `🙋 زائر يطلب موظفاً — محادثة ${output.conversationId.slice(0, 8)}`, { conversationId: output.conversationId });
+    }
+  };
 
   const chatLimiter = new RateLimiter(Number(env.SHAM_CHAT_RATE_PER_MIN) || 20, 60_000);
   const requestLimiter = new RateLimiter(6, 10 * 60_000);
@@ -81,7 +93,58 @@ export function createShamCore(options: CoreOptions = {}) {
     const input = validateChatInput(req.body);
     const controller = new AbortController();
     res.on('close', () => { if (!res.writableFinished) controller.abort(); });
-    res.json(await orchestrator.chat(input, { signal: controller.signal }));
+    const output = await orchestrator.chat(input, { signal: controller.signal });
+    await afterChat(output);
+    res.json(output);
+  }));
+
+  /**
+   * Streaming variant (Server-Sent Events over POST): live progress steps, then answer tokens,
+   * then a final `done` event with cards, citations and suggestions.
+   */
+  assistant.post('/chat/stream', async (req, res) => {
+    let input;
+    try {
+      if (!chatLimiter.allow(clientKey(req))) throw new AssistantError(429, 'RATE_LIMITED', 'Too many messages, please wait a minute');
+      input = validateChatInput(req.body);
+    } catch (error) { sendError(res, error); return; }
+    const controller = new AbortController();
+    res.on('close', () => { if (!res.writableFinished) controller.abort(); });
+    res.writeHead(200, { 'Content-Type': 'text/event-stream; charset=utf-8', 'Cache-Control': 'no-store, no-transform', Connection: 'keep-alive', 'X-Accel-Buffering': 'no' });
+    res.flushHeaders?.();
+    const write = (event: StreamEvent) => { if (!res.writableEnded) res.write(`event: ${event.type}\ndata: ${JSON.stringify(event)}\n\n`); };
+    try {
+      const output = await orchestrator.chat(input, { signal: controller.signal, onEvent: write });
+      await afterChat(output);
+    } catch (error) {
+      console.error('[Sham Core] stream', error instanceof Error ? error.message : error);
+      write({ type: 'error', code: 'INTERNAL', message: 'Internal error' });
+    } finally {
+      res.end();
+    }
+  });
+
+  assistant.post('/feedback', wrap(async (req, res) => {
+    if (!feedbackLimiter.allow(clientKey(req))) throw new AssistantError(429, 'RATE_LIMITED', 'Too many ratings');
+    const feedback = await repo.setFeedback(req.body || {});
+    if (feedback.rating === 'down') {
+      await notifier.send('feedback.negative', `👎 تقييم سلبي لرد المساعد${feedback.reason ? `: ${feedback.reason}` : ''}`, { conversationId: req.body?.conversationId, messageId: req.body?.messageId });
+    }
+    res.json({ feedback });
+  }));
+
+  /** Visitor memory transparency ("what do you remember about me") and erasure ("forget me"). */
+  assistant.get('/me', wrap(async (req, res) => {
+    const visitorId = String(req.query.visitorId || '');
+    if (!VISITOR.test(visitorId)) throw new AssistantError(400, 'INVALID_VISITOR', 'visitorId is required');
+    const profile = await repo.visitor(visitorId);
+    res.json({ memory: profile?.memory || {}, conversations: profile?.conversationIds.length || 0, firstSeen: profile?.firstSeen });
+  }));
+  assistant.delete('/me', wrap(async (req, res) => {
+    if (!privacyLimiter.allow(clientKey(req))) throw new AssistantError(429, 'RATE_LIMITED', 'Too many attempts');
+    const visitorId = String(req.query.visitorId || '');
+    if (!VISITOR.test(visitorId)) throw new AssistantError(400, 'INVALID_VISITOR', 'visitorId is required');
+    res.json({ deleted: await repo.deleteVisitorData(visitorId) });
   }));
 
   /** Polling endpoint so visitors receive human replies after a handoff. */
@@ -111,6 +174,10 @@ export function createShamCore(options: CoreOptions = {}) {
         await repo.saveConversation(conversation);
       }
     }
+    const service = (await repo.services()).find((x) => x.id === request.serviceId);
+    await notifier.send('request.created', `🧾 طلب جديد ${request.ref} — ${service?.nameAr || request.serviceId} — ${request.contact.name}${request.total !== undefined ? ` — ${request.total} ${request.currency}` : ''}`, {
+      ref: request.ref, type: request.type, serviceId: request.serviceId, contact: request.contact, total: request.total, currency: request.currency,
+    });
     res.status(201).json({ request: publicView(request) });
   }));
 
@@ -142,9 +209,11 @@ export function createShamCore(options: CoreOptions = {}) {
   });
 
   admin.get('/overview', wrap(async (_req, res) => {
-    const [requests, conversations, products, knowledge, services, settings] = await Promise.all([
-      repo.requests(), repo.conversations(), repo.products(true), repo.knowledge(), repo.services(true), repo.settings(),
+    const [requests, conversations, products, knowledge, services, settings, gaps] = await Promise.all([
+      repo.requests(), repo.conversations(), repo.products(true), repo.knowledge(), repo.services(true), repo.settings(), repo.gaps(),
     ]);
+    let up = 0; let down = 0;
+    for (const c of conversations) for (const m of c.messages) { if (m.feedback?.rating === 'up') up++; else if (m.feedback?.rating === 'down') down++; }
     const since = Date.now() - 24 * 3600_000;
     const byStatus: Record<string, number> = {};
     const byType: Record<string, number> = {};
@@ -167,7 +236,9 @@ export function createShamCore(options: CoreOptions = {}) {
         requests: requests.length, requestsNew: byStatus.new || 0,
         products: products.length, lowStock: products.filter((p) => p.active && p.stock <= 3).length,
         knowledge: knowledge.length, services: services.length,
+        gapsOpen: gaps.filter((g) => g.status === 'open').length, feedbackUp: up, feedbackDown: down,
       },
+      notifications: { configured: notifier.configured },
       byStatus, byType, intents, engineUsage: engines, pipelineValue: revenue,
     });
   }));
@@ -222,6 +293,34 @@ export function createShamCore(options: CoreOptions = {}) {
     res.json({ item: conversation });
   }));
 
+  // ---- quality: knowledge gaps + rated answers (the learning loop) ----
+  admin.get('/gaps', wrap(async (_req, res) => {
+    const items = (await repo.gaps()).sort((a, b) => (a.status === 'open' ? 0 : 1) - (b.status === 'open' ? 0 : 1) || b.count - a.count || b.lastAt.localeCompare(a.lastAt));
+    res.json({ items });
+  }));
+  admin.patch('/gaps/:id', wrap(async (req, res) => { res.json({ item: await repo.resolveGap(String(req.params.id), req.body || {}) }); }));
+  admin.get('/feedback', wrap(async (_req, res) => {
+    const items = (await repo.conversations()).flatMap((c) => c.messages.map((m, i) => ({ m, i, c }))
+      .filter(({ m }) => m.feedback)
+      .map(({ m, i, c }) => ({
+        conversationId: c.id, messageId: m.id, rating: m.feedback!.rating, reason: m.feedback!.reason, at: m.feedback!.at,
+        question: [...c.messages.slice(0, i)].reverse().find((x) => x.role === 'user')?.text || '', answer: m.text, engine: m.engine, intent: m.intent,
+      })))
+      .sort((a, b) => b.at.localeCompare(a.at)).slice(0, 300);
+    res.json({ items });
+  }));
+
+  /** Manus-style operations agent over read-only admin tools. */
+  admin.post('/agent', wrap(async (req, res) => {
+    const message = typeof req.body?.message === 'string' ? req.body.message.trim().slice(0, 1000) : '';
+    res.json(await runAdminAgent(repo, message || 'تقرير اليوم', { env, fetch: options.fetch }));
+  }));
+
+  admin.post('/notifications/test', wrap(async (_req, res) => {
+    if (!notifier.configured) throw new ValidationError('NOT_CONFIGURED', 'Set SHAM_WEBHOOK_URL (https) on the server first', 409);
+    res.json({ delivered: await notifier.send('test', '✅ اختبار إشعارات Sham Core', {}) });
+  }));
+
   admin.get('/settings', wrap(async (_req, res) => { res.json({ item: await repo.settings(), engines: engineStatuses(env) }); }));
   admin.put('/settings', wrap(async (req, res) => { res.json({ item: await repo.updateSettings(req.body || {}) }); }));
 
@@ -232,7 +331,7 @@ export function createShamCore(options: CoreOptions = {}) {
   }));
 
   admin.get('/export', wrap(async (_req, res) => {
-    const collections: CollectionName[] = ['settings', 'services', 'products', 'knowledge', 'requests', 'conversations'];
+    const collections: CollectionName[] = ['settings', 'services', 'products', 'knowledge', 'requests', 'conversations', 'gaps', 'visitors'];
     const out: Record<string, unknown> = { exportedAt: new Date().toISOString(), storage: store.kind };
     for (const c of collections) out[c] = await store.list(c);
     res.setHeader('Content-Disposition', `attachment; filename="sham-core-backup-${new Date().toISOString().slice(0, 10)}.json"`);
