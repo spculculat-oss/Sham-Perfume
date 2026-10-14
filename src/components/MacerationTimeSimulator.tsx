@@ -1713,7 +1713,10 @@ ${calculation.isFinished ? L('tag_status_done') : fmt(L('tag_status_progress_tpl
             </div>
             <p className="text-[11px] leading-relaxed text-stone-700">
               {fmt(L('shahin_rule_text'), {
-                date: calculation.endDateFormatted.split('،')[1]?.trim() || calculation.endDateIso,
+                date:
+                  calculation.endDateFormatted.split('،')[1]?.trim() ||
+                  calculation.endDateFormatted.split(',')[1]?.trim() ||
+                  calculation.endDateFormatted,
               })}
             </p>
           </div>
