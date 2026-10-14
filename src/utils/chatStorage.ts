@@ -12,6 +12,7 @@ export interface ChatMessage {
   role: 'user' | 'assistant';
   text: string;
   timestamp: string;
+  kind?: 'error';
   aiEngine?: {
     id: string;
     name: string;
@@ -30,21 +31,14 @@ export interface StoredChatSession {
   messages: ChatMessage[];
 }
 
-const CHAT_STORAGE_KEY = 'miyaar_perfumer_chat_session';
 export const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000; // 30 days (1 month)
 
 export const DEFAULT_WELCOME_MESSAGE: ChatMessage = {
   id: 'welcome',
   role: 'assistant',
-  text: `مرحباً بك في معملي يا عاشق الشذى والطيوب! أنا الخبير شاهين، شيخ العطارين وكبير كيميائيي العطور بخبرة تزيد عن 35 عاماً.
-أنا هنا لأتحاور معك في أي مجال ترغب به في عالم العطور والتركيبات:
-🌿 **المجال الطبي والعلاجي:** العلاج بالروائح (Aromatherapy)، الزيوت المهدئة والمنشطة، ومحاذير الاستخدام الطبي والجرعات الآمنة للجلد والأطفال والربو والحوامل، ومعايير IFRA.
-✨ **المجال التجميلي والعناية:** معطرات الجسم والميست (Body Mist)، رذاذ الشعر المعطر، الكريمات واللوشن العطري، والعطور الزيتية الخالية من الكحول مع أسرار الاستحلاب والثبات.
-🧪 **الاستخدامات الشخصية وصناعة العطور:** اختيار وتوليف عطرك الخاص، حساب النسب والأوزان الدقيقة لزجاجتك بالميزان (0.01g)، وحل مشكلات التصنيع وأسرار التعتيق (Maceration).
-
-تحدث معي براحتك في أي سؤال أو فكرة تخطر ببالك، وسأناقشك خطوة بخطوة كخبير ومعلم شخصي!
-
-📌 ملاحظة: محادثتك محفوظة بالكامل محلياً في جهازك، وستُمسح تلقائياً بعد شهر (30 يوماً) حفاظاً على خصوصيتك.`,
+  text: `مرحباً! أنا شاهين، مساعدك الرقمي لتصميم العطور وفهم الحسابات والمكونات.
+اذكر الحجم والتركيز والمكونات المتاحة وهدفك، وسأساعدك خطوة بخطوة. المقترحات تجريبية وليست اعتماداً للسلامة أو نصيحة طبية.
+محادثتك محفوظة محلياً في هذا المتصفح لمدة 30 يوماً. تشغيل الذكاء الاصطناعي يحتاج خادماً ومفتاح خدمة صالحاً.`,
   timestamp: 'الآن',
   aiEngine: {
     id: 'ensemble',
@@ -54,104 +48,77 @@ export const DEFAULT_WELCOME_MESSAGE: ChatMessage = {
   },
 };
 
-/**
- * Loads stored chat from localStorage. If the session has passed 30 days (1 month),
- * it automatically clears the storage and initializes a fresh session.
- */
-export function loadStoredChatSession(): {
-  messages: ChatMessage[];
-  expiresAt: number;
-  daysRemaining: number;
-  isExpiredPurged: boolean;
-} {
+export const CHAT_STORAGE_KEY = 'miyaar_perfumer_chat_session';
+const PROVIDERS = ['gemini', 'deepseek', 'openai', 'claude', 'ensemble'];
+
+export function isChatMessage(value: unknown): value is ChatMessage {
+  if (!value || typeof value !== 'object') return false;
+  const message = value as ChatMessage;
+  return typeof message.id === 'string' && message.id.length > 0 &&
+    (message.role === 'user' || message.role === 'assistant') &&
+    typeof message.text === 'string' && message.text.trim().length > 0 && message.text.length <= 32000 &&
+    typeof message.timestamp === 'string' &&
+    (message.kind === undefined || message.kind === 'error') &&
+    (message.aiEngine === undefined || Boolean(message.aiEngine &&
+      typeof message.aiEngine.id === 'string' && typeof message.aiEngine.name === 'string' &&
+      typeof message.aiEngine.badge === 'string' && PROVIDERS.includes(message.aiEngine.provider))) &&
+    (message.activePerspectiveTab === undefined || typeof message.activePerspectiveTab === 'string') &&
+    (message.perspectives === undefined || (Array.isArray(message.perspectives) && message.perspectives.every((p) =>
+      p && PROVIDERS.includes(p.provider) && PROVIDERS.includes(p.modelId) &&
+      typeof p.name === 'string' && typeof p.badge === 'string' && typeof p.color === 'string' &&
+      typeof p.reply === 'string'
+    )));
+}
+
+function validDates(session: StoredChatSession, now: number): boolean {
+  return session?.version === 1 && Number.isFinite(session.createdAt) && Number.isFinite(session.expiresAt) &&
+    session.createdAt <= now && session.expiresAt > session.createdAt &&
+    session.expiresAt - session.createdAt <= THIRTY_DAYS_MS;
+}
+
+/** Reject corrupt records and enforce a fixed, non-sliding 30-day window. */
+export function loadStoredChatSession() {
+  const now = Date.now();
+  let expired = false;
   try {
     const raw = localStorage.getItem(CHAT_STORAGE_KEY);
     if (raw) {
       const session: StoredChatSession = JSON.parse(raw);
-      const now = Date.now();
-
-      // Check if session has expired (passed 30 days / 1 month)
-      if (session.expiresAt && now > session.expiresAt) {
-        localStorage.removeItem(CHAT_STORAGE_KEY);
-        const newExpiresAt = now + THIRTY_DAYS_MS;
-        return {
-          messages: [
-            {
-              id: 'expired-notice-' + now,
-              role: 'assistant',
-              text: `مرحباً بك مجدداً يا صديقي! لقد مر شهر (30 يوماً) على محادثتك السابقة، وتم مسحها تلقائياً للحفاظ على خصوصيتك ومساحة التخزين. معمل الخبير شاهين مفتوح لك لبدء جلسة جديدة اليوم!`,
-              timestamp: 'الآن',
-            },
-          ],
-          expiresAt: newExpiresAt,
-          daysRemaining: 30,
-          isExpiredPurged: true,
-        };
+      expired = validDates(session, now) && session.expiresAt <= now;
+      if (validDates(session, now) && !expired && Array.isArray(session.messages)) {
+        const seen = new Set<string>();
+        const messages = session.messages.filter(isChatMessage).filter((message) => {
+          if (seen.has(message.id)) return false;
+          seen.add(message.id);
+          return true;
+        }).slice(-200);
+        if (messages.length) return { messages, expiresAt: session.expiresAt,
+          daysRemaining: Math.ceil((session.expiresAt - now) / 86400000), isExpiredPurged: false };
       }
-
-      // Valid session
-      if (Array.isArray(session.messages) && session.messages.length > 0) {
-        const daysRemaining = Math.max(
-          1,
-          Math.ceil((session.expiresAt - now) / (24 * 60 * 60 * 1000))
-        );
-        return {
-          messages: session.messages,
-          expiresAt: session.expiresAt,
-          daysRemaining,
-          isExpiredPurged: false,
-        };
-      }
+      localStorage.removeItem(CHAT_STORAGE_KEY);
     }
-  } catch (e) {
-    console.error('Error loading chat storage session:', e);
+  } catch {
+    // Storage denial/corruption must not prevent chatting in memory.
   }
-
-  // Brand new session
-  const now = Date.now();
-  const expiresAt = now + THIRTY_DAYS_MS;
-  return {
-    messages: [DEFAULT_WELCOME_MESSAGE],
-    expiresAt,
-    daysRemaining: 30,
-    isExpiredPurged: false,
-  };
+  return { messages: [DEFAULT_WELCOME_MESSAGE], expiresAt: now + THIRTY_DAYS_MS,
+    daysRemaining: 30, isExpiredPurged: expired };
 }
 
-/**
- * Persists chat messages to localStorage with a fixed 30-day expiration window.
- */
 export function saveChatSession(messages: ChatMessage[]): void {
   try {
     const now = Date.now();
     let createdAt = now;
     let expiresAt = now + THIRTY_DAYS_MS;
-
-    const existingRaw = localStorage.getItem(CHAT_STORAGE_KEY);
-    if (existingRaw) {
-      try {
-        const existing: StoredChatSession = JSON.parse(existingRaw);
-        if (existing.createdAt && existing.expiresAt) {
-          createdAt = existing.createdAt;
-          expiresAt = existing.expiresAt;
-        }
-      } catch (err) {
-        // ignore parse error, use new timestamps
+    try {
+      const existing = JSON.parse(localStorage.getItem(CHAT_STORAGE_KEY) || 'null');
+      if (validDates(existing, now) && existing.expiresAt > now) {
+        createdAt = existing.createdAt;
+        expiresAt = existing.expiresAt;
       }
-    }
-
-    const session: StoredChatSession = {
-      version: 1,
-      createdAt,
-      expiresAt,
-      lastUpdated: now,
-      messages,
-    };
-
-    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(session));
-  } catch (e) {
-    console.error('Error saving chat storage session:', e);
-  }
+    } catch { /* Replace malformed storage. */ }
+    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify({ version: 1, createdAt, expiresAt,
+      lastUpdated: now, messages: messages.filter(isChatMessage).slice(-200) } satisfies StoredChatSession));
+  } catch { /* The live chat remains usable if storage is unavailable. */ }
 }
 
 /**
@@ -160,9 +127,7 @@ export function saveChatSession(messages: ChatMessage[]): void {
 export function clearChatSession(): void {
   try {
     localStorage.removeItem(CHAT_STORAGE_KEY);
-  } catch (e) {
-    console.error('Error clearing chat session:', e);
-  }
+  } catch { /* Clearing in-memory state must still work if storage is blocked. */ }
 }
 
 /**
