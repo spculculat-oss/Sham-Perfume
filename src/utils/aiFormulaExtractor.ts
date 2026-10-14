@@ -1,4 +1,4 @@
-import { ConcentrationType, PyramidNote } from '../types/perfume';
+import type { ConcentrationType, PyramidNote } from '../types/perfume';
 
 export interface ExtractedAIPerfume {
   title: string;
@@ -13,164 +13,45 @@ export interface ExtractedAIPerfume {
   summary: string;
   pyramidNotes: PyramidNote[];
 }
+const concentrationTypes: ConcentrationType[] = ['extrait', 'edp', 'edt', 'edc', 'eau_fraiche', 'aftershave', 'mist', 'oil_pure', 'custom'];
+const inRange = (value: unknown, min: number, max: number): value is number =>
+  typeof value === 'number' && Number.isFinite(value) && value >= min && value <= max;
+const nonEmpty = (value: unknown): value is string => typeof value === 'string' && value.trim().length > 0 && value.length <= 2000;
 
+/** Never turn general advice, a safety percentage or a greeting into an invented recipe. */
 export function extractFormulaFromAIMessage(text: string): ExtractedAIPerfume | null {
-  if (!text || typeof text !== 'string') return null;
-
-  // Check if text looks like a perfume recipe / formula recommendation
-  const hasKeywords =
-    text.includes('تركيز') ||
-    text.includes('EDP') ||
-    text.includes('Extrait') ||
-    text.includes('زيت') ||
-    text.includes('كحول') ||
-    text.includes('افتتاحية') ||
-    text.includes('قاعدة') ||
-    text.includes('نوتات') ||
-    text.includes('formula') ||
-    text.includes('concentration');
-
-  if (!hasKeywords) return null;
-
-  // Detect concentration %
-  let concentration = 20;
-  const concMatch = text.match(/(\d{1,2})\s*%/);
-  if (concMatch) {
-    const val = parseInt(concMatch[1], 10);
-    if (val >= 2 && val <= 45) {
-      concentration = val;
+  if (typeof text !== 'string') return null;
+  const blocks = [...text.matchAll(/```sham-formula\s*\n([\s\S]*?)```/g)];
+  if (blocks.length !== 1) return null;
+  try {
+    const formula = JSON.parse(blocks[0][1]);
+    if (!formula || typeof formula !== 'object' || Array.isArray(formula) ||
+      !nonEmpty(formula.title) || !nonEmpty(formula.author) || !nonEmpty(formula.summary) ||
+      !concentrationTypes.includes(formula.concentrationType) ||
+      !inRange(formula.concentrationPercent, 0.01, 100) || !inRange(formula.bottleVolumeMl, 1, 10000) ||
+      !inRange(formula.alcoholPercentage, 0, 100) || !inRange(formula.waterPercent, 0, 100) ||
+      !inRange(formula.fixativePercent, 0, 100) || !inRange(formula.macerationDays, 0, 365) ||
+      formula.concentrationPercent + formula.waterPercent + formula.fixativePercent > 100 ||
+      !Array.isArray(formula.pyramidNotes) || !formula.pyramidNotes.length || formula.pyramidNotes.length > 50) return null;
+    const notes: PyramidNote[] = [];
+    for (const [index, note] of formula.pyramidNotes.entries()) {
+      if (!note || !nonEmpty(note.nameAr) || !nonEmpty(note.nameEn) ||
+        !['top', 'heart', 'base'].includes(note.category) || !inRange(note.percentageOfOil, 0.01, 100)) return null;
+      notes.push({ id: `shaheen-note-${index}`, nameAr: note.nameAr.trim(), nameEn: note.nameEn.trim(),
+        category: note.category, percentageOfOil: note.percentageOfOil });
     }
-  }
+    if (Math.abs(notes.reduce((sum, note) => sum + note.percentageOfOil, 0) - 100) > 0.01) return null;
+    return { title: formula.title.trim(), author: formula.author.trim(), summary: formula.summary.trim(),
+      concentrationType: formula.concentrationType, concentrationPercent: formula.concentrationPercent,
+      bottleVolumeMl: formula.bottleVolumeMl, alcoholPercentage: formula.alcoholPercentage,
+      waterPercent: formula.waterPercent, fixativePercent: formula.fixativePercent,
+      macerationDays: formula.macerationDays, pyramidNotes: notes };
+  } catch { return null; }
+}
 
-  // Detect concentration type
-  let concType: ConcentrationType = 'edp';
-  if (concentration >= 25 || /extrait|اكستري/i.test(text)) {
-    concType = 'extrait';
-  } else if (concentration <= 14 && /edt|تواليت/i.test(text)) {
-    concType = 'edt';
-  } else if (concentration <= 5 && /edc|كولونيا/i.test(text)) {
-    concType = 'edc';
-  }
-
-  // Detect bottle volume
-  let bottleVolume = 50;
-  const volMatch = text.match(/(\d{2,3})\s*(?:مل|ml)/i);
-  if (volMatch) {
-    const v = parseInt(volMatch[1], 10);
-    if ([10, 15, 30, 50, 100, 200].includes(v)) {
-      bottleVolume = v;
-    }
-  }
-
-  // Detect title
-  let title = 'تركيبة الخبير شاهين المخصصة';
-  const titleMatch = text.match(/(?:عطر|تركيبة|اسم العطر|توليفة)[:\s]+([^\n,.،]+)/);
-  if (titleMatch && titleMatch[1]) {
-    title = titleMatch[1].trim();
-  }
-
-  // Extract or synthesize default notes from text
-  const pyramidNotes: PyramidNote[] = [];
-
-  if (/برغموت|ليمون|حمضيات|فواكه|bergamot|citrus/i.test(text)) {
-    pyramidNotes.push({
-      id: 'ai-note-top-1',
-      nameAr: 'برغموت إيطالي فوار',
-      nameEn: 'Italian Bergamot',
-      category: 'top',
-      percentageOfOil: 20,
-      description: 'افتتاحية منعشة وفواحة',
-    });
-  }
-  if (/زعفران|هيل|فلفل|قرفة|saffron|cardamom/i.test(text)) {
-    pyramidNotes.push({
-      id: 'ai-note-top-2',
-      nameAr: 'زعفران أحمر وتوابل منعشة',
-      nameEn: 'Red Saffron & Spices',
-      category: 'top',
-      percentageOfOil: 15,
-      description: 'حرارة تابلية راقية',
-    });
-  }
-  if (/ورد|ياسمين|زهور|لافندر|rose|jasmine|lavender/i.test(text)) {
-    pyramidNotes.push({
-      id: 'ai-note-heart-1',
-      nameAr: 'ورد دمشقي وياسمين فاخر',
-      nameEn: 'Damask Rose & Jasmine',
-      category: 'heart',
-      percentageOfOil: 25,
-      description: 'قلب زهري أرستقراطي ناعم',
-    });
-  }
-  if (/أرز|صندل|خشب|cedar|sandalwood/i.test(text)) {
-    pyramidNotes.push({
-      id: 'ai-note-heart-2',
-      nameAr: 'خشب الأرز الأطلسي',
-      nameEn: 'Atlas Cedarwood',
-      category: 'heart',
-      percentageOfOil: 15,
-      description: 'عمق خشبي كلاسيكي',
-    });
-  }
-  if (/عود|بخور|oud|agarwood/i.test(text)) {
-    pyramidNotes.push({
-      id: 'ai-note-base-1',
-      nameAr: 'دهن عود معتق ملكي',
-      nameEn: 'Royal Aged Oud',
-      category: 'base',
-      percentageOfOil: 15,
-      description: 'قاعدة شرقية آسرة',
-    });
-  }
-  if (/عنبر|أمبروكسان|amber|ambroxan/i.test(text)) {
-    pyramidNotes.push({
-      id: 'ai-note-base-2',
-      nameAr: 'عنبر حوتي وأمبروكسان نقي',
-      nameEn: 'Ambergris & Ambroxan',
-      category: 'base',
-      percentageOfOil: 10,
-      description: 'إشعاع وثبات فائق لأكثر من 24 ساعة',
-    });
-  }
-
-  // If no notes matched, provide balanced default set
-  if (pyramidNotes.length === 0) {
-    pyramidNotes.push(
-      {
-        id: 'ai-n1',
-        nameAr: 'برغموت ونوتات حمضية فوارة',
-        nameEn: 'Sparkling Citrus Bergamot',
-        category: 'top',
-        percentageOfOil: 25,
-      },
-      {
-        id: 'ai-n2',
-        nameAr: 'قلب زهري وتوابل ناعمة',
-        nameEn: 'Floral Heart & Soft Spices',
-        category: 'heart',
-        percentageOfOil: 35,
-      },
-      {
-        id: 'ai-n3',
-        nameAr: 'خشب الصندل وعنبر ومسك',
-        nameEn: 'Sandalwood Amber Musk',
-        category: 'base',
-        percentageOfOil: 40,
-      }
-    );
-  }
-
-  return {
-    title,
-    author: 'الخبير شاهين (AI Master)',
-    concentrationPercent: concentration,
-    concentrationType: concType,
-    bottleVolumeMl: bottleVolume,
-    alcoholPercentage: 96,
-    waterPercent: 0,
-    fixativePercent: 1.5,
-    macerationDays: 30,
-    summary: text.slice(0, 160) + '...',
-    pyramidNotes,
-  };
+/** Only an explicit transfer command may apply an older recipe instead of asking the AI. */
+export function isFormulaTransferCommand(text: string): boolean {
+  const command = text.trim().replace(/[.!؟]+$/, '').replace(/\s+/g, ' ');
+  return /^(?:من فضلك )?(?:طبق|انقل|حوّل|حول)(?: (?:هذه|التركيبة|الوصفة|التوليفة|السابقة|الأخيرة))* (?:(?:على|في|إلى|الى) (?:ال)?حاسبة(?: التركيز)?|للحاسبة)$/.test(command) ||
+    /^(?:please )?(?:apply|transfer|send) (?:(?:this|the|last|previous) )?(?:formula|recipe|blend) to (?:the )?calculator$/i.test(command);
 }

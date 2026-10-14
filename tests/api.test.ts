@@ -12,7 +12,11 @@ test('API requests keep the same-origin URL and POST body', async (t) => {
   );
 
   assert.deepEqual(await requestApi('/api/chat', options), { reply: 'ok' });
-  assert.deepEqual(fetchMock.mock.calls[0].arguments, ['/api/chat', options]);
+  const [url, actual] = fetchMock.mock.calls[0].arguments as unknown as [string, RequestInit];
+  assert.equal(url, '/api/chat');
+  assert.equal(actual.method, options.method);
+  assert.equal(actual.body, options.body);
+  assert.ok(actual.signal instanceof AbortSignal);
 });
 
 for (const status of [404, 500, 503]) {
@@ -58,4 +62,28 @@ test('the Pages bundle rejects API calls without making any network request', as
   assert.equal(api.isStaticHosting, true);
   await assert.rejects(api.requestApi('/api/chat'), { name: 'ApiUnavailableError' });
   assert.equal(fetchMock.mock.callCount(), 0);
+});
+
+test('API timeouts abort stalled requests and service error codes are preserved', async (t) => {
+  const mock = t.mock.method(globalThis, 'fetch', ((_url: unknown, init: RequestInit) => new Promise((_resolve, reject) => {
+    init.signal?.addEventListener('abort', () => reject(init.signal?.reason), { once: true });
+  })) as typeof fetch);
+  await assert.rejects(requestApi('/api/chat', undefined, 10), { name: 'TimeoutError' });
+  mock.mock.mockImplementation(async () => new Response(JSON.stringify({ code: 'PROVIDER_NOT_CONFIGURED' }), {
+    status: 503, headers: jsonHeaders,
+  }));
+  await assert.rejects(requestApi('/api/chat'), { status: 503, code: 'PROVIDER_NOT_CONFIGURED' });
+});
+
+test('caller cancellation reaches the actual browser request', async (t) => {
+  let observedSignal: AbortSignal | undefined;
+  t.mock.method(globalThis, 'fetch', ((_url: unknown, init: RequestInit) => new Promise((_resolve, reject) => {
+    observedSignal = init.signal as AbortSignal;
+    observedSignal.addEventListener('abort', () => reject(observedSignal?.reason), { once: true });
+  })) as typeof fetch);
+  const controller = new AbortController();
+  const pending = requestApi('/api/chat', { signal: controller.signal });
+  controller.abort();
+  await assert.rejects(pending, { name: 'AbortError' });
+  assert.equal(observedSignal?.aborted, true);
 });

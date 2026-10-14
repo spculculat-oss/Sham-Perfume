@@ -92,5 +92,39 @@ test('chat rejects missing messages with a real validation error', async () => {
     body: '{}',
   });
   assert.equal(response.status, 400);
-  assert.deepEqual(await response.json(), { error: 'Message is required' });
+  assert.deepEqual(await response.json(), { error: 'Message is required', code: 'INVALID_MESSAGE' });
+});
+
+test('chat refuses malformed bodies, history and unknown providers without creating a canned answer', async () => {
+  for (const body of [null, [], { message: '   ' }, { message: 'hello', model: 'fake' },
+    { message: 'hello', conversationHistory: [null] }, { message: 'hello', conversationHistory: {} },
+    { message: 'hello', language: 'unsupported' }, { message: 'x'.repeat(4001) }]) {
+    const response = await fetch(`${baseUrl}/api/chat`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+    });
+    assert.equal(response.status, 400);
+    const data = await response.json();
+    assert.equal(typeof data.error, 'string');
+    assert.equal(data.reply, undefined);
+  }
+});
+
+test('chat without credentials gives an actionable 503 instead of impersonating four AI engines', async () => {
+  const response = await fetch(`${baseUrl}/api/chat`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'مرحبا' }),
+  });
+  assert.equal(response.status, 503);
+  const data = await response.json();
+  assert.equal(data.code, 'PROVIDER_NOT_CONFIGURED');
+  assert.equal(data.reply, undefined);
+  assert.equal(data.perspectives, undefined);
+});
+
+test('invalid JSON and oversized payloads return JSON errors', async () => {
+  for (const [body, status] of [['{broken', 400], [JSON.stringify({ message: 'x'.repeat(140000) }), 413]] as const) {
+    const response = await fetch(`${baseUrl}/api/chat`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body });
+    assert.equal(response.status, status);
+    assert.match(response.headers.get('content-type') || '', /application\/json/);
+    assert.equal((await response.json()).code, 'INVALID_REQUEST');
+  }
 });
