@@ -138,6 +138,16 @@ export const Footer: React.FC<FooterProps> = ({
                   دليل التعتيق وجداول المثبتات الكيميائية
                 </button>
               </li>
+              <li>
+                <button
+                  onClick={() => setActiveTab('maceration_simulator')}
+                  className="hover:text-amber-400 transition-colors cursor-pointer flex items-center gap-1.5 text-amber-300 font-semibold"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                  <span>محاكي التعتيق الزمني وتاريخ نضوج العطر</span>
+                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">جديد</span>
+                </button>
+              </li>
             </ul>
           </div>
 

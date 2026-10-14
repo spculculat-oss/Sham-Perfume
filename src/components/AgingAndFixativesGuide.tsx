@@ -12,14 +12,22 @@ import {
 } from 'lucide-react';
 import ingredientsImg from '../assets/images/perfume_ingredients_pyramid_1791692429360.jpg';
 import { SupportedLanguage } from '../types/i18n';
+import { FormulationState } from '../types/perfume';
 import { isRTL } from '../utils/localizedContent';
+import { MacerationTimeSimulator } from './MacerationTimeSimulator';
 
 interface AgingAndFixativesGuideProps {
   currentLang?: SupportedLanguage;
+  formulation?: FormulationState;
+  onOpenConsultation?: (prompt: string) => void;
+  onNavigateToTab?: (tab: string) => void;
 }
 
 export const AgingAndFixativesGuide: React.FC<AgingAndFixativesGuideProps> = ({
   currentLang = 'ar',
+  formulation,
+  onOpenConsultation,
+  onNavigateToTab,
 }) => {
   const rtl = isRTL(currentLang);
 
@@ -29,13 +37,13 @@ export const AgingAndFixativesGuide: React.FC<AgingAndFixativesGuideProps> = ({
       <div className="border-b border-stone-200/80 pb-5">
         <h2 className="text-xl sm:text-2xl font-bold text-stone-900 font-serif-luxury">
           {rtl
-            ? 'دليل التعتيق، المثبتات، ومعايير نقاء المعمل'
+            ? 'دليل التعتيق، المثبتات، ومحاكي نضوج العطر المعملي'
             : 'Maceration Protocol, Fixatives & Laboratory Standards'}
         </h2>
         <p className="text-stone-500 text-sm mt-1">
           {rtl
-            ? 'المرجع العلمي لصناع العطور: فترات التعتيق النموذجية، خواص المذيبات، وكيفية مضاعفة الثبات والفوحان بأمان.'
-            : 'Scientific guide for perfumers: benchmark maceration timelines, solvent mechanics, and safe sillage/longevity optimization.'}
+            ? 'المرجع العلمي لصناع العطور: محاكي التعتيق الزمني، فترات التعتيق النموذجية، خواص المذيبات، وكيفية مضاعفة الثبات والفوحان بأمان.'
+            : 'Scientific guide for perfumers: benchmark maceration timelines, maturation forecasting, and safe sillage/longevity optimization.'}
         </p>
       </div>
 
@@ -81,6 +89,15 @@ export const AgingAndFixativesGuide: React.FC<AgingAndFixativesGuideProps> = ({
           </div>
         </div>
       </div>
+
+      {/* FEATURED TOOL: MACERATION TIME SIMULATOR */}
+      <MacerationTimeSimulator
+        currentLang={currentLang}
+        initialMacerationDays={formulation ? (formulation.concentrationType === 'extrait' ? 50 : 30) : 30}
+        formulaTitle={rtl ? 'تركيبة معمل الشام المختارة' : 'Selected Formulation'}
+        batchCode="BATCH-2026-SHAM"
+        onOpenConsultation={onOpenConsultation}
+      />
 
       {/* Grid: Maceration Timeline by Fragrance Family */}
       <div className="space-y-4">

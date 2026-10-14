@@ -18,6 +18,9 @@ import {
   Lightbulb,
   ExternalLink,
   Sliders,
+  Hourglass,
+  Calendar,
+  Bot,
 } from 'lucide-react';
 import {
   CalculationResult,
@@ -48,6 +51,8 @@ interface ConcentrationCalculatorProps {
   onNavigateToTab?: (tab: string) => void;
   currentLang?: SupportedLanguage;
   currencyCode?: string;
+  macerationDays?: number;
+  setMacerationDays?: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = ({
@@ -61,6 +66,8 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
   onNavigateToTab,
   currentLang: propLang,
   currencyCode: propCurrency,
+  macerationDays = 30,
+  setMacerationDays,
 }) => {
   const { currentLang: ctxLang, t } = useLanguage();
   const effectiveLang = propLang || ctxLang || 'ar';
@@ -732,6 +739,77 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                           : 'Batch compounding ensures olfactory uniformity across all bottles and cuts waste by up to 12%.'}
                       </div>
                     )}
+                  </div>
+                </div>
+
+                {/* Maceration Period & Predicted Maturation Date Box */}
+                <div className="mt-4 pt-4 border-t border-stone-200/80 bg-gradient-to-br from-amber-50/70 via-stone-50 to-amber-50/40 p-4 rounded-xl border border-amber-200/80 space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <Hourglass className="w-4 h-4 text-amber-800 shrink-0" />
+                      <div>
+                        <span className="font-bold text-xs text-stone-900 block">
+                          {isRTL ? 'فترة التعتيق وتاريخ نضوج العطر المتوقع (محاكي التعتيق الزمني)' : 'Maceration Period & Predicted Maturation Date'}
+                        </span>
+                        <span className="text-[10px] text-stone-500">
+                          {isRTL ? 'حساب تاريخ الانتهاء المتوقع بناءً على أيام النظام وتاريخ البدء' : 'Calculates exact completion date from start date & days'}
+                        </span>
+                      </div>
+                    </div>
+
+                    {onNavigateToTab && (
+                      <button
+                        type="button"
+                        onClick={() => onNavigateToTab('maceration_simulator')}
+                        className="px-2.5 py-1 rounded-lg bg-amber-800 hover:bg-amber-900 text-white font-bold text-[11px] flex items-center gap-1 shadow-xs transition-colors cursor-pointer self-start sm:self-auto"
+                      >
+                        <Calendar className="w-3 h-3 text-amber-300" />
+                        <span>{isRTL ? 'محاكي التعتيق الزمني ⏳' : 'Aging Simulator ⏳'}</span>
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+                    <div className="sm:col-span-5 flex items-center gap-2">
+                      <div className="w-full">
+                        <label className="text-[10px] font-bold text-stone-600 block mb-1">
+                          {isRTL ? 'أيام التعتيق المقررة:' : 'Maceration Days:'}
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="number"
+                            min="3"
+                            max="365"
+                            value={macerationDays}
+                            onChange={(e) => setMacerationDays?.(Math.max(1, parseInt(e.target.value) || 1))}
+                            className="w-24 p-2 bg-white border border-stone-300 rounded-lg text-xs font-bold font-mono-numbers text-stone-900 focus:outline-none focus:ring-1 focus:ring-amber-800"
+                          />
+                          <span className="text-xs text-stone-500 font-medium">
+                            {isRTL ? 'يوماً' : 'days'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-7 bg-white p-2.5 rounded-lg border border-amber-300/80 shadow-2xs space-y-0.5">
+                      <div className="flex items-center justify-between text-[10px]">
+                        <span className="font-semibold text-stone-500 flex items-center gap-1">
+                          <Calendar className="w-3 h-3 text-amber-700" />
+                          <span>{isRTL ? 'تاريخ الانتهاء المتوقع للنضوج:' : 'Target Maturation Date:'}</span>
+                        </span>
+                        <span className="font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded text-[9px] border border-emerald-200">
+                          {isRTL ? 'تلقائي بالنظام' : 'System Auto'}
+                        </span>
+                      </div>
+                      <div className="font-bold text-xs text-stone-950 font-serif-luxury">
+                        {new Date(Date.now() + (macerationDays || 30) * 86400000).toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', {
+                          weekday: 'long',
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        })}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1503,6 +1581,47 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                       {isRTL
                         ? 'دليل وشرح جميع معايير الحاسبة والمعمل 📖'
                         : 'Formulation Criteria & Chemistry Guide 📖'}
+                    </span>
+                  </button>
+
+                  {/* Maceration Time Simulator Direct Button */}
+                  {onNavigateToTab && (
+                    <button
+                      type="button"
+                      onClick={() => onNavigateToTab('maceration_simulator')}
+                      className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-900 to-stone-900 hover:from-amber-950 hover:to-black text-amber-300 font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer border border-amber-500/30"
+                    >
+                      <Hourglass className="w-4 h-4 text-amber-400" />
+                      <span>
+                        {isRTL
+                          ? 'محاكي التعتيق الزمني وتاريخ نضوج العطر ⏳'
+                          : 'Maceration & Aging Time Simulator ⏳'}
+                      </span>
+                    </button>
+                  )}
+
+                  {/* Ask Shahin AI Button */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const expectedDate = new Date(Date.now() + (macerationDays || 30) * 86400000).toLocaleDateString('ar-SA', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      });
+                      const prompt = `أيها الخبير شاهين (شيخ العطارين)، أعمل على تركيبة بتركيز ${formulation.concentrationPercent}% بحجم ${formulation.bottleVolumeMl} مل (وزن الزيت: ${result.oilWeightGrams.toFixed(2)} جم، الكحول: ${result.alcoholWeightGrams.toFixed(2)} جم).
+مدة التعتيق المقررة: ${macerationDays} يوماً، وتاريخ الانتهاء المتوقع: ${expectedDate}.
+ما هو تقييمك المخبري لتوازن هذه النسب؟ وكيف أضمن أعلى ثبات وفوحان وأفضل نتيجة تعتيق؟`;
+                      window.dispatchEvent(new CustomEvent('open-ai-chat-with-prompt', { detail: prompt }));
+                    }}
+                    className="w-full py-2.5 px-3 bg-amber-50 hover:bg-amber-100 text-amber-950 font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer border border-amber-300/80"
+                  >
+                    <Bot className="w-4 h-4 text-amber-800" />
+                    <span>
+                      {isRTL
+                        ? 'استشارة الخبير شاهين حول نسب وتعتيق التركيبة 🧙‍♂️'
+                        : 'Consult Master Shahin on Formulation & Aging 🧙‍♂️'}
                     </span>
                   </button>
                 </div>

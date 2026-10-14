@@ -10,6 +10,7 @@ import { FormulaLibrary } from './components/FormulaLibrary';
 import { WorldPerfumesLibrary } from './components/WorldPerfumesLibrary';
 import { RawMaterialsEncyclopedia } from './components/RawMaterialsEncyclopedia';
 import { AgingAndFixativesGuide } from './components/AgingAndFixativesGuide';
+import { MacerationTimeSimulator } from './components/MacerationTimeSimulator';
 import { ManufacturingSpecSheet } from './components/ManufacturingSpecSheet';
 import { PerfumerAIChatbot } from './components/PerfumerAIChatbot';
 import { PerfumerMasterLabView } from './components/PerfumerMasterLabView';
@@ -313,6 +314,7 @@ export default function App() {
   const [batchCode, setBatchCode] = useState('MYR-B01');
   const [formulaNotes, setFormulaNotes] = useState('تركيبة متوازنة شرقية غربية معتقة.');
   const [macerationDays, setMacerationDays] = useState(30);
+  const [macerationStartDate, setMacerationStartDate] = useState<string>(() => new Date().toISOString().split('T')[0]);
 
   // Fragrance pyramid notes
   const [pyramidNotes, setPyramidNotes] = useState<PyramidNote[]>(
@@ -717,6 +719,8 @@ export default function App() {
               onNavigateToTab={(tab) => navigateToTab(tab)}
               currentLang={currentLang}
               currencyCode={currentEnvironment.currencyCode}
+              macerationDays={macerationDays}
+              setMacerationDays={setMacerationDays}
             />
           )}
 
@@ -788,7 +792,32 @@ export default function App() {
         )}
 
         {activeTab === 'guide' && (
-          <AgingAndFixativesGuide currentLang={currentLang} />
+          <AgingAndFixativesGuide
+            currentLang={currentLang}
+            formulation={formulation}
+            onOpenConsultation={(prompt) => {
+              window.dispatchEvent(new CustomEvent('open-ai-chat-with-prompt', { detail: prompt }));
+            }}
+            onNavigateToTab={(tab) => navigateToTab(tab)}
+          />
+        )}
+
+        {activeTab === 'maceration_simulator' && (
+          <div className="space-y-6 animate-in fade-in">
+            <MacerationTimeSimulator
+              currentLang={currentLang}
+              initialStartDate={macerationStartDate}
+              initialMacerationDays={macerationDays}
+              formulaTitle={formulaTitle}
+              batchCode={batchCode}
+              onMacerationDaysChange={(days) => setMacerationDays(days)}
+              onStartDateChange={(date) => setMacerationStartDate(date)}
+              onOpenConsultation={(prompt) => {
+                window.dispatchEvent(new CustomEvent('open-ai-chat-with-prompt', { detail: prompt }));
+              }}
+              onNavigateToTab={(tab) => navigateToTab(tab)}
+            />
+          </div>
         )}
       </main>
 

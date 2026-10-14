@@ -135,6 +135,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
     portal_master_ai: 'Multi-AI synthesis (Gemini + DeepSeek + ChatGPT + Claude) in one lab',
     portal_library: 'Secure storage, cloud sync, and printable manufacturing specs',
     portal_guide: 'Cold maceration protocol, filtration, and longevity science',
+    portal_maceration_simulator: 'Forecasting exact perfume maturation completion date with Master Shahin advice',
     portal_environment: 'Worldwide coverage adapting formula to local temperature & humidity',
     portal_privacy: 'Full encryption of formulas, instant export, and GDPR compliance',
   };
@@ -676,7 +677,59 @@ export const HomeHub: React.FC<HomeHubProps> = ({
       ],
     },
 
-    // 11. Country, Climate & Facility Portal
+    // 11. Maceration Time Simulator Portal (محاكي التعتيق الزمني وتاريخ نضوج العطر)
+    {
+      id: 'portal_maceration_simulator',
+      targetTab: 'maceration_simulator',
+      category: 'lab',
+      titleAr: 'محاكي التعتيق الزمني وتاريخ نضوج العطر',
+      titleEn: 'Maceration Time Simulator & Maturation Forecast',
+      subtitleAr: 'حساب تاريخ الانتهاء المتوقع لنضوج العطر بدقة بناءً على تاريخ البدء وأيام التعتيق المقررة مع الخبير شاهين',
+      accentColor: 'from-amber-700 to-amber-950 text-amber-400 bg-amber-500/10',
+      borderGlow: 'hover:border-amber-500/50 hover:shadow-amber-950/20',
+      icons: [Hourglass, Calendar, Clock, Sparkles],
+      statsBadge: 'معتمد مع الخبير شاهين 🧙‍♂️',
+      news: [
+        {
+          id: 'm1',
+          badge: 'تاريخ الانتهاء الدقيق',
+          title: 'حساب تاريخ نضوج العطر بدقة متناهية بناءً على تاريخ البدء وأيام النظام',
+          description: 'حدد تاريخ بدء الخلط وسيقوم النظام فوراً بحساب اليوم الدقيق لاكتمال التفاعلات الكيميائية والإستيرية داخل الزجاجة.',
+          metric: 'دقة باليوم والتقويم',
+          timestamp: 'خوارزمية معملية حية',
+          actionHint: 'حساب تاريخ نضوج تشغيلتك',
+        },
+        {
+          id: 'm2',
+          badge: 'تنبيه التقويم و iCal',
+          title: 'تنزيل ملف تقويم (.ics) لتنبيهك بهاتفك في يوم اكتمال نضوج العطر',
+          description: 'اربط تاريخ انتهاء التعتيق بتقويم هاتفك ليأتيك إشعار فوري في الموعد المحدد لبدء الفلترة والتعبئة دون نسيان.',
+          metric: 'تصدير .ICS فوري',
+          timestamp: 'إشعار ذكي',
+          actionHint: 'تفعيل تنبيه التقويم',
+        },
+        {
+          id: 'm3',
+          badge: 'استشارة الخبير شاهين',
+          title: 'توجيهات شيخ العطارين شاهين لكل عائلة عطرية وظروف الحفظ المثالية',
+          description: 'احصل على نصيحة شاهين الحصرية لتفادي الأكسدة، معايير التعتيق البارد (4°C)، واختيار أوعية الزجاج العسلي المعتم.',
+          metric: 'استشارة فورية 🧙‍♂️',
+          timestamp: 'حكمة شيخ العطارين',
+          actionHint: 'استشارة الخبير شاهين الآن',
+        },
+        {
+          id: 'm4',
+          badge: 'بطاقة زجاجة المعمل',
+          title: 'توليد ونسخ بطاقة التعتيق الفورية للصقها على قوارير المختبر',
+          description: 'بطاقة توثيق معملية تحوي اسم التركيبة، كود الباتش، تاريخ البدء، وتاريخ الانتهاء المتوقع لحفظ النظام في ورشتك.',
+          metric: 'بطاقة مخبرية جاهزة',
+          timestamp: 'توثيق صناعي',
+          actionHint: 'نسخ بطاقة الزجاجة',
+        },
+      ],
+    },
+
+    // 12. Country, Climate & Facility Portal
     {
       id: 'portal_country',
       targetTab: 'country_modal',

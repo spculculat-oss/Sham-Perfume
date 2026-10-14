@@ -72,6 +72,7 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'alcohol', label: t('nav_alcohol', currentLang) },
     { id: 'costing', label: t('nav_costing', currentLang) },
     { id: 'master_ai', label: t('nav_ai_master', currentLang) },
+    { id: 'maceration_simulator', label: t('nav_maceration', currentLang, 'محاكي التعتيق الزمني') },
     { id: 'library', label: t('nav_library', currentLang) },
     { id: 'guide', label: t('nav_guide', currentLang) },
   ];
@@ -132,6 +133,9 @@ export const Header: React.FC<HeaderProps> = ({
               )}
               {item.id === 'master_ai' && (
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              )}
+              {item.id === 'maceration_simulator' && (
+                <span className="text-[10px] text-amber-500 font-bold">⏳</span>
               )}
               {item.id === 'world_perfumes' && (
                 <span className="text-[10px] text-amber-600 font-bold">★</span>

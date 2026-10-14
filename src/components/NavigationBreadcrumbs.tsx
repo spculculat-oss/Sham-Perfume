@@ -55,6 +55,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
     alcohol: { label: t('nav_alcohol', currentLang), icon: Hourglass },
     costing: { label: t('nav_costing', currentLang), icon: DollarSign },
     master_ai: { label: t('nav_ai_master', currentLang), icon: Bot },
+    maceration_simulator: { label: isRtl ? 'محاكي التعتيق الزمني' : 'Maceration Simulator', icon: Hourglass },
     library: { label: t('nav_library', currentLang), icon: BookMarked },
     guide: { label: t('nav_guide', currentLang), icon: BookOpen },
   };
@@ -64,6 +65,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
 
   const quickLinks = [
     { id: 'concentration', label: isRtl ? 'حاسبة التراكيز' : 'Concentration', icon: FlaskConical },
+    { id: 'maceration_simulator', label: isRtl ? 'محاكي التعتيق' : 'Aging Simulator', icon: Hourglass },
     { id: 'pyramid', label: isRtl ? 'الهرم العطري' : 'Pyramid', icon: Layers },
     { id: 'alcohol', label: isRtl ? 'تخفيف الكحول' : 'Alcohol', icon: Hourglass },
     { id: 'costing', label: isRtl ? 'التكاليف والأرباح' : 'Costing', icon: DollarSign },
