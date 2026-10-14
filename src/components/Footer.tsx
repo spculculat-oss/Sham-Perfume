@@ -196,7 +196,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <span className="text-sm font-bold text-white flex items-center gap-2">
                   <span>{L('lang_title')}</span>
                   <span className="text-[10px] text-amber-400 font-normal border border-amber-500/30 px-1.5 py-0.2 rounded-full">
-                    Platform Language (10 Languages)
+                    Platform Language ({SUPPORTED_LANGUAGES.length} Languages)
                   </span>
                 </span>
                 <span className="text-xs text-stone-400 block mt-0.5">
