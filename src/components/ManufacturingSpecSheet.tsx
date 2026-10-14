@@ -11,7 +11,7 @@ import { calculatePyramidBreakdown, formatNum } from '../utils/calculations';
 import { UserDetailedAddress, FACILITY_TYPE_LABELS } from '../types/address';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL, getCommonLabel } from '../utils/localizedContent';
-import { LText, makeT, fmt, pickArEn } from '../utils/localize';
+import { LText, makeT, fmt, pickArEn, localeDate } from '../utils/localize';
 
 interface ManufacturingSpecSheetProps {
   formulaTitle: string;
@@ -877,6 +877,13 @@ export const ManufacturingSpecSheet: React.FC<ManufacturingSpecSheetProps> = ({
   const targetDate = new Date(Date.now() + macerationDays * 24 * 60 * 60 * 1000)
     .toISOString()
     .split('T')[0];
+  const dateDisplayOpts: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+  const currentDateDisplay = localeDate(currentLang, new Date(), dateDisplayOpts);
+  const targetDateDisplay = localeDate(
+    currentLang,
+    new Date(Date.now() + macerationDays * 24 * 60 * 60 * 1000),
+    dateDisplayOpts
+  );
 
   const breakdown = calculatePyramidBreakdown(
     pyramidNotes,
@@ -997,11 +1004,11 @@ export const ManufacturingSpecSheet: React.FC<ManufacturingSpecSheetProps> = ({
               </div>
               <div>
                 <span className="text-stone-400">{L('date_issued')}</span>
-                <span>{currentDate}</span>
+                <span>{currentDateDisplay}</span>
               </div>
               <div>
                 <span className="text-stone-400">{L('maceration_done')}</span>
-                <span className="font-semibold text-amber-900">{targetDate} ({macerationDays} {L('days')})</span>
+                <span className="font-semibold text-amber-900">{targetDateDisplay} ({macerationDays} {L('days')})</span>
               </div>
             </div>
           </div>

@@ -329,7 +329,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
       }
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'ar-SA';
+      utterance.lang = LOCALE_MAP[currentLang] || 'ar-SA';
       utterance.rate = 0.95;
       utterance.onend = () => setIsSpeaking(false);
       utterance.onerror = () => setIsSpeaking(false);

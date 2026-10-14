@@ -16,7 +16,7 @@ import { SavedFormula } from '../types/perfume';
 import { CURATED_FORMULA_PRESETS } from '../data/presets';
 import { SupportedLanguage } from '../types/i18n';
 import { getCommonLabel, isRTL } from '../utils/localizedContent';
-import { LText, makeT, fmt } from '../utils/localize';
+import { LText, makeT, fmt, localeDate } from '../utils/localize';
 
 interface FormulaLibraryProps {
   currentLang?: SupportedLanguage;
@@ -266,7 +266,7 @@ export const FormulaLibrary: React.FC<FormulaLibraryProps> = ({
                   {/* Top Meta */}
                   <div className="flex items-center justify-between text-xs text-stone-400 font-mono-numbers">
                     <span>{formula.batchCode}</span>
-                    <span>{formula.dateCreated}</span>
+                    <span>{localeDate(currentLang, new Date(formula.dateCreated), { day: 'numeric', month: 'long', year: 'numeric' })}</span>
                   </div>
 
                   {/* Title & Author */}
