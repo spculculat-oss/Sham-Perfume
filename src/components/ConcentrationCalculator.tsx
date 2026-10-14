@@ -36,9 +36,115 @@ import {
 } from '../data/presets';
 import { formatNum } from '../utils/calculations';
 import { useLanguage } from '../context/LanguageContext';
+import { LText, makeT, fmt, LOCALE_MAP } from '../utils/localize';
 import { FragrancePyramidGraphic } from './FragrancePyramidGraphic';
 import { CalculatorCriteriaGuide } from './CalculatorCriteriaGuide';
 import { VisualScaleSimulator } from './VisualScaleSimulator';
+
+const S = {
+  lab_badge: { ar: 'معمل معيار شام لدقة صناعة العطور', en: 'Sham Perfumery Laboratory Standard', fr: 'Laboratoire Standard Sham Parfumerie', es: 'Laboratorio estándar de perfumería Sham', it: 'Laboratorio standard della profumeria Sham', de: 'Sham Parfümerie-Laborstandard', ru: 'Парфюмерная лаборатория стандарта Sham', zh: 'Sham 香水工艺实验室标准', tr: 'Sham Parfümeri Laboratuvar Standardı', fa: 'آزمایشگاه استاندارد صنعت عطر شام' },
+  scale_badge: { ar: '⚖️ محاكاة وزن المواد والميزان', en: '⚖️ Visual Scale Simulator', fr: '⚖️ Simulateur de balance visuelle', es: '⚖️ Simulador visual de balanza', it: '⚖️ Simulatore visivo di bilancia', de: '⚖️ Visuelle Waagen-Simulation', ru: '⚖️ Визуальный симулятор весов', zh: '⚖️ 视觉称量模拟器', tr: '⚖️ Görsel terazi simülatörü', fa: '⚖️ شبیه‌ساز بصری ترازو' },
+  back_to_formulation: { ar: 'العودة لحاسبة التركيب ←', en: 'Back to Formulation ←', fr: 'Retour à la formulation ←', es: 'Volver a la formulación ←', it: 'Torna alla formulazione ←', de: 'Zurück zur Formulierung ←', ru: 'К формуле ←', zh: '返回配方 ←', tr: 'Formülasyona dön ←', fa: 'بازگشت به فرمولاسیون ←' },
+  return_to_calc: { ar: 'العودة لمقادير الحاسبة ←', en: 'Return to Calculator ←', fr: 'Retour au calculateur ←', es: 'Volver a la calculadora ←', it: 'Torna al calcolatore ←', de: 'Zurück zum Rechner ←', ru: 'К калькулятору ←', zh: '返回计算器 ←', tr: 'Hesaplayıcıya dön ←', fa: 'بازگشت به ماشین‌حساب ←' },
+  open_pyramid: { ar: 'فتح جرافيك الهرم التفاعلي 💨', en: 'Open Interactive Pyramid 💨', fr: 'Ouvrir la pyramide interactive 💨', es: 'Abrir pirámide interactiva 💨', it: 'Apri piramide interattiva 💨', de: 'Interaktive Pyramide öffnen 💨', ru: 'Открыть интерактивную пирамиду 💨', zh: '打开互动金字塔 💨', tr: 'Etkileşimli piramidi aç 💨', fa: 'باز کردن هرم تعاملی 💨' },
+  bottle_guide_tip: { ar: 'اقرأ شرح معيار حجم الزجاجة والفراغ الهوائي', en: 'Read bottle volume & headspace guide', fr: 'Guide volume & espace de tête', es: 'Guía de volumen y espacio de cabeza', it: 'Guida volume e spazio di testa', de: 'Leitfaden Volumen & Luftraum', ru: 'Руководство: объём и «хедспейс»', zh: '瓶容量与顶空指南', tr: 'Şişe hacmi ve hava boşluğu kılavuzu', fa: 'راهنمای حجم بطری و فضای سر' },
+  criterion_guide: { ar: 'شرح المعيار', en: 'Criterion Guide', fr: 'Guide du critère', es: 'Guía del criterio', it: 'Guida del criterio', de: 'Kriterien-Leitfaden', ru: 'Описание критерия', zh: '标准说明', tr: 'Kriter kılavuzu', fa: 'راهنمای معیار' },
+  current_volume_lbl: { ar: 'الحجم الحالي: ', en: 'Current: ', fr: 'Actuel : ', es: 'Actual: ', it: 'Attuale: ', de: 'Aktuell: ', ru: 'Текущий: ', zh: '当前：', tr: 'Mevcut: ', fa: 'فعلی: ' },
+  headspace_std: { ar: 'معيار الحجم والفراغ الهوائي (Headspace Standard):', en: 'Bottle Volume & Headspace Margin Standard:', fr: 'Standard volume & espace de tête :', es: 'Estándar de volumen y espacio de cabeza:', it: 'Standard volume e spazio di testa:', de: 'Standard Volumen & Luftraum:', ru: 'Стандарт объёма и «хедспейса»:', zh: '瓶容量与顶空标准：', tr: 'Hacim ve hava boşluğu standardı:', fa: 'استاندارد حجم و فضای سر:' },
+  custom_volume: { ar: 'تخصيص حجم يدوي', en: 'Custom Volume Slider', fr: 'Curseur de volume personnalisé', es: 'Control de volumen personalizado', it: 'Slider volume personalizzato', de: 'Custom-Volumen-Regler', ru: 'Свой ползунок объёма', zh: '自定义容量滑块', tr: 'Özel hacim kaydırıcısı', fa: 'اسلایدر حجم دلخواه' },
+  conc_guide_tip: { ar: 'اقرأ شرح معيار نسب التركيز', en: 'Read concentration grade guide', fr: 'Guide des grades de concentration', es: 'Guía de grados de concentración', it: 'Guida dei gradi di concentrazione', de: 'Leitfaden Konzentration', ru: 'Руководство по степени концентрации', zh: '浓度等级指南', tr: 'Konsantrasyon derecesi kılavuzu', fa: 'راهنمای درجه غلظت' },
+  current_conc_lbl: { ar: 'التركيز الحالي: ', en: 'Current: ', fr: 'Actuel : ', es: 'Actual: ', it: 'Attuale: ', de: 'Aktuell: ', ru: 'Текущая: ', zh: '当前：', tr: 'Mevcut: ', fa: 'فعلی: ' },
+  conc_std: { ar: 'معيار التركيز العطري الدولي (Fragrance Concentration Standard):', en: 'International Fragrance Concentration Standard:', fr: 'Standard international de concentration :', es: 'Estándar internacional de concentración:', it: 'Standard internazionale di concentrazione:', de: 'Internationaler Konzentrationsstandard:', ru: 'Международный стандарт концентрации:', zh: '国际香水浓度标准：', tr: 'Uluslararası konsantrasyon standardı:', fa: 'استاندارد بین‌المللی غلظت عطر:' },
+  fine_adjust: { ar: 'تعديل النسبة بدقة (1% إلى 50%)', en: 'Fine Adjustment (1% to 50%)', fr: 'Ajustement fin (1% à 50%)', es: 'Ajuste fino (1% a 50%)', it: 'Regolazione fine (1%–50%)', de: 'Feineinstellung (1% bis 50%)', ru: 'Тонкая настройка (1%–50%)', zh: '精细调节（1% 至 50%）', tr: 'İnce ayar (%1–%50)', fa: 'تنظیم دقیق (۱٪ تا ۵۰٪)' },
+  live_scale_lbl: { ar: 'محاكاة وزن المواد الخام اللحظية (دقة 0.01g)', en: 'Live Raw Materials Scale Simulation (0.01g)', fr: 'Simulation live de pesée (0,01 g)', es: 'Simulación de pesaje en vivo (0,01 g)', it: 'Simulazione pesata dal vivo (0,01 g)', de: 'Live-Wiegung (0,01 g)', ru: 'Живая симуляция весов (0,01 г)', zh: '实时称量模拟（0.01g）', tr: 'Canlı hammadde tartım simülasyonu (0,01g)', fa: 'شبیه‌سازی زنده وزن مواد (دقت ۰٫۰۱g)' },
+  net_lbl: { ar: 'صافي الزجاجة:', en: 'Net:', fr: 'Net :', es: 'Neto:', it: 'Netto:', de: 'Netto:', ru: 'Нетто:', zh: '净含量：', tr: 'Net: ', fa: 'خالص بطری:' },
+  oil_mass: { ar: 'الزيت العطري', en: 'Oil Mass', fr: 'Masse d’huile', es: 'Masa de aceite', it: 'Massa oleosa', de: 'Ölmasse', ru: 'Масса масла', zh: '油的质量', tr: 'Yağ kütlesi', fa: 'جرم روغن' },
+  drops_word: { ar: 'قطرة', en: 'drops', fr: 'gouttes', es: 'gotas', it: 'gocce', de: 'Tropfen', ru: 'капель', zh: '滴', tr: 'damla', fa: 'قطره' },
+  ethanol_mass: { ar: 'الكحول الإيثيلي', en: 'Ethanol Mass', fr: 'Masse d’éthanol', es: 'Masa de etanol', it: 'Massa di etanolo', de: 'Ethanolmasse', ru: 'Масса этанола', zh: '乙醇质量', tr: 'Etanol kütlesi', fa: 'جرم اتانول' },
+  fixative_mass: { ar: 'المثبت العطري', en: 'Fixative Mass', fr: 'Masse de fixateur', es: 'Masa de fijador', it: 'Massa fissante', de: 'Fixiermasse', ru: 'Масса фиксатора', zh: '固定剂质量', tr: 'Sabitleyici kütlesi', fa: 'جرم ثابت‌کننده' },
+  fixative_zero: { ar: 'المثبت: 0 جم', en: 'Fixative: 0g', fr: 'Fixateur : 0 g', es: 'Fijador: 0 g', it: 'Fissante: 0 g', de: 'Fixativ: 0 g', ru: 'Фиксатор: 0 г', zh: '固定剂：0g', tr: 'Sabitleyici: 0g', fa: 'ثابت‌کننده: ۰ گرم' },
+  optional_lbl: { ar: '(اختياري)', en: '(Optional)', fr: '(Facultatif)', es: '(Opcional)', it: '(Opzionale)', de: '(Optional)', ru: '(необязательно)', zh: '（可选）', tr: '(İsteğe bağlı)', fa: '(اختیاری)' },
+  full_simulator: { ar: 'المحاكي التفاعلي الموسع ⚖️', en: 'Full Simulator ⚖️', fr: 'Simulateur complet ⚖️', es: 'Simulador completo ⚖️', it: 'Simulatore completo ⚖️', de: 'Vollsimulator ⚖️', ru: 'Полный симулятор ⚖️', zh: '完整模拟器 ⚖️', tr: 'Tam simülatör ⚖️', fa: 'شبیه‌ساز کامل ⚖️' },
+  ethanol_opt_96: { ar: '96% - إيثانول عضوي فاخر (المعيار الدولي)', en: '96% - Cosmetic Perfumers Ethanol (Global Standard)', fr: '96 % - Éthanol parfumerie (standard mondial)', es: '96% - Etanol de perfumería (estándar global)', it: '96% - Etanolo da profumeria (standard globale)', de: '96 % - Parfümerie-Ethanol (Weltstandard)', ru: '96% — парфюмерный этанол (мировой стандарт)', zh: '96% - 化妆品级调香乙醇（全球标准）', tr: '%96 - Parfümeri etanolü (küresel standart)', fa: '٪۹۶ - اتانول عطرسازی (استاندارد جهانی)' },
+  ethanol_opt_99: { ar: '99% - إيثانول مطلق خالي من الماء تماماً', en: '99% - Anhydrous Absolute Ethanol', fr: '99 % - Éthanol absolu anhydre', es: '99% - Etanol absoluto anhidro', it: '99% - Etanolo assoluto anidro', de: '99 % - Absolut wasserfreies Ethanol', ru: '99% — абсолютный безводный этанол', zh: '99% - 无水绝对乙醇', tr: '%99 - Susuz mutlak etanol', fa: '٪۹۹ - اتانول مطلق بدون آب' },
+  ethanol_opt_95: { ar: '95% - كحول تقطير زراعي قياسي', en: '95% - Agricultural Distilled Alcohol', fr: '95 % - Alcool agricole distillé', es: '95% - Alcohol agrícola destilado', it: '95% - Alcol agricolo distillato', de: '95 % - Landwirtschaftlicher Destillatalkohol', ru: '95% — сельхоздистиллят', zh: '95% - 农业蒸馏酒精', tr: '%95 - Tarımsal damıtık alkol', fa: '٪۹۵ - الکل تقطیر کشاورزی' },
+  bottles_word: { ar: 'عبوة', en: 'bottles', fr: 'flacons', es: 'frascos', it: 'flaconi', de: 'Flaschen', ru: 'флаконов', zh: '瓶', tr: 'şişe', fa: 'بطری' },
+  maceration_title: { ar: 'فترة التعتيق وتاريخ نضوج العطر المتوقع (محاكي التعتيق الزمني)', en: 'Maceration Period & Predicted Maturation Date', fr: 'Période de macération & date de maturation', es: 'Periodo de maceración y fecha de maduración', it: 'Periodo di macerazione e data di maturazione', de: 'Mazerationszeit & Reifedatum', ru: 'Период мацерации и дата созревания', zh: '浸置期与预计成熟日期', tr: 'Maserasyon süresi ve olgunlaşma tarihi', fa: 'دوره تعریف و تاریخ رسیدن پیش‌بینی‌شده' },
+  maceration_desc: { ar: 'حساب تاريخ الانتهاء المتوقع بناءً على أيام النظام وتاريخ البدء', en: 'Calculates exact completion date from start date & days', fr: 'Calcule la date de fin exacte (départ + jours)', es: 'Calcula la fecha exacta de fin (inicio + días)', it: 'Calcola la data esatta di completamento', de: 'Berechnet das exakte Enddatum (Start + Tage)', ru: 'Точный расчёт даты завершения (старт + дни)', zh: '根据起始日期与天数精确计算完成日期', tr: 'Başlangıç ve günlere göre tam bitiş tarihi', fa: 'محاسبه تاریخ پایان دقیق از تاریخ شروع و روزها' },
+  aging_sim_btn: { ar: 'محاكي التعتيق الزمني ⏳', en: 'Aging Simulator ⏳', fr: 'Simulateur de maturation ⏳', es: 'Simulador de añejamiento ⏳', it: 'Simulatore di invecchiamento ⏳', de: 'Reifungs-Simulator ⏳', ru: 'Симулятор настаивания ⏳', zh: '熟成模拟器 ⏳', tr: 'Olgunlaşma simülatörü ⏳', fa: 'شبیه‌ساز تعریف ⏳' },
+  mac_days_lbl: { ar: 'أيام التعتيق المقررة:', en: 'Maceration Days:', fr: 'Jours de macération :', es: 'Días de maceración:', it: 'Giorni di macerazione:', de: 'Mazerationstage:', ru: 'Дни мацерации:', zh: '浸置天数：', tr: 'Maserasyon günleri:', fa: 'روزهای تعریف:' },
+  days_word: { ar: 'يوماً', en: 'days', fr: 'jours', es: 'días', it: 'giorni', de: 'Tage', ru: 'дн.', zh: '天', tr: 'gün', fa: 'روز' },
+  maturity_date_lbl: { ar: 'تاريخ الانتهاء المتوقع للنضوج:', en: 'Target Maturation Date:', fr: 'Date de maturation visée :', es: 'Fecha de maduración:', it: 'Data di maturazione:', de: 'Ziel-Reifedatum:', ru: 'Дата созревания:', zh: '目标成熟日期：', tr: 'Hedef olgunlaşma tarihi:', fa: 'تاریخ رسیدن هدف:' },
+  system_auto: { ar: 'تلقائي بالنظام', en: 'System Auto', fr: 'Auto (système)', es: 'Auto (sistema)', it: 'Auto (sistema)', de: 'Systemautomatik', ru: 'Авто (система)', zh: '系统自动', tr: 'Sistem otomatiği', fa: 'خودکار سیستم' },
+  advanced_chem: { ar: 'إعدادات كيميائية متقدمة (الكثافة، الماء المقطر، المثبتات)', en: 'Advanced Chemistry Settings (Density, Water, Fixatives)', fr: 'Réglages chimiques avancés (densité, eau, fixateurs)', es: 'Ajustes químicos avanzados (densidad, agua, fijadores)', it: 'Impostazioni chimiche avanzate (densità, acqua, fissanti)', de: 'Erweiterte Chemieeinstellungen (Dichte, Wasser, Fixative)', ru: 'Расширенные химические настройки (плотность, вода, фиксаторы)', zh: '高级化学设置（密度、蒸馏水、固定剂）', tr: 'Gelişmiş kimya ayarları (yoğunluk, su, sabitleyici)', fa: 'تنظیمات پیشرفته شیمی (چگالی، آب مقطر، ثابت‌کننده)' },
+  hide_settings: { ar: 'إخفاء الإعدادات ▲', en: 'Hide Settings ▲', fr: 'Masquer ▲', es: 'Ocultar ▲', it: 'Nascondi ▲', de: 'Ausblenden ▲', ru: 'Скрыть ▲', zh: '收起设置 ▲', tr: 'Gizle ▲', fa: 'پنهان کردن ▲' },
+  customize_settings: { ar: 'تخصيص الإعدادات الكيميائية ▼', en: 'Customize Settings ▼', fr: 'Personnaliser ▼', es: 'Personalizar ▼', it: 'Personalizza ▼', de: 'Anpassen ▼', ru: 'Настроить ▼', zh: '自定义设置 ▼', tr: 'Özelleştir ▼', fa: 'شخصی‌سازی ▼' },
+  water_benchmark: { ar: 'النسبة النموذجية: 0% إلى 2% فقط لترطيب الرذاذ.', en: 'Safe benchmark: 0% to 2% max.', fr: 'Référence sûre : 0 % à 2 % max.', es: 'Referencia segura: 0% a 2% máx.', it: 'Riferimento sicuro: 0%–2% max.', de: 'Sicherer Richtwert: 0 bis 2 % max.', ru: 'Безопасный ориентир: 0–2% макс.', zh: '安全参考：最高 0%–2%。', tr: 'Güvenli aralık: en fazla %0–2.', fa: 'محدوده امن: حداکثر ۰ تا ۲ درصد.' },
+  fixative_benchmark: { ar: 'النسبة الموصى بها: 0.5% إلى 2% لإبطاء تبخر النوتات الخفيفة.', en: 'Recommended ratio: 0.5% to 2%.', fr: 'Ratio recommandé : 0,5 % à 2 %.', es: 'Proporción recomendada: 0,5% a 2%.', it: 'Rapporto consigliato: 0,5%–2%.', de: 'Empfohlenes Verhältnis: 0,5 bis 2 %.', ru: 'Рекомендуется: 0,5–2%.', zh: '建议比例：0.5%–2%。', tr: 'Önerilen oran: %0,5–2.', fa: 'نسب توصیه‌شده: ۰٫۵ تا ۲ درصد.' },
+  oil_sg_lbl: { ar: 'كثافة الزيت العطري (g/ml)', en: 'Oil Specific Gravity (g/ml)', fr: 'Densité de l’huile (g/ml)', es: 'Densidad del aceite (g/ml)', it: 'Densità dell’olio (g/ml)', de: 'Öldichte (g/ml)', ru: 'Плотность масла (г/мл)', zh: '油比重（g/ml）', tr: 'Yağ yoğunluğu (g/ml)', fa: 'چگالی روغن (g/ml)' },
+  oil_sg_note: { ar: 'المتوسط: 0.92 جم/مل', en: 'Standard benchmark: 0.92 g/ml', fr: 'Référence : 0,92 g/ml', es: 'Referencia: 0,92 g/ml', it: 'Riferimento: 0,92 g/ml', de: 'Richtwert: 0,92 g/ml', ru: 'Ориентир: 0,92 г/мл', zh: '参考值：0.92 g/ml', tr: 'Referans: 0,92 g/ml', fa: 'مرجع: ۰٫۹۲ گرم بر میلی‌لیتر' },
+  ethanol_sg_lbl: { ar: 'كثافة الكحول الإيثيلي (g/ml)', en: 'Ethanol Specific Gravity (g/ml)', fr: 'Densité de l’éthanol (g/ml)', es: 'Densidad del etanol (g/ml)', it: 'Densità dell’etanolo (g/ml)', de: 'Ethandichte (g/ml)', ru: 'Плотность этанола (г/мл)', zh: '乙醇比重（g/ml）', tr: 'Etanol yoğunluğu (g/ml)', fa: 'چگالی اتانول (g/ml)' },
+  ethanol_sg_note: { ar: 'الكحول 96% كثافته تقريباً 0.80 جم/مل', en: '96% ethanol is ~0.80 g/ml', fr: 'Éthanol 96 % : ~0,80 g/ml', es: 'Etanol 96%: ~0,80 g/ml', it: 'Etanolo 96%: ~0,80 g/ml', de: '96 %-Ethanol: ca. 0,80 g/ml', ru: 'Этанол 96% ≈ 0,80 г/мл', zh: '96% 乙醇约 0.80 g/ml', tr: '%96 etanol: ~0,80 g/ml', fa: 'اتانول ۹۶٪ حدود ۰٫۸۰ گرم بر میلی‌لیتر' },
+  copied_lbl: { ar: 'تم النسخ', en: 'Copied', fr: 'Copié', es: 'Copiado', it: 'Copiato', de: 'Kopiert', ru: 'Скопировано', zh: '已复制', tr: 'Kopyalandı', fa: 'کپی شد' },
+  copy_recipe_lbl: { ar: 'نسخ المقادير', en: 'Copy Recipe', fr: 'Copier la recette', es: 'Copiar receta', it: 'Copia ricetta', de: 'Rezept kopieren', ru: 'Скопировать рецепт', zh: '复制配方', tr: 'Tarifi kopyala', fa: 'کپی دستور' },
+  breakdown_lbl: { ar: 'توزيع المكونات في الزجاجة', en: 'Formula Ratio Breakdown', fr: 'Répartition dans le flacon', es: 'Distribución en el frasco', it: 'Ripartizione nel flacone', de: 'Verteilung in der Flasche', ru: 'Распределение во флаконе', zh: '瓶内成分占比', tr: 'Şişe içi oran dağılımı', fa: 'توزیع اجزا در بطری' },
+  volumetric_lbl: { ar: 'بالمخبار: ', en: 'Volumetric: ', fr: 'Volumétrique : ', es: 'Volumétrico: ', it: 'Volumetrico: ', de: 'Volumetrisch: ', ru: 'По объёму: ', zh: '量筒：', tr: 'Hacimsel: ', fa: 'حجمی: ' },
+  scale_mass_lbl: { ar: 'وزن الميزان', en: 'Scale Mass', fr: 'Masse au peson', es: 'Masa en balanza', it: 'Massa in bilancia', de: 'Waagenmasse', ru: 'Масса на весах', zh: '称量质量', tr: 'Terazi kütlesi', fa: 'جرم ترازویی' },
+  total_oil_lbl: { ar: 'إجمالي الزيت العطري:', en: 'Total Fragrance Oil:', fr: 'Huile parfum totale :', es: 'Aceite aromático total:', it: 'Olio profumato totale:', de: 'Duftöl gesamt:', ru: 'Масла всего:', zh: '香精油总量：', tr: 'Toplam kokulu yağ:', fa: 'کل روغن عطری:' },
+  total_alcohol_lbl: { ar: 'إجمالي الكحول الإيثيلي:', en: 'Total Ethyl Alcohol:', fr: 'Éthanol total :', es: 'Etanol total:', it: 'Etanolo totale:', de: 'Ethanol gesamt:', ru: 'Этанола всего:', zh: '乙醇总量：', tr: 'Toplam etanol:', fa: 'کل اتانول:' },
+  live_cost_lbl: { ar: 'إجمالي تكلفة المواد الخام التلقائية', en: 'Live Raw Materials Total Cost', fr: 'Coût matières en direct', es: 'Coste de materias en vivo', it: 'Costo materie dal vivo', de: 'Live-Materialkosten', ru: 'Себестоимость сырья в реальном времени', zh: '原料实时总成本', tr: 'Canlı hammadde maliyeti', fa: 'هزینه زنده مواد اولیه' },
+  live_word: { ar: 'تحديث لحظي', en: 'Live', fr: 'Direct', es: 'En vivo', it: 'Dal vivo', de: 'Live', ru: 'Реальное время', zh: '实时', tr: 'Canlı', fa: 'زنده' },
+  hide_prices: { ar: 'إخفاء الأسعار ▲', en: 'Hide Prices ▲', fr: 'Masquer les prix ▲', es: 'Ocultar precios ▲', it: 'Nascondi prezzi ▲', de: 'Preise ausblenden ▲', ru: 'Скрыть цены ▲', zh: '收起价格 ▲', tr: 'Fiyatları gizle ▲', fa: 'پنهان کردن قیمت‌ها ▲' },
+  adjust_prices: { ar: 'تعديل الأسعار ⚙️', en: 'Adjust Prices ⚙️', fr: 'Ajuster les prix ⚙️', es: 'Ajustar precios ⚙️', it: 'Regola prezzi ⚙️', de: 'Preise anpassen ⚙️', ru: 'Настроить цены ⚙️', zh: '调整价格 ⚙️', tr: 'Fiyatları ayarla ⚙️', fa: 'تنظیم قیمت‌ها ⚙️' },
+  cost_per_bottle_lbl: { ar: 'تكلفة المواد للزجاجة الواحدة:', en: 'Raw Cost per Single Bottle:', fr: 'Coût matière par flacon :', es: 'Coste material por frasco:', it: 'Costo materia per flacone:', de: 'Materialkosten je Flasche:', ru: 'Себестоимость на флакон:', zh: '单瓶原料成本：', tr: 'Şişe başına hammadde maliyeti:', fa: 'هزینه مواد هر بطری:' },
+  itemized_lbl: { ar: 'تفصيل تكلفة المواد لكل عبوة:', en: 'Itemized Cost per Bottle:', fr: 'Détail par flacon :', es: 'Detalle por frasco:', it: 'Dettaglio per flacone:', de: 'Kostenaufstellung je Flasche:', ru: 'Детализация на флакон:', zh: '单瓶成本明细：', tr: 'Şişe başına maliyet dökümü:', fa: 'ریز هزینه هر بطری:' },
+  of_materials: { ar: 'من تكلفة الخامات', en: 'of materials', fr: 'du coût matières', es: 'del coste de materiales', it: 'del costo material', de: 'der Materialkosten', ru: 'от стоимости сырья', zh: '（占原料成本）', tr: 'malzeme maliyetinin', fa: 'از هزینه مواد' },
+  oil_cost_lbl: { ar: 'الزيت العطري الخام', en: 'Fragrance Oil', fr: 'Huile parfum', es: 'Aceite aromático', it: 'Olio profumato', de: 'Duftöl', ru: 'Парфюмерное масло', zh: '香精油', tr: 'Kokulu yağ', fa: 'روغن عطری' },
+  water_cost_lbl: { ar: 'الماء المقطر', en: 'Distilled Water', fr: 'Eau distillée', es: 'Agua destilada', it: 'Acqua distillata', de: 'Destilliertes Wasser', ru: 'Дистиллированная вода', zh: '蒸馏水', tr: 'Damıtılmış su', fa: 'آب مقطر' },
+  price_config_lbl: { ar: 'تخصيص أسعار شراء المواد الافتراضية', en: 'Customize Benchmark Raw Material Prices', fr: 'Personnaliser les prix de référence', es: 'Personalizar precios de referencia', it: 'Personalizza prezzi di riferimento', de: 'Referenzpreise anpassen', ru: 'Настроить эталонные цены', zh: '自定义基准原料价格', tr: 'Referans hammadde fiyatlarını düzenle', fa: 'شخصی‌سازی قیمت‌های مرجع مواد' },
+  autosave_note: { ar: 'تُحفظ تلقائياً وتحدث الإجمالي', en: 'Auto-saved & Live Updated', fr: 'Enregistré auto & mis à jour', es: 'Guardado y actualizado automático', it: 'Salvataggio e aggiornamento automatici', de: 'Automatisch gespeichert & live', ru: 'Автосохранение и обновление', zh: '自动保存并实时更新', tr: 'Otomatik kaydedilir ve güncellenir', fa: 'ذخیره خودکار و به‌روزرسانی زنده' },
+  visual_scale_lbl: { ar: 'محاكي وزن المواد والميزان البصري', en: 'Visual Scale & Balance Simulator', fr: 'Simulateur visuel de balance', es: 'Simulador visual de balanza', it: 'Simulatore visivo di bilancia', de: 'Visuelle Waagen-Simulation', ru: 'Визуальный симулятор весов', zh: '视觉称重模拟器', tr: 'Görsel terazi simülatörü', fa: 'شبیه‌ساز بصری وزن و ترازو' },
+  visual_scale_desc: { ar: 'محاكاة بصرية حية لوزن كل مادة بالجرام والقطرات وتعبئة المخبار', en: 'Live gravimetric scale readout & liquid beaker visualization', fr: 'Lecture gravimétrique en direct et visualisation d’éprouvette', es: 'Lectura gravimétrica en vivo y visualización de probeta', it: 'Lettura gravimetrica dal vivo e becher visualizzato', de: 'Live-Waagenanzeige und Becherglas-Darstellung', ru: 'Живая гравиметрия и визуализация мензурки', zh: '实时称量读数与量杯可视化', tr: 'Canlı tartım okuması ve behür görselleştirmesi', fa: 'نمایش زنده وزن و بصری‌سازی استوانه' },
+  full_lab_view: { ar: 'المحاكي الكامل 🔬', en: 'Full Lab View 🔬', fr: 'Vue labo complète 🔬', es: 'Vista de laboratorio 🔬', it: 'Vista laboratorio 🔬', de: 'Komplette Laboransicht 🔬', ru: 'Полный вид лаборатории 🔬', zh: '完整实验室视图 🔬', tr: 'Tam laboratuvar görünümü 🔬', fa: 'نمای کامل آزمایشگاه 🔬' },
+  oil_colon: { ar: 'الزيت:', en: 'Oil:', fr: 'Huile :', es: 'Aceite:', it: 'Olio:', de: 'Öl:', ru: 'Масло:', zh: '油：', tr: 'Yağ:', fa: 'روغن:' },
+  ethanol_colon: { ar: 'الكحول:', en: 'Ethanol:', fr: 'Éthanol :', es: 'Etanol:', it: 'Etanolo:', de: 'Ethanol:', ru: 'Этанол:', zh: '乙醇：', tr: 'Etanol:', fa: 'اتانول:' },
+  fixative_colon: { ar: 'المثبت:', en: 'Fixative:', fr: 'Fixateur :', es: 'Fijador:', it: 'Fissante:', de: 'Fixativ:', ru: 'Фиксатор:', zh: '固定剂：', tr: 'Sabitleyici:', fa: 'ثابت‌کننده:' },
+  water_colon: { ar: 'الماء:', en: 'Water:', fr: 'Eau :', es: 'Agua:', it: 'Acqua:', de: 'Wasser:', ru: 'Вода:', zh: '水：', tr: 'Su:', fa: 'آب:' },
+  tare_lbl: { ar: 'TARE (تصفير)', en: 'TARE (Zero)', fr: 'TARE (Zéro)', es: 'TARE (Cero)', it: 'TARE (Zero)', de: 'TARE (Null)', ru: 'TARE (тара)', zh: 'TARE（去皮）', tr: 'TARE (Sıfırla)', fa: 'TARE (صفر کردن)' },
+  q_mark: { ar: '؟', en: '?', fr: '?', es: '?', it: '?', de: '?', ru: '?', zh: '?', tr: '?', fa: '؟' },
+  scale_sim_title: { ar: 'المحاكي البصري لوزن المواد الخام وميزان المعمل الرقمي (0.01g)', en: 'Visual Laboratory Balance & Raw Materials Compounding Simulator', fr: 'Simulateur visuel de balance & compounds (0,01 g)', es: 'Simulador visual de balanza y compuestos (0,01 g)', it: 'Simulatore visivo di bilancia e composti (0,01 g)', de: 'Visuelle Laborwaage & Compoundierung (0,01 g)', ru: 'Визуальный симулятор лабораторных весов (0,01 г)', zh: '视觉实验室天平与原料调配模拟器（0.01g）', tr: 'Görsel laboratuvar terazi ve bileşik simülatörü (0,01g)', fa: 'شبیه‌ساز بصری ترازو آزمایشگاهی و مواد (۰٫۰۱g)' },
+  scale_sim_desc: { ar: 'محاكاة حية لميزان المعمل، وزن الزيوت والكحول والمثبتات بالجرام والقطرات خطوة بخطوة مع تعبئة المخبار.', en: 'Real-time step-by-step weighing walkthrough on digital balance pan (0.01g) with liquid beaker simulation.', fr: 'Pesée pas à pas en temps réel sur balance numérique (0,01 g) avec simulation d’éprouvette.', es: 'Pesaje paso a paso en tiempo real en balanza digital (0,01 g) con simulación de probeta.', it: 'Pesatura passo passo in tempo reale su bilancia digitale (0,01 g) con becher simulato.', de: 'Schrittweise Echtzeit-Wägung auf digitaler Waage (0,01 g) mit Becherglas.', ru: 'Пошаговое взвешивание в реальном времени (0,01 г) с мензуркой.', zh: '数字天平上的实时分步称量演练（0.01g），含量杯模拟。', tr: 'Dijital terazide adım adım gerçek zamanlı tartım (0,01g) ve behür simülasyonu.', fa: 'وزن‌کشی گام‌به‌گام زنده روی ترازوی دیجیتال (۰٫۰۱g) با شبیه‌سازی استوانه.' },
+  pyramid_graph_title: { ar: 'جرافيك الهرم العطري التفاعلي ومحاكي سيناريو ما بعد الرش', en: 'Interactive Olfactory Pyramid & Virtual Post-Spray Simulator', fr: 'Pyramide olfactive interactive & simulation post-vaporisation', es: 'Pirámide olfativa interactiva y simulación post-pulverización', it: 'Piramide olfattiva interattiva e simulazione post-spruzzo', de: 'Interaktive Duftpyramide & Sprüh-Simulation', ru: 'Интерактивная пирамида и симуляция после распыления', zh: '互动香调金字塔与喷后场景模拟', tr: 'Etkileşimli koku piramidi ve sprey sonrası simülasyon', fa: 'هرم عطری تعاملی و شبیه‌سازی پس از اسپری' },
+  pyramid_graph_desc: { ar: 'هرم ثلاثي الأبعاد مصنف بترتيب سرعة الطيران (1 إلى 10)، نسب النوتات الدقيقة، ومؤشر الفوحان دقيقة بدقيقة.', en: '3D geometric pyramid classified by volatility rank (1 to 10), precise mass ratios, and minute-by-minute sillage tracker.', fr: 'Pyramide 3D classée par volatilité (1 à 10), ratios massiques précis et suivi du sillage minute par minute.', es: 'Pirámide 3D clasificada por volatilidad (1 a 10), ratios precisos y estela minuto a minuto.', it: 'Piramide 3D classificata per volatilità (1–10), rapporti precisi e scia minuto per minuto.', de: '3D-Pyramide nach Flüchtigkeit (1–10), präzise Massenverhältnisse und Sillage-Minutentracker.', ru: '3D-пирамида по летучести (1–10), точные массовые доли и шлейф по минутам', zh: '按挥发性（1–10）分类的 3D 金字塔、精确质量配比与逐分钟扩散追踪。', tr: 'Uçuculuk derecesine göre sınıflandırılmış 3B piramit (1–10), net kütle oranları ve dakika dakika iz takibi.', fa: 'هرم سه‌بعدی طبقه‌بندی‌شده براساس فراریت (۱ تا ۱۰)، نسبت‌های دقیق و ردیابی دقیقه‌به‌دقیقه انتشار.' },
+  pyramid_prompt_q: { ar: 'هل تريد رؤية جرافيك الهرم وسيناريو ما بعد الرش لحظة بلحظة لهذه التركيبة؟', en: 'Inspect the live Fragrance Pyramid and virtual spray simulation scenario for this formula?', fr: 'Visualiser la pyramide et la simulation post-vulgarisation de cette formule ?', es: '¿Ver la pirámide y la simulación post-spray de esta fórmula?', it: 'Vuoi la piramide e la simulazione post-spruzzo di questa formula?', de: 'Pyramide und Sprüh-Simulation dieser Formel ansehen?', ru: 'Посмотреть пирамиду и симуляцию распыления этой формулы?', zh: '查看此配方的金字塔与喷后模拟？', tr: 'Bu formülün piramidini ve sprey simülasyonunu görmek ister misiniz?', fa: 'هرم و شبیه‌سازی اسپری این فرمول را ببینید؟' },
+  pyramid_prompt_desc: { ar: 'انقر لعرض الرسم الهرمي التفاعلي ثلاثي الطبقات ومحاكاة التبخر من دقيقة الصفر حتى 18+ ساعة.', en: 'Click to inspect the 3-tier interactive pyramid and real-time volatilization curve from 0m to 24h.', fr: 'Cliquez pour la pyramide 3 niveaux et la courbe d’évaporation de 0 à 24 h.', es: 'Haga clic para la pirámide de 3 niveles y la curva de evaporación de 0 a 24 h.', it: 'Clicca per la piramide a 3 livelli e la curva di evaporazione 0–24 h.', de: 'Klicken Sie für die 3-stufige Pyramide und Verdunstungskurve (0–24 h).', ru: 'Нажмите: 3-уровневая пирамида и кривая испарения 0–24 ч.', zh: '点击查看三层互动金字塔与 0–24 小时实时蒸发曲线。', tr: '3 katlı piramit ve 0–24 saat buharlaşma eğrisi için tıklayın.', fa: 'برای هرم سه‌لایه و منحنی تبخیر ۰ تا ۲۴ ساعت کلیک کنید.' },
+  headspace_note: { ar: '• السعة الحجمية: تحدد بدقة كتلة الزيت والكحول والماء الواجب وزنها. • قاعدة الفراغ الهوائي: اترك دائماً فراغاً بنسبة 3% إلى 5% في أعلى الزجاجة لامتصاص تمدد السائل الناتج عن حرارة الجو، ولضمان عمل أنبوب البخاخ دون ضغط مفرط.', en: '• Nominal Capacity: Accurately defines the gravimetric mass of oil, alcohol, and fixatives to weigh. • Headspace Rule: Always preserve a 3% to 5% air gap to absorb thermal expansion and ensure leak-free atomizer performance.', fr: '• Capacité nominale : définit la masse gravimétrique à peser. • Espace de tête : conservez toujours 3 à 5 % d’air pour absorber la dilatation thermique et garantir un spray sans fuite.', es: '• Capacidad nominal: define la masa gravimétrica a pesar. • Regla del espacio de cabeza: deje siempre un 3–5% de aire para la dilatación térmica y un atomizador sin fugas.', it: '• Capacità nominale: definisce la massa da pesare. • Spazio di testa: lasciare sempre il 3–5% d’aria per l’espansione termica e un erogatore senza perdite.', de: '• Nennkapazität: definiert die abzuwiegende Masse. • Luftraumregel: immer 3–5 % Luft für thermische Ausdehnung und dichtes Zerstäuberventil.', ru: ' • Номинальный объём: определяет точную массу для взвешивания. • Правило «хедспейса»: всегда оставляйте 3–5% воздуха для теплового расширения и корректной работы распылителя.', zh: '• 标称容量：精确确定需称量的油、醇、固定剂质量。• 顶空规则：始终保留 3%–5% 空气间隙，以吸收热膨胀并确保喷头不漏。', tr: '• Nominal kapasite: tartılacak kütleyi tanımlar. • Hava boşluğu kuralı: ısıl genleşme için daima %3–5 hava bırakın.', fa: '• ظرفیت اسمی: جرم دقیق قابل وزن‌کشی را تعیین می‌کند. • قاعده فضای سر: همیشه ۳ تا ۵ درصد هوا برای انبساط حرارتی و عملکرد درست اسپری بگذارید.' },
+  conc_std_note: { ar: '• Extrait (25%-35%): ثبات أقصى 12-24 ساعة مع فوحان حميمي. • EDP (15%-22%): التوازن المعياري العالمي للثبات والانتشار. • EDT (8%-14%): انطباع أولي منعش يتناقص تدريجياً. • EDC (3%-6%): نسمات صيفية خفيفة سريعة التطاير.', en: '• Extrait (25%-35%): Maximum 12-24h longevity with royal intimacy. • EDP (15%-22%): The global benchmark for balanced longevity and diffusion. • EDT (8%-14%): A fresh opening that tapers gradually. • EDC (3%-6%): Light summer breezes, quick to evaporate.', fr: '• Extrait (25–35%) : tenue maximale 12–24 h, sillage intime. • EDP (15–22%) : l’équilibre mondial tenue/diffusion. • EDT (8–14%) : ouverture fraîche qui s’estompe. • EDC (3–6%) : brises d’été légères et volatiles.', es: '• Extrait (25–35%): fijación máxima 12–24 h, estela íntima. • EDP (15–22%): equilibrio global fijación/difusión. • EDT (8–14%): apertura fresca que decae. • EDC (3–6%): brisas veraniegas ligeras.', it: '• Extrait (25–35%): tenacia 12–24 h, scia intima. • EDP (15–22%): equilibrio globale tenacia/diffusione. • EDT (8–14%): apertura fresca che sfuma. • EDC (3–6%): brezzi estivi leggeri.', de: '• Extrait (25–35 %): maximale 12–24 h Haltbarkeit, intime Sillage. • EDP (15–22 %): globales Benchmark für Balance. • EDT (8–14 %): frischer Auftakt, langsam abklingend. • EDC (3–6 %): leichte Sommerbrisen.', ru: '• Extrait (25–35%): максимум 12–24 ч, интимный шлейф. • EDP (15–22%): мировой баланс стойкости и шлейфа. • EDT (8–14%): свежее начало, постепенное угасание. • EDC (3–6%): лёгкие летние аккорды.', zh: '• 浓香精 Extrait（25%–35%）：最长 12–24 小时持久，贴身扩散。• 淡香精 EDP（15%–22%）：全球公认的持久与扩散平衡。• 淡香水 EDT（8%–14%）：清新开场，逐渐减弱。• 古龙水 EDC（3%–6%）：轻盈夏日，挥发较快。', tr: '• Extrait (%25–35): en uzun 12–24 saat kalıcılık. • EDP (%15–22): kalıcılık/yayılma dengesi. • EDT (%8–14): taze açılış, yavaşça azalır. • EDC (%3–6): hafif yaz esintileri.', fa: '• اکس trait (۲۵–۳۵٪): حداکثر ۱۲–۲۴ ساعت ماندگاری صمیمی. • EDP (۱۵–۲۲٪): تعادل جهانی ماندگاری و انتشار. • EDT (۸–۱۴٪): شروع تازه که کم‌کم ضعیف می‌شود. • EDC (۳–۶٪): نسیم‌های تابستانی سبک.' },
+  live_update_note: { ar: 'تحديث لحظي لجرامات المواد مع سحب مؤشر النسبة', en: 'Real-time gram adjustment as concentration changes', fr: 'Ajustement des grammes en temps réel selon la concentration', es: 'Gramos en tiempo real según la concentración', it: 'Grammi in tempo reale al variare della concentrazione', de: 'Gramm-Aktualisierung in Echtzeit', ru: 'Граммы обновляются в реальном времени', zh: '浓度变化时克数实时更新', tr: 'Konsantrasyon değiştikçe gram real zamanlı güncellenir', fa: 'گرم‌ها با تغییر غلظت به‌صورت زنده به‌روز می‌شوند' },
+  alcohol_note: { ar: 'الكحول 96% هو الأنسب لإذابة الزيوت دون تعكر. كحول الصيدليات 70% يفسد العطر لاحتوائه على 30% ماء.', en: '96% ethanol is the golden standard to solubilize oils without clouding. Pharmacy 70% alcohol ruins the perfume with its 30% water content.', fr: 'L’éthanol 96 % dissout les huiles sans trouble. L’alcool de pharmacie à 70 % gâte le parfum (30 % d’eau).', es: 'El etanol al 96% disuelve los aceites sin enturbiar. El alcohol de farmacia al 70% arruina el perfume (30% agua).', it: 'L’etanolo al 96% scioglie gli oli senza opacizzare. Quello farmaceutico al 70% rovina il profumo (30% acqua).', de: '96 %-Ethanol löst Öle klar. Apotheken-Alkohol (70 %) ruiniert das Parfüm durch 30 % Wasser.', ru: 'Этанол 96% растворяет масла без помутнения. Аптечный 70% портит духи (30% воды).', zh: '96% 乙醇溶解精油不浑浊；药房 70% 酒精含 30% 水会毁掉香水。', tr: '%96 etanol yağları bulanmadan çözer. Eczane alkolü %30 su içerdiğinden parfümü bozar.', fa: 'اتانول ۹۶٪ روغن‌ها را بدون کدورت حل می‌کند؛ الکل ۷۰٪ داروخانه به‌دلیل ۳۰٪ آب عطر را خراب می‌کند.' },
+  batch_note: { ar: 'الخلط بالتشغيلة الكاملة يوحد نقاء ورائحة العطر ويقلل هدر الخامات بنسبة تصل لـ 12%.', en: 'Batch compounding ensures olfactory uniformity across all bottles and cuts material waste by up to 12%.', fr: 'Le mélange en lot garantit l’homogénéité olfactive et réduit les pertes jusqu’à 12 %.', es: 'Mezclar por lote homogeneiza el aroma y reduce el desperdicio hasta 12%.', it: 'La miscelazione a lotto uniforma l’olfatto e riduce gli sprechi fino al 12%.', de: 'Chargenmischung sichert Gleichmäßigkeit und senkt Abfall bis 12 %.', ru: 'Партия целиком — одинаковый аромат во всех флаконах, минус до 12% отходов.', zh: '整批调配确保所有瓶气味一致，最多可减少 12% 原料浪费。', tr: 'Parti karışımı tüm şişelerde aynı kokuyu sağlar, israfı %12’ye kadar azaltır.', fa: 'اختلاط کل بچ یکنواختی رایحه را تضمین و ضایعات را تا ۱۲٪ کاهش می‌دهد.' },
+  cta_pyramid: { ar: 'مشاهدة جرافيك الهرم وسيناريو رش العطر 💨', en: 'View Fragrance Pyramid & Spray Simulation 💨', fr: 'Voir la pyramide et simulation de spray 💨', es: 'Ver pirámide y simulación de spray 💨', it: 'Vedi piramide e simulazione spray 💨', de: 'Pyramide & Sprüh-Simulation ansehen 💨', ru: 'Пирамида и симуляция распыления 💨', zh: '查看香调金字塔与喷洒模拟 💨', tr: 'Piramit ve sprey simülasyonunu gör 💨', fa: 'مشاهده هرم و شبیه‌سازی اسپری 💨' },
+  cta_criteria: { ar: 'دليل وشرح جميع معايير الحاسبة والمعمل 📖', en: 'Formulation Criteria & Chemistry Guide 📖', fr: 'Guide des critères & chimie 📖', es: 'Guía de criterios y química 📖', it: 'Guida criteri e chimica 📖', de: 'Leitfaden: Kriterien & Chemie 📖', ru: 'Справочник критериев и химии 📖', zh: '配方标准与化学指南 📖', tr: 'Kriter ve kimya kılavuzu 📖', fa: 'راهنمای معیارها و شیمی 📖' },
+  cta_aging: { ar: 'محاكي التعتيق الزمني وتاريخ نضوج العطر ⏳', en: 'Maceration & Aging Time Simulator ⏳', fr: 'Simulateur de macération & maturation ⏳', es: 'Simulador de maceración y añejamiento ⏳', it: 'Simulatore di macerazione e invecchiamento ⏳', de: 'Mazerations- & Reife-Simulator ⏳', ru: 'Симулятор мацерации и настаивания ⏳', zh: '浸置与熟成时间模拟器 ⏳', tr: 'Maserasyon ve olgunlaşma simülatörü ⏳', fa: 'شبیه‌ساز زمان تعریف و رسیدن عطر ⏳' },
+  cta_shahin: { ar: 'استشارة الخبير شاهين حول نسب وتعتيق التركيبة 🧙‍♂️', en: 'Consult Master Shahin on Formulation & Aging 🧙‍♂️', fr: 'Consulter Maître Shahin 🧙‍♂️', es: 'Consultar al Maestro Shahin 🧙‍♂️', it: 'Consuluta al Maestro Shahin 🧙‍♂️', de: 'Meister Shahin befragen 🧙‍♂️', ru: 'Спросить мастера Шахина 🧙‍♂️', zh: '咨询 Shahin 大师配方与熟成 🧙‍♂️', tr: 'Usta Shahin’e danış 🧙‍♂️', fa: 'مشورت از استاد شاهین 🧙‍♂️' },
+  grav_std: { ar: 'معيار ميزان المعمل (الميزان الرقمي vs المخبار):', en: 'Laboratory Gravimetric Standard (Digital Scale vs Cylinder):', fr: 'Standard gravimétrique (balance vs éprouvette) :', es: 'Estándar gravimétrico (balanza vs probeta):', it: 'Standard gravimetrico (bilancia vs cilindro):', de: 'Gravimetrischer Standard (Waage vs Messzylinder):', ru: 'Гравиметрический стандарт (весы vs мензурка):', zh: '实验室称量标准（电子秤 vs 量筒）：', tr: 'Gravimetrik standart (terazi vs ölçü silindiri):', fa: 'استاندارد وزن‌سنجی (ترازوی دیجیتال در برابر استوانه):' },
+  grav_std_note: { ar: 'استخدام الميزان الرقمي بالغرام أدق بكثير من المخبار المدرج بالمليلتر، والأخطاء المسموحة ±0.02 جم لكل 100 جم.', en: 'Gravimetric digital balance measurement is strictly preferred over graduated cylinders; tolerance ±0.02 g per 100 g.', fr: 'La pesée gravimétrique est bien plus précise que l’éprouvette ; tolérance ±0,02 g / 100 g.', es: 'La balanza digital es mucho más precisa que la probeta; tolerancia ±0,02 g / 100 g.', it: 'La bilancia digitale è molto più precisa del cilindro; tolleranza ±0,02 g / 100 g.', de: 'Digitale Wägung ist dem Messzylinder klar überlegen; Toleranz ±0,02 g je 100 g.', ru: 'Взвешивание точнее мерного цилиндра; допуск ±0,02 г на 100 г.', zh: '电子称量远精确于量筒；公差每 100 克 ±0.02 克。', tr: 'Dijital tartım ölçü silindirinden çok daha hassastır; ±0,02 g tolerans.', fa: 'توزین دیجیتال دقیق‌تر از استوانه مدرج است؛ تلورانس ±۰٫۰۲ گرم در ۱۰۰ گرم.' },
+  oil_price_tpl: { ar: 'سعر كيلو الزيت ({c}/kg)', en: 'Oil Price ({c}/kg)', fr: 'Prix kg huile ({c}/kg)', es: 'Precio kg aceite ({c}/kg)', it: 'Prezzo kg olio ({c}/kg)', de: 'Ölpreis ({c}/kg)', ru: 'Цена кг масла ({c}/кг)', zh: '油价格（{c}/kg）', tr: 'Yağ fiyatı ({c}/kg)', fa: 'قیمت هر کیلو روغن ({c}/kg)' },
+  ethanol_price_tpl: { ar: 'سعر لتر الكحول ({c}/L)', en: 'Ethanol Price ({c}/L)', fr: 'Prix L éthanol ({c}/L)', es: 'Precio L etanol ({c}/L)', it: 'Prezzo L etanolo ({c}/L)', de: 'Ethanolpreis ({c}/L)', ru: 'Цена л этанола ({c}/л)', zh: '乙醇价格（{c}/L）', tr: 'Etanol fiyatı ({c}/L)', fa: 'قیمت هر لیتر اتانول ({c}/L)' },
+  fixative_price_tpl: { ar: 'سعر كيلو المثبت ({c}/kg)', en: 'Fixative Price ({c}/kg)', fr: 'Prix kg fixateur ({c}/kg)', es: 'Precio kg fijador ({c}/kg)', it: 'Prezzo kg fissante ({c}/kg)', de: 'Fixativpreis ({c}/kg)', ru: 'Цена кг фиксатора ({c}/кг)', zh: '固定剂价格（{c}/kg）', tr: 'Sabitleyici fiyatı ({c}/kg)', fa: 'قیمت هر کیلو ثابت‌کننده ({c}/kg)' },
+  water_price_tpl: { ar: 'سعر لتر الماء المقطر ({c}/L)', en: 'Distilled Water ({c}/L)', fr: 'Eau distillée ({c}/L)', es: 'Agua destilada ({c}/L)', it: 'Acqua distillata ({c}/L)', de: 'Dest. Wasser ({c}/L)', ru: 'Дист. вода ({c}/л)', zh: '蒸馏水（{c}/L）', tr: 'Damıtılmış su ({c}/L)', fa: 'آب مقطر ({c}/L)' },
+  single_bottle_tpl: { ar: 'المقادير للزجاجة الواحدة ({v} مل):', en: 'Batch Metrics per Single Bottle ({v}ml):', fr: 'Mesures par flacon ({v} ml) :', es: 'Métricas por frasco ({v} ml):', it: 'Metriche per flacone ({v} ml):', de: 'Werte je Flasche ({v} ml):', ru: 'Показатели на флакон ({v} мл):', zh: '单瓶指标（{v}ml）：', tr: 'Şişe başına metrikler ({v} ml):', fa: 'شاخص‌های هر بطری ({v} میلی‌لیتر):' },
+  batch_total_tpl: { ar: 'إجمالي إنتاج التشغيلة ({n} عبوة):', en: 'Batch Production Total ({n} units):', fr: 'Production totale du lot ({n} flacons) :', es: 'Producción total del lote ({n} uds.):', it: 'Produzione totale del lotto ({n} pz.):', de: 'Gesamtproduktion der Charge ({n} Stk.):', ru: 'Итог партии ({n} шт.):', zh: '整批产量（{n} 瓶）：', tr: 'Parti toplam üretimi ({n} adet):', fa: 'کل تولید بچ ({n} بطری):' },
+  cost_note_tpl: { ar: 'محسوبة تلقائياً بأسعار الخامات الافتراضية ({c})', en: 'Calculated dynamically from benchmark prices ({c})', fr: 'Calculé selon les prix de référence ({c})', es: 'Calculado con precios de referencia ({c})', it: 'Calcolato dai prezzi di riferimento ({c})', de: 'Aus Referenzpreisen berechnet ({c})', ru: 'Расчёт по эталонным ценам ({c})', zh: '按基准价格动态计算（{c}）', tr: 'Referans fiyatlardan otomatik hesaplanır ({c})', fa: 'بر اساس قیمت‌های مرجع محاسبه می‌شود ({c})' },
+  batch_cost_tpl: { ar: 'تكلفة التشغيلة ({n} عبوة):', en: 'Total Batch Cost ({n} units):', fr: 'Coût total du lot ({n} flacons) :', es: 'Coste total del lote ({n} uds.):', it: 'Costo totale del lotto ({n} pz.):', de: 'Gesamtkosten der Charge ({n} Stk.):', ru: 'Себестоимость партии ({n} шт.):', zh: '整批成本（{n} 瓶）：', tr: 'Parti toplam maliyeti ({n} adet):', fa: 'هزینه کل بچ ({n} بطری):' },
+  clip_header: { ar: '📌 تركيبة عطرية - معيار شام\nالحجم: {v} مل | التركيز: {c}%', en: '📌 Fragrance Formulation - Sham Standard\nVolume: {v}ml | Concentration: {c}%', fr: '📌 Formulation - Standard Sham\nVolume : {v} ml | Concentration : {c} %', es: '📌 Formulación - Estándar Sham\nVolumen: {v} ml | Concentración: {c}%', it: '📌 Formula - Standard Sham\nVolume: {v} ml | Concentrazione: {c}%', de: '📌 Formulierung - Sham-Standard\nVolumen: {v} ml | Konzentration: {c} %', ru: '📌 Формула — стандарт Sham\nОбъём: {v} мл | Концентрация: {c}%', zh: '📌 香水配方 - Sham 标准\n容量：{v}ml | 浓度：{c}%', tr: '📌 Parfüm Formülü - Sham Standardı\nHacim: {v} ml | Konsantrasyon: %{c}', fa: '📌 فرمول عطر - استاندارد شام\nحجم: {v} میلی‌لیتر | غلظت: {c}٪' },
+  clip_oil: { ar: 'الزيت العطري: {w} جم ({v} مل)', en: 'Fragrance Oil: {w}g ({v}ml)', fr: 'Huile parfum : {w} g ({v} ml)', es: 'Aceite aromático: {w} g ({v} ml)', it: 'Olio profumato: {w} g ({v} ml)', de: 'Duftöl: {w} g ({v} ml)', ru: 'Парфюмерное масло: {w} г ({v} мл)', zh: '香精油：{w}g（{v}ml）', tr: 'Kokulu yağ: {w} g ({v} ml)', fa: 'روغن عطری: {w} گرم ({v} میلی‌لیتر)' },
+  clip_alcohol: { ar: 'الكحول الإيثيلي: {w} جم ({v} مل)', en: 'Ethanol: {w}g ({v}ml)', fr: 'Éthanol : {w} g ({v} ml)', es: 'Etanol: {w} g ({v} ml)', it: 'Etanolo: {w} g ({v} ml)', de: 'Ethanol: {w} g ({v} ml)', ru: 'Этанол: {w} г ({v} мл)', zh: '乙醇：{w}g（{v}ml）', tr: 'Etanol: {w} g ({v} ml)', fa: 'اتانول: {w} گرم ({v} میلی‌لیتر)' },
+  clip_water: { ar: 'الماء المقطر: {w} جم ({v} مل)', en: 'Distilled Water: {w}g ({v}ml)', fr: 'Eau distillée : {w} g ({v} ml)', es: 'Agua destilada: {w} g ({v} ml)', it: 'Acqua distillata: {w} g ({v} ml)', de: 'Dest. Wasser: {w} g ({v} ml)', ru: 'Дист. вода: {w} г ({v} мл)', zh: '蒸馏水：{w}g（{v}ml）', tr: 'Damıtılmış su: {w} g ({v} ml)', fa: 'آب مقطر: {w} گرم ({v} میلی‌لیتر)' },
+  clip_fixative: { ar: 'المثبت: {w} جم ({v} مل)', en: 'Fixative: {w}g ({v}ml)', fr: 'Fixateur : {w} g ({v} ml)', es: 'Fijador: {w} g ({v} ml)', it: 'Fissante: {w} g ({v} ml)', de: 'Fixativ: {w} g ({v} ml)', ru: 'Фиксатор: {w} г ({v} мл)', zh: '固定剂：{w}g（{v}ml）', tr: 'Sabitleyici: {w} g ({v} ml)', fa: 'ثابت‌کننده: {w} گرم ({v} میلی‌لیتر)' },
+  clip_total: { ar: 'الوزن الإجمالي للزجاجة: {w} جم', en: 'Net Bottle Total: {w}g', fr: 'Poids net flacon : {w} g', es: 'Peso neto frasco: {w} g', it: 'Peso netto flacone: {w} g', de: 'Flasche netto: {w} g', ru: 'Итого во флаконе: {w} г', zh: '瓶内总重量：{w}g', tr: 'Şişe net toplam: {w} g', fa: 'وزن کل بطری: {w} گرم' },
+  shahin_prompt_tpl: { ar: 'أيها الخبير شاهين (شيخ العطارين)، أعمل على تركيبة بتركيز {c}% بحجم {v} مل (وزن الزيت: {ow} جم، الكحول: {aw} جم).\nمدة التعتيق المقررة: {d} يوماً، وتاريخ الانتهاء المتوقع: {date}.\nما هو تقييمك المخبري لتوازن هذه النسب؟ وكيف أضمن أعلى ثبات وفوحان وأفضل نتيجة تعتيق؟', en: 'Dear Master Shahin (Dean of Perfumers), I am working on a {c}% concentration formula in a {v}ml bottle (oil: {ow}g, ethanol: {aw}g).\nPlanned maceration: {d} days, expected completion: {date}.\nWhat is your lab assessment of these ratios, and how do I secure maximum longevity, sillage, and maturation quality?', fr: 'Cher Maître Shahin, je travaille sur une formule à {c} % dans un flacon de {v} ml (huile : {ow} g, éthanol : {aw} g).\nMacération prévue : {d} jours, achèvement : {date}.\nQuelle est votre évaluation de ces ratios et comment maximiser tenue, sillage et maturation ?', es: 'Querido Maestro Shahin, trabajo en una fórmula al {c}% en un frasco de {v} ml (aceite: {ow} g, etanol: {aw} g).\nMaceración prevista: {d} días, finalización: {date}.\n¿Cuál es su evaluación de estas proporciones y cómo logro máxima fijación, estela y maduración?', it: 'Caro Maestro Shahin, sto lavorando a una formula al {c}% in flacone da {v} ml (olio: {ow} g, etanolo: {aw} g).\nMacerazione prevista: {d} giorni, completamento: {date}.\nQual è la sua valutazione di questi rapporti e come ottengo massima tenacia, scia e maturazione?', de: 'Lieber Meister Shahin, ich arbeite an einer {c}%-Formel in einem {v}-ml-Fläschchen (Öl: {ow} g, Ethanol: {aw} g).\nGeplante Mazeration: {d} Tage, Fertigstellung: {date}.\nWie bewerten Sie diese Verhältnisse und wie erreiche ich maximale Haltbarkeit, Sillage und Reifung?', ru: 'Уважаемый мастер Шахин, работаю над формулой {c}% во флаконе {v} мл (масло: {ow} г, этанол: {aw} г).\nМацерация: {d} дней, завершение: {date}.\nОцените эти пропорции: как добиться максимальной стойкости, шлейфа и качества настаивания?', zh: '尊敬的 Shahin 大师，我正在调配一款 {c}% 浓度、{v}ml 瓶装的配方（油：{ow}g，乙醇：{aw}g）。\n计划浸置 {d} 天，预计完成：{date}。\n请评估这些比例，并指导如何获得最佳持久度、扩散与熟成效果？', tr: 'Sayın Usta Shahin, {v} ml\'lik şişede %{c} konsantrasyonlu bir formül üzerinde çalışıyorum (yağ: {ow} g, etanol: {aw} g).\nPlanlanan maserasyon: {d} gün, tahmini bitiş: {date}.\nBu oranları nasıl bulursunuz ve en iyi kalıcılık, iz ve olgunlaşma için ne önerirsiniz?', fa: 'استاد شاهین گرامی، روی فرمولی با غلظت {c}٪ در بطری {v} میلی‌لیتری کار می‌کنم (روغن: {ow} گرم، اتانول: {aw} گرم).\nتعریف برنامه‌ریزی‌شده: {d} روز، پایان مورد انتظار: {date}.\nارزیابی شما درباره این نسبت‌ها چیست و چگونه بیشترین ماندگاری، انتشار و کیفیت تعریف را به دست آورم؟' },
+} satisfies Record<string, LText>;
 
 interface ConcentrationCalculatorProps {
   formulation: FormulationState;
@@ -72,6 +178,7 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
   const { currentLang: ctxLang, t } = useLanguage();
   const effectiveLang = propLang || ctxLang || 'ar';
   const isRTL = effectiveLang === 'ar' || effectiveLang === 'fa';
+  const L = makeT(effectiveLang, S);
   const activeCurrency = propCurrency || formulation.currency || 'SAR';
 
   // Navigation inside the calculator: formulation, graphic pyramid, criteria guide, or visual scale simulator
@@ -168,18 +275,14 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
   };
 
   const copyRecipeToClipboard = () => {
-    const text = isRTL
-      ? `📌 تركيبة عطرية - معيار شام
-الحجم: ${formulation.bottleVolumeMl} مل | التركيز: ${formulation.concentrationPercent}%
-الزيت العطري: ${formatNum(result.oilWeightGrams)} جم (${formatNum(result.oilVolumeMl)} مل)
-الكحول الإيثيلي: ${formatNum(result.alcoholWeightGrams)} جم (${formatNum(result.alcoholVolumeMl)} مل)
-${result.waterVolumeMl > 0 ? `الماء المقطر: ${formatNum(result.waterWeightGrams)} جم (${formatNum(result.waterVolumeMl)} مل)\n` : ''}${result.fixativeVolumeMl > 0 ? `المثبت: ${formatNum(result.fixativeWeightGrams)} جم (${formatNum(result.fixativeVolumeMl)} مل)\n` : ''}الوزن الإجمالي للزجاجة: ${formatNum(result.totalWeightGrams)} جم`
-      : `📌 Fragrance Formulation - Sham Standard
-Volume: ${formulation.bottleVolumeMl}ml | Concentration: ${formulation.concentrationPercent}%
-Fragrance Oil: ${formatNum(result.oilWeightGrams)}g (${formatNum(result.oilVolumeMl)}ml)
-Ethanol: ${formatNum(result.alcoholWeightGrams)}g (${formatNum(result.alcoholVolumeMl)}ml)
-${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGrams)}g (${formatNum(result.waterVolumeMl)}ml)\n` : ''}${result.fixativeVolumeMl > 0 ? `Fixative: ${formatNum(result.fixativeWeightGrams)}g (${formatNum(result.fixativeVolumeMl)}ml)\n` : ''}Net Batch Total: ${formatNum(result.totalWeightGrams)}g`;
-
+    const text = [
+      fmt(L('clip_header'), { v: formulation.bottleVolumeMl, c: formulation.concentrationPercent }),
+      fmt(L('clip_oil'), { w: formatNum(result.oilWeightGrams), v: formatNum(result.oilVolumeMl) }),
+      fmt(L('clip_alcohol'), { w: formatNum(result.alcoholWeightGrams), v: formatNum(result.alcoholVolumeMl) }),
+      ...(result.waterVolumeMl > 0 ? [fmt(L('clip_water'), { w: formatNum(result.waterWeightGrams), v: formatNum(result.waterVolumeMl) })] : []),
+      ...(result.fixativeVolumeMl > 0 ? [fmt(L('clip_fixative'), { w: formatNum(result.fixativeWeightGrams), v: formatNum(result.fixativeVolumeMl) })] : []),
+      fmt(L('clip_total'), { w: formatNum(result.totalWeightGrams) }),
+    ].join('\n');
     navigator.clipboard.writeText(text);
     setCopiedSummary(true);
     setTimeout(() => setCopiedSummary(false), 2000);
@@ -193,7 +296,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold border border-amber-200 mb-1.5">
             <Sparkles className="w-3.5 h-3.5 text-amber-700" />
             <span>
-              {isRTL ? 'معمل معيار شام لدقة صناعة العطور' : 'Sham Perfumery Laboratory Standard'}
+              {L('lab_badge')}
             </span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-stone-900 font-serif-luxury">
@@ -255,7 +358,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
             }`}
           >
             <Scale className="w-3.5 h-3.5 text-amber-400" />
-            <span>{isRTL ? '⚖️ محاكاة وزن المواد والميزان' : '⚖️ Visual Scale Simulator'}</span>
+            <span>{L('scale_badge')}</span>
           </button>
         </div>
       </div>
@@ -270,14 +373,10 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
               </div>
               <div>
                 <h3 className="font-bold text-sm sm:text-base text-amber-100">
-                  {isRTL
-                    ? 'المحاكي البصري لوزن المواد الخام وميزان المعمل الرقمي (0.01g)'
-                    : 'Visual Laboratory Balance & Raw Materials Compounding Simulator'}
+                  {L('scale_sim_title')}
                 </h3>
                 <p className="text-xs text-stone-300 mt-0.5">
-                  {isRTL
-                    ? 'محاكاة حية لميزان المعمل، وزن الزيوت والكحول والمثبتات بالجرام والقطرات خطوة بخطوة مع تعبئة المخبار.'
-                    : 'Real-time step-by-step weighing walkthrough on digital balance pan (0.01g) with liquid beaker simulation.'}
+                  {L('scale_sim_desc')}
                 </p>
               </div>
             </div>
@@ -288,7 +387,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                 onClick={() => setActiveView('formulation')}
                 className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer border border-white/10"
               >
-                {isRTL ? 'العودة لحاسبة التركيب ←' : 'Back to Formulation ←'}
+                {L('back_to_formulation')}
               </button>
             </div>
           </div>
@@ -312,14 +411,10 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
               </div>
               <div>
                 <h3 className="font-bold text-sm sm:text-base text-amber-100">
-                  {isRTL
-                    ? 'جرافيك الهرم العطري التفاعلي ومحاكي سيناريو ما بعد الرش'
-                    : 'Interactive Olfactory Pyramid & Virtual Post-Spray Simulator'}
+                  {L('pyramid_graph_title')}
                 </h3>
                 <p className="text-xs text-stone-300 mt-0.5">
-                  {isRTL
-                    ? 'هرم ثلاثي الأبعاد مصنف بترتيب سرعة الطيران (1 إلى 10)، نسب النوتات الدقيقة، ومؤشر الفوحان دقيقة بدقيقة.'
-                    : '3D geometric pyramid classified by volatility rank (1 to 10), precise mass ratios, and minute-by-minute sillage tracker.'}
+                  {L('pyramid_graph_desc')}
                 </p>
               </div>
             </div>
@@ -330,7 +425,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                 onClick={() => setActiveView('formulation')}
                 className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer border border-white/10"
               >
-                {isRTL ? 'العودة لمقادير الحاسبة ←' : 'Return to Calculator ←'}
+                {L('return_to_calc')}
               </button>
             </div>
           </div>
@@ -368,14 +463,10 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
               </div>
               <div className={isRTL ? 'text-right' : 'text-left'}>
                 <span className="text-xs sm:text-sm font-bold text-amber-950 block">
-                  {isRTL
-                    ? 'هل تريد رؤية جرافيك الهرم وسيناريو ما بعد الرش لحظة بلحظة لهذه التركيبة؟'
-                    : 'Inspect the live Fragrance Pyramid and virtual spray simulation scenario for this formula?'}
+                  {L('pyramid_prompt_q')}
                 </span>
                 <span className="text-[11px] text-stone-600">
-                  {isRTL
-                    ? 'انقر لعرض الرسم الهرمي التفاعلي ثلاثي الطبقات ومحاكاة التبخر من دقيقة الصفر حتى 18+ ساعة.'
-                    : 'Click to inspect the 3-tier interactive pyramid and real-time volatilization curve from 0m to 24h.'}
+                  {L('pyramid_prompt_desc')}
                 </span>
               </div>
             </div>
@@ -387,7 +478,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                 className="px-4 py-2 bg-gradient-to-r from-amber-700 to-amber-800 hover:from-amber-800 hover:to-amber-900 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
               >
                 <Wind className="w-3.5 h-3.5 text-amber-200" />
-                <span>{isRTL ? 'فتح جرافيك الهرم التفاعلي 💨' : 'Open Interactive Pyramid 💨'}</span>
+                <span>{L('open_pyramid')}</span>
               </button>
             </div>
           </div>
@@ -408,15 +499,15 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                       type="button"
                       onClick={() => toggleCriterion('bottle_volume')}
                       className="px-2 py-0.5 rounded-full bg-amber-50 hover:bg-amber-100 border border-amber-300 text-[10px] font-bold text-amber-900 flex items-center gap-1 cursor-pointer transition-colors"
-                      title={isRTL ? 'اقرأ شرح معيار حجم الزجاجة والفراغ الهوائي' : 'Read bottle volume & headspace guide'}
+                      title={L('bottle_guide_tip')}
                     >
                       <HelpCircle className="w-3 h-3 text-amber-700" />
-                      <span>{isRTL ? 'شرح المعيار' : 'Criterion Guide'}</span>
+                      <span>{L('criterion_guide')}</span>
                       {expandedCriteria['bottle_volume'] ? <ChevronUp className="w-2.5 h-2.5" /> : <ChevronDown className="w-2.5 h-2.5" />}
                     </button>
                   </div>
                   <div className="text-xs text-stone-500">
-                    {isRTL ? 'الحجم الحالي: ' : 'Current: '}
+                    {L('current_volume_lbl')}
                     <span className="font-bold text-stone-900 font-mono-numbers">{formulation.bottleVolumeMl} ml</span>
                   </div>
                 </div>
@@ -426,12 +517,10 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                   <div className="p-3.5 bg-amber-50/80 rounded-xl border border-amber-200 text-xs text-stone-800 space-y-1.5 animate-in fade-in">
                     <div className="font-bold text-amber-950 flex items-center gap-1.5">
                       <Lightbulb className="w-3.5 h-3.5 text-amber-700" />
-                      <span>{isRTL ? 'معيار الحجم والفراغ الهوائي (Headspace Standard):' : 'Bottle Volume & Headspace Margin Standard:'}</span>
+                      <span>{L('headspace_std')}</span>
                     </div>
                     <p className="text-[11px] leading-relaxed text-stone-700">
-                      {isRTL
-                        ? '• السعة الحجمية: تحدد بدقة كتلة الزيت والكحول والماء الواجب وزنها. • قاعدة الفراغ الهوائي: اترك دائماً فراغاً بنسبة 3% إلى 5% في أعلى الزجاجة لامتصاص تمدد السائل الناتج عن حرارة الجو، ولضمان عمل أنبوب البخاخ دون ضغط مفرط.'
-                        : '• Nominal Capacity: Accurately defines the gravimetric mass of oil, alcohol, and fixatives to weigh. • Headspace Rule: Always preserve a 3% to 5% air gap to absorb thermal expansion and ensure leak-free atomizer performance.'}
+                      {L('headspace_note')}
                     </p>
                   </div>
                 )}
@@ -460,7 +549,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                 {/* Custom Bottle Slider */}
                 <div className="pt-2">
                   <div className="flex justify-between text-xs text-stone-500 mb-1">
-                    <span>{isRTL ? 'تخصيص حجم يدوي' : 'Custom Volume Slider'}</span>
+                    <span>{L('custom_volume')}</span>
                     <span className="font-mono-numbers text-stone-900 font-bold">{formulation.bottleVolumeMl} ml</span>
                   </div>
                   <input
@@ -492,15 +581,15 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                       type="button"
                       onClick={() => toggleCriterion('concentration')}
                       className="px-2 py-0.5 rounded-full bg-amber-50 hover:bg-amber-100 border border-amber-300 text-[10px] font-bold text-amber-900 flex items-center gap-1 cursor-pointer transition-colors"
-                      title={isRTL ? 'اقرأ شرح معيار نسب التركيز' : 'Read concentration grade guide'}
+                      title={L('conc_guide_tip')}
                     >
                       <HelpCircle className="w-3 h-3 text-amber-700" />
-                      <span>{isRTL ? 'شرح المعيار' : 'Criterion Guide'}</span>
+                      <span>{L('criterion_guide')}</span>
                       {expandedCriteria['concentration'] ? <ChevronUp className="w-2.5 h-2.5" /> : <ChevronDown className="w-2.5 h-2.5" />}
                     </button>
                   </div>
                   <div className="text-xs text-stone-500">
-                    {isRTL ? 'التركيز الحالي: ' : 'Current: '}
+                    {L('current_conc_lbl')}
                     <span className="font-bold text-amber-800 font-mono-numbers text-sm">
                       {formulation.concentrationPercent}%
                     </span>
@@ -512,12 +601,10 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                   <div className="p-3.5 bg-amber-50/80 rounded-xl border border-amber-200 text-xs text-stone-800 space-y-1.5 animate-in fade-in">
                     <div className="font-bold text-amber-950 flex items-center gap-1.5">
                       <Lightbulb className="w-3.5 h-3.5 text-amber-700" />
-                      <span>{isRTL ? 'معيار التركيز العطري الدولي (Fragrance Concentration Standard):' : 'International Fragrance Concentration Standard:'}</span>
+                      <span>{L('conc_std')}</span>
                     </div>
                     <p className="text-[11px] leading-relaxed text-stone-700">
-                      {isRTL
-                        ? '• Extrait (25%-35%): ثبات أقصى 12-24 ساعة مع فوحان حميمي. • EDP (15%-22%): التوازن المعياري العالمي للثبات والانتشار. • EDT (10%-14%): انتعاش يومي فواح. قاعدة ذهبية: لا تزد التركيز فوق 35% تجنباً لكتم الفوحان.'
-                        : '• Extrait (25%-35%): Maximum 12-24h longevity with royal intimate presence. • EDP (15%-22%): The benchmark balance of longevity and sillage. • EDT (10%-14%): Fresh daily sillage. Golden Rule: Never exceed 35% to avoid suppressing air diffusion.'}
+                      {L('conc_std_note')}
                     </p>
                   </div>
                 )}
@@ -559,7 +646,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                 {/* Custom Concentration Slider */}
                 <div className="pt-2">
                   <div className="flex justify-between text-xs text-stone-500 mb-1">
-                    <span>{isRTL ? 'تعديل النسبة بدقة (1% إلى 50%)' : 'Fine Adjustment (1% to 50%)'}</span>
+                    <span>{L('fine_adjust')}</span>
                     <span className="font-mono-numbers text-stone-900 font-bold">{formulation.concentrationPercent}%</span>
                   </div>
                   <input
@@ -584,10 +671,10 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                   <div className="flex items-center justify-between text-xs">
                     <span className="font-bold text-amber-950 flex items-center gap-1.5">
                       <Scale className="w-4 h-4 text-amber-700 animate-pulse" />
-                      <span>{isRTL ? 'محاكاة وزن المواد الخام اللحظية (دقة 0.01g)' : 'Live Raw Materials Scale Simulation (0.01g)'}</span>
+                      <span>{L('live_scale_lbl')}</span>
                     </span>
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100/90 text-[10px] font-mono-numbers font-bold text-amber-900 border border-amber-300/70">
-                      <span>{isRTL ? 'صافي الزجاجة:' : 'Net:'}</span>
+                      <span>{L('net_lbl')}</span>
                       <strong className="text-amber-950 font-extrabold">{formatNum(result.totalWeightGrams)} g</strong>
                     </span>
                   </div>
@@ -597,20 +684,20 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                     <div className="p-2.5 rounded-lg bg-white border border-amber-200/90 shadow-2xs">
                       <div className="text-[10px] font-bold text-amber-800 flex items-center gap-1">
                         <span className="w-2 h-2 rounded-full bg-amber-600 inline-block" />
-                        <span>{isRTL ? 'الزيت العطري' : 'Oil Mass'}</span>
+                        <span>{L('oil_mass')}</span>
                       </div>
                       <div className="font-mono-numbers font-black text-amber-950 text-sm mt-0.5">
                         {formatNum(result.oilWeightGrams)} g
                       </div>
                       <div className="text-[10px] text-amber-700/80 font-mono-numbers">
-                        {formatNum(result.oilVolumeMl)} ml · ~{Math.round(result.oilWeightGrams * 24)} {isRTL ? 'قطرة' : 'drops'}
+                        {formatNum(result.oilVolumeMl)} ml · ~{Math.round(result.oilWeightGrams * 24)} {L('drops_word')}
                       </div>
                     </div>
 
                     <div className="p-2.5 rounded-lg bg-white border border-stone-200 shadow-2xs">
                       <div className="text-[10px] font-bold text-stone-700 flex items-center gap-1">
                         <span className="w-2 h-2 rounded-full bg-stone-400 inline-block" />
-                        <span>{isRTL ? 'الكحول الإيثيلي' : 'Ethanol Mass'}</span>
+                        <span>{L('ethanol_mass')}</span>
                       </div>
                       <div className="font-mono-numbers font-black text-stone-900 text-sm mt-0.5">
                         {formatNum(result.alcoholWeightGrams)} g
@@ -624,7 +711,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                       <div className="p-2.5 rounded-lg bg-white border border-emerald-200 shadow-2xs">
                         <div className="text-[10px] font-bold text-emerald-800 flex items-center gap-1">
                           <span className="w-2 h-2 rounded-full bg-emerald-600 inline-block" />
-                          <span>{isRTL ? 'المثبت العطري' : 'Fixative Mass'}</span>
+                          <span>{L('fixative_mass')}</span>
                         </div>
                         <div className="font-mono-numbers font-black text-emerald-950 text-sm mt-0.5">
                           {formatNum(result.fixativeWeightGrams)} g
@@ -635,24 +722,22 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                       </div>
                     ) : (
                       <div className="p-2 rounded-lg bg-stone-100/70 border border-stone-200 text-stone-400 flex flex-col justify-center text-[10px]">
-                        <span className="font-semibold">{isRTL ? 'المثبت: 0 جم' : 'Fixative: 0g'}</span>
-                        <span className="text-[9px] text-stone-400">{isRTL ? '(اختياري)' : '(Optional)'}</span>
+                        <span className="font-semibold">{L('fixative_zero')}</span>
+                        <span className="text-[9px] text-stone-400">{L('optional_lbl')}</span>
                       </div>
                     )}
                   </div>
 
                   <div className="pt-1 flex items-center justify-between border-t border-amber-200/50">
                     <span className="text-[10px] text-stone-500">
-                      {isRTL
-                        ? 'تحديث لحظي لجرامات المواد مع سحب مؤشر النسبة'
-                        : 'Real-time gram adjustment as concentration changes'}
+                      {L('live_update_note')}
                     </span>
                     <button
                       type="button"
                       onClick={() => setActiveView('scale_simulator')}
                       className="text-[11px] text-amber-800 font-bold hover:text-amber-950 hover:underline flex items-center gap-1 cursor-pointer"
                     >
-                      <span>{isRTL ? 'المحاكي التفاعلي الموسع ⚖️' : 'Full Simulator ⚖️'}</span>
+                      <span>{L('full_simulator')}</span>
                     </button>
                   </div>
                 </div>
@@ -673,7 +758,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                         onClick={() => toggleCriterion('alcohol_purity')}
                         className="text-[10px] text-amber-800 font-bold hover:underline cursor-pointer"
                       >
-                        [؟]
+                        [{L('q_mark')}]
                       </button>
                     </div>
                     <select
@@ -686,15 +771,13 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                       }
                       className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs text-stone-800 font-semibold focus:outline-none"
                     >
-                      <option value={96}>{isRTL ? '96% - إيثانول عضوي فاخر (المعيار الدولي)' : '96% - Cosmetic Perfumers Ethanol (Global Standard)'}</option>
-                      <option value={99}>{isRTL ? '99% - إيثانول مطلق خالي من الماء تماماً' : '99% - Anhydrous Absolute Ethanol'}</option>
-                      <option value={95}>{isRTL ? '95% - كحول تقطير زراعي قياسي' : '95% - Agricultural Distilled Alcohol'}</option>
+                      <option value={96}>{L('ethanol_opt_96')}</option>
+                      <option value={99}>{L('ethanol_opt_99')}</option>
+                      <option value={95}>{L('ethanol_opt_95')}</option>
                     </select>
                     {expandedCriteria['alcohol_purity'] && (
                       <div className="p-2.5 mt-2 bg-amber-50 border border-amber-200 rounded-lg text-[10px] text-amber-950 leading-relaxed">
-                        {isRTL
-                          ? 'الكحول 96% هو الأنسب لإذابة الزيوت دون تعكر. كحول الصيدليات 70% يفسد العطر لاحتوائه على 30% ماء.'
-                          : '96% ethanol is the golden standard to solubilize oils without cloudiness. Never use 70% rubbing alcohol.'}
+                        {L('alcohol_note')}
                       </div>
                     )}
                   </div>
@@ -711,7 +794,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                         onClick={() => toggleCriterion('batch_count')}
                         className="text-[10px] text-amber-800 font-bold hover:underline cursor-pointer"
                       >
-                        [؟]
+                        [{L('q_mark')}]
                       </button>
                     </div>
                     <div className="flex items-center gap-2">
@@ -729,14 +812,12 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                         className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs text-stone-900 font-bold font-mono-numbers focus:outline-none"
                       />
                       <span className="text-xs text-stone-500 font-medium whitespace-nowrap">
-                        {isRTL ? 'عبوة' : 'bottles'}
+                        {L('bottles_word')}
                       </span>
                     </div>
                     {expandedCriteria['batch_count'] && (
                       <div className="p-2.5 mt-2 bg-amber-50 border border-amber-200 rounded-lg text-[10px] text-amber-950 leading-relaxed">
-                        {isRTL
-                          ? 'الخلط بالتشغيلة الكاملة يوحد نقاء ورائحة العطر ويقلل هدر الخامات بنسبة تصل لـ 12%.'
-                          : 'Batch compounding ensures olfactory uniformity across all bottles and cuts waste by up to 12%.'}
+                        {L('batch_note')}
                       </div>
                     )}
                   </div>
@@ -749,10 +830,10 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                       <Hourglass className="w-4 h-4 text-amber-800 shrink-0" />
                       <div>
                         <span className="font-bold text-xs text-stone-900 block">
-                          {isRTL ? 'فترة التعتيق وتاريخ نضوج العطر المتوقع (محاكي التعتيق الزمني)' : 'Maceration Period & Predicted Maturation Date'}
+                          {L('maceration_title')}
                         </span>
                         <span className="text-[10px] text-stone-500">
-                          {isRTL ? 'حساب تاريخ الانتهاء المتوقع بناءً على أيام النظام وتاريخ البدء' : 'Calculates exact completion date from start date & days'}
+                          {L('maceration_desc')}
                         </span>
                       </div>
                     </div>
@@ -764,7 +845,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                         className="px-2.5 py-1 rounded-lg bg-amber-800 hover:bg-amber-900 text-white font-bold text-[11px] flex items-center gap-1 shadow-xs transition-colors cursor-pointer self-start sm:self-auto"
                       >
                         <Calendar className="w-3 h-3 text-amber-300" />
-                        <span>{isRTL ? 'محاكي التعتيق الزمني ⏳' : 'Aging Simulator ⏳'}</span>
+                        <span>{L('aging_sim_btn')}</span>
                       </button>
                     )}
                   </div>
@@ -773,7 +854,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                     <div className="sm:col-span-5 flex items-center gap-2">
                       <div className="w-full">
                         <label className="text-[10px] font-bold text-stone-600 block mb-1">
-                          {isRTL ? 'أيام التعتيق المقررة:' : 'Maceration Days:'}
+                          {L('mac_days_lbl')}
                         </label>
                         <div className="flex items-center gap-2">
                           <input
@@ -785,7 +866,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                             className="w-24 p-2 bg-white border border-stone-300 rounded-lg text-xs font-bold font-mono-numbers text-stone-900 focus:outline-none focus:ring-1 focus:ring-amber-800"
                           />
                           <span className="text-xs text-stone-500 font-medium">
-                            {isRTL ? 'يوماً' : 'days'}
+                            {L('days_word')}
                           </span>
                         </div>
                       </div>
@@ -795,14 +876,14 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                       <div className="flex items-center justify-between text-[10px]">
                         <span className="font-semibold text-stone-500 flex items-center gap-1">
                           <Calendar className="w-3 h-3 text-amber-700" />
-                          <span>{isRTL ? 'تاريخ الانتهاء المتوقع للنضوج:' : 'Target Maturation Date:'}</span>
+                          <span>{L('maturity_date_lbl')}</span>
                         </span>
                         <span className="font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded text-[9px] border border-emerald-200">
-                          {isRTL ? 'تلقائي بالنظام' : 'System Auto'}
+                          {L('system_auto')}
                         </span>
                       </div>
                       <div className="font-bold text-xs text-stone-950 font-serif-luxury">
-                        {new Date(Date.now() + (macerationDays || 30) * 86400000).toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', {
+                        {new Date(Date.now() + (macerationDays || 30) * 86400000).toLocaleDateString(LOCALE_MAP[effectiveLang], {
                           weekday: 'long',
                           year: 'numeric',
                           month: 'long',
@@ -823,12 +904,12 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                 >
                   <div className="flex items-center gap-2">
                     <Sliders className="w-4 h-4 text-amber-700" />
-                    <span>{isRTL ? 'إعدادات كيميائية متقدمة (الكثافة، الماء المقطر، المثبتات)' : 'Advanced Chemistry Settings (Density, Water, Fixatives)'}</span>
+                    <span>{L('advanced_chem')}</span>
                   </div>
                   <span className="text-xs text-amber-800 font-bold">
                     {showAdvanced
-                      ? isRTL ? 'إخفاء الإعدادات ▲' : 'Hide Settings ▲'
-                      : isRTL ? 'تخصيص الإعدادات الكيميائية ▼' : 'Customize Settings ▼'}
+                      ? L('hide_settings')
+                      : L('customize_settings')}
                   </span>
                 </button>
 
@@ -859,7 +940,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                           className="w-full accent-amber-800 cursor-pointer mt-1"
                         />
                         <p className="text-[10px] text-stone-500 mt-1">
-                          {isRTL ? 'النسبة النموذجية: 0% إلى 2% فقط لترطيب الرذاذ.' : 'Safe benchmark: 0% to 2% max.'}
+                          {L('water_benchmark')}
                         </p>
                       </div>
 
@@ -887,7 +968,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                           className="w-full accent-amber-800 cursor-pointer mt-1"
                         />
                         <p className="text-[10px] text-stone-500 mt-1">
-                          {isRTL ? 'النسبة الموصى بها: 0.5% إلى 2% لإبطاء تبخر النوتات الخفيفة.' : 'Recommended ratio: 0.5% to 2%.'}
+                          {L('fixative_benchmark')}
                         </p>
                       </div>
                     </div>
@@ -896,7 +977,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                       {/* Oil Density */}
                       <div>
                         <label className="text-xs font-medium text-stone-700 block mb-1">
-                          {isRTL ? 'كثافة الزيت العطري (g/ml)' : 'Oil Specific Gravity (g/ml)'}
+                          {L('oil_sg_lbl')}
                         </label>
                         <input
                           type="number"
@@ -913,14 +994,14 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                           className="w-full px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg text-xs font-mono-numbers text-stone-900"
                         />
                         <span className="text-[10px] text-stone-400 block mt-0.5">
-                          {isRTL ? 'المتوسط: 0.92 جم/مل' : 'Standard benchmark: 0.92 g/ml'}
+                          {L('oil_sg_note')}
                         </span>
                       </div>
 
                       {/* Alcohol Density */}
                       <div>
                         <label className="text-xs font-medium text-stone-700 block mb-1">
-                          {isRTL ? 'كثافة الكحول الإيثيلي (g/ml)' : 'Ethanol Specific Gravity (g/ml)'}
+                          {L('ethanol_sg_lbl')}
                         </label>
                         <input
                           type="number"
@@ -937,7 +1018,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                           className="w-full px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg text-xs font-mono-numbers text-stone-900"
                         />
                         <span className="text-[10px] text-stone-400 block mt-0.5">
-                          {isRTL ? 'الكحول 96% كثافته تقريباً 0.80 جم/مل' : '96% ethanol is ~0.80 g/ml'}
+                          {L('ethanol_sg_note')}
                         </span>
                       </div>
                     </div>
@@ -969,8 +1050,8 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                     {copiedSummary ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : null}
                     <span>
                       {copiedSummary
-                        ? isRTL ? 'تم النسخ' : 'Copied'
-                        : isRTL ? 'نسخ المقادير' : 'Copy Recipe'}
+                        ? L('copied_lbl')
+                        : L('copy_recipe_lbl')}
                     </span>
                   </button>
                 </div>
@@ -978,7 +1059,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                 {/* Visual Ingredient Breakdown Ratio Bar */}
                 <div className="space-y-2">
                   <div className="flex justify-between text-xs font-medium text-stone-600">
-                    <span>{isRTL ? 'توزيع المكونات في الزجاجة' : 'Formula Ratio Breakdown'}</span>
+                    <span>{L('breakdown_lbl')}</span>
                     <span className="font-mono-numbers font-bold text-stone-900">100%</span>
                   </div>
                   <div className="h-4 rounded-full overflow-hidden flex bg-stone-100 p-0.5 border border-stone-200">
@@ -1034,9 +1115,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                 {/* Detailed Ingredients Table */}
                 <div className="space-y-3 pt-2">
                   <div className="text-xs font-semibold text-stone-900">
-                    {isRTL
-                      ? `المقادير للزجاجة الواحدة (${formulation.bottleVolumeMl} مل):`
-                      : `Batch Metrics per Single Bottle (${formulation.bottleVolumeMl}ml):`}
+                    {fmt(L('single_bottle_tpl'), { v: formulation.bottleVolumeMl })}
                   </div>
                   <div className="divide-y divide-stone-100 border border-stone-200/70 rounded-xl overflow-hidden bg-stone-50/50">
                     
@@ -1048,7 +1127,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                           {t('result_oil', 'الزيت العطري الخام')}
                         </div>
                         <div className="text-[11px] text-stone-500">
-                          {isRTL ? 'بالمخبار: ' : 'Volumetric: '}
+                          {L('volumetric_lbl')}
                           <span className="font-mono-numbers">{formatNum(result.oilVolumeMl)} ml</span>
                         </div>
                       </div>
@@ -1056,7 +1135,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                         <div className="text-base font-bold text-amber-900">
                           {formatNum(result.oilWeightGrams)} g
                         </div>
-                        <div className="text-[10px] text-stone-400">{isRTL ? 'وزن الميزان' : 'Scale Mass'}</div>
+                        <div className="text-[10px] text-stone-400">{L('scale_mass_lbl')}</div>
                       </div>
                     </div>
 
@@ -1068,7 +1147,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                           {t('result_alcohol', 'الكحول الإيثيلي (Ethanol)')}
                         </div>
                         <div className="text-[11px] text-stone-500">
-                          {isRTL ? 'بالمخبار: ' : 'Volumetric: '}
+                          {L('volumetric_lbl')}
                           <span className="font-mono-numbers">{formatNum(result.alcoholVolumeMl)} ml</span>
                         </div>
                       </div>
@@ -1076,7 +1155,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                         <div className="text-base font-bold text-stone-900">
                           {formatNum(result.alcoholWeightGrams)} g
                         </div>
-                        <div className="text-[10px] text-stone-400">{isRTL ? 'وزن الميزان' : 'Scale Mass'}</div>
+                        <div className="text-[10px] text-stone-400">{L('scale_mass_lbl')}</div>
                       </div>
                     </div>
 
@@ -1143,9 +1222,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                   <div className="p-4 bg-amber-50/70 border border-amber-200/80 rounded-xl space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-amber-950">
-                        {isRTL
-                          ? `إجمالي إنتاج التشغيلة (${formulation.batchCount} عبوة):`
-                          : `Batch Production Total (${formulation.batchCount} units):`}
+                        {fmt(L('batch_total_tpl'), { n: formulation.batchCount })}
                       </span>
                       <span className="text-xs font-mono-numbers font-semibold text-amber-900">
                         {formatNum(result.batchTotalVolumeMl / 1000, 2)} L
@@ -1154,7 +1231,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                     <div className="grid grid-cols-2 gap-3 text-xs pt-1">
                       <div className="bg-white p-2.5 rounded-lg border border-amber-100">
                         <span className="text-stone-500 block text-[11px]">
-                          {isRTL ? 'إجمالي الزيت العطري:' : 'Total Fragrance Oil:'}
+                          {L('total_oil_lbl')}
                         </span>
                         <span className="font-mono-numbers font-bold text-amber-900 text-sm">
                           {result.batchTotalOilGrams >= 1000
@@ -1164,7 +1241,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                       </div>
                       <div className="bg-white p-2.5 rounded-lg border border-amber-100">
                         <span className="text-stone-500 block text-[11px]">
-                          {isRTL ? 'إجمالي الكحول الإيثيلي:' : 'Total Ethyl Alcohol:'}
+                          {L('total_alcohol_lbl')}
                         </span>
                         <span className="font-mono-numbers font-bold text-stone-900 text-sm">
                           {result.batchTotalAlcoholGrams >= 1000
@@ -1187,15 +1264,13 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                       </div>
                       <div>
                         <h4 className="text-sm font-bold text-amber-950 flex items-center gap-2">
-                          <span>{isRTL ? 'إجمالي تكلفة المواد الخام التلقائية' : 'Live Raw Materials Total Cost'}</span>
+                          <span>{L('live_cost_lbl')}</span>
                           <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 animate-pulse">
-                            {isRTL ? 'تحديث لحظي' : 'Live'}
+                            {L('live_word')}
                           </span>
                         </h4>
                         <span className="text-[10px] text-stone-500">
-                          {isRTL
-                            ? `محسوبة تلقائياً بأسعار الخامات الافتراضية (${activeCurrency})`
-                            : `Calculated dynamically from benchmark prices (${activeCurrency})`}
+                          {fmt(L('cost_note_tpl'), { c: activeCurrency })}
                         </span>
                       </div>
                     </div>
@@ -1206,7 +1281,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                       className="px-2.5 py-1 text-[11px] rounded-lg bg-white border border-amber-200 text-amber-900 font-semibold hover:bg-amber-100 transition-colors flex items-center gap-1 cursor-pointer shadow-2xs"
                     >
                       <Sliders className="w-3 h-3 text-amber-700" />
-                      <span>{showPriceConfig ? (isRTL ? 'إخفاء الأسعار ▲' : 'Hide Prices ▲') : (isRTL ? 'تعديل الأسعار ⚙️' : 'Adjust Prices ⚙️')}</span>
+                      <span>{showPriceConfig ? (L('hide_prices')) : (L('adjust_prices'))}</span>
                     </button>
                   </div>
 
@@ -1214,7 +1289,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div className="bg-white p-3.5 rounded-xl border border-amber-200/90 shadow-2xs">
                       <div className="text-[11px] font-medium text-stone-500 mb-0.5">
-                        {isRTL ? 'تكلفة المواد للزجاجة الواحدة:' : 'Raw Cost per Single Bottle:'}
+                        {L('cost_per_bottle_lbl')}
                       </div>
                       <div className="flex items-baseline gap-1.5">
                         <span className="text-xl font-extrabold text-amber-950 font-mono-numbers">
@@ -1231,9 +1306,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
 
                     <div className="bg-white p-3.5 rounded-xl border border-amber-200/90 shadow-2xs">
                       <div className="text-[11px] font-medium text-stone-500 mb-0.5">
-                        {isRTL
-                          ? `تكلفة التشغيلة (${formulation.batchCount} عبوة):`
-                          : `Total Batch Cost (${formulation.batchCount} units):`}
+                        {fmt(L('batch_cost_tpl'), { n: formulation.batchCount })}
                       </div>
                       <div className="flex items-baseline gap-1.5">
                         <span className="text-xl font-extrabold text-stone-900 font-mono-numbers">
@@ -1249,9 +1322,9 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                   {/* Itemized Cost Breakdown */}
                   <div className="space-y-1.5 pt-1 text-xs">
                     <div className="text-[11px] font-bold text-stone-700 flex items-center justify-between">
-                      <span>{isRTL ? 'تفصيل تكلفة المواد لكل عبوة:' : 'Itemized Cost per Bottle:'}</span>
+                      <span>{L('itemized_lbl')}</span>
                       <span className="font-mono-numbers text-stone-400 text-[10px]">
-                        100% {isRTL ? 'من تكلفة الخامات' : 'of materials'}
+                        100% {L('of_materials')}
                       </span>
                     </div>
 
@@ -1261,7 +1334,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                         <div className="flex items-center gap-1.5">
                           <span className="w-2.5 h-2.5 rounded-xs bg-amber-600 inline-block" />
                           <span className="font-semibold text-stone-800">
-                            {isRTL ? 'الزيت العطري الخام' : 'Fragrance Oil'}
+                            {L('oil_cost_lbl')}
                           </span>
                           <span className="text-[10px] text-stone-400 font-mono-numbers">
                             ({formatNum(result.oilWeightGrams, 2)}g @ {oilPricePerKg} {activeCurrency}/kg)
@@ -1280,7 +1353,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                         <div className="flex items-center gap-1.5">
                           <span className="w-2.5 h-2.5 rounded-xs bg-stone-400 inline-block" />
                           <span className="font-semibold text-stone-800">
-                            {isRTL ? 'الكحول الإيثيلي' : 'Ethyl Alcohol'}
+                            {L('ethanol_mass')}
                           </span>
                           <span className="text-[10px] text-stone-400 font-mono-numbers">
                             ({formatNum(result.alcoholVolumeMl, 1)}ml @ {alcoholPricePerLiter} {activeCurrency}/L)
@@ -1300,7 +1373,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                           <div className="flex items-center gap-1.5">
                             <span className="w-2.5 h-2.5 rounded-xs bg-emerald-600 inline-block" />
                             <span className="font-semibold text-emerald-950">
-                              {isRTL ? 'المثبت العطري' : 'Fixative'}
+                              {L('fixative_mass')}
                             </span>
                             <span className="text-[10px] text-stone-400 font-mono-numbers">
                               ({formatNum(result.fixativeWeightGrams, 2)}g @ {fixativePricePerKg} {activeCurrency}/kg)
@@ -1318,7 +1391,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                           <div className="flex items-center gap-1.5">
                             <span className="w-2.5 h-2.5 rounded-xs bg-sky-400 inline-block" />
                             <span className="font-semibold text-sky-950">
-                              {isRTL ? 'الماء المقطر' : 'Distilled Water'}
+                              {L('water_cost_lbl')}
                             </span>
                             <span className="text-[10px] text-stone-400 font-mono-numbers">
                               ({formatNum(result.waterVolumeMl, 1)}ml @ {waterPricePerLiter} {activeCurrency}/L)
@@ -1338,17 +1411,17 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-stone-900 flex items-center gap-1">
                           <Sliders className="w-3.5 h-3.5 text-amber-700" />
-                          <span>{isRTL ? 'تخصيص أسعار شراء المواد الافتراضية' : 'Customize Benchmark Raw Material Prices'}</span>
+                          <span>{L('price_config_lbl')}</span>
                         </span>
                         <span className="text-[10px] text-stone-400 font-medium">
-                          {isRTL ? 'تُحفظ تلقائياً وتحدث الإجمالي' : 'Auto-saved & Live Updated'}
+                          {L('autosave_note')}
                         </span>
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                         <div>
                           <label className="text-[11px] font-medium text-stone-600 block mb-1">
-                            {isRTL ? `سعر كيلو الزيت (${activeCurrency}/kg)` : `Oil Price (${activeCurrency}/kg)`}
+                            {fmt(L('oil_price_tpl'), { c: activeCurrency })}
                           </label>
                           <input
                             type="number"
@@ -1362,7 +1435,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
 
                         <div>
                           <label className="text-[11px] font-medium text-stone-600 block mb-1">
-                            {isRTL ? `سعر لتر الكحول (${activeCurrency}/L)` : `Ethanol Price (${activeCurrency}/L)`}
+                            {fmt(L('ethanol_price_tpl'), { c: activeCurrency })}
                           </label>
                           <input
                             type="number"
@@ -1376,7 +1449,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
 
                         <div>
                           <label className="text-[11px] font-medium text-stone-600 block mb-1">
-                            {isRTL ? `سعر كيلو المثبت (${activeCurrency}/kg)` : `Fixative Price (${activeCurrency}/kg)`}
+                            {fmt(L('fixative_price_tpl'), { c: activeCurrency })}
                           </label>
                           <input
                             type="number"
@@ -1390,7 +1463,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
 
                         <div>
                           <label className="text-[11px] font-medium text-stone-600 block mb-1">
-                            {isRTL ? `سعر لتر الماء المقطر (${activeCurrency}/L)` : `Distilled Water (${activeCurrency}/L)`}
+                            {fmt(L('water_price_tpl'), { c: activeCurrency })}
                           </label>
                           <input
                             type="number"
@@ -1417,13 +1490,13 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                       </div>
                       <div>
                         <h4 className="text-sm font-bold text-stone-100 flex items-center gap-2">
-                          <span>{isRTL ? 'محاكي وزن المواد والميزان البصري' : 'Visual Scale & Balance Simulator'}</span>
+                          <span>{L('visual_scale_lbl')}</span>
                           <span className="text-[9px] font-mono-numbers px-1.5 py-0.5 rounded bg-amber-900/60 text-amber-300 border border-amber-700/50">
                             ± 0.01 g
                           </span>
                         </h4>
                         <span className="text-[10px] text-stone-400">
-                          {isRTL ? 'محاكاة بصرية حية لوزن كل مادة بالجرام والقطرات وتعبئة المخبار' : 'Live gravimetric scale readout & liquid beaker visualization'}
+                          {L('visual_scale_desc')}
                         </span>
                       </div>
                     </div>
@@ -1433,7 +1506,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                       onClick={() => setActiveView('scale_simulator')}
                       className="px-2.5 py-1 text-[11px] rounded-lg bg-amber-600 hover:bg-amber-500 text-stone-950 font-bold transition-colors flex items-center gap-1 cursor-pointer"
                     >
-                      <span>{isRTL ? 'المحاكي الكامل 🔬' : 'Full Lab View 🔬'}</span>
+                      <span>{L('full_lab_view')}</span>
                     </button>
                   </div>
 
@@ -1480,27 +1553,27 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                       <div className="space-y-1.5 text-xs">
                         <div className="text-[11px] font-bold text-amber-300 flex items-center gap-1.5">
                           <span className="w-2 h-2 rounded-full bg-amber-500" />
-                          <span>{isRTL ? 'الزيت:' : 'Oil:'}</span>
+                          <span>{L('oil_colon')}</span>
                           <span className="font-mono-numbers text-white font-extrabold">{formatNum(result.oilWeightGrams)} g</span>
-                          <span className="text-[10px] text-stone-400 font-mono-numbers">({formatNum(result.oilVolumeMl)} ml · ~{Math.round(result.oilWeightGrams * 24)} {isRTL ? 'قطرة' : 'drops'})</span>
+                          <span className="text-[10px] text-stone-400 font-mono-numbers">({formatNum(result.oilVolumeMl)} ml · ~{Math.round(result.oilWeightGrams * 24)} {L('drops_word')})</span>
                         </div>
                         <div className="text-[11px] font-bold text-cyan-300 flex items-center gap-1.5">
                           <span className="w-2 h-2 rounded-full bg-cyan-400" />
-                          <span>{isRTL ? 'الكحول:' : 'Ethanol:'}</span>
+                          <span>{L('ethanol_colon')}</span>
                           <span className="font-mono-numbers text-white font-extrabold">{formatNum(result.alcoholWeightGrams)} g</span>
                           <span className="text-[10px] text-stone-400 font-mono-numbers">({formatNum(result.alcoholVolumeMl)} ml)</span>
                         </div>
                         {result.fixativeWeightGrams > 0 && (
                           <div className="text-[11px] font-bold text-emerald-300 flex items-center gap-1.5">
                             <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                            <span>{isRTL ? 'المثبت:' : 'Fixative:'}</span>
+                            <span>{L('fixative_colon')}</span>
                             <span className="font-mono-numbers text-white">{formatNum(result.fixativeWeightGrams)} g</span>
                           </div>
                         )}
                         {result.waterWeightGrams > 0 && (
                           <div className="text-[11px] font-bold text-sky-300 flex items-center gap-1.5">
                             <span className="w-2 h-2 rounded-full bg-sky-400" />
-                            <span>{isRTL ? 'الماء:' : 'Water:'}</span>
+                            <span>{L('water_colon')}</span>
                             <span className="font-mono-numbers text-white">{formatNum(result.waterWeightGrams)} g</span>
                           </div>
                         )}
@@ -1527,7 +1600,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                               : 'bg-stone-800 hover:bg-stone-700 text-stone-300'
                           }`}
                         >
-                          TARE (تصفير)
+                          {L('tare_lbl')}
                         </button>
                       </div>
                     </div>
@@ -1564,9 +1637,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                   >
                     <Wind className="w-4 h-4 text-stone-900" />
                     <span>
-                      {isRTL
-                        ? 'مشاهدة جرافيك الهرم وسيناريو رش العطر 💨'
-                        : 'View Fragrance Pyramid & Spray Simulation 💨'}
+                      {L('cta_pyramid')}
                     </span>
                   </button>
 
@@ -1578,9 +1649,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                   >
                     <BookOpen className="w-3.5 h-3.5 text-amber-700" />
                     <span>
-                      {isRTL
-                        ? 'دليل وشرح جميع معايير الحاسبة والمعمل 📖'
-                        : 'Formulation Criteria & Chemistry Guide 📖'}
+                      {L('cta_criteria')}
                     </span>
                   </button>
 
@@ -1593,9 +1662,7 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                     >
                       <Hourglass className="w-4 h-4 text-amber-400" />
                       <span>
-                        {isRTL
-                          ? 'محاكي التعتيق الزمني وتاريخ نضوج العطر ⏳'
-                          : 'Maceration & Aging Time Simulator ⏳'}
+                        {L('cta_aging')}
                       </span>
                     </button>
                   )}
@@ -1610,18 +1677,21 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                         month: 'long',
                         day: 'numeric',
                       });
-                      const prompt = `أيها الخبير شاهين (شيخ العطارين)، أعمل على تركيبة بتركيز ${formulation.concentrationPercent}% بحجم ${formulation.bottleVolumeMl} مل (وزن الزيت: ${result.oilWeightGrams.toFixed(2)} جم، الكحول: ${result.alcoholWeightGrams.toFixed(2)} جم).
-مدة التعتيق المقررة: ${macerationDays} يوماً، وتاريخ الانتهاء المتوقع: ${expectedDate}.
-ما هو تقييمك المخبري لتوازن هذه النسب؟ وكيف أضمن أعلى ثبات وفوحان وأفضل نتيجة تعتيق؟`;
+                      const prompt = fmt(L('shahin_prompt_tpl'), {
+                        c: formulation.concentrationPercent,
+                        v: formulation.bottleVolumeMl,
+                        ow: result.oilWeightGrams.toFixed(2),
+                        aw: result.alcoholWeightGrams.toFixed(2),
+                        d: macerationDays,
+                        date: expectedDate,
+                      });
                       window.dispatchEvent(new CustomEvent('open-ai-chat-with-prompt', { detail: prompt }));
                     }}
                     className="w-full py-2.5 px-3 bg-amber-50 hover:bg-amber-100 text-amber-950 font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer border border-amber-300/80"
                   >
                     <Bot className="w-4 h-4 text-amber-800" />
                     <span>
-                      {isRTL
-                        ? 'استشارة الخبير شاهين حول نسب وتعتيق التركيبة 🧙‍♂️'
-                        : 'Consult Master Shahin on Formulation & Aging 🧙‍♂️'}
+                      {L('cta_shahin')}
                     </span>
                   </button>
                 </div>
@@ -1633,15 +1703,11 @@ ${result.waterVolumeMl > 0 ? `Distilled Water: ${formatNum(result.waterWeightGra
                 <div className="font-semibold text-stone-900 flex items-center gap-1.5">
                   <Info className="w-4 h-4 text-amber-700 shrink-0" />
                   <span>
-                    {isRTL
-                      ? 'معيار ميزان المعمل (الميزان الرقمي vs المخبار):'
-                      : 'Laboratory Gravimetric Standard (Digital Scale vs Cylinder):'}
+                    {L('grav_std')}
                   </span>
                 </div>
                 <p className="leading-relaxed text-[11px]">
-                  {isRTL
-                    ? 'استخدام الميزان الرقمي بالغرام أدق بكثير من المخبار المدرج بالمليلتر، لأن الزيوت العطرية مادة لزجة تلتصق بجدران الأنابيب الزجاجية مسببة فاقداً يصل لـ 1.5 مل في كل عبوة، بينما الميزان يحسب الوزن المباشر بدقة 0.01 جم داخل الزجاجة دون أي فاقد.'
-                    : 'Gravimetric digital balance measurement is strictly preferred over volumetric glass cylinders. Viscous essential oils adhere to pipette walls causing up to 1.5ml loss per bottle, while direct scale taring achieves 0.01g precision with zero material waste.'}
+                  {L('grav_std_note')}
                 </p>
               </div>
 

@@ -30,6 +30,7 @@ import { PyramidNote } from '../types/perfume';
 import { ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
 import { SupportedLanguage } from '../types/i18n';
 import { getLocalizedNewsArticle, isRTL } from '../utils/localizedContent';
+import { LText, makeT, fmt, LOCALE_MAP } from '../utils/localize';
 import masterShaheenImg from '../assets/images/master_perfumer_compounding_1791693212967.jpg';
 
 interface WorldPerfumeNewsProps {
@@ -37,6 +38,65 @@ interface WorldPerfumeNewsProps {
   onApplyNewsNotesToCalculator: (formula: ExtractedAIPerfume) => void;
   onAddNoteToPyramid: (note: PyramidNote) => void;
 }
+
+const S = {
+  load_1: { ar: 'الخبير شاهين يتواصل مع مراسلي المعارض في ميلانو وباريس ودبي...', en: 'Master Shahin is contacting fair correspondents in Milan, Paris & Dubai...', fr: 'Le Maître Shahin contacte ses correspondants à Milan, Paris et Dubaï…', es: 'El Maestro Shahin contacta a sus corresponsales en Milán, París y Dubái...', it: 'Il Maestro Shahin contatta gli inviati di Milano, Parigi e Dubai…', de: 'Meister Shahin kontaktiert die Messekorrespondenten in Mailand, Paris und Dubai…', ru: 'Мастер Шахин связывается с корреспондентами в Милане, Париже и Дубае…', zh: 'Shahin 大师正与米兰、巴黎和迪拜的展会通讯员联络……', tr: 'Usta Shahin Milano, Paris ve Dubai fuar muhabirleriyle görüşüyor…', fa: 'استاد شاهین با خبرنگاران نمایشگاه‌های میلان، پاریس و دبی تماس می‌گیرد...' },
+  load_2: { ar: 'يفحص عينات الحصاد الطبيعي وشهادات النقاء والكروماتوغرافيا (GC-MS)...', en: 'Inspecting botanical harvest samples, purity certificates & GC-MS...', fr: 'Inspection des récoltes, certificats de pureté et GC-MS…', es: 'Inspeccionando cosechas, certificados de pureza y GC-MS...', it: 'Ispezione dei raccolti, certificati di purezza e GC-MS…', de: 'Prüfung von Ernteproben, Reinheitszertifikaten und GC-MS…', ru: 'Проверка образцов урожая, сертификатов чистоты и ГХ-МС…', zh: '正在检测天然收成样本、纯度证书与 GC-MS……', tr: 'Hasat örnekleri, saflık sertifikaları ve GC-MS inceleniyor…', fa: 'نمونه‌های برداشت، گواهی خلوص و GC-MS بررسی می‌شود...' },
+  load_3: { ar: 'يحلل صيحات النيش وتعديلات IFRA للسلامة الجلدية...', en: 'Analyzing niche trends and IFRA skin-safety amendments...', fr: 'Analyse des tendances de niche et amendements IFRA…', es: 'Analizando tendencias de nicho y enmiendas IFRA...', it: 'Analisi delle tendenze di nicchia e modifiche IFRA…', de: 'Analyse von Nischentrends und IFRA-Änderungen…', ru: 'Анализ нишевых трендов и поправок IFRA…', zh: '正在分析小众趋势与 IFRA 皮肤安全修订……', tr: 'Niş trendleri ve IFRA cilt güvenliği düzenlemeleri analiz ediliyor…', fa: 'روندهای نیچ و اصلاحات IFRA برای ایمنی پوستی تحلیل می‌شود...' },
+  load_4: { ar: 'يصيغ التقارير الفنية المعملية ويرفق الصور المصورة لليوم...', en: 'Drafting technical lab reports and attaching today’s photos...', fr: 'Rédaction des rapports techniques et photos du jour…', es: 'Redactando informes técnicos con las fotos de hoy...', it: 'Redazione dei rapporti tecnici con le foto di oggi…', de: 'Technische Laborberichte mit den heutigen Fotos…', ru: 'Подготовка технических отчётов с сегодняшними фото…', zh: '正在撰写实验室技术报告并附上今日图片……', tr: 'Teknik laboratuvar raporları yazılıyor ve günün fotoğrafları ekleniyor…', fa: 'گزارش‌های فنی آزمایشگاهی نوشته و عکس‌های امروز پیوست می‌شود...' },
+  refresh_ok: { ar: 'تم تحديث النشرة اليومية بالصور بنجاح عبر الخبير شاهين.', en: 'Daily illustrated bulletin refreshed successfully by Master Shahin.', fr: 'Bulletin quotidien illustré actualisé par le Maître Shahin.', es: 'Boletín diario ilustrado actualizado por el Maestro Shahin.', it: 'Bollettino quotidiano illustrato aggiornato dal Maestro Shahin.', de: 'Tägliches Bildbulletin von Meister Shahin aktualisiert.', ru: 'Ежедневный иллюстрированный бюллетень обновлён мастером Шахином.', zh: 'Shahin 大师成功更新了每日图文快报。', tr: 'Günlük görsel bülten Usta Shahin tarafından güncellendi.', fa: 'نشریه روزانه مصور توسط استاد شاهین با موفقیت به‌روزرسانی شد.' },
+  today_tpl: { ar: 'اليوم · {d}', en: 'Today · {d}', fr: 'Aujourd’hui · {d}', es: 'Hoy · {d}', it: 'Oggi · {d}', de: 'Heute · {d}', ru: 'Сегодня · {d}', zh: '今天 · {d}', tr: 'Bugün · {d}', fa: 'امروز · {d}' },
+  read_time_default: { ar: '3 دقائق', en: '3 min', fr: '3 min', es: '3 min', it: '3 min', de: '3 Min', ru: '3 мин', zh: '3 分钟', tr: '3 dk', fa: '۳ دقیقه' },
+  refresh_local_ok: { ar: 'تم تحديث النشرة اليومية ونشر التقارير المصورة مع الخبير شاهين.', en: 'Daily bulletin refreshed and photo reports published with Master Shahin.', fr: 'Bulletin actualisé et rapports photo publiés avec le Maître Shahin.', es: 'Boletín actualizado e informes foto publicados con el Maestro Shahin.', it: 'Bollettino aggiornato e report foto pubblicati con il Maestro Shahin.', de: 'Bulletin aktualisiert, Fotoreports mit Meister Shahin veröffentlicht.', ru: 'Бюллетень обновлён, фотоотчёты опубликованы с мастером Шахином.', zh: '每日快报已更新，图文报告已与 Shahin 大师一同发布。', tr: 'Günlük bülten güncellendi ve foto raporlar Usta Shahin ile yayımlandı.', fa: 'نشریه روزانه به‌روزرسانی و گزارش‌های مصور با استاد شاهین منتشر شد.' },
+  cat_all: { ar: 'جميع الأخبار والتقارير المصورة', en: 'All Photo Reports', fr: 'Tous les rapports photo', es: 'Todos los informes foto', it: 'Tutti i report foto', de: 'Alle Fotoreports', ru: 'Все фотоотчёты', zh: '全部图文报道', tr: 'Tüm foto raporlar', fa: 'همه گزارش‌های مصور' },
+  cat_niche: { ar: 'ابتكارات النيش والكيمياء', en: 'Niche & Green Chemistry', fr: 'Niche & chimie verte', es: 'Nicho y química verde', it: 'Nicchia e chimica verde', de: 'Nische & grüne Chemie', ru: 'Ниша и зелёная химия', zh: '小众与绿色化学', tr: 'Niş ve yeşil kimya', fa: 'نیچ و شیمی سبز' },
+  cat_exhibitions: { ar: 'المعارض الدولية الكبرى', en: 'International Exhibitions', fr: 'Expositions internationales', es: 'Exposiciones internacionales', it: 'Esposizioni internazionali', de: 'Internationale Messen', ru: 'Международные выставки', zh: '国际大展', tr: 'Uluslararası fuarlar', fa: 'نمایشگاه‌های بین‌المللی' },
+  cat_harvests: { ar: 'مواسم الحصاد والمواد الخام', en: 'Botanical Harvests', fr: 'Récoltes botaniques', es: 'Cosechas botánicas', it: 'Raccolte botaniche', de: 'Botanische Ernten', ru: 'Ботанические урожаи', zh: '植物收成', tr: 'Botanik hasatlar', fa: 'فصل‌های برداشت گیاهی' },
+  cat_trends: { ar: 'صيحات وتقارير السوق', en: 'Market Trends & Analytics', fr: 'Tendances & analyses', es: 'Tendencias y análisis', it: 'Tendenze e analisi', de: 'Trends & Analysen', ru: 'Тренды и аналитика', zh: '市场趋势与分析', tr: 'Pazar trendleri ve analitik', fa: 'روندها و تحلیل بازار' },
+  cat_ifra: { ar: 'لوائح وتحديثات IFRA', en: 'IFRA Regulations', fr: 'Réglementation IFRA', es: 'Reglamentos IFRA', it: 'Regolamenti IFRA', de: 'IFRA-Richtlinien', ru: 'Регламенты IFRA', zh: 'IFRA 法规', tr: 'IFRA düzenlemeleri', fa: 'مقررات IFRA' },
+  newsletter_name: { ar: 'أخبار وصيحات العطور العالمية - معمل شام', en: 'World Perfume News - Sham Atelier', fr: 'Actualités mondiales du parfum - Atelier Sham', es: 'Noticias mundiales del perfume - Atelier Sham', it: 'Notizie mondiali del profumo - Atelier Sham', de: 'Welt-Parfümnews - Atelier Sham', ru: 'Мировые парфюмерные новости — Ателье Sham', zh: '世界香水资讯 — Sham 调香室', tr: 'Dünya Parfüm Haberleri - Sham Atölyesi', fa: 'اخبار جهانی عطر - کارگاه شام' },
+  source_lbl: { ar: 'المصدر:', en: 'Source:', fr: 'Source :', es: 'Fuente:', it: 'Fonte:', de: 'Quelle:', ru: 'Источник:', zh: '来源：', tr: 'Kaynak:', fa: 'منبع:' },
+  verdict_lbl2: { ar: 'رأي الخبير:', en: 'Master Verdict:', fr: 'Verdict du Maître :', es: 'Veredicto del Maestro:', it: 'Verdetto del Maestro:', de: 'Urteil des Meisters:', ru: 'Мнение мастера:', zh: '大师评语：', tr: 'Usta yorumu:', fa: 'نظر استاد:' },
+  default_note_name: { ar: 'نوتة عطرية', en: 'Aromatic Note', fr: 'Note aromatique', es: 'Nota aromática', it: 'Nota aromatica', de: 'Aromatische Note', ru: 'Ароматическая нота', zh: '香材音符', tr: 'Aromatik nota', fa: 'نت عطری' },
+  inspired_tpl: { ar: 'مستوحى من تقرير الخبير شاهين: {t}', en: 'Inspired by Master Shaheen Report: {t}', fr: 'Inspiré du rapport du Maître Shaheen : {t}', es: 'Inspirado en el informe del Maestro Shaheen: {t}', it: 'Ispirato al report del Maestro Shaheen: {t}', de: 'Inspired by Meister Shaheens Report: {t}', ru: 'По мотивам отчёта мастера Шахина: {t}', zh: '灵感来自 Shaheen 大师报告：{t}', tr: 'Usta Shaheen raporundan ilhamla: {t}', fa: 'الهام‌گرفته از گزارش استاد شاهین: {t}' },
+  accord_title_tpl: { ar: 'توليفة تقرير: {t}...', en: 'Report Accord: {t}...', fr: 'Accord du rapport : {t}…', es: 'Acorde del informe: {t}…', it: 'Accordo del report: {t}…', de: 'Report-Akkord: {t}…', ru: 'Аккорд отчёта: {t}…', zh: '报告香调：{t}……', tr: 'Rapor akoru: {t}...', fa: 'آکورد گزارش: {t}...' },
+  news_author: { ar: 'الخبير شاهين (أخبار العطور العالمية)', en: 'Master Shaheen (Global Perfume Trends)', fr: 'Maître Shaheen (Tendances mondiales)', es: 'Maestro Shaheen (Tendencias globales)', it: 'Maestro Shaheen (Tendenze globali)', de: 'Meister Shaheen (Globale Trends)', ru: 'Мастер Шахин (мировые тренды)', zh: 'Shaheen 大师（全球香水趋势）', tr: 'Usta Shaheen (Küresel Parfüm Trendleri)', fa: 'استاد شاهین (روندهای جهانی عطر)' },
+  summary_tpl: { ar: 'توليفة مصممة بناءً على أحدث تقارير السوق المصورة المنشورة اليوم في {t}.\n{v}', en: 'Formula based on today’s daily fragrance intelligence in {t}.\n{v}', fr: 'Formule basée sur le rapport du jour dans {t}.\n{v}', es: 'Fórmula basada en el informe de hoy en {t}.\n{v}', it: 'Formula basata sul report di oggi in {t}.\n{v}', de: 'Formel basiert auf dem heutigen Report in {t}.\n{v}', ru: 'Формула по сегодняшнему отчёту: {t}.\n{v}', zh: '基于今日报告的配方：{t}。\n{v}', tr: 'Bugünün raporuna dayalı formül: {t}.\n{v}', fa: 'فرمول مبتنی بر گزارش امروز: {t}.\n{v}' },
+  briefing_title: { ar: '👑 نشرة الخبير شاهين اليومية المصورة', en: '👑 Master Shahin’s Daily Illustrated Bulletin', fr: '👑 Bulletin illustré quotidien du Maître Shahin', es: '👑 Boletín ilustrado diario del Maestro Shahin', it: '👑 Bollettino illustrato quotidiano del Maestro Shahin', de: '👑 Meister Shahins tägliches Bildbulletin', ru: '👑 Ежедневный иллюстрированный бюллетень мастера Шахина', zh: '👑 Shahin 大师每日图文快报', tr: '👑 Usta Shahin’in günlük görsel bülteni', fa: '👑 نشریه روزانه مصور استاد شاهین' },
+  active_coverage_tpl: { ar: 'تغطية نشطة لليوم: {d}', en: 'Live coverage today: {d}', fr: 'Couverture du jour : {d}', es: 'Cobertura de hoy: {d}', it: 'Copertura di oggi: {d}', de: 'Heutige Berichterstattung: {d}', ru: 'Освещение сегодня: {d}', zh: '今日实时报道：{d}', tr: 'Bugünün canlı kapsamı: {d}', fa: 'پوشش زنده امروز: {d}' },
+  observatory_title: { ar: 'مرصد وصيحات العطور العالمية بالصور الحصرية', en: 'Global Perfume Trends Observatory with Exclusive Photos', fr: 'Observatoire mondial des tendances avec photos exclusives', es: 'Observatorio mundial de tendencias con fotos exclusivas', it: 'Osservatorio mondiale delle tendenze con foto esclusive', de: 'Welt-Trendobservatorium mit exklusiven Fotos', ru: 'Обсерватория мировых трендов с эксклюзивными фото', zh: '世界香水趋势观察站 · 独家图片', tr: 'Özel fotoğraflarla küresel parfüm trend gözlemevi', fa: 'رصدخانه روندهای جهانی عطر با عکس‌های اختصاصی' },
+  observatory_desc: { ar: 'يرصد لك الخبير شاهين يومياً وبشكل مؤتمت أحدث ما تشهده مختبرات ومعارض باريس وميلانو وبيوتي وورلد دبي، مواسم حصاد الورود واللبان والعود النقي، ولوائح IFRA، مع إرفاق الصور عالية الدقة وإمكانية تحويل أي نوتات فوراً لحاسبة التركيب والمعمل!', en: 'Master Shahin tracks daily — fully automated — the latest from Paris & Milan labs, Beauty World Dubai, rose, frankincense & pure oud harvests, and IFRA rules, with high-res photos and one-tap transfer of any notes to the formulation calculator!', fr: 'Le Maître Shahin suit chaque jour, en automatique, les labos de Paris et Milan, Beauty World Dubaï, les récoltes de rose, d’oliban et d’oud pur, et les règles IFRA — avec photos HD et transfert instantané vers le calculateur !', es: 'El Maestro Shahin rastrea a diario los laboratorios de París y Milán, Beauty World Dubái, cosechas de rosa, olíbano y oud puro, y normas IFRA — con fotos HD y transferencia al calculador en un toque.', it: 'Il Maestro Shahin monitora ogni giorno i laboratori di Parigi e Milano, Beauty World Dubai, raccolti di rosa, incenso e oud puro e regole IFRA — con foto HD e trasferimento immediato al calcolatore.', de: 'Meister Shahin verfolgt täglich vollautomatisch die Labore von Paris & Mailand, Beauty World Dubai, Rosen-, Weihrauch- und Oud-Ernten sowie IFRA-Regeln — mit HD-Fotos und Sofortübernahme in den Rechner.', ru: 'Мастер Шахин ежедневно и автоматически отслеживает лаборатории Парижа и Милана, Beauty World Dubai, сборы роз, ладана и чистого уда, нормы IFRA — с HD-фото и мгновенным переносом нот в калькулятор!', zh: 'Shahin 大师每日自动追踪巴黎与米兰实验室、迪拜 Beauty World、玫瑰乳香纯乌木收成与 IFRA 法规，附高清图片，并可一键将香材转入调配计算器！', tr: 'Usta Shahin, Paris ve Milano laboratuvarlarını, Dubai Beauty World’ü, gül, tütsü ve saf oud hasatlarını ve IFRA kurallarını günlük otomatik izler — HD fotoğraflar ve tek dokunuşla hesaplayıcıya aktarma ile!', fa: 'استاد شاهین هر روز و به‌صورت خودکار جدیدترین خبرهای آزمایشگاه‌های پاریس و میلان، بیوتی ورلد دبی، فصل‌های برداشت گل محمدی، کندر و عود خالص و مقررات IFRA را با عکس‌های باکیفیت ردیابی می‌کند و هر نت را با یک لمس به ماشین‌حساب منتقل می‌کند!' },
+  urgent_today: { ar: 'عاجل اليوم', en: 'URGENT TODAY', fr: 'URGENT AUJOURD’HUI', es: 'URGENTE HOY', it: 'URGENTE OGGI', de: 'HEUTE AKTUELL', ru: 'СРОЧНО СЕГОДНЯ', zh: '今日要闻', tr: 'BUGÜN ACİL', fa: 'فوری امروز' },
+  urgent_fallback: { ar: 'صعود تقنيات التقطير الجزيئي البارد لدهن العود ومواسم الورد لعام 2026.', en: 'Cold molecular distillation for oud and 2026 rose harvests on the rise.', fr: 'La distillation moléculaire à froid pour l’oud et les récoltes de rose 2026 progresse.', es: 'La destilación molecular en frío para el oud y cosechas de rosa 2026 en ascenso.', it: 'La distillazione molecolare a freddo per oud e raccolti di rosa 2026 in crescita.', de: 'Kalte Molekulardestillation für Oud und Rosenernten 2026 im Aufschwung.', ru: 'Холодная молекулярная дистилляция уда и урожаи роз 2026 набирают обороты.', zh: '冷分子蒸馏乌木与 2026 玫瑰收成正在兴起。', tr: 'Oud için soğuk moleküler damıtma ve 2026 gül hasatları yükselişte.', fa: 'تقطیر مولکولی سرد عود و برداشت گل ۲۰۲۶ در حال رشد است.' },
+  shahin_name: { ar: 'الخبير شاهين', en: 'Master Shahin', fr: 'Maître Shahin', es: 'Maestro Shahin', it: 'Maestro Shahin', de: 'Meister Shahin', ru: 'Мастер Шахин', zh: 'Shahin 大师', tr: 'Usta Shahin', fa: 'استاد شاهین' },
+  shahin_role: { ar: 'شيخ العطارين ورئيس التحرير', en: 'Dean of Perfumers & Editor-in-Chief', fr: 'Doyen des parfumeurs et rédacteur en chef', es: 'Decano de perfumistas y editor jefe', it: 'Decano dei profumieri e direttore', de: 'Doyen der Parfumeure & Chefredakteur', ru: 'Шейх парфюмеров и главред', zh: '调香师泰斗 · 总编辑', tr: 'Attarların şeyhi ve yayın yönetmeni', fa: 'شیخ عطرسازان و سردبیر' },
+  loading_news: { ar: 'الخبير شاهين يجلب أخبار اليوم...', en: 'Master Shahin is fetching today’s news...', fr: 'Le Maître Shahin récupère les news…', es: 'El Maestro Shahin está trayendo las noticias...', it: 'Il Maestro Shahin sta scaricando le notizie…', de: 'Meister Shahin holt die heutigen News…', ru: 'Мастер Шахин загружает новости…', zh: 'Shahin 大师正在获取今日新闻……', tr: 'Usta Shahin günün haberlerini getiriyor…', fa: 'استاد شاهین اخبار امروز را می‌آورد...' },
+  refresh_btn: { ar: 'تحديث النشرة اليومية بالذكاء الاصطناعي', en: 'Refresh Daily Bulletin with AI', fr: 'Actualiser le bulletin avec l’IA', es: 'Actualizar boletín con IA', it: 'Aggiorna bollettino con IA', de: 'Bulletin mit KI aktualisieren', ru: 'Обновить бюллетень с ИИ', zh: '用 AI 刷新每日快报', tr: 'Bülteni YZ ile yenile', fa: 'به‌روزرسانی نشریه با هوش مصنوعی' },
+  reports_count_tpl: { ar: '{n} تقرير مصور', en: '{n} photo reports', fr: '{n} rapports photo', es: '{n} informes foto', it: '{n} report foto', de: '{n} Fotoreports', ru: '{n} фотоотчётов', zh: '{n} 篇图文报道', tr: '{n} foto rapor', fa: '{n} گزارش مصور' },
+  refresh_done: { ar: 'تحديث اليوم مكتمل ✓', en: 'Today’s refresh complete ✓', fr: 'Actualisation du jour terminée ✓', es: 'Actualización de hoy completa ✓', it: 'Aggiornamento di oggi completato ✓', de: 'Heutige Aktualisierung fertig ✓', ru: 'Обновление завершено ✓', zh: '今日更新完成 ✓', tr: 'Bugünün güncellemesi tamam ✓', fa: 'به‌روزرسانی امروز کامل شد ✓' },
+  ready_to_refresh: { ar: 'جاهز للتحديث', en: 'Ready to refresh', fr: 'Prêt à actualiser', es: 'Listo para actualizar', it: 'Pronto ad aggiornare', de: 'Bereit zur Aktualisierung', ru: 'Готов к обновлению', zh: '准备刷新', tr: 'Yenilemeye hazır', fa: 'آماده به‌روزرسانی' },
+  generating: { ar: 'جاري توليد التقارير المصورة...', en: 'Generating photo reports...', fr: 'Génération des rapports photo…', es: 'Generando informes foto...', it: 'Generazione dei report foto…', de: 'Fotoreports werden erstellt…', ru: 'Генерация фотоотчётов…', zh: '正在生成图文报道……', tr: 'Foto raporlar oluşturuluyor…', fa: 'در حال تولید گزارش‌های مصور...' },
+  reports_word: { ar: 'تقارير مصورة', en: 'reports', fr: 'rapports', es: 'informes', it: 'report', de: 'Reports', ru: 'отчётов', zh: '篇报道', tr: 'rapor', fa: 'گزارش' },
+  featured_lbl: { ar: 'التقرير الأبرز اليوم · اختيار الخبير شاهين', en: 'Today’s Featured Report · Master Shahin’s Pick', fr: 'Rapport phare du jour · choix du Maître', es: 'Informe destacado de hoy · elección del Maestro', it: 'Report del giorno · scelta del Maestro', de: 'Top-Report heute · Meister Shahins Wahl', ru: 'Отчёт дня · выбор мастера Шахина', zh: '今日焦点报道 · Shahin 大师之选', tr: 'Günün öne çıkan raporu · Usta Shahin’in seçimi', fa: 'گزارش برجسته امروز · انتخاب استاد شاهین' },
+  notes_intro: { ar: 'النوتات والنسب المتصدرة في التقرير:', en: 'Top notes & ratios in this report:', fr: 'Notes et ratios phares du rapport :', es: 'Notas y proporciones del informe:', it: 'Note e proporzioni del report:', de: 'Top-Noten & Verhältnisse im Report:', ru: 'Ноты и пропорции отчёта:', zh: '报告中的主打香材与比例：', tr: 'Rapordaki öne çıkan notalar ve oranlar:', fa: 'نت‌ها و نسبت‌های برتر این گزارش:' },
+  transferred_ok: { ar: 'تم النقل للحاسبة!', en: 'Transferred to calculator!', fr: 'Transféré vers le calculateur !', es: '¡Transferido a la calculadora!', it: 'Trasferito al calcolatore!', de: 'In den Rechner übernommen!', ru: 'Перенесено в калькулятор!', zh: '已转入计算器！', tr: 'Hesaplayıcıya aktarıldı!', fa: 'به ماشین‌حساب منتقل شد!' },
+  apply_notes_lbl: { ar: 'تطبيق نوتات التقرير في المعمل', en: 'Apply report notes in the lab', fr: 'Appliquer les notes au laboratoire', es: 'Aplicar notas en el laboratorio', it: 'Applica le note in laboratorio', de: 'Noten ins Labor übernehmen', ru: 'Применить ноты в лаборатории', zh: '在实验室应用报告香材', tr: 'Rapor notalarını laboratuvarda uygula', fa: 'نت‌های گزارش را در آزمایشگاه اعمال کن' },
+  read_full_lbl: { ar: 'قراءة التقرير الكامل بالصور', en: 'Read the full photo report', fr: 'Lire le rapport complet', es: 'Leer el informe completo', it: 'Leggi il report completo', de: 'Vollständigen Report lesen', ru: 'Читать полный отчёт', zh: '阅读完整图文报道', tr: 'Tam foto raporu oku', fa: 'گزارش کامل مصور را بخوانید' },
+  copy_tooltip: { ar: 'نسخ ملخص التقرير', en: 'Copy report summary', fr: 'Copier le résumé', es: 'Copiar resumen', it: 'Copia riassunto', de: 'Report kopieren', ru: 'Скопировать отчёт', zh: '复制报告摘要', tr: 'Rapor özetini kopyala', fa: 'کپی خلاصه گزارش' },
+  bookmark_tooltip: { ar: 'حفظ في المفضلة', en: 'Save to favorites', fr: 'Enregistrer', es: 'Guardar en favoritos', it: 'Salva nei preferiti', de: 'Speichern', ru: 'В закладки', zh: '收藏', tr: 'Favorilere kaydet', fa: 'ذخیره در علاقه‌مندی‌ها' },
+  search_ph: { ar: 'ابحث في تقارير اليوم المصورة، المكونات، المعارض...', en: 'Search today’s photo reports, ingredients, exhibitions...', fr: 'Rechercher rapports, ingrédients, expositions…', es: 'Buscar informes, ingredientes, exposiciones...', it: 'Cerca report, ingredienti, esposizioni…', de: 'Reports, Zutaten, Messen durchsuchen…', ru: 'Поиск по отчётам, ингредиентам, выставкам…', zh: '搜索今日图文报道、原料、展会……', tr: 'Günün foto raporlarında, bileşenlerde, fuarlarda ara...', fa: 'جستجو در گزارش‌های مصور امروز، مواد، نمایشگاه‌ها...' },
+  shahin_monitor: { ar: 'رصد الخبير شاهين', en: 'Master Shahin Monitor', fr: 'Veille du Maître Shahin', es: 'Monitor del Maestro Shahin', it: 'Monitor del Maestro Shahin', de: 'Meister-Shahin-Monitor', ru: 'Монитор мастера Шахина', zh: 'Shahin 大师监测', tr: 'Usta Shahin izleme', fa: 'رصد استاد شاهین' },
+  apply_in_lab: { ar: 'تطبيق في المعمل', en: 'Apply in Lab', fr: 'Appliquer au labo', es: 'Aplicar en lab', it: 'Applica in lab', de: 'Ins Labor', ru: 'Применить в лаб.', zh: '在实验室应用', tr: 'Laboratuvarda uygula', fa: 'در آزمایشگاه اعمال کن' },
+  shahin_daily: { ar: 'رصد الخبير شاهين لليوم', en: 'Master Shahin daily briefing', fr: 'Veille quotidienne du Maître', es: 'Monitor diario del Maestro', it: 'Monitor quotidiano del Maestro', de: 'Tagesbriefing des Meisters', ru: 'Ежедневный обзор мастера', zh: 'Shahin 大师每日简报', tr: 'Usta Shahin günlük izleme', fa: 'رصد روزانه استاد شاهین' },
+  read_time_lbl: { ar: 'وقت القراءة:', en: 'Read Time:', fr: 'Temps de lecture :', es: 'Tiempo de lectura:', it: 'Tempo di lettura:', de: 'Lesezeit:', ru: 'Время чтения:', zh: '阅读时间：', tr: 'Okuma süresi:', fa: 'زمان مطالعه:' },
+  editor_shahin: { ar: 'تحرير: الخبير شاهين', en: 'Editor: Master Shahin', fr: 'Rédaction : Maître Shahin', es: 'Editor: Maestro Shahin', it: 'Redazione: Maestro Shahin', de: 'Redaktion: Meister Shahin', ru: 'Редактор: мастер Шахин', zh: '编辑：Shahin 大师', tr: 'Editör: Usta Shahin', fa: 'سردبیر: استاد شاهین' },
+  verdict_lbl: { ar: 'حكم ورؤية الخبير شاهين المعملية', en: 'Master Perfumer Shaheen Laboratory Verdict', fr: 'Verdict laboratoire du Maître Shaheen', es: 'Veredicto de laboratorio del Maestro Shaheen', it: 'Verdetto di laboratorio del Maestro Shaheen', de: 'Laborurteil von Meister Shaheen', ru: 'Лабораторный вердикт мастера Шахина', zh: 'Shaheen 大师实验室评语', tr: 'Usta Shaheen laboratuvar değerlendirmesi', fa: 'ارزیابی آزمایشگاهی استاد شاهین' },
+  market_impact_lbl: { ar: 'أثر السوق والاقتصاد العطري:', en: 'Market Impact:', fr: 'Impact marché :', es: 'Impacto de mercado:', it: 'Impatto di mercato:', de: 'Marktauswirkung:', ru: 'Влияние на рынок:', zh: '市场影响：', tr: 'Pazar etkisi:', fa: 'تأثر بازار:' },
+  accord_lbl: { ar: 'الهرم العطري المقترح في هذا التقرير:', en: 'Recommended Olfactory Accord in This Report:', fr: 'Accord olfactif recommandé :', es: 'Acorde olfativo recomendado:', it: 'Accordo olfattivo consigliato:', de: 'Empfohlenes Duft-Akkord:', ru: 'Рекомендуемый аккорд:', zh: '本报告推荐香调金字塔：', tr: 'Önerilen koku piramidi:', fa: 'هرم عطری پیشنهادی این گزارش:' },
+  lab_ready: { ar: 'جاهز للتطبيق المعملي', en: 'Lab Ready', fr: 'Prêt pour le labo', es: 'Listo para el lab', it: 'Pronto per il lab', de: 'Laborbereit', ru: 'Готово к лаб.', zh: '可用于实验室', tr: 'Laboratuvara hazır', fa: 'آماده اعمال آزمایشگاهی' },
+  apply_full_lbl: { ar: 'تطبيق هذه التوليفة بالكامل في حاسبة العطور والمعمل', en: 'Apply Full Accord to Formulation Scale & Lab', fr: 'Appliquer l’accord complet au calculateur', es: 'Aplicar el acorde completo a la calculadora', it: 'Applica l’accordo completo al calcolatore', de: 'Vollständigen Akkord in Rechner übernehmen', ru: 'Применить весь аккорд в калькуляторе', zh: '将整套香调应用到调配计算器', tr: 'Tam akoru hesaplayıcıya uygula', fa: 'کل آکورد را در ماشین‌حساب اعمال کن' },
+  close_lbl: { ar: 'إغلاق', en: 'Close', fr: 'Fermer', es: 'Cerrar', it: 'Chiudi', de: 'Schließen', ru: 'Закрыть', zh: '关闭', tr: 'Kapat', fa: 'بستن' },
+} satisfies Record<string, LText>;
 
 const STORAGE_KEY_NEWS = 'miyaar_daily_perfume_news_v2';
 const STORAGE_KEY_LAST_REFRESH = 'miyaar_perfume_news_last_refresh_date';
@@ -47,6 +107,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
   onAddNoteToPyramid,
 }) => {
   const rtl = isRTL(currentLang);
+  const L = makeT(currentLang, S);
 
   // Initialize news list from localStorage or fallback
   const [newsList, setNewsList] = useState<PerfumeNewsItem[]>(() => {
@@ -77,12 +138,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
   });
   const [refreshToast, setRefreshToast] = useState<{ message: string; count: number } | null>(null);
 
-  const REFRESH_PHRASES = [
-    'الخبير شاهين يتواصل مع مراسلي المعارض في ميلانو وباريس ودبي...',
-    'يفحص عينات الحصاد الطبيعي وشهادات النقاء والكروماتوغرافيا (GC-MS)...',
-    'يحلل صيحات النيش وتعديلات IFRA للسلامة الجلدية...',
-    'يصيغ التقارير الفنية المعملية ويرفق الصور المصورة لليوم...',
-  ];
+  const REFRESH_PHRASES = [L('load_1'), L('load_2'), L('load_3'), L('load_4')];
 
   // Cycling phrases during refresh
   useEffect(() => {
@@ -180,7 +236,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
           setLastRefreshedDate(todayStr);
           localStorage.setItem(STORAGE_KEY_LAST_REFRESH, todayStr);
           setRefreshToast({
-            message: data.message || 'تم تحديث النشرة اليومية بالصور بنجاح عبر الخبير شاهين.',
+            message: data.message || L('refresh_ok'),
             count: data.count || data.articles.length,
           });
           setTimeout(() => setRefreshToast(null), 6000);
@@ -191,7 +247,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
     } catch (err) {
       console.warn('AI Refresh error, using local lab bulletin:', err);
       // Fallback local update
-      const todayArabic = new Date().toLocaleDateString('ar-EG', { day: 'numeric', month: 'long', year: 'numeric' });
+      const todayLocalized = new Date().toLocaleDateString(LOCALE_MAP[currentLang], { day: 'numeric', month: 'long', year: 'numeric' });
       const localRefresh: PerfumeNewsItem[] = [
         {
           id: `shaheen-local-refresh-${Date.now()}`,
@@ -206,8 +262,8 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
           contentAr: `رصد معمل «صمم عطرك مع شام» بقيادة الخبير شاهين اليوم تسارع وتيرة التحول العالمي نحو "الكيمياء العطرية الخضراء".
 أثبتت التحاليل المخبرية أن الجيل الجديد من المثبتات الحيوية يقلل سرعة تطاير النوتات الحمضية بنسبة 45% دون أي تعكر أو اصفرار في السائل العطري.
 ننصح العطارين الحرفيين بتجربة إضافة 1% إلى 1.5% من هذه المستخلصات الطبيعية لضمان إشعاع عطري نقي مطابق لأعلى معايير IFRA 51.`,
-          date: `اليوم · ${todayArabic}`,
-          readTime: '3 دقائق',
+          date: fmt(L('today_tpl'), { d: todayLocalized }),
+          readTime: L('read_time_default'),
           source: 'مختبر الخبير شاهين · باريس وجراس',
           imageUrl: NEWS_EDITORIAL_IMAGES.nicheLaunch,
           tags: ['كيمياء خضراء', 'مثبتات حيوية', 'عطور النيش', 'معايير IFRA'],
@@ -223,7 +279,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
       ];
       mergeArticles(localRefresh);
       setRefreshToast({
-        message: 'تم تحديث النشرة اليومية ونشر التقارير المصورة مع الخبير شاهين.',
+        message: L('refresh_local_ok'),
         count: 1,
       });
       setTimeout(() => setRefreshToast(null), 5000);
@@ -233,12 +289,12 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
   };
 
   const categories = [
-    { id: 'all', label: rtl ? 'جميع الأخبار والتقارير المصورة' : 'All Photo Reports' },
-    { id: 'niche', label: rtl ? 'ابتكارات النيش والكيمياء' : 'Niche & Green Chemistry' },
-    { id: 'exhibitions', label: rtl ? 'المعارض الدولية الكبرى' : 'International Exhibitions' },
-    { id: 'harvests', label: rtl ? 'مواسم الحصاد والمواد الخام' : 'Botanical Harvests' },
-    { id: 'trends', label: rtl ? 'صيحات وتقارير السوق' : 'Market Trends & Analytics' },
-    { id: 'ifra', label: rtl ? 'لوائح وتحديثات IFRA' : 'IFRA Regulations' },
+    { id: 'all', label: L('cat_all') },
+    { id: 'niche', label: L('cat_niche') },
+    { id: 'exhibitions', label: L('cat_exhibitions') },
+    { id: 'harvests', label: L('cat_harvests') },
+    { id: 'trends', label: L('cat_trends') },
+    { id: 'ifra', label: L('cat_ifra') },
   ];
 
   // Filtering
@@ -255,7 +311,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
 
   const handleCopySummary = (item: PerfumeNewsItem) => {
     const loc = getLocalizedNewsArticle(item, currentLang);
-    const text = `📰 [${rtl ? 'أخبار وصيحات العطور العالمية - معمل شام' : 'World Perfume News - Sham Atelier'}]\n${loc.titleAr}\n📅 ${item.date} | 🏛️ ${rtl ? 'المصدر:' : 'Source:'} ${item.source}\n\n${item.summaryAr}\n\n${rtl ? 'رأي الخبير:' : 'Master Verdict:'} ${item.expertVerdict || ''}`;
+    const text = `📰 [${L('newsletter_name')}]\n${loc.titleAr}\n📅 ${item.date} | 🏛️ ${L('source_lbl')} ${item.source}\n\n${item.summaryAr}\n\n${L('verdict_lbl2')} ${item.expertVerdict || ''}`;
     navigator.clipboard.writeText(text);
     setCopiedId(item.id);
     setTimeout(() => setCopiedId(null), 2500);
@@ -273,16 +329,16 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
 
     const transformedNotes: PyramidNote[] = (item.keyNotes || []).map((k: any, index: number) => ({
       id: `news-note-${item.id}-${index}`,
-      nameAr: (rtl ? k.nameAr : (k.nameEn || k.nameAr)) || 'نوتة عطرية',
+      nameAr: (rtl ? k.nameAr : (k.nameEn || k.nameAr)) || L('default_note_name'),
       nameEn: k.nameEn || k.nameAr || 'Aromatic Note',
       category: (k.type === 'top' || k.type === 'heart' || k.type === 'base' ? k.type : 'heart') as 'top' | 'heart' | 'base',
       percentageOfOil: k.percentageHint || 25,
-      description: `${rtl ? 'مستوحى من تقرير الخبير شاهين:' : 'Inspired by Master Shaheen Report:'} ${loc.titleAr}`,
+      description: fmt(L('inspired_tpl'), { t: loc.titleAr }),
     }));
 
     const formula: ExtractedAIPerfume = {
-      title: `${rtl ? 'توليفة تقرير:' : 'Report Accord:'} ${loc.titleAr.slice(0, 32)}...`,
-      author: rtl ? 'الخبير شاهين (أخبار العطور العالمية)' : 'Master Shaheen (Global Perfume Trends)',
+      title: fmt(L('accord_title_tpl'), { t: loc.titleAr.slice(0, 32) }),
+      author: L('news_author'),
       bottleVolumeMl: 50,
       concentrationPercent: 20,
       concentrationType: 'edp',
@@ -290,7 +346,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
       waterPercent: 0,
       fixativePercent: 1.5,
       macerationDays: 35,
-      summary: `${rtl ? 'توليفة مصممة بناءً على أحدث تقارير السوق المصورة المنشورة اليوم في' : 'Formula based on today’s daily fragrance intelligence in'} ${loc.titleAr}.\n${item.expertVerdict || ''}`,
+      summary: fmt(L('summary_tpl'), { t: loc.titleAr, v: item.expertVerdict || '' }),
       pyramidNotes: transformedNotes,
     };
 
@@ -310,7 +366,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
     return getEditorialImageForCategory(item.category, index);
   };
 
-  const todayDisplay = new Date().toLocaleDateString('ar-EG', {
+  const todayDisplay = new Date().toLocaleDateString(LOCALE_MAP[currentLang], {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
@@ -330,31 +386,31 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
             <div className="flex flex-wrap items-center gap-2.5">
               <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gradient-to-r from-amber-500/30 to-amber-600/20 text-amber-300 text-xs font-bold border border-amber-500/40 shadow-xs">
                 <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-                <span>👑 نشرة الخبير شاهين اليومية المصورة</span>
+                <span>{L('briefing_title')}</span>
               </span>
 
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/60 text-emerald-300 text-xs font-medium border border-emerald-800/50">
                 <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-                <span>تغطية نشطة لليوم: {todayDisplay}</span>
+                <span>{fmt(L('active_coverage_tpl'), { d: todayDisplay })}</span>
               </span>
             </div>
 
             <h2 className="text-2xl sm:text-4xl font-extrabold font-serif-luxury tracking-tight text-white leading-tight">
-              مرصد وصيحات العطور العالمية بالصور الحصرية
+              {L('observatory_title')}
             </h2>
 
             <p className="text-stone-300 text-xs sm:text-sm leading-relaxed max-w-2xl">
-              يرصد لك <strong className="text-amber-300">الخبير شاهين</strong> يومياً وبشكل مؤتمت أحدث ما تشهده مختبرات ومعارض باريس وميلانو وبيوتي وورلد دبي، مواسم حصاد الورود واللبان والعود النقي، ولوائح IFRA، مع إرفاق الصور عالية الدقة وإمكانية تحويل أي نوتات فوراً لحاسبة التركيب والمعمل!
+              {L('observatory_desc')}
             </p>
 
             {/* Live Ticker */}
             <div className="pt-1 flex items-center gap-3 bg-stone-900/90 backdrop-blur-md rounded-2xl p-3 border border-stone-800 text-xs text-stone-200">
               <span className="px-2.5 py-1 rounded-lg bg-red-600 text-white font-bold text-[10px] tracking-wider shrink-0 flex items-center gap-1 animate-pulse">
                 <Flame className="w-3.5 h-3.5" />
-                عاجل اليوم
+                {L('urgent_today')}
               </span>
               <div className="truncate flex-1 font-medium text-stone-200">
-                {newsList[0]?.titleAr || 'صعود تقنيات التقطير الجزيئي البارد لدهن العود ومواسم الورد لعام 2026.'}
+                {newsList[0]?.titleAr || L('urgent_fallback')}
               </div>
             </div>
           </div>
@@ -364,15 +420,15 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
             <div className="flex items-center gap-3">
               <img
                 src={masterShaheenImg}
-                alt="الخبير شاهين"
+                alt={L('shahin_name')}
                 className="w-12 h-12 rounded-full object-cover border-2 border-amber-400 shadow-md"
               />
               <div className="text-right">
                 <div className="font-bold text-sm text-white flex items-center gap-1">
-                  <span>الخبير شاهين</span>
+                  <span>{L('shahin_name')}</span>
                   <ShieldCheck className="w-4 h-4 text-emerald-400" />
                 </div>
-                <div className="text-[11px] text-amber-300/80">شيخ العطارين ورئيس التحرير</div>
+                <div className="text-[11px] text-amber-300/80">{L('shahin_role')}</div>
               </div>
             </div>
 
@@ -388,12 +444,12 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
               {isRefreshing ? (
                 <>
                   <RotateCcw className="w-4 h-4 animate-spin text-amber-300" />
-                  <span>الخبير شاهين يجلب أخبار اليوم...</span>
+                  <span>{L('loading_news')}</span>
                 </>
               ) : (
                 <>
                   <Sparkles className="w-4 h-4 text-amber-300" />
-                  <span>تحديث النشرة اليومية بالذكاء الاصطناعي</span>
+                  <span>{L('refresh_btn')}</span>
                 </>
               )}
             </button>
@@ -401,10 +457,10 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
             <div className="flex items-center justify-between text-[11px] text-stone-400 pt-1 border-t border-stone-800">
               <span className="flex items-center gap-1">
                 <ImageIcon className="w-3.5 h-3.5 text-amber-400" />
-                <span>{newsList.length} تقرير مصور</span>
+                <span>{fmt(L('reports_count_tpl'), { n: newsList.length })}</span>
               </span>
               <span className="text-stone-400">
-                {lastRefreshedDate ? 'تحديث اليوم مكتمل ✓' : 'جاهز للتحديث'}
+                {lastRefreshedDate ? L('refresh_done') : L('ready_to_refresh')}
               </span>
             </div>
           </div>
@@ -418,7 +474,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
               {REFRESH_PHRASES[refreshStep]}
             </div>
             <span className="text-[10px] text-amber-300/70 shrink-0 font-mono">
-              جاري توليد التقارير المصورة...
+              {L('generating')}
             </span>
           </div>
         )}
@@ -431,7 +487,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
               <span className="font-semibold">{refreshToast.message}</span>
             </div>
             <span className="px-2.5 py-1 rounded-full bg-emerald-900/60 text-emerald-300 text-[11px] font-bold">
-              +{refreshToast.count} تقارير مصورة
+              +{refreshToast.count} {L('reports_word')}
             </span>
           </div>
         )}
@@ -449,11 +505,11 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
               />
               <div className="absolute top-3 right-3 px-3 py-1.5 rounded-full bg-stone-950/80 backdrop-blur-md text-amber-300 text-xs font-bold flex items-center gap-1.5 shadow-lg border border-amber-500/30">
                 <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-                <span>التقرير الأبرز اليوم · اختيار الخبير شاهين</span>
+                <span>{L('featured_lbl')}</span>
               </div>
               <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-xs text-white text-[11px] font-mono-numbers flex items-center gap-1">
                 <Clock className="w-3.5 h-3.5 text-amber-300" />
-                <span>{featuredHotNews.readTime || '3 دقائق'}</span>
+                <span>{featuredHotNews.readTime || L('read_time_default')}</span>
               </div>
             </div>
 
@@ -483,7 +539,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                 {featuredHotNews.keyNotes && (
                   <div className="pt-2">
                     <span className="text-xs font-semibold text-stone-700 block mb-2">
-                      النوتات والنسب المتصدرة في التقرير:
+                      {L('notes_intro')}
                     </span>
                     <div className="flex flex-wrap gap-2">
                       {featuredHotNews.keyNotes.map((note, idx) => (
@@ -521,12 +577,12 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                     {transferSuccessId === featuredHotNews.id ? (
                       <>
                         <Check className="w-4 h-4 text-emerald-300" />
-                        <span>تم النقل للحاسبة!</span>
+                        <span>{L('transferred_ok')}</span>
                       </>
                     ) : (
                       <>
                         <FlaskConical className="w-4 h-4 text-amber-300" />
-                        <span>تطبيق نوتات التقرير في المعمل</span>
+                        <span>{L('apply_notes_lbl')}</span>
                       </>
                     )}
                   </button>
@@ -536,7 +592,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                     className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-semibold transition-all cursor-pointer"
                   >
                     <BookOpen className="w-4 h-4 text-stone-600" />
-                    <span>قراءة التقرير الكامل بالصور</span>
+                    <span>{L('read_full_lbl')}</span>
                   </button>
                 </div>
 
@@ -544,7 +600,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                   <button
                     onClick={() => handleCopySummary(featuredHotNews)}
                     className="p-2 rounded-lg text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors cursor-pointer"
-                    title="نسخ ملخص التقرير"
+                    title={L('copy_tooltip')}
                   >
                     {copiedId === featuredHotNews.id ? (
                       <Check className="w-4 h-4 text-emerald-600" />
@@ -559,7 +615,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                         ? 'text-amber-700 bg-amber-50'
                         : 'text-stone-500 hover:text-stone-900 hover:bg-stone-100'
                     }`}
-                    title="حفظ في المفضلة"
+                    title={L('bookmark_tooltip')}
                   >
                     <Bookmark className="w-4 h-4" />
                   </button>
@@ -594,7 +650,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
           <Search className={`w-4 h-4 absolute ${rtl ? 'right-3.5' : 'left-3.5'} top-1/2 -translate-y-1/2 text-stone-400`} />
           <input
             type="text"
-            placeholder={rtl ? 'ابحث في تقارير اليوم المصورة، المكونات، المعارض...' : 'Search daily reports, notes, exhibitions...'}
+            placeholder={L('search_ph')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={`w-full ${rtl ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4 text-left'} py-2.5 bg-white border border-stone-200 rounded-xl text-xs text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-amber-700 shadow-xs`}
@@ -633,14 +689,14 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                     {item.isDailyRefreshed && (
                       <span className="px-2 py-0.5 rounded-md bg-gradient-to-r from-amber-600 to-amber-700 text-white text-[9px] font-bold shadow-md flex items-center gap-1">
                         <Zap className="w-2.5 h-2.5" />
-                        <span>رصد الخبير شاهين</span>
+                        <span>{L('shahin_monitor')}</span>
                       </span>
                     )}
                   </div>
 
                   <div className={`absolute bottom-3 ${rtl ? 'left-3' : 'right-3'} px-2 py-0.5 rounded bg-black/70 backdrop-blur-xs text-white text-[10px] flex items-center gap-1 font-mono-numbers`}>
                     <Clock className="w-3 h-3 text-stone-300" />
-                    <span>{item.readTime || '3 دقائق'}</span>
+                    <span>{item.readTime || L('read_time_default')}</span>
                   </div>
                 </div>
 
@@ -706,12 +762,12 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                   {isTransferred ? (
                     <>
                       <Check className="w-3.5 h-3.5 text-emerald-300" />
-                      <span>{rtl ? 'تم النقل للحاسبة' : 'Transferred'}</span>
+                      <span>{L('transferred_ok')}</span>
                     </>
                   ) : (
                     <>
                       <FlaskConical className="w-3.5 h-3.5 text-amber-300" />
-                      <span>{rtl ? 'تطبيق في المعمل' : 'Apply in Lab'}</span>
+                      <span>{L('apply_in_lab')}</span>
                     </>
                   )}
                 </button>
@@ -720,14 +776,14 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                   <button
                     onClick={() => openArticleReader(item)}
                     className="p-1.5 text-stone-600 hover:text-stone-950 hover:bg-stone-200 rounded-lg text-xs font-medium cursor-pointer"
-                    title={rtl ? 'قراءة كاملة بالصور' : 'Read Full Report'}
+                    title={L('read_full_lbl')}
                   >
                     <BookOpen className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleCopySummary(item)}
                     className="p-1.5 text-stone-500 hover:text-stone-900 hover:bg-stone-200 rounded-lg cursor-pointer"
-                    title={rtl ? 'نسخ ملخص' : 'Copy Summary'}
+                    title={L('copy_tooltip')}
                   >
                     {isCopied ? (
                       <Check className="w-4 h-4 text-emerald-600" />
@@ -742,7 +798,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                         ? 'text-amber-700 bg-amber-100'
                         : 'text-stone-500 hover:text-stone-900 hover:bg-stone-200'
                     }`}
-                    title={rtl ? 'حفظ' : 'Bookmark'}
+                    title={L('bookmark_tooltip')}
                   >
                     <Bookmark className="w-4 h-4" />
                   </button>
@@ -782,7 +838,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                   </span>
                   {selectedArticle.isDailyRefreshed && (
                     <span className="px-3 py-1 rounded-lg bg-amber-600 text-white text-xs font-bold shadow-md">
-                      ⚡ رصد الخبير شاهين لليوم
+                      ⚡ {L('shahin_daily')}
                     </span>
                   )}
                 </div>
@@ -796,13 +852,13 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                     <span>{selectedArticle.date}</span>
                   </span>
                   <span>·</span>
-                  <span>{rtl ? 'المصدر:' : 'Source:'} {selectedArticle.source}</span>
+                  <span>{L('source_lbl')} {selectedArticle.source}</span>
                   <span>·</span>
-                  <span>{rtl ? 'وقت القراءة:' : 'Read Time:'} {selectedArticle.readTime || '3 دقائق'}</span>
+                  <span>{L('read_time_lbl')} {selectedArticle.readTime || L('read_time_default')}</span>
                   <span>·</span>
                   <span className="text-amber-800 font-semibold flex items-center gap-1">
                     <User className="w-3.5 h-3.5" />
-                    <span>تحرير: الخبير شاهين</span>
+                    <span>{L('editor_shahin')}</span>
                   </span>
                 </div>
 
@@ -819,14 +875,14 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                   <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-50 to-stone-50 border border-amber-200 space-y-2">
                     <span className="text-xs font-bold text-amber-900 flex items-center gap-1.5">
                       <Sparkles className="w-4 h-4 text-amber-700" />
-                      <span>{rtl ? 'حكم ورؤية الخبير شاهين المعملية' : 'Master Perfumer Shaheen Laboratory Verdict'}</span>
+                      <span>{L('verdict_lbl')}</span>
                     </span>
                     <p className="text-xs text-amber-950 leading-relaxed italic">
                       {selectedArticle.expertVerdict}
                     </p>
                     {selectedArticle.marketImpact && (
                       <div className="text-[11px] text-amber-800 pt-1 font-medium border-t border-amber-200/60">
-                        📊 {rtl ? 'أثر السوق والاقتصاد العطري:' : 'Market Impact:'} {selectedArticle.marketImpact}
+                        📊 {L('market_impact_lbl')} {selectedArticle.marketImpact}
                       </div>
                     )}
                   </div>
@@ -837,10 +893,10 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                   <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200 space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-stone-900">
-                        {rtl ? 'الهرم العطري المقترح في هذا التقرير:' : 'Recommended Olfactory Accord in This Report:'}
+                        {L('accord_lbl')}
                       </span>
                       <span className="text-[10px] text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full font-bold">
-                        {rtl ? 'جاهز للتطبيق المعملي' : 'Lab Ready'}
+                        {L('lab_ready')}
                       </span>
                     </div>
 
@@ -869,7 +925,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                       className="w-full py-3 rounded-xl bg-amber-800 hover:bg-amber-900 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
                     >
                       <FlaskConical className="w-4 h-4 text-amber-300" />
-                      <span>{rtl ? 'تطبيق هذه التوليفة بالكامل في حاسبة العطور والمعمل' : 'Apply Full Accord to Formulation Scale'}</span>
+                      <span>{L('apply_full_lbl')}</span>
                     </button>
                   </div>
                 )}
@@ -881,14 +937,14 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                     className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-xs font-medium text-stone-700 cursor-pointer"
                   >
                     <Copy className="w-3.5 h-3.5" />
-                    <span>{rtl ? 'نسخ ملخص التقرير' : 'Copy Summary'}</span>
+                    <span>{L('copy_tooltip')}</span>
                   </button>
 
                   <button
                     onClick={closeArticleReader}
                     className="px-5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold cursor-pointer"
                   >
-                    {rtl ? 'إغلاق' : 'Close'}
+                    {L('close_lbl')}
                   </button>
                 </div>
               </div>

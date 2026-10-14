@@ -1,6 +1,6 @@
 export const STATS_BADGE_EN: Record<string, string> = {
   portal_concentration: '0.01g Precision · Active Volume',
-  portal_news: 'Breaking · 2026 World Trends',
+  portal_news: '👑 Master Shahin Daily Pictorial Briefing',
   portal_world_perfumes: '8 Master Presets Ready',
   portal_raw_materials: '28+ Pure Ingredients & IFRA',
   portal_pyramid: '3-Layer Volatility Simulation',

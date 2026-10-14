@@ -13,10 +13,182 @@ import {
 import { calculateAlcoholDilution, formatNum } from '../utils/calculations';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../utils/localizedContent';
+import { LText, makeT, fmt } from '../utils/localize';
 
 interface AlcoholDilutionCalculatorProps {
   currentLang?: SupportedLanguage;
 }
+
+const S = {
+  page_title: {
+    ar: 'حاسبة تخفيف تركيز الكحول الإيثيلي',
+    en: 'Ethanol Alcohol Dilution Calculator',
+    fr: 'Calculateur de dilution de l’éthanol',
+    es: 'Calculadora de dilución de etanol',
+    it: 'Calcolatore di diluizione dell’etanolo',
+    de: 'Ethanol-Verdünnungsrechner',
+    ru: 'Калькулятор разведения этанола',
+    zh: '乙醇稀释计算器',
+    tr: 'Etanol seyreltme hesaplayıcısı',
+    fa: 'ماشین‌حساب رقیق‌سازی الکل اتیلیک',
+  },
+  page_desc: {
+    ar: 'تعديل درجة نقاء الكحول (مثلاً من 96% أو 99.9% إلى 80% أو 85%) باستخدام الماء المقطر وفق معادلة التخفيف وقانون حفظ الكتلة.',
+    en: 'Precise gravimetric and volumetric calculation of distilled water needed to dilute perfumer ethanol (C₁V₁ = C₂V₂).',
+    fr: 'Ajustement du degré d’alcool (ex. de 96 % ou 99,9 % à 80 %) à l’eau distillée selon l’équation de dilution.',
+    es: 'Ajuste del grado alcohólico (ej. de 96% a 80%) con agua destilada según la ecuación de dilución.',
+    it: 'Regolazione del grado alcolico (es. da 96% a 80%) con acqua distillata secondo l’equazione di diluizione.',
+    de: 'Anpassung des Alkoholgrads (z. B. von 96 % auf 80 %) mit destilliertem Wasser nach der Verdünnungsgleichung.',
+    ru: 'Корректировка крепости спирта (напр., с 96% до 80%) дистиллированной водой по уравнению разведения.',
+    zh: '依据稀释方程与质量守恒定律，用蒸馏水精确调整酒精纯度（如从 96% 降至 80%）。',
+    tr: 'Seyreltme denklemine göre distile suyla alkol derecesini ayarlayın (örn. %96’dan %80’e).',
+    fa: 'تنظیم درجه خلوص الکل (مثلاً از ۹۶٪ به ۸۰٪) با آب مقطر طبق معادله رقیق‌سازی و قانون بقای جرم.',
+  },
+  params_title: {
+    ar: 'معايير سائل الكحول والهدف المطلوب',
+    en: 'Ethanol Concentration Parameters',
+    fr: 'Paramètres de concentration d’éthanol',
+    es: 'Parámetros de concentración de etanol',
+    it: 'Parametri di concentrazione di etanolo',
+    de: 'Ethanol-Konzentrationsparameter',
+    ru: 'Параметры концентрации этанола',
+    zh: '乙醇浓度参数',
+    tr: 'Etanol konsantrasyon parametreleri',
+    fa: 'پارامترهای غلظت الکل',
+  },
+  initial_label: {
+    ar: 'تركيز الكحول الخام المتوفر (C₁)',
+    en: 'Available Raw Alcohol Strength (C₁)',
+    fr: 'Degré d’alcool brut disponible (C₁)',
+    es: 'Grado alcohólico bruto disponible (C₁)',
+    it: 'Grado alcolico grezzo disponibile (C₁)',
+    de: 'Verfügbare Rohalkoholstärke (C₁)',
+    ru: 'Исходная крепость спирта (C₁)',
+    zh: '现有原料酒精浓度 (C₁)',
+    tr: 'Mevcut ham alkol derecesi (C₁)',
+    fa: 'غلظت الکل خام موجود (C₁)',
+  },
+  target_label: {
+    ar: 'تركيز الكحول النهائي المستهدف للعطر (C₂)',
+    en: 'Target Compound Strength (C₂)',
+    fr: 'Degré final visé du parfum (C₂)',
+    es: 'Grado final deseado del perfume (C₂)',
+    it: 'Grado finale desiderato (C₂)',
+    de: 'Ziel-Konzentration (C₂)',
+    ru: 'Целевая крепость композиции (C₂)',
+    zh: '目标最终酒精浓度 (C₂)',
+    tr: 'Hedef nihai alkol derecesi (C₂)',
+    fa: 'غلظت نهایی هدف عطر (C₂)',
+  },
+  volume_label: {
+    ar: 'الحجم النهائي المطلوب تحضيره (V₂)',
+    en: 'Desired Final Batch Volume (V₂)',
+    fr: 'Volume final souhaité (V₂)',
+    es: 'Volumen final deseado (V₂)',
+    it: 'Volume finale desiderato (V₂)',
+    de: 'Gewünschtes Endvolumen (V₂)',
+    ru: 'Желаемый итоговый объём (V₂)',
+    zh: '目标最终配制体积 (V₂)',
+    tr: 'İstenen nihai hacim (V₂)',
+    fa: 'حجم نهایی موردنیاز (V₂)',
+  },
+  law_title: {
+    ar: 'قانون التخفيف العلمي (C₁V₁ = C₂V₂)',
+    en: 'Volumetric Dilution Principle (C₁V₁ = C₂V₂)',
+    fr: 'Principe de dilution (C₁V₁ = C₂V₂)',
+    es: 'Principio de dilución (C₁V₁ = C₂V₂)',
+    it: 'Principio di diluizione (C₁V₁ = C₂V₂)',
+    de: 'Verdünnungsprinzip (C₁V₁ = C₂V₂)',
+    ru: 'Принцип разведения (C₁V₁ = C₂V₂)',
+    zh: '科学稀释定律 (C₁V₁ = C₂V₂)',
+    tr: 'Seyreltme prensibi (C₁V₁ = C₂V₂)',
+    fa: 'قانون علمی رقیق‌سازی (C₁V₁ = C₂V₂)',
+  },
+  law_desc: {
+    ar: 'عند إضافة الماء للكحول يحدث انكماش طفيف في الحجم المشترك (Volume Contraction) بسبب تشكل الروابط الهيدروجينية، لذلك يُنصح دائماً بالوزن بالجرام بدقة الميزان لضمان مطابقة التركيز الدوائي.',
+    en: 'When water is added to ethanol, a minor volume contraction occurs due to hydrogen bonding. For pharmaceutical accuracy, measuring mass in grams on analytical scales is recommended.',
+    fr: 'L’ajout d’eau à l’éthanol provoque une légère contraction volumique due aux liaisons hydrogène ; pesez en grammes pour une précision pharmaceutique.',
+    es: 'Al añadir agua al etanol ocurre una ligera contracción volumétrica por puentes de hidrógeno; pese en gramos para precisión farmacéutica.',
+    it: 'Aggiungendo acqua all’etanolo si verifica una lieve contrazione volumetrica dovuta ai legami idrogeno; pesare in grammi per precisione farmaceutica.',
+    de: 'Beim Mischen von Wasser und Ethanol entsteht eine geringe Volumenkontraktion durch Wasserstoffbrücken; wiegen Sie in Gramm für pharmazeutische Genauigkeit.',
+    ru: 'При добавлении воды в этанол происходит небольшое сжатие объёма из-за водородных связей; для фармацевтической точности взвешивайте в граммах.',
+    zh: '水与乙醇混合时会因氢键产生轻微体积收缩；为确保药学精度，建议以克为单位称量。',
+    tr: 'Su ve etanol karıştırıldığında hidrojen bağlarından dolayı hafif hacim daralması olur; eczacılık hassasiyeti için gramla tartın.',
+    fa: 'هنگام افزودن آب به الکل به دلیل پیوندهای هیدروژنی، انقباض حجمی جزئی رخ می‌دهد؛ برای دقت دارویی، همیشه بر حسب گرم توزین کنید.',
+  },
+  results_title: {
+    ar: 'نتائج المعايرة والخلط',
+    en: 'Compounding Recipe',
+    fr: 'Recette de formulation',
+    es: 'Receta de compounding',
+    it: 'Ricetta di miscelazione',
+    de: 'Mischrezept',
+    ru: 'Рецепт смешивания',
+    zh: '配制配方结果',
+    tr: 'Karım reçetesi',
+    fa: 'نتایج معیارسازی و ترکیب',
+  },
+  required_alcohol_tpl: {
+    ar: '1. حجم الكحول الخام المتوفر ({p}%) المطلوب:',
+    en: '1. Required Raw Alcohol ({p}%):',
+    fr: '1. Alcool brut requis ({p} %) :',
+    es: '1. Alcohol bruto requerido ({p}%):',
+    it: '1. Alcol grezzo richiesto ({p}%):',
+    de: '1. Benötigter Rohalkohol ({p}%):',
+    ru: '1. Требуемый исходный спирт ({p}%):',
+    zh: '1. 所需原料酒精（{p}%）：',
+    tr: '1. Gerekli ham alkol (%{p}):',
+    fa: '۱. حجم الکل خام موردنیاز ({p}٪):',
+  },
+  required_water: {
+    ar: '2. حجم الماء المقطر الطبي الواجب إضافته:',
+    en: '2. Required Medical Distilled Water:',
+    fr: '2. Eau distillée médicale à ajouter :',
+    es: '2. Agua destilada médica a añadir:',
+    it: '2. Acqua distillata medica da aggiungere:',
+    de: '2. Benötigtes medizinisches destilliertes Wasser:',
+    ru: '2. Требуемая дистиллированная вода:',
+    zh: '2. 需加入的医用蒸馏水：',
+    tr: '2. Eklenecek tıbbi distile su:',
+    fa: '۲. حجم آب مقطر پزشکی که باید اضافه شود:',
+  },
+  final_volume: {
+    ar: 'الحجم النهائي المحضر:',
+    en: 'Target Final Volume:',
+    fr: 'Volume final préparé :',
+    es: 'Volumen final preparado:',
+    it: 'Volume finale preparato:',
+    de: 'Ziel-Endvolumen:',
+    ru: 'Итоговый объём:',
+    zh: '最终配制体积：',
+    tr: 'Hedef nihai hacim:',
+    fa: 'حجم نهایی آماده‌شده:',
+  },
+  total_weight: {
+    ar: 'الوزن الكلي للخليط المخفف:',
+    en: 'Total Batch Weight:',
+    fr: 'Poids total du lot :',
+    es: 'Peso total del lote:',
+    it: 'Peso totale del lotto:',
+    de: 'Gesamtgewicht der Charge:',
+    ru: 'Общий вес смеси:',
+    zh: '稀释后混合液总重：',
+    tr: 'Toplam parti ağırlığı:',
+    fa: 'وزن کل مخلوط رقیق‌شده:',
+  },
+  mixture_density: {
+    ar: 'الكثافة التقديرية للخليط الناتج:',
+    en: 'Resulting Mixture Density:',
+    fr: 'Densité estimée du mélange :',
+    es: 'Densidad estimada de la mezcla:',
+    it: 'Densità stimata del miscuglio:',
+    de: 'Geschätzte Mischungsdichte:',
+    ru: 'Примерная плотность смеси:',
+    zh: '混合液估算密度：',
+    tr: 'Tahmini karışım yoğunluğu:',
+    fa: 'چگالی تقریبی مخلوط حاصل:',
+  },
+} satisfies Record<string, LText>;
 
 export const AlcoholDilutionCalculator: React.FC<AlcoholDilutionCalculatorProps> = ({
   currentLang = 'ar',
@@ -26,6 +198,7 @@ export const AlcoholDilutionCalculator: React.FC<AlcoholDilutionCalculatorProps>
   const [desiredFinalVolume, setDesiredFinalVolume] = useState(1000); // 1000 ml (1 Liter)
 
   const rtl = isRTL(currentLang);
+  const L = makeT(currentLang, S);
   const dilution = calculateAlcoholDilution(initialPurity, targetPurity, desiredFinalVolume);
 
   const handleInitialChange = (val: number) => {
@@ -42,12 +215,10 @@ export const AlcoholDilutionCalculator: React.FC<AlcoholDilutionCalculatorProps>
       {/* Section Header */}
       <div className="border-b border-stone-200/80 pb-5">
         <h2 className="text-xl sm:text-2xl font-bold text-stone-900 font-serif-luxury">
-          {rtl ? 'حاسبة تخفيف تركيز الكحول الإيثيلي' : 'Ethanol Alcohol Dilution Calculator'}
+          {L('page_title')}
         </h2>
         <p className="text-stone-500 text-sm mt-1">
-          {rtl
-            ? 'تعديل درجة نقاء الكحول (مثلاً من 96% أو 99.9% إلى 80% أو 85%) باستخدام الماء المقطر وفق معادلة التخفيف وقانون حفظ الكتلة.'
-            : 'Precise gravimetric and volumetric calculation of distilled water needed to dilute perfumer ethanol (C₁V₁ = C₂V₂).'}
+          {L('page_desc')}
         </p>
       </div>
 
@@ -57,14 +228,14 @@ export const AlcoholDilutionCalculator: React.FC<AlcoholDilutionCalculatorProps>
           <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-5">
             <h3 className="text-sm font-bold text-stone-950 flex items-center gap-2">
               <Beaker className="w-4 h-4 text-amber-700" />
-              <span>{rtl ? 'معايير سائل الكحول والهدف المطلوب' : 'Ethanol Concentration Parameters'}</span>
+              <span>{L('params_title')}</span>
             </h3>
 
             {/* Initial Purity Input */}
             <div className="space-y-2">
               <div className="flex justify-between items-center text-xs">
                 <label className="font-semibold text-stone-800">
-                  {rtl ? 'تركيز الكحول الخام المتوفر (C₁)' : 'Available Raw Alcohol Strength (C₁)'}
+                  {L('initial_label')}
                 </label>
                 <span className="font-mono-numbers font-bold text-stone-900 bg-stone-100 px-2 py-0.5 rounded">
                   {initialPurity}%
@@ -101,7 +272,7 @@ export const AlcoholDilutionCalculator: React.FC<AlcoholDilutionCalculatorProps>
             <div className="space-y-2 pt-2">
               <div className="flex justify-between items-center text-xs">
                 <label className="font-semibold text-stone-800">
-                  {rtl ? 'تركيز الكحول النهائي المستهدف للعطر (C₂)' : 'Target Compound Strength (C₂)'}
+                  {L('target_label')}
                 </label>
                 <span className="font-mono-numbers font-bold text-amber-900 bg-amber-50 px-2 py-0.5 rounded">
                   {targetPurity}%
@@ -138,7 +309,7 @@ export const AlcoholDilutionCalculator: React.FC<AlcoholDilutionCalculatorProps>
             <div className="space-y-2 pt-2">
               <div className="flex justify-between items-center text-xs">
                 <label className="font-semibold text-stone-800">
-                  {rtl ? 'الحجم النهائي المطلوب تحضيره (V₂)' : 'Desired Final Batch Volume (V₂)'}
+                  {L('volume_label')}
                 </label>
                 <span className="font-mono-numbers font-bold text-stone-900 bg-stone-100 px-2 py-0.5 rounded">
                   {desiredFinalVolume} ml
@@ -176,12 +347,10 @@ export const AlcoholDilutionCalculator: React.FC<AlcoholDilutionCalculatorProps>
           <div className="p-4 bg-amber-50/70 border border-amber-200/80 rounded-2xl text-xs space-y-2 text-stone-700 leading-relaxed">
             <div className="font-bold text-amber-950 flex items-center gap-1.5">
               <Info className="w-4 h-4 text-amber-800" />
-              <span>{rtl ? 'قانون التخفيف العلمي (C₁V₁ = C₂V₂)' : 'Volumetric Dilution Principle (C₁V₁ = C₂V₂)'}</span>
+              <span>{L('law_title')}</span>
             </div>
             <p>
-              {rtl
-                ? 'عند إضافة الماء للكحول يحدث انكماش طفيف في الحجم المشترك (Volume Contraction) بسبب تشكل الروابط الهيدروجينية، لذلك يُنصح دائماً بالوزن بالجرام بدقة الميزان لضمان مطابقة التركيز الدوائي.'
-                : 'When water is added to ethanol, a minor volume contraction occurs due to hydrogen bonding. For pharmaceutical accuracy, measuring mass in grams on analytical scales is recommended.'}
+              {L('law_desc')}
             </p>
           </div>
         </div>
@@ -189,12 +358,12 @@ export const AlcoholDilutionCalculator: React.FC<AlcoholDilutionCalculatorProps>
         {/* Right Column: Dilution Results */}
         <div className="lg:col-span-5 space-y-6">
           <div className="bg-stone-900 text-white p-6 rounded-3xl border border-stone-800 shadow-xl space-y-6">
-            <div className="border-b border-stone-800 pb-3 flex items-center justify-between">
+            <div className="border-b border-stone-800 pb-3 flex items-center justify-between gap-2">
               <h3 className="text-sm font-bold text-amber-400 flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>{rtl ? 'نتائج المعايرة والخلط' : 'Compounding Recipe'}</span>
+                <span>{L('results_title')}</span>
               </h3>
-              <span className="text-[11px] font-mono text-stone-400">
+              <span className="text-[11px] font-mono text-stone-400 shrink-0">
                 {targetPurity}% ABV
               </span>
             </div>
@@ -203,7 +372,7 @@ export const AlcoholDilutionCalculator: React.FC<AlcoholDilutionCalculatorProps>
             <div className="space-y-4">
               <div className="p-4 rounded-2xl bg-stone-800/80 border border-stone-700/80 space-y-1">
                 <span className="text-[11px] text-stone-300 block">
-                  {rtl ? `1. حجم الكحول الخام المتوفر (${initialPurity}%) المطلوب:` : `1. Required Raw Alcohol (${initialPurity}%):`}
+                  {fmt(L('required_alcohol_tpl'), { p: initialPurity })}
                 </span>
                 <div className="flex items-baseline justify-between">
                   <span className="text-2xl font-bold font-mono-numbers text-white">
@@ -217,7 +386,7 @@ export const AlcoholDilutionCalculator: React.FC<AlcoholDilutionCalculatorProps>
 
               <div className="p-4 rounded-2xl bg-amber-950/40 border border-amber-800/50 space-y-1">
                 <span className="text-[11px] text-amber-200 block">
-                  {rtl ? '2. حجم الماء المقطر الطبي الواجب إضافته:' : '2. Required Medical Distilled Water:'}
+                  {L('required_water')}
                 </span>
                 <div className="flex items-baseline justify-between">
                   <span className="text-2xl font-bold font-mono-numbers text-amber-400">
@@ -233,17 +402,17 @@ export const AlcoholDilutionCalculator: React.FC<AlcoholDilutionCalculatorProps>
             {/* Summary Specifications */}
             <div className="p-4 bg-stone-950/60 rounded-2xl border border-stone-800 text-xs space-y-2">
               <div className="flex justify-between text-stone-400">
-                <span>{rtl ? 'الحجم النهائي المحضر:' : 'Target Final Volume:'}</span>
+                <span>{L('final_volume')}</span>
                 <span className="font-mono-numbers font-bold text-white">{desiredFinalVolume} ml</span>
               </div>
               <div className="flex justify-between text-stone-400">
-                <span>{rtl ? 'الوزن الكلي للخليط المخفف:' : 'Total Batch Weight:'}</span>
+                <span>{L('total_weight')}</span>
                 <span className="font-mono-numbers font-bold text-amber-300">
                   {formatNum(dilution.requiredInitialVolumeMl * ethanolDensity + dilution.requiredWaterVolumeMl, 2)} g
                 </span>
               </div>
               <div className="flex justify-between text-stone-400">
-                <span>{rtl ? 'الكثافة التقديرية للخليط الناتج:' : 'Resulting Mixture Density:'}</span>
+                <span>{L('mixture_density')}</span>
                 <span className="font-mono-numbers text-stone-300">
                   {targetPurity >= 85 ? '0.835 g/ml' : targetPurity >= 80 ? '0.850 g/ml' : '0.875 g/ml'}
                 </span>
