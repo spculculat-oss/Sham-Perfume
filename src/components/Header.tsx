@@ -66,6 +66,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenPrivacyModal,
 }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [groupMenuStates, setGroupMenuStates] = useState<Record<string, boolean>>({});
   const userMenuRef = useRef<HTMLDivElement>(null);
   const L = makeT(currentLang, S);
 
@@ -74,24 +75,70 @@ export const Header: React.FC<HeaderProps> = ({
       if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
         setIsUserMenuOpen(false);
       }
+      // Close group menus when clicking outside
+      const groupButtons = document.querySelectorAll('[data-group-menu]');
+      const isGroupClick = Array.from(groupButtons).some(btn => btn.contains(e.target as Node));
+      if (!isGroupClick) {
+        setGroupMenuStates({});
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const navItems = [
-    { id: 'home', label: t('nav_home', currentLang), shortLabel: t('nav_home_short', currentLang), isHome: true },
-    { id: 'concentration', label: t('nav_calc', currentLang), shortLabel: t('nav_calc_short', currentLang) },
-    { id: 'perfume_news', label: t('nav_news', currentLang), shortLabel: t('nav_news_short', currentLang), isNew: true },
-    { id: 'world_perfumes', label: t('nav_world_perfumes', currentLang), shortLabel: t('nav_world_perfumes_short', currentLang) },
-    { id: 'raw_materials', label: t('nav_raw_materials', currentLang), shortLabel: t('nav_raw_materials_short', currentLang) },
-    { id: 'pyramid', label: t('nav_pyramid', currentLang), shortLabel: t('nav_pyramid_short', currentLang) },
-    { id: 'alcohol', label: t('nav_alcohol', currentLang), shortLabel: t('nav_alcohol_short', currentLang) },
-    { id: 'costing', label: t('nav_costing', currentLang), shortLabel: t('nav_costing_short', currentLang) },
-    { id: 'master_ai', label: t('nav_ai_master', currentLang), shortLabel: t('nav_ai_master_short', currentLang) },
-    { id: 'maceration_simulator', label: t('nav_maceration', currentLang, 'محاكي التعتيق الزمني'), shortLabel: t('nav_maceration_short', currentLang, 'محاكي التعتيق') },
-    { id: 'library', label: t('nav_library', currentLang), shortLabel: t('nav_library_short', currentLang) },
-    { id: 'guide', label: t('nav_guide', currentLang), shortLabel: t('nav_guide_short', currentLang) },
+  const isGroupMenuOpen = (id: string) => groupMenuStates[id] || false;
+  const setIsGroupMenuOpen = (id: string, open: boolean) => {
+    setGroupMenuStates(prev => ({ ...prev, [id]: open }));
+  };
+
+  // Smart navigation groups - reduces 12 items to 4 main groups with dropdowns
+  const navGroups = [
+    {
+      id: 'home',
+      type: 'single',
+      label: t('nav_home_short', currentLang),
+      fullLabel: t('nav_home', currentLang),
+      icon: Home,
+      iconColor: 'text-amber-700',
+    },
+    {
+      id: 'tools',
+      type: 'dropdown',
+      label: t('nav_tools_short', currentLang),
+      fullLabel: t('nav_tools', currentLang),
+      icon: FlaskConical,
+      iconColor: 'text-amber-600',
+      items: [
+        { id: 'concentration', label: t('nav_calc_short', currentLang), fullLabel: t('nav_calc', currentLang), icon: FlaskConical },
+        { id: 'alcohol', label: t('nav_alcohol_short', currentLang), fullLabel: t('nav_alcohol', currentLang), icon: FlaskConical },
+        { id: 'costing', label: t('nav_costing_short', currentLang), fullLabel: t('nav_costing', currentLang), icon: Newspaper },
+        { id: 'maceration_simulator', label: t('nav_maceration_short', currentLang), fullLabel: t('nav_maceration', currentLang, 'محاكي التعتيق الزمني'), icon: FlaskConical },
+      ],
+    },
+    {
+      id: 'explore',
+      type: 'dropdown',
+      label: t('nav_explore_short', currentLang),
+      fullLabel: t('nav_explore', currentLang),
+      icon: Compass,
+      iconColor: 'text-amber-600',
+      items: [
+        { id: 'perfume_news', label: t('nav_news_short', currentLang), fullLabel: t('nav_news', currentLang), icon: Newspaper, isNew: true },
+        { id: 'world_perfumes', label: t('nav_world_perfumes_short', currentLang), fullLabel: t('nav_world_perfumes', currentLang), icon: Compass },
+        { id: 'pyramid', label: t('nav_pyramid_short', currentLang), fullLabel: t('nav_pyramid', currentLang), icon: Compass },
+        { id: 'raw_materials', label: t('nav_raw_materials_short', currentLang), fullLabel: t('nav_raw_materials', currentLang), icon: Database },
+        { id: 'library', label: t('nav_library_short', currentLang), fullLabel: t('nav_library', currentLang), icon: Database },
+        { id: 'guide', label: t('nav_guide_short', currentLang), fullLabel: t('nav_guide', currentLang), icon: Newspaper },
+      ],
+    },
+    {
+      id: 'master_ai',
+      type: 'single',
+      label: t('nav_ai_master_short', currentLang),
+      fullLabel: t('nav_ai_master', currentLang),
+      icon: Sparkles,
+      iconColor: 'text-emerald-500',
+    },
   ];
 
   return (
@@ -128,72 +175,80 @@ export const Header: React.FC<HeaderProps> = ({
           )}
         </div>
 
-        {/* Zone 2: Navigation links - Horizontally scrollable with gradient fade */}
+        {/* Zone 2: Navigation links - Smart grouped navigation with dropdowns */}
         <div className="hidden xl:block relative">
           {/* Gradient fade left edge */}
-          <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-white/95 to-transparent pointer-events-none z-10 xl:hidden"></div>
+          <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-white/95 to-transparent pointer-events-none z-10"></div>
           {/* Gradient fade right edge */}
-          <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white/95 to-transparent pointer-events-none z-10 xl:hidden"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white/95 to-transparent pointer-events-none z-10"></div>
           
-          <nav className="flex items-center gap-1.5 xl:gap-2 text-xs font-medium text-stone-600 overflow-x-auto no-scrollbar scroll-smooth">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`whitespace-nowrap shrink-0 transition-all py-1.5 px-2.5 rounded-lg relative flex items-center gap-1.5 cursor-pointer ${
-                  activeTab === item.id
-                    ? 'text-stone-950 font-bold bg-stone-100 shadow-2xs border border-stone-200/80'
-                    : 'hover:text-stone-900 hover:bg-stone-50'
-                }`}
-                title={item.label}
-              >
-                {/* Smart icons based on item type */}
-                {item.isHome && (
-                  <Home className="w-3.5 h-3.5 text-amber-700 shrink-0" />
-                )}
-                {item.id === 'perfume_news' && (
-                  <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30 shrink-0">
-                    NEW
-                  </span>
-                )}
-                {item.id === 'master_ai' && (
-                  <Sparkles className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                )}
-                {item.id === 'maceration_simulator' && (
-                  <FlaskConical className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                )}
-                {item.id === 'world_perfumes' && (
-                  <Compass className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                )}
-                {item.id === 'raw_materials' && (
-                  <Database className="w-3.5 h-3.5 text-stone-600 shrink-0" />
-                )}
-                {item.id === 'pyramid' && (
-                  <Compass className="w-3.5 h-3.5 text-stone-600 rotate-45 shrink-0" />
-                )}
-                {item.id === 'alcohol' && (
-                  <FlaskConical className="w-3.5 h-3.5 text-stone-600 shrink-0" />
-                )}
-                {item.id === 'costing' && (
-                  <Newspaper className="w-3.5 h-3.5 text-stone-600 shrink-0" />
-                )}
-                {item.id === 'library' && (
-                  <Database className="w-3.5 h-3.5 text-stone-600 shrink-0" />
-                )}
-                {item.id === 'guide' && (
-                  <Newspaper className="w-3.5 h-3.5 text-stone-600 shrink-0" />
-                )}
-                
-                {/* Label: show short label on smaller XL, full label on large XL */}
-                <span className="hidden sm:inline">
-                  <span className="xl:text-xs text-[11px]">
-                    {item.shortLabel}
-                  </span>
-                </span>
-                <span className="xl:inline hidden text-[11px]">
-                  {item.label}
-                </span>
-              </button>
+          <nav className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth py-1">
+            {navGroups.map((group) => (
+              group.type === 'single' ? (
+                <button
+                  key={group.id}
+                  onClick={() => setActiveTab(group.id)}
+                  className={`whitespace-nowrap shrink-0 transition-all py-1.5 px-2.5 rounded-lg flex items-center gap-1.5 cursor-pointer ${
+                    activeTab === group.id
+                      ? 'text-stone-950 font-bold bg-stone-100 shadow-2xs border border-stone-200/80'
+                      : 'hover:text-stone-900 hover:bg-stone-50'
+                  }`}
+                  title={group.fullLabel}
+                >
+                  <group.icon className={`w-3.5 h-3.5 ${group.iconColor} shrink-0`} />
+                  <span className="xl:text-xs text-[11px] hidden lg:inline">{group.label}</span>
+                  <span className="xl:inline hidden text-[11px]">{group.fullLabel}</span>
+                </button>
+              ) : (
+                <div key={group.id} className="relative shrink-0">
+                  {/* Group button with dropdown */}
+                  <button
+                    data-group-menu
+                    onClick={() => setIsGroupMenuOpen(group.id, !isGroupMenuOpen(group.id))}
+                    className={`whitespace-nowrap shrink-0 transition-all py-1.5 px-2.5 rounded-lg flex items-center gap-1.5 cursor-pointer ${
+                      isGroupMenuOpen(group.id)
+                        ? 'text-stone-950 font-bold bg-stone-100 shadow-2xs border border-stone-200/80'
+                        : 'hover:text-stone-900 hover:bg-stone-50'
+                    }`}
+                    title={group.fullLabel}
+                  >
+                    <group.icon className={`w-3.5 h-3.5 ${group.iconColor} shrink-0`} />
+                    <span className="xl:text-xs text-[11px] hidden lg:inline">{group.label}</span>
+                    <span className="px-1.5 py-0.2 rounded bg-stone-100 text-[10px] font-medium text-stone-600 border border-stone-200/60 shrink-0">
+                      {group.items?.length}
+                    </span>
+                    <ChevronDown className="w-3 h-3 text-stone-400 ml-0.5 shrink-0" />
+                  </button>
+                  
+                  {/* Dropdown menu */}
+                  {isGroupMenuOpen(group.id) && (
+                    <div className="absolute top-full mt-2 left-0 z-50 min-w-[220px] rounded-xl bg-white border border-stone-200 shadow-xl overflow-hidden animate-in fade-in zoom-in-95">
+                      {group.items?.map((item) => (
+                        <button
+                          key={item.id}
+                          onClick={() => {
+                            setActiveTab(item.id);
+                            setIsGroupMenuOpen(group.id, false);
+                          }}
+                          className={`w-full px-4 py-2 text-left flex items-center gap-2 transition-colors cursor-pointer ${
+                            activeTab === item.id
+                              ? 'bg-amber-50 text-amber-900 font-semibold'
+                              : 'hover:bg-stone-50 text-stone-700'
+                          }`}
+                        >
+                          {item.isNew && (
+                            <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30 shrink-0">
+                              NEW
+                            </span>
+                          )}
+                          <item.icon className="w-3.5 h-3.5 text-stone-500 shrink-0" />
+                          <span>{item.fullLabel}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )
             ))}
           </nav>
         </div>
@@ -325,67 +380,84 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* Mobile & Tablet Secondary Navigation Strip */}
-      <div className="xl:hidden flex items-center gap-2 overflow-x-auto pt-2 mt-2 border-t border-stone-100 text-xs no-scrollbar">
-        {/* Quick Language Switcher on Mobile/Tablet */}
-        <div className="shrink-0">
-          <LanguageSelector
-            currentLang={currentLang}
-            onSelectLanguage={onSelectLanguage}
-            compactMobile
-          />
-        </div>
+      {/* Mobile & Tablet Navigation - Condensed grouped view */}
+      <div className="xl:hidden">
+        <div className="flex items-center gap-2 overflow-x-auto pt-2 mt-2 border-t border-stone-100 text-xs no-scrollbar">
+          {/* Quick Language Switcher on Mobile/Tablet */}
+          <div className="shrink-0">
+            <LanguageSelector
+              currentLang={currentLang}
+              onSelectLanguage={onSelectLanguage}
+              compactMobile
+            />
+          </div>
 
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => setActiveTab(item.id)}
-            className={`whitespace-nowrap px-3 py-1 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer shrink-0 ${
-              activeTab === item.id
-                ? 'bg-amber-900 text-white font-bold shadow-xs'
-                : 'text-stone-700 hover:text-stone-900 bg-stone-100/90 font-medium'
-            }`}
-            title={item.label}
-          >
-            {/* Icons for mobile */}
-            {item.isHome && (
-              <Home className="w-3.5 h-3.5 text-amber-300 shrink-0" />
-            )}
-            {item.id === 'perfume_news' && (
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping shrink-0" />
-            )}
-            {item.id === 'master_ai' && (
-              <Sparkles className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-            )}
-            {item.id === 'maceration_simulator' && (
-              <FlaskConical className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-            )}
-            {item.id === 'world_perfumes' && (
-              <Compass className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-            )}
-            {item.id === 'raw_materials' && (
-              <Database className="w-3.5 h-3.5 text-stone-600 shrink-0" />
-            )}
-            {item.id === 'pyramid' && (
-              <Compass className="w-3.5 h-3.5 text-stone-600 rotate-45 shrink-0" />
-            )}
-            {item.id === 'alcohol' && (
-              <FlaskConical className="w-3.5 h-3.5 text-stone-600 shrink-0" />
-            )}
-            {item.id === 'costing' && (
-              <Newspaper className="w-3.5 h-3.5 text-stone-600 shrink-0" />
-            )}
-            {item.id === 'library' && (
-              <Database className="w-3.5 h-3.5 text-stone-600 shrink-0" />
-            )}
-            {item.id === 'guide' && (
-              <Newspaper className="w-3.5 h-3.5 text-stone-600 shrink-0" />
-            )}
-            
-            {/* Short label for mobile */}
-            <span className="text-[11px] font-medium whitespace-nowrap">{item.shortLabel}</span>
-          </button>
-        ))}
+          {/* Mobile nav groups as scrollable pills */}
+          {navGroups.map((group) => (
+            group.type === 'single' ? (
+              <button
+                key={group.id}
+                onClick={() => setActiveTab(group.id)}
+                className={`whitespace-nowrap px-3 py-1.5 rounded-lg flex items-center gap-1.5 shrink-0 ${
+                  activeTab === group.id
+                    ? 'bg-amber-900 text-white font-bold shadow-xs'
+                    : 'text-stone-700 hover:text-stone-900 bg-stone-100/90 font-medium'
+                }`}
+                title={group.fullLabel}
+              >
+                <group.icon className={`w-3.5 h-3.5 ${group.iconColor.replace('text-emerald-500', 'text-emerald-400').replace('text-amber-700', 'text-amber-300').replace('text-amber-600', 'text-amber-500')} shrink-0`} />
+                <span className="text-[11px]">{group.label}</span>
+              </button>
+            ) : (
+              <div key={group.id} className="relative shrink-0">
+                {/* Group pill */}
+                <button
+                  onClick={() => setIsGroupMenuOpen(group.id, !isGroupMenuOpen(group.id))}
+                  className={`whitespace-nowrap px-3 py-1.5 rounded-lg flex items-center gap-1.5 shrink-0 ${
+                    isGroupMenuOpen(group.id)
+                      ? 'bg-amber-900 text-white font-bold shadow-xs'
+                      : 'text-stone-700 hover:text-stone-900 bg-stone-100/90 font-medium'
+                  }`}
+                  title={group.fullLabel}
+                >
+                  <group.icon className={`w-3.5 h-3.5 ${group.iconColor.replace('text-emerald-500', 'text-emerald-400').replace('text-amber-700', 'text-amber-300').replace('text-amber-600', 'text-amber-500')} shrink-0`} />
+                  <span className="text-[11px]">{group.label}</span>
+                  <span className="px-1 py-0.5 rounded-full bg-amber-100 text-[10px] font-medium text-amber-800 shrink-0">
+                    {group.items?.length}
+                  </span>
+                </button>
+                
+                {/* Group dropdown for mobile */}
+                {isGroupMenuOpen(group.id) && (
+                  <div className="absolute top-full left-0 mt-2 min-w-[240px] rounded-xl bg-white border border-stone-200 shadow-xl overflow-hidden animate-in fade-in zoom-in-95">
+                    {group.items?.map((item) => (
+                      <button
+                        key={item.id}
+                        onClick={() => {
+                          setActiveTab(item.id);
+                          setIsGroupMenuOpen(group.id, false);
+                        }}
+                        className={`w-full px-4 py-2 text-left flex items-center gap-2 transition-colors cursor-pointer ${
+                          activeTab === item.id
+                            ? 'bg-amber-50 text-amber-900 font-semibold'
+                            : 'hover:bg-stone-50 text-stone-700'
+                        }`}
+                      >
+                        {item.isNew && (
+                          <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30 shrink-0">
+                            NEW
+                          </span>
+                        )}
+                        <item.icon className="w-3.5 h-3.5 text-stone-500 shrink-0" />
+                        <span className="text-xs">{item.fullLabel}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          ))}
+        </div>
       </div>
     </header>
   );
