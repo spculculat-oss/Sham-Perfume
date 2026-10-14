@@ -1,11 +1,17 @@
-import { SupportedLanguage } from '../types/i18n';
+import { SupportedLanguage, SUPPORTED_LANGUAGES } from '../types/i18n';
 import { WORLD_PERFUMES, WorldPerfumeRecipe } from '../data/worldPerfumes';
 import { RAW_MATERIALS_DATABASE, RawMaterialItem } from '../data/rawMaterials';
 import { PERFUME_NEWS_DATA, PerfumeNewsItem, NEWS_EN_FALLBACK } from '../data/perfumeNews';
 import { fmt, localeDate } from './localize';
 import { COMMON_LABELS_EXT } from './commonLabelsExt';
 
-export const isRTL = (lang: SupportedLanguage): boolean => lang === 'ar' || lang === 'fa';
+/**
+ * Direction of a language, derived from the single source of truth
+ * (SUPPORTED_LANGUAGES dir field) so every newly enabled RTL language
+ * (he, ur, ps, ...) is picked up automatically.
+ */
+export const isRTL = (lang: SupportedLanguage): boolean =>
+  SUPPORTED_LANGUAGES.find((l) => l.code === lang)?.dir === 'rtl';
 
 // ==========================================
 // 1. COMMON UI STRINGS DICTIONARY
@@ -592,6 +598,10 @@ const READ_TIME_TPL: Record<SupportedLanguage, string> = {
   bn: '{n} মিনিট',
   cs: '{n} min',
   ro: '{n} min',
+  // Extended languages — batch 2 (RTL)
+  he: '{n} דק׳',
+  ur: '{n} منٹ',
+  ps: '{n} دقیقې',
 };
 
 export const getLocalizedNewsArticle = (article: PerfumeNewsItem, lang: SupportedLanguage) => {

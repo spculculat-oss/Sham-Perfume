@@ -22,6 +22,7 @@ import {
 import { SupportedLanguage } from '../types/i18n';
 import { t } from '../utils/i18n';
 import { LText, makeT } from '../utils/localize';
+import { isRTL } from '../utils/localizedContent';
 
 
 const S = {
@@ -66,7 +67,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
   currentLang = 'ar',
   onOpenPrintModal,
 }) => {
-  const isRtl = currentLang === 'ar' || currentLang === 'fa';
+  const isRtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
   const BackIcon = isRtl ? ArrowRight : ArrowLeft;
   const Separator = isRtl ? ChevronLeft : ChevronRight;
