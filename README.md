@@ -22,7 +22,7 @@
 
 ## التشغيل المحلي
 
-المطلوب: Node.js 22.12 أو أحدث (راجع `.nvmrc`)، وBun **1.4.3** المثبت في `package.json`. ملف `bun.lock` هو مرجع التبعيات؛ إصدارات Bun القديمة قد لا تفهم نسخة ملف القفل.
+المطلوب: Node.js 22.x بإصدار 22.12 أو أحدث داخل هذا الإصدار الرئيسي (راجع `.nvmrc`)، وBun **1.4.3** المثبت في `package.json`. ملف `bun.lock` هو مرجع التبعيات؛ إصدارات Bun القديمة قد لا تفهم نسخة ملف القفل.
 
 ```bash
 npx --yes bun@1.4.3 install --frozen-lockfile
@@ -40,6 +40,8 @@ npm run dev
 npm run lint
 npm test
 npm run build
+npm run build:vercel
+npm run test:vercel
 npm run build:pages
 npm run check:pages
 ```
@@ -80,6 +82,47 @@ git status
 ملفات `docs` موجودة في Git للحفاظ على التوافق مع النشر القديم. `dist` و`node_modules` لا تُرفع.
 
 > GitHub Pages يستضيف الواجهة الثابتة فقط؛ نجاح نشره لا يعني أن `server.ts` أو `/api/chat` أو `/api/news` تعمل عليه.
+
+## نشر الواجهة وAPI معًا على Vercel
+
+نجاح نشر Vite إلى `dist` وحده لا يشغّل شاهين. هذا المشروع يستخدم **Build Output API v3** لبناء الواجهة ودالة Node.js في نشر واحد، ولا يحتاج اختيار Express preset أو وضع Vite داخل الدالة.
+
+- `server/app.ts`: تطبيق Express والمسارات فقط، بلا `listen` وبلا Vite.
+- `server.ts`: تشغيل محلي/استضافة Node.js تقليدية؛ ليس مدخل دالة Vercel.
+- `server/vercel-entry.cts`: مدخل دالة Vercel؛ يُجمع بواسطة esbuild إلى حزمة CJS مستقلة.
+- `scripts/build-vercel.mjs`: يضع الواجهة في `.vercel/output/static` والدالة في `.vercel/output/functions/api.func`، مع توجيه كل `/api/...` إلى الدالة **قبل** fallback الواجهة. الملفات المولدة لا تُرفع إلى Git.
+- `tsconfig.json` يفحص السيرفر بأنواع Node، و`tsconfig.app.json` يفحص الواجهة بأنواع `vite/client`، لتجنب خلط أنواع Vite بتجميع السيرفر.
+
+### خطوات النشر للمشروع الموجود
+
+1. ادمج طلب الإصلاح في `main` أولًا. لا تحذف مشروع Vercel أو تنشئ مشروعًا جديدًا.
+2. افتح مشروع **`sham-perfume-49bf`**، وهو المشروع المرتبط بالرابط `https://sham-perfume-49bf.vercel.app`، وليس المشروع الآخر `sham-perfume`.
+3. في **Settings → Build and Deployment**: اجعل **Framework Preset = Other**، و**Root Directory = ./**، و**Node.js Version = 22.x**. لا تستخدم preset Vite أو Express. إعدادات الأوامر تأتي من `vercel.json`؛ ألغِ أي overrides قديمة خصوصًا Output Directory = dist. عند الحاجة لإدخال الأوامر يدويًا:
+   - Install Command: `npx --yes bun@1.4.3 install --frozen-lockfile`
+   - Build Command: `npm run build:vercel`
+   - Output Directory: لا تحدد `dist` أو `docs`؛ اتركه افتراضيًا/بلا override لأن النتيجة هي `.vercel/output`.
+4. في **Settings → Environment Variables** أضف `GEMINI_API_KEY` بمفتاح جديد صالح، واختر **Production**؛ اختر **Preview** فقط إن أردت اختبار نشر الفرع أيضًا. لا ترسل المفتاح في المحادثة، ولا تسمِّه `VITE_GEMINI_API_KEY`. مفاتيح بقية المزودين اختيارية، والأخبار تحتاج Gemini تحديدًا. إلغاء مفتاح سبق كشفه واستبداله يتم في حساب المزود.
+5. من **Deployments** انشر أحدث commit من `main` بعد الدمج. إعادة نشر deployment قديم تعيد الكود القديم، حتى لو حفظت إعدادات جديدة. عند إعادة النشر اختر **Redeploy** بدون استخدام build cache إذا ظهر هذا الاختيار.
+
+### التحقق بعد النشر
+
+- افتح `/api/health`: المتوقع JSON `{"service":"sham-perfume","status":"ok"}` وحالة HTTP 200. هذا يؤكد عمل الدالة فقط.
+- افتح `/api/models`: المتوقع JSON بقائمة المحركات. `hasApiKey: true` يعني وجود إعداد المفتاح، **ولا يثبت صحة المفتاح أو نجاح طلب الذكاء الاصطناعي**.
+- جرّب إرسال رسالة قصيرة في شاهين. نجاح `/api/chat` عبر POST مع رد من المزود هو اختبار المحادثة الفعلي؛ فتحه في شريط العنوان يرسل GET وليس اختبارًا صحيحًا.
+- بدون مفاتيح، `/api/chat` و`/api/news` يعيدان 503 واضحًا بدل ردود/أخبار مصطنعة. ظهور صفحة Vercel `404 NOT_FOUND` على `/api/models` يعني أن دالة هذا الإصلاح لم تُنشر، وليس مجرد مفتاح غير صالح.
+
+التحقق المحلي:
+
+```bash
+npm run lint
+npm test
+npm run build:vercel
+npm run test:vercel
+```
+
+اختبارات Vercel تشغّل **حزمة الدالة المولدة خارج المشروع، دون node_modules أو .env** وتفحص GET/POST والأخطاء وإعدادات التوجيه. ليست محاكاة كاملة للبنية السحابية ولا اختبارًا لمفتاح حقيقي. GitHub Actions ينفذها مع اختبارات Pages. ذاكرة الأخبار داخل الدالة مؤقتة وقد تُمسح عند cold start أو تختلف بين النسخ؛ ليست قاعدة بيانات دائمة.
+
+**Vercel Hobby مجاني للاستخدام الشخصي غير التجاري فقط**؛ لا تفترض أن متجرًا/استخدامًا تجاريًا مسموح على الخطة. تكلفة وحدود APIs منفصلة عن الاستضافة المجانية.
 
 ## نشر التطبيق الكامل بخادم Node.js
 

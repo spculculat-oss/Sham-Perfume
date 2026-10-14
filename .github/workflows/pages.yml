@@ -41,6 +41,10 @@ jobs:
         run: bun run lint
       - name: Regression tests
         run: bun run test
+      - name: Build full-stack Vercel artifact
+        run: bun run build:vercel
+      - name: Test isolated Vercel function and routes
+        run: bun run test:vercel
       - name: Build current source for Pages
         run: bun run build:pages
       - name: Verify published paths and fallback
