@@ -175,71 +175,79 @@ export const Header: React.FC<HeaderProps> = ({
           )}
         </div>
 
-        {/* Zone 2: Navigation links - Smart grouped navigation with dropdowns */}
-        <div className="hidden xl:block relative flex items-center gap-3 py-1 w-full">
-          {/* Gradient fade left edge */}
-          <div className="absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-white/95 to-transparent pointer-events-none z-10"></div>
+        {/* Zone 2: Navigation links - Compact icon-only bar with dropdowns */}
+        <div className="hidden xl:block relative flex items-center justify-center py-1">
+          {/* Gradient fade left edge - visible only if overflow */}
+          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white/95 to-transparent pointer-events-none z-10"></div>
           {/* Gradient fade right edge */}
-          <div className="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white/95 to-transparent pointer-events-none z-10"></div>
-          <div className="flex items-center gap-3 relative z-20 flex-1 justify-start">
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white/95 to-transparent pointer-events-none z-10"></div>
+          <div className="flex items-center gap-2 relative z-20">
             {navGroups.map((group) => (
               group.type === 'single' ? (
                 <button
                   key={group.id}
                   onClick={() => setActiveTab(group.id)}
-                  className={`whitespace-nowrap transition-all py-1.5 px-3 rounded-lg flex items-center gap-2 cursor-pointer ${
+                  className={`transition-all py-1.5 px-2.5 rounded-lg flex items-center gap-1.5 cursor-pointer ${
                     activeTab === group.id
                       ? 'text-stone-950 font-bold bg-stone-100 shadow-2xs border border-stone-200/80'
-                      : 'hover:text-stone-900 hover:bg-stone-50'
+                      : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50'
                   }`}
                   title={group.fullLabel}
+                  aria-label={group.fullLabel}
                 >
-                  <group.icon className={`w-4 h-4 ${group.iconColor} shrink-0`} />
-                  <span className="hidden md:inline text-xs font-medium text-stone-700">{group.label}</span>
+                  <group.icon className={`w-4.5 h-4.5 ${group.iconColor} shrink-0`} />
                 </button>
               ) : (
                 <div key={group.id} className="relative">
                   <button
                     data-group-menu="true"
                     onClick={() => setIsGroupMenuOpen(group.id, !isGroupMenuOpen(group.id))}
-                    className={`whitespace-nowrap transition-all py-1.5 px-3 rounded-lg flex items-center gap-2 cursor-pointer ${
+                    className={`transition-all py-1.5 px-2.5 rounded-lg flex items-center gap-1 cursor-pointer ${
                       isGroupMenuOpen(group.id)
                         ? 'text-stone-950 font-bold bg-stone-100 shadow-2xs border border-stone-200/80'
-                        : 'hover:text-stone-900 hover:bg-stone-50'
+                        : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50'
                     }`}
                     title={group.fullLabel}
+                    aria-label={group.fullLabel}
                   >
-                    <group.icon className={`w-4 h-4 ${group.iconColor} shrink-0`} />
-                    <span className="hidden md:inline text-xs font-medium text-stone-700">{group.label}</span>
-                    <span className="px-1.5 py-0.2 rounded bg-stone-100 text-[11px] font-medium text-stone-600 border border-stone-200/60 shrink-0">
+                    <group.icon className={`w-4.5 h-4.5 ${group.iconColor} shrink-0`} />
+                    <span className="absolute -top-1.5 -right-1.5 px-1 py-0 rounded-full bg-amber-500 text-white text-[9px] font-bold leading-none">
                       {group.items?.length}
                     </span>
-                    <ChevronDown className="w-3.5 h-3.5 text-stone-400 ml-0.5 shrink-0" />
+                    <ChevronDown className="w-3 h-3 text-stone-400 ml-0.5 shrink-0" />
                   </button>
                   {isGroupMenuOpen(group.id) && (
-                    <div className="absolute top-full mt-2 left-0 z-50 min-w-[260px] rounded-xl bg-white border border-stone-200 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 p-1">
-                      {group.items?.map((item) => (
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50 min-w-[280px] rounded-xl bg-white border border-stone-200 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 p-1">
+                      {group.items?.map((item, idx) => (
                         <button
                           key={item.id}
                           onClick={() => {
                             setActiveTab(item.id);
                             setIsGroupMenuOpen(group.id, false);
                           }}
-                          className={`w-full px-3 py-2 text-left flex items-center gap-2 transition-colors cursor-pointer ${
+                          className={`w-full px-3 py-2 text-left flex items-center gap-2.5 transition-colors cursor-pointer ${
                             activeTab === item.id
-                              ? 'bg-amber-50 text-amber-900 font-semibold border-l-2 border-amber-500 rounded-l-lg'
+                              ? 'bg-amber-50 text-amber-900 font-semibold border-l-3 border-amber-500 rounded-l-lg pl-3'
                               : 'hover:bg-stone-50 text-stone-700 rounded-lg'
                           }`}
                         >
                           {item.isNew && (
-                            <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30 shrink-0">
+                            <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30 shrink-0 ml-1">
                               NEW
                             </span>
                           )}
                           <item.icon className="w-4 h-4 text-stone-500 shrink-0" />
-                          <span className="text-sm">{item.fullLabel}</span>
+                          <span className="text-sm font-medium">{item.fullLabel}</span>
                         </button>
                       ))}
+                      <div className="mt-1 pt-1 border-t border-stone-100">
+                        <button
+                          onClick={() => setIsGroupMenuOpen(group.id, false)}
+                          className="w-full px-3 py-1.5 text-center text-xs text-stone-500 hover:text-stone-700 hover:bg-stone-50 rounded-lg transition-colors"
+                        >
+                          {activeTab === group.id ? 'إغلاق' : 'إغلاق القائمة'}
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
