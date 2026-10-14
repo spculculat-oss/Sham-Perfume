@@ -1,7 +1,7 @@
 import { SupportedLanguage } from '../types/i18n';
 import { WORLD_PERFUMES, WorldPerfumeRecipe } from '../data/worldPerfumes';
 import { RAW_MATERIALS_DATABASE, RawMaterialItem } from '../data/rawMaterials';
-import { PERFUME_NEWS_DATA, PerfumeNewsItem } from '../data/perfumeNews';
+import { PERFUME_NEWS_DATA, PerfumeNewsItem, NEWS_EN_FALLBACK } from '../data/perfumeNews';
 
 export const isRTL = (lang: SupportedLanguage): boolean => lang === 'ar' || lang === 'fa';
 
@@ -565,9 +565,21 @@ export const getLocalizedNewsArticle = (article: PerfumeNewsItem, lang: Supporte
     niche: 'Haute Parfumerie & Niche Houses',
   };
 
+  const en = NEWS_EN_FALLBACK[article.id];
+  const ext = article as PerfumeNewsItem & {
+    summaryEn?: string;
+    contentEn?: string;
+    verdictEn?: string;
+    impactEn?: string;
+  };
+
   return {
     ...article,
     titleAr: article.titleEn || article.titleAr,
     categoryLabelAr: categoryMap[article.category] || article.categoryLabelAr,
+    summaryAr: ext.summaryEn || en?.summary || article.summaryAr,
+    contentAr: ext.contentEn || en?.content || article.contentAr,
+    expertVerdict: ext.verdictEn || en?.verdict || article.expertVerdict,
+    marketImpact: ext.impactEn || en?.impact || article.marketImpact,
   };
 };

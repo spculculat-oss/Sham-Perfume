@@ -22,7 +22,9 @@ export interface PerfumeNewsItem {
   isHot?: boolean;
   isDailyRefreshed?: boolean;
   summaryAr: string;
+  summaryEn?: string;
   contentAr?: string;
+  contentEn?: string;
   date?: string;
   readTime?: string;
   source?: string;
@@ -30,7 +32,9 @@ export interface PerfumeNewsItem {
   tags?: string[];
   keyNotes?: PerfumeNewsKeyNote[];
   marketImpact?: string;
+  impactEn?: string;
   expertVerdict?: string;
+  verdictEn?: string;
   author?: string;
   location?: string;
   fullArticleAr?: string;
@@ -54,3 +58,55 @@ export const PERFUME_NEWS_DATA: PerfumeNewsItem[] = [{id:`esxence-milano-trends-
 أجمع الخبراء على أن الذائقة الخليجية والعربية تقود الابتكار في سوق العطور العالمي بقيمة تتجاوز 12 مليار دولار. وقد شهد المعرض تقديم خامات عود صناعي وطبيعي هجين تمنح فوحاناً استثنائياً دون الحدة الترابية الثقيلة، مما يجعلها مثالية للدمج مع الحمضيات الإيطالية واللافندر الفرنسي.`,date:`28 سبتمبر 2026`,readTime:`4 دقائق`,source:`دبي - المكتب الإعلامي لصناعة التجميل والعطور`,imageUrl:exhibitionImg,tags:[`بيوتي وورلد`,`دبي`,`دهن العود`,`صناعة العطور`,`أمبروكسان`],keyNotes:[{nameAr:`دهن عود كلمنتان مروض`,nameEn:`Tamed Kalimantan Oud`,type:`base`,percentageHint:30},{nameAr:`زعفران إسباني ونوتات جلود`,nameEn:`Spanish Saffron & Leather`,type:`heart`,percentageHint:25},{nameAr:`لبان حوجري عماني نقي`,nameEn:`Pure Omani Frankincense`,type:`base`,percentageHint:25},{nameAr:`لافندر بروفانس الفرنسي`,nameEn:`French Provence Lavender`,type:`top`,percentageHint:20}],marketImpact:`عقود توريد لزيوت العود المستدامة تجاوزت قيمتها 85 مليون دولار.`,expertVerdict:`«الاندماج الشرقي الغربي هو مستقبل صناعة العطور، وأصبح العود مكوناً ثابتاً في أرقى مختبرات العالم» - الخبير شاهين.`},{id:`green-chemistry-fixatives-revolution`,titleAr:`ثورة المثبتات الحيوية: علماء الكيمياء الخضراء يبتكرون مثبتات طبيعية 100% تطيل عمر العطر لـ 48 ساعة`,titleEn:`Green Chemistry Breakthrough: 100% Bio-Based Fixatives with 48h Longevity`,category:`niche`,categoryLabelAr:`إصدارات وتقنيات النيش`,isHot:!1,summaryAr:`نجحت مختبرات الكيمياء الحيوية في سويسرا بإنتاج بدائل حيوية لمركبات الفثالات والبوليمرات البترولية، تقدم ثباتاً فائقاً وتحافظ على استقرار الرائحة في زجاجات العطور.`,contentAr:`تمثل هذه التقنية الثورية نقلة نوعية لصناع العطور الحرفيين؛ حيث تستخلص جزيئات التثبيت الجديدة من نفايات قشور الحمضيات ولحاء الصنوبر المعاد تدويرهما. تتميز هذه المثبتات بأنها عديمة الرائحة تماماً ولا تغير لون السائل العطري حتى بعد سنتين من التعتيق.
 
 يتيح معمل «صمم عطرك مع شام» دمج هذه التوصيات في حاسبة التراكيز مع حساب نسب المثبت الدقيقة (من 0.5% إلى 2%) لضمان انتشار الفوحان على البشرة والملابس بتجانس تام.`,date:`22 سبتمبر 2026`,readTime:`3 دقائق`,source:`جنيف - المعهد السويسري للابتكار العطري`,imageUrl:pyramidImg,tags:[`كيمياء خضراء`,`مثبتات حيوية`,`ثبات العطر`,`استدامة`,`تعتيق`],keyNotes:[{nameAr:`مثبت حيوي مستدام (Bio-Fixative)`,nameEn:`Bio-Polymer Fixative`,type:`base`,percentageHint:20},{nameAr:`خشب الأرز الأطلسي المعالج`,nameEn:`Atlas Cedarwood Pure`,type:`base`,percentageHint:30},{nameAr:`زهر البرتقال التونسي (نيرولي)`,nameEn:`Tunisian Neroli`,type:`top`,percentageHint:25},{nameAr:`ياسمين سامباك الصافي`,nameEn:`Jasmine Sambac Absolute`,type:`heart`,percentageHint:25}],marketImpact:`تحول 30% من معامل النيش الأوروبية إلى المثبتات القائمة على التكنولوجيا الحيوية.`,expertVerdict:`«المثبت الذكي هو الذي لا يطمس جمال النوتات بل يرفعها ويعطيها متنفساً تدريجياً على مدار الساعات» - معمل شام.`}];
+
+// =========================================
+// ENGLISH CONTENT FALLBACK
+// Full English bodies for the six seed articles so that non-Arabic
+// readers (any UI language) always get complete English article
+// content instead of leaking Arabic on the news page.
+// =========================================
+export interface NewsEnFallback {
+  summary: string;
+  content: string;
+  impact: string;
+  verdict: string;
+}
+
+export const NEWS_EN_FALLBACK: Record<string, NewsEnFallback> = {
+  'esxence-milano-trends-2026': {
+    summary: 'The international Esxence perfume fair concluded by announcing a new global direction led by Chinese tea, transparent incense, and warm salty notes — far removed from the heavy sugary character of past seasons.',
+    content: 'This year’s halls of Esxence Milano hosted more than 300 niche perfume houses from 40 countries, where master perfumers confirmed a radical shift in consumer taste toward light, meditative scents with exceptional longevity.\n\nBlack Chinese tea (Oolong) and white tea notes stood out, blended with white amber molecules and aromatic clary sage touched with rock salt. Experts confirm that modern solvents extend the life of citrus and herbal top notes so they last more than 6 hours without losing their clarity.',
+    impact: 'A 42% surge in demand for absolute tea oils and clean herbal extracts.',
+    verdict: '“The modern consumer seeks a calm, comfortable fragrance for enclosed spaces and workplaces — one that never disturbs, yet lasts” — Master Shahin.',
+  },
+  'grasse-taif-rose-harvest': {
+    summary: 'The Rose de Mai harvest on the French Riviera and the mountain Taif rose recorded an exceptional season in aromatic density and natural purity, with lower levels of chemical contaminants.',
+    content: 'Rose-grower associations in France’s Grasse district and Saudi Arabia’s Taif province announced the completion of steam distillation and solvent extraction to produce rose otto and rose absolute.\n\nGC-MS chromatographic analyses showed a marked rise in geraniol and phenethyl alcohol concentrations at levels that give the perfume a unique velvety depth. The Sham lab advises perfumers to add 3% to 8% natural rose oil in the heart, anchored with Iso E Super and white musk to prevent rapid evaporation.',
+    impact: 'Relative price stability for absolute oils after two years of drought-driven volatility.',
+    verdict: '“Natural rose can never be fully replaced by synthetic substitutes; just 1g in a 100ml bottle makes an enormous difference in softness and aromatic soul” — Sham Lab.',
+  },
+  'global-trends-gourmand-evolution': {
+    summary: 'Sweet perfumes are no longer limited to vanilla and burnt sugar; the current trend blends luxurious nutty flavours with cool spices and tanned leathers.',
+    content: 'Retail sales reports from Paris, London, and Dubai confirm that fragrances built on a Sicilian pistachio accord with Guatemalan cardamom achieved growth exceeding 60% in the men’s and unisex categories.\n\nThis success stems from combining a warm, delicious feel with an understated aristocratic touch. Perfumers managed to calibrate vanillin and ethyl maltol concentrations to stay within balance and never drift into cheap-candy territory, supported by deep woods such as sandalwood and cedarwood.',
+    impact: 'Suppliers racing to secure supercritical CO₂-processed pistachio extracts.',
+    verdict: '“The key to mastering this line is not overdoing the sugar, and anchoring the base with sharp woody resins that break the richness” — Master Shahin.',
+  },
+  'ifra-51-amendment-guide': {
+    summary: 'The 51st amendment package of the International Fragrance Association has entered mandatory enforcement, including new restrictions on oakmoss derivatives and isoegenol compounds.',
+    content: 'IFRA has issued the mandatory enforcement document for safety certificates covering factories and independent perfumers. The new regulations aim to prevent any skin irritation or photosensitivity upon sun exposure.\n\nKey points for perfumers on the Design Your Perfume with Sham platform:\n1. The maximum oakmoss absolute must not exceed 0.1% in products applied to skin (Category 4).\n2. Lilial (Butylphenyl Methylpropional) is categorically banned — replace it with Floralozone or Hedione.\n3. Review benzyl benzoate content in fragrance oils intended for export.',
+    impact: 'More than 120 traditional chemicals withdrawn, with massive investment flowing into safe green alternatives.',
+    verdict: '“IFRA compliance is not an obstacle to creativity — it is the golden ticket that takes your perfumes into global markets without legal worries” — Sham Lab.',
+  },
+  'beautyworld-middle-east-dubai': {
+    summary: 'The Dubai fair recorded historic partnerships for supplying sustainable, biologically treated oud oil, alongside the integration of authentic Eastern techniques into Parisian perfume houses.',
+    content: 'The Dubai World Trade Centre hosted the largest edition of Beautyworld Middle East, with more than 1,800 exhibitors among the leading manufacturers of oils, bottles, and filling and capping machinery.\n\nExperts agreed that Gulf and Arab taste is driving innovation in the global fragrance market, now worth more than $12 billion. The fair unveiled hybrid synthetic-natural oud materials that deliver exceptional sillage without heavy earthy harshness, making them ideal for blending with Italian citrus and French lavender.',
+    impact: 'Sustainable oud oil supply contracts exceeded $85 million in value.',
+    verdict: '“The East-West fusion is the future of perfumery, and oud has become a permanent ingredient in the world’s finest laboratories” — Master Shahin.',
+  },
+  'green-chemistry-fixatives-revolution': {
+    summary: 'Swiss biochemistry laboratories have succeeded in producing bio-based alternatives to phthalate compounds and petroleum polymers, delivering superior fixation while preserving scent stability inside perfume bottles.',
+    content: 'This breakthrough technology is a qualitative leap for artisan perfumers: the new fixative molecules are extracted from recycled citrus-peel waste and pine bark. These fixatives are completely odourless and do not alter the colour of the perfume liquid even after two years of maceration.\n\nThe Design Your Perfume with Sham lab lets you integrate these recommendations into the concentration calculator with precise fixative ratios (from 0.5% to 2%) to guarantee even sillage on skin and fabric.',
+    impact: '30% of European niche laboratories have switched to biotechnology-based fixatives.',
+    verdict: '“A smart fixative never masks the beauty of the notes — it lifts them and lets them breathe gradually over the hours” — Sham Lab.',
+  },
+};

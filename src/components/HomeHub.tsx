@@ -65,7 +65,9 @@ import { UserEnvironmentProfile } from '../utils/environmentAdapter';
 import { UserDetailedAddress } from '../types/address';
 import { UserProfile } from '../types/auth';
 import { STATS_BADGE_EN, PORTAL_NEWS_EN } from '../utils/localizedHub';
-import { LText, makeT } from '../utils/localize';
+import { LText, makeT, loc, fmt } from '../utils/localize';
+import { PORTAL_L10N, NEWS_L10N_A, NewsL10N } from '../utils/hubL10n';
+import { NEWS_L10N_B } from '../utils/hubL10n2';
 
 interface PortalNewsItem {
   id: string;
@@ -184,6 +186,60 @@ export const HomeHub: React.FC<HomeHubProps> = ({
     portal_maceration_simulator: 'Forecasting exact perfume maturation completion date with Master Shahin advice',
     portal_environment: 'Worldwide coverage adapting formula to local temperature & humidity',
     portal_privacy: 'Full encryption of formulas, instant export, and GDPR compliance',
+  };
+
+  // ===== Full 10-language localization for the 13 portal cards =====
+  const ALL_NEWS_L10N: Record<string, NewsL10N> = { ...NEWS_L10N_A, ...NEWS_L10N_B };
+  const hubVars: Record<string, string | number> = {
+    v: formulation.bottleVolumeMl,
+    c: formulation.concentrationPercent,
+    t: formulation.concentrationType.toUpperCase(),
+    w: (formulation.bottleVolumeMl * (formulation.concentrationPercent / 100) * formulation.oilDensity).toFixed(2),
+    f: (formulation.bottleVolumeMl * (formulation.fixativePercent / 100)).toFixed(2),
+    n: pyramidNotes.length,
+    cur: currentEnvironment.currencyCode,
+    lib: savedFormulas.length,
+    flag: currentEnvironment.countryFlag || '🌍',
+    country: isRtl
+      ? currentEnvironment.countryNameAr.split('(')[0]
+      : (currentEnvironment.countryNameEn || currentEnvironment.countryNameAr.split('(')[0]),
+    t1: pyramidNotes.slice(0, 3).map((nt) => (isRtl ? nt.nameAr : nt.nameEn)).join(' · '),
+    tot: pyramidNotes.reduce((acc, curr) => acc + (curr.percentageOfOil || 0), 0),
+    title: savedFormulas[0]?.title || (isRtl ? 'عطر شام' : 'Sham Perfume'),
+    code: savedFormulas[0]?.batchCode || 'B01',
+  };
+  const localizePortalNews = (portalId: string, item?: PortalNewsItem): PortalNewsItem | undefined => {
+    if (!item) return item;
+    const l10n = ALL_NEWS_L10N[`${portalId}:${item.id}`];
+    if (l10n) {
+      return {
+        ...item,
+        badge: fmt(loc(currentLang, l10n.badge), hubVars),
+        title: fmt(loc(currentLang, l10n.title), hubVars),
+        description: fmt(loc(currentLang, l10n.description), hubVars),
+        metric: fmt(loc(currentLang, l10n.metric), hubVars),
+        timestamp: loc(currentLang, l10n.timestamp),
+        actionHint: loc(currentLang, l10n.actionHint),
+      };
+    }
+    if (!isRtl && PORTAL_NEWS_EN[item.id]) return { ...item, ...PORTAL_NEWS_EN[item.id] };
+    return item;
+  };
+  const localizedPortalTitle = (portalId: string, fallbackAr: string, fallbackEn?: string): string => {
+    const l10n = PORTAL_L10N[portalId];
+    if (l10n) return loc(currentLang, l10n.title) || fallbackAr;
+    return isRtl ? fallbackAr : (fallbackEn || fallbackAr);
+  };
+  const localizedPortalSubtitle = (portalId: string, fallbackAr: string): string => {
+    const l10n = PORTAL_L10N[portalId];
+    if (l10n) return loc(currentLang, l10n.subtitle) || fallbackAr;
+    return isRtl ? fallbackAr : (SUBTITLE_EN_MAP[portalId] || fallbackAr);
+  };
+  const localizedStatsBadge = (portalId: string, fallback: string): string => {
+    const l10n = PORTAL_L10N[portalId];
+    if (l10n) return fmt(loc(currentLang, l10n.badge), hubVars) || fallback;
+    if (!isRtl && STATS_BADGE_EN[portalId]) return STATS_BADGE_EN[portalId];
+    return fallback;
   };
 
   // Global state for auto-rotation
@@ -1091,14 +1147,14 @@ export const HomeHub: React.FC<HomeHubProps> = ({
         <div className="flex-1 overflow-hidden min-w-0 py-0.5">
           <div className="text-xs text-stone-200 font-medium truncate flex items-center gap-2">
             <span className="text-amber-400 font-bold shrink-0">
-              [{isRtl ? portals[portalIndexes['portal_concentration'] || 0]?.titleAr : (portals[portalIndexes['portal_concentration'] || 0]?.titleEn || portals[portalIndexes['portal_concentration'] || 0]?.titleAr)}]:
+              [{localizedPortalTitle('portal_concentration', portals[0]?.titleAr || '', portals[0]?.titleEn)}]:
             </span>
             <span className="truncate">
               {(() => {
                 const n0 = portals[0]?.news[portalIndexes['portal_concentration'] || 0];
                 const n1 = portals[1]?.news[portalIndexes['portal_news'] || 0];
-                const t0 = !isRtl && n0 && PORTAL_NEWS_EN[n0.id] ? PORTAL_NEWS_EN[n0.id].title : n0?.title;
-                const t1 = !isRtl && n1 && PORTAL_NEWS_EN[n1.id] ? PORTAL_NEWS_EN[n1.id].title : n1?.title;
+                const t0 = localizePortalNews('portal_concentration', n0)?.title;
+                const t1 = localizePortalNews('portal_news', n1)?.title;
                 return `${t0} · ${t1}`;
               })()}
             </span>
@@ -1175,14 +1231,8 @@ export const HomeHub: React.FC<HomeHubProps> = ({
         {filteredPortals.map((portal) => {
           const currentNewsIdx = portalIndexes[portal.id] || 0;
           const rawNews = portal.news[currentNewsIdx] || portal.news[0];
-          const currentNews =
-            !isRtl && PORTAL_NEWS_EN[rawNews.id]
-              ? { ...rawNews, ...PORTAL_NEWS_EN[rawNews.id] }
-              : rawNews;
-          const statsBadge =
-            !isRtl && STATS_BADGE_EN[portal.id]
-              ? STATS_BADGE_EN[portal.id]
-              : portal.statsBadge;
+          const currentNews = localizePortalNews(portal.id, rawNews) || rawNews;
+          const statsBadge = localizedStatsBadge(portal.id, portal.statsBadge);
           
           // Current changing icon index
           const iconIdx = currentNewsIdx % portal.icons.length;
@@ -1229,10 +1279,10 @@ export const HomeHub: React.FC<HomeHubProps> = ({
                 {/* Portal Title & Subtitle */}
                 <div>
                   <h3 className="text-base sm:text-lg font-bold font-serif-luxury text-stone-900 group-hover:text-amber-800 transition-colors">
-                    {isRtl ? portal.titleAr : (portal.titleEn || portal.titleAr)}
+                    {localizedPortalTitle(portal.id, portal.titleAr, portal.titleEn)}
                   </h3>
                   <p className="text-[11px] text-stone-500 line-clamp-1 mt-0.5 font-light">
-                    {isRtl ? portal.subtitleAr : (SUBTITLE_EN_MAP[portal.id] || portal.subtitleAr)}
+                    {localizedPortalSubtitle(portal.id, portal.subtitleAr)}
                   </p>
                 </div>
               </div>
