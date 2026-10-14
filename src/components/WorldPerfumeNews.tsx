@@ -271,7 +271,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
 
   const handleCopySummary = (item: PerfumeNewsItem) => {
     const loc = getLocalizedNewsArticle(item, currentLang);
-    const text = `📰 [${L('newsletter_name')}]\n${loc.titleAr}\n📅 ${item.date} | 🏛️ ${L('source_lbl')} ${item.source}\n\n${item.summaryAr}\n\n${L('verdict_lbl2')} ${item.expertVerdict || ''}`;
+    const text = `📰 [${L('newsletter_name')}]\n${loc.titleAr}\n📅 ${loc.date} | 🏛️ ${L('source_lbl')} ${loc.source}\n\n${loc.summaryAr}\n\n${L('verdict_lbl2')} ${loc.expertVerdict || ''}`;
     navigator.clipboard.writeText(text);
     setCopiedId(item.id);
     setTimeout(() => setCopiedId(null), 2500);

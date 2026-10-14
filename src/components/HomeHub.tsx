@@ -68,6 +68,7 @@ import { STATS_BADGE_EN, PORTAL_NEWS_EN } from '../utils/localizedHub';
 import { LText, makeT, loc, fmt } from '../utils/localize';
 import { PORTAL_L10N, NEWS_L10N_A, NewsL10N } from '../utils/hubL10n';
 import { NEWS_L10N_B } from '../utils/hubL10n2';
+import { NEWS_L10N_C } from '../utils/hubL10n3';
 
 interface PortalNewsItem {
   id: string;
@@ -189,7 +190,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
   };
 
   // ===== Full 10-language localization for the 13 portal cards =====
-  const ALL_NEWS_L10N: Record<string, NewsL10N> = { ...NEWS_L10N_A, ...NEWS_L10N_B };
+  const ALL_NEWS_L10N: Record<string, NewsL10N> = { ...NEWS_L10N_A, ...NEWS_L10N_B, ...NEWS_L10N_C };
   const hubVars: Record<string, string | number> = {
     v: formulation.bottleVolumeMl,
     c: formulation.concentrationPercent,
@@ -207,6 +208,33 @@ export const HomeHub: React.FC<HomeHubProps> = ({
     tot: pyramidNotes.reduce((acc, curr) => acc + (curr.percentageOfOil || 0), 0),
     title: savedFormulas[0]?.title || (isRtl ? 'عطر شام' : 'Sham Perfume'),
     code: savedFormulas[0]?.batchCode || 'B01',
+    // environment-driven values for portal cards (part C)
+    rc: currentEnvironment.recommendedConcentrationPercent,
+    rf: currentEnvironment.recommendedFixativePercent,
+    climate: isRtl
+      ? currentEnvironment.climateLabelAr
+      : (currentEnvironment.climateLabelEn || currentEnvironment.climateLabelAr),
+    cursym: isRtl
+      ? currentEnvironment.currencySymbolAr
+      : (currentEnvironment.currencySymbolEn || currentEnvironment.currencySymbolAr),
+    countryfull: isRtl
+      ? currentEnvironment.countryNameAr
+      : (currentEnvironment.countryNameEn || currentEnvironment.countryNameAr),
+    lab: detailedAddress.labOrFacilityName || (isRtl ? 'معمل شام الحرفي' : 'Sham Artisan Lab'),
+    city: detailedAddress.city || (isRtl ? 'المدينة' : 'City'),
+    street: detailedAddress.street || (isRtl ? 'العنوان التفصيلي' : 'Detailed address'),
+    regstat: detailedAddress.city
+      ? loc(currentLang, { ar: 'مسجل ومعتمد', en: 'Registered & certified', fr: 'Enregistré et certifié', es: 'Registrado y certificado', it: 'Registrato e certificato', de: 'Registriert & zertifiziert', ru: 'Зарегистрировано и подтверждено', zh: '已登记认证', tr: 'Kayıtlı ve sertifikalı', fa: 'ثبت‌شده و تأییدشده' })
+      : loc(currentLang, { ar: 'غير مكتمل', en: 'Incomplete', fr: 'Incomplet', es: 'Incompleto', it: 'Incompleto', de: 'Unvollständig', ru: 'Не заполнено', zh: '未完成', tr: 'Eksik', fa: 'ناقص' }),
+    acctname: currentUser
+      ? loc(currentLang, { ar: `مسجل باسم: ${currentUser.name} (${currentUser.craftLevel})`, en: `Signed in as: ${currentUser.name} (${currentUser.craftLevel})`, fr: `Connecté : ${currentUser.name} (${currentUser.craftLevel})`, es: `Sesión iniciada: ${currentUser.name} (${currentUser.craftLevel})`, it: `Connesso come: ${currentUser.name} (${currentUser.craftLevel})`, de: `Angemeldet als: ${currentUser.name} (${currentUser.craftLevel})`, ru: `Вы вошли как: ${currentUser.name} (${currentUser.craftLevel})`, zh: `已登录：${currentUser.name}（${currentUser.craftLevel}）`, tr: `Giriş yapıldı: ${currentUser.name} (${currentUser.craftLevel})`, fa: `وارد شده به‌عنوان: ${currentUser.name} (${currentUser.craftLevel})` })
+      : loc(currentLang, { ar: 'جلسة ضيف محلية آمنة', en: 'Secure local guest session', fr: 'Session invitée locale sécurisée', es: 'Sesión de invitado local segura', it: 'Sessione ospite locale sicura', de: 'Sichere lokale Gast-Sitzung', ru: 'Безопасный локальный гостевой сеанс', zh: '安全的本地访客会话', tr: 'Güvenli yerel konuk oturumu', fa: 'جلسه مهمان محلی امن' }),
+    acctstat: currentUser
+      ? loc(currentLang, { ar: 'حساب نشط', en: 'Active account', fr: 'Compte actif', es: 'Cuenta activa', it: 'Account attivo', de: 'Aktives Konto', ru: 'Активный аккаунт', zh: '活跃账户', tr: 'Etkin hesap', fa: 'حساب فعال' })
+      : loc(currentLang, { ar: 'جلسة محلية', en: 'Local session', fr: 'Session locale', es: 'Sesión local', it: 'Sessione locale', de: 'Lokale Sitzung', ru: 'Локальный сеанс', zh: '本地会话', tr: 'Yerel oturum', fa: 'جلسه محلی' }),
+    acctact: currentUser
+      ? loc(currentLang, { ar: 'عرض تفاصيل الحساب', en: 'View account details', fr: 'Voir les détails du compte', es: 'Ver detalles de la cuenta', it: 'Vedi dettagli account', de: 'Kontodetails ansehen', ru: 'Данные аккаунта', zh: '查看账户详情', tr: 'Hesap detaylarını gör', fa: 'مشاهده جزئیات حساب' })
+      : loc(currentLang, { ar: 'تسجيل دخول أو إنشاء حساب', en: 'Sign in or create an account', fr: 'Se connecter ou créer un compte', es: 'Iniciar sesión o crear cuenta', it: 'Accedi o crea un account', de: 'Anmelden oder Konto erstellen', ru: 'Войти или создать аккаунт', zh: '登录或注册账户', tr: 'Giriş yap veya hesap oluştur', fa: 'ورود یا ایجاد حساب' }),
   };
   const localizePortalNews = (portalId: string, item?: PortalNewsItem): PortalNewsItem | undefined => {
     if (!item) return item;
@@ -218,8 +246,8 @@ export const HomeHub: React.FC<HomeHubProps> = ({
         title: fmt(loc(currentLang, l10n.title), hubVars),
         description: fmt(loc(currentLang, l10n.description), hubVars),
         metric: fmt(loc(currentLang, l10n.metric), hubVars),
-        timestamp: loc(currentLang, l10n.timestamp),
-        actionHint: loc(currentLang, l10n.actionHint),
+        timestamp: fmt(loc(currentLang, l10n.timestamp), hubVars),
+        actionHint: fmt(loc(currentLang, l10n.actionHint), hubVars),
       };
     }
     if (!isRtl && PORTAL_NEWS_EN[item.id]) return { ...item, ...PORTAL_NEWS_EN[item.id] };

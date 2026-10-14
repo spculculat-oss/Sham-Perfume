@@ -2,6 +2,7 @@ import { SupportedLanguage } from '../types/i18n';
 import { WORLD_PERFUMES, WorldPerfumeRecipe } from '../data/worldPerfumes';
 import { RAW_MATERIALS_DATABASE, RawMaterialItem } from '../data/rawMaterials';
 import { PERFUME_NEWS_DATA, PerfumeNewsItem, NEWS_EN_FALLBACK } from '../data/perfumeNews';
+import { fmt, localeDate } from './localize';
 
 export const isRTL = (lang: SupportedLanguage): boolean => lang === 'ar' || lang === 'fa';
 
@@ -554,6 +555,20 @@ export const getLocalizedRawMaterial = (item: RawMaterialItem, lang: SupportedLa
 // ==========================================
 // 4. WORLD PERFUME NEWS LOCALIZATION
 // ==========================================
+/** Localized "{n} minutes" pattern per language for article read times. */
+const READ_TIME_TPL: Record<SupportedLanguage, string> = {
+  ar: '{n} دقائق',
+  en: '{n} min',
+  fr: '{n} min',
+  es: '{n} min',
+  it: '{n} min',
+  de: '{n} Min.',
+  ru: '{n} мин',
+  zh: '{n} 分钟',
+  tr: '{n} dk',
+  fa: '{n} دقیقه',
+};
+
 export const getLocalizedNewsArticle = (article: PerfumeNewsItem, lang: SupportedLanguage) => {
   if (lang === 'ar') return article;
 
@@ -571,6 +586,9 @@ export const getLocalizedNewsArticle = (article: PerfumeNewsItem, lang: Supporte
     contentEn?: string;
     verdictEn?: string;
     impactEn?: string;
+    dateIso?: string;
+    readTimeMinutes?: number;
+    sourceEn?: string;
   };
 
   return {
@@ -581,5 +599,12 @@ export const getLocalizedNewsArticle = (article: PerfumeNewsItem, lang: Supporte
     contentAr: ext.contentEn || en?.content || article.contentAr,
     expertVerdict: ext.verdictEn || en?.verdict || article.expertVerdict,
     marketImpact: ext.impactEn || en?.impact || article.marketImpact,
+    date: ext.dateIso
+      ? localeDate(lang, new Date(`${ext.dateIso}T00:00:00`), { day: 'numeric', month: 'long', year: 'numeric' })
+      : article.date,
+    readTime: typeof ext.readTimeMinutes === 'number'
+      ? fmt(READ_TIME_TPL[lang], { n: ext.readTimeMinutes })
+      : article.readTime,
+    source: ext.sourceEn || article.source,
   };
 };

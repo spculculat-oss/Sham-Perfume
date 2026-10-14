@@ -24,17 +24,20 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import perfumerImg from '../assets/images/master_perfumer_compounding_1791693212967.jpg';
-import { extractFormulaFromAIMessage, isFormulaTransferCommand, ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
-import { exportChatTranscriptToFile } from '../utils/chatStorage';
-import { useShaheenChat } from '../hooks/useShaheenChat';
-import { useShaheenModels } from '../hooks/useShaheenModels';
-import { ShaheenServiceStatus, ShaheenProviderMatrix, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
+import { extractFormulaFromAIMessage, ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
+import {
+  ChatMessage,
+  loadStoredChatSession,
+  saveChatSession,
+  clearChatSession,
+  exportChatTranscriptToFile,
+  DEFAULT_WELCOME_MESSAGE,
+} from '../utils/chatStorage';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../utils/localizedContent';
-import { LText, makeT, fmt, LOCALE_MAP } from '../utils/localize';
-import { isStaticHosting } from '../utils/api';
-import { copyChatText } from '../utils/clipboard';
-import { StaticHostingNotice } from './StaticHostingNotice';
+import { LText, makeT, fmt, loc, LOCALE_MAP } from '../utils/localize';
+import { isStaticHosting, requestApi, type ChatResponse } from '../utils/api';
+import { StaticHostingNotice, API_ERROR_NOTICE } from './StaticHostingNotice';
 
 interface PerfumerMasterLabViewProps {
   currentLang?: SupportedLanguage;
@@ -208,10 +211,10 @@ const S = {
   prompt_3: { ar: 'كيف أصنع تركيبة تجميلية لمعطر جسم (Body Mist) ثابت ومستحلب؟', en: 'How do I make a stable emulsified Body Mist formula?', fr: 'Comment créer une formule de brume corporelle émulsionnée et stable ?', es: '¿Cómo creo una fórmula de Body Mist emulsionada y estable?', it: 'Come creo una formula di Body Mist emulsionata e stabile?', de: 'Wie erstelle ich eine stabile, emulgierte Body-Mist-Formel?', ru: 'Как сделать стабильную эмульгированную формулу Body Mist?', zh: '如何调制稳定乳化的身体喷雾（Body Mist）配方？', tr: 'Stabil, emülsifiye bir Body Mist formülü nasıl yapılır?', fa: 'چگونه فرمول اسپری بدن (Body Mist) پایدار و امولسیون‌شده بسازم؟' },
   prompt_4: { ar: 'العطر أصبح حليبياً ومتعكراً بعد إضافة الكحول، كيف أصفّيه بالمعمل؟', en: 'My perfume turned milky after adding alcohol — how do I clarify it?', fr: 'Mon parfum est devenu laiteux après l’alcool — comment le clarifier ?', es: 'Mi perfume se enturbió tras añadir alcohol, ¿cómo aclararlo?', it: 'Il mio profumo è diventato lattiginoso dopo l’alcol: come chiarificarlo?', de: 'Mein Parfüm wurde nach Alkoholzugabe milchig — wie kläre ich es?', ru: 'Духи помутнели после добавления спирта — как осветлить?', zh: '加酒精后香水变浑浊，如何在实验室澄清？', tr: 'Alkol ekledikten sonra parfümüm sütlüleşti, nasıl berraklaştırırım?', fa: 'عطرم بعد از افزودن الکل شیری و کدر شد؛ چگونه شفافش کنم؟' },
   prompt_5: { ar: 'ما المدة والشروط العلمية لتعتيق العطر (Maceration) للحصول على صفاء وثبات؟', en: 'What is the scientifically correct maceration duration & conditions for clarity and tenacity?', fr: 'Quelle durée et conditions de macération pour clarté et tenue ?', es: '¿Qué duración y condiciones de maceración para claridad y fijación?', it: 'Quale durata e condizioni di macerazione per chiarezza e tenacia?', de: 'Welche Mazerationstemperatur und -dauer für Klarheit und Haltbarkeit?', ru: 'Какова длительность и условия мацерации для ясности и стойкости?', zh: '获得清澈与持久所需的科学浸置时长与条件是什么？', tr: 'Berraklık ve kalıcılık için bilimsel maserasyon süresi ve koşulları nedir?', fa: 'مدت و شرایط علمی تعریف عطر (Maceration) برای شفافیت و ماندگاری چیست؟' },
-  eng_auto_name: {"ar": "شاهين — اختيار تلقائي", "en": "Shahin — automatic selection", "fr": "Shahin — sélection automatique", "es": "Shahin — selección automática", "it": "Shahin — selezione automatica", "de": "Shahin — automatische Auswahl", "ru": "Шахин — автоматический выбор", "zh": "Shahin — 自动选择", "tr": "Shahin — otomatik seçim", "fa": "شاهین — انتخاب خودکار"},
-  eng_auto_short: {"ar": "⚡ تلقائي", "en": "⚡ Auto", "fr": "⚡ Auto", "es": "⚡ Auto", "it": "⚡ Auto", "de": "⚡ Auto", "ru": "⚡ Авто", "zh": "⚡ 自动", "tr": "⚡ Otomatik", "fa": "⚡ خودکار"},
-  eng_auto_badge: {"ar": "⚡ تلقائي", "en": "⚡ Auto", "fr": "⚡ Auto", "es": "⚡ Auto", "it": "⚡ Auto", "de": "⚡ Auto", "ru": "⚡ Авто", "zh": "⚡ 自动", "tr": "⚡ Otomatik", "fa": "⚡ خودکار"},
-  eng_auto_desc: {"ar": "يستخدم محركاً متاحاً، ويجرّب محركاً مهيأً آخر عند الفشل؛ لا يدمج آراء غير مستدعاة.", "en": "Uses an available provider and tries another configured provider on failure; does not fabricate expert opinions.", "fr": "Utilise un fournisseur disponible, puis un autre fournisseur configuré en cas d’échec.", "es": "Usa un proveedor disponible y prueba otro configurado si falla.", "it": "Usa un fornitore disponibile e ne prova un altro configurato in caso di errore.", "de": "Nutzt einen verfügbaren Anbieter und bei Fehler einen anderen konfigurierten Anbieter.", "ru": "Использует доступного провайдера, при ошибке пробует другого настроенного провайдера.", "zh": "使用可用服务，失败时尝试另一已配置服务，不虚构其他引擎的意见。", "tr": "Kullanılabilir sağlayıcıyı kullanır, hata olursa yapılandırılmış başka bir sağlayıcıyı dener.", "fa": "از سرویس در دسترس استفاده می‌کند و در صورت خطا سرویس تنظیم‌شده دیگری را امتحان می‌کند."},
+  eng_auto_name: { ar: 'أتمتة الدمج الذكي (Auto Ensemble)', en: 'Smart Fusion Automation (Auto Ensemble)', fr: 'Fusion intelligente automatique (Auto Ensemble)', es: 'Fusión inteligente automática (Auto Ensemble)', it: 'Fusione intelligente automatica (Auto Ensemble)', de: 'Intelligente Fusion (Auto Ensemble)', ru: 'Автосборка умного слияния (Auto Ensemble)', zh: '智能融合自动化（Auto Ensemble）', tr: 'Akıllı birleşim otomasyonu (Auto Ensemble)', fa: 'ادغام هوشمند خودکار (Auto Ensemble)' },
+  eng_auto_short: { ar: '⚡ مجلس الخبراء', en: '⚡ Expert Council', fr: '⚡ Conseil d’experts', es: '⚡ Consejo de expertos', it: '⚡ Consiglio di esperti', de: '⚡ Expertrat', ru: '⚡ Совет экспертов', zh: '⚡ 专家议会', tr: '⚡ Uzman konseyi', fa: '⚡ شورای متخصصان' },
+  eng_auto_badge: { ar: '⚡ مجلس الخبراء المؤتمت', en: '⚡ Automated Expert Council', fr: '⚡ Conseil d’experts automatisé', es: '⚡ Consejo automatizado', it: '⚡ Consiglio automatizzato', de: '⚡ Automatisierter Expertrat', ru: '⚡ Автоматический совет экспертов', zh: '⚡ 自动化专家议会', tr: '⚡ Otomatik uzman konseyi', fa: '⚡ شورای خودکار متخصصان' },
+  eng_auto_desc: { ar: 'يدمج ذكاء الأربعة نماذج تلقائياً ويصيغ الخلاصة الموحدة', en: 'Automatically fuses all four models into one unified verdict', fr: 'Fusionne automatiquement les quatre modèles en un verdict unifié', es: 'Fusiona automáticamente los cuatro modelos en un veredicto unificado', it: 'Fonde automaticamente i quattro modelli in un verdetto unificato', de: 'Vereint automatisch alle vier Modelle zu einem Urteil', ru: 'Автоматически объединяет четыре модели в единый вывод', zh: '自动融合四个模型并给出统一结论', tr: 'Dört modeli otomatik birleştirip ortak sonuç üretir', fa: 'چهار مدل را خودکار ادغام و نتیجه واحد می‌سازد' },
   eng_gemini_short: { ar: '✨ جيمناي', en: '✨ Gemini', fr: '✨ Gemini', es: '✨ Gemini', it: '✨ Gemini', de: '✨ Gemini', ru: '✨ Gemini', zh: '✨ Gemini', tr: '✨ Gemini', fa: '✨ جمنای' },
   eng_gemini_desc: { ar: 'الحسابات الرياضية الدقيقة، أوزان الغرامات، والسرعة الفائقة', en: 'Precise math, gram-level weights, and blazing speed', fr: 'Maths précises, poids au gramme et rapidité', es: 'Matemáticas precisas, pesos al gramo y velocidad', it: 'Matematica precisa, pesi al grammo e velocità', de: 'Präzise Mathematik, Grammgewichte und Tempo', ru: 'Точная математика, граммы и скорость', zh: '精准计算、克级配比与极速响应', tr: 'Hassas matematik, gram ağırlıkları ve hız', fa: 'محاسبات دقیق، وزن‌های گرمی و سرعت بالا' },
   eng_deepseek_short: { ar: '🔬 ديب سيك', en: '🔬 DeepSeek', fr: '🔬 DeepSeek', es: '🔬 DeepSeek', it: '🔬 DeepSeek', de: '🔬 DeepSeek', ru: '🔬 DeepSeek', zh: '🔬 DeepSeek', tr: '🔬 DeepSeek', fa: '🔬 دیپ‌سیک' },
@@ -233,7 +236,7 @@ const S = {
   cancel: { ar: 'إلغاء', en: 'Cancel', fr: 'Annuler', es: 'Cancelar', it: 'Annulla', de: 'Abbrechen', ru: 'Отмена', zh: '取消', tr: 'Vazgeç', fa: 'انصراف' },
   confirm_wipe: { ar: 'تأكيد المسح', en: 'Confirm Wipe', fr: 'Confirmer l’effacement', es: 'Confirmar borrado', it: 'Conferma cancellazione', de: 'Löschen bestätigen', ru: 'Подтвердить стирание', zh: '确认清除', tr: 'Silmeyi onayla', fa: 'تأیید پاک‌سازی' },
   engine_lbl: { ar: 'محرك الذكاء العطري:', en: 'Fragrance AI Engine:', fr: 'Moteur IA olfactif :', es: 'Motor de IA olfativa:', it: 'Motore IA olfattivo:', de: 'Duft-KI-Engine:', ru: 'Движок парфюмерного ИИ:', zh: '香水 AI 引擎：', tr: 'Koku YZ motoru:', fa: 'موتور هوش مصنوعی عطری:' },
-  ai_matrix_tooltip: {"ar": "عرض معلومات مزودي الذكاء الاصطناعي — التوفر حسب إعدادات الخادم", "en": "AI provider information — availability depends on server configuration"},
+  ai_matrix_tooltip: { ar: 'عرض حالة شبكة الذكاء الاصطناعي الأربعة المتصلة بالمعمل', en: 'View the four AI engines connected to the lab', fr: 'Voir les quatre moteurs IA connectés', es: 'Ver los cuatro motores IA conectados', it: 'Vedi i quattro motori IA collegati', de: 'Die vier angeschlossenen KI-Engines ansehen', ru: 'Просмотр четырёх ИИ-движков лаборатории', zh: '查看连接到实验室的四个 AI 引擎', tr: 'Laboratuvara bağlı dört YZ motorunu görüntüle', fa: 'مشاهده چهار موتور هوش مصنوعی متصل به آزمایشگاه' },
   ai_network_lbl: { ar: 'شبكة الذكاء (4)', en: 'AI Network (4)', fr: 'Réseau IA (4)', es: 'Red IA (4)', it: 'Rete IA (4)', de: 'KI-Netzwerk (4)', ru: 'Сеть ИИ (4)', zh: 'AI 网络（4）', tr: 'YZ ağı (4)', fa: 'شبکه هوش مصنوعی (۴)' },
   ai_matrix_title: { ar: 'شبكة محركات الذكاء الاصطناعي المؤتمتة بالمعمل (Automated AI Council):', en: 'Automated AI Council of the lab:', fr: 'Conseil IA automatisé du laboratoire :', es: 'Consejo IA automatizado del laboratorio:', it: 'Consiglio IA automatizzato del laboratorio:', de: 'Automatisierter KI-Rat des Labors:', ru: 'Автоматический ИИ-совет лаборатории:', zh: '实验室自动化 AI 议会：', tr: 'Laboratuvarın otomatik YZ konseyi:', fa: 'شورای خودکار هوش مصنوعی آزمایشگاه:' },
   matrix_gemini_desc: { ar: 'حسابات الأوزان بالغرام والمل وسرعة الاستجابة.', en: 'Gram & ml weight math with fast responses.', fr: 'Calculs en grammes et ml, réponses rapides.', es: 'Cálculos en gramos y ml, respuestas rápidas.', it: 'Calcoli in grammi e ml, risposte rapide.', de: 'Gramm- und ml-Berechnungen mit schnellen Antworten.', ru: 'Расчёты в граммах и мл, быстрые ответы.', zh: '克与毫升计算，响应迅速。', tr: 'Gram ve ml hesaplamaları, hızlı yanıtlar.', fa: 'محاسبات گرم و میلی‌لیتر با پاسخ سریع.' },
@@ -286,10 +289,13 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   const rtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
   const masterPrompts: string[] = [L('prompt_1'), L('prompt_2'), L('prompt_3'), L('prompt_4'), L('prompt_5')];
-  const { messages, setMessages, daysRemaining, isLoading, sendMessage, clearHistory } = useShaheenChat();
-  const modelStatus = useShaheenModels();
+  // Load persisted session with 30-day (1 month) expiration check
+  const [sessionData, setSessionData] = useState(() => loadStoredChatSession());
+  const [messages, setMessages] = useState<ChatMessage[]>(() => sessionData.messages);
+  const [daysRemaining, setDaysRemaining] = useState(sessionData.daysRemaining);
 
   const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [scaleWeight, setScaleWeight] = useState(14.85);
   const [dripping, setDripping] = useState(false);
   const [compoundingStep, setCompoundingStep] = useState(0);
@@ -302,10 +308,10 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
 
   const AI_ENGINES = [
     { id: 'auto', name: L('eng_auto_name'), short: L('eng_auto_short'), badge: L('eng_auto_badge'), color: 'border-amber-400 bg-amber-500/20 text-amber-300', desc: L('eng_auto_desc') },
-    { id: 'gemini', name: 'Google Gemini', short: L('eng_gemini_short'), badge: '✨ Gemini', color: 'border-emerald-400 bg-emerald-500/20 text-emerald-300', desc: L('eng_gemini_desc') },
-    { id: 'deepseek', name: 'DeepSeek', short: L('eng_deepseek_short'), badge: '🔬 DeepSeek', color: 'border-blue-400 bg-blue-500/20 text-blue-300', desc: L('eng_deepseek_desc') },
-    { id: 'openai', name: 'OpenAI', short: L('eng_openai_short'), badge: '🟢 OpenAI', color: 'border-green-400 bg-green-500/20 text-green-300', desc: L('eng_openai_desc') },
-    { id: 'claude', name: 'Anthropic Claude', short: L('eng_claude_short'), badge: '🟣 Claude', color: 'border-purple-400 bg-purple-500/20 text-purple-300', desc: L('eng_claude_desc') },
+    { id: 'gemini', name: 'Google Gemini 3.8 Flash', short: L('eng_gemini_short'), badge: '✨ Gemini 3.8 Flash', color: 'border-emerald-400 bg-emerald-500/20 text-emerald-300', desc: L('eng_gemini_desc') },
+    { id: 'deepseek', name: 'DeepSeek R1 Chemistry', short: L('eng_deepseek_short'), badge: '🔬 DeepSeek R1', color: 'border-blue-400 bg-blue-500/20 text-blue-300', desc: L('eng_deepseek_desc') },
+    { id: 'openai', name: 'ChatGPT GPT-4o Architect', short: L('eng_openai_short'), badge: '🟢 GPT-4o Architect', color: 'border-green-400 bg-green-500/20 text-green-300', desc: L('eng_openai_desc') },
+    { id: 'claude', name: 'Claude 3.5 Haute Parfumerie', short: L('eng_claude_short'), badge: '🟣 Claude 3.5 Sonnet', color: 'border-purple-400 bg-purple-500/20 text-purple-300', desc: L('eng_claude_desc') },
   ];
 
   const setActivePerspectiveForMessage = (msgId: string, tabId: string) => {
@@ -313,8 +319,6 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
       prev.map((m) => (m.id === msgId ? { ...m, activePerspectiveTab: tabId } : m))
     );
   };
-
-  useEffect(() => () => { window.speechSynthesis?.cancel(); }, []);
 
   const handleSpeech = (text: string) => {
     if ('speechSynthesis' in window) {
@@ -325,7 +329,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
       }
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = LOCALE_MAP[currentLang];
+      utterance.lang = LOCALE_MAP[currentLang] || 'ar-SA';
       utterance.rate = 0.95;
       utterance.onend = () => setIsSpeaking(false);
       utterance.onerror = () => setIsSpeaking(false);
@@ -346,6 +350,23 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
+
+  // Persist messages whenever changed & broadcast to sync floating window
+  useEffect(() => {
+    saveChatSession(messages);
+    window.dispatchEvent(new CustomEvent('miyaar-chat-updated', { detail: messages }));
+  }, [messages]);
+
+  // Sync with updates from floating chat window
+  useEffect(() => {
+    const handleSync = (e: any) => {
+      if (Array.isArray(e.detail)) {
+        setMessages(e.detail);
+      }
+    };
+    window.addEventListener('miyaar-chat-updated', handleSync);
+    return () => window.removeEventListener('miyaar-chat-updated', handleSync);
+  }, []);
 
   useEffect(() => {
     let interval: any;
@@ -374,8 +395,12 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
 
     const activeModelChoice = overrideModel || selectedModel;
 
-    // A request for a new formula must never silently apply an earlier one.
-    if (isFormulaTransferCommand(text)) {
+    // Check if user requested an immediate interactive action by text command
+    const lower = text.toLowerCase();
+    if (
+      (lower.includes('طبق') || lower.includes('حول') || lower.includes('انقل')) &&
+      (lower.includes('حاسبة') || lower.includes('تركيب'))
+    ) {
       for (let i = messages.length - 1; i >= 0; i--) {
         if (messages[i].role === 'assistant') {
           const formula = extractFormulaFromAIMessage(messages[i].text);
@@ -387,30 +412,87 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
       }
     }
 
-    if (text.length > 4000) return;
+    const userMsg: ChatMessage = {
+      id: 'u-' + Date.now(),
+      role: 'user',
+      text,
+      timestamp: new Date().toLocaleTimeString(LOCALE_MAP[currentLang], { hour: '2-digit', minute: '2-digit' }),
+    };
+
+    setMessages((prev) => [...prev, userMsg]);
     setInput('');
-    await sendMessage({ text, model: activeModelChoice, language: currentLang,
-      errorText: (error) => chatErrorText(currentLang, error) });
+    setIsLoading(true);
+    setDripping(true);
+
+    try {
+      const data = await requestApi<ChatResponse>('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: text,
+          model: activeModelChoice,
+          conversationHistory: messages.map((m) => ({ role: m.role, text: m.text })),
+        }),
+      });
+      if (typeof data.reply !== 'string' || !data.reply.trim()) {
+        throw new Error('Chat response is empty');
+      }
+      const reply = data.reply || L('retry_later');
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: 'b-' + Date.now(),
+          role: 'assistant',
+          text: reply,
+          timestamp: new Date().toLocaleTimeString(LOCALE_MAP[currentLang], { hour: '2-digit', minute: '2-digit' }),
+          aiEngine: data.engine,
+          perspectives: data.perspectives,
+          activePerspectiveTab: 'consensus',
+        },
+      ]);
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: 'err-' + Date.now(),
+          role: 'assistant',
+          text: loc(currentLang, API_ERROR_NOTICE),
+          timestamp: new Date().toLocaleTimeString(LOCALE_MAP[currentLang], { hour: '2-digit', minute: '2-digit' }),
+          aiEngine: {
+            id: 'ensemble',
+            name: L('shahin_name'),
+            badge: L('fallback_badge'),
+            provider: 'ensemble',
+          },
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+      setDripping(false);
+    }
   };
 
-  const handleCopySingle = async (id: string, text: string) => {
-    if (!await copyChatText(text)) return;
+  const handleCopySingle = (id: string, text: string) => {
+    navigator.clipboard.writeText(text);
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2500);
   };
 
-  const handleCopyEntireChat = async () => {
+  const handleCopyEntireChat = () => {
     const transcript = messages
       .map((m) => `[${m.role === 'user' ? L('q_word') : L('shahin_name')} - ${m.timestamp}]:\n${m.text}`)
       .join('\n\n' + '─'.repeat(40) + '\n\n');
 
-    if (!await copyChatText(transcript)) return;
+    navigator.clipboard.writeText(transcript);
     setCopiedAll(true);
     setTimeout(() => setCopiedAll(false), 2500);
   };
 
   const handleClearHistory = () => {
-    clearHistory();
+    clearChatSession();
+    setMessages([DEFAULT_WELCOME_MESSAGE]);
+    setDaysRemaining(30);
     setShowClearConfirm(false);
   };
 
@@ -423,7 +505,6 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   return (
     <div className="space-y-4">
       <StaticHostingNotice currentLang={currentLang} />
-      <ShaheenServiceStatus language={currentLang} models={modelStatus.models} failed={modelStatus.failed} />
       {/* 1. Compact Slim Header with Expiry Info & Controls */}
       <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200/90 shadow-2xs flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
@@ -560,7 +641,6 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                 <button
                   key={eng.id}
                   onClick={() => setSelectedModel(eng.id as any)}
-                  disabled={isLoading || modelStatus.isUnavailable(eng.id)}
                   className={`px-3 py-1 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 border ${
                     isSelected
                       ? eng.color + ' font-bold shadow-xs'
@@ -602,14 +682,43 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                 <ChevronDown className="w-4 h-4" />
               </button>
             </div>
-            <ShaheenProviderMatrix language={currentLang} models={modelStatus.models} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-[11px]">
+              <div className="p-2 rounded-xl bg-stone-950 border border-emerald-500/30 flex items-start gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 mt-1 shrink-0 animate-pulse" />
+                <div>
+                  <div className="font-bold text-emerald-300">Google Gemini 3.8 Flash</div>
+                  <div className="text-stone-400 text-[10px]">{L('matrix_gemini_desc')}</div>
+                </div>
+              </div>
+              <div className="p-2 rounded-xl bg-stone-950 border border-blue-500/30 flex items-start gap-2">
+                <span className="w-2 h-2 rounded-full bg-blue-400 mt-1 shrink-0 animate-pulse" />
+                <div>
+                  <div className="font-bold text-blue-300">DeepSeek R1 Chemistry</div>
+                  <div className="text-stone-400 text-[10px]">{L('matrix_deepseek_desc')}</div>
+                </div>
+              </div>
+              <div className="p-2 rounded-xl bg-stone-950 border border-green-500/30 flex items-start gap-2">
+                <span className="w-2 h-2 rounded-full bg-green-400 mt-1 shrink-0 animate-pulse" />
+                <div>
+                  <div className="font-bold text-green-300">ChatGPT GPT-4o Architect</div>
+                  <div className="text-stone-400 text-[10px]">{L('matrix_openai_desc')}</div>
+                </div>
+              </div>
+              <div className="p-2 rounded-xl bg-stone-950 border border-purple-500/30 flex items-start gap-2">
+                <span className="w-2 h-2 rounded-full bg-purple-400 mt-1 shrink-0 animate-pulse" />
+                <div>
+                  <div className="font-bold text-purple-300">Claude 3.5 Haute Parfumerie</div>
+                  <div className="text-stone-400 text-[10px]">{L('matrix_claude_desc')}</div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
         {/* Messages Stream Board */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 bg-stone-50/50">
           {messages.map((m) => {
-            const activeDisplayContent = m.id === 'welcome' ? shaheenWelcome(currentLang) :
+            const activeDisplayContent =
               m.activePerspectiveTab && m.activePerspectiveTab !== 'consensus' && m.perspectives
                 ? m.perspectives.find((p) => p.modelId === m.activePerspectiveTab)?.reply || m.text
                 : m.text;
@@ -662,7 +771,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                           m.aiEngine?.provider === 'gemini' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' :
                           'bg-amber-50 text-amber-900 border-amber-200'
                         }`}>
-                          <span>{m.aiEngine?.badge || (rtl ? 'شاهين' : 'Shahin')}</span>
+                          <span>{m.aiEngine?.badge || L('default_badge')}</span>
                         </span>
                       </div>
                       <span className="text-[10px] text-stone-400 font-mono-numbers">{m.timestamp}</span>
@@ -847,7 +956,6 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                                 {AI_ENGINES.map((eng) => (
                                   <button
                                     key={eng.id}
-                                    disabled={isLoading || modelStatus.isUnavailable(eng.id)}
                                     onClick={() => {
                                       const prevUserMsg = messages
                                         .slice(0, messages.findIndex((msg) => msg.id === m.id))
@@ -856,7 +964,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                                       setComparingMsgId(null);
                                       setSelectedModel(eng.id as any);
                                       handleSend(
-                                        prevUserMsg?.text || L('redo_formula'),
+                                        `${fmt(L('consult_prefix_tpl'), { m: eng.short })}${prevUserMsg?.text || L('redo_formula')}`,
                                         eng.id as any
                                       );
                                     }}
@@ -925,7 +1033,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
             <button
               key={idx}
               onClick={() => handleSend(prompt)}
-              disabled={isLoading || modelStatus.isUnavailable(selectedModel)}
+              disabled={isLoading || isStaticHosting}
               className="whitespace-nowrap px-3 py-1.5 rounded-full bg-white hover:bg-amber-50 border border-stone-200 text-stone-700 hover:text-amber-900 text-xs transition-colors cursor-pointer shrink-0 shadow-2xs font-medium"
             >
               {prompt}
@@ -944,16 +1052,15 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
           <input
             ref={inputRef}
             type="text"
-            maxLength={4000}
             placeholder={L('input_ph')}
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            disabled={isLoading || modelStatus.isUnavailable(selectedModel)}
+            disabled={isLoading || isStaticHosting}
             className="flex-1 px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl text-xs sm:text-sm text-stone-900 focus:outline-none focus:border-amber-700 focus:bg-white transition-all shadow-inner"
           />
           <button
             type="submit"
-            disabled={!input.trim() || input.length > 4000 || isLoading || modelStatus.isUnavailable(selectedModel)}
+            disabled={!input.trim() || isLoading || isStaticHosting}
             className="px-6 py-3 bg-amber-800 hover:bg-amber-900 disabled:opacity-40 text-white rounded-xl font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer shrink-0 shadow-xs"
           >
             <span>{L('send')}</span>
