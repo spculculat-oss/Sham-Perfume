@@ -217,8 +217,24 @@ export const Header: React.FC<HeaderProps> = ({
                     <ChevronDown className="w-3 h-3 text-stone-400 ml-0.5 shrink-0" />
                   </button>
                   {isGroupMenuOpen(group.id) && (
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50 min-w-[280px] rounded-xl bg-white border border-stone-200 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 p-1">
-                      {group.items?.map((item, idx) => (
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50 min-w-[280px] rounded-xl bg-white border border-stone-200 shadow-xl overflow-hidden animate-in fade-in zoom-in-95">
+                      <div className="px-3 py-2 bg-amber-50 border-b border-amber-100 rounded-t-xl">
+                        <div className="flex items-center gap-2">
+                          <div className={`w-2 h-2 rounded-full ${group.iconColor?.replace('text-emerald-500', 'bg-emerald-500').replace('text-amber-700', 'bg-amber-500').replace('text-amber-600', 'bg-amber-500')}`}></div>
+                          <span className="text-xs font-bold text-amber-900">{group.fullLabel}</span>
+                          <span className="px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-700 text-[10px] font-medium border border-amber-500/30">
+                            {group.items?.length} أداة
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-amber-700 mt-0.5 leading-tight">
+                          {group.id === 'tools' && 'جميع أدوات الحسابات المعملية - الكيمياء، المخاليط، والتكلفة'}
+                          {group.id === 'explore' && 'مكتبة العطور، الخامات، الإخباريات، والأدلة المرجعية'}
+                          {group.id === 'home' && 'العودة للصفحة الرئيسية'}
+                          {group.id === 'master_ai' && 'خبير المعمل الذكي بالذكاء الاصطناعي'}
+                        </p>
+                      </div>
+                      <div className="p-1">
+                        {group.items?.map((item, idx) => (
                         <button
                           key={item.id}
                           onClick={() => {
@@ -239,7 +255,8 @@ export const Header: React.FC<HeaderProps> = ({
                           <item.icon className="w-4 h-4 text-stone-500 shrink-0" />
                           <span className="text-sm font-medium">{item.fullLabel}</span>
                         </button>
-                      ))}
+                      ))}  // end map
+                      </div>  // end items container
                       <div className="mt-1 pt-1 border-t border-stone-100">
                         <button
                           onClick={() => setIsGroupMenuOpen(group.id, false)}
