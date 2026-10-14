@@ -62,6 +62,8 @@ Sham Core هو مساعد الخدمات ولوحة الإدارة داخل مو
 ### مسارات API
 **عامة:** `GET /api/assistant/config` • `POST /api/assistant/chat` • `GET /api/assistant/conversations/:id?visitorId=` • `GET /api/assistant/products` • `POST /api/assistant/requests` • `POST /api/assistant/track`
 
+الشات بيقبل `consult: true` عشان يطلب المجلس الاستشاري، و`config` بيرجّع `council.available`.
+
 **إدارة:** `GET /overview` • إضافة وتعديل وحذف لـ `services` و`products` و`knowledge` • `GET/PATCH /requests` • `GET /conversations`، `POST /conversations/:id/reply`، `PATCH /conversations/:id` • `GET/PUT /settings` • `POST /test-chat` (مع trace) • `GET /export` (نسخة احتياطية JSON)
 
 ---
@@ -72,7 +74,8 @@ Sham Core هو مساعد الخدمات ولوحة الإدارة داخل مو
 - **المحادثات:** كل محادثة ومعاها نيتها ومحركها ومسار تنفيذها. الموظف يرد بنفسه، والرد يظهر للزائر في نفس الودجت.
 - **المنتجات وقاعدة المعرفة والخدمات:** إضافة وتعديل وحذف. أي **خدمة تجارية جديدة** بتتعمل بكلمات توجيه وحقول استمارة، والمساعد بيبدأ يوجّه ليها فوراً.
 - **المحركات والإعدادات:** ترتيب المحركات وتفعيلها، ودرجة الإبداع، وهوية المساعد، ومواعيد العمل، والتواصل المباشر، ونسخة احتياطية.
-- **مختبر المساعد:** نفس مسار الزوار مع عرض كل خطوة.
+- **المجلس الاستشاري** (جوه «المحركات والإعدادات»): المقاعد (المحرك، واسم النموذج، والزاوية)، والرئيس، وعدد جولات النقاش، والأنواع اللي بيجتمع فيها تلقائياً، وهل الزائر يشوف النقاش. التفاصيل في [`AI_TOOLS_REVERSE_ENGINEERING.md`](AI_TOOLS_REVERSE_ENGINEERING.md) القسم 11.
+- **مختبر المساعد:** نفس مسار الزوار مع عرض كل خطوة، وعلامة «استشارة المجلس».
 
 ---
 
@@ -86,6 +89,8 @@ Sham Core هو مساعد الخدمات ولوحة الإدارة داخل مو
 | `FIREBASE_PROJECT_ID` / `FIREBASE_CLIENT_EMAIL` / `FIREBASE_PRIVATE_KEY` | بيانات حساب خدمة Firestore |
 | `SHAM_LLM_BASE_URL` / `SHAM_LLM_MODEL` / `SHAM_LLM_API_KEY` | نموذج مفتوح مستضاف ذاتياً، مثلاً `http://127.0.0.1:11434/v1` و`qwen2.5:7b-instruct` |
 | `GEMINI_API_KEY` وغيره | اختيارية تماماً. لو موجودة بتدخل في سياسة المحركات |
+| `OPENROUTER_API_KEY` / `OPENROUTER_MODEL` | مفتاح واحد لنماذج كتير من شركات مختلفة، مفيد لمقاعد المجلس |
+| `SHAM_COUNCIL_RATE_PER_HOUR` | حد ردود المجلس لكل زائر في الساعة (الافتراضي 12) |
 | `SHAM_SEED_DEMO=true` | منتجات تجريبية مُعلَّمة «تجريبي» للمعاينة فقط |
 | `SHAM_CHAT_RATE_PER_MIN` / `SHAM_TRUST_PROXY` | حد الرسائل لكل IP في الدقيقة، وعدد البروكسيات الموثوقة (الافتراضي على Vercel = 1) |
 

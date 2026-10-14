@@ -6,9 +6,10 @@
  *  self_hosted : any OpenAI-compatible server you run (Ollama, vLLM, LM Studio, llama.cpp server)
  *                with open-weight models such as Qwen, Llama, Mistral or DeepSeek open weights.
  *  gemini / openai / claude / deepseek : optional hosted providers (server-side keys only).
+ *  openrouter  : one key, many hosted models (useful for the advisory council: different vendors per seat).
  *  sham_local  : Sham's own deterministic composer — works with zero keys and zero cost.
  */
-import type { EngineId } from './types';
+import type { EngineId, ModelEngineId } from './types';
 
 type Env = Record<string, string | undefined>;
 export interface EngineTurn { role: 'user' | 'assistant'; text: string }
@@ -23,6 +24,7 @@ export function engineStatuses(env: Env = process.env): EngineStatus[] {
     { id: 'openai', name: 'OpenAI', model: env.OPENAI_MODEL?.trim() || 'gpt-4o-mini', configured: configured(env.OPENAI_API_KEY), kind: 'hosted' },
     { id: 'claude', name: 'Anthropic Claude', model: env.ANTHROPIC_MODEL?.trim() || 'claude-sonnet-4-5', configured: configured(env.ANTHROPIC_API_KEY), kind: 'hosted' },
     { id: 'deepseek', name: 'DeepSeek', model: env.DEEPSEEK_MODEL?.trim() || 'deepseek-chat', configured: configured(env.DEEPSEEK_API_KEY), kind: 'hosted' },
+    { id: 'openrouter', name: 'OpenRouter', model: env.OPENROUTER_MODEL?.trim() || 'openai/gpt-4o-mini', configured: configured(env.OPENROUTER_API_KEY), kind: 'hosted' },
     { id: 'sham_local', name: 'Sham Core (built-in)', model: 'rules+bm25', configured: true, kind: 'own' },
   ];
 }
@@ -80,21 +82,26 @@ async function* sseData(body: ReadableStream<Uint8Array>): AsyncGenerator<string
   }
 }
 
+/** Model ids the admin may type for a council seat (provider slugs such as `qwen2.5:7b`, `anthropic/claude-sonnet-4.5`). */
+export const MODEL_ID = /^[A-Za-z0-9._:/@-]{1,120}$/;
+
 export async function callEngine(
-  id: Exclude<EngineId, 'sham_local'>,
+  id: ModelEngineId,
   system: string,
   turns: EngineTurn[],
-  options: { env?: Env; fetch?: typeof fetch; signal: AbortSignal; temperature: number; onToken?: (text: string) => void },
+  options: { env?: Env; fetch?: typeof fetch; signal: AbortSignal; temperature: number; onToken?: (text: string) => void; model?: string; maxTokens?: number },
 ): Promise<string | undefined> {
   const env = options.env || process.env;
   const request = options.fetch || fetch;
-  const status = engineStatuses(env).find((e) => e.id === id)!;
+  const base = engineStatuses(env).find((e) => e.id === id)!;
+  const status = { ...base, model: options.model && MODEL_ID.test(options.model) ? options.model : base.model };
+  const maxTokens = options.maxTokens ?? 1200;
   const stream = Boolean(options.onToken);
   let url: string;
   let headers: Record<string, string> = { 'Content-Type': 'application/json' };
   let body: object;
   const openAiShape = () => ({
-    model: status.model, temperature: options.temperature, max_tokens: 1200, ...(stream ? { stream: true } : {}),
+    model: status.model, temperature: options.temperature, max_tokens: maxTokens, ...(stream ? { stream: true } : {}),
     messages: [{ role: 'system', content: system }, ...turns.map((t) => ({ role: t.role, content: t.text }))],
   });
 
@@ -108,12 +115,17 @@ export async function callEngine(
     body = {
       systemInstruction: { parts: [{ text: system }] },
       contents: turns.map((t) => ({ role: t.role === 'assistant' ? 'model' : 'user', parts: [{ text: t.text }] })),
-      generationConfig: { temperature: options.temperature, maxOutputTokens: 1200 },
+      generationConfig: { temperature: options.temperature, maxOutputTokens: maxTokens },
     };
   } else if (id === 'claude') {
     url = 'https://api.anthropic.com/v1/messages';
     headers = { ...headers, 'x-api-key': env.ANTHROPIC_API_KEY!.trim(), 'anthropic-version': '2023-06-01' };
-    body = { model: status.model, system, max_tokens: 1200, temperature: options.temperature, ...(stream ? { stream: true } : {}), messages: turns.map((t) => ({ role: t.role, content: t.text })) };
+    body = { model: status.model, system, max_tokens: maxTokens, temperature: options.temperature, ...(stream ? { stream: true } : {}), messages: turns.map((t) => ({ role: t.role, content: t.text })) };
+  } else if (id === 'openrouter') {
+    url = 'https://openrouter.ai/api/v1/chat/completions';
+    headers = { ...headers, Authorization: `Bearer ${env.OPENROUTER_API_KEY!.trim()}`, 'X-Title': 'Sham Core' };
+    if (env.APP_URL?.trim()) headers['HTTP-Referer'] = env.APP_URL.trim();
+    body = openAiShape();
   } else {
     url = id === 'openai' ? 'https://api.openai.com/v1/chat/completions' : 'https://api.deepseek.com/chat/completions';
     headers.Authorization = `Bearer ${(id === 'openai' ? env.OPENAI_API_KEY : env.DEEPSEEK_API_KEY)!.trim()}`;

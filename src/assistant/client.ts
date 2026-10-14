@@ -9,11 +9,13 @@ export interface RequestView { ref: string; type: string; status: string; servic
 export interface ActionCard { type: 'request_form' | 'products' | 'order_status' | 'open_tab' | 'handoff' | 'privacy'; serviceId?: string; title?: string; fields?: FormField[]; products?: ProductCard[]; request?: RequestView; ref?: string; tab?: string; memory?: Record<string, string> }
 export interface PublicStep { stage: string; label: string }
 export interface Citation { id: string; title: string; kind: string }
-export interface AssistantConfig { assistantName: { ar: string; en: string }; welcome: { ar: string; en: string }; currency: string; modelEnhanced: boolean; services: PublicService[] }
-export interface ChatReply { conversationId: string; messageId: string; steps: PublicStep[]; suggestions: string[]; reply: string; engine: { id: string; name: string }; intent: string; actions: ActionCard[]; citations: Citation[]; status: 'open' | 'handoff' | 'closed'; trace?: { stage: string; detail: string; ms?: number }[] }
+export interface CouncilInfo { available: boolean; seats: number; auto: string[]; showDiscussion: boolean }
+export interface CouncilView { outcome: 'synthesis' | 'single' | 'failed'; rounds: number; entries: { label: string; role: string; engine: string; opinion: string; reviews: string[]; chair: boolean }[] }
+export interface AssistantConfig { assistantName: { ar: string; en: string }; welcome: { ar: string; en: string }; currency: string; modelEnhanced: boolean; council?: CouncilInfo; services: PublicService[] }
+export interface ChatReply { conversationId: string; messageId: string; steps: PublicStep[]; suggestions: string[]; reply: string; engine: { id: string; name: string }; intent: string; actions: ActionCard[]; citations: Citation[]; status: 'open' | 'handoff' | 'closed'; council?: CouncilView; trace?: { stage: string; detail: string; ms?: number }[] }
 export interface UiMessage {
   id?: string; role: 'user' | 'assistant'; text: string; at: string; engine?: string; actions?: ActionCard[]; citations?: Citation[];
-  steps?: PublicStep[]; suggestions?: string[]; feedback?: { rating: 'up' | 'down' }; streaming?: boolean; stopped?: boolean;
+  steps?: PublicStep[]; suggestions?: string[]; feedback?: { rating: 'up' | 'down' }; streaming?: boolean; stopped?: boolean; council?: CouncilView;
 }
 export type StreamEvent =
   | { type: 'step'; step: PublicStep } | { type: 'delta'; text: string } | { type: 'reset' }
@@ -38,8 +40,8 @@ export function visitorId(): string {
 
 export const assistantApi = {
   config: () => requestApi<AssistantConfig>('/api/assistant/config', undefined, 15000),
-  chat: (message: string, language: SupportedLanguage, conversationId?: string, signal?: AbortSignal, rewind?: string) =>
-    requestApi<ChatReply>('/api/assistant/chat', { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined }), signal }, 40000),
+  chat: (message: string, language: SupportedLanguage, conversationId?: string, signal?: AbortSignal, rewind?: string, consult?: boolean) =>
+    requestApi<ChatReply>('/api/assistant/chat', { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined, consult: consult || undefined }), signal }, consult ? 70000 : 40000),
   conversation: (id: string) =>
     requestApi<{ id: string; status: ChatReply['status']; messages: UiMessage[] }>(`/api/assistant/conversations/${encodeURIComponent(id)}?visitorId=${encodeURIComponent(visitorId())}`, undefined, 15000),
   submitRequest: (body: { serviceId: string; contact: { name: string; phone?: string; email?: string }; fields: Record<string, string>; items?: { productId: string; quantity: number }[]; conversationId?: string }) =>
@@ -56,9 +58,9 @@ export const assistantApi = {
  * the final reply. Throws before the first event if streaming is unavailable, so callers can
  * fall back to the plain JSON endpoint.
  */
-export async function streamChat(message: string, language: SupportedLanguage, conversationId: string | undefined, onEvent: (event: StreamEvent) => void, signal?: AbortSignal, rewind?: string): Promise<ChatReply> {
+export async function streamChat(message: string, language: SupportedLanguage, conversationId: string | undefined, onEvent: (event: StreamEvent) => void, signal?: AbortSignal, rewind?: string, consult?: boolean): Promise<ChatReply> {
   if (isStaticHosting) throw new ApiUnavailableError();
-  const response = await fetch('/api/assistant/chat/stream', { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined }), signal });
+  const response = await fetch('/api/assistant/chat/stream', { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined, consult: consult || undefined }), signal });
   if (!response.ok) {
     let code: string | undefined;
     try { code = (await response.json())?.code; } catch { /* not JSON */ }

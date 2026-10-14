@@ -11,6 +11,7 @@ import { createNotifier } from './notify';
 import { runAdminAgent } from './adminAgent';
 import { createStore, type Store } from './store';
 import { engineStatuses } from './engines';
+import { activeSeats, councilAvailable, publicTranscript } from './council';
 import type { CollectionName, RequestStatus } from './types';
 
 type Env = Record<string, string | undefined>;
@@ -70,6 +71,8 @@ export function createShamCore(options: CoreOptions = {}) {
   const chatLimiter = new RateLimiter(Number(env.SHAM_CHAT_RATE_PER_MIN) || 20, 60_000);
   const requestLimiter = new RateLimiter(6, 10 * 60_000);
   const trackLimiter = new RateLimiter(10, 10 * 60_000);
+  // Each council answer costs several model calls; cap it per client (normal chat keeps working when exceeded).
+  const councilLimiter = new RateLimiter(Number(env.SHAM_COUNCIL_RATE_PER_HOUR) || 12, 60 * 60_000);
   const authFailures = new RateLimiter(10, 15 * 60_000);
 
   // ---------------- public ----------------
@@ -84,6 +87,7 @@ export function createShamCore(options: CoreOptions = {}) {
       welcome: { ar: settings.welcomeAr, en: settings.welcomeEn },
       currency: settings.currency,
       modelEnhanced: settings.enginePolicy.some((id) => id !== 'sham_local' && statuses.find((s) => s.id === id)?.configured),
+      council: { available: councilAvailable(settings.council, env), seats: activeSeats(settings.council, env).length, auto: settings.council.intents, showDiscussion: settings.council.showDiscussion },
       services: services.map(({ id, kind, nameAr, nameEn, descriptionAr, descriptionEn, formFields, siteTab }) => ({ id, kind, nameAr, nameEn, descriptionAr, descriptionEn, formFields, siteTab })),
     });
   }));
@@ -93,7 +97,8 @@ export function createShamCore(options: CoreOptions = {}) {
     const input = validateChatInput(req.body);
     const controller = new AbortController();
     res.on('close', () => { if (!res.writableFinished) controller.abort(); });
-    const output = await orchestrator.chat(input, { signal: controller.signal });
+    const key = clientKey(req);
+    const output = await orchestrator.chat(input, { signal: controller.signal, councilGate: () => councilLimiter.allow(key) });
     await afterChat(output);
     res.json(output);
   }));
@@ -114,7 +119,8 @@ export function createShamCore(options: CoreOptions = {}) {
     res.flushHeaders?.();
     const write = (event: StreamEvent) => { if (!res.writableEnded) res.write(`event: ${event.type}\ndata: ${JSON.stringify(event)}\n\n`); };
     try {
-      const output = await orchestrator.chat(input, { signal: controller.signal, onEvent: write });
+      const key = clientKey(req);
+      const output = await orchestrator.chat(input, { signal: controller.signal, onEvent: write, councilGate: () => councilLimiter.allow(key) });
       await afterChat(output);
     } catch (error) {
       console.error('[Sham Core] stream', error instanceof Error ? error.message : error);
@@ -151,9 +157,14 @@ export function createShamCore(options: CoreOptions = {}) {
   assistant.get('/conversations/:id', wrap(async (req, res) => {
     const conversation = await repo.conversation(String(req.params.id));
     if (!conversation || conversation.visitorId !== req.query.visitorId) throw new AssistantError(404, 'NOT_FOUND', 'Conversation not found');
+    const { council } = await repo.settings();
+    const lang = conversation.language === 'ar' || conversation.language === 'fa' ? 'ar' : 'en';
     res.json({
       id: conversation.id, status: conversation.status,
-      messages: conversation.messages.map(({ role, text, at, engine, actions, citations }) => ({ role, text, at, engine, actions, citations })),
+      messages: conversation.messages.map(({ id, role, text, at, engine, actions, citations, council: transcript, stopped }) => ({
+        id, role, text, at, engine, actions, citations, ...(stopped ? { stopped } : {}),
+        ...(transcript && council.showDiscussion ? { council: publicTranscript(transcript, lang, env) } : {}),
+      })),
     });
   }));
 

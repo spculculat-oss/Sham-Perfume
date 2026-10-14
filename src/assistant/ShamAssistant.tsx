@@ -1,16 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
-  Check, CheckCircle2, ChevronDown, Copy, ExternalLink, Headset, Loader2, MessageCircle, Mic, MicOff, PackageSearch, Pencil, RefreshCw, RotateCcw, Send,
-  ShieldCheck, ShoppingBag, Sparkles, Square, ThumbsDown, ThumbsUp, Trash2, Volume2, VolumeX, X,
+  Check, CheckCircle2, ChevronDown, Copy, Crown, ExternalLink, Headset, Loader2, MessageCircle, Mic, MicOff, PackageSearch, Pencil, RefreshCw, RotateCcw, Send,
+  ShieldCheck, ShoppingBag, Sparkles, Square, ThumbsDown, ThumbsUp, Trash2, Users, Volume2, VolumeX, X,
 } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { SUPPORTED_LANGUAGES } from '../types/i18n';
 import { ApiError, ApiUnavailableError, isStaticHosting } from '../utils/api';
-import { loc, makeT, type LText } from '../utils/localize';
+import { fmt, loc, makeT, type LText } from '../utils/localize';
 import {
   assistantApi, CONVERSATION_KEY, streamChat, type ActionCard, type AssistantConfig, type ChatReply, type FormField, type ProductCard,
-  type PublicService, type PublicStep, type RequestView, type UiMessage,
+  type CouncilView, type PublicService, type PublicStep, type RequestView, type UiMessage,
 } from './client';
 
 const S = {
@@ -18,6 +18,14 @@ const S = {
   teaser: { ar: 'طلبات • متجر • دعم', en: 'Orders • Store • Support' },
   placeholder: { ar: 'اكتب سؤالك أو طلبك…', en: 'Type your question or request…' },
   send: { ar: 'إرسال', en: 'Send' },
+  council_toggle: { ar: 'استشارة المجلس: أكثر من نموذج ذكاء اصطناعي يتناقشوا قبل الرد', en: 'Council mode: several AI models debate before answering' },
+  council_on: { ar: 'وضع المجلس شغّال — {n} مستشارين هيكتبوا آراءهم ويراجعوا بعض، والرد هياخد وقت أطول شوية.', en: 'Council mode on — {n} advisors will give opinions and review each other; answers take a little longer.' },
+  council_title: { ar: 'نقاش المجلس الاستشاري', en: 'Advisory council discussion' },
+  council_meta: { ar: '{n} مستشارين · {r} جولة مراجعة', en: '{n} advisors · {r} review round(s)' },
+  council_opinion: { ar: 'الرأي الأول', en: 'First opinion' },
+  council_review: { ar: 'بعد مراجعة آراء الباقين', en: 'After reviewing the others' },
+  council_chair: { ar: 'رئيس المجلس (كتب الرد)', en: 'Chair (wrote the answer)' },
+  council_note: { ar: 'آراء آلية للاستئناس؛ الأسعار والمواعيد يؤكدها فريق شام فقط.', en: 'Automated opinions for guidance; prices and timelines are confirmed by the Sham team only.' },
   reset: { ar: 'محادثة جديدة', en: 'New conversation' },
   close: { ar: 'إغلاق', en: 'Close' },
   own_engine: { ar: 'محرك شام الذاتي', en: 'Sham built-in engine' },
@@ -132,6 +140,11 @@ export function ShamAssistant({ currentLang }: Props) {
   const [listening, setListening] = useState(false);
   const [speakingId, setSpeakingId] = useState<string | null>(null);
   const [notice, setNotice] = useState('');
+  // Advisory council mode (several AI models deliberate). Remembered for the browser session only.
+  const [consult, setConsult] = useState(() => { try { return sessionStorage.getItem('sham_core_consult') === '1'; } catch { return false; } });
+  const toggleConsult = () => setConsult((v) => { try { sessionStorage.setItem('sham_core_consult', v ? '0' : '1'); } catch { /* private mode */ } return !v; });
+  const councilReady = Boolean(config?.council?.available);
+  const consulting = consult && councilReady;
   const scrollRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
   const recognitionRef = useRef<Recognition | null>(null);
@@ -211,18 +224,18 @@ export function ShamAssistant({ currentLang }: Props) {
           if (event.type === 'step') patch((x) => ({ ...x, steps: [...(x.steps || []), event.step] }));
           else if (event.type === 'delta') patch((x) => ({ ...x, text: x.text + event.text }));
           else if (event.type === 'reset') patch((x) => ({ ...x, text: '' }));
-        }, controller.signal, replaces);
+        }, controller.signal, replaces, consulting);
       } catch (e) {
         const terminal = streamed || controller.signal.aborted || e instanceof ApiUnavailableError || (e instanceof ApiError && e.status < 500 && e.status !== 404);
         if (terminal) throw e;
-        reply = await assistantApi.chat(message, currentLang, conversationId, controller.signal, replaces);
+        reply = await assistantApi.chat(message, currentLang, conversationId, controller.signal, replaces, consulting);
       }
       if (controller.signal.aborted) throw new DOMException('Stopped', 'AbortError');
       setConversationId(reply.conversationId);
       setStatus(reply.status);
       patch((x) => ({
         ...x, id: reply.messageId || draftId, text: reply.reply, engine: reply.engine.id, actions: reply.actions, citations: reply.citations,
-        steps: reply.steps?.length ? reply.steps : x.steps, suggestions: reply.suggestions, streaming: false,
+        steps: reply.steps?.length ? reply.steps : x.steps, suggestions: reply.suggestions, streaming: false, council: reply.council,
       }));
     } catch (e) {
       if (controller.signal.aborted) {
@@ -235,7 +248,7 @@ export function ShamAssistant({ currentLang }: Props) {
     } finally {
       if (abortRef.current === controller) { abortRef.current = null; setBusy(false); }
     }
-  }, [busy, conversationId, currentLang]);
+  }, [busy, conversationId, currentLang, consulting]);
 
   const stop = () => abortRef.current?.abort();
   const [editing, setEditing] = useState<string | null>(null);
@@ -395,6 +408,7 @@ export function ShamAssistant({ currentLang }: Props) {
                       onRegenerate={i === lastAssistantIndex && !busy && status === 'open' && lastUserIndex(messages) >= 0 && lastUserIndex(messages) < i ? () => { const last = messages[lastUserIndex(messages)].text; void send(last, last); } : undefined}
                       onSpeak={() => speak(m, m.id || String(i))} onRate={(rating, reason) => void rate(m, rating, reason)} />
                   )}
+                  {m.role === 'assistant' && !m.streaming && m.council && m.council.entries.length > 0 && <CouncilPanel council={m.council} lang={currentLang} />}
                   {m.citations && m.citations.length > 0 && (
                     <p className="text-[10px] text-stone-500 px-2">{L('sources')}: {m.citations.map((c) => c.title).join(' · ')}</p>
                   )}
@@ -433,6 +447,12 @@ export function ShamAssistant({ currentLang }: Props) {
                   disabled={isStaticHosting}
                   className="flex-1 resize-none max-h-28 rounded-2xl border border-stone-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
                 />
+                {councilReady && (
+                  <button type="button" onClick={toggleConsult} disabled={isStaticHosting || busy} aria-pressed={consulting} aria-label={L('council_toggle')} title={L('council_toggle')}
+                    className={`h-10 w-10 shrink-0 rounded-full border flex items-center justify-center disabled:opacity-40 ${consulting ? 'bg-amber-500 border-amber-500 text-stone-950 ring-2 ring-amber-300' : 'border-stone-300 text-stone-600 hover:bg-stone-100'}`}>
+                    <Users className="w-4 h-4" />
+                  </button>
+                )}
                 {canListen && (
                   <button type="button" onClick={toggleMic} disabled={isStaticHosting} aria-pressed={listening} aria-label={listening ? L('mic_stop') : L('mic')} title={listening ? L('mic_stop') : L('mic')}
                     className={`h-10 w-10 shrink-0 rounded-full border flex items-center justify-center disabled:opacity-40 ${listening ? 'bg-red-600 border-red-600 text-white animate-pulse' : 'border-stone-300 text-stone-600 hover:bg-stone-100'}`}>
@@ -451,7 +471,9 @@ export function ShamAssistant({ currentLang }: Props) {
                   </button>
                 )}
               </div>
-              <p className="mt-1.5 text-[10px] text-stone-400">{L('no_card')}</p>
+              {consulting
+                ? <p role="status" className="mt-1.5 text-[10px] font-semibold text-amber-800 flex items-center gap-1"><Users className="w-3 h-3 shrink-0" />{fmt(L('council_on'), { n: config?.council?.seats || 2 })}</p>
+                : <p className="mt-1.5 text-[10px] text-stone-400">{L('no_card')}</p>}
             </form>
           </motion.section>
         )}
@@ -471,6 +493,44 @@ function Bubble({ role, text, engine, lang = 'ar', streaming, stopped }: { role:
         {stopped && <span className="block mt-1.5 text-[10px] font-semibold text-amber-700">⏹ {loc(lang, S.stopped)}</span>}
         {label && !streaming && <span className="block mt-1.5 text-[10px] text-stone-400">{label}</span>}
       </div>
+    </div>
+  );
+}
+
+/** The advisory council's discussion: each advisor's first opinion, their peer reviews, and who chaired. */
+function CouncilPanel({ council, lang }: { council: CouncilView; lang: SupportedLanguage }) {
+  const L = makeT(lang, S);
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="mx-1 rounded-xl border border-amber-200 bg-amber-50/40">
+      <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open}
+        className="w-full flex items-center gap-1.5 px-2.5 py-2 text-[11px] font-bold text-amber-900 text-start">
+        <Users className="w-3.5 h-3.5 shrink-0" />
+        <span className="flex-1">{L('council_title')} <span className="font-normal text-stone-500">· {fmt(L('council_meta'), { n: council.entries.length, r: council.rounds })}</span></span>
+        <ChevronDown className={`w-3.5 h-3.5 transition ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <div className="px-2.5 pb-2.5 space-y-2">
+          {council.entries.map((e) => (
+            <div key={e.label} className="rounded-lg border border-stone-200 bg-white p-2">
+              <p className="text-[11px] font-bold text-stone-800 flex flex-wrap items-center gap-1">
+                <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-stone-900 text-[9px] text-amber-200">{e.label}</span>
+                {e.role} <span className="font-normal text-stone-400" dir="ltr">{e.engine}</span>
+                {e.chair && <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-100 px-1.5 text-[9px] text-amber-900"><Crown className="w-2.5 h-2.5" />{L('council_chair')}</span>}
+              </p>
+              <p className="mt-1 text-[10px] font-semibold text-stone-500">{L('council_opinion')}</p>
+              <p dir="auto" className="text-[11px] text-stone-700 whitespace-pre-wrap leading-relaxed text-start">{e.opinion}</p>
+              {e.reviews.map((r, i) => (
+                <div key={i} className="mt-1.5 border-s-2 border-amber-300 ps-2">
+                  <p className="text-[10px] font-semibold text-stone-500">{L('council_review')}{e.reviews.length > 1 ? ` (${i + 1})` : ''}</p>
+                  <p dir="auto" className="text-[11px] text-stone-700 whitespace-pre-wrap leading-relaxed text-start">{r}</p>
+                </div>
+              ))}
+            </div>
+          ))}
+          <p className="text-[10px] text-stone-500">{L('council_note')}</p>
+        </div>
+      )}
     </div>
   );
 }

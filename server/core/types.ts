@@ -70,7 +70,7 @@ export interface KnowledgeDoc {
 }
 
 export interface TraceStep {
-  stage: 'guard' | 'intent' | 'retrieve' | 'plan' | 'tool' | 'engine' | 'compose';
+  stage: 'guard' | 'intent' | 'retrieve' | 'plan' | 'tool' | 'council' | 'engine' | 'compose';
   detail: string;
   ms?: number;
 }
@@ -112,6 +112,8 @@ export interface ConversationMessage {
   feedback?: MessageFeedback;
   /** The visitor pressed "stop": `text` is exactly what they saw before stopping. */
   stopped?: boolean;
+  /** Advisory council transcript (independent opinions → anonymous peer review → synthesis). */
+  council?: CouncilTranscript;
 }
 
 export interface Conversation {
@@ -186,7 +188,56 @@ export interface VisitorProfile {
   lastSeen: string;
 }
 
-export type EngineId = 'self_hosted' | 'gemini' | 'openai' | 'claude' | 'deepseek' | 'sham_local';
+export type EngineId = 'self_hosted' | 'gemini' | 'openai' | 'claude' | 'deepseek' | 'openrouter' | 'sham_local';
+export type ModelEngineId = Exclude<EngineId, 'sham_local'>;
+
+/** Expert lens a council member argues from (the same model can sit twice with different lenses). */
+export type CouncilRole = 'formulator' | 'commercial' | 'safety' | 'customer' | 'general';
+
+export interface CouncilMember {
+  id: string;
+  engine: ModelEngineId;
+  /** Optional model override, e.g. two Ollama models on one self-hosted server, or OpenRouter slugs. */
+  model?: string;
+  role: CouncilRole;
+  enabled: boolean;
+}
+
+/** "Advisory council": several models answer independently, review each other anonymously, then a chair writes one consultative reply. */
+export interface CouncilSettings {
+  enabled: boolean;
+  members: CouncilMember[];
+  /** Chair that writes the final answer: a member id, or 'auto' (first member that answered, in engine-policy order). */
+  chair: string;
+  /** Peer-review rounds after the first opinions (0 = opinions + synthesis only). */
+  rounds: number;
+  /** Intents that convene the council automatically; visitors can also ask for it explicitly. */
+  intents: string[];
+  /** Let visitors read the discussion under the answer (admins always can). */
+  showDiscussion: boolean;
+}
+
+export interface CouncilEntry {
+  memberId: string;
+  /** Anonymous label used during the review ("A", "B", …) so models judge content, not brands. */
+  label: string;
+  engine: ModelEngineId;
+  model: string;
+  role: CouncilRole;
+  opinion?: string;
+  reviews: string[];
+  ok: boolean;
+  ms: number;
+}
+
+export interface CouncilTranscript {
+  entries: CouncilEntry[];
+  rounds: number;
+  chair?: { memberId: string; engine: ModelEngineId; model: string };
+  /** 'synthesis' = chair wrote the answer; 'single' = only one opinion survived; 'failed' = fell back to the normal engine policy. */
+  outcome: 'synthesis' | 'single' | 'failed';
+  ms: number;
+}
 
 export interface CoreSettings {
   assistantNameAr: string;
@@ -197,6 +248,7 @@ export interface CoreSettings {
   /** Ordered engine policy. `sham_local` is always appended as the guaranteed last step. */
   enginePolicy: EngineId[];
   temperature: number;
+  council: CouncilSettings;
   currency: string;
   handoffContact: string;
   businessHours: string;

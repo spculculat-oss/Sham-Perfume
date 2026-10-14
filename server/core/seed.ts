@@ -3,6 +3,7 @@
  * Commercial services start enabled but the product catalog starts EMPTY on purpose:
  * the assistant must never quote prices or stock the business has not entered.
  */
+import { defaultCouncil } from './council';
 import type { CoreSettings, KnowledgeDoc, Product, ServiceDef } from './types';
 
 const now = () => new Date().toISOString();
@@ -132,8 +133,9 @@ export function defaultSettings(): CoreSettings & { id: string } {
     welcomeAr: 'أهلاً بك في شام 👋 أنا مساعد شام للخدمات. أقدر أساعدك في الأدوات والحاسبات، الطلبات والمتجر، العطور المخصصة، الجملة، الاستشارات والدعم. تحب تبدأ بإيه؟',
     welcomeEn: 'Welcome to Sham 👋 I am the Sham services assistant. I can help with tools and calculators, store orders, bespoke perfumes, wholesale, consultations and support. Where would you like to start?',
     personaAr: 'ودود، مختصر، مهني، يتحدث بلهجة الزائر عند الإمكان، ولا يعد بأسعار أو مواعيد غير موجودة في البيانات.',
-    enginePolicy: ['self_hosted', 'gemini', 'openai', 'claude', 'deepseek', 'sham_local'],
+    enginePolicy: ['self_hosted', 'gemini', 'openai', 'claude', 'deepseek', 'openrouter', 'sham_local'],
     temperature: 0.3,
+    council: defaultCouncil(),
     currency: 'EGP',
     handoffContact: '',
     businessHours: '',

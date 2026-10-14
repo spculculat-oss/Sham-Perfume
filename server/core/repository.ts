@@ -9,6 +9,7 @@ import type {
   RequestType, ServiceDef, ServiceRequest, VisitorProfile,
 } from './types';
 import { defaultKnowledge, defaultServices, defaultSettings, demoProducts } from './seed';
+import { CouncilConfigError, defaultCouncil, normalizeCouncil } from './council';
 import { Bm25Index, tokenize, type IndexedDoc } from './text';
 import { stripIntro } from './router';
 
@@ -56,11 +57,13 @@ export class Repository {
   // ---------- settings ----------
   async settings(): Promise<CoreSettings> {
     await this.ready();
-    return (await this.store.get('settings', 'core')) || defaultSettings();
+    const stored = await this.store.get('settings', 'core');
+    // Settings saved before a feature existed get its defaults (e.g. the advisory council).
+    return stored ? { ...stored, council: stored.council || defaultCouncil() } : defaultSettings();
   }
   async updateSettings(patch: Partial<CoreSettings>): Promise<CoreSettings> {
     const current = await this.settings();
-    const allowedEngines = ['self_hosted', 'gemini', 'openai', 'claude', 'deepseek', 'sham_local'];
+    const allowedEngines = ['self_hosted', 'gemini', 'openai', 'claude', 'deepseek', 'openrouter', 'sham_local'];
     const next = { ...current, id: 'core' } as CoreSettings & { id: string };
     for (const key of ['assistantNameAr', 'assistantNameEn', 'welcomeAr', 'welcomeEn', 'personaAr', 'currency', 'handoffContact', 'businessHours'] as const) {
       if (patch[key] !== undefined) next[key] = str(patch[key], key.startsWith('welcome') || key === 'personaAr' ? 1200 : 200);
@@ -75,6 +78,12 @@ export class Repository {
         throw new ValidationError('INVALID_POLICY', 'Unknown engine in policy');
       }
       next.enginePolicy = [...new Set(patch.enginePolicy)];
+    }
+    if (patch.council !== undefined) {
+      try { next.council = normalizeCouncil(patch.council, current.council); } catch (error) {
+        if (error instanceof CouncilConfigError) throw new ValidationError('INVALID_COUNCIL', error.message);
+        throw error;
+      }
     }
     next.updatedAt = new Date().toISOString();
     await this.store.put('settings', 'core', next);

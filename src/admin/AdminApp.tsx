@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Activity, ArrowRight, BookOpen, Bot, Boxes, ClipboardList, Cpu, Database, Download, FlaskConical, Headset, KeyRound,
   BellRing, CheckCircle2, CircleAlert, EyeOff, LayoutDashboard, Lightbulb, Loader2, LogOut, MessagesSquare, Plus, RefreshCw, Save, Send,
-  Settings2, ThumbsDown, ThumbsUp, Trash2, TriangleAlert, Wand2,
+  Settings2, ThumbsDown, ThumbsUp, Trash2, TriangleAlert, Users, Wand2,
 } from 'lucide-react';
 import type {
-  Conversation, CoreSettings, EngineId, KnowledgeDoc, KnowledgeGap, Product, RequestStatus, ServiceDef, ServiceRequest,
+  Conversation, CoreSettings, CouncilMember, CouncilRole, CouncilTranscript, EngineId, KnowledgeDoc, KnowledgeGap, ModelEngineId, Product, RequestStatus, ServiceDef, ServiceRequest,
 } from '../../server/core/types';
 import type { AgentResult } from '../../server/core/adminAgent';
 import { AdminApiError, adminRequest, getToken, send, setToken } from './adminApi';
@@ -38,7 +38,11 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
 const STATUS: Record<RequestStatus, string> = { new: 'جديد', in_progress: 'قيد التنفيذ', quoted: 'عرض سعر', confirmed: 'مؤكد', completed: 'مكتمل', cancelled: 'ملغي' };
 const TYPE: Record<string, string> = { order: 'طلب متجر', custom_formula: 'عطر مخصص', b2b_quote: 'عرض جملة', consultation: 'استشارة', support: 'دعم', service: 'خدمة' };
 const INTENT: Record<string, string> = { greeting: 'تحية', thanks: 'شكر', list_services: 'عرض الخدمات', track_order: 'تتبع', browse_products: 'تصفح منتجات', service_request: 'طلب خدمة', handoff: 'تحويل لموظف', calculate: 'حساب', perfume_expert: 'سؤال خبير', question: 'سؤال عام', memory_view: 'عرض الذاكرة', forget: 'حذف البيانات' };
-const ENGINE_LABEL: Record<string, string> = { self_hosted: 'نموذج مفتوح مستضاف ذاتياً', gemini: 'Gemini', openai: 'OpenAI', claude: 'Claude', deepseek: 'DeepSeek', sham_local: 'محرك شام الذاتي', human: 'موظف', system: 'النظام' };
+const ENGINE_LABEL: Record<string, string> = { self_hosted: 'نموذج مفتوح مستضاف ذاتياً', gemini: 'Gemini', openai: 'OpenAI', claude: 'Claude', deepseek: 'DeepSeek', openrouter: 'OpenRouter', sham_local: 'محرك شام الذاتي', human: 'موظف', system: 'النظام' };
+
+const COUNCIL_ROLE: Record<CouncilRole, string> = { formulator: 'خبير التركيب والمواد', commercial: 'المستشار التجاري', safety: 'مراجع السلامة والجودة', customer: 'صوت العميل', general: 'مستشار عام' };
+const COUNCIL_INTENTS = ['perfume_expert', 'question', 'service_request', 'browse_products', 'list_services'];
+const MODEL_ENGINES: ModelEngineId[] = ['self_hosted', 'gemini', 'openai', 'claude', 'deepseek', 'openrouter'];
 
 const card = 'rounded-2xl border border-stone-200 bg-white p-4 shadow-sm';
 const input = 'w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400';
@@ -354,6 +358,7 @@ function ConversationsPanel() {
                     <div className={`max-w-[85%] rounded-xl px-3 py-2 text-sm whitespace-pre-wrap ${m.role === 'user' ? 'bg-stone-100' : m.engine === 'human' ? 'bg-emerald-50 border border-emerald-200' : 'bg-amber-50 border border-amber-100'}`}>
                       {m.text}
                       <div className="text-[10px] text-stone-400 mt-1">{fmtDate(m.at)}{m.intent ? ` · ${INTENT[m.intent] || m.intent}` : ''}{m.engine ? ` · ${ENGINE_LABEL[m.engine] || m.engine}` : ''}</div>
+                      {m.council && <CouncilTranscriptView council={m.council} />}
                       {m.trace && (
                         <details className="mt-1 text-[10px] text-stone-500"><summary className="cursor-pointer">مسار التنفيذ</summary>
                           <ol className="mt-1 space-y-0.5" dir="ltr">{m.trace.map((t, j) => <li key={j}><b>{t.stage}</b> {t.detail}{t.ms !== undefined ? ` (${t.ms}ms)` : ''}</li>)}</ol></details>
@@ -588,23 +593,116 @@ function EnginesPanel() {
             <button disabled={busy} onClick={save} className={`${btn} bg-stone-900 text-amber-100 w-full`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />حفظ الإعدادات</>}</button>
             {message && <p className="text-xs text-center">{message}</p>}
           </div>
+          <CouncilSettingsCard form={form} setForm={setForm} engines={data.engines} onSave={save} busy={busy} message={message} />
         </div>
       )}
     </>
   );
 }
 
-interface SandboxReply { reply: string; engine: { id: string; name: string }; intent: string; actions: { type: string; serviceId?: string }[]; citations: { title: string }[]; trace?: { stage: string; detail: string; ms?: number }[] }
+/** Advisory council: which models sit, with which expert lens, who chairs, how many debate rounds. */
+function CouncilSettingsCard({ form, setForm, engines, onSave, busy, message }: { form: CoreSettings; setForm: (f: CoreSettings) => void; engines: EngineStatus[]; onSave: () => void; busy: boolean; message: string }) {
+  const council = form.council;
+  const set = (patch: Partial<CoreSettings['council']>) => setForm({ ...form, council: { ...council, ...patch } });
+  const setMember = (id: string, patch: Partial<CouncilMember>) => set({ members: council.members.map((m) => (m.id === id ? { ...m, ...patch } : m)) });
+  const configured = (id: string) => engines.find((e) => e.id === id)?.configured;
+  const ready = council.members.filter((m) => m.enabled && configured(m.engine)).length;
+  return (
+    <div className={`${card} space-y-3 lg:col-span-2`}>
+      <div className="flex flex-wrap items-center gap-2">
+        <Users className="w-4 h-4 text-amber-700" />
+        <h2 className="font-bold text-sm">المجلس الاستشاري (نقاش بين نماذج الذكاء الاصطناعي)</h2>
+        <label className="ms-auto inline-flex items-center gap-1.5 text-xs font-semibold"><input type="checkbox" checked={council.enabled} onChange={(e) => set({ enabled: e.target.checked })} />مفعّل</label>
+      </div>
+      <p className="text-[11px] text-stone-500 leading-relaxed">
+        كل مقعد يكتب رأيه مستقلاً ← المقاعد تراجع آراء بعضها بأسماء مجهولة (A، B، C) ← رئيس المجلس يكتب ردّاً استشارياً واحداً للزائر. الكل يشتغل على بيانات شام فقط، ومحدش منهم يقدر ينفّذ طلب أو يغيّر حاجة.
+        كل رد بالمجلس بيكلّف (عدد المقاعد × (1 + الجولات) + 1) طلب للمزوّدين، وفيه حد أقصى لكل زائر (SHAM_COUNCIL_RATE_PER_HOUR، الافتراضي 12 في الساعة).
+      </p>
+      <p className={`text-xs font-semibold ${ready >= 2 ? 'text-emerald-700' : 'text-amber-700'}`}>
+        {ready >= 2 ? `جاهز: ${ready} مقاعد مهيأة (يُستخدم أول 5).` : `غير جاهز: محتاج مقعدين مهيأين على الأقل (حالياً ${ready}). أضف مفاتيح المزوّدين أو اضبط SHAM_LLM_BASE_URL، ويمكن تشغيل أكثر من نموذج على نفس الخادم بتحديد اسم النموذج.`}
+      </p>
+      <div className="space-y-2">
+        {council.members.map((m) => (
+          <div key={m.id} className={`grid grid-cols-2 md:grid-cols-[auto_1fr_1fr_1fr_auto] items-center gap-2 rounded-xl border p-2 ${m.enabled && configured(m.engine) ? 'border-amber-300 bg-amber-50/40' : 'border-stone-200'}`}>
+            <input type="checkbox" aria-label="تفعيل المقعد" checked={m.enabled} onChange={(e) => setMember(m.id, { enabled: e.target.checked })} />
+            <select className={input} aria-label="المحرك" value={m.engine} onChange={(e) => setMember(m.id, { engine: e.target.value as ModelEngineId })}>
+              {MODEL_ENGINES.map((id) => <option key={id} value={id}>{ENGINE_LABEL[id]}{configured(id) ? '' : ' (غير مهيأ)'}</option>)}
+            </select>
+            <input className={input} dir="ltr" aria-label="النموذج" placeholder={engines.find((e) => e.id === m.engine)?.model || 'model'} value={m.model || ''} onChange={(e) => setMember(m.id, { model: e.target.value.trim() || undefined })} />
+            <select className={input} aria-label="الدور" value={m.role} onChange={(e) => setMember(m.id, { role: e.target.value as CouncilRole })}>
+              {(Object.keys(COUNCIL_ROLE) as CouncilRole[]).map((r) => <option key={r} value={r}>{COUNCIL_ROLE[r]}</option>)}
+            </select>
+            <button type="button" aria-label="حذف المقعد" onClick={() => set({ members: council.members.filter((x) => x.id !== m.id), chair: council.chair === m.id ? 'auto' : council.chair })} className="p-2 text-stone-400 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
+          </div>
+        ))}
+        {council.members.length < 8 && (
+          <button type="button" onClick={() => set({ members: [...council.members, { id: `seat-${Math.random().toString(36).slice(2, 10)}`, engine: 'self_hosted', role: 'general', enabled: true }] })}
+            className={`${btn} border border-dashed border-stone-300 text-xs w-full`}><Plus className="w-3.5 h-3.5" />إضافة مقعد</button>
+        )}
+      </div>
+      <div className="grid md:grid-cols-3 gap-3">
+        <Field label="رئيس المجلس (يكتب الرد النهائي)">
+          <select className={input} value={council.chair} onChange={(e) => set({ chair: e.target.value })}>
+            <option value="auto">تلقائي (حسب ترتيب المحركات)</option>
+            {council.members.map((m, i) => <option key={m.id} value={m.id}>مقعد {i + 1}: {COUNCIL_ROLE[m.role]} — {ENGINE_LABEL[m.engine]}{m.model ? ` (${m.model})` : ''}</option>)}
+          </select>
+        </Field>
+        <Field label="جولات النقاش (المراجعة المتبادلة)">
+          <select className={input} value={council.rounds} onChange={(e) => set({ rounds: Number(e.target.value) })}>
+            <option value={0}>بدون نقاش (آراء + خلاصة)</option><option value={1}>جولة واحدة (موصى به)</option><option value={2}>جولتان (أبطأ وأغلى)</option>
+          </select>
+        </Field>
+        <label className="flex items-center gap-2 text-xs font-semibold mt-5"><input type="checkbox" checked={council.showDiscussion} onChange={(e) => set({ showDiscussion: e.target.checked })} />إظهار النقاش للزائر تحت الرد</label>
+      </div>
+      <div>
+        <p className="text-xs font-semibold mb-1">يجتمع المجلس تلقائياً في (والزائر يقدر يطلبه بنفسه من زر المجلس في هذه الأنواع):</p>
+        <div className="flex flex-wrap gap-2">
+          {COUNCIL_INTENTS.map((intent) => (
+            <label key={intent} className="inline-flex items-center gap-1 text-[11px] rounded-full border border-stone-300 px-2 py-1">
+              <input type="checkbox" checked={council.intents.includes(intent)} onChange={(e) => set({ intents: e.target.checked ? [...council.intents, intent] : council.intents.filter((x) => x !== intent) })} />{INTENT[intent]}
+            </label>
+          ))}
+        </div>
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <button disabled={busy} onClick={onSave} className={`${btn} bg-stone-900 text-amber-100`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />حفظ إعدادات المجلس</>}</button>
+        {message && <p className="text-xs">{message}</p>}
+        <p className="text-[11px] text-stone-500">جرّبه من «مختبر المساعد» بعلامة «استشارة المجلس».</p>
+      </div>
+    </div>
+  );
+}
+
+/** Admin view of a council transcript (full: failed seats, models, timings). */
+function CouncilTranscriptView({ council }: { council: CouncilTranscript }) {
+  return (
+    <details className="mt-1 text-[11px] text-stone-600">
+      <summary className="cursor-pointer font-semibold text-amber-800">نقاش المجلس ({council.entries.filter((e) => e.ok).length}/{council.entries.length} مقاعد · {council.rounds} جولة · {(council.ms / 1000).toFixed(1)} ث · {council.outcome})</summary>
+      <div className="mt-1 space-y-1.5">
+        {council.entries.map((e) => (
+          <div key={e.memberId} className={`rounded-lg border p-1.5 ${e.ok ? 'border-stone-200 bg-white' : 'border-red-200 bg-red-50'}`}>
+            <p className="font-bold">{e.label} · {COUNCIL_ROLE[e.role]} · <span dir="ltr">{ENGINE_LABEL[e.engine]} {e.model}</span>{council.chair?.memberId === e.memberId ? ' · 👑 الرئيس' : ''} <span className="font-normal text-stone-400">{e.ms}ms</span></p>
+            {e.ok ? <p className="whitespace-pre-wrap">{e.opinion}</p> : <p className="text-red-700">لم يرد (فشل أو انتهت المهلة)</p>}
+            {e.reviews.map((r, i) => <p key={i} className="mt-1 whitespace-pre-wrap border-s-2 border-amber-300 ps-1.5"><b>مراجعة {i + 1}:</b> {r}</p>)}
+          </div>
+        ))}
+      </div>
+    </details>
+  );
+}
+
+interface SandboxReply { council?: { outcome: string; rounds: number; entries: { label: string; role: string; engine: string; opinion: string; reviews: string[]; chair: boolean }[] }; reply: string; engine: { id: string; name: string }; intent: string; actions: { type: string; serviceId?: string }[]; citations: { title: string }[]; trace?: { stage: string; detail: string; ms?: number }[] }
 
 function SandboxPanel() {
   const [message, setMessage] = useState('');
   const [language, setLanguage] = useState('ar');
   const [log, setLog] = useState<{ q: string; r?: SandboxReply; error?: string }[]>([]);
   const [busy, setBusy] = useState(false);
-  const samples = useMemo(() => ['عايز اشتري زيت عود', 'محتاج عرض سعر جملة لمحل', 'يعني ايه تعتيق العطر؟', '50 مل بتركيز 20%', 'عايز أكلم موظف', 'What services do you offer?'], []);
+  const [consult, setConsult] = useState(false);
+  const samples = useMemo(() => ['ازاي أركّب عطر عود ثابت؟', 'عايز اشتري زيت عود', 'محتاج عرض سعر جملة لمحل', 'يعني ايه تعتيق العطر؟', '50 مل بتركيز 20%', 'عايز أكلم موظف', 'What services do you offer?'], []);
   const run = async (q: string) => {
     if (!q.trim()) return; setBusy(true);
-    try { const r = await adminRequest<SandboxReply>('/test-chat', send('POST', { message: q, language })); setLog((l) => [{ q, r }, ...l]); }
+    try { const r = await adminRequest<SandboxReply>('/test-chat', send('POST', { message: q, language, ...(consult ? { consult: true } : {}) })); setLog((l) => [{ q, r }, ...l]); }
     catch (e) { setLog((l) => [{ q, error: (e as Error).message }, ...l]); } finally { setBusy(false); setMessage(''); }
   };
   return (
@@ -613,6 +711,7 @@ function SandboxPanel() {
       <form className={`${card} flex flex-wrap gap-2`} onSubmit={(e) => { e.preventDefault(); void run(message); }}>
         <input className={`${input} flex-1 min-w-[200px]`} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="اكتب رسالة اختبار…" aria-label="رسالة اختبار" />
         <select className={`${input} w-24`} value={language} onChange={(e) => setLanguage(e.target.value)} aria-label="اللغة"><option value="ar">ar</option><option value="en">en</option><option value="fr">fr</option></select>
+        <label className="inline-flex items-center gap-1 text-xs font-semibold"><input type="checkbox" checked={consult} onChange={(e) => setConsult(e.target.checked)} />استشارة المجلس</label>
         <button disabled={busy} className={`${btn} bg-stone-900 text-amber-100`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : 'تشغيل'}</button>
         <div className="w-full flex flex-wrap gap-1.5">{samples.map((s) => <button type="button" key={s} onClick={() => void run(s)} className="text-[11px] rounded-full border border-stone-300 px-2.5 py-1 hover:bg-amber-50">{s}</button>)}</div>
       </form>
@@ -627,6 +726,17 @@ function SandboxPanel() {
                   <p className="text-sm whitespace-pre-wrap bg-amber-50 rounded-xl p-3">{entry.r.reply}</p>
                   <p className="text-[11px] text-stone-500 mt-1">المحرك: <b>{ENGINE_LABEL[entry.r.engine.id] || entry.r.engine.name}</b> · النية: <b>{INTENT[entry.r.intent] || entry.r.intent}</b> · بطاقات: {entry.r.actions.map((a) => a.type + (a.serviceId ? `:${a.serviceId}` : '')).join('، ') || '—'}</p>
                   {entry.r.citations.length > 0 && <p className="text-[11px] text-stone-500">المراجع: {entry.r.citations.map((c) => c.title).join(' · ')}</p>}
+                  {entry.r.council && (
+                    <details className="mt-2 text-[11px]" open><summary className="cursor-pointer font-semibold text-amber-800">نقاش المجلس ({entry.r.council.entries.length} مستشارين · {entry.r.council.rounds} جولة)</summary>
+                      <div className="mt-1 space-y-1.5">{entry.r.council.entries.map((e) => (
+                        <div key={e.label} className="rounded-lg border border-stone-200 p-1.5">
+                          <p className="font-bold">{e.label} · {e.role} · <span dir="ltr">{e.engine}</span>{e.chair ? ' · 👑' : ''}</p>
+                          <p className="whitespace-pre-wrap">{e.opinion}</p>
+                          {e.reviews.map((r, i) => <p key={i} className="mt-1 whitespace-pre-wrap border-s-2 border-amber-300 ps-1.5">{r}</p>)}
+                        </div>
+                      ))}</div>
+                    </details>
+                  )}
                 </div>
                 <ol className="text-[11px] bg-stone-900 text-stone-100 rounded-xl p-3 space-y-1 font-mono overflow-x-auto" dir="ltr">
                   {entry.r.trace?.map((t, j) => <li key={j}><span className="text-amber-400">{t.stage}</span> {t.detail}{t.ms !== undefined ? <span className="text-stone-400"> {t.ms}ms</span> : null}</li>)}
