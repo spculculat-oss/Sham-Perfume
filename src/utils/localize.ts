@@ -41,6 +41,10 @@ export const LOCALE_MAP: Record<SupportedLanguage, string> = {
   bn: 'bn-BD',
   cs: 'cs-CZ',
   ro: 'ro-RO',
+  // Extended languages — batch 2 (RTL)
+  he: 'he-IL',
+  ur: 'ur-PK',
+  ps: 'ps-AF',
 };
 
 /**

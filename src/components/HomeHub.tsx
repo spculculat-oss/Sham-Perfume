@@ -65,6 +65,7 @@ import { UserEnvironmentProfile } from '../utils/environmentAdapter';
 import { UserDetailedAddress } from '../types/address';
 import { UserProfile } from '../types/auth';
 import { STATS_BADGE_EN, PORTAL_NEWS_EN } from '../utils/localizedHub';
+import { isRTL } from '../utils/localizedContent';
 import { LText, makeT, loc, fmt } from '../utils/localize';
 import { PORTAL_L10N, NEWS_L10N_A, NewsL10N } from '../utils/hubL10n';
 import { NEWS_L10N_B } from '../utils/hubL10n2';
@@ -170,7 +171,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
   onOpenAuthModal,
   onOpenSpecModal,
 }) => {
-  const isRtl = currentLang === 'ar' || currentLang === 'fa';
+  const isRtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
 
   const SUBTITLE_EN_MAP: Record<string, string> = {

@@ -79,6 +79,9 @@ const TIMEZONE_TO_COUNTRY: Record<string, string> = {
   'Europe/Prague': 'CZ',
   'Europe/Bucharest': 'RO',
   'Europe/Lisbon': 'PT',
+  // Extended language batch 2 (RTL)
+  'Asia/Karachi': 'PK',
+  'Asia/Kabul': 'AF',
 };
 
 /**
@@ -334,6 +337,24 @@ export function detectUserCountryAndLanguage(): GeoDetectionResult {
       return {
         detectedCountry: findCountryByCode('RO')!,
         detectedLanguage: 'ro',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'he') {
+      return {
+        detectedCountry: findCountryByCode('IL')!,
+        detectedLanguage: 'he',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'ur') {
+      return {
+        detectedCountry: findCountryByCode('PK')!,
+        detectedLanguage: 'ur',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'ps') {
+      return {
+        detectedCountry: findCountryByCode('AF')!,
+        detectedLanguage: 'ps',
         detectionSource: 'default',
       };
     }

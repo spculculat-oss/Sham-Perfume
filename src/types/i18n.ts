@@ -24,7 +24,11 @@ export type SupportedLanguage =
   | 'ms'
   | 'bn'
   | 'cs'
-  | 'ro';
+  | 'ro'
+  // Extended languages — batch 2 (RTL)
+  | 'he'
+  | 'ur'
+  | 'ps';
 
 export interface LanguageConfig {
   code: SupportedLanguage;
@@ -61,6 +65,10 @@ export const SUPPORTED_LANGUAGES: LanguageConfig[] = [
   { code: 'bn', name: 'Bengali', nativeName: 'বাংলা', dir: 'ltr', flag: '🇧🇩' },
   { code: 'cs', name: 'Czech', nativeName: 'Čeština', dir: 'ltr', flag: '🇨🇿' },
   { code: 'ro', name: 'Romanian', nativeName: 'Română', dir: 'ltr', flag: '🇷🇴' },
+  // Extended languages — batch 2 (RTL)
+  { code: 'he', name: 'Hebrew', nativeName: 'עברית', dir: 'rtl', flag: '🇮🇱' },
+  { code: 'ur', name: 'Urdu', nativeName: 'اردو', dir: 'rtl', flag: '🇵🇰' },
+  { code: 'ps', name: 'Pashto', nativeName: 'پښتو', dir: 'rtl', flag: '🇦🇫' },
 ];
 
 export type TranslationKey = string;
