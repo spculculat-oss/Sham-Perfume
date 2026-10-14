@@ -37,7 +37,9 @@ import {
 } from '../utils/chatStorage';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../utils/localizedContent';
-import { LText, makeT, fmt, LOCALE_MAP } from '../utils/localize';
+import { LText, makeT, fmt, loc, LOCALE_MAP } from '../utils/localize';
+import { isStaticHosting, requestApi, type ChatResponse } from '../utils/api';
+import { StaticHostingNotice, API_ERROR_NOTICE } from './StaticHostingNotice';
 
 
 const S = {
@@ -1270,7 +1272,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
     overrideModel?: 'auto' | 'gemini' | 'deepseek' | 'openai' | 'claude'
   ) => {
     const text = (textToSend || input).trim();
-    if (!text || isLoading) return;
+    if (!text || isLoading || isStaticHosting) return;
 
     const activeModelChoice = overrideModel || selectedModel;
 
@@ -1306,7 +1308,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/chat', {
+      const data = await requestApi<ChatResponse>('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -1319,7 +1321,9 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
         }),
       });
 
-      const data = await response.json();
+      if (typeof data.reply !== 'string' || !data.reply.trim()) {
+        throw new Error('Chat response is empty');
+      }
       const replyText = data.reply || L('error_reply');
 
       const botMessage: ChatMessage = {
@@ -1338,7 +1342,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
       const fallbackMessage: ChatMessage = {
         id: 'bot-err-' + Date.now(),
         role: 'assistant',
-        text: L('fallback_reply'),
+        text: loc(currentLang, API_ERROR_NOTICE),
         timestamp: new Date().toLocaleTimeString(LOCALE_MAP[currentLang] || 'ar-EG', { hour: '2-digit', minute: '2-digit' }),
         aiEngine: {
           id: 'ensemble',
@@ -1543,6 +1547,8 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                 </button>
               </div>
             </div>
+
+            <StaticHostingNotice currentLang={currentLang} />
 
             {/* Multi-AI Model Selector Toolbar */}
             <div className="px-3 py-2 bg-stone-950 text-white border-b border-stone-800 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar">
@@ -1982,7 +1988,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                 <button
                   key={idx}
                   onClick={() => handleSendMessage(q)}
-                  disabled={isLoading}
+                  disabled={isLoading || isStaticHosting}
                   className="whitespace-nowrap px-2.5 py-1 rounded-full bg-white hover:bg-amber-50 border border-stone-200 text-stone-700 hover:text-amber-900 text-[11px] transition-all cursor-pointer shadow-2xs shrink-0 font-medium"
                 >
                   {q}
@@ -2004,13 +2010,13 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                 placeholder={L('input_placeholder')}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                disabled={isLoading}
+                disabled={isLoading || isStaticHosting}
                 className="flex-1 px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs sm:text-sm text-stone-900 focus:outline-none focus:border-amber-700 focus:bg-white transition-all shadow-inner"
               />
 
               <button
                 type="submit"
-                disabled={!input.trim() || isLoading}
+                disabled={!input.trim() || isLoading || isStaticHosting}
                 className="p-2.5 px-4 bg-amber-800 hover:bg-amber-900 disabled:opacity-40 text-white rounded-xl shadow-xs transition-all cursor-pointer flex items-center justify-center shrink-0 font-medium text-xs sm:text-sm gap-1"
                 title={L('send')}
               >

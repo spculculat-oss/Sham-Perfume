@@ -11,19 +11,22 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT || 3000);
+if (!Number.isInteger(PORT) || PORT < 0 || PORT > 65535) {
+  throw new Error('PORT must be an integer between 0 and 65535.');
+}
 
 app.use(express.json());
 
 const apiKey = process.env.GEMINI_API_KEY || '';
-const ai = new GoogleGenAI({
+const ai = apiKey ? new GoogleGenAI({
   apiKey,
   httpOptions: {
     headers: {
       'User-Agent': 'aistudio-build',
     },
   },
-});
+}) : null;
 
 // ============================================================================
 // SYSTEM INSTRUCTION: "الخبير شاهين" - شيخ العطارين وكبير الكيميائيين
@@ -156,6 +159,7 @@ async function executeGeminiCore(
   systemInstruction: string,
   temperature = 0.75
 ): Promise<string> {
+  if (!ai) throw new Error('GEMINI_API_KEY is not configured.');
   const models = ['gemini-3.8-flash', 'gemini-3.1-flash-lite', 'gemini-flash-latest'];
 
   for (const modelName of models) {
@@ -811,7 +815,7 @@ app.get('/api/models', (req, res) => {
         badge: '👑 الخبير شاهين (متصل)',
         description: 'حوار واقعي إنساني ذكي وشامل في المجالات الطبية والتجميلية والشخصية مع دمج آراء الخبراء',
         accentColor: 'amber',
-        hasApiKey: true,
+        hasApiKey: Boolean(apiKey || process.env.DEEPSEEK_API_KEY || process.env.OPENAI_API_KEY || process.env.ANTHROPIC_API_KEY),
       },
       {
         id: 'gemini',
@@ -829,7 +833,7 @@ app.get('/api/models', (req, res) => {
         badge: '🔬 DeepSeek R1',
         description: 'الاستدلال الكيميائي ومعايير IFRA لسلامة الجلد والكثافة النوعية',
         accentColor: 'blue',
-        hasApiKey: true,
+        hasApiKey: Boolean(process.env.DEEPSEEK_API_KEY),
       },
       {
         id: 'openai',
@@ -838,7 +842,7 @@ app.get('/api/models', (req, res) => {
         badge: '🟢 GPT-4o Architect',
         description: 'تصميم الأكوردات العطرية والانتشار وقوس الفوحان التجاري',
         accentColor: 'green',
-        hasApiKey: true,
+        hasApiKey: Boolean(process.env.OPENAI_API_KEY),
       },
       {
         id: 'claude',
@@ -847,7 +851,7 @@ app.get('/api/models', (req, res) => {
         badge: '🟣 Claude 3.5 Sonnet',
         description: 'مدرسة جراس الفرنسية العريقة وأسرار التعتيق والزيوت النباتية النادرة',
         accentColor: 'purple',
-        hasApiKey: true,
+        hasApiKey: Boolean(process.env.ANTHROPIC_API_KEY),
       },
     ],
   });
@@ -931,100 +935,8 @@ function getTodayArabicDateString(): string {
   });
 }
 
-function getFallbackDailyNews(): GeneratedNewsItem[] {
-  const todayDate = `اليوم · ${getTodayArabicDateString()}`;
-  return [
-    {
-      id: `shaheen-daily-${Date.now()}-1`,
-      badge: '⚡ رصد الخبير شاهين اليومي',
-      titleAr: 'طفرة تقنيات التقطير الجزيئي البارد للعود الكمبودي وخلاصات زهور الجبل',
-      titleEn: 'Breakthrough Cold Molecular Distillation for Pure Oud & Alpine Florals',
-      category: 'niche',
-      categoryLabelAr: 'ابتكارات النيش والكيمياء',
-      isHot: true,
-      isDailyRefreshed: true,
-      summaryAr: 'أعلنت مختبرات العطور المتخصصة عن تقنية تقطير مبتكرة تعزل الجزيئات الثقيلة المسببة للكدر والحدة الترابية في دهن العود، مع مضاعفة نقاء النوتات الزهرية النادرة.',
-      contentAr: `في متابعة معملية حصرية لليوم، كشفت دور العطور الحرفية بالتعاون مع مراكز الأبحاث في غراس وسويسرا عن جيل جديد من أجهزة التقطير الجزيئي تحت تفريغ هوائي منخفض الحرارة.
-تسمح هذه التقنية باستخلاص دهن العود الطبيعي دون تعريضه للحرق الحراري المعتاد في أواني النحاس التقليدية، مما ينتج دهن عود بلوري شفاف يحتفظ بنقاء عطري يشبه نسيم الغابات البكر.
-يؤكد معملنا أن هذه التقنية تفتح الباب لمصممي العطور لدمج العود بنسب تصل إلى 15% في العطور الصيفية والمكتبية دون أي إزعاج أو ثقل خانق.`,
-      date: todayDate,
-      readTime: '3 دقائق',
-      source: 'مختبر الخبير شاهين · جراس وباريس',
-      imageUrl: EDITORIAL_NEWS_IMAGES[0], // niche perfume bottle on marble
-      tags: ['تقطير جزيئي', 'دهن عود نقي', 'عطور النيش', 'كيمياء العطور', 'تعتيق بارد'],
-      keyNotes: [
-        { nameAr: 'دهن عود بلوري مقطر جزيئياً', nameEn: 'Cold-Distilled Crystal Oud', type: 'base', percentageHint: 25 },
-        { nameAr: 'برغموت صقلي معصور حيوياً', nameEn: 'Bio-Cold Pressed Bergamot', type: 'top', percentageHint: 30 },
-        { nameAr: 'سوسن إيطالي ونفحات بودرية', nameEn: 'Italian Iris & Powder Accord', type: 'heart', percentageHint: 20 },
-        { nameAr: 'أمبروكسان بلوري نقي ومثبت', nameEn: 'Crystal Ambroxan Fixative', type: 'base', percentageHint: 25 },
-      ],
-      marketImpact: 'ارتفاع عقود توريد خلاصات العود النقي بنسبة 35% في أسواق باريس ودبي.',
-      expertVerdict: '«التقطير البارد هو قفزة نوعية في تاريخ العطور الشرقية؛ فهو يزيل الخشونة الترابية ويبرز روح العود النبيلة التي تمتزج مع أرق الأزهار» - الخبير شاهين.',
-      author: 'الخبير شاهين (شيخ العطارين)',
-      location: 'باريس - معمل شام الدولي',
-    },
-    {
-      id: `shaheen-daily-${Date.now()}-2`,
-      badge: '⚡ تقرير المعارض الحصري',
-      titleAr: 'قمة العطور العالمية تكشف توجهات الروائح الخضراء المنعشة والزيوت التجميلية المستحلبة',
-      titleEn: 'Global Fragrance Summit: The Rise of Mineral Greens and Water-Soluble Essences',
-      category: 'exhibitions',
-      categoryLabelAr: 'المعارض الدولية الكبرى',
-      isHot: true,
-      isDailyRefreshed: true,
-      summaryAr: 'شهد جناح الابتكار في القمة الدولية للعطور توقيع اتفاقيات كبرى لاعتماد الزيوت العطرية القابلة للذوبان المائي في معطرات الشعر والجسم دون الحاجة لكحول مجفف.',
-      contentAr: `عقدت القمة الدولية لكبار صناع العطور جلساتها الموسعة اليوم بمشاركة أبرز خبراء الشذى من أوروبا والشرق الأوسط وآسيا.
-تصدرت النقاشات المعملية مشروعات العطور النظيفة (Clean Fragrances)، وحلول الاستحلاب الدقيق باستخدام مشتقات الجلوكوز النباتي والبوليسوربات الآمن على كيراتين الشعر وحاجز البشرة الدهني.
-وقد أشاد الخبراء بالمعايير التي توازن بين الفوحان الذي يدوم طوال اليوم والملمس الحريري غير اللزج.`,
-      date: todayDate,
-      readTime: '4 دقائق',
-      source: 'مراسلو معمل شام · ميلانو ودبي',
-      imageUrl: EDITORIAL_NEWS_IMAGES[1], // exhibition summit
-      tags: ['قمة العطور', 'معطرات شعر', 'استحلاب تجميلي', 'عطور مائية', 'ثبات'],
-      keyNotes: [
-        { nameAr: 'شاي أبيض وزهر البرتقال', nameEn: 'White Tea & Orange Blossom', type: 'top', percentageHint: 30 },
-        { nameAr: 'هيل غواتيمالي وخزامى جبلي', nameEn: 'Guatemalan Cardamom & Lavender', type: 'heart', percentageHint: 25 },
-        { nameAr: 'خشب الأرز ومسك الحرير', nameEn: 'Cedarwood & Silk Musk', type: 'base', percentageHint: 35 },
-        { nameAr: 'مستحلب تجميلي نباتي Polysorbate', nameEn: 'Cosmetic Solubilizer', type: 'base', percentageHint: 10 },
-      ],
-      marketImpact: 'توقعات بنمو سوق معطرات الشعر والجسم الطبيعية بنسبة 52% خلال العامين القادمين.',
-      expertVerdict: '«معطر الشعر التجميلي الناجح هو الذي يمنح لمسة لمعان وثباتاً أرستقراطياً دون أن يثقل الشعر أو يسبب جفافه» - الخبير شاهين.',
-      author: 'الخبير شاهين (كبير الكيميائيين)',
-      location: 'ميلانو - قمة العطور',
-    },
-    {
-      id: `shaheen-daily-${Date.now()}-3`,
-      badge: '⚡ حصاد ومواد خام',
-      titleAr: 'تقييم مواسم حصاد اللبان العماني والزعفران الكشميري: نقاء تاريخي وخلو تام من الشوائب',
-      titleEn: 'Omani Frankincense & Kashmiri Saffron Harvest: Record Essential Oil Purity',
-      category: 'harvests',
-      categoryLabelAr: 'مواسم الحصاد والمواد الخام',
-      isHot: false,
-      isDailyRefreshed: true,
-      summaryAr: 'أظهرت تحاليل الطيف الكتلي لموسم قطاف اللبان الحوجري الصافي في ظفار والزعفران الأحمر في كشمير كثافة غير مسبوقة في المركبات التثبيتية الطبيعية.',
-      contentAr: `أصدر معمل أبحاث المواد الخام التابع لمعملنا تقريره التقييمي الدوري حول محاصيل الصمغ الراتنجي والتوابل العطرية النادرة لهذا الموسم.
-أكدت القراءات المعملية أن حبوب اللبان الحوجري الأبيض النقي احتوت على نسبة ألفا-باينين وأحماض بوزويلية تمنح العطر قدرة تثبيت فائقة تمتد لأكثر من 36 ساعة على الأقمشة الصوفية والقطنية.
-أما الزعفران، فقد سجل نسبة سافرانال عالية جداً تضفي طابعاً جلدياً مخملياً دافئاً عند إضافته بنسبة 0.5% إلى 1% في قلب العطر.`,
-      date: todayDate,
-      readTime: '3 دقائق',
-      source: 'محطة أبحاث الخامات العطرية · مسقط وظفار',
-      imageUrl: EDITORIAL_NEWS_IMAGES[2], // botanical raw materials
-      tags: ['لبان حوجري', 'زعفران كشميري', 'حصاد طبيعي', 'تثبيت العطر', 'خامات نادرة'],
-      keyNotes: [
-        { nameAr: 'لبان حوجري ملكي نقي', nameEn: 'Royal Hojari Frankincense', type: 'base', percentageHint: 35 },
-        { nameAr: 'زعفران أحمر نقي (كروسين)', nameEn: 'Pure Kashmiri Saffron', type: 'heart', percentageHint: 15 },
-        { nameAr: 'خشب الصندل العتيق', nameEn: 'Aged Sandalwood', type: 'base', percentageHint: 30 },
-        { nameAr: 'فلفل وردي وليمون منعش', nameEn: 'Pink Pepper & Sicilian Lemon', type: 'top', percentageHint: 20 },
-      ],
-      marketImpact: 'استقرار أسعار اللبان الحوجري الممتاز مع ارتفاع الطلب من دور النيش الفرنسية.',
-      expertVerdict: '«اللبان الحوجري الطبيعي هو روح العطر الشرقي ومثبته الخالد، قطرة منه تغنيك عن عشرات المثبتات الصناعية» - الخبير شاهين.',
-      author: 'الخبير شاهين (شيخ العطارين)',
-      location: 'صلالة - مرصد الخامات الطبيعية',
-    },
-  ];
-}
-
 async function generateFreshDailyNewsWithShaheen(): Promise<GeneratedNewsItem[]> {
+  if (!ai) throw new Error('News refresh requires GEMINI_API_KEY.');
   const models = ['gemini-3.1-flash-lite', 'gemini-3.8-flash', 'gemini-flash-latest'];
   const todayArabic = getTodayArabicDateString();
 
@@ -1111,8 +1023,7 @@ async function generateFreshDailyNewsWithShaheen(): Promise<GeneratedNewsItem[]>
     }
   }
 
-  // Fallback to richly crafted daily news for today
-  return getFallbackDailyNews();
+  throw new Error('No news provider returned valid articles.');
 }
 
 // GET /api/news - Get active daily news feed
@@ -1134,13 +1045,9 @@ app.get('/api/news', async (req, res) => {
     });
   } catch (error: any) {
     console.error('Error fetching news:', error);
-    res.json({
-      success: true,
-      lastRefreshedAt: new Date().toISOString(),
-      dateString: getTodayArabicDateString(),
-      curator: 'الخبير شاهين',
-      count: 3,
-      articles: getFallbackDailyNews(),
+    res.status(503).json({
+      success: false,
+      error: 'News service is unavailable. Existing articles have not been changed.',
     });
   }
 });
@@ -1163,18 +1070,15 @@ app.post('/api/news/refresh', async (req, res) => {
     });
   } catch (error: any) {
     console.error('Error refreshing news:', error);
-    const fallback = getFallbackDailyNews();
-    activeDailyNewsList = fallback;
-    res.json({
-      success: true,
-      message: 'تم تحديث النشرة اليومية عبر قاعدة معمل الخبير شاهين بنجاح.',
-      refreshedAt: new Date().toISOString(),
-      dateString: getTodayArabicDateString(),
-      curator: 'الخبير شاهين',
-      count: fallback.length,
-      articles: fallback,
+    res.status(503).json({
+      success: false,
+      error: 'News refresh failed. Existing articles have not been changed.',
     });
   }
+});
+
+app.use('/api', (_req, res) => {
+  res.status(404).json({ error: 'API route not found' });
 });
 
 // ============================================================================
@@ -1194,8 +1098,10 @@ async function startServer() {
     app.use(vite.middlewares);
   }
 
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server started on http://0.0.0.0:${PORT}`);
+  const server = app.listen(PORT, '0.0.0.0', () => {
+    const address = server.address();
+    const boundPort = typeof address === 'object' && address ? address.port : PORT;
+    console.log(`Server started on http://0.0.0.0:${boundPort}`);
   });
 }
 
