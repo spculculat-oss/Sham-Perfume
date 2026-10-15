@@ -20,6 +20,11 @@ import { I18N_EXT_18 } from "./i18nExt18";
 import { I18N_EXT_19 } from "./i18nExt19";
 import { I18N_EXT_20 } from "./i18nExt20";
 import { I18N_EXT_21 } from "./i18nExt21";
+import { I18N_EXT_22 } from "./i18nExt22";
+import { I18N_EXT_23 } from "./i18nExt23";
+import { I18N_EXT_24 } from "./i18nExt24";
+import { I18N_EXT_25 } from "./i18nExt25";
+import { I18N_EXT_26 } from "./i18nExt26";
 
 export const USER_LANG_STORAGE_KEY = "sham_perfume_user_language";
 
@@ -48,6 +53,11 @@ export const TRANSLATIONS: Record<SupportedLanguage, Record<string, string>> = {
   ...I18N_EXT_19,
   ...I18N_EXT_20,
   ...I18N_EXT_21,
+  ...I18N_EXT_22,
+  ...I18N_EXT_23,
+  ...I18N_EXT_24,
+  ...I18N_EXT_25,
+  ...I18N_EXT_26,
 };
 
 export function getInitialLanguage(): SupportedLanguage {
