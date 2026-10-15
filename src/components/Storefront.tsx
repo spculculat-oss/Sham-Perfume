@@ -41,6 +41,8 @@ export const Storefront: React.FC<Props> = ({ onClose, currentLang, retailerId }
   const [products, setProducts] = useState<any[]>(productsData.products || []);
   
   const filtered = products.filter(p => {
+    // Handle special category 'newArrivals' (shows all products sorted by date)
+    if (cat === 'newArrivals') return true;
     if (cat !== 'all' && (p as any).category !== cat) return false;
     if (search) {
       const q = search.toLowerCase();
