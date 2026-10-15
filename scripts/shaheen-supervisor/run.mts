@@ -33,6 +33,7 @@ for (const tool of AI_TOOLS) {
 
 // 3) Shaheen reviews (one request for all tools)
 let review: Review | undefined;
+let reviewNote = '';
 let ask: Ask | undefined;
 try { ask = await makeAsk(env); } catch { ask = undefined; }
 const reviewed = AI_TOOLS.filter((t) => probes[t.id]?.some((p) => p.ok && p.answer));
@@ -41,8 +42,9 @@ if (ask && reviewed.length) {
     const reply = await ask(REVIEW_SYSTEM, reviewPrompt(reviewed.map((t) => ({ id: t.id, guidance: previous?.tools[t.id]?.guidance?.text, probes: probes[t.id]! }))));
     review = readReview(parseJson(reply));
     console.log(`Shaheen reviewed ${Object.keys(review.tools).length} tools`);
-  } catch (error) { console.log(`Shaheen's review failed (${(error as Error).message.slice(0, 120)}): automatic checks only`); }
-} else console.log(ask ? 'Nothing to review' : 'No AI engine configured: automatic checks only');
+  } catch (error) { reviewNote = `Shaheen's review failed (${(error as Error).message.slice(0, 160)}): automatic checks only`; }
+} else reviewNote = ask ? 'Nothing to review' : 'No AI engine configured: automatic checks only';
+if (reviewNote) console.log(reviewNote);
 
 // 4) Report + guidance
 const report = buildReport({ previous, probes, review, now });
@@ -59,6 +61,7 @@ if (env.GITHUB_STEP_SUMMARY) {
 if (env.GITHUB_ACTIONS) {
   const clean = (t: string) => t.replace(/[\r\n%]/g, ' ').slice(0, 400);
   console.log(`::notice title=Shaheen supervisor::${clean(`${report.overall ?? '—'}/10 — ${review ? 'reviewed by Shaheen' : 'automatic checks only'} — ${report.summaryAr}`)}`);
+  if (reviewNote) console.log(`::warning title=Shaheen review::${clean(reviewNote)}`);
   for (const { t, r } of rows) {
     const line = clean(`${r!.score ?? '—'}/10 ${r!.status} · ${event[r!.lastEvent]} · ${r!.issues.slice(0, 2).join(' · ') || 'سليم'}`);
     console.log(`::${r!.status === 'fail' ? 'warning' : 'notice'} title=${t.id}::${line}`);
