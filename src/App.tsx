@@ -53,12 +53,25 @@ import {
 } from './utils/geoDetector';
 import { UserProfile } from './types/auth';
 import { getCurrentUserSession, logoutUser } from './utils/authStorage';
+import { decodeFormulaPayload } from './utils/formulaShare';
 import { Check, X, BookmarkPlus } from 'lucide-react';
 
 const LOCAL_STORAGE_KEY = 'miyaar_perfume_saved_formulas';
 
 
 const S = {
+  toast_shared_loaded: {
+    ar: '✨ تم فتح تركيبة العطر المشاركة: «{title}» في حاسبة المعمل وبطاقة المواصفات!',
+    en: '✨ Shared fragrance formula loaded: «{title}» into lab calculator & spec sheet!',
+    fr: '✨ Formule partagée chargée : « {title} » dans le calculateur et la fiche !',
+    es: '✨ ¡Fórmula compartida cargada: «{title}» en la calculadora y ficha técnica!',
+    it: '✨ Formula condivisa caricata: «{title}» nel calcolatore e nella scheda!',
+    de: '✨ Geteilte Formel geladen: „{title}“ im Rechner & Datenblatt!',
+    ru: '✨ Загружена полученная формула: «{title}» в калькулятор и техкарту!',
+    zh: '✨ 已加载共享香水配方：「{title}」至实验室计算器与规格单！',
+    tr: '✨ Paylaşılan formül yüklendi: «{title}» hesaplayıcıya ve teknik karta!',
+    fa: '✨ فرمول اشتراک‌گذاری شده «{title}» در ماشین‌حساب و کارت مشخصات بارگذاری شد!',
+  },
   toast_home_back: { ar: 'أنت الآن في الصفحة الرئيسية. اضغط زر الرجوع مجدداً لمغادرة المنصة.', en: 'You are on the home page. Press back again to leave the platform.', fr: 'Vous êtes sur l’accueil. Appuyez à nouveau sur retour pour quitter.', es: 'Estás en el inicio. Pulsa atrás de nuevo para salir.', it: 'Sei nella home. Premi di nuovo indietro per uscire.', de: 'Sie sind auf der Startseite. Drücken Sie erneut „Zurück“, um zu verlassen.', ru: 'Вы на главной странице. Нажмите «Назад» ещё раз, чтобы выйти.', zh: '您正在首页。再次点击返回即可离开平台。', tr: 'Ana sayfadasınız. Ayrılmak için geriye tekrar basın.', fa: 'شما در صفحه اصلی هستید. برای خروج دوباره دکمه بازگشت را بزنید.' },
   toast_lang_tpl: { ar: '🌐 تم تغيير لغة المنصة بنجاح إلى: {flag} «{native}» ({dir})', en: '🌐 Platform language changed to: {flag} «{native}» ({dir})', fr: '🌐 Langue changée : {flag} « {native} » ({dir})', es: '🌐 Idioma cambiado a: {flag} «{native}» ({dir})', it: '🌐 Lingua cambiata: {flag} «{native}» ({dir})', de: '🌐 Sprache geändert: {flag} „{native}“ ({dir})', ru: '🌐 Язык платформы изменён: {flag} «{native}» ({dir})', zh: '🌐 平台语言已切换为：{flag}「{native}」（{dir}）', tr: '🌐 Dil değiştirildi: {flag} «{native}» ({dir})', fa: '🌐 زبان پلتفرم به {flag} «{native}» ({dir}) تغییر کرد' },
   toast_geo_tpl: { ar: '📍 تم تحديد موقعك: {flag} {country} — لغة المنصة: {lang}', en: '📍 Location detected: {flag} {country} — Platform language: {lang}', fr: '📍 Position détectée : {flag} {country} — Langue : {lang}', es: '📍 Ubicación detectada: {flag} {country} — Idioma: {lang}', it: '📍 Posizione rilevata: {flag} {country} — Lingua: {lang}', de: '📍 Standort erkannt: {flag} {country} — Sprache: {lang}', ru: '📍 Ваше местоположение: {flag} {country} — Язык: {lang}', zh: '📍 已检测到您的位置：{flag} {country} — 平台语言：{lang}', tr: '📍 Konum algılandı: {flag} {country} — Dil: {lang}', fa: '📍 موقعیت شما شناسایی شد: {flag} {country} — زبان پلتفرم: {lang}' },
@@ -94,7 +107,9 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<string>(() => {
     try {
       const hash = window.location.hash.replace('#', '');
-      return hash || 'home';
+      const clean = hash.split('?')[0];
+      if (clean === 'formula' || clean === 'spec') return 'concentration';
+      return clean || 'home';
     } catch {
       return 'home';
     }
@@ -289,8 +304,10 @@ export default function App() {
       }
 
       // 2. Identify target tab
-      const hash = window.location.hash.replace('#', '');
-      const targetTab = event.state?.tab || hash || 'home';
+      const hash = window.location.hash.replace('#', '').split('?')[0];
+      const rawTarget = event.state?.tab || hash || 'home';
+      const cleanRaw = rawTarget.split('?')[0];
+      const targetTab = cleanRaw === 'formula' || cleanRaw === 'spec' ? 'concentration' : cleanRaw;
 
       // 3. Double-back safety net on Home to prevent accidental browser tab close
       if (targetTab === 'home' && (!event.state || event.state.isInitial)) {
@@ -319,8 +336,9 @@ export default function App() {
     };
 
     const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '') || 'home';
-      setActiveTab(hash);
+      const hash = window.location.hash.replace('#', '').split('?')[0];
+      const target = hash === 'formula' || hash === 'spec' ? 'concentration' : (hash || 'home');
+      setActiveTab(target);
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -394,6 +412,47 @@ export default function App() {
   const [detailedAddress, setDetailedAddress] = useState<UserDetailedAddress>(() =>
     loadDetailedAddress()
   );
+
+  // Check and load shared formula from URL hash or query params
+  useEffect(() => {
+    const handleUrlFormula = () => {
+      try {
+        const hash = window.location.hash || '';
+        const search = window.location.search || '';
+        if (
+          hash.includes('d=') ||
+          hash.includes('formula=') ||
+          search.includes('formula=') ||
+          search.includes('d=')
+        ) {
+          const raw = hash.includes('d=') || hash.includes('formula=') ? hash : search;
+          const payload = decodeFormulaPayload(raw);
+          if (payload && payload.title) {
+            setFormulaTitle(payload.title);
+            if (payload.author) setFormulaAuthor(payload.author);
+            if (payload.batchCode) setBatchCode(payload.batchCode);
+            if (payload.notes) setFormulaNotes(payload.notes);
+            if (payload.macerationDays) setMacerationDays(payload.macerationDays);
+            if (payload.formulation) setFormulation(payload.formulation);
+            if (payload.pyramidNotes && payload.pyramidNotes.length > 0) {
+              setPyramidNotes(payload.pyramidNotes);
+            }
+            setActiveTab('concentration');
+            setIsSpecModalOpen(true);
+            showToast(fmt(L('toast_shared_loaded'), { title: payload.title }));
+          }
+        }
+      } catch (err) {
+        console.error('Error loading shared formula from URL:', err);
+      }
+    };
+
+    handleUrlFormula();
+    window.addEventListener('hashchange', handleUrlFormula);
+    return () => {
+      window.removeEventListener('hashchange', handleUrlFormula);
+    };
+  }, []);
 
   // Auto-detect country and language based on the country where the site was opened
   useEffect(() => {
