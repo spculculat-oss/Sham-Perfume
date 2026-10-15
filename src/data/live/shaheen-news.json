@@ -1,9 +1,319 @@
 {
  "version": 1,
- "updatedAt": "2026-10-15T00:00:00.000Z",
- "nextUpdateAt": "2026-10-15T12:00:00.000Z",
+ "updatedAt": "2026-10-15T14:55:56.114Z",
+ "nextUpdateAt": "2026-10-16T02:55:56.114Z",
  "intervalHours": 12,
- "editor": "feeds",
- "sources": [],
- "items": []
+ "editor": "shaheen",
+ "digest": {
+  "ar": "تشهد نشرة أخبار العطور اليوم نشاطاً ملحوظاً في قطاع الإطلاقات الجديدة والمجموعات الحصرية من دور عالمية مثل Amouage وKAYALI وHermès، إلى جانب توسع علامات تجارية كبرى في قطاع التجزئة والفنادق. كما تبرز الفعاليات الإقليمية والمعارض المتخصصة في المنطقة العربية والشرق الأوسط كمنصات رئيسية لعرض أحدث الابتكارات العطرية.",
+  "en": "Today's fragrance news digest highlights notable new launches and exclusive collections from global houses such as Amouage, KAYALI, and Hermès, alongside major retail and hospitality expansions. Regional events and specialized exhibitions in the Middle East also stand out as key platforms for showcasing the latest olfactory innovations."
+ },
+ "sources": [
+  {
+   "name": "Now Smell This",
+   "count": 2
+  },
+  {
+   "name": "Sharjah24",
+   "count": 2
+  },
+  {
+   "name": "25H",
+   "count": 1
+  },
+  {
+   "name": "Grazia",
+   "count": 1
+  },
+  {
+   "name": "www.marketscreener.com",
+   "count": 1
+  },
+  {
+   "name": "Boutique Hotelier USA",
+   "count": 1
+  },
+  {
+   "name": "GuruFocus",
+   "count": 1
+  },
+  {
+   "name": "Mamabella",
+   "count": 1
+  },
+  {
+   "name": "Cosmetics Business",
+   "count": 1
+  },
+  {
+   "name": "New York Magazine",
+   "count": 1
+  }
+ ],
+ "items": [
+  {
+   "id": "np3cgjd",
+   "url": "https://nstperfume.com/2026/10/14/amouage-decision-42-overture-41-new-fragrances/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-14T15:29:01.000Z",
+   "original": "Amouage Decision 42 & Overture 41 ~ new fragrances",
+   "lang": "en",
+   "category": "launch",
+   "importance": 5,
+   "title": {
+    "ar": "دار Amouage تطلق عطرين جديدين ضمن مجموعة Exceptional Extraits",
+    "en": "Amouage Launches Decision 42 and Overture 41 in Exceptional Extraits Collection"
+   },
+   "summary": {
+    "ar": "أطلقت دار العطور الفاخرة Amouage عطرين جديدين هما Decision 42 وOverture 41 ضمن مجموعتها الحصرية Exceptional Extraits.",
+    "en": "Luxury fragrance house Amouage has launched Decision 42 and Overture 41, two new additions to its Exceptional Extraits collection."
+   },
+   "note": {
+    "ar": "إصدارات التركيزات العالية 'Extrait' تمثل فرصة رائعة لعشاق الثبات الفائق والتعقيد الشمي العالي في العطور الفاخرة.",
+    "en": "High-concentration Extrait releases offer fragrance enthusiasts exceptional longevity and olfactory complexity."
+   }
+  },
+  {
+   "id": "ngers87",
+   "url": "https://news.google.com/rss/articles/CBMiwgJBVV95cUxNR3ZRYUtTU2tjcnRXWWdNN0RtSkNJWko4bzU3N1NOLWdEbWV4QVl4clZKMFluMTA2OEZERnBWUUFuU3padHRqOG93eG9ULTU0UUlscFlqcFIyQ3dwVHZBRndySmF2bVhYTUNVd1Z3ZFZTcF9iUk5YSHZrYkFEd0RuOUswQVgwYWlOT0dRemxHMlUtUGhremJ3YVFyT0RTdURaOXRTU09YVlYxQlFxZzNrSE1kYk1hLXpJRXBOajF3ZFh5TWF3REFTNGNTRVN5TEpQQXlESm1nTFk4MTN6Y1NETDhmdFo2TkRwN2s4emR1Z3ZhcjNwcldWaGtpUEx2Y19LS19YUTZYaWxrY25MNkNsRUo4MTlubWdaYVhOSzhPaUR2UlJrRmJ4Y185OWFzRDY4Nmh2dWRyME9RZWRtbEtXUnJn?oc=5",
+   "source": "25H",
+   "publishedAt": "2026-10-14T17:22:59.000Z",
+   "original": "KAYALI تقدّم الفصل الجديد من مجموعتها المستوحاة من الحلويات مع عطر YUM VANILLA CUPCAKE",
+   "lang": "ar",
+   "category": "launch",
+   "importance": 5,
+   "title": {
+    "ar": "علامة KAYALI تقدم عطرها الجديد YUM VANILLA CUPCAKE",
+    "en": "KAYALI Introduces New Gourmand Fragrance YUM VANILLA CUPCAKE"
+   },
+   "summary": {
+    "ar": "قدمت علامة KAYALI الفصل الجديد من مجموعتها المستوحاة من الحلويات مع إطلاق عطر YUM VANILLA CUPCAKE.",
+    "en": "KAYALI has presented the next chapter of its dessert-inspired collection with the launch of YUM VANILLA CUPCAKE."
+   },
+   "note": {
+    "ar": "إضافة مميزة لمحبي العطور السكرية الغورماند (Gourmand) التي تلاقي رواجاً واسعاً في السوق الحالي.",
+    "en": "A delightful addition for fans of gourmand and sweet fragrance profiles currently trending in the market."
+   }
+  },
+  {
+   "id": "nrbw4f1",
+   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBPeWV0TjVDZHdRbHRSSzdaMDdKUk9YdUxzNjRURWt5ek1WQUNheUZCcWNDaklkWElnQWJ6ZWg1d2t6UVcydjdtcnd6NEVqZU9rcERQTTNYS2xzSldZ?oc=5",
+   "source": "Sharjah24",
+   "publishedAt": "2026-10-15T09:50:20.000Z",
+   "original": "معرض الإمارات للعطور والعود يستقطب إقبالاً لافتاً من الزوار",
+   "lang": "ar",
+   "category": "events",
+   "importance": 4,
+   "title": {
+    "ar": "معرض الإمارات للعطور والعود يستقطب إقبالاً لافتاً",
+    "en": "Emirates Perfumes and Oud Exhibition Draws Strong Visitor Turnout"
+   },
+   "summary": {
+    "ar": "شهد معرض الإمارات للعطور والعود إقبالاً جماهيرياً كبيراً ومشاركة واسعة من العارضين المهتمين بصناعة العطور والعود.",
+    "en": "The Emirates Perfumes and Oud Exhibition has attracted notable visitor turnout and strong participation from industry exhibitors."
+   },
+   "note": {
+    "ar": "يعكس المعرض قوة السوق المحلي في قطاع العطور الشرقية والعود، وفرصة ممتازة لاكتشاف العلامات الناشئة.",
+    "en": "Reflects the strength of the regional market in oriental perfumery and oud, offering great discovery opportunities."
+   }
+  },
+  {
+   "id": "nff8yv9",
+   "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxQcFRmcXBfT042LVMxeENLUFc3Nml5ZExOWEkteUZUa2oxSS0xYktMTU9kUzlmZDRYVjltX3RIdVR1RzE5QVpzVnFTRWpId3VlVEJjWTR5TzctaFNOQ1otTjU4NFh0V091eURvRVVOcFlVOW8yOFdGamRuU25mVl9USUhPejJwS0dqTjlDS0drT3JVX3NSWEFTcDZ2dmN1aE93ODhfUnMyVWRTbzk3eTRlbDNhVEI3OTFIaUZ6RTJrRjZzaVdWODl4OXpXbXRaUWxFMlc1d0xWV21kVm9Md3lUWUJxZ244OVow?oc=5",
+   "source": "Grazia",
+   "publishedAt": "2026-10-15T09:41:16.000Z",
+   "original": "Ginseng Biloba, la nouvelle échappée olfactive d’Hermès aux notes boisées, végétales et délicatement amères",
+   "lang": "fr",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "Hermès توسع محفظتها العطرية بعطر Ginseng Biloba",
+    "en": "Hermès Expands Olfactory Portfolio with Ginseng Biloba"
+   },
+   "summary": {
+    "ar": "أطلقت دار Hermès عطرها الجديد Ginseng Biloba الذي يجمع بين النفحات الخشبية والنباتية والمرارة الرقيقة.",
+    "en": "Hermès has introduced Ginseng Biloba, a new olfactory escape featuring woody, vegetal, and delicately bitter notes."
+   },
+   "note": {
+    "ar": "خيار منعش ومبتكر لمن يبحثون عن تجارب عطرية غير تقليدية تبتعد عن الحلاوة التقليدية.",
+    "en": "A fresh and innovative choice for those seeking unconventional, non-sweet fragrance profiles."
+   }
+  },
+  {
+   "id": "n7qp1mf",
+   "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxPMEhyY3RGZTRjdUo4bEJBc2JwZ0p4ZjJnT1pCWjRCRFJfVlNPc1J1T1FHTHJ0RGJjdkR2cFpzSU5OMHVmc3Fyb05ibmEwSUxIS0dVV1dad1hzVEZIREtIMnFDQ0NlSEVyTi1hWGVGa0JwdU54UnVnLVFONks3TE5Wb2pkMWk2NmxfOG1nM0l3Y1QybUpsLXhGOENYdFhtTjNOS2IyamVwb1Z1eHBweXdUb0loWF95MlhjejI3amhFZDFUWHFsaHNtQlBoN3d4blNnV3dF?oc=5",
+   "source": "www.marketscreener.com",
+   "publishedAt": "2026-10-15T10:01:05.000Z",
+   "original": "Symrise expands global production platform for sustainable musk fragrance ingredient",
+   "lang": "en",
+   "category": "ingredients",
+   "importance": 4,
+   "title": {
+    "ar": "Symrise توسع إنتاجها العالمي لمكونات المسك المستدامة",
+    "en": "Symrise Expands Global Production for Sustainable Musk Ingredients"
+   },
+   "summary": {
+    "ar": "أعلنت شركة Symrise عن توسيع منصة إنتاجها العالمية لمكونات المسك العطري المستدام.",
+    "en": "Symrise has announced the expansion of its global production platform for sustainable musk fragrance ingredients."
+   },
+   "note": {
+    "ar": "يؤكد هذا التوجه استمرار الصناعة في تبني معايير الاستدامة وتوفير بدائل مسك صديقة للبيئة لمصنعي العطور.",
+    "en": "Highlights the industry's ongoing shift toward sustainability and eco-friendly musk alternatives for formulators."
+   }
+  },
+  {
+   "id": "nuv4s8d",
+   "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBxZnZSZ1c3aENtcGVCSjJlSVVfcEl2RTNvVGoxZjdfbElDYXVSMTBjWEh5ckZ1ZWdmbm9QMldqSHBmbUFNY2ltTGE1MmRBdUpjZklodUNOWkNIUDU4TnFoc2Q4eDlweFFuYXdoU0RMbUpyUDhubDYtRTZZRQ?oc=5",
+   "source": "Boutique Hotelier USA",
+   "publishedAt": "2026-10-15T14:34:20.000Z",
+   "original": "Parfums De Marly partners with Buzz on new hotel collection",
+   "lang": "en",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "Parfums De Marly تدخل في شراكة مع Buzz لتقديم مجموعة فندقية",
+    "en": "Parfums De Marly Partners with Buzz for New Hotel Collection"
+   },
+   "summary": {
+    "ar": "أعلنت دار Parfums De Marly عن شراكة جديدة مع Buzz لإطلاق مجموعة عطرية مخصصة للفنادق.",
+    "en": "Parfums De Marly has partnered with Buzz to launch a new hotel amenity fragrance collection."
+   },
+   "note": {
+    "ar": "خطوة تعزز حضور العلامات الفاخرة في قطاع الضيافة وتمنح المستهلكين تجربة متكاملة.",
+    "en": "A strategic move enhancing luxury brand presence in the hospitality sector and consumer touchpoints."
+   }
+  },
+  {
+   "id": "n8w2lho",
+   "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPODQ2X3d2Sm56ckFlMXNqbHhTeVJYOTdaQnAtNW9pRG0zN0NuZHhJbmh6cUJpdy1MUHdOdEY3R0EwVE1tS1hNN1FOc1lxTGZUZ1dBZnBWWVdrTktqblp2d3l4NGtseEs2eVhWbzlEa2VWeEUxZEUxaERHb3pLVU1xbWk3OWppRGlSTU1XR3VvYVBjOE45U0pEZ2V4X2NYX1hCeXh5OUktUGRKdGJkLUxkLUtSeVZYcG4wc0pmOWRESWsyOFVGbERBT1kxSTd3TjQ?oc=5",
+   "source": "GuruFocus",
+   "publishedAt": "2026-10-15T14:04:44.000Z",
+   "original": "Coty Launches Coty Fragrance Club to Engage Community, Shares Tr",
+   "lang": "en",
+   "category": "market",
+   "importance": 3,
+   "title": {
+    "ar": "Coty تطلق نادي العطور العالمي للتفاعل مع المجتمع",
+    "en": "Coty Launches Global Fragrance Club to Engage Community"
+   },
+   "summary": {
+    "ar": "أطلقت شركة Coty مبادرة 'Coty Fragrance Club' بهدف تعزيز التفاعل مع مجتمع عشاق العطور.",
+    "en": "Coty has introduced the 'Coty Fragrance Club' to engage directly with fragrance enthusiasts and consumers."
+   },
+   "note": {
+    "ar": "توضح هذه المبادرة مدى أهمية بناء مجتمعات تفاعلية حول العلامات التجارية الكبرى في قطاع التجميل.",
+    "en": "Demonstrates the growing importance of community-building for major beauty conglomerates."
+   }
+  },
+  {
+   "id": "n1xuqn34",
+   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBDak5yVmJWZF91SW1nRWlNbklZSXFnQllBdk9vdmtRVUtfYjJMN3VXNWRVQWhsa2lMNGc2XzRDVWw4d18xQ2RwakxDZ0RibmtLN0Q5Nm1DSk9uTVp0?oc=5",
+   "source": "Sharjah24",
+   "publishedAt": "2026-10-14T17:40:45.000Z",
+   "original": "\"الإماراتيين للعود والعطور ومستحضرات التجميل\" تستقطبان 64 عارضاً",
+   "lang": "ar",
+   "category": "events",
+   "importance": 3,
+   "title": {
+    "ar": "معرض 'الإماراتيين للعود والعطور' يستقطب 64 عارضاً",
+    "en": "Emirates Oud and Perfumes Platforms Attract 64 Exhibitors"
+   },
+   "summary": {
+    "ar": "استقطبت منصتا العارضين للإماراتيين للعود والعطور ومستحضرات التجميل 64 عارضاً محلياً وإقليمياً.",
+    "en": "The Emirati platforms for oud, perfumes, and cosmetics have successfully attracted 64 exhibitors."
+   },
+   "note": {
+    "ar": "منصة ممتازة لدعم رواد الأعمال والمصممين المحليين في قطاع العطور الشرقية.",
+    "en": "An excellent platform supporting local entrepreneurs and designers in oriental perfumery."
+   }
+  },
+  {
+   "id": "nefwbe4",
+   "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNVVZNYjNxZUx2RGNOWEMwVXlOMW15bENud243TFl5UDdUTDFiU3h5RU9VcWVQSTFfdEgtaWZ3NU1EaXZkTUo2aWl4YTVHMU9DazhtX0E3ejNxdGZJVXJBeWFYMUdvMi1zZ29jSEphNlNKQVAyVGsxRkpZLTdUczNkbHg2TDJBLXA1QzV4YUZERFNjSnlLdVg4OFFYMUxXYkRWdXpSU2pWem4tYWFuOGRnS3BQeWg5MW9EdWc?oc=5",
+   "source": "Mamabella",
+   "publishedAt": "2026-10-14T14:22:34.000Z",
+   "original": "Jo Malone London launches at Boots, bringing luxury fragrance – including minis – to 39 UK stores",
+   "lang": "en",
+   "category": "market",
+   "importance": 3,
+   "title": {
+    "ar": "Jo Malone London تطلق منتجاتها في متاجر Boots البريطانية",
+    "en": "Jo Malone London Launches at Boots Stores in the UK"
+   },
+   "summary": {
+    "ar": "أطلقت Jo Malone London منتجاتها العطرية الفاخرة بما في ذلك العطور المصغرة في 39 متجراً لـ Boots في بريطانيا.",
+    "en": "Jo Malone London has launched its luxury fragrance range, including minis, across 39 Boots stores in the UK."
+   },
+   "note": {
+    "ar": "توسيع قنوات التوزيع يسهل على عشاق العطور الوصول إلى العلامة بأحجام تجريبية مناسبة.",
+    "en": "Expands retail availability, making luxury scents and travel sizes more accessible to consumers."
+   }
+  },
+  {
+   "id": "n5d1l9i",
+   "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBJRFNYUHoyeTFnRXc1bzAwaEY0WWFSQUxtQnlrUGpQeFppV2h3ZUFBYUh3S21wamJ1TlRIZ2FFaElwZDhDdW1MUUsyWXBYSjFaMHNfTTR4cGxXZG1QMmJDZk90bWpsRG82R1ZWS0NXdHR2dm96R1VldTQ1bw?oc=5",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-14T11:30:40.000Z",
+   "original": "L’Oréal Travel Retail targets 10% in refillable fragrance solutions at travel hubs by 2030",
+   "lang": "en",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "L’Oréal Travel Retail تستهدف حلول العطور القابلة لإعادة التعبئة",
+    "en": "L’Oréal Travel Retail Targets 10% Refillable Fragrances by 2030"
+   },
+   "summary": {
+    "ar": "تخطط L’Oréal Travel Retail لأن تكون 10% من حلول العطور في مراكز السفر قابلة لإعادة التعبئة بحلول عام 2030.",
+    "en": "L’Oréal Travel Retail aims for 10% of fragrance solutions at travel hubs to be refillable by 2030."
+   },
+   "note": {
+    "ar": "مؤشر إضافي على التزام الأسواق الكبرى بتقليل النفايات البيئية في قطاع العطور الفاخرة.",
+    "en": "Another strong indicator of major market commitment to reducing environmental waste in luxury retail."
+   }
+  },
+  {
+   "id": "n1alrkgr",
+   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNYjlNQ3R4UUxPaFlFQ0JYbHluMWQ5SlVCNEI4aWduZHk4SXRuRUlXeHJIeXlla2NLdEQ2ZXhPdjZTNDNPMzBCcTF4ZHJxNUZWbzJVVlFNb3FXRndmdnp4b0F6NFN3YmwzdE02V2prNmdpMUFPSGxqOVFYZlF4SVdVVXpoNGdpZw?oc=5",
+   "source": "New York Magazine",
+   "publishedAt": "2026-10-14T11:00:00.000Z",
+   "original": "What Are You Actually Allergic to in a Perfume? A Dermatologist Explains.",
+   "lang": "en",
+   "category": "regulation",
+   "importance": 2,
+   "title": {
+    "ar": "دليل طبي حول مسببات الحساسية الشائعة في العطور",
+    "en": "Dermatologist Explains Common Allergens in Perfumes"
+   },
+   "summary": {
+    "ar": "شرح خبراء الجلدية أبرز المكونات والعناصر في العطور التي قد تسبب تفاعلات تحسسية لدى بعض المستخدمين.",
+    "en": "Dermatologists break down the actual ingredients in perfumes that commonly trigger allergic reactions."
+   },
+   "note": {
+    "ar": "معلومة هامة لمن يعانون من حساسيات جلدية عند تجربة عطور جديدة أو مكونات معينة.",
+    "en": "Valuable information for consumers prone to skin sensitivities when testing new fragrances."
+   }
+  },
+  {
+   "id": "nwhlsv8",
+   "url": "https://nstperfume.com/2026/10/15/the-soul-of-french-perfume/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-15T13:58:09.000Z",
+   "original": "The Soul of French Perfume",
+   "lang": "en",
+   "category": "culture",
+   "importance": 2,
+   "title": {
+    "ar": "متحف Osmothèque في فرساي يكشف أسرار العطور الفرنسية",
+    "en": "The Osmothèque in Versailles Lifts the Veil on French Perfumery"
+   },
+   "summary": {
+    "ar": "يتعاون متحف Osmothèque في فرساي مع espace Richaud لتسليط الضوء على أسرار وتاريخ صناعة العطور الفرنسية العريقة.",
+    "en": "The Osmothèque in Versailles, in partnership with espace Richaud, explores the secrets of millennia-old French perfumery."
+   },
+   "note": {
+    "ar": "وجهة أساسية لكل باحث في تاريخ العطور وتطور تركيباتها عبر الزمن.",
+    "en": "A must-know historical institution for anyone passionate about perfume heritage and formulation history."
+   }
+  }
+ ]
 }
