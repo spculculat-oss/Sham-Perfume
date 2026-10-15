@@ -25,6 +25,8 @@ test('Shaheen is told how to ask for real images/videos and to use tables, never
   assert.match(prompt, /sham-media/);
   assert.match(prompt, /لا تكتب أبداً روابط صور أو فيديو/);
   assert.match(prompt, /جدول Markdown/);
+  assert.match(prompt, /ابدأ ردك بسياج واحد باسم sham-media/);
+  assert.match(prompt, /السياج إلزامي كلما طلب المستخدم صوراً أو فيديو/);
   assert.match(systemInstruction('en', '', 'fast'), /sham-media/);
 });
 
@@ -41,6 +43,10 @@ test('the sham-media block is parsed, limited, cleaned and hidden from the visib
   assert.equal(extractMediaRequest('```sham-media\nnot json\n```'), undefined);
   assert.equal(extractMediaRequest('plain answer'), undefined);
   assert.equal(stripMediaBlock('answer\n```sham-media\n{"images":["ro'), 'answer');
+  const leading = '```sham-media\n{"images":["agarwood"]}\n```\n### شكل العود\nقطع خشب داكنة.';
+  assert.deepEqual(extractMediaRequest(leading), { images: ['agarwood'], videos: [] });
+  assert.equal(stripMediaBlock(leading), '### شكل العود\nقطع خشب داكنة.');
+  assert.equal(stripFormulaBlock(leading), '### شكل العود\nقطع خشب داكنة.');
 });
 
 test('long turns drop the media block before trimming the history', () => {
