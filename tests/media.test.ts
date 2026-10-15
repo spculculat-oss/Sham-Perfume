@@ -11,7 +11,10 @@ import { compactTurn } from '../src/utils/chatStore';
 const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json' } });
 const page = (index: number, title: string, extra: Record<string, unknown> = {}) => ({
   index, title, imageinfo: [{
-    thumburl: `https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/${index}.jpg/500px-${index}.jpg`, thumbwidth: 500, thumbheight: 375, width: 3000,
+    // Shape of the live API (Oct 2026): thumbnails on thumb.wikimedia.org with utm_* tracking params.
+    thumburl: `https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ab/${index}.jpg/500px-${index}.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail`,
+    responsiveUrls: { 2: `https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ab/${index}.jpg/1280px-${index}.jpg?utm_source=commons.wikimedia.org` },
+    thumbwidth: 500, thumbheight: 375, width: 3000,
     descriptionurl: `https://commons.wikimedia.org/wiki/${encodeURIComponent(title)}`, mime: 'image/jpeg',
     extmetadata: { LicenseShortName: { value: 'CC BY-SA 4.0' }, Artist: { value: '<a href="//x">Jane &amp; Co</a>' } }, ...extra,
   }],
@@ -60,22 +63,40 @@ test('images come from Wikimedia Commons with credit, filtered by type, size and
   const result = await searchImages('agarwood', { fetch: (async (u: string, init?: RequestInit) => {
     url = u; ua = new Headers(init?.headers).get('user-agent') || '';
     return json({ query: { pages: {
-      a: page(3, 'File:Oud_chips.jpg'),
+      a: page(3, 'File:Agarwood_chips.jpg'),
       b: page(1, 'File:Agarwood resin.JPG'),
       c: page(2, 'File:Nude model with perfume.jpg'),
       d: page(4, 'File:Tiny.png', { thumbwidth: 120, thumbheight: 90 }),
       e: page(5, 'File:Diagram.svg', { mime: 'image/svg+xml' }),
       f: page(6, 'File:Elsewhere.jpg', { thumburl: 'https://evil.example/a.jpg' }),
+      g: page(7, 'File:Lookalike.jpg', { thumburl: 'https://thumb.wikimedia.org.evil.example/a.jpg' }),
     } } });
   }) as typeof fetch });
   assert.match(url, /^https:\/\/commons\.wikimedia\.org\/w\/api\.php\?/);
   assert.equal(new URL(url).searchParams.get("gsrsearch"), "agarwood filetype:bitmap");
   assert.match(ua, /ShamPerfume/);
-  assert.deepEqual(result.images.map((i) => i.title), ['Agarwood resin', 'Oud chips']);
+  assert.deepEqual(result.images.map((i) => i.title), ['Agarwood resin', 'Agarwood chips']);
   assert.equal(result.images[0].license, 'CC BY-SA 4.0');
   assert.equal(result.images[0].author, 'Jane & Co');
-  assert.match(result.images[0].large || '', /\/960px-/);
+  assert.equal(result.images[0].thumb, 'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ab/1.jpg/500px-1.jpg');
+  assert.equal(result.images[0].large, 'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ab/1.jpg/1280px-1.jpg');
   assert.equal(result.source, 'wikimedia');
+});
+
+test('image search drops synonym noise and retries a long topic with fewer words', async () => {
+  const asked: string[] = [];
+  const result = await searchImages('agarwood resin chips', { fetch: (async (u: string) => {
+    const q = new URL(u).searchParams.get('gsrsearch') || '';
+    asked.push(q);
+    if (q !== 'agarwood filetype:bitmap') return json({ batchcomplete: '' });
+    return json({ query: { pages: {
+      a: page(1, 'File:Agarwood top grade.jpg'),
+      b: page(2, 'File:Huis Oud Wulven bij Houten.jpg'),
+      c: page(3, 'File:Infected Agarwoods Aquilaria Malaysia.jpg'),
+    } } });
+  }) as typeof fetch });
+  assert.deepEqual(asked, ['agarwood resin chips filetype:bitmap', 'agarwood resin filetype:bitmap', 'agarwood filetype:bitmap']);
+  assert.deepEqual(result.images.map((i) => i.title), ['Agarwood top grade', 'Infected Agarwoods Aquilaria Malaysia']);
 });
 
 test('videos use the YouTube API with the key in a header, and fall back to a search link', async () => {
