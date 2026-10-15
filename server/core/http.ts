@@ -15,7 +15,13 @@ import { probeEngines } from '../shaheen';
 import { SHAHEEN_SITE_SETTINGS } from '../config/shaheen';
 import { engineStatuses } from './engines';
 import { activeSeats, councilAvailable, publicTranscript } from './council';
-import type { CollectionName, RequestStatus } from './types';
+import type { CollectionName, RequestStatus, ServiceRequest } from './types';
+import {
+  sendCustomerStatusEmail,
+  renderOrderStatusEmail,
+  getEmailHistory,
+  STATUS_LABELS_AR,
+} from './email';
 
 type Env = Record<string, string | undefined>;
 
@@ -238,6 +244,11 @@ export function createShamCore(options: CoreOptions = {}) {
         gapsOpen: gaps.filter((g) => g.status === 'open').length, feedbackUp: up, feedbackDown: down,
       },
       notifications: { configured: notifier.configured },
+      emailNotifications: {
+        configured: Boolean(env.RESEND_API_KEY || env.SENDGRID_API_KEY || env.SHAM_WEBHOOK_URL),
+        provider: env.RESEND_API_KEY ? 'Resend' : env.SENDGRID_API_KEY ? 'SendGrid' : env.SHAM_WEBHOOK_URL ? 'Webhook' : 'Simulator',
+        sentCount: getEmailHistory().length,
+      },
       byStatus, byType, intents, engineUsage: engines, pipelineValue: revenue,
     });
   }));
@@ -258,7 +269,125 @@ export function createShamCore(options: CoreOptions = {}) {
     const items = (await repo.requests()).filter((r) => !status || r.status === status).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     res.json({ items });
   }));
-  admin.patch('/requests/:id', wrap(async (req, res) => { res.json({ item: await repo.updateRequest(String(req.params.id), req.body || {}) }); }));
+  admin.patch('/requests/:id', wrap(async (req, res) => {
+    const id = String(req.params.id);
+    const existing = (await repo.requests()).find((r) => r.id === id);
+    if (!existing) throw new ValidationError('NOT_FOUND', 'Request not found', 404);
+
+    const oldStatus = existing.status;
+    const requestedStatus = req.body?.status as RequestStatus | undefined;
+    const isStatusChange = Boolean(requestedStatus && requestedStatus !== oldStatus);
+    const customEmailNote = typeof req.body?.customEmailNote === 'string' ? req.body.customEmailNote.trim() : undefined;
+    const notifyCustomer = req.body?.notifyCustomer !== false;
+
+    let item = await repo.updateRequest(id, req.body || {});
+
+    let emailNotificationResult = undefined;
+    if (isStatusChange && notifyCustomer && item.contact.email) {
+      emailNotificationResult = await sendCustomerStatusEmail({
+        request: item,
+        status: item.status,
+        customNote: customEmailNote,
+      }, env, options.fetch);
+
+      await notifier.send('order.status_changed', `📦 تحديث حالة الطلب ${item.ref}: ${STATUS_LABELS_AR[item.status]} (${item.contact.name})`, {
+        ref: item.ref,
+        status: item.status,
+        contact: item.contact,
+        emailDelivery: emailNotificationResult.delivery,
+      });
+
+      const noteText = emailNotificationResult.delivery === 'sent'
+        ? `✉️ تم إرسال إشعار بريد إلكتروني للعميل (${item.contact.email}): الحالة "${STATUS_LABELS_AR[item.status]}" عبر ${emailNotificationResult.provider}`
+        : emailNotificationResult.delivery === 'simulated'
+        ? `✉️ تم تسجيل إشعار بريد إلكتروني للعميل (${item.contact.email}): الحالة "${STATUS_LABELS_AR[item.status]}" (محاكاة)`
+        : `⚠️ تعذر إرسال بريد للعميل (${item.contact.email}): ${emailNotificationResult.error || 'خطأ'}`;
+
+      item = await repo.updateRequest(item.id, { note: noteText });
+    }
+
+    res.json({ item, emailNotification: emailNotificationResult });
+  }));
+
+  admin.post('/requests/:id/notify-email', wrap(async (req, res) => {
+    const id = String(req.params.id);
+    const item = (await repo.requests()).find((r) => r.id === id);
+    if (!item) throw new ValidationError('NOT_FOUND', 'Request not found', 404);
+    if (!item.contact.email) throw new ValidationError('NO_EMAIL', 'لا يوجد بريد إلكتروني مسجل لهذا العميل', 400);
+
+    const status = (req.body?.status as RequestStatus) || item.status;
+    const customNote = typeof req.body?.customNote === 'string' ? req.body.customNote.trim() : undefined;
+
+    const result = await sendCustomerStatusEmail({
+      request: item,
+      status,
+      customNote,
+    }, env, options.fetch);
+
+    const noteText = result.delivery === 'sent'
+      ? `✉️ تم إرسال إشعار بريد إلكتروني يدوي (${item.contact.email}): الحالة "${STATUS_LABELS_AR[status]}" عبر ${result.provider}`
+      : result.delivery === 'simulated'
+      ? `✉️ تم تسجيل إشعار بريد إلكتروني تجريبي يدوي (${item.contact.email}): الحالة "${STATUS_LABELS_AR[status]}"`
+      : `⚠️ تعذر إرسال بريد يدوي (${item.contact.email}): ${result.error || 'خطأ'}`;
+
+    const updated = await repo.updateRequest(item.id, { note: noteText });
+    res.json({ ok: result.success, item: updated, emailNotification: result });
+  }));
+
+  admin.get('/requests/:id/email-preview', wrap(async (req, res) => {
+    const id = String(req.params.id);
+    const item = (await repo.requests()).find((r) => r.id === id);
+    if (!item) throw new ValidationError('NOT_FOUND', 'Request not found', 404);
+
+    const status = (req.query.status as RequestStatus) || item.status;
+    const customNote = typeof req.query.customNote === 'string' ? req.query.customNote : undefined;
+
+    const preview = renderOrderStatusEmail({
+      request: item,
+      status,
+      customNote,
+    });
+
+    res.json({ preview });
+  }));
+
+  admin.get('/emails/history', wrap(async (_req, res) => {
+    res.json({ items: getEmailHistory() });
+  }));
+
+  admin.post('/emails/test', wrap(async (req, res) => {
+    const email = typeof req.body?.email === 'string' ? req.body.email.trim() : '';
+    if (!email || !email.includes('@')) throw new ValidationError('INVALID_EMAIL', 'البريد الإلكتروني غير صحيح', 400);
+    const status = (req.body?.status as RequestStatus) || 'in_progress';
+    const customNote = typeof req.body?.customNote === 'string' ? req.body.customNote : 'هذه رسالة تجريبية لاختبار نظام إشعارات البريد الإلكتروني للعملاء من لوحة إدارة شام.';
+
+    const dummyRequest: ServiceRequest = {
+      id: 'test-req',
+      ref: 'SH-DEMO88',
+      type: 'order',
+      serviceId: 'store',
+      status,
+      contact: { name: 'عميل تجريبي', email, phone: '+201000000000' },
+      fields: { 'العنوان': 'القاهرة، المعادي', 'طريقة الدفع': 'الدفع عند الاستلام' },
+      items: [
+        { productId: 'demo-oud-oil', sku: 'DEMO-OUD-30', name: 'زيت عود ملكي فاخر', quantity: 1, unitPrice: 450, currency: 'EGP' },
+        { productId: 'demo-bottle', sku: 'DEMO-BTL-50', name: 'زجاجة بخاخ 50 مل فاخرة', quantity: 2, unitPrice: 35, currency: 'EGP' },
+      ],
+      total: 520,
+      currency: 'EGP',
+      notes: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    const result = await sendCustomerStatusEmail({
+      request: dummyRequest,
+      status,
+      customNote,
+    }, env, options.fetch);
+
+    res.json({ ok: result.success, emailNotification: result });
+  }));
 
   admin.get('/conversations', wrap(async (_req, res) => {
     const items = (await repo.conversations()).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 300).map((c) => ({
