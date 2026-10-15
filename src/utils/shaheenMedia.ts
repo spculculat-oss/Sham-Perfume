@@ -1,4 +1,5 @@
 import { requestApi } from './api';
+import { findMediaBlocks, removeMediaBlocks } from './mediaBlock';
 
 /**
  * Shaheen asks for visual aids with a hidden ```sham-media block at the end of a reply:
@@ -13,7 +14,6 @@ export interface VideoResult { videos: MediaVideo[]; searchUrl: string }
 export interface MediaPlace { name: string; label: string; lat: number; lon: number; osm: string }
 export interface PlaceResult { places: MediaPlace[] }
 
-const BLOCK = /```sham-media[^\n]*\n([\s\S]*?)```/g;
 
 const cleanTopic = (value: unknown): string | undefined => {
   if (typeof value !== 'string') return undefined;
@@ -28,14 +28,11 @@ export function extractMediaRequest(text: string): MediaRequest | undefined {
   const images: string[] = [];
   const videos: string[] = [];
   const places: string[] = [];
-  for (const match of text.matchAll(BLOCK)) {
-    try {
-      const data = JSON.parse(match[1].trim()) as Record<string, unknown>;
-      if (!data || typeof data !== 'object') continue;
-      images.push(...topics(data.images ?? data.image, 2));
-      videos.push(...topics(data.videos ?? data.video, 1));
-      places.push(...topics(data.places ?? data.place, 5));
-    } catch { /* A malformed block is simply ignored. */ }
+  for (const { data } of findMediaBlocks(text)) {
+    if (!data) continue;
+    images.push(...topics(data.images ?? data.image, 2));
+    videos.push(...topics(data.videos ?? data.video, 1));
+    places.push(...topics(data.places ?? data.place, 5));
   }
   const request: MediaRequest = { images: [...new Set(images)].slice(0, 2), videos: [...new Set(videos)].slice(0, 1) };
   const uniquePlaces = [...new Set(places)].slice(0, 5);
@@ -45,8 +42,7 @@ export function extractMediaRequest(text: string): MediaRequest | undefined {
 
 /** Hide the block (and an unfinished one at the very end) from the visible / spoken / copied text. */
 export function stripMediaBlock(text: string): string {
-  if (!text.includes('```sham-media')) return text;
-  return text.replace(BLOCK, '').replace(/```sham-media[\s\S]*$/, '').replace(/\n{3,}/g, '\n\n').trim();
+  return removeMediaBlocks(text);
 }
 
 const cache = new Map<string, Promise<unknown>>();

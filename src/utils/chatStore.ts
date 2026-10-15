@@ -1,4 +1,5 @@
 import type { SupportedLanguage } from '../types/i18n';
+import { removeMediaBlocks } from './mediaBlock';
 import { isStaticHosting, requestApi, type ChatResponse } from './api';
 import { CHAT_STORAGE_KEY, clearChatSession, DEFAULT_WELCOME_MESSAGE, isChatMessage,
   loadStoredChatSession, saveChatSession, type ChatMessage, type ShaheenProvider } from './chatStorage';
@@ -15,7 +16,7 @@ const TURN_LIMIT = 4000;
 export function compactTurn(text: string): string {
   if (text.length <= TURN_LIMIT) return text;
   // The visual-aid topics are disposable: drop them rather than leave a half-cut block behind.
-  text = text.replace(/```sham-media[^\n]*\n[\s\S]*?```/g, '').trimEnd();
+  text = removeMediaBlocks(text).trimEnd();
   if (text.length <= TURN_LIMIT) return text;
   const formula = text.match(/```sham-formula\s*\n[\s\S]*?```/)?.[0];
   const tail = formula && formula.length <= 1800 ? `\n…\n${formula}` : '\n…';

@@ -258,3 +258,33 @@ test('a long Nominatim queue sends extra places straight to Photon', async () =>
   assert.equal(result.places[0].label, 'Grasse, France');
   resetGeo();
 });
+
+test('the media block is found however the model wrote it (live: ```json and no closing fence)', async () => {
+  const { findMediaBlocks, normalizeMediaBlocks, removeMediaBlocks } = await import('../src/utils/mediaBlock');
+  const { publicChatResult } = await import('../server/shaheen');
+  // Exactly what production returned on 2026-10-15.
+  const live = '```json\n{"images":["agarwood raw wood","Aquilaria trees"],"videos":["agarwood essential oil steam distillation process"]}\n### شكل العود الخام\n\nقطع خشبية داكنة.';
+  assert.deepEqual(extractMediaRequest(live), { images: ['agarwood raw wood', 'Aquilaria trees'], videos: ['agarwood essential oil steam distillation process'] });
+  assert.equal(stripMediaBlock(live), '### شكل العود الخام\n\nقطع خشبية داكنة.');
+  assert.equal(stripFormulaBlock(live), '### شكل العود الخام\n\nقطع خشبية داكنة.');
+  // The API sends one canonical, closed block instead.
+  assert.equal(publicChatResult({ reply: live, mode: 'auto' }).reply,
+    '```sham-media\n{"images":["agarwood raw wood","Aquilaria trees"],"videos":["agarwood essential oil steam distillation process"]}\n```\n### شكل العود الخام\n\nقطع خشبية داكنة.');
+
+  // Other shapes: closed json fence at the end, bare line, unlabelled fence, singular keys.
+  assert.deepEqual(extractMediaRequest('answer\n```json\n{"places":["Grasse, France"]}\n```'), { images: [], videos: [], places: ['Grasse, France'] });
+  assert.equal(removeMediaBlocks('answer\n```json\n{"places":["Grasse, France"]}\n```'), 'answer');
+  assert.equal(removeMediaBlocks('{"images":["rose"]}\nالورد الدمشقي.'), 'الورد الدمشقي.');
+  assert.equal(removeMediaBlocks('```\n{"place":"Taif"}\n```\nالطائف.'), 'الطائف.');
+  assert.equal(normalizeMediaBlocks('```\n{"place":"Taif","image":"Taif rose"}\n```\nالطائف.'), '```sham-media\n{"places":["Taif"],"images":["Taif rose"]}\n```\nالطائف.');
+
+  // Never touched: formula JSON, ordinary code, JSON with other keys, plain text.
+  const formula = 'وصفة:\n```sham-formula\n{"title":"x","pyramidNotes":[]}\n```';
+  const code = 'مثال:\n```json\n{"title":"Rose","images":["rose"]}\n```';
+  for (const text of [formula, code, 'نص عادي فيه كلمة images فقط']) {
+    assert.deepEqual(findMediaBlocks(text), []);
+    assert.equal(normalizeMediaBlocks(text), text);
+  }
+  // A broken sham-media fence is still hidden.
+  assert.equal(removeMediaBlocks('```sham-media\n{oops\n```\nok'), 'ok');
+});
