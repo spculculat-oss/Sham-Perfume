@@ -1,3 +1,4 @@
+import { T } from './adminL10n';
 import React, { useCallback, useMemo, useState } from 'react';
 import { CheckCircle2, CircleAlert, Clock3, Download, EyeOff, FileJson, History, PackageCheck, RotateCcw, Trash2 } from 'lucide-react';
 import {
