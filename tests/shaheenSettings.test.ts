@@ -5,7 +5,7 @@ import express from 'express';
 import { SHAHEEN_SITE_SETTINGS, normalizeShaheen, ShaheenConfigError } from '../server/config/shaheen';
 import { Repository, ValidationError } from '../server/core/repository';
 import { MemoryStore } from '../server/core/store';
-import { classifyEngineFailure, geminiThinking } from '../server/core/engines';
+import { callEngine, classifyEngineFailure, geminiThinking, pickGeminiModel, GEMINI_DEFAULT_MODEL } from '../server/core/engines';
 import { createShaheenRouter, executeChat, getChatModels, probeEngines, systemInstruction } from '../server/shaheen';
 import { compactTurn, chatHistory } from '../src/utils/chatStore';
 import { isChatMessage, type ChatMessage } from '../src/utils/chatStorage';
@@ -206,4 +206,32 @@ test('provider refusals are classified into fixed codes (no upstream text)', () 
   for (const [status, body, expected] of cases) {
     assert.equal(classifyEngineFailure(status, typeof body === 'string' ? body : JSON.stringify(body)), expected, JSON.stringify(body));
   }
+});
+
+test('Gemini: picks the best chat model the key can actually use', () => {
+  const m = (name: string, gen = true) => ({ name: `models/${name}`, supportedGenerationMethods: gen ? ['generateContent'] : ['embedContent'] });
+  assert.equal(pickGeminiModel([m('gemini-3.5-flash'), m('gemini-flash-latest'), m('gemini-4-pro')]), 'gemini-flash-latest');
+  assert.equal(pickGeminiModel([m('gemini-3-flash-preview'), m('gemini-3.5-flash'), m('gemini-3.1-flash-lite'), m('gemini-3.5-flash-image'), m('text-embedding-004', false)]), 'gemini-3.5-flash');
+  assert.equal(pickGeminiModel([m('gemini-3.1-flash-lite'), m('gemini-3-flash-preview')]), 'gemini-3.1-flash-lite');
+  assert.equal(pickGeminiModel([m('gemini-embedding-001', false)]), undefined);
+  assert.equal(GEMINI_DEFAULT_MODEL, 'gemini-flash-latest');
+});
+
+test('Gemini: a retired model is replaced automatically and remembered', async () => {
+  const calls: string[] = [];
+  const fetch = (async (url: string) => {
+    calls.push(String(url).replace('https://generativelanguage.googleapis.com/v1beta/', ''));
+    if (String(url).includes('/models?')) {
+      return json({ models: [{ name: 'models/gemini-2.5-flash', supportedGenerationMethods: ['generateContent'] },
+        { name: 'models/gemini-3.5-flash', supportedGenerationMethods: ['generateContent'] }] });
+    }
+    if (String(url).includes('gemini-2.5-flash:')) return json({ error: { code: 404, status: 'NOT_FOUND' } }, 404);
+    return json({ candidates: [{ content: { parts: [{ text: 'أهلاً' }] } }] });
+  }) as typeof globalThis.fetch;
+  const opts = { env: { GEMINI_API_KEY: 'retired-model-key' }, fetch, signal: AbortSignal.timeout(5000), temperature: 0.5, model: 'gemini-2.5-flash' };
+  assert.equal(await callEngine('gemini', 'sys', [{ role: 'user', text: 'hi' }], opts), 'أهلاً');
+  assert.deepEqual(calls, ['models/gemini-2.5-flash:generateContent', 'models?pageSize=1000', 'models/gemini-3.5-flash:generateContent']);
+  calls.length = 0;
+  assert.equal(await callEngine('gemini', 'sys', [{ role: 'user', text: 'hi' }], opts), 'أهلاً');
+  assert.deepEqual(calls, ['models/gemini-3.5-flash:generateContent']);
 });
