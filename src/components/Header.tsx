@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import {
   Printer,
   Sparkles,
+  Shield,
   Newspaper,
   FlaskConical,
   User,
@@ -17,6 +18,7 @@ import {
 import { SupportedLanguage } from '../types/i18n';
 import { t } from '../utils/i18n';
 import { LanguageSelector } from './LanguageSelector';
+import { AdminMerchantManagement } from './AdminMerchantManagement';
 import { UserProfile } from '../types/auth';
 import { UserEnvironmentProfile } from '../utils/environmentAdapter';
 import { LText, makeT, pickArEn } from '../utils/localize';
@@ -70,6 +72,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenProfilePage,
 }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [showAdminModal, setShowAdminModal] = useState(false);
   const [groupMenuStates, setGroupMenuStates] = useState<Record<string, boolean>>({});
   const userMenuRef = useRef<HTMLDivElement>(null);
   const L = makeT(currentLang, S);
@@ -391,7 +394,19 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           )}
 
-          {/* 5. Print Spec Sheet */}
+          {/* 5. Admin Dashboard Button — only for admin users */}
+          {currentUser?.isAdmin && (
+            <button
+              onClick={() => setShowAdminModal(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-purple-700 hover:bg-purple-800 rounded-xl transition-all shadow-sm cursor-pointer shrink-0"
+              title="لوحة تحكم الإدارة"
+            >
+              <Shield className="w-3.5 h-3.5 text-purple-200" />
+              <span className="hidden xl:inline">الإدارة</span>
+            </button>
+          )}
+
+          {/* 6. Print Spec Sheet */}
           <button
             onClick={onOpenPrintModal}
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-stone-700 bg-stone-100 hover:bg-stone-200/80 rounded-xl transition-all cursor-pointer border border-stone-200 shrink-0"
@@ -496,5 +511,12 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
     </header>
+    {/* Admin Management Modal */}
+    {showAdminModal && (
+      <AdminMerchantManagement
+        onClose={() => setShowAdminModal(false)}
+        currentLang={currentLang}
+      />
+    )}
   );
 };
