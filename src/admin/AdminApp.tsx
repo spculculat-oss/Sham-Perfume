@@ -89,7 +89,7 @@ export default function AdminApp() {
       setToken(candidate); setTok(candidate); setAuthed(true);
     } catch (e) {
       setToken('');
-      setLoginError(e instanceof AdminApiError ? (e.status === 401 ? T('رمز الإدارة غير صحيح.') : e.status === 503 ? 'لوحة الإدارة غير مفعلة: اضبط SHAM_ADMIN_TOKEN (12 حرفاً على الأقل) في متغيرات الخادم.' : e.status === 429 ? T('محاولات كثيرة فاشلة. انتظر 15 دقيقة.') : e.message) : T('تعذّر الاتصال بالخادم.'));
+      setLoginError(e instanceof AdminApiError ? (e.status === 401 ? T('رمز الإدارة غير صحيح.') : e.status === 503 ? T('لوحة الإدارة غير مفعلة: اضبط SHAM_ADMIN_TOKEN (12 حرفاً على الأقل) في متغيرات الخادم.') : e.status === 429 ? T('محاولات كثيرة فاشلة. انتظر 15 دقيقة.') : e.message) : T('تعذّر الاتصال بالخادم.'));
     } finally { setChecking(false); }
   }, []);
 
@@ -97,7 +97,7 @@ export default function AdminApp() {
   useEffect(() => { document.documentElement.dir = 'rtl'; document.documentElement.lang = 'ar'; document.title = T('إدارة شام — Sham Core'); }, []);
 
   if (isStaticHosting) {
-    return <Shell><div className={`${card} max-w-lg mx-auto mt-24 text-center`}>لوحة الإدارة تحتاج خادم شام (Node.js أو Vercel). نسخة GitHub Pages ثابتة ولا تحتوي على API.</div></Shell>;
+    return <Shell><div className={`${card} max-w-lg mx-auto mt-24 text-center`}>{T('لوحة الإدارة تحتاج خادم شام (Node.js أو Vercel). نسخة GitHub Pages ثابتة ولا تحتوي على API.')}</div></Shell>;
   }
 
   if (!authed) {
@@ -361,10 +361,10 @@ function RequestsPanel() {
     <>
       <Header
         title={T('الطلبات والعروض')}
-        subtitle="طلبات المتجر، العطور المخصصة، الجملة، الاستشارات مع نظام إشعارات البريد التلقائي للعملاء"
+        subtitle={T('طلبات المتجر، العطور المخصصة، الجملة، الاستشارات مع نظام إشعارات البريد التلقائي للعملاء')}
         actions={<>
-          <select className={input} value={filter} onChange={(e) => setFilter(e.target.value as RequestStatus | '')} aria-label="تصفية حسب الحالة">
-            <option value="">كل الحالات</option>
+          <select className={input} value={filter} onChange={(e) => setFilter(e.target.value as RequestStatus | '')} aria-label={T('تصفية حسب الحالة')}>
+            <option value="">{T('كل الحالات')}</option>
             {Object.entries(STATUS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
           </select>
           <button onClick={reload} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" /></button>
@@ -373,7 +373,7 @@ function RequestsPanel() {
       <Feedback error={error} loading={loading && !data} />
       <div className="grid lg:grid-cols-5 gap-4">
         <div className="lg:col-span-3 space-y-2">
-          {data?.items.length === 0 && <p className="text-sm text-stone-500">لا توجد طلبات.</p>}
+          {data?.items.length === 0 && <p className="text-sm text-stone-500">{T('لا توجد طلبات.')}</p>}
           {data?.items.map((r) => (
             <button key={r.id} onClick={() => setSelected(r)} className={`${card} w-full text-start hover:border-amber-400 ${selected?.id === r.id ? 'border-amber-500 ring-2 ring-amber-200' : ''}`}>
               <div className="flex flex-wrap items-center gap-2 text-sm">
@@ -410,10 +410,10 @@ function RequestsPanel() {
                 {selected.contact.email ? (
                   <p className="flex items-center gap-1.5 flex-wrap">
                     البريد: <a dir="ltr" className="text-emerald-700 underline font-semibold" href={`mailto:${selected.contact.email}`}>{selected.contact.email}</a>
-                    <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-md font-medium">مفعّل للإشعارات</span>
+                    <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-md font-medium">{T('مفعّل للإشعارات')}</span>
                   </p>
                 ) : (
-                  <p className="text-xs text-stone-400">البريد: غير مسجل (الإشعارات بالبريد غير متاحة)</p>
+                  <p className="text-xs text-stone-400">{T('البريد: غير مسجل (الإشعارات بالبريد غير متاحة)')}</p>
                 )}
               </div>
 
@@ -428,7 +428,7 @@ function RequestsPanel() {
               {selected.items && (
                 <table className="w-full text-xs">
                   <thead>
-                    <tr className="text-stone-500"><th className="text-start">المنتج</th><th>الكمية</th><th>السعر</th></tr>
+                    <tr className="text-stone-500"><th className="text-start">{T('المنتج')}</th><th>{T('الكمية')}</th><th>{T('السعر')}</th></tr>
                   </thead>
                   <tbody>
                     {selected.items.map((i) => (
@@ -440,7 +440,7 @@ function RequestsPanel() {
                     ))}
                   </tbody>
                   <tfoot>
-                    <tr className="font-bold"><td colSpan={2}>الإجمالي</td><td className="text-center">{selected.total} {selected.currency}</td></tr>
+                    <tr className="font-bold"><td colSpan={2}>{T('الإجمالي')}</td><td className="text-center">{selected.total} {selected.currency}</td></tr>
                   </tfoot>
                 </table>
               )}
@@ -455,7 +455,7 @@ function RequestsPanel() {
                     disabled={busy || selected.status === 'cancelled'}
                     onChange={(e) => {
                       const next = e.target.value as RequestStatus;
-                      if (next === 'cancelled' && !confirm('إلغاء الطلب نهائي ويعيد الكميات للمخزون. متأكد؟')) return;
+                      if (next === 'cancelled' && !confirm(T('إلغاء الطلب نهائي ويعيد الكميات للمخزون. متأكد؟'))) return;
                       void update({ status: next });
                     }}
                   >
@@ -472,7 +472,7 @@ function RequestsPanel() {
                         onChange={(e) => setNotifyCustomer(e.target.checked)}
                         className="rounded text-amber-600 focus:ring-amber-500 w-4 h-4"
                       />
-                      <span>إرسال إشعار بريد إلكتروني للعميل تلقائياً عند تغيير الحالة</span>
+                      <span>{T('إرسال إشعار بريد إلكتروني للعميل تلقائياً عند تغيير الحالة')}</span>
                     </label>
 
                     <input
@@ -480,8 +480,8 @@ function RequestsPanel() {
                       className={`${input} text-xs`}
                       value={customEmailNote}
                       onChange={(e) => setCustomEmailNote(e.target.value)}
-                      placeholder="ملاحظة خاصة بالعميل تُرفق بالبريد (رقم الشحنة، تفاصيل العرض…)"
-                      aria-label="ملاحظة البريد"
+                      placeholder={T('ملاحظة خاصة بالعميل تُرفق بالبريد (رقم الشحنة، تفاصيل العرض…)')}
+                      aria-label={T('ملاحظة البريد')}
                     />
 
                     <div className="flex gap-2">
@@ -500,7 +500,7 @@ function RequestsPanel() {
                         onClick={() => void sendManualNotification()}
                         disabled={sendingManualEmail || busy}
                         className={`${btn} flex-1 text-xs bg-amber-600 text-white hover:bg-amber-700`}
-                        title="إرسال إشعار بالحالة الحالية فوراً للعميل"
+                        title={T('إرسال إشعار بالحالة الحالية فوراً للعميل')}
                       >
                         {sendingManualEmail ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Mail className="w-3.5 h-3.5" />}
                         إرسال إشعار الآن
@@ -524,22 +524,22 @@ function RequestsPanel() {
                   rows={2}
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
-                  placeholder="ملاحظة داخلية للإدارة (مذكرات داخلية، موعد توريد…)"
-                  aria-label="ملاحظة داخلية"
+                  placeholder={T('ملاحظة داخلية للإدارة (مذكرات داخلية، موعد توريد…)')}
+                  aria-label={T('ملاحظة داخلية')}
                 />
                 <button
                   disabled={busy || !note.trim()}
                   onClick={() => update({ note })}
                   className={`${btn} bg-stone-900 text-amber-100 w-full`}
                 >
-                  {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : 'إضافة ملاحظة داخلية'}
+                  {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : T('إضافة ملاحظة داخلية')}
                 </button>
               </div>
 
               {actionError && <p className="text-xs text-red-700">{actionError}</p>}
 
               <div className="border-t pt-2">
-                <p className="text-xs font-semibold text-stone-600 mb-1">سجل التحديثات والإشعارات:</p>
+                <p className="text-xs font-semibold text-stone-600 mb-1">{T('سجل التحديثات والإشعارات:')}</p>
                 <ol className="text-[11px] text-stone-500 space-y-1 max-h-48 overflow-y-auto">
                   {[...selected.notes].reverse().map((n, i) => (
                     <li key={i} className={`p-1.5 rounded-lg ${n.text.includes('✉️') ? 'bg-amber-50/70 text-amber-900 font-medium' : 'bg-stone-50'}`}>
@@ -550,7 +550,7 @@ function RequestsPanel() {
               </div>
             </div>
           ) : (
-            <p className="text-sm text-stone-400">اختر طلباً لعرض التفاصيل وتحديث حالته وإشعاراته.</p>
+            <p className="text-sm text-stone-400">{T('اختر طلباً لعرض التفاصيل وتحديث حالته وإشعاراته.')}</p>
           )}
         </div>
       </div>
@@ -583,7 +583,7 @@ function EmailPreviewModal({
           <div className="flex items-center gap-2">
             <Mail className="w-5 h-5 text-amber-400" />
             <div>
-              <h3 className="font-bold text-sm">معاينة إشعار البريد الإلكتروني للعميل</h3>
+              <h3 className="font-bold text-sm">{T('معاينة إشعار البريد الإلكتروني للعميل')}</h3>
               <p className="text-xs text-stone-400">إلى: <span dir="ltr" className="text-amber-300 font-mono">{preview.recipientEmail}</span> ({preview.customerName})</p>
             </div>
           </div>
@@ -599,7 +599,7 @@ function EmailPreviewModal({
         {/* Subject line bar */}
         <div className="px-4 py-2.5 bg-stone-100 border-b border-stone-200 flex items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-2 min-w-0">
-            <span className="font-semibold text-stone-600 shrink-0">عنوان الرسالة (Subject):</span>
+            <span className="font-semibold text-stone-600 shrink-0">{T('عنوان الرسالة (Subject):')}</span>
             <span className="font-medium text-stone-900 truncate" dir={adminDir()}>{preview.subject}</span>
           </div>
           <div className="flex gap-1 shrink-0">
@@ -640,7 +640,7 @@ function EmailPreviewModal({
 
         {/* Footer */}
         <div className="p-3 bg-white border-t border-stone-200 flex items-center justify-between text-xs">
-          <span className="text-stone-500">تصميم متجاوب ومتوافق مع تطبيقات البريد (Gmail, Outlook, Apple Mail).</span>
+          <span className="text-stone-500">{T('تصميم متجاوب ومتوافق مع تطبيقات البريد (Gmail, Outlook, Apple Mail).')}</span>
           <button
             type="button"
             onClick={onClose}
@@ -677,7 +677,7 @@ function EmailsPanel() {
 
   const [testEmail, setTestEmail] = useState('');
   const [testStatus, setTestStatus] = useState<RequestStatus>('in_progress');
-  const [testNote, setTestNote] = useState('رسالة تجريبية: طلبك قيد التجهيز بعناية فائقة من مختبرات شام.');
+  const [testNote, setTestNote] = useState(T('رسالة تجريبية: طلبك قيد التجهيز بعناية فائقة من مختبرات شام.'));
   const [testBusy, setTestBusy] = useState(false);
   const [testResult, setTestResult] = useState<{ success: boolean; message: string } | null>(null);
 
@@ -735,8 +735,8 @@ function EmailsPanel() {
   return (
     <>
       <Header
-        title="نظام إشعارات البريد الإلكتروني للعملاء"
-        subtitle="إدارة قوالب إشعارات الطلبات وتحديثات الحالات، واختبار الإرسال، ومراجعة سجل البريد المرسل"
+        title={T('نظام إشعارات البريد الإلكتروني للعملاء')}
+        subtitle={T('إدارة قوالب إشعارات الطلبات وتحديثات الحالات، واختبار الإرسال، ومراجعة سجل البريد المرسل')}
         actions={<>
           <button onClick={() => { reloadOverview(); reloadHistory(); }} className={`${btn} bg-white border border-stone-300`}>
             <RefreshCw className="w-4 h-4" />
@@ -753,12 +753,12 @@ function EmailsPanel() {
             مزود البريد النشط
           </div>
           <p className="text-2xl font-bold text-stone-900 mt-1">
-            {overview?.emailNotifications?.provider || 'محاكي آمن (Simulator)'}
+            {overview?.emailNotifications?.provider || T('محاكي آمن (Simulator)')}
           </p>
           <p className="text-xs text-stone-500 mt-1">
             {overview?.emailNotifications?.configured
-              ? '✅ متصل ومفعل لإرسال الرسائل الحقيقية للعملاء'
-              : '⚡ يعمل في وضع المحاكاة الآمنة والتدقيق الداخلي (دون استهلاك رصيد خارجي)'}
+              ? T('✅ متصل ومفعل لإرسال الرسائل الحقيقية للعملاء')
+              : T('⚡ يعمل في وضع المحاكاة الآمنة والتدقيق الداخلي (دون استهلاك رصيد خارجي)')}
           </p>
         </div>
 
@@ -770,7 +770,7 @@ function EmailsPanel() {
           <p className="text-2xl font-bold text-emerald-700 mt-1">
             {historyData?.items.length ?? overview?.emailNotifications?.sentCount ?? 0}
           </p>
-          <p className="text-xs text-stone-500 mt-1">إشعارات تم توليدها وإرسالها للعملاء عند تغيير الحالات</p>
+          <p className="text-xs text-stone-500 mt-1">{T('إشعارات تم توليدها وإرسالها للعملاء عند تغيير الحالات')}</p>
         </div>
 
         <div className={card}>
@@ -785,7 +785,7 @@ function EmailsPanel() {
               </span>
             ))}
           </div>
-          <p className="text-[10px] text-stone-400 mt-2">يرسل النظام إشعاراً فورياً بتصميم متجاوب وبطاقة تتبع مباشرة</p>
+          <p className="text-[10px] text-stone-400 mt-2">{T('يرسل النظام إشعاراً فورياً بتصميم متجاوب وبطاقة تتبع مباشرة')}</p>
         </div>
       </div>
 
@@ -795,7 +795,7 @@ function EmailsPanel() {
           <form onSubmit={sendTest} className={`${card} space-y-3`}>
             <div className="flex items-center gap-2 border-b pb-2">
               <Mail className="w-4 h-4 text-amber-600" />
-              <h2 className="font-bold text-sm">إرسال بريد تجريبي لاختبار النظام</h2>
+              <h2 className="font-bold text-sm">{T('إرسال بريد تجريبي لاختبار النظام')}</h2>
             </div>
             <p className="text-xs text-stone-500">
               يمكنك كتابة أي بريد إلكتروني واختيار الحالة لتجربة استلام الرسالة والتأكد من مظهرها وجودتها.
@@ -834,7 +834,7 @@ function EmailsPanel() {
                 rows={2}
                 value={testNote}
                 onChange={(e) => setTestNote(e.target.value)}
-                placeholder="ملاحظة إضافية للعميل"
+                placeholder={T('ملاحظة إضافية للعميل')}
               />
             </label>
 
@@ -862,9 +862,9 @@ function EmailsPanel() {
             <div className="flex items-center justify-between border-b pb-2">
               <div className="flex items-center gap-2">
                 <Eye className="w-4 h-4 text-stone-700" />
-                <h2 className="font-bold text-sm">استعراض مظهر القوالب للعملاء</h2>
+                <h2 className="font-bold text-sm">{T('استعراض مظهر القوالب للعملاء')}</h2>
               </div>
-              <span className="text-xs text-stone-400">تصميم فاخر بنمط شام</span>
+              <span className="text-xs text-stone-400">{T('تصميم فاخر بنمط شام')}</span>
             </div>
 
             <div className="flex flex-wrap gap-1.5">
@@ -882,7 +882,7 @@ function EmailsPanel() {
 
             <div className="p-4 bg-stone-50 rounded-xl border border-stone-200 text-xs space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-stone-500">عنوان الرسالة المتوقع:</span>
+                <span className="text-stone-500">{T('عنوان الرسالة المتوقع:')}</span>
                 <span className="font-semibold text-stone-900" dir={adminDir()}>
                   [شام للعطور] تحديث حالة طلبك SH-SAMPLE: {STATUS[activeTemplateStatus]}
                 </span>
@@ -900,11 +900,11 @@ function EmailsPanel() {
                       type: 'order',
                       serviceId: 'store',
                       status: activeTemplateStatus,
-                      contact: { name: 'الأستاذ أحمد فؤاد', email: 'ahmed@example.com', phone: '+201123456789' },
-                      fields: { 'العنوان': 'التجمع الخامس، القاهرة', 'طريقة الدفع': 'الدفع عند الاستلام' },
+                      contact: { name: T('الأستاذ أحمد فؤاد'), email: 'ahmed@example.com', phone: '+201123456789' },
+                      fields: { 'العنوان': T('التجمع الخامس، القاهرة'), 'طريقة الدفع': T('الدفع عند الاستلام') },
                       items: [
-                        { productId: 'oud', sku: 'OUD-ROYAL', name: 'عطر عود ملكي خاص (EdP)', quantity: 1, unitPrice: 850, currency: 'EGP' },
-                        { productId: 'rose', sku: 'ROSE-GRASSE', name: 'زيت ورد غراس النقي 30 مل', quantity: 2, unitPrice: 380, currency: 'EGP' },
+                        { productId: 'oud', sku: 'OUD-ROYAL', name: T('عطر عود ملكي خاص (EdP)'), quantity: 1, unitPrice: 850, currency: 'EGP' },
+                        { productId: 'rose', sku: 'ROSE-GRASSE', name: T('زيت ورد غراس النقي 30 مل'), quantity: 2, unitPrice: 380, currency: 'EGP' },
                       ],
                       total: 1610,
                       currency: 'EGP',
@@ -923,7 +923,7 @@ function EmailsPanel() {
                         html: `<html><body style="font-family:sans-serif;direction:rtl;padding:20px;text-align:right;"><h2 style="color:#b45309;">شام للعطور</h2><p>مرحباً عميلنا العزيز 👋</p><p>حالة طلبك الحالية: <b>${STATUS[activeTemplateStatus]}</b></p></body></html>`,
                         text: `شام للعطور\nحالة طلبك: ${STATUS[activeTemplateStatus]}`,
                         recipientEmail: 'ahmed@example.com',
-                        customerName: 'الأستاذ أحمد فؤاد',
+                        customerName: T('الأستاذ أحمد فؤاد'),
                       });
                     });
                   }}
@@ -943,7 +943,7 @@ function EmailsPanel() {
         <div className="flex items-center justify-between mb-3 border-b pb-2">
           <div className="flex items-center gap-2">
             <Mail className="w-4 h-4 text-amber-600" />
-            <h2 className="font-bold text-sm">سجل الإشعارات المرسلة للعملاء</h2>
+            <h2 className="font-bold text-sm">{T('سجل الإشعارات المرسلة للعملاء')}</h2>
           </div>
           <button
             type="button"
@@ -973,13 +973,13 @@ function EmailsPanel() {
             <table className="w-full text-xs">
               <thead>
                 <tr className="text-stone-500 border-b text-start">
-                  <th className="py-2 text-start">الوقت</th>
-                  <th className="py-2 text-start">رقم الطلب</th>
-                  <th className="py-2 text-start">العميل والبريد</th>
-                  <th className="py-2 text-start">الحالة المرسلة</th>
-                  <th className="py-2 text-start">المزود</th>
-                  <th className="py-2 text-start">حالة الإرسال</th>
-                  <th className="py-2 text-center">الإجراء</th>
+                  <th className="py-2 text-start">{T('الوقت')}</th>
+                  <th className="py-2 text-start">{T('رقم الطلب')}</th>
+                  <th className="py-2 text-start">{T('العميل والبريد')}</th>
+                  <th className="py-2 text-start">{T('الحالة المرسلة')}</th>
+                  <th className="py-2 text-start">{T('المزود')}</th>
+                  <th className="py-2 text-start">{T('حالة الإرسال')}</th>
+                  <th className="py-2 text-center">{T('الإجراء')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">
@@ -1002,7 +1002,7 @@ function EmailsPanel() {
                         {item.deliveryStatus === 'sent' && <CheckCircle2 className="w-3.5 h-3.5" />}
                         {item.deliveryStatus === 'simulated' && <Sparkles className="w-3.5 h-3.5" />}
                         {item.deliveryStatus === 'failed' && <CircleAlert className="w-3.5 h-3.5" />}
-                        {item.deliveryStatus === 'sent' ? 'تم الإرسال' : item.deliveryStatus === 'simulated' ? 'محاكاة ناجحة' : 'فشل'}
+                        {item.deliveryStatus === 'sent' ? T('تم الإرسال') : item.deliveryStatus === 'simulated' ? T('محاكاة ناجحة') : T('فشل')}
                       </span>
                     </td>
                     <td className="py-2.5 text-center">
@@ -1047,20 +1047,20 @@ function ConversationsPanel() {
 
   return (
     <>
-      <Header title={T('المحادثات')} subtitle="كل محادثات الزوار مع مسار التنفيذ؛ يمكن الرد مباشرة على التحويلات"
+      <Header title={T('المحادثات')} subtitle={T('كل محادثات الزوار مع مسار التنفيذ؛ يمكن الرد مباشرة على التحويلات')}
         actions={<>
-          <label className="flex items-center gap-1.5 text-xs bg-white border border-stone-300 rounded-xl px-3"><input type="checkbox" checked={onlyHandoff} onChange={(e) => setOnlyHandoff(e.target.checked)} />التحويلات فقط</label>
+          <label className="flex items-center gap-1.5 text-xs bg-white border border-stone-300 rounded-xl px-3"><input type="checkbox" checked={onlyHandoff} onChange={(e) => setOnlyHandoff(e.target.checked)} />{T('التحويلات فقط')}</label>
           <button onClick={reload} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" /></button>
         </>} />
       <Feedback error={error} loading={loading && !data} />
       <div className="grid lg:grid-cols-5 gap-4">
         <div className="lg:col-span-2 space-y-2 max-h-[75vh] overflow-y-auto">
-          {items.length === 0 && !loading && <p className="text-sm text-stone-500">لا توجد محادثات.</p>}
+          {items.length === 0 && !loading && <p className="text-sm text-stone-500">{T('لا توجد محادثات.')}</p>}
           {items.map((c) => (
             <button key={c.id} onClick={() => void open(c.id)} className={`${card} w-full text-start p-3 hover:border-amber-400 ${selected?.id === c.id ? 'border-amber-500' : ''}`}>
               <div className="flex items-center gap-2 text-xs">
-                {c.status === 'handoff' && <span className="rounded-full bg-emerald-100 text-emerald-800 px-2 py-0.5 font-bold flex items-center gap-1"><Headset className="w-3 h-3" />تحويل</span>}
-                {c.status === 'closed' && <span className="rounded-full bg-stone-200 px-2 py-0.5">مغلقة</span>}
+                {c.status === 'handoff' && <span className="rounded-full bg-emerald-100 text-emerald-800 px-2 py-0.5 font-bold flex items-center gap-1"><Headset className="w-3 h-3" />{T('تحويل')}</span>}
+                {c.status === 'closed' && <span className="rounded-full bg-stone-200 px-2 py-0.5">{T('مغلقة')}</span>}
                 <span className="text-stone-500">{c.memory.name || c.visitorId.slice(0, 10)}</span>
                 <span className="ms-auto text-stone-400">{fmtDate(c.updatedAt)}</span>
               </div>
@@ -1076,9 +1076,9 @@ function ConversationsPanel() {
                 <b className="text-sm">{selected.memory.name || 'زائر'}</b>
                 <span className="text-[11px] text-stone-400" dir="ltr">{selected.visitorId}</span>
                 {selected.memory.lastRequestRef && <span className="text-[11px] bg-amber-100 rounded-full px-2" dir="ltr">{selected.memory.lastRequestRef}</span>}
-                <select className="ms-auto rounded-lg border border-stone-300 text-xs px-2 py-1" value={selected.status} aria-label="حالة المحادثة"
+                <select className="ms-auto rounded-lg border border-stone-300 text-xs px-2 py-1" value={selected.status} aria-label={T('حالة المحادثة')}
                   onChange={async (e) => { const { item } = await adminRequest<{ item: Conversation }>(`/conversations/${selected.id}`, send('PATCH', { status: e.target.value })); setSelected(item); reload(); }}>
-                  <option value="open">مفتوحة (المساعد)</option><option value="handoff">{T('تحويل لموظف')}</option><option value="closed">مغلقة</option>
+                  <option value="open">{T('مفتوحة (المساعد)')}</option><option value="handoff">{T('تحويل لموظف')}</option><option value="closed">{T('مغلقة')}</option>
                 </select>
               </div>
               <div className="flex-1 overflow-y-auto py-3 space-y-2">
@@ -1089,7 +1089,7 @@ function ConversationsPanel() {
                       <div className="text-[10px] text-stone-400 mt-1">{fmtDate(m.at)}{m.intent ? ` · ${INTENT[m.intent] || m.intent}` : ''}{m.engine ? ` · ${ENGINE_LABEL[m.engine] || m.engine}` : ''}</div>
                       {m.council && <CouncilTranscriptView council={m.council} />}
                       {m.trace && (
-                        <details className="mt-1 text-[10px] text-stone-500"><summary className="cursor-pointer">مسار التنفيذ</summary>
+                        <details className="mt-1 text-[10px] text-stone-500"><summary className="cursor-pointer">{T('مسار التنفيذ')}</summary>
                           <ol className="mt-1 space-y-0.5" dir="ltr">{m.trace.map((t, j) => <li key={j}><b>{t.stage}</b> {t.detail}{t.ms !== undefined ? ` (${t.ms}ms)` : ''}</li>)}</ol></details>
                       )}
                     </div>
@@ -1101,11 +1101,11 @@ function ConversationsPanel() {
                 try { const { item } = await adminRequest<{ item: Conversation }>(`/conversations/${selected.id}/reply`, send('POST', { text: reply })); setSelected(item); setReply(''); reload(); }
                 finally { setBusy(false); }
               }}>
-                <input className={input} value={reply} onChange={(e) => setReply(e.target.value)} placeholder="اكتب رداً بشرياً يظهر للزائر في نفس المحادثة…" aria-label="رد الموظف" />
+                <input className={input} value={reply} onChange={(e) => setReply(e.target.value)} placeholder={T('اكتب رداً بشرياً يظهر للزائر في نفس المحادثة…')} aria-label={T('رد الموظف')} />
                 <button disabled={busy || !reply.trim()} className={`${btn} bg-emerald-700 text-white`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4 rotate-180" />}</button>
               </form>
             </div>
-          ) : <p className="text-sm text-stone-400">اختر محادثة.</p>}
+          ) : <p className="text-sm text-stone-400">{T('اختر محادثة.')}</p>}
         </div>
       </div>
     </>
@@ -1130,13 +1130,13 @@ function CollectionPanel<T extends { id: string }>({ path, title, subtitle, empt
     } catch (e) { setSaveError((e as Error).message); } finally { setBusy(false); }
   };
   const remove = async (id: string) => {
-    if (!confirm('حذف نهائي؟')) return;
+    if (!confirm(T('حذف نهائي؟'))) return;
     try { await adminRequest(`/${path}/${id}`, send('DELETE')); if (editing?.id === id) setEditing(null); reload(); }
     catch (e) { setSaveError((e as Error).message); }
   };
   return (
     <>
-      <Header title={title} subtitle={subtitle} actions={<button onClick={() => setEditing({ ...blank })} className={`${btn} bg-stone-900 text-amber-100`}><Plus className="w-4 h-4" />إضافة</button>} />
+      <Header title={title} subtitle={subtitle} actions={<button onClick={() => setEditing({ ...blank })} className={`${btn} bg-stone-900 text-amber-100`}><Plus className="w-4 h-4" />{T('إضافة')}</button>} />
       <Feedback error={error} loading={loading && !data} />
       <div className="grid lg:grid-cols-5 gap-4">
         <div className="lg:col-span-3 space-y-2">
@@ -1144,7 +1144,7 @@ function CollectionPanel<T extends { id: string }>({ path, title, subtitle, empt
           {data?.items.map((item) => (
             <div key={item.id} className={`${card} flex items-start gap-3 p-3 ${editing?.id === item.id ? 'border-amber-500' : ''}`}>
               <button className="flex-1 text-start min-w-0" onClick={() => setEditing(structuredClone(item))}>{summary(item)}</button>
-              <button onClick={() => void remove(item.id)} aria-label="حذف" className="p-1.5 rounded-lg text-red-600 hover:bg-red-50"><Trash2 className="w-4 h-4" /></button>
+              <button onClick={() => void remove(item.id)} aria-label={T('حذف')} className="p-1.5 rounded-lg text-red-600 hover:bg-red-50"><Trash2 className="w-4 h-4" /></button>
             </div>
           ))}
         </div>
@@ -1155,11 +1155,11 @@ function CollectionPanel<T extends { id: string }>({ path, title, subtitle, empt
               <Editor value={editing} onChange={setEditing} />
               {saveError && <p className="text-xs text-red-700">{saveError}</p>}
               <div className="flex gap-2">
-                <button disabled={busy} onClick={save} className={`${btn} bg-stone-900 text-amber-100 flex-1`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />حفظ</>}</button>
-                <button onClick={() => setEditing(null)} className={`${btn} bg-stone-100`}>إلغاء</button>
+                <button disabled={busy} onClick={save} className={`${btn} bg-stone-900 text-amber-100 flex-1`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />{T('حفظ')}</>}</button>
+                <button onClick={() => setEditing(null)} className={`${btn} bg-stone-100`}>{T('إلغاء')}</button>
               </div>
             </div>
-          ) : <p className="text-sm text-stone-400">اختر عنصراً للتعديل أو أضف جديداً.</p>}
+          ) : <p className="text-sm text-stone-400">{T('اختر عنصراً للتعديل أو أضف جديداً.')}</p>}
         </div>
       </div>
     </>
@@ -1172,29 +1172,29 @@ const fromCsv = (s: string) => s.split(/[,،]/).map((x) => x.trim()).filter(Bool
 
 function ProductsPanel() {
   return (
-    <CollectionPanel<Product> path="products" title={T('المنتجات')} subtitle="الكتالوج الوحيد الذي يقتبس منه المساعد الأسعار والمخزون" empty="الكتالوج فارغ — المساعد لن يذكر أي أسعار حتى تضيف منتجات."
+    <CollectionPanel<Product> path="products" title={T('المنتجات')} subtitle={T('الكتالوج الوحيد الذي يقتبس منه المساعد الأسعار والمخزون')} empty={T('الكتالوج فارغ — المساعد لن يذكر أي أسعار حتى تضيف منتجات.')}
       blank={{ nameAr: '', nameEn: '', price: 0, stock: 0, unit: 'piece', category: 'perfume', active: true, tags: [] }}
       summary={(p) => (<>
-        <p className="text-sm font-semibold truncate">{p.nameAr || p.nameEn} {p.demo && <span className="text-[10px] bg-stone-200 rounded px-1">تجريبي</span>} {!p.active && <span className="text-[10px] bg-red-100 text-red-800 rounded px-1">مخفي</span>}</p>
+        <p className="text-sm font-semibold truncate">{p.nameAr || p.nameEn} {p.demo && <span className="text-[10px] bg-stone-200 rounded px-1">{T('تجريبي')}</span>} {!p.active && <span className="text-[10px] bg-red-100 text-red-800 rounded px-1">{T('مخفي')}</span>}</p>
         <p className="text-xs text-stone-500"><span dir="ltr">{p.sku}</span> · {p.price} {p.currency} / {p.unit} · مخزون <b className={p.stock <= 3 ? 'text-red-700' : ''}>{p.stock}</b></p>
       </>)}
       Editor={({ value: p, onChange }) => (
         <div className="space-y-2">
           <div className="grid grid-cols-2 gap-2">
-            <Field label="الاسم بالعربية"><input className={input} value={p.nameAr || ''} onChange={(e) => onChange({ ...p, nameAr: e.target.value })} /></Field>
+            <Field label={T('الاسم بالعربية')}><input className={input} value={p.nameAr || ''} onChange={(e) => onChange({ ...p, nameAr: e.target.value })} /></Field>
             <Field label="Name (English)"><input className={input} dir="ltr" value={p.nameEn || ''} onChange={(e) => onChange({ ...p, nameEn: e.target.value })} /></Field>
             <Field label="SKU"><input className={input} dir="ltr" value={p.sku || ''} onChange={(e) => onChange({ ...p, sku: e.target.value })} /></Field>
-            <Field label="الفئة"><select className={input} value={p.category} onChange={(e) => onChange({ ...p, category: e.target.value as Product['category'] })}>
-              {[['perfume', 'عطر'], ['oil', 'زيت'], ['raw_material', 'مادة خام'], ['packaging', 'عبوات'], ['kit', 'طقم'], ['other', 'أخرى']].map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></Field>
-            <Field label="السعر"><input className={input} type="number" min={0} step="0.01" value={p.price ?? 0} onChange={(e) => onChange({ ...p, price: Number(e.target.value) })} /></Field>
-            <Field label="العملة"><input className={input} dir="ltr" placeholder="EGP" value={p.currency || ''} onChange={(e) => onChange({ ...p, currency: e.target.value })} /></Field>
-            <Field label="المخزون"><input className={input} type="number" min={0} step={1} value={p.stock ?? 0} onChange={(e) => onChange({ ...p, stock: Math.floor(Number(e.target.value)) })} /></Field>
-            <Field label="الوحدة"><input className={input} value={p.unit || ''} onChange={(e) => onChange({ ...p, unit: e.target.value })} /></Field>
+            <Field label={T('الفئة')}><select className={input} value={p.category} onChange={(e) => onChange({ ...p, category: e.target.value as Product['category'] })}>
+              {[['perfume', T('عطر')], ['oil', T('زيت')], ['raw_material', T('مادة خام')], ['packaging', T('عبوات')], ['kit', T('طقم')], ['other', T('أخرى')]].map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></Field>
+            <Field label={T('السعر')}><input className={input} type="number" min={0} step="0.01" value={p.price ?? 0} onChange={(e) => onChange({ ...p, price: Number(e.target.value) })} /></Field>
+            <Field label={T('العملة')}><input className={input} dir="ltr" placeholder="EGP" value={p.currency || ''} onChange={(e) => onChange({ ...p, currency: e.target.value })} /></Field>
+            <Field label={T('المخزون')}><input className={input} type="number" min={0} step={1} value={p.stock ?? 0} onChange={(e) => onChange({ ...p, stock: Math.floor(Number(e.target.value)) })} /></Field>
+            <Field label={T('الوحدة')}><input className={input} value={p.unit || ''} onChange={(e) => onChange({ ...p, unit: e.target.value })} /></Field>
           </div>
-          <Field label="الوصف بالعربية"><textarea className={input} rows={2} value={p.descriptionAr || ''} onChange={(e) => onChange({ ...p, descriptionAr: e.target.value })} /></Field>
+          <Field label={T('الوصف بالعربية')}><textarea className={input} rows={2} value={p.descriptionAr || ''} onChange={(e) => onChange({ ...p, descriptionAr: e.target.value })} /></Field>
           <Field label="Description (English)"><textarea className={input} dir="ltr" rows={2} value={p.descriptionEn || ''} onChange={(e) => onChange({ ...p, descriptionEn: e.target.value })} /></Field>
-          <Field label="كلمات البحث (مفصولة بفواصل)"><input className={input} value={csv(p.tags)} onChange={(e) => onChange({ ...p, tags: fromCsv(e.target.value) })} /></Field>
-          <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={p.active ?? true} onChange={(e) => onChange({ ...p, active: e.target.checked })} />ظاهر للزوار</label>
+          <Field label={T('كلمات البحث (مفصولة بفواصل)')}><input className={input} value={csv(p.tags)} onChange={(e) => onChange({ ...p, tags: fromCsv(e.target.value) })} /></Field>
+          <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={p.active ?? true} onChange={(e) => onChange({ ...p, active: e.target.checked })} />{T('ظاهر للزوار')}</label>
         </div>
       )} />
   );
@@ -1202,15 +1202,15 @@ function ProductsPanel() {
 
 function KnowledgePanel() {
   return (
-    <CollectionPanel<KnowledgeDoc> path="knowledge" title={T('قاعدة المعرفة')} subtitle="المصدر الذي يستند إليه المساعد في الإجابات ويعرضه كمراجع (RAG)" empty="لا توجد مستندات."
+    <CollectionPanel<KnowledgeDoc> path="knowledge" title={T('قاعدة المعرفة')} subtitle={T('المصدر الذي يستند إليه المساعد في الإجابات ويعرضه كمراجع (RAG)')} empty={T('لا توجد مستندات.')}
       blank={{ title: '', content: '', tags: [] }}
       summary={(d) => (<><p className="text-sm font-semibold truncate">{d.title}</p><p className="text-xs text-stone-500 line-clamp-2">{d.content}</p></>)}
       Editor={({ value: d, onChange }) => (
         <div className="space-y-2">
-          <Field label="العنوان"><input className={input} value={d.title || ''} onChange={(e) => onChange({ ...d, title: e.target.value })} /></Field>
-          <Field label="المحتوى (سياسات، أسئلة شائعة، شروط الشحن والاسترجاع…)"><textarea className={input} rows={10} value={d.content || ''} onChange={(e) => onChange({ ...d, content: e.target.value })} /></Field>
-          <Field label="وسوم (مفصولة بفواصل)"><input className={input} value={csv(d.tags)} onChange={(e) => onChange({ ...d, tags: fromCsv(e.target.value) })} /></Field>
-          <Field label="معرف الخدمة المرتبطة (اختياري)"><input className={input} dir="ltr" value={d.serviceId || ''} onChange={(e) => onChange({ ...d, serviceId: e.target.value })} /></Field>
+          <Field label={T('العنوان')}><input className={input} value={d.title || ''} onChange={(e) => onChange({ ...d, title: e.target.value })} /></Field>
+          <Field label={T('المحتوى (سياسات، أسئلة شائعة، شروط الشحن والاسترجاع…)')}><textarea className={input} rows={10} value={d.content || ''} onChange={(e) => onChange({ ...d, content: e.target.value })} /></Field>
+          <Field label={T('وسوم (مفصولة بفواصل)')}><input className={input} value={csv(d.tags)} onChange={(e) => onChange({ ...d, tags: fromCsv(e.target.value) })} /></Field>
+          <Field label={T('معرف الخدمة المرتبطة (اختياري)')}><input className={input} dir="ltr" value={d.serviceId || ''} onChange={(e) => onChange({ ...d, serviceId: e.target.value })} /></Field>
         </div>
       )} />
   );
@@ -1218,10 +1218,10 @@ function KnowledgePanel() {
 
 function ServicesPanel() {
   return (
-    <CollectionPanel<ServiceDef> path="services" title={T('الخدمات')} subtitle="أضف أي خدمة تجارية جديدة: الكلمات المفتاحية توجّه الزوار إليها، والحقول تحدد استمارة الطلب" empty="لا توجد خدمات."
+    <CollectionPanel<ServiceDef> path="services" title={T('الخدمات')} subtitle={T('أضف أي خدمة تجارية جديدة: الكلمات المفتاحية توجّه الزوار إليها، والحقول تحدد استمارة الطلب')} empty={T('لا توجد خدمات.')}
       blank={{ nameAr: '', nameEn: '', kind: 'custom', enabled: true, keywords: [], formFields: [], order: 50 }}
       summary={(s) => (<>
-        <p className="text-sm font-semibold">{s.nameAr} {!s.enabled && <span className="text-[10px] bg-red-100 text-red-800 rounded px-1">معطلة</span>}</p>
+        <p className="text-sm font-semibold">{s.nameAr} {!s.enabled && <span className="text-[10px] bg-red-100 text-red-800 rounded px-1">{T('معطلة')}</span>}</p>
         <p className="text-xs text-stone-500" dir="ltr">{s.id} · {s.kind} · {s.formFields.length} fields · {s.keywords.length} keywords</p>
       </>)}
       Editor={function ServiceEditor({ value: s, onChange }) {
@@ -1231,20 +1231,20 @@ function ServicesPanel() {
         return (
           <div className="space-y-2">
             <div className="grid grid-cols-2 gap-2">
-              <Field label="الاسم بالعربية"><input className={input} value={s.nameAr || ''} onChange={(e) => onChange({ ...s, nameAr: e.target.value })} /></Field>
+              <Field label={T('الاسم بالعربية')}><input className={input} value={s.nameAr || ''} onChange={(e) => onChange({ ...s, nameAr: e.target.value })} /></Field>
               <Field label="Name (English)"><input className={input} dir="ltr" value={s.nameEn || ''} onChange={(e) => onChange({ ...s, nameEn: e.target.value })} /></Field>
-              <Field label="النوع"><select className={input} value={s.kind} onChange={(e) => onChange({ ...s, kind: e.target.value as ServiceDef['kind'] })}>
-                {[['info', 'معلومات/أدوات'], ['store', 'متجر'], ['custom_order', 'طلب مخصص'], ['b2b', 'جملة B2B'], ['consultation', T('استشارة')], ['support', T('دعم')], ['custom', 'خدمة جديدة']].map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></Field>
-              <Field label="الترتيب"><input className={input} type="number" value={s.order ?? 50} onChange={(e) => onChange({ ...s, order: Number(e.target.value) })} /></Field>
+              <Field label={T('النوع')}><select className={input} value={s.kind} onChange={(e) => onChange({ ...s, kind: e.target.value as ServiceDef['kind'] })}>
+                {[['info', T('معلومات/أدوات')], ['store', T('متجر')], ['custom_order', T('طلب مخصص')], ['b2b', T('جملة B2B')], ['consultation', T('استشارة')], ['support', T('دعم')], ['custom', T('خدمة جديدة')]].map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></Field>
+              <Field label={T('الترتيب')}><input className={input} type="number" value={s.order ?? 50} onChange={(e) => onChange({ ...s, order: Number(e.target.value) })} /></Field>
             </div>
-            <Field label="الوصف بالعربية"><textarea className={input} rows={2} value={s.descriptionAr || ''} onChange={(e) => onChange({ ...s, descriptionAr: e.target.value })} /></Field>
+            <Field label={T('الوصف بالعربية')}><textarea className={input} rows={2} value={s.descriptionAr || ''} onChange={(e) => onChange({ ...s, descriptionAr: e.target.value })} /></Field>
             <Field label="Description (English)"><textarea className={input} dir="ltr" rows={2} value={s.descriptionEn || ''} onChange={(e) => onChange({ ...s, descriptionEn: e.target.value })} /></Field>
-            <Field label="كلمات التوجيه (مفصولة بفواصل)"><textarea className={input} rows={2} value={csv(s.keywords)} onChange={(e) => onChange({ ...s, keywords: fromCsv(e.target.value) })} /></Field>
-            <Field label="حقول الاستمارة (JSON: name, labelAr, labelEn, type, required, options)">
+            <Field label={T('كلمات التوجيه (مفصولة بفواصل)')}><textarea className={input} rows={2} value={csv(s.keywords)} onChange={(e) => onChange({ ...s, keywords: fromCsv(e.target.value) })} /></Field>
+            <Field label={T('حقول الاستمارة (JSON: name, labelAr, labelEn, type, required, options)')}>
               <textarea className={`${input} font-mono text-[11px]`} dir="ltr" rows={6} value={fieldsText} onChange={(e) => {
                 setFieldsText(e.target.value);
                 try { const parsed = JSON.parse(e.target.value); if (!Array.isArray(parsed)) throw new Error(); onChange({ ...s, formFields: parsed }); setJsonError(''); }
-                catch { setJsonError('JSON غير صالح — لن تُحفظ الحقول حتى يُصحَّح.'); }
+                catch { setJsonError(T('JSON غير صالح — لن تُحفظ الحقول حتى يُصحَّح.')); }
               }} />
             </Field>
             {jsonError && <p className="text-[11px] text-red-700">{jsonError}</p>}
@@ -1271,23 +1271,23 @@ function EnginesPanel() {
   const toggle = (id: EngineId) => form && setForm({ ...form, enginePolicy: policy.includes(id) ? policy.filter((x) => x !== id) : [...policy.filter((x) => x !== 'sham_local'), id, 'sham_local'] });
   const save = async () => {
     if (!form) return; setBusy(true); setMessage('');
-    try { await adminRequest('/settings', send('PUT', { ...form, shaheen: undefined })); setMessage('تم الحفظ ✅'); reload(); }
+    try { await adminRequest('/settings', send('PUT', { ...form, shaheen: undefined })); setMessage(T('تم الحفظ ✅')); reload(); }
     catch (e) { setMessage((e as Error).message); } finally { setBusy(false); }
   };
   return (
     <>
-      <Header title={T('المحركات والإعدادات')} subtitle="سياسة اختيار المحرك مع التحويل التلقائي عند الفشل؛ محرك شام الذاتي هو خط الأمان الأخير دائماً"
+      <Header title={T('المحركات والإعدادات')} subtitle={T('سياسة اختيار المحرك مع التحويل التلقائي عند الفشل؛ محرك شام الذاتي هو خط الأمان الأخير دائماً')}
         actions={<a href="/api/admin/export" onClick={async (e) => {
           e.preventDefault();
           const response = await fetch(apiUrl('/api/admin/export'), { headers: { Authorization: `Bearer ${getToken()}` } });
           const blob = await response.blob(); const url = URL.createObjectURL(blob);
           const a = document.createElement('a'); a.href = url; a.download = `sham-core-backup-${new Date().toISOString().slice(0, 10)}.json`; a.click(); URL.revokeObjectURL(url);
-        }} className={`${btn} bg-white border border-stone-300`}><Download className="w-4 h-4" />نسخة احتياطية</a>} />
+        }} className={`${btn} bg-white border border-stone-300`}><Download className="w-4 h-4" />{T('نسخة احتياطية')}</a>} />
       <Feedback error={error} loading={loading && !data} />
       {form && data && (
         <div className="grid lg:grid-cols-2 gap-4">
           <div className={`${card} space-y-2`}>
-            <h2 className="font-bold text-sm">ترتيب المحركات</h2>
+            <h2 className="font-bold text-sm">{T('ترتيب المحركات')}</h2>
             <p className="text-[11px] text-stone-500">المفاتيح وعناوين الخوادم تُضبط في متغيرات بيئة الخادم فقط ولا تظهر هنا. المحرك غير المهيأ يُتخطى تلقائياً.</p>
             {data.engines.map((engine) => {
               const active = policy.includes(engine.id);
@@ -1308,7 +1308,7 @@ function EnginesPanel() {
           <div className={`${card} space-y-2`}>
             <h2 className="font-bold text-sm">هوية المساعد</h2>
             <div className="grid grid-cols-2 gap-2">
-              <Field label="الاسم بالعربية"><input className={input} value={form.assistantNameAr} onChange={(e) => setForm({ ...form, assistantNameAr: e.target.value })} /></Field>
+              <Field label={T('الاسم بالعربية')}><input className={input} value={form.assistantNameAr} onChange={(e) => setForm({ ...form, assistantNameAr: e.target.value })} /></Field>
               <Field label="Name (English)"><input className={input} dir="ltr" value={form.assistantNameEn} onChange={(e) => setForm({ ...form, assistantNameEn: e.target.value })} /></Field>
             </div>
             <Field label="رسالة الترحيب بالعربية"><textarea className={input} rows={3} value={form.welcomeAr} onChange={(e) => setForm({ ...form, welcomeAr: e.target.value })} /></Field>
@@ -1793,7 +1793,7 @@ function QualityPanel() {
                     <textarea className={input} required rows={4} value={draft.content} onChange={(e) => setDraft({ ...draft, content: e.target.value })} placeholder="الإجابة الصحيحة كما يجب أن يقولها المساعد" aria-label="الإجابة" />
                     <div className="flex gap-2">
                       <button disabled={busy} className={`${btn} bg-emerald-700 text-white`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}حفظ في قاعدة المعرفة</button>
-                      <button type="button" onClick={() => setEditing(null)} className={`${btn} border border-stone-300`}>إلغاء</button>
+                      <button type="button" onClick={() => setEditing(null)} className={`${btn} border border-stone-300`}>{T('إلغاء')}</button>
                     </div>
                   </form>
                 ) : g.status === 'open' ? (
