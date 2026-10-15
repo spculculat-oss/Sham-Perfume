@@ -433,6 +433,147 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   'بيانات المستخدمين لم تُلمس': { en: 'User data was not touched' },
   'رُدّت بيانات المستخدمين بعد محاولة لمسها': { en: 'User data was blocked after an attempt to touch it' },
   'تحليل مسبق فقط': { en: 'Pre-analysis only' },
+  // ── Batch 5: email studio, notifications, status labels, storage ───────
+  '✅ دائم': { en: '✅ Persistent' },
+  '⚠️ مؤقت': { en: '⚠️ Temporary' },
+  '✅ مفعلة': { en: '✅ Enabled' },
+  'تعذر الإرسال': { en: 'Sending failed' },
+  'خطأ غير معروف': { en: 'Unknown error' },
+  'خطأ': { en: 'Error' },
+  'البريد:': { en: 'Email:' },
+  'تغيير حالة الطلب': { en: 'Change order status' },
+  'معاينة البريد': { en: 'Email preview' },
+  'إرسال إشعار الآن': { en: 'Send a notification now' },
+  'عرض منسق (HTML)': { en: 'Formatted view (HTML)' },
+  'نص عادي (Text)': { en: 'Plain text (Text)' },
+  'إغلاق المعاينة': { en: 'Close preview' },
+  'مزود البريد النشط': { en: 'Active email provider' },
+  'إجمالي الإشعارات المسجلة': { en: 'Total recorded notifications' },
+  'حالات الإشعار التلقائي': { en: 'Automatic-notification statuses' },
+  'يمكنك كتابة أي بريد إلكتروني واختيار الحالة لتجربة استلام الرسالة والتأكد من مظهرها وجودتها.': { en: 'You can enter any email address and pick a status to try receiving the message and check how it looks.' },
+  'البريد الإلكتروني المستلم:': { en: 'Recipient email address:' },
+  'حالة الطلب المراد تجربتها:': { en: 'Order status to test:' },
+  'ملاحظة العميل التجريبية:': { en: 'Sample customer note:' },
+  'يحتوي الإيميل على: شعار وتوقيع شام للعطور الفاخر، شارة الحالة الملونة، تفاصيل الطلب، جدول المنتجات، ملاحظة فريق العمل، وزر «تتبع حالة طلبك بالتفصيل» ورابط مساعد شام المباشر.': { en: 'The email contains: the Sham Perfumes luxury logo and signature, the coloured status badge, the order details, the products table, the team note, a “track your order in detail” button and a direct link to the Sham assistant.' },
+  'شام للعطور': { en: 'Sham Perfumes' },
+  'مرحباً عميلنا العزيز 👋': { en: 'Hello dear customer 👋' },
+  'حالة طلبك الحالية:': { en: 'Your current order status:' },
+  'معاينة القالب الكامل بالرسومات والتنسيق': { en: 'Preview the full template with graphics and styling' },
+  'تحديث السجل': { en: 'Refresh the log' },
+  'جارٍ تحميل سجل الإشعارات…': { en: 'Loading the notifications log…' },
+  'لم يتم إرسال إشعارات بعد. عند تغيير حالة أي طلب يحمل بريداً إلكترونياً، سيظهر الإشعار المرسل هنا فوراً.': { en: 'No notifications sent yet. When you change the status of any order that has an email address, the sent notification appears here immediately.' },
+  'عرض': { en: 'View' },
+  'زائر': { en: 'Visitor' },
+  'تعديل': { en: 'Edit' },
+  'إضافة جديد': { en: 'Add new' },
+  'مهيأ (الإعداد موجود؛ لا يضمن صحة المفتاح)': { en: 'Configured (the setting exists; the key is not verified)' },
+  'غير مهيأ — اضبط SHAM_LLM_BASE_URL': { en: 'Not configured — set SHAM_LLM_BASE_URL' },
+  'غير مهيأ — لا يوجد مفتاح': { en: 'Not configured — no key' },
+  'لوحة الإدارة (تعديل محفوظ)': { en: 'Admin panel (saved change)' },
+  'مهيأ على الخادم': { en: 'Configured on the server' },
+  ' (موصى به)': { en: ' (recommended)' },
+  'توكن': { en: 'tokens' },
+  'يعمل ✅': { en: 'Working ✅' },
+  'لم يعمل': { en: 'Not working' },
+  'إخفاء': { en: 'Hide' },
+  ' · 👑 الرئيس': { en: ' · 👑 Chair' },
+  'المفتوحة': { en: 'Open' },
+  'الكل': { en: 'All' },
+  'مفتوحة': { en: 'open' },
+  '· تم الحل ✅': { en: '· Resolved ✅' },
+  '· متجاهلة': { en: '· Ignored' },
+  'بدون سبب مسجل': { en: 'No recorded reason' },
+  'يحتاج SHAM_ADMIN_TOKEN': { en: 'Needs SHAM_ADMIN_TOKEN' },
+  'لم يُفحص بعد': { en: 'Not checked yet' },
+  'قيّمه شاهين': { en: 'Judged by Shaheen' },
+  'فحص آلي فقط': { en: 'Automatic check only' },
+  'إلغاء نهائي': { en: 'Cancel permanently' },
+  'استعادة': { en: 'Restore' },
+  'ملغى': { en: 'Canceled' },
+  'تحليل فقط (دون تطبيق)': { en: 'Analyse only (without applying)' },
+  'استقبال وتطبيق الزيادة': { en: 'Receive and apply the addition' },
+  'مخزون': { en: 'Stock' },
+  'المراجع:': { en: 'References:' },
+  'حفظ في قاعدة المعرفة': { en: 'Save to the knowledge base' },
+  'رد المساعد:': { en: 'Assistant reply:' },
+  'تقييم سلبي': { en: 'Negative rating' },
+  'آخر مرة': { en: 'Last time' },
+  'آخر مراجعة:': { en: 'Last review:' },
+  'المراجعة القادمة:': { en: 'Next review:' },
+  'المحركات المهيأة:': { en: 'Configured engines:' },
+  'إشعارات Webhook:': { en: 'Webhook notifications:' },
+  'الطلبات:': { en: 'Requests:' },
+  'الخدمات:': { en: 'Services:' },
+  'المنتجات:': { en: 'Products:' },
+  'مستند': { en: 'documents' },
+  'رسالة': { en: 'messages' },
+  'إجابة': { en: 'answers' },
+  'مراجعة': { en: 'Review' },
+  'كل مقعد يكتب رأيه مستقلاً ← المقاعد تراجع آراء بعضها بأسماء مجهولة (A، B، C) ← رئيس المجلس يكتب ردّاً استشارياً واحداً للزائر. الكل يشتغل على بيانات شام فقط، ومحدش منهم يقدر ينفّذ طلب أو يغيّر حاجة.': { en: 'Each seat writes its own opinion independently ← the seats review each other\'s opinions under anonymous names (A, B, C) ← the council chair writes a single advisory reply for the visitor. Everything runs on Sham\'s data only, and none of them can execute an order or change anything.' },
+  'كل رد بالمجلس بيكلّف (عدد المقاعد × (1 + الجولات) + 1) طلب للمزوّدين، وفيه حد أقصى لكل زائر (SHAM_COUNCIL_RATE_PER_HOUR، الافتراضي 12 في الساعة).': { en: 'Every council reply costs (number of seats × (1 + rounds) + 1) provider requests, with a per-visitor cap (SHAM_COUNCIL_RATE_PER_HOUR, default 12 per hour).' },
+  'اضبط': { en: 'Set' },
+  'أو انسخ «الإعداد الدائم» بالأسفل لملف': { en: 'or copy the “permanent configuration” below into the file' },
+  'على Vercel/Firebase.': { en: 'on Vercel/Firebase.' },
+  'تعديلات لم تُحفظ': { en: 'Unsaved changes' },
+  // ── Batch 5b: templated messages ({placeholder} form) ─────────────────
+  'إعداد التخزين غير صحيح ({error}). يعمل النظام مؤقتاً في الذاكرة.': { en: 'The storage configuration is invalid ({error}). The system runs in memory temporarily.' },
+  'التخزين الحالي في الذاكرة فقط وسيُفقد عند إعادة التشغيل.': { en: 'Storage is in memory only and will be lost when the server restarts.' },
+  'إشعار البريد متاح: {email}': { en: 'Email notification available: {email}' },
+  '[شام للعطور] تحديث حالة طلبك SH-SAMPLE: {status}': { en: '[Sham Perfumes] Your order status update SH-SAMPLE: {status}' },
+  'شام للعطور\\nحالة طلبك: {status}': { en: 'Sham Perfumes\\nOrder status: {status}' },
+  'حالة طلبك الحالية: {status}': { en: 'Your current order status: {status}' },
+  'درجة الإبداع (temperature): {value}': { en: 'Creativity level (temperature): {value}' },
+  'التخزين الحالي مؤقت ({kind})': { en: 'Storage is currently temporary ({kind})' },
+  'التخزين دائم ({kind}) — التعديلات تفضل محفوظة.': { en: 'Storage is persistent ({kind}) — changes stay saved.' },
+  'مصدر الإعدادات الحالي:': { en: 'Current settings source:' },
+  'الملف المشترك server/config/shaheen.ts': { en: 'The shared file server/config/shaheen.ts' },
+  'جاهز: {count} محرك مهيأ ومسموح ({engines}).': { en: 'Ready: {count} configured and allowed engines ({engines}).' },
+  'السماح بـ {engine}': { en: 'Allow {engine}' },
+  'نموذج {engine}': { en: 'Model for {engine}' },
+  'افتراضي: {model}': { en: 'Default: {model}' },
+  ' (غير مهيأ)': { en: ' (not configured)' },
+  'بطاقات:': { en: 'Actions:' },
+  'نقاش المجلس ({seats} مقاعد · {rounds} جولة · {sec} ث · {outcome})': { en: 'Council discussion ({seats} seats · {rounds} rounds · {sec}s · {outcome})' },
+  'مقعد {n}: {role} — {engine}': { en: 'Seat {n}: {role} — {engine}' },
+  'مراجعة {n}:': { en: 'Review {n}:' },
+  'نقاش المجلس ({seats} مستشارين · {rounds} جولة)': { en: 'Council discussion ({seats} advisors · {rounds} rounds)' },
+  'تشغيل': { en: 'Run' },
+  'صياغة الملخص:': { en: 'Summary composed by:' },
+  'لا توجد فجوات مفتوحة — ممتاز.': { en: 'No open gaps — excellent.' },
+  'لا توجد فجوات — ممتاز.': { en: 'No gaps — excellent.' },
+  'تقييم سلبي: {reason}': { en: 'Negative rating: {reason}' },
+  ' · السبب: {reason}': { en: ' · Reason: {reason}' },
+  'تم: {action} ✅': { en: 'Done: {action} ✅' },
+  'آخر فحص:': { en: 'Last check:' },
+  '{n}ث': { en: '{n}s' },
+  ' · {n} ث': { en: ' · {n} s' },
+  'ذاكرة الإجابات:': { en: 'Answer memory:' },
+  'مرة من الذاكرة': { en: 'times from memory' },
+  '🟢 متاح': { en: '🟢 Available' },
+  '⏸️ متوقف {sec}ث (حصة)': { en: '⏸️ Paused {sec}s (quota)' },
+  ' · حد {rpm}': { en: ' · limit {rpm}' },
+  '{n}/دقيقة': { en: '{n}/minute' },
+  'من {date} · التقييم وقتها {score}/10': { en: 'Since {date} · the score then was {score}/10' },
+  'آخر مراجعة: {last} · المراجعة القادمة: {next} ·': { en: 'Last review: {last} · Next review: {next} ·' },
+  'فُحص: {date} · الفحص الآلي {score}/10 ·': { en: 'Checked: {date} · automatic score {score}/10 ·' },
+  'إلغاء «{title}» نهائياً؟ اكتب السبب (اختياري):': { en: 'Cancel “{title}” permanently? Type the reason (optional):' },
+  'المثبتات ({n})': { en: 'Installed ({n})' },
+  'الملغيات ({n})': { en: 'Canceled ({n})' },
+  'سجل التحديثات ({n})': { en: 'Updates ledger ({n})' },
+  'من {platform} · حزمة': { en: 'From {platform} · package' },
+  'أُلغي {date}': { en: 'Canceled {date}' },
+  '· رفضنا عودته {n} مرة': { en: '· we rejected its return {n} times' },
+  ' (آخرها {date})': { en: ' (the last was {date})' },
+  '{n} ثُبّتت': { en: '{n} installed' },
+  '{n} ترقية': { en: '{n} upgraded' },
+  '{n} بدون تغيير': { en: '{n} unchanged' },
+  '{n} أقدم': { en: '{n} older' },
+  '{n} ملغى': { en: '{n} canceled' },
+  '{n} مرفوض': { en: '{n} rejected' },
+  '{n} مؤجل': { en: '{n} deferred' },
+  '«الإعداد الدائم» لملف المستودع': { en: 'the “permanent configuration” for the repository file' },
+  'إرسال البريد التجريبي الآن': { en: 'Send the test email now' },
+  'دخول': { en: 'Log in' },
 };
 
 let currentLang: SupportedLanguage = 'ar';
@@ -465,6 +606,44 @@ export function T(text: string): string {
 }
 
 /** Writing direction for the admin panel, following the current language. */
+/**
+ * Locale used for dates and numbers in the admin UI; follows the current language
+ * so Arabic keeps `ar-EG` and every other language uses its own tag.
+ */
+export function adminLocale(): string {
+  return currentLang === 'ar' ? 'ar-EG' : currentLang;
+}
+
+/** Translate a template that carries runtime values, using `{name}` placeholders. */
+export function TP(text: string, vars: Record<string, string | number>): string {
+  return T(text).replace(/\{(\w+)\}/g, (match, name: string) =>
+    Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : match,
+  );
+}
+
+/** List separator that follows the current language (Arabic comma vs. Latin comma). */
+export function listSep(): string {
+  return currentLang === 'ar' ? '، ' : ', ';
+}
+
+/**
+ * Wrap a label map so every read re-translates it.
+ * Module-level maps built with `T()` on import would otherwise freeze in the
+ * language that happened to be active when the module was first loaded.
+ */
+export function reactiveMap<T extends object>(build: () => T): T {
+  return new Proxy({} as T, {
+    get: (_target, prop) => (build() as Record<string | symbol, unknown>)[prop],
+    has: (_target, prop) => prop in build(),
+    ownKeys: () => Reflect.ownKeys(build()),
+    getOwnPropertyDescriptor: (_target, prop) => ({
+      configurable: true,
+      enumerable: true,
+      value: (build() as Record<string | symbol, unknown>)[prop],
+    }),
+  });
+}
+
 export function adminDir(): 'rtl' | 'ltr' {
   const cfg = SUPPORTED_LANGUAGES.find(l => l.code === currentLang);
   return (cfg?.dir as 'rtl' | 'ltr') || 'rtl';

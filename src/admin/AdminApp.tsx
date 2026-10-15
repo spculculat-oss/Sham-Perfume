@@ -1,4 +1,4 @@
-import { T, adminDir, useAdminLanguage } from './adminL10n';
+import { T, adminDir, useAdminLanguage, reactiveMap, TP, listSep, adminLocale } from './adminL10n';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Activity, ArrowRight, ArrowDownToLine, BookOpen, Bot, Boxes, ClipboardList, Cpu, Database, Download, FlaskConical, Headset, KeyRound,
@@ -46,19 +46,19 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'updates', label: T('بيئة التحديثات'), icon: <ArrowDownToLine className="w-4 h-4" /> },
 ];
 
-const STATUS: Record<RequestStatus, string> = { new: T('جديد'), in_progress: T('قيد التنفيذ'), quoted: T('عرض سعر'), confirmed: T('مؤكد'), completed: T('مكتمل'), cancelled: T('ملغي') };
-const TYPE: Record<string, string> = { order: T('طلب متجر'), custom_formula: T('عطر مخصص'), b2b_quote: T('عرض جملة'), consultation: T('استشارة'), support: T('دعم'), service: T('خدمة') };
-const INTENT: Record<string, string> = { greeting: T('تحية'), thanks: T('شكر'), list_services: T('عرض الخدمات'), track_order: T('تتبع'), browse_products: T('تصفح منتجات'), service_request: T('طلب خدمة'), handoff: T('تحويل لموظف'), calculate: T('حساب'), perfume_expert: T('سؤال خبير'), question: T('سؤال عام'), memory_view: T('عرض الذاكرة'), forget: T('حذف البيانات') };
-const ENGINE_LABEL: Record<string, string> = { self_hosted: T('نموذج مفتوح مستضاف ذاتياً'), gemini: 'Gemini', openai: 'OpenAI', claude: 'Claude', deepseek: 'DeepSeek', openrouter: 'OpenRouter', sham_local: T('محرك شام الذاتي'), human: T('موظف'), system: T('النظام') };
+const STATUS: Record<RequestStatus, string> = reactiveMap(() => ({ new: T('جديد'), in_progress: T('قيد التنفيذ'), quoted: T('عرض سعر'), confirmed: T('مؤكد'), completed: T('مكتمل'), cancelled: T('ملغي') }));
+const TYPE: Record<string, string> = reactiveMap(() => ({ order: T('طلب متجر'), custom_formula: T('عطر مخصص'), b2b_quote: T('عرض جملة'), consultation: T('استشارة'), support: T('دعم'), service: T('خدمة') }));
+const INTENT: Record<string, string> = reactiveMap(() => ({ greeting: T('تحية'), thanks: T('شكر'), list_services: T('عرض الخدمات'), track_order: T('تتبع'), browse_products: T('تصفح منتجات'), service_request: T('طلب خدمة'), handoff: T('تحويل لموظف'), calculate: T('حساب'), perfume_expert: T('سؤال خبير'), question: T('سؤال عام'), memory_view: T('عرض الذاكرة'), forget: T('حذف البيانات') }));
+const ENGINE_LABEL: Record<string, string> = reactiveMap(() => ({ self_hosted: T('نموذج مفتوح مستضاف ذاتياً'), gemini: 'Gemini', openai: 'OpenAI', claude: 'Claude', deepseek: 'DeepSeek', openrouter: 'OpenRouter', sham_local: T('محرك شام الذاتي'), human: T('موظف'), system: T('النظام') }));
 
-const COUNCIL_ROLE: Record<CouncilRole, string> = { formulator: T('خبير التركيب والمواد'), commercial: T('المستشار التجاري'), safety: T('مراجع السلامة والجودة'), customer: T('صوت العميل'), general: T('مستشار عام') };
+const COUNCIL_ROLE: Record<CouncilRole, string> = reactiveMap(() => ({ formulator: T('خبير التركيب والمواد'), commercial: T('المستشار التجاري'), safety: T('مراجع السلامة والجودة'), customer: T('صوت العميل'), general: T('مستشار عام') }));
 const COUNCIL_INTENTS = ['perfume_expert', 'question', 'service_request', 'browse_products', 'list_services'];
 const MODEL_ENGINES: ModelEngineId[] = ['self_hosted', 'gemini', 'openai', 'claude', 'deepseek', 'openrouter'];
 
 const card = 'rounded-2xl border border-stone-200 bg-white p-4 shadow-sm';
 const input = 'w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400';
 const btn = 'inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-sm font-semibold disabled:opacity-50';
-const fmtDate = (iso?: string) => (iso ? new Date(iso).toLocaleString('ar-EG', { dateStyle: 'short', timeStyle: 'short' }) : '');
+const fmtDate = (iso?: string) => (iso ? new Date(iso).toLocaleString(adminLocale(), { dateStyle: 'short', timeStyle: 'short' }) : '');
 
 function useLoad<T>(path: string, deps: unknown[] = []) {
   const [data, setData] = useState<T | null>(null);
@@ -105,10 +105,10 @@ export default function AdminApp() {
       <Shell>
         <form className={`${card} max-w-sm mx-auto mt-24 space-y-4`} onSubmit={(e) => { e.preventDefault(); void login(token.trim()); }}>
           <div className="flex items-center gap-2"><KeyRound className="w-5 h-5 text-amber-700" /><h1 className="font-bold text-lg">{T('إدارة شام — Sham Core')}</h1></div>
-          <p className="text-xs text-stone-500">أدخل رمز الإدارة المضبوط في متغير الخادم <code dir="ltr">SHAM_ADMIN_TOKEN</code>{T('. يُحفظ الرمز في هذه الجلسة فقط.')}</p>
+          <p className="text-xs text-stone-500">{T('أدخل رمز الإدارة المضبوط في متغير الخادم')} <code dir="ltr">SHAM_ADMIN_TOKEN</code>{T('. يُحفظ الرمز في هذه الجلسة فقط.')}</p>
           <input className={input} type="password" dir="ltr" autoComplete="current-password" value={token} onChange={(e) => setTok(e.target.value)} placeholder="Admin token" aria-label={T('رمز الإدارة')} />
           {loginError && <p role="alert" className="text-xs text-red-700">{loginError}</p>}
-          <button disabled={checking || !token.trim()} className={`${btn} w-full bg-stone-900 text-amber-100`}>{checking ? <Loader2 className="w-4 h-4 animate-spin" /> : 'دخول'}</button>
+          <button disabled={checking || !token.trim()} className={`${btn} w-full bg-stone-900 text-amber-100`}>{checking ? <Loader2 className="w-4 h-4 animate-spin" /> : T('دخول')}</button>
           <a href="#home" className="block text-center text-xs text-stone-500 hover:underline">{T('العودة إلى الموقع')}</a>
         </form>
       </Shell>
@@ -196,7 +196,7 @@ function OverviewPanel({ go }: { go: (t: Tab) => void }) {
         <div className="space-y-4">
           {(!data.storage.persistent || data.storage.error) && (
             <div className="rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">
-              <b>{T('تنبيه التخزين:')}</b> {data.storage.error ? `إعداد التخزين غير صحيح (${data.storage.error}). يعمل النظام مؤقتاً في الذاكرة.` : 'التخزين الحالي في الذاكرة فقط وسيُفقد عند إعادة التشغيل.'} اضبط <code dir="ltr">SHAM_STORE=file</code> على سيرفر Node أو <code dir="ltr">SHAM_STORE=firestore</code> على Vercel/Firebase.
+              <b>{T('تنبيه التخزين:')}</b> {data.storage.error ? TP('إعداد التخزين غير صحيح ({error}). يعمل النظام مؤقتاً في الذاكرة.', { error: data.storage.error }) : T('التخزين الحالي في الذاكرة فقط وسيُفقد عند إعادة التشغيل.')} {T('اضبط')} <code dir="ltr">SHAM_STORE=file</code> {T('على سيرفر Node أو')} <code dir="ltr">SHAM_STORE=firestore</code> {T('على Vercel/Firebase.')}
             </div>
           )}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -229,11 +229,11 @@ function OverviewPanel({ go }: { go: (t: Tab) => void }) {
             <div className={card}>
               <h2 className="font-bold text-sm mb-3 flex items-center gap-1.5"><Database className="w-4 h-4" />{T('البنية')}</h2>
               <ul className="text-xs space-y-1.5 text-stone-600">
-                <li>التخزين: <b dir="ltr">{data.storage.kind}</b> {data.storage.persistent ? '✅ دائم' : '⚠️ مؤقت'}</li>
-                <li>المحادثات: <b>{data.counts.conversations}</b> · الطلبات: <b>{data.counts.requests}</b></li>
-                <li>المعرفة: <b>{data.counts.knowledge}</b> مستند · الخدمات: <b>{data.counts.services}</b> · المنتجات: <b>{data.counts.products}</b></li>
-                <li>المحركات المهيأة: {data.engines.filter((e) => e.configured).map((e) => ENGINE_LABEL[e.id]).join('، ')}</li>
-                <li>إشعارات Webhook: {data.notifications?.configured ? '✅ مفعلة' : <>غير مفعلة — اضبط <code dir="ltr">SHAM_WEBHOOK_URL</code></>}</li>
+                <li>{T('التخزين:')} <b dir="ltr">{data.storage.kind}</b> {data.storage.persistent ? T('✅ دائم') : T('⚠️ مؤقت')}</li>
+                <li>{T('المحادثات:')} <b>{data.counts.conversations}</b> {T('· الطلبات:')} <b>{data.counts.requests}</b></li>
+                <li>{T('المعرفة:')} <b>{data.counts.knowledge}</b> {T('مستند · الخدمات:')} <b>{data.counts.services}</b> {T('· المنتجات:')} <b>{data.counts.products}</b></li>
+                <li>{T('المحركات المهيأة:')} {data.engines.filter((e) => e.configured).map((e) => ENGINE_LABEL[e.id]).join(listSep())}</li>
+                <li>{T('إشعارات Webhook:')} {data.notifications?.configured ? T('✅ مفعلة') : <>{T('غير مفعلة — اضبط')} <code dir="ltr">SHAM_WEBHOOK_URL</code></>}</li>
               </ul>
               {data.notifications?.configured && <NotifyTest />}
             </div>
@@ -292,11 +292,11 @@ function RequestsPanel() {
       if (response.emailNotification) {
         if (response.emailNotification.success) {
           setEmailNotice({
-            message: `✉️ تم إرسال إشعار بالبريد الإلكتروني للعميل (${response.emailNotification.recipient}) بنجاح عبر ${response.emailNotification.provider}`,
+            message: TP('✉️ Notification email sent to the customer ({email}) successfully via {provider}', { email: response.emailNotification.recipient, provider: response.emailNotification.provider }),
           });
         } else {
           setEmailNotice({
-            message: `⚠️ تنبيه إرسال البريد: ${response.emailNotification.error || 'تعذر الإرسال'}`,
+            message: TP('⚠️ Email sending alert: {error}', { error: response.emailNotification.error || T('تعذر الإرسال') }),
             isError: true,
           });
         }
@@ -342,11 +342,11 @@ function RequestsPanel() {
       reload();
       if (response.emailNotification.success) {
         setEmailNotice({
-          message: `✉️ تم إرسال إشعار البريد الإلكتروني فورياً إلى ${response.emailNotification.recipient} (${response.emailNotification.provider})`,
+          message: TP('✉️ The notification email was sent immediately to {email} ({provider})', { email: response.emailNotification.recipient, provider: response.emailNotification.provider }),
         });
       } else {
         setEmailNotice({
-          message: `⚠️ فشل إرسال البريد: ${response.emailNotification.error || 'خطأ غير معروف'}`,
+          message: TP('⚠️ Email sending failed: {error}', { error: response.emailNotification.error || T('خطأ غير معروف') }),
           isError: true,
         });
       }
@@ -381,7 +381,7 @@ function RequestsPanel() {
                 <span className="text-xs rounded-full bg-stone-100 px-2 py-0.5">{TYPE[r.type]}</span>
                 <span className={`text-xs rounded-full px-2 py-0.5 ${r.status === 'new' ? 'bg-amber-100 text-amber-900' : r.status === 'cancelled' ? 'bg-red-100 text-red-800' : 'bg-emerald-100 text-emerald-800'}`}>{STATUS[r.status]}</span>
                 {r.contact.email && (
-                  <span className="inline-flex items-center gap-1 text-[11px] rounded-full bg-amber-50 border border-amber-200 text-amber-800 px-2 py-0.5" title={`إشعار البريد متاح: ${r.contact.email}`}>
+                  <span className="inline-flex items-center gap-1 text-[11px] rounded-full bg-amber-50 border border-amber-200 text-amber-800 px-2 py-0.5" title={TP('إشعار البريد متاح: {email}', { email: r.contact.email })}>
                     <Mail className="w-3 h-3 text-amber-700" />
                     <span className="max-w-[120px] truncate" dir="ltr">{r.contact.email}</span>
                   </span>
@@ -405,11 +405,11 @@ function RequestsPanel() {
               </div>
 
               <div className="text-sm space-y-1 bg-stone-50 rounded-xl p-3">
-                <p>العميل: <b>{selected.contact.name}</b></p>
-                {selected.contact.phone && <p>الهاتف: <a dir="ltr" className="text-emerald-700 underline" href={`tel:${selected.contact.phone}`}>{selected.contact.phone}</a></p>}
+                <p>{T('العميل:')} <b>{selected.contact.name}</b></p>
+                {selected.contact.phone && <p>{T('الهاتف:')} <a dir="ltr" className="text-emerald-700 underline" href={`tel:${selected.contact.phone}`}>{selected.contact.phone}</a></p>}
                 {selected.contact.email ? (
                   <p className="flex items-center gap-1.5 flex-wrap">
-                    البريد: <a dir="ltr" className="text-emerald-700 underline font-semibold" href={`mailto:${selected.contact.email}`}>{selected.contact.email}</a>
+                    {T('البريد:')} <a dir="ltr" className="text-emerald-700 underline font-semibold" href={`mailto:${selected.contact.email}`}>{selected.contact.email}</a>
                     <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-md font-medium">{T('مفعّل للإشعارات')}</span>
                   </p>
                 ) : (
@@ -448,7 +448,7 @@ function RequestsPanel() {
               {/* Status Update & Email Notification Controls */}
               <div className="p-3 bg-amber-50/60 border border-amber-200/80 rounded-xl space-y-2.5">
                 <label className="block text-xs font-semibold text-stone-800">
-                  تغيير حالة الطلب
+                  {T('تغيير حالة الطلب')}
                   <select
                     className={`${input} mt-1`}
                     value={selected.status}
@@ -492,7 +492,7 @@ function RequestsPanel() {
                         className={`${btn} flex-1 text-xs bg-white border border-stone-300 text-stone-800 hover:bg-stone-50`}
                       >
                         {previewLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Eye className="w-3.5 h-3.5 text-stone-600" />}
-                        معاينة البريد
+                        {T('معاينة البريد')}
                       </button>
 
                       <button
@@ -503,7 +503,7 @@ function RequestsPanel() {
                         title={T('إرسال إشعار بالحالة الحالية فوراً للعميل')}
                       >
                         {sendingManualEmail ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Mail className="w-3.5 h-3.5" />}
-                        إرسال إشعار الآن
+                        {T('إرسال إشعار الآن')}
                       </button>
                     </div>
                   </div>
@@ -584,7 +584,7 @@ function EmailPreviewModal({
             <Mail className="w-5 h-5 text-amber-400" />
             <div>
               <h3 className="font-bold text-sm">{T('معاينة إشعار البريد الإلكتروني للعميل')}</h3>
-              <p className="text-xs text-stone-400">إلى: <span dir="ltr" className="text-amber-300 font-mono">{preview.recipientEmail}</span> ({preview.customerName})</p>
+              <p className="text-xs text-stone-400">{T('إلى:')} <span dir="ltr" className="text-amber-300 font-mono">{preview.recipientEmail}</span> ({preview.customerName})</p>
             </div>
           </div>
           <button
@@ -608,14 +608,14 @@ function EmailPreviewModal({
               onClick={() => setTab('html')}
               className={`px-2.5 py-1 rounded-lg font-semibold text-xs transition-colors ${tab === 'html' ? 'bg-amber-600 text-white' : 'bg-white text-stone-700 border border-stone-300'}`}
             >
-              عرض منسق (HTML)
+              {T('عرض منسق (HTML)')}
             </button>
             <button
               type="button"
               onClick={() => setTab('text')}
               className={`px-2.5 py-1 rounded-lg font-semibold text-xs transition-colors ${tab === 'text' ? 'bg-amber-600 text-white' : 'bg-white text-stone-700 border border-stone-300'}`}
             >
-              نص عادي (Text)
+              {T('نص عادي (Text)')}
             </button>
           </div>
         </div>
@@ -646,7 +646,7 @@ function EmailPreviewModal({
             onClick={onClose}
             className={`${btn} bg-stone-900 text-amber-100 text-xs`}
           >
-            إغلاق المعاينة
+            {T('إغلاق المعاينة')}
           </button>
         </div>
       </div>
@@ -702,14 +702,14 @@ function EmailsPanel() {
       if (response.ok) {
         setTestResult({
           success: true,
-          message: `تم الإرسال بنجاح إلى ${response.emailNotification.recipient} عبر مزود ${response.emailNotification.provider} (${response.emailNotification.delivery})`,
+          message: TP('Sent successfully to {email} via the provider {provider} ({delivery})', { email: response.emailNotification.recipient, provider: response.emailNotification.provider, delivery: response.emailNotification.delivery }),
         });
         reloadHistory();
         reloadOverview();
       } else {
         setTestResult({
           success: false,
-          message: `تعذر الإرسال: ${response.emailNotification.error || 'خطأ'}`,
+          message: TP('Sending failed: {error}', { error: response.emailNotification.error || T('خطأ') }),
         });
       }
     } catch (err) {
@@ -740,7 +740,7 @@ function EmailsPanel() {
         actions={<>
           <button onClick={() => { reloadOverview(); reloadHistory(); }} className={`${btn} bg-white border border-stone-300`}>
             <RefreshCw className="w-4 h-4" />
-            تحديث
+            {T('تحديث')}
           </button>
         </>}
       />
@@ -750,7 +750,7 @@ function EmailsPanel() {
         <div className={`${card} border-amber-300 bg-amber-50/40`}>
           <div className="flex items-center gap-2 text-amber-900 font-bold text-sm mb-1">
             <Mail className="w-4 h-4 text-amber-700" />
-            مزود البريد النشط
+            {T('مزود البريد النشط')}
           </div>
           <p className="text-2xl font-bold text-stone-900 mt-1">
             {overview?.emailNotifications?.provider || T('محاكي آمن (Simulator)')}
@@ -765,7 +765,7 @@ function EmailsPanel() {
         <div className={card}>
           <div className="flex items-center gap-2 text-stone-700 font-bold text-sm mb-1">
             <Send className="w-4 h-4 text-emerald-600" />
-            إجمالي الإشعارات المسجلة
+            {T('إجمالي الإشعارات المسجلة')}
           </div>
           <p className="text-2xl font-bold text-emerald-700 mt-1">
             {historyData?.items.length ?? overview?.emailNotifications?.sentCount ?? 0}
@@ -776,7 +776,7 @@ function EmailsPanel() {
         <div className={card}>
           <div className="flex items-center gap-2 text-stone-700 font-bold text-sm mb-1">
             <Check className="w-4 h-4 text-amber-600" />
-            حالات الإشعار التلقائي
+            {T('حالات الإشعار التلقائي')}
           </div>
           <div className="flex flex-wrap gap-1 mt-2">
             {Object.entries(STATUS).map(([k, v]) => (
@@ -798,11 +798,11 @@ function EmailsPanel() {
               <h2 className="font-bold text-sm">{T('إرسال بريد تجريبي لاختبار النظام')}</h2>
             </div>
             <p className="text-xs text-stone-500">
-              يمكنك كتابة أي بريد إلكتروني واختيار الحالة لتجربة استلام الرسالة والتأكد من مظهرها وجودتها.
+              {T('يمكنك كتابة أي بريد إلكتروني واختيار الحالة لتجربة استلام الرسالة والتأكد من مظهرها وجودتها.')}
             </p>
 
             <label className="block text-xs font-semibold">
-              البريد الإلكتروني المستلم:
+              {T('البريد الإلكتروني المستلم:')}
               <input
                 type="email"
                 required
@@ -815,7 +815,7 @@ function EmailsPanel() {
             </label>
 
             <label className="block text-xs font-semibold">
-              حالة الطلب المراد تجربتها:
+              {T('حالة الطلب المراد تجربتها:')}
               <select
                 className={`${input} mt-1`}
                 value={testStatus}
@@ -828,7 +828,7 @@ function EmailsPanel() {
             </label>
 
             <label className="block text-xs font-semibold">
-              ملاحظة العميل التجريبية:
+              {T('ملاحظة العميل التجريبية:')}
               <textarea
                 className={`${input} mt-1`}
                 rows={2}
@@ -844,7 +844,7 @@ function EmailsPanel() {
               className={`${btn} bg-amber-600 text-white w-full hover:bg-amber-700`}
             >
               {testBusy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-              إرسال البريد التجريبي الآن
+              {T('إرسال البريد التجريبي الآن')}
             </button>
 
             {testResult && (
@@ -884,11 +884,11 @@ function EmailsPanel() {
               <div className="flex items-center justify-between">
                 <span className="text-stone-500">{T('عنوان الرسالة المتوقع:')}</span>
                 <span className="font-semibold text-stone-900" dir={adminDir()}>
-                  [شام للعطور] تحديث حالة طلبك SH-SAMPLE: {STATUS[activeTemplateStatus]}
+                  {TP('[شام للعطور] تحديث حالة طلبك SH-SAMPLE: {status}', { status: STATUS[activeTemplateStatus] })}
                 </span>
               </div>
               <p className="text-stone-600 leading-relaxed">
-                يحتوي الإيميل على: شعار وتوقيع شام للعطور الفاخر، شارة الحالة الملونة، تفاصيل الطلب، جدول المنتجات، ملاحظة فريق العمل، وزر «تتبع حالة طلبك بالتفصيل» ورابط مساعد شام المباشر.
+                {T('يحتوي الإيميل على: شعار وتوقيع شام للعطور الفاخر، شارة الحالة الملونة، تفاصيل الطلب، جدول المنتجات، ملاحظة فريق العمل، وزر «تتبع حالة طلبك بالتفصيل» ورابط مساعد شام المباشر.')}
               </p>
               <div className="pt-2 flex justify-end">
                 <button
@@ -901,7 +901,7 @@ function EmailsPanel() {
                       serviceId: 'store',
                       status: activeTemplateStatus,
                       contact: { name: T('الأستاذ أحمد فؤاد'), email: 'ahmed@example.com', phone: '+201123456789' },
-                      fields: { 'العنوان': T('التجمع الخامس، القاهرة'), 'طريقة الدفع': T('الدفع عند الاستلام') },
+                      fields: { [T('العنوان')]: T('التجمع الخامس، القاهرة'), [T('طريقة الدفع')]: T('الدفع عند الاستلام') },
                       items: [
                         { productId: 'oud', sku: 'OUD-ROYAL', name: T('عطر عود ملكي خاص (EdP)'), quantity: 1, unitPrice: 850, currency: 'EGP' },
                         { productId: 'rose', sku: 'ROSE-GRASSE', name: T('زيت ورد غراس النقي 30 مل'), quantity: 2, unitPrice: 380, currency: 'EGP' },
@@ -919,9 +919,9 @@ function EmailsPanel() {
                     }).catch(() => {
                       // Fallback dummy preview
                       setPreviewModalItem({
-                        subject: `[شام للعطور] تحديث حالة طلبك SH-SAMPLE: ${STATUS[activeTemplateStatus]}`,
-                        html: `<html><body style="font-family:sans-serif;direction:rtl;padding:20px;text-align:right;"><h2 style="color:#b45309;">شام للعطور</h2><p>مرحباً عميلنا العزيز 👋</p><p>حالة طلبك الحالية: <b>${STATUS[activeTemplateStatus]}</b></p></body></html>`,
-                        text: `شام للعطور\nحالة طلبك: ${STATUS[activeTemplateStatus]}`,
+                        subject: TP('[شام للعطور] تحديث حالة طلبك SH-SAMPLE: {status}', { status: STATUS[activeTemplateStatus] }),
+                        html: `<html><body style="font-family:sans-serif;direction:rtl;padding:20px;text-align:right;"><h2 style="color:#b45309;">${T('شام للعطور')}</h2><p>${T('مرحباً عميلنا العزيز 👋')}</p><p>${T('حالة طلبك الحالية:')} <b>${STATUS[activeTemplateStatus]}</b></p></body></html>`,
+                        text: TP('شام للعطور\\nحالة طلبك: {status}', { status: STATUS[activeTemplateStatus] }),
                         recipientEmail: 'ahmed@example.com',
                         customerName: T('الأستاذ أحمد فؤاد'),
                       });
@@ -930,7 +930,7 @@ function EmailsPanel() {
                   className={`${btn} bg-stone-900 text-amber-100 text-xs`}
                 >
                   <Eye className="w-3.5 h-3.5" />
-                  معاينة القالب الكامل بالرسومات والتنسيق
+                  {T('معاينة القالب الكامل بالرسومات والتنسيق')}
                 </button>
               </div>
             </div>
@@ -951,20 +951,20 @@ function EmailsPanel() {
             className="text-xs text-stone-500 hover:text-stone-900 flex items-center gap-1"
           >
             <RefreshCw className="w-3 h-3" />
-            تحديث السجل
+            {T('تحديث السجل')}
           </button>
         </div>
 
         {historyLoading && !historyData && (
           <div className="flex items-center gap-2 text-xs text-stone-500 py-6">
             <Loader2 className="w-4 h-4 animate-spin" />
-            جارٍ تحميل سجل الإشعارات…
+            {T('جارٍ تحميل سجل الإشعارات…')}
           </div>
         )}
 
         {historyData && historyData.items.length === 0 && (
           <p className="text-xs text-stone-400 py-6 text-center">
-            لم يتم إرسال إشعارات بعد. عند تغيير حالة أي طلب يحمل بريداً إلكترونياً، سيظهر الإشعار المرسل هنا فوراً.
+            {T('لم يتم إرسال إشعارات بعد. عند تغيير حالة أي طلب يحمل بريداً إلكترونياً، سيظهر الإشعار المرسل هنا فوراً.')}
           </p>
         )}
 
@@ -1012,7 +1012,7 @@ function EmailsPanel() {
                         className={`${btn} text-[11px] py-1 px-2.5 bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-200`}
                       >
                         <Eye className="w-3 h-3" />
-                        عرض
+                        {T('عرض')}
                       </button>
                     </td>
                   </tr>
@@ -1065,7 +1065,7 @@ function ConversationsPanel() {
                 <span className="ms-auto text-stone-400">{fmtDate(c.updatedAt)}</span>
               </div>
               <p className="text-xs text-stone-700 mt-1 truncate">{c.lastMessage}</p>
-              <p className="text-[10px] text-stone-400 mt-0.5">{c.messageCount} رسالة · {c.language}{c.serviceId ? ` · ${c.serviceId}` : ''}</p>
+              <p className="text-[10px] text-stone-400 mt-0.5">{c.messageCount} {T('رسالة')} · {c.language}{c.serviceId ? ` · ${c.serviceId}` : ''}</p>
             </button>
           ))}
         </div>
@@ -1073,7 +1073,7 @@ function ConversationsPanel() {
           {selected ? (
             <div className={`${card} flex flex-col max-h-[75vh]`}>
               <div className="flex flex-wrap items-center gap-2 pb-2 border-b">
-                <b className="text-sm">{selected.memory.name || 'زائر'}</b>
+                <b className="text-sm">{selected.memory.name || T('زائر')}</b>
                 <span className="text-[11px] text-stone-400" dir="ltr">{selected.visitorId}</span>
                 {selected.memory.lastRequestRef && <span className="text-[11px] bg-amber-100 rounded-full px-2" dir="ltr">{selected.memory.lastRequestRef}</span>}
                 <select className="ms-auto rounded-lg border border-stone-300 text-xs px-2 py-1" value={selected.status} aria-label={T('حالة المحادثة')}
@@ -1151,7 +1151,7 @@ function CollectionPanel<T extends { id: string }>({ path, title, subtitle, empt
         <div className="lg:col-span-2">
           {editing ? (
             <div className={`${card} space-y-3 lg:sticky lg:top-4`}>
-              <h2 className="font-bold text-sm">{editing.id ? 'تعديل' : 'إضافة جديد'}</h2>
+              <h2 className="font-bold text-sm">{editing.id ? T('تعديل') : T('إضافة جديد')}</h2>
               <Editor value={editing} onChange={setEditing} />
               {saveError && <p className="text-xs text-red-700">{saveError}</p>}
               <div className="flex gap-2">
@@ -1167,7 +1167,7 @@ function CollectionPanel<T extends { id: string }>({ path, title, subtitle, empt
 }
 
 const Field = ({ label, children }: { label: string; children: React.ReactNode }) => <label className="block text-xs font-semibold text-stone-700 space-y-1"><span>{label}</span>{children}</label>;
-const csv = (v?: string[]) => (v || []).join('، ');
+const csv = (v?: string[]) => (v || []).join(listSep());
 const fromCsv = (s: string) => s.split(/[,،]/).map((x) => x.trim()).filter(Boolean);
 
 function ProductsPanel() {
@@ -1176,7 +1176,7 @@ function ProductsPanel() {
       blank={{ nameAr: '', nameEn: '', price: 0, stock: 0, unit: 'piece', category: 'perfume', active: true, tags: [] }}
       summary={(p) => (<>
         <p className="text-sm font-semibold truncate">{p.nameAr || p.nameEn} {p.demo && <span className="text-[10px] bg-stone-200 rounded px-1">{T('تجريبي')}</span>} {!p.active && <span className="text-[10px] bg-red-100 text-red-800 rounded px-1">{T('مخفي')}</span>}</p>
-        <p className="text-xs text-stone-500"><span dir="ltr">{p.sku}</span> · {p.price} {p.currency} / {p.unit} · مخزون <b className={p.stock <= 3 ? 'text-red-700' : ''}>{p.stock}</b></p>
+        <p className="text-xs text-stone-500"><span dir="ltr">{p.sku}</span> · {p.price} {p.currency} / {p.unit} · {T('مخزون')} <b className={p.stock <= 3 ? 'text-red-700' : ''}>{p.stock}</b></p>
       </>)}
       Editor={({ value: p, onChange }) => (
         <div className="space-y-2">
@@ -1296,14 +1296,14 @@ function EnginesPanel() {
                   <input type="checkbox" aria-label={engine.name} checked={active || engine.id === 'sham_local'} disabled={engine.id === 'sham_local'} onChange={() => toggle(engine.id)} />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold">{ENGINE_LABEL[engine.id]} <span className="text-[10px] text-stone-400" dir="ltr">{engine.model}</span></p>
-                    <p className={`text-[11px] ${engine.configured ? 'text-emerald-700' : 'text-stone-400'}`}>{engine.configured ? 'مهيأ (الإعداد موجود؛ لا يضمن صحة المفتاح)' : engine.id === 'self_hosted' ? 'غير مهيأ — اضبط SHAM_LLM_BASE_URL' : 'غير مهيأ — لا يوجد مفتاح'}</p>
+                    <p className={`text-[11px] ${engine.configured ? 'text-emerald-700' : 'text-stone-400'}`}>{engine.configured ? T('مهيأ (الإعداد موجود؛ لا يضمن صحة المفتاح)') : engine.id === 'self_hosted' ? T('غير مهيأ — اضبط SHAM_LLM_BASE_URL') : T('غير مهيأ — لا يوجد مفتاح')}</p>
                   </div>
                   {active && engine.id !== 'sham_local' && <div className="flex flex-col"><button className="text-xs px-1" onClick={() => move(engine.id, -1)} aria-label={T('أعلى')}>▲</button><button className="text-xs px-1" onClick={() => move(engine.id, 1)} aria-label={T('أسفل')}>▼</button></div>}
                   {active && <span className="text-[10px] font-bold text-amber-800">#{policy.indexOf(engine.id) + 1}</span>}
                 </div>
               );
             })}
-            <Field label={`درجة الإبداع (temperature): ${form.temperature}`}><input type="range" min={0} max={1} step={0.05} value={form.temperature} onChange={(e) => setForm({ ...form, temperature: Number(e.target.value) })} className="w-full" /></Field>
+            <Field label={TP('درجة الإبداع (temperature): {value}', { value: form.temperature })}><input type="range" min={0} max={1} step={0.05} value={form.temperature} onChange={(e) => setForm({ ...form, temperature: Number(e.target.value) })} className="w-full" /></Field>
           </div>
           <div className={`${card} space-y-2`}>
             <h2 className="font-bold text-sm">{T('هوية المساعد')}</h2>
@@ -1331,7 +1331,7 @@ function EnginesPanel() {
 
 interface SettingsView { item: CoreSettings; engines: EngineStatus[]; shaheen: { source: 'admin' | 'file'; defaults: ShaheenSettings }; storage: { kind: string; persistent: boolean; error?: string } }
 interface ProbeResult { id: ModelEngineId; name: string; model: string; configured: boolean; ok: boolean; ms: number; error?: string; detail?: string; usedModel?: string }
-const PROBE_ERROR: Record<string, string> = {
+const PROBE_ERROR: Record<string, string> = reactiveMap(() => ({
   not_configured: T('غير مهيأ — لا يوجد مفتاح/عنوان في متغيرات الخادم'),
   rejected_or_empty: T('المزوّد رفض الطلب أو رجّع رداً فارغاً — راجع صلاحية المفتاح واسم النموذج والرصيد'),
   timeout: T('انتهت المهلة — الخدمة بطيئة أو غير متاحة'),
@@ -1343,7 +1343,7 @@ const PROBE_ERROR: Record<string, string> = {
   region_blocked: T('المزوّد لا يخدم منطقة الخادم — استخدم خادماً في منطقة مدعومة'),
   bad_request: T('المزوّد رفض صيغة الطلب — راجع اسم النموذج والإعدادات'),
   upstream_error: T('خدمة المزوّد متعطلة حالياً — أعد المحاولة لاحقاً'),
-};
+}));
 
 /** «الخبير شاهين»: which engines, in which order, which models, tone, length and extra instructions. */
 function ShaheenPanel() {
@@ -1390,13 +1390,13 @@ function ShaheenPanel() {
       <div className="space-y-4">
         {!data.storage.persistent ? (
           <div className="rounded-2xl border border-amber-300 bg-amber-50 p-3 text-xs leading-relaxed text-amber-950">
-            <p className="font-bold flex items-center gap-1.5"><TriangleAlert className="w-4 h-4" />التخزين الحالي مؤقت ({data.storage.kind})</p>
-            <p>أي تعديل تحفظه هنا يشتغل فوراً، لكنه ممكن يضيع لما الخادم يعيد التشغيل. عشان يبقى دائم على الموقعين: فعّل <code dir="ltr">SHAM_STORE=firestore</code> مع بيانات Firebase في Vercel، أو انسخ «الإعداد الدائم» بالأسفل لملف <code dir="ltr">server/config/shaheen.ts</code> في المستودع.</p>
+            <p className="font-bold flex items-center gap-1.5"><TriangleAlert className="w-4 h-4" />{TP('التخزين الحالي مؤقت ({kind})', { kind: data.storage.kind })}</p>
+            <p>{T('أي تعديل تحفظه هنا يشتغل فوراً، لكنه ممكن يضيع لما الخادم يعيد التشغيل. عشان يبقى دائم على الموقعين: فعّل')} <code dir="ltr">SHAM_STORE=firestore</code> {T('مع بيانات Firebase في Vercel، أو انسخ «الإعداد الدائم» بالأسفل لملف')} <code dir="ltr">server/config/shaheen.ts</code> {T('في المستودع.')}</p>
           </div>
         ) : (
-          <p className="text-xs text-emerald-800 flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" />التخزين دائم ({data.storage.kind}) — التعديلات تفضل محفوظة.</p>
+          <p className="text-xs text-emerald-800 flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" />{TP('التخزين دائم ({kind}) — التعديلات تفضل محفوظة.', { kind: data.storage.kind })}</p>
         )}
-        <p className="text-[11px] text-stone-500">مصدر الإعدادات الحالي: {data.shaheen.source === 'admin' ? 'لوحة الإدارة (تعديل محفوظ)' : 'الملف المشترك server/config/shaheen.ts'}</p>
+        <p className="text-[11px] text-stone-500">{T('مصدر الإعدادات الحالي:')} {data.shaheen.source === 'admin' ? T('لوحة الإدارة (تعديل محفوظ)') : T('الملف المشترك server/config/shaheen.ts')}</p>
 
         <div className="grid lg:grid-cols-2 gap-4">
           <div className={`${card} space-y-3`}>
@@ -1405,7 +1405,7 @@ function ShaheenPanel() {
               <label className="inline-flex items-center gap-1.5 text-xs font-semibold"><input type="checkbox" checked={form.allowVisitorChoice} onChange={(e) => set({ allowVisitorChoice: e.target.checked })} />{T('السماح للزائر باختيار وضع الرد (سريع / معمّق / مجلس الخبراء) — أسماء المحركات لا تظهر للزوار أبداً')}</label>
             </div>
             <p className={`text-xs font-semibold ${ready.length ? 'text-emerald-700' : 'text-red-700'}`}>
-              {ready.length ? `جاهز: ${ready.length} محرك مهيأ ومسموح (${ready.map((id) => ENGINE_LABEL[id]).join('، ')}).` : T('غير جاهز: مفيش ولا محرك مسموح ومهيأ — الزوار هيشوفوا «شاهين غير متصل».')}
+              {ready.length ? TP('جاهز: {count} محرك مهيأ ومسموح ({engines}).', { count: ready.length, engines: ready.map((id) => ENGINE_LABEL[id]).join(listSep()) }) : T('غير جاهز: مفيش ولا محرك مسموح ومهيأ — الزوار هيشوفوا «شاهين غير متصل».')}
             </p>
             <h2 className="font-bold text-sm">{T('المحركات وترتيب «تلقائي»')}</h2>
             <p className="text-[11px] text-stone-500">{T('«تلقائي» يجرّب المحركات بالترتيب ده ويتخطى غير المهيأ أو اللي فشل. المحرك غير المسموح يختفي من واجهة الزوار. المفاتيح تُضبط في متغيرات الخادم فقط.')}</p>
@@ -1413,11 +1413,11 @@ function ShaheenPanel() {
               const on = allowed.includes(id); const st = status(id);
               return (
                 <div key={id} className={`grid grid-cols-[auto_1fr_auto] items-center gap-2 rounded-xl border p-2 ${on ? 'border-amber-300 bg-amber-50/50' : 'border-stone-200'}`}>
-                  <input type="checkbox" aria-label={`السماح بـ ${ENGINE_LABEL[id]}`} checked={on} onChange={() => toggle(id)} />
+                  <input type="checkbox" aria-label={TP('السماح بـ {engine}', { engine: ENGINE_LABEL[id] })} checked={on} onChange={() => toggle(id)} />
                   <div className="min-w-0 space-y-1">
                     <p className="text-sm font-semibold">{ENGINE_LABEL[id]} {on && <span className="text-[10px] font-bold text-amber-800">#{allowed.indexOf(id) + 1}</span>}</p>
-                    <p className={`text-[11px] ${st?.configured ? 'text-emerald-700' : 'text-stone-400'}`}>{st?.configured ? 'مهيأ على الخادم' : id === 'self_hosted' ? 'غير مهيأ — اضبط SHAM_LLM_BASE_URL' : 'غير مهيأ — لا يوجد مفتاح'}</p>
-                    <input className={`${input} py-1 text-xs`} dir="ltr" aria-label={`نموذج ${ENGINE_LABEL[id]}`} placeholder={`افتراضي: ${st?.model || 'model'}`}
+                    <p className={`text-[11px] ${st?.configured ? 'text-emerald-700' : 'text-stone-400'}`}>{st?.configured ? T('مهيأ على الخادم') : id === 'self_hosted' ? T('غير مهيأ — اضبط SHAM_LLM_BASE_URL') : T('غير مهيأ — لا يوجد مفتاح')}</p>
+                    <input className={`${input} py-1 text-xs`} dir="ltr" aria-label={TP('نموذج {engine}', { engine: ENGINE_LABEL[id] })} placeholder={TP('افتراضي: {model}', { model: st?.model || 'model' })}
                       value={form.models[id] || ''} onChange={(e) => {
                         const models = { ...form.models };
                         if (e.target.value.trim()) models[id] = e.target.value.trim(); else delete models[id];
@@ -1433,10 +1433,10 @@ function ShaheenPanel() {
           <div className="space-y-4">
             <div className={`${card} space-y-3`}>
               <h2 className="font-bold text-sm">{T('أسلوب الردود')}</h2>
-              <Field label={`درجة الإبداع (temperature): ${form.temperature}`}><input type="range" min={0} max={1} step={0.05} value={form.temperature} onChange={(e) => set({ temperature: Number(e.target.value) })} className="w-full" /></Field>
+              <Field label={TP('درجة الإبداع (temperature): {value}', { value: form.temperature })}><input type="range" min={0} max={1} step={0.05} value={form.temperature} onChange={(e) => set({ temperature: Number(e.target.value) })} className="w-full" /></Field>
               <Field label={T('أقصى طول للرد')}>
                 <select className={input} value={form.maxTokens} onChange={(e) => set({ maxTokens: Number(e.target.value) })}>
-                  {[1024, 2048, 4096, 6144, 8192].map((n) => <option key={n} value={n}>{n} توكن{n === 4096 ? ' (موصى به)' : ''}</option>)}
+                  {[1024, 2048, 4096, 6144, 8192].map((n) => <option key={n} value={n}>{n} {T('توكن')}{n === 4096 ? T(' (موصى به)') : ''}</option>)}
                 </select>
               </Field>
               <Field label={T('تعليمات إضافية لشاهين (اختياري — لا تلغي قواعد السلامة)')}>
@@ -1449,7 +1449,7 @@ function ShaheenPanel() {
             <div className={`${card} space-y-2`}>
               <div className="flex flex-wrap items-center gap-2">
                 <button disabled={busy || !dirty} onClick={() => void save(form)} className={`${btn} bg-stone-900 text-amber-100`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />{T('حفظ إعدادات شاهين')}</>}</button>
-                <button disabled={busy || probing} onClick={() => void runProbe()} className={`${btn} border border-stone-300 bg-white`}>{probing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Activity className="w-4 h-4" />}اختبار الاتصال بالمحركات</button>
+                <button disabled={busy || probing} onClick={() => void runProbe()} className={`${btn} border border-stone-300 bg-white`}>{probing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Activity className="w-4 h-4" />}{T('اختبار الاتصال بالمحركات')}</button>
                 {data.shaheen.source === 'admin' && <button disabled={busy} onClick={() => void save(null)} className={`${btn} border border-stone-300 bg-white text-xs`}><RefreshCw className="w-3.5 h-3.5" />{T('رجوع لإعدادات الملف')}</button>}
               </div>
               {dirty && <p className="text-[11px] text-amber-700">{T('فيه تعديلات لم تُحفظ.')}</p>}
@@ -1461,8 +1461,8 @@ function ShaheenPanel() {
                     <div key={r.id} className={`flex items-start gap-2 rounded-xl border p-2 text-xs ${r.ok ? 'border-emerald-200 bg-emerald-50' : r.configured ? 'border-red-200 bg-red-50' : 'border-stone-200 bg-stone-50'}`}>
                       {r.ok ? <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" /> : <CircleAlert className={`w-4 h-4 shrink-0 ${r.configured ? 'text-red-700' : 'text-stone-400'}`} />}
                       <div>
-                        <p className="font-semibold">{ENGINE_LABEL[r.id]} <span className="font-normal text-stone-500" dir="ltr">{r.model}</span>{r.ms ? <span className="font-normal text-stone-400"> · {(r.ms / 1000).toFixed(1)} ث</span> : null}</p>
-                        <p>{r.ok ? 'يعمل ✅' : PROBE_ERROR[r.error || ''] || 'لم يعمل'}</p>
+                        <p className="font-semibold">{ENGINE_LABEL[r.id]} <span className="font-normal text-stone-500" dir="ltr">{r.model}</span>{r.ms ? <span className="font-normal text-stone-400">{TP(' · {n} ث', { n: (r.ms / 1000).toFixed(1) })}</span> : null}</p>
+                        <p>{r.ok ? T('يعمل ✅') : PROBE_ERROR[r.error || ''] || T('لم يعمل')}</p>
                         {r.usedModel && <p className="text-[10px] text-amber-700" dir="ltr">↪ {r.usedModel}</p>}
                         {r.detail && <p className="text-[10px] text-stone-500 break-words" dir="ltr">{r.detail}</p>}
                       </div>
@@ -1474,10 +1474,10 @@ function ShaheenPanel() {
             </div>
 
             <div className={`${card} space-y-2`}>
-              <button type="button" onClick={() => setShowConfig((v) => !v)} className="text-xs font-semibold text-amber-800 hover:underline">{showConfig ? 'إخفاء' : 'عرض'} «الإعداد الدائم» لملف المستودع</button>
+              <button type="button" onClick={() => setShowConfig((v) => !v)} className="text-xs font-semibold text-amber-800 hover:underline">{showConfig ? T('إخفاء') : T('عرض')} {T('«الإعداد الدائم» لملف المستودع')}</button>
               {showConfig && (
                 <>
-                  <p className="text-[11px] text-stone-500">ده نفس الإعداد الحالي بصيغة ملف <code dir="ltr">server/config/shaheen.ts</code>{T('. لما يتحط في المستودع ويتعمل نشر، يبقى هو الأساس على الموقعين حتى بدون تخزين دائم.')}</p>
+                  <p className="text-[11px] text-stone-500">{T('ده نفس الإعداد الحالي بصيغة ملف')} <code dir="ltr">server/config/shaheen.ts</code>{T('. لما يتحط في المستودع ويتعمل نشر، يبقى هو الأساس على الموقعين حتى بدون تخزين دائم.')}</p>
                   <pre dir="ltr" className="overflow-x-auto rounded-xl bg-stone-900 p-3 text-[11px] text-stone-100">{`export const SHAHEEN_SITE_SETTINGS: ShaheenSettings = ${JSON.stringify(form, null, 2)};`}</pre>
                 </>
               )}
@@ -1504,18 +1504,18 @@ function CouncilSettingsCard({ form, setForm, engines, onSave, busy, message }: 
         <label className="ms-auto inline-flex items-center gap-1.5 text-xs font-semibold"><input type="checkbox" checked={council.enabled} onChange={(e) => set({ enabled: e.target.checked })} />{T('مفعّل')}</label>
       </div>
       <p className="text-[11px] text-stone-500 leading-relaxed">
-        كل مقعد يكتب رأيه مستقلاً ← المقاعد تراجع آراء بعضها بأسماء مجهولة (A، B، C) ← رئيس المجلس يكتب ردّاً استشارياً واحداً للزائر. الكل يشتغل على بيانات شام فقط، ومحدش منهم يقدر ينفّذ طلب أو يغيّر حاجة.
-        كل رد بالمجلس بيكلّف (عدد المقاعد × (1 + الجولات) + 1) طلب للمزوّدين، وفيه حد أقصى لكل زائر (SHAM_COUNCIL_RATE_PER_HOUR، الافتراضي 12 في الساعة).
+        {T('كل مقعد يكتب رأيه مستقلاً ← المقاعد تراجع آراء بعضها بأسماء مجهولة (A، B، C) ← رئيس المجلس يكتب ردّاً استشارياً واحداً للزائر. الكل يشتغل على بيانات شام فقط، ومحدش منهم يقدر ينفّذ طلب أو يغيّر حاجة.')}
+        {T('كل رد بالمجلس بيكلّف (عدد المقاعد × (1 + الجولات) + 1) طلب للمزوّدين، وفيه حد أقصى لكل زائر (SHAM_COUNCIL_RATE_PER_HOUR، الافتراضي 12 في الساعة.')}
       </p>
       <p className={`text-xs font-semibold ${ready >= 2 ? 'text-emerald-700' : 'text-amber-700'}`}>
-        {ready >= 2 ? `جاهز: ${ready} مقاعد مهيأة (يُستخدم أول 5).` : `غير جاهز: محتاج مقعدين مهيأين على الأقل (حالياً ${ready}). أضف مفاتيح المزوّدين أو اضبط SHAM_LLM_BASE_URL، ويمكن تشغيل أكثر من نموذج على نفس الخادم بتحديد اسم النموذج.`}
+        {ready >= 2 ? TP('جاهز: {n} مقاعد مهيأة (يُستخدم أول 5).', { n: ready }) : TP('غير جاهز: محتاج مقعدين مهيأين على الأقل (حالياً {n}). أضف مفاتيح المزوّدين أو اضبط SHAM_LLM_BASE_URL، ويمكن تشغيل أكثر من نموذج على نفس الخادم بتحديد اسم النموذج.', { n: ready })}
       </p>
       <div className="space-y-2">
         {council.members.map((m) => (
           <div key={m.id} className={`grid grid-cols-2 md:grid-cols-[auto_1fr_1fr_1fr_auto] items-center gap-2 rounded-xl border p-2 ${m.enabled && configured(m.engine) ? 'border-amber-300 bg-amber-50/40' : 'border-stone-200'}`}>
             <input type="checkbox" aria-label={T('تفعيل المقعد')} checked={m.enabled} onChange={(e) => setMember(m.id, { enabled: e.target.checked })} />
             <select className={input} aria-label={T('المحرك')} value={m.engine} onChange={(e) => setMember(m.id, { engine: e.target.value as ModelEngineId })}>
-              {MODEL_ENGINES.map((id) => <option key={id} value={id}>{ENGINE_LABEL[id]}{configured(id) ? '' : ' (غير مهيأ)'}</option>)}
+              {MODEL_ENGINES.map((id) => <option key={id} value={id}>{ENGINE_LABEL[id]}{configured(id) ? '' : T(' (غير مهيأ)')}</option>)}
             </select>
             <input className={input} dir="ltr" aria-label={T('النموذج')} placeholder={engines.find((e) => e.id === m.engine)?.model || 'model'} value={m.model || ''} onChange={(e) => setMember(m.id, { model: e.target.value.trim() || undefined })} />
             <select className={input} aria-label={T('الدور')} value={m.role} onChange={(e) => setMember(m.id, { role: e.target.value as CouncilRole })}>
@@ -1533,7 +1533,7 @@ function CouncilSettingsCard({ form, setForm, engines, onSave, busy, message }: 
         <Field label={T('رئيس المجلس (يكتب الرد النهائي)')}>
           <select className={input} value={council.chair} onChange={(e) => set({ chair: e.target.value })}>
             <option value="auto">{T('تلقائي (حسب ترتيب المحركات)')}</option>
-            {council.members.map((m, i) => <option key={m.id} value={m.id}>مقعد {i + 1}: {COUNCIL_ROLE[m.role]} — {ENGINE_LABEL[m.engine]}{m.model ? ` (${m.model})` : ''}</option>)}
+            {council.members.map((m, i) => <option key={m.id} value={m.id}>{TP('مقعد {n}: {role} — {engine}', { n: i + 1, role: COUNCIL_ROLE[m.role], engine: ENGINE_LABEL[m.engine] })}{m.model ? ` (${m.model})` : ''}</option>)}
           </select>
         </Field>
         <Field label={T('جولات النقاش (المراجعة المتبادلة)')}>
@@ -1566,13 +1566,13 @@ function CouncilSettingsCard({ form, setForm, engines, onSave, busy, message }: 
 function CouncilTranscriptView({ council }: { council: CouncilTranscript }) {
   return (
     <details className="mt-1 text-[11px] text-stone-600">
-      <summary className="cursor-pointer font-semibold text-amber-800">نقاش المجلس ({council.entries.filter((e) => e.ok).length}/{council.entries.length} مقاعد · {council.rounds} جولة · {(council.ms / 1000).toFixed(1)} ث · {council.outcome})</summary>
+      <summary className="cursor-pointer font-semibold text-amber-800">{TP('نقاش المجلس ({seats} مقاعد · {rounds} جولة · {sec} ث · {outcome})', { seats: `${council.entries.filter((e) => e.ok).length}/${council.entries.length}`, rounds: council.rounds, sec: (council.ms / 1000).toFixed(1), outcome: council.outcome })}</summary>
       <div className="mt-1 space-y-1.5">
         {council.entries.map((e) => (
           <div key={e.memberId} className={`rounded-lg border p-1.5 ${e.ok ? 'border-stone-200 bg-white' : 'border-red-200 bg-red-50'}`}>
-            <p className="font-bold">{e.label} · {COUNCIL_ROLE[e.role]} · <span dir="ltr">{ENGINE_LABEL[e.engine]} {e.model}</span>{council.chair?.memberId === e.memberId ? ' · 👑 الرئيس' : ''} <span className="font-normal text-stone-400">{e.ms}ms</span></p>
+            <p className="font-bold">{e.label} · {COUNCIL_ROLE[e.role]} · <span dir="ltr">{ENGINE_LABEL[e.engine]} {e.model}</span>{council.chair?.memberId === e.memberId ? T(' · 👑 الرئيس') : ''} <span className="font-normal text-stone-400">{e.ms}ms</span></p>
             {e.ok ? <p className="whitespace-pre-wrap">{e.opinion}</p> : <p className="text-red-700">{T('لم يرد (فشل أو انتهت المهلة)')}</p>}
-            {e.reviews.map((r, i) => <p key={i} className="mt-1 whitespace-pre-wrap border-s-2 border-amber-300 ps-1.5"><b>مراجعة {i + 1}:</b> {r}</p>)}
+            {e.reviews.map((r, i) => <p key={i} className="mt-1 whitespace-pre-wrap border-s-2 border-amber-300 ps-1.5"><b>{TP('مراجعة {n}:', { n: i + 1 })}</b> {r}</p>)}
           </div>
         ))}
       </div>
@@ -1601,7 +1601,7 @@ function SandboxPanel() {
         <input className={`${input} flex-1 min-w-[200px]`} value={message} onChange={(e) => setMessage(e.target.value)} placeholder={T('اكتب رسالة اختبار…')} aria-label={T('رسالة اختبار')} />
         <select className={`${input} w-24`} value={language} onChange={(e) => setLanguage(e.target.value)} aria-label={T('اللغة')}><option value="ar">ar</option><option value="en">en</option><option value="fr">fr</option></select>
         <label className="inline-flex items-center gap-1 text-xs font-semibold"><input type="checkbox" checked={consult} onChange={(e) => setConsult(e.target.checked)} />{T('استشارة المجلس')}</label>
-        <button disabled={busy} className={`${btn} bg-stone-900 text-amber-100`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : 'تشغيل'}</button>
+        <button disabled={busy} className={`${btn} bg-stone-900 text-amber-100`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : T('تشغيل')}</button>
         <div className="w-full flex flex-wrap gap-1.5">{samples.map((s) => <button type="button" key={s} onClick={() => void run(s)} className="text-[11px] rounded-full border border-stone-300 px-2.5 py-1 hover:bg-amber-50">{s}</button>)}</div>
       </form>
       <div className="space-y-3 mt-4">
@@ -1613,10 +1613,10 @@ function SandboxPanel() {
               <div className="mt-2 grid md:grid-cols-2 gap-3">
                 <div>
                   <p className="text-sm whitespace-pre-wrap bg-amber-50 rounded-xl p-3">{entry.r.reply}</p>
-                  <p className="text-[11px] text-stone-500 mt-1">المحرك: <b>{ENGINE_LABEL[entry.r.engine.id] || entry.r.engine.name}</b> · النية: <b>{INTENT[entry.r.intent] || entry.r.intent}</b> · بطاقات: {entry.r.actions.map((a) => a.type + (a.serviceId ? `:${a.serviceId}` : '')).join('، ') || '—'}</p>
-                  {entry.r.citations.length > 0 && <p className="text-[11px] text-stone-500">المراجع: {entry.r.citations.map((c) => c.title).join(' · ')}</p>}
+                  <p className="text-[11px] text-stone-500 mt-1">{T('المحرك:')} <b>{ENGINE_LABEL[entry.r.engine.id] || entry.r.engine.name}</b> {T('· النية:')} <b>{INTENT[entry.r.intent] || entry.r.intent}</b> · {T('بطاقات:')} {entry.r.actions.map((a) => a.type + (a.serviceId ? `:${a.serviceId}` : '')).join(listSep()) || '—'}</p>
+                  {entry.r.citations.length > 0 && <p className="text-[11px] text-stone-500">{T('المراجع:')} {entry.r.citations.map((c) => c.title).join(' · ')}</p>}
                   {entry.r.council && (
-                    <details className="mt-2 text-[11px]" open><summary className="cursor-pointer font-semibold text-amber-800">نقاش المجلس ({entry.r.council.entries.length} مستشارين · {entry.r.council.rounds} جولة)</summary>
+                    <details className="mt-2 text-[11px]" open><summary className="cursor-pointer font-semibold text-amber-800">{TP('نقاش المجلس ({seats} مستشارين · {rounds} جولة)', { seats: entry.r.council.entries.length, rounds: entry.r.council.rounds })}</summary>
                       <div className="mt-1 space-y-1.5">{entry.r.council.entries.map((e) => (
                         <div key={e.label} className="rounded-lg border border-stone-200 p-1.5">
                           <p className="font-bold">{e.label} · {e.role} · <span dir="ltr">{e.engine}</span>{e.chair ? ' · 👑' : ''}</p>
@@ -1681,7 +1681,7 @@ function AgentPanel({ go }: { go: (t: Tab) => void }) {
       <form className={`${card} space-y-3`} onSubmit={(e) => { e.preventDefault(); void run(message); }}>
         <div className="flex gap-2">
           <input className={input} value={message} onChange={(e) => setMessage(e.target.value.slice(0, 1000))} placeholder={T('اطلب تقريراً… مثال: إيه اللي محتاج انتباهي النهارده؟')} aria-label={T('طلب للمساعد الإداري')} />
-          <button disabled={busy} className={`${btn} bg-stone-900 text-amber-100 shrink-0`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}تشغيل</button>
+          <button disabled={busy} className={`${btn} bg-stone-900 text-amber-100 shrink-0`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}{T('تشغيل')}</button>
         </div>
         <div className="flex flex-wrap gap-1.5">
           {AGENT_PRESETS.map((p) => <button key={p} type="button" disabled={busy} onClick={() => { setMessage(p); void run(p); }} className="text-xs rounded-full border border-amber-300 bg-amber-50 px-3 py-1 hover:bg-amber-100 disabled:opacity-50">{p}</button>)}
@@ -1702,7 +1702,7 @@ function AgentPanel({ go }: { go: (t: Tab) => void }) {
                 </li>
               ))}
             </ol>
-            <p className="text-[10px] text-stone-400 mt-3">صياغة الملخص: {ENGINE_LABEL[result.engine] || result.engine}</p>
+            <p className="text-[10px] text-stone-400 mt-3">{T('صياغة الملخص:')} {ENGINE_LABEL[result.engine] || result.engine}</p>
           </div>
           <div className="space-y-3">
             <div className={`${card} border-amber-300`}>
@@ -1770,11 +1770,11 @@ function QualityPanel() {
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-bold text-sm flex items-center gap-1.5"><Lightbulb className="w-4 h-4 text-amber-600" />{T('فجوات المعرفة')}</h2>
             <div className="flex text-xs rounded-lg border border-stone-200 overflow-hidden">
-              {(['open', 'all'] as const).map((v) => <button key={v} type="button" onClick={() => setView(v)} className={`px-2.5 py-1 ${view === v ? 'bg-stone-900 text-white' : ''}`}>{v === 'open' ? 'المفتوحة' : 'الكل'}</button>)}
+              {(['open', 'all'] as const).map((v) => <button key={v} type="button" onClick={() => setView(v)} className={`px-2.5 py-1 ${view === v ? 'bg-stone-900 text-white' : ''}`}>{v === 'open' ? T('المفتوحة') : T('الكل')}</button>)}
             </div>
           </div>
           <Feedback error={gaps.error} loading={gaps.loading && !gaps.data} />
-          {gaps.data && !items.length && <p className="text-xs text-stone-400 py-4 text-center">لا توجد فجوات {view === 'open' ? 'مفتوحة' : ''} — ممتاز.</p>}
+          {gaps.data && !items.length && <p className="text-xs text-stone-400 py-4 text-center">{view === 'open' ? T('لا توجد فجوات مفتوحة — ممتاز.') : T('لا توجد فجوات — ممتاز.')}</p>}
           <ul className="space-y-2">
             {items.map((g) => (
               <li key={g.id} className="rounded-xl border border-stone-200 p-3 text-sm">
@@ -1783,16 +1783,16 @@ function QualityPanel() {
                   <span className="shrink-0 text-[11px] rounded-full bg-stone-100 px-2 py-0.5">×{g.count}</span>
                 </div>
                 <p className="text-[11px] text-stone-500 mt-1">
-                  {g.source === 'no_answer' ? T('لم يجد المساعد إجابة') : `تقييم سلبي${g.reason ? `: ${g.reason}` : ''}`} · آخر مرة {fmtDate(g.lastAt)}
-                  {g.status !== 'open' && <b className="ms-1">{g.status === 'resolved' ? '· تم الحل ✅' : '· متجاهلة'}</b>}
+                  {g.source === 'no_answer' ? T('لم يجد المساعد إجابة') : g.reason ? TP('تقييم سلبي: {reason}', { reason: g.reason }) : T('تقييم سلبي')} · {T('آخر مرة')} {fmtDate(g.lastAt)}
+                  {g.status !== 'open' && <b className="ms-1">{g.status === 'resolved' ? T('· تم الحل ✅') : T('· متجاهلة')}</b>}
                 </p>
-                {g.lastAnswer && <p className="mt-1.5 text-[11px] text-stone-500 line-clamp-2 bg-stone-50 rounded-lg p-1.5">رد المساعد: {g.lastAnswer}</p>}
+                {g.lastAnswer && <p className="mt-1.5 text-[11px] text-stone-500 line-clamp-2 bg-stone-50 rounded-lg p-1.5">{T('رد المساعد:')} {g.lastAnswer}</p>}
                 {editing === g.id ? (
                   <form className="mt-2 space-y-2" onSubmit={(e) => { e.preventDefault(); void patch(g.id, draft); }}>
                     <input className={input} required value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} placeholder={T('عنوان المستند')} aria-label={T('عنوان المستند')} />
                     <textarea className={input} required rows={4} value={draft.content} onChange={(e) => setDraft({ ...draft, content: e.target.value })} placeholder={T('الإجابة الصحيحة كما يجب أن يقولها المساعد')} aria-label={T('الإجابة')} />
                     <div className="flex gap-2">
-                      <button disabled={busy} className={`${btn} bg-emerald-700 text-white`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}حفظ في قاعدة المعرفة</button>
+                      <button disabled={busy} className={`${btn} bg-emerald-700 text-white`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}{T('حفظ في قاعدة المعرفة')}</button>
                       <button type="button" onClick={() => setEditing(null)} className={`${btn} border border-stone-300`}>{T('إلغاء')}</button>
                     </div>
                   </form>
@@ -1820,7 +1820,7 @@ function QualityPanel() {
                   <span className="truncate">{f.question || '—'}</span>
                 </div>
                 <p className="mt-1 text-stone-600 line-clamp-3">{f.answer}</p>
-                <p className="mt-1 text-[10px] text-stone-400">{fmtDate(f.at)} · {ENGINE_LABEL[f.engine || ''] || f.engine} {f.intent ? `· ${INTENT[f.intent] || f.intent}` : ''}{f.reason ? ` · السبب: ${f.reason}` : ''}</p>
+                <p className="mt-1 text-[10px] text-stone-400">{fmtDate(f.at)} · {ENGINE_LABEL[f.engine || ''] || f.engine} {f.intent ? `· ${INTENT[f.intent] || f.intent}` : ''}{f.reason ? TP(' · السبب: {reason}', { reason: f.reason }) : ''}</p>
               </li>
             ))}
           </ul>
@@ -1839,8 +1839,8 @@ interface MaintenanceSnapshot {
   remedies: { action: string; at: string }[];
 }
 const DOCTOR_REPO = (import.meta.env.VITE_GITHUB_REPO as string | undefined) || 'spculculat-oss/Sham-Perfume';
-const REMEDY_LABEL: Record<string, string> = { reset_provider_gate: T('تصفير حالة المزوّدين'), refresh_model_list: T('تحديث قائمة الموديلات'), clear_answer_cache: T('مسح ذاكرة الإجابات') };
-const FIX_RESULT: Record<string, string> = { merged: T('⏳ تحت المراقبة'), failed: T('❌ ما اتطبقش'), verified: T('✅ شغال'), reverted: T('↩️ اترجع'), unverified: T('⚪ من غير تأكيد') };
+const REMEDY_LABEL: Record<string, string> = reactiveMap(() => ({ reset_provider_gate: T('تصفير حالة المزوّدين'), refresh_model_list: T('تحديث قائمة الموديلات'), clear_answer_cache: T('مسح ذاكرة الإجابات') }));
+const FIX_RESULT: Record<string, string> = reactiveMap(() => ({ merged: T('⏳ تحت المراقبة'), failed: T('❌ ما اتطبقش'), verified: T('✅ شغال'), reverted: T('↩️ اترجع'), unverified: T('⚪ من غير تأكيد') }));
 
 function DoctorPanel() {
   const { data, error, loading, reload } = useLoad<MaintenanceSnapshot>('/maintenance');
@@ -1856,7 +1856,7 @@ function DoctorPanel() {
   useEffect(() => { loadReport(); }, [loadReport]);
   const remedy = async (action: string) => {
     setBusy(action); setMessage('');
-    try { await adminRequest('/maintenance', send('POST', { action })); setMessage(`تم: ${REMEDY_LABEL[action]} ✅`); reload(); }
+    try { await adminRequest('/maintenance', send('POST', { action })); setMessage(TP('تم: {action} ✅', { action: REMEDY_LABEL[action] })); reload(); }
     catch (e) { setMessage((e as Error).message); } finally { setBusy(''); }
   };
   const w = data?.window;
@@ -1872,11 +1872,11 @@ function DoctorPanel() {
           {report && (
             <>
               <p className="text-sm font-semibold">{report.headline}</p>
-              {report.lastRun && <p className="text-[11px] text-stone-500">آخر فحص: {new Date(report.lastRun).toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}</p>}
+              {report.lastRun && <p className="text-[11px] text-stone-500">{T('آخر فحص:')} {new Date(report.lastRun).toLocaleString(adminLocale(), { timeZone: 'Africa/Cairo' })}</p>}
               <ul className="space-y-1">
                 {report.rows.map((r) => <li key={r.check} className="flex gap-2 text-xs"><span>{r.status}</span><span className="font-semibold">{r.check}</span><span className="text-stone-500 truncate">{r.detail}</span></li>)}
               </ul>
-              {report.timeline && <p className="text-xs" title={T('آخر 6 ساعات')}>آخر 6 ساعات: <span className="tracking-tight">{report.timeline}</span></p>}
+              {report.timeline && <p className="text-xs" title={T('آخر 6 ساعات')}>{T('آخر 6 ساعات:')} <span className="tracking-tight">{report.timeline}</span></p>}
               <h3 className="font-bold text-xs pt-2">{T('إصلاحات الكود التلقائية')}</h3>
               {report.fixes.length ? report.fixes.map((f) => (
                 <p key={f.at} className="text-xs">{FIX_RESULT[f.result] || f.result} — {f.summary || f.problem}{f.url && <> · <a href={f.url} target="_blank" rel="noreferrer" className="text-amber-700 underline">{T('التغيير')}</a></>}</p>
@@ -1894,13 +1894,13 @@ function DoctorPanel() {
               <div className="grid grid-cols-3 gap-2 text-center">
                 <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{w.answered}</p><p className="text-[10px] text-stone-500">{T('ردود آخر 10 د')}</p></div>
                 <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{Math.round(w.errorRate * 100)}%</p><p className="text-[10px] text-stone-500">{T('أخطاء')}</p></div>
-                <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{(w.latencyMs.p95 / 1000).toFixed(1)}ث</p><p className="text-[10px] text-stone-500">p95</p></div>
+                <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{TP('{n}ث', { n: (w.latencyMs.p95 / 1000).toFixed(1) })}</p><p className="text-[10px] text-stone-500">p95</p></div>
               </div>
               {Object.keys(w.errors).length > 0 && <p className="text-xs text-red-700" dir="ltr">{Object.entries(w.errors).map(([k, v]) => `${k}: ${v}`).join(' · ')}</p>}
               {Object.entries(data.providers).map(([id, p]) => (
-                <p key={id} className="text-xs">{ENGINE_LABEL[id] || id}: {p.coolingMs > 0 ? `⏸️ متوقف ${Math.ceil(p.coolingMs / 1000)}ث (حصة)` : '🟢 متاح'} · {p.startedLastMinute}/دقيقة{p.rpm ? ` · حد ${p.rpm}` : ''}</p>
+                <p key={id} className="text-xs">{ENGINE_LABEL[id] || id}: {p.coolingMs > 0 ? TP('⏸️ متوقف {sec}ث (حصة)', { sec: Math.ceil(p.coolingMs / 1000) }) : T('🟢 متاح')} · {TP('{n}/دقيقة', { n: p.startedLastMinute })}{p.rpm ? TP(' · حد {rpm}', { rpm: p.rpm }) : ''}</p>
               ))}
-              {data.answerCache && <p className="text-xs text-stone-600">ذاكرة الإجابات: {data.answerCache.entries} إجابة · {data.answerCache.hits} مرة من الذاكرة</p>}
+              {data.answerCache && <p className="text-xs text-stone-600">{T('ذاكرة الإجابات:')} {data.answerCache.entries} {T('إجابة')} · {data.answerCache.hits} {T('مرة من الذاكرة')}</p>}
               <div className="flex flex-wrap gap-2 pt-1">
                 {Object.keys(REMEDY_LABEL).map((action) => (
                   <button key={action} type="button" disabled={Boolean(busy)} onClick={() => remedy(action)} className={`${btn} text-xs bg-stone-900 text-amber-100`}>

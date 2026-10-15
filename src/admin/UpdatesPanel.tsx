@@ -1,4 +1,4 @@
-import { T } from './adminL10n';
+import { T, reactiveMap, TP } from './adminL10n';
 import React, { useCallback, useMemo, useState } from 'react';
 import { CheckCircle2, CircleAlert, Clock3, Download, EyeOff, FileJson, History, PackageCheck, RotateCcw, Trash2 } from 'lucide-react';
 import {
@@ -48,7 +48,7 @@ const SAMPLE_PACKAGE = JSON.stringify({
   ],
 }, null, 2);
 
-const DECISION: Record<ItemDecision, { label: string; cls: string }> = {
+const DECISION: Record<ItemDecision, { label: string; cls: string }> = reactiveMap(() => ({
   applied: { label: T('ثُبّتت — زيادة جديدة'), cls: 'bg-emerald-100 text-emerald-800' },
   updated: { label: T('ترقية فعلية'), cls: 'bg-sky-100 text-sky-800' },
   unchanged: { label: T('موجود بنفس المحتوى'), cls: 'bg-stone-100 text-stone-600' },
@@ -56,7 +56,7 @@ const DECISION: Record<ItemDecision, { label: string; cls: string }> = {
   canceled: { label: T('ملغى — رُفض مجدداً'), cls: 'bg-red-100 text-red-800' },
   rejected: { label: T('مرفوض'), cls: 'bg-red-100 text-red-700' },
   deferred: { label: T('مؤجل — تبعية ناقصة'), cls: 'bg-amber-100 text-amber-800' },
-};
+}));
 
 const KIND_LABEL: Record<string, string> = { tool: T('أداة'), feature: T('ميزة'), data: T('بيانات'), content: T('محتوى'), config: T('إعداد') };
 
@@ -95,7 +95,7 @@ export default function UpdatesPanel() {
   }, [raw]);
 
   const onCancel = useCallback((id: string, title?: string) => {
-    const reason = window.prompt(`إلغاء «${title ?? id}» نهائياً؟ اكتب السبب (اختياري):`, '');
+    const reason = window.prompt(TP('إلغاء «{title}» نهائياً؟ اكتب السبب (اختياري):', { title: title ?? id }), '');
     if (reason === null) return;
     cancelDevelopment(id, reason.trim() || T('إلغاء إداري من بيئة التحديثات'), 'Admin cancel from the updates environment');
     setTick((n) => n + 1);
@@ -132,10 +132,10 @@ export default function UpdatesPanel() {
         {error && <p role="alert" className="text-xs text-red-700 mt-2 flex items-center gap-1"><CircleAlert className="w-3.5 h-3.5" />{error}</p>}
         <div className="flex flex-wrap gap-2 mt-3">
           <button type="button" className={`${btn} bg-white border border-stone-300`} onClick={() => run('analyze')}>
-            <FileJson className="w-4 h-4" />تحليل فقط (دون تطبيق)
+            <FileJson className="w-4 h-4" />{T('تحليل فقط (دون تطبيق)')}
           </button>
           <button type="button" className={`${btn} bg-stone-900 text-amber-100`} onClick={() => run('receive')}>
-            <PackageCheck className="w-4 h-4" />استقبال وتطبيق الزيادة
+            <PackageCheck className="w-4 h-4" />{T('استقبال وتطبيق الزيادة')}
           </button>
         </div>
         <details className="mt-3 text-xs text-stone-500">
@@ -154,9 +154,9 @@ export default function UpdatesPanel() {
       <div className={card}>
         <div className="flex flex-wrap gap-1 mb-3 border-b border-stone-100 pb-2">
           {([
-            ['installed', `المثبتات (${installed.length})`],
-            ['canceled', `الملغيات (${canceled.length})`],
-            ['ledger', `سجل التحديثات (${ledger.length})`],
+            ['installed', TP('المثبتات ({n})', { n: installed.length })],
+            ['canceled', TP('الملغيات ({n})', { n: canceled.length })],
+            ['ledger', TP('سجل التحديثات ({n})', { n: ledger.length })],
           ] as Array<[Section, string]>).map(([id, label]) => (
             <button key={id} type="button" onClick={() => setSection(id)}
               className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${section === id ? 'bg-amber-500 text-stone-950' : 'hover:bg-stone-100 text-stone-600'}`}>
@@ -178,7 +178,7 @@ export default function UpdatesPanel() {
                       <span className="text-[10px] text-stone-400" dir="ltr">{item.id}</span>
                     </div>
                     <p className="text-[11px] text-stone-500 mt-1">
-                      من {item.fromPlatform} · حزمة <span dir="ltr">{item.fromPackageId}</span> · {fmtDate(item.appliedAt)}
+                      {TP('من {platform} · حزمة', { platform: item.fromPlatform })} <span dir="ltr">{item.fromPackageId}</span> · {fmtDate(item.appliedAt)}
                     </p>
                     <details className="mt-1">
                       <summary className="text-[11px] text-stone-500 cursor-pointer hover:text-stone-700">{T('الحمولة')}</summary>
@@ -187,7 +187,7 @@ export default function UpdatesPanel() {
                   </div>
                   <button type="button" onClick={() => onCancel(item.id, item.titleAr)}
                     className={`${btn} text-xs bg-red-50 text-red-700 border border-red-200 hover:bg-red-100`}>
-                    <Trash2 className="w-3.5 h-3.5" />إلغاء نهائي
+                    <Trash2 className="w-3.5 h-3.5" />{T('إلغاء نهائي')}
                   </button>
                 </div>
               ))}
@@ -205,18 +205,18 @@ export default function UpdatesPanel() {
                       <span className="font-bold text-sm">{entry.titleAr ?? entry.id}</span>
                       <span className="text-[10px] text-stone-400" dir="ltr">{entry.id}</span>
                       <span className="text-[10px] rounded-full bg-red-100 text-red-700 px-2 py-0.5 flex items-center gap-1">
-                        <EyeOff className="w-3 h-3" />ملغى
+                        <EyeOff className="w-3 h-3" />{T('ملغى')}
                       </span>
                     </div>
-                    <p className="text-[11px] text-stone-600 mt-1">{entry.reasonAr ?? 'بدون سبب مسجل'}</p>
+                    <p className="text-[11px] text-stone-600 mt-1">{entry.reasonAr ?? T('بدون سبب مسجل')}</p>
                     <p className="text-[11px] text-stone-500">
-                      أُلغي {fmtDate(entry.canceledAt)}
-                      {entry.rejectedAttempts > 0 && <> · رفضنا عودته {entry.rejectedAttempts} مرة{entry.lastAttemptAt ? ` (آخرها ${fmtDate(entry.lastAttemptAt)})` : ''}</>}
+                      {TP('أُلغي {date}', { date: fmtDate(entry.canceledAt) })}
+                      {entry.rejectedAttempts > 0 && <>{TP('· رفضنا عودته {n} مرة', { n: entry.rejectedAttempts })}{entry.lastAttemptAt ? TP(' (آخرها {date})', { date: fmtDate(entry.lastAttemptAt) }) : ''}</>}
                     </p>
                   </div>
                   <button type="button" onClick={() => onRestore(entry.id)}
                     className={`${btn} text-xs bg-white border border-stone-300 hover:bg-stone-50`}>
-                    <RotateCcw className="w-3.5 h-3.5" />استعادة
+                    <RotateCcw className="w-3.5 h-3.5" />{T('استعادة')}
                   </button>
                 </div>
               ))}
@@ -237,13 +237,13 @@ export default function UpdatesPanel() {
                     <span className="text-[11px] text-stone-400 ms-auto">{fmtDate(entry.receivedAt)}</span>
                   </div>
                   <p className="text-[11px] text-stone-600 mt-1">
-                    {entry.counts.applied > 0 && <Badge cls={DECISION.applied.cls}>{entry.counts.applied} ثُبّتت</Badge>}
-                    {entry.counts.updated > 0 && <Badge cls={DECISION.updated.cls}>{entry.counts.updated} ترقية</Badge>}
-                    {entry.counts.unchanged > 0 && <Badge cls={DECISION.unchanged.cls}>{entry.counts.unchanged} بدون تغيير</Badge>}
-                    {entry.counts.stale > 0 && <Badge cls={DECISION.stale.cls}>{entry.counts.stale} أقدم</Badge>}
-                    {entry.counts.canceled > 0 && <Badge cls={DECISION.canceled.cls}>{entry.counts.canceled} ملغى</Badge>}
-                    {entry.counts.rejected > 0 && <Badge cls={DECISION.rejected.cls}>{entry.counts.rejected} مرفوض</Badge>}
-                    {entry.counts.deferred > 0 && <Badge cls={DECISION.deferred.cls}>{entry.counts.deferred} مؤجل</Badge>}
+                    {entry.counts.applied > 0 && <Badge cls={DECISION.applied.cls}>{TP('{n} ثُبّتت', { n: entry.counts.applied })}</Badge>}
+                    {entry.counts.updated > 0 && <Badge cls={DECISION.updated.cls}>{TP('{n} ترقية', { n: entry.counts.updated })}</Badge>}
+                    {entry.counts.unchanged > 0 && <Badge cls={DECISION.unchanged.cls}>{TP('{n} بدون تغيير', { n: entry.counts.unchanged })}</Badge>}
+                    {entry.counts.stale > 0 && <Badge cls={DECISION.stale.cls}>{TP('{n} أقدم', { n: entry.counts.stale })}</Badge>}
+                    {entry.counts.canceled > 0 && <Badge cls={DECISION.canceled.cls}>{TP('{n} ملغى', { n: entry.counts.canceled })}</Badge>}
+                    {entry.counts.rejected > 0 && <Badge cls={DECISION.rejected.cls}>{TP('{n} مرفوض', { n: entry.counts.rejected })}</Badge>}
+                    {entry.counts.deferred > 0 && <Badge cls={DECISION.deferred.cls}>{TP('{n} مؤجل', { n: entry.counts.deferred })}</Badge>}
                     {Object.values(entry.counts).every((n) => n === 0) && <span className="text-stone-400">{T('لا عناصر')}</span>}
                   </p>
                 </div>
