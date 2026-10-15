@@ -57,6 +57,9 @@ jobs:
         run: bun install --frozen-lockfile || bun install
       - name: Collect news and train «مساعد شام»
         run: node --import tsx scripts/shaheen-news/run.mts
+      - name: Regression tests with the new data
+        # Never publish a bulletin that would turn main red.
+        run: bun run test
       - name: Publish on main
         if: env.NEWS_COMMIT == 'true'
         env:

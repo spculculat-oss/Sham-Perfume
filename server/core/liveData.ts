@@ -16,7 +16,7 @@ export const LIVE_DATA_BASE = 'https://raw.githubusercontent.com/spculculat-oss/
 const FRESH_MS = 30 * 60_000;
 const RETRY_MS = 10 * 60_000;
 
-/** On by default where the site is really served (Vercel / production); tests and dev use the bundled copy. */
+/** On by default where the site is really served (Vercel / production); off in tests and dev unless SHAM_LIVE_DATA=on. */
 export function liveDataEnabled(env: Env) {
   const flag = env.SHAM_LIVE_DATA?.trim().toLowerCase();
   if (flag === 'off') return false;
@@ -55,6 +55,8 @@ const isNews = (d: unknown): d is LiveNews => Boolean(d && typeof d === 'object'
 
 /** Lessons Shaheen wrote for the Sham assistant, as read-only knowledge documents. */
 export async function trainedKnowledge(env: Env = process.env, request: typeof fetch = fetch): Promise<KnowledgeDoc[]> {
+  // Off in tests and dev (deterministic answers); the published lessons change every 12 hours.
+  if (!liveDataEnabled(env)) return [];
   const file = await load('sham-training.json', bundledTraining as TrainingFile, isTraining, env, request);
   return file.docs
     .filter((d) => d && typeof d.id === 'string' && typeof d.title === 'string' && typeof d.content === 'string')
@@ -70,7 +72,7 @@ export const asksForNews = (question: string) => NEWS_QUESTION.test(question);
 
 /** A short block of today's real headlines for Shaheen's prompt, only when the visitor asks about news. */
 export async function newsContext(question: string, language: string, env: Env = process.env, request: typeof fetch = fetch): Promise<string> {
-  if (!asksForNews(question)) return '';
+  if (!liveDataEnabled(env) || !asksForNews(question)) return '';
   const news = await liveNews(env, request).catch(() => undefined);
   if (!news?.items.length) return '';
   const lines = news.items.slice(0, 10).map((i) => `- ${language === 'ar' ? i.title.ar : i.title.en} (${i.source}${i.publishedAt ? `، ${i.publishedAt.slice(0, 10)}` : ''})`);
