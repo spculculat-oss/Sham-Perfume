@@ -6,6 +6,7 @@ import {
   ChevronUp, ChevronDown, Mail, Eye, ExternalLink, Check, Sparkles,
 } from 'lucide-react';
 import UpdatesPanel from './UpdatesPanel';
+import SupervisorPanel from './SupervisorPanel';
 import type {
   Conversation, CoreSettings, CouncilMember, CouncilRole, CouncilTranscript, EngineId, KnowledgeDoc, KnowledgeGap, ModelEngineId, Product, RequestStatus, ServiceDef, ServiceRequest, ShaheenSettings,
 } from '../../server/core/types';
@@ -14,7 +15,7 @@ import { AdminApiError, adminRequest, getToken, send, setToken } from './adminAp
 import { apiUrl, isStaticHosting } from '../utils/api';
 import { parseDoctorIssue, type DoctorReport } from './doctorReport';
 
-type Tab = 'overview' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'emails' | 'doctor' | 'sandbox' | 'updates';
+type Tab = 'overview' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'emails' | 'doctor' | 'supervisor' | 'sandbox' | 'updates';
 interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: string }
 interface Overview {
   storage: { kind: string; persistent: boolean; error?: string };
@@ -39,6 +40,7 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'engines', label: 'المحركات والإعدادات', icon: <Cpu className="w-4 h-4" /> },
   { id: 'shaheen', label: 'الخبير شاهين', icon: <FlaskConical className="w-4 h-4" /> },
   { id: 'doctor', label: 'طبيب شاهين', icon: <Stethoscope className="w-4 h-4" /> },
+  { id: 'supervisor', label: 'مشرف الذكاء الاصطناعي', icon: <Sparkles className="w-4 h-4" /> },
   { id: 'sandbox', label: 'مختبر المساعد', icon: <FlaskConical className="w-4 h-4" /> },
   { id: 'updates', label: 'بيئة التحديثات', icon: <ArrowDownToLine className="w-4 h-4" /> },
 ];
@@ -136,6 +138,7 @@ export default function AdminApp() {
           {tab === 'shaheen' && <ShaheenPanel />}
           {tab === 'emails' && <EmailsPanel />}
           {tab === 'doctor' && <DoctorPanel />}
+          {tab === 'supervisor' && <SupervisorPanel />}
           {tab === 'sandbox' && <SandboxPanel />}
           {tab === 'updates' && <UpdatesPanel />}
         </main>

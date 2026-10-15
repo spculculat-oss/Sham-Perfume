@@ -1,4 +1,4 @@
-name: Shaheen news and assistant training (every 12 hours)
+name: Shaheen news, assistant training and AI supervision (every 12 hours)
 
 # «نشرة شاهين»: every 12 hours «الخبير شاهين» collects the latest perfume news from the web, writes
 # Arabic/English summaries and his comment, and trains «مساعد شام» (perfumery lessons, answers to the
@@ -6,6 +6,8 @@ name: Shaheen news and assistant training (every 12 hours)
 # The site reads them directly (also on GitHub Pages) and the server refreshes them without a redeploy.
 # Code: scripts/shaheen-news/. Secrets (all optional): the AI keys, SHAM_ADMIN_TOKEN (unanswered questions).
 # Without any AI key it still publishes the real headlines, just without Shaheen's summaries.
+# Then «مشرف شاهين» (scripts/shaheen-supervisor/) tests every AI tool on the site, scores it and writes
+# quality guidance the tool follows (src/data/live/ai-supervisor.json; admin panel → «مشرف الذكاء الاصطناعي»).
 
 on:
   schedule:
@@ -14,7 +16,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main, 'arena/**']
-    paths: ['scripts/shaheen-news/**', '.github/workflows/shaheen-news.yml']
+    paths: ['scripts/shaheen-news/**', 'scripts/shaheen-supervisor/**', 'src/utils/aiTools.ts', '.github/workflows/shaheen-news.yml']
 
 permissions:
   contents: write
@@ -76,5 +78,60 @@ jobs:
             sleep $((attempt * 5))
           done
           if [ -z "$pushed" ]; then echo "::error::Could not push the news update"; exit 1; fi
-          # Pushes made with this token start no workflows; rebuild GitHub Pages explicitly so the bundled copy is fresh too.
-          gh workflow run pages.yml --ref main || echo "::warning::Pages rebuild not started (the site still reads the new news directly)"
+
+  supervise:
+    name: Shaheen supervises the AI tools
+    needs: news
+    # Runs even when the news step failed: that failure is one of the things Shaheen reports.
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      SUPERVISOR_COMMIT: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      SHAM_ADMIN_TOKEN: ${{ secrets.SHAM_ADMIN_TOKEN }}
+      SHAM_SITE_URL: ${{ vars.DOCTOR_SITE_URL || 'https://sham-perfume-49bf.vercel.app' }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          # On main: the latest main, including the bulletin the news job just published.
+          ref: ${{ github.ref == 'refs/heads/main' && 'main' || github.sha }}
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Shaheen tests, scores and guides every AI tool
+        run: node --import tsx scripts/shaheen-supervisor/run.mts
+      - name: Regression tests with the new guidance
+        run: bun run test
+      - name: Publish on main and rebuild Pages
+        if: env.SUPERVISOR_COMMIT == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen supervisor bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/live
+          if git diff --cached --quiet; then echo "Nothing new to publish"; else
+            git commit -m "مشرف شاهين: مراجعة أدوات الذكاء الاصطناعي $(date -u +%Y-%m-%dT%H:%MZ)"
+            for attempt in 1 2 3 4 5; do
+              if git pull --rebase --depth=50 origin main && git push origin HEAD:main; then pushed=1; break; fi
+              sleep $((attempt * 5))
+            done
+            if [ -z "$pushed" ]; then echo "::error::Could not push the supervisor report"; exit 1; fi
+          fi
+          # Pushes made with this token start no workflows; rebuild GitHub Pages once for the news and the report.
+          gh workflow run pages.yml --ref main || echo "::warning::Pages rebuild not started (the site still reads the new data directly)"

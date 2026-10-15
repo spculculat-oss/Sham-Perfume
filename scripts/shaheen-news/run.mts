@@ -16,6 +16,7 @@ import {
   type Ask, type NewsFile, type TrainingDoc, type TrainingFile,
 } from './curate';
 import { makeAsk } from '../doctor/agent';
+import { guidanceBlock } from '../../src/utils/aiTools';
 
 const DIR = new URL('../../src/data/live/', import.meta.url);
 const NEWS = new URL('shaheen-news.json', DIR);
@@ -26,6 +27,10 @@ const say = (line: string) => { console.log(line); log.push(line); };
 const read = <T,>(url: URL): T | undefined => { try { return existsSync(url) ? JSON.parse(readFileSync(url, 'utf8')) as T : undefined; } catch { return undefined; } };
 
 const previousNews = read<NewsFile>(NEWS);
+// Quality guidance from Shaheen's own review of these tools (scripts/shaheen-supervisor).
+const supervisor = read<{ tools?: Record<string, { guidance?: { text?: string } }> }>(new URL('ai-supervisor.json', DIR));
+const EDITOR = EDITOR_SYSTEM + guidanceBlock(supervisor?.tools?.news_bulletin?.guidance?.text);
+const TRAINER = TRAINER_SYSTEM + guidanceBlock(supervisor?.tools?.assistant_training?.guidance?.text);
 const previousTraining = read<TrainingFile>(TRAINING)?.docs || [];
 const now = new Date();
 
@@ -48,7 +53,7 @@ let fresh = itemsFromFeeds(candidates);
 let digest = previousNews?.digest;
 if (ask && candidates.length) {
   try {
-    const edited = itemsFromEditor(await askJson(EDITOR_SYSTEM, editorPrompt(candidates, now)), candidates);
+    const edited = itemsFromEditor(await askJson(EDITOR, editorPrompt(candidates, now)), candidates);
     if (edited.items.length >= 3) { fresh = edited.items.sort((a, b) => b.importance - a.importance); digest = edited.digest || digest; editor = 'shaheen'; }
     say(`Shaheen edited ${edited.items.length} stories`);
   } catch (error) { say(`Shaheen could not edit this run (${(error as Error).message.slice(0, 120)}); publishing headlines only`); }
@@ -64,7 +69,7 @@ const lessons: TrainingDoc[] = [];
 if (ask) {
   const topics = nextLessons(previousTraining, Number(env.SHAHEEN_LESSONS_PER_RUN || 4));
   try {
-    lessons.push(...docsFromTrainer(await askJson(TRAINER_SYSTEM, lessonPrompt(topics)), 'curriculum', topics.map((t) => t.id), now));
+    lessons.push(...docsFromTrainer(await askJson(TRAINER, lessonPrompt(topics)), 'curriculum', topics.map((t) => t.id), now));
     say(`Lessons written for «مساعد شام»: ${lessons.map((d) => d.title).join(' · ') || 'none'}`);
   } catch (error) { say(`Lessons skipped this run (${(error as Error).message.slice(0, 120)})`); }
 
@@ -76,7 +81,7 @@ if (ask) {
       const gaps = ((await response.json()) as { items?: { id: string; question: string; status: string }[] }).items || [];
       const open = gaps.filter((g) => g.status === 'open' && g.question?.trim()).slice(0, 8);
       if (open.length) {
-        const answered = docsFromTrainer(await askJson(TRAINER_SYSTEM, gapPrompt(open.map((g) => g.question.slice(0, 300)))), 'gap', open.map((g) => g.id), now);
+        const answered = docsFromTrainer(await askJson(TRAINER, gapPrompt(open.map((g) => g.question.slice(0, 300)))), 'gap', open.map((g) => g.id), now);
         lessons.push(...answered);
         say(`Answered ${answered.length} of ${open.length} open questions the assistant could not answer`);
       } else say('No open questions waiting for an answer');

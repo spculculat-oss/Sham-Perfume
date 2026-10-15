@@ -4,6 +4,7 @@ import { createShaheenRouter } from './shaheen';
 import { createMediaRouter } from './media';
 import { createShamCore } from './core/http';
 import { callEngine, engineStatuses } from './core/engines';
+import { supervisorGuidance } from './core/liveData';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { corsMiddleware } from './cors';
 
@@ -105,7 +106,8 @@ async function generateFreshDailyNewsWithShaheen(): Promise<GeneratedNewsItem[]>
   if (!engines.length) throw new Error('News refresh requires a configured AI engine.');
   const todayArabic = getTodayArabicDateString();
 
-  const system = 'أنت الخبير شاهين، محرر تحريري تثقيفي في عالم العطور. أخرج فقط مصفوفة JSON صالحة دون أي شرح أو Markdown.';
+  const system = 'أنت الخبير شاهين، محرر تحريري تثقيفي في عالم العطور. أخرج فقط مصفوفة JSON صالحة دون أي شرح أو Markdown.'
+    + await supervisorGuidance('news_articles', process.env).catch(() => '');
   const prompt = `تاريخ اليوم: ${todayArabic}.
 اكتب 3 مقالات تحريرية تثقيفية قصيرة لقسم «مرصد العطور» في منصة شام:
 1. اتجاه عام في تصميم العطور أو الكيمياء الخضراء أو العطور النيش.
