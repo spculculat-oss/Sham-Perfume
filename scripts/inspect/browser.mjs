@@ -7,7 +7,7 @@
 const { default: puppeteer } = await import(process.env.PUPPETEER_PATH || 'puppeteer-core');
 
 const SITES = (process.env.INSPECT_SITES || 'https://spculculat-oss.github.io/Sham-Perfume/,https://sham-perfume-49bf.vercel.app/').split(',');
-const QUESTIONS = (process.env.INSPECT_QUESTIONS || 'عايز أخفف كحول 96% إلى 70% وأعمل منه 1 لتر، أحط كام مية؟|صمم لي عطر شرقي بالعود والورد 50 مل تركيز EDP|احسب تكلفة 100 زجاجة عطر 50 مل تركيز 20% لو الزيت بـ 3 جنيه للمل والكحول بـ 0.2 جنيه للمل').split('|');
+const QUESTIONS = (process.env.INSPECT_QUESTIONS || 'السلام عليكم|ايه افضل خلطة شتوية|عايز أخفف كحول 96% إلى 70% وأعمل منه 1 لتر، أحط كام مية؟|صمم لي عطر شرقي بالعود والورد 50 مل تركيز EDP|احسب تكلفة 100 زجاجة عطر 50 مل تركيز 20% لو الزيت بـ 3 جنيه للمل والكحول بـ 0.2 جنيه للمل').split('|');
 // chat = the floating Shaheen bubble; lab = the full «خبير المعمل» page (#master_ai).
 const SCENE = (process.env.INSPECT_SCENE || 'chat') + (process.env.INSPECT_MOBILE ? '-mobile' : '');
 const esc = (s) => String(s).replace(/%/g, '%25').replace(/\r/g, '').replace(/\n/g, '%0A');

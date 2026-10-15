@@ -320,3 +320,15 @@ test('image captions read like words, not catalogue codes; «oud» does not brin
   assert.equal(topicOnlyInPlaceName("Damaszener-Rose 'Madame Hardy'", 'damask rose'), false);
   assert.equal(readableCaption('Glass perfume bottle MET DP108895', 'perfume bottle'), 'Glass perfume bottle');
 });
+
+test('map places are kept only for geographic questions or places the answer talks about', async () => {
+  const { extractMediaRequest, relevantPlaces } = await import('../src/utils/shaheenMedia');
+  const answer = 'عطر شتوي بالعود والعنبر، والورد الطائفي يضيف دفئاً.\n```sham-media\n{"images":["agarwood"],"places":["Metzingen, Germany","Taif, Saudi Arabia"]}\n```';
+  assert.deepEqual(extractMediaRequest(answer, 'ايه افضل خلطة شتوية')?.places, ['Taif, Saudi Arabia']);
+  assert.deepEqual(extractMediaRequest(answer, 'فين بتتزرع الورود؟ وريني على الخريطة')?.places, ['Metzingen, Germany', 'Taif, Saudi Arabia']);
+  assert.deepEqual(extractMediaRequest(answer)?.places, ['Metzingen, Germany', 'Taif, Saudi Arabia'], 'Without a question nothing is filtered');
+  assert.deepEqual(relevantPlaces(['Grasse, France'], 'Tell me about jasmine absolute', 'Jasmine from Grasse is prized.'), ['Grasse, France']);
+  assert.deepEqual(relevantPlaces(['Metzingen, Germany'], 'best fresh perfume', 'Try a citrus aromatic.'), []);
+  const imagesOnly = extractMediaRequest('x\n```sham-media\n{"places":["Metzingen, Germany"]}\n```', 'ايه افضل خلطة شتوية');
+  assert.equal(imagesOnly, undefined);
+});

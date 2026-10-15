@@ -827,6 +827,8 @@ interface PerfumerAIChatbotProps {
   onPrintSpecSheet: (formula: ExtractedAIPerfume) => void;
   /** Opens a calculator (dilution, maceration, pyramid…) with the values from the conversation. */
   onOpenTool?: (link: ToolLink) => void;
+  /** On the Shaheen lab page the same chat is already on screen: hide the floating copy (state is kept). */
+  hidden?: boolean;
 }
 
 
@@ -838,6 +840,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   onCalculateCosting,
   onPrintSpecSheet,
   onOpenTool,
+  hidden = false,
 }) => {
   const rtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
@@ -852,6 +855,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   ];
   const [isOpen, setIsOpen] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
+  useEffect(() => { if (hidden) setIsOpen(false); }, [hidden]);
 
   const { messages, setMessages, daysRemaining, isLoading, busy, sendMessage, retryLast, clearHistory } = useShaheenChat();
   const modelStatus = useShaheenModels();
@@ -1004,7 +1008,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   };
 
   return (
-    <>
+    <div style={{ display: hidden ? 'none' : 'contents' }} data-testid="floating-chat-root">
       {/* Floating Trigger Button */}
       <div className={`fixed bottom-6 ${rtl ? 'right-6' : 'left-6'} z-40 no-print flex items-center gap-3`}>
         <AnimatePresence>
@@ -1251,7 +1255,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                   ? linkTools({ question: askedBefore[askedBefore.length - 1]?.text || '', previousQuestion: askedBefore[askedBefore.length - 2]?.text || '', answer: msg.text, formulas })
                   : [];
                 const isError = msg.kind === 'error';
-                const mediaRequest = msg.role === 'assistant' && !isError && msg.id !== 'welcome' ? extractMediaRequest(msg.text) : undefined;
+                const mediaRequest = msg.role === 'assistant' && !isError && msg.id !== 'welcome' ? extractMediaRequest(msg.text, askedBefore[askedBefore.length - 1]?.text || '') : undefined;
                 const isLastMessage = msg.id === messages[messages.length - 1]?.id;
                 const canCompare = msg.role === 'assistant' && !isError && msg.id !== 'welcome' && AI_ENGINES.length > 1;
 
@@ -1622,6 +1626,6 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 };

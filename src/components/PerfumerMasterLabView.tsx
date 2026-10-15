@@ -583,7 +583,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                     : stripMediaBlock(m.text);
 
             const isError = m.kind === 'error';
-            const mediaRequest = m.role === 'assistant' && !isError && m.id !== 'welcome' ? extractMediaRequest(m.text) : undefined;
+            const mediaRequest = m.role === 'assistant' && !isError && m.id !== 'welcome' ? extractMediaRequest(m.text, messages.slice(0, msgIndex).filter((x) => x.role === 'user').pop()?.text || '') : undefined;
             const isLastMessage = m.id === messages[messages.length - 1]?.id;
             const canCompare = m.role === 'assistant' && !isError && m.id !== 'welcome' && AI_ENGINES.length > 1;
             const formulas = m.role === 'assistant' && !isError ? extractFormulasFromAIMessage(activeDisplayContent) : [];

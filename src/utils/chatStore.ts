@@ -1,6 +1,7 @@
 import type { SupportedLanguage } from '../types/i18n';
 import { removeMediaBlocks } from './mediaBlock';
 import { findFormulaBlocks } from './aiFormulaExtractor';
+import { greetingKind, greetingReply } from './shaheenGreeting';
 import { ApiError, isStaticHosting, requestApi, visitorId, type ChatResponse } from './api';
 import { CHAT_STORAGE_KEY, clearChatSession, DEFAULT_WELCOME_MESSAGE, isChatMessage,
   loadStoredChatSession, saveChatSession, type ChatMessage, type ShaheenProvider } from './chatStorage';
@@ -72,6 +73,9 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
   const syncStorage = (event: StorageEvent) => {
     // A full localStorage wipe also clears the conversation.
     if (event.key !== CHAT_STORAGE_KEY && event.key !== null) return;
+    // Another open tab of the site merely saving its own chat used to abort the question in flight here,
+    // so the answer silently never came. While waiting, only a real clear (key removed) cancels it.
+    if (controller && event.key === CHAT_STORAGE_KEY && typeof event.newValue === 'string') return;
     controller?.abort(); generation++;
     publish({ ...loadStoredChatSession(), isLoading: false }, false);
   };
@@ -129,11 +133,21 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       expire();
       const current = getSnapshot();
       const text = options.text.trim();
-      if (!text || text.length > 4000 || current.isLoading || isStaticHosting) return false;
-      const token = ++generation;
-      controller = new AbortController();
+      if (!text || text.length > 4000 || current.isLoading) return false;
       const timestamp = () => new Date().toLocaleTimeString(options.language, { hour: '2-digit', minute: '2-digit' });
       const id = (role: string) => `${role}-${Date.now()}-${++sequence}`;
+      // A bare greeting is answered here: instant, identical on every site, and no AI quota spent on «هاي».
+      const greeting = greetingKind(text);
+      if (greeting) {
+        publish({ ...current, messages: [...current.messages,
+          { id: id('user'), role: 'user', text, timestamp: timestamp() },
+          { id: id('bot'), role: 'assistant', text: greetingReply(greeting, options.language), timestamp: timestamp(),
+            aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' } }] });
+        return true;
+      }
+      if (isStaticHosting) return false;
+      const token = ++generation;
+      controller = new AbortController();
       publish({ ...current, isLoading: true,
         messages: [...current.messages, { id: id('user'), role: 'user', text, timestamp: timestamp() }] });
       const signal = controller.signal;

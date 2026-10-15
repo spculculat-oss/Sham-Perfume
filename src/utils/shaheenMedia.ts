@@ -23,8 +23,42 @@ const cleanTopic = (value: unknown): string | undefined => {
 const topics = (value: unknown, max: number) =>
   [...new Set((Array.isArray(value) ? value : typeof value === 'string' ? [value] : []).map(cleanTopic).filter((x): x is string => Boolean(x)))].slice(0, max);
 
-/** Topics requested in a reply (at most 2 image, 1 video and 5 place searches), or undefined. */
-export function extractMediaRequest(text: string): MediaRequest | undefined {
+/**
+ * Places only belong on a map when the question is about geography (origin, farms, cities, museums…)
+ * or the answer itself talks about that place. Seen live: «Metzingen, Germany» (a brand's head office)
+ * pinned under an answer that had nothing to do with places.
+ */
+const GEO_QUESTION = /(?:منشا|منشأ|موطن|مزارع|مزرعه|مزرعة|حقول|حقل|يزرع|تزرع|يُزرع|تُزرع|زراع|ينبت|تنبت|يستخرج|يُستخرج|تستخرج|يتصنع|اين|أين|وين|فين|مكان|اماكن|أماكن|خريط|خرائط|دوله|دولة|دول(?=\s|$)|بلد|بلاد|مدينه|مدينة|مدن|منطقه|منطقة|مناطق|متحف|متاحف|سوق|اسواق|أسواق|رحله|رحلة|اسافر|أسافر|ازور|أزور|where|origin|map|farm|field|grown|grow|harvest|countr|city|cities|region|museum|market|visit|travel|located)/i;
+const AR_PLACES: Record<string, string> = {
+  grasse: 'غراس|جراس|غراسي', taif: 'طائف|الطايف', kannauj: 'كنوج|قنوج|كانوج', kazanlak: 'كازانلك|كازانلاك', bulgaria: 'بلغاريا',
+  isparta: 'اسبارطة|إسبارطة|إسبرطة', turkey: 'تركيا', assam: 'آسام|اسام|أسام', india: 'الهند|هند', madagascar: 'مدغشقر',
+  oman: 'عمان|عُمان', dhofar: 'ظفار', salalah: 'صلالة', yemen: 'اليمن', somalia: 'الصومال', ethiopia: 'إثيوبيا|اثيوبيا|الحبشة',
+  indonesia: 'إندونيسيا|اندونيسيا', java: 'جاوة|جاوا', cambodia: 'كمبوديا', laos: 'لاوس', vietnam: 'فيتنام', thailand: 'تايلاند',
+  china: 'الصين', hainan: 'هاينان', 'sri lanka': 'سريلانكا|سيريلانكا', morocco: 'المغرب', egypt: 'مصر', tunisia: 'تونس',
+  damascus: 'دمشق|الشام', syria: 'سوريا', iran: 'إيران|ايران', paris: 'باريس', provence: 'بروفانس', france: 'فرنسا',
+  calabria: 'كالابريا', sicily: 'صقلية', italy: 'إيطاليا|ايطاليا', mysore: 'ميسور', haiti: 'هايتي', reunion: 'ريونيون',
+  comoros: 'القمر', 'saudi arabia': 'السعودية', mecca: 'مكة', medina: 'المدينة', dubai: 'دبي', uae: 'الإمارات|الامارات',
+};
+const fold = (text: string) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+function placeInAnswer(place: string, answer: string) {
+  const text = fold(answer);
+  return place.split(',').map((part) => fold(part).trim()).filter((part) => part.length >= 3).some((part) => {
+    const escaped = part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    if (new RegExp(`(?<!\\p{L})${escaped}(?!\\p{L})`, 'u').test(text)) return true;
+    const arabic = AR_PLACES[part];
+    return Boolean(arabic && new RegExp(`(?:${arabic})`).test(answer));
+  });
+}
+export function relevantPlaces(places: string[], question: string, answer: string) {
+  if (GEO_QUESTION.test(question)) return places;
+  return places.filter((place) => placeInAnswer(place, removeMediaBlocks(answer)));
+}
+
+/**
+ * Topics requested in a reply (at most 2 image, 1 video and 5 place searches), or undefined.
+ * With the visitor's `question`, places that do not fit it are left off the map.
+ */
+export function extractMediaRequest(text: string, question?: string): MediaRequest | undefined {
   const images: string[] = [];
   const videos: string[] = [];
   const places: string[] = [];
@@ -35,7 +69,8 @@ export function extractMediaRequest(text: string): MediaRequest | undefined {
     places.push(...topics(data.places ?? data.place, 5));
   }
   const request: MediaRequest = { images: [...new Set(images)].slice(0, 2), videos: [...new Set(videos)].slice(0, 1) };
-  const uniquePlaces = [...new Set(places)].slice(0, 5);
+  let uniquePlaces = [...new Set(places)].slice(0, 5);
+  if (question !== undefined) uniquePlaces = relevantPlaces(uniquePlaces, question, text);
   if (uniquePlaces.length) request.places = uniquePlaces;
   return request.images.length || request.videos.length || uniquePlaces.length ? request : undefined;
 }
