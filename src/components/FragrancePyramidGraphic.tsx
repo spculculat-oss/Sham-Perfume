@@ -275,7 +275,7 @@ export const FragrancePyramidGraphic: React.FC<FragrancePyramidGraphicProps> = (
   const L = makeT(effectiveLang, S);
 
   // Enriched and volatility-sorted notes
-  const enrichedNotes = pyramidNotes.map(enrichPyramidNote);
+  const enrichedNotes = pyramidNotes.map((note) => enrichPyramidNote(note, effectiveLang));
   const sortedNotes = sortNotesByVolatilityOrder(enrichedNotes);
 
   const topNotes = sortedNotes.filter((n) => n.category === 'top');

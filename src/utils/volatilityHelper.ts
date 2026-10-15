@@ -1,3 +1,5 @@
+import type { SupportedLanguage } from '../types/i18n';
+import { noteMetric } from './noteL10n';
 import { PyramidNote } from '../types/perfume';
 
 export interface EnrichedPyramidNote extends PyramidNote {
@@ -8,28 +10,28 @@ export interface EnrichedPyramidNote extends PyramidNote {
   qualityGrade?: string;
 }
 
-export function enrichPyramidNote(note: PyramidNote): EnrichedPyramidNote {
+export function enrichPyramidNote(note: PyramidNote, lang: SupportedLanguage = 'ar'): EnrichedPyramidNote {
   let volatilityRank = 5;
-  let evaporationTime = '2 - 4 ساعات';
-  let diffusionRadius = 'نصف قطر متوسط (~1.5م)';
-  let scentFamily = 'زهري أروماتيك';
-  let qualityGrade = 'نقاء معملي فاخر (Cosmetic Grade A)';
+  let evaporationTime = noteMetric('evap_default', lang);
+  let diffusionRadius = noteMetric('radius_default', lang);
+  let scentFamily = noteMetric('family_default', lang);
+  const qualityGrade = noteMetric('grade_a', lang);
 
   if (note.category === 'top') {
     volatilityRank = 2;
-    evaporationTime = '15 - 45 دقيقة';
-    diffusionRadius = 'إشعاع فوري عريض (~3م)';
-    scentFamily = 'حمضيات وأروماتيك متطاير';
+    evaporationTime = noteMetric('evap_top', lang);
+    diffusionRadius = noteMetric('radius_top', lang);
+    scentFamily = noteMetric('family_top', lang);
   } else if (note.category === 'heart') {
     volatilityRank = 5;
-    evaporationTime = '2 - 5 ساعات';
-    diffusionRadius = 'هالة متوسطة (~2م)';
-    scentFamily = 'زهور وتوابل دافئة';
+    evaporationTime = noteMetric('evap_heart', lang);
+    diffusionRadius = noteMetric('radius_heart', lang);
+    scentFamily = noteMetric('family_heart', lang);
   } else if (note.category === 'base') {
     volatilityRank = 9;
-    evaporationTime = '12 - 24+ ساعة';
-    diffusionRadius = 'ثبات حميمي ملتصق (~1م)';
-    scentFamily = 'أخشاب وعنبر وراتنجات';
+    evaporationTime = noteMetric('evap_base', lang);
+    diffusionRadius = noteMetric('radius_base', lang);
+    scentFamily = noteMetric('family_base', lang);
   }
 
   return {
