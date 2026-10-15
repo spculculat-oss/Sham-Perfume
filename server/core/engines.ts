@@ -129,13 +129,12 @@ export const GEMINI_DEFAULT_MODEL = 'gemini-flash-latest';
 
 interface GeminiModelInfo { name?: string; supportedGenerationMethods?: string[] }
 
-/** Best text model for chat among those the key can use: rolling alias → newest stable Flash → Lite → previews. */
-export function pickGeminiModel(models: GeminiModelInfo[]): string | undefined {
+/** Text models for chat the key can use, best first: rolling alias → newest stable Flash → Lite → previews. */
+export function rankGeminiModels(models: GeminiModelInfo[]): string[] {
   const ids = models
     .filter((m) => typeof m.name === 'string' && (m.supportedGenerationMethods || []).includes('generateContent'))
     .map((m) => m.name!.replace(/^models\//, ''))
     .filter((id) => /^gemini-/.test(id) && !/(image|tts|live|audio|embedding|robotics|computer|vision|learnlm|aqa)/i.test(id));
-  if (ids.includes('gemini-flash-latest')) return 'gemini-flash-latest';
   const version = (id: string) => Number(id.match(/^gemini-(\d+(?:\.\d+)?)/)?.[1] || 0);
   const rank = (id: string) => [
     /-flash/.test(id) && !/lite/.test(id) && !/(preview|exp)/.test(id),
@@ -143,19 +142,63 @@ export function pickGeminiModel(models: GeminiModelInfo[]): string | undefined {
     /-flash/.test(id),
     true,
   ].findIndex(Boolean);
-  return [...ids].sort((a, b) => rank(a) - rank(b) || version(b) - version(a) || a.length - b.length)[0];
+  const sorted = [...ids].sort((a, b) => rank(a) - rank(b) || version(b) - version(a) || a.length - b.length);
+  return ids.includes('gemini-flash-latest') ? ['gemini-flash-latest', ...sorted.filter((id) => id !== 'gemini-flash-latest')] : sorted;
 }
 
-type GeminiCache = Map<string, { model: string; at: number }>;
+/** Best text model for chat among those the key can use. */
+export function pickGeminiModel(models: GeminiModelInfo[]): string | undefined {
+  return rankGeminiModels(models)[0];
+}
+
+/**
+ * Gemini quotas are per model: when one is exhausted (429), these are tried next — Lite first
+ * (largest free quota), then other chat models. The model that just failed is excluded.
+ */
+export function geminiQuotaFallbacks(models: GeminiModelInfo[], failed: string, limit = 3): string[] {
+  const ranked = rankGeminiModels(models).filter((id) => id !== failed);
+  const lite = ranked.filter((id) => /lite/.test(id) && !/(preview|exp)/.test(id))
+    .sort((a, b) => Number(/-latest$/.test(b)) - Number(/-latest$/.test(a)));
+  return [...new Set([...lite, ...ranked])].slice(0, limit);
+}
+
+/**
+ * Safe one-line reason from a provider error body, for the admin probe and the key workflow:
+ * only structured fields (status, quota names and limits, retry delay) — never free-text messages.
+ */
+export function failureDetail(body = ''): string {
+  try {
+    const err = (JSON.parse(body.slice(0, 8000)) as { error?: { status?: unknown; details?: { violations?: { quotaId?: string; quotaMetric?: string; quotaValue?: string }[]; retryDelay?: string }[] } }).error;
+    if (!err) return '';
+    const parts: string[] = typeof err.status === 'string' && /^[A-Z_]{3,40}$/.test(err.status) ? [err.status] : [];
+    for (const d of err.details || []) {
+      for (const v of d.violations || []) parts.push([v.quotaId, v.quotaValue !== undefined ? `limit ${v.quotaValue}` : ''].filter(Boolean).join(' '));
+      if (d.retryDelay) parts.push(`retry in ${d.retryDelay}`);
+    }
+    return parts.filter(Boolean).join(' · ').replace(/(AIza[\w-]{10,}|sk-[\w-]{10,}|key=[^&\s]+)/g, '[redacted]').slice(0, 400);
+  } catch {
+    return '';
+  }
+}
+
+type GeminiCache = Map<string, { model: string; at: number; ttl?: number }>;
 const geminiSubstitutes: GeminiCache = ((globalThis as { __shamGeminiModels?: GeminiCache }).__shamGeminiModels ??= new Map());
 const geminiCacheKey = (apiKey: string, model: string) => `${createHash('sha256').update(apiKey).digest('hex').slice(0, 16)}:${model}`;
 
-async function discoverGeminiModel(apiKey: string, unavailable: string, request: typeof fetch, signal: AbortSignal): Promise<string | undefined> {
+async function listGeminiModels(apiKey: string, request: typeof fetch, signal: AbortSignal): Promise<GeminiModelInfo[]> {
   try {
     const response = await request('https://generativelanguage.googleapis.com/v1beta/models?pageSize=1000', { headers: { 'x-goog-api-key': apiKey }, signal });
-    if (!response.ok) return undefined;
-    const data = await response.json() as { models?: GeminiModelInfo[] };
-    const picked = pickGeminiModel((data.models || []).filter((m) => m.name?.replace(/^models\//, '') !== unavailable));
+    if (!response.ok) return [];
+    return (await response.json() as { models?: GeminiModelInfo[] }).models || [];
+  } catch {
+    return [];
+  }
+}
+
+async function discoverGeminiModel(apiKey: string, unavailable: string, request: typeof fetch, signal: AbortSignal): Promise<string | undefined> {
+  try {
+    const models = await listGeminiModels(apiKey, request, signal);
+    const picked = pickGeminiModel(models.filter((m) => m.name?.replace(/^models\//, '') !== unavailable));
     if (picked) geminiSubstitutes.set(geminiCacheKey(apiKey, unavailable), { model: picked, at: Date.now() });
     return picked;
   } catch {
@@ -194,15 +237,16 @@ export async function callEngine(
   id: ModelEngineId,
   system: string,
   turns: EngineTurn[],
-  options: { env?: Env; fetch?: typeof fetch; signal: AbortSignal; temperature: number; onToken?: (text: string) => void; model?: string; maxTokens?: number; maxChars?: number; onFailure?: (failure: EngineFailure, status: number) => void },
+  options: { env?: Env; fetch?: typeof fetch; signal: AbortSignal; temperature: number; onToken?: (text: string) => void; model?: string; maxTokens?: number; maxChars?: number; onFailure?: (failure: EngineFailure, status: number, detail: string) => void; onModel?: (model: string) => void },
 ): Promise<string | undefined> {
   const env = options.env || process.env;
   const request = options.fetch || fetch;
   const base = engineStatuses(env).find((e) => e.id === id)!;
   const status = { ...base, model: options.model && MODEL_ID.test(options.model) ? options.model : base.model };
+  const requestedModel = status.model;
   if (id === 'gemini') {
     const cached = geminiSubstitutes.get(geminiCacheKey(env.GEMINI_API_KEY!.trim(), status.model));
-    if (cached && Date.now() - cached.at < 6 * 3600_000) status.model = cached.model;
+    if (cached && Date.now() - cached.at < (cached.ttl ?? 6 * 3600_000)) status.model = cached.model;
   }
   const maxTokens = options.maxTokens ?? 1200;
   const maxChars = options.maxChars ?? 12000;
@@ -243,21 +287,46 @@ export async function callEngine(
     body = openAiShape();
   }
 
+  let usedModel = status.model;
   let response = await request(url, { method: 'POST', headers, body: JSON.stringify(body), signal: options.signal });
   if (id === 'gemini' && response.status === 404) {
     // The configured model was retired or is not open to this key: switch to the best available one.
     const apiKey = env.GEMINI_API_KEY!.trim();
     const better = await discoverGeminiModel(apiKey, status.model, request, options.signal);
     if (better && better !== status.model) {
+      usedModel = better;
       url = url.replace(`/models/${encodeURIComponent(status.model)}:`, `/models/${encodeURIComponent(better)}:`);
       body = { ...body, generationConfig: { temperature: options.temperature, ...geminiThinking(better, maxTokens) } };
       response = await request(url, { method: 'POST', headers, body: JSON.stringify(body), signal: options.signal });
     }
   }
+  let errorBody: string | undefined;
+  if (id === 'gemini' && response.status === 429) errorBody = await response.text().catch(() => '');
+  if (errorBody !== undefined && /RESOURCE_EXHAUSTED|QuotaFailure|quota/i.test(errorBody)) {
+    // Quota is per model: an exhausted model does not mean the key is dead — try others for an hour.
+    const apiKey = env.GEMINI_API_KEY!.trim();
+    const original = url.match(/\/models\/([^:]+):/)?.[1];
+    const failed = original ? decodeURIComponent(original) : status.model;
+    for (const next of geminiQuotaFallbacks(await listGeminiModels(apiKey, request, options.signal), failed)) {
+      if (options.signal.aborted) break;
+      const nextUrl = url.replace(`/models/${encodeURIComponent(failed)}:`, `/models/${encodeURIComponent(next)}:`);
+      const nextBody = { ...body, generationConfig: { temperature: options.temperature, ...geminiThinking(next, maxTokens) } };
+      const attempt = await request(nextUrl, { method: 'POST', headers, body: JSON.stringify(nextBody), signal: options.signal });
+      if (attempt.ok) {
+        geminiSubstitutes.set(geminiCacheKey(apiKey, requestedModel), { model: next, at: Date.now(), ttl: 3600_000 });
+        response = attempt; errorBody = undefined; usedModel = next;
+        break;
+      }
+      if (attempt.status !== 429 && attempt.status !== 404) { response = attempt; errorBody = undefined; break; }
+      await attempt.body?.cancel().catch(() => {});
+    }
+  }
   if (!response.ok) {
-    if (options.onFailure) options.onFailure(classifyEngineFailure(response.status, await response.text().catch(() => '')), response.status);
+    const text = errorBody ?? await response.text().catch(() => '');
+    if (options.onFailure) options.onFailure(classifyEngineFailure(response.status, text), response.status, failureDetail(text));
     return undefined;
   }
+  options.onModel?.(usedModel);
 
   const isStream = stream && response.body && (response.headers.get('content-type') || '').includes('text/event-stream');
   if (isStream) {
