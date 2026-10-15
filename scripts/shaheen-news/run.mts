@@ -97,5 +97,8 @@ if (env.GITHUB_STEP_SUMMARY) {
 }
 if (env.GITHUB_ACTIONS) {
   console.log(`::notice title=Shaheen news::${newsFile.items.length} stories (editor ${newsFile.editor}), ${lessons.length} new lessons, ${trainingFile.docs.length} lessons total`);
-  newsFile.items.slice(0, 8).forEach((i, n) => console.log(`::notice title=Story ${n + 1}::${i.title.ar.replace(/[\r\n%]/g, ' ')} — ${i.source}`));
+  const clean = (t: string) => t.replace(/[\r\n%]/g, ' ');
+  console.log(`::notice title=Sources::${clean(log.filter((l) => /^[✓✗]/.test(l)).join(' | '))}`);
+  console.log(`::notice title=Training::${clean(log.filter((l) => /Lessons|questions|SHAM_ADMIN_TOKEN/.test(l)).join(' | ') || 'no AI key')}`);
+  newsFile.items.slice(0, 6).forEach((i, n) => console.log(`::notice title=Story ${n + 1}::${i.title.ar.replace(/[\r\n%]/g, ' ')} — ${i.source}`));
 }
