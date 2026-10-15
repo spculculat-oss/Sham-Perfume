@@ -107,6 +107,8 @@ test('the server uses the published lessons and headlines, refreshing them from 
   assert.equal(liveDataEnabled({}), false);
   assert.equal(liveDataEnabled({ VERCEL: '1' }), true);
   assert.equal(liveDataEnabled({ VERCEL: '1', SHAM_LIVE_DATA: 'off' }), false);
+  assert.deepEqual(await trainedKnowledge({}), [], 'Tests and dev answer deterministically, whatever was published');
+  assert.equal(await newsContext('ايه آخر الأخبار؟', 'ar', {}), '');
   const updatedAt = '2099-01-01T00:00:00.000Z';
   const calls: string[] = [];
   const fetcher = (async (url: string) => {
