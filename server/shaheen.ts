@@ -9,7 +9,7 @@
  * there are no canned answers pretending to be AI.
  */
 import express from 'express';
-import { newsContext } from './core/liveData';
+import { newsContext, supervisorGuidance } from './core/liveData';
 import { SUPPORTED_LANGUAGES } from '../src/types/i18n';
 import type { SupportedLanguage } from '../src/types/i18n';
 import { normalizeMediaBlocks } from '../src/utils/mediaBlock';
@@ -163,7 +163,8 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   // Vercel functions stop at 60 s: keep the whole failover chain inside that.
   const total = AbortSignal.any([AbortSignal.timeout(options.totalTimeoutMs ?? 50000), ...(options.signal ? [options.signal] : [])]);
   // Questions about news get the real headlines Shaheen collected (every 12 h) instead of invented ones.
-  const instruction = systemInstruction(input.language, settings.instructions, style) + await newsContext(input.message, input.language, env).catch(() => '');
+  const instruction = systemInstruction(input.language, settings.instructions, style) + await newsContext(input.message, input.language, env).catch(() => '')
+    + await supervisorGuidance('shaheen_chat', env).catch(() => '');
   // A deep analysis plus its formula block used to be cut before the closing fence: give it room.
   const maxTokens = style === 'fast' ? Math.min(settings.maxTokens, 1024)
     : style === 'deep' ? Math.min(8192, Math.max(settings.maxTokens, 6144)) : settings.maxTokens;
@@ -223,7 +224,7 @@ async function executeCouncil(input: ChatRequest, options: ExecuteOptions, env: 
   const result = await runCouncil({
     question: input.message, history: input.conversationHistory.slice(-6), lang,
     languageName: `${SUPPORTED_LANGUAGES.find((l) => l.code === input.language)!.name} (${input.language})`,
-    briefing: `CONTEXT (Shaheen's rules — follow them):\n${systemInstruction(input.language, settings.instructions)}\nENABLED SERVICES: the lab calculators on this site and the Sham assistant for orders.`,
+    briefing: `CONTEXT (Shaheen's rules — follow them):\n${systemInstruction(input.language, settings.instructions)}${await supervisorGuidance('shaheen_chat', env).catch(() => '')}\nENABLED SERVICES: the lab calculators on this site and the Sham assistant for orders.`,
     council, enginePolicy: settings.engines, temperature: settings.temperature, env, fetch: options.fetch, signal, onStep: () => {},
   });
   if (!result.reply || !result.chair) {
