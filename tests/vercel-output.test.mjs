@@ -65,6 +65,8 @@ test('Vercel config builds explicit full-stack output instead of Vite-only dist'
   // Work branches skip Vercel previews (the free plan's daily deployment cap must stay free for main);
   // main is never disabled.
   assert.equal(settings.git.deploymentEnabled['arena/**'], false);
+  // Fluid compute: one instance serves many visitors at once, sharing Shaheen's answer cache and queue.
+  assert.equal(settings.fluid, true);
   assert.notEqual(settings.git.deploymentEnabled.main, false);
   assert.equal(config.version, 3);
   const metadata = JSON.parse(await readFile(path.join(output, 'functions/api.func/.vc-config.json'), 'utf8'));
