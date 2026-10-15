@@ -1,0 +1,21 @@
+# Python dependencies for the perfume scraper system
+
+# Web scraping
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+urllib3>=2.0.0
+
+# Database
+psycopg2-binary>=2.9.0
+
+# Data processing
+pandas>=2.0.0
+
+# YAML config
+pyyaml>=6.0
+
+# Logging
+python-json-logger>=2.0.0
+
+# Optional: Playwright for JavaScript-heavy sites
+# playwright>=1.40.0
