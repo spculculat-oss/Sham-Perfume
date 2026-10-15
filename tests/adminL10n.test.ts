@@ -40,7 +40,7 @@ test('unknown strings pass through untouched (nothing can go blank)', () => {
 });
 
 test('the dictionary carries the admin shell with full English coverage', () => {
-  assert.ok(adminStringCount() >= 200, `expected a populated dictionary, got ${adminStringCount()}`);
+  assert.ok(adminStringCount() >= 300, `expected a populated dictionary, got ${adminStringCount()}`);
   assert.equal(adminCoverage('en'), adminStringCount());
   for (const entry of Object.values(ADMIN_STRINGS)) {
     const english = entry.en;

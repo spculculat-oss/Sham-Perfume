@@ -1248,7 +1248,7 @@ function ServicesPanel() {
               }} />
             </Field>
             {jsonError && <p className="text-[11px] text-red-700">{jsonError}</p>}
-            <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={s.enabled ?? true} onChange={(e) => onChange({ ...s, enabled: e.target.checked })} />مفعلة للزوار</label>
+            <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={s.enabled ?? true} onChange={(e) => onChange({ ...s, enabled: e.target.checked })} />{T('مفعلة للزوار')}</label>
           </div>
         );
       }} />
@@ -1288,7 +1288,7 @@ function EnginesPanel() {
         <div className="grid lg:grid-cols-2 gap-4">
           <div className={`${card} space-y-2`}>
             <h2 className="font-bold text-sm">{T('ترتيب المحركات')}</h2>
-            <p className="text-[11px] text-stone-500">المفاتيح وعناوين الخوادم تُضبط في متغيرات بيئة الخادم فقط ولا تظهر هنا. المحرك غير المهيأ يُتخطى تلقائياً.</p>
+            <p className="text-[11px] text-stone-500">{T('المفاتيح وعناوين الخوادم تُضبط في متغيرات بيئة الخادم فقط ولا تظهر هنا. المحرك غير المهيأ يُتخطى تلقائياً.')}</p>
             {data.engines.map((engine) => {
               const active = policy.includes(engine.id);
               return (
@@ -1298,7 +1298,7 @@ function EnginesPanel() {
                     <p className="text-sm font-semibold">{ENGINE_LABEL[engine.id]} <span className="text-[10px] text-stone-400" dir="ltr">{engine.model}</span></p>
                     <p className={`text-[11px] ${engine.configured ? 'text-emerald-700' : 'text-stone-400'}`}>{engine.configured ? 'مهيأ (الإعداد موجود؛ لا يضمن صحة المفتاح)' : engine.id === 'self_hosted' ? 'غير مهيأ — اضبط SHAM_LLM_BASE_URL' : 'غير مهيأ — لا يوجد مفتاح'}</p>
                   </div>
-                  {active && engine.id !== 'sham_local' && <div className="flex flex-col"><button className="text-xs px-1" onClick={() => move(engine.id, -1)} aria-label="أعلى">▲</button><button className="text-xs px-1" onClick={() => move(engine.id, 1)} aria-label="أسفل">▼</button></div>}
+                  {active && engine.id !== 'sham_local' && <div className="flex flex-col"><button className="text-xs px-1" onClick={() => move(engine.id, -1)} aria-label={T('أعلى')}>▲</button><button className="text-xs px-1" onClick={() => move(engine.id, 1)} aria-label={T('أسفل')}>▼</button></div>}
                   {active && <span className="text-[10px] font-bold text-amber-800">#{policy.indexOf(engine.id) + 1}</span>}
                 </div>
               );
@@ -1306,20 +1306,20 @@ function EnginesPanel() {
             <Field label={`درجة الإبداع (temperature): ${form.temperature}`}><input type="range" min={0} max={1} step={0.05} value={form.temperature} onChange={(e) => setForm({ ...form, temperature: Number(e.target.value) })} className="w-full" /></Field>
           </div>
           <div className={`${card} space-y-2`}>
-            <h2 className="font-bold text-sm">هوية المساعد</h2>
+            <h2 className="font-bold text-sm">{T('هوية المساعد')}</h2>
             <div className="grid grid-cols-2 gap-2">
               <Field label={T('الاسم بالعربية')}><input className={input} value={form.assistantNameAr} onChange={(e) => setForm({ ...form, assistantNameAr: e.target.value })} /></Field>
               <Field label="Name (English)"><input className={input} dir="ltr" value={form.assistantNameEn} onChange={(e) => setForm({ ...form, assistantNameEn: e.target.value })} /></Field>
             </div>
-            <Field label="رسالة الترحيب بالعربية"><textarea className={input} rows={3} value={form.welcomeAr} onChange={(e) => setForm({ ...form, welcomeAr: e.target.value })} /></Field>
+            <Field label={T('رسالة الترحيب بالعربية')}><textarea className={input} rows={3} value={form.welcomeAr} onChange={(e) => setForm({ ...form, welcomeAr: e.target.value })} /></Field>
             <Field label="Welcome (English)"><textarea className={input} dir="ltr" rows={3} value={form.welcomeEn} onChange={(e) => setForm({ ...form, welcomeEn: e.target.value })} /></Field>
-            <Field label="الشخصية وأسلوب الرد"><textarea className={input} rows={2} value={form.personaAr} onChange={(e) => setForm({ ...form, personaAr: e.target.value })} /></Field>
+            <Field label={T('الشخصية وأسلوب الرد')}><textarea className={input} rows={2} value={form.personaAr} onChange={(e) => setForm({ ...form, personaAr: e.target.value })} /></Field>
             <div className="grid grid-cols-3 gap-2">
-              <Field label="العملة الافتراضية"><input className={input} dir="ltr" value={form.currency} onChange={(e) => setForm({ ...form, currency: e.target.value })} /></Field>
-              <Field label="مواعيد العمل"><input className={input} value={form.businessHours} onChange={(e) => setForm({ ...form, businessHours: e.target.value })} /></Field>
-              <Field label="تواصل مباشر"><input className={input} value={form.handoffContact} onChange={(e) => setForm({ ...form, handoffContact: e.target.value })} placeholder="واتساب / هاتف" /></Field>
+              <Field label={T('العملة الافتراضية')}><input className={input} dir="ltr" value={form.currency} onChange={(e) => setForm({ ...form, currency: e.target.value })} /></Field>
+              <Field label={T('مواعيد العمل')}><input className={input} value={form.businessHours} onChange={(e) => setForm({ ...form, businessHours: e.target.value })} /></Field>
+              <Field label={T('تواصل مباشر')}><input className={input} value={form.handoffContact} onChange={(e) => setForm({ ...form, handoffContact: e.target.value })} placeholder={T('واتساب / هاتف')} /></Field>
             </div>
-            <button disabled={busy} onClick={save} className={`${btn} bg-stone-900 text-amber-100 w-full`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />حفظ الإعدادات</>}</button>
+            <button disabled={busy} onClick={save} className={`${btn} bg-stone-900 text-amber-100 w-full`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />{T('حفظ الإعدادات')}</>}</button>
             {message && <p className="text-xs text-center">{message}</p>}
           </div>
           <CouncilSettingsCard form={form} setForm={setForm} engines={data.engines} onSave={save} busy={busy} message={message} />
@@ -1332,17 +1332,17 @@ function EnginesPanel() {
 interface SettingsView { item: CoreSettings; engines: EngineStatus[]; shaheen: { source: 'admin' | 'file'; defaults: ShaheenSettings }; storage: { kind: string; persistent: boolean; error?: string } }
 interface ProbeResult { id: ModelEngineId; name: string; model: string; configured: boolean; ok: boolean; ms: number; error?: string; detail?: string; usedModel?: string }
 const PROBE_ERROR: Record<string, string> = {
-  not_configured: 'غير مهيأ — لا يوجد مفتاح/عنوان في متغيرات الخادم',
-  rejected_or_empty: 'المزوّد رفض الطلب أو رجّع رداً فارغاً — راجع صلاحية المفتاح واسم النموذج والرصيد',
-  timeout: 'انتهت المهلة — الخدمة بطيئة أو غير متاحة',
-  unreachable: 'تعذّر الوصول للمزوّد (شبكة/عنوان خاطئ/مفتاح مرفوض)',
-  invalid_key: 'المفتاح غير صالح أو ملغي — أنشئ مفتاحاً جديداً من حساب المزوّد وضعه في متغيرات الخادم',
-  no_credit: 'الحساب بلا رصيد أو انتهت الحصة المجانية — اشحن الرصيد أو فعّل الفوترة عند المزوّد',
-  rate_limited: 'تجاوزت حد الطلبات مؤقتاً — انتظر دقيقة ثم أعد الاختبار',
-  model_not_found: 'اسم النموذج غير متاح لهذا الحساب — اختر نموذجاً آخر من الإعدادات',
-  region_blocked: 'المزوّد لا يخدم منطقة الخادم — استخدم خادماً في منطقة مدعومة',
-  bad_request: 'المزوّد رفض صيغة الطلب — راجع اسم النموذج والإعدادات',
-  upstream_error: 'خدمة المزوّد متعطلة حالياً — أعد المحاولة لاحقاً',
+  not_configured: T('غير مهيأ — لا يوجد مفتاح/عنوان في متغيرات الخادم'),
+  rejected_or_empty: T('المزوّد رفض الطلب أو رجّع رداً فارغاً — راجع صلاحية المفتاح واسم النموذج والرصيد'),
+  timeout: T('انتهت المهلة — الخدمة بطيئة أو غير متاحة'),
+  unreachable: T('تعذّر الوصول للمزوّد (شبكة/عنوان خاطئ/مفتاح مرفوض)'),
+  invalid_key: T('المفتاح غير صالح أو ملغي — أنشئ مفتاحاً جديداً من حساب المزوّد وضعه في متغيرات الخادم'),
+  no_credit: T('الحساب بلا رصيد أو انتهت الحصة المجانية — اشحن الرصيد أو فعّل الفوترة عند المزوّد'),
+  rate_limited: T('تجاوزت حد الطلبات مؤقتاً — انتظر دقيقة ثم أعد الاختبار'),
+  model_not_found: T('اسم النموذج غير متاح لهذا الحساب — اختر نموذجاً آخر من الإعدادات'),
+  region_blocked: T('المزوّد لا يخدم منطقة الخادم — استخدم خادماً في منطقة مدعومة'),
+  bad_request: T('المزوّد رفض صيغة الطلب — راجع اسم النموذج والإعدادات'),
+  upstream_error: T('خدمة المزوّد متعطلة حالياً — أعد المحاولة لاحقاً'),
 };
 
 /** «الخبير شاهين»: which engines, in which order, which models, tone, length and extra instructions. */
@@ -1374,7 +1374,7 @@ function ShaheenPanel() {
     try {
       const next = await adminRequest<SettingsView>('/settings', send('PUT', { shaheen }));
       setData(next); setForm(next.item.shaheen);
-      setMessage(shaheen === null ? 'تمت العودة لإعدادات الملف المشتركة ✅' : 'تم الحفظ ✅ — يظهر فوراً على الموقعين');
+      setMessage(shaheen === null ? T('تمت العودة لإعدادات الملف المشتركة ✅') : T('تم الحفظ ✅ — يظهر فوراً على الموقعين'));
     } catch (e) { setMessage((e as Error).message); } finally { setBusy(false); }
   };
   const runProbe = async () => {
@@ -1386,7 +1386,7 @@ function ShaheenPanel() {
 
   return (
     <>
-      <Header title={T('الخبير شاهين')} subtitle="إعدادات شات تصميم العطور (النافذة العائمة وصفحة المعمل). نفس الإعدادات تُطبَّق على موقع Vercel وموقع GitHub Pages لأن الاتنين بيستخدموا نفس الخادم." />
+      <Header title={T('الخبير شاهين')} subtitle={T('إعدادات شات تصميم العطور (النافذة العائمة وصفحة المعمل). نفس الإعدادات تُطبَّق على موقع Vercel وموقع GitHub Pages لأن الاتنين بيستخدموا نفس الخادم.')} />
       <div className="space-y-4">
         {!data.storage.persistent ? (
           <div className="rounded-2xl border border-amber-300 bg-amber-50 p-3 text-xs leading-relaxed text-amber-950">
@@ -1401,14 +1401,14 @@ function ShaheenPanel() {
         <div className="grid lg:grid-cols-2 gap-4">
           <div className={`${card} space-y-3`}>
             <div className="flex flex-wrap items-center gap-3">
-              <label className="inline-flex items-center gap-1.5 text-sm font-bold"><input type="checkbox" checked={form.enabled} onChange={(e) => set({ enabled: e.target.checked })} />شاهين مفعّل للزوار</label>
-              <label className="inline-flex items-center gap-1.5 text-xs font-semibold"><input type="checkbox" checked={form.allowVisitorChoice} onChange={(e) => set({ allowVisitorChoice: e.target.checked })} />السماح للزائر باختيار وضع الرد (سريع / معمّق / مجلس الخبراء) — أسماء المحركات لا تظهر للزوار أبداً</label>
+              <label className="inline-flex items-center gap-1.5 text-sm font-bold"><input type="checkbox" checked={form.enabled} onChange={(e) => set({ enabled: e.target.checked })} />{T('شاهين مفعّل للزوار')}</label>
+              <label className="inline-flex items-center gap-1.5 text-xs font-semibold"><input type="checkbox" checked={form.allowVisitorChoice} onChange={(e) => set({ allowVisitorChoice: e.target.checked })} />{T('السماح للزائر باختيار وضع الرد (سريع / معمّق / مجلس الخبراء) — أسماء المحركات لا تظهر للزوار أبداً')}</label>
             </div>
             <p className={`text-xs font-semibold ${ready.length ? 'text-emerald-700' : 'text-red-700'}`}>
-              {ready.length ? `جاهز: ${ready.length} محرك مهيأ ومسموح (${ready.map((id) => ENGINE_LABEL[id]).join('، ')}).` : 'غير جاهز: مفيش ولا محرك مسموح ومهيأ — الزوار هيشوفوا «شاهين غير متصل».'}
+              {ready.length ? `جاهز: ${ready.length} محرك مهيأ ومسموح (${ready.map((id) => ENGINE_LABEL[id]).join('، ')}).` : T('غير جاهز: مفيش ولا محرك مسموح ومهيأ — الزوار هيشوفوا «شاهين غير متصل».')}
             </p>
-            <h2 className="font-bold text-sm">المحركات وترتيب «تلقائي»</h2>
-            <p className="text-[11px] text-stone-500">«تلقائي» يجرّب المحركات بالترتيب ده ويتخطى غير المهيأ أو اللي فشل. المحرك غير المسموح يختفي من واجهة الزوار. المفاتيح تُضبط في متغيرات الخادم فقط.</p>
+            <h2 className="font-bold text-sm">{T('المحركات وترتيب «تلقائي»')}</h2>
+            <p className="text-[11px] text-stone-500">{T('«تلقائي» يجرّب المحركات بالترتيب ده ويتخطى غير المهيأ أو اللي فشل. المحرك غير المسموح يختفي من واجهة الزوار. المفاتيح تُضبط في متغيرات الخادم فقط.')}</p>
             {all.map((id) => {
               const on = allowed.includes(id); const st = status(id);
               return (
@@ -1424,7 +1424,7 @@ function ShaheenPanel() {
                         set({ models });
                       }} />
                   </div>
-                  {on && <div className="flex flex-col"><button type="button" className="p-0.5 rounded hover:bg-amber-100 disabled:opacity-30" disabled={allowed.indexOf(id) === 0} onClick={() => move(id, -1)} aria-label="تقديم في الترتيب"><ChevronUp className="w-4 h-4" /></button><button type="button" className="p-0.5 rounded hover:bg-amber-100 disabled:opacity-30" disabled={allowed.indexOf(id) === allowed.length - 1} onClick={() => move(id, 1)} aria-label="تأخير في الترتيب"><ChevronDown className="w-4 h-4" /></button></div>}
+                  {on && <div className="flex flex-col"><button type="button" className="p-0.5 rounded hover:bg-amber-100 disabled:opacity-30" disabled={allowed.indexOf(id) === 0} onClick={() => move(id, -1)} aria-label={T('تقديم في الترتيب')}><ChevronUp className="w-4 h-4" /></button><button type="button" className="p-0.5 rounded hover:bg-amber-100 disabled:opacity-30" disabled={allowed.indexOf(id) === allowed.length - 1} onClick={() => move(id, 1)} aria-label={T('تأخير في الترتيب')}><ChevronDown className="w-4 h-4" /></button></div>}
                 </div>
               );
             })}
@@ -1432,31 +1432,31 @@ function ShaheenPanel() {
 
           <div className="space-y-4">
             <div className={`${card} space-y-3`}>
-              <h2 className="font-bold text-sm">أسلوب الردود</h2>
+              <h2 className="font-bold text-sm">{T('أسلوب الردود')}</h2>
               <Field label={`درجة الإبداع (temperature): ${form.temperature}`}><input type="range" min={0} max={1} step={0.05} value={form.temperature} onChange={(e) => set({ temperature: Number(e.target.value) })} className="w-full" /></Field>
-              <Field label="أقصى طول للرد">
+              <Field label={T('أقصى طول للرد')}>
                 <select className={input} value={form.maxTokens} onChange={(e) => set({ maxTokens: Number(e.target.value) })}>
                   {[1024, 2048, 4096, 6144, 8192].map((n) => <option key={n} value={n}>{n} توكن{n === 4096 ? ' (موصى به)' : ''}</option>)}
                 </select>
               </Field>
-              <Field label="تعليمات إضافية لشاهين (اختياري — لا تلغي قواعد السلامة)">
+              <Field label={T('تعليمات إضافية لشاهين (اختياري — لا تلغي قواعد السلامة)')}>
                 <textarea className={input} rows={5} maxLength={2000} value={form.instructions} onChange={(e) => set({ instructions: e.target.value })}
-                  placeholder="مثال: اقترح خامات متوفرة في السوق المصري، واذكر البدائل الاقتصادية، واختم بتذكير بطلب عينة من متجر شام." />
+                  placeholder={T('مثال: اقترح خامات متوفرة في السوق المصري، واذكر البدائل الاقتصادية، واختم بتذكير بطلب عينة من متجر شام.')} />
               </Field>
               <p className="text-[11px] text-stone-400 text-left" dir="ltr">{form.instructions.length}/2000</p>
             </div>
 
             <div className={`${card} space-y-2`}>
               <div className="flex flex-wrap items-center gap-2">
-                <button disabled={busy || !dirty} onClick={() => void save(form)} className={`${btn} bg-stone-900 text-amber-100`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />حفظ إعدادات شاهين</>}</button>
+                <button disabled={busy || !dirty} onClick={() => void save(form)} className={`${btn} bg-stone-900 text-amber-100`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />{T('حفظ إعدادات شاهين')}</>}</button>
                 <button disabled={busy || probing} onClick={() => void runProbe()} className={`${btn} border border-stone-300 bg-white`}>{probing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Activity className="w-4 h-4" />}اختبار الاتصال بالمحركات</button>
-                {data.shaheen.source === 'admin' && <button disabled={busy} onClick={() => void save(null)} className={`${btn} border border-stone-300 bg-white text-xs`}><RefreshCw className="w-3.5 h-3.5" />رجوع لإعدادات الملف</button>}
+                {data.shaheen.source === 'admin' && <button disabled={busy} onClick={() => void save(null)} className={`${btn} border border-stone-300 bg-white text-xs`}><RefreshCw className="w-3.5 h-3.5" />{T('رجوع لإعدادات الملف')}</button>}
               </div>
-              {dirty && <p className="text-[11px] text-amber-700">فيه تعديلات لم تُحفظ.</p>}
+              {dirty && <p className="text-[11px] text-amber-700">{T('فيه تعديلات لم تُحفظ.')}</p>}
               {message && <p className="text-xs">{message}</p>}
               {probe && (
                 <div className="space-y-1.5 pt-1">
-                  <p className="text-[11px] text-stone-500">الاختبار يبعت طلب صغير حقيقي لكل محرك مسموح (بالإعدادات المحفوظة).</p>
+                  <p className="text-[11px] text-stone-500">{T('الاختبار يبعت طلب صغير حقيقي لكل محرك مسموح (بالإعدادات المحفوظة).')}</p>
                   {probe.map((r) => (
                     <div key={r.id} className={`flex items-start gap-2 rounded-xl border p-2 text-xs ${r.ok ? 'border-emerald-200 bg-emerald-50' : r.configured ? 'border-red-200 bg-red-50' : 'border-stone-200 bg-stone-50'}`}>
                       {r.ok ? <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" /> : <CircleAlert className={`w-4 h-4 shrink-0 ${r.configured ? 'text-red-700' : 'text-stone-400'}`} />}
@@ -1468,7 +1468,7 @@ function ShaheenPanel() {
                       </div>
                     </div>
                   ))}
-                  {!probe.length && <p className="text-xs text-stone-500">لا توجد محركات مسموح بها.</p>}
+                  {!probe.length && <p className="text-xs text-stone-500">{T('لا توجد محركات مسموح بها.')}</p>}
                 </div>
               )}
             </div>
@@ -1477,7 +1477,7 @@ function ShaheenPanel() {
               <button type="button" onClick={() => setShowConfig((v) => !v)} className="text-xs font-semibold text-amber-800 hover:underline">{showConfig ? 'إخفاء' : 'عرض'} «الإعداد الدائم» لملف المستودع</button>
               {showConfig && (
                 <>
-                  <p className="text-[11px] text-stone-500">ده نفس الإعداد الحالي بصيغة ملف <code dir="ltr">server/config/shaheen.ts</code>. لما يتحط في المستودع ويتعمل نشر، يبقى هو الأساس على الموقعين حتى بدون تخزين دائم.</p>
+                  <p className="text-[11px] text-stone-500">ده نفس الإعداد الحالي بصيغة ملف <code dir="ltr">server/config/shaheen.ts</code>{T('. لما يتحط في المستودع ويتعمل نشر، يبقى هو الأساس على الموقعين حتى بدون تخزين دائم.')}</p>
                   <pre dir="ltr" className="overflow-x-auto rounded-xl bg-stone-900 p-3 text-[11px] text-stone-100">{`export const SHAHEEN_SITE_SETTINGS: ShaheenSettings = ${JSON.stringify(form, null, 2)};`}</pre>
                 </>
               )}
@@ -1500,8 +1500,8 @@ function CouncilSettingsCard({ form, setForm, engines, onSave, busy, message }: 
     <div className={`${card} space-y-3 lg:col-span-2`}>
       <div className="flex flex-wrap items-center gap-2">
         <Users className="w-4 h-4 text-amber-700" />
-        <h2 className="font-bold text-sm">المجلس الاستشاري (نقاش بين نماذج الذكاء الاصطناعي)</h2>
-        <label className="ms-auto inline-flex items-center gap-1.5 text-xs font-semibold"><input type="checkbox" checked={council.enabled} onChange={(e) => set({ enabled: e.target.checked })} />مفعّل</label>
+        <h2 className="font-bold text-sm">{T('المجلس الاستشاري (نقاش بين نماذج الذكاء الاصطناعي)')}</h2>
+        <label className="ms-auto inline-flex items-center gap-1.5 text-xs font-semibold"><input type="checkbox" checked={council.enabled} onChange={(e) => set({ enabled: e.target.checked })} />{T('مفعّل')}</label>
       </div>
       <p className="text-[11px] text-stone-500 leading-relaxed">
         كل مقعد يكتب رأيه مستقلاً ← المقاعد تراجع آراء بعضها بأسماء مجهولة (A، B، C) ← رئيس المجلس يكتب ردّاً استشارياً واحداً للزائر. الكل يشتغل على بيانات شام فقط، ومحدش منهم يقدر ينفّذ طلب أو يغيّر حاجة.
@@ -1513,38 +1513,38 @@ function CouncilSettingsCard({ form, setForm, engines, onSave, busy, message }: 
       <div className="space-y-2">
         {council.members.map((m) => (
           <div key={m.id} className={`grid grid-cols-2 md:grid-cols-[auto_1fr_1fr_1fr_auto] items-center gap-2 rounded-xl border p-2 ${m.enabled && configured(m.engine) ? 'border-amber-300 bg-amber-50/40' : 'border-stone-200'}`}>
-            <input type="checkbox" aria-label="تفعيل المقعد" checked={m.enabled} onChange={(e) => setMember(m.id, { enabled: e.target.checked })} />
-            <select className={input} aria-label="المحرك" value={m.engine} onChange={(e) => setMember(m.id, { engine: e.target.value as ModelEngineId })}>
+            <input type="checkbox" aria-label={T('تفعيل المقعد')} checked={m.enabled} onChange={(e) => setMember(m.id, { enabled: e.target.checked })} />
+            <select className={input} aria-label={T('المحرك')} value={m.engine} onChange={(e) => setMember(m.id, { engine: e.target.value as ModelEngineId })}>
               {MODEL_ENGINES.map((id) => <option key={id} value={id}>{ENGINE_LABEL[id]}{configured(id) ? '' : ' (غير مهيأ)'}</option>)}
             </select>
-            <input className={input} dir="ltr" aria-label="النموذج" placeholder={engines.find((e) => e.id === m.engine)?.model || 'model'} value={m.model || ''} onChange={(e) => setMember(m.id, { model: e.target.value.trim() || undefined })} />
-            <select className={input} aria-label="الدور" value={m.role} onChange={(e) => setMember(m.id, { role: e.target.value as CouncilRole })}>
+            <input className={input} dir="ltr" aria-label={T('النموذج')} placeholder={engines.find((e) => e.id === m.engine)?.model || 'model'} value={m.model || ''} onChange={(e) => setMember(m.id, { model: e.target.value.trim() || undefined })} />
+            <select className={input} aria-label={T('الدور')} value={m.role} onChange={(e) => setMember(m.id, { role: e.target.value as CouncilRole })}>
               {(Object.keys(COUNCIL_ROLE) as CouncilRole[]).map((r) => <option key={r} value={r}>{COUNCIL_ROLE[r]}</option>)}
             </select>
-            <button type="button" aria-label="حذف المقعد" onClick={() => set({ members: council.members.filter((x) => x.id !== m.id), chair: council.chair === m.id ? 'auto' : council.chair })} className="p-2 text-stone-400 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
+            <button type="button" aria-label={T('حذف المقعد')} onClick={() => set({ members: council.members.filter((x) => x.id !== m.id), chair: council.chair === m.id ? 'auto' : council.chair })} className="p-2 text-stone-400 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
           </div>
         ))}
         {council.members.length < 8 && (
           <button type="button" onClick={() => set({ members: [...council.members, { id: `seat-${Math.random().toString(36).slice(2, 10)}`, engine: 'self_hosted', role: 'general', enabled: true }] })}
-            className={`${btn} border border-dashed border-stone-300 text-xs w-full`}><Plus className="w-3.5 h-3.5" />إضافة مقعد</button>
+            className={`${btn} border border-dashed border-stone-300 text-xs w-full`}><Plus className="w-3.5 h-3.5" />{T('إضافة مقعد')}</button>
         )}
       </div>
       <div className="grid md:grid-cols-3 gap-3">
-        <Field label="رئيس المجلس (يكتب الرد النهائي)">
+        <Field label={T('رئيس المجلس (يكتب الرد النهائي)')}>
           <select className={input} value={council.chair} onChange={(e) => set({ chair: e.target.value })}>
-            <option value="auto">تلقائي (حسب ترتيب المحركات)</option>
+            <option value="auto">{T('تلقائي (حسب ترتيب المحركات)')}</option>
             {council.members.map((m, i) => <option key={m.id} value={m.id}>مقعد {i + 1}: {COUNCIL_ROLE[m.role]} — {ENGINE_LABEL[m.engine]}{m.model ? ` (${m.model})` : ''}</option>)}
           </select>
         </Field>
-        <Field label="جولات النقاش (المراجعة المتبادلة)">
+        <Field label={T('جولات النقاش (المراجعة المتبادلة)')}>
           <select className={input} value={council.rounds} onChange={(e) => set({ rounds: Number(e.target.value) })}>
-            <option value={0}>بدون نقاش (آراء + خلاصة)</option><option value={1}>جولة واحدة (موصى به)</option><option value={2}>جولتان (أبطأ وأغلى)</option>
+            <option value={0}>{T('بدون نقاش (آراء + خلاصة)')}</option><option value={1}>{T('جولة واحدة (موصى به)')}</option><option value={2}>{T('جولتان (أبطأ وأغلى)')}</option>
           </select>
         </Field>
-        <label className="flex items-center gap-2 text-xs font-semibold mt-5"><input type="checkbox" checked={council.showDiscussion} onChange={(e) => set({ showDiscussion: e.target.checked })} />إظهار النقاش للزائر تحت الرد</label>
+        <label className="flex items-center gap-2 text-xs font-semibold mt-5"><input type="checkbox" checked={council.showDiscussion} onChange={(e) => set({ showDiscussion: e.target.checked })} />{T('إظهار النقاش للزائر تحت الرد')}</label>
       </div>
       <div>
-        <p className="text-xs font-semibold mb-1">يجتمع المجلس تلقائياً في (والزائر يقدر يطلبه بنفسه من زر المجلس في هذه الأنواع):</p>
+        <p className="text-xs font-semibold mb-1">{T('يجتمع المجلس تلقائياً في (والزائر يقدر يطلبه بنفسه من زر المجلس في هذه الأنواع):')}</p>
         <div className="flex flex-wrap gap-2">
           {COUNCIL_INTENTS.map((intent) => (
             <label key={intent} className="inline-flex items-center gap-1 text-[11px] rounded-full border border-stone-300 px-2 py-1">
@@ -1554,9 +1554,9 @@ function CouncilSettingsCard({ form, setForm, engines, onSave, busy, message }: 
         </div>
       </div>
       <div className="flex flex-wrap items-center gap-2">
-        <button disabled={busy} onClick={onSave} className={`${btn} bg-stone-900 text-amber-100`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />حفظ إعدادات المجلس</>}</button>
+        <button disabled={busy} onClick={onSave} className={`${btn} bg-stone-900 text-amber-100`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />{T('حفظ إعدادات المجلس')}</>}</button>
         {message && <p className="text-xs">{message}</p>}
-        <p className="text-[11px] text-stone-500">جرّبه من «مختبر المساعد» بعلامة «استشارة المجلس».</p>
+        <p className="text-[11px] text-stone-500">{T('جرّبه من «مختبر المساعد» بعلامة «استشارة المجلس».')}</p>
       </div>
     </div>
   );
@@ -1571,7 +1571,7 @@ function CouncilTranscriptView({ council }: { council: CouncilTranscript }) {
         {council.entries.map((e) => (
           <div key={e.memberId} className={`rounded-lg border p-1.5 ${e.ok ? 'border-stone-200 bg-white' : 'border-red-200 bg-red-50'}`}>
             <p className="font-bold">{e.label} · {COUNCIL_ROLE[e.role]} · <span dir="ltr">{ENGINE_LABEL[e.engine]} {e.model}</span>{council.chair?.memberId === e.memberId ? ' · 👑 الرئيس' : ''} <span className="font-normal text-stone-400">{e.ms}ms</span></p>
-            {e.ok ? <p className="whitespace-pre-wrap">{e.opinion}</p> : <p className="text-red-700">لم يرد (فشل أو انتهت المهلة)</p>}
+            {e.ok ? <p className="whitespace-pre-wrap">{e.opinion}</p> : <p className="text-red-700">{T('لم يرد (فشل أو انتهت المهلة)')}</p>}
             {e.reviews.map((r, i) => <p key={i} className="mt-1 whitespace-pre-wrap border-s-2 border-amber-300 ps-1.5"><b>مراجعة {i + 1}:</b> {r}</p>)}
           </div>
         ))}
@@ -1588,7 +1588,7 @@ function SandboxPanel() {
   const [log, setLog] = useState<{ q: string; r?: SandboxReply; error?: string }[]>([]);
   const [busy, setBusy] = useState(false);
   const [consult, setConsult] = useState(false);
-  const samples = useMemo(() => ['ازاي أركّب عطر عود ثابت؟', 'عايز اشتري زيت عود', 'محتاج عرض سعر جملة لمحل', 'يعني ايه تعتيق العطر؟', '50 مل بتركيز 20%', 'عايز أكلم موظف', 'What services do you offer?'], []);
+  const samples = useMemo(() => [T('ازاي أركّب عطر عود ثابت؟'), T('عايز اشتري زيت عود'), T('محتاج عرض سعر جملة لمحل'), T('يعني ايه تعتيق العطر؟'), T('50 مل بتركيز 20%'), T('عايز أكلم موظف'), 'What services do you offer?'], []);
   const run = async (q: string) => {
     if (!q.trim()) return; setBusy(true);
     try { const r = await adminRequest<SandboxReply>('/test-chat', send('POST', { message: q, language, ...(consult ? { consult: true } : {}) })); setLog((l) => [{ q, r }, ...l]); }
@@ -1596,11 +1596,11 @@ function SandboxPanel() {
   };
   return (
     <>
-      <Header title={T('مختبر المساعد')} subtitle="جرّب نفس مسار الزوار مع عرض كامل لخطوات التنفيذ (التوجيه، الاسترجاع، الأدوات، المحرك)" />
+      <Header title={T('مختبر المساعد')} subtitle={T('جرّب نفس مسار الزوار مع عرض كامل لخطوات التنفيذ (التوجيه، الاسترجاع، الأدوات، المحرك)')} />
       <form className={`${card} flex flex-wrap gap-2`} onSubmit={(e) => { e.preventDefault(); void run(message); }}>
-        <input className={`${input} flex-1 min-w-[200px]`} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="اكتب رسالة اختبار…" aria-label="رسالة اختبار" />
-        <select className={`${input} w-24`} value={language} onChange={(e) => setLanguage(e.target.value)} aria-label="اللغة"><option value="ar">ar</option><option value="en">en</option><option value="fr">fr</option></select>
-        <label className="inline-flex items-center gap-1 text-xs font-semibold"><input type="checkbox" checked={consult} onChange={(e) => setConsult(e.target.checked)} />استشارة المجلس</label>
+        <input className={`${input} flex-1 min-w-[200px]`} value={message} onChange={(e) => setMessage(e.target.value)} placeholder={T('اكتب رسالة اختبار…')} aria-label={T('رسالة اختبار')} />
+        <select className={`${input} w-24`} value={language} onChange={(e) => setLanguage(e.target.value)} aria-label={T('اللغة')}><option value="ar">ar</option><option value="en">en</option><option value="fr">fr</option></select>
+        <label className="inline-flex items-center gap-1 text-xs font-semibold"><input type="checkbox" checked={consult} onChange={(e) => setConsult(e.target.checked)} />{T('استشارة المجلس')}</label>
         <button disabled={busy} className={`${btn} bg-stone-900 text-amber-100`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : 'تشغيل'}</button>
         <div className="w-full flex flex-wrap gap-1.5">{samples.map((s) => <button type="button" key={s} onClick={() => void run(s)} className="text-[11px] rounded-full border border-stone-300 px-2.5 py-1 hover:bg-amber-50">{s}</button>)}</div>
       </form>
@@ -1648,12 +1648,12 @@ function NotifyTest() {
       catch { setState('fail'); }
     }} className={`${btn} mt-3 bg-stone-100 border border-stone-300 text-xs`}>
       {state === 'busy' ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <BellRing className="w-3.5 h-3.5" />}
-      {state === 'ok' ? 'تم إرسال إشعار تجريبي ✅' : state === 'fail' ? 'فشل الإرسال — راجع الرابط' : 'إرسال إشعار تجريبي'}
+      {state === 'ok' ? T('تم إرسال إشعار تجريبي ✅') : state === 'fail' ? T('فشل الإرسال — راجع الرابط') : T('إرسال إشعار تجريبي')}
     </button>
   );
 }
 
-const AGENT_PRESETS = ['تقرير اليوم الكامل', 'إيه الطلبات المتأخرة؟', 'المخزون اللي قرب يخلص', 'الزوار سألوا عن إيه ومالقوش إجابة؟', 'رضا العملاء عامل إزاي؟', 'المبيعات والقيمة المتوقعة'];
+const AGENT_PRESETS = [T('تقرير اليوم الكامل'), T('إيه الطلبات المتأخرة؟'), T('المخزون اللي قرب يخلص'), T('الزوار سألوا عن إيه ومالقوش إجابة؟'), T('رضا العملاء عامل إزاي؟'), T('المبيعات والقيمة المتوقعة')];
 const SEVERITY: Record<AgentResult['sections'][number]['severity'], { cls: string; icon: React.ReactNode }> = {
   ok: { cls: 'border-emerald-200 bg-emerald-50/50', icon: <CheckCircle2 className="w-4 h-4 text-emerald-600" /> },
   warn: { cls: 'border-amber-300 bg-amber-50/60', icon: <TriangleAlert className="w-4 h-4 text-amber-600" /> },
@@ -1669,18 +1669,18 @@ function AgentPanel({ go }: { go: (t: Tab) => void }) {
   const [result, setResult] = useState<AgentResult | null>(null);
   const [asked, setAsked] = useState('');
   const run = async (text: string) => {
-    const q = text.trim() || 'تقرير اليوم الكامل';
+    const q = text.trim() || T('تقرير اليوم الكامل');
     setBusy(true); setError(''); setAsked(q);
     try { setResult(await adminRequest<AgentResult>('/agent', send('POST', { message: q }))); }
-    catch (e) { setError(e instanceof Error ? e.message : 'فشل التشغيل'); }
+    catch (e) { setError(e instanceof Error ? e.message : T('فشل التشغيل')); }
     finally { setBusy(false); }
   };
   return (
     <>
-      <Header title={T('المساعد الإداري')} subtitle="وكيل عمليات يخطط وينفذ أدوات قراءة فقط على بيانات شام ثم يكتب تقريراً بخطوات قابلة للتنفيذ. لا يعدّل أي بيانات بنفسه." />
+      <Header title={T('المساعد الإداري')} subtitle={T('وكيل عمليات يخطط وينفذ أدوات قراءة فقط على بيانات شام ثم يكتب تقريراً بخطوات قابلة للتنفيذ. لا يعدّل أي بيانات بنفسه.')} />
       <form className={`${card} space-y-3`} onSubmit={(e) => { e.preventDefault(); void run(message); }}>
         <div className="flex gap-2">
-          <input className={input} value={message} onChange={(e) => setMessage(e.target.value.slice(0, 1000))} placeholder="اطلب تقريراً… مثال: إيه اللي محتاج انتباهي النهارده؟" aria-label="طلب للمساعد الإداري" />
+          <input className={input} value={message} onChange={(e) => setMessage(e.target.value.slice(0, 1000))} placeholder={T('اطلب تقريراً… مثال: إيه اللي محتاج انتباهي النهارده؟')} aria-label={T('طلب للمساعد الإداري')} />
           <button disabled={busy} className={`${btn} bg-stone-900 text-amber-100 shrink-0`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}تشغيل</button>
         </div>
         <div className="flex flex-wrap gap-1.5">
@@ -1688,11 +1688,11 @@ function AgentPanel({ go }: { go: (t: Tab) => void }) {
         </div>
       </form>
       {error && <p role="alert" className="mt-3 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p>}
-      {busy && <div className="mt-4 flex items-center gap-2 text-sm text-stone-500"><Loader2 className="w-4 h-4 animate-spin" />الوكيل يخطط وينفذ المهام…</div>}
+      {busy && <div className="mt-4 flex items-center gap-2 text-sm text-stone-500"><Loader2 className="w-4 h-4 animate-spin" />{T('الوكيل يخطط وينفذ المهام…')}</div>}
       {result && !busy && (
         <div className="mt-4 grid lg:grid-cols-[260px_1fr] gap-4">
           <div className={card}>
-            <h2 className="font-bold text-sm mb-1">الخطة المنفذة</h2>
+            <h2 className="font-bold text-sm mb-1">{T('الخطة المنفذة')}</h2>
             <p className="text-[11px] text-stone-500 mb-3">«{asked}»</p>
             <ol className="border-s-2 border-amber-300 ps-3 space-y-2">
               {result.plan.map((step, i) => (
@@ -1706,7 +1706,7 @@ function AgentPanel({ go }: { go: (t: Tab) => void }) {
           </div>
           <div className="space-y-3">
             <div className={`${card} border-amber-300`}>
-              <h2 className="font-bold text-sm mb-2 flex items-center gap-1.5"><Wand2 className="w-4 h-4 text-amber-700" />الملخص</h2>
+              <h2 className="font-bold text-sm mb-2 flex items-center gap-1.5"><Wand2 className="w-4 h-4 text-amber-700" />{T('الملخص')}</h2>
               <p className="text-sm leading-relaxed whitespace-pre-wrap">{result.summary}</p>
               {result.nextActions.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-2">
@@ -1721,7 +1721,7 @@ function AgentPanel({ go }: { go: (t: Tab) => void }) {
                 <div key={section.task} className={`rounded-2xl border p-4 ${SEVERITY[section.severity].cls}`}>
                   <div className="flex items-center justify-between gap-2 mb-2">
                     <h3 className="font-bold text-sm flex items-center gap-1.5">{SEVERITY[section.severity].icon}{section.title}</h3>
-                    {TAB_IDS.has(section.tab) && <button type="button" onClick={() => go(section.tab as Tab)} className="text-[11px] text-stone-600 hover:underline">فتح ←</button>}
+                    {TAB_IDS.has(section.tab) && <button type="button" onClick={() => go(section.tab as Tab)} className="text-[11px] text-stone-600 hover:underline">{T('فتح ←')}</button>}
                   </div>
                   <ul className="text-xs space-y-1 text-stone-700 list-disc ps-4">{section.lines.map((line, i) => <li key={i}>{line}</li>)}</ul>
                 </div>
@@ -1751,24 +1751,24 @@ function QualityPanel() {
   const patch = async (id: string, body: unknown) => {
     setBusy(true); setError('');
     try { await adminRequest(`/gaps/${encodeURIComponent(id)}`, send('PATCH', body)); setEditing(null); gaps.reload(); }
-    catch (e) { setError(e instanceof Error ? e.message : 'فشل الحفظ'); }
+    catch (e) { setError(e instanceof Error ? e.message : T('فشل الحفظ')); }
     finally { setBusy(false); }
   };
 
   return (
     <>
-      <Header title={T('الجودة والتعلّم')} subtitle="كل سؤال لم يجد إجابة أو رد قيّمه زائر سلبياً يتحول لفجوة. اكتب الإجابة مرة واحدة فتُضاف لقاعدة المعرفة ويستخدمها المساعد فوراً."
+      <Header title={T('الجودة والتعلّم')} subtitle={T('كل سؤال لم يجد إجابة أو رد قيّمه زائر سلبياً يتحول لفجوة. اكتب الإجابة مرة واحدة فتُضاف لقاعدة المعرفة ويستخدمها المساعد فوراً.')}
         actions={<button onClick={() => { gaps.reload(); feedback.reload(); }} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" />{T('تحديث')}</button>} />
       <div className="grid grid-cols-3 gap-3 mb-4">
-        <div className={card}><p className="text-xs text-stone-500">فجوات مفتوحة</p><p className="text-3xl font-bold text-orange-700">{gaps.data?.items.filter((g) => g.status === 'open').length ?? '…'}</p></div>
-        <div className={card}><p className="text-xs text-stone-500">نسبة الرضا</p><p className="text-3xl font-bold text-emerald-700">{rate === null ? '—' : `${rate}%`}</p></div>
-        <div className={card}><p className="text-xs text-stone-500">التقييمات</p><p className="text-lg font-bold mt-2"><span className="text-emerald-700">👍 {ups}</span> · <span className="text-red-700">👎 {downs}</span></p></div>
+        <div className={card}><p className="text-xs text-stone-500">{T('فجوات مفتوحة')}</p><p className="text-3xl font-bold text-orange-700">{gaps.data?.items.filter((g) => g.status === 'open').length ?? '…'}</p></div>
+        <div className={card}><p className="text-xs text-stone-500">{T('نسبة الرضا')}</p><p className="text-3xl font-bold text-emerald-700">{rate === null ? '—' : `${rate}%`}</p></div>
+        <div className={card}><p className="text-xs text-stone-500">{T('التقييمات')}</p><p className="text-lg font-bold mt-2"><span className="text-emerald-700">👍 {ups}</span> · <span className="text-red-700">👎 {downs}</span></p></div>
       </div>
       {error && <p role="alert" className="mb-3 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p>}
       <div className="grid xl:grid-cols-2 gap-4">
         <section className={card}>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="font-bold text-sm flex items-center gap-1.5"><Lightbulb className="w-4 h-4 text-amber-600" />فجوات المعرفة</h2>
+            <h2 className="font-bold text-sm flex items-center gap-1.5"><Lightbulb className="w-4 h-4 text-amber-600" />{T('فجوات المعرفة')}</h2>
             <div className="flex text-xs rounded-lg border border-stone-200 overflow-hidden">
               {(['open', 'all'] as const).map((v) => <button key={v} type="button" onClick={() => setView(v)} className={`px-2.5 py-1 ${view === v ? 'bg-stone-900 text-white' : ''}`}>{v === 'open' ? 'المفتوحة' : 'الكل'}</button>)}
             </div>
@@ -1783,14 +1783,14 @@ function QualityPanel() {
                   <span className="shrink-0 text-[11px] rounded-full bg-stone-100 px-2 py-0.5">×{g.count}</span>
                 </div>
                 <p className="text-[11px] text-stone-500 mt-1">
-                  {g.source === 'no_answer' ? 'لم يجد المساعد إجابة' : `تقييم سلبي${g.reason ? `: ${g.reason}` : ''}`} · آخر مرة {fmtDate(g.lastAt)}
+                  {g.source === 'no_answer' ? T('لم يجد المساعد إجابة') : `تقييم سلبي${g.reason ? `: ${g.reason}` : ''}`} · آخر مرة {fmtDate(g.lastAt)}
                   {g.status !== 'open' && <b className="ms-1">{g.status === 'resolved' ? '· تم الحل ✅' : '· متجاهلة'}</b>}
                 </p>
                 {g.lastAnswer && <p className="mt-1.5 text-[11px] text-stone-500 line-clamp-2 bg-stone-50 rounded-lg p-1.5">رد المساعد: {g.lastAnswer}</p>}
                 {editing === g.id ? (
                   <form className="mt-2 space-y-2" onSubmit={(e) => { e.preventDefault(); void patch(g.id, draft); }}>
-                    <input className={input} required value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} placeholder="عنوان المستند" aria-label="عنوان المستند" />
-                    <textarea className={input} required rows={4} value={draft.content} onChange={(e) => setDraft({ ...draft, content: e.target.value })} placeholder="الإجابة الصحيحة كما يجب أن يقولها المساعد" aria-label="الإجابة" />
+                    <input className={input} required value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} placeholder={T('عنوان المستند')} aria-label={T('عنوان المستند')} />
+                    <textarea className={input} required rows={4} value={draft.content} onChange={(e) => setDraft({ ...draft, content: e.target.value })} placeholder={T('الإجابة الصحيحة كما يجب أن يقولها المساعد')} aria-label={T('الإجابة')} />
                     <div className="flex gap-2">
                       <button disabled={busy} className={`${btn} bg-emerald-700 text-white`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}حفظ في قاعدة المعرفة</button>
                       <button type="button" onClick={() => setEditing(null)} className={`${btn} border border-stone-300`}>{T('إلغاء')}</button>
@@ -1798,20 +1798,20 @@ function QualityPanel() {
                   </form>
                 ) : g.status === 'open' ? (
                   <div className="mt-2 flex gap-2">
-                    <button type="button" onClick={() => { setEditing(g.id); setDraft({ title: g.question.slice(0, 120), content: '' }); }} className={`${btn} text-xs bg-stone-900 text-amber-100`}><BookOpen className="w-3.5 h-3.5" />أضف الإجابة</button>
-                    <button type="button" disabled={busy} onClick={() => void patch(g.id, { status: 'ignored' })} className={`${btn} text-xs border border-stone-300`}><EyeOff className="w-3.5 h-3.5" />تجاهل</button>
+                    <button type="button" onClick={() => { setEditing(g.id); setDraft({ title: g.question.slice(0, 120), content: '' }); }} className={`${btn} text-xs bg-stone-900 text-amber-100`}><BookOpen className="w-3.5 h-3.5" />{T('أضف الإجابة')}</button>
+                    <button type="button" disabled={busy} onClick={() => void patch(g.id, { status: 'ignored' })} className={`${btn} text-xs border border-stone-300`}><EyeOff className="w-3.5 h-3.5" />{T('تجاهل')}</button>
                   </div>
                 ) : g.status === 'ignored' ? (
-                  <button type="button" disabled={busy} onClick={() => void patch(g.id, { status: 'open' })} className="mt-2 text-[11px] text-stone-600 hover:underline">إعادة فتح</button>
+                  <button type="button" disabled={busy} onClick={() => void patch(g.id, { status: 'open' })} className="mt-2 text-[11px] text-stone-600 hover:underline">{T('إعادة فتح')}</button>
                 ) : null}
               </li>
             ))}
           </ul>
         </section>
         <section className={card}>
-          <h2 className="font-bold text-sm mb-3">آخر التقييمات</h2>
+          <h2 className="font-bold text-sm mb-3">{T('آخر التقييمات')}</h2>
           <Feedback error={feedback.error} loading={feedback.loading && !feedback.data} />
-          {feedback.data && !feedback.data.items.length && <p className="text-xs text-stone-400 py-4 text-center">لم يقيّم الزوار أي رد بعد.</p>}
+          {feedback.data && !feedback.data.items.length && <p className="text-xs text-stone-400 py-4 text-center">{T('لم يقيّم الزوار أي رد بعد.')}</p>}
           <ul className="space-y-2 max-h-[70vh] overflow-y-auto">
             {feedback.data?.items.map((f) => (
               <li key={`${f.conversationId}-${f.messageId}`} className={`rounded-xl border p-3 text-xs ${f.rating === 'down' ? 'border-red-200' : 'border-emerald-200'}`}>
@@ -1839,8 +1839,8 @@ interface MaintenanceSnapshot {
   remedies: { action: string; at: string }[];
 }
 const DOCTOR_REPO = (import.meta.env.VITE_GITHUB_REPO as string | undefined) || 'spculculat-oss/Sham-Perfume';
-const REMEDY_LABEL: Record<string, string> = { reset_provider_gate: 'تصفير حالة المزوّدين', refresh_model_list: 'تحديث قائمة الموديلات', clear_answer_cache: 'مسح ذاكرة الإجابات' };
-const FIX_RESULT: Record<string, string> = { merged: '⏳ تحت المراقبة', failed: '❌ ما اتطبقش', verified: '✅ شغال', reverted: '↩️ اترجع', unverified: '⚪ من غير تأكيد' };
+const REMEDY_LABEL: Record<string, string> = { reset_provider_gate: T('تصفير حالة المزوّدين'), refresh_model_list: T('تحديث قائمة الموديلات'), clear_answer_cache: T('مسح ذاكرة الإجابات') };
+const FIX_RESULT: Record<string, string> = { merged: T('⏳ تحت المراقبة'), failed: T('❌ ما اتطبقش'), verified: T('✅ شغال'), reverted: T('↩️ اترجع'), unverified: T('⚪ من غير تأكيد') };
 
 function DoctorPanel() {
   const { data, error, loading, reload } = useLoad<MaintenanceSnapshot>('/maintenance');

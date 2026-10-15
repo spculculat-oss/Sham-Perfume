@@ -83,7 +83,7 @@ export default function SupervisorPanel() {
                 </span>
                 {r ? <span className={`text-[11px] rounded-full px-2 py-0.5 ${STATUS[r.status].cls}`}>{STATUS[r.status].label}</span>
                   : <span className="text-[11px] rounded-full px-2 py-0.5 bg-stone-100 text-stone-600">{tool.id === 'admin_agent' ? 'يحتاج SHAM_ADMIN_TOKEN' : 'لم يُفحص بعد'}</span>}
-                {trend.length > 1 && <span className="flex items-end gap-0.5 h-6" title="آخر التقييمات">{trend.map((h) => <span key={h.at} className="w-1.5 bg-amber-400 rounded-sm" style={{ height: `${Math.max(8, h.score * 10)}%` }} />)}</span>}
+                {trend.length > 1 && <span className="flex items-end gap-0.5 h-6" title={T('آخر التقييمات')}>{trend.map((h) => <span key={h.at} className="w-1.5 bg-amber-400 rounded-sm" style={{ height: `${Math.max(8, h.score * 10)}%` }} />)}</span>}
               </button>
               {isOpen && r && (
                 <div className="mt-3 space-y-3 text-xs border-t border-stone-100 pt-3">
