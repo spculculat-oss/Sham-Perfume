@@ -96,8 +96,11 @@ test('isolated production function serves health and model diagnostics as JSON',
   assert.equal(response.status, 200);
   assert.match(response.headers.get('content-type'), /application\/json/);
   const data = await response.json();
-  assert.equal(data.models.length, 5);
+  // auto + the six Shaheen engines (gemini, deepseek, openai, claude, self_hosted, openrouter).
+  assert.equal(data.models.length, 7);
   assert.ok(data.models.every((model) => !model.hasApiKey));
+  assert.equal(data.enabled, true);
+  assert.equal(data.allowVisitorChoice, true);
 });
 
 test('isolated chat handler processes POST bodies and returns honest no-key errors', async () => {

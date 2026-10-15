@@ -1,47 +1,103 @@
 import type { SupportedLanguage } from '../types/i18n';
 import { ApiError, isStaticHosting } from '../utils/api';
-import { loc } from '../utils/localize';
-import { API_ERROR_NOTICE } from './StaticHostingNotice';
+import { loc, type LText } from '../utils/localize';
+import type { ShaheenEngine } from '../hooks/useShaheenModels';
 
-const NO_KEY = {
-  ar: 'شاهين غير متصل: لا يوجد مفتاح خدمة للمحرك المطلوب. أضف مفتاحاً صالحاً في إعدادات الخادم. لا تكتب المفتاح في المحادثة.',
-  en: 'Shahin is not connected: the requested provider has no API key. Configure a valid key on the server. Never paste keys into chat.',
+const NO_KEY: LText = {
+  ar: 'شاهين غير متصل الآن: لا يوجد محرك ذكاء اصطناعي مُفعّل على الخادم. على إدارة الموقع إضافة مفتاح خدمة صالح. لا تكتب أي مفتاح في المحادثة.',
+  en: 'Shahin is offline: no AI engine is configured on the server. The site administration needs to add a valid key. Never paste keys into chat.',
 };
-const TIMEOUT = {
-  ar: 'انتهت مهلة الاتصال بشاهين. لم يصل رد من الخدمة. أعد إرسال سؤالك للمحاولة مجدداً.',
-  en: 'Shahin’s request timed out without an answer. Send your question again to retry.',
+const ENGINE_NO_KEY: LText = {
+  ar: 'المحرك المختار غير مُفعّل الآن. اختر «تلقائي» ليستخدم شاهين أي محرك متاح.',
+  en: 'The selected engine is not available right now. Choose “Auto” so Shahin uses any available engine.',
 };
+const DISABLED: LText = {
+  ar: 'الخبير شاهين متوقف مؤقتاً من إدارة الموقع. جرّب لاحقاً، أو استخدم «مساعد شام» للطلبات والدعم.',
+  en: 'Master Shahin is temporarily turned off by the site administration. Try later, or use the Sham assistant for orders and support.',
+};
+const TIMEOUT: LText = {
+  ar: 'انتهت مهلة الرد قبل أن يكمل شاهين إجابته. أعد المحاولة، وإذا تكرر جرّب سؤالاً أقصر.',
+  en: 'Shahin’s answer timed out. Try again, and if it repeats, ask a shorter question.',
+};
+const UNAVAILABLE: LText = {
+  ar: 'محرك الذكاء الاصطناعي لم يُرجع رداً صالحاً الآن (قد تكون الخدمة مشغولة أو المفتاح يحتاج مراجعة). أعد المحاولة بعد قليل أو اختر «تلقائي».',
+  en: 'The AI engine did not return a valid answer (the service may be busy or its key needs checking). Retry shortly or choose “Auto”.',
+};
+const RATE: LText = {
+  ar: 'أرسلت رسائل كثيرة خلال دقيقة. انتظر قليلاً ثم أعد المحاولة.',
+  en: 'Too many messages in a minute. Wait a moment, then retry.',
+};
+const NETWORK: LText = {
+  ar: 'تعذّر الوصول إلى خادم شاهين. تأكد من اتصالك بالإنترنت ثم أعد المحاولة.',
+  en: 'Could not reach Shahin’s server. Check your internet connection and retry.',
+};
+const INVALID: LText = {
+  ar: 'تعذّر إرسال الرسالة بهذا الشكل. اختصر الرسالة أو امسح المحادثة ثم أعد المحاولة.',
+  en: 'The message could not be sent as is. Shorten it or clear the chat, then retry.',
+};
+const GENERIC: LText = {
+  ar: 'حدث خطأ غير متوقع في خدمة شاهين، ولم يُنشأ رد. أعد المحاولة بعد قليل.',
+  en: 'Shahin’s service hit an unexpected error and no answer was created. Please retry shortly.',
+};
+
+/** A precise, actionable message per failure (never a generic “server or news” text). */
 export function chatErrorText(language: SupportedLanguage, error: unknown) {
-  if (error instanceof ApiError && error.code === 'PROVIDER_NOT_CONFIGURED') return loc(language, NO_KEY);
-  if ((error instanceof ApiError && error.status === 504) || (error instanceof DOMException && error.name === 'TimeoutError')) {
-    return loc(language, TIMEOUT);
+  if (error instanceof ApiError) {
+    if (error.code === 'SHAHEEN_DISABLED') return loc(language, DISABLED);
+    if (error.code === 'PROVIDER_NOT_CONFIGURED') return loc(language, NO_KEY);
+    if (error.code === 'PROVIDER_UNAVAILABLE') return loc(language, UNAVAILABLE);
+    if (error.status === 429) return loc(language, RATE);
+    if (error.status === 504 || error.code === 'PROVIDER_TIMEOUT') return loc(language, TIMEOUT);
+    if (error.status === 400) return loc(language, INVALID);
+    return loc(language, GENERIC);
   }
-  return loc(language, API_ERROR_NOTICE);
-}
-export function ShaheenServiceStatus({ language, models, failed }: {
-  language: SupportedLanguage; models: { id: string; hasApiKey: boolean }[] | null; failed: boolean;
-}) {
-  if (isStaticHosting || (models?.some((model) => model.hasApiKey) && !failed)) return null;
-  const text = failed ? loc(language, API_ERROR_NOTICE) : models ? loc(language, NO_KEY) : loc(language, {
-    ar: 'جارٍ التحقق من إعداد خدمة شاهين…', en: 'Checking Shahin’s service configuration…',
-  });
-  return <p role="status" className="shrink-0 rounded-xl border border-amber-300 bg-amber-50 p-3 text-xs leading-relaxed text-amber-950">{text}</p>;
+  if (error instanceof DOMException && error.name === 'TimeoutError') return loc(language, TIMEOUT);
+  if (error instanceof TypeError) return loc(language, NETWORK); // fetch() network / CORS failure
+  return loc(language, GENERIC);
 }
 
-export function ShaheenProviderMatrix({ language, models }: {
-  language: SupportedLanguage; models: { id: string; hasApiKey: boolean }[] | null;
+/** Banner above the chat. Hidden when everything is fine (or on a static build with its own notice). */
+export function ShaheenServiceStatus({ language, models, failed, enabled = true, selected = 'auto' }: {
+  language: SupportedLanguage; models: { id: string; hasApiKey: boolean }[] | null; failed: boolean;
+  enabled?: boolean; selected?: string;
 }) {
-  const labels = { gemini: 'Google Gemini', deepseek: 'DeepSeek', openai: 'OpenAI', claude: 'Anthropic Claude' };
+  if (isStaticHosting || !models && !failed) return null;
+  let text: string | null = null;
+  if (failed) text = loc(language, NETWORK);
+  else if (!enabled) text = loc(language, DISABLED);
+  else if (!models?.some((m) => m.hasApiKey)) text = loc(language, NO_KEY);
+  else if (selected !== 'auto' && !models.find((m) => m.id === selected)?.hasApiKey) text = loc(language, ENGINE_NO_KEY);
+  if (!text) return null;
+  return <p role="status" className="shrink-0 border-b border-amber-300 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-950">{text}</p>;
+}
+
+const ENGINE_NAMES: Record<string, string> = {
+  gemini: 'Google Gemini', deepseek: 'DeepSeek', openai: 'OpenAI', claude: 'Anthropic Claude',
+  self_hosted: 'Sham Open Model', openrouter: 'OpenRouter',
+};
+export const engineName = (id: string, fallback?: string) => ENGINE_NAMES[id] || fallback || id;
+
+/** The engines the server actually allows, with their real state (no hard-coded list, no fake “connected”). */
+export function ShaheenProviderMatrix({ language, models }: { language: SupportedLanguage; models: ShaheenEngine[] | null }) {
+  const list = (models || []).filter((m) => m.id !== 'auto');
+  if (!models) {
+    return <p className="text-xs text-stone-400">{loc(language, { ar: 'جارٍ التحقق من المحركات…', en: 'Checking engines…' })}</p>;
+  }
   return <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-    {Object.entries(labels).map(([id, name]) => {
-      const configured = !isStaticHosting && models?.find((model) => model.id === id)?.hasApiKey;
-      return <div key={id} className="rounded-xl border border-stone-700 bg-stone-950 p-2">
-        <div className="font-bold text-stone-200">{name}</div>
+    {list.map((m) => {
+      const configured = !isStaticHosting && m.hasApiKey;
+      return <div key={m.id} className="rounded-xl border border-stone-700 bg-stone-950 p-2">
+        <div className="flex items-center gap-1.5 font-bold text-stone-200">
+          <span className={`h-2 w-2 rounded-full ${configured ? 'bg-emerald-400' : 'bg-stone-600'}`} />
+          {engineName(m.id, m.name)}
+          {m.model && <span className="font-mono text-[10px] font-normal text-stone-500" dir="ltr">{m.model}</span>}
+        </div>
         <div className={configured ? 'text-emerald-300' : 'text-stone-400'}>{loc(language, configured
-          ? { ar: 'المفتاح مهيأ — التوفر الفعلي يُختبر عند الإرسال', en: 'Key configured — actual availability is checked when sending' }
-          : { ar: 'غير مهيأ أو لم يتم التحقق بعد', en: 'Not configured or not checked yet' })}</div>
+          ? { ar: 'مُفعّل على الخادم — التوفر الفعلي يُختبر عند الإرسال', en: 'Enabled on the server — real availability is checked when sending' }
+          : { ar: 'غير مُفعّل (لا يوجد مفتاح على الخادم)', en: 'Not enabled (no key on the server)' })}</div>
       </div>;
     })}
+    {!list.length && <p className="text-stone-400">{loc(language, { ar: 'لا توجد محركات مسموح بها في الإعدادات.', en: 'No engines are allowed in the settings.' })}</p>}
   </div>;
 }
 

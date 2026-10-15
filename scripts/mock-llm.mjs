@@ -50,6 +50,18 @@ function answer(model, messages) {
     const key = /formulation/.test(lens) ? 'perfumery' : /cost/.test(lens) ? 'cost' : /safety/.test(lens) ? 'safety' : 'goal';
     return byLens[key];
   }
+  // «الخبير شاهين» (perfume-design chat): Markdown + one transferable formula block.
+  if (/أنت شاهين/.test(system)) {
+    if (/Health check/.test(system)) return 'OK';
+    const formula = { title: 'عود وورد — مقترح تجريبي', author: 'شاهين — مقترح تجريبي', concentrationPercent: 20, concentrationType: 'edp',
+      bottleVolumeMl: 50, alcoholPercentage: 96, waterPercent: 0, fixativePercent: 0, macerationDays: 30, summary: 'مقترح يحتاج مراجعة السلامة',
+      pyramidNotes: [
+        { id: 'note-1', nameAr: 'برغموت', nameEn: 'Bergamot', category: 'top', percentageOfOil: 20 },
+        { id: 'note-2', nameAr: 'ورد طائفي', nameEn: 'Taif rose', category: 'heart', percentageOfOil: 35 },
+        { id: 'note-3', nameAr: 'عود', nameEn: 'Oud', category: 'base', percentageOfOil: 45 },
+      ] };
+    return `### مقترح مبدئي (نموذج تجريبي للتطوير — ليس رداً حقيقياً)\nسؤالك: «${lastUser(messages).slice(0, 80)}»\n\n**الحجم:** 50 مل بتركيز **20%** (أو دي بارفان).\n\n| الطبقة | المادة | النسبة من الزيت |\n|---|---|---|\n| علوية | برغموت | 20% |\n| قلب | ورد طائفي | 35% |\n| قاعدة | عود | 45% |\n\n- زيت عطري: 10 مل، وكحول 96%: 40 مل.\n- التعتيق: *30 يوماً* في مكان بارد ومظلم.\n\n> المقترح تجريبي ويحتاج مراجعة السلامة واختبار حساسية.\n\n\`\`\`sham-formula\n${JSON.stringify(formula)}\n\`\`\``;
+  }
   // Normal single-engine answer: rephrase Sham's grounded draft.
   const draft = (system.match(/SAFE DRAFT[^\n]*\n([\s\S]*)$/) || [, ''])[1].trim();
   return draft || (ar ? 'تمام، أقدر أساعدك في خدمات شام.' : 'Sure, I can help with Sham services.');

@@ -64,7 +64,7 @@ test('model diagnostics report missing API keys truthfully', async () => {
   const response = await fetch(`${baseUrl}/api/models`);
   assert.equal(response.status, 200);
   const data = await response.json();
-  assert.equal(data.models.length, 5);
+  assert.equal(data.models.length, 7);
   assert.ok(data.models.every((model: { hasApiKey: boolean }) => model.hasApiKey === false));
 });
 

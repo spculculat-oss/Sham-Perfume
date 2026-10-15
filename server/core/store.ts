@@ -94,9 +94,10 @@ export function createStore(env: Env = process.env): Store {
     return new FirestoreStore({ projectId, clientEmail, privateKey, prefix: env.SHAM_FIRESTORE_PREFIX?.trim() || 'sham_core_' });
   }
   if (requested === 'memory') return new MemoryStore();
-  if (requested === 'file' || (!requested && !env.VERCEL)) {
+  // Serverless platforms (Vercel, Tencent EdgeOne) have no durable disk.
+  if (requested === 'file' || (!requested && !env.VERCEL && !env.SHAM_SERVERLESS)) {
     return new FileStore(resolve(env.SHAM_DATA_FILE?.trim() || '.data/sham-core.json'));
   }
-  // Vercel without explicit storage: functions have no durable disk. Admin shows this warning.
+  // Serverless without explicit storage: no durable disk. Admin shows this warning.
   return new MemoryStore();
 }

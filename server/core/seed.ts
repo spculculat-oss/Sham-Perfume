@@ -3,6 +3,7 @@
  * Commercial services start enabled but the product catalog starts EMPTY on purpose:
  * the assistant must never quote prices or stock the business has not entered.
  */
+import { withShaheenDefaults } from '../config/shaheen';
 import { defaultCouncil } from './council';
 import type { CoreSettings, KnowledgeDoc, Product, ServiceDef } from './types';
 
@@ -136,6 +137,7 @@ export function defaultSettings(): CoreSettings & { id: string } {
     enginePolicy: ['self_hosted', 'gemini', 'openai', 'claude', 'deepseek', 'openrouter', 'sham_local'],
     temperature: 0.3,
     council: defaultCouncil(),
+    shaheen: withShaheenDefaults(undefined),
     currency: 'EGP',
     handoffContact: '',
     businessHours: '',
