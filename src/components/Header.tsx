@@ -95,22 +95,22 @@ export const Header: React.FC<HeaderProps> = ({
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 px-4 sm:px-8 py-2.5 no-print shadow-xs">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 px-3 sm:px-8 py-2.5 no-print shadow-xs">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
         
         {/* Zone 1: Brand wordmark: صمم عطرك مع شام */}
-        <div className="flex items-center gap-3 shrink-0">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-stone-900 to-amber-950 text-amber-400 flex items-center justify-center font-serif-luxury font-bold text-lg shadow-md border border-amber-600/30">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0 sm:shrink-0">
+          <div className="w-9 h-9 shrink-0 rounded-xl bg-gradient-to-br from-stone-900 to-amber-950 text-amber-400 flex items-center justify-center font-serif-luxury font-bold text-lg shadow-md border border-amber-600/30">
             شام
           </div>
           <button 
             onClick={() => setActiveTab('home')}
-            className="text-right flex flex-col items-start cursor-pointer group"
+            className="text-right flex flex-col items-start cursor-pointer group min-w-0"
           >
-            <span className="text-base sm:text-lg font-extrabold tracking-tight text-stone-950 group-hover:text-amber-800 transition-colors font-serif-luxury">
+            <span className="max-w-full truncate text-[15px] sm:text-lg font-extrabold tracking-tight text-stone-950 group-hover:text-amber-800 transition-colors font-serif-luxury">
               {t('brand_name', currentLang)}
             </span>
-            <span className="text-[10px] text-amber-700 font-medium hidden sm:inline">
+            <span className="text-[10px] text-amber-700 font-medium hidden sm:inline whitespace-nowrap">
               {t('brand_subtitle', currentLang)}
             </span>
           </button>
@@ -119,58 +119,29 @@ export const Header: React.FC<HeaderProps> = ({
           {activeTab !== 'home' && (
             <button
               onClick={() => setActiveTab('home')}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-800 hover:bg-amber-900 text-white text-xs font-bold shadow-xs transition-all cursor-pointer mr-1 animate-in fade-in"
+              className="flex shrink-0 items-center gap-1.5 p-2 sm:px-3 sm:py-1.5 rounded-xl bg-amber-800 hover:bg-amber-900 text-white text-xs font-bold shadow-xs transition-all cursor-pointer mr-1 animate-in fade-in"
               title={L('home_tooltip')}
+              aria-label={L('home_btn')}
             >
               <Home className="w-3.5 h-3.5 text-amber-300" />
-              <span className="inline text-[11px]">{L('home_btn')}</span>
+              <span className="hidden sm:inline text-[11px]">{L('home_btn')}</span>
             </button>
           )}
         </div>
 
-        {/* Zone 2: Navigation links */}
-        <nav className="hidden xl:flex items-center gap-2 xl:gap-2.5 text-xs font-medium text-stone-600">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`whitespace-nowrap shrink-0 transition-all py-1.5 px-2 rounded-lg relative flex items-center gap-1.5 cursor-pointer ${
-                activeTab === item.id
-                  ? 'text-stone-950 font-bold bg-stone-100 shadow-2xs border border-stone-200/80'
-                  : 'hover:text-stone-900 hover:bg-stone-50'
-              }`}
-            >
-              {item.isHome && (
-                <Home className="w-3.5 h-3.5 text-amber-700" />
-              )}
-              {item.id === 'perfume_news' && (
-                <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30">
-                  NEW
-                </span>
-              )}
-              {item.id === 'master_ai' && (
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              )}
-              {item.id === 'maceration_simulator' && (
-                <span className="text-[10px] text-amber-500 font-bold">⏳</span>
-              )}
-              {item.id === 'world_perfumes' && (
-                <span className="text-[10px] text-amber-600 font-bold">★</span>
-              )}
-              <span>{item.label}</span>
-            </button>
-          ))}
-        </nav>
+        {/* Zone 2: navigation lives in the scrollable row below at every width — 12 sections never fit inline. */}
 
         {/* Zone 3: Global Controls (Language, Environment/Homeland, User Auth, Privacy, Print) */}
-        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
           
-          {/* 1. Language Switcher (10 World Languages) */}
-          <LanguageSelector
-            currentLang={currentLang}
-            onSelectLanguage={onSelectLanguage}
-            onAutoDetectLanguage={onAutoDetectLanguage}
-          />
+          {/* 1. Language Switcher (10 World Languages) — on phones it sits in the row below to free space */}
+          <div className="hidden sm:block">
+            <LanguageSelector
+              currentLang={currentLang}
+              onSelectLanguage={onSelectLanguage}
+              onAutoDetectLanguage={onAutoDetectLanguage}
+            />
+          </div>
 
           {/* 2. Country & Detailed Address Selector */}
           <button
@@ -181,7 +152,7 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="text-base leading-none">
               {currentEnvironment.countryFlag || '🌍'}
             </span>
-            <span className="hidden md:inline truncate max-w-[120px] font-bold">
+            <span className="hidden lg:inline truncate max-w-[120px] font-bold">
               {pickArEn(currentLang, currentEnvironment.countryNameAr, currentEnvironment.countryNameEn).split('(')[0].trim()}
             </span>
             <span className="px-1.5 py-0.5 rounded bg-amber-200/80 text-[10px] font-mono font-bold text-amber-950">
@@ -269,10 +240,12 @@ export const Header: React.FC<HeaderProps> = ({
           ) : (
             <button
               onClick={onOpenAuthModal}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-amber-800 hover:bg-amber-900 rounded-xl transition-all shadow-sm cursor-pointer shrink-0"
+              className="flex items-center gap-1.5 p-2 sm:px-3 sm:py-1.5 text-xs font-semibold text-white bg-amber-800 hover:bg-amber-900 rounded-xl transition-all shadow-sm cursor-pointer shrink-0"
+              aria-label={L('login')}
+              title={L('login')}
             >
               <User className="w-3.5 h-3.5 text-amber-200" />
-              <span>{L('login')}</span>
+              <span className="hidden sm:inline">{L('login')}</span>
             </button>
           )}
 
@@ -290,9 +263,9 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Mobile & Tablet Secondary Navigation Strip */}
-      <div className="xl:hidden flex items-center gap-2 overflow-x-auto pt-2 mt-2 border-t border-stone-100 text-xs no-scrollbar">
-        {/* Quick Language Switcher on Mobile/Tablet */}
-        <div className="shrink-0">
+      <div className="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto pt-2 mt-2 border-t border-stone-100 text-xs no-scrollbar">
+        {/* Quick Language Switcher on phones (the header row has the full one from sm up) */}
+        <div className="shrink-0 sm:hidden">
           <LanguageSelector
             currentLang={currentLang}
             onSelectLanguage={onSelectLanguage}

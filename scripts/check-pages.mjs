@@ -19,4 +19,14 @@ for (const asset of assets) {
   await access(new URL(asset.slice(base.length), output));
 }
 
-console.log(`Pages build verified: ${assets.length} entry assets, base ${base}, 404 fallback and .nojekyll.`);
+// When the static build is wired to a deployed API, the URL must actually be in the bundle.
+const apiBase = process.env.VITE_API_BASE_URL?.trim();
+let apiNote = 'no API server (server features disabled)';
+if (apiBase && /^https:\/\//.test(apiBase)) {
+  const origin = new URL(apiBase).origin;
+  const js = await Promise.all(assets.filter((a) => a.endsWith('.js')).map((a) => readFile(new URL(a.slice(base.length), output), 'utf8')));
+  assert.ok(js.some((code) => code.includes(origin)), `VITE_API_BASE_URL (${origin}) is missing from the Pages bundle.`);
+  apiNote = `API ${origin}`;
+}
+
+console.log(`Pages build verified: ${assets.length} entry assets, base ${base}, 404 fallback and .nojekyll, ${apiNote}.`);

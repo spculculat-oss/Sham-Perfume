@@ -37,7 +37,9 @@ import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../utils/localizedContent';
 import { LText, makeT, fmt, loc, LOCALE_MAP } from '../utils/localize';
 import { isStaticHosting, requestApi, type ChatResponse } from '../utils/api';
-import { StaticHostingNotice, API_ERROR_NOTICE } from './StaticHostingNotice';
+import { StaticHostingNotice } from './StaticHostingNotice';
+import { chatErrorText } from './ShaheenServiceStatus';
+import { chatHistory } from '../utils/chatStore';
 
 interface PerfumerMasterLabViewProps {
   currentLang?: SupportedLanguage;
@@ -431,7 +433,10 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
         body: JSON.stringify({
           message: text,
           model: activeModelChoice,
-          conversationHistory: messages.map((m) => ({ role: m.role, text: m.text })),
+          // Same rules as the floating chat: the site language, and a bounded history without the
+          // welcome/error bubbles (the server rejects >24 turns or >16k chars, which broke long chats).
+          language: currentLang,
+          conversationHistory: chatHistory(messages),
         }),
       });
       if (typeof data.reply !== 'string' || !data.reply.trim()) {
@@ -457,7 +462,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
         {
           id: 'err-' + Date.now(),
           role: 'assistant',
-          text: loc(currentLang, API_ERROR_NOTICE),
+          text: chatErrorText(currentLang, err),
           timestamp: new Date().toLocaleTimeString(LOCALE_MAP[currentLang], { hour: '2-digit', minute: '2-digit' }),
           aiEngine: {
             id: 'ensemble',

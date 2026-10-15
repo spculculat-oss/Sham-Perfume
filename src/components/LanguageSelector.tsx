@@ -186,7 +186,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
             <Globe className="w-3.5 h-3.5 text-amber-800" />
           </div>
           
-          <span className="font-extrabold text-[11px] text-amber-900 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200/60 hidden md:inline">
+          <span className="font-extrabold text-[11px] text-amber-900 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200/60 hidden lg:inline">
             {L('trigger_label')}
           </span>
 
@@ -194,7 +194,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
             {activeConfig.flag}
           </span>
 
-          <span className="font-bold text-stone-900 truncate max-w-[85px] sm:max-w-[100px]">
+          <span className="font-bold text-stone-900 truncate max-w-[85px] sm:max-w-[100px] hidden sm:inline">
             {activeConfig.nativeName}
           </span>
         </div>
