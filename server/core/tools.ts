@@ -36,7 +36,7 @@ export const tools = {
         Object.keys(h.matched).forEach((t) => covered.add(t));
         return true;
       }).slice(0, 3);
-      const docs = await repo.knowledge();
+      const docs = await repo.allKnowledge();
       const services = await repo.services();
       const passages = hits.map((h) => {
         const full = h.doc.kind === 'knowledge' ? docs.find((d) => d.id === h.doc.id)?.content || h.doc.text

@@ -35,6 +35,7 @@ import { LText, makeT, fmt, loc, LOCALE_MAP } from '../utils/localize';
 import { ApiError, isStaticHosting, requestApi } from '../utils/api';
 import { isNewsArticle, mergeNewsArticles, restoreNewsCache, resolveNewsImage } from '../utils/newsCache';
 import { StaticHostingNotice, API_ERROR_NOTICE } from './StaticHostingNotice';
+import { ShaheenLiveNews } from './ShaheenLiveNews';
 import masterShaheenImg from '../assets/images/master_perfumer_compounding_1791693212967.jpg';
 
 interface WorldPerfumeNewsProps {
@@ -456,6 +457,9 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
           </div>
         )}
       </div>
+
+      {/* REAL NEWS: collected from the web by Shaheen every 12 hours (scripts/shaheen-news) */}
+      <ShaheenLiveNews currentLang={currentLang} />
 
       {/* 2. FEATURED SPOTLIGHT ARTICLE WITH FULL PHOTO BANNER */}
       {featuredHotNews && (

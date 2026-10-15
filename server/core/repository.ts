@@ -3,6 +3,7 @@
  * Prices, stock and order totals are always computed on the server from the catalog.
  */
 import { randomBytes, randomUUID } from 'node:crypto';
+import { trainedKnowledge } from './liveData';
 import type { Store } from './store';
 import type {
   Conversation, CoreSettings, KnowledgeDoc, KnowledgeGap, OrderItem, Product, PublicRequestView, RequestStatus,
@@ -229,8 +230,14 @@ export class Repository {
   }
 
   /** Unified retrieval index over knowledge, enabled services and active products. */
+  /** Admin documents plus the read-only lessons «الخبير شاهين» writes for the assistant every 12 hours. */
+  async allKnowledge(): Promise<KnowledgeDoc[]> {
+    const [own, trained] = await Promise.all([this.knowledge(), trainedKnowledge(this.env).catch(() => [] as KnowledgeDoc[])]);
+    const ids = new Set(own.map((d) => d.id));
+    return [...own, ...trained.filter((d) => !ids.has(d.id))];
+  }
   async searchIndex(): Promise<Bm25Index> {
-    const [docs, services, products] = await Promise.all([this.knowledge(), this.services(), this.products()]);
+    const [docs, services, products] = await Promise.all([this.allKnowledge(), this.services(), this.products()]);
     const key = JSON.stringify([docs.map((d) => d.updatedAt + d.id), services.map((s) => s.updatedAt + s.id), products.map((p) => p.updatedAt + p.id)]);
     if (this.index?.key === key) return this.index.bm25;
     const indexed: IndexedDoc[] = [
