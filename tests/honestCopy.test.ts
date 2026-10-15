@@ -32,3 +32,12 @@ test('site copy does not advertise fake multi-vendor AI claims', () => {
   }
   assert.deepEqual(offenders, []);
 });
+
+// Visitors meet «الخبير شاهين» only: vendor/product names may appear in the admin panel, never in
+// visitor-facing code (engine ids in lowercase are internal identifiers and are allowed).
+test('visitor-facing code never shows AI vendor or product names', () => {
+  const VENDOR = /\b(Gemini|DeepSeek|ChatGPT|GPT-\d|Claude|OpenAI|Anthropic|OpenRouter|Llama|Qwen|Mistral)\b|جيميني|جيمناي|ديب ?سيك|شات ?جي ?بي ?تي|كلود/;
+  const offenders = [...files('src').filter((file) => !file.replace(/\\/g, '/').startsWith('src/admin/')), 'index.html']
+    .filter((file) => VENDOR.test(readFileSync(file, 'utf8')));
+  assert.deepEqual(offenders, []);
+});

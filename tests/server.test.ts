@@ -64,8 +64,10 @@ test('model diagnostics report missing API keys truthfully', async () => {
   const response = await fetch(`${baseUrl}/api/models`);
   assert.equal(response.status, 200);
   const data = await response.json();
-  assert.equal(data.models.length, 7);
+  // Visitors get Shaheen's modes only — no engine ids, vendor or model names.
+  assert.deepEqual(data.models.map((model: { id: string }) => model.id), ['auto', 'fast', 'deep', 'council']);
   assert.ok(data.models.every((model: { hasApiKey: boolean }) => model.hasApiKey === false));
+  assert.doesNotMatch(JSON.stringify(data), /gemini|openai|gpt|claude|anthropic|deepseek|openrouter|qwen/i);
 });
 
 test('news fetch and refresh without a key fail without fabricating articles', async () => {

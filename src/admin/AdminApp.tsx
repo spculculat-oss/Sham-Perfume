@@ -676,7 +676,7 @@ function ShaheenPanel() {
           <div className={`${card} space-y-3`}>
             <div className="flex flex-wrap items-center gap-3">
               <label className="inline-flex items-center gap-1.5 text-sm font-bold"><input type="checkbox" checked={form.enabled} onChange={(e) => set({ enabled: e.target.checked })} />شاهين مفعّل للزوار</label>
-              <label className="inline-flex items-center gap-1.5 text-xs font-semibold"><input type="checkbox" checked={form.allowVisitorChoice} onChange={(e) => set({ allowVisitorChoice: e.target.checked })} />السماح للزائر باختيار محرك معيّن</label>
+              <label className="inline-flex items-center gap-1.5 text-xs font-semibold"><input type="checkbox" checked={form.allowVisitorChoice} onChange={(e) => set({ allowVisitorChoice: e.target.checked })} />السماح للزائر باختيار وضع الرد (سريع / معمّق / مجلس الخبراء) — أسماء المحركات لا تظهر للزوار أبداً</label>
             </div>
             <p className={`text-xs font-semibold ${ready.length ? 'text-emerald-700' : 'text-red-700'}`}>
               {ready.length ? `جاهز: ${ready.length} محرك مهيأ ومسموح (${ready.map((id) => ENGINE_LABEL[id]).join('، ')}).` : 'غير جاهز: مفيش ولا محرك مسموح ومهيأ — الزوار هيشوفوا «شاهين غير متصل».'}

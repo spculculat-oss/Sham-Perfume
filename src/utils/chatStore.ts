@@ -3,7 +3,8 @@ import { isStaticHosting, requestApi, type ChatResponse } from './api';
 import { CHAT_STORAGE_KEY, clearChatSession, DEFAULT_WELCOME_MESSAGE, isChatMessage,
   loadStoredChatSession, saveChatSession, type ChatMessage, type ShaheenProvider } from './chatStorage';
 
-export type ShaheenModelChoice = 'auto' | ShaheenProvider;
+/** Visitor-facing response modes (engine ids are still accepted by the API but never shown). */
+export type ShaheenModelChoice = 'auto' | 'fast' | 'deep' | 'council' | ShaheenProvider;
 const TURN_LIMIT = 4000;
 
 /**
@@ -127,7 +128,7 @@ export function createChatStore(request: typeof requestApi = requestApi) {
         });
         if (generation !== token) return false;
         const message: ChatMessage = { id: id('bot'), role: 'assistant', text: data?.reply, timestamp: timestamp(),
-          aiEngine: data?.engine, perspectives: data?.perspectives, activePerspectiveTab: 'consensus' };
+          aiEngine: data?.engine };
         if (!message.text?.trim() || !isChatMessage(message)) throw new Error('Invalid chat response');
         publish({ ...getSnapshot(), messages: [...getSnapshot().messages, message], isLoading: false });
       } catch (error) {

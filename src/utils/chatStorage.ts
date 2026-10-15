@@ -19,7 +19,8 @@ export interface ChatMessage {
     id: string;
     name: string;
     badge: string;
-    provider: ShaheenProvider | 'ensemble';
+    /** 'shaheen' for current replies (visitors never get engine names); older saved chats may hold an engine id. */
+    provider: ShaheenProvider | 'ensemble' | 'shaheen';
     model?: string;
   };
   perspectives?: ModelPerspective[];
@@ -52,7 +53,7 @@ export const DEFAULT_WELCOME_MESSAGE: ChatMessage = {
 };
 
 export const CHAT_STORAGE_KEY = 'miyaar_perfumer_chat_session';
-const PROVIDERS = ['gemini', 'deepseek', 'openai', 'claude', 'self_hosted', 'openrouter', 'ensemble'];
+const PROVIDERS = ['gemini', 'deepseek', 'openai', 'claude', 'self_hosted', 'openrouter', 'ensemble', 'shaheen'];
 
 export function isChatMessage(value: unknown): value is ChatMessage {
   if (!value || typeof value !== 'object') return false;

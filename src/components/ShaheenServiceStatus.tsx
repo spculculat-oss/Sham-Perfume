@@ -2,14 +2,35 @@ import type { SupportedLanguage } from '../types/i18n';
 import { ApiError, isStaticHosting } from '../utils/api';
 import { loc, type LText } from '../utils/localize';
 import type { ShaheenEngine } from '../hooks/useShaheenModels';
+import { visibleEngines } from './shaheenEngines';
 
 const NO_KEY: LText = {
-  ar: 'شاهين غير متصل الآن: لا يوجد محرك ذكاء اصطناعي مُفعّل على الخادم. على إدارة الموقع إضافة مفتاح خدمة صالح. لا تكتب أي مفتاح في المحادثة.',
-  en: 'Shahin is offline: no AI engine is configured on the server. The site administration needs to add a valid key. Never paste keys into chat.',
+  ar: 'الخبير شاهين غير متاح الآن. جرّب بعد قليل، أو استخدم «مساعد شام» للطلبات والدعم. لا تكتب أي بيانات سرية في المحادثة.',
+  en: 'Master Shahin is not available right now. Try again shortly, or use the Sham assistant for orders and support. Never share secrets in chat.',
+  fr: 'Maître Shahin est indisponible pour le moment. Réessayez bientôt ou utilisez l’assistant Sham.',
+  es: 'El Maestro Shahin no está disponible ahora. Inténtalo en breve o usa el asistente de Sham.',
+  it: 'Il Maestro Shahin non è disponibile ora. Riprova tra poco o usa l’assistente Sham.',
+  de: 'Meister Shahin ist gerade nicht verfügbar. Versuchen Sie es gleich erneut oder nutzen Sie den Sham-Assistenten.',
+  ru: 'Мастер Шахин сейчас недоступен. Попробуйте позже или воспользуйтесь помощником Sham.',
+  zh: 'Shahin 大师暂时无法使用。请稍后再试，或使用 Sham 助手。',
+  tr: 'Usta Shahin şu anda kullanılamıyor. Biraz sonra tekrar deneyin veya Sham asistanını kullanın.',
+  fa: 'استاد شاهین اکنون در دسترس نیست. کمی بعد دوباره امتحان کنید یا از دستیار شام استفاده کنید.',
 };
 const ENGINE_NO_KEY: LText = {
-  ar: 'المحرك المختار غير مُفعّل الآن. اختر «تلقائي» ليستخدم شاهين أي محرك متاح.',
-  en: 'The selected engine is not available right now. Choose “Auto” so Shahin uses any available engine.',
+  ar: 'هذا الوضع غير متاح الآن. اختر «تلقائي» ليجيبك شاهين بأي طريقة متاحة.',
+  en: 'This mode is not available right now. Choose “Auto” and Shahin will answer any way it can.',
+  fr: 'Ce mode n’est pas disponible. Choisissez « Auto ».', es: 'Este modo no está disponible ahora. Elige «Automático».',
+  it: 'Questa modalità non è disponibile ora. Scegli «Automatico».', de: 'Dieser Modus ist gerade nicht verfügbar. Wählen Sie „Automatisch“.',
+  ru: 'Этот режим сейчас недоступен. Выберите «Авто».', zh: '该模式暂不可用，请选择“自动”。',
+  tr: 'Bu mod şu anda kullanılamıyor. “Otomatik”i seçin.', fa: 'این حالت اکنون در دسترس نیست. «خودکار» را انتخاب کنید.',
+};
+const COUNCIL_OFF: LText = {
+  ar: 'مجلس الخبراء غير متاح الآن. جرّب «تحليل معمّق» للحصول على إجابة مفصّلة.',
+  en: 'The expert council is not available right now. Try “In-depth” for a detailed answer.',
+  fr: 'Le conseil d’experts est indisponible. Essayez « Analyse approfondie ».', es: 'El consejo de expertos no está disponible. Prueba «Análisis a fondo».',
+  it: 'Il consiglio di esperti non è disponibile. Prova «Analisi approfondita».', de: 'Der Expertenrat ist nicht verfügbar. Versuchen Sie „Tiefenanalyse“.',
+  ru: 'Совет экспертов недоступен. Попробуйте «Глубокий анализ».', zh: '专家委员会暂不可用，请尝试“深度分析”。',
+  tr: 'Uzmanlar kurulu şu anda kullanılamıyor. “Derin analiz”i deneyin.', fa: 'شورای خبرگان در دسترس نیست. «تحلیل عمیق» را امتحان کنید.',
 };
 const DISABLED: LText = {
   ar: 'الخبير شاهين متوقف مؤقتاً من إدارة الموقع. جرّب لاحقاً، أو استخدم «مساعد شام» للطلبات والدعم.',
@@ -20,8 +41,8 @@ const TIMEOUT: LText = {
   en: 'Shahin’s answer timed out. Try again, and if it repeats, ask a shorter question.',
 };
 const UNAVAILABLE: LText = {
-  ar: 'محرك الذكاء الاصطناعي لم يُرجع رداً صالحاً الآن (قد تكون الخدمة مشغولة أو المفتاح يحتاج مراجعة). أعد المحاولة بعد قليل أو اختر «تلقائي».',
-  en: 'The AI engine did not return a valid answer (the service may be busy or its key needs checking). Retry shortly or choose “Auto”.',
+  ar: 'لم يتمكن شاهين من إكمال الرد الآن (الخدمة مشغولة). أعد المحاولة بعد قليل أو اختر «تلقائي».',
+  en: 'Shahin could not finish the answer right now (the service is busy). Retry shortly or choose “Auto”.',
 };
 const RATE: LText = {
   ar: 'أرسلت رسائل كثيرة خلال دقيقة. انتظر قليلاً ثم أعد المحاولة.',
@@ -46,6 +67,7 @@ export function chatErrorText(language: SupportedLanguage, error: unknown) {
     if (error.code === 'SHAHEEN_DISABLED') return loc(language, DISABLED);
     if (error.code === 'PROVIDER_NOT_CONFIGURED') return loc(language, NO_KEY);
     if (error.code === 'PROVIDER_UNAVAILABLE') return loc(language, UNAVAILABLE);
+    if (error.code === 'COUNCIL_UNAVAILABLE') return loc(language, COUNCIL_OFF);
     if (error.status === 429) return loc(language, RATE);
     if (error.status === 504 || error.code === 'PROVIDER_TIMEOUT') return loc(language, TIMEOUT);
     if (error.status === 400) return loc(language, INVALID);
@@ -71,33 +93,26 @@ export function ShaheenServiceStatus({ language, models, failed, enabled = true,
   return <p role="status" className="shrink-0 border-b border-amber-300 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-950">{text}</p>;
 }
 
-const ENGINE_NAMES: Record<string, string> = {
-  gemini: 'Google Gemini', deepseek: 'DeepSeek', openai: 'OpenAI', claude: 'Anthropic Claude',
-  self_hosted: 'Sham Open Model', openrouter: 'OpenRouter',
-};
-export const engineName = (id: string, fallback?: string) => ENGINE_NAMES[id] || fallback || id;
-
-/** The engines the server actually allows, with their real state (no hard-coded list, no fake “connected”). */
-export function ShaheenProviderMatrix({ language, models }: { language: SupportedLanguage; models: ShaheenEngine[] | null }) {
-  const list = (models || []).filter((m) => m.id !== 'auto');
+/** Shaheen's response modes and whether each can answer now (no engine or vendor names). */
+export function ShaheenModesPanel({ language, models }: { language: SupportedLanguage; models: ShaheenEngine[] | null }) {
   if (!models) {
-    return <p className="text-xs text-stone-400">{loc(language, { ar: 'جارٍ التحقق من المحركات…', en: 'Checking engines…' })}</p>;
+    return <p className="text-xs text-stone-400">{loc(language, { ar: 'جارٍ التحقق من الأوضاع المتاحة…', en: 'Checking available modes…' })}</p>;
   }
+  const modes = visibleEngines(models.map((m) => ({ ...m, hasApiKey: true })), language);
   return <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-    {list.map((m) => {
-      const configured = !isStaticHosting && m.hasApiKey;
+    {modes.map((m) => {
+      const ready = !isStaticHosting && models.find((x) => x.id === m.id)?.hasApiKey === true;
       return <div key={m.id} className="rounded-xl border border-stone-700 bg-stone-950 p-2">
         <div className="flex items-center gap-1.5 font-bold text-stone-200">
-          <span className={`h-2 w-2 rounded-full ${configured ? 'bg-emerald-400' : 'bg-stone-600'}`} />
-          {engineName(m.id, m.name)}
-          {m.model && <span className="font-mono text-[10px] font-normal text-stone-500" dir="ltr">{m.model}</span>}
+          <span className={`h-2 w-2 rounded-full ${ready ? 'bg-emerald-400' : 'bg-stone-600'}`} />
+          {m.short}
         </div>
-        <div className={configured ? 'text-emerald-300' : 'text-stone-400'}>{loc(language, configured
-          ? { ar: 'مُفعّل على الخادم — التوفر الفعلي يُختبر عند الإرسال', en: 'Enabled on the server — real availability is checked when sending' }
-          : { ar: 'غير مُفعّل (لا يوجد مفتاح على الخادم)', en: 'Not enabled (no key on the server)' })}</div>
+        <div className="text-stone-400">{m.desc}</div>
+        <div className={ready ? 'text-emerald-300' : 'text-stone-500'}>{loc(language, ready
+          ? { ar: 'متاح الآن', en: 'Available now', fr: 'Disponible', es: 'Disponible', it: 'Disponibile', de: 'Verfügbar', ru: 'Доступно', zh: '可用', tr: 'Kullanılabilir', fa: 'در دسترس' }
+          : { ar: 'غير متاح حالياً', en: 'Not available right now', fr: 'Indisponible', es: 'No disponible', it: 'Non disponibile', de: 'Nicht verfügbar', ru: 'Недоступно', zh: '暂不可用', tr: 'Şu an kullanılamıyor', fa: 'فعلاً در دسترس نیست' })}</div>
       </div>;
     })}
-    {!list.length && <p className="text-stone-400">{loc(language, { ar: 'لا توجد محركات مسموح بها في الإعدادات.', en: 'No engines are allowed in the settings.' })}</p>}
   </div>;
 }
 

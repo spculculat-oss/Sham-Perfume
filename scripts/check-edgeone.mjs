@@ -31,7 +31,7 @@ try {
   }
   assert.deepEqual(await (await fetch(`${base}/api/health`, { headers })).json(), { service: 'sham-perfume', status: 'ok' });
   const models = await (await fetch(`${base}/api/models`, { headers })).json();
-  assert.equal(models.models.length, 7);
+  assert.deepEqual(models.models.map((m) => m.id), ['auto', 'fast', 'deep', 'council']);
 
   // State must persist across requests: admin setting, then per-visitor rate limit.
   const auth = { ...headers, authorization: 'Bearer edgeone-check-token' };

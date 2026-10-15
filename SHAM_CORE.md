@@ -111,3 +111,20 @@ Sham Core هو مساعد الخدمات ولوحة الإدارة داخل مو
 - مفيش بوابة دفع إلكتروني لسه. الطلبات بتتسجل والفريق يأكد الدفع والشحن. الخطوة الجاية بوابة محلية (Paymob أو Fawry مثلاً) وإشعارات بريد/واتساب للطلبات الجديدة.
 - تحديد المعدل وذاكرة الفهرس بيتعملوا لكل نسخة خادم. للتوسع الأفقي: Redis مشترك.
 - التتبع بيطلب رقم الطلب **ومعاه** الهاتف أو البريد. رمز الإدارة مكانه متغيرات الخادم فقط، ومش بيتحط أبداً في `VITE_*` أو في Git.
+
+## Visitor anonymity (Shaheen modes)
+
+Visitors only ever meet «الخبير شاهين». The public API never returns engine, vendor or model names:
+
+| Visitor mode | Behaviour (admin-only detail) |
+|---|---|
+| `auto` — تلقائي | admin engine order with failover |
+| `fast` — رد سريع | quick engines first, short answer (≤ 1024 tokens) |
+| `deep` — تحليل معمّق | careful engines first, step-by-step analysis |
+| `council` — مجلس الخبراء | advisory council (needs ≥ 2 working seats, else `503 COUNCIL_UNAVAILABLE`), 12/h per visitor |
+
+- `GET /api/models` → `{ models: [{ id, hasApiKey }], enabled, allowVisitorChoice }`.
+- `POST /api/chat` → `{ reply, mode, engine: { id: mode, provider: 'shaheen', … } }`.
+- Sham assistant replies are labelled `sham_ai` / `sham_local`; council advisors are shown as letters only.
+- Both system prompts forbid naming any model or company. The admin dashboard still shows real engines, probes and usage.
+- `tests/honestCopy.test.ts` fails the build if a vendor name appears in visitor-facing code (`src/admin/` is exempt).

@@ -32,9 +32,9 @@ import { isRTL } from '../utils/localizedContent';
 import { LText, makeT, fmt, loc, LOCALE_MAP } from '../utils/localize';
 import { isStaticHosting } from '../utils/api';
 import { StaticHostingNotice } from './StaticHostingNotice';
-import { ShaheenProviderMatrix, ShaheenServiceStatus, chatErrorText, engineName, shaheenWelcome } from './ShaheenServiceStatus';
+import { ShaheenModesPanel, ShaheenServiceStatus, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
-import { ENGINE_BADGE, visibleEngines, scrollChatToEnd } from './shaheenEngines';
+import { ENGINE_BADGE, modeBadge, visibleEngines, scrollChatToEnd } from './shaheenEngines';
 import type { ShaheenModelChoice } from '../utils/chatStore';
 import { useShaheenChat } from '../hooks/useShaheenChat';
 import { useShaheenModels } from '../hooks/useShaheenModels';
@@ -212,18 +212,6 @@ const S = {
   prompt_3: { ar: 'كيف أصنع تركيبة تجميلية لمعطر جسم (Body Mist) ثابت ومستحلب؟', en: 'How do I make a stable emulsified Body Mist formula?', fr: 'Comment créer une formule de brume corporelle émulsionnée et stable ?', es: '¿Cómo creo una fórmula de Body Mist emulsionada y estable?', it: 'Come creo una formula di Body Mist emulsionata e stabile?', de: 'Wie erstelle ich eine stabile, emulgierte Body-Mist-Formel?', ru: 'Как сделать стабильную эмульгированную формулу Body Mist?', zh: '如何调制稳定乳化的身体喷雾（Body Mist）配方？', tr: 'Stabil, emülsifiye bir Body Mist formülü nasıl yapılır?', fa: 'چگونه فرمول اسپری بدن (Body Mist) پایدار و امولسیون‌شده بسازم؟' },
   prompt_4: { ar: 'العطر أصبح حليبياً ومتعكراً بعد إضافة الكحول، كيف أصفّيه بالمعمل؟', en: 'My perfume turned milky after adding alcohol — how do I clarify it?', fr: 'Mon parfum est devenu laiteux après l’alcool — comment le clarifier ?', es: 'Mi perfume se enturbió tras añadir alcohol, ¿cómo aclararlo?', it: 'Il mio profumo è diventato lattiginoso dopo l’alcol: come chiarificarlo?', de: 'Mein Parfüm wurde nach Alkoholzugabe milchig — wie kläre ich es?', ru: 'Духи помутнели после добавления спирта — как осветлить?', zh: '加酒精后香水变浑浊，如何在实验室澄清？', tr: 'Alkol ekledikten sonra parfümüm sütlüleşti, nasıl berraklaştırırım?', fa: 'عطرم بعد از افزودن الکل شیری و کدر شد؛ چگونه شفافش کنم؟' },
   prompt_5: { ar: 'ما المدة والشروط العلمية لتعتيق العطر (Maceration) للحصول على صفاء وثبات؟', en: 'What is the scientifically correct maceration duration & conditions for clarity and tenacity?', fr: 'Quelle durée et conditions de macération pour clarté et tenue ?', es: '¿Qué duración y condiciones de maceración para claridad y fijación?', it: 'Quale durata e condizioni di macerazione per chiarezza e tenacia?', de: 'Welche Mazerationstemperatur und -dauer für Klarheit und Haltbarkeit?', ru: 'Какова длительность и условия мацерации для ясности и стойкости?', zh: '获得清澈与持久所需的科学浸置时长与条件是什么？', tr: 'Berraklık ve kalıcılık için bilimsel maserasyon süresi ve koşulları nedir?', fa: 'مدت و شرایط علمی تعریف عطر (Maceration) برای شفافیت و ماندگاری چیست؟' },
-  eng_auto_name: { ar: 'شاهين — اختيار تلقائي', en: 'Shahin — automatic choice', fr: 'Shahin — choix automatique', es: 'Shahin — elección automática', it: 'Shahin — scelta automatica', de: 'Shahin — automatische Wahl', ru: 'Шахин — автоматический выбор', zh: 'Shahin — 自动选择', tr: 'Shahin — otomatik seçim', fa: 'شاهین — انتخاب خودکار' },
-  eng_auto_short: { ar: '⚡ تلقائي', en: '⚡ Auto', fr: '⚡ Auto', es: '⚡ Auto', it: '⚡ Auto', de: '⚡ Auto', ru: '⚡ Авто', zh: '⚡ 自动', tr: '⚡ Otomatik', fa: '⚡ خودکار' },
-  eng_auto_badge: { ar: 'شاهين', en: 'Shahin' },
-  eng_auto_desc: { ar: 'يستخدم أول محرك متاح حسب إعدادات الموقع، ويجرّب التالي عند الفشل. الرد من محرك واحد ويُذكر اسمه.', en: 'Uses the first available engine from the site settings and fails over to the next. One engine answers and is credited.' },
-  eng_gemini_short: { ar: '✨ جيمناي', en: '✨ Gemini', fr: '✨ Gemini', es: '✨ Gemini', it: '✨ Gemini', de: '✨ Gemini', ru: '✨ Gemini', zh: '✨ Gemini', tr: '✨ Gemini', fa: '✨ جمنای' },
-  eng_gemini_desc: { ar: 'الحسابات الرياضية الدقيقة، أوزان الغرامات، والسرعة الفائقة', en: 'Precise math, gram-level weights, and blazing speed', fr: 'Maths précises, poids au gramme et rapidité', es: 'Matemáticas precisas, pesos al gramo y velocidad', it: 'Matematica precisa, pesi al grammo e velocità', de: 'Präzise Mathematik, Grammgewichte und Tempo', ru: 'Точная математика, граммы и скорость', zh: '精准计算、克级配比与极速响应', tr: 'Hassas matematik, gram ağırlıkları ve hız', fa: 'محاسبات دقیق، وزن‌های گرمی و سرعت بالا' },
-  eng_deepseek_short: { ar: '🔬 ديب سيك', en: '🔬 DeepSeek', fr: '🔬 DeepSeek', es: '🔬 DeepSeek', it: '🔬 DeepSeek', de: '🔬 DeepSeek', ru: '🔬 DeepSeek', zh: '🔬 DeepSeek', tr: '🔬 DeepSeek', fa: '🔬 دیپ‌سیک' },
-  eng_deepseek_desc: { ar: 'استدلال كيميائي، الكثافة النوعية ومعايير أمان IFRA', en: 'Chemical reasoning, specific gravity, and IFRA safety', fr: 'Raisonnement chimique, densité et sécurité IFRA', es: 'Razonamiento químico, densidad y seguridad IFRA', it: 'Ragionamento chimico, densità e sicurezza IFRA', de: 'Chemisches Denken, Dichte und IFRA-Sicherheit', ru: 'Химическая логика, плотность и безопасность IFRA', zh: '化学推理、比重与 IFRA 安全', tr: 'Kimyasal akıl yürütme, yoğunluk ve IFRA güvenliği', fa: 'استدلال شیمیایی، چگالی و ایمنی IFRA' },
-  eng_openai_short: { ar: '🟢 شات جي بي تي', en: '🟢 ChatGPT', fr: '🟢 ChatGPT', es: '🟢 ChatGPT', it: '🟢 ChatGPT', de: '🟢 ChatGPT', ru: '🟢 ChatGPT', zh: '🟢 ChatGPT', tr: '🟢 ChatGPT', fa: '🟢 چت‌جی‌پی‌تی' },
-  eng_openai_desc: { ar: 'هندسة الأكوردات، الفوحان التجاري والانتشار الجذاب', en: 'Accord architecture, commercial sillage, and allure', fr: 'Architecture des accords, sillage commercial et séduction', es: 'Arquitectura de acordes, estela comercial y atractivo', it: 'Architettura degli accordi, scia commerciale e appeal', de: 'Akkordarchitektur, kommerzielle Sillage und Anziehung', ru: 'Архитектура аккордов, коммерческий шлейф', zh: '香调架构、商业扩散与吸引力', tr: 'Akor mimarisi, ticari iz ve çekicilik', fa: 'معماری آکورد، انتشار تجاری و جذابیت' },
-  eng_claude_short: { ar: '🟣 كلود', en: '🟣 Claude', fr: '🟣 Claude', es: '🟣 Claude', it: '🟣 Claude', de: '🟣 Claude', ru: '🟣 Claude', zh: '🟣 Claude', tr: '🟣 Claude', fa: '🟣 کلود' },
-  eng_claude_desc: { ar: 'مدرسة جراس الفرنسية، التعتيق الصامت، وأناقة النيش', en: 'French Grasse school, quiet maturation, and niche elegance', fr: 'École de Grasse, maturation discrète et élégance de niche', es: 'Escuela de Grasse, maduración silenciosa y elegancia de nicho', it: 'Scuola di Grasse, maturazione silenziosa ed eleganza di nicchia', de: 'Grasse-Schule, stille Reifung und Nischen-Eleganz', ru: 'Школа Граса, тихое настаивание и нишевая элегантность', zh: '格拉斯学派、静谧熟成与小众优雅', tr: 'Grasse okulu, sessiz olgunlaşma ve niş zarafeti', fa: 'مدرسه گراس، تعریف آرام و ظرافت نیچ' },
   comp_1: { ar: 'الخبير شاهين يقطر الزيوت الخام في المخبار بدقة الميزان...', en: 'Master Shahin drips raw oils into the flask with scale precision...', fr: 'Le Maître Shahin verse les huiles dans le ballon avec précision…', es: 'El Maestro Shahin gotea los aceites con precisión de balanza...', it: 'Il Maestro Shahin versa gli oli nel matraccio con precisione…', de: 'Meister Shahin tropft die Rohöle mit Waagenpräzision ein…', ru: 'Мастер Шахин капает масла в колбу с точностью весов…', zh: 'Shahin 大师正以天平精度将原精滴入烧瓶……', tr: 'Usta Shahin çiğ yağları terazi hassasiyetiyle damlatıyor…', fa: 'استاد شاهین روغن‌های خام را با دقت ترازو در بالن می‌چکاند...' },
   comp_2: { ar: 'يفحص الكثافة النوعية وتجانس النوتات العطرية...', en: 'Checking specific gravity and note homogeneity...', fr: 'Vérification de la densité et de l’homogénéité des notes…', es: 'Comprobando densidad y homogeneidad de notas...', it: 'Verifica di densità e omogeneità delle note…', de: 'Prüfung von Dichte und Homogenität der Noten…', ru: 'Проверка плотности и однородности нот…', zh: '正在检测比重与香气均匀度……', tr: 'Yoğunluk ve nota homojenliği kontrol ediliyor…', fa: 'بررسی چگالی و همگنی نت‌ها...' },
   comp_3: { ar: 'يمزج مركب العطر ويتحقق من توازن الهرم العطري...', en: 'Blending the concentrate and verifying pyramid balance...', fr: 'Assemblage du concentré et équilibre de la pyramide…', es: 'Mezclando el concentrado y verificando el equilibrio...', it: 'Fusione del concentrato e verifica dell’equilibrio…', de: 'Vermengung des Konzentrats und Pyramidenabgleich…', ru: 'Смешивание концентрата и проверка баланса пирамиды…', zh: '正在混合浓缩物并校验金字塔平衡……', tr: 'Konsantre harmanlanıyor ve piramit dengesi doğrulanıyor…', fa: 'اختلاط کنسانتره و بررسی تعادل هرم...' },
@@ -236,18 +224,15 @@ const S = {
   clear_confirm_tpl: { ar: 'هل ترغب في مسح سجل المحادثة بالكامل الآن؟ (تُمسح تلقائياً بعد {d} يوماً).', en: 'Wipe the entire chat history now? (It auto-deletes after {d} days).', fr: 'Effacer tout l’historique maintenant ? (suppression auto après {d} jours).', es: '¿Borrar todo el historial ahora? (se borra solo tras {d} días).', it: 'Cancellare tutta la cronologia ora? (si cancella da sola dopo {d} giorni).', de: 'Gesamten Verlauf jetzt löschen? (automatisch nach {d} Tagen).', ru: 'Стереть всю историю переписки? (автоудаление через {d} дн.).', zh: '现在清除全部聊天记录吗？（{d} 天后自动清除）', tr: 'Tüm sohbet geçmişi silinsin mi? ({d} gün sonra otomatik silinir).', fa: 'همه تاریخچه گفتگو الان پاک شود؟ (پس از {d} روز خودکار پاک می‌شود).' },
   cancel: { ar: 'إلغاء', en: 'Cancel', fr: 'Annuler', es: 'Cancelar', it: 'Annulla', de: 'Abbrechen', ru: 'Отмена', zh: '取消', tr: 'Vazgeç', fa: 'انصراف' },
   confirm_wipe: { ar: 'تأكيد المسح', en: 'Confirm Wipe', fr: 'Confirmer l’effacement', es: 'Confirmar borrado', it: 'Conferma cancellazione', de: 'Löschen bestätigen', ru: 'Подтвердить стирание', zh: '确认清除', tr: 'Silmeyi onayla', fa: 'تأیید پاک‌سازی' },
-  engine_lbl: { ar: 'محرك الذكاء العطري:', en: 'Fragrance AI Engine:', fr: 'Moteur IA olfactif :', es: 'Motor de IA olfativa:', it: 'Motore IA olfattivo:', de: 'Duft-KI-Engine:', ru: 'Движок парфюмерного ИИ:', zh: '香水 AI 引擎：', tr: 'Koku YZ motoru:', fa: 'موتور هوش مصنوعی عطری:' },
-  ai_matrix_tooltip: { ar: 'عرض محركات الذكاء الاصطناعي المتاحة الآن وحالتها', en: 'See which AI engines are available right now', fr: 'Voir les moteurs IA disponibles et leur état', es: 'Ver qué motores de IA están disponibles ahora', it: 'Vedi quali motori IA sono disponibili ora', de: 'Verfügbare KI-Engines und ihren Status anzeigen', ru: 'Посмотреть, какие ИИ-движки доступны сейчас', zh: '查看当前可用的 AI 引擎及其状态', tr: 'Şu anda kullanılabilir YZ motorlarını gör', fa: 'مشاهده موتورهای هوش مصنوعی در دسترس و وضعیت آن‌ها' },
-  ai_network_lbl: { ar: 'المحركات', en: 'Engines', fr: 'Moteurs', es: 'Motores', it: 'Motori', de: 'Engines', ru: 'Движки', zh: '引擎', tr: 'Motorlar', fa: 'موتورها' },
-  ai_matrix_title: { ar: 'محركات الذكاء الاصطناعي وحالتها الآن:', en: 'AI engines and their current status:', fr: 'Moteurs IA et leur état actuel :', es: 'Motores de IA y su estado actual:', it: 'Motori IA e stato attuale:', de: 'KI-Engines und ihr aktueller Status:', ru: 'ИИ-движки и их текущий статус:', zh: 'AI 引擎及当前状态：', tr: 'YZ motorları ve güncel durumları:', fa: 'موتورهای هوش مصنوعی و وضعیت فعلی:' },
+  engine_lbl: { ar: 'طريقة الرد:', en: 'Answer style:', fr: 'Style de réponse :', es: 'Estilo de respuesta:', it: 'Stile di risposta:', de: 'Antwortstil:', ru: 'Стиль ответа:', zh: '回答方式：', tr: 'Yanıt biçimi:', fa: 'شیوه پاسخ:' },
+  ai_matrix_tooltip: { ar: 'عرض أوضاع شاهين المتاحة الآن', en: 'See Shahin’s available modes', fr: 'Voir les modes disponibles de Shahin', es: 'Ver los modos disponibles de Shahin', it: 'Vedi le modalità disponibili di Shahin', de: 'Verfügbare Modi von Shahin anzeigen', ru: 'Посмотреть доступные режимы Шахина', zh: '查看 Shahin 当前可用的模式', tr: 'Shahin’in kullanılabilir modlarını gör', fa: 'مشاهده حالت‌های در دسترس شاهین' },
+  ai_network_lbl: { ar: 'الأوضاع', en: 'Modes', fr: 'Modes', es: 'Modos', it: 'Modalità', de: 'Modi', ru: 'Режимы', zh: '模式', tr: 'Modlar', fa: 'حالت‌ها' },
+  ai_matrix_title: { ar: 'أوضاع الخبير شاهين المتاحة الآن:', en: 'Master Shahin’s modes right now:', fr: 'Modes de Maître Shahin :', es: 'Modos del Maestro Shahin:', it: 'Modalità del Maestro Shahin:', de: 'Modi von Meister Shahin:', ru: 'Режимы мастера Шахина:', zh: 'Shahin 大师当前的模式：', tr: 'Usta Shahin’in modları:', fa: 'حالت‌های استاد شاهین:' },
   you: { ar: 'أنت', en: 'You', fr: 'Vous', es: 'Tú', it: 'Tu', de: 'Sie', ru: 'Вы', zh: '您', tr: 'Siz', fa: 'شما' },
   alt_shahin: { ar: 'شاهين', en: 'Shahin', fr: 'Shahin', es: 'Shahin', it: 'Shahin', de: 'Shahin', ru: 'Шахин', zh: 'Shahin', tr: 'Shahin', fa: 'شاهین' },
   default_badge: { ar: 'شاهين', en: 'Shahin' },
   error_badge: { ar: 'تنبيه', en: 'Notice', fr: 'Avis', es: 'Aviso', it: 'Avviso', de: 'Hinweis', ru: 'Уведомление', zh: '提示', tr: 'Uyarı', fa: 'هشدار' },
   retry: { ar: 'إعادة المحاولة', en: 'Retry', fr: 'Réessayer', es: 'Reintentar', it: 'Riprova', de: 'Erneut versuchen', ru: 'Повторить', zh: '重试', tr: 'Tekrar dene', fa: 'تلاش دوباره' },
-  perspectives_lbl: { ar: 'تبديل منظور المحركات المستشارة:', en: 'Switch consulted-engine perspective:', fr: 'Changer de perspective des moteurs :', es: 'Cambiar perspectiva de motores:', it: 'Cambia prospettiva dei motori:', de: 'Perspektive der Engines wechseln:', ru: 'Переключить мнение движков:', zh: '切换咨询引擎视角：', tr: 'Danışılan motor perspektifini değiştir:', fa: 'تغییر دیدگاه موتورهای مشاور:' },
-  models_count: { ar: 'المحركات المستشارة: {n}', en: '{n} engines consulted', fr: '{n} moteurs consultés', es: '{n} motores consultados', it: '{n} motori consultati', de: '{n} Engines befragt', ru: 'Опрошено движков: {n}', zh: '已咨询 {n} 个引擎', tr: '{n} motora danışıldı', fa: 'موتورهای مشورت‌شده: {n}' },
-  unified_summary: { ar: '⚡ خلاصة شاهين الموحدة', en: '⚡ Shahin Unified Verdict', fr: '⚡ Verdict unifié de Shahin', es: '⚡ Veredicto unificado de Shahin', it: '⚡ Verdetto unificato di Shahin', de: '⚡ Shahins vereinigtes Urteil', ru: '⚡ Единый вывод Шахина', zh: '⚡ Shahin 统一结论', tr: '⚡ Shahin birleşik özeti', fa: '⚡ نتیجه واحد شاهین' },
   convert_lbl: { ar: 'تحويل بيانات هذه الخلطة لأيقونات وحاسبات التطبيق:', en: 'Convert this blend into app tools:', fr: 'Convertir cette composition en outils :', es: 'Convertir esta mezcla en herramientas:', it: 'Converti questa miscela in strumenti:', de: 'Diese Mischung in App-Werkzeuge umwandeln:', ru: 'Перенести эту смесь в инструменты приложения:', zh: '将此配方转换为应用工具：', tr: 'Bu karışımı uygulama araçlarına aktar:', fa: 'تبدیل این ترکیب به ابزارهای برنامه:' },
   to_conc_tooltip: { ar: 'تطبيق مقادير هذه الخلطة في حاسبة التركيب وتعبئة الزجاجة', en: 'Apply this blend to the compounding calculator', fr: 'Appliquer au calculateur de composition', es: 'Aplicar a la calculadora de composición', it: 'Applica al calcolatore di composizione', de: 'In den Kompositionsrechner übernehmen', ru: 'Применить в калькуляторе составления', zh: '将此配方应用到调配计算器', tr: 'Bu karışımı hesaplayıcıya uygula', fa: 'اعمال این ترکیب در ماشین‌حساب' },
   to_conc_lbl: { ar: 'حاسبة التركيب', en: 'Compounding Calculator', fr: 'Calculateur', es: 'Calculadora', it: 'Calcolatore', de: 'Rechner', ru: 'Калькулятор', zh: '调配计算器', tr: 'Hesaplayıcı', fa: 'ماشین‌حساب' },
@@ -265,9 +250,9 @@ const S = {
   copied_ok: { ar: 'تم النسخ بنجاح!', en: 'Copied!', fr: 'Copié !', es: '¡Copiado!', it: 'Copiato!', de: 'Kopiert!', ru: 'Скопировано!', zh: '已复制！', tr: 'Kopyalandı!', fa: 'کپی شد!' },
   copy_q_lbl: { ar: 'نسخ السؤال', en: 'Copy question', fr: 'Copier la question', es: 'Copiar pregunta', it: 'Copia domanda', de: 'Frage kopieren', ru: 'Копировать вопрос', zh: '复制提问', tr: 'Soruyu kopyala', fa: 'کپی پرسش' },
   copy_a_lbl: { ar: 'نسخ الإجابة والتركيبة', en: 'Copy answer & formula', fr: 'Copier réponse et formule', es: 'Copiar respuesta y fórmula', it: 'Copia risposta e formula', de: 'Antwort & Formel kopieren', ru: 'Копировать ответ и формулу', zh: '复制回答与配方', tr: 'Yanıtı ve formülü kopyala', fa: 'کپی پاسخ و فرمول' },
-  compare_tooltip: { ar: 'استشارة نموذج ذكاء اصطناعي آخر لمقارنة الرأي', en: 'Consult another AI model for a second opinion', fr: 'Consulter un autre modèle IA', es: 'Consultar otro modelo IA', it: 'Consulta un altro modello IA', de: 'Ein anderes KI-Modell befragen', ru: 'Спросить другую ИИ-модель', zh: '咨询另一个 AI 模型以对比意见', tr: 'İkinci görüş için başka bir YZ modeline danış', fa: 'مشورت با مدل هوش مصنوعی دیگر' },
-  compare_lbl: { ar: 'مقارنة بنموذج آخر', en: 'Compare with another model', fr: 'Comparer avec un autre modèle', es: 'Comparar con otro modelo', it: 'Confronta con un altro modello', de: 'Mit anderem Modell vergleichen', ru: 'Сравнить с другой моделью', zh: '与其他模型对比', tr: 'Başka modelle karşılaştır', fa: 'مقایسه با مدل دیگر' },
-  choose_model_lbl: { ar: 'اختر نموذجاً للمقارنة:', en: 'Pick a model to compare:', fr: 'Choisissez un modèle :', es: 'Elige un modelo:', it: 'Scegli un modello:', de: 'Modell wählen:', ru: 'Выберите модель:', zh: '选择要对比的模型：', tr: 'Karşılaştırılacak modeli seç:', fa: 'مدل مقایسه را انتخاب کنید:' },
+  compare_tooltip: { ar: 'اطلب رأياً ثانياً بطريقة رد أخرى', en: 'Ask for a second opinion in another answer style', fr: 'Demander un second avis dans un autre style', es: 'Pedir una segunda opinión con otro estilo', it: 'Chiedi un secondo parere con un altro stile', de: 'Zweite Meinung in einem anderen Stil anfordern', ru: 'Попросить второе мнение в другом стиле', zh: '以另一种回答方式获取第二意见', tr: 'Başka bir yanıt biçimiyle ikinci görüş iste', fa: 'درخواست نظر دوم با شیوه پاسخ دیگر' },
+  compare_lbl: { ar: 'رأي ثانٍ', en: 'Second opinion', fr: 'Second avis', es: 'Segunda opinión', it: 'Secondo parere', de: 'Zweite Meinung', ru: 'Второе мнение', zh: '第二意见', tr: 'İkinci görüş', fa: 'نظر دوم' },
+  choose_model_lbl: { ar: 'اختر طريقة الرد:', en: 'Pick an answer style:', fr: 'Choisissez un style :', es: 'Elige un estilo:', it: 'Scegli uno stile:', de: 'Stil wählen:', ru: 'Выберите стиль:', zh: '选择回答方式：', tr: 'Bir yanıt biçimi seçin:', fa: 'شیوه پاسخ را انتخاب کنید:' },
   redo_formula: { ar: 'أعد حساب التركيبة السابقة', en: 'Recalculate the previous formula', fr: 'Recalculer la formule précédente', es: 'Recalcular la fórmula anterior', it: 'Ricalcola la formula precedente', de: 'Vorherige Formel neu berechnen', ru: 'Пересчитать предыдущую формулу', zh: '重新计算上一个配方', tr: 'Önceki formülü yeniden hesapla', fa: 'فرمول قبلی را دوباره محاسبه کن' },
   speech_tooltip: { ar: 'استماع صوتي لنصيحة الخبير شاهين', en: 'Listen to Master Shahin’s advice', fr: 'Écouter le conseil du Maître Shahin', es: 'Escuchar el consejo del Maestro Shahin', it: 'Ascolta il consiglio del Maestro Shahin', de: 'Meister Shahins Rat anhören', ru: 'Послушать совет мастера Шахина', zh: '语音收听 Shahin 大师建议', tr: 'Usta Shahin’in tavsiyesini dinle', fa: 'گوش‌دادن به توصیه استاد شاهین' },
   loading_status: { ar: 'الخبير شاهين يقطر الزيوت ويزن النوتات بالميزان...', en: 'Master Shahin is dripping oils and weighing notes...', fr: 'Le Maître Shahin pèse les notes goutte à goutte…', es: 'El Maestro Shahin está pesando las notas...', it: 'Il Maestro Shahin sta pesando le note…', de: 'Meister Shahin wiegt die Noten ab…', ru: 'Мастер Шахин отвешивает ноты…', zh: 'Shahin 大师正在滴油并称量香材……', tr: 'Usta Shahin yağları damlatıp notaları tartıyor…', fa: 'استاد شاهین روغن‌ها را می‌چکاند و نت‌ها را وزن می‌کند...' },
@@ -303,24 +288,9 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   const [comparingMsgId, setComparingMsgId] = useState<string | null>(null);
   const [showAiMatrix, setShowAiMatrix] = useState(false);
 
-  // Real engines from the server settings (no invented model versions).
-  const SHORT: Record<string, string> = {
-    auto: L('eng_auto_short'), gemini: L('eng_gemini_short'), deepseek: L('eng_deepseek_short'),
-    openai: L('eng_openai_short'), claude: L('eng_claude_short'),
-  };
-  const DESC: Record<string, string> = {
-    auto: L('eng_auto_desc'), gemini: L('eng_gemini_desc'), deepseek: L('eng_deepseek_desc'),
-    openai: L('eng_openai_desc'), claude: L('eng_claude_desc'),
-  };
-  const AI_ENGINES = visibleEngines(modelStatus.engines, currentLang, (id) => SHORT[id])
-    .map((eng) => ({ ...eng, name: eng.id === 'auto' ? L('eng_auto_name') : engineName(eng.id, eng.name), desc: DESC[eng.id] || eng.model || '' }));
-  const enabledEngineCount = (modelStatus.models || []).filter((m) => m.id !== 'auto' && m.hasApiKey).length;
-
-  const setActivePerspectiveForMessage = (msgId: string, tabId: string) => {
-    setMessages((prev) =>
-      prev.map((m) => (m.id === msgId ? { ...m, activePerspectiveTab: tabId } : m))
-    );
-  };
+  // Shaheen's response modes the server says can answer (no engine or vendor names reach visitors).
+  const AI_ENGINES = visibleEngines(modelStatus.engines, currentLang);
+  const enabledEngineCount = (modelStatus.models || []).filter((m) => m.hasApiKey && AI_ENGINES.some((e) => e.id === m.id)).length;
 
   const handleSpeech = (text: string) => {
     if ('speechSynthesis' in window) {
@@ -597,7 +567,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                 <ChevronDown className="w-4 h-4" />
               </button>
             </div>
-            <ShaheenProviderMatrix language={currentLang} models={modelStatus.models} />
+            <ShaheenModesPanel language={currentLang} models={modelStatus.models} />
           </div>
         )}
         <ShaheenServiceStatus language={currentLang} models={modelStatus.models} failed={modelStatus.failed}
@@ -609,8 +579,6 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
             const activeDisplayContent =
               m.id === 'welcome'
                 ? shaheenWelcome(currentLang)
-                : m.activePerspectiveTab && m.activePerspectiveTab !== 'consensus' && m.perspectives
-                ? m.perspectives.find((p) => p.modelId === m.activePerspectiveTab)?.reply || m.text
                 : m.text;
 
             const isError = m.kind === 'error';
@@ -666,10 +634,9 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                           </span>
                         ) : m.id !== 'welcome' && (
                           <span
-                            className={`text-[10px] px-2 py-0.5 rounded-full font-medium border flex items-center gap-1 ${ENGINE_BADGE[m.aiEngine?.provider || ''] || 'bg-amber-50 text-amber-900 border-amber-200'}`}
-                            title={m.aiEngine?.model ? `${m.aiEngine.name} · ${m.aiEngine.model}` : undefined}
+                            className={`text-[10px] px-2 py-0.5 rounded-full font-medium border flex items-center gap-1 ${ENGINE_BADGE[modeBadge(m.aiEngine?.id, currentLang).mode || ''] || 'bg-amber-50 text-amber-900 border-amber-200'}`}
                           >
-                            <span>{m.aiEngine?.provider && m.aiEngine.provider !== 'ensemble' ? engineName(m.aiEngine.provider, m.aiEngine.badge) : L('default_badge')}</span>
+                            <span>{modeBadge(m.aiEngine?.id, currentLang).label}</span>
                           </span>
                         )}
                       </div>
@@ -677,43 +644,6 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                     </div>
                   )}
 
-                  {/* Perspective Switcher Tabs on Message */}
-                  {m.role === 'assistant' && m.perspectives && m.perspectives.length > 0 && (
-                    <div className="p-1.5 bg-stone-50 rounded-xl border border-stone-200/80 mb-2 space-y-1">
-                      <div className="text-[10px] text-stone-500 font-bold flex items-center justify-between px-1">
-                        <span>{L('perspectives_lbl')}</span>
-                        <span className="text-[9px] text-amber-700 bg-amber-100/60 px-1.5 py-0.2 rounded font-mono-numbers">{fmt(L('models_count'), { n: m.perspectives.length })}</span>
-                      </div>
-                      <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
-                        <button
-                          onClick={() => setActivePerspectiveForMessage(m.id, 'consensus')}
-                          className={`px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0 border ${
-                            (!m.activePerspectiveTab || m.activePerspectiveTab === 'consensus')
-                              ? 'bg-amber-200/90 text-amber-950 border-amber-400 shadow-2xs'
-                              : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-100'
-                          }`}
-                        >
-                          <span>{L('unified_summary')}</span>
-                        </button>
-                        {m.perspectives.map((p) => {
-                          const isActive = m.activePerspectiveTab === p.modelId;
-                          return (
-                            <button
-                              key={p.modelId}
-                              onClick={() => setActivePerspectiveForMessage(m.id, p.modelId)}
-                              className={`px-2.5 py-1 rounded-lg text-[10px] font-medium transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0 border ${
-                                isActive
-                                  ? p.color + ' font-bold shadow-2xs'
-                                  : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-100'
-                              }`}
-                            >
-                              <span>{p.badge}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
 
                   {/* Text Payload */}
                   {m.role === 'assistant' && !isError ? (

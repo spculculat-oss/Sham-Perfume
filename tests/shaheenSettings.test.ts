@@ -136,6 +136,8 @@ test('router: admin settings reach visitors immediately, and visitors are rate l
   await withRouter({ OPENAI_API_KEY: 'sk-test', SHAM_SHAHEEN_RATE_PER_MIN: '3' }, r, async (base) => {
     let models = await (await fetch(`${base}/models`)).json();
     assert.equal(models.enabled, true);
+    assert.deepEqual(models.models, [{ id: 'auto', hasApiKey: true }, { id: 'fast', hasApiKey: true }, { id: 'deep', hasApiKey: true },
+      { id: 'council', hasApiKey: false }], 'one engine: no council, and no vendor names');
     assert.equal(models.allowVisitorChoice, true);
 
     await r.updateSettings({ shaheen: { ...SHAHEEN_SITE_SETTINGS, allowVisitorChoice: false } });
@@ -144,7 +146,10 @@ test('router: admin settings reach visitors immediately, and visitors are rate l
 
     const ok = await post(base, { message: 'مرحبا', model: 'deepseek' });
     assert.equal(ok.status, 200);
-    assert.equal((await ok.json()).engine.provider, 'openai', 'visitor choice is off → auto');
+    const okBody = await ok.json();
+    assert.equal(okBody.mode, 'auto', 'visitor choice is off → auto');
+    assert.deepEqual(okBody.engine, { id: 'auto', provider: 'shaheen', name: 'الخبير شاهين', badge: 'شاهين', accentColor: 'amber' });
+    assert.doesNotMatch(JSON.stringify(okBody), /openai|gpt|deepseek/i, 'visitors never learn which vendor answered');
     assert.equal((await post(base, { message: 'مرحبا' })).status, 200);
 
     await r.updateSettings({ shaheen: { ...SHAHEEN_SITE_SETTINGS, enabled: false } });

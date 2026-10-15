@@ -97,7 +97,7 @@ test('isolated production function serves health and model diagnostics as JSON',
   assert.match(response.headers.get('content-type'), /application\/json/);
   const data = await response.json();
   // auto + the six Shaheen engines (gemini, deepseek, openai, claude, self_hosted, openrouter).
-  assert.equal(data.models.length, 7);
+  assert.deepEqual(data.models.map((model) => model.id), ['auto', 'fast', 'deep', 'council'], 'visitors see modes, not engines');
   assert.ok(data.models.every((model) => !model.hasApiKey));
   assert.equal(data.enabled, true);
   assert.equal(data.allowVisitorChoice, true);

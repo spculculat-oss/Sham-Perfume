@@ -14,6 +14,22 @@ import type { ModelEngineId, ShaheenSettings } from '../core/types';
 
 export const SHAHEEN_ENGINES: ModelEngineId[] = ['gemini', 'deepseek', 'openai', 'claude', 'self_hosted', 'openrouter'];
 
+/**
+ * What visitors choose between. They never see engine or vendor names — only Shaheen and these modes.
+ *  auto    : the admin's failover order (below), default answer style
+ *  fast    : short, direct answers; prefers the quickest engines
+ *  deep    : detailed analysis (reasoning, alternatives, risks, step-by-step numbers); prefers the strongest engines
+ *  council : several engines discuss, one synthesised answer (only offered when 2+ council seats work)
+ */
+export const SHAHEEN_MODES = ['auto', 'fast', 'deep', 'council'] as const;
+export type ShaheenMode = typeof SHAHEEN_MODES[number];
+
+/** Engine preference per mode, filtered by the engines the admin enabled and the keys that exist. */
+export const SHAHEEN_MODE_ORDER: Record<'fast' | 'deep', ModelEngineId[]> = {
+  fast: ['gemini', 'deepseek', 'openai', 'self_hosted', 'openrouter', 'claude'],
+  deep: ['claude', 'openai', 'gemini', 'deepseek', 'openrouter', 'self_hosted'],
+};
+
 export const SHAHEEN_SITE_SETTINGS: ShaheenSettings = {
   enabled: true,
   // Failover order for "auto". Engines without a key are skipped automatically.
