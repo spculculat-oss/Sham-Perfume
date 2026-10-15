@@ -991,7 +991,7 @@ export default function App() {
         {activeTab === 'store' && (
           <Storefront
             onClose={() => navigateToTab('home')}
-            currentLang={currentLang}
+            currentLang={currentLang === 'ar' || currentLang === 'fa' || currentLang === 'he' || currentLang === 'ur' || currentLang === 'ps' ? 'ar' : 'en'}
             retailerId={currentUser?.id}
           />
         )}
