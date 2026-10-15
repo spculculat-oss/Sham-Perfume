@@ -274,3 +274,4 @@ NAT_IPS=20 node --import tsx scripts/load-test.mts                              
 
 تشغيل يدوي: Actions ← «Shaheen Doctor» ← Run workflow (`live` يصلّح، `dry` يراجع بس). محليًا للمراجعة بس: `DOCTOR_MODE=dry node --import tsx scripts/doctor/run.mts`.
 
+# Store Update
