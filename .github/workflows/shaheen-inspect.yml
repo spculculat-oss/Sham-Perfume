@@ -43,19 +43,31 @@ jobs:
       - name: Install headless browser driver
         if: always()
         run: mkdir -p /tmp/pp && cd /tmp/pp && npm init -y >/dev/null && npm i --no-audit --no-fund puppeteer-core@24 >/dev/null
-      - name: Browser · GitHub Pages · floating chat
+      - name: Browser · GitHub Pages · phone · floating chat
         if: always()
+        run: node scripts/inspect/browser.mjs
+        env: { INSPECT_SITES: 'https://spculculat-oss.github.io/Sham-Perfume/', INSPECT_SCENE: chat, INSPECT_MOBILE: '1', PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js }
+      - name: Browser · Vercel · phone · lab page
+        if: always()
+        run: node scripts/inspect/browser.mjs
+        env: { INSPECT_SITES: 'https://sham-perfume-49bf.vercel.app/', INSPECT_SCENE: lab, INSPECT_MOBILE: '1', PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js }
+      - name: Browser · second Vercel project
+        if: always()
+        run: node scripts/inspect/browser.mjs
+        env: { INSPECT_SITES: 'https://sham-perfume.vercel.app/', INSPECT_SCENE: chat, INSPECT_QUESTIONS: 'عايز أخفف كحول 96% إلى 70% وأعمل منه 1 لتر، أحط كام مية؟', PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js }
+      - name: Browser · GitHub Pages · floating chat
+        if: always() && github.event_name == 'workflow_dispatch'
         run: node scripts/inspect/browser.mjs
         env: { INSPECT_SITES: 'https://spculculat-oss.github.io/Sham-Perfume/', INSPECT_SCENE: chat, PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js }
       - name: Browser · GitHub Pages · lab page
-        if: always()
+        if: always() && github.event_name == 'workflow_dispatch'
         run: node scripts/inspect/browser.mjs
         env: { INSPECT_SITES: 'https://spculculat-oss.github.io/Sham-Perfume/', INSPECT_SCENE: lab, PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js }
       - name: Browser · Vercel · floating chat
-        if: always()
+        if: always() && github.event_name == 'workflow_dispatch'
         run: node scripts/inspect/browser.mjs
         env: { INSPECT_SITES: 'https://sham-perfume-49bf.vercel.app/', INSPECT_SCENE: chat, PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js }
       - name: Browser · Vercel · lab page
-        if: always()
+        if: always() && github.event_name == 'workflow_dispatch'
         run: node scripts/inspect/browser.mjs
         env: { INSPECT_SITES: 'https://sham-perfume-49bf.vercel.app/', INSPECT_SCENE: lab, PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js }
