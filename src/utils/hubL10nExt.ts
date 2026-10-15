@@ -2,6 +2,7 @@ import type { SupportedLanguage } from '../types/i18n';
 import { HUB_L10N_EXT_1 } from './hubL10nExt1';
 import { HUB_L10N_EXT_2 } from './hubL10nExt2';
 import { HUB_L10N_EXT_3 } from './hubL10nExt3';
+import { HUB_L10N_EXT_4 } from './hubL10nExt4';
 
 // =========================================
 // HUB L10N — EXTENSION AGGREGATOR & MERGE
@@ -17,7 +18,7 @@ export type HubL10nExtEntry = Partial<Record<HubL10nField, Partial<Record<Suppor
 export type HubL10nExt = Record<string, HubL10nExtEntry>;
 
 /** All extension language packs, in merge order. */
-export const HUB_L10N_EXTS: HubL10nExt[] = [HUB_L10N_EXT_1, HUB_L10N_EXT_2, HUB_L10N_EXT_3];
+export const HUB_L10N_EXTS: HubL10nExt[] = [HUB_L10N_EXT_1, HUB_L10N_EXT_2, HUB_L10N_EXT_3, HUB_L10N_EXT_4];
 
 /**
  * Merge one or more base hub dictionaries with the extension packs.
