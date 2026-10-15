@@ -14,6 +14,7 @@ import {
   Database,
   MapPin,
   Home,
+  Store,
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
 import { t } from '../utils/i18n';
@@ -145,6 +146,14 @@ export const Header: React.FC<HeaderProps> = ({
       fullLabel: t('nav_ai_master', currentLang),
       icon: Sparkles,
       iconColor: 'text-emerald-500',
+    },
+    {
+      id: 'shop',
+      type: 'single',
+      label: currentLang === 'ar' ? 'التسوق' : 'Shop',
+      fullLabel: currentLang === 'ar' ? 'متجر الشام - العطور' : 'Sham Perfume Store',
+      icon: Store,
+      iconColor: 'text-amber-600',
     },
   ];
 

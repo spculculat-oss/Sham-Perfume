@@ -52,6 +52,7 @@ import {
   CheckCircle2,
   Radio,
   SlidersHorizontal,
+  Store,
 } from 'lucide-react';
 
 import heroImg from '../assets/images/hero_luxury_perfume_1791692409081.jpg';
@@ -972,6 +973,50 @@ export const HomeHub: React.FC<HomeHubProps> = ({
           timestamp: 'حرية نقل البيانات',
           actionHint: 'تصدير نسختك الاحتياطية',
           onSpecialAction: onOpenPrivacyModal,
+        },
+      ],
+    },
+
+    // 13. SHOP STOREPORTAL - Featured Products Store
+    {
+      id: 'portal_store',
+      targetTab: 'store',
+      category: 'business',
+      titleAr: '🛍️ المتجر | عطور أصيلة بأسعار مميزة',
+      titleEn: '🛍️ SHOP | Authentic Perfumes at Special Prices',
+      subtitleAr: 'مئات العطور من أفضل الموردين - شحن مجاني - دفع آمن',
+      accentColor: 'from-amber-500 to-orange-600 text-amber-600 bg-amber-500/10',
+      borderGlow: 'hover:border-amber-500/80 hover:shadow-amber-900/20 hover:scale-[1.02] transition-transform',
+      icons: [Store, Sparkles, Gift, Award],
+      statsBadge: '🛒 المتجر مفتوح الآن',
+      imageThumbnail: 'https://images.unsplash.com/photo-1541643600913-80f5f10a3b08?w=400&h=300&fit=crop',
+      news: [
+        {
+          id: 's1',
+          badge: '🔥 عرض حصري',
+          title: 'اكتشف مجموعة واسعة من العطور الأصلية',
+          description: 'نحن نورد العطور من أفضل الموردين مثل لطيفة، الرحاب، وغيرهم. أسعار مميزة مع شحن مجاني للطلبات فوق 500 جنيه.',
+          metric: '100+ منتج',
+          timestamp: 'مجموعة متنوعة',
+          actionHint: 'تصفح المتجر الآن',
+        },
+        {
+          id: 's2',
+          badge: '⭐ الأكثر مبيعاً',
+          title: 'العطور الرائجية هذا الموسم',
+          description: 'اكتشف أحدث مجموعات العطور التي يبحث عنها الجميع - من عطور الرجال الخفية إلى عطور النساء الفاخرة.',
+          metric: 'الرائج',
+          timestamp: 'موسم 2026',
+          actionHint: 'الدخول للمتجر',
+        },
+        {
+          id: 's3',
+          badge: '🎁 هدايا مميزة',
+          title: 'مجموعة هدايا العطور المميزة',
+          description: 'ابحث عن الهدية المثالية لأحبائك - عطور أصيلة في علب فاخرة. عرض خاص للهدايا هذا الشهر.',
+          metric: '50+ خيار هدية',
+          timestamp: 'عرض محدود',
+          actionHint: 'استكشاف الهدايا',
         },
       ],
     },
