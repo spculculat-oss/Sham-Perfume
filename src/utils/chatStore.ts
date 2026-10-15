@@ -1,5 +1,5 @@
 import type { SupportedLanguage } from '../types/i18n';
-import { isStaticHosting, requestApi, type ChatResponse } from './api';
+import { ApiError, isStaticHosting, requestApi, type ChatResponse } from './api';
 import { CHAT_STORAGE_KEY, clearChatSession, DEFAULT_WELCOME_MESSAGE, isChatMessage,
   loadStoredChatSession, saveChatSession, type ChatMessage, type ShaheenProvider } from './chatStorage';
 
@@ -22,7 +22,27 @@ export function compactTurn(text: string): string {
   return text.slice(0, TURN_LIMIT - tail.length).trimEnd() + tail;
 }
 
-interface Snapshot { messages: ChatMessage[]; isLoading: boolean; daysRemaining: number; expiresAt: number }
+interface Snapshot { messages: ChatMessage[]; isLoading: boolean; busy: boolean; daysRemaining: number; expiresAt: number }
+
+/** When every engine is occupied the server answers 503 SHAHEEN_BUSY with a wait hint; queue patiently instead of failing. */
+export const BUSY_RETRIES = 8;
+const BUSY_FALLBACK_WAIT_MS = 4000;
+const CHAT_TIMEOUT_MS = 90_000;
+const VISITOR_KEY = 'sham_visitor_id';
+const VISITOR_ID = /^[A-Za-z0-9_-]{8,64}$/;
+
+function loadVisitorId(): string {
+  try {
+    const stored = localStorage.getItem(VISITOR_KEY);
+    if (stored && VISITOR_ID.test(stored)) return stored;
+    const id = (globalThis.crypto?.randomUUID?.() || `${Date.now().toString(36)}${Math.random().toString(36).slice(2)}${Math.random().toString(36).slice(2)}`)
+      .replace(/[^A-Za-z0-9_-]/g, '').slice(0, 64);
+    localStorage.setItem(VISITOR_KEY, id);
+    return id;
+  } catch {
+    return `${Date.now().toString(36)}${Math.random().toString(36).slice(2)}${Math.random().toString(36).slice(2)}`.slice(0, 64);
+  }
+}
 interface SendOptions {
   text: string; model: ShaheenModelChoice; language: SupportedLanguage;
   errorText: (error: unknown) => string;
@@ -43,13 +63,17 @@ export function chatHistory(messages: ChatMessage[]) {
 }
 
 /** One synchronous owner for both chat surfaces: no effect-driven rebroadcast loops. */
-export function createChatStore(request: typeof requestApi = requestApi) {
+export function createChatStore(
+  request: typeof requestApi = requestApi,
+  sleep: (ms: number) => Promise<void> = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+) {
+  const visitorId = loadVisitorId();
   let snapshot: Snapshot | undefined;
   let controller: AbortController | undefined;
   let generation = 0;
   let sequence = 0;
   const listeners = new Set<() => void>();
-  const getSnapshot = (): Snapshot => snapshot ??= { ...loadStoredChatSession(), isLoading: false };
+  const getSnapshot = (): Snapshot => snapshot ??= { ...loadStoredChatSession(), isLoading: false, busy: false };
   const publish = (next: Snapshot, persist = true) => {
     next = { ...next, messages: next.messages.slice(-200) };
     snapshot = next;
@@ -60,14 +84,14 @@ export function createChatStore(request: typeof requestApi = requestApi) {
     // A full localStorage wipe also clears the conversation.
     if (event.key !== CHAT_STORAGE_KEY && event.key !== null) return;
     controller?.abort(); generation++;
-    publish({ ...loadStoredChatSession(), isLoading: false }, false);
+    publish({ ...loadStoredChatSession(), isLoading: false, busy: false }, false);
   };
   const expire = () => {
     const current = getSnapshot();
     if (current.expiresAt <= Date.now()) {
       controller?.abort(); generation++;
       clearChatSession();
-      publish({ ...loadStoredChatSession(), isLoading: false }, false);
+      publish({ ...loadStoredChatSession(), isLoading: false, busy: false }, false);
     } else {
       const daysRemaining = Math.ceil((current.expiresAt - Date.now()) / 86400000);
       if (daysRemaining !== current.daysRemaining) publish({ ...current, daysRemaining }, false);
@@ -99,7 +123,7 @@ export function createChatStore(request: typeof requestApi = requestApi) {
     clear() {
       controller?.abort(); generation++;
       clearChatSession();
-      publish({ ...loadStoredChatSession(), messages: [DEFAULT_WELCOME_MESSAGE], isLoading: false });
+      publish({ ...loadStoredChatSession(), messages: [DEFAULT_WELCOME_MESSAGE], isLoading: false, busy: false });
     },
     /** Re-asks the question behind a trailing error bubble (removes both, then sends again). */
     async retry(options: Omit<SendOptions, 'text'>) {
@@ -121,22 +145,35 @@ export function createChatStore(request: typeof requestApi = requestApi) {
       controller = new AbortController();
       const timestamp = () => new Date().toLocaleTimeString(options.language, { hour: '2-digit', minute: '2-digit' });
       const id = (role: string) => `${role}-${Date.now()}-${++sequence}`;
-      publish({ ...current, isLoading: true,
+      publish({ ...current, isLoading: true, busy: false,
         messages: [...current.messages, { id: id('user'), role: 'user', text, timestamp: timestamp() }] });
       try {
-        const data = await request<ChatResponse>('/api/chat', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: controller.signal,
-          body: JSON.stringify({ message: text, model: options.model, language: options.language,
-            conversationHistory: chatHistory(current.messages) }),
-        });
+        let data: ChatResponse | undefined;
+        for (let attempt = 0; ; attempt++) {
+          try {
+            data = await request<ChatResponse>('/api/chat', {
+              method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: controller.signal,
+              body: JSON.stringify({ message: text, model: options.model, language: options.language, visitorId,
+                conversationHistory: chatHistory(current.messages) }),
+            }, CHAT_TIMEOUT_MS);
+            break;
+          } catch (error) {
+            const busy = error instanceof ApiError && error.status === 503 && error.code === 'SHAHEEN_BUSY';
+            if (!busy || attempt >= BUSY_RETRIES || generation !== token) throw error;
+            publish({ ...getSnapshot(), busy: true });
+            const hint = error.retryAfterMs && error.retryAfterMs > 0 ? error.retryAfterMs : BUSY_FALLBACK_WAIT_MS;
+            await sleep(hint * (0.8 + Math.random() * 0.4));
+            if (generation !== token) return false;
+          }
+        }
         if (generation !== token) return false;
         const message: ChatMessage = { id: id('bot'), role: 'assistant', text: data?.reply, timestamp: timestamp(),
           aiEngine: data?.engine };
         if (!message.text?.trim() || !isChatMessage(message)) throw new Error('Invalid chat response');
-        publish({ ...getSnapshot(), messages: [...getSnapshot().messages, message], isLoading: false });
+        publish({ ...getSnapshot(), messages: [...getSnapshot().messages, message], isLoading: false, busy: false });
       } catch (error) {
         if (generation !== token) return false;
-        publish({ ...getSnapshot(), isLoading: false, messages: [...getSnapshot().messages, {
+        publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
           id: id('bot-err'), role: 'assistant', kind: 'error', text: options.errorText(error), timestamp: timestamp(),
         }] });
       } finally {

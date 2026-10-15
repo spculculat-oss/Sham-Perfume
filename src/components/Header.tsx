@@ -149,6 +149,7 @@ export const Header: React.FC<HeaderProps> = ({
   ];
 
   return (
+    <>
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 px-4 sm:px-8 py-2.5 no-print shadow-xs">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         
@@ -518,5 +519,6 @@ export const Header: React.FC<HeaderProps> = ({
         currentLang={currentLang}
       />
     )}
+    </>
   );
 };

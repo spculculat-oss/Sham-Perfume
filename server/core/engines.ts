@@ -185,6 +185,11 @@ type GeminiCache = Map<string, { model: string; at: number; ttl?: number }>;
 const geminiSubstitutes: GeminiCache = ((globalThis as { __shamGeminiModels?: GeminiCache }).__shamGeminiModels ??= new Map());
 const geminiCacheKey = (apiKey: string, model: string) => `${createHash('sha256').update(apiKey).digest('hex').slice(0, 16)}:${model}`;
 
+/** Maintenance remedy (refresh_model_list): forget cached Gemini model substitutions so discovery re-runs on the next message. */
+export function resetGeminiModelCaches(): void {
+  geminiSubstitutes.clear();
+}
+
 async function listGeminiModels(apiKey: string, request: typeof fetch, signal: AbortSignal): Promise<GeminiModelInfo[]> {
   try {
     const response = await request('https://generativelanguage.googleapis.com/v1beta/models?pageSize=1000', { headers: { 'x-goog-api-key': apiKey }, signal });

@@ -24,7 +24,7 @@ import {
   Save,
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
-import { LText, makeT } from '../utils/localize';
+import { LText, loc, makeT } from '../utils/localize';
 import {
   getMerchantById,
   updateMerchant,
@@ -137,7 +137,7 @@ export const MerchantWorkspace: React.FC<{
         platformMargin: editProduct.costPrice * (PLATFORM_MARGIN_PERCENT / 100),
         stock: editProduct.stock, minOrderQty: editProduct.minOrderQty,
         descriptionAr: editProduct.descriptionAr, descriptionEn: editProduct.descriptionEn,
-        isActive: true, approvalStatus: 'pending',
+        isActive: true, approvalStatus: 'pending' as const,
       });
       setEditProductId(null);
       setShowAddProduct(false);
@@ -157,7 +157,7 @@ export const MerchantWorkspace: React.FC<{
         descriptionAr: newProduct.descriptionAr, descriptionEn: newProduct.descriptionEn,
         imageUrl: undefined,
         isActive: false,
-        approvalStatus: 'pending',
+        approvalStatus: 'pending' as const,
         notes: '',
         createdAt: '', updatedAt: '',
       };
@@ -189,7 +189,7 @@ export const MerchantWorkspace: React.FC<{
       platformMargin: editProduct.costPrice * (PLATFORM_MARGIN_PERCENT / 100),
       stock: editProduct.stock, minOrderQty: editProduct.minOrderQty,
       descriptionAr: editProduct.descriptionAr, descriptionEn: editProduct.descriptionEn,
-      isActive: true, approvalStatus: 'pending',
+      isActive: true, approvalStatus: 'pending' as const,
     });
     setEditProductId(null);
     setShowAddProduct(false);
@@ -213,19 +213,19 @@ export const MerchantWorkspace: React.FC<{
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
         <div className="text-center">
           <AlertCircle className="w-12 h-12 mx-auto text-amber-500 mb-3"/>
-          <h2 className="text-xl font-bold text-stone-900 mb-2">{L('title', currentLang)}</h2>
+          <h2 className="text-xl font-bold text-stone-900 mb-2">{L('title')}</h2>
           <p className="text-stone-600">Merchant not found</p>
-          <button onClick={onClose} className="mt-4 px-4 py-2 bg-amber-700 text-white rounded-lg">{L('back', currentLang)}</button>
+          <button onClick={onClose} className="mt-4 px-4 py-2 bg-amber-700 text-white rounded-lg">{L('back')}</button>
         </div>
       </div>
     );
   }
 
   const tabs = [
-    { key:'dashboard', label:L('dashboard', currentLang), icon:Package },
-    { key:'products', label:L('my_products', currentLang), icon:ShoppingBag },
-    { key:'orders', label:L('incoming_orders', currentLang), icon:DollarSign },
-    { key:'profile', label:L('profile', currentLang), icon:Settings },
+    { key:'dashboard', label:L('dashboard'), icon:Package },
+    { key:'products', label:L('my_products'), icon:ShoppingBag },
+    { key:'orders', label:L('incoming_orders'), icon:DollarSign },
+    { key:'profile', label:L('profile'), icon:Settings },
   ] as const;
 
   return (
@@ -238,7 +238,7 @@ export const MerchantWorkspace: React.FC<{
               {merchant.companyNameAr.slice(0,2)}
             </div>
             <div>
-              <h1 className="text-lg font-bold font-serif-luxury">{L('title', currentLang)}</h1>
+              <h1 className="text-lg font-bold font-serif-luxury">{L('title')}</h1>
               <p className="text-sm text-amber-200/80">{merchant.companyNameAr} — {merchant.companyNameEn}</p>
             </div>
           </div>
@@ -274,10 +274,10 @@ export const MerchantWorkspace: React.FC<{
               {/* Stats */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {[
-                  { label:L('stats_orders', currentLang), value:totalOrders, color:'bg-amber-50 border-amber-200/60 text-amber-900', icon:ShoppingBag },
-                  { label:L('stats_revenue', currentLang), value:totalRevenue.toLocaleString()+' جنيه', color:'bg-emerald-50 border-emerald-200/60 text-emerald-900', icon:DollarSign },
-                  { label:L('stats_products', currentLang), value:`${approvedCount}/${totalProducts}`, color:'bg-blue-50 border-blue-200/60 text-blue-900', icon:Package },
-                  { label:L('stats_margin', currentLang), value:`${PLATFORM_MARGIN_PERCENT}%`, color:'bg-purple-50 border-purple-200/60 text-purple-900', icon:TrendingUp },
+                  { label:L('stats_orders'), value:totalOrders, color:'bg-amber-50 border-amber-200/60 text-amber-900', icon:ShoppingBag },
+                  { label:L('stats_revenue'), value:totalRevenue.toLocaleString()+' جنيه', color:'bg-emerald-50 border-emerald-200/60 text-emerald-900', icon:DollarSign },
+                  { label:L('stats_products'), value:`${approvedCount}/${totalProducts}`, color:'bg-blue-50 border-blue-200/60 text-blue-900', icon:Package },
+                  { label:L('stats_margin'), value:`${PLATFORM_MARGIN_PERCENT}%`, color:'bg-purple-50 border-purple-200/60 text-purple-900', icon:TrendingUp },
                 ].map(s => (
                   <div key={s.label} className={`p-5 rounded-xl border ${s.color}`}>
                     <div className="flex items-center justify-between mb-3">
@@ -296,10 +296,10 @@ export const MerchantWorkspace: React.FC<{
                     <TrendingUp className="w-5 h-5"/>
                   </div>
                   <div>
-                    <h3 className="font-bold text-stone-900 mb-1">{L('margin_info', currentLang)}</h3>
+                    <h3 className="font-bold text-stone-900 mb-1">{L('margin_info')}</h3>
                     <p className="text-sm text-stone-600">
-                      سعر الجملة: <strong>mer.companyNameAr}</strong> ←
-                      سعر العرض للزبون: <strong>{cur.Retain} × 1.25</strong>
+                      سعر الجملة: <strong>{merchant?.companyNameAr}</strong> ←
+                      سعر العرض للزبون: <strong>سعر الجملة × 1.25</strong>
                       ربح المنصة: <strong>٢٥٪ من سعر الجملة</strong>
                     </p>
                   </div>
@@ -308,11 +308,11 @@ export const MerchantWorkspace: React.FC<{
 
               {/* Recent Orders */}
               <div>
-                <h3 className="text-lg font-bold text-stone-900 mb-3">{L('orders_title', currentLang)} — Recent</h3>
+                <h3 className="text-lg font-bold text-stone-900 mb-3">{L('orders_title')} — Recent</h3>
                 {orders.length === 0 ? (
                   <div className="p-6 rounded-xl bg-stone-50 border border-stone-200 text-center">
                     <ShoppingBag className="w-10 h-10 mx-auto text-stone-300 mb-3"/>
-                    <p className="text-sm text-stone-500">{L('no_products', currentLang)}</p>
+                    <p className="text-sm text-stone-500">{L('no_products')}</p>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -325,7 +325,7 @@ export const MerchantWorkspace: React.FC<{
                               order.status==='completed'?'bg-emerald-100 text-emerald-800':
                               order.status==='cancelled'?'bg-red-100 text-red-800':
                               'bg-amber-100 text-amber-800'
-                            }`}>{L(`order_${order.status}`, currentLang)}</span>
+                            }`}>{L(`order_${order.status}` as keyof typeof S)}</span>
                           </div>
                           <div className="text-right text-xs text-stone-500">
                             {new Date(order.createdAt).toLocaleDateString()}
@@ -339,25 +339,25 @@ export const MerchantWorkspace: React.FC<{
                             </div>
                           ))}
                           <div className="border-t border-stone-200 mt-2 pt-2 flex justify-between font-bold">
-                            <span>{L('order_total_retail', currentLang)}:</span>
+                            <span>{L('order_total_retail')}:</span>
                             <span className="text-emerald-700">{order.subtotalRetail.toLocaleString()} جنيه</span>
                           </div>
                           <div className="flex justify-between text-xs text-stone-500">
-                            <span>{L('order_platform_revenue', currentLang)}:</span>
+                            <span>{L('order_platform_revenue')}:</span>
                             <span className="text-amber-700 font-bold">{order.totalPlatformRevenue.toLocaleString()} جنيه</span>
                           </div>
                           <div className="flex justify-between text-xs text-stone-500">
-                            <span>{L('order_cost_to_merchant', currentLang)}:</span>
+                            <span>{L('order_cost_to_merchant')}:</span>
                             <span className="text-blue-700 font-bold">{order.subtotalCost.toLocaleString()} جنيه</span>
                           </div>
                         </div>
                         {order.status !== 'completed' && order.status !== 'cancelled' && (
                           <div className="mt-3 flex gap-2">
                             <button onClick={()=>confirmOrder(order.id)} className="flex-1 px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-medium transition-colors">
-                              {L('order_confirm', currentLang)}
+                              {L('order_confirm')}
                             </button>
                             <button onClick={()=>setConfirmCancelOrder(order.id)} className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-medium transition-colors">
-                              {L('order_cancel', currentLang)}
+                              {L('order_cancel')}
                             </button>
                           </div>
                         )}
@@ -369,13 +369,13 @@ export const MerchantWorkspace: React.FC<{
 
               {/* Active Products */}
               <div>
-                <h3 className="text-lg font-bold text-stone-900 mb-3">{L('my_products', currentLang)} — Active</h3>
+                <h3 className="text-lg font-bold text-stone-900 mb-3">{L('my_products')} — Active</h3>
                 {approvedProducts.length === 0 ? (
                   <div className="p-6 rounded-xl bg-stone-50 border border-stone-200 text-center">
                     <Package className="w-10 h-10 mx-auto text-stone-300 mb-3"/>
-                    <p className="text-sm text-stone-500 mb-2">{L('no_products', currentLang)}</p>
+                    <p className="text-sm text-stone-500 mb-2">{L('no_products')}</p>
                     <button onClick={()=>setShowAddProduct(true)} className="px-4 py-2 bg-amber-700 text-white rounded-lg text-sm font-medium hover:bg-amber-800 transition-colors">
-                      <Plus className="w-4 h-4 inline mr-1"/> {L('add_first_product', currentLang)}
+                      <Plus className="w-4 h-4 inline mr-1"/> {L('add_first_product')}
                     </button>
                   </div>
                 ) : (
@@ -385,23 +385,23 @@ export const MerchantWorkspace: React.FC<{
                         <div className="flex items-start justify-between mb-2">
                           <div className="font-bold text-stone-900">{product.nameAr}</div>
                           <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
-                            {L('status_approved', currentLang)}
+                            {L('status_approved')}
                           </span>
                         </div>
                         <div className="text-xs text-stone-500 mb-2">{product.category} — {product.unit}</div>
                         <div className="grid grid-cols-2 gap-2 text-sm mb-2">
                           <div className="p-2 rounded-lg bg-amber-50 border border-amber-200/40">
-                            <div className="text-xs text-stone-500">{L('product_cost_price', currentLang)}</div>
+                            <div className="text-xs text-stone-500">{L('product_cost_price')}</div>
                             <div className="font-bold text-amber-900 font-mono">{product.costPrice} جنيه</div>
                           </div>
                           <div className="p-2 rounded-lg bg-emerald-50 border border-emerald-200/40">
-                            <div className="text-xs text-stone-500">{L('product_retail_price', currentLang)}</div>
+                            <div className="text-xs text-stone-500">{L('product_retail_price')}</div>
                             <div className="font-bold text-emerald-900 font-mono">{product.retailPrice} جنيه</div>
                           </div>
                         </div>
                         <div className="flex justify-between text-xs text-stone-500">
-                          <span>{L('product_stock', currentLang)}: {product.stock}</span>
-                          <span>{L('product_min_order', currentLang)}: {product.minOrderQty}</span>
+                          <span>{L('product_stock')}: {product.stock}</span>
+                          <span>{L('product_min_order')}: {product.minOrderQty}</span>
                         </div>
                         <div className="mt-3 flex gap-2">
                           <button onClick={()=>startEdit(product)} className="flex-1 px-2 py-1 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded text-xs font-medium transition-colors">
@@ -422,17 +422,17 @@ export const MerchantWorkspace: React.FC<{
           {activeTab === 'products' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-bold text-stone-900">{L('my_products', currentLang)}</h2>
+                <h2 className="text-lg font-bold text-stone-900">{L('my_products')}</h2>
                 <button onClick={()=>setShowAddProduct(true)} className="px-4 py-2 bg-amber-700 text-white rounded-xl text-sm font-medium hover:bg-amber-800 transition-colors flex items-center gap-2">
-                  <Plus className="w-4 h-4"/> {L('add_product', currentLang)}
+                  <Plus className="w-4 h-4"/> {L('add_product')}
                 </button>
               </div>
               {products.length === 0 ? (
                 <div className="p-8 rounded-xl bg-stone-50 border border-stone-200 text-center">
                   <Package className="w-12 h-12 mx-auto text-stone-300 mb-3"/>
-                  <p className="text-stone-500 mb-3">{L('no_products', currentLang)}</p>
+                  <p className="text-stone-500 mb-3">{L('no_products')}</p>
                   <button onClick={()=>setShowAddProduct(true)} className="px-4 py-2 bg-amber-700 text-white rounded-lg text-sm font-medium hover:bg-amber-800 transition-colors">
-                    <Plus className="w-4 h-4 inline mr-1"/> {L('add_first_product', currentLang)}
+                    <Plus className="w-4 h-4 inline mr-1"/> {L('add_first_product')}
                   </button>
                 </div>
               ) : (
@@ -447,24 +447,24 @@ export const MerchantWorkspace: React.FC<{
                           <div className="font-bold text-stone-900">{product.nameAr}</div>
                           <div className="text-xs text-stone-500">{product.category} — {product.unit} | SKU: {product.sku}</div>
                           <div className="flex gap-3 mt-1 text-sm">
-                            <span className="text-stone-500">{L('product_cost_price', currentLang)}: <strong className="text-amber-900">{product.costPrice}</strong> جنيه</span>
-                            <span className="text-emerald-700 font-bold">{L('product_retail_price', currentLang)}: <strong>{product.retailPrice}</strong> جنيه</span>
+                            <span className="text-stone-500">{L('product_cost_price')}: <strong className="text-amber-900">{product.costPrice}</strong> جنيه</span>
+                            <span className="text-emerald-700 font-bold">{L('product_retail_price')}: <strong>{product.retailPrice}</strong> جنيه</span>
                           </div>
                           <div className="text-xs text-stone-500 mt-1">
-                            {L('product_stock', currentLang)}: {product.stock} | {L('product_min_order', currentLang)}: {product.minOrderQty}
+                            {L('product_stock')}: {product.stock} | {L('product_min_order')}: {product.minOrderQty}
                           </div>
                           <span className={`px-2 py-0.5 rounded text-[10px] font-bold mt-1 inline-block ${
                             product.approvalStatus==='approved'?'bg-emerald-100 text-emerald-800':
                             product.approvalStatus==='pending'?'bg-amber-100 text-amber-800':'bg-red-100 text-red-800'
                           }`}>
-                            {product.approvalStatus=== 'approved' ? L('status_approved', currentLang) :
-                             product.approvalStatus=== 'pending' ? L('status_pending', currentLang) : L('status_rejected', currentLang)}
+                            {product.approvalStatus=== 'approved' ? L('status_approved') :
+                             product.approvalStatus=== 'pending' ? L('status_pending') : L('status_rejected')}
                           </span>
                         </div>
-                      </>
+                      </div>
                       <div className="flex items-center gap-2">
                         <button onClick={()=>startEdit(product)} className="px-3 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-lg text-xs font-medium transition-colors">
-                          <Edit3 className="w-3.5 h-3.5 inline mr-0.5"/> {L('edit', currentLang)}
+                          <Edit3 className="w-3.5 h-3.5 inline mr-0.5"/> {L('edit')}
                         </button>
                         <button onClick={()=>deleteProduct(product.id)} className="px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg text-xs font-medium transition-colors">
                           <Trash2 className="w-3.5 h-3.5 inline"/>
@@ -479,11 +479,11 @@ export const MerchantWorkspace: React.FC<{
 
           {activeTab === 'orders' && (
             <div className="space-y-4">
-              <h2 className="text-lg font-bold text-stone-900">{L('orders_title', currentLang)}</h2>
+              <h2 className="text-lg font-bold text-stone-900">{L('orders_title')}</h2>
               {orders.length === 0 ? (
                 <div className="p-8 rounded-xl bg-stone-50 border border-stone-200 text-center">
                   <DollarSign className="w-12 h-12 mx-auto text-stone-300 mb-3"/>
-                  <p className="text-stone-500">{L('no_products', currentLang)}</p>
+                  <p className="text-stone-500">{L('no_products')}</p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -496,7 +496,7 @@ export const MerchantWorkspace: React.FC<{
                             order.status==='completed'?'bg-emerald-100 text-emerald-800':
                             order.status==='cancelled'?'bg-red-100 text-red-800':
                             'bg-amber-100 text-amber-800'
-                          }`}>{L(`order_${order.status}`, currentLang)}</span>
+                          }`}>{L(`order_${order.status}` as keyof typeof S)}</span>
                         </div>
                         <span className="text-xs text-stone-500">{new Date(order.createdAt).toLocaleDateString()}</span>
                       </div>
@@ -508,31 +508,31 @@ export const MerchantWorkspace: React.FC<{
                           </div>
                         ))}
                         <div className="border-t border-stone-200 mt-2 pt-2 flex justify-between font-bold text-sm">
-                          <span>{L('order_total_retail', currentLang)}:</span>
+                          <span>{L('order_total_retail')}:</span>
                           <span className="text-emerald-700">{order.subtotalRetail.toLocaleString()} جنيه</span>
                         </div>
                         <div className="flex justify-between text-xs text-stone-500 mt-1">
-                          <span>{L('order_platform_revenue', currentLang)}: <span className="text-amber-700 font-bold">{order.totalPlatformRevenue.toLocaleString()} جنيه</span></span>
-                          <span>{L('order_cost_to_merchant', currentLang)}: <span className="text-blue-700 font-bold">{order.subtotalCost.toLocaleString()} جنيه</span></span>
+                          <span>{L('order_platform_revenue')}: <span className="text-amber-700 font-bold">{order.totalPlatformRevenue.toLocaleString()} جنيه</span></span>
+                          <span>{L('order_cost_to_merchant')}: <span className="text-blue-700 font-bold">{order.subtotalCost.toLocaleString()} جنيه</span></span>
                         </div>
                       </div>
                       {order.status !== 'completed' && order.status !== 'cancelled' && (
                         <div className="mt-3 flex gap-2">
                           <button onClick={()=>confirmOrder(order.id)} className="flex-1 px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-medium transition-colors">
-                            {L('order_confirm', currentLang)}
+                            {L('order_confirm')}
                           </button>
                           <button onClick={()=>setConfirmCancelOrder(order.id)} className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-medium transition-colors">
-                            {L('order_cancel', currentLang)}
+                            {L('order_cancel')}
                           </button>
                         </div>
                       )}
                       {order.status === 'cancelled' && (
-                        <p className="text-xs text-red-600 mt-2">{{ar:'تم إلغاء هذا الطلب', en:'This order has been cancelled', fr:'Cette commande a été annulée', es:'Este pedido ha sido cancelado', it:'Questo ordine è stato annullato', de:'Diese Bestellung wurde storniert', ru:'Этот заказ был отменен', zh:'此订单已被取消', tr:'Bu sipariş iptal edilmiştir', fa:'این سفارش لغو شده است'}[currentLang]}</p>
+                        <p className="text-xs text-red-600 mt-2">{loc(currentLang, {ar:'تم إلغاء هذا الطلب', en:'This order has been cancelled', fr:'Cette commande a été annulée', es:'Este pedido ha sido cancelado', it:'Questo ordine è stato annullato', de:'Diese Bestellung wurde storniert', ru:'Этот заказ был отменен', zh:'此订单已被取消', tr:'Bu sipariş iptal edilmiştir', fa:'این سفارش لغو شده است'})}</p>
                       )}
                       {order.status === 'completed' && (
                         <p className="text-xs text-emerald-600 mt-2 flex items-center gap-1">
                           <CheckCircle className="w-3 h-3"/>
-                          {{ar:'اكتمل بنجاح', en:'Completed successfully', fr:'Terminé avec succès', es:'Completado con éxito', it:'Completato con successo', de:'Erfolgreich abgeschlossen', ru:'Успешно завершен', zh:'成功完成', tr:'Başarıyla tamamlandı', fa:'با موفقیت تکمیل شده'}[currentLang]}
+                          {loc(currentLang, {ar:'اكتمل بنجاح', en:'Completed successfully', fr:'Terminé avec succès', es:'Completado con éxito', it:'Completato con successo', de:'Erfolgreich abgeschlossen', ru:'Успешно завершен', zh:'成功完成', tr:'Başarıyla tamamlandı', fa:'با موفقیت تکمیل شده'})}
                         </p>
                       )}
                     </div>
@@ -544,76 +544,76 @@ export const MerchantWorkspace: React.FC<{
 
           {activeTab === 'profile' && (
             <div className="space-y-6">
-              <h2 className="text-lg font-bold text-stone-900">{L('profile', currentLang)}</h2>
+              <h2 className="text-lg font-bold text-stone-900">{L('profile')}</h2>
               {/* Warning for non-admin */}
               <div className="p-3 rounded-lg bg-amber-50 border border-amber-200/60 flex items-start gap-2">
                 <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5"/>
-                <p className="text-xs text-amber-800">{L('admin_warning', currentLang)}</p>
+                <p className="text-xs text-amber-800">{L('admin_warning')}</p>
               </div>
 
               {/* Company Info */}
               <div className="p-5 rounded-xl border border-stone-200">
-                <h3 className="text-sm font-bold text-stone-900 mb-3">{L('profile', currentLang)}</h3>
+                <h3 className="text-sm font-bold text-stone-900 mb-3">{L('profile')}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('company_name_ar', currentLang)}</label>
+                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('company_name_ar')}</label>
                     <input value={merchant.companyNameAr} onChange={e=>updateMerchant(merchant.id,{companyNameAr:e.target.value})}
                       className="w-full px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
                   </div>
                   <div>
-                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('company_name_en', currentLang)}</label>
+                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('company_name_en')}</label>
                     <input value={merchant.companyNameEn} onChange={e=>updateMerchant(merchant.id,{companyNameEn:e.target.value})}
                       className="w-full px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
                   </div>
                   <div>
-                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('registration_number', currentLang)}</label>
+                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('registration_number')}</label>
                     <input value={merchant.registrationNumber || ''} onChange={e=>updateMerchant(merchant.id,{registrationNumber:e.target.value})}
                       className="w-full px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
                   </div>
                   <div>
-                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('tax_id', currentLang)}</label>
+                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('tax_id')}</label>
                     <input value={merchant.taxId || ''} onChange={e=>updateMerchant(merchant.id,{taxId:e.target.value})}
                       className="w-full px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
                   </div>
                   <div>
-                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('email', currentLang)}</label>
+                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('email')}</label>
                     <input type="email" value={merchant.email} onChange={e=>updateMerchant(merchant.id,{email:e.target.value})}
                       className="w-full px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
                   </div>
                   <div>
-                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('phone', currentLang)}</label>
+                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('phone')}</label>
                     <input value={merchant.phone} onChange={e=>updateMerchant(merchant.id,{phone:e.target.value})}
                       className="w-full px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
                   </div>
                   <div>
-                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('whatsapp', currentLang)}</label>
+                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('whatsapp')}</label>
                     <input value={merchant.whatsapp || ''} onChange={e=>updateMerchant(merchant.id,{whatsapp:e.target.value})}
                       className="w-full px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
                   </div>
                   <div>
                     <label className="text-xs font-medium text-stone-600 mb-1 block">هامش المنصة: {merchant.marginPercent}%</label>
-                    <p className="text-xs text-stone-500 mt-1">{L('margin_info', currentLang)}</p>
+                    <p className="text-xs text-stone-500 mt-1">{L('margin_info')}</p>
                   </div>
                 </div>
               </div>
 
               {/* Banking Info */}
               <div className="p-5 rounded-xl border border-stone-200">
-                <h3 className="text-sm font-bold text-stone-900 mb-3">{L('banking_info', currentLang)}</h3>
+                <h3 className="text-sm font-bold text-stone-900 mb-3">{L('banking_info')}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('bank_name', currentLang)}</label>
-                    <input value={merchant.bankingInfo?.bankName || ''} onChange={e=>updateMerchant(merchant.id,{bankingInfo:{...merchant.bankingInfo,bankName:e.target.value}})}
+                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('bank_name')}</label>
+                    <input value={merchant.bankingInfo?.bankName || ''} onChange={e=>updateMerchant(merchant.id,{bankingInfo:{bankName:e.target.value,accountNumber:merchant.bankingInfo?.accountNumber||'',accountHolder:merchant.bankingInfo?.accountHolder||'',iban:merchant.bankingInfo?.iban}})}
                       className="w-full px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
                   </div>
                   <div>
-                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('account_number', currentLang)}</label>
-                    <input value={merchant.bankingInfo?.accountNumber || ''} onChange={e=>updateMerchant(merchant.id,{bankingInfo:{...merchant.bankingInfo,accountNumber:e.target.value}})}
+                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('account_number')}</label>
+                    <input value={merchant.bankingInfo?.accountNumber || ''} onChange={e=>updateMerchant(merchant.id,{bankingInfo:{bankName:merchant.bankingInfo?.bankName||'',accountNumber:e.target.value,accountHolder:merchant.bankingInfo?.accountHolder||'',iban:merchant.bankingInfo?.iban}})}
                       className="w-full px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
                   </div>
                   <div className="md:col-span-2">
-                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('account_holder', currentLang)}</label>
-                    <input value={merchant.bankingInfo?.accountHolder || ''} onChange={e=>updateMerchant(merchant.id,{bankingInfo:{...merchant.bankingInfo,accountHolder:e.target.value}})}
+                    <label className="text-xs font-medium text-stone-600 mb-1 block">{L('account_holder')}</label>
+                    <input value={merchant.bankingInfo?.accountHolder || ''} onChange={e=>updateMerchant(merchant.id,{bankingInfo:{bankName:merchant.bankingInfo?.bankName||'',accountNumber:merchant.bankingInfo?.accountNumber||'',accountHolder:e.target.value,iban:merchant.bankingInfo?.iban}})}
                       className="w-full px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
                   </div>
                 </div>
@@ -621,7 +621,7 @@ export const MerchantWorkspace: React.FC<{
 
               {/* Channels */}
               <div className="p-5 rounded-xl border border-stone-200">
-                <h3 className="text-sm font-bold text-stone-900 mb-3">{L('profile', currentLang)} — Channels</h3>
+                <h3 className="text-sm font-bold text-stone-900 mb-3">{L('profile')} — Channels</h3>
                 <div className="grid grid-cols-3 gap-3">
                   {(['email','whatsapp','phone'] as const).map(ch=>(
                     <div key={ch} className="p-3 rounded-lg bg-stone-50 border border-stone-200 text-center">
@@ -629,11 +629,11 @@ export const MerchantWorkspace: React.FC<{
                         {ch==='email'&&<Mail className="w-4 h-4 text-stone-500"/>}
                         {ch==='whatsapp'&&<MessageSquare className="w-4 h-4 text-stone-500"/>}
                         {ch==='phone'&&<Phone className="w-4 h-4 text-stone-500"/>}
-                        <span className="text-xs text-stone-600">{L(`channel_${ch}`, currentLang)}</span>
+                        <span className="text-xs text-stone-600">{L(`channel_${ch}` as keyof typeof S)}</span>
                       </div>
                       <div className="text-xs font-medium">
-                        {merchant.channels[ch] ? <span className="text-emerald-700">{L('channel_active', currentLang)}</span>
-                         : <span className="text-stone-400">{L('channel_inactive', currentLang)}</span>}
+                        {merchant.channels[ch] ? <span className="text-emerald-700">{L('channel_active')}</span>
+                         : <span className="text-stone-400">{L('channel_inactive')}</span>}
                       </div>
                     </div>
                   ))}
@@ -642,7 +642,7 @@ export const MerchantWorkspace: React.FC<{
 
               <div className="flex justify-end">
                 <button onClick={onClose} className="px-4 py-2 bg-amber-700 text-white rounded-xl text-sm font-medium hover:bg-amber-800 transition-colors">
-                  {L('back', currentLang)}
+                  {L('back')}
                 </button>
               </div>
             </div>
@@ -654,18 +654,18 @@ export const MerchantWorkspace: React.FC<{
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
             <div className="w-full max-w-lg bg-white rounded-2xl shadow-2xl animate-in fade-in zoom-in-95 p-6">
               <h2 className="text-lg font-bold text-stone-900 mb-4 font-serif-luxury">
-                {editProductId ? L('product_name_ar', currentLang)+' (تعديل)' : L('add_product', currentLang)}
+                {editProductId ? L('product_name_ar')+' (تعديل)' : L('add_product')}
               </h2>
               <div className="space-y-3">
                 <div>
-                  <label className="text-xs font-medium text-stone-700">{L('product_name_ar', currentLang)}</label>
+                  <label className="text-xs font-medium text-stone-700">{L('product_name_ar')}</label>
                   <input value={editProductId ? editProduct.nameAr : newProduct.nameAr} onChange={e=>{
                     if(editProductId) setEditProduct({...editProduct, nameAr:e.target.value});
                     else setNewProduct({...newProduct, nameAr:e.target.value});
                   }} className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-stone-700">{L('product_name_en', currentLang)}</label>
+                  <label className="text-xs font-medium text-stone-700">{L('product_name_en')}</label>
                   <input value={editProductId ? editProduct.nameEn : newProduct.nameEn} onChange={e=>{
                     if(editProductId) setEditProduct({...editProduct, nameEn:e.target.value});
                     else setNewProduct({...newProduct, nameEn:e.target.value});
@@ -673,7 +673,7 @@ export const MerchantWorkspace: React.FC<{
                 </div>
                 <div className="flex gap-2">
                   <div className="flex-1">
-                    <label className="text-xs font-medium text-stone-700">{L('product_category', currentLang)}</label>
+                    <label className="text-xs font-medium text-stone-700">{L('product_category')}</label>
                     <select value={editProductId ? editProduct.category : newProduct.category} onChange={e=>{
                       if(editProductId) setEditProduct({...editProduct, category:e.target.value});
                       else setNewProduct({...newProduct, category:e.target.value});
@@ -682,7 +682,7 @@ export const MerchantWorkspace: React.FC<{
                     </select>
                   </div>
                   <div className="flex-1">
-                    <label className="text-xs font-medium text-stone-700">{L('product_unit', currentLang)}</label>
+                    <label className="text-xs font-medium text-stone-700">{L('product_unit')}</label>
                     <select value={editProductId ? editProduct.unit : newProduct.unit} onChange={e=>{
                       if(editProductId) setEditProduct({...editProduct, unit:e.target.value});
                       else setNewProduct({...newProduct, unit:e.target.value});
@@ -692,25 +692,25 @@ export const MerchantWorkspace: React.FC<{
                   </div>
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-stone-700">{L('product_cost_price', currentLang)}</label>
+                  <label className="text-xs font-medium text-stone-700">{L('product_cost_price')}</label>
                   <input type="number" value={editProductId ? editProduct.costPrice : newProduct.costPrice} onChange={e=>{
                     if(editProductId) setEditProduct({...editProduct, costPrice:parseFloat(e.target.value)||0});
                     else setNewProduct({...newProduct, costPrice:parseFloat(e.target.value)||0});
                   }} className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
                   <p className="text-[10px] text-stone-400 mt-1">
-                    {L('product_retail_price', currentLang)}: <strong>{((editProductId?editProduct.costPrice:newProduct.costPrice)*1.25).toFixed(2)}</strong> جنيه (مع {PLATFORM_MARGIN_PERCENT}٪)
+                    {L('product_retail_price')}: <strong>{((editProductId?editProduct.costPrice:newProduct.costPrice)*1.25).toFixed(2)}</strong> جنيه (مع {PLATFORM_MARGIN_PERCENT}٪)
                   </p>
                 </div>
                 <div className="flex gap-2">
                   <div className="flex-1">
-                    <label className="text-xs font-medium text-stone-700">{L('product_stock', currentLang)}</label>
+                    <label className="text-xs font-medium text-stone-700">{L('product_stock')}</label>
                     <input type="number" value={editProductId ? editProduct.stock : newProduct.stock} onChange={e=>{
                       if(editProductId) setEditProduct({...editProduct, stock:parseInt(e.target.value)||0});
                       else setNewProduct({...newProduct, stock:parseInt(e.target.value)||0});
                     }} className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
                   </div>
                   <div className="flex-1">
-                    <label className="text-xs font-medium text-stone-700">{L('product_min_order', currentLang)}</label>
+                    <label className="text-xs font-medium text-stone-700">{L('product_min_order')}</label>
                     <input type="number" value={editProductId ? editProduct.minOrderQty : newProduct.minOrderQty} onChange={e=>{
                       if(editProductId) setEditProduct({...editProduct, minOrderQty:parseInt(e.target.value)||1});
                       else setNewProduct({...newProduct, minOrderQty:parseInt(e.target.value)||1});
@@ -736,11 +736,11 @@ export const MerchantWorkspace: React.FC<{
               <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-3">
                 <XCircle className="w-6 h-6 text-red-600"/>
               </div>
-              <h3 className="text-lg font-bold text-stone-900 mb-2">{L('cancel_dialog_title', currentLang)}</h3>
-              <p className="text-sm text-stone-600 mb-4">{L('cancel_dialog_msg', currentLang)}</p>
+              <h3 className="text-lg font-bold text-stone-900 mb-2">{L('cancel_dialog_title')}</h3>
+              <p className="text-sm text-stone-600 mb-4">{L('cancel_dialog_msg')}</p>
               <div className="flex gap-2">
                 <button onClick={()=>setConfirmCancelOrder(null)} className="flex-1 px-4 py-2 rounded-lg bg-stone-100 text-stone-700 text-sm font-medium hover:bg-stone-200">إلغاء</button>
-                <button onClick={()=>cancelOrder(confirmCancelOrder)} className="flex-1 px-4 py-2 rounded-lg bg-red-600 text-white text-sm font-medium hover:bg-red-700">{L('order_cancel', currentLang)}</button>
+                <button onClick={()=>cancelOrder(confirmCancelOrder)} className="flex-1 px-4 py-2 rounded-lg bg-red-600 text-white text-sm font-medium hover:bg-red-700">{L('order_cancel')}</button>
               </div>
             </div>
           </div>

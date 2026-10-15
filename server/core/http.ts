@@ -14,6 +14,7 @@ import { RateLimiter, clientKey } from './rateLimit';
 import { probeEngines } from '../shaheen';
 import { SHAHEEN_SITE_SETTINGS } from '../config/shaheen';
 import { engineStatuses } from './engines';
+import { MAINTENANCE_ACTIONS, ShaheenRuntime, runningVersion, type MaintenanceAction } from './maintenance';
 import { activeSeats, councilAvailable, publicTranscript } from './council';
 import type { CollectionName, RequestStatus } from './types';
 
@@ -32,7 +33,7 @@ function sendError(res: express.Response, error: unknown) {
 const wrap = (fn: (req: express.Request, res: express.Response) => Promise<unknown>) =>
   (req: express.Request, res: express.Response) => { fn(req, res).catch((error) => sendError(res, error)); };
 
-export interface CoreOptions { env?: Env; store?: Store; fetch?: typeof fetch }
+export interface CoreOptions { env?: Env; store?: Store; fetch?: typeof fetch; runtime?: ShaheenRuntime }
 
 export function createShamCore(options: CoreOptions = {}) {
   const env = options.env || process.env;
@@ -45,6 +46,7 @@ export function createShamCore(options: CoreOptions = {}) {
   }
   const repo = new Repository(store, env);
   const orchestrator = new Orchestrator(repo, { env, fetch: options.fetch });
+  const runtime = options.runtime || new ShaheenRuntime(runningVersion(env));
   const notifier = createNotifier(env, options.fetch);
   const feedbackLimiter = new RateLimiter(60, 10 * 60_000);
   const privacyLimiter = new RateLimiter(10, 10 * 60_000);
@@ -81,14 +83,22 @@ export function createShamCore(options: CoreOptions = {}) {
   }));
 
   assistant.post('/chat', wrap(async (req, res) => {
-    if (!chatLimiter.allow(clientKey(req))) throw new AssistantError(429, 'RATE_LIMITED', 'Too many messages, please wait a minute');
-    const input = validateChatInput(req.body);
-    const controller = new AbortController();
-    res.on('close', () => { if (!res.writableFinished) controller.abort(); });
-    const key = clientKey(req);
-    const output = await orchestrator.chat(input, { signal: controller.signal, councilGate: () => councilLimiter.allow(key) });
-    await afterChat(output);
-    res.json(output);
+    const started = Date.now();
+    try {
+      if (!chatLimiter.allow(clientKey(req))) throw new AssistantError(429, 'RATE_LIMITED', 'Too many messages, please wait a minute');
+      const input = validateChatInput(req.body);
+      const controller = new AbortController();
+      res.on('close', () => { if (!res.writableFinished) controller.abort(); });
+      const key = clientKey(req);
+      const output = await orchestrator.chat(input, { signal: controller.signal, councilGate: () => councilLimiter.allow(key) });
+      await afterChat(output);
+      runtime.record({ ms: Date.now() - started, status: 200 });
+      res.json(output);
+    } catch (error) {
+      const e = error as { status?: number; code?: string };
+      runtime.record({ ms: Date.now() - started, status: e.status || 500, code: e.code });
+      throw error;
+    }
   }));
 
   /**
@@ -206,6 +216,20 @@ export function createShamCore(options: CoreOptions = {}) {
     }
     next();
   });
+
+  // Doctor (طبيب شاهين): health counters + safe remedies. Engine ids only — never display names.
+  const maintenanceSnapshot = () => ({ ...runtime.snapshot(), engines: engineStatuses(env).map((e) => e.id) });
+  admin.get('/maintenance', wrap(async (_req, res) => { res.json(maintenanceSnapshot()); }));
+  admin.post('/maintenance', wrap(async (req, res) => {
+    const body = (req.body || {}) as { action?: unknown; actions?: unknown };
+    const actions: unknown[] = Array.isArray(body.actions) ? body.actions : body.action !== undefined ? [body.action] : [];
+    if (!actions.length || actions.some((a) => typeof a !== 'string' || !(MAINTENANCE_ACTIONS as readonly string[]).includes(a))) {
+      res.status(400).json({ error: 'Unknown maintenance action', code: 'UNKNOWN_ACTION' });
+      return;
+    }
+    const results = actions.map((a) => runtime.act(a as MaintenanceAction));
+    res.json({ results, snapshot: maintenanceSnapshot() });
+  }));
 
   admin.get('/overview', wrap(async (_req, res) => {
     const [requests, conversations, products, knowledge, services, settings, gaps] = await Promise.all([

@@ -13,6 +13,8 @@ import { SUPPORTED_LANGUAGES } from '../src/types/i18n';
 import type { SupportedLanguage } from '../src/types/i18n';
 import { callEngine, engineStatuses, type EngineFailure } from './core/engines';
 import { RateLimiter, clientKey } from './core/rateLimit';
+import { AnswerCache, GateBusyError, ProviderGate, VISITOR_ID, cacheKey, capacityConfig, normalizeQuestion, retryHintMs } from './core/capacity';
+import type { ShaheenRuntime } from './core/maintenance';
 import { councilAvailable, runCouncil } from './core/council';
 import type { Repository } from './core/repository';
 import type { CouncilSettings, ModelEngineId, ShaheenSettings } from './core/types';
@@ -28,7 +30,7 @@ export interface ChatRequest {
   conversationHistory: ChatTurn[];
 }
 export class ChatError extends Error {
-  constructor(public status: number, public code: string, message: string) { super(message); }
+  constructor(public status: number, public code: string, message: string, public retryAfterMs?: number) { super(message); }
 }
 type Environment = Record<string, string | undefined>;
 
@@ -150,6 +152,7 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   const maxTokens = style === 'fast' ? Math.min(settings.maxTokens, 1024) : settings.maxTokens;
   const turns: ChatTurn[] = [...input.conversationHistory, { role: 'user', text: input.message }];
   let timedOut = false;
+  let limitedRetryMs: number | undefined;
   for (const provider of candidates) {
     if (total.aborted) break;
     const signal = AbortSignal.any([total, AbortSignal.timeout(options.timeoutMs ?? 28000)]);
@@ -159,6 +162,9 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
       const reply = await callEngine(provider, instruction, turns, {
         env, fetch: options.fetch, signal, temperature: settings.temperature, model,
         maxTokens, maxChars: 32000,
+        onFailure: (failure, _status, detail) => {
+          if (failure === 'rate_limited') limitedRetryMs = retryHintMs(detail) ?? limitedRetryMs;
+        },
       });
       if (signal.aborted) throw signal.reason;
       if (typeof reply !== 'string' || !reply.trim()) continue;
@@ -170,7 +176,7 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
     }
   }
   if (total.aborted || timedOut) throw new ChatError(504, 'PROVIDER_TIMEOUT', 'AI request timed out or was cancelled');
-  throw new ChatError(503, 'PROVIDER_UNAVAILABLE', 'The configured AI providers did not return a valid answer');
+  throw new ChatError(503, 'PROVIDER_UNAVAILABLE', 'The configured AI providers did not return a valid answer', limitedRetryMs);
 }
 
 /** "council" mode: Sham Core's advisory council answers a Shaheen question (seats from the admin council settings). */
@@ -239,12 +245,26 @@ export async function probeEngines(settings: ShaheenSettings, options: { env?: E
 }
 
 /** Public routes: GET /api/models and POST /api/chat (rate limited, settings from the shared store). */
-export function createShaheenRouter(options: { repo: Repository; env?: Environment; fetch?: typeof fetch }) {
+export function createShaheenRouter(options: { repo: Repository; env?: Environment; fetch?: typeof fetch; runtime?: ShaheenRuntime }) {
   const env = options.env || process.env;
   const router = express.Router();
-  const limiter = new RateLimiter(Number(env.SHAM_SHAHEEN_RATE_PER_MIN) || 10, 60_000);
+  const cfg = capacityConfig(env);
+  const visitorLimiter = new RateLimiter(cfg.perVisitorPerMin, 60_000);
+  const ipLimiter = new RateLimiter(cfg.perIpPerMin, 60_000);
   // A council answer costs several model calls: separate hourly budget per visitor.
   const councilLimiter = new RateLimiter(Number(env.SHAM_COUNCIL_RATE_PER_HOUR) || 12, 60 * 60_000);
+  // Capacity layer: identical opening questions share one provider call; a provider 429
+  // makes visitors wait in line (bounded) instead of failing.
+  const answers = new AnswerCache<ReturnType<typeof publicChatResult>>(cfg.cacheEntries, cfg.cacheTtlMs);
+  const gate = new ProviderGate(cfg.maxConcurrent, cfg.queueWaitMs, cfg.providerRpm);
+  options.runtime?.attach({ gate, answers: answers as unknown as AnswerCache<unknown> });
+  const visitorKeyOf = (req: express.Request, body: unknown): string => {
+    const header = req.headers['x-sham-visitor'];
+    if (typeof header === 'string' && VISITOR_ID.test(header)) return `v:${header}`;
+    const fromBody = (body as { visitorId?: unknown } | null)?.visitorId;
+    if (typeof fromBody === 'string' && VISITOR_ID.test(fromBody)) return `v:${fromBody}`;
+    return `ip:${clientKey(req)}`;
+  };
 
   router.get('/models', async (_req, res) => {
     res.setHeader('Cache-Control', 'no-store');
@@ -262,16 +282,39 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
     res.on('close', cancel);
     try {
       const input = validateChatRequest(req.body);
-      if (!limiter.allow(clientKey(req))) throw new ChatError(429, 'RATE_LIMITED', 'Too many messages, please wait a minute');
+      const visitorKey = visitorKeyOf(req, req.body);
+      if (!ipLimiter.allow(clientKey(req)) || !visitorLimiter.allow(visitorKey)) {
+        throw new ChatError(429, 'RATE_LIMITED', 'Too many messages, please wait a minute');
+      }
       const { shaheen, council } = await options.repo.settings();
-      if (input.model === 'council' && shaheen.allowVisitorChoice && !councilLimiter.allow(clientKey(req))) {
+      if (input.model === 'council' && shaheen.allowVisitorChoice && !councilLimiter.allow(visitorKey)) {
         throw new ChatError(429, 'RATE_LIMITED', 'Too many expert-council questions, try the other modes');
       }
-      const result = await executeChat(input, { env, fetch: options.fetch, signal: controller.signal, settings: shaheen, council });
-      if (!res.destroyed) res.json(publicChatResult(result));
+      const produce = async (signal?: AbortSignal) => {
+        const result = await gate.run(['shaheen'], async () => {
+          try {
+            return { outcome: 'ok' as const, value: await executeChat(input, { env, fetch: options.fetch, signal, settings: shaheen, council }) };
+          } catch (error) {
+            if (error instanceof ChatError && error.code === 'PROVIDER_UNAVAILABLE') {
+              return { outcome: 'limited' as const, retryMs: error.retryAfterMs };
+            }
+            throw error;
+          }
+        }, signal);
+        if (!result) throw new ChatError(503, 'PROVIDER_UNAVAILABLE', 'The configured AI providers did not return a valid answer');
+        return publicChatResult(result);
+      };
+      // Only an opening question (no history yet) may be shared between visitors.
+      const cacheable = cfg.cacheTtlMs > 0 && input.conversationHistory.length === 0;
+      const key = cacheable ? cacheKey([normalizeQuestion(input.message), input.language, input.model, JSON.stringify(shaheen)]) : '';
+      const result = cacheable ? await answers.getOrLoad(key, () => produce()) : await produce(controller.signal);
+      if (!res.destroyed) res.json(result);
     } catch (error) {
       if (res.destroyed) return;
-      if (error instanceof ChatError) {
+      if (error instanceof GateBusyError) {
+        res.setHeader('Retry-After', String(Math.max(1, Math.ceil(error.retryAfterMs / 1000))));
+        res.status(503).json({ error: 'Shaheen is busy, please retry shortly', code: 'SHAHEEN_BUSY', retryAfterMs: error.retryAfterMs });
+      } else if (error instanceof ChatError) {
         res.status(error.status).json({ error: error.message, code: error.code });
       } else {
         res.status(500).json({ error: 'Chat service failed', code: 'CHAT_FAILED' });

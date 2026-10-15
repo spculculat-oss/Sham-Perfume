@@ -25,6 +25,7 @@ import {
   saveOrder, updateOrderStatus, updateOrderPaymentStatus,
   getPlatformStats,
   addAdminNote,
+  getAdminNotes,
 } from '../utils/merchantDataStore';
 import { PLATFORM_MARGIN_PERCENT } from '../config/margin';
 
@@ -99,6 +100,7 @@ export const AdminMerchantManagement: React.FC<{
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMerchantId, setSelectedMerchantId] = useState<string|null>(null);
   const [showProductModal, setShowProductModal] = useState(false);
+  const [, setShowOrderModal] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
   const [newNote, setNewNote] = useState('');
   const [confirmDelete, setConfirmDelete] = useState<string|null>(null);
@@ -118,8 +120,8 @@ export const AdminMerchantManagement: React.FC<{
 
   const stats = useMemo(() => getPlatformStats(), []);
   const merchant = selectedMerchantId ? getMerchantById(selectedMerchantId) : null;
-  const products = merchantId ? getMerchantProducts(merchantId) : [];
-  const orders = merchantId ? getOrdersByMerchant(merchantId) : [];
+  const products = selectedMerchantId ? getMerchantProducts(selectedMerchantId) : [];
+  const orders = selectedMerchantId ? getOrdersByMerchant(selectedMerchantId) : [];
 
   const handleApprove = () => {
     if (!merchant) return;
@@ -157,7 +159,7 @@ export const AdminMerchantManagement: React.FC<{
   const toggleChannel = (channel: 'email'|'whatsapp'|'phone', enable: boolean) => {
     if (!merchant) return;
     const ch = { ...merchant.channels };
-    (ch as Record<string, boolean>)[channel] = enable;
+    (ch as unknown as Record<string, boolean>)[channel] = enable;
     updateMerchant(merchant.id, { channels: ch });
     addAdminNote({ merchantId: merchant.id, type: enable ? 'general' : 'channel_deletion',
       content: `${enable ? 'تفعيل' : 'حذف'} canal ${channel} لـ ${merchant.companyNameAr}`, createdBy: 'Admin' });
@@ -179,7 +181,7 @@ export const AdminMerchantManagement: React.FC<{
       costPrice: 0, retailPrice: 0, platformMargin: 0,
       costCurrency: 'EGP', stock: 0, minOrderQty: 1,
       descriptionAr: '', descriptionEn: '', imageUrl: undefined,
-      isActive: false, approvalStatus: 'pending', notes: '',
+      isActive: false, approvalStatus: 'pending' as const, notes: '',
       createdAt: '', updatedAt: '',
     };
     saveMerchantProduct(product);
@@ -192,10 +194,10 @@ export const AdminMerchantManagement: React.FC<{
   const updateOrderStatusHandler = (id: string, status: any) => updateOrderStatus(id, status);
 
   const tabLabels = {
-    all: L('tab_all', currentLang),
-    pending: L('tab_pending', currentLang),
-    approved: L('tab_approved', currentLang),
-    suspended: L('tab_suspended', currentLang),
+    all: L('tab_all'),
+    pending: L('tab_pending'),
+    approved: L('tab_approved'),
+    suspended: L('tab_suspended'),
   };
 
   const renderMerchantRow = (m: any) => (
@@ -246,8 +248,8 @@ export const AdminMerchantManagement: React.FC<{
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-stone-900 to-amber-950 text-amber-400 flex items-center justify-center font-bold text-lg">شام</div>
             <div>
-              <h1 className="text-lg font-bold text-stone-900 font-serif-luxury">{L('page_title', currentLang)}</h1>
-              <p className="text-xs text-stone-500">{L('margin_desc', currentLang)}</p>
+              <h1 className="text-lg font-bold text-stone-900 font-serif-luxury">{L('page_title')}</h1>
+              <p className="text-xs text-stone-500">{L('margin_desc')}</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 rounded-lg hover:bg-stone-100 transition-colors"><RefreshCw className="w-4 h-4 text-stone-500"/></button>
@@ -258,13 +260,13 @@ export const AdminMerchantManagement: React.FC<{
           <div className="w-72 border-r border-stone-200 flex flex-col bg-stone-50/50 shrink-0 overflow-y-auto">
             {/* Stats Card */}
             <div className="p-4 border-b border-stone-200 space-y-3">
-              <div className="text-xs font-bold text-stone-500 uppercase tracking-wider">{L('stats_merchants', currentLang)}</div>
+              <div className="text-xs font-bold text-stone-500 uppercase tracking-wider">{L('stats_merchants')}</div>
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { v: stats.totalMerchants, l: L('stats_merchants', currentLang), c: 'bg-amber-50 border-amber-200/60 text-amber-900' },
-                  { v: stats.approvedMerchants, l: L('stats_approved', currentLang), c: 'bg-emerald-50 border-emerald-200/60 text-emerald-900' },
-                  { v: stats.pendingMerchants, l: L('stats_pending', currentLang), c: 'bg-amber-100 border-amber-300/60 text-amber-800' },
-                  { v: stats.suspendedMerchants, l: L('stats_suspended', currentLang), c: 'bg-red-50 border-red-200/60 text-red-800' },
+                  { v: stats.totalMerchants, l: L('stats_merchants'), c: 'bg-amber-50 border-amber-200/60 text-amber-900' },
+                  { v: stats.approvedMerchants, l: L('stats_approved'), c: 'bg-emerald-50 border-emerald-200/60 text-emerald-900' },
+                  { v: stats.pendingMerchants, l: L('stats_pending'), c: 'bg-amber-100 border-amber-300/60 text-amber-800' },
+                  { v: stats.suspendedMerchants, l: L('stats_suspended'), c: 'bg-red-50 border-red-200/60 text-red-800' },
                 ].map(s => (
                   <div key={s.l} className={`p-3 rounded-xl border ${s.c}`}>
                     <div className="text-2xl font-bold">{s.v}</div>
@@ -276,27 +278,27 @@ export const AdminMerchantManagement: React.FC<{
             {/* Metrics */}
             <div className="p-4 border-b border-stone-200 space-y-2">
               {[
-                [stats.totalProducts, L('stats_products', currentLang)],
-                [stats.approvedProducts, L('stats_approved_products', currentLang)],
-                [stats.totalOrders, L('stats_orders', currentLang)],
-                [stats.pendingOrders, L('stats_pending_orders', currentLang)],
-                [stats.completedOrders, L('stats_completed_orders', currentLang)],
-                [stats.totalRetailers, L('stats_retailers', currentLang)],
-                [stats.totalRevenue, L('stats_total_revenue', currentLang)],
-                [stats.totalPlatformRevenue, L('stats_platform_revenue', currentLang)],
+                [stats.totalProducts, L('stats_products')],
+                [stats.approvedProducts, L('stats_approved_products')],
+                [stats.totalOrders, L('stats_orders')],
+                [stats.pendingOrders, L('stats_pending_orders')],
+                [stats.completedOrders, L('stats_completed_orders')],
+                [stats.totalRetailers, L('stats_retailers')],
+                [stats.totalRevenue, L('stats_total_revenue')],
+                [stats.totalPlatformRevenue, L('stats_platform_revenue')],
               ].map(([v, l]) => (
                 <div key={l} className="flex justify-between items-center py-1 border-b border-stone-100 last:border-0">
                   <span className="text-xs font-bold text-stone-500">{l}</span>
                   <span className="text-sm font-bold text-stone-800">
                     {typeof v === 'number' && v > 0 ? v.toLocaleString() : v}
-                    {l.includes('revenue') ? ' جنيه' : ''}
+                    {String(l).includes('revenue') ? ' جنيه' : ''}
                   </span>
                 </div>
               ))}
             </div>
             {/* Tabs */}
             <div className="p-3 border-t border-stone-200">
-              <div className="text-xs font-bold text-stone-500 uppercase mb-2">{L('section_merchants', currentLang)}</div>
+              <div className="text-xs font-bold text-stone-500 uppercase mb-2">{L('section_merchants')}</div>
               {(['all','pending','approved','suspended'] as const).map(tab => (
                 <button key={tab} onClick={()=>{setActiveTab(tab);setSelectedMerchantId(null);}}
                   className={`w-full text-left px-3 py-2 rounded-lg text-xs font-medium mb-1 transition-colors ${
@@ -305,9 +307,9 @@ export const AdminMerchantManagement: React.FC<{
                   {tab===activeTab?tabLabels[tab]:tabLabels[tab]}
                 </button>
               ))}
-              <div className="text-xs font-bold text-stone-500 uppercase mt-4 mb-2">{L('section_orders', currentLang)}</div>
+              <div className="text-xs font-bold text-stone-500 uppercase mt-4 mb-2">{L('section_orders')}</div>
               <button onClick={()=>setShowOrderModal(true)} className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-stone-600 hover:bg-stone-100">
-                <Plus className="w-3 h-3 inline mr-1"/> {L('add_order', currentLang)}
+                <Plus className="w-3 h-3 inline mr-1"/> {L('add_order')}
               </button>
             </div>
           </div>
@@ -319,12 +321,12 @@ export const AdminMerchantManagement: React.FC<{
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400"/>
                 <input type="text" value={searchQuery} onChange={e=>setSearchQuery(e.target.value)}
-                  placeholder={L('search', currentLang)}
+                  placeholder={L('search')}
                   className="w-full pl-9 pr-4 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
               </div>
               {selectedMerchantId && (
                 <button onClick={()=>setSelectedMerchantId(null)} className="px-3 py-2 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-medium transition-colors">
-                  ← {L('back', currentLang)}
+                  ← {L('back')}
                 </button>
               )}
             </div>
@@ -344,7 +346,7 @@ export const AdminMerchantManagement: React.FC<{
                     {filteredMerchants.length===0 ? (
                       <tr><td colSpan={7} className="py-12 text-center text-stone-400">
                         <Users className="w-12 h-12 mx-auto mb-3 opacity-50"/>
-                        <p className="text-sm">{L('no_data', currentLang)}</p>
+                        <p className="text-sm">{L('no_data')}</p>
                       </td></tr>
                     ) : filteredMerchants.map(renderMerchantRow)}
                   </tbody>
@@ -356,20 +358,20 @@ export const AdminMerchantManagement: React.FC<{
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
                         <div className="w-14 h-14 rounded-2xl bg-amber-500/30 flex items-center justify-center text-2xl font-bold">
-                          {merchant.companyNameAr.slice(0,2)}
+                          {merchant!.companyNameAr.slice(0,2)}
                         </div>
                         <div>
-                          <h2 className="text-xl font-bold font-serif-luxury">{merchant.companyNameAr}</h2>
-                          <p className="text-sm text-amber-200">{merchant.companyNameEn}</p>
+                          <h2 className="text-xl font-bold font-serif-luxury">{merchant!.companyNameAr}</h2>
+                          <p className="text-sm text-amber-200">{merchant!.companyNameEn}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
                         <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                          merchant.status==='active'?'bg-emerald-500/30 text-emerald-200':
-                          merchant.status==='suspended'?'bg-red-500/30 text-red-200':
+                          merchant!.status==='active'?'bg-emerald-500/30 text-emerald-200':
+                          merchant!.status==='suspended'?'bg-red-500/30 text-red-200':
                           'bg-amber-500/30 text-amber-200'
-                        }`}>{merchant.status}</span>
-                        {merchant.approved && (
+                        }`}>{merchant!.status}</span>
+                        {merchant!.approved && (
                           <span className="px-3 py-1 rounded-full bg-emerald-500/30 text-emerald-200 text-xs flex items-center gap-1">
                             <CheckCircle className="w-3 h-3"/> معتمد
                           </span>
@@ -377,16 +379,16 @@ export const AdminMerchantManagement: React.FC<{
                       </div>
                     </div>
                     <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-3 text-sm text-amber-200/90">
-                      <div><span className="text-amber-200/60 text-[10px] block">{L('margin_label', currentLang)}</span><span className="font-bold text-lg">{merchant.marginPercent}%</span></div>
-                      <div><span className="text-amber-200/60 text-[10px] block">{L('stats_products', currentLang)}</span><span className="font-bold text-lg">{merchant.totalProducts}</span></div>
-                      <div><span className="text-amber-200/60 text-[10px] block">الطلبات</span><span className="font-bold text-lg">{merchant.totalOrders}</span></div>
-                      <div><span className="text-amber-200/60 text-[10px] block">{L('stats_total_revenue', currentLang)}</span><span className="font-bold text-lg">{merchant.totalRevenue.toLocaleString()}</span></div>
+                      <div><span className="text-amber-200/60 text-[10px] block">{L('margin_label')}</span><span className="font-bold text-lg">{merchant!.marginPercent}%</span></div>
+                      <div><span className="text-amber-200/60 text-[10px] block">{L('stats_products')}</span><span className="font-bold text-lg">{merchant!.totalProducts}</span></div>
+                      <div><span className="text-amber-200/60 text-[10px] block">الطلبات</span><span className="font-bold text-lg">{merchant!.totalOrders}</span></div>
+                      <div><span className="text-amber-200/60 text-[10px] block">{L('stats_total_revenue')}</span><span className="font-bold text-lg">{merchant!.totalRevenue.toLocaleString()}</span></div>
                     </div>
                     <div className="mt-4 p-3 rounded-lg bg-white/10 border border-amber-500/30 grid grid-cols-3 gap-2 text-center">
-                      <div className="text-xs text-amber-200/70">{L('margin_to_merchant', currentLang)}</div>
-                      <div className="text-xs text-amber-200/70">{L('margin_to_customer', currentLang)}</div>
-                      <div className="text-xs text-amber-200/70 font-bold">{L('platform_keeps', currentLang)}</div>
-                      <div className="mt-1 font-bold text-lg">{merchant.marginPercent}%</div>
+                      <div className="text-xs text-amber-200/70">{L('margin_to_merchant')}</div>
+                      <div className="text-xs text-amber-200/70">{L('margin_to_customer')}</div>
+                      <div className="text-xs text-amber-200/70 font-bold">{L('platform_keeps')}</div>
+                      <div className="mt-1 font-bold text-lg">{merchant!.marginPercent}%</div>
                       <div className="mt-1 font-bold text-lg text-amber-300">× ١.٢٥</div>
                       <div className="mt-1 font-bold text-lg text-amber-300">٢٥٪</div>
                     </div>
@@ -395,20 +397,20 @@ export const AdminMerchantManagement: React.FC<{
                   {/* Channels */}
                   <div className="p-4 rounded-xl border border-stone-200 bg-stone-50">
                     <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-sm font-bold text-stone-900">{L('notes_label', currentLang)}</h3>
+                      <h3 className="text-sm font-bold text-stone-900">{L('notes_label')}</h3>
                       <button onClick={()=>setShowNotes(!showNotes)} className="text-xs px-2 py-1 rounded-lg bg-stone-100 hover:bg-stone-200">{showNotes?'إخفاء':'عرض'}</button>
                     </div>
                     {showNotes ? (
                       <div className="space-y-3">
                         <div className="flex gap-2">
-                          <input value={newNote} onChange={e=>setNewNote(e.target.value)} placeholder={L('add_note', currentLang)}
+                          <input value={newNote} onChange={e=>setNewNote(e.target.value)} placeholder={L('add_note')}
                             className="flex-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
                           <button onClick={handleAddNote} className="px-3 py-2 bg-amber-700 hover:bg-amber-800 text-white rounded-lg text-xs font-medium">
-                            {L('save_note', currentLang)}
+                            {L('save_note')}
                           </button>
                         </div>
                         <div className="border-t border-stone-200 pt-2 max-h-40 overflow-auto">
-                          {getAdminNotes(merchant.id).map(n=>(
+                          {getAdminNotes(merchant!.id).map(n=>(
                             <div key={n.id} className="p-2 rounded-lg bg-stone-100/80 text-xs text-stone-700 mb-1">
                               <div className="flex items-center gap-2 text-stone-400 mb-0.5">
                                 <span className="font-mono text-[10px]">{n.type}</span>
@@ -417,7 +419,7 @@ export const AdminMerchantManagement: React.FC<{
                               <p>{n.content}</p>
                             </div>
                           ))}
-                          {getAdminNotes(merchant.id).length===0 && <p className="text-xs text-stone-400 text-center py-2">لا توجد ملاحظات</p>}
+                          {getAdminNotes(merchant!.id).length===0 && <p className="text-xs text-stone-400 text-center py-2">لا توجد ملاحظات</p>}
                         </div>
                       </div>
                     ) : (
@@ -428,19 +430,19 @@ export const AdminMerchantManagement: React.FC<{
                               {ch==='email'&&<Mail className="w-3.5 h-3.5 text-stone-500"/>}
                               {ch==='whatsapp'&&<MessageSquare className="w-3.5 h-3.5 text-stone-500"/>}
                               {ch==='phone'&&<Phone className="w-3.5 h-3.5 text-stone-500"/>}
-                              <span className="text-xs text-stone-400 ml-1">{L(`channel_${ch}`, currentLang)}</span>
+                              <span className="text-xs text-stone-400 ml-1">{L(`channel_${ch}` as keyof typeof S)}</span>
                             </div>
                             <div className="text-[10px] font-medium">
-                              {merchant.channels[ch] ? <span className="text-emerald-700">{L('channel_active', currentLang)}</span>
-                               : <span className="text-stone-400">{L('channel_inactive', currentLang)}</span>}
+                              {merchant!.channels[ch] ? <span className="text-emerald-700">{L('channel_active')}</span>
+                               : <span className="text-stone-400">{L('channel_inactive')}</span>}
                             </div>
                             <div className="flex items-center justify-center gap-1 mt-2">
-                              {!merchant.channels[ch] ? (
-                                <button onClick={()=>toggleChannel(ch,true)} className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 hover:bg-emerald-200">{L('channel_restore', currentLang)}</button>
+                              {!merchant!.channels[ch] ? (
+                                <button onClick={()=>toggleChannel(ch,true)} className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 hover:bg-emerald-200">{L('channel_restore')}</button>
                               ) : (
                                 <>
-                                  <button onClick={()=>toggleChannel(ch,false)} className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 hover:bg-amber-200">{L('channel_suspend', currentLang)}</button>
-                                  <button onClick={()=>toggleChannel(ch,false)} className="text-[10px] px-1.5 py-0.5 rounded bg-red-100 text-red-700 hover:bg-red-200">{L('channel_delete', currentLang)}</button>
+                                  <button onClick={()=>toggleChannel(ch,false)} className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 hover:bg-amber-200">{L('channel_suspend')}</button>
+                                  <button onClick={()=>toggleChannel(ch,false)} className="text-[10px] px-1.5 py-0.5 rounded bg-red-100 text-red-700 hover:bg-red-200">{L('channel_delete')}</button>
                                 </>
                               )}
                             </div>
@@ -452,41 +454,41 @@ export const AdminMerchantManagement: React.FC<{
 
                   {/* Actions */}
                   <div className="flex items-center gap-2 p-3 rounded-xl bg-stone-100/80">
-                    {merchant.status==='pending' && (
+                    {merchant!.status==='pending' && (
                       <>
                         <button onClick={handleApprove} className="flex-1 px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-sm font-medium">
-                          <CheckCircle className="w-4 h-4 inline mr-1"/> {L('approve', currentLang)}
+                          <CheckCircle className="w-4 h-4 inline mr-1"/> {L('approve')}
                         </button>
                         <button onClick={handleReject} className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-sm font-medium">
-                          <XCircle className="w-4 h-4 inline mr-1"/> {L('reject', currentLang)}
+                          <XCircle className="w-4 h-4 inline mr-1"/> {L('reject')}
                         </button>
                       </>
                     )}
-                    {merchant.status==='approved' && (
-                      <button onClick={()=>setConfirmSuspend(merchant.id)} className="flex-1 px-4 py-2 bg-amber-700 hover:bg-amber-800 text-white rounded-xl text-sm font-medium">
-                        <Ban className="w-4 h-4 inline mr-1"/> {L('suspend', currentLang)}
+                    {merchant!.status==='approved' && (
+                      <button onClick={()=>setConfirmSuspend(merchant!.id)} className="flex-1 px-4 py-2 bg-amber-700 hover:bg-amber-800 text-white rounded-xl text-sm font-medium">
+                        <Ban className="w-4 h-4 inline mr-1"/> {L('suspend')}
                       </button>
                     )}
-                    {merchant.status==='suspended' && (
+                    {merchant!.status==='suspended' && (
                       <button onClick={handleActivate} className="flex-1 px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-sm font-medium">
-                        <RefreshCw className="w-4 h-4 inline mr-1"/> {L('activate', currentLang)}
+                        <RefreshCw className="w-4 h-4 inline mr-1"/> {L('activate')}
                       </button>
                     )}
-                    <button onClick={()=>setConfirmDelete(merchant.id)} className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-sm font-medium">
-                      <Trash2 className="w-4 h-4 inline mr-1"/> {L('delete', currentLang)}
+                    <button onClick={()=>setConfirmDelete(merchant!.id)} className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-sm font-medium">
+                      <Trash2 className="w-4 h-4 inline mr-1"/> {L('delete')}
                     </button>
                   </div>
 
                   {/* Products */}
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-sm font-bold text-stone-900">{L('section_products', currentLang)}</h3>
+                      <h3 className="text-sm font-bold text-stone-900">{L('section_products')}</h3>
                       <button onClick={()=>setShowProductModal(true)} className="text-xs px-2 py-1 rounded-lg bg-amber-100 text-amber-900 hover:bg-amber-200">
-                        <Plus className="w-3 h-3 inline mr-1"/> {L('add_product', currentLang)}
+                        <Plus className="w-3 h-3 inline mr-1"/> {L('add_product')}
                       </button>
                     </div>
                     {products.length===0 ? (
-                      <p className="text-xs text-stone-400 text-center py-3">{L('no_data', currentLang)}</p>
+                      <p className="text-xs text-stone-400 text-center py-3">{L('no_data')}</p>
                     ) : (
                       <div className="max-h-48 overflow-auto rounded-lg border border-stone-200">
                         {products.map(p=>(
@@ -499,8 +501,8 @@ export const AdminMerchantManagement: React.FC<{
                               <span className="font-medium text-stone-800">{p.nameAr||p.sku}</span>
                             </div>
                             <div className="text-right font-mono">
-                              <div className="text-stone-500">{L('margin_to_merchant', currentLang)}: {p.costPrice}</div>
-                              <div className="text-amber-800 font-bold">{L('margin_to_customer', currentLang)}: {p.retailPrice}</div>
+                              <div className="text-stone-500">{L('margin_to_merchant')}: {p.costPrice}</div>
+                              <div className="text-amber-800 font-bold">{L('margin_to_customer')}: {p.retailPrice}</div>
                             </div>
                             <div className="flex items-center gap-1">
                               {p.approvalStatus==='pending' && <>
@@ -518,13 +520,13 @@ export const AdminMerchantManagement: React.FC<{
                   {/* Orders */}
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-sm font-bold text-stone-900">{L('section_orders', currentLang)}</h3>
+                      <h3 className="text-sm font-bold text-stone-900">{L('section_orders')}</h3>
                       <button onClick={()=>setShowOrderModal(true)} className="text-xs px-2 py-1 rounded-lg bg-amber-100 text-amber-900 hover:bg-amber-200">
-                        <Plus className="w-3 h-3 inline mr-1"/> {L('add_order', currentLang)}
+                        <Plus className="w-3 h-3 inline mr-1"/> {L('add_order')}
                       </button>
                     </div>
                     {orders.length===0 ? (
-                      <p className="text-xs text-stone-400 text-center py-3">{L('no_data', currentLang)}</p>
+                      <p className="text-xs text-stone-400 text-center py-3">{L('no_data')}</p>
                     ) : (
                       <div className="max-h-60 overflow-auto rounded-lg border border-stone-200">
                         {orders.map(o=>(
@@ -535,7 +537,7 @@ export const AdminMerchantManagement: React.FC<{
                                 o.status==='completed'?'bg-emerald-100 text-emerald-800':
                                 o.status==='cancelled'?'bg-red-100 text-red-800':
                                 o.status==='shipped'||o.status==='delivered'?'bg-blue-100 text-blue-800':'bg-amber-100 text-amber-800'
-                              }`}>{L(`order_status_${o.status}`, currentLang)}</span>
+                              }`}>{L(`order_status_${o.status}` as keyof typeof S)}</span>
                             </div>
                             <div className="text-right font-mono text-xs">
                               <div>الدفع: {o.subtotalRetail.toLocaleString()}</div>
@@ -563,12 +565,12 @@ export const AdminMerchantManagement: React.FC<{
         {showProductModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
             <div className="w-full max-w-lg bg-white rounded-2xl shadow-2xl animate-in fade-in zoom-in-95 p-6">
-              <h2 className="text-lg font-bold text-stone-900 mb-4 font-serif-luxury">{L('add_product', currentLang)}</h2>
+              <h2 className="text-lg font-bold text-stone-900 mb-4 font-serif-luxury">{L('add_product')}</h2>
               <div className="space-y-3">
                 <div>
-                  <label className="text-xs font-medium text-stone-700">{L('margin_to_merchant', currentLang)}</label>
+                  <label className="text-xs font-medium text-stone-700">{L('margin_to_merchant')}</label>
                   <input type="number" className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300" placeholder="10"/>
-                  <p className="text-[10px] text-stone-400 mt-1">{L('margin_desc', currentLang)}</p>
+                  <p className="text-[10px] text-stone-400 mt-1">{L('margin_desc')}</p>
                 </div>
                 <div>
                   <label className="text-xs font-medium text-stone-700">اسم المنتج عربي</label>
@@ -595,7 +597,7 @@ export const AdminMerchantManagement: React.FC<{
                 <div className="flex justify-end gap-2 pt-3">
                   <button onClick={()=>setShowProductModal(false)} className="px-4 py-2 rounded-lg bg-stone-100 text-stone-700 text-sm font-medium hover:bg-stone-200">إلغاء</button>
                   <button onClick={addProduct} className="px-4 py-2 rounded-lg bg-amber-700 text-white text-sm font-medium hover:bg-amber-800">
-                    <Plus className="w-4 h-4 inline mr-1"/> {L('add_product', currentLang)}
+                    <Plus className="w-4 h-4 inline mr-1"/> {L('add_product')}
                   </button>
                 </div>
               </div>
@@ -610,11 +612,11 @@ export const AdminMerchantManagement: React.FC<{
               <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-3">
                 <Trash2 className="w-6 h-6 text-red-600"/>
               </div>
-              <h3 className="text-lg font-bold text-stone-900 mb-2">{L('delete', currentLang)}</h3>
-              <p className="text-sm text-stone-600 mb-4">{L('confirm_delete', currentLang)}</p>
+              <h3 className="text-lg font-bold text-stone-900 mb-2">{L('delete')}</h3>
+              <p className="text-sm text-stone-600 mb-4">{L('confirm_delete')}</p>
               <div className="flex gap-2">
                 <button onClick={()=>setConfirmDelete(null)} className="flex-1 px-4 py-2 rounded-lg bg-stone-100 text-stone-700 text-sm font-medium hover:bg-stone-200">إلغاء</button>
-                <button onClick={handleDelete} className="flex-1 px-4 py-2 rounded-lg bg-red-600 text-white text-sm font-medium hover:bg-red-700">{L('delete', currentLang)}</button>
+                <button onClick={handleDelete} className="flex-1 px-4 py-2 rounded-lg bg-red-600 text-white text-sm font-medium hover:bg-red-700">{L('delete')}</button>
               </div>
             </div>
           </div>
@@ -627,11 +629,11 @@ export const AdminMerchantManagement: React.FC<{
               <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-3">
                 <Ban className="w-6 h-6 text-amber-600"/>
               </div>
-              <h3 className="text-lg font-bold text-stone-900 mb-2">{L('suspend', currentLang)}</h3>
-              <p className="text-sm text-stone-600 mb-4">{L('confirm_suspend', currentLang)}</p>
+              <h3 className="text-lg font-bold text-stone-900 mb-2">{L('suspend')}</h3>
+              <p className="text-sm text-stone-600 mb-4">{L('confirm_suspend')}</p>
               <div className="flex gap-2">
                 <button onClick={()=>setConfirmSuspend(null)} className="flex-1 px-4 py-2 rounded-lg bg-stone-100 text-stone-700 text-sm font-medium hover:bg-stone-200">إلغاء</button>
-                <button onClick={handleSuspend} className="flex-1 px-4 py-2 rounded-lg bg-amber-700 text-white text-sm font-medium hover:bg-amber-800">{L('suspend', currentLang)}</button>
+                <button onClick={handleSuspend} className="flex-1 px-4 py-2 rounded-lg bg-amber-700 text-white text-sm font-medium hover:bg-amber-800">{L('suspend')}</button>
               </div>
             </div>
           </div>
