@@ -27,12 +27,20 @@ export const tools = {
       const index = await repo.searchIndex();
       // Relative + absolute thresholds: weak lexical overlaps are dropped instead of shown as answers.
       const raw = index.search(args.query, 6, 1.2).filter((h) => h.doc.kind !== 'product');
+      // Curated admin knowledge outranks the lessons «الخبير شاهين» writes by itself: a learned lesson
+      // must match clearly (never on a stray word) and never win a near tie against a hand-written doc.
+      const isTrained = (h: (typeof raw)[number]) => h.doc.id.startsWith('shaheen-');
+      const ordered = raw
+        .filter((h) => !isTrained(h) || h.score >= 3)
+        .map((h) => ({ h, rank: isTrained(h) ? h.score : h.score * 1.15 }))
+        .sort((a, b) => b.rank - a.rank)
+        .map(({ h }) => h);
       // Coverage-based selection: the best passage always; each extra passage must answer a *significant*
       // part of the question (query terms the stronger passages did not cover, weighted by BM25).
       const covered = new Set<string>();
-      const hits = raw.filter((h, i) => {
+      const hits = ordered.filter((h, i) => {
         const fresh = Object.entries(h.matched).filter(([t]) => !covered.has(t)).reduce((sum, [, w]) => sum + w, 0);
-        if (i > 0 && (h.score < raw[0].score * 0.45 || fresh < raw[0].score * 0.4)) return false;
+        if (i > 0 && (h.score < ordered[0].score * 0.45 || fresh < ordered[0].score * 0.4)) return false;
         Object.keys(h.matched).forEach((t) => covered.add(t));
         return true;
       }).slice(0, 3);
