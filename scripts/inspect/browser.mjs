@@ -12,6 +12,7 @@ const esc = (s) => String(s).replace(/%/g, '%25').replace(/\r/g, '').replace(/\n
 const note = (level, title, body) => console.log(`::${level} title=${esc(title).replace(/[:,]/g, ' ')}::${esc(body)}`);
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
+const openChat = (page) => page.evaluate(() => { [...document.querySelectorAll('button[title]')].find((b) => /شاهين|Shahin|Perfumer/i.test(b.title))?.click(); });
 const browser = await puppeteer.launch({ executablePath: process.env.CHROME_PATH || '/usr/bin/google-chrome', args: ['--no-sandbox', '--lang=ar'] });
 
 for (const site of SITES) {
@@ -26,6 +27,8 @@ for (const site of SITES) {
 
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 900 });
+  await page.setExtraHTTPHeaders({ 'Accept-Language': 'ar-EG,ar;q=0.9' });
+  await page.evaluateOnNewDocument(() => { Object.defineProperty(navigator, 'language', { get: () => 'ar-EG' }); Object.defineProperty(navigator, 'languages', { get: () => ['ar-EG', 'ar'] }); });
   const apiCalls = [];
   page.on('response', (r) => { if (r.url().includes('/api/chat')) apiCalls.push(`${r.status()} ${r.url()}`); });
   page.on('pageerror', (e) => note('warning', `js error ${host}`, String(e).slice(0, 500)));
@@ -33,7 +36,9 @@ for (const site of SITES) {
     await page.goto(site, { waitUntil: 'networkidle2', timeout: 60_000 });
     await page.evaluate(() => localStorage.clear());
     await page.reload({ waitUntil: 'networkidle2' });
-    await page.click('button[title*="شاهين"]');
+    await page.waitForFunction(() => [...document.querySelectorAll('button[title]')].some((b) => /شاهين|Shahin|Perfumer/i.test(b.title)), { timeout: 30_000 })
+      .catch(async () => note('warning', `buttons ${host}`, JSON.stringify(await page.$$eval('button', (bs) => bs.map((b) => b.title || b.textContent.trim().slice(0, 30)).slice(0, 80)))));
+    await openChat(page);
     await page.waitForSelector('form input[maxlength="4000"]', { timeout: 15_000 });
     await wait(1500);
     const modes = await page.$$eval('button[aria-pressed]', (bs) => bs.map((b) => b.textContent.trim()));
@@ -76,7 +81,7 @@ for (const site of SITES) {
           opened = await page.evaluate(() => document.querySelector('main')?.innerText.slice(0, 160) || '');
           if (opened === headBefore) problems.push('رابط الأداة لم يغيّر الصفحة');
           // Re-open the chat if the tool navigation closed it.
-          if (!(await page.$('form input[maxlength="4000"]'))) { await page.click('button[title*="شاهين"]'); await page.waitForSelector('form input[maxlength="4000"]', { timeout: 10_000 }).catch(() => {}); }
+          if (!(await page.$('form input[maxlength="4000"]'))) { await openChat(page); await page.waitForSelector('form input[maxlength="4000"]', { timeout: 10_000 }).catch(() => {}); }
         }
         note(problems.length ? 'warning' : 'notice', `${host} · ${modes[m]} · ${question.slice(0, 30)}`,
           `${JSON.stringify({ ms: Date.now() - started, links: seen.links, buttons: seen.buttons, api: apiCalls.slice(-1) })}\nمشاكل: ${problems.join(' | ') || 'لا شيء'}\n----- الأداة بعد الضغط -----\n${opened}\n----- ما يراه الزائر -----\n${seen.text.slice(0, 3000)}\n----- HTML -----\n${seen.html}`);
