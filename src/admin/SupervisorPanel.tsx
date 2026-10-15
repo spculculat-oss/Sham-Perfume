@@ -1,3 +1,4 @@
+import { T } from './adminL10n';
 import React, { useCallback, useEffect, useState } from 'react';
 import { RefreshCw, ShieldCheck } from 'lucide-react';
 import bundled from '../data/live/ai-supervisor.json';
@@ -48,7 +49,7 @@ export default function SupervisorPanel() {
           <h1 className="text-xl font-bold">مشرف الذكاء الاصطناعي — الخبير شاهين</h1>
           <p className="text-xs text-stone-500 mt-1">كل 12 ساعة يجرّب شاهين كل أداة ذكاء اصطناعي في الموقع بأسئلة حقيقية، يقيّم ردودها، ويكتب لها توجيهات تحسّن أداءها — ويتراجع عنها لو الأداء قلّ.</p>
         </div>
-        <button type="button" onClick={load} disabled={loading} className={`${btn} bg-white border border-stone-300`}><RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />تحديث</button>
+        <button type="button" onClick={load} disabled={loading} className={`${btn} bg-white border border-stone-300`}><RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />{T('تحديث')}</button>
       </div>
 
       <div className={`${card} mb-4 flex flex-wrap items-center gap-4`}>

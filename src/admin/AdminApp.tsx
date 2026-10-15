@@ -1,3 +1,4 @@
+import { T, adminDir, useAdminLanguage } from './adminL10n';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Activity, ArrowRight, ArrowDownToLine, BookOpen, Bot, Boxes, ClipboardList, Cpu, Database, Download, FlaskConical, Headset, KeyRound,
@@ -28,29 +29,29 @@ interface Overview {
 interface FeedbackItem { conversationId: string; messageId?: string; rating: 'up' | 'down'; reason?: string; at: string; question: string; answer: string; engine?: string; intent?: string }
 
 const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
-  { id: 'overview', label: 'نظرة عامة', icon: <LayoutDashboard className="w-4 h-4" /> },
-  { id: 'agent', label: 'المساعد الإداري', icon: <Wand2 className="w-4 h-4" /> },
-  { id: 'quality', label: 'الجودة والتعلّم', icon: <Lightbulb className="w-4 h-4" /> },
-  { id: 'requests', label: 'الطلبات والعروض', icon: <ClipboardList className="w-4 h-4" /> },
-  { id: 'emails', label: 'إشعارات البريد', icon: <Mail className="w-4 h-4" /> },
-  { id: 'conversations', label: 'المحادثات', icon: <MessagesSquare className="w-4 h-4" /> },
-  { id: 'products', label: 'المنتجات', icon: <Boxes className="w-4 h-4" /> },
-  { id: 'knowledge', label: 'قاعدة المعرفة', icon: <BookOpen className="w-4 h-4" /> },
-  { id: 'services', label: 'الخدمات', icon: <Settings2 className="w-4 h-4" /> },
-  { id: 'engines', label: 'المحركات والإعدادات', icon: <Cpu className="w-4 h-4" /> },
-  { id: 'shaheen', label: 'الخبير شاهين', icon: <FlaskConical className="w-4 h-4" /> },
-  { id: 'doctor', label: 'طبيب شاهين', icon: <Stethoscope className="w-4 h-4" /> },
-  { id: 'supervisor', label: 'مشرف الذكاء الاصطناعي', icon: <Sparkles className="w-4 h-4" /> },
-  { id: 'sandbox', label: 'مختبر المساعد', icon: <FlaskConical className="w-4 h-4" /> },
-  { id: 'updates', label: 'بيئة التحديثات', icon: <ArrowDownToLine className="w-4 h-4" /> },
+  { id: 'overview', label: T('نظرة عامة'), icon: <LayoutDashboard className="w-4 h-4" /> },
+  { id: 'agent', label: T('المساعد الإداري'), icon: <Wand2 className="w-4 h-4" /> },
+  { id: 'quality', label: T('الجودة والتعلّم'), icon: <Lightbulb className="w-4 h-4" /> },
+  { id: 'requests', label: T('الطلبات والعروض'), icon: <ClipboardList className="w-4 h-4" /> },
+  { id: 'emails', label: T('إشعارات البريد'), icon: <Mail className="w-4 h-4" /> },
+  { id: 'conversations', label: T('المحادثات'), icon: <MessagesSquare className="w-4 h-4" /> },
+  { id: 'products', label: T('المنتجات'), icon: <Boxes className="w-4 h-4" /> },
+  { id: 'knowledge', label: T('قاعدة المعرفة'), icon: <BookOpen className="w-4 h-4" /> },
+  { id: 'services', label: T('الخدمات'), icon: <Settings2 className="w-4 h-4" /> },
+  { id: 'engines', label: T('المحركات والإعدادات'), icon: <Cpu className="w-4 h-4" /> },
+  { id: 'shaheen', label: T('الخبير شاهين'), icon: <FlaskConical className="w-4 h-4" /> },
+  { id: 'doctor', label: T('طبيب شاهين'), icon: <Stethoscope className="w-4 h-4" /> },
+  { id: 'supervisor', label: T('مشرف الذكاء الاصطناعي'), icon: <Sparkles className="w-4 h-4" /> },
+  { id: 'sandbox', label: T('مختبر المساعد'), icon: <FlaskConical className="w-4 h-4" /> },
+  { id: 'updates', label: T('بيئة التحديثات'), icon: <ArrowDownToLine className="w-4 h-4" /> },
 ];
 
-const STATUS: Record<RequestStatus, string> = { new: 'جديد', in_progress: 'قيد التنفيذ', quoted: 'عرض سعر', confirmed: 'مؤكد', completed: 'مكتمل', cancelled: 'ملغي' };
-const TYPE: Record<string, string> = { order: 'طلب متجر', custom_formula: 'عطر مخصص', b2b_quote: 'عرض جملة', consultation: 'استشارة', support: 'دعم', service: 'خدمة' };
-const INTENT: Record<string, string> = { greeting: 'تحية', thanks: 'شكر', list_services: 'عرض الخدمات', track_order: 'تتبع', browse_products: 'تصفح منتجات', service_request: 'طلب خدمة', handoff: 'تحويل لموظف', calculate: 'حساب', perfume_expert: 'سؤال خبير', question: 'سؤال عام', memory_view: 'عرض الذاكرة', forget: 'حذف البيانات' };
-const ENGINE_LABEL: Record<string, string> = { self_hosted: 'نموذج مفتوح مستضاف ذاتياً', gemini: 'Gemini', openai: 'OpenAI', claude: 'Claude', deepseek: 'DeepSeek', openrouter: 'OpenRouter', sham_local: 'محرك شام الذاتي', human: 'موظف', system: 'النظام' };
+const STATUS: Record<RequestStatus, string> = { new: T('جديد'), in_progress: T('قيد التنفيذ'), quoted: T('عرض سعر'), confirmed: T('مؤكد'), completed: T('مكتمل'), cancelled: T('ملغي') };
+const TYPE: Record<string, string> = { order: T('طلب متجر'), custom_formula: T('عطر مخصص'), b2b_quote: T('عرض جملة'), consultation: T('استشارة'), support: T('دعم'), service: T('خدمة') };
+const INTENT: Record<string, string> = { greeting: T('تحية'), thanks: T('شكر'), list_services: T('عرض الخدمات'), track_order: T('تتبع'), browse_products: T('تصفح منتجات'), service_request: T('طلب خدمة'), handoff: T('تحويل لموظف'), calculate: T('حساب'), perfume_expert: T('سؤال خبير'), question: T('سؤال عام'), memory_view: T('عرض الذاكرة'), forget: T('حذف البيانات') };
+const ENGINE_LABEL: Record<string, string> = { self_hosted: T('نموذج مفتوح مستضاف ذاتياً'), gemini: 'Gemini', openai: 'OpenAI', claude: 'Claude', deepseek: 'DeepSeek', openrouter: 'OpenRouter', sham_local: T('محرك شام الذاتي'), human: T('موظف'), system: T('النظام') };
 
-const COUNCIL_ROLE: Record<CouncilRole, string> = { formulator: 'خبير التركيب والمواد', commercial: 'المستشار التجاري', safety: 'مراجع السلامة والجودة', customer: 'صوت العميل', general: 'مستشار عام' };
+const COUNCIL_ROLE: Record<CouncilRole, string> = { formulator: T('خبير التركيب والمواد'), commercial: T('المستشار التجاري'), safety: T('مراجع السلامة والجودة'), customer: T('صوت العميل'), general: T('مستشار عام') };
 const COUNCIL_INTENTS = ['perfume_expert', 'question', 'service_request', 'browse_products', 'list_services'];
 const MODEL_ENGINES: ModelEngineId[] = ['self_hosted', 'gemini', 'openai', 'claude', 'deepseek', 'openrouter'];
 
@@ -73,6 +74,8 @@ function useLoad<T>(path: string, deps: unknown[] = []) {
 }
 
 export default function AdminApp() {
+  // Admin panel follows the language chosen on the public site (Arabic fallback).
+  useAdminLanguage();
   const [token, setTok] = useState(getToken());
   const [authed, setAuthed] = useState(false);
   const [checking, setChecking] = useState(Boolean(token));
@@ -86,12 +89,12 @@ export default function AdminApp() {
       setToken(candidate); setTok(candidate); setAuthed(true);
     } catch (e) {
       setToken('');
-      setLoginError(e instanceof AdminApiError ? (e.status === 401 ? 'رمز الإدارة غير صحيح.' : e.status === 503 ? 'لوحة الإدارة غير مفعلة: اضبط SHAM_ADMIN_TOKEN (12 حرفاً على الأقل) في متغيرات الخادم.' : e.status === 429 ? 'محاولات كثيرة فاشلة. انتظر 15 دقيقة.' : e.message) : 'تعذّر الاتصال بالخادم.');
+      setLoginError(e instanceof AdminApiError ? (e.status === 401 ? T('رمز الإدارة غير صحيح.') : e.status === 503 ? 'لوحة الإدارة غير مفعلة: اضبط SHAM_ADMIN_TOKEN (12 حرفاً على الأقل) في متغيرات الخادم.' : e.status === 429 ? T('محاولات كثيرة فاشلة. انتظر 15 دقيقة.') : e.message) : T('تعذّر الاتصال بالخادم.'));
     } finally { setChecking(false); }
   }, []);
 
   useEffect(() => { if (token) void login(token); }, []); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { document.documentElement.dir = 'rtl'; document.documentElement.lang = 'ar'; document.title = 'إدارة شام — Sham Core'; }, []);
+  useEffect(() => { document.documentElement.dir = 'rtl'; document.documentElement.lang = 'ar'; document.title = T('إدارة شام — Sham Core'); }, []);
 
   if (isStaticHosting) {
     return <Shell><div className={`${card} max-w-lg mx-auto mt-24 text-center`}>لوحة الإدارة تحتاج خادم شام (Node.js أو Vercel). نسخة GitHub Pages ثابتة ولا تحتوي على API.</div></Shell>;
@@ -101,12 +104,12 @@ export default function AdminApp() {
     return (
       <Shell>
         <form className={`${card} max-w-sm mx-auto mt-24 space-y-4`} onSubmit={(e) => { e.preventDefault(); void login(token.trim()); }}>
-          <div className="flex items-center gap-2"><KeyRound className="w-5 h-5 text-amber-700" /><h1 className="font-bold text-lg">إدارة شام — Sham Core</h1></div>
-          <p className="text-xs text-stone-500">أدخل رمز الإدارة المضبوط في متغير الخادم <code dir="ltr">SHAM_ADMIN_TOKEN</code>. يُحفظ الرمز في هذه الجلسة فقط.</p>
-          <input className={input} type="password" dir="ltr" autoComplete="current-password" value={token} onChange={(e) => setTok(e.target.value)} placeholder="Admin token" aria-label="رمز الإدارة" />
+          <div className="flex items-center gap-2"><KeyRound className="w-5 h-5 text-amber-700" /><h1 className="font-bold text-lg">{T('إدارة شام — Sham Core')}</h1></div>
+          <p className="text-xs text-stone-500">أدخل رمز الإدارة المضبوط في متغير الخادم <code dir="ltr">SHAM_ADMIN_TOKEN</code>{T('. يُحفظ الرمز في هذه الجلسة فقط.')}</p>
+          <input className={input} type="password" dir="ltr" autoComplete="current-password" value={token} onChange={(e) => setTok(e.target.value)} placeholder="Admin token" aria-label={T('رمز الإدارة')} />
           {loginError && <p role="alert" className="text-xs text-red-700">{loginError}</p>}
           <button disabled={checking || !token.trim()} className={`${btn} w-full bg-stone-900 text-amber-100`}>{checking ? <Loader2 className="w-4 h-4 animate-spin" /> : 'دخول'}</button>
-          <a href="#home" className="block text-center text-xs text-stone-500 hover:underline">العودة إلى الموقع</a>
+          <a href="#home" className="block text-center text-xs text-stone-500 hover:underline">{T('العودة إلى الموقع')}</a>
         </form>
       </Shell>
     );
@@ -116,13 +119,13 @@ export default function AdminApp() {
     <Shell>
       <div className="flex flex-col lg:flex-row min-h-screen">
         <aside className="lg:w-60 bg-stone-900 text-stone-100 lg:min-h-screen p-3 flex lg:flex-col gap-1 overflow-x-auto shrink-0">
-          <div className="hidden lg:flex items-center gap-2 px-2 py-3 mb-2 border-b border-stone-700"><Bot className="w-6 h-6 text-amber-400" /><div><p className="font-bold text-sm">Sham Core</p><p className="text-[10px] text-stone-400">مركز إدارة المساعد والخدمات</p></div></div>
+          <div className="hidden lg:flex items-center gap-2 px-2 py-3 mb-2 border-b border-stone-700"><Bot className="w-6 h-6 text-amber-400" /><div><p className="font-bold text-sm">Sham Core</p><p className="text-[10px] text-stone-400">{T('مركز إدارة المساعد والخدمات')}</p></div></div>
           {TABS.map((t) => (
             <button key={t.id} type="button" onClick={() => setTab(t.id)} className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm whitespace-nowrap ${tab === t.id ? 'bg-amber-500 text-stone-950 font-bold' : 'hover:bg-white/10'}`}>{t.icon}{t.label}</button>
           ))}
           <div className="lg:mt-auto flex lg:flex-col gap-1">
-            <a href="#home" className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm hover:bg-white/10 whitespace-nowrap"><ArrowRight className="w-4 h-4" />الموقع</a>
-            <button type="button" onClick={() => { setToken(''); setAuthed(false); setTok(''); }} className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm hover:bg-white/10 whitespace-nowrap"><LogOut className="w-4 h-4" />خروج</button>
+            <a href="#home" className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm hover:bg-white/10 whitespace-nowrap"><ArrowRight className="w-4 h-4" />{T('الموقع')}</a>
+            <button type="button" onClick={() => { setToken(''); setAuthed(false); setTok(''); }} className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm hover:bg-white/10 whitespace-nowrap"><LogOut className="w-4 h-4" />{T('خروج')}</button>
           </div>
         </aside>
         <main className="flex-1 p-4 lg:p-6 min-w-0">
@@ -148,7 +151,7 @@ export default function AdminApp() {
 }
 
 function Shell({ children }: { children: React.ReactNode }) {
-  return <div dir="rtl" className="min-h-screen bg-stone-100 text-stone-900 font-sans">{children}</div>;
+  return <div dir={adminDir()} className="min-h-screen bg-stone-100 text-stone-900 font-sans">{children}</div>;
 }
 
 function Header({ title, subtitle, actions }: { title: string; subtitle?: string; actions?: React.ReactNode }) {
@@ -161,7 +164,7 @@ function Header({ title, subtitle, actions }: { title: string; subtitle?: string
 }
 
 function Feedback({ error, loading }: { error?: string; loading?: boolean }) {
-  if (loading) return <div className="flex items-center gap-2 text-sm text-stone-500 py-6"><Loader2 className="w-4 h-4 animate-spin" />جارٍ التحميل…</div>;
+  if (loading) return <div className="flex items-center gap-2 text-sm text-stone-500 py-6"><Loader2 className="w-4 h-4 animate-spin" />{T('جارٍ التحميل…')}</div>;
   if (error) return <p role="alert" className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p>;
   return null;
 }
@@ -169,7 +172,7 @@ function Feedback({ error, loading }: { error?: string; loading?: boolean }) {
 function Bars({ data, labels }: { data: Record<string, number>; labels?: Record<string, string> }) {
   const entries = Object.entries(data).sort((a, b) => b[1] - a[1]);
   const max = Math.max(1, ...entries.map(([, v]) => v));
-  if (!entries.length) return <p className="text-xs text-stone-400">لا توجد بيانات بعد.</p>;
+  if (!entries.length) return <p className="text-xs text-stone-400">{T('لا توجد بيانات بعد.')}</p>;
   return (
     <div className="space-y-1.5">
       {entries.map(([k, v]) => (
@@ -187,24 +190,24 @@ function OverviewPanel({ go }: { go: (t: Tab) => void }) {
   const { data, error, loading, reload } = useLoad<Overview>('/overview');
   return (
     <>
-      <Header title="نظرة عامة" subtitle="حالة المساعد والخدمات والطلبات" actions={<button onClick={reload} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" />تحديث</button>} />
+      <Header title={T('نظرة عامة')} subtitle={T('حالة المساعد والخدمات والطلبات')} actions={<button onClick={reload} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" />{T('تحديث')}</button>} />
       <Feedback error={error} loading={loading && !data} />
       {data && (
         <div className="space-y-4">
           {(!data.storage.persistent || data.storage.error) && (
             <div className="rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">
-              <b>تنبيه التخزين:</b> {data.storage.error ? `إعداد التخزين غير صحيح (${data.storage.error}). يعمل النظام مؤقتاً في الذاكرة.` : 'التخزين الحالي في الذاكرة فقط وسيُفقد عند إعادة التشغيل.'} اضبط <code dir="ltr">SHAM_STORE=file</code> على سيرفر Node أو <code dir="ltr">SHAM_STORE=firestore</code> على Vercel/Firebase.
+              <b>{T('تنبيه التخزين:')}</b> {data.storage.error ? `إعداد التخزين غير صحيح (${data.storage.error}). يعمل النظام مؤقتاً في الذاكرة.` : 'التخزين الحالي في الذاكرة فقط وسيُفقد عند إعادة التشغيل.'} اضبط <code dir="ltr">SHAM_STORE=file</code> على سيرفر Node أو <code dir="ltr">SHAM_STORE=firestore</code> على Vercel/Firebase.
             </div>
           )}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              ['طلبات جديدة', data.counts.requestsNew, 'requests', 'text-amber-700'],
-              ['تحويلات لموظف مفتوحة', data.counts.handoffsOpen, 'conversations', 'text-emerald-700'],
-              ['محادثات آخر 24 ساعة', data.counts.conversations24h, 'conversations', 'text-stone-800'],
-              ['منتجات مخزونها منخفض', data.counts.lowStock, 'products', 'text-red-700'],
-              ['أسئلة بلا إجابة (فجوات)', data.counts.gapsOpen ?? 0, 'quality', 'text-orange-700'],
-              ['تقييمات إيجابية 👍', data.counts.feedbackUp ?? 0, 'quality', 'text-emerald-700'],
-              ['تقييمات سلبية 👎', data.counts.feedbackDown ?? 0, 'quality', 'text-red-700'],
+              [T('طلبات جديدة'), data.counts.requestsNew, 'requests', 'text-amber-700'],
+              [T('تحويلات لموظف مفتوحة'), data.counts.handoffsOpen, 'conversations', 'text-emerald-700'],
+              [T('محادثات آخر 24 ساعة'), data.counts.conversations24h, 'conversations', 'text-stone-800'],
+              [T('منتجات مخزونها منخفض'), data.counts.lowStock, 'products', 'text-red-700'],
+              [T('أسئلة بلا إجابة (فجوات)'), data.counts.gapsOpen ?? 0, 'quality', 'text-orange-700'],
+              [T('تقييمات إيجابية 👍'), data.counts.feedbackUp ?? 0, 'quality', 'text-emerald-700'],
+              [T('تقييمات سلبية 👎'), data.counts.feedbackDown ?? 0, 'quality', 'text-red-700'],
             ].map(([label, value, target, color]) => (
               <button key={label as string} onClick={() => go(target as Tab)} className={`${card} text-start hover:border-amber-400`}>
                 <p className="text-xs text-stone-500">{label}</p><p className={`text-3xl font-bold mt-1 ${color}`}>{value as number}</p>
@@ -212,19 +215,19 @@ function OverviewPanel({ go }: { go: (t: Tab) => void }) {
             ))}
           </div>
           <div className="grid md:grid-cols-3 gap-3">
-            <div className={card}><h2 className="font-bold text-sm mb-3 flex items-center gap-1.5"><Activity className="w-4 h-4" />نوايا الزوار</h2><Bars data={data.intents} labels={INTENT} /></div>
-            <div className={card}><h2 className="font-bold text-sm mb-3">الطلبات حسب الحالة</h2><Bars data={data.byStatus} labels={STATUS} /></div>
-            <div className={card}><h2 className="font-bold text-sm mb-3">المحركات التي ردّت فعلياً</h2><Bars data={data.engineUsage} labels={ENGINE_LABEL} /></div>
+            <div className={card}><h2 className="font-bold text-sm mb-3 flex items-center gap-1.5"><Activity className="w-4 h-4" />{T('نوايا الزوار')}</h2><Bars data={data.intents} labels={INTENT} /></div>
+            <div className={card}><h2 className="font-bold text-sm mb-3">{T('الطلبات حسب الحالة')}</h2><Bars data={data.byStatus} labels={STATUS} /></div>
+            <div className={card}><h2 className="font-bold text-sm mb-3">{T('المحركات التي ردّت فعلياً')}</h2><Bars data={data.engineUsage} labels={ENGINE_LABEL} /></div>
           </div>
           <div className="grid md:grid-cols-3 gap-3">
-            <div className={card}><h2 className="font-bold text-sm mb-3">الطلبات حسب النوع</h2><Bars data={data.byType} labels={TYPE} /></div>
+            <div className={card}><h2 className="font-bold text-sm mb-3">{T('الطلبات حسب النوع')}</h2><Bars data={data.byType} labels={TYPE} /></div>
             <div className={card}>
-              <h2 className="font-bold text-sm mb-3">قيمة طلبات المتجر (غير الملغاة)</h2>
-              {Object.keys(data.pipelineValue).length ? Object.entries(data.pipelineValue).map(([c, v]) => <p key={c} className="text-2xl font-bold">{v.toLocaleString('ar-EG')} <span className="text-sm">{c}</span></p>) : <p className="text-xs text-stone-400">لا توجد طلبات متجر بعد.</p>}
-              <p className="text-[11px] text-stone-400 mt-2">قيمة تقديرية قبل تأكيد الشحن والدفع.</p>
+              <h2 className="font-bold text-sm mb-3">{T('قيمة طلبات المتجر (غير الملغاة)')}</h2>
+              {Object.keys(data.pipelineValue).length ? Object.entries(data.pipelineValue).map(([c, v]) => <p key={c} className="text-2xl font-bold">{v.toLocaleString('ar-EG')} <span className="text-sm">{c}</span></p>) : <p className="text-xs text-stone-400">{T('لا توجد طلبات متجر بعد.')}</p>}
+              <p className="text-[11px] text-stone-400 mt-2">{T('قيمة تقديرية قبل تأكيد الشحن والدفع.')}</p>
             </div>
             <div className={card}>
-              <h2 className="font-bold text-sm mb-3 flex items-center gap-1.5"><Database className="w-4 h-4" />البنية</h2>
+              <h2 className="font-bold text-sm mb-3 flex items-center gap-1.5"><Database className="w-4 h-4" />{T('البنية')}</h2>
               <ul className="text-xs space-y-1.5 text-stone-600">
                 <li>التخزين: <b dir="ltr">{data.storage.kind}</b> {data.storage.persistent ? '✅ دائم' : '⚠️ مؤقت'}</li>
                 <li>المحادثات: <b>{data.counts.conversations}</b> · الطلبات: <b>{data.counts.requests}</b></li>
@@ -357,7 +360,7 @@ function RequestsPanel() {
   return (
     <>
       <Header
-        title="الطلبات والعروض"
+        title={T('الطلبات والعروض')}
         subtitle="طلبات المتجر، العطور المخصصة، الجملة، الاستشارات مع نظام إشعارات البريد التلقائي للعملاء"
         actions={<>
           <select className={input} value={filter} onChange={(e) => setFilter(e.target.value as RequestStatus | '')} aria-label="تصفية حسب الحالة">
@@ -597,7 +600,7 @@ function EmailPreviewModal({
         <div className="px-4 py-2.5 bg-stone-100 border-b border-stone-200 flex items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-2 min-w-0">
             <span className="font-semibold text-stone-600 shrink-0">عنوان الرسالة (Subject):</span>
-            <span className="font-medium text-stone-900 truncate" dir="rtl">{preview.subject}</span>
+            <span className="font-medium text-stone-900 truncate" dir={adminDir()}>{preview.subject}</span>
           </div>
           <div className="flex gap-1 shrink-0">
             <button
@@ -629,7 +632,7 @@ function EmailPreviewModal({
               />
             </div>
           ) : (
-            <pre className="p-4 bg-white border border-stone-200 rounded-xl text-xs font-mono text-stone-800 whitespace-pre-wrap leading-relaxed select-all" dir="rtl">
+            <pre className="p-4 bg-white border border-stone-200 rounded-xl text-xs font-mono text-stone-800 whitespace-pre-wrap leading-relaxed select-all" dir={adminDir()}>
               {preview.text}
             </pre>
           )}
@@ -880,7 +883,7 @@ function EmailsPanel() {
             <div className="p-4 bg-stone-50 rounded-xl border border-stone-200 text-xs space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-stone-500">عنوان الرسالة المتوقع:</span>
-                <span className="font-semibold text-stone-900" dir="rtl">
+                <span className="font-semibold text-stone-900" dir={adminDir()}>
                   [شام للعطور] تحديث حالة طلبك SH-SAMPLE: {STATUS[activeTemplateStatus]}
                 </span>
               </div>
@@ -1044,7 +1047,7 @@ function ConversationsPanel() {
 
   return (
     <>
-      <Header title="المحادثات" subtitle="كل محادثات الزوار مع مسار التنفيذ؛ يمكن الرد مباشرة على التحويلات"
+      <Header title={T('المحادثات')} subtitle="كل محادثات الزوار مع مسار التنفيذ؛ يمكن الرد مباشرة على التحويلات"
         actions={<>
           <label className="flex items-center gap-1.5 text-xs bg-white border border-stone-300 rounded-xl px-3"><input type="checkbox" checked={onlyHandoff} onChange={(e) => setOnlyHandoff(e.target.checked)} />التحويلات فقط</label>
           <button onClick={reload} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" /></button>
@@ -1075,7 +1078,7 @@ function ConversationsPanel() {
                 {selected.memory.lastRequestRef && <span className="text-[11px] bg-amber-100 rounded-full px-2" dir="ltr">{selected.memory.lastRequestRef}</span>}
                 <select className="ms-auto rounded-lg border border-stone-300 text-xs px-2 py-1" value={selected.status} aria-label="حالة المحادثة"
                   onChange={async (e) => { const { item } = await adminRequest<{ item: Conversation }>(`/conversations/${selected.id}`, send('PATCH', { status: e.target.value })); setSelected(item); reload(); }}>
-                  <option value="open">مفتوحة (المساعد)</option><option value="handoff">تحويل لموظف</option><option value="closed">مغلقة</option>
+                  <option value="open">مفتوحة (المساعد)</option><option value="handoff">{T('تحويل لموظف')}</option><option value="closed">مغلقة</option>
                 </select>
               </div>
               <div className="flex-1 overflow-y-auto py-3 space-y-2">
@@ -1169,7 +1172,7 @@ const fromCsv = (s: string) => s.split(/[,،]/).map((x) => x.trim()).filter(Bool
 
 function ProductsPanel() {
   return (
-    <CollectionPanel<Product> path="products" title="المنتجات" subtitle="الكتالوج الوحيد الذي يقتبس منه المساعد الأسعار والمخزون" empty="الكتالوج فارغ — المساعد لن يذكر أي أسعار حتى تضيف منتجات."
+    <CollectionPanel<Product> path="products" title={T('المنتجات')} subtitle="الكتالوج الوحيد الذي يقتبس منه المساعد الأسعار والمخزون" empty="الكتالوج فارغ — المساعد لن يذكر أي أسعار حتى تضيف منتجات."
       blank={{ nameAr: '', nameEn: '', price: 0, stock: 0, unit: 'piece', category: 'perfume', active: true, tags: [] }}
       summary={(p) => (<>
         <p className="text-sm font-semibold truncate">{p.nameAr || p.nameEn} {p.demo && <span className="text-[10px] bg-stone-200 rounded px-1">تجريبي</span>} {!p.active && <span className="text-[10px] bg-red-100 text-red-800 rounded px-1">مخفي</span>}</p>
@@ -1199,7 +1202,7 @@ function ProductsPanel() {
 
 function KnowledgePanel() {
   return (
-    <CollectionPanel<KnowledgeDoc> path="knowledge" title="قاعدة المعرفة" subtitle="المصدر الذي يستند إليه المساعد في الإجابات ويعرضه كمراجع (RAG)" empty="لا توجد مستندات."
+    <CollectionPanel<KnowledgeDoc> path="knowledge" title={T('قاعدة المعرفة')} subtitle="المصدر الذي يستند إليه المساعد في الإجابات ويعرضه كمراجع (RAG)" empty="لا توجد مستندات."
       blank={{ title: '', content: '', tags: [] }}
       summary={(d) => (<><p className="text-sm font-semibold truncate">{d.title}</p><p className="text-xs text-stone-500 line-clamp-2">{d.content}</p></>)}
       Editor={({ value: d, onChange }) => (
@@ -1215,7 +1218,7 @@ function KnowledgePanel() {
 
 function ServicesPanel() {
   return (
-    <CollectionPanel<ServiceDef> path="services" title="الخدمات" subtitle="أضف أي خدمة تجارية جديدة: الكلمات المفتاحية توجّه الزوار إليها، والحقول تحدد استمارة الطلب" empty="لا توجد خدمات."
+    <CollectionPanel<ServiceDef> path="services" title={T('الخدمات')} subtitle="أضف أي خدمة تجارية جديدة: الكلمات المفتاحية توجّه الزوار إليها، والحقول تحدد استمارة الطلب" empty="لا توجد خدمات."
       blank={{ nameAr: '', nameEn: '', kind: 'custom', enabled: true, keywords: [], formFields: [], order: 50 }}
       summary={(s) => (<>
         <p className="text-sm font-semibold">{s.nameAr} {!s.enabled && <span className="text-[10px] bg-red-100 text-red-800 rounded px-1">معطلة</span>}</p>
@@ -1231,7 +1234,7 @@ function ServicesPanel() {
               <Field label="الاسم بالعربية"><input className={input} value={s.nameAr || ''} onChange={(e) => onChange({ ...s, nameAr: e.target.value })} /></Field>
               <Field label="Name (English)"><input className={input} dir="ltr" value={s.nameEn || ''} onChange={(e) => onChange({ ...s, nameEn: e.target.value })} /></Field>
               <Field label="النوع"><select className={input} value={s.kind} onChange={(e) => onChange({ ...s, kind: e.target.value as ServiceDef['kind'] })}>
-                {[['info', 'معلومات/أدوات'], ['store', 'متجر'], ['custom_order', 'طلب مخصص'], ['b2b', 'جملة B2B'], ['consultation', 'استشارة'], ['support', 'دعم'], ['custom', 'خدمة جديدة']].map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></Field>
+                {[['info', 'معلومات/أدوات'], ['store', 'متجر'], ['custom_order', 'طلب مخصص'], ['b2b', 'جملة B2B'], ['consultation', T('استشارة')], ['support', T('دعم')], ['custom', 'خدمة جديدة']].map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></Field>
               <Field label="الترتيب"><input className={input} type="number" value={s.order ?? 50} onChange={(e) => onChange({ ...s, order: Number(e.target.value) })} /></Field>
             </div>
             <Field label="الوصف بالعربية"><textarea className={input} rows={2} value={s.descriptionAr || ''} onChange={(e) => onChange({ ...s, descriptionAr: e.target.value })} /></Field>
@@ -1273,7 +1276,7 @@ function EnginesPanel() {
   };
   return (
     <>
-      <Header title="المحركات والإعدادات" subtitle="سياسة اختيار المحرك مع التحويل التلقائي عند الفشل؛ محرك شام الذاتي هو خط الأمان الأخير دائماً"
+      <Header title={T('المحركات والإعدادات')} subtitle="سياسة اختيار المحرك مع التحويل التلقائي عند الفشل؛ محرك شام الذاتي هو خط الأمان الأخير دائماً"
         actions={<a href="/api/admin/export" onClick={async (e) => {
           e.preventDefault();
           const response = await fetch(apiUrl('/api/admin/export'), { headers: { Authorization: `Bearer ${getToken()}` } });
@@ -1352,7 +1355,7 @@ function ShaheenPanel() {
   const [probing, setProbing] = useState(false);
   const [showConfig, setShowConfig] = useState(false);
   useEffect(() => { if (data) setForm(data.item.shaheen); }, [data]);
-  if (!form || !data) return <><Header title="الخبير شاهين" /><Feedback error={error} loading={loading} /></>;
+  if (!form || !data) return <><Header title={T('الخبير شاهين')} /><Feedback error={error} loading={loading} /></>;
 
   const set = (patch: Partial<ShaheenSettings>) => setForm({ ...form, ...patch });
   const status = (id: string) => data.engines.find((e) => e.id === id);
@@ -1383,7 +1386,7 @@ function ShaheenPanel() {
 
   return (
     <>
-      <Header title="الخبير شاهين" subtitle="إعدادات شات تصميم العطور (النافذة العائمة وصفحة المعمل). نفس الإعدادات تُطبَّق على موقع Vercel وموقع GitHub Pages لأن الاتنين بيستخدموا نفس الخادم." />
+      <Header title={T('الخبير شاهين')} subtitle="إعدادات شات تصميم العطور (النافذة العائمة وصفحة المعمل). نفس الإعدادات تُطبَّق على موقع Vercel وموقع GitHub Pages لأن الاتنين بيستخدموا نفس الخادم." />
       <div className="space-y-4">
         {!data.storage.persistent ? (
           <div className="rounded-2xl border border-amber-300 bg-amber-50 p-3 text-xs leading-relaxed text-amber-950">
@@ -1593,7 +1596,7 @@ function SandboxPanel() {
   };
   return (
     <>
-      <Header title="مختبر المساعد" subtitle="جرّب نفس مسار الزوار مع عرض كامل لخطوات التنفيذ (التوجيه، الاسترجاع، الأدوات، المحرك)" />
+      <Header title={T('مختبر المساعد')} subtitle="جرّب نفس مسار الزوار مع عرض كامل لخطوات التنفيذ (التوجيه، الاسترجاع، الأدوات، المحرك)" />
       <form className={`${card} flex flex-wrap gap-2`} onSubmit={(e) => { e.preventDefault(); void run(message); }}>
         <input className={`${input} flex-1 min-w-[200px]`} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="اكتب رسالة اختبار…" aria-label="رسالة اختبار" />
         <select className={`${input} w-24`} value={language} onChange={(e) => setLanguage(e.target.value)} aria-label="اللغة"><option value="ar">ar</option><option value="en">en</option><option value="fr">fr</option></select>
@@ -1674,7 +1677,7 @@ function AgentPanel({ go }: { go: (t: Tab) => void }) {
   };
   return (
     <>
-      <Header title="المساعد الإداري" subtitle="وكيل عمليات يخطط وينفذ أدوات قراءة فقط على بيانات شام ثم يكتب تقريراً بخطوات قابلة للتنفيذ. لا يعدّل أي بيانات بنفسه." />
+      <Header title={T('المساعد الإداري')} subtitle="وكيل عمليات يخطط وينفذ أدوات قراءة فقط على بيانات شام ثم يكتب تقريراً بخطوات قابلة للتنفيذ. لا يعدّل أي بيانات بنفسه." />
       <form className={`${card} space-y-3`} onSubmit={(e) => { e.preventDefault(); void run(message); }}>
         <div className="flex gap-2">
           <input className={input} value={message} onChange={(e) => setMessage(e.target.value.slice(0, 1000))} placeholder="اطلب تقريراً… مثال: إيه اللي محتاج انتباهي النهارده؟" aria-label="طلب للمساعد الإداري" />
@@ -1754,8 +1757,8 @@ function QualityPanel() {
 
   return (
     <>
-      <Header title="الجودة والتعلّم" subtitle="كل سؤال لم يجد إجابة أو رد قيّمه زائر سلبياً يتحول لفجوة. اكتب الإجابة مرة واحدة فتُضاف لقاعدة المعرفة ويستخدمها المساعد فوراً."
-        actions={<button onClick={() => { gaps.reload(); feedback.reload(); }} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" />تحديث</button>} />
+      <Header title={T('الجودة والتعلّم')} subtitle="كل سؤال لم يجد إجابة أو رد قيّمه زائر سلبياً يتحول لفجوة. اكتب الإجابة مرة واحدة فتُضاف لقاعدة المعرفة ويستخدمها المساعد فوراً."
+        actions={<button onClick={() => { gaps.reload(); feedback.reload(); }} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" />{T('تحديث')}</button>} />
       <div className="grid grid-cols-3 gap-3 mb-4">
         <div className={card}><p className="text-xs text-stone-500">فجوات مفتوحة</p><p className="text-3xl font-bold text-orange-700">{gaps.data?.items.filter((g) => g.status === 'open').length ?? '…'}</p></div>
         <div className={card}><p className="text-xs text-stone-500">نسبة الرضا</p><p className="text-3xl font-bold text-emerald-700">{rate === null ? '—' : `${rate}%`}</p></div>
@@ -1860,7 +1863,7 @@ function DoctorPanel() {
   return (
     <>
       <Header title="طبيب شاهين — الصيانة التلقائية" subtitle="بيراجع الخبير شاهين كل 10 دقايق من خوادم GitHub (مش من خادم الموقع) وبيصلّح المشاكل لوحده"
-        actions={<button type="button" onClick={() => { reload(); loadReport(); }} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" />تحديث</button>} />
+        actions={<button type="button" onClick={() => { reload(); loadReport(); }} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" />{T('تحديث')}</button>} />
       <div className="grid lg:grid-cols-2 gap-4">
         <div className={`${card} space-y-2`}>
           <h2 className="font-bold text-sm">آخر تقرير للطبيب</h2>
