@@ -34,6 +34,8 @@ const S = {
   login: { ar: 'تسجيل الدخول', en: 'Log in', fr: 'Connexion', es: 'Iniciar sesión', it: 'Accedi', de: 'Anmelden', ru: 'Войти', zh: '登录', tr: 'Giriş yap', fa: 'ورود' },
   print_tooltip: { ar: 'طباعة بطاقة تصنيع العطر', en: 'Print manufacturing spec sheet', fr: 'Imprimer la fiche de fabrication', es: 'Imprimir hoja de fabricación', it: 'Stampa scheda di produzione', de: 'Produktionsblatt drucken', ru: 'Печать производственной карты', zh: '打印生产规格表', tr: 'Üretim föyünü yazdır', fa: 'چاپ کارت تولید عطر' },
   print_btn: { ar: 'طباعة', en: 'Print', fr: 'Imprimer', es: 'Imprimir', it: 'Stampa', de: 'Drucken', ru: 'Печать', zh: '打印', tr: 'Yazdır', fa: 'چاپ' },
+  profile_tooltip: { ar: 'صفحتي الشخصية وبياناتي', en: 'My personal profile & data', fr: 'Mon profil et mes données', es: 'Mi perfil y datos personales', it: 'Il mio profilo personale', de: 'Mein Profil & Daten', ru: 'Мой профиль и данные', zh: '我的个人主页与数据', tr: 'Kişisel profilim ve verilerim', fa: 'پروفایل و داده‌های شخصی من' },
+  profile_btn: { ar: 'حسابي', en: 'My Profile', fr: 'Mon Profil', es: 'Mi Perfil', it: 'Il Mio Profilo', de: 'Mein Profil', ru: 'Мой Профиль', zh: '我的个人主页', tr: 'Kişisel Profilim', fa: 'پروفایل من' },
 } satisfies Record<string, LText>;
 
 interface HeaderProps {
@@ -49,6 +51,7 @@ interface HeaderProps {
   currentEnvironment: UserEnvironmentProfile;
   onOpenEnvironmentModal: () => void;
   onOpenPrivacyModal: () => void;
+  onOpenProfilePage: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -64,8 +67,10 @@ export const Header: React.FC<HeaderProps> = ({
   currentEnvironment,
   onOpenEnvironmentModal,
   onOpenPrivacyModal,
+  onOpenProfilePage,
 }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [groupMenuStates, setGroupMenuStates] = useState<Record<string, boolean>>({});
   const userMenuRef = useRef<HTMLDivElement>(null);
   const L = makeT(currentLang, S);
 
@@ -74,43 +79,89 @@ export const Header: React.FC<HeaderProps> = ({
       if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
         setIsUserMenuOpen(false);
       }
+      // Close group menus when clicking outside
+      const groupButtons = document.querySelectorAll('[data-group-menu]');
+      const isGroupClick = Array.from(groupButtons).some(btn => btn.contains(e.target as Node));
+      if (!isGroupClick) {
+        setGroupMenuStates({});
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const navItems = [
-    { id: 'home', label: t('nav_home', currentLang), isHome: true },
-    { id: 'concentration', label: t('nav_calc', currentLang) },
-    { id: 'perfume_news', label: t('nav_news', currentLang), isNew: true },
-    { id: 'world_perfumes', label: t('nav_world_perfumes', currentLang) },
-    { id: 'raw_materials', label: t('nav_raw_materials', currentLang) },
-    { id: 'pyramid', label: t('nav_pyramid', currentLang) },
-    { id: 'alcohol', label: t('nav_alcohol', currentLang) },
-    { id: 'costing', label: t('nav_costing', currentLang) },
-    { id: 'master_ai', label: t('nav_ai_master', currentLang) },
-    { id: 'maceration_simulator', label: t('nav_maceration', currentLang, 'محاكي التعتيق الزمني') },
-    { id: 'library', label: t('nav_library', currentLang) },
-    { id: 'guide', label: t('nav_guide', currentLang) },
+  const isGroupMenuOpen = (id: string) => groupMenuStates[id] || false;
+  const setIsGroupMenuOpen = (id: string, open: boolean) => {
+    setGroupMenuStates(prev => ({ ...prev, [id]: open }));
+  };
+
+  // Smart navigation groups - reduces 12 items to 4 main groups with dropdowns
+  const navGroups = [
+    {
+      id: 'home',
+      type: 'single',
+      label: t('nav_home_short', currentLang),
+      fullLabel: t('nav_home', currentLang),
+      icon: Home,
+      iconColor: 'text-amber-700',
+    },
+    {
+      id: 'tools',
+      type: 'dropdown',
+      label: t('nav_tools_short', currentLang),
+      fullLabel: t('nav_tools', currentLang),
+      icon: FlaskConical,
+      iconColor: 'text-amber-600',
+      items: [
+        { id: 'concentration', label: t('nav_calc_short', currentLang), fullLabel: t('nav_calc', currentLang), icon: FlaskConical },
+        { id: 'alcohol', label: t('nav_alcohol_short', currentLang), fullLabel: t('nav_alcohol', currentLang), icon: FlaskConical },
+        { id: 'costing', label: t('nav_costing_short', currentLang), fullLabel: t('nav_costing', currentLang), icon: Newspaper },
+        { id: 'maceration_simulator', label: t('nav_maceration_short', currentLang), fullLabel: t('nav_maceration', currentLang, 'محاكي التعتيق الزمني'), icon: FlaskConical },
+      ],
+    },
+    {
+      id: 'explore',
+      type: 'dropdown',
+      label: t('nav_explore_short', currentLang),
+      fullLabel: t('nav_explore', currentLang),
+      icon: Compass,
+      iconColor: 'text-amber-600',
+      items: [
+        { id: 'perfume_news', label: t('nav_news_short', currentLang), fullLabel: t('nav_news', currentLang), icon: Newspaper, isNew: true },
+        { id: 'world_perfumes', label: t('nav_world_perfumes_short', currentLang), fullLabel: t('nav_world_perfumes', currentLang), icon: Compass },
+        { id: 'pyramid', label: t('nav_pyramid_short', currentLang), fullLabel: t('nav_pyramid', currentLang), icon: Compass },
+        { id: 'raw_materials', label: t('nav_raw_materials_short', currentLang), fullLabel: t('nav_raw_materials', currentLang), icon: Database },
+        { id: 'library', label: t('nav_library_short', currentLang), fullLabel: t('nav_library', currentLang), icon: Database },
+        { id: 'guide', label: t('nav_guide_short', currentLang), fullLabel: t('nav_guide', currentLang), icon: Newspaper },
+      ],
+    },
+    {
+      id: 'master_ai',
+      type: 'single',
+      label: t('nav_ai_master_short', currentLang),
+      fullLabel: t('nav_ai_master', currentLang),
+      icon: Sparkles,
+      iconColor: 'text-emerald-500',
+    },
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 px-3 sm:px-8 py-2.5 no-print shadow-xs">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 px-4 sm:px-8 py-2.5 no-print shadow-xs">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         
         {/* Zone 1: Brand wordmark: صمم عطرك مع شام */}
-        <div className="flex items-center gap-2 sm:gap-3 min-w-0 sm:shrink-0">
-          <div className="w-9 h-9 shrink-0 rounded-xl bg-gradient-to-br from-stone-900 to-amber-950 text-amber-400 flex items-center justify-center font-serif-luxury font-bold text-lg shadow-md border border-amber-600/30">
+        <div className="flex items-center gap-3 shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-stone-900 to-amber-950 text-amber-400 flex items-center justify-center font-serif-luxury font-bold text-lg shadow-md border border-amber-600/30">
             شام
           </div>
           <button 
             onClick={() => setActiveTab('home')}
-            className="text-right flex flex-col items-start cursor-pointer group min-w-0"
+            className="text-right flex flex-col items-start cursor-pointer group"
           >
-            <span className="max-w-full truncate text-[15px] sm:text-lg font-extrabold tracking-tight text-stone-950 group-hover:text-amber-800 transition-colors font-serif-luxury">
+            <span className="text-base sm:text-lg font-extrabold tracking-tight text-stone-950 group-hover:text-amber-800 transition-colors font-serif-luxury">
               {t('brand_name', currentLang)}
             </span>
-            <span className="text-[10px] text-amber-700 font-medium hidden sm:inline whitespace-nowrap">
+            <span className="text-[10px] text-amber-700 font-medium hidden sm:inline">
               {t('brand_subtitle', currentLang)}
             </span>
           </button>
@@ -119,29 +170,122 @@ export const Header: React.FC<HeaderProps> = ({
           {activeTab !== 'home' && (
             <button
               onClick={() => setActiveTab('home')}
-              className="flex shrink-0 items-center gap-1.5 p-2 sm:px-3 sm:py-1.5 rounded-xl bg-amber-800 hover:bg-amber-900 text-white text-xs font-bold shadow-xs transition-all cursor-pointer mr-1 animate-in fade-in"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-800 hover:bg-amber-900 text-white text-xs font-bold shadow-xs transition-all cursor-pointer mr-1 animate-in fade-in"
               title={L('home_tooltip')}
-              aria-label={L('home_btn')}
             >
               <Home className="w-3.5 h-3.5 text-amber-300" />
-              <span className="hidden sm:inline text-[11px]">{L('home_btn')}</span>
+              <span className="inline text-[11px]">{L('home_btn')}</span>
             </button>
           )}
         </div>
 
-        {/* Zone 2: navigation lives in the scrollable row below at every width — 12 sections never fit inline. */}
+        {/* Zone 2: Navigation links - Compact icon-only bar with dropdowns */}
+        <div className="hidden xl:block relative flex items-center justify-center py-1">
+          {/* Gradient fade left edge - visible only if overflow */}
+          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white/95 to-transparent pointer-events-none z-10"></div>
+          {/* Gradient fade right edge */}
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white/95 to-transparent pointer-events-none z-10"></div>
+          <div className="flex items-center gap-2 relative z-20">
+            {navGroups.map((group) => (
+              group.type === 'single' ? (
+                <button
+                  key={group.id}
+                  onClick={() => setActiveTab(group.id)}
+                  className={`transition-all py-1.5 px-2.5 rounded-lg flex items-center gap-1.5 cursor-pointer ${
+                    activeTab === group.id
+                      ? 'text-stone-950 font-bold bg-stone-100 shadow-2xs border border-stone-200/80'
+                      : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50'
+                  }`}
+                  title={group.fullLabel}
+                  aria-label={group.fullLabel}
+                >
+                  <group.icon className={`w-4.5 h-4.5 ${group.iconColor} shrink-0`} />
+                </button>
+              ) : (
+                <div key={group.id} className="relative">
+                  <button
+                    data-group-menu="true"
+                    onClick={() => setIsGroupMenuOpen(group.id, !isGroupMenuOpen(group.id))}
+                    className={`transition-all py-1.5 px-2.5 rounded-lg flex items-center gap-1 cursor-pointer ${
+                      isGroupMenuOpen(group.id)
+                        ? 'text-stone-950 font-bold bg-stone-100 shadow-2xs border border-stone-200/80'
+                        : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50'
+                    }`}
+                    title={group.fullLabel}
+                    aria-label={group.fullLabel}
+                  >
+                    <group.icon className={`w-4.5 h-4.5 ${group.iconColor} shrink-0`} />
+                    <span className="absolute -top-1.5 -right-1.5 px-1 py-0 rounded-full bg-amber-500 text-white text-[9px] font-bold leading-none">
+                      {group.items?.length}
+                    </span>
+                    <ChevronDown className="w-3 h-3 text-stone-400 ml-0.5 shrink-0" />
+                  </button>
+                  {isGroupMenuOpen(group.id) && (
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50 min-w-[280px] rounded-xl bg-white border border-stone-200 shadow-xl overflow-hidden animate-in fade-in zoom-in-95">
+                      <div className="px-3 py-2 bg-amber-50 border-b border-amber-100 rounded-t-xl">
+                        <div className="flex items-center gap-2">
+                          <div className={`w-2 h-2 rounded-full ${group.iconColor?.replace('text-emerald-500', 'bg-emerald-500').replace('text-amber-700', 'bg-amber-500').replace('text-amber-600', 'bg-amber-500')}`}></div>
+                          <span className="text-xs font-bold text-amber-900">{group.fullLabel}</span>
+                          <span className="px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-700 text-[10px] font-medium border border-amber-500/30">
+                            {group.items?.length} أداة
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-amber-700 mt-0.5 leading-tight">
+                          {group.id === 'tools' && 'جميع أدوات الحسابات المعملية - الكيمياء، المخاليط، والتكلفة'}
+                          {group.id === 'explore' && 'مكتبة العطور، الخامات، الإخباريات، والأدلة المرجعية'}
+                          {group.id === 'home' && 'العودة للصفحة الرئيسية'}
+                          {group.id === 'master_ai' && 'خبير المعمل الذكي بالذكاء الاصطناعي'}
+                        </p>
+                      </div>
+                      <div className="p-1">
+                        {group.items?.map((item, idx) => (
+                        <button
+                          key={item.id}
+                          onClick={() => {
+                            setActiveTab(item.id);
+                            setIsGroupMenuOpen(group.id, false);
+                          }}
+                          className={`w-full px-3 py-2 text-left flex items-center gap-2.5 transition-colors cursor-pointer ${
+                            activeTab === item.id
+                              ? 'bg-amber-50 text-amber-900 font-semibold border-l-3 border-amber-500 rounded-l-lg pl-3'
+                              : 'hover:bg-stone-50 text-stone-700 rounded-lg'
+                          }`}
+                        >
+                          {item.isNew && (
+                            <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30 shrink-0 ml-1">
+                              NEW
+                            </span>
+                          )}
+                          <item.icon className="w-4 h-4 text-stone-500 shrink-0" />
+                          <span className="text-sm font-medium">{item.fullLabel}</span>
+                        </button>
+                      ))}  // end map
+                      </div>  // end items container
+                      <div className="mt-1 pt-1 border-t border-stone-100">
+                        <button
+                          onClick={() => setIsGroupMenuOpen(group.id, false)}
+                          className="w-full px-3 py-1.5 text-center text-xs text-stone-500 hover:text-stone-700 hover:bg-stone-50 rounded-lg transition-colors"
+                        >
+                          {activeTab === group.id ? 'إغلاق' : 'إغلاق القائمة'}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )
+            ))}
+          </div>
+        </div>
 
         {/* Zone 3: Global Controls (Language, Environment/Homeland, User Auth, Privacy, Print) */}
-        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
           
-          {/* 1. Language Switcher (10 World Languages) — on phones it sits in the row below to free space */}
-          <div className="hidden sm:block">
-            <LanguageSelector
-              currentLang={currentLang}
-              onSelectLanguage={onSelectLanguage}
-              onAutoDetectLanguage={onAutoDetectLanguage}
-            />
-          </div>
+          {/* 1. Language Switcher (10 World Languages) */}
+          <LanguageSelector
+            currentLang={currentLang}
+            onSelectLanguage={onSelectLanguage}
+            onAutoDetectLanguage={onAutoDetectLanguage}
+          />
 
           {/* 2. Country & Detailed Address Selector */}
           <button
@@ -152,7 +296,7 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="text-base leading-none">
               {currentEnvironment.countryFlag || '🌍'}
             </span>
-            <span className="hidden lg:inline truncate max-w-[120px] font-bold">
+            <span className="hidden md:inline truncate max-w-[120px] font-bold">
               {pickArEn(currentLang, currentEnvironment.countryNameAr, currentEnvironment.countryNameEn).split('(')[0].trim()}
             </span>
             <span className="px-1.5 py-0.5 rounded bg-amber-200/80 text-[10px] font-mono font-bold text-amber-950">
@@ -240,12 +384,10 @@ export const Header: React.FC<HeaderProps> = ({
           ) : (
             <button
               onClick={onOpenAuthModal}
-              className="flex items-center gap-1.5 p-2 sm:px-3 sm:py-1.5 text-xs font-semibold text-white bg-amber-800 hover:bg-amber-900 rounded-xl transition-all shadow-sm cursor-pointer shrink-0"
-              aria-label={L('login')}
-              title={L('login')}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-amber-800 hover:bg-amber-900 rounded-xl transition-all shadow-sm cursor-pointer shrink-0"
             >
               <User className="w-3.5 h-3.5 text-amber-200" />
-              <span className="hidden sm:inline">{L('login')}</span>
+              <span>{L('login')}</span>
             </button>
           )}
 
@@ -259,42 +401,99 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="hidden xl:inline">{L('print_btn')}</span>
           </button>
 
+          {/* 5. My Profile Button - Personal page shortcut */}
+          {currentUser && (
+            <button
+              onClick={onOpenProfilePage}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-emerald-700 hover:bg-emerald-800 rounded-xl transition-all shadow-sm cursor-pointer shrink-0"
+              title={L('profile_tooltip')}
+            >
+              <User className="w-3.5 h-3.5 text-white" />
+              <span className="hidden xl:inline">{L('profile_btn')}</span>
+            </button>
+          )}
+
         </div>
       </div>
 
-      {/* Mobile & Tablet Secondary Navigation Strip */}
-      <div className="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto pt-2 mt-2 border-t border-stone-100 text-xs no-scrollbar">
-        {/* Quick Language Switcher on phones (the header row has the full one from sm up) */}
-        <div className="shrink-0 sm:hidden">
-          <LanguageSelector
-            currentLang={currentLang}
-            onSelectLanguage={onSelectLanguage}
-            compactMobile
-          />
-        </div>
+      {/* Mobile & Tablet Navigation - Condensed grouped view */}
+      <div className="xl:hidden">
+        <div className="flex items-center gap-2 overflow-x-auto pt-2 mt-2 border-t border-stone-100 text-xs no-scrollbar">
+          {/* Quick Language Switcher on Mobile/Tablet */}
+          <div className="shrink-0">
+            <LanguageSelector
+              currentLang={currentLang}
+              onSelectLanguage={onSelectLanguage}
+              compactMobile
+            />
+          </div>
 
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => setActiveTab(item.id)}
-            className={`whitespace-nowrap px-3 py-1 rounded-lg transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${
-              activeTab === item.id
-                ? 'bg-amber-900 text-white font-bold shadow-xs'
-                : 'text-stone-700 hover:text-stone-900 bg-stone-100/90 font-medium'
-            }`}
-          >
-            {item.isHome && (
-              <Home className="w-3.5 h-3.5 text-amber-300" />
-            )}
-            {item.id === 'perfume_news' && (
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping" />
-            )}
-            {item.id === 'master_ai' && (
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            )}
-            <span>{item.label}</span>
-          </button>
-        ))}
+          {/* Mobile nav groups as scrollable pills */}
+          {navGroups.map((group) => (
+            group.type === 'single' ? (
+              <button
+                key={group.id}
+                onClick={() => setActiveTab(group.id)}
+                className={`whitespace-nowrap px-3 py-1.5 rounded-lg flex items-center gap-1.5 shrink-0 ${
+                  activeTab === group.id
+                    ? 'bg-amber-900 text-white font-bold shadow-xs'
+                    : 'text-stone-700 hover:text-stone-900 bg-stone-100/90 font-medium'
+                }`}
+                title={group.fullLabel}
+              >
+                <group.icon className={`w-3.5 h-3.5 ${group.iconColor.replace('text-emerald-500', 'text-emerald-400').replace('text-amber-700', 'text-amber-300').replace('text-amber-600', 'text-amber-500')} shrink-0`} />
+                <span className="text-[11px]">{group.label}</span>
+              </button>
+            ) : (
+              <div key={group.id} className="relative shrink-0">
+                {/* Group pill */}
+                <button
+                  onClick={() => setIsGroupMenuOpen(group.id, !isGroupMenuOpen(group.id))}
+                  className={`whitespace-nowrap px-3 py-1.5 rounded-lg flex items-center gap-1.5 shrink-0 ${
+                    isGroupMenuOpen(group.id)
+                      ? 'bg-amber-900 text-white font-bold shadow-xs'
+                      : 'text-stone-700 hover:text-stone-900 bg-stone-100/90 font-medium'
+                  }`}
+                  title={group.fullLabel}
+                >
+                  <group.icon className={`w-3.5 h-3.5 ${group.iconColor.replace('text-emerald-500', 'text-emerald-400').replace('text-amber-700', 'text-amber-300').replace('text-amber-600', 'text-amber-500')} shrink-0`} />
+                  <span className="text-[11px]">{group.label}</span>
+                  <span className="px-1 py-0.5 rounded-full bg-amber-100 text-[10px] font-medium text-amber-800 shrink-0">
+                    {group.items?.length}
+                  </span>
+                </button>
+                
+                {/* Group dropdown for mobile */}
+                {isGroupMenuOpen(group.id) && (
+                  <div className="absolute top-full left-0 mt-2 min-w-[240px] rounded-xl bg-white border border-stone-200 shadow-xl overflow-hidden animate-in fade-in zoom-in-95">
+                    {group.items?.map((item) => (
+                      <button
+                        key={item.id}
+                        onClick={() => {
+                          setActiveTab(item.id);
+                          setIsGroupMenuOpen(group.id, false);
+                        }}
+                        className={`w-full px-4 py-2 text-left flex items-center gap-2 transition-colors cursor-pointer ${
+                          activeTab === item.id
+                            ? 'bg-amber-50 text-amber-900 font-semibold'
+                            : 'hover:bg-stone-50 text-stone-700'
+                        }`}
+                      >
+                        {item.isNew && (
+                          <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30 shrink-0">
+                            NEW
+                          </span>
+                        )}
+                        <item.icon className="w-3.5 h-3.5 text-stone-500 shrink-0" />
+                        <span className="text-xs">{item.fullLabel}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          ))}
+        </div>
       </div>
     </header>
   );
