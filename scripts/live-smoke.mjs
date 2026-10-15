@@ -68,10 +68,12 @@ for (const [i, c] of CASES.entries()) {
   if (data.engine && typeof data.engine === 'object' && VENDORS.test(JSON.stringify(data.engine))) problems.push('vendor name in engine field');
   if (c.path === '/api/chat' && status === 200 && data.mode !== c.body.model) problems.push(`mode ${data.mode} ≠ ${c.body.model}`);
   if (c.identity && status === 200 && !/شاهين|شام|Shahin|Shaheen|Sham/i.test(reply)) problems.push('identity answer does not present itself as Shahin/Sham');
+  const notes = [];
+  if (!c.identity && c.path === '/api/chat' && /الخبير شاهين|شاهين|Shahin|Shaheen|Al-Khabeer/i.test(reply.slice(0, 140))) notes.push('starts by introducing itself');
   const ok = problems.length === 0;
   if (!ok) failures++;
   const head = `${ok ? 'OK' : 'FAIL'} · HTTP ${status} · ${(ms / 1000).toFixed(1)}s${data.mode ? ` · mode=${data.mode}` : ''}${engine ? ` · engine=${engine}` : ''}`;
-  annotate(ok ? 'notice' : 'error', `${i + 1}. ${c.title}`, `${head}${problems.length ? `\nPROBLEMS: ${problems.join('; ')}` : ''}\nQ: ${c.body.message}\nA: ${clip(reply || JSON.stringify(data))}`);
+  annotate(!ok ? 'error' : notes.length ? 'warning' : 'notice', `${i + 1}. ${c.title}`, `${head}${problems.length ? `\nPROBLEMS: ${problems.join('; ')}` : ''}${notes.length ? `\nNOTE: ${notes.join('; ')}` : ''}\nQ: ${c.body.message}\nA: ${clip(reply || JSON.stringify(data))}`);
   summary.push(`| ${i + 1} | ${c.title} | ${status} | ${(ms / 1000).toFixed(1)}s | ${ok ? '✅' : '❌ ' + problems.join('; ').replace(/\|/g, '/')} |`);
   details.push(`### ${i + 1}. ${c.title}\n**Q:** ${c.body.message}\n\n${reply ? reply : '`' + JSON.stringify(data) + '`'}\n`);
 }
