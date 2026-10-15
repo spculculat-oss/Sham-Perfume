@@ -15,6 +15,7 @@ import { normalizeMediaBlocks } from '../src/utils/mediaBlock';
 import { callEngine, engineStatuses, type EngineFailure } from './core/engines';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { AnswerCache, GateBusyError, ProviderGate, VISITOR_ID, cacheKey, capacityConfig, normalizeQuestion, retryHintMs } from './core/capacity';
+import type { ShaheenRuntime } from './core/maintenance';
 import { councilAvailable, runCouncil } from './core/council';
 import type { Repository } from './core/repository';
 import type { CouncilSettings, ModelEngineId, ShaheenSettings } from './core/types';
@@ -272,7 +273,7 @@ export async function probeEngines(settings: ShaheenSettings, options: { env?: E
 }
 
 /** Public routes: GET /api/models and POST /api/chat (rate limited, settings from the shared store). */
-export function createShaheenRouter(options: { repo: Repository; env?: Environment; fetch?: typeof fetch }) {
+export function createShaheenRouter(options: { repo: Repository; env?: Environment; fetch?: typeof fetch; runtime?: ShaheenRuntime }) {
   const env = options.env || process.env;
   const router = express.Router();
   const capacity = capacityConfig(env);
@@ -284,6 +285,8 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
   const councilLimiter = new RateLimiter(Number(env.SHAM_COUNCIL_RATE_PER_HOUR) || 12, 60 * 60_000);
   const gate = new ProviderGate(capacity.maxConcurrent, capacity.queueWaitMs, capacity.providerRpm);
   const answers = new AnswerCache<ChatAnswer>(capacity.cacheEntries, capacity.cacheTtlMs);
+  const runtime = options.runtime;
+  runtime?.attach({ gate, answers: answers as AnswerCache<unknown> });
   // Settings change rarely; reading them once per message would cost a store read per visitor.
   // Saved in this instance → refreshed at once (revision); saved elsewhere (shared store) → within 3 s.
   let settingsCache: { at: number; revision: number; value: Awaited<ReturnType<Repository['settings']>> } | undefined;
@@ -306,6 +309,7 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
   });
 
   router.post('/chat', async (req, res) => {
+    const started = Date.now();
     const controller = new AbortController();
     const cancel = () => { if (!res.writableEnded) controller.abort(); };
     res.on('close', cancel);
@@ -330,8 +334,11 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
         result = await run(controller.signal);
       }
       if (!res.destroyed) res.json(publicChatResult(result));
+      runtime?.record({ ms: Date.now() - started, status: 200 });
     } catch (error) {
       if (res.destroyed) return;
+      if (error instanceof ChatError) runtime?.record({ ms: Date.now() - started, status: error.status, code: error.code });
+      else runtime?.record({ ms: Date.now() - started, status: 500, code: 'CHAT_FAILED' });
       if (error instanceof ChatError) {
         if (error.retryAfterMs) res.setHeader('Retry-After', String(Math.min(60, Math.max(1, Math.ceil(error.retryAfterMs / 1000)))));
         res.status(error.status).json({ error: error.message, code: error.code });

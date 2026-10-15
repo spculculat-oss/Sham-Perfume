@@ -32,7 +32,9 @@ test('EdgeOne function: one app per instance, /api prefix restored, per-visitor 
     for (const path of ['/api/health', '/health']) {
       const res = await fetch(base + path);
       assert.equal(res.status, 200, path);
-      assert.deepEqual(await res.json(), { service: 'sham-perfume', status: 'ok' });
+      const health = await res.json();
+      assert.deepEqual({ service: health.service, status: health.status }, { service: 'sham-perfume', status: 'ok' });
+      assert.equal(typeof health.version, 'string', 'deployed commit, read by the maintenance agent');
     }
     const chat = (ip: string) => fetch(`${base}/api/chat`, { method: 'POST',
       headers: { 'content-type': 'application/json', 'eo-connecting-ip': ip }, body: JSON.stringify({ message: 'hi' }) });

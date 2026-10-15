@@ -8,7 +8,8 @@
   "git": {
     "deploymentEnabled": {
       "arena/**": false,
-      "arena/*": false
+      "arena/*": false,
+      "doctor/**": false
     }
   }
 }

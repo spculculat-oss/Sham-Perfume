@@ -1,0 +1,295 @@
+/**
+ * «طبيب شاهين» — autonomous maintenance agent of «الخبير شاهين». One run (every 10 minutes, GitHub Actions):
+ *   1. load memory from the maintenance issue
+ *   2. probe the live site (light requests only — no load on visitors)
+ *   3. decide remedies (playbook.ts) and carry them out:
+ *        runtime reset through the admin API · re-run Pages / key-sync workflows · Vercel redeploy (token) or a
+ *        deploy nudge commit · AI code fix verified by the full test suite, merged, watched, auto-reverted if worse
+ *   4. update the status board, comment only on events.
+ * Runs on GitHub's machines, never on the website's servers.
+ */
+import { execFile } from 'node:child_process';
+import { COOLDOWN_MIN, canFix, cooled, decide, remember, type Action, type Capabilities, type DoctorState, type FixRecord } from './playbook';
+import { runProbes, type Finding, type ProbeContext } from './probes';
+import { ISSUE_LABEL, ISSUE_TITLE, eventComment, readState, renderBody, type ActionLog } from './report';
+import { attemptFix, VERIFY_COMMANDS, type FixDeps } from './fixer';
+import type { GitHub } from './github';
+
+type Env = Record<string, string | undefined>;
+export interface Shell { (command: string, timeoutMs?: number): Promise<{ ok: boolean; output: string }> }
+
+export interface DoctorOptions {
+  env: Env;
+  github?: GitHub;
+  fetch: typeof fetch;
+  sh: Shell;
+  ask?: (system: string, prompt: string) => Promise<string>;
+  root: string;
+  mode: 'live' | 'dry';
+  runId?: string;
+  runUrl?: string;
+  now?: () => number;
+  log?: (line: string) => void;
+}
+
+export function shell(root: string): Shell {
+  return (command, timeoutMs = 15 * 60_000) => new Promise((resolve) => {
+    execFile('bash', ['-lc', command], { cwd: root, timeout: timeoutMs, maxBuffer: 64 * 1024 * 1024, env: { ...process.env, CI: '1', FORCE_COLOR: '0' } },
+      (error, stdout, stderr) => resolve({ ok: !error, output: `${stdout}\n${stderr}`.trim() }));
+  });
+}
+
+const q = (s: string) => `'${s.replace(/'/g, `'\\''`)}'`;
+
+export async function runDoctor(o: DoctorOptions) {
+  const now = o.now || Date.now;
+  const log = o.log || ((line: string) => console.log(line));
+  const env = o.env;
+  const site = (env.DOCTOR_SITE_URL || 'https://sham-perfume-49bf.vercel.app').replace(/\/+$/, '');
+  const pages = env.DOCTOR_PAGES_URL || 'https://spculculat-oss.github.io/Sham-Perfume/';
+  const vercelProject = env.DOCTOR_VERCEL_PROJECT || 'sham-perfume-49bf';
+  const live = o.mode === 'live';
+  const caps: Capabilities = {
+    adminToken: Boolean(env.SHAM_ADMIN_TOKEN?.trim()),
+    vercelToken: Boolean(env.VERCEL_TOKEN?.trim()),
+    ai: Boolean(o.ask),
+    write: live && Boolean(o.github?.canWrite),
+  };
+
+  // 1) memory
+  let issue: Awaited<ReturnType<GitHub['findIssue']>>;
+  try { issue = await o.github?.findIssue(ISSUE_LABEL); } catch (error) { log(`::warning title=Doctor::cannot read the maintenance issue: ${(error as Error).message}`); }
+  const state: DoctorState = readState(issue?.body);
+  const previous = state.history.at(-1);
+
+  // 2) probes
+  let main: ProbeContext['main'];
+  try { main = await o.github?.head('main'); } catch { /* deploy check is skipped */ }
+  const ctx: ProbeContext = {
+    site, pages, pagesOrigin: new URL(pages).origin, vercelProject, visitorId: 'sham-doctor-probe', adminToken: env.SHAM_ADMIN_TOKEN?.trim() || undefined,
+    github: o.github, main, fetch: o.fetch, now: now(),
+  };
+  const findings = await runProbes(ctx);
+  for (const f of findings) log(`${f.status.toUpperCase().padEnd(4)} ${f.id.padEnd(8)} ${f.summary}`);
+  remember(state, findings, now());
+
+  // 3) remedies
+  const { actions, notes } = decide(findings, state, caps, now());
+  const done: ActionLog[] = [];
+  const queue = [...actions];
+  while (queue.length) {
+    const action = queue.shift()!;
+    const at = new Date(now()).toISOString();
+    state.lastActions[action.kind === 'ai_fix' ? `ai_fix:${action.problem}` : action.kind] = at;
+    let result: { ok: boolean; detail: string; then?: Action };
+    try { result = await execute(action, { o, ctx, state, findings, caps, main, site, vercelProject, log }); }
+    catch (error) { result = { ok: false, detail: `خطأ: ${(error as Error).message.slice(0, 300)}` }; }
+    log(`${result.ok ? 'DONE' : 'FAIL'} ${action.kind}: ${result.detail}`);
+    done.push({ at, kind: action.kind, reason: action.reason, ok: result.ok, detail: result.detail });
+    const next = result.then;
+    if (next && !queue.some((a) => a.kind === next.kind)) {
+      // Follow-ups obey the same limits as planned remedies (cooldowns, one pending fix, daily cap).
+      const allowed = next.kind === 'ai_fix' ? canFix(state, caps, now()) && cooled(state, `ai_fix:${next.problem}`, COOLDOWN_MIN.ai_fix, now())
+        : cooled(state, next.kind, COOLDOWN_MIN[next.kind], now());
+      if (allowed) queue.push(next);
+      else notes.push(`${next.reason} — مؤجل (حدود الأمان: فترة تهدئة أو إصلاح سابق تحت المراقبة)`);
+    }
+  }
+
+  // 4) report
+  const body = renderBody(findings, state, { notes, actions: done, site, runUrl: o.runUrl, mode: o.mode });
+  if (o.github && live) {
+    try {
+      if (!issue) {
+        await o.github.ensureLabel(ISSUE_LABEL, '0E8A16', 'سجل طبيب شاهين (صيانة تلقائية)');
+        issue = await o.github.createIssue(ISSUE_TITLE, body, [ISSUE_LABEL]);
+      } else await o.github.updateIssue(issue.number, body);
+      const comment = eventComment(findings, previous, state, done, notes);
+      if (comment && issue) await o.github.comment(issue.number, comment);
+    } catch (error) { log(`::warning title=Doctor::cannot update the maintenance issue: ${(error as Error).message}`); }
+  }
+  return { findings, actions: done, notes, state, body };
+}
+
+interface ExecContext {
+  o: DoctorOptions; ctx: ProbeContext; state: DoctorState; findings: Finding[]; caps: Capabilities;
+  main?: { sha: string; date: string }; site: string; vercelProject: string; log: (line: string) => void;
+}
+
+async function execute(action: Action, x: ExecContext): Promise<{ ok: boolean; detail: string; then?: Action }> {
+  const { o } = x;
+  const gh = o.github!;
+  switch (action.kind) {
+    case 'reset_runtime': {
+      const actions = ['reset_provider_gate', 'refresh_model_list', ...(action.reason.includes('فاضي') ? ['clear_answer_cache'] : [])];
+      const response = await o.fetch(`${x.site}/api/admin/maintenance`, {
+        method: 'POST', headers: { authorization: `Bearer ${o.env.SHAM_ADMIN_TOKEN?.trim()}`, 'content-type': 'application/json' },
+        body: JSON.stringify({ actions }), signal: AbortSignal.timeout(15_000),
+      });
+      return { ok: response.ok, detail: response.ok ? `صفّيت حالة المزوّدين وقائمة الموديلات على الخادم (${actions.join('، ')})` : `واجهة الصيانة ردّت HTTP ${response.status}` };
+    }
+    case 'rerun_pages':
+      await gh.dispatch('pages.yml');
+      return { ok: true, detail: 'شغّلت بناء ونشر GitHub Pages من جديد' };
+    case 'rerun_keys':
+      await gh.dispatch('shaheen-keys.yml');
+      return { ok: true, detail: 'شغّلت فحص ومزامنة مفاتيح الذكاء الاصطناعي' };
+    case 'redeploy_vercel':
+      return redeployVercel(x);
+    case 'nudge_deploy':
+      return nudgeDeploy(x, action.reason);
+    case 'verify_build': {
+      const build = await o.sh('npm run build:vercel && npm run test:vercel');
+      if (build.ok) {
+        return { ok: true, detail: 'البناء عندي نجح — العطل كان مؤقت في Vercel', then: x.caps.vercelToken ? { kind: 'redeploy_vercel', reason: 'إعادة نشر بعد عطل مؤقت' } : { kind: 'nudge_deploy', reason: 'إعادة نشر بعد عطل مؤقت' } };
+      }
+      return { ok: true, detail: 'البناء فشل عندي كمان — المشكلة في الكود', then: { kind: 'ai_fix', problem: `build:${x.main?.sha.slice(0, 12)}`, reason: 'بناء Vercel فشل', evidence: build.output.slice(-10_000) } };
+    }
+    case 'ai_fix':
+      return aiFix(action, x);
+    case 'revert':
+      return revert(action, x);
+  }
+  return { ok: false, detail: 'إجراء غير معروف' };
+}
+
+async function redeployVercel(x: ExecContext) {
+  const token = x.o.env.VERCEL_TOKEN!.trim();
+  const scope = x.o.env.VERCEL_SCOPE || 'sham-de37';
+  const api = async (path: string, init: RequestInit = {}) => {
+    const response = await x.o.fetch(`https://api.vercel.com${path}${path.includes('?') ? '&' : '?'}slug=${encodeURIComponent(scope)}`, {
+      ...init, headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, signal: AbortSignal.timeout(30_000),
+    });
+    const data = await response.json().catch(() => ({})) as any;
+    if (!response.ok) throw new Error(`Vercel ${response.status} ${data?.error?.code || ''} ${data?.error?.message || ''}`.trim());
+    return data;
+  };
+  const repoId = await x.o.github!.repoId();
+  const created = await api('/v13/deployments?forceNew=1', {
+    method: 'POST',
+    body: JSON.stringify({ name: x.vercelProject, project: x.vercelProject, target: 'production', gitSource: { type: 'github', repoId, ref: 'main', ...(x.main ? { sha: x.main.sha } : {}) } }),
+  });
+  return { ok: true, detail: `بدأت نشر جديد على Vercel لـ ${x.main?.sha.slice(0, 7) || 'main'} (${created.url ? `https://${created.url}` : created.id})` };
+}
+
+async function git(x: ExecContext, command: string) {
+  const r = await x.o.sh(command, 5 * 60_000);
+  if (!r.ok) throw new Error(`${command.split(' ').slice(0, 3).join(' ')}: ${r.output.slice(-400)}`);
+  return r.output.trim();
+}
+
+async function prepareGit(x: ExecContext) {
+  await git(x, 'git config user.name "Shaheen Doctor" && git config user.email "41898282+github-actions[bot]@users.noreply.github.com"');
+  await git(x, 'git fetch --quiet --depth=50 origin main && git checkout --quiet -B main origin/main');
+}
+
+async function nudgeDeploy(x: ExecContext, reason: string) {
+  await prepareGit(x);
+  await git(x, `git commit --quiet --allow-empty -m ${q(`chore(doctor): redeploy — ${reason}`)} && git push --quiet origin HEAD:main`);
+  return { ok: true, detail: 'عملت كومِت فاضي على main علشان Vercel ينشر آخر نسخة' };
+}
+
+/** Commit the working-tree change as a PR and merge it (falls back to a direct push), then rebuild Pages. */
+async function ship(x: ExecContext, files: string[] | 'committed', title: string, body: string): Promise<{ sha: string; url?: string }> {
+  const gh = x.o.github!;
+  const branch = `doctor/${x.o.runId || Date.now()}`;
+  await git(x, `git checkout --quiet -B ${branch}`);
+  if (files !== 'committed') {
+    await git(x, `git add -A -- ${files.map(q).join(' ')}`);
+    await git(x, `git commit --quiet -m ${q(title)} -m ${q(body.slice(0, 3000))}`);
+  }
+  let sha: string; let url: string | undefined;
+  try {
+    await git(x, `git push --quiet origin HEAD:refs/heads/${branch}`);
+    const pr = await gh.createPull(branch, title, body);
+    url = pr.html_url;
+    sha = (await gh.mergePull(pr.number, `${title} (#${pr.number})`)).sha;
+    await gh.deleteBranch(branch);
+  } catch (error) {
+    x.log(`::warning title=Doctor::PR route failed (${(error as Error).message.slice(0, 200)}) — pushing to main directly`);
+    await gh.deleteBranch(branch);
+    await git(x, 'git push --quiet origin HEAD:main');
+    sha = await git(x, 'git rev-parse HEAD');
+    url = `https://github.com/${gh.repo}/commit/${sha}`;
+  }
+  await git(x, 'git checkout --quiet main');
+  // Pushes made with the workflow token do not trigger other workflows: start the Pages build ourselves.
+  await gh.dispatch('pages.yml').catch(() => undefined);
+  return { sha, url };
+}
+
+async function evidenceFor(action: Action, x: ExecContext): Promise<string> {
+  const gh = x.o.github!;
+  const ci = x.findings.find((f) => f.id === 'ci');
+  if (action.problem?.startsWith('ci:') && ci?.data?.runId) {
+    const jobs = await gh.failedJobs(Number(ci.data.runId));
+    const parts: string[] = [];
+    for (const job of jobs.slice(0, 2)) {
+      const notes = await gh.annotations(job.id);
+      parts.push(`JOB ${job.name} · failed steps: ${job.steps.join(', ')}`);
+      if (notes.length) parts.push(notes.map((n) => `${n.path}:${n.start_line} ${n.annotation_level} ${n.title || ''} ${n.message}`).join('\n'));
+      parts.push(await gh.jobLog(job.id, 9000));
+    }
+    return parts.join('\n\n') || action.evidence || '';
+  }
+  return action.evidence || '';
+}
+
+async function aiFix(action: Action, x: ExecContext) {
+  const { o, state } = x;
+  await prepareGit(x);
+  const evidence = await evidenceFor(action, x);
+  const deps: FixDeps = {
+    root: o.root, ask: o.ask!, log: (line) => x.log(`  fixer: ${line}`),
+    sh: (command) => o.sh(command, 15 * 60_000),
+    trackedFiles: async () => (await git(x, 'git ls-files')).split('\n').filter(Boolean),
+  };
+  const result = await attemptFix({ problem: action.problem || 'unknown', reason: action.reason, evidence }, deps);
+  const record: FixRecord = { at: new Date().toISOString(), problem: action.problem || action.reason, result: 'failed', summary: result.summary };
+  if (!result.ok) {
+    state.fixes.push(record); state.fixes.splice(0, Math.max(0, state.fixes.length - 20));
+    await o.sh('git checkout --quiet -- . && git checkout --quiet main');
+    return { ok: false, detail: `${result.summary} (${result.attempts} محاولات)\n  ${result.log.join('\n  ')}` };
+  }
+  const baseline = x.findings.filter((f) => f.status === 'fail').map((f) => f.id);
+  const body = [`🩺 إصلاح تلقائي من طبيب شاهين`, '', `**المشكلة:** ${action.reason}`, `**الإصلاح:** ${result.summary}`, '',
+    `**الفحوص اللي عدّت قبل الدمج:** ${VERIFY_COMMANDS.map((c) => `\`${c}\``).join('، ')}`, '', '**السجل:**', ...result.log.map((l) => `- ${l}`), '',
+    'الطبيب هيراقب الموقع بعد النشر، ولو ظهرت مشاكل جديدة هيرجّع التغيير ده تلقائيًا.'].join('\n');
+  const shipped = await ship(x, result.changed, `fix(doctor): ${result.summary.slice(0, 90) || action.reason}`, body);
+  Object.assign(record, { result: 'merged', sha: shipped.sha, url: shipped.url });
+  state.fixes.push(record); state.fixes.splice(0, Math.max(0, state.fixes.length - 20));
+  state.pending = { sha: shipped.sha, at: record.at, baseline, problem: record.problem };
+  return { ok: true, detail: `${result.summary} — اتدمج ${shipped.sha.slice(0, 7)} بعد ما عدّى كل الفحوص${shipped.url ? ` (${shipped.url})` : ''}` };
+}
+
+async function revert(action: Action, x: ExecContext) {
+  const { o, state } = x;
+  await prepareGit(x);
+  const sha = action.sha!;
+  const parents = (await git(x, `git rev-list --parents -n 1 ${sha}`)).split(' ').length - 1;
+  await git(x, `git revert --no-edit ${parents > 1 ? '-m 1 ' : ''}${sha}`);
+  for (const command of ['npm run lint', 'npm test']) {
+    const r = await o.sh(command);
+    if (!r.ok) { await o.sh('git reset --quiet --hard origin/main'); return { ok: false, detail: `الرجوع ما عدّاش \`${command}\` — هسيبه وأبلّغ` }; }
+  }
+  const shipped = await ship(x, 'committed', `revert(doctor): ${sha.slice(0, 7)}`, `↩️ رجوع تلقائي: ${action.reason}`);
+  const record = state.fixes.find((f) => f.sha === sha);
+  if (record) record.result = 'reverted';
+  state.pending = undefined;
+  return { ok: true, detail: `رجّعت ${sha.slice(0, 7)} (${shipped.url || shipped.sha.slice(0, 7)})` };
+}
+
+/** The doctor thinks with the same AI engines (and keys) as Shaheen, in the admin's failover order. */
+export async function makeAsk(env: Env): Promise<DoctorOptions['ask']> {
+  const { callEngine, engineStatuses } = await import('../../server/core/engines');
+  const order = ['gemini', 'deepseek', 'openai', 'claude', 'openrouter', 'self_hosted'] as const;
+  const ready = order.filter((id) => engineStatuses(env).find((e) => e.id === id)?.configured);
+  if (!ready.length) return undefined;
+  return async (system, prompt) => {
+    for (const id of ready) {
+      const reply = await callEngine(id, system, [{ role: 'user', text: prompt }], { env, signal: AbortSignal.timeout(180_000), temperature: 0.2, maxTokens: 16_000, maxChars: 200_000 }).catch(() => undefined);
+      if (reply?.trim()) return reply;
+    }
+    throw new Error('no AI engine answered');
+  };
+}
