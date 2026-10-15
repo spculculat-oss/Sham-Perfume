@@ -77,6 +77,22 @@ export const LOCALE_MAP: Record<SupportedLanguage, string> = {
   my: 'my-MM',
   km: 'km-KH',
   lo: 'lo-LA',
+  // Extended languages — batch 5 (Indian subcontinent, Central Asia)
+  ta: 'ta-IN',
+  te: 'te-IN',
+  mr: 'mr-IN',
+  gu: 'gu-IN',
+  pa: 'pa-IN',
+  kn: 'kn-IN',
+  ml: 'ml-IN',
+  or: 'or-IN',
+  kk: 'kk-KZ',
+  uz: 'uz-UZ',
+  az: 'az-AZ',
+  mn: 'mn-MN',
+  ky: 'ky-KG',
+  tg: 'tg-TJ',
+  tk: 'tk-TM',
 };
 
 /**
