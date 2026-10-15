@@ -9,7 +9,15 @@
     "start": "tsx server.ts",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.app.json",
+    "build:pages": "vite build --mode pages && node scripts/prepare-pages.mjs",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "check:pages": "node scripts/check-pages.mjs",
+    "build:vercel": "npm run build && node scripts/build-vercel.mjs",
+    "test:vercel": "node --test tests/vercel-output.test.mjs",
+    "check:edgeone": "node scripts/check-edgeone.mjs",
+    "verify:keys": "node --import tsx scripts/verify-ai-keys.mts",
+    "sync:vercel-env": "node scripts/sync-vercel-env.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
@@ -33,5 +41,9 @@
     "tailwindcss": "^4.3.3",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
+  },
+  "packageManager": "bun@1.4.3",
+  "engines": {
+    "node": "22.x"
   }
 }
