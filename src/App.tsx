@@ -3,6 +3,7 @@ import { Header } from './components/Header';
 import { UserProfilePage } from './components/UserProfilePage';
 import { Hero } from './components/Hero';
 import { HomeHub } from './components/HomeHub';
+import { Storefront } from './components/Storefront';
 import { ConcentrationCalculator } from './components/ConcentrationCalculator';
 import { PyramidCalculator } from './components/PyramidCalculator';
 import { AlcoholDilutionCalculator } from './components/AlcoholDilutionCalculator';
@@ -983,6 +984,14 @@ export default function App() {
               onNavigateToTab={(tab) => navigateToTab(tab)}
             />
           </div>
+        )}
+
+        {activeTab === 'store' && (
+          <Storefront
+            onClose={() => navigateToTab('home')}
+            currentLang={currentLang}
+            retailerId={currentUser?.id}
+          />
         )}
       </main>
 
