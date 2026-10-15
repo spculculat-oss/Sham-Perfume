@@ -1,4 +1,5 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
+import { tidyCaption, topicOnlyInPlaceName } from '../utils/mediaCaption';
 import { ExternalLink, Image as ImageIcon, MapPin, Play, X } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { isStaticHosting } from '../utils/api';
@@ -48,7 +49,12 @@ export function ShaheenMedia({ request, lang }: Props) {
       if (!alive) return;
       const seen = new Set<string>();
       // Interleave the topics so each one gets a picture before any gets a second.
-      const lists = results.map((r) => (r.status === 'fulfilled' ? r.value.images : []));
+      // Readable captions (no catalogue numbers), and no Dutch places for «oud» — also for answers the
+      // server cached before it learned this.
+      const topics = imageKey.split('|');
+      const lists = results.map((r, n) => (r.status === 'fulfilled' ? r.value.images : [])
+        .filter((img) => !topicOnlyInPlaceName(img.title, topics[n]))
+        .map((img) => ({ ...img, title: tidyCaption(img.title, topics[n]) })));
       const merged: MediaImage[] = [];
       for (let i = 0; i < 4; i++) for (const list of lists) {
         const img = list[i];

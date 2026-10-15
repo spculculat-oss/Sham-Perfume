@@ -9,6 +9,7 @@
  * - places: OpenStreetMap geocoding (Nominatim, Photon as fallback) for the map under the answer.
  * Results are cached, filtered for safety, and contain no AI vendor names.
  */
+import { tidyCaption, withoutPlaceCompounds } from '../src/utils/mediaCaption';
 import express from 'express';
 import { RateLimiter, clientKey } from './core/rateLimit';
 
@@ -103,7 +104,7 @@ async function commonsSearch(query: string, options: { fetch?: typeof fetch; sig
     })
     .filter((x): x is MediaImage => Boolean(x))
     // Commons expands synonyms (oud → Dutch place names): keep files whose title names the topic.
-    .filter((img) => !terms(query).length || terms(query).some((t) => terms(img.title).includes(t)))
+    .filter((img) => !terms(query).length || terms(query).some((t) => terms(withoutPlaceCompounds(img.title)).includes(t)))
     // Visitors read Arabic or Latin-script languages: captions in other scripts are reduced to their
     // readable part (usually the botanical name), and readable files are shown first.
     .map((img, i) => ({ img: { ...img, title: readableCaption(img.title, query) }, readable: isReadable(img.title), i }))
@@ -123,12 +124,12 @@ export function readableCaption(title: string, query: string): string {
   const topic = query.trim().replace(/^\p{Ll}/u, (c) => c.toUpperCase());
   const clean = title.replace(/\s+/g, ' ').trim();
   if (!clean || CAMERA_NAME.test(clean)) return topic;
-  if (!FOREIGN_LETTER.test(clean)) return clean;
+  if (!FOREIGN_LETTER.test(clean)) return tidyCaption(clean, topic);
   const runs = clean.split(/(?:(?![\p{Script=Latin}\p{Script=Arabic}])\p{L}[\p{M}\u200c\u200d]*)+/u)
     .map((part) => part.replace(/^[\s()\[\],.;:–—-]+|[\s()\[\],.;:–—-]+$/g, '').trim())
     .filter((part) => (part.match(/\p{L}/gu) || []).length >= 3);
   const best = runs.sort((x, y) => y.length - x.length)[0];
-  return best && !CAMERA_NAME.test(best) ? best : topic;
+  return best && !CAMERA_NAME.test(best) ? tidyCaption(best, topic) : topic;
 }
 
 const terms = (text: string) => text.toLowerCase().split(/[^\p{L}\p{N}]+/u).filter((t) => t.length >= 3).map((t) => t.replace(/s$/, ''));
