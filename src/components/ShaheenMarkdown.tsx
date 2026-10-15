@@ -14,7 +14,12 @@ import { MATH_CLOSE, MATH_OPEN, plainMath } from '../utils/shaheenText';
  */
 export function stripFormulaBlock(text: string): string {
   // Any formula-looking block (```json label, cut fence, bare JSON…), not only the canonical one.
-  return removeToolBlocks(removeFormulaBlocks(removeMediaBlocks(text))).replace(/\n{3,}/g, '\n\n').trim();
+  return removeToolBlocks(removeFormulaBlocks(removeMediaBlocks(text)))
+    // Fences left behind once a block inside them was removed («```sham-formula» + «```json…```» + «```»),
+    // empty blocks and a dangling closing fence: seen live as an empty black box under the answer.
+    .replace(/^[ \t]*(```|~~~)[\w-]*[ \t]*\n(?:[ \t]*\n)*[ \t]*\1[ \t]*$/gm, '')
+    .replace(/\n[ \t]*(```|~~~)[\w-]*[ \t]*$/, '')
+    .replace(/\n{3,}/g, '\n\n').trim();
 }
 
 const INLINE = /(\u2045[^\u2046\n]*\u2046|\*\*[^*\n]+\*\*|__[^_\n]+__|`[^`\n]+`|\[[^\]\n]+\]\(https:\/\/[^)\s]+\)|\*[^*\s][^*\n]*\*)/g;
@@ -64,7 +69,15 @@ export function ShaheenMarkdown({ text, className = '' }: { text: string; classN
       i++;
       while (i < lines.length && !lines[i].trim().startsWith('```')) body.push(lines[i++]);
       i++;
-      blocks.push(<pre key={key} dir="ltr" className="overflow-x-auto rounded-xl bg-stone-900 p-3 text-[11px] leading-relaxed text-stone-100"><code>{body.join('\n')}</code></pre>);
+      const content = body.join('\n').trim();
+      // Visitors never see an empty box or machine JSON. Anything else in a fence is almost always a
+      // calculation or a note, so it reads as text in a soft box — not as a black «code» panel.
+      if (!content || /^[[{]/.test(content)) continue;
+      blocks.push(
+        <div key={key} dir="auto" className="whitespace-pre-wrap rounded-xl border border-amber-100 bg-amber-50/60 px-3 py-2 text-stone-800 tabular-nums">
+          {lineBreaks(content, key)}
+        </div>,
+      );
       continue;
     }
 

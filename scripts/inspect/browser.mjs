@@ -2,7 +2,7 @@
  * Real-browser inspection: opens each public site in Chrome like a visitor, asks Shaheen in every answer
  * mode, and reports (as GitHub annotations) exactly what the chat bubble shows — raw code, calculator links,
  * the formula toolbar — and whether tapping a calculator link really opens that tool on the site.
- * Usage (CI): PUPPETEER_PATH=/tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js node scripts/inspect/browser.mjs
+ * Runs on every push under scripts/inspect. Usage (CI): PUPPETEER_PATH=/tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js node scripts/inspect/browser.mjs
  */
 const { default: puppeteer } = await import(process.env.PUPPETEER_PATH || 'puppeteer-core');
 
@@ -81,13 +81,15 @@ for (const site of SITES) {
           const buttons = card ? [...card.querySelectorAll('button')].map((b) => b.textContent.trim()).filter(Boolean) : [];
           const text = last?.innerText || '';
           const captions = card ? [...card.querySelectorAll('[data-testid="shaheen-media"] img')].map((i) => i.alt) : [];
-          return { captions, text, html: last?.innerHTML.slice(0, 1500) || '', pre: last ? last.querySelectorAll('pre').length : 0, links, buttons: buttons.slice(0, 25) };
+          const emptyBoxes = last ? [...last.querySelectorAll('pre, div.rounded-xl')].filter((b) => !b.textContent.trim()).length : 0;
+          return { emptyBoxes, captions, text, html: last?.innerHTML.slice(0, 1500) || '', pre: last ? last.querySelectorAll('pre').length : 0, links, buttons: buttons.slice(0, 25) };
         });
         const problems = [];
         if (!seen.text) problems.push('لا رد');
         if (/\$\$|\\(frac|times|text|approx|cdot)\b|\$[A-Za-z]_/.test(seen.text)) problems.push('LaTeX ظاهر');
         if (/```|"pyramidNotes"|"tools"\s*:|sham-(formula|tool|media)/.test(seen.text)) problems.push('كود/JSON ظاهر');
         if (seen.pre) problems.push(`صندوق كود ظاهر (${seen.pre})`);
+        if (seen.emptyBoxes) problems.push(`صندوق فاضي ظاهر (${seen.emptyBoxes})`);
         if (!seen.links.length) problems.push('لا روابط أدوات');
         const codeCaptions = seen.captions.filter((c) => /\d{3,}|\dpx\b|\b[A-Z]{2,}\d|-\d{4}-|^Oud-/.test(c));
         if (codeCaptions.length) problems.push(`تعليقات صور شكلها أكواد: ${codeCaptions.join(' ؛ ')}`);
