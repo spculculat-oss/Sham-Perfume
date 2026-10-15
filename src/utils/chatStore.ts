@@ -1,5 +1,6 @@
 import type { SupportedLanguage } from '../types/i18n';
 import { removeMediaBlocks } from './mediaBlock';
+import { findFormulaBlocks } from './aiFormulaExtractor';
 import { ApiError, isStaticHosting, requestApi, visitorId, type ChatResponse } from './api';
 import { CHAT_STORAGE_KEY, clearChatSession, DEFAULT_WELCOME_MESSAGE, isChatMessage,
   loadStoredChatSession, saveChatSession, type ChatMessage, type ShaheenProvider } from './chatStorage';
@@ -18,7 +19,9 @@ export function compactTurn(text: string): string {
   // The visual-aid topics are disposable: drop them rather than leave a half-cut block behind.
   text = removeMediaBlocks(text).trimEnd();
   if (text.length <= TURN_LIMIT) return text;
-  const formula = text.match(/```sham-formula\s*\n[\s\S]*?```/)?.[0];
+  const spans = findFormulaBlocks(text);
+  const span = spans.filter((s) => s.formula).pop() || spans.pop();
+  const formula = span && text.slice(span.start, span.end);
   const tail = formula && formula.length <= 1800 ? `\n…\n${formula}` : '\n…';
   return text.slice(0, TURN_LIMIT - tail.length).trimEnd() + tail;
 }

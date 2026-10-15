@@ -160,7 +160,9 @@ test('fast prefers quick engines, is short and asks for a brief answer; deep pre
   const deep = await executeChat(validateChatRequest({ message: 'hi', model: 'deep' }), { env: { ANTHROPIC_API_KEY: 'k', GEMINI_API_KEY: 'k' }, fetch: record });
   assert.equal(deep.mode, 'deep');
   assert.equal(deep.engine.provider, 'claude');
-  assert.equal(JSON.parse(calls[0].body).max_tokens, SHAHEEN_SITE_SETTINGS.maxTokens);
+  // Deep answers carry analysis plus a formula block: more room so the block is not cut off.
+  assert.equal(JSON.parse(calls[0].body).max_tokens, Math.max(SHAHEEN_SITE_SETTINGS.maxTokens, 6144));
+  assert.match(calls[0].body, /sham-formula حرفياً/);
 });
 
 test('the system prompt tells Shaheen never to name a model or company', () => {

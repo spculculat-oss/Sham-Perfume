@@ -26,7 +26,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import perfumerImg from '../assets/images/master_perfumer_compounding_1791693212967.jpg';
-import { extractFormulaFromAIMessage, isFormulaTransferCommand, ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
+import { extractFormulaFromAIMessage, extractFormulasFromAIMessage, isFormulaTransferCommand, ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
 import { exportChatTranscriptToFile } from '../utils/chatStorage';
 import { useShaheenChat } from '../hooks/useShaheenChat';
 import { useShaheenModels } from '../hooks/useShaheenModels';
@@ -860,6 +860,8 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [copiedAll, setCopiedAll] = useState(false);
   const [recordedId, setRecordedId] = useState<string | null>(null);
+  // A deep analysis may offer several alternative formulas: which one the toolbar acts on, per message.
+  const [formulaPick, setFormulaPick] = useState<Record<string, number>>({});
   const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   // Multi-AI Model Orchestrator State
@@ -1233,7 +1235,9 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                     ? shaheenWelcome(currentLang)
                     : stripMediaBlock(msg.text);
 
-                const extractedFormula = msg.role === 'assistant' && msg.kind !== 'error' ? extractFormulaFromAIMessage(activeDisplayContent) : null;
+                const formulas = msg.role === 'assistant' && msg.kind !== 'error' ? extractFormulasFromAIMessage(activeDisplayContent) : [];
+                const formulaIndex = Math.min(formulaPick[msg.id] ?? 0, Math.max(formulas.length - 1, 0));
+                const extractedFormula = formulas[formulaIndex] ?? null;
                 const isError = msg.kind === 'error';
                 const mediaRequest = msg.role === 'assistant' && !isError && msg.id !== 'welcome' ? extractMediaRequest(msg.text) : undefined;
                 const isLastMessage = msg.id === messages[messages.length - 1]?.id;
@@ -1329,6 +1333,25 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                               {extractedFormula.concentrationPercent}% {extractedFormula.concentrationType.toUpperCase()}
                             </span>
                           </div>
+
+                          {formulas.length > 1 && (
+                            <div className="flex flex-wrap gap-1.5" role="tablist">
+                              {formulas.map((f, i) => (
+                                <button
+                                  key={i}
+                                  role="tab"
+                                  aria-selected={i === formulaIndex}
+                                  onClick={() => setFormulaPick((p) => ({ ...p, [msg.id]: i }))}
+                                  className={`px-2.5 py-1 rounded-full text-[11px] font-semibold border cursor-pointer transition-colors ${
+                                    i === formulaIndex ? 'bg-amber-800 text-white border-amber-800' : 'bg-white text-amber-900 border-amber-300 hover:bg-amber-100'
+                                  }`}
+                                  title={f.summary}
+                                >
+                                  {i + 1}. {f.title}
+                                </button>
+                              ))}
+                            </div>
+                          )}
 
                           {/* Interactive Transfer Buttons */}
                           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">

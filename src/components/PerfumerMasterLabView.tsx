@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import perfumerImg from '../assets/images/master_perfumer_compounding_1791693212967.jpg';
-import { extractFormulaFromAIMessage, isFormulaTransferCommand, ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
+import { extractFormulaFromAIMessage, extractFormulasFromAIMessage, isFormulaTransferCommand, ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
 import { exportChatTranscriptToFile } from '../utils/chatStorage';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../utils/localizedContent';
@@ -305,6 +305,8 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [copiedAll, setCopiedAll] = useState(false);
   const [recordedId, setRecordedId] = useState<string | null>(null);
+  // A deep analysis may offer several alternative formulas: which one the toolbar acts on, per message.
+  const [formulaPick, setFormulaPick] = useState<Record<string, number>>({});
   const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -576,7 +578,9 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
             const mediaRequest = m.role === 'assistant' && !isError && m.id !== 'welcome' ? extractMediaRequest(m.text) : undefined;
             const isLastMessage = m.id === messages[messages.length - 1]?.id;
             const canCompare = m.role === 'assistant' && !isError && m.id !== 'welcome' && AI_ENGINES.length > 1;
-            const extractedFormula = m.role === 'assistant' && !isError ? extractFormulaFromAIMessage(activeDisplayContent) : null;
+            const formulas = m.role === 'assistant' && !isError ? extractFormulasFromAIMessage(activeDisplayContent) : [];
+                const formulaIndex = Math.min(formulaPick[m.id] ?? 0, Math.max(formulas.length - 1, 0));
+                const extractedFormula = formulas[formulaIndex] ?? null;
 
             return (
               <div
@@ -672,6 +676,25 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                           {extractedFormula.concentrationPercent}% {extractedFormula.concentrationType.toUpperCase()}
                         </span>
                       </div>
+
+                          {formulas.length > 1 && (
+                            <div className="flex flex-wrap gap-1.5" role="tablist">
+                              {formulas.map((f, i) => (
+                                <button
+                                  key={i}
+                                  role="tab"
+                                  aria-selected={i === formulaIndex}
+                                  onClick={() => setFormulaPick((p) => ({ ...p, [m.id]: i }))}
+                                  className={`px-2.5 py-1 rounded-full text-[11px] font-semibold border cursor-pointer transition-colors ${
+                                    i === formulaIndex ? 'bg-amber-800 text-white border-amber-800' : 'bg-white text-amber-900 border-amber-300 hover:bg-amber-100'
+                                  }`}
+                                  title={f.summary}
+                                >
+                                  {i + 1}. {f.title}
+                                </button>
+                              ))}
+                            </div>
+                          )}
 
                       {/* Interactive Transfer Buttons */}
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">

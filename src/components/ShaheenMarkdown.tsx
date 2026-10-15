@@ -1,5 +1,6 @@
 import React from 'react';
 import { removeMediaBlocks } from '../utils/mediaBlock';
+import { removeFormulaBlocks } from '../utils/aiFormulaExtractor';
 
 /**
  * Small, safe Markdown renderer for Shaheen's answers (React elements only — never innerHTML).
@@ -9,7 +10,8 @@ import { removeMediaBlocks } from '../utils/mediaBlock';
  * videos) is hidden too: ShaheenMedia renders it.
  */
 export function stripFormulaBlock(text: string): string {
-  return removeMediaBlocks(text).replace(/```sham-formula\s*\n[\s\S]*?```/g, '').replace(/\n{3,}/g, '\n\n').trim();
+  // Any formula-looking block (```json label, cut fence, bare JSON…), not only the canonical one.
+  return removeFormulaBlocks(removeMediaBlocks(text)).replace(/\n{3,}/g, '\n\n').trim();
 }
 
 const INLINE = /(\*\*[^*\n]+\*\*|__[^_\n]+__|`[^`\n]+`|\[[^\]\n]+\]\(https:\/\/[^)\s]+\)|\*[^*\s][^*\n]*\*)/g;

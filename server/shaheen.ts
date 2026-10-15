@@ -99,7 +99,7 @@ export function getPublicModes(env: Environment, settings: ShaheenSettings = SHA
 
 const STYLE: Record<'fast' | 'deep', string> = {
   fast: 'وضع «رد سريع»: أجب مباشرة وبإيجاز (في حدود 120 كلمة) بالنقاط الأهم فقط، ما لم يطلب المستخدم تفاصيل صراحة.',
-  deep: 'وضع «تحليل معمّق»: حلّل السؤال بعمق. اشرح المنطق، وقارن البدائل، واذكر المخاطر وحدود المعلومة، واعرض الحسابات خطوة بخطوة بأرقام واضحة.',
+  deep: 'وضع «تحليل معمّق»: حلّل السؤال بعمق. اشرح المنطق، وقارن البدائل، واذكر المخاطر وحدود المعلومة، واعرض الحسابات خطوة بخطوة بأرقام واضحة في نص أو جدول Markdown (لا في سياج كود). إذا كانت الإجابة تركيبة قابلة للنقل للحاسبة فلا تنسَ سياج sham-formula في آخر الرد، واجعل التحليل مركّزاً حتى لا ينقطع الرد قبله.',
 };
 
 export function systemInstruction(language: SupportedLanguage, extra = '', style?: 'fast' | 'deep'): string {
@@ -118,6 +118,7 @@ export function systemInstruction(language: SupportedLanguage, extra = '', style
 في الحسابات فرّق بين النسب الحجمية والوزنية، ولا تحوّل مل إلى جرام دون كثافة معلومة. وضّح أن التركيبات المقترحة تجريبية وتحتاج مراجعة السلامة والتوافق واختباراً صغيراً.
 إذا طلب المستخدم تركيبة عطر قابلة للنقل للحاسبة، وكانت البيانات كافية، اشرحها ثم أرفق JSON واحداً داخل سياج كود باسم sham-formula بالحقول التالية، دون تخمين بيانات ناقصة:
 {"title":"اسم العطر","author":"شاهين — مقترح تجريبي","concentrationPercent":20,"concentrationType":"edp","bottleVolumeMl":50,"alcoholPercentage":96,"waterPercent":0,"fixativePercent":0,"macerationDays":30,"summary":"مقترح يحتاج مراجعة السلامة","pyramidNotes":[{"id":"note-1","nameAr":"اسم المادة المحددة","nameEn":"Exact material name","category":"top","percentageOfOil":100}]}
+اكتب السياج باسم sham-formula حرفياً (وليس json)، وضع JSON في سطر مستقل بعد اسم السياج، وأغلقه بثلاث علامات \`\`\` في سطر مستقل، واكتب الأرقام بالأرقام الإنجليزية بدون علامة %. لا تكتب JSON التركيبة خارج هذا السياج ولا تذكر السياج في الشرح. إذا عرضت بدائل لتركيبات مختلفة فأرفق سياج sham-formula مستقلاً لكل بديل (ثلاثة على الأكثر) وبعنوان title مختلف.
 الأرقام أعلاه أمثلة للشكل فقط، وليست وصفة افتراضية. يجب أن تطابق القيم الشرح وطلب المستخدم، وأن تجمع نسب pyramidNotes إلى 100 من الزيت. التصنيفات top أو heart أو base. نسب التركيز والماء والمثبت من إجمالي المنتج ولا تتجاوز 100 معاً. لا ترفق JSON في التحيات أو الإجابات العامة أو الطبية، ولا تدّع أن الصيغة معتمدة للاستخدام على الجلد.
 للمقارنات والنِّسب والخصائص (مثل مقارنة مواد، عائلات عطرية، تركيزات EDP/EDT، مدد التعتيق) اعرضها في جدول Markdown واضح بأعمدة قليلة.
 عندما تفيد الصور أو الفيديو في التوضيح فعلاً (شكل مادة خام أو نبات أو راتنج، أدوات المختبر، طرق الاستخلاص والتقطير والنقع، ورائحة لا تكفيها الكلمات) أو طلبها المستخدم، ابدأ ردك بسياج واحد باسم sham-media يحتوي JSON فقط، ثم اكتب الشرح بعده. وعندما يكون للسؤال بُعد جغرافي (منشأ مادة خام، مزارع الورد أو العود أو اللافندر، مدن ومتاحف وأسواق العطور، أين تُزرع نبتة) أضف places في نفس السياج ليعرضها الموقع على خريطة. السياج إلزامي كلما طلب المستخدم صوراً أو فيديو أو خريطة أو أماكن أو قال «وريني» أو show me. مثال:
@@ -158,7 +159,9 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   // Vercel functions stop at 60 s: keep the whole failover chain inside that.
   const total = AbortSignal.any([AbortSignal.timeout(options.totalTimeoutMs ?? 50000), ...(options.signal ? [options.signal] : [])]);
   const instruction = systemInstruction(input.language, settings.instructions, style);
-  const maxTokens = style === 'fast' ? Math.min(settings.maxTokens, 1024) : settings.maxTokens;
+  // A deep analysis plus its formula block used to be cut before the closing fence: give it room.
+  const maxTokens = style === 'fast' ? Math.min(settings.maxTokens, 1024)
+    : style === 'deep' ? Math.min(8192, Math.max(settings.maxTokens, 6144)) : settings.maxTokens;
   const turns: ChatTurn[] = [...input.conversationHistory, { role: 'user', text: input.message }];
   let timedOut = false;
   const attempt = async (provider: Provider): Promise<{ outcome: 'ok'; value: ChatAnswer } | { outcome: 'next' | 'limited'; retryMs?: number }> => {
