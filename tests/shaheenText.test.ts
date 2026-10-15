@@ -70,3 +70,23 @@ test('an opening «أهلاً بك.» is dropped for real questions, kept when t
   assert.equal(stripOpeningGreeting('أهلاً وسهلاً، إليك الحسابات المطلوبة لتخفيف الكحول', 'خفف كحول'), 'إليك الحسابات المطلوبة لتخفيف الكحول');
   assert.equal(publicChatResult({ reply, mode: 'auto' }, 'صمم لي عطر').reply.startsWith('لتصميم'), true);
 });
+
+test('no empty or black code boxes: stray fences around a removed formula block disappear', () => {
+  const f = '{"title":"x","concentrationPercent":20,"bottleVolumeMl":50,"pyramidNotes":[{"nameAr":"ورد","category":"heart","percentageOfOil":100}]}';
+  const cases = [
+    `نص\n\n\`\`\`sham-formula\n\`\`\`json\n${f}\n\`\`\`\n\`\`\``,
+    `نص\n\n\`\`\`sham-formula\n${f}\n\`\`\`\n\`\`\``,
+    'نص\n\n```json\n```',
+    'نص\n```',
+    'نص\n\n```\n{"unknown": true}\n```',
+  ];
+  for (const text of cases) {
+    const html = renderToStaticMarkup(createElement(ShaheenMarkdown, { text }));
+    assert.doesNotMatch(html, /<pre|```|\{"/, text);
+    assert.match(html, /نص/);
+  }
+  // A calculation the model fenced reads as text in a soft box, not as a code panel.
+  const calc = renderToStaticMarkup(createElement(ShaheenMarkdown, { text: '```\nالكحول = 70 × 1000 ÷ 96 ≈ 729 مل\n```' }));
+  assert.doesNotMatch(calc, /<pre|<code/);
+  assert.match(calc, /<div dir="auto"[^>]*>الكحول = 70 × 1000 ÷ 96 ≈ 729 مل<\/div>/);
+});
