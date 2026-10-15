@@ -62,6 +62,10 @@ test('Vercel config builds explicit full-stack output instead of Vite-only dist'
   assert.equal(settings.outputDirectory, null);
   assert.equal(settings.buildCommand, 'npm run build:vercel');
   assert.match(settings.installCommand, /bun@1\.4\.3.*--frozen-lockfile/);
+  // Work branches skip Vercel previews (the free plan's daily deployment cap must stay free for main);
+  // main is never disabled.
+  assert.equal(settings.git.deploymentEnabled['arena/**'], false);
+  assert.notEqual(settings.git.deploymentEnabled.main, false);
   assert.equal(config.version, 3);
   const metadata = JSON.parse(await readFile(path.join(output, 'functions/api.func/.vc-config.json'), 'utf8'));
   assert.equal(metadata.runtime, 'nodejs22.x');
