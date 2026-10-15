@@ -5,7 +5,7 @@ import express from 'express';
 import { SHAHEEN_SITE_SETTINGS, normalizeShaheen, ShaheenConfigError } from '../server/config/shaheen';
 import { Repository, ValidationError } from '../server/core/repository';
 import { MemoryStore } from '../server/core/store';
-import { geminiThinking } from '../server/core/engines';
+import { classifyEngineFailure, geminiThinking } from '../server/core/engines';
 import { createShaheenRouter, executeChat, getChatModels, probeEngines, systemInstruction } from '../server/shaheen';
 import { compactTurn, chatHistory } from '../src/utils/chatStore';
 import { isChatMessage, type ChatMessage } from '../src/utils/chatStorage';
@@ -112,7 +112,7 @@ test('probeEngines reports each allowed engine honestly without leaking upstream
   const byId = Object.fromEntries(results.map((r) => [r.id, r]));
   assert.equal(byId.openai.ok, true);
   assert.equal(byId.deepseek.ok, false);
-  assert.match(byId.deepseek.error!, /^(rejected_or_empty|unreachable)$/);
+  assert.equal(byId.deepseek.error, 'invalid_key');
   assert.equal(byId.claude.error, 'unreachable');
   assert.deepEqual({ ok: byId.self_hosted.ok, error: byId.self_hosted.error, configured: byId.self_hosted.configured },
     { ok: false, error: 'not_configured', configured: false });
@@ -188,4 +188,22 @@ test('replies from the newer engines are accepted and saved', () => {
   }
   assert.equal(isChatMessage({ id: 'bot-1', role: 'assistant', text: 'رد', timestamp: 't',
     aiEngine: { id: 'x', provider: 'unknown', name: 'x', badge: 'x' } }), false);
+});
+
+test('provider refusals are classified into fixed codes (no upstream text)', () => {
+  const cases: [number, unknown, string][] = [
+    [400, { error: { code: 400, status: 'INVALID_ARGUMENT', details: [{ reason: 'API_KEY_INVALID' }] } }, 'invalid_key'],
+    [400, { error: { status: 'FAILED_PRECONDITION', message: 'User location is not supported for the API use.' } }, 'region_blocked'],
+    [429, { error: { status: 'RESOURCE_EXHAUSTED' } }, 'rate_limited'],
+    [429, { error: { code: 'insufficient_quota', type: 'insufficient_quota' } }, 'no_credit'],
+    [401, { error: { code: 'invalid_api_key' } }, 'invalid_key'],
+    [404, { error: { code: 'model_not_found' } }, 'model_not_found'],
+    [400, { type: 'error', error: { type: 'invalid_request_error', message: 'Your credit balance is too low to access the Anthropic API.' } }, 'no_credit'],
+    [402, { error: { message: 'Insufficient Balance' } }, 'no_credit'],
+    [529, { type: 'error', error: { type: 'overloaded_error' } }, 'upstream_error'],
+    [400, 'not json', 'bad_request'],
+  ];
+  for (const [status, body, expected] of cases) {
+    assert.equal(classifyEngineFailure(status, typeof body === 'string' ? body : JSON.stringify(body)), expected, JSON.stringify(body));
+  }
 });

@@ -121,11 +121,36 @@ export function geminiThinking(model: string, maxTokens: number): Record<string,
 /** Model ids the admin may type for a council seat (provider slugs such as `qwen2.5:7b`, `anthropic/claude-sonnet-4.5`). */
 export const MODEL_ID = /^[A-Za-z0-9._:/@-]{1,120}$/;
 
+/**
+ * Why a provider refused a request, as a fixed code (never the upstream text, which can echo keys
+ * or account details). Lets the admin see "invalid key" vs "no credit" vs "wrong model" at a glance.
+ */
+export type EngineFailure = 'invalid_key' | 'no_credit' | 'rate_limited' | 'model_not_found' | 'region_blocked' | 'bad_request' | 'upstream_error';
+
+export function classifyEngineFailure(status: number, body = ''): EngineFailure {
+  const text = body.slice(0, 4000);
+  const code = (() => {
+    try {
+      const err = (JSON.parse(text) as { error?: { code?: unknown; status?: unknown; type?: unknown; details?: { reason?: unknown }[] } }).error || {};
+      return [err.code, err.status, err.type, ...(err.details || []).map((d) => d?.reason)].filter((v) => typeof v === 'string').join(' ');
+    } catch { return ''; }
+  })();
+  if (/API_KEY_INVALID|API_KEY_SERVICE_BLOCKED|invalid_api_key|authentication_error|UNAUTHENTICATED/i.test(code) || status === 401) return 'invalid_key';
+  if (/insufficient_quota|billing|credit balance|insufficient balance|Insufficient Balance|exceeded your current quota/i.test(`${code} ${text}`) || status === 402) return 'no_credit';
+  if (/User location is not supported|unsupported_country|not available in your (country|region)/i.test(text)) return 'region_blocked';
+  if (/model_not_found|not_found_error|NOT_FOUND/i.test(code) || status === 404 || /model .* (does not exist|not found)/i.test(text)) return 'model_not_found';
+  if (status === 403 || /PERMISSION_DENIED|permission_error/i.test(code)) return 'invalid_key';
+  if (status === 429 || /RESOURCE_EXHAUSTED|rate_limit/i.test(code)) return 'rate_limited';
+  if (status >= 500 || /overloaded/i.test(code)) return 'upstream_error';
+  return 'bad_request';
+}
+
+
 export async function callEngine(
   id: ModelEngineId,
   system: string,
   turns: EngineTurn[],
-  options: { env?: Env; fetch?: typeof fetch; signal: AbortSignal; temperature: number; onToken?: (text: string) => void; model?: string; maxTokens?: number; maxChars?: number },
+  options: { env?: Env; fetch?: typeof fetch; signal: AbortSignal; temperature: number; onToken?: (text: string) => void; model?: string; maxTokens?: number; maxChars?: number; onFailure?: (failure: EngineFailure, status: number) => void },
 ): Promise<string | undefined> {
   const env = options.env || process.env;
   const request = options.fetch || fetch;
@@ -171,7 +196,10 @@ export async function callEngine(
   }
 
   const response = await request(url, { method: 'POST', headers, body: JSON.stringify(body), signal: options.signal });
-  if (!response.ok) return undefined;
+  if (!response.ok) {
+    if (options.onFailure) options.onFailure(classifyEngineFailure(response.status, await response.text().catch(() => '')), response.status);
+    return undefined;
+  }
 
   const isStream = stream && response.body && (response.headers.get('content-type') || '').includes('text/event-stream');
   if (isStream) {

@@ -10,7 +10,7 @@
 import express from 'express';
 import { SUPPORTED_LANGUAGES } from '../src/types/i18n';
 import type { SupportedLanguage } from '../src/types/i18n';
-import { callEngine, engineStatuses } from './core/engines';
+import { callEngine, engineStatuses, type EngineFailure } from './core/engines';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import type { Repository } from './core/repository';
 import type { ModelEngineId, ShaheenSettings } from './core/types';
@@ -157,10 +157,11 @@ export async function probeEngines(settings: ShaheenSettings, options: { env?: E
     if (!status.configured) return { ...base, ok: false, ms: 0, error: 'not_configured' };
     const started = Date.now();
     const signal = AbortSignal.timeout(options.timeoutMs ?? 20000);
+    let failure: EngineFailure | undefined;
     try {
       const reply = await callEngine(id, 'Health check. Reply with the single word OK.', [{ role: 'user', text: 'ping' }],
-        { env, fetch: options.fetch, signal, temperature: 0, model, maxTokens: 32 });
-      return { ...base, ok: Boolean(reply?.trim()), ms: Date.now() - started, ...(reply?.trim() ? {} : { error: 'rejected_or_empty' }) };
+        { env, fetch: options.fetch, signal, temperature: 0, model, maxTokens: 32, onFailure: (f) => { failure = f; } });
+      return { ...base, ok: Boolean(reply?.trim()), ms: Date.now() - started, ...(reply?.trim() ? {} : { error: failure || 'rejected_or_empty' }) };
     } catch {
       return { ...base, ok: false, ms: Date.now() - started, error: signal.aborted ? 'timeout' : 'unreachable' };
     }
