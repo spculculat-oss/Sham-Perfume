@@ -75,8 +75,8 @@ export function publicEngine(engine: string): { id: EngineId | 'sham_ai'; name: 
 }
 
 export const INTENT_LABEL = {
-  ar: { greeting: 'تحية', thanks: 'شكر', list_services: 'استعراض الخدمات', track_order: 'تتبع طلب', browse_products: 'تصفح المنتجات', service_request: 'طلب خدمة', handoff: 'التحويل لموظف', calculate: 'عملية حسابية', perfume_expert: 'سؤال عن التركيب', question: 'سؤال عام', memory_view: 'عرض ما أتذكره', forget: 'حذف البيانات' },
-  en: { greeting: 'greeting', thanks: 'thanks', list_services: 'services overview', track_order: 'order tracking', browse_products: 'browsing products', service_request: 'service request', handoff: 'human handoff', calculate: 'calculation', perfume_expert: 'formulation question', question: 'general question', memory_view: 'memory', forget: 'data deletion' },
+  ar: { identity: 'سؤال عن هوية المساعد', greeting: 'تحية', thanks: 'شكر', list_services: 'استعراض الخدمات', track_order: 'تتبع طلب', browse_products: 'تصفح المنتجات', service_request: 'طلب خدمة', handoff: 'التحويل لموظف', calculate: 'عملية حسابية', perfume_expert: 'سؤال عن التركيب', question: 'سؤال عام', memory_view: 'عرض ما أتذكره', forget: 'حذف البيانات' },
+  en: { identity: 'assistant identity', greeting: 'greeting', thanks: 'thanks', list_services: 'services overview', track_order: 'order tracking', browse_products: 'browsing products', service_request: 'service request', handoff: 'human handoff', calculate: 'calculation', perfume_expert: 'formulation question', question: 'general question', memory_view: 'memory', forget: 'data deletion' },
 } as const;
 
 function toolStepLabel(tool: string, result: ToolResult, serviceName: string): [string, string] {
@@ -109,6 +109,7 @@ export function suggestFollowUps(lang: 'ar' | 'en', routed: RouteResult, service
   const pick = (...items: (string | false | undefined)[]) => items.filter((x): x is string => Boolean(x)).slice(0, 3);
   switch (routed.intent) {
     case 'greeting': case 'thanks': return pick(S.services, has('custom_order') && S.custom, S.track);
+    case 'identity': return pick(S.services, S.how, has('custom_order') && S.custom);
     case 'list_services': return pick(has('store') && S.store, has('b2b') && S.b2b, has('support') && S.human);
     case 'browse_products': case 'service_request': return pick(S.how, S.track, service?.kind !== 'support' && has('support') && S.human);
     case 'track_order': return pick(has('support') && S.human, S.services);
@@ -267,7 +268,7 @@ export class Orchestrator {
     let engine: EngineId = 'sham_local';
     const statuses = engineStatuses(this.options.env || process.env);
     const policy = [...settings.enginePolicy.filter((e) => e !== 'sham_local'), 'sham_local' as const];
-    const useModel = !['greeting', 'thanks', 'track_order', 'calculate', 'memory_view', 'forget'].includes(routed.intent);
+    const useModel = !['greeting', 'thanks', 'identity', 'track_order', 'calculate', 'memory_view', 'forget'].includes(routed.intent);
     const env = this.options.env || process.env;
     const history: EngineTurn[] = conversation.messages.slice(-10).map((m) => ({ role: m.role, text: m.text }));
 
@@ -359,7 +360,7 @@ export class Orchestrator {
     type Step = { tool: keyof typeof tools; args: unknown };
     const steps: Step[] = [];
     switch (routed.intent) {
-      case 'greeting': case 'thanks': break;
+      case 'greeting': case 'thanks': case 'identity': break;
       case 'list_services': steps.push({ tool: 'list_services', args: {} }); break;
       case 'track_order':
         steps.push({ tool: 'track_order', args: { ref: routed.entities.ref || conversation.memory.lastRequestRef, contact: routed.entities.email || routed.entities.phone } });
@@ -396,6 +397,10 @@ export class Orchestrator {
         const welcome = ar ? settings.welcomeAr : settings.welcomeEn;
         return welcome.includes(' 👋') ? welcome.replace(' 👋', `${who} 👋`) : `${welcome}${who ? ` (${who.trim()})` : ''}`;
       }
+      case 'identity':
+        return ar
+          ? 'أنا «مساعد شام»، المساعد الذكي الخاص بمنصة «صمم عطرك مع شام». شام هي اللي طوّرت النظام ده، وتفاصيله التقنية مش متاحة للعرض. أقدر أساعدك في الطلبات والمتجر والعطور المخصصة والجملة والدعم، ولأسئلة تركيب العطور استشر «الخبير شاهين». تحب نبدأ بإيه؟'
+          : 'I am the Sham assistant, the smart assistant built by Sham for the “Design your perfume with Sham” platform. Its technical details are not shared. I can help with orders, the store, bespoke perfumes, wholesale and support — and Master Shahin answers perfume-formulation questions. Where would you like to start?';
       case 'thanks': return ar ? 'العفو! 🌹 لو احتجت أي حاجة تانية في خدمات شام أنا موجود.' : 'You are welcome! 🌹 I am here if you need anything else from Sham.';
       case 'list_services':
         return (ar ? 'دي خدمات شام المتاحة حالياً:\n' : 'These are Sham services available now:\n') +

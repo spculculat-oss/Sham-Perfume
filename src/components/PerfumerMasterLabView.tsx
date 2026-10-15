@@ -34,7 +34,7 @@ import { isStaticHosting } from '../utils/api';
 import { StaticHostingNotice } from './StaticHostingNotice';
 import { ShaheenModesPanel, ShaheenServiceStatus, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
-import { ENGINE_BADGE, modeBadge, visibleEngines, scrollChatToEnd } from './shaheenEngines';
+import { ENGINE_BADGE, messageTime, modeBadge, visibleEngines, scrollChatToEnd } from './shaheenEngines';
 import type { ShaheenModelChoice } from '../utils/chatStore';
 import { useShaheenChat } from '../hooks/useShaheenChat';
 import { useShaheenModels } from '../hooks/useShaheenModels';
@@ -51,18 +51,7 @@ interface PerfumerMasterLabViewProps {
 
 
 const S = {
-  council_title: {
-    ar: 'مجلس الخبير شاهين · شيخ العطارين',
-    en: 'Master Perfumer Shahin AI Council',
-    fr: 'Conseil du Maître Parfumeur Shahin IA',
-    es: 'Consejo del Maestro Perfumista Shahin IA',
-    it: 'Consiglio del Mastro Profumiere Shahin AI',
-    de: 'Meister-Parfümeur Shahin KI-Rat',
-    ru: 'Совет мастера-парфюмера Шахина ИИ',
-    zh: '调香大师沙欣 AI 议会',
-    tr: 'Usta Parfümör Şahin AI Konseyi',
-    fa: 'شورای استاد شاهین · شیخ عطارها',
-  },
+  council_title: { ar: 'الخبير شاهين · شيخ العطارين', en: 'Master Perfumer Shahin', fr: 'Maître Parfumeur Shahin', es: 'Maestro Perfumista Shahin', it: 'Mastro Profumiere Shahin', de: 'Meister-Parfümeur Shahin', ru: 'Мастер-парфюмер Шахин', zh: '调香大师 Shahin', tr: 'Usta Parfümör Shahin', fa: 'استاد عطرساز شاهین · شیخ عطارها' },
   vault_tooltip: {
     ar: 'يتم حفظ المحادثة كاملة في جهازك وتُمسح تلقائياً بعد 30 يوماً من بدئها',
     en: 'Chat session stored encrypted locally and auto-purged after 30 days',
@@ -208,7 +197,7 @@ const S = {
     fa: 'پاک کردن تاریخچه گفتگو',
   },
   prompt_1: { ar: 'ناقشني في اختيار عطر شخصي يناسب يومي الصيفي في العمل', en: 'Help me pick a personal scent for my summer workday', fr: 'Aide-moi à choisir un parfum pour mes journées d’été au bureau', es: 'Ayúdame a elegir un aroma para mi día de verano en el trabajo', it: 'Aiutami a scegliere un profumo per la mia giornata estiva in ufficio', de: 'Hilf mir, einen Duft für meinen Sommertag im Büro zu wählen', ru: 'Помоги выбрать аромат на летний рабочий день', zh: '帮我挑一款适合夏日工作日的个人香氛', tr: 'Yaz günü işim için kişisel bir koku seçmeme yardım et', fa: 'برای روز کاری تابستانم کمکم کن عطر شخصی انتخاب کنم' },
-  prompt_2: { ar: 'ما الاستخدامات الطبية والعلاجية للزيوت العطرية ونسب الأمان للأطفال والحوامل؟', en: 'What are the therapeutic uses of essential oils and safe ratios for children & pregnancy?', fr: 'Quels sont les usages thérapeutiques des huiles et les dosages sûrs pour enfants et grossesse ?', es: '¿Cuáles son los usos terapéuticos de los aceites y las dosis seguras para niños y embarazo?', it: 'Quali sono gli usi terapeutici degli oli e i dosaggi sicuri per bambini e gravidanza?', de: 'Welche therapeutischen Anwendungen haben Öle und welche Dosierungen sind für Kinder und Schwangere sicher?', ru: 'Каково терапевтическое применение эфирных масел и безопасные дозы для детей и беременных?', zh: '精油的疗愈用途是什么？儿童与孕期的安全剂量是多少？', tr: 'Uçucu yağların terapötik kullanımları ve çocuk/hamilelik için güvenli oranlar nelerdir?', fa: 'کاربردهای درمانی روغن‌های اسانسی و نسبت‌های امن برای کودکان و بارداری چیست؟' },
+  prompt_2: { ar: 'احسب لي تركيبة 50 مل تركيز EDP: كم جرام زيت وكحول ومثبت؟', en: 'Work out a 50 ml EDP for me: how many grams of oil, alcohol and fixative?', fr: 'Calcule un EDP de 50 ml : combien de grammes d’huile, d’alcool et de fixateur ?', es: 'Calcula un EDP de 50 ml: ¿cuántos gramos de aceite, alcohol y fijador?', it: 'Calcola un EDP da 50 ml: quanti grammi di olio, alcol e fissativo?', de: 'Berechne ein 50-ml-EDP: wie viele Gramm Öl, Alkohol und Fixativ?', ru: 'Рассчитай EDP на 50 мл: сколько граммов масла, спирта и фиксатора?', zh: '帮我计算 50 毫升 EDP：需要多少克香精油、酒精和定香剂？', tr: '50 ml EDP hesapla: kaç gram yağ, alkol ve sabitleyici?', fa: 'یک ادو پرفیوم ۵۰ میلی‌لیتری حساب کن: چند گرم روغن، الکل و تثبیت‌کننده؟' },
   prompt_3: { ar: 'كيف أصنع تركيبة تجميلية لمعطر جسم (Body Mist) ثابت ومستحلب؟', en: 'How do I make a stable emulsified Body Mist formula?', fr: 'Comment créer une formule de brume corporelle émulsionnée et stable ?', es: '¿Cómo creo una fórmula de Body Mist emulsionada y estable?', it: 'Come creo una formula di Body Mist emulsionata e stabile?', de: 'Wie erstelle ich eine stabile, emulgierte Body-Mist-Formel?', ru: 'Как сделать стабильную эмульгированную формулу Body Mist?', zh: '如何调制稳定乳化的身体喷雾（Body Mist）配方？', tr: 'Stabil, emülsifiye bir Body Mist formülü nasıl yapılır?', fa: 'چگونه فرمول اسپری بدن (Body Mist) پایدار و امولسیون‌شده بسازم؟' },
   prompt_4: { ar: 'العطر أصبح حليبياً ومتعكراً بعد إضافة الكحول، كيف أصفّيه بالمعمل؟', en: 'My perfume turned milky after adding alcohol — how do I clarify it?', fr: 'Mon parfum est devenu laiteux après l’alcool — comment le clarifier ?', es: 'Mi perfume se enturbió tras añadir alcohol, ¿cómo aclararlo?', it: 'Il mio profumo è diventato lattiginoso dopo l’alcol: come chiarificarlo?', de: 'Mein Parfüm wurde nach Alkoholzugabe milchig — wie kläre ich es?', ru: 'Духи помутнели после добавления спирта — как осветлить?', zh: '加酒精后香水变浑浊，如何在实验室澄清？', tr: 'Alkol ekledikten sonra parfümüm sütlüleşti, nasıl berraklaştırırım?', fa: 'عطرم بعد از افزودن الکل شیری و کدر شد؛ چگونه شفافش کنم؟' },
   prompt_5: { ar: 'ما المدة والشروط العلمية لتعتيق العطر (Maceration) للحصول على صفاء وثبات؟', en: 'What is the scientifically correct maceration duration & conditions for clarity and tenacity?', fr: 'Quelle durée et conditions de macération pour clarté et tenue ?', es: '¿Qué duración y condiciones de maceración para claridad y fijación?', it: 'Quale durata e condizioni di macerazione per chiarezza e tenacia?', de: 'Welche Mazerationstemperatur und -dauer für Klarheit und Haltbarkeit?', ru: 'Какова длительность и условия мацерации для ясности и стойкости?', zh: '获得清澈与持久所需的科学浸置时长与条件是什么？', tr: 'Berraklık ve kalıcılık için bilimsel maserasyon süresi ve koşulları nedir?', fa: 'مدت و شرایط علمی تعریف عطر (Maceration) برای شفافیت و ماندگاری چیست؟' },
@@ -367,7 +356,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
 
   const handleCopyEntireChat = async () => {
     const transcript = messages
-      .map((m) => `[${m.role === 'user' ? L('q_word') : L('shahin_name')} - ${m.timestamp}]:\n${m.text}`)
+      .map((m) => `[${m.role === 'user' ? L('q_word') : L('shahin_name')} - ${messageTime(m.timestamp, currentLang)}]:\n${m.text}`)
       .join('\n\n' + '─'.repeat(40) + '\n\n');
 
     if (!await copyChatText(transcript)) return;
@@ -640,7 +629,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                           </span>
                         )}
                       </div>
-                      <span className="text-[10px] text-stone-400 font-mono-numbers">{m.timestamp}</span>
+                      <span className="text-[10px] text-stone-400 font-mono-numbers">{messageTime(m.timestamp, currentLang)}</span>
                     </div>
                   )}
 
@@ -751,7 +740,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                         : 'border-stone-100 text-stone-500'
                     }`}
                   >
-                    <span className="font-mono-numbers">{m.timestamp}</span>
+                    <span className="font-mono-numbers">{messageTime(m.timestamp, currentLang)}</span>
 
                     <div className="flex items-center gap-1.5">
                       <button
