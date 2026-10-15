@@ -85,7 +85,7 @@ async function newsArticleProbes(ctx: ProbeContext): Promise<Probe[]> {
   type Article = { titleAr?: string; summaryAr?: string; contentAr?: string };
   const r = await timed(() => json<{ success?: boolean; articles?: Article[] }>(ctx.fetch, `${ctx.site}/api/news`));
   const articles = (r.value?.articles || []).slice(0, 3);
-  const answer = articles.map((a) => `## ${a.titleAr || ''}\n${a.summaryAr || ''}\n${(a.contentAr || '').slice(0, 500)}`).join('\n\n');
+  const answer = articles.map((a) => `## ${a.titleAr || ''}\n${a.summaryAr || ''}\n${(a.contentAr || '').slice(0, 500)}${(a.contentAr || '').length > 500 ? ' [اقتطاع من المشرف]' : ''}`).join('\n\n');
   const findings = r.error ? [] : articles.length ? inspectAnswer(answer, { language: 'ar', ms: r.ms }) : [{ severe: true, text: 'لا توجد مقالات' }];
   return [{ tool: 'news_articles', question: 'GET /api/news (مقالات اليوم)', answer, ms: r.ms, ok: !r.error && r.value?.success !== false, error: r.error, findings }];
 }
@@ -131,7 +131,7 @@ function trainingProbes(ctx: ProbeContext): Probe[] {
   if (!lessons.length) findings.push({ severe: true, text: 'لا توجد دروس لمساعد شام بعد' });
   if ((ctx.now - Date.parse(file.updatedAt)) / 3600_000 > 13) findings.push({ severe: false, text: 'الدروس لم تتحدث منذ أكثر من 13 ساعة' });
   const sample = rotate(lessons, ctx.run, 2);
-  const answer = sample.map((d) => `## ${d.title}\n${d.content.slice(0, 900)}`).join('\n\n');
+  const answer = sample.map((d) => `## ${d.title}\n${d.content.slice(0, 900)}${d.content.length > 900 ? ' [اقتطاع من المشرف]' : ''}`).join('\n\n');
   return [{ tool: 'assistant_training', question: `أحدث الدروس (${lessons.length} درس)`, answer, ms: 0, ok: true, findings: [...findings, ...(answer ? inspectAnswer(answer, { language: 'ar' }) : [])] }];
 }
 

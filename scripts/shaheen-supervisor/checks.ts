@@ -81,16 +81,19 @@ export const REVIEW_SYSTEM = `أنت «الخبير شاهين»، خبير ال
 ثم تكتب لكل أداة «توجيهات الجودة» التي ستُضاف إلى تعليماتها لتحسين أدائها: من 3 إلى 6 نقاط قصيرة بصيغة الأمر بالعربية، مبنية على ما رأيته فعلاً في العينات، تحافظ على النقاط السابقة المفيدة، ولا تطلب ميزات غير موجودة، ولا تخالف قواعد الأمان، ولا تذكر أسماء شركات أو نماذج ذكاء اصطناعي، ولا روابط. اترك التوجيهات فارغة إذا كانت الأداة ممتازة ولا تحتاج تغييراً.
 أعد JSON فقط بلا أي نص آخر.`;
 
+const clip = (text: string, max: number) => (text.length > max ? `${text.slice(0, max)} [اقتطاع من المشرف]` : text);
+
 export function reviewPrompt(tools: { id: AiToolId; guidance?: string; probes: Probe[] }[]) {
   const blocks = tools.map(({ id, guidance, probes }) => {
     const def = AI_TOOLS.find((t) => t.id === id)!;
-    const samples = probes.map((p, i) => `  [${i + 1}] السؤال/الطلب: ${p.question}\n  الزمن: ${Math.round(p.ms / 100) / 10} ث${p.ok ? '' : ` · فشل: ${p.error || ''}`}\n  الفحص الآلي: ${p.findings.map((f) => f.text).join('، ') || 'سليم'}\n  الرد: ${visibleText(p.answer).slice(0, 1800).replace(/\n{3,}/g, '\n\n')}`).join('\n');
+    const samples = probes.map((p, i) => `  [${i + 1}] السؤال/الطلب: ${p.question}\n  الزمن: ${Math.round(p.ms / 100) / 10} ث${p.ok ? '' : ` · فشل: ${p.error || ''}`}\n  الفحص الآلي: ${p.findings.map((f) => f.text).join('، ') || 'سليم'}\n  الرد: ${clip(visibleText(p.answer), 1800).replace(/\n{3,}/g, '\n\n')}`).join('\n');
     return `### ${id} — ${def.nameAr}\nطبيعة الأداة: ${def.descriptionAr}\n${def.acceptsGuidance ? `التوجيهات الحالية: ${guidance || 'لا يوجد'}` : 'هذه الأداة لا تقرأ توجيهات (قيّمها فقط واترك guidance فارغاً).'}\nالعينات:\n${samples}`;
   });
   return `${blocks.join('\n\n')}\n
 أعد بالشكل:
 {"summary":"جملتان عن حالة أدوات الموقع اليوم","tools":{"<id>":{"score":1,"strengths":["…"],"issues":["…"],"guidance":"- نقطة\\n- نقطة"}}}
-score من 1 إلى 10 (10 = ممتاز). اكتب issues محددة (ما الخطأ وأين)، وstrengths قصيرة.`;
+score من 1 إلى 10: كن صارماً — 10 فقط لرد بلا أي ملاحظة، 8 لرد جيد فيه ملاحظة صغيرة، 6 لرد مقبول يحتاج تحسيناً واضحاً، وأقل من ذلك لرد خاطئ أو مضلل. اكتب issues محددة (ما الخطأ وأين)، وstrengths قصيرة.
+ملاحظة: بعض العينات مقتطعة عمداً بواسطة المشرف ومكتوب عندها «[اقتطاع من المشرف]» — لا تعتبر ذلك عيباً في الأداة.`;
 }
 
 export function parseJson(text: string): unknown {
