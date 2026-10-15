@@ -1,12 +1,12 @@
 {
  "version": 1,
- "updatedAt": "2026-10-15T15:00:12.722Z",
- "nextUpdateAt": "2026-10-16T03:00:12.722Z",
+ "updatedAt": "2026-10-15T15:35:47.607Z",
+ "nextUpdateAt": "2026-10-16T03:35:47.607Z",
  "intervalHours": 12,
  "editor": "shaheen",
  "digest": {
-  "ar": "تشهد نشرة أخبار العطور لهذا اليوم إطلاقات استثنائية من دور فاخرة مثل Amouage وKayali، وتوسعات ضخمة لشركات المواد الخام مثل Symrise، إلى جانب فعاليات إقليمية بارزة كمعرض الإمارات للعطور والعود، واتجاهات السوق نحو الاستدامة والعطور الشخصية.",
-  "en": "Today's perfume news digest features exceptional new releases from luxury houses like Amouage and Kayali, major expansions by raw material giants like Symrise, prominent regional events such as the UAE Perfumes and Oud Exhibition, and market trends focusing on sustainability and personalized fragrances."
+  "ar": "تشهد نشرة اليوم طيفاً واسعاً من الأنشطة في عالم العطور، بدءاً من إطلاقات فاخرة من دار Amouage و Kayali، مروراً بتوسعات كبرى في سوق التجزئة وإنتاج المواد الخام المستدامة مثل مسك Symrise، وصولاً إلى الفعاليات والمعارض الإقليمية والدولية البارزة مثل معرض العود والعطور في الشارقة.",
+  "en": "Today's digest captures a vibrant spectrum of the fragrance world, ranging from luxury launches by Amouage and Kayali, major retail expansions and sustainable musk production by Symrise, to prominent regional and international exhibitions like the Oud and Perfume Exhibition in Sharjah."
  },
  "sources": [
   {
@@ -30,6 +30,26 @@
    "count": 1
   },
   {
+   "name": "GlobeNewswire",
+   "count": 1
+  },
+  {
+   "name": "Beauty Packaging",
+   "count": 1
+  },
+  {
+   "name": "CaFleureBon",
+   "count": 1
+  },
+  {
+   "name": "Grazia",
+   "count": 1
+  },
+  {
+   "name": "Glossy",
+   "count": 1
+  },
+  {
    "name": "Boutique Hotelier USA",
    "count": 1
   },
@@ -39,10 +59,6 @@
   },
   {
    "name": "GuruFocus",
-   "count": 1
-  },
-  {
-   "name": "Grazia",
    "count": 1
   },
   {
@@ -65,16 +81,16 @@
    "category": "launch",
    "importance": 5,
    "title": {
-    "ar": "دار Amouage تطلق عطرين جديدين ضمن مجموعة Exceptional Extraits",
-    "en": "Amouage Launches Decision 42 and Overture 41 in Exceptional Extraits Collection"
+    "ar": "إطلاق عطري Decision 42 و Overture 41 من مجموعة Exceptional Extraits لدار Amouage",
+    "en": "Amouage Launches Decision 42 and Overture 41 from Exceptional Extraits Collection"
    },
    "summary": {
-    "ar": "أطلقت دار العطور الفاخرة Amouage عطرين جديدين هما Decision 42 وOverture 41 ضمن مجموعتها الراقية Exceptional Extraits.",
+    "ar": "أطلقت دار العطور الفاخرة Amouage عطرين جديدين هما Decision 42 و Overture 41 ضمن مجموعتها الحصرية Exceptional Extraits.",
     "en": "Luxury perfume house Amouage has launched Decision 42 and Overture 41, two new fragrances in the Exceptional Extraits collection."
    },
    "note": {
-    "ar": "إصدارات أمواج المركزة تمثل قمة الفخامة والثبات، وهي محط أنظار جامعي العطور النيوتش الفاخرة.",
-    "en": "Amouage's concentrated extraits represent the pinnacle of luxury and longevity, eagerly anticipated by niche collectors."
+    "ar": "إصدارات استثنائية بتركيزات عالية تهم عشاق العطور الفاخرة والعميقة التي تبحث عن الفخامة والثبات الفائق.",
+    "en": "Exceptional high-concentration releases that appeal to lovers of luxurious, deep, and long-lasting niche perfumery."
    }
   },
   {
@@ -87,16 +103,16 @@
    "category": "launch",
    "importance": 5,
    "title": {
-    "ar": "KAYALI تكشف عن عطرها الجديد Yum Vanilla Cupcake",
-    "en": "KAYALI Introduces New Yum Vanilla Cupcake Gourmand Fragrance"
+    "ar": "KAYALI تقدم عطر YUM VANILLA CUPCAKE ضمن مجموعتها المستوحاة من الحلويات",
+    "en": "KAYALI Introduces YUM VANILLA CUPCAKE to Gourmand Collection"
    },
    "summary": {
-    "ar": "أقدمت العلامة الشهيرة KAYALI على تقديم الفصل الجديد من مجموعتها المستوحاة من الحلويات بإطلاق عطر Yum Vanilla Cupcake.",
-    "en": "KAYALI has presented the new chapter of its dessert-inspired collection with the launch of Yum Vanilla Cupcake."
+    "ar": "أقدمت العلامة التجارية KAYALI على تقديم فصل جديد من مجموعتها المستوحاة من الحلويات من خلال عطر YUM VANILLA CUPCAKE.",
+    "en": "KAYALI has presented the newest chapter in its dessert-inspired fragrance collection with YUM VANILLA CUPCAKE."
    },
    "note": {
-    "ar": "عطور الغورماند من كايالي تحظى بشعبية جارفة بين عشاق روائح الفانيليا والحلويات الدافئة.",
-    "en": "Kayali's gourmand creations enjoy massive popularity among fans of warm vanilla and dessert scents."
+    "ar": "خبر رائع لمحبي النوتات السكرية والحلويات (Gourmand)، يمنح صانعي العطور المنزلية أفكاراً مميزة لتوليفات الفانيليا.",
+    "en": "A delightful treat for gourmand lovers, offering great inspiration for warm, sweet vanilla accords."
    }
   },
   {
@@ -107,18 +123,18 @@
    "original": "معرض الإمارات للعطور والعود يستقطب إقبالاً لافتاً من الزوار",
    "lang": "ar",
    "category": "events",
-   "importance": 5,
+   "importance": 4,
    "title": {
-    "ar": "معرض الإمارات للعطور والعود يستقطب إقبالاً لافتاً",
-    "en": "UAE Perfumes and Oud Exhibition Attracts Remarkable Visitor Turnout"
+    "ar": "معرض الإمارات للعطور والعود يستقطب إقبالاً لافتاً من الزوار في الشارقة",
+    "en": "UAE Perfumes and Oud Exhibition Attracts Significant Visitor Turnout in Sharjah"
    },
    "summary": {
-    "ar": "شهد معرض الإمارات للعطور والعود إقبالاً جماهيرياً لافتاً من الزوار وعشاق العطور الشرقية والعود.",
-    "en": "The UAE Perfumes and Oud Exhibition has attracted remarkable turnout from visitors and enthusiasts of oriental fragrances and oud."
+    "ar": "شهد معرض الإمارات للعطور والعود إقبالاً واسعاً من الزوار، بدعم من مجلس سيدات أعمال الشارقة لعدد من العضوات.",
+    "en": "The UAE Perfumes and Oud Exhibition has drawn significant visitor engagement, with support from the Sharjah Business Women Council."
    },
    "note": {
-    "ar": "هذا المعرض يعد وجهة أساسية لكل مهتم بصناعة وتجارة العود والعطور الشرقية في المنطقة.",
-    "en": "This exhibition is a key destination for anyone interested in the oud and oriental perfume trade in the region."
+    "ar": "هذا المعرض يعكس قوة سوق العود والعطور الشرقية في المنطقة ويعد منصة رئيسية للعلامات الناشئة.",
+    "en": "Highlights the booming market for oriental perfumery and oud in the region, serving as a key platform for local and niche brands."
    }
   },
   {
@@ -131,16 +147,192 @@
    "category": "ingredients",
    "importance": 4,
    "title": {
-    "ar": "شركة Symrise توسع منصة إنتاجها العالمية لمكونات المسك المستدام",
-    "en": "Symrise Expands Global Production Platform for Sustainable Musk Ingredient"
+    "ar": "شركة Symrise توسع منصة إنتاجها العالمي لمكونات المسك المستدام",
+    "en": "Symrise Expands Global Production Platform for Sustainable Musk Fragrance Ingredient"
    },
    "summary": {
-    "ar": "أعلنت شركة Symrise عن توسيع منصة إنتاجها العالمية الخاصة بمكونات عطور المسك المستدامة.",
-    "en": "Symrise has announced the expansion of its global production platform for sustainable musk fragrance ingredients."
+    "ar": "قامت شركة Symrise بتوسيع شبكة إنتاجها العالمية لمكونات عطور المسك المستدامة لتلبية الطلب المتزايد.",
+    "en": "Symrise has expanded its global production platform for sustainable musk fragrance ingredients to meet growing demand."
    },
    "note": {
-    "ar": "الاستدامة وتوفير بدائل مسك صديقة للبيئة باتت توجهاً استراتيجياً لكبرى شركات توريد المواد الخام.",
-    "en": "Sustainability and eco-friendly musk alternatives have become a strategic direction for major raw material suppliers."
+    "ar": "الاستدامة في المواد الخام مثل المسك أصبحت توجهاً عالمياً يغير مستقبل تركيب العطور والابتكار الكيميائي.",
+    "en": "Sustainability in raw materials like musk is a major trend shaping the future of fragrance formulation and green chemistry."
+   }
+  },
+  {
+   "id": "nc3otts",
+   "url": "https://news.google.com/rss/articles/CBMijAJBVV95cUxQYkswdWVKT19mQklGcHlpMDFzdGx5Ul9TZ2V6R3JZa2RUUl9sWjMydmJBYm84VlZ1NkZ6czUzd2JXb01HdVJuU0NrOUVoTmE1Q2dyeXdXUXVSUV9QZ3JZOHFaNGdZcEVKSEdyQmtsbVpXekl0aW1oSnF2WV9tWkMxZ2dPX193d2tEMEg3R2ljVW1iQkJ1dzRIUFdLbGw0TGYwRmVVaXlOa19FS3djYkdXcTF2YWFfZE9KYjFUU1F6Mk0zOVJyTVNCMVdLVTBhQlZrN3FsbFBXSWRlVEdKRmFWMWplMzU3ekZnSl92T01hSEk2ODVqZS0yQzhCNHdQX0w5bXZqU1hkQ01nODI3?oc=5",
+   "source": "GlobeNewswire",
+   "publishedAt": "2026-10-14T12:00:00.000Z",
+   "original": "10ML Reaches €10M ARR and 100,000 Customers, Commits €35 Million to Become Europe’s Largest Perfume Retailer",
+   "lang": "en",
+   "category": "market",
+   "importance": 4,
+   "title": {
+    "ar": "شركة 10ML تجمع 35 مليون يورو لتصبح أكبر متاجر تجزئة للعطور في أوروبا",
+    "en": "10ML Secures €35 Million to Become Europe’s Largest Perfume Retailer"
+   },
+   "summary": {
+    "ar": "وصلت منصة 10ML إلى إيرادات سنوية متكررة بقيمة 10 ملايين يورو مع 100,000 عميل، وتلتزم بضخ 35 مليون يورو لتوسيع نشاطها.",
+    "en": "10ML reached €10M ARR and 100,000 customers, committing €35 million to become Europe's largest perfume retailer."
+   },
+   "note": {
+    "ar": "مؤشر قوي على انتعاش سوق تجزئة العطور عبر الإنترنت ونمو منصات الاكتشاف العطري في أوروبا.",
+    "en": "A strong indicator of the booming online fragrance retail market and the rapid growth of discovery platforms in Europe."
+   }
+  },
+  {
+   "id": "n5d1l9i",
+   "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBJRFNYUHoyeTFnRXc1bzAwaEY0WWFSQUxtQnlrUGpQeFppV2h3ZUFBYUh3S21wamJ1TlRIZ2FFaElwZDhDdW1MUUsyWXBYSjFaMHNfTTR4cGxXZG1QMmJDZk90bWpsRG82R1ZWS0NXdHR2dm96R1VldTQ1bw?oc=5",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-14T11:30:40.000Z",
+   "original": "L’Oréal Travel Retail targets 10% in refillable fragrance solutions at travel hubs by 2030",
+   "lang": "en",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "L’Oréal Travel Retail تستهدف اعتماد 10% من حلول العطور القابلة لإعادة التعبئة بحلول 2030",
+    "en": "L’Oréal Travel Retail Targets 10% Refillable Fragrance Solutions by 2030"
+   },
+   "summary": {
+    "ar": "تخطط لوريال للتجزئة السياحية للوصول إلى نسبة 10% من زجاجات العطور القابلة لإعادة التعبئة في مراكز السفر بحلول عام 2030.",
+    "en": "L’Oréal Travel Retail aims for 10% of its fragrance solutions at travel hubs to be refillable by 2030."
+   },
+   "note": {
+    "ar": "خطوة بيئية مهمة تتماشى مع توجهات الاستدامة وتقليل النفايات في قطاع العطور الفاخرة.",
+    "en": "An important eco-friendly step aligning with sustainability goals and waste reduction in luxury perfumery."
+   }
+  },
+  {
+   "id": "n1qx0m76",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOUjBGVGFUMnM0dDVxMmZfOHBVNDEwR05BOUpzdzJZakxXN01HNW1LNVczS2oxNmljTnV6S0VyWFNfanRfQ3pHanJMOEFsT1l3ZjJBbXFQS19HRlk0cUx6RFJqNkR1WEFzS19fems5cFFESGVRUmNraGE1TmxHQVc2WEwyaUNLS2NZY095cUx6cFh0cV9mNnZ1YW1IQ2JIOFFlSnc?oc=5",
+   "source": "Beauty Packaging",
+   "publishedAt": "2026-10-14T12:52:00.000Z",
+   "original": "Armani Beauty Names Josh Hart as Fragrance Ambassador",
+   "lang": "en",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "علامة Armani Beauty تعين اللاعب Josh Hart سفيراً لعطورها",
+    "en": "Armani Beauty Names Josh Hart as Fragrance Ambassador"
+   },
+   "summary": {
+    "ar": "اختارت علامة Armani Beauty الرياضي Josh Hart ليكون السفيرة الجديد لعطورها في حملاتها القادمة.",
+    "en": "Armani Beauty has appointed Josh Hart as its newest fragrance ambassador for upcoming campaigns."
+   },
+   "note": {
+    "ar": "ربط العطور بالرياضيين والشخصيات العامة يظل استراتيجية تسويقية ناجحة لجذب جماهير جديدة.",
+    "en": "Connecting fragrance houses with sports figures remains a powerful marketing strategy to reach wider audiences."
+   }
+  },
+  {
+   "id": "n1796pjx",
+   "url": "https://cafleurebon.com/sylhouette-parfums-desire-noir-winner/?utm_source=rss&utm_medium=rss&utm_campaign=sylhouette-parfums-desire-noir-winner",
+   "source": "CaFleureBon",
+   "publishedAt": "2026-10-15T14:05:01.000Z",
+   "original": "Sylhouette Parfums Desire Noir Winner",
+   "lang": "en",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "عطر Desire Noir من Sylhouette Parfums يفوز بإشادة نقدية واسعة",
+    "en": "Sylhouette Parfums Desire Noir Wins Critical Acclaim"
+   },
+   "summary": {
+    "ar": "فاز عطر Desire Noir من علامة Sylhouette Parfums، الذي صممه العطار الفيتنامي Sy Truong، بإشادة نقدية لتركيبته الغنية بالسوسن والدخان الخفيف.",
+    "en": "Sylhouette Parfums Desire Noir, crafted by Vietnamese perfumer Sy Truong, won acclaim for its powdery iris and soft smoke notes."
+   },
+   "note": {
+    "ar": "تسليط الضوء على الإبداعات المستقلة يثري ثقافة العطور الفنية (Niche) ويشجع العطارين المستقلين.",
+    "en": "Highlighting independent creations enriches niche perfume culture and encourages independent perfumers."
+   }
+  },
+  {
+   "id": "nwhlsv8",
+   "url": "https://nstperfume.com/2026/10/15/the-soul-of-french-perfume/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-15T13:58:09.000Z",
+   "original": "The Soul of French Perfume",
+   "lang": "en",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "متحف Osmothèque في فرساي يكشف عن أسرار تاريخ صناعة العطور الفرنسية",
+    "en": "The Osmothèque in Versailles Lifts the Veil on French Perfumery Secrets"
+   },
+   "summary": {
+    "ar": "يعتزم متحف Osmothèque في فرساي بالتعاون مع espace Richaud تسليط الضوء على أسرار تاريخ صناعة العطور العريقة في فرنسا ابتداءً من نوفمبر.",
+    "en": "The Osmothèque in Versailles, in partnership with espace Richaud, is set to reveal millennia-old secrets of French perfumery starting November."
+   },
+   "note": {
+    "ar": "فرصة رائعة للمهتمين بتاريخ العطور والوصفات التاريخية المفقودة التي تحميها هذه المؤسسة العريقة.",
+    "en": "A wonderful opportunity for fragrance historians to explore lost formulas and heritage preserved by this esteemed institution."
+   }
+  },
+  {
+   "id": "n1xvlv6z",
+   "url": "https://cosmeticsbusiness.com/cpl-aromas-presents-resonance-at-beautyworld-middle-east",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-15T11:32:00.000Z",
+   "original": "CPL Aromas presents RESONANCE at BeautyWorld Middle East 2026",
+   "lang": "en",
+   "category": "events",
+   "importance": 3,
+   "title": {
+    "ar": "شركة CPL Aromas تقدم مشروع RESONANCE في معرض Beautyworld Middle East 2026",
+    "en": "CPL Aromas Presents RESONANCE at Beautyworld Middle East 2026"
+   },
+   "summary": {
+    "ar": "استعرضت شركة CPL Aromas ابتكارها العطري RESONANCE في معرض Beautyworld Middle East 2026 كاستكشاف حسي للشعر والمشاعر.",
+    "en": "CPL Aromas showcased its olfactory exploration of poetry and emotion, RESONANCE, at Beautyworld Middle East 2026."
+   },
+   "note": {
+    "ar": "المعرض يعكس الابتكارات الكبرى في سوق الشرق الأوسط، ويقدم مفاهيم حسية جديدة تهم مصممي العطور.",
+    "en": "Reflects major innovations in the Middle East market, offering inspiring sensory concepts for perfumers."
+   }
+  },
+  {
+   "id": "nff8yv9",
+   "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxQcFRmcXBfT042LVMxeENLUFc3Nml5ZExOWEkteUZUa2oxSS0xYktMTU9kUzlmZDRYVjltX3RIdVR1RzE5QVpzVnFTRWpId3VlVEJjWTR5TzctaFNOQ1otTjU4NFh0V091eURvRVVOcFlVOW8yOFdGamRuU25mVl9USUhPejJwS0dqTjlDS0drT3JVX3NSWEFTcDZ2dmN1aE93ODhfUnMyVWRTbzk3eTRlbDNhVEI3OTFIaUZ6RTJrRjZzaVdWODl4OXpXbXRaUWxFMlc1d0xWV21kVm9Md3lUWUJxZ244OVow?oc=5",
+   "source": "Grazia",
+   "publishedAt": "2026-10-15T09:41:16.000Z",
+   "original": "Ginseng Biloba, la nouvelle échappée olfactive d’Hermès aux notes boisées, végétales et délicatement amères",
+   "lang": "fr",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "Hermès تطلق عطر Ginseng Biloba الجديد بنوتات خشبية ونباتية",
+    "en": "Hermès Launches New Ginseng Biloba Fragrance with Woody and Botanical Notes"
+   },
+   "summary": {
+    "ar": "أقدمت دار Hermès على إطلاق عطرها الجديد Ginseng Biloba الذي يجمع بين النوتات الخشبية والنباتية واللمسات المرة الرقيقة.",
+    "en": "Hermès has released its new fragrance Ginseng Biloba, featuring woody, botanical, and delicately bitter notes."
+   },
+   "note": {
+    "ar": "توجه نباتي وعشبي متميز يثري محفظة الدار ويقدم خيارات منعشة ومختلفة لعشاق العطور الراقية.",
+    "en": "A distinct botanical direction enriching the house's portfolio with fresh and unique options for fine fragrance lovers."
+   }
+  },
+  {
+   "id": "n1hdop1o",
+   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQXy1fbnRCNHNpU1lzQ2NDSkFIVnpPY3RzUjRUdXNubUVXRjk4RUhXb25Qa25xT3JHdGwxb0V3UGhKVS1UekdSUVVxZ0NaTjJWQm1BVjFfcFhZN1pPRjN0azhtU0hQMUhOTUJ4SnNBZlhha0tJc3dTUEtpSjB5RWR2RWJCMXlBSHRkaWpLR18wak5MSUNIbGRlWGFEU08xeG5vSXg4SzFGc0JWVVgw?oc=5",
+   "source": "Glossy",
+   "publishedAt": "2026-10-15T04:27:08.000Z",
+   "original": "Amid an executive shakeup, Gap Beauty expands with its first gourmand fragrance",
+   "lang": "en",
+   "category": "market",
+   "importance": 2,
+   "title": {
+    "ar": "Gap Beauty توسع محفظتها بإطلاق أول عطر جورماند ضمن خطط التطوير",
+    "en": "Gap Beauty Expands with Its First Gourmand Fragrance Amid Executive Shakeup"
+   },
+   "summary": {
+    "ar": "أعلنت Gap Beauty عن توسيع نطاق منتجاتها بإطلاق أول عطر جورماند لها بالتزامن مع تغييرات إدارية.",
+    "en": "Gap Beauty is expanding its product line with the launch of its first gourmand fragrance amidst an executive shakeup."
+   },
+   "note": {
+    "ar": "دخول العلامات التجارية الشهيرة لعالم عطور الحلويات يعكس هيمنة هذا الخط العطري في السوق الحالي.",
+    "en": "The entry of mainstream brands into gourmand scents highlights the current market dominance of sweet, edible notes."
    }
   },
   {
@@ -163,50 +355,6 @@
    "note": {
     "ar": "توسع دور العطور النيش في قطاع الضيافة الفاخرة يعزز من التجربة الحسية للنزلاء.",
     "en": "The expansion of niche houses into luxury hospitality enhances the sensory experience for guests."
-   }
-  },
-  {
-   "id": "n1xvlv6z",
-   "url": "https://cosmeticsbusiness.com/cpl-aromas-presents-resonance-at-beautyworld-middle-east",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-10-15T11:32:00.000Z",
-   "original": "CPL Aromas presents RESONANCE at BeautyWorld Middle East 2026",
-   "lang": "en",
-   "category": "events",
-   "importance": 4,
-   "title": {
-    "ar": "CPL Aromas تقدم مشروع RESONANCE في معرض Beautyworld Middle East 2026",
-    "en": "CPL Aromas Presents RESONANCE at Beautyworld Middle East 2026"
-   },
-   "summary": {
-    "ar": "عرضت شركة CPL Aromas استكشافها العطري الجديد تحت عنوان RESONANCE ضمن فعاليات معرض Beautyworld Middle East 2026.",
-    "en": "CPL Aromas presented its new olfactory exploration titled RESONANCE at Beautyworld Middle East 2026."
-   },
-   "note": {
-    "ar": "استكشاف الروابط بين الشعر والعاطفة والانسانية يعكس مدى عمق الابتكار الفني في تصميم العطور.",
-    "en": "Exploring the connections between poetry, emotion, and humanity reflects the depth of artistic innovation in perfume design."
-   }
-  },
-  {
-   "id": "n5d1l9i",
-   "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBJRFNYUHoyeTFnRXc1bzAwaEY0WWFSQUxtQnlrUGpQeFppV2h3ZUFBYUh3S21wamJ1TlRIZ2FFaElwZDhDdW1MUUsyWXBYSjFaMHNfTTR4cGxXZG1QMmJDZk90bWpsRG82R1ZWS0NXdHR2dm96R1VldTQ1bw?oc=5",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-10-14T11:30:40.000Z",
-   "original": "L’Oréal Travel Retail targets 10% in refillable fragrance solutions at travel hubs by 2030",
-   "lang": "en",
-   "category": "market",
-   "importance": 4,
-   "title": {
-    "ar": "L’Oréal Travel Retail تستهدف اعتماد حلول العطور القابلة لإعادة التعبئة بنسبة 10% بحلول 2030",
-    "en": "L’Oréal Travel Retail Targets 10% in Refillable Fragrance Solutions by 2030"
-   },
-   "summary": {
-    "ar": "وضعت L’Oréal Travel Retail هدفاً للوصول إلى نسبة 10% من حلول العطور القابلة لإعادة التعبئة في مراكز السفر بحلول عام 2030.",
-    "en": "L’Oréal Travel Retail has set a target of 10% in refillable fragrance solutions at travel hubs by 2030."
-   },
-   "note": {
-    "ar": "خطوات عملية نحو تقليل النفايات البيئية في قطاع تجارة السفر الفاخر.",
-    "en": "Practical steps towards reducing environmental waste in the luxury travel retail sector."
    }
   },
   {
@@ -320,28 +468,6 @@
    }
   },
   {
-   "id": "nff8yv9",
-   "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxQcFRmcXBfT042LVMxeENLUFc3Nml5ZExOWEkteUZUa2oxSS0xYktMTU9kUzlmZDRYVjltX3RIdVR1RzE5QVpzVnFTRWpId3VlVEJjWTR5TzctaFNOQ1otTjU4NFh0V091eURvRVVOcFlVOW8yOFdGamRuU25mVl9USUhPejJwS0dqTjlDS0drT3JVX3NSWEFTcDZ2dmN1aE93ODhfUnMyVWRTbzk3eTRlbDNhVEI3OTFIaUZ6RTJrRjZzaVdWODl4OXpXbXRaUWxFMlc1d0xWV21kVm9Md3lUWUJxZ244OVow?oc=5",
-   "source": "Grazia",
-   "publishedAt": "2026-10-15T09:41:16.000Z",
-   "original": "Ginseng Biloba, la nouvelle échappée olfactive d’Hermès aux notes boisées, végétales et délicatement amères",
-   "lang": "fr",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "Hermès توسع محفظتها العطرية بعطر Ginseng Biloba",
-    "en": "Hermès Expands Olfactory Portfolio with Ginseng Biloba"
-   },
-   "summary": {
-    "ar": "أطلقت دار Hermès عطرها الجديد Ginseng Biloba الذي يجمع بين النفحات الخشبية والنباتية والمرارة الرقيقة.",
-    "en": "Hermès has introduced Ginseng Biloba, a new olfactory escape featuring woody, vegetal, and delicately bitter notes."
-   },
-   "note": {
-    "ar": "خيار منعش ومبتكر لمن يبحثون عن تجارب عطرية غير تقليدية تبتعد عن الحلاوة التقليدية.",
-    "en": "A fresh and innovative choice for those seeking unconventional, non-sweet fragrance profiles."
-   }
-  },
-  {
    "id": "nefwbe4",
    "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNVVZNYjNxZUx2RGNOWEMwVXlOMW15bENud243TFl5UDdUTDFiU3h5RU9VcWVQSTFfdEgtaWZ3NU1EaXZkTUo2aWl4YTVHMU9DazhtX0E3ejNxdGZJVXJBeWFYMUdvMi1zZ29jSEphNlNKQVAyVGsxRkpZLTdUczNkbHg2TDJBLXA1QzV4YUZERFNjSnlLdVg4OFFYMUxXYkRWdXpSU2pWem4tYWFuOGRnS3BQeWg5MW9EdWc?oc=5",
    "source": "Mamabella",
@@ -383,28 +509,6 @@
    "note": {
     "ar": "معلومة هامة لمن يعانون من حساسيات جلدية عند تجربة عطور جديدة أو مكونات معينة.",
     "en": "Valuable information for consumers prone to skin sensitivities when testing new fragrances."
-   }
-  },
-  {
-   "id": "nwhlsv8",
-   "url": "https://nstperfume.com/2026/10/15/the-soul-of-french-perfume/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-15T13:58:09.000Z",
-   "original": "The Soul of French Perfume",
-   "lang": "en",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "متحف Osmothèque في فرساي يكشف أسرار العطور الفرنسية",
-    "en": "The Osmothèque in Versailles Lifts the Veil on French Perfumery"
-   },
-   "summary": {
-    "ar": "يتعاون متحف Osmothèque في فرساي مع espace Richaud لتسليط الضوء على أسرار وتاريخ صناعة العطور الفرنسية العريقة.",
-    "en": "The Osmothèque in Versailles, in partnership with espace Richaud, explores the secrets of millennia-old French perfumery."
-   },
-   "note": {
-    "ar": "وجهة أساسية لكل باحث في تاريخ العطور وتطور تركيباتها عبر الزمن.",
-    "en": "A must-know historical institution for anyone passionate about perfume heritage and formulation history."
    }
   }
  ]
