@@ -67,9 +67,10 @@ import { UserProfile } from '../types/auth';
 import { STATS_BADGE_EN, PORTAL_NEWS_EN } from '../utils/localizedHub';
 import { isRTL } from '../utils/localizedContent';
 import { LText, makeT, loc, fmt } from '../utils/localize';
-import { PORTAL_L10N, NEWS_L10N_A, NewsL10N } from '../utils/hubL10n';
+import { PORTAL_L10N as PORTAL_L10N_BASE, NEWS_L10N_A, NewsL10N } from '../utils/hubL10n';
 import { NEWS_L10N_B } from '../utils/hubL10n2';
 import { NEWS_L10N_C } from '../utils/hubL10n3';
+import { mergeHubL10n } from '../utils/hubL10nExt';
 
 interface PortalNewsItem {
   id: string;
@@ -190,8 +191,9 @@ export const HomeHub: React.FC<HomeHubProps> = ({
     portal_privacy: 'Full encryption of formulas, instant export, and GDPR compliance',
   };
 
-  // ===== Full 10-language localization for the 13 portal cards =====
-  const ALL_NEWS_L10N: Record<string, NewsL10N> = { ...NEWS_L10N_A, ...NEWS_L10N_B, ...NEWS_L10N_C };
+  // ===== Full 10-language base + extension language packs for the 13 portal cards & 52 news cards =====
+  const PORTAL_L10N = mergeHubL10n([PORTAL_L10N_BASE]) as unknown as Record<string, { title: LText; subtitle: LText; badge: LText }>;
+  const ALL_NEWS_L10N: Record<string, NewsL10N> = mergeHubL10n([NEWS_L10N_A, NEWS_L10N_B, NEWS_L10N_C]) as unknown as Record<string, NewsL10N>;
   const hubVars: Record<string, string | number> = {
     v: formulation.bottleVolumeMl,
     c: formulation.concentrationPercent,
