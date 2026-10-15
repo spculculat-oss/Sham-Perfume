@@ -11,7 +11,7 @@ dotenv.config();
 const app = express();
 
 // Rate limits use the client IP; trust exactly the configured number of proxy hops (Vercel = 1).
-const trustProxy = process.env.SHAM_TRUST_PROXY ?? (process.env.VERCEL ? '1' : '');
+const trustProxy = process.env.SHAM_TRUST_PROXY ?? (process.env.VERCEL || process.env.SHAM_SERVERLESS ? '1' : '');
 if (trustProxy) app.set('trust proxy', /^\d+$/.test(trustProxy) ? Number(trustProxy) : trustProxy);
 
 // The GitHub Pages build calls this API cross-origin (see server/cors.ts). Must run before body parsing.

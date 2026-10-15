@@ -15,4 +15,14 @@ export class RateLimiter {
   }
 }
 
-export const clientKey = (req: express.Request) => (req.ip || req.socket.remoteAddress || 'unknown');
+/**
+ * Per-visitor key for rate limits. On Tencent EdgeOne the platform gateway sets EO-Connecting-IP to the
+ * real client address (only trusted there; elsewhere the header could be forged).
+ */
+export const clientKey = (req: express.Request) => {
+  if (process.env.SHAM_PLATFORM === 'edgeone') {
+    const eo = req.get('eo-connecting-ip')?.split(',')[0]?.trim();
+    if (eo) return eo;
+  }
+  return req.ip || req.socket.remoteAddress || 'unknown';
+};

@@ -135,6 +135,15 @@ npm run test:vercel
 
 **Vercel Hobby مجاني للاستخدام الشخصي غير التجاري فقط**؛ لا تفترض أن متجرًا/استخدامًا تجاريًا مسموح على الخطة. تكلفة وحدود APIs منفصلة عن الاستضافة المجانية.
 
+## النشر المجاني على Tencent EdgeOne (الصين/آسيا)
+
+الموقع كامل، الواجهة والشات ولوحة الإدارة، بيشتغل على **Tencent EdgeOne Makers** بخطة مجانية دائمة: مليون طلب API في الشهر، ومدة لحد 120 ثانية للطلب. ومش محتاج ترخيص ICP لو اخترت منطقة "Global (excluding Chinese mainland)".
+
+- الإعداد موجود في `edgeone.json` و`cloud-functions/api/[[default]].ts`. النشر بيتم بربط المستودع من لوحة EdgeOne.
+- شاهين ممكن يشتغل مجاناً ببوابة نماذج Tencent (`AI_GATEWAY_API_KEY` ← `@makers/deepseek-v4-flash`).
+- الفحص: `npm run check:edgeone`.
+- الخطوات كاملة في [`EDGEONE.md`](EDGEONE.md).
+
 ## نشر التطبيق الكامل بخادم Node.js
 
 على استضافة تدعم Node.js:

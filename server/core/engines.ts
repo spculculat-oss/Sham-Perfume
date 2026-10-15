@@ -17,9 +17,30 @@ export interface EngineStatus { id: EngineId; name: string; model: string; confi
 
 const configured = (v?: string) => Boolean(v?.trim() && !/^(MY_|YOUR_|<)/i.test(v.trim()));
 
+/** Tencent EdgeOne Makers model gateway (OpenAI-compatible, free monthly tokens for built-in models). */
+export const EDGEONE_GATEWAY_URL = 'https://ai-gateway.edgeone.link/v1';
+export const EDGEONE_DEFAULT_MODEL = '@makers/deepseek-v4-flash';
+
+/**
+ * The "self-hosted / OpenAI-compatible" engine: SHAM_LLM_BASE_URL (+ optional SHAM_LLM_API_KEY), or —
+ * when only the EdgeOne gateway key exists (AI_GATEWAY_API_KEY) — Tencent's gateway with a free model.
+ */
+export function openCompatibleEngine(env: Env) {
+  if (configured(env.SHAM_LLM_BASE_URL)) {
+    return { baseUrl: env.SHAM_LLM_BASE_URL!.trim(), apiKey: configured(env.SHAM_LLM_API_KEY) ? env.SHAM_LLM_API_KEY!.trim() : '',
+      model: env.SHAM_LLM_MODEL?.trim() || 'qwen2.5:7b-instruct', gateway: false };
+  }
+  if (configured(env.AI_GATEWAY_API_KEY)) {
+    return { baseUrl: env.AI_GATEWAY_BASE_URL?.trim() || EDGEONE_GATEWAY_URL, apiKey: env.AI_GATEWAY_API_KEY!.trim(),
+      model: env.SHAM_LLM_MODEL?.trim() || EDGEONE_DEFAULT_MODEL, gateway: true };
+  }
+  return null;
+}
+
 export function engineStatuses(env: Env = process.env): EngineStatus[] {
+  const open = openCompatibleEngine(env);
   return [
-    { id: 'self_hosted', name: 'Self-hosted open model', model: env.SHAM_LLM_MODEL?.trim() || 'qwen2.5:7b-instruct', configured: configured(env.SHAM_LLM_BASE_URL), kind: 'self_hosted' },
+    { id: 'self_hosted', name: open?.gateway ? 'Tencent EdgeOne Models' : 'Self-hosted open model', model: open?.model || env.SHAM_LLM_MODEL?.trim() || 'qwen2.5:7b-instruct', configured: Boolean(open), kind: 'self_hosted' },
     { id: 'gemini', name: 'Google Gemini', model: env.GEMINI_MODEL?.trim() || 'gemini-2.5-flash', configured: configured(env.GEMINI_API_KEY), kind: 'hosted' },
     { id: 'openai', name: 'OpenAI', model: env.OPENAI_MODEL?.trim() || 'gpt-4o-mini', configured: configured(env.OPENAI_API_KEY), kind: 'hosted' },
     { id: 'claude', name: 'Anthropic Claude', model: env.ANTHROPIC_MODEL?.trim() || 'claude-sonnet-4-5', configured: configured(env.ANTHROPIC_API_KEY), kind: 'hosted' },
@@ -122,8 +143,9 @@ export async function callEngine(
   });
 
   if (id === 'self_hosted') {
-    url = `${env.SHAM_LLM_BASE_URL!.trim().replace(/\/+$/, '')}/chat/completions`;
-    if (configured(env.SHAM_LLM_API_KEY)) headers.Authorization = `Bearer ${env.SHAM_LLM_API_KEY!.trim()}`;
+    const open = openCompatibleEngine(env)!;
+    url = `${open.baseUrl.replace(/\/+$/, '')}/chat/completions`;
+    if (open.apiKey) headers.Authorization = `Bearer ${open.apiKey}`;
     body = openAiShape();
   } else if (id === 'gemini') {
     url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(status.model)}:${stream ? 'streamGenerateContent?alt=sse' : 'generateContent'}`;

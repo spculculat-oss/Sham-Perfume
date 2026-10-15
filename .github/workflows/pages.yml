@@ -45,6 +45,8 @@ jobs:
         run: bun run build:vercel
       - name: Test isolated Vercel function and routes
         run: bun run test:vercel
+      - name: Verify Tencent EdgeOne build (Cloud Function + persistent state)
+        run: bun run check:edgeone
       - name: Build current source for Pages
         # GitHub Pages is static: the chatbots call the deployed Vercel API cross-origin.
         # Override with the PAGES_API_BASE_URL repository variable ("none" = no server features).

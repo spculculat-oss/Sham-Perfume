@@ -94,11 +94,13 @@ Sham Core هو مساعد الخدمات ولوحة الإدارة داخل مو
 | `SHAM_COUNCIL_RATE_PER_HOUR` | حد ردود المجلس لكل زائر في الساعة (الافتراضي 12) |
 | `SHAM_SEED_DEMO=true` | منتجات تجريبية مُعلَّمة «تجريبي» للمعاينة فقط |
 | `SHAM_CORS_ORIGINS` | المواقع المسموح لها تكلّم الـ API من دومين تاني (الافتراضي GitHub Pages؛ `none` يقفلها) |
+| `AI_GATEWAY_API_KEY` | بوابة نماذج Tencent EdgeOne (متوافقة مع OpenAI، فيها توكنز مجانية). المحرك «نموذج مفتوح» بيستخدمها لو `SHAM_LLM_BASE_URL` فاضي. التفاصيل في [`EDGEONE.md`](EDGEONE.md) |
 | `SHAM_SHAHEEN_RATE_PER_MIN` | حد رسائل «الخبير شاهين» لكل زائر في الدقيقة (الافتراضي 10) |
 | `SHAM_CHAT_RATE_PER_MIN` / `SHAM_TRUST_PROXY` | حد الرسائل لكل IP في الدقيقة، وعدد البروكسيات الموثوقة (الافتراضي على Vercel = 1) |
 
 - **سيرفر Node / VPS:** `SHAM_STORE=file` تخزين دائم على القرص. ممكن تشغّل Ollama على نفس السيرفر وتضبط `SHAM_LLM_BASE_URL`.
 - **Vercel:** الدوال مالهاش قرص دائم، فاستخدم `SHAM_STORE=firestore`. من غيره البيانات بتتمسح عند إعادة التشغيل، واللوحة بتنبّه لده.
+- **Tencent EdgeOne:** نفس التطبيق كواجهة ودالة سحابية (`cloud-functions/api/[[default]].ts`)، مجاني. التخزين في الذاكرة لكل نسخة لو مفيش `SHAM_STORE=firestore`. الخطوات في [`EDGEONE.md`](EDGEONE.md).
 - **Firebase:** حساب الخدمة بيتخطى `firestore.rules`، والقواعد الحالية بتفضل قافلة الوصول من المتصفح. المجموعات بتبدأ بـ `sham_core_`.
 - **GitHub Pages:** نسخة ثابتة مالهاش خادم. الـ workflow بيبنيها بـ `VITE_API_BASE_URL` (متغير المستودع `PAGES_API_BASE_URL`، والافتراضي `https://sham-perfume-49bf.vercel.app`)، فالشات بوتات (مساعد شام وشاهين) ولوحة الإدارة بيكلّموا خادم Vercel مباشرة. الخادم بيسمح بده بس للمواقع المكتوبة في `SHAM_CORS_ORIGINS` (الافتراضي `https://spculculat-oss.github.io`)، ومن غير كوكيز. لو حطيت `PAGES_API_BASE_URL=none`، النسخة الثابتة بترجع تقفل مزايا الخادم وتعرض تنبيه.
 
