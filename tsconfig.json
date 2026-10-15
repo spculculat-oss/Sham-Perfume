@@ -30,6 +30,8 @@
     "server/**/*.cts",
     "cloud-functions/**/*.ts",
     "scripts/doctor/**/*.ts",
-    "scripts/doctor/**/*.mts"
+    "scripts/doctor/**/*.mts",
+    "scripts/shaheen-news/**/*.ts",
+    "scripts/shaheen-news/**/*.mts"
   ]
 }

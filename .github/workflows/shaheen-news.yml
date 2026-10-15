@@ -1,0 +1,77 @@
+name: Shaheen news and assistant training (every 12 hours)
+
+# «نشرة شاهين»: every 12 hours «الخبير شاهين» collects the latest perfume news from the web, writes
+# Arabic/English summaries and his comment, and trains «مساعد شام» (perfumery lessons, answers to the
+# questions it could not answer, the latest-news digest). Results: src/data/live/*.json on main.
+# The site reads them directly (also on GitHub Pages) and the server refreshes them without a redeploy.
+# Code: scripts/shaheen-news/. Secrets (all optional): the AI keys, SHAM_ADMIN_TOKEN (unanswered questions).
+# Without any AI key it still publishes the real headlines, just without Shaheen's summaries.
+
+on:
+  schedule:
+    # 03:07 and 15:07 UTC = 06:07 and 18:07 Cairo (summer time). The first run starts as soon as this is merged.
+    - cron: '7 3,15 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main, 'arena/**']
+    paths: ['scripts/shaheen-news/**', '.github/workflows/shaheen-news.yml']
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: shaheen-news-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  news:
+    name: Collect news and train the assistant
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      # Branch pushes rehearse only: the result is shown in the job summary, nothing is committed.
+      NEWS_COMMIT: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      SHAM_ADMIN_TOKEN: ${{ secrets.SHAM_ADMIN_TOKEN }}
+      SHAM_SITE_URL: ${{ vars.DOCTOR_SITE_URL || 'https://sham-perfume-49bf.vercel.app' }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Collect news and train «مساعد شام»
+        run: node --import tsx scripts/shaheen-news/run.mts
+      - name: Publish on main
+        if: env.NEWS_COMMIT == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen news bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/live
+          if git diff --cached --quiet; then echo "Nothing new to publish"; exit 0; fi
+          git commit -m "نشرة شاهين: تحديث الأخبار وتدريب مساعد شام $(date -u +%Y-%m-%dT%H:%MZ)"
+          # main moves often: rebase onto the latest main and retry.
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase --depth=50 origin main && git push origin HEAD:main; then pushed=1; break; fi
+            sleep $((attempt * 5))
+          done
+          if [ -z "$pushed" ]; then echo "::error::Could not push the news update"; exit 1; fi
+          # Pushes made with this token start no workflows; rebuild GitHub Pages explicitly so the bundled copy is fresh too.
+          gh workflow run pages.yml --ref main || echo "::warning::Pages rebuild not started (the site still reads the new news directly)"

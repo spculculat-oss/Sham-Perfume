@@ -3,6 +3,7 @@
   "framework": null,
   "installCommand": "npx --yes bun@1.4.3 install --frozen-lockfile",
   "buildCommand": "npm run build:vercel",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- . ':(exclude)src/data/live'",
   "outputDirectory": null,
   "fluid": true,
   "git": {

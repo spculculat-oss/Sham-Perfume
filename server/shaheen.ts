@@ -9,6 +9,7 @@
  * there are no canned answers pretending to be AI.
  */
 import express from 'express';
+import { newsContext } from './core/liveData';
 import { SUPPORTED_LANGUAGES } from '../src/types/i18n';
 import type { SupportedLanguage } from '../src/types/i18n';
 import { normalizeMediaBlocks } from '../src/utils/mediaBlock';
@@ -161,7 +162,8 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   if (!candidates.length) throw new ChatError(503, 'PROVIDER_NOT_CONFIGURED', 'No API key configured for the requested provider');
   // Vercel functions stop at 60 s: keep the whole failover chain inside that.
   const total = AbortSignal.any([AbortSignal.timeout(options.totalTimeoutMs ?? 50000), ...(options.signal ? [options.signal] : [])]);
-  const instruction = systemInstruction(input.language, settings.instructions, style);
+  // Questions about news get the real headlines Shaheen collected (every 12 h) instead of invented ones.
+  const instruction = systemInstruction(input.language, settings.instructions, style) + await newsContext(input.message, input.language, env).catch(() => '');
   // A deep analysis plus its formula block used to be cut before the closing fence: give it room.
   const maxTokens = style === 'fast' ? Math.min(settings.maxTokens, 1024)
     : style === 'deep' ? Math.min(8192, Math.max(settings.maxTokens, 6144)) : settings.maxTokens;

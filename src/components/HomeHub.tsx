@@ -68,7 +68,8 @@ import { UserDetailedAddress } from '../types/address';
 import { UserProfile } from '../types/auth';
 import { STATS_BADGE_EN, PORTAL_NEWS_EN } from '../utils/localizedHub';
 import { isRTL } from '../utils/localizedContent';
-import { LText, makeT, loc, fmt } from '../utils/localize';
+import { LText, makeT, loc, fmt, LOCALE_MAP } from '../utils/localize';
+import { loadLiveNews, relativeTime, type NewsFile } from '../utils/liveNews';
 import { PORTAL_L10N as PORTAL_L10N_BASE, NEWS_L10N_A, NewsL10N } from '../utils/hubL10n';
 import { NEWS_L10N_B } from '../utils/hubL10n2';
 import { NEWS_L10N_C } from '../utils/hubL10n3';
@@ -284,6 +285,19 @@ export const HomeHub: React.FC<HomeHubProps> = ({
   // Animate pulse on index change
   const [animatingPortals, setAnimatingPortals] = useState<Record<string, boolean>>({});
 
+  // Real perfume news collected by Shaheen every 12 hours (works on GitHub Pages too: no server needed).
+  const [liveNews, setLiveNews] = useState<NewsFile | null>(null);
+  useEffect(() => { let alive = true; loadLiveNews().then((d) => { if (alive) setLiveNews(d); }, () => {}); return () => { alive = false; }; }, []);
+  const liveHeadlines: PortalNewsItem[] = (liveNews?.items || []).slice(0, 6).map((item) => ({
+    id: `live-${item.id}`,
+    badge: currentLang === 'ar' ? '📡 خبر حقيقي' : '📡 Live news',
+    title: currentLang === 'ar' ? item.title.ar : item.title.en,
+    description: currentLang === 'ar' ? item.summary.ar : item.summary.en,
+    metric: item.source,
+    timestamp: relativeTime(item.publishedAt || liveNews!.updatedAt, LOCALE_MAP[currentLang] || 'en'),
+    actionHint: currentLang === 'ar' ? 'كل أخبار العطور' : 'All perfume news',
+  }));
+
   // Dynamic news definitions utilizing live state
   const portals: PortalDefinition[] = [
     // 1. Formulation & Lab Portal
@@ -352,7 +366,8 @@ export const HomeHub: React.FC<HomeHubProps> = ({
       icons: [Newspaper, Flame, Globe, TrendingUp],
       statsBadge: '👑 رصد الخبير شاهين اليومي المصور',
       imageThumbnail: newsImg,
-      news: [
+      // Real headlines Shaheen collected from the web (every 12 h); the written samples only until the first bulletin.
+      news: liveHeadlines.length ? liveHeadlines : [
         {
           id: 'n1',
           badge: 'عاجل من ميلانو',
