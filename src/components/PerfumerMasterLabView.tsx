@@ -38,6 +38,7 @@ import { ShaheenModesPanel, ShaheenServiceStatus, busyNoteText, chatErrorText, s
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
 import { ShaheenMedia } from './ShaheenMedia';
 import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
+import { stripOpeningGreeting } from '../utils/shaheenText';
 import { ENGINE_BADGE, messageTime, modeBadge, visibleEngines, scrollChatToEnd } from './shaheenEngines';
 import type { ShaheenModelChoice } from '../utils/chatStore';
 import { useShaheenChat } from '../hooks/useShaheenChat';
@@ -577,7 +578,9 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
             const activeDisplayContent =
               m.id === 'welcome'
                 ? shaheenWelcome(currentLang)
-                : stripMediaBlock(m.text);
+                : m.role === 'assistant'
+                    ? stripOpeningGreeting(stripMediaBlock(m.text), messages.slice(0, msgIndex).filter((x) => x.role === 'user').pop()?.text || '')
+                    : stripMediaBlock(m.text);
 
             const isError = m.kind === 'error';
             const mediaRequest = m.role === 'assistant' && !isError && m.id !== 'welcome' ? extractMediaRequest(m.text) : undefined;

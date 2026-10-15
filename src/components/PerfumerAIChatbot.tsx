@@ -36,6 +36,7 @@ import { ShaheenServiceStatus, ShaheenModesPanel, busyNoteText, chatErrorText, s
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
 import { ShaheenMedia } from './ShaheenMedia';
 import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
+import { stripOpeningGreeting } from '../utils/shaheenText';
 import { ENGINE_BADGE, messageTime, modeBadge, visibleEngines, scrollChatToEnd } from './shaheenEngines';
 import type { ShaheenModelChoice } from '../utils/chatStore';
 import { SupportedLanguage } from '../types/i18n';
@@ -1238,6 +1239,8 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                 const activeDisplayContent =
                   msg.id === 'welcome'
                     ? shaheenWelcome(currentLang)
+                    : msg.role === 'assistant'
+                    ? stripOpeningGreeting(stripMediaBlock(msg.text), messages.slice(0, msgIndex).filter((x) => x.role === 'user').pop()?.text || '')
                     : stripMediaBlock(msg.text);
 
                 const formulas = msg.role === 'assistant' && msg.kind !== 'error' ? extractFormulasFromAIMessage(activeDisplayContent) : [];
