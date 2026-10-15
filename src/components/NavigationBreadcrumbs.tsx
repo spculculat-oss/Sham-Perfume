@@ -131,7 +131,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
               <span>{L('back_btn')}</span>
               {previousTabLabel && (
                 <span className="hidden md:inline text-stone-500 text-[11px]">
-                  ({previousTabLabel})
+                  ({tabConfigs[previousTabLabel]?.label || previousTabLabel.replace(/_/g, ' ')})
                 </span>
               )}
             </button>

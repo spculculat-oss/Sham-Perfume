@@ -79,13 +79,17 @@ export function volumeMl(text: string): number | undefined {
   return l !== undefined && inRange(l * 1000, 1, 10000) ? l * 1000 : undefined;
 }
 
+// Arabic words need real word edges: «مست» must not match «مستخدم / المستدمجة / مستوى» (seen live:
+// a costing answer opened the calculator as «MIST»), and «دهن العود» is an ingredient, not a perfume oil.
+const AR = '\\u0600-\\u06FF';
+const arWord = (alternatives: string) => new RegExp(`(?<![${AR}])(?:وبال|بال|وال|لل|ال|و|ب|ل)?(?:${alternatives})(?![${AR}])`, 'i');
 const TYPE_WORDS: [RegExp, ConcentrationType][] = [
-  [/extrait|إكستري|اكستريت|اكستريه|parfum\b|برفان/i, 'extrait'],
-  [/\bedp\b|eau de parfum|أو دو بارفان|او دي بارفان|أو دي بارفان/i, 'edp'],
-  [/\bedt\b|eau de toilette|تواليت/i, 'edt'],
-  [/\bedc\b|cologne|كولونيا/i, 'edc'],
-  [/مست|mist|سبلاش|splash/i, 'mist'],
-  [/زيت عطري مركز|عطر زيتي|دهن|perfume oil|\battar\b/i, 'oil_pure'],
+  [/\bedp\b|eau de parfum|أو دو بارفان|او دي بارفان|أو دي بارفان|(?:او|أو) (?:دو|دي) برفان/i, 'edp'],
+  [/extrait|parfum\b/i, 'extrait'], [arWord('إكستري|اكستريت|اكستريه|إكستريه|برفان'), 'extrait'],
+  [/\bedt\b|eau de toilette/i, 'edt'], [arWord('تواليت'), 'edt'],
+  [/\bedc\b|cologne/i, 'edc'], [arWord('كولونيا'), 'edc'],
+  [/\b(?:body\s+)?mist\b|\bsplash\b/i, 'mist'], [arWord('مست|ميست|بودي مست|سبلاش|معطر جسم'), 'mist'],
+  [/perfume oil|\battar\b/i, 'oil_pure'], [arWord('زيت عطري مركز|عطر زيتي|عطور زيتية|دهن(?! ?(?:ال)?عود)'), 'oil_pure'],
 ];
 export const concentrationTypeIn = (text: string) => TYPE_WORDS.find(([re]) => re.test(text))?.[1];
 

@@ -167,7 +167,7 @@ test('GET /api/media validates, caches and rate-limits lookups', async () => {
     const first = await fetch(`${base}?type=image&q=Damask%20rose%20petals`);
     assert.equal(first.status, 200);
     const body = await first.json() as { images: { title: string }[] };
-    assert.equal(body.images[0].title, 'Rose 1');
+    assert.equal(body.images[0].title, 'Rose'); // «Rose 1.jpg»: the file number is not part of the caption
     // Same topic again (any case): served from the cache.
     await fetch(`${base}?type=image&q=damask%20ROSE%20petals`);
     assert.equal(upstream, 1);
@@ -303,4 +303,20 @@ test('the media block is found however the model wrote it (live: ```json and no 
   }
   // A broken sham-media fence is still hidden.
   assert.equal(removeMediaBlocks('```sham-media\n{oops\n```\nok'), 'ok');
+});
+
+test('image captions read like words, not catalogue codes; «oud» does not bring Dutch place names', async () => {
+  const { tidyCaption, topicOnlyInPlaceName } = await import('../src/utils/mediaCaption');
+  // Captions seen live under Shaheen's answers.
+  assert.equal(tidyCaption('Blackwell E 1750 pl 82 Rosa damascena 4500px'), 'Blackwell Rosa damascena');
+  assert.equal(tidyCaption('Glass perfume bottle MET DP108895'), 'Glass perfume bottle');
+  assert.equal(tidyCaption('Beaker, measuring (AM 1949.59-1)'), 'Beaker, measuring');
+  assert.equal(tidyCaption('Rosa damascena5'), 'Rosa damascena');
+  assert.equal(tidyCaption('Glass graduated cylinder-250ml 1'), 'Glass graduated cylinder');
+  assert.equal(tidyCaption('IMG 2034', 'Oud'), 'Oud');
+  for (const kept of ['Agarwood top grade', 'Rosa × damascena in Taif', 'عود كمبودي', 'Jasmin à Grasse']) assert.equal(tidyCaption(kept), kept);
+  assert.equal(topicOnlyInPlaceName('Oud-Zevenaar, de Fergusonbrug foto6 2015-05-14 18.02', 'oud'), true);
+  assert.equal(topicOnlyInPlaceName('Oud wood chips', 'oud'), false);
+  assert.equal(topicOnlyInPlaceName("Damaszener-Rose 'Madame Hardy'", 'damask rose'), false);
+  assert.equal(readableCaption('Glass perfume bottle MET DP108895', 'perfume bottle'), 'Glass perfume bottle');
 });
