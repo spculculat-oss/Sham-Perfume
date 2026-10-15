@@ -2,7 +2,7 @@
  * Real-browser inspection: opens each public site in Chrome like a visitor, asks Shaheen in every answer
  * mode, and reports (as GitHub annotations) exactly what the chat bubble shows — raw code, calculator links,
  * the formula toolbar — and whether tapping a calculator link really opens that tool on the site.
- * Usage (CI): PUPPETEER_PATH=/tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js node scripts/inspect/browser.mjs
+ * Runs on every push under scripts/inspect. Usage (CI): PUPPETEER_PATH=/tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js node scripts/inspect/browser.mjs
  */
 const { default: puppeteer } = await import(process.env.PUPPETEER_PATH || 'puppeteer-core');
 
