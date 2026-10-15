@@ -59,8 +59,6 @@ export class Repository {
   }
 
   // ---------- settings ----------
-  /** Bumped on every settings save in this instance. */
-  settingsRevision = 0;
   async settings(): Promise<CoreSettings> {
     await this.ready();
     const stored = await this.store.get('settings', 'core');
@@ -117,7 +115,6 @@ export class Repository {
     }
     const saved = { ...rest, updatedAt: new Date().toISOString(), ...(shaheenOverride ? { shaheen: shaheenOverride } : {}) };
     await this.store.put('settings', 'core', saved as CoreSettings & { id: string });
-    this.settingsRevision++; // cached readers (Shaheen's router) pick the change up immediately
     return { ...saved, shaheen: withShaheenDefaults(shaheenOverride) };
   }
 

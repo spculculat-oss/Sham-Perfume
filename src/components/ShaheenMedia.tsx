@@ -1,12 +1,9 @@
-import React, { Suspense, lazy, useEffect, useState } from 'react';
-import { ExternalLink, Image as ImageIcon, MapPin, Play, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { ExternalLink, Image as ImageIcon, Play, X } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { isStaticHosting } from '../utils/api';
 import { makeT, type LText } from '../utils/localize';
-import { fetchMedia, osmSearchUrl, youtubeSearchUrl, type MediaImage, type MediaPlace, type MediaRequest, type VideoResult } from '../utils/shaheenMedia';
-
-// Leaflet (~150 KB) is only downloaded when an answer actually has places to show.
-const ShaheenMap = lazy(() => import('./ShaheenMap'));
+import { fetchMedia, youtubeSearchUrl, type MediaImage, type MediaRequest, type VideoResult } from '../utils/shaheenMedia';
 
 const STRINGS = {
   title: { ar: 'توضيح مرئي', en: 'Visual guide', fr: 'Guide visuel', es: 'Guía visual', de: 'Visuelle Erklärung', tr: 'Görsel rehber', ru: 'Наглядно', zh: '图示说明' },
@@ -16,9 +13,6 @@ const STRINGS = {
   searchVideos: { ar: 'شاهد فيديوهات توضيحية على YouTube:', en: 'Watch explanatory videos on YouTube:', fr: 'Voir des vidéos explicatives sur YouTube :', es: 'Ver vídeos explicativos en YouTube:', de: 'Erklärvideos auf YouTube ansehen:', tr: 'YouTube’da açıklayıcı videolar izleyin:' },
   source: { ar: 'المصدر والترخيص', en: 'Source & license', fr: 'Source et licence', es: 'Fuente y licencia', de: 'Quelle & Lizenz', tr: 'Kaynak ve lisans' },
   by: { ar: 'تصوير/إعداد:', en: 'By', fr: 'Par', es: 'Por', de: 'Von', tr: 'Yazar:' },
-  places: { ar: 'أماكن على الخريطة', en: 'Places on the map', fr: 'Lieux sur la carte', es: 'Lugares en el mapa', de: 'Orte auf der Karte', tr: 'Haritadaki yerler', ru: 'Места на карте', zh: '地图上的地点' },
-  mapHint: { ar: 'اضغط على اسم المكان للانتقال إليه على الخريطة. بيانات الخريطة © مساهمو OpenStreetMap.', en: 'Tap a place to fly to it on the map. Map data © OpenStreetMap contributors.', fr: 'Touchez un lieu pour le voir sur la carte. Données © contributeurs OpenStreetMap.', es: 'Toca un lugar para verlo en el mapa. Datos © colaboradores de OpenStreetMap.', de: 'Ort antippen, um ihn auf der Karte zu zeigen. Kartendaten © OpenStreetMap-Mitwirkende.', tr: 'Haritada görmek için bir yere dokunun. Harita verileri © OpenStreetMap katkıcıları.' },
-  openMap: { ar: 'افتح في OpenStreetMap', en: 'Open in OpenStreetMap', fr: 'Ouvrir dans OpenStreetMap', es: 'Abrir en OpenStreetMap', de: 'In OpenStreetMap öffnen', tr: 'OpenStreetMap’te aç' },
   close: { ar: 'إغلاق', en: 'Close', fr: 'Fermer', es: 'Cerrar', de: 'Schließen', tr: 'Kapat' },
 } satisfies Record<string, LText>;
 
@@ -34,17 +28,12 @@ export function ShaheenMedia({ request, lang }: Props) {
   const [playing, setPlaying] = useState<string | null>(null);
   const [zoom, setZoom] = useState<MediaImage | null>(null);
   const [broken, setBroken] = useState<ReadonlySet<string>>(new Set());
-  const placeKey = (request.places || []).join('|');
-  const [places, setPlaces] = useState<MediaPlace[] | null>(placeKey && !isStaticHosting ? null : []);
-  const [selectedPlace, setSelectedPlace] = useState(-1);
-  const [unlocated, setUnlocated] = useState<string[]>([]);
 
   useEffect(() => {
     let alive = true;
     if (!imageKey || isStaticHosting) { setImages([]); return; }
     setImages(null);
-    // Images and places do not depend on the interface language (it can switch right after load).
-    void Promise.allSettled(imageKey.split('|').map((q) => fetchMedia('image', q, ''))).then((results) => {
+    void Promise.allSettled(imageKey.split('|').map((q) => fetchMedia('image', q, lang))).then((results) => {
       if (!alive) return;
       const seen = new Set<string>();
       // Interleave the topics so each one gets a picture before any gets a second.
@@ -57,7 +46,7 @@ export function ShaheenMedia({ request, lang }: Props) {
       setImages(merged);
     });
     return () => { alive = false; };
-  }, [imageKey]);
+  }, [imageKey, lang]);
 
   useEffect(() => {
     let alive = true;
@@ -70,23 +59,6 @@ export function ShaheenMedia({ request, lang }: Props) {
   }, [videoQuery, lang]);
 
   useEffect(() => {
-    let alive = true;
-    const names = placeKey ? placeKey.split('|') : [];
-    if (!placeKey || isStaticHosting) { setPlaces([]); setUnlocated(names); return; }
-    setPlaces(null);
-    setUnlocated([]);
-    setSelectedPlace(-1);
-    void Promise.allSettled(placeKey.split('|').map((q) => fetchMedia('place', q, ''))).then((results) => {
-      if (!alive) return;
-      const seen = new Set<string>();
-      setUnlocated(names.filter((_, i) => { const r = results[i]; return r.status !== 'fulfilled' || !r.value.places.length; }));
-      setPlaces(results.flatMap((r) => (r.status === 'fulfilled' ? r.value.places.slice(0, 1) : []))
-        .filter((p) => { const k = `${p.lat.toFixed(2)},${p.lon.toFixed(2)}`; if (seen.has(k)) return false; seen.add(k); return true; }));
-    });
-    return () => { alive = false; };
-  }, [placeKey]);
-
-  useEffect(() => {
     if (!zoom) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setZoom(null); };
     window.addEventListener('keydown', onKey);
@@ -97,28 +69,24 @@ export function ShaheenMedia({ request, lang }: Props) {
   const shown = (images || []).filter((img) => !broken.has(img.thumb));
   const hasImages = shown.length > 0;
   const hasVideoArea = Boolean(videoQuery);
-  const loadingPlaces = places === null;
-  const hasPlaces = Boolean(places?.length);
-  // Places that could not be located (or no API on this host) still get a search link (`unlocated`).
-  const hasPlaceArea = loadingPlaces || hasPlaces || unlocated.length > 0;
-  if (!loadingImages && !hasImages && !hasVideoArea && !hasPlaceArea) return null;
+  if (!loadingImages && !hasImages && !hasVideoArea) return null;
 
   return (
-    <section className="@container mt-3 rounded-xl border border-amber-200/80 bg-amber-50/40 p-2.5 sm:p-3" aria-label={L('title')} data-testid="shaheen-media">
+    <section className="mt-3 rounded-xl border border-amber-200/80 bg-amber-50/40 p-2.5 sm:p-3" aria-label={L('title')} data-testid="shaheen-media">
       <div className="mb-2 flex items-center gap-1.5 text-[11px] font-bold text-amber-900">
         <ImageIcon className="h-3.5 w-3.5" aria-hidden />
         <span>{L('title')}</span>
       </div>
 
       {loadingImages && (
-        <div className="grid grid-cols-2 gap-2 @lg:grid-cols-4" aria-busy="true">
+        <div className="grid grid-cols-2 gap-2" aria-busy="true">
           {[0, 1].map((i) => <div key={i} className="aspect-[4/3] animate-pulse rounded-lg bg-stone-200/80" />)}
         </div>
       )}
 
       {hasImages && (
         <>
-          <div className="grid grid-cols-2 gap-2 @lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-2">
             {shown.map((img) => (
               <button
                 key={img.thumb}
@@ -142,7 +110,7 @@ export function ShaheenMedia({ request, lang }: Props) {
         <div className={hasImages || loadingImages ? 'mt-3' : ''}>
           {video === null && <div className="aspect-video w-full animate-pulse rounded-lg bg-stone-200/80" aria-busy="true" />}
           {video && video.videos.map((v) => (
-            <div key={v.id} className="mb-2 max-w-md overflow-hidden rounded-lg border border-stone-200 bg-white shadow-sm">
+            <div key={v.id} className="mb-2 overflow-hidden rounded-lg border border-stone-200 bg-white shadow-sm">
               {playing === v.id ? (
                 <iframe
                   className="aspect-video w-full"
@@ -176,49 +144,6 @@ export function ShaheenMedia({ request, lang }: Props) {
               <ExternalLink className="h-3 w-3 shrink-0" aria-hidden />
             </a>
           )}
-        </div>
-      )}
-
-      {hasPlaceArea && (
-        <div className={hasImages || loadingImages || hasVideoArea ? 'mt-3' : ''}>
-          <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-bold text-amber-900">
-            <MapPin className="h-3.5 w-3.5" aria-hidden />
-            <span>{L('places')}</span>
-          </div>
-          {(loadingPlaces || hasPlaces) && (
-            <Suspense fallback={<div className="h-56 w-full animate-pulse rounded-lg bg-stone-200/80 sm:h-64" aria-busy="true" />}>
-              {loadingPlaces
-                ? <div className="h-56 w-full animate-pulse rounded-lg bg-stone-200/80 sm:h-64" aria-busy="true" />
-                : <ShaheenMap places={places!} selected={selectedPlace} onSelect={setSelectedPlace} label={L('places')} />}
-            </Suspense>
-          )}
-          {hasPlaces && (
-            <ol className="mt-2 flex flex-wrap gap-1.5">
-              {places!.map((p, i) => (
-                <li key={`${p.lat},${p.lon}`} className={`flex max-w-full items-center overflow-hidden rounded-full border text-[11px] ${i === selectedPlace ? 'border-amber-700 bg-amber-100' : 'border-stone-200 bg-white'}`}>
-                  <button type="button" onClick={() => setSelectedPlace(i)} title={p.label} className="flex min-w-0 items-center gap-1 px-2.5 py-1 font-bold text-stone-800 hover:text-amber-900 cursor-pointer">
-                    <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-amber-700 text-[9px] text-white">{i + 1}</span>
-                    <span className="truncate" dir="auto">{p.name}</span>
-                  </button>
-                  <a href={p.osm} target="_blank" rel="noopener noreferrer nofollow" aria-label={`${L('openMap')}: ${p.name}`} title={L('openMap')} className="border-s border-stone-200 px-2 py-1 text-amber-800 hover:bg-amber-50">
-                    <ExternalLink className="h-3 w-3" aria-hidden />
-                  </a>
-                </li>
-              ))}
-            </ol>
-          )}
-          {unlocated.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-1.5">
-              {unlocated.map((q) => (
-                <a key={q} href={osmSearchUrl(q)} target="_blank" rel="noopener noreferrer nofollow" className="inline-flex max-w-full items-center gap-1 rounded-full border border-stone-200 bg-white px-2.5 py-1 text-[11px] font-bold text-stone-700 hover:bg-amber-50">
-                  <MapPin className="h-3 w-3 shrink-0 text-amber-700" aria-hidden />
-                  <span className="truncate" dir="auto">{q}</span>
-                  <ExternalLink className="h-3 w-3 shrink-0" aria-hidden />
-                </a>
-              ))}
-            </div>
-          )}
-          {hasPlaces && <p className="mt-1.5 text-[10px] leading-snug text-stone-500">{L('mapHint')}</p>}
         </div>
       )}
 

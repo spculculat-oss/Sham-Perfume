@@ -30,14 +30,12 @@ app.use((error: any, _req: express.Request, res: express.Response, next: express
 const shamCore = createShamCore();
 
 app.get('/api/health', (_req, res) => {
-  res.setHeader('Cache-Control', 'no-store');
-  // `version` = deployed commit: the maintenance agent compares it with main to spot a stale deploy.
-  res.json({ service: 'sham-perfume', status: 'ok', version: shamCore.runtime.version, uptimeS: Math.round((Date.now() - shamCore.runtime.startedAt) / 1000) });
+  res.json({ service: 'sham-perfume', status: 'ok' });
 });
 
 // «الخبير شاهين»: GET /api/models + POST /api/chat. Settings come from server/config/shaheen.ts and the
 // admin dashboard, so both sites (Vercel and GitHub Pages, which calls this API) behave the same.
-app.use('/api', createShaheenRouter({ repo: shamCore.repo, runtime: shamCore.runtime }));
+app.use('/api', createShaheenRouter({ repo: shamCore.repo }));
 app.use('/api', createMediaRouter());
 
 // ============================================================================

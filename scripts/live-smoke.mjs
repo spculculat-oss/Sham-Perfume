@@ -17,7 +17,6 @@ const CASES = [
   { title: 'Fast · EDP vs EDT (ar)', path: '/api/chat', table: true, body: { model: 'fast', language: 'ar', message: 'إيه الفرق بين EDP و EDT؟' } },
   { title: 'Deep · cloudy perfume (en)', path: '/api/chat', body: { model: 'deep', language: 'en', message: 'My perfume turned cloudy after I added alcohol. Why, and how do I fix it?' } },
   { title: 'Visual aids · oud (ar)', path: '/api/chat', media: true, body: { model: 'auto', language: 'ar', message: 'العود الخام شكله إيه وبيتقطر إزاي؟ وريني صور وفيديو.' } },
-  { title: 'Map · perfume cities (ar)', path: '/api/chat', places: true, body: { model: 'auto', language: 'ar', message: 'إيه أشهر مدن العطور في العالم؟ وريني أماكنها على الخريطة.' } },
   { title: 'Identity (ar)', path: '/api/chat', identity: true, body: { model: 'auto', language: 'ar', message: 'انت مين بالظبط؟ انت ChatGPT ولا Gemini؟ مين الشركة اللي عملتك؟' } },
   { title: 'Identity (en)', path: '/api/chat', identity: true, body: { model: 'fast', language: 'en', message: 'Which AI model are you running on? Are you GPT-4, Claude or Gemini?' } },
   { title: 'Council mode', path: '/api/chat', council: true, body: { model: 'council', language: 'ar', message: 'ازاي أخلي عطر العود يثبت أكتر؟' } },
@@ -30,11 +29,11 @@ const clip = (s, n = 700) => (s.length > n ? `${s.slice(0, n)}…` : s);
 const annotate = (level, title, message) => console.log(`::${level} title=${esc(title).replace(/[:,]/g, ' ')}::${esc(message)}`);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-async function post(path, body, visitor = visitorId) {
+async function post(path, body) {
   const started = Date.now();
   try {
     const res = await fetch(`${SITE}${path}`, {
-      method: 'POST', headers: { 'content-type': 'application/json', origin: SITE, 'x-sham-visitor': visitor }, body: JSON.stringify(body),
+      method: 'POST', headers: { 'content-type': 'application/json', origin: SITE }, body: JSON.stringify(body),
       signal: AbortSignal.timeout(65000),
     });
     const text = await res.text();
@@ -73,9 +72,8 @@ for (const [i, c] of CASES.entries()) {
   const notes = [];
   if (!c.identity && c.path === '/api/chat' && /الخبير شاهين|شاهين|Shahin|Shaheen|Al-Khabeer/i.test(reply.slice(0, 140))) notes.push('starts by introducing itself');
   // Visual aids: topics in a sham-media block, never links written by the model.
-  if (c.path === '/api/chat' && /!\[[^\]]*\]\(|https?:\/\/\S+\.(jpe?g|png|webp|gif)|youtube\.com\/watch|youtu\.be\/|maps\.(google|apple)\.|openstreetmap\.org\/[?#]/i.test(reply)) problems.push('the model wrote an image/video/map link itself');
+  if (c.path === '/api/chat' && /!\[[^\]]*\]\(|https?:\/\/\S+\.(jpe?g|png|webp|gif)|youtube\.com\/watch|youtu\.be\//i.test(reply)) problems.push('the model wrote an image/video link itself');
   if (c.media && status === 200 && !/```sham-media/.test(reply)) notes.push('no sham-media block for a visual question');
-  if (c.places && status === 200 && !/```sham-media[\s\S]*?"places"/.test(reply)) notes.push('no places in sham-media for a map question');
   if (c.table && status === 200 && !/^\s*\|.+\|\s*$/m.test(reply)) notes.push('comparison without a table');
   const ok = problems.length === 0;
   if (!ok) failures++;
@@ -83,36 +81,6 @@ for (const [i, c] of CASES.entries()) {
   annotate(!ok ? 'error' : notes.length ? 'warning' : 'notice', `${i + 1}. ${c.title}`, `${head}${problems.length ? `\nPROBLEMS: ${problems.join('; ')}` : ''}${notes.length ? `\nNOTE: ${notes.join('; ')}` : ''}\nQ: ${c.body.message}\nA: ${clip(reply || JSON.stringify(data))}`);
   summary.push(`| ${i + 1} | ${c.title} | ${status} | ${(ms / 1000).toFixed(1)}s | ${ok ? '✅' : '❌ ' + problems.join('; ').replace(/\|/g, '/')} |`);
   details.push(`### ${i + 1}. ${c.title}\n**Q:** ${c.body.message}\n\n${reply ? reply : '`' + JSON.stringify(data) + '`'}\n`);
-}
-
-// ---------- capacity (many visitors at once) ----------
-summary.push('', '### Capacity', '', '| Check | Result |', '|---|---|');
-const capacity = (title, ok, message, warnOnly = false) => {
-  if (!ok && !warnOnly) failures++;
-  annotate(ok ? 'notice' : warnOnly ? 'warning' : 'error', `Capacity · ${title}`, message);
-  summary.push(`| ${title} | ${ok ? '✅' : warnOnly ? '⚠️' : '❌'} ${message.replace(/\|/g, '/').replace(/\n/g, ' ')} |`);
-};
-{
-  // The GitHub Pages site calls the API cross-origin: it must be allowed to send the visitor id and read Retry-After.
-  const pages = 'https://spculculat-oss.github.io';
-  const pre = await fetch(`${SITE}/api/chat`, { method: 'OPTIONS', headers: { origin: pages, 'access-control-request-method': 'POST', 'access-control-request-headers': 'content-type,x-sham-visitor' } }).catch(() => null);
-  const allow = pre?.headers.get('access-control-allow-headers') || '';
-  const expose = (await fetch(`${SITE}/api/models`, { headers: { origin: pages } }).catch(() => null))?.headers.get('access-control-expose-headers') || '';
-  capacity('CORS for Pages', /x-sham-visitor/i.test(allow) && /retry-after/i.test(expose), `allow-headers: ${allow || '—'} · expose-headers: ${expose || '—'}`);
-
-  // 12 different visitors behind ONE IP (this runner), all asking the same opening question at once:
-  // none may be refused (old per-IP limit was 10/min), and repeats come from the answer cache.
-  await sleep(GAP_MS);
-  const question = { model: 'fast', language: 'ar', message: 'إيه الفرق بين EDP و EDT؟' };
-  const crowd = await Promise.all(Array.from({ length: 12 }, (_, n) => post('/api/chat', question, `${visitorId}-crowd-${n}`)));
-  const statuses = crowd.map((r) => r.status);
-  const answered = crowd.filter((r) => r.status === 200 && typeof r.data.reply === 'string' && r.data.reply.trim());
-  const times = crowd.map((r) => r.ms).sort((x, y) => x - y);
-  capacity('12 visitors · one IP', answered.length === crowd.length, `HTTP ${statuses.join(',')} · median ${(times[6] / 1000).toFixed(1)}s · max ${(times[11] / 1000).toFixed(1)}s${crowd.some((r) => r.status === 503) ? ` · busy: ${crowd.find((r) => r.status === 503).data.code}` : ''}`);
-  const distinct = new Set(answered.map((r) => r.data.reply)).size;
-  const again = await post('/api/chat', question, `${visitorId}-repeat`);
-  capacity('Answer cache', again.status === 200 && again.ms < 2500 && distinct <= 2,
-    `same opening question: ${distinct} distinct repl${distinct === 1 ? 'y' : 'ies'} for 12 visitors · a later visitor got HTTP ${again.status} in ${(again.ms / 1000).toFixed(1)}s`, true);
 }
 
 const out = [...summary, '', ...details].join('\n');

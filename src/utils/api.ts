@@ -21,26 +21,7 @@ export class ApiUnavailableError extends Error {
   constructor() { super('This static deployment has no API server.'); this.name = 'ApiUnavailableError'; }
 }
 export class ApiError extends Error {
-  constructor(public status: number, public code?: string, public retryAfterMs?: number) { super(`API request failed (${status})`); }
-}
-
-const VISITOR_KEY = 'sham_visitor_id';
-let sessionVisitor: string | undefined;
-/**
- * Anonymous random id for this browser (no personal data). Lets the server tell apart visitors who
- * share one public IP — common on mobile networks — so they do not use up each other's message quota.
- */
-export function visitorId(): string {
-  const fresh = () => (globalThis.crypto?.randomUUID?.() || `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`).replace(/[^A-Za-z0-9_-]/g, '');
-  try {
-    const stored = localStorage.getItem(VISITOR_KEY);
-    if (stored && /^[A-Za-z0-9_-]{8,64}$/.test(stored)) return stored;
-    const id = fresh();
-    localStorage.setItem(VISITOR_KEY, id);
-    return id;
-  } catch {
-    return sessionVisitor ??= fresh(); // storage blocked: one id for this page view
-  }
+  constructor(public status: number, public code?: string) { super(`API request failed (${status})`); }
 }
 export interface ChatResponse {
   reply: string;
@@ -61,8 +42,7 @@ export async function requestApi<T>(endpoint: `/api/${string}`, options?: Reques
     if (!response.ok) {
       let code: string | undefined;
       try { const data = await response.json(); if (typeof data?.code === 'string') code = data.code; } catch { /* Ignore provider/HTML bodies. */ }
-      const retryAfter = Number(response.headers.get('retry-after'));
-      throw new ApiError(response.status, code, Number.isFinite(retryAfter) && retryAfter > 0 ? Math.min(60, retryAfter) * 1000 : undefined);
+      throw new ApiError(response.status, code);
     }
     if (!response.headers.get('content-type')?.toLowerCase().includes('application/json')) {
       throw new Error(`Expected JSON from ${endpoint}, but received a static page.`);

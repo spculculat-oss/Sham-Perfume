@@ -28,8 +28,6 @@
     "server.ts",
     "server/**/*.ts",
     "server/**/*.cts",
-    "cloud-functions/**/*.ts",
-    "scripts/doctor/**/*.ts",
-    "scripts/doctor/**/*.mts"
+    "cloud-functions/**/*.ts"
   ]
 }

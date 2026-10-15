@@ -32,7 +32,7 @@ import { isRTL } from '../utils/localizedContent';
 import { LText, makeT, fmt, loc, LOCALE_MAP } from '../utils/localize';
 import { isStaticHosting } from '../utils/api';
 import { StaticHostingNotice } from './StaticHostingNotice';
-import { ShaheenModesPanel, ShaheenServiceStatus, busyNoteText, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
+import { ShaheenModesPanel, ShaheenServiceStatus, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
 import { ShaheenMedia } from './ShaheenMedia';
 import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
@@ -264,7 +264,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   const L = makeT(currentLang, S);
   const masterPrompts: string[] = [L('prompt_1'), L('prompt_2'), L('prompt_3'), L('prompt_4'), L('prompt_5')];
   // Same conversation store as the floating Shaheen window (one history, never overwritten by the other).
-  const { messages, setMessages, daysRemaining, isLoading, busy, sendMessage, retryLast, clearHistory } = useShaheenChat();
+  const { messages, setMessages, daysRemaining, isLoading, sendMessage, retryLast, clearHistory } = useShaheenChat();
   const modelStatus = useShaheenModels();
   const selectedModel = modelStatus.selected;
   const setSelectedModel = modelStatus.setSelected;
@@ -848,9 +848,6 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                 <p className="text-xs text-amber-800 leading-relaxed">
                   {compoundingPhrases[compoundingStep]}
                 </p>
-                {busy && (
-                  <p role="status" className="rounded-lg bg-amber-100/80 px-2 py-1.5 text-[11px] font-semibold leading-relaxed text-amber-900">{busyNoteText(currentLang)}</p>
-                )}
                 <div className="flex items-center gap-1.5 pt-1">
                   <span className="w-2 h-2 rounded-full bg-amber-600 animate-bounce" />
                   <span className="w-2 h-2 rounded-full bg-amber-600 animate-bounce [animation-delay:0.2s]" />

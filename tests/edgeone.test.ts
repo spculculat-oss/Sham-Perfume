@@ -20,17 +20,6 @@ test('serverless platforms default to the memory store (no durable disk)', () =>
 });
 
 test('EdgeOne function: one app per instance, /api prefix restored, per-visitor limits by EO-Connecting-IP', async () => {
-  const savedKeys = {
-    gemini: process.env.GEMINI_API_KEY,
-    openai: process.env.OPENAI_API_KEY,
-    claude: process.env.ANTHROPIC_API_KEY,
-    deepseek: process.env.DEEPSEEK_API_KEY,
-    rate: process.env.SHAM_SHAHEEN_RATE_PER_MIN,
-  };
-  delete process.env.GEMINI_API_KEY;
-  delete process.env.OPENAI_API_KEY;
-  delete process.env.ANTHROPIC_API_KEY;
-  delete process.env.DEEPSEEK_API_KEY;
   process.env.SHAM_SHAHEEN_RATE_PER_MIN = '2';
   const { default: app } = await import('../cloud-functions/api/[[default]]');
   assert.equal(process.env.SHAM_PLATFORM, 'edgeone');
@@ -43,9 +32,7 @@ test('EdgeOne function: one app per instance, /api prefix restored, per-visitor 
     for (const path of ['/api/health', '/health']) {
       const res = await fetch(base + path);
       assert.equal(res.status, 200, path);
-      const health = await res.json();
-      assert.deepEqual({ service: health.service, status: health.status }, { service: 'sham-perfume', status: 'ok' });
-      assert.equal(typeof health.version, 'string', 'deployed commit, read by the maintenance agent');
+      assert.deepEqual(await res.json(), { service: 'sham-perfume', status: 'ok' });
     }
     const chat = (ip: string) => fetch(`${base}/api/chat`, { method: 'POST',
       headers: { 'content-type': 'application/json', 'eo-connecting-ip': ip }, body: JSON.stringify({ message: 'hi' }) });
@@ -55,12 +42,6 @@ test('EdgeOne function: one app per instance, /api prefix restored, per-visitor 
     assert.equal((await chat('41.33.1.1')).status, 429);
     assert.equal((await chat('197.1.1.9')).status, 503, 'another visitor has their own limit');
   } finally {
-    if (savedKeys.gemini !== undefined) process.env.GEMINI_API_KEY = savedKeys.gemini;
-    if (savedKeys.openai !== undefined) process.env.OPENAI_API_KEY = savedKeys.openai;
-    if (savedKeys.claude !== undefined) process.env.ANTHROPIC_API_KEY = savedKeys.claude;
-    if (savedKeys.deepseek !== undefined) process.env.DEEPSEEK_API_KEY = savedKeys.deepseek;
-    if (savedKeys.rate !== undefined) process.env.SHAM_SHAHEEN_RATE_PER_MIN = savedKeys.rate;
-    else delete process.env.SHAM_SHAHEEN_RATE_PER_MIN;
     await new Promise((done) => server.close(done));
   }
 });

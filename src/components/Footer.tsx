@@ -1,7 +1,8 @@
 import React from 'react';
-import { Newspaper, Sparkles } from 'lucide-react';
-import { SupportedLanguage } from '../types/i18n';
+import { Newspaper, Sparkles, Award, Globe, Check, Languages } from 'lucide-react';
+import { SupportedLanguage, SUPPORTED_LANGUAGES, LanguageConfig } from '../types/i18n';
 import { LText, makeT, fmt } from '../utils/localize';
+import { isRTL } from '../utils/localizedContent';
 
 
 const S = {
@@ -34,12 +35,15 @@ const S = {
 interface FooterProps {
   setActiveTab: (tab: string) => void;
   currentLang?: SupportedLanguage;
+  onSelectLanguage?: (lang: SupportedLanguage) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
   setActiveTab,
   currentLang = 'ar',
+  onSelectLanguage,
 }) => {
+  const rtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
   return (
     <footer className="bg-stone-950 text-stone-300 border-t border-stone-800 mt-20 pt-14 pb-12 no-print">
@@ -181,12 +185,74 @@ export const Footer: React.FC<FooterProps> = ({
 
         </div>
 
+        {/* Dedicated Language Switcher Section: خانة تغيير لغة المنصة */}
+        <div className="py-7 border-b border-stone-850">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30 shrink-0">
+                <Languages className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-sm font-bold text-white flex items-center gap-2">
+                  <span>{L('lang_title')}</span>
+                  <span className="text-[10px] text-amber-400 font-normal border border-amber-500/30 px-1.5 py-0.2 rounded-full">
+                    Platform Language ({SUPPORTED_LANGUAGES.length} Languages)
+                  </span>
+                </span>
+                <span className="text-xs text-stone-400 block mt-0.5">
+                  {L('lang_sub')}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5">
+            {SUPPORTED_LANGUAGES.map((lang: LanguageConfig) => {
+              const isActive = lang.code === currentLang;
+              return (
+                <button
+                  key={lang.code}
+                  onClick={() => onSelectLanguage && onSelectLanguage(lang.code)}
+                  className={`p-2.5 rounded-xl border ${rtl ? 'text-right' : 'text-left'} transition-all flex items-center justify-between cursor-pointer group ${
+                    isActive
+                      ? 'bg-amber-950/60 border-amber-500 text-white shadow-sm ring-1 ring-amber-500/30'
+                      : 'bg-stone-900/60 hover:bg-stone-900 border-stone-800 hover:border-amber-700/60 text-stone-300 hover:text-white'
+                  }`}
+                >
+                  <div className="flex items-center gap-2 truncate">
+                    <span className="text-base group-hover:scale-110 transition-transform">
+                      {lang.flag}
+                    </span>
+                    <div className="truncate">
+                      <div className="font-bold text-xs truncate">{lang.nativeName}</div>
+                      <div className="text-[10px] text-stone-500 truncate font-mono">
+                        {lang.name} · {lang.dir.toUpperCase()}
+                      </div>
+                    </div>
+                  </div>
+                  {isActive && (
+                    <Check className="w-3.5 h-3.5 text-amber-400 shrink-0 stroke-[3]" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
           <div>
             {fmt(L('copyright_tpl'), { y: new Date().getFullYear() })}
           </div>
-
+          <div className="flex flex-wrap items-center gap-4 text-stone-400">
+            <span>{L('badge_scale')}</span>
+            <span aria-hidden="true">·</span>
+            <span>{L('badge_ifra')}</span>
+            <span aria-hidden="true">·</span>
+            <span>{L('badge_encyclopedia')}</span>
+            <span aria-hidden="true">·</span>
+            <span>{L('badge_observatory')}</span>
+          </div>
         </div>
       </div>
     </footer>
