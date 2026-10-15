@@ -34,6 +34,8 @@ const S = {
   login: { ar: 'تسجيل الدخول', en: 'Log in', fr: 'Connexion', es: 'Iniciar sesión', it: 'Accedi', de: 'Anmelden', ru: 'Войти', zh: '登录', tr: 'Giriş yap', fa: 'ورود' },
   print_tooltip: { ar: 'طباعة بطاقة تصنيع العطر', en: 'Print manufacturing spec sheet', fr: 'Imprimer la fiche de fabrication', es: 'Imprimir hoja de fabricación', it: 'Stampa scheda di produzione', de: 'Produktionsblatt drucken', ru: 'Печать производственной карты', zh: '打印生产规格表', tr: 'Üretim föyünü yazdır', fa: 'چاپ کارت تولید عطر' },
   print_btn: { ar: 'طباعة', en: 'Print', fr: 'Imprimer', es: 'Imprimir', it: 'Stampa', de: 'Drucken', ru: 'Печать', zh: '打印', tr: 'Yazdır', fa: 'چاپ' },
+  profile_tooltip: { ar: 'صفحتي الشخصية وبياناتي', en: 'My personal profile & data', fr: 'Mon profil et mes données', es: 'Mi perfil y datos personales', it: 'Il mio profilo personale', de: 'Mein Profil & Daten', ru: 'Мой профиль и данные', zh: '我的个人主页与数据', tr: 'Kişisel profilim ve verilerim', fa: 'پروفایل و داده‌های شخصی من' },
+  profile_btn: { ar: 'حسابي', en: 'My Profile', fr: 'Mon Profil', es: 'Mi Perfil', it: 'Il Mio Profilo', de: 'Mein Profil', ru: 'Мой Профиль', zh: '我的个人主页', tr: 'Kişisel Profilim', fa: 'پروفایل من' },
 } satisfies Record<string, LText>;
 
 interface HeaderProps {
@@ -49,6 +51,7 @@ interface HeaderProps {
   currentEnvironment: UserEnvironmentProfile;
   onOpenEnvironmentModal: () => void;
   onOpenPrivacyModal: () => void;
+  onOpenProfilePage: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -64,6 +67,7 @@ export const Header: React.FC<HeaderProps> = ({
   currentEnvironment,
   onOpenEnvironmentModal,
   onOpenPrivacyModal,
+  onOpenProfilePage,
 }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [groupMenuStates, setGroupMenuStates] = useState<Record<string, boolean>>({});
@@ -396,6 +400,18 @@ export const Header: React.FC<HeaderProps> = ({
             <Printer className="w-3.5 h-3.5 text-amber-700" />
             <span className="hidden xl:inline">{L('print_btn')}</span>
           </button>
+
+          {/* 5. My Profile Button - Personal page shortcut */}
+          {currentUser && (
+            <button
+              onClick={onOpenProfilePage}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-emerald-700 hover:bg-emerald-800 rounded-xl transition-all shadow-sm cursor-pointer shrink-0"
+              title={L('profile_tooltip')}
+            >
+              <User className="w-3.5 h-3.5 text-white" />
+              <span className="hidden xl:inline">{L('profile_btn')}</span>
+            </button>
+          )}
 
         </div>
       </div>
