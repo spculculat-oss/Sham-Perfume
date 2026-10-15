@@ -1,4 +1,4 @@
-import { T, adminDir, useAdminLanguage } from './adminL10n';
+import { T, adminDir, useAdminLanguage, reactiveMap, TP, listSep, adminLocale } from './adminL10n';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Activity, ArrowRight, ArrowDownToLine, BookOpen, Bot, Boxes, ClipboardList, Cpu, Database, Download, FlaskConical, Headset, KeyRound,
@@ -46,19 +46,19 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'updates', label: T('بيئة التحديثات'), icon: <ArrowDownToLine className="w-4 h-4" /> },
 ];
 
-const STATUS: Record<RequestStatus, string> = { new: T('جديد'), in_progress: T('قيد التنفيذ'), quoted: T('عرض سعر'), confirmed: T('مؤكد'), completed: T('مكتمل'), cancelled: T('ملغي') };
-const TYPE: Record<string, string> = { order: T('طلب متجر'), custom_formula: T('عطر مخصص'), b2b_quote: T('عرض جملة'), consultation: T('استشارة'), support: T('دعم'), service: T('خدمة') };
-const INTENT: Record<string, string> = { greeting: T('تحية'), thanks: T('شكر'), list_services: T('عرض الخدمات'), track_order: T('تتبع'), browse_products: T('تصفح منتجات'), service_request: T('طلب خدمة'), handoff: T('تحويل لموظف'), calculate: T('حساب'), perfume_expert: T('سؤال خبير'), question: T('سؤال عام'), memory_view: T('عرض الذاكرة'), forget: T('حذف البيانات') };
-const ENGINE_LABEL: Record<string, string> = { self_hosted: T('نموذج مفتوح مستضاف ذاتياً'), gemini: 'Gemini', openai: 'OpenAI', claude: 'Claude', deepseek: 'DeepSeek', openrouter: 'OpenRouter', sham_local: T('محرك شام الذاتي'), human: T('موظف'), system: T('النظام') };
+const STATUS: Record<RequestStatus, string> = reactiveMap(() => ({ new: T('جديد'), in_progress: T('قيد التنفيذ'), quoted: T('عرض سعر'), confirmed: T('مؤكد'), completed: T('مكتمل'), cancelled: T('ملغي') }));
+const TYPE: Record<string, string> = reactiveMap(() => ({ order: T('طلب متجر'), custom_formula: T('عطر مخصص'), b2b_quote: T('عرض جملة'), consultation: T('استشارة'), support: T('دعم'), service: T('خدمة') }));
+const INTENT: Record<string, string> = reactiveMap(() => ({ greeting: T('تحية'), thanks: T('شكر'), list_services: T('عرض الخدمات'), track_order: T('تتبع'), browse_products: T('تصفح منتجات'), service_request: T('طلب خدمة'), handoff: T('تحويل لموظف'), calculate: T('حساب'), perfume_expert: T('سؤال خبير'), question: T('سؤال عام'), memory_view: T('عرض الذاكرة'), forget: T('حذف البيانات') }));
+const ENGINE_LABEL: Record<string, string> = reactiveMap(() => ({ self_hosted: T('نموذج مفتوح مستضاف ذاتياً'), gemini: 'Gemini', openai: 'OpenAI', claude: 'Claude', deepseek: 'DeepSeek', openrouter: 'OpenRouter', sham_local: T('محرك شام الذاتي'), human: T('موظف'), system: T('النظام') }));
 
-const COUNCIL_ROLE: Record<CouncilRole, string> = { formulator: T('خبير التركيب والمواد'), commercial: T('المستشار التجاري'), safety: T('مراجع السلامة والجودة'), customer: T('صوت العميل'), general: T('مستشار عام') };
+const COUNCIL_ROLE: Record<CouncilRole, string> = reactiveMap(() => ({ formulator: T('خبير التركيب والمواد'), commercial: T('المستشار التجاري'), safety: T('مراجع السلامة والجودة'), customer: T('صوت العميل'), general: T('مستشار عام') }));
 const COUNCIL_INTENTS = ['perfume_expert', 'question', 'service_request', 'browse_products', 'list_services'];
 const MODEL_ENGINES: ModelEngineId[] = ['self_hosted', 'gemini', 'openai', 'claude', 'deepseek', 'openrouter'];
 
 const card = 'rounded-2xl border border-stone-200 bg-white p-4 shadow-sm';
 const input = 'w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400';
 const btn = 'inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-sm font-semibold disabled:opacity-50';
-const fmtDate = (iso?: string) => (iso ? new Date(iso).toLocaleString('ar-EG', { dateStyle: 'short', timeStyle: 'short' }) : '');
+const fmtDate = (iso?: string) => (iso ? new Date(iso).toLocaleString(adminLocale(), { dateStyle: 'short', timeStyle: 'short' }) : '');
 
 function useLoad<T>(path: string, deps: unknown[] = []) {
   const [data, setData] = useState<T | null>(null);
@@ -89,7 +89,7 @@ export default function AdminApp() {
       setToken(candidate); setTok(candidate); setAuthed(true);
     } catch (e) {
       setToken('');
-      setLoginError(e instanceof AdminApiError ? (e.status === 401 ? T('رمز الإدارة غير صحيح.') : e.status === 503 ? 'لوحة الإدارة غير مفعلة: اضبط SHAM_ADMIN_TOKEN (12 حرفاً على الأقل) في متغيرات الخادم.' : e.status === 429 ? T('محاولات كثيرة فاشلة. انتظر 15 دقيقة.') : e.message) : T('تعذّر الاتصال بالخادم.'));
+      setLoginError(e instanceof AdminApiError ? (e.status === 401 ? T('رمز الإدارة غير صحيح.') : e.status === 503 ? T('لوحة الإدارة غير مفعلة: اضبط SHAM_ADMIN_TOKEN (12 حرفاً على الأقل) في متغيرات الخادم.') : e.status === 429 ? T('محاولات كثيرة فاشلة. انتظر 15 دقيقة.') : e.message) : T('تعذّر الاتصال بالخادم.'));
     } finally { setChecking(false); }
   }, []);
 
@@ -97,7 +97,7 @@ export default function AdminApp() {
   useEffect(() => { document.documentElement.dir = 'rtl'; document.documentElement.lang = 'ar'; document.title = T('إدارة شام — Sham Core'); }, []);
 
   if (isStaticHosting) {
-    return <Shell><div className={`${card} max-w-lg mx-auto mt-24 text-center`}>لوحة الإدارة تحتاج خادم شام (Node.js أو Vercel). نسخة GitHub Pages ثابتة ولا تحتوي على API.</div></Shell>;
+    return <Shell><div className={`${card} max-w-lg mx-auto mt-24 text-center`}>{T('لوحة الإدارة تحتاج خادم شام (Node.js أو Vercel). نسخة GitHub Pages ثابتة ولا تحتوي على API.')}</div></Shell>;
   }
 
   if (!authed) {
@@ -105,10 +105,10 @@ export default function AdminApp() {
       <Shell>
         <form className={`${card} max-w-sm mx-auto mt-24 space-y-4`} onSubmit={(e) => { e.preventDefault(); void login(token.trim()); }}>
           <div className="flex items-center gap-2"><KeyRound className="w-5 h-5 text-amber-700" /><h1 className="font-bold text-lg">{T('إدارة شام — Sham Core')}</h1></div>
-          <p className="text-xs text-stone-500">أدخل رمز الإدارة المضبوط في متغير الخادم <code dir="ltr">SHAM_ADMIN_TOKEN</code>{T('. يُحفظ الرمز في هذه الجلسة فقط.')}</p>
+          <p className="text-xs text-stone-500">{T('أدخل رمز الإدارة المضبوط في متغير الخادم')} <code dir="ltr">SHAM_ADMIN_TOKEN</code>{T('. يُحفظ الرمز في هذه الجلسة فقط.')}</p>
           <input className={input} type="password" dir="ltr" autoComplete="current-password" value={token} onChange={(e) => setTok(e.target.value)} placeholder="Admin token" aria-label={T('رمز الإدارة')} />
           {loginError && <p role="alert" className="text-xs text-red-700">{loginError}</p>}
-          <button disabled={checking || !token.trim()} className={`${btn} w-full bg-stone-900 text-amber-100`}>{checking ? <Loader2 className="w-4 h-4 animate-spin" /> : 'دخول'}</button>
+          <button disabled={checking || !token.trim()} className={`${btn} w-full bg-stone-900 text-amber-100`}>{checking ? <Loader2 className="w-4 h-4 animate-spin" /> : T('دخول')}</button>
           <a href="#home" className="block text-center text-xs text-stone-500 hover:underline">{T('العودة إلى الموقع')}</a>
         </form>
       </Shell>
@@ -196,7 +196,7 @@ function OverviewPanel({ go }: { go: (t: Tab) => void }) {
         <div className="space-y-4">
           {(!data.storage.persistent || data.storage.error) && (
             <div className="rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">
-              <b>{T('تنبيه التخزين:')}</b> {data.storage.error ? `إعداد التخزين غير صحيح (${data.storage.error}). يعمل النظام مؤقتاً في الذاكرة.` : 'التخزين الحالي في الذاكرة فقط وسيُفقد عند إعادة التشغيل.'} اضبط <code dir="ltr">SHAM_STORE=file</code> على سيرفر Node أو <code dir="ltr">SHAM_STORE=firestore</code> على Vercel/Firebase.
+              <b>{T('تنبيه التخزين:')}</b> {data.storage.error ? TP('إعداد التخزين غير صحيح ({error}). يعمل النظام مؤقتاً في الذاكرة.', { error: data.storage.error }) : T('التخزين الحالي في الذاكرة فقط وسيُفقد عند إعادة التشغيل.')} {T('اضبط')} <code dir="ltr">SHAM_STORE=file</code> {T('على سيرفر Node أو')} <code dir="ltr">SHAM_STORE=firestore</code> {T('على Vercel/Firebase.')}
             </div>
           )}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -229,11 +229,11 @@ function OverviewPanel({ go }: { go: (t: Tab) => void }) {
             <div className={card}>
               <h2 className="font-bold text-sm mb-3 flex items-center gap-1.5"><Database className="w-4 h-4" />{T('البنية')}</h2>
               <ul className="text-xs space-y-1.5 text-stone-600">
-                <li>التخزين: <b dir="ltr">{data.storage.kind}</b> {data.storage.persistent ? '✅ دائم' : '⚠️ مؤقت'}</li>
-                <li>المحادثات: <b>{data.counts.conversations}</b> · الطلبات: <b>{data.counts.requests}</b></li>
-                <li>المعرفة: <b>{data.counts.knowledge}</b> مستند · الخدمات: <b>{data.counts.services}</b> · المنتجات: <b>{data.counts.products}</b></li>
-                <li>المحركات المهيأة: {data.engines.filter((e) => e.configured).map((e) => ENGINE_LABEL[e.id]).join('، ')}</li>
-                <li>إشعارات Webhook: {data.notifications?.configured ? '✅ مفعلة' : <>غير مفعلة — اضبط <code dir="ltr">SHAM_WEBHOOK_URL</code></>}</li>
+                <li>{T('التخزين:')} <b dir="ltr">{data.storage.kind}</b> {data.storage.persistent ? T('✅ دائم') : T('⚠️ مؤقت')}</li>
+                <li>{T('المحادثات:')} <b>{data.counts.conversations}</b> {T('· الطلبات:')} <b>{data.counts.requests}</b></li>
+                <li>{T('المعرفة:')} <b>{data.counts.knowledge}</b> {T('مستند · الخدمات:')} <b>{data.counts.services}</b> {T('· المنتجات:')} <b>{data.counts.products}</b></li>
+                <li>{T('المحركات المهيأة:')} {data.engines.filter((e) => e.configured).map((e) => ENGINE_LABEL[e.id]).join(listSep())}</li>
+                <li>{T('إشعارات Webhook:')} {data.notifications?.configured ? T('✅ مفعلة') : <>{T('غير مفعلة — اضبط')} <code dir="ltr">SHAM_WEBHOOK_URL</code></>}</li>
               </ul>
               {data.notifications?.configured && <NotifyTest />}
             </div>
@@ -292,11 +292,11 @@ function RequestsPanel() {
       if (response.emailNotification) {
         if (response.emailNotification.success) {
           setEmailNotice({
-            message: `✉️ تم إرسال إشعار بالبريد الإلكتروني للعميل (${response.emailNotification.recipient}) بنجاح عبر ${response.emailNotification.provider}`,
+            message: TP('✉️ Notification email sent to the customer ({email}) successfully via {provider}', { email: response.emailNotification.recipient, provider: response.emailNotification.provider }),
           });
         } else {
           setEmailNotice({
-            message: `⚠️ تنبيه إرسال البريد: ${response.emailNotification.error || 'تعذر الإرسال'}`,
+            message: TP('⚠️ Email sending alert: {error}', { error: response.emailNotification.error || T('تعذر الإرسال') }),
             isError: true,
           });
         }
@@ -342,11 +342,11 @@ function RequestsPanel() {
       reload();
       if (response.emailNotification.success) {
         setEmailNotice({
-          message: `✉️ تم إرسال إشعار البريد الإلكتروني فورياً إلى ${response.emailNotification.recipient} (${response.emailNotification.provider})`,
+          message: TP('✉️ The notification email was sent immediately to {email} ({provider})', { email: response.emailNotification.recipient, provider: response.emailNotification.provider }),
         });
       } else {
         setEmailNotice({
-          message: `⚠️ فشل إرسال البريد: ${response.emailNotification.error || 'خطأ غير معروف'}`,
+          message: TP('⚠️ Email sending failed: {error}', { error: response.emailNotification.error || T('خطأ غير معروف') }),
           isError: true,
         });
       }
@@ -361,10 +361,10 @@ function RequestsPanel() {
     <>
       <Header
         title={T('الطلبات والعروض')}
-        subtitle="طلبات المتجر، العطور المخصصة، الجملة، الاستشارات مع نظام إشعارات البريد التلقائي للعملاء"
+        subtitle={T('طلبات المتجر، العطور المخصصة، الجملة، الاستشارات مع نظام إشعارات البريد التلقائي للعملاء')}
         actions={<>
-          <select className={input} value={filter} onChange={(e) => setFilter(e.target.value as RequestStatus | '')} aria-label="تصفية حسب الحالة">
-            <option value="">كل الحالات</option>
+          <select className={input} value={filter} onChange={(e) => setFilter(e.target.value as RequestStatus | '')} aria-label={T('تصفية حسب الحالة')}>
+            <option value="">{T('كل الحالات')}</option>
             {Object.entries(STATUS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
           </select>
           <button onClick={reload} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" /></button>
@@ -373,7 +373,7 @@ function RequestsPanel() {
       <Feedback error={error} loading={loading && !data} />
       <div className="grid lg:grid-cols-5 gap-4">
         <div className="lg:col-span-3 space-y-2">
-          {data?.items.length === 0 && <p className="text-sm text-stone-500">لا توجد طلبات.</p>}
+          {data?.items.length === 0 && <p className="text-sm text-stone-500">{T('لا توجد طلبات.')}</p>}
           {data?.items.map((r) => (
             <button key={r.id} onClick={() => setSelected(r)} className={`${card} w-full text-start hover:border-amber-400 ${selected?.id === r.id ? 'border-amber-500 ring-2 ring-amber-200' : ''}`}>
               <div className="flex flex-wrap items-center gap-2 text-sm">
@@ -381,7 +381,7 @@ function RequestsPanel() {
                 <span className="text-xs rounded-full bg-stone-100 px-2 py-0.5">{TYPE[r.type]}</span>
                 <span className={`text-xs rounded-full px-2 py-0.5 ${r.status === 'new' ? 'bg-amber-100 text-amber-900' : r.status === 'cancelled' ? 'bg-red-100 text-red-800' : 'bg-emerald-100 text-emerald-800'}`}>{STATUS[r.status]}</span>
                 {r.contact.email && (
-                  <span className="inline-flex items-center gap-1 text-[11px] rounded-full bg-amber-50 border border-amber-200 text-amber-800 px-2 py-0.5" title={`إشعار البريد متاح: ${r.contact.email}`}>
+                  <span className="inline-flex items-center gap-1 text-[11px] rounded-full bg-amber-50 border border-amber-200 text-amber-800 px-2 py-0.5" title={TP('إشعار البريد متاح: {email}', { email: r.contact.email })}>
                     <Mail className="w-3 h-3 text-amber-700" />
                     <span className="max-w-[120px] truncate" dir="ltr">{r.contact.email}</span>
                   </span>
@@ -405,15 +405,15 @@ function RequestsPanel() {
               </div>
 
               <div className="text-sm space-y-1 bg-stone-50 rounded-xl p-3">
-                <p>العميل: <b>{selected.contact.name}</b></p>
-                {selected.contact.phone && <p>الهاتف: <a dir="ltr" className="text-emerald-700 underline" href={`tel:${selected.contact.phone}`}>{selected.contact.phone}</a></p>}
+                <p>{T('العميل:')} <b>{selected.contact.name}</b></p>
+                {selected.contact.phone && <p>{T('الهاتف:')} <a dir="ltr" className="text-emerald-700 underline" href={`tel:${selected.contact.phone}`}>{selected.contact.phone}</a></p>}
                 {selected.contact.email ? (
                   <p className="flex items-center gap-1.5 flex-wrap">
-                    البريد: <a dir="ltr" className="text-emerald-700 underline font-semibold" href={`mailto:${selected.contact.email}`}>{selected.contact.email}</a>
-                    <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-md font-medium">مفعّل للإشعارات</span>
+                    {T('البريد:')} <a dir="ltr" className="text-emerald-700 underline font-semibold" href={`mailto:${selected.contact.email}`}>{selected.contact.email}</a>
+                    <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-md font-medium">{T('مفعّل للإشعارات')}</span>
                   </p>
                 ) : (
-                  <p className="text-xs text-stone-400">البريد: غير مسجل (الإشعارات بالبريد غير متاحة)</p>
+                  <p className="text-xs text-stone-400">{T('البريد: غير مسجل (الإشعارات بالبريد غير متاحة)')}</p>
                 )}
               </div>
 
@@ -428,7 +428,7 @@ function RequestsPanel() {
               {selected.items && (
                 <table className="w-full text-xs">
                   <thead>
-                    <tr className="text-stone-500"><th className="text-start">المنتج</th><th>الكمية</th><th>السعر</th></tr>
+                    <tr className="text-stone-500"><th className="text-start">{T('المنتج')}</th><th>{T('الكمية')}</th><th>{T('السعر')}</th></tr>
                   </thead>
                   <tbody>
                     {selected.items.map((i) => (
@@ -440,7 +440,7 @@ function RequestsPanel() {
                     ))}
                   </tbody>
                   <tfoot>
-                    <tr className="font-bold"><td colSpan={2}>الإجمالي</td><td className="text-center">{selected.total} {selected.currency}</td></tr>
+                    <tr className="font-bold"><td colSpan={2}>{T('الإجمالي')}</td><td className="text-center">{selected.total} {selected.currency}</td></tr>
                   </tfoot>
                 </table>
               )}
@@ -448,14 +448,14 @@ function RequestsPanel() {
               {/* Status Update & Email Notification Controls */}
               <div className="p-3 bg-amber-50/60 border border-amber-200/80 rounded-xl space-y-2.5">
                 <label className="block text-xs font-semibold text-stone-800">
-                  تغيير حالة الطلب
+                  {T('تغيير حالة الطلب')}
                   <select
                     className={`${input} mt-1`}
                     value={selected.status}
                     disabled={busy || selected.status === 'cancelled'}
                     onChange={(e) => {
                       const next = e.target.value as RequestStatus;
-                      if (next === 'cancelled' && !confirm('إلغاء الطلب نهائي ويعيد الكميات للمخزون. متأكد؟')) return;
+                      if (next === 'cancelled' && !confirm(T('إلغاء الطلب نهائي ويعيد الكميات للمخزون. متأكد؟'))) return;
                       void update({ status: next });
                     }}
                   >
@@ -472,7 +472,7 @@ function RequestsPanel() {
                         onChange={(e) => setNotifyCustomer(e.target.checked)}
                         className="rounded text-amber-600 focus:ring-amber-500 w-4 h-4"
                       />
-                      <span>إرسال إشعار بريد إلكتروني للعميل تلقائياً عند تغيير الحالة</span>
+                      <span>{T('إرسال إشعار بريد إلكتروني للعميل تلقائياً عند تغيير الحالة')}</span>
                     </label>
 
                     <input
@@ -480,8 +480,8 @@ function RequestsPanel() {
                       className={`${input} text-xs`}
                       value={customEmailNote}
                       onChange={(e) => setCustomEmailNote(e.target.value)}
-                      placeholder="ملاحظة خاصة بالعميل تُرفق بالبريد (رقم الشحنة، تفاصيل العرض…)"
-                      aria-label="ملاحظة البريد"
+                      placeholder={T('ملاحظة خاصة بالعميل تُرفق بالبريد (رقم الشحنة، تفاصيل العرض…)')}
+                      aria-label={T('ملاحظة البريد')}
                     />
 
                     <div className="flex gap-2">
@@ -492,7 +492,7 @@ function RequestsPanel() {
                         className={`${btn} flex-1 text-xs bg-white border border-stone-300 text-stone-800 hover:bg-stone-50`}
                       >
                         {previewLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Eye className="w-3.5 h-3.5 text-stone-600" />}
-                        معاينة البريد
+                        {T('معاينة البريد')}
                       </button>
 
                       <button
@@ -500,10 +500,10 @@ function RequestsPanel() {
                         onClick={() => void sendManualNotification()}
                         disabled={sendingManualEmail || busy}
                         className={`${btn} flex-1 text-xs bg-amber-600 text-white hover:bg-amber-700`}
-                        title="إرسال إشعار بالحالة الحالية فوراً للعميل"
+                        title={T('إرسال إشعار بالحالة الحالية فوراً للعميل')}
                       >
                         {sendingManualEmail ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Mail className="w-3.5 h-3.5" />}
-                        إرسال إشعار الآن
+                        {T('إرسال إشعار الآن')}
                       </button>
                     </div>
                   </div>
@@ -524,22 +524,22 @@ function RequestsPanel() {
                   rows={2}
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
-                  placeholder="ملاحظة داخلية للإدارة (مذكرات داخلية، موعد توريد…)"
-                  aria-label="ملاحظة داخلية"
+                  placeholder={T('ملاحظة داخلية للإدارة (مذكرات داخلية، موعد توريد…)')}
+                  aria-label={T('ملاحظة داخلية')}
                 />
                 <button
                   disabled={busy || !note.trim()}
                   onClick={() => update({ note })}
                   className={`${btn} bg-stone-900 text-amber-100 w-full`}
                 >
-                  {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : 'إضافة ملاحظة داخلية'}
+                  {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : T('إضافة ملاحظة داخلية')}
                 </button>
               </div>
 
               {actionError && <p className="text-xs text-red-700">{actionError}</p>}
 
               <div className="border-t pt-2">
-                <p className="text-xs font-semibold text-stone-600 mb-1">سجل التحديثات والإشعارات:</p>
+                <p className="text-xs font-semibold text-stone-600 mb-1">{T('سجل التحديثات والإشعارات:')}</p>
                 <ol className="text-[11px] text-stone-500 space-y-1 max-h-48 overflow-y-auto">
                   {[...selected.notes].reverse().map((n, i) => (
                     <li key={i} className={`p-1.5 rounded-lg ${n.text.includes('✉️') ? 'bg-amber-50/70 text-amber-900 font-medium' : 'bg-stone-50'}`}>
@@ -550,7 +550,7 @@ function RequestsPanel() {
               </div>
             </div>
           ) : (
-            <p className="text-sm text-stone-400">اختر طلباً لعرض التفاصيل وتحديث حالته وإشعاراته.</p>
+            <p className="text-sm text-stone-400">{T('اختر طلباً لعرض التفاصيل وتحديث حالته وإشعاراته.')}</p>
           )}
         </div>
       </div>
@@ -583,8 +583,8 @@ function EmailPreviewModal({
           <div className="flex items-center gap-2">
             <Mail className="w-5 h-5 text-amber-400" />
             <div>
-              <h3 className="font-bold text-sm">معاينة إشعار البريد الإلكتروني للعميل</h3>
-              <p className="text-xs text-stone-400">إلى: <span dir="ltr" className="text-amber-300 font-mono">{preview.recipientEmail}</span> ({preview.customerName})</p>
+              <h3 className="font-bold text-sm">{T('معاينة إشعار البريد الإلكتروني للعميل')}</h3>
+              <p className="text-xs text-stone-400">{T('إلى:')} <span dir="ltr" className="text-amber-300 font-mono">{preview.recipientEmail}</span> ({preview.customerName})</p>
             </div>
           </div>
           <button
@@ -599,7 +599,7 @@ function EmailPreviewModal({
         {/* Subject line bar */}
         <div className="px-4 py-2.5 bg-stone-100 border-b border-stone-200 flex items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-2 min-w-0">
-            <span className="font-semibold text-stone-600 shrink-0">عنوان الرسالة (Subject):</span>
+            <span className="font-semibold text-stone-600 shrink-0">{T('عنوان الرسالة (Subject):')}</span>
             <span className="font-medium text-stone-900 truncate" dir={adminDir()}>{preview.subject}</span>
           </div>
           <div className="flex gap-1 shrink-0">
@@ -608,14 +608,14 @@ function EmailPreviewModal({
               onClick={() => setTab('html')}
               className={`px-2.5 py-1 rounded-lg font-semibold text-xs transition-colors ${tab === 'html' ? 'bg-amber-600 text-white' : 'bg-white text-stone-700 border border-stone-300'}`}
             >
-              عرض منسق (HTML)
+              {T('عرض منسق (HTML)')}
             </button>
             <button
               type="button"
               onClick={() => setTab('text')}
               className={`px-2.5 py-1 rounded-lg font-semibold text-xs transition-colors ${tab === 'text' ? 'bg-amber-600 text-white' : 'bg-white text-stone-700 border border-stone-300'}`}
             >
-              نص عادي (Text)
+              {T('نص عادي (Text)')}
             </button>
           </div>
         </div>
@@ -640,13 +640,13 @@ function EmailPreviewModal({
 
         {/* Footer */}
         <div className="p-3 bg-white border-t border-stone-200 flex items-center justify-between text-xs">
-          <span className="text-stone-500">تصميم متجاوب ومتوافق مع تطبيقات البريد (Gmail, Outlook, Apple Mail).</span>
+          <span className="text-stone-500">{T('تصميم متجاوب ومتوافق مع تطبيقات البريد (Gmail, Outlook, Apple Mail).')}</span>
           <button
             type="button"
             onClick={onClose}
             className={`${btn} bg-stone-900 text-amber-100 text-xs`}
           >
-            إغلاق المعاينة
+            {T('إغلاق المعاينة')}
           </button>
         </div>
       </div>
@@ -677,7 +677,7 @@ function EmailsPanel() {
 
   const [testEmail, setTestEmail] = useState('');
   const [testStatus, setTestStatus] = useState<RequestStatus>('in_progress');
-  const [testNote, setTestNote] = useState('رسالة تجريبية: طلبك قيد التجهيز بعناية فائقة من مختبرات شام.');
+  const [testNote, setTestNote] = useState(T('رسالة تجريبية: طلبك قيد التجهيز بعناية فائقة من مختبرات شام.'));
   const [testBusy, setTestBusy] = useState(false);
   const [testResult, setTestResult] = useState<{ success: boolean; message: string } | null>(null);
 
@@ -702,14 +702,14 @@ function EmailsPanel() {
       if (response.ok) {
         setTestResult({
           success: true,
-          message: `تم الإرسال بنجاح إلى ${response.emailNotification.recipient} عبر مزود ${response.emailNotification.provider} (${response.emailNotification.delivery})`,
+          message: TP('Sent successfully to {email} via the provider {provider} ({delivery})', { email: response.emailNotification.recipient, provider: response.emailNotification.provider, delivery: response.emailNotification.delivery }),
         });
         reloadHistory();
         reloadOverview();
       } else {
         setTestResult({
           success: false,
-          message: `تعذر الإرسال: ${response.emailNotification.error || 'خطأ'}`,
+          message: TP('Sending failed: {error}', { error: response.emailNotification.error || T('خطأ') }),
         });
       }
     } catch (err) {
@@ -735,12 +735,12 @@ function EmailsPanel() {
   return (
     <>
       <Header
-        title="نظام إشعارات البريد الإلكتروني للعملاء"
-        subtitle="إدارة قوالب إشعارات الطلبات وتحديثات الحالات، واختبار الإرسال، ومراجعة سجل البريد المرسل"
+        title={T('نظام إشعارات البريد الإلكتروني للعملاء')}
+        subtitle={T('إدارة قوالب إشعارات الطلبات وتحديثات الحالات، واختبار الإرسال، ومراجعة سجل البريد المرسل')}
         actions={<>
           <button onClick={() => { reloadOverview(); reloadHistory(); }} className={`${btn} bg-white border border-stone-300`}>
             <RefreshCw className="w-4 h-4" />
-            تحديث
+            {T('تحديث')}
           </button>
         </>}
       />
@@ -750,33 +750,33 @@ function EmailsPanel() {
         <div className={`${card} border-amber-300 bg-amber-50/40`}>
           <div className="flex items-center gap-2 text-amber-900 font-bold text-sm mb-1">
             <Mail className="w-4 h-4 text-amber-700" />
-            مزود البريد النشط
+            {T('مزود البريد النشط')}
           </div>
           <p className="text-2xl font-bold text-stone-900 mt-1">
-            {overview?.emailNotifications?.provider || 'محاكي آمن (Simulator)'}
+            {overview?.emailNotifications?.provider || T('محاكي آمن (Simulator)')}
           </p>
           <p className="text-xs text-stone-500 mt-1">
             {overview?.emailNotifications?.configured
-              ? '✅ متصل ومفعل لإرسال الرسائل الحقيقية للعملاء'
-              : '⚡ يعمل في وضع المحاكاة الآمنة والتدقيق الداخلي (دون استهلاك رصيد خارجي)'}
+              ? T('✅ متصل ومفعل لإرسال الرسائل الحقيقية للعملاء')
+              : T('⚡ يعمل في وضع المحاكاة الآمنة والتدقيق الداخلي (دون استهلاك رصيد خارجي)')}
           </p>
         </div>
 
         <div className={card}>
           <div className="flex items-center gap-2 text-stone-700 font-bold text-sm mb-1">
             <Send className="w-4 h-4 text-emerald-600" />
-            إجمالي الإشعارات المسجلة
+            {T('إجمالي الإشعارات المسجلة')}
           </div>
           <p className="text-2xl font-bold text-emerald-700 mt-1">
             {historyData?.items.length ?? overview?.emailNotifications?.sentCount ?? 0}
           </p>
-          <p className="text-xs text-stone-500 mt-1">إشعارات تم توليدها وإرسالها للعملاء عند تغيير الحالات</p>
+          <p className="text-xs text-stone-500 mt-1">{T('إشعارات تم توليدها وإرسالها للعملاء عند تغيير الحالات')}</p>
         </div>
 
         <div className={card}>
           <div className="flex items-center gap-2 text-stone-700 font-bold text-sm mb-1">
             <Check className="w-4 h-4 text-amber-600" />
-            حالات الإشعار التلقائي
+            {T('حالات الإشعار التلقائي')}
           </div>
           <div className="flex flex-wrap gap-1 mt-2">
             {Object.entries(STATUS).map(([k, v]) => (
@@ -785,7 +785,7 @@ function EmailsPanel() {
               </span>
             ))}
           </div>
-          <p className="text-[10px] text-stone-400 mt-2">يرسل النظام إشعاراً فورياً بتصميم متجاوب وبطاقة تتبع مباشرة</p>
+          <p className="text-[10px] text-stone-400 mt-2">{T('يرسل النظام إشعاراً فورياً بتصميم متجاوب وبطاقة تتبع مباشرة')}</p>
         </div>
       </div>
 
@@ -795,14 +795,14 @@ function EmailsPanel() {
           <form onSubmit={sendTest} className={`${card} space-y-3`}>
             <div className="flex items-center gap-2 border-b pb-2">
               <Mail className="w-4 h-4 text-amber-600" />
-              <h2 className="font-bold text-sm">إرسال بريد تجريبي لاختبار النظام</h2>
+              <h2 className="font-bold text-sm">{T('إرسال بريد تجريبي لاختبار النظام')}</h2>
             </div>
             <p className="text-xs text-stone-500">
-              يمكنك كتابة أي بريد إلكتروني واختيار الحالة لتجربة استلام الرسالة والتأكد من مظهرها وجودتها.
+              {T('يمكنك كتابة أي بريد إلكتروني واختيار الحالة لتجربة استلام الرسالة والتأكد من مظهرها وجودتها.')}
             </p>
 
             <label className="block text-xs font-semibold">
-              البريد الإلكتروني المستلم:
+              {T('البريد الإلكتروني المستلم:')}
               <input
                 type="email"
                 required
@@ -815,7 +815,7 @@ function EmailsPanel() {
             </label>
 
             <label className="block text-xs font-semibold">
-              حالة الطلب المراد تجربتها:
+              {T('حالة الطلب المراد تجربتها:')}
               <select
                 className={`${input} mt-1`}
                 value={testStatus}
@@ -828,13 +828,13 @@ function EmailsPanel() {
             </label>
 
             <label className="block text-xs font-semibold">
-              ملاحظة العميل التجريبية:
+              {T('ملاحظة العميل التجريبية:')}
               <textarea
                 className={`${input} mt-1`}
                 rows={2}
                 value={testNote}
                 onChange={(e) => setTestNote(e.target.value)}
-                placeholder="ملاحظة إضافية للعميل"
+                placeholder={T('ملاحظة إضافية للعميل')}
               />
             </label>
 
@@ -844,7 +844,7 @@ function EmailsPanel() {
               className={`${btn} bg-amber-600 text-white w-full hover:bg-amber-700`}
             >
               {testBusy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-              إرسال البريد التجريبي الآن
+              {T('إرسال البريد التجريبي الآن')}
             </button>
 
             {testResult && (
@@ -862,9 +862,9 @@ function EmailsPanel() {
             <div className="flex items-center justify-between border-b pb-2">
               <div className="flex items-center gap-2">
                 <Eye className="w-4 h-4 text-stone-700" />
-                <h2 className="font-bold text-sm">استعراض مظهر القوالب للعملاء</h2>
+                <h2 className="font-bold text-sm">{T('استعراض مظهر القوالب للعملاء')}</h2>
               </div>
-              <span className="text-xs text-stone-400">تصميم فاخر بنمط شام</span>
+              <span className="text-xs text-stone-400">{T('تصميم فاخر بنمط شام')}</span>
             </div>
 
             <div className="flex flex-wrap gap-1.5">
@@ -882,13 +882,13 @@ function EmailsPanel() {
 
             <div className="p-4 bg-stone-50 rounded-xl border border-stone-200 text-xs space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-stone-500">عنوان الرسالة المتوقع:</span>
+                <span className="text-stone-500">{T('عنوان الرسالة المتوقع:')}</span>
                 <span className="font-semibold text-stone-900" dir={adminDir()}>
-                  [شام للعطور] تحديث حالة طلبك SH-SAMPLE: {STATUS[activeTemplateStatus]}
+                  {TP('[شام للعطور] تحديث حالة طلبك SH-SAMPLE: {status}', { status: STATUS[activeTemplateStatus] })}
                 </span>
               </div>
               <p className="text-stone-600 leading-relaxed">
-                يحتوي الإيميل على: شعار وتوقيع شام للعطور الفاخر، شارة الحالة الملونة، تفاصيل الطلب، جدول المنتجات، ملاحظة فريق العمل، وزر «تتبع حالة طلبك بالتفصيل» ورابط مساعد شام المباشر.
+                {T('يحتوي الإيميل على: شعار وتوقيع شام للعطور الفاخر، شارة الحالة الملونة، تفاصيل الطلب، جدول المنتجات، ملاحظة فريق العمل، وزر «تتبع حالة طلبك بالتفصيل» ورابط مساعد شام المباشر.')}
               </p>
               <div className="pt-2 flex justify-end">
                 <button
@@ -900,11 +900,11 @@ function EmailsPanel() {
                       type: 'order',
                       serviceId: 'store',
                       status: activeTemplateStatus,
-                      contact: { name: 'الأستاذ أحمد فؤاد', email: 'ahmed@example.com', phone: '+201123456789' },
-                      fields: { 'العنوان': 'التجمع الخامس، القاهرة', 'طريقة الدفع': 'الدفع عند الاستلام' },
+                      contact: { name: T('الأستاذ أحمد فؤاد'), email: 'ahmed@example.com', phone: '+201123456789' },
+                      fields: { [T('العنوان')]: T('التجمع الخامس، القاهرة'), [T('طريقة الدفع')]: T('الدفع عند الاستلام') },
                       items: [
-                        { productId: 'oud', sku: 'OUD-ROYAL', name: 'عطر عود ملكي خاص (EdP)', quantity: 1, unitPrice: 850, currency: 'EGP' },
-                        { productId: 'rose', sku: 'ROSE-GRASSE', name: 'زيت ورد غراس النقي 30 مل', quantity: 2, unitPrice: 380, currency: 'EGP' },
+                        { productId: 'oud', sku: 'OUD-ROYAL', name: T('عطر عود ملكي خاص (EdP)'), quantity: 1, unitPrice: 850, currency: 'EGP' },
+                        { productId: 'rose', sku: 'ROSE-GRASSE', name: T('زيت ورد غراس النقي 30 مل'), quantity: 2, unitPrice: 380, currency: 'EGP' },
                       ],
                       total: 1610,
                       currency: 'EGP',
@@ -919,18 +919,18 @@ function EmailsPanel() {
                     }).catch(() => {
                       // Fallback dummy preview
                       setPreviewModalItem({
-                        subject: `[شام للعطور] تحديث حالة طلبك SH-SAMPLE: ${STATUS[activeTemplateStatus]}`,
-                        html: `<html><body style="font-family:sans-serif;direction:rtl;padding:20px;text-align:right;"><h2 style="color:#b45309;">شام للعطور</h2><p>مرحباً عميلنا العزيز 👋</p><p>حالة طلبك الحالية: <b>${STATUS[activeTemplateStatus]}</b></p></body></html>`,
-                        text: `شام للعطور\nحالة طلبك: ${STATUS[activeTemplateStatus]}`,
+                        subject: TP('[شام للعطور] تحديث حالة طلبك SH-SAMPLE: {status}', { status: STATUS[activeTemplateStatus] }),
+                        html: `<html><body style="font-family:sans-serif;direction:rtl;padding:20px;text-align:right;"><h2 style="color:#b45309;">${T('شام للعطور')}</h2><p>${T('مرحباً عميلنا العزيز 👋')}</p><p>${T('حالة طلبك الحالية:')} <b>${STATUS[activeTemplateStatus]}</b></p></body></html>`,
+                        text: TP('شام للعطور\\nحالة طلبك: {status}', { status: STATUS[activeTemplateStatus] }),
                         recipientEmail: 'ahmed@example.com',
-                        customerName: 'الأستاذ أحمد فؤاد',
+                        customerName: T('الأستاذ أحمد فؤاد'),
                       });
                     });
                   }}
                   className={`${btn} bg-stone-900 text-amber-100 text-xs`}
                 >
                   <Eye className="w-3.5 h-3.5" />
-                  معاينة القالب الكامل بالرسومات والتنسيق
+                  {T('معاينة القالب الكامل بالرسومات والتنسيق')}
                 </button>
               </div>
             </div>
@@ -943,7 +943,7 @@ function EmailsPanel() {
         <div className="flex items-center justify-between mb-3 border-b pb-2">
           <div className="flex items-center gap-2">
             <Mail className="w-4 h-4 text-amber-600" />
-            <h2 className="font-bold text-sm">سجل الإشعارات المرسلة للعملاء</h2>
+            <h2 className="font-bold text-sm">{T('سجل الإشعارات المرسلة للعملاء')}</h2>
           </div>
           <button
             type="button"
@@ -951,20 +951,20 @@ function EmailsPanel() {
             className="text-xs text-stone-500 hover:text-stone-900 flex items-center gap-1"
           >
             <RefreshCw className="w-3 h-3" />
-            تحديث السجل
+            {T('تحديث السجل')}
           </button>
         </div>
 
         {historyLoading && !historyData && (
           <div className="flex items-center gap-2 text-xs text-stone-500 py-6">
             <Loader2 className="w-4 h-4 animate-spin" />
-            جارٍ تحميل سجل الإشعارات…
+            {T('جارٍ تحميل سجل الإشعارات…')}
           </div>
         )}
 
         {historyData && historyData.items.length === 0 && (
           <p className="text-xs text-stone-400 py-6 text-center">
-            لم يتم إرسال إشعارات بعد. عند تغيير حالة أي طلب يحمل بريداً إلكترونياً، سيظهر الإشعار المرسل هنا فوراً.
+            {T('لم يتم إرسال إشعارات بعد. عند تغيير حالة أي طلب يحمل بريداً إلكترونياً، سيظهر الإشعار المرسل هنا فوراً.')}
           </p>
         )}
 
@@ -973,13 +973,13 @@ function EmailsPanel() {
             <table className="w-full text-xs">
               <thead>
                 <tr className="text-stone-500 border-b text-start">
-                  <th className="py-2 text-start">الوقت</th>
-                  <th className="py-2 text-start">رقم الطلب</th>
-                  <th className="py-2 text-start">العميل والبريد</th>
-                  <th className="py-2 text-start">الحالة المرسلة</th>
-                  <th className="py-2 text-start">المزود</th>
-                  <th className="py-2 text-start">حالة الإرسال</th>
-                  <th className="py-2 text-center">الإجراء</th>
+                  <th className="py-2 text-start">{T('الوقت')}</th>
+                  <th className="py-2 text-start">{T('رقم الطلب')}</th>
+                  <th className="py-2 text-start">{T('العميل والبريد')}</th>
+                  <th className="py-2 text-start">{T('الحالة المرسلة')}</th>
+                  <th className="py-2 text-start">{T('المزود')}</th>
+                  <th className="py-2 text-start">{T('حالة الإرسال')}</th>
+                  <th className="py-2 text-center">{T('الإجراء')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">
@@ -1002,7 +1002,7 @@ function EmailsPanel() {
                         {item.deliveryStatus === 'sent' && <CheckCircle2 className="w-3.5 h-3.5" />}
                         {item.deliveryStatus === 'simulated' && <Sparkles className="w-3.5 h-3.5" />}
                         {item.deliveryStatus === 'failed' && <CircleAlert className="w-3.5 h-3.5" />}
-                        {item.deliveryStatus === 'sent' ? 'تم الإرسال' : item.deliveryStatus === 'simulated' ? 'محاكاة ناجحة' : 'فشل'}
+                        {item.deliveryStatus === 'sent' ? T('تم الإرسال') : item.deliveryStatus === 'simulated' ? T('محاكاة ناجحة') : T('فشل')}
                       </span>
                     </td>
                     <td className="py-2.5 text-center">
@@ -1012,7 +1012,7 @@ function EmailsPanel() {
                         className={`${btn} text-[11px] py-1 px-2.5 bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-200`}
                       >
                         <Eye className="w-3 h-3" />
-                        عرض
+                        {T('عرض')}
                       </button>
                     </td>
                   </tr>
@@ -1047,25 +1047,25 @@ function ConversationsPanel() {
 
   return (
     <>
-      <Header title={T('المحادثات')} subtitle="كل محادثات الزوار مع مسار التنفيذ؛ يمكن الرد مباشرة على التحويلات"
+      <Header title={T('المحادثات')} subtitle={T('كل محادثات الزوار مع مسار التنفيذ؛ يمكن الرد مباشرة على التحويلات')}
         actions={<>
-          <label className="flex items-center gap-1.5 text-xs bg-white border border-stone-300 rounded-xl px-3"><input type="checkbox" checked={onlyHandoff} onChange={(e) => setOnlyHandoff(e.target.checked)} />التحويلات فقط</label>
+          <label className="flex items-center gap-1.5 text-xs bg-white border border-stone-300 rounded-xl px-3"><input type="checkbox" checked={onlyHandoff} onChange={(e) => setOnlyHandoff(e.target.checked)} />{T('التحويلات فقط')}</label>
           <button onClick={reload} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" /></button>
         </>} />
       <Feedback error={error} loading={loading && !data} />
       <div className="grid lg:grid-cols-5 gap-4">
         <div className="lg:col-span-2 space-y-2 max-h-[75vh] overflow-y-auto">
-          {items.length === 0 && !loading && <p className="text-sm text-stone-500">لا توجد محادثات.</p>}
+          {items.length === 0 && !loading && <p className="text-sm text-stone-500">{T('لا توجد محادثات.')}</p>}
           {items.map((c) => (
             <button key={c.id} onClick={() => void open(c.id)} className={`${card} w-full text-start p-3 hover:border-amber-400 ${selected?.id === c.id ? 'border-amber-500' : ''}`}>
               <div className="flex items-center gap-2 text-xs">
-                {c.status === 'handoff' && <span className="rounded-full bg-emerald-100 text-emerald-800 px-2 py-0.5 font-bold flex items-center gap-1"><Headset className="w-3 h-3" />تحويل</span>}
-                {c.status === 'closed' && <span className="rounded-full bg-stone-200 px-2 py-0.5">مغلقة</span>}
+                {c.status === 'handoff' && <span className="rounded-full bg-emerald-100 text-emerald-800 px-2 py-0.5 font-bold flex items-center gap-1"><Headset className="w-3 h-3" />{T('تحويل')}</span>}
+                {c.status === 'closed' && <span className="rounded-full bg-stone-200 px-2 py-0.5">{T('مغلقة')}</span>}
                 <span className="text-stone-500">{c.memory.name || c.visitorId.slice(0, 10)}</span>
                 <span className="ms-auto text-stone-400">{fmtDate(c.updatedAt)}</span>
               </div>
               <p className="text-xs text-stone-700 mt-1 truncate">{c.lastMessage}</p>
-              <p className="text-[10px] text-stone-400 mt-0.5">{c.messageCount} رسالة · {c.language}{c.serviceId ? ` · ${c.serviceId}` : ''}</p>
+              <p className="text-[10px] text-stone-400 mt-0.5">{c.messageCount} {T('رسالة')} · {c.language}{c.serviceId ? ` · ${c.serviceId}` : ''}</p>
             </button>
           ))}
         </div>
@@ -1073,12 +1073,12 @@ function ConversationsPanel() {
           {selected ? (
             <div className={`${card} flex flex-col max-h-[75vh]`}>
               <div className="flex flex-wrap items-center gap-2 pb-2 border-b">
-                <b className="text-sm">{selected.memory.name || 'زائر'}</b>
+                <b className="text-sm">{selected.memory.name || T('زائر')}</b>
                 <span className="text-[11px] text-stone-400" dir="ltr">{selected.visitorId}</span>
                 {selected.memory.lastRequestRef && <span className="text-[11px] bg-amber-100 rounded-full px-2" dir="ltr">{selected.memory.lastRequestRef}</span>}
-                <select className="ms-auto rounded-lg border border-stone-300 text-xs px-2 py-1" value={selected.status} aria-label="حالة المحادثة"
+                <select className="ms-auto rounded-lg border border-stone-300 text-xs px-2 py-1" value={selected.status} aria-label={T('حالة المحادثة')}
                   onChange={async (e) => { const { item } = await adminRequest<{ item: Conversation }>(`/conversations/${selected.id}`, send('PATCH', { status: e.target.value })); setSelected(item); reload(); }}>
-                  <option value="open">مفتوحة (المساعد)</option><option value="handoff">{T('تحويل لموظف')}</option><option value="closed">مغلقة</option>
+                  <option value="open">{T('مفتوحة (المساعد)')}</option><option value="handoff">{T('تحويل لموظف')}</option><option value="closed">{T('مغلقة')}</option>
                 </select>
               </div>
               <div className="flex-1 overflow-y-auto py-3 space-y-2">
@@ -1089,7 +1089,7 @@ function ConversationsPanel() {
                       <div className="text-[10px] text-stone-400 mt-1">{fmtDate(m.at)}{m.intent ? ` · ${INTENT[m.intent] || m.intent}` : ''}{m.engine ? ` · ${ENGINE_LABEL[m.engine] || m.engine}` : ''}</div>
                       {m.council && <CouncilTranscriptView council={m.council} />}
                       {m.trace && (
-                        <details className="mt-1 text-[10px] text-stone-500"><summary className="cursor-pointer">مسار التنفيذ</summary>
+                        <details className="mt-1 text-[10px] text-stone-500"><summary className="cursor-pointer">{T('مسار التنفيذ')}</summary>
                           <ol className="mt-1 space-y-0.5" dir="ltr">{m.trace.map((t, j) => <li key={j}><b>{t.stage}</b> {t.detail}{t.ms !== undefined ? ` (${t.ms}ms)` : ''}</li>)}</ol></details>
                       )}
                     </div>
@@ -1101,11 +1101,11 @@ function ConversationsPanel() {
                 try { const { item } = await adminRequest<{ item: Conversation }>(`/conversations/${selected.id}/reply`, send('POST', { text: reply })); setSelected(item); setReply(''); reload(); }
                 finally { setBusy(false); }
               }}>
-                <input className={input} value={reply} onChange={(e) => setReply(e.target.value)} placeholder="اكتب رداً بشرياً يظهر للزائر في نفس المحادثة…" aria-label="رد الموظف" />
+                <input className={input} value={reply} onChange={(e) => setReply(e.target.value)} placeholder={T('اكتب رداً بشرياً يظهر للزائر في نفس المحادثة…')} aria-label={T('رد الموظف')} />
                 <button disabled={busy || !reply.trim()} className={`${btn} bg-emerald-700 text-white`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4 rotate-180" />}</button>
               </form>
             </div>
-          ) : <p className="text-sm text-stone-400">اختر محادثة.</p>}
+          ) : <p className="text-sm text-stone-400">{T('اختر محادثة.')}</p>}
         </div>
       </div>
     </>
@@ -1130,13 +1130,13 @@ function CollectionPanel<T extends { id: string }>({ path, title, subtitle, empt
     } catch (e) { setSaveError((e as Error).message); } finally { setBusy(false); }
   };
   const remove = async (id: string) => {
-    if (!confirm('حذف نهائي؟')) return;
+    if (!confirm(T('حذف نهائي؟'))) return;
     try { await adminRequest(`/${path}/${id}`, send('DELETE')); if (editing?.id === id) setEditing(null); reload(); }
     catch (e) { setSaveError((e as Error).message); }
   };
   return (
     <>
-      <Header title={title} subtitle={subtitle} actions={<button onClick={() => setEditing({ ...blank })} className={`${btn} bg-stone-900 text-amber-100`}><Plus className="w-4 h-4" />إضافة</button>} />
+      <Header title={title} subtitle={subtitle} actions={<button onClick={() => setEditing({ ...blank })} className={`${btn} bg-stone-900 text-amber-100`}><Plus className="w-4 h-4" />{T('إضافة')}</button>} />
       <Feedback error={error} loading={loading && !data} />
       <div className="grid lg:grid-cols-5 gap-4">
         <div className="lg:col-span-3 space-y-2">
@@ -1144,22 +1144,22 @@ function CollectionPanel<T extends { id: string }>({ path, title, subtitle, empt
           {data?.items.map((item) => (
             <div key={item.id} className={`${card} flex items-start gap-3 p-3 ${editing?.id === item.id ? 'border-amber-500' : ''}`}>
               <button className="flex-1 text-start min-w-0" onClick={() => setEditing(structuredClone(item))}>{summary(item)}</button>
-              <button onClick={() => void remove(item.id)} aria-label="حذف" className="p-1.5 rounded-lg text-red-600 hover:bg-red-50"><Trash2 className="w-4 h-4" /></button>
+              <button onClick={() => void remove(item.id)} aria-label={T('حذف')} className="p-1.5 rounded-lg text-red-600 hover:bg-red-50"><Trash2 className="w-4 h-4" /></button>
             </div>
           ))}
         </div>
         <div className="lg:col-span-2">
           {editing ? (
             <div className={`${card} space-y-3 lg:sticky lg:top-4`}>
-              <h2 className="font-bold text-sm">{editing.id ? 'تعديل' : 'إضافة جديد'}</h2>
+              <h2 className="font-bold text-sm">{editing.id ? T('تعديل') : T('إضافة جديد')}</h2>
               <Editor value={editing} onChange={setEditing} />
               {saveError && <p className="text-xs text-red-700">{saveError}</p>}
               <div className="flex gap-2">
-                <button disabled={busy} onClick={save} className={`${btn} bg-stone-900 text-amber-100 flex-1`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />حفظ</>}</button>
-                <button onClick={() => setEditing(null)} className={`${btn} bg-stone-100`}>إلغاء</button>
+                <button disabled={busy} onClick={save} className={`${btn} bg-stone-900 text-amber-100 flex-1`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />{T('حفظ')}</>}</button>
+                <button onClick={() => setEditing(null)} className={`${btn} bg-stone-100`}>{T('إلغاء')}</button>
               </div>
             </div>
-          ) : <p className="text-sm text-stone-400">اختر عنصراً للتعديل أو أضف جديداً.</p>}
+          ) : <p className="text-sm text-stone-400">{T('اختر عنصراً للتعديل أو أضف جديداً.')}</p>}
         </div>
       </div>
     </>
@@ -1167,34 +1167,34 @@ function CollectionPanel<T extends { id: string }>({ path, title, subtitle, empt
 }
 
 const Field = ({ label, children }: { label: string; children: React.ReactNode }) => <label className="block text-xs font-semibold text-stone-700 space-y-1"><span>{label}</span>{children}</label>;
-const csv = (v?: string[]) => (v || []).join('، ');
+const csv = (v?: string[]) => (v || []).join(listSep());
 const fromCsv = (s: string) => s.split(/[,،]/).map((x) => x.trim()).filter(Boolean);
 
 function ProductsPanel() {
   return (
-    <CollectionPanel<Product> path="products" title={T('المنتجات')} subtitle="الكتالوج الوحيد الذي يقتبس منه المساعد الأسعار والمخزون" empty="الكتالوج فارغ — المساعد لن يذكر أي أسعار حتى تضيف منتجات."
+    <CollectionPanel<Product> path="products" title={T('المنتجات')} subtitle={T('الكتالوج الوحيد الذي يقتبس منه المساعد الأسعار والمخزون')} empty={T('الكتالوج فارغ — المساعد لن يذكر أي أسعار حتى تضيف منتجات.')}
       blank={{ nameAr: '', nameEn: '', price: 0, stock: 0, unit: 'piece', category: 'perfume', active: true, tags: [] }}
       summary={(p) => (<>
-        <p className="text-sm font-semibold truncate">{p.nameAr || p.nameEn} {p.demo && <span className="text-[10px] bg-stone-200 rounded px-1">تجريبي</span>} {!p.active && <span className="text-[10px] bg-red-100 text-red-800 rounded px-1">مخفي</span>}</p>
-        <p className="text-xs text-stone-500"><span dir="ltr">{p.sku}</span> · {p.price} {p.currency} / {p.unit} · مخزون <b className={p.stock <= 3 ? 'text-red-700' : ''}>{p.stock}</b></p>
+        <p className="text-sm font-semibold truncate">{p.nameAr || p.nameEn} {p.demo && <span className="text-[10px] bg-stone-200 rounded px-1">{T('تجريبي')}</span>} {!p.active && <span className="text-[10px] bg-red-100 text-red-800 rounded px-1">{T('مخفي')}</span>}</p>
+        <p className="text-xs text-stone-500"><span dir="ltr">{p.sku}</span> · {p.price} {p.currency} / {p.unit} · {T('مخزون')} <b className={p.stock <= 3 ? 'text-red-700' : ''}>{p.stock}</b></p>
       </>)}
       Editor={({ value: p, onChange }) => (
         <div className="space-y-2">
           <div className="grid grid-cols-2 gap-2">
-            <Field label="الاسم بالعربية"><input className={input} value={p.nameAr || ''} onChange={(e) => onChange({ ...p, nameAr: e.target.value })} /></Field>
+            <Field label={T('الاسم بالعربية')}><input className={input} value={p.nameAr || ''} onChange={(e) => onChange({ ...p, nameAr: e.target.value })} /></Field>
             <Field label="Name (English)"><input className={input} dir="ltr" value={p.nameEn || ''} onChange={(e) => onChange({ ...p, nameEn: e.target.value })} /></Field>
             <Field label="SKU"><input className={input} dir="ltr" value={p.sku || ''} onChange={(e) => onChange({ ...p, sku: e.target.value })} /></Field>
-            <Field label="الفئة"><select className={input} value={p.category} onChange={(e) => onChange({ ...p, category: e.target.value as Product['category'] })}>
-              {[['perfume', 'عطر'], ['oil', 'زيت'], ['raw_material', 'مادة خام'], ['packaging', 'عبوات'], ['kit', 'طقم'], ['other', 'أخرى']].map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></Field>
-            <Field label="السعر"><input className={input} type="number" min={0} step="0.01" value={p.price ?? 0} onChange={(e) => onChange({ ...p, price: Number(e.target.value) })} /></Field>
-            <Field label="العملة"><input className={input} dir="ltr" placeholder="EGP" value={p.currency || ''} onChange={(e) => onChange({ ...p, currency: e.target.value })} /></Field>
-            <Field label="المخزون"><input className={input} type="number" min={0} step={1} value={p.stock ?? 0} onChange={(e) => onChange({ ...p, stock: Math.floor(Number(e.target.value)) })} /></Field>
-            <Field label="الوحدة"><input className={input} value={p.unit || ''} onChange={(e) => onChange({ ...p, unit: e.target.value })} /></Field>
+            <Field label={T('الفئة')}><select className={input} value={p.category} onChange={(e) => onChange({ ...p, category: e.target.value as Product['category'] })}>
+              {[['perfume', T('عطر')], ['oil', T('زيت')], ['raw_material', T('مادة خام')], ['packaging', T('عبوات')], ['kit', T('طقم')], ['other', T('أخرى')]].map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></Field>
+            <Field label={T('السعر')}><input className={input} type="number" min={0} step="0.01" value={p.price ?? 0} onChange={(e) => onChange({ ...p, price: Number(e.target.value) })} /></Field>
+            <Field label={T('العملة')}><input className={input} dir="ltr" placeholder="EGP" value={p.currency || ''} onChange={(e) => onChange({ ...p, currency: e.target.value })} /></Field>
+            <Field label={T('المخزون')}><input className={input} type="number" min={0} step={1} value={p.stock ?? 0} onChange={(e) => onChange({ ...p, stock: Math.floor(Number(e.target.value)) })} /></Field>
+            <Field label={T('الوحدة')}><input className={input} value={p.unit || ''} onChange={(e) => onChange({ ...p, unit: e.target.value })} /></Field>
           </div>
-          <Field label="الوصف بالعربية"><textarea className={input} rows={2} value={p.descriptionAr || ''} onChange={(e) => onChange({ ...p, descriptionAr: e.target.value })} /></Field>
+          <Field label={T('الوصف بالعربية')}><textarea className={input} rows={2} value={p.descriptionAr || ''} onChange={(e) => onChange({ ...p, descriptionAr: e.target.value })} /></Field>
           <Field label="Description (English)"><textarea className={input} dir="ltr" rows={2} value={p.descriptionEn || ''} onChange={(e) => onChange({ ...p, descriptionEn: e.target.value })} /></Field>
-          <Field label="كلمات البحث (مفصولة بفواصل)"><input className={input} value={csv(p.tags)} onChange={(e) => onChange({ ...p, tags: fromCsv(e.target.value) })} /></Field>
-          <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={p.active ?? true} onChange={(e) => onChange({ ...p, active: e.target.checked })} />ظاهر للزوار</label>
+          <Field label={T('كلمات البحث (مفصولة بفواصل)')}><input className={input} value={csv(p.tags)} onChange={(e) => onChange({ ...p, tags: fromCsv(e.target.value) })} /></Field>
+          <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={p.active ?? true} onChange={(e) => onChange({ ...p, active: e.target.checked })} />{T('ظاهر للزوار')}</label>
         </div>
       )} />
   );
@@ -1202,15 +1202,15 @@ function ProductsPanel() {
 
 function KnowledgePanel() {
   return (
-    <CollectionPanel<KnowledgeDoc> path="knowledge" title={T('قاعدة المعرفة')} subtitle="المصدر الذي يستند إليه المساعد في الإجابات ويعرضه كمراجع (RAG)" empty="لا توجد مستندات."
+    <CollectionPanel<KnowledgeDoc> path="knowledge" title={T('قاعدة المعرفة')} subtitle={T('المصدر الذي يستند إليه المساعد في الإجابات ويعرضه كمراجع (RAG)')} empty={T('لا توجد مستندات.')}
       blank={{ title: '', content: '', tags: [] }}
       summary={(d) => (<><p className="text-sm font-semibold truncate">{d.title}</p><p className="text-xs text-stone-500 line-clamp-2">{d.content}</p></>)}
       Editor={({ value: d, onChange }) => (
         <div className="space-y-2">
-          <Field label="العنوان"><input className={input} value={d.title || ''} onChange={(e) => onChange({ ...d, title: e.target.value })} /></Field>
-          <Field label="المحتوى (سياسات، أسئلة شائعة، شروط الشحن والاسترجاع…)"><textarea className={input} rows={10} value={d.content || ''} onChange={(e) => onChange({ ...d, content: e.target.value })} /></Field>
-          <Field label="وسوم (مفصولة بفواصل)"><input className={input} value={csv(d.tags)} onChange={(e) => onChange({ ...d, tags: fromCsv(e.target.value) })} /></Field>
-          <Field label="معرف الخدمة المرتبطة (اختياري)"><input className={input} dir="ltr" value={d.serviceId || ''} onChange={(e) => onChange({ ...d, serviceId: e.target.value })} /></Field>
+          <Field label={T('العنوان')}><input className={input} value={d.title || ''} onChange={(e) => onChange({ ...d, title: e.target.value })} /></Field>
+          <Field label={T('المحتوى (سياسات، أسئلة شائعة، شروط الشحن والاسترجاع…)')}><textarea className={input} rows={10} value={d.content || ''} onChange={(e) => onChange({ ...d, content: e.target.value })} /></Field>
+          <Field label={T('وسوم (مفصولة بفواصل)')}><input className={input} value={csv(d.tags)} onChange={(e) => onChange({ ...d, tags: fromCsv(e.target.value) })} /></Field>
+          <Field label={T('معرف الخدمة المرتبطة (اختياري)')}><input className={input} dir="ltr" value={d.serviceId || ''} onChange={(e) => onChange({ ...d, serviceId: e.target.value })} /></Field>
         </div>
       )} />
   );
@@ -1218,10 +1218,10 @@ function KnowledgePanel() {
 
 function ServicesPanel() {
   return (
-    <CollectionPanel<ServiceDef> path="services" title={T('الخدمات')} subtitle="أضف أي خدمة تجارية جديدة: الكلمات المفتاحية توجّه الزوار إليها، والحقول تحدد استمارة الطلب" empty="لا توجد خدمات."
+    <CollectionPanel<ServiceDef> path="services" title={T('الخدمات')} subtitle={T('أضف أي خدمة تجارية جديدة: الكلمات المفتاحية توجّه الزوار إليها، والحقول تحدد استمارة الطلب')} empty={T('لا توجد خدمات.')}
       blank={{ nameAr: '', nameEn: '', kind: 'custom', enabled: true, keywords: [], formFields: [], order: 50 }}
       summary={(s) => (<>
-        <p className="text-sm font-semibold">{s.nameAr} {!s.enabled && <span className="text-[10px] bg-red-100 text-red-800 rounded px-1">معطلة</span>}</p>
+        <p className="text-sm font-semibold">{s.nameAr} {!s.enabled && <span className="text-[10px] bg-red-100 text-red-800 rounded px-1">{T('معطلة')}</span>}</p>
         <p className="text-xs text-stone-500" dir="ltr">{s.id} · {s.kind} · {s.formFields.length} fields · {s.keywords.length} keywords</p>
       </>)}
       Editor={function ServiceEditor({ value: s, onChange }) {
@@ -1231,24 +1231,24 @@ function ServicesPanel() {
         return (
           <div className="space-y-2">
             <div className="grid grid-cols-2 gap-2">
-              <Field label="الاسم بالعربية"><input className={input} value={s.nameAr || ''} onChange={(e) => onChange({ ...s, nameAr: e.target.value })} /></Field>
+              <Field label={T('الاسم بالعربية')}><input className={input} value={s.nameAr || ''} onChange={(e) => onChange({ ...s, nameAr: e.target.value })} /></Field>
               <Field label="Name (English)"><input className={input} dir="ltr" value={s.nameEn || ''} onChange={(e) => onChange({ ...s, nameEn: e.target.value })} /></Field>
-              <Field label="النوع"><select className={input} value={s.kind} onChange={(e) => onChange({ ...s, kind: e.target.value as ServiceDef['kind'] })}>
-                {[['info', 'معلومات/أدوات'], ['store', 'متجر'], ['custom_order', 'طلب مخصص'], ['b2b', 'جملة B2B'], ['consultation', T('استشارة')], ['support', T('دعم')], ['custom', 'خدمة جديدة']].map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></Field>
-              <Field label="الترتيب"><input className={input} type="number" value={s.order ?? 50} onChange={(e) => onChange({ ...s, order: Number(e.target.value) })} /></Field>
+              <Field label={T('النوع')}><select className={input} value={s.kind} onChange={(e) => onChange({ ...s, kind: e.target.value as ServiceDef['kind'] })}>
+                {[['info', T('معلومات/أدوات')], ['store', T('متجر')], ['custom_order', T('طلب مخصص')], ['b2b', T('جملة B2B')], ['consultation', T('استشارة')], ['support', T('دعم')], ['custom', T('خدمة جديدة')]].map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></Field>
+              <Field label={T('الترتيب')}><input className={input} type="number" value={s.order ?? 50} onChange={(e) => onChange({ ...s, order: Number(e.target.value) })} /></Field>
             </div>
-            <Field label="الوصف بالعربية"><textarea className={input} rows={2} value={s.descriptionAr || ''} onChange={(e) => onChange({ ...s, descriptionAr: e.target.value })} /></Field>
+            <Field label={T('الوصف بالعربية')}><textarea className={input} rows={2} value={s.descriptionAr || ''} onChange={(e) => onChange({ ...s, descriptionAr: e.target.value })} /></Field>
             <Field label="Description (English)"><textarea className={input} dir="ltr" rows={2} value={s.descriptionEn || ''} onChange={(e) => onChange({ ...s, descriptionEn: e.target.value })} /></Field>
-            <Field label="كلمات التوجيه (مفصولة بفواصل)"><textarea className={input} rows={2} value={csv(s.keywords)} onChange={(e) => onChange({ ...s, keywords: fromCsv(e.target.value) })} /></Field>
-            <Field label="حقول الاستمارة (JSON: name, labelAr, labelEn, type, required, options)">
+            <Field label={T('كلمات التوجيه (مفصولة بفواصل)')}><textarea className={input} rows={2} value={csv(s.keywords)} onChange={(e) => onChange({ ...s, keywords: fromCsv(e.target.value) })} /></Field>
+            <Field label={T('حقول الاستمارة (JSON: name, labelAr, labelEn, type, required, options)')}>
               <textarea className={`${input} font-mono text-[11px]`} dir="ltr" rows={6} value={fieldsText} onChange={(e) => {
                 setFieldsText(e.target.value);
                 try { const parsed = JSON.parse(e.target.value); if (!Array.isArray(parsed)) throw new Error(); onChange({ ...s, formFields: parsed }); setJsonError(''); }
-                catch { setJsonError('JSON غير صالح — لن تُحفظ الحقول حتى يُصحَّح.'); }
+                catch { setJsonError(T('JSON غير صالح — لن تُحفظ الحقول حتى يُصحَّح.')); }
               }} />
             </Field>
             {jsonError && <p className="text-[11px] text-red-700">{jsonError}</p>}
-            <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={s.enabled ?? true} onChange={(e) => onChange({ ...s, enabled: e.target.checked })} />مفعلة للزوار</label>
+            <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={s.enabled ?? true} onChange={(e) => onChange({ ...s, enabled: e.target.checked })} />{T('مفعلة للزوار')}</label>
           </div>
         );
       }} />
@@ -1271,24 +1271,24 @@ function EnginesPanel() {
   const toggle = (id: EngineId) => form && setForm({ ...form, enginePolicy: policy.includes(id) ? policy.filter((x) => x !== id) : [...policy.filter((x) => x !== 'sham_local'), id, 'sham_local'] });
   const save = async () => {
     if (!form) return; setBusy(true); setMessage('');
-    try { await adminRequest('/settings', send('PUT', { ...form, shaheen: undefined })); setMessage('تم الحفظ ✅'); reload(); }
+    try { await adminRequest('/settings', send('PUT', { ...form, shaheen: undefined })); setMessage(T('تم الحفظ ✅')); reload(); }
     catch (e) { setMessage((e as Error).message); } finally { setBusy(false); }
   };
   return (
     <>
-      <Header title={T('المحركات والإعدادات')} subtitle="سياسة اختيار المحرك مع التحويل التلقائي عند الفشل؛ محرك شام الذاتي هو خط الأمان الأخير دائماً"
+      <Header title={T('المحركات والإعدادات')} subtitle={T('سياسة اختيار المحرك مع التحويل التلقائي عند الفشل؛ محرك شام الذاتي هو خط الأمان الأخير دائماً')}
         actions={<a href="/api/admin/export" onClick={async (e) => {
           e.preventDefault();
           const response = await fetch(apiUrl('/api/admin/export'), { headers: { Authorization: `Bearer ${getToken()}` } });
           const blob = await response.blob(); const url = URL.createObjectURL(blob);
           const a = document.createElement('a'); a.href = url; a.download = `sham-core-backup-${new Date().toISOString().slice(0, 10)}.json`; a.click(); URL.revokeObjectURL(url);
-        }} className={`${btn} bg-white border border-stone-300`}><Download className="w-4 h-4" />نسخة احتياطية</a>} />
+        }} className={`${btn} bg-white border border-stone-300`}><Download className="w-4 h-4" />{T('نسخة احتياطية')}</a>} />
       <Feedback error={error} loading={loading && !data} />
       {form && data && (
         <div className="grid lg:grid-cols-2 gap-4">
           <div className={`${card} space-y-2`}>
-            <h2 className="font-bold text-sm">ترتيب المحركات</h2>
-            <p className="text-[11px] text-stone-500">المفاتيح وعناوين الخوادم تُضبط في متغيرات بيئة الخادم فقط ولا تظهر هنا. المحرك غير المهيأ يُتخطى تلقائياً.</p>
+            <h2 className="font-bold text-sm">{T('ترتيب المحركات')}</h2>
+            <p className="text-[11px] text-stone-500">{T('المفاتيح وعناوين الخوادم تُضبط في متغيرات بيئة الخادم فقط ولا تظهر هنا. المحرك غير المهيأ يُتخطى تلقائياً.')}</p>
             {data.engines.map((engine) => {
               const active = policy.includes(engine.id);
               return (
@@ -1296,30 +1296,30 @@ function EnginesPanel() {
                   <input type="checkbox" aria-label={engine.name} checked={active || engine.id === 'sham_local'} disabled={engine.id === 'sham_local'} onChange={() => toggle(engine.id)} />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold">{ENGINE_LABEL[engine.id]} <span className="text-[10px] text-stone-400" dir="ltr">{engine.model}</span></p>
-                    <p className={`text-[11px] ${engine.configured ? 'text-emerald-700' : 'text-stone-400'}`}>{engine.configured ? 'مهيأ (الإعداد موجود؛ لا يضمن صحة المفتاح)' : engine.id === 'self_hosted' ? 'غير مهيأ — اضبط SHAM_LLM_BASE_URL' : 'غير مهيأ — لا يوجد مفتاح'}</p>
+                    <p className={`text-[11px] ${engine.configured ? 'text-emerald-700' : 'text-stone-400'}`}>{engine.configured ? T('مهيأ (الإعداد موجود؛ لا يضمن صحة المفتاح)') : engine.id === 'self_hosted' ? T('غير مهيأ — اضبط SHAM_LLM_BASE_URL') : T('غير مهيأ — لا يوجد مفتاح')}</p>
                   </div>
-                  {active && engine.id !== 'sham_local' && <div className="flex flex-col"><button className="text-xs px-1" onClick={() => move(engine.id, -1)} aria-label="أعلى">▲</button><button className="text-xs px-1" onClick={() => move(engine.id, 1)} aria-label="أسفل">▼</button></div>}
+                  {active && engine.id !== 'sham_local' && <div className="flex flex-col"><button className="text-xs px-1" onClick={() => move(engine.id, -1)} aria-label={T('أعلى')}>▲</button><button className="text-xs px-1" onClick={() => move(engine.id, 1)} aria-label={T('أسفل')}>▼</button></div>}
                   {active && <span className="text-[10px] font-bold text-amber-800">#{policy.indexOf(engine.id) + 1}</span>}
                 </div>
               );
             })}
-            <Field label={`درجة الإبداع (temperature): ${form.temperature}`}><input type="range" min={0} max={1} step={0.05} value={form.temperature} onChange={(e) => setForm({ ...form, temperature: Number(e.target.value) })} className="w-full" /></Field>
+            <Field label={TP('درجة الإبداع (temperature): {value}', { value: form.temperature })}><input type="range" min={0} max={1} step={0.05} value={form.temperature} onChange={(e) => setForm({ ...form, temperature: Number(e.target.value) })} className="w-full" /></Field>
           </div>
           <div className={`${card} space-y-2`}>
-            <h2 className="font-bold text-sm">هوية المساعد</h2>
+            <h2 className="font-bold text-sm">{T('هوية المساعد')}</h2>
             <div className="grid grid-cols-2 gap-2">
-              <Field label="الاسم بالعربية"><input className={input} value={form.assistantNameAr} onChange={(e) => setForm({ ...form, assistantNameAr: e.target.value })} /></Field>
+              <Field label={T('الاسم بالعربية')}><input className={input} value={form.assistantNameAr} onChange={(e) => setForm({ ...form, assistantNameAr: e.target.value })} /></Field>
               <Field label="Name (English)"><input className={input} dir="ltr" value={form.assistantNameEn} onChange={(e) => setForm({ ...form, assistantNameEn: e.target.value })} /></Field>
             </div>
-            <Field label="رسالة الترحيب بالعربية"><textarea className={input} rows={3} value={form.welcomeAr} onChange={(e) => setForm({ ...form, welcomeAr: e.target.value })} /></Field>
+            <Field label={T('رسالة الترحيب بالعربية')}><textarea className={input} rows={3} value={form.welcomeAr} onChange={(e) => setForm({ ...form, welcomeAr: e.target.value })} /></Field>
             <Field label="Welcome (English)"><textarea className={input} dir="ltr" rows={3} value={form.welcomeEn} onChange={(e) => setForm({ ...form, welcomeEn: e.target.value })} /></Field>
-            <Field label="الشخصية وأسلوب الرد"><textarea className={input} rows={2} value={form.personaAr} onChange={(e) => setForm({ ...form, personaAr: e.target.value })} /></Field>
+            <Field label={T('الشخصية وأسلوب الرد')}><textarea className={input} rows={2} value={form.personaAr} onChange={(e) => setForm({ ...form, personaAr: e.target.value })} /></Field>
             <div className="grid grid-cols-3 gap-2">
-              <Field label="العملة الافتراضية"><input className={input} dir="ltr" value={form.currency} onChange={(e) => setForm({ ...form, currency: e.target.value })} /></Field>
-              <Field label="مواعيد العمل"><input className={input} value={form.businessHours} onChange={(e) => setForm({ ...form, businessHours: e.target.value })} /></Field>
-              <Field label="تواصل مباشر"><input className={input} value={form.handoffContact} onChange={(e) => setForm({ ...form, handoffContact: e.target.value })} placeholder="واتساب / هاتف" /></Field>
+              <Field label={T('العملة الافتراضية')}><input className={input} dir="ltr" value={form.currency} onChange={(e) => setForm({ ...form, currency: e.target.value })} /></Field>
+              <Field label={T('مواعيد العمل')}><input className={input} value={form.businessHours} onChange={(e) => setForm({ ...form, businessHours: e.target.value })} /></Field>
+              <Field label={T('تواصل مباشر')}><input className={input} value={form.handoffContact} onChange={(e) => setForm({ ...form, handoffContact: e.target.value })} placeholder={T('واتساب / هاتف')} /></Field>
             </div>
-            <button disabled={busy} onClick={save} className={`${btn} bg-stone-900 text-amber-100 w-full`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />حفظ الإعدادات</>}</button>
+            <button disabled={busy} onClick={save} className={`${btn} bg-stone-900 text-amber-100 w-full`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />{T('حفظ الإعدادات')}</>}</button>
             {message && <p className="text-xs text-center">{message}</p>}
           </div>
           <CouncilSettingsCard form={form} setForm={setForm} engines={data.engines} onSave={save} busy={busy} message={message} />
@@ -1331,19 +1331,19 @@ function EnginesPanel() {
 
 interface SettingsView { item: CoreSettings; engines: EngineStatus[]; shaheen: { source: 'admin' | 'file'; defaults: ShaheenSettings }; storage: { kind: string; persistent: boolean; error?: string } }
 interface ProbeResult { id: ModelEngineId; name: string; model: string; configured: boolean; ok: boolean; ms: number; error?: string; detail?: string; usedModel?: string }
-const PROBE_ERROR: Record<string, string> = {
-  not_configured: 'غير مهيأ — لا يوجد مفتاح/عنوان في متغيرات الخادم',
-  rejected_or_empty: 'المزوّد رفض الطلب أو رجّع رداً فارغاً — راجع صلاحية المفتاح واسم النموذج والرصيد',
-  timeout: 'انتهت المهلة — الخدمة بطيئة أو غير متاحة',
-  unreachable: 'تعذّر الوصول للمزوّد (شبكة/عنوان خاطئ/مفتاح مرفوض)',
-  invalid_key: 'المفتاح غير صالح أو ملغي — أنشئ مفتاحاً جديداً من حساب المزوّد وضعه في متغيرات الخادم',
-  no_credit: 'الحساب بلا رصيد أو انتهت الحصة المجانية — اشحن الرصيد أو فعّل الفوترة عند المزوّد',
-  rate_limited: 'تجاوزت حد الطلبات مؤقتاً — انتظر دقيقة ثم أعد الاختبار',
-  model_not_found: 'اسم النموذج غير متاح لهذا الحساب — اختر نموذجاً آخر من الإعدادات',
-  region_blocked: 'المزوّد لا يخدم منطقة الخادم — استخدم خادماً في منطقة مدعومة',
-  bad_request: 'المزوّد رفض صيغة الطلب — راجع اسم النموذج والإعدادات',
-  upstream_error: 'خدمة المزوّد متعطلة حالياً — أعد المحاولة لاحقاً',
-};
+const PROBE_ERROR: Record<string, string> = reactiveMap(() => ({
+  not_configured: T('غير مهيأ — لا يوجد مفتاح/عنوان في متغيرات الخادم'),
+  rejected_or_empty: T('المزوّد رفض الطلب أو رجّع رداً فارغاً — راجع صلاحية المفتاح واسم النموذج والرصيد'),
+  timeout: T('انتهت المهلة — الخدمة بطيئة أو غير متاحة'),
+  unreachable: T('تعذّر الوصول للمزوّد (شبكة/عنوان خاطئ/مفتاح مرفوض)'),
+  invalid_key: T('المفتاح غير صالح أو ملغي — أنشئ مفتاحاً جديداً من حساب المزوّد وضعه في متغيرات الخادم'),
+  no_credit: T('الحساب بلا رصيد أو انتهت الحصة المجانية — اشحن الرصيد أو فعّل الفوترة عند المزوّد'),
+  rate_limited: T('تجاوزت حد الطلبات مؤقتاً — انتظر دقيقة ثم أعد الاختبار'),
+  model_not_found: T('اسم النموذج غير متاح لهذا الحساب — اختر نموذجاً آخر من الإعدادات'),
+  region_blocked: T('المزوّد لا يخدم منطقة الخادم — استخدم خادماً في منطقة مدعومة'),
+  bad_request: T('المزوّد رفض صيغة الطلب — راجع اسم النموذج والإعدادات'),
+  upstream_error: T('خدمة المزوّد متعطلة حالياً — أعد المحاولة لاحقاً'),
+}));
 
 /** «الخبير شاهين»: which engines, in which order, which models, tone, length and extra instructions. */
 function ShaheenPanel() {
@@ -1374,7 +1374,7 @@ function ShaheenPanel() {
     try {
       const next = await adminRequest<SettingsView>('/settings', send('PUT', { shaheen }));
       setData(next); setForm(next.item.shaheen);
-      setMessage(shaheen === null ? 'تمت العودة لإعدادات الملف المشتركة ✅' : 'تم الحفظ ✅ — يظهر فوراً على الموقعين');
+      setMessage(shaheen === null ? T('تمت العودة لإعدادات الملف المشتركة ✅') : T('تم الحفظ ✅ — يظهر فوراً على الموقعين'));
     } catch (e) { setMessage((e as Error).message); } finally { setBusy(false); }
   };
   const runProbe = async () => {
@@ -1386,45 +1386,45 @@ function ShaheenPanel() {
 
   return (
     <>
-      <Header title={T('الخبير شاهين')} subtitle="إعدادات شات تصميم العطور (النافذة العائمة وصفحة المعمل). نفس الإعدادات تُطبَّق على موقع Vercel وموقع GitHub Pages لأن الاتنين بيستخدموا نفس الخادم." />
+      <Header title={T('الخبير شاهين')} subtitle={T('إعدادات شات تصميم العطور (النافذة العائمة وصفحة المعمل). نفس الإعدادات تُطبَّق على موقع Vercel وموقع GitHub Pages لأن الاتنين بيستخدموا نفس الخادم.')} />
       <div className="space-y-4">
         {!data.storage.persistent ? (
           <div className="rounded-2xl border border-amber-300 bg-amber-50 p-3 text-xs leading-relaxed text-amber-950">
-            <p className="font-bold flex items-center gap-1.5"><TriangleAlert className="w-4 h-4" />التخزين الحالي مؤقت ({data.storage.kind})</p>
-            <p>أي تعديل تحفظه هنا يشتغل فوراً، لكنه ممكن يضيع لما الخادم يعيد التشغيل. عشان يبقى دائم على الموقعين: فعّل <code dir="ltr">SHAM_STORE=firestore</code> مع بيانات Firebase في Vercel، أو انسخ «الإعداد الدائم» بالأسفل لملف <code dir="ltr">server/config/shaheen.ts</code> في المستودع.</p>
+            <p className="font-bold flex items-center gap-1.5"><TriangleAlert className="w-4 h-4" />{TP('التخزين الحالي مؤقت ({kind})', { kind: data.storage.kind })}</p>
+            <p>{T('أي تعديل تحفظه هنا يشتغل فوراً، لكنه ممكن يضيع لما الخادم يعيد التشغيل. عشان يبقى دائم على الموقعين: فعّل')} <code dir="ltr">SHAM_STORE=firestore</code> {T('مع بيانات Firebase في Vercel، أو انسخ «الإعداد الدائم» بالأسفل لملف')} <code dir="ltr">server/config/shaheen.ts</code> {T('في المستودع.')}</p>
           </div>
         ) : (
-          <p className="text-xs text-emerald-800 flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" />التخزين دائم ({data.storage.kind}) — التعديلات تفضل محفوظة.</p>
+          <p className="text-xs text-emerald-800 flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" />{TP('التخزين دائم ({kind}) — التعديلات تفضل محفوظة.', { kind: data.storage.kind })}</p>
         )}
-        <p className="text-[11px] text-stone-500">مصدر الإعدادات الحالي: {data.shaheen.source === 'admin' ? 'لوحة الإدارة (تعديل محفوظ)' : 'الملف المشترك server/config/shaheen.ts'}</p>
+        <p className="text-[11px] text-stone-500">{T('مصدر الإعدادات الحالي:')} {data.shaheen.source === 'admin' ? T('لوحة الإدارة (تعديل محفوظ)') : T('الملف المشترك server/config/shaheen.ts')}</p>
 
         <div className="grid lg:grid-cols-2 gap-4">
           <div className={`${card} space-y-3`}>
             <div className="flex flex-wrap items-center gap-3">
-              <label className="inline-flex items-center gap-1.5 text-sm font-bold"><input type="checkbox" checked={form.enabled} onChange={(e) => set({ enabled: e.target.checked })} />شاهين مفعّل للزوار</label>
-              <label className="inline-flex items-center gap-1.5 text-xs font-semibold"><input type="checkbox" checked={form.allowVisitorChoice} onChange={(e) => set({ allowVisitorChoice: e.target.checked })} />السماح للزائر باختيار وضع الرد (سريع / معمّق / مجلس الخبراء) — أسماء المحركات لا تظهر للزوار أبداً</label>
+              <label className="inline-flex items-center gap-1.5 text-sm font-bold"><input type="checkbox" checked={form.enabled} onChange={(e) => set({ enabled: e.target.checked })} />{T('شاهين مفعّل للزوار')}</label>
+              <label className="inline-flex items-center gap-1.5 text-xs font-semibold"><input type="checkbox" checked={form.allowVisitorChoice} onChange={(e) => set({ allowVisitorChoice: e.target.checked })} />{T('السماح للزائر باختيار وضع الرد (سريع / معمّق / مجلس الخبراء) — أسماء المحركات لا تظهر للزوار أبداً')}</label>
             </div>
             <p className={`text-xs font-semibold ${ready.length ? 'text-emerald-700' : 'text-red-700'}`}>
-              {ready.length ? `جاهز: ${ready.length} محرك مهيأ ومسموح (${ready.map((id) => ENGINE_LABEL[id]).join('، ')}).` : 'غير جاهز: مفيش ولا محرك مسموح ومهيأ — الزوار هيشوفوا «شاهين غير متصل».'}
+              {ready.length ? TP('جاهز: {count} محرك مهيأ ومسموح ({engines}).', { count: ready.length, engines: ready.map((id) => ENGINE_LABEL[id]).join(listSep()) }) : T('غير جاهز: مفيش ولا محرك مسموح ومهيأ — الزوار هيشوفوا «شاهين غير متصل».')}
             </p>
-            <h2 className="font-bold text-sm">المحركات وترتيب «تلقائي»</h2>
-            <p className="text-[11px] text-stone-500">«تلقائي» يجرّب المحركات بالترتيب ده ويتخطى غير المهيأ أو اللي فشل. المحرك غير المسموح يختفي من واجهة الزوار. المفاتيح تُضبط في متغيرات الخادم فقط.</p>
+            <h2 className="font-bold text-sm">{T('المحركات وترتيب «تلقائي»')}</h2>
+            <p className="text-[11px] text-stone-500">{T('«تلقائي» يجرّب المحركات بالترتيب ده ويتخطى غير المهيأ أو اللي فشل. المحرك غير المسموح يختفي من واجهة الزوار. المفاتيح تُضبط في متغيرات الخادم فقط.')}</p>
             {all.map((id) => {
               const on = allowed.includes(id); const st = status(id);
               return (
                 <div key={id} className={`grid grid-cols-[auto_1fr_auto] items-center gap-2 rounded-xl border p-2 ${on ? 'border-amber-300 bg-amber-50/50' : 'border-stone-200'}`}>
-                  <input type="checkbox" aria-label={`السماح بـ ${ENGINE_LABEL[id]}`} checked={on} onChange={() => toggle(id)} />
+                  <input type="checkbox" aria-label={TP('السماح بـ {engine}', { engine: ENGINE_LABEL[id] })} checked={on} onChange={() => toggle(id)} />
                   <div className="min-w-0 space-y-1">
                     <p className="text-sm font-semibold">{ENGINE_LABEL[id]} {on && <span className="text-[10px] font-bold text-amber-800">#{allowed.indexOf(id) + 1}</span>}</p>
-                    <p className={`text-[11px] ${st?.configured ? 'text-emerald-700' : 'text-stone-400'}`}>{st?.configured ? 'مهيأ على الخادم' : id === 'self_hosted' ? 'غير مهيأ — اضبط SHAM_LLM_BASE_URL' : 'غير مهيأ — لا يوجد مفتاح'}</p>
-                    <input className={`${input} py-1 text-xs`} dir="ltr" aria-label={`نموذج ${ENGINE_LABEL[id]}`} placeholder={`افتراضي: ${st?.model || 'model'}`}
+                    <p className={`text-[11px] ${st?.configured ? 'text-emerald-700' : 'text-stone-400'}`}>{st?.configured ? T('مهيأ على الخادم') : id === 'self_hosted' ? T('غير مهيأ — اضبط SHAM_LLM_BASE_URL') : T('غير مهيأ — لا يوجد مفتاح')}</p>
+                    <input className={`${input} py-1 text-xs`} dir="ltr" aria-label={TP('نموذج {engine}', { engine: ENGINE_LABEL[id] })} placeholder={TP('افتراضي: {model}', { model: st?.model || 'model' })}
                       value={form.models[id] || ''} onChange={(e) => {
                         const models = { ...form.models };
                         if (e.target.value.trim()) models[id] = e.target.value.trim(); else delete models[id];
                         set({ models });
                       }} />
                   </div>
-                  {on && <div className="flex flex-col"><button type="button" className="p-0.5 rounded hover:bg-amber-100 disabled:opacity-30" disabled={allowed.indexOf(id) === 0} onClick={() => move(id, -1)} aria-label="تقديم في الترتيب"><ChevronUp className="w-4 h-4" /></button><button type="button" className="p-0.5 rounded hover:bg-amber-100 disabled:opacity-30" disabled={allowed.indexOf(id) === allowed.length - 1} onClick={() => move(id, 1)} aria-label="تأخير في الترتيب"><ChevronDown className="w-4 h-4" /></button></div>}
+                  {on && <div className="flex flex-col"><button type="button" className="p-0.5 rounded hover:bg-amber-100 disabled:opacity-30" disabled={allowed.indexOf(id) === 0} onClick={() => move(id, -1)} aria-label={T('تقديم في الترتيب')}><ChevronUp className="w-4 h-4" /></button><button type="button" className="p-0.5 rounded hover:bg-amber-100 disabled:opacity-30" disabled={allowed.indexOf(id) === allowed.length - 1} onClick={() => move(id, 1)} aria-label={T('تأخير في الترتيب')}><ChevronDown className="w-4 h-4" /></button></div>}
                 </div>
               );
             })}
@@ -1432,52 +1432,52 @@ function ShaheenPanel() {
 
           <div className="space-y-4">
             <div className={`${card} space-y-3`}>
-              <h2 className="font-bold text-sm">أسلوب الردود</h2>
-              <Field label={`درجة الإبداع (temperature): ${form.temperature}`}><input type="range" min={0} max={1} step={0.05} value={form.temperature} onChange={(e) => set({ temperature: Number(e.target.value) })} className="w-full" /></Field>
-              <Field label="أقصى طول للرد">
+              <h2 className="font-bold text-sm">{T('أسلوب الردود')}</h2>
+              <Field label={TP('درجة الإبداع (temperature): {value}', { value: form.temperature })}><input type="range" min={0} max={1} step={0.05} value={form.temperature} onChange={(e) => set({ temperature: Number(e.target.value) })} className="w-full" /></Field>
+              <Field label={T('أقصى طول للرد')}>
                 <select className={input} value={form.maxTokens} onChange={(e) => set({ maxTokens: Number(e.target.value) })}>
-                  {[1024, 2048, 4096, 6144, 8192].map((n) => <option key={n} value={n}>{n} توكن{n === 4096 ? ' (موصى به)' : ''}</option>)}
+                  {[1024, 2048, 4096, 6144, 8192].map((n) => <option key={n} value={n}>{n} {T('توكن')}{n === 4096 ? T(' (موصى به)') : ''}</option>)}
                 </select>
               </Field>
-              <Field label="تعليمات إضافية لشاهين (اختياري — لا تلغي قواعد السلامة)">
+              <Field label={T('تعليمات إضافية لشاهين (اختياري — لا تلغي قواعد السلامة)')}>
                 <textarea className={input} rows={5} maxLength={2000} value={form.instructions} onChange={(e) => set({ instructions: e.target.value })}
-                  placeholder="مثال: اقترح خامات متوفرة في السوق المصري، واذكر البدائل الاقتصادية، واختم بتذكير بطلب عينة من متجر شام." />
+                  placeholder={T('مثال: اقترح خامات متوفرة في السوق المصري، واذكر البدائل الاقتصادية، واختم بتذكير بطلب عينة من متجر شام.')} />
               </Field>
               <p className="text-[11px] text-stone-400 text-left" dir="ltr">{form.instructions.length}/2000</p>
             </div>
 
             <div className={`${card} space-y-2`}>
               <div className="flex flex-wrap items-center gap-2">
-                <button disabled={busy || !dirty} onClick={() => void save(form)} className={`${btn} bg-stone-900 text-amber-100`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />حفظ إعدادات شاهين</>}</button>
-                <button disabled={busy || probing} onClick={() => void runProbe()} className={`${btn} border border-stone-300 bg-white`}>{probing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Activity className="w-4 h-4" />}اختبار الاتصال بالمحركات</button>
-                {data.shaheen.source === 'admin' && <button disabled={busy} onClick={() => void save(null)} className={`${btn} border border-stone-300 bg-white text-xs`}><RefreshCw className="w-3.5 h-3.5" />رجوع لإعدادات الملف</button>}
+                <button disabled={busy || !dirty} onClick={() => void save(form)} className={`${btn} bg-stone-900 text-amber-100`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />{T('حفظ إعدادات شاهين')}</>}</button>
+                <button disabled={busy || probing} onClick={() => void runProbe()} className={`${btn} border border-stone-300 bg-white`}>{probing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Activity className="w-4 h-4" />}{T('اختبار الاتصال بالمحركات')}</button>
+                {data.shaheen.source === 'admin' && <button disabled={busy} onClick={() => void save(null)} className={`${btn} border border-stone-300 bg-white text-xs`}><RefreshCw className="w-3.5 h-3.5" />{T('رجوع لإعدادات الملف')}</button>}
               </div>
-              {dirty && <p className="text-[11px] text-amber-700">فيه تعديلات لم تُحفظ.</p>}
+              {dirty && <p className="text-[11px] text-amber-700">{T('فيه تعديلات لم تُحفظ.')}</p>}
               {message && <p className="text-xs">{message}</p>}
               {probe && (
                 <div className="space-y-1.5 pt-1">
-                  <p className="text-[11px] text-stone-500">الاختبار يبعت طلب صغير حقيقي لكل محرك مسموح (بالإعدادات المحفوظة).</p>
+                  <p className="text-[11px] text-stone-500">{T('الاختبار يبعت طلب صغير حقيقي لكل محرك مسموح (بالإعدادات المحفوظة).')}</p>
                   {probe.map((r) => (
                     <div key={r.id} className={`flex items-start gap-2 rounded-xl border p-2 text-xs ${r.ok ? 'border-emerald-200 bg-emerald-50' : r.configured ? 'border-red-200 bg-red-50' : 'border-stone-200 bg-stone-50'}`}>
                       {r.ok ? <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" /> : <CircleAlert className={`w-4 h-4 shrink-0 ${r.configured ? 'text-red-700' : 'text-stone-400'}`} />}
                       <div>
-                        <p className="font-semibold">{ENGINE_LABEL[r.id]} <span className="font-normal text-stone-500" dir="ltr">{r.model}</span>{r.ms ? <span className="font-normal text-stone-400"> · {(r.ms / 1000).toFixed(1)} ث</span> : null}</p>
-                        <p>{r.ok ? 'يعمل ✅' : PROBE_ERROR[r.error || ''] || 'لم يعمل'}</p>
+                        <p className="font-semibold">{ENGINE_LABEL[r.id]} <span className="font-normal text-stone-500" dir="ltr">{r.model}</span>{r.ms ? <span className="font-normal text-stone-400">{TP(' · {n} ث', { n: (r.ms / 1000).toFixed(1) })}</span> : null}</p>
+                        <p>{r.ok ? T('يعمل ✅') : PROBE_ERROR[r.error || ''] || T('لم يعمل')}</p>
                         {r.usedModel && <p className="text-[10px] text-amber-700" dir="ltr">↪ {r.usedModel}</p>}
                         {r.detail && <p className="text-[10px] text-stone-500 break-words" dir="ltr">{r.detail}</p>}
                       </div>
                     </div>
                   ))}
-                  {!probe.length && <p className="text-xs text-stone-500">لا توجد محركات مسموح بها.</p>}
+                  {!probe.length && <p className="text-xs text-stone-500">{T('لا توجد محركات مسموح بها.')}</p>}
                 </div>
               )}
             </div>
 
             <div className={`${card} space-y-2`}>
-              <button type="button" onClick={() => setShowConfig((v) => !v)} className="text-xs font-semibold text-amber-800 hover:underline">{showConfig ? 'إخفاء' : 'عرض'} «الإعداد الدائم» لملف المستودع</button>
+              <button type="button" onClick={() => setShowConfig((v) => !v)} className="text-xs font-semibold text-amber-800 hover:underline">{showConfig ? T('إخفاء') : T('عرض')} {T('«الإعداد الدائم» لملف المستودع')}</button>
               {showConfig && (
                 <>
-                  <p className="text-[11px] text-stone-500">ده نفس الإعداد الحالي بصيغة ملف <code dir="ltr">server/config/shaheen.ts</code>. لما يتحط في المستودع ويتعمل نشر، يبقى هو الأساس على الموقعين حتى بدون تخزين دائم.</p>
+                  <p className="text-[11px] text-stone-500">{T('ده نفس الإعداد الحالي بصيغة ملف')} <code dir="ltr">server/config/shaheen.ts</code>{T('. لما يتحط في المستودع ويتعمل نشر، يبقى هو الأساس على الموقعين حتى بدون تخزين دائم.')}</p>
                   <pre dir="ltr" className="overflow-x-auto rounded-xl bg-stone-900 p-3 text-[11px] text-stone-100">{`export const SHAHEEN_SITE_SETTINGS: ShaheenSettings = ${JSON.stringify(form, null, 2)};`}</pre>
                 </>
               )}
@@ -1500,51 +1500,51 @@ function CouncilSettingsCard({ form, setForm, engines, onSave, busy, message }: 
     <div className={`${card} space-y-3 lg:col-span-2`}>
       <div className="flex flex-wrap items-center gap-2">
         <Users className="w-4 h-4 text-amber-700" />
-        <h2 className="font-bold text-sm">المجلس الاستشاري (نقاش بين نماذج الذكاء الاصطناعي)</h2>
-        <label className="ms-auto inline-flex items-center gap-1.5 text-xs font-semibold"><input type="checkbox" checked={council.enabled} onChange={(e) => set({ enabled: e.target.checked })} />مفعّل</label>
+        <h2 className="font-bold text-sm">{T('المجلس الاستشاري (نقاش بين نماذج الذكاء الاصطناعي)')}</h2>
+        <label className="ms-auto inline-flex items-center gap-1.5 text-xs font-semibold"><input type="checkbox" checked={council.enabled} onChange={(e) => set({ enabled: e.target.checked })} />{T('مفعّل')}</label>
       </div>
       <p className="text-[11px] text-stone-500 leading-relaxed">
-        كل مقعد يكتب رأيه مستقلاً ← المقاعد تراجع آراء بعضها بأسماء مجهولة (A، B، C) ← رئيس المجلس يكتب ردّاً استشارياً واحداً للزائر. الكل يشتغل على بيانات شام فقط، ومحدش منهم يقدر ينفّذ طلب أو يغيّر حاجة.
-        كل رد بالمجلس بيكلّف (عدد المقاعد × (1 + الجولات) + 1) طلب للمزوّدين، وفيه حد أقصى لكل زائر (SHAM_COUNCIL_RATE_PER_HOUR، الافتراضي 12 في الساعة).
+        {T('كل مقعد يكتب رأيه مستقلاً ← المقاعد تراجع آراء بعضها بأسماء مجهولة (A، B، C) ← رئيس المجلس يكتب ردّاً استشارياً واحداً للزائر. الكل يشتغل على بيانات شام فقط، ومحدش منهم يقدر ينفّذ طلب أو يغيّر حاجة.')}
+        {T('كل رد بالمجلس بيكلّف (عدد المقاعد × (1 + الجولات) + 1) طلب للمزوّدين، وفيه حد أقصى لكل زائر (SHAM_COUNCIL_RATE_PER_HOUR، الافتراضي 12 في الساعة.')}
       </p>
       <p className={`text-xs font-semibold ${ready >= 2 ? 'text-emerald-700' : 'text-amber-700'}`}>
-        {ready >= 2 ? `جاهز: ${ready} مقاعد مهيأة (يُستخدم أول 5).` : `غير جاهز: محتاج مقعدين مهيأين على الأقل (حالياً ${ready}). أضف مفاتيح المزوّدين أو اضبط SHAM_LLM_BASE_URL، ويمكن تشغيل أكثر من نموذج على نفس الخادم بتحديد اسم النموذج.`}
+        {ready >= 2 ? TP('جاهز: {n} مقاعد مهيأة (يُستخدم أول 5).', { n: ready }) : TP('غير جاهز: محتاج مقعدين مهيأين على الأقل (حالياً {n}). أضف مفاتيح المزوّدين أو اضبط SHAM_LLM_BASE_URL، ويمكن تشغيل أكثر من نموذج على نفس الخادم بتحديد اسم النموذج.', { n: ready })}
       </p>
       <div className="space-y-2">
         {council.members.map((m) => (
           <div key={m.id} className={`grid grid-cols-2 md:grid-cols-[auto_1fr_1fr_1fr_auto] items-center gap-2 rounded-xl border p-2 ${m.enabled && configured(m.engine) ? 'border-amber-300 bg-amber-50/40' : 'border-stone-200'}`}>
-            <input type="checkbox" aria-label="تفعيل المقعد" checked={m.enabled} onChange={(e) => setMember(m.id, { enabled: e.target.checked })} />
-            <select className={input} aria-label="المحرك" value={m.engine} onChange={(e) => setMember(m.id, { engine: e.target.value as ModelEngineId })}>
-              {MODEL_ENGINES.map((id) => <option key={id} value={id}>{ENGINE_LABEL[id]}{configured(id) ? '' : ' (غير مهيأ)'}</option>)}
+            <input type="checkbox" aria-label={T('تفعيل المقعد')} checked={m.enabled} onChange={(e) => setMember(m.id, { enabled: e.target.checked })} />
+            <select className={input} aria-label={T('المحرك')} value={m.engine} onChange={(e) => setMember(m.id, { engine: e.target.value as ModelEngineId })}>
+              {MODEL_ENGINES.map((id) => <option key={id} value={id}>{ENGINE_LABEL[id]}{configured(id) ? '' : T(' (غير مهيأ)')}</option>)}
             </select>
-            <input className={input} dir="ltr" aria-label="النموذج" placeholder={engines.find((e) => e.id === m.engine)?.model || 'model'} value={m.model || ''} onChange={(e) => setMember(m.id, { model: e.target.value.trim() || undefined })} />
-            <select className={input} aria-label="الدور" value={m.role} onChange={(e) => setMember(m.id, { role: e.target.value as CouncilRole })}>
+            <input className={input} dir="ltr" aria-label={T('النموذج')} placeholder={engines.find((e) => e.id === m.engine)?.model || 'model'} value={m.model || ''} onChange={(e) => setMember(m.id, { model: e.target.value.trim() || undefined })} />
+            <select className={input} aria-label={T('الدور')} value={m.role} onChange={(e) => setMember(m.id, { role: e.target.value as CouncilRole })}>
               {(Object.keys(COUNCIL_ROLE) as CouncilRole[]).map((r) => <option key={r} value={r}>{COUNCIL_ROLE[r]}</option>)}
             </select>
-            <button type="button" aria-label="حذف المقعد" onClick={() => set({ members: council.members.filter((x) => x.id !== m.id), chair: council.chair === m.id ? 'auto' : council.chair })} className="p-2 text-stone-400 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
+            <button type="button" aria-label={T('حذف المقعد')} onClick={() => set({ members: council.members.filter((x) => x.id !== m.id), chair: council.chair === m.id ? 'auto' : council.chair })} className="p-2 text-stone-400 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
           </div>
         ))}
         {council.members.length < 8 && (
           <button type="button" onClick={() => set({ members: [...council.members, { id: `seat-${Math.random().toString(36).slice(2, 10)}`, engine: 'self_hosted', role: 'general', enabled: true }] })}
-            className={`${btn} border border-dashed border-stone-300 text-xs w-full`}><Plus className="w-3.5 h-3.5" />إضافة مقعد</button>
+            className={`${btn} border border-dashed border-stone-300 text-xs w-full`}><Plus className="w-3.5 h-3.5" />{T('إضافة مقعد')}</button>
         )}
       </div>
       <div className="grid md:grid-cols-3 gap-3">
-        <Field label="رئيس المجلس (يكتب الرد النهائي)">
+        <Field label={T('رئيس المجلس (يكتب الرد النهائي)')}>
           <select className={input} value={council.chair} onChange={(e) => set({ chair: e.target.value })}>
-            <option value="auto">تلقائي (حسب ترتيب المحركات)</option>
-            {council.members.map((m, i) => <option key={m.id} value={m.id}>مقعد {i + 1}: {COUNCIL_ROLE[m.role]} — {ENGINE_LABEL[m.engine]}{m.model ? ` (${m.model})` : ''}</option>)}
+            <option value="auto">{T('تلقائي (حسب ترتيب المحركات)')}</option>
+            {council.members.map((m, i) => <option key={m.id} value={m.id}>{TP('مقعد {n}: {role} — {engine}', { n: i + 1, role: COUNCIL_ROLE[m.role], engine: ENGINE_LABEL[m.engine] })}{m.model ? ` (${m.model})` : ''}</option>)}
           </select>
         </Field>
-        <Field label="جولات النقاش (المراجعة المتبادلة)">
+        <Field label={T('جولات النقاش (المراجعة المتبادلة)')}>
           <select className={input} value={council.rounds} onChange={(e) => set({ rounds: Number(e.target.value) })}>
-            <option value={0}>بدون نقاش (آراء + خلاصة)</option><option value={1}>جولة واحدة (موصى به)</option><option value={2}>جولتان (أبطأ وأغلى)</option>
+            <option value={0}>{T('بدون نقاش (آراء + خلاصة)')}</option><option value={1}>{T('جولة واحدة (موصى به)')}</option><option value={2}>{T('جولتان (أبطأ وأغلى)')}</option>
           </select>
         </Field>
-        <label className="flex items-center gap-2 text-xs font-semibold mt-5"><input type="checkbox" checked={council.showDiscussion} onChange={(e) => set({ showDiscussion: e.target.checked })} />إظهار النقاش للزائر تحت الرد</label>
+        <label className="flex items-center gap-2 text-xs font-semibold mt-5"><input type="checkbox" checked={council.showDiscussion} onChange={(e) => set({ showDiscussion: e.target.checked })} />{T('إظهار النقاش للزائر تحت الرد')}</label>
       </div>
       <div>
-        <p className="text-xs font-semibold mb-1">يجتمع المجلس تلقائياً في (والزائر يقدر يطلبه بنفسه من زر المجلس في هذه الأنواع):</p>
+        <p className="text-xs font-semibold mb-1">{T('يجتمع المجلس تلقائياً في (والزائر يقدر يطلبه بنفسه من زر المجلس في هذه الأنواع):')}</p>
         <div className="flex flex-wrap gap-2">
           {COUNCIL_INTENTS.map((intent) => (
             <label key={intent} className="inline-flex items-center gap-1 text-[11px] rounded-full border border-stone-300 px-2 py-1">
@@ -1554,9 +1554,9 @@ function CouncilSettingsCard({ form, setForm, engines, onSave, busy, message }: 
         </div>
       </div>
       <div className="flex flex-wrap items-center gap-2">
-        <button disabled={busy} onClick={onSave} className={`${btn} bg-stone-900 text-amber-100`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />حفظ إعدادات المجلس</>}</button>
+        <button disabled={busy} onClick={onSave} className={`${btn} bg-stone-900 text-amber-100`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />{T('حفظ إعدادات المجلس')}</>}</button>
         {message && <p className="text-xs">{message}</p>}
-        <p className="text-[11px] text-stone-500">جرّبه من «مختبر المساعد» بعلامة «استشارة المجلس».</p>
+        <p className="text-[11px] text-stone-500">{T('جرّبه من «مختبر المساعد» بعلامة «استشارة المجلس».')}</p>
       </div>
     </div>
   );
@@ -1566,13 +1566,13 @@ function CouncilSettingsCard({ form, setForm, engines, onSave, busy, message }: 
 function CouncilTranscriptView({ council }: { council: CouncilTranscript }) {
   return (
     <details className="mt-1 text-[11px] text-stone-600">
-      <summary className="cursor-pointer font-semibold text-amber-800">نقاش المجلس ({council.entries.filter((e) => e.ok).length}/{council.entries.length} مقاعد · {council.rounds} جولة · {(council.ms / 1000).toFixed(1)} ث · {council.outcome})</summary>
+      <summary className="cursor-pointer font-semibold text-amber-800">{TP('نقاش المجلس ({seats} مقاعد · {rounds} جولة · {sec} ث · {outcome})', { seats: `${council.entries.filter((e) => e.ok).length}/${council.entries.length}`, rounds: council.rounds, sec: (council.ms / 1000).toFixed(1), outcome: council.outcome })}</summary>
       <div className="mt-1 space-y-1.5">
         {council.entries.map((e) => (
           <div key={e.memberId} className={`rounded-lg border p-1.5 ${e.ok ? 'border-stone-200 bg-white' : 'border-red-200 bg-red-50'}`}>
-            <p className="font-bold">{e.label} · {COUNCIL_ROLE[e.role]} · <span dir="ltr">{ENGINE_LABEL[e.engine]} {e.model}</span>{council.chair?.memberId === e.memberId ? ' · 👑 الرئيس' : ''} <span className="font-normal text-stone-400">{e.ms}ms</span></p>
-            {e.ok ? <p className="whitespace-pre-wrap">{e.opinion}</p> : <p className="text-red-700">لم يرد (فشل أو انتهت المهلة)</p>}
-            {e.reviews.map((r, i) => <p key={i} className="mt-1 whitespace-pre-wrap border-s-2 border-amber-300 ps-1.5"><b>مراجعة {i + 1}:</b> {r}</p>)}
+            <p className="font-bold">{e.label} · {COUNCIL_ROLE[e.role]} · <span dir="ltr">{ENGINE_LABEL[e.engine]} {e.model}</span>{council.chair?.memberId === e.memberId ? T(' · 👑 الرئيس') : ''} <span className="font-normal text-stone-400">{e.ms}ms</span></p>
+            {e.ok ? <p className="whitespace-pre-wrap">{e.opinion}</p> : <p className="text-red-700">{T('لم يرد (فشل أو انتهت المهلة)')}</p>}
+            {e.reviews.map((r, i) => <p key={i} className="mt-1 whitespace-pre-wrap border-s-2 border-amber-300 ps-1.5"><b>{TP('مراجعة {n}:', { n: i + 1 })}</b> {r}</p>)}
           </div>
         ))}
       </div>
@@ -1588,7 +1588,7 @@ function SandboxPanel() {
   const [log, setLog] = useState<{ q: string; r?: SandboxReply; error?: string }[]>([]);
   const [busy, setBusy] = useState(false);
   const [consult, setConsult] = useState(false);
-  const samples = useMemo(() => ['ازاي أركّب عطر عود ثابت؟', 'عايز اشتري زيت عود', 'محتاج عرض سعر جملة لمحل', 'يعني ايه تعتيق العطر؟', '50 مل بتركيز 20%', 'عايز أكلم موظف', 'What services do you offer?'], []);
+  const samples = useMemo(() => [T('ازاي أركّب عطر عود ثابت؟'), T('عايز اشتري زيت عود'), T('محتاج عرض سعر جملة لمحل'), T('يعني ايه تعتيق العطر؟'), T('50 مل بتركيز 20%'), T('عايز أكلم موظف'), 'What services do you offer?'], []);
   const run = async (q: string) => {
     if (!q.trim()) return; setBusy(true);
     try { const r = await adminRequest<SandboxReply>('/test-chat', send('POST', { message: q, language, ...(consult ? { consult: true } : {}) })); setLog((l) => [{ q, r }, ...l]); }
@@ -1596,12 +1596,12 @@ function SandboxPanel() {
   };
   return (
     <>
-      <Header title={T('مختبر المساعد')} subtitle="جرّب نفس مسار الزوار مع عرض كامل لخطوات التنفيذ (التوجيه، الاسترجاع، الأدوات، المحرك)" />
+      <Header title={T('مختبر المساعد')} subtitle={T('جرّب نفس مسار الزوار مع عرض كامل لخطوات التنفيذ (التوجيه، الاسترجاع، الأدوات، المحرك)')} />
       <form className={`${card} flex flex-wrap gap-2`} onSubmit={(e) => { e.preventDefault(); void run(message); }}>
-        <input className={`${input} flex-1 min-w-[200px]`} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="اكتب رسالة اختبار…" aria-label="رسالة اختبار" />
-        <select className={`${input} w-24`} value={language} onChange={(e) => setLanguage(e.target.value)} aria-label="اللغة"><option value="ar">ar</option><option value="en">en</option><option value="fr">fr</option></select>
-        <label className="inline-flex items-center gap-1 text-xs font-semibold"><input type="checkbox" checked={consult} onChange={(e) => setConsult(e.target.checked)} />استشارة المجلس</label>
-        <button disabled={busy} className={`${btn} bg-stone-900 text-amber-100`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : 'تشغيل'}</button>
+        <input className={`${input} flex-1 min-w-[200px]`} value={message} onChange={(e) => setMessage(e.target.value)} placeholder={T('اكتب رسالة اختبار…')} aria-label={T('رسالة اختبار')} />
+        <select className={`${input} w-24`} value={language} onChange={(e) => setLanguage(e.target.value)} aria-label={T('اللغة')}><option value="ar">ar</option><option value="en">en</option><option value="fr">fr</option></select>
+        <label className="inline-flex items-center gap-1 text-xs font-semibold"><input type="checkbox" checked={consult} onChange={(e) => setConsult(e.target.checked)} />{T('استشارة المجلس')}</label>
+        <button disabled={busy} className={`${btn} bg-stone-900 text-amber-100`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : T('تشغيل')}</button>
         <div className="w-full flex flex-wrap gap-1.5">{samples.map((s) => <button type="button" key={s} onClick={() => void run(s)} className="text-[11px] rounded-full border border-stone-300 px-2.5 py-1 hover:bg-amber-50">{s}</button>)}</div>
       </form>
       <div className="space-y-3 mt-4">
@@ -1613,10 +1613,10 @@ function SandboxPanel() {
               <div className="mt-2 grid md:grid-cols-2 gap-3">
                 <div>
                   <p className="text-sm whitespace-pre-wrap bg-amber-50 rounded-xl p-3">{entry.r.reply}</p>
-                  <p className="text-[11px] text-stone-500 mt-1">المحرك: <b>{ENGINE_LABEL[entry.r.engine.id] || entry.r.engine.name}</b> · النية: <b>{INTENT[entry.r.intent] || entry.r.intent}</b> · بطاقات: {entry.r.actions.map((a) => a.type + (a.serviceId ? `:${a.serviceId}` : '')).join('، ') || '—'}</p>
-                  {entry.r.citations.length > 0 && <p className="text-[11px] text-stone-500">المراجع: {entry.r.citations.map((c) => c.title).join(' · ')}</p>}
+                  <p className="text-[11px] text-stone-500 mt-1">{T('المحرك:')} <b>{ENGINE_LABEL[entry.r.engine.id] || entry.r.engine.name}</b> {T('· النية:')} <b>{INTENT[entry.r.intent] || entry.r.intent}</b> · {T('بطاقات:')} {entry.r.actions.map((a) => a.type + (a.serviceId ? `:${a.serviceId}` : '')).join(listSep()) || '—'}</p>
+                  {entry.r.citations.length > 0 && <p className="text-[11px] text-stone-500">{T('المراجع:')} {entry.r.citations.map((c) => c.title).join(' · ')}</p>}
                   {entry.r.council && (
-                    <details className="mt-2 text-[11px]" open><summary className="cursor-pointer font-semibold text-amber-800">نقاش المجلس ({entry.r.council.entries.length} مستشارين · {entry.r.council.rounds} جولة)</summary>
+                    <details className="mt-2 text-[11px]" open><summary className="cursor-pointer font-semibold text-amber-800">{TP('نقاش المجلس ({seats} مستشارين · {rounds} جولة)', { seats: entry.r.council.entries.length, rounds: entry.r.council.rounds })}</summary>
                       <div className="mt-1 space-y-1.5">{entry.r.council.entries.map((e) => (
                         <div key={e.label} className="rounded-lg border border-stone-200 p-1.5">
                           <p className="font-bold">{e.label} · {e.role} · <span dir="ltr">{e.engine}</span>{e.chair ? ' · 👑' : ''}</p>
@@ -1648,12 +1648,12 @@ function NotifyTest() {
       catch { setState('fail'); }
     }} className={`${btn} mt-3 bg-stone-100 border border-stone-300 text-xs`}>
       {state === 'busy' ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <BellRing className="w-3.5 h-3.5" />}
-      {state === 'ok' ? 'تم إرسال إشعار تجريبي ✅' : state === 'fail' ? 'فشل الإرسال — راجع الرابط' : 'إرسال إشعار تجريبي'}
+      {state === 'ok' ? T('تم إرسال إشعار تجريبي ✅') : state === 'fail' ? T('فشل الإرسال — راجع الرابط') : T('إرسال إشعار تجريبي')}
     </button>
   );
 }
 
-const AGENT_PRESETS = ['تقرير اليوم الكامل', 'إيه الطلبات المتأخرة؟', 'المخزون اللي قرب يخلص', 'الزوار سألوا عن إيه ومالقوش إجابة؟', 'رضا العملاء عامل إزاي؟', 'المبيعات والقيمة المتوقعة'];
+const AGENT_PRESETS = [T('تقرير اليوم الكامل'), T('إيه الطلبات المتأخرة؟'), T('المخزون اللي قرب يخلص'), T('الزوار سألوا عن إيه ومالقوش إجابة؟'), T('رضا العملاء عامل إزاي؟'), T('المبيعات والقيمة المتوقعة')];
 const SEVERITY: Record<AgentResult['sections'][number]['severity'], { cls: string; icon: React.ReactNode }> = {
   ok: { cls: 'border-emerald-200 bg-emerald-50/50', icon: <CheckCircle2 className="w-4 h-4 text-emerald-600" /> },
   warn: { cls: 'border-amber-300 bg-amber-50/60', icon: <TriangleAlert className="w-4 h-4 text-amber-600" /> },
@@ -1669,30 +1669,30 @@ function AgentPanel({ go }: { go: (t: Tab) => void }) {
   const [result, setResult] = useState<AgentResult | null>(null);
   const [asked, setAsked] = useState('');
   const run = async (text: string) => {
-    const q = text.trim() || 'تقرير اليوم الكامل';
+    const q = text.trim() || T('تقرير اليوم الكامل');
     setBusy(true); setError(''); setAsked(q);
     try { setResult(await adminRequest<AgentResult>('/agent', send('POST', { message: q }))); }
-    catch (e) { setError(e instanceof Error ? e.message : 'فشل التشغيل'); }
+    catch (e) { setError(e instanceof Error ? e.message : T('فشل التشغيل')); }
     finally { setBusy(false); }
   };
   return (
     <>
-      <Header title={T('المساعد الإداري')} subtitle="وكيل عمليات يخطط وينفذ أدوات قراءة فقط على بيانات شام ثم يكتب تقريراً بخطوات قابلة للتنفيذ. لا يعدّل أي بيانات بنفسه." />
+      <Header title={T('المساعد الإداري')} subtitle={T('وكيل عمليات يخطط وينفذ أدوات قراءة فقط على بيانات شام ثم يكتب تقريراً بخطوات قابلة للتنفيذ. لا يعدّل أي بيانات بنفسه.')} />
       <form className={`${card} space-y-3`} onSubmit={(e) => { e.preventDefault(); void run(message); }}>
         <div className="flex gap-2">
-          <input className={input} value={message} onChange={(e) => setMessage(e.target.value.slice(0, 1000))} placeholder="اطلب تقريراً… مثال: إيه اللي محتاج انتباهي النهارده؟" aria-label="طلب للمساعد الإداري" />
-          <button disabled={busy} className={`${btn} bg-stone-900 text-amber-100 shrink-0`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}تشغيل</button>
+          <input className={input} value={message} onChange={(e) => setMessage(e.target.value.slice(0, 1000))} placeholder={T('اطلب تقريراً… مثال: إيه اللي محتاج انتباهي النهارده؟')} aria-label={T('طلب للمساعد الإداري')} />
+          <button disabled={busy} className={`${btn} bg-stone-900 text-amber-100 shrink-0`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}{T('تشغيل')}</button>
         </div>
         <div className="flex flex-wrap gap-1.5">
           {AGENT_PRESETS.map((p) => <button key={p} type="button" disabled={busy} onClick={() => { setMessage(p); void run(p); }} className="text-xs rounded-full border border-amber-300 bg-amber-50 px-3 py-1 hover:bg-amber-100 disabled:opacity-50">{p}</button>)}
         </div>
       </form>
       {error && <p role="alert" className="mt-3 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p>}
-      {busy && <div className="mt-4 flex items-center gap-2 text-sm text-stone-500"><Loader2 className="w-4 h-4 animate-spin" />الوكيل يخطط وينفذ المهام…</div>}
+      {busy && <div className="mt-4 flex items-center gap-2 text-sm text-stone-500"><Loader2 className="w-4 h-4 animate-spin" />{T('الوكيل يخطط وينفذ المهام…')}</div>}
       {result && !busy && (
         <div className="mt-4 grid lg:grid-cols-[260px_1fr] gap-4">
           <div className={card}>
-            <h2 className="font-bold text-sm mb-1">الخطة المنفذة</h2>
+            <h2 className="font-bold text-sm mb-1">{T('الخطة المنفذة')}</h2>
             <p className="text-[11px] text-stone-500 mb-3">«{asked}»</p>
             <ol className="border-s-2 border-amber-300 ps-3 space-y-2">
               {result.plan.map((step, i) => (
@@ -1702,11 +1702,11 @@ function AgentPanel({ go }: { go: (t: Tab) => void }) {
                 </li>
               ))}
             </ol>
-            <p className="text-[10px] text-stone-400 mt-3">صياغة الملخص: {ENGINE_LABEL[result.engine] || result.engine}</p>
+            <p className="text-[10px] text-stone-400 mt-3">{T('صياغة الملخص:')} {ENGINE_LABEL[result.engine] || result.engine}</p>
           </div>
           <div className="space-y-3">
             <div className={`${card} border-amber-300`}>
-              <h2 className="font-bold text-sm mb-2 flex items-center gap-1.5"><Wand2 className="w-4 h-4 text-amber-700" />الملخص</h2>
+              <h2 className="font-bold text-sm mb-2 flex items-center gap-1.5"><Wand2 className="w-4 h-4 text-amber-700" />{T('الملخص')}</h2>
               <p className="text-sm leading-relaxed whitespace-pre-wrap">{result.summary}</p>
               {result.nextActions.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-2">
@@ -1721,7 +1721,7 @@ function AgentPanel({ go }: { go: (t: Tab) => void }) {
                 <div key={section.task} className={`rounded-2xl border p-4 ${SEVERITY[section.severity].cls}`}>
                   <div className="flex items-center justify-between gap-2 mb-2">
                     <h3 className="font-bold text-sm flex items-center gap-1.5">{SEVERITY[section.severity].icon}{section.title}</h3>
-                    {TAB_IDS.has(section.tab) && <button type="button" onClick={() => go(section.tab as Tab)} className="text-[11px] text-stone-600 hover:underline">فتح ←</button>}
+                    {TAB_IDS.has(section.tab) && <button type="button" onClick={() => go(section.tab as Tab)} className="text-[11px] text-stone-600 hover:underline">{T('فتح ←')}</button>}
                   </div>
                   <ul className="text-xs space-y-1 text-stone-700 list-disc ps-4">{section.lines.map((line, i) => <li key={i}>{line}</li>)}</ul>
                 </div>
@@ -1751,30 +1751,30 @@ function QualityPanel() {
   const patch = async (id: string, body: unknown) => {
     setBusy(true); setError('');
     try { await adminRequest(`/gaps/${encodeURIComponent(id)}`, send('PATCH', body)); setEditing(null); gaps.reload(); }
-    catch (e) { setError(e instanceof Error ? e.message : 'فشل الحفظ'); }
+    catch (e) { setError(e instanceof Error ? e.message : T('فشل الحفظ')); }
     finally { setBusy(false); }
   };
 
   return (
     <>
-      <Header title={T('الجودة والتعلّم')} subtitle="كل سؤال لم يجد إجابة أو رد قيّمه زائر سلبياً يتحول لفجوة. اكتب الإجابة مرة واحدة فتُضاف لقاعدة المعرفة ويستخدمها المساعد فوراً."
+      <Header title={T('الجودة والتعلّم')} subtitle={T('كل سؤال لم يجد إجابة أو رد قيّمه زائر سلبياً يتحول لفجوة. اكتب الإجابة مرة واحدة فتُضاف لقاعدة المعرفة ويستخدمها المساعد فوراً.')}
         actions={<button onClick={() => { gaps.reload(); feedback.reload(); }} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" />{T('تحديث')}</button>} />
       <div className="grid grid-cols-3 gap-3 mb-4">
-        <div className={card}><p className="text-xs text-stone-500">فجوات مفتوحة</p><p className="text-3xl font-bold text-orange-700">{gaps.data?.items.filter((g) => g.status === 'open').length ?? '…'}</p></div>
-        <div className={card}><p className="text-xs text-stone-500">نسبة الرضا</p><p className="text-3xl font-bold text-emerald-700">{rate === null ? '—' : `${rate}%`}</p></div>
-        <div className={card}><p className="text-xs text-stone-500">التقييمات</p><p className="text-lg font-bold mt-2"><span className="text-emerald-700">👍 {ups}</span> · <span className="text-red-700">👎 {downs}</span></p></div>
+        <div className={card}><p className="text-xs text-stone-500">{T('فجوات مفتوحة')}</p><p className="text-3xl font-bold text-orange-700">{gaps.data?.items.filter((g) => g.status === 'open').length ?? '…'}</p></div>
+        <div className={card}><p className="text-xs text-stone-500">{T('نسبة الرضا')}</p><p className="text-3xl font-bold text-emerald-700">{rate === null ? '—' : `${rate}%`}</p></div>
+        <div className={card}><p className="text-xs text-stone-500">{T('التقييمات')}</p><p className="text-lg font-bold mt-2"><span className="text-emerald-700">👍 {ups}</span> · <span className="text-red-700">👎 {downs}</span></p></div>
       </div>
       {error && <p role="alert" className="mb-3 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p>}
       <div className="grid xl:grid-cols-2 gap-4">
         <section className={card}>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="font-bold text-sm flex items-center gap-1.5"><Lightbulb className="w-4 h-4 text-amber-600" />فجوات المعرفة</h2>
+            <h2 className="font-bold text-sm flex items-center gap-1.5"><Lightbulb className="w-4 h-4 text-amber-600" />{T('فجوات المعرفة')}</h2>
             <div className="flex text-xs rounded-lg border border-stone-200 overflow-hidden">
-              {(['open', 'all'] as const).map((v) => <button key={v} type="button" onClick={() => setView(v)} className={`px-2.5 py-1 ${view === v ? 'bg-stone-900 text-white' : ''}`}>{v === 'open' ? 'المفتوحة' : 'الكل'}</button>)}
+              {(['open', 'all'] as const).map((v) => <button key={v} type="button" onClick={() => setView(v)} className={`px-2.5 py-1 ${view === v ? 'bg-stone-900 text-white' : ''}`}>{v === 'open' ? T('المفتوحة') : T('الكل')}</button>)}
             </div>
           </div>
           <Feedback error={gaps.error} loading={gaps.loading && !gaps.data} />
-          {gaps.data && !items.length && <p className="text-xs text-stone-400 py-4 text-center">لا توجد فجوات {view === 'open' ? 'مفتوحة' : ''} — ممتاز.</p>}
+          {gaps.data && !items.length && <p className="text-xs text-stone-400 py-4 text-center">{view === 'open' ? T('لا توجد فجوات مفتوحة — ممتاز.') : T('لا توجد فجوات — ممتاز.')}</p>}
           <ul className="space-y-2">
             {items.map((g) => (
               <li key={g.id} className="rounded-xl border border-stone-200 p-3 text-sm">
@@ -1783,35 +1783,35 @@ function QualityPanel() {
                   <span className="shrink-0 text-[11px] rounded-full bg-stone-100 px-2 py-0.5">×{g.count}</span>
                 </div>
                 <p className="text-[11px] text-stone-500 mt-1">
-                  {g.source === 'no_answer' ? 'لم يجد المساعد إجابة' : `تقييم سلبي${g.reason ? `: ${g.reason}` : ''}`} · آخر مرة {fmtDate(g.lastAt)}
-                  {g.status !== 'open' && <b className="ms-1">{g.status === 'resolved' ? '· تم الحل ✅' : '· متجاهلة'}</b>}
+                  {g.source === 'no_answer' ? T('لم يجد المساعد إجابة') : g.reason ? TP('تقييم سلبي: {reason}', { reason: g.reason }) : T('تقييم سلبي')} · {T('آخر مرة')} {fmtDate(g.lastAt)}
+                  {g.status !== 'open' && <b className="ms-1">{g.status === 'resolved' ? T('· تم الحل ✅') : T('· متجاهلة')}</b>}
                 </p>
-                {g.lastAnswer && <p className="mt-1.5 text-[11px] text-stone-500 line-clamp-2 bg-stone-50 rounded-lg p-1.5">رد المساعد: {g.lastAnswer}</p>}
+                {g.lastAnswer && <p className="mt-1.5 text-[11px] text-stone-500 line-clamp-2 bg-stone-50 rounded-lg p-1.5">{T('رد المساعد:')} {g.lastAnswer}</p>}
                 {editing === g.id ? (
                   <form className="mt-2 space-y-2" onSubmit={(e) => { e.preventDefault(); void patch(g.id, draft); }}>
-                    <input className={input} required value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} placeholder="عنوان المستند" aria-label="عنوان المستند" />
-                    <textarea className={input} required rows={4} value={draft.content} onChange={(e) => setDraft({ ...draft, content: e.target.value })} placeholder="الإجابة الصحيحة كما يجب أن يقولها المساعد" aria-label="الإجابة" />
+                    <input className={input} required value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} placeholder={T('عنوان المستند')} aria-label={T('عنوان المستند')} />
+                    <textarea className={input} required rows={4} value={draft.content} onChange={(e) => setDraft({ ...draft, content: e.target.value })} placeholder={T('الإجابة الصحيحة كما يجب أن يقولها المساعد')} aria-label={T('الإجابة')} />
                     <div className="flex gap-2">
-                      <button disabled={busy} className={`${btn} bg-emerald-700 text-white`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}حفظ في قاعدة المعرفة</button>
-                      <button type="button" onClick={() => setEditing(null)} className={`${btn} border border-stone-300`}>إلغاء</button>
+                      <button disabled={busy} className={`${btn} bg-emerald-700 text-white`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}{T('حفظ في قاعدة المعرفة')}</button>
+                      <button type="button" onClick={() => setEditing(null)} className={`${btn} border border-stone-300`}>{T('إلغاء')}</button>
                     </div>
                   </form>
                 ) : g.status === 'open' ? (
                   <div className="mt-2 flex gap-2">
-                    <button type="button" onClick={() => { setEditing(g.id); setDraft({ title: g.question.slice(0, 120), content: '' }); }} className={`${btn} text-xs bg-stone-900 text-amber-100`}><BookOpen className="w-3.5 h-3.5" />أضف الإجابة</button>
-                    <button type="button" disabled={busy} onClick={() => void patch(g.id, { status: 'ignored' })} className={`${btn} text-xs border border-stone-300`}><EyeOff className="w-3.5 h-3.5" />تجاهل</button>
+                    <button type="button" onClick={() => { setEditing(g.id); setDraft({ title: g.question.slice(0, 120), content: '' }); }} className={`${btn} text-xs bg-stone-900 text-amber-100`}><BookOpen className="w-3.5 h-3.5" />{T('أضف الإجابة')}</button>
+                    <button type="button" disabled={busy} onClick={() => void patch(g.id, { status: 'ignored' })} className={`${btn} text-xs border border-stone-300`}><EyeOff className="w-3.5 h-3.5" />{T('تجاهل')}</button>
                   </div>
                 ) : g.status === 'ignored' ? (
-                  <button type="button" disabled={busy} onClick={() => void patch(g.id, { status: 'open' })} className="mt-2 text-[11px] text-stone-600 hover:underline">إعادة فتح</button>
+                  <button type="button" disabled={busy} onClick={() => void patch(g.id, { status: 'open' })} className="mt-2 text-[11px] text-stone-600 hover:underline">{T('إعادة فتح')}</button>
                 ) : null}
               </li>
             ))}
           </ul>
         </section>
         <section className={card}>
-          <h2 className="font-bold text-sm mb-3">آخر التقييمات</h2>
+          <h2 className="font-bold text-sm mb-3">{T('آخر التقييمات')}</h2>
           <Feedback error={feedback.error} loading={feedback.loading && !feedback.data} />
-          {feedback.data && !feedback.data.items.length && <p className="text-xs text-stone-400 py-4 text-center">لم يقيّم الزوار أي رد بعد.</p>}
+          {feedback.data && !feedback.data.items.length && <p className="text-xs text-stone-400 py-4 text-center">{T('لم يقيّم الزوار أي رد بعد.')}</p>}
           <ul className="space-y-2 max-h-[70vh] overflow-y-auto">
             {feedback.data?.items.map((f) => (
               <li key={`${f.conversationId}-${f.messageId}`} className={`rounded-xl border p-3 text-xs ${f.rating === 'down' ? 'border-red-200' : 'border-emerald-200'}`}>
@@ -1820,7 +1820,7 @@ function QualityPanel() {
                   <span className="truncate">{f.question || '—'}</span>
                 </div>
                 <p className="mt-1 text-stone-600 line-clamp-3">{f.answer}</p>
-                <p className="mt-1 text-[10px] text-stone-400">{fmtDate(f.at)} · {ENGINE_LABEL[f.engine || ''] || f.engine} {f.intent ? `· ${INTENT[f.intent] || f.intent}` : ''}{f.reason ? ` · السبب: ${f.reason}` : ''}</p>
+                <p className="mt-1 text-[10px] text-stone-400">{fmtDate(f.at)} · {ENGINE_LABEL[f.engine || ''] || f.engine} {f.intent ? `· ${INTENT[f.intent] || f.intent}` : ''}{f.reason ? TP(' · السبب: {reason}', { reason: f.reason }) : ''}</p>
               </li>
             ))}
           </ul>
@@ -1839,8 +1839,8 @@ interface MaintenanceSnapshot {
   remedies: { action: string; at: string }[];
 }
 const DOCTOR_REPO = (import.meta.env.VITE_GITHUB_REPO as string | undefined) || 'spculculat-oss/Sham-Perfume';
-const REMEDY_LABEL: Record<string, string> = { reset_provider_gate: 'تصفير حالة المزوّدين', refresh_model_list: 'تحديث قائمة الموديلات', clear_answer_cache: 'مسح ذاكرة الإجابات' };
-const FIX_RESULT: Record<string, string> = { merged: '⏳ تحت المراقبة', failed: '❌ ما اتطبقش', verified: '✅ شغال', reverted: '↩️ اترجع', unverified: '⚪ من غير تأكيد' };
+const REMEDY_LABEL: Record<string, string> = reactiveMap(() => ({ reset_provider_gate: T('تصفير حالة المزوّدين'), refresh_model_list: T('تحديث قائمة الموديلات'), clear_answer_cache: T('مسح ذاكرة الإجابات') }));
+const FIX_RESULT: Record<string, string> = reactiveMap(() => ({ merged: T('⏳ تحت المراقبة'), failed: T('❌ ما اتطبقش'), verified: T('✅ شغال'), reverted: T('↩️ اترجع'), unverified: T('⚪ من غير تأكيد') }));
 
 function DoctorPanel() {
   const { data, error, loading, reload } = useLoad<MaintenanceSnapshot>('/maintenance');
@@ -1856,51 +1856,51 @@ function DoctorPanel() {
   useEffect(() => { loadReport(); }, [loadReport]);
   const remedy = async (action: string) => {
     setBusy(action); setMessage('');
-    try { await adminRequest('/maintenance', send('POST', { action })); setMessage(`تم: ${REMEDY_LABEL[action]} ✅`); reload(); }
+    try { await adminRequest('/maintenance', send('POST', { action })); setMessage(TP('تم: {action} ✅', { action: REMEDY_LABEL[action] })); reload(); }
     catch (e) { setMessage((e as Error).message); } finally { setBusy(''); }
   };
   const w = data?.window;
   return (
     <>
-      <Header title="طبيب شاهين — الصيانة التلقائية" subtitle="بيراجع الخبير شاهين كل 10 دقايق من خوادم GitHub (مش من خادم الموقع) وبيصلّح المشاكل لوحده"
+      <Header title={T('طبيب شاهين — الصيانة التلقائية')} subtitle={T('بيراجع الخبير شاهين كل 10 دقايق من خوادم GitHub (مش من خادم الموقع) وبيصلّح المشاكل لوحده')}
         actions={<button type="button" onClick={() => { reload(); loadReport(); }} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" />{T('تحديث')}</button>} />
       <div className="grid lg:grid-cols-2 gap-4">
         <div className={`${card} space-y-2`}>
-          <h2 className="font-bold text-sm">آخر تقرير للطبيب</h2>
+          <h2 className="font-bold text-sm">{T('آخر تقرير للطبيب')}</h2>
           {report === undefined && <Feedback loading />}
-          {report === null && <p className="text-xs text-stone-500">لسه مفيش تقرير — أول فحص بيتعمل خلال 10 دقايق من دمج الطبيب في main.</p>}
+          {report === null && <p className="text-xs text-stone-500">{T('لسه مفيش تقرير — أول فحص بيتعمل خلال 10 دقايق من دمج الطبيب في main.')}</p>}
           {report && (
             <>
               <p className="text-sm font-semibold">{report.headline}</p>
-              {report.lastRun && <p className="text-[11px] text-stone-500">آخر فحص: {new Date(report.lastRun).toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}</p>}
+              {report.lastRun && <p className="text-[11px] text-stone-500">{T('آخر فحص:')} {new Date(report.lastRun).toLocaleString(adminLocale(), { timeZone: 'Africa/Cairo' })}</p>}
               <ul className="space-y-1">
                 {report.rows.map((r) => <li key={r.check} className="flex gap-2 text-xs"><span>{r.status}</span><span className="font-semibold">{r.check}</span><span className="text-stone-500 truncate">{r.detail}</span></li>)}
               </ul>
-              {report.timeline && <p className="text-xs" title="آخر 6 ساعات">آخر 6 ساعات: <span className="tracking-tight">{report.timeline}</span></p>}
-              <h3 className="font-bold text-xs pt-2">إصلاحات الكود التلقائية</h3>
+              {report.timeline && <p className="text-xs" title={T('آخر 6 ساعات')}>{T('آخر 6 ساعات:')} <span className="tracking-tight">{report.timeline}</span></p>}
+              <h3 className="font-bold text-xs pt-2">{T('إصلاحات الكود التلقائية')}</h3>
               {report.fixes.length ? report.fixes.map((f) => (
-                <p key={f.at} className="text-xs">{FIX_RESULT[f.result] || f.result} — {f.summary || f.problem}{f.url && <> · <a href={f.url} target="_blank" rel="noreferrer" className="text-amber-700 underline">التغيير</a></>}</p>
-              )) : <p className="text-xs text-stone-500">لسه مفيش</p>}
-              <a href={report.url} target="_blank" rel="noreferrer" className="inline-block text-xs text-amber-700 underline">السجل الكامل على GitHub ←</a>
+                <p key={f.at} className="text-xs">{FIX_RESULT[f.result] || f.result} — {f.summary || f.problem}{f.url && <> · <a href={f.url} target="_blank" rel="noreferrer" className="text-amber-700 underline">{T('التغيير')}</a></>}</p>
+              )) : <p className="text-xs text-stone-500">{T('لسه مفيش')}</p>}
+              <a href={report.url} target="_blank" rel="noreferrer" className="inline-block text-xs text-amber-700 underline">{T('السجل الكامل على GitHub ←')}</a>
             </>
           )}
         </div>
         <div className={`${card} space-y-2`}>
-          <h2 className="font-bold text-sm">الخادم دلوقتي (النسخة اللي ردّت)</h2>
+          <h2 className="font-bold text-sm">{T('الخادم دلوقتي (النسخة اللي ردّت)')}</h2>
           <Feedback error={error} loading={loading && !data} />
           {w && data && (
             <>
               <p className="text-xs text-stone-500" dir="ltr">version {data.version.slice(0, 7)} · up {Math.round(data.uptimeS / 60)} min</p>
               <div className="grid grid-cols-3 gap-2 text-center">
-                <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{w.answered}</p><p className="text-[10px] text-stone-500">ردود آخر 10 د</p></div>
-                <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{Math.round(w.errorRate * 100)}%</p><p className="text-[10px] text-stone-500">أخطاء</p></div>
-                <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{(w.latencyMs.p95 / 1000).toFixed(1)}ث</p><p className="text-[10px] text-stone-500">p95</p></div>
+                <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{w.answered}</p><p className="text-[10px] text-stone-500">{T('ردود آخر 10 د')}</p></div>
+                <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{Math.round(w.errorRate * 100)}%</p><p className="text-[10px] text-stone-500">{T('أخطاء')}</p></div>
+                <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{TP('{n}ث', { n: (w.latencyMs.p95 / 1000).toFixed(1) })}</p><p className="text-[10px] text-stone-500">p95</p></div>
               </div>
               {Object.keys(w.errors).length > 0 && <p className="text-xs text-red-700" dir="ltr">{Object.entries(w.errors).map(([k, v]) => `${k}: ${v}`).join(' · ')}</p>}
               {Object.entries(data.providers).map(([id, p]) => (
-                <p key={id} className="text-xs">{ENGINE_LABEL[id] || id}: {p.coolingMs > 0 ? `⏸️ متوقف ${Math.ceil(p.coolingMs / 1000)}ث (حصة)` : '🟢 متاح'} · {p.startedLastMinute}/دقيقة{p.rpm ? ` · حد ${p.rpm}` : ''}</p>
+                <p key={id} className="text-xs">{ENGINE_LABEL[id] || id}: {p.coolingMs > 0 ? TP('⏸️ متوقف {sec}ث (حصة)', { sec: Math.ceil(p.coolingMs / 1000) }) : T('🟢 متاح')} · {TP('{n}/دقيقة', { n: p.startedLastMinute })}{p.rpm ? TP(' · حد {rpm}', { rpm: p.rpm }) : ''}</p>
               ))}
-              {data.answerCache && <p className="text-xs text-stone-600">ذاكرة الإجابات: {data.answerCache.entries} إجابة · {data.answerCache.hits} مرة من الذاكرة</p>}
+              {data.answerCache && <p className="text-xs text-stone-600">{T('ذاكرة الإجابات:')} {data.answerCache.entries} {T('إجابة')} · {data.answerCache.hits} {T('مرة من الذاكرة')}</p>}
               <div className="flex flex-wrap gap-2 pt-1">
                 {Object.keys(REMEDY_LABEL).map((action) => (
                   <button key={action} type="button" disabled={Boolean(busy)} onClick={() => remedy(action)} className={`${btn} text-xs bg-stone-900 text-amber-100`}>
