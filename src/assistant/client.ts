@@ -1,5 +1,5 @@
 /** Browser client for Sham Core. Same-origin relative URLs only (works behind any host/proxy). */
-import { ApiError, ApiUnavailableError, isStaticHosting, requestApi } from '../utils/api';
+import { ApiError, ApiUnavailableError, apiUrl, isStaticHosting, requestApi } from '../utils/api';
 import type { SupportedLanguage } from '../types/i18n';
 
 export interface FormField { name: string; labelAr: string; labelEn: string; type: 'text' | 'textarea' | 'number' | 'select' | 'email' | 'tel'; required?: boolean; options?: string[] }
@@ -60,7 +60,7 @@ export const assistantApi = {
  */
 export async function streamChat(message: string, language: SupportedLanguage, conversationId: string | undefined, onEvent: (event: StreamEvent) => void, signal?: AbortSignal, rewind?: string, consult?: boolean): Promise<ChatReply> {
   if (isStaticHosting) throw new ApiUnavailableError();
-  const response = await fetch('/api/assistant/chat/stream', { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined, consult: consult || undefined }), signal });
+  const response = await fetch(apiUrl('/api/assistant/chat/stream'), { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined, consult: consult || undefined }), signal });
   if (!response.ok) {
     let code: string | undefined;
     try { code = (await response.json())?.code; } catch { /* not JSON */ }

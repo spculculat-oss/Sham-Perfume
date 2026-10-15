@@ -1,4 +1,5 @@
 /** Admin client. The token lives in sessionStorage only (cleared when the tab closes). */
+import { apiUrl } from '../utils/api';
 export const ADMIN_TOKEN_KEY = 'sham_core_admin_token';
 
 export class AdminApiError extends Error {
@@ -9,7 +10,7 @@ export function getToken() { try { return sessionStorage.getItem(ADMIN_TOKEN_KEY
 export function setToken(token: string) { try { if (token) sessionStorage.setItem(ADMIN_TOKEN_KEY, token); else sessionStorage.removeItem(ADMIN_TOKEN_KEY); } catch { /* ignore */ } }
 
 export async function adminRequest<T>(path: string, init: RequestInit = {}, token = getToken()): Promise<T> {
-  const response = await fetch(`/api/admin${path}`, {
+  const response = await fetch(apiUrl(`/api/admin${path}`), {
     ...init,
     headers: { ...(init.body ? { 'Content-Type': 'application/json' } : {}), Authorization: `Bearer ${token}`, ...(init.headers || {}) },
     signal: init.signal || AbortSignal.timeout(45000),

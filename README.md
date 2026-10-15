@@ -90,7 +90,9 @@ git status
 
 ملفات `docs` موجودة في Git للحفاظ على التوافق مع النشر القديم. `dist` و`node_modules` لا تُرفع.
 
-> GitHub Pages يستضيف الواجهة الثابتة فقط؛ نجاح نشره لا يعني أن `server.ts` أو `/api/chat` أو `/api/news` تعمل عليه.
+> GitHub Pages يستضيف الواجهة الثابتة فقط ولا يشغّل `server.ts`. عشان الشات بوتات تشتغل عليه، الـ workflow بيبني النسخة الثابتة بـ `VITE_API_BASE_URL`، فالواجهة بتكلّم خادم Vercel مباشرة. القيمة جاية من متغير المستودع `PAGES_API_BASE_URL`، والافتراضي `https://sham-perfume-49bf.vercel.app`.
+> الخادم بيسمح بالطلبات دي بس للدومينات المكتوبة في `SHAM_CORS_ORIGINS`، والافتراضي `https://spculculat-oss.github.io`.
+> مفاتيح الذكاء الاصطناعي بتفضل على Vercel وعمرها ما توصل للمتصفح.
 
 ## نشر الواجهة وAPI معًا على Vercel
 

@@ -129,3 +129,25 @@ test('invalid JSON and oversized payloads return JSON errors', async () => {
     assert.equal((await response.json()).code, 'INVALID_REQUEST');
   }
 });
+
+test('CORS: the GitHub Pages origin may call the API cross-origin, other sites may not', async () => {
+  const pages = 'https://spculculat-oss.github.io';
+  for (const path of ['/api/chat', '/api/assistant/chat/stream', '/api/admin/settings']) {
+    const preflight = await fetch(`${baseUrl}${path}`, { method: 'OPTIONS', headers: { Origin: pages, 'Access-Control-Request-Method': 'POST', 'Access-Control-Request-Headers': 'content-type,authorization' } });
+    assert.equal(preflight.status, 204, path);
+    assert.equal(preflight.headers.get('access-control-allow-origin'), pages);
+    assert.match(preflight.headers.get('access-control-allow-headers') || '', /Authorization/);
+    assert.equal(preflight.headers.get('access-control-allow-credentials'), null, 'no cookies cross-origin');
+  }
+  const models = await fetch(`${baseUrl}/api/models`, { headers: { Origin: pages } });
+  assert.equal(models.headers.get('access-control-allow-origin'), pages);
+  const bad = await fetch(`${baseUrl}/api/chat`, { method: 'POST', headers: { Origin: pages, 'Content-Type': 'application/json' }, body: '{bad' });
+  assert.equal(bad.status, 400);
+  assert.equal(bad.headers.get('access-control-allow-origin'), pages, 'errors are readable by the Pages site too');
+
+  const evil = await fetch(`${baseUrl}/api/models`, { headers: { Origin: 'https://evil.example' } });
+  assert.equal(evil.headers.get('access-control-allow-origin'), null);
+  assert.match(evil.headers.get('vary') || '', /Origin/);
+  const evilPreflight = await fetch(`${baseUrl}/api/chat`, { method: 'OPTIONS', headers: { Origin: 'https://evil.example', 'Access-Control-Request-Method': 'POST' } });
+  assert.equal(evilPreflight.headers.get('access-control-allow-origin'), null);
+});

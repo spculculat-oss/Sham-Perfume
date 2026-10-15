@@ -92,12 +92,13 @@ Sham Core هو مساعد الخدمات ولوحة الإدارة داخل مو
 | `OPENROUTER_API_KEY` / `OPENROUTER_MODEL` | مفتاح واحد لنماذج كتير من شركات مختلفة، مفيد لمقاعد المجلس |
 | `SHAM_COUNCIL_RATE_PER_HOUR` | حد ردود المجلس لكل زائر في الساعة (الافتراضي 12) |
 | `SHAM_SEED_DEMO=true` | منتجات تجريبية مُعلَّمة «تجريبي» للمعاينة فقط |
+| `SHAM_CORS_ORIGINS` | المواقع المسموح لها تكلّم الـ API من دومين تاني (الافتراضي GitHub Pages؛ `none` يقفلها) |
 | `SHAM_CHAT_RATE_PER_MIN` / `SHAM_TRUST_PROXY` | حد الرسائل لكل IP في الدقيقة، وعدد البروكسيات الموثوقة (الافتراضي على Vercel = 1) |
 
 - **سيرفر Node / VPS:** `SHAM_STORE=file` تخزين دائم على القرص. ممكن تشغّل Ollama على نفس السيرفر وتضبط `SHAM_LLM_BASE_URL`.
 - **Vercel:** الدوال مالهاش قرص دائم، فاستخدم `SHAM_STORE=firestore`. من غيره البيانات بتتمسح عند إعادة التشغيل، واللوحة بتنبّه لده.
 - **Firebase:** حساب الخدمة بيتخطى `firestore.rules`، والقواعد الحالية بتفضل قافلة الوصول من المتصفح. المجموعات بتبدأ بـ `sham_core_`.
-- **GitHub Pages:** نسخة ثابتة. الودجت واللوحة بيوضحوا إنهم محتاجين خادم.
+- **GitHub Pages:** نسخة ثابتة مالهاش خادم. الـ workflow بيبنيها بـ `VITE_API_BASE_URL` (متغير المستودع `PAGES_API_BASE_URL`، والافتراضي `https://sham-perfume-49bf.vercel.app`)، فالشات بوتات (مساعد شام وشاهين) ولوحة الإدارة بيكلّموا خادم Vercel مباشرة. الخادم بيسمح بده بس للمواقع المكتوبة في `SHAM_CORS_ORIGINS` (الافتراضي `https://spculculat-oss.github.io`)، ومن غير كوكيز. لو حطيت `PAGES_API_BASE_URL=none`، النسخة الثابتة بترجع تقفل مزايا الخادم وتعرض تنبيه.
 
 ---
 

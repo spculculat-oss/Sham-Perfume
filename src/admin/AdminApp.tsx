@@ -9,7 +9,7 @@ import type {
 } from '../../server/core/types';
 import type { AgentResult } from '../../server/core/adminAgent';
 import { AdminApiError, adminRequest, getToken, send, setToken } from './adminApi';
-import { isStaticHosting } from '../utils/api';
+import { apiUrl, isStaticHosting } from '../utils/api';
 
 type Tab = 'overview' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'sandbox';
 interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: string }
@@ -550,7 +550,7 @@ function EnginesPanel() {
       <Header title="المحركات والإعدادات" subtitle="سياسة اختيار المحرك مع التحويل التلقائي عند الفشل؛ محرك شام الذاتي هو خط الأمان الأخير دائماً"
         actions={<a href="/api/admin/export" onClick={async (e) => {
           e.preventDefault();
-          const response = await fetch('/api/admin/export', { headers: { Authorization: `Bearer ${getToken()}` } });
+          const response = await fetch(apiUrl('/api/admin/export'), { headers: { Authorization: `Bearer ${getToken()}` } });
           const blob = await response.blob(); const url = URL.createObjectURL(blob);
           const a = document.createElement('a'); a.href = url; a.download = `sham-core-backup-${new Date().toISOString().slice(0, 10)}.json`; a.click(); URL.revokeObjectURL(url);
         }} className={`${btn} bg-white border border-stone-300`}><Download className="w-4 h-4" />نسخة احتياطية</a>} />

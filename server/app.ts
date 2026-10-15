@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { GoogleGenAI } from '@google/genai';
 import { ChatError, executeChat, getChatModels, validateChatRequest } from './shaheen';
 import { createShamCore } from './core/http';
+import { corsMiddleware } from './cors';
 
 dotenv.config();
 
@@ -12,6 +13,8 @@ const app = express();
 const trustProxy = process.env.SHAM_TRUST_PROXY ?? (process.env.VERCEL ? '1' : '');
 if (trustProxy) app.set('trust proxy', /^\d+$/.test(trustProxy) ? Number(trustProxy) : trustProxy);
 
+// The GitHub Pages build calls this API cross-origin (see server/cors.ts). Must run before body parsing.
+app.use('/api', corsMiddleware(process.env.SHAM_CORS_ORIGINS));
 app.use(express.json({ limit: '128kb' }));
 app.use((error: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
   if (error?.type === 'entity.parse.failed' || error?.type === 'entity.too.large') {
