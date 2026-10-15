@@ -68,7 +68,7 @@ export const EDITOR_SYSTEM = `أنت «الخبير شاهين»، خبير ال
 export function editorPrompt(candidates: RawItem[], now = new Date()) {
   const lines = candidates.map((c, i) => `${i}. ${c.title} | ${c.source}${c.publishedAt ? ` | ${c.publishedAt.slice(0, 10)}` : ''}${c.snippet ? ` | ${c.snippet.slice(0, 280)}` : ''}`);
   return `تاريخ اليوم ${now.toISOString().slice(0, 10)}. العناوين:\n${lines.join('\n')}\n
-اختر من 8 إلى 20 خبراً (الأهم أولاً) وأعد بالشكل:
+اختر من 12 إلى 20 خبراً مختلفاً (الأهم أولاً، ونوّع بين الإطلاقات والصناعة والمواد الخام والسوق والمعارض والأخبار العربية)، واكتب أسماء الماركات كما هي بالحروف اللاتينية إن لم يكن لها اسم عربي مشهور وأعد بالشكل:
 {"digest":{"ar":"ثلاث جمل تلخص أبرز ما في النشرة","en":"..."},"items":[{"i":0,"category":"${NEWS_CATEGORIES.join('|')}","importance":1,"title":{"ar":"","en":""},"summary":{"ar":"","en":""},"note":{"ar":"","en":""}}]}
 importance من 1 إلى 5 (5 = الأهم).`;
 }
@@ -79,7 +79,8 @@ export function parseJson(text: string): unknown {
   if (start < 0 || end <= start) throw new Error('No JSON object in the reply');
   return JSON.parse(body.slice(start, end + 1));
 }
-const str = (v: unknown, max: number) => (typeof v === 'string' && !VENDOR.test(v) ? v.replace(/\s+/g, ' ').trim().slice(0, max) : '');
+// Stray letters from other scripts (seen: a Hebrew «מ» inside an Arabic brand name) are removed.
+const str = (v: unknown, max: number) => (typeof v === 'string' && !VENDOR.test(v) ? v.replace(/[\u0590-\u05FF]/g, '').replace(/\s+/g, ' ').trim().slice(0, max) : '');
 const bi = (v: unknown, max: number): Bi | undefined => {
   const o = (v && typeof v === 'object' ? v : {}) as Record<string, unknown>;
   const ar = str(o.ar, max); const en = str(o.en, max);

@@ -52,7 +52,7 @@ test("Shaheen's edit is validated: unknown indexes, non-Arabic titles and AI ven
   const reply = parseJson('```json\n' + JSON.stringify({
     digest: { ar: 'ملخص النشرة', en: 'Digest' },
     items: [
-      { i: 0, category: 'launch', importance: 5, title: { ar: 'ديور تطلق عطر عود جديد', en: 'Dior launches a new oud' }, summary: { ar: 'إطلاق جديد', en: 'New launch' }, note: { ar: 'تعليق Gemini', en: 'ok' } },
+      { i: 0, category: 'launch', importance: 5, title: { ar: 'ديور تطلق عطر عود جמديد', en: 'Dior launches a new oud' }, summary: { ar: 'إطلاق جديد', en: 'New launch' }, note: { ar: 'تعليق Gemini', en: 'ok' } },
       { i: 0, title: { ar: 'مكرر', en: 'dup' } },
       { i: 9, title: { ar: 'مخترع', en: 'invented' } },
       { i: 1, title: { ar: '', en: 'English only' } },
