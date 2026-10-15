@@ -119,7 +119,7 @@ test('opinions → anonymous peer review → chair synthesis, streamed, stored, 
   assert.ok(llm.calls.every((c) => c.system.includes('ONLY from CONTEXT')), 'every seat gets the grounding rules');
   assert.ok(llm.calls.find((c) => c.kind === 'chair')!.stream, 'the chair streams to the visitor');
 
-  assert.equal(out.engine.id, 'self_hosted');
+  assert.equal(out.engine.id, 'sham_ai', 'visitors see Sham Core AI, not the engine');
   assert.match(out.reply, /الخلاصة/);
   const streamed = events.reduce((acc, e) => (e.type === 'reset' ? '' : e.type === 'delta' ? acc + e.text : acc), '');
   assert.equal(streamed.trim(), out.reply);
@@ -129,6 +129,9 @@ test('opinions → anonymous peer review → chair synthesis, streamed, stored, 
   assert.equal(out.council?.entries.filter((e) => e.chair).length, 1);
   assert.ok(out.council?.entries.every((e) => e.reviews.length === 1 && e.opinion));
   assert.ok(!JSON.stringify(out.council).includes('seat-a'), 'no internal seat ids for visitors');
+  const labels = JSON.stringify(out.council?.entries.map(({ label, role, engine }) => ({ label, role, engine }))) + JSON.stringify(out.steps);
+  assert.ok(!/model-[abc]|self_hosted/.test(labels), 'no model names in seat labels or progress steps');
+  assert.ok(out.steps.some((s) => /المستشار [A-C]/.test(s.label)), 'seats appear as anonymous advisors');
 
   const stored = (await repo.conversation(out.conversationId))!.messages.at(-1)!;
   assert.equal(stored.council?.entries.length, 3);

@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { ChatError, executeChat, getChatModels, systemInstruction, validateChatRequest, type Provider } from '../server/shaheen';
+import { ChatError, executeChat, getChatModels, getPublicModes, publicChatResult, systemInstruction, validateChatRequest, type Provider } from '../server/shaheen';
+import { defaultCouncil } from '../server/core/council';
+import { SHAHEEN_SITE_SETTINGS } from '../server/config/shaheen';
 
 const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json' } });
 const keys = { GEMINI_API_KEY: 'test-gemini', DEEPSEEK_API_KEY: 'test-deepseek', OPENAI_API_KEY: 'test-openai', ANTHROPIC_API_KEY: 'test-claude' };
@@ -131,4 +133,61 @@ test('an individual provider deadline is also classified as a timeout', async ()
       })) as typeof fetch,
     }), { status: 504, code: 'PROVIDER_TIMEOUT' });
   } finally { clearInterval(keepAlive); }
+});
+
+// ── Visitor modes: Shaheen never reveals which engine or vendor answered ──
+const VENDORS = /gemini|deepseek|openai|chatgpt|gpt|claude|anthropic|openrouter|llama|qwen|google/i;
+const anyAnswer = (async (url: string | URL | Request) => String(url).includes('generativelanguage')
+  ? json({ candidates: [{ content: { parts: [{ text: 'إجابة' }] } }] })
+  : String(url).includes('anthropic') ? json({ content: [{ type: 'text', text: 'إجابة' }] })
+    : json({ choices: [{ message: { content: 'إجابة' } }] })) as typeof fetch;
+
+test('modes are accepted; unknown modes and roles are still rejected', () => {
+  for (const model of ['auto', 'fast', 'deep', 'council']) assert.equal(validateChatRequest({ message: 'hi', model }).model, model);
+  assert.throws(() => validateChatRequest({ message: 'hi', model: 'turbo' }), ChatError);
+});
+
+test('fast prefers quick engines, is short and asks for a brief answer; deep prefers careful engines', async () => {
+  const calls: { url: string; body: string }[] = [];
+  const record = (async (url, init) => { calls.push({ url: String(url), body: String(init?.body) }); return anyAnswer(url); }) as typeof fetch;
+  const fast = await executeChat(validateChatRequest({ message: 'hi', model: 'fast' }), { env: { ANTHROPIC_API_KEY: 'k', GEMINI_API_KEY: 'k' }, fetch: record });
+  assert.equal(fast.mode, 'fast');
+  assert.equal(fast.engine.provider, 'gemini');
+  const body = JSON.parse(calls[0].body);
+  assert.ok(body.generationConfig.maxOutputTokens <= 1024 + 2048, 'fast caps output (plus thinking budget for -latest aliases)');
+  assert.match(calls[0].body, /رد سريع/);
+  calls.length = 0;
+  const deep = await executeChat(validateChatRequest({ message: 'hi', model: 'deep' }), { env: { ANTHROPIC_API_KEY: 'k', GEMINI_API_KEY: 'k' }, fetch: record });
+  assert.equal(deep.mode, 'deep');
+  assert.equal(deep.engine.provider, 'claude');
+  assert.equal(JSON.parse(calls[0].body).max_tokens, SHAHEEN_SITE_SETTINGS.maxTokens);
+});
+
+test('the system prompt tells Shaheen never to name a model or company', () => {
+  for (const lang of ['ar', 'en', 'fr'] as const) assert.match(systemInstruction(lang), /لا تذكر أبداً اسم أي نموذج لغوي أو شركة ذكاء اصطناعي/);
+  assert.match(systemInstruction('ar', '', 'deep'), /تحليل معمّق/);
+});
+
+test('public modes and answers carry no engine, vendor or model names', async () => {
+  const modes = getPublicModes({ GEMINI_API_KEY: 'k' }, SHAHEEN_SITE_SETTINGS, defaultCouncil());
+  assert.deepEqual(modes.map((m) => m.id), ['auto', 'fast', 'deep', 'council']);
+  assert.deepEqual(modes.map((m) => m.hasApiKey), [true, true, true, false], 'one engine is not a council');
+  assert.doesNotMatch(JSON.stringify(modes), VENDORS);
+  const answer = await executeChat(validateChatRequest({ message: 'hi', model: 'gemini' }), { env: { GEMINI_API_KEY: 'k' }, fetch: anyAnswer });
+  const shown = publicChatResult(answer);
+  assert.equal(shown.mode, 'auto', 'legacy engine ids are shown as plain auto');
+  assert.equal(shown.engine.provider, 'shaheen');
+  assert.doesNotMatch(JSON.stringify(shown), VENDORS);
+});
+
+test('council mode needs two working seats, then answers as one anonymous reply', async () => {
+  let calls = 0;
+  await assert.rejects(executeChat(validateChatRequest({ message: 'hi', model: 'council' }), { env: { GEMINI_API_KEY: 'k' }, council: defaultCouncil(),
+    fetch: (async () => { calls++; return json({}); }) as typeof fetch }), { status: 503, code: 'COUNCIL_UNAVAILABLE' });
+  await assert.rejects(executeChat(validateChatRequest({ message: 'hi', model: 'council' }), { env: keys, fetch: anyAnswer }), { code: 'COUNCIL_UNAVAILABLE' });
+  assert.equal(calls, 0);
+  const result = await executeChat(validateChatRequest({ message: 'عطر عود ثابت؟', model: 'council' }), { env: { GEMINI_API_KEY: 'k', OPENAI_API_KEY: 'k' }, council: defaultCouncil(), fetch: anyAnswer });
+  assert.equal(result.mode, 'council');
+  assert.ok(result.reply);
+  assert.doesNotMatch(JSON.stringify(publicChatResult(result)), VENDORS);
 });

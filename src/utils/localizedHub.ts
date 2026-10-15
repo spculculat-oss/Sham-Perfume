@@ -6,7 +6,7 @@ export const STATS_BADGE_EN: Record<string, string> = {
   portal_pyramid: '3-Layer Volatility Simulation',
   portal_alcohol: 'Ethanol Dilution (C₁V₁ = C₂V₂)',
   portal_costing: 'Bespoke Pricing & ROI Margins',
-  portal_master_ai: '⚡ Admin-selected AI engines',
+  portal_master_ai: '⚡ Sham’s own AI expert',
   portal_library: 'Saved Batch Archives & Spec Print',
   portal_guide: 'Cold Maceration & Fixative Science',
   portal_country: 'Worldwide Climate Adaptation',
@@ -265,9 +265,9 @@ export const PORTAL_NEWS_EN: Record<
   // 8. Master Perfumer AI (Shahin)
   ai1: {
     badge: '⚡ Advisory council',
-    title: 'With two or more engines enabled, each gives its view and Shahin merges them into one answer',
-    description: 'If only one engine is available, Shahin answers with it directly. The engines available right now are shown inside the Shahin window.',
-    metric: 'Depends on enabled engines',
+    title: 'Expert council: several advisors discuss your question, then Shahin sums up one answer',
+    description: 'The expert council appears whenever it is available; Shahin can always answer automatically, quickly or in depth. Available modes are shown inside the Shahin window.',
+    metric: 'Depends on available modes',
     timestamp: 'Available now',
     actionHint: 'Start a chat with Shahin',
   },

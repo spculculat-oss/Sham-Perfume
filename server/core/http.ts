@@ -6,7 +6,7 @@
 import express from 'express';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { Repository, ValidationError, publicView } from './repository';
-import { AssistantError, Orchestrator, validateChatInput, type ChatOutput, type StreamEvent } from './orchestrator';
+import { AssistantError, Orchestrator, publicEngine, validateChatInput, type ChatOutput, type StreamEvent } from './orchestrator';
 import { createNotifier } from './notify';
 import { runAdminAgent } from './adminAgent';
 import { createStore, type Store } from './store';
@@ -150,7 +150,7 @@ export function createShamCore(options: CoreOptions = {}) {
     res.json({
       id: conversation.id, status: conversation.status,
       messages: conversation.messages.map(({ id, role, text, at, engine, actions, citations, council: transcript, stopped }) => ({
-        id, role, text, at, engine, actions, citations, ...(stopped ? { stopped } : {}),
+        id, role, text, at, engine: engine ? publicEngine(engine).id : engine, actions, citations, ...(stopped ? { stopped } : {}),
         ...(transcript && council.showDiscussion ? { council: publicTranscript(transcript, lang, env) } : {}),
       })),
     });

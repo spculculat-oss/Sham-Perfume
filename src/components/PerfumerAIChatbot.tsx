@@ -30,9 +30,9 @@ import { extractFormulaFromAIMessage, isFormulaTransferCommand, ExtractedAIPerfu
 import { exportChatTranscriptToFile } from '../utils/chatStorage';
 import { useShaheenChat } from '../hooks/useShaheenChat';
 import { useShaheenModels } from '../hooks/useShaheenModels';
-import { ShaheenServiceStatus, ShaheenProviderMatrix, chatErrorText, shaheenWelcome, engineName } from './ShaheenServiceStatus';
+import { ShaheenServiceStatus, ShaheenModesPanel, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
-import { ENGINE_BADGE, visibleEngines, scrollChatToEnd } from './shaheenEngines';
+import { ENGINE_BADGE, modeBadge, visibleEngines, scrollChatToEnd } from './shaheenEngines';
 import type { ShaheenModelChoice } from '../utils/chatStore';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../utils/localizedContent';
@@ -127,18 +127,7 @@ const S = {
     tr: '{d} gün kaldı',
     fa: '{d} روز باقی مانده',
   },
-  status_ready_tpl: {
-    ar: 'متصل · {n} محرك جاهز',
-    en: 'Online · {n} engine(s) ready',
-    fr: 'En ligne · {n} moteur(s) prêt(s)',
-    es: 'En línea · {n} motor(es) listo(s)',
-    it: 'Online · {n} motore/i pronto/i',
-    de: 'Online · {n} Engine(s) bereit',
-    ru: 'В сети · готово движков: {n}',
-    zh: '在线 · {n} 个引擎可用',
-    tr: 'Çevrimiçi · {n} motor hazır',
-    fa: 'آنلاین · {n} موتور آماده',
-  },
+  status_ready_tpl: { ar: 'متصل · {n} وضع متاح', en: 'Online · {n} mode(s) available', fr: 'En ligne · {n} mode(s) disponible(s)', es: 'En línea · {n} modo(s) disponible(s)', it: 'Online · {n} modalità disponibili', de: 'Online · {n} Modus/Modi verfügbar', ru: 'В сети · доступно режимов: {n}', zh: '在线 · {n} 种模式可用', tr: 'Çevrimiçi · {n} mod kullanılabilir', fa: 'آنلاین · {n} حالت در دسترس' },
   status_offline: {
     ar: 'غير متصل حالياً',
     en: 'Offline right now',
@@ -247,93 +236,12 @@ const S = {
     tr: 'Kapat',
     fa: 'بستن',
   },
-  engine_label: {
-    ar: 'محرك الذكاء:',
-    en: 'AI Engine:',
-    fr: 'Moteur IA :',
-    es: 'Motor IA:',
-    it: 'Motore IA:',
-    de: 'KI-Engine:',
-    ru: 'ИИ-движок:',
-    zh: 'AI 引擎：',
-    tr: 'YZ motoru:',
-    fa: 'موتور هوش مصنوعی:',
-  },
-  matrix_tooltip: {"ar": "عرض معلومات مزودي الذكاء الاصطناعي — التوفر حسب إعدادات الخادم", "en": "AI provider information — availability depends on server configuration"},
+  engine_label: { ar: 'طريقة الرد:', en: 'Answer style:', fr: 'Style de réponse :', es: 'Estilo de respuesta:', it: 'Stile di risposta:', de: 'Antwortstil:', ru: 'Стиль ответа:', zh: '回答方式：', tr: 'Yanıt biçimi:', fa: 'شیوه پاسخ:' },
+  matrix_tooltip: { ar: 'عرض أوضاع شاهين المتاحة الآن', en: 'See Shahin’s available modes', fr: 'Voir les modes disponibles de Shahin', es: 'Ver los modos disponibles de Shahin', it: 'Vedi le modalità disponibili di Shahin', de: 'Verfügbare Modi von Shahin anzeigen', ru: 'Посмотреть доступные режимы Шахина', zh: '查看 Shahin 当前可用的模式', tr: 'Shahin’in kullanılabilir modlarını gör', fa: 'مشاهده حالت‌های در دسترس شاهین' },
   error_badge: { ar: 'تنبيه', en: 'Notice', fr: 'Avis', es: 'Aviso', it: 'Avviso', de: 'Hinweis', ru: 'Уведомление', zh: '提示', tr: 'Uyarı', fa: 'هشدار' },
   retry: { ar: 'إعادة المحاولة', en: 'Retry', fr: 'Réessayer', es: 'Reintentar', it: 'Riprova', de: 'Erneut versuchen', ru: 'Повторить', zh: '重试', tr: 'Tekrar dene', fa: 'تلاش دوباره' },
-  matrix_btn: {
-    ar: 'شبكة الذكاء',
-    en: 'AI Matrix',
-    fr: 'Matrice IA',
-    es: 'Matriz IA',
-    it: 'Matrice IA',
-    de: 'KI-Matrix',
-    ru: 'Матрица ИИ',
-    zh: 'AI 矩阵',
-    tr: 'YZ matrisi',
-    fa: 'شبکه هوش',
-  },
-  matrix_title: {
-    ar: 'شبكة محركات الذكاء الاصطناعي المؤتمتة بالمعمل (Automated AI Council):',
-    en: 'Automated AI Council — Lab Engine Matrix:',
-    fr: 'Conseil IA automatisé — matrice des moteurs :',
-    es: 'Consejo IA automatizado — matriz de motores:',
-    it: 'Consiglio IA automatizzato — matrice dei motori:',
-    de: 'Automatischer KI-Rat — Engine-Matrix:',
-    ru: 'Автоматический ИИ-совет — матрица движков:',
-    zh: '自动化 AI 议会——引擎矩阵：',
-    tr: 'Otomatik YZ konseyi — motor matrisi:',
-    fa: 'شورای خودکار هوش مصنوعی — ماتریس موتورها:',
-  },
-  matrix_gemini: {
-    ar: 'حسابات الأوزان بالغرام، سرعة استخراج نسب الزيت والكحول.',
-    en: 'Gram-level weight math; rapid oil & alcohol ratio extraction.',
-    fr: 'Calculs au gramme ; extraction rapide des ratios huile/alcool.',
-    es: 'Cálculos al gramo; extracción rápida de proporciones.',
-    it: 'Calcoli al grammo; estrazione rapida dei rapporti.',
-    de: 'Rechnungen auf Grammbasis; schnelle Extraktion der Verhältnisse.',
-    ru: 'Расчёты с точностью до грамма; быстрое извлечение пропорций.',
-    zh: '克级精确计算；快速提取油酒比例。',
-    tr: 'Gram düzeyinde hesaplar; hızlı oran çıkarımı.',
-    fa: 'محاسبات بر حسب گرم؛ استخراج سریع نسبت روغن و الکل.',
-  },
-  matrix_deepseek: {
-    ar: 'استدلال كيميائي، الكثافة النوعية ومعايير سلامة IFRA.',
-    en: 'Chemical reasoning, specific gravity & IFRA safety.',
-    fr: 'Raisonnement chimique, densité et sécurité IFRA.',
-    es: 'Razonamiento químico, densidad y seguridad IFRA.',
-    it: 'Ragionamento chimico, densità e sicurezza IFRA.',
-    de: 'Chemische Logik, Dichte & IFRA-Sicherheit.',
-    ru: 'Химическая логика, плотность и безопасность IFRA.',
-    zh: '化学推理、比重与 IFRA 安全。',
-    tr: 'Kimyasal akıl yürütme, yoğunluk ve IFRA güvenliği.',
-    fa: 'استدلال شیمیایی، چگالی ویژه و ایمنی IFRA.',
-  },
-  matrix_openai: {
-    ar: 'هندسة الأكوردات، الفوحان التجاري والجاذبية التسويقية.',
-    en: 'Accord architecture, commercial sillage & market appeal.',
-    fr: 'Architecture des accords, sillage commercial.',
-    es: 'Arquitectura de acordes, estela comercial.',
-    it: 'Architettura degli accordi, scia commerciale.',
-    de: 'Akkord-Architektur, kommerzielle Sillage.',
-    ru: 'Архитектура аккордов, коммерческий шлейф.',
-    zh: '香调架构、商业扩散与市场吸引力。',
-    tr: 'Akor mimarisi, ticari iz ve pazar çekiciliği.',
-    fa: 'معماری آکورد، انتشار تجاری و جذابیت بازاریابی.',
-  },
-  matrix_claude: {
-    ar: 'تقاليد جراس الفرنسية، التعتيق الصبور، والنيش الأرستقراطي.',
-    en: 'Grasse tradition, patient maceration & niche elegance.',
-    fr: 'Tradition de Grasse, macération patiente et élégance de niche.',
-    es: 'Tradición de Grasse, maceración paciente y elegancia de nicho.',
-    it: 'Tradizione di Grasse, macerazione paziente ed eleganza di nicchia.',
-    de: 'Grasse-Tradition, geduldige Mazeration & Nische-Eleganz.',
-    ru: 'Традиции Граса, терпеливая мацерация и нишевая элегантность.',
-    zh: '格拉斯传统、静待陈化与小众优雅。',
-    tr: 'Grasse geleneği, sabırlı dinlendirme ve niş zarafeti.',
-    fa: 'سنت گراس، کهنه‌سازی صبور و ظرافت نیچ.',
-  },
+  matrix_btn: { ar: 'الأوضاع', en: 'Modes', fr: 'Modes', es: 'Modos', it: 'Modalità', de: 'Modi', ru: 'Режимы', zh: '模式', tr: 'Modlar', fa: 'حالت‌ها' },
+  matrix_title: { ar: 'أوضاع الخبير شاهين المتاحة الآن:', en: 'Master Shahin’s modes right now:', fr: 'Modes de Maître Shahin :', es: 'Modos del Maestro Shahin:', it: 'Modalità del Maestro Shahin:', de: 'Modi von Meister Shahin:', ru: 'Режимы мастера Шахина:', zh: 'Shahin 大师当前的模式：', tr: 'Usta Shahin’in modları:', fa: 'حالت‌های استاد شاهین:' },
   clear_confirm_tpl: {
     ar: 'مسح المحادثة بالكامل الآن؟ (تُمسح تلقائياً بعد {d} يوماً).',
     en: 'Clear the entire chat? (auto-deletes after {d} days).',
@@ -405,42 +313,6 @@ const S = {
     zh: '⚡ 自动化专家议会',
     tr: '⚡ Otomatik uzmanlar kurulu',
     fa: '⚡ شورای خبرگان خودکار',
-  },
-  persp_lbl: {
-    ar: 'تبديل منظور المحركات المستشارة:',
-    en: 'Switch advisor engine view:',
-    fr: 'Changer de moteur conseiller :',
-    es: 'Cambiar vista del motor asesor:',
-    it: 'Cambia vista del motore consulente:',
-    de: 'Berater-Engine wechseln:',
-    ru: 'Переключить движок-советник:',
-    zh: '切换顾问引擎视角：',
-    tr: 'Danışman motor görünümünü değiştir:',
-    fa: 'تغییر نمای موتور مشاور:',
-  },
-  persp_ens: {
-    ar: 'المحركات المستشارة: {n}',
-    en: '{n} engines consulted',
-    fr: '{n} moteurs consultés',
-    es: '{n} motores consultados',
-    it: '{n} motori consultati',
-    de: '{n} Engines befragt',
-    ru: 'Опрошено движков: {n}',
-    zh: '已咨询 {n} 个引擎',
-    tr: '{n} motora danışıldı',
-    fa: 'موتورهای مشورت‌شده: {n}',
-  },
-  consensus_lbl: {
-    ar: '⚡ خلاصة شاهين الموحدة',
-    en: '⚡ Shahin Unified Summary',
-    fr: '⚡ Synthèse unifiée de Shahin',
-    es: '⚡ Síntesis unificada de Shahin',
-    it: '⚡ Sintesi unificata di Shahin',
-    de: '⚡ Shahins vereintes Fazit',
-    ru: '⚡ Единое резюме Шахина',
-    zh: '⚡ Shahin 统一结论',
-    tr: '⚡ Shahin birleşik özet',
-    fa: '⚡ جمع‌بندی واحد شاهین',
   },
   transfer_lbl: {
     ar: 'تحويل هذه الخلطة لأيقونات وحاسبات التطبيق:',
@@ -634,42 +506,9 @@ const S = {
     tr: 'Cevabı ve formülü kopyala',
     fa: 'کپی پاسخ و فرمول',
   },
-  consult_tooltip: {
-    ar: 'استشارة نموذج ذكاء اصطناعي آخر على نفس السؤال لمقارنة الرأي',
-    en: 'Ask another AI model the same question to compare opinions',
-    fr: 'Consulter un autre modèle IA sur la même question',
-    es: 'Consultar otro modelo IA con la misma pregunta',
-    it: 'Chiedi a un altro modello IA la stessa domanda',
-    de: 'Ein anderes KI-Modell zur gleichen Frage befragen',
-    ru: 'Спросить другую ИИ-модель и сравнить мнения',
-    zh: '向另一个 AI 模型提出同一问题以比较观点',
-    tr: 'Aynı soruyu başka bir yapay zeka modeline sor',
-    fa: 'پرسیدن همان سؤال از مدل هوش مصنوعی دیگر برای مقایسه',
-  },
-  consult_btn: {
-    ar: 'مقارنة بنموذج آخر',
-    en: 'Compare with another model',
-    fr: 'Comparer avec un autre modèle',
-    es: 'Comparar con otro modelo',
-    it: 'Confronta con un altro modello',
-    de: 'Mit anderem Modell vergleichen',
-    ru: 'Сравнить с другой моделью',
-    zh: '与其他模型对比',
-    tr: 'Başka bir modelle karşılaştır',
-    fa: 'مقایسه با مدل دیگر',
-  },
-  choose_model: {
-    ar: 'اختر نموذجاً للمقارنة:',
-    en: 'Choose a model to compare:',
-    fr: 'Choisir un modèle à comparer :',
-    es: 'Elige un modelo para comparar:',
-    it: 'Scegli un modello da confrontare:',
-    de: 'Modell zum Vergleich wählen:',
-    ru: 'Выберите модель для сравнения:',
-    zh: '选择要对比的模型：',
-    tr: 'Karşılaştırılacak modeli seç:',
-    fa: 'مدل مورد مقایسه را انتخاب کنید:',
-  },
+  consult_tooltip: { ar: 'اطلب رأياً ثانياً بطريقة رد أخرى', en: 'Ask for a second opinion in another answer style', fr: 'Demander un second avis dans un autre style', es: 'Pedir una segunda opinión con otro estilo', it: 'Chiedi un secondo parere con un altro stile', de: 'Zweite Meinung in einem anderen Stil anfordern', ru: 'Попросить второе мнение в другом стиле', zh: '以另一种回答方式获取第二意见', tr: 'Başka bir yanıt biçimiyle ikinci görüş iste', fa: 'درخواست نظر دوم با شیوه پاسخ دیگر' },
+  consult_btn: { ar: 'رأي ثانٍ', en: 'Second opinion', fr: 'Second avis', es: 'Segunda opinión', it: 'Secondo parere', de: 'Zweite Meinung', ru: 'Второе мнение', zh: '第二意见', tr: 'İkinci görüş', fa: 'نظر دوم' },
+  choose_model: { ar: 'اختر طريقة الرد:', en: 'Pick an answer style:', fr: 'Choisissez un style :', es: 'Elige un estilo:', it: 'Scegli uno stile:', de: 'Stil wählen:', ru: 'Выберите стиль:', zh: '选择回答方式：', tr: 'Bir yanıt biçimi seçin:', fa: 'شیوه پاسخ را انتخاب کنید:' },
   speech_tooltip: {
     ar: 'استماع صوتي',
     en: 'Listen',
@@ -922,106 +761,6 @@ const S = {
     tr: 'Usta Shahin',
     fa: 'استاد شاهین',
   },
-  engine_auto_name: {"ar": "شاهين — اختيار تلقائي", "en": "Shahin — automatic selection", "fr": "Shahin — sélection automatique", "es": "Shahin — selección automática", "it": "Shahin — selezione automatica", "de": "Shahin — automatische Auswahl", "ru": "Шахин — автоматический выбор", "zh": "Shahin — 自动选择", "tr": "Shahin — otomatik seçim", "fa": "شاهین — انتخاب خودکار"},
-  engine_auto_short: {"ar": "⚡ تلقائي", "en": "⚡ Auto", "fr": "⚡ Auto", "es": "⚡ Auto", "it": "⚡ Auto", "de": "⚡ Auto", "ru": "⚡ Авто", "zh": "⚡ 自动", "tr": "⚡ Otomatik", "fa": "⚡ خودکار"},
-  engine_auto_desc: {"ar": "يستخدم محركاً متاحاً، ويجرّب محركاً مهيأً آخر عند الفشل؛ لا يدمج آراء غير مستدعاة.", "en": "Uses an available provider and tries another configured provider on failure; does not fabricate expert opinions.", "fr": "Utilise un fournisseur disponible, puis un autre fournisseur configuré en cas d’échec.", "es": "Usa un proveedor disponible y prueba otro configurado si falla.", "it": "Usa un fornitore disponibile e ne prova un altro configurato in caso di errore.", "de": "Nutzt einen verfügbaren Anbieter und bei Fehler einen anderen konfigurierten Anbieter.", "ru": "Использует доступного провайдера, при ошибке пробует другого настроенного провайдера.", "zh": "使用可用服务，失败时尝试另一已配置服务，不虚构其他引擎的意见。", "tr": "Kullanılabilir sağlayıcıyı kullanır, hata olursa yapılandırılmış başka bir sağlayıcıyı dener.", "fa": "از سرویس در دسترس استفاده می‌کند و در صورت خطا سرویس تنظیم‌شده دیگری را امتحان می‌کند."},
-  engine_gemini_short: {
-    ar: '✨ جيمناي',
-    en: '✨ Gemini',
-    fr: '✨ Gemini',
-    es: '✨ Gemini',
-    it: '✨ Gemini',
-    de: '✨ Gemini',
-    ru: '✨ Gemini',
-    zh: '✨ Gemini',
-    tr: '✨ Gemini',
-    fa: '✨ جمنای',
-  },
-  engine_gemini_desc: {
-    ar: 'الحسابات الرياضية الدقيقة، أوزان الغرامات، والسرعة الفائقة',
-    en: 'Precise math, gram weights & blazing speed',
-    fr: 'Calculs précis, poids en grammes et rapidité',
-    es: 'Cálculos precisos, pesos en gramos y velocidad',
-    it: 'Calcoli precisi, pesi in grammi e velocità',
-    de: 'Präzise Mathe, Grammgewichte & Tempo',
-    ru: 'Точная математика, граммы и скорость',
-    zh: '精确计算、克重与极速',
-    tr: 'Hassas hesaplar, gram ağırlıkları ve hız',
-    fa: 'محاسبات دقیق، وزن گریمی و سرعت بالا',
-  },
-  engine_deepseek_short: {
-    ar: '🔬 ديب سيك',
-    en: '🔬 DeepSeek',
-    fr: '🔬 DeepSeek',
-    es: '🔬 DeepSeek',
-    it: '🔬 DeepSeek',
-    de: '🔬 DeepSeek',
-    ru: '🔬 DeepSeek',
-    zh: '🔬 DeepSeek',
-    tr: '🔬 DeepSeek',
-    fa: '🔬 دیپ‌سیک',
-  },
-  engine_deepseek_desc: {
-    ar: 'استدلال كيميائي، الكثافة النوعية ومعايير أمان IFRA',
-    en: 'Chemical reasoning, specific gravity & IFRA safety',
-    fr: 'Raisonnement chimique, densité et sécurité IFRA',
-    es: 'Razonamiento químico, densidad y seguridad IFRA',
-    it: 'Ragionamento chimico, densità e sicurezza IFRA',
-    de: 'Chemisches Denken, Dichte & IFRA-Sicherheit',
-    ru: 'Химическая логика, плотность и стандарты IFRA',
-    zh: '化学推理、比重与 IFRA 安全',
-    tr: 'Kimyasal akıl yürütme, yoğunluk ve IFRA güvenliği',
-    fa: 'استدلال شیمیایی، چگالی و ایمنی IFRA',
-  },
-  engine_openai_short: {
-    ar: '🟢 شات جي بي تي',
-    en: '🟢 ChatGPT',
-    fr: '🟢 ChatGPT',
-    es: '🟢 ChatGPT',
-    it: '🟢 ChatGPT',
-    de: '🟢 ChatGPT',
-    ru: '🟢 ChatGPT',
-    zh: '🟢 ChatGPT',
-    tr: '🟢 ChatGPT',
-    fa: '🟢 چت‌جی‌پی‌تی',
-  },
-  engine_openai_desc: {
-    ar: 'هندسة الأكوردات، الفوحان التجاري والانتشار الجذاب',
-    en: 'Accord architecture, commercial sillage & allure',
-    fr: 'Architecture des accords, sillage commercial et attrait',
-    es: 'Arquitectura de acordes, estela comercial y atractivo',
-    it: 'Architettura degli accordi, scia commerciale e appeal',
-    de: 'Akkord-Architektur, kommerzielle Sillage & Anziehung',
-    ru: 'Архитектура аккордов, коммерческий шлейф и притягательность',
-    zh: '香调架构、商业扩散与吸引力',
-    tr: 'Akor mimarisi, ticari iz ve çekicilik',
-    fa: 'معماری آکورد، انتشار تجاری و جذابیت',
-  },
-  engine_claude_short: {
-    ar: '🟣 كلود',
-    en: '🟣 Claude',
-    fr: '🟣 Claude',
-    es: '🟣 Claude',
-    it: '🟣 Claude',
-    de: '🟣 Claude',
-    ru: '🟣 Claude',
-    zh: '🟣 Claude',
-    tr: '🟣 Claude',
-    fa: '🟣 کلود',
-  },
-  engine_claude_desc: {
-    ar: 'مدرسة جراس الفرنسية، التعتيق الصامت، وأناقة النيش',
-    en: 'Grasse school, silent maceration & niche elegance',
-    fr: 'École de Grasse, macération silencieuse et élégance de niche',
-    es: 'Escuela de Grasse, maceración silenciosa y elegancia de nicho',
-    it: 'Scuola di Grasse, macerazione silenziosa ed eleganza di nicchia',
-    de: 'Grasse-Schule, stille Mazeration & Nische-Eleganz',
-    ru: 'Школа Граса, тихая мацерация и нишевая элегантность',
-    zh: '格拉斯学派、静默陈化与小众优雅',
-    tr: 'Grasse okulu, sessiz dinlendirme ve niş zarafeti',
-    fa: 'مدرسه گراس، کهنه‌سازی آرام و ظرافت نیچ',
-  },
-  engine_auto_badge: {"ar": "⚡ تلقائي", "en": "⚡ Auto", "fr": "⚡ Auto", "es": "⚡ Auto", "it": "⚡ Auto", "de": "⚡ Auto", "ru": "⚡ Авто", "zh": "⚡ 自动", "tr": "⚡ Otomatik", "fa": "⚡ خودکار"},
   welcome_msg: {
     ar: `مرحباً بك في معملي يا عاشق الشذى والطيوب! أنا الخبير شاهين، شيخ العطارين وكبير كيميائيي العطور.
 أنا هنا بجانب ميزاني ومخابيري أقطر الزيوت الخام وأمزج التراكيب.
@@ -1137,24 +876,9 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   const [comparingMsgId, setComparingMsgId] = useState<string | null>(null);
   const [showAiMatrix, setShowAiMatrix] = useState(false);
 
-  // Only engines that are really enabled on the server (same list on every site).
-  const SHORT: Record<string, string> = {
-    auto: L('engine_auto_short'), gemini: L('engine_gemini_short'), deepseek: L('engine_deepseek_short'),
-    openai: L('engine_openai_short'), claude: L('engine_claude_short'),
-  };
-  const DESC: Record<string, string> = {
-    auto: L('engine_auto_desc'), gemini: L('engine_gemini_desc'), deepseek: L('engine_deepseek_desc'),
-    openai: L('engine_openai_desc'), claude: L('engine_claude_desc'),
-  };
-  const AI_ENGINES = visibleEngines(modelStatus.engines, currentLang, (id) => SHORT[id])
-    .map((eng) => ({ ...eng, name: eng.id === 'auto' ? L('engine_auto_name') : engineName(eng.id, eng.name), desc: DESC[eng.id] || eng.model || '' }));
-  const enabledEngineCount = (modelStatus.models || []).filter((m) => m.id !== 'auto' && m.hasApiKey).length;
-
-  const setActivePerspectiveForMessage = (msgId: string, tabId: string) => {
-    setMessages((prev) =>
-      prev.map((m) => (m.id === msgId ? { ...m, activePerspectiveTab: tabId } : m))
-    );
-  };
+  // Shaheen's response modes the server says can answer (no engine or vendor names reach visitors).
+  const AI_ENGINES = visibleEngines(modelStatus.engines, currentLang);
+  const enabledEngineCount = (modelStatus.models || []).filter((m) => m.hasApiKey && AI_ENGINES.some((e) => e.id === m.id)).length;
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -1485,7 +1209,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                     <X className="w-3.5 h-3.5" />
                   </button>
                 </div>
-                <ShaheenProviderMatrix language={currentLang} models={modelStatus.models} />
+                <ShaheenModesPanel language={currentLang} models={modelStatus.models} />
               </div>
             )}
 
@@ -1517,8 +1241,6 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                 const activeDisplayContent =
                   msg.id === 'welcome'
                     ? shaheenWelcome(currentLang)
-                    : msg.activePerspectiveTab && msg.activePerspectiveTab !== 'consensus' && msg.perspectives
-                    ? msg.perspectives.find((p) => p.modelId === msg.activePerspectiveTab)?.reply || msg.text
                     : msg.text;
 
                 const extractedFormula = msg.role === 'assistant' && msg.kind !== 'error' ? extractFormulaFromAIMessage(activeDisplayContent) : null;
@@ -1570,10 +1292,9 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                               </span>
                             ) : msg.id !== 'welcome' && (
                               <span
-                                className={`text-[10px] px-2 py-0.5 rounded-full font-medium border flex items-center gap-1 ${ENGINE_BADGE[msg.aiEngine?.provider || ''] || 'bg-amber-50 text-amber-900 border-amber-200'}`}
-                                title={msg.aiEngine?.model ? `${msg.aiEngine.name} · ${msg.aiEngine.model}` : undefined}
+                                className={`text-[10px] px-2 py-0.5 rounded-full font-medium border flex items-center gap-1 ${ENGINE_BADGE[modeBadge(msg.aiEngine?.id, currentLang).mode || ''] || 'bg-amber-50 text-amber-900 border-amber-200'}`}
                               >
-                                <span>{msg.aiEngine?.provider && msg.aiEngine.provider !== 'ensemble' ? engineName(msg.aiEngine.provider, msg.aiEngine.badge) : (rtl ? 'شاهين' : 'Shahin')}</span>
+                                <span>{modeBadge(msg.aiEngine?.id, currentLang).label}</span>
                               </span>
                             )}
                           </div>
@@ -1581,43 +1302,6 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                         </div>
                       )}
 
-                      {/* Perspective Switcher Tabs on Message (advisory council replies only) */}
-                      {msg.role === 'assistant' && msg.perspectives && msg.perspectives.length > 0 && (
-                        <div className="p-1.5 bg-stone-50 rounded-xl border border-stone-200/80 mb-2 space-y-1">
-                          <div className="text-[10px] text-stone-500 font-bold flex items-center justify-between px-1">
-                            <span>{L('persp_lbl')}</span>
-                            <span className="text-[9px] text-amber-700 bg-amber-100/60 px-1.5 py-0.5 rounded">{fmt(L('persp_ens'), { n: msg.perspectives.length })}</span>
-                          </div>
-                          <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
-                            <button
-                              onClick={() => setActivePerspectiveForMessage(msg.id, 'consensus')}
-                              className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0 border ${
-                                (!msg.activePerspectiveTab || msg.activePerspectiveTab === 'consensus')
-                                  ? 'bg-amber-200/90 text-amber-950 border-amber-400 shadow-2xs'
-                                  : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-100'
-                              }`}
-                            >
-                              <span>{L('consensus_lbl')}</span>
-                            </button>
-                            {msg.perspectives.map((p) => {
-                              const isActive = msg.activePerspectiveTab === p.modelId;
-                              return (
-                                <button
-                                  key={p.modelId}
-                                  onClick={() => setActivePerspectiveForMessage(msg.id, p.modelId)}
-                                  className={`px-2 py-1 rounded-lg text-[10px] font-medium transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0 border ${
-                                    isActive
-                                      ? p.color + ' font-bold shadow-2xs'
-                                      : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-100'
-                                  }`}
-                                >
-                                  <span>{p.badge}</span>
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )}
 
                       {/* Text Payload */}
                       {msg.role === 'assistant' && !isError ? (

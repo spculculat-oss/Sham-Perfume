@@ -5,7 +5,7 @@ import express from 'express';
 import { SHAHEEN_SITE_SETTINGS, normalizeShaheen, ShaheenConfigError } from '../server/config/shaheen';
 import { Repository, ValidationError } from '../server/core/repository';
 import { MemoryStore } from '../server/core/store';
-import { geminiThinking } from '../server/core/engines';
+import { callEngine, classifyEngineFailure, geminiThinking, pickGeminiModel, GEMINI_DEFAULT_MODEL } from '../server/core/engines';
 import { createShaheenRouter, executeChat, getChatModels, probeEngines, systemInstruction } from '../server/shaheen';
 import { compactTurn, chatHistory } from '../src/utils/chatStore';
 import { isChatMessage, type ChatMessage } from '../src/utils/chatStorage';
@@ -112,7 +112,7 @@ test('probeEngines reports each allowed engine honestly without leaking upstream
   const byId = Object.fromEntries(results.map((r) => [r.id, r]));
   assert.equal(byId.openai.ok, true);
   assert.equal(byId.deepseek.ok, false);
-  assert.match(byId.deepseek.error!, /^(rejected_or_empty|unreachable)$/);
+  assert.equal(byId.deepseek.error, 'invalid_key');
   assert.equal(byId.claude.error, 'unreachable');
   assert.deepEqual({ ok: byId.self_hosted.ok, error: byId.self_hosted.error, configured: byId.self_hosted.configured },
     { ok: false, error: 'not_configured', configured: false });
@@ -136,6 +136,8 @@ test('router: admin settings reach visitors immediately, and visitors are rate l
   await withRouter({ OPENAI_API_KEY: 'sk-test', SHAM_SHAHEEN_RATE_PER_MIN: '3' }, r, async (base) => {
     let models = await (await fetch(`${base}/models`)).json();
     assert.equal(models.enabled, true);
+    assert.deepEqual(models.models, [{ id: 'auto', hasApiKey: true }, { id: 'fast', hasApiKey: true }, { id: 'deep', hasApiKey: true },
+      { id: 'council', hasApiKey: false }], 'one engine: no council, and no vendor names');
     assert.equal(models.allowVisitorChoice, true);
 
     await r.updateSettings({ shaheen: { ...SHAHEEN_SITE_SETTINGS, allowVisitorChoice: false } });
@@ -144,7 +146,10 @@ test('router: admin settings reach visitors immediately, and visitors are rate l
 
     const ok = await post(base, { message: 'مرحبا', model: 'deepseek' });
     assert.equal(ok.status, 200);
-    assert.equal((await ok.json()).engine.provider, 'openai', 'visitor choice is off → auto');
+    const okBody = await ok.json();
+    assert.equal(okBody.mode, 'auto', 'visitor choice is off → auto');
+    assert.deepEqual(okBody.engine, { id: 'auto', provider: 'shaheen', name: 'الخبير شاهين', badge: 'شاهين', accentColor: 'amber' });
+    assert.doesNotMatch(JSON.stringify(okBody), /openai|gpt|deepseek/i, 'visitors never learn which vendor answered');
     assert.equal((await post(base, { message: 'مرحبا' })).status, 200);
 
     await r.updateSettings({ shaheen: { ...SHAHEEN_SITE_SETTINGS, enabled: false } });
@@ -188,4 +193,50 @@ test('replies from the newer engines are accepted and saved', () => {
   }
   assert.equal(isChatMessage({ id: 'bot-1', role: 'assistant', text: 'رد', timestamp: 't',
     aiEngine: { id: 'x', provider: 'unknown', name: 'x', badge: 'x' } }), false);
+});
+
+test('provider refusals are classified into fixed codes (no upstream text)', () => {
+  const cases: [number, unknown, string][] = [
+    [400, { error: { code: 400, status: 'INVALID_ARGUMENT', details: [{ reason: 'API_KEY_INVALID' }] } }, 'invalid_key'],
+    [400, { error: { status: 'FAILED_PRECONDITION', message: 'User location is not supported for the API use.' } }, 'region_blocked'],
+    [429, { error: { status: 'RESOURCE_EXHAUSTED' } }, 'rate_limited'],
+    [429, { error: { code: 'insufficient_quota', type: 'insufficient_quota' } }, 'no_credit'],
+    [401, { error: { code: 'invalid_api_key' } }, 'invalid_key'],
+    [404, { error: { code: 'model_not_found' } }, 'model_not_found'],
+    [400, { type: 'error', error: { type: 'invalid_request_error', message: 'Your credit balance is too low to access the Anthropic API.' } }, 'no_credit'],
+    [402, { error: { message: 'Insufficient Balance' } }, 'no_credit'],
+    [529, { type: 'error', error: { type: 'overloaded_error' } }, 'upstream_error'],
+    [400, 'not json', 'bad_request'],
+  ];
+  for (const [status, body, expected] of cases) {
+    assert.equal(classifyEngineFailure(status, typeof body === 'string' ? body : JSON.stringify(body)), expected, JSON.stringify(body));
+  }
+});
+
+test('Gemini: picks the best chat model the key can actually use', () => {
+  const m = (name: string, gen = true) => ({ name: `models/${name}`, supportedGenerationMethods: gen ? ['generateContent'] : ['embedContent'] });
+  assert.equal(pickGeminiModel([m('gemini-3.5-flash'), m('gemini-flash-latest'), m('gemini-4-pro')]), 'gemini-flash-latest');
+  assert.equal(pickGeminiModel([m('gemini-3-flash-preview'), m('gemini-3.5-flash'), m('gemini-3.1-flash-lite'), m('gemini-3.5-flash-image'), m('text-embedding-004', false)]), 'gemini-3.5-flash');
+  assert.equal(pickGeminiModel([m('gemini-3.1-flash-lite'), m('gemini-3-flash-preview')]), 'gemini-3.1-flash-lite');
+  assert.equal(pickGeminiModel([m('gemini-embedding-001', false)]), undefined);
+  assert.equal(GEMINI_DEFAULT_MODEL, 'gemini-flash-latest');
+});
+
+test('Gemini: a retired model is replaced automatically and remembered', async () => {
+  const calls: string[] = [];
+  const fetch = (async (url: string) => {
+    calls.push(String(url).replace('https://generativelanguage.googleapis.com/v1beta/', ''));
+    if (String(url).includes('/models?')) {
+      return json({ models: [{ name: 'models/gemini-2.5-flash', supportedGenerationMethods: ['generateContent'] },
+        { name: 'models/gemini-3.5-flash', supportedGenerationMethods: ['generateContent'] }] });
+    }
+    if (String(url).includes('gemini-2.5-flash:')) return json({ error: { code: 404, status: 'NOT_FOUND' } }, 404);
+    return json({ candidates: [{ content: { parts: [{ text: 'أهلاً' }] } }] });
+  }) as typeof globalThis.fetch;
+  const opts = { env: { GEMINI_API_KEY: 'retired-model-key' }, fetch, signal: AbortSignal.timeout(5000), temperature: 0.5, model: 'gemini-2.5-flash' };
+  assert.equal(await callEngine('gemini', 'sys', [{ role: 'user', text: 'hi' }], opts), 'أهلاً');
+  assert.deepEqual(calls, ['models/gemini-2.5-flash:generateContent', 'models?pageSize=1000', 'models/gemini-3.5-flash:generateContent']);
+  calls.length = 0;
+  assert.equal(await callEngine('gemini', 'sys', [{ role: 'user', text: 'hi' }], opts), 'أهلاً');
+  assert.deepEqual(calls, ['models/gemini-3.5-flash:generateContent']);
 });

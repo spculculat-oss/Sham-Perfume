@@ -4,24 +4,26 @@
  * It shares the engine layer of Sham Core (server/core/engines.ts), so every engine the admin can
  * configure there (Gemini, DeepSeek, OpenAI, Claude, a self-hosted open model, OpenRouter) works
  * here too, and its settings come from server/config/shaheen.ts + the admin dashboard.
- * Attribution is honest: only the engine that actually answered is credited; "auto" is failover,
- * not a fake panel, and there are no canned answers pretending to be AI.
+ * Visitors only ever see «الخبير شاهين» and a response mode (auto / fast / deep / council): engine and
+ * vendor names stay server-side and in the admin dashboard. "auto" is failover, not a fake panel, and
+ * there are no canned answers pretending to be AI.
  */
 import express from 'express';
 import { SUPPORTED_LANGUAGES } from '../src/types/i18n';
 import type { SupportedLanguage } from '../src/types/i18n';
-import { callEngine, engineStatuses } from './core/engines';
+import { callEngine, engineStatuses, type EngineFailure } from './core/engines';
 import { RateLimiter, clientKey } from './core/rateLimit';
+import { councilAvailable, runCouncil } from './core/council';
 import type { Repository } from './core/repository';
-import type { ModelEngineId, ShaheenSettings } from './core/types';
-import { SHAHEEN_ENGINES, SHAHEEN_SITE_SETTINGS } from './config/shaheen';
+import type { CouncilSettings, ModelEngineId, ShaheenSettings } from './core/types';
+import { SHAHEEN_ENGINES, SHAHEEN_MODES, SHAHEEN_MODE_ORDER, SHAHEEN_SITE_SETTINGS, type ShaheenMode } from './config/shaheen';
 
 export const PROVIDERS = SHAHEEN_ENGINES;
 export type Provider = ModelEngineId;
 export interface ChatTurn { role: 'user' | 'assistant'; text: string }
 export interface ChatRequest {
   message: string;
-  model: Provider | 'auto';
+  model: Provider | ShaheenMode;
   language: SupportedLanguage;
   conversationHistory: ChatTurn[];
 }
@@ -46,7 +48,7 @@ export function validateChatRequest(body: unknown): ChatRequest {
   const { message, model = 'auto', language = 'ar', conversationHistory = [] } = body as Record<string, unknown>;
   if (typeof message !== 'string' || !message.trim()) throw new ChatError(400, 'INVALID_MESSAGE', 'Message is required');
   if (message.length > 4000) throw new ChatError(400, 'MESSAGE_TOO_LONG', 'Message exceeds 4000 characters');
-  if (model !== 'auto' && !PROVIDERS.includes(model as Provider)) throw new ChatError(400, 'INVALID_MODEL', 'Unknown AI provider');
+  if (!(SHAHEEN_MODES as readonly unknown[]).includes(model) && !PROVIDERS.includes(model as Provider)) throw new ChatError(400, 'INVALID_MODEL', 'Unknown AI provider');
   if (!SUPPORTED_LANGUAGES.some((lang) => lang.code === language)) throw new ChatError(400, 'INVALID_LANGUAGE', 'Unsupported language');
   if (!Array.isArray(conversationHistory) || conversationHistory.length > 24) {
     throw new ChatError(400, 'INVALID_HISTORY', 'History must contain at most 24 turns');
@@ -80,12 +82,31 @@ export function getChatModels(env: Environment, settings: ShaheenSettings = SHAH
     accentColor: 'amber', hasApiKey: models.some((model) => model.hasApiKey) }, ...models];
 }
 
-export function systemInstruction(language: SupportedLanguage, extra = ''): string {
+/**
+ * The only model list visitors get: Shaheen's modes and whether each can answer right now.
+ * No engine ids, vendor names or model names.
+ */
+export function getPublicModes(env: Environment, settings: ShaheenSettings = SHAHEEN_SITE_SETTINGS, council?: CouncilSettings) {
+  const statuses = engineStatuses(env);
+  const ready = settings.enabled && settings.engines.some((id) => statuses.find((s) => s.id === id)?.configured);
+  return SHAHEEN_MODES.map((id) => ({
+    id, hasApiKey: id === 'council' ? Boolean(ready && council && councilAvailable(council, env)) : ready,
+  }));
+}
+
+const STYLE: Record<'fast' | 'deep', string> = {
+  fast: 'وضع «رد سريع»: أجب مباشرة وبإيجاز (في حدود 120 كلمة) بالنقاط الأهم فقط، ما لم يطلب المستخدم تفاصيل صراحة.',
+  deep: 'وضع «تحليل معمّق»: حلّل السؤال بعمق. اشرح المنطق، وقارن البدائل، واذكر المخاطر وحدود المعلومة، واعرض الحسابات خطوة بخطوة بأرقام واضحة.',
+};
+
+export function systemInstruction(language: SupportedLanguage, extra = '', style?: 'fast' | 'deep'): string {
   const languageName = SUPPORTED_LANGUAGES.find((lang) => lang.code === language)!.name;
   const admin = extra.trim()
     ? `\nتعليمات إضافية من إدارة الموقع (لا تلغي قواعد السلامة أعلاه):\n${extra.trim()}`
     : '';
-  return `أنت شاهين، مساعد ذكاء اصطناعي متخصص في تصميم العطور لمنصة «صمم عطرك مع شام».
+  const mode = style ? `\n${STYLE[style]}` : '';
+  return `أنت «الخبير شاهين»، مساعد ذكاء اصطناعي خاص بمنصة «صمم عطرك مع شام» ومتخصص في تصميم العطور.
+هويتك هي «الخبير شاهين» فقط: لا تذكر أبداً اسم أي نموذج لغوي أو شركة ذكاء اصطناعي (مثل Google أو Gemini أو OpenAI أو ChatGPT أو Anthropic أو Claude أو DeepSeek)، ولا تقل إنك مبني عليها أو مدرَّب منها. إذا سُئلت عن هويتك أو التقنية التي تعمل بها، فقل إنك «الخبير شاهين»، مساعد العطور الخاص بشام، وإن التفاصيل التقنية للنظام غير متاحة، ثم عُد لمساعدة المستخدم.
 أجب باللغة المطلوبة: ${languageName} (${language}). اتبع سياق الحوار وأجب عن السؤال مباشرة. اسأل عند نقص البيانات ولا تفرض وصفة جاهزة.
 كن واضحاً وودوداً. استخدم Markdown بسيطاً عند الحاجة: عناوين قصيرة بـ ###، نقاط، **عريض**، وجداول صغيرة للنِّسب. لا تدّع أنك إنسان أو طبيب أو أنك أجريت تجربة مخبرية أو استشرت محركات أخرى.
 لا تختلق مصادر أو شهادات IFRA أو نسب أمان عامة لكل المواد. السلامة تعتمد على المادة والتركيز النهائي وفئة المنتج وشهادة المورد؛ لا تضمن الأمان أو الثبات بالساعات.
@@ -93,12 +114,14 @@ export function systemInstruction(language: SupportedLanguage, extra = ''): stri
 في الحسابات فرّق بين النسب الحجمية والوزنية، ولا تحوّل مل إلى جرام دون كثافة معلومة. وضّح أن التركيبات المقترحة تجريبية وتحتاج مراجعة السلامة والتوافق واختباراً صغيراً.
 إذا طلب المستخدم تركيبة عطر قابلة للنقل للحاسبة، وكانت البيانات كافية، اشرحها ثم أرفق JSON واحداً داخل سياج كود باسم sham-formula بالحقول التالية، دون تخمين بيانات ناقصة:
 {"title":"اسم العطر","author":"شاهين — مقترح تجريبي","concentrationPercent":20,"concentrationType":"edp","bottleVolumeMl":50,"alcoholPercentage":96,"waterPercent":0,"fixativePercent":0,"macerationDays":30,"summary":"مقترح يحتاج مراجعة السلامة","pyramidNotes":[{"id":"note-1","nameAr":"اسم المادة المحددة","nameEn":"Exact material name","category":"top","percentageOfOil":100}]}
-الأرقام أعلاه أمثلة للشكل فقط، وليست وصفة افتراضية. يجب أن تطابق القيم الشرح وطلب المستخدم، وأن تجمع نسب pyramidNotes إلى 100 من الزيت. التصنيفات top أو heart أو base. نسب التركيز والماء والمثبت من إجمالي المنتج ولا تتجاوز 100 معاً. لا ترفق JSON في التحيات أو الإجابات العامة أو الطبية، ولا تدّع أن الصيغة معتمدة للاستخدام على الجلد.${admin}`;
+الأرقام أعلاه أمثلة للشكل فقط، وليست وصفة افتراضية. يجب أن تطابق القيم الشرح وطلب المستخدم، وأن تجمع نسب pyramidNotes إلى 100 من الزيت. التصنيفات top أو heart أو base. نسب التركيز والماء والمثبت من إجمالي المنتج ولا تتجاوز 100 معاً. لا ترفق JSON في التحيات أو الإجابات العامة أو الطبية، ولا تدّع أن الصيغة معتمدة للاستخدام على الجلد.${mode}${admin}`;
 }
 
 export interface ExecuteOptions {
   env?: Environment; fetch?: typeof fetch; signal?: AbortSignal; timeoutMs?: number; totalTimeoutMs?: number;
   settings?: ShaheenSettings;
+  /** Advisory-council seats (shared with Sham Core); required for the "council" mode. */
+  council?: CouncilSettings;
 }
 
 /** Only the provider that actually answered is credited. Auto is failover, not a fake panel. */
@@ -110,11 +133,16 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   const available = settings.engines.filter((id) => configured.has(id));
   // When the admin does not let visitors pick, a specific request quietly becomes "auto".
   const requested = settings.allowVisitorChoice ? input.model : 'auto';
-  const candidates = requested === 'auto' ? available : available.filter((id) => id === requested);
+  if (requested === 'council') return executeCouncil(input, options, env, settings);
+  const style = requested === 'fast' || requested === 'deep' ? requested : undefined;
+  const candidates = requested === 'auto' ? available
+    : style ? SHAHEEN_MODE_ORDER[style].filter((id) => available.includes(id))
+      : available.filter((id) => id === requested);
   if (!candidates.length) throw new ChatError(503, 'PROVIDER_NOT_CONFIGURED', 'No API key configured for the requested provider');
   // Vercel functions stop at 60 s: keep the whole failover chain inside that.
   const total = AbortSignal.any([AbortSignal.timeout(options.totalTimeoutMs ?? 50000), ...(options.signal ? [options.signal] : [])]);
-  const instruction = systemInstruction(input.language, settings.instructions);
+  const instruction = systemInstruction(input.language, settings.instructions, style);
+  const maxTokens = style === 'fast' ? Math.min(settings.maxTokens, 1024) : settings.maxTokens;
   const turns: ChatTurn[] = [...input.conversationHistory, { role: 'user', text: input.message }];
   let timedOut = false;
   for (const provider of candidates) {
@@ -125,11 +153,11 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
     try {
       const reply = await callEngine(provider, instruction, turns, {
         env, fetch: options.fetch, signal, temperature: settings.temperature, model,
-        maxTokens: settings.maxTokens, maxChars: 32000,
+        maxTokens, maxChars: 32000,
       });
       if (signal.aborted) throw signal.reason;
       if (typeof reply !== 'string' || !reply.trim()) continue;
-      return { reply: reply.trim(), engine: { id: provider, provider, name: ENGINE_INFO[provider].name,
+      return { reply: reply.trim(), mode: requested, engine: { id: provider, provider, name: ENGINE_INFO[provider].name,
         badge: ENGINE_INFO[provider].name, model, accentColor: ENGINE_INFO[provider].color } };
     } catch {
       timedOut ||= signal.aborted;
@@ -138,6 +166,33 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   }
   if (total.aborted || timedOut) throw new ChatError(504, 'PROVIDER_TIMEOUT', 'AI request timed out or was cancelled');
   throw new ChatError(503, 'PROVIDER_UNAVAILABLE', 'The configured AI providers did not return a valid answer');
+}
+
+/** "council" mode: Sham Core's advisory council answers a Shaheen question (seats from the admin council settings). */
+async function executeCouncil(input: ChatRequest, options: ExecuteOptions, env: Environment, settings: ShaheenSettings) {
+  const council = options.council;
+  if (!council || !councilAvailable(council, env)) throw new ChatError(503, 'COUNCIL_UNAVAILABLE', 'The expert council needs at least two working engines');
+  const signal = AbortSignal.any([AbortSignal.timeout(options.totalTimeoutMs ?? 52000), ...(options.signal ? [options.signal] : [])]);
+  const lang = input.language === 'ar' || input.language === 'fa' ? 'ar' : 'en';
+  const result = await runCouncil({
+    question: input.message, history: input.conversationHistory.slice(-6), lang,
+    languageName: `${SUPPORTED_LANGUAGES.find((l) => l.code === input.language)!.name} (${input.language})`,
+    briefing: `CONTEXT (Shaheen's rules — follow them):\n${systemInstruction(input.language, settings.instructions)}\nENABLED SERVICES: the lab calculators on this site and the Sham assistant for orders.`,
+    council, enginePolicy: settings.engines, temperature: settings.temperature, env, fetch: options.fetch, signal, onStep: () => {},
+  });
+  if (!result.reply || !result.chair) {
+    throw signal.aborted ? new ChatError(504, 'PROVIDER_TIMEOUT', 'AI request timed out or was cancelled')
+      : new ChatError(503, 'PROVIDER_UNAVAILABLE', 'The configured AI providers did not return a valid answer');
+  }
+  const chair = result.chair as ModelEngineId;
+  return { reply: result.reply.trim(), mode: 'council' as const, engine: { id: chair, provider: chair, name: ENGINE_INFO[chair]?.name || chair,
+    badge: ENGINE_INFO[chair]?.name || chair, model: '', accentColor: ENGINE_INFO[chair]?.color || 'amber' } };
+}
+
+/** What a visitor receives: the answer and the mode — never which engine or vendor produced it. */
+export function publicChatResult(result: { reply: string; mode?: string }) {
+  const mode = (SHAHEEN_MODES as readonly string[]).includes(result.mode || '') ? result.mode! : 'auto';
+  return { reply: result.reply, mode, engine: { id: mode, provider: 'shaheen', name: 'الخبير شاهين', badge: 'شاهين', accentColor: 'amber' } };
 }
 
 export interface EngineProbe { id: ModelEngineId; name: string; model: string; configured: boolean; ok: boolean; ms: number; error?: string }
@@ -157,10 +212,11 @@ export async function probeEngines(settings: ShaheenSettings, options: { env?: E
     if (!status.configured) return { ...base, ok: false, ms: 0, error: 'not_configured' };
     const started = Date.now();
     const signal = AbortSignal.timeout(options.timeoutMs ?? 20000);
+    let failure: EngineFailure | undefined;
     try {
       const reply = await callEngine(id, 'Health check. Reply with the single word OK.', [{ role: 'user', text: 'ping' }],
-        { env, fetch: options.fetch, signal, temperature: 0, model, maxTokens: 32 });
-      return { ...base, ok: Boolean(reply?.trim()), ms: Date.now() - started, ...(reply?.trim() ? {} : { error: 'rejected_or_empty' }) };
+        { env, fetch: options.fetch, signal, temperature: 0, model, maxTokens: 32, onFailure: (f) => { failure = f; } });
+      return { ...base, ok: Boolean(reply?.trim()), ms: Date.now() - started, ...(reply?.trim() ? {} : { error: failure || 'rejected_or_empty' }) };
     } catch {
       return { ...base, ok: false, ms: Date.now() - started, error: signal.aborted ? 'timeout' : 'unreachable' };
     }
@@ -172,13 +228,14 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
   const env = options.env || process.env;
   const router = express.Router();
   const limiter = new RateLimiter(Number(env.SHAM_SHAHEEN_RATE_PER_MIN) || 10, 60_000);
-  const settings = async () => (await options.repo.settings()).shaheen;
+  // A council answer costs several model calls: separate hourly budget per visitor.
+  const councilLimiter = new RateLimiter(Number(env.SHAM_COUNCIL_RATE_PER_HOUR) || 12, 60 * 60_000);
 
   router.get('/models', async (_req, res) => {
     res.setHeader('Cache-Control', 'no-store');
     try {
-      const shaheen = await settings();
-      res.json({ models: getChatModels(env, shaheen), enabled: shaheen.enabled, allowVisitorChoice: shaheen.allowVisitorChoice });
+      const { shaheen, council } = await options.repo.settings();
+      res.json({ models: getPublicModes(env, shaheen, council), enabled: shaheen.enabled, allowVisitorChoice: shaheen.allowVisitorChoice });
     } catch {
       res.status(500).json({ error: 'Settings unavailable', code: 'SETTINGS_UNAVAILABLE' });
     }
@@ -191,8 +248,12 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
     try {
       const input = validateChatRequest(req.body);
       if (!limiter.allow(clientKey(req))) throw new ChatError(429, 'RATE_LIMITED', 'Too many messages, please wait a minute');
-      const result = await executeChat(input, { env, fetch: options.fetch, signal: controller.signal, settings: await settings() });
-      if (!res.destroyed) res.json(result);
+      const { shaheen, council } = await options.repo.settings();
+      if (input.model === 'council' && shaheen.allowVisitorChoice && !councilLimiter.allow(clientKey(req))) {
+        throw new ChatError(429, 'RATE_LIMITED', 'Too many expert-council questions, try the other modes');
+      }
+      const result = await executeChat(input, { env, fetch: options.fetch, signal: controller.signal, settings: shaheen, council });
+      if (!res.destroyed) res.json(publicChatResult(result));
     } catch (error) {
       if (res.destroyed) return;
       if (error instanceof ChatError) {

@@ -88,7 +88,7 @@ test('history includes current conversation, excludes welcome/error text and pas
 });
 
 test('upstream failures and invalid replies release the lock and are marked as errors', async () => {
-  for (const result of [null, { reply: '' }, { reply: 'hi', perspectives: [null] }]) {
+  for (const result of [null, { reply: '' }, { reply: 'hi', engine: { id: 'auto', provider: 'unknown' } }]) {
     const store = createChatStore((async () => result) as typeof requestApi);
     await store.send(options);
     assert.equal(store.getSnapshot().isLoading, false);
@@ -194,4 +194,14 @@ test('retry re-asks the question behind a trailing error bubble and replaces it 
   assert.deepEqual(after.slice(-2).map((m) => [m.role, m.text]), [['user', 'My perfume'], ['assistant', 'Second time lucky']]);
   assert.equal(after.filter((m) => m.kind === 'error').length, 0);
   assert.equal(await store.retry({ model: 'auto', language: 'en', errorText: () => 'x' }), false, 'nothing to retry');
+});
+
+test('replies in the current server shape (mode + anonymous Shaheen engine) are accepted', async () => {
+  const engine = { id: 'deep', provider: 'shaheen', name: 'الخبير شاهين', badge: 'شاهين', accentColor: 'amber' };
+  const store = createChatStore((async () => ({ reply: 'تحليل', mode: 'deep', engine })) as typeof requestApi);
+  await store.send(options);
+  const last = store.getSnapshot().messages.at(-1);
+  assert.equal(last?.kind, undefined);
+  assert.equal(last?.text, 'تحليل');
+  assert.equal(last?.aiEngine?.id, 'deep');
 });

@@ -9,6 +9,7 @@
  *  openrouter  : one key, many hosted models (useful for the advisory council: different vendors per seat).
  *  sham_local  : Sham's own deterministic composer — works with zero keys and zero cost.
  */
+import { createHash } from 'node:crypto';
 import type { EngineId, ModelEngineId } from './types';
 
 type Env = Record<string, string | undefined>;
@@ -41,7 +42,7 @@ export function engineStatuses(env: Env = process.env): EngineStatus[] {
   const open = openCompatibleEngine(env);
   return [
     { id: 'self_hosted', name: open?.gateway ? 'Tencent EdgeOne Models' : 'Self-hosted open model', model: open?.model || env.SHAM_LLM_MODEL?.trim() || 'qwen2.5:7b-instruct', configured: Boolean(open), kind: 'self_hosted' },
-    { id: 'gemini', name: 'Google Gemini', model: env.GEMINI_MODEL?.trim() || 'gemini-2.5-flash', configured: configured(env.GEMINI_API_KEY), kind: 'hosted' },
+    { id: 'gemini', name: 'Google Gemini', model: env.GEMINI_MODEL?.trim() || GEMINI_DEFAULT_MODEL, configured: configured(env.GEMINI_API_KEY), kind: 'hosted' },
     { id: 'openai', name: 'OpenAI', model: env.OPENAI_MODEL?.trim() || 'gpt-4o-mini', configured: configured(env.OPENAI_API_KEY), kind: 'hosted' },
     { id: 'claude', name: 'Anthropic Claude', model: env.ANTHROPIC_MODEL?.trim() || 'claude-sonnet-4-5', configured: configured(env.ANTHROPIC_API_KEY), kind: 'hosted' },
     { id: 'deepseek', name: 'DeepSeek', model: env.DEEPSEEK_MODEL?.trim() || 'deepseek-chat', configured: configured(env.DEEPSEEK_API_KEY), kind: 'hosted' },
@@ -119,18 +120,90 @@ export function geminiThinking(model: string, maxTokens: number): Record<string,
 }
 
 /** Model ids the admin may type for a council seat (provider slugs such as `qwen2.5:7b`, `anthropic/claude-sonnet-4.5`). */
+
+/**
+ * Google retires Gemini model IDs quickly (and limits old ones to projects that used them before),
+ * so the default is Google's own rolling alias and a "model not found" answer triggers discovery.
+ */
+export const GEMINI_DEFAULT_MODEL = 'gemini-flash-latest';
+
+interface GeminiModelInfo { name?: string; supportedGenerationMethods?: string[] }
+
+/** Best text model for chat among those the key can use: rolling alias → newest stable Flash → Lite → previews. */
+export function pickGeminiModel(models: GeminiModelInfo[]): string | undefined {
+  const ids = models
+    .filter((m) => typeof m.name === 'string' && (m.supportedGenerationMethods || []).includes('generateContent'))
+    .map((m) => m.name!.replace(/^models\//, ''))
+    .filter((id) => /^gemini-/.test(id) && !/(image|tts|live|audio|embedding|robotics|computer|vision|learnlm|aqa)/i.test(id));
+  if (ids.includes('gemini-flash-latest')) return 'gemini-flash-latest';
+  const version = (id: string) => Number(id.match(/^gemini-(\d+(?:\.\d+)?)/)?.[1] || 0);
+  const rank = (id: string) => [
+    /-flash/.test(id) && !/lite/.test(id) && !/(preview|exp)/.test(id),
+    /-flash/.test(id) && !/(preview|exp)/.test(id),
+    /-flash/.test(id),
+    true,
+  ].findIndex(Boolean);
+  return [...ids].sort((a, b) => rank(a) - rank(b) || version(b) - version(a) || a.length - b.length)[0];
+}
+
+type GeminiCache = Map<string, { model: string; at: number }>;
+const geminiSubstitutes: GeminiCache = ((globalThis as { __shamGeminiModels?: GeminiCache }).__shamGeminiModels ??= new Map());
+const geminiCacheKey = (apiKey: string, model: string) => `${createHash('sha256').update(apiKey).digest('hex').slice(0, 16)}:${model}`;
+
+async function discoverGeminiModel(apiKey: string, unavailable: string, request: typeof fetch, signal: AbortSignal): Promise<string | undefined> {
+  try {
+    const response = await request('https://generativelanguage.googleapis.com/v1beta/models?pageSize=1000', { headers: { 'x-goog-api-key': apiKey }, signal });
+    if (!response.ok) return undefined;
+    const data = await response.json() as { models?: GeminiModelInfo[] };
+    const picked = pickGeminiModel((data.models || []).filter((m) => m.name?.replace(/^models\//, '') !== unavailable));
+    if (picked) geminiSubstitutes.set(geminiCacheKey(apiKey, unavailable), { model: picked, at: Date.now() });
+    return picked;
+  } catch {
+    return undefined;
+  }
+}
+
 export const MODEL_ID = /^[A-Za-z0-9._:/@-]{1,120}$/;
+
+/**
+ * Why a provider refused a request, as a fixed code (never the upstream text, which can echo keys
+ * or account details). Lets the admin see "invalid key" vs "no credit" vs "wrong model" at a glance.
+ */
+export type EngineFailure = 'invalid_key' | 'no_credit' | 'rate_limited' | 'model_not_found' | 'region_blocked' | 'bad_request' | 'upstream_error';
+
+export function classifyEngineFailure(status: number, body = ''): EngineFailure {
+  const text = body.slice(0, 4000);
+  const code = (() => {
+    try {
+      const err = (JSON.parse(text) as { error?: { code?: unknown; status?: unknown; type?: unknown; details?: { reason?: unknown }[] } }).error || {};
+      return [err.code, err.status, err.type, ...(err.details || []).map((d) => d?.reason)].filter((v) => typeof v === 'string').join(' ');
+    } catch { return ''; }
+  })();
+  if (/API_KEY_INVALID|API_KEY_SERVICE_BLOCKED|invalid_api_key|authentication_error|UNAUTHENTICATED/i.test(code) || status === 401) return 'invalid_key';
+  if (/insufficient_quota|billing|credit balance|insufficient balance|Insufficient Balance|exceeded your current quota/i.test(`${code} ${text}`) || status === 402) return 'no_credit';
+  if (/User location is not supported|unsupported_country|not available in your (country|region)/i.test(text)) return 'region_blocked';
+  if (/model_not_found|not_found_error|NOT_FOUND/i.test(code) || status === 404 || /model .* (does not exist|not found)/i.test(text)) return 'model_not_found';
+  if (status === 403 || /PERMISSION_DENIED|permission_error/i.test(code)) return 'invalid_key';
+  if (status === 429 || /RESOURCE_EXHAUSTED|rate_limit/i.test(code)) return 'rate_limited';
+  if (status >= 500 || /overloaded/i.test(code)) return 'upstream_error';
+  return 'bad_request';
+}
+
 
 export async function callEngine(
   id: ModelEngineId,
   system: string,
   turns: EngineTurn[],
-  options: { env?: Env; fetch?: typeof fetch; signal: AbortSignal; temperature: number; onToken?: (text: string) => void; model?: string; maxTokens?: number; maxChars?: number },
+  options: { env?: Env; fetch?: typeof fetch; signal: AbortSignal; temperature: number; onToken?: (text: string) => void; model?: string; maxTokens?: number; maxChars?: number; onFailure?: (failure: EngineFailure, status: number) => void },
 ): Promise<string | undefined> {
   const env = options.env || process.env;
   const request = options.fetch || fetch;
   const base = engineStatuses(env).find((e) => e.id === id)!;
   const status = { ...base, model: options.model && MODEL_ID.test(options.model) ? options.model : base.model };
+  if (id === 'gemini') {
+    const cached = geminiSubstitutes.get(geminiCacheKey(env.GEMINI_API_KEY!.trim(), status.model));
+    if (cached && Date.now() - cached.at < 6 * 3600_000) status.model = cached.model;
+  }
   const maxTokens = options.maxTokens ?? 1200;
   const maxChars = options.maxChars ?? 12000;
   const stream = Boolean(options.onToken);
@@ -170,8 +243,21 @@ export async function callEngine(
     body = openAiShape();
   }
 
-  const response = await request(url, { method: 'POST', headers, body: JSON.stringify(body), signal: options.signal });
-  if (!response.ok) return undefined;
+  let response = await request(url, { method: 'POST', headers, body: JSON.stringify(body), signal: options.signal });
+  if (id === 'gemini' && response.status === 404) {
+    // The configured model was retired or is not open to this key: switch to the best available one.
+    const apiKey = env.GEMINI_API_KEY!.trim();
+    const better = await discoverGeminiModel(apiKey, status.model, request, options.signal);
+    if (better && better !== status.model) {
+      url = url.replace(`/models/${encodeURIComponent(status.model)}:`, `/models/${encodeURIComponent(better)}:`);
+      body = { ...body, generationConfig: { temperature: options.temperature, ...geminiThinking(better, maxTokens) } };
+      response = await request(url, { method: 'POST', headers, body: JSON.stringify(body), signal: options.signal });
+    }
+  }
+  if (!response.ok) {
+    if (options.onFailure) options.onFailure(classifyEngineFailure(response.status, await response.text().catch(() => '')), response.status);
+    return undefined;
+  }
 
   const isStream = stream && response.body && (response.headers.get('content-type') || '').includes('text/event-stream');
   if (isStream) {

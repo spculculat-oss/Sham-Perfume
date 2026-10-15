@@ -69,7 +69,7 @@ test('OpenAI-compatible engines stream tokens over SSE and <think> never reaches
   const bot = new Orchestrator(repo, { env: { SHAM_LLM_BASE_URL: 'http://llm.internal:11434/v1' }, fetch: fetchMock });
   const deltas: string[] = [];
   const out = await bot.chat({ message: 'يعني ايه تعتيق العطر؟', visitorId: visitor, language: 'ar' }, { onEvent: (e) => { if (e.type === 'delta') deltas.push(e.text); } });
-  assert.equal(out.engine.id, 'self_hosted');
+  assert.equal(out.engine.id, 'sham_ai');
   assert.equal(out.reply, 'التعتيق يعني ترك العطر');
   assert.ok(deltas.length >= 2, 'tokens arrive incrementally');
   assert.ok(!deltas.join('').includes('plan'));

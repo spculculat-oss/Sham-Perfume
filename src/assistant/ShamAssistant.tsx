@@ -18,7 +18,7 @@ const S = {
   teaser: { ar: 'طلبات • متجر • دعم', en: 'Orders • Store • Support' },
   placeholder: { ar: 'اكتب سؤالك أو طلبك…', en: 'Type your question or request…' },
   send: { ar: 'إرسال', en: 'Send' },
-  council_toggle: { ar: 'استشارة المجلس: أكثر من نموذج ذكاء اصطناعي يتناقشوا قبل الرد', en: 'Council mode: several AI models debate before answering' },
+  council_toggle: { ar: 'مجلس الخبراء: عدة مستشارين يتناقشوا قبل الرد', en: 'Expert council: several advisors discuss before answering' },
   council_on: { ar: 'وضع المجلس شغّال — {n} مستشارين هيكتبوا آراءهم ويراجعوا بعض، والرد هياخد وقت أطول شوية.', en: 'Council mode on — {n} advisors will give opinions and review each other; answers take a little longer.' },
   council_title: { ar: 'نقاش المجلس الاستشاري', en: 'Advisory council discussion' },
   council_meta: { ar: '{n} مستشارين · {r} جولة مراجعة', en: '{n} advisors · {r} review round(s)' },
@@ -198,7 +198,7 @@ export function ShamAssistant({ currentLang }: Props) {
     return () => window.removeEventListener('open-sham-assistant', handler);
   }, []);
 
-  /** `replaces` = text of the latest user message being regenerated/edited (ChatGPT-style rewind). */
+  /** `replaces` = text of the latest user message being regenerated/edited (rewind and re-ask). */
   const send = useCallback(async (text: string, replaces?: string) => {
     const message = text.trim();
     if (!message || busy) return;
@@ -484,7 +484,7 @@ export function ShamAssistant({ currentLang }: Props) {
 
 function Bubble({ role, text, engine, lang = 'ar', streaming, stopped }: { role: 'user' | 'assistant'; text: string; engine?: string; lang?: SupportedLanguage; streaming?: boolean; stopped?: boolean }) {
   const user = role === 'user';
-  const label = engine === 'human' ? loc(lang, S.human) : engine && engine !== 'system' ? (engine === 'sham_local' ? 'Sham Core' : `Sham Core · ${engine}`) : '';
+  const label = engine === 'human' ? loc(lang, S.human) : engine && engine !== 'system' ? (engine === 'sham_local' ? 'Sham Core' : 'Sham Core · AI') : '';
   return (
     <div className={`flex ${user ? 'justify-end' : 'justify-start'}`}>
       <div className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-wrap shadow-sm ${user ? 'bg-stone-900 text-white rounded-ee-sm' : engine === 'human' ? 'bg-emerald-50 border border-emerald-200 text-stone-900 rounded-es-sm' : 'bg-white border border-stone-200 text-stone-800 rounded-es-sm'}`}>
@@ -515,7 +515,7 @@ function CouncilPanel({ council, lang }: { council: CouncilView; lang: Supported
             <div key={e.label} className="rounded-lg border border-stone-200 bg-white p-2">
               <p className="text-[11px] font-bold text-stone-800 flex flex-wrap items-center gap-1">
                 <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-stone-900 text-[9px] text-amber-200">{e.label}</span>
-                {e.role} <span className="font-normal text-stone-400" dir="ltr">{e.engine}</span>
+                {e.role}
                 {e.chair && <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-100 px-1.5 text-[9px] text-amber-900"><Crown className="w-2.5 h-2.5" />{L('council_chair')}</span>}
               </p>
               <p className="mt-1 text-[10px] font-semibold text-stone-500">{L('council_opinion')}</p>

@@ -44,7 +44,7 @@ export interface ChatOutput {
   conversationId: string;
   messageId: string;
   reply: string;
-  engine: { id: EngineId; name: string };
+  engine: { id: EngineId | 'sham_ai'; name: string };
   intent: string;
   actions: ActionCard[];
   citations: Citation[];
@@ -63,6 +63,16 @@ export type StreamEvent =
   | { type: 'reset' }
   | { type: 'done'; output: ChatOutput }
   | { type: 'error'; code: string; message: string };
+
+/**
+ * Visitor-facing engine identity: Sham's own composer keeps its id, every language model becomes
+ * "sham_ai" (Sham Core AI). Real engine ids stay in the stored conversation and the admin trace.
+ */
+export function publicEngine(engine: string): { id: EngineId | 'sham_ai'; name: string } {
+  if (engine === 'sham_local') return { id: 'sham_local', name: 'Sham Core' };
+  if (engine === 'human' || engine === 'system') return { id: engine as EngineId, name: engine };
+  return { id: 'sham_ai', name: 'Sham Core AI' };
+}
 
 export const INTENT_LABEL = {
   ar: { greeting: 'تحية', thanks: 'شكر', list_services: 'استعراض الخدمات', track_order: 'تتبع طلب', browse_products: 'تصفح المنتجات', service_request: 'طلب خدمة', handoff: 'التحويل لموظف', calculate: 'عملية حسابية', perfume_expert: 'سؤال عن التركيب', question: 'سؤال عام', memory_view: 'عرض ما أتذكره', forget: 'حذف البيانات' },
@@ -316,8 +326,10 @@ export class Orchestrator {
       if (opts.onEvent) for (const chunk of reply.match(/[^\s]+\s*/g) || [reply]) emit({ type: 'delta', text: chunk });
     }
     const engineName = statuses.find((s) => s.id === engine)!.name;
-    if (council?.chair && engine === council.chair.engine) step('engine', `الرد الاستشاري جاهز (رئاسة المجلس: ${engineName})`, `Consultative answer ready (chair: ${engineName})`);
-    else step('engine', `صياغة الرد: ${engine === 'sham_local' ? 'محرك شام الذاتي' : engineName}`, `Writing the answer: ${engineName}`);
+    // Visitors see "Sham Core", never which vendor/model wrote the answer (admins see it in the trace).
+    const publicName = engine === 'sham_local' ? { ar: 'محرك شام الذاتي', en: 'Sham built-in engine' } : { ar: 'Sham Core AI', en: 'Sham Core AI' };
+    if (council?.chair && engine === council.chair.engine) step('engine', 'الرد الاستشاري جاهز', 'Consultative answer ready');
+    else step('engine', `صياغة الرد: ${publicName.ar}`, `Writing the answer: ${publicName.en}`);
 
     // 7) Compose + remember
     const suggestions = suggestFollowUps(lang, routed, service, services);
@@ -335,7 +347,7 @@ export class Orchestrator {
     await this.repo.touchVisitor(conversation.visitorId, conversation.id, conversation.memory);
 
     const output: ChatOutput = {
-      conversationId: conversation.id, messageId, reply, engine: { id: engine, name: engineName }, intent: routed.intent,
+      conversationId: conversation.id, messageId, reply, engine: opts.debug ? { id: engine, name: engineName } : publicEngine(engine), intent: routed.intent,
       actions, citations, steps, suggestions, status: conversation.status, trace: opts.debug ? trace : undefined,
       ...(council && (settings.council.showDiscussion || opts.debug) ? { council: publicTranscript(council, lang, env) } : {}),
     };
@@ -481,6 +493,7 @@ ${draft}`;
     const language = SUPPORTED_LANGUAGES.find((l) => l.code === uiLang)!.name;
     return `You are "${settings.assistantNameAr} / ${settings.assistantNameEn}", the services assistant of the Sham perfume platform. Persona: ${settings.personaAr}
 Reply in the visitor's language (their message looks ${msgLang === 'ar' ? 'Arabic — mirror their dialect, e.g. Egyptian' : 'non-Arabic'}; site language: ${language}). Be concise (max ~120 words).
+IDENTITY: you are only "${settings.assistantNameAr} / ${settings.assistantNameEn}" of Sham. Never name or hint at any language model or AI company (Google, Gemini, OpenAI, ChatGPT, Anthropic, Claude, DeepSeek…), never say you are built on or trained by one; if asked, say you are Sham's assistant and the system's technical details are not shared.
 HARD RULES:
 1. Use ONLY facts in CONTEXT below for prices, stock, policies, timelines and order status. Never invent products, prices, discounts, delivery times or certifications.
 2. You cannot place orders, take payments or change anything. Requests are submitted ONLY by the visitor through the form card the UI shows; never claim something was ordered or booked.

@@ -610,6 +610,13 @@ const PROBE_ERROR: Record<string, string> = {
   rejected_or_empty: 'المزوّد رفض الطلب أو رجّع رداً فارغاً — راجع صلاحية المفتاح واسم النموذج والرصيد',
   timeout: 'انتهت المهلة — الخدمة بطيئة أو غير متاحة',
   unreachable: 'تعذّر الوصول للمزوّد (شبكة/عنوان خاطئ/مفتاح مرفوض)',
+  invalid_key: 'المفتاح غير صالح أو ملغي — أنشئ مفتاحاً جديداً من حساب المزوّد وضعه في متغيرات الخادم',
+  no_credit: 'الحساب بلا رصيد أو انتهت الحصة المجانية — اشحن الرصيد أو فعّل الفوترة عند المزوّد',
+  rate_limited: 'تجاوزت حد الطلبات مؤقتاً — انتظر دقيقة ثم أعد الاختبار',
+  model_not_found: 'اسم النموذج غير متاح لهذا الحساب — اختر نموذجاً آخر من الإعدادات',
+  region_blocked: 'المزوّد لا يخدم منطقة الخادم — استخدم خادماً في منطقة مدعومة',
+  bad_request: 'المزوّد رفض صيغة الطلب — راجع اسم النموذج والإعدادات',
+  upstream_error: 'خدمة المزوّد متعطلة حالياً — أعد المحاولة لاحقاً',
 };
 
 /** «الخبير شاهين»: which engines, in which order, which models, tone, length and extra instructions. */
@@ -669,7 +676,7 @@ function ShaheenPanel() {
           <div className={`${card} space-y-3`}>
             <div className="flex flex-wrap items-center gap-3">
               <label className="inline-flex items-center gap-1.5 text-sm font-bold"><input type="checkbox" checked={form.enabled} onChange={(e) => set({ enabled: e.target.checked })} />شاهين مفعّل للزوار</label>
-              <label className="inline-flex items-center gap-1.5 text-xs font-semibold"><input type="checkbox" checked={form.allowVisitorChoice} onChange={(e) => set({ allowVisitorChoice: e.target.checked })} />السماح للزائر باختيار محرك معيّن</label>
+              <label className="inline-flex items-center gap-1.5 text-xs font-semibold"><input type="checkbox" checked={form.allowVisitorChoice} onChange={(e) => set({ allowVisitorChoice: e.target.checked })} />السماح للزائر باختيار وضع الرد (سريع / معمّق / مجلس الخبراء) — أسماء المحركات لا تظهر للزوار أبداً</label>
             </div>
             <p className={`text-xs font-semibold ${ready.length ? 'text-emerald-700' : 'text-red-700'}`}>
               {ready.length ? `جاهز: ${ready.length} محرك مهيأ ومسموح (${ready.map((id) => ENGINE_LABEL[id]).join('، ')}).` : 'غير جاهز: مفيش ولا محرك مسموح ومهيأ — الزوار هيشوفوا «شاهين غير متصل».'}

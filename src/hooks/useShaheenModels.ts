@@ -4,8 +4,6 @@ import type { ShaheenModelChoice } from '../utils/chatStore';
 
 export interface ShaheenEngine {
   id: ShaheenModelChoice;
-  name: string;
-  model?: string;
   hasApiKey: boolean;
 }
 interface ModelsState {
@@ -16,7 +14,8 @@ interface ModelsState {
 }
 
 /**
- * One request to /api/models shared by every Shaheen surface. The answer reflects the server's live
+ * One request to /api/models shared by every Shaheen surface. It lists Shaheen's response modes
+ * (auto / fast / deep / council) and whether each can answer — never engine or vendor names. The answer reflects the server's live
  * settings (server/config/shaheen.ts + admin dashboard), so the GitHub Pages site and the Vercel site
  * show exactly the same engines.
  */

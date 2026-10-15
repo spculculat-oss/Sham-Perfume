@@ -167,7 +167,9 @@ export async function runCouncil(run: CouncilRun): Promise<CouncilResult> {
     memberId: m.id, label: String.fromCharCode(65 + i), engine: m.engine,
     model: m.model || statuses.find((s) => s.id === m.engine)!.model, role: m.role, reviews: [], ok: false, ms: 0,
   }));
-  const name = (e: CouncilEntry) => seatTag(e, statuses);
+  // Visitors see neutral advisor letters, never vendors or model names (those stay in the admin trace).
+  const name = (e: CouncilEntry) => `المستشار ${e.label}`;
+  const nameEn = (e: CouncilEntry) => `Advisor ${e.label}`;
   const ask = async (member: CouncilMember, system: string, turns: EngineTurn[], maxTokens: number, ms: number) => {
     try {
       return await callEngine(member.engine, system, turns, { env: run.env, fetch: run.fetch, temperature: Math.max(run.temperature, 0.4), signal: signalFor(ms), model: member.model, maxTokens });
@@ -185,7 +187,7 @@ export async function runCouncil(run: CouncilRun): Promise<CouncilResult> {
     entry.ms = Date.now() - t;
     if (opinion) {
       entry.opinion = clip(opinion, 2500); entry.ok = true;
-      run.onStep(`رأي ${COUNCIL_ROLES[member.role].ar} (${name(entry)})`, `${COUNCIL_ROLES[member.role].en} (${name(entry)}) gave an opinion`);
+      run.onStep(`رأي ${COUNCIL_ROLES[member.role].ar} (${name(entry)})`, `${COUNCIL_ROLES[member.role].en} (${nameEn(entry)}) gave an opinion`);
     }
   }));
   const voices = entries.filter((e) => e.ok);
@@ -235,19 +237,13 @@ export async function runCouncil(run: CouncilRun): Promise<CouncilResult> {
   return { transcript: finish('failed') };
 }
 
-/** Short seat name: the vendor for hosted APIs, the model for routers/self-hosted servers that host many models. */
-function seatTag(e: Pick<CouncilEntry, 'engine' | 'model'>, statuses: ReturnType<typeof engineStatuses>) {
-  return e.engine === 'self_hosted' || e.engine === 'openrouter' ? e.model : statuses.find((s) => s.id === e.engine)?.name || e.engine;
-}
-
-/** What visitors may see of the discussion (no internal ids or timings). */
-export function publicTranscript(t: CouncilTranscript, lang: 'ar' | 'en', env: Env = process.env) {
-  const statuses = engineStatuses(env);
+/** What visitors may see of the discussion: roles and anonymous letters only (no vendors, models, ids or timings). */
+export function publicTranscript(t: CouncilTranscript, lang: 'ar' | 'en', _env: Env = process.env) {
   return {
     outcome: t.outcome, rounds: t.rounds,
     entries: t.entries.filter((e) => e.ok).map((e) => ({
       label: e.label, role: lang === 'ar' ? COUNCIL_ROLES[e.role].ar : COUNCIL_ROLES[e.role].en,
-      engine: seatTag(e, statuses), opinion: e.opinion || '', reviews: e.reviews,
+      engine: '', opinion: e.opinion || '', reviews: e.reviews,
       chair: t.chair?.memberId === e.memberId,
     })),
   };
