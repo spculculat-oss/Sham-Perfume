@@ -48,9 +48,17 @@ test('the data category values all map onto labelled keys', () => {
   }
 });
 
-test('content label coverage grows wave by wave (never shrinks)', () => {
+test('all 100 platform languages carry the full content-label set', () => {
+  const incomplete = SUPPORTED_LANGUAGES.map((l) => l.code).filter(
+    (code) => KEYS.some((key) => (CONTENT_LABELS_ALL[code]?.[key] ?? '').length === 0),
+  );
+  assert.deepEqual(incomplete, [], `languages missing content labels: ${incomplete.join(', ')}`);
+  assert.equal(SUPPORTED_LANGUAGES.length, 100);
+});
+
+test('waves never overwrite an earlier language (append-only coverage)', () => {
   const covered = Object.entries(CONTENT_LABELS_ALL)
     .filter(([, pack]) => KEYS.some((key) => (pack?.[key] ?? '').length > 0))
     .map(([lang]) => lang);
-  assert.ok(covered.length >= 20, `expected at least 20 languages, got ${covered.length}`);
+  assert.ok(covered.length >= 100, `expected 100 languages, got ${covered.length}`);
 });
