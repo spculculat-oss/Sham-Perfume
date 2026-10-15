@@ -90,7 +90,20 @@ export type SupportedLanguage =
   | 'cy'
   | 'lb'
   | 'gd'
-  | 'co';
+  | 'co'
+  | 'sd'
+  | 'as'
+  | 'oc'
+  | 'bo'
+  | 'dz'
+  | 'mg'
+  | 'sn'
+  | 'rw'
+  | 'st'
+  | 'ln'
+  | 'ti'
+  | 'om'
+  | 'ig';
 
 export interface LanguageConfig {
   code: SupportedLanguage;
@@ -193,6 +206,19 @@ export const SUPPORTED_LANGUAGES: LanguageConfig[] = [
   { code: 'lb', name: 'Luxembourgish', nativeName: 'Lëtzebuergesch', dir: 'ltr', flag: '🇱🇺' },
   { code: 'gd', name: 'Scottish Gaelic', nativeName: 'Gàidhlig', dir: 'ltr', flag: '🇬🇧' },
   { code: 'co', name: 'Corsican', nativeName: 'Corsu', dir: 'ltr', flag: '🇫🇷' },
+  { code: 'sd', name: 'Sindhi', nativeName: 'سنڌي', dir: 'rtl', flag: '🇵🇰' },
+  { code: 'as', name: 'Assamese', nativeName: 'অসমীয়া', dir: 'ltr', flag: '🇮🇳' },
+  { code: 'oc', name: 'Occitan', nativeName: 'Occitan', dir: 'ltr', flag: '🇫🇷' },
+  { code: 'bo', name: 'Tibetan', nativeName: 'བོད་སྐད་', dir: 'ltr', flag: '🇨🇳' },
+  { code: 'dz', name: 'Dzongkha', nativeName: 'རྫོང་ཁ', dir: 'ltr', flag: '🇧🇹' },
+  { code: 'mg', name: 'Malagasy', nativeName: 'Malagasy', dir: 'ltr', flag: '🇲🇬' },
+  { code: 'sn', name: 'Shona', nativeName: 'chiShona', dir: 'ltr', flag: '🇿🇼' },
+  { code: 'rw', name: 'Kinyarwanda', nativeName: 'Ikinyarwanda', dir: 'ltr', flag: '🇷🇼' },
+  { code: 'st', name: 'Sesotho', nativeName: 'Sesotho', dir: 'ltr', flag: '🇱🇸' },
+  { code: 'ln', name: 'Lingala', nativeName: 'Lingála', dir: 'ltr', flag: '🇨🇩' },
+  { code: 'ti', name: 'Tigrinya', nativeName: 'ትግርኛ', dir: 'ltr', flag: '🇪🇷' },
+  { code: 'om', name: 'Oromo', nativeName: 'Afaan Oromoo', dir: 'ltr', flag: '🇪🇹' },
+  { code: 'ig', name: 'Igbo', nativeName: 'Igbo', dir: 'ltr', flag: '🇳🇬' },
 ];
 
 export type TranslationKey = string;
