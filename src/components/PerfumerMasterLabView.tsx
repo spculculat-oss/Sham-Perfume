@@ -34,6 +34,8 @@ import { isStaticHosting } from '../utils/api';
 import { StaticHostingNotice } from './StaticHostingNotice';
 import { ShaheenModesPanel, ShaheenServiceStatus, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
+import { ShaheenMedia } from './ShaheenMedia';
+import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
 import { ENGINE_BADGE, messageTime, modeBadge, visibleEngines, scrollChatToEnd } from './shaheenEngines';
 import type { ShaheenModelChoice } from '../utils/chatStore';
 import { useShaheenChat } from '../hooks/useShaheenChat';
@@ -568,9 +570,10 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
             const activeDisplayContent =
               m.id === 'welcome'
                 ? shaheenWelcome(currentLang)
-                : m.text;
+                : stripMediaBlock(m.text);
 
             const isError = m.kind === 'error';
+            const mediaRequest = m.role === 'assistant' && !isError && m.id !== 'welcome' ? extractMediaRequest(m.text) : undefined;
             const isLastMessage = m.id === messages[messages.length - 1]?.id;
             const canCompare = m.role === 'assistant' && !isError && m.id !== 'welcome' && AI_ENGINES.length > 1;
             const extractedFormula = m.role === 'assistant' && !isError ? extractFormulaFromAIMessage(activeDisplayContent) : null;
@@ -636,7 +639,10 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
 
                   {/* Text Payload */}
                   {m.role === 'assistant' && !isError ? (
-                    <ShaheenMarkdown text={activeDisplayContent} className="text-xs sm:text-sm leading-relaxed font-sans" />
+                    <>
+                      <ShaheenMarkdown text={activeDisplayContent} className="text-xs sm:text-sm leading-relaxed font-sans" />
+                      {mediaRequest && <ShaheenMedia request={mediaRequest} lang={currentLang} />}
+                    </>
                   ) : (
                     <div className="text-xs sm:text-sm leading-relaxed whitespace-pre-line font-sans break-words space-y-2" dir="auto">
                       {activeDisplayContent}

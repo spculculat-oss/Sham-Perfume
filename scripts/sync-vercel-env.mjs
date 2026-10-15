@@ -20,6 +20,8 @@ const TARGETS = ['production', 'preview', 'development'];
 const KEYS = {
   GEMINI_API_KEY: 'gemini', OPENAI_API_KEY: 'openai', ANTHROPIC_API_KEY: 'claude',
   DEEPSEEK_API_KEY: 'deepseek', OPENROUTER_API_KEY: 'openrouter', AI_GATEWAY_API_KEY: 'self_hosted',
+  // Not an AI engine: real videos under Shaheen's answers (YouTube Data API v3). Synced as is.
+  YOUTUBE_API_KEY: 'youtube',
 };
 const BLOCKING = new Set(['invalid_key', 'no_credit']);
 const gh = Boolean(process.env.GITHUB_ACTIONS);

@@ -4,10 +4,11 @@ import React from 'react';
  * Small, safe Markdown renderer for Shaheen's answers (React elements only — never innerHTML).
  * Supports headings, bold/italic, inline code, bullet & numbered lists, tables, quotes, code blocks
  * and https links. The machine-readable ```sham-formula block is hidden: the formula card under the
- * message already presents it with its actions.
+ * message already presents it with its actions. The ```sham-media block (topics for real images and
+ * videos) is hidden too: ShaheenMedia renders it.
  */
 export function stripFormulaBlock(text: string): string {
-  return text.replace(/```sham-formula\s*\n[\s\S]*?```/g, '').replace(/\n{3,}/g, '\n\n').trim();
+  return text.replace(/```sham-formula\s*\n[\s\S]*?```/g, '').replace(/```sham-media[^\n]*\n[\s\S]*?```/g, '').replace(/```sham-media[\s\S]*$/, '').replace(/\n{3,}/g, '\n\n').trim();
 }
 
 const INLINE = /(\*\*[^*\n]+\*\*|__[^_\n]+__|`[^`\n]+`|\[[^\]\n]+\]\(https:\/\/[^)\s]+\)|\*[^*\s][^*\n]*\*)/g;
