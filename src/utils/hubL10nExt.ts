@@ -17,6 +17,7 @@ import { HUB_L10N_EXT_15 } from './hubL10nExt15';
 import { HUB_L10N_EXT_16 } from './hubL10nExt16';
 import { HUB_L10N_EXT_17 } from './hubL10nExt17';
 import { HUB_L10N_EXT_18 } from './hubL10nExt18';
+import { HUB_L10N_EXT_19 } from './hubL10nExt19';
 
 // =========================================
 // HUB L10N — EXTENSION AGGREGATOR & MERGE
@@ -32,7 +33,7 @@ export type HubL10nExtEntry = Partial<Record<HubL10nField, Partial<Record<Suppor
 export type HubL10nExt = Record<string, HubL10nExtEntry>;
 
 /** All extension language packs, in merge order. */
-export const HUB_L10N_EXTS: HubL10nExt[] = [HUB_L10N_EXT_1, HUB_L10N_EXT_2, HUB_L10N_EXT_3, HUB_L10N_EXT_4, HUB_L10N_EXT_5, HUB_L10N_EXT_6, HUB_L10N_EXT_7, HUB_L10N_EXT_8, HUB_L10N_EXT_9, HUB_L10N_EXT_10, HUB_L10N_EXT_11, HUB_L10N_EXT_12, HUB_L10N_EXT_13, HUB_L10N_EXT_14, HUB_L10N_EXT_15, HUB_L10N_EXT_16, HUB_L10N_EXT_17, HUB_L10N_EXT_18];
+export const HUB_L10N_EXTS: HubL10nExt[] = [HUB_L10N_EXT_1, HUB_L10N_EXT_2, HUB_L10N_EXT_3, HUB_L10N_EXT_4, HUB_L10N_EXT_5, HUB_L10N_EXT_6, HUB_L10N_EXT_7, HUB_L10N_EXT_8, HUB_L10N_EXT_9, HUB_L10N_EXT_10, HUB_L10N_EXT_11, HUB_L10N_EXT_12, HUB_L10N_EXT_13, HUB_L10N_EXT_14, HUB_L10N_EXT_15, HUB_L10N_EXT_16, HUB_L10N_EXT_17, HUB_L10N_EXT_18, HUB_L10N_EXT_19];
 
 /**
  * Merge one or more base hub dictionaries with the extension packs.
