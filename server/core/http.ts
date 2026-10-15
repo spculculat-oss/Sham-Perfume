@@ -16,6 +16,7 @@ import { SHAHEEN_SITE_SETTINGS } from '../config/shaheen';
 import { engineStatuses } from './engines';
 import { activeSeats, councilAvailable, publicTranscript } from './council';
 import type { CollectionName, RequestStatus, ServiceRequest } from './types';
+import { MAINTENANCE_ACTIONS, ShaheenRuntime, runningVersion, type MaintenanceAction } from './maintenance';
 import {
   sendCustomerStatusEmail,
   renderOrderStatusEmail,
@@ -38,7 +39,7 @@ function sendError(res: express.Response, error: unknown) {
 const wrap = (fn: (req: express.Request, res: express.Response) => Promise<unknown>) =>
   (req: express.Request, res: express.Response) => { fn(req, res).catch((error) => sendError(res, error)); };
 
-export interface CoreOptions { env?: Env; store?: Store; fetch?: typeof fetch }
+export interface CoreOptions { env?: Env; store?: Store; fetch?: typeof fetch; runtime?: ShaheenRuntime }
 
 export function createShamCore(options: CoreOptions = {}) {
   const env = options.env || process.env;
@@ -50,6 +51,8 @@ export function createShamCore(options: CoreOptions = {}) {
     store = createStore({ SHAM_STORE: 'memory' });
   }
   const repo = new Repository(store, env);
+  // Shared with the Shaheen chat router: outcomes + capacity parts, read by the maintenance agent.
+  const runtime = options.runtime || new ShaheenRuntime(runningVersion(env));
   const orchestrator = new Orchestrator(repo, { env, fetch: options.fetch });
   const notifier = createNotifier(env, options.fetch);
   const feedbackLimiter = new RateLimiter(60, 10 * 60_000);
@@ -467,6 +470,24 @@ export function createShamCore(options: CoreOptions = {}) {
     res.json(await orchestrator.chat(input, { debug: true }));
   }));
 
+  /** Maintenance agent («طبيب شاهين», scripts/doctor): health of this instance + safe runtime remedies. */
+  admin.get('/maintenance', wrap(async (_req, res) => {
+    const settings = await repo.settings();
+    res.json({
+      ...runtime.snapshot(),
+      engines: engineStatuses(env).filter((e) => e.id !== 'sham_local').map(({ id, configured }) => ({ id, configured })),
+      shaheen: { enabled: settings.shaheen.enabled, engines: settings.shaheen.engines },
+      storage: { kind: store.kind, persistent: store.persistent, error: storeError },
+    });
+  }));
+  admin.post('/maintenance', wrap(async (req, res) => {
+    const requested = Array.isArray(req.body?.actions) ? req.body.actions : [req.body?.action];
+    if (!requested.length || requested.some((a: unknown) => !MAINTENANCE_ACTIONS.includes(a as MaintenanceAction))) {
+      throw new AssistantError(400, 'INVALID_ACTION', `action must be one of ${MAINTENANCE_ACTIONS.join(', ')}`);
+    }
+    res.json({ results: (requested as MaintenanceAction[]).map((a) => runtime.act(a)), snapshot: runtime.snapshot() });
+  }));
+
   admin.get('/export', wrap(async (_req, res) => {
     const collections: CollectionName[] = ['settings', 'services', 'products', 'knowledge', 'requests', 'conversations', 'gaps', 'visitors'];
     const out: Record<string, unknown> = { exportedAt: new Date().toISOString(), storage: store.kind };
@@ -475,5 +496,5 @@ export function createShamCore(options: CoreOptions = {}) {
     res.json(out);
   }));
 
-  return { assistant, admin, repo, orchestrator, store };
+  return { assistant, admin, repo, orchestrator, store, runtime };
 }

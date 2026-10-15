@@ -201,6 +201,9 @@ export class ProviderGate {
     }
   }
 
+  /** Forget every pause and learned pace (maintenance remedy; they are re-learned from the next 429). */
+  reset() { this.states.clear(); }
+
   snapshot() {
     const now = Date.now();
     return Object.fromEntries([...this.states.keys()].map((id) => {

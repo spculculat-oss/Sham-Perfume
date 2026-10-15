@@ -188,6 +188,9 @@ const geminiCacheKey = (apiKey: string, model: string) => `${createHash('sha256'
 // The model list changes rarely: under load every quota fallback used to fetch it again.
 const geminiModelLists = new Map<string, { at: number; models: Promise<GeminiModelInfo[]> }>();
 
+/** Maintenance remedy: forget cached Gemini model lists and substitutes (rebuilt on the next request). */
+export function resetGeminiModelCaches() { geminiModelLists.clear(); geminiSubstitutes.clear(); }
+
 async function listGeminiModels(apiKey: string, request: typeof fetch, _signal?: AbortSignal): Promise<GeminiModelInfo[]> {
   const key = geminiCacheKey(apiKey, 'models');
   const cached = geminiModelLists.get(key);

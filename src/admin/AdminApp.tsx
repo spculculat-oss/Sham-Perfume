@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Activity, ArrowRight, ArrowDownToLine, BookOpen, Bot, Boxes, ClipboardList, Cpu, Database, Download, FlaskConical, Headset, KeyRound,
   BellRing, CheckCircle2, CircleAlert, EyeOff, LayoutDashboard, Lightbulb, Loader2, LogOut, MessagesSquare, Plus, RefreshCw, Save, Send,
-  Settings2, ThumbsDown, ThumbsUp, Trash2, TriangleAlert, Users, Wand2,
+  Settings2, Stethoscope, ThumbsDown, ThumbsUp, Trash2, TriangleAlert, Users, Wand2,
   ChevronUp, ChevronDown, Mail, Eye, ExternalLink, Check, Sparkles,
 } from 'lucide-react';
 import UpdatesPanel from './UpdatesPanel';
@@ -12,8 +12,9 @@ import type {
 import type { AgentResult } from '../../server/core/adminAgent';
 import { AdminApiError, adminRequest, getToken, send, setToken } from './adminApi';
 import { apiUrl, isStaticHosting } from '../utils/api';
+import { parseDoctorIssue, type DoctorReport } from './doctorReport';
 
-type Tab = 'overview' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'emails' | 'sandbox' | 'updates';
+type Tab = 'overview' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'emails' | 'doctor' | 'sandbox' | 'updates';
 interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: string }
 interface Overview {
   storage: { kind: string; persistent: boolean; error?: string };
@@ -37,6 +38,7 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'services', label: 'الخدمات', icon: <Settings2 className="w-4 h-4" /> },
   { id: 'engines', label: 'المحركات والإعدادات', icon: <Cpu className="w-4 h-4" /> },
   { id: 'shaheen', label: 'الخبير شاهين', icon: <FlaskConical className="w-4 h-4" /> },
+  { id: 'doctor', label: 'طبيب شاهين', icon: <Stethoscope className="w-4 h-4" /> },
   { id: 'sandbox', label: 'مختبر المساعد', icon: <FlaskConical className="w-4 h-4" /> },
   { id: 'updates', label: 'بيئة التحديثات', icon: <ArrowDownToLine className="w-4 h-4" /> },
 ];
@@ -133,6 +135,7 @@ export default function AdminApp() {
           {tab === 'engines' && <EnginesPanel />}
           {tab === 'shaheen' && <ShaheenPanel />}
           {tab === 'emails' && <EmailsPanel />}
+          {tab === 'doctor' && <DoctorPanel />}
           {tab === 'sandbox' && <SandboxPanel />}
           {tab === 'updates' && <UpdatesPanel />}
         </main>
@@ -1820,3 +1823,91 @@ function QualityPanel() {
     </>
   );
 }
+
+// ---------------- «طبيب شاهين» (automatic maintenance, scripts/doctor) ----------------
+interface MaintenanceSnapshot {
+  version: string; uptimeS: number;
+  window: { requests: number; rateLimited: number; answered: number; errors: Record<string, number>; errorRate: number; latencyMs: { p50: number; p95: number; max: number } };
+  providers: Record<string, { inFlight: number; coolingMs: number; rpm: number | null; startedLastMinute: number }>;
+  answerCache: { entries: number; hits: number; misses: number; shared: number } | null;
+  remedies: { action: string; at: string }[];
+}
+const DOCTOR_REPO = (import.meta.env.VITE_GITHUB_REPO as string | undefined) || 'spculculat-oss/Sham-Perfume';
+const REMEDY_LABEL: Record<string, string> = { reset_provider_gate: 'تصفير حالة المزوّدين', refresh_model_list: 'تحديث قائمة الموديلات', clear_answer_cache: 'مسح ذاكرة الإجابات' };
+const FIX_RESULT: Record<string, string> = { merged: '⏳ تحت المراقبة', failed: '❌ ما اتطبقش', verified: '✅ شغال', reverted: '↩️ اترجع', unverified: '⚪ من غير تأكيد' };
+
+function DoctorPanel() {
+  const { data, error, loading, reload } = useLoad<MaintenanceSnapshot>('/maintenance');
+  const [report, setReport] = useState<DoctorReport | null | undefined>(undefined);
+  const [busy, setBusy] = useState('');
+  const [message, setMessage] = useState('');
+  const loadReport = useCallback(() => {
+    fetch(`https://api.github.com/repos/${DOCTOR_REPO}/issues?labels=shaheen-doctor&state=open&per_page=1`, { headers: { Accept: 'application/vnd.github+json' } })
+      .then((r) => (r.ok ? r.json() : []))
+      .then((issues: { body?: string; html_url: string }[]) => setReport(issues[0] ? parseDoctorIssue(issues[0].body || '', issues[0].html_url) : null))
+      .catch(() => setReport(null));
+  }, []);
+  useEffect(() => { loadReport(); }, [loadReport]);
+  const remedy = async (action: string) => {
+    setBusy(action); setMessage('');
+    try { await adminRequest('/maintenance', send('POST', { action })); setMessage(`تم: ${REMEDY_LABEL[action]} ✅`); reload(); }
+    catch (e) { setMessage((e as Error).message); } finally { setBusy(''); }
+  };
+  const w = data?.window;
+  return (
+    <>
+      <Header title="طبيب شاهين — الصيانة التلقائية" subtitle="بيراجع الخبير شاهين كل 10 دقايق من خوادم GitHub (مش من خادم الموقع) وبيصلّح المشاكل لوحده"
+        actions={<button type="button" onClick={() => { reload(); loadReport(); }} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" />تحديث</button>} />
+      <div className="grid lg:grid-cols-2 gap-4">
+        <div className={`${card} space-y-2`}>
+          <h2 className="font-bold text-sm">آخر تقرير للطبيب</h2>
+          {report === undefined && <Feedback loading />}
+          {report === null && <p className="text-xs text-stone-500">لسه مفيش تقرير — أول فحص بيتعمل خلال 10 دقايق من دمج الطبيب في main.</p>}
+          {report && (
+            <>
+              <p className="text-sm font-semibold">{report.headline}</p>
+              {report.lastRun && <p className="text-[11px] text-stone-500">آخر فحص: {new Date(report.lastRun).toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}</p>}
+              <ul className="space-y-1">
+                {report.rows.map((r) => <li key={r.check} className="flex gap-2 text-xs"><span>{r.status}</span><span className="font-semibold">{r.check}</span><span className="text-stone-500 truncate">{r.detail}</span></li>)}
+              </ul>
+              {report.timeline && <p className="text-xs" title="آخر 6 ساعات">آخر 6 ساعات: <span className="tracking-tight">{report.timeline}</span></p>}
+              <h3 className="font-bold text-xs pt-2">إصلاحات الكود التلقائية</h3>
+              {report.fixes.length ? report.fixes.map((f) => (
+                <p key={f.at} className="text-xs">{FIX_RESULT[f.result] || f.result} — {f.summary || f.problem}{f.url && <> · <a href={f.url} target="_blank" rel="noreferrer" className="text-amber-700 underline">التغيير</a></>}</p>
+              )) : <p className="text-xs text-stone-500">لسه مفيش</p>}
+              <a href={report.url} target="_blank" rel="noreferrer" className="inline-block text-xs text-amber-700 underline">السجل الكامل على GitHub ←</a>
+            </>
+          )}
+        </div>
+        <div className={`${card} space-y-2`}>
+          <h2 className="font-bold text-sm">الخادم دلوقتي (النسخة اللي ردّت)</h2>
+          <Feedback error={error} loading={loading && !data} />
+          {w && data && (
+            <>
+              <p className="text-xs text-stone-500" dir="ltr">version {data.version.slice(0, 7)} · up {Math.round(data.uptimeS / 60)} min</p>
+              <div className="grid grid-cols-3 gap-2 text-center">
+                <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{w.answered}</p><p className="text-[10px] text-stone-500">ردود آخر 10 د</p></div>
+                <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{Math.round(w.errorRate * 100)}%</p><p className="text-[10px] text-stone-500">أخطاء</p></div>
+                <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{(w.latencyMs.p95 / 1000).toFixed(1)}ث</p><p className="text-[10px] text-stone-500">p95</p></div>
+              </div>
+              {Object.keys(w.errors).length > 0 && <p className="text-xs text-red-700" dir="ltr">{Object.entries(w.errors).map(([k, v]) => `${k}: ${v}`).join(' · ')}</p>}
+              {Object.entries(data.providers).map(([id, p]) => (
+                <p key={id} className="text-xs">{ENGINE_LABEL[id] || id}: {p.coolingMs > 0 ? `⏸️ متوقف ${Math.ceil(p.coolingMs / 1000)}ث (حصة)` : '🟢 متاح'} · {p.startedLastMinute}/دقيقة{p.rpm ? ` · حد ${p.rpm}` : ''}</p>
+              ))}
+              {data.answerCache && <p className="text-xs text-stone-600">ذاكرة الإجابات: {data.answerCache.entries} إجابة · {data.answerCache.hits} مرة من الذاكرة</p>}
+              <div className="flex flex-wrap gap-2 pt-1">
+                {Object.keys(REMEDY_LABEL).map((action) => (
+                  <button key={action} type="button" disabled={Boolean(busy)} onClick={() => remedy(action)} className={`${btn} text-xs bg-stone-900 text-amber-100`}>
+                    {busy === action ? <Loader2 className="w-3 h-3 animate-spin" /> : <Wand2 className="w-3 h-3" />}{REMEDY_LABEL[action]}
+                  </button>
+                ))}
+              </div>
+              {message && <p role="status" className="text-xs">{message}</p>}
+            </>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
