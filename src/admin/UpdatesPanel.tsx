@@ -22,17 +22,17 @@ const SAMPLE_PACKAGE = JSON.stringify({
   schemaVersion: 1,
   packageId: 'sample-packaging-cost-2026-10',
   platform: 'manual',
-  noteAr: 'مثال: أداة جديدة وترقية بيانات تابعة لها',
+  noteAr: T('مثال: أداة جديدة وترقية بيانات تابعة لها'),
   items: [
     {
       id: 'tool.packaging-cost',
       kind: 'tool',
       version: 1,
-      titleAr: 'حاسبة تكلفة التغليف',
+      titleAr: T('حاسبة تكلفة التغليف'),
       titleEn: 'Packaging Cost Calculator',
       payload: {
         route: '#packaging-cost',
-        descriptionAr: 'تحسب تكلفة الزجاجة والغطاء والكرتونة والملصق لكل وحدة إنتاج',
+        descriptionAr: T('تحسب تكلفة الزجاجة والغطاء والكرتونة والملصق لكل وحدة إنتاج'),
         inputs: ['bottleCost', 'capCost', 'cartonCost', 'labelCost', 'unitsPerCarton'],
       },
     },
@@ -40,7 +40,7 @@ const SAMPLE_PACKAGE = JSON.stringify({
       id: 'data.bottle-presets',
       kind: 'data',
       version: 2,
-      titleAr: 'أحجام العبوات — تحديث',
+      titleAr: T('أحجام العبوات — تحديث'),
       titleEn: 'Bottle size presets — update',
       requires: ['tool.packaging-cost'],
       payload: { sizesMl: [10, 15, 30, 50, 100, 200] },
@@ -49,16 +49,16 @@ const SAMPLE_PACKAGE = JSON.stringify({
 }, null, 2);
 
 const DECISION: Record<ItemDecision, { label: string; cls: string }> = {
-  applied: { label: 'ثُبّتت — زيادة جديدة', cls: 'bg-emerald-100 text-emerald-800' },
-  updated: { label: 'ترقية فعلية', cls: 'bg-sky-100 text-sky-800' },
-  unchanged: { label: 'موجود بنفس المحتوى', cls: 'bg-stone-100 text-stone-600' },
-  stale: { label: 'أقدم من المثبت', cls: 'bg-stone-100 text-stone-500' },
-  canceled: { label: 'ملغى — رُفض مجدداً', cls: 'bg-red-100 text-red-800' },
-  rejected: { label: 'مرفوض', cls: 'bg-red-100 text-red-700' },
-  deferred: { label: 'مؤجل — تبعية ناقصة', cls: 'bg-amber-100 text-amber-800' },
+  applied: { label: T('ثُبّتت — زيادة جديدة'), cls: 'bg-emerald-100 text-emerald-800' },
+  updated: { label: T('ترقية فعلية'), cls: 'bg-sky-100 text-sky-800' },
+  unchanged: { label: T('موجود بنفس المحتوى'), cls: 'bg-stone-100 text-stone-600' },
+  stale: { label: T('أقدم من المثبت'), cls: 'bg-stone-100 text-stone-500' },
+  canceled: { label: T('ملغى — رُفض مجدداً'), cls: 'bg-red-100 text-red-800' },
+  rejected: { label: T('مرفوض'), cls: 'bg-red-100 text-red-700' },
+  deferred: { label: T('مؤجل — تبعية ناقصة'), cls: 'bg-amber-100 text-amber-800' },
 };
 
-const KIND_LABEL: Record<string, string> = { tool: 'أداة', feature: 'ميزة', data: 'بيانات', content: 'محتوى', config: 'إعداد' };
+const KIND_LABEL: Record<string, string> = { tool: T('أداة'), feature: T('ميزة'), data: T('بيانات'), content: T('محتوى'), config: T('إعداد') };
 
 const fmtDate = (iso?: string) => (iso ? new Date(iso).toLocaleString('ar-EG', { dateStyle: 'short', timeStyle: 'short' }) : '');
 
@@ -79,7 +79,7 @@ export default function UpdatesPanel() {
     setError('');
     const trimmed = raw.trim();
     if (!trimmed) {
-      setError('الصق حزمة التطوير (JSON) أولاً.');
+      setError(T('الصق حزمة التطوير (JSON) أولاً.'));
       setReport(null);
       return;
     }
@@ -97,7 +97,7 @@ export default function UpdatesPanel() {
   const onCancel = useCallback((id: string, title?: string) => {
     const reason = window.prompt(`إلغاء «${title ?? id}» نهائياً؟ اكتب السبب (اختياري):`, '');
     if (reason === null) return;
-    cancelDevelopment(id, reason.trim() || 'إلغاء إداري من بيئة التحديثات', 'Admin cancel from the updates environment');
+    cancelDevelopment(id, reason.trim() || T('إلغاء إداري من بيئة التحديثات'), 'Admin cancel from the updates environment');
     setTick((n) => n + 1);
   }, []);
 
@@ -109,15 +109,15 @@ export default function UpdatesPanel() {
   return (
     <div className="space-y-4">
       <Header
-        title="بيئة استقبال التحديثات"
-        subtitle="أول ما يستقبل أي تطوير قادم من أي منصة: تحليل، مقارنة بالموجود، تطبيق الزيادة فقط، وإبقاء الملغي ملغياً — دون لمس بيانات المستخدمين."
+        title={T('بيئة استقبال التحديثات')}
+        subtitle={T('أول ما يستقبل أي تطوير قادم من أي منصة: تحليل، مقارنة بالموجود، تطبيق الزيادة فقط، وإبقاء الملغي ملغياً — دون لمس بيانات المستخدمين.')}
       />
 
       <div className={card}>
         <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-          <h2 className="font-bold text-sm flex items-center gap-1.5"><Download className="w-4 h-4" />استقبال حزمة تطوير (JSON)</h2>
+          <h2 className="font-bold text-sm flex items-center gap-1.5"><Download className="w-4 h-4" />{T('استقبال حزمة تطوير (JSON)')}</h2>
           <div className="flex gap-2">
-            <button type="button" className="text-xs text-stone-500 hover:underline" onClick={() => { setRaw(SAMPLE_PACKAGE); setError(''); setReport(null); }}>إدراج مثال جاهز</button>
+            <button type="button" className="text-xs text-stone-500 hover:underline" onClick={() => { setRaw(SAMPLE_PACKAGE); setError(''); setReport(null); }}>{T('إدراج مثال جاهز')}</button>
           </div>
         </div>
         <textarea
@@ -139,12 +139,12 @@ export default function UpdatesPanel() {
           </button>
         </div>
         <details className="mt-3 text-xs text-stone-500">
-          <summary className="cursor-pointer hover:text-stone-700">صيغة الحزمة المتوقعة</summary>
+          <summary className="cursor-pointer hover:text-stone-700">{T('صيغة الحزمة المتوقعة')}</summary>
           <ul className="list-disc ps-5 mt-2 space-y-1">
-            <li><code dir="ltr">packageId</code> معرّف فريد للحزمة عند المنصة المصدر، و<code dir="ltr">platform</code> اسم المنصة.</li>
-            <li>كل عنصر: <code dir="ltr">id</code> ثابت، <code dir="ltr">kind</code> (tool/feature/data/content/config)، <code dir="ltr">version</code> تصاعدي، عنوانان، و<code dir="ltr">payload</code> بيانات تصريحية.</li>
-            <li>لا يُثبَّت إلا الجديد فعلاً أو الأحدث فعلاً؛ نفس المحتوى يُتجاهل، والأقدم يُتجاهل.</li>
-            <li>أي عنصر أُلغي سابقاً يُرفض تلقائياً مهما عاد، وأي حمولة تشير لتخزين المستخدمين تُرفض.</li>
+            <li>{T('حقل packageId معرّف فريد للحزمة عند المنصة المصدر، وحقل platform اسم المنصة.')}</li>
+            <li>{T('كل عنصر: id ثابت، وkind (tool/feature/data/content/config)، وversion تصاعدي، وعنوانان، وpayload بيانات تصريحية.')}</li>
+            <li>{T('لا يُثبَّت إلا الجديد فعلاً أو الأحدث فعلاً؛ نفس المحتوى يُتجاهل، والأقدم يُتجاهل.')}</li>
+            <li>{T('أي عنصر أُلغي سابقاً يُرفض تلقائياً مهما عاد، وأي حمولة تشير لتخزين المستخدمين تُرفض.')}</li>
           </ul>
         </details>
       </div>
@@ -166,7 +166,7 @@ export default function UpdatesPanel() {
         </div>
 
         {section === 'installed' && (
-          installed.length === 0 ? <Empty text="لا توجد تطويرات مثبتة بعد. استقبل حزمة أولاً." /> : (
+          installed.length === 0 ? <Empty text={T('لا توجد تطويرات مثبتة بعد. استقبل حزمة أولاً.')} /> : (
             <div className="space-y-2">
               {installed.map((item) => (
                 <div key={item.id} className="rounded-xl border border-stone-200 p-3 flex flex-wrap items-start justify-between gap-2">
@@ -181,7 +181,7 @@ export default function UpdatesPanel() {
                       من {item.fromPlatform} · حزمة <span dir="ltr">{item.fromPackageId}</span> · {fmtDate(item.appliedAt)}
                     </p>
                     <details className="mt-1">
-                      <summary className="text-[11px] text-stone-500 cursor-pointer hover:text-stone-700">الحمولة</summary>
+                      <summary className="text-[11px] text-stone-500 cursor-pointer hover:text-stone-700">{T('الحمولة')}</summary>
                       <pre dir="ltr" className="text-[10px] bg-stone-50 rounded-lg p-2 mt-1 overflow-x-auto">{JSON.stringify(item.payload, null, 2)}</pre>
                     </details>
                   </div>
@@ -196,7 +196,7 @@ export default function UpdatesPanel() {
         )}
 
         {section === 'canceled' && (
-          canceled.length === 0 ? <Empty text="لا توجد تطويرات ملغاة. ما تلغيه هنا لا يعود من أي منصة." /> : (
+          canceled.length === 0 ? <Empty text={T('لا توجد تطويرات ملغاة. ما تلغيه هنا لا يعود من أي منصة.')} /> : (
             <div className="space-y-2">
               {canceled.map((entry) => (
                 <div key={entry.id} className="rounded-xl border border-red-200 bg-red-50/50 p-3 flex flex-wrap items-start justify-between gap-2">
@@ -225,7 +225,7 @@ export default function UpdatesPanel() {
         )}
 
         {section === 'ledger' && (
-          ledger.length === 0 ? <Empty text="لم تُستقبل أي حزمة بعد." /> : (
+          ledger.length === 0 ? <Empty text={T('لم تُستقبل أي حزمة بعد.')} /> : (
             <div className="space-y-2">
               {ledger.map((entry) => (
                 <div key={`${entry.packageId}-${entry.receivedAt}`} className="rounded-xl border border-stone-200 p-3">
@@ -233,7 +233,7 @@ export default function UpdatesPanel() {
                     <History className="w-3.5 h-3.5 text-stone-400" />
                     <span className="font-mono text-xs" dir="ltr">{entry.packageId}</span>
                     <span className="text-[10px] rounded-full bg-stone-100 px-2 py-0.5">{entry.platform}</span>
-                    {entry.revision && <span className="text-[10px] rounded-full bg-amber-100 text-amber-800 px-2 py-0.5">نسخة منقحة</span>}
+                    {entry.revision && <span className="text-[10px] rounded-full bg-amber-100 text-amber-800 px-2 py-0.5">{T('نسخة منقحة')}</span>}
                     <span className="text-[11px] text-stone-400 ms-auto">{fmtDate(entry.receivedAt)}</span>
                   </div>
                   <p className="text-[11px] text-stone-600 mt-1">
@@ -244,7 +244,7 @@ export default function UpdatesPanel() {
                     {entry.counts.canceled > 0 && <Badge cls={DECISION.canceled.cls}>{entry.counts.canceled} ملغى</Badge>}
                     {entry.counts.rejected > 0 && <Badge cls={DECISION.rejected.cls}>{entry.counts.rejected} مرفوض</Badge>}
                     {entry.counts.deferred > 0 && <Badge cls={DECISION.deferred.cls}>{entry.counts.deferred} مؤجل</Badge>}
-                    {Object.values(entry.counts).every((n) => n === 0) && <span className="text-stone-400">لا عناصر</span>}
+                    {Object.values(entry.counts).every((n) => n === 0) && <span className="text-stone-400">{T('لا عناصر')}</span>}
                   </p>
                 </div>
               ))}
@@ -270,7 +270,7 @@ function ReportCard({ report }: { report: UpdateReport }) {
       <div className="flex flex-wrap items-center gap-2 mb-2">
         {report.ok ? <CheckCircle2 className="w-4 h-4 text-emerald-600" /> : <CircleAlert className="w-4 h-4 text-red-600" />}
         <h2 className="font-bold text-sm">
-          {report.duplicate ? 'حزمة مستقبلة من قبل بنفس المحتوى — لا جديد' : report.dryRun ? 'نتيجة التحليل (لم يُكتب شيء)' : 'تقرير الاستقبال'}
+          {report.duplicate ? T('حزمة مستقبلة من قبل بنفس المحتوى — لا جديد') : report.dryRun ? T('نتيجة التحليل (لم يُكتب شيء)') : T('تقرير الاستقبال')}
         </h2>
         <span className="text-[10px] rounded-full bg-stone-100 px-2 py-0.5" dir="ltr">{report.platform}</span>
         <span className="font-mono text-[10px] text-stone-400" dir="ltr">{report.packageId}</span>
@@ -282,7 +282,7 @@ function ReportCard({ report }: { report: UpdateReport }) {
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead><tr className="text-stone-500 border-b border-stone-100">
-              <th className="text-start py-1.5">العنصر</th><th className="text-start">القرار</th><th className="text-start">التفاصيل</th>
+              <th className="text-start py-1.5">{T('العنصر')}</th><th className="text-start">{T('القرار')}</th><th className="text-start">{T('التفاصيل')}</th>
             </tr></thead>
             <tbody>
               {report.items.map((item) => (
@@ -305,9 +305,9 @@ function ReportCard({ report }: { report: UpdateReport }) {
 
       <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-[11px] text-stone-500">
         {report.userDataPreserved
-          ? <span className="flex items-center gap-1 text-emerald-700"><CheckCircle2 className="w-3.5 h-3.5" />بيانات المستخدمين لم تُلمس</span>
-          : <span className="flex items-center gap-1 text-red-700"><CircleAlert className="w-3.5 h-3.5" />رُدّت بيانات المستخدمين بعد محاولة لمسها</span>}
-        {report.dryRun && <span className="flex items-center gap-1"><Clock3 className="w-3.5 h-3.5" />تحليل مسبق فقط</span>}
+          ? <span className="flex items-center gap-1 text-emerald-700"><CheckCircle2 className="w-3.5 h-3.5" />{T('بيانات المستخدمين لم تُلمس')}</span>
+          : <span className="flex items-center gap-1 text-red-700"><CircleAlert className="w-3.5 h-3.5" />{T('رُدّت بيانات المستخدمين بعد محاولة لمسها')}</span>}
+        {report.dryRun && <span className="flex items-center gap-1"><Clock3 className="w-3.5 h-3.5" />{T('تحليل مسبق فقط')}</span>}
       </div>
       {report.userDataNotesAr.map((note, i) => <p key={i} className="text-[11px] text-stone-500 mt-1">{note}</p>)}
     </div>

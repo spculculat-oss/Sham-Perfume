@@ -1862,13 +1862,13 @@ function DoctorPanel() {
   const w = data?.window;
   return (
     <>
-      <Header title="طبيب شاهين — الصيانة التلقائية" subtitle="بيراجع الخبير شاهين كل 10 دقايق من خوادم GitHub (مش من خادم الموقع) وبيصلّح المشاكل لوحده"
+      <Header title={T('طبيب شاهين — الصيانة التلقائية')} subtitle={T('بيراجع الخبير شاهين كل 10 دقايق من خوادم GitHub (مش من خادم الموقع) وبيصلّح المشاكل لوحده')}
         actions={<button type="button" onClick={() => { reload(); loadReport(); }} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" />{T('تحديث')}</button>} />
       <div className="grid lg:grid-cols-2 gap-4">
         <div className={`${card} space-y-2`}>
-          <h2 className="font-bold text-sm">آخر تقرير للطبيب</h2>
+          <h2 className="font-bold text-sm">{T('آخر تقرير للطبيب')}</h2>
           {report === undefined && <Feedback loading />}
-          {report === null && <p className="text-xs text-stone-500">لسه مفيش تقرير — أول فحص بيتعمل خلال 10 دقايق من دمج الطبيب في main.</p>}
+          {report === null && <p className="text-xs text-stone-500">{T('لسه مفيش تقرير — أول فحص بيتعمل خلال 10 دقايق من دمج الطبيب في main.')}</p>}
           {report && (
             <>
               <p className="text-sm font-semibold">{report.headline}</p>
@@ -1876,24 +1876,24 @@ function DoctorPanel() {
               <ul className="space-y-1">
                 {report.rows.map((r) => <li key={r.check} className="flex gap-2 text-xs"><span>{r.status}</span><span className="font-semibold">{r.check}</span><span className="text-stone-500 truncate">{r.detail}</span></li>)}
               </ul>
-              {report.timeline && <p className="text-xs" title="آخر 6 ساعات">آخر 6 ساعات: <span className="tracking-tight">{report.timeline}</span></p>}
-              <h3 className="font-bold text-xs pt-2">إصلاحات الكود التلقائية</h3>
+              {report.timeline && <p className="text-xs" title={T('آخر 6 ساعات')}>آخر 6 ساعات: <span className="tracking-tight">{report.timeline}</span></p>}
+              <h3 className="font-bold text-xs pt-2">{T('إصلاحات الكود التلقائية')}</h3>
               {report.fixes.length ? report.fixes.map((f) => (
-                <p key={f.at} className="text-xs">{FIX_RESULT[f.result] || f.result} — {f.summary || f.problem}{f.url && <> · <a href={f.url} target="_blank" rel="noreferrer" className="text-amber-700 underline">التغيير</a></>}</p>
-              )) : <p className="text-xs text-stone-500">لسه مفيش</p>}
-              <a href={report.url} target="_blank" rel="noreferrer" className="inline-block text-xs text-amber-700 underline">السجل الكامل على GitHub ←</a>
+                <p key={f.at} className="text-xs">{FIX_RESULT[f.result] || f.result} — {f.summary || f.problem}{f.url && <> · <a href={f.url} target="_blank" rel="noreferrer" className="text-amber-700 underline">{T('التغيير')}</a></>}</p>
+              )) : <p className="text-xs text-stone-500">{T('لسه مفيش')}</p>}
+              <a href={report.url} target="_blank" rel="noreferrer" className="inline-block text-xs text-amber-700 underline">{T('السجل الكامل على GitHub ←')}</a>
             </>
           )}
         </div>
         <div className={`${card} space-y-2`}>
-          <h2 className="font-bold text-sm">الخادم دلوقتي (النسخة اللي ردّت)</h2>
+          <h2 className="font-bold text-sm">{T('الخادم دلوقتي (النسخة اللي ردّت)')}</h2>
           <Feedback error={error} loading={loading && !data} />
           {w && data && (
             <>
               <p className="text-xs text-stone-500" dir="ltr">version {data.version.slice(0, 7)} · up {Math.round(data.uptimeS / 60)} min</p>
               <div className="grid grid-cols-3 gap-2 text-center">
-                <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{w.answered}</p><p className="text-[10px] text-stone-500">ردود آخر 10 د</p></div>
-                <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{Math.round(w.errorRate * 100)}%</p><p className="text-[10px] text-stone-500">أخطاء</p></div>
+                <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{w.answered}</p><p className="text-[10px] text-stone-500">{T('ردود آخر 10 د')}</p></div>
+                <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{Math.round(w.errorRate * 100)}%</p><p className="text-[10px] text-stone-500">{T('أخطاء')}</p></div>
                 <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{(w.latencyMs.p95 / 1000).toFixed(1)}ث</p><p className="text-[10px] text-stone-500">p95</p></div>
               </div>
               {Object.keys(w.errors).length > 0 && <p className="text-xs text-red-700" dir="ltr">{Object.entries(w.errors).map(([k, v]) => `${k}: ${v}`).join(' · ')}</p>}
