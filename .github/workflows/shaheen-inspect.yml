@@ -1,0 +1,39 @@
+name: Shaheen answer inspection
+
+# Asks the live Shaheen real questions in each answer mode and reports, as annotations, what a visitor on
+# the GitHub Pages site would see (formula toolbar, calculator links, any raw code or vendor names).
+on:
+  workflow_dispatch:
+  push:
+    branches: ['arena/**']
+    paths: ['scripts/inspect/**', '.github/workflows/shaheen-inspect.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    name: Inspect Shaheen answers
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      DOCTOR_SITE_URL: ${{ vars.DOCTOR_SITE_URL || 'https://sham-perfume-49bf.vercel.app' }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - run: bun install --frozen-lockfile || bun install
+      - name: Shaheen (auto)
+        run: node --import tsx scripts/inspect/run.mts
+        env: { INSPECT_MODES: auto }
+      - name: Fast answer
+        run: node --import tsx scripts/inspect/run.mts
+        env: { INSPECT_MODES: fast }
+      - name: Deep analysis
+        run: node --import tsx scripts/inspect/run.mts
+        env: { INSPECT_MODES: deep }
