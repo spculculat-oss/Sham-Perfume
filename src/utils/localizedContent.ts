@@ -650,6 +650,20 @@ const READ_TIME_TPL: Record<SupportedLanguage, string> = {
   ky: '{n} мүнөт',
   tg: '{n} дақиқа',
   tk: '{n} minut',
+  is: '{n} mínútur',
+  sq: '{n} minuta',
+  mk: '{n} минути',
+  bs: '{n} minuta',
+  be: '{n} хвілін',
+  ca: '{n} minuts',
+  eu: '{n} minutu',
+  gl: '{n} minutos',
+  mt: '{n} minuta',
+  ga: '{n} nóiméad',
+  cy: '{n} munud',
+  lb: '{n} Minutten',
+  gd: '{n} mionaidean',
+  co: '{n} minuti',
 };
 
 export const getLocalizedNewsArticle = (article: PerfumeNewsItem, lang: SupportedLanguage) => {

@@ -76,7 +76,21 @@ export type SupportedLanguage =
   | 'mn'
   | 'ky'
   | 'tg'
-  | 'tk';
+  | 'tk'
+  | 'is'
+  | 'sq'
+  | 'mk'
+  | 'bs'
+  | 'be'
+  | 'ca'
+  | 'eu'
+  | 'gl'
+  | 'mt'
+  | 'ga'
+  | 'cy'
+  | 'lb'
+  | 'gd'
+  | 'co';
 
 export interface LanguageConfig {
   code: SupportedLanguage;
@@ -165,6 +179,20 @@ export const SUPPORTED_LANGUAGES: LanguageConfig[] = [
   { code: 'ky', name: 'Kyrgyz', nativeName: 'Кыргызча', dir: 'ltr', flag: '🇰🇬' },
   { code: 'tg', name: 'Tajik', nativeName: 'Тоҷикӣ', dir: 'ltr', flag: '🇹🇯' },
   { code: 'tk', name: 'Turkmen', nativeName: 'Türkmençe', dir: 'ltr', flag: '🇹🇲' },
+  { code: 'is', name: 'Icelandic', nativeName: 'Íslenska', dir: 'ltr', flag: '🇮🇸' },
+  { code: 'sq', name: 'Albanian', nativeName: 'Shqip', dir: 'ltr', flag: '🇦🇱' },
+  { code: 'mk', name: 'Macedonian', nativeName: 'Македонски', dir: 'ltr', flag: '🇲🇰' },
+  { code: 'bs', name: 'Bosnian', nativeName: 'Bosanski', dir: 'ltr', flag: '🇧🇦' },
+  { code: 'be', name: 'Belarusian', nativeName: 'Беларуская', dir: 'ltr', flag: '🇧🇾' },
+  { code: 'ca', name: 'Catalan', nativeName: 'Català', dir: 'ltr', flag: '🇪🇸' },
+  { code: 'eu', name: 'Basque', nativeName: 'Euskara', dir: 'ltr', flag: '🇪🇸' },
+  { code: 'gl', name: 'Galician', nativeName: 'Galego', dir: 'ltr', flag: '🇪🇸' },
+  { code: 'mt', name: 'Maltese', nativeName: 'Malti', dir: 'ltr', flag: '🇲🇹' },
+  { code: 'ga', name: 'Irish', nativeName: 'Gaeilge', dir: 'ltr', flag: '🇮🇪' },
+  { code: 'cy', name: 'Welsh', nativeName: 'Cymraeg', dir: 'ltr', flag: '🇬🇧' },
+  { code: 'lb', name: 'Luxembourgish', nativeName: 'Lëtzebuergesch', dir: 'ltr', flag: '🇱🇺' },
+  { code: 'gd', name: 'Scottish Gaelic', nativeName: 'Gàidhlig', dir: 'ltr', flag: '🇬🇧' },
+  { code: 'co', name: 'Corsican', nativeName: 'Corsu', dir: 'ltr', flag: '🇫🇷' },
 ];
 
 export type TranslationKey = string;
