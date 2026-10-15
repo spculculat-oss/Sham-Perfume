@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import type { AddressInfo } from 'node:net';
 import test from 'node:test';
 import express from 'express';
-import { createMediaRouter, sanitizeQuery, searchImages, searchPlace, searchVideos } from '../server/media';
+import { createMediaRouter, readableCaption, sanitizeQuery, searchImages, searchPlace, searchVideos } from '../server/media';
 import { systemInstruction } from '../server/shaheen';
 import { extractMediaRequest, stripMediaBlock } from '../src/utils/shaheenMedia';
 import { stripFormulaBlock } from '../src/components/ShaheenMarkdown';
@@ -103,6 +103,22 @@ test('image search drops synonym noise and retries a long topic with fewer words
   }) as typeof fetch });
   assert.deepEqual(asked, ['agarwood resin chips filetype:bitmap', 'agarwood resin filetype:bitmap', 'agarwood filetype:bitmap']);
   assert.deepEqual(result.images.map((i) => i.title), ['Agarwood top grade', 'Infected Agarwoods Aquilaria Malaysia']);
+});
+
+test('image captions are readable for visitors (live: a Malayalam file title on a rose image)', async () => {
+  assert.equal(readableCaption('പനീർ റോസ് (Rosa damascena)', 'damask rose'), 'Rosa damascena');
+  assert.equal(readableCaption('沉香 Agarwood chips', 'agarwood'), 'Agarwood chips');
+  assert.equal(readableCaption('Ветивер Vetiveria zizanioides', 'vetiver'), 'Vetiveria zizanioides');
+  assert.equal(readableCaption('Агаровое дерево', 'agarwood'), 'Agarwood'); // nothing readable → the topic
+  assert.equal(readableCaption('DSC 0042', 'oud'), 'Oud');
+  for (const kept of ['Jasmin à Grasse', 'عود كمبودي', 'Rosa × damascena in Taif']) assert.equal(readableCaption(kept, 'x'), kept);
+
+  const result = await searchImages('rosa damascena', { fetch: (async () => json({ query: { pages: {
+    a: page(1, 'File:പനീർ റോസ് (Rosa damascena).jpg'),
+    b: page(2, 'File:Rosa damascena in Taif.jpg'),
+  } } })) as typeof fetch });
+  // Readable files come first; the other keeps only its readable part.
+  assert.deepEqual(result.images.map((i) => i.title), ['Rosa damascena in Taif', 'Rosa damascena']);
 });
 
 test('videos use the YouTube API with the key in a header, and fall back to a search link', async () => {
