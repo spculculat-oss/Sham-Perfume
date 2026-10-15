@@ -17,6 +17,10 @@ import { LText, makeT, fmt } from '../utils/localize';
 
 interface AlcoholDilutionCalculatorProps {
   currentLang?: SupportedLanguage;
+  /** Values Shaheen read from the visitor's question (strength you have → strength you want, final volume). */
+  initialFrom?: number;
+  initialTarget?: number;
+  initialVolumeMl?: number;
 }
 
 const S = {
@@ -192,10 +196,13 @@ const S = {
 
 export const AlcoholDilutionCalculator: React.FC<AlcoholDilutionCalculatorProps> = ({
   currentLang = 'ar',
+  initialFrom,
+  initialTarget,
+  initialVolumeMl,
 }) => {
-  const [initialPurity, setInitialPurity] = useState(96); // e.g. 96%
-  const [targetPurity, setTargetPurity] = useState(80); // e.g. 80%
-  const [desiredFinalVolume, setDesiredFinalVolume] = useState(1000); // 1000 ml (1 Liter)
+  const [initialPurity, setInitialPurity] = useState(initialFrom ?? 96); // e.g. 96%
+  const [targetPurity, setTargetPurity] = useState(initialTarget ?? Math.min(80, (initialFrom ?? 96) - 1)); // e.g. 80%
+  const [desiredFinalVolume, setDesiredFinalVolume] = useState(initialVolumeMl ?? 1000); // 1000 ml (1 Liter)
 
   const rtl = isRTL(currentLang);
   const L = makeT(currentLang, S);

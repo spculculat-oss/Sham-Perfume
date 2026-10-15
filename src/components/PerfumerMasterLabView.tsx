@@ -25,6 +25,8 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import perfumerImg from '../assets/images/master_perfumer_compounding_1791693212967.jpg';
+import { linkTools, type ToolLink } from '../utils/shaheenTools';
+import { ShaheenToolLinks } from './ShaheenToolLinks';
 import { extractFormulaFromAIMessage, extractFormulasFromAIMessage, isFormulaTransferCommand, ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
 import { exportChatTranscriptToFile } from '../utils/chatStorage';
 import { SupportedLanguage } from '../types/i18n';
@@ -49,6 +51,8 @@ interface PerfumerMasterLabViewProps {
   onRecordToRecipeLibrary: (formula: ExtractedAIPerfume) => void;
   onCalculateCosting: (formula: ExtractedAIPerfume) => void;
   onPrintSpecSheet: (formula: ExtractedAIPerfume) => void;
+  /** Opens a calculator (dilution, maceration, pyramid…) with the values from the conversation. */
+  onOpenTool?: (link: ToolLink) => void;
 }
 
 
@@ -259,6 +263,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   onRecordToRecipeLibrary,
   onCalculateCosting,
   onPrintSpecSheet,
+  onOpenTool,
 }) => {
   const rtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
@@ -568,7 +573,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
 
         {/* Messages Stream Board */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 bg-stone-50/50">
-          {messages.map((m) => {
+          {messages.map((m, msgIndex) => {
             const activeDisplayContent =
               m.id === 'welcome'
                 ? shaheenWelcome(currentLang)
@@ -581,6 +586,10 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
             const formulas = m.role === 'assistant' && !isError ? extractFormulasFromAIMessage(activeDisplayContent) : [];
                 const formulaIndex = Math.min(formulaPick[m.id] ?? 0, Math.max(formulas.length - 1, 0));
                 const extractedFormula = formulas[formulaIndex] ?? null;
+                const askedBefore = messages.slice(0, msgIndex).filter((x) => x.role === 'user');
+                const toolLinks = m.role === 'assistant' && m.kind !== 'error' && m.id !== 'welcome' && onOpenTool
+                  ? linkTools({ question: askedBefore[askedBefore.length - 1]?.text || '', previousQuestion: askedBefore[askedBefore.length - 2]?.text || '', answer: m.text, formulas })
+                  : [];
 
             return (
               <div
@@ -760,6 +769,8 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                       </div>
                     </div>
                   )}
+
+                  {toolLinks.length > 0 && <ShaheenToolLinks links={toolLinks} lang={currentLang} onOpen={(link) => onOpenTool?.(link)} />}
 
                   {/* Bottom Action Strip (not on error notices) */}
                   {!isError && <div

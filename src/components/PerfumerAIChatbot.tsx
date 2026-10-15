@@ -26,6 +26,8 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import perfumerImg from '../assets/images/master_perfumer_compounding_1791693212967.jpg';
+import { linkTools, type ToolLink } from '../utils/shaheenTools';
+import { ShaheenToolLinks } from './ShaheenToolLinks';
 import { extractFormulaFromAIMessage, extractFormulasFromAIMessage, isFormulaTransferCommand, ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
 import { exportChatTranscriptToFile } from '../utils/chatStorage';
 import { useShaheenChat } from '../hooks/useShaheenChat';
@@ -822,6 +824,8 @@ interface PerfumerAIChatbotProps {
   onRecordToRecipeLibrary: (formula: ExtractedAIPerfume) => void;
   onCalculateCosting: (formula: ExtractedAIPerfume) => void;
   onPrintSpecSheet: (formula: ExtractedAIPerfume) => void;
+  /** Opens a calculator (dilution, maceration, pyramid…) with the values from the conversation. */
+  onOpenTool?: (link: ToolLink) => void;
 }
 
 
@@ -832,6 +836,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   onRecordToRecipeLibrary,
   onCalculateCosting,
   onPrintSpecSheet,
+  onOpenTool,
 }) => {
   const rtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
@@ -1228,7 +1233,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
 
             {/* 2. Expanded Chat Board */}
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 bg-stone-50/60">
-              {messages.map((msg) => {
+              {messages.map((msg, msgIndex) => {
                 // Determine active perspective content if user toggled model tabs on this message
                 const activeDisplayContent =
                   msg.id === 'welcome'
@@ -1238,6 +1243,10 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                 const formulas = msg.role === 'assistant' && msg.kind !== 'error' ? extractFormulasFromAIMessage(activeDisplayContent) : [];
                 const formulaIndex = Math.min(formulaPick[msg.id] ?? 0, Math.max(formulas.length - 1, 0));
                 const extractedFormula = formulas[formulaIndex] ?? null;
+                const askedBefore = messages.slice(0, msgIndex).filter((x) => x.role === 'user');
+                const toolLinks = msg.role === 'assistant' && msg.kind !== 'error' && msg.id !== 'welcome' && onOpenTool
+                  ? linkTools({ question: askedBefore[askedBefore.length - 1]?.text || '', previousQuestion: askedBefore[askedBefore.length - 2]?.text || '', answer: msg.text, formulas })
+                  : [];
                 const isError = msg.kind === 'error';
                 const mediaRequest = msg.role === 'assistant' && !isError && msg.id !== 'welcome' ? extractMediaRequest(msg.text) : undefined;
                 const isLastMessage = msg.id === messages[messages.length - 1]?.id;
@@ -1429,6 +1438,8 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                           </div>
                         </div>
                       )}
+
+                      {toolLinks.length > 0 && <ShaheenToolLinks links={toolLinks} lang={currentLang} onOpen={(link) => { onOpenTool?.(link); setIsOpen(false); }} />}
 
                       {/* Bottom Action Strip (not on error notices) */}
                       {!isError && <div

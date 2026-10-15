@@ -1,6 +1,7 @@
 import React from 'react';
 import { removeMediaBlocks } from '../utils/mediaBlock';
 import { removeFormulaBlocks } from '../utils/aiFormulaExtractor';
+import { removeToolBlocks } from '../utils/shaheenTools';
 
 /**
  * Small, safe Markdown renderer for Shaheen's answers (React elements only — never innerHTML).
@@ -11,7 +12,7 @@ import { removeFormulaBlocks } from '../utils/aiFormulaExtractor';
  */
 export function stripFormulaBlock(text: string): string {
   // Any formula-looking block (```json label, cut fence, bare JSON…), not only the canonical one.
-  return removeFormulaBlocks(removeMediaBlocks(text)).replace(/\n{3,}/g, '\n\n').trim();
+  return removeToolBlocks(removeFormulaBlocks(removeMediaBlocks(text))).replace(/\n{3,}/g, '\n\n').trim();
 }
 
 const INLINE = /(\*\*[^*\n]+\*\*|__[^_\n]+__|`[^`\n]+`|\[[^\]\n]+\]\(https:\/\/[^)\s]+\)|\*[^*\s][^*\n]*\*)/g;
