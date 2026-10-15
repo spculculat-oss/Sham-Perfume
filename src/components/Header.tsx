@@ -148,7 +148,7 @@ export const Header: React.FC<HeaderProps> = ({
       iconColor: 'text-emerald-500',
     },
     {
-      id: 'shop',
+      id: 'store',
       type: 'single',
       label: currentLang === 'ar' ? 'التسوق' : 'Shop',
       fullLabel: currentLang === 'ar' ? 'متجر الشام - العطور' : 'Sham Perfume Store',
