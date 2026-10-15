@@ -60,7 +60,23 @@ export type SupportedLanguage =
   | 'si'
   | 'my'
   | 'km'
-  | 'lo';
+  | 'lo'
+  // Extended languages — batch 5 (LTR: Indian subcontinent, Central Asia)
+  | 'ta'
+  | 'te'
+  | 'mr'
+  | 'gu'
+  | 'pa'
+  | 'kn'
+  | 'ml'
+  | 'or'
+  | 'kk'
+  | 'uz'
+  | 'az'
+  | 'mn'
+  | 'ky'
+  | 'tg'
+  | 'tk';
 
 export interface LanguageConfig {
   code: SupportedLanguage;
@@ -133,6 +149,22 @@ export const SUPPORTED_LANGUAGES: LanguageConfig[] = [
   { code: 'my', name: 'Burmese', nativeName: 'မြန်မာ', dir: 'ltr', flag: '🇲🇲' },
   { code: 'km', name: 'Khmer', nativeName: 'ខ្មែរ', dir: 'ltr', flag: '🇰🇭' },
   { code: 'lo', name: 'Lao', nativeName: 'ລາວ', dir: 'ltr', flag: '🇱🇦' },
+  // Extended languages — batch 5 (LTR: Indian subcontinent, Central Asia)
+  { code: 'ta', name: 'Tamil', nativeName: 'தமிழ்', dir: 'ltr', flag: '🇮🇳' },
+  { code: 'te', name: 'Telugu', nativeName: 'తెలుగు', dir: 'ltr', flag: '🇮🇳' },
+  { code: 'mr', name: 'Marathi', nativeName: 'मराठी', dir: 'ltr', flag: '🇮🇳' },
+  { code: 'gu', name: 'Gujarati', nativeName: 'ગુજરાતી', dir: 'ltr', flag: '🇮🇳' },
+  { code: 'pa', name: 'Punjabi', nativeName: 'ਪੰਜਾਬੀ', dir: 'ltr', flag: '🇮🇳' },
+  { code: 'kn', name: 'Kannada', nativeName: 'ಕನ್ನಡ', dir: 'ltr', flag: '🇮🇳' },
+  { code: 'ml', name: 'Malayalam', nativeName: 'മലയാളം', dir: 'ltr', flag: '🇮🇳' },
+  { code: 'or', name: 'Odia', nativeName: 'ଓଡ଼ିଆ', dir: 'ltr', flag: '🇮🇳' },
+  { code: 'kk', name: 'Kazakh', nativeName: 'Қазақ тілі', dir: 'ltr', flag: '🇰🇿' },
+  { code: 'uz', name: 'Uzbek', nativeName: 'Oʻzbekcha', dir: 'ltr', flag: '🇺🇿' },
+  { code: 'az', name: 'Azerbaijani', nativeName: 'Azərbaycan dili', dir: 'ltr', flag: '🇦🇿' },
+  { code: 'mn', name: 'Mongolian', nativeName: 'Монгол хэл', dir: 'ltr', flag: '🇲🇳' },
+  { code: 'ky', name: 'Kyrgyz', nativeName: 'Кыргызча', dir: 'ltr', flag: '🇰🇬' },
+  { code: 'tg', name: 'Tajik', nativeName: 'Тоҷикӣ', dir: 'ltr', flag: '🇹🇯' },
+  { code: 'tk', name: 'Turkmen', nativeName: 'Türkmençe', dir: 'ltr', flag: '🇹🇲' },
 ];
 
 export type TranslationKey = string;
