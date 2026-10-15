@@ -23,7 +23,7 @@ function xorCipher(str: string, key: string): string {
   return result;
 }
 
-function encrypt(data: string): string {
+function encrypt(data: unknown): string {
   const xored = xorCipher(JSON.stringify(data), SECRET_KEY);
   return btoa(xored);
 }
@@ -354,20 +354,21 @@ export function updateOrderStatus(
   if (idx < 0) return undefined;
 
   const now = new Date().toISOString();
+  const dated = _statusToDateMap(status, now, all[idx]);
   all[idx] = {
     ...all[idx],
     ...extra,
     status,
     updatedAt: now,
-    ...(_statusToDateMap(status, now)),
+    ...dated,
   };
   write(ORDER_STORAGE_KEY, all);
   return all[idx];
 }
 
-function _statusToDateMap(status: MediationOrderRecord['status'], now: string): Record<string, string> {
+function _statusToDateMap(status: MediationOrderRecord['status'], now: string, current?: MediationOrderRecord): Record<string, string> {
   const map: Record<string, string> = {};
-  if (status === 'confirmed' && !allOrdersGetField(idOf(all, idx), 'confirmedAt'))
+  if (status === 'confirmed' && !current?.confirmedAt)
     map.confirmedAt = now;
   if (status === 'shipped') map.shippedAt = now;
   if (status === 'delivered') map.deliveredAt = now;
@@ -376,10 +377,6 @@ function _statusToDateMap(status: MediationOrderRecord['status'], now: string): 
   return map;
 }
 
-// Helper for the update function
-function idOf(arr: any[], idx: number): string { return arr[idx].id; }
-let all = getAllOrders();
-let idx = 0; // unused placeholder — just for compilation; real logic above
 
 export function updateOrderPaymentStatus(
   id: string,
@@ -485,13 +482,13 @@ export interface CommunicationLogRecord {
 }
 
 export function getCommunicationLogs(merchantId?: string): CommunicationLogRecord[] {
-  const all = read(COMMUNICATION_LOG_KEY, []);
+  const all = read<CommunicationLogRecord[]>(COMMUNICATION_LOG_KEY, []);
   if (!merchantId) return all;
   return all.filter(c => c.merchantId === merchantId);
 }
 
 export function addCommunicationLog(log: Omit<CommunicationLogRecord, 'id' | 'createdAt'>): CommunicationLogRecord {
-  const all = read(COMMUNICATION_LOG_KEY, []);
+  const all = read<CommunicationLogRecord[]>(COMMUNICATION_LOG_KEY, []);
   const record: CommunicationLogRecord = {
     ...log,
     id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
@@ -516,13 +513,13 @@ export interface AdminNoteRecord {
 }
 
 export function getAdminNotes(merchantId?: string): AdminNoteRecord[] {
-  const all = read(ADMIN_NOTES_KEY, []);
+  const all = read<AdminNoteRecord[]>(ADMIN_NOTES_KEY, []);
   if (!merchantId) return all;
   return all.filter(n => n.merchantId === merchantId);
 }
 
 export function addAdminNote(note: Omit<AdminNoteRecord, 'id' | 'createdAt'>): AdminNoteRecord {
-  const all = read(ADMIN_NOTES_KEY, []);
+  const all = read<AdminNoteRecord[]>(ADMIN_NOTES_KEY, []);
   const record: AdminNoteRecord = {
     ...note,
     id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),

@@ -229,3 +229,78 @@ export function getNoteActivityAtMinute(volatilityRank: number, currentMinutes: 
     statusBadgeClass,
   };
 }
+
+// ─── Real-time evaporation kinetics (spray simulator) ─────────────────────────
+
+export interface EvaporationKinetics {
+  /** Perfume oil still on the skin, 0–100 %. */
+  oilRemainingOnSkinPct: number;
+  /** Carrier alcohol still present, 0–100 %. */
+  alcoholRemainingPct: number;
+  /** Current evaporation flux of the oil phase. */
+  evaporationRateMgPerHour: number;
+  /** Which pyramid tier dominates the vapour right now. */
+  dominantVaporTier: 'top' | 'heart' | 'base';
+  /** Share of each tier in the vapour being released now. */
+  vaporComposition: { topPct: number; heartPct: number; basePct: number };
+  /** Oil anchored into the skin lipid barrier, 0–100 %. */
+  skinAdsorptionPercent: number;
+  /** Approximate scent-bubble radius around the wearer. */
+  sillageRadiusMeters: number;
+}
+
+const clampPct = (v: number) => Math.max(0, Math.min(100, Math.round(v * 10) / 10));
+
+/**
+ * First-order evaporation per tier. Rate constants double roughly every +10 °C of skin
+ * temperature; a higher oil concentration slows the relative loss of the oil phase.
+ */
+export function calculateEvaporationKinetics(
+  currentMinutes: number,
+  concentrationPercent: number,
+  skinTempC: number,
+  topRatio: number,
+  heartRatio: number,
+  baseRatio: number,
+): EvaporationKinetics {
+  const t = Math.max(0, currentMinutes) / 60; // hours
+  const tempFactor = Math.pow(2, (skinTempC - 32) / 10);
+  const total = Math.max(1, topRatio + heartRatio + baseRatio);
+  const share = { top: topRatio / total, heart: heartRatio / total, base: baseRatio / total };
+  const concentrationFactor = Math.min(1.6, Math.max(0.6, 15 / Math.max(5, concentrationPercent)));
+  const k = {
+    top: 1.35 * tempFactor * concentrationFactor,
+    heart: 0.34 * tempFactor * concentrationFactor,
+    base: 0.055 * tempFactor * concentrationFactor,
+    alcohol: 5.5 * tempFactor,
+  };
+  const remaining = {
+    top: Math.exp(-k.top * t),
+    heart: Math.exp(-k.heart * t),
+    base: Math.exp(-k.base * t),
+  };
+  const oilRemaining = (share.top * remaining.top + share.heart * remaining.heart + share.base * remaining.base) * 100;
+  const flux = {
+    top: k.top * remaining.top * share.top,
+    heart: k.heart * remaining.heart * share.heart,
+    base: k.base * remaining.base * share.base,
+  };
+  const fluxTotal = Math.max(1e-9, flux.top + flux.heart + flux.base);
+  const dominantVaporTier = (flux.top >= flux.heart && flux.top >= flux.base ? 'top' : flux.heart >= flux.base ? 'heart' : 'base') as EvaporationKinetics['dominantVaporTier'];
+  // A typical spray deposits ~10–15 mg of oil; scale the flux into mg/h.
+  const evaporationRateMgPerHour = Math.round(fluxTotal * 26 * Math.min(2, Math.max(0.5, concentrationPercent / 15)) * 10) / 10;
+  const skinAdsorptionPercent = clampPct((1 - oilRemaining / 100) * 45 + share.base * 30 * (1 - Math.exp(-t / 2.5)) + 8 * (1 - Math.exp(-t / 0.5)));
+  return {
+    oilRemainingOnSkinPct: clampPct(oilRemaining),
+    alcoholRemainingPct: clampPct(Math.exp(-k.alcohol * t) * 100),
+    evaporationRateMgPerHour,
+    dominantVaporTier,
+    vaporComposition: {
+      topPct: Math.round((flux.top / fluxTotal) * 100),
+      heartPct: Math.round((flux.heart / fluxTotal) * 100),
+      basePct: Math.round((flux.base / fluxTotal) * 100),
+    },
+    skinAdsorptionPercent,
+    sillageRadiusMeters: Math.round(Math.max(0.2, Math.min(3.5, evaporationRateMgPerHour / 9)) * 100) / 100,
+  };
+}

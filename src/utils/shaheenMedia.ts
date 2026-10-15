@@ -6,6 +6,9 @@ import { requestApi } from './api';
  * The block holds search topics only (never links); the site looks them up through /api/media.
  */
 export interface MediaRequest { images: string[]; videos: string[] }
+
+/** A named place Shaheen mentioned, resolved to coordinates for the map view. */
+export interface MediaPlace { name: string; lat: number; lon: number }
 export interface MediaImage { title: string; thumb: string; large?: string; width: number; height: number; page: string; license: string; author: string }
 export interface MediaVideo { id: string; title: string; channel: string; thumb: string }
 export interface ImageResult { images: MediaImage[] }

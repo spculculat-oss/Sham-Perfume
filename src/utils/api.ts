@@ -21,7 +21,7 @@ export class ApiUnavailableError extends Error {
   constructor() { super('This static deployment has no API server.'); this.name = 'ApiUnavailableError'; }
 }
 export class ApiError extends Error {
-  constructor(public status: number, public code?: string) { super(`API request failed (${status})`); }
+  constructor(public status: number, public code?: string, public retryAfterMs?: number) { super(`API request failed (${status})`); }
 }
 export interface ChatResponse {
   reply: string;
@@ -41,8 +41,17 @@ export async function requestApi<T>(endpoint: `/api/${string}`, options?: Reques
     const response = await fetch(apiUrl(endpoint), { ...options, signal: controller.signal });
     if (!response.ok) {
       let code: string | undefined;
-      try { const data = await response.json(); if (typeof data?.code === 'string') code = data.code; } catch { /* Ignore provider/HTML bodies. */ }
-      throw new ApiError(response.status, code);
+      let retryAfterMs: number | undefined;
+      try {
+        const data = await response.json();
+        if (typeof data?.code === 'string') code = data.code;
+        if (typeof data?.retryAfterMs === 'number' && data.retryAfterMs > 0) retryAfterMs = data.retryAfterMs;
+      } catch { /* Ignore provider/HTML bodies. */ }
+      if (retryAfterMs === undefined) {
+        const header = Number(response.headers.get('retry-after'));
+        if (Number.isFinite(header) && header > 0) retryAfterMs = header * 1000;
+      }
+      throw new ApiError(response.status, code, retryAfterMs);
     }
     if (!response.headers.get('content-type')?.toLowerCase().includes('application/json')) {
       throw new Error(`Expected JSON from ${endpoint}, but received a static page.`);

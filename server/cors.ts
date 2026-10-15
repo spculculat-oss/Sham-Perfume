@@ -32,12 +32,12 @@ export function corsMiddleware(raw: string | undefined): express.RequestHandler 
     res.setHeader('Access-Control-Allow-Origin', origin);
     if (req.method === 'OPTIONS') {
       res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Sham-Visitor');
       res.setHeader('Access-Control-Max-Age', '600');
       res.status(204).end();
       return;
     }
-    res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition');
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition, Retry-After');
     next();
   };
 }
