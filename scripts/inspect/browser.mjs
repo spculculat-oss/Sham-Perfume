@@ -80,7 +80,8 @@ for (const site of SITES) {
           const links = card ? [...card.querySelectorAll('[data-testid="shaheen-tool-links"] button')].map((b) => b.textContent.trim()) : [];
           const buttons = card ? [...card.querySelectorAll('button')].map((b) => b.textContent.trim()).filter(Boolean) : [];
           const text = last?.innerText || '';
-          return { text, html: last?.innerHTML.slice(0, 1500) || '', pre: last ? last.querySelectorAll('pre').length : 0, links, buttons: buttons.slice(0, 25) };
+          const captions = card ? [...card.querySelectorAll('[data-testid="shaheen-media"] img')].map((i) => i.alt) : [];
+          return { captions, text, html: last?.innerHTML.slice(0, 1500) || '', pre: last ? last.querySelectorAll('pre').length : 0, links, buttons: buttons.slice(0, 25) };
         });
         const problems = [];
         if (!seen.text) problems.push('لا رد');
@@ -88,6 +89,8 @@ for (const site of SITES) {
         if (/```|"pyramidNotes"|"tools"\s*:|sham-(formula|tool|media)/.test(seen.text)) problems.push('كود/JSON ظاهر');
         if (seen.pre) problems.push(`صندوق كود ظاهر (${seen.pre})`);
         if (!seen.links.length) problems.push('لا روابط أدوات');
+        const codeCaptions = seen.captions.filter((c) => /\d{3,}|\dpx\b|\b[A-Z]{2,}\d|-\d{4}-|^Oud-/.test(c));
+        if (codeCaptions.length) problems.push(`تعليقات صور شكلها أكواد: ${codeCaptions.join(' ؛ ')}`);
         // Does the first calculator link really open the tool?
         let opened = '';
         if (seen.links.length) {
@@ -100,7 +103,7 @@ for (const site of SITES) {
           if (SCENE.startsWith('lab') || !(await page.$('form input[maxlength="4000"]'))) { await enter(); await page.waitForSelector('form input[maxlength="4000"]', { timeout: 15_000 }).catch(() => {}); await wait(1000); }
         }
         note(problems.length ? 'warning' : 'notice', `${SCENE} ${host} · ${modes[m]} · ${question.slice(0, 30)}`,
-          `${JSON.stringify({ ms: Date.now() - started, links: seen.links, buttons: seen.buttons, api: apiCalls.slice(-1), jsErrors: jsErrors.splice(0) })}\nمشاكل: ${problems.join(' | ') || 'لا شيء'}\n----- الأداة بعد الضغط -----\n${opened}\n----- ما يراه الزائر -----\n${seen.text.slice(0, 3000)}\n----- HTML -----\n${seen.html}`);
+          `${JSON.stringify({ ms: Date.now() - started, links: seen.links, captions: seen.captions, buttons: seen.buttons, api: apiCalls.slice(-1), jsErrors: jsErrors.splice(0) })}\nمشاكل: ${problems.join(' | ') || 'لا شيء'}\n----- الأداة بعد الضغط -----\n${opened}\n----- ما يراه الزائر -----\n${seen.text.slice(0, 3000)}\n----- HTML -----\n${seen.html}`);
         await wait(3000);
       }
     }

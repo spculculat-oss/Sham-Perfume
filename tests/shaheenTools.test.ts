@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { alcoholDilutionIn, concentrationPercentIn, explicitToolLinks, linkTools, macerationDaysIn, materialIn,
+import { alcoholDilutionIn, concentrationPercentIn, concentrationTypeIn, explicitToolLinks, linkTools, macerationDaysIn, materialIn,
   questionIntents, removeToolBlocks, volumeMl } from '../src/utils/shaheenTools';
 import { stripFormulaBlock } from '../src/components/ShaheenMarkdown';
 import { extractFormulasFromAIMessage } from '../src/utils/aiFormulaExtractor';
@@ -75,4 +75,19 @@ test("Shaheen's own ```sham-tool block wins, is validated and is never shown", (
   assert.doesNotMatch(stripFormulaBlock(answer), /sham-tool|alcoholFrom/);
   // Even when the question alone would not have linked anything.
   assert.equal(tools('سؤال', answer)[0].tool, 'alcohol');
+});
+
+test('concentration type needs whole Arabic words (live: a costing answer opened the calculator as MIST)', () => {
+  assert.equal(concentrationTypeIn('أسعار المواد الخام عرضة للتغير بناءً على جودة الزيوت المستدمجة'), undefined);
+  assert.equal(concentrationTypeIn('الكمية المستخدمة ومستوى الثبات'), undefined);
+  assert.equal(concentrationTypeIn('عايز بودي مست 100 مل'), 'mist');
+  assert.equal(concentrationTypeIn('دهن العود الكمبودي في القاعدة'), undefined);
+  assert.equal(concentrationTypeIn('eau de parfum'), 'edp');
+  assert.equal(concentrationTypeIn('بالكولونيا'), 'edc');
+  const links = linkTools({
+    question: 'احسب تكلفة 100 زجاجة عطر 50 مل تركيز 20% لو الزيت بـ 3 جنيه للمل والكحول بـ 0.2 جنيه للمل',
+    answer: 'كمية الزيت العطري: 50 مل × 20% = 10 مل. تفاوت الأسعار: أسعار المواد الخام عرضة للتغير بناءً على جودة الزيوت المستدمجة.',
+    formulas: [],
+  });
+  assert.equal(links.find((l) => l.tool === 'concentration')?.concentrationType, undefined);
 });
