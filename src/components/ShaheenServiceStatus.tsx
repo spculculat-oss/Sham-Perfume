@@ -44,6 +44,25 @@ const UNAVAILABLE: LText = {
   ar: 'لم يتمكن شاهين من إكمال الرد الآن (الخدمة مشغولة). أعد المحاولة بعد قليل أو اختر «تلقائي».',
   en: 'Shahin could not finish the answer right now (the service is busy). Retry shortly or choose “Auto”.',
 };
+const BUSY_WAIT: LText = {
+  ar: 'شاهين يرد الآن على عدد كبير من الزوار — سؤالك في الدور وسيصلك الرد تلقائياً خلال لحظات.',
+  en: 'Shaheen is answering many visitors right now — your question is in line and the reply will arrive by itself shortly.',
+  fr: 'Shaheen répond à de nombreux visiteurs en ce moment — votre question est en file et la réponse arrivera d’elle-même.',
+  es: 'Shaheen está atendiendo a muchos visitantes — tu pregunta está en cola y la respuesta llegará sola en breve.',
+  it: 'Shaheen sta rispondendo a molti visitatori — la tua domanda è in coda e la risposta arriverà da sola a breve.',
+  de: 'Shaheen beantwortet gerade viele Besucher — Ihre Frage ist in der Warteschlange, die Antwort kommt gleich von selbst.',
+  ru: 'Шахин сейчас отвечает многим посетителям — ваш вопрос в очереди, ответ придёт автоматически.',
+  zh: 'Shaheen 正在同时回答许多访客——您的问题已在排队，回复将很快自动送达。',
+  tr: 'Shaheen şu anda çok sayıda ziyaretçiye yanıt veriyor — sorunuz sırada, yanıt birazdan kendiliğinden gelecek.',
+  fa: 'شاهین هم‌اکنون به بازدیدکنندگان زیادی پاسخ می‌دهد — پرسش شما در نوبت است و پاسخ به‌زودی خودکار می‌رسد.',
+};
+const BUSY_GAVE_UP: LText = {
+  ar: 'الضغط على شاهين كبير جداً الآن بسبب عدد الزوار. أعد المحاولة بعد دقيقة.',
+  en: 'Shaheen is very busy right now because of the number of visitors. Please retry in a minute.',
+};
+/** Shown inside the "preparing the answer" bubble while the store waits in line by itself. */
+export const busyNoteText = (language: SupportedLanguage) => loc(language, BUSY_WAIT);
+
 const RATE: LText = {
   ar: 'أرسلت رسائل كثيرة خلال دقيقة. انتظر قليلاً ثم أعد المحاولة.',
   en: 'Too many messages in a minute. Wait a moment, then retry.',
@@ -68,6 +87,7 @@ export function chatErrorText(language: SupportedLanguage, error: unknown) {
     if (error.code === 'PROVIDER_NOT_CONFIGURED') return loc(language, NO_KEY);
     if (error.code === 'PROVIDER_UNAVAILABLE') return loc(language, UNAVAILABLE);
     if (error.code === 'COUNCIL_UNAVAILABLE') return loc(language, COUNCIL_OFF);
+    if (error.code === 'SHAHEEN_BUSY') return loc(language, BUSY_GAVE_UP);
     if (error.status === 429) return loc(language, RATE);
     if (error.status === 504 || error.code === 'PROVIDER_TIMEOUT') return loc(language, TIMEOUT);
     if (error.status === 400) return loc(language, INVALID);

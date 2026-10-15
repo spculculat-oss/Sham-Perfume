@@ -1,6 +1,6 @@
 import type { SupportedLanguage } from '../types/i18n';
 import { removeMediaBlocks } from './mediaBlock';
-import { isStaticHosting, requestApi, type ChatResponse } from './api';
+import { ApiError, isStaticHosting, requestApi, visitorId, type ChatResponse } from './api';
 import { CHAT_STORAGE_KEY, clearChatSession, DEFAULT_WELCOME_MESSAGE, isChatMessage,
   loadStoredChatSession, saveChatSession, type ChatMessage, type ShaheenProvider } from './chatStorage';
 
@@ -23,7 +23,16 @@ export function compactTurn(text: string): string {
   return text.slice(0, TURN_LIMIT - tail.length).trimEnd() + tail;
 }
 
-interface Snapshot { messages: ChatMessage[]; isLoading: boolean; daysRemaining: number; expiresAt: number }
+/** `busy`: the server asked to come back shortly (many visitors at once) and the store is retrying by itself. */
+interface Snapshot { messages: ChatMessage[]; isLoading: boolean; busy?: boolean; daysRemaining: number; expiresAt: number }
+/** Automatic retries when Shaheen answers "busy" (503 SHAHEEN_BUSY), honouring Retry-After. */
+export const BUSY_RETRIES = 3;
+const busyDelay = (error: ApiError, attempt: number) =>
+  Math.min(30_000, (error.retryAfterMs ?? 4000 * 2 ** attempt)) * (0.8 + Math.random() * 0.4);
+const wait = (ms: number, signal: AbortSignal) => new Promise<void>((resolve, reject) => {
+  const timer = setTimeout(resolve, ms);
+  signal.addEventListener('abort', () => { clearTimeout(timer); reject(signal.reason); }, { once: true });
+});
 interface SendOptions {
   text: string; model: ShaheenModelChoice; language: SupportedLanguage;
   errorText: (error: unknown) => string;
@@ -44,7 +53,7 @@ export function chatHistory(messages: ChatMessage[]) {
 }
 
 /** One synchronous owner for both chat surfaces: no effect-driven rebroadcast loops. */
-export function createChatStore(request: typeof requestApi = requestApi) {
+export function createChatStore(request: typeof requestApi = requestApi, pause: typeof wait = wait) {
   let snapshot: Snapshot | undefined;
   let controller: AbortController | undefined;
   let generation = 0;
@@ -124,20 +133,33 @@ export function createChatStore(request: typeof requestApi = requestApi) {
       const id = (role: string) => `${role}-${Date.now()}-${++sequence}`;
       publish({ ...current, isLoading: true,
         messages: [...current.messages, { id: id('user'), role: 'user', text, timestamp: timestamp() }] });
+      const signal = controller.signal;
       try {
-        const data = await request<ChatResponse>('/api/chat', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: controller.signal,
-          body: JSON.stringify({ message: text, model: options.model, language: options.language,
-            conversationHistory: chatHistory(current.messages) }),
-        });
+        const body = JSON.stringify({ message: text, model: options.model, language: options.language,
+          conversationHistory: chatHistory(current.messages) });
+        let data: ChatResponse | undefined;
+        for (let attempt = 0; ; attempt++) {
+          try {
+            data = await request<ChatResponse>('/api/chat', {
+              method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Sham-Visitor': visitorId() }, signal, body,
+            }, 58_000); // the server may queue a question for up to ~50 s before answering
+            break;
+          } catch (error) {
+            // Many visitors at once: wait in line instead of showing an error (the server says how long).
+            if (!(error instanceof ApiError && error.code === 'SHAHEEN_BUSY') || attempt >= BUSY_RETRIES || generation !== token) throw error;
+            if (!getSnapshot().busy) publish({ ...getSnapshot(), busy: true }, false);
+            await pause(busyDelay(error, attempt), signal);
+            if (generation !== token) return false;
+          }
+        }
         if (generation !== token) return false;
         const message: ChatMessage = { id: id('bot'), role: 'assistant', text: data?.reply, timestamp: timestamp(),
           aiEngine: data?.engine };
         if (!message.text?.trim() || !isChatMessage(message)) throw new Error('Invalid chat response');
-        publish({ ...getSnapshot(), messages: [...getSnapshot().messages, message], isLoading: false });
+        publish({ ...getSnapshot(), messages: [...getSnapshot().messages, message], isLoading: false, busy: false });
       } catch (error) {
         if (generation !== token) return false;
-        publish({ ...getSnapshot(), isLoading: false, messages: [...getSnapshot().messages, {
+        publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
           id: id('bot-err'), role: 'assistant', kind: 'error', text: options.errorText(error), timestamp: timestamp(),
         }] });
       } finally {

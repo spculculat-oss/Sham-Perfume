@@ -14,6 +14,7 @@ import type { SupportedLanguage } from '../src/types/i18n';
 import { normalizeMediaBlocks } from '../src/utils/mediaBlock';
 import { callEngine, engineStatuses, type EngineFailure } from './core/engines';
 import { RateLimiter, clientKey } from './core/rateLimit';
+import { AnswerCache, GateBusyError, ProviderGate, VISITOR_ID, cacheKey, capacityConfig, normalizeQuestion, retryHintMs } from './core/capacity';
 import { councilAvailable, runCouncil } from './core/council';
 import type { Repository } from './core/repository';
 import type { CouncilSettings, ModelEngineId, ShaheenSettings } from './core/types';
@@ -29,7 +30,7 @@ export interface ChatRequest {
   conversationHistory: ChatTurn[];
 }
 export class ChatError extends Error {
-  constructor(public status: number, public code: string, message: string) { super(message); }
+  constructor(public status: number, public code: string, message: string, public retryAfterMs?: number) { super(message); }
 }
 type Environment = Record<string, string | undefined>;
 
@@ -128,10 +129,18 @@ export interface ExecuteOptions {
   settings?: ShaheenSettings;
   /** Advisory-council seats (shared with Sham Core); required for the "council" mode. */
   council?: CouncilSettings;
+  /** Capacity gate (queue + circuit breaker per provider); without it providers are tried once, in order. */
+  gate?: ProviderGate;
 }
 
 /** Only the provider that actually answered is credited. Auto is failover, not a fake panel. */
-export async function executeChat(input: ChatRequest, options: ExecuteOptions = {}) {
+/** One answer: the reply, the visitor-facing mode and (server/admin side only) the engine that wrote it. */
+export interface ChatAnswer {
+  reply: string; mode: ChatRequest['model'];
+  engine: { id: Provider; provider: Provider; name: string; badge: string; model: string; accentColor: string };
+}
+
+export async function executeChat(input: ChatRequest, options: ExecuteOptions = {}): Promise<ChatAnswer> {
   const env = options.env || process.env;
   const settings = options.settings || SHAHEEN_SITE_SETTINGS;
   if (!settings.enabled) throw new ChatError(503, 'SHAHEEN_DISABLED', 'Shaheen is turned off by the site administration');
@@ -151,23 +160,45 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   const maxTokens = style === 'fast' ? Math.min(settings.maxTokens, 1024) : settings.maxTokens;
   const turns: ChatTurn[] = [...input.conversationHistory, { role: 'user', text: input.message }];
   let timedOut = false;
-  for (const provider of candidates) {
-    if (total.aborted) break;
+  const attempt = async (provider: Provider): Promise<{ outcome: 'ok'; value: ChatAnswer } | { outcome: 'next' | 'limited'; retryMs?: number }> => {
+    if (total.aborted) return { outcome: 'next' };
     const signal = AbortSignal.any([total, AbortSignal.timeout(options.timeoutMs ?? 28000)]);
     const status = engineStatuses(env).find((s) => s.id === provider)!;
     const model = settings.models[provider] || status.model;
+    let refusal: { failure: EngineFailure; status: number; detail: string } | undefined;
     try {
       const reply = await callEngine(provider, instruction, turns, {
         env, fetch: options.fetch, signal, temperature: settings.temperature, model,
-        maxTokens, maxChars: 32000,
+        maxTokens, maxChars: 32000, onFailure: (failure, httpStatus, detail) => { refusal = { failure, status: httpStatus, detail }; },
       });
       if (signal.aborted) throw signal.reason;
-      if (typeof reply !== 'string' || !reply.trim()) continue;
-      return { reply: reply.trim(), mode: requested, engine: { id: provider, provider, name: ENGINE_INFO[provider].name,
-        badge: ENGINE_INFO[provider].name, model, accentColor: ENGINE_INFO[provider].color } };
+      if (typeof reply === 'string' && reply.trim()) {
+        return { outcome: 'ok', value: { reply: reply.trim(), mode: requested, engine: { id: provider, provider, name: ENGINE_INFO[provider].name,
+          badge: ENGINE_INFO[provider].name, model, accentColor: ENGINE_INFO[provider].color } } };
+      }
     } catch {
       timedOut ||= signal.aborted;
       // Never leak provider error bodies, credentials, or fabricated fallback answers.
+    }
+    // 429 = "too many requests right now": the gate cools this provider down instead of hammering it.
+    if (refusal && (refusal.status === 429 || refusal.failure === 'rate_limited')) return { outcome: 'limited', retryMs: retryHintMs(refusal.detail) };
+    return { outcome: 'next' };
+  };
+  if (options.gate) {
+    try {
+      const answer = await options.gate.run(candidates, attempt, total);
+      if (answer) return answer;
+    } catch (error) {
+      if (error instanceof GateBusyError && !total.aborted) {
+        throw new ChatError(503, 'SHAHEEN_BUSY', 'Shaheen is answering many visitors right now, please retry shortly', error.retryAfterMs);
+      }
+      if (!total.aborted) throw error;
+    }
+  } else {
+    for (const provider of candidates) {
+      if (total.aborted) break;
+      const result = await attempt(provider);
+      if (result.outcome === 'ok') return result.value;
     }
   }
   if (total.aborted || timedOut) throw new ChatError(504, 'PROVIDER_TIMEOUT', 'AI request timed out or was cancelled');
@@ -175,7 +206,7 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
 }
 
 /** "council" mode: Sham Core's advisory council answers a Shaheen question (seats from the admin council settings). */
-async function executeCouncil(input: ChatRequest, options: ExecuteOptions, env: Environment, settings: ShaheenSettings) {
+async function executeCouncil(input: ChatRequest, options: ExecuteOptions, env: Environment, settings: ShaheenSettings): Promise<ChatAnswer> {
   const council = options.council;
   if (!council || !councilAvailable(council, env)) throw new ChatError(503, 'COUNCIL_UNAVAILABLE', 'The expert council needs at least two working engines');
   const signal = AbortSignal.any([AbortSignal.timeout(options.totalTimeoutMs ?? 52000), ...(options.signal ? [options.signal] : [])]);
@@ -244,14 +275,30 @@ export async function probeEngines(settings: ShaheenSettings, options: { env?: E
 export function createShaheenRouter(options: { repo: Repository; env?: Environment; fetch?: typeof fetch }) {
   const env = options.env || process.env;
   const router = express.Router();
-  const limiter = new RateLimiter(Number(env.SHAM_SHAHEEN_RATE_PER_MIN) || 10, 60_000);
+  const capacity = capacityConfig(env);
+  // Per visitor (IP + anonymous browser id, so people behind one mobile-carrier IP are told apart)
+  // and a looser per-IP ceiling that bounds anyone rotating browser ids.
+  const limiter = new RateLimiter(capacity.perVisitorPerMin, 60_000);
+  const ipLimiter = new RateLimiter(capacity.perIpPerMin, 60_000);
   // A council answer costs several model calls: separate hourly budget per visitor.
   const councilLimiter = new RateLimiter(Number(env.SHAM_COUNCIL_RATE_PER_HOUR) || 12, 60 * 60_000);
+  const gate = new ProviderGate(capacity.maxConcurrent, capacity.queueWaitMs, capacity.providerRpm);
+  const answers = new AnswerCache<ChatAnswer>(capacity.cacheEntries, capacity.cacheTtlMs);
+  // Settings change rarely; reading them once per message would cost a store read per visitor.
+  // Saved in this instance → refreshed at once (revision); saved elsewhere (shared store) → within 3 s.
+  let settingsCache: { at: number; revision: number; value: Awaited<ReturnType<Repository['settings']>> } | undefined;
+  const settings = async () => {
+    const revision = options.repo.settingsRevision;
+    if (!settingsCache || settingsCache.revision !== revision || Date.now() - settingsCache.at > 3000) {
+      settingsCache = { at: Date.now(), revision, value: await options.repo.settings() };
+    }
+    return settingsCache.value;
+  };
 
   router.get('/models', async (_req, res) => {
     res.setHeader('Cache-Control', 'no-store');
     try {
-      const { shaheen, council } = await options.repo.settings();
+      const { shaheen, council } = await settings();
       res.json({ models: getPublicModes(env, shaheen, council), enabled: shaheen.enabled, allowVisitorChoice: shaheen.allowVisitorChoice });
     } catch {
       res.status(500).json({ error: 'Settings unavailable', code: 'SETTINGS_UNAVAILABLE' });
@@ -264,16 +311,29 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
     res.on('close', cancel);
     try {
       const input = validateChatRequest(req.body);
-      if (!limiter.allow(clientKey(req))) throw new ChatError(429, 'RATE_LIMITED', 'Too many messages, please wait a minute');
-      const { shaheen, council } = await options.repo.settings();
-      if (input.model === 'council' && shaheen.allowVisitorChoice && !councilLimiter.allow(clientKey(req))) {
+      const ip = clientKey(req);
+      const browser = req.get('x-sham-visitor');
+      const visitor = browser && VISITOR_ID.test(browser) ? `${ip}|${browser}` : ip;
+      if (!limiter.allow(visitor) || !ipLimiter.allow(ip)) throw new ChatError(429, 'RATE_LIMITED', 'Too many messages, please wait a minute');
+      const { shaheen, council } = await settings();
+      if (input.model === 'council' && shaheen.allowVisitorChoice && !councilLimiter.allow(visitor)) {
         throw new ChatError(429, 'RATE_LIMITED', 'Too many expert-council questions, try the other modes');
       }
-      const result = await executeChat(input, { env, fetch: options.fetch, signal: controller.signal, settings: shaheen, council });
+      const run = (signal?: AbortSignal) => executeChat(input, { env, fetch: options.fetch, signal, settings: shaheen, council, gate });
+      let result: ChatAnswer;
+      if (!input.conversationHistory.length && capacity.cacheTtlMs > 0 && capacity.cacheEntries > 0) {
+        // Opening question: answered from the shared cache, or by ONE provider call shared by everyone
+        // asking it right now. That call must not follow one visitor's disconnect, so it gets no signal.
+        const key = cacheKey([normalizeQuestion(input.message), input.language, input.model, shaheen]);
+        result = await abortable(answers.getOrLoad(key, () => run(), (r) => Boolean(r.reply)), controller.signal);
+      } else {
+        result = await run(controller.signal);
+      }
       if (!res.destroyed) res.json(publicChatResult(result));
     } catch (error) {
       if (res.destroyed) return;
       if (error instanceof ChatError) {
+        if (error.retryAfterMs) res.setHeader('Retry-After', String(Math.min(60, Math.max(1, Math.ceil(error.retryAfterMs / 1000)))));
         res.status(error.status).json({ error: error.message, code: error.code });
       } else {
         res.status(500).json({ error: 'Chat service failed', code: 'CHAT_FAILED' });
@@ -283,4 +343,14 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
     }
   });
   return router;
+}
+
+/** Stop waiting when this visitor leaves (the shared work itself keeps going for the others). */
+function abortable<T>(promise: Promise<T>, signal: AbortSignal): Promise<T> {
+  if (signal.aborted) return Promise.reject(signal.reason);
+  return new Promise<T>((resolve, reject) => {
+    const onAbort = () => reject(signal.reason);
+    signal.addEventListener('abort', onAbort, { once: true });
+    promise.then(resolve, reject).finally(() => signal.removeEventListener('abort', onAbort));
+  });
 }
