@@ -32,6 +32,8 @@ import { useShaheenChat } from '../hooks/useShaheenChat';
 import { useShaheenModels } from '../hooks/useShaheenModels';
 import { ShaheenServiceStatus, ShaheenModesPanel, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
+import { ShaheenMedia } from './ShaheenMedia';
+import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
 import { ENGINE_BADGE, messageTime, modeBadge, visibleEngines, scrollChatToEnd } from './shaheenEngines';
 import type { ShaheenModelChoice } from '../utils/chatStore';
 import { SupportedLanguage } from '../types/i18n';
@@ -1229,10 +1231,11 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                 const activeDisplayContent =
                   msg.id === 'welcome'
                     ? shaheenWelcome(currentLang)
-                    : msg.text;
+                    : stripMediaBlock(msg.text);
 
                 const extractedFormula = msg.role === 'assistant' && msg.kind !== 'error' ? extractFormulaFromAIMessage(activeDisplayContent) : null;
                 const isError = msg.kind === 'error';
+                const mediaRequest = msg.role === 'assistant' && !isError && msg.id !== 'welcome' ? extractMediaRequest(msg.text) : undefined;
                 const isLastMessage = msg.id === messages[messages.length - 1]?.id;
                 const canCompare = msg.role === 'assistant' && !isError && msg.id !== 'welcome' && AI_ENGINES.length > 1;
 
@@ -1293,7 +1296,10 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
 
                       {/* Text Payload */}
                       {msg.role === 'assistant' && !isError ? (
-                        <ShaheenMarkdown text={activeDisplayContent} className="font-sans" />
+                        <>
+                          <ShaheenMarkdown text={activeDisplayContent} className="font-sans" />
+                          {mediaRequest && <ShaheenMedia request={mediaRequest} lang={currentLang} />}
+                        </>
                       ) : (
                         <div className="whitespace-pre-line break-words font-sans space-y-2" dir="auto">
                           {activeDisplayContent}

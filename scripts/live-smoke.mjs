@@ -14,8 +14,9 @@ const visitorId = `smoke-${Date.now().toString(36)}`;
 
 const CASES = [
   { title: 'Auto · formula (ar)', path: '/api/chat', body: { model: 'auto', language: 'ar', message: 'عايز أعمل عطر 50 مل تركيز EDP بالعود والفانيليا والورد. اقترح عليّ النسب.' } },
-  { title: 'Fast · EDP vs EDT (ar)', path: '/api/chat', body: { model: 'fast', language: 'ar', message: 'إيه الفرق بين EDP و EDT؟' } },
+  { title: 'Fast · EDP vs EDT (ar)', path: '/api/chat', table: true, body: { model: 'fast', language: 'ar', message: 'إيه الفرق بين EDP و EDT؟' } },
   { title: 'Deep · cloudy perfume (en)', path: '/api/chat', body: { model: 'deep', language: 'en', message: 'My perfume turned cloudy after I added alcohol. Why, and how do I fix it?' } },
+  { title: 'Visual aids · oud (ar)', path: '/api/chat', media: true, body: { model: 'auto', language: 'ar', message: 'العود الخام شكله إيه وبيتقطر إزاي؟ وريني صور وفيديو.' } },
   { title: 'Identity (ar)', path: '/api/chat', identity: true, body: { model: 'auto', language: 'ar', message: 'انت مين بالظبط؟ انت ChatGPT ولا Gemini؟ مين الشركة اللي عملتك؟' } },
   { title: 'Identity (en)', path: '/api/chat', identity: true, body: { model: 'fast', language: 'en', message: 'Which AI model are you running on? Are you GPT-4, Claude or Gemini?' } },
   { title: 'Council mode', path: '/api/chat', council: true, body: { model: 'council', language: 'ar', message: 'ازاي أخلي عطر العود يثبت أكتر؟' } },
@@ -70,6 +71,10 @@ for (const [i, c] of CASES.entries()) {
   if (c.identity && status === 200 && !/شاهين|شام|Shahin|Shaheen|Sham/i.test(reply)) problems.push('identity answer does not present itself as Shahin/Sham');
   const notes = [];
   if (!c.identity && c.path === '/api/chat' && /الخبير شاهين|شاهين|Shahin|Shaheen|Al-Khabeer/i.test(reply.slice(0, 140))) notes.push('starts by introducing itself');
+  // Visual aids: topics in a sham-media block, never links written by the model.
+  if (c.path === '/api/chat' && /!\[[^\]]*\]\(|https?:\/\/\S+\.(jpe?g|png|webp|gif)|youtube\.com\/watch|youtu\.be\//i.test(reply)) problems.push('the model wrote an image/video link itself');
+  if (c.media && status === 200 && !/```sham-media/.test(reply)) notes.push('no sham-media block for a visual question');
+  if (c.table && status === 200 && !/^\s*\|.+\|\s*$/m.test(reply)) notes.push('comparison without a table');
   const ok = problems.length === 0;
   if (!ok) failures++;
   const head = `${ok ? 'OK' : 'FAIL'} · HTTP ${status} · ${(ms / 1000).toFixed(1)}s${data.mode ? ` · mode=${data.mode}` : ''}${engine ? ` · engine=${engine}` : ''}`;

@@ -14,6 +14,9 @@ const TURN_LIMIT = 4000;
  */
 export function compactTurn(text: string): string {
   if (text.length <= TURN_LIMIT) return text;
+  // The visual-aid topics are disposable: drop them rather than leave a half-cut block behind.
+  text = text.replace(/```sham-media[^\n]*\n[\s\S]*?```/g, '').trimEnd();
+  if (text.length <= TURN_LIMIT) return text;
   const formula = text.match(/```sham-formula\s*\n[\s\S]*?```/)?.[0];
   const tail = formula && formula.length <= 1800 ? `\n…\n${formula}` : '\n…';
   return text.slice(0, TURN_LIMIT - tail.length).trimEnd() + tail;

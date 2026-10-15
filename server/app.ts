@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { createShaheenRouter } from './shaheen';
+import { createMediaRouter } from './media';
 import { createShamCore } from './core/http';
 import { callEngine, engineStatuses } from './core/engines';
 import { RateLimiter, clientKey } from './core/rateLimit';
@@ -35,6 +36,7 @@ app.get('/api/health', (_req, res) => {
 // «الخبير شاهين»: GET /api/models + POST /api/chat. Settings come from server/config/shaheen.ts and the
 // admin dashboard, so both sites (Vercel and GitHub Pages, which calls this API) behave the same.
 app.use('/api', createShaheenRouter({ repo: shamCore.repo }));
+app.use('/api', createMediaRouter());
 
 // ============================================================================
 // DAILY PERFUME NEWS ENGINE (MASTER SHAHEEN AI CURATION & REFRESH)

@@ -66,6 +66,20 @@ report('Perfume news feed', news.status === 200 && articles.length > 0, `HTTP ${
 const config = json((await get(`${SITE}/api/assistant/config`)).text);
 report('Sham assistant config', Boolean(config?.services?.length), `${config?.services?.length || 0} services · model-enhanced=${config?.modelEnhanced} · council seats=${config?.council?.seats ?? '?'}`);
 
+// Shaheen's visual aids: real images from Wikimedia Commons, videos from YouTube (or a search link).
+const img = await get(`${SITE}/api/media?type=image&q=agarwood`);
+const imgData = json(img.text);
+const imgOk = img.status === 200 && Array.isArray(imgData?.images) && imgData.images.length > 0 && imgData.images.every((i) => /^https:\/\/upload\.wikimedia\.org\//.test(i.thumb));
+report('Shaheen images', imgOk, `HTTP ${img.status} · ${imgData?.images?.length ?? 0} image(s)${imgData?.images?.[0] ? ` · e.g. «${imgData.images[0].title}» (${imgData.images[0].license})` : ''}`,
+  imgOk ? undefined : img.status === 404 ? 'warning' : undefined);
+const vid = await get(`${SITE}/api/media?type=video&q=perfume%20maceration&lang=ar`);
+const vidData = json(vid.text);
+const vidOk = vid.status === 200 && typeof vidData?.searchUrl === 'string';
+report('Shaheen videos', vidOk && vidData.source === 'youtube',
+  vid.status !== 200 ? `HTTP ${vid.status}` : vidData?.source === 'youtube' ? `${vidData.videos.length} embeddable video(s) · e.g. «${vidData.videos[0]?.title}»`
+    : 'search link only — enable "YouTube Data API v3" in the Google Cloud project of the Gemini key, or add a YOUTUBE_API_KEY secret',
+  vidOk && vidData.source === 'youtube' ? undefined : vid.status === 404 || vidOk ? 'warning' : undefined);
+
 // 4) Second Vercel project (informational: it only gets keys once VERCEL_TOKEN syncs them).
 const second = json((await get(`${SECOND}/api/models`)).text);
 const secondReady = (second?.models || []).some((m) => m.hasApiKey);
