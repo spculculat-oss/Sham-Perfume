@@ -419,16 +419,16 @@ const S = {
     fa: 'تغییر نمای موتور مشاور:',
   },
   persp_ens: {
-    ar: 'دمج مؤتمت 4 محركات',
-    en: 'Automated 4-engine blend',
-    fr: 'Fusion automatique de 4 moteurs',
-    es: 'Fusión automática de 4 motores',
-    it: 'Fusione automatica di 4 motori',
-    de: 'Automatische 4-Engine-Fusion',
-    ru: 'Автослияние 4 движков',
-    zh: '四引擎自动融合',
-    tr: '4 motorlu otomatik harman',
-    fa: 'ترکیب خودکار ۴ موتور',
+    ar: 'المحركات المستشارة: {n}',
+    en: '{n} engines consulted',
+    fr: '{n} moteurs consultés',
+    es: '{n} motores consultados',
+    it: '{n} motori consultati',
+    de: '{n} Engines befragt',
+    ru: 'Опрошено движков: {n}',
+    zh: '已咨询 {n} 个引擎',
+    tr: '{n} motora danışıldı',
+    fa: 'موتورهای مشورت‌شده: {n}',
   },
   consensus_lbl: {
     ar: '⚡ خلاصة شاهين الموحدة',
@@ -1581,12 +1581,12 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                         </div>
                       )}
 
-                      {/* Perspective Switcher Tabs on Message (When Multi-AI Ensemble generated) */}
+                      {/* Perspective Switcher Tabs on Message (advisory council replies only) */}
                       {msg.role === 'assistant' && msg.perspectives && msg.perspectives.length > 0 && (
                         <div className="p-1.5 bg-stone-50 rounded-xl border border-stone-200/80 mb-2 space-y-1">
                           <div className="text-[10px] text-stone-500 font-bold flex items-center justify-between px-1">
                             <span>{L('persp_lbl')}</span>
-                            <span className="text-[9px] text-amber-700 bg-amber-100/60 px-1.5 py-0.5 rounded">{L('persp_ens')}</span>
+                            <span className="text-[9px] text-amber-700 bg-amber-100/60 px-1.5 py-0.5 rounded">{fmt(L('persp_ens'), { n: msg.perspectives.length })}</span>
                           </div>
                           <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
                             <button

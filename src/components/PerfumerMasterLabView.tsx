@@ -89,15 +89,15 @@ const S = {
   },
   session_desc: {
     ar: 'تفاعل مباشر وحفظ تلقائي لكامل الجلسة لمدة شهر كامل مع إمكانية التصدير',
-    en: 'Multi-AI formulation synthesis co-pilot with one-month persistent cache',
-    fr: 'Copilote multi-IA de formulation avec cache persistant d’un mois',
-    es: 'Copiloto multi-IA de formulación con caché persistente de un mes',
-    it: 'Co-pilota multi-AI con cache persistente di un mese',
-    de: 'Multi-KI-Formulierungscopilot mit einmonatigem Cache',
-    ru: 'Ко-пилот мульти-ИИ синтеза формул с месячным кэшем',
-    zh: '多 AI 配方合成副驾驶，支持一个月持久缓存',
-    tr: 'Bir aylık kalıcı önbellekle çoklu AI formülasyon yardımcısı',
-    fa: 'دستیار چند-IA سنتز فرمول با حافظه پایدار یک‌ماهه',
+    en: 'Live chat with your full session saved automatically for a month, with export',
+    fr: 'Échange en direct, session complète enregistrée automatiquement pendant un mois, avec export',
+    es: 'Chat en vivo con la sesión completa guardada automáticamente durante un mes, con exportación',
+    it: 'Chat dal vivo con la sessione salvata automaticamente per un mese, con esportazione',
+    de: 'Live-Chat mit automatischer Speicherung der ganzen Sitzung für einen Monat, inklusive Export',
+    ru: 'Живой чат: вся сессия автоматически сохраняется на месяц, с экспортом',
+    zh: '实时对话，整个会话自动保存一个月，并可导出',
+    tr: 'Canlı sohbet; tüm oturum bir ay boyunca otomatik kaydedilir ve dışa aktarılabilir',
+    fa: 'گفتگوی زنده با ذخیره خودکار کل جلسه به مدت یک ماه و امکان برون‌بری',
   },
   scale: {
     ar: 'الميزان:',
@@ -237,20 +237,16 @@ const S = {
   cancel: { ar: 'إلغاء', en: 'Cancel', fr: 'Annuler', es: 'Cancelar', it: 'Annulla', de: 'Abbrechen', ru: 'Отмена', zh: '取消', tr: 'Vazgeç', fa: 'انصراف' },
   confirm_wipe: { ar: 'تأكيد المسح', en: 'Confirm Wipe', fr: 'Confirmer l’effacement', es: 'Confirmar borrado', it: 'Conferma cancellazione', de: 'Löschen bestätigen', ru: 'Подтвердить стирание', zh: '确认清除', tr: 'Silmeyi onayla', fa: 'تأیید پاک‌سازی' },
   engine_lbl: { ar: 'محرك الذكاء العطري:', en: 'Fragrance AI Engine:', fr: 'Moteur IA olfactif :', es: 'Motor de IA olfativa:', it: 'Motore IA olfattivo:', de: 'Duft-KI-Engine:', ru: 'Движок парфюмерного ИИ:', zh: '香水 AI 引擎：', tr: 'Koku YZ motoru:', fa: 'موتور هوش مصنوعی عطری:' },
-  ai_matrix_tooltip: { ar: 'عرض حالة شبكة الذكاء الاصطناعي الأربعة المتصلة بالمعمل', en: 'View the four AI engines connected to the lab', fr: 'Voir les quatre moteurs IA connectés', es: 'Ver los cuatro motores IA conectados', it: 'Vedi i quattro motori IA collegati', de: 'Die vier angeschlossenen KI-Engines ansehen', ru: 'Просмотр четырёх ИИ-движков лаборатории', zh: '查看连接到实验室的四个 AI 引擎', tr: 'Laboratuvara bağlı dört YZ motorunu görüntüle', fa: 'مشاهده چهار موتور هوش مصنوعی متصل به آزمایشگاه' },
+  ai_matrix_tooltip: { ar: 'عرض محركات الذكاء الاصطناعي المتاحة الآن وحالتها', en: 'See which AI engines are available right now', fr: 'Voir les moteurs IA disponibles et leur état', es: 'Ver qué motores de IA están disponibles ahora', it: 'Vedi quali motori IA sono disponibili ora', de: 'Verfügbare KI-Engines und ihren Status anzeigen', ru: 'Посмотреть, какие ИИ-движки доступны сейчас', zh: '查看当前可用的 AI 引擎及其状态', tr: 'Şu anda kullanılabilir YZ motorlarını gör', fa: 'مشاهده موتورهای هوش مصنوعی در دسترس و وضعیت آن‌ها' },
   ai_network_lbl: { ar: 'المحركات', en: 'Engines', fr: 'Moteurs', es: 'Motores', it: 'Motori', de: 'Engines', ru: 'Движки', zh: '引擎', tr: 'Motorlar', fa: 'موتورها' },
-  ai_matrix_title: { ar: 'شبكة محركات الذكاء الاصطناعي المؤتمتة بالمعمل (Automated AI Council):', en: 'Automated AI Council of the lab:', fr: 'Conseil IA automatisé du laboratoire :', es: 'Consejo IA automatizado del laboratorio:', it: 'Consiglio IA automatizzato del laboratorio:', de: 'Automatisierter KI-Rat des Labors:', ru: 'Автоматический ИИ-совет лаборатории:', zh: '实验室自动化 AI 议会：', tr: 'Laboratuvarın otomatik YZ konseyi:', fa: 'شورای خودکار هوش مصنوعی آزمایشگاه:' },
-  matrix_gemini_desc: { ar: 'حسابات الأوزان بالغرام والمل وسرعة الاستجابة.', en: 'Gram & ml weight math with fast responses.', fr: 'Calculs en grammes et ml, réponses rapides.', es: 'Cálculos en gramos y ml, respuestas rápidas.', it: 'Calcoli in grammi e ml, risposte rapide.', de: 'Gramm- und ml-Berechnungen mit schnellen Antworten.', ru: 'Расчёты в граммах и мл, быстрые ответы.', zh: '克与毫升计算，响应迅速。', tr: 'Gram ve ml hesaplamaları, hızlı yanıtlar.', fa: 'محاسبات گرم و میلی‌لیتر با پاسخ سریع.' },
-  matrix_deepseek_desc: { ar: 'استدلال كيميائي، الكثافة ومعايير IFRA.', en: 'Chemical reasoning, density, and IFRA standards.', fr: 'Raisonnement chimique, densité et normes IFRA.', es: 'Razonamiento químico, densidad y normas IFRA.', it: 'Ragionamento chimico, densità e norme IFRA.', de: 'Chemielogik, Dichte und IFRA-Normen.', ru: 'Химическая логика, плотность и стандарты IFRA.', zh: '化学推理、密度与 IFRA 标准。', tr: 'Kimyasal akıl yürütme, yoğunluk ve IFRA standartları.', fa: 'استدلال شیمیایی، چگالی و استانداردهای IFRA.' },
-  matrix_openai_desc: { ar: 'هندسة الأكوردات، الفوحان وقوس الأداء.', en: 'Accord engineering, sillage, and performance arc.', fr: 'Ingénierie des accords, sillage et courbe de performance.', es: 'Ingeniería de acordes, estela y curva de rendimiento.', it: 'Ingegneria degli accordi, scia e curva di prestazione.', de: 'Akkord-Engineering, Sillage und Leistungskurve.', ru: 'Инжиниринг аккордов, шлейф и кривая звучания.', zh: '香调工程、扩散与表现曲线。', tr: 'Akor mühendisliği, iz ve performans eğrisi.', fa: 'مهندسی آکورد، انتشار و منحنی عملکرد.' },
-  matrix_claude_desc: { ar: 'تقاليد جراس وتعتيق النيش الأرستقراطي.', en: 'Grasse traditions and aristocratic niche aging.', fr: 'Traditions de Grasse et maturation aristocratique.', es: 'Tradiciones de Grasse y añejamiento aristocrático.', it: 'Tradizioni di Grasse e affinamento aristocratico.', de: 'Grasse-Traditionen und aristokratische Reifung.', ru: 'Традиции Граса и аристократическое настаивание.', zh: '格拉斯传统与贵族式小众陈化。', tr: 'Grasse gelenekleri ve aristokratik niş olgunlaşması.', fa: 'سنت‌های گراس و تعریف اشرافی نیچ.' },
+  ai_matrix_title: { ar: 'محركات الذكاء الاصطناعي وحالتها الآن:', en: 'AI engines and their current status:', fr: 'Moteurs IA et leur état actuel :', es: 'Motores de IA y su estado actual:', it: 'Motori IA e stato attuale:', de: 'KI-Engines und ihr aktueller Status:', ru: 'ИИ-движки и их текущий статус:', zh: 'AI 引擎及当前状态：', tr: 'YZ motorları ve güncel durumları:', fa: 'موتورهای هوش مصنوعی و وضعیت فعلی:' },
   you: { ar: 'أنت', en: 'You', fr: 'Vous', es: 'Tú', it: 'Tu', de: 'Sie', ru: 'Вы', zh: '您', tr: 'Siz', fa: 'شما' },
   alt_shahin: { ar: 'شاهين', en: 'Shahin', fr: 'Shahin', es: 'Shahin', it: 'Shahin', de: 'Shahin', ru: 'Шахин', zh: 'Shahin', tr: 'Shahin', fa: 'شاهین' },
   default_badge: { ar: 'شاهين', en: 'Shahin' },
   error_badge: { ar: 'تنبيه', en: 'Notice', fr: 'Avis', es: 'Aviso', it: 'Avviso', de: 'Hinweis', ru: 'Уведомление', zh: '提示', tr: 'Uyarı', fa: 'هشدار' },
   retry: { ar: 'إعادة المحاولة', en: 'Retry', fr: 'Réessayer', es: 'Reintentar', it: 'Riprova', de: 'Erneut versuchen', ru: 'Повторить', zh: '重试', tr: 'Tekrar dene', fa: 'تلاش دوباره' },
   perspectives_lbl: { ar: 'تبديل منظور المحركات المستشارة:', en: 'Switch consulted-engine perspective:', fr: 'Changer de perspective des moteurs :', es: 'Cambiar perspectiva de motores:', it: 'Cambia prospettiva dei motori:', de: 'Perspektive der Engines wechseln:', ru: 'Переключить мнение движков:', zh: '切换咨询引擎视角：', tr: 'Danışılan motor perspektifini değiştir:', fa: 'تغییر دیدگاه موتورهای مشاور:' },
-  models_count: { ar: '4 نماذج متزامنة', en: '4 parallel models', fr: '4 modèles en parallèle', es: '4 modelos en paralelo', it: '4 modelli in parallelo', de: '4 parallele Modelle', ru: '4 модели параллельно', zh: '4 个并行模型', tr: '4 paralel model', fa: '۴ مدل موازی' },
+  models_count: { ar: 'المحركات المستشارة: {n}', en: '{n} engines consulted', fr: '{n} moteurs consultés', es: '{n} motores consultados', it: '{n} motori consultati', de: '{n} Engines befragt', ru: 'Опрошено движков: {n}', zh: '已咨询 {n} 个引擎', tr: '{n} motora danışıldı', fa: 'موتورهای مشورت‌شده: {n}' },
   unified_summary: { ar: '⚡ خلاصة شاهين الموحدة', en: '⚡ Shahin Unified Verdict', fr: '⚡ Verdict unifié de Shahin', es: '⚡ Veredicto unificado de Shahin', it: '⚡ Verdetto unificato di Shahin', de: '⚡ Shahins vereinigtes Urteil', ru: '⚡ Единый вывод Шахина', zh: '⚡ Shahin 统一结论', tr: '⚡ Shahin birleşik özeti', fa: '⚡ نتیجه واحد شاهین' },
   convert_lbl: { ar: 'تحويل بيانات هذه الخلطة لأيقونات وحاسبات التطبيق:', en: 'Convert this blend into app tools:', fr: 'Convertir cette composition en outils :', es: 'Convertir esta mezcla en herramientas:', it: 'Converti questa miscela in strumenti:', de: 'Diese Mischung in App-Werkzeuge umwandeln:', ru: 'Перенести эту смесь в инструменты приложения:', zh: '将此配方转换为应用工具：', tr: 'Bu karışımı uygulama araçlarına aktar:', fa: 'تبدیل این ترکیب به ابزارهای برنامه:' },
   to_conc_tooltip: { ar: 'تطبيق مقادير هذه الخلطة في حاسبة التركيب وتعبئة الزجاجة', en: 'Apply this blend to the compounding calculator', fr: 'Appliquer au calculateur de composition', es: 'Aplicar a la calculadora de composición', it: 'Applica al calcolatore di composizione', de: 'In den Kompositionsrechner übernehmen', ru: 'Применить в калькуляторе составления', zh: '将此配方应用到调配计算器', tr: 'Bu karışımı hesaplayıcıya uygula', fa: 'اعمال این ترکیب در ماشین‌حساب' },
@@ -686,7 +682,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                     <div className="p-1.5 bg-stone-50 rounded-xl border border-stone-200/80 mb-2 space-y-1">
                       <div className="text-[10px] text-stone-500 font-bold flex items-center justify-between px-1">
                         <span>{L('perspectives_lbl')}</span>
-                        <span className="text-[9px] text-amber-700 bg-amber-100/60 px-1.5 py-0.2 rounded font-mono-numbers">{L('models_count')}</span>
+                        <span className="text-[9px] text-amber-700 bg-amber-100/60 px-1.5 py-0.2 rounded font-mono-numbers">{fmt(L('models_count'), { n: m.perspectives.length })}</span>
                       </div>
                       <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
                         <button
