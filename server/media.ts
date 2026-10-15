@@ -17,7 +17,7 @@ export interface MediaImage {
   title: string;
   /** 500px preview served by Wikimedia (a standard thumbnail size). */
   thumb: string;
-  /** 960px version for the enlarged view, when the original is big enough. */
+  /** Bigger version for the enlarged view (Wikimedia's 2x responsive URL). */
   large?: string;
   width: number;
   height: number;
@@ -43,13 +43,24 @@ export function sanitizeQuery(raw: unknown): string | undefined {
 
 const stripHtml = (s: unknown) => (typeof s === 'string' ? s.replace(/<[^>]*>/g, ' ').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#0?39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/\s+/g, ' ').trim() : '');
 
+/** Wikimedia media hosts only (thumbnails moved to thumb.wikimedia.org in 2026); tracking params dropped. */
+function wikimediaUrl(raw: unknown): string | undefined {
+  if (typeof raw !== 'string') return undefined;
+  try {
+    const url = new URL(raw);
+    if (url.protocol !== 'https:' || !/^(upload|thumb)\.wikimedia\.org$/.test(url.hostname)) return undefined;
+    for (const key of [...url.searchParams.keys()]) if (key.startsWith('utm_')) url.searchParams.delete(key);
+    return url.href;
+  } catch { return undefined; }
+}
+
 interface CommonsPage {
   index?: number; title?: string;
-  imageinfo?: { thumburl?: string; width?: number; thumbwidth?: number; thumbheight?: number; descriptionurl?: string; mime?: string;
+  imageinfo?: { thumburl?: string; width?: number; responsiveUrls?: Record<string, string>; thumbwidth?: number; thumbheight?: number; descriptionurl?: string; mime?: string;
     extmetadata?: Record<string, { value?: unknown }> }[];
 }
 
-export async function searchImages(query: string, options: { fetch?: typeof fetch; signal?: AbortSignal; limit?: number } = {}): Promise<ImageResult> {
+async function commonsSearch(query: string, options: { fetch?: typeof fetch; signal?: AbortSignal; limit?: number }): Promise<MediaImage[]> {
   const request = options.fetch || fetch;
   const params = new URLSearchParams({
     action: 'query', format: 'json', formatversion: '1', generator: 'search', gsrnamespace: '6', gsrlimit: '16',
@@ -64,21 +75,36 @@ export async function searchImages(query: string, options: { fetch?: typeof fetc
     .map((p): MediaImage | undefined => {
       const info = p.imageinfo?.[0];
       const title = (p.title || '').replace(/^File:/, '').replace(/\.[a-z0-9]{2,5}$/i, '').replace(/_/g, ' ').trim();
-      if (!info?.thumburl || !/^https:\/\/upload\.wikimedia\.org\//.test(info.thumburl)) return undefined;
+      const thumb = wikimediaUrl(info?.thumburl);
+      if (!info || !thumb) return undefined;
       if (!/^image\/(jpeg|png|webp)$/.test(info.mime || '')) return undefined;
       if ((info.thumbwidth || 0) < 200 || (info.thumbheight || 0) < 150 || UNSAFE.test(title)) return undefined;
       const meta = info.extmetadata || {};
       return {
-        title: title.slice(0, 120), thumb: info.thumburl, width: info.thumbwidth || 500, height: info.thumbheight || 375,
-        ...((info.width || 0) >= 1200 && /\/500px-/.test(info.thumburl) ? { large: info.thumburl.replace('/500px-', '/960px-') } : {}),
+        title: title.slice(0, 120), thumb, width: info.thumbwidth || 500, height: info.thumbheight || 375,
+        ...(wikimediaUrl(info.responsiveUrls?.['2']) ? { large: wikimediaUrl(info.responsiveUrls?.['2']) } : {}),
         page: info.descriptionurl && /^https:\/\/commons\.wikimedia\.org\//.test(info.descriptionurl) ? info.descriptionurl : 'https://commons.wikimedia.org/',
         license: stripHtml(meta.LicenseShortName?.value).slice(0, 40) || 'Wikimedia Commons',
         author: stripHtml(meta.Artist?.value).slice(0, 80),
       };
     })
     .filter((x): x is MediaImage => Boolean(x))
+    // Commons expands synonyms (oud → Dutch place names): keep files whose title names the topic.
+    .filter((img) => !terms(query).length || terms(query).some((t) => terms(img.title).includes(t)))
     .slice(0, options.limit ?? 4);
-  return { images, source: 'wikimedia' };
+  return images;
+}
+
+const terms = (text: string) => text.toLowerCase().split(/[^\p{L}\p{N}]+/u).filter((t) => t.length >= 3).map((t) => t.replace(/s$/, ''));
+
+/** Commons needs every word to match: an empty multi-word search is retried with fewer words. */
+export async function searchImages(query: string, options: { fetch?: typeof fetch; signal?: AbortSignal; limit?: number } = {}): Promise<ImageResult> {
+  const words = query.split(' ');
+  for (let n = words.length; n >= Math.max(1, words.length - 2); n--) {
+    const images = await commonsSearch(words.slice(0, n).join(' '), options);
+    if (images.length) return { images, source: 'wikimedia' };
+  }
+  return { images: [], source: 'wikimedia' };
 }
 
 /** YouTube key: its own, else the Google AI key (works only if that project enabled the YouTube API). */
@@ -123,8 +149,8 @@ export async function searchVideos(query: string, options: { env?: Env; fetch?: 
 
 type Cached = { at: number; data: ImageResult | VideoResult };
 const cache: Map<string, Cached> = ((globalThis as { __shamMediaCache?: Map<string, Cached> }).__shamMediaCache ??= new Map());
-// A plain search link (no key / key refused) is rechecked hourly so enabling the YouTube API shows up soon.
-const ttl = (data: ImageResult | VideoResult) => ('source' in data && data.source === 'link' ? 3600_000 : 24 * 3600_000);
+// Empty image results and a plain search link (no key / key refused) are rechecked hourly so enabling the YouTube API shows up soon.
+const ttl = (data: ImageResult | VideoResult) => (('images' in data && !data.images.length) || ('source' in data && data.source === 'link') ? 3600_000 : 24 * 3600_000);
 
 /** Public route: GET /api/media?type=image|video&q=…&lang=xx (rate limited, cached for a day). */
 export function createMediaRouter(options: { env?: Env; fetch?: typeof fetch } = {}) {
