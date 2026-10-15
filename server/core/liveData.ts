@@ -1,10 +1,12 @@
 /**
  * What «الخبير شاهين» publishes every 12 hours (scripts/shaheen-news): the perfume news and the lessons
- * he wrote for «مساعد شام». The files ship inside the build and are refreshed at run time from the
+ * he wrote for «مساعد شام», and his quality guidance for every AI tool (scripts/shaheen-supervisor). The files ship inside the build and are refreshed at run time from the
  * repository, so the server learns each update without waiting for a redeploy.
  */
 import bundledNews from '../../src/data/live/shaheen-news.json';
 import bundledTraining from '../../src/data/live/sham-training.json';
+import bundledSupervisor from '../../src/data/live/ai-supervisor.json';
+import { guidanceBlock, type AiToolId } from '../../src/utils/aiTools';
 import type { KnowledgeDoc } from './types';
 
 type Env = Record<string, string | undefined>;
@@ -77,4 +79,18 @@ export async function newsContext(question: string, language: string, env: Env =
   if (!news?.items.length) return '';
   const lines = news.items.slice(0, 10).map((i) => `- ${language === 'ar' ? i.title.ar : i.title.en} (${i.source}${i.publishedAt ? `، ${i.publishedAt.slice(0, 10)}` : ''})`);
   return `\nآخر أخبار العطور الحقيقية التي جمعتَها من الإنترنت بتاريخ ${news.updatedAt.slice(0, 10)} (استخدمها إذا سأل المستخدم عن الأخبار أو الجديد، ولا تخترع أخباراً غيرها، وأحِله لصفحة «أخبار العطور» في الموقع للتفاصيل):\n${lines.join('\n')}`;
+}
+
+interface SupervisorFile { updatedAt: string; tools: Partial<Record<AiToolId, { guidance?: { text?: string } }>> }
+const isSupervisor = (d: unknown): d is SupervisorFile => Boolean(d && typeof d === 'object' && typeof (d as SupervisorFile).updatedAt === 'string' && (d as SupervisorFile).tools && typeof (d as SupervisorFile).tools === 'object');
+
+/**
+ * The quality guidance «الخبير شاهين» wrote for one AI tool after reviewing its real answers, as a block
+ * to append to that tool's instructions ('' when there is none, and always '' in tests and dev).
+ */
+export async function supervisorGuidance(tool: AiToolId, env: Env = process.env, request: typeof fetch = fetch): Promise<string> {
+  if (!liveDataEnabled(env)) return '';
+  const file = await load('ai-supervisor.json', bundledSupervisor as SupervisorFile, isSupervisor, env, request).catch(() => undefined);
+  const text = file?.tools?.[tool]?.guidance?.text;
+  return typeof text === 'string' ? guidanceBlock(text.slice(0, 1200)) : '';
 }

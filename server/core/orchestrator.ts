@@ -10,6 +10,7 @@
  *  - plan → act → observe loop with an inspectable task trace (Manus).
  */
 import { randomUUID } from 'node:crypto';
+import { supervisorGuidance } from './liveData';
 import type { Repository } from './repository';
 import { route, stripIntro, type RouteResult } from './router';
 import { tools, type ToolResult } from './tools';
@@ -294,7 +295,8 @@ export class Orchestrator {
 
     const total = AbortSignal.any([AbortSignal.timeout(this.options.totalTimeoutMs ?? 25000), ...(opts.signal ? [opts.signal] : [])]);
     if (useModel && !council?.chair && !opts.signal?.aborted) {
-      const system = this.systemPrompt(settings, services, input.language, lang, routed, results, actions, local);
+      const system = this.systemPrompt(settings, services, input.language, lang, routed, results, actions, local)
+        + await supervisorGuidance('sham_assistant', env).catch(() => '');
       const turns: EngineTurn[] = [...history, { role: 'user', text: redacted }];
       for (const id of policy) {
         if (id === 'sham_local') break;
