@@ -30,7 +30,10 @@ import { extractFormulaFromAIMessage, isFormulaTransferCommand, ExtractedAIPerfu
 import { exportChatTranscriptToFile } from '../utils/chatStorage';
 import { useShaheenChat } from '../hooks/useShaheenChat';
 import { useShaheenModels } from '../hooks/useShaheenModels';
-import { ShaheenServiceStatus, ShaheenProviderMatrix, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
+import { ShaheenServiceStatus, ShaheenProviderMatrix, chatErrorText, shaheenWelcome, engineName } from './ShaheenServiceStatus';
+import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
+import { ENGINE_BADGE, visibleEngines, scrollChatToEnd } from './shaheenEngines';
+import type { ShaheenModelChoice } from '../utils/chatStore';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../utils/localizedContent';
 import { LText, makeT, fmt, LOCALE_MAP } from '../utils/localize';
@@ -124,17 +127,29 @@ const S = {
     tr: '{d} gün kaldı',
     fa: '{d} روز باقی مانده',
   },
-  scale_tpl: {
-    ar: 'الميزان الرقمي: {w}g',
-    en: 'Digital Scale: {w}g',
-    fr: 'Balance numérique : {w} g',
-    es: 'Balanza digital: {w}g',
-    it: 'Bilancia digitale: {w}g',
-    de: 'Digitale Waage: {w}g',
-    ru: 'Цифровые весы: {w} г',
-    zh: '电子秤：{w}g',
-    tr: 'Dijital terazi: {w}g',
-    fa: 'ترازوی دیجیتال: {w} گرم',
+  status_ready_tpl: {
+    ar: 'متصل · {n} محرك جاهز',
+    en: 'Online · {n} engine(s) ready',
+    fr: 'En ligne · {n} moteur(s) prêt(s)',
+    es: 'En línea · {n} motor(es) listo(s)',
+    it: 'Online · {n} motore/i pronto/i',
+    de: 'Online · {n} Engine(s) bereit',
+    ru: 'В сети · готово движков: {n}',
+    zh: '在线 · {n} 个引擎可用',
+    tr: 'Çevrimiçi · {n} motor hazır',
+    fa: 'آنلاین · {n} موتور آماده',
+  },
+  status_offline: {
+    ar: 'غير متصل حالياً',
+    en: 'Offline right now',
+    fr: 'Hors ligne pour le moment',
+    es: 'Sin conexión por ahora',
+    it: 'Offline al momento',
+    de: 'Derzeit offline',
+    ru: 'Сейчас не в сети',
+    zh: '当前离线',
+    tr: 'Şu anda çevrimdışı',
+    fa: 'فعلاً آفلاین',
   },
   export_tooltip: {
     ar: 'تنزيل نسخة نصية TXT',
@@ -245,17 +260,19 @@ const S = {
     fa: 'موتور هوش مصنوعی:',
   },
   matrix_tooltip: {"ar": "عرض معلومات مزودي الذكاء الاصطناعي — التوفر حسب إعدادات الخادم", "en": "AI provider information — availability depends on server configuration"},
+  error_badge: { ar: 'تنبيه', en: 'Notice', fr: 'Avis', es: 'Aviso', it: 'Avviso', de: 'Hinweis', ru: 'Уведомление', zh: '提示', tr: 'Uyarı', fa: 'هشدار' },
+  retry: { ar: 'إعادة المحاولة', en: 'Retry', fr: 'Réessayer', es: 'Reintentar', it: 'Riprova', de: 'Erneut versuchen', ru: 'Повторить', zh: '重试', tr: 'Tekrar dene', fa: 'تلاش دوباره' },
   matrix_btn: {
-    ar: 'شبكة الذكاء (4)',
-    en: 'AI Matrix (4)',
-    fr: 'Matrice IA (4)',
-    es: 'Matriz IA (4)',
-    it: 'Matrice IA (4)',
-    de: 'KI-Matrix (4)',
-    ru: 'Матрица ИИ (4)',
-    zh: 'AI 矩阵（4）',
-    tr: 'YZ matrisi (4)',
-    fa: 'شبکه هوش (۴)',
+    ar: 'شبكة الذكاء',
+    en: 'AI Matrix',
+    fr: 'Matrice IA',
+    es: 'Matriz IA',
+    it: 'Matrice IA',
+    de: 'KI-Matrix',
+    ru: 'Матрица ИИ',
+    zh: 'AI 矩阵',
+    tr: 'YZ matrisi',
+    fa: 'شبکه هوش',
   },
   matrix_title: {
     ar: 'شبكة محركات الذكاء الاصطناعي المؤتمتة بالمعمل (Automated AI Council):',
@@ -869,18 +886,6 @@ const S = {
     tr: '👑 Usta Shahin Laboratuvarı',
     fa: '👑 آزمایشگاه استاد شاهین',
   },
-  consult_prefix_tpl: {
-    ar: '[استشارة متخصصة من محرك {m}]:',
-    en: '[Specialist consult via {m}]:',
-    fr: '[Consultation spécialisée via {m}] :',
-    es: '[Consulta especializada vía {m}]:',
-    it: '[Consulenza specializzata via {m}]:',
-    de: '[Fachkonsultation über {m}]:',
-    ru: '[Консультация специалиста через {m}]:',
-    zh: '【{m} 专家会诊】：',
-    tr: '[{m} üzerinden uzman görüşü]:',
-    fa: '[مشاوره تخصصی از موتور {m}]:',
-  },
   reformat_fallback: {
     ar: 'أعد صياغة التركيبة السابقة وحساب نسبها برؤيتك المتخصصة',
     en: 'Reformulate the previous formula and recalculate its ratios from your expert perspective',
@@ -1113,12 +1118,13 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
 
-  const { messages, setMessages, daysRemaining, isLoading, sendMessage, clearHistory } = useShaheenChat();
+  const { messages, setMessages, daysRemaining, isLoading, sendMessage, retryLast, clearHistory } = useShaheenChat();
   const modelStatus = useShaheenModels();
+  const selectedModel = modelStatus.selected;
+  const setSelectedModel = modelStatus.setSelected;
 
   const [input, setInput] = useState('');
   const [compoundingStep, setCompoundingStep] = useState(0);
-  const [currentScaleWeight, setCurrentScaleWeight] = useState(12.45);
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   // Copy & Action tracking states
@@ -1128,17 +1134,21 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   // Multi-AI Model Orchestrator State
-  const [selectedModel, setSelectedModel] = useState<'auto' | 'gemini' | 'deepseek' | 'openai' | 'claude'>('auto');
   const [comparingMsgId, setComparingMsgId] = useState<string | null>(null);
   const [showAiMatrix, setShowAiMatrix] = useState(false);
 
-  const AI_ENGINES = [
-    { id: 'auto', name: L('engine_auto_name'), short: L('engine_auto_short'), badge: L('engine_auto_badge'), color: 'border-amber-400 bg-amber-500/20 text-amber-300', desc: L('engine_auto_desc') },
-    { id: 'gemini', name: 'Google Gemini', short: L('engine_gemini_short'), badge: '✨ Gemini', color: 'border-emerald-400 bg-emerald-500/20 text-emerald-300', desc: L('engine_gemini_desc') },
-    { id: 'deepseek', name: 'DeepSeek', short: L('engine_deepseek_short'), badge: '🔬 DeepSeek', color: 'border-blue-400 bg-blue-500/20 text-blue-300', desc: L('engine_deepseek_desc') },
-    { id: 'openai', name: 'OpenAI', short: L('engine_openai_short'), badge: '🟢 OpenAI', color: 'border-green-400 bg-green-500/20 text-green-300', desc: L('engine_openai_desc') },
-    { id: 'claude', name: 'Anthropic Claude', short: L('engine_claude_short'), badge: '🟣 Claude', color: 'border-purple-400 bg-purple-500/20 text-purple-300', desc: L('engine_claude_desc') },
-  ];
+  // Only engines that are really enabled on the server (same list on every site).
+  const SHORT: Record<string, string> = {
+    auto: L('engine_auto_short'), gemini: L('engine_gemini_short'), deepseek: L('engine_deepseek_short'),
+    openai: L('engine_openai_short'), claude: L('engine_claude_short'),
+  };
+  const DESC: Record<string, string> = {
+    auto: L('engine_auto_desc'), gemini: L('engine_gemini_desc'), deepseek: L('engine_deepseek_desc'),
+    openai: L('engine_openai_desc'), claude: L('engine_claude_desc'),
+  };
+  const AI_ENGINES = visibleEngines(modelStatus.engines, currentLang, (id) => SHORT[id])
+    .map((eng) => ({ ...eng, name: eng.id === 'auto' ? L('engine_auto_name') : engineName(eng.id, eng.name), desc: DESC[eng.id] || eng.model || '' }));
+  const enabledEngineCount = (modelStatus.models || []).filter((m) => m.id !== 'auto' && m.hasApiKey).length;
 
   const setActivePerspectiveForMessage = (msgId: string, tabId: string) => {
     setMessages((prev) =>
@@ -1150,7 +1160,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    scrollChatToEnd(messagesEndRef.current);
   };
 
   useEffect(() => {
@@ -1162,7 +1172,6 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
     if (isLoading) {
       interval = setInterval(() => {
         setCompoundingStep((prev) => (prev + 1) % 4);
-        setCurrentScaleWeight((prev) => +(prev + 0.35 + Math.random() * 0.2).toFixed(2));
       }, 1100);
     }
     return () => clearInterval(interval);
@@ -1177,7 +1186,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
 
   const handleSendMessage = async (
     textToSend?: string,
-    overrideModel?: 'auto' | 'gemini' | 'deepseek' | 'openai' | 'claude'
+    overrideModel?: ShaheenModelChoice
   ) => {
     const text = (textToSend || input).trim();
     if (!text || isLoading || isStaticHosting) return;
@@ -1187,10 +1196,11 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
     // A request for a new formula must never silently apply an earlier one.
     if (isFormulaTransferCommand(text)) {
       for (let i = messages.length - 1; i >= 0; i--) {
-        if (messages[i].role === 'assistant') {
+        if (messages[i].role === 'assistant' && messages[i].kind !== 'error') {
           const formula = extractFormulaFromAIMessage(messages[i].text);
           if (formula) {
             onApplyToConcentrationCalculator(formula);
+            if (!textToSend) setInput('');
             setIsOpen(false);
             return;
           }
@@ -1199,7 +1209,9 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
     }
 
     if (text.length > 4000) return;
-    setInput('');
+    // Only clear the box when its own text was sent; a calculator consult or
+    // "compare" must not wipe what the visitor is typing.
+    if (!textToSend) setInput('');
     await sendMessage({ text, model: activeModelChoice, language: currentLang,
       errorText: (error) => chatErrorText(currentLang, error) });
   };
@@ -1221,7 +1233,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
 
   const handleConsultDifferentEngine = (
     originalUserText: string,
-    targetEngine: 'auto' | 'gemini' | 'deepseek' | 'openai' | 'claude'
+    targetEngine: ShaheenModelChoice
   ) => {
     setComparingMsgId(null);
     setSelectedModel(targetEngine);
@@ -1347,17 +1359,19 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                     </span>
                     {/* Auto-Purge Expiration Badge */}
                     <span
-                      className="px-2 py-0.2 bg-emerald-950 border border-emerald-500/40 text-emerald-300 rounded-full text-[9px] flex items-center gap-1 font-mono-numbers"
+                      className="px-2 py-0.5 bg-emerald-950 border border-emerald-500/40 text-emerald-300 rounded-full text-[9px] flex items-center gap-1 font-mono-numbers"
                       title={L('expiry_tooltip')}
                     >
                       <Clock className="w-2.5 h-2.5 text-emerald-400" />
                       <span>{fmt(L('days_left_tpl'), { d: daysRemaining })}</span>
                     </span>
                   </div>
-                  <div className="text-[10px] text-amber-300/80 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                  <div className="text-[10px] text-amber-300/80 flex items-center gap-1" aria-live="polite">
+                    <span className={`w-1.5 h-1.5 rounded-full ${isLoading ? 'bg-amber-400 animate-pulse' : enabledEngineCount > 0 && modelStatus.enabled ? 'bg-emerald-400' : 'bg-stone-500'}`} />
                     <span>
-                      {isLoading ? compoundingMessages[compoundingStep] : fmt(L('scale_tpl'), { w: currentScaleWeight })}
+                      {isLoading ? compoundingMessages[compoundingStep]
+                        : enabledEngineCount > 0 && modelStatus.enabled ? fmt(L('status_ready_tpl'), { n: enabledEngineCount })
+                        : modelStatus.models ? L('status_offline') : '…'}
                     </span>
                   </div>
                 </div>
@@ -1411,7 +1425,8 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
             </div>
 
             <StaticHostingNotice currentLang={currentLang} />
-      <ShaheenServiceStatus language={currentLang} models={modelStatus.models} failed={modelStatus.failed} />
+            <ShaheenServiceStatus language={currentLang} models={modelStatus.models} failed={modelStatus.failed}
+              enabled={modelStatus.enabled} selected={selectedModel} />
 
             {/* Multi-AI Model Selector Toolbar */}
             <div className="px-3 py-2 bg-stone-950 text-white border-b border-stone-800 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar">
@@ -1426,14 +1441,15 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                   return (
                     <button
                       key={eng.id}
-                      onClick={() => setSelectedModel(eng.id as any)}
+                      onClick={() => setSelectedModel(eng.id)}
                       disabled={isLoading || modelStatus.isUnavailable(eng.id)}
                       className={`px-2.5 py-1 rounded-xl text-[11px] font-medium transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 border ${
                         isSelected
                           ? eng.color + ' font-bold shadow-xs'
                           : 'bg-stone-900/90 text-stone-400 hover:text-stone-200 border-stone-800 hover:border-stone-700'
                       }`}
-                      title={eng.name + ' - ' + eng.desc}
+                      title={eng.desc ? eng.name + ' - ' + eng.desc : eng.name}
+                      aria-pressed={isSelected}
                     >
                       <span>{eng.short}</span>
                       {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />}
@@ -1452,7 +1468,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                   title={L('matrix_tooltip')}
                 >
                   <Layers className="w-3 h-3" />
-                  <span className="hidden md:inline">{L('matrix_btn')}</span>
+                  <span className="hidden md:inline">{L('matrix_btn')} ({enabledEngineCount})</span>
                 </button>
               </div>
             </div>
@@ -1505,7 +1521,10 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                     ? msg.perspectives.find((p) => p.modelId === msg.activePerspectiveTab)?.reply || msg.text
                     : msg.text;
 
-                const extractedFormula = msg.role === 'assistant' ? extractFormulaFromAIMessage(activeDisplayContent) : null;
+                const extractedFormula = msg.role === 'assistant' && msg.kind !== 'error' ? extractFormulaFromAIMessage(activeDisplayContent) : null;
+                const isError = msg.kind === 'error';
+                const isLastMessage = msg.id === messages[messages.length - 1]?.id;
+                const canCompare = msg.role === 'assistant' && !isError && msg.id !== 'welcome' && AI_ENGINES.length > 1;
 
                 return (
                   <div
@@ -1534,7 +1553,9 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                       className={`max-w-[92%] sm:max-w-[86%] p-4 rounded-2xl text-xs sm:text-[13px] leading-relaxed shadow-2xs space-y-2.5 ${
                         msg.role === 'user'
                           ? 'bg-amber-900 text-white rounded-tl-xs'
-                          : 'bg-white text-stone-900 border border-stone-200/90 rounded-tr-xs'
+                          : isError
+                            ? 'bg-amber-50 text-amber-950 border border-amber-300 rounded-tr-xs'
+                            : 'bg-white text-stone-900 border border-stone-200/90 rounded-tr-xs'
                       }`}
                     >
                       {/* AI Engine Header for Assistant */}
@@ -1542,15 +1563,19 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                         <div className="flex items-center justify-between pb-1.5 mb-1 border-b border-stone-100 text-[11px]">
                           <div className="flex items-center gap-1.5">
                             <span className="font-bold text-amber-950 font-serif-luxury">{L('welcome_name')}</span>
-                            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium border flex items-center gap-1 ${
-                              msg.aiEngine?.provider === 'deepseek' ? 'bg-blue-50 text-blue-800 border-blue-200' :
-                              msg.aiEngine?.provider === 'openai' ? 'bg-green-50 text-green-800 border-green-200' :
-                              msg.aiEngine?.provider === 'claude' ? 'bg-purple-50 text-purple-800 border-purple-200' :
-                              msg.aiEngine?.provider === 'gemini' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' :
-                              'bg-amber-50 text-amber-900 border-amber-200'
-                            }`}>
-                              <span>{msg.aiEngine?.badge || (rtl ? 'شاهين' : 'Shahin')}</span>
-                            </span>
+                            {isError ? (
+                              <span className="text-[10px] px-2 py-0.5 rounded-full font-medium border flex items-center gap-1 bg-amber-100 text-amber-900 border-amber-300">
+                                <AlertCircle className="w-3 h-3" />
+                                <span>{L('error_badge')}</span>
+                              </span>
+                            ) : msg.id !== 'welcome' && (
+                              <span
+                                className={`text-[10px] px-2 py-0.5 rounded-full font-medium border flex items-center gap-1 ${ENGINE_BADGE[msg.aiEngine?.provider || ''] || 'bg-amber-50 text-amber-900 border-amber-200'}`}
+                                title={msg.aiEngine?.model ? `${msg.aiEngine.name} · ${msg.aiEngine.model}` : undefined}
+                              >
+                                <span>{msg.aiEngine?.provider && msg.aiEngine.provider !== 'ensemble' ? engineName(msg.aiEngine.provider, msg.aiEngine.badge) : (rtl ? 'شاهين' : 'Shahin')}</span>
+                              </span>
+                            )}
                           </div>
                           <span className="text-[10px] text-stone-400 font-mono-numbers">{msg.timestamp}</span>
                         </div>
@@ -1561,7 +1586,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                         <div className="p-1.5 bg-stone-50 rounded-xl border border-stone-200/80 mb-2 space-y-1">
                           <div className="text-[10px] text-stone-500 font-bold flex items-center justify-between px-1">
                             <span>{L('persp_lbl')}</span>
-                            <span className="text-[9px] text-amber-700 bg-amber-100/60 px-1.5 py-0.2 rounded">{L('persp_ens')}</span>
+                            <span className="text-[9px] text-amber-700 bg-amber-100/60 px-1.5 py-0.5 rounded">{L('persp_ens')}</span>
                           </div>
                           <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
                             <button
@@ -1595,9 +1620,24 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                       )}
 
                       {/* Text Payload */}
-                      <div className="whitespace-pre-line break-words font-sans space-y-2">
-                        {activeDisplayContent}
-                      </div>
+                      {msg.role === 'assistant' && !isError ? (
+                        <ShaheenMarkdown text={activeDisplayContent} className="font-sans" />
+                      ) : (
+                        <div className="whitespace-pre-line break-words font-sans space-y-2" dir="auto">
+                          {activeDisplayContent}
+                        </div>
+                      )}
+
+                      {isError && isLastMessage && (
+                        <button
+                          onClick={() => void retryLast({ model: selectedModel, language: currentLang, errorText: (error) => chatErrorText(currentLang, error) })}
+                          disabled={isLoading || isStaticHosting}
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-amber-800 px-3 py-1.5 text-[11px] font-bold text-white hover:bg-amber-900 disabled:opacity-50 cursor-pointer"
+                        >
+                          <RotateCcw className="w-3.5 h-3.5" />
+                          <span>{L('retry')}</span>
+                        </button>
+                      )}
 
                       {/* SMART INTERACTION BAR: Transfer Chat Data to App Modules */}
                       {extractedFormula && (
@@ -1689,8 +1729,8 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                         </div>
                       )}
 
-                      {/* Bottom Action Strip Under EVERY message */}
-                      <div
+                      {/* Bottom Action Strip (not on error notices) */}
+                      {!isError && <div
                         className={`flex flex-wrap items-center justify-between gap-2 text-[10px] pt-2 border-t ${
                           msg.role === 'user'
                             ? 'border-amber-800/80 text-amber-200'
@@ -1726,7 +1766,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                           {msg.role === 'assistant' && (
                             <>
                               {/* Re-consult another model */}
-                              <div className="relative">
+                              {canCompare && <div className="relative">
                                 <button
                                   onClick={() => setComparingMsgId(comparingMsgId === msg.id ? null : msg.id)}
                                   className="px-2 py-0.5 rounded bg-stone-100 hover:bg-stone-200 text-stone-700 hover:text-stone-950 border border-stone-200 transition-colors flex items-center gap-1 cursor-pointer font-medium text-[11px]"
@@ -1748,7 +1788,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                                     {AI_ENGINES.map((eng) => (
                                       <button
                                         key={eng.id}
-                                        disabled={isLoading || modelStatus.isUnavailable(eng.id)}
+                                        disabled={isLoading}
                                         onClick={() => {
                                           const prevUserMsg = messages
                                             .slice(0, messages.findIndex((m) => m.id === msg.id))
@@ -1756,7 +1796,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                                             .find((m) => m.role === 'user');
                                           handleConsultDifferentEngine(
                                             prevUserMsg?.text || L('reformat_fallback'),
-                                            eng.id as any
+                                            eng.id
                                           );
                                         }}
                                         className="w-full text-right px-2 py-1.5 rounded-lg hover:bg-stone-800 text-stone-200 hover:text-white transition-colors flex items-center justify-between text-[11px] cursor-pointer"
@@ -1767,10 +1807,10 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                                     ))}
                                   </div>
                                 )}
-                              </div>
+                              </div>}
 
                               <button
-                                onClick={() => handleSpeech(activeDisplayContent)}
+                                onClick={() => handleSpeech(stripFormulaBlock(activeDisplayContent))}
                                 className="p-1 hover:text-amber-800 transition-colors flex items-center gap-1 cursor-pointer"
                                 title={L('speech_tooltip')}
                               >
@@ -1779,7 +1819,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                             </>
                           )}
                         </div>
-                      </div>
+                      </div>}
                     </div>
                   </div>
                 );
@@ -1847,7 +1887,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                 placeholder={L('input_placeholder')}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                disabled={isLoading || modelStatus.isUnavailable(selectedModel)}
+                disabled={isStaticHosting || modelStatus.isUnavailable(selectedModel)}
                 className="flex-1 px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs sm:text-sm text-stone-900 focus:outline-none focus:border-amber-700 focus:bg-white transition-all shadow-inner"
               />
 

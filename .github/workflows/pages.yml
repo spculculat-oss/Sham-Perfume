@@ -52,6 +52,9 @@ jobs:
           VITE_API_BASE_URL: ${{ vars.PAGES_API_BASE_URL || 'https://sham-perfume-49bf.vercel.app' }}
         run: bun run build:pages
       - name: Verify published paths and fallback
+        env:
+          # Same value as the build step, so the check confirms the bundle really calls this backend.
+          VITE_API_BASE_URL: ${{ vars.PAGES_API_BASE_URL || 'https://sham-perfume-49bf.vercel.app' }}
         run: bun run check:pages
       - name: Upload Pages artifact
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'

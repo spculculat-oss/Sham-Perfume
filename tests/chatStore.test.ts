@@ -177,3 +177,21 @@ test('loading history removes empty messages and duplicate IDs and caps records 
   assert.equal(new Set(session.messages.map((item) => item.id)).size, 200);
   assert.ok(session.messages.every((item) => item.text.trim()));
 });
+
+test('retry re-asks the question behind a trailing error bubble and replaces it with the answer', async () => {
+  let calls = 0;
+  const store = createChatStore((async () => {
+    calls++;
+    if (calls === 1) throw new Error('down');
+    return { reply: 'Second time lucky', engine: { id: 'self_hosted', provider: 'self_hosted', name: 'Self-hosted', badge: 'Self-hosted', model: 'qwen' } };
+  }) as typeof requestApi);
+  await store.send(options);
+  const failed = store.getSnapshot().messages;
+  assert.equal(failed[failed.length - 1].kind, 'error');
+  assert.equal(await store.retry({ model: 'auto', language: 'en', errorText: () => 'x' }), true);
+  const after = store.getSnapshot().messages;
+  assert.equal(calls, 2);
+  assert.deepEqual(after.slice(-2).map((m) => [m.role, m.text]), [['user', 'My perfume'], ['assistant', 'Second time lucky']]);
+  assert.equal(after.filter((m) => m.kind === 'error').length, 0);
+  assert.equal(await store.retry({ model: 'auto', language: 'en', errorText: () => 'x' }), false, 'nothing to retry');
+});

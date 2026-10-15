@@ -3,15 +3,16 @@ import {
   Activity, ArrowRight, BookOpen, Bot, Boxes, ClipboardList, Cpu, Database, Download, FlaskConical, Headset, KeyRound,
   BellRing, CheckCircle2, CircleAlert, EyeOff, LayoutDashboard, Lightbulb, Loader2, LogOut, MessagesSquare, Plus, RefreshCw, Save, Send,
   Settings2, ThumbsDown, ThumbsUp, Trash2, TriangleAlert, Users, Wand2,
+  ChevronUp, ChevronDown,
 } from 'lucide-react';
 import type {
-  Conversation, CoreSettings, CouncilMember, CouncilRole, CouncilTranscript, EngineId, KnowledgeDoc, KnowledgeGap, ModelEngineId, Product, RequestStatus, ServiceDef, ServiceRequest,
+  Conversation, CoreSettings, CouncilMember, CouncilRole, CouncilTranscript, EngineId, KnowledgeDoc, KnowledgeGap, ModelEngineId, Product, RequestStatus, ServiceDef, ServiceRequest, ShaheenSettings,
 } from '../../server/core/types';
 import type { AgentResult } from '../../server/core/adminAgent';
 import { AdminApiError, adminRequest, getToken, send, setToken } from './adminApi';
 import { apiUrl, isStaticHosting } from '../utils/api';
 
-type Tab = 'overview' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'sandbox';
+type Tab = 'overview' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'sandbox';
 interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: string }
 interface Overview {
   storage: { kind: string; persistent: boolean; error?: string };
@@ -32,6 +33,7 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'knowledge', label: 'قاعدة المعرفة', icon: <BookOpen className="w-4 h-4" /> },
   { id: 'services', label: 'الخدمات', icon: <Settings2 className="w-4 h-4" /> },
   { id: 'engines', label: 'المحركات والإعدادات', icon: <Cpu className="w-4 h-4" /> },
+  { id: 'shaheen', label: 'الخبير شاهين', icon: <FlaskConical className="w-4 h-4" /> },
   { id: 'sandbox', label: 'مختبر المساعد', icon: <FlaskConical className="w-4 h-4" /> },
 ];
 
@@ -125,6 +127,7 @@ export default function AdminApp() {
           {tab === 'knowledge' && <KnowledgePanel />}
           {tab === 'services' && <ServicesPanel />}
           {tab === 'engines' && <EnginesPanel />}
+          {tab === 'shaheen' && <ShaheenPanel />}
           {tab === 'sandbox' && <SandboxPanel />}
         </main>
       </div>
@@ -527,7 +530,7 @@ function ServicesPanel() {
 }
 
 function EnginesPanel() {
-  const { data, error, loading, reload } = useLoad<{ item: CoreSettings; engines: EngineStatus[] }>('/settings');
+  const { data, error, loading, reload } = useLoad<SettingsView>('/settings');
   const [form, setForm] = useState<CoreSettings | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
@@ -542,7 +545,7 @@ function EnginesPanel() {
   const toggle = (id: EngineId) => form && setForm({ ...form, enginePolicy: policy.includes(id) ? policy.filter((x) => x !== id) : [...policy.filter((x) => x !== 'sham_local'), id, 'sham_local'] });
   const save = async () => {
     if (!form) return; setBusy(true); setMessage('');
-    try { await adminRequest('/settings', send('PUT', form)); setMessage('تم الحفظ ✅'); reload(); }
+    try { await adminRequest('/settings', send('PUT', { ...form, shaheen: undefined })); setMessage('تم الحفظ ✅'); reload(); }
     catch (e) { setMessage((e as Error).message); } finally { setBusy(false); }
   };
   return (
@@ -596,6 +599,157 @@ function EnginesPanel() {
           <CouncilSettingsCard form={form} setForm={setForm} engines={data.engines} onSave={save} busy={busy} message={message} />
         </div>
       )}
+    </>
+  );
+}
+
+interface SettingsView { item: CoreSettings; engines: EngineStatus[]; shaheen: { source: 'admin' | 'file'; defaults: ShaheenSettings }; storage: { kind: string; persistent: boolean; error?: string } }
+interface ProbeResult { id: ModelEngineId; name: string; model: string; configured: boolean; ok: boolean; ms: number; error?: string }
+const PROBE_ERROR: Record<string, string> = {
+  not_configured: 'غير مهيأ — لا يوجد مفتاح/عنوان في متغيرات الخادم',
+  rejected_or_empty: 'المزوّد رفض الطلب أو رجّع رداً فارغاً — راجع صلاحية المفتاح واسم النموذج والرصيد',
+  timeout: 'انتهت المهلة — الخدمة بطيئة أو غير متاحة',
+  unreachable: 'تعذّر الوصول للمزوّد (شبكة/عنوان خاطئ/مفتاح مرفوض)',
+};
+
+/** «الخبير شاهين»: which engines, in which order, which models, tone, length and extra instructions. */
+function ShaheenPanel() {
+  const { data, error, loading, setData } = useLoad<SettingsView>('/settings');
+  const [form, setForm] = useState<ShaheenSettings | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState('');
+  const [probe, setProbe] = useState<ProbeResult[] | null>(null);
+  const [probing, setProbing] = useState(false);
+  const [showConfig, setShowConfig] = useState(false);
+  useEffect(() => { if (data) setForm(data.item.shaheen); }, [data]);
+  if (!form || !data) return <><Header title="الخبير شاهين" /><Feedback error={error} loading={loading} /></>;
+
+  const set = (patch: Partial<ShaheenSettings>) => setForm({ ...form, ...patch });
+  const status = (id: string) => data.engines.find((e) => e.id === id);
+  const allowed = form.engines;
+  const all: ModelEngineId[] = [...allowed, ...MODEL_ENGINES.filter((id) => !allowed.includes(id))];
+  const move = (id: ModelEngineId, delta: number) => {
+    const list = [...allowed]; const i = list.indexOf(id); const j = i + delta;
+    if (i < 0 || j < 0 || j >= list.length) return;
+    [list[i], list[j]] = [list[j], list[i]]; set({ engines: list });
+  };
+  const toggle = (id: ModelEngineId) => set({ engines: allowed.includes(id) ? allowed.filter((x) => x !== id) : [...allowed, id] });
+  const ready = allowed.filter((id) => status(id)?.configured);
+
+  const save = async (shaheen: ShaheenSettings | null) => {
+    setBusy(true); setMessage('');
+    try {
+      const next = await adminRequest<SettingsView>('/settings', send('PUT', { shaheen }));
+      setData(next); setForm(next.item.shaheen);
+      setMessage(shaheen === null ? 'تمت العودة لإعدادات الملف المشتركة ✅' : 'تم الحفظ ✅ — يظهر فوراً على الموقعين');
+    } catch (e) { setMessage((e as Error).message); } finally { setBusy(false); }
+  };
+  const runProbe = async () => {
+    setProbing(true); setProbe(null); setMessage('');
+    try { setProbe((await adminRequest<{ results: ProbeResult[] }>('/shaheen/test', send('POST', {}))).results); }
+    catch (e) { setMessage((e as Error).message); } finally { setProbing(false); }
+  };
+  const dirty = JSON.stringify(form) !== JSON.stringify(data.item.shaheen);
+
+  return (
+    <>
+      <Header title="الخبير شاهين" subtitle="إعدادات شات تصميم العطور (النافذة العائمة وصفحة المعمل). نفس الإعدادات تُطبَّق على موقع Vercel وموقع GitHub Pages لأن الاتنين بيستخدموا نفس الخادم." />
+      <div className="space-y-4">
+        {!data.storage.persistent ? (
+          <div className="rounded-2xl border border-amber-300 bg-amber-50 p-3 text-xs leading-relaxed text-amber-950">
+            <p className="font-bold flex items-center gap-1.5"><TriangleAlert className="w-4 h-4" />التخزين الحالي مؤقت ({data.storage.kind})</p>
+            <p>أي تعديل تحفظه هنا يشتغل فوراً، لكنه ممكن يضيع لما الخادم يعيد التشغيل. عشان يبقى دائم على الموقعين: فعّل <code dir="ltr">SHAM_STORE=firestore</code> مع بيانات Firebase في Vercel، أو انسخ «الإعداد الدائم» بالأسفل لملف <code dir="ltr">server/config/shaheen.ts</code> في المستودع.</p>
+          </div>
+        ) : (
+          <p className="text-xs text-emerald-800 flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" />التخزين دائم ({data.storage.kind}) — التعديلات تفضل محفوظة.</p>
+        )}
+        <p className="text-[11px] text-stone-500">مصدر الإعدادات الحالي: {data.shaheen.source === 'admin' ? 'لوحة الإدارة (تعديل محفوظ)' : 'الملف المشترك server/config/shaheen.ts'}</p>
+
+        <div className="grid lg:grid-cols-2 gap-4">
+          <div className={`${card} space-y-3`}>
+            <div className="flex flex-wrap items-center gap-3">
+              <label className="inline-flex items-center gap-1.5 text-sm font-bold"><input type="checkbox" checked={form.enabled} onChange={(e) => set({ enabled: e.target.checked })} />شاهين مفعّل للزوار</label>
+              <label className="inline-flex items-center gap-1.5 text-xs font-semibold"><input type="checkbox" checked={form.allowVisitorChoice} onChange={(e) => set({ allowVisitorChoice: e.target.checked })} />السماح للزائر باختيار محرك معيّن</label>
+            </div>
+            <p className={`text-xs font-semibold ${ready.length ? 'text-emerald-700' : 'text-red-700'}`}>
+              {ready.length ? `جاهز: ${ready.length} محرك مهيأ ومسموح (${ready.map((id) => ENGINE_LABEL[id]).join('، ')}).` : 'غير جاهز: مفيش ولا محرك مسموح ومهيأ — الزوار هيشوفوا «شاهين غير متصل».'}
+            </p>
+            <h2 className="font-bold text-sm">المحركات وترتيب «تلقائي»</h2>
+            <p className="text-[11px] text-stone-500">«تلقائي» يجرّب المحركات بالترتيب ده ويتخطى غير المهيأ أو اللي فشل. المحرك غير المسموح يختفي من واجهة الزوار. المفاتيح تُضبط في متغيرات الخادم فقط.</p>
+            {all.map((id) => {
+              const on = allowed.includes(id); const st = status(id);
+              return (
+                <div key={id} className={`grid grid-cols-[auto_1fr_auto] items-center gap-2 rounded-xl border p-2 ${on ? 'border-amber-300 bg-amber-50/50' : 'border-stone-200'}`}>
+                  <input type="checkbox" aria-label={`السماح بـ ${ENGINE_LABEL[id]}`} checked={on} onChange={() => toggle(id)} />
+                  <div className="min-w-0 space-y-1">
+                    <p className="text-sm font-semibold">{ENGINE_LABEL[id]} {on && <span className="text-[10px] font-bold text-amber-800">#{allowed.indexOf(id) + 1}</span>}</p>
+                    <p className={`text-[11px] ${st?.configured ? 'text-emerald-700' : 'text-stone-400'}`}>{st?.configured ? 'مهيأ على الخادم' : id === 'self_hosted' ? 'غير مهيأ — اضبط SHAM_LLM_BASE_URL' : 'غير مهيأ — لا يوجد مفتاح'}</p>
+                    <input className={`${input} py-1 text-xs`} dir="ltr" aria-label={`نموذج ${ENGINE_LABEL[id]}`} placeholder={`افتراضي: ${st?.model || 'model'}`}
+                      value={form.models[id] || ''} onChange={(e) => {
+                        const models = { ...form.models };
+                        if (e.target.value.trim()) models[id] = e.target.value.trim(); else delete models[id];
+                        set({ models });
+                      }} />
+                  </div>
+                  {on && <div className="flex flex-col"><button type="button" className="p-0.5 rounded hover:bg-amber-100 disabled:opacity-30" disabled={allowed.indexOf(id) === 0} onClick={() => move(id, -1)} aria-label="تقديم في الترتيب"><ChevronUp className="w-4 h-4" /></button><button type="button" className="p-0.5 rounded hover:bg-amber-100 disabled:opacity-30" disabled={allowed.indexOf(id) === allowed.length - 1} onClick={() => move(id, 1)} aria-label="تأخير في الترتيب"><ChevronDown className="w-4 h-4" /></button></div>}
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="space-y-4">
+            <div className={`${card} space-y-3`}>
+              <h2 className="font-bold text-sm">أسلوب الردود</h2>
+              <Field label={`درجة الإبداع (temperature): ${form.temperature}`}><input type="range" min={0} max={1} step={0.05} value={form.temperature} onChange={(e) => set({ temperature: Number(e.target.value) })} className="w-full" /></Field>
+              <Field label="أقصى طول للرد">
+                <select className={input} value={form.maxTokens} onChange={(e) => set({ maxTokens: Number(e.target.value) })}>
+                  {[1024, 2048, 4096, 6144, 8192].map((n) => <option key={n} value={n}>{n} توكن{n === 4096 ? ' (موصى به)' : ''}</option>)}
+                </select>
+              </Field>
+              <Field label="تعليمات إضافية لشاهين (اختياري — لا تلغي قواعد السلامة)">
+                <textarea className={input} rows={5} maxLength={2000} value={form.instructions} onChange={(e) => set({ instructions: e.target.value })}
+                  placeholder="مثال: اقترح خامات متوفرة في السوق المصري، واذكر البدائل الاقتصادية، واختم بتذكير بطلب عينة من متجر شام." />
+              </Field>
+              <p className="text-[11px] text-stone-400 text-left" dir="ltr">{form.instructions.length}/2000</p>
+            </div>
+
+            <div className={`${card} space-y-2`}>
+              <div className="flex flex-wrap items-center gap-2">
+                <button disabled={busy || !dirty} onClick={() => void save(form)} className={`${btn} bg-stone-900 text-amber-100`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save className="w-4 h-4" />حفظ إعدادات شاهين</>}</button>
+                <button disabled={busy || probing} onClick={() => void runProbe()} className={`${btn} border border-stone-300 bg-white`}>{probing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Activity className="w-4 h-4" />}اختبار الاتصال بالمحركات</button>
+                {data.shaheen.source === 'admin' && <button disabled={busy} onClick={() => void save(null)} className={`${btn} border border-stone-300 bg-white text-xs`}><RefreshCw className="w-3.5 h-3.5" />رجوع لإعدادات الملف</button>}
+              </div>
+              {dirty && <p className="text-[11px] text-amber-700">فيه تعديلات لم تُحفظ.</p>}
+              {message && <p className="text-xs">{message}</p>}
+              {probe && (
+                <div className="space-y-1.5 pt-1">
+                  <p className="text-[11px] text-stone-500">الاختبار يبعت طلب صغير حقيقي لكل محرك مسموح (بالإعدادات المحفوظة).</p>
+                  {probe.map((r) => (
+                    <div key={r.id} className={`flex items-start gap-2 rounded-xl border p-2 text-xs ${r.ok ? 'border-emerald-200 bg-emerald-50' : r.configured ? 'border-red-200 bg-red-50' : 'border-stone-200 bg-stone-50'}`}>
+                      {r.ok ? <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" /> : <CircleAlert className={`w-4 h-4 shrink-0 ${r.configured ? 'text-red-700' : 'text-stone-400'}`} />}
+                      <div>
+                        <p className="font-semibold">{ENGINE_LABEL[r.id]} <span className="font-normal text-stone-500" dir="ltr">{r.model}</span>{r.ms ? <span className="font-normal text-stone-400"> · {(r.ms / 1000).toFixed(1)} ث</span> : null}</p>
+                        <p>{r.ok ? 'يعمل ✅' : PROBE_ERROR[r.error || ''] || 'لم يعمل'}</p>
+                      </div>
+                    </div>
+                  ))}
+                  {!probe.length && <p className="text-xs text-stone-500">لا توجد محركات مسموح بها.</p>}
+                </div>
+              )}
+            </div>
+
+            <div className={`${card} space-y-2`}>
+              <button type="button" onClick={() => setShowConfig((v) => !v)} className="text-xs font-semibold text-amber-800 hover:underline">{showConfig ? 'إخفاء' : 'عرض'} «الإعداد الدائم» لملف المستودع</button>
+              {showConfig && (
+                <>
+                  <p className="text-[11px] text-stone-500">ده نفس الإعداد الحالي بصيغة ملف <code dir="ltr">server/config/shaheen.ts</code>. لما يتحط في المستودع ويتعمل نشر، يبقى هو الأساس على الموقعين حتى بدون تخزين دائم.</p>
+                  <pre dir="ltr" className="overflow-x-auto rounded-xl bg-stone-900 p-3 text-[11px] text-stone-100">{`export const SHAHEEN_SITE_SETTINGS: ShaheenSettings = ${JSON.stringify(form, null, 2)};`}</pre>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
