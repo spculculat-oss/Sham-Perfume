@@ -1,0 +1,25 @@
+# Supplier site configurations
+
+suppliers:
+  - name: Sham Perfume
+    website_url: https://www.shamperfume.com
+    api_available: false
+    status: approved
+    credibility_score: 85
+    scraper_class: shamperfume_scraper
+    categories:
+      - /perfumes
+      - /perfumes/kenz-de-rasasi
+    selectors:
+      product_card: .product-item, .product-card, .product
+      product_link: a.product-link, a[href*="/perfumes/"]
+      product_name: .product-name, .product-title, h2, h3
+      product_price: .price, .product-price
+      product_image: .product-image img
+
+  # Add more suppliers here as you verify them
+  # - name: Another Perfume Site
+  #   website_url: https://example.com
+  #   api_available: false
+  #   status: vetting
+  #   credibility_score: 0
