@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
+import { UserProfilePage } from './components/UserProfilePage';
 import { Hero } from './components/Hero';
 import { HomeHub } from './components/HomeHub';
 import { ConcentrationCalculator } from './components/ConcentrationCalculator';
@@ -14,7 +15,6 @@ import { MacerationTimeSimulator } from './components/MacerationTimeSimulator';
 import { ManufacturingSpecSheet } from './components/ManufacturingSpecSheet';
 import { PerfumerAIChatbot } from './components/PerfumerAIChatbot';
 import { PerfumerMasterLabView } from './components/PerfumerMasterLabView';
-import { ShamAssistant } from './assistant/ShamAssistant';
 import { WorldPerfumeNews } from './components/WorldPerfumeNews';
 import { Footer } from './components/Footer';
 import { NavigationBreadcrumbs } from './components/NavigationBreadcrumbs';
@@ -385,6 +385,8 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(() =>
     getCurrentUserSession().user
   );
+  const [showProfilePage, setShowProfilePage] = useState(false);
+  const [profileUser, setProfileUser] = useState<UserProfile | null>(null);
 
   // User Detailed Facility & Shipping Address State
   const [detailedAddress, setDetailedAddress] = useState<UserDetailedAddress>(() =>
@@ -469,6 +471,16 @@ export default function App() {
       handleUpdateEnvironment(getInitialUserEnvironment());
     }
     showToast(fmt(L('toast_welcome_tpl'), { name: user.name }));
+  };
+
+  const handleOpenProfilePage = (user: UserProfile) => {
+    setProfileUser(user);
+    setShowProfilePage(true);
+  };
+
+  const handleCloseProfilePage = () => {
+    setShowProfilePage(false);
+    setProfileUser(null);
   };
 
   const handleLogout = () => {
@@ -697,6 +709,7 @@ export default function App() {
           currentEnvironment={currentEnvironment}
           onOpenEnvironmentModal={handleOpenEnvironmentModal}
           onOpenPrivacyModal={handleOpenPrivacyModal}
+          onOpenProfilePage={() => currentUser && handleOpenProfilePage(currentUser)}
         />
 
         {/* Hero Showcase (only shown when in concentration tab or home) */}
@@ -867,9 +880,6 @@ export default function App() {
         onPrintSpecSheet={handlePrintSpecSheetForFormula}
       />
 
-      {/* Sham Core services assistant: orders, store, bespoke, B2B, support (opposite corner to Shaheen) */}
-      <ShamAssistant currentLang={currentLang} />
-
       {/* Footer */}
       <Footer
         setActiveTab={(tab) => navigateToTab(tab)}
@@ -999,6 +1009,17 @@ export default function App() {
           detailedAddress={detailedAddress}
           currentLang={currentLang}
           onClose={handleCloseSpecModal}
+        />
+      )}
+
+      {/* User Profile Page */}
+      {showProfilePage && profileUser && (
+        <UserProfilePage
+          user={profileUser}
+          currentLang={currentLang}
+          isAdmin={false}
+          onLogout={handleLogout}
+          onClose={handleCloseProfilePage}
         />
       )}
 
