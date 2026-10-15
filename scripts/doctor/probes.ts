@@ -109,13 +109,14 @@ export async function probeChat(ctx: ProbeContext): Promise<Finding> {
 }
 
 export async function probeCors(ctx: ProbeContext, deployCurrent: boolean): Promise<Finding> {
-  const pre = await timed(ctx, `${ctx.site}/api/chat`, { method: 'OPTIONS', headers: { origin: ctx.pagesOrigin, 'access-control-request-method': 'POST', 'access-control-request-headers': 'content-type,x-sham-visitor' } }, 15_000);
+  // Exactly what a browser on the GitHub Pages site does before asking Shaheen (same origin, same headers).
+  const pre = await timed(ctx, `${ctx.site}/api/chat`, { method: 'OPTIONS', headers: { origin: ctx.pagesOrigin, 'access-control-request-method': 'POST', 'access-control-request-headers': 'content-type' } }, 15_000);
   const origin = pre.headers.get('access-control-allow-origin');
   const allow = pre.headers.get('access-control-allow-headers') || '';
-  if (origin !== ctx.pagesOrigin) return { id: 'cors', status: 'fail', summary: `موقع GitHub Pages مش مسموح له يكلم الـ API (HTTP ${pre.status})`, data: { http: pre.status, origin, allow, current: deployCurrent } };
-  // The visitor-id header is a newer feature: only a problem once the live site runs main.
-  if (!/x-sham-visitor/i.test(allow)) return { id: 'cors', status: deployCurrent ? 'fail' : 'skip', summary: 'هيدر معرّف الزائر مش مسموح', data: { allow, current: deployCurrent } };
-  return { id: 'cors', status: 'ok', summary: 'Pages ← API مسموح', data: { allow } };
+  if (origin !== ctx.pagesOrigin || !/content-type/i.test(allow)) {
+    return { id: 'cors', status: 'fail', summary: `شاهين على موقع GitHub Pages محجوب: المتصفح مش مسموح له يكلم الـ API (HTTP ${pre.status})`, data: { http: pre.status, origin, allow, current: deployCurrent } };
+  }
+  return { id: 'cors', status: 'ok', summary: 'شاهين على GitHub Pages يقدر يكلم الـ API', data: { allow } };
 }
 
 export async function probePages(ctx: ProbeContext): Promise<Finding> {

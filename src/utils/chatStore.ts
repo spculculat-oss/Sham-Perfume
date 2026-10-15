@@ -135,13 +135,15 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
         messages: [...current.messages, { id: id('user'), role: 'user', text, timestamp: timestamp() }] });
       const signal = controller.signal;
       try {
+        // The anonymous visitor id travels in the body, not in a custom header: a custom header needs CORS approval,
+        // and a server one deploy behind would then block every question from the GitHub Pages site.
         const body = JSON.stringify({ message: text, model: options.model, language: options.language,
-          conversationHistory: chatHistory(current.messages) });
+          conversationHistory: chatHistory(current.messages), visitorId: visitorId() });
         let data: ChatResponse | undefined;
         for (let attempt = 0; ; attempt++) {
           try {
             data = await request<ChatResponse>('/api/chat', {
-              method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Sham-Visitor': visitorId() }, signal, body,
+              method: 'POST', headers: { 'Content-Type': 'application/json' }, signal, body,
             }, 58_000); // the server may queue a question for up to ~50 s before answering
             break;
           } catch (error) {

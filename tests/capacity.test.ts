@@ -111,6 +111,10 @@ test('router: visitors behind one shared IP have their own quota, bounded per IP
     const own = { 'x-forwarded-for': '41.33.0.8', 'x-sham-visitor': 'visitor-same-123' };
     assert.equal((await ask(base, { message: 'أ' }, own)).status, 200);
     assert.equal((await ask(base, { message: 'ب' }, own)).status, 429, 'one visitor is still limited');
+    const inBody = { 'x-forwarded-for': '41.33.0.10' };
+    assert.equal((await ask(base, { message: 'هـ', visitorId: 'body-visitor-1' }, inBody)).status, 200);
+    assert.equal((await ask(base, { message: 'و', visitorId: 'body-visitor-2' }, inBody)).status, 200, 'the id may come in the body (what the site sends)');
+    assert.equal((await ask(base, { message: 'ز', visitorId: 'body-visitor-2' }, inBody)).status, 429);
     const bogus = { 'x-forwarded-for': '41.33.0.9', 'x-sham-visitor': '<script>' };
     assert.equal((await ask(base, { message: 'ج' }, bogus)).status, 200);
     assert.equal((await ask(base, { message: 'د' }, { ...bogus, 'x-sham-visitor': 'other' })).status, 429, 'invalid ids fall back to the IP');
@@ -176,7 +180,8 @@ test('the chat waits in line by itself when Shaheen is busy, and sends an anonym
   const waits: number[] = [];
   let calls = 0;
   const request = (async (_path: string, init?: RequestInit, timeout?: number) => {
-    seen.push({ visitor: (init?.headers as Record<string, string>)['X-Sham-Visitor'], timeout });
+    assert.deepEqual(Object.keys(init?.headers as Record<string, string>), ['Content-Type'], 'only CORS-simple headers: an API one deploy behind must still accept the GitHub Pages site');
+    seen.push({ visitor: JSON.parse(String(init?.body)).visitorId, timeout });
     if (++calls <= 2) throw new ApiError(503, 'SHAHEEN_BUSY', 7000);
     return { reply: 'أهلاً' };
   }) as typeof requestApi;

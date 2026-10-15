@@ -316,7 +316,7 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
     try {
       const input = validateChatRequest(req.body);
       const ip = clientKey(req);
-      const browser = req.get('x-sham-visitor');
+      const browser = req.get('x-sham-visitor') || (typeof req.body?.visitorId === 'string' ? req.body.visitorId : undefined);
       const visitor = browser && VISITOR_ID.test(browser) ? `${ip}|${browser}` : ip;
       if (!limiter.allow(visitor) || !ipLimiter.allow(ip)) throw new ChatError(429, 'RATE_LIMITED', 'Too many messages, please wait a minute');
       const { shaheen, council } = await settings();
