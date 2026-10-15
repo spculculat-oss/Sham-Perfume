@@ -37,3 +37,10 @@ jobs:
       - name: Deep analysis
         run: node --import tsx scripts/inspect/run.mts
         env: { INSPECT_MODES: deep }
+      - name: Real browser (GitHub Pages + Vercel)
+        if: always()
+        run: |
+          mkdir -p /tmp/pp && (cd /tmp/pp && npm init -y >/dev/null && npm i --no-audit --no-fund puppeteer-core@24 >/dev/null)
+          node scripts/inspect/browser.mjs
+        env:
+          PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js
