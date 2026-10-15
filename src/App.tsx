@@ -4,6 +4,7 @@ import { UserProfilePage } from './components/UserProfilePage';
 import { Hero } from './components/Hero';
 import { HomeHub } from './components/HomeHub';
 import { Storefront } from './components/Storefront';
+import { ProductDetail } from './components/ProductDetail';
 import { ConcentrationCalculator } from './components/ConcentrationCalculator';
 import { PyramidCalculator } from './components/PyramidCalculator';
 import { AlcoholDilutionCalculator } from './components/AlcoholDilutionCalculator';
@@ -119,12 +120,32 @@ export default function App() {
       const hash = window.location.hash.replace('#', '');
       const clean = hash.split('?')[0];
       if (clean === 'formula' || clean === 'spec') return 'concentration';
+      // Check for product detail page
+      const productMatch = clean.match(/^product=(\d+)$/);
+      if (productMatch) {
+        const productId = parseInt(productMatch[1]);
+        if (!isNaN(productId)) {
+          return 'productDetail';
+        }
+      }
       return clean || 'home';
     } catch {
       return 'home';
     }
   });
-  const [historyStack, setHistoryStack] = useState<string[]>(['home']);
+  const [productId, setProductId] = useState<number | null>(null);
+  const [historyStack, setHistoryStack] = useState<string[]>(() => {
+    try {
+      const hash = window.location.hash.replace('#', '');
+      const clean = hash.split('?')[0];
+      if (clean.match(/^product=(\d+)$/)) {
+        return ['productDetail'];
+      }
+      return ['home'];
+    } catch {
+      return ['home'];
+    }
+  });
 
   // Modals & toast state
   const [isSpecModalOpen, setIsSpecModalOpen] = useState(false);
@@ -348,6 +369,16 @@ export default function App() {
 
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '').split('?')[0];
+      // Check for product detail page
+      const productMatch = hash.match(/^product=(\d+)$/);
+      if (productMatch) {
+        const productId = parseInt(productMatch[1]);
+        if (!isNaN(productId)) {
+          setActiveTab('productDetail');
+          setProductId(productId);
+          return;
+        }
+      }
       const target = hash === 'formula' || hash === 'spec' ? 'concentration' : 
                     hash === 'store' ? 'store' : (hash || 'home');
       setActiveTab(target);
@@ -993,6 +1024,18 @@ export default function App() {
             onClose={() => navigateToTab('home')}
             currentLang={currentLang === 'ar' || currentLang === 'fa' || currentLang === 'he' || currentLang === 'ur' || currentLang === 'ps' ? 'ar' : 'en'}
             retailerId={currentUser?.id}
+          />
+        )}
+
+        {activeTab === 'productDetail' && productId && (
+          <ProductDetail
+            productId={productId}
+            currentLang={currentLang === 'ar' || currentLang === 'fa' || currentLang === 'he' || currentLang === 'ur' || currentLang === 'ps' ? 'ar' : 'en'}
+            onClose={() => navigateToTab('store')}
+            onAddToCart={(product) => {
+              // Add to cart logic could go here
+              console.log('Added to cart:', product);
+            }}
           />
         )}
       </main>
