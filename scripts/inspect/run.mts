@@ -8,6 +8,10 @@ import { extractFormulasFromAIMessage, findFormulaBlocks } from '../../src/utils
 import { linkTools } from '../../src/utils/shaheenTools';
 import { stripFormulaBlock } from '../../src/components/ShaheenMarkdown';
 import { extractMediaRequest, stripMediaBlock } from '../../src/utils/shaheenMedia';
+import { stripOpeningGreeting } from '../../src/utils/shaheenText';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { ShaheenMarkdown } from '../../src/components/ShaheenMarkdown';
 
 const SITE = process.env.DOCTOR_SITE_URL || 'https://sham-perfume-49bf.vercel.app';
 const ORIGIN = 'https://spculculat-oss.github.io';
@@ -48,7 +52,16 @@ for (const mode of MODES) {
     if (VENDORS.test(reply)) problems.push(`اسم مزوّد: ${reply.match(VENDORS)![0]}`);
     if (blocks.length && !formulas.length) problems.push(`كتلة تركيبة غير صالحة (${blocks.length}) — شريط الحاسبة لن يظهر`);
     if (/sham-formula|sham-tool|sham-media/i.test(shown)) problems.push('اسم سياج داخلي ظاهر');
-    if (/(^|\n)\s*(أهلاً|مرحباً|أنا الخبير شاهين)/.test(reply.slice(0, 80))) problems.push('بدأ بالترحيب/التعريف');
+    // What the visitor's browser actually shows (same cleaning + renderer as the chat).
+    const visible = stripOpeningGreeting(stripMediaBlock(reply), question);
+    const html = renderToStaticMarkup(createElement(ShaheenMarkdown, { text: visible }));
+    const text = html.replace(/<[^>]+>/g, ' ');
+    if (/\$\$|\\(frac|times|text|approx|cdot)\b/.test(text)) problems.push('LaTeX خام ظاهر للزائر');
+    if (/(^|\s)\*\s/.test(text)) problems.push('نجمة قائمة ظاهرة كنص');
+    if (/^\s*(أهلاً|مرحباً|أنا الخبير شاهين)/.test(text.slice(0, 80))) problems.push('بدأ بالترحيب/التعريف (بعد التنظيف)');
+    if (/^\s*(أهلاً|مرحباً)/.test(reply.slice(0, 40))) problems.push('ملحوظة: الخادم ما زال يرحّب (النسخة المنشورة قديمة)');
+    if (/\$[A-Z]_|\\(frac|times)\b/.test(reply)) problems.push('ملحوظة: الخادم ما زال يكتب LaTeX (العميل يحوّله)');
+    if (/صمم|تركيبة|ركّب/.test(question) && !formulas.length) problems.push('طلب تركيبة بدون تركيبة — شريط الحاسبة لن يظهر');
     const meta = { mode, http: status, ms, replyMode: json.mode, keys: Object.keys(json), chars: reply.length, shownChars: shown.length,
       formulas: formulas.map((f) => `${f.title} ${f.concentrationPercent}% ${f.bottleVolumeMl}ml notes=${f.pyramidNotes.length} days=${f.macerationDays}`),
       blocks: blocks.length, tools: links.map((l) => JSON.stringify(l)), media: Boolean(extractMediaRequest(reply)), code: json.code };

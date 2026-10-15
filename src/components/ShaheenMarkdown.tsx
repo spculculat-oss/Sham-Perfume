@@ -2,20 +2,22 @@ import React from 'react';
 import { removeMediaBlocks } from '../utils/mediaBlock';
 import { removeFormulaBlocks } from '../utils/aiFormulaExtractor';
 import { removeToolBlocks } from '../utils/shaheenTools';
+import { MATH_CLOSE, MATH_OPEN, plainMath } from '../utils/shaheenText';
 
 /**
  * Small, safe Markdown renderer for Shaheen's answers (React elements only — never innerHTML).
  * Supports headings, bold/italic, inline code, bullet & numbered lists, tables, quotes, code blocks
  * and https links. The machine-readable ```sham-formula block is hidden: the formula card under the
  * message already presents it with its actions. The ```sham-media block (topics for real images and
- * videos) is hidden too: ShaheenMedia renders it.
+ * videos) is hidden too: ShaheenMedia renders it. LaTeX math ($…$, $$…$$) is turned into readable
+ * equations (V₁ = 70 × 1000 ÷ 96) shown left-to-right, and nested bullets under a numbered step stay nested.
  */
 export function stripFormulaBlock(text: string): string {
   // Any formula-looking block (```json label, cut fence, bare JSON…), not only the canonical one.
   return removeToolBlocks(removeFormulaBlocks(removeMediaBlocks(text))).replace(/\n{3,}/g, '\n\n').trim();
 }
 
-const INLINE = /(\*\*[^*\n]+\*\*|__[^_\n]+__|`[^`\n]+`|\[[^\]\n]+\]\(https:\/\/[^)\s]+\)|\*[^*\s][^*\n]*\*)/g;
+const INLINE = /(\u2045[^\u2046\n]*\u2046|\*\*[^*\n]+\*\*|__[^_\n]+__|`[^`\n]+`|\[[^\]\n]+\]\(https:\/\/[^)\s]+\)|\*[^*\s][^*\n]*\*)/g;
 
 function inline(text: string, keyBase: string): React.ReactNode[] {
   const out: React.ReactNode[] = [];
@@ -26,22 +28,27 @@ function inline(text: string, keyBase: string): React.ReactNode[] {
     const at = match.index ?? 0;
     if (at > last) out.push(text.slice(last, at));
     const key = `${keyBase}-${i++}`;
-    if (token.startsWith('**') || token.startsWith('__')) out.push(<strong key={key} className="font-bold">{token.slice(2, -2)}</strong>);
+    if (token.startsWith(MATH_OPEN)) out.push(<span key={key} dir="ltr" className="mx-0.5 inline-block rounded-md bg-amber-50 px-1.5 py-0.5 font-semibold tabular-nums text-stone-800 ring-1 ring-amber-100">{token.slice(1, -1)}</span>);
+    else if (token.startsWith('**') || token.startsWith('__')) out.push(<strong key={key} className="font-bold">{inline(token.slice(2, -2), key)}</strong>);
     else if (token.startsWith('`')) out.push(<code key={key} className="rounded bg-stone-100 px-1 py-0.5 font-mono text-[0.85em] text-stone-800" dir="ltr">{token.slice(1, -1)}</code>);
     else if (token.startsWith('[')) {
       const [, label, href] = token.match(/^\[([^\]]+)\]\(([^)]+)\)$/) || [];
       out.push(<a key={key} href={href} target="_blank" rel="noopener noreferrer nofollow" className="text-amber-800 underline">{label}</a>);
-    } else out.push(<em key={key}>{token.slice(1, -1)}</em>);
+    } else out.push(<em key={key}>{inline(token.slice(1, -1), key)}</em>);
     last = at + token.length;
   }
   if (last < text.length) out.push(text.slice(last));
   return out;
 }
 
+/** A list item whose wrapped lines (e.g. an equation under a step) keep their own line. */
+const lineBreaks = (text: string, keyBase: string): React.ReactNode[] =>
+  text.split('\n').flatMap((part, j) => (j ? [<br key={`${keyBase}br${j}`} />, ...inline(part, `${keyBase}l${j}`)] : inline(part, `${keyBase}l${j}`)));
+
 const cells = (line: string) => line.trim().replace(/^\||\|$/g, '').split('|').map((c) => c.trim());
 
 export function ShaheenMarkdown({ text, className = '' }: { text: string; className?: string }) {
-  const lines = stripFormulaBlock(text).split('\n');
+  const lines = plainMath(stripFormulaBlock(text)).split('\n');
   const blocks: React.ReactNode[] = [];
   let i = 0;
   let k = 0;
@@ -87,17 +94,46 @@ export function ShaheenMarkdown({ text, className = '' }: { text: string; classN
 
     if (/^([-*•])\s+/.test(trimmed) || /^\d+[.)]\s+/.test(trimmed)) {
       const ordered = /^\d+[.)]\s+/.test(trimmed);
-      const items: string[] = [];
+      const start = ordered ? Number(trimmed.match(/^(\d+)/)?.[1] || 1) : 1;
+      const baseIndent = line.length - line.trimStart().length;
+      const items: { text: string; sub: string[] }[] = [];
       while (i < lines.length) {
-        const t = lines[i].trim();
+        const raw = lines[i];
+        const t = raw.trim();
+        const indent = raw.length - raw.trimStart().length;
+        const marker = t.match(/^(?:[-*•]|\d+[.)])\s+(.*)$/);
+        // Indented bullets under a step are its sub-points (models write "1. المعطيات:\n   * …").
+        if (marker && items.length && indent >= baseIndent + 2) { items[items.length - 1].sub.push(marker[1]); i++; continue; }
         const m = ordered ? t.match(/^\d+[.)]\s+(.*)$/) : t.match(/^[-*•]\s+(.*)$/);
-        if (m) { items.push(m[1]); i++; continue; }
-        // A wrapped continuation line belongs to the previous item.
-        if (t && items.length && /^\s{2,}/.test(lines[i])) { items[items.length - 1] += ` ${t}`; i++; continue; }
+        if (m) { items.push({ text: m[1], sub: [] }); i++; continue; }
+        // A wrapped continuation line belongs to the previous item (or its last sub-point).
+        if (t && items.length && indent >= 2) {
+          const last = items[items.length - 1];
+          if (last.sub.length) last.sub[last.sub.length - 1] += `\n${t}`; else last.text += `\n${t}`;
+          i++; continue;
+        }
+        // A blank line between items of the same list does not end it.
+        if (!t && i + 1 < lines.length) {
+          const nextRaw = lines[i + 1];
+          const nextT = nextRaw.trim();
+          const nextIndent = nextRaw.length - nextRaw.trimStart().length;
+          const sameList = (ordered ? /^\d+[.)]\s+/ : /^[-*•]\s+/).test(nextT);
+          const subPoint = items.length > 0 && nextIndent >= baseIndent + 2 && /^(?:[-*•]|\d+[.)])\s+/.test(nextT);
+          if (sameList || subPoint) { i++; continue; }
+        }
         break;
       }
       const List = ordered ? 'ol' : 'ul';
-      blocks.push(<List key={key} className={`${ordered ? 'list-decimal' : 'list-disc'} space-y-1 ps-5`}>{items.map((it, j) => <li key={j}>{inline(it, `${key}-${j}`)}</li>)}</List>);
+      blocks.push(
+        <List key={key} start={ordered && start !== 1 ? start : undefined} className={`${ordered ? 'list-decimal' : 'list-disc'} space-y-1 ps-5`}>
+          {items.map((it, j) => (
+            <li key={j}>
+              {lineBreaks(it.text, `${key}-${j}`)}
+              {it.sub.length > 0 && <ul className="mt-1 list-[circle] space-y-0.5 ps-5">{it.sub.map((s, n) => <li key={n}>{lineBreaks(s, `${key}-${j}-${n}`)}</li>)}</ul>}
+            </li>
+          ))}
+        </List>,
+      );
       continue;
     }
 
