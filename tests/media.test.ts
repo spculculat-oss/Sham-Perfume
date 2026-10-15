@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import type { AddressInfo } from 'node:net';
 import test from 'node:test';
 import express from 'express';
-import { createMediaRouter, sanitizeQuery, searchImages, searchVideos } from '../server/media';
+import { createMediaRouter, sanitizeQuery, searchImages, searchPlace, searchVideos } from '../server/media';
 import { systemInstruction } from '../server/shaheen';
 import { extractMediaRequest, stripMediaBlock } from '../src/utils/shaheenMedia';
 import { stripFormulaBlock } from '../src/components/ShaheenMarkdown';
@@ -166,4 +166,125 @@ test('GET /api/media validates, caches and rate-limits lookups', async () => {
   } finally {
     server.close();
   }
+});
+
+// Nominatim spacing is per instance; tests reset it so they do not wait.
+const resetGeo = () => { (globalThis as { __shamGeoThrottle?: { next: number } }).__shamGeoThrottle!.next = 0; };
+
+test('Shaheen can ask for places; they are parsed, capped at 5 and never accepted as links', () => {
+  const prompt = systemInstruction('ar');
+  assert.match(prompt, /places/);
+  assert.match(prompt, /Grasse, France/);
+  assert.match(prompt, /خرائط أو إحداثيات/);
+  const reply = '```sham-media\n{"places":["Grasse, France","Taif, Saudi Arabia","Grasse, France","Kannauj, India","Bulgaria Rose Valley","Hainan, China","Assam, India"]}\n```\nمدن العطور:';
+  assert.deepEqual(extractMediaRequest(reply), { images: [], videos: [], places: ['Grasse, France', 'Taif, Saudi Arabia', 'Kannauj, India', 'Bulgaria Rose Valley', 'Hainan, China'] });
+  assert.equal(extractMediaRequest('```sham-media\n{"images":["rose"]}\n```')?.places, undefined);
+  assert.deepEqual(extractMediaRequest('```sham-media\n{"place":"https://maps.example/x Grasse"}\n```')?.places, ['Grasse']);
+});
+
+test('places are geocoded with OpenStreetMap (Nominatim, then Photon) and validated', async () => {
+  resetGeo();
+  let seen = '';
+  const ok = await searchPlace('Grasse, France', { lang: 'ar', fetch: (async (u: string, init?: RequestInit) => {
+    seen = u;
+    assert.match(new Headers(init?.headers).get('user-agent') || '', /ShamPerfume/);
+    return json([{ lat: '43.6589123', lon: '6.9237456', display_name: 'غراس، ألب ماريتيم، فرنسا' }]);
+  }) as typeof fetch });
+  assert.equal(new URL(seen).hostname, 'nominatim.openstreetmap.org');
+  assert.equal(new URL(seen).searchParams.get('accept-language'), 'ar,en');
+  assert.deepEqual(ok.places, [{ name: 'Grasse, France', label: 'غراس، ألب ماريتيم، فرنسا', lat: 43.65891, lon: 6.92375,
+    osm: 'https://www.openstreetmap.org/?mlat=43.65891&mlon=6.92375#map=9/43.65891/6.92375' }]);
+
+  // Unknown to OpenStreetMap: empty, no second service asked.
+  resetGeo();
+  let calls = 0;
+  const none = await searchPlace('Atlantis perfume city', { fetch: (async () => { calls++; return json([]); }) as typeof fetch });
+  assert.deepEqual(none.places, []);
+  assert.equal(calls, 1);
+
+  // Nominatim refuses this host: Photon (same OpenStreetMap data) answers.
+  resetGeo();
+  const hosts: string[] = [];
+  const fallback = await searchPlace('Taif', { fetch: (async (u: string) => {
+    hosts.push(new URL(u).hostname);
+    if (hosts.length === 1) return json({ error: 'blocked' }, 403);
+    return json({ features: [{ geometry: { coordinates: [40.4158, 21.2703] }, properties: { name: 'Taif', state: 'Makkah Province', country: 'Saudi Arabia' } }] });
+  }) as typeof fetch });
+  assert.deepEqual(hosts, ['nominatim.openstreetmap.org', 'photon.komoot.io']);
+  assert.equal(fallback.places[0].label, 'Taif, Makkah Province, Saudi Arabia');
+  assert.equal(fallback.places[0].lat, 21.2703);
+
+  // Nonsense coordinates are dropped.
+  resetGeo();
+  const bad = await searchPlace('Nowhere', { fetch: (async (u: string) => (u.includes('nominatim')
+    ? json([{ lat: '123', lon: '6', display_name: 'x' }])
+    : json({ features: [{ geometry: { coordinates: [0, 0] } }] }))) as typeof fetch });
+  assert.deepEqual(bad.places, []);
+});
+
+test('Nominatim requests from one instance are spaced about a second apart', async () => {
+  resetGeo();
+  const at: number[] = [];
+  const fetchStub = (async () => { at.push(Date.now()); return json([{ lat: '1.5', lon: '2.5', display_name: 'P' }]); }) as typeof fetch;
+  await Promise.all([searchPlace('Place one', { fetch: fetchStub }), searchPlace('Place two', { fetch: fetchStub })]);
+  assert.ok(at[1] - at[0] >= 1000, `gap ${at[1] - at[0]}ms`);
+});
+
+test('GET /api/media?type=place returns coordinates', async () => {
+  resetGeo();
+  const app = express();
+  app.use('/api', createMediaRouter({ env: {}, fetch: (async () => json([{ lat: '30.0444', lon: '31.2357', display_name: 'Cairo, Egypt' }])) as typeof fetch }));
+  const server = app.listen(0);
+  try {
+    const res = await fetch(`http://127.0.0.1:${(server.address() as AddressInfo).port}/api/media?type=place&q=Khan%20el-Khalili%2C%20Cairo&lang=ar`);
+    assert.equal(res.status, 200);
+    const body = await res.json() as { places: { name: string; lat: number }[] };
+    assert.equal(body.places[0].name, 'Khan el-Khalili, Cairo');
+    assert.equal(body.places[0].lat, 30.0444);
+  } finally {
+    server.close();
+  }
+});
+
+test('a long Nominatim queue sends extra places straight to Photon', async () => {
+  resetGeo();
+  (globalThis as { __shamGeoThrottle?: { next: number } }).__shamGeoThrottle!.next = Date.now() + 10_000;
+  const hosts: string[] = [];
+  const result = await searchPlace('Grasse', { fetch: (async (u: string) => {
+    hosts.push(new URL(u).hostname);
+    return json({ features: [{ geometry: { coordinates: [6.92, 43.66] }, properties: { name: 'Grasse', country: 'France' } }] });
+  }) as typeof fetch });
+  assert.deepEqual(hosts, ['photon.komoot.io']);
+  assert.equal(result.places[0].label, 'Grasse, France');
+  resetGeo();
+});
+
+test('the media block is found however the model wrote it (live: ```json and no closing fence)', async () => {
+  const { findMediaBlocks, normalizeMediaBlocks, removeMediaBlocks } = await import('../src/utils/mediaBlock');
+  const { publicChatResult } = await import('../server/shaheen');
+  // Exactly what production returned on 2026-10-15.
+  const live = '```json\n{"images":["agarwood raw wood","Aquilaria trees"],"videos":["agarwood essential oil steam distillation process"]}\n### شكل العود الخام\n\nقطع خشبية داكنة.';
+  assert.deepEqual(extractMediaRequest(live), { images: ['agarwood raw wood', 'Aquilaria trees'], videos: ['agarwood essential oil steam distillation process'] });
+  assert.equal(stripMediaBlock(live), '### شكل العود الخام\n\nقطع خشبية داكنة.');
+  assert.equal(stripFormulaBlock(live), '### شكل العود الخام\n\nقطع خشبية داكنة.');
+  // The API sends one canonical, closed block instead.
+  assert.equal(publicChatResult({ reply: live, mode: 'auto' }).reply,
+    '```sham-media\n{"images":["agarwood raw wood","Aquilaria trees"],"videos":["agarwood essential oil steam distillation process"]}\n```\n### شكل العود الخام\n\nقطع خشبية داكنة.');
+
+  // Other shapes: closed json fence at the end, bare line, unlabelled fence, singular keys.
+  assert.deepEqual(extractMediaRequest('answer\n```json\n{"places":["Grasse, France"]}\n```'), { images: [], videos: [], places: ['Grasse, France'] });
+  assert.equal(removeMediaBlocks('answer\n```json\n{"places":["Grasse, France"]}\n```'), 'answer');
+  assert.equal(removeMediaBlocks('{"images":["rose"]}\nالورد الدمشقي.'), 'الورد الدمشقي.');
+  assert.equal(removeMediaBlocks('```\n{"place":"Taif"}\n```\nالطائف.'), 'الطائف.');
+  assert.equal(normalizeMediaBlocks('```\n{"place":"Taif","image":"Taif rose"}\n```\nالطائف.'), '```sham-media\n{"places":["Taif"],"images":["Taif rose"]}\n```\nالطائف.');
+
+  // Never touched: formula JSON, ordinary code, JSON with other keys, plain text.
+  const formula = 'وصفة:\n```sham-formula\n{"title":"x","pyramidNotes":[]}\n```';
+  const code = 'مثال:\n```json\n{"title":"Rose","images":["rose"]}\n```';
+  for (const text of [formula, code, 'نص عادي فيه كلمة images فقط']) {
+    assert.deepEqual(findMediaBlocks(text), []);
+    assert.equal(normalizeMediaBlocks(text), text);
+  }
+  // A broken sham-media fence is still hidden.
+  assert.equal(removeMediaBlocks('```sham-media\n{oops\n```\nok'), 'ok');
 });

@@ -100,7 +100,7 @@ export const Header: React.FC<HeaderProps> = ({
     {
       id: 'home',
       type: 'single',
-      label: t('nav_home_short', currentLang),
+      label: t('nav_home_short', currentLang, t('nav_home', currentLang)),
       fullLabel: t('nav_home', currentLang),
       icon: Home,
       iconColor: 'text-amber-700',
@@ -108,37 +108,37 @@ export const Header: React.FC<HeaderProps> = ({
     {
       id: 'tools',
       type: 'dropdown',
-      label: t('nav_tools_short', currentLang),
+      label: t('nav_tools_short', currentLang, t('nav_tools', currentLang)),
       fullLabel: t('nav_tools', currentLang),
       icon: FlaskConical,
       iconColor: 'text-amber-600',
       items: [
-        { id: 'concentration', label: t('nav_calc_short', currentLang), fullLabel: t('nav_calc', currentLang), icon: FlaskConical },
-        { id: 'alcohol', label: t('nav_alcohol_short', currentLang), fullLabel: t('nav_alcohol', currentLang), icon: FlaskConical },
-        { id: 'costing', label: t('nav_costing_short', currentLang), fullLabel: t('nav_costing', currentLang), icon: Newspaper },
-        { id: 'maceration_simulator', label: t('nav_maceration_short', currentLang), fullLabel: t('nav_maceration', currentLang, 'محاكي التعتيق الزمني'), icon: FlaskConical },
+        { id: 'concentration', label: t('nav_calc_short', currentLang, t('nav_calc', currentLang)), fullLabel: t('nav_calc', currentLang), icon: FlaskConical },
+        { id: 'alcohol', label: t('nav_alcohol_short', currentLang, t('nav_alcohol', currentLang)), fullLabel: t('nav_alcohol', currentLang), icon: FlaskConical },
+        { id: 'costing', label: t('nav_costing_short', currentLang, t('nav_costing', currentLang)), fullLabel: t('nav_costing', currentLang), icon: Newspaper },
+        { id: 'maceration_simulator', label: t('nav_maceration_short', currentLang, t('nav_maceration', currentLang)), fullLabel: t('nav_maceration', currentLang, 'محاكي التعتيق الزمني'), icon: FlaskConical },
       ],
     },
     {
       id: 'explore',
       type: 'dropdown',
-      label: t('nav_explore_short', currentLang),
+      label: t('nav_explore_short', currentLang, t('nav_explore', currentLang)),
       fullLabel: t('nav_explore', currentLang),
       icon: Compass,
       iconColor: 'text-amber-600',
       items: [
-        { id: 'perfume_news', label: t('nav_news_short', currentLang), fullLabel: t('nav_news', currentLang), icon: Newspaper, isNew: true },
-        { id: 'world_perfumes', label: t('nav_world_perfumes_short', currentLang), fullLabel: t('nav_world_perfumes', currentLang), icon: Compass },
-        { id: 'pyramid', label: t('nav_pyramid_short', currentLang), fullLabel: t('nav_pyramid', currentLang), icon: Compass },
-        { id: 'raw_materials', label: t('nav_raw_materials_short', currentLang), fullLabel: t('nav_raw_materials', currentLang), icon: Database },
-        { id: 'library', label: t('nav_library_short', currentLang), fullLabel: t('nav_library', currentLang), icon: Database },
-        { id: 'guide', label: t('nav_guide_short', currentLang), fullLabel: t('nav_guide', currentLang), icon: Newspaper },
+        { id: 'perfume_news', label: t('nav_news_short', currentLang, t('nav_news', currentLang)), fullLabel: t('nav_news', currentLang), icon: Newspaper, isNew: true },
+        { id: 'world_perfumes', label: t('nav_world_perfumes_short', currentLang, t('nav_world_perfumes', currentLang)), fullLabel: t('nav_world_perfumes', currentLang), icon: Compass },
+        { id: 'pyramid', label: t('nav_pyramid_short', currentLang, t('nav_pyramid', currentLang)), fullLabel: t('nav_pyramid', currentLang), icon: Compass },
+        { id: 'raw_materials', label: t('nav_raw_materials_short', currentLang, t('nav_raw_materials', currentLang)), fullLabel: t('nav_raw_materials', currentLang), icon: Database },
+        { id: 'library', label: t('nav_library_short', currentLang, t('nav_library', currentLang)), fullLabel: t('nav_library', currentLang), icon: Database },
+        { id: 'guide', label: t('nav_guide_short', currentLang, t('nav_guide', currentLang)), fullLabel: t('nav_guide', currentLang), icon: Newspaper },
       ],
     },
     {
       id: 'master_ai',
       type: 'single',
-      label: t('nav_ai_master_short', currentLang),
+      label: t('nav_ai_master_short', currentLang, t('nav_ai_master', currentLang)),
       fullLabel: t('nav_ai_master', currentLang),
       icon: Sparkles,
       iconColor: 'text-emerald-500',
@@ -146,22 +146,22 @@ export const Header: React.FC<HeaderProps> = ({
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 px-4 sm:px-8 py-2.5 no-print shadow-xs">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 px-3 sm:px-8 py-2.5 no-print shadow-xs">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
         
         {/* Zone 1: Brand wordmark: صمم عطرك مع شام */}
-        <div className="flex items-center gap-3 shrink-0">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-stone-900 to-amber-950 text-amber-400 flex items-center justify-center font-serif-luxury font-bold text-lg shadow-md border border-amber-600/30">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0 sm:shrink-0">
+          <div className="w-9 h-9 shrink-0 rounded-xl bg-gradient-to-br from-stone-900 to-amber-950 text-amber-400 flex items-center justify-center font-serif-luxury font-bold text-lg shadow-md border border-amber-600/30">
             شام
           </div>
           <button 
             onClick={() => setActiveTab('home')}
-            className="text-right flex flex-col items-start cursor-pointer group"
+            className="text-right flex flex-col items-start cursor-pointer group min-w-0"
           >
-            <span className="text-base sm:text-lg font-extrabold tracking-tight text-stone-950 group-hover:text-amber-800 transition-colors font-serif-luxury">
+            <span className="max-w-full truncate text-[15px] sm:text-lg font-extrabold tracking-tight text-stone-950 group-hover:text-amber-800 transition-colors font-serif-luxury">
               {t('brand_name', currentLang)}
             </span>
-            <span className="text-[10px] text-amber-700 font-medium hidden sm:inline">
+            <span className="text-[10px] text-amber-700 font-medium hidden sm:inline whitespace-nowrap">
               {t('brand_subtitle', currentLang)}
             </span>
           </button>
@@ -170,11 +170,11 @@ export const Header: React.FC<HeaderProps> = ({
           {activeTab !== 'home' && (
             <button
               onClick={() => setActiveTab('home')}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-800 hover:bg-amber-900 text-white text-xs font-bold shadow-xs transition-all cursor-pointer mr-1 animate-in fade-in"
+              className="flex shrink-0 items-center gap-1.5 p-2 sm:px-3 sm:py-1.5 rounded-xl bg-amber-800 hover:bg-amber-900 text-white text-xs font-bold shadow-xs transition-all cursor-pointer mr-1 animate-in fade-in"
               title={L('home_tooltip')}
             >
               <Home className="w-3.5 h-3.5 text-amber-300" />
-              <span className="inline text-[11px]">{L('home_btn')}</span>
+              <span className="hidden sm:inline text-[11px]">{L('home_btn')}</span>
             </button>
           )}
         </div>
@@ -278,14 +278,16 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Zone 3: Global Controls (Language, Environment/Homeland, User Auth, Privacy, Print) */}
-        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
           
-          {/* 1. Language Switcher (10 World Languages) */}
-          <LanguageSelector
-            currentLang={currentLang}
-            onSelectLanguage={onSelectLanguage}
-            onAutoDetectLanguage={onAutoDetectLanguage}
-          />
+          {/* 1. Language Switcher (below xl the navigation row underneath carries it, so exactly one is shown) */}
+          <div className="hidden xl:block">
+            <LanguageSelector
+              currentLang={currentLang}
+              onSelectLanguage={onSelectLanguage}
+              onAutoDetectLanguage={onAutoDetectLanguage}
+            />
+          </div>
 
           {/* 2. Country & Detailed Address Selector */}
           <button
@@ -296,7 +298,7 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="text-base leading-none">
               {currentEnvironment.countryFlag || '🌍'}
             </span>
-            <span className="hidden md:inline truncate max-w-[120px] font-bold">
+            <span className="hidden lg:inline truncate max-w-[120px] font-bold">
               {pickArEn(currentLang, currentEnvironment.countryNameAr, currentEnvironment.countryNameEn).split('(')[0].trim()}
             </span>
             <span className="px-1.5 py-0.5 rounded bg-amber-200/80 text-[10px] font-mono font-bold text-amber-950">
@@ -324,7 +326,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <div className="w-5 h-5 rounded-full bg-amber-500 text-stone-950 flex items-center justify-center font-bold text-[10px]">
                   {currentUser.name.slice(0, 1)}
                 </div>
-                <span className="truncate max-w-[90px]">{currentUser.name}</span>
+                <span className="hidden sm:inline truncate max-w-[90px]">{currentUser.name}</span>
                 <ChevronDown className="w-3 h-3 text-stone-400" />
               </button>
 
@@ -384,10 +386,12 @@ export const Header: React.FC<HeaderProps> = ({
           ) : (
             <button
               onClick={onOpenAuthModal}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-amber-800 hover:bg-amber-900 rounded-xl transition-all shadow-sm cursor-pointer shrink-0"
+              className="flex items-center gap-1.5 p-2 sm:px-3 sm:py-1.5 text-xs font-semibold text-white bg-amber-800 hover:bg-amber-900 rounded-xl transition-all shadow-sm cursor-pointer shrink-0"
+              aria-label={L('login')}
+              title={L('login')}
             >
               <User className="w-3.5 h-3.5 text-amber-200" />
-              <span>{L('login')}</span>
+              <span className="hidden md:inline">{L('login')}</span>
             </button>
           )}
 

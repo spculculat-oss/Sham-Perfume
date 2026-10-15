@@ -6,6 +6,7 @@
  * - images: Wikimedia Commons (free, no key, every result has a license and an author credit);
  * - videos: YouTube Data API v3 when a key is available (YOUTUBE_API_KEY, else the Google key in
  *   GEMINI_API_KEY if that project has the YouTube API enabled); otherwise a YouTube search link.
+ * - places: OpenStreetMap geocoding (Nominatim, Photon as fallback) for the map under the answer.
  * Results are cached, filtered for safety, and contain no AI vendor names.
  */
 import express from 'express';
@@ -29,6 +30,18 @@ export interface MediaImage {
 export interface MediaVideo { id: string; title: string; channel: string; thumb: string }
 export interface ImageResult { images: MediaImage[]; source: 'wikimedia' }
 export interface VideoResult { videos: MediaVideo[]; searchUrl: string; source: 'youtube' | 'link' }
+export interface MediaPlace {
+  /** The topic as Shaheen named it (e.g. "Grasse, France"). */
+  name: string;
+  /** Full place name from OpenStreetMap, in the visitor's language when available. */
+  label: string;
+  lat: number;
+  lon: number;
+  /** OpenStreetMap page centred on the place. */
+  osm: string;
+}
+export interface PlaceResult { places: MediaPlace[]; source: 'openstreetmap' }
+type AnyResult = ImageResult | VideoResult | PlaceResult;
 
 const UA = 'ShamPerfume/1.0 (https://spculculat-oss.github.io/Sham-Perfume/; perfume design platform)';
 /** Titles that must never be shown next to a perfumery answer, whatever the search returned. */
@@ -147,10 +160,61 @@ export async function searchVideos(query: string, options: { env?: Env; fetch?: 
   }
 }
 
-type Cached = { at: number; data: ImageResult | VideoResult };
+const validCoord = (lat: number, lon: number) => Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180 && !(lat === 0 && lon === 0);
+const osmLink = (lat: number, lon: number) => `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=9/${lat}/${lon}`;
+// Nominatim allows one request per second per application: requests are spaced on this instance.
+const geo: { next: number } = ((globalThis as { __shamGeoThrottle?: { next: number } }).__shamGeoThrottle ??= { next: 0 });
+/** Waits for this instance's Nominatim slot; false when the queue is too long (use the fallback instead). */
+async function geoTurn(signal?: AbortSignal): Promise<boolean> {
+  const now = Date.now();
+  const wait = Math.max(0, geo.next - now);
+  if (wait > 4000) return false;
+  geo.next = Math.max(now, geo.next) + 1100;
+  if (wait) await new Promise<void>((resolve, reject) => {
+    const timer = setTimeout(resolve, wait);
+    signal?.addEventListener('abort', () => { clearTimeout(timer); reject(signal.reason); }, { once: true });
+  });
+  return true;
+}
+
+/** One place → coordinates. Nominatim (OpenStreetMap) first, Photon (also OpenStreetMap data) as fallback. */
+export async function searchPlace(query: string, options: { fetch?: typeof fetch; signal?: AbortSignal; lang?: string } = {}): Promise<PlaceResult> {
+  const request = options.fetch || fetch;
+  const lang = options.lang && /^[a-z]{2}$/.test(options.lang) ? options.lang : 'en';
+  const found = (lat: number, lon: number, label: string): PlaceResult => ({ source: 'openstreetmap', places: [{
+    name: query, label: stripHtml(label).slice(0, 140) || query, lat: Math.round(lat * 1e5) / 1e5, lon: Math.round(lon * 1e5) / 1e5, osm: '',
+  }].map((p) => ({ ...p, osm: osmLink(p.lat, p.lon) })) });
+  try {
+    if (!(await geoTurn(options.signal))) throw new Error('Nominatim queue is full');
+    const params = new URLSearchParams({ format: 'jsonv2', limit: '1', q: query, 'accept-language': `${lang},en` });
+    const response = await request(`https://nominatim.openstreetmap.org/search?${params}`, { headers: { 'User-Agent': UA, Referer: 'https://spculculat-oss.github.io/Sham-Perfume/' }, signal: options.signal });
+    if (response.ok) {
+      const hit = ((await response.json()) as { lat?: string; lon?: string; display_name?: string }[])[0];
+      const lat = Number(hit?.lat); const lon = Number(hit?.lon);
+      if (hit && validCoord(lat, lon)) return found(lat, lon, hit.display_name || query);
+      if (!hit) return { places: [], source: 'openstreetmap' }; // OpenStreetMap does not know it
+    }
+  } catch (error) {
+    if (options.signal?.aborted) throw error;
+  }
+  // Nominatim busy or blocked from this host: Photon (komoot) serves the same OpenStreetMap data.
+  const params = new URLSearchParams({ q: query, limit: '1', ...(['en', 'de', 'fr'].includes(lang) ? { lang } : {}) });
+  const response = await request(`https://photon.komoot.io/api/?${params}`, { headers: { 'User-Agent': UA }, signal: options.signal });
+  if (!response.ok) throw new Error(`Photon HTTP ${response.status}`);
+  const feature = ((await response.json()) as { features?: { geometry?: { coordinates?: number[] }; properties?: Record<string, string> }[] }).features?.[0];
+  const [lon, lat] = feature?.geometry?.coordinates || [];
+  if (!feature || !validCoord(Number(lat), Number(lon))) return { places: [], source: 'openstreetmap' };
+  const p = feature.properties || {};
+  return found(Number(lat), Number(lon), [p.name, p.city !== p.name ? p.city : '', p.state, p.country].filter(Boolean).join(', '));
+}
+
+type Cached = { at: number; data: AnyResult };
 const cache: Map<string, Cached> = ((globalThis as { __shamMediaCache?: Map<string, Cached> }).__shamMediaCache ??= new Map());
 // Empty image results and a plain search link (no key / key refused) are rechecked hourly so enabling the YouTube API shows up soon.
-const ttl = (data: ImageResult | VideoResult) => (('images' in data && !data.images.length) || ('source' in data && data.source === 'link') ? 3600_000 : 24 * 3600_000);
+const ttl = (data: AnyResult) => {
+  if (('images' in data && !data.images.length) || ('places' in data && !data.places.length) || ('source' in data && data.source === 'link')) return 3600_000;
+  return 'places' in data ? 7 * 24 * 3600_000 : 24 * 3600_000; // places do not move
+};
 
 /** Public route: GET /api/media?type=image|video&q=…&lang=xx (rate limited, cached for a day). */
 export function createMediaRouter(options: { env?: Env; fetch?: typeof fetch } = {}) {
@@ -158,19 +222,21 @@ export function createMediaRouter(options: { env?: Env; fetch?: typeof fetch } =
   const router = express.Router();
   const limiter = new RateLimiter(Number(env.SHAM_MEDIA_RATE_PER_MIN) || 40, 60_000);
   router.get('/media', async (req, res) => {
-    const type = req.query.type === 'video' ? 'video' : req.query.type === 'image' ? 'image' : undefined;
+    const type = req.query.type === 'video' || req.query.type === 'image' || req.query.type === 'place' ? req.query.type : undefined;
     const q = sanitizeQuery(req.query.q);
     const lang = typeof req.query.lang === 'string' && /^[a-z]{2,3}$/.test(req.query.lang) ? req.query.lang : undefined;
-    if (!type || !q) { res.status(400).json({ error: 'type (image|video) and a short q are required', code: 'INVALID_MEDIA_QUERY' }); return; }
+    if (!type || !q) { res.status(400).json({ error: 'type (image|video|place) and a short q are required', code: 'INVALID_MEDIA_QUERY' }); return; }
     const key = `${type}:${lang || ''}:${q.toLowerCase()}`;
     const hit = cache.get(key);
     if (hit && Date.now() - hit.at < ttl(hit.data)) { res.setHeader('Cache-Control', 'public, max-age=3600'); res.json(hit.data); return; }
     if (!limiter.allow(clientKey(req))) { res.status(429).json({ error: 'Too many media lookups, please wait a minute', code: 'RATE_LIMITED' }); return; }
     try {
-      const signal = AbortSignal.timeout(8000);
+      const signal = AbortSignal.timeout(type === 'place' ? 10_000 : 8000);
       const data = type === 'image'
         ? await searchImages(q, { fetch: options.fetch, signal })
-        : await searchVideos(q, { env, fetch: options.fetch, signal, lang: lang?.slice(0, 2) });
+        : type === 'place'
+          ? await searchPlace(q, { fetch: options.fetch, signal, lang: lang?.slice(0, 2) })
+          : await searchVideos(q, { env, fetch: options.fetch, signal, lang: lang?.slice(0, 2) });
       if (cache.size > 500) cache.delete(cache.keys().next().value!);
       cache.set(key, { at: Date.now(), data });
       res.setHeader('Cache-Control', 'public, max-age=3600');

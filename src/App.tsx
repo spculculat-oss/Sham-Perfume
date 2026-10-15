@@ -15,6 +15,7 @@ import { MacerationTimeSimulator } from './components/MacerationTimeSimulator';
 import { ManufacturingSpecSheet } from './components/ManufacturingSpecSheet';
 import { PerfumerAIChatbot } from './components/PerfumerAIChatbot';
 import { PerfumerMasterLabView } from './components/PerfumerMasterLabView';
+import { ShamAssistant } from './assistant/ShamAssistant';
 import { WorldPerfumeNews } from './components/WorldPerfumeNews';
 import { Footer } from './components/Footer';
 import { TopLanguageHub } from './components/TopLanguageHub';
@@ -886,6 +887,9 @@ export default function App() {
         onCalculateCosting={handleCalculateCosting}
         onPrintSpecSheet={handlePrintSpecSheetForFormula}
       />
+
+      {/* Sham Core services assistant: orders, store, bespoke, B2B, support (opposite corner to Shaheen) */}
+      <ShamAssistant currentLang={currentLang} />
 
       {/* Footer */}
       <Footer

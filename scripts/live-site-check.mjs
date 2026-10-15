@@ -79,6 +79,12 @@ report('Shaheen videos', vidOk && vidData.source === 'youtube',
   vid.status !== 200 ? `HTTP ${vid.status}` : vidData?.source === 'youtube' ? `${vidData.videos.length} embeddable video(s) · e.g. «${vidData.videos[0]?.title}»`
     : 'search link only — enable "YouTube Data API v3" in the Google Cloud project of the Gemini key, or add a YOUTUBE_API_KEY secret',
   vidOk && vidData.source === 'youtube' ? undefined : vid.status === 404 || vidOk ? 'warning' : undefined);
+const place = await get(`${SITE}/api/media?type=place&q=Grasse%2C%20France`);
+const placeData = json(place.text)?.places?.[0];
+// Grasse is at about 43.66 N, 6.92 E.
+const placeOk = place.status === 200 && placeData && Math.abs(placeData.lat - 43.66) < 0.3 && Math.abs(placeData.lon - 6.92) < 0.3;
+report('Shaheen map places', Boolean(placeOk), `HTTP ${place.status}${placeData ? ` · Grasse → ${placeData.lat}, ${placeData.lon} (${placeData.label})` : ' · not located'}`,
+  placeOk ? undefined : place.status === 400 || place.status === 404 ? 'warning' : undefined);
 
 // 4) Second Vercel project (informational: it only gets keys once VERCEL_TOKEN syncs them).
 const second = json((await get(`${SECOND}/api/models`)).text);
