@@ -44,7 +44,23 @@ export type SupportedLanguage =
   | 'lv'
   | 'et'
   | 'ka'
-  | 'hy';
+  | 'hy'
+  // Extended languages — batch 4 (LTR: Africa, SE Asia, Oceania)
+  | 'tl'
+  | 'sw'
+  | 'am'
+  | 'ha'
+  | 'yo'
+  | 'zu'
+  | 'af'
+  | 'so'
+  | 'jv'
+  | 'mi'
+  | 'ne'
+  | 'si'
+  | 'my'
+  | 'km'
+  | 'lo';
 
 export interface LanguageConfig {
   code: SupportedLanguage;
@@ -101,6 +117,22 @@ export const SUPPORTED_LANGUAGES: LanguageConfig[] = [
   { code: 'et', name: 'Estonian', nativeName: 'Eesti', dir: 'ltr', flag: '🇪🇪' },
   { code: 'ka', name: 'Georgian', nativeName: 'ქართული', dir: 'ltr', flag: '🇬🇪' },
   { code: 'hy', name: 'Armenian', nativeName: 'Հայերեն', dir: 'ltr', flag: '🇦🇲' },
+  // Extended languages — batch 4 (LTR: Africa, SE Asia, Oceania)
+  { code: 'tl', name: 'Tagalog', nativeName: 'Filipino', dir: 'ltr', flag: '🇵🇭' },
+  { code: 'sw', name: 'Swahili', nativeName: 'Kiswahili', dir: 'ltr', flag: '🇰🇪' },
+  { code: 'am', name: 'Amharic', nativeName: 'አማርኛ', dir: 'ltr', flag: '🇪🇹' },
+  { code: 'ha', name: 'Hausa', nativeName: 'Hausa', dir: 'ltr', flag: '🇳🇬' },
+  { code: 'yo', name: 'Yoruba', nativeName: 'Yorùbá', dir: 'ltr', flag: '🇳🇬' },
+  { code: 'zu', name: 'Zulu', nativeName: 'isiZulu', dir: 'ltr', flag: '🇿🇦' },
+  { code: 'af', name: 'Afrikaans', nativeName: 'Afrikaans', dir: 'ltr', flag: '🇿🇦' },
+  { code: 'so', name: 'Somali', nativeName: 'Soomaali', dir: 'ltr', flag: '🇸🇴' },
+  { code: 'jv', name: 'Javanese', nativeName: 'Basa Jawa', dir: 'ltr', flag: '🇮🇩' },
+  { code: 'mi', name: 'Maori', nativeName: 'Te Reo Māori', dir: 'ltr', flag: '🇳🇿' },
+  { code: 'ne', name: 'Nepali', nativeName: 'नेपाली', dir: 'ltr', flag: '🇳🇵' },
+  { code: 'si', name: 'Sinhala', nativeName: 'සිංහල', dir: 'ltr', flag: '🇱🇰' },
+  { code: 'my', name: 'Burmese', nativeName: 'မြန်မာ', dir: 'ltr', flag: '🇲🇲' },
+  { code: 'km', name: 'Khmer', nativeName: 'ខ្មែរ', dir: 'ltr', flag: '🇰🇭' },
+  { code: 'lo', name: 'Lao', nativeName: 'ລາວ', dir: 'ltr', flag: '🇱🇦' },
 ];
 
 export type TranslationKey = string;
