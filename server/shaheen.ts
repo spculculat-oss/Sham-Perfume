@@ -195,7 +195,13 @@ export function publicChatResult(result: { reply: string; mode?: string }) {
   return { reply: result.reply, mode, engine: { id: mode, provider: 'shaheen', name: 'الخبير شاهين', badge: 'شاهين', accentColor: 'amber' } };
 }
 
-export interface EngineProbe { id: ModelEngineId; name: string; model: string; configured: boolean; ok: boolean; ms: number; error?: string }
+export interface EngineProbe {
+  id: ModelEngineId; name: string; model: string; configured: boolean; ok: boolean; ms: number; error?: string;
+  /** Provider's own reason (quota name, message) — admin only, never contains the key. */
+  detail?: string;
+  /** Model that actually answered when Shaheen had to switch (retired model or exhausted quota). */
+  usedModel?: string;
+}
 
 /**
  * Admin "test connection": one tiny real request per allowed engine, so a wrong key, a model the
@@ -213,10 +219,14 @@ export async function probeEngines(settings: ShaheenSettings, options: { env?: E
     const started = Date.now();
     const signal = AbortSignal.timeout(options.timeoutMs ?? 20000);
     let failure: EngineFailure | undefined;
+    let detail = '';
+    let usedModel = model;
     try {
       const reply = await callEngine(id, 'Health check. Reply with the single word OK.', [{ role: 'user', text: 'ping' }],
-        { env, fetch: options.fetch, signal, temperature: 0, model, maxTokens: 32, onFailure: (f) => { failure = f; } });
-      return { ...base, ok: Boolean(reply?.trim()), ms: Date.now() - started, ...(reply?.trim() ? {} : { error: failure || 'rejected_or_empty' }) };
+        { env, fetch: options.fetch, signal, temperature: 0, model, maxTokens: 32, onFailure: (f, _s, d) => { failure = f; detail = d; }, onModel: (m) => { usedModel = m; } });
+      const ok = Boolean(reply?.trim());
+      return { ...base, ok, ms: Date.now() - started, ...(ok && usedModel !== model ? { usedModel } : {}),
+        ...(ok ? {} : { error: failure || 'rejected_or_empty', ...(detail ? { detail } : {}) }) };
     } catch {
       return { ...base, ok: false, ms: Date.now() - started, error: signal.aborted ? 'timeout' : 'unreachable' };
     }

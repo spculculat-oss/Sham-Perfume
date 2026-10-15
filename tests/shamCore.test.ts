@@ -260,3 +260,20 @@ test('HTTP: public assistant API and admin protection', async () => {
     assert.equal(res.status, 503);
   } finally { s2.close(); }
 });
+
+test('identity questions are answered by Sham itself, without calling any model or naming a vendor', async () => {
+  let modelCalls = 0;
+  const repo = freshRepo({ SHAM_LLM_BASE_URL: 'http://llm.test/v1', SHAM_LLM_MODEL: 'main' });
+  const bot = new Orchestrator(repo, { env: { SHAM_LLM_BASE_URL: 'http://llm.test/v1', SHAM_LLM_MODEL: 'main' },
+    fetch: (async () => { modelCalls++; return json({ choices: [{ message: { content: 'I am ChatGPT by OpenAI' } }] }); }) as typeof fetch });
+  const control = await bot.chat({ message: 'ازاي اعمل عطر ثابت؟', visitorId: visitor, language: 'ar' });
+  assert.ok(modelCalls > 0 && control.engine.id !== 'sham_local', 'the model is wired up for normal questions');
+  modelCalls = 0;
+  for (const message of ['انت شغال بأنهي ذكاء اصطناعي؟ ChatGPT ولا Gemini؟', 'انت مين؟', 'Who made you? Are you Claude?']) {
+    const out = await bot.chat({ message, visitorId: visitor, language: /[a-z]/i.test(message[0]) ? 'en' : 'ar' });
+    assert.match(out.reply, /مساعد شام|Sham assistant/);
+    assert.doesNotMatch(out.reply, /gemini|openai|chatgpt|claude|anthropic|deepseek|google/i);
+  }
+  assert.equal(modelCalls, 0);
+  assert.equal(route('عطر شغال على العود', defaultServices()).intent === 'identity', false, 'perfume talk is not an identity question');
+});

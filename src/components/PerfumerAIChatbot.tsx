@@ -32,7 +32,7 @@ import { useShaheenChat } from '../hooks/useShaheenChat';
 import { useShaheenModels } from '../hooks/useShaheenModels';
 import { ShaheenServiceStatus, ShaheenModesPanel, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
-import { ENGINE_BADGE, modeBadge, visibleEngines, scrollChatToEnd } from './shaheenEngines';
+import { ENGINE_BADGE, messageTime, modeBadge, visibleEngines, scrollChatToEnd } from './shaheenEngines';
 import type { ShaheenModelChoice } from '../utils/chatStore';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../utils/localizedContent';
@@ -301,18 +301,6 @@ const S = {
     zh: 'Shahin 大师',
     tr: 'Usta Shahin',
     fa: 'استاد شاهین',
-  },
-  default_badge: {
-    ar: '⚡ مجلس الخبراء المؤتمت',
-    en: '⚡ Automated Experts Council',
-    fr: '⚡ Conseil d’experts automatisé',
-    es: '⚡ Consejo automatizado',
-    it: '⚡ Consiglio automatizzato',
-    de: '⚡ Automatischer Expertenrat',
-    ru: '⚡ Автоматический совет экспертов',
-    zh: '⚡ 自动化专家议会',
-    tr: '⚡ Otomatik uzmanlar kurulu',
-    fa: '⚡ شورای خبرگان خودکار',
   },
   transfer_lbl: {
     ar: 'تحويل هذه الخلطة لأيقونات وحاسبات التطبيق:',
@@ -1298,7 +1286,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                               </span>
                             )}
                           </div>
-                          <span className="text-[10px] text-stone-400 font-mono-numbers">{msg.timestamp}</span>
+                          <span className="text-[10px] text-stone-400 font-mono-numbers">{messageTime(msg.timestamp, currentLang)}</span>
                         </div>
                       )}
 
@@ -1421,7 +1409,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                             : 'border-stone-100 text-stone-400'
                         }`}
                       >
-                        <span className="font-mono-numbers">{msg.timestamp}</span>
+                        <span className="font-mono-numbers">{messageTime(msg.timestamp, currentLang)}</span>
 
                         <div className="flex items-center gap-1.5">
                           {/* Copy Button Under EACH message */}
