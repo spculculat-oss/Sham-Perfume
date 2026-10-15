@@ -129,6 +129,15 @@ const TIMEZONE_TO_COUNTRY: Record<string, string> = {
   'Europe/Malta': 'MT',
   'Europe/Dublin': 'IE',
   'Europe/Luxembourg': 'LU',
+  // Extended language batch 7 (final: Asia, Africa)
+  'Asia/Thimphu': 'BT',
+  'Indian/Antananarivo': 'MG',
+  'Africa/Harare': 'ZW',
+  'Africa/Kigali': 'RW',
+  'Africa/Maseru': 'LS',
+  'Africa/Kinshasa': 'CD',
+  'Africa/Lubumbashi': 'CD',
+  'Africa/Asmara': 'ER',
 };
 
 /**
@@ -756,6 +765,84 @@ export function detectUserCountryAndLanguage(): GeoDetectionResult {
       return {
         detectedCountry: findCountryByCode('FR')!,
         detectedLanguage: 'co',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'sd') {
+      return {
+        detectedCountry: findCountryByCode('PK')!,
+        detectedLanguage: 'sd',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'as') {
+      return {
+        detectedCountry: findCountryByCode('IN')!,
+        detectedLanguage: 'as',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'oc') {
+      return {
+        detectedCountry: findCountryByCode('FR')!,
+        detectedLanguage: 'oc',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'bo') {
+      return {
+        detectedCountry: findCountryByCode('CN')!,
+        detectedLanguage: 'bo',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'dz') {
+      return {
+        detectedCountry: findCountryByCode('BT')!,
+        detectedLanguage: 'dz',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'mg') {
+      return {
+        detectedCountry: findCountryByCode('MG')!,
+        detectedLanguage: 'mg',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'sn') {
+      return {
+        detectedCountry: findCountryByCode('ZW')!,
+        detectedLanguage: 'sn',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'rw') {
+      return {
+        detectedCountry: findCountryByCode('RW')!,
+        detectedLanguage: 'rw',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'st') {
+      return {
+        detectedCountry: findCountryByCode('LS')!,
+        detectedLanguage: 'st',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'ln') {
+      return {
+        detectedCountry: findCountryByCode('CD')!,
+        detectedLanguage: 'ln',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'ti') {
+      return {
+        detectedCountry: findCountryByCode('ER')!,
+        detectedLanguage: 'ti',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'om') {
+      return {
+        detectedCountry: findCountryByCode('ET')!,
+        detectedLanguage: 'om',
+        detectionSource: 'default',
+      };
+    } else if (primaryLang === 'ig') {
+      return {
+        detectedCountry: findCountryByCode('NG')!,
+        detectedLanguage: 'ig',
         detectionSource: 'default',
       };
     }
