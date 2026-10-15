@@ -15,7 +15,7 @@ jobs:
   inspect:
     name: Inspect Shaheen answers
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 40
     env:
       DOCTOR_SITE_URL: ${{ vars.DOCTOR_SITE_URL || 'https://sham-perfume-49bf.vercel.app' }}
     steps:
@@ -29,18 +29,33 @@ jobs:
           bun-version-file: package.json
       - run: bun install --frozen-lockfile || bun install
       - name: Shaheen (auto)
+        if: github.event_name == 'workflow_dispatch'
         run: node --import tsx scripts/inspect/run.mts
         env: { INSPECT_MODES: auto }
       - name: Fast answer
+        if: github.event_name == 'workflow_dispatch'
         run: node --import tsx scripts/inspect/run.mts
         env: { INSPECT_MODES: fast }
       - name: Deep analysis
+        if: github.event_name == 'workflow_dispatch'
         run: node --import tsx scripts/inspect/run.mts
         env: { INSPECT_MODES: deep }
-      - name: Real browser (GitHub Pages + Vercel)
+      - name: Install headless browser driver
         if: always()
-        run: |
-          mkdir -p /tmp/pp && (cd /tmp/pp && npm init -y >/dev/null && npm i --no-audit --no-fund puppeteer-core@24 >/dev/null)
-          node scripts/inspect/browser.mjs
-        env:
-          PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js
+        run: mkdir -p /tmp/pp && cd /tmp/pp && npm init -y >/dev/null && npm i --no-audit --no-fund puppeteer-core@24 >/dev/null
+      - name: Browser · GitHub Pages · floating chat
+        if: always()
+        run: node scripts/inspect/browser.mjs
+        env: { INSPECT_SITES: 'https://spculculat-oss.github.io/Sham-Perfume/', INSPECT_SCENE: chat, PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js }
+      - name: Browser · GitHub Pages · lab page
+        if: always()
+        run: node scripts/inspect/browser.mjs
+        env: { INSPECT_SITES: 'https://spculculat-oss.github.io/Sham-Perfume/', INSPECT_SCENE: lab, PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js }
+      - name: Browser · Vercel · floating chat
+        if: always()
+        run: node scripts/inspect/browser.mjs
+        env: { INSPECT_SITES: 'https://sham-perfume-49bf.vercel.app/', INSPECT_SCENE: chat, PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js }
+      - name: Browser · Vercel · lab page
+        if: always()
+        run: node scripts/inspect/browser.mjs
+        env: { INSPECT_SITES: 'https://sham-perfume-49bf.vercel.app/', INSPECT_SCENE: lab, PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js }
