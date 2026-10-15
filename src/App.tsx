@@ -317,7 +317,8 @@ export default function App() {
       const hash = window.location.hash.replace('#', '').split('?')[0];
       const rawTarget = event.state?.tab || hash || 'home';
       const cleanRaw = rawTarget.split('?')[0];
-      const targetTab = cleanRaw === 'formula' || cleanRaw === 'spec' ? 'concentration' : cleanRaw;
+      const targetTab = cleanRaw === 'formula' || cleanRaw === 'spec' ? 'concentration' : 
+                        cleanRaw === 'store' ? 'store' : cleanRaw;
 
       // 3. Double-back safety net on Home to prevent accidental browser tab close
       if (targetTab === 'home' && (!event.state || event.state.isInitial)) {
@@ -347,7 +348,8 @@ export default function App() {
 
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '').split('?')[0];
-      const target = hash === 'formula' || hash === 'spec' ? 'concentration' : (hash || 'home');
+      const target = hash === 'formula' || hash === 'spec' ? 'concentration' : 
+                    hash === 'store' ? 'store' : (hash || 'home');
       setActiveTab(target);
     };
 
