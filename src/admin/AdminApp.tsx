@@ -604,7 +604,7 @@ function EnginesPanel() {
 }
 
 interface SettingsView { item: CoreSettings; engines: EngineStatus[]; shaheen: { source: 'admin' | 'file'; defaults: ShaheenSettings }; storage: { kind: string; persistent: boolean; error?: string } }
-interface ProbeResult { id: ModelEngineId; name: string; model: string; configured: boolean; ok: boolean; ms: number; error?: string; detail?: string; usedModel?: string }
+interface ProbeResult { id: ModelEngineId; name: string; model: string; configured: boolean; ok: boolean; ms: number; error?: string }
 const PROBE_ERROR: Record<string, string> = {
   not_configured: 'غير مهيأ — لا يوجد مفتاح/عنوان في متغيرات الخادم',
   rejected_or_empty: 'المزوّد رفض الطلب أو رجّع رداً فارغاً — راجع صلاحية المفتاح واسم النموذج والرصيد',
@@ -737,8 +737,6 @@ function ShaheenPanel() {
                       <div>
                         <p className="font-semibold">{ENGINE_LABEL[r.id]} <span className="font-normal text-stone-500" dir="ltr">{r.model}</span>{r.ms ? <span className="font-normal text-stone-400"> · {(r.ms / 1000).toFixed(1)} ث</span> : null}</p>
                         <p>{r.ok ? 'يعمل ✅' : PROBE_ERROR[r.error || ''] || 'لم يعمل'}</p>
-                        {r.usedModel && <p className="text-[10px] text-amber-700" dir="ltr">↪ {r.usedModel}</p>}
-                        {r.detail && <p className="text-[10px] text-stone-500 break-words" dir="ltr">{r.detail}</p>}
                       </div>
                     </div>
                   ))}

@@ -9,7 +9,7 @@ import type { ServiceDef } from './types';
 export type Intent =
   | 'greeting' | 'thanks' | 'list_services' | 'track_order' | 'browse_products'
   | 'service_request' | 'handoff' | 'calculate' | 'perfume_expert' | 'question'
-  | 'memory_view' | 'forget' | 'identity';
+  | 'memory_view' | 'forget';
 
 export interface RouteResult {
   intent: Intent;
@@ -46,18 +46,6 @@ export function matchesKeyword(text: string, word: string): boolean {
 const has = (text: string, words: string[]) => words.some((w) => matchesKeyword(text, w));
 
 const GREETING = ['السلام عليكم', 'سلام عليكم', 'مرحبا', 'اهلا', 'هاي', 'صباح الخير', 'مساء الخير', 'hello', 'hi ', 'hey', 'good morning', 'good evening'];
-/** "Who are you / which AI is this?" — answered by Sham itself, never by a model that might name its vendor. */
-const IDENTITY = new RegExp([
-  ' (انت|انتي|حضرتك) (مين|ايه|بوت|روبوت|انسان|ذكاء|موديل|نموذج)',
-  ' مين (انت|انتي|اللي (عملك|برمجك|صنعك|طورك)|عملك|برمجك|صنعك|طورك)',
-  ' (بانهي|باي|بأي|ايه|اي|انهي) (ذكاء|موديل|نموذج|محرك|ai )',
-  ' (انت|انتي|حضرتك) (شغال|مبني|معمول|مبرمج|متدرب) (على|علي|ب)',
-  ' (chat ?gpt|gpt ?-?\\d|gemini|openai|claude|anthropic|deepseek|llama|qwen|bard|copilot) ',
-  ' who (are you|made you|built you|created you|trained you)',
-  ' (what|which) (ai|model|llm|engine) (are you|is this|do you)',
-  ' are you (an? )?(ai|bot|robot|human|gpt|real person)',
-].join('|'));
-
 const THANKS = ['شكرا', 'متشكر', 'تسلم', 'جزاك الله', 'thanks', 'thank you', 'thx'];
 const SERVICES_LIST = ['خدمات', 'خدماتكم', 'بتقدموا ايه', 'تقدمون', 'تعمل ايه', 'تقدر تعمل', 'services', 'what can you do', 'what do you offer'];
 const TRACK = ['تتبع', 'حاله الطلب', 'حالة طلبي', 'طلبي فين', 'فين طلب', 'فين الطلب', 'وصل فين', 'رقم الطلب', 'موصلش', 'مجاش', 'ماوصل', 'لم يصل', 'track', 'order status', 'where is my order'];
@@ -111,7 +99,6 @@ export function route(message: string, services: ServiceDef[]): RouteResult {
   if (has(text, FORGET)) return result('forget', 0.9);
   if (has(text, MEMORY)) return result('memory_view', 0.85);
   if (entities.ref || has(text, TRACK)) return result('track_order', entities.ref ? 0.95 : 0.8);
-  if (IDENTITY.test(text)) return result('identity', 0.9);
   if (has(text, HANDOFF)) return result('handoff', 0.9, services.find((s) => s.kind === 'support')?.id);
   if (entities.volumeMl && entities.percent) return result('calculate', 0.85, services.find((s) => s.kind === 'info')?.id);
 

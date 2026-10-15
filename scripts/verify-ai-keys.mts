@@ -44,8 +44,7 @@ if (process.env.SHAM_VERIFY_FILE) writeFileSync(process.env.SHAM_VERIFY_FILE, JS
 if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${lines.join('\n')}\n`);
 if (process.env.GITHUB_ACTIONS) {
   for (const r of configured) {
-    const extra = [r.usedModel ? `answered by ${r.usedModel}` : '', r.detail || ''].filter(Boolean).join(' · ').replace(/\r?\n/g, ' ');
-    console.log(`::${r.ok ? 'notice' : 'warning'} title=Shaheen key ${r.id}::${r.code} (${r.model}, ${r.ms}ms)${extra ? ` — ${extra}` : ''}`);
+    console.log(`::${r.ok ? 'notice' : 'warning'} title=Shaheen key ${r.id}::${r.code} (${r.model}, ${r.ms}ms)`);
   }
   console.log(`::notice title=Shaheen keys summary::configured=${configured.map((r) => r.id).join(',') || 'none'} ok=${configured.filter((r) => r.ok).map((r) => r.id).join(',') || 'none'}`);
 }
