@@ -29,7 +29,8 @@ try {
     if (i > 50) throw new Error('function did not start');
     await new Promise((r) => setTimeout(r, 200));
   }
-  assert.deepEqual(await (await fetch(`${base}/api/health`, { headers })).json(), { service: 'sham-perfume', status: 'ok' });
+  const health = await (await fetch(`${base}/api/health`, { headers })).json();
+  assert.deepEqual({ service: health.service, status: health.status }, { service: 'sham-perfume', status: 'ok' });
   const models = await (await fetch(`${base}/api/models`, { headers })).json();
   assert.deepEqual(models.models.map((m) => m.id), ['auto', 'fast', 'deep', 'council']);
 

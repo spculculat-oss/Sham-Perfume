@@ -460,13 +460,16 @@ Seviye: {level}
 interface RawMaterialsEncyclopediaProps {
   currentLang?: SupportedLanguage;
   onAddMaterialToPyramid: (note: PyramidNote) => void;
+  /** A material Shaheen was asked about: the encyclopedia opens filtered on it. */
+  initialSearch?: string;
 }
 
 export const RawMaterialsEncyclopedia: React.FC<RawMaterialsEncyclopediaProps> = ({
   currentLang = 'ar',
   onAddMaterialToPyramid,
+  initialSearch = '',
 }) => {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(initialSearch);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [addedId, setAddedId] = useState<string | null>(null);

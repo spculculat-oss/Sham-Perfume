@@ -1,18 +1,20 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  Activity, ArrowRight, BookOpen, Bot, Boxes, ClipboardList, Cpu, Database, Download, FlaskConical, Headset, KeyRound,
+  Activity, ArrowRight, ArrowDownToLine, BookOpen, Bot, Boxes, ClipboardList, Cpu, Database, Download, FlaskConical, Headset, KeyRound,
   BellRing, CheckCircle2, CircleAlert, EyeOff, LayoutDashboard, Lightbulb, Loader2, LogOut, MessagesSquare, Plus, RefreshCw, Save, Send,
-  Settings2, ThumbsDown, ThumbsUp, Trash2, TriangleAlert, Users, Wand2,
-  ChevronUp, ChevronDown,
+  Settings2, Stethoscope, ThumbsDown, ThumbsUp, Trash2, TriangleAlert, Users, Wand2,
+  ChevronUp, ChevronDown, Mail, Eye, ExternalLink, Check, Sparkles,
 } from 'lucide-react';
+import UpdatesPanel from './UpdatesPanel';
 import type {
   Conversation, CoreSettings, CouncilMember, CouncilRole, CouncilTranscript, EngineId, KnowledgeDoc, KnowledgeGap, ModelEngineId, Product, RequestStatus, ServiceDef, ServiceRequest, ShaheenSettings,
 } from '../../server/core/types';
 import type { AgentResult } from '../../server/core/adminAgent';
 import { AdminApiError, adminRequest, getToken, send, setToken } from './adminApi';
 import { apiUrl, isStaticHosting } from '../utils/api';
+import { parseDoctorIssue, type DoctorReport } from './doctorReport';
 
-type Tab = 'overview' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'sandbox';
+type Tab = 'overview' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'emails' | 'doctor' | 'sandbox' | 'updates';
 interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: string }
 interface Overview {
   storage: { kind: string; persistent: boolean; error?: string };
@@ -20,6 +22,7 @@ interface Overview {
   counts: Record<string, number>;
   byStatus: Record<string, number>; byType: Record<string, number>; intents: Record<string, number>; engineUsage: Record<string, number>; pipelineValue: Record<string, number>;
   notifications?: { configured: boolean };
+  emailNotifications?: { configured: boolean; provider: string; sentCount: number };
 }
 interface FeedbackItem { conversationId: string; messageId?: string; rating: 'up' | 'down'; reason?: string; at: string; question: string; answer: string; engine?: string; intent?: string }
 
@@ -28,13 +31,16 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'agent', label: 'المساعد الإداري', icon: <Wand2 className="w-4 h-4" /> },
   { id: 'quality', label: 'الجودة والتعلّم', icon: <Lightbulb className="w-4 h-4" /> },
   { id: 'requests', label: 'الطلبات والعروض', icon: <ClipboardList className="w-4 h-4" /> },
+  { id: 'emails', label: 'إشعارات البريد', icon: <Mail className="w-4 h-4" /> },
   { id: 'conversations', label: 'المحادثات', icon: <MessagesSquare className="w-4 h-4" /> },
   { id: 'products', label: 'المنتجات', icon: <Boxes className="w-4 h-4" /> },
   { id: 'knowledge', label: 'قاعدة المعرفة', icon: <BookOpen className="w-4 h-4" /> },
   { id: 'services', label: 'الخدمات', icon: <Settings2 className="w-4 h-4" /> },
   { id: 'engines', label: 'المحركات والإعدادات', icon: <Cpu className="w-4 h-4" /> },
   { id: 'shaheen', label: 'الخبير شاهين', icon: <FlaskConical className="w-4 h-4" /> },
+  { id: 'doctor', label: 'طبيب شاهين', icon: <Stethoscope className="w-4 h-4" /> },
   { id: 'sandbox', label: 'مختبر المساعد', icon: <FlaskConical className="w-4 h-4" /> },
+  { id: 'updates', label: 'بيئة التحديثات', icon: <ArrowDownToLine className="w-4 h-4" /> },
 ];
 
 const STATUS: Record<RequestStatus, string> = { new: 'جديد', in_progress: 'قيد التنفيذ', quoted: 'عرض سعر', confirmed: 'مؤكد', completed: 'مكتمل', cancelled: 'ملغي' };
@@ -128,7 +134,10 @@ export default function AdminApp() {
           {tab === 'services' && <ServicesPanel />}
           {tab === 'engines' && <EnginesPanel />}
           {tab === 'shaheen' && <ShaheenPanel />}
+          {tab === 'emails' && <EmailsPanel />}
+          {tab === 'doctor' && <DoctorPanel />}
           {tab === 'sandbox' && <SandboxPanel />}
+          {tab === 'updates' && <UpdatesPanel />}
         </main>
       </div>
     </Shell>
@@ -236,25 +245,125 @@ function RequestsPanel() {
   const [note, setNote] = useState('');
   const [busy, setBusy] = useState(false);
   const [actionError, setActionError] = useState('');
+  const [emailNotice, setEmailNotice] = useState<{ message: string; isError?: boolean } | null>(null);
 
-  const update = async (patch: { status?: RequestStatus; note?: string }) => {
+  // Email notification states
+  const [notifyCustomer, setNotifyCustomer] = useState(true);
+  const [customEmailNote, setCustomEmailNote] = useState('');
+  const [previewModalOpen, setPreviewModalOpen] = useState(false);
+  const [previewData, setPreviewData] = useState<{ subject: string; html: string; text: string; recipientEmail: string; customerName: string } | null>(null);
+  const [previewLoading, setPreviewLoading] = useState(false);
+  const [sendingManualEmail, setSendingManualEmail] = useState(false);
+
+  // Auto-enable notifyCustomer when selecting a request with email
+  useEffect(() => {
+    if (selected?.contact.email) {
+      setNotifyCustomer(true);
+    }
+    setCustomEmailNote('');
+    setEmailNotice(null);
+  }, [selected?.id]);
+
+  const update = async (patch: { status?: RequestStatus; note?: string; notifyCustomer?: boolean; customEmailNote?: string }) => {
     if (!selected) return;
-    setBusy(true); setActionError('');
+    setBusy(true); setActionError(''); setEmailNotice(null);
     try {
-      const { item } = await adminRequest<{ item: ServiceRequest }>(`/requests/${selected.id}`, send('PATCH', patch));
-      setSelected(item); setNote(''); reload();
-    } catch (e) { setActionError((e as Error).message); } finally { setBusy(false); }
+      const payload = {
+        ...patch,
+        notifyCustomer: patch.status ? notifyCustomer : undefined,
+        customEmailNote: patch.status && customEmailNote.trim() ? customEmailNote.trim() : undefined,
+      };
+      const response = await adminRequest<{
+        item: ServiceRequest;
+        emailNotification?: { success: boolean; delivery: string; provider: string; recipient: string; error?: string };
+      }>(`/requests/${selected.id}`, send('PATCH', payload));
+
+      setSelected(response.item);
+      setNote('');
+      setCustomEmailNote('');
+      reload();
+
+      if (response.emailNotification) {
+        if (response.emailNotification.success) {
+          setEmailNotice({
+            message: `✉️ تم إرسال إشعار بالبريد الإلكتروني للعميل (${response.emailNotification.recipient}) بنجاح عبر ${response.emailNotification.provider}`,
+          });
+        } else {
+          setEmailNotice({
+            message: `⚠️ تنبيه إرسال البريد: ${response.emailNotification.error || 'تعذر الإرسال'}`,
+            isError: true,
+          });
+        }
+      }
+    } catch (e) {
+      setActionError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const openEmailPreview = async (targetStatus?: RequestStatus) => {
+    if (!selected) return;
+    setPreviewLoading(true);
+    try {
+      const statusParam = targetStatus || selected.status;
+      const noteParam = customEmailNote.trim() ? `&customNote=${encodeURIComponent(customEmailNote.trim())}` : '';
+      const { preview } = await adminRequest<{ preview: { subject: string; html: string; text: string; recipientEmail: string; customerName: string } }>(
+        `/requests/${selected.id}/email-preview?status=${statusParam}${noteParam}`
+      );
+      setPreviewData(preview);
+      setPreviewModalOpen(true);
+    } catch (e) {
+      setActionError((e as Error).message);
+    } finally {
+      setPreviewLoading(false);
+    }
+  };
+
+  const sendManualNotification = async () => {
+    if (!selected || !selected.contact.email) return;
+    setSendingManualEmail(true); setEmailNotice(null);
+    try {
+      const response = await adminRequest<{
+        ok: boolean;
+        item: ServiceRequest;
+        emailNotification: { success: boolean; delivery: string; provider: string; recipient: string; error?: string };
+      }>(`/requests/${selected.id}/notify-email`, send('POST', {
+        status: selected.status,
+        customNote: customEmailNote.trim() || undefined,
+      }));
+      setSelected(response.item);
+      reload();
+      if (response.emailNotification.success) {
+        setEmailNotice({
+          message: `✉️ تم إرسال إشعار البريد الإلكتروني فورياً إلى ${response.emailNotification.recipient} (${response.emailNotification.provider})`,
+        });
+      } else {
+        setEmailNotice({
+          message: `⚠️ فشل إرسال البريد: ${response.emailNotification.error || 'خطأ غير معروف'}`,
+          isError: true,
+        });
+      }
+    } catch (e) {
+      setActionError((e as Error).message);
+    } finally {
+      setSendingManualEmail(false);
+    }
   };
 
   return (
     <>
-      <Header title="الطلبات والعروض" subtitle="طلبات المتجر، العطور المخصصة، الجملة، الاستشارات وتذاكر الدعم"
+      <Header
+        title="الطلبات والعروض"
+        subtitle="طلبات المتجر، العطور المخصصة، الجملة، الاستشارات مع نظام إشعارات البريد التلقائي للعملاء"
         actions={<>
           <select className={input} value={filter} onChange={(e) => setFilter(e.target.value as RequestStatus | '')} aria-label="تصفية حسب الحالة">
-            <option value="">كل الحالات</option>{Object.entries(STATUS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+            <option value="">كل الحالات</option>
+            {Object.entries(STATUS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
           </select>
           <button onClick={reload} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" /></button>
-        </>} />
+        </>}
+      />
       <Feedback error={error} loading={loading && !data} />
       <div className="grid lg:grid-cols-5 gap-4">
         <div className="lg:col-span-3 space-y-2">
@@ -262,48 +371,659 @@ function RequestsPanel() {
           {data?.items.map((r) => (
             <button key={r.id} onClick={() => setSelected(r)} className={`${card} w-full text-start hover:border-amber-400 ${selected?.id === r.id ? 'border-amber-500 ring-2 ring-amber-200' : ''}`}>
               <div className="flex flex-wrap items-center gap-2 text-sm">
-                <b dir="ltr">{r.ref}</b><span className="text-xs rounded-full bg-stone-100 px-2 py-0.5">{TYPE[r.type]}</span>
+                <b dir="ltr">{r.ref}</b>
+                <span className="text-xs rounded-full bg-stone-100 px-2 py-0.5">{TYPE[r.type]}</span>
                 <span className={`text-xs rounded-full px-2 py-0.5 ${r.status === 'new' ? 'bg-amber-100 text-amber-900' : r.status === 'cancelled' ? 'bg-red-100 text-red-800' : 'bg-emerald-100 text-emerald-800'}`}>{STATUS[r.status]}</span>
+                {r.contact.email && (
+                  <span className="inline-flex items-center gap-1 text-[11px] rounded-full bg-amber-50 border border-amber-200 text-amber-800 px-2 py-0.5" title={`إشعار البريد متاح: ${r.contact.email}`}>
+                    <Mail className="w-3 h-3 text-amber-700" />
+                    <span className="max-w-[120px] truncate" dir="ltr">{r.contact.email}</span>
+                  </span>
+                )}
                 <span className="ms-auto text-xs text-stone-400">{fmtDate(r.createdAt)}</span>
               </div>
-              <p className="text-xs text-stone-600 mt-1">{r.contact.name} · <span dir="ltr">{r.contact.phone || r.contact.email}</span>{r.total !== undefined ? ` · ${r.total} ${r.currency}` : ''}</p>
+              <p className="text-xs text-stone-600 mt-1">
+                {r.contact.name} · <span dir="ltr">{r.contact.phone || r.contact.email}</span>
+                {r.total !== undefined ? ` · ${r.total} ${r.currency}` : ''}
+              </p>
             </button>
           ))}
         </div>
+
         <div className="lg:col-span-2">
           {selected ? (
             <div className={`${card} space-y-3 lg:sticky lg:top-4`}>
-              <div className="flex items-center justify-between"><h2 className="font-bold" dir="ltr">{selected.ref}</h2><span className="text-xs text-stone-500">{TYPE[selected.type]} · {selected.serviceId}</span></div>
-              <div className="text-sm space-y-1">
+              <div className="flex items-center justify-between">
+                <h2 className="font-bold text-base" dir="ltr">{selected.ref}</h2>
+                <span className="text-xs text-stone-500">{TYPE[selected.type]} · {selected.serviceId}</span>
+              </div>
+
+              <div className="text-sm space-y-1 bg-stone-50 rounded-xl p-3">
                 <p>العميل: <b>{selected.contact.name}</b></p>
                 {selected.contact.phone && <p>الهاتف: <a dir="ltr" className="text-emerald-700 underline" href={`tel:${selected.contact.phone}`}>{selected.contact.phone}</a></p>}
-                {selected.contact.email && <p>البريد: <a dir="ltr" className="text-emerald-700 underline" href={`mailto:${selected.contact.email}`}>{selected.contact.email}</a></p>}
+                {selected.contact.email ? (
+                  <p className="flex items-center gap-1.5 flex-wrap">
+                    البريد: <a dir="ltr" className="text-emerald-700 underline font-semibold" href={`mailto:${selected.contact.email}`}>{selected.contact.email}</a>
+                    <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-md font-medium">مفعّل للإشعارات</span>
+                  </p>
+                ) : (
+                  <p className="text-xs text-stone-400">البريد: غير مسجل (الإشعارات بالبريد غير متاحة)</p>
+                )}
               </div>
+
               {Object.keys(selected.fields).length > 0 && (
-                <dl className="text-xs bg-stone-50 rounded-xl p-3 space-y-1">{Object.entries(selected.fields).map(([k, v]) => <div key={k}><dt className="inline font-semibold">{k}: </dt><dd className="inline whitespace-pre-wrap">{v}</dd></div>)}</dl>
+                <dl className="text-xs bg-stone-50 rounded-xl p-3 space-y-1">
+                  {Object.entries(selected.fields).map(([k, v]) => (
+                    <div key={k}><dt className="inline font-semibold">{k}: </dt><dd className="inline whitespace-pre-wrap">{v}</dd></div>
+                  ))}
+                </dl>
               )}
+
               {selected.items && (
-                <table className="w-full text-xs"><thead><tr className="text-stone-500"><th className="text-start">المنتج</th><th>الكمية</th><th>السعر</th></tr></thead>
-                  <tbody>{selected.items.map((i) => <tr key={i.productId}><td>{i.name} <span className="text-stone-400" dir="ltr">({i.sku})</span></td><td className="text-center">{i.quantity}</td><td className="text-center">{i.unitPrice} {i.currency}</td></tr>)}</tbody>
-                  <tfoot><tr className="font-bold"><td colSpan={2}>الإجمالي</td><td className="text-center">{selected.total} {selected.currency}</td></tr></tfoot></table>
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="text-stone-500"><th className="text-start">المنتج</th><th>الكمية</th><th>السعر</th></tr>
+                  </thead>
+                  <tbody>
+                    {selected.items.map((i) => (
+                      <tr key={i.productId}>
+                        <td>{i.name} <span className="text-stone-400" dir="ltr">({i.sku})</span></td>
+                        <td className="text-center">{i.quantity}</td>
+                        <td className="text-center">{i.unitPrice} {i.currency}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot>
+                    <tr className="font-bold"><td colSpan={2}>الإجمالي</td><td className="text-center">{selected.total} {selected.currency}</td></tr>
+                  </tfoot>
+                </table>
               )}
-              <label className="block text-xs font-semibold">تغيير الحالة
-                <select className={`${input} mt-1`} value={selected.status} disabled={busy || selected.status === 'cancelled'} onChange={(e) => {
-                  const next = e.target.value as RequestStatus;
-                  if (next === 'cancelled' && !confirm('إلغاء الطلب نهائي ويعيد الكميات للمخزون. متأكد؟')) return;
-                  void update({ status: next });
-                }}>{Object.entries(STATUS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select>
-              </label>
-              <div className="space-y-2">
-                <textarea className={input} rows={2} value={note} onChange={(e) => setNote(e.target.value)} placeholder="ملاحظة داخلية (عرض سعر، موعد شحن…)" aria-label="ملاحظة داخلية" />
-                <button disabled={busy || !note.trim()} onClick={() => update({ note })} className={`${btn} bg-stone-900 text-amber-100 w-full`}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : 'إضافة ملاحظة'}</button>
+
+              {/* Status Update & Email Notification Controls */}
+              <div className="p-3 bg-amber-50/60 border border-amber-200/80 rounded-xl space-y-2.5">
+                <label className="block text-xs font-semibold text-stone-800">
+                  تغيير حالة الطلب
+                  <select
+                    className={`${input} mt-1`}
+                    value={selected.status}
+                    disabled={busy || selected.status === 'cancelled'}
+                    onChange={(e) => {
+                      const next = e.target.value as RequestStatus;
+                      if (next === 'cancelled' && !confirm('إلغاء الطلب نهائي ويعيد الكميات للمخزون. متأكد؟')) return;
+                      void update({ status: next });
+                    }}
+                  >
+                    {Object.entries(STATUS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+                  </select>
+                </label>
+
+                {selected.contact.email && (
+                  <div className="space-y-2 pt-1 border-t border-amber-200/60">
+                    <label className="flex items-center gap-2 text-xs font-medium text-stone-700 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={notifyCustomer}
+                        onChange={(e) => setNotifyCustomer(e.target.checked)}
+                        className="rounded text-amber-600 focus:ring-amber-500 w-4 h-4"
+                      />
+                      <span>إرسال إشعار بريد إلكتروني للعميل تلقائياً عند تغيير الحالة</span>
+                    </label>
+
+                    <input
+                      type="text"
+                      className={`${input} text-xs`}
+                      value={customEmailNote}
+                      onChange={(e) => setCustomEmailNote(e.target.value)}
+                      placeholder="ملاحظة خاصة بالعميل تُرفق بالبريد (رقم الشحنة، تفاصيل العرض…)"
+                      aria-label="ملاحظة البريد"
+                    />
+
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => void openEmailPreview()}
+                        disabled={previewLoading}
+                        className={`${btn} flex-1 text-xs bg-white border border-stone-300 text-stone-800 hover:bg-stone-50`}
+                      >
+                        {previewLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Eye className="w-3.5 h-3.5 text-stone-600" />}
+                        معاينة البريد
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => void sendManualNotification()}
+                        disabled={sendingManualEmail || busy}
+                        className={`${btn} flex-1 text-xs bg-amber-600 text-white hover:bg-amber-700`}
+                        title="إرسال إشعار بالحالة الحالية فوراً للعميل"
+                      >
+                        {sendingManualEmail ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Mail className="w-3.5 h-3.5" />}
+                        إرسال إشعار الآن
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
+
+              {emailNotice && (
+                <div className={`p-2.5 rounded-xl text-xs flex items-center gap-2 ${emailNotice.isError ? 'bg-red-50 text-red-800 border border-red-200' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}`}>
+                  {emailNotice.isError ? <CircleAlert className="w-4 h-4 shrink-0 text-red-600" /> : <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />}
+                  <span>{emailNotice.message}</span>
+                </div>
+              )}
+
+              {/* Internal Admin Note */}
+              <div className="space-y-2 pt-2 border-t">
+                <textarea
+                  className={input}
+                  rows={2}
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                  placeholder="ملاحظة داخلية للإدارة (مذكرات داخلية، موعد توريد…)"
+                  aria-label="ملاحظة داخلية"
+                />
+                <button
+                  disabled={busy || !note.trim()}
+                  onClick={() => update({ note })}
+                  className={`${btn} bg-stone-900 text-amber-100 w-full`}
+                >
+                  {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : 'إضافة ملاحظة داخلية'}
+                </button>
+              </div>
+
               {actionError && <p className="text-xs text-red-700">{actionError}</p>}
-              <ol className="text-[11px] text-stone-500 space-y-1 border-t pt-2 max-h-40 overflow-y-auto">{[...selected.notes].reverse().map((n, i) => <li key={i}><span className="text-stone-400">{fmtDate(n.at)}</span> — {n.by === 'admin' ? '👤 ' : ''}{n.text}</li>)}</ol>
+
+              <div className="border-t pt-2">
+                <p className="text-xs font-semibold text-stone-600 mb-1">سجل التحديثات والإشعارات:</p>
+                <ol className="text-[11px] text-stone-500 space-y-1 max-h-48 overflow-y-auto">
+                  {[...selected.notes].reverse().map((n, i) => (
+                    <li key={i} className={`p-1.5 rounded-lg ${n.text.includes('✉️') ? 'bg-amber-50/70 text-amber-900 font-medium' : 'bg-stone-50'}`}>
+                      <span className="text-stone-400">{fmtDate(n.at)}</span> — {n.by === 'admin' ? '👤 ' : ''}{n.text}
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </div>
-          ) : <p className="text-sm text-stone-400">اختر طلباً لعرض التفاصيل.</p>}
+          ) : (
+            <p className="text-sm text-stone-400">اختر طلباً لعرض التفاصيل وتحديث حالته وإشعاراته.</p>
+          )}
         </div>
       </div>
+
+      {/* Email Preview Modal */}
+      {previewModalOpen && previewData && (
+        <EmailPreviewModal
+          preview={previewData}
+          onClose={() => setPreviewModalOpen(false)}
+        />
+      )}
+    </>
+  );
+}
+
+function EmailPreviewModal({
+  preview,
+  onClose,
+}: {
+  preview: { subject: string; html: string; text: string; recipientEmail: string; customerName: string };
+  onClose: () => void;
+}) {
+  const [tab, setTab] = useState<'html' | 'text'>('html');
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="bg-white rounded-2xl shadow-2xl border border-stone-200 w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden">
+        {/* Header */}
+        <div className="p-4 bg-stone-900 text-stone-100 flex items-center justify-between border-b border-stone-800">
+          <div className="flex items-center gap-2">
+            <Mail className="w-5 h-5 text-amber-400" />
+            <div>
+              <h3 className="font-bold text-sm">معاينة إشعار البريد الإلكتروني للعميل</h3>
+              <p className="text-xs text-stone-400">إلى: <span dir="ltr" className="text-amber-300 font-mono">{preview.recipientEmail}</span> ({preview.customerName})</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg p-1.5 text-stone-400 hover:text-white hover:bg-white/10 transition-colors"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Subject line bar */}
+        <div className="px-4 py-2.5 bg-stone-100 border-b border-stone-200 flex items-center justify-between gap-2 text-xs">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="font-semibold text-stone-600 shrink-0">عنوان الرسالة (Subject):</span>
+            <span className="font-medium text-stone-900 truncate" dir="rtl">{preview.subject}</span>
+          </div>
+          <div className="flex gap-1 shrink-0">
+            <button
+              type="button"
+              onClick={() => setTab('html')}
+              className={`px-2.5 py-1 rounded-lg font-semibold text-xs transition-colors ${tab === 'html' ? 'bg-amber-600 text-white' : 'bg-white text-stone-700 border border-stone-300'}`}
+            >
+              عرض منسق (HTML)
+            </button>
+            <button
+              type="button"
+              onClick={() => setTab('text')}
+              className={`px-2.5 py-1 rounded-lg font-semibold text-xs transition-colors ${tab === 'text' ? 'bg-amber-600 text-white' : 'bg-white text-stone-700 border border-stone-300'}`}
+            >
+              نص عادي (Text)
+            </button>
+          </div>
+        </div>
+
+        {/* Body content */}
+        <div className="flex-1 overflow-y-auto p-4 bg-stone-50 min-h-[380px]">
+          {tab === 'html' ? (
+            <div className="border border-stone-200 rounded-xl overflow-hidden bg-white shadow-sm">
+              <iframe
+                title="Email Preview"
+                srcDoc={preview.html}
+                className="w-full h-[520px] border-0"
+                sandbox="allow-same-origin"
+              />
+            </div>
+          ) : (
+            <pre className="p-4 bg-white border border-stone-200 rounded-xl text-xs font-mono text-stone-800 whitespace-pre-wrap leading-relaxed select-all" dir="rtl">
+              {preview.text}
+            </pre>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="p-3 bg-white border-t border-stone-200 flex items-center justify-between text-xs">
+          <span className="text-stone-500">تصميم متجاوب ومتوافق مع تطبيقات البريد (Gmail, Outlook, Apple Mail).</span>
+          <button
+            type="button"
+            onClick={onClose}
+            className={`${btn} bg-stone-900 text-amber-100 text-xs`}
+          >
+            إغلاق المعاينة
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface EmailHistoryItem {
+  id: string;
+  requestId: string;
+  orderRef: string;
+  recipientEmail: string;
+  customerName: string;
+  status: RequestStatus;
+  statusLabelAr: string;
+  subject: string;
+  sentAt: string;
+  deliveryStatus: 'sent' | 'simulated' | 'skipped' | 'failed';
+  provider: string;
+  error?: string;
+  htmlContent: string;
+  textContent: string;
+}
+
+function EmailsPanel() {
+  const { data: overview, reload: reloadOverview } = useLoad<Overview>('/overview');
+  const { data: historyData, loading: historyLoading, reload: reloadHistory } = useLoad<{ items: EmailHistoryItem[] }>('/emails/history');
+
+  const [testEmail, setTestEmail] = useState('');
+  const [testStatus, setTestStatus] = useState<RequestStatus>('in_progress');
+  const [testNote, setTestNote] = useState('رسالة تجريبية: طلبك قيد التجهيز بعناية فائقة من مختبرات شام.');
+  const [testBusy, setTestBusy] = useState(false);
+  const [testResult, setTestResult] = useState<{ success: boolean; message: string } | null>(null);
+
+  // Template preview explorer
+  const [activeTemplateStatus, setActiveTemplateStatus] = useState<RequestStatus>('in_progress');
+  const [previewModalItem, setPreviewModalItem] = useState<{ subject: string; html: string; text: string; recipientEmail: string; customerName: string } | null>(null);
+
+  const sendTest = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!testEmail.trim() || !testEmail.includes('@')) return;
+    setTestBusy(true); setTestResult(null);
+    try {
+      const response = await adminRequest<{
+        ok: boolean;
+        emailNotification: { success: boolean; delivery: string; provider: string; recipient: string; error?: string };
+      }>('/emails/test', send('POST', {
+        email: testEmail.trim(),
+        status: testStatus,
+        customNote: testNote.trim() || undefined,
+      }));
+
+      if (response.ok) {
+        setTestResult({
+          success: true,
+          message: `تم الإرسال بنجاح إلى ${response.emailNotification.recipient} عبر مزود ${response.emailNotification.provider} (${response.emailNotification.delivery})`,
+        });
+        reloadHistory();
+        reloadOverview();
+      } else {
+        setTestResult({
+          success: false,
+          message: `تعذر الإرسال: ${response.emailNotification.error || 'خطأ'}`,
+        });
+      }
+    } catch (err) {
+      setTestResult({
+        success: false,
+        message: (err as Error).message,
+      });
+    } finally {
+      setTestBusy(false);
+    }
+  };
+
+  const inspectEmail = (item: EmailHistoryItem) => {
+    setPreviewModalItem({
+      subject: item.subject,
+      html: item.htmlContent,
+      text: item.textContent,
+      recipientEmail: item.recipientEmail,
+      customerName: item.customerName,
+    });
+  };
+
+  return (
+    <>
+      <Header
+        title="نظام إشعارات البريد الإلكتروني للعملاء"
+        subtitle="إدارة قوالب إشعارات الطلبات وتحديثات الحالات، واختبار الإرسال، ومراجعة سجل البريد المرسل"
+        actions={<>
+          <button onClick={() => { reloadOverview(); reloadHistory(); }} className={`${btn} bg-white border border-stone-300`}>
+            <RefreshCw className="w-4 h-4" />
+            تحديث
+          </button>
+        </>}
+      />
+
+      {/* Provider Status Card */}
+      <div className="grid md:grid-cols-3 gap-4 mb-6">
+        <div className={`${card} border-amber-300 bg-amber-50/40`}>
+          <div className="flex items-center gap-2 text-amber-900 font-bold text-sm mb-1">
+            <Mail className="w-4 h-4 text-amber-700" />
+            مزود البريد النشط
+          </div>
+          <p className="text-2xl font-bold text-stone-900 mt-1">
+            {overview?.emailNotifications?.provider || 'محاكي آمن (Simulator)'}
+          </p>
+          <p className="text-xs text-stone-500 mt-1">
+            {overview?.emailNotifications?.configured
+              ? '✅ متصل ومفعل لإرسال الرسائل الحقيقية للعملاء'
+              : '⚡ يعمل في وضع المحاكاة الآمنة والتدقيق الداخلي (دون استهلاك رصيد خارجي)'}
+          </p>
+        </div>
+
+        <div className={card}>
+          <div className="flex items-center gap-2 text-stone-700 font-bold text-sm mb-1">
+            <Send className="w-4 h-4 text-emerald-600" />
+            إجمالي الإشعارات المسجلة
+          </div>
+          <p className="text-2xl font-bold text-emerald-700 mt-1">
+            {historyData?.items.length ?? overview?.emailNotifications?.sentCount ?? 0}
+          </p>
+          <p className="text-xs text-stone-500 mt-1">إشعارات تم توليدها وإرسالها للعملاء عند تغيير الحالات</p>
+        </div>
+
+        <div className={card}>
+          <div className="flex items-center gap-2 text-stone-700 font-bold text-sm mb-1">
+            <Check className="w-4 h-4 text-amber-600" />
+            حالات الإشعار التلقائي
+          </div>
+          <div className="flex flex-wrap gap-1 mt-2">
+            {Object.entries(STATUS).map(([k, v]) => (
+              <span key={k} className="text-[11px] bg-stone-100 border border-stone-200 rounded-md px-2 py-0.5 font-medium">
+                {v}
+              </span>
+            ))}
+          </div>
+          <p className="text-[10px] text-stone-400 mt-2">يرسل النظام إشعاراً فورياً بتصميم متجاوب وبطاقة تتبع مباشرة</p>
+        </div>
+      </div>
+
+      <div className="grid lg:grid-cols-12 gap-6 mb-6">
+        {/* Test Email Dispatcher */}
+        <div className="lg:col-span-5">
+          <form onSubmit={sendTest} className={`${card} space-y-3`}>
+            <div className="flex items-center gap-2 border-b pb-2">
+              <Mail className="w-4 h-4 text-amber-600" />
+              <h2 className="font-bold text-sm">إرسال بريد تجريبي لاختبار النظام</h2>
+            </div>
+            <p className="text-xs text-stone-500">
+              يمكنك كتابة أي بريد إلكتروني واختيار الحالة لتجربة استلام الرسالة والتأكد من مظهرها وجودتها.
+            </p>
+
+            <label className="block text-xs font-semibold">
+              البريد الإلكتروني المستلم:
+              <input
+                type="email"
+                required
+                className={`${input} mt-1`}
+                dir="ltr"
+                placeholder="customer@example.com"
+                value={testEmail}
+                onChange={(e) => setTestEmail(e.target.value)}
+              />
+            </label>
+
+            <label className="block text-xs font-semibold">
+              حالة الطلب المراد تجربتها:
+              <select
+                className={`${input} mt-1`}
+                value={testStatus}
+                onChange={(e) => setTestStatus(e.target.value as RequestStatus)}
+              >
+                {Object.entries(STATUS).map(([k, v]) => (
+                  <option key={k} value={k}>{v} ({k})</option>
+                ))}
+              </select>
+            </label>
+
+            <label className="block text-xs font-semibold">
+              ملاحظة العميل التجريبية:
+              <textarea
+                className={`${input} mt-1`}
+                rows={2}
+                value={testNote}
+                onChange={(e) => setTestNote(e.target.value)}
+                placeholder="ملاحظة إضافية للعميل"
+              />
+            </label>
+
+            <button
+              type="submit"
+              disabled={testBusy || !testEmail.trim()}
+              className={`${btn} bg-amber-600 text-white w-full hover:bg-amber-700`}
+            >
+              {testBusy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+              إرسال البريد التجريبي الآن
+            </button>
+
+            {testResult && (
+              <div className={`p-3 rounded-xl text-xs flex items-center gap-2 ${testResult.success ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-red-50 text-red-800 border border-red-200'}`}>
+                {testResult.success ? <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" /> : <CircleAlert className="w-4 h-4 text-red-600 shrink-0" />}
+                <span>{testResult.message}</span>
+              </div>
+            )}
+          </form>
+        </div>
+
+        {/* Template Explorer / Quick Preview */}
+        <div className="lg:col-span-7">
+          <div className={`${card} space-y-3`}>
+            <div className="flex items-center justify-between border-b pb-2">
+              <div className="flex items-center gap-2">
+                <Eye className="w-4 h-4 text-stone-700" />
+                <h2 className="font-bold text-sm">استعراض مظهر القوالب للعملاء</h2>
+              </div>
+              <span className="text-xs text-stone-400">تصميم فاخر بنمط شام</span>
+            </div>
+
+            <div className="flex flex-wrap gap-1.5">
+              {Object.entries(STATUS).map(([k, v]) => (
+                <button
+                  key={k}
+                  type="button"
+                  onClick={() => setActiveTemplateStatus(k as RequestStatus)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${activeTemplateStatus === k ? 'bg-stone-900 text-amber-100 ring-2 ring-amber-400' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'}`}
+                >
+                  {v}
+                </button>
+              ))}
+            </div>
+
+            <div className="p-4 bg-stone-50 rounded-xl border border-stone-200 text-xs space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-stone-500">عنوان الرسالة المتوقع:</span>
+                <span className="font-semibold text-stone-900" dir="rtl">
+                  [شام للعطور] تحديث حالة طلبك SH-SAMPLE: {STATUS[activeTemplateStatus]}
+                </span>
+              </div>
+              <p className="text-stone-600 leading-relaxed">
+                يحتوي الإيميل على: شعار وتوقيع شام للعطور الفاخر، شارة الحالة الملونة، تفاصيل الطلب، جدول المنتجات، ملاحظة فريق العمل، وزر «تتبع حالة طلبك بالتفصيل» ورابط مساعد شام المباشر.
+              </p>
+              <div className="pt-2 flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const sampleReq: ServiceRequest = {
+                      id: 'sample',
+                      ref: 'SH-SAMPLE',
+                      type: 'order',
+                      serviceId: 'store',
+                      status: activeTemplateStatus,
+                      contact: { name: 'الأستاذ أحمد فؤاد', email: 'ahmed@example.com', phone: '+201123456789' },
+                      fields: { 'العنوان': 'التجمع الخامس، القاهرة', 'طريقة الدفع': 'الدفع عند الاستلام' },
+                      items: [
+                        { productId: 'oud', sku: 'OUD-ROYAL', name: 'عطر عود ملكي خاص (EdP)', quantity: 1, unitPrice: 850, currency: 'EGP' },
+                        { productId: 'rose', sku: 'ROSE-GRASSE', name: 'زيت ورد غراس النقي 30 مل', quantity: 2, unitPrice: 380, currency: 'EGP' },
+                      ],
+                      total: 1610,
+                      currency: 'EGP',
+                      notes: [],
+                      createdAt: new Date().toISOString(),
+                      updatedAt: new Date().toISOString(),
+                    };
+                    adminRequest<{ preview: { subject: string; html: string; text: string; recipientEmail: string; customerName: string } }>(
+                      `/requests/sample/email-preview?status=${activeTemplateStatus}`
+                    ).then((res) => {
+                      setPreviewModalItem(res.preview);
+                    }).catch(() => {
+                      // Fallback dummy preview
+                      setPreviewModalItem({
+                        subject: `[شام للعطور] تحديث حالة طلبك SH-SAMPLE: ${STATUS[activeTemplateStatus]}`,
+                        html: `<html><body style="font-family:sans-serif;direction:rtl;padding:20px;text-align:right;"><h2 style="color:#b45309;">شام للعطور</h2><p>مرحباً عميلنا العزيز 👋</p><p>حالة طلبك الحالية: <b>${STATUS[activeTemplateStatus]}</b></p></body></html>`,
+                        text: `شام للعطور\nحالة طلبك: ${STATUS[activeTemplateStatus]}`,
+                        recipientEmail: 'ahmed@example.com',
+                        customerName: 'الأستاذ أحمد فؤاد',
+                      });
+                    });
+                  }}
+                  className={`${btn} bg-stone-900 text-amber-100 text-xs`}
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                  معاينة القالب الكامل بالرسومات والتنسيق
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Sent Emails History Table */}
+      <div className={card}>
+        <div className="flex items-center justify-between mb-3 border-b pb-2">
+          <div className="flex items-center gap-2">
+            <Mail className="w-4 h-4 text-amber-600" />
+            <h2 className="font-bold text-sm">سجل الإشعارات المرسلة للعملاء</h2>
+          </div>
+          <button
+            type="button"
+            onClick={reloadHistory}
+            className="text-xs text-stone-500 hover:text-stone-900 flex items-center gap-1"
+          >
+            <RefreshCw className="w-3 h-3" />
+            تحديث السجل
+          </button>
+        </div>
+
+        {historyLoading && !historyData && (
+          <div className="flex items-center gap-2 text-xs text-stone-500 py-6">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            جارٍ تحميل سجل الإشعارات…
+          </div>
+        )}
+
+        {historyData && historyData.items.length === 0 && (
+          <p className="text-xs text-stone-400 py-6 text-center">
+            لم يتم إرسال إشعارات بعد. عند تغيير حالة أي طلب يحمل بريداً إلكترونياً، سيظهر الإشعار المرسل هنا فوراً.
+          </p>
+        )}
+
+        {historyData && historyData.items.length > 0 && (
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="text-stone-500 border-b text-start">
+                  <th className="py-2 text-start">الوقت</th>
+                  <th className="py-2 text-start">رقم الطلب</th>
+                  <th className="py-2 text-start">العميل والبريد</th>
+                  <th className="py-2 text-start">الحالة المرسلة</th>
+                  <th className="py-2 text-start">المزود</th>
+                  <th className="py-2 text-start">حالة الإرسال</th>
+                  <th className="py-2 text-center">الإجراء</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-stone-100">
+                {historyData.items.map((item) => (
+                  <tr key={item.id} className="hover:bg-stone-50/70">
+                    <td className="py-2.5 text-stone-500 whitespace-nowrap">{fmtDate(item.sentAt)}</td>
+                    <td className="py-2.5 font-bold font-mono text-amber-700" dir="ltr">{item.orderRef}</td>
+                    <td className="py-2.5">
+                      <div className="font-semibold text-stone-900">{item.customerName}</div>
+                      <div className="text-[11px] text-stone-500 font-mono" dir="ltr">{item.recipientEmail}</div>
+                    </td>
+                    <td className="py-2.5">
+                      <span className={`inline-block px-2 py-0.5 rounded-full text-[11px] font-semibold ${item.status === 'completed' || item.status === 'confirmed' ? 'bg-emerald-100 text-emerald-800' : item.status === 'cancelled' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800'}`}>
+                        {item.statusLabelAr || STATUS[item.status] || item.status}
+                      </span>
+                    </td>
+                    <td className="py-2.5 text-stone-600 font-medium">{item.provider}</td>
+                    <td className="py-2.5">
+                      <span className={`inline-flex items-center gap-1 text-[11px] font-bold ${item.deliveryStatus === 'sent' ? 'text-emerald-700' : item.deliveryStatus === 'simulated' ? 'text-blue-700' : 'text-red-700'}`}>
+                        {item.deliveryStatus === 'sent' && <CheckCircle2 className="w-3.5 h-3.5" />}
+                        {item.deliveryStatus === 'simulated' && <Sparkles className="w-3.5 h-3.5" />}
+                        {item.deliveryStatus === 'failed' && <CircleAlert className="w-3.5 h-3.5" />}
+                        {item.deliveryStatus === 'sent' ? 'تم الإرسال' : item.deliveryStatus === 'simulated' ? 'محاكاة ناجحة' : 'فشل'}
+                      </span>
+                    </td>
+                    <td className="py-2.5 text-center">
+                      <button
+                        type="button"
+                        onClick={() => inspectEmail(item)}
+                        className={`${btn} text-[11px] py-1 px-2.5 bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-200`}
+                      >
+                        <Eye className="w-3 h-3" />
+                        عرض
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      {/* Preview Modal */}
+      {previewModalItem && (
+        <EmailPreviewModal
+          preview={previewModalItem}
+          onClose={() => setPreviewModalItem(null)}
+        />
+      )}
     </>
   );
 }
@@ -1103,3 +1823,91 @@ function QualityPanel() {
     </>
   );
 }
+
+// ---------------- «طبيب شاهين» (automatic maintenance, scripts/doctor) ----------------
+interface MaintenanceSnapshot {
+  version: string; uptimeS: number;
+  window: { requests: number; rateLimited: number; answered: number; errors: Record<string, number>; errorRate: number; latencyMs: { p50: number; p95: number; max: number } };
+  providers: Record<string, { inFlight: number; coolingMs: number; rpm: number | null; startedLastMinute: number }>;
+  answerCache: { entries: number; hits: number; misses: number; shared: number } | null;
+  remedies: { action: string; at: string }[];
+}
+const DOCTOR_REPO = (import.meta.env.VITE_GITHUB_REPO as string | undefined) || 'spculculat-oss/Sham-Perfume';
+const REMEDY_LABEL: Record<string, string> = { reset_provider_gate: 'تصفير حالة المزوّدين', refresh_model_list: 'تحديث قائمة الموديلات', clear_answer_cache: 'مسح ذاكرة الإجابات' };
+const FIX_RESULT: Record<string, string> = { merged: '⏳ تحت المراقبة', failed: '❌ ما اتطبقش', verified: '✅ شغال', reverted: '↩️ اترجع', unverified: '⚪ من غير تأكيد' };
+
+function DoctorPanel() {
+  const { data, error, loading, reload } = useLoad<MaintenanceSnapshot>('/maintenance');
+  const [report, setReport] = useState<DoctorReport | null | undefined>(undefined);
+  const [busy, setBusy] = useState('');
+  const [message, setMessage] = useState('');
+  const loadReport = useCallback(() => {
+    fetch(`https://api.github.com/repos/${DOCTOR_REPO}/issues?labels=shaheen-doctor&state=open&per_page=1`, { headers: { Accept: 'application/vnd.github+json' } })
+      .then((r) => (r.ok ? r.json() : []))
+      .then((issues: { body?: string; html_url: string }[]) => setReport(issues[0] ? parseDoctorIssue(issues[0].body || '', issues[0].html_url) : null))
+      .catch(() => setReport(null));
+  }, []);
+  useEffect(() => { loadReport(); }, [loadReport]);
+  const remedy = async (action: string) => {
+    setBusy(action); setMessage('');
+    try { await adminRequest('/maintenance', send('POST', { action })); setMessage(`تم: ${REMEDY_LABEL[action]} ✅`); reload(); }
+    catch (e) { setMessage((e as Error).message); } finally { setBusy(''); }
+  };
+  const w = data?.window;
+  return (
+    <>
+      <Header title="طبيب شاهين — الصيانة التلقائية" subtitle="بيراجع الخبير شاهين كل 10 دقايق من خوادم GitHub (مش من خادم الموقع) وبيصلّح المشاكل لوحده"
+        actions={<button type="button" onClick={() => { reload(); loadReport(); }} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" />تحديث</button>} />
+      <div className="grid lg:grid-cols-2 gap-4">
+        <div className={`${card} space-y-2`}>
+          <h2 className="font-bold text-sm">آخر تقرير للطبيب</h2>
+          {report === undefined && <Feedback loading />}
+          {report === null && <p className="text-xs text-stone-500">لسه مفيش تقرير — أول فحص بيتعمل خلال 10 دقايق من دمج الطبيب في main.</p>}
+          {report && (
+            <>
+              <p className="text-sm font-semibold">{report.headline}</p>
+              {report.lastRun && <p className="text-[11px] text-stone-500">آخر فحص: {new Date(report.lastRun).toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}</p>}
+              <ul className="space-y-1">
+                {report.rows.map((r) => <li key={r.check} className="flex gap-2 text-xs"><span>{r.status}</span><span className="font-semibold">{r.check}</span><span className="text-stone-500 truncate">{r.detail}</span></li>)}
+              </ul>
+              {report.timeline && <p className="text-xs" title="آخر 6 ساعات">آخر 6 ساعات: <span className="tracking-tight">{report.timeline}</span></p>}
+              <h3 className="font-bold text-xs pt-2">إصلاحات الكود التلقائية</h3>
+              {report.fixes.length ? report.fixes.map((f) => (
+                <p key={f.at} className="text-xs">{FIX_RESULT[f.result] || f.result} — {f.summary || f.problem}{f.url && <> · <a href={f.url} target="_blank" rel="noreferrer" className="text-amber-700 underline">التغيير</a></>}</p>
+              )) : <p className="text-xs text-stone-500">لسه مفيش</p>}
+              <a href={report.url} target="_blank" rel="noreferrer" className="inline-block text-xs text-amber-700 underline">السجل الكامل على GitHub ←</a>
+            </>
+          )}
+        </div>
+        <div className={`${card} space-y-2`}>
+          <h2 className="font-bold text-sm">الخادم دلوقتي (النسخة اللي ردّت)</h2>
+          <Feedback error={error} loading={loading && !data} />
+          {w && data && (
+            <>
+              <p className="text-xs text-stone-500" dir="ltr">version {data.version.slice(0, 7)} · up {Math.round(data.uptimeS / 60)} min</p>
+              <div className="grid grid-cols-3 gap-2 text-center">
+                <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{w.answered}</p><p className="text-[10px] text-stone-500">ردود آخر 10 د</p></div>
+                <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{Math.round(w.errorRate * 100)}%</p><p className="text-[10px] text-stone-500">أخطاء</p></div>
+                <div className="rounded-xl bg-stone-50 p-2"><p className="text-lg font-bold">{(w.latencyMs.p95 / 1000).toFixed(1)}ث</p><p className="text-[10px] text-stone-500">p95</p></div>
+              </div>
+              {Object.keys(w.errors).length > 0 && <p className="text-xs text-red-700" dir="ltr">{Object.entries(w.errors).map(([k, v]) => `${k}: ${v}`).join(' · ')}</p>}
+              {Object.entries(data.providers).map(([id, p]) => (
+                <p key={id} className="text-xs">{ENGINE_LABEL[id] || id}: {p.coolingMs > 0 ? `⏸️ متوقف ${Math.ceil(p.coolingMs / 1000)}ث (حصة)` : '🟢 متاح'} · {p.startedLastMinute}/دقيقة{p.rpm ? ` · حد ${p.rpm}` : ''}</p>
+              ))}
+              {data.answerCache && <p className="text-xs text-stone-600">ذاكرة الإجابات: {data.answerCache.entries} إجابة · {data.answerCache.hits} مرة من الذاكرة</p>}
+              <div className="flex flex-wrap gap-2 pt-1">
+                {Object.keys(REMEDY_LABEL).map((action) => (
+                  <button key={action} type="button" disabled={Boolean(busy)} onClick={() => remedy(action)} className={`${btn} text-xs bg-stone-900 text-amber-100`}>
+                    {busy === action ? <Loader2 className="w-3 h-3 animate-spin" /> : <Wand2 className="w-3 h-3" />}{REMEDY_LABEL[action]}
+                  </button>
+                ))}
+              </div>
+              {message && <p role="status" className="text-xs">{message}</p>}
+            </>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+

@@ -23,6 +23,25 @@ export class ApiUnavailableError extends Error {
 export class ApiError extends Error {
   constructor(public status: number, public code?: string, public retryAfterMs?: number) { super(`API request failed (${status})`); }
 }
+
+const VISITOR_KEY = 'sham_visitor_id';
+let sessionVisitor: string | undefined;
+/**
+ * Anonymous random id for this browser (no personal data). Lets the server tell apart visitors who
+ * share one public IP — common on mobile networks — so they do not use up each other's message quota.
+ */
+export function visitorId(): string {
+  const fresh = () => (globalThis.crypto?.randomUUID?.() || `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`).replace(/[^A-Za-z0-9_-]/g, '');
+  try {
+    const stored = localStorage.getItem(VISITOR_KEY);
+    if (stored && /^[A-Za-z0-9_-]{8,64}$/.test(stored)) return stored;
+    const id = fresh();
+    localStorage.setItem(VISITOR_KEY, id);
+    return id;
+  } catch {
+    return sessionVisitor ??= fresh(); // storage blocked: one id for this page view
+  }
+}
 export interface ChatResponse {
   reply: string;
   engine?: ChatMessage['aiEngine'];
@@ -41,17 +60,9 @@ export async function requestApi<T>(endpoint: `/api/${string}`, options?: Reques
     const response = await fetch(apiUrl(endpoint), { ...options, signal: controller.signal });
     if (!response.ok) {
       let code: string | undefined;
-      let retryAfterMs: number | undefined;
-      try {
-        const data = await response.json();
-        if (typeof data?.code === 'string') code = data.code;
-        if (typeof data?.retryAfterMs === 'number' && data.retryAfterMs > 0) retryAfterMs = data.retryAfterMs;
-      } catch { /* Ignore provider/HTML bodies. */ }
-      if (retryAfterMs === undefined) {
-        const header = Number(response.headers.get('retry-after'));
-        if (Number.isFinite(header) && header > 0) retryAfterMs = header * 1000;
-      }
-      throw new ApiError(response.status, code, retryAfterMs);
+      try { const data = await response.json(); if (typeof data?.code === 'string') code = data.code; } catch { /* Ignore provider/HTML bodies. */ }
+      const retryAfter = Number(response.headers.get('retry-after'));
+      throw new ApiError(response.status, code, Number.isFinite(retryAfter) && retryAfter > 0 ? Math.min(60, retryAfter) * 1000 : undefined);
     }
     if (!response.headers.get('content-type')?.toLowerCase().includes('application/json')) {
       throw new Error(`Expected JSON from ${endpoint}, but received a static page.`);

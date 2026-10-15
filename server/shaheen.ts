@@ -11,6 +11,7 @@
 import express from 'express';
 import { SUPPORTED_LANGUAGES } from '../src/types/i18n';
 import type { SupportedLanguage } from '../src/types/i18n';
+import { normalizeMediaBlocks } from '../src/utils/mediaBlock';
 import { callEngine, engineStatuses, type EngineFailure } from './core/engines';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { AnswerCache, GateBusyError, ProviderGate, VISITOR_ID, cacheKey, capacityConfig, normalizeQuestion, retryHintMs } from './core/capacity';
@@ -98,7 +99,7 @@ export function getPublicModes(env: Environment, settings: ShaheenSettings = SHA
 
 const STYLE: Record<'fast' | 'deep', string> = {
   fast: 'وضع «رد سريع»: أجب مباشرة وبإيجاز (في حدود 120 كلمة) بالنقاط الأهم فقط، ما لم يطلب المستخدم تفاصيل صراحة.',
-  deep: 'وضع «تحليل معمّق»: حلّل السؤال بعمق. اشرح المنطق، وقارن البدائل، واذكر المخاطر وحدود المعلومة، واعرض الحسابات خطوة بخطوة بأرقام واضحة.',
+  deep: 'وضع «تحليل معمّق»: حلّل السؤال بعمق. اشرح المنطق، وقارن البدائل، واذكر المخاطر وحدود المعلومة، واعرض الحسابات خطوة بخطوة بأرقام واضحة في نص أو جدول Markdown (لا في سياج كود). إذا كانت الإجابة تركيبة قابلة للنقل للحاسبة فلا تنسَ سياج sham-formula في آخر الرد، واجعل التحليل مركّزاً حتى لا ينقطع الرد قبله.',
 };
 
 export function systemInstruction(language: SupportedLanguage, extra = '', style?: 'fast' | 'deep'): string {
@@ -117,11 +118,13 @@ export function systemInstruction(language: SupportedLanguage, extra = '', style
 في الحسابات فرّق بين النسب الحجمية والوزنية، ولا تحوّل مل إلى جرام دون كثافة معلومة. وضّح أن التركيبات المقترحة تجريبية وتحتاج مراجعة السلامة والتوافق واختباراً صغيراً.
 إذا طلب المستخدم تركيبة عطر قابلة للنقل للحاسبة، وكانت البيانات كافية، اشرحها ثم أرفق JSON واحداً داخل سياج كود باسم sham-formula بالحقول التالية، دون تخمين بيانات ناقصة:
 {"title":"اسم العطر","author":"شاهين — مقترح تجريبي","concentrationPercent":20,"concentrationType":"edp","bottleVolumeMl":50,"alcoholPercentage":96,"waterPercent":0,"fixativePercent":0,"macerationDays":30,"summary":"مقترح يحتاج مراجعة السلامة","pyramidNotes":[{"id":"note-1","nameAr":"اسم المادة المحددة","nameEn":"Exact material name","category":"top","percentageOfOil":100}]}
+اكتب السياج باسم sham-formula حرفياً (وليس json)، وضع JSON في سطر مستقل بعد اسم السياج، وأغلقه بثلاث علامات \`\`\` في سطر مستقل، واكتب الأرقام بالأرقام الإنجليزية بدون علامة %. لا تكتب JSON التركيبة خارج هذا السياج ولا تذكر السياج في الشرح. إذا عرضت بدائل لتركيبات مختلفة فأرفق سياج sham-formula مستقلاً لكل بديل (ثلاثة على الأكثر) وبعنوان title مختلف.
 الأرقام أعلاه أمثلة للشكل فقط، وليست وصفة افتراضية. يجب أن تطابق القيم الشرح وطلب المستخدم، وأن تجمع نسب pyramidNotes إلى 100 من الزيت. التصنيفات top أو heart أو base. نسب التركيز والماء والمثبت من إجمالي المنتج ولا تتجاوز 100 معاً. لا ترفق JSON في التحيات أو الإجابات العامة أو الطبية، ولا تدّع أن الصيغة معتمدة للاستخدام على الجلد.
+عندما يكون السؤال عن عملية تخدمها أداة من أدوات الموقع وفيه أو في إجابتك أرقام محددة، أرفق في آخر الرد سياجاً واحداً باسم sham-tool يحتوي JSON فقط، مثل {"tools":[{"tool":"alcohol","alcoholFrom":96,"alcoholTo":70,"finalVolumeMl":1000},{"tool":"maceration","macerationDays":42}]}. الأدوات وحقولها: concentration (bottleVolumeMl، concentrationPercent، concentrationType، alcoholPercentage، waterPercent، fixativePercent) لحساب كميات الزيت والكحول، alcohol (alcoholFrom، alcoholTo، finalVolumeMl) لتخفيف الكحول، maceration (macerationDays) للتعتيق، costing للتكاليف والتسعير، pyramid للنوتات، raw_materials (search باسم المادة بالإنجليزية) لسؤال عن مادة خام، guide للمثبتات والثبات. افهم طبيعة السؤال أولاً واختر الأدوات التي تخدمه فقط (أداة إلى ثلاث)، واكتب القيم المذكورة في الحوار أو في توصيتك فقط دون تخمين، ولا تذكر السياج في الشرح، ولا ترفقه في التحيات أو الأسئلة الطبية.
 للمقارنات والنِّسب والخصائص (مثل مقارنة مواد، عائلات عطرية، تركيزات EDP/EDT، مدد التعتيق) اعرضها في جدول Markdown واضح بأعمدة قليلة.
-عندما تفيد الصور أو الفيديو في التوضيح فعلاً (شكل مادة خام أو نبات أو راتنج، أدوات المختبر، طرق الاستخلاص والتقطير والنقع، ورائحة لا تكفيها الكلمات) أو طلبها المستخدم، ابدأ ردك بسياج واحد باسم sham-media يحتوي JSON فقط، ثم اكتب الشرح بعده. السياج إلزامي كلما طلب المستخدم صوراً أو فيديو أو قال «وريني» أو show me. مثال:
-{"images":["agarwood","Aquilaria"],"videos":["steam distillation of essential oils"]}
-images حتى عبارتي بحث بالإنجليزية من كلمة إلى ثلاث كلمات (الاسم الشائع أو العلمي للمادة أو النبات أو الأداة، مثل agarwood أو Rosa damascena أو ambergris أو distillation apparatus)، وvideos عبارة بحث واحدة بلغة المستخدم أو بالإنجليزية. سيعرض الموقع صوراً وفيديوهات حقيقية من مصادر موثوقة. لا تكتب أبداً روابط صور أو فيديو أو صيغة ![]() بنفسك، ولا تَعِد بصورة لم تطلبها في السياج، ولا تذكر السياج في الشرح. لا تضف sham-media للتحيات أو الأسئلة الطبية أو الأسئلة التي لا يفيدها التوضيح المرئي.${mode}${admin}`;
+عندما تفيد الصور أو الفيديو في التوضيح فعلاً (شكل مادة خام أو نبات أو راتنج، أدوات المختبر، طرق الاستخلاص والتقطير والنقع، ورائحة لا تكفيها الكلمات) أو طلبها المستخدم، ابدأ ردك بسياج واحد باسم sham-media يحتوي JSON فقط، ثم اكتب الشرح بعده. وعندما يكون للسؤال بُعد جغرافي (منشأ مادة خام، مزارع الورد أو العود أو اللافندر، مدن ومتاحف وأسواق العطور، أين تُزرع نبتة) أضف places في نفس السياج ليعرضها الموقع على خريطة. السياج إلزامي كلما طلب المستخدم صوراً أو فيديو أو خريطة أو أماكن أو قال «وريني» أو show me. مثال:
+{"images":["agarwood","Aquilaria"],"videos":["steam distillation of essential oils"],"places":["Assam, India","Hainan, China"]}
+images حتى عبارتي بحث بالإنجليزية من كلمة إلى ثلاث كلمات (الاسم الشائع أو العلمي للمادة أو النبات أو الأداة، مثل agarwood أو Rosa damascena أو ambergris أو distillation apparatus)، وvideos عبارة بحث واحدة بلغة المستخدم أو بالإنجليزية، وplaces حتى 5 أماكن حقيقية معروفة بالإنجليزية بصيغة «المكان، الدولة» (مدينة أو منطقة أو معلم مثل Grasse, France أو Taif, Saudi Arabia أو Kannauj, India)، وكل مفتاح اختياري فاكتب المفيد منها فقط. سيعرض الموقع صوراً وفيديوهات وخريطة حقيقية من مصادر موثوقة. اكتب السياج باسم sham-media حرفياً (وليس json) وأغلقه بثلاث علامات \`\`\`. لا تكتب أبداً روابط صور أو فيديو أو خرائط أو إحداثيات أو صيغة ![]() بنفسك، ولا تحِل المستخدم إلى تطبيقات أو مواقع خرائط أو بحث خارجية؛ الموقع يعرض الخريطة والصور بنفسه، ولا تَعِد بصورة لم تطلبها في السياج، ولا تذكر السياج في الشرح. لا تضف sham-media للتحيات أو الأسئلة الطبية أو الأسئلة التي لا يفيدها التوضيح المرئي.${mode}${admin}`;
 }
 
 export interface ExecuteOptions {
@@ -129,10 +132,18 @@ export interface ExecuteOptions {
   settings?: ShaheenSettings;
   /** Advisory-council seats (shared with Sham Core); required for the "council" mode. */
   council?: CouncilSettings;
+  /** Capacity gate (queue + circuit breaker per provider); without it providers are tried once, in order. */
+  gate?: ProviderGate;
 }
 
 /** Only the provider that actually answered is credited. Auto is failover, not a fake panel. */
-export async function executeChat(input: ChatRequest, options: ExecuteOptions = {}) {
+/** One answer: the reply, the visitor-facing mode and (server/admin side only) the engine that wrote it. */
+export interface ChatAnswer {
+  reply: string; mode: ChatRequest['model'];
+  engine: { id: Provider; provider: Provider; name: string; badge: string; model: string; accentColor: string };
+}
+
+export async function executeChat(input: ChatRequest, options: ExecuteOptions = {}): Promise<ChatAnswer> {
   const env = options.env || process.env;
   const settings = options.settings || SHAHEEN_SITE_SETTINGS;
   if (!settings.enabled) throw new ChatError(503, 'SHAHEEN_DISABLED', 'Shaheen is turned off by the site administration');
@@ -149,38 +160,58 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   // Vercel functions stop at 60 s: keep the whole failover chain inside that.
   const total = AbortSignal.any([AbortSignal.timeout(options.totalTimeoutMs ?? 50000), ...(options.signal ? [options.signal] : [])]);
   const instruction = systemInstruction(input.language, settings.instructions, style);
-  const maxTokens = style === 'fast' ? Math.min(settings.maxTokens, 1024) : settings.maxTokens;
+  // A deep analysis plus its formula block used to be cut before the closing fence: give it room.
+  const maxTokens = style === 'fast' ? Math.min(settings.maxTokens, 1024)
+    : style === 'deep' ? Math.min(8192, Math.max(settings.maxTokens, 6144)) : settings.maxTokens;
   const turns: ChatTurn[] = [...input.conversationHistory, { role: 'user', text: input.message }];
   let timedOut = false;
-  let limitedRetryMs: number | undefined;
-  for (const provider of candidates) {
-    if (total.aborted) break;
+  const attempt = async (provider: Provider): Promise<{ outcome: 'ok'; value: ChatAnswer } | { outcome: 'next' | 'limited'; retryMs?: number }> => {
+    if (total.aborted) return { outcome: 'next' };
     const signal = AbortSignal.any([total, AbortSignal.timeout(options.timeoutMs ?? 28000)]);
     const status = engineStatuses(env).find((s) => s.id === provider)!;
     const model = settings.models[provider] || status.model;
+    let refusal: { failure: EngineFailure; status: number; detail: string } | undefined;
     try {
       const reply = await callEngine(provider, instruction, turns, {
         env, fetch: options.fetch, signal, temperature: settings.temperature, model,
-        maxTokens, maxChars: 32000,
-        onFailure: (failure, _status, detail) => {
-          if (failure === 'rate_limited') limitedRetryMs = retryHintMs(detail) ?? limitedRetryMs;
-        },
+        maxTokens, maxChars: 32000, onFailure: (failure, httpStatus, detail) => { refusal = { failure, status: httpStatus, detail }; },
       });
       if (signal.aborted) throw signal.reason;
-      if (typeof reply !== 'string' || !reply.trim()) continue;
-      return { reply: reply.trim(), mode: requested, engine: { id: provider, provider, name: ENGINE_INFO[provider].name,
-        badge: ENGINE_INFO[provider].name, model, accentColor: ENGINE_INFO[provider].color } };
+      if (typeof reply === 'string' && reply.trim()) {
+        return { outcome: 'ok', value: { reply: reply.trim(), mode: requested, engine: { id: provider, provider, name: ENGINE_INFO[provider].name,
+          badge: ENGINE_INFO[provider].name, model, accentColor: ENGINE_INFO[provider].color } } };
+      }
     } catch {
       timedOut ||= signal.aborted;
       // Never leak provider error bodies, credentials, or fabricated fallback answers.
     }
+    // 429 = "too many requests right now": the gate cools this provider down instead of hammering it.
+    if (refusal && (refusal.status === 429 || refusal.failure === 'rate_limited')) return { outcome: 'limited', retryMs: retryHintMs(refusal.detail) };
+    return { outcome: 'next' };
+  };
+  if (options.gate) {
+    try {
+      const answer = await options.gate.run(candidates, attempt, total);
+      if (answer) return answer;
+    } catch (error) {
+      if (error instanceof GateBusyError && !total.aborted) {
+        throw new ChatError(503, 'SHAHEEN_BUSY', 'Shaheen is answering many visitors right now, please retry shortly', error.retryAfterMs);
+      }
+      if (!total.aborted) throw error;
+    }
+  } else {
+    for (const provider of candidates) {
+      if (total.aborted) break;
+      const result = await attempt(provider);
+      if (result.outcome === 'ok') return result.value;
+    }
   }
   if (total.aborted || timedOut) throw new ChatError(504, 'PROVIDER_TIMEOUT', 'AI request timed out or was cancelled');
-  throw new ChatError(503, 'PROVIDER_UNAVAILABLE', 'The configured AI providers did not return a valid answer', limitedRetryMs);
+  throw new ChatError(503, 'PROVIDER_UNAVAILABLE', 'The configured AI providers did not return a valid answer');
 }
 
 /** "council" mode: Sham Core's advisory council answers a Shaheen question (seats from the admin council settings). */
-async function executeCouncil(input: ChatRequest, options: ExecuteOptions, env: Environment, settings: ShaheenSettings) {
+async function executeCouncil(input: ChatRequest, options: ExecuteOptions, env: Environment, settings: ShaheenSettings): Promise<ChatAnswer> {
   const council = options.council;
   if (!council || !councilAvailable(council, env)) throw new ChatError(503, 'COUNCIL_UNAVAILABLE', 'The expert council needs at least two working engines');
   const signal = AbortSignal.any([AbortSignal.timeout(options.totalTimeoutMs ?? 52000), ...(options.signal ? [options.signal] : [])]);
@@ -203,7 +234,8 @@ async function executeCouncil(input: ChatRequest, options: ExecuteOptions, env: 
 /** What a visitor receives: the answer and the mode — never which engine or vendor produced it. */
 export function publicChatResult(result: { reply: string; mode?: string }) {
   const mode = (SHAHEEN_MODES as readonly string[]).includes(result.mode || '') ? result.mode! : 'auto';
-  return { reply: result.reply, mode, engine: { id: mode, provider: 'shaheen', name: 'الخبير شاهين', badge: 'شاهين', accentColor: 'amber' } };
+  // The model sometimes labels the visual-aid block ```json or leaves it open: send one canonical block.
+  return { reply: normalizeMediaBlocks(result.reply), mode, engine: { id: mode, provider: 'shaheen', name: 'الخبير شاهين', badge: 'شاهين', accentColor: 'amber' } };
 }
 
 export interface EngineProbe {
@@ -248,28 +280,32 @@ export async function probeEngines(settings: ShaheenSettings, options: { env?: E
 export function createShaheenRouter(options: { repo: Repository; env?: Environment; fetch?: typeof fetch; runtime?: ShaheenRuntime }) {
   const env = options.env || process.env;
   const router = express.Router();
-  const cfg = capacityConfig(env);
-  const visitorLimiter = new RateLimiter(cfg.perVisitorPerMin, 60_000);
-  const ipLimiter = new RateLimiter(cfg.perIpPerMin, 60_000);
+  const capacity = capacityConfig(env);
+  // Per visitor (IP + anonymous browser id, so people behind one mobile-carrier IP are told apart)
+  // and a looser per-IP ceiling that bounds anyone rotating browser ids.
+  const limiter = new RateLimiter(capacity.perVisitorPerMin, 60_000);
+  const ipLimiter = new RateLimiter(capacity.perIpPerMin, 60_000);
   // A council answer costs several model calls: separate hourly budget per visitor.
   const councilLimiter = new RateLimiter(Number(env.SHAM_COUNCIL_RATE_PER_HOUR) || 12, 60 * 60_000);
-  // Capacity layer: identical opening questions share one provider call; a provider 429
-  // makes visitors wait in line (bounded) instead of failing.
-  const answers = new AnswerCache<ReturnType<typeof publicChatResult>>(cfg.cacheEntries, cfg.cacheTtlMs);
-  const gate = new ProviderGate(cfg.maxConcurrent, cfg.queueWaitMs, cfg.providerRpm);
-  options.runtime?.attach({ gate, answers: answers as unknown as AnswerCache<unknown> });
-  const visitorKeyOf = (req: express.Request, body: unknown): string => {
-    const header = req.headers['x-sham-visitor'];
-    if (typeof header === 'string' && VISITOR_ID.test(header)) return `v:${header}`;
-    const fromBody = (body as { visitorId?: unknown } | null)?.visitorId;
-    if (typeof fromBody === 'string' && VISITOR_ID.test(fromBody)) return `v:${fromBody}`;
-    return `ip:${clientKey(req)}`;
+  const gate = new ProviderGate(capacity.maxConcurrent, capacity.queueWaitMs, capacity.providerRpm);
+  const answers = new AnswerCache<ChatAnswer>(capacity.cacheEntries, capacity.cacheTtlMs);
+  const runtime = options.runtime;
+  runtime?.attach({ gate, answers: answers as AnswerCache<unknown> });
+  // Settings change rarely; reading them once per message would cost a store read per visitor.
+  // Saved in this instance → refreshed at once (revision); saved elsewhere (shared store) → within 3 s.
+  let settingsCache: { at: number; revision: number; value: Awaited<ReturnType<Repository['settings']>> } | undefined;
+  const settings = async () => {
+    const revision = options.repo.settingsRevision;
+    if (!settingsCache || settingsCache.revision !== revision || Date.now() - settingsCache.at > 3000) {
+      settingsCache = { at: Date.now(), revision, value: await options.repo.settings() };
+    }
+    return settingsCache.value;
   };
 
   router.get('/models', async (_req, res) => {
     res.setHeader('Cache-Control', 'no-store');
     try {
-      const { shaheen, council } = await options.repo.settings();
+      const { shaheen, council } = await settings();
       res.json({ models: getPublicModes(env, shaheen, council), enabled: shaheen.enabled, allowVisitorChoice: shaheen.allowVisitorChoice });
     } catch {
       res.status(500).json({ error: 'Settings unavailable', code: 'SETTINGS_UNAVAILABLE' });
@@ -277,44 +313,38 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
   });
 
   router.post('/chat', async (req, res) => {
+    const started = Date.now();
     const controller = new AbortController();
     const cancel = () => { if (!res.writableEnded) controller.abort(); };
     res.on('close', cancel);
     try {
       const input = validateChatRequest(req.body);
-      const visitorKey = visitorKeyOf(req, req.body);
-      if (!ipLimiter.allow(clientKey(req)) || !visitorLimiter.allow(visitorKey)) {
-        throw new ChatError(429, 'RATE_LIMITED', 'Too many messages, please wait a minute');
-      }
-      const { shaheen, council } = await options.repo.settings();
-      if (input.model === 'council' && shaheen.allowVisitorChoice && !councilLimiter.allow(visitorKey)) {
+      const ip = clientKey(req);
+      const browser = req.get('x-sham-visitor') || (typeof req.body?.visitorId === 'string' ? req.body.visitorId : undefined);
+      const visitor = browser && VISITOR_ID.test(browser) ? `${ip}|${browser}` : ip;
+      if (!limiter.allow(visitor) || !ipLimiter.allow(ip)) throw new ChatError(429, 'RATE_LIMITED', 'Too many messages, please wait a minute');
+      const { shaheen, council } = await settings();
+      if (input.model === 'council' && shaheen.allowVisitorChoice && !councilLimiter.allow(visitor)) {
         throw new ChatError(429, 'RATE_LIMITED', 'Too many expert-council questions, try the other modes');
       }
-      const produce = async (signal?: AbortSignal) => {
-        const result = await gate.run(['shaheen'], async () => {
-          try {
-            return { outcome: 'ok' as const, value: await executeChat(input, { env, fetch: options.fetch, signal, settings: shaheen, council }) };
-          } catch (error) {
-            if (error instanceof ChatError && error.code === 'PROVIDER_UNAVAILABLE') {
-              return { outcome: 'limited' as const, retryMs: error.retryAfterMs };
-            }
-            throw error;
-          }
-        }, signal);
-        if (!result) throw new ChatError(503, 'PROVIDER_UNAVAILABLE', 'The configured AI providers did not return a valid answer');
-        return publicChatResult(result);
-      };
-      // Only an opening question (no history yet) may be shared between visitors.
-      const cacheable = cfg.cacheTtlMs > 0 && input.conversationHistory.length === 0;
-      const key = cacheable ? cacheKey([normalizeQuestion(input.message), input.language, input.model, JSON.stringify(shaheen)]) : '';
-      const result = cacheable ? await answers.getOrLoad(key, () => produce()) : await produce(controller.signal);
-      if (!res.destroyed) res.json(result);
+      const run = (signal?: AbortSignal) => executeChat(input, { env, fetch: options.fetch, signal, settings: shaheen, council, gate });
+      let result: ChatAnswer;
+      if (!input.conversationHistory.length && capacity.cacheTtlMs > 0 && capacity.cacheEntries > 0) {
+        // Opening question: answered from the shared cache, or by ONE provider call shared by everyone
+        // asking it right now. That call must not follow one visitor's disconnect, so it gets no signal.
+        const key = cacheKey([normalizeQuestion(input.message), input.language, input.model, shaheen]);
+        result = await abortable(answers.getOrLoad(key, () => run(), (r) => Boolean(r.reply)), controller.signal);
+      } else {
+        result = await run(controller.signal);
+      }
+      if (!res.destroyed) res.json(publicChatResult(result));
+      runtime?.record({ ms: Date.now() - started, status: 200 });
     } catch (error) {
       if (res.destroyed) return;
-      if (error instanceof GateBusyError) {
-        res.setHeader('Retry-After', String(Math.max(1, Math.ceil(error.retryAfterMs / 1000))));
-        res.status(503).json({ error: 'Shaheen is busy, please retry shortly', code: 'SHAHEEN_BUSY', retryAfterMs: error.retryAfterMs });
-      } else if (error instanceof ChatError) {
+      if (error instanceof ChatError) runtime?.record({ ms: Date.now() - started, status: error.status, code: error.code });
+      else runtime?.record({ ms: Date.now() - started, status: 500, code: 'CHAT_FAILED' });
+      if (error instanceof ChatError) {
+        if (error.retryAfterMs) res.setHeader('Retry-After', String(Math.min(60, Math.max(1, Math.ceil(error.retryAfterMs / 1000)))));
         res.status(error.status).json({ error: error.message, code: error.code });
       } else {
         res.status(500).json({ error: 'Chat service failed', code: 'CHAT_FAILED' });
@@ -324,4 +354,14 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
     }
   });
   return router;
+}
+
+/** Stop waiting when this visitor leaves (the shared work itself keeps going for the others). */
+function abortable<T>(promise: Promise<T>, signal: AbortSignal): Promise<T> {
+  if (signal.aborted) return Promise.reject(signal.reason);
+  return new Promise<T>((resolve, reject) => {
+    const onAbort = () => reject(signal.reason);
+    signal.addEventListener('abort', onAbort, { once: true });
+    promise.then(resolve, reject).finally(() => signal.removeEventListener('abort', onAbort));
+  });
 }

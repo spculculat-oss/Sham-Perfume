@@ -35,6 +35,7 @@ import {
 import { WorldPerfumeRecipe } from './data/worldPerfumes';
 import { calculatePerfumeFormulation } from './utils/calculations';
 import { ExtractedAIPerfume } from './utils/aiFormulaExtractor';
+import type { ShaheenTool, ToolLink } from './utils/shaheenTools';
 import { SupportedLanguage, SUPPORTED_LANGUAGES } from './types/i18n';
 import { getInitialLanguage, saveLanguage } from './utils/i18n';
 import { LanguageProvider } from './context/LanguageContext';
@@ -82,6 +83,14 @@ const S = {
   toast_apply_lab_tpl: { ar: '🧪 تم تطبيق تركيبة «{title}» في حاسبة التركيب والمعمل بنجاح!', en: '🧪 Formula «{title}» applied to the compounding calculator!', fr: '🧪 Formule « {title} » appliquée au calculateur !', es: '🧪 ¡Fórmula «{title}» aplicada a la calculadora!', it: '🧪 Formula «{title}» applicata al calcolatore!', de: '🧪 Formel „{title}“ in den Rechner übernommen!', ru: '🧪 Формула «{title}» применена в калькуляторе!', zh: '🧪 配方「{title}」已成功应用到调配计算器！', tr: '🧪 «{title}» formülü hesaplayıcıya uygulandı!', fa: '🧪 فرمول «{title}» با موفقیت در ماشین‌حساب اعمال شد!' },
   toast_apply_pyramid_tpl: { ar: '🔺 تم نقل نوتات «{title}» إلى حاسبة الهرم العطري بنجاح!', en: '🔺 Notes of «{title}» transferred to the pyramid calculator!', fr: '🔺 Notes de « {title} » transférées au calculateur de pyramide !', es: '🔺 ¡Notas de «{title}» transferidas a la pirámide olfativa!', it: '🔺 Note di «{title}» trasferite al calcolatore della piramide!', de: '🔺 Noten von „{title}“ in den Pyramidenrechner übertragen!', ru: '🔺 Ноты «{title}» перенесены в калькулятор пирамиды!', zh: '🔺 「{title}」的香材已成功转移到金字塔计算器！', tr: '🔺 «{title}» notaları piramit hesaplayıcısına aktarıldı!', fa: '🔺 نت‌های «{title}» به ماشین‌حساب هرم منتقل شد!' },
   toast_saved_lib_tpl: { ar: '📝 تم تدوين وحفظ «{title}» في دفتر الوصفات تلقائياً!', en: '📝 «{title}» recorded into the recipe library automatically!', fr: '📝 « {title} » enregistrée dans le carnet de recettes !', es: '📝 ¡«{title}» guardada en la libreta de recetas!', it: '📝 «{title}» salvata nella libreria delle ricette!', de: '📝 „{title}“ automatisch im Rezeptbuch gespeichert!', ru: '📝 «{title}» автоматически сохранена в книге рецептов!', zh: '📝 「{title}」已自动记入配方库！', tr: '📝 «{title}» tarif defterine kaydedildi!', fa: '📝 «{title}» به‌طور خودکار در دفتر فرمول‌ها ثبت شد!' },
+  toast_tool_tpl: { ar: '🧪 فتحت «{tool}» بقيم سؤالك — راجعها قبل التنفيذ', en: '🧪 Opened «{tool}» with the values from your question — review them before use', fr: '🧪 « {tool} » ouvert avec les valeurs de votre question — vérifiez-les', es: '🧪 «{tool}» abierto con los valores de tu pregunta — revísalos', de: '🧪 „{tool}“ mit den Werten deiner Frage geöffnet — bitte prüfen', tr: '🧪 «{tool}» sorunuzdaki değerlerle açıldı — kontrol edin', fa: '🧪 «{tool}» با مقادیر سؤال شما باز شد — قبل از اجرا بررسی کنید' },
+  tool_concentration: { ar: 'حاسبة التركيب', en: 'Compounding calculator' },
+  tool_pyramid: { ar: 'الهرم العطري', en: 'Fragrance pyramid' },
+  tool_maceration: { ar: 'محاكي التعتيق', en: 'Maceration simulator' },
+  tool_alcohol: { ar: 'تخفيف الكحول', en: 'Alcohol dilution' },
+  tool_costing: { ar: 'التكاليف والأرباح', en: 'Cost & profit' },
+  tool_raw_materials: { ar: 'موسوعة الخامات', en: 'Raw materials' },
+  tool_guide: { ar: 'دليل المثبتات والتعتيق', en: 'Fixatives & aging guide' },
   toast_costing_tpl: { ar: '💰 تم الانتقال لحاسبة التكاليف والأرباح لتسعير تركيبة «{title}»!', en: '💰 Moved to the costing calculator to price «{title}»!', fr: '💰 Passage au calculateur de coûts pour tarifer « {title} » !', es: '💰 ¡Ve a la calculadora de costes para tarificar «{title}»!', it: '💰 Passato al calcolatore dei costi per prezzi «{title}»!', de: '💰 Zum Kostenrechner gewechselt, um „{title}“ zu bepreisen!', ru: '💰 Переход к калькулятору себестоимости для «{title}»!', zh: '💰 已转到成本计算器为「{title}」定价！', tr: '💰 «{title}» için maliyet hesaplayıcısına geçildi!', fa: '💰 برای قیمت‌گذاری «{title}» به ماشین‌حساب هزینه منتقل شدید!' },
   toast_loaded_lab_tpl: { ar: 'تم تحميل التركيبة "{title}" بنجاح في المعمل', en: 'Formula "{title}" loaded into the lab', fr: 'Formule « {title} » chargée dans le laboratoire', es: 'Fórmula "{title}" cargada en el laboratorio', it: 'Formula "{title}" caricata nel laboratorio', de: 'Formel „{title}“ ins Labor geladen', ru: 'Формула «{title}» загружена в лабораторию', zh: '配方“{title}”已成功载入实验室', tr: '"{title}" formülü laboratuvara yüklendi', fa: 'فرمول «{title}» با موفقیت در آزمایشگاه بارگذاری شد' },
   toast_loaded_world_tpl: { ar: 'تم تحميل تركيبة «{title}» في حاسبة المعمل بنجاح!', en: 'Formula «{title}» loaded into the lab calculator!', fr: 'Formule « {title} » chargée dans le calculateur !', es: '¡Fórmula «{title}» cargada en la calculadora!', it: 'Formula «{title}» caricata nel calcolatore!', de: 'Formel „{title}“ in den Lab-rechner geladen!', ru: 'Формула «{title}» загружена в калькулятор!', zh: '配方「{title}」已成功载入实验室计算器！', tr: '«{title}» formülü hesaplayıcıya yüklendi!', fa: 'فرمول «{title}» با موفقیت در ماشین‌حساب بارگذاری شد!' },
@@ -369,6 +378,9 @@ export default function App() {
   const [batchCode, setBatchCode] = useState('MYR-B01');
   const [formulaNotes, setFormulaNotes] = useState('تركيبة متوازنة شرقية غربية معتقة.');
   const [macerationDays, setMacerationDays] = useState(30);
+  // Values Shaheen read from a question, for calculators that keep their own inputs (remount on each link).
+  const [alcoholPreset, setAlcoholPreset] = useState<{ from?: number; to?: number; volume?: number; at: number } | null>(null);
+  const [materialSearch, setMaterialSearch] = useState<{ text: string; at: number } | null>(null);
   const [macerationStartDate, setMacerationStartDate] = useState<string>(() => new Date().toISOString().split('T')[0]);
 
   // Fragrance pyramid notes
@@ -577,6 +589,10 @@ export default function App() {
       bottleVolumeMl: formula.bottleVolumeMl || 50,
       concentrationPercent: formula.concentrationPercent,
       concentrationType: formula.concentrationType,
+      // The whole recipe, not only the oil share: alcohol strength, water and fixative too.
+      alcoholPercentage: formula.alcoholPercentage || prev.alcoholPercentage,
+      waterPercent: formula.waterPercent ?? prev.waterPercent,
+      fixativePercent: formula.fixativePercent ?? prev.fixativePercent,
     }));
     setFormulaTitle(formula.title);
     setFormulaAuthor(formula.author);
@@ -657,6 +673,30 @@ export default function App() {
       setPyramidNotes(formula.pyramidNotes);
     }
     handleOpenSpecModal();
+  };
+
+  // 6. Any calculator Shaheen linked to his answer, opened with the values from the conversation.
+  const TOOL_TABS: Record<ShaheenTool, string> = {
+    concentration: 'concentration', pyramid: 'pyramid', maceration: 'maceration_simulator', alcohol: 'alcohol',
+    costing: 'costing', raw_materials: 'raw_materials', guide: 'guide',
+  };
+  const handleOpenShaheenTool = (link: ToolLink) => {
+    if (link.tool === 'concentration' || link.tool === 'costing' || link.tool === 'pyramid') {
+      setFormulation((prev) => ({
+        ...prev,
+        ...(link.bottleVolumeMl !== undefined && { bottleVolumeMl: link.bottleVolumeMl }),
+        ...(link.concentrationPercent !== undefined && { concentrationPercent: link.concentrationPercent }),
+        ...(link.concentrationType && { concentrationType: link.concentrationType }),
+        ...(link.alcoholPercentage !== undefined && { alcoholPercentage: link.alcoholPercentage }),
+        ...(link.waterPercent !== undefined && { waterPercent: link.waterPercent }),
+        ...(link.fixativePercent !== undefined && { fixativePercent: link.fixativePercent }),
+      }));
+    }
+    if (link.macerationDays !== undefined) setMacerationDays(link.macerationDays);
+    if (link.tool === 'alcohol') setAlcoholPreset({ from: link.alcoholFrom, to: link.alcoholTo, volume: link.finalVolumeMl, at: Date.now() });
+    if (link.tool === 'raw_materials') setMaterialSearch({ text: link.search || '', at: Date.now() });
+    navigateToTab(TOOL_TABS[link.tool]);
+    showToast(fmt(L('toast_tool_tpl'), { tool: L(`tool_${link.tool}` as 'tool_concentration') }));
   };
 
   // ===================== LIBRARY & WORLD RECIPES HANDLERS =====================
@@ -858,7 +898,9 @@ export default function App() {
 
         {activeTab === 'raw_materials' && (
           <RawMaterialsEncyclopedia
+            key={materialSearch?.at ?? 'default'}
             currentLang={currentLang}
+            initialSearch={materialSearch?.text}
             onAddMaterialToPyramid={handleAddMaterialToPyramid}
           />
         )}
@@ -874,7 +916,13 @@ export default function App() {
         )}
 
         {activeTab === 'alcohol' && (
-          <AlcoholDilutionCalculator currentLang={currentLang} />
+          <AlcoholDilutionCalculator
+            key={alcoholPreset?.at ?? 'default'}
+            currentLang={currentLang}
+            initialFrom={alcoholPreset?.from}
+            initialTarget={alcoholPreset?.to}
+            initialVolumeMl={alcoholPreset?.volume}
+          />
         )}
 
         {activeTab === 'costing' && (
@@ -904,6 +952,7 @@ export default function App() {
             onRecordToRecipeLibrary={handleRecordToRecipeLibrary}
             onCalculateCosting={handleCalculateCosting}
             onPrintSpecSheet={handlePrintSpecSheetForFormula}
+            onOpenTool={handleOpenShaheenTool}
           />
         )}
 
@@ -945,6 +994,7 @@ export default function App() {
         onRecordToRecipeLibrary={handleRecordToRecipeLibrary}
         onCalculateCosting={handleCalculateCosting}
         onPrintSpecSheet={handlePrintSpecSheetForFormula}
+        onOpenTool={handleOpenShaheenTool}
       />
 
       {/* Sham Core services assistant: orders, store, bespoke, B2B, support (opposite corner to Shaheen) */}

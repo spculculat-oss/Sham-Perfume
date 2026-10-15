@@ -3,5 +3,13 @@
   "framework": null,
   "installCommand": "npx --yes bun@1.4.3 install --frozen-lockfile",
   "buildCommand": "npm run build:vercel",
-  "outputDirectory": null
+  "outputDirectory": null,
+  "fluid": true,
+  "git": {
+    "deploymentEnabled": {
+      "arena/**": false,
+      "arena/*": false,
+      "doctor/**": false
+    }
+  }
 }

@@ -25,14 +25,16 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import perfumerImg from '../assets/images/master_perfumer_compounding_1791693212967.jpg';
-import { extractFormulaFromAIMessage, isFormulaTransferCommand, ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
+import { linkTools, type ToolLink } from '../utils/shaheenTools';
+import { ShaheenToolLinks } from './ShaheenToolLinks';
+import { extractFormulaFromAIMessage, extractFormulasFromAIMessage, isFormulaTransferCommand, ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
 import { exportChatTranscriptToFile } from '../utils/chatStorage';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../utils/localizedContent';
 import { LText, makeT, fmt, loc, LOCALE_MAP } from '../utils/localize';
 import { isStaticHosting } from '../utils/api';
 import { StaticHostingNotice } from './StaticHostingNotice';
-import { ShaheenModesPanel, ShaheenServiceStatus, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
+import { ShaheenModesPanel, ShaheenServiceStatus, busyNoteText, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
 import { ShaheenMedia } from './ShaheenMedia';
 import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
@@ -49,6 +51,8 @@ interface PerfumerMasterLabViewProps {
   onRecordToRecipeLibrary: (formula: ExtractedAIPerfume) => void;
   onCalculateCosting: (formula: ExtractedAIPerfume) => void;
   onPrintSpecSheet: (formula: ExtractedAIPerfume) => void;
+  /** Opens a calculator (dilution, maceration, pyramid…) with the values from the conversation. */
+  onOpenTool?: (link: ToolLink) => void;
 }
 
 
@@ -259,12 +263,13 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   onRecordToRecipeLibrary,
   onCalculateCosting,
   onPrintSpecSheet,
+  onOpenTool,
 }) => {
   const rtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
   const masterPrompts: string[] = [L('prompt_1'), L('prompt_2'), L('prompt_3'), L('prompt_4'), L('prompt_5')];
   // Same conversation store as the floating Shaheen window (one history, never overwritten by the other).
-  const { messages, setMessages, daysRemaining, isLoading, sendMessage, retryLast, clearHistory } = useShaheenChat();
+  const { messages, setMessages, daysRemaining, isLoading, busy, sendMessage, retryLast, clearHistory } = useShaheenChat();
   const modelStatus = useShaheenModels();
   const selectedModel = modelStatus.selected;
   const setSelectedModel = modelStatus.setSelected;
@@ -305,6 +310,8 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [copiedAll, setCopiedAll] = useState(false);
   const [recordedId, setRecordedId] = useState<string | null>(null);
+  // A deep analysis may offer several alternative formulas: which one the toolbar acts on, per message.
+  const [formulaPick, setFormulaPick] = useState<Record<string, number>>({});
   const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -566,7 +573,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
 
         {/* Messages Stream Board */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 bg-stone-50/50">
-          {messages.map((m) => {
+          {messages.map((m, msgIndex) => {
             const activeDisplayContent =
               m.id === 'welcome'
                 ? shaheenWelcome(currentLang)
@@ -576,7 +583,13 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
             const mediaRequest = m.role === 'assistant' && !isError && m.id !== 'welcome' ? extractMediaRequest(m.text) : undefined;
             const isLastMessage = m.id === messages[messages.length - 1]?.id;
             const canCompare = m.role === 'assistant' && !isError && m.id !== 'welcome' && AI_ENGINES.length > 1;
-            const extractedFormula = m.role === 'assistant' && !isError ? extractFormulaFromAIMessage(activeDisplayContent) : null;
+            const formulas = m.role === 'assistant' && !isError ? extractFormulasFromAIMessage(activeDisplayContent) : [];
+                const formulaIndex = Math.min(formulaPick[m.id] ?? 0, Math.max(formulas.length - 1, 0));
+                const extractedFormula = formulas[formulaIndex] ?? null;
+                const askedBefore = messages.slice(0, msgIndex).filter((x) => x.role === 'user');
+                const toolLinks = m.role === 'assistant' && m.kind !== 'error' && m.id !== 'welcome' && onOpenTool
+                  ? linkTools({ question: askedBefore[askedBefore.length - 1]?.text || '', previousQuestion: askedBefore[askedBefore.length - 2]?.text || '', answer: m.text, formulas })
+                  : [];
 
             return (
               <div
@@ -673,6 +686,25 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                         </span>
                       </div>
 
+                          {formulas.length > 1 && (
+                            <div className="flex flex-wrap gap-1.5" role="tablist">
+                              {formulas.map((f, i) => (
+                                <button
+                                  key={i}
+                                  role="tab"
+                                  aria-selected={i === formulaIndex}
+                                  onClick={() => setFormulaPick((p) => ({ ...p, [m.id]: i }))}
+                                  className={`px-2.5 py-1 rounded-full text-[11px] font-semibold border cursor-pointer transition-colors ${
+                                    i === formulaIndex ? 'bg-amber-800 text-white border-amber-800' : 'bg-white text-amber-900 border-amber-300 hover:bg-amber-100'
+                                  }`}
+                                  title={f.summary}
+                                >
+                                  {i + 1}. {f.title}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+
                       {/* Interactive Transfer Buttons */}
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
                         <button
@@ -737,6 +769,8 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                       </div>
                     </div>
                   )}
+
+                  {toolLinks.length > 0 && <ShaheenToolLinks links={toolLinks} lang={currentLang} onOpen={(link) => onOpenTool?.(link)} />}
 
                   {/* Bottom Action Strip (not on error notices) */}
                   {!isError && <div
@@ -848,6 +882,9 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                 <p className="text-xs text-amber-800 leading-relaxed">
                   {compoundingPhrases[compoundingStep]}
                 </p>
+                {busy && (
+                  <p role="status" className="rounded-lg bg-amber-100/80 px-2 py-1.5 text-[11px] font-semibold leading-relaxed text-amber-900">{busyNoteText(currentLang)}</p>
+                )}
                 <div className="flex items-center gap-1.5 pt-1">
                   <span className="w-2 h-2 rounded-full bg-amber-600 animate-bounce" />
                   <span className="w-2 h-2 rounded-full bg-amber-600 animate-bounce [animation-delay:0.2s]" />

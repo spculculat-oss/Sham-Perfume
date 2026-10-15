@@ -185,19 +185,30 @@ type GeminiCache = Map<string, { model: string; at: number; ttl?: number }>;
 const geminiSubstitutes: GeminiCache = ((globalThis as { __shamGeminiModels?: GeminiCache }).__shamGeminiModels ??= new Map());
 const geminiCacheKey = (apiKey: string, model: string) => `${createHash('sha256').update(apiKey).digest('hex').slice(0, 16)}:${model}`;
 
-/** Maintenance remedy (refresh_model_list): forget cached Gemini model substitutions so discovery re-runs on the next message. */
-export function resetGeminiModelCaches(): void {
-  geminiSubstitutes.clear();
-}
+// The model list changes rarely: under load every quota fallback used to fetch it again.
+const geminiModelLists = new Map<string, { at: number; models: Promise<GeminiModelInfo[]> }>();
 
-async function listGeminiModels(apiKey: string, request: typeof fetch, signal: AbortSignal): Promise<GeminiModelInfo[]> {
-  try {
-    const response = await request('https://generativelanguage.googleapis.com/v1beta/models?pageSize=1000', { headers: { 'x-goog-api-key': apiKey }, signal });
-    if (!response.ok) return [];
-    return (await response.json() as { models?: GeminiModelInfo[] }).models || [];
-  } catch {
-    return [];
-  }
+/** Maintenance remedy: forget cached Gemini model lists and substitutes (rebuilt on the next request). */
+export function resetGeminiModelCaches() { geminiModelLists.clear(); geminiSubstitutes.clear(); }
+
+async function listGeminiModels(apiKey: string, request: typeof fetch, _signal?: AbortSignal): Promise<GeminiModelInfo[]> {
+  const key = geminiCacheKey(apiKey, 'models');
+  const cached = geminiModelLists.get(key);
+  if (cached && Date.now() - cached.at < 10 * 60_000) return cached.models;
+  // Shared by concurrent callers, so it is bounded by its own timeout, not by one visitor's signal.
+  const models = (async () => {
+    try {
+      const response = await request('https://generativelanguage.googleapis.com/v1beta/models?pageSize=1000', { headers: { 'x-goog-api-key': apiKey }, signal: AbortSignal.timeout(8000) });
+      if (!response.ok) return [];
+      return (await response.json() as { models?: GeminiModelInfo[] }).models || [];
+    } catch {
+      return [];
+    }
+  })();
+  geminiModelLists.set(key, { at: Date.now(), models }); // concurrent callers share this request
+  const list = await models;
+  if (!list.length) geminiModelLists.delete(key); // failures are not cached
+  return list;
 }
 
 async function discoverGeminiModel(apiKey: string, unavailable: string, request: typeof fetch, signal: AbortSignal): Promise<string | undefined> {

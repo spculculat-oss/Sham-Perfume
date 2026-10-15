@@ -32,6 +32,7 @@ import {
   getNoteActivityAtMinute,
   EvolutionScenarioStage,
 } from '../utils/volatilityHelper';
+import { PerfumeSpraySimulator } from './PerfumeSpraySimulator';
 
 
 const S = {
@@ -296,6 +297,7 @@ export const FragrancePyramidGraphic: React.FC<FragrancePyramidGraphicProps> = (
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
   const [sprayAnimationActive, setSprayAnimationActive] = useState<boolean>(false);
   const [copiedScenario, setCopiedScenario] = useState<boolean>(false);
+  const [showSpraySimulator, setShowSpraySimulator] = useState<boolean>(true);
 
   // Scenario generation
   const scenario = generateCustomSprayScenario(pyramidNotes, bottleVolumeMl, concentrationPercent);
@@ -327,12 +329,19 @@ export const FragrancePyramidGraphic: React.FC<FragrancePyramidGraphicProps> = (
   }, [isPlaying, playbackSpeed]);
 
   const handleTriggerSpray = () => {
+    setShowSpraySimulator(true);
     setSprayAnimationActive(true);
     setCurrentMinutes(0);
     setIsPlaying(true);
     setTimeout(() => {
       setSprayAnimationActive(false);
     }, 1800);
+    setTimeout(() => {
+      const simEl = document.getElementById('perfume-spray-simulator-section');
+      if (simEl) {
+        simEl.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   const handleResetSimulation = () => {
@@ -539,6 +548,38 @@ export const FragrancePyramidGraphic: React.FC<FragrancePyramidGraphicProps> = (
             </span>
           </div>
         </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* FULL PHYSICAL SPRAY, SKIN ADHESION & EVAPORATION KINETICS SIMULATOR        */}
+      {/* ========================================================================= */}
+      <div id="perfume-spray-simulator-section" className="scroll-mt-6 space-y-3">
+        <div className="flex items-center justify-between px-2">
+          <div className="flex items-center gap-2 text-xs font-bold text-stone-800">
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
+            <span>محاكاة خروج العطر وثباته على مسام الجلد والتبخر الزمني (Atomizer ➔ Skin Fixation ➔ Evaporation)</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowSpraySimulator(!showSpraySimulator)}
+            className="text-xs font-semibold text-amber-700 hover:text-amber-900 cursor-pointer flex items-center gap-1 bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-300/40 transition-colors"
+          >
+            <span>{showSpraySimulator ? 'تصغير شاشة المحاكاة' : 'فتح شاشة محاكاة الرش المباشرة'}</span>
+            {showSpraySimulator ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+          </button>
+        </div>
+
+        {showSpraySimulator && (
+          <div className="animate-in fade-in duration-300">
+            <PerfumeSpraySimulator
+              pyramidNotes={pyramidNotes}
+              bottleVolumeMl={bottleVolumeMl}
+              concentrationPercent={concentrationPercent}
+              result={result}
+              currentLang={effectiveLang}
+            />
+          </div>
+        )}
       </div>
 
       {/* Main Grid: Visual Graphic Pyramid (Left) + Interactive Scenario Simulation (Right) */}

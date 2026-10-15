@@ -11,6 +11,13 @@ import {
   Coins,
   ArrowRightLeft,
   Search,
+  BarChart3,
+  Sliders,
+  CheckCircle2,
+  Award,
+  Sparkles,
+  Info,
+  Percent,
 } from 'lucide-react';
 import { CalculationResult, CostingState, FormulationState } from '../types/perfume';
 import {
@@ -529,6 +536,474 @@ const S = {
     tr: 'Sham Parfümerie Atölyesi',
     fa: 'پلتفرم شام',
   },
+  chart_section_title: {
+    ar: 'الرسم البياني المالي: مقارنة تكلفة الإنتاج وسعر البيع المتوقع بحسب حجم العطر',
+    en: 'Financial Decision Chart: Production Cost vs Selling Price by Volume',
+    fr: 'Graphique financier : Coût de production vs Prix de vente par volume',
+    es: 'Gráfico financiero: Costo de producción vs Precio de venta por volumen',
+    it: 'Grafico finanziario: Costo di produzione vs Prezzo di vendita per volume',
+    de: 'Finanzdiagramm: Herstellungskosten vs. Verkaufspreis nach Flakongröße',
+    ru: 'Финансовый график: Себестоимость vs Цена продажи по объёму',
+    zh: '财务决策图表：按香水容量对比制造成本与建议售价',
+    tr: 'Finansal Karar Grafiği: Şişe Hacmine Göre Üretim Maliyeti ve Satış Fiyatı',
+    fa: 'نمودار تصمیم‌گیری مالی: مقایسه هزینه تولید و قیمت فروش بر اساس حجم عطر',
+  },
+  chart_section_desc: {
+    ar: 'تحليل اقتصادي مرئي يوضح لمصمم العطور ديناميكية تسعير الزجاجات المختلفة وهوامش الربح ووفورات الحجم لاتخاذ قرار مالي وتسويقي مدروس.',
+    en: 'Visual unit-economics breakdown showing how production cost, pricing elasticity, and net margins scale across bottle sizes for smart financial decisions.',
+    fr: 'Analyse visuelle montrant l’élasticité des coûts, des prix et des marges selon les tailles de flacons pour éclairer les décisions financières.',
+    es: 'Análisis visual que muestra cómo escalan costos, precios de venta y márgenes según el tamaño del frasco para una decisión financiera acertada.',
+    it: 'Analisi visiva dell’evoluzione di costi, prezzi di vendita e margini per volumi di flacone, a supporto delle decisioni finanziarie.',
+    de: 'Visuelle Analyse der Stückkosten-, Preis- und Margenentwicklung über verschiedene Flakongrößen zur fundierten Finanzentscheidung.',
+    ru: 'Наглядный анализ себестоимости, розничных цен и чистой прибыли по разным объёмам флаконов для принятия финансовых решений.',
+    zh: '直观展示不同容量瓶装下的成本结构、建议售价与净利润率，辅助调香师制定精准商业决策。',
+    tr: 'Parfüm tasarımcısının doğru finansal karar almasını sağlayan, şişe boyutlarına göre birim maliyet ve kâr marjı analizi.',
+    fa: 'تحلیل اقتصادی تصویری برای طراح عطر جهت بررسی تغییرات هزینه، قیمت‌گذاری و حاشیه سود در اندازه‌های مختلف بطری.',
+  },
+  chart_view_mode_label: {
+    ar: 'مستوى التسعير المعروض:',
+    en: 'Displayed Pricing Target:',
+    fr: 'Niveau de prix affiché :',
+    es: 'Nivel de precio mostrado:',
+    it: 'Livello di prezzo visualizzato:',
+    de: 'Angezeigte Preisstufe:',
+    ru: 'Уровень отображаемой цены:',
+    zh: '显示价格梯度：',
+    tr: 'Görüntülenen Fiyat Düzeyi:',
+    fa: 'سطح قیمت‌گذاری نمایشی:',
+  },
+  chart_view_retail: {
+    ar: 'سعر بيع التجزئة المقترح (Retail)',
+    en: 'Suggested Retail Price',
+    fr: 'Prix de vente public conseillé',
+    es: 'Precio minorista sugerido',
+    it: 'Prezzo consigliato al pubblico',
+    de: 'Empfohlener Endverbraucherpreis',
+    ru: 'Рекомендованная розничная цена',
+    zh: '建议零售价',
+    tr: 'Önerilen Perakende Satış Fiyatı',
+    fa: 'قیمت پیشنهادی خرده‌فروشی',
+  },
+  chart_view_wholesale: {
+    ar: 'سعر بيع الجملة (Wholesale)',
+    en: 'Wholesale Price',
+    fr: 'Prix de vente en gros',
+    es: 'Precio mayorista',
+    it: 'Prezzo all’ingrosso',
+    de: 'Großhandelspreis',
+    ru: 'Оптовая цена',
+    zh: '批发价',
+    tr: 'Toptan Satış Fiyatı',
+    fa: 'قیمت فروش عمده',
+  },
+  chart_metric_bottle: {
+    ar: 'إجمالي الزجاجة (Total Bottle)',
+    en: 'Total Per Bottle',
+    fr: 'Total par flacon',
+    es: 'Total por frasco',
+    it: 'Totale per flacone',
+    de: 'Gesamt pro Flakon',
+    ru: 'Итого за флакон',
+    zh: '单瓶总额',
+    tr: 'Şişe Başına Toplam',
+    fa: 'مجموع هر بطری',
+  },
+  chart_metric_ml: {
+    ar: 'المقياس لكل 1 مل (Per ml Economics)',
+    en: 'Per 1 ml Economics',
+    fr: 'Économie par 1 ml',
+    es: 'Métricas por 1 ml',
+    it: 'Metriche per 1 ml',
+    de: 'Kennzahlen pro 1 ml',
+    ru: 'Экономика на 1 мл',
+    zh: '每毫升经济学指标',
+    tr: '1 ml Başına Değerler',
+    fa: 'شاخص‌های اقتصادی به ازای هر ۱ میل',
+  },
+  legend_cost: {
+    ar: 'تكلفة الإنتاج الإجمالية',
+    en: 'Total Production Cost',
+    fr: 'Coût total de production',
+    es: 'Costo total de producción',
+    it: 'Costo totale di produzione',
+    de: 'Gesamte Herstellungskosten',
+    ru: 'Общая себестоимость',
+    zh: '总制造成本',
+    tr: 'Toplam Üretim Maliyeti',
+    fa: 'مجموع هزینه تولید',
+  },
+  legend_price: {
+    ar: 'سعر البيع المتوقع',
+    en: 'Expected Selling Price',
+    fr: 'Prix de vente prévu',
+    es: 'Precio de venta esperado',
+    it: 'Prezzo di vendita atteso',
+    de: 'Erwarteter Verkaufspreis',
+    ru: 'Ожидаемая цена продажи',
+    zh: '预计销售价格',
+    tr: 'Beklenen Satış Fiyatı',
+    fa: 'قیمت فروش پیش‌بینی‌شده',
+  },
+  legend_profit: {
+    ar: 'صافي الربح المتوقع',
+    en: 'Expected Net Profit',
+    fr: 'Bénéfice net prévu',
+    es: 'Beneficio neto esperado',
+    it: 'Profitto netto previsto',
+    de: 'Erwarteter Nettogewinn',
+    ru: 'Ожидаемая чистая прибыль',
+    zh: '预计净利润',
+    tr: 'Beklenen Net Kâr',
+    fa: 'سود خالص پیش‌بینی‌شده',
+  },
+  legend_raw_materials: {
+    ar: 'الزيت العطري والكحول',
+    en: 'Perfume Oil & Ethanol',
+    fr: 'Huile de parfum & éthanol',
+    es: 'Aceite de fragancia y etanol',
+    it: 'Olio profumato ed etanolo',
+    de: 'Duftöl & Ethanol',
+    ru: 'Ароматическое масло и этанол',
+    zh: '香精油与乙醇',
+    tr: 'Esans yağı ve etanol',
+    fa: 'روغن عطری و اتانول',
+  },
+  legend_packaging_labor: {
+    ar: 'الزجاجة والعلبة والمصنعية',
+    en: 'Bottle, Box & Labor',
+    fr: 'Flacon, étui & atelier',
+    es: 'Frasco, caja y mano de obra',
+    it: 'Flacone, scatola e manodopera',
+    de: 'Flakon, Verpackung & Handwerk',
+    ru: 'Флакон, коробка и работа',
+    zh: '瓶身、包装盒与人工',
+    tr: 'Şişe, kutu ve işçilik',
+    fa: 'بطری، جعبه و دستمزد',
+  },
+  current_flacon_badge: {
+    ar: 'الحجم الحالي المعتمد',
+    en: 'Current Master Volume',
+    fr: 'Volume actuel sélectionné',
+    es: 'Volumen actual seleccionado',
+    it: 'Volume attuale selezionato',
+    de: 'Aktuell gewähltes Volumen',
+    ru: 'Текущий выбранный объём',
+    zh: '当前选定容量',
+    tr: 'Mevcut Seçili Hacim',
+    fa: 'حجم انتخابی کنونی',
+  },
+  detail_breakdown_title: {
+    ar: 'التحليل المالي التفصيلي للزجاجة ({v} مل):',
+    en: 'Detailed Unit Economics for Flacon ({v} ml):',
+    fr: 'Économie unitaire détaillée pour ({v} ml) :',
+    es: 'Economía unitaria detallada para ({v} ml):',
+    it: 'Economia unitaria dettagliata per ({v} ml):',
+    de: 'Detaillierte Stückkostenrechnung für ({v} ml):',
+    ru: 'Детальный расчёт себестоимости флакона ({v} мл):',
+    zh: '（{v} 毫升）瓶装详细单件经济学核算：',
+    tr: '({v} ml) Şişe İçin Detaylı Birim Maliyet Analizi:',
+    fa: 'تحلیل مالی تفصیلی برای بطری ({v} میلی‌لیتر):',
+  },
+  roi_label: {
+    ar: 'معدل العائد على الاستثمار (ROI):',
+    en: 'Return on Investment (ROI):',
+    fr: 'Retour sur investissement (ROI) :',
+    es: 'Retorno de inversión (ROI):',
+    it: 'Ritorno sull’investimento (ROI):',
+    de: 'Kapitalrendite (ROI):',
+    ru: 'Рентабельность инвестиций (ROI):',
+    zh: '投资回报率（ROI）：',
+    tr: 'Yatırım Getirisi (ROI):',
+    fa: 'نرخ بازگشت سرمایه (ROI):',
+  },
+  margin_rate_label: {
+    ar: 'نسبة هامش الربح من البيع:',
+    en: 'Profit Margin on Selling Price:',
+    fr: 'Marge bénéficiaire sur prix de vente :',
+    es: 'Margen de beneficio sobre venta:',
+    it: 'Margine di profitto sul prezzo:',
+    de: 'Gewinnmarge am Verkaufspreis:',
+    ru: 'Маржинальность от цены продажи:',
+    zh: '销售利润率：',
+    tr: 'Satış Üzerinden Kâr Oranı:',
+    fa: 'درصد حاشیه سود از فروش:',
+  },
+  cost_per_ml_label: {
+    ar: 'تكلفة الملي الواحد:',
+    en: 'Cost per 1 ml:',
+    fr: 'Coût par 1 ml :',
+    es: 'Costo por 1 ml:',
+    it: 'Costo per 1 ml:',
+    de: 'Kosten pro 1 ml:',
+    ru: 'Себестоимость 1 мл:',
+    zh: '每毫升成本：',
+    tr: '1 ml Başına Maliyet:',
+    fa: 'هزینه هر ۱ میلی‌لیتر:',
+  },
+  selling_per_ml_label: {
+    ar: 'سعر البيع لكل 1 مل:',
+    en: 'Selling price per 1 ml:',
+    fr: 'Prix de vente par 1 ml :',
+    es: 'Precio de venta por 1 ml:',
+    it: 'Prezzo di vendita per 1 ml:',
+    de: 'Verkaufspreis pro 1 ml:',
+    ru: 'Цена продажи 1 мл:',
+    zh: '每毫升售价：',
+    tr: '1 ml Satış Fiyatı:',
+    fa: 'قیمت فروش هر ۱ میلی‌لیتر:',
+  },
+  breakeven_units_tpl: {
+    ar: 'نقطة التعادل للدفعة ({n} زجاجة): تحتاج بيع {b} زجاجة لاسترداد رأس مال الإنتاج بالكامل.',
+    en: 'Batch Breakeven ({n} units): requires selling {b} bottles to fully recoup production capital.',
+    fr: 'Seuil de rentabilité ({n} unités) : nécessite la vente de {b} flacons pour couvrir l’investissement.',
+    es: 'Punto de equilibrio ({n} uds): requiere vender {b} frascos para recuperar el capital invertido.',
+    it: 'Punto di pareggio ({n} flaconi): occorre vendere {b} pezzi per recuperare il capitale di produzione.',
+    de: 'Gewinnschwelle ({n} Stück): erfordert den Verkauf von {b} Flakons zur vollen Kostendeckung.',
+    ru: 'Точка безубыточности ({n} шт.): продажа {b} флаконов полностью окупает затраты партии.',
+    zh: '（{n} 瓶批次）盈亏平衡点：售出 {b} 瓶即可收回全部生产成本。',
+    tr: 'Parti Başa Baş Noktası ({n} şişe): Yatırılan sermayeyi karşılamak için {b} şişe satışı gerekir.',
+    fa: 'نقطه سربه‌سر برای پارت ({n} بطری): فروش {b} بطری کل سرمایه تولید را بازمی‌گرداند.',
+  },
+  decision_matrix_title: {
+    ar: 'مصفوفة القرار المالي والتسعير بحسب الحجم',
+    en: 'Volume & Pricing Decision Matrix',
+    fr: 'Matrice de décision financière par volume',
+    es: 'Matriz de decisión financiera por volumen',
+    it: 'Matrice decisionale finanziaria per volume',
+    de: 'Entscheidungsmatrix nach Flakongröße',
+    ru: 'Матрица финансовых решений по объёмам',
+    zh: '按容量财务决策矩阵',
+    tr: 'Hacme Göre Finansal Karar Matrisi',
+    fa: 'ماتریس تصمیم‌گیری مالی بر اساس حجم',
+  },
+  th_flacon_vol: {
+    ar: 'سعة الزجاجة',
+    en: 'Flacon Volume',
+    fr: 'Volume du flacon',
+    es: 'Capacidad del frasco',
+    it: 'Volume flacone',
+    de: 'Flakongröße',
+    ru: 'Объём флакона',
+    zh: '瓶装容量',
+    tr: 'Şişe Hacmi',
+    fa: 'حجم بطری',
+  },
+  th_cost_total: {
+    ar: 'تكلفة الإنتاج',
+    en: 'Production Cost',
+    fr: 'Coût de production',
+    es: 'Costo producción',
+    it: 'Costo produzione',
+    de: 'Herstellkosten',
+    ru: 'Себестоимость',
+    zh: '制造成本',
+    tr: 'Üretim Maliyeti',
+    fa: 'هزینه تولید',
+  },
+  th_suggested_price: {
+    ar: 'سعر البيع المقترح',
+    en: 'Target Selling Price',
+    fr: 'Prix de vente conseillé',
+    es: 'Precio sugerido',
+    it: 'Prezzo suggerito',
+    de: 'Ziel-Verkaufspreis',
+    ru: 'Реком. цена продажи',
+    zh: '建议售价',
+    tr: 'Önerilen Satış Fiyatı',
+    fa: 'قیمت فروش پیشنهادی',
+  },
+  th_net_margin: {
+    ar: 'صافي الربح للزجاجة',
+    en: 'Net Profit / Unit',
+    fr: 'Bénéfice net / unité',
+    es: 'Beneficio neto / ud',
+    it: 'Utile netto / pezzo',
+    de: 'Nettogewinn / Stück',
+    ru: 'Чистая прибыль / шт.',
+    zh: '单瓶净利',
+    tr: 'Birim Başına Net Kâr',
+    fa: 'سود خالص هر بطری',
+  },
+  th_cost_ml: {
+    ar: 'تكلفة الملي الواحد',
+    en: 'Cost per 1 ml',
+    fr: 'Coût / 1 ml',
+    es: 'Costo / 1 ml',
+    it: 'Costo / 1 ml',
+    de: 'Kosten / 1 ml',
+    ru: 'Себестоимость / 1 мл',
+    zh: '每毫升成本',
+    tr: '1 ml Maliyeti',
+    fa: 'هزینه هر ۱ میل',
+  },
+  th_roi: {
+    ar: 'العائد (ROI)',
+    en: 'ROI %',
+    fr: 'ROI %',
+    es: 'ROI %',
+    it: 'ROI %',
+    de: 'ROI %',
+    ru: 'Рентабельность (ROI)',
+    zh: '投资回报率 (ROI)',
+    tr: 'Yatırım Getirisi (ROI)',
+    fa: 'بازده سرمایه‌گذاری (ROI)',
+  },
+  th_financial_verdict: {
+    ar: 'التوصية المالية للمصمم',
+    en: 'Financial Recommendation',
+    fr: 'Recommandation financière',
+    es: 'Recomendación financiera',
+    it: 'Raccomandazione finanziaria',
+    de: 'Finanzielle Empfehlung',
+    ru: 'Финансовая рекомендация',
+    zh: '设计师财务建议',
+    tr: 'Tasarımcı Finansal Önerisi',
+    fa: 'توصیه مالی برای طراح',
+  },
+  verdict_travel_desc: {
+    ar: 'حجم استكشاف وسفر: تكلفة الملي مرتفعة ولكن سعر الدخول منخفض، ممتاز لاكتساب عملاء جدد وتجربة العطر.',
+    en: 'Discovery & Travel size: higher per-ml cost but accessible price point; ideal for customer onboarding.',
+    fr: 'Format voyage : coût au ml plus élevé mais prix d’accès accessible ; idéal pour la découverte.',
+    es: 'Formato viaje: mayor costo por ml pero precio de entrada accesible; excelente para captación de clientes.',
+    it: 'Formato viaggio: costo al ml più elevato ma prezzo accessibile; ottimo per farsi conoscere.',
+    de: 'Reise- & Entdeckungsgröße: höhere Kosten pro ml bei niedrigem Einstiegspreis; ideal zum Kennenlernen.',
+    ru: 'Тревел-формат: себестоимость за мл выше, но доступная цена привлекает новых покупателей.',
+    zh: '旅行便携装：每毫升成本偏高但总门槛低，非常适合作为拓客拉新体验装。',
+    tr: 'Keşif ve seyahat boyu: ml maliyeti yüksek ancak erişilebilir fiyatıyla yeni müşteri kazanımında etkilidir.',
+    fa: 'حجم سفری و تست: هزینه هر میل بالاتر است اما قیمت ورودی مناسب مشتریان جدید است.',
+  },
+  verdict_compact_desc: {
+    ar: 'حجم مدمج فاخر: حل وسط بين سعر البيع المناسب وهوامش ربح متماسكة، ممتاز للإهداء ومجموعات البوتيك.',
+    en: 'Compact Luxury: solid balance between customer price acceptance and boutique margins.',
+    fr: 'Luxe compact : bon équilibre entre prix d’achat attractif et marge saine en boutique.',
+    es: 'Lujo compacto: equilibrio entre precio atractivo y buen margen para colecciones boutique.',
+    it: 'Lusso compatto: buon equilibrio tra prezzo competitivo e margini solidi per boutique.',
+    de: 'Kompakter Luxus: ausgewogene Balance zwischen Endkundenpreis und Boutiquen-Marge.',
+    ru: 'Компактный люкс: отличный компромисс между доступной ценой и надёжной маржой.',
+    zh: '轻奢精致装：在价格亲和力与精品店稳健毛利率之间取得良好平衡。',
+    tr: 'Kompakt lüks: müşteri için makul fiyat ve butik satışı için dengeli kâr marjı sunar.',
+    fa: 'لوکس فشرده: تعادل مناسب میان قیمت پذیرفتنی و حاشیه سود پایدار برای بوتیک‌ها.',
+  },
+  verdict_golden_desc: {
+    ar: 'الحجم الذهبي التجاري: أعلى توازن بين كلفة التعبئة وتكلفة المكونات، وهو الأكثر مبيعاً في أسواق العطور العالمية.',
+    en: 'Commercial Golden Ratio: peak balance of packaging efficiency and ingredients; global market best-seller.',
+    fr: 'Ratio d’or commercial : équilibre parfait emballage/formule, le plus vendu dans la parfumerie mondiale.',
+    es: 'Proporción áurea comercial: óptimo equilibrio envase/fórmula, el más vendido a nivel internacional.',
+    it: 'Rapporto aureo commerciale: equilibrio perfetto tra packaging e formula, formato più venduto al mondo.',
+    de: 'Goldener Schnitt: ideale Balance aus Verpackungs- und Rohstoffkosten; internationaler Bestseller.',
+    ru: 'Золотой стандарт: лучшее соотношение затрат на упаковку и объёма духов, мировой бестселлер.',
+    zh: '商业黄金标准：包装耗材与原料成本最佳配比，全球香水零售最主流热销规格。',
+    tr: 'Ticari altın standart: ambalaj maliyeti ile esans dengesinin zirvesi; küresel pazarda en çok satan hacim.',
+    fa: 'استاندارد طلایی تجاری: بهترین تناسب میان هزینه بسته‌بندی و فرمولاسیون و پرفروش‌ترین اندازه در بازار.',
+  },
+  verdict_niche_desc: {
+    ar: 'الحجم المفضل لدور النيش: يرفع القيمة الذهنية والرمزية للعلامة التجارية بهامش ربح مجزي جداً.',
+    en: 'Niche House Preference: elevates brand prestige and perceived value with substantial margin upside.',
+    fr: 'Préférence niche : renforce le prestige et la valeur perçue de la marque avec une marge généreuse.',
+    es: 'Favorito de nicho: eleva el prestigio de marca y el valor percibido con excelente margen.',
+    it: 'Preferito dalle maison di nicchia: accresce il prestigio del brand con un margine elevato.',
+    de: 'Nischen-Favorit: steigert Markenprestige und gefühlten Wert bei sehr solider Gewinnmarge.',
+    ru: 'Нишевый фаворит: подчёркивает премиальность бренда и обеспечивает высокую чистую прибыль.',
+    zh: '沙龙小众典范：大幅提升品牌格调与高级感，同时提供极其丰厚的单件利润空间。',
+    tr: 'Niş parfüm tercihi: markanın prestij algısını yükseltir ve yüksek kâr marjı sağlar.',
+    fa: 'محبوب خانه‌های نیش: افزایش‌دهنده وجهه و ارزش درک‌شده برند با حاشیه سود بسیار مناسب.',
+  },
+  verdict_flagship_desc: {
+    ar: 'حجم الواجهة الأساسية: أعلى عائد مالي مطلق لكل عملية بيع، وأفضل توفير لتكلفة الملي للمستهلك.',
+    en: 'Flagship Volume: highest absolute cash profit per unit and best value per milliliter for the buyer.',
+    fr: 'Volume phare : rentabilité absolue maximale par unité et meilleur rapport ml/prix pour le client.',
+    es: 'Volumen insignia: mayor ganancia neta absoluta por frasco y mejor valor por ml para el consumidor.',
+    it: 'Volume di punta: massimo profitto monetario per pezzo e miglior valore al ml per il cliente.',
+    de: 'Flaggschiff-Volumen: höchster absoluter Reingewinn pro Flakon und bestes Preis-pro-ml-Verhältnis.',
+    ru: 'Флагманский объём: максимальная абсолютная прибыль с флакона и максимальная выгода за мл для клиента.',
+    zh: '旗舰核心规格：单瓶现金净利润最高，客户每毫升性价比最佳，极具商业爆发力。',
+    tr: 'Amiral gemisi hacmi: şişe başına en yüksek net nakit kârı ve müşteri için en iyi ml değerini sağlar.',
+    fa: 'حجم پرچمدار اصلی: بالاترین سود نقدی مطلق به ازای هر فروش و بیشترین صرفه اقتصادی برای مشتری.',
+  },
+  verdict_salon_desc: {
+    ar: 'إصدار صالونات وكولونيا كبرى: قيمة فاتورة مرتفعة جداً (High AOV) وربح استثنائي لهواة الجمع.',
+    en: 'Grand Salon Edition: premium average order value with exceptional collector & flacon margin.',
+    fr: 'Édition grand salon : panier moyen très élevé et marge exceptionnelle pour collectionneurs.',
+    es: 'Edición gran salón: ticket promedio muy alto y rentabilidad destacada para coleccionistas.',
+    it: 'Edizione gran salone: scontrino medio elevato e margine eccezionale per collezionisti.',
+    de: 'Großsalon-Edition: sehr hoher Warenkorbwert und außergewöhnliche Sammler-Marge.',
+    ru: 'Гранд-салон: высокий средний чек и внушительная маржа для ценителей и коллекционеров.',
+    zh: '大容量沙龙典藏装：极大提升客单价（High AOV），面向资深藏家的高溢价规格。',
+    tr: 'Büyük salon ve kolonya edisyonu: yüksek sepet tutarı ve koleksiyoncular için özel kâr potansiyeli.',
+    fa: 'نسخه بزرگ سالنی: میانگین سبد خرید بسیار بالا با سود فوق‌العاده برای مجموعه‌داران.',
+  },
+  verdict_custom_desc: {
+    ar: 'حجم مخصص خاص بالتركيبة الحالية: مبني بدقة على معطيات الزجاجة المدخلة في الحاسبة.',
+    en: 'Custom Volume: dynamically computed from your active formulation bottle size.',
+    fr: 'Volume sur-mesure : calculé selon les paramètres de votre formule actuelle.',
+    es: 'Volumen personalizado: calculado según los parámetros de tu fórmula activa.',
+    it: 'Volume personalizzato: calcolato in base alla formula attualmente impostata.',
+    de: 'Individuelle Größe: exakt auf die Parameter der aktuellen Rezeptur abgestimmt.',
+    ru: 'Индивидуальный объём: рассчитан точно по текущим параметрам вашей формулы.',
+    zh: '专属定制容量：依据当前计算器中输入的实际参数精确核算。',
+    tr: 'Özel hacim: hesaplayıcıya girilen mevcut formül parametrelerine göre hesaplanmıştır.',
+    fa: 'حجم سفارشی: دقیقا بر اساس پارامترهای واردشده در این فرمول محاسبه شده است.',
+  },
+  insights_card_title: {
+    ar: 'نصائح الخبير المالي لمصمم العطور (Financial Advisor Insights):',
+    en: 'Perfumer Financial Advisory Insights:',
+    fr: 'Conseils financiers pour le créateur de parfum :',
+    es: 'Claves financieras para el diseñador de fragancias:',
+    it: 'Consigli finanziari per il designer di profumi:',
+    de: 'Finanzielle Praxistipps für Parfümeure:',
+    ru: 'Финансовые рекомендации для парфюмера:',
+    zh: '调香师商业财务决策建议：',
+    tr: 'Parfümör İçin Finansal Karar Notları:',
+    fa: 'نکات راهبردی مالی برای طراح عطر:',
+  },
+  scale_tip_title: {
+    ar: 'ميزة وفورات الحجم (Packaging Economy):',
+    en: 'Packaging Economies of Scale:',
+    fr: 'Économies d’échelle sur le packaging :',
+    es: 'Economías de escala en packaging:',
+    it: 'Economie di scala sul packaging:',
+    de: 'Skaleneffekte bei Verpackungen:',
+    ru: 'Эффект масштаба упаковки:',
+    zh: '包装耗材规模效益：',
+    tr: 'Ambalajda Ölçek Ekonomisi:',
+    fa: 'مزیت صرفه‌جویی مقیاس بسته‌بندی:',
+  },
+  scale_tip_text: {
+    ar: 'تكلفة البخاخ والغطاء والعلبة تنخفض نسبياً لكل مل كلما كبرت الزجاجة، مما يجعل زجاجات 100 مل تحقق أرباحاً صافية تفوق 3 أضعاف زجاجات 30 مل بالرغم من تقارب كلفة التعبئة.',
+    en: 'Pumps, caps, and rigid boxes cost nearly the same regardless of volume. A 100 ml bottle generates >3x the absolute cash profit of a 30 ml bottle despite similar manufacturing handling.',
+    fr: 'Pompe, capot et boîte coûtent quasiment autant quel que soit le volume. Un 100 ml dégage >3x le profit d’un 30 ml avec un temps de conditionnement presque identique.',
+    es: 'Atomizador, tapa y estuche cuestan casi lo mismo sin importar el volumen. Un frasco de 100 ml genera >3x el beneficio de un 30 ml con similar esfuerzo.',
+    it: 'Spruzzino, tappo e scatola incidono quasi allo stesso modo. Un 100 ml genera >3x il profitto netto di un 30 ml a parità di complessità di confezionamento.',
+    de: 'Zerstäuber, Kappe und Box kosten fast dasselbe. Ein 100-ml-Flakon bringt >3x mehr Reingewinn als 30 ml bei vergleichbarem Abfüllaufwand.',
+    ru: 'Стоимость помпы, крышки и коробки почти одинакова. 100 мл флакон приносит в 3+ раза больше чистой прибыли, чем 30 мл.',
+    zh: '喷头、瓶盖和外盒的基础成本变动不大。100 毫升瓶装的实际现金利润通常是 30 毫升的 3 倍以上，极具商业杠杆效应。',
+    tr: 'Pompa, kapak ve kutu maliyeti hacim büyüdükçe birim ml başına düşer. 100 ml şişe, benzer işçilikle 30 ml şişeye kıyasla 3 kattan fazla net nakit kâr sağlar.',
+    fa: 'هزینه پمپ، درپوش و جعبه در بطری‌های بزرگتر به ازای هر میل کاهش می‌یابد؛ بطری ۱۰۰ میل بیش از ۳ برابر بطری ۳۰ میل سود نقدی ایجاد می‌کند.',
+  },
+  sweetspot_tip_title: {
+    ar: 'استراتيجية الثنائيات (Size Bundling Strategy):',
+    en: 'Dual-Size Pricing Strategy:',
+    fr: 'Stratégie du double format :',
+    es: 'Estrategia de doble formato:',
+    it: 'Strategia del doppio formato:',
+    de: 'Doppelgrößen-Strategie:',
+    ru: 'Стратегия двух форматов:',
+    zh: '双规格捆绑策略：',
+    tr: 'Çift Boyut Stratejisi:',
+    fa: 'استراتژی دو اندازه (پکیج سایزها):',
+  },
+  sweetspot_tip_text: {
+    ar: 'ينصح خبراء العطور بطرح حجمين رئيسيين: 30 مل أو 50 مل كخيار شراء منخفض المخاطرة، و 100 مل كخيار قيمة مضافة يعظم هامش الربح النقدي.',
+    en: 'Industry best practice suggests launching two complementary sizes: 30 or 50 ml as an impulse/entry purchase, and 100 ml to maximize cash margin and customer lifetime value.',
+    fr: 'La bonne pratique consiste à lancer deux tailles : 30 ou 50 ml pour un achat d’impulsion accessible, et 100 ml pour maximiser la marge nette.',
+    es: 'La práctica recomendada es lanzar dos tamaños: 30 o 50 ml para compra de entrada, y 100 ml para maximizar el margen de ganancia neta.',
+    it: 'La strategia migliore prevede due formati: 30 o 50 ml per l’acquisto d’impulso, e 100 ml per massimizzare la marginalità complessiva.',
+    de: 'Die beste Strategie umfasst zwei Größen: 30 oder 50 ml als Einstiegskauf und 100 ml zur Maximierung des absoluten Gewinns.',
+    ru: 'Рекомендуется запускать два формата: 30 или 50 мл для первого знакомства и 100 мл для максимизации абсолютной чистой прибыли.',
+    zh: '成熟品牌最佳实践是推出双规格：30 或 50 毫升作为低门槛尝试装，100 毫升作为主力利润放大装。',
+    tr: 'Sektörün en başarılı stratejisi iki boyut sunmaktır: kolay satın alma için 30 veya 50 ml, kârı maksimize etmek için 100 ml.',
+    fa: 'توصیه متخصصان ارائه دو اندازه مکمل است: ۳۰ یا ۵۰ میل برای ورود و خرید آسان، و ۱۰۰ میل برای به حداکثر رساندن سود خالص نقدی.',
+  },
 } satisfies Record<string, LText>;
 
 export const CostCalculator: React.FC<CostCalculatorProps> = ({
@@ -553,6 +1028,18 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
   // Comparison custom currency for export benchmarking
   const [comparisonCurrency, setComparisonCurrency] = useState<string>('USD');
 
+  // Chart interactive controls: pricing target (retail vs wholesale) and metric mode (bottle vs per_ml)
+  const [chartPriceMode, setChartPriceMode] = useState<'retail' | 'wholesale'>('retail');
+  const [chartMetricMode, setChartMetricMode] = useState<'bottle' | 'per_ml'>('bottle');
+  const [selectedVolume, setSelectedVolume] = useState<number>(formulation.bottleVolumeMl || 50);
+
+  // Sync selectedVolume if formulation bottleVolumeMl updates
+  useEffect(() => {
+    if (formulation.bottleVolumeMl && formulation.bottleVolumeMl > 0) {
+      setSelectedVolume(formulation.bottleVolumeMl);
+    }
+  }, [formulation.bottleVolumeMl]);
+
   // Sync if parent updates current currency code
   useEffect(() => {
     if (currentCurrencyCode && currentCurrencyCode !== costing.currency) {
@@ -562,6 +1049,97 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
 
   const costResult = calculatePerfumeCosting(calculationResult, costing);
   const activeCurrency = findCurrencyByCode(costing.currency);
+
+  // Multi-Volume Financial Economics Dataset
+  const standardVolumes = [15, 30, 50, 75, 100, 200];
+  const allVolumes = Array.from(new Set([...standardVolumes, formulation.bottleVolumeMl]))
+    .filter((v) => Number.isFinite(v) && v > 0)
+    .sort((a, b) => a - b);
+
+  const baseVolume = formulation.bottleVolumeMl > 0 ? formulation.bottleVolumeMl : 50;
+
+  const volumeEconomics = allVolumes.map((vol) => {
+    // Proportional fragrance oil weight & cost
+    const oilRatio = baseVolume > 0
+      ? (calculationResult.oilWeightGrams / baseVolume)
+      : (formulation.concentrationPercent / 100);
+    const oilWeightGrams = vol * oilRatio;
+    const oilCost = (oilWeightGrams / 1000) * (costing.oilCostPerKg || 0);
+
+    // Proportional alcohol volume & cost
+    const alcoholRatio = baseVolume > 0
+      ? (calculationResult.alcoholVolumeMl / baseVolume)
+      : Math.max(0, (100 - formulation.concentrationPercent) / 100);
+    const alcoholVolumeMl = vol * alcoholRatio;
+    const alcoholCost = (alcoholVolumeMl / 1000) * (costing.alcoholCostPerLiter || 0);
+
+    // Packaging cost scaling (sub-linear elasticity for bottle glass, crimp pump & box)
+    const packagingFactor = Math.pow(vol / baseVolume, 0.35);
+    const bottleCost = (costing.bottleUnitCost || 0) * packagingFactor;
+    const boxCost = (costing.packagingUnitCost || 0) * packagingFactor;
+    const packagingCost = bottleCost + boxCost;
+
+    // Labor overhead
+    const laborCost = (costing.laborAndOverheadPerUnit || 0) * (0.85 + 0.15 * (vol / baseVolume));
+
+    const totalCost = oilCost + alcoholCost + packagingCost + laborCost;
+    const rawMaterialsCost = oilCost + alcoholCost;
+    const packagingAndLaborCost = packagingCost + laborCost;
+
+    const wholesalePrice = totalCost * (1 + ((costing.targetMarginPercent || 50) * 0.4) / 100);
+    const retailPrice = totalCost * (1 + (costing.targetMarginPercent || 50) / 100);
+
+    const activeSellingPrice = chartPriceMode === 'retail' ? retailPrice : wholesalePrice;
+    const netProfit = activeSellingPrice - totalCost;
+    const profitMarginPercent = activeSellingPrice > 0 ? (netProfit / activeSellingPrice) * 100 : 0;
+    const roiPercent = totalCost > 0 ? (netProfit / totalCost) * 100 : 0;
+
+    const costPerMl = totalCost / vol;
+    const sellingPricePerMl = activeSellingPrice / vol;
+    const profitPerMl = netProfit / vol;
+
+    let verdictKey: keyof typeof S = 'verdict_custom_desc';
+    if (vol <= 20) verdictKey = 'verdict_travel_desc';
+    else if (vol <= 35) verdictKey = 'verdict_compact_desc';
+    else if (vol <= 60) verdictKey = 'verdict_golden_desc';
+    else if (vol <= 85) verdictKey = 'verdict_niche_desc';
+    else if (vol <= 120) verdictKey = 'verdict_flagship_desc';
+    else if (vol >= 180) verdictKey = 'verdict_salon_desc';
+
+    return {
+      volume: vol,
+      isCurrent: vol === formulation.bottleVolumeMl,
+      oilWeightGrams,
+      oilCost,
+      alcoholVolumeMl,
+      alcoholCost,
+      bottleCost,
+      boxCost,
+      packagingCost,
+      laborCost,
+      rawMaterialsCost,
+      packagingAndLaborCost,
+      totalCost,
+      wholesalePrice,
+      retailPrice,
+      activeSellingPrice,
+      netProfit,
+      profitMarginPercent,
+      roiPercent,
+      costPerMl,
+      sellingPricePerMl,
+      profitPerMl,
+      verdictKey,
+    };
+  });
+
+  const maxBottleValue = Math.max(...volumeEconomics.map((item) => item.activeSellingPrice), 1);
+  const maxPerMlValue = Math.max(...volumeEconomics.map((item) => item.sellingPricePerMl), 0.1);
+
+  const selectedItem = volumeEconomics.find((item) => item.volume === selectedVolume) || volumeEconomics[0];
+  const breakevenBottles = selectedItem && selectedItem.netProfit > 0
+    ? Math.ceil((selectedItem.totalCost * costing.batchSize) / selectedItem.activeSellingPrice)
+    : costing.batchSize;
 
   return (
     <div className="space-y-8">
@@ -1001,6 +1579,462 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
               </div>
             </div>
 
+          </div>
+        </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* FINANCIAL DECISION CHART: PRODUCTION COST VS EXPECTED SELLING PRICE BY VOLUME */}
+      {/* ========================================================================= */}
+      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200/90 shadow-md space-y-6">
+        {/* Section Header & Interactive Controls */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-stone-100 pb-5">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center shadow-xs">
+                <BarChart3 className="w-4 h-4" />
+              </div>
+              <h3 className="text-base sm:text-lg font-bold text-stone-900">
+                {L('chart_section_title')}
+              </h3>
+            </div>
+            <p className="text-xs sm:text-sm text-stone-500 max-w-3xl leading-relaxed">
+              {L('chart_section_desc')}
+            </p>
+          </div>
+
+          {/* Interactive Mode Switches */}
+          <div className="flex flex-wrap items-center gap-2.5">
+            {/* Price Target Mode (Retail vs Wholesale) */}
+            <div className="bg-stone-100 p-1 rounded-xl flex items-center text-xs font-semibold">
+              <button
+                type="button"
+                onClick={() => setChartPriceMode('retail')}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  chartPriceMode === 'retail'
+                    ? 'bg-amber-900 text-white shadow-xs'
+                    : 'text-stone-600 hover:text-stone-900'
+                }`}
+              >
+                {L('chart_view_retail')}
+              </button>
+              <button
+                type="button"
+                onClick={() => setChartPriceMode('wholesale')}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  chartPriceMode === 'wholesale'
+                    ? 'bg-amber-900 text-white shadow-xs'
+                    : 'text-stone-600 hover:text-stone-900'
+                }`}
+              >
+                {L('chart_view_wholesale')}
+              </button>
+            </div>
+
+            {/* Metric Mode (Per Bottle vs Per 1 ml) */}
+            <div className="bg-stone-100 p-1 rounded-xl flex items-center text-xs font-semibold">
+              <button
+                type="button"
+                onClick={() => setChartMetricMode('bottle')}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  chartMetricMode === 'bottle'
+                    ? 'bg-stone-900 text-white shadow-xs'
+                    : 'text-stone-600 hover:text-stone-900'
+                }`}
+              >
+                {L('chart_metric_bottle')}
+              </button>
+              <button
+                type="button"
+                onClick={() => setChartMetricMode('per_ml')}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  chartMetricMode === 'per_ml'
+                    ? 'bg-stone-900 text-white shadow-xs'
+                    : 'text-stone-600 hover:text-stone-900'
+                }`}
+              >
+                {L('chart_metric_ml')}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Legend Toolbar */}
+        <div className="flex flex-wrap items-center justify-between gap-3 text-xs bg-stone-50/80 p-3 rounded-2xl border border-stone-200/60">
+          <div className="flex flex-wrap items-center gap-4 text-stone-700">
+            {/* Cost Legend */}
+            <div className="flex items-center gap-2">
+              <span className="w-3.5 h-3.5 rounded-md bg-stone-800 shrink-0 inline-block" />
+              <span className="font-semibold">{L('legend_cost')}</span>
+              <span className="text-[11px] text-stone-400">
+                ({L('legend_raw_materials')} + {L('legend_packaging_labor')})
+              </span>
+            </div>
+
+            {/* Selling Price Legend */}
+            <div className="flex items-center gap-2">
+              <span className="w-3.5 h-3.5 rounded-md bg-amber-600 shrink-0 inline-block" />
+              <span className="font-semibold">{L('legend_price')}</span>
+            </div>
+
+            {/* Net Profit Margin Legend */}
+            <div className="flex items-center gap-2">
+              <span className="w-3.5 h-3.5 rounded-md bg-emerald-600 shrink-0 inline-block" />
+              <span className="font-semibold text-emerald-800">{L('legend_profit')}</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 text-[11px] text-stone-500 font-mono-numbers">
+            <span className="font-bold text-amber-900 bg-amber-100/80 px-2 py-0.5 rounded-md">
+              {costing.currency}
+            </span>
+            <span>+{costing.targetMarginPercent}% {L('margin_word')}</span>
+          </div>
+        </div>
+
+        {/* Visual Dual-Bar Comparison Graphic */}
+        <div className="overflow-x-auto pb-4 pt-2">
+          <div className="min-w-[720px] grid grid-cols-6 gap-3 sm:gap-4">
+            {volumeEconomics.map((item) => {
+              const isSelected = item.volume === selectedVolume;
+              const costVal = chartMetricMode === 'bottle' ? item.totalCost : item.costPerMl;
+              const priceVal = chartMetricMode === 'bottle' ? item.activeSellingPrice : item.sellingPricePerMl;
+              const profitVal = chartMetricMode === 'bottle' ? item.netProfit : item.profitPerMl;
+
+              const maxRef = chartMetricMode === 'bottle' ? maxBottleValue : maxPerMlValue;
+              const costHeightPercent = Math.max(12, Math.min(100, (costVal / maxRef) * 100));
+              const priceHeightPercent = Math.max(16, Math.min(100, (priceVal / maxRef) * 100));
+
+              // Raw materials portion inside the cost bar
+              const rawMaterialsRatio = item.totalCost > 0 ? item.rawMaterialsCost / item.totalCost : 0.5;
+
+              return (
+                <div
+                  key={`vol-bar-${item.volume}`}
+                  onClick={() => setSelectedVolume(item.volume)}
+                  className={`group relative flex flex-col justify-between p-3.5 rounded-2xl border transition-all cursor-pointer ${
+                    isSelected
+                      ? 'bg-amber-50/60 border-amber-500 ring-2 ring-amber-500/30 shadow-md scale-[1.02]'
+                      : 'bg-white hover:bg-stone-50/70 border-stone-200 hover:border-stone-300 shadow-xs'
+                  }`}
+                >
+                  {/* Top: Volume Badge & Tags */}
+                  <div className="space-y-1 text-center pb-2 border-b border-stone-100">
+                    <div className="flex items-center justify-center gap-1">
+                      <span className="text-sm font-extrabold font-mono-numbers text-stone-900">
+                        {item.volume}
+                      </span>
+                      <span className="text-[11px] font-semibold text-stone-500">مل</span>
+                    </div>
+
+                    {item.isCurrent && (
+                      <span className="inline-flex items-center gap-1 text-[9px] font-bold text-amber-900 bg-amber-100 px-1.5 py-0.5 rounded-full">
+                        <CheckCircle2 className="w-2.5 h-2.5" />
+                        <span>{L('current_flacon_badge')}</span>
+                      </span>
+                    )}
+
+                    {!item.isCurrent && item.volume === 100 && (
+                      <span className="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded-full">
+                        <Award className="w-2.5 h-2.5" />
+                        <span>أعلى ربح</span>
+                      </span>
+                    )}
+
+                    {!item.isCurrent && item.volume === 50 && (
+                      <span className="inline-flex items-center gap-1 text-[9px] font-bold text-purple-800 bg-purple-100 px-1.5 py-0.5 rounded-full">
+                        <Sparkles className="w-2.5 h-2.5" />
+                        <span>الحجم الذهبي</span>
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Visual Dual Bars (Height 210px) */}
+                  <div className="h-[210px] flex items-end justify-center gap-2.5 sm:gap-3 py-3 px-1">
+                    {/* Bar 1: Cost Bar */}
+                    <div className="flex-1 flex flex-col items-center h-full justify-end">
+                      <span className="text-[10px] font-mono-numbers font-semibold text-stone-600 mb-1 leading-none text-center">
+                        {formatNum(costVal)}
+                      </span>
+                      <div
+                        style={{ height: `${costHeightPercent}%` }}
+                        className="w-full max-w-[28px] rounded-t-lg overflow-hidden flex flex-col justify-end shadow-xs bg-stone-200 transition-all duration-300"
+                        title={`${L('legend_cost')}: ${formatNum(item.totalCost)} ${costing.currency}`}
+                      >
+                        {/* Packaging & Labor segment */}
+                        <div
+                          style={{ height: `${Math.round((1 - rawMaterialsRatio) * 100)}%` }}
+                          className="w-full bg-stone-500/90"
+                        />
+                        {/* Raw materials segment */}
+                        <div
+                          style={{ height: `${Math.round(rawMaterialsRatio * 100)}%` }}
+                          className="w-full bg-amber-800"
+                        />
+                      </div>
+                      <span className="text-[9px] font-bold text-stone-400 mt-1 uppercase">
+                        {L('th_cost_total')}
+                      </span>
+                    </div>
+
+                    {/* Bar 2: Selling Price Bar */}
+                    <div className="flex-1 flex flex-col items-center h-full justify-end">
+                      <div className="mb-1 flex flex-col items-center leading-none">
+                        <span className="text-[9px] font-mono-numbers font-bold text-emerald-700 bg-emerald-50 px-1 rounded">
+                          +{formatNum(item.profitMarginPercent)}%
+                        </span>
+                        <span className="text-[10px] font-mono-numbers font-bold text-stone-900 mt-0.5">
+                          {formatNum(priceVal)}
+                        </span>
+                      </div>
+                      <div
+                        style={{ height: `${priceHeightPercent}%` }}
+                        className="w-full max-w-[28px] rounded-t-lg overflow-hidden flex flex-col justify-end shadow-xs bg-amber-100 transition-all duration-300"
+                        title={`${L('legend_price')}: ${formatNum(item.activeSellingPrice)} ${costing.currency}`}
+                      >
+                        {/* Net Profit segment */}
+                        <div
+                          style={{
+                            height: `${item.activeSellingPrice > 0 ? Math.round((item.netProfit / item.activeSellingPrice) * 100) : 50}%`,
+                          }}
+                          className="w-full bg-emerald-600"
+                        />
+                        {/* Cost Base segment */}
+                        <div
+                          style={{
+                            height: `${item.activeSellingPrice > 0 ? Math.round((item.totalCost / item.activeSellingPrice) * 100) : 50}%`,
+                          }}
+                          className="w-full bg-amber-600/80"
+                        />
+                      </div>
+                      <span className="text-[9px] font-bold text-amber-800 mt-1 uppercase">
+                        {chartPriceMode === 'retail' ? 'تجزئة' : 'جملة'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Bottom Stats Card */}
+                  <div className="space-y-1.5 pt-2.5 border-t border-stone-100 text-xs">
+                    <div className="flex justify-between items-center text-[11px] text-stone-600">
+                      <span>{L('legend_profit')}</span>
+                      <span className="font-mono-numbers font-bold text-emerald-700">
+                        +{formatNum(profitVal)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center text-[10px] text-stone-400">
+                      <span>{L('cost_per_ml_label')}</span>
+                      <span className="font-mono-numbers font-medium text-stone-600">
+                        {formatNum(item.costPerMl)} {costing.currency}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Selected Volume Financial Deep Dive Card */}
+        {selectedItem && (
+          <div className="bg-gradient-to-br from-amber-50/70 via-stone-50 to-white p-5 sm:p-6 rounded-2xl border border-amber-200/90 shadow-xs space-y-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-amber-200/60 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-lg bg-amber-800 text-white flex items-center justify-center font-mono-numbers text-xs font-bold">
+                  {selectedItem.volume}
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-stone-900">
+                    {fmt(L('detail_breakdown_title'), { v: selectedItem.volume })}
+                  </h4>
+                  <span className="text-xs text-amber-800 font-medium">
+                    {chartPriceMode === 'retail' ? L('chart_view_retail') : L('chart_view_wholesale')}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-stone-500">{L('roi_label')}</span>
+                <span className="text-sm font-extrabold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-lg font-mono-numbers">
+                  +{formatNum(selectedItem.roiPercent)}%
+                </span>
+              </div>
+            </div>
+
+            {/* 4 KPI Summary Cards for Selected Volume */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <div className="p-3 bg-white rounded-xl border border-stone-200/80 space-y-1">
+                <span className="text-[11px] text-stone-500 font-medium block">
+                  {L('th_cost_total')}
+                </span>
+                <div className="text-base font-extrabold text-stone-900 font-mono-numbers">
+                  {formatNum(selectedItem.totalCost)} {costing.currency}
+                </div>
+                <div className="text-[10px] text-stone-400">
+                  {L('legend_raw_materials')}: {formatNum(selectedItem.rawMaterialsCost)} {costing.currency}
+                </div>
+              </div>
+
+              <div className="p-3 bg-white rounded-xl border border-stone-200/80 space-y-1">
+                <span className="text-[11px] text-stone-500 font-medium block">
+                  {L('th_suggested_price')}
+                </span>
+                <div className="text-base font-extrabold text-amber-900 font-mono-numbers">
+                  {formatNum(selectedItem.activeSellingPrice)} {costing.currency}
+                </div>
+                <div className="text-[10px] text-stone-400">
+                  {L('margin_rate_label')} {formatNum(selectedItem.profitMarginPercent)}%
+                </div>
+              </div>
+
+              <div className="p-3 bg-emerald-50/80 rounded-xl border border-emerald-200 space-y-1">
+                <span className="text-[11px] text-emerald-800 font-medium block">
+                  {L('th_net_margin')}
+                </span>
+                <div className="text-base font-extrabold text-emerald-700 font-mono-numbers">
+                  +{formatNum(selectedItem.netProfit)} {costing.currency}
+                </div>
+                <div className="text-[10px] text-emerald-600 font-mono-numbers">
+                  +{formatNum(selectedItem.profitPerMl)} {costing.currency} / مل
+                </div>
+              </div>
+
+              <div className="p-3 bg-white rounded-xl border border-stone-200/80 space-y-1">
+                <span className="text-[11px] text-stone-500 font-medium block">
+                  {L('th_cost_ml')}
+                </span>
+                <div className="text-base font-extrabold text-stone-800 font-mono-numbers">
+                  {formatNum(selectedItem.costPerMl)} {costing.currency}
+                </div>
+                <div className="text-[10px] text-stone-400">
+                  {L('selling_per_ml_label')} {formatNum(selectedItem.sellingPricePerMl)} {costing.currency}
+                </div>
+              </div>
+            </div>
+
+            {/* Breakeven Banner & Financial Verdict */}
+            <div className="p-3.5 bg-stone-900 text-white rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-2">
+                <Info className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>
+                  {fmt(L('breakeven_units_tpl'), {
+                    n: costing.batchSize,
+                    b: breakevenBottles,
+                  })}
+                </span>
+              </div>
+              <span className="text-amber-400 font-semibold shrink-0">
+                {selectedItem.isCurrent ? `★ ${L('current_flacon_badge')}` : `الحجم: ${selectedItem.volume} مل`}
+              </span>
+            </div>
+
+            <div className="text-xs text-stone-600 bg-white/80 p-3 rounded-xl border border-stone-200/70">
+              <span className="font-bold text-stone-900 ml-1">
+                {L('th_financial_verdict')}:
+              </span>
+              <span>{L(selectedItem.verdictKey)}</span>
+            </div>
+          </div>
+        )}
+
+        {/* Multi-Volume Financial Decision Matrix Table */}
+        <div className="space-y-3 pt-2">
+          <div className="flex items-center gap-2">
+            <Layers className="w-4 h-4 text-amber-800" />
+            <h4 className="text-sm font-bold text-stone-900">
+              {L('decision_matrix_title')}
+            </h4>
+          </div>
+
+          <div className="overflow-x-auto border border-stone-200 rounded-2xl shadow-xs">
+            <table className={`w-full ${rtl ? 'text-right' : 'text-left'} text-xs`}>
+              <thead className="bg-stone-50 border-b border-stone-200 text-stone-600 font-semibold text-[11px]">
+                <tr>
+                  <th className="py-3 px-3.5">{L('th_flacon_vol')}</th>
+                  <th className="py-3 px-3.5">{L('th_cost_total')}</th>
+                  <th className="py-3 px-3.5 text-amber-900 font-bold">{L('th_suggested_price')}</th>
+                  <th className="py-3 px-3.5 text-emerald-800 font-bold">{L('th_net_margin')}</th>
+                  <th className="py-3 px-3.5">{L('th_cost_ml')}</th>
+                  <th className="py-3 px-3.5 text-center">{L('th_roi')}</th>
+                  <th className="py-3 px-3.5 min-w-[200px]">{L('th_financial_verdict')}</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-stone-100 font-mono-numbers">
+                {volumeEconomics.map((item) => {
+                  const isCur = item.volume === formulation.bottleVolumeMl;
+                  const isSel = item.volume === selectedVolume;
+                  return (
+                    <tr
+                      key={`matrix-row-${item.volume}`}
+                      onClick={() => setSelectedVolume(item.volume)}
+                      className={`transition-colors cursor-pointer ${
+                        isSel
+                          ? 'bg-amber-100/60 font-bold'
+                          : isCur
+                            ? 'bg-amber-50/50'
+                            : 'hover:bg-stone-50'
+                      }`}
+                    >
+                      <td className="py-3 px-3.5 font-sans font-bold text-stone-900 flex items-center gap-1.5">
+                        <span>{item.volume} مل</span>
+                        {isCur && (
+                          <span className="text-[9px] bg-amber-200 text-amber-900 px-1.5 py-0.2 rounded-full font-bold">
+                            المعتمد
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-3 px-3.5 text-stone-700">
+                        {formatNum(item.totalCost)} {costing.currency}
+                      </td>
+                      <td className="py-3 px-3.5 font-bold text-amber-900">
+                        {formatNum(item.activeSellingPrice)} {costing.currency}
+                      </td>
+                      <td className="py-3 px-3.5 font-bold text-emerald-700">
+                        +{formatNum(item.netProfit)} {costing.currency}
+                      </td>
+                      <td className="py-3 px-3.5 text-stone-600">
+                        {formatNum(item.costPerMl)} {costing.currency} / مل
+                      </td>
+                      <td className="py-3 px-3.5 text-center text-emerald-800 font-bold">
+                        +{formatNum(item.roiPercent)}%
+                      </td>
+                      <td className="py-3 px-3.5 font-sans text-stone-600 text-[11px] leading-relaxed">
+                        {L(item.verdictKey)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Executive Perfumer Financial Advisory Insights */}
+        <div className="p-4 sm:p-5 bg-stone-50 rounded-2xl border border-stone-200/80 space-y-3">
+          <div className="flex items-center gap-2">
+            <TrendingUp className="w-4 h-4 text-amber-700" />
+            <h4 className="text-xs sm:text-sm font-bold text-stone-900">
+              {L('insights_card_title')}
+            </h4>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div className="p-3.5 bg-white rounded-xl border border-stone-200/70 space-y-1">
+              <span className="font-bold text-stone-900 block">
+                {L('scale_tip_title')}
+              </span>
+              <p className="text-stone-600 leading-relaxed text-[11px]">
+                {L('scale_tip_text')}
+              </p>
+            </div>
+
+            <div className="p-3.5 bg-white rounded-xl border border-stone-200/70 space-y-1">
+              <span className="font-bold text-stone-900 block">
+                {L('sweetspot_tip_title')}
+              </span>
+              <p className="text-stone-600 leading-relaxed text-[11px]">
+                {L('sweetspot_tip_text')}
+              </p>
+            </div>
           </div>
         </div>
       </div>
