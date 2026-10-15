@@ -53,6 +53,7 @@ import {
   Radio,
   SlidersHorizontal,
   Store,
+  Gift,
 } from 'lucide-react';
 
 import heroImg from '../assets/images/hero_luxury_perfume_1791692409081.jpg';
