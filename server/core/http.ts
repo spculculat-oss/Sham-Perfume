@@ -10,27 +10,15 @@ import { AssistantError, Orchestrator, validateChatInput, type ChatOutput, type 
 import { createNotifier } from './notify';
 import { runAdminAgent } from './adminAgent';
 import { createStore, type Store } from './store';
+import { RateLimiter, clientKey } from './rateLimit';
+import { probeEngines } from '../shaheen';
+import { SHAHEEN_SITE_SETTINGS } from '../config/shaheen';
 import { engineStatuses } from './engines';
 import { activeSeats, councilAvailable, publicTranscript } from './council';
 import type { CollectionName, RequestStatus } from './types';
 
 type Env = Record<string, string | undefined>;
 
-class RateLimiter {
-  private hits = new Map<string, number[]>();
-  constructor(private limit: number, private windowMs: number) {}
-  allow(key: string): boolean {
-    const now = Date.now();
-    const recent = (this.hits.get(key) || []).filter((t) => now - t < this.windowMs);
-    if (recent.length >= this.limit) { this.hits.set(key, recent); return false; }
-    recent.push(now);
-    this.hits.set(key, recent);
-    if (this.hits.size > 5000) for (const [k, v] of this.hits) if (!v.some((t) => now - t < this.windowMs)) this.hits.delete(k);
-    return true;
-  }
-}
-
-const clientKey = (req: express.Request) => (req.ip || req.socket.remoteAddress || 'unknown');
 
 function sendError(res: express.Response, error: unknown) {
   if (error instanceof ValidationError || error instanceof AssistantError) {
@@ -329,8 +317,20 @@ export function createShamCore(options: CoreOptions = {}) {
     res.json({ delivered: await notifier.send('test', '✅ اختبار إشعارات Sham Core', {}) });
   }));
 
-  admin.get('/settings', wrap(async (_req, res) => { res.json({ item: await repo.settings(), engines: engineStatuses(env) }); }));
-  admin.put('/settings', wrap(async (req, res) => { res.json({ item: await repo.updateSettings(req.body || {}) }); }));
+  const settingsView = async () => ({
+    item: await repo.settings(), engines: engineStatuses(env),
+    shaheen: { source: await repo.shaheenSource(), defaults: SHAHEEN_SITE_SETTINGS },
+    storage: { kind: store.kind, persistent: store.persistent, error: storeError },
+  });
+  admin.get('/settings', wrap(async (_req, res) => { res.json(await settingsView()); }));
+  admin.put('/settings', wrap(async (req, res) => { await repo.updateSettings(req.body || {}); res.json(await settingsView()); }));
+
+  /** «الخبير شاهين»: real one-line request to every allowed engine (wrong key / model / server shows up here). */
+  const probeLimiter = new RateLimiter(10, 10 * 60_000);
+  admin.post('/shaheen/test', wrap(async (req, res) => {
+    if (!probeLimiter.allow(clientKey(req))) throw new AssistantError(429, 'RATE_LIMITED', 'Too many tests, wait a few minutes');
+    res.json({ results: await probeEngines((await repo.settings()).shaheen, { env, fetch: options.fetch }) });
+  }));
 
   /** Sandbox: same pipeline as visitors, plus the full trace. */
   admin.post('/test-chat', wrap(async (req, res) => {

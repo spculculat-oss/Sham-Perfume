@@ -32,7 +32,7 @@ import { ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
 import { SupportedLanguage } from '../types/i18n';
 import { getLocalizedNewsArticle, isRTL } from '../utils/localizedContent';
 import { LText, makeT, fmt, loc, LOCALE_MAP } from '../utils/localize';
-import { isStaticHosting, requestApi } from '../utils/api';
+import { ApiError, isStaticHosting, requestApi } from '../utils/api';
 import { isNewsArticle, mergeNewsArticles, restoreNewsCache, resolveNewsImage } from '../utils/newsCache';
 import { StaticHostingNotice, API_ERROR_NOTICE } from './StaticHostingNotice';
 import masterShaheenImg from '../assets/images/master_perfumer_compounding_1791693212967.jpg';
@@ -75,6 +75,8 @@ const S = {
   shahin_name: { ar: 'الخبير شاهين', en: 'Master Shahin', fr: 'Maître Shahin', es: 'Maestro Shahin', it: 'Maestro Shahin', de: 'Meister Shahin', ru: 'Мастер Шахин', zh: 'Shahin 大师', tr: 'Usta Shahin', fa: 'استاد شاهین' },
   shahin_role: { ar: 'شيخ العطارين ورئيس التحرير', en: 'Dean of Perfumers & Editor-in-Chief', fr: 'Doyen des parfumeurs et rédacteur en chef', es: 'Decano de perfumistas y editor jefe', it: 'Decano dei profumieri e direttore', de: 'Doyen der Parfumeure & Chefredakteur', ru: 'Шейх парфюмеров и главред', zh: '调香师泰斗 · 总编辑', tr: 'Attarların şeyhi ve yayın yönetmeni', fa: 'شیخ عطرسازان و سردبیر' },
   loading_news: { ar: 'الخبير شاهين يجلب أخبار اليوم...', en: 'Master Shahin is fetching today’s news...', fr: 'Le Maître Shahin récupère les news…', es: 'El Maestro Shahin está trayendo las noticias...', it: 'Il Maestro Shahin sta scaricando le notizie…', de: 'Meister Shahin holt die heutigen News…', ru: 'Мастер Шахин загружает новости…', zh: 'Shahin 大师正在获取今日新闻……', tr: 'Usta Shahin günün haberlerini getiriyor…', fa: 'استاد شاهین اخبار امروز را می‌آورد...' },
+  ai_disclaimer: { ar: 'تنبيه: التقارير المحدَّثة يوميًا مقالات تحريرية يكتبها الذكاء الاصطناعي للتثقيف، وليست أخبارًا موثقة. تحقق من أي رقم أو حدث من مصدره الرسمي.', en: 'Note: daily-refreshed reports are AI-written editorial pieces for learning, not verified news. Check any figure or event with its official source.' },
+  refresh_limited: { ar: 'وصلت للحد المسموح من التحديثات اليدوية. النشرة تتحدث تلقائياً كل يوم — جرّب لاحقاً.', en: 'Manual refresh limit reached. The bulletin updates daily on its own — try later.' },
   refresh_btn: { ar: 'تحديث النشرة اليومية بالذكاء الاصطناعي', en: 'Refresh Daily Bulletin with AI', fr: 'Actualiser le bulletin avec l’IA', es: 'Actualizar boletín con IA', it: 'Aggiorna bollettino con IA', de: 'Bulletin mit KI aktualisieren', ru: 'Обновить бюллетень с ИИ', zh: '用 AI 刷新每日快报', tr: 'Bülteni YZ ile yenile', fa: 'به‌روزرسانی نشریه با هوش مصنوعی' },
   reports_count_tpl: { ar: '{n} تقرير مصور', en: '{n} photo reports', fr: '{n} rapports photo', es: '{n} informes foto', it: '{n} report foto', de: '{n} Fotoreports', ru: '{n} фотоотчётов', zh: '{n} 篇图文报道', tr: '{n} foto rapor', fa: '{n} گزارش مصور' },
   refresh_done: { ar: 'تحديث اليوم مكتمل ✓', en: 'Today’s refresh complete ✓', fr: 'Actualisation du jour terminée ✓', es: 'Actualización de hoy completa ✓', it: 'Aggiornamento di oggi completato ✓', de: 'Heutige Aktualisierung fertig ✓', ru: 'Обновление завершено ✓', zh: '今日更新完成 ✓', tr: 'Bugünün güncellemesi tamam ✓', fa: 'به‌روزرسانی امروز کامل شد ✓' },
@@ -242,7 +244,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
       setTimeout(() => setRefreshToast(null), 6000);
     } catch (err) {
       console.warn('News refresh failed; no articles were changed:', err);
-      setRefreshToast({ message: loc(currentLang, API_ERROR_NOTICE), count: 0, error: true });
+      setRefreshToast({ message: err instanceof ApiError && err.status === 429 ? L('refresh_limited') : loc(currentLang, API_ERROR_NOTICE), count: 0, error: true });
     } finally {
       setIsRefreshing(false);
     }
@@ -358,6 +360,9 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
 
             <p className="text-stone-300 text-xs sm:text-sm leading-relaxed max-w-2xl">
               {L('observatory_desc')}
+            </p>
+            <p className="text-[11px] text-amber-200/80 leading-relaxed max-w-2xl border-s-2 border-amber-500/50 ps-2">
+              {L('ai_disclaimer')}
             </p>
 
             {/* Live Ticker */}

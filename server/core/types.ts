@@ -239,6 +239,27 @@ export interface CouncilTranscript {
   ms: number;
 }
 
+/**
+ * Settings of «الخبير شاهين» (the perfume-design chat). Defaults live in server/config/shaheen.ts
+ * (tracked in Git, so every deployment — Vercel and the API behind GitHub Pages — gets the same
+ * baseline); the admin dashboard can override them when the store is persistent.
+ */
+export interface ShaheenSettings {
+  /** Master switch: when off, the chat answers SHAHEEN_DISABLED and the UI explains it. */
+  enabled: boolean;
+  /** Engines Shaheen may use, in failover order for "auto". Unlisted engines are hidden from visitors. */
+  engines: ModelEngineId[];
+  /** Optional model id per engine (otherwise the server env / built-in default is used). */
+  models: Partial<Record<ModelEngineId, string>>;
+  temperature: number;
+  /** Answer length budget per reply (tokens). */
+  maxTokens: number;
+  /** Extra admin instructions appended to the built-in safety prompt (cannot remove the safety rules). */
+  instructions: string;
+  /** Let visitors pick a specific engine; when off only "auto" is offered. */
+  allowVisitorChoice: boolean;
+}
+
 export interface CoreSettings {
   assistantNameAr: string;
   assistantNameEn: string;
@@ -249,6 +270,7 @@ export interface CoreSettings {
   enginePolicy: EngineId[];
   temperature: number;
   council: CouncilSettings;
+  shaheen: ShaheenSettings;
   currency: string;
   handoffContact: string;
   businessHours: string;

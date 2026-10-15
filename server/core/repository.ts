@@ -10,6 +10,7 @@ import type {
 } from './types';
 import { defaultKnowledge, defaultServices, defaultSettings, demoProducts } from './seed';
 import { CouncilConfigError, defaultCouncil, normalizeCouncil } from './council';
+import { ShaheenConfigError, normalizeShaheen, withShaheenDefaults } from '../config/shaheen';
 import { Bm25Index, tokenize, type IndexedDoc } from './text';
 import { stripIntro } from './router';
 
@@ -43,7 +44,10 @@ export class Repository {
   ready(): Promise<void> {
     this.seeded ||= (async () => {
       if (!(await this.store.get('settings', 'core'))) {
-        await this.store.put('settings', 'core', defaultSettings());
+        // Shaheen settings are not copied into the store: until an admin overrides them they follow
+        // server/config/shaheen.ts, so a change there reaches every deployment on the next deploy.
+        const { shaheen: _fileDefaults, ...seed } = defaultSettings();
+        await this.store.put('settings', 'core', seed as CoreSettings & { id: string });
         if (!(await this.store.list('services')).length) for (const s of defaultServices()) await this.store.put('services', s.id, s);
         if (!(await this.store.list('knowledge')).length) for (const k of defaultKnowledge()) await this.store.put('knowledge', k.id, k);
         if (this.env.SHAM_SEED_DEMO === 'true' && !(await this.store.list('products')).length) {
@@ -59,7 +63,15 @@ export class Repository {
     await this.ready();
     const stored = await this.store.get('settings', 'core');
     // Settings saved before a feature existed get its defaults (e.g. the advisory council).
-    return stored ? { ...stored, council: stored.council || defaultCouncil() } : defaultSettings();
+    return stored
+      ? { ...stored, council: stored.council || defaultCouncil(), shaheen: withShaheenDefaults(stored.shaheen) }
+      : defaultSettings();
+  }
+
+  /** 'admin' when the dashboard overrides Shaheen, 'file' when it follows server/config/shaheen.ts. */
+  async shaheenSource(): Promise<'admin' | 'file'> {
+    await this.ready();
+    return (await this.store.get('settings', 'core'))?.shaheen ? 'admin' : 'file';
   }
   async updateSettings(patch: Partial<CoreSettings>): Promise<CoreSettings> {
     const current = await this.settings();
@@ -85,9 +97,25 @@ export class Repository {
         throw error;
       }
     }
-    next.updatedAt = new Date().toISOString();
-    await this.store.put('settings', 'core', next);
-    return next;
+    // Shaheen: null = go back to the shared file defaults. An unchanged copy (the dashboard always
+    // sends the whole form) must not freeze today's file values into the store.
+    const storedShaheen = (await this.store.get('settings', 'core'))?.shaheen;
+    const { shaheen: _effective, ...rest } = next;
+    let shaheenOverride = storedShaheen;
+    if ((patch as { shaheen?: unknown }).shaheen === null) shaheenOverride = undefined;
+    else if (patch.shaheen !== undefined) {
+      let normalized;
+      try { normalized = normalizeShaheen(patch.shaheen, current.shaheen); } catch (error) {
+        if (error instanceof ShaheenConfigError) throw new ValidationError('INVALID_SHAHEEN', error.message);
+        throw error;
+      }
+      // Same as server/config/shaheen.ts → follow the file again; unchanged → keep what was stored.
+      if (JSON.stringify(normalized) === JSON.stringify(withShaheenDefaults(undefined))) shaheenOverride = undefined;
+      else if (JSON.stringify(normalized) !== JSON.stringify(current.shaheen)) shaheenOverride = normalized;
+    }
+    const saved = { ...rest, updatedAt: new Date().toISOString(), ...(shaheenOverride ? { shaheen: shaheenOverride } : {}) };
+    await this.store.put('settings', 'core', saved as CoreSettings & { id: string });
+    return { ...saved, shaheen: withShaheenDefaults(shaheenOverride) };
   }
 
   // ---------- services ----------

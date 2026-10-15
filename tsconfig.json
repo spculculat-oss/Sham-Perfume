@@ -27,6 +27,7 @@
   "include": [
     "server.ts",
     "server/**/*.ts",
-    "server/**/*.cts"
+    "server/**/*.cts",
+    "cloud-functions/**/*.ts"
   ]
 }

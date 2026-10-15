@@ -12,3 +12,6 @@ coverage/
 
 # Sham Core local data (conversations, requests, catalog) — never commit customer data
 .data/
+
+# Tencent EdgeOne Makers local build output
+.edgeone/
