@@ -93,6 +93,20 @@ export const LOCALE_MAP: Record<SupportedLanguage, string> = {
   ky: 'ky-KG',
   tg: 'tg-TJ',
   tk: 'tk-TM',
+  is: 'is-IS',
+  sq: 'sq-AL',
+  mk: 'mk-MK',
+  bs: 'bs-BA',
+  be: 'be-BY',
+  ca: 'ca-ES',
+  eu: 'eu-ES',
+  gl: 'gl-ES',
+  mt: 'mt-MT',
+  ga: 'ga-IE',
+  cy: 'cy-GB',
+  lb: 'lb-LU',
+  gd: 'gd-GB',
+  co: 'it-IT', // Corsican has no CLDR date data; fall back to Italian (closest relative)
 };
 
 /**
