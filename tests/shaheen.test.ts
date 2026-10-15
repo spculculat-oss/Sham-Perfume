@@ -166,6 +166,8 @@ test('fast prefers quick engines, is short and asks for a brief answer; deep pre
 test('the system prompt tells Shaheen never to name a model or company', () => {
   for (const lang of ['ar', 'en', 'fr'] as const) assert.match(systemInstruction(lang), /لا تذكر أبداً اسم أي نموذج لغوي أو شركة ذكاء اصطناعي/);
   assert.match(systemInstruction('ar', '', 'deep'), /تحليل معمّق/);
+  assert.match(systemInstruction('en'), /لا تبدأ ردودك بالترحيب أو بتعريف نفسك/, 'answers go straight to the point, no self-introduction every time');
+  assert.match(systemInstruction('en'), /Master Shahin/);
 });
 
 test('public modes and answers carry no engine, vendor or model names', async () => {

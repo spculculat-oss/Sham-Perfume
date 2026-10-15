@@ -1,16 +1,19 @@
 name: Live Shaheen check
 
-# Asks the deployed site real visitor questions (the dev sandbox cannot reach it) and checks that
-# answers arrive and no AI vendor name leaks. Results: job summary + annotations.
+# Asks the deployed site real visitor questions and checks the whole site from a visitor's point of
+# view (the dev sandbox cannot reach it). Runs daily too, so a broken deploy or an overwritten main
+# shows up as a failed run. Results: job summary + annotations.
 on:
   workflow_dispatch:
     inputs:
       site_url:
         description: Site to test
         default: https://sham-perfume-49bf.vercel.app
+  schedule:
+    - cron: '0 6 * * *'
   push:
     branches: ['arena/**']
-    paths: ['scripts/live-smoke.mjs', '.github/workflows/live-smoke.yml']
+    paths: ['scripts/live-smoke.mjs', 'scripts/live-site-check.mjs', '.github/workflows/live-smoke.yml']
 
 permissions:
   contents: read
@@ -20,12 +23,15 @@ jobs:
     name: Ask Shaheen
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      SITE_URL: ${{ inputs.site_url || 'https://sham-perfume-49bf.vercel.app' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Site, API and CORS
+        run: node scripts/live-site-check.mjs
       - name: Ask live questions
-        env:
-          SITE_URL: ${{ inputs.site_url || 'https://sham-perfume-49bf.vercel.app' }}
+        if: always()
         run: node scripts/live-smoke.mjs
