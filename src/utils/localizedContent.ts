@@ -4,6 +4,7 @@ import { RAW_MATERIALS_DATABASE, RawMaterialItem } from '../data/rawMaterials';
 import { PERFUME_NEWS_DATA, PerfumeNewsItem, NEWS_EN_FALLBACK } from '../data/perfumeNews';
 import { fmt, localeDate } from './localize';
 import { COMMON_LABELS_EXT } from './commonLabelsExt';
+import { CONTENT_LABEL_KEYS, contentLabel } from './contentLabels';
 
 /**
  * Direction of a language, derived from the single source of truth
@@ -385,7 +386,7 @@ interface LocalizedPerfumeMeta {
   compoundingTips: string;
 }
 
-const PERFUME_TRANSLATIONS: Record<string, Record<string, Partial<LocalizedPerfumeMeta>>> = {
+export const PERFUME_TRANSLATIONS: Record<string, Record<string, Partial<LocalizedPerfumeMeta>>> = {
   'baccarat-rouge-540': {
     en: {
       title: 'Inspired by: Baccarat Rouge 540 (MFK Accord)',
@@ -452,7 +453,7 @@ const PERFUME_TRANSLATIONS: Record<string, Record<string, Partial<LocalizedPerfu
       compoundingTips: 'Allow at least 45 days of cold maceration to allow vanilla and coumarin crystals to harmonize with the clove and tobacco oils.',
     },
   },
-  'dior-sauvage': {
+  'sauvage-dior': {
     en: {
       title: 'Inspired by: Dior Sauvage Modern Legend',
       category: 'Aromatic Fougère Woody',
@@ -512,6 +513,54 @@ const PERFUME_TRANSLATIONS: Record<string, Record<string, Partial<LocalizedPerfu
       compoundingTips: 'Calone must be kept below 0.8% of the formulation to impart an authentic sea breeze without fishy or harsh undertones.',
     },
   },
+  'tom-ford-oud-wood': {
+    en: {
+      title: 'Inspired by: Tom Ford Oud Wood (Private Blend)',
+      category: 'Western Aristocratic Woody Oud',
+      concentration: 'Eau de Parfum',
+      description: 'Taming oriental oud with quiet western elegance; Brazilian rosewood and cardamom, then smoky sandalwood, vetiver and tonka bean in a captivating progression.',
+      sillage: 'Refined, polite sillage that never intrudes',
+      longevity: '10 - 14 hours',
+      season: 'Autumn, winter and upscale gatherings',
+      compoundingTips: 'Never use raw animalic Indian oud; use a filtered woody Agarwood Accord with sandalwood and Brazilian rosewood.',
+    },
+  },
+  'bleu-de-chanel': {
+    en: {
+      title: 'Inspired by: Bleu de Chanel EDP',
+      category: 'Fresh Aromatic Woody',
+      concentration: 'Eau de Parfum',
+      description: 'Blue elegance in full; grapefruit, lemon and mint over resinous incense, ginger, cedar and pure sandalwood.',
+      sillage: 'Elegant, balanced projection',
+      longevity: '10 - 14 hours',
+      season: 'All four seasons — for the office and meetings',
+      compoundingTips: 'The harmony between grapefruit and incense in the base is what gives Bleu de Chanel its luxurious character, bridging freshness and gravity.',
+    },
+  },
+  'royal-taif-oud': {
+    en: {
+      title: 'Heritage Blend — Royal Taif Rose & Aged Oud',
+      category: 'Royal Oriental Animalic Luxury',
+      concentration: 'Extrait de Parfum (25%)',
+      description: 'The timeless heritage blend of Arabia and the Gulf; pure first-harvest Taif rose mingled with Bangladeshi oud oil, Indian oud, animalic amber and deer musk.',
+      sillage: 'Opulent sillage that announces its wearer',
+      longevity: '24+ hours of exceptional tenacity',
+      season: 'Eids, weddings and grand occasions',
+      compoundingTips: 'Taif rose needs a low-sharpness oud oil so the agarwood never overwhelms the honeyed rose; 45 days of maceration gives a stunning velvety body.',
+    },
+  },
+  'khamrah-angels-share': {
+    en: {
+      title: 'Inspired by: Lattafa Khamrah / Kilian Angels\' Share',
+      category: 'Warm Oriental Gourmand with Cinnamon & Dates',
+      concentration: 'Eau de Parfum',
+      description: 'The most viral winter bomb; macerated woody accents flavoured with dates, cinnamon, nutmeg and tonka bean, plus caramel, oak wood and praline.',
+      sillage: 'Seductive, captivating projection',
+      longevity: '18 - 24 hours',
+      season: 'Winter, holidays and family evenings',
+      compoundingTips: 'Cinnamon, cognac and tonka bean form the triangle of attraction; make sure to use ethyl vanillin to bring out the caramelised date sweetness.',
+    },
+  },
 };
 
 export const getLocalizedPerfume = (recipe: WorldPerfumeRecipe, lang: SupportedLanguage) => {
@@ -542,28 +591,16 @@ export const getLocalizedPerfume = (recipe: WorldPerfumeRecipe, lang: SupportedL
 export const getLocalizedRawMaterial = (item: RawMaterialItem, lang: SupportedLanguage) => {
   if (lang === 'ar') return item;
   
-  // Clean English translations for non-Arabic locales
-  const categoryMap: Record<string, string> = {
-    solvent: 'Solvent & Carrier Base',
-    fixative: 'Chemical Fixative & Binder',
-    aromachemical: 'Modern Aromachemical Molecule',
-    natural_essential: 'Pure Essential Oil / Extract',
-    natural_resin: 'Natural Resin & Precious Oud',
-  };
-
-  const placementMap: Record<string, string> = {
-    top: 'Top Note (Opening)',
-    heart: 'Heart Note (Middle Bouquet)',
-    base: 'Base Note (Deep Fixative)',
-    carrier: 'Carrier Solvent & Base',
-    all: 'Universal / All Levels',
-  };
+  // Category and pyramid placement labels are translated for the whole platform
+  // (see contentLabels.ts); the material name falls back to its English name.
+  const categoryKey = CONTENT_LABEL_KEYS.material[item.category as keyof typeof CONTENT_LABEL_KEYS.material];
+  const placementKey = CONTENT_LABEL_KEYS.placement[item.pyramidPlacement as keyof typeof CONTENT_LABEL_KEYS.placement];
 
   return {
     ...item,
     nameAr: item.nameEn || item.nameAr,
-    categoryAr: categoryMap[item.category] || item.categoryAr,
-    pyramidPlacementAr: placementMap[item.pyramidPlacement] || item.pyramidPlacementAr,
+    categoryAr: categoryKey ? contentLabel(categoryKey, lang) : item.categoryAr,
+    pyramidPlacementAr: placementKey ? contentLabel(placementKey, lang) : item.pyramidPlacementAr,
   };
 };
 
@@ -682,14 +719,6 @@ const READ_TIME_TPL: Record<SupportedLanguage, string> = {
 export const getLocalizedNewsArticle = (article: PerfumeNewsItem, lang: SupportedLanguage) => {
   if (lang === 'ar') return article;
 
-  const categoryMap: Record<string, string> = {
-    trends: 'Global Trends & Analytics',
-    exhibitions: 'International Exhibitions & Salons',
-    harvests: 'Botanical Harvests & Yields',
-    ifra: 'IFRA Regulations & Safety',
-    niche: 'Haute Parfumerie & Niche Houses',
-  };
-
   const en = NEWS_EN_FALLBACK[article.id];
   const ext = article as PerfumeNewsItem & {
     summaryEn?: string;
@@ -704,7 +733,9 @@ export const getLocalizedNewsArticle = (article: PerfumeNewsItem, lang: Supporte
   return {
     ...article,
     titleAr: article.titleEn || article.titleAr,
-    categoryLabelAr: categoryMap[article.category] || article.categoryLabelAr,
+    categoryLabelAr: CONTENT_LABEL_KEYS.news[article.category as keyof typeof CONTENT_LABEL_KEYS.news]
+      ? contentLabel(CONTENT_LABEL_KEYS.news[article.category as keyof typeof CONTENT_LABEL_KEYS.news], lang)
+      : article.categoryLabelAr,
     summaryAr: ext.summaryEn || en?.summary || article.summaryAr,
     contentAr: ext.contentEn || en?.content || article.contentAr,
     expertVerdict: ext.verdictEn || en?.verdict || article.expertVerdict,
