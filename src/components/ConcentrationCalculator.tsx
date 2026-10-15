@@ -36,7 +36,7 @@ import {
 } from '../data/presets';
 import { formatNum } from '../utils/calculations';
 import { useLanguage } from '../context/LanguageContext';
-import { LText, makeT, fmt, LOCALE_MAP } from '../utils/localize';
+import { LText, makeT, fmt, LOCALE_MAP, localeDate } from '../utils/localize';
 import { FragrancePyramidGraphic } from './FragrancePyramidGraphic';
 import { CalculatorCriteriaGuide } from './CalculatorCriteriaGuide';
 import { VisualScaleSimulator } from './VisualScaleSimulator';
@@ -1671,12 +1671,16 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
                   <button
                     type="button"
                     onClick={() => {
-                      const expectedDate = new Date(Date.now() + (macerationDays || 30) * 86400000).toLocaleDateString('ar-SA', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      });
+                      const expectedDate = localeDate(
+                        effectiveLang,
+                        new Date(Date.now() + (macerationDays || 30) * 86400000),
+                        {
+                          weekday: 'long',
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        }
+                      );
                       const prompt = fmt(L('shahin_prompt_tpl'), {
                         c: formulation.concentrationPercent,
                         v: formulation.bottleVolumeMl,

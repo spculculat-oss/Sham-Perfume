@@ -1,0 +1,60 @@
+name: Shaheen AI keys (verify + sync to Vercel)
+
+# Keys live ONLY in repository secrets (Settings → Secrets and variables → Actions):
+#   GEMINI_API_KEY, OPENAI_API_KEY, ANTHROPIC_API_KEY, DEEPSEEK_API_KEY,
+#   optional OPENROUTER_API_KEY, AI_GATEWAY_API_KEY, YOUTUBE_API_KEY (videos under Shaheen's answers),
+#   and VERCEL_TOKEN for the sync.
+# 1) every present key gets one tiny real request through the site's own engine code;
+# 2) working keys are copied to the Vercel projects and production is redeployed if anything changed.
+# GitHub Pages has no server: it talks to the Vercel API, so both sites use the synced keys.
+# Run it again from the Actions tab ("Run workflow") whenever you add or rotate a key.
+
+on:
+  push:
+    branches: [main, 'arena/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: shaheen-keys
+  cancel-in-progress: false
+
+jobs:
+  keys:
+    name: Verify and sync Shaheen keys
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
+      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_SCOPE: ${{ vars.VERCEL_SCOPE || 'sham-de37' }}
+      VERCEL_PROJECTS: ${{ vars.VERCEL_PROJECTS || 'sham-perfume-49bf,sham-perfume' }}
+      SHAM_VERIFY_FILE: ${{ github.workspace }}/../shaheen-verify.json
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install locked dependencies
+        run: bun install --frozen-lockfile
+      - name: Verify each AI key with a real request
+        run: node --import tsx scripts/verify-ai-keys.mts
+      - name: Sync working keys to Vercel and redeploy
+        run: node scripts/sync-vercel-env.mjs

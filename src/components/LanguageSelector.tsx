@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Globe, Check, ChevronDown, Search, Sparkles, Languages, MapPin } from 'lucide-react';
 import { SupportedLanguage, SUPPORTED_LANGUAGES, LanguageConfig } from '../types/i18n';
 import { getCommonLabel, isRTL } from '../utils/localizedContent';
-import { LText, makeT } from '../utils/localize';
+import { LText, makeT, fmt } from '../utils/localize';
 
 const S = {
   trigger_label: {
@@ -42,16 +42,16 @@ const S = {
     fa: 'تغییر زبان پلتفرم',
   },
   header_sub: {
-    ar: 'اختر لغتك المفضلة (10 لغات عالمية)',
-    en: 'Select your language (10 world languages)',
-    fr: 'Choisissez votre langue (10 langues)',
-    es: 'Elija su idioma (10 idiomas)',
-    it: 'Scegli la tua lingua (10 lingue)',
-    de: 'Wählen Sie Ihre Sprache (10 Sprachen)',
-    ru: 'Выберите язык (10 языков)',
-    zh: '选择您的语言（10 种世界语言）',
-    tr: 'Dilinizi seçin (10 dünya dili)',
-    fa: 'زبان خود را انتخاب کنید (۱۰ زبان جهانی)',
+    ar: 'اختر لغتك المفضلة ({n} لغة عالمية)',
+    en: 'Select your language ({n} world languages)',
+    fr: 'Choisissez votre langue ({n} langues)',
+    es: 'Elija su idioma ({n} idiomas)',
+    it: 'Scegli la tua lingua ({n} lingue)',
+    de: 'Wählen Sie Ihre Sprache ({n} Sprachen)',
+    ru: 'Выберите язык ({n} языков)',
+    zh: '选择您的语言（{n} 种世界语言）',
+    tr: 'Dilinizi seçin ({n} dünya dili)',
+    fa: 'زبان خود را انتخاب کنید ({n} زبان جهانی)',
   },
   no_match: {
     ar: 'لم يتم العثور على لغة مطابقة للبحث',
@@ -186,7 +186,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
             <Globe className="w-3.5 h-3.5 text-amber-800" />
           </div>
           
-          <span className="font-extrabold text-[11px] text-amber-900 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200/60 hidden md:inline">
+          <span className="font-extrabold text-[11px] text-amber-900 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200/60 hidden lg:inline">
             {L('trigger_label')}
           </span>
 
@@ -194,7 +194,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
             {activeConfig.flag}
           </span>
 
-          <span className="font-bold text-stone-900 truncate max-w-[85px] sm:max-w-[100px]">
+          <span className="font-bold text-stone-900 truncate max-w-[85px] sm:max-w-[100px] hidden sm:inline">
             {activeConfig.nativeName}
           </span>
         </div>
@@ -221,7 +221,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
                   {L('header_title')}
                 </div>
                 <div className="text-[10px] text-stone-300">
-                  {L('header_sub')}
+                  {fmt(L('header_sub'), { n: SUPPORTED_LANGUAGES.length })}
                 </div>
               </div>
             </div>

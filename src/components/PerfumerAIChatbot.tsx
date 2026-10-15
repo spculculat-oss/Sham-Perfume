@@ -26,18 +26,22 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import perfumerImg from '../assets/images/master_perfumer_compounding_1791693212967.jpg';
-import { extractFormulaFromAIMessage, ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
-import {
-  ChatMessage,
-  loadStoredChatSession,
-  saveChatSession,
-  clearChatSession,
-  exportChatTranscriptToFile,
-  DEFAULT_WELCOME_MESSAGE,
-} from '../utils/chatStorage';
+import { extractFormulaFromAIMessage, isFormulaTransferCommand, ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
+import { exportChatTranscriptToFile } from '../utils/chatStorage';
+import { useShaheenChat } from '../hooks/useShaheenChat';
+import { useShaheenModels } from '../hooks/useShaheenModels';
+import { ShaheenServiceStatus, ShaheenModesPanel, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
+import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
+import { ShaheenMedia } from './ShaheenMedia';
+import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
+import { ENGINE_BADGE, messageTime, modeBadge, visibleEngines, scrollChatToEnd } from './shaheenEngines';
+import type { ShaheenModelChoice } from '../utils/chatStore';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../utils/localizedContent';
 import { LText, makeT, fmt, LOCALE_MAP } from '../utils/localize';
+import { isStaticHosting } from '../utils/api';
+import { copyChatText } from '../utils/clipboard';
+import { StaticHostingNotice } from './StaticHostingNotice';
 
 
 const S = {
@@ -125,17 +129,18 @@ const S = {
     tr: '{d} gün kaldı',
     fa: '{d} روز باقی مانده',
   },
-  scale_tpl: {
-    ar: 'الميزان الرقمي: {w}g',
-    en: 'Digital Scale: {w}g',
-    fr: 'Balance numérique : {w} g',
-    es: 'Balanza digital: {w}g',
-    it: 'Bilancia digitale: {w}g',
-    de: 'Digitale Waage: {w}g',
-    ru: 'Цифровые весы: {w} г',
-    zh: '电子秤：{w}g',
-    tr: 'Dijital terazi: {w}g',
-    fa: 'ترازوی دیجیتال: {w} گرم',
+  status_ready_tpl: { ar: 'متصل · {n} وضع متاح', en: 'Online · {n} mode(s) available', fr: 'En ligne · {n} mode(s) disponible(s)', es: 'En línea · {n} modo(s) disponible(s)', it: 'Online · {n} modalità disponibili', de: 'Online · {n} Modus/Modi verfügbar', ru: 'В сети · доступно режимов: {n}', zh: '在线 · {n} 种模式可用', tr: 'Çevrimiçi · {n} mod kullanılabilir', fa: 'آنلاین · {n} حالت در دسترس' },
+  status_offline: {
+    ar: 'غير متصل حالياً',
+    en: 'Offline right now',
+    fr: 'Hors ligne pour le moment',
+    es: 'Sin conexión por ahora',
+    it: 'Offline al momento',
+    de: 'Derzeit offline',
+    ru: 'Сейчас не в сети',
+    zh: '当前离线',
+    tr: 'Şu anda çevrimdışı',
+    fa: 'فعلاً آفلاین',
   },
   export_tooltip: {
     ar: 'تنزيل نسخة نصية TXT',
@@ -233,102 +238,12 @@ const S = {
     tr: 'Kapat',
     fa: 'بستن',
   },
-  engine_label: {
-    ar: 'محرك الذكاء:',
-    en: 'AI Engine:',
-    fr: 'Moteur IA :',
-    es: 'Motor IA:',
-    it: 'Motore IA:',
-    de: 'KI-Engine:',
-    ru: 'ИИ-движок:',
-    zh: 'AI 引擎：',
-    tr: 'YZ motoru:',
-    fa: 'موتور هوش مصنوعی:',
-  },
-  matrix_tooltip: {
-    ar: 'عرض حالة شبكة الذكاء الاصطناعي الأربعة المتصلة بالمعمل',
-    en: 'Show the status of the four lab-connected AI engines',
-    fr: 'Voir l’état des quatre moteurs IA connectés',
-    es: 'Ver el estado de los cuatro motores IA conectados',
-    it: 'Stato dei quattro motori IA collegati',
-    de: 'Status der vier verbundenen KI-Engines',
-    ru: 'Статус четырёх подключённых ИИ-движков',
-    zh: '查看四个已连接 AI 引擎的状态',
-    tr: 'Bağlı dört yapay zeka motorunun durumu',
-    fa: 'نمایش وضعیت چهار موتور هوش مصنوعی متصل',
-  },
-  matrix_btn: {
-    ar: 'شبكة الذكاء (4)',
-    en: 'AI Matrix (4)',
-    fr: 'Matrice IA (4)',
-    es: 'Matriz IA (4)',
-    it: 'Matrice IA (4)',
-    de: 'KI-Matrix (4)',
-    ru: 'Матрица ИИ (4)',
-    zh: 'AI 矩阵（4）',
-    tr: 'YZ matrisi (4)',
-    fa: 'شبکه هوش (۴)',
-  },
-  matrix_title: {
-    ar: 'شبكة محركات الذكاء الاصطناعي المؤتمتة بالمعمل (Automated AI Council):',
-    en: 'Automated AI Council — Lab Engine Matrix:',
-    fr: 'Conseil IA automatisé — matrice des moteurs :',
-    es: 'Consejo IA automatizado — matriz de motores:',
-    it: 'Consiglio IA automatizzato — matrice dei motori:',
-    de: 'Automatischer KI-Rat — Engine-Matrix:',
-    ru: 'Автоматический ИИ-совет — матрица движков:',
-    zh: '自动化 AI 议会——引擎矩阵：',
-    tr: 'Otomatik YZ konseyi — motor matrisi:',
-    fa: 'شورای خودکار هوش مصنوعی — ماتریس موتورها:',
-  },
-  matrix_gemini: {
-    ar: 'حسابات الأوزان بالغرام، سرعة استخراج نسب الزيت والكحول.',
-    en: 'Gram-level weight math; rapid oil & alcohol ratio extraction.',
-    fr: 'Calculs au gramme ; extraction rapide des ratios huile/alcool.',
-    es: 'Cálculos al gramo; extracción rápida de proporciones.',
-    it: 'Calcoli al grammo; estrazione rapida dei rapporti.',
-    de: 'Rechnungen auf Grammbasis; schnelle Extraktion der Verhältnisse.',
-    ru: 'Расчёты с точностью до грамма; быстрое извлечение пропорций.',
-    zh: '克级精确计算；快速提取油酒比例。',
-    tr: 'Gram düzeyinde hesaplar; hızlı oran çıkarımı.',
-    fa: 'محاسبات بر حسب گرم؛ استخراج سریع نسبت روغن و الکل.',
-  },
-  matrix_deepseek: {
-    ar: 'استدلال كيميائي، الكثافة النوعية ومعايير سلامة IFRA.',
-    en: 'Chemical reasoning, specific gravity & IFRA safety.',
-    fr: 'Raisonnement chimique, densité et sécurité IFRA.',
-    es: 'Razonamiento químico, densidad y seguridad IFRA.',
-    it: 'Ragionamento chimico, densità e sicurezza IFRA.',
-    de: 'Chemische Logik, Dichte & IFRA-Sicherheit.',
-    ru: 'Химическая логика, плотность и безопасность IFRA.',
-    zh: '化学推理、比重与 IFRA 安全。',
-    tr: 'Kimyasal akıl yürütme, yoğunluk ve IFRA güvenliği.',
-    fa: 'استدلال شیمیایی، چگالی ویژه و ایمنی IFRA.',
-  },
-  matrix_openai: {
-    ar: 'هندسة الأكوردات، الفوحان التجاري والجاذبية التسويقية.',
-    en: 'Accord architecture, commercial sillage & market appeal.',
-    fr: 'Architecture des accords, sillage commercial.',
-    es: 'Arquitectura de acordes, estela comercial.',
-    it: 'Architettura degli accordi, scia commerciale.',
-    de: 'Akkord-Architektur, kommerzielle Sillage.',
-    ru: 'Архитектура аккордов, коммерческий шлейф.',
-    zh: '香调架构、商业扩散与市场吸引力。',
-    tr: 'Akor mimarisi, ticari iz ve pazar çekiciliği.',
-    fa: 'معماری آکورد، انتشار تجاری و جذابیت بازاریابی.',
-  },
-  matrix_claude: {
-    ar: 'تقاليد جراس الفرنسية، التعتيق الصبور، والنيش الأرستقراطي.',
-    en: 'Grasse tradition, patient maceration & niche elegance.',
-    fr: 'Tradition de Grasse, macération patiente et élégance de niche.',
-    es: 'Tradición de Grasse, maceración paciente y elegancia de nicho.',
-    it: 'Tradizione di Grasse, macerazione paziente ed eleganza di nicchia.',
-    de: 'Grasse-Tradition, geduldige Mazeration & Nische-Eleganz.',
-    ru: 'Традиции Граса, терпеливая мацерация и нишевая элегантность.',
-    zh: '格拉斯传统、静待陈化与小众优雅。',
-    tr: 'Grasse geleneği, sabırlı dinlendirme ve niş zarafeti.',
-    fa: 'سنت گراس، کهنه‌سازی صبور و ظرافت نیچ.',
-  },
+  engine_label: { ar: 'طريقة الرد:', en: 'Answer style:', fr: 'Style de réponse :', es: 'Estilo de respuesta:', it: 'Stile di risposta:', de: 'Antwortstil:', ru: 'Стиль ответа:', zh: '回答方式：', tr: 'Yanıt biçimi:', fa: 'شیوه پاسخ:' },
+  matrix_tooltip: { ar: 'عرض أوضاع شاهين المتاحة الآن', en: 'See Shahin’s available modes', fr: 'Voir les modes disponibles de Shahin', es: 'Ver los modos disponibles de Shahin', it: 'Vedi le modalità disponibili di Shahin', de: 'Verfügbare Modi von Shahin anzeigen', ru: 'Посмотреть доступные режимы Шахина', zh: '查看 Shahin 当前可用的模式', tr: 'Shahin’in kullanılabilir modlarını gör', fa: 'مشاهده حالت‌های در دسترس شاهین' },
+  error_badge: { ar: 'تنبيه', en: 'Notice', fr: 'Avis', es: 'Aviso', it: 'Avviso', de: 'Hinweis', ru: 'Уведомление', zh: '提示', tr: 'Uyarı', fa: 'هشدار' },
+  retry: { ar: 'إعادة المحاولة', en: 'Retry', fr: 'Réessayer', es: 'Reintentar', it: 'Riprova', de: 'Erneut versuchen', ru: 'Повторить', zh: '重试', tr: 'Tekrar dene', fa: 'تلاش دوباره' },
+  matrix_btn: { ar: 'الأوضاع', en: 'Modes', fr: 'Modes', es: 'Modos', it: 'Modalità', de: 'Modi', ru: 'Режимы', zh: '模式', tr: 'Modlar', fa: 'حالت‌ها' },
+  matrix_title: { ar: 'أوضاع الخبير شاهين المتاحة الآن:', en: 'Master Shahin’s modes right now:', fr: 'Modes de Maître Shahin :', es: 'Modos del Maestro Shahin:', it: 'Modalità del Maestro Shahin:', de: 'Modi von Meister Shahin:', ru: 'Режимы мастера Шахина:', zh: 'Shahin 大师当前的模式：', tr: 'Usta Shahin’in modları:', fa: 'حالت‌های استاد شاهین:' },
   clear_confirm_tpl: {
     ar: 'مسح المحادثة بالكامل الآن؟ (تُمسح تلقائياً بعد {d} يوماً).',
     en: 'Clear the entire chat? (auto-deletes after {d} days).',
@@ -388,54 +303,6 @@ const S = {
     zh: 'Shahin 大师',
     tr: 'Usta Shahin',
     fa: 'استاد شاهین',
-  },
-  default_badge: {
-    ar: '⚡ مجلس الخبراء المؤتمت',
-    en: '⚡ Automated Experts Council',
-    fr: '⚡ Conseil d’experts automatisé',
-    es: '⚡ Consejo automatizado',
-    it: '⚡ Consiglio automatizzato',
-    de: '⚡ Automatischer Expertenrat',
-    ru: '⚡ Автоматический совет экспертов',
-    zh: '⚡ 自动化专家议会',
-    tr: '⚡ Otomatik uzmanlar kurulu',
-    fa: '⚡ شورای خبرگان خودکار',
-  },
-  persp_lbl: {
-    ar: 'تبديل منظور المحركات المستشارة:',
-    en: 'Switch advisor engine view:',
-    fr: 'Changer de moteur conseiller :',
-    es: 'Cambiar vista del motor asesor:',
-    it: 'Cambia vista del motore consulente:',
-    de: 'Berater-Engine wechseln:',
-    ru: 'Переключить движок-советник:',
-    zh: '切换顾问引擎视角：',
-    tr: 'Danışman motor görünümünü değiştir:',
-    fa: 'تغییر نمای موتور مشاور:',
-  },
-  persp_ens: {
-    ar: 'دمج مؤتمت 4 محركات',
-    en: 'Automated 4-engine blend',
-    fr: 'Fusion automatique de 4 moteurs',
-    es: 'Fusión automática de 4 motores',
-    it: 'Fusione automatica di 4 motori',
-    de: 'Automatische 4-Engine-Fusion',
-    ru: 'Автослияние 4 движков',
-    zh: '四引擎自动融合',
-    tr: '4 motorlu otomatik harman',
-    fa: 'ترکیب خودکار ۴ موتور',
-  },
-  consensus_lbl: {
-    ar: '⚡ خلاصة شاهين الموحدة',
-    en: '⚡ Shahin Unified Summary',
-    fr: '⚡ Synthèse unifiée de Shahin',
-    es: '⚡ Síntesis unificada de Shahin',
-    it: '⚡ Sintesi unificata di Shahin',
-    de: '⚡ Shahins vereintes Fazit',
-    ru: '⚡ Единое резюме Шахина',
-    zh: '⚡ Shahin 统一结论',
-    tr: '⚡ Shahin birleşik özet',
-    fa: '⚡ جمع‌بندی واحد شاهین',
   },
   transfer_lbl: {
     ar: 'تحويل هذه الخلطة لأيقونات وحاسبات التطبيق:',
@@ -629,42 +496,9 @@ const S = {
     tr: 'Cevabı ve formülü kopyala',
     fa: 'کپی پاسخ و فرمول',
   },
-  consult_tooltip: {
-    ar: 'استشارة نموذج ذكاء اصطناعي آخر على نفس السؤال لمقارنة الرأي',
-    en: 'Ask another AI model the same question to compare opinions',
-    fr: 'Consulter un autre modèle IA sur la même question',
-    es: 'Consultar otro modelo IA con la misma pregunta',
-    it: 'Chiedi a un altro modello IA la stessa domanda',
-    de: 'Ein anderes KI-Modell zur gleichen Frage befragen',
-    ru: 'Спросить другую ИИ-модель и сравнить мнения',
-    zh: '向另一个 AI 模型提出同一问题以比较观点',
-    tr: 'Aynı soruyu başka bir yapay zeka modeline sor',
-    fa: 'پرسیدن همان سؤال از مدل هوش مصنوعی دیگر برای مقایسه',
-  },
-  consult_btn: {
-    ar: 'مقارنة بنموذج آخر',
-    en: 'Compare with another model',
-    fr: 'Comparer avec un autre modèle',
-    es: 'Comparar con otro modelo',
-    it: 'Confronta con un altro modello',
-    de: 'Mit anderem Modell vergleichen',
-    ru: 'Сравнить с другой моделью',
-    zh: '与其他模型对比',
-    tr: 'Başka bir modelle karşılaştır',
-    fa: 'مقایسه با مدل دیگر',
-  },
-  choose_model: {
-    ar: 'اختر نموذجاً للمقارنة:',
-    en: 'Choose a model to compare:',
-    fr: 'Choisir un modèle à comparer :',
-    es: 'Elige un modelo para comparar:',
-    it: 'Scegli un modello da confrontare:',
-    de: 'Modell zum Vergleich wählen:',
-    ru: 'Выберите модель для сравнения:',
-    zh: '选择要对比的模型：',
-    tr: 'Karşılaştırılacak modeli seç:',
-    fa: 'مدل مورد مقایسه را انتخاب کنید:',
-  },
+  consult_tooltip: { ar: 'اطلب رأياً ثانياً بطريقة رد أخرى', en: 'Ask for a second opinion in another answer style', fr: 'Demander un second avis dans un autre style', es: 'Pedir una segunda opinión con otro estilo', it: 'Chiedi un secondo parere con un altro stile', de: 'Zweite Meinung in einem anderen Stil anfordern', ru: 'Попросить второе мнение в другом стиле', zh: '以另一种回答方式获取第二意见', tr: 'Başka bir yanıt biçimiyle ikinci görüş iste', fa: 'درخواست نظر دوم با شیوه پاسخ دیگر' },
+  consult_btn: { ar: 'رأي ثانٍ', en: 'Second opinion', fr: 'Second avis', es: 'Segunda opinión', it: 'Secondo parere', de: 'Zweite Meinung', ru: 'Второе мнение', zh: '第二意见', tr: 'İkinci görüş', fa: 'نظر دوم' },
+  choose_model: { ar: 'اختر طريقة الرد:', en: 'Pick an answer style:', fr: 'Choisissez un style :', es: 'Elige un estilo:', it: 'Scegli uno stile:', de: 'Stil wählen:', ru: 'Выберите стиль:', zh: '选择回答方式：', tr: 'Bir yanıt biçimi seçin:', fa: 'شیوه پاسخ را انتخاب کنید:' },
   speech_tooltip: {
     ar: 'استماع صوتي',
     en: 'Listen',
@@ -881,18 +715,6 @@ const S = {
     tr: '👑 Usta Shahin Laboratuvarı',
     fa: '👑 آزمایشگاه استاد شاهین',
   },
-  consult_prefix_tpl: {
-    ar: '[استشارة متخصصة من محرك {m}]:',
-    en: '[Specialist consult via {m}]:',
-    fr: '[Consultation spécialisée via {m}] :',
-    es: '[Consulta especializada vía {m}]:',
-    it: '[Consulenza specializzata via {m}]:',
-    de: '[Fachkonsultation über {m}]:',
-    ru: '[Консультация специалиста через {m}]:',
-    zh: '【{m} 专家会诊】：',
-    tr: '[{m} üzerinden uzman görüşü]:',
-    fa: '[مشاوره تخصصی از موتور {m}]:',
-  },
   reformat_fallback: {
     ar: 'أعد صياغة التركيبة السابقة وحساب نسبها برؤيتك المتخصصة',
     en: 'Reformulate the previous formula and recalculate its ratios from your expert perspective',
@@ -928,150 +750,6 @@ const S = {
     zh: 'Shahin 大师',
     tr: 'Usta Shahin',
     fa: 'استاد شاهین',
-  },
-  engine_auto_name: {
-    ar: 'أتمتة الدمج الذكي (Auto Ensemble)',
-    en: 'Smart Auto Ensemble',
-    fr: 'Ensemble automatique intelligent',
-    es: 'Ensamble automático inteligente',
-    it: 'Ensemble automatico intelligente',
-    de: 'Intelligentes Auto-Ensemble',
-    ru: 'Умный автосенсамбль',
-    zh: '智能自动合议',
-    tr: 'Akıllı otomatik ansambl',
-    fa: 'ترکیب هوشمند خودکار',
-  },
-  engine_auto_short: {
-    ar: '⚡ مجلس الخبراء',
-    en: '⚡ Experts Council',
-    fr: '⚡ Conseil d’experts',
-    es: '⚡ Consejo de expertos',
-    it: '⚡ Consiglio di esperti',
-    de: '⚡ Expertenrat',
-    ru: '⚡ Совет экспертов',
-    zh: '⚡ 专家议会',
-    tr: '⚡ Uzmanlar kurulu',
-    fa: '⚡ شورای خبرگان',
-  },
-  engine_auto_desc: {
-    ar: 'يدمج ذكاء الأربعة نماذج تلقائياً ويصيغ الخلاصة الموحدة',
-    en: 'Automatically blends all four models into one unified verdict',
-    fr: 'Fusionne automatiquement les quatre modèles en un verdict unifié',
-    es: 'Fusiona los cuatro modelos en un veredicto unificado',
-    it: 'Unisce automaticamente i quattro modelli in un verdetto unificato',
-    de: 'Vereint alle vier Modelle automatisch zu einem Urteil',
-    ru: 'Автоматически объединяет четыре модели в единый вердикт',
-    zh: '自动融合四个模型并生成统一结论',
-    tr: 'Dört modeli otomatik birleştirip tek sonuç çıkarır',
-    fa: 'چهار مدل را خودکار ترکیب و نتیجه واحد می‌سازد',
-  },
-  engine_gemini_short: {
-    ar: '✨ جيمناي',
-    en: '✨ Gemini',
-    fr: '✨ Gemini',
-    es: '✨ Gemini',
-    it: '✨ Gemini',
-    de: '✨ Gemini',
-    ru: '✨ Gemini',
-    zh: '✨ Gemini',
-    tr: '✨ Gemini',
-    fa: '✨ جمنای',
-  },
-  engine_gemini_desc: {
-    ar: 'الحسابات الرياضية الدقيقة، أوزان الغرامات، والسرعة الفائقة',
-    en: 'Precise math, gram weights & blazing speed',
-    fr: 'Calculs précis, poids en grammes et rapidité',
-    es: 'Cálculos precisos, pesos en gramos y velocidad',
-    it: 'Calcoli precisi, pesi in grammi e velocità',
-    de: 'Präzise Mathe, Grammgewichte & Tempo',
-    ru: 'Точная математика, граммы и скорость',
-    zh: '精确计算、克重与极速',
-    tr: 'Hassas hesaplar, gram ağırlıkları ve hız',
-    fa: 'محاسبات دقیق، وزن گریمی و سرعت بالا',
-  },
-  engine_deepseek_short: {
-    ar: '🔬 ديب سيك',
-    en: '🔬 DeepSeek',
-    fr: '🔬 DeepSeek',
-    es: '🔬 DeepSeek',
-    it: '🔬 DeepSeek',
-    de: '🔬 DeepSeek',
-    ru: '🔬 DeepSeek',
-    zh: '🔬 DeepSeek',
-    tr: '🔬 DeepSeek',
-    fa: '🔬 دیپ‌سیک',
-  },
-  engine_deepseek_desc: {
-    ar: 'استدلال كيميائي، الكثافة النوعية ومعايير أمان IFRA',
-    en: 'Chemical reasoning, specific gravity & IFRA safety',
-    fr: 'Raisonnement chimique, densité et sécurité IFRA',
-    es: 'Razonamiento químico, densidad y seguridad IFRA',
-    it: 'Ragionamento chimico, densità e sicurezza IFRA',
-    de: 'Chemisches Denken, Dichte & IFRA-Sicherheit',
-    ru: 'Химическая логика, плотность и стандарты IFRA',
-    zh: '化学推理、比重与 IFRA 安全',
-    tr: 'Kimyasal akıl yürütme, yoğunluk ve IFRA güvenliği',
-    fa: 'استدلال شیمیایی، چگالی و ایمنی IFRA',
-  },
-  engine_openai_short: {
-    ar: '🟢 شات جي بي تي',
-    en: '🟢 ChatGPT',
-    fr: '🟢 ChatGPT',
-    es: '🟢 ChatGPT',
-    it: '🟢 ChatGPT',
-    de: '🟢 ChatGPT',
-    ru: '🟢 ChatGPT',
-    zh: '🟢 ChatGPT',
-    tr: '🟢 ChatGPT',
-    fa: '🟢 چت‌جی‌پی‌تی',
-  },
-  engine_openai_desc: {
-    ar: 'هندسة الأكوردات، الفوحان التجاري والانتشار الجذاب',
-    en: 'Accord architecture, commercial sillage & allure',
-    fr: 'Architecture des accords, sillage commercial et attrait',
-    es: 'Arquitectura de acordes, estela comercial y atractivo',
-    it: 'Architettura degli accordi, scia commerciale e appeal',
-    de: 'Akkord-Architektur, kommerzielle Sillage & Anziehung',
-    ru: 'Архитектура аккордов, коммерческий шлейф и притягательность',
-    zh: '香调架构、商业扩散与吸引力',
-    tr: 'Akor mimarisi, ticari iz ve çekicilik',
-    fa: 'معماری آکورد، انتشار تجاری و جذابیت',
-  },
-  engine_claude_short: {
-    ar: '🟣 كلود',
-    en: '🟣 Claude',
-    fr: '🟣 Claude',
-    es: '🟣 Claude',
-    it: '🟣 Claude',
-    de: '🟣 Claude',
-    ru: '🟣 Claude',
-    zh: '🟣 Claude',
-    tr: '🟣 Claude',
-    fa: '🟣 کلود',
-  },
-  engine_claude_desc: {
-    ar: 'مدرسة جراس الفرنسية، التعتيق الصامت، وأناقة النيش',
-    en: 'Grasse school, silent maceration & niche elegance',
-    fr: 'École de Grasse, macération silencieuse et élégance de niche',
-    es: 'Escuela de Grasse, maceración silenciosa y elegancia de nicho',
-    it: 'Scuola di Grasse, macerazione silenziosa ed eleganza di nicchia',
-    de: 'Grasse-Schule, stille Mazeration & Nische-Eleganz',
-    ru: 'Школа Граса, тихая мацерация и нишевая элегантность',
-    zh: '格拉斯学派、静默陈化与小众优雅',
-    tr: 'Grasse okulu, sessiz dinlendirme ve niş zarafeti',
-    fa: 'مدرسه گراس، کهنه‌سازی آرام و ظرافت نیچ',
-  },
-  engine_auto_badge: {
-    ar: '⚡ مجلس الخبراء المؤتمت',
-    en: '⚡ Automated Experts Council',
-    fr: '⚡ Conseil d’experts automatisé',
-    es: '⚡ Consejo automatizado',
-    it: '⚡ Consiglio automatizzato',
-    de: '⚡ Automatischer Expertenrat',
-    ru: '⚡ Автоматический совет экспертов',
-    zh: '⚡ 自动化专家议会',
-    tr: '⚡ Otomatik uzmanlar kurulu',
-    fa: '⚡ شورای خبرگان خودکار',
   },
   welcome_msg: {
     ar: `مرحباً بك في معملي يا عاشق الشذى والطيوب! أنا الخبير شاهين، شيخ العطارين وكبير كيميائيي العطور.
@@ -1169,15 +847,13 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
 
-  // Load persisted session with 30-day (1 month) expiration check
-  const [sessionData, setSessionData] = useState(() => loadStoredChatSession());
-  const [messages, setMessages] = useState<ChatMessage[]>(() => sessionData.messages);
-  const [daysRemaining, setDaysRemaining] = useState(sessionData.daysRemaining);
+  const { messages, setMessages, daysRemaining, isLoading, sendMessage, retryLast, clearHistory } = useShaheenChat();
+  const modelStatus = useShaheenModels();
+  const selectedModel = modelStatus.selected;
+  const setSelectedModel = modelStatus.setSelected;
 
   const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [compoundingStep, setCompoundingStep] = useState(0);
-  const [currentScaleWeight, setCurrentScaleWeight] = useState(12.45);
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   // Copy & Action tracking states
@@ -1187,72 +863,29 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   // Multi-AI Model Orchestrator State
-  const [selectedModel, setSelectedModel] = useState<'auto' | 'gemini' | 'deepseek' | 'openai' | 'claude'>('auto');
   const [comparingMsgId, setComparingMsgId] = useState<string | null>(null);
   const [showAiMatrix, setShowAiMatrix] = useState(false);
 
-  const AI_ENGINES = [
-    { id: 'auto', name: L('engine_auto_name'), short: L('engine_auto_short'), badge: L('engine_auto_badge'), color: 'border-amber-400 bg-amber-500/20 text-amber-300', desc: L('engine_auto_desc') },
-    { id: 'gemini', name: 'Google Gemini 3.8 Flash', short: L('engine_gemini_short'), badge: '✨ Gemini 3.8 Flash', color: 'border-emerald-400 bg-emerald-500/20 text-emerald-300', desc: L('engine_gemini_desc') },
-    { id: 'deepseek', name: 'DeepSeek R1 Chemistry', short: L('engine_deepseek_short'), badge: '🔬 DeepSeek R1', color: 'border-blue-400 bg-blue-500/20 text-blue-300', desc: L('engine_deepseek_desc') },
-    { id: 'openai', name: 'ChatGPT GPT-4o Architect', short: L('engine_openai_short'), badge: '🟢 GPT-4o Architect', color: 'border-green-400 bg-green-500/20 text-green-300', desc: L('engine_openai_desc') },
-    { id: 'claude', name: 'Claude 3.5 Haute Parfumerie', short: L('engine_claude_short'), badge: '🟣 Claude 3.5 Sonnet', color: 'border-purple-400 bg-purple-500/20 text-purple-300', desc: L('engine_claude_desc') },
-  ];
-
-  const setActivePerspectiveForMessage = (msgId: string, tabId: string) => {
-    setMessages((prev) =>
-      prev.map((m) => (m.id === msgId ? { ...m, activePerspectiveTab: tabId } : m))
-    );
-  };
+  // Shaheen's response modes the server says can answer (no engine or vendor names reach visitors).
+  const AI_ENGINES = visibleEngines(modelStatus.engines, currentLang);
+  const enabledEngineCount = (modelStatus.models || []).filter((m) => m.hasApiKey && AI_ENGINES.some((e) => e.id === m.id)).length;
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    scrollChatToEnd(messagesEndRef.current);
   };
 
   useEffect(() => {
     scrollToBottom();
   }, [messages, isLoading]);
 
-  // Persist messages whenever changed & broadcast to sync full lab view
-  useEffect(() => {
-    saveChatSession(messages);
-    window.dispatchEvent(new CustomEvent('miyaar-chat-updated', { detail: messages }));
-  }, [messages]);
-
-  // Sync with updates from full lab view
-  useEffect(() => {
-    const handleSync = (e: any) => {
-      if (Array.isArray(e.detail)) {
-        setMessages(e.detail);
-      }
-    };
-    window.addEventListener('miyaar-chat-updated', handleSync);
-    return () => window.removeEventListener('miyaar-chat-updated', handleSync);
-  }, []);
-
-  // Listen for cross-app AI consultation requests from calculators
-  useEffect(() => {
-    const handleConsultation = (e: any) => {
-      if (e.detail) {
-        setIsOpen(true);
-        setTimeout(() => {
-          handleSendMessage(e.detail);
-        }, 150);
-      }
-    };
-    window.addEventListener('open-ai-chat-with-prompt', handleConsultation);
-    return () => window.removeEventListener('open-ai-chat-with-prompt', handleConsultation);
-  }, []);
-
   useEffect(() => {
     let interval: any;
     if (isLoading) {
       interval = setInterval(() => {
         setCompoundingStep((prev) => (prev + 1) % 4);
-        setCurrentScaleWeight((prev) => +(prev + 0.35 + Math.random() * 0.2).toFixed(2));
       }, 1100);
     }
     return () => clearInterval(interval);
@@ -1267,26 +900,21 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
 
   const handleSendMessage = async (
     textToSend?: string,
-    overrideModel?: 'auto' | 'gemini' | 'deepseek' | 'openai' | 'claude'
+    overrideModel?: ShaheenModelChoice
   ) => {
     const text = (textToSend || input).trim();
-    if (!text || isLoading) return;
+    if (!text || isLoading || isStaticHosting) return;
 
     const activeModelChoice = overrideModel || selectedModel;
 
-    // Check if user requested an immediate interactive action by text command
-    const lower = text.toLowerCase();
-    if (
-      (lower.includes('طبق') || lower.includes('حول') || lower.includes('انقل') ||
-        lower.includes('apply') || lower.includes('transfer') || lower.includes('send')) &&
-      (lower.includes('حاسبة') || lower.includes('تركيب') ||
-        lower.includes('calculator') || lower.includes('lab') || lower.includes('formula'))
-    ) {
+    // A request for a new formula must never silently apply an earlier one.
+    if (isFormulaTransferCommand(text)) {
       for (let i = messages.length - 1; i >= 0; i--) {
-        if (messages[i].role === 'assistant') {
+        if (messages[i].role === 'assistant' && messages[i].kind !== 'error') {
           const formula = extractFormulaFromAIMessage(messages[i].text);
           if (formula) {
             onApplyToConcentrationCalculator(formula);
+            if (!textToSend) setInput('');
             setIsOpen(false);
             return;
           }
@@ -1294,96 +922,60 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
       }
     }
 
-    const userMessage: ChatMessage = {
-      id: 'user-' + Date.now(),
-      role: 'user',
-      text,
-      timestamp: new Date().toLocaleTimeString(LOCALE_MAP[currentLang] || 'ar-EG', { hour: '2-digit', minute: '2-digit' }),
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-    setInput('');
-    setIsLoading(true);
-
-    try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: text,
-          model: activeModelChoice,
-          conversationHistory: messages.map((m) => ({
-            role: m.role,
-            text: m.text,
-          })),
-        }),
-      });
-
-      const data = await response.json();
-      const replyText = data.reply || L('error_reply');
-
-      const botMessage: ChatMessage = {
-        id: 'bot-' + Date.now(),
-        role: 'assistant',
-        text: replyText,
-        timestamp: new Date().toLocaleTimeString(LOCALE_MAP[currentLang] || 'ar-EG', { hour: '2-digit', minute: '2-digit' }),
-        aiEngine: data.engine,
-        perspectives: data.perspectives,
-        activePerspectiveTab: 'consensus',
-      };
-
-      setMessages((prev) => [...prev, botMessage]);
-    } catch (error) {
-      console.error('Chat error:', error);
-      const fallbackMessage: ChatMessage = {
-        id: 'bot-err-' + Date.now(),
-        role: 'assistant',
-        text: L('fallback_reply'),
-        timestamp: new Date().toLocaleTimeString(LOCALE_MAP[currentLang] || 'ar-EG', { hour: '2-digit', minute: '2-digit' }),
-        aiEngine: {
-          id: 'ensemble',
-          name: L('welcome_name'),
-          badge: L('fallback_badge'),
-          provider: 'ensemble',
-        },
-      };
-      setMessages((prev) => [...prev, fallbackMessage]);
-    } finally {
-      setIsLoading(false);
-    }
+    if (text.length > 4000) return;
+    // Only clear the box when its own text was sent; a calculator consult or
+    // "compare" must not wipe what the visitor is typing.
+    if (!textToSend) setInput('');
+    await sendMessage({ text, model: activeModelChoice, language: currentLang,
+      errorText: (error) => chatErrorText(currentLang, error) });
   };
+
+  // Always use the current history/language/loading state when a calculator asks Shahin.
+  useEffect(() => {
+    const consult = (event: Event) => {
+      const text = (event as CustomEvent<unknown>).detail;
+      if (typeof text !== 'string' || !text.trim()) return;
+      setIsOpen(true);
+      if (isStaticHosting || isLoading || modelStatus.isUnavailable(selectedModel)) {
+        setInput(text.slice(0, 4000)); return;
+      }
+      void handleSendMessage(text);
+    };
+    window.addEventListener('open-ai-chat-with-prompt', consult);
+    return () => window.removeEventListener('open-ai-chat-with-prompt', consult);
+  });
 
   const handleConsultDifferentEngine = (
     originalUserText: string,
-    targetEngine: 'auto' | 'gemini' | 'deepseek' | 'openai' | 'claude'
+    targetEngine: ShaheenModelChoice
   ) => {
     setComparingMsgId(null);
     setSelectedModel(targetEngine);
-    handleSendMessage(`${fmt(L('consult_prefix_tpl'), { m: targetEngine.toUpperCase() })} ${originalUserText}`, targetEngine);
+    handleSendMessage(originalUserText, targetEngine);
   };
 
-  const handleCopyMessage = (id: string, text: string) => {
-    navigator.clipboard.writeText(text);
+  const handleCopyMessage = async (id: string, text: string) => {
+    if (!await copyChatText(text)) return;
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2500);
   };
 
-  const handleCopyAll = () => {
+  const handleCopyAll = async () => {
     const transcript = messages
       .map((m) => `[${m.role === 'user' ? L('transcript_q') : L('transcript_a')} - ${m.timestamp}]:\n${m.text}`)
       .join('\n\n' + '─'.repeat(40) + '\n\n');
 
-    navigator.clipboard.writeText(transcript);
+    if (!await copyChatText(transcript)) return;
     setCopiedAll(true);
     setTimeout(() => setCopiedAll(false), 2500);
   };
 
   const handleClearHistory = () => {
-    clearChatSession();
-    setMessages([DEFAULT_WELCOME_MESSAGE]);
-    setDaysRemaining(30);
+    clearHistory();
     setShowClearConfirm(false);
   };
+
+  useEffect(() => () => { window.speechSynthesis?.cancel(); }, []);
 
   const handleSpeech = (text: string) => {
     if ('speechSynthesis' in window) {
@@ -1481,17 +1073,19 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                     </span>
                     {/* Auto-Purge Expiration Badge */}
                     <span
-                      className="px-2 py-0.2 bg-emerald-950 border border-emerald-500/40 text-emerald-300 rounded-full text-[9px] flex items-center gap-1 font-mono-numbers"
+                      className="px-2 py-0.5 bg-emerald-950 border border-emerald-500/40 text-emerald-300 rounded-full text-[9px] flex items-center gap-1 font-mono-numbers"
                       title={L('expiry_tooltip')}
                     >
                       <Clock className="w-2.5 h-2.5 text-emerald-400" />
                       <span>{fmt(L('days_left_tpl'), { d: daysRemaining })}</span>
                     </span>
                   </div>
-                  <div className="text-[10px] text-amber-300/80 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                  <div className="text-[10px] text-amber-300/80 flex items-center gap-1" aria-live="polite">
+                    <span className={`w-1.5 h-1.5 rounded-full ${isLoading ? 'bg-amber-400 animate-pulse' : enabledEngineCount > 0 && modelStatus.enabled ? 'bg-emerald-400' : 'bg-stone-500'}`} />
                     <span>
-                      {isLoading ? compoundingMessages[compoundingStep] : fmt(L('scale_tpl'), { w: currentScaleWeight })}
+                      {isLoading ? compoundingMessages[compoundingStep]
+                        : enabledEngineCount > 0 && modelStatus.enabled ? fmt(L('status_ready_tpl'), { n: enabledEngineCount })
+                        : modelStatus.models ? L('status_offline') : '…'}
                     </span>
                   </div>
                 </div>
@@ -1544,6 +1138,10 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
               </div>
             </div>
 
+            <StaticHostingNotice currentLang={currentLang} />
+            <ShaheenServiceStatus language={currentLang} models={modelStatus.models} failed={modelStatus.failed}
+              enabled={modelStatus.enabled} selected={selectedModel} />
+
             {/* Multi-AI Model Selector Toolbar */}
             <div className="px-3 py-2 bg-stone-950 text-white border-b border-stone-800 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar">
               <div className="flex items-center gap-1.5 shrink-0 text-amber-400 font-bold text-[11px]">
@@ -1557,13 +1155,15 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                   return (
                     <button
                       key={eng.id}
-                      onClick={() => setSelectedModel(eng.id as any)}
+                      onClick={() => setSelectedModel(eng.id)}
+                      disabled={isLoading || modelStatus.isUnavailable(eng.id)}
                       className={`px-2.5 py-1 rounded-xl text-[11px] font-medium transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 border ${
                         isSelected
                           ? eng.color + ' font-bold shadow-xs'
                           : 'bg-stone-900/90 text-stone-400 hover:text-stone-200 border-stone-800 hover:border-stone-700'
                       }`}
-                      title={eng.name + ' - ' + eng.desc}
+                      title={eng.desc ? eng.name + ' - ' + eng.desc : eng.name}
+                      aria-pressed={isSelected}
                     >
                       <span>{eng.short}</span>
                       {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />}
@@ -1582,7 +1182,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                   title={L('matrix_tooltip')}
                 >
                   <Layers className="w-3 h-3" />
-                  <span className="hidden md:inline">{L('matrix_btn')}</span>
+                  <span className="hidden md:inline">{L('matrix_btn')} ({enabledEngineCount})</span>
                 </button>
               </div>
             </div>
@@ -1599,36 +1199,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                     <X className="w-3.5 h-3.5" />
                   </button>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
-                  <div className="p-2 rounded-xl bg-stone-950 border border-emerald-500/30 flex items-start gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 mt-1 shrink-0 animate-pulse" />
-                    <div>
-                      <div className="font-bold text-emerald-300">Google Gemini 3.8 Flash</div>
-                      <div className="text-stone-400 text-[10px]">{L('matrix_gemini')}</div>
-                    </div>
-                  </div>
-                  <div className="p-2 rounded-xl bg-stone-950 border border-blue-500/30 flex items-start gap-2">
-                    <span className="w-2 h-2 rounded-full bg-blue-400 mt-1 shrink-0 animate-pulse" />
-                    <div>
-                      <div className="font-bold text-blue-300">DeepSeek R1 Chemistry</div>
-                      <div className="text-stone-400 text-[10px]">{L('matrix_deepseek')}</div>
-                    </div>
-                  </div>
-                  <div className="p-2 rounded-xl bg-stone-950 border border-green-500/30 flex items-start gap-2">
-                    <span className="w-2 h-2 rounded-full bg-green-400 mt-1 shrink-0 animate-pulse" />
-                    <div>
-                      <div className="font-bold text-green-300">ChatGPT GPT-4o Architect</div>
-                      <div className="text-stone-400 text-[10px]">{L('matrix_openai')}</div>
-                    </div>
-                  </div>
-                  <div className="p-2 rounded-xl bg-stone-950 border border-purple-500/30 flex items-start gap-2">
-                    <span className="w-2 h-2 rounded-full bg-purple-400 mt-1 shrink-0 animate-pulse" />
-                    <div>
-                      <div className="font-bold text-purple-300">Claude 3.5 Haute Parfumerie</div>
-                      <div className="text-stone-400 text-[10px]">{L('matrix_claude')}</div>
-                    </div>
-                  </div>
-                </div>
+                <ShaheenModesPanel language={currentLang} models={modelStatus.models} />
               </div>
             )}
 
@@ -1659,12 +1230,14 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                 // Determine active perspective content if user toggled model tabs on this message
                 const activeDisplayContent =
                   msg.id === 'welcome'
-                    ? L('welcome_msg')
-                    : msg.activePerspectiveTab && msg.activePerspectiveTab !== 'consensus' && msg.perspectives
-                    ? msg.perspectives.find((p) => p.modelId === msg.activePerspectiveTab)?.reply || msg.text
-                    : msg.text;
+                    ? shaheenWelcome(currentLang)
+                    : stripMediaBlock(msg.text);
 
-                const extractedFormula = msg.role === 'assistant' ? extractFormulaFromAIMessage(activeDisplayContent) : null;
+                const extractedFormula = msg.role === 'assistant' && msg.kind !== 'error' ? extractFormulaFromAIMessage(activeDisplayContent) : null;
+                const isError = msg.kind === 'error';
+                const mediaRequest = msg.role === 'assistant' && !isError && msg.id !== 'welcome' ? extractMediaRequest(msg.text) : undefined;
+                const isLastMessage = msg.id === messages[messages.length - 1]?.id;
+                const canCompare = msg.role === 'assistant' && !isError && msg.id !== 'welcome' && AI_ENGINES.length > 1;
 
                 return (
                   <div
@@ -1693,7 +1266,9 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                       className={`max-w-[92%] sm:max-w-[86%] p-4 rounded-2xl text-xs sm:text-[13px] leading-relaxed shadow-2xs space-y-2.5 ${
                         msg.role === 'user'
                           ? 'bg-amber-900 text-white rounded-tl-xs'
-                          : 'bg-white text-stone-900 border border-stone-200/90 rounded-tr-xs'
+                          : isError
+                            ? 'bg-amber-50 text-amber-950 border border-amber-300 rounded-tr-xs'
+                            : 'bg-white text-stone-900 border border-stone-200/90 rounded-tr-xs'
                       }`}
                     >
                       {/* AI Engine Header for Assistant */}
@@ -1701,62 +1276,46 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                         <div className="flex items-center justify-between pb-1.5 mb-1 border-b border-stone-100 text-[11px]">
                           <div className="flex items-center gap-1.5">
                             <span className="font-bold text-amber-950 font-serif-luxury">{L('welcome_name')}</span>
-                            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium border flex items-center gap-1 ${
-                              msg.aiEngine?.provider === 'deepseek' ? 'bg-blue-50 text-blue-800 border-blue-200' :
-                              msg.aiEngine?.provider === 'openai' ? 'bg-green-50 text-green-800 border-green-200' :
-                              msg.aiEngine?.provider === 'claude' ? 'bg-purple-50 text-purple-800 border-purple-200' :
-                              msg.aiEngine?.provider === 'gemini' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' :
-                              'bg-amber-50 text-amber-900 border-amber-200'
-                            }`}>
-                              <span>{msg.aiEngine?.badge || L('default_badge')}</span>
-                            </span>
+                            {isError ? (
+                              <span className="text-[10px] px-2 py-0.5 rounded-full font-medium border flex items-center gap-1 bg-amber-100 text-amber-900 border-amber-300">
+                                <AlertCircle className="w-3 h-3" />
+                                <span>{L('error_badge')}</span>
+                              </span>
+                            ) : msg.id !== 'welcome' && (
+                              <span
+                                className={`text-[10px] px-2 py-0.5 rounded-full font-medium border flex items-center gap-1 ${ENGINE_BADGE[modeBadge(msg.aiEngine?.id, currentLang).mode || ''] || 'bg-amber-50 text-amber-900 border-amber-200'}`}
+                              >
+                                <span>{modeBadge(msg.aiEngine?.id, currentLang).label}</span>
+                              </span>
+                            )}
                           </div>
-                          <span className="text-[10px] text-stone-400 font-mono-numbers">{msg.timestamp}</span>
+                          <span className="text-[10px] text-stone-400 font-mono-numbers">{messageTime(msg.timestamp, currentLang)}</span>
                         </div>
                       )}
 
-                      {/* Perspective Switcher Tabs on Message (When Multi-AI Ensemble generated) */}
-                      {msg.role === 'assistant' && msg.perspectives && msg.perspectives.length > 0 && (
-                        <div className="p-1.5 bg-stone-50 rounded-xl border border-stone-200/80 mb-2 space-y-1">
-                          <div className="text-[10px] text-stone-500 font-bold flex items-center justify-between px-1">
-                            <span>{L('persp_lbl')}</span>
-                            <span className="text-[9px] text-amber-700 bg-amber-100/60 px-1.5 py-0.2 rounded">{L('persp_ens')}</span>
-                          </div>
-                          <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
-                            <button
-                              onClick={() => setActivePerspectiveForMessage(msg.id, 'consensus')}
-                              className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0 border ${
-                                (!msg.activePerspectiveTab || msg.activePerspectiveTab === 'consensus')
-                                  ? 'bg-amber-200/90 text-amber-950 border-amber-400 shadow-2xs'
-                                  : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-100'
-                              }`}
-                            >
-                              <span>{L('consensus_lbl')}</span>
-                            </button>
-                            {msg.perspectives.map((p) => {
-                              const isActive = msg.activePerspectiveTab === p.modelId;
-                              return (
-                                <button
-                                  key={p.modelId}
-                                  onClick={() => setActivePerspectiveForMessage(msg.id, p.modelId)}
-                                  className={`px-2 py-1 rounded-lg text-[10px] font-medium transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0 border ${
-                                    isActive
-                                      ? p.color + ' font-bold shadow-2xs'
-                                      : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-100'
-                                  }`}
-                                >
-                                  <span>{p.badge}</span>
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )}
 
                       {/* Text Payload */}
-                      <div className="whitespace-pre-line break-words font-sans space-y-2">
-                        {activeDisplayContent}
-                      </div>
+                      {msg.role === 'assistant' && !isError ? (
+                        <>
+                          <ShaheenMarkdown text={activeDisplayContent} className="font-sans" />
+                          {mediaRequest && <ShaheenMedia request={mediaRequest} lang={currentLang} />}
+                        </>
+                      ) : (
+                        <div className="whitespace-pre-line break-words font-sans space-y-2" dir="auto">
+                          {activeDisplayContent}
+                        </div>
+                      )}
+
+                      {isError && isLastMessage && (
+                        <button
+                          onClick={() => void retryLast({ model: selectedModel, language: currentLang, errorText: (error) => chatErrorText(currentLang, error) })}
+                          disabled={isLoading || isStaticHosting}
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-amber-800 px-3 py-1.5 text-[11px] font-bold text-white hover:bg-amber-900 disabled:opacity-50 cursor-pointer"
+                        >
+                          <RotateCcw className="w-3.5 h-3.5" />
+                          <span>{L('retry')}</span>
+                        </button>
+                      )}
 
                       {/* SMART INTERACTION BAR: Transfer Chat Data to App Modules */}
                       {extractedFormula && (
@@ -1848,15 +1407,15 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                         </div>
                       )}
 
-                      {/* Bottom Action Strip Under EVERY message */}
-                      <div
+                      {/* Bottom Action Strip (not on error notices) */}
+                      {!isError && <div
                         className={`flex flex-wrap items-center justify-between gap-2 text-[10px] pt-2 border-t ${
                           msg.role === 'user'
                             ? 'border-amber-800/80 text-amber-200'
                             : 'border-stone-100 text-stone-400'
                         }`}
                       >
-                        <span className="font-mono-numbers">{msg.timestamp}</span>
+                        <span className="font-mono-numbers">{messageTime(msg.timestamp, currentLang)}</span>
 
                         <div className="flex items-center gap-1.5">
                           {/* Copy Button Under EACH message */}
@@ -1885,7 +1444,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                           {msg.role === 'assistant' && (
                             <>
                               {/* Re-consult another model */}
-                              <div className="relative">
+                              {canCompare && <div className="relative">
                                 <button
                                   onClick={() => setComparingMsgId(comparingMsgId === msg.id ? null : msg.id)}
                                   className="px-2 py-0.5 rounded bg-stone-100 hover:bg-stone-200 text-stone-700 hover:text-stone-950 border border-stone-200 transition-colors flex items-center gap-1 cursor-pointer font-medium text-[11px]"
@@ -1907,6 +1466,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                                     {AI_ENGINES.map((eng) => (
                                       <button
                                         key={eng.id}
+                                        disabled={isLoading}
                                         onClick={() => {
                                           const prevUserMsg = messages
                                             .slice(0, messages.findIndex((m) => m.id === msg.id))
@@ -1914,7 +1474,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                                             .find((m) => m.role === 'user');
                                           handleConsultDifferentEngine(
                                             prevUserMsg?.text || L('reformat_fallback'),
-                                            eng.id as any
+                                            eng.id
                                           );
                                         }}
                                         className="w-full text-right px-2 py-1.5 rounded-lg hover:bg-stone-800 text-stone-200 hover:text-white transition-colors flex items-center justify-between text-[11px] cursor-pointer"
@@ -1925,10 +1485,10 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                                     ))}
                                   </div>
                                 )}
-                              </div>
+                              </div>}
 
                               <button
-                                onClick={() => handleSpeech(activeDisplayContent)}
+                                onClick={() => handleSpeech(stripFormulaBlock(activeDisplayContent))}
                                 className="p-1 hover:text-amber-800 transition-colors flex items-center gap-1 cursor-pointer"
                                 title={L('speech_tooltip')}
                               >
@@ -1937,7 +1497,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                             </>
                           )}
                         </div>
-                      </div>
+                      </div>}
                     </div>
                   </div>
                 );
@@ -1982,7 +1542,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                 <button
                   key={idx}
                   onClick={() => handleSendMessage(q)}
-                  disabled={isLoading}
+                  disabled={isLoading || modelStatus.isUnavailable(selectedModel)}
                   className="whitespace-nowrap px-2.5 py-1 rounded-full bg-white hover:bg-amber-50 border border-stone-200 text-stone-700 hover:text-amber-900 text-[11px] transition-all cursor-pointer shadow-2xs shrink-0 font-medium"
                 >
                   {q}
@@ -2001,16 +1561,17 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
               <input
                 ref={inputRef}
                 type="text"
+            maxLength={4000}
                 placeholder={L('input_placeholder')}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                disabled={isLoading}
+                disabled={isStaticHosting || modelStatus.isUnavailable(selectedModel)}
                 className="flex-1 px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs sm:text-sm text-stone-900 focus:outline-none focus:border-amber-700 focus:bg-white transition-all shadow-inner"
               />
 
               <button
                 type="submit"
-                disabled={!input.trim() || isLoading}
+                disabled={!input.trim() || input.length > 4000 || isLoading || modelStatus.isUnavailable(selectedModel)}
                 className="p-2.5 px-4 bg-amber-800 hover:bg-amber-900 disabled:opacity-40 text-white rounded-xl shadow-xs transition-all cursor-pointer flex items-center justify-center shrink-0 font-medium text-xs sm:text-sm gap-1"
                 title={L('send')}
               >

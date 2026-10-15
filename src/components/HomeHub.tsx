@@ -65,9 +65,12 @@ import { UserEnvironmentProfile } from '../utils/environmentAdapter';
 import { UserDetailedAddress } from '../types/address';
 import { UserProfile } from '../types/auth';
 import { STATS_BADGE_EN, PORTAL_NEWS_EN } from '../utils/localizedHub';
+import { isRTL } from '../utils/localizedContent';
 import { LText, makeT, loc, fmt } from '../utils/localize';
-import { PORTAL_L10N, NEWS_L10N_A, NewsL10N } from '../utils/hubL10n';
+import { PORTAL_L10N as PORTAL_L10N_BASE, NEWS_L10N_A, NewsL10N } from '../utils/hubL10n';
 import { NEWS_L10N_B } from '../utils/hubL10n2';
+import { NEWS_L10N_C } from '../utils/hubL10n3';
+import { mergeHubL10n } from '../utils/hubL10nExt';
 
 interface PortalNewsItem {
   id: string;
@@ -111,7 +114,7 @@ const S = {
   guest: { ar: 'ضيف المعمل', en: 'Lab Guest', fr: 'Invité du laboratoire', es: 'Invitado del laboratorio', it: 'Ospite del laboratorio', de: 'Laborgast', ru: 'Гость лаборатории', zh: '实验室访客', tr: 'Laboratuvar konuğu', fa: 'مهمان آزمایشگاه' },
   open_lab_calc: { ar: 'دخول حاسبة المعمل الفورية', en: 'Open Lab Calculator', fr: 'Ouvrir le calculateur', es: 'Abrir la calculadora', it: 'Apri il calcolatore', de: 'Rechner öffnen', ru: 'Открыть калькулятор', zh: '打开实验室计算器', tr: 'Hesaplayıcıyı aç', fa: 'باز کردن ماشین‌حساب آزمایشگاه' },
   global_trends: { ar: 'أحدث أخبار العطور بالعالم', en: 'Global Fragrance Trends', fr: 'Tendances mondiales de la parfumerie', es: 'Tendencias globales del perfume', it: 'Tendenze globali del profumo', de: 'Globale Dufttrends', ru: 'Мировые тренды парфюмерии', zh: '全球香水潮流', tr: 'Küresel parfüm trendleri', fa: 'ترندهای جهانی عطر' },
-  consult_ai: { ar: 'مجلس الخبير شاهين AI', en: 'Consult Master Shahin AI', fr: 'Consulter l’IA Maître Shahin', es: 'Consultar a la IA del Maestro Shahin', it: 'Consulta l’IA del Maestro Shahin', de: 'Meister Shahin KI befragen', ru: 'Консультация ИИ мастера Шахина', zh: '咨询 Shahin 大师 AI', tr: 'Usta Shahin YZ’ye danış', fa: 'مشورت با هوش مصنوعی استاد شاهین' },
+  consult_ai: { ar: 'استشر الخبير شاهين', en: 'Consult Master Shahin', fr: 'Consulter Maître Shahin', es: 'Consultar al Maestro Shahin', it: 'Consulta il Maestro Shahin', de: 'Meister Shahin fragen', ru: 'Спросить мастера Шахина', zh: '咨询 Shahin 大师', tr: 'Usta Shahin’e danış', fa: 'مشورت با استاد شاهین' },
   alt_hero: { ar: 'معمل صمم عطرك مع شام', en: 'Design Your Perfume with Sham lab', fr: 'Laboratoire — créez votre parfum avec Sham', es: 'Laboratorio — diseña tu perfume con Sham', it: 'Laboratorio — crea il tuo profumo con Sham', de: 'Labor — Gestalten Sie Ihr Parfüm mit Sham', ru: 'Лаборатория «Создай свой аромат с Sham»', zh: '与 Sham 一起设计香水的实验室', tr: 'Parfümünüzü Sham ile tasarlayın laboratuvarı', fa: 'آزمایشگاه ساخت عطر با شام' },
   network_badge: { ar: 'شبكة منافذ منصة شام الحرفية', en: 'Sham Artisanal Portals Network', fr: 'Réseau des portails artisanaux Sham', es: 'Red de portales artesanales de Sham', it: 'Rete dei portali artigianali Sham', de: 'Sham-Portalnetzwerk für Handwerkskunst', ru: 'Сеть порталов ремесленной платформы Sham', zh: 'Sham 匠心门户网络', tr: 'Sham zanaat portal ağı', fa: 'شبکه درگاه‌های صنعتگری شام' },
   hero_quote: { ar: '«12 منفذاً تخصصياً يجمع كل ما يحتاجه صانع العطور من الحسابات الرياضية الدقيقة إلى الأخبار العالمية وأسرار الصنعة»', en: '«12 specialized portals uniting precision compounding mathematics, world industry reports, and artisan secrets»', fr: '« 12 portails spécialisés réunissant mathématiques de précision, rapports mondiaux et secrets d’atelier »', es: '«12 portales especializados que unen matemáticas de precisión, informes mundiales y secretos artesanales»', it: '«12 portali specializzati che uniscono matematica di precisione, report mondiali e segreti artigianali»', de: '«12 spezialisierte Portale — Präzisionsmathematik, Weltberichte und Handwerksgeheimnisse»', ru: '«12 специализированных порталов: точные расчёты, мировые обзоры и секреты мастерства»', zh: '「12 个专业门户：从精密计算到全球资讯与匠艺秘诀」', tr: '«12 uzman portal: hassas hesaplamalar, dünya raporları ve zanaat sırları»', fa: '«۱۲ درگاه تخصصی: از محاسبات دقیق تا اخبار جهانی و رازهای صنعتگری»' },
@@ -169,7 +172,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
   onOpenAuthModal,
   onOpenSpecModal,
 }) => {
-  const isRtl = currentLang === 'ar' || currentLang === 'fa';
+  const isRtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
 
   const SUBTITLE_EN_MAP: Record<string, string> = {
@@ -180,7 +183,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
     portal_pyramid: 'Three-layer pyramid structure with molecular evaporation simulation',
     portal_alcohol: 'Accurate dilution with distilled water to prevent clouding',
     portal_costing: 'Bottle unit pricing, ingredient costs, and ROI margin estimation',
-    portal_master_ai: 'Multi-AI synthesis (Gemini + DeepSeek + ChatGPT + Claude) in one lab',
+    portal_master_ai: 'Sham’s own perfumery expert: quick replies, in-depth analysis or an expert council',
     portal_library: 'Secure storage, cloud sync, and printable manufacturing specs',
     portal_guide: 'Cold maceration protocol, filtration, and longevity science',
     portal_maceration_simulator: 'Forecasting exact perfume maturation completion date with Master Shahin advice',
@@ -188,8 +191,9 @@ export const HomeHub: React.FC<HomeHubProps> = ({
     portal_privacy: 'Full encryption of formulas, instant export, and GDPR compliance',
   };
 
-  // ===== Full 10-language localization for the 13 portal cards =====
-  const ALL_NEWS_L10N: Record<string, NewsL10N> = { ...NEWS_L10N_A, ...NEWS_L10N_B };
+  // ===== Full 10-language base + extension language packs for the 13 portal cards & 52 news cards =====
+  const PORTAL_L10N = mergeHubL10n([PORTAL_L10N_BASE]) as unknown as Record<string, { title: LText; subtitle: LText; badge: LText }>;
+  const ALL_NEWS_L10N: Record<string, NewsL10N> = mergeHubL10n([NEWS_L10N_A, NEWS_L10N_B, NEWS_L10N_C]) as unknown as Record<string, NewsL10N>;
   const hubVars: Record<string, string | number> = {
     v: formulation.bottleVolumeMl,
     c: formulation.concentrationPercent,
@@ -207,6 +211,33 @@ export const HomeHub: React.FC<HomeHubProps> = ({
     tot: pyramidNotes.reduce((acc, curr) => acc + (curr.percentageOfOil || 0), 0),
     title: savedFormulas[0]?.title || (isRtl ? 'عطر شام' : 'Sham Perfume'),
     code: savedFormulas[0]?.batchCode || 'B01',
+    // environment-driven values for portal cards (part C)
+    rc: currentEnvironment.recommendedConcentrationPercent,
+    rf: currentEnvironment.recommendedFixativePercent,
+    climate: isRtl
+      ? currentEnvironment.climateLabelAr
+      : (currentEnvironment.climateLabelEn || currentEnvironment.climateLabelAr),
+    cursym: isRtl
+      ? currentEnvironment.currencySymbolAr
+      : (currentEnvironment.currencySymbolEn || currentEnvironment.currencySymbolAr),
+    countryfull: isRtl
+      ? currentEnvironment.countryNameAr
+      : (currentEnvironment.countryNameEn || currentEnvironment.countryNameAr),
+    lab: detailedAddress.labOrFacilityName || (isRtl ? 'معمل شام الحرفي' : 'Sham Artisan Lab'),
+    city: detailedAddress.city || (isRtl ? 'المدينة' : 'City'),
+    street: detailedAddress.street || (isRtl ? 'العنوان التفصيلي' : 'Detailed address'),
+    regstat: detailedAddress.city
+      ? loc(currentLang, { ar: 'مسجل ومعتمد', en: 'Registered & certified', fr: 'Enregistré et certifié', es: 'Registrado y certificado', it: 'Registrato e certificato', de: 'Registriert & zertifiziert', ru: 'Зарегистрировано и подтверждено', zh: '已登记认证', tr: 'Kayıtlı ve sertifikalı', fa: 'ثبت‌شده و تأییدشده' })
+      : loc(currentLang, { ar: 'غير مكتمل', en: 'Incomplete', fr: 'Incomplet', es: 'Incompleto', it: 'Incompleto', de: 'Unvollständig', ru: 'Не заполнено', zh: '未完成', tr: 'Eksik', fa: 'ناقص' }),
+    acctname: currentUser
+      ? loc(currentLang, { ar: `مسجل باسم: ${currentUser.name} (${currentUser.craftLevel})`, en: `Signed in as: ${currentUser.name} (${currentUser.craftLevel})`, fr: `Connecté : ${currentUser.name} (${currentUser.craftLevel})`, es: `Sesión iniciada: ${currentUser.name} (${currentUser.craftLevel})`, it: `Connesso come: ${currentUser.name} (${currentUser.craftLevel})`, de: `Angemeldet als: ${currentUser.name} (${currentUser.craftLevel})`, ru: `Вы вошли как: ${currentUser.name} (${currentUser.craftLevel})`, zh: `已登录：${currentUser.name}（${currentUser.craftLevel}）`, tr: `Giriş yapıldı: ${currentUser.name} (${currentUser.craftLevel})`, fa: `وارد شده به‌عنوان: ${currentUser.name} (${currentUser.craftLevel})` })
+      : loc(currentLang, { ar: 'جلسة ضيف محلية آمنة', en: 'Secure local guest session', fr: 'Session invitée locale sécurisée', es: 'Sesión de invitado local segura', it: 'Sessione ospite locale sicura', de: 'Sichere lokale Gast-Sitzung', ru: 'Безопасный локальный гостевой сеанс', zh: '安全的本地访客会话', tr: 'Güvenli yerel konuk oturumu', fa: 'جلسه مهمان محلی امن' }),
+    acctstat: currentUser
+      ? loc(currentLang, { ar: 'حساب نشط', en: 'Active account', fr: 'Compte actif', es: 'Cuenta activa', it: 'Account attivo', de: 'Aktives Konto', ru: 'Активный аккаунт', zh: '活跃账户', tr: 'Etkin hesap', fa: 'حساب فعال' })
+      : loc(currentLang, { ar: 'جلسة محلية', en: 'Local session', fr: 'Session locale', es: 'Sesión local', it: 'Sessione locale', de: 'Lokale Sitzung', ru: 'Локальный сеанс', zh: '本地会话', tr: 'Yerel oturum', fa: 'جلسه محلی' }),
+    acctact: currentUser
+      ? loc(currentLang, { ar: 'عرض تفاصيل الحساب', en: 'View account details', fr: 'Voir les détails du compte', es: 'Ver detalles de la cuenta', it: 'Vedi dettagli account', de: 'Kontodetails ansehen', ru: 'Данные аккаунта', zh: '查看账户详情', tr: 'Hesap detaylarını gör', fa: 'مشاهده جزئیات حساب' })
+      : loc(currentLang, { ar: 'تسجيل دخول أو إنشاء حساب', en: 'Sign in or create an account', fr: 'Se connecter ou créer un compte', es: 'Iniciar sesión o crear cuenta', it: 'Accedi o crea un account', de: 'Anmelden oder Konto erstellen', ru: 'Войти или создать аккаунт', zh: '登录或注册账户', tr: 'Giriş yap veya hesap oluştur', fa: 'ورود یا ایجاد حساب' }),
   };
   const localizePortalNews = (portalId: string, item?: PortalNewsItem): PortalNewsItem | undefined => {
     if (!item) return item;
@@ -218,8 +249,8 @@ export const HomeHub: React.FC<HomeHubProps> = ({
         title: fmt(loc(currentLang, l10n.title), hubVars),
         description: fmt(loc(currentLang, l10n.description), hubVars),
         metric: fmt(loc(currentLang, l10n.metric), hubVars),
-        timestamp: loc(currentLang, l10n.timestamp),
-        actionHint: loc(currentLang, l10n.actionHint),
+        timestamp: fmt(loc(currentLang, l10n.timestamp), hubVars),
+        actionHint: fmt(loc(currentLang, l10n.actionHint), hubVars),
       };
     }
     if (!isRtl && PORTAL_NEWS_EN[item.id]) return { ...item, ...PORTAL_NEWS_EN[item.id] };
@@ -627,22 +658,22 @@ export const HomeHub: React.FC<HomeHubProps> = ({
       id: 'portal_master_ai',
       targetTab: 'master_ai',
       category: 'ai_news',
-      titleAr: 'المعلم العطري الذكي (شاهين AI · Multi-AI Ensemble)',
-      titleEn: 'Master Perfumer AI (Shahin · Multi-AI Ensemble)',
-      subtitleAr: 'أتمتة دمج الذكاء الاصطناعي (Gemini + DeepSeek + ChatGPT + Claude) في معمل عطري متكامل',
+      titleAr: 'المعلم العطري الذكي (شاهين AI)',
+      titleEn: 'Master Perfumer AI (Shahin)',
+      subtitleAr: 'خبير عطور ذكي خاص بشام: رد سريع أو تحليل معمّق أو مجلس الخبراء',
       accentColor: 'from-amber-500 to-emerald-600 text-emerald-400 bg-emerald-500/10',
       borderGlow: 'hover:border-emerald-400/50 hover:shadow-emerald-900/10',
       icons: [Bot, Brain, Wand2, MessageSquare],
-      statsBadge: '⚡ مجلس خبراء الذكاء (4 نماذج)',
+      statsBadge: '⚡ خبير شام الذكي',
       news: [
         {
           id: 'ai1',
-          badge: '⚡ دمج مؤتمت (4 نماذج)',
-          title: 'استشارة متزامنة تجمع بين جيمناي وديب سيك وشات جي بي تي وكلود في إجابة موحدة',
-          description: 'اطلب من شاهين ابتكار تركيبة ليجمع لك دقة أوزان جيمناي، كيمياء ديب سيك، أكوردات ChatGPT، وفخامة تعتيق كلود.',
-          metric: 'Ensemble متزامن',
-          timestamp: 'مباشر الآن',
-          actionHint: 'بدء جلسة مع مجلس الخبراء',
+          badge: '⚡ المجلس الاستشاري',
+          title: 'مجلس الخبراء: عدة مستشارين يناقشون سؤالك ثم يلخّص شاهين رأياً واحداً',
+          description: 'يظهر «مجلس الخبراء» عندما يكون متاحاً؛ وفي كل الأحوال يجيبك شاهين تلقائياً أو برد سريع أو بتحليل معمّق. الأوضاع المتاحة الآن تظهر داخل نافذة شاهين.',
+          metric: 'حسب الأوضاع المتاحة',
+          timestamp: 'متاح الآن',
+          actionHint: 'ابدأ محادثة مع شاهين',
         },
         {
           id: 'ai2',
@@ -656,20 +687,20 @@ export const HomeHub: React.FC<HomeHubProps> = ({
         {
           id: 'ai3',
           badge: 'حفظ وتصدير السجل',
-          title: 'تنزيل أرشيف المحادثات الفنية كوثيقة رسمية موقعة باسم معملك',
+          title: 'تنزيل محادثاتك الفنية كملف نصي (TXT) للرجوع إليها',
           description: 'احفظ خلاصة جلساتك مع المعلم العطري لتكون مرجعاً دائماً لورشة عملك ومختبرك الشخصي.',
-          metric: 'تصدير نصي مشفر',
-          timestamp: 'توثيق صناعي',
+          metric: 'تصدير TXT',
+          timestamp: 'أرشيف شخصي',
           actionHint: 'محادثة الخبير الآن',
         },
         {
           id: 'ai4',
-          badge: 'قاعدة بيانات متجددة',
-          title: 'مواكب لأحدث أبحاث مدرسة جراس ومقاييس الأمان الكيميائي العالمية',
-          description: 'تمت تغذية الخبير بأمهات كتب العطارة القديمة وأحدث دوريات الجمعيات العطرية في أوروبا والشرق.',
-          metric: 'مكتبة جراس والشرق',
-          timestamp: 'تحديث مستمر',
-          actionHint: 'فتح مجلس الخبير شاهين',
+          badge: 'السلامة أولاً',
+          title: 'تعليمات متخصصة في تركيب العطور مع تنبيهات السلامة',
+          description: 'شاهين موجَّه بتعليمات خبير عطور: لا يختلق مصادر أو شهادات IFRA، ويذكّرك بالتحقق من حدود الاستخدام وشهادة المورد قبل التصنيع.',
+          metric: 'تحقّق من IFRA',
+          timestamp: 'إرشاد مسؤول',
+          actionHint: 'اسأل شاهين',
         },
       ],
     },

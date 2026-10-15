@@ -2,22 +2,16 @@ import { SupportedLanguage } from '../types/i18n';
 
 /**
  * A localized text value. `ar` and `en` are mandatory baselines;
- * every other language is optional and degrades gracefully:
+ * every other supported language is optional and degrades gracefully:
  *   - fa falls back to ar (RTL sibling)
- *   - any missing LTR language falls back to en
+ *   - any missing language falls back to en
+ * The optional part is derived from SupportedLanguage, so newly enabled
+ * languages are automatically accepted here without editing this type.
  */
 export type LText = {
   ar: string;
   en: string;
-  fr?: string;
-  es?: string;
-  it?: string;
-  de?: string;
-  ru?: string;
-  zh?: string;
-  tr?: string;
-  fa?: string;
-};
+} & Partial<Record<SupportedLanguage, string>>;
 
 /** Map each supported platform language to its canonical BCP-47 locale. */
 export const LOCALE_MAP: Record<SupportedLanguage, string> = {
@@ -31,6 +25,101 @@ export const LOCALE_MAP: Record<SupportedLanguage, string> = {
   zh: 'zh-CN',
   tr: 'tr-TR',
   fa: 'fa-IR',
+  // Extended languages — batch 1 (LTR)
+  hi: 'hi-IN',
+  pt: 'pt-BR',
+  id: 'id-ID',
+  ja: 'ja-JP',
+  ko: 'ko-KR',
+  vi: 'vi-VN',
+  th: 'th-TH',
+  pl: 'pl-PL',
+  nl: 'nl-NL',
+  uk: 'uk-UA',
+  el: 'el-GR',
+  ms: 'ms-MY',
+  bn: 'bn-BD',
+  cs: 'cs-CZ',
+  ro: 'ro-RO',
+  // Extended languages — batch 2 (RTL)
+  he: 'he-IL',
+  ur: 'ur-PK',
+  ps: 'ps-AF',
+  // Extended languages — batch 3 (LTR)
+  sv: 'sv-SE',
+  da: 'da-DK',
+  fi: 'fi-FI',
+  no: 'nb-NO',
+  hu: 'hu-HU',
+  sk: 'sk-SK',
+  sl: 'sl-SI',
+  hr: 'hr-HR',
+  sr: 'sr-Latn-RS',
+  bg: 'bg-BG',
+  lt: 'lt-LT',
+  lv: 'lv-LV',
+  et: 'et-EE',
+  ka: 'ka-GE',
+  hy: 'hy-AM',
+  // Extended languages — batch 4 (Africa, SE Asia, Oceania)
+  tl: 'tl-PH',
+  sw: 'sw-KE',
+  am: 'am-ET',
+  ha: 'ha-NG',
+  yo: 'yo-NG',
+  zu: 'zu-ZA',
+  af: 'af-ZA',
+  so: 'so-SO',
+  jv: 'jv-ID',
+  mi: 'mi-NZ',
+  ne: 'ne-NP',
+  si: 'si-LK',
+  my: 'my-MM',
+  km: 'km-KH',
+  lo: 'lo-LA',
+  // Extended languages — batch 5 (Indian subcontinent, Central Asia)
+  ta: 'ta-IN',
+  te: 'te-IN',
+  mr: 'mr-IN',
+  gu: 'gu-IN',
+  pa: 'pa-IN',
+  kn: 'kn-IN',
+  ml: 'ml-IN',
+  or: 'or-IN',
+  kk: 'kk-KZ',
+  uz: 'uz-UZ',
+  az: 'az-AZ',
+  mn: 'mn-MN',
+  ky: 'ky-KG',
+  tg: 'tg-TJ',
+  tk: 'tk-TM',
+  is: 'is-IS',
+  sq: 'sq-AL',
+  mk: 'mk-MK',
+  bs: 'bs-BA',
+  be: 'be-BY',
+  ca: 'ca-ES',
+  eu: 'eu-ES',
+  gl: 'gl-ES',
+  mt: 'mt-MT',
+  ga: 'ga-IE',
+  cy: 'cy-GB',
+  lb: 'lb-LU',
+  gd: 'gd-GB',
+  co: 'it-IT', // Corsican has no CLDR date data; fall back to Italian (closest relative)
+  sd: 'sd-PK',
+  as: 'as-IN',
+  oc: 'oc-FR',
+  bo: 'bo-CN',
+  dz: 'dz-BT',
+  mg: 'mg-MG',
+  sn: 'sn-ZW',
+  rw: 'rw-RW',
+  st: 'st-ZA',
+  ln: 'ln-CD',
+  ti: 'ti-ER',
+  om: 'om-ET',
+  ig: 'ig-NG',
 };
 
 /**

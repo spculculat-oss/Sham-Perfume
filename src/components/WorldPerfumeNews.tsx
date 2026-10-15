@@ -21,16 +21,20 @@ import {
   Radio,
   Image as ImageIcon,
   CheckCircle2,
+  AlertCircle,
   User,
   Zap,
 } from 'lucide-react';
 import { PERFUME_NEWS_DATA, PerfumeNewsItem } from '../data/perfumeNews';
-import { NEWS_EDITORIAL_IMAGES, getEditorialImageForCategory } from '../data/newsImages';
+import { NEWS_IMAGE_LIST, getEditorialImageForCategory } from '../data/newsImages';
 import { PyramidNote } from '../types/perfume';
 import { ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
 import { SupportedLanguage } from '../types/i18n';
 import { getLocalizedNewsArticle, isRTL } from '../utils/localizedContent';
-import { LText, makeT, fmt, LOCALE_MAP } from '../utils/localize';
+import { LText, makeT, fmt, loc, LOCALE_MAP } from '../utils/localize';
+import { ApiError, isStaticHosting, requestApi } from '../utils/api';
+import { isNewsArticle, mergeNewsArticles, restoreNewsCache, resolveNewsImage } from '../utils/newsCache';
+import { StaticHostingNotice, API_ERROR_NOTICE } from './StaticHostingNotice';
 import masterShaheenImg from '../assets/images/master_perfumer_compounding_1791693212967.jpg';
 
 interface WorldPerfumeNewsProps {
@@ -71,6 +75,8 @@ const S = {
   shahin_name: { ar: 'الخبير شاهين', en: 'Master Shahin', fr: 'Maître Shahin', es: 'Maestro Shahin', it: 'Maestro Shahin', de: 'Meister Shahin', ru: 'Мастер Шахин', zh: 'Shahin 大师', tr: 'Usta Shahin', fa: 'استاد شاهین' },
   shahin_role: { ar: 'شيخ العطارين ورئيس التحرير', en: 'Dean of Perfumers & Editor-in-Chief', fr: 'Doyen des parfumeurs et rédacteur en chef', es: 'Decano de perfumistas y editor jefe', it: 'Decano dei profumieri e direttore', de: 'Doyen der Parfumeure & Chefredakteur', ru: 'Шейх парфюмеров и главред', zh: '调香师泰斗 · 总编辑', tr: 'Attarların şeyhi ve yayın yönetmeni', fa: 'شیخ عطرسازان و سردبیر' },
   loading_news: { ar: 'الخبير شاهين يجلب أخبار اليوم...', en: 'Master Shahin is fetching today’s news...', fr: 'Le Maître Shahin récupère les news…', es: 'El Maestro Shahin está trayendo las noticias...', it: 'Il Maestro Shahin sta scaricando le notizie…', de: 'Meister Shahin holt die heutigen News…', ru: 'Мастер Шахин загружает новости…', zh: 'Shahin 大师正在获取今日新闻……', tr: 'Usta Shahin günün haberlerini getiriyor…', fa: 'استاد شاهین اخبار امروز را می‌آورد...' },
+  ai_disclaimer: { ar: 'تنبيه: التقارير المحدَّثة يوميًا مقالات تحريرية يكتبها الذكاء الاصطناعي للتثقيف، وليست أخبارًا موثقة. تحقق من أي رقم أو حدث من مصدره الرسمي.', en: 'Note: daily-refreshed reports are AI-written editorial pieces for learning, not verified news. Check any figure or event with its official source.' },
+  refresh_limited: { ar: 'وصلت للحد المسموح من التحديثات اليدوية. النشرة تتحدث تلقائياً كل يوم — جرّب لاحقاً.', en: 'Manual refresh limit reached. The bulletin updates daily on its own — try later.' },
   refresh_btn: { ar: 'تحديث النشرة اليومية بالذكاء الاصطناعي', en: 'Refresh Daily Bulletin with AI', fr: 'Actualiser le bulletin avec l’IA', es: 'Actualizar boletín con IA', it: 'Aggiorna bollettino con IA', de: 'Bulletin mit KI aktualisieren', ru: 'Обновить бюллетень с ИИ', zh: '用 AI 刷新每日快报', tr: 'Bülteni YZ ile yenile', fa: 'به‌روزرسانی نشریه با هوش مصنوعی' },
   reports_count_tpl: { ar: '{n} تقرير مصور', en: '{n} photo reports', fr: '{n} rapports photo', es: '{n} informes foto', it: '{n} report foto', de: '{n} Fotoreports', ru: '{n} фотоотчётов', zh: '{n} 篇图文报道', tr: '{n} foto rapor', fa: '{n} گزارش مصور' },
   refresh_done: { ar: 'تحديث اليوم مكتمل ✓', en: 'Today’s refresh complete ✓', fr: 'Actualisation du jour terminée ✓', es: 'Actualización de hoy completa ✓', it: 'Aggiornamento di oggi completato ✓', de: 'Heutige Aktualisierung fertig ✓', ru: 'Обновление завершено ✓', zh: '今日更新完成 ✓', tr: 'Bugünün güncellemesi tamam ✓', fa: 'به‌روزرسانی امروز کامل شد ✓' },
@@ -112,13 +118,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
   // Initialize news list from localStorage or fallback
   const [newsList, setNewsList] = useState<PerfumeNewsItem[]>(() => {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY_NEWS);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed;
-        }
-      }
+      return restoreNewsCache(localStorage.getItem(STORAGE_KEY_NEWS), PERFUME_NEWS_DATA);
     } catch {}
     return PERFUME_NEWS_DATA;
   });
@@ -134,9 +134,13 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [refreshStep, setRefreshStep] = useState(0);
   const [lastRefreshedDate, setLastRefreshedDate] = useState<string>(() => {
-    return localStorage.getItem(STORAGE_KEY_LAST_REFRESH) || '';
+    try {
+      return localStorage.getItem(STORAGE_KEY_LAST_REFRESH) || '';
+    } catch {
+      return '';
+    }
   });
-  const [refreshToast, setRefreshToast] = useState<{ message: string; count: number } | null>(null);
+  const [refreshToast, setRefreshToast] = useState<{ message: string; count: number; error?: boolean } | null>(null);
 
   const REFRESH_PHRASES = [L('load_1'), L('load_2'), L('load_3'), L('load_4')];
 
@@ -180,109 +184,67 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // Fetch or Auto-refresh on mount
+  // Pages has no /api routes; retain the bundled/cached feed without failing requests.
   useEffect(() => {
-    const fetchLatestOrRefresh = async () => {
+    if (isStaticHosting) return;
+    let cancelled = false;
+
+    const fetchLatest = async () => {
       try {
-        const todayStr = new Date().toISOString().split('T')[0];
-        const res = await fetch('/api/news');
-        if (res.ok) {
-          const data = await res.json();
-          if (data.success && Array.isArray(data.articles) && data.articles.length > 0) {
-            mergeArticles(data.articles);
-            setLastRefreshedDate(todayStr);
-            localStorage.setItem(STORAGE_KEY_LAST_REFRESH, todayStr);
+        const data = await requestApi<{ success: boolean; articles: unknown }>('/api/news');
+        if (!cancelled && data.success && Array.isArray(data.articles)) {
+          const articles = data.articles.filter(isNewsArticle);
+          if (articles.length > 0) {
+            mergeArticles(articles);
+            markRefreshed();
           }
         }
       } catch (err) {
-        console.warn('Silent news fetch failed, relying on cached data:', err);
+        console.warn('News fetch failed; keeping the existing articles:', err);
       }
     };
 
-    fetchLatestOrRefresh();
+    fetchLatest();
+    return () => { cancelled = true; };
   }, []);
 
-  // Helper to merge newly fetched articles without duplicates
+  const markRefreshed = () => {
+    const todayStr = new Date().toISOString().split('T')[0];
+    setLastRefreshedDate(todayStr);
+    try { localStorage.setItem(STORAGE_KEY_LAST_REFRESH, todayStr); } catch {}
+  };
+
   const mergeArticles = (newArticles: PerfumeNewsItem[]) => {
     setNewsList((prev) => {
-      const existingIds = new Set(newArticles.map((a) => a.id));
-      const filteredPrev = prev.filter((p) => !existingIds.has(p.id));
-      const combined = [...newArticles, ...filteredPrev];
-      try {
-        localStorage.setItem(STORAGE_KEY_NEWS, JSON.stringify(combined));
-      } catch {}
+      const combined = mergeNewsArticles(prev, newArticles);
+      try { localStorage.setItem(STORAGE_KEY_NEWS, JSON.stringify(combined)); } catch {}
       return combined;
     });
   };
 
-  // Daily AI Refresh Trigger
   const handlePerformDailyRefresh = async () => {
-    if (isRefreshing) return;
+    if (isRefreshing || isStaticHosting) return;
     setIsRefreshing(true);
     setRefreshToast(null);
 
     try {
-      const res = await fetch('/api/news/refresh', {
+      const data = await requestApi<{ success: boolean; articles: unknown; message?: string }>('/api/news/refresh', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
       });
-
-      const todayStr = new Date().toISOString().split('T')[0];
-
-      if (res.ok) {
-        const data = await res.json();
-        if (data.articles && data.articles.length > 0) {
-          mergeArticles(data.articles);
-          setLastRefreshedDate(todayStr);
-          localStorage.setItem(STORAGE_KEY_LAST_REFRESH, todayStr);
-          setRefreshToast({
-            message: data.message || L('refresh_ok'),
-            count: data.count || data.articles.length,
-          });
-          setTimeout(() => setRefreshToast(null), 6000);
-          return;
-        }
+      if (!data.success || !Array.isArray(data.articles)) {
+        throw new Error('Refresh response is invalid');
       }
-      throw new Error('Refresh response empty');
+      const articles = data.articles.filter(isNewsArticle);
+      if (articles.length === 0) throw new Error('Refresh response is empty');
+
+      mergeArticles(articles);
+      markRefreshed();
+      setRefreshToast({ message: data.message || L('refresh_ok'), count: articles.length });
+      setTimeout(() => setRefreshToast(null), 6000);
     } catch (err) {
-      console.warn('AI Refresh error, using local lab bulletin:', err);
-      // Fallback local update
-      const todayLocalized = new Date().toLocaleDateString(LOCALE_MAP[currentLang], { day: 'numeric', month: 'long', year: 'numeric' });
-      const localRefresh: PerfumeNewsItem[] = [
-        {
-          id: `shaheen-local-refresh-${Date.now()}`,
-          badge: '⚡ رصد الخبير شاهين اليومي',
-          titleAr: 'طفرة العطور الخضراء والمثبتات الطبيعية المستدامة في معارض ميلانو وباريس',
-          titleEn: 'Green Chemistry and Bio-Fixatives Revolution in Milan & Paris',
-          category: 'niche',
-          categoryLabelAr: 'ابتكارات النيش',
-          isHot: true,
-          isDailyRefreshed: true,
-          summaryAr: 'أعلنت كبرى دور العطور الحرفية اليوم عن بدء اعتماد المثبتات الحيوية المستخلصة من قشور الحمضيات ولحاء الصنوبر، والتي تضمن ثباتاً يتجاوز 36 ساعة دون التأثير على رائحة العطر.',
-          contentAr: `رصد معمل «صمم عطرك مع شام» بقيادة الخبير شاهين اليوم تسارع وتيرة التحول العالمي نحو "الكيمياء العطرية الخضراء".
-أثبتت التحاليل المخبرية أن الجيل الجديد من المثبتات الحيوية يقلل سرعة تطاير النوتات الحمضية بنسبة 45% دون أي تعكر أو اصفرار في السائل العطري.
-ننصح العطارين الحرفيين بتجربة إضافة 1% إلى 1.5% من هذه المستخلصات الطبيعية لضمان إشعاع عطري نقي مطابق لأعلى معايير IFRA 51.`,
-          date: fmt(L('today_tpl'), { d: todayLocalized }),
-          readTime: L('read_time_default'),
-          source: 'مختبر الخبير شاهين · باريس وجراس',
-          imageUrl: NEWS_EDITORIAL_IMAGES.nicheLaunch,
-          tags: ['كيمياء خضراء', 'مثبتات حيوية', 'عطور النيش', 'معايير IFRA'],
-          keyNotes: [
-            { nameAr: 'برغموت كالابريا الصافي', nameEn: 'Calabrian Bergamot', type: 'top', percentageHint: 30 },
-            { nameAr: 'شاي أولونغ مدخن ونيرولي', nameEn: 'Smoked Oolong & Neroli', type: 'heart', percentageHint: 35 },
-            { nameAr: 'مثبت حيوي وأرز أطلسي', nameEn: 'Bio-Polymer & Cedar', type: 'base', percentageHint: 35 },
-          ],
-          marketImpact: 'تحول أكثر من 40 دار نيش أوروبية لاستخدام مثبتات الكيمياء الخضراء.',
-          expertVerdict: '«المثبت الذكي هو الذي يحفظ النوتات دون أن يكتم تنفسها الطبيعي» - الخبير شاهين.',
-          author: 'الخبير شاهين (شيخ العطارين)',
-        },
-      ];
-      mergeArticles(localRefresh);
-      setRefreshToast({
-        message: L('refresh_local_ok'),
-        count: 1,
-      });
-      setTimeout(() => setRefreshToast(null), 5000);
+      console.warn('News refresh failed; no articles were changed:', err);
+      setRefreshToast({ message: err instanceof ApiError && err.status === 429 ? L('refresh_limited') : loc(currentLang, API_ERROR_NOTICE), count: 0, error: true });
     } finally {
       setIsRefreshing(false);
     }
@@ -311,7 +273,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
 
   const handleCopySummary = (item: PerfumeNewsItem) => {
     const loc = getLocalizedNewsArticle(item, currentLang);
-    const text = `📰 [${L('newsletter_name')}]\n${loc.titleAr}\n📅 ${item.date} | 🏛️ ${L('source_lbl')} ${item.source}\n\n${item.summaryAr}\n\n${L('verdict_lbl2')} ${item.expertVerdict || ''}`;
+    const text = `📰 [${L('newsletter_name')}]\n${loc.titleAr}\n📅 ${loc.date} | 🏛️ ${L('source_lbl')} ${loc.source}\n\n${loc.summaryAr}\n\n${L('verdict_lbl2')} ${loc.expertVerdict || ''}`;
     navigator.clipboard.writeText(text);
     setCopiedId(item.id);
     setTimeout(() => setCopiedId(null), 2500);
@@ -358,13 +320,9 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
   const rawFeatured = newsList.find((n) => n.isDailyRefreshed && n.isHot) || newsList.find((n) => n.isHot) || newsList[0];
   const featuredHotNews = rawFeatured ? getLocalizedNewsArticle(rawFeatured, currentLang) : null;
 
-  // Resolve image helper with safe fallback
-  const resolveArticleImage = (item: PerfumeNewsItem, index: number) => {
-    if (item.imageUrl && (item.imageUrl.startsWith('http') || item.imageUrl.startsWith('data:') || item.imageUrl.startsWith('/'))) {
-      return item.imageUrl;
-    }
-    return getEditorialImageForCategory(item.category, index);
-  };
+  // Use current build assets, not stale /src paths or old hashes from localStorage.
+  const resolveArticleImage = (item: PerfumeNewsItem, index: number) =>
+    resolveNewsImage(item.imageUrl, NEWS_IMAGE_LIST, getEditorialImageForCategory(item.category, index));
 
   const todayDisplay = new Date().toLocaleDateString(LOCALE_MAP[currentLang], {
     day: 'numeric',
@@ -374,6 +332,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
 
   return (
     <div className="space-y-10">
+      <StaticHostingNotice currentLang={currentLang} />
       
       {/* 1. MASTER SHAHEEN DAILY EDITORIAL BULLETIN HEADER */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-stone-950 via-stone-900 to-amber-950 text-white p-6 sm:p-10 border border-amber-900/50 shadow-2xl">
@@ -401,6 +360,9 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
 
             <p className="text-stone-300 text-xs sm:text-sm leading-relaxed max-w-2xl">
               {L('observatory_desc')}
+            </p>
+            <p className="text-[11px] text-amber-200/80 leading-relaxed max-w-2xl border-s-2 border-amber-500/50 ps-2">
+              {L('ai_disclaimer')}
             </p>
 
             {/* Live Ticker */}
@@ -434,8 +396,8 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
 
             <button
               onClick={handlePerformDailyRefresh}
-              disabled={isRefreshing}
-              className={`w-full py-3 px-5 rounded-xl font-bold text-xs flex items-center justify-center gap-2.5 shadow-lg transition-all cursor-pointer ${
+              disabled={isRefreshing || isStaticHosting}
+              className={`w-full py-3 px-5 rounded-xl font-bold text-xs flex items-center justify-center gap-2.5 shadow-lg transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
                 isRefreshing
                   ? 'bg-amber-700/60 text-stone-200 cursor-wait'
                   : 'bg-gradient-to-r from-amber-600 via-amber-700 to-amber-800 hover:from-amber-500 hover:to-amber-700 text-white shadow-amber-900/40 hover:scale-[1.02] active:scale-[0.98]'
@@ -481,14 +443,16 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
 
         {/* Refresh Toast Notice */}
         {refreshToast && (
-          <div className="mt-6 p-4 rounded-2xl bg-emerald-950/80 border border-emerald-500/50 backdrop-blur-md animate-in fade-in flex items-center justify-between gap-3 text-emerald-200 text-xs">
+          <div role={refreshToast.error ? 'alert' : 'status'} className={`mt-6 p-4 rounded-2xl border backdrop-blur-md flex items-center justify-between gap-3 text-xs ${refreshToast.error ? 'bg-amber-950/80 border-amber-500/50 text-amber-200' : 'bg-emerald-950/80 border-emerald-500/50 text-emerald-200'}`}>
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+              {refreshToast.error ? <AlertCircle className="w-5 h-5 shrink-0" /> : <CheckCircle2 className="w-5 h-5 shrink-0" />}
               <span className="font-semibold">{refreshToast.message}</span>
             </div>
-            <span className="px-2.5 py-1 rounded-full bg-emerald-900/60 text-emerald-300 text-[11px] font-bold">
-              +{refreshToast.count} {L('reports_word')}
-            </span>
+            {!refreshToast.error && (
+              <span className="px-2.5 py-1 rounded-full bg-emerald-900/60 text-emerald-300 text-[11px] font-bold">
+                +{refreshToast.count} {L('reports_word')}
+              </span>
+            )}
           </div>
         )}
       </div>

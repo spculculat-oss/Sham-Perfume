@@ -1,14 +1,25 @@
-import { SupportedLanguage } from '../types/i18n';
+import { SupportedLanguage, SUPPORTED_LANGUAGES } from '../types/i18n';
 import { WORLD_PERFUMES, WorldPerfumeRecipe } from '../data/worldPerfumes';
 import { RAW_MATERIALS_DATABASE, RawMaterialItem } from '../data/rawMaterials';
 import { PERFUME_NEWS_DATA, PerfumeNewsItem, NEWS_EN_FALLBACK } from '../data/perfumeNews';
+import { fmt, localeDate } from './localize';
+import { COMMON_LABELS_EXT } from './commonLabelsExt';
 
-export const isRTL = (lang: SupportedLanguage): boolean => lang === 'ar' || lang === 'fa';
+/**
+ * Direction of a language, derived from the single source of truth
+ * (SUPPORTED_LANGUAGES dir field) so every newly enabled RTL language
+ * (he, ur, ps, ...) is picked up automatically.
+ */
+export const isRTL = (lang: SupportedLanguage): boolean =>
+  SUPPORTED_LANGUAGES.find((l) => l.code === lang)?.dir === 'rtl';
 
 // ==========================================
 // 1. COMMON UI STRINGS DICTIONARY
 // ==========================================
-export const COMMON_LABELS: Record<SupportedLanguage, Record<string, string>> = {
+export const COMMON_LABELS_BASE: Record<
+  'ar' | 'en' | 'fr' | 'es' | 'it' | 'de' | 'ru' | 'zh' | 'tr' | 'fa',
+  Record<string, string>
+> = {
   ar: {
     search: 'بحث...',
     all: 'الكل',
@@ -351,6 +362,11 @@ export const COMMON_LABELS: Record<SupportedLanguage, Record<string, string>> = 
   },
 };
 
+export const COMMON_LABELS: Record<SupportedLanguage, Record<string, string>> = {
+  ...COMMON_LABELS_BASE,
+  ...COMMON_LABELS_EXT,
+};
+
 export const getCommonLabel = (key: string, lang: SupportedLanguage): string => {
   return COMMON_LABELS[lang]?.[key] || COMMON_LABELS.en?.[key] || COMMON_LABELS.ar?.[key] || key;
 };
@@ -554,6 +570,115 @@ export const getLocalizedRawMaterial = (item: RawMaterialItem, lang: SupportedLa
 // ==========================================
 // 4. WORLD PERFUME NEWS LOCALIZATION
 // ==========================================
+/** Localized "{n} minutes" pattern per language for article read times. */
+const READ_TIME_TPL: Record<SupportedLanguage, string> = {
+  ar: '{n} دقائق',
+  en: '{n} min',
+  fr: '{n} min',
+  es: '{n} min',
+  it: '{n} min',
+  de: '{n} Min.',
+  ru: '{n} мин',
+  zh: '{n} 分钟',
+  tr: '{n} dk',
+  fa: '{n} دقیقه',
+  // Extended languages — batch 1 (LTR)
+  hi: '{n} मिनट',
+  pt: '{n} min',
+  id: '{n} menit',
+  ja: '{n}分',
+  ko: '{n}분',
+  vi: '{n} phút',
+  th: '{n} นาที',
+  pl: '{n} min',
+  nl: '{n} min',
+  uk: '{n} хв',
+  el: '{n} λεπτά',
+  ms: '{n} minit',
+  bn: '{n} মিনিট',
+  cs: '{n} min',
+  ro: '{n} min',
+  // Extended languages — batch 2 (RTL)
+  he: '{n} דק׳',
+  ur: '{n} منٹ',
+  ps: '{n} دقیقې',
+  // Extended languages — batch 3 (LTR)
+  sv: '{n} min',
+  da: '{n} min',
+  fi: '{n} min',
+  no: '{n} min',
+  hu: '{n} perc',
+  sk: '{n} min',
+  sl: '{n} min',
+  hr: '{n} min',
+  sr: '{n} min',
+  bg: '{n} мин',
+  lt: '{n} min',
+  lv: '{n} min',
+  et: '{n} min',
+  ka: '{n} წუთი',
+  hy: '{n} րոպե',
+  // Extended languages — batch 4 (Africa, SE Asia, Oceania)
+  tl: '{n} minuto',
+  sw: 'dakika {n}',
+  am: '{n} ደቂቃ',
+  ha: 'minti {n}',
+  yo: 'iṣẹju {n}',
+  zu: 'amaminithi {n}',
+  af: '{n} min',
+  so: 'daqiiqo {n}',
+  jv: '{n} menit',
+  mi: '{n} meneti',
+  ne: '{n} मिनेट',
+  si: 'මිනිත්තු {n}',
+  my: '{n} မိနစ်',
+  km: '{n} នាទី',
+  lo: '{n} ນາທີ',
+  // Extended languages — batch 5 (Indian subcontinent, Central Asia)
+  ta: '{n} நிமிடம்',
+  te: '{n} నిమిషాలు',
+  mr: '{n} मिनिटे',
+  gu: '{n} મિનિટ',
+  pa: '{n} ਮਿੰਟ',
+  kn: '{n} ನಿಮಿಷಗಳು',
+  ml: '{n} മിനിറ്റ്',
+  or: '{n} ମିନିଟ୍',
+  kk: '{n} мин',
+  uz: '{n} daqiqa',
+  az: '{n} dəqiqə',
+  mn: '{n} мин',
+  ky: '{n} мүнөт',
+  tg: '{n} дақиқа',
+  tk: '{n} minut',
+  is: '{n} mínútur',
+  sq: '{n} minuta',
+  mk: '{n} минути',
+  bs: '{n} minuta',
+  be: '{n} хвілін',
+  ca: '{n} minuts',
+  eu: '{n} minutu',
+  gl: '{n} minutos',
+  mt: '{n} minuta',
+  ga: '{n} nóiméad',
+  cy: '{n} munud',
+  lb: '{n} Minutten',
+  gd: '{n} mionaidean',
+  co: '{n} minuti',
+  sd: '{n} منٽ',
+  as: '{n} মিনিট',
+  oc: '{n} minutas',
+  bo: '{n} སྐར་མ',
+  dz: '{n} སྐར་མ',
+  mg: '{n} minitra',
+  sn: '{n} miniti',
+  rw: '{n} iminota',
+  st: '{n} metsotso',
+  ln: '{n} miniti',
+  ti: '{n} ደቂቃ',
+  om: '{n} daqiiqaa',
+  ig: '{n} nkeji',
+};
+
 export const getLocalizedNewsArticle = (article: PerfumeNewsItem, lang: SupportedLanguage) => {
   if (lang === 'ar') return article;
 
@@ -571,6 +696,9 @@ export const getLocalizedNewsArticle = (article: PerfumeNewsItem, lang: Supporte
     contentEn?: string;
     verdictEn?: string;
     impactEn?: string;
+    dateIso?: string;
+    readTimeMinutes?: number;
+    sourceEn?: string;
   };
 
   return {
@@ -581,5 +709,12 @@ export const getLocalizedNewsArticle = (article: PerfumeNewsItem, lang: Supporte
     contentAr: ext.contentEn || en?.content || article.contentAr,
     expertVerdict: ext.verdictEn || en?.verdict || article.expertVerdict,
     marketImpact: ext.impactEn || en?.impact || article.marketImpact,
+    date: ext.dateIso
+      ? localeDate(lang, new Date(`${ext.dateIso}T00:00:00`), { day: 'numeric', month: 'long', year: 'numeric' })
+      : article.date,
+    readTime: typeof ext.readTimeMinutes === 'number'
+      ? fmt(READ_TIME_TPL[lang], { n: ext.readTimeMinutes })
+      : article.readTime,
+    source: ext.sourceEn || article.source,
   };
 };

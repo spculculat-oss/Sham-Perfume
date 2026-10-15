@@ -1,0 +1,94 @@
+name: Build, test and deploy Pages
+
+on:
+  push:
+    branches: [main, 'arena/**']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  build:
+    name: Check and build React
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PAGES_BASE_PATH: ${{ vars.PAGES_BASE_PATH || format('/{0}/', github.event.repository.name) }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install locked dependencies
+        run: bun install --frozen-lockfile
+      - name: Type check
+        run: bun run lint
+      - name: Regression tests
+        run: bun run test
+      - name: Build full-stack Vercel artifact
+        run: bun run build:vercel
+      - name: Test isolated Vercel function and routes
+        run: bun run test:vercel
+      - name: Verify Tencent EdgeOne build (Cloud Function + persistent state)
+        run: bun run check:edgeone
+      - name: Build current source for Pages
+        # GitHub Pages is static: the chatbots call the deployed Vercel API cross-origin.
+        # Override with the PAGES_API_BASE_URL repository variable ("none" = no server features).
+        env:
+          VITE_API_BASE_URL: ${{ vars.PAGES_API_BASE_URL || 'https://sham-perfume-49bf.vercel.app' }}
+        run: bun run build:pages
+      - name: Verify published paths and fallback
+        env:
+          # Same value as the build step, so the check confirms the bundle really calls this backend.
+          VITE_API_BASE_URL: ${{ vars.PAGES_API_BASE_URL || 'https://sham-perfume-49bf.vercel.app' }}
+        run: bun run check:pages
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: docs
+
+  deploy:
+    name: Deploy to GitHub Pages
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Verify Pages publishing source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          build_type=$(gh api "repos/$GITHUB_REPOSITORY/pages" --jq '.build_type')
+          if [[ "$build_type" != "workflow" ]]; then
+            echo "::error::Set Settings > Pages > Build and deployment > Source to GitHub Actions, then rerun this workflow. See README.md."
+            exit 1
+          fi
+      - name: Configure Pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+      - name: Deploy checked artifact
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
