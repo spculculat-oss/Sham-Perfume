@@ -1,0 +1,31 @@
+name: Live Shaheen check
+
+# Asks the deployed site real visitor questions (the dev sandbox cannot reach it) and checks that
+# answers arrive and no AI vendor name leaks. Results: job summary + annotations.
+on:
+  workflow_dispatch:
+    inputs:
+      site_url:
+        description: Site to test
+        default: https://sham-perfume-49bf.vercel.app
+  push:
+    branches: ['arena/**']
+    paths: ['scripts/live-smoke.mjs', '.github/workflows/live-smoke.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  ask:
+    name: Ask Shaheen
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Ask live questions
+        env:
+          SITE_URL: ${{ inputs.site_url || 'https://sham-perfume-49bf.vercel.app' }}
+        run: node scripts/live-smoke.mjs

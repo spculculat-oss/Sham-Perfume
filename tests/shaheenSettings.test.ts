@@ -5,7 +5,7 @@ import express from 'express';
 import { SHAHEEN_SITE_SETTINGS, normalizeShaheen, ShaheenConfigError } from '../server/config/shaheen';
 import { Repository, ValidationError } from '../server/core/repository';
 import { MemoryStore } from '../server/core/store';
-import { callEngine, classifyEngineFailure, geminiThinking, pickGeminiModel, GEMINI_DEFAULT_MODEL } from '../server/core/engines';
+import { callEngine, classifyEngineFailure, failureDetail, geminiQuotaFallbacks, geminiThinking, pickGeminiModel, GEMINI_DEFAULT_MODEL } from '../server/core/engines';
 import { createShaheenRouter, executeChat, getChatModels, probeEngines, systemInstruction } from '../server/shaheen';
 import { compactTurn, chatHistory } from '../src/utils/chatStore';
 import { isChatMessage, type ChatMessage } from '../src/utils/chatStorage';
@@ -239,4 +239,50 @@ test('Gemini: a retired model is replaced automatically and remembered', async (
   calls.length = 0;
   assert.equal(await callEngine('gemini', 'sys', [{ role: 'user', text: 'hi' }], opts), 'أهلاً');
   assert.deepEqual(calls, ['models/gemini-3.5-flash:generateContent']);
+});
+
+const QUOTA_429 = { error: { code: 429, status: 'RESOURCE_EXHAUSTED',
+  message: 'You exceeded your current quota, please check your plan and billing details. key=AIzaSyFAKEFAKEFAKEFAKE',
+  details: [
+    { '@type': 'type.googleapis.com/google.rpc.QuotaFailure', violations: [{ quotaMetric: 'generativelanguage.googleapis.com/generate_content_free_tier_requests', quotaId: 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', quotaValue: '20' }] },
+    { '@type': 'type.googleapis.com/google.rpc.RetryInfo', retryDelay: '41s' },
+  ] } };
+
+test('Gemini: quota fallbacks try Lite first and never the model that failed', () => {
+  const m = (name: string) => ({ name: `models/${name}`, supportedGenerationMethods: ['generateContent'] });
+  assert.deepEqual(geminiQuotaFallbacks([m('gemini-flash-latest'), m('gemini-3.5-flash'), m('gemini-flash-lite-latest'), m('gemini-3.1-flash-lite'), m('gemini-3-flash-preview')], 'gemini-flash-latest'),
+    ['gemini-flash-lite-latest', 'gemini-3.1-flash-lite', 'gemini-3.5-flash']);
+});
+
+test('Gemini: an exhausted model quota switches to another model for an hour, and reports the reason', async () => {
+  const calls: string[] = [];
+  const fetch = (async (url: string) => {
+    calls.push(String(url).replace('https://generativelanguage.googleapis.com/v1beta/', ''));
+    if (String(url).includes('/models?')) {
+      return json({ models: ['gemini-flash-latest', 'gemini-3.5-flash', 'gemini-flash-lite-latest'].map((n) => ({ name: `models/${n}`, supportedGenerationMethods: ['generateContent'] })) });
+    }
+    if (String(url).includes('gemini-flash-latest:')) return json(QUOTA_429, 429);
+    return json({ candidates: [{ content: { parts: [{ text: 'تمام' }] } }] });
+  }) as typeof globalThis.fetch;
+  let used = '';
+  const opts = { env: { GEMINI_API_KEY: 'quota-key' }, fetch, signal: AbortSignal.timeout(5000), temperature: 0.5, onModel: (m: string) => { used = m; } };
+  assert.equal(await callEngine('gemini', 'sys', [{ role: 'user', text: 'hi' }], opts), 'تمام');
+  assert.deepEqual(calls, ['models/gemini-flash-latest:generateContent', 'models?pageSize=1000', 'models/gemini-flash-lite-latest:generateContent']);
+  assert.equal(used, 'gemini-flash-lite-latest');
+  calls.length = 0;
+  assert.equal(await callEngine('gemini', 'sys', [{ role: 'user', text: 'hi' }], opts), 'تمام');
+  assert.deepEqual(calls, ['models/gemini-flash-lite-latest:generateContent'], 'remembered: no wasted call on the exhausted model');
+
+  // Every model exhausted: the failure carries Google's reason without the key.
+  let failure = ''; let detail = '';
+  const allOut = (async (url: string) => String(url).includes('/models?')
+    ? json({ models: [{ name: 'models/gemini-flash-lite-latest', supportedGenerationMethods: ['generateContent'] }] })
+    : json(QUOTA_429, 429)) as typeof globalThis.fetch;
+  assert.equal(await callEngine('gemini', 'sys', [{ role: 'user', text: 'hi' }], { env: { GEMINI_API_KEY: 'dead-quota-key' }, fetch: allOut,
+    signal: AbortSignal.timeout(5000), temperature: 0.5, onFailure: (f, _s, d) => { failure = f; detail = d; } }), undefined);
+  assert.equal(failure, 'no_credit');
+  assert.match(detail, /GenerateRequestsPerDayPerProjectPerModel-FreeTier limit 20/);
+  assert.match(detail, /retry in 41s/);
+  assert.doesNotMatch(detail, /AIza/);
+  assert.equal(failureDetail('not json'), '');
 });

@@ -73,6 +73,12 @@ export function modeBadge(id: string | undefined, language: SupportedLanguage): 
   return { label: `${shahin} · ${loc(language, MODE_TEXT[id].name)}`, mode: id };
 }
 
+/** Message time; the welcome message is stored with a fixed Arabic «الآن», shown in the visitor's language. */
+export function messageTime(timestamp: string, language: SupportedLanguage): string {
+  if (timestamp !== 'الآن') return timestamp;
+  return loc(language, { ar: 'الآن', en: 'Now', fr: 'Maintenant', es: 'Ahora', it: 'Ora', de: 'Jetzt', ru: 'Сейчас', zh: '刚刚', tr: 'Şimdi', fa: 'اکنون' });
+}
+
 /**
  * Scroll only the chat's own scroll box to its end. `scrollIntoView` also scrolls
  * the page/window, which made the lab page jump down on open and on every reply.
