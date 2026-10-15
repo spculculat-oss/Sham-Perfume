@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Star, ShoppingCart, UserPlus, Menu, Sparkles, ArrowRight, Package, Check } from 'lucide-react';
-import { getApprovedActiveProducts, saveMerchant } from '../utils/merchantDataStore';
+import { saveMerchant } from '../utils/merchantDataStore';
+
+// Load products from JSON file
+import productsData from '../data/products.json';
 
 const t = {
   ar: {
@@ -34,7 +37,9 @@ export const Storefront: React.FC<Props> = ({ onClose, currentLang, retailerId }
   const [form, setForm] = useState({ nameAr: '', email: '', phone: '', pass: '' });
   const [slide, setSlide] = useState(0);
 
-  const products = getApprovedActiveProducts();
+  // Use products from JSON file (synced from backend)
+  const [products, setProducts] = useState<any[]>(productsData.products || []);
+  
   const filtered = products.filter(p => {
     if (cat !== 'all' && (p as any).category !== cat) return false;
     if (search) {
@@ -46,8 +51,8 @@ export const Storefront: React.FC<Props> = ({ onClose, currentLang, retailerId }
 
   const featured = filtered.filter((p: any) => p.isFeatured || (p.rating && p.rating >= 4)).slice(0, 6);
   const newItems = [...filtered].sort((a, b) => {
-    const da = (a as any).createdAt ? new Date((a as any).createdAt).getTime() : 0;
-    const db = (b as any).createdAt ? new Date((b as any).createdAt).getTime() : 0;
+    const da = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+    const db = b.createdAt ? new Date(b.createdAt).getTime() : 0;
     return db - da;
   }).slice(0, 6);
 
@@ -162,17 +167,17 @@ export const Storefront: React.FC<Props> = ({ onClose, currentLang, retailerId }
                       <div className="grid md:grid-cols-2 gap-6 items-center">
                         <div className="relative aspect-square bg-gradient-to-br from-amber-100 to-stone-100 rounded-xl flex items-center justify-center">
                           <Package className="w-24 h-24 text-amber-400/30" />
-                          {(product as any).isNew && (
+                          {product.isNew && (
                             <span className="absolute top-3 left-3 px-2 py-1 bg-emerald-500 text-white text-xs rounded-full">
                               <Sparkles className="w-3 h-3 inline mr-1" /> جديد
                             </span>
                           )}
                         </div>
                         <div className="space-y-3">
-                          <h3 className="text-2xl font-bold">{(product as any).nameAr || (product as any).nameEn}</h3>
-                          <p className="text-stone-500">{(product as any).category}</p>
+                          <h3 className="text-2xl font-bold">{product.nameAr || product.nameEn}</h3>
+                          <p className="text-stone-500">{product.category}</p>
                           <div className="flex items-center gap-2 text-amber-400">
-                            {(product as any).rating && [1,2,3].map(i => (
+                            {product.rating && [1,2,3].map(i => (
                               <Star key={i} className="w-5 h-5 fill-current" />
                             ))}
                           </div>
@@ -201,10 +206,10 @@ export const Storefront: React.FC<Props> = ({ onClose, currentLang, retailerId }
                   <div className="aspect-square bg-gradient-to-br from-amber-100 to-stone-100 rounded-lg flex items-center justify-center mb-3">
                     <Package className="w-12 h-12 text-amber-400/30" />
                   </div>
-                  <h3 className="font-bold text-sm line-clamp-2">{(product as any).nameAr || (product as any).nameEn}</h3>
-                  <p className="text-xs text-stone-500">{(product as any).category}</p>
+                  <h3 className="font-bold text-sm line-clamp-2">{product.nameAr || product.nameEn}</h3>
+                  <p className="text-xs text-stone-500">{product.category}</p>
                   <div className="flex items-center justify-between mt-2">
-                    <span className="text-lg font-bold text-amber-900">{(product as any).retailPrice} <span className="text-xs">جنيه</span></span>
+                    <span className="text-lg font-bold text-amber-900">{product.ourPrice} <span className="text-xs">جنيه</span></span>
                     <button onClick={() => addToCart(product)} className="px-3 py-1 bg-amber-700 hover:bg-amber-800 text-white text-xs rounded">
                       {lang.addToCart}
                     </button>
@@ -221,7 +226,7 @@ export const Storefront: React.FC<Props> = ({ onClose, currentLang, retailerId }
             <div className="max-h-40 overflow-y-auto mb-2">
               {Array.from(cart.entries()).map(([id, item]) => (
                 <div key={id} className="flex items-center justify-between py-1 border-b text-sm">
-                  <span>{(item.p as any).nameAr || (item.p as any).nameEn}</span>
+                  <span>{item.p.nameAr || item.p.nameEn}</span>
                   <div className="flex items-center gap-2">
                     <span className="text-stone-600">{item.q}</span>
                     <button onClick={() => removeFromCart(id)} className="text-red-500"><span className="text-lg">×</span></button>
