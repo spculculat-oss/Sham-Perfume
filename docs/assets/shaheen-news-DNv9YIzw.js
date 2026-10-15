@@ -1,1 +1,0 @@
-var e={version:1,updatedAt:`2026-10-15T00:00:00.000Z`,nextUpdateAt:`2026-10-15T12:00:00.000Z`,intervalHours:12,editor:`feeds`,sources:[],items:[]};export{e as default};
