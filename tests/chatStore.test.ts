@@ -205,3 +205,42 @@ test('replies in the current server shape (mode + anonymous Shaheen engine) are 
   assert.equal(last?.text, 'تحليل');
   assert.equal(last?.aiEngine?.id, 'deep');
 });
+
+test('a bare greeting is answered locally at once, without calling the AI', async () => {
+  let calls = 0;
+  const store = createChatStore((async () => { calls++; return { reply: 'AI tip about DPG' }; }) as typeof requestApi);
+  assert.equal(await store.send({ ...options, text: 'السلام عليكم', language: 'ar' }), true);
+  assert.equal(calls, 0);
+  const [, question, answer] = store.getSnapshot().messages;
+  assert.equal(question.text, 'السلام عليكم');
+  assert.match(answer.text, /^وعليكم السلام/);
+  assert.equal(answer.aiEngine?.provider, 'shaheen');
+  assert.equal(store.getSnapshot().isLoading, false);
+  await store.send({ ...options, text: 'what is the best winter blend?' });
+  assert.equal(calls, 1, 'Real questions still go to Shaheen');
+});
+
+test('another tab saving its chat no longer swallows the answer in flight', async () => {
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'window');
+  const events = new EventTarget();
+  Object.defineProperty(globalThis, 'window', { configurable: true, value: events });
+  const pending = deferred();
+  const store = createChatStore((async () => pending.promise) as typeof requestApi);
+  const unsubscribe = store.subscribe(() => {});
+  try {
+    const sending = store.send(options);
+    const event = new Event('storage');
+    Object.defineProperty(event, 'key', { value: CHAT_STORAGE_KEY });
+    Object.defineProperty(event, 'newValue', { value: memory.get(CHAT_STORAGE_KEY) ?? '{}' });
+    events.dispatchEvent(event);
+    pending.resolve({ reply: 'The winter blend' });
+    assert.equal(await sending, true);
+    const messages = store.getSnapshot().messages;
+    assert.equal(messages[messages.length - 1].text, 'The winter blend');
+    assert.equal(store.getSnapshot().isLoading, false);
+  } finally {
+    unsubscribe();
+    if (descriptor) Object.defineProperty(globalThis, 'window', descriptor);
+    else delete (globalThis as any).window;
+  }
+});

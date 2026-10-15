@@ -995,6 +995,7 @@ export default function App() {
         onCalculateCosting={handleCalculateCosting}
         onPrintSpecSheet={handlePrintSpecSheetForFormula}
         onOpenTool={handleOpenShaheenTool}
+        hidden={activeTab === 'master_ai'}
       />
 
       {/* Sham Core services assistant: orders, store, bespoke, B2B, support (opposite corner to Shaheen) */}
