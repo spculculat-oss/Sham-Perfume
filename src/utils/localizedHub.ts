@@ -6,7 +6,7 @@ export const STATS_BADGE_EN: Record<string, string> = {
   portal_pyramid: '3-Layer Volatility Simulation',
   portal_alcohol: 'Ethanol Dilution (C₁V₁ = C₂V₂)',
   portal_costing: 'Bespoke Pricing & ROI Margins',
-  portal_master_ai: 'Multi-AI Formulation Synthesis',
+  portal_master_ai: '⚡ Admin-selected AI engines',
   portal_library: 'Saved Batch Archives & Spec Print',
   portal_guide: 'Cold Maceration & Fixative Science',
   portal_country: 'Worldwide Climate Adaptation',
@@ -262,14 +262,14 @@ export const PORTAL_NEWS_EN: Record<
     actionHint: 'Check profit projections',
   },
 
-  // 8. Multi-AI Master Lab
+  // 8. Master Perfumer AI (Shahin)
   ai1: {
-    badge: 'Multi-AI Synthesis',
-    title: 'Combined AI Intelligence: Gemini + Claude + DeepSeek',
-    description: 'Generates professional IFRA-compliant fragrance formulas with olfactory pyramid ratios in seconds.',
-    metric: 'Instant Accord Synthesis',
-    timestamp: 'Active AI Co-Pilot',
-    actionHint: 'Generate custom formula',
+    badge: '⚡ Advisory council',
+    title: 'With two or more engines enabled, each gives its view and Shahin merges them into one answer',
+    description: 'If only one engine is available, Shahin answers with it directly. The engines available right now are shown inside the Shahin window.',
+    metric: 'Depends on enabled engines',
+    timestamp: 'Available now',
+    actionHint: 'Start a chat with Shahin',
   },
   ai2: {
     badge: 'Natural Language Understanding',
@@ -280,12 +280,12 @@ export const PORTAL_NEWS_EN: Record<
     actionHint: 'Chat with AI perfumer',
   },
   ai3: {
-    badge: 'IFRA Safety Screening',
-    title: 'Automated Allergen & Threshold Verification',
-    description: 'Flags restricted allergens like oakmoss atranol, farnesol, and cinnamal with safe alternative suggestions.',
-    metric: '100% IFRA Compliance',
-    timestamp: 'Safety Engine',
-    actionHint: 'Audit formula safety',
+    badge: 'Safety first',
+    title: 'Specialist perfumery instructions with safety reminders',
+    description: 'Shahin never invents sources or IFRA certificates, and reminds you to check usage limits and supplier documents before production.',
+    metric: 'Check IFRA limits',
+    timestamp: 'Responsible guidance',
+    actionHint: 'Ask Shahin',
   },
   ai4: {
     badge: 'Direct Lab Workbench Transfer',
