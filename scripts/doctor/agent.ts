@@ -244,6 +244,9 @@ async function aiFix(action: Action, x: ExecContext) {
     sh: (command) => o.sh(command, 15 * 60_000),
     trackedFiles: async () => (await git(x, 'git ls-files')).split('\n').filter(Boolean),
   };
+  // Known recipe, no AI needed: a lockfile that no longer matches package.json (e.g. a commit made from stale
+  // files) breaks every install. Regenerate it from package.json, verify everything, ship only bun.lock.
+  if (LOCKFILE_BROKEN.test(evidence)) return repairLockfile(action, x);
   const result = await attemptFix({ problem: action.problem || 'unknown', reason: action.reason, evidence }, deps);
   const record: FixRecord = { at: new Date().toISOString(), problem: action.problem || action.reason, result: 'failed', summary: result.summary };
   if (!result.ok) {
@@ -260,6 +263,28 @@ async function aiFix(action: Action, x: ExecContext) {
   state.fixes.push(record); state.fixes.splice(0, Math.max(0, state.fixes.length - 20));
   state.pending = { sha: shipped.sha, at: record.at, baseline, problem: record.problem };
   return { ok: true, detail: `${result.summary} — اتدمج ${shipped.sha.slice(0, 7)} بعد ما عدّى كل الفحوص${shipped.url ? ` (${shipped.url})` : ''}` };
+}
+
+const LOCKFILE_BROKEN = /lockfile had changes|lockfile is frozen|failed steps: [^\n]*Install locked dependencies/i;
+
+async function repairLockfile(action: Action, x: ExecContext) {
+  const { o, state } = x;
+  const record: FixRecord = { at: new Date().toISOString(), problem: action.problem || 'lockfile', result: 'failed', summary: 'إعادة توليد bun.lock من package.json' };
+  const keep = () => { state.fixes.push(record); state.fixes.splice(0, Math.max(0, state.fixes.length - 20)); };
+  const install = await o.sh('bun install', 10 * 60_000);
+  const changed = (await o.sh('git status --porcelain -- bun.lock')).output.trim();
+  if (!install.ok || !changed) { keep(); return { ok: false, detail: `ما قدرتش أصلّح bun.lock (${install.ok ? 'مفيش تغيير' : install.output.slice(-200)})` }; }
+  for (const command of ['bun install --frozen-lockfile', ...VERIFY_COMMANDS]) {
+    const r = await o.sh(command);
+    if (!r.ok) { await o.sh('git checkout --quiet -- bun.lock'); keep(); return { ok: false, detail: `bun.lock الجديد ما عدّاش \`${command}\`` }; }
+  }
+  const body = ['🩺 إصلاح تلقائي من طبيب شاهين', '', `**المشكلة:** ${action.reason} — ملف القفل bun.lock مش متطابق مع package.json، فالتثبيت بيفشل في GitHub وVercel.`,
+    '**الإصلاح:** إعادة توليد bun.lock من package.json (من غير تغيير أي اعتمادية).', '', `**الفحوص:** ${VERIFY_COMMANDS.map((c) => `\`${c}\``).join('، ')}`].join('\n');
+  const shipped = await ship(x, ['bun.lock'], 'fix(doctor): regenerate bun.lock from package.json', body);
+  Object.assign(record, { result: 'merged', sha: shipped.sha, url: shipped.url });
+  keep();
+  state.pending = { sha: shipped.sha, at: record.at, baseline: x.findings.filter((f) => f.status === 'fail').map((f) => f.id), problem: record.problem };
+  return { ok: true, detail: `ملف القفل اتصلّح واتدمج ${shipped.sha.slice(0, 7)} بعد ما عدّى كل الفحوص${shipped.url ? ` (${shipped.url})` : ''}` };
 }
 
 async function revert(action: Action, x: ExecContext) {

@@ -57,8 +57,9 @@ export const cooled = (state: DoctorState, key: string, minutes: number, now: nu
 const fixesToday = (state: DoctorState, now: number) => state.fixes.filter((f) => f.result !== 'failed' && now - Date.parse(f.at) < 24 * 60 * MIN).length
   + state.fixes.filter((f) => f.result === 'failed' && now - Date.parse(f.at) < 24 * 60 * MIN).length / 2; // failed attempts count half
 
+/** Room for one more code fix (review mode is handled separately: planned actions are only reported). */
 export const canFix = (state: DoctorState, caps: Capabilities, now: number) =>
-  caps.ai && caps.write && !state.pending && fixesToday(state, now) < MAX_FIXES_PER_DAY;
+  caps.ai && !state.pending && fixesToday(state, now) < MAX_FIXES_PER_DAY;
 
 export function decide(findings: Finding[], state: DoctorState, caps: Capabilities, now = Date.now()): { actions: Action[]; notes: string[] } {
   const by = Object.fromEntries(findings.map((f) => [f.id, f])) as Record<CheckId, Finding>;

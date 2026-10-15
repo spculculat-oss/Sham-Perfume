@@ -359,3 +359,68 @@ test('the admin panel reads the status board the doctor writes', async () => {
   assert.equal(report.fixes[0].summary, 'سماح بالهيدر');
   assert.equal(report.lastRun, state.lastRunAt);
 });
+
+test('review mode reports a planned code fix as planned (not as a daily cap)', () => {
+  const red = withFinding(healthy(), f('ci', 'fail', { sha: 'b'.repeat(40), runId: 7 }));
+  const dry = runs([red], emptyState(), caps({ write: false }));
+  assert.deepEqual(dry.actions, []);
+  assert.ok(dry.notes.some((n) => n.includes('وضع المراجعة فقط') && n.includes('ai_fix')), dry.notes.join(' | '));
+});
+
+test('a lockfile out of sync with package.json is repaired by a fixed recipe (no AI), verified and shipped alone', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const { shell } = await import('../scripts/doctor/agent');
+  const dir = mkdtempSync(join(tmpdir(), 'doctor-lock-'));
+  const g = (cwd: string, ...args: string[]) => execFileSync('git', args, { cwd, encoding: 'utf8' }).trim();
+  g(dir, 'init', '--quiet', '--bare', '-b', 'main', 'remote.git');
+  const work = join(dir, 'work');
+  g(dir, 'clone', '--quiet', join(dir, 'remote.git'), 'work');
+  writeFileSync(join(work, 'bun.lock'), '{ "leaflet": missing }\n');
+  writeFileSync(join(work, 'package.json'), '{ "dependencies": { "leaflet": "^1.9.4" } }\n');
+  g(work, 'add', '.'); g(work, '-c', 'user.name=t', '-c', 'user.email=t@t', 'commit', '--quiet', '-m', 'stale lockfile'); g(work, 'push', '--quiet', 'origin', 'HEAD:main');
+  const base = g(work, 'rev-parse', 'HEAD');
+  const real = shell(work);
+  const commands: string[] = [];
+  const sh = async (command: string) => {
+    commands.push(command);
+    if (command === 'bun install') { writeFileSync(join(work, 'bun.lock'), '{ "leaflet": "1.9.4" }\n'); return { ok: true, output: '' }; }
+    if (command.startsWith('npm ') || command.startsWith('bun ')) return { ok: true, output: '' };
+    return real(command);
+  };
+  const { gh, calls } = fakeGitHub();
+  const fakes = gh as unknown as Record<string, unknown>;
+  fakes.head = async () => ({ sha: base, date: new Date(NOW - 60 * MIN).toISOString(), message: '' });
+  fakes.runs = async () => [{ id: 9, head_sha: base, status: 'completed', conclusion: 'failure', html_url: '', created_at: '', updated_at: '', event: 'push' }];
+  fakes.failedJobs = async () => [{ id: 5, name: 'Check and build React', steps: ['Install locked dependencies'] }];
+  fakes.annotations = async () => [];
+  fakes.jobLog = async () => 'error: lockfile had changes, but lockfile is frozen';
+  fakes.createPull = async () => ({ number: 7, html_url: 'https://github.com/o/r/pull/7' });
+  fakes.mergePull = async () => {
+    // simulate GitHub squash-merging the PR branch into main
+    g(join(dir, 'remote.git'), 'update-ref', 'refs/heads/main', g(join(dir, 'remote.git'), 'rev-parse', `refs/heads/doctor/43`));
+    return { sha: g(join(dir, 'remote.git'), 'rev-parse', 'main'), merged: true };
+  };
+  fakes.deleteBranch = async () => undefined;
+  const site = (async (input: string | URL | Request, init?: RequestInit) => {
+    const url = String(input);
+    const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), { status, headers: { 'access-control-allow-origin': 'https://pages.example', 'access-control-allow-headers': 'Content-Type, X-Sham-Visitor' } });
+    if (url.endsWith('/api/health')) return json({ status: 'ok', version: base });
+    if (url.endsWith('/api/models')) return json({ models: [{ id: 'auto', hasApiKey: true }] });
+    if (url.endsWith('/api/chat')) return init?.method === 'POST' ? json({ reply: 'أنا شاهين' }) : json({}, 204);
+    if (url === 'https://pages.example/x/') return new Response('<script type="module" src="/x/a.js"></script>');
+    return json({ images: [] });
+  }) as typeof fetch;
+  let asked = 0;
+  const result = await runDoctor({
+    env: { DOCTOR_SITE_URL: 'https://site', DOCTOR_PAGES_URL: 'https://pages.example/x/' }, github: gh, fetch: site, sh,
+    ask: async () => { asked++; return '{}'; }, root: work, mode: 'live', runId: '43', log: () => {}, now: () => NOW,
+  });
+  assert.equal(result.actions[0]?.kind, 'ai_fix');
+  assert.ok(result.actions[0].ok, result.actions[0].detail);
+  assert.equal(asked, 0, 'no AI call for a known recipe');
+  assert.ok(commands.includes('bun install --frozen-lockfile') && commands.includes('npm test'), 'verified with a frozen install and the full checks');
+  assert.equal(g(join(dir, 'remote.git'), 'show', 'main:bun.lock'), '{ "leaflet": "1.9.4" }');
+  assert.deepEqual(g(join(dir, 'remote.git'), 'diff', '--name-only', base, 'main').split('\n'), ['bun.lock'], 'only the lockfile is shipped');
+  assert.equal(result.state.fixes.at(-1)?.url, 'https://github.com/o/r/pull/7');
+  assert.ok(calls.includes('dispatch:pages.yml'));
+});

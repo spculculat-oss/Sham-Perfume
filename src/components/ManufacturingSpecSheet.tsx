@@ -1,5 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { Printer, X, CheckCircle, Calendar, Hash, User, ShieldCheck, ArrowRight, ArrowLeft, Copy, Check } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+  Printer,
+  X,
+  CheckCircle,
+  Calendar,
+  Hash,
+  User,
+  ShieldCheck,
+  ArrowRight,
+  ArrowLeft,
+  Copy,
+  Check,
+  Share2,
+  Link2,
+  ExternalLink,
+} from 'lucide-react';
 import {
   CalculationResult,
   FormulationState,
@@ -7,6 +22,12 @@ import {
   SavedFormula,
 } from '../types/perfume';
 import { calculatePyramidBreakdown, formatNum } from '../utils/calculations';
+import {
+  generateFormulaShareUrl,
+  formatWhatsAppShareMessage,
+  buildWhatsAppLink,
+  SharedFormulaPayload,
+} from '../utils/formulaShare';
 
 import { UserDetailedAddress, FACILITY_TYPE_LABELS } from '../types/address';
 import { SupportedLanguage } from '../types/i18n';
@@ -76,6 +97,138 @@ const S = {
     zh: '复制',
     tr: 'Kopyala',
     fa: 'کپی',
+  },
+  share_btn: {
+    ar: 'مشاركة',
+    en: 'Share',
+    fr: 'Partager',
+    es: 'Compartir',
+    it: 'Condividi',
+    de: 'Teilen',
+    ru: 'Поделиться',
+    zh: '分享',
+    tr: 'Paylaş',
+    fa: 'اشتراک‌گذاری',
+  },
+  share_tooltip: {
+    ar: 'مشاركة التركيبة عبر واتساب أو نسخ الرابط المباشر',
+    en: 'Share formula via WhatsApp or copy direct link',
+    fr: 'Partager via WhatsApp ou copier le lien direct',
+    es: 'Compartir por WhatsApp o copiar enlace directo',
+    it: 'Condividi su WhatsApp o copia link diretto',
+    de: 'Per WhatsApp teilen oder Direktlink kopieren',
+    ru: 'Поделиться в WhatsApp или скопировать прямую ссылку',
+    zh: '通过WhatsApp分享或复制直接链接',
+    tr: 'WhatsApp ile paylaş veya doğrudan bağlantıyı kopyala',
+    fa: 'اشتراک‌گذاری در واتساپ یا کپی لینک مستقیم',
+  },
+  share_modal_title: {
+    ar: 'مشاركة بطاقة التركيبة ومواصفات التصنيع',
+    en: 'Share Formula & Manufacturing Spec Sheet',
+    fr: 'Partager la formule et la fiche technique',
+    es: 'Compartir fórmula y ficha técnica',
+    it: 'Condividi formula e scheda tecnica',
+    de: 'Formel & Produktionsdatenblatt teilen',
+    ru: 'Поделиться формулой и техкартой',
+    zh: '分享配方与制造规格单',
+    tr: 'Formülü ve üretim kartını paylaş',
+    fa: 'اشتراک‌گذاری کارت فرمول و مشخصات تولید',
+  },
+  share_modal_desc: {
+    ar: 'أرسل رابطاً مباشراً للتركيبة يفتح بطاقة المواصفات فوراً، أو شارك ملخص التركيبة والهرم العطري عبر واتساب.',
+    en: 'Send a direct link that opens this spec sheet instantly, or share the formula summary via WhatsApp.',
+    fr: 'Envoyez un lien direct ouvrant la fiche technique ou partagez le résumé via WhatsApp.',
+    es: 'Envíe un enlace directo a la ficha o comparta el resumen por WhatsApp.',
+    it: 'Invia un link diretto alla scheda o condividi il riepilogo su WhatsApp.',
+    de: 'Senden Sie einen Direktlink zum Datenblatt oder teilen Sie die Zusammenfassung per WhatsApp.',
+    ru: 'Отправьте прямую ссылку на техкарту или поделитесь сводкой в WhatsApp.',
+    zh: '发送可立即打开规格单的直接链接，或通过WhatsApp分享摘要。',
+    tr: 'Teknik kartı açan doğrudan bağlantı gönderin veya özeti WhatsApp ile paylaşın.',
+    fa: 'ارسال لینک مستقیم برای باز کردن کارت مشخصات یا اشتراک خلاصه در واتساپ.',
+  },
+  direct_link_lbl: {
+    ar: 'الرابط المباشر للتركيبة (Direct Link)',
+    en: 'Direct Formula Link',
+    fr: 'Lien direct de formule',
+    es: 'Enlace directo de fórmula',
+    it: 'Link diretto formula',
+    de: 'Direktlink zur Formel',
+    ru: 'Прямая ссылка на формулу',
+    zh: '配方直接链接',
+    tr: 'Doğrudan formül bağlantısı',
+    fa: 'لینک مستقیم فرمول',
+  },
+  copy_link_btn: {
+    ar: 'نسخ الرابط',
+    en: 'Copy Link',
+    fr: 'Copier le lien',
+    es: 'Copiar enlace',
+    it: 'Copia link',
+    de: 'Link kopieren',
+    ru: 'Копировать ссылку',
+    zh: '复制链接',
+    tr: 'Bağlantıyı kopyala',
+    fa: 'کپی لینک',
+  },
+  link_copied: {
+    ar: 'تم نسخ الرابط المباشر بنجاح!',
+    en: 'Direct link copied successfully!',
+    fr: 'Lien direct copié avec succès !',
+    es: '¡Enlace directo copiado con éxito!',
+    it: 'Link diretto copiato con successo!',
+    de: 'Direktlink erfolgreich kopiert!',
+    ru: 'Прямая ссылка успешно скопирована!',
+    zh: '直接链接复制成功！',
+    tr: 'Doğrudan bağlantı başarıyla kopyalandı!',
+    fa: 'لینک مستقیم با موفقیت کپی شد!',
+  },
+  share_whatsapp_btn: {
+    ar: 'مشاركة عبر واتساب (WhatsApp)',
+    en: 'Share via WhatsApp',
+    fr: 'Partager sur WhatsApp',
+    es: 'Compartir en WhatsApp',
+    it: 'Condividi su WhatsApp',
+    de: 'Auf WhatsApp teilen',
+    ru: 'Поделиться в WhatsApp',
+    zh: '在WhatsApp中分享',
+    tr: 'WhatsApp ile paylaş',
+    fa: 'اشتراک‌گذاری در واتساپ',
+  },
+  share_native_btn: {
+    ar: 'مشاركة عبر التطبيقات',
+    en: 'Share via Apps',
+    fr: 'Partager via d\'autres apps',
+    es: 'Compartir en aplicaciones',
+    it: 'Condividi su app',
+    de: 'Über Apps teilen',
+    ru: 'Поделиться в приложениях',
+    zh: '通过应用分享',
+    tr: 'Uygulamalarla paylaş',
+    fa: 'اشتراک‌گذاری از طریق برنامه‌ها',
+  },
+  msg_preview_lbl: {
+    ar: 'معاينة نص الرسالة المشاركة:',
+    en: 'Message Preview:',
+    fr: 'Aperçu du message :',
+    es: 'Vista previa del mensaje:',
+    it: 'Anteprima messaggio:',
+    de: 'Nachrichtenvorschau:',
+    ru: 'Предпросмотр сообщения:',
+    zh: '消息预览：',
+    tr: 'Mesaj önizlemesi:',
+    fa: 'پیش‌نمایش پیام:',
+  },
+  copy_msg_text: {
+    ar: 'نسخ النص بالكامل',
+    en: 'Copy Full Text',
+    fr: 'Copier le texte complet',
+    es: 'Copiar texto completo',
+    it: 'Copia testo completo',
+    de: 'Gesamten Text kopieren',
+    ru: 'Скопировать весь текст',
+    zh: '复制全文',
+    tr: 'Tüm metni kopyala',
+    fa: 'کپی کامل متن',
   },
   print_btn: {
     ar: 'طباعة',
@@ -869,9 +1022,75 @@ export const ManufacturingSpecSheet: React.FC<ManufacturingSpecSheetProps> = ({
   onClose,
 }) => {
   const [copied, setCopied] = useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [textCopied, setTextCopied] = useState(false);
+
   const rtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
   const ActionArrow = rtl ? ArrowLeft : ArrowRight;
+
+  const sharePayload: SharedFormulaPayload = useMemo(
+    () => ({
+      title: formulaTitle,
+      author,
+      batchCode,
+      notes,
+      macerationDays,
+      formulation,
+      pyramidNotes,
+    }),
+    [formulaTitle, author, batchCode, notes, macerationDays, formulation, pyramidNotes]
+  );
+
+  const shareUrl = useMemo(() => {
+    return generateFormulaShareUrl(sharePayload);
+  }, [sharePayload]);
+
+  const whatsAppMessage = useMemo(() => {
+    return formatWhatsAppShareMessage(sharePayload, shareUrl, currentLang);
+  }, [sharePayload, shareUrl, currentLang]);
+
+  const handleCopyDirectLink = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2500);
+    } catch (e) {
+      console.error('Failed to copy share url', e);
+    }
+  };
+
+  const handleCopyMessageText = async () => {
+    try {
+      await navigator.clipboard.writeText(whatsAppMessage);
+      setTextCopied(true);
+      setTimeout(() => setTextCopied(false), 2500);
+    } catch (e) {
+      console.error('Failed to copy message', e);
+    }
+  };
+
+  const handleShareWhatsApp = () => {
+    const link = buildWhatsAppLink(whatsAppMessage);
+    window.open(link, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleNativeShare = async () => {
+    if (typeof navigator !== 'undefined' && (navigator as any).share) {
+      try {
+        await (navigator as any).share({
+          title: formulaTitle || 'تركيبة عطر شام',
+          text: whatsAppMessage,
+          url: shareUrl,
+        });
+      } catch (e) {
+        // User cancelled or not supported
+      }
+    } else {
+      handleCopyDirectLink();
+    }
+  };
 
   const currentDate = new Date().toISOString().split('T')[0];
   const targetDate = new Date(Date.now() + macerationDays * 24 * 60 * 60 * 1000)
@@ -958,6 +1177,14 @@ export const ManufacturingSpecSheet: React.FC<ManufacturingSpecSheetProps> = ({
             </span>
           </div>
           <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => setIsShareOpen(true)}
+              className="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-xs transition-colors"
+              title={L('share_tooltip')}
+            >
+              <Share2 className="w-3.5 h-3.5" />
+              <span>{L('share_btn')}</span>
+            </button>
             <button
               onClick={handleCopySummary}
               className="px-3 py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition-colors"
@@ -1220,6 +1447,13 @@ export const ManufacturingSpecSheet: React.FC<ManufacturingSpecSheetProps> = ({
         <div className="p-4 sm:p-6 bg-stone-100 border-t border-stone-200 flex flex-wrap items-center justify-between gap-3 no-print">
           <div className="flex flex-wrap items-center gap-2">
             <button
+              onClick={() => setIsShareOpen(true)}
+              className="px-4 sm:px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 cursor-pointer shadow-xs transition-colors"
+            >
+              <Share2 className="w-4 h-4" />
+              <span>{L('share_btn')}</span>
+            </button>
+            <button
               onClick={handlePrint}
               className="px-4 sm:px-5 py-2.5 bg-amber-800 hover:bg-amber-900 text-white rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 cursor-pointer shadow-xs transition-colors"
             >
@@ -1243,6 +1477,139 @@ export const ManufacturingSpecSheet: React.FC<ManufacturingSpecSheetProps> = ({
           </button>
         </div>
 
+        {/* Share Modal Dialog Overlay */}
+        {isShareOpen && (
+          <div
+            className="fixed inset-0 z-60 bg-black/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 no-print animate-in fade-in duration-150"
+            onClick={() => setIsShareOpen(false)}
+          >
+            <div
+              className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-stone-200 w-full max-w-lg overflow-hidden text-stone-900"
+              onClick={(e) => e.stopPropagation()}
+              dir={rtl ? 'rtl' : 'ltr'}
+            >
+              {/* Header */}
+              <div className="p-4 sm:p-5 bg-gradient-to-r from-stone-900 via-stone-800 to-amber-950 text-white flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-amber-500/20 border border-amber-400/30 flex items-center justify-center text-amber-400">
+                    <Share2 className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-sm sm:text-base text-white">
+                      {L('share_modal_title')}
+                    </h3>
+                    <p className="text-[11px] text-stone-300">
+                      {formulaTitle || L('default_title')} · {batchCode || 'SHAM-BATCH'}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setIsShareOpen(false)}
+                  className="p-1.5 rounded-lg text-stone-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Body */}
+              <div className="p-5 sm:p-6 space-y-5 max-h-[75vh] overflow-y-auto">
+                <p className="text-xs text-stone-600 leading-relaxed">
+                  {L('share_modal_desc')}
+                </p>
+
+                {/* Direct Link Section */}
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold text-stone-800 flex items-center gap-1.5">
+                    <Link2 className="w-3.5 h-3.5 text-amber-600" />
+                    <span>{L('direct_link_lbl')}</span>
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      readOnly
+                      value={shareUrl}
+                      className="w-full text-xs font-mono bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-stone-600 truncate focus:outline-hidden select-all"
+                    />
+                    <button
+                      onClick={handleCopyDirectLink}
+                      className={`px-4 py-2 rounded-xl text-xs font-bold shrink-0 flex items-center gap-1.5 transition-all shadow-xs cursor-pointer ${
+                        linkCopied
+                          ? 'bg-emerald-600 text-white'
+                          : 'bg-stone-900 hover:bg-stone-800 text-white'
+                      }`}
+                    >
+                      {linkCopied ? (
+                        <>
+                          <Check className="w-3.5 h-3.5" />
+                          <span>{L('copied')}</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>{L('copy_link_btn')}</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                  {linkCopied && (
+                    <div className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1 animate-in fade-in">
+                      <CheckCircle className="w-3.5 h-3.5" />
+                      <span>{L('link_copied')}</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Primary Actions: WhatsApp & System Share */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  <button
+                    onClick={handleShareWhatsApp}
+                    className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
+                  >
+                    <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                    </svg>
+                    <span>{L('share_whatsapp_btn')}</span>
+                  </button>
+
+                  <button
+                    onClick={handleNativeShare}
+                    className="w-full py-3 px-4 bg-stone-100 hover:bg-stone-200 text-stone-800 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 border border-stone-300 transition-colors cursor-pointer"
+                  >
+                    <Share2 className="w-4 h-4 text-amber-700" />
+                    <span>{L('share_native_btn')}</span>
+                  </button>
+                </div>
+
+                {/* Message Text Preview */}
+                <div className="space-y-2 pt-2 border-t border-stone-200">
+                  <div className="flex items-center justify-between text-xs text-stone-500">
+                    <span className="font-semibold text-stone-700">{L('msg_preview_lbl')}</span>
+                    <button
+                      onClick={handleCopyMessageText}
+                      className="text-amber-800 hover:text-amber-950 font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                    >
+                      {textCopied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{textCopied ? L('copied') : L('copy_msg_text')}</span>
+                    </button>
+                  </div>
+                  <pre className="text-[11px] font-sans whitespace-pre-wrap bg-stone-50 p-3 rounded-xl border border-stone-200 text-stone-700 leading-relaxed max-h-36 overflow-y-auto">
+                    {whatsAppMessage}
+                  </pre>
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="p-3 bg-stone-50 border-t border-stone-200 flex justify-end">
+                <button
+                  onClick={() => setIsShareOpen(false)}
+                  className="px-4 py-2 bg-stone-800 hover:bg-stone-900 text-white rounded-xl text-xs font-semibold cursor-pointer transition-colors"
+                >
+                  {L('close')}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Floating Corner Quick-Close Button (Always visible on all screens regardless of scroll position) */}
