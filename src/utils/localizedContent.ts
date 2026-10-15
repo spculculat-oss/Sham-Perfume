@@ -618,6 +618,22 @@ const READ_TIME_TPL: Record<SupportedLanguage, string> = {
   et: '{n} min',
   ka: '{n} წუთი',
   hy: '{n} րոպե',
+  // Extended languages — batch 4 (Africa, SE Asia, Oceania)
+  tl: '{n} minuto',
+  sw: 'dakika {n}',
+  am: '{n} ደቂቃ',
+  ha: 'minti {n}',
+  yo: 'iṣẹju {n}',
+  zu: 'amaminithi {n}',
+  af: '{n} min',
+  so: 'daqiiqo {n}',
+  jv: '{n} menit',
+  mi: '{n} meneti',
+  ne: '{n} मिनेट',
+  si: 'මිනිත්තු {n}',
+  my: '{n} မိနစ်',
+  km: '{n} នាទី',
+  lo: '{n} ນາທີ',
 };
 
 export const getLocalizedNewsArticle = (article: PerfumeNewsItem, lang: SupportedLanguage) => {

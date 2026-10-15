@@ -61,6 +61,22 @@ export const LOCALE_MAP: Record<SupportedLanguage, string> = {
   et: 'et-EE',
   ka: 'ka-GE',
   hy: 'hy-AM',
+  // Extended languages — batch 4 (Africa, SE Asia, Oceania)
+  tl: 'tl-PH',
+  sw: 'sw-KE',
+  am: 'am-ET',
+  ha: 'ha-NG',
+  yo: 'yo-NG',
+  zu: 'zu-ZA',
+  af: 'af-ZA',
+  so: 'so-SO',
+  jv: 'jv-ID',
+  mi: 'mi-NZ',
+  ne: 'ne-NP',
+  si: 'si-LK',
+  my: 'my-MM',
+  km: 'km-KH',
+  lo: 'lo-LA',
 };
 
 /**
