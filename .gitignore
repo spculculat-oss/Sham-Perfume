@@ -15,3 +15,4 @@ coverage/
 
 # Tencent EdgeOne Makers local build output
 .edgeone/
+sham_perfume.db
