@@ -18,6 +18,7 @@ import { PerfumerMasterLabView } from './components/PerfumerMasterLabView';
 import { ShamAssistant } from './assistant/ShamAssistant';
 import { WorldPerfumeNews } from './components/WorldPerfumeNews';
 import { Footer } from './components/Footer';
+import { TopLanguageHub } from './components/TopLanguageHub';
 import { NavigationBreadcrumbs } from './components/NavigationBreadcrumbs';
 import { CountryAndAddressModal } from './components/CountryAndAddressModal';
 import { AuthModal } from './components/AuthModal';
@@ -713,6 +714,12 @@ export default function App() {
           onOpenProfilePage={() => currentUser && handleOpenProfilePage(currentUser)}
         />
 
+        {/* Unified Top Language Hub: full language switcher + trust badges (moved from footer) */}
+        <TopLanguageHub
+          currentLang={currentLang}
+          onSelectLanguage={handleSelectLanguage}
+        />
+
         {/* Hero Showcase (only shown when in concentration tab or home) */}
         {activeTab === 'concentration' && (
           <Hero
@@ -888,7 +895,6 @@ export default function App() {
       <Footer
         setActiveTab={(tab) => navigateToTab(tab)}
         currentLang={currentLang}
-        onSelectLanguage={handleSelectLanguage}
       />
 
       {/* Save Formula Modal */}
