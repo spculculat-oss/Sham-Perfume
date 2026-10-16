@@ -17,7 +17,7 @@ const SITE = process.env.DOCTOR_SITE_URL || 'https://sham-perfume-49bf.vercel.ap
 const ORIGIN = 'https://spculculat-oss.github.io';
 const MODES = (process.env.INSPECT_MODES || 'auto,fast,deep').split(',');
 const VENDORS = /\b(gemini|google|openai|chat ?gpt|gpt-?\d|claude|anthropic|deepseek|openrouter|llama|qwen|mistral)\b|جيمي?ني|جوجل|شات ?جي|كلود|ديب ?سيك/i;
-const QUESTIONS = [
+const QUESTIONS = process.env.INSPECT_QUESTIONS ? process.env.INSPECT_QUESTIONS.split('|') : [
   'صمم لي عطر شرقي بالعود والورد 50 مل تركيز EDP',
   'عايز أخفف كحول 96% إلى 70% وأعمل منه 1 لتر، أحط كام مية؟',
   'كام يوم أعتق عطر العود عشان يثبت؟',

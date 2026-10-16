@@ -28,6 +28,10 @@ jobs:
         with:
           bun-version-file: package.json
       - run: bun install --frozen-lockfile || bun install
+      - name: TEMP · the visitor's detergent question, every mode (API)
+        if: github.event_name == 'push'
+        run: node --import tsx scripts/inspect/run.mts
+        env: { INSPECT_MODES: 'auto,fast,deep,council', INSPECT_QUESTIONS: 'عايز اركب عطر لمنظف بس فية مشكلة لما بتحط عطر فى منظف ريحتة بتروح بسبب الكيماويات اعمل اية' }
       - name: Shaheen (auto)
         if: github.event_name == 'workflow_dispatch'
         run: node --import tsx scripts/inspect/run.mts
@@ -46,7 +50,7 @@ jobs:
       - name: Browser · GitHub Pages · phone · floating chat
         if: always()
         run: node scripts/inspect/browser.mjs
-        env: { INSPECT_SITES: 'https://spculculat-oss.github.io/Sham-Perfume/', INSPECT_SCENE: chat, INSPECT_MOBILE: '1', PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js }
+        env: { INSPECT_SITES: 'https://spculculat-oss.github.io/Sham-Perfume/', INSPECT_SCENE: chat, INSPECT_MOBILE: '1', INSPECT_QUESTIONS: 'عايز اركب عطر لمنظف بس فية مشكلة لما بتحط عطر فى منظف ريحتة بتروح بسبب الكيماويات اعمل اية', PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js }
       - name: Browser · Vercel · phone · lab page
         if: always()
         run: node scripts/inspect/browser.mjs
