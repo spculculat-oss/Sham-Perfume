@@ -18,6 +18,8 @@ const git = (...args) => execFileSync('git', args, { encoding: 'utf8', stdio: ['
 const tryGit = (...args) => { try { git(...args); return true; } catch (e) { console.log(String(e.stderr || e.message).trim().split('\n').slice(-3).join(' / ')); return false; } };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const QUOTA = 'src/data/live/ai-quota.json';
+// «ذاكرة شاهين» and the bots' AI memory: both copies are kept (union), never one bot's copy over another's.
+const MEMORIES = new Set(['src/data/live/shaheen-memory.json', 'src/data/live/ai-memory.json']);
 
 git('add', '--', ...paths);
 if (!git('diff', '--cached', '--name-only')) { console.log('Nothing new to publish'); process.exit(0); }
@@ -38,6 +40,23 @@ function mergeQuota(theirsText, oursText) {
   return `${JSON.stringify({ updatedAt: new Date().toISOString(), engines }, null, 1)}\n`;
 }
 
+/** Two copies of a memory file together: every entry kept, the newer answer wins, uses are not lost. */
+function mergeMemoryText(theirsText, oursText) {
+  const parse = (t) => { try { const d = JSON.parse(t); return Array.isArray(d?.entries) ? d : { entries: [] }; } catch { return { entries: [] }; } };
+  const theirs = parse(theirsText); const ours = parse(oursText);
+  const byId = new Map();
+  for (const e of [...theirs.entries, ...ours.entries]) {
+    if (!e || typeof e.id !== 'string') continue;
+    const mine = byId.get(e.id);
+    if (!mine) { byId.set(e.id, e); continue; }
+    const newer = Date.parse(e.at) > Date.parse(mine.at) ? e : mine;
+    const lastUsed = [mine.lastUsed, e.lastUsed].filter(Boolean).sort().pop();
+    byId.set(e.id, { ...newer, hits: Math.max(mine.hits || 0, e.hits || 0), ...(lastUsed ? { lastUsed } : {}) });
+  }
+  const updatedAt = [theirs.updatedAt, ours.updatedAt].filter(Boolean).sort().pop() || new Date().toISOString();
+  return `${JSON.stringify({ version: 1, updatedAt, entries: [...byId.values()] }, null, 1)}\n`;
+}
+
 for (let attempt = 1; attempt <= 6; attempt++) {
   if (attempt > 1) await sleep(attempt * 4000);
   if (!tryGit('fetch', '-q', '--depth=50', 'origin', 'main')) continue;
@@ -52,6 +71,7 @@ for (let attempt = 1; attempt <= 6; attempt++) {
     if (deleted.has(f)) { if (existsSync(f)) git('rm', '-q', '--', f); continue; }
     const ours = readFileSync(join(keep, f), 'utf8');
     if (f === QUOTA && existsSync(f)) writeFileSync(f, mergeQuota(readFileSync(f, 'utf8'), ours));
+    else if (MEMORIES.has(f) && existsSync(f)) writeFileSync(f, mergeMemoryText(readFileSync(f, 'utf8'), ours));
     else { mkdirSync(dirname(f), { recursive: true }); writeFileSync(f, ours); }
   }
   const broken = mine.filter((f) => f.endsWith('.json') && existsSync(f)).filter((f) => { try { JSON.parse(readFileSync(f, 'utf8')); return false; } catch { return true; } });

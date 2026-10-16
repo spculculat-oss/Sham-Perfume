@@ -2,6 +2,7 @@
  * Sham Core — shared domain types.
  * Every entity is owned by Sham's own storage; no provider ever owns business data.
  */
+import type { MemoryEntry } from '../../src/utils/shaheenMemory';
 import type { SupportedLanguage } from '../../src/types/i18n';
 
 export type Lang = SupportedLanguage;
@@ -286,5 +287,7 @@ export interface Collections {
   settings: CoreSettings & { id: string };
   gaps: KnowledgeGap;
   visitors: VisitorProfile;
+  /** «ذاكرة شاهين»: answers Shaheen gave, reused for repeated questions and when no AI engine answers. */
+  memory: MemoryEntry;
 }
 export type CollectionName = keyof Collections;

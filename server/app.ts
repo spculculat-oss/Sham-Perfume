@@ -39,7 +39,7 @@ app.get('/api/health', (_req, res) => {
 
 // «الخبير شاهين»: GET /api/models + POST /api/chat. Settings come from server/config/shaheen.ts and the
 // admin dashboard, so both sites (Vercel and GitHub Pages, which calls this API) behave the same.
-app.use('/api', createShaheenRouter({ repo: shamCore.repo, runtime: shamCore.runtime }));
+app.use('/api', createShaheenRouter({ repo: shamCore.repo, runtime: shamCore.runtime, memory: shamCore.memory }));
 app.use('/api', createMediaRouter());
 // «اسأل شاهين» in «متجر شام»: POST /api/store/advise (server/store.ts).
 app.use('/api', createStoreRouter({ repo: shamCore.repo }));

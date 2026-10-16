@@ -13,6 +13,7 @@ import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs
 import { guidanceBlock } from '../../src/utils/aiTools';
 import type { RawProduct } from '../../src/utils/storeCatalog';
 import { makeAsk, QuotaExhaustedError, quotaBook } from '../doctor/agent';
+import { answerBook } from '../doctor/answers';
 import { extractProduct, pageImages, pageText, parseListing, parseSitemap, parseSitemapIndex, validateShaheenReading, type ExtractedProduct, type SitemapEntry } from './extract';
 import { reviewStore, type ReviewFile } from './review';
 import { SOURCES } from './sources';
@@ -121,7 +122,9 @@ const importInfo: Record<string, unknown> = { at: new Date().toISOString(), mark
 // AI packages: Shaheen reads pages only while the quota lasts; pages left unread wait for its renewal.
 const quota = quotaBook(new URL('../../src/data/live/ai-quota.json', import.meta.url));
 let ask: Awaited<ReturnType<typeof makeAsk>>;
-try { ask = await makeAsk(env, { quota }); } catch { ask = undefined; }
+// The same page text read before is answered from the bots' memory (no AI call, even with the quota paused).
+const memory = answerBook(new URL('../../src/data/live/ai-memory.json', import.meta.url));
+try { ask = await makeAsk(env, { quota, memory }); } catch { ask = undefined; }
 let aiResumeAt = 0;
 
 const SHAHEEN_READER = `أنت «الخبير شاهين» وتقرأ صفحة منتج عطر من متجر مورّد. استخرج البيانات المكتوبة في الصفحة فقط ولا تخمّن.
@@ -199,10 +202,11 @@ for (const source of SOURCES.filter((s) => !env.IMPORT_SOURCE || env.IMPORT_SOUR
           const reply = await ask(READER, prompt);
           const body = (reply || '').replace(/```(?:json)?/gi, '');
           x = validateShaheenReading(JSON.parse(body.slice(body.indexOf('{'), body.lastIndexOf('}') + 1)), page.body, job.url, source.currency);
-          if (x) viaShaheen++;
+          if (x) viaShaheen++; else memory.forget(READER, prompt);
         } catch (error) {
           // Quota used up: this page (and the next ones needing Shaheen) wait for the renewal — not failures.
           if (error instanceof QuotaExhaustedError) { aiResumeAt = error.resumeAt; deferred.push(job.url); continue; }
+          memory.forget(READER, prompt);
           x = null;
         }
       }
@@ -226,6 +230,8 @@ for (const source of SOURCES.filter((s) => !env.IMPORT_SOURCE || env.IMPORT_SOUR
 
 if (aiResumeAt) { importInfo.aiResumeAt = new Date(aiResumeAt).toISOString(); say(`AI packages used up until ${importInfo.aiResumeAt}; the import continues then`); }
 quota.save();
+memory.save();
+if (memory.hits()) say(`${memory.hits()} page readings answered from Shaheen's memory (no AI call)`);
 
 // A changed price rule applies to every imported product at once (the price is a pure function of the
 // supplier's EGP price), so nothing waits for its refresh and the reviewer never hides products for it.

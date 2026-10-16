@@ -9,6 +9,7 @@ import { guidanceBlock } from '../../src/utils/aiTools';
 import type { RawProduct, StoreCatalogFile, StoreEntry } from '../../src/utils/storeCatalog';
 import { BATCH, buildCatalogFile, entriesFromShaheen, parseJson, staleProducts, STORE_SYSTEM, storePrompt } from './curate';
 import { makeAsk, QuotaExhaustedError, quotaBook } from '../doctor/agent';
+import { answerBook } from '../doctor/answers';
 
 const env = process.env;
 const DIR = new URL('../../src/data/live/', import.meta.url);
@@ -31,7 +32,9 @@ say(`Products: ${products.length}; waiting for Shaheen: ${pendingAll}; this run 
 const fresh: Record<string, StoreEntry> = {};
 const quota = quotaBook(new URL('ai-quota.json', DIR));
 let ask: Awaited<ReturnType<typeof makeAsk>>;
-try { ask = await makeAsk(env, { quota }); } catch { ask = undefined; }
+// The same batch asked before (a run that stopped, a lost publish) is answered from the bots' memory.
+const memory = answerBook(new URL('ai-memory.json', DIR));
+try { ask = await makeAsk(env, { quota, memory }); } catch { ask = undefined; }
 let resumeAt = 0;
 if (ask && stale.length) {
   for (let i = 0; i < stale.length; i += BATCH) {
@@ -40,7 +43,9 @@ if (ask && stale.length) {
     for (let attempt = 1; attempt <= 2 && !resumeAt; attempt++) {
       try {
         const prompt = storePrompt(batch) + (attempt > 1 ? '\n\nتنبيه: ردك السابق لم يكن JSON صالحاً. أعد JSON صالحاً فقط بدون أي نص أو فواصل زائدة.' : '');
-        const got = entriesFromShaheen(parseJson(await ask(SYSTEM, prompt)), batch, now.toISOString());
+        let got: ReturnType<typeof entriesFromShaheen>;
+        try { got = entriesFromShaheen(parseJson(await ask(SYSTEM, prompt)), batch, now.toISOString()); }
+        catch (error) { if (!(error instanceof QuotaExhaustedError)) memory.forget(SYSTEM, prompt); throw error; }
         Object.assign(fresh, got);
         say(`Shaheen rewrote ${Object.keys(got).length}/${batch.length} products${attempt > 1 ? ' (second try)' : ''}`);
         break;
@@ -56,6 +61,8 @@ const left = Math.max(0, pendingAll - Object.keys(fresh).length);
 if (resumeAt) say(`AI packages used up: ${left} products wait for the renewal at ${new Date(resumeAt).toISOString()} (rule-based text until then)`);
 else if (left) say(`${left} products left for the next run`);
 quota.save();
+memory.save();
+if (memory.hits()) say(`${memory.hits()} batches answered from Shaheen's memory (no AI call)`);
 
 const file = buildCatalogFile(products, previous, fresh, now);
 mkdirSync(DIR, { recursive: true });

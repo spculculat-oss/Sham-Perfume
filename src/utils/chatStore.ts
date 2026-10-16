@@ -2,6 +2,8 @@ import type { SupportedLanguage } from '../types/i18n';
 import { removeMediaBlocks } from './mediaBlock';
 import { findFormulaBlocks } from './aiFormulaExtractor';
 import { greetingKind, greetingReply } from './shaheenGreeting';
+import { browserMemory, type OfflineMemory } from './browserMemory';
+import { offlineNote } from './shaheenMemory';
 import { ApiError, isStaticHosting, requestApi, visitorId, type ChatResponse } from './api';
 import { CHAT_STORAGE_KEY, clearChatSession, DEFAULT_WELCOME_MESSAGE, isChatMessage,
   loadStoredChatSession, saveChatSession, type ChatMessage, type ShaheenProvider } from './chatStorage';
@@ -42,6 +44,17 @@ interface SendOptions {
   errorText: (error: unknown) => string;
 }
 
+/**
+ * When the server cannot answer (no connection, server down, every engine busy or out of quota) Shaheen
+ * answers from memory instead of an error. Not for a question the server refused (bad request, rate
+ * limit…) or when the administration turned Shaheen off.
+ */
+export function canAnswerFromMemory(error: unknown): boolean {
+  if (!(error instanceof ApiError)) return true; // network failure, timeout, a non-JSON page
+  if (error.code === 'SHAHEEN_DISABLED') return false;
+  return error.status >= 500 || error.status === 408 || error.code === 'SHAHEEN_BUSY';
+}
+
 export function chatHistory(messages: ChatMessage[]) {
   const history: { role: 'user' | 'assistant'; text: string }[] = [];
   let size = 0;
@@ -57,7 +70,7 @@ export function chatHistory(messages: ChatMessage[]) {
 }
 
 /** One synchronous owner for both chat surfaces: no effect-driven rebroadcast loops. */
-export function createChatStore(request: typeof requestApi = requestApi, pause: typeof wait = wait) {
+export function createChatStore(request: typeof requestApi = requestApi, pause: typeof wait = wait, memory: OfflineMemory = browserMemory) {
   let snapshot: Snapshot | undefined;
   let controller: AbortController | undefined;
   let generation = 0;
@@ -151,11 +164,12 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       publish({ ...current, isLoading: true,
         messages: [...current.messages, { id: id('user'), role: 'user', text, timestamp: timestamp() }] });
       const signal = controller.signal;
+      const history = chatHistory(current.messages);
       try {
         // The anonymous visitor id travels in the body, not in a custom header: a custom header needs CORS approval,
         // and a server one deploy behind would then block every question from the GitHub Pages site.
         const body = JSON.stringify({ message: text, model: options.model, language: options.language,
-          conversationHistory: chatHistory(current.messages), visitorId: visitorId() });
+          conversationHistory: history, visitorId: visitorId() });
         let data: ChatResponse | undefined;
         for (let attempt = 0; ; attempt++) {
           try {
@@ -176,8 +190,19 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
           aiEngine: data?.engine };
         if (!message.text?.trim() || !isChatMessage(message)) throw new Error('Invalid chat response');
         publish({ ...getSnapshot(), messages: [...getSnapshot().messages, message], isLoading: false, busy: false });
+        // «ذاكرة شاهين»: this browser keeps its opening questions for the day the server cannot be reached.
+        if (!history.length && options.model !== 'council') memory.learn({ question: text, lang: options.language, mode: options.model, answer: message.text });
       } catch (error) {
         if (generation !== token) return false;
+        const remembered = canAnswerFromMemory(error) ? await memory.recall(text, options.language).catch(() => undefined) : undefined;
+        if (generation !== token) return false;
+        if (remembered) {
+          publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
+            id: id('bot'), role: 'assistant', text: remembered.answer + offlineNote(options.language, remembered.exact), timestamp: timestamp(),
+            aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' },
+          }] });
+          return true;
+        }
         publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
           id: id('bot-err'), role: 'assistant', kind: 'error', text: options.errorText(error), timestamp: timestamp(),
         }] });

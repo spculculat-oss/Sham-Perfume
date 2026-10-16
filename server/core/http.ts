@@ -6,6 +6,7 @@
 import express from 'express';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { Repository, ValidationError, publicView } from './repository';
+import { ShaheenMemory } from './memory';
 import { AssistantError, Orchestrator, publicEngine, validateChatInput, type ChatOutput, type StreamEvent } from './orchestrator';
 import { createNotifier } from './notify';
 import { runAdminAgent } from './adminAgent';
@@ -54,6 +55,8 @@ export function createShamCore(options: CoreOptions = {}) {
   // Shared with the Shaheen chat router: outcomes + capacity parts, read by the maintenance agent.
   const runtime = options.runtime || new ShaheenRuntime(runningVersion(env));
   const orchestrator = new Orchestrator(repo, { env, fetch: options.fetch });
+  // «ذاكرة شاهين»: shared with the Shaheen chat router (server/app.ts); exported to the bots below.
+  const memory = new ShaheenMemory(store, env, options.fetch);
   const notifier = createNotifier(env, options.fetch);
   const feedbackLimiter = new RateLimiter(60, 10 * 60_000);
   const privacyLimiter = new RateLimiter(10, 10 * 60_000);
@@ -215,6 +218,10 @@ export function createShamCore(options: CoreOptions = {}) {
     }
     next();
   });
+
+  // What this server learned (questions + answers, no visitor data): merged into
+  // src/data/live/shaheen-memory.json by scripts/shaheen-memory every two hours.
+  admin.get('/shaheen-memory', wrap(async (_req, res) => { res.json(await memory.learned()); }));
 
   admin.get('/overview', wrap(async (_req, res) => {
     const [requests, conversations, products, knowledge, services, settings, gaps] = await Promise.all([
@@ -496,5 +503,5 @@ export function createShamCore(options: CoreOptions = {}) {
     res.json(out);
   }));
 
-  return { assistant, admin, repo, orchestrator, store, runtime };
+  return { assistant, admin, repo, orchestrator, store, runtime, memory };
 }
