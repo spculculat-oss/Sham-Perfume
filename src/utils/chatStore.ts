@@ -2,6 +2,7 @@ import type { SupportedLanguage } from '../types/i18n';
 import { removeMediaBlocks } from './mediaBlock';
 import { findFormulaBlocks } from './aiFormulaExtractor';
 import { greetingKind, greetingReply } from './shaheenGreeting';
+import { quickAnswer } from './shaheenQuickApps';
 import { browserMemory, type OfflineMemory } from './browserMemory';
 import { offlineNote } from './shaheenMemory';
 import { ApiError, isStaticHosting, requestApi, visitorId, type ChatResponse } from './api';
@@ -155,6 +156,16 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
         publish({ ...current, messages: [...current.messages,
           { id: id('user'), role: 'user', text, timestamp: timestamp() },
           { id: id('bot'), role: 'assistant', text: greetingReply(greeting, options.language), timestamp: timestamp(),
+            aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' } }] });
+        return true;
+      }
+      // «تطبيقات شاهين السريعة»: a simple, complete task (alcohol dilution, oil amounts, oz↔ml, thanks…) is
+      // calculated right here — instant, no queue, no AI quota — so the engines stay free for real questions.
+      const quick = quickAnswer(text, options.language);
+      if (quick) {
+        publish({ ...current, messages: [...current.messages,
+          { id: id('user'), role: 'user', text, timestamp: timestamp() },
+          { id: id('bot'), role: 'assistant', text: quick.reply, timestamp: timestamp(),
             aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' } }] });
         return true;
       }
