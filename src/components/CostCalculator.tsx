@@ -30,6 +30,7 @@ import { calculatePerfumeCosting, formatNum } from '../utils/calculations';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../utils/localizedContent';
 import { LText, makeT, fmt, pickArEn } from '../utils/localize';
+import { uiLabel } from '../utils/uiTextL10n';
 
 interface CostCalculatorProps {
   currentLang?: SupportedLanguage;
@@ -1724,7 +1725,7 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
                       <span className="text-sm font-extrabold font-mono-numbers text-stone-900">
                         {item.volume}
                       </span>
-                      <span className="text-[11px] font-semibold text-stone-500">مل</span>
+                      <span className="text-[11px] font-semibold text-stone-500">{uiLabel('unit_ml', currentLang)}</span>
                     </div>
 
                     {item.isCurrent && (
@@ -1737,14 +1738,14 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
                     {!item.isCurrent && item.volume === 100 && (
                       <span className="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded-full">
                         <Award className="w-2.5 h-2.5" />
-                        <span>أعلى ربح</span>
+                        <span>{uiLabel('top_profit', currentLang)}</span>
                       </span>
                     )}
 
                     {!item.isCurrent && item.volume === 50 && (
                       <span className="inline-flex items-center gap-1 text-[9px] font-bold text-purple-800 bg-purple-100 px-1.5 py-0.5 rounded-full">
                         <Sparkles className="w-2.5 h-2.5" />
-                        <span>الحجم الذهبي</span>
+                        <span>{uiLabel('golden_size', currentLang)}</span>
                       </span>
                     )}
                   </div>
@@ -1894,7 +1895,7 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
                   +{formatNum(selectedItem.netProfit)} {costing.currency}
                 </div>
                 <div className="text-[10px] text-emerald-600 font-mono-numbers">
-                  +{formatNum(selectedItem.profitPerMl)} {costing.currency} / مل
+                  +{formatNum(selectedItem.profitPerMl)} {costing.currency} / {uiLabel('unit_ml', currentLang)}
                 </div>
               </div>
 
@@ -1975,10 +1976,10 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
                       }`}
                     >
                       <td className="py-3 px-3.5 font-sans font-bold text-stone-900 flex items-center gap-1.5">
-                        <span>{item.volume} مل</span>
+                        <span>{item.volume} {uiLabel('unit_ml', currentLang)}</span>
                         {isCur && (
                           <span className="text-[9px] bg-amber-200 text-amber-900 px-1.5 py-0.2 rounded-full font-bold">
-                            المعتمد
+                            {uiLabel('certified', currentLang)}
                           </span>
                         )}
                       </td>
@@ -1992,7 +1993,7 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
                         +{formatNum(item.netProfit)} {costing.currency}
                       </td>
                       <td className="py-3 px-3.5 text-stone-600">
-                        {formatNum(item.costPerMl)} {costing.currency} / مل
+                        {formatNum(item.costPerMl)} {costing.currency} / {uiLabel('unit_ml', currentLang)}
                       </td>
                       <td className="py-3 px-3.5 text-center text-emerald-800 font-bold">
                         +{formatNum(item.roiPercent)}%

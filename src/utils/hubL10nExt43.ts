@@ -343,7 +343,7 @@ export const HUB_L10N_EXT_43: Record<string, HubExtEntry43> = {
   },
   'portal_library:lib3': {
     badge: { sn: 'Kubatana kwakapetwa negore', rw: 'Guhuza kabiri mu gicu' },
-    title: { sn: 'Chengetedzo yemuno yakachengeteka nekubatana kweFirebase kwazvino', rw: 'Ububiko bwo mu karere butekanye hamwe no guhuza Firebose ako kanya' },
+    title: { sn: 'Chengetedzo yemuno yakachengeteka nekubatana kweFirebase kwazvino', rw: 'Ububiko bwo mu karere butekanye hamwe no guhuza Firebase ako kanya' },
     description: { sn: 'Usarasikirwe nefomula dzako kana uchinja mudziyo — zvakanyorwa zvakabatanidzwa neakaundi yako pachako yakakodhwa.', rw: 'Ntuzatakaze ifomula zawe iyo uhinduye igikoresho — inyandiko zihuza na konti yawe bwite yanditse mu ibanga.' },
     metric: { sn: 'Kubatana kweFirebase', rw: 'Guhuza Firebase' },
     timestamp: { sn: 'Chengetedzo nemapepa', rw: 'Kubika no kubungabunga' },

@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
 import { LText, loc, makeT } from '../utils/localize';
+import { uiLabel } from '../utils/uiTextL10n';
 import {
   getMerchantById,
   updateMerchant,
@@ -109,6 +110,7 @@ export const MerchantWorkspace: React.FC<{
   merchantId: string;
 }> = ({ onClose, currentLang, merchantId }) => {
   const L = makeT(currentLang, S);
+  const CUR = uiLabel('currency_egp', currentLang);
   const merchant = useMemo(() => getMerchantById(merchantId), [merchantId]);
   const [activeTab, setActiveTab] = useState<'dashboard'|'products'|'orders'|'profile'>('dashboard');
   const [showAddProduct, setShowAddProduct] = useState(false);
@@ -275,7 +277,7 @@ export const MerchantWorkspace: React.FC<{
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {[
                   { label:L('stats_orders'), value:totalOrders, color:'bg-amber-50 border-amber-200/60 text-amber-900', icon:ShoppingBag },
-                  { label:L('stats_revenue'), value:totalRevenue.toLocaleString()+' جنيه', color:'bg-emerald-50 border-emerald-200/60 text-emerald-900', icon:DollarSign },
+                  { label:L('stats_revenue'), value:totalRevenue.toLocaleString()+' '+CUR, color:'bg-emerald-50 border-emerald-200/60 text-emerald-900', icon:DollarSign },
                   { label:L('stats_products'), value:`${approvedCount}/${totalProducts}`, color:'bg-blue-50 border-blue-200/60 text-blue-900', icon:Package },
                   { label:L('stats_margin'), value:`${PLATFORM_MARGIN_PERCENT}%`, color:'bg-purple-50 border-purple-200/60 text-purple-900', icon:TrendingUp },
                 ].map(s => (
@@ -298,9 +300,9 @@ export const MerchantWorkspace: React.FC<{
                   <div>
                     <h3 className="font-bold text-stone-900 mb-1">{L('margin_info')}</h3>
                     <p className="text-sm text-stone-600">
-                      سعر الجملة: <strong>{merchant?.companyNameAr}</strong> ←
-                      سعر العرض للزبون: <strong>سعر الجملة × 1.25</strong>
-                      ربح المنصة: <strong>٢٥٪ من سعر الجملة</strong>
+                      {uiLabel('wholesale_price', currentLang)}: <strong>{merchant?.companyNameAr}</strong> ←
+                      {uiLabel('offer_price', currentLang)}: <strong>{uiLabel('wholesale_x125', currentLang)}</strong>
+                      {uiLabel('platform_profit', currentLang)}: <strong>{uiLabel('platform_share_25', currentLang)}</strong>
                     </p>
                   </div>
                 </div>
@@ -335,20 +337,20 @@ export const MerchantWorkspace: React.FC<{
                           {order.items.map(item => (
                             <div key={item.productId} className="flex justify-between">
                               <span className="text-stone-700">{item.productNameAr} × {item.qty}</span>
-                              <span className="font-mono text-stone-600">{item.totalRetail.toLocaleString()} جنيه</span>
+                              <span className="font-mono text-stone-600">{item.totalRetail.toLocaleString()} {CUR}</span>
                             </div>
                           ))}
                           <div className="border-t border-stone-200 mt-2 pt-2 flex justify-between font-bold">
                             <span>{L('order_total_retail')}:</span>
-                            <span className="text-emerald-700">{order.subtotalRetail.toLocaleString()} جنيه</span>
+                            <span className="text-emerald-700">{order.subtotalRetail.toLocaleString()} {CUR}</span>
                           </div>
                           <div className="flex justify-between text-xs text-stone-500">
                             <span>{L('order_platform_revenue')}:</span>
-                            <span className="text-amber-700 font-bold">{order.totalPlatformRevenue.toLocaleString()} جنيه</span>
+                            <span className="text-amber-700 font-bold">{order.totalPlatformRevenue.toLocaleString()} {CUR}</span>
                           </div>
                           <div className="flex justify-between text-xs text-stone-500">
                             <span>{L('order_cost_to_merchant')}:</span>
-                            <span className="text-blue-700 font-bold">{order.subtotalCost.toLocaleString()} جنيه</span>
+                            <span className="text-blue-700 font-bold">{order.subtotalCost.toLocaleString()} {CUR}</span>
                           </div>
                         </div>
                         {order.status !== 'completed' && order.status !== 'cancelled' && (
@@ -392,11 +394,11 @@ export const MerchantWorkspace: React.FC<{
                         <div className="grid grid-cols-2 gap-2 text-sm mb-2">
                           <div className="p-2 rounded-lg bg-amber-50 border border-amber-200/40">
                             <div className="text-xs text-stone-500">{L('product_cost_price')}</div>
-                            <div className="font-bold text-amber-900 font-mono">{product.costPrice} جنيه</div>
+                            <div className="font-bold text-amber-900 font-mono">{product.costPrice} {CUR}</div>
                           </div>
                           <div className="p-2 rounded-lg bg-emerald-50 border border-emerald-200/40">
                             <div className="text-xs text-stone-500">{L('product_retail_price')}</div>
-                            <div className="font-bold text-emerald-900 font-mono">{product.retailPrice} جنيه</div>
+                            <div className="font-bold text-emerald-900 font-mono">{product.retailPrice} {CUR}</div>
                           </div>
                         </div>
                         <div className="flex justify-between text-xs text-stone-500">
@@ -405,7 +407,7 @@ export const MerchantWorkspace: React.FC<{
                         </div>
                         <div className="mt-3 flex gap-2">
                           <button onClick={()=>startEdit(product)} className="flex-1 px-2 py-1 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded text-xs font-medium transition-colors">
-                            <Edit3 className="w-3 h-3 inline mr-0.5"/> تعديل
+                            <Edit3 className="w-3 h-3 inline mr-0.5"/> {uiLabel('edit', currentLang)}
                           </button>
                           <button onClick={()=>deleteProduct(product.id)} className="px-2 py-1 bg-red-100 hover:bg-red-200 text-red-700 rounded text-xs font-medium transition-colors">
                             <Trash2 className="w-3 h-3 inline"/>
@@ -447,8 +449,8 @@ export const MerchantWorkspace: React.FC<{
                           <div className="font-bold text-stone-900">{product.nameAr}</div>
                           <div className="text-xs text-stone-500">{product.category} — {product.unit} | SKU: {product.sku}</div>
                           <div className="flex gap-3 mt-1 text-sm">
-                            <span className="text-stone-500">{L('product_cost_price')}: <strong className="text-amber-900">{product.costPrice}</strong> جنيه</span>
-                            <span className="text-emerald-700 font-bold">{L('product_retail_price')}: <strong>{product.retailPrice}</strong> جنيه</span>
+                            <span className="text-stone-500">{L('product_cost_price')}: <strong className="text-amber-900">{product.costPrice}</strong> {CUR}</span>
+                            <span className="text-emerald-700 font-bold">{L('product_retail_price')}: <strong>{product.retailPrice}</strong> {CUR}</span>
                           </div>
                           <div className="text-xs text-stone-500 mt-1">
                             {L('product_stock')}: {product.stock} | {L('product_min_order')}: {product.minOrderQty}
@@ -504,16 +506,16 @@ export const MerchantWorkspace: React.FC<{
                         {order.items.map(item => (
                           <div key={item.productId} className="flex justify-between">
                             <span className="text-stone-700">{item.productNameAr} × {item.qty} {item.unit}</span>
-                            <span className="font-mono text-stone-600">{item.totalRetail.toLocaleString()} جنيه</span>
+                            <span className="font-mono text-stone-600">{item.totalRetail.toLocaleString()} {CUR}</span>
                           </div>
                         ))}
                         <div className="border-t border-stone-200 mt-2 pt-2 flex justify-between font-bold text-sm">
                           <span>{L('order_total_retail')}:</span>
-                          <span className="text-emerald-700">{order.subtotalRetail.toLocaleString()} جنيه</span>
+                          <span className="text-emerald-700">{order.subtotalRetail.toLocaleString()} {CUR}</span>
                         </div>
                         <div className="flex justify-between text-xs text-stone-500 mt-1">
-                          <span>{L('order_platform_revenue')}: <span className="text-amber-700 font-bold">{order.totalPlatformRevenue.toLocaleString()} جنيه</span></span>
-                          <span>{L('order_cost_to_merchant')}: <span className="text-blue-700 font-bold">{order.subtotalCost.toLocaleString()} جنيه</span></span>
+                          <span>{L('order_platform_revenue')}: <span className="text-amber-700 font-bold">{order.totalPlatformRevenue.toLocaleString()} {CUR}</span></span>
+                          <span>{L('order_cost_to_merchant')}: <span className="text-blue-700 font-bold">{order.subtotalCost.toLocaleString()} {CUR}</span></span>
                         </div>
                       </div>
                       {order.status !== 'completed' && order.status !== 'cancelled' && (
@@ -591,7 +593,7 @@ export const MerchantWorkspace: React.FC<{
                       className="w-full px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
                   </div>
                   <div>
-                    <label className="text-xs font-medium text-stone-600 mb-1 block">هامش المنصة: {merchant.marginPercent}%</label>
+                    <label className="text-xs font-medium text-stone-600 mb-1 block">{uiLabel('platform_margin_label', currentLang)}: {merchant.marginPercent}%</label>
                     <p className="text-xs text-stone-500 mt-1">{L('margin_info')}</p>
                   </div>
                 </div>
@@ -654,7 +656,7 @@ export const MerchantWorkspace: React.FC<{
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
             <div className="w-full max-w-lg bg-white rounded-2xl shadow-2xl animate-in fade-in zoom-in-95 p-6">
               <h2 className="text-lg font-bold text-stone-900 mb-4 font-serif-luxury">
-                {editProductId ? L('product_name_ar')+' (تعديل)' : L('add_product')}
+                {editProductId ? L('product_name_ar')+' ('+uiLabel('edit', currentLang)+')' : L('add_product')}
               </h2>
               <div className="space-y-3">
                 <div>
@@ -698,7 +700,7 @@ export const MerchantWorkspace: React.FC<{
                     else setNewProduct({...newProduct, costPrice:parseFloat(e.target.value)||0});
                   }} className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
                   <p className="text-[10px] text-stone-400 mt-1">
-                    {L('product_retail_price')}: <strong>{((editProductId?editProduct.costPrice:newProduct.costPrice)*1.25).toFixed(2)}</strong> جنيه (مع {PLATFORM_MARGIN_PERCENT}٪)
+                    {L('product_retail_price')}: <strong>{((editProductId?editProduct.costPrice:newProduct.costPrice)*1.25).toFixed(2)}</strong> {CUR} ({uiLabel('with_pct', currentLang)} {String(PLATFORM_MARGIN_PERCENT)+'%'})
                   </p>
                 </div>
                 <div className="flex gap-2">
@@ -718,10 +720,10 @@ export const MerchantWorkspace: React.FC<{
                   </div>
                 </div>
                 <div className="flex justify-end gap-2 pt-3">
-                  <button onClick={()=>{setShowAddProduct(false);setEditProductId(null);}} className="px-4 py-2 rounded-lg bg-stone-100 text-stone-700 text-sm font-medium hover:bg-stone-200"> canceling</button>
+                  <button onClick={()=>{setShowAddProduct(false);setEditProductId(null);}} className="px-4 py-2 rounded-lg bg-stone-100 text-stone-700 text-sm font-medium hover:bg-stone-200">{uiLabel('cancel', currentLang)}</button>
                   <button onClick={editProductId ? handleSaveEdit : handleSaveProduct} className="px-4 py-2 rounded-lg bg-amber-700 text-white text-sm font-medium hover:bg-amber-800">
                     <Save className="w-4 h-4 inline mr-1"/>
-                    {editProductId ? 'حفظ التعديل' : 'إضافة المنتج'}
+                    {editProductId ? uiLabel('save_edit', currentLang) : L('add_product')}
                   </button>
                 </div>
               </div>
@@ -739,7 +741,7 @@ export const MerchantWorkspace: React.FC<{
               <h3 className="text-lg font-bold text-stone-900 mb-2">{L('cancel_dialog_title')}</h3>
               <p className="text-sm text-stone-600 mb-4">{L('cancel_dialog_msg')}</p>
               <div className="flex gap-2">
-                <button onClick={()=>setConfirmCancelOrder(null)} className="flex-1 px-4 py-2 rounded-lg bg-stone-100 text-stone-700 text-sm font-medium hover:bg-stone-200">إلغاء</button>
+                <button onClick={()=>setConfirmCancelOrder(null)} className="flex-1 px-4 py-2 rounded-lg bg-stone-100 text-stone-700 text-sm font-medium hover:bg-stone-200">{uiLabel('cancel', currentLang)}</button>
                 <button onClick={()=>cancelOrder(confirmCancelOrder)} className="flex-1 px-4 py-2 rounded-lg bg-red-600 text-white text-sm font-medium hover:bg-red-700">{L('order_cancel')}</button>
               </div>
             </div>

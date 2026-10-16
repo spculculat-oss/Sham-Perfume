@@ -28,6 +28,7 @@ import { SupportedLanguage } from '../types/i18n';
 import { formatNum } from '../utils/calculations';
 import { useLanguage } from '../context/LanguageContext';
 import { LText, makeT, fmt, pickArEn } from '../utils/localize';
+import { uiLabel } from '../utils/uiTextL10n';
 import {
   calculateEvaporationKinetics,
   EvaporationKinetics,
@@ -1259,7 +1260,7 @@ export const PerfumeSpraySimulator: React.FC<PerfumeSpraySimulatorProps> = ({
             />
           </div>
           <span className="text-[10px] text-stone-500 block">
-            {kinetics.alcoholRemainingPct === 0 ? 'تبخر الكحول بالكامل 💨' : 'وميض تبخر سريع'}
+            {kinetics.alcoholRemainingPct === 0 ? uiLabel('alcohol_evaporated', effectiveLang) : uiLabel('alcohol_flash', effectiveLang)}
           </span>
         </div>
 
@@ -1279,7 +1280,7 @@ export const PerfumeSpraySimulator: React.FC<PerfumeSpraySimulatorProps> = ({
             />
           </div>
           <span className="text-[10px] text-stone-500 block">
-            رسو في الطبقة الدهنية
+            {uiLabel('skin_residue', effectiveLang)}
           </span>
         </div>
 
@@ -1299,7 +1300,7 @@ export const PerfumeSpraySimulator: React.FC<PerfumeSpraySimulatorProps> = ({
             />
           </div>
           <span className="text-[10px] text-stone-500 block">
-            {kinetics.evaporationRateMgPerHour > 1.0 ? 'انبعاث فوار نشط' : 'تطاير مخملي هادئ'}
+            {kinetics.evaporationRateMgPerHour > 1.0 ? uiLabel('emissive_active', effectiveLang) : uiLabel('velvet_drift', effectiveLang)}
           </span>
         </div>
 
@@ -1319,14 +1320,14 @@ export const PerfumeSpraySimulator: React.FC<PerfumeSpraySimulatorProps> = ({
             />
           </div>
           <span className="text-[10px] text-stone-500 block">
-            {kinetics.sillageRadiusMeters >= 2.0 ? 'فوحان خارق للمكان' : kinetics.sillageRadiusMeters >= 1.0 ? 'هالة شخصية أنيقة' : 'ثبات ملاصق للبشرة'}
+            {kinetics.sillageRadiusMeters >= 2.0 ? uiLabel('sillage_huge', effectiveLang) : kinetics.sillageRadiusMeters >= 1.0 ? uiLabel('aura_elegant', effectiveLang) : uiLabel('skin_close', effectiveLang)}
           </span>
         </div>
 
         {/* Metric 5: Active Vapor Dominance */}
         <div className="bg-stone-900/90 p-3.5 rounded-2xl border border-stone-800 space-y-1.5 col-span-2 sm:col-span-1">
           <div className="flex items-center justify-between text-[11px] text-stone-400">
-            <span>الهالة العطرية في الجو</span>
+            <span>{uiLabel('air_aura', effectiveLang)}</span>
             <Sparkles className="w-3.5 h-3.5 text-amber-300" />
           </div>
           <div className="font-mono-numbers text-base font-bold text-white flex items-center gap-1.5">
@@ -1341,10 +1342,10 @@ export const PerfumeSpraySimulator: React.FC<PerfumeSpraySimulatorProps> = ({
             />
             <span className="truncate">
               {kinetics.dominantVaporTier === 'top'
-                ? 'قمة (Top Notes)'
+                ? uiLabel('tier_top', effectiveLang)
                 : kinetics.dominantVaporTier === 'heart'
-                ? 'قلب (Heart Notes)'
-                : 'قاعدة (Base Notes)'}
+                ? uiLabel('tier_heart', effectiveLang)
+                : uiLabel('tier_base', effectiveLang)}
             </span>
           </div>
           <div className="text-[10px] text-stone-400 font-mono-numbers pt-1 flex justify-between">
@@ -1419,12 +1420,12 @@ export const PerfumeSpraySimulator: React.FC<PerfumeSpraySimulatorProps> = ({
             className="w-full accent-amber-500 cursor-pointer h-2 bg-stone-800 rounded-lg appearance-none"
           />
           <div className="flex justify-between text-[10px] text-stone-400 font-mono-numbers">
-            <span>0m (لحظة الرش)</span>
-            <span>15m (القمة)</span>
-            <span>1h (القلب)</span>
-            <span>4h (القاعدة)</span>
-            <span>8h (الدراي داون)</span>
-            <span>12h+ (أثر دائم)</span>
+            <span>0m ({uiLabel('tl_spray', effectiveLang)})</span>
+            <span>15m ({uiLabel('tl_top', effectiveLang)})</span>
+            <span>1h ({uiLabel('tl_heart', effectiveLang)})</span>
+            <span>4h ({uiLabel('tl_base', effectiveLang)})</span>
+            <span>8h ({uiLabel('tl_drydown', effectiveLang)})</span>
+            <span>12h+ ({uiLabel('tl_trail', effectiveLang)})</span>
           </div>
         </div>
 
@@ -1474,7 +1475,7 @@ export const PerfumeSpraySimulator: React.FC<PerfumeSpraySimulatorProps> = ({
       <div className="p-3.5 bg-stone-900/60 rounded-xl border border-stone-800/80 text-[11px] space-y-1.5 text-stone-400">
         <div className="font-semibold text-stone-300 mb-1 flex items-center gap-1.5">
           <Info className="w-3.5 h-3.5 text-amber-400" />
-          <span>الدليل اللوني لسرعة تطاير الجزيئات (Molecular Evaporation Legend):</span>
+          <span>{uiLabel('evap_legend', effectiveLang)} (Molecular Evaporation Legend):</span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
           <div className="flex items-center gap-2">
