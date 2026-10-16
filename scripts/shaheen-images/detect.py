@@ -148,10 +148,12 @@ def plan(boxes, tokens):
 
 
 def mask_boxes(remove, width, height):
-    """Rectangles to erase, padded so no edge of a letter is left behind."""
+    """Rectangles to erase, padded so no edge of a letter is left behind. Wider along the line: the faint ends
+    of a semi-transparent watermark line are often not read (Al Qannas: «…chic» after «instagram : jove»)."""
     out = []
     for b in remove:
         x0, y0, x1, y1 = b['box']
-        pad = max(5, int(0.4 * (y1 - y0)))
-        out.append([max(0, x0 - pad), max(0, y0 - pad), min(width, x1 + pad), min(height, y1 + pad)])
+        h = max(y1 - y0, 8)
+        pad, side = max(5, int(0.4 * h)), max(8, 2 * h)
+        out.append([max(0, x0 - side), max(0, y0 - pad), min(width, x1 + side), min(height, y1 + pad)])
     return out
