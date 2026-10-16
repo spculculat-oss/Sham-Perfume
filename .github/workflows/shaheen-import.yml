@@ -19,4 +19,11 @@ jobs:
         with:
           node-version-file: .nvmrc
           package-manager-cache: false
-      - run: node --experimental-strip-types scripts/shaheen-import/probe.mts
+      - name: product page
+        run: node --experimental-strip-types scripts/shaheen-import/probe.mts
+      - name: sitemap
+        env: { PROBE_MODE: sitemap }
+        run: node --experimental-strip-types scripts/shaheen-import/probe.mts
+      - name: second product
+        env: { PROBE_URL: 'https://www.shamperfume.com/perfumes/zimaya/zimaya-amber-is-great-edp-100ml/' }
+        run: node --experimental-strip-types scripts/shaheen-import/probe.mts
