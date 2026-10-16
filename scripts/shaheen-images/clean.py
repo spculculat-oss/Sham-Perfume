@@ -154,8 +154,15 @@ def main():
     inpaint = None
     today = datetime.date.today().isoformat()
     checked = edited = review = failed = 0
+    def downloads(pool):
+        # In batches: when the time budget ends no more photos are being downloaded for nothing.
+        for i in range(0, len(pending), 32):
+            if time.time() - start > budget:
+                return
+            yield from pool.map(fetch, pending[i:i + 32])
+
     with concurrent.futures.ThreadPoolExecutor(8) as pool:
-        for url, blob in pool.map(fetch, pending):
+        for url, blob in downloads(pool):
             if time.time() - start > budget:
                 break
             if not blob:

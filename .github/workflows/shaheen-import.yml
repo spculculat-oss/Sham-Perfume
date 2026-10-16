@@ -7,6 +7,12 @@ name: Shaheen product importer and page reviewer (every 2 hours)
 # (photos load, price formula, clean name, real description, source still sold) and hides broken ones.
 # Shaheen then writes the Arabic names/descriptions (scripts/shaheen-store) and GitHub Pages is rebuilt,
 # which generates a standalone page for every product (p/<slug>.html). Code: scripts/shaheen-import/.
+# «منقّح الصور» (scripts/shaheen-images/, no AI service): every product photo is read (OCR) once; a photo
+# that carries another source's contact marks (a store's website/watermark, phone, WhatsApp, @account) is
+# repainted where the mark was (LaMa inpainting), checked again, saved in the site (public/store-images/)
+# and used instead of the supplier's link — also when the importer refreshes the product later. The
+# manufacturer's own print on the bottle/box is kept. Each run works for a time budget, so a big backlog
+# is finished over a few runs; src/data/live/image-clean.json remembers every photo already checked.
 # Settings (repository variables, all optional): IMPORT_MAX_NEW (default 150 new products per run),
 # IMPORT_MAX_REFRESH (default 25), IMPORT_RATE_MYR_EGP (fallback exchange rate), and the price rule:
 # IMPORT_MARKUP (default 1.5), IMPORT_SHIPPING_EGP (fixed cost added per bottle, default 0) and
@@ -28,7 +34,7 @@ on:
     # (the bot's own commits use GITHUB_TOKEN, which starts no workflow, so there is no loop).
     # Branches: rehearsal only.
     branches: [main, 'arena/**']
-    paths: ['scripts/shaheen-import/**', 'src/data/products.json', '.github/workflows/shaheen-import.yml']
+    paths: ['scripts/shaheen-import/**', 'scripts/shaheen-images/**', 'src/data/products.json', '.github/workflows/shaheen-import.yml']
 
 permissions:
   contents: write
@@ -42,7 +48,7 @@ jobs:
   import:
     name: Import supplier products and review every page
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 50
     env:
       # Branch pushes rehearse only: the result is shown in the job summary, nothing is committed.
       IMPORT_COMMIT: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
@@ -83,7 +89,22 @@ jobs:
         run: bun install --frozen-lockfile || bun install
       - name: Shaheen imports the products and «مراجع الصفحات» reviews them
         run: node --import tsx scripts/shaheen-import/run.mts
-      - name: Shaheen writes the Arabic names and descriptions of the new products
+      - name: Set up the photo cleaner's model cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/lama
+          key: big-lama-v0.1.0
+      - name: «منقّح الصور» removes other sources' contact marks from the product photos
+        # Never blocks the import: a photo not checked this time is checked by a later run.
+        continue-on-error: true
+        timeout-minutes: 25
+        env:
+          # Seconds of work per run (main): 4000+ photos are read once, then only new photos.
+          IMAGE_TIME_BUDGET_S: ${{ vars.IMAGE_TIME_BUDGET_S || (github.ref == 'refs/heads/main' && '900' || '120') }}
+        run: |
+          pip install -q rapidocr_onnxruntime pillow numpy
+          python3 scripts/shaheen-images/test_detect.py
+          python3 scripts/shaheen-images/clean.py
         continue-on-error: true
         run: node --import tsx scripts/shaheen-store/run.mts
       - name: «ذاكرة شاهين» collects and curates what Shaheen learned (no AI call)
@@ -109,7 +130,7 @@ jobs:
           before=$(git rev-parse HEAD)
           # Other bots (news, supervisor) write some of the same generated files: scripts/ci/publish.mjs
           # resolves that instead of failing (a half-done rebase used to lose the whole import).
-          node scripts/ci/publish.mjs "مستورد شاهين: نقل منتجات المورد ومراجعة الصفحات $(date -u +%Y-%m-%dT%H:%MZ)" src/data/products.json src/data/live \
+          node scripts/ci/publish.mjs "مستورد شاهين: نقل منتجات المورد ومراجعة الصفحات $(date -u +%Y-%m-%dT%H:%MZ)" src/data/products.json src/data/live public/store-images \
             || { echo "::error::Could not push the imported products"; exit 1; }
           if [ "$(git rev-parse HEAD)" = "$before" ]; then exit 0; fi
           # Pushes made with this token start no workflows: rebuild GitHub Pages (store + product pages).

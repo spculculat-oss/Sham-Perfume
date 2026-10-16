@@ -5,6 +5,7 @@ import { isRTL } from '../لغات/localizedContent';
 import type { SupportedLanguage } from '../types/i18n';
 import campaignLifestyle from '../assets/images/store_campaign_lifestyle.jpg';
 import productsData from '../data/products.json';
+import { storeImageSrc } from '../utils/liveStore';
 
 const S = {
   promo_title: { ar: 'عالم عطور شام', en: 'The Sham Fragrance Edit' },
@@ -168,7 +169,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({ currentLang = 'ar', on
                       {activeProduct?.imageUrl && failedProductImage !== activeProduct.id ? (
                         <img
                           key={activeProduct.id}
-                          src={activeProduct.imageUrl}
+                          src={storeImageSrc(activeProduct.imageUrl)}
                           alt={productName}
                           className="h-full w-full object-contain p-2.5 drop-shadow-[0_18px_18px_rgba(40,24,10,0.22)] sm:p-3"
                           loading="lazy"
@@ -238,7 +239,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({ currentLang = 'ar', on
           <div className="relative mx-auto flex min-h-[62px] max-w-7xl items-center gap-2.5 px-3 py-2 sm:gap-4 sm:px-6">
             <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-amber-100/30 bg-gradient-to-br from-amber-100 to-[#c8a16a] shadow-md shadow-black/20">
               {activeProduct?.imageUrl && failedProductImage !== activeProduct.id
-                ? <img key={`compact-${activeProduct.id}`} src={activeProduct.imageUrl} alt={productName} className="h-full w-full object-contain p-0.5" loading="lazy" onError={() => setFailedProductImage(activeProduct.id)} />
+                ? <img key={`compact-${activeProduct.id}`} src={storeImageSrc(activeProduct.imageUrl)} alt={productName} className="h-full w-full object-contain p-0.5" loading="lazy" onError={() => setFailedProductImage(activeProduct.id)} />
                 : <Sparkles className="h-5 w-5 text-amber-950" />}
             </div>
             <div className="min-w-0 flex-1">
