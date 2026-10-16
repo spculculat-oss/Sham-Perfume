@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-16T13:35:47.296Z",
+ "updatedAt": "2026-10-16T15:06:39.998Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
-  "total": 921,
-  "imported": 870,
-  "ok": 488,
-  "warn": 433,
+  "total": 1071,
+  "imported": 1020,
+  "ok": 524,
+  "warn": 547,
   "hidden": 0,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-16T13:32:41.093Z",
+  "at": "2026-10-16T15:03:27.930Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,8 +25,8 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1016,
-    "listingOnly": 57,
+    "listingProducts": 1017,
+    "listingOnly": 58,
     "listingComplete": true,
     "added": 150,
     "refreshed": 25,
@@ -34,14 +34,14 @@
     "failedCount": 0,
     "viaShaheen": 0,
     "deferred": 0,
-    "gone": 2
+    "gone": 1
    }
   ],
   "rate": 13.081,
   "prices": {
-   "count": 870,
+   "count": 1020,
    "min": 750,
-   "median": 3240,
+   "median": 3340,
    "max": 7830,
    "top": [
     {
@@ -66,22 +66,22 @@
      "sizeMl": 105
     },
     {
+     "sku": "BUJ-1054",
+     "name": "Too Damn Clean by Bujairami 100ml Extrait de Parfum",
+     "price": 7460,
+     "supplierEgp": 4970.78,
+     "sizeMl": 100
+    },
+    {
      "sku": "AFN-824",
      "name": "Supremacy Incense by Afnan Perfumes – 100 ml (Unisex)",
      "price": 7245,
      "supplierEgp": 4826.89,
      "sizeMl": 100
-    },
-    {
-     "sku": "MAI-191",
-     "name": "Majesty by Maison Asrar 100ml EDP Unisex",
-     "price": 7185,
-     "supplierEgp": 4787.65,
-     "sizeMl": 100
     }
    ]
   },
-  "durationMs": 186217
+  "durationMs": 192083
  },
  "items": [
   {
@@ -1522,6 +1522,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/darlene-pour-femme-by-volare-100-ml-for-women-193.html"
+  },
+  {
+   "sku": "GRA-195",
+   "id": 195,
+   "name": "Oud Elixir by Grandeur Elite – 100 ml Eau de Parfum for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/oud-elixir-by-grandeur-elite-100-ml-eau-de-parfum-for-men-195.html"
   },
   {
    "sku": "ARD-197",
@@ -4614,6 +4624,1156 @@
     "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/hawas-ice-ultradose-by-kenz-de-rasasi-100ml-men-921.html"
+  },
+  {
+   "sku": "PAR-930",
+   "id": 930,
+   "name": "Taskeen Caramel Cascade 100ml by Paris Corner",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/taskeen-caramel-cascade-100ml-by-paris-corner-930.html"
+  },
+  {
+   "sku": "PAR-931",
+   "id": 931,
+   "name": "Daar Al Oud Intense 100ml by Paris Corner",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/daar-al-oud-intense-100ml-by-paris-corner-931.html"
+  },
+  {
+   "sku": "PAR-932",
+   "id": 932,
+   "name": "Autograph 100ml by Paris Corner",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/autograph-100ml-by-paris-corner-932.html"
+  },
+  {
+   "sku": "PAR-933",
+   "id": 933,
+   "name": "Rich Santal Emir by Paris Corner 100 ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/rich-santal-emir-by-paris-corner-100-ml-933.html"
+  },
+  {
+   "sku": "OSM-934",
+   "id": 934,
+   "name": "White F Berries & Flowers 75ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/white-f-berries-and-flowers-75ml-edp-934.html"
+  },
+  {
+   "sku": "OSM-935",
+   "id": 935,
+   "name": "Vanilla S Amber & Musk 75ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/vanilla-s-amber-and-musk-75ml-edp-935.html"
+  },
+  {
+   "sku": "PAR-936",
+   "id": 936,
+   "name": "Atomise Intensive Men by Emir Paris Corner 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/atomise-intensive-men-by-emir-paris-corner-100ml-936.html"
+  },
+  {
+   "sku": "FRE-937",
+   "id": 937,
+   "name": "Obsidian French Avenue Eau De Parfum 100ml Unisex",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/obsidian-french-avenue-eau-de-parfum-100ml-unisex-937.html"
+  },
+  {
+   "sku": "OSM-939",
+   "id": 939,
+   "name": "Woody W Bergamot Leather 75ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/woody-w-bergamot-leather-75ml-edp-939.html"
+  },
+  {
+   "sku": "FRE-940",
+   "id": 940,
+   "name": "Ghost Spectre by French Avenue 80ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ghost-spectre-by-french-avenue-80ml-940.html"
+  },
+  {
+   "sku": "OSM-941",
+   "id": 941,
+   "name": "Osma S – Pepper & Sandalwood EDP 150 ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/osma-s-pepper-and-sandalwood-edp-150-ml-941.html"
+  },
+  {
+   "sku": "OSM-942",
+   "id": 942,
+   "name": "Fruity D Cherry & Oud 75ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/fruity-d-cherry-and-oud-75ml-edp-942.html"
+  },
+  {
+   "sku": "OSM-943",
+   "id": 943,
+   "name": "Flowers W Osma Sandalwood 75ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/flowers-w-osma-sandalwood-75ml-943.html"
+  },
+  {
+   "sku": "OSM-944",
+   "id": 944,
+   "name": "Amber S Rose Osma 75ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/amber-s-rose-osma-75ml-edp-944.html"
+  },
+  {
+   "sku": "OSM-945",
+   "id": 945,
+   "name": "Woody F Pineapple & Leather 75ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/woody-f-pineapple-and-leather-75ml-edp-945.html"
+  },
+  {
+   "sku": "OSM-946",
+   "id": 946,
+   "name": "Osma Bonjour Oriental Blossoms 150ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/osma-bonjour-oriental-blossoms-150ml-edp-946.html"
+  },
+  {
+   "sku": "OSM-947",
+   "id": 947,
+   "name": "Woody S Mango Leather 75ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/woody-s-mango-leather-75ml-edp-947.html"
+  },
+  {
+   "sku": "OSM-948",
+   "id": 948,
+   "name": "Osma O Tobacco & Pear 150ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/osma-o-tobacco-and-pear-150ml-edp-948.html"
+  },
+  {
+   "sku": "OSM-949",
+   "id": 949,
+   "name": "Osma Citrus F 75ml Eau de Parfum - Fruity & Rose",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/osma-citrus-f-75ml-eau-de-parfum-fruity-and-rose-949.html"
+  },
+  {
+   "sku": "OSM-950",
+   "id": 950,
+   "name": "Floral R Luxurious Rose 75ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/floral-r-luxurious-rose-75ml-edp-950.html"
+  },
+  {
+   "sku": "OSM-951",
+   "id": 951,
+   "name": "Amber A Amber & Leather 75ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/amber-a-amber-and-leather-75ml-edp-951.html"
+  },
+  {
+   "sku": "OSM-952",
+   "id": 952,
+   "name": "Osma Bonsoir Cedarwood Warmth 150ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/osma-bonsoir-cedarwood-warmth-150ml-edp-952.html"
+  },
+  {
+   "sku": "OSM-953",
+   "id": 953,
+   "name": "Rose P Berry & Rose 75ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/rose-p-berry-and-rose-75ml-edp-953.html"
+  },
+  {
+   "sku": "OSM-954",
+   "id": 954,
+   "name": "Osma Portofino Summer Purity 150ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/osma-portofino-summer-purity-150ml-edp-954.html"
+  },
+  {
+   "sku": "OSM-955",
+   "id": 955,
+   "name": "Fruity O Mandarin & Amber 75ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/fruity-o-mandarin-and-amber-75ml-edp-955.html"
+  },
+  {
+   "sku": "OSM-956",
+   "id": 956,
+   "name": "Cotton C Rose & Sandalwood 75ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/cotton-c-rose-and-sandalwood-75ml-956.html"
+  },
+  {
+   "sku": "OSM-957",
+   "id": 957,
+   "name": "Aromatic M Essence of Nature 75ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/aromatic-m-essence-of-nature-75ml-957.html"
+  },
+  {
+   "sku": "OSM-958",
+   "id": 958,
+   "name": "Osma A Tropical & Soft 150ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/osma-a-tropical-and-soft-150ml-edp-958.html"
+  },
+  {
+   "sku": "OSM-959",
+   "id": 959,
+   "name": "Osma Floral A Ginger Blossom 75ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/osma-floral-a-ginger-blossom-75ml-959.html"
+  },
+  {
+   "sku": "FRE-964",
+   "id": 964,
+   "name": "Axis by French Avenue 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/axis-by-french-avenue-100ml-964.html"
+  },
+  {
+   "sku": "OSM-969",
+   "id": 969,
+   "name": "Osma M Pineapple & Vanilla 150ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/osma-m-pineapple-and-vanilla-150ml-edp-969.html"
+  },
+  {
+   "sku": "FRE-971",
+   "id": 971,
+   "name": "Aromatix Magnetiq by French Avenue 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/aromatix-magnetiq-by-french-avenue-100ml-971.html"
+  },
+  {
+   "sku": "FRE-972",
+   "id": 972,
+   "name": "Aromatix Teas Me by French Avenue 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/aromatix-teas-me-by-french-avenue-100ml-972.html"
+  },
+  {
+   "sku": "FRE-973",
+   "id": 973,
+   "name": "Imperial Ocean French Avenue 100ml for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/imperial-ocean-french-avenue-100ml-for-men-973.html"
+  },
+  {
+   "sku": "PAR-974",
+   "id": 974,
+   "name": "Khair Pistachio by Paris Corner 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/khair-pistachio-by-paris-corner-100ml-edp-974.html"
+  },
+  {
+   "sku": "PAR-976",
+   "id": 976,
+   "name": "Lueur D Espoir Ambre by Emir Paris Corner 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/lueur-d-espoir-ambre-by-emir-paris-corner-100ml-976.html"
+  },
+  {
+   "sku": "OSM-977",
+   "id": 977,
+   "name": "Paudree F Roses & Musk 75ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/paudree-f-roses-and-musk-75ml-edp-977.html"
+  },
+  {
+   "sku": "PAR-984",
+   "id": 984,
+   "name": "Just Bergamot Emir Factory Edition 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/just-bergamot-emir-factory-edition-100ml-edp-984.html"
+  },
+  {
+   "sku": "BUJ-986",
+   "id": 986,
+   "name": "Oud Money by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/oud-money-by-bujairami-100ml-extrait-de-parfum-986.html"
+  },
+  {
+   "sku": "ASD-987",
+   "id": 987,
+   "name": "Sougha by Asdaaf 100ml EDP Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sougha-by-asdaaf-100ml-edp-women-987.html"
+  },
+  {
+   "sku": "BUJ-988",
+   "id": 988,
+   "name": "Dead Serious Bujairami 100ml Extrait Perfume Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/dead-serious-bujairami-100ml-extrait-perfume-unisex-988.html"
+  },
+  {
+   "sku": "RAY-994",
+   "id": 994,
+   "name": "Wood Noir by Rayhaan 100ml Eau de Parfum for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/wood-noir-by-rayhaan-100ml-eau-de-parfum-for-men-994.html"
+  },
+  {
+   "sku": "RAY-995",
+   "id": 995,
+   "name": "Wolf by Rayhaan 100ml Eau de Parfum for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/wolf-by-rayhaan-100ml-eau-de-parfum-for-men-995.html"
+  },
+  {
+   "sku": "RAY-996",
+   "id": 996,
+   "name": "Adonis Icarus by Rayhaan 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/adonis-icarus-by-rayhaan-100ml-eau-de-parfum-996.html"
+  },
+  {
+   "sku": "RAY-997",
+   "id": 997,
+   "name": "Imperia by Rayhaan 100ml Eau de Parfum for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/imperia-by-rayhaan-100ml-eau-de-parfum-for-men-997.html"
+  },
+  {
+   "sku": "RAY-998",
+   "id": 998,
+   "name": "Pacific by Rayhaan 100ml Eau de Parfum for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/pacific-by-rayhaan-100ml-eau-de-parfum-for-men-998.html"
+  },
+  {
+   "sku": "RAY-1002",
+   "id": 1002,
+   "name": "Tropical Vibe by Rayhaan 100ml Eau de Parfum Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/tropical-vibe-by-rayhaan-100ml-eau-de-parfum-unisex-1002.html"
+  },
+  {
+   "sku": "BUJ-1003",
+   "id": 1003,
+   "name": "Boss Life by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/boss-life-by-bujairami-100ml-extrait-de-parfum-1003.html"
+  },
+  {
+   "sku": "BUJ-1005",
+   "id": 1005,
+   "name": "Mafia Boss by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/mafia-boss-by-bujairami-100ml-extrait-de-parfum-1005.html"
+  },
+  {
+   "sku": "BUJ-1006",
+   "id": 1006,
+   "name": "Breathless by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/breathless-by-bujairami-100ml-extrait-de-parfum-1006.html"
+  },
+  {
+   "sku": "BUJ-1007",
+   "id": 1007,
+   "name": "Billion Dollar by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/billion-dollar-by-bujairami-100ml-extrait-de-parfum-1007.html"
+  },
+  {
+   "sku": "BUJ-1008",
+   "id": 1008,
+   "name": "Born Nomad by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/born-nomad-by-bujairami-100ml-extrait-de-parfum-1008.html"
+  },
+  {
+   "sku": "BUJ-1009",
+   "id": 1009,
+   "name": "Amber Eclipse by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/amber-eclipse-by-bujairami-100ml-extrait-de-parfum-1009.html"
+  },
+  {
+   "sku": "BUJ-1010",
+   "id": 1010,
+   "name": "Boujee by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/boujee-by-bujairami-100ml-eau-de-parfum-1010.html"
+  },
+  {
+   "sku": "BUJ-1011",
+   "id": 1011,
+   "name": "World Power by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/world-power-by-bujairami-100ml-extrait-de-parfum-1011.html"
+  },
+  {
+   "sku": "BUJ-1012",
+   "id": 1012,
+   "name": "Imperial Oud by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/imperial-oud-by-bujairami-100ml-extrait-de-parfum-1012.html"
+  },
+  {
+   "sku": "BUJ-1013",
+   "id": 1013,
+   "name": "Cartel by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/cartel-by-bujairami-100ml-extrait-de-parfum-1013.html"
+  },
+  {
+   "sku": "BUJ-1014",
+   "id": 1014,
+   "name": "Sacred Skin by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sacred-skin-by-bujairami-100ml-extrait-de-parfum-1014.html"
+  },
+  {
+   "sku": "BUJ-1015",
+   "id": 1015,
+   "name": "Soul Fusion Intense by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/soul-fusion-intense-by-bujairami-100ml-eau-de-parfum-1015.html"
+  },
+  {
+   "sku": "BUJ-1016",
+   "id": 1016,
+   "name": "Madness by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/madness-by-bujairami-100ml-eau-de-parfum-1016.html"
+  },
+  {
+   "sku": "BUJ-1017",
+   "id": 1017,
+   "name": "Only Ever by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/only-ever-by-bujairami-100ml-eau-de-parfum-1017.html"
+  },
+  {
+   "sku": "BUJ-1018",
+   "id": 1018,
+   "name": "Non Stop by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/non-stop-by-bujairami-100ml-extrait-de-parfum-1018.html"
+  },
+  {
+   "sku": "BUJ-1019",
+   "id": 1019,
+   "name": "New York by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/new-york-by-bujairami-100ml-eau-de-parfum-1019.html"
+  },
+  {
+   "sku": "BUJ-1020",
+   "id": 1020,
+   "name": "Silent Halo by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/silent-halo-by-bujairami-100ml-extrait-de-parfum-1020.html"
+  },
+  {
+   "sku": "BUJ-1021",
+   "id": 1021,
+   "name": "Sugar Rush by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sugar-rush-by-bujairami-100ml-eau-de-parfum-1021.html"
+  },
+  {
+   "sku": "BUJ-1022",
+   "id": 1022,
+   "name": "Sacred Order by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sacred-order-by-bujairami-100ml-extrait-de-parfum-1022.html"
+  },
+  {
+   "sku": "BUJ-1023",
+   "id": 1023,
+   "name": "Freeze by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/freeze-by-bujairami-100ml-eau-de-parfum-1023.html"
+  },
+  {
+   "sku": "BUJ-1024",
+   "id": 1024,
+   "name": "Mad Love by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/mad-love-by-bujairami-100ml-extrait-de-parfum-1024.html"
+  },
+  {
+   "sku": "BUJ-1025",
+   "id": 1025,
+   "name": "Lolita by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/lolita-by-bujairami-100ml-extrait-de-parfum-1025.html"
+  },
+  {
+   "sku": "BUJ-1026",
+   "id": 1026,
+   "name": "Ya Habibi by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ya-habibi-by-bujairami-100ml-extrait-de-parfum-1026.html"
+  },
+  {
+   "sku": "BUJ-1027",
+   "id": 1027,
+   "name": "Too Damn Good by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/too-damn-good-by-bujairami-100ml-extrait-de-parfum-1027.html"
+  },
+  {
+   "sku": "BUJ-1028",
+   "id": 1028,
+   "name": "Legacy by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/legacy-by-bujairami-100ml-extrait-de-parfum-1028.html"
+  },
+  {
+   "sku": "BUJ-1029",
+   "id": 1029,
+   "name": "Vanilla Dream by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/vanilla-dream-by-bujairami-100ml-eau-de-parfum-1029.html"
+  },
+  {
+   "sku": "BUJ-1030",
+   "id": 1030,
+   "name": "Vibration by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/vibration-by-bujairami-100ml-extrait-de-parfum-1030.html"
+  },
+  {
+   "sku": "BUJ-1031",
+   "id": 1031,
+   "name": "Chroma by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/chroma-by-bujairami-100ml-eau-de-parfum-1031.html"
+  },
+  {
+   "sku": "BUJ-1032",
+   "id": 1032,
+   "name": "Kingsman by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/kingsman-by-bujairami-100ml-extrait-de-parfum-1032.html"
+  },
+  {
+   "sku": "BUJ-1033",
+   "id": 1033,
+   "name": "Executor by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/executor-by-bujairami-100ml-extrait-de-parfum-1033.html"
+  },
+  {
+   "sku": "BUJ-1034",
+   "id": 1034,
+   "name": "Ibiza by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ibiza-by-bujairami-100ml-extrait-de-parfum-1034.html"
+  },
+  {
+   "sku": "BUJ-1035",
+   "id": 1035,
+   "name": "Hectic by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/hectic-by-bujairami-100ml-extrait-de-parfum-1035.html"
+  },
+  {
+   "sku": "BUJ-1036",
+   "id": 1036,
+   "name": "Next Level by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/next-level-by-bujairami-100ml-extrait-de-parfum-1036.html"
+  },
+  {
+   "sku": "BUJ-1037",
+   "id": 1037,
+   "name": "No Limit by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/no-limit-by-bujairami-100ml-eau-de-parfum-1037.html"
+  },
+  {
+   "sku": "BUJ-1038",
+   "id": 1038,
+   "name": "Emperor by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/emperor-by-bujairami-100ml-eau-de-parfum-1038.html"
+  },
+  {
+   "sku": "BUJ-1039",
+   "id": 1039,
+   "name": "Houdini by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/houdini-by-bujairami-100ml-extrait-de-parfum-1039.html"
+  },
+  {
+   "sku": "BUJ-1040",
+   "id": 1040,
+   "name": "First Class by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/first-class-by-bujairami-100ml-extrait-de-parfum-1040.html"
+  },
+  {
+   "sku": "BUJ-1041",
+   "id": 1041,
+   "name": "Shadow Script by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/shadow-script-by-bujairami-100ml-extrait-de-parfum-1041.html"
+  },
+  {
+   "sku": "BUJ-1042",
+   "id": 1042,
+   "name": "Resolution by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/resolution-by-bujairami-100ml-eau-de-parfum-1042.html"
+  },
+  {
+   "sku": "BUJ-1043",
+   "id": 1043,
+   "name": "Ghost by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ghost-by-bujairami-100ml-eau-de-parfum-1043.html"
+  },
+  {
+   "sku": "BUJ-1044",
+   "id": 1044,
+   "name": "Real Deal by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/real-deal-by-bujairami-100ml-extrait-de-parfum-1044.html"
+  },
+  {
+   "sku": "BUJ-1045",
+   "id": 1045,
+   "name": "Psycho by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/psycho-by-bujairami-100ml-extrait-de-parfum-1045.html"
+  },
+  {
+   "sku": "BUJ-1046",
+   "id": 1046,
+   "name": "Perfect Life by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/perfect-life-by-bujairami-100ml-eau-de-parfum-1046.html"
+  },
+  {
+   "sku": "BUJ-1047",
+   "id": 1047,
+   "name": "Pulse Fiction by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/pulse-fiction-by-bujairami-100ml-eau-de-parfum-1047.html"
+  },
+  {
+   "sku": "BUJ-1048",
+   "id": 1048,
+   "name": "Drip No. 7 by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/drip-no-7-by-bujairami-100ml-eau-de-parfum-1048.html"
+  },
+  {
+   "sku": "BUJ-1049",
+   "id": 1049,
+   "name": "Rizz by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/rizz-by-bujairami-100ml-extrait-de-parfum-1049.html"
+  },
+  {
+   "sku": "BUJ-1050",
+   "id": 1050,
+   "name": "Woodlands by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/woodlands-by-bujairami-100ml-extrait-de-parfum-1050.html"
+  },
+  {
+   "sku": "BUJ-1051",
+   "id": 1051,
+   "name": "Blush by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/blush-by-bujairami-100ml-eau-de-parfum-1051.html"
+  },
+  {
+   "sku": "BUJ-1052",
+   "id": 1052,
+   "name": "The Rock Intensely by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/the-rock-intensely-by-bujairami-100ml-eau-de-parfum-1052.html"
+  },
+  {
+   "sku": "BUJ-1053",
+   "id": 1053,
+   "name": "Sovereign by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sovereign-by-bujairami-100ml-eau-de-parfum-1053.html"
+  },
+  {
+   "sku": "BUJ-1054",
+   "id": 1054,
+   "name": "Too Damn Clean by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/too-damn-clean-by-bujairami-100ml-extrait-de-parfum-1054.html"
+  },
+  {
+   "sku": "BUJ-1055",
+   "id": 1055,
+   "name": "Ocean Eyes by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ocean-eyes-by-bujairami-100ml-extrait-de-parfum-1055.html"
+  },
+  {
+   "sku": "BUJ-1056",
+   "id": 1056,
+   "name": "Red Static by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/red-static-by-bujairami-100ml-eau-de-parfum-1056.html"
+  },
+  {
+   "sku": "BUJ-1057",
+   "id": 1057,
+   "name": "Unforgettable by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/unforgettable-by-bujairami-100ml-eau-de-parfum-1057.html"
+  },
+  {
+   "sku": "BUJ-1058",
+   "id": 1058,
+   "name": "Enforcer by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/enforcer-by-bujairami-100ml-eau-de-parfum-1058.html"
+  },
+  {
+   "sku": "BUJ-1059",
+   "id": 1059,
+   "name": "Red Eclipse by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/red-eclipse-by-bujairami-100ml-eau-de-parfum-1059.html"
+  },
+  {
+   "sku": "BUJ-1060",
+   "id": 1060,
+   "name": "Drip by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/drip-by-bujairami-100ml-extrait-de-parfum-1060.html"
+  },
+  {
+   "sku": "PEN-1061",
+   "id": 1061,
+   "name": "Destined Red 100ml by Pendora Scents",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/destined-red-100ml-by-pendora-scents-1061.html"
+  },
+  {
+   "sku": "VEL-1063",
+   "id": 1063,
+   "name": "Velixir Concordia 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-concordia-100ml-edp-1063.html"
+  },
+  {
+   "sku": "VEL-1065",
+   "id": 1065,
+   "name": "Velixir Persephone 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-persephone-100ml-edp-1065.html"
+  },
+  {
+   "sku": "VEL-1066",
+   "id": 1066,
+   "name": "Velixir Orion 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-orion-100ml-edp-1066.html"
+  },
+  {
+   "sku": "VEL-1067",
+   "id": 1067,
+   "name": "Velixir Hera 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-hera-100ml-edp-1067.html"
+  },
+  {
+   "sku": "VEL-1068",
+   "id": 1068,
+   "name": "Velixir Morpheus 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-morpheus-100ml-edp-1068.html"
+  },
+  {
+   "sku": "VEL-1069",
+   "id": 1069,
+   "name": "Velixir Artemis 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-artemis-100ml-edp-1069.html"
+  },
+  {
+   "sku": "VEL-1070",
+   "id": 1070,
+   "name": "Velixir Uranus 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-uranus-100ml-edp-1070.html"
+  },
+  {
+   "sku": "VEL-1071",
+   "id": 1071,
+   "name": "Velixir Icarus 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-icarus-100ml-edp-1071.html"
   }
  ]
 }
