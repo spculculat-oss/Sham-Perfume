@@ -27,6 +27,7 @@ import {
 import { SupportedLanguage } from '../types/i18n';
 import { t } from '../utils/i18n';
 import { LText, makeT, pickArEn, localeDate } from '../utils/localize';
+import { uiLabel } from '../utils/uiTextL10n';
 import { isRTL } from '../utils/localizedContent';
 
 interface UserProfilePageProps {
@@ -590,7 +591,7 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, currentL
                 {L('experiences_title')}
               </h5>
               <span className="px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 text-[10px] font-medium">
-                {experiences.length} نشاط
+                {experiences.length} {uiLabel('unit_activities', currentLang)}
               </span>
             </div>
             
@@ -659,7 +660,7 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, currentL
                 {L('orders_title')}
               </h5>
               <span className="px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 text-[10px] font-medium">
-                {orders.length} طلب
+                {orders.length} {uiLabel('unit_orders', currentLang)}
               </span>
             </div>
             
@@ -789,7 +790,7 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, currentL
                   onClick={() => setConfirmClear(false)}
                   className="px-3 py-2 text-xs font-medium text-stone-600 bg-stone-100 hover:bg-stone-200 rounded-lg transition-colors cursor-pointer"
                 >
-                  إلغاء
+                  {uiLabel('cancel', currentLang)}
                 </button>
                 <button
                   onClick={() => {

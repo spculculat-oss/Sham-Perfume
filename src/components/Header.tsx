@@ -23,6 +23,7 @@ import { AdminMerchantManagement } from './AdminMerchantManagement';
 import { UserProfile } from '../types/auth';
 import { UserEnvironmentProfile } from '../utils/environmentAdapter';
 import { LText, makeT, pickArEn } from '../utils/localize';
+import { uiLabel } from '../utils/uiTextL10n';
 
 
 const S = {
@@ -240,14 +241,14 @@ export const Header: React.FC<HeaderProps> = ({
                           <div className={`w-2 h-2 rounded-full ${group.iconColor?.replace('text-emerald-500', 'bg-emerald-500').replace('text-amber-700', 'bg-amber-500').replace('text-amber-600', 'bg-amber-500')}`}></div>
                           <span className="text-xs font-bold text-amber-900">{group.fullLabel}</span>
                           <span className="px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-700 text-[10px] font-medium border border-amber-500/30">
-                            {group.items?.length} أداة
+                            {group.items?.length} {uiLabel('unit_tools', currentLang)}
                           </span>
                         </div>
                         <p className="text-[10px] text-amber-700 mt-0.5 leading-tight">
-                          {group.id === 'tools' && 'جميع أدوات الحسابات المعملية - الكيمياء، المخاليط، والتكلفة'}
-                          {group.id === 'explore' && 'مكتبة العطور، الخامات، الإخباريات، والأدلة المرجعية'}
-                          {group.id === 'home' && 'العودة للصفحة الرئيسية'}
-                          {group.id === 'master_ai' && 'خبير المعمل الذكي بالذكاء الاصطناعي'}
+                          {group.id === 'tools' && uiLabel('group_tools_desc', currentLang)}
+                          {group.id === 'explore' && uiLabel('group_explore_desc', currentLang)}
+                          {group.id === 'home' && uiLabel('group_home_desc', currentLang)}
+                          {group.id === 'master_ai' && uiLabel('group_ai_desc', currentLang)}
                         </p>
                       </div>
                       <div className="p-1">
@@ -279,7 +280,7 @@ export const Header: React.FC<HeaderProps> = ({
                           onClick={() => setIsGroupMenuOpen(group.id, false)}
                           className="w-full px-3 py-1.5 text-center text-xs text-stone-500 hover:text-stone-700 hover:bg-stone-50 rounded-lg transition-colors"
                         >
-                          {activeTab === group.id ? 'إغلاق' : 'إغلاق القائمة'}
+                          {activeTab === group.id ? uiLabel('close', currentLang) : uiLabel('close_menu', currentLang)}
                         </button>
                       </div>
                     </div>
@@ -413,10 +414,10 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               onClick={() => setShowAdminModal(true)}
               className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-purple-700 hover:bg-purple-800 rounded-xl transition-all shadow-sm cursor-pointer shrink-0"
-              title="لوحة تحكم الإدارة"
+              title={uiLabel('admin_panel_title', currentLang)}
             >
               <Shield className="w-3.5 h-3.5 text-purple-200" />
-              <span className="hidden xl:inline">الإدارة</span>
+              <span className="hidden xl:inline">{uiLabel('admin_panel', currentLang)}</span>
             </button>
           )}
 

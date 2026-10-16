@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
 import { LText, makeT } from '../utils/localize';
+import { uiLabel } from '../utils/uiTextL10n';
 import { getApprovedActiveProducts, getMerchantById, getProductById } from '../utils/merchantDataStore';
 import { PLATFORM_MARGIN_PERCENT, calculateRetailPrice, calculatePlatformRevenue, calculateMerchantPayout } from '../config/margin';
 import { getAllOrders, saveOrder, getOrCreateRetailer, incrementRetailerOrder, MerchantProductRecord, MediationOrderRecord } from '../utils/merchantDataStore';
@@ -79,6 +80,7 @@ interface ProductCatalogProps {
 
 export const ProductCatalog: React.FC<ProductCatalogProps> = ({ onClose, currentLang, retailerId }) => {
   const L = makeT(currentLang, S);
+  const CUR = uiLabel('currency_egp', currentLang);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [minPrice, setMinPrice] = useState<number>(0);
@@ -341,12 +343,12 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({ onClose, current
                           <span className="text-xs text-stone-500">{L('product_card_retail_price')}</span>
                           <div className="text-right">
                             <span className="text-lg font-bold text-amber-900 font-mono">{product.retailPrice}</span>
-                            <span className="text-xs text-amber-700">جنيه</span>
+                            <span className="text-xs text-amber-700">{CUR}</span>
                           </div>
                         </div>
                         <div className="flex justify-between text-[10px] text-stone-400">
-                          <span>{L('product_card_cost_price')}: {product.costPrice} جنيه</span>
-                          <span>{L('product_card_platform_revenue')}: {product.platformMargin} جنيه</span>
+                          <span>{L('product_card_cost_price')}: {product.costPrice} {CUR}</span>
+                          <span>{L('product_card_platform_revenue')}: {product.platformMargin} {CUR}</span>
                         </div>
                         <div className="mt-2 text-[10px] text-stone-400">
                           SKU: {product.sku} | {product.approvalStatus}
@@ -364,7 +366,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({ onClose, current
                           </>
                         ) : (
                           <button disabled className="flex-1 px-3 py-2 bg-stone-100 text-stone-400 rounded-lg text-xs font-medium cursor-not-allowed">
-                            نفذ
+                            {uiLabel('sold_out', currentLang)}
                           </button>
                         )}
                       </div>
@@ -420,7 +422,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({ onClose, current
                                 </div>
                               </div>
                               <div className="text-right">
-                                <div className="text-sm font-bold text-amber-900">{item.product.retailPrice} جنيه</div>
+                                <div className="text-sm font-bold text-amber-900">{item.product.retailPrice} {CUR}</div>
                                 <span className="text-xs text-stone-400">{L('product_card_retail_price')}</span>
                               </div>
                             </div>
@@ -435,7 +437,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({ onClose, current
                                 </button>
                               </div>
                               <div className="text-right">
-                                <div className="text-sm font-bold text-stone-900">{(item.product.retailPrice * item.qty).toLocaleString()} جنيه</div>
+                                <div className="text-sm font-bold text-stone-900">{(item.product.retailPrice * item.qty).toLocaleString()} {CUR}</div>
                                 <button onClick={()=>removeFromCart(productId)} className="text-xs text-red-600 hover:text-red-800 mt-0.5 inline-block">
                                   <Trash2 className="w-3 h-3 inline"/> {L('cart_clear')}
                                 </button>
@@ -443,8 +445,8 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({ onClose, current
                             </div>
                             <div className="mt-1 text-[10px] text-stone-400 border-t border-stone-100 pt-1">
                               <div className="flex justify-between">
-                                <span>{L('product_card_cost_price')}: {item.product.costPrice} جنيه</span>
-                                <span>{L('product_card_platform_revenue')}: {item.product.platformMargin} جنيه</span>
+                                <span>{L('product_card_cost_price')}: {item.product.costPrice} {CUR}</span>
+                                <span>{L('product_card_platform_revenue')}: {item.product.platformMargin} {CUR}</span>
                               </div>
                             </div>
                           </div>
@@ -465,15 +467,15 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({ onClose, current
                       </div>
                       <div className="flex justify-between">
                         <span className="text-stone-600">{L('cart_platform_revenue_total')}:</span>
-                        <span className="text-amber-700 font-bold">{cartPlatformRevenue.toLocaleString()} جنيه</span>
+                        <span className="text-amber-700 font-bold">{cartPlatformRevenue.toLocaleString()} {CUR}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-stone-500">{L('cart_total_cost')}:</span>
-                        <span className="text-blue-700 font-bold">{cartTotalCost.toLocaleString()} جنيه</span>
+                        <span className="text-blue-700 font-bold">{cartTotalCost.toLocaleString()} {CUR}</span>
                       </div>
                       <div className="border-t border-stone-200 mt-2 pt-2 flex justify-between font-bold">
                         <span className="text-stone-900">{L('cart_total_retail')}:</span>
-                        <span className="text-emerald-700 text-lg">{cartTotalRetail.toLocaleString()} جنيه</span>
+                        <span className="text-emerald-700 text-lg">{cartTotalRetail.toLocaleString()} {CUR}</span>
                       </div>
                     </div>
                     <div className="mt-4 p-3 rounded-lg bg-emerald-50 border border-emerald-200/60">
