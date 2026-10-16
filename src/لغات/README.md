@@ -54,6 +54,23 @@ isLanguageSupported('de');
    بتضاف من غير ما تعدّل لغة موجودة.
 4. الشاشات ممنوع يبقى فيها نص عربي مكتوب جوه JSX — فيه اختبارات حارسة على ده.
 
+## نصوص المتجر (متجر شام + صفحة العطر + السلة)
+
+| الملف | فيه إيه |
+|---|---|
+| `storeKeys.ts` | مفاتيح المتجر (`StoreTextKey`) + `STORE_BASE_LANGS` + `STORE_CORE_KEYS` (42 مفتاح أساسي) |
+| `storeL10nBase.ts` | العشر لغات الأساسية لكل مفتاح، مصفوفات متراصة على ترتيب `STORE_BASE_LANGS` |
+| `storeL10nExt1…9.ts` | تسع موجات × 10 لغات = التسعين لغة الباقية، مصفوفات متراصة على `STORE_CORE_KEYS` |
+| `storeL10nExt.ts` | تجميع الموجات في `STORE_TEXT_WAVES` |
+| `storeL10n.ts` | الحلّال: `storeText` / `makeStoreT` / `storeLabel` / `storeLocalized` / `storeNumber` / `storeReasonText` |
+
+قاعدة الحل واحدة في كل المتجر: **لغة الزائر ← إنجليزي ← عربي ← المفتاح**، يعني اللغة اللي
+مفيهاش ترجمة بتشوف إنجليزي — مستحيل تشوف عربي إلا لو اختارت عربي. الجداول والنوتات بتترجم
+بـ `storeFamilyLabel`/`storeGenderLabel`/`storeSeasonLabel`/`storeOccasionLabel`، وأسباب
+«اسأل شاهين» بتتبعت كـ `{ key, vars }` وتتحل في `storeReasonText` (وبتحوّل `{value}`
+لوسم مترجم كمان). صفحات المنتج المستقلة (`docs/p/*.html`) بتشيل جدول الوسوم نفسه بحزمة
+متراصة + سكربت صغير بيبدّل اللغة من `localStorage` (مفتاح `sham_perfume_user_language`).
+
 ## اختبارات مرتبطة
 
 | الملف | بيحمي إيه |
@@ -63,6 +80,7 @@ isLanguageSupported('de');
 | `tests/noteL10n.test.ts` | مقاييس الهرم بتترجم صح والإنجليزي بديل آمن |
 | `tests/uiTextL10n.test.ts` | الوحدات والعدّادات + حارس على الشاشات المنضّفة |
 | `tests/integrity.test.ts` | سلامة البنية العامة من ضمنها ملفات اللغات |
+| `tests/storeL10n.test.ts` | المتجر بالـ100 لغة: مفيش عربي لغير العربي، الجداول والأسباب والسلة والصور المستقلة |
 
 ## إضافة لغة جديدة (وصفة سريعة)
 

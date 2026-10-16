@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { StoreProduct } from './storeCatalog';
+import { makeStoreT, storeLocalized } from '../لغات/storeL10n';
+import type { SupportedLanguage } from '../types/i18n';
 
 /** The visitor's basket in «متجر شام», shared by the store and the product page and kept across visits. */
 const KEY = 'sham-store-cart';
@@ -55,9 +57,14 @@ export function cartSummary(cart: Cart, products: StoreProduct[]) {
 }
 
 /** The message the Sham assistant receives when the visitor completes the order. */
-export function orderMessage(summary: ReturnType<typeof cartSummary>, lang: 'ar' | 'en'): string {
-  const items = summary.lines.map((l) => `- ${l.product.name[lang]} (${l.product.sku}) × ${l.qty} = ${l.subtotal} ${lang === 'ar' ? 'جنيه' : 'EGP'}`).join('\n');
-  return lang === 'ar'
-    ? `عايز أطلب من متجر شام:\n${items}\nالإجمالي: ${summary.total} جنيه`
-    : `I'd like to order from Sham store:\n${items}\nTotal: ${summary.total} EGP`;
+/** The message the Sham assistant receives when the visitor completes the order — in their language. */
+export function orderMessage(summary: ReturnType<typeof cartSummary>, lang: SupportedLanguage): string {
+  const t = makeStoreT(lang);
+  const currency = t('sf_currency');
+  const items = summary.lines.map((l) => t('cart_order_line', {
+    name: storeLocalized(l.product.name, lang), sku: l.product.sku, qty: l.qty,
+    subtotal: l.subtotal, currency,
+  }));
+  // Plain digits on purpose: the hand-off message is read by the assistant, not by the currency formatter.
+  return [t('cart_order_intro'), ...items, `${t('sf_total')}: ${summary.total} ${currency}`].join('\n');
 }

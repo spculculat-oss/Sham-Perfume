@@ -1,0 +1,110 @@
+// Wave 7 — store core strings (ky tg tk is sq mk bs be ca eu).
+
+import type { StoreCoreWave } from './storeKeys';
+
+export const STORE_TEXT_W7: StoreCoreWave = {
+  packs: {
+    ky: [
+      'Уд', 'Чыгыш', 'Амбра', 'Жыгач', 'Гүл', 'Жаңы', 'Цитрус', 'Суу', 'Жемиш', 'Гурман', 'Мускус', 'Каймалдуу', 'Тери', 'Пудра',
+      'Эркектер', 'Аялдар', 'Унисекс',
+      'Жай', 'Кыш', 'Жаз', 'Күз', 'Бардык сезондор',
+      'Күнүмдүк', 'Кечинде', 'Жумуш', 'Өзгөчө күндөр', 'Белек',
+      'Sham дүкөнү', 'Издөө', 'Баары', 'Жаңы', 'Эң жаңы', 'Баасы: арзандан', 'Баасы: кымбаттан', 'Эң жогорку рейтинг', 'Себет', 'Жалпы', 'Себетке кошуу', 'Толук маалымат', 'Кампада жок', 'Сүрөттөмө', 'Булар да жагат',
+    ],
+    tg: [
+      'Уд', 'Шарқӣ', 'Анбар', 'Чӯб', 'Гул', 'Тоза', 'Ситр', 'Об', 'Мева', 'Гурман', 'Мишк', 'Зиравори', 'Чарм', 'Пудра',
+      'Мардона', 'Занона', 'Унисекс',
+      'Тобистон', 'Зимистон', 'Баҳор', 'Тирамоҳ', 'Ҳамаи фаслҳо',
+      'Ҳаррӯза', 'Бегоҳ', 'Кор', 'Рӯзҳои махсус', 'Тӯҳфа',
+      'Дукони Sham', 'Ҷустуҷӯ', 'Ҳама', 'Нав', 'Навтарин', 'Нарх: аз арзон', 'Нарх: аз гарон', 'Баландтарин рейтинг', 'Сабад', 'Ҳамагӣ', 'Ба сабад илова кунед', 'Тафсилот', 'Дар анбор нест', 'Тавсиф', 'Инҳо ҳам писандида мешаванд',
+    ],
+    tk: [
+      'Ud', 'Gündogar', 'Amber', 'Agaç', 'Gül', 'Täze', 'Sitrus', 'Suw', 'Miwe', 'Gurman', 'Müşk', 'Ysly', 'Deri', 'Pudra',
+      'Erkek', 'Zenan', 'Uniseks',
+      'Tomus', 'Gyş', 'Ýaz', 'Güýz', 'Ähli pasyllar',
+      'Gündelik', 'Agşam', 'Iş', 'Aýratyn günler', 'Sowgat',
+      'Sham dükany', 'Gözle', 'Hemmesi', 'Täze', 'Iň täze', 'Bahasy: arzanadan', 'Bahasy: gymmatdan', 'Iň ýokary reýting', 'Sebet', 'Jemi', 'Sebede goş', 'Jikme-jiklikler', 'Ammar ýok', 'Düşündiriş', 'Bulary hem halarsyňyz',
+    ],
+    is: [
+      'Oud', 'Austurlenskt', 'Amber', 'Viðar', 'Blóma', 'Ferskt', 'Sítrus', 'Vatn', 'Ávaxta', 'Gourmand', 'Misk', 'Kryddað', 'Leður', 'Púður',
+      'Karlar', 'Konur', 'Unisex',
+      'Sumar', 'Vetur', 'Vor', 'Haust', 'Allar árstíðir',
+      'Daglega', 'Kvöld', 'Vinna', 'Sérstök tækifæri', 'Gjöf',
+      'Sham-verslun', 'Leita', 'Allt', 'Nýtt', 'Nýjast', 'Verð: lágt fyrst', 'Verð: hátt fyrst', 'Hæst metið', 'Karfa', 'Samtals', 'Setja í körfu', 'Nánar', 'Uppselt', 'Lýsing', 'Þér gæti líkað þetta',
+    ],
+    sq: [
+      'Oud', 'Oriental', 'Qelibar', 'Drusor', 'Lulesh', 'I freskët', 'Agrume', 'Ujor', 'Frutor', 'Gurman', 'Musk', 'Pikant', 'Lëkurë', 'Pudros',
+      'Meshkuj', 'Femra', 'Uniseks',
+      'Verë', 'Dimër', 'Pranverë', 'Vjeshtë', 'Të gjitha stinët',
+      'I përditshëm', 'Mbrëmje', 'Punë', 'Raste të veçanta', 'Dhuratë',
+      'Dyqani Sham', 'Kërko', 'Të gjitha', 'I ri', 'Më i ri', 'Çmimi: nga më i ulëti', 'Çmimi: nga më i larti', 'Më i vlerësuari', 'Shportë', 'Totali', 'Shto në shportë', 'Detaje', 'Nuk ka stok', 'Përshkrimi', 'Mund t\'ju pëlqejë edhe kjo',
+    ],
+    mk: [
+      'Уд', 'Ориентален', 'Амбра', 'Дрвен', 'Цветен', 'Свеж', 'Цитрусен', 'Воден', 'Овошен', 'Гурмански', 'Мошусен', 'Зачинет', 'Кожен', 'Пудрест',
+      'Машки', 'Женски', 'Унисекс',
+      'Лето', 'Зима', 'Пролет', 'Есен', 'Сите сезони',
+      'Секојдневен', 'Вечер', 'Работа', 'Посебни прилики', 'Подарок',
+      'Продавница Sham', 'Пребарај', 'Сите', 'Нови', 'Најнови', 'Цена: од најниска', 'Цена: од највисока', 'Највисоко оценети', 'Кошничка', 'Вкупно', 'Додај во кошничка', 'Детали', 'Нема на залиха', 'Опис', 'Можеби ќе ви се допадне и ова',
+    ],
+    bs: [
+      'Oud', 'Orijentalni', 'Amber', 'Drveni', 'Cvjetni', 'Svjež', 'Citrusni', 'Vodeni', 'Voćni', 'Gurmanski', 'Mošusni', 'Začinski', 'Kožni', 'Puderasti',
+      'Muški', 'Ženski', 'Unisex',
+      'Ljeto', 'Zima', 'Proljeće', 'Jesen', 'Sve sezone',
+      'Svakodnevno', 'Navečer', 'Za posao', 'Posebne prilike', 'Poklon',
+      'Prodavnica Sham', 'Pretraži', 'Sve', 'Noviteti', 'Najnovije', 'Cijena: od najniže', 'Cijena: od najviše', 'Najbolje ocijenjeno', 'Korpa', 'Ukupno', 'U korpu', 'Detalji', 'Nema na stanju', 'Opis', 'Možda će vam se svidjeti',
+    ],
+    be: [
+      'Уд', 'Усходні', 'Амбра', 'Драўняны', 'Кветкавы', 'Свежы', 'Цытрусавы', 'Водны', 'Садавінны', 'Гурманскі', 'Мускусны', 'Прыправы', 'Скураны', 'Пудравы',
+      'Мужчынскі', 'Жаночы', 'Унісекс',
+      'Лета', 'Зіма', 'Вясна', 'Восень', 'Усе сезоны',
+      'Штодзённы', 'Вечар', 'Праца', 'Асаблівыя падзеі', 'Падарунак',
+      'Крама Sham', 'Пошук', 'Усе', 'Навінкі', 'Найноўшыя', 'Цана: ад нізкай', 'Цана: ад высокай', 'Найвышэйшы рэйтынг', 'Кошык', 'Разам', 'У кошык', 'Дэталі', 'Няма ў наяўнасці', 'Апісанне', 'Вам можа спадабацца і гэта',
+    ],
+    ca: [
+      'Oud', 'Oriental', 'Ambre', 'Fuster', 'Floral', 'Fresc', 'Cítric', 'Aquàtic', 'Fruitat', 'Gourmand', 'Almescat', 'Especiat', 'Cuir', 'Empolvorat',
+      'Home', 'Dona', 'Unisex',
+      'Estiu', 'Hivern', 'Primavera', 'Tardor', 'Totes les estacions',
+      'Diari', 'Vespre', 'Feina', 'Ocasions especials', 'Regal',
+      'Botiga Sham', 'Cercar', 'Tots', 'Novetats', 'Més recents', 'Preu: de menor a major', 'Preu: de major a menor', 'Millor valorats', 'Cistella', 'Total', 'Afegir a la cistella', 'Detalls', 'Esgotat', 'Descripció', 'També et pot agradar',
+    ],
+    eu: [
+      'Oud', 'Ekialdekoa', 'Anbar', 'Egurrezkoa', 'Lorezkoa', 'Freskoa', 'Zitrikoa', 'Uretakoa', 'Fruta', 'Gourmand', 'Musk', 'Ozpindua', 'Larrua', 'Hautsa',
+      'Gizonezko', 'Emakumezko', 'Unisex',
+      'Uda', 'Negua', 'Udaberria', 'Udazkena', 'Urtaro guztiak',
+      'Egunerokoa', 'Arratsaldea', 'Lana', 'Oraingarri bereziak', 'Oparia',
+      'Sham denda', 'Bilatu', 'Guztiak', 'Berria', 'Berrienak', 'Prezioa: txikienetik', 'Prezioa: handienetik', 'Balorazio handiena', 'Saskia', 'Guztira', 'Gehitu saskira', 'Xehetasunak', 'Agortuta', 'Deskribapena', 'Hau ere gustatuko zaizu',
+    ],
+  },
+  extra: {
+    is: {
+      sf_tagline: 'Ilmkennt valdar ilmir',
+      sf_search_ph: 'Leitaðu að ilmi, nótu eða merki…',
+      sf_ask_title: 'Spurðu Shaheen',
+      sf_cart_empty: 'Karfan þín er tóm',
+      sf_checkout: 'Ljúktu pöntuninni með Sham-aðstoðarmanninum',
+      sf_loading: 'Hleður vörum…',
+      pd_scent_profile: 'Ilmprófíll',
+      pd_ask_shaheen: 'Spurðu Shaheen um þennan ilm',
+    },
+    sq: {
+      sf_tagline: 'Parfume të zgjedhura me kujdes',
+      sf_search_ph: 'Kërko një parfum, notë ose markë…',
+      sf_ask_title: 'Pyet Shaheen',
+      sf_cart_empty: 'Shporta juaj është bosh',
+      sf_checkout: 'Përfundo porosinë me asistentin Sham',
+      sf_loading: 'Duke ngarkuar produktet…',
+      pd_scent_profile: 'Profili i aromës',
+      pd_ask_shaheen: 'Pyet Shaheen për këtë parfum',
+    },
+    ca: {
+      sf_tagline: 'Fragàncies triades amb cura',
+      sf_search_ph: 'Cerca una fragància, una nota o una marca…',
+      sf_ask_title: 'Pregunta a Shaheen',
+      sf_cart_empty: 'La teva cistella és buida',
+      sf_checkout: 'Completa la comanda amb l\'assistent Sham',
+      sf_loading: 'S\'estan carregant els productes…',
+      pd_scent_profile: 'Perfil olfactiu',
+      pd_ask_shaheen: 'Pregunta a Shaheen sobre aquesta fragància',
+    },
+  },
+};

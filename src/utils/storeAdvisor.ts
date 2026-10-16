@@ -4,13 +4,20 @@
  * products Shaheen enriched (src/utils/storeCatalog.ts) with the reasons for each choice.
  * Instant and identical on GitHub Pages and Vercel; the AI advisor (server/store.ts) refines it when available.
  */
-import { FAMILY_LABEL, GENDER_LABEL, OCCASION_LABEL, SEASON_LABEL, searchText, type Family, type Gender, type Occasion, type Season, type StoreProduct } from './storeCatalog';
+import { searchText, type Family, type Gender, type Occasion, type Season, type StoreProduct } from './storeCatalog';
+import { storeReasonList, storeReasonText, type StoreReason } from '../لغات/storeL10n';
+import type { SupportedLanguage } from '../types/i18n';
 
 export interface Wish {
   gender?: Gender; families: Family[]; seasons: Season[]; occasions: Occasion[];
   budgetMax?: number; budgetMin?: number; cheap: boolean; luxury: boolean; brands: string[]; words: string[];
 }
-export interface Pick { product: StoreProduct; score: number; reasons: { ar: string[]; en: string[] } }
+/** A reason is a template + its values, resolved by src/لغات/storeL10n.ts in the visitor's language. */
+export interface Pick { product: StoreProduct; score: number; reasons: StoreReason[] }
+/** The why-chips of one pick in one language («طابع عود · في حدود ميزانيتك (250 ج)»). */
+export const pickReasons = (pick: Pick, lang: SupportedLanguage): string[] =>
+  pick.reasons.map((reason) => storeReasonText(lang, reason));
+export const pickReasonLine = (pick: Pick, lang: SupportedLanguage): string => storeReasonList(lang, pick.reasons);
 export interface Advice { wish: Wish; picks: Pick[]; matched: boolean }
 
 const DIGITS: Record<string, string> = { '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4', '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9', '۰': '0', '۱': '1', '۲': '2', '۳': '3', '۴': '4', '۵': '5', '۶': '6', '۷': '7', '۸': '8', '۹': '9' };
@@ -62,8 +69,6 @@ export function parseWish(text: string): Wish {
   return wish;
 }
 
-const OCCASION_PHRASE: Record<Occasion, string> = { daily: 'للاستخدام اليومي', evening: 'للسهرات', work: 'مناسب للشغل', special: 'للمناسبات', gift: 'مناسب كهدية' };
-
 /** Before Shaheen has trained a product: the classic season/occasion of its scent family. */
 const WARM: Family[] = ['oud', 'amber', 'gourmand', 'spicy', 'leather', 'oriental'];
 const COOL: Family[] = ['fresh', 'citrus', 'aquatic'];
@@ -86,46 +91,46 @@ export function recommend(products: StoreProduct[], text: string, limit = 6): Ad
   const top = Math.max(1, ...prices);
   const picks: Pick[] = [];
   for (const product of products) {
-    const ar: string[] = []; const en: string[] = [];
+    const reasons: StoreReason[] = [];
     let score = 0;
     if (!product.inStock) score -= 3;
     if (wish.gender) {
-      if (product.gender === wish.gender) { score += 3; ar.push(GENDER_LABEL[wish.gender].ar); en.push(GENDER_LABEL[wish.gender].en); }
+      if (product.gender === wish.gender) { score += 3; reasons.push({ key: 'reason_gender', vars: { value: wish.gender } }); }
       else if (product.gender === 'unisex' || !product.gender) score += 0.5;
       else continue; // a men's perfume is not a gift for «مراتي»
     }
-    for (const f of wish.families) if (product.families.includes(f)) { score += 3; ar.push(`طابع ${FAMILY_LABEL[f].ar}`); en.push(`${FAMILY_LABEL[f].en} character`); }
+    for (const f of wish.families) if (product.families.includes(f)) { score += 3; reasons.push({ key: 'reason_family', vars: { value: f } }); }
     const seasons = inferSeasons(product); const occasions = inferOccasions(product);
-    for (const s of wish.seasons) if (seasons.includes(s) || seasons.includes('all')) { score += 2; ar.push(SEASON_LABEL[s].ar); en.push(SEASON_LABEL[s].en); }
-    for (const o of wish.occasions) if (occasions.includes(o)) { score += 2; ar.push(OCCASION_PHRASE[o]); en.push(`good for ${OCCASION_LABEL[o].en.toLowerCase()}`); }
+    for (const s of wish.seasons) if (seasons.includes(s) || seasons.includes('all')) { score += 2; reasons.push({ key: `season_${s}` as StoreReason['key'] }); }
+    for (const o of wish.occasions) if (occasions.includes(o)) { score += 2; reasons.push({ key: 'reason_occasion', vars: { value: o } }); }
     if (wish.brands.length) {
-      if (wish.brands.includes(product.brand)) { score += 4; ar.push(`من ${product.brand}`); en.push(`by ${product.brand}`); }
+      if (wish.brands.includes(product.brand)) { score += 4; reasons.push({ key: 'reason_brand', vars: { value: product.brand } }); }
       else score -= 1;
     }
     if (wish.budgetMax !== undefined) {
       if (product.price > wish.budgetMax) continue;
-      score += 1; ar.push(`في حدود ميزانيتك (${product.price} ج)`); en.push(`within budget (${product.price} EGP)`);
+      score += 1; reasons.push({ key: 'reason_budget', vars: { value: product.price } });
     }
     if (wish.budgetMin !== undefined && product.price < wish.budgetMin) continue;
     if (wish.cheap) {
       score += 3 * (1 - product.price / top);
-      if (product.price <= top / 3) { ar.push(`سعر اقتصادي (${product.price} ج)`); en.push(`budget price (${product.price} EGP)`); }
+      if (product.price <= top / 3) reasons.push({ key: 'reason_cheap', vars: { value: product.price } });
     }
     if (wish.luxury) {
       score += 2 * (product.price / top);
-      if (product.price >= top / 2) { ar.push('من الفئة الفاخرة'); en.push('premium range'); }
+      if (product.price >= top / 2) reasons.push({ key: 'reason_luxury' });
     }
     const haystack = searchText(product);
     const hits = wish.words.filter((w) => haystack.includes(w)).length;
     score += Math.min(4, hits * 1.5);
-    if (hits && !ar.length) { ar.push('يطابق كلمات بحثك'); en.push('matches your words'); }
+    if (hits && !reasons.length) reasons.push({ key: 'reason_words' });
     score += 0.3 * ((product.rating || 3) - 3) + (product.isFeatured ? 0.3 : 0) + (product.enrichedBy === 'shaheen' ? 0.2 : 0);
-    picks.push({ product, score, reasons: { ar, en } });
+    picks.push({ product, score, reasons });
   }
   picks.sort((a, b) => b.score - a.score || a.product.price - b.product.price);
-  const matched = picks.some((p) => p.reasons.ar.length) && (hasCriteria(wish) || picks[0]?.score >= 1.5);
-  const chosen = (matched ? picks.filter((p) => p.reasons.ar.length) : picks).slice(0, limit);
+  const matched = picks.some((p) => p.reasons.length) && (hasCriteria(wish) || picks[0]?.score >= 1.5);
+  const chosen = (matched ? picks.filter((p) => p.reasons.length) : picks).slice(0, limit);
   // No exact match: still say why each one is shown.
-  for (const p of chosen) if (!p.reasons.ar.length && p.product.rating) { p.reasons.ar.push(`تقييم ${p.product.rating} من 5`); p.reasons.en.push(`rated ${p.product.rating}/5`); }
+  for (const p of chosen) if (!p.reasons.length && p.product.rating) p.reasons.push({ key: 'reason_rated', vars: { value: p.product.rating } });
   return { wish, matched, picks: chosen };
 }

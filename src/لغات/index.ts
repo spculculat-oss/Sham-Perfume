@@ -105,3 +105,11 @@ export function languagesSummary(): string {
 export function isLanguageSupported(code: string): code is SupportedLanguage {
   return SUPPORTED_LANGUAGES.some((language) => language.code === code);
 }
+
+/**
+ * نصوص المتجر — «متجر شام» بيتكلم لغات المنصة كلها من هنا (storeL10n.ts).
+ * الواجهة تطلب مفتاحاً بلغة الزائر: `storeText(lang, 'sf_add_to_cart')` أو `makeStoreT(lang)`،
+ * والحل: لغة الزائر ← الإنجليزية ← العربية ← المفتاح، فما حدش يشوف عربي غير لو اختار عربي.
+ */
+export * from './storeKeys';
+export * from './storeL10n';

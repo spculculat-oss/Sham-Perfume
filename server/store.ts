@@ -9,6 +9,9 @@ import express from 'express';
 import productsData from '../src/data/products.json';
 import { recommend } from '../src/utils/storeAdvisor';
 import { FAMILY_LABEL, GENDER_LABEL, mergeCatalog, OCCASION_LABEL, SEASON_LABEL, type RawProduct, type StoreCatalogFile, type StoreProduct } from '../src/utils/storeCatalog';
+import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../src/types/i18n';
+import { makeStoreT } from '../src/لغات/storeL10n';
+import { pickReasonLine } from '../src/utils/storeAdvisor';
 import { callEngine, engineStatuses } from './core/engines';
 import { liveStoreCatalog, supervisorGuidance } from './core/liveData';
 import { RateLimiter, clientKey } from './core/rateLimit';
@@ -42,12 +45,14 @@ export function catalogLines(products: StoreProduct[]): string {
 }
 
 /** The rule-based answer: same shape as Shaheen's, in the visitor's language. */
-export function localAdvice(products: StoreProduct[], message: string, lang: 'ar' | 'en'): StoreAdvice {
+/** The rule-based answer in any of the platform's languages (never Arabic for a non-Arabic visitor). */
+export function localAdvice(products: StoreProduct[], message: string, lang: SupportedLanguage): StoreAdvice {
   const { picks, matched } = recommend(products, message, 4);
-  const reply = lang === 'ar'
-    ? (matched ? `اخترت لك ${picks.length} ${picks.length === 1 ? 'عطراً' : 'عطور'} من المتجر تناسب طلبك:` : 'مش لاقي تطابق دقيق لطلبك، دي أكثر العطور تقييماً في المتجر — قولّي تفاصيل أكتر (رجالي/نسائي، الموسم، الميزانية) وأنا أضيّق الاختيار.')
-    : (matched ? `Here ${picks.length === 1 ? 'is 1 perfume' : `are ${picks.length} perfumes`} from the store that ${picks.length === 1 ? 'fits' : 'fit'} your request:` : 'No exact match — these are the best-rated perfumes in the store. Tell me more (men/women, season, budget) to narrow it down.');
-  return { source: 'local', reply, picks: picks.map((p) => ({ id: p.product.sku, why: (lang === 'ar' ? p.reasons.ar : p.reasons.en).join(' · ') })) };
+  const t = makeStoreT(lang);
+  return {
+    source: 'local', reply: t(matched ? 'advice_quick' : 'advice_none'),
+    picks: picks.map((p) => ({ id: p.product.sku, why: pickReasonLine(p, lang) })),
+  };
 }
 
 export function readAdvice(raw: string, products: StoreProduct[]): Omit<StoreAdvice, 'source'> | undefined {
@@ -80,7 +85,11 @@ export function createStoreRouter(options: StoreRouterOptions = {}) {
 
   router.post('/store/advise', async (req, res) => {
     const message = clean(req.body?.message, 500);
-    const lang: 'ar' | 'en' = req.body?.language === 'en' ? 'en' : 'ar';
+    const requested = req.body?.language;
+    // The visitor's real language (any of the platform's 100), Arabic only when asked for Arabic.
+    const lang: SupportedLanguage = typeof requested === 'string' && SUPPORTED_LANGUAGES.some((l) => l.code === requested)
+      ? requested as SupportedLanguage
+      : 'en';
     if (message.length < 2) { res.status(400).json({ error: 'Message is required', code: 'INVALID_MESSAGE' }); return; }
     if (!limiter.allow(clientKey(req))) { res.status(429).json({ error: 'Too many requests, please wait a minute', code: 'RATE_LIMITED' }); return; }
     const list = mergeCatalog(products, await catalog().catch(() => undefined));
@@ -99,7 +108,7 @@ export function createStoreRouter(options: StoreRouterOptions = {}) {
       const seen = new Set(ranked.map((p) => p.sku));
       const ordered = [...ranked, ...list.filter((p) => !seen.has(p.sku) && p.inStock)];
       const system = ADVISOR_SYSTEM + await supervisorGuidance('store_advisor', env).catch(() => '');
-      const prompt = `طلب الزائر (${lang === 'ar' ? 'بالعربية' : 'in English'}): «${message}»
+      const prompt = `طلب الزائر (لغته: ${lang}): «${message}»
 ترشيح مبدئي من فلتر المتجر (قد يكون ناقصاً): ${shortlist.join(', ') || 'لا يوجد'}
 منتجات المتجر (المعرّف | الاسم | العلامة | السعر | الجنس | العائلة | النوتات | المواسم | المناسبات):
 ${catalogLines(ordered)}
