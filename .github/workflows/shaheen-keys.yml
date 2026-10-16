@@ -1,7 +1,7 @@
 name: Shaheen AI keys (verify + sync to Vercel)
 
 # Keys live ONLY in repository secrets (Settings → Secrets and variables → Actions):
-#   GEMINI_API_KEY, OPENAI_API_KEY, ANTHROPIC_API_KEY, DEEPSEEK_API_KEY,
+#   GEMINI_API_KEY, OPENAI_API_KEY, ANTHROPIC_API_KEY, DEEPSEEK_API_KEY, MANUS_API_KEY (background agent),
 #   optional OPENROUTER_API_KEY, AI_GATEWAY_API_KEY, YOUTUBE_API_KEY (videos under Shaheen's answers),
 #   and VERCEL_TOKEN for the sync.
 # 1) every present key gets one tiny real request through the site's own engine code;
@@ -31,6 +31,8 @@ jobs:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      # Background task agent only (verified here, never copied to Vercel: visitors never reach it).
+      MANUS_API_KEY: ${{ secrets.MANUS_API_KEY }}
       OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
       YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}

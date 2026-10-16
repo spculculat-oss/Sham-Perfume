@@ -1,0 +1,60 @@
+name: Shaheen languages and design audit (Manus, weekly)
+
+# «الخبير شاهين» sends his background agent (Manus, key MANUS_API_KEY in repository secrets) to open the
+# live GitHub Pages site in a real browser and audit the languages (Arabic + English every week and 3 more
+# of the site's languages in rotation) and the design (desktop + phone). The report is kept in
+# src/data/live/manus-audit.json for the admin team; visitors never see it or the agent's name.
+# Settings (repository variables, optional): MANUS_PROFILE (lite | standard | max, default lite = fewest
+# credits) and MANUS_WAIT_MIN (default 30). Code: scripts/shaheen-manus/ and server/core/manus.ts.
+
+on:
+  schedule:
+    # Saturdays 06:15 UTC (08:15/09:15 Cairo).
+    - cron: '15 6 * * 6'
+  workflow_dispatch:
+  push:
+    # main: a change to the audit runs it at once. Branches: rehearsal (the report is shown, not committed).
+    branches: [main, 'arena/**']
+    paths: ['scripts/shaheen-manus/**', 'server/core/manus.ts', '.github/workflows/shaheen-manus.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: shaheen-manus
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    name: Audit the site's languages and design
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      MANUS_API_KEY: ${{ secrets.MANUS_API_KEY }}
+      MANUS_PROFILE: ${{ vars.MANUS_PROFILE || 'lite' }}
+      MANUS_WAIT_MIN: ${{ vars.MANUS_WAIT_MIN || '30' }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.ref == 'refs/heads/main' && 'main' || github.sha }}
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Shaheen's agent audits the languages and the design
+        run: node --import tsx scripts/shaheen-manus/run.mts
+      - name: Keep the report on main
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "Shaheen audit bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "تدقيق شاهين للغات والتصميم $(date -u +%Y-%m-%d)" src/data/live/manus-audit.json

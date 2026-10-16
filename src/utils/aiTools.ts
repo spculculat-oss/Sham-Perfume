@@ -77,6 +77,8 @@ export const AI_TOOLS: AiToolDef[] = [
 /** Shared plumbing (engine calls, the advisory council, the doctor, Shaheen's own supervisor), not visitor tools. */
 export const AI_INFRASTRUCTURE = [
   'server/core/engines.ts', 'server/core/council.ts', 'scripts/doctor/agent.ts', 'scripts/doctor/run.mts', 'scripts/shaheen-supervisor/run.mts',
+  // Shaheen's background agent (Manus): admin-only audits in GitHub Actions, never a visitor tool.
+  'server/core/manus.ts', 'scripts/shaheen-manus/run.mts',
 ];
 
 export const aiTool = (id: string) => AI_TOOLS.find((t) => t.id === id);
