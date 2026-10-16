@@ -8,7 +8,7 @@ name: Shaheen product importer and page reviewer (every 12 hours)
 # Shaheen then writes the Arabic names/descriptions (scripts/shaheen-store) and GitHub Pages is rebuilt,
 # which generates a standalone page for every product (p/<slug>.html). Code: scripts/shaheen-import/.
 # Settings (repository variables, all optional): IMPORT_MAX_NEW (default 30 new products per run),
-# IMPORT_MAX_REFRESH (default 40), IMPORT_RATE_MYR_EGP (fallback exchange rate).
+# IMPORT_MAX_REFRESH (default 40), IMPORT_RATE_MYR_EGP (fallback exchange rate), IMPORT_MARKUP (default 1.5).
 
 on:
   schedule:
@@ -43,6 +43,7 @@ jobs:
       IMPORT_MAX_NEW: ${{ github.event.inputs.max_new || vars.IMPORT_MAX_NEW || (github.ref == 'refs/heads/main' && '30' || '6') }}
       IMPORT_MAX_REFRESH: ${{ vars.IMPORT_MAX_REFRESH || (github.ref == 'refs/heads/main' && '40' || '2') }}
       IMPORT_RATE_MYR_EGP: ${{ vars.IMPORT_RATE_MYR_EGP }}
+      IMPORT_MARKUP: ${{ vars.IMPORT_MARKUP || '1.5' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -64,9 +65,6 @@ jobs:
           bun-version-file: package.json
       - name: Install dependencies
         run: bun install --frozen-lockfile || bun install
-      - name: TEMP diagnostics
-        continue-on-error: true
-        run: node --import tsx scripts/shaheen-import/debug.mts
       - name: Shaheen imports the products and «مراجع الصفحات» reviews them
         run: node --import tsx scripts/shaheen-import/run.mts
       - name: Shaheen writes the Arabic names and descriptions of the new products

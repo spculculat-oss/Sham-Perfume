@@ -24,6 +24,8 @@ const REVIEW = new URL('../../src/data/live/store-review.json', import.meta.url)
 const UA = 'Mozilla/5.0 (compatible; ShaheenImporter/1.0; +https://spculculat-oss.github.io/Sham-Perfume/)';
 const MAX_NEW = Number(env.IMPORT_MAX_NEW ?? 30);
 const MAX_REFRESH = Number(env.IMPORT_MAX_REFRESH ?? 40);
+// The scenario's markup (×1.5); a repository variable can change it without touching the code.
+const MARKUP = Number(env.IMPORT_MARKUP) >= 1 ? Number(env.IMPORT_MARKUP) : undefined;
 const CONCURRENCY = Math.max(1, Math.min(6, Number(env.IMPORT_CONCURRENCY ?? 3)));
 const started = Date.now();
 const log: string[] = [];
@@ -80,7 +82,7 @@ async function sitemapEntries(source: ImportSource): Promise<SitemapEntry[]> {
 const products: RawProduct[] = read<{ products?: RawProduct[] }>(PRODUCTS)?.products || [];
 const previous = read<ReviewFile>(REVIEW);
 const before = products.length;
-const importInfo: Record<string, unknown> = { at: new Date().toISOString(), sources: [] as unknown[] };
+const importInfo: Record<string, unknown> = { at: new Date().toISOString(), markup: MARKUP ?? 1.5, sources: [] as unknown[] };
 let ask: Awaited<ReturnType<typeof makeAsk>>;
 try { ask = await makeAsk(env); } catch { ask = undefined; }
 
@@ -153,7 +155,7 @@ for (const source of SOURCES.filter((s) => !env.IMPORT_SOURCE || env.IMPORT_SOUR
   const now = new Date().toISOString();
   for (const x of results) {
     const existing = bySourceKey.get(sourceKey(source.id, x.supplierSku)) || byUrl.get(x.url.replace(/\/+$/, ''));
-    const product = toStoreProduct(x, { source, rate, now, nextId: nextIdOf(products), existing });
+    const product = toStoreProduct(x, { source, rate, now, nextId: nextIdOf(products), existing, markup: MARKUP });
     if (existing) { products[products.indexOf(existing)] = product; refreshed++; } else { products.push(product); added++; }
     bySourceKey.set(sourceKey(source.id, x.supplierSku), product);
     byUrl.set(x.url.replace(/\/+$/, ''), product);
@@ -165,7 +167,7 @@ for (const source of SOURCES.filter((s) => !env.IMPORT_SOURCE || env.IMPORT_SOUR
 
 // «مراجع الصفحات» reviews the whole store after the import.
 importInfo.durationMs = Date.now() - started;
-const { products: reviewed, report } = await reviewStore(products, { previous, importInfo, imageBudget: Number(env.REVIEW_IMAGE_BUDGET ?? 80) });
+const { products: reviewed, report } = await reviewStore(products, { previous, importInfo, markup: MARKUP, imageBudget: Number(env.REVIEW_IMAGE_BUDGET ?? 80) });
 say(`Reviewer: ${report.summary.total} products — ${report.summary.ok} ok, ${report.summary.warn} with remarks, ${report.summary.hidden} hidden; ${report.summary.imagesChecked} photos checked, ${report.summary.brokenImages} broken`);
 
 writeFileSync(PRODUCTS, JSON.stringify({ products: reviewed }, null, 2));
