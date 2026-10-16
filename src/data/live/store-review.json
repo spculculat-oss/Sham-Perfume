@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-16T15:06:39.998Z",
+ "updatedAt": "2026-10-16T17:04:54.644Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
-  "total": 1071,
-  "imported": 1020,
-  "ok": 524,
-  "warn": 547,
+  "total": 1111,
+  "imported": 1060,
+  "ok": 538,
+  "warn": 573,
   "hidden": 0,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-16T15:03:27.930Z",
+  "at": "2026-10-16T17:03:02.932Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,21 +25,21 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1017,
-    "listingOnly": 58,
+    "listingProducts": 1019,
+    "listingOnly": 56,
     "listingComplete": true,
-    "added": 150,
+    "added": 40,
     "refreshed": 25,
     "failed": [],
     "failedCount": 0,
     "viaShaheen": 0,
     "deferred": 0,
-    "gone": 1
+    "gone": 5
    }
   ],
   "rate": 13.081,
   "prices": {
-   "count": 1020,
+   "count": 1060,
    "min": 750,
    "median": 3340,
    "max": 7830,
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 192083
+  "durationMs": 111731
  },
  "items": [
   {
@@ -1444,6 +1444,16 @@
    "page": "p/shahd-by-lattafa-perfumes-100-ml-women-166.html"
   },
   {
+   "sku": "LAT-172",
+   "id": 172,
+   "name": "Mazaaji by Lattafa 100ml EDP for Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/mazaaji-by-lattafa-100ml-edp-for-women-172.html"
+  },
+  {
    "sku": "LAT-176",
    "id": 176,
    "name": "Ana Abiyedh by Lattafa 60ml EDP Unisex",
@@ -1502,56 +1512,6 @@
     "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/blush-amber-100ml-by-grandeur-185.html"
-  },
-  {
-   "sku": "VOL-188",
-   "id": 188,
-   "name": "Reload Intense by Volare Man – 100 ml for Him",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/reload-intense-by-volare-man-100-ml-for-him-188.html"
-  },
-  {
-   "sku": "VOL-193",
-   "id": 193,
-   "name": "Darlene Pour Femme by Volare – 100 ml for Women",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/darlene-pour-femme-by-volare-100-ml-for-women-193.html"
-  },
-  {
-   "sku": "GRA-195",
-   "id": 195,
-   "name": "Oud Elixir by Grandeur Elite – 100 ml Eau de Parfum for Men",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/oud-elixir-by-grandeur-elite-100-ml-eau-de-parfum-for-men-195.html"
-  },
-  {
-   "sku": "ARD-197",
-   "id": 197,
-   "name": "Oud 24 Hours Ard Al Zaafaran 100ml EDP",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/oud-24-hours-ard-al-zaafaran-100ml-edp-197.html"
-  },
-  {
-   "sku": "ARD-198",
-   "id": 198,
-   "name": "Mousuf by Ard Al Zaafaran EDP 100 ml",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/mousuf-by-ard-al-zaafaran-edp-100-ml-198.html"
   },
   {
    "sku": "ZIM-211",
@@ -2179,6 +2139,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/yara-tous-by-lattafa-100ml-edp-women-321.html"
+  },
+  {
+   "sku": "ARD-326",
+   "id": 326,
+   "name": "Ajmal Ehsas Bloom by Ard Al Zaafaran 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ajmal-ehsas-bloom-by-ard-al-zaafaran-100ml-326.html"
   },
   {
    "sku": "MAI-341",
@@ -3496,6 +3466,16 @@
    "page": "p/dark-aoud-by-maison-alhambra-80ml-edp-621.html"
   },
   {
+   "sku": "LAT-626",
+   "id": 626,
+   "name": "Najdia Tribute by Lattafa 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/najdia-tribute-by-lattafa-100ml-edp-626.html"
+  },
+  {
    "sku": "MAI-628",
    "id": 628,
    "name": "Fortnight by Maison Alhambra 100ml EDP Men",
@@ -4475,6 +4455,16 @@
    "page": "p/la-charmante-eclatant-by-maison-alhambra-100ml-edp-880.html"
   },
   {
+   "sku": "MAI-882",
+   "id": 882,
+   "name": "Rose Origami by Maison Alhambra 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/rose-origami-by-maison-alhambra-100ml-882.html"
+  },
+  {
    "sku": "ARD-884",
    "id": 884,
    "name": "Maraseem Al Malaki by Ard Al Zaafaran 100ml EDP",
@@ -4564,6 +4554,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/feroce-by-armaf-100ml-edp-women-901.html"
+  },
+  {
+   "sku": "MAI-903",
+   "id": 903,
+   "name": "Hercules by Maison Alhambra For Him 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/hercules-by-maison-alhambra-for-him-100ml-903.html"
   },
   {
    "sku": "MAI-905",
@@ -5774,6 +5774,286 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/velixir-icarus-100ml-edp-1071.html"
+  },
+  {
+   "sku": "VEL-1074",
+   "id": 1074,
+   "name": "Velixir Athena 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-athena-100ml-edp-1074.html"
+  },
+  {
+   "sku": "VEL-1075",
+   "id": 1075,
+   "name": "Velixir Poseidon 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-poseidon-100ml-edp-1075.html"
+  },
+  {
+   "sku": "VEL-1079",
+   "id": 1079,
+   "name": "Velixir Adonis 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-adonis-100ml-edp-1079.html"
+  },
+  {
+   "sku": "ASD-1081",
+   "id": 1081,
+   "name": "Marj Perfume 100ml Lattafa Asdaaf Arabic For Women",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/marj-perfume-100ml-lattafa-asdaaf-arabic-for-women-1081.html"
+  },
+  {
+   "sku": "RAV-1082",
+   "id": 1082,
+   "name": "Nuit Parfaite by Rave 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "وصف المورد قصير",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/nuit-parfaite-by-rave-100ml-edp-1082.html"
+  },
+  {
+   "sku": "RAV-1083",
+   "id": 1083,
+   "name": "Pure Desire Gold by Rave 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/pure-desire-gold-by-rave-100ml-edp-1083.html"
+  },
+  {
+   "sku": "ASD-1084",
+   "id": 1084,
+   "name": "Ameerat Al Arab Prive Rose by Lattafa 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ameerat-al-arab-prive-rose-by-lattafa-100ml-1084.html"
+  },
+  {
+   "sku": "VEL-1088",
+   "id": 1088,
+   "name": "Velixir Asteria 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-asteria-100ml-edp-1088.html"
+  },
+  {
+   "sku": "VEL-1090",
+   "id": 1090,
+   "name": "Velixir Himeros 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-himeros-100ml-edp-1090.html"
+  },
+  {
+   "sku": "VEL-1091",
+   "id": 1091,
+   "name": "Velixir Galatea 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-galatea-100ml-edp-1091.html"
+  },
+  {
+   "sku": "VEL-1092",
+   "id": 1092,
+   "name": "Velixir Apollo 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-apollo-100ml-edp-1092.html"
+  },
+  {
+   "sku": "VEL-1093",
+   "id": 1093,
+   "name": "Velixir Helios 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-helios-100ml-edp-1093.html"
+  },
+  {
+   "sku": "VEL-1094",
+   "id": 1094,
+   "name": "Velixir Paladin 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-paladin-100ml-edp-1094.html"
+  },
+  {
+   "sku": "PEN-1095",
+   "id": 1095,
+   "name": "Ultra Marine 100ml by Pendora Scents",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ultra-marine-100ml-by-pendora-scents-1095.html"
+  },
+  {
+   "sku": "VEL-1096",
+   "id": 1096,
+   "name": "Nyx Velixir Parfums 100ml for Unisex",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/nyx-velixir-parfums-100ml-for-unisex-1096.html"
+  },
+  {
+   "sku": "VEL-1097",
+   "id": 1097,
+   "name": "Velixir Ares 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-ares-100ml-edp-1097.html"
+  },
+  {
+   "sku": "VEL-1098",
+   "id": 1098,
+   "name": "Velixir Aphrodite 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-aphrodite-100ml-edp-1098.html"
+  },
+  {
+   "sku": "ASD-1099",
+   "id": 1099,
+   "name": "Majd Al Sultan by Asdaaf 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/majd-al-sultan-by-asdaaf-100ml-edp-1099.html"
+  },
+  {
+   "sku": "VEL-1100",
+   "id": 1100,
+   "name": "Selene Velixir Parfums 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/selene-velixir-parfums-100ml-1100.html"
+  },
+  {
+   "sku": "VEL-1101",
+   "id": 1101,
+   "name": "Velixir Narcisus 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-narcisus-100ml-edp-1101.html"
+  },
+  {
+   "sku": "RAV-1102",
+   "id": 1102,
+   "name": "Now Intense by Rave 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/now-intense-by-rave-100ml-edp-1102.html"
+  },
+  {
+   "sku": "RAV-1103",
+   "id": 1103,
+   "name": "Now Rouge Perfume EDP 100ml by RAVE",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/now-rouge-perfume-edp-100ml-by-rave-1103.html"
+  },
+  {
+   "sku": "VEL-1104",
+   "id": 1104,
+   "name": "Harmonia Velixir Parfums 100ml for Unisex",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/harmonia-velixir-parfums-100ml-for-unisex-1104.html"
+  },
+  {
+   "sku": "VEL-1105",
+   "id": 1105,
+   "name": "Velixir Demeter 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-demeter-100ml-edp-1105.html"
+  },
+  {
+   "sku": "RAV-1106",
+   "id": 1106,
+   "name": "Au Soleil by Rave 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "وصف المورد قصير",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/au-soleil-by-rave-100ml-edp-1106.html"
+  },
+  {
+   "sku": "NIC-1111",
+   "id": 1111,
+   "name": "Khanjar by Niche Emarati 85ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/khanjar-by-niche-emarati-85ml-edp-1111.html"
   }
  ]
 }

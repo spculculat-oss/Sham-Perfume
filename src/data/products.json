@@ -9255,7 +9255,7 @@
       "brand": "Lattafa",
       "supplierPrice": 1883.66,
       "ourPrice": 2830,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -9305,7 +9305,10 @@
       "barcode": "6291107459059",
       "importedAt": "2026-10-16T09:17:51.478Z",
       "refreshedAt": "2026-10-16T15:06:39.969Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 173,
@@ -9606,7 +9609,9 @@
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ana-abiyedh-scarlet-lattafa-box-60ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ana-abiyedh-scarlet-i-am-white-60ml-edp-by-lattafa.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ana-abiyedh-scarlet-lattafa-bottle-60ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/perfumes/lattafa/ana-abiyedh-scarlet-lattafa-edp-bottle-60ml.jpg"
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ana-abiyedh-scarlet-67619283927423-60ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ana-abiyedh-scarlet-lattafa-60ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ana-abiyedh-scarlet-lattafa-edp-box-60ml.jpg"
       ],
       "category": "نسائي",
       "brand": "Lattafa",
@@ -9656,7 +9661,7 @@
       ],
       "barcode": "6290362349938",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld"
     },
     {
@@ -9673,7 +9678,9 @@
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/raghba-men-lattafa-perfume-warm-spicy-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/raghba-men-putrajaya-boardwalk-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/raghba-men-rainy-kl-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/perfumes/lattafa/raghba-men-lattafa-perfume-lelaki-sweet-smoky-100ml-edp.jpg"
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/raghba-men-malayman-holding-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/raghba-men-lattafa-perfumes-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/raghba-men-car-interior-100ml-edp.jpg"
       ],
       "category": "رجالي",
       "brand": "Lattafa",
@@ -9721,7 +9728,7 @@
       ],
       "barcode": "6291106060065",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -9741,7 +9748,9 @@
         "https://www.shamperfume.com/cdn/large/fdcb9bde-109c-41a6-39f8-1784f68fa300.jpg",
         "https://www.shamperfume.com/cdn/large/888fff02-fd97-43ca-0175-50a9e9728e00.jpg",
         "https://www.shamperfume.com/cdn/large/ea07b08a-e2f9-4deb-d869-6e029078dc00.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/0ef3a3f9-e317-4f63-fe5d-e565e4948f00.jpg"
+        "https://www.shamperfume.com/cdn/large/f666b580-3a70-4892-cc67-d228b4ee3200.jpg",
+        "https://www.shamperfume.com/cdn/large/f4a1a256-c4a6-4ba5-2e3e-7b4dd0d36d00.jpg",
+        "https://www.shamperfume.com/cdn/large/30ea2c6a-02eb-41aa-5d95-03e4e1836700.jpg"
       ],
       "category": "مختلط",
       "brand": "Lattafa Pride",
@@ -9795,7 +9804,7 @@
       ],
       "barcode": "6290362346111",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -9867,7 +9876,7 @@
       "occasionsSource": [],
       "barcode": "6290360598918",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -9934,7 +9943,7 @@
       ],
       "barcode": "6290360595771",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -9954,7 +9963,9 @@
         "https://www.shamperfume.com/cdn/large/perfumes/mood-perfume/mood-velvet-her-100ml-bottla-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/mood-perfume/mood-unisex-velvet-edp-8053629629758-100ml.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/mood-perfume/mood-velvet-her-100ml-perfume-box-edp.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/perfumes/mood-perfume/mood-velvet-her-100ml-perfume-edp.jpg"
+        "https://www.shamperfume.com/cdn/large/perfumes/mood-perfume/mood-velvet-her-100ml-perfume-post-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/mood-perfume/mood-velvet-eau-de-parfum-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/mood-perfume/mood-velvet-her-100ml-perfume-bottle-edp.jpg"
       ],
       "category": "نسائي",
       "brand": "Mood Perfume",
@@ -10000,7 +10011,7 @@
       "occasionsSource": [],
       "barcode": "8053629629758",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld"
     },
     {
@@ -10070,7 +10081,7 @@
       ],
       "barcode": "6291108735787",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld"
     },
     {
@@ -10087,6 +10098,7 @@
         "https://www.shamperfume.com/cdn/large/perfumes/gulf-orchid/tahara-vanilla-body-mist-250ml-my-edp.jpg",
         "https://www.shamperfume.com/cdn/large/products/migrated/230/Tahara-Vanilla-Body-Mist-pos3.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/gulf-orchid/tahara-vanilla-body-mist-car-women-250ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/gulf-orchid/tahara-vanilla-body-mist-man-women-gift-250ml-edp.jpg",
         "https://www.shamperfume.com/cdn/OGImage/perfumes/gulf-orchid/tahara-vanilla-body-mist-250ml-edp.jpg"
       ],
       "category": "نسائي",
@@ -10139,7 +10151,7 @@
       ],
       "barcode": "6291107018430",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld"
     },
     {
@@ -10200,7 +10212,7 @@
       ],
       "barcode": "5055810042868",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر"
@@ -10220,6 +10232,8 @@
         "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/luxe-emerald-maison-alhambra-100ml-unisex-perfume-malaysia-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/minyak-wangi-luxe-emerald-tahan-lama-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/maison-alhambra-luxe-emerald-woody-amber-perfume-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/beli-perfume-luxe-emerald-original-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/luxe-emerald-perfume-maison-alhambra-eau-de-parfum-100ml-unisex-bond-luxurious-fragrance-perfume-edp.jpg",
         "https://www.shamperfume.com/cdn/OGImage/perfumes/maison-alhambra/luxe-emerald-maison-alhambra-100ml-edp-unisex-perfume-malaysia.jpg"
       ],
       "category": "مختلط",
@@ -10273,7 +10287,7 @@
       "occasionsSource": [],
       "barcode": "6290362341109",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld"
     },
     {
@@ -10345,7 +10359,7 @@
       ],
       "barcode": "5055810038618",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld"
     },
     {
@@ -10368,7 +10382,7 @@
       "brand": "Volare",
       "supplierPrice": 2419.99,
       "ourPrice": 3630,
-      "stockStatus": "out_of_stock",
+      "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -10409,11 +10423,8 @@
       ],
       "barcode": "6294019023479",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
-      "importedVia": "json-ld",
-      "reviewIssues": [
-        "غير متوفر عند المورد"
-      ]
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
     },
     {
       "id": 189,
@@ -10479,7 +10490,7 @@
       "occasionsSource": [],
       "barcode": "6295199794128",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld"
     },
     {
@@ -10496,7 +10507,9 @@
         "https://www.shamperfume.com/cdn/large/never-forget-me-by-maison-asrar-90ml-edp-women-3.jpg",
         "https://www.shamperfume.com/cdn/large/never-forget-me-by-maison-asrar-90ml-edp-women-4.jpg",
         "https://www.shamperfume.com/cdn/large/never-forget-me-by-maison-asrar-90ml-edp-women-5.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/never-forget-me-by-maison-asrar-90ml-edp-women-1.jpg"
+        "https://www.shamperfume.com/cdn/large/never-forget-me-by-maison-asrar-90ml-edp-women-6.jpg",
+        "https://www.shamperfume.com/cdn/large/never-forget-me-by-maison-asrar-90ml-edp-women-7.jpg",
+        "https://www.shamperfume.com/cdn/large/never-forget-me-by-maison-asrar-90ml-edp-women-8.jpg"
       ],
       "category": "نسائي",
       "brand": "Maison Asrar",
@@ -10552,7 +10565,7 @@
       ],
       "barcode": "6291107016955",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld"
     },
     {
@@ -10569,7 +10582,9 @@
         "https://www.shamperfume.com/cdn/large/majesty-by-maison-asrar-100ml-edp-unisex-3.jpg",
         "https://www.shamperfume.com/cdn/large/majesty-by-maison-asrar-100ml-edp-unisex-4.jpg",
         "https://www.shamperfume.com/cdn/large/majesty-by-maison-asrar-100ml-edp-unisex-5.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/majesty-by-maison-asrar-100ml-edp-unisex-1.jpg"
+        "https://www.shamperfume.com/cdn/large/majesty-by-maison-asrar-100ml-edp-unisex-9.jpg",
+        "https://www.shamperfume.com/cdn/large/majesty-by-maison-asrar-100ml-edp-unisex-6.jpg",
+        "https://www.shamperfume.com/cdn/large/majesty-by-maison-asrar-100ml-edp-unisex-7.jpg"
       ],
       "category": "مختلط",
       "brand": "Maison Asrar",
@@ -10628,7 +10643,7 @@
       ],
       "barcode": "6290362163381",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld"
     },
     {
@@ -10694,7 +10709,7 @@
       ],
       "barcode": "6291108733448",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld"
     },
     {
@@ -10711,13 +10726,14 @@
         "https://www.shamperfume.com/cdn/large/perfumes/volare/darlene-volare-gift-surprise-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/volare/darlene-volare-mirror-reflection-beauty-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/volare/darlene-volare-vanilla-blossom-moment-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/volare/darlene-volare-rosy-sunrise-balcony-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/OGImage/perfumes/volare/darlene-volare-perfume-wanita-sweet-floral-long-lasting-100ml-edp.jpg"
       ],
       "category": "نسائي",
       "brand": "Volare",
       "supplierPrice": 1569.72,
       "ourPrice": 2355,
-      "stockStatus": "out_of_stock",
+      "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -10761,11 +10777,8 @@
       "occasionsSource": [],
       "barcode": "6423080728185",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
-      "importedVia": "json-ld",
-      "reviewIssues": [
-        "غير متوفر عند المورد"
-      ]
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
     },
     {
       "id": 194,
@@ -10828,7 +10841,7 @@
       "occasionsSource": [],
       "barcode": "6291107459127",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld"
     },
     {
@@ -10851,7 +10864,7 @@
       "brand": "Grandeur",
       "supplierPrice": 2158.36,
       "ourPrice": 3240,
-      "stockStatus": "out_of_stock",
+      "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -10900,11 +10913,8 @@
       ],
       "barcode": "5055810035648",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
-      "importedVia": "json-ld",
-      "reviewIssues": [
-        "غير متوفر عند المورد"
-      ]
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
     },
     {
       "id": 196,
@@ -10920,6 +10930,7 @@
         "https://www.shamperfume.com/cdn/large/perfumes/volare/moroccan-dream-volare-perfume-oriental-musky-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/volare/moroccandream-home-entryway-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/volare/moroccandream-couple-sofa-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/volare/moroccandream-couple-balcony-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/OGImage/perfumes/volare/moroccan-dream-volare-perfume-wanita-oriental-floral-100ml-edp.jpg"
       ],
       "category": "نسائي",
@@ -10966,7 +10977,7 @@
       "occasionsSource": [],
       "barcode": "6294019023806",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld"
     },
     {
@@ -10989,7 +11000,7 @@
       "brand": "Ard Al Zaafaran",
       "supplierPrice": 1635.13,
       "ourPrice": 2455,
-      "stockStatus": "out_of_stock",
+      "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -11031,11 +11042,8 @@
       ],
       "barcode": "6423080594773",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
-      "importedVia": "json-ld",
-      "reviewIssues": [
-        "غير متوفر عند المورد"
-      ]
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
     },
     {
       "id": 198,
@@ -11051,13 +11059,15 @@
         "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/beli-perfume-mousuf-original-malaysia-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/products/migrated/95/haruman-premium-mousuf-ard-al-zaafaran-malaysia-pos3.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/mousuf-broken-impact-009-malaysia-clear-bottle-box-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/perfumes/ard-al-zaafaran/mousuf-ard-al-zaafaran-100ml-edp-perfume-malaysia.jpg"
+        "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/mousuf-broken-impact-008-malaysia-clear-bottle-box-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/ard-al-zaafaran-mousuf-perfume-unisex-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/perfume-mousuf-haruman-mewah-arab-100ml-edp.jpg"
       ],
       "category": "رجالي",
       "brand": "Ard Al Zaafaran",
       "supplierPrice": 1569.72,
       "ourPrice": 2355,
-      "stockStatus": "out_of_stock",
+      "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -11102,11 +11112,8 @@
       "occasionsSource": [],
       "barcode": "6437842514039",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
-      "importedVia": "json-ld",
-      "reviewIssues": [
-        "غير متوفر عند المورد"
-      ]
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
     },
     {
       "id": 199,
@@ -11122,6 +11129,8 @@
         "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/arabian-night-oud-amber-woody-perfume-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/arabian-night-oud-woody-perfume-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/arabian-night-oud-amber-woody-perfume-man-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/perfume-lelaki-arabian-night-haruman-mewah-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/arabian-nights-parfume-arabic-perfume-edp-original-perfume-100ml-perfume-store-edp.jpg",
         "https://www.shamperfume.com/cdn/OGImage/perfumes/ard-al-zaafaran/arabian-night-100ml-edp-men-perfume-malaysia.jpg"
       ],
       "category": "رجالي",
@@ -11174,7 +11183,7 @@
       "occasionsSource": [],
       "barcode": "6297000944012",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld"
     },
     {
@@ -11191,7 +11200,9 @@
         "https://www.shamperfume.com/cdn/large/perfumes/al-wataniah/al-wataniah-ameerati-floral-oriental-perfume-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/al-wataniah/perfume-wanita-ameerati-original-al-wataniah-malaysia-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/al-wataniah/minyak-wangi-ameerati-tahan-lama-al-wataniah-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/perfumes/al-wataniah/al-wataniah-ameerati-floral-oriental-her-perfume-100ml-edp.jpg"
+        "https://www.shamperfume.com/cdn/large/perfumes/al-wataniah/beli-perfume-ameerati-original-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/al-wataniah/perfume-wanita-ameerati-haruman-amber-rose-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/al-wataniah/haruman-mewah-ameerati-al-wataniah-malaysia-100ml-edp.jpg"
       ],
       "category": "نسائي",
       "brand": "Al Wataniah",
@@ -11243,7 +11254,7 @@
       "occasionsSource": [],
       "barcode": "5055810014902",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld"
     },
     {
@@ -11260,7 +11271,9 @@
         "https://www.shamperfume.com/cdn/large/perfumes/zimaya/kotak-royal-leather-zimaya-perfume-original-malaysia-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/zimaya/royal-leather-zimaya-botol-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/zimaya/royal-leather-zimaya-boardroom-power-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/perfumes/zimaya/royal-leather-by-zimaya-box-bottle-malaysia-hadiah-100ml-edp.jpg"
+        "https://www.shamperfume.com/cdn/large/perfumes/zimaya/royal-leather-zimaya-amber-lounge-signature-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/zimaya/royal-leather-zimaya-leather-journal-moment-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/zimaya/royal-leather-zimaya-desk-after-hours-100ml-edp.jpg"
       ],
       "category": "مختلط",
       "brand": "Zimaya",
@@ -11311,7 +11324,7 @@
       "occasionsSource": [],
       "barcode": "6290171071044",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
       "importedVia": "json-ld"
     },
     {
@@ -19901,7 +19914,7 @@
       "brand": "Ard Al Zaafaran",
       "supplierPrice": 1556.64,
       "ourPrice": 2335,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -19942,7 +19955,10 @@
       "barcode": "6266515361782",
       "importedAt": "2026-10-16T10:48:24.939Z",
       "refreshedAt": "2026-10-16T10:48:24.939Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 327,
@@ -40187,7 +40203,7 @@
       "brand": "Lattafa",
       "supplierPrice": 1818.26,
       "ourPrice": 2730,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -40238,7 +40254,10 @@
       "barcode": "6291108733882",
       "importedAt": "2026-10-16T13:16:56.090Z",
       "refreshedAt": "2026-10-16T13:16:56.090Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 627,
@@ -57609,7 +57628,7 @@
       "brand": "Maison Alhambra",
       "supplierPrice": 2616.2,
       "ourPrice": 3925,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -57652,7 +57671,10 @@
       "barcode": "6290362340928",
       "importedAt": "2026-10-16T13:35:47.267Z",
       "refreshedAt": "2026-10-16T13:35:47.267Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 883,
@@ -59011,7 +59033,7 @@
       "brand": "Maison Alhambra",
       "supplierPrice": 1739.77,
       "ourPrice": 2610,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -59055,7 +59077,10 @@
       "barcode": "6291107459233",
       "importedAt": "2026-10-16T13:35:47.267Z",
       "refreshedAt": "2026-10-16T13:35:47.267Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 904,
@@ -70734,6 +70759,2613 @@
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1072,
+      "sku": "MOO-1072",
+      "nameAr": "Aroma Mood 100ml EDP Unisex",
+      "nameEn": "Aroma Mood 100ml EDP Unisex",
+      "descriptionAr": "",
+      "descriptionEn": "Aroma Mood – 100 ml Eau de Parfum Unisex\nFragrance Notes:\nTop Notes: Citrus, Notes\nHeart Notes: White Flowers, Musk\nBase Notes: Amber, Sandalwood, Woody Notes",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/perfumes/mood-perfume/aroma-mood-100ml-box-unisex-perfume-edp.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/perfumes/mood-perfume/aroma-mood-100ml-box-unisex-perfume-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/mood-perfume/aroma-mood-100ml-unisex-perfume-bottle-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/mood-perfume/aroma-mood-100ml-unisex-perfume-box-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/mood-perfume/mood-aroma-edp-100ml-bottle-box.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/mood-perfume/aroma-mood-100ml-unisex-perfume-post-edp.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/perfumes/mood-perfume/aroma-mood-100ml-box-unisex-perfume-edp.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Mood Perfume",
+      "supplierPrice": 2877.82,
+      "ourPrice": 4320,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "aroma-mood-100ml",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 220,
+      "supplierSalePrice": 139,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/mood-perfume/aroma-mood/",
+      "slug": "aroma-mood-100ml-edp-unisex-1072",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "notes": {
+        "top": [
+          "Citrus",
+          "Notes"
+        ],
+        "heart": [
+          "White Flowers",
+          "Musk"
+        ],
+        "base": [
+          "Amber",
+          "Sandalwood",
+          "Woody Notes"
+        ]
+      },
+      "families": [],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Casual"
+      ],
+      "barcode": "8053629629802",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
+    },
+    {
+      "id": 1073,
+      "sku": "GRA-1073",
+      "nameAr": "Codice Profumo Man by Grandeur Elite – 100 ml for Men",
+      "nameEn": "Codice Profumo Man by Grandeur Elite – 100 ml for Men",
+      "descriptionAr": "",
+      "descriptionEn": "Codice Profumo Man by Grandeur Elite – 100 ml Eau de Parfum for Men\nFragrance Family: Amber • Woody • Spicy\nTop Notes: Cardamom, Mandarin, Apple\nMiddle Notes: Amber, Lavender, Tonka Bean\nBase Notes: Leather, Patchouli, Vetiver",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/perfumes/grandeur/codice-profumo-man-grandeur-elite-100ml-edp-men-perfume-malaysia.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/perfumes/grandeur/codice-profumo-man-grandeur-elite-100ml-edp-men-perfume-malaysia.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/grandeur/perfume-lelaki-codice-profumo-original-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/grandeur/grandeur-elite-codice-profumo-amber-woody-perfume-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/grandeur/perfume-lelaki-codice-profumo-haruman-mewah-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/grandeur/beli-perfume-codice-profumo-original-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/perfumes/grandeur/codice-profumo-man-grandeur-elite-100ml-edp-men-perfume-malaysia.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "Grandeur",
+      "supplierPrice": 1687.45,
+      "ourPrice": 2535,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "Codice-Pro-366",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 129,
+      "supplierSalePrice": 90,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/grandeur/codice/",
+      "slug": "codice-profumo-man-by-grandeur-elite-100-ml-for-men-1073",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "notes": {
+        "top": [
+          "Cardamom",
+          "Mandarin",
+          "Apple"
+        ],
+        "heart": [
+          "Amber",
+          "Lavender",
+          "Tonka Bean"
+        ],
+        "base": [
+          "Leather",
+          "Patchouli",
+          "Vetiver"
+        ]
+      },
+      "families": [
+        "Amber",
+        "Woody",
+        "Spicy"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [],
+      "barcode": "5055810038564",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
+    },
+    {
+      "id": 1074,
+      "sku": "VEL-1074",
+      "nameAr": "Velixir Athena 100ml EDP",
+      "nameEn": "Velixir Athena 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Velixir Athena 100ml EDP is a floral woody fragrance designed for those who prefer a refined balance of freshness and soft elegance. It opens with bright fruity and citrus nuances that deliver a clean and uplifting introduction. The heart develops into a smooth floral blend, adding a delicate and sophisticated character. The dry-down settles into warm woody notes with a soft musky base, creating a balanced scent profile. This fragrance is suitable for daily wear, casual environments and daytime occasions. It offers a clean, modern and versatile scent with a smooth projection, making it ideal for warm climates and effortless everyday use.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/6d1bc41b-2b47-4869-3767-585086d76600.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/6d1bc41b-2b47-4869-3767-585086d76600.jpg",
+        "https://www.shamperfume.com/cdn/large/c56f7e95-0f80-4a82-902a-5d0d69178100.jpg",
+        "https://www.shamperfume.com/cdn/large/cf247df4-2c11-49f0-99f7-e4c78c24d400.jpg",
+        "https://www.shamperfume.com/cdn/large/2edda073-8ef4-419f-502f-cc9fc9592900.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/6d1bc41b-2b47-4869-3767-585086d76600.jpg"
+      ],
+      "category": "عطور",
+      "brand": "Velixir",
+      "supplierPrice": 3466.46,
+      "ourPrice": 5200,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "VELIXIR-ATHENA-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 265,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/velixir/velixir-athena-100ml-edp/",
+      "slug": "velixir-athena-100ml-edp-1074",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Floral Woody"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Casual"
+      ],
+      "barcode": "2212241600003",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1075,
+      "sku": "VEL-1075",
+      "nameAr": "Velixir Poseidon 100ml EDP",
+      "nameEn": "Velixir Poseidon 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Velixir Poseidon 100ml EDP is a citrus aromatic fragrance designed for those who prefer a fresh, aquatic and energetic scent profile. It opens with a bright blend of bergamot and mandarin orange, delivering a clean, juicy and vibrant introduction. The heart develops into ginger, adding a crisp spicy edge that enhances freshness and structure. The dry-down settles into ambergris, creating a smooth, slightly marine and musky finish that feels airy, modern. This fragrance is suitable for daily wear, outdoor activities and warm climates. It offers a fresh, aquatic and versatile character with moderate projection, making it ideal for those who prefer clean and refreshing scents with a modern oceanic feel.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/velixir-poseidon-100ml-edp-6.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/velixir-poseidon-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/velixir-poseidon-100ml-edp-9.jpg",
+        "https://www.shamperfume.com/cdn/large/velixir-poseidon-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/velixir-poseidon-100ml-edp-8.jpg",
+        "https://www.shamperfume.com/cdn/large/velixir-poseidon-100ml-edp-11.jpg",
+        "https://www.shamperfume.com/cdn/large/velixir-poseidon-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/large/velixir-poseidon-100ml-edp-12.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/velixir-poseidon-100ml-edp-6.jpg"
+      ],
+      "category": "عطور",
+      "brand": "Velixir",
+      "supplierPrice": 3662.68,
+      "ourPrice": 5495,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "VELIXIR-POSEIDON-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 280,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/velixir/velixir-poseidon-100ml-edp/",
+      "slug": "velixir-poseidon-100ml-edp-1075",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Oriental Vanilla"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Casual"
+      ],
+      "barcode": "2212241600017",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1076,
+      "sku": "ASD-1076",
+      "nameAr": "Sa'ud by Asdaaf 100ml EDP Unisex",
+      "nameEn": "Sa'ud by Asdaaf 100ml EDP Unisex",
+      "descriptionAr": "",
+      "descriptionEn": "Sa'ud by Asdaaf – 100ml Eau de Parfum Unisex\nSa'ud by Asdaaf is a floral woody musk fragrance for women and men. It opens with fresh and juicy orange, mandarin and bergamot. The heart combines elegant jasmine and rose, before settling into a warm base of musk, jasmine, woods and oud. The overall scent feels citrusy, floral, musky and softly woody, making it suitable for daily wear, work, casual outings and special occasions.\nFragrance Notes:\nTop: Orange, Mandarin, Bergamot\nMiddle: Jasmine, Rose\nBase: Musk, Jasmine, Woods, Oud",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/saud-by-asdaaf-100ml-edp-unisex-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/saud-by-asdaaf-100ml-edp-unisex-1.jpg",
+        "https://www.shamperfume.com/cdn/large/saud-by-asdaaf-100ml-edp-unisex-2.jpg",
+        "https://www.shamperfume.com/cdn/large/saud-by-asdaaf-100ml-edp-unisex-3.jpg",
+        "https://www.shamperfume.com/cdn/large/saud-by-asdaaf-100ml-edp-unisex-5.jpg",
+        "https://www.shamperfume.com/cdn/large/saud-by-asdaaf-100ml-edp-unisex-4.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/saud-by-asdaaf-100ml-edp-unisex-1.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Asdaaf",
+      "supplierPrice": 1831.34,
+      "ourPrice": 2750,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "ASDAAF-SAUD-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 140,
+      "supplierSalePrice": 110,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/asdaaf/saud-asdaaf/",
+      "slug": "sa-ud-by-asdaaf-100ml-edp-unisex-1076",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [
+          "Orange",
+          "Mandarin",
+          "Bergamot"
+        ],
+        "heart": [
+          "Jasmine",
+          "Rose"
+        ],
+        "base": [
+          "Musk",
+          "Jasmine",
+          "Woods",
+          "Oud"
+        ]
+      },
+      "families": [
+        "Floral Aquatic"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Special Event",
+        "Casual"
+      ],
+      "barcode": "6290360591575",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
+    },
+    {
+      "id": 1077,
+      "sku": "PEN-1077",
+      "nameAr": "One Pendora Scents For Him – 100 ml for Men",
+      "nameEn": "One Pendora Scents For Him – 100 ml for Men",
+      "descriptionAr": "",
+      "descriptionEn": "One Pendora Scents For Him – 100 ml Eau de Parfum for Men\nFragrance Family: Fresh • Fruity • Woody Top Notes: Pineapple, Tangerine, Papaya Middle Notes: Violet, Jasmine, Iris, Rose Base Notes: Sandalwood, Amber, Cedarwood, Oak Moss",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/perfumes/pandora/one-perfume-man-pendora-scents-him-edp-pendora-him-100ml-perfum-one-pendora.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/one-perfume-man-pendora-scents-him-edp-pendora-him-100ml-perfum-one-pendora.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/one-perfume-man-pendora-scents-him-edp-pendora-him-100ml-perfum-one-pendora-1.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/one-perfume-man-pendora-scents-him-edp-pendora-him-100ml-perfum-one-pendora-2.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/one-perfume-man-pendora-scents-him-edp-pendora-him-100ml-perfum-one-pendora-3.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/one-perfume-man-pendora-scents-him-edp-pendora-him-100ml-perfum-one-pendora-4.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/one-perfume-man-pendora-scents-him-edp-pendora-him-100ml-perfum-one-pendora-5.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/one-perfume-man-pendora-scents-him-edp-pendora-him-100ml-perfum-one-pendora-7.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/perfumes/pandora/one-perfume-man-pendora-scents-him-edp-pendora-him-100ml-perfum-one-pendora.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "Pendora",
+      "supplierPrice": 1674.37,
+      "ourPrice": 2515,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "One-Pendor-26",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 128,
+      "supplierSalePrice": 118,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/pendora/one-pendora/",
+      "slug": "one-pendora-scents-for-him-100-ml-for-men-1077",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Moderate",
+      "notes": {
+        "top": [
+          "Pineapple",
+          "Tangerine",
+          "Papaya"
+        ],
+        "heart": [
+          "Violet",
+          "Jasmine",
+          "Iris",
+          "Rose"
+        ],
+        "base": [
+          "Sandalwood",
+          "Amber",
+          "Cedarwood",
+          "Oak Moss"
+        ]
+      },
+      "families": [
+        "Fresh",
+        "Fruity",
+        "Woody"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall"
+      ],
+      "occasionsSource": [
+        "Casual"
+      ],
+      "barcode": "6423080727102",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
+    },
+    {
+      "id": 1078,
+      "sku": "PEN-1078",
+      "nameAr": "Club Intense 100ml EDP Men Paris Corner Pendora",
+      "nameEn": "Club Intense 100ml EDP Men Paris Corner Pendora",
+      "descriptionAr": "",
+      "descriptionEn": "Club Intense by Paris Corner – 100 ml Eau de Parfum for Men\nFragrance Family: Woody • Aromatic • Spicy Top Notes: Bergamot, Lemon Middle Notes: Cardamom, Pepper, Lavender Base Notes: Amber, Cedarwood, Musk",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/perfumes/pandora/perfume-lelaki-club-intense-original-malaysia-100ml-edp.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/perfume-lelaki-club-intense-original-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/minyak-wangi-lelaki-club-intense-paris-corner-tahan-lama-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/club-intense-paris-corner-pandora-fragrance-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/beli-perfume-club-intense-original-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/club-intense-paris-corner-pandora-fragrance-malaysia-man-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/perfume-lelaki-club-intense-woody-spicy-scent-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/haruman-maskulin-club-intense-paris-corner-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/club-intense-paris-corner-100ml-edp-men-perfume-malaysia.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "Pendora",
+      "supplierPrice": 1949.07,
+      "ourPrice": 2925,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "Club-Intense-00001A",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 149,
+      "supplierSalePrice": 110,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/pendora/club-intense/",
+      "slug": "club-intense-100ml-edp-men-paris-corner-pendora-1078",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [
+          "Bergamot",
+          "Lemon"
+        ],
+        "heart": [
+          "Cardamom",
+          "Pepper",
+          "Lavender"
+        ],
+        "base": [
+          "Amber",
+          "Cedarwood",
+          "Musk"
+        ]
+      },
+      "families": [
+        "Woody",
+        "Aromatic",
+        "Spicy"
+      ],
+      "seasonsSource": [
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Casual"
+      ],
+      "barcode": "6298144543192",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
+    },
+    {
+      "id": 1079,
+      "sku": "VEL-1079",
+      "nameAr": "Velixir Adonis 100ml EDP",
+      "nameEn": "Velixir Adonis 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Velixir Adonis 100ml EDP is a warm oriental vanilla fragrance designed for those who prefer a balance between fresh aromatics and deep sweet richness. It opens with lavender, mint and citrus notes that provide a clean and slightly invigorating start. The heart develops into creamy Madagascar vanilla and benzoin, adding smooth warmth and resinous depth. The dry-down settles into amber, tonka bean, honey and soft tobacco nuances, creating a sweet, slightly smoky scent profile. This fragrance is best suited for evening wear, special occasions and cooler environments. It delivers a seductive, bold and confident character with moderate to strong projection and a noticeable presence without being overly sharp.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/velixir-adonis-5.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/velixir-adonis-5.jpg",
+        "https://www.shamperfume.com/cdn/large/velixir-adonis-6.jpg",
+        "https://www.shamperfume.com/cdn/large/velixir-adonis-3.jpg",
+        "https://www.shamperfume.com/cdn/large/velixir-adonis-4.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/velixir-adonis-5.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Velixir",
+      "supplierPrice": 3466.46,
+      "ourPrice": 5200,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "VELIXIR-ADONIS-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 265,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/velixir/velixir-adonis/",
+      "slug": "velixir-adonis-100ml-edp-1079",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Oriental Vanilla"
+      ],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Special Event"
+      ],
+      "barcode": "2212241600004",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1080,
+      "sku": "PEN-1080",
+      "nameAr": "Noir En Leather by Pendora Scents 100 ml",
+      "nameEn": "Noir En Leather by Pendora Scents 100 ml",
+      "descriptionAr": "",
+      "descriptionEn": "Noir En Leather by Pendora Scents (Paris Corner) – 100 ml Eau de Parfum for Men\nFragrance Family: Oriental • Leather • Woody Top Note: Cardamom Middle Notes: Leather, Jasmine Sambac Base Notes: Amber, Moss, Patchouli",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/perfumes/pandora/noir-en-leather-pendora-scents-paris-corner-100ml-edp-men-malaysia.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/noir-en-leather-pendora-scents-paris-corner-100ml-edp-men-malaysia.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/perfume-lelaki-noir-en-leather-pendora-scents-original-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/minyak-wangi-noir-en-leather-pendora-scents-tahan-lama-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/paris-corner-noir-en-leather-100ml-edp-perfume-lelaki-malaysia.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/beli-perfume-noir-en-leather-original-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/harumanpremiumnoirenleatherpendorascentsbaukulitmewahwoodyuntuklelakimalaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/noir-en-leather-perfume-playful-competition-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/pandora/noir-en-leather-100ml-edp-by-pendora-scents-perfume-lelaki.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "Pendora",
+      "supplierPrice": 2027.55,
+      "ourPrice": 3045,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "Noir-En-Le-50",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 155,
+      "supplierSalePrice": 115,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/pendora/noir-en-leather/",
+      "slug": "noir-en-leather-by-pendora-scents-100-ml-1080",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [
+          "Cardamom"
+        ],
+        "heart": [
+          "Leather",
+          "Jasmine Sambac"
+        ],
+        "base": [
+          "Amber",
+          "Moss",
+          "Patchouli"
+        ]
+      },
+      "families": [
+        "Oriental",
+        "Leather",
+        "Woody"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Casual"
+      ],
+      "barcode": "6298141543195",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
+    },
+    {
+      "id": 1081,
+      "sku": "ASD-1081",
+      "nameAr": "Marj Perfume 100ml Lattafa Asdaaf Arabic For Women",
+      "nameEn": "Marj Perfume 100ml Lattafa Asdaaf Arabic For Women",
+      "descriptionAr": "",
+      "descriptionEn": "Marj Perfume 100ml Lattafa Asdaaf\nMarj Perfume 100ml Lattafa Asdaaf Asdaaf by Lattafa Eau De Parfum carry strong fragrance that opens up with energizing notes while having the base of jasmine, wood, musk and oud. Asdaaf perfumes are perfect combination of spices, resins, exotic woods an essential oils. The root of this type of perfumes are the aromatic notes of the oriental and woody groups. The main feature in Arabic perfumes is its sensuality, exoticism and intense scent. Arabic fragrances are more intense and stronger. Asdaaf perfumes by Lattafa are well developed with frgarnce particles as arabian perfumes are having history of and smoky fragrance. Asdaaf perfumes are exotic and attractive enough that you can’t resist them.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/perfumes/lattafa/marj-perfume-100ml-lattafa-asdaaf-marg-her-original-arabic-long-lasting-perfume-women-sham-perfume-store-edp-perfume-63878778.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/marj-perfume-100ml-lattafa-asdaaf-marg-her-original-arabic-long-lasting-perfume-women-sham-perfume-store-edp-perfume-63878778.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/marj-perfume-100ml-lattafa-asdaaf-marg-her-original-arabic-long-lasting-perfume-women-sham-perfume-store-edp-perfume-63878847.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/marj-perfume-100ml-lattafa-asdaaf-marg-her-original-arabic-long-lasting-perfume-women-sham-perfume-store-edp-perfume-65384686.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/marj-perfume-100ml-lattafa-asdaaf-marg-her-original-arabic-long-lasting-perfume-women-sham-perfume-store-edp-perfume-65384742.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/perfumes/lattafa/marj-perfume-100ml-lattafa-asdaaf-marg-her-original-arabic-long-lasting-perfume-women-sham-perfume-store-edp-perfume-63878778.jpg"
+      ],
+      "category": "نسائي",
+      "brand": "Asdaaf",
+      "supplierPrice": 1569.72,
+      "ourPrice": 2355,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "MARJ-Asdaa-5613",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 120,
+      "supplierSalePrice": 85,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/asdaaf/marj-perfume-100ml/",
+      "slug": "marj-perfume-100ml-lattafa-asdaaf-arabic-for-women-1081",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Floral"
+      ],
+      "seasonsSource": [],
+      "occasionsSource": [],
+      "barcode": "6291107456416",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1082,
+      "sku": "RAV-1082",
+      "nameAr": "Nuit Parfaite by Rave 100ml EDP",
+      "nameEn": "Nuit Parfaite by Rave 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Nuit Parfaite by Rave 100ml EDP",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/ae18d030-67ff-48d3-8924-7f2894dd5500.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/ae18d030-67ff-48d3-8924-7f2894dd5500.jpg",
+        "https://www.shamperfume.com/cdn/large/4a701c98-2afb-482d-327c-eca299ee2d00.jpg",
+        "https://www.shamperfume.com/cdn/large/d3a4b4f9-0aa6-4300-7ba8-9d60f449ee00.jpg",
+        "https://www.shamperfume.com/cdn/large/c364b14d-1404-486b-2ff3-1533169f8a00.jpg",
+        "https://www.shamperfume.com/cdn/large/0cecf080-fe69-4545-4171-8c57351f9600.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/ae18d030-67ff-48d3-8924-7f2894dd5500.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Rave",
+      "supplierPrice": 1949.07,
+      "ourPrice": 2925,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "NUIT-PARFAITE",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 149,
+      "supplierSalePrice": 139,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rave/nuit-parfaite/",
+      "slug": "nuit-parfaite-by-rave-100ml-edp-1082",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Floral Aquatic"
+      ],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Special Event",
+        "Dinner"
+      ],
+      "barcode": "6290360599700",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "وصف المورد قصير",
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 1083,
+      "sku": "RAV-1083",
+      "nameAr": "Pure Desire Gold by Rave 100ml EDP",
+      "nameEn": "Pure Desire Gold by Rave 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Pure Desire Gold by Rave – 100 ml Eau de Parfum.\nPure Desire Gold by Rave A warm sweet-amber fragrance with creamy woods, soft spices and musky depth. It opens with sweet fruity brightness,\nPure Desire Gold ni bau dia sweet, creamy & sensual—tahan lama, bold dan sesuai siang & malam.\nTop Notes: Sweet Fruity Notes\nMiddle Notes: Amber, Soft Spices, Woods\nBase Notes: Vanilla, Musk, Creamy Woods",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/f51612a2-b238-42a2-dead-24e9b4223200.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/f51612a2-b238-42a2-dead-24e9b4223200.jpg",
+        "https://www.shamperfume.com/cdn/large/24c658b0-d189-45f5-d49d-02fab3085800.jpg",
+        "https://www.shamperfume.com/cdn/large/b5e14c7d-7210-4369-e9ef-f2a8d5c6c600.jpg",
+        "https://www.shamperfume.com/cdn/large/ec6e5835-9a8a-4d1d-34d3-2e2053575800.jpg",
+        "https://www.shamperfume.com/cdn/large/e22164d1-4a22-4d26-befe-2821f0fd1f00.jpg",
+        "https://www.shamperfume.com/cdn/large/7aebce26-2fc9-4f3f-8163-bc85ebdaa000.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/f51612a2-b238-42a2-dead-24e9b4223200.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Rave",
+      "supplierPrice": 1962.15,
+      "ourPrice": 2945,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "PURE-DESIRE-GOLD",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 150,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rave/pure-desire-gold/",
+      "slug": "pure-desire-gold-by-rave-100ml-edp-1083",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [
+          "Sweet Fruity Notes"
+        ],
+        "heart": [
+          "Amber",
+          "Soft Spices",
+          "Woods"
+        ],
+        "base": [
+          "Vanilla",
+          "Musk",
+          "Creamy Woods"
+        ]
+      },
+      "families": [
+        "Oriental Vanilla"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Evening",
+        "Casual"
+      ],
+      "barcode": "6291106069211",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1084,
+      "sku": "ASD-1084",
+      "nameAr": "Ameerat Al Arab Prive Rose by Lattafa 100ml",
+      "nameEn": "Ameerat Al Arab Prive Rose by Lattafa 100ml",
+      "descriptionAr": "",
+      "descriptionEn": "Ameerat Al Arab Prive Rose by Asdaaf Lattafa – 100 ml Eau de Parfum for Women\nFragrance Notes:Top Notes: Rose, JasmineHeart Notes: Amber, VanillaBase Notes: White Musk, Sandalwood",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ameerat-al-arab-prive-rose-lattafa-100ml-wanita-malaysia-edp.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ameerat-al-arab-prive-rose-lattafa-100ml-wanita-malaysia-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/perfume-wanita-ameerat-al-arab-prive-rose-original-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/minyak-wangi-ameerat-al-arab-prive-rose-tahan-lama-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/prive-rose-klcc-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/prive-rose-bedroom-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/prive-rose-cafe-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ameerat-prive-rose-car-night-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/perfumes/lattafa/ameerat-al-arab-prive-rose-lattafa-100ml-wanita-malaysia-edp.jpg"
+      ],
+      "category": "نسائي",
+      "brand": "Asdaaf",
+      "supplierPrice": 1687.45,
+      "ourPrice": 2535,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "Ameerat-Al-Arab-Rose",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 129,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/asdaaf/ameerat-al-arab-prive/",
+      "slug": "ameerat-al-arab-prive-rose-by-lattafa-100ml-1084",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": [
+          "White Musk",
+          "Sandalwood"
+        ]
+      },
+      "families": [],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall"
+      ],
+      "occasionsSource": [],
+      "barcode": "6290360590868",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1085,
+      "sku": "RAV-1085",
+      "nameAr": "Now by Rave Perfume Lattafa 100ml For Man",
+      "nameEn": "Now by Rave Perfume Lattafa 100ml For Man",
+      "descriptionAr": "",
+      "descriptionEn": "Now by Rave Perfume (Lattafa) – 100 ml for Men\nFragrance Family: Fresh • Woody • Aromatic Top Notes: Bergamot, Lemon, Mint Middle Notes: Lavender, Cardamom, Amber Base Notes: Cedarwood, Musk, Patchouli",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/perfumes/lattafa/now-rave-lattafa-perfume-lelaki-fresh-blue-aromatic-100ml-edp.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/now-rave-lattafa-perfume-lelaki-fresh-blue-aromatic-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/now-rave-lattafa-botol-wangian-lelaki-citrus-sporty-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/now-rave-lattafa-perfume-lelaki-tahan-lama-aquatic-fresh-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/kotak-now-rave-lattafa-perfume-original-edp-clean-sporty-100ml.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/now-rave-lattafa-men-fragrance-fresh-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/now-rave-rooftop-sunset-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/now-rave-bottle-next-gym-accessories-kl-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/now-rave-suria-klcc-indoor-mall-100ml-edp.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "Rave",
+      "supplierPrice": 1831.34,
+      "ourPrice": 2750,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "Now-by-Rav-9832",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 140,
+      "supplierSalePrice": 89,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rave/now-by-rave/",
+      "slug": "now-by-rave-perfume-lattafa-100ml-for-man-1085",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "notes": {
+        "top": [
+          "Bergamot",
+          "Lemon",
+          "Mint"
+        ],
+        "heart": [
+          "Lavender",
+          "Cardamom",
+          "Amber"
+        ],
+        "base": [
+          "Cedarwood",
+          "Musk",
+          "Patchouli"
+        ]
+      },
+      "families": [
+        "Fresh",
+        "Woody",
+        "Aromatic"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall"
+      ],
+      "occasionsSource": [
+        "Casual"
+      ],
+      "barcode": "6291107456485",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
+    },
+    {
+      "id": 1086,
+      "sku": "ASD-1086",
+      "nameAr": "Ameer Al Arab by Asdaaf 100ml EDP Men",
+      "nameEn": "Ameer Al Arab by Asdaaf 100ml EDP Men",
+      "descriptionAr": "",
+      "descriptionEn": "Ameer Al Arab by Asdaaf Lattafa – 100 ml Eau de Parfum for Men\nFragrance Notes:Top Notes: Amber, Oud, CitrusHeart Notes: Floral, Spicy NotesBase Notes: Musk, Sandalwood, Vanilla",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ameer-al-arab-by-asdaaf-100ml-edp-men-malaysia.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ameer-al-arab-by-asdaaf-100ml-edp-men-malaysia.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/perfume-lelaki-ameer-al-arab-asdaaf-original-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/minyak-wangi-lelaki-ameer-al-arab-asdaaf-tahan-lama-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ameer-al-arab-malay-genting-fog-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ameer-al-arab-luxury-car-black-gold-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ameer-al-arab-malay-penang-heritage-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ameer-al-arab-malay-kl-monorail-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/asdaaf-ameer-al-arab-100ml-edp-men-malaysia.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "Asdaaf",
+      "supplierPrice": 1687.45,
+      "ourPrice": 2535,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "Ameer-al-a-4365",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 129,
+      "supplierSalePrice": 95,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/asdaaf/ameer-al-arab/",
+      "slug": "ameer-al-arab-by-asdaaf-100ml-edp-men-1086",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": [
+          "Musk",
+          "Sandalwood",
+          "Vanilla"
+        ]
+      },
+      "families": [],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [],
+      "barcode": "6291107456348",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
+    },
+    {
+      "id": 1087,
+      "sku": "ASD-1087",
+      "nameAr": "Golden Oud by Lattafa Asdaaf 100 ml Unisex",
+      "nameEn": "Golden Oud by Lattafa Asdaaf 100 ml Unisex",
+      "descriptionAr": "",
+      "descriptionEn": "Golden Oud by Lattafa Asdaaf – 100 ml Eau de Parfum Unisex\nFragrance Family: Oriental • Woody • Oud Top Notes: Oud, Saffron Middle Notes: Amber, Rose, Patchouli Base Notes: Vanilla, Musk, Sandalwood",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/perfumes/lattafa/golden-oud-lattafa-asdaaf-100ml-edp-unisex-perfume-malaysia.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/golden-oud-lattafa-asdaaf-100ml-edp-unisex-perfume-malaysia.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/perfume-golden-oud-original-lattafa-asdaaf-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/lattafa-asdaaf-golden-oud-oriental-woody-perfume-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/beli-perfume-golden-oud-original-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/haruman-mewah-golden-oud-lattafa-asdaaf-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/perfume-golden-oud-original-lattafa-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/lattafa-asdaaf-golden-oud-oriental-perfume-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/lattafa-golden-oud-oriental-perfume-100ml-edp.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Asdaaf",
+      "supplierPrice": 1739.77,
+      "ourPrice": 2610,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "Golden-oud-6569",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 133,
+      "supplierSalePrice": 110,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/asdaaf/golden-oud/",
+      "slug": "golden-oud-by-lattafa-asdaaf-100-ml-unisex-1087",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "notes": {
+        "top": [
+          "Oud",
+          "Saffron"
+        ],
+        "heart": [
+          "Amber",
+          "Rose",
+          "Patchouli"
+        ],
+        "base": [
+          "Vanilla",
+          "Musk",
+          "Sandalwood"
+        ]
+      },
+      "families": [
+        "Oriental",
+        "Woody",
+        "Oud"
+      ],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [],
+      "barcode": "6291106068221",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
+    },
+    {
+      "id": 1088,
+      "sku": "VEL-1088",
+      "nameAr": "Velixir Asteria 100ml EDP",
+      "nameEn": "Velixir Asteria 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Velixir Asteria 100ml EDP is a citrus floral woody fragrance designed for those who prefer a bright, clean and elegant scent profile. It opens with a vibrant blend of blood orange, mandarin, bergamot and lemon, delivering a fresh and uplifting citrus burst. The heart develops into a smooth tiare flower note that adds a soft tropical floral touch. The dry-down settles into sandalwood, musk and powdery accords, creating a clean, soft finish. This fragrance is ideal for daily wear, warm climates and casual environments. It offers a fresh, airy and refined character with a smooth projection, making it a versatile and easy-to-wear scent for both men and women.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/1373743e-4963-4afa-4144-16da97492500.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/1373743e-4963-4afa-4144-16da97492500.jpg",
+        "https://www.shamperfume.com/cdn/large/a5751c3f-7342-4e7d-8d0f-045c4e89b100.jpg",
+        "https://www.shamperfume.com/cdn/large/85737438-841d-4d90-7b41-893d38b9a800.jpg",
+        "https://www.shamperfume.com/cdn/large/d7e68ae9-15e8-46e6-9d59-fee99e27bd00.jpg",
+        "https://www.shamperfume.com/cdn/large/e6672124-6016-4e25-6f7e-e35235dd6800.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/1373743e-4963-4afa-4144-16da97492500.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Velixir",
+      "supplierPrice": 3636.52,
+      "ourPrice": 5455,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "VELIXIR-ASTERIA-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 278,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/velixir/velixir-asteria-100ml-edp/",
+      "slug": "velixir-asteria-100ml-edp-1088",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Floral Aquatic"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Casual"
+      ],
+      "barcode": "2212241600016",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1089,
+      "sku": "ASD-1089",
+      "nameAr": "Ameer Al Arab Imperium by Asdaaf 100ml EDP Men",
+      "nameEn": "Ameer Al Arab Imperium by Asdaaf 100ml EDP Men",
+      "descriptionAr": "",
+      "descriptionEn": "Ameer Al Arab Imperium by Asdaaf – 100 ml Eau de Parfum for Men\nTop Notes: Bergamot, Saffron, CardamomHeart Notes: Amberwood, Patchouli, RoseBase Notes: Musk, Sandalwood, Vanilla",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ameeralarabimperium100mledpformenbyasdaaf6.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ameeralarabimperium100mledpformenbyasdaaf6.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ameeralarabimperium100mledpformenbyasdaaf.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ameeralarabimperium100mledpformenbyasdaaf2.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ameeralarabimperium100mledpformenbyasdaaf3.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ameeralarabimperium100mledpformenbyasdaaf4.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ameeralarabimperium100mledpformenbyasdaaf5.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ameeralarabimperium100mledpformenbyasdaaf7.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ameeralarabimperium100mledpformenbyasdaaf8.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "Asdaaf",
+      "supplierPrice": 2210.69,
+      "ourPrice": 3320,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "Ameer-Imperium-100",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 169,
+      "supplierSalePrice": 89,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/asdaaf/ameer-al-arab-imperium/",
+      "slug": "ameer-al-arab-imperium-by-asdaaf-100ml-edp-men-1089",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": [
+          "Musk",
+          "Sandalwood",
+          "Vanilla"
+        ]
+      },
+      "families": [],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Casual"
+      ],
+      "barcode": "6290360599465",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
+    },
+    {
+      "id": 1090,
+      "sku": "VEL-1090",
+      "nameAr": "Velixir Himeros 100ml EDP",
+      "nameEn": "Velixir Himeros 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Velixir Himeros 100ml EDP is a woody aromatic fragrance designed for those who prefer a balance between fresh green notes and warm woody depth. It opens with a blend of green notes, bergamot and woody accords, delivering a clean and slightly sharp introduction. The heart develops into solar notes and ginger, adding a bright, warm and slightly spicy character. The dry-down settles into sandalwood and cedarwood, creating a smooth, dry woody finish. This fragrance is suitable for daily wear, office environments and casual settings. It offers a clean, modern and versatile scent profile with a balanced projection, making it ideal for warm climates and everyday use.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/9b021bfe-d45f-4848-9e4c-58ab5a8c9b00.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/9b021bfe-d45f-4848-9e4c-58ab5a8c9b00.jpg",
+        "https://www.shamperfume.com/cdn/large/f47ede95-16bb-45cf-423a-d06779b24b00.jpg",
+        "https://www.shamperfume.com/cdn/large/8f62b117-e88e-4167-c4e6-c8633b677900.jpg",
+        "https://www.shamperfume.com/cdn/large/e35f9d2c-4ae3-4451-fd1d-5626d14e3100.jpg",
+        "https://www.shamperfume.com/cdn/large/7ac14449-4516-40fe-ef39-342fe28bcc00.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/9b021bfe-d45f-4848-9e4c-58ab5a8c9b00.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Velixir",
+      "supplierPrice": 3728.09,
+      "ourPrice": 5595,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "VELIXIR-HIMEROS-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 285,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/velixir/velixir-himeros-100ml-edp/",
+      "slug": "velixir-himeros-100ml-edp-1090",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Woody Aromatic"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Casual"
+      ],
+      "barcode": "2212241600021",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1091,
+      "sku": "VEL-1091",
+      "nameAr": "Velixir Galatea 100ml EDP",
+      "nameEn": "Velixir Galatea 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Velixir Galatea 100ml EDP is a gourmand oriental fragrance designed for those who enjoy rich, sweet and indulgent scent profiles. It opens with a delicious blend of biscuit and caramel, delivering a warm and dessert-like introduction. The heart develops into creamy milk, honey, sugar and tonka bean, creating a smooth and lactonic sweetness with depth. The dry-down settles into vanilla, praline, amber and white musk, forming a warm, addictive finish. This fragrance is best suited for evening wear, indoor settings and cooler environments. It offers a bold, sweet and comforting character with strong projection, making it ideal for those who prefer heavy gourmand fragrances with a luxurious feel.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/920eadc0-03a9-4ea0-05fe-7471287aa000.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/920eadc0-03a9-4ea0-05fe-7471287aa000.jpg",
+        "https://www.shamperfume.com/cdn/large/7a76837d-a751-46f8-584e-513d4305e800.jpg",
+        "https://www.shamperfume.com/cdn/large/d74af648-0bfa-4502-aac3-bed683971e00.jpg",
+        "https://www.shamperfume.com/cdn/large/79e67062-6944-4318-0153-bec67c497900.jpg",
+        "https://www.shamperfume.com/cdn/large/44d28662-6e9d-4a73-b484-f22802e27f00.jpg",
+        "https://www.shamperfume.com/cdn/large/34b95608-a105-4250-e8aa-20c46c3a6c00.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/920eadc0-03a9-4ea0-05fe-7471287aa000.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Velixir",
+      "supplierPrice": 3479.55,
+      "ourPrice": 5220,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "VELIXIR-GALATEA-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 266,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/velixir/velixir-galatea-100ml-edp/",
+      "slug": "velixir-galatea-100ml-edp-1091",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Floral Woody"
+      ],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Special Event"
+      ],
+      "barcode": "2212241600005",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1092,
+      "sku": "VEL-1092",
+      "nameAr": "Velixir Apollo 100ml EDP",
+      "nameEn": "Velixir Apollo 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Velixir Apollo 100ml EDP is a woody aromatic fragrance designed for those who prefer a balance of fresh energy and smooth depth. It opens with a crisp blend of green apple, ginger and bergamot, delivering a bright and invigorating start. The heart develops into an aromatic mix of clary sage and juniper berries, adding herbal freshness and subtle complexity. The dry-down settles into amberwood, cedar, tonka bean and vetiver, creating a warm, slightly sweet woody finish. This fragrance is suitable for daily wear, casual settings and active lifestyles. It offers a clean, modern and versatile scent profile with moderate to strong projection and a fresh masculine-leaning character without being overpowering.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/21545232-3baa-4eb9-3b5d-cc924877a400.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/21545232-3baa-4eb9-3b5d-cc924877a400.jpg",
+        "https://www.shamperfume.com/cdn/large/5ac9c0d2-ccbf-4c95-8aa2-f1e0bcc14100.jpg",
+        "https://www.shamperfume.com/cdn/large/149b81c7-ab91-4f15-0a9d-0fe91178bc00.jpg",
+        "https://www.shamperfume.com/cdn/large/a15784e9-8b79-4fdb-678a-4213ebffe300.jpg",
+        "https://www.shamperfume.com/cdn/large/7ad7d391-bc55-4b8f-8bfb-567c475a7600.jpg",
+        "https://www.shamperfume.com/cdn/large/593a0cc2-29cd-45aa-25f0-db082c5dcc00.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/21545232-3baa-4eb9-3b5d-cc924877a400.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Velixir",
+      "supplierPrice": 3505.71,
+      "ourPrice": 5260,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "VELIXIR-APOLLO-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 268,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/velixir/velixir-apollo-100ml-edp/",
+      "slug": "velixir-apollo-100ml-edp-1092",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Woody Aromatic"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Casual"
+      ],
+      "barcode": "2212241600008",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1093,
+      "sku": "VEL-1093",
+      "nameAr": "Velixir Helios 100ml EDP",
+      "nameEn": "Velixir Helios 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Velixir Helios 100ml EDP is a warm spicy woody fragrance designed for those who prefer a bold, radiant and modern scent profile. It opens with a vibrant blend of citrus and spices, delivering an energetic and slightly sharp introduction. The heart develops into a smooth aromatic layer with warm accords that add depth and character. The dry-down settles into amber, woods and soft sweet nuances, creating a and well-balanced finish. This fragrance is suitable for evening wear, social occasions and cooler environments. It offers a confident, strong and noticeable presence with moderate to high projection, making it ideal for those who enjoy warm and expressive scents.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/velixir-helios-100ml-edp-19.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/velixir-helios-100ml-edp-19.jpg",
+        "https://www.shamperfume.com/cdn/large/velixir-helios-100ml-edp-20.jpg",
+        "https://www.shamperfume.com/cdn/large/velixir-helios-100ml-edp-21.jpg",
+        "https://www.shamperfume.com/cdn/large/velixir-helios-100ml-edp-22.jpg",
+        "https://www.shamperfume.com/cdn/large/velixir-helios-100ml-edp-23.jpg",
+        "https://www.shamperfume.com/cdn/large/velixir-helios-100ml-edp-24.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/velixir-helios-100ml-edp-19.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Velixir",
+      "supplierPrice": 3492.63,
+      "ourPrice": 5240,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "VELIXIR-HELIOS-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 267,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/velixir/velixir-helios-100ml-edp/",
+      "slug": "velixir-helios-100ml-edp-1093",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Floral Woody"
+      ],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening"
+      ],
+      "barcode": "2212241600002",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1094,
+      "sku": "VEL-1094",
+      "nameAr": "Velixir Paladin 100ml EDP",
+      "nameEn": "Velixir Paladin 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Velixir Paladin 100ml EDP is an aromatic vanilla fragrance designed for those who prefer a smooth balance between sweetness and fresh aromatic depth. It opens with a soft and warm vanilla note that delivers a refined and slightly creamy introduction. The heart develops into lavender and aromatic accords, adding a clean, calming and sophisticated character. The dry-down settles into vetiver, creating an earthy, slightly smoky and well-grounded finish that enhances longevity and depth.\nThis fragrance is suitable for daily wear, office environments and evening settings. It offers a balanced, elegant and modern scent profile with moderate to strong projection, making it versatile for both warm climates and controlled indoor environments.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/d13c22a7-68b0-4722-9422-dcc04685a000.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/d13c22a7-68b0-4722-9422-dcc04685a000.jpg",
+        "https://www.shamperfume.com/cdn/large/58dc13da-2166-4b45-26a4-a306bf068d00.jpg",
+        "https://www.shamperfume.com/cdn/large/13eb51b7-f5f4-4aea-3308-2f5564f91500.jpg",
+        "https://www.shamperfume.com/cdn/large/a905baef-a69d-4270-9764-a90fdec82e00.jpg",
+        "https://www.shamperfume.com/cdn/large/709e8fcf-64d7-4b5a-327f-b0387c1cbf00.jpg",
+        "https://www.shamperfume.com/cdn/large/746e411a-8009-422c-40f3-dc30fc284900.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/d13c22a7-68b0-4722-9422-dcc04685a000.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Velixir",
+      "supplierPrice": 3492.63,
+      "ourPrice": 5240,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "VELIXIR-PALADIN-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 267,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/velixir/velixir-paladin-100ml-edp/",
+      "slug": "velixir-paladin-100ml-edp-1094",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Oriental Vanilla"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Evening"
+      ],
+      "barcode": "2212241600010",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1095,
+      "sku": "PEN-1095",
+      "nameAr": "Ultra Marine 100ml by Pendora Scents",
+      "nameEn": "Ultra Marine 100ml by Pendora Scents",
+      "descriptionAr": "",
+      "descriptionEn": "Ultra Marine 100ml by Pendora Scents\nUltra Marine 100ml by Pendora Scents The fragrance opens with bergamot, lemon, and marine accords before revealing an aromatic heart of lavender, rosemary, and geranium. It settles into a smooth base of cedarwood, amber, musk, and patchouli, creating a fresh aquatic woody signature with long-lasting performance.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/ultra-marine-100ml-by-pendora-scents-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/ultra-marine-100ml-by-pendora-scents-1.jpg",
+        "https://www.shamperfume.com/cdn/large/ultra-marine-100ml-by-pendora-scents-2.jpg",
+        "https://www.shamperfume.com/cdn/large/ultra-marine-100ml-by-pendora-scents-3.jpg",
+        "https://www.shamperfume.com/cdn/large/ultra-marine-100ml-by-pendora-scents-4.jpg",
+        "https://www.shamperfume.com/cdn/large/ultra-marine-100ml-by-pendora-scents-5.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/ultra-marine-100ml-by-pendora-scents-1.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "Pendora",
+      "supplierPrice": 2092.96,
+      "ourPrice": 3140,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "ULTRA-MARINE-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 160,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/pendora/ultra-marine-edp-100ml-pendora/",
+      "slug": "ultra-marine-100ml-by-pendora-scents-1095",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Oriental"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Office",
+        "Evening",
+        "Daily Wear"
+      ],
+      "barcode": "6423080723586",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1096,
+      "sku": "VEL-1096",
+      "nameAr": "Nyx Velixir Parfums 100ml for Unisex",
+      "nameEn": "Nyx Velixir Parfums 100ml for Unisex",
+      "descriptionAr": "",
+      "descriptionEn": "Nyx Velixir Parfums – Eau de Parfum for Women and Men.\nNyx Velixir Parfums A warm woody fragrance with a soft powdery character and gentle spice. Creamy sandalwood creates a smooth and grounded opening, followed by incense that adds an aromatic, lightly smoky depth. Amber completes the scent with a warm, softly sweet and comforting finish. The official product page describes moderate-to-strong sillage and projection, with approximately 7–8 hours of longevity on skin. Available in a 100ml size.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/nyx-velixir-parfums-100ml-for-unisex-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/nyx-velixir-parfums-100ml-for-unisex-1.jpg",
+        "https://www.shamperfume.com/cdn/large/nyx-velixir-parfums-100ml-for-unisex-2.jpg",
+        "https://www.shamperfume.com/cdn/large/nyx-velixir-parfums-100ml-for-unisex-5.jpg",
+        "https://www.shamperfume.com/cdn/large/nyx-velixir-parfums-100ml-for-unisex-3.jpg",
+        "https://www.shamperfume.com/cdn/large/nyx-velixir-parfums-100ml-for-unisex-4.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/nyx-velixir-parfums-100ml-for-unisex-1.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Velixir",
+      "supplierPrice": 4185.92,
+      "ourPrice": 6280,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "VELIXIR-NYX-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 320,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/velixir/nyx-velixir-parfums-100ml/",
+      "slug": "nyx-velixir-parfums-100ml-for-unisex-1096",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Woody Oriental"
+      ],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Evening",
+        "Casual"
+      ],
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1097,
+      "sku": "VEL-1097",
+      "nameAr": "Velixir Ares 100ml EDP",
+      "nameEn": "Velixir Ares 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Velixir Ares 100ml EDP is a citrus woody fragrance designed for those who prefer a fresh, clean and versatile scent profile. It opens with a bright blend of grapefruit, mandarin orange and citrus accords, delivering an energetic and uplifting start. The heart develops into smooth sandalwood and cedarwood, adding structure and refined woody depth. The dry-down settles into amber, musk and patchouli, creating a soft, balanced finish. This fragrance is suitable for daily wear, office environments and active lifestyles. It offers a fresh, modern and easy-to-wear character with moderate projection, making it ideal for warm climates and all-day use.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/10b10304-1381-42bf-fe6f-140be60a1200.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/10b10304-1381-42bf-fe6f-140be60a1200.jpg",
+        "https://www.shamperfume.com/cdn/large/124e7755-17bb-4321-dbdd-d99fdfaf0f00.jpg",
+        "https://www.shamperfume.com/cdn/large/79bb3ed9-f28f-494c-bebd-b213a8bb6000.jpg",
+        "https://www.shamperfume.com/cdn/large/66df1cc9-ad68-4af5-2391-e950c300c200.jpg",
+        "https://www.shamperfume.com/cdn/large/b25f8315-e749-406e-f539-b70597974c00.jpg",
+        "https://www.shamperfume.com/cdn/large/b9a94cd5-a91a-43e6-d0f9-d14ae55e8500.jpg",
+        "https://www.shamperfume.com/cdn/large/682a0a6e-eb5e-40bc-4ea1-5c5ea8fc1300.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/10b10304-1381-42bf-fe6f-140be60a1200.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Velixir",
+      "supplierPrice": 3623.44,
+      "ourPrice": 5440,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "VELIXIR-ARES-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 277,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/velixir/velixir-ares-100ml-edp/",
+      "slug": "velixir-ares-100ml-edp-1097",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Woody Aromatic"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Casual"
+      ],
+      "barcode": "2212241600012",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1098,
+      "sku": "VEL-1098",
+      "nameAr": "Velixir Aphrodite 100ml EDP",
+      "nameEn": "Velixir Aphrodite 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Velixir Aphrodite 100ml EDP is a floral fruity fragrance designed to capture soft elegance and modern sensuality. It opens with a bright blend of bergamot, litchi and ginger, delivering a fresh and slightly spicy introduction. The heart develops into a smooth floral composition of rose and peony layered with a subtle cacao nuance that adds depth and uniqueness. The dry-down settles into warm patchouli with a soft musky undertone, creating a balanced, feminine scent profile. This fragrance is ideal for daily wear, casual settings and daytime occasions. It offers a clean, fresh and romantic character with a light yet noticeable presence, making it suitable for warm climates and versatile use.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/cdb2058d-25aa-4c58-1325-4166696c5500.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/cdb2058d-25aa-4c58-1325-4166696c5500.jpg",
+        "https://www.shamperfume.com/cdn/large/7498acbf-7439-4628-acd5-45ca63e65f00.jpg",
+        "https://www.shamperfume.com/cdn/large/8dc4f73d-cfb7-45aa-e26b-5af616cb3500.jpg",
+        "https://www.shamperfume.com/cdn/large/ee007831-f81b-45eb-c7f2-f912bdd9b900.jpg",
+        "https://www.shamperfume.com/cdn/large/90275684-67e1-42f0-c39f-69fa6069b100.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/cdb2058d-25aa-4c58-1325-4166696c5500.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Velixir",
+      "supplierPrice": 3649.6,
+      "ourPrice": 5475,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "VELIXIR-APHRODITE-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 279,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/velixir/velixir-aphrodite-100ml-edp/",
+      "slug": "velixir-aphrodite-100ml-edp-1098",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Floral Fruity"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Casual"
+      ],
+      "barcode": "2212241600018",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1099,
+      "sku": "ASD-1099",
+      "nameAr": "Majd Al Sultan by Asdaaf 100ml EDP",
+      "nameEn": "Majd Al Sultan by Asdaaf 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Majd Al Sultan by Asdaaf – 100ml Eau de Parfum.\nMajd Al Sultan by Asdaaf 100ml EDP A rich, dark, and smoky oriental-woody fragrance crafted for men who appreciate bold sophistication and regal allure. Opening with an intense burst of smoky incense, spices, and a touch of crisp apple, it evolves into a resinous heart of myrrh, saffron, and warm amber. The dry down is deep and comforting, featuring creamy vanilla, cedarwood, rich oud, and white musk. Powerful with remarkable projection, it is ideal for formal occasions, cooler weather, and evening wear.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/majd-al-sultan-by-asdaaf-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/majd-al-sultan-by-asdaaf-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/majd-al-sultan-by-asdaaf-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/majd-al-sultan-by-asdaaf-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/majd-al-sultan-by-asdaaf-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/majd-al-sultan-by-asdaaf-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/majd-al-sultan-by-asdaaf-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/majd-al-sultan-by-asdaaf-100ml-edp-1.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "Asdaaf",
+      "supplierPrice": 2027.55,
+      "ourPrice": 3045,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "MAJD-AL-SULTAN-ASDAAF",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 155,
+      "supplierSalePrice": 89,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/asdaaf/majd-al-sultan-asdaaf/",
+      "slug": "majd-al-sultan-by-asdaaf-100ml-edp-1099",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Oriental"
+      ],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Office",
+        "Evening",
+        "Date Night",
+        "Special Event"
+      ],
+      "barcode": "6291107456393",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 1100,
+      "sku": "VEL-1100",
+      "nameAr": "Selene Velixir Parfums 100ml",
+      "nameEn": "Selene Velixir Parfums 100ml",
+      "descriptionAr": "",
+      "descriptionEn": "Selene Velixir Parfums – Eau de Parfum for Women and Men.\nVelixir Parfums Selene A luminous floral fruity fragrance with juicy freshness and an elegant white-floral character. It opens with raspberry, creating a bright, sweet and lively fruity impression. The heart combines peony, magnolia, jasmine sambac and rose geranium for a soft, layered bouquet with fresh floral, creamy white-floral and lightly green nuances. The official product page describes moderate-to-strong sillage and projection, with approximately 7–8 hours of longevity on skin. Available in a 100ml size.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/selene-velixir-parfums-100ml-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/selene-velixir-parfums-100ml-1.jpg",
+        "https://www.shamperfume.com/cdn/large/selene-velixir-parfums-100ml-2.jpg",
+        "https://www.shamperfume.com/cdn/large/selene-velixir-parfums-100ml-3.jpg",
+        "https://www.shamperfume.com/cdn/large/selene-velixir-parfums-100ml-4.jpg",
+        "https://www.shamperfume.com/cdn/large/selene-velixir-parfums-100ml-5.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/selene-velixir-parfums-100ml-1.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Velixir",
+      "supplierPrice": 4185.92,
+      "ourPrice": 6280,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "VELIXIR-SELENE-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 320,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/velixir/selene-100ml-velixir-parfums/",
+      "slug": "selene-velixir-parfums-100ml-1100",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Floral Fruity"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Special Event",
+        "Casual"
+      ],
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1101,
+      "sku": "VEL-1101",
+      "nameAr": "Velixir Narcisus 100ml EDP",
+      "nameEn": "Velixir Narcisus 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Velixir Narcisus 100ml EDP is a citrus floral woody fragrance designed for those who prefer a clean, elegant and modern scent profile. It opens with fresh bergamot, delivering a bright and slightly zesty introduction. The heart develops into smooth orange blossom, adding a soft white floral character with refined sweetness. The dry-down settles into ambrofix and patchouli, creating a warm, slightly woody finish that feels balanced and contemporary. This fragrance is suitable for daily wear, office environments and modern lifestyles. It offers a clean, fresh and versatile character with a soft yet noticeable projection, making it ideal for warm climates and effortless everyday use.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/10b49e1d-5f5d-4808-7465-63ffb8929400.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/10b49e1d-5f5d-4808-7465-63ffb8929400.jpg",
+        "https://www.shamperfume.com/cdn/large/ddec249a-b4f6-4003-7326-302717400500.jpg",
+        "https://www.shamperfume.com/cdn/large/52e8479b-7359-4cbe-71cc-d5c74f251900.jpg",
+        "https://www.shamperfume.com/cdn/large/f5180be2-7ef8-46f2-0442-0b6ee8042400.jpg",
+        "https://www.shamperfume.com/cdn/large/9c0b1ea3-2e63-4585-3002-a9d96726c700.jpg",
+        "https://www.shamperfume.com/cdn/large/9405dbcd-1acc-4a8f-6983-49fcebcdd200.jpg",
+        "https://www.shamperfume.com/cdn/large/dadef485-5203-4879-3c0a-4cdda21f8300.jpg",
+        "https://www.shamperfume.com/cdn/large/39c5d917-0540-489b-985d-11bdd805a600.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Velixir",
+      "supplierPrice": 3636.52,
+      "ourPrice": 5455,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "VELIXIR-NARCISUS-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 278,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/velixir/velixir-narcisus-100ml-edp/",
+      "slug": "velixir-narcisus-100ml-edp-1101",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Fresh"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Casual"
+      ],
+      "barcode": "2212241600007",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1102,
+      "sku": "RAV-1102",
+      "nameAr": "Now Intense by Rave 100ml EDP",
+      "nameEn": "Now Intense by Rave 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Now Intense by Rave – 100 ml Eau de Parfum.\nNow Intense ni bau dia fresh, spicy & masculine—tahan lama, powerful dan sesuai dipakai siang atau malam.\nTop Notes: Fresh Citrus, Spicy Notes\nMiddle Notes: Aromatic Herbs, Woody Notes\nBase Notes: Amber, Musk, Dry Woods",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/354a0097-7ea2-4634-6385-53bf53f4e700.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/354a0097-7ea2-4634-6385-53bf53f4e700.jpg",
+        "https://www.shamperfume.com/cdn/large/34598e95-7886-4d4e-e2b0-9629234c7e00.jpg",
+        "https://www.shamperfume.com/cdn/large/cfdac27a-ddbb-458e-73c0-9e210deede00.jpg",
+        "https://www.shamperfume.com/cdn/large/ab8375e6-ad03-41bf-251c-f2b01a891f00.jpg",
+        "https://www.shamperfume.com/cdn/large/7cf226b0-ff2e-48c7-dd47-a6d82e96c600.jpg",
+        "https://www.shamperfume.com/cdn/large/f24468de-db07-411f-cb30-19670eb9d800.jpg",
+        "https://www.shamperfume.com/cdn/large/f0c0be16-5433-4baf-20e2-f9d4e8bec300.jpg",
+        "https://www.shamperfume.com/cdn/large/1073e1a1-df25-4cea-adb7-d4ac73761000.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "Rave",
+      "supplierPrice": 1556.64,
+      "ourPrice": 2335,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "NOW-INTENSE",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 119,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rave/now-intense/",
+      "slug": "now-intense-by-rave-100ml-edp-1102",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [
+          "Fresh Citrus",
+          "Spicy Notes"
+        ],
+        "heart": [
+          "Aromatic Herbs",
+          "Woody Notes"
+        ],
+        "base": [
+          "Amber",
+          "Musk",
+          "Dry Woods"
+        ]
+      },
+      "families": [
+        "Citrus"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Casual"
+      ],
+      "barcode": "6291108735053",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1103,
+      "sku": "RAV-1103",
+      "nameAr": "Now Rouge Perfume EDP 100ml by RAVE",
+      "nameEn": "Now Rouge Perfume EDP 100ml by RAVE",
+      "descriptionAr": "",
+      "descriptionEn": "Now Rouge Perfume EDP 100ml by RAVE\nNow Rouge Perfume EDP 100ml by RAVE Opens with vibrant fruity and spicy accords before developing into a refined floral heart. The fragrance settles into a warm amber, vanilla, and woody base, creating a smooth and long-lasting finish.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/now-rouge-perfume-edp-100ml-by-rave-4.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/now-rouge-perfume-edp-100ml-by-rave-4.jpg",
+        "https://www.shamperfume.com/cdn/large/now-rouge-perfume-edp-100ml-by-rave-2.jpg",
+        "https://www.shamperfume.com/cdn/large/now-rouge-perfume-edp-100ml-by-rave-3.jpg",
+        "https://www.shamperfume.com/cdn/large/now-rouge-perfume-edp-100ml-by-rave-1.jpg",
+        "https://www.shamperfume.com/cdn/large/now-rouge-perfume-edp-100ml-by-rave-5.jpg",
+        "https://www.shamperfume.com/cdn/large/now-rouge-perfume-edp-100ml-by-rave-6.jpg",
+        "https://www.shamperfume.com/cdn/large/now-rouge-perfume-edp-100ml-by-rave-7.jpg",
+        "https://www.shamperfume.com/cdn/large/now-rouge-perfume-edp-100ml-by-rave-8.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Rave",
+      "supplierPrice": 1831.34,
+      "ourPrice": 2750,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "NOW-ROUGE-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 140,
+      "supplierSalePrice": 79,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rave/now-rouge-rave-100ml/",
+      "slug": "now-rouge-perfume-edp-100ml-by-rave-1103",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Floral Fruity"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Evening"
+      ],
+      "barcode": "6291108735046",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 1104,
+      "sku": "VEL-1104",
+      "nameAr": "Harmonia Velixir Parfums 100ml for Unisex",
+      "nameEn": "Harmonia Velixir Parfums 100ml for Unisex",
+      "descriptionAr": "",
+      "descriptionEn": "Harmonia Velixir Parfums – 100ml Eau de Parfum for Women and Men.\nHarmonia Velixir Parfums A fresh and soothing fragrance with citrus, green and gently spicy accords. Tea and lemongrass create a clean, bright and aromatic opening. Rose and magnolia add a soft floral character, while woody notes provide quiet warmth and a smooth finish. The official product page describes moderate-to-strong sillage and projection, with approximately 7–8 hours of longevity on skin. A suitable everyday fragrance for women and men who enjoy fresh green scents with delicate florals and soft woods.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/harmonia-velixir-parfums-100ml-for-unisex-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/harmonia-velixir-parfums-100ml-for-unisex-1.jpg",
+        "https://www.shamperfume.com/cdn/large/harmonia-velixir-parfums-100ml-for-unisex-2.jpg",
+        "https://www.shamperfume.com/cdn/large/harmonia-velixir-parfums-100ml-for-unisex-5.jpg",
+        "https://www.shamperfume.com/cdn/large/harmonia-velixir-parfums-100ml-for-unisex-3.jpg",
+        "https://www.shamperfume.com/cdn/large/harmonia-velixir-parfums-100ml-for-unisex-4.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/harmonia-velixir-parfums-100ml-for-unisex-1.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Velixir",
+      "supplierPrice": 4316.73,
+      "ourPrice": 6480,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "VELIXIR-HARMONIA-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 330,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/velixir/harmonia-velixir-parfums-100ml/",
+      "slug": "harmonia-velixir-parfums-100ml-for-unisex-1104",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (9-10 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Oriental"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Casual"
+      ],
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1105,
+      "sku": "VEL-1105",
+      "nameAr": "Velixir Demeter 100ml EDP",
+      "nameEn": "Velixir Demeter 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Velixir Demeter 100ml EDP is a fresh green aromatic fragrance designed for those who prefer a clean, energetic and refreshing scent profile. It opens with a vibrant blend of mint, lemon, basil and thyme, delivering a crisp and uplifting citrus-herbal start. The heart develops into a smooth aromatic mix of blackcurrant, lavender, jasmine and rosemary, adding depth and refined freshness. The dry-down settles into musk and cedarwood, creating a clean, soft finish. This fragrance is suitable for daily wear, outdoor activities and warm climates. It offers a fresh, green and modern character with a cooling effect, making it ideal for those who prefer light, refreshing and versatile scents.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/3fdf08b8-df63-49f0-09b9-05fbd2d68600.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/3fdf08b8-df63-49f0-09b9-05fbd2d68600.jpg",
+        "https://www.shamperfume.com/cdn/large/1516e3cb-5452-435a-6429-934b01c94d00.jpg",
+        "https://www.shamperfume.com/cdn/large/ef3a3049-403d-4659-adc1-cb40279c1200.jpg",
+        "https://www.shamperfume.com/cdn/large/d6c9e1d8-cbfe-4514-06cf-30cda448e700.jpg",
+        "https://www.shamperfume.com/cdn/large/0f3992d8-4fd4-4faa-0e0a-cf5495e2a700.jpg",
+        "https://www.shamperfume.com/cdn/large/796208e2-7ce3-41e9-2d12-58609a1b8b00.jpg",
+        "https://www.shamperfume.com/cdn/large/2dc5d92e-9260-4ad3-9c66-90ec7b0f4200.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/3fdf08b8-df63-49f0-09b9-05fbd2d68600.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Velixir",
+      "supplierPrice": 3531.87,
+      "ourPrice": 5300,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "VELIXIR-DEMETER-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 270,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/velixir/velixir-demeter-100ml-edp/",
+      "slug": "velixir-demeter-100ml-edp-1105",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Floral Woody"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Casual"
+      ],
+      "barcode": "2212241600009",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
+      ]
+    },
+    {
+      "id": 1106,
+      "sku": "RAV-1106",
+      "nameAr": "Au Soleil by Rave 100ml EDP",
+      "nameEn": "Au Soleil by Rave 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Au Soleil by Rave – 100ml Eau de Parfum.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/51f75afd-8016-4846-d31a-87285a88e400.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/51f75afd-8016-4846-d31a-87285a88e400.jpg",
+        "https://www.shamperfume.com/cdn/large/ab7c7575-810f-4b46-5843-05e849180600.jpg",
+        "https://www.shamperfume.com/cdn/large/de070dc8-0e2f-46f4-fdae-32fada0dfe00.jpg",
+        "https://www.shamperfume.com/cdn/large/aeb7bf7f-792e-4d4c-6ffb-ed6ab116dc00.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/51f75afd-8016-4846-d31a-87285a88e400.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Rave",
+      "supplierPrice": 2289.17,
+      "ourPrice": 3435,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "AU-SOLEIL",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 175,
+      "supplierSalePrice": 139,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rave/au-soleil-rave/",
+      "slug": "au-soleil-by-rave-100ml-edp-1106",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Floral Fruity"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Casual"
+      ],
+      "barcode": "6290360599717",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "وصف المورد قصير",
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 1107,
+      "sku": "ASD-1107",
+      "nameAr": "Shaghaf Man by Asdaaf (Lattafa) – 100 ml for Men",
+      "nameEn": "Shaghaf Man by Asdaaf (Lattafa) – 100 ml for Men",
+      "descriptionAr": "",
+      "descriptionEn": "Shaghaf Man by Asdaaf (Lattafa) – 100 ml Eau de Parfum for Men\nFragrance Family: Aromatic • Citrus • Woody • Oriental\nTop Notes: Lemon, Lavender, Chinese Orange\nMiddle Notes: Tagetes, Sage, Cardamom, Cinnamon\nBase Notes: Patchouli, Praline, Tolu Balsam, Ebony/Rosewood, Black Amber",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/perfumes/asdaaf/shaghaf-man-asdaaf-lattafa-perfume-lelaki-citrus-fresh-malaysia-100ml-edp.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/perfumes/asdaaf/shaghaf-man-asdaaf-lattafa-perfume-lelaki-citrus-fresh-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/asdaaf/shaghaf-man-asdaaf-lattafa-botol-wangian-lelaki-sporty-clean-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/asdaaf/shaghaf-man-asdaaf-lattafa-men-fragrance-citrus-spicy-longlasting-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/asdaaf/shaghaf-man-lattafa-minyak-wangi-lelaki-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/asdaaf/shaghaf-man-asdaaf-pavilion-kl-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/asdaaf/shaghaf-man-asdaaf-bukit-bintang-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/asdaaf/shaghaf-man-asdaaf-mrt-trx-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/perfumes/asdaaf/shaghaf-man-asdaaf-lattafa-perfume-lelaki-citrus-fresh-malaysia-100ml-edp.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "Asdaaf",
+      "supplierPrice": 1896.75,
+      "ourPrice": 2850,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "Shaghaf-00001A",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 145,
+      "supplierSalePrice": 110,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/asdaaf/shaghaf-man/",
+      "slug": "shaghaf-man-by-asdaaf-lattafa-100-ml-for-men-1107",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "notes": {
+        "top": [
+          "Lemon",
+          "Lavender",
+          "Chinese Orange"
+        ],
+        "heart": [
+          "Tagetes",
+          "Sage",
+          "Cardamom",
+          "Cinnamon"
+        ],
+        "base": [
+          "Patchouli",
+          "Praline",
+          "Tolu Balsam",
+          "Ebony",
+          "Rosewood",
+          "Black Amber"
+        ]
+      },
+      "families": [
+        "Aromatic",
+        "Citrus",
+        "Woody",
+        "Oriental"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [],
+      "barcode": "6291106068566",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
+    },
+    {
+      "id": 1108,
+      "sku": "AHM-1108",
+      "nameAr": "Rose Noir by Ahmed Al Maghribi EDP Women",
+      "nameEn": "Rose Noir by Ahmed Al Maghribi EDP Women",
+      "descriptionAr": "",
+      "descriptionEn": "Rose Noir by Ahmed Al Maghribi – Eau de Parfum for Women\nTop Notes: Turkish Rose, Saffron, Pink Pepper\nHeart Notes: Jasmine, Patchouli, Amber\nBase Notes: Vanilla, Musk, Sandalwood",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/perfumes/ahmed-al-maghribi/rose-noir-ahmed-maghribi-perfume-wanita-rose-gelap-100ml-edp.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/perfumes/ahmed-al-maghribi/rose-noir-ahmed-maghribi-perfume-wanita-rose-gelap-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/ahmed-al-maghribi/rose-noir-ahmed-maghribi-botol-wangian-wanita-rose-manis-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/ahmed-al-maghribi/rose-noir-ahmed-maghribi-perfume-wanita-rose-amber-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/ahmed-al-maghribi/noir-rose-perfume-ahmed-al-maghribi-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/ahmed-al-maghribi/rosenoir-hijabi-arabica-klcc-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/ahmed-al-maghribi/noir-rose-perfume-ahmed-al-maghribi-women-her-edp-75ml-olympic-noir-ahmed-sham-perfume-store-edp-perfume-60120268-100ml.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/ahmed-al-maghribi/rosenoir-hijabi-trx-bridge-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/ahmed-al-maghribi/rosenoir-hijabi-aeon-japanesegarden-100ml-edp.jpg"
+      ],
+      "category": "نسائي",
+      "brand": "Ahmed Al Maghribi",
+      "supplierPrice": 3139.44,
+      "ourPrice": 4710,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "Noir-Rose-9963",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 240,
+      "supplierSalePrice": 179,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/ahmed-al-maghribi/rose-noir/",
+      "slug": "rose-noir-by-ahmed-al-maghribi-edp-women-1108",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "notes": {
+        "top": [
+          "Turkish Rose",
+          "Saffron",
+          "Pink Pepper"
+        ],
+        "heart": [
+          "Jasmine",
+          "Patchouli",
+          "Amber"
+        ],
+        "base": [
+          "Vanilla",
+          "Musk",
+          "Sandalwood"
+        ]
+      },
+      "families": [],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall"
+      ],
+      "occasionsSource": [],
+      "barcode": "6290360615875",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
+    },
+    {
+      "id": 1109,
+      "sku": "NAF-1109",
+      "nameAr": "Oud Maluky by Nafahat 100ml Unisex",
+      "nameEn": "Oud Maluky by Nafahat 100ml Unisex",
+      "descriptionAr": "",
+      "descriptionEn": "Oud Maluky by Nafahat – Eau de Parfum 100ml\nOud Maluky by Nafahat is a rich woody-oriental fragrance With a scent profile rooted in Maluku island oud. Opening with fresh woods and subtle lemongrass, it evolves into a heart of patchouli and premium Indonesian agarwood (oud), and dries down into smooth burnt woods with lasting presence. Designed for both men and women who appreciate bold yet refined scents.\nFragrance Notes\nTop: Lemongrass, Fresh Wood\nHeart: Indonesian Agarwood (Oud), Patchouli\nBase: Burnt Wood, Woody Musk, Warm Amber\nHaruman Kayu Oudh Eksklusif\nOud Maluky oleh Nafahat diinspirasikan oleh kayu oud Maluku yang kaya. Bermula dengan kayu hijau dan lemon­rumput yang segar, kemudian mengembang ke jantung oud Maluku dan patchouli, dan berakhir dengan kayu hangus serta musk yang tahan lama. Sesuai untuk lelaki dan wanita yang gemar haruman yang tegas tetapi anggun.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/perfumes/nafahat/oud-maluky-nafahat-perfume-unisex-oud-woody-100ml-edp.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/perfumes/nafahat/oud-maluky-nafahat-perfume-unisex-oud-woody-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/nafahat/oud-maluky-nafahat-botol-wangian-smoky-oud-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/nafahat/oud-maluky-nafahat-perfume-warm-amber-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/nafahat/oud-maluky-car-night-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/nafahat/oud-maluky-gold-studio-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/nafahat/oud-maluky-hijabi-dark-gold-portrait-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/nafahat/oud-maluky-oud-smoke-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/products/migrated/493/oud-maluky-car-night-pos7.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Nafahat",
+      "supplierPrice": 1700.53,
+      "ourPrice": 2555,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "Oud-maluky-943",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 130,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/nafahat/oud-maluky/",
+      "slug": "oud-maluky-by-nafahat-100ml-unisex-1109",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "notes": {
+        "top": [
+          "Lemongrass",
+          "Fresh Wood"
+        ],
+        "heart": [
+          "Indonesian Agarwood (Oud)",
+          "Patchouli"
+        ],
+        "base": [
+          "Burnt Wood",
+          "Woody Musk"
+        ]
+      },
+      "families": [],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [],
+      "barcode": "6498254710631",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
+    },
+    {
+      "id": 1110,
+      "sku": "MAH-1110",
+      "nameAr": "Oud Al Khalifah by Mahabub Perfumes – 100 ml",
+      "nameEn": "Oud Al Khalifah by Mahabub Perfumes – 100 ml",
+      "descriptionAr": "",
+      "descriptionEn": "Oud Al Khalifah by Mahabub Perfumes – 100 ml Eau De Parfum\nFragrance Notes:\nTop: Oud, Spices\nHeart: Amber, Woods, Resin\nBase: Musk, Smoky Woods, Warm Amber",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/perfumes/mahabub-perfume/oud-al-khalifah-mahabub-100ml-edp-malaysia.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/perfumes/mahabub-perfume/oud-al-khalifah-mahabub-100ml-edp-malaysia.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/mahabub-perfume/perfume-oud-al-khalifah-mahabub-original-malaysia-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/mahabub-perfume/minyak-wangi-oud-al-khalifah-tahan-lama-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/mahabub-perfume/khalifah-home-fireplace-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/products/migrated/363/khalifah-home-fireplace-pos4.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/mahabub-perfume/khalifah-klcc-streetwalk-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/mahabub-perfume/khalifah-car-backseat-kl-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/perfumes/mahabub-perfume/oud-al-khalifah-mahabub-100ml-edp-malaysia.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Mahabub Perfume",
+      "supplierPrice": 1896.75,
+      "ourPrice": 2850,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "Oud-Al-Kha-9573",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 145,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/mahabub-perfume/oud-al-khalifah/",
+      "slug": "oud-al-khalifah-by-mahabub-perfumes-100-ml-1110",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "notes": {
+        "top": [
+          "Oud",
+          "Spices"
+        ],
+        "heart": [
+          "Amber",
+          "Woods",
+          "Resin"
+        ],
+        "base": [
+          "Musk",
+          "Smoky Woods",
+          "Warm Amber"
+        ]
+      },
+      "families": [],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [],
+      "barcode": "6296600010158",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld"
+    },
+    {
+      "id": 1111,
+      "sku": "NIC-1111",
+      "nameAr": "Khanjar by Niche Emarati 85ml EDP",
+      "nameEn": "Khanjar by Niche Emarati 85ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Khanjar by Niche Emarati – 85 ml Eau de Parfum.\nKhanjar ni bau dia pekat, smoky, oud-heavy—ada amber creamy, spices ringan dan woody base yang tahan lama. Perfume niche Arab premium untuk peminat bau kuat, bold dan mewah.\nTop Notes: Spicy Notes, Woody Notes\nMiddle Notes: Oud, Amber\nBase Notes: Smoky Woods, Musk, Vanilla",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/d41e6702-7346-4222-74f8-ba3d79d1a100.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/d41e6702-7346-4222-74f8-ba3d79d1a100.jpg",
+        "https://www.shamperfume.com/cdn/large/f9426491-4342-4261-f6a1-2db0057eaa00.jpg",
+        "https://www.shamperfume.com/cdn/large/2d915e83-1069-4369-3b5c-e6c56d071a00.jpg",
+        "https://www.shamperfume.com/cdn/large/b55eb7d7-2d6b-44bc-f5c5-a5dc1dba6200.jpg",
+        "https://www.shamperfume.com/cdn/large/813ceecf-5e48-4c59-7706-a855e3119d00.jpg",
+        "https://www.shamperfume.com/cdn/large/5504c255-e0b4-4bb9-e7f4-006a32458500.jpg",
+        "https://www.shamperfume.com/cdn/large/7f62ac0b-e8c7-42c6-5fdb-c1f17a86f500.jpg",
+        "https://www.shamperfume.com/cdn/large/50268354-1e03-4d69-0ca7-521e2122ef00.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Niche Emarati",
+      "supplierPrice": 3401.06,
+      "ourPrice": 5105,
+      "stockStatus": "out_of_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T17:04:54.631Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "KHANJAR",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 260,
+      "supplierSalePrice": 220,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/niche-emarati/khanjar/",
+      "slug": "khanjar-by-niche-emarati-85ml-edp-1111",
+      "sizeMl": 85,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [
+          "Spicy Notes",
+          "Woody Notes"
+        ],
+        "heart": [
+          "Oud",
+          "Amber"
+        ],
+        "base": [
+          "Smoky Woods",
+          "Musk",
+          "Vanilla"
+        ]
+      },
+      "families": [],
+      "seasonsSource": [
+        "Spring",
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Special Event",
+        "Casual"
+      ],
+      "barcode": "6290360592299",
+      "importedAt": "2026-10-16T17:04:54.631Z",
+      "refreshedAt": "2026-10-16T17:04:54.631Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
         "غير متوفر عند المورد"
       ]
     }
