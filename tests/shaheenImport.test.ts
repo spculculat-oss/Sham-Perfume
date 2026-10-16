@@ -196,6 +196,11 @@ test('every product gets a standalone page with share preview, schema.org price 
   assert.match(other, /Amber &lt;Night&gt;/);
   assert.doesNotMatch(other, /<Night>/);
   assert.match(renderIndexPage(list, { siteUrl: 'https://x.example/' }), /href="zimaya-amber-is-great-eau-de-parfum-100ml-52\.html"/);
+  // A photo that is gone shows a placeholder (main/cards) or disappears (thumbnail) instead of a broken icon.
+  assert.match(html, /id="main" onerror="noImg\(this\)"/);
+  assert.match(html, /onerror="noImg\(this,1\)"/);
+  assert.match(html, /function noImg\(i,thumb\)/);
+  assert.match(renderIndexPage(list, { siteUrl: 'https://x.example/' }), /function noImg[\s\S]*onerror="noImg\(this\)"/);
 });
 
 test("the supervisor's importer probe reads the reviewer's report", async () => {

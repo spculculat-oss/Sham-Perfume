@@ -135,7 +135,16 @@ export default function App() {
       return 'home';
     }
   });
-  const [productId, setProductId] = useState<number | null>(null);
+  // A product link opened directly (a product page's «اطلب من المتجر» button, a shared link) must show that
+  // product at once — not an empty detail page until the hash changes.
+  const [productId, setProductId] = useState<number | null>(() => {
+    try {
+      const m = window.location.hash.replace('#', '').split('?')[0].match(/^product=(\d+)$/);
+      return m ? parseInt(m[1], 10) : null;
+    } catch {
+      return null;
+    }
+  });
   const [historyStack, setHistoryStack] = useState<string[]>(() => {
     try {
       const hash = window.location.hash.replace('#', '');

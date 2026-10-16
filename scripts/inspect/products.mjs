@@ -56,8 +56,9 @@ for (const [n, link] of sample.entries()) {
         h1: document.querySelector('h1')?.textContent?.trim() || '',
         price: document.querySelector('.price')?.textContent?.trim() || '',
         stock: document.querySelector('.price + p')?.textContent?.trim() || '',
-        photos: imgs.length, loaded: imgs.filter((i) => i.complete && i.naturalWidth > 0).length,
-        mainLoaded: !!document.querySelector('#main') && document.querySelector('#main').naturalWidth > 0,
+        photos: imgs.length, loaded: imgs.filter((i) => i.complete && i.naturalWidth > 0 && !i.dataset.broken).length,
+        mainLoaded: !!document.querySelector('#main') && document.querySelector('#main').naturalWidth > 0 && !document.querySelector('#main').dataset.broken,
+        broken: [...document.querySelectorAll('[data-broken]')].map((i) => i.dataset.broken),
         order: document.querySelector('a.btn')?.getAttribute('href') || '',
         description: [...document.querySelectorAll('section p')].map((p) => p.textContent).join(' ').trim().length,
         notes: document.querySelectorAll('.notes div').length,
@@ -66,15 +67,22 @@ for (const [n, link] of sample.entries()) {
         ldPrice: ld?.offers?.price, ldCurrency: ld?.offers?.priceCurrency,
       };
     });
-    const priceNumber = Number(seen.price.replace(/[٠-٩]/g, (d) => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[^\d]/g, ''));
+    // «٥٢٫٥ جنيه» / «٤٬٩١٠ جنيه»: Arabic digits, «٫» decimal point, «٬» thousands separator.
+    const priceNumber = Number(seen.price.replace(/[٠-٩]/g, (d) => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/٫/g, '.').replace(/[^\d.]/g, ''));
     const forbidden = seen.text.match(FORBIDDEN)?.[0];
     const issues = [];
     if (res?.status() !== 200) issues.push(`HTTP ${res?.status()}`);
-    if (!/[\u0600-\u06FF]/.test(seen.h1)) issues.push(`no Arabic name (${seen.h1.slice(0, 40)})`);
+    const remarks = [];
+    // A product Shaheen has not written yet keeps the supplier's English name until the next run.
+    if (!/[\u0600-\u06FF]/.test(seen.h1)) remarks.push(`Arabic name not written yet (${seen.h1.slice(0, 40)})`);
     if (!/جنيه/.test(seen.price) || !(priceNumber >= 30)) issues.push(`price «${seen.price}»`);
     if (seen.ldCurrency !== 'EGP' || Number(seen.ldPrice) !== priceNumber) issues.push(`structured price ${seen.ldPrice} ${seen.ldCurrency} ≠ page ${priceNumber}`);
-    if (!seen.mainLoaded) issues.push('main photo did not load');
-    if (seen.loaded < seen.photos) issues.push(`${seen.photos - seen.loaded}/${seen.photos} photos did not load`);
+    // Old illustrative stock photos that are gone show the placeholder (a known data remark); a real product
+    // photo from the supplier that does not load is a problem.
+    const stock = seen.broken.length && seen.broken.every((u) => /unsplash\.com/.test(u));
+    if (seen.broken.length) (stock ? remarks : issues).push(`${seen.broken.length} photo(s) gone → placeholder shown${stock ? ' (old stock photo)' : ''}`);
+    else if (!seen.mainLoaded) issues.push('main photo did not load');
+    else if (seen.loaded < seen.photos) issues.push(`${seen.photos - seen.loaded}/${seen.photos} photos did not load`);
     if (!/#product=/.test(seen.order)) issues.push(`order button «${seen.order}»`);
     if (seen.description < 60) issues.push('description missing or very short');
     if (forbidden) issues.push(`visitor sees «${forbidden}»`);
@@ -88,14 +96,14 @@ for (const [n, link] of sample.entries()) {
       const target = new URL(seen.order, url).href;
       await page.goto(target, { waitUntil: 'networkidle2', timeout: 60_000 });
       const firstWord = seen.h1.split(/\s+/).filter((w) => w.length > 2)[1] || seen.h1.split(/\s+/)[0];
-      const found = await page.waitForFunction((w) => document.body.innerText.includes(w), { timeout: 25_000 }, firstWord).then(() => true).catch(() => false);
-      inStore = found ? 'opens in the store' : `store did not show «${firstWord}»`;
+      const found = await page.waitForFunction((w, p) => document.body.innerText.includes(w) && document.body.innerText.includes(p), { timeout: 25_000 }, firstWord, seen.price.replace(/\s*جنيه.*/, '')).then(() => true).catch(() => false);
+      inStore = found ? 'opens in the store with the same name and price' : `store did not show «${firstWord}» with ${seen.price}`;
       if (!found) issues.push(inStore);
       await new Promise((r) => setTimeout(r, 1200));
       await page.screenshot({ path: `${SHOTS}/product-${n + 1}-store.png` });
     }
-    if (issues.length) problem(`Product page ${n + 1}`, `${link}: ${issues.join(' | ')}`);
-    else note('notice', `Product page ${n + 1} OK`, `${seen.h1} — ${seen.price} — ${seen.stock} — ${seen.loaded}/${seen.photos} photos — ${seen.notes} note groups — ${inStore} — ${link}`);
+    if (issues.length) problem(`Product page ${n + 1}`, `${link}: ${[...issues, ...remarks].join(' | ')}`);
+    else note(remarks.length ? 'warning' : 'notice', `Product page ${n + 1} OK`, `${seen.h1} — ${seen.price} — ${seen.stock} — ${seen.loaded}/${seen.photos} photos — ${seen.notes} note groups — ${inStore} — ${link}${remarks.length ? ` — remarks: ${remarks.join(' | ')}` : ''}`);
   } catch (e) {
     problem(`Product page ${n + 1}`, `${link}: ${String(e).slice(0, 300)}`);
   }

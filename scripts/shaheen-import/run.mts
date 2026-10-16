@@ -16,7 +16,7 @@ import { makeAsk, QuotaExhaustedError, quotaBook } from '../doctor/agent';
 import { extractProduct, pageImages, pageText, parseSitemap, parseSitemapIndex, validateShaheenReading, type ExtractedProduct, type SitemapEntry } from './extract';
 import { reviewStore, type ReviewFile } from './review';
 import { SOURCES } from './sources';
-import { isImported, nextIdOf, ourPriceOf, planRun, priceReport, sourceKey, toStoreProduct, type ImportedProduct, type ImportSource, type PriceRule } from './transform';
+import { isImported, nextIdOf, normalizeBrand, ourPriceOf, planRun, priceReport, sourceKey, toStoreProduct, type ImportedProduct, type ImportSource, type PriceRule } from './transform';
 
 const env = process.env;
 const PRODUCTS = new URL('../../src/data/products.json', import.meta.url);
@@ -188,6 +188,8 @@ quota.save();
 let repriced = 0;
 for (const p of products) {
   if (!isImported(p) || !(Number(p.supplierPrice) > 0)) continue;
+  // Same for the brand spelling (RASASI → Rasasi): the filter never waits for a refresh to list a brand once.
+  if (p.brand && normalizeBrand(p.brand) !== p.brand) p.brand = normalizeBrand(p.brand);
   const price = ourPriceOf(Number(p.supplierPrice), MARKUP);
   if (price !== Number(p.ourPrice)) { p.ourPrice = price; repriced++; }
 }
