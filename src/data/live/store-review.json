@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-16T11:04:43.122Z",
+ "updatedAt": "2026-10-16T13:16:56.101Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
-  "total": 621,
-  "imported": 570,
-  "ok": 300,
-  "warn": 321,
+  "total": 771,
+  "imported": 720,
+  "ok": 403,
+  "warn": 368,
   "hidden": 0,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-16T11:02:03.179Z",
+  "at": "2026-10-16T13:14:02.765Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,8 +25,8 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1021,
-    "listingOnly": 58,
+    "listingProducts": 1015,
+    "listingOnly": 55,
     "listingComplete": true,
     "added": 150,
     "refreshed": 25,
@@ -39,9 +39,9 @@
   ],
   "rate": 13.081,
   "prices": {
-   "count": 570,
+   "count": 720,
    "min": 750,
-   "median": 3310,
+   "median": 3240,
    "max": 7830,
    "top": [
     {
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 159948
+  "durationMs": 173343
  },
  "items": [
   {
@@ -1424,6 +1424,16 @@
    "page": "p/afaq-gold-by-lattafa-edp-100-ml-unisex-155.html"
   },
   {
+   "sku": "LAT-158",
+   "id": 158,
+   "name": "Sheikh Al Shuyukh by Lattafa 50ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sheikh-al-shuyukh-by-lattafa-50ml-edp-men-158.html"
+  },
+  {
    "sku": "LAT-161",
    "id": 161,
    "name": "Thouq by Lattafa Pride 80ml EDP",
@@ -1502,6 +1512,16 @@
     "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/blush-amber-100ml-by-grandeur-185.html"
+  },
+  {
+   "sku": "VOL-188",
+   "id": 188,
+   "name": "Reload Intense by Volare Man – 100 ml for Him",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/reload-intense-by-volare-man-100-ml-for-him-188.html"
   },
   {
    "sku": "VOL-193",
@@ -1843,6 +1863,16 @@
     "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/victoria-by-lattafa-100ml-edp-265.html"
+  },
+  {
+   "sku": "LAT-266",
+   "id": 266,
+   "name": "Ejaazi by Lattafa Perfume 100 ml for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ejaazi-by-lattafa-perfume-100-ml-for-men-266.html"
   },
   {
    "sku": "LAT-267",
@@ -3464,6 +3494,461 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/dark-aoud-by-maison-alhambra-80ml-edp-621.html"
+  },
+  {
+   "sku": "MAI-628",
+   "id": 628,
+   "name": "Fortnight by Maison Alhambra 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/fortnight-by-maison-alhambra-100ml-edp-men-628.html"
+  },
+  {
+   "sku": "ARM-629",
+   "id": 629,
+   "name": "Armaf Aoud Odyssey 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/armaf-aoud-odyssey-100ml-edp-men-629.html"
+  },
+  {
+   "sku": "KHA-630",
+   "id": 630,
+   "name": "Magnate Noble by Khadlaj 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/magnate-noble-by-khadlaj-100ml-edp-630.html"
+  },
+  {
+   "sku": "MAI-631",
+   "id": 631,
+   "name": "Opulence Leather by Maison Alhambra – 100 ml Man",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/opulence-leather-by-maison-alhambra-100-ml-man-631.html"
+  },
+  {
+   "sku": "VOL-634",
+   "id": 634,
+   "name": "Society 974 Volare 100 ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/society-974-volare-100-ml-edp-unisex-634.html"
+  },
+  {
+   "sku": "ARM-637",
+   "id": 637,
+   "name": "Hunter Intense Armaf 100ml EDP Perfume for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/hunter-intense-armaf-100ml-edp-perfume-for-men-637.html"
+  },
+  {
+   "sku": "MAI-644",
+   "id": 644,
+   "name": "Black Wood 60ml by Maison Alhambra EDP for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/black-wood-60ml-by-maison-alhambra-edp-for-men-644.html"
+  },
+  {
+   "sku": "ZIM-648",
+   "id": 648,
+   "name": "Tiramisu Caramel By Zimaya 100 ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/tiramisu-caramel-by-zimaya-100-ml-edp-648.html"
+  },
+  {
+   "sku": "AFN-651",
+   "id": 651,
+   "name": "Pure Musk by Afnan 100ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/pure-musk-by-afnan-100ml-edp-unisex-651.html"
+  },
+  {
+   "sku": "RUE-652",
+   "id": 652,
+   "name": "Nexa Immortal by Rue Broca 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/nexa-immortal-by-rue-broca-100ml-edp-men-652.html"
+  },
+  {
+   "sku": "ZIM-654",
+   "id": 654,
+   "name": "Reflect by Zimaya 100ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/reflect-by-zimaya-100ml-edp-unisex-654.html"
+  },
+  {
+   "sku": "ARM-655",
+   "id": 655,
+   "name": "Armaf Club De Nuit Intense Man Parfum 150ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/armaf-club-de-nuit-intense-man-parfum-150ml-655.html"
+  },
+  {
+   "sku": "AFN-657",
+   "id": 657,
+   "name": "9 PM - Pour Femme Afnan Perfumes 100 ml Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/9-pm-pour-femme-afnan-perfumes-100-ml-women-657.html"
+  },
+  {
+   "sku": "MAI-659",
+   "id": 659,
+   "name": "Decadent Dream by Maison Alhambra – 100 ml Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/decadent-dream-by-maison-alhambra-100-ml-women-659.html"
+  },
+  {
+   "sku": "MAI-662",
+   "id": 662,
+   "name": "Panther Pour Homme Maison Alhambra 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/panther-pour-homme-maison-alhambra-100ml-662.html"
+  },
+  {
+   "sku": "ARM-663",
+   "id": 663,
+   "name": "Armaf Odyssey Mega Man 10ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/armaf-odyssey-mega-man-10ml-edp-663.html"
+  },
+  {
+   "sku": "ARD-665",
+   "id": 665,
+   "name": "Musk White Perfume Musk Original EDP 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/musk-white-perfume-musk-original-edp-100ml-665.html"
+  },
+  {
+   "sku": "ARM-667",
+   "id": 667,
+   "name": "Club De Nuit Sillage by Armaf 10ml EDP Pen Spray Unisex",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/club-de-nuit-sillage-by-armaf-10ml-edp-pen-spray-unisex-667.html"
+  },
+  {
+   "sku": "MAI-672",
+   "id": 672,
+   "name": "La Charmante by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "وصف المورد قصير",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/la-charmante-by-maison-alhambra-100ml-edp-672.html"
+  },
+  {
+   "sku": "MAI-673",
+   "id": 673,
+   "name": "My Party Maison Alhambra 100ml EDP Woman",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/my-party-maison-alhambra-100ml-edp-woman-673.html"
+  },
+  {
+   "sku": "MAI-679",
+   "id": 679,
+   "name": "Narissa Poudree 100ml by Maison Alhambra",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/narissa-poudree-100ml-by-maison-alhambra-679.html"
+  },
+  {
+   "sku": "MAI-692",
+   "id": 692,
+   "name": "Kismet Lunar Magic 100ml by Maison Alhambra",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/kismet-lunar-magic-100ml-by-maison-alhambra-692.html"
+  },
+  {
+   "sku": "ARD-699",
+   "id": 699,
+   "name": "Sultan Al Quloub Ard Al Zaafaran 100 ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/sultan-al-quloub-ard-al-zaafaran-100-ml-edp-men-699.html"
+  },
+  {
+   "sku": "GRA-702",
+   "id": 702,
+   "name": "Liberty EDP Grandeur Elite Perfume For Her Spray 60ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/liberty-edp-grandeur-elite-perfume-for-her-spray-60ml-702.html"
+  },
+  {
+   "sku": "ZIM-707",
+   "id": 707,
+   "name": "Royal Paragon by Zimaya EDP 100ml Man",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/royal-paragon-by-zimaya-edp-100ml-man-707.html"
+  },
+  {
+   "sku": "ARD-713",
+   "id": 713,
+   "name": "Shahrazad Eau De Parfum 100ml by Ard Al Zaafaran",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/shahrazad-eau-de-parfum-100ml-by-ard-al-zaafaran-713.html"
+  },
+  {
+   "sku": "ARD-717",
+   "id": 717,
+   "name": "Hareem Al Sultan EDP 50ml by Ard Al Zaafaran",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hareem-al-sultan-edp-50ml-by-ard-al-zaafaran-717.html"
+  },
+  {
+   "sku": "ARM-726",
+   "id": 726,
+   "name": "Armaf La Rosa Eau De Parfum 10ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/armaf-la-rosa-eau-de-parfum-10ml-726.html"
+  },
+  {
+   "sku": "MAI-729",
+   "id": 729,
+   "name": "Jorge Di Profumo Aqua Maison Alhambra 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/jorge-di-profumo-aqua-maison-alhambra-100ml-729.html"
+  },
+  {
+   "sku": "ARD-732",
+   "id": 732,
+   "name": "Oud Al Turas 100ml by Ard Al Zaafaran",
+   "status": "warn",
+   "issues": [
+    "وصف المورد قصير",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/oud-al-turas-100ml-by-ard-al-zaafaran-732.html"
+  },
+  {
+   "sku": "GRA-734",
+   "id": 734,
+   "name": "Soaked Sun Exclusif by Grandeur Elite EDP 100 ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/soaked-sun-exclusif-by-grandeur-elite-edp-100-ml-734.html"
+  },
+  {
+   "sku": "GRA-736",
+   "id": 736,
+   "name": "Grandeur Statement Man Eau De Parfum 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/grandeur-statement-man-eau-de-parfum-100ml-736.html"
+  },
+  {
+   "sku": "MAI-739",
+   "id": 739,
+   "name": "Narissa Ruby (Rouge) Maison Alhambra 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/narissa-ruby-rouge-maison-alhambra-100ml-739.html"
+  },
+  {
+   "sku": "MAI-742",
+   "id": 742,
+   "name": "Pink Shimmer Secret 100ml by Maison Alhambra",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/pink-shimmer-secret-100ml-by-maison-alhambra-742.html"
+  },
+  {
+   "sku": "MAI-743",
+   "id": 743,
+   "name": "Your Touch Oud by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/your-touch-oud-by-maison-alhambra-100ml-edp-743.html"
+  },
+  {
+   "sku": "ARD-744",
+   "id": 744,
+   "name": "Jazzab Gold by Ard Al Zaafaran Eau De Parfum 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/jazzab-gold-by-ard-al-zaafaran-eau-de-parfum-100ml-744.html"
+  },
+  {
+   "sku": "MAI-746",
+   "id": 746,
+   "name": "Expose Blanc by Maison Alhambra 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/expose-blanc-by-maison-alhambra-100ml-edp-men-746.html"
+  },
+  {
+   "sku": "GRA-747",
+   "id": 747,
+   "name": "Tubbees Chocolate Fudge by Grandeur 50ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/tubbees-chocolate-fudge-by-grandeur-50ml-edp-747.html"
+  },
+  {
+   "sku": "MAI-748",
+   "id": 748,
+   "name": "Jean Lowe Azure by Maison Alhambra EDP 100 ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/jean-lowe-azure-by-maison-alhambra-edp-100-ml-748.html"
+  },
+  {
+   "sku": "ARM-752",
+   "id": 752,
+   "name": "Armaf King Checkmate 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/armaf-king-checkmate-100ml-edp-752.html"
+  },
+  {
+   "sku": "ARM-753",
+   "id": 753,
+   "name": "Armaf Beach Party Eau De Parfum 100ml",
+   "status": "warn",
+   "issues": [
+    "وصف المورد قصير",
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/armaf-beach-party-eau-de-parfum-100ml-753.html"
+  },
+  {
+   "sku": "MAI-755",
+   "id": 755,
+   "name": "Precious Gold 80ml by Maison Alhambra",
+   "status": "warn",
+   "issues": [
+    "وصف المورد قصير",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/precious-gold-80ml-by-maison-alhambra-755.html"
+  },
+  {
+   "sku": "GRA-757",
+   "id": 757,
+   "name": "Gallant Perfume Man EDP 100ml For Him Grandeur Aromatic",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/gallant-perfume-man-edp-100ml-for-him-grandeur-aromatic-757.html"
+  },
+  {
+   "sku": "ALW-769",
+   "id": 769,
+   "name": "Shagaf Al Ward by Al Wataniah 100ml EDP Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/shagaf-al-ward-by-al-wataniah-100ml-edp-women-769.html"
   }
  ]
 }
