@@ -169,7 +169,7 @@ async function storeAdvisorProbes(ctx: ProbeContext): Promise<Probe[]> {
 }
 
 function storeCatalogProbes(ctx: ProbeContext): Probe[] {
-  type Catalog = { updatedAt: string; editor: string; entries: Record<string, { editor: string; name?: { ar: string }; description: { ar: string }; families: string[]; notes: { top: string[]; heart: string[]; base: string[] } }>; audit: { checked: number; issues: { sku: string; issues: string[] }[] } };
+  type Catalog = { updatedAt: string; editor: string; entries: Record<string, { editor: string; nameAr: string; descriptionAr: string; families: string[]; notes: { top: string[]; heart: string[]; base: string[] } }>; audit: { checked: number; issues: { sku: string; issues: string[] }[] } };
   const file = readLive<Catalog>(ctx, 'store-catalog.json');
   if (!file) return [{ tool: 'store_catalog', question: 'ملف كتالوج المتجر', answer: '', ms: 0, ok: false, error: 'الملف غير موجود', findings: [] }];
   const entries = Object.entries(file.entries);
@@ -180,7 +180,7 @@ function storeCatalogProbes(ctx: ProbeContext): Probe[] {
   if (!trained.length) findings.push({ severe: false, text: 'لم يراجع شاهين أي منتج بعد (بيانات بالقواعد فقط)' });
   if (file.audit.issues.length) findings.push({ severe: false, text: `${file.audit.issues.length} منتج فيها ملاحظات بيانات للتاجر` });
   const sample = rotate(trained.length ? trained : entries, ctx.run, 3);
-  const answer = sample.map(([sku, e]) => `## ${sku} ${e.name?.ar || ''}\n${e.description.ar}\nالعائلة: ${e.families.join('/')} — النوتات: ${[...e.notes.top, ...e.notes.heart, ...e.notes.base].join(', ')}`).join('\n\n');
+  const answer = sample.map(([sku, e]) => `## ${sku} ${e.nameAr || ''}\n${e.descriptionAr || ''}\nالعائلة: ${e.families.join('/')} — النوتات: ${[...e.notes.top, ...e.notes.heart, ...e.notes.base].join(', ')}`).join('\n\n');
   return [{ tool: 'store_catalog', question: `كتالوج المتجر (${trained.length}/${entries.length} راجعها شاهين)`, answer, ms: 0, ok: true, findings: [...findings, ...(answer ? inspectAnswer(answer, { language: 'ar' }).filter((f) => f.severe) : [])] }];
 }
 

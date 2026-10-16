@@ -193,3 +193,23 @@ test('the cart totals from catalog prices and builds the order message for the S
   assert.match(message, /الإجمالي: 700 جنيه/);
   assert.doesNotMatch(message, /GONE-1/);
 });
+
+test("the supervisor's store probes read the catalog file and the advisor's answer", async () => {
+  const { mkdtempSync, writeFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { join } = await import('node:path');
+  const { pathToFileURL } = await import('node:url');
+  const { PROBES } = await import('../scripts/shaheen-supervisor/probes');
+  const dir = mkdtempSync(join(tmpdir(), 'store-probe-'));
+  const now = new Date('2026-10-16T00:00:00Z');
+  writeFileSync(join(dir, 'store-catalog.json'), JSON.stringify(buildCatalogFile(RAW, undefined, { 'SHM-003': { ...ruleEntry(RAW[2]), editor: 'shaheen' } }, now)));
+  const ctx = { site: 'https://site.example', run: 0, now: now.getTime(), liveDir: pathToFileURL(`${dir}/`),
+    fetch: (async () => json({ source: 'shaheen', reply: 'دي أنسب اختيارات للطلب', picks: [{ id: 'SHM-003', why: 'زهري ناعم' }] })) as typeof fetch };
+  const [catalog] = await PROBES.store_catalog(ctx);
+  assert.equal(catalog.ok, true);
+  assert.match(catalog.question, /1\/4/);
+  assert.match(catalog.answer, /SHM-003/);
+  const advisor = await PROBES.store_advisor(ctx);
+  assert.equal(advisor.length, 2);
+  assert.ok(advisor.every((p) => p.ok && !p.findings.some((f) => f.severe)));
+});
