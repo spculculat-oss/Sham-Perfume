@@ -20,6 +20,7 @@ import { AnswerCache, GateBusyError, ProviderGate, VISITOR_ID, cacheKey, capacit
 import type { ShaheenRuntime } from './core/maintenance';
 import type { ShaheenMemory } from './core/memory';
 import { offlineNote } from '../src/utils/shaheenMemory';
+import { quickAnswer } from '../src/utils/shaheenQuickApps';
 import { councilAvailable, runCouncil } from './core/council';
 import type { Repository } from './core/repository';
 import type { CouncilSettings, ModelEngineId, ShaheenSettings } from './core/types';
@@ -132,6 +133,17 @@ export function systemInstruction(language: SupportedLanguage, extra = '', style
 images حتى عبارتي بحث بالإنجليزية من كلمة إلى ثلاث كلمات (الاسم الشائع أو العلمي للمادة أو النبات أو الأداة، مثل agarwood أو Rosa damascena أو ambergris أو distillation apparatus)، وvideos عبارة بحث واحدة بلغة المستخدم أو بالإنجليزية، وplaces حتى 5 أماكن حقيقية معروفة بالإنجليزية بصيغة «المكان، الدولة» (مدينة أو منطقة أو معلم مثل Grasse, France أو Taif, Saudi Arabia أو Kannauj, India) تخص السؤال نفسه فقط، ولا تضع أبداً مقرات شركات أو ماركات أو متاجر، وكل مفتاح اختياري فاكتب المفيد منها فقط. سيعرض الموقع صوراً وفيديوهات وخريطة حقيقية من مصادر موثوقة. اكتب السياج باسم sham-media حرفياً (وليس json) وأغلقه بثلاث علامات \`\`\`. لا تكتب أبداً روابط صور أو فيديو أو خرائط أو إحداثيات أو صيغة ![]() بنفسك، ولا تحِل المستخدم إلى تطبيقات أو مواقع خرائط أو بحث خارجية؛ الموقع يعرض الخريطة والصور بنفسه، ولا تَعِد بصورة لم تطلبها في السياج، ولا تذكر السياج في الشرح. لا تضف sham-media للتحيات أو الأسئلة الطبية أو الأسئلة التي لا يفيدها التوضيح المرئي.${mode}${admin}`;
 }
 
+/**
+ * «المهام البسيطة»: a short, self-contained question (what is ambergris? how long to macerate?) does not
+ * need the flagship model. It goes to the light tier (Gemini Flash-Lite: its own, larger quota, faster),
+ * keeping the main model's quota for formulas, analyses and long conversations.
+ */
+const NEEDS_FULL_MODEL = /صمم|تصميم|تركيب|وصف[ةه]|خلط[ةه]|نسب|حلل|تحليل|قارن|مقارن|جدول|خطوة|اشرح بالتفصيل|بالتفصيل|formula|recipe|design|ratio|analy|compare|table|step|detail/i;
+export function isSimpleQuestion(input: Pick<ChatRequest, 'message' | 'conversationHistory'>): boolean {
+  return input.message.length <= 140 && input.conversationHistory.length <= 2 && !NEEDS_FULL_MODEL.test(input.message);
+}
+export const liteModel = (env: Environment) => env.GEMINI_LITE_MODEL?.trim() || 'gemini-flash-lite-latest';
+
 export interface ExecuteOptions {
   env?: Environment; fetch?: typeof fetch; signal?: AbortSignal; timeoutMs?: number; totalTimeoutMs?: number;
   settings?: ShaheenSettings;
@@ -139,6 +151,8 @@ export interface ExecuteOptions {
   council?: CouncilSettings;
   /** Capacity gate (queue + circuit breaker per provider); without it providers are tried once, in order. */
   gate?: ProviderGate;
+  /** The visitor's lane in the gate (fair turns, at most two requests at once per visitor). */
+  owner?: string;
 }
 
 /** Only the provider that actually answered is credited. Auto is failover, not a fake panel. */
@@ -171,17 +185,19 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   const maxTokens = style === 'fast' ? Math.min(settings.maxTokens, 1024)
     : style === 'deep' ? Math.min(8192, Math.max(settings.maxTokens, 6144)) : settings.maxTokens;
   const turns: ChatTurn[] = [...input.conversationHistory, { role: 'user', text: input.message }];
+  const lite = requested === 'auto' && env.SHAM_LITE_ROUTING?.trim().toLowerCase() !== 'off' && isSimpleQuestion(input);
   let timedOut = false;
   const attempt = async (provider: Provider): Promise<{ outcome: 'ok'; value: ChatAnswer } | { outcome: 'next' | 'limited'; retryMs?: number }> => {
     if (total.aborted) return { outcome: 'next' };
     const signal = AbortSignal.any([total, AbortSignal.timeout(options.timeoutMs ?? 28000)]);
     const status = engineStatuses(env).find((s) => s.id === provider)!;
-    const model = settings.models[provider] || status.model;
+    const useLite = lite && provider === 'gemini';
+    const model = useLite ? liteModel(env) : settings.models[provider] || status.model;
     let refusal: { failure: EngineFailure; status: number; detail: string } | undefined;
     try {
       const reply = await callEngine(provider, instruction, turns, {
         env, fetch: options.fetch, signal, temperature: settings.temperature, model,
-        maxTokens, maxChars: 32000, onFailure: (failure, httpStatus, detail) => { refusal = { failure, status: httpStatus, detail }; },
+        maxTokens: useLite ? Math.min(maxTokens, 1536) : maxTokens, maxChars: 32000, onFailure: (failure, httpStatus, detail) => { refusal = { failure, status: httpStatus, detail }; },
       });
       if (signal.aborted) throw signal.reason;
       if (typeof reply === 'string' && reply.trim()) {
@@ -198,7 +214,7 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   };
   if (options.gate) {
     try {
-      const answer = await options.gate.run(candidates, attempt, total);
+      const answer = await options.gate.run(candidates, attempt, total, options.owner);
       if (answer) return answer;
     } catch (error) {
       if (error instanceof GateBusyError && !total.aborted) {
@@ -295,7 +311,7 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
   const ipLimiter = new RateLimiter(capacity.perIpPerMin, 60_000);
   // A council answer costs several model calls: separate hourly budget per visitor.
   const councilLimiter = new RateLimiter(Number(env.SHAM_COUNCIL_RATE_PER_HOUR) || 12, 60 * 60_000);
-  const gate = new ProviderGate(capacity.maxConcurrent, capacity.queueWaitMs, capacity.providerRpm);
+  const gate = new ProviderGate(capacity.maxConcurrent, capacity.queueWaitMs, capacity.providerRpm, 250, capacity.perVisitorConcurrent);
   const answers = new AnswerCache<ChatAnswer>(capacity.cacheEntries, capacity.cacheTtlMs);
   const runtime = options.runtime;
   // «ذاكرة شاهين»: repeated questions without any AI call, and answers when no engine is reachable.
@@ -342,6 +358,13 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       const opening = !input.conversationHistory.length;
       const useMemory = Boolean(memory && shaheen.enabled && req.body?.memory !== false);
       const mode = shaheen.allowVisitorChoice ? input.model : 'auto';
+      // «تطبيقات شاهين السريعة»: the same instant apps as the browser (for clients that did not run them).
+      const quick = shaheen.enabled && req.body?.memory !== false ? quickAnswer(input.message, input.language) : undefined;
+      if (quick) {
+        if (!res.destroyed) res.json({ ...publicChatResult({ reply: quick.reply, mode }, input.message), quick: quick.app });
+        runtime?.record({ ms: Date.now() - started, status: 200 });
+        return;
+      }
       if (useMemory && opening) {
         const hit = await memory!.recall(input.message, input.language, mode).catch(() => undefined);
         if (hit) {
@@ -351,7 +374,7 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
         }
       }
       chatInput = { input, mode, useMemory };
-      const run = (signal?: AbortSignal) => executeChat(input, { env, fetch: options.fetch, signal, settings: shaheen, council, gate });
+      const run = (signal?: AbortSignal) => executeChat(input, { env, fetch: options.fetch, signal, settings: shaheen, council, gate, owner: visitor });
       let result: ChatAnswer;
       if (!input.conversationHistory.length && capacity.cacheTtlMs > 0 && capacity.cacheEntries > 0) {
         // Opening question: answered from the shared cache, or by ONE provider call shared by everyone
