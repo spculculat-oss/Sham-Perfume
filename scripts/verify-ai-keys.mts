@@ -9,6 +9,7 @@
 import { appendFileSync, writeFileSync } from 'node:fs';
 import { probeEngines } from '../server/shaheen';
 import { SHAHEEN_SITE_SETTINGS } from '../server/config/shaheen';
+import { manusConfigured, manusWhoAmI } from '../server/core/manus';
 
 const LABEL: Record<string, string> = {
   ok: 'يعمل ✅',
@@ -27,7 +28,13 @@ const LABEL: Record<string, string> = {
 
 const settings = { ...SHAHEEN_SITE_SETTINGS, engines: ['gemini', 'openai', 'claude', 'deepseek', 'openrouter', 'self_hosted'] as typeof SHAHEEN_SITE_SETTINGS.engines };
 const results = await probeEngines(settings, { timeoutMs: 30000 });
-const rows = results.map((r) => ({ ...r, code: r.ok ? 'ok' : r.error || 'unreachable' }));
+const rows: Array<{ id: string; name: string; model: string; ok: boolean; configured: boolean; code: string; ms: number; usedModel?: string; detail?: string }> =
+  results.map((r) => ({ ...r, code: r.ok ? 'ok' : r.error || 'unreachable' }));
+// Manus is a background task agent (not a chat engine): its key is checked with a free read-only call.
+if (manusConfigured()) {
+  const m = await manusWhoAmI({ timeoutMs: 30000 });
+  rows.push({ id: 'manus', name: 'Manus (وكيل المهام الخلفية)', model: 'agent', ok: m.ok, configured: true, code: m.code, ms: m.ms });
+} else rows.push({ id: 'manus', name: 'Manus (وكيل المهام الخلفية)', model: 'agent', ok: false, configured: false, code: 'not_configured', ms: 0 });
 const configured = rows.filter((r) => r.configured);
 
 const lines = [
