@@ -90,6 +90,10 @@ def fix_products():
     fix_count = 0
     
     for i, product in enumerate(products):
+        # Products from «مستورد شاهين» carry the supplier's real photos and text; Shaheen writes their
+        # Arabic text and «مراجع الصفحات» reviews them — never overwrite them with stock photos or fillers.
+        if product.get('supplierSku'):
+            continue
         issues = []
         
         # Check required fields

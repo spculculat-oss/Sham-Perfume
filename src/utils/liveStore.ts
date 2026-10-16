@@ -1,4 +1,3 @@
-import productsData from '../data/products.json';
 import { isCatalogFile, LIVE_STORE_URL, mergeCatalog, type RawProduct, type StoreCatalogFile, type StoreProduct } from './storeCatalog';
 import { recommend } from './storeAdvisor';
 import { apiUrl, isStaticHosting } from './api';
@@ -8,11 +7,20 @@ import { apiUrl, isStaticHosting } from './api';
  * 12 hours (scripts/shaheen-store). The copy in the build is the fallback; the repository copy is newer
  * between deploys and needs no server, so it also works on GitHub Pages.
  */
-export const storeProducts = (): RawProduct[] => (productsData as { products?: RawProduct[] }).products || [];
+// The product list grows with «مستورد شاهين» (hundreds of products with photos and notes), so it is a
+// separate chunk loaded only when the store opens, not part of the site's first download.
+export const storeProducts = async (): Promise<RawProduct[]> =>
+  ((await import('../data/products.json')).default as { products?: RawProduct[] }).products || [];
+
+/** Photos mirrored into the site (store/…) are served under the site's base path (/Sham-Perfume/ on Pages). */
+export const storeImageSrc = (url: string) => (/^https:\/\//.test(url) ? url : `${(import.meta as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? '/'}${url}`);
+
+/** The product's own shareable page, generated at build time (scripts/product-pages.mts). */
+export const productPageUrl = (slug: string) => `${(import.meta as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? '/'}p/${slug}.html`;
 
 let pending: Promise<StoreProduct[]> | undefined;
 export function loadStoreCatalog(request: typeof fetch = fetch): Promise<StoreProduct[]> {
-  return pending ??= (async () => {
+  pending ??= (async () => {
     const bundled = (await import('../data/live/store-catalog.json')).default as unknown as StoreCatalogFile;
     let file = bundled;
     try {
@@ -20,8 +28,11 @@ export function loadStoreCatalog(request: typeof fetch = fetch): Promise<StorePr
       const data: unknown = response.ok ? await response.json() : undefined;
       if (isCatalogFile(data) && Date.parse(data.updatedAt) > Date.parse(bundled.updatedAt)) file = data;
     } catch { /* offline or blocked: the bundled enrichment is still good */ }
-    return mergeCatalog(storeProducts(), file);
+    return mergeCatalog(await storeProducts(), file);
   })();
+  // A failed load (e.g. a chunk blocked offline) must not be cached forever.
+  pending.catch(() => { pending = undefined; });
+  return pending;
 }
 
 export interface StoreSuggestion { source: 'shaheen' | 'local'; reply: string; picks: { product: StoreProduct; why: string }[] }

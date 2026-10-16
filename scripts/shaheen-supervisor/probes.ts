@@ -184,6 +184,30 @@ function storeCatalogProbes(ctx: ProbeContext): Probe[] {
   return [{ tool: 'store_catalog', question: `كتالوج المتجر (${trained.length}/${entries.length} راجعها شاهين)`, answer, ms: 0, ok: true, findings: [...findings, ...(answer ? inspectAnswer(answer, { language: 'ar' }).filter((f) => f.severe) : [])] }];
 }
 
+function storeImportProbes(ctx: ProbeContext): Probe[] {
+  type Review = {
+    updatedAt: string; summary: { total: number; imported: number; ok: number; warn: number; hidden: number; imagesChecked: number; brokenImages: number };
+    import?: { rate?: number; sources?: { id: string; added?: number; refreshed?: number; failedCount?: number; viaShaheen?: number; sitemapProducts?: number }[] };
+    items: { sku: string; name: string; status: string; issues: string[] }[];
+  };
+  const file = readLive<Review>(ctx, 'store-review.json');
+  if (!file) return [{ tool: 'store_import', question: 'تقرير مستورد شاهين ومراجع الصفحات', answer: '', ms: 0, ok: false, error: 'التقرير غير موجود (لم يعمل المستورد بعد)', findings: [] }];
+  const s = file.summary;
+  const ageH = (ctx.now - Date.parse(file.updatedAt)) / 3600_000;
+  const findings = [] as Probe['findings'];
+  if (ageH > 13) findings.push({ severe: false, text: `المراجعة لم تتحدث منذ ${Math.round(ageH)} ساعة` });
+  if (s.hidden) findings.push({ severe: s.hidden > Math.max(5, s.imported * 0.2), text: `${s.hidden} منتج مخفي لعيوب حرجة` });
+  if (s.brokenImages) findings.push({ severe: s.brokenImages > Math.max(5, s.imagesChecked * 0.2), text: `${s.brokenImages}/${s.imagesChecked} صورة لا تفتح` });
+  for (const src of file.import?.sources || []) {
+    if (src.sitemapProducts === 0) findings.push({ severe: true, text: `خريطة موقع المورد ${src.id} لم تُقرأ` });
+    if ((src.failedCount || 0) > 5) findings.push({ severe: false, text: `${src.failedCount} صفحة منتج تعذرت قراءتها عند ${src.id}` });
+  }
+  const answer = [`${s.total} منتج (${s.imported} مستورد): ${s.ok} سليم، ${s.warn} بملاحظات، ${s.hidden} مخفي.`,
+    ...(file.import?.sources || []).map((x) => `${x.id}: +${x.added ?? 0} جديد، ${x.refreshed ?? 0} محدّث، ${x.failedCount ?? 0} تعذر، ${x.viaShaheen ?? 0} قرأها شاهين`),
+    ...rotate(file.items, ctx.run, 3).map((i) => `${i.sku} ${i.name}: ${i.issues.join('، ')}`)].join('\n');
+  return [{ tool: 'store_import', question: 'مستورد شاهين ومراجع الصفحات', answer, ms: 0, ok: true, findings }];
+}
+
 export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<Probe[]>> = {
   shaheen_chat: chatProbes,
   sham_assistant: assistantProbes,
@@ -194,4 +218,5 @@ export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<P
   admin_agent: adminProbes,
   store_advisor: storeAdvisorProbes,
   store_catalog: storeCatalogProbes,
+  store_import: storeImportProbes,
 };

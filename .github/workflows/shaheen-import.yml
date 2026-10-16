@@ -1,0 +1,96 @@
+name: Shaheen product importer and page reviewer (every 12 hours)
+
+# «مستورد شاهين»: every 12 hours «الخبير شاهين» transfers the supplier's products into «متجر شام» with
+# all their data and photos (sitemap + schema.org Product data on each product page; when a page has no
+# structured data, Shaheen reads it and his answer is checked against the page). Prices follow the store's
+# scenario: supplier price → EGP at today's rate → × 1.5. Then «مراجع الصفحات» reviews every product
+# (photos load, price formula, clean name, real description, source still sold) and hides broken ones.
+# Shaheen then writes the Arabic names/descriptions (scripts/shaheen-store) and GitHub Pages is rebuilt,
+# which generates a standalone page for every product (p/<slug>.html). Code: scripts/shaheen-import/.
+# Settings (repository variables, all optional): IMPORT_MAX_NEW (default 30 new products per run),
+# IMPORT_MAX_REFRESH (default 40), IMPORT_RATE_MYR_EGP (fallback exchange rate), IMPORT_MARKUP (default 1.5).
+
+on:
+  schedule:
+    # 02:37 and 14:37 UTC = 05:37 and 17:37 Cairo.
+    - cron: '37 2,14 * * *'
+  workflow_dispatch:
+    inputs:
+      max_new:
+        description: 'New products to import this run'
+        required: false
+        default: '30'
+  push:
+    branches: ['arena/**']
+    paths: ['scripts/shaheen-import/**', '.github/workflows/shaheen-import.yml']
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: shaheen-import-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  import:
+    name: Import supplier products and review every page
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      # Branch pushes rehearse only: the result is shown in the job summary, nothing is committed.
+      IMPORT_COMMIT: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      IMPORT_MAX_NEW: ${{ github.event.inputs.max_new || vars.IMPORT_MAX_NEW || (github.ref == 'refs/heads/main' && '30' || '6') }}
+      IMPORT_MAX_REFRESH: ${{ vars.IMPORT_MAX_REFRESH || (github.ref == 'refs/heads/main' && '40' || '2') }}
+      IMPORT_RATE_MYR_EGP: ${{ vars.IMPORT_RATE_MYR_EGP }}
+      IMPORT_MARKUP: ${{ vars.IMPORT_MARKUP || '1.5' }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Shaheen imports the products and «مراجع الصفحات» reviews them
+        run: node --import tsx scripts/shaheen-import/run.mts
+      - name: Shaheen writes the Arabic names and descriptions of the new products
+        continue-on-error: true
+        run: node --import tsx scripts/shaheen-store/run.mts
+      - name: Every product gets its own page (build check)
+        run: node --import tsx scripts/product-pages.mts dist && ls dist/p | wc -l
+      - name: Regression tests with the new products
+        # Never publish products that would turn main red (failing tests are listed as annotations).
+        run: |
+          set -o pipefail
+          bun run test 2>&1 | tee /tmp/test.log || { grep -B2 -A12 '^not ok\|^    not ok\|^  not ok' /tmp/test.log | grep -E 'not ok|error:|expected|actual|message' | head -8 | sed 's/^/::error title=test::/'; exit 1; }
+      - name: Publish on main and rebuild Pages
+        if: env.IMPORT_COMMIT == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen importer bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/products.json src/data/live
+          if git diff --cached --quiet; then echo "Nothing new to publish"; exit 0; fi
+          git commit -m "مستورد شاهين: نقل منتجات المورد ومراجعة الصفحات $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase --depth=50 origin main && git push origin HEAD:main; then pushed=1; break; fi
+            sleep $((attempt * 5))
+          done
+          if [ -z "$pushed" ]; then echo "::error::Could not push the imported products"; exit 1; fi
+          # Pushes made with this token start no workflows: rebuild GitHub Pages (store + product pages).
+          gh workflow run pages.yml --ref main || echo "::warning::Pages rebuild not started"

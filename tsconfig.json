@@ -34,6 +34,12 @@
     "scripts/shaheen-news/**/*.ts",
     "scripts/shaheen-news/**/*.mts",
     "scripts/shaheen-supervisor/**/*.ts",
-    "scripts/shaheen-supervisor/**/*.mts"
+    "scripts/shaheen-supervisor/**/*.mts",
+    "scripts/shaheen-store/**/*.ts",
+    "scripts/shaheen-store/**/*.mts",
+    "scripts/shaheen-import/**/*.ts",
+    "scripts/shaheen-import/**/*.mts",
+    "scripts/product-pages/**/*.ts",
+    "scripts/product-pages.mts"
   ]
 }

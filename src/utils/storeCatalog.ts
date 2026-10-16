@@ -11,6 +11,12 @@ export interface RawProduct {
   id: number | string; sku?: string; nameAr?: string; nameEn?: string; descriptionAr?: string; descriptionEn?: string;
   imageUrl?: string | null; category?: string; brand?: string; supplierPrice?: number; ourPrice?: number;
   stockStatus?: string; isFeatured?: boolean; isNew?: boolean; rating?: number; reviewCount?: number; createdAt?: string;
+  /** Filled by «مستورد شاهين» (scripts/shaheen-import) from the supplier's real product page. */
+  images?: string[]; slug?: string; url?: string | null; sizeMl?: number; concentration?: string; longevity?: string;
+  notes?: { top?: string[]; heart?: string[]; base?: string[] }; families?: string[]; seasonsSource?: string[]; occasionsSource?: string[];
+  supplierId?: string | null; supplierName?: string | null; supplierSku?: string;
+  /** false = hidden by «مراجع الصفحات» (scripts/shaheen-import/review.ts) until the problem is fixed. */
+  published?: boolean;
 }
 
 export const FAMILIES = ['oud', 'oriental', 'amber', 'woody', 'floral', 'fresh', 'citrus', 'aquatic', 'fruity', 'gourmand', 'musk', 'spicy', 'leather', 'powdery'] as const;
@@ -62,11 +68,23 @@ export interface StoreProduct {
   id: number | string; sku: string; name: { ar: string; en: string }; description: { ar: string; en: string };
   brand: string; category: string; gender?: Gender; families: Family[]; notes: StoreEntry['notes'];
   seasons: Season[]; occasions: Occasion[]; tags: string[]; price: number; imageUrl?: string;
+  /** Every photo of the product (the first one is imageUrl). */
+  images: string[]; slug: string; sizeMl?: number; concentration?: string; longevity?: string;
   inStock: boolean; rating?: number; reviewCount?: number; isFeatured: boolean; isNew: boolean; createdAt?: string;
   enrichedBy: 'shaheen' | 'rules';
 }
 
 export const skuOf = (p: RawProduct) => String(p.sku || p.id);
+
+export const slugify = (s: string) => s.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+  .replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80) || 'perfume';
+/** Every product's own shareable page: p/<slug>.html (generated at build time by scripts/product-pages.mts). */
+export function productSlug(p: RawProduct): string {
+  if (typeof p.slug === 'string' && /^[a-z0-9-]+$/.test(p.slug)) return p.slug;
+  const name = slugify(p.nameEn || '');
+  // Names without real words («1», Arabic only) use the brand and SKU instead.
+  return `${/[a-z]{3,}/.test(name) ? name : slugify(`${p.brand && p.brand !== 'Unknown' ? p.brand : ''} ${skuOf(p)}`)}-${String(p.id)}`;
+}
 
 /** Characters that only appear when an import script garbled a name (CJK, Hangul, Cyrillic, Hebrew, emoji…). */
 const FOREIGN = /[\u0400-\u04FF\u0590-\u05FF\u3040-\u30FF\u3400-\u9FFF\uAC00-\uD7AF\u1100-\u11FF\uFF00-\uFFEF]|\p{Extended_Pictographic}/u;
@@ -111,7 +129,23 @@ const FAMILY_WORDS: [Family, RegExp][] = [
   ['oriental', /شرقي|oriental/i],
   ['leather', /جلد|leather/i],
   ['fruity', /فواكه|فاكهة|رمان|تفاح|fruit|apple|pomegranate/i],
+  ['powdery', /بودر|powder|iris|orris/i],
 ];
+const SEASON_WORDS: [Season, RegExp][] = [['summer', /summer|صيف/i], ['winter', /winter|شتا/i], ['spring', /spring|ربيع/i], ['autumn', /fall|autumn|خريف/i], ['all', /all seasons|year.?round|كل المواسم/i]];
+const OCCASION_WORDS: [Occasion, RegExp][] = [
+  ['daily', /daily|casual|يومي/i], ['work', /office|work|عمل/i], ['evening', /evening|night|dinner|سهر/i],
+  ['special', /special|event|party|wedding|مناسب/i], ['gift', /gift|هدي/i],
+];
+const pick = <T,>(words: [T, RegExp][], text: string, max: number) => words.filter(([, re]) => re.test(text)).map(([v]) => v).slice(0, max);
+/** Notes the supplier publishes on the product page (real, not guessed). */
+const sourceNotes = (p: RawProduct): StoreEntry['notes'] => {
+  const clean = (l?: string[]) => (Array.isArray(l) ? l : []).map((n) => cleanText(n, 40)).filter(Boolean).slice(0, 8);
+  return { top: clean(p.notes?.top), heart: clean(p.notes?.heart), base: clean(p.notes?.base) };
+};
+const hasNotes = (n: StoreEntry['notes']) => Boolean(n.top.length || n.heart.length || n.base.length);
+/** Photos the store can show: https URLs, or files mirrored into the site (store/…). */
+export const productImages = (p: RawProduct): string[] => [...new Set([p.imageUrl, ...(Array.isArray(p.images) ? p.images : [])]
+  .filter((u): u is string => typeof u === 'string' && (/^https:\/\//.test(u) || /^store\/[\w./-]+$/.test(u))))].slice(0, 8);
 const genderOf = (p: RawProduct): Gender | undefined => {
   const t = `${p.category || ''} ${p.nameAr || ''} ${p.nameEn || ''} ${p.descriptionAr || ''}`;
   if (/مختلط|للجنسين|unisex/i.test(t)) return 'unisex';
@@ -123,7 +157,9 @@ const genderOf = (p: RawProduct): Gender | undefined => {
 /** Without any AI engine: honest, rule-based clean-up (no invented notes). */
 export function ruleEntry(p: RawProduct, now = new Date().toISOString()): StoreEntry {
   const text = `${p.nameAr || ''} ${p.nameEn || ''} ${p.descriptionAr || ''} ${p.descriptionEn || ''} ${p.category || ''}`;
-  const families = FAMILY_WORDS.filter(([, re]) => re.test(text)).map(([f]) => f).slice(0, 3);
+  // The supplier's own family words come first; the name/description words fill the rest.
+  const declared = (p.families || []).join(' ');
+  const families = [...new Set([...pick(FAMILY_WORDS, declared, 3), ...pick(FAMILY_WORDS, text, 3)])].slice(0, 3);
   const nameEn = cleanText(p.nameEn, 120) || cleanText(p.nameAr, 120);
   // A garbled Arabic name is worse than the clean English one.
   const nameAr = !p.nameAr || isGarbled(p.nameAr) ? nameEn : cleanText(p.nameAr, 120);
@@ -134,10 +170,11 @@ export function ruleEntry(p: RawProduct, now = new Date().toISOString()): StoreE
     : cleanText(p.descriptionAr);
   const descEn = isGenericDescription(p.descriptionEn) || isGarbled(p.descriptionEn)
     ? [`${nameEn}`, brand && `by ${brand}`, gender && `for ${GENDER_LABEL[gender].en.toLowerCase()}`, families.length ? `with ${/^[aeiou]/i.test(families[0]) ? 'an' : 'a'} ${families.map((f) => FAMILY_LABEL[f].en.toLowerCase()).join(' and ')} character` : ''].filter(Boolean).join(' ') + '.'
-    : cleanText(p.descriptionEn);
+    : cleanText(p.descriptionEn, 900);
   return {
     sourceHash: productHash(p), editor: 'rules', updatedAt: now, nameAr, nameEn, descriptionAr: descAr, descriptionEn: descEn,
-    gender, families, notes: { top: [], heart: [], base: [] }, seasons: [], occasions: [], tags: [],
+    gender, families, notes: sourceNotes(p),
+    seasons: pick(SEASON_WORDS, (p.seasonsSource || []).join(' '), 4), occasions: pick(OCCASION_WORDS, (p.occasionsSource || []).join(' '), 4), tags: [],
   };
 }
 
@@ -145,18 +182,22 @@ export function mergeProduct(p: RawProduct, entry?: StoreEntry): StoreProduct {
   // An entry written for older merchant text is not trusted: rules until Shaheen rewrites it (next run).
   const fresh = entry && entry.sourceHash === productHash(p) ? entry : undefined;
   const e = fresh || ruleEntry(p);
+  const images = productImages(p);
   return {
     id: p.id, sku: skuOf(p), name: { ar: e.nameAr, en: e.nameEn }, description: { ar: e.descriptionAr, en: e.descriptionEn },
     brand: p.brand && p.brand !== 'Unknown' ? p.brand : '', category: cleanText(p.category, 40), gender: e.gender, families: e.families,
-    notes: e.notes, seasons: e.seasons, occasions: e.occasions, tags: e.tags,
-    price: Number(p.ourPrice) || 0, imageUrl: typeof p.imageUrl === 'string' && /^https:\/\//.test(p.imageUrl) ? p.imageUrl : undefined,
+    // Notes published by the supplier win over an empty list (Shaheen never invents notes).
+    notes: hasNotes(e.notes) ? e.notes : sourceNotes(p), seasons: e.seasons, occasions: e.occasions, tags: e.tags,
+    price: Number(p.ourPrice) || 0, imageUrl: images[0], images,
+    slug: productSlug(p), sizeMl: Number(p.sizeMl) > 0 ? Number(p.sizeMl) : undefined, concentration: cleanText(p.concentration, 40) || undefined,
+    longevity: cleanText(p.longevity, 40) || undefined,
     inStock: p.stockStatus !== 'out_of_stock', rating: p.rating, reviewCount: p.reviewCount,
     isFeatured: Boolean(p.isFeatured), isNew: Boolean(p.isNew), createdAt: p.createdAt, enrichedBy: e.editor,
   };
 }
 
 export function mergeCatalog(products: RawProduct[], file?: Pick<StoreCatalogFile, 'entries'>): StoreProduct[] {
-  return products.filter((p) => p && (p.nameAr || p.nameEn)).map((p) => mergeProduct(p, file?.entries?.[skuOf(p)]));
+  return products.filter((p) => p && (p.nameAr || p.nameEn) && p.published !== false).map((p) => mergeProduct(p, file?.entries?.[skuOf(p)]));
 }
 
 export function isCatalogFile(data: unknown): data is StoreCatalogFile {

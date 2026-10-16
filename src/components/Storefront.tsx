@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Loader2, Minus, Package, Plus, Search, Send, ShoppingCart, Sparkles, Star, Trash2, UserPlus, X } from 'lucide-react';
 import { saveMerchant } from '../utils/merchantDataStore';
-import { FAMILY_LABEL, GENDER_LABEL, mergeCatalog, searchText, type Family, type Gender, type StoreProduct } from '../utils/storeCatalog';
-import { askShaheenStore, loadStoreCatalog, localSuggestion, storeProducts, type StoreSuggestion } from '../utils/liveStore';
+import { FAMILY_LABEL, GENDER_LABEL, searchText, type Family, type Gender, type StoreProduct } from '../utils/storeCatalog';
+import { askShaheenStore, loadStoreCatalog, localSuggestion, storeImageSrc, type StoreSuggestion } from '../utils/liveStore';
 import { addToCart, cartSummary, clearCart, orderMessage, setCartQty, useCart } from '../utils/storeCart';
 
 const t = {
@@ -14,7 +14,7 @@ const t = {
     byShaheen: 'اختيار شاهين', quick: 'اقتراح سريع', thinking: 'شاهين بيراجع المتجر…',
     all: 'الكل', newOnly: 'الجديد', allCategories: 'كل الفئات', allBrands: 'كل العلامات',
     sortNew: 'الأحدث', sortPriceLow: 'السعر: من الأقل', sortPriceHigh: 'السعر: من الأعلى', sortRating: 'الأعلى تقييماً',
-    found: '{count} منتج', noResults: 'لا توجد نتائج — جرّب «اسأل شاهين» أو امسح الفلاتر', clear: 'مسح الفلاتر',
+    loading: 'جاري تحميل المنتجات…', more: 'عرض المزيد ({n} منتج)', found: '{count} منتج', noResults: 'لا توجد نتائج — جرّب «اسأل شاهين» أو امسح الفلاتر', clear: 'مسح الفلاتر',
     addToCart: 'أضف للسلة', added: 'أضيف ✓', details: 'التفاصيل', currency: 'جنيه', outOfStock: 'غير متوفر',
     cart: 'السلة', cartEmpty: 'السلة فاضية', total: 'الإجمالي', checkout: 'أتمم الطلب مع مساعد شام', clearCart: 'تفريغ السلة',
     becomeMerchant: 'سجّل كتاجر', merchantTitle: 'تسجيل تاجر', companyName: 'اسم الشركة', email: 'البريد', phone: 'الهاتف',
@@ -28,7 +28,7 @@ const t = {
     byShaheen: "Shaheen's pick", quick: 'Quick pick', thinking: 'Shaheen is reviewing the store…',
     all: 'All', newOnly: 'New', allCategories: 'All categories', allBrands: 'All brands',
     sortNew: 'Newest', sortPriceLow: 'Price: low to high', sortPriceHigh: 'Price: high to low', sortRating: 'Top rated',
-    found: '{count} products', noResults: 'No results — try «Ask Shaheen» or clear the filters', clear: 'Clear filters',
+    loading: 'Loading products…', more: 'Show more ({n} products)', found: '{count} products', noResults: 'No results — try «Ask Shaheen» or clear the filters', clear: 'Clear filters',
     addToCart: 'Add to cart', added: 'Added ✓', details: 'Details', currency: 'EGP', outOfStock: 'Out of stock',
     cart: 'Cart', cartEmpty: 'Your cart is empty', total: 'Total', checkout: 'Complete the order with Sham assistant', clearCart: 'Empty cart',
     becomeMerchant: 'Become a merchant', merchantTitle: 'Merchant registration', companyName: 'Company name', email: 'Email', phone: 'Phone',
@@ -44,13 +44,23 @@ function ProductImage({ product, className }: { product: StoreProduct; className
   if (!product.imageUrl || broken) {
     return <div className={`${className} bg-gradient-to-br from-amber-100 to-stone-100 flex items-center justify-center`}><Package className="w-10 h-10 text-amber-400/50" /></div>;
   }
-  return <img src={product.imageUrl} alt={product.name.ar} loading="lazy" onError={() => setBroken(true)} className={`${className} object-cover`} />;
+  // Real product photos (bottle on white) are shown whole; illustrative stock photos fill the frame.
+  const fit = /unsplash\.com/.test(product.imageUrl) ? 'object-cover' : 'object-contain bg-white';
+  return <img src={storeImageSrc(product.imageUrl)} alt={product.name.ar} loading="lazy" onError={() => setBroken(true)} className={`${className} ${fit}`} />;
 }
 
 export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
   const L = t[currentLang];
-  const [products, setProducts] = useState<StoreProduct[]>(() => mergeCatalog(storeProducts()));
-  useEffect(() => { let live = true; loadStoreCatalog().then((list) => { if (live) setProducts(list); }).catch(() => undefined); return () => { live = false; }; }, []);
+  const [products, setProducts] = useState<StoreProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    let live = true;
+    loadStoreCatalog().then((list) => { if (live) setProducts(list); }).catch(() => undefined).finally(() => { if (live) setLoading(false); });
+    return () => { live = false; };
+  }, []);
+  // Large catalogs: show a page of products at a time.
+  const PAGE = 48;
+  const [limit, setLimit] = useState(PAGE);
 
   // Filters
   const [search, setSearch] = useState('');
@@ -79,6 +89,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
     return list.sort((a, b) => sort === 'priceLow' ? a.price - b.price : sort === 'priceHigh' ? b.price - a.price
       : sort === 'rating' ? (b.rating || 0) - (a.rating || 0) : time(b) - time(a));
   }, [products, search, gender, family, category, brand, newOnly, sort]);
+  useEffect(() => { setLimit(PAGE); }, [search, gender, family, category, brand, newOnly, sort]);
   const filtered = search || gender !== 'all' || family !== 'all' || category !== 'all' || brand !== 'all' || newOnly;
   const resetFilters = () => { setSearch(''); setGender('all'); setFamily('all'); setCategory('all'); setBrand('all'); setNewOnly(false); };
 
@@ -251,8 +262,20 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
           </div>
         </section>
 
-        {shown.length ? (
-          <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3" data-testid="store-grid">{shown.map((p) => card(p))}</section>
+        {loading && !products.length ? (
+          <p className="text-center text-sm text-stone-500 py-10" data-testid="store-loading">{L.loading}</p>
+        ) : shown.length ? (
+          <>
+            <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3" data-testid="store-grid">{shown.slice(0, limit).map((p) => card(p))}</section>
+            {shown.length > limit && (
+              <div className="text-center mt-5">
+                <button type="button" onClick={() => setLimit(limit + PAGE)} data-testid="store-more"
+                  className="px-6 py-2.5 rounded-xl border border-amber-300 bg-white hover:bg-amber-50 text-amber-900 text-sm font-semibold cursor-pointer">
+                  {L.more.replace('{n}', String(shown.length - limit))}
+                </button>
+              </div>
+            )}
+          </>
         ) : (
           <p className="text-center text-sm text-stone-500 py-10">{L.noResults}</p>
         )}

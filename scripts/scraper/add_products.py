@@ -181,14 +181,12 @@ def main():
     print(f"\nScraped {len(scraped)} products")
     
     if not scraped:
-        print("No products scraped, using fallback products")
-        # Add some fallback products if scraping failed
-        scraped = [
-            {"name": "عطر عربى جديد 1", "price": 40, "image": None, "url": None, "category": "/perfumes", "supplier": "Scraped"},
-            {"name": "عطر انجليزى فاخر 2", "price": 65, "image": None, "url": None, "category": "/perfumes", "supplier": "Scraped"},
-            {"name": "عطر اسبانى متميز 3", "price": 55, "image": None, "url": None, "category": "/perfumes", "supplier": "Scraped"},
-        ]
-    
+        # Never invent products: the old fallback added three fake perfumes («Scraped») whenever the
+        # connection failed. The automated importer is now «مستورد شاهين» (scripts/shaheen-import/,
+        # every 12 hours in GitHub Actions); its reviewer flags the three old fallback products.
+        print("No products scraped — nothing added. Use «مستورد شاهين»: node --import tsx scripts/shaheen-import/run.mts")
+        return
+
     # Load existing products
     existing = load_existing_products()
     print(f"Existing products: {len(existing['products'])}")
