@@ -312,14 +312,13 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Zone 3: Global Controls (Language, Environment/Homeland, User Auth, Privacy, Print) */}
         <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
           
-          {/* 1. Language Switcher (below xl the navigation row underneath carries it, so exactly one is shown) */}
-          <div className="hidden xl:block">
-            <LanguageSelector
-              currentLang={currentLang}
-              onSelectLanguage={onSelectLanguage}
-              onAutoDetectLanguage={onAutoDetectLanguage}
-            />
-          </div>
+          {/* 1. Unified languages button — the only language list in the platform */}
+          <LanguageSelector
+            currentLang={currentLang}
+            onSelectLanguage={onSelectLanguage}
+            onAutoDetectLanguage={onAutoDetectLanguage}
+            className="shrink-0"
+          />
 
           {/* 2. Country & Detailed Address Selector */}
           <button
@@ -467,15 +466,6 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Mobile & Tablet Navigation - Condensed grouped view */}
       <div className="xl:hidden">
         <div className="flex items-center gap-2 overflow-x-auto pt-2 mt-2 border-t border-stone-100 text-xs no-scrollbar">
-          {/* Quick Language Switcher on Mobile/Tablet */}
-          <div className="shrink-0">
-            <LanguageSelector
-              currentLang={currentLang}
-              onSelectLanguage={onSelectLanguage}
-              compactMobile
-            />
-          </div>
-
           {/* Mobile nav groups as scrollable pills */}
           {navGroups.map((group) => (
             group.type === 'single' ? (

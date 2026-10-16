@@ -51,6 +51,7 @@ import { UserProfile } from '../types/auth';
 import { SupportedLanguage, SUPPORTED_LANGUAGES, LanguageConfig } from '../types/i18n';
 import { LText, makeT, fmt, pickArEn, LOCALE_MAP } from '../لغات/localize';
 import { isRTL } from '../لغات/localizedContent';
+import { filterLanguages } from '../لغات/languagePicker';
 
 
 const S = {
@@ -359,16 +360,9 @@ export const CountryAndAddressModal: React.FC<CountryAndAddressModalProps> = ({
     );
   });
 
-  // Filtered languages
-  const filteredLanguages = SUPPORTED_LANGUAGES.filter((l) => {
-    if (!languageSearch.trim()) return true;
-    const q = languageSearch.toLowerCase().trim();
-    return (
-      l.name.toLowerCase().includes(q) ||
-      l.nativeName.toLowerCase().includes(q) ||
-      l.code.toLowerCase().includes(q)
-    );
-  });
+  // Filtered languages — the same search engine as the unified button in the header,
+  // so both lists always agree on what a query finds.
+  const filteredLanguages = filterLanguages(languageSearch);
 
   const handleSelectLanguage = (langCode: SupportedLanguage) => {
     if (onSelectLanguage) {
