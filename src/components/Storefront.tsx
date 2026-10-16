@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Star, ShoppingCart, UserPlus, Menu, Sparkles, ArrowRight, Package, Check } from 'lucide-react';
+import { Search, Star, ShoppingCart, UserPlus, Menu, Sparkles, ArrowRight, Package, Check, ChevronDown, X, LayoutGrid } from 'lucide-react';
 import { saveMerchant } from '../utils/merchantDataStore';
 
 // Load products from JSON file
@@ -7,22 +7,32 @@ import productsData from '../data/products.json';
 
 const t = {
   ar: {
-    title: 'متجر الشام', search: 'ابحث عن عطر...',
+    title: 'متجر الشام', search: 'ابحث عن عطر...', searchPlaceholder: 'ابحث عن اسم عطر أو علامة تجارية...',
     categories: ['الكل', 'رجالي', 'نسائي', 'جديد'],
-    featured: 'المنتجات المميزة', seeAll: 'اعرض الكل',
+    brands: ['الكل', 'Lattafa', 'Rasasi', 'Al-Rehab', 'Shama', 'Dior', 'YSL', 'Baccarat', 'De Pronom'],
+    featured: 'المنتجات المميزة', seeAll: 'اعرض الكل', viewAll: 'عرض الكل',
     addToCart: 'أضف للسلة', viewDetails: 'عرض التفاصيل', inStock: 'متاح',
     becomeMerchant: 'تاجر', companyNameAr: 'الاسم عربي',
     email: 'البريد', phone: 'هاتف', password: 'كلمة المرور',
     register: 'سجل الآن', cartTotal: 'المجموع', checkout: 'أتمم الطلب', clearCart: 'مسح السلة',
+    sortBy: 'ترتيب حسب', sortNew: 'الأحدث أولاً', sortPriceLow: 'السعر من الأقل', sortPriceHigh: 'السعر من الأعلى',
+    productsFound: '{count} منتج وجيب',
+    noResults: 'لا توجد نتائج، حاول بحث آخر',
+    filterByBrand: 'تصفية بالعلامة',
   },
   en: {
-    title: 'Sham Store', search: 'Search...',
+    title: 'Sham Store', search: 'Search...', searchPlaceholder: 'Search by product name or brand...',
     categories: ['All', 'Men', 'Women', 'New'],
-    featured: 'Featured Products', seeAll: 'See All',
+    brands: ['All', 'Lattafa', 'Rasasi', 'Al-Rehab', 'Shama', 'Dior', 'YSL', 'Baccarat', 'De Pronom'],
+    featured: 'Featured Products', seeAll: 'See All', viewAll: 'View All',
     addToCart: 'Add to Cart', viewDetails: 'View Details', inStock: 'In Stock',
     becomeMerchant: 'Become Merchant', companyNameAr: 'Company Name (AR)',
     email: 'Email', phone: 'Phone', password: 'Password',
     register: 'Register', cartTotal: 'Total', checkout: 'Checkout', clearCart: 'Clear Cart',
+    sortBy: 'Sort by', sortNew: 'Newest First', sortPriceLow: 'Price: Low to High', sortPriceHigh: 'Price: High to Low',
+    productsFound: '{count} products found',
+    noResults: 'No results found, try another search',
+    filterByBrand: 'Filter by Brand',
   }
 };
 
@@ -32,6 +42,9 @@ export const Storefront: React.FC<Props> = ({ onClose, currentLang, retailerId }
   const lang = t[currentLang];
   const [search, setSearch] = useState('');
   const [cat, setCat] = useState('all');
+  const [brand, setBrand] = useState('all');
+  const [sort, setSort] = useState('new');
+  const [showBrandFilter, setShowBrandFilter] = useState(false);
   const [cart, setCart] = useState<Map<string, { p: any; q: number }>>(new Map());
   const [showReg, setShowReg] = useState(false);
   const [form, setForm] = useState({ nameAr: '', email: '', phone: '', pass: '' });
@@ -41,9 +54,12 @@ export const Storefront: React.FC<Props> = ({ onClose, currentLang, retailerId }
   const [products, setProducts] = useState<any[]>(productsData.products || []);
   
   const filtered = products.filter(p => {
-    // Handle special category 'newArrivals' (shows all products sorted by date)
+    // Brand filter
+    if (brand !== 'all' && (p as any).brand !== brand) return false;
+    // Category filter
     if (cat === 'newArrivals') return true;
     if (cat !== 'all' && (p as any).category !== cat) return false;
+    // Search filter
     if (search) {
       const q = search.toLowerCase();
       if (!(p.nameAr || '').toLowerCase().includes(q) && !(p.nameEn || '').toLowerCase().includes(q)) return false;
@@ -51,12 +67,20 @@ export const Storefront: React.FC<Props> = ({ onClose, currentLang, retailerId }
     return true;
   });
 
-  const featured = filtered.filter((p: any) => p.isFeatured || (p.rating && p.rating >= 4)).slice(0, 6);
-  const newItems = [...filtered].sort((a, b) => {
+  // Sort products
+  const sorted = [...filtered].sort((a, b) => {
+    if (sort === 'priceLow') return (a.ourPrice || 0) - (b.ourPrice || 0);
+    if (sort === 'priceHigh') return (b.ourPrice || 0) - (a.ourPrice || 0);
+    // Default: newest first
     const da = a.createdAt ? new Date(a.createdAt).getTime() : 0;
     const db = b.createdAt ? new Date(b.createdAt).getTime() : 0;
     return db - da;
-  }).slice(0, 6);
+  });
+
+  const featured = sorted.filter((p: any) => p.isFeatured || (p.rating && p.rating >= 4)).slice(0, 6);
+  const newItems = sorted.slice(0, 6);
+
+  const filteredCount = filtered.length;
 
   const totalItems = Array.from(cart.values()).reduce((s, i) => s + i.q, 0);
   const totalPrice = Array.from(cart.values()).reduce((s, i) => s + (i.p as any).retailPrice * i.q, 0);
@@ -151,8 +175,46 @@ export const Storefront: React.FC<Props> = ({ onClose, currentLang, retailerId }
               </button>
             ))}
           </div>
+          <div className="flex gap-2 mt-3">
+            <button className="flex items-center gap-1 px-3 py-2 bg-stone-100 rounded-full text-sm hover:bg-stone-200" onClick={() => setShowBrandFilter(!showBrandFilter)}>
+              <LayoutGrid className="w-4 h-4" />
+              {lang.filterByBrand}
+              <ChevronDown className="w-4 h-4" />
+            </button>
+            <div className="relative">
+              {showBrandFilter && (
+                <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border p-2 z-10 min-w-[180px]">
+                  {lang.brands.map(b => (
+                    <button key={b} onClick={() => { setBrand(b === 'الكل' || b === 'All' ? 'all' : b); setShowBrandFilter(false); }}
+                      className={`w-full text-left px-3 py-1.5 rounded text-sm ${brand === (b === 'الكل' || b === 'All' ? 'all' : b) ? 'bg-amber-100 text-amber-800 font-medium' : 'hover:bg-stone-100'}`}>
+                      {b}
+                    </button>
+                  ))}
+                  <div className="border-t my-1" />
+                  <button onClick={() => { setBrand('all'); setShowBrandFilter(false); }}
+                    className="w-full text-left px-3 py-1.5 rounded text-sm text-stone-500 hover:bg-stone-100">
+                    {currentLang === 'ar' ? 'إلغاء' : 'Cancel'}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </section>
+
+      {/* Search Results Info */}
+      <div className="flex items-center justify-between mb-6">
+        <p className="text-sm text-stone-600">{lang.productsFound.replace('{count}', String(filteredCount))}</p>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-stone-600">{lang.sortBy}:</span>
+          <select value={sort} onChange={e => setSort(e.target.value)}
+            className="px-3 py-1.5 bg-stone-100 border rounded text-sm">
+            <option value="new">{lang.sortNew}</option>
+            <option value="priceLow">{lang.sortPriceLow}</option>
+            <option value="priceHigh">{lang.sortPriceHigh}</option>
+          </select>
+        </div>
+      </div>
 
       <main className="max-w-7xl mx-auto px-4 py-6">
         {featured.length > 0 && (
