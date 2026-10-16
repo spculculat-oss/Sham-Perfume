@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ExternalLink, MessageCircle, Radio, RefreshCw } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
-import { fmt, LOCALE_MAP, makeT, type LText } from '../utils/localize';
+import { fmt, LOCALE_MAP, makeT, type LText } from '../لغات/localize';
 import { loadLiveNews, relativeTime, type NewsFile } from '../utils/liveNews';
 
 const S = {

@@ -12,7 +12,7 @@ import { SUPPORTED_LANGUAGES } from '../src/types/i18n';
 import { WORLD_PERFUMES } from '../src/data/worldPerfumes';
 import { RAW_MATERIALS_DATABASE } from '../src/data/rawMaterials';
 import { PERFUME_NEWS_DATA } from '../src/data/perfumeNews';
-import { PERFUME_TRANSLATIONS, getLocalizedPerfume, getLocalizedRawMaterial, getLocalizedNewsArticle } from '../src/utils/localizedContent';
+import { PERFUME_TRANSLATIONS, getLocalizedPerfume, getLocalizedRawMaterial, getLocalizedNewsArticle } from '../src/لغات/localizedContent';
 
 const ARABIC = /[\u0600-\u06FF]/;
 /** Persian, Urdu, Pashto and Sindhi write in an Arabic-based script. */

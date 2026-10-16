@@ -16,8 +16,8 @@ import {
 import { RAW_MATERIALS_DATABASE, RawMaterialItem } from '../data/rawMaterials';
 import { PyramidNote } from '../types/perfume';
 import { SupportedLanguage } from '../types/i18n';
-import { getLocalizedRawMaterial, getCommonLabel, isRTL } from '../utils/localizedContent';
-import { LText, makeT, fmt } from '../utils/localize';
+import { getLocalizedRawMaterial, getCommonLabel, isRTL } from '../لغات/localizedContent';
+import { LText, makeT, fmt } from '../لغات/localize';
 
 
 const S = {

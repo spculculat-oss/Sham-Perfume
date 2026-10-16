@@ -12,8 +12,8 @@ import {
 } from 'lucide-react';
 import { calculateAlcoholDilution, formatNum } from '../utils/calculations';
 import { SupportedLanguage } from '../types/i18n';
-import { isRTL } from '../utils/localizedContent';
-import { LText, makeT, fmt } from '../utils/localize';
+import { isRTL } from '../لغات/localizedContent';
+import { LText, makeT, fmt } from '../لغات/localize';
 
 interface AlcoholDilutionCalculatorProps {
   currentLang?: SupportedLanguage;

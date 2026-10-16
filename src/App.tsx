@@ -39,9 +39,9 @@ import { calculatePerfumeFormulation } from './utils/calculations';
 import { ExtractedAIPerfume } from './utils/aiFormulaExtractor';
 import type { ShaheenTool, ToolLink } from './utils/shaheenTools';
 import { SupportedLanguage, SUPPORTED_LANGUAGES } from './types/i18n';
-import { getInitialLanguage, saveLanguage } from './utils/i18n';
+import { getInitialLanguage, saveLanguage } from './لغات/i18n';
 import { LanguageProvider } from './context/LanguageContext';
-import { LText, makeT, fmt, pickArEn } from './utils/localize';
+import { LText, makeT, fmt, pickArEn } from './لغات/localize';
 import {
   UserEnvironmentProfile,
   getInitialUserEnvironment,
@@ -863,7 +863,7 @@ export default function App() {
 
         {/* Store Promo Hub: promotional banner with store deals */}
         <TopPromoHub
-          currentLang={currentLang}
+          currentLang={currentLang === 'ar' || currentLang === 'en' ? currentLang : 'ar'}
           onViewStore={() => navigateToTab('store')}
         />
 

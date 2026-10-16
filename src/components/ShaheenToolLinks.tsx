@@ -1,7 +1,7 @@
 import React from 'react';
 import { BookOpen, Calculator, Clock, DollarSign, Droplets, FlaskConical, Layers, ShoppingBag, Wrench } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
-import { makeT, type LText } from '../utils/localize';
+import { makeT, type LText } from '../لغات/localize';
 import type { ShaheenTool, ToolLink } from '../utils/shaheenTools';
 
 const S = {

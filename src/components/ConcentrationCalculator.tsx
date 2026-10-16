@@ -36,7 +36,7 @@ import {
 } from '../data/presets';
 import { formatNum } from '../utils/calculations';
 import { useLanguage } from '../context/LanguageContext';
-import { LText, makeT, fmt, LOCALE_MAP, localeDate } from '../utils/localize';
+import { LText, makeT, fmt, LOCALE_MAP, localeDate } from '../لغات/localize';
 import { FragrancePyramidGraphic } from './FragrancePyramidGraphic';
 import { CalculatorCriteriaGuide } from './CalculatorCriteriaGuide';
 import { VisualScaleSimulator } from './VisualScaleSimulator';

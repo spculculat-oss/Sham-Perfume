@@ -7,7 +7,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { SUPPORTED_LANGUAGES } from '../src/types/i18n';
-import { NOTE_METRICS, noteMetric } from '../src/utils/noteL10n';
+import { NOTE_METRICS, noteMetric } from '../src/لغات/noteL10n';
 import { enrichPyramidNote } from '../src/utils/volatilityHelper';
 import type { PyramidNote } from '../src/types/perfume';
 

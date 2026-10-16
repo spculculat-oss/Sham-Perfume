@@ -1,7 +1,7 @@
 import React from 'react';
 import { Newspaper, Sparkles } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
-import { LText, makeT, fmt } from '../utils/localize';
+import { LText, makeT, fmt } from '../لغات/localize';
 
 
 const S = {

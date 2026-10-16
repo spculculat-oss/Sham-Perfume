@@ -1,5 +1,5 @@
 import type { SupportedLanguage } from '../types/i18n';
-import { noteMetric } from './noteL10n';
+import { noteMetric } from '../لغات/noteL10n';
 import { PyramidNote } from '../types/perfume';
 
 export interface EnrichedPyramidNote extends PyramidNote {

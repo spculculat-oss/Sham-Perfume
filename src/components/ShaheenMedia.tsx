@@ -3,7 +3,7 @@ import { tidyCaption, topicOnlyInPlaceName } from '../utils/mediaCaption';
 import { ExternalLink, Image as ImageIcon, MapPin, Play, X } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { isStaticHosting } from '../utils/api';
-import { makeT, type LText } from '../utils/localize';
+import { makeT, type LText } from '../لغات/localize';
 import { fetchMedia, osmSearchUrl, youtubeSearchUrl, type MediaImage, type MediaPlace, type MediaRequest, type VideoResult } from '../utils/shaheenMedia';
 
 // Leaflet (~150 KB) is only downloaded when an answer actually has places to show.

@@ -15,8 +15,8 @@ import {
 } from 'lucide-react';
 import { WORLD_PERFUMES, WorldPerfumeRecipe } from '../data/worldPerfumes';
 import { SupportedLanguage } from '../types/i18n';
-import { getLocalizedPerfume, getCommonLabel, isRTL } from '../utils/localizedContent';
-import { LText, makeT, fmt, pickArEn } from '../utils/localize';
+import { getLocalizedPerfume, getCommonLabel, isRTL } from '../لغات/localizedContent';
+import { LText, makeT, fmt, pickArEn } from '../لغات/localize';
 
 
 const S = {

@@ -31,8 +31,8 @@ import {
 
 import { UserDetailedAddress, FACILITY_TYPE_LABELS } from '../types/address';
 import { SupportedLanguage } from '../types/i18n';
-import { isRTL, getCommonLabel } from '../utils/localizedContent';
-import { LText, makeT, fmt, pickArEn, localeDate } from '../utils/localize';
+import { isRTL, getCommonLabel } from '../لغات/localizedContent';
+import { LText, makeT, fmt, pickArEn, localeDate } from '../لغات/localize';
 
 interface ManufacturingSpecSheetProps {
   formulaTitle: string;

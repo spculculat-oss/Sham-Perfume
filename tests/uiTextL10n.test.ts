@@ -11,7 +11,7 @@ import test from 'node:test';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { SUPPORTED_LANGUAGES } from '../src/types/i18n';
-import { UI_TEXT, uiLabel } from '../src/utils/uiTextL10n';
+import { UI_TEXT, uiLabel } from '../src/لغات/uiTextL10n';
 
 const ARABIC = /[\u0600-\u06FF]/;
 /** Persian, Urdu, Pashto and Sindhi write in an Arabic-based script. */

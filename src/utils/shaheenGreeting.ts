@@ -1,5 +1,5 @@
 import type { SupportedLanguage } from '../types/i18n';
-import { loc, type LText } from './localize';
+import { loc, type LText } from '../لغات/localize';
 
 /**
  * A message that is only a greeting («هاي», «السلام عليكم», «ازيك يا شاهين», "hi") is answered right in
