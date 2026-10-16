@@ -26,7 +26,7 @@ if (mode === 'sitemap') {
   const b = r.body;
   note('page', `${r.status} ${url} ${b.length}b | title=${(b.match(/<title[^>]*>([^<]*)/i) || [])[1]} | lang=${(b.match(/<html[^>]*lang="([^"]+)/) || [])[1]}`);
   const lds = [...b.matchAll(/<script[^>]*application\/ld\+json[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
-  lds.forEach((ld, i) => note(`ld ${i}`, ld.slice(0, 1000)));
+  lds.forEach((ld, i) => { if (ld.includes('"Product"')) { const j = JSON.parse(ld); note('offers', JSON.stringify(j.offers).slice(0, 1000)); note('product keys', `${Object.keys(j).join(',')} | brand=${JSON.stringify(j.brand)} | images=${(j.image || []).length} | sku=${j.sku} | rating=${JSON.stringify(j.aggregateRating)} | props=${JSON.stringify(j.additionalProperty || '').slice(0, 400)}`); note('desc tail', String(j.description).slice(-700)); } });
   const metas = [...b.matchAll(/<meta[^>]+(?:property|name)="((?:og|product|twitter):[^"]+|description)"[^>]+content="([^"]*)"/g)].map((m) => `${m[1]}=${m[2]}`);
   note('meta', metas.join(' | '));
   const imgs = [...new Set([...b.matchAll(/(?:src|data-src|href)="(https?:[^"]+\.(?:jpe?g|png|webp|avif)[^"]*)"/gi)].map((m) => m[1]))];
