@@ -21,6 +21,12 @@ export interface ImportSource {
   currency: string;
   /** Fallback exchange rate to EGP when the live rate cannot be read. */
   fallbackRateToEgp?: number;
+  /**
+   * The store's own «all products» listing ({page} = 1, 2, …). Read as well as the sitemap because a sitemap
+   * can miss products (shamperfume lists 999 in its sitemap, its second sitemap file is a 404, the store
+   * shows 1060): every product on the listing that the sitemap lacks is imported too.
+   */
+  listing?: { url: string; maxPages: number };
 }
 
 export interface ImportedFields {

@@ -7,7 +7,7 @@ name: Shaheen product importer and page reviewer (every 2 hours)
 # (photos load, price formula, clean name, real description, source still sold) and hides broken ones.
 # Shaheen then writes the Arabic names/descriptions (scripts/shaheen-store) and GitHub Pages is rebuilt,
 # which generates a standalone page for every product (p/<slug>.html). Code: scripts/shaheen-import/.
-# Settings (repository variables, all optional): IMPORT_MAX_NEW (default 30 new products per run),
+# Settings (repository variables, all optional): IMPORT_MAX_NEW (default 150 new products per run),
 # IMPORT_MAX_REFRESH (default 25), IMPORT_RATE_MYR_EGP (fallback exchange rate), and the price rule:
 # IMPORT_MARKUP (default 1.5), IMPORT_SHIPPING_EGP (fixed cost added per bottle, default 0) and
 # IMPORT_MAX_PROFIT_EGP (cap on the profit per bottle, default none). A changed rule reprices every product.
@@ -22,7 +22,7 @@ on:
       max_new:
         description: 'New products to import this run'
         required: false
-        default: '30'
+        default: '150'
   push:
     # main: a change to the importer, or a merchant's own edit of products.json, is imported/reviewed at once
     # (the bot's own commits use GITHUB_TOKEN, which starts no workflow, so there is no loop).
@@ -46,7 +46,10 @@ jobs:
     env:
       # Branch pushes rehearse only: the result is shown in the job summary, nothing is committed.
       IMPORT_COMMIT: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
-      IMPORT_MAX_NEW: ${{ github.event.inputs.max_new || vars.IMPORT_MAX_NEW || (github.ref == 'refs/heads/main' && '30' || '6') }}
+      # 150 new products per run until the supplier's whole catalog (1060) is in — about 7 runs (~14 h);
+      # after that each run only picks up the supplier's new arrivals. Shaheen's Arabic text follows as the
+      # AI quota allows (products wait with the supplier's own text until then).
+      IMPORT_MAX_NEW: ${{ github.event.inputs.max_new || vars.IMPORT_MAX_NEW || (github.ref == 'refs/heads/main' && '150' || '6') }}
       IMPORT_MAX_REFRESH: ${{ vars.IMPORT_MAX_REFRESH || (github.ref == 'refs/heads/main' && '25' || '2') }}
       IMPORT_RATE_MYR_EGP: ${{ vars.IMPORT_RATE_MYR_EGP }}
       IMPORT_MARKUP: ${{ vars.IMPORT_MARKUP || '1.5' }}

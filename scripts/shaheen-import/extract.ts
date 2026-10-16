@@ -45,6 +45,25 @@ const decode = (s: string) => s
 export const squash = (s: string) => decode(s).replace(/\s+/g, ' ').trim();
 
 /** Product URLs (and their images) from a sitemap; language duplicates such as /ms/ are skipped. */
+/**
+ * Product links on a store listing page (relative or absolute), in page order, restricted to the source's
+ * product URL pattern; plus the page count it announces («Page 1 of 45»), when it does.
+ */
+export function parseListing(html: string, base: string, opts: { include?: RegExp; exclude?: RegExp } = {}): { urls: string[]; pages?: number } {
+  const urls: string[] = [];
+  for (const m of html.matchAll(/href\s*=\s*["']([^"'#]+)["']/gi)) {
+    let url: string;
+    try { url = new URL(decode(m[1]).split('?')[0], base).href; } catch { continue; }
+    if (!url.endsWith('/') && !/\.[a-z0-9]{2,5}$/i.test(url)) url += '/';
+    if (opts.include && !opts.include.test(url)) continue;
+    if (opts.exclude && opts.exclude.test(url)) continue;
+    if (!urls.includes(url)) urls.push(url);
+  }
+  const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  const pages = Number((text.match(/Page\s+\d+\s+of\s+(\d+)/i) || [])[1]) || undefined;
+  return { urls, pages };
+}
+
 export function parseSitemap(xml: string, opts: { include?: RegExp; exclude?: RegExp } = {}): SitemapEntry[] {
   const out: SitemapEntry[] = [];
   const seen = new Set<string>();

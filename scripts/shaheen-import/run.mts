@@ -13,7 +13,7 @@ import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs
 import { guidanceBlock } from '../../src/utils/aiTools';
 import type { RawProduct } from '../../src/utils/storeCatalog';
 import { makeAsk, QuotaExhaustedError, quotaBook } from '../doctor/agent';
-import { extractProduct, pageImages, pageText, parseSitemap, parseSitemapIndex, validateShaheenReading, type ExtractedProduct, type SitemapEntry } from './extract';
+import { extractProduct, pageImages, pageText, parseListing, parseSitemap, parseSitemapIndex, validateShaheenReading, type ExtractedProduct, type SitemapEntry } from './extract';
 import { reviewStore, type ReviewFile } from './review';
 import { SOURCES } from './sources';
 import { isImported, nextIdOf, normalizeBrand, ourPriceOf, planRun, priceReport, sourceKey, toStoreProduct, type ImportedProduct, type ImportSource, type PriceRule } from './transform';
@@ -85,6 +85,35 @@ async function sitemapEntries(source: ImportSource): Promise<SitemapEntry[]> {
   return all;
 }
 
+/**
+ * Products on the store's own listing that its sitemap lacks. `complete` is false when a listing page could
+ * not be read — then no product is treated as gone because it was missing from the listing.
+ */
+async function listingExtras(source: ImportSource, known: Set<string>): Promise<{ extras: SitemapEntry[]; complete: boolean; pages: number; seen: number }> {
+  const extras: SitemapEntry[] = [];
+  if (!source.listing) return { extras, complete: true, pages: 0, seen: 0 };
+  const pageUrl = (n: number) => source.listing!.url.replace('{page}', String(n));
+  const opts = { include: source.productUrl, exclude: source.excludeUrl };
+  const first = await get(pageUrl(1));
+  if (first.status !== 200) { say(`Listing ${pageUrl(1)}: HTTP ${first.status}`); return { extras, complete: false, pages: 0, seen: 0 }; }
+  const one = parseListing(first.body, source.base, opts);
+  const pages = Math.min(source.listing.maxPages, one.pages || 1);
+  const all = new Set(one.urls);
+  let complete = true;
+  let cursor = 2;
+  await Promise.all(Array.from({ length: 3 }, async () => {
+    while (cursor <= pages) {
+      const n = cursor++;
+      await sleep(300); // polite to the supplier
+      const page = await get(pageUrl(n));
+      if (page.status !== 200) { complete = false; continue; }
+      for (const u of parseListing(page.body, source.base, opts).urls) all.add(u);
+    }
+  }));
+  for (const url of all) if (!known.has(url.replace(/\/+$/, ''))) extras.push({ url, images: [] });
+  return { extras, complete, pages, seen: all.size };
+}
+
 const products: RawProduct[] = read<{ products?: RawProduct[] }>(PRODUCTS)?.products || [];
 const previous = read<ReviewFile>(REVIEW);
 const before = products.length;
@@ -112,16 +141,28 @@ for (const source of SOURCES.filter((s) => !env.IMPORT_SOURCE || env.IMPORT_SOUR
   if (!(rate > 0)) { say(`${source.id}: no exchange rate — import skipped (nothing is priced without a rate)`); continue; }
   say(`${source.id}: 1 ${source.currency} = ${rate} EGP (${from})`);
 
-  const entries = await sitemapEntries(source);
-  info.sitemapProducts = entries.length;
-  say(`${source.id}: ${entries.length} products in the sitemap`);
-  if (!entries.length) { say(`${source.id}: sitemap unreadable — existing products kept as they are`); continue; }
+  const sitemap = await sitemapEntries(source);
+  info.sitemapProducts = sitemap.length;
+  say(`${source.id}: ${sitemap.length} products in the sitemap`);
+  if (!sitemap.length) { say(`${source.id}: sitemap unreadable — existing products kept as they are`); continue; }
 
   const mine = products.filter((p): p is ImportedProduct => isImported(p) && (p as ImportedProduct).supplierId === source.id);
+  // The store's listing adds the products its sitemap misses (they are its newest ones: imported first).
+  const inSitemap = new Set(sitemap.map((e) => e.url.replace(/\/+$/, '')));
+  const listing = await listingExtras(source, inSitemap);
+  const listingOnly = new Set(listing.extras.map((e) => e.url.replace(/\/+$/, '')));
+  if (source.listing) {
+    Object.assign(info, { listingPages: listing.pages, listingProducts: listing.seen, listingOnly: listing.extras.length, listingComplete: listing.complete });
+    say(`${source.id}: listing ${listing.seen} products on ${listing.pages} pages, ${listing.extras.length} missing from the sitemap${listing.complete ? '' : ' (some pages unreadable)'}`);
+  }
+  const entries = [...listing.extras, ...sitemap];
+  // A listing page that could not be read must not make its products look «gone» from the supplier.
+  if (!listing.complete) for (const p of mine) if (!inSitemap.has(p.url.replace(/\/+$/, '')) && !listingOnly.has(p.url.replace(/\/+$/, ''))) entries.push({ url: p.url, images: [] });
   // Brands the store already sells come first, so the catalog grows around what customers know.
   const known = new Set(products.map((p) => String(p.brand || '').toLowerCase().replace(/[^a-z]/g, '')).filter(Boolean));
   const brandOf = (u: string) => (u.match(/\/perfumes\/([^/]+)\//) || [])[1]?.replace(/[^a-z]/g, '') || '';
-  const ordered = [...entries].sort((a, b) => Number([...known].some((k) => brandOf(b.url).startsWith(k))) - Number([...known].some((k) => brandOf(a.url).startsWith(k))));
+  const first = (u: string) => (listingOnly.has(u.replace(/\/+$/, '')) ? 2 : 0) + Number([...known].some((k) => brandOf(u).startsWith(k)));
+  const ordered = [...entries].sort((a, b) => first(b.url) - first(a.url));
   const plan = planRun(ordered, mine, MAX_NEW, MAX_REFRESH);
   const imagesByUrl = new Map(entries.map((e) => [e.url.replace(/\/+$/, ''), e.images]));
   say(`${source.id}: ${mine.length} already imported; this run: ${plan.fresh.length} new, ${plan.refresh.length} to refresh, ${plan.gone.length} left the supplier`);
@@ -147,6 +188,9 @@ for (const source of SOURCES.filter((s) => !env.IMPORT_SOURCE || env.IMPORT_SOUR
       }
       let x = extractProduct(page.body, job.url, imagesByUrl.get(job.url.replace(/\/+$/, '')) || []);
       if (!x && ask && aiResumeAt) { deferred.push(job.url); continue; }
+      // A link found only on a listing page is imported only from real product data (no AI spent on
+      // a page that may not be a product at all).
+      if (!x && listingOnly.has(job.url.replace(/\/+$/, ''))) { failed.push(`${job.url} (listing link without product data)`); continue; }
       if (!x && ask) {
         // No structured data: Shaheen reads the page; his answer must match the page or it is dropped.
         const imgs = pageImages(page.body, job.url).slice(0, 40);
