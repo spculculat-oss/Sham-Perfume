@@ -24,8 +24,8 @@ const S = {
     en: '🛍️ New from Shama Perfumes | 特價中 | New Arrivals'
   },
   trust_badges: {
-    ar: ['شحن مجاني فوق 500 جنيه', 'توصيل خلال 3-5 أيام', 'ضمان استرجاع 30 يوم', 'دفع آمن 100%'],
-    en: ['Free Shipping over 500 EGP', 'Delivery in 3-5 days', '30-day return guarantee', '100% Secure Payment']
+    ar: 'شحن مجاني فوق 500 جنيه | توصيل خلال 3-5 أيام | ضمان استرجاع 30 يوم | دفع آمن 100%',
+    en: 'Free Shipping over 500 EGP | Delivery in 3-5 days | 30-day return guarantee | 100% Secure Payment'
   }
 };
 
@@ -180,7 +180,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({ currentLang = 'ar', on
 
                 {/* Trust badges */}
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {L('trust_badges').map((badge, i) => (
+                  {L('trust_badges').split(' | ').map((badge: string, i: number) => (
                     <div key={i} className="flex items-center gap-1 text-xs bg-white/20 px-2 py-1 rounded-full">
                       {i === 0 && <Star className="w-3 h-3 text-amber-300" />}
                       {i === 1 && <Zap className="w-3 h-3 text-yellow-200" />}
