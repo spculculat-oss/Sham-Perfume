@@ -16,7 +16,7 @@ import { makeAsk, QuotaExhaustedError, quotaBook } from '../doctor/agent';
 import { extractProduct, pageImages, pageText, parseSitemap, parseSitemapIndex, validateShaheenReading, type ExtractedProduct, type SitemapEntry } from './extract';
 import { reviewStore, type ReviewFile } from './review';
 import { SOURCES } from './sources';
-import { isImported, nextIdOf, planRun, sourceKey, toStoreProduct, type ImportedProduct, type ImportSource } from './transform';
+import { isImported, nextIdOf, normalizeBrand, ourPriceOf, planRun, priceReport, sourceKey, toStoreProduct, type ImportedProduct, type ImportSource, type PriceRule } from './transform';
 
 const env = process.env;
 const PRODUCTS = new URL('../../src/data/products.json', import.meta.url);
@@ -24,8 +24,14 @@ const REVIEW = new URL('../../src/data/live/store-review.json', import.meta.url)
 const UA = 'Mozilla/5.0 (compatible; ShaheenImporter/1.0; +https://spculculat-oss.github.io/Sham-Perfume/)';
 const MAX_NEW = Number(env.IMPORT_MAX_NEW ?? 30);
 const MAX_REFRESH = Number(env.IMPORT_MAX_REFRESH ?? 25);
-// The scenario's markup (×1.5); a repository variable can change it without touching the code.
-const MARKUP = Number(env.IMPORT_MARKUP) >= 1 ? Number(env.IMPORT_MARKUP) : undefined;
+// The merchant's price rule — repository variables change it without touching the code:
+// IMPORT_MARKUP (×1.5), IMPORT_SHIPPING_EGP (fixed cost per bottle, 0), IMPORT_MAX_PROFIT_EGP (profit cap, none).
+const positive = (v?: string) => (Number(v) > 0 ? Number(v) : undefined);
+const MARKUP: PriceRule = {
+  markup: Number(env.IMPORT_MARKUP) >= 1 ? Number(env.IMPORT_MARKUP) : 1.5,
+  shippingEgp: positive(env.IMPORT_SHIPPING_EGP),
+  maxProfitEgp: positive(env.IMPORT_MAX_PROFIT_EGP),
+};
 const CONCURRENCY = Math.max(1, Math.min(6, Number(env.IMPORT_CONCURRENCY ?? 3)));
 const started = Date.now();
 const log: string[] = [];
@@ -82,7 +88,7 @@ async function sitemapEntries(source: ImportSource): Promise<SitemapEntry[]> {
 const products: RawProduct[] = read<{ products?: RawProduct[] }>(PRODUCTS)?.products || [];
 const previous = read<ReviewFile>(REVIEW);
 const before = products.length;
-const importInfo: Record<string, unknown> = { at: new Date().toISOString(), markup: MARKUP ?? 1.5, sources: [] as unknown[] };
+const importInfo: Record<string, unknown> = { at: new Date().toISOString(), markup: MARKUP.markup, pricing: MARKUP, sources: [] as unknown[] };
 // AI packages: Shaheen reads pages only while the quota lasts; pages left unread wait for its renewal.
 const quota = quotaBook(new URL('../../src/data/live/ai-quota.json', import.meta.url));
 let ask: Awaited<ReturnType<typeof makeAsk>>;
@@ -177,6 +183,21 @@ for (const source of SOURCES.filter((s) => !env.IMPORT_SOURCE || env.IMPORT_SOUR
 if (aiResumeAt) { importInfo.aiResumeAt = new Date(aiResumeAt).toISOString(); say(`AI packages used up until ${importInfo.aiResumeAt}; the import continues then`); }
 quota.save();
 
+// A changed price rule applies to every imported product at once (the price is a pure function of the
+// supplier's EGP price), so nothing waits for its refresh and the reviewer never hides products for it.
+let repriced = 0;
+for (const p of products) {
+  if (!isImported(p) || !(Number(p.supplierPrice) > 0)) continue;
+  // Same for the brand spelling (RASASI → Rasasi): the filter never waits for a refresh to list a brand once.
+  if (p.brand && normalizeBrand(p.brand) !== p.brand) p.brand = normalizeBrand(p.brand);
+  const price = ourPriceOf(Number(p.supplierPrice), MARKUP);
+  if (price !== Number(p.ourPrice)) { p.ourPrice = price; repriced++; }
+}
+if (repriced) say(`Price rule ×${MARKUP.markup}${MARKUP.shippingEgp ? ` + ${MARKUP.shippingEgp} EGP shipping` : ''}${MARKUP.maxProfitEgp ? `, profit ≤ ${MARKUP.maxProfitEgp} EGP` : ''}: ${repriced} products repriced`);
+const prices = priceReport(products);
+importInfo.prices = prices;
+if (prices.count) say(`Prices of ${prices.count} imported products: ${prices.min}–${prices.max} EGP (median ${prices.median})`);
+
 // «مراجع الصفحات» reviews the whole store after the import.
 importInfo.durationMs = Date.now() - started;
 const { products: reviewed, report } = await reviewStore(products, { previous, importInfo, markup: MARKUP, imageBudget: Number(env.REVIEW_IMAGE_BUDGET ?? 80) });
@@ -188,7 +209,8 @@ say(`products.json: ${before} → ${reviewed.length} products`);
 
 if (env.GITHUB_STEP_SUMMARY) {
   const rows = report.items.slice(0, 25).map((i) => `- **${i.sku}** ${i.name} — ${i.status === 'hidden' ? '🚫 مخفي' : '⚠️'} ${i.issues.join('، ')}`);
-  appendFileSync(env.GITHUB_STEP_SUMMARY, `## مستورد شاهين + مراجع الصفحات — ${new Date().toISOString()}\n\n${log.map((l) => `- ${l}`).join('\n')}\n\n### ملاحظات المراجع\n${rows.join('\n') || 'لا يوجد'}\n`);
+  const dear = prices.top.map((t) => `- **${t.sku}** ${t.name} — ${t.price} جنيه (تكلفة المورد ${Math.round(t.supplierEgp)} جنيه)`).join('\n');
+  appendFileSync(env.GITHUB_STEP_SUMMARY, `## مستورد شاهين + مراجع الصفحات — ${new Date().toISOString()}\n\n${log.map((l) => `- ${l}`).join('\n')}\n\n### أغلى المنتجات المستوردة\n${dear || 'لا يوجد'}\n\n### ملاحظات المراجع\n${rows.join('\n') || 'لا يوجد'}\n`);
 }
 if (env.GITHUB_ACTIONS) {
   const clean = (t: string) => t.replace(/[\r\n%]/g, ' ').slice(0, 900);
@@ -196,6 +218,7 @@ if (env.GITHUB_ACTIONS) {
   const added = reviewed.filter((p) => isImported(p) && (p as ImportedProduct).importedAt === (p as ImportedProduct).refreshedAt).slice(-3)
     .map((p) => { const i = p as ImportedProduct; return `${i.sku} ${i.nameEn} — ${i.ourPrice} EGP (${i.supplierPriceOriginal} ${i.supplierCurrency}) — ${i.images.length} photos — notes ${[...(i.notes?.top || []), ...(i.notes?.heart || [])].slice(0, 4).join('/')}`; });
   if (added.length) console.log(`::notice title=Imported samples::${clean(added.join(' || '))}`);
+  if (prices.top.length) console.log(`::notice title=Most expensive imports::${clean(prices.top.map((t) => `${t.sku} ${t.name} — ${t.price} EGP (supplier ${Math.round(t.supplierEgp)} EGP)`).join(' || '))}`);
   const remarks = report.items.filter((i) => i.status === 'hidden').slice(0, 4).map((i) => `${i.sku}: ${i.issues.join(', ')}`);
   if (remarks.length) console.log(`::warning title=Reviewer hid::${clean(remarks.join(' || '))}`);
 }

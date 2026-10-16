@@ -11,6 +11,10 @@ const esc = (s: unknown) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g,
 /** Photos mirrored into the site are relative to the site root; pages live one folder down (p/). */
 const img = (u: string, siteUrl: string, absolute = false) => (/^https:\/\//.test(u) ? u : absolute ? new URL(u, siteUrl).href : `../${u}`);
 const egp = (n: number) => `${n.toLocaleString('ar-EG')} جنيه`;
+// A photo that no longer loads (e.g. an old illustrative stock photo) shows a neutral placeholder like the
+// store does; a broken thumbnail is simply removed. Broken photos are marked data-broken for the page check.
+const PLACEHOLDER = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fef3c7"/><stop offset="1" stop-color="#f5f5f4"/></linearGradient></defs><rect width="400" height="400" fill="url(#g)"/><rect x="170" y="110" width="60" height="40" rx="8" fill="#fbbf24" opacity=".55"/><rect x="135" y="150" width="130" height="150" rx="26" fill="#fbbf24" opacity=".35"/></svg>')}`;
+const NO_IMAGE = `<script>function noImg(i,thumb){i.onerror=null;i.dataset.broken=i.getAttribute('src');if(thumb){i.closest('a').remove();return}i.src=${JSON.stringify(PLACEHOLDER)}}</script>`;
 
 const STYLE = `*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;background:#faf7f2;color:#1c1917;line-height:1.7}
 a{color:#b45309}header{background:#1c1917;color:#fbbf24;padding:12px 20px;display:flex;justify-content:space-between;align-items:center}
@@ -56,10 +60,10 @@ export function renderProductPage(p: StoreProduct, related: StoreProduct[], o: P
 <meta property="og:type" content="product"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${esc(url)}">${p.images[0] ? `<meta property="og:image" content="${esc(img(p.images[0], o.siteUrl, true))}">` : ''}
 <meta property="product:price:amount" content="${p.price}"><meta property="product:price:currency" content="EGP"><meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">${ld}</script><style>${STYLE}</style></head>
+<script type="application/ld+json">${ld}</script><style>${STYLE}</style>${NO_IMAGE}</head>
 <body><header><a href="../">صمم عطرك مع شام</a><a href="index.html">كل منتجات المتجر</a></header>
-<main><div class="grid"><div class="gallery">${p.images[0] ? `<img src="${esc(img(p.images[0], o.siteUrl))}" alt="${esc(p.name.ar)}" id="main">` : ''}
-<div class="thumbs">${p.images.map((u, i) => `<a href="${esc(img(u, o.siteUrl))}" onclick="document.getElementById('main').src=this.href;return false"><img src="${esc(img(u, o.siteUrl))}" alt="${esc(`${p.name.ar} ${i + 1}`)}" loading="lazy"></a>`).join('')}</div></div>
+<main><div class="grid"><div class="gallery">${p.images[0] ? `<img src="${esc(img(p.images[0], o.siteUrl))}" alt="${esc(p.name.ar)}" id="main" onerror="noImg(this)">` : ''}
+<div class="thumbs">${p.images.map((u, i) => `<a href="${esc(img(u, o.siteUrl))}" onclick="document.getElementById('main').src=this.href;return false"><img src="${esc(img(u, o.siteUrl))}" alt="${esc(`${p.name.ar} ${i + 1}`)}" loading="lazy" onerror="noImg(this,1)"></a>`).join('')}</div></div>
 <div><h1>${esc(p.name.ar)}</h1>${p.name.en !== p.name.ar ? `<div class="en">${esc(p.name.en)}</div>` : ''}
 <p class="price">${esc(egp(p.price))}</p><p>${p.inStock ? '✅ متوفر' : '⛔ غير متوفر حالياً'}</p>
 <div class="chips">${chips.map((c) => `<span class="chip">${esc(c)}</span>`).join('')}</div>
@@ -74,7 +78,7 @@ ${related.length ? `<section><h2>قد يعجبك أيضاً</h2><div class="card
 }
 
 function card(p: StoreProduct) {
-  return `<a class="card" href="${esc(p.slug)}.html">${p.images[0] ? `<img src="${esc(/^https:/.test(p.images[0]) ? p.images[0] : `../${p.images[0]}`)}" alt="${esc(p.name.ar)}" loading="lazy">` : ''}<div>${esc(p.name.ar)}</div><div class="p">${esc(egp(p.price))}</div></a>`;
+  return `<a class="card" href="${esc(p.slug)}.html">${p.images[0] ? `<img src="${esc(/^https:/.test(p.images[0]) ? p.images[0] : `../${p.images[0]}`)}" alt="${esc(p.name.ar)}" loading="lazy" onerror="noImg(this)">` : ''}<div>${esc(p.name.ar)}</div><div class="p">${esc(egp(p.price))}</div></a>`;
 }
 
 export function renderIndexPage(products: StoreProduct[], o: PageOptions): string {
@@ -82,7 +86,7 @@ export function renderIndexPage(products: StoreProduct[], o: PageOptions): strin
   return `<!doctype html>
 <html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>كل منتجات متجر شام (${products.length})</title><meta name="description" content="كل عطور متجر شام بالصور والأسعار والنوتات — ${products.length} منتج.">
-<link rel="canonical" href="${esc(url)}"><style>${STYLE}</style></head>
+<link rel="canonical" href="${esc(url)}"><style>${STYLE}</style>${NO_IMAGE}</head>
 <body><header><a href="../">صمم عطرك مع شام</a><a href="../#store">افتح المتجر</a></header>
 <main><h1>كل منتجات متجر شام (${products.length})</h1><div class="cards">${products.map(card).join('')}</div></main>
 <footer>متجر شام</footer></body></html>

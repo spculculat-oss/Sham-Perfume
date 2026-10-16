@@ -8,7 +8,9 @@ name: Shaheen product importer and page reviewer (every 2 hours)
 # Shaheen then writes the Arabic names/descriptions (scripts/shaheen-store) and GitHub Pages is rebuilt,
 # which generates a standalone page for every product (p/<slug>.html). Code: scripts/shaheen-import/.
 # Settings (repository variables, all optional): IMPORT_MAX_NEW (default 30 new products per run),
-# IMPORT_MAX_REFRESH (default 25), IMPORT_RATE_MYR_EGP (fallback exchange rate), IMPORT_MARKUP (default 1.5).
+# IMPORT_MAX_REFRESH (default 25), IMPORT_RATE_MYR_EGP (fallback exchange rate), and the price rule:
+# IMPORT_MARKUP (default 1.5), IMPORT_SHIPPING_EGP (fixed cost added per bottle, default 0) and
+# IMPORT_MAX_PROFIT_EGP (cap on the profit per bottle, default none). A changed rule reprices every product.
 
 on:
   schedule:
@@ -48,6 +50,8 @@ jobs:
       IMPORT_MAX_REFRESH: ${{ vars.IMPORT_MAX_REFRESH || (github.ref == 'refs/heads/main' && '25' || '2') }}
       IMPORT_RATE_MYR_EGP: ${{ vars.IMPORT_RATE_MYR_EGP }}
       IMPORT_MARKUP: ${{ vars.IMPORT_MARKUP || '1.5' }}
+      IMPORT_SHIPPING_EGP: ${{ vars.IMPORT_SHIPPING_EGP }}
+      IMPORT_MAX_PROFIT_EGP: ${{ vars.IMPORT_MAX_PROFIT_EGP }}
       # Arabic text for up to 8 × 14 products per run, while the AI quota lasts.
       STORE_MAX_BATCHES: ${{ vars.STORE_MAX_BATCHES || '8' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -59,6 +63,9 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          # A run that waited in the queue (concurrency) starts from the latest main, not from the commit that
+          # triggered it — otherwise it re-imports what the previous run already published and cannot push.
+          ref: ${{ github.ref == 'refs/heads/main' && 'main' || github.sha }}
           fetch-depth: 1
       - name: Set up Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0

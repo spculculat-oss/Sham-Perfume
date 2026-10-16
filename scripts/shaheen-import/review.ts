@@ -10,7 +10,7 @@
  * in the report (src/data/live/store-review.json), which the Shaheen doctor and supervisor also read.
  */
 import { isGarbled, isGenericDescription, productSlug, skuOf, type RawProduct } from '../../src/utils/storeCatalog';
-import { isImported, ourPriceOf, type ImportedProduct } from './transform';
+import { isImported, ourPriceOf, type ImportedProduct, type PriceRule } from './transform';
 
 export type ReviewStatus = 'ok' | 'warn' | 'hidden';
 export interface ReviewItem { sku: string; id: number | string; name: string; status: ReviewStatus; issues: string[]; page?: string }
@@ -39,7 +39,7 @@ export async function checkImage(url: string, request: typeof fetch = fetch): Pr
 const STOCK_PHOTO = /images\.unsplash\.com|pexels\.com|placeholder|via\.placeholder|dummyimage/i;
 
 /** Data checks that need no network (pure, tested). */
-export function reviewProduct(p: RawProduct, opts: { markup?: number } = {}): { critical: string[]; warnings: string[] } {
+export function reviewProduct(p: RawProduct, opts: { markup?: number | PriceRule } = {}): { critical: string[]; warnings: string[] } {
   const critical: string[] = [];
   const warnings: string[] = [];
   const name = p.nameEn || p.nameAr || '';
@@ -72,7 +72,7 @@ export function reviewProduct(p: RawProduct, opts: { markup?: number } = {}): { 
 
 export interface ReviewOptions {
   /** Which photos to download this run (rotating sample); others keep their last result. */
-  imageBudget?: number; request?: typeof fetch; now?: string; markup?: number;
+  imageBudget?: number; request?: typeof fetch; now?: string; markup?: number | PriceRule;
   previous?: ReviewFile; importInfo?: Record<string, unknown>; concurrency?: number;
 }
 

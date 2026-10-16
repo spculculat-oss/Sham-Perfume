@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { extractProduct, parseNotes, parseSitemap, parseSitemapIndex, validateShaheenReading } from '../scripts/shaheen-import/extract';
-import { brandPrefix, cleanName, nextIdOf, ourPriceOf, planRun, toStoreProduct, type ImportedProduct } from '../scripts/shaheen-import/transform';
+import { brandPrefix, cleanName, nextIdOf, ourPriceOf, planRun, priceReport, toStoreProduct, type ImportedProduct } from '../scripts/shaheen-import/transform';
 import { reviewProduct, reviewStore } from '../scripts/shaheen-import/review';
 import { SOURCES } from '../scripts/shaheen-import/sources';
 import { relatedTo, renderIndexPage, renderProductPage } from '../scripts/product-pages/render';
@@ -196,6 +196,11 @@ test('every product gets a standalone page with share preview, schema.org price 
   assert.match(other, /Amber &lt;Night&gt;/);
   assert.doesNotMatch(other, /<Night>/);
   assert.match(renderIndexPage(list, { siteUrl: 'https://x.example/' }), /href="zimaya-amber-is-great-eau-de-parfum-100ml-52\.html"/);
+  // A photo that is gone shows a placeholder (main/cards) or disappears (thumbnail) instead of a broken icon.
+  assert.match(html, /id="main" onerror="noImg\(this\)"/);
+  assert.match(html, /onerror="noImg\(this,1\)"/);
+  assert.match(html, /function noImg\(i,thumb\)/);
+  assert.match(renderIndexPage(list, { siteUrl: 'https://x.example/' }), /function noImg[\s\S]*onerror="noImg\(this\)"/);
 });
 
 test("the supervisor's importer probe reads the reviewer's report", async () => {
@@ -269,4 +274,21 @@ test('AI packages: a used-up quota pauses the engine until it renews, and the jo
   const later = (await makeAsk(env, { quota: renewed, request }))!;
   assert.equal(await later('s', 'p'), '{"ok":true}');
   assert.deepEqual(renewed.file().engines, {});
+});
+
+
+test('importer: the merchant price rule (markup, fixed shipping, profit cap) and the price report', () => {
+  assert.equal(ourPriceOf(1000), 1500);
+  assert.equal(ourPriceOf(1000, 1.3), 1300);
+  assert.equal(ourPriceOf(1000, { markup: 1.5, shippingEgp: 100 }), 1650);
+  // A 3,270 EGP bottle: ×1.5 would add 1,635 EGP; capped at 800 → 4,075 (rounded up to 5).
+  assert.equal(ourPriceOf(3270.25, { markup: 1.5, maxProfitEgp: 800 }), 4075);
+  // The cap never touches cheap bottles.
+  assert.equal(ourPriceOf(400, { markup: 1.5, maxProfitEgp: 800 }), 600);
+  assert.equal(ourPriceOf(1000, { markup: 0.5 }), 1500, 'a markup under 1 falls back to the scenario');
+  const base = { sku: 'X', nameEn: 'A', supplierId: 'shamperfume', supplierSku: 's', importedAt: 'x', refreshedAt: 'x', url: 'u', images: ['i'] };
+  const list = [900, 4800, 1500, 6000].map((price, i) => ({ ...base, id: i + 1, sku: `X-${i}`, ourPrice: price, supplierPrice: price / 1.5 }));
+  const report = priceReport([...list, { id: 9, sku: 'OLD', nameEn: 'Old', ourPrice: 50 }] as never, 2);
+  assert.deepEqual([report.count, report.min, report.median, report.max], [4, 900, 3150, 6000]);
+  assert.deepEqual(report.top.map((t) => t.sku), ['X-3', 'X-1']);
 });
