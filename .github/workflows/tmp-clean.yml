@@ -1,4 +1,5 @@
 name: TEMP image clean check
+# round 2: zoomed re-read
 on:
   push:
     branches: ['arena/0c21b935-sham-perfume']

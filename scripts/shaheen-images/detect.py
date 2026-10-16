@@ -11,7 +11,7 @@ mahabubperfumes.com…), the names, sizes and the box's decorative patterns.
 import re
 from difflib import SequenceMatcher
 
-DETECTOR_VERSION = 1
+DETECTOR_VERSION = 2
 
 # The supplier itself (shamperfume.com, its phone/WhatsApp, e-mail and social handles): always removed.
 SOURCE = re.compile(
@@ -100,17 +100,51 @@ def _near(a, b):
     return gap <= 1.2 * line and overlap > 0 and _h(b) <= 2.2 * line
 
 
+COMMON = {'instagram', 'facebook', 'tiktok', 'telegram', 'whatsapp', 'follow', 'https', 'store', 'shop', 'perfume', 'perfumes'}
+
+
+def names(text):
+    """The shop's own name in a mark: «instagram : joveychic» -> {'joveychic'}."""
+    return {w for w in re.findall(r'[a-z]{5,}', re.sub(r'www|\.(?:com|net|my|co|shop|store|org)\b', ' ', text.lower())) if w not in COMMON}
+
+
+def _same_line(a, b):
+    """b continues a's line (e.g. «: joveychic» read apart from «instagram»)."""
+    ax0, ay0, ax1, ay1 = a['box']; bx0, by0, bx1, by1 = b['box']
+    line = max(min(_h(a), _h(b)), 8)
+    v = min(ay1, by1) - max(ay0, by0)
+    gap = max(bx0 - ax1, ax0 - bx1)
+    return v >= 0.5 * line and gap <= 2 * max(_h(a), 8) and _h(b) <= 2.2 * max(_h(a), 8)
+
+
+def _shares_name(text, marks):
+    t = letters(text)
+    return len(t) >= 5 and any(n in t or SequenceMatcher(None, n, t).find_longest_match(0, len(n), 0, len(t)).size >= 5 for m in marks for n in names(m))
+
+
 def plan(boxes, tokens):
     kinds = [classify(b, tokens) for b in boxes]
     remove = [i for i, k in enumerate(kinds) if k in ('source', 'contact')]
-    # The rest of the same overlay (a line the OCR could not read cleanly, or another contact line).
-    for i in list(remove):
-        for j, b in enumerate(boxes):
-            if j not in remove and _near(boxes[i], b) and (float(b['score']) < MIN_SCORE or kinds[j] in ('review', 'source', 'contact')
-                                                            or CONTACT.search(b['text'])):
-                remove.append(j)
+    # The rest of the same overlay: the rest of its line, and the lines next to it that the OCR could not
+    # read cleanly, that are contacts too, or that repeat the shop's name — until nothing more joins.
+    grew = True
+    while grew:
+        grew = False
+        marks = [boxes[i]['text'] for i in remove]
+        for i in list(remove):
+            for j, b in enumerate(boxes):
+                if j in remove or kinds[j] is None and is_packaging(b['text'], tokens) and not _shares_name(b['text'], marks):
+                    continue
+                joins = (float(b['score']) < MIN_SCORE or kinds[j] in ('review', 'source', 'contact') or bool(CONTACT.search(b['text']))
+                         or _shares_name(b['text'], marks))
+                if (_same_line(boxes[i], b) and (joins or re.match(r'\s*[:@|/-]', b['text']))) or (_near(boxes[i], b) and joins):
+                    remove.append(j); grew = True
     review = [boxes[i]['text'] for i, k in enumerate(kinds) if k == 'review' and i not in remove]
-    return {'remove': [boxes[i] for i in remove], 'marks': [boxes[i]['text'] for i in remove], 'review': review}
+    marks = []
+    for i in remove:
+        if boxes[i]['text'] not in marks:
+            marks.append(boxes[i]['text'])
+    return {'remove': [boxes[i] for i in remove], 'marks': marks, 'review': review}
 
 
 def mask_boxes(remove, width, height):

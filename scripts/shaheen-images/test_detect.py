@@ -31,6 +31,23 @@ class Rules(unittest.TestCase):
         self.assertEqual(sorted(p['marks']), ['instagram : joveychic', 'wwwiovevchic.nct'])
         self.assertEqual(len(mask_boxes(p['remove'], 1080, 1080)), 2)
 
+    def test_a_faint_overlay_read_in_pieces_goes_whole(self):
+        # Al Qannas: at full size the OCR reads only «instagram»; the zoomed re-read finds the rest in pieces.
+        boxes = [box('instagram', 0.99, (550, 822, 613, 840)), box(': joveychic', 0.93, (618, 823, 690, 840)),
+                 box('www.joveychic.net', 0.91, (552, 800, 668, 818)), box('AL QANNAS', 0.98, (560, 640, 680, 660)),
+                 box('EAU DE PARFUM', 0.97, (560, 590, 690, 605))]
+        p = plan(boxes, TOKENS)
+        self.assertEqual(sorted(p['marks']), [': joveychic', 'instagram', 'www.joveychic.net'])
+
+    def test_a_shop_name_line_next_to_a_mark_goes_but_the_product_name_stays(self):
+        boxes = [box('www.joveychic.net', 0.97, (552, 800, 668, 818)), box('JOVEYCHIC', 0.96, (560, 821, 640, 838)),
+                 box('Lattafa', 0.96, (560, 842, 620, 858))]
+        self.assertEqual(sorted(plan(boxes, TOKENS)['marks']), ['JOVEYCHIC', 'www.joveychic.net'])
+
+    def test_product_text_on_the_same_line_as_a_mark_stays(self):
+        boxes = [box('SOUQSCENT.COM', 0.96, (432, 692, 559, 714)), box('100ml', 0.97, (575, 693, 630, 713))]
+        self.assertEqual(plan(boxes, TOKENS)['marks'], ['SOUQSCENT.COM'])
+
 
 if __name__ == '__main__':
     unittest.main()

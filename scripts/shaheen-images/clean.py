@@ -15,7 +15,7 @@ IMAGE_ONLY (comma-separated photo links, for a test), IMAGE_WRITE_PRODUCTS (defa
 """
 import concurrent.futures, datetime, hashlib, io, json, os, re, subprocess, sys, time, urllib.request
 import numpy as np
-from PIL import Image, ImageFilter
+from PIL import Image, ImageFilter, ImageOps
 sys.path.insert(0, os.path.dirname(__file__))
 from detect import DETECTOR_VERSION, brand_tokens, mask_boxes, plan
 
@@ -60,6 +60,35 @@ def ocr(engine, rgb):
         xs = [p[0] for p in points]; ys = [p[1] for p in points]
         out.append({'text': text, 'score': round(float(score), 3), 'box': [int(min(xs)), int(min(ys)), int(max(xs)), int(max(ys))]})
     return out
+
+
+def zoom_read(engine, rgb, around):
+    """Read again around the marks found, 3× larger and with more contrast: a semi-transparent watermark is
+    often read only in part at full size (Al Qannas: «instagram» but not «www.joveychic.net»)."""
+    H, W = rgb.shape[:2]
+    out = []
+    for b in around:
+        x0, y0, x1, y1 = b['box']
+        h, w = max(y1 - y0, 8), x1 - x0
+        X0, X1 = max(0, x0 - int(1.5 * w) - 4 * h), min(W, x1 + int(1.5 * w) + 4 * h)
+        Y0, Y1 = max(0, y0 - 3 * h), min(H, y1 + 3 * h)
+        crop = Image.fromarray(rgb[Y0:Y1, X0:X1])
+        for img in (crop, ImageOps.autocontrast(crop.convert('L'), cutoff=1).convert('RGB')):
+            big = img.resize((img.width * 3, img.height * 3), Image.LANCZOS)
+            for z in ocr(engine, np.array(big)):
+                bx0, by0, bx1, by1 = z['box']
+                out.append({**z, 'box': [X0 + bx0 // 3, Y0 + by0 // 3, X0 + -(-bx1 // 3), Y0 + -(-by1 // 3)]})
+    return out
+
+
+def find(engine, rgb, tokens, around=()):
+    """The marks on a photo: the full-size read, plus a zoomed read around every mark (or former mark)."""
+    boxes = ocr(engine, rgb)
+    p = plan(boxes, tokens)
+    look = list(around) + p['remove']
+    if look:
+        p = plan(boxes + zoom_read(engine, rgb, look), tokens)
+    return p
 
 
 class Inpainter:
@@ -172,7 +201,7 @@ def main():
             except Exception:
                 failed += 1; continue
             checked += 1
-            p = plan(ocr(engine, rgb), tokens)
+            p = find(engine, rgb, tokens)
             if not p['remove']:
                 registry['images'][url] = {'s': 'review', 'm': p['review'][:4], 'at': today} if p['review'] else 'ok'
                 review += bool(p['review'])
@@ -180,10 +209,11 @@ def main():
             inpaint = inpaint or Inpainter()
             h, w = rgb.shape[:2]
             clean = erase(inpaint, rgb, mask_boxes(p['remove'], w, h))
-            left = plan(ocr(engine, clean), tokens)
-            if left['remove']:  # a second pass for what the first one did not fully cover
+            # Checked again (zoomed where the marks were): a second pass for anything not fully covered.
+            left = find(engine, clean, tokens, p['remove'])
+            if left['remove']:
                 clean = erase(inpaint, clean, mask_boxes(left['remove'], w, h))
-                left = plan(ocr(engine, clean), tokens)
+                left = find(engine, clean, tokens, p['remove'])
             name = file_name(url)
             os.makedirs(os.path.join(ROOT, 'public', OUT_DIR), exist_ok=True)
             Image.fromarray(clean).save(os.path.join(ROOT, 'public', name), quality=92, optimize=True, progressive=True)
