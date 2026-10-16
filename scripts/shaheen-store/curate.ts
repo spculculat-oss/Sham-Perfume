@@ -43,7 +43,7 @@ export function staleProducts(products: RawProduct[], previous: StoreCatalogFile
 export const STORE_SYSTEM = `أنت «الخبير شاهين»، خبير العطور في منصة «صمم عطرك مع شام»، وتدرّب «متجر شام» ليعرض منتجاته بشكل احترافي ويساعد الزوار في الاختيار.
 لكل منتج ستكتب: اسماً عربياً صحيحاً ونظيفاً (بدون حروف من لغات أخرى)، واسماً إنجليزياً، ووصفاً عربياً جذاباً وصادقاً من جملتين، ووصفاً إنجليزياً قصيراً، والجنس، والعائلة العطرية، والمواسم، والمناسبات، وكلمات بحث.
 قواعد صارمة:
-- إذا وصلتك supplierNotes من صفحة المنتج الأصلية فهي موثقة: انقلها كما هي إلى notes (بالإنجليزية). وإذا وصل وصف إنجليزي طويل فلخّصه بالعربية بأمانة دون إضافة معلومات.
+- إذا وصلتك supplierNotes من صفحة المنتج الأصلية فهي موثقة: انقلها كما هي إلى notes (بالإنجليزية). وإذا كانت فارغة والوصف الإنجليزي يذكر النوتات صراحة في كلامه (افتتاحية/قلب/قاعدة) فاستخرجها منه بنفس كلماته الإنجليزية. وإذا وصل وصف إنجليزي طويل فلخّصه بالعربية بأمانة دون إضافة معلومات.
 - النوتات (top/heart/base) فقط إذا كان العطر تجارياً مشهوراً ونوتاته منشورة ومعروفة (مثل Dior Sauvage أو Baccarat Rouge 540 أو Lattafa Ameer Al Oudh). إن لم تكن متأكداً اترك القوائم فارغة. لا تخترع نوتات أبداً.
 - لا تدّعِ ثباتاً بالساعات ولا أنه أصلي أو مقلد، ولا تذكر أسعاراً أو خصومات أو شحناً.
 - إذا كان الاسم العربي مشوهاً فاكتب الاسم الصحيح بالعربية اعتماداً على الاسم الإنجليزي والعلامة (مثل «لطافة أمير العود»).
@@ -78,6 +78,18 @@ const pickEnum = <T extends string>(values: readonly T[], input: unknown, max: n
 const words = (input: unknown, max: number, len = 40) =>
   [...new Set((Array.isArray(input) ? input : []).filter((v): v is string => typeof v === 'string').map((v) => cleanText(v, len)).filter((v) => v.length >= 2 && !VENDOR.test(v)))].slice(0, max);
 
+/**
+ * Notes: the supplier's published pyramid wins. For an imported product without one, Shaheen may pick the
+ * notes its description names in prose — each must literally appear in that description (never invented).
+ */
+export function notesFor(p: RawProduct, supplier: StoreEntry['notes'], fromShaheen: StoreEntry['notes']): StoreEntry['notes'] {
+  if (supplier.top.length || supplier.heart.length || supplier.base.length) return supplier;
+  if (!p.url) return fromShaheen;
+  const text = (p.descriptionEn || '').toLowerCase();
+  const inText = (list: string[]) => list.filter((n) => n.length >= 3 && text.includes(n.toLowerCase()));
+  return { top: inText(fromShaheen.top), heart: inText(fromShaheen.heart), base: inText(fromShaheen.base) };
+}
+
 /** Shaheen's reply → validated entries for the products that were asked (anything else is ignored). */
 export function entriesFromShaheen(reply: unknown, asked: RawProduct[], now: string): Record<string, StoreEntry> {
   const list = (reply as { products?: unknown })?.products;
@@ -105,8 +117,7 @@ export function entriesFromShaheen(reply: unknown, asked: RawProduct[], now: str
       descriptionEn: descriptionEn.length >= 20 && !isGarbled(descriptionEn) && !VENDOR.test(descriptionEn) ? descriptionEn : base.descriptionEn,
       gender,
       families: pickEnum<Family>(FAMILIES, r.families, 3).length ? pickEnum<Family>(FAMILIES, r.families, 3) : base.families,
-      notes: words(notes.top, 6).length || words(notes.heart, 6).length || words(notes.base, 6).length
-        ? { top: words(notes.top, 6), heart: words(notes.heart, 6), base: words(notes.base, 6) } : base.notes,
+      notes: notesFor(p, base.notes, { top: words(notes.top, 6), heart: words(notes.heart, 6), base: words(notes.base, 6) }),
       seasons: pickEnum<Season>(SEASONS, r.seasons, 3).length ? pickEnum<Season>(SEASONS, r.seasons, 3) : base.seasons,
       occasions: pickEnum<Occasion>(OCCASIONS, r.occasions, 3).length ? pickEnum<Occasion>(OCCASIONS, r.occasions, 3) : base.occasions,
       tags: words(r.tags, 8, 30),

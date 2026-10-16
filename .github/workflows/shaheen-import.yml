@@ -75,8 +75,10 @@ jobs:
       - name: Every product gets its own page (build check)
         run: node --import tsx scripts/product-pages.mts dist && ls dist/p | wc -l
       - name: Regression tests with the new products
-        # Never publish products that would turn main red.
-        run: bun run test
+        # Never publish products that would turn main red (failing tests are listed as annotations).
+        run: |
+          set -o pipefail
+          bun run test 2>&1 | tee /tmp/test.log || { grep -B2 -A12 '^not ok\|^    not ok\|^  not ok' /tmp/test.log | grep -E 'not ok|error:|expected|actual|message' | head -8 | sed 's/^/::error title=test::/'; exit 1; }
       - name: Publish on main and rebuild Pages
         if: env.IMPORT_COMMIT == 'true'
         env:

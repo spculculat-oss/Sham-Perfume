@@ -215,3 +215,14 @@ test("the supervisor's importer probe reads the reviewer's report", async () => 
   assert.match(probe.answer, /\+1 جديد/);
   assert.ok(!probe.findings.some((f) => f.severe));
 });
+
+test("an imported product's notes come from the supplier, or from its own description through Shaheen — never invented", async () => {
+  const { notesFor } = await import('../scripts/shaheen-store/curate');
+  const empty = { top: [], heart: [], base: [] };
+  const supplier = { top: ['Saffron'], heart: [], base: ['Cedar'] };
+  const prose = { ...imported(), notes: undefined, descriptionEn: 'Bergamot and mandarin open it; a mint and ginger heart; sandalwood and musk in the drydown.' } as RawProduct;
+  assert.deepEqual(notesFor(prose, supplier, { top: ['Lemon'], heart: [], base: [] }), supplier);
+  assert.deepEqual(notesFor(prose, empty, { top: ['Bergamot', 'Mandarin', 'Vanilla'], heart: ['Mint', 'Ginger'], base: ['Sandalwood', 'Oud'] }),
+    { top: ['Bergamot', 'Mandarin'], heart: ['Mint', 'Ginger'], base: ['Sandalwood'] });
+  assert.deepEqual(notesFor(merchant, empty, { top: ['Lemon'], heart: [], base: [] }).top, ['Lemon'], 'famous perfumes of the merchant: the old rule');
+});
