@@ -22,7 +22,16 @@ const summary = (line: string) => { if (env.GITHUB_STEP_SUMMARY) appendFileSync(
 const present = ['KASHIER_MERCHANT_ID', 'KASHIER_API_KEY', 'KASHIER_SECRET_KEY'].filter((k) => env[k]?.trim());
 if (!present.length) { note('notice', 'Kashier', 'not configured yet — the store keeps the «مساعد شام» order flow'); process.exit(0); }
 const missing = ['KASHIER_MERCHANT_ID', 'KASHIER_API_KEY', 'KASHIER_SECRET_KEY'].filter((k) => !env[k]?.trim());
-if (missing.length) { note('warning', 'Kashier', `missing secret(s): ${missing.join(', ')}`); record('missing'); process.exit(0); }
+if (missing.length) {
+  note('warning', 'Kashier', `missing secret(s): ${missing.join(', ')}`);
+  // Names only (never values): finds a secret saved under a slightly different name, e.g. "KASHIER SECRET".
+  try {
+    const names = Object.keys(JSON.parse(env.SHAM_SECRET_NAMES_JSON || '{}') as Record<string, unknown>);
+    const near = names.filter((n) => /KASH|MID|MERCHANT|SECRET|PAY/i.test(n) && n !== 'github_token');
+    note('notice', 'Kashier secret names found', near.length ? near.join(', ') : 'none similar');
+  } catch { /* not available */ }
+  record('missing'); process.exit(0);
+}
 
 // Shape hints, without revealing anything: the usual mix-ups are a password or the wrong key in a slot.
 const mid = env.KASHIER_MERCHANT_ID!.trim();
