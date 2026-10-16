@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { createShaheenRouter } from './shaheen';
 import { createMediaRouter } from './media';
 import { createStoreRouter } from './store';
+import { createCheckoutRouter } from './checkout';
 import { createShamCore } from './core/http';
 import { callEngine, engineStatuses } from './core/engines';
 import { supervisorGuidance } from './core/liveData';
@@ -43,6 +44,8 @@ app.use('/api', createShaheenRouter({ repo: shamCore.repo, runtime: shamCore.run
 app.use('/api', createMediaRouter());
 // «اسأل شاهين» in «متجر شام»: POST /api/store/advise (server/store.ts).
 app.use('/api', createStoreRouter({ repo: shamCore.repo }));
+// «الدفع في متجر شام»: country, Kashier payment sessions and their verified results (server/checkout.ts).
+app.use('/api', createCheckoutRouter());
 
 // ============================================================================
 // DAILY PERFUME NEWS ENGINE (MASTER SHAHEEN AI CURATION & REFRESH)

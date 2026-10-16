@@ -7,6 +7,7 @@ import { isRTL } from '../لغات/localizedContent';
 import type { SupportedLanguage } from '../types/i18n';
 import { askShaheenStore, loadStoreCatalog, localSuggestion, storeImageSrc, type StoreSuggestion } from '../utils/liveStore';
 import { addToCart, cartSummary, clearCart, orderMessage, setCartQty, useCart } from '../utils/storeCart';
+import { CheckoutError, countryOptions, returnedPayment, startCheckout, usePayments, useStoreMoney, type CheckoutForm, type PaymentResult } from '../utils/storeCheckout';
 
 /**
  * كل نص في واجهة المتجر — من مفتاح واحد في src/لغات/storeL10n.ts، في أي لغة من لغات المنصة.
@@ -33,6 +34,11 @@ function storeLabels(lang: SupportedLanguage) {
     merchantTitle: t('sf_merchant_title'), companyName: t('sf_company'), email: t('sf_email'), phone: t('sf_phone'),
     password: t('sf_password'), register: t('sf_register'), cancel: t('sf_cancel'),
     fill: t('sf_fill_required'), registered: t('sf_registered'),
+    shipTo: t('sf_ship_to'), itemsTotal: t('sf_items_total'), shipping: t('sf_shipping'), shippingDays: t('sf_shipping_days'),
+    deliveryDetails: t('sf_delivery_details'), fullName: t('sf_full_name'), city: t('sf_city'), address: t('sf_address'),
+    payNow: t('sf_pay_now'), payContinue: t('sf_pay_continue'), payCharge: t('sf_pay_charge'), paying: t('sf_paying'),
+    payError: t('sf_pay_error'), payInvalid: t('sf_pay_invalid'), paid: t('sf_paid'), payPending: t('sf_pay_pending'),
+    payFailed: t('sf_pay_failed'), testMode: t('sf_test_mode'), back: t('sf_back'), orAssistant: t('sf_or_assistant'),
   };
 }
 
@@ -157,6 +163,46 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
     window.dispatchEvent(new CustomEvent('open-sham-assistant', { detail: orderMessage(summary, currentLang) }));
     setCartOpen(false);
   };
+
+  // Prices in the visitor's currency + shipping to their country (src/utils/pricing.ts), paid through Kashier.
+  const money = useStoreMoney(currentLang, L.currency);
+  const countries = useMemo(() => countryOptions(currentLang), [currentLang]);
+  const payments = usePayments();
+  const bill = money.quote(summary.lines.map((l) => ({ sku: l.product.sku, price: l.product.price, qty: l.qty })));
+  const lineTotal = new Map(bill.lines.map((l) => [l.sku, l.subtotal]));
+  const [step, setStep] = useState<'cart' | 'form'>('cart');
+  const [payForm, setPayForm] = useState<CheckoutForm>({ name: '', email: '', phone: '', city: '', line: '' });
+  const [paying, setPaying] = useState(false);
+  const [payMessage, setPayMessage] = useState('');
+  const [payResult, setPayResult] = useState<PaymentResult | null>(null);
+  useEffect(() => {
+    void returnedPayment().then((result) => {
+      if (!result) return;
+      setPayResult(result);
+      if (result.state === 'paid') clearCart();
+    });
+  }, []);
+  const pay = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (paying) return;
+    setPaying(true); setPayMessage('');
+    try {
+      await startCheckout(summary.lines.map((l) => ({ sku: l.product.sku, qty: l.qty })), money.country, payForm, currentLang);
+    } catch (error) {
+      const code = error instanceof CheckoutError ? error.code : 'FAILED';
+      setPayMessage(/^(INVALID_|MISSING_)/.test(code) ? L.payInvalid : L.payError);
+      setPaying(false);
+    }
+  };
+  const countryPicker = (testId: string) => (
+    <label className="inline-flex items-center gap-1.5 text-xs text-stone-600">
+      <span>{L.shipTo}</span>
+      <select value={money.country} onChange={(e) => money.setCountry(e.target.value)} data-testid={testId}
+        className="max-w-[11rem] px-2 py-1.5 bg-white border border-stone-200 rounded-lg text-xs">
+        {countries.map((c) => <option key={c.code} value={c.code}>{c.name}</option>)}
+      </select>
+    </label>
+  );
   const openDetails = (p: StoreProduct) => { window.location.hash = `#product=${p.id}`; };
 
   // Merchant registration
@@ -177,7 +223,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
   };
 
   const chip = (active: boolean) => `px-3 py-1.5 rounded-full text-xs whitespace-nowrap border transition-colors ${active ? 'bg-amber-600 border-amber-600 text-white' : 'bg-white border-stone-200 text-stone-700 hover:bg-stone-100'}`;
-  const price = (n: number) => `${storeNumber(n, currentLang)} ${L.currency}`;
+  const price = money.price;
 
   const card = (p: StoreProduct, why?: string, pick?: boolean) => (
     <div key={p.sku} className={`bg-white rounded-2xl border ${pick ? 'border-amber-300 shadow-md' : 'border-stone-200'} overflow-hidden flex flex-col`} data-testid={pick ? 'store-pick' : 'store-product'}>
@@ -324,6 +370,12 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-5 space-y-6">
+        {payResult && (
+          <div role="status" data-testid="store-payment-result" className={`flex items-start justify-between gap-3 rounded-2xl border p-4 text-sm ${payResult.state === 'paid' ? 'border-emerald-200 bg-emerald-50 text-emerald-900' : payResult.state === 'failed' ? 'border-red-200 bg-red-50 text-red-900' : 'border-amber-200 bg-amber-50 text-amber-900'}`}>
+            <span>{(payResult.state === 'paid' ? L.paid : payResult.state === 'failed' ? L.payFailed : L.payPending).replace('{ref}', payResult.ref)}</span>
+            <button type="button" onClick={() => setPayResult(null)} className="p-0.5 cursor-pointer" aria-label={L.cancel}><X className="w-4 h-4" /></button>
+          </div>
+        )}
         {/* «اسأل شاهين» */}
         <section ref={panel} className="rounded-3xl border border-amber-200 bg-gradient-to-br from-amber-50 via-white to-orange-50 p-4 sm:p-5 shadow-sm" data-testid="store-ask">
           <div className="flex items-center gap-2 mb-1">
@@ -375,6 +427,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
               <option value="new">{L.sortNew}</option><option value="priceLow">{L.sortPriceLow}</option>
               <option value="priceHigh">{L.sortPriceHigh}</option><option value="rating">{L.sortRating}</option>
             </select>
+            {countryPicker('store-country')}
             <span className="text-xs text-stone-500">{L.found.replace('{count}', String(shown.length))}</span>
             {filtered && <button type="button" onClick={resetFilters} className="text-xs text-amber-700 hover:underline cursor-pointer">{L.clear}</button>}
           </div>
@@ -409,12 +462,12 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
             {summary.lines.length ? (
               <>
                 <div className="flex-1 overflow-y-auto divide-y">
-                  {summary.lines.map(({ product, qty, subtotal }) => (
+                  {summary.lines.map(({ product, qty }) => (
                     <div key={product.sku} className="py-2.5 flex items-center gap-2">
                       <ProductImage product={product} className="w-12 h-12 rounded-lg shrink-0" />
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold line-clamp-1">{storeLocalized(product.name, currentLang)}</p>
-                        <p className="text-xs text-stone-500">{price(subtotal)}</p>
+                        <p className="text-xs text-stone-500">{money.money(lineTotal.get(product.sku) ?? 0)}</p>
                       </div>
                       <div className="flex items-center gap-1">
                         <button type="button" onClick={() => setCartQty(product.sku, qty - 1)} className="p-1 rounded border cursor-pointer"><Minus className="w-3 h-3" /></button>
@@ -425,9 +478,33 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                   ))}
                 </div>
                 <div className="border-t pt-3 space-y-2">
-                  <p className="flex justify-between font-bold"><span>{L.total}</span><span data-testid="store-cart-total">{price(summary.total)}</span></p>
-                  <button type="button" onClick={checkout} className="w-full py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-sm font-semibold cursor-pointer">{L.checkout}</button>
-                  <button type="button" onClick={clearCart} className="w-full py-2 rounded-xl bg-stone-100 text-stone-700 text-xs inline-flex items-center justify-center gap-1 cursor-pointer"><Trash2 className="w-3.5 h-3.5" />{L.clearCart}</button>
+                  {countryPicker('store-cart-country')}
+                  <p className="flex justify-between text-sm"><span>{L.itemsTotal}</span><span>{money.money(bill.items)}</span></p>
+                  <p className="flex justify-between text-sm" data-testid="store-cart-shipping"><span>{L.shipping}{bill.zone.days ? <span className="block text-[10px] text-stone-400">{L.shippingDays.replace('{days}', bill.zone.days)}</span> : null}</span><span>{money.money(bill.shipping)}</span></p>
+                  <p className="flex justify-between font-bold"><span>{L.total}</span><span data-testid="store-cart-total">{money.money(bill.total)}</span></p>
+                  {payments?.enabled && step === 'form' ? (
+                    <form onSubmit={pay} className="space-y-2" data-testid="store-checkout-form">
+                      <p className="text-sm font-bold pt-1">{L.deliveryDetails}</p>
+                      {payments.mode === 'test' && <p className="text-[11px] rounded-lg bg-sky-50 text-sky-800 px-2 py-1">{L.testMode}</p>}
+                      {([['name', L.fullName, 'text', 'name'], ['email', L.email, 'email', 'email'], ['phone', L.phone, 'tel', 'tel'], ['city', L.city, 'text', 'address-level2'], ['line', L.address, 'text', 'street-address']] as const).map(([key, label, type, auto]) => (
+                        <input key={key} type={type} required autoComplete={auto} placeholder={label} aria-label={label} value={payForm[key]}
+                          onChange={(e) => setPayForm({ ...payForm, [key]: e.target.value })} className="w-full px-3 py-2 border rounded-lg text-sm" />
+                      ))}
+                      {payMessage && <p className="text-xs text-red-700" role="alert">{payMessage}</p>}
+                      <button type="submit" disabled={paying} data-testid="store-pay" className="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 disabled:bg-stone-400 text-white text-sm font-semibold cursor-pointer inline-flex items-center justify-center gap-2">
+                        {paying ? <><Loader2 className="w-4 h-4 animate-spin" />{L.paying}</> : L.payContinue}
+                      </button>
+                      <button type="button" onClick={() => setStep('cart')} className="w-full py-1.5 text-xs text-stone-600 cursor-pointer">{L.back}</button>
+                    </form>
+                  ) : payments?.enabled ? (
+                    <>
+                      <button type="button" onClick={() => setStep('form')} data-testid="store-pay-start" className="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold cursor-pointer">{L.payNow}</button>
+                      <button type="button" onClick={checkout} className="w-full py-1.5 text-xs text-amber-800 hover:underline cursor-pointer">{L.orAssistant}</button>
+                    </>
+                  ) : (
+                    <button type="button" onClick={checkout} className="w-full py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-sm font-semibold cursor-pointer">{L.checkout}</button>
+                  )}
+                  {step === 'cart' && <button type="button" onClick={clearCart} className="w-full py-2 rounded-xl bg-stone-100 text-stone-700 text-xs inline-flex items-center justify-center gap-1 cursor-pointer"><Trash2 className="w-3.5 h-3.5" />{L.clearCart}</button>}
                 </div>
               </>
             ) : <p className="text-sm text-stone-500 text-center py-10">{L.cartEmpty}</p>}

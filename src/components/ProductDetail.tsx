@@ -9,6 +9,7 @@ import { isRTL } from '../لغات/localizedContent';
 import type { SupportedLanguage } from '../types/i18n';
 import { loadStoreCatalog, productPageUrl, storeImageSrc } from '../utils/liveStore';
 import { addToCart, useCart } from '../utils/storeCart';
+import { useStoreMoney } from '../utils/storeCheckout';
 
 /** كل نص في صفحة العطر — من src/لغات/storeL10n.ts بلغة الزائر (والإنجليزية كأرضية، لا عربية لغير العربي). */
 function detailLabels(lang: SupportedLanguage) {
@@ -34,6 +35,7 @@ const closeness = (a: StoreProduct, b: StoreProduct) =>
 
 export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose, onAddToCart }) => {
   const L = useMemo(() => detailLabels(currentLang), [currentLang]);
+  const money = useStoreMoney(currentLang, L.currency); // the visitor's currency (src/utils/pricing.ts)
   const dir = isRTL(currentLang) ? 'rtl' : 'ltr';
   const [products, setProducts] = useState<StoreProduct[]>([]);
   const [loading, setLoading] = useState(true);
@@ -62,7 +64,7 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
   }
 
   const current = product.images[photo] || product.imageUrl;
-  const price = (n: number) => `${storeNumber(n, currentLang)} ${L.currency}`;
+  const price = money.price;
   const related = products.filter((p) => p.sku !== product.sku).map((p) => ({ p, s: closeness(product, p) }))
     .filter((r) => r.s > 0).sort((a, b) => b.s - a.s).slice(0, 4).map((r) => r.p);
   const notes = ([['top', product.notes.top], ['heart', product.notes.heart], ['base', product.notes.base]] as const).filter(([, list]) => list.length);
