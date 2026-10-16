@@ -863,7 +863,7 @@ export default function App() {
 
         {/* Store Promo Hub: promotional banner with store deals */}
         <TopPromoHub
-          currentLang={currentLang}
+          currentLang={currentLang === 'ar' || currentLang === 'en' ? currentLang : 'ar'}
           onViewStore={() => navigateToTab('store')}
         />
 

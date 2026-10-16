@@ -77,7 +77,25 @@ export const Header: React.FC<HeaderProps> = ({
   const [showAdminModal, setShowAdminModal] = useState(false);
   const [groupMenuStates, setGroupMenuStates] = useState<Record<string, boolean>>({});
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const appHeaderRef = useRef<HTMLElement>(null);
   const L = makeT(currentLang, S);
+
+  useEffect(() => {
+    const header = appHeaderRef.current;
+    if (!header) return;
+    const updateStickyOffset = () => {
+      document.documentElement.style.setProperty('--sham-global-header-height', `${Math.ceil(header.getBoundingClientRect().height)}px`);
+    };
+    updateStickyOffset();
+    const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(updateStickyOffset) : undefined;
+    observer?.observe(header);
+    window.addEventListener('resize', updateStickyOffset);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener('resize', updateStickyOffset);
+      document.documentElement.style.removeProperty('--sham-global-header-height');
+    };
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -160,7 +178,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <>
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 px-3 sm:px-8 py-2.5 no-print shadow-xs">
+    <header ref={appHeaderRef} className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 px-3 sm:px-8 py-2.5 no-print shadow-xs">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
         
         {/* Zone 1: Brand wordmark: صمم عطرك مع شام */}
