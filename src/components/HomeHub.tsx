@@ -66,14 +66,14 @@ import { FormulationState, PyramidNote, SavedFormula } from '../types/perfume';
 import { UserEnvironmentProfile } from '../utils/environmentAdapter';
 import { UserDetailedAddress } from '../types/address';
 import { UserProfile } from '../types/auth';
-import { STATS_BADGE_EN, PORTAL_NEWS_EN } from '../utils/localizedHub';
-import { isRTL } from '../utils/localizedContent';
-import { LText, makeT, loc, fmt, LOCALE_MAP } from '../utils/localize';
+import { STATS_BADGE_EN, PORTAL_NEWS_EN } from '../لغات/localizedHub';
+import { isRTL } from '../لغات/localizedContent';
+import { LText, makeT, loc, fmt, LOCALE_MAP } from '../لغات/localize';
 import { loadLiveNews, relativeTime, type NewsFile } from '../utils/liveNews';
-import { PORTAL_L10N as PORTAL_L10N_BASE, NEWS_L10N_A, NewsL10N } from '../utils/hubL10n';
-import { NEWS_L10N_B } from '../utils/hubL10n2';
-import { NEWS_L10N_C } from '../utils/hubL10n3';
-import { mergeHubL10n } from '../utils/hubL10nExt';
+import { PORTAL_L10N as PORTAL_L10N_BASE, NEWS_L10N_A, NewsL10N } from '../لغات/hubL10n';
+import { NEWS_L10N_B } from '../لغات/hubL10n2';
+import { NEWS_L10N_C } from '../لغات/hubL10n3';
+import { mergeHubL10n } from '../لغات/hubL10nExt';
 
 interface PortalNewsItem {
   id: string;

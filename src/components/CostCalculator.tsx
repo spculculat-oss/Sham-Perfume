@@ -28,9 +28,9 @@ import {
 } from '../data/worldCurrencies';
 import { calculatePerfumeCosting, formatNum } from '../utils/calculations';
 import { SupportedLanguage } from '../types/i18n';
-import { isRTL } from '../utils/localizedContent';
-import { LText, makeT, fmt, pickArEn } from '../utils/localize';
-import { uiLabel } from '../utils/uiTextL10n';
+import { isRTL } from '../لغات/localizedContent';
+import { LText, makeT, fmt, pickArEn } from '../لغات/localize';
+import { uiLabel } from '../لغات/uiTextL10n';
 
 interface CostCalculatorProps {
   currentLang?: SupportedLanguage;

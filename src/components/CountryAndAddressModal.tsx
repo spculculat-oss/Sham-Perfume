@@ -49,8 +49,8 @@ import { ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
 import { PyramidNote } from '../types/perfume';
 import { UserProfile } from '../types/auth';
 import { SupportedLanguage, SUPPORTED_LANGUAGES, LanguageConfig } from '../types/i18n';
-import { LText, makeT, fmt, pickArEn, LOCALE_MAP } from '../utils/localize';
-import { isRTL } from '../utils/localizedContent';
+import { LText, makeT, fmt, pickArEn, LOCALE_MAP } from '../لغات/localize';
+import { isRTL } from '../لغات/localizedContent';
 
 
 const S = {

@@ -1,6 +1,6 @@
 import type { SupportedLanguage } from '../types/i18n';
 import { ApiError, isStaticHosting } from '../utils/api';
-import { loc, type LText } from '../utils/localize';
+import { loc, type LText } from '../لغات/localize';
 import type { ShaheenEngine } from '../hooks/useShaheenModels';
 import { visibleEngines } from './shaheenEngines';
 

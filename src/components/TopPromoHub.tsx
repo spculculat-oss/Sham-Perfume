@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronDown, Sparkles, ShoppingCart, ArrowRight, Star, Tag, Zap } from 'lucide-react';
-import { makeT } from '../utils/localize';
-import { isRTL } from '../utils/localizedContent';
+import { makeT } from '../لغات/localize';
+import type { SupportedLanguage } from '../types/i18n';
+import { isRTL } from '../لغات/localizedContent';
 import productsData from '../data/products.json';
 
 const S = {
@@ -23,20 +24,23 @@ const S = {
     ar: '🛍️ منتجات جدید من شاما برفume | 特價中 | Nouveautés',
     en: '🛍️ New from Shama Perfumes | 特價中 | New Arrivals'
   },
-  trust_badges: {
-    ar: ['شحن مجاني فوق 500 جنيه', 'توصيل خلال 3-5 أيام', 'ضمان استرجاع 30 يوم', 'دفع آمن 100%'],
-    en: ['Free Shipping over 500 EGP', 'Delivery in 3-5 days', '30-day return guarantee', '100% Secure Payment']
-  }
+};
+
+/** Trust badges are a list per language, so they stay out of the LText dictionary. */
+const TRUST_BADGES: Record<'ar' | 'en', string[]> = {
+  ar: ['شحن مجاني فوق 500 جنيه', 'توصيل خلال 3-5 أيام', 'ضمان استرجاع 30 يوم', 'دفع آمن 100%'],
+  en: ['Free Shipping over 500 EGP', 'Delivery in 3-5 days', '30-day return guarantee', '100% Secure Payment'],
 };
 
 interface TopPromoHubProps {
-  currentLang?: 'ar' | 'en';
+  currentLang?: SupportedLanguage;
   onViewStore?: () => void;
 }
 
 export const TopPromoHub: React.FC<TopPromoHubProps> = ({ currentLang = 'ar', onViewStore }) => {
   const rtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
+  const trustBadges = currentLang === 'ar' ? TRUST_BADGES.ar : TRUST_BADGES.en;
   const [expanded, setExpanded] = useState(true);
   const [slideIndex, setSlideIndex] = useState(0);
 
@@ -180,7 +184,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({ currentLang = 'ar', on
 
                 {/* Trust badges */}
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {L('trust_badges').map((badge, i) => (
+                  {trustBadges.map((badge, i) => (
                     <div key={i} className="flex items-center gap-1 text-xs bg-white/20 px-2 py-1 rounded-full">
                       {i === 0 && <Star className="w-3 h-3 text-amber-300" />}
                       {i === 1 && <Zap className="w-3 h-3 text-yellow-200" />}

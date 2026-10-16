@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { SupportedLanguage, SUPPORTED_LANGUAGES, LanguageConfig, TranslationKey } from '../types/i18n';
-import { getInitialLanguage, saveLanguage, t as translateFn, TRANSLATIONS } from '../utils/i18n';
+import { getInitialLanguage, saveLanguage, t as translateFn, TRANSLATIONS } from '../لغات/i18n';
 
 interface LanguageContextType {
   currentLang: SupportedLanguage;

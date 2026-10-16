@@ -27,8 +27,8 @@ import { PyramidNote, CalculationResult } from '../types/perfume';
 import { SupportedLanguage } from '../types/i18n';
 import { formatNum } from '../utils/calculations';
 import { useLanguage } from '../context/LanguageContext';
-import { LText, makeT, fmt, pickArEn } from '../utils/localize';
-import { uiLabel } from '../utils/uiTextL10n';
+import { LText, makeT, fmt, pickArEn } from '../لغات/localize';
+import { uiLabel } from '../لغات/uiTextL10n';
 import {
   calculateEvaporationKinetics,
   EvaporationKinetics,

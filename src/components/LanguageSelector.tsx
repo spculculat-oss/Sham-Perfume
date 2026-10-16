@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Globe, Check, ChevronDown, Search, Sparkles, Languages, MapPin } from 'lucide-react';
 import { SupportedLanguage, SUPPORTED_LANGUAGES, LanguageConfig } from '../types/i18n';
-import { getCommonLabel, isRTL } from '../utils/localizedContent';
-import { LText, makeT, fmt } from '../utils/localize';
+import { getCommonLabel, isRTL } from '../لغات/localizedContent';
+import { LText, makeT, fmt } from '../لغات/localize';
 
 const S = {
   trigger_label: {

@@ -15,8 +15,8 @@ import {
   Ban,
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
-import { LText, makeT } from '../utils/localize';
-import { uiLabel } from '../utils/uiTextL10n';
+import { LText, makeT } from '../لغات/localize';
+import { uiLabel } from '../لغات/uiTextL10n';
 import {
   getAllMerchants, getMerchantById,
   saveMerchant, updateMerchant, deleteMerchant,

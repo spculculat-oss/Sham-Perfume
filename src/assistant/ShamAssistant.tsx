@@ -7,7 +7,7 @@ import {
 import type { SupportedLanguage } from '../types/i18n';
 import { SUPPORTED_LANGUAGES } from '../types/i18n';
 import { ApiError, ApiUnavailableError, isStaticHosting } from '../utils/api';
-import { fmt, loc, makeT, type LText } from '../utils/localize';
+import { fmt, loc, makeT, type LText } from '../لغات/localize';
 import {
   assistantApi, CONVERSATION_KEY, streamChat, type ActionCard, type AssistantConfig, type ChatReply, type FormField, type ProductCard,
   type CouncilView, type PublicService, type PublicStep, type RequestView, type UiMessage,

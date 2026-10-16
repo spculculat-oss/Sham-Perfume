@@ -13,8 +13,8 @@ import {
 import ingredientsImg from '../assets/images/perfume_ingredients_pyramid_1791692429360.jpg';
 import { SupportedLanguage } from '../types/i18n';
 import { FormulationState } from '../types/perfume';
-import { isRTL } from '../utils/localizedContent';
-import { LText, makeT } from '../utils/localize';
+import { isRTL } from '../لغات/localizedContent';
+import { LText, makeT } from '../لغات/localize';
 import { MacerationTimeSimulator } from './MacerationTimeSimulator';
 
 

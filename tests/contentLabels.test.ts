@@ -6,7 +6,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { SUPPORTED_LANGUAGES } from '../src/types/i18n';
-import { CONTENT_LABELS_ALL, CONTENT_LABEL_KEYS, contentLabel } from '../src/utils/contentLabels';
+import { CONTENT_LABELS_ALL, CONTENT_LABEL_KEYS, contentLabel } from '../src/لغات/contentLabels';
 
 const KEYS = [
   'news_trends', 'news_exhibitions', 'news_harvests', 'news_ifra', 'news_niche',

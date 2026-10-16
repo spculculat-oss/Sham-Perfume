@@ -1,6 +1,6 @@
 import type { SupportedLanguage } from '../types/i18n';
 import { isStaticHosting } from '../utils/api';
-import { loc, type LText } from '../utils/localize';
+import { loc, type LText } from '../لغات/localize';
 
 const STATIC_HOSTING_NOTICE: LText = {
   ar: 'هذه نسخة GitHub Pages الثابتة. الحاسبات والمكتبات متاحة، لكن المحادثة الذكية وتحديث الأخبار يحتاجان إلى خادم Node.js ولا يعملان على هذه الاستضافة.',

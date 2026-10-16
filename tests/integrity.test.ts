@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
-import { TRANSLATIONS } from '../src/utils/i18n';
+import { TRANSLATIONS } from '../src/لغات/i18n';
 import { SUPPORTED_LANGUAGES } from '../src/types/i18n';
 
 const read = (file: string) => readFileSync(file, 'utf8');
