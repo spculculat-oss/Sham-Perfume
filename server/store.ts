@@ -94,11 +94,15 @@ export function createStoreRouter(options: StoreRouterOptions = {}) {
     const engines: ModelEngineId[] = settings.enabled ? settings.engines.filter((id) => configured.has(id)) : [];
     if (engines.length) {
       const shortlist = recommend(list, message, 8).picks.map((p) => p.product.sku);
+      // Big catalogs (imported by «مستورد شاهين»): Shaheen sees the best-matching products first.
+      const ranked = recommend(list, message, 80).picks.map((p) => p.product);
+      const seen = new Set(ranked.map((p) => p.sku));
+      const ordered = [...ranked, ...list.filter((p) => !seen.has(p.sku) && p.inStock)];
       const system = ADVISOR_SYSTEM + await supervisorGuidance('store_advisor', env).catch(() => '');
       const prompt = `طلب الزائر (${lang === 'ar' ? 'بالعربية' : 'in English'}): «${message}»
 ترشيح مبدئي من فلتر المتجر (قد يكون ناقصاً): ${shortlist.join(', ') || 'لا يوجد'}
 منتجات المتجر (المعرّف | الاسم | العلامة | السعر | الجنس | العائلة | النوتات | المواسم | المناسبات):
-${catalogLines(list)}
+${catalogLines(ordered)}
 
 أعد: {"reply":"جملة أو جملتان للزائر بلغته","picks":[{"id":"المعرّف كما في القائمة","why":"سبب قصير"}]}`;
       const signal = AbortSignal.timeout(options.timeoutMs ?? 22_000);

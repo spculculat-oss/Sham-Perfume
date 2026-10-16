@@ -16,6 +16,8 @@ from pathlib import Path
 # Configuration
 STORE_URL = "https://spculculat-oss.github.io/Sham-Perfume/#store"
 PRODUCTS_FILE = "src/data/products.json"
+REVIEW_FILE = "src/data/live/store-review.json"
+SITE_URL = "https://spculculat-oss.github.io/Sham-Perfume/"
 CHECK_INTERVAL = 600  # 10 minutes
 MAX_FIX_ATTEMPTS = 3
 
@@ -135,6 +137,47 @@ class ShaheenDoctor:
             self.log(f"ERROR: Failed to check images: {e}", "ERROR")
             return False
     
+    def check_store_review(self):
+        """Read the report of «مراجع الصفحات» (written by «مستورد شاهين» every 12 hours)."""
+        self.log("Checking the page reviewer report...")
+        try:
+            with open(REVIEW_FILE, 'r', encoding='utf-8') as f:
+                review = json.load(f)
+        except FileNotFoundError:
+            self.log("INFO: No reviewer report yet (the importer has not run)")
+            return True
+        except Exception as e:
+            self.log(f"ERROR: Reviewer report unreadable: {e}", "ERROR")
+            return False
+        s = review.get('summary', {})
+        self.log(f"Reviewer: {s.get('total', 0)} products, {s.get('ok', 0)} ok, {s.get('warn', 0)} with remarks, "
+                 f"{s.get('hidden', 0)} hidden, {s.get('brokenImages', 0)}/{s.get('imagesChecked', 0)} broken photos")
+        for item in review.get('items', []):
+            if item.get('status') == 'hidden':
+                self.issues_found.append(f"{item.get('sku')}: {', '.join(item.get('issues', []))}")
+        return True
+
+    def check_product_pages(self):
+        """Every product has its own page (p/<slug>.html): check the index and a few imported products."""
+        self.log("Checking the product pages...")
+        try:
+            r = requests.get(f"{SITE_URL}p/index.html", timeout=10)
+            if r.status_code != 200:
+                self.log(f"WARNING: Product index returned {r.status_code} (Pages not rebuilt yet?)", "WARNING")
+                return True
+            with open(PRODUCTS_FILE, 'r', encoding='utf-8') as f:
+                products = [p for p in json.load(f).get('products', []) if p.get('slug') and p.get('published', True)]
+            sample = products[(self.fix_count * 3) % max(1, len(products)):][:3]
+            for p in sample:
+                page = requests.get(f"{SITE_URL}p/{p['slug']}.html", timeout=10)
+                if page.status_code != 200:
+                    self.issues_found.append(f"{p.get('sku')}: product page returned {page.status_code}")
+            self.log(f"OK: product index online; {len(sample)} product pages checked")
+            return True
+        except Exception as e:
+            self.log(f"ERROR: Failed to check product pages: {e}", "ERROR")
+            return False
+
     def check_workflow_status(self):
         """Check GitHub Actions workflow status."""
         self.log("Checking GitHub Actions status...")
@@ -154,6 +197,8 @@ class ShaheenDoctor:
             ("Products File", self.check_products_file),
             ("Store Page", self.check_store_page),
             ("Product Images", self.check_product_images),
+            ("Page Reviewer", self.check_store_review),
+            ("Product Pages", self.check_product_pages),
             ("Workflow Status", self.check_workflow_status),
         ]
         

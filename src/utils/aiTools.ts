@@ -6,7 +6,7 @@
  */
 export type AiToolId =
   | 'shaheen_chat' | 'sham_assistant' | 'news_articles' | 'news_bulletin' | 'assistant_training' | 'media' | 'admin_agent'
-  | 'store_advisor' | 'store_catalog';
+  | 'store_advisor' | 'store_catalog' | 'store_import';
 
 export interface AiToolDef {
   id: AiToolId;
@@ -61,6 +61,11 @@ export const AI_TOOLS: AiToolDef[] = [
     id: 'store_catalog', nameAr: 'تدريب كتالوج المتجر', nameEn: 'Store catalog training',
     descriptionAr: 'كل 12 ساعة يراجع شاهين منتجات المتجر: يصحح الأسماء والأوصاف ويضيف العائلة العطرية والنوتات والمواسم والمناسبات ويكشف أخطاء البيانات.',
     sources: ['scripts/shaheen-store/run.mts'], routes: [], acceptsGuidance: true,
+  },
+  {
+    id: 'store_import', nameAr: 'مستورد شاهين + مراجع الصفحات', nameEn: 'Shaheen product importer + page reviewer',
+    descriptionAr: 'كل 12 ساعة ينقل شاهين منتجات المورد إلى «متجر شام» بكل بياناتها وصورها (من خريطة الموقع وبيانات schema.org، ويقرأ الصفحة بنفسه إن لزم)، ويسعّرها بمعادلة المتجر، ثم يراجع «مراجع الصفحات» كل منتج وصورته وسعره وصفحته ويخفي المعيب.',
+    sources: ['scripts/shaheen-import/run.mts'], routes: [], acceptsGuidance: true,
   },
   {
     id: 'admin_agent', nameAr: 'المساعد الإداري', nameEn: 'Admin operations agent',

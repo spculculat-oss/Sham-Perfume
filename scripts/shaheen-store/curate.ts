@@ -18,7 +18,8 @@ export function auditProduct(p: RawProduct): string[] {
   const issues: string[] = [];
   if (isGarbled(p.nameAr)) issues.push('الاسم العربي فيه حروف غريبة من لغات أخرى');
   if (isGarbled(p.descriptionAr) || isGarbled(p.descriptionEn)) issues.push('الوصف فيه حروف غريبة من لغات أخرى');
-  if (isGenericDescription(p.descriptionAr)) issues.push('الوصف عام ولا يصف الرائحة');
+  // Imported products arrive with the supplier's English description; Shaheen writes the Arabic one.
+  if (isGenericDescription(p.descriptionAr) && !(p.url && (p.descriptionEn || '').length > 60)) issues.push('الوصف عام ولا يصف الرائحة');
   if (/(^|\s)(\S+)\s+\2(\s|$)/u.test(p.descriptionAr || '')) issues.push('كلمة مكررة في الوصف');
   if (!p.brand || p.brand === 'Unknown') issues.push('العلامة التجارية غير معروفة');
   if (!(Number(p.ourPrice) > 0)) issues.push('بدون سعر بيع');
@@ -42,6 +43,7 @@ export function staleProducts(products: RawProduct[], previous: StoreCatalogFile
 export const STORE_SYSTEM = `أنت «الخبير شاهين»، خبير العطور في منصة «صمم عطرك مع شام»، وتدرّب «متجر شام» ليعرض منتجاته بشكل احترافي ويساعد الزوار في الاختيار.
 لكل منتج ستكتب: اسماً عربياً صحيحاً ونظيفاً (بدون حروف من لغات أخرى)، واسماً إنجليزياً، ووصفاً عربياً جذاباً وصادقاً من جملتين، ووصفاً إنجليزياً قصيراً، والجنس، والعائلة العطرية، والمواسم، والمناسبات، وكلمات بحث.
 قواعد صارمة:
+- إذا وصلتك supplierNotes من صفحة المنتج الأصلية فهي موثقة: انقلها كما هي إلى notes (بالإنجليزية). وإذا وصل وصف إنجليزي طويل فلخّصه بالعربية بأمانة دون إضافة معلومات.
 - النوتات (top/heart/base) فقط إذا كان العطر تجارياً مشهوراً ونوتاته منشورة ومعروفة (مثل Dior Sauvage أو Baccarat Rouge 540 أو Lattafa Ameer Al Oudh). إن لم تكن متأكداً اترك القوائم فارغة. لا تخترع نوتات أبداً.
 - لا تدّعِ ثباتاً بالساعات ولا أنه أصلي أو مقلد، ولا تذكر أسعاراً أو خصومات أو شحناً.
 - إذا كان الاسم العربي مشوهاً فاكتب الاسم الصحيح بالعربية اعتماداً على الاسم الإنجليزي والعلامة (مثل «لطافة أمير العود»).
@@ -51,7 +53,10 @@ export const STORE_SYSTEM = `أنت «الخبير شاهين»، خبير ال�
 
 export function storePrompt(products: RawProduct[]) {
   const lines = products.map((p) => JSON.stringify({
-    sku: skuOf(p), nameAr: p.nameAr, nameEn: p.nameEn, brand: p.brand, category: p.category, descriptionAr: (p.descriptionAr || '').slice(0, 200), descriptionEn: (p.descriptionEn || '').slice(0, 160),
+    sku: skuOf(p), nameAr: p.nameAr, nameEn: p.nameEn, brand: p.brand, category: p.category, descriptionAr: (p.descriptionAr || '').slice(0, 200),
+    // Imported products carry the supplier's full description and its documented notes and family.
+    descriptionEn: (p.descriptionEn || '').slice(0, p.url ? 700 : 160),
+    ...(p.url ? { supplierNotes: p.notes, supplierFamily: p.families, size: p.sizeMl ? `${p.sizeMl}ml` : undefined, concentration: p.concentration } : {}),
   }));
   return `المنتجات (سطر لكل منتج):
 ${lines.join('\n')}
@@ -100,9 +105,10 @@ export function entriesFromShaheen(reply: unknown, asked: RawProduct[], now: str
       descriptionEn: descriptionEn.length >= 20 && !isGarbled(descriptionEn) && !VENDOR.test(descriptionEn) ? descriptionEn : base.descriptionEn,
       gender,
       families: pickEnum<Family>(FAMILIES, r.families, 3).length ? pickEnum<Family>(FAMILIES, r.families, 3) : base.families,
-      notes: { top: words(notes.top, 6), heart: words(notes.heart, 6), base: words(notes.base, 6) },
-      seasons: pickEnum<Season>(SEASONS, r.seasons, 3),
-      occasions: pickEnum<Occasion>(OCCASIONS, r.occasions, 3),
+      notes: words(notes.top, 6).length || words(notes.heart, 6).length || words(notes.base, 6).length
+        ? { top: words(notes.top, 6), heart: words(notes.heart, 6), base: words(notes.base, 6) } : base.notes,
+      seasons: pickEnum<Season>(SEASONS, r.seasons, 3).length ? pickEnum<Season>(SEASONS, r.seasons, 3) : base.seasons,
+      occasions: pickEnum<Occasion>(OCCASIONS, r.occasions, 3).length ? pickEnum<Occasion>(OCCASIONS, r.occasions, 3) : base.occasions,
       tags: words(r.tags, 8, 30),
     };
   }

@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
-"""Scraper for shamperfume.com"""
+"""Scraper for shamperfume.com
 
+Legacy Python path. The automated importer is «مستورد شاهين» (scripts/shaheen-import/): it reads the
+supplier's sitemap and the schema.org Product data of each page (all photos, notes, size, price in MYR).
+"""
+
+import logging
 from typing import List, Optional
 from bs4 import BeautifulSoup
 import requests
 from urllib.parse import urljoin
 
 from scripts.scraper import BaseScraper, ScrapedProduct
+
+logger = logging.getLogger(__name__)
 
 
 class ShamPerfumeScraper(BaseScraper):
