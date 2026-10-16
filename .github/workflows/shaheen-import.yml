@@ -97,13 +97,11 @@ jobs:
         run: |
           git config user.name "Shaheen importer bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/data/products.json src/data/live
-          if git diff --cached --quiet; then echo "Nothing new to publish"; exit 0; fi
-          git commit -m "مستورد شاهين: نقل منتجات المورد ومراجعة الصفحات $(date -u +%Y-%m-%dT%H:%MZ)"
-          for attempt in 1 2 3 4 5; do
-            if git pull --rebase --depth=50 origin main && git push origin HEAD:main; then pushed=1; break; fi
-            sleep $((attempt * 5))
-          done
-          if [ -z "$pushed" ]; then echo "::error::Could not push the imported products"; exit 1; fi
+          before=$(git rev-parse HEAD)
+          # Other bots (news, supervisor) write some of the same generated files: scripts/ci/publish.mjs
+          # resolves that instead of failing (a half-done rebase used to lose the whole import).
+          node scripts/ci/publish.mjs "مستورد شاهين: نقل منتجات المورد ومراجعة الصفحات $(date -u +%Y-%m-%dT%H:%MZ)" src/data/products.json src/data/live \
+            || { echo "::error::Could not push the imported products"; exit 1; }
+          if [ "$(git rev-parse HEAD)" = "$before" ]; then exit 0; fi
           # Pushes made with this token start no workflows: rebuild GitHub Pages (store + product pages).
           gh workflow run pages.yml --ref main || echo "::warning::Pages rebuild not started"

@@ -77,15 +77,9 @@ jobs:
         run: |
           git config user.name "Shaheen news bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/data/live
-          if git diff --cached --quiet; then echo "Nothing new to publish"; exit 0; fi
-          git commit -m "نشرة شاهين: تحديث الأخبار وتدريب مساعد شام والمتجر $(date -u +%Y-%m-%dT%H:%MZ)"
-          # main moves often: rebase onto the latest main and retry.
-          for attempt in 1 2 3 4 5; do
-            if git pull --rebase --depth=50 origin main && git push origin HEAD:main; then pushed=1; break; fi
-            sleep $((attempt * 5))
-          done
-          if [ -z "$pushed" ]; then echo "::error::Could not push the news update"; exit 1; fi
+          # main moves often and other bots write some of the same files: scripts/ci/publish.mjs handles both.
+          node scripts/ci/publish.mjs "نشرة شاهين: تحديث الأخبار وتدريب مساعد شام والمتجر $(date -u +%Y-%m-%dT%H:%MZ)" src/data/live \
+            || { echo "::error::Could not push the news update"; exit 1; }
 
   supervise:
     name: Shaheen supervises the AI tools
@@ -132,14 +126,7 @@ jobs:
         run: |
           git config user.name "Shaheen supervisor bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/data/live
-          if git diff --cached --quiet; then echo "Nothing new to publish"; else
-            git commit -m "مشرف شاهين: مراجعة أدوات الذكاء الاصطناعي $(date -u +%Y-%m-%dT%H:%MZ)"
-            for attempt in 1 2 3 4 5; do
-              if git pull --rebase --depth=50 origin main && git push origin HEAD:main; then pushed=1; break; fi
-              sleep $((attempt * 5))
-            done
-            if [ -z "$pushed" ]; then echo "::error::Could not push the supervisor report"; exit 1; fi
-          fi
+          node scripts/ci/publish.mjs "مشرف شاهين: مراجعة أدوات الذكاء الاصطناعي $(date -u +%Y-%m-%dT%H:%MZ)" src/data/live \
+            || { echo "::error::Could not push the supervisor report"; exit 1; }
           # Pushes made with this token start no workflows; rebuild GitHub Pages once for the news and the report.
           gh workflow run pages.yml --ref main || echo "::warning::Pages rebuild not started (the site still reads the new data directly)"
