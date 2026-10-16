@@ -317,9 +317,12 @@ export async function callEngine(
     }
   }
   let errorBody: string | undefined;
-  if (id === 'gemini' && response.status === 429) errorBody = await response.text().catch(() => '');
-  if (errorBody !== undefined && /RESOURCE_EXHAUSTED|QuotaFailure|quota/i.test(errorBody)) {
-    // Quota is per model: an exhausted model does not mean the key is dead — try others for an hour.
+  if (id === 'gemini' && (response.status === 429 || response.status >= 500)) errorBody = await response.text().catch(() => '');
+  // Quota is per model: an exhausted model does not mean the key is dead — try others for an hour.
+  const exhausted = response.status === 429 && /RESOURCE_EXHAUSTED|QuotaFailure|quota/i.test(errorBody || '');
+  // Google also answers 503 UNAVAILABLE ("high demand") for one model while the others work: same remedy, for 10 minutes.
+  const overloaded = errorBody !== undefined && response.status >= 500;
+  if (exhausted || overloaded) {
     const apiKey = env.GEMINI_API_KEY!.trim();
     const original = url.match(/\/models\/([^:]+):/)?.[1];
     const failed = original ? decodeURIComponent(original) : status.model;
@@ -329,11 +332,11 @@ export async function callEngine(
       const nextBody = { ...body, generationConfig: { temperature: options.temperature, ...geminiThinking(next, maxTokens) } };
       const attempt = await request(nextUrl, { method: 'POST', headers, body: JSON.stringify(nextBody), signal: options.signal });
       if (attempt.ok) {
-        geminiSubstitutes.set(geminiCacheKey(apiKey, requestedModel), { model: next, at: Date.now(), ttl: 3600_000 });
+        geminiSubstitutes.set(geminiCacheKey(apiKey, requestedModel), { model: next, at: Date.now(), ttl: exhausted ? 3600_000 : 10 * 60_000 });
         response = attempt; errorBody = undefined; usedModel = next;
         break;
       }
-      if (attempt.status !== 429 && attempt.status !== 404) { response = attempt; errorBody = undefined; break; }
+      if (attempt.status !== 429 && attempt.status !== 404 && attempt.status < 500) { response = attempt; errorBody = undefined; break; }
       await attempt.body?.cancel().catch(() => {});
     }
   }
