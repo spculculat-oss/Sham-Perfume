@@ -22,8 +22,11 @@ on:
         required: false
         default: '30'
   push:
-    branches: ['arena/**']
-    paths: ['scripts/shaheen-import/**', '.github/workflows/shaheen-import.yml']
+    # main: a change to the importer, or a merchant's own edit of products.json, is imported/reviewed at once
+    # (the bot's own commits use GITHUB_TOKEN, which starts no workflow, so there is no loop).
+    # Branches: rehearsal only.
+    branches: [main, 'arena/**']
+    paths: ['scripts/shaheen-import/**', 'src/data/products.json', '.github/workflows/shaheen-import.yml']
 
 permissions:
   contents: write
