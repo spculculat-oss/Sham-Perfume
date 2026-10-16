@@ -1,7 +1,7 @@
 {
  "version": 1,
- "updatedAt": "2026-10-16T19:20:35.099Z",
- "nextUpdateAt": "2026-10-17T07:20:35.099Z",
+ "updatedAt": "2026-10-16T21:28:34.736Z",
+ "nextUpdateAt": "2026-10-17T09:28:34.736Z",
  "intervalHours": 12,
  "editor": "feeds",
  "digest": {
@@ -11,11 +11,15 @@
  "sources": [
   {
    "name": "Now Smell This",
-   "count": 6
+   "count": 5
   },
   {
    "name": "Premium Beauty News",
    "count": 3
+  },
+  {
+   "name": "Vietnam.vn",
+   "count": 2
   },
   {
    "name": "CaFleureBon",
@@ -26,11 +30,19 @@
    "count": 2
   },
   {
-   "name": "EIN Presswire",
+   "name": "Grazia",
    "count": 1
   },
   {
-   "name": "Grazia",
+   "name": "白鲸出海",
+   "count": 1
+  },
+  {
+   "name": "The Economic Times",
+   "count": 1
+  },
+  {
+   "name": "EIN Presswire",
    "count": 1
   },
   {
@@ -51,10 +63,6 @@
   },
   {
    "name": "اليوم السابع",
-   "count": 1
-  },
-  {
-   "name": "Vietnam.vn",
    "count": 1
   },
   {
@@ -84,17 +92,63 @@
   {
    "name": "ChemAnalyst",
    "count": 1
-  },
-  {
-   "name": "WWD",
-   "count": 1
-  },
-  {
-   "name": "Trend Hunter",
-   "count": 1
   }
  ],
  "items": [
+  {
+   "id": "n1377zge",
+   "url": "https://news.google.com/rss/articles/CBMimwJBVV95cUxNaDlnSzJIOVZaeGpvdHNlZkxhWGdRaE52VWNYcG9CM1Z0ZWcwR3Vlc3JWaXdyUXRiRTVzZFc0RmVaVFhzY2xRbU52SnFtR3RidTJOYVdyZnpTYWhiTTFJekNBOVprSktMaC1TM2NEZV9BRUpTLXpLUWs3OE5qN3J1LUsxTmtTNzdHUnZLS3dBdlpjeFVfZ1VEZWJ3VlEtRkNKTWJBYmpyRkNSaXhHNDJZRWsySms0dEcwMHp5MG5qcmsxM0hERmxOMnZSOWJkV2x3WFpaVG9uYWZMeU5IekpEWlc2SVdiQWNvLWZvOHhvaWgtc3Q1SUhNeWt3SW5oeUQ4U0hFTjNUTGJOZ1VpcDdibjEwVEhMNDhyWXlN?oc=5",
+   "source": "Grazia",
+   "publishedAt": "2026-10-16T20:10:14.000Z",
+   "original": "Les mamans l’adorent : ce parfum emblématique de L’Artisan Parfumeur, maison qui fête ses 50 ans, \"fait tourner les têtes de génération en génération\"",
+   "lang": "fr",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Les mamans l’adorent : ce parfum emblématique de L’Artisan Parfumeur, maison qui fête ses 50 ans, \"fait tourner les têtes de génération en génération\"",
+    "en": "Les mamans l’adorent : ce parfum emblématique de L’Artisan Parfumeur, maison qui fête ses 50 ans, \"fait tourner les têtes de génération en génération\""
+   },
+   "summary": {
+    "ar": "Les mamans l’adorent : ce parfum emblématique de L’Artisan Parfumeur, maison qui fête ses 50 ans, \"fait tourner les têtes de génération en génération\"",
+    "en": "Les mamans l’adorent : ce parfum emblématique de L’Artisan Parfumeur, maison qui fête ses 50 ans, \"fait tourner les têtes de génération en génération\""
+   }
+  },
+  {
+   "id": "n1bnyg1q",
+   "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE1XRDhxZ1drVXRBQlpsNzN2UVVBazN6NC13SkYzd1BpTW94X2dpU0dCdkVRTmNXUkpZZ2ZKMDBlb2xUMFd2dUZLYVJZYTY5MURDNXZzZmtxWWFRYmhPWXc?oc=5",
+   "source": "白鲸出海",
+   "publishedAt": "2026-10-16T20:05:12.000Z",
+   "original": "Hacker Queen Is Also a Perfume Genius Ending Explained: A Satisfying Conclusion for Readers",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Hacker Queen Is Also a Perfume Genius Ending Explained: A Satisfying Conclusion for Readers",
+    "en": "Hacker Queen Is Also a Perfume Genius Ending Explained: A Satisfying Conclusion for Readers"
+   },
+   "summary": {
+    "ar": "Hacker Queen Is Also a Perfume Genius Ending Explained: A Satisfying Conclusion for Readers",
+    "en": "Hacker Queen Is Also a Perfume Genius Ending Explained: A Satisfying Conclusion for Readers"
+   }
+  },
+  {
+   "id": "n157wjme",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPVzItU2J6OExTME9GaHBtVEQ5dmJUSUlpTUtWb3dLMlVsYWpPOU5YUmszOFVmTW9wNmJoZ29yY0ZxWlZiMzg1X1RqUjYzWTlLN0NjMUFRV3lPTXYzaFc4cGUtWXRfYi15U3dJQnBpd0VBUTFma2dmVl9DcDdKbWd4bGRVWm9ndU5GbnVua256WlRrWENzYjF6Ny1MaVBRcEtPMVpuOTVIdTZTRDR1blA4?oc=5",
+   "source": "Vietnam.vn",
+   "publishedAt": "2026-10-16T19:41:02.000Z",
+   "original": "تقديم البخور إحياءً لذكرى لجنة التفتيش في المنطقة الخامسة عند النصب التذكاري التاريخي الوطني",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 2,
+   "title": {
+    "ar": "تقديم البخور إحياءً لذكرى لجنة التفتيش في المنطقة الخامسة عند النصب التذكاري التاريخي الوطني",
+    "en": "تقديم البخور إحياءً لذكرى لجنة التفتيش في المنطقة الخامسة عند النصب التذكاري التاريخي الوطني"
+   },
+   "summary": {
+    "ar": "تقديم البخور إحياءً لذكرى لجنة التفتيش في المنطقة الخامسة عند النصب التذكاري التاريخي الوطني",
+    "en": "تقديم البخور إحياءً لذكرى لجنة التفتيش في المنطقة الخامسة عند النصب التذكاري التاريخي الوطني"
+   }
+  },
   {
    "id": "n18hqpz",
    "url": "https://cafleurebon.com/aroma-sanctum-perfumes-mabon-review-akuura-kulak-plus-an-autumnal-giveaway/?utm_source=rss&utm_medium=rss&utm_campaign=aroma-sanctum-perfumes-mabon-review-akuura-kulak-plus-an-autumnal-giveaway",
@@ -111,6 +165,24 @@
    "summary": {
     "ar": "Aroma Sanctum Perfumes Mabon by Akuura Kulak is a marvel of collective memory, emblematic of the harvest season in all its glory. The post Aroma Sanctum Perfumes Mabon Review (Akuura Kulak) + An Autumnal Giveaway appeared first on ÇaFleureBon Perfume Blog .",
     "en": "Aroma Sanctum Perfumes Mabon by Akuura Kulak is a marvel of collective memory, emblematic of the harvest season in all its glory. The post Aroma Sanctum Perfumes Mabon Review (Akuura Kulak) + An Autumnal Giveaway appeared first on ÇaFleureBon Perfume Blog ."
+   }
+  },
+  {
+   "id": "n1t4vxs5",
+   "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxNcnVJNUhsYTVPNDFybU5XeXRRbmpxZEhoNE9KUjNYbGNRcmZ3UzhQQWpJdUZSajFHSGV2S3ZqcGRUWjdEUG92cENSTVQ1TnF6Z3NOVDBRREF2WFFFa09XOEduOGg5TDRuczFnaExLelRLQk1ST1huUnF5T0dTMmM2eFJ2T2JUdXhxajZxWktjRGNzS25ucTZLM0tLQlRLbmsyUmQ1eGg0TkJtRWt3R19FQXl6QllRekx0SE16d2NoaXRHc1BWdEhLa3pRSGR1ZVR6aldQbDVMc2p3aHF00gHiAUFVX3lxTE14dV9reEV4bEZ0LTVQdFdMa2lYci11dV9XdWd4SEVTbGVsbkNhYnlveGxRMktoWW1jUGYyOVI2U0hTd0JJOEhjdlRteFJJRHFCYk9pYXh4WE9wcld5XzVSc1dsN2RHLUhlT01SZHhPQmhJVkZlS1FMcEZqUENCMUJIclJyRFdYdzhQZTA0RlBwcUZhT3kzRHV6b09qTXdIRmQ2akZITjZid0NHXzdJVUlrVVBYLXJoeXRWLTZjLVRKUDhSRm5NU3pyVlVZYWJONDlIYjB4RzdqU1Bwb3IyaUp2cXc?oc=5",
+   "source": "The Economic Times",
+   "publishedAt": "2026-10-16T19:07:09.000Z",
+   "original": "'Under attack' from fragrance, Hanoi prunes its famous blossoms",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "'Under attack' from fragrance, Hanoi prunes its famous blossoms",
+    "en": "'Under attack' from fragrance, Hanoi prunes its famous blossoms"
+   },
+   "summary": {
+    "ar": "'Under attack' from fragrance, Hanoi prunes its famous blossoms",
+    "en": "'Under attack' from fragrance, Hanoi prunes its famous blossoms"
    }
   },
   {
@@ -147,24 +219,6 @@
    "summary": {
     "ar": "Matière Première, the French niche house of perfumer Aurélien Guichard, has launched Cherry Amber, a new unisex fragrance. Cherry Amber is currently exclusive to the Middle East...",
     "en": "Matière Première, the French niche house of perfumer Aurélien Guichard, has launched Cherry Amber, a new unisex fragrance. Cherry Amber is currently exclusive to the Middle East..."
-   }
-  },
-  {
-   "id": "n1377zge",
-   "url": "https://news.google.com/rss/articles/CBMimwJBVV95cUxNaDlnSzJIOVZaeGpvdHNlZkxhWGdRaE52VWNYcG9CM1Z0ZWcwR3Vlc3JWaXdyUXRiRTVzZFc0RmVaVFhzY2xRbU52SnFtR3RidTJOYVdyZnpTYWhiTTFJekNBOVprSktMaC1TM2NEZV9BRUpTLXpLUWs3OE5qN3J1LUsxTmtTNzdHUnZLS3dBdlpjeFVfZ1VEZWJ3VlEtRkNKTWJBYmpyRkNSaXhHNDJZRWsySms0dEcwMHp5MG5qcmsxM0hERmxOMnZSOWJkV2x3WFpaVG9uYWZMeU5IekpEWlc2SVdiQWNvLWZvOHhvaWgtc3Q1SUhNeWt3SW5oeUQ4U0hFTjNUTGJOZ1VpcDdibjEwVEhMNDhyWXlN?oc=5",
-   "source": "Grazia",
-   "publishedAt": "2026-10-16T17:07:44.000Z",
-   "original": "Les mamans l’adorent : ce parfum emblématique de L’Artisan Parfumeur, maison qui fête ses 50 ans, \"fait tourner les têtes de génération en génération\"",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Les mamans l’adorent : ce parfum emblématique de L’Artisan Parfumeur, maison qui fête ses 50 ans, \"fait tourner les têtes de génération en génération\"",
-    "en": "Les mamans l’adorent : ce parfum emblématique de L’Artisan Parfumeur, maison qui fête ses 50 ans, \"fait tourner les têtes de génération en génération\""
-   },
-   "summary": {
-    "ar": "Les mamans l’adorent : ce parfum emblématique de L’Artisan Parfumeur, maison qui fête ses 50 ans, \"fait tourner les têtes de génération en génération\"",
-    "en": "Les mamans l’adorent : ce parfum emblématique de L’Artisan Parfumeur, maison qui fête ses 50 ans, \"fait tourner les têtes de génération en génération\""
    }
   },
   {
@@ -225,7 +279,7 @@
    "id": "nozj1rl",
    "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOWFNIeF96WVY1SWdxZXViajF1aWRsbVFmclZLbTc4VVBLdG5YM1ZqU0tJQTJrTUJqTm81ZnhZX3hTNGZ0ZTM1X0RmalE1OXZ5ZDREY2lOdVZQV2owNjNhR01lbXd2d3o5TjhhRzQ2bEF0REMwX3h5TEY4UndPWjNxQQ?oc=5",
    "source": "Premium Beauty News",
-   "publishedAt": "2026-10-16T16:02:21.000Z",
+   "publishedAt": "2026-10-16T16:08:02.000Z",
    "original": "Réel contre virtuel : Les clubs de parfum, nouvelle obsession des marques ?",
    "lang": "fr",
    "category": "industry",
@@ -607,72 +661,6 @@
    "note": {
     "ar": "التحول نحو المكونات المستدامة وخاصة المسك الاصطناعي الآمن بيئياً هو الاتجاه الأبرز لصناعة العطور الحديثة.",
     "en": "The industry-wide shift toward sustainable, eco-friendly synthetics like clean musks is shaping the future of formulation."
-   }
-  },
-  {
-   "id": "n1ysalbs",
-   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNWnJjT0ZQVTVsUmxqRndiTUhtc19VSHB3T05PdV80Wll1RW1yaWZBYXg3bU16QnNWNnlTTmlGZ1JVLXkxbzBPVmRwV0hrazgxREpRbnJpcU5pUjRyUVBpaVBaWHlad0d3NVM5TU5hVFFRdEd6M1lQWWJVVHlhMTFiNDFaWmUxenNEMDV5a0FXZXVqNGhWOTZDMmJmbnk3Y1FJNW9WZWhuOGkwTHVDT1R3?oc=5",
-   "source": "WWD",
-   "publishedAt": "2026-10-15T17:40:41.000Z",
-   "original": "Esxence’s 16th Annual Event Returns With Focus on the World Of Artistic Fragrances",
-   "lang": "en",
-   "category": "events",
-   "importance": 4,
-   "title": {
-    "ar": "معرض Esxence يعلن عن تفاصيل دورته السادسة عشرة المخصصة للعطور الفنية",
-    "en": "Esxence’s 16th Annual Event Returns With Focus on the World Of Artistic Fragrences"
-   },
-   "summary": {
-    "ar": "أعلن معرض Esxence عن عودته في نسخته السادسة عشرة ليكون وجهة عالمية لعشاق وصناعة العطور الفنية والنيش.",
-    "en": "Esxence has announced its 16th annual edition, returning with a strong focus on the vibrant world of artistic niche perfumery."
-   },
-   "note": {
-    "ar": "أهم حدث عالمي لعطور النيش، حيث يترقبه المصممون والهواة لاكتشاف الاتجاهات الفنية القادمة.",
-    "en": "The premier global event for niche perfumery, eagerly awaited by creators and aficionados to discover upcoming trends."
-   }
-  },
-  {
-   "id": "n18lozqm",
-   "url": "https://nstperfume.com/2026/10/15/4711-original-intense-new-fragrance/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-15T18:07:01.000Z",
-   "original": "4711 Original Intense ~ new fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "إطلاق الإصدار العطري الجديد 4711 Original Intense الحمضي المنعش",
-    "en": "4711 Original Intense ~ new fragrance"
-   },
-   "summary": {
-    "ar": "أطلقت شركة Mäurer & Wirtz عطراً جديداً ومنعشاً باسم 4711 Original Intense كإصدار مطور يعتمد على الحمضيات.",
-    "en": "Mäurer & Wirtz has launched 4711 Original Intense, a fresh citrus-forward flanker to the classic original fragrance."
-   },
-   "note": {
-    "ar": "إعادة إحياء للكلاسيكيات بلمسات مكثفة تناسب الأذواق المعاصرة.",
-    "en": "A modern, intense twist on a historic classic, breathing new life into timeless freshness."
-   }
-  },
-  {
-   "id": "nfccohx",
-   "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE1XQWEtQTVSc3F0T3IyZWRqRGlocmEyQTdvdWxPOG9qRks1bXhIc0tPeDZTNy1ULWpmR3RKVHNuU1p4RmFhbVp1S0VyMWt1ei1SOUFJaHN6Wlkyc1JxMVVCN2ZEZFgyN21pVllfd1BTQXpBdw?oc=5",
-   "source": "Trend Hunter",
-   "publishedAt": "2026-10-15T16:40:27.000Z",
-   "original": "Nail Polish-Inspired Perfumes: Snif Introduces Lychee Lacquer with a Manicure-Inspired…",
-   "lang": "en",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "علامة Snif تطلق عطراً مستوحى من طلاء الأظافر برائحة الليتشي",
-    "en": "Nail Polish-Inspired Perfumes: Snif Introduces Lychee Lacquer with a Manicure-Inspired Scent"
-   },
-   "summary": {
-    "ar": "ابتكرت علامة Snif عطراً جديداً باسم Lychee Lacquer مستوحى من طلاء الأظافر وعالم العناية بالأظافر.",
-    "en": "Snif has introduced Lychee Lacquer, a creative new fragrance inspired by manicures and nail polish notes."
-   },
-   "note": {
-    "ar": "ابتكار غير تقليدي يبرز مدى اتساع خيال صانعي العطور في دمج مفاهيم الحياة اليومية بالعطور.",
-    "en": "An unconventional release showcasing the boundless imagination of modern perfumery concepts."
    }
   }
  ]
