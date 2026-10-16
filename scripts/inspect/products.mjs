@@ -94,10 +94,14 @@ for (const [n, link] of sample.entries()) {
     let inStore = 'not checked';
     if (/#product=/.test(seen.order)) {
       const target = new URL(seen.order, url).href;
+      // An Arabic visitor: the store opens in Arabic (same name and «جنيه» price as the product page).
+      await page.goto(SITE, { waitUntil: 'domcontentloaded', timeout: 60_000 });
+      await page.evaluate(() => { localStorage.setItem('sham_perfume_user_language', 'ar'); localStorage.setItem('sham_perfume_user_override_lang', 'ar'); });
       await page.goto(target, { waitUntil: 'networkidle2', timeout: 60_000 });
       const firstWord = seen.h1.split(/\s+/).filter((w) => w.length > 2)[1] || seen.h1.split(/\s+/)[0];
       const found = await page.waitForFunction((w, p) => document.body.innerText.includes(w) && document.body.innerText.includes(p), { timeout: 25_000 }, firstWord, seen.price.replace(/\s*جنيه.*/, '')).then(() => true).catch(() => false);
-      inStore = found ? 'opens in the store with the same name and price' : `store did not show «${firstWord}» with ${seen.price}`;
+      const shown = found ? '' : await page.evaluate(() => `lang=${document.documentElement.lang} hash=${location.hash} loading=${!!document.querySelector('[data-testid="product-loading"]')} photo=${!!document.querySelector('[data-testid="product-photo"]')} h1=«${document.querySelector('main h1, h1')?.textContent?.trim().slice(0, 60) || ''}» text=«${document.body.innerText.replace(/\s+/g, ' ').slice(0, 260)}»`);
+      inStore = found ? 'opens in the store with the same name and price' : `store did not show «${firstWord}» with ${seen.price} — it shows: ${shown}`;
       if (!found) issues.push(inStore);
       await new Promise((r) => setTimeout(r, 1200));
       await page.screenshot({ path: `${SHOTS}/product-${n + 1}-store.png` });
