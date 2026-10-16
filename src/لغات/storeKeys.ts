@@ -1,0 +1,178 @@
+import type { SupportedLanguage } from '../types/i18n';
+
+/**
+ * Phase 5 — «متجر شام» speaks every language of the platform.
+ *
+ * Every string a visitor reads in the store lives here: the storefront chrome, the
+ * product page, the cart, and the labels of the scent profile (family, gender,
+ * season, occasion). Packs are stored as arrays aligned to a fixed key order so a
+ * wave of ~18 languages stays a compact, reviewable block (see storeL10nExt*.ts).
+ *
+ * Resolution order is always language → English → Arabic → key, so **no visitor
+ * ever sees Arabic unless Arabic is their language**; an untranslated sentence
+ * degrades to English, never to a blank row and never to Arabic.
+ */
+export type StoreTextKey =
+  // ---- storefront chrome -------------------------------------------------
+  | 'sf_store_name'
+  | 'sf_tagline'
+  | 'sf_search_ph'
+  | 'sf_search_label'
+  | 'sf_search_btn'
+  | 'sf_search_results'
+  | 'sf_clear_search'
+  | 'sf_search_none'
+  | 'sf_search_all'
+  | 'sf_quick_title'
+  | 'sf_ask_title'
+  | 'sf_ask_hint'
+  | 'sf_ask_ph'
+  | 'sf_ask_btn'
+  | 'sf_chip_summer'
+  | 'sf_chip_gift'
+  | 'sf_chip_oud'
+  | 'sf_chip_sweet'
+  | 'sf_chip_budget'
+  | 'sf_by_shaheen'
+  | 'sf_quick_pick'
+  | 'sf_thinking'
+  | 'sf_all'
+  | 'sf_new_only'
+  | 'sf_all_categories'
+  | 'sf_all_brands'
+  | 'sf_sort_new'
+  | 'sf_sort_price_low'
+  | 'sf_sort_price_high'
+  | 'sf_sort_rating'
+  | 'sf_loading'
+  | 'sf_more'
+  | 'sf_found'
+  | 'sf_no_results'
+  | 'sf_clear_filters'
+  | 'sf_add_to_cart'
+  | 'sf_added'
+  | 'sf_details'
+  | 'sf_out_of_stock'
+  | 'sf_cart'
+  | 'sf_cart_empty'
+  | 'sf_total'
+  | 'sf_currency'
+  | 'sf_checkout'
+  | 'sf_clear_cart'
+  | 'sf_become_merchant'
+  | 'sf_merchant_title'
+  | 'sf_company'
+  | 'sf_email'
+  | 'sf_phone'
+  | 'sf_password'
+  | 'sf_register'
+  | 'sf_fill_required'
+  | 'sf_registered'
+  | 'sf_cancel'
+  | 'sf_new_badge'
+  // ---- product page ------------------------------------------------------
+  | 'pd_not_found'
+  | 'pd_description'
+  | 'pd_scent_profile'
+  | 'pd_family'
+  | 'pd_gender'
+  | 'pd_seasons'
+  | 'pd_occasions'
+  | 'pd_brand'
+  | 'pd_category'
+  | 'pd_sku'
+  | 'pd_in_cart'
+  | 'pd_qty'
+  | 'pd_related'
+  | 'pd_ask_shaheen'
+  | 'pd_ask_prompt'
+  | 'pd_reviewed'
+  | 'pd_size'
+  | 'pd_concentration'
+  | 'pd_product_page'
+  | 'pd_photo'
+  | 'pd_loading'
+  | 'pd_back'
+  | 'pd_top'
+  | 'pd_heart'
+  | 'pd_base'
+  | 'pd_ml'
+  | 'pd_longevity'
+  | 'pd_in_stock'
+  | 'pd_index'
+  | 'pd_notes_pyramid'
+  | 'pd_shop_cta'
+  | 'pd_footer'
+  // ---- scent-profile & note labels ---------------------------------------
+  | 'family_oud'
+  | 'family_oriental'
+  | 'family_amber'
+  | 'family_woody'
+  | 'family_floral'
+  | 'family_fresh'
+  | 'family_citrus'
+  | 'family_aquatic'
+  | 'family_fruity'
+  | 'family_gourmand'
+  | 'family_musk'
+  | 'family_spicy'
+  | 'family_leather'
+  | 'family_powdery'
+  | 'gender_men'
+  | 'gender_women'
+  | 'gender_unisex'
+  | 'season_summer'
+  | 'season_winter'
+  | 'season_spring'
+  | 'season_autumn'
+  | 'season_all'
+  | 'occasion_daily'
+  | 'occasion_evening'
+  | 'occasion_work'
+  | 'occasion_special'
+  | 'occasion_gift'
+  | 'note_vanilla'
+  // ---- cart hand-off & instant advice ------------------------------------
+  | 'cart_order_intro'
+  | 'cart_order_line'
+  | 'advice_quick'
+  | 'advice_none'
+  // ---- why this pick (advisor reasons) -----------------------------------
+  | 'reason_family'
+  | 'reason_gender'
+  | 'reason_occasion'
+  | 'reason_brand'
+  | 'reason_budget'
+  | 'reason_cheap'
+  | 'reason_luxury'
+  | 'reason_words'
+  | 'reason_rated';
+
+/** The ten platform languages of the base pack, in the order its arrays use. */
+export const STORE_BASE_LANGS: readonly SupportedLanguage[] = ['ar', 'en', 'fr', 'es', 'it', 'de', 'ru', 'zh', 'tr', 'fa'];
+
+/**
+ * The 42 strings every one of the platform's languages carries: the scent-profile
+ * labels a product page is built from plus the store's most frequent controls.
+ * Extension waves translate exactly this list, so their arrays stay comparable.
+ */
+export const STORE_CORE_KEYS: readonly StoreTextKey[] = [
+  'family_oud', 'family_oriental', 'family_amber', 'family_woody', 'family_floral', 'family_fresh',
+  'family_citrus', 'family_aquatic', 'family_fruity', 'family_gourmand', 'family_musk', 'family_spicy',
+  'family_leather', 'family_powdery',
+  'gender_men', 'gender_women', 'gender_unisex',
+  'season_summer', 'season_winter', 'season_spring', 'season_autumn', 'season_all',
+  'occasion_daily', 'occasion_evening', 'occasion_work', 'occasion_special', 'occasion_gift',
+  'sf_store_name', 'sf_search_btn', 'sf_all', 'sf_new_only', 'sf_sort_new', 'sf_sort_price_low',
+  'sf_sort_price_high', 'sf_sort_rating', 'sf_cart', 'sf_total', 'sf_add_to_cart', 'sf_details',
+  'sf_out_of_stock', 'pd_description', 'pd_related',
+];
+
+/** A wave of extension translations: one array per language, aligned to STORE_CORE_KEYS. */
+export interface StoreCoreWave {
+  packs: Partial<Record<SupportedLanguage, readonly string[]>>;
+  /** Optional fully-written sentences for the languages of this wave. */
+  extra?: Partial<Record<SupportedLanguage, Partial<Record<StoreTextKey, string>>>>;
+}
+
+export type StoreTextPack = Partial<Record<SupportedLanguage, Partial<Record<StoreTextKey, string>>>>;

@@ -1,49 +1,43 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowUpRight, Loader2, Minus, Package, Plus, Search, Send, ShoppingCart, Sparkles, Star, Trash2, UserPlus, X } from 'lucide-react';
 import { saveMerchant } from '../utils/merchantDataStore';
-import { FAMILY_LABEL, GENDER_LABEL, searchText, type Family, type Gender, type StoreProduct } from '../utils/storeCatalog';
+import { searchText, type Family, type Gender, type StoreProduct } from '../utils/storeCatalog';
+import { makeStoreT, storeFamilyLabel, storeGenderLabel, storeLocalized, storeNumber } from '../لغات/storeL10n';
+import { isRTL } from '../لغات/localizedContent';
+import type { SupportedLanguage } from '../types/i18n';
 import { askShaheenStore, loadStoreCatalog, localSuggestion, storeImageSrc, type StoreSuggestion } from '../utils/liveStore';
 import { addToCart, cartSummary, clearCart, orderMessage, setCartQty, useCart } from '../utils/storeCart';
 
-const t = {
-  ar: {
-    title: 'متجر شام', search: 'اكتب اسم عطر أو نوتة أو علامة…',
-    storeTagline: 'عطور مختارة بعناية', searchLabel: 'ابحث في عطور متجر شام', searchButton: 'بحث',
-    searchResults: 'اقتراحات تناسب بحثك', searchNoResults: 'مفيش عطور مطابقة — جرّب اسم أو نوتة تانية.',
-    searchAll: 'عرض كل النتائج', searchQuickTitle: 'ابدأ بنوتة بتحبها', searchQuickNotes: ['عود', 'مسك', 'فانيليا'], searchShortcut: 'Ctrl K',
-    askTitle: 'اسأل شاهين', askHint: 'قول لشاهين بتدوّر على إيه — المناسبة، الموسم، رجالي ولا نسائي، الميزانية — وهو يختار لك من المتجر.',
-    askPlaceholder: 'مثال: عطر رجالي للصيف للشغل تحت 250 جنيه', ask: 'رشّح لي',
-    chips: ['رجالي صيفي منعش للشغل', 'هدية نسائية فخمة', 'عود ثابت للسهرات', 'عطر حلو للشتاء', 'أرخص عطور مميزة'],
-    byShaheen: 'اختيار شاهين', quick: 'اقتراح سريع', thinking: 'شاهين بيراجع المتجر…',
-    all: 'الكل', newOnly: 'الجديد', allCategories: 'كل الفئات', allBrands: 'كل العلامات',
-    sortNew: 'الأحدث', sortPriceLow: 'السعر: من الأقل', sortPriceHigh: 'السعر: من الأعلى', sortRating: 'الأعلى تقييماً',
-    loading: 'جاري تحميل المنتجات…', more: 'عرض المزيد ({n} منتج)', found: '{count} منتج', noResults: 'لا توجد نتائج — جرّب «اسأل شاهين» أو امسح الفلاتر', clear: 'مسح الفلاتر',
-    addToCart: 'أضف للسلة', added: 'أضيف ✓', details: 'التفاصيل', currency: 'جنيه', outOfStock: 'غير متوفر',
-    cart: 'السلة', cartEmpty: 'السلة فاضية', total: 'الإجمالي', checkout: 'أتمم الطلب مع مساعد شام', clearCart: 'تفريغ السلة',
-    becomeMerchant: 'سجّل كتاجر', merchantTitle: 'تسجيل تاجر', companyName: 'اسم الشركة', email: 'البريد', phone: 'الهاتف',
-    password: 'كلمة المرور', register: 'سجّل الآن', cancel: 'إلغاء', fill: 'يرجى تعبئة الحقول المطلوبة', registered: 'تم استلام طلبك، وسيراجعه فريق شام',
-  },
-  en: {
-    title: 'Sham Store', search: 'Search a scent, note or brand…',
-    storeTagline: 'Scents, chosen with care', searchLabel: 'Search Sham perfume store', searchButton: 'Search',
-    searchResults: 'Scents matching your search', searchNoResults: 'No matching scents — try another name or note.',
-    searchAll: 'View all results', searchQuickTitle: 'Start with a note you love', searchQuickNotes: ['Oud', 'Musk', 'Vanilla'], searchShortcut: 'Ctrl K',
-    askTitle: 'Ask Shaheen', askHint: 'Tell Shaheen what you are looking for — occasion, season, men or women, budget — and he picks from the store.',
-    askPlaceholder: 'e.g. a fresh summer perfume for work under 250 EGP', ask: 'Recommend',
-    chips: ['Fresh summer scent for work', 'Luxury gift for her', 'Long-lasting oud for evenings', 'Sweet winter perfume', 'Best budget picks'],
-    byShaheen: "Shaheen's pick", quick: 'Quick pick', thinking: 'Shaheen is reviewing the store…',
-    all: 'All', newOnly: 'New', allCategories: 'All categories', allBrands: 'All brands',
-    sortNew: 'Newest', sortPriceLow: 'Price: low to high', sortPriceHigh: 'Price: high to low', sortRating: 'Top rated',
-    loading: 'Loading products…', more: 'Show more ({n} products)', found: '{count} products', noResults: 'No results — try «Ask Shaheen» or clear the filters', clear: 'Clear filters',
-    addToCart: 'Add to cart', added: 'Added ✓', details: 'Details', currency: 'EGP', outOfStock: 'Out of stock',
-    cart: 'Cart', cartEmpty: 'Your cart is empty', total: 'Total', checkout: 'Complete the order with Sham assistant', clearCart: 'Empty cart',
-    becomeMerchant: 'Become a merchant', merchantTitle: 'Merchant registration', companyName: 'Company name', email: 'Email', phone: 'Phone',
-    password: 'Password', register: 'Register', cancel: 'Cancel', fill: 'Please fill the required fields', registered: 'Request received — the Sham team will review it',
-  },
-};
+/**
+ * كل نص في واجهة المتجر — من مفتاح واحد في src/لغات/storeL10n.ts، في أي لغة من لغات المنصة.
+ * القاعدة: لغة الزائر ← الإنجليزية ← العربية، فما حدش يشوف عربي غير لو اختار عربي.
+ */
+function storeLabels(lang: SupportedLanguage) {
+  const t = makeStoreT(lang);
+  return {
+    title: t('sf_store_name'), search: t('sf_search_ph'), storeTagline: t('sf_tagline'),
+    searchLabel: t('sf_search_label'), searchButton: t('sf_search_btn'), searchResults: t('sf_search_results'),
+    searchNoResults: t('sf_search_none'), searchAll: t('sf_search_all'), searchQuickTitle: t('sf_quick_title'),
+    searchQuickNotes: [t('family_oud'), t('family_musk'), t('note_vanilla')], searchShortcut: 'Ctrl K',
+    askTitle: t('sf_ask_title'), askHint: t('sf_ask_hint'), askPlaceholder: t('sf_ask_ph'), ask: t('sf_ask_btn'),
+    chips: [t('sf_chip_summer'), t('sf_chip_gift'), t('sf_chip_oud'), t('sf_chip_sweet'), t('sf_chip_budget')],
+    byShaheen: t('sf_by_shaheen'), quick: t('sf_quick_pick'), thinking: t('sf_thinking'),
+    all: t('sf_all'), newOnly: t('sf_new_only'), newBadge: t('sf_new_badge'),
+    allCategories: t('sf_all_categories'), allBrands: t('sf_all_brands'),
+    sortNew: t('sf_sort_new'), sortPriceLow: t('sf_sort_price_low'), sortPriceHigh: t('sf_sort_price_high'),
+    sortRating: t('sf_sort_rating'), loading: t('sf_loading'), more: t('sf_more'), found: t('sf_found'),
+    noResults: t('sf_no_results'), clear: t('sf_clear_filters'), clearSearch: t('sf_clear_search'),
+    addToCart: t('sf_add_to_cart'), added: t('sf_added'), details: t('sf_details'), currency: t('sf_currency'),
+    outOfStock: t('sf_out_of_stock'), cart: t('sf_cart'), cartEmpty: t('sf_cart_empty'), total: t('sf_total'),
+    checkout: t('sf_checkout'), clearCart: t('sf_clear_cart'), becomeMerchant: t('sf_become_merchant'),
+    merchantTitle: t('sf_merchant_title'), companyName: t('sf_company'), email: t('sf_email'), phone: t('sf_phone'),
+    password: t('sf_password'), register: t('sf_register'), cancel: t('sf_cancel'),
+    fill: t('sf_fill_required'), registered: t('sf_registered'),
+  };
+}
 
 type Sort = 'new' | 'priceLow' | 'priceHigh' | 'rating';
-interface Props { onClose?: () => void; currentLang: 'ar' | 'en'; retailerId?: string; shaheenQuery?: { text: string; at: number } | null }
+interface Props { onClose?: () => void; currentLang: SupportedLanguage; retailerId?: string; shaheenQuery?: { text: string; at: number } | null }
 
 function ProductImage({ product, className }: { product: StoreProduct; className: string }) {
   const [broken, setBroken] = useState(false);
@@ -56,7 +50,8 @@ function ProductImage({ product, className }: { product: StoreProduct; className
 }
 
 export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
-  const L = t[currentLang];
+  const L = useMemo(() => storeLabels(currentLang), [currentLang]);
+  const dir = isRTL(currentLang) ? 'rtl' : 'ltr';
   const [products, setProducts] = useState<StoreProduct[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -182,24 +177,24 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
   };
 
   const chip = (active: boolean) => `px-3 py-1.5 rounded-full text-xs whitespace-nowrap border transition-colors ${active ? 'bg-amber-600 border-amber-600 text-white' : 'bg-white border-stone-200 text-stone-700 hover:bg-stone-100'}`;
-  const price = (n: number) => `${n.toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US')} ${L.currency}`;
+  const price = (n: number) => `${storeNumber(n, currentLang)} ${L.currency}`;
 
   const card = (p: StoreProduct, why?: string, pick?: boolean) => (
     <div key={p.sku} className={`bg-white rounded-2xl border ${pick ? 'border-amber-300 shadow-md' : 'border-stone-200'} overflow-hidden flex flex-col`} data-testid={pick ? 'store-pick' : 'store-product'}>
       <button type="button" onClick={() => openDetails(p)} className="relative block cursor-pointer" title={L.details}>
         <ProductImage product={p} className="w-full aspect-square" />
-        {p.isNew && <span className="absolute top-2 start-2 px-2 py-0.5 bg-emerald-500 text-white text-[10px] rounded-full">{currentLang === 'ar' ? 'جديد' : 'New'}</span>}
+        {p.isNew && <span className="absolute top-2 start-2 px-2 py-0.5 bg-emerald-500 text-white text-[10px] rounded-full">{L.newBadge}</span>}
         {!p.inStock && <span className="absolute top-2 end-2 px-2 py-0.5 bg-stone-700 text-white text-[10px] rounded-full">{L.outOfStock}</span>}
       </button>
       <div className="p-3 flex flex-col gap-1.5 flex-1">
-        <button type="button" onClick={() => openDetails(p)} className="text-start font-bold text-sm text-stone-900 line-clamp-2 hover:text-amber-800 cursor-pointer">{p.name[currentLang]}</button>
+        <button type="button" onClick={() => openDetails(p)} className="text-start font-bold text-sm text-stone-900 line-clamp-2 hover:text-amber-800 cursor-pointer">{storeLocalized(p.name, currentLang)}</button>
         <div className="flex items-center gap-2 text-[11px] text-stone-500">
           {p.brand && <span>{p.brand}</span>}
-          {p.gender && <span>· {GENDER_LABEL[p.gender][currentLang]}</span>}
+          {p.gender && <span>· {storeGenderLabel(p.gender, currentLang)}</span>}
           {p.rating ? <span className="inline-flex items-center gap-0.5 text-amber-600"><Star className="w-3 h-3 fill-current" />{p.rating}</span> : null}
         </div>
         {p.families.length > 0 && (
-          <div className="flex flex-wrap gap-1">{p.families.slice(0, 3).map((f) => <span key={f} className="px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 text-[10px]">{FAMILY_LABEL[f][currentLang]}</span>)}</div>
+          <div className="flex flex-wrap gap-1">{p.families.slice(0, 3).map((f) => <span key={f} className="px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 text-[10px]">{storeFamilyLabel(f, currentLang)}</span>)}</div>
         )}
         {why && <p className="text-[11px] leading-relaxed text-stone-700 bg-amber-50/60 rounded-lg p-2"><Sparkles className="inline w-3 h-3 text-amber-600 me-1" />{why}</p>}
         <div className="mt-auto flex items-center justify-between gap-2 pt-1">
@@ -214,7 +209,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
   );
 
   return (
-    <div className="min-h-screen bg-stone-50" dir={currentLang === 'ar' ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-stone-50" dir={dir}>
       {/* Keep the store's sticky search bar below the site header so language menus stay on top. */}
       <header className="sticky z-30 border-b border-white/10 bg-stone-950/95 text-white shadow-lg shadow-stone-950/10 backdrop-blur-xl" style={{ top: 'var(--sham-global-header-height, 0px)' }}>
         <div className="mx-auto flex max-w-7xl items-center gap-2.5 px-3 py-2.5 sm:gap-4 sm:px-4 sm:py-3">
@@ -252,7 +247,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                   className="min-w-0 flex-1 appearance-none bg-transparent py-2 text-start text-sm text-white outline-none placeholder:text-stone-400 focus:ring-0 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
                 />
                 {search ? (
-                  <button type="button" onClick={() => { setSearch(''); searchInputRef.current?.focus(); }} aria-label={currentLang === 'ar' ? 'مسح البحث' : 'Clear search'} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-stone-400 transition hover:bg-white/10 hover:text-white">
+                  <button type="button" onClick={() => { setSearch(''); searchInputRef.current?.focus(); }} aria-label={L.clearSearch} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-stone-400 transition hover:bg-white/10 hover:text-white">
                     <X className="h-4 w-4" />
                   </button>
                 ) : (
@@ -283,8 +278,8 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                           <button key={product.sku} type="button" onClick={() => { setSearchFocused(false); openDetails(product); }} className="group flex w-full items-center gap-2.5 rounded-xl p-2 text-start transition hover:bg-amber-50 focus:bg-amber-50 focus:outline-none" data-testid="store-search-suggestion">
                             <ProductImage product={product} className="h-11 w-11 shrink-0 rounded-xl border border-stone-200" />
                             <span className="min-w-0 flex-1">
-                              <span className="block truncate text-xs font-bold text-stone-900 group-hover:text-amber-900">{product.name[currentLang]}</span>
-                              <span className="mt-0.5 block truncate text-[10px] text-stone-500">{[product.brand || product.category, product.families.slice(0, 1).map((family) => FAMILY_LABEL[family][currentLang]).join('')].filter(Boolean).join(' · ')}</span>
+                              <span className="block truncate text-xs font-bold text-stone-900 group-hover:text-amber-900">{storeLocalized(product.name, currentLang)}</span>
+                              <span className="mt-0.5 block truncate text-[10px] text-stone-500">{[product.brand || product.category, product.families.slice(0, 1).map((family) => storeFamilyLabel(family, currentLang)).join('')].filter(Boolean).join(' · ')}</span>
                             </span>
                             <span className="flex shrink-0 items-center gap-1 text-[11px] font-bold text-amber-900">
                               <span>{price(product.price)}</span>
@@ -364,10 +359,10 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
         <section className="space-y-2.5">
           <div className="flex gap-1.5 overflow-x-auto pb-1">
             <button type="button" onClick={() => setGender('all')} className={chip(gender === 'all')}>{L.all}</button>
-            {(['men', 'women', 'unisex'] as Gender[]).map((g) => <button key={g} type="button" onClick={() => setGender(g)} className={chip(gender === g)}>{GENDER_LABEL[g][currentLang]}</button>)}
+            {(['men', 'women', 'unisex'] as Gender[]).map((g) => <button key={g} type="button" onClick={() => setGender(g)} className={chip(gender === g)}>{storeGenderLabel(g, currentLang)}</button>)}
             <button type="button" onClick={() => setNewOnly(!newOnly)} className={chip(newOnly)}>{L.newOnly}</button>
             <span className="w-px bg-stone-200 mx-1" />
-            {families.map((f) => <button key={f} type="button" onClick={() => setFamily(family === f ? 'all' : f)} className={chip(family === f)}>{FAMILY_LABEL[f][currentLang]}</button>)}
+            {families.map((f) => <button key={f} type="button" onClick={() => setFamily(family === f ? 'all' : f)} className={chip(family === f)}>{storeFamilyLabel(f, currentLang)}</button>)}
           </div>
           <div className="flex flex-wrap items-center gap-2 text-sm">
             <select value={category} onChange={(e) => setCategory(e.target.value)} className="px-2.5 py-1.5 bg-white border border-stone-200 rounded-lg text-xs">
@@ -418,7 +413,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                     <div key={product.sku} className="py-2.5 flex items-center gap-2">
                       <ProductImage product={product} className="w-12 h-12 rounded-lg shrink-0" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold line-clamp-1">{product.name[currentLang]}</p>
+                        <p className="text-sm font-semibold line-clamp-1">{storeLocalized(product.name, currentLang)}</p>
                         <p className="text-xs text-stone-500">{price(subtotal)}</p>
                       </div>
                       <div className="flex items-center gap-1">

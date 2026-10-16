@@ -1036,7 +1036,7 @@ export default function App() {
         {activeTab === 'store' && (
           <Storefront
             onClose={() => navigateToTab('home')}
-            currentLang={currentLang === 'ar' || currentLang === 'fa' || currentLang === 'he' || currentLang === 'ur' || currentLang === 'ps' ? 'ar' : 'en'}
+            currentLang={currentLang}
             retailerId={currentUser?.id}
             shaheenQuery={storeQuery}
           />
@@ -1045,7 +1045,7 @@ export default function App() {
         {activeTab === 'productDetail' && productId && (
           <ProductDetail
             productId={productId}
-            currentLang={currentLang === 'ar' || currentLang === 'fa' || currentLang === 'he' || currentLang === 'ur' || currentLang === 'ps' ? 'ar' : 'en'}
+            currentLang={currentLang}
             onClose={() => navigateToTab('store')}
           />
         )}

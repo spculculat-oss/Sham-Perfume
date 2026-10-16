@@ -6,6 +6,7 @@ import path from 'node:path';
 import test from 'node:test';
 import { TRANSLATIONS } from '../src/لغات/i18n';
 import { SUPPORTED_LANGUAGES } from '../src/types/i18n';
+import { STORE_TEXT_BASE } from '../src/لغات/storeL10nBase';
 
 const read = (file: string) => readFileSync(file, 'utf8');
 const sourceFiles = (dir: string): string[] => readdirSync(dir).flatMap((name) => {
@@ -37,7 +38,8 @@ test('no visitor sees a raw translation key: every t() key without a fallback ex
     for (const call of read(file).matchAll(/\bt\(\s*['"]([a-z0-9_]+)['"]\s*(,\s*(?:[^()]|\([^()]*\))*?)?\)/g)) {
       const extraArgs = (call[2] ?? '').split(',').length - 1;
       if (extraArgs >= 2) continue; // t(key, lang, fallback) shows the fallback
-      if (!(call[1] in TRANSLATIONS.en) && !(call[1] in TRANSLATIONS.ar)) missing.push(`${file}: ${call[1]}`);
+      // Store surfaces read their strings from the store pack (src/لغات/storeL10n.ts) instead of the app dictionary.
+      if (!(call[1] in TRANSLATIONS.en) && !(call[1] in TRANSLATIONS.ar) && !(call[1] in STORE_TEXT_BASE)) missing.push(`${file}: ${call[1]}`);
     }
   }
   assert.deepEqual(missing, []);

@@ -1,6 +1,8 @@
 import { isCatalogFile, LIVE_STORE_URL, mergeCatalog, type RawProduct, type StoreCatalogFile, type StoreProduct } from './storeCatalog';
-import { recommend } from './storeAdvisor';
+import { pickReasonLine, recommend } from './storeAdvisor';
 import { apiUrl, isStaticHosting } from './api';
+import { makeStoreT } from '../لغات/storeL10n';
+import type { SupportedLanguage } from '../types/i18n';
 
 /**
  * «متجر شام» as the visitor sees it: the merchant's products + the enrichment «الخبير شاهين» writes every
@@ -38,16 +40,17 @@ export function loadStoreCatalog(request: typeof fetch = fetch): Promise<StorePr
 export interface StoreSuggestion { source: 'shaheen' | 'local'; reply: string; picks: { product: StoreProduct; why: string }[] }
 
 /** Instant answer from the rule-based advisor (shown first, then upgraded by Shaheen). */
-export function localSuggestion(products: StoreProduct[], message: string, lang: 'ar' | 'en'): StoreSuggestion {
+export function localSuggestion(products: StoreProduct[], message: string, lang: SupportedLanguage): StoreSuggestion {
   const { picks, matched } = recommend(products, message, 4);
-  const reply = lang === 'ar'
-    ? (matched ? 'ترشيحات سريعة من المتجر — شاهين بيراجعها لك…' : 'مش لاقي تطابق دقيق، دي أعلى العطور تقييماً — شاهين بيدوّر لك…')
-    : (matched ? 'Quick picks from the store — Shaheen is reviewing them…' : 'No exact match; top-rated picks for now — Shaheen is looking…');
-  return { source: 'local', reply, picks: picks.map((p) => ({ product: p.product, why: (lang === 'ar' ? p.reasons.ar : p.reasons.en).join(' · ') })) };
+  const t = makeStoreT(lang);
+  return {
+    source: 'local', reply: t(matched ? 'advice_quick' : 'advice_none'),
+    picks: picks.map((p) => ({ product: p.product, why: pickReasonLine(p, lang) })),
+  };
 }
 
 /** «اسأل شاهين»: POST /api/store/advise; null when the server cannot be reached (keep the local answer). */
-export async function askShaheenStore(products: StoreProduct[], message: string, lang: 'ar' | 'en', request: typeof fetch = fetch): Promise<StoreSuggestion | null> {
+export async function askShaheenStore(products: StoreProduct[], message: string, lang: SupportedLanguage, request: typeof fetch = fetch): Promise<StoreSuggestion | null> {
   if (isStaticHosting) return null;
   try {
     const response = await request(apiUrl('/api/store/advise'), {
