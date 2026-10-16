@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-16T08:33:21.337Z",
+ "updatedAt": "2026-10-16T09:05:55.589Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
-  "total": 141,
-  "imported": 90,
-  "ok": 24,
-  "warn": 117,
+  "total": 171,
+  "imported": 120,
+  "ok": 46,
+  "warn": 125,
   "hidden": 0,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-16T08:32:37.824Z",
+  "at": "2026-10-16T09:05:09.054Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -35,9 +35,9 @@
   ],
   "rate": 13.081,
   "prices": {
-   "count": 90,
+   "count": 120,
    "min": 985,
-   "median": 4397.5,
+   "median": 4222.5,
    "max": 5890,
    "top": [
     {
@@ -69,15 +69,15 @@
      "sizeMl": 100
     },
     {
-     "sku": "RAS-082",
-     "name": "Hawas For Him by Rasasi 100ml EDP",
-     "price": 5675,
-     "supplierEgp": 3780.41,
+     "sku": "LAT-148",
+     "name": "Maahir Honor 100ml by Lattafa",
+     "price": 5695,
+     "supplierEgp": 3793.49,
      "sizeMl": 100
     }
    ]
   },
-  "durationMs": 43514
+  "durationMs": 46538
  },
  "items": [
   {
@@ -1355,6 +1355,89 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/dynasty-by-lattafa-100ml-edp-unisex-138.html"
+  },
+  {
+   "sku": "ALR-143",
+   "id": 143,
+   "name": "French Coffee Al Rehab 100ml EDP Women",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/french-coffee-al-rehab-100ml-edp-women-143.html"
+  },
+  {
+   "sku": "LAT-144",
+   "id": 144,
+   "name": "Angel by LaMuse (Lattafa) – 100 ml for Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/angel-by-lamuse-lattafa-100-ml-for-women-144.html"
+  },
+  {
+   "sku": "LAT-145",
+   "id": 145,
+   "name": "Al Nashama Caprice by Lattafa 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "وصف المورد قصير",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/al-nashama-caprice-by-lattafa-100ml-edp-145.html"
+  },
+  {
+   "sku": "LAT-148",
+   "id": 148,
+   "name": "Maahir Honor 100ml by Lattafa",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/maahir-honor-100ml-by-lattafa-148.html"
+  },
+  {
+   "sku": "LAT-149",
+   "id": 149,
+   "name": "Al Qiam Gold by Lattafa Pride 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "وصف المورد قصير",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/al-qiam-gold-by-lattafa-pride-100ml-edp-149.html"
+  },
+  {
+   "sku": "LAT-155",
+   "id": 155,
+   "name": "Afaq Gold by Lattafa EDP 100 ml Unisex",
+   "status": "warn",
+   "issues": [
+    "وصف المورد قصير"
+   ],
+   "page": "p/afaq-gold-by-lattafa-edp-100-ml-unisex-155.html"
+  },
+  {
+   "sku": "LAT-161",
+   "id": 161,
+   "name": "Thouq by Lattafa Pride 80ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/thouq-by-lattafa-pride-80ml-edp-161.html"
+  },
+  {
+   "sku": "LAT-166",
+   "id": 166,
+   "name": "Shahd by Lattafa Perfumes 100 ml Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/shahd-by-lattafa-perfumes-100-ml-women-166.html"
   }
  ]
 }
