@@ -9,6 +9,7 @@
  * Runs on GitHub's machines, never on the website's servers.
  */
 import { execFile } from 'node:child_process';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { COOLDOWN_MIN, canFix, cooled, decide, remember, type Action, type Capabilities, type DoctorState, type FixRecord } from './playbook';
 import { runProbes, type Finding, type ProbeContext } from './probes';
 import { ISSUE_LABEL, ISSUE_TITLE, eventComment, readState, renderBody, type ActionLog } from './report';
@@ -304,17 +305,86 @@ async function revert(action: Action, x: ExecContext) {
   return { ok: true, detail: `رجّعت ${sha.slice(0, 7)} (${shipped.url || shipped.sha.slice(0, 7)})` };
 }
 
+/**
+ * The AI packages (free tiers, credit) as Shaheen's batch jobs see them: an engine whose quota ran out is
+ * paused until the provider says it renews, the pause is saved (src/data/live/ai-quota.json) so the next run
+ * does not waste requests, and the job continues where it stopped once the quota is back.
+ */
+export interface QuotaFile { updatedAt: string; engines: Record<string, { pausedUntil: string; reason: string; detail?: string }> }
+export class QuotaExhaustedError extends Error {
+  constructor(public resumeAt: number) { super(`AI quota exhausted until ${new Date(resumeAt).toISOString()}`); this.name = 'QuotaExhaustedError'; }
+}
+
+/** When a refused engine can be tried again: the provider's «retry in Ns», else the next daily/minute window. */
+export function pauseUntil(status: number, failure: string, detail: string, now: number): number | undefined {
+  if (status !== 429 && status !== 402 && failure !== 'no_credit' && failure !== 'rate_limited') return undefined;
+  const retry = detail.match(/retry in (\d+(?:\.\d+)?)s/i);
+  if (retry) return now + Math.max(30, Math.ceil(Number(retry[1]))) * 1000 + 30_000;
+  if (/PerDay|per day|daily/i.test(detail) || status === 402 || failure === 'no_credit') {
+    // Daily free-tier quotas renew at midnight Pacific time (07:00–08:00 UTC): wait for 08:05 UTC.
+    const next = new Date(now); next.setUTCHours(8, 5, 0, 0);
+    if (next.getTime() <= now) next.setUTCDate(next.getUTCDate() + 1);
+    return next.getTime();
+  }
+  return now + 65_000; // per-minute limits
+}
+
+export function quotaBook(path?: URL, now: () => number = Date.now) {
+  let file: QuotaFile = { updatedAt: new Date(now()).toISOString(), engines: {} };
+  if (path) {
+    try { file = JSON.parse(readFileSync(path, 'utf8')) as QuotaFile; file.engines ||= {}; } catch { /* first run */ }
+  }
+  return {
+    file: () => file,
+    pausedUntil: (id: string) => { const t = Date.parse(file.engines[id]?.pausedUntil || ''); return Number.isFinite(t) && t > now() ? t : 0; },
+    pause(id: string, until: number, reason: string, detail?: string) {
+      file.engines[id] = { pausedUntil: new Date(until).toISOString(), reason, ...(detail ? { detail: detail.slice(0, 200) } : {}) };
+      file.updatedAt = new Date(now()).toISOString();
+    },
+    clear(id: string) { if (file.engines[id]) { delete file.engines[id]; file.updatedAt = new Date(now()).toISOString(); } },
+    save() { if (path) writeFileSync(path, `${JSON.stringify(file, null, 1)}\n`); },
+  };
+}
+export type QuotaBook = ReturnType<typeof quotaBook>;
+
 /** The doctor thinks with the same AI engines (and keys) as Shaheen, in the admin's failover order. */
-export async function makeAsk(env: Env): Promise<DoctorOptions['ask']> {
+export async function makeAsk(env: Env, options: { quota?: QuotaBook; maxWaitMs?: number; sleep?: (ms: number) => Promise<void>; request?: typeof fetch } = {}): Promise<DoctorOptions['ask']> {
   const { callEngine, engineStatuses } = await import('../../server/core/engines');
   const order = ['gemini', 'deepseek', 'openai', 'claude', 'openrouter', 'self_hosted'] as const;
   const ready = order.filter((id) => engineStatuses(env).find((e) => e.id === id)?.configured);
   if (!ready.length) return undefined;
-  return async (system, prompt) => {
+  const quota = options.quota;
+  const sleep = options.sleep || ((ms: number) => new Promise((r) => setTimeout(r, ms)));
+  let waited = 0;
+  const ask = async (system: string, prompt: string): Promise<string> => {
     for (const id of ready) {
-      const reply = await callEngine(id, system, [{ role: 'user', text: prompt }], { env, signal: AbortSignal.timeout(180_000), temperature: 0.2, maxTokens: 16_000, maxChars: 200_000 }).catch(() => undefined);
-      if (reply?.trim()) return reply;
+      if (quota?.pausedUntil(id)) continue;
+      let refused: { until: number; reason: string; detail: string } | undefined;
+      const reply = await callEngine(id, system, [{ role: 'user', text: prompt }], {
+        env, fetch: options.request, signal: AbortSignal.timeout(180_000), temperature: 0.2, maxTokens: 16_000, maxChars: 200_000,
+        onFailure: (failure, status, detail) => {
+          const until = quota ? pauseUntil(status, failure, detail, Date.now()) : undefined;
+          if (until) refused = { until, reason: failure, detail };
+        },
+      }).catch(() => undefined);
+      if (reply?.trim()) { quota?.clear(id); return reply; }
+      if (refused && quota) quota.pause(id, refused.until, refused.reason, refused.detail);
+    }
+    if (quota) {
+      const paused = ready.map((id) => quota.pausedUntil(id)).filter(Boolean);
+      if (paused.length === ready.length) {
+        const resumeAt = Math.min(...paused);
+        // A per-minute limit is waited out inside the run; a daily one ends the run (the next run continues).
+        const wait = resumeAt - Date.now();
+        if (wait <= 90_000 && waited + wait <= (options.maxWaitMs ?? 5 * 60_000)) {
+          waited += Math.max(0, wait);
+          await sleep(Math.max(0, wait));
+          return ask(system, prompt);
+        }
+        throw new QuotaExhaustedError(resumeAt);
+      }
     }
     throw new Error('no AI engine answered');
   };
+  return ask;
 }

@@ -226,3 +226,45 @@ test("an imported product's notes come from the supplier, or from its own descri
     { top: ['Bergamot', 'Mandarin'], heart: ['Mint', 'Ginger'], base: ['Sandalwood'] });
   assert.deepEqual(notesFor(merchant, empty, { top: ['Lemon'], heart: [], base: [] }).top, ['Lemon'], 'famous perfumes of the merchant: the old rule');
 });
+
+test('AI packages: a used-up quota pauses the engine until it renews, and the job continues after the renewal', async () => {
+  const { makeAsk, pauseUntil, quotaBook, QuotaExhaustedError } = await import('../scripts/doctor/agent');
+  const { mkdtempSync, readFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { join } = await import('node:path');
+  const { pathToFileURL } = await import('node:url');
+  const now = Date.parse('2026-10-16T06:00:00Z');
+  assert.equal(pauseUntil(429, 'rate_limited', 'RESOURCE_EXHAUSTED · GenerateRequestsPerDayPerProjectPerModel-FreeTier limit 20 · retry in 64535s', now), now + 64565_000);
+  assert.equal(new Date(pauseUntil(429, 'rate_limited', 'GenerateRequestsPerDayPerProjectPerModel-FreeTier limit 20', now)!).toISOString(), '2026-10-16T08:05:00.000Z');
+  assert.equal(new Date(pauseUntil(402, 'no_credit', '', Date.parse('2026-10-16T09:00:00Z'))!).toISOString(), '2026-10-17T08:05:00.000Z');
+  assert.equal(pauseUntil(429, 'rate_limited', 'PerMinute', now), now + 65_000);
+  assert.equal(pauseUntil(400, 'bad_request', '', now), undefined, 'other errors never pause an engine');
+
+  const file = pathToFileURL(join(mkdtempSync(join(tmpdir(), 'quota-')), 'ai-quota.json'));
+  let calls = 0;
+  let exhausted = true;
+  const request = (async (url: string) => {
+    if (String(url).includes('/models?')) return new Response(JSON.stringify({ models: [] }), { status: 200 });
+    calls++;
+    return exhausted
+      ? new Response(JSON.stringify({ error: { status: 'RESOURCE_EXHAUSTED', details: [{ violations: [{ quotaId: 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', quotaValue: '20' }] }, { retryDelay: '64535s' }] } }), { status: 429 })
+      : new Response(JSON.stringify({ candidates: [{ content: { parts: [{ text: '{"ok":true}' }] } }] }), { status: 200 });
+  }) as unknown as typeof fetch;
+  const env = { GEMINI_API_KEY: 'test-key' };
+  const quota = quotaBook(file);
+  const ask = (await makeAsk(env, { quota, request }))!;
+  await assert.rejects(ask('s', 'p'), (e: unknown) => e instanceof QuotaExhaustedError && e.resumeAt > Date.now() + 60_000);
+  quota.save();
+  assert.equal(JSON.parse(readFileSync(file, 'utf8')).engines.gemini.reason, 'rate_limited');
+  // The next run reads the pause and spends no request until the renewal.
+  const before = calls;
+  const nextRun = (await makeAsk(env, { quota: quotaBook(file), request }))!;
+  await assert.rejects(nextRun('s', 'p'), QuotaExhaustedError);
+  assert.equal(calls, before);
+  // After the renewal it continues.
+  exhausted = false;
+  const renewed = quotaBook(file, () => Date.now() + 70_000_000);
+  const later = (await makeAsk(env, { quota: renewed, request }))!;
+  assert.equal(await later('s', 'p'), '{"ok":true}');
+  assert.deepEqual(renewed.file().engines, {});
+});

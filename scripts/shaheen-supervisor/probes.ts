@@ -187,7 +187,7 @@ function storeCatalogProbes(ctx: ProbeContext): Probe[] {
 function storeImportProbes(ctx: ProbeContext): Probe[] {
   type Review = {
     updatedAt: string; summary: { total: number; imported: number; ok: number; warn: number; hidden: number; imagesChecked: number; brokenImages: number };
-    import?: { rate?: number; sources?: { id: string; added?: number; refreshed?: number; failedCount?: number; viaShaheen?: number; sitemapProducts?: number }[] };
+    import?: { rate?: number; aiResumeAt?: string; sources?: { id: string; added?: number; refreshed?: number; failedCount?: number; viaShaheen?: number; sitemapProducts?: number }[] };
     items: { sku: string; name: string; status: string; issues: string[] }[];
   };
   const file = readLive<Review>(ctx, 'store-review.json');
@@ -198,6 +198,7 @@ function storeImportProbes(ctx: ProbeContext): Probe[] {
   if (ageH > 13) findings.push({ severe: false, text: `المراجعة لم تتحدث منذ ${Math.round(ageH)} ساعة` });
   if (s.hidden) findings.push({ severe: s.hidden > Math.max(5, s.imported * 0.2), text: `${s.hidden} منتج مخفي لعيوب حرجة` });
   if (s.brokenImages) findings.push({ severe: s.brokenImages > Math.max(5, s.imagesChecked * 0.2), text: `${s.brokenImages}/${s.imagesChecked} صورة لا تفتح` });
+  if (file.import?.aiResumeAt && Date.parse(file.import.aiResumeAt) > ctx.now) findings.push({ severe: false, text: `باقات الذكاء الاصطناعي خلصت؛ الاستيراد يكمل بعد التجديد ${file.import.aiResumeAt}` });
   for (const src of file.import?.sources || []) {
     if (src.sitemapProducts === 0) findings.push({ severe: true, text: `خريطة موقع المورد ${src.id} لم تُقرأ` });
     if ((src.failedCount || 0) > 5) findings.push({ severe: false, text: `${src.failedCount} صفحة منتج تعذرت قراءتها عند ${src.id}` });
