@@ -17,6 +17,8 @@ export const SOURCES: ImportSource[] = [
     excludeUrl: /\/ms\//,
     currency: 'MYR',
     fallbackRateToEgp: 11.5,
+    // «Showing 1–24 of 1060 products … Page 1 of 45».
+    listing: { url: 'https://www.shamperfume.com/perfumes/?page={page}', maxPages: 80 },
   },
 ];
 

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { extractProduct, parseNotes, parseSitemap, parseSitemapIndex, validateShaheenReading } from '../scripts/shaheen-import/extract';
+import { extractProduct, parseListing, parseNotes, parseSitemap, parseSitemapIndex, validateShaheenReading } from '../scripts/shaheen-import/extract';
 import { brandPrefix, cleanName, nextIdOf, ourPriceOf, planRun, priceReport, toStoreProduct, type ImportedProduct } from '../scripts/shaheen-import/transform';
 import { reviewProduct, reviewStore } from '../scripts/shaheen-import/review';
 import { SOURCES } from '../scripts/shaheen-import/sources';
@@ -291,4 +291,17 @@ test('importer: the merchant price rule (markup, fixed shipping, profit cap) and
   const report = priceReport([...list, { id: 9, sku: 'OLD', nameEn: 'Old', ourPrice: 50 }] as never, 2);
   assert.deepEqual([report.count, report.min, report.median, report.max], [4, 900, 3150, 6000]);
   assert.deepEqual(report.top.map((t) => t.sku), ['X-3', 'X-1']);
+});
+
+test('importer: the store listing finds the products its sitemap misses (and only product links)', () => {
+  const html = `<a href="/perfumes/zimaya/zimaya-amber-is-great-edp-100ml/"><img></a>
+    <a href="https://www.shamperfume.com/perfumes/lattafa/khamrah/?ref=card">Khamrah</a>
+    <a href="/perfumes/lattafa/khamrah/">again</a><a href="/perfumes/on-sale/">Deals</a><a href="/ms/perfumes/lattafa/yara/">BM</a>
+    <a href="/perfumes/zimaya/">Zimaya</a><a href="/blog/oud-guide/">Blog</a><span>Page <b>1</b> of <b>45</b></span>`;
+  const source = SOURCES[0];
+  const { urls, pages } = parseListing(html, source.base, { include: source.productUrl, exclude: source.excludeUrl });
+  assert.deepEqual(urls, ['https://www.shamperfume.com/perfumes/zimaya/zimaya-amber-is-great-edp-100ml/', 'https://www.shamperfume.com/perfumes/lattafa/khamrah/']);
+  assert.equal(pages, 45);
+  assert.equal(source.listing?.url.replace('{page}', '2'), 'https://www.shamperfume.com/perfumes/?page=2');
+  assert.equal(parseListing('<p>nothing</p>', source.base).pages, undefined);
 });
