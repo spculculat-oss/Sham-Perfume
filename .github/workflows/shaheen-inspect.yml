@@ -46,13 +46,13 @@ jobs:
       - name: Browser · GitHub Pages · phone · floating chat
         if: always()
         run: node scripts/inspect/browser.mjs
-        env: { INSPECT_SITES: 'https://spculculat-oss.github.io/Sham-Perfume/', INSPECT_SCENE: chat, INSPECT_MOBILE: '1', INSPECT_QUESTIONS: 'عايز اركب عطر لمنظف بس فية مشكلة لما بتحط عطر فى منظف ريحتة بتروح بسبب الكيماويات اعمل اية|صمم لي عطر شرقي بالعود والورد 50 مل تركيز EDP', PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js }
+        env: { INSPECT_SITES: 'https://spculculat-oss.github.io/Sham-Perfume/', INSPECT_SCENE: chat, INSPECT_MOBILE: '1', PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js }
       - name: Browser · Vercel · phone · lab page
-        if: always() && github.event_name == 'workflow_dispatch'
+        if: always()
         run: node scripts/inspect/browser.mjs
         env: { INSPECT_SITES: 'https://sham-perfume-49bf.vercel.app/', INSPECT_SCENE: lab, INSPECT_MOBILE: '1', PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js }
       - name: Browser · second Vercel project
-        if: always() && github.event_name == 'workflow_dispatch'
+        if: always()
         run: node scripts/inspect/browser.mjs
         env: { INSPECT_SITES: 'https://sham-perfume.vercel.app/', INSPECT_SCENE: chat, INSPECT_QUESTIONS: 'عايز أخفف كحول 96% إلى 70% وأعمل منه 1 لتر، أحط كام مية؟', PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js }
       - name: Browser · GitHub Pages · floating chat
