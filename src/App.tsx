@@ -93,6 +93,8 @@ const S = {
   tool_costing: { ar: 'التكاليف والأرباح', en: 'Cost & profit' },
   tool_raw_materials: { ar: 'موسوعة الخامات', en: 'Raw materials' },
   tool_guide: { ar: 'دليل المثبتات والتعتيق', en: 'Fixatives & aging guide' },
+  tool_store: { ar: 'ترشيحات من متجر شام', en: 'Picks from Sham store' },
+  toast_store: { ar: '🛍️ شاهين بيختار لك من متجر شام حسب طلبك', en: '🛍️ Shaheen is picking from Sham store for you' },
   toast_costing_tpl: { ar: '💰 تم الانتقال لحاسبة التكاليف والأرباح لتسعير تركيبة «{title}»!', en: '💰 Moved to the costing calculator to price «{title}»!', fr: '💰 Passage au calculateur de coûts pour tarifer « {title} » !', es: '💰 ¡Ve a la calculadora de costes para tarificar «{title}»!', it: '💰 Passato al calcolatore dei costi per prezzi «{title}»!', de: '💰 Zum Kostenrechner gewechselt, um „{title}“ zu bepreisen!', ru: '💰 Переход к калькулятору себестоимости для «{title}»!', zh: '💰 已转到成本计算器为「{title}」定价！', tr: '💰 «{title}» için maliyet hesaplayıcısına geçildi!', fa: '💰 برای قیمت‌گذاری «{title}» به ماشین‌حساب هزینه منتقل شدید!' },
   toast_loaded_lab_tpl: { ar: 'تم تحميل التركيبة "{title}" بنجاح في المعمل', en: 'Formula "{title}" loaded into the lab', fr: 'Formule « {title} » chargée dans le laboratoire', es: 'Fórmula "{title}" cargada en el laboratorio', it: 'Formula "{title}" caricata nel laboratorio', de: 'Formel „{title}“ ins Labor geladen', ru: 'Формула «{title}» загружена в лабораторию', zh: '配方“{title}”已成功载入实验室', tr: '"{title}" formülü laboratuvara yüklendi', fa: 'فرمول «{title}» با موفقیت در آزمایشگاه بارگذاری شد' },
   toast_loaded_world_tpl: { ar: 'تم تحميل تركيبة «{title}» في حاسبة المعمل بنجاح!', en: 'Formula «{title}» loaded into the lab calculator!', fr: 'Formule « {title} » chargée dans le calculateur !', es: '¡Fórmula «{title}» cargada en la calculadora!', it: 'Formula «{title}» caricata nel calcolatore!', de: 'Formel „{title}“ in den Lab-rechner geladen!', ru: 'Формула «{title}» загружена в калькулятор!', zh: '配方「{title}」已成功载入实验室计算器！', tr: '«{title}» formülü hesaplayıcıya yüklendi!', fa: 'فرمول «{title}» با موفقیت در ماشین‌حساب بارگذاری شد!' },
@@ -415,6 +417,8 @@ export default function App() {
   // Values Shaheen read from a question, for calculators that keep their own inputs (remount on each link).
   const [alcoholPreset, setAlcoholPreset] = useState<{ from?: number; to?: number; volume?: number; at: number } | null>(null);
   const [materialSearch, setMaterialSearch] = useState<{ text: string; at: number } | null>(null);
+  // «ترشيحات من متجر شام» from Shaheen's chat: the visitor's wish, asked again in the store's «اسأل شاهين».
+  const [storeQuery, setStoreQuery] = useState<{ text: string; at: number } | null>(null);
   const [macerationStartDate, setMacerationStartDate] = useState<string>(() => new Date().toISOString().split('T')[0]);
 
   // Fragrance pyramid notes
@@ -712,7 +716,7 @@ export default function App() {
   // 6. Any calculator Shaheen linked to his answer, opened with the values from the conversation.
   const TOOL_TABS: Record<ShaheenTool, string> = {
     concentration: 'concentration', pyramid: 'pyramid', maceration: 'maceration_simulator', alcohol: 'alcohol',
-    costing: 'costing', raw_materials: 'raw_materials', guide: 'guide',
+    costing: 'costing', raw_materials: 'raw_materials', guide: 'guide', store: 'store',
   };
   const handleOpenShaheenTool = (link: ToolLink) => {
     if (link.tool === 'concentration' || link.tool === 'costing' || link.tool === 'pyramid') {
@@ -729,8 +733,9 @@ export default function App() {
     if (link.macerationDays !== undefined) setMacerationDays(link.macerationDays);
     if (link.tool === 'alcohol') setAlcoholPreset({ from: link.alcoholFrom, to: link.alcoholTo, volume: link.finalVolumeMl, at: Date.now() });
     if (link.tool === 'raw_materials') setMaterialSearch({ text: link.search || '', at: Date.now() });
+    if (link.tool === 'store') setStoreQuery(link.search ? { text: link.search, at: Date.now() } : null);
     navigateToTab(TOOL_TABS[link.tool]);
-    showToast(fmt(L('toast_tool_tpl'), { tool: L(`tool_${link.tool}` as 'tool_concentration') }));
+    showToast(link.tool === 'store' ? L('toast_store') : fmt(L('toast_tool_tpl'), { tool: L(`tool_${link.tool}` as 'tool_concentration') }));
   };
 
   // ===================== LIBRARY & WORLD RECIPES HANDLERS =====================
@@ -1024,6 +1029,7 @@ export default function App() {
             onClose={() => navigateToTab('home')}
             currentLang={currentLang === 'ar' || currentLang === 'fa' || currentLang === 'he' || currentLang === 'ur' || currentLang === 'ps' ? 'ar' : 'en'}
             retailerId={currentUser?.id}
+            shaheenQuery={storeQuery}
           />
         )}
 
@@ -1032,10 +1038,6 @@ export default function App() {
             productId={productId}
             currentLang={currentLang === 'ar' || currentLang === 'fa' || currentLang === 'he' || currentLang === 'ur' || currentLang === 'ps' ? 'ar' : 'en'}
             onClose={() => navigateToTab('store')}
-            onAddToCart={(product) => {
-              // Add to cart logic could go here
-              console.log('Added to cart:', product);
-            }}
           />
         )}
       </main>

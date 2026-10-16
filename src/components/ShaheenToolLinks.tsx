@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, Calculator, Clock, DollarSign, Droplets, FlaskConical, Layers, Wrench } from 'lucide-react';
+import { BookOpen, Calculator, Clock, DollarSign, Droplets, FlaskConical, Layers, ShoppingBag, Wrench } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { makeT, type LText } from '../utils/localize';
 import type { ShaheenTool, ToolLink } from '../utils/shaheenTools';
@@ -13,13 +13,14 @@ const S = {
   costing: { ar: 'التكاليف والأرباح', en: 'Cost & profit', fr: 'Coûts et marges', es: 'Costes y márgenes', de: 'Kosten & Gewinn', tr: 'Maliyet ve kâr', fa: 'هزینه و سود' },
   raw_materials: { ar: 'موسوعة الخامات', en: 'Raw materials', fr: 'Matières premières', es: 'Materias primas', de: 'Rohstoffe', tr: 'Hammaddeler', fa: 'مواد اولیه' },
   guide: { ar: 'دليل المثبتات والتعتيق', en: 'Fixatives & aging guide', fr: 'Guide fixateurs et vieillissement', es: 'Guía de fijadores', de: 'Fixateure & Reifung', tr: 'Sabitleyici rehberi', fa: 'راهنمای تثبیت‌کننده‌ها' },
+  store: { ar: 'ترشيحات من متجر شام', en: 'Picks from Sham store', fr: 'Sélection de la boutique Sham', es: 'Selección de la tienda Sham', de: 'Auswahl aus dem Sham-Shop', tr: 'Sham mağazasından öneriler', fa: 'پیشنهادهای فروشگاه شام' },
   days: { ar: 'يوم', en: 'days', fr: 'jours', es: 'días', de: 'Tage', tr: 'gün', fa: 'روز' },
   ml: { ar: 'مل', en: 'ml' },
 } satisfies Record<string, LText>;
 
 const ICONS: Record<ShaheenTool, React.ComponentType<{ className?: string }>> = {
   concentration: FlaskConical, pyramid: Layers, maceration: Clock, alcohol: Droplets,
-  costing: DollarSign, raw_materials: BookOpen, guide: Calculator,
+  costing: DollarSign, raw_materials: BookOpen, guide: Calculator, store: ShoppingBag,
 };
 
 /** Short summary of the values the tool will open with, e.g. «100 مل · 20%» or «96% → 70%». */
@@ -33,6 +34,8 @@ export function toolSummary(link: ToolLink, lang: SupportedLanguage): string {
     if (link.macerationDays !== undefined) parts.push(`${link.macerationDays} ${L('days')}`);
   } else if (link.tool === 'raw_materials') {
     if (link.search) parts.push(link.search);
+  } else if (link.tool === 'store') {
+    // The wish travels to «اسأل شاهين» in the store; the chip stays short.
   } else {
     if (link.bottleVolumeMl !== undefined) parts.push(`${link.bottleVolumeMl} ${L('ml')}`);
     if (link.concentrationPercent !== undefined) parts.push(`${link.concentrationPercent}%`);

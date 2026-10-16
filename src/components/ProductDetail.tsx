@@ -1,316 +1,149 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Star, ShoppingCart, Share2, Heart, Package, Shield, Truck, RotateCcw } from 'lucide-react';
-import productsData from '../data/products.json';
+import React, { useEffect, useState } from 'react';
+import { ArrowLeft, ArrowRight, MessageCircle, Package, ShoppingCart, Sparkles, Star } from 'lucide-react';
+import { FAMILY_LABEL, GENDER_LABEL, mergeCatalog, OCCASION_LABEL, SEASON_LABEL, type StoreProduct } from '../utils/storeCatalog';
+import { loadStoreCatalog, storeProducts } from '../utils/liveStore';
+import { addToCart, useCart } from '../utils/storeCart';
 
 const t = {
   ar: {
-    back: 'رجوع',
-    details: 'تفاصيل المنتج',
-    description: 'الوصف',
-    specs: 'المواصفات',
-    related: 'منتجات ذات صلة',
-    addToCart: 'أضف للسلة',
-    inCart: 'موجود في السلة',
-    qty: 'الكمية',
-    outOfStock: 'نفد من inventory',
-    reviews: 'التقييمات',
-    writeReview: 'اكتب تقييم',
-    brand: 'العلامة التجارية',
-    category: 'الفئة',
-    sku: 'رمز المنتج',
-    price: 'السعر',
-    supplierPrice: 'سعر التوريد',
-    ourPrice: 'سعرنا',
-    discount: 'خصم',
-    shipping: 'شحن مجاني',
-    delivery: 'توصيل خلال 3-5 أيام',
-    guarantee: 'ضمان استرجاع 30 يوم',
-    unit: 'الوحدة',
-    ingredients: 'المكونات',
-    notes: 'النقاط',
-    top: '최고',
-    middle: 'تظهر',
-    base: 'أساسي',
-    sillage: 'الرنين',
-    longevity: 'البقاء',
-    projection: 'الامتداد',
+    back: 'رجوع للمتجر', notFound: 'المنتج غير موجود', description: 'الوصف', profile: 'البصمة العطرية', family: 'العائلة',
+    gender: 'مناسب لـ', seasons: 'المواسم', occasions: 'المناسبات', top: 'الافتتاحية', heart: 'القلب', base: 'القاعدة',
+    brand: 'العلامة', category: 'الفئة', sku: 'رمز المنتج', addToCart: 'أضف للسلة', inCart: 'في السلة ({n})', qty: 'الكمية',
+    outOfStock: 'غير متوفر حالياً', currency: 'جنيه', related: 'قد يعجبك أيضاً', askShaheen: 'اسأل شاهين عن العطر ده',
+    askPrompt: 'أنا بفكر أشتري «{name}»{brand} من متجر شام ({price} جنيه). اوصفلي طابعه ولمين يناسب وامتى ألبسه، ورشحلي بدائل قريبة لو فيه.',
+    reviewed: 'راجع شاهين بيانات هذا العطر',
   },
   en: {
-    back: 'Back',
-    details: 'Product Details',
-    description: 'Description',
-    specs: 'Specifications',
-    related: 'Related Products',
-    addToCart: 'Add to Cart',
-    inCart: 'In Cart',
-    qty: 'Quantity',
-    outOfStock: 'Out of Stock',
-    reviews: 'Reviews',
-    writeReview: 'Write Review',
-    brand: 'Brand',
-    category: 'Category',
-    sku: 'SKU',
-    price: 'Price',
-    supplierPrice: 'Supplier Price',
-    ourPrice: 'Our Price',
-    discount: 'Discount',
-    shipping: 'Free Shipping',
-    delivery: 'Delivery in 3-5 days',
-    guarantee: '30-day return guarantee',
-    unit: 'Unit',
-    ingredients: 'Ingredients',
-    notes: 'Notes',
-    top: 'Top',
-    middle: 'Middle',
-    base: 'Base',
-    sillage: 'Sillage',
-    longevity: 'Longevity',
-    projection: 'Projection',
-  }
+    back: 'Back to store', notFound: 'Product not found', description: 'Description', profile: 'Scent profile', family: 'Family',
+    gender: 'For', seasons: 'Seasons', occasions: 'Occasions', top: 'Top', heart: 'Heart', base: 'Base',
+    brand: 'Brand', category: 'Category', sku: 'SKU', addToCart: 'Add to cart', inCart: 'In cart ({n})', qty: 'Quantity',
+    outOfStock: 'Currently out of stock', currency: 'EGP', related: 'You may also like', askShaheen: 'Ask Shaheen about this perfume',
+    askPrompt: "I'm thinking of buying «{name}»{brand} from Sham store ({price} EGP). Describe its character, who it suits and when to wear it, and suggest close alternatives if any.",
+    reviewed: 'Shaheen reviewed this perfume’s details',
+  },
 };
 
-interface Props {
-  productId: number;
-  currentLang: 'ar' | 'en';
-  onClose?: () => void;
-  onAddToCart?: (product: any) => void;
-}
+interface Props { productId: number; currentLang: 'ar' | 'en'; onClose?: () => void; onAddToCart?: (product: StoreProduct) => void }
+
+/** How close two products are (same family, gender, brand, price band) for «قد يعجبك أيضاً». */
+const closeness = (a: StoreProduct, b: StoreProduct) =>
+  b.families.filter((f) => a.families.includes(f)).length * 3 + (a.gender && a.gender === b.gender ? 2 : 0) +
+  (a.brand && a.brand === b.brand ? 1 : 0) + (Math.abs(a.price - b.price) <= a.price * 0.3 ? 1 : 0);
 
 export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose, onAddToCart }) => {
-  const lang = t[currentLang];
-  const product = productsData.products?.find(p => p.id === productId);
-  
+  const L = t[currentLang];
+  const [products, setProducts] = useState<StoreProduct[]>(() => mergeCatalog(storeProducts()));
+  useEffect(() => { let live = true; loadStoreCatalog().then((list) => { if (live) setProducts(list); }).catch(() => undefined); return () => { live = false; }; }, []);
   const [qty, setQty] = useState(1);
-  const [inCart, setInCart] = useState(false);
-  
+  const [broken, setBroken] = useState(false);
+  const cart = useCart();
+  const product = products.find((p) => String(p.id) === String(productId));
+  useEffect(() => { setQty(1); setBroken(false); window.scrollTo?.({ top: 0 }); }, [productId]);
+  const Back = currentLang === 'ar' ? ArrowRight : ArrowLeft;
+
   if (!product) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-xl">{lang.details}: not found</div>
+      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
+        <Package className="w-12 h-12 text-stone-300" />
+        <p className="text-lg text-stone-600">{L.notFound}</p>
+        <button type="button" onClick={onClose} className="text-amber-700 hover:underline">{L.back}</button>
       </div>
     );
   }
-  
-  const discount = product.supplierPrice 
-    ? Math.round((1 - product.ourPrice / product.supplierPrice) * 100)
-    : 0;
-  
-  const related = productsData.products?.filter(p => 
-    p.id !== product.id && p.brand === product.brand
-  ).slice(0, 4) || [];
-  
+
+  const price = (n: number) => `${n.toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US')} ${L.currency}`;
+  const related = products.filter((p) => p.sku !== product.sku).map((p) => ({ p, s: closeness(product, p) }))
+    .filter((r) => r.s > 0).sort((a, b) => b.s - a.s).slice(0, 4).map((r) => r.p);
+  const notes = ([['top', product.notes.top], ['heart', product.notes.heart], ['base', product.notes.base]] as const).filter(([, list]) => list.length);
+  const askShaheen = () => {
+    const prompt = L.askPrompt.replace('{name}', product.name[currentLang]).replace('{brand}', product.brand ? ` (${product.brand})` : '').replace('{price}', String(product.price));
+    window.dispatchEvent(new CustomEvent('open-ai-chat-with-prompt', { detail: prompt }));
+  };
+  const add = () => { addToCart(product.sku, qty); onAddToCart?.(product); };
+  const tag = (text: string) => <span key={text} className="px-2 py-0.5 rounded-full bg-amber-50 border border-amber-100 text-amber-900 text-xs">{text}</span>;
+
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center gap-4">
-          <button 
-            onClick={onClose}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            {lang.back}
-          </button>
-          <h1 className="text-xl font-bold">{lang.details}</h1>
+    <div className="min-h-screen bg-stone-50" dir={currentLang === 'ar' ? 'rtl' : 'ltr'}>
+      <header className="bg-white border-b">
+        <div className="max-w-6xl mx-auto px-4 py-3">
+          <button type="button" onClick={onClose} className="inline-flex items-center gap-2 text-stone-600 hover:text-stone-900 text-sm cursor-pointer"><Back className="w-4 h-4" />{L.back}</button>
         </div>
       </header>
-      
-      {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Image */}
-          <div className="space-y-4">
-            <div className="bg-white rounded-xl overflow-hidden shadow-lg">
-              <img 
-                src={product.imageUrl || 'https://via.placeholder.com/500x500?text=No+Image'} 
-                alt={product.nameAr || product.nameEn}
-                className="w-full h-auto object-cover"
-              />
+
+      <div className="max-w-6xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white rounded-2xl overflow-hidden border">
+          {product.imageUrl && !broken
+            ? <img src={product.imageUrl.replace(/w=300&h=300/, 'w=700&h=700')} alt={product.name.ar} onError={() => setBroken(true)} className="w-full aspect-square object-cover" />
+            : <div className="w-full aspect-square bg-gradient-to-br from-amber-100 to-stone-100 flex items-center justify-center"><Package className="w-20 h-20 text-amber-400/40" /></div>}
+        </div>
+
+        <div className="space-y-4">
+          <div className="bg-white rounded-2xl border p-5 space-y-3">
+            <div className="flex items-center gap-2 text-xs text-stone-500">
+              {product.brand && <span className="font-semibold text-stone-700">{product.brand}</span>}
+              {product.rating ? <span className="inline-flex items-center gap-0.5 text-amber-600"><Star className="w-3.5 h-3.5 fill-current" />{product.rating}{product.reviewCount ? <span className="text-stone-400"> ({product.reviewCount})</span> : null}</span> : null}
             </div>
-            {product.imageUrl && (
-              <button className="w-full bg-white border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition">
-                <Share2 className="w-5 h-5 mx-auto" />
-              </button>
-            )}
+            <h1 className="text-2xl font-bold text-stone-900">{product.name[currentLang]}</h1>
+            <p className="text-3xl font-bold text-amber-900">{price(product.price)}</p>
+            {product.inStock ? (
+              <div className="flex items-center gap-2">
+                <div className="flex items-center border rounded-lg" aria-label={L.qty}>
+                  <button type="button" onClick={() => setQty(Math.max(1, qty - 1))} className="px-3 py-2 cursor-pointer">−</button>
+                  <span className="w-8 text-center">{qty}</span>
+                  <button type="button" onClick={() => setQty(Math.min(99, qty + 1))} className="px-3 py-2 cursor-pointer">+</button>
+                </div>
+                <button type="button" onClick={add} className="flex-1 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-semibold inline-flex items-center justify-center gap-2 cursor-pointer">
+                  <ShoppingCart className="w-4 h-4" />{cart[product.sku] ? L.inCart.replace('{n}', String(cart[product.sku])) : L.addToCart}
+                </button>
+              </div>
+            ) : <p className="py-2.5 rounded-xl bg-stone-100 text-stone-500 text-center">{L.outOfStock}</p>}
+            <button type="button" onClick={askShaheen} data-testid="product-ask-shaheen"
+              className="w-full py-2.5 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-900 text-sm font-semibold inline-flex items-center justify-center gap-2 cursor-pointer">
+              <MessageCircle className="w-4 h-4" />{L.askShaheen}
+            </button>
           </div>
-          
-          {/* Details */}
-          <div className="space-y-6">
-            <div className="bg-white rounded-xl p-6 shadow-lg">
-              <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                <Package className="w-4 h-4" />
-                <span>{product.sku}</span>
-              </div>
-              
-              <h2 className="text-2xl font-bold mb-2">
-                {currentLang === 'ar' ? product.nameAr : product.nameEn}
-              </h2>
-              
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-sm font-medium">{product.brand}</span>
-                {product.rating && (
-                  <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                    <span className="text-sm">{product.rating}</span>
-                    {product.reviewCount && (
-                      <span className="text-sm text-gray-500">({product.reviewCount})</span>
-                    )}
-                  </div>
-                )}
-              </div>
-              
-              {/* Price */}
-              <div className="border-t border-gray-100 pt-4">
-                <div className="flex items-baseline gap-3">
-                  <span className="text-3xl font-bold">{product.ourPrice}</span>
-                  <span className="text-lg text-gray-500">EGP</span>
-                  {discount > 0 && (
-                    <span className="text-sm bg-red-100 text-red-600 px-2 py-1 rounded">
-                      -{discount}%
-                    </span>
-                  )}
-                </div>
-                {product.supplierPrice && (
-                  <div className="text-sm text-gray-500 mt-1">
-                    {lang.supplierPrice}: {product.supplierPrice} EGP
-                  </div>
-                )}
-              </div>
-              
-              {/* Stock and Actions */}
-              <div className="border-t border-gray-100 pt-4 mt-4">
-                {product.stockStatus === 'in_stock' ? (
-                  <>
-                    <div className="flex items-center gap-2 mb-4">
-                      <div className="flex-1">
-                        <label className="block text-sm font-medium mb-2">{lang.qty}:</label>
-                        <div className="flex items-center gap-2">
-                          <button 
-                            onClick={() => setQty(Math.max(1, qty - 1))}
-                            className="px-3 py-2 border rounded hover:bg-gray-100"
-                          >
-                            -
-                          </button>
-                          <span className="py-2 min-w-[40px] text-center">{qty}</span>
-                          <button 
-                            onClick={() => setQty(qty + 1)}
-                            className="px-3 py-2 border rounded hover:bg-gray-100"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <button
-                      onClick={() => {
-                        if (onAddToCart) {
-                          onAddToCart(product);
-                          setInCart(true);
-                        }
-                      }}
-                      className={`
-                        w-full py-3 px-6 rounded-lg font-semibold transition
-                        ${inCart 
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-amber-500 text-white hover:bg-amber-600'
-                        }
-                      `}
-                    >
-                      {inCart ? lang.inCart : lang.addToCart}
-                    </button>
-                  </>
-                ) : (
-                  <button className="w-full py-3 px-6 rounded-lg font-semibold bg-gray-200 text-gray-500 cursor-not-allowed">
-                    {lang.outOfStock}
-                  </button>
-                )}
-              </div>
+
+          <div className="bg-white rounded-2xl border p-5 space-y-2">
+            <h2 className="font-semibold">{L.description}</h2>
+            <p className="text-stone-700 leading-relaxed text-sm">{product.description[currentLang]}</p>
+            {product.enrichedBy === 'shaheen' && <p className="text-[11px] text-amber-700 inline-flex items-center gap-1"><Sparkles className="w-3 h-3" />{L.reviewed}</p>}
+          </div>
+
+          {(product.families.length > 0 || notes.length > 0 || product.gender || product.seasons.length > 0) && (
+            <div className="bg-white rounded-2xl border p-5 space-y-3 text-sm">
+              <h2 className="font-semibold">{L.profile}</h2>
+              {product.families.length > 0 && <div className="flex flex-wrap items-center gap-1.5"><span className="text-stone-500 me-1">{L.family}:</span>{product.families.map((f) => tag(FAMILY_LABEL[f][currentLang]))}</div>}
+              {product.gender && <div className="flex flex-wrap items-center gap-1.5"><span className="text-stone-500 me-1">{L.gender}:</span>{tag(GENDER_LABEL[product.gender][currentLang])}</div>}
+              {product.seasons.length > 0 && <div className="flex flex-wrap items-center gap-1.5"><span className="text-stone-500 me-1">{L.seasons}:</span>{product.seasons.map((s) => tag(SEASON_LABEL[s][currentLang]))}</div>}
+              {product.occasions.length > 0 && <div className="flex flex-wrap items-center gap-1.5"><span className="text-stone-500 me-1">{L.occasions}:</span>{product.occasions.map((o) => tag(OCCASION_LABEL[o][currentLang]))}</div>}
+              {notes.map(([level, list]) => <div key={level} className="flex flex-wrap items-center gap-1.5"><span className="text-stone-500 me-1">{L[level]}:</span>{list.map(tag)}</div>)}
             </div>
-            
-            {/* Features */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-white rounded-lg p-4 text-center shadow-sm">
-                <Truck className="w-6 h-6 mx-auto mb-2 text-amber-500" />
-                <div className="text-sm">{lang.shipping}</div>
-              </div>
-              <div className="bg-white rounded-lg p-4 text-center shadow-sm">
-                <RotateCcw className="w-6 h-6 mx-auto mb-2 text-amber-500" />
-                <div className="text-sm">{lang.guarantee}</div>
-              </div>
-              <div className="bg-white rounded-lg p-4 text-center shadow-sm">
-                <Shield className="w-6 h-6 mx-auto mb-2 text-amber-500" />
-                <div className="text-sm">{lang.delivery}</div>
-              </div>
-            </div>
-            
-            {/* Description */}
-            <div className="bg-white rounded-xl p-6 shadow-lg">
-              <h3 className="text-lg font-semibold mb-3">{lang.description}</h3>
-              <div className="text-gray-600 leading-relaxed">
-                {currentLang === 'ar' ? product.descriptionAr || 'عطر فاخر بجودة عالية وسعر مميز.' : product.descriptionEn || 'A luxurious perfume with high quality and special price.'}
-              </div>
-            </div>
-            
-            {/* Specs */}
-            <div className="bg-white rounded-xl p-6 shadow-lg">
-              <h3 className="text-lg font-semibold mb-4">{lang.specs}</h3>
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-500">{lang.brand}:</span>
-                  <span className="font-medium">{product.brand}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500">{lang.category}:</span>
-                  <span className="font-medium">{product.category}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500">{lang.sku}:</span>
-                  <span className="font-medium">{product.sku}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500">{lang.unit}:</span>
-                  <span className="font-medium">{product.unit}</span>
-                </div>
-              </div>
-            </div>
+          )}
+
+          <div className="bg-white rounded-2xl border p-5 grid grid-cols-2 gap-2 text-sm">
+            {product.brand && <><span className="text-stone-500">{L.brand}</span><span className="font-medium">{product.brand}</span></>}
+            {product.category && <><span className="text-stone-500">{L.category}</span><span className="font-medium">{product.category}</span></>}
+            <span className="text-stone-500">{L.sku}</span><span className="font-medium font-mono text-xs">{product.sku}</span>
           </div>
         </div>
-        
-        {/* Related Products */}
-        {related.length > 0 && (
-          <div className="mt-12">
-            <h2 className="text-2xl font-bold mb-6">{lang.related}</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {related.map(p => (
-                <div 
-                  key={p.id}
-                  className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition cursor-pointer"
-                  onClick={() => {
-                    window.location.hash = `#product=${p.id}`;
-                  }}
-                >
-                  <img 
-                    src={p.imageUrl || 'https://via.placeholder.com/300x300?text=No+Image'} 
-                    alt={p.nameAr || p.nameEn}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-4">
-                    <div className="text-sm text-gray-500 mb-1">{p.brand}</div>
-                    <h3 className="font-semibold mb-2">
-                      {currentLang === 'ar' ? p.nameAr : p.nameEn}
-                    </h3>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xl font-bold">{p.ourPrice}</span>
-                      <span className="text-gray-500">EGP</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
+
+      {related.length > 0 && (
+        <div className="max-w-6xl mx-auto px-4 pb-10">
+          <h2 className="text-xl font-bold mb-3">{L.related}</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {related.map((p) => (
+              <button type="button" key={p.sku} onClick={() => { window.location.hash = `#product=${p.id}`; }} className="bg-white rounded-2xl border overflow-hidden text-start hover:shadow-md transition cursor-pointer">
+                {p.imageUrl ? <img src={p.imageUrl} alt={p.name.ar} loading="lazy" className="w-full aspect-square object-cover" /> : <div className="w-full aspect-square bg-amber-50" />}
+                <div className="p-3">
+                  <p className="text-sm font-semibold line-clamp-2">{p.name[currentLang]}</p>
+                  <p className="text-sm font-bold text-amber-900 mt-1">{price(p.price)}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

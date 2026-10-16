@@ -8,6 +8,10 @@ name: Shaheen news, assistant training and AI supervision (every 12 hours)
 # Without any AI key it still publishes the real headlines, just without Shaheen's summaries.
 # Then «مشرف شاهين» (scripts/shaheen-supervisor/) tests every AI tool on the site, scores it and writes
 # quality guidance the tool follows (src/data/live/ai-supervisor.json; admin panel → «مشرف الذكاء الاصطناعي»).
+# «تدريب المتجر» (scripts/shaheen-store/): Shaheen reviews the products of «متجر شام» — clean names and
+# descriptions, scent family, notes, seasons, occasions, data issues for the merchant — in
+# src/data/live/store-catalog.json, which the store and its «اسأل شاهين» advisor read. A change to
+# src/data/products.json retrains the changed products right away.
 
 on:
   schedule:
@@ -16,7 +20,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main, 'arena/**']
-    paths: ['scripts/shaheen-news/**', 'scripts/shaheen-supervisor/**', 'src/utils/aiTools.ts', '.github/workflows/shaheen-news.yml']
+    paths: ['scripts/shaheen-news/**', 'scripts/shaheen-supervisor/**', 'scripts/shaheen-store/**', 'src/data/products.json', 'src/utils/storeCatalog.ts', 'src/utils/aiTools.ts', '.github/workflows/shaheen-news.yml']
 
 permissions:
   contents: write
@@ -59,6 +63,10 @@ jobs:
         run: bun install --frozen-lockfile || bun install
       - name: Collect news and train «مساعد شام»
         run: node --import tsx scripts/shaheen-news/run.mts
+      - name: Shaheen trains «متجر شام» (product catalog)
+        # A store problem must not block the news bulletin.
+        continue-on-error: true
+        run: node --import tsx scripts/shaheen-store/run.mts
       - name: Regression tests with the new data
         # Never publish a bulletin that would turn main red.
         run: bun run test
@@ -71,7 +79,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add src/data/live
           if git diff --cached --quiet; then echo "Nothing new to publish"; exit 0; fi
-          git commit -m "نشرة شاهين: تحديث الأخبار وتدريب مساعد شام $(date -u +%Y-%m-%dT%H:%MZ)"
+          git commit -m "نشرة شاهين: تحديث الأخبار وتدريب مساعد شام والمتجر $(date -u +%Y-%m-%dT%H:%MZ)"
           # main moves often: rebase onto the latest main and retry.
           for attempt in 1 2 3 4 5; do
             if git pull --rebase --depth=50 origin main && git push origin HEAD:main; then pushed=1; break; fi

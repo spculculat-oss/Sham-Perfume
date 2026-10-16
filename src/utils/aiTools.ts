@@ -5,7 +5,8 @@
  * until it is registered here — so no new AI tool runs without Shaheen's supervision.
  */
 export type AiToolId =
-  | 'shaheen_chat' | 'sham_assistant' | 'news_articles' | 'news_bulletin' | 'assistant_training' | 'media' | 'admin_agent';
+  | 'shaheen_chat' | 'sham_assistant' | 'news_articles' | 'news_bulletin' | 'assistant_training' | 'media' | 'admin_agent'
+  | 'store_advisor' | 'store_catalog';
 
 export interface AiToolDef {
   id: AiToolId;
@@ -50,6 +51,16 @@ export const AI_TOOLS: AiToolDef[] = [
     id: 'media', nameAr: 'الصور والفيديو والخرائط في الردود', nameEn: 'Images, videos and maps in answers',
     descriptionAr: 'يبحث عن صور حرة وفيديوهات وأماكن على الخريطة للمواضيع التي يطلبها شاهين في رده.',
     sources: ['server/media.ts'], routes: ['/api/media'], acceptsGuidance: false,
+  },
+  {
+    id: 'store_advisor', nameAr: 'مستشار التسوق «اسأل شاهين» في المتجر', nameEn: 'Store shopping advisor',
+    descriptionAr: 'الزائر يصف ما يبحث عنه في «متجر شام» فيختار له شاهين من منتجات المتجر الحقيقية مع سبب لكل اختيار.',
+    sources: ['server/store.ts'], routes: ['/api/store/advise'], acceptsGuidance: true,
+  },
+  {
+    id: 'store_catalog', nameAr: 'تدريب كتالوج المتجر', nameEn: 'Store catalog training',
+    descriptionAr: 'كل 12 ساعة يراجع شاهين منتجات المتجر: يصحح الأسماء والأوصاف ويضيف العائلة العطرية والنوتات والمواسم والمناسبات ويكشف أخطاء البيانات.',
+    sources: ['scripts/shaheen-store/run.mts'], routes: [], acceptsGuidance: true,
   },
   {
     id: 'admin_agent', nameAr: 'المساعد الإداري', nameEn: 'Admin operations agent',

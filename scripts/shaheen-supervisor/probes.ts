@@ -9,7 +9,7 @@ import { inspectAnswer, type Probe } from './checks';
 type Fetch = typeof fetch;
 export interface ProbeContext { site: string; fetch: Fetch; run: number; adminToken?: string; now: number; liveDir: URL }
 
-export const QUESTIONS: Record<'shaheen_chat' | 'sham_assistant', { q: string; lang: 'ar' | 'en' }[]> = {
+export const QUESTIONS: Record<'shaheen_chat' | 'sham_assistant' | 'store_advisor', { q: string; lang: 'ar' | 'en' }[]> = {
   shaheen_chat: [
     { q: 'صمم لي عطر شرقي بالعود والورد 50 مل تركيز EDP', lang: 'ar' },
     { q: 'عايز أخفف كحول 96% إلى 80% وأعمل منه 500 مل، أحط كام مية؟', lang: 'ar' },
@@ -31,6 +31,16 @@ export const QUESTIONS: Record<'shaheen_chat' | 'sham_assistant', { q: string; l
     { q: 'How can I track my order?', lang: 'en' },
     { q: 'ايه آخر أخبار العطور؟', lang: 'ar' },
     { q: 'عايز أكلم حد من فريق شام', lang: 'ar' },
+  ],
+  store_advisor: [
+    { q: 'عايز عطر رجالي للصيف للشغل', lang: 'ar' },
+    { q: 'هدية لمراتي عطر نسائي فخم', lang: 'ar' },
+    { q: 'عود ثابت للسهرات تحت 300 جنيه', lang: 'ar' },
+    { q: 'عطر منعش للجنسين للاستخدام اليومي', lang: 'ar' },
+    { q: 'حاجة شبه سوفاج', lang: 'ar' },
+    { q: 'A sweet vanilla perfume for winter evenings', lang: 'en' },
+    { q: 'ارخص عطر عندكم', lang: 'ar' },
+    { q: 'عطر مسك ناعم للبنات', lang: 'ar' },
   ],
 };
 
@@ -142,6 +152,38 @@ async function adminProbes(ctx: ProbeContext): Promise<Probe[]> {
   return [{ tool: 'admin_agent', question: 'تقرير اليوم', answer, ms: r.ms, ok: !r.error, error: r.error, findings: r.error ? [] : inspectAnswer(answer, { language: 'ar', ms: r.ms, vendorNamesAllowed: true }) }];
 }
 
+async function storeAdvisorProbes(ctx: ProbeContext): Promise<Probe[]> {
+  const out: Probe[] = [];
+  for (const { q, lang } of rotate(QUESTIONS.store_advisor, ctx.run, 2)) {
+    const r = await timed(() => json<{ source?: string; reply?: string; picks?: { id: string; why: string }[] }>(ctx.fetch, `${ctx.site}/api/store/advise`, post({ message: q, language: lang })));
+    const picks = r.value?.picks || [];
+    const answer = `${r.value?.reply || ''}\n${picks.map((p) => `- ${p.id}: ${p.why}`).join('\n')}`.trim();
+    const findings = r.error ? [] : [
+      ...(picks.length ? [] : [{ severe: true, text: 'لم يرشّح أي منتج' }]),
+      ...(r.value?.source === 'shaheen' ? [] : [{ severe: false, text: 'الرد من الفلتر المحلي فقط (المحركات لم ترد)' }]),
+      ...inspectAnswer(answer, { language: lang, ms: r.ms, maxChars: 1800 }),
+    ];
+    out.push({ tool: 'store_advisor', question: q, answer, ms: r.ms, ok: !r.error, error: r.error, findings });
+  }
+  return out;
+}
+
+function storeCatalogProbes(ctx: ProbeContext): Probe[] {
+  type Catalog = { updatedAt: string; editor: string; entries: Record<string, { editor: string; name?: { ar: string }; description: { ar: string }; families: string[]; notes: { top: string[]; heart: string[]; base: string[] } }>; audit: { checked: number; issues: { sku: string; issues: string[] }[] } };
+  const file = readLive<Catalog>(ctx, 'store-catalog.json');
+  if (!file) return [{ tool: 'store_catalog', question: 'ملف كتالوج المتجر', answer: '', ms: 0, ok: false, error: 'الملف غير موجود', findings: [] }];
+  const entries = Object.entries(file.entries);
+  const trained = entries.filter(([, e]) => e.editor === 'shaheen');
+  const ageH = (ctx.now - Date.parse(file.updatedAt)) / 3600_000;
+  const findings = [] as Probe['findings'];
+  if (ageH > 13) findings.push({ severe: false, text: `الكتالوج لم يتحدث منذ ${Math.round(ageH)} ساعة` });
+  if (!trained.length) findings.push({ severe: false, text: 'لم يراجع شاهين أي منتج بعد (بيانات بالقواعد فقط)' });
+  if (file.audit.issues.length) findings.push({ severe: false, text: `${file.audit.issues.length} منتج فيها ملاحظات بيانات للتاجر` });
+  const sample = rotate(trained.length ? trained : entries, ctx.run, 3);
+  const answer = sample.map(([sku, e]) => `## ${sku} ${e.name?.ar || ''}\n${e.description.ar}\nالعائلة: ${e.families.join('/')} — النوتات: ${[...e.notes.top, ...e.notes.heart, ...e.notes.base].join(', ')}`).join('\n\n');
+  return [{ tool: 'store_catalog', question: `كتالوج المتجر (${trained.length}/${entries.length} راجعها شاهين)`, answer, ms: 0, ok: true, findings: [...findings, ...(answer ? inspectAnswer(answer, { language: 'ar' }).filter((f) => f.severe) : [])] }];
+}
+
 export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<Probe[]>> = {
   shaheen_chat: chatProbes,
   sham_assistant: assistantProbes,
@@ -150,4 +192,6 @@ export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<P
   assistant_training: trainingProbes,
   media: mediaProbes,
   admin_agent: adminProbes,
+  store_advisor: storeAdvisorProbes,
+  store_catalog: storeCatalogProbes,
 };

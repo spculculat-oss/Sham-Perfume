@@ -14,7 +14,7 @@ import type { ExtractedAIPerfume } from './aiFormulaExtractor';
  * Pure (no browser or server imports), shared by both chat surfaces and the tests.
  */
 
-export type ShaheenTool = 'concentration' | 'pyramid' | 'maceration' | 'alcohol' | 'costing' | 'raw_materials' | 'guide';
+export type ShaheenTool = 'concentration' | 'pyramid' | 'maceration' | 'alcohol' | 'costing' | 'raw_materials' | 'guide' | 'store';
 export type ShaheenIntent = 'formula' | ShaheenTool;
 
 export interface ToolLink {
@@ -30,7 +30,7 @@ export interface ToolLink {
   alcoholFrom?: number;
   alcoholTo?: number;
   finalVolumeMl?: number;
-  /** Raw-material encyclopedia search. */
+  /** Raw-material encyclopedia search, or the visitor's wish for «اسأل شاهين» in the store. */
   search?: string;
 }
 
@@ -49,7 +49,10 @@ const INTENT_PATTERNS: [ShaheenIntent, RegExp][] = [
   ['pyramid', /هرم|نوتات|نوتة|نوته|\b(pyramid|top notes?|heart notes?|middle notes?|base notes?)\b/i],
   ['raw_materials', /مادة خام|مواد خام|المواد الخام|خامات|خامة|(ما هو|ما هي|ايه هو|إيه هو|ايه هي|إيه هي|معلومات عن)\s+(زيت|مادة|خامة)|\b(raw materials?|ingredients?|what (is|are) (an? )?[\w-]+ (oil|absolute)|essential oils?)\b/i],
   ['guide', /مثبت|مثبتات|ثبات|الثبات|فوحان|\b(fixative|fixation|longevity|sillage)\b/i],
+  // Shopping: the visitor wants a ready perfume, not a formula → «متجر شام» with «اسأل شاهين».
+  ['store', /(?<![\u0621-\u064A])(?:أشتري|اشتري|اشترى|هشتري|شراء|متجر|المتجر|عندكم|رشحلي|رشح لي|رشّح لي|ترشيح|ترشح لي|انصحني|تنصحني|هدية|هديه|اطلب عطر|أطلب عطر)(?![\u0621-\u064A])|(?:عايز|عايزة|عاوز|محتاج|محتاجة|ابغى|أبغى|أريد|اريد)\s+(?:عطر|برفان|برفيوم)(?!\s*(?:أركب|اركب|اعمل|أعمل))|\b(buy|shop|store|gift|recommend (?:me )?(?:a )?(?:perfume|fragrance|scent)|which perfume should)\b/i],
 ];
+const COST_WORDS = /تكلف|تكاليف|ربح|أرباح|ارباح|هامش|تسعير|\b(cost\w*|profit|margin|pricing)\b/i;
 const NO_TOOLS = /^(مرحبا|اهلا|أهلا|السلام عليكم|هاي|hi|hello|hey|شكرا|شكراً|thanks?|thank you)[\s!.؟?]*$/i;
 const MEDICAL = /حامل|حوامل|رضيع|أطفال|اطفال|ربو|حساسية|علاج|دواء|جرعة|بلع|\b(pregnan\w*|baby|infant|asthma|allerg\w*|medical|dose|ingest\w*)\b/i;
 
@@ -57,7 +60,9 @@ const MEDICAL = /حامل|حوامل|رضيع|أطفال|اطفال|ربو|حس�
 export function questionIntents(question: string, previousQuestion = ''): ShaheenIntent[] {
   const q = normalizeDigits(question || '').trim();
   if (!q || NO_TOOLS.test(q) || MEDICAL.test(q)) return [];
-  const found = INTENT_PATTERNS.filter(([, re]) => re.test(q)).map(([intent]) => intent);
+  let found = INTENT_PATTERNS.filter(([, re]) => re.test(q)).map(([intent]) => intent);
+  // «بكام عطر العود عندكم؟» asks the store's price, not the production-cost calculator.
+  if (found.includes('store') && !COST_WORDS.test(q)) found = found.filter((i) => i !== 'costing');
   // «طيب ولو 100 مل؟» / «and for 45 days?» — a short follow-up keeps the topic of the question before it.
   if (!found.length && previousQuestion && q.length <= 80) return questionIntents(previousQuestion);
   return found;
@@ -139,7 +144,7 @@ export function materialIn(text: string): string | undefined {
 /* ------------------------------- explicit blocks from Shaheen -------------------------------- */
 
 const TOOL_FENCE = /```[ \t]*sham[-_ ]?tools?[^\n]*\n([\s\S]*?)(?:```|$)/gi;
-const TOOLS: ShaheenTool[] = ['concentration', 'pyramid', 'maceration', 'alcohol', 'costing', 'raw_materials', 'guide'];
+const TOOLS: ShaheenTool[] = ['concentration', 'pyramid', 'maceration', 'alcohol', 'costing', 'raw_materials', 'guide', 'store'];
 const CONCENTRATION_TYPES: ConcentrationType[] = ['extrait', 'edp', 'edt', 'edc', 'eau_fraiche', 'aftershave', 'mist', 'oil_pure', 'custom'];
 
 function sanitize(raw: Record<string, unknown>): ToolLink | null {
@@ -166,7 +171,7 @@ function sanitize(raw: Record<string, unknown>): ToolLink | null {
     const type = (CONCENTRATION_TYPES as string[]).includes(ct) ? ct as ConcentrationType : concentrationTypeIn(ct);
     if (type) link.concentrationType = type;
   }
-  if (typeof raw.search === 'string' && raw.search.trim().length >= 2 && raw.search.length <= 60) link.search = raw.search.trim();
+  if (typeof raw.search === 'string' && raw.search.trim().length >= 2 && raw.search.length <= (tool === 'store' ? 160 : 60)) link.search = raw.search.trim();
   return link;
 }
 
@@ -198,7 +203,7 @@ export interface LinkInput {
   formulas?: ExtractedAIPerfume[];
 }
 
-const ORDER: ShaheenTool[] = ['concentration', 'alcohol', 'maceration', 'pyramid', 'costing', 'raw_materials', 'guide'];
+const ORDER: ShaheenTool[] = ['store', 'concentration', 'alcohol', 'maceration', 'pyramid', 'costing', 'raw_materials', 'guide'];
 
 /** The calculators this answer should open, with the values the question and answer give. */
 export function linkTools({ question, previousQuestion = '', answer, formulas = [] }: LinkInput): ToolLink[] {
@@ -239,6 +244,9 @@ export function linkTools({ question, previousQuestion = '', answer, formulas = 
     } else if (intent === 'raw_materials') {
       const name = materialIn(question);
       if (name) link.search = name;
+    } else if (intent === 'store') {
+      const wish = (question || '').replace(/\s+/g, ' ').trim().slice(0, 160);
+      if (wish.length >= 2) link.search = wish;
     }
     links.set(intent, link);
   }
