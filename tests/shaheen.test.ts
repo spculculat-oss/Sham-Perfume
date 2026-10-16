@@ -62,7 +62,7 @@ test('auto failover changes attribution to the provider that succeeded', async (
     fetch: (async () => ++calls === 1 ? json({ error: 'unavailable' }, 503)
       : json({ choices: [{ message: { content: 'Actual DeepSeek answer' } }] })) as typeof fetch });
   assert.equal(reply.engine.provider, 'deepseek');
-  assert.equal(calls, 2);
+  assert.equal(calls, 3, 'Gemini 503 → one look for another Gemini model (none here) → DeepSeek');
 });
 
 test('explicit provider never silently impersonates another provider', async () => {

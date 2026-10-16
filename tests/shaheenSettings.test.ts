@@ -286,3 +286,32 @@ test('Gemini: an exhausted model quota switches to another model for an hour, an
   assert.doesNotMatch(detail, /AIza/);
   assert.equal(failureDetail('not json'), '');
 });
+
+test('Gemini: a model overloaded by Google (503 UNAVAILABLE) hands the question to another model for 10 minutes', async () => {
+  const calls: string[] = [];
+  const fetch = (async (url: string) => {
+    calls.push(String(url).replace('https://generativelanguage.googleapis.com/v1beta/', ''));
+    if (String(url).includes('/models?')) {
+      return json({ models: ['gemini-flash-latest', 'gemini-3.5-flash', 'gemini-flash-lite-latest'].map((n) => ({ name: `models/${n}`, supportedGenerationMethods: ['generateContent'] })) });
+    }
+    if (String(url).includes('gemini-flash-latest:')) return json({ error: { code: 503, status: 'UNAVAILABLE', message: 'This model is currently experiencing high demand.' } }, 503);
+    return json({ candidates: [{ content: { parts: [{ text: 'المنظف يحتاج عطراً مقاوماً للقلويات' }] } }] });
+  }) as typeof globalThis.fetch;
+  let used = '';
+  const opts = { env: { GEMINI_API_KEY: 'overloaded-key' }, fetch, signal: AbortSignal.timeout(5000), temperature: 0.5, onModel: (m: string) => { used = m; } };
+  assert.match(await callEngine('gemini', 'sys', [{ role: 'user', text: 'عطر لمنظف' }], opts) || '', /المنظف/);
+  assert.deepEqual(calls, ['models/gemini-flash-latest:generateContent', 'models?pageSize=1000', 'models/gemini-flash-lite-latest:generateContent']);
+  assert.equal(used, 'gemini-flash-lite-latest');
+  calls.length = 0;
+  await callEngine('gemini', 'sys', [{ role: 'user', text: 'hi' }], opts);
+  assert.deepEqual(calls, ['models/gemini-flash-lite-latest:generateContent'], 'remembered while Google is overloaded');
+
+  // Every model overloaded: still a clean failure for the failover chain.
+  let failure = '';
+  const allDown = (async (url: string) => String(url).includes('/models?')
+    ? json({ models: [{ name: 'models/gemini-flash-lite-latest', supportedGenerationMethods: ['generateContent'] }] })
+    : json({ error: { code: 503, status: 'UNAVAILABLE' } }, 503)) as typeof globalThis.fetch;
+  assert.equal(await callEngine('gemini', 'sys', [{ role: 'user', text: 'hi' }], { env: { GEMINI_API_KEY: 'all-down-key' }, fetch: allDown,
+    signal: AbortSignal.timeout(5000), temperature: 0.5, onFailure: (f) => { failure = f; } }), undefined);
+  assert.equal(failure, 'upstream_error');
+});
