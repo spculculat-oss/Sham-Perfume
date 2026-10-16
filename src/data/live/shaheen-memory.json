@@ -1,7 +1,27 @@
 {
  "version": 1,
- "updatedAt": "2026-10-16T10:46:45.896Z",
+ "updatedAt": "2026-10-16T13:15:01.044Z",
  "entries": [
+  {
+   "id": "ar|auto|ليه العطر بيختفي بسرعة علي جلدي؟ وازود الثبات ازاي",
+   "question": "ليه العطر بيختفي بسرعة على جلدي؟ وأزود الثبات ازاي؟",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "### أسباب اختفاء العطر بسرعة عن الجلد\n- **طبيعة البشرة الجافة:** البشرة الجافة تمتص جزيئات العطر بسرعة وتتخلص منها لعدم وجود زيوت طبيعية كافية لتحفظها.\n- **نوع التركيز:** استخدام تركيز خفيف مثل الكولونيا (Eau de Cologne) أو التواليت (Eau de Toilette) يحتوي على نسبة قليلة من الزيوت العطرية مقارنة بالبارفان (Eau de Parfum).\n- **التعرض للحرارة والشمس:** الحرارة المرتفعة تسرع تبخر المكونات العليا والمتوسطة للعطر.\n- **التخزين الخاطئ:** حفظ العطر في أماكن حارة أو معرضة للضوء يفقد المكونات العطرية استقرارها.\n\n---\n\n### جدول مقارنة الثبات حسب التركيز\n\n| نوع التركيز | نسبة الزيوت العطرية التقريبية | متوسط الثبات |\n| :--- | :--- | :--- |\n| **Eau de Cologne** | 3 إلى 5 بالمئة | ساعة إلى ساعتين |\n| **Eau de Toilette** | 5 إلى 15 بالمئة | 3 إلى 4 ساعات |\n| **Eau de Parfum** | 15 إلى 20 بالمئة | 5 إلى 8 ساعات |\n| **Parfum** | 20 إلى 30 بالمئة | أكثر من 8 ساعات |\n\n---\n\n### نصائح لزيادة ثبات العطر\n1. **ترطيب البشرة أولاً:** استخدم مرطباً غير معطر (مثل الفازلين أو لوشن مرطب) على الجلد قبل رش العطر ليعمل كحاجز يمنع امتصاصه السريع.\n2. **الرش على نقاط النبض:** ضع العطر خلف الأذنين، على المعصمين، الرقبة، ومثبتات الجسم الطبيعية حيث تكون الحرارة أعلى وتساعد في انتشار العطر تدريجياً.\n3. **عدم فرك المعصمين:** تجنب فرك المعصمين ببعضهما بعد الرش، لأن الفرك يكسر جزيئات العطر ويجعلها تتبخر أسرع.\n4. **الرش على الملابس والشعر بحذر:** الملابس تحتفظ برائحة العطر لفترة أطول مقارنة بالجلد المباشر (تأكد من ملاءمة القماش لعدم التبقع).\n5. **تحسين مدة التعتيق:** اترك العطر المخصص يتعتق لفترة كافية (30 يوماً أو أكثر) لتمتزج المكونات جيداً ويستقر الثبات.",
+   "at": "2026-10-16T13:15:01.044Z",
+   "hits": 0,
+   "source": "probe"
+  },
+  {
+   "id": "en|auto|what fixative works best for a citrus cologne, and at what percentage",
+   "question": "What fixative works best for a citrus cologne, and at what percentage?",
+   "lang": "en",
+   "style": "auto",
+   "answer": "### Fixatives for Citrus Colognes\n\nCitrus notes are notoriously volatile and evaporate quickly. To anchor them without masking their bright, zesty character, you need clean, transparent fixatives that blend well with light top notes. \n\nHere are the best fixatives for citrus colognes:\n\n| Fixative | Olfactory Profile | Recommended Percentage (of total oil) |\n| :--- | :--- | :--- |\n| **Iso E Super** | Woody, cedar-like, velvety, transparent | 5.0% to 15.0% |\n| **Ambroxan** | Clean, ambergris-like, woody, salty-sweet | 2.0% to 8.0% |\n| **Hedione** | Floral, transparent, jasmine petal nuance | 5.0% to 20.0% |\n| **Benzyl Acetate** | Fresh, sweet, fruity-floral | 1.0% to 5.0% |\n\n### Master Shahin's Recommendation\nFor a classic citrus cologne, **Iso E Super** combined with a touch of **Ambroxan** works exceptionally well. They provide modern diffusion and longevity without weighing down the refreshing citrus opening. \n\n*Note: These suggested percentages are experimental and depend on your overall formula balance and safety compliance. Would you like to build a complete citrus cologne formula incorporating one of these fixatives?*",
+   "at": "2026-10-16T13:15:01.044Z",
+   "hits": 0,
+   "source": "probe"
+  },
   {
    "id": "ar|auto|كم يوم اعتق عطر فيه مسك وعنبر وعود",
    "question": "كم يوم أعتق عطر فيه مسك وعنبر وعود؟",
