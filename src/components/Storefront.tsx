@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Loader2, Minus, Package, Plus, Search, Send, ShoppingCart, Sparkles, Star, Trash2, UserPlus, X } from 'lucide-react';
+import { ArrowUpRight, Loader2, Minus, Package, Plus, Search, Send, ShoppingCart, Sparkles, Star, Trash2, UserPlus, X } from 'lucide-react';
 import { saveMerchant } from '../utils/merchantDataStore';
 import { FAMILY_LABEL, GENDER_LABEL, searchText, type Family, type Gender, type StoreProduct } from '../utils/storeCatalog';
 import { askShaheenStore, loadStoreCatalog, localSuggestion, storeImageSrc, type StoreSuggestion } from '../utils/liveStore';
@@ -7,7 +7,10 @@ import { addToCart, cartSummary, clearCart, orderMessage, setCartQty, useCart } 
 
 const t = {
   ar: {
-    title: 'متجر شام', search: 'ابحث بالاسم أو العلامة أو النوتة (عود، فانيليا، مسك…)',
+    title: 'متجر شام', search: 'اكتب اسم عطر أو نوتة أو علامة…',
+    storeTagline: 'عطور مختارة بعناية', searchLabel: 'ابحث في عطور متجر شام', searchButton: 'بحث',
+    searchResults: 'اقتراحات تناسب بحثك', searchNoResults: 'مفيش عطور مطابقة — جرّب اسم أو نوتة تانية.',
+    searchAll: 'عرض كل النتائج', searchQuickTitle: 'ابدأ بنوتة بتحبها', searchQuickNotes: ['عود', 'مسك', 'فانيليا'], searchShortcut: 'Ctrl K',
     askTitle: 'اسأل شاهين', askHint: 'قول لشاهين بتدوّر على إيه — المناسبة، الموسم، رجالي ولا نسائي، الميزانية — وهو يختار لك من المتجر.',
     askPlaceholder: 'مثال: عطر رجالي للصيف للشغل تحت 250 جنيه', ask: 'رشّح لي',
     chips: ['رجالي صيفي منعش للشغل', 'هدية نسائية فخمة', 'عود ثابت للسهرات', 'عطر حلو للشتاء', 'أرخص عطور مميزة'],
@@ -21,7 +24,10 @@ const t = {
     password: 'كلمة المرور', register: 'سجّل الآن', cancel: 'إلغاء', fill: 'يرجى تعبئة الحقول المطلوبة', registered: 'تم استلام طلبك، وسيراجعه فريق شام',
   },
   en: {
-    title: 'Sham Store', search: 'Search by name, brand or note (oud, vanilla, musk…)',
+    title: 'Sham Store', search: 'Search a scent, note or brand…',
+    storeTagline: 'Scents, chosen with care', searchLabel: 'Search Sham perfume store', searchButton: 'Search',
+    searchResults: 'Scents matching your search', searchNoResults: 'No matching scents — try another name or note.',
+    searchAll: 'View all results', searchQuickTitle: 'Start with a note you love', searchQuickNotes: ['Oud', 'Musk', 'Vanilla'], searchShortcut: 'Ctrl K',
     askTitle: 'Ask Shaheen', askHint: 'Tell Shaheen what you are looking for — occasion, season, men or women, budget — and he picks from the store.',
     askPlaceholder: 'e.g. a fresh summer perfume for work under 250 EGP', ask: 'Recommend',
     chips: ['Fresh summer scent for work', 'Luxury gift for her', 'Long-lasting oud for evenings', 'Sweet winter perfume', 'Best budget picks'],
@@ -62,8 +68,11 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
   const PAGE = 48;
   const [limit, setLimit] = useState(PAGE);
 
-  // Filters
+  // Filters and the live scent-finder search.
   const [search, setSearch] = useState('');
+  const [searchFocused, setSearchFocused] = useState(false);
+  const searchBarRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const [gender, setGender] = useState<Gender | 'all'>('all');
   const [family, setFamily] = useState<Family | 'all'>('all');
   const [category, setCategory] = useState('all');
@@ -92,6 +101,28 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
   useEffect(() => { setLimit(PAGE); }, [search, gender, family, category, brand, newOnly, sort]);
   const filtered = search || gender !== 'all' || family !== 'all' || category !== 'all' || brand !== 'all' || newOnly;
   const resetFilters = () => { setSearch(''); setGender('all'); setFamily('all'); setCategory('all'); setBrand('all'); setNewOnly(false); };
+
+  useEffect(() => {
+    const closeOnOutsidePress = (event: PointerEvent) => {
+      if (event.target instanceof Node && !searchBarRef.current?.contains(event.target)) setSearchFocused(false);
+    };
+    const handleSearchShortcut = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        searchInputRef.current?.focus();
+      }
+      if (event.key === 'Escape' && searchFocused) {
+        setSearchFocused(false);
+        searchInputRef.current?.blur();
+      }
+    };
+    document.addEventListener('pointerdown', closeOnOutsidePress);
+    document.addEventListener('keydown', handleSearchShortcut);
+    return () => {
+      document.removeEventListener('pointerdown', closeOnOutsidePress);
+      document.removeEventListener('keydown', handleSearchShortcut);
+    };
+  }, [searchFocused]);
 
   // «اسأل شاهين»
   const [wish, setWish] = useState('');
@@ -184,23 +215,115 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
 
   return (
     <div className="min-h-screen bg-stone-50" dir={currentLang === 'ar' ? 'rtl' : 'ltr'}>
-      <header className="bg-stone-900 text-white sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
-          <div className="flex items-center gap-2 shrink-0">
-            <div className="w-9 h-9 rounded-lg bg-amber-500 flex items-center justify-center"><Sparkles className="w-5 h-5 text-white" /></div>
-            <span className="text-lg font-bold">{L.title}</span>
+      {/* Keep the store's sticky search bar below the site header so language menus stay on top. */}
+      <header className="sticky z-30 border-b border-white/10 bg-stone-950/95 text-white shadow-lg shadow-stone-950/10 backdrop-blur-xl" style={{ top: 'var(--sham-global-header-height, 0px)' }}>
+        <div className="mx-auto flex max-w-7xl items-center gap-2.5 px-3 py-2.5 sm:gap-4 sm:px-4 sm:py-3">
+          <div className="flex shrink-0 items-center gap-2.5">
+            <div className="relative flex h-10 w-10 items-center justify-center rounded-2xl border border-amber-300/30 bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 shadow-md shadow-amber-950/30">
+              <span className="absolute inset-0 rounded-2xl bg-white/10" />
+              <Sparkles className="relative h-5 w-5 text-stone-950" />
+            </div>
+            <div className="hidden sm:block">
+              <span className="block text-sm font-extrabold tracking-wide text-white">{L.title}</span>
+              <span className="block text-[10px] font-medium text-amber-200/75">{L.storeTagline}</span>
+            </div>
           </div>
-          <div className="flex-1 relative min-w-0">
-            <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
-            <input type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder={L.search} data-testid="store-search"
-              className="w-full ps-9 pe-3 py-2 bg-stone-800 border border-stone-700 rounded-lg text-sm text-white placeholder-stone-400 focus:outline-none focus:border-amber-500" />
+
+          <div className="relative min-w-0 flex-1" ref={searchBarRef}>
+            <div className={`pointer-events-none absolute -inset-1 rounded-[1.35rem] bg-gradient-to-r from-amber-400/30 via-orange-500/10 to-amber-200/20 blur-md transition-opacity ${searchFocused ? 'opacity-100' : 'opacity-60'}`} />
+            <form role="search" aria-label={L.searchLabel} onSubmit={(event) => { event.preventDefault(); setSearchFocused(false); searchInputRef.current?.blur(); }}>
+              <div className={`relative flex h-12 items-center gap-1.5 rounded-2xl border p-1.5 shadow-inner transition-all ${searchFocused ? 'border-amber-300/70 bg-stone-900 ring-2 ring-amber-400/20' : 'border-white/15 bg-stone-900/85 hover:border-amber-300/40'}`}>
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-300 to-amber-600 text-stone-950 shadow-sm shadow-amber-950/30">
+                  <Search className="h-4 w-4" />
+                </span>
+                <input
+                  ref={searchInputRef}
+                  type="search"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                  onFocus={() => setSearchFocused(true)}
+                  placeholder={L.search}
+                  aria-label={L.searchLabel}
+                  aria-expanded={searchFocused}
+                  aria-controls={searchFocused ? 'store-search-suggestions' : undefined}
+                  autoComplete="off"
+                  enterKeyHint="search"
+                  data-testid="store-search"
+                  className="min-w-0 flex-1 appearance-none bg-transparent py-2 text-start text-sm text-white outline-none placeholder:text-stone-400 focus:ring-0 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
+                />
+                {search ? (
+                  <button type="button" onClick={() => { setSearch(''); searchInputRef.current?.focus(); }} aria-label={currentLang === 'ar' ? 'مسح البحث' : 'Clear search'} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-stone-400 transition hover:bg-white/10 hover:text-white">
+                    <X className="h-4 w-4" />
+                  </button>
+                ) : (
+                  <kbd className="hidden shrink-0 rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-[10px] font-medium text-stone-400 lg:inline-flex">{L.searchShortcut}</kbd>
+                )}
+                <button type="submit" aria-label={L.searchButton} className="inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-2.5 text-stone-950 shadow-sm transition hover:from-amber-400 hover:to-orange-400 active:scale-[0.98] sm:px-4">
+                  <Search className="h-4 w-4 sm:hidden" />
+                  <span className="hidden text-xs font-extrabold sm:inline">{L.searchButton}</span>
+                  <ArrowUpRight className="hidden h-3.5 w-3.5 sm:block" />
+                </button>
+              </div>
+            </form>
+
+            {searchFocused && (
+              <div id="store-search-suggestions" className="absolute inset-x-0 top-full z-20 mt-2 overflow-hidden rounded-2xl border border-stone-200 bg-white text-stone-800 shadow-2xl shadow-stone-950/25 animate-in fade-in zoom-in-95" data-testid="store-search-suggestions">
+                {search.trim() ? (
+                  <>
+                    <div className="flex items-center justify-between gap-3 border-b border-stone-100 bg-stone-50/90 px-3.5 py-2.5">
+                      <span className="flex min-w-0 items-center gap-2 text-xs font-bold text-stone-700">
+                        <Sparkles className="h-3.5 w-3.5 shrink-0 text-amber-600" />
+                        <span className="truncate">{L.searchResults}</span>
+                      </span>
+                      <span className="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-900">{shown.length}</span>
+                    </div>
+                    {shown.length ? (
+                      <div className="max-h-72 overflow-y-auto p-1.5">
+                        {shown.slice(0, 5).map((product) => (
+                          <button key={product.sku} type="button" onClick={() => { setSearchFocused(false); openDetails(product); }} className="group flex w-full items-center gap-2.5 rounded-xl p-2 text-start transition hover:bg-amber-50 focus:bg-amber-50 focus:outline-none" data-testid="store-search-suggestion">
+                            <ProductImage product={product} className="h-11 w-11 shrink-0 rounded-xl border border-stone-200" />
+                            <span className="min-w-0 flex-1">
+                              <span className="block truncate text-xs font-bold text-stone-900 group-hover:text-amber-900">{product.name[currentLang]}</span>
+                              <span className="mt-0.5 block truncate text-[10px] text-stone-500">{[product.brand || product.category, product.families.slice(0, 1).map((family) => FAMILY_LABEL[family][currentLang]).join('')].filter(Boolean).join(' · ')}</span>
+                            </span>
+                            <span className="flex shrink-0 items-center gap-1 text-[11px] font-bold text-amber-900">
+                              <span>{price(product.price)}</span>
+                              <ArrowUpRight className="h-3.5 w-3.5 text-amber-600 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                            </span>
+                          </button>
+                        ))}
+                        <button type="button" onClick={() => { setSearchFocused(false); document.querySelector('[data-testid="store-grid"]')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} className="mt-1 flex w-full items-center justify-between rounded-xl border-t border-stone-100 px-3 py-2.5 text-xs font-bold text-amber-800 transition hover:bg-amber-50">
+                          <span>{L.searchAll}</span><span>{shown.length}</span>
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2.5 px-4 py-5 text-xs text-stone-500">
+                        <Search className="h-4 w-4 shrink-0 text-stone-400" />{L.searchNoResults}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="p-3.5">
+                    <p className="mb-2.5 flex items-center gap-2 text-xs font-bold text-stone-700"><Sparkles className="h-3.5 w-3.5 text-amber-600" />{L.searchQuickTitle}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {L.searchQuickNotes.map((note) => (
+                        <button key={note} type="button" onClick={() => { setSearch(note); searchInputRef.current?.focus(); }} className="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-900 transition hover:border-amber-400 hover:bg-amber-100">
+                          <Search className="h-3 w-3" />{note}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
-          <button type="button" onClick={() => setCartOpen(true)} className="relative p-2 cursor-pointer" title={L.cart} data-testid="store-cart-button">
-            <ShoppingCart className="w-5 h-5" />
-            {summary.count > 0 && <span className="absolute -top-1 -end-1 min-w-5 h-5 px-1 bg-amber-500 text-white text-xs font-bold rounded-full flex items-center justify-center">{summary.count}</span>}
+
+          <button type="button" onClick={() => setCartOpen(true)} className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 transition hover:border-amber-300/40 hover:bg-amber-400/10 cursor-pointer" title={L.cart} aria-label={L.cart} data-testid="store-cart-button">
+            <ShoppingCart className="h-5 w-5" />
+            {summary.count > 0 && <span className="absolute -top-1 -end-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500 px-1 text-xs font-bold text-stone-950">{summary.count}</span>}
           </button>
-          <button type="button" onClick={() => setShowReg(true)} className="hidden sm:flex items-center gap-2 px-3 py-2 bg-amber-600 hover:bg-amber-700 rounded-lg text-sm cursor-pointer">
-            <UserPlus className="w-4 h-4" />{L.becomeMerchant}
+          <button type="button" onClick={() => setShowReg(true)} className="hidden shrink-0 items-center gap-2 rounded-xl border border-amber-300/30 bg-amber-500 px-3 py-2 text-sm font-bold text-stone-950 transition hover:bg-amber-400 sm:flex">
+            <UserPlus className="h-4 w-4" />{L.becomeMerchant}
           </button>
         </div>
       </header>
