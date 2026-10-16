@@ -1,7 +1,7 @@
 {
  "version": 1,
- "updatedAt": "2026-10-16T08:33:23.756Z",
- "nextUpdateAt": "2026-10-16T20:33:23.756Z",
+ "updatedAt": "2026-10-16T09:05:57.616Z",
+ "nextUpdateAt": "2026-10-16T21:05:57.616Z",
  "editor": "shaheen",
  "entries": {
   "LAT-001": {
@@ -5904,10 +5904,1147 @@
     "كراميل",
     "عطور نسائية حلوة"
    ]
+  },
+  "LAT-142": {
+   "sourceHash": "1095vqr",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Simply Oud by Lattafa 100ml EDP for Men",
+   "nameEn": "Simply Oud by Lattafa 100ml EDP for Men",
+   "descriptionAr": "عطر Simply Oud by Lattafa 100ml EDP for Men من Lattafa رجالي بطابع عود ومسكي وعنبري.",
+   "descriptionEn": "Simply Oud by Lattafa – 100 ml Eau De Parfum for Men\nFragrance Notes:Top: Oud, SpicesHeart: Amber, WoodsBase: Smoke, Musk, Dry Woods",
+   "gender": "men",
+   "families": [
+    "oud",
+    "musk",
+    "amber"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Smoke",
+     "Musk",
+     "Dry Woods"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "winter",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily"
+   ],
+   "tags": []
+  },
+  "ALR-143": {
+   "sourceHash": "su0zqh",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "French Coffee Al Rehab 100ml EDP Women",
+   "nameEn": "French Coffee Al Rehab 100ml EDP Women",
+   "descriptionAr": "عطر French Coffee Al Rehab 100ml EDP Women من Al Rehab نسائي بطابع حلو وتوابل.",
+   "descriptionEn": "French Coffee by Al Rehab – 100 ml Eau de Parfum for Women\nFragrance Family: Gourmand • Sweet • CoffeeKey Notes: Coffee, Caramel, Vanilla, Cocoa, Spices",
+   "gender": "women",
+   "families": [
+    "gourmand",
+    "spicy"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [],
+   "tags": []
+  },
+  "LAT-144": {
+   "sourceHash": "he6smc",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Angel by LaMuse (Lattafa) – 100 ml for Women",
+   "nameEn": "Angel by LaMuse (Lattafa) – 100 ml for Women",
+   "descriptionAr": "عطر Angel by LaMuse (Lattafa) – 100 ml for Women من Lattafa نسائي بطابع زهري وحلو وفواكه.",
+   "descriptionEn": "Angel by LaMuse (Lattafa) – 100 ml Eau de Parfum for Women\nFragrance Family: Floral • Fruity • Sweet Top Notes: Mandarin, Peach, Raspberry Middle Notes: Rose, Jasmine, Caramel Base Notes: Vanilla, Amber, Musk",
+   "gender": "women",
+   "families": [
+    "floral",
+    "gourmand",
+    "fruity"
+   ],
+   "notes": {
+    "top": [
+     "Mandarin",
+     "Peach",
+     "Raspberry"
+    ],
+    "heart": [
+     "Rose",
+     "Jasmine",
+     "Caramel"
+    ],
+    "base": [
+     "Vanilla",
+     "Amber",
+     "Musk"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [],
+   "tags": []
+  },
+  "LAT-145": {
+   "sourceHash": "1dzz8r2",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Al Nashama Caprice by Lattafa 100ml EDP",
+   "nameEn": "Al Nashama Caprice by Lattafa 100ml EDP",
+   "descriptionAr": "عطر Al Nashama Caprice by Lattafa 100ml EDP من Lattafa للجنسين.",
+   "descriptionEn": "Al Nashama Caprice by Lattafa 100ml EDP",
+   "gender": "unisex",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "LAT-146": {
+   "sourceHash": "j7pgo8",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Rouat Al Oud by Lattafa 100ml EDP Unisex",
+   "nameEn": "Rouat Al Oud by Lattafa 100ml EDP Unisex",
+   "descriptionAr": "عطر Rouat Al Oud by Lattafa 100ml EDP Unisex من Lattafa للجنسين بطابع عود وخشبي وشرقي.",
+   "descriptionEn": "Rouat Al Oud by Lattafa – 100 ml Eau de Parfum for Women & Men\nFragrance Family: Oriental • Woody • Oud Top Notes: Saffron, Rose, Cinnamon Middle Notes: Amber, Leather, Patchouli Base Notes: Oud, Musk, Sandalwood",
+   "gender": "unisex",
+   "families": [
+    "oud",
+    "woody",
+    "oriental"
+   ],
+   "notes": {
+    "top": [
+     "Saffron",
+     "Rose",
+     "Cinnamon"
+    ],
+    "heart": [
+     "Amber",
+     "Leather",
+     "Patchouli"
+    ],
+    "base": [
+     "Oud",
+     "Musk",
+     "Sandalwood"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "daily"
+   ],
+   "tags": []
+  },
+  "LAT-147": {
+   "sourceHash": "cbmy0l",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Pure Musk by Lattafa (Khalis Musk) 100ml EDP",
+   "nameEn": "Pure Musk by Lattafa (Khalis Musk) 100ml EDP",
+   "descriptionAr": "عطر Pure Musk by Lattafa (Khalis Musk) 100ml EDP من Lattafa بطابع زهري ومسكي ومنعش.",
+   "descriptionEn": "Pure Musk (Khalis Musk) by Lattafa – 100 ml Eau de Parfum + Body Spray Unisex\nFragrance Family: Musk • Floral • Fresh Top Notes: White Musk, Soft Florals Middle Notes: Rose, Jasmine, Lily Base Notes: Musk, Amber, Vanilla",
+   "families": [
+    "floral",
+    "musk",
+    "fresh"
+   ],
+   "notes": {
+    "top": [
+     "White Musk",
+     "Soft Florals"
+    ],
+    "heart": [
+     "Rose",
+     "Jasmine",
+     "Lily"
+    ],
+    "base": [
+     "Musk",
+     "Amber",
+     "Vanilla"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [],
+   "tags": []
+  },
+  "LAT-148": {
+   "sourceHash": "1b7ig3y",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Maahir Honor 100ml by Lattafa",
+   "nameEn": "Maahir Honor 100ml by Lattafa",
+   "descriptionAr": "عطر Maahir Honor 100ml by Lattafa من Lattafa للجنسين بطابع زهري وخشبي ومسكي.",
+   "descriptionEn": "Maahir Honor 100ml by Lattafa\nMaahir Honor 100ml by Lattafa The fragrance opens with pineapple and bergamot accented by pink pepper before revealing a refined heart of jasmine, tuberose, and magnolia. It settles into a smooth base of sandalwood, amber, musk, and vetiver, creating an elegant floral woody composition with long-lasting depth.",
+   "gender": "unisex",
+   "families": [
+    "floral",
+    "woody",
+    "musk"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "summer",
+    "winter",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily",
+    "work",
+    "evening",
+    "special"
+   ],
+   "tags": []
+  },
+  "LAT-149": {
+   "sourceHash": "3woqw1",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Al Qiam Gold by Lattafa Pride 100ml EDP",
+   "nameEn": "Al Qiam Gold by Lattafa Pride 100ml EDP",
+   "descriptionAr": "عطر Al Qiam Gold by Lattafa Pride 100ml EDP من Lattafa Pride للجنسين بطابع خشبي وشرقي.",
+   "descriptionEn": "Al Qiam Gold by Lattafa Pride – 100ml Eau de Parfum",
+   "gender": "unisex",
+   "families": [
+    "woody",
+    "oriental"
+   ],
+   "notes": {
+    "top": [
+     "Saffron",
+     "Citrus"
+    ],
+    "heart": [
+     "Amber",
+     "Floral Notes",
+     "Soft Woods"
+    ],
+    "base": [
+     "Oud",
+     "Vanilla",
+     "Musk"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "work",
+    "evening",
+    "special"
+   ],
+   "tags": []
+  },
+  "LAT-150": {
+   "sourceHash": "7imdsg",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Qaed Al Fursan Untamed Lattafa 90ml EDP",
+   "nameEn": "Qaed Al Fursan Untamed Lattafa 90ml EDP",
+   "descriptionAr": "عطر Qaed Al Fursan Untamed Lattafa 90ml EDP من Lattafa رجالي بطابع عود وحلو ومسكي.",
+   "descriptionEn": "Qaed Al Fursan Untamed by Lattafa – 90 ml Eau de Parfum for Men\nFragrance Notes:Top Notes: Pineapple, SaffronHeart Notes: Amber, Vanilla, LeatherBase Notes: Musk, Oud, Patchouli",
+   "gender": "men",
+   "families": [
+    "oud",
+    "gourmand",
+    "musk"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Musk",
+     "Oud",
+     "Patchouli"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "winter",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily"
+   ],
+   "tags": []
+  },
+  "LAT-151": {
+   "sourceHash": "1t5s8lj",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Nebras Elixir by Lattafa for Her – 100 ml",
+   "nameEn": "Nebras Elixir by Lattafa for Her – 100 ml",
+   "descriptionAr": "عطر Nebras Elixir by Lattafa for Her – 100 ml من Lattafa Pride للجنسين بطابع حلو وعنبري ومسكي.",
+   "descriptionEn": "Nebras Elixir by Lattafa – 100 ml Eau de Parfum\nFragrance Family: Vanilla • Amber • Gourmand Top Notes: Vanilla, Sugar, Cacao Middle Notes: Amber, Musk, Tonka Bean Base Notes: Caramel, Sandalwood",
+   "gender": "unisex",
+   "families": [
+    "gourmand",
+    "amber",
+    "musk"
+   ],
+   "notes": {
+    "top": [
+     "Vanilla",
+     "Sugar",
+     "Cacao"
+    ],
+    "heart": [
+     "Amber",
+     "Musk",
+     "Tonka Bean"
+    ],
+    "base": [
+     "Caramel",
+     "Sandalwood"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "winter",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [],
+   "tags": []
+  },
+  "LAT-152": {
+   "sourceHash": "funkzi",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Wajood by Lattafa – 100 ml Eau de Parfum for Men",
+   "nameEn": "Wajood by Lattafa – 100 ml Eau de Parfum for Men",
+   "descriptionAr": "عطر Wajood by Lattafa – 100 ml Eau de Parfum for Men من Lattafa Pride رجالي بطابع منعش ومائي وخشبي.",
+   "descriptionEn": "Wajood by Lattafa – 100 ml Eau de Parfum for Men\nFragrance Family: Fresh • Aqua • Woody Top Notes: Bergamot, Lemon, Marine Notes Middle Notes: Lavender, Sage, Cedarwood Base Notes: Amber, Musk, Patchouli",
+   "gender": "men",
+   "families": [
+    "fresh",
+    "aquatic",
+    "woody"
+   ],
+   "notes": {
+    "top": [
+     "Bergamot",
+     "Lemon",
+     "Marine Notes"
+    ],
+    "heart": [
+     "Lavender",
+     "Sage",
+     "Cedarwood"
+    ],
+    "base": [
+     "Amber",
+     "Musk",
+     "Patchouli"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily"
+   ],
+   "tags": []
+  },
+  "LAT-153": {
+   "sourceHash": "1rkcs4o",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Shaheen Gold by Lattafa Perfumes Unisex 100 ml",
+   "nameEn": "Shaheen Gold by Lattafa Perfumes Unisex 100 ml",
+   "descriptionAr": "عطر Shaheen Gold by Lattafa Perfumes Unisex 100 ml من Lattafa Pride للجنسين بطابع حلو وخشبي وفواكه.",
+   "descriptionEn": "Shaheen Gold by Lattafa Perfumes – 100 ml Eau de Parfum (Unisex)\nFragrance Family: Fruity • Gourmand • Woody Top Notes: Pineapple, Grapefruit Middle Notes: Lavender, Fig Base Notes: Vanilla, Tonka, Patchouli",
+   "gender": "unisex",
+   "families": [
+    "gourmand",
+    "woody",
+    "fruity"
+   ],
+   "notes": {
+    "top": [
+     "Pineapple",
+     "Grapefruit"
+    ],
+    "heart": [
+     "Lavender",
+     "Fig"
+    ],
+    "base": [
+     "Vanilla",
+     "Tonka",
+     "Patchouli"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily"
+   ],
+   "tags": []
+  },
+  "LAT-154": {
+   "sourceHash": "15q2t0w",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Hala by Lattafa – 100 ml Eau de Parfum for Men",
+   "nameEn": "Hala by Lattafa – 100 ml Eau de Parfum for Men",
+   "descriptionAr": "عطر Hala by Lattafa – 100 ml Eau de Parfum for Men من Lattafa Pride رجالي بطابع خشبي وتوابل وشرقي.",
+   "descriptionEn": "Hala by Lattafa – 100 ml Eau de Parfum for Men\nFragrance Family: Oriental • Woody • Spicy Top Notes: Pepper, Nutmeg Middle Notes: Cedarwood, Amber Base Notes: Incense, Labdanum",
+   "gender": "men",
+   "families": [
+    "woody",
+    "spicy",
+    "oriental"
+   ],
+   "notes": {
+    "top": [
+     "Pepper",
+     "Nutmeg"
+    ],
+    "heart": [
+     "Cedarwood",
+     "Amber"
+    ],
+    "base": [
+     "Incense",
+     "Labdanum"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [],
+   "tags": []
+  },
+  "LAT-155": {
+   "sourceHash": "1xg652u",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Afaq Gold by Lattafa EDP 100 ml Unisex",
+   "nameEn": "Afaq Gold by Lattafa EDP 100 ml Unisex",
+   "descriptionAr": "عطر Afaq Gold by Lattafa EDP 100 ml Unisex من Lattafa Pride للجنسين.",
+   "descriptionEn": "Afaq Gold by Lattafa – 100 ml Eau De Parfum (Unisex)",
+   "gender": "unisex",
+   "families": [],
+   "notes": {
+    "top": [
+     "Fruity Notes",
+     "Citrus"
+    ],
+    "heart": [
+     "Amber",
+     "Woods"
+    ],
+    "base": [
+     "Musk",
+     "Soft Amber",
+     "Warm Woods"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "winter",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily"
+   ],
+   "tags": []
+  },
+  "LAT-156": {
+   "sourceHash": "u9amw5",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Nebras by Lattafa Pride 100ml EDP Women",
+   "nameEn": "Nebras by Lattafa Pride 100ml EDP Women",
+   "descriptionAr": "عطر Nebras by Lattafa Pride 100ml EDP Women من Lattafa Pride نسائي بطابع زهري وحلو ومسكي.",
+   "descriptionEn": "Nebras by Lattafa Pride – 100 ml Eau de Parfum for Women\nTop Notes: Red Berries, MandarinHeart Notes: Vanilla, Cacao, RoseBase Notes: Tonka Bean, Amber, Musk",
+   "gender": "women",
+   "families": [
+    "floral",
+    "gourmand",
+    "musk"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Tonka Bean",
+     "Amber",
+     "Musk"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [],
+   "tags": []
+  },
+  "LAT-157": {
+   "sourceHash": "vl2x94",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Al Ameed by Lattafa EDP 100ml For Him",
+   "nameEn": "Al Ameed by Lattafa EDP 100ml For Him",
+   "descriptionAr": "عطر Al Ameed by Lattafa EDP 100ml For Him من Lattafa Pride رجالي بطابع عود وزهري وعنبري.",
+   "descriptionEn": "Al Ameed by Lattafa – Eau de Parfum 100 ml\nAl Ameed by Lattafa is a bold men’s fragrance that blends fresh aromatic with rich woods and incense. It opens with clean notes of bergamot and fresh lime-zest, transitions into a heart of rose, jasmine and cedarwood, and finishes with a strong base of oud, amber, leather and smoky incense. Perfect for confident men who want a Clearly structured fragrance scent that stands out.\nFragrance NotesTop: Bergamot, Lime ZestHeart: Rose, Jasmine, CedarwoodBase: Oud, Amber, Leather, Incense",
+   "gender": "men",
+   "families": [
+    "oud",
+    "floral",
+    "amber"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Oud",
+     "Amber",
+     "Leather",
+     "Incense"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [],
+   "tags": []
+  },
+  "LAT-158": {
+   "sourceHash": "10d3k4s",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Sheikh Al Shuyukh by Lattafa 50ml EDP Men",
+   "nameEn": "Sheikh Al Shuyukh by Lattafa 50ml EDP Men",
+   "descriptionAr": "عطر Sheikh Al Shuyukh by Lattafa 50ml EDP Men من Lattafa رجالي بطابع عنبري وخشبي وشرقي.",
+   "descriptionEn": "Sheikh Al Shuyukh by Lattafa – 50 ml Eau de Parfum for Men\nFragrance Family: Oriental • Woody • Amber\nTop Notes: Rose, Cinnamon, Saffron\nMiddle Notes: Caramel, Patchouli\nBase Notes: Woods, Vanilla, Amber, Ambroxan",
+   "gender": "men",
+   "families": [
+    "amber",
+    "woody",
+    "oriental"
+   ],
+   "notes": {
+    "top": [
+     "Rose",
+     "Cinnamon",
+     "Saffron"
+    ],
+    "heart": [
+     "Caramel",
+     "Patchouli"
+    ],
+    "base": [
+     "Woods",
+     "Vanilla",
+     "Amber",
+     "Ambroxan"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "winter",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily"
+   ],
+   "tags": []
+  },
+  "LAT-159": {
+   "sourceHash": "df10q5",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Lail Maleki by Lattafa 100ml EDP Unisex",
+   "nameEn": "Lail Maleki by Lattafa 100ml EDP Unisex",
+   "descriptionAr": "عطر Lail Maleki by Lattafa 100ml EDP Unisex من Lattafa للجنسين بطابع زهري وحلو ومسكي.",
+   "descriptionEn": "Lail Maleki by Lattafa – 100 ml Eau De Parfum (Unisex)\nFragrance Notes:\nTop: Fruity Notes, Jasmine, Honey\nHeart: Rose, Orchid, Spices\nBase: Amber, Vanilla, Musk",
+   "gender": "unisex",
+   "families": [
+    "floral",
+    "gourmand",
+    "musk"
+   ],
+   "notes": {
+    "top": [
+     "Fruity Notes",
+     "Jasmine",
+     "Honey"
+    ],
+    "heart": [
+     "Rose",
+     "Orchid",
+     "Spices"
+    ],
+    "base": [
+     "Amber",
+     "Vanilla",
+     "Musk"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "winter",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily"
+   ],
+   "tags": []
+  },
+  "LAT-160": {
+   "sourceHash": "1qa407h",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Tharwah Gold by Lattafa Pride 100ml EDP",
+   "nameEn": "Tharwah Gold by Lattafa Pride 100ml EDP",
+   "descriptionAr": "عطر Tharwah Gold by Lattafa Pride 100ml EDP من Lattafa Pride للجنسين بطابع عنبري وشرقي وحلو.",
+   "descriptionEn": "Tharwah Gold by Lattafa Pride – 100 ml Eau de Parfum.\nTharwah Gold ni bau dia manis warm, amber creamy, woody lembut dan spices ringan. Perfume Arab mewah dan tahan lama sesuai untuk siang & malam.\nTop Notes: Sweet Notes, Soft Spices\nMiddle Notes: Amber, Woody Notes\nBase Notes: Vanilla, Musk, Creamy Woods",
+   "gender": "unisex",
+   "families": [
+    "amber",
+    "oriental",
+    "gourmand"
+   ],
+   "notes": {
+    "top": [
+     "Sweet Notes",
+     "Soft Spices"
+    ],
+    "heart": [
+     "Amber",
+     "Woody Notes"
+    ],
+    "base": [
+     "Vanilla",
+     "Musk",
+     "Creamy Woods"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily",
+    "evening",
+    "special"
+   ],
+   "tags": []
+  },
+  "LAT-161": {
+   "sourceHash": "1p5xc0o",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Thouq by Lattafa Pride 80ml EDP",
+   "nameEn": "Thouq by Lattafa Pride 80ml EDP",
+   "descriptionAr": "عطر Thouq by Lattafa Pride 80ml EDP من Lattafa Pride للجنسين بطابع زهري وحلو ومسكي.",
+   "descriptionEn": "Thouq by Lattafa Pride – 80 ml Eau de Parfum.\nThouq ni bau dia fresh, clean dan modern—ada citrus segar, floral lembut dan amber creamy yang tahan lama. Perfume Arab yang elegant dan sesuai dipakai harian.\nTop Notes: Citrus, Fresh Notes\nMiddle Notes: Soft Florals, Amber\nBase Notes: Musk, Vanilla, Woody Notes",
+   "gender": "unisex",
+   "families": [
+    "floral",
+    "gourmand",
+    "musk"
+   ],
+   "notes": {
+    "top": [
+     "Citrus",
+     "Fresh Notes"
+    ],
+    "heart": [
+     "Soft Florals",
+     "Amber"
+    ],
+    "base": [
+     "Musk",
+     "Vanilla",
+     "Woody Notes"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily",
+    "work",
+    "evening"
+   ],
+   "tags": []
+  },
+  "LAT-162": {
+   "sourceHash": "12o46ii",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Awraq Al Oud by Lattafa 100ml Man",
+   "nameEn": "Awraq Al Oud by Lattafa 100ml Man",
+   "descriptionAr": "عطر Awraq Al Oud by Lattafa 100ml Man من Lattafa للجنسين بطابع عود ومسكي وعنبري.",
+   "descriptionEn": "Awraq Al Oud by Lattafa – 100 ml Eau De Parfum for Men\nFragrance Notes:\nTop: Oud, Spices, Smoke\nHeart: Amber, Woods\nBase: Dry Woods, Musk, Warm Amber",
+   "gender": "unisex",
+   "families": [
+    "oud",
+    "musk",
+    "amber"
+   ],
+   "notes": {
+    "top": [
+     "Oud",
+     "Spices",
+     "Smoke"
+    ],
+    "heart": [
+     "Amber",
+     "Woods"
+    ],
+    "base": [
+     "Dry Woods",
+     "Musk",
+     "Warm Amber"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [],
+   "tags": []
+  },
+  "LAT-163": {
+   "sourceHash": "esph9u",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Pure Crystal by Lattafa Pride 100ml EDP",
+   "nameEn": "Pure Crystal by Lattafa Pride 100ml EDP",
+   "descriptionAr": "عطر Pure Crystal by Lattafa Pride 100ml EDP من Lattafa Pride للجنسين بطابع زهري وحلو ومسكي.",
+   "descriptionEn": "Pure Crystal by Lattafa Pride – 100 ml Eau de Parfum.\nPure Crystal ni bau dia fresh, clean dan elegant—ada citrus segar, floral lembut dan amber creamy yang tahan lama. Perfume Arab moden dan premium untuk dipakai harian.\nTop Notes: Citrus, Fresh Notes\nMiddle Notes: Soft Florals, Amber\nBase Notes: Musk, Vanilla, Woody Notes",
+   "gender": "unisex",
+   "families": [
+    "floral",
+    "gourmand",
+    "musk"
+   ],
+   "notes": {
+    "top": [
+     "Citrus",
+     "Fresh Notes"
+    ],
+    "heart": [
+     "Soft Florals",
+     "Amber"
+    ],
+    "base": [
+     "Musk",
+     "Vanilla",
+     "Woody Notes"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily",
+    "work",
+    "evening"
+   ],
+   "tags": []
+  },
+  "LAT-164": {
+   "sourceHash": "avzd56",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Rouat Al Musk by Lattafa 100ml for Women",
+   "nameEn": "Rouat Al Musk by Lattafa 100ml for Women",
+   "descriptionAr": "عطر Rouat Al Musk by Lattafa 100ml for Women من Lattafa نسائي بطابع زهري وحلو ومسكي.",
+   "descriptionEn": "Rouat Al Musk by Lattafa – 100 ml Eau De Parfum (For Women & Unisex)\nFragrance Notes:\nTop: Orange Blossom, Mandarin Orange, Fruits\nHeart: White Flowers, Jasmine, Sandalwood\nBase: Amber, Vanilla",
+   "gender": "women",
+   "families": [
+    "floral",
+    "gourmand",
+    "musk"
+   ],
+   "notes": {
+    "top": [
+     "Orange Blossom",
+     "Mandarin Orange",
+     "Fruits"
+    ],
+    "heart": [
+     "White Flowers",
+     "Jasmine",
+     "Sandalwood"
+    ],
+    "base": [
+     "Amber",
+     "Vanilla"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "winter",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily"
+   ],
+   "tags": []
+  },
+  "LAT-165": {
+   "sourceHash": "xgsh7b",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Sakeena by Lattafa 100ml EDP Women",
+   "nameEn": "Sakeena by Lattafa 100ml EDP Women",
+   "descriptionAr": "عطر Sakeena by Lattafa 100ml EDP Women من Lattafa نسائي بطابع زهري وحلو وفواكه.",
+   "descriptionEn": "Sakeena by Lattafa Perfumes – 100 ml Eau de Parfum (Women)\nFragrance Family: Floral • Fruity • Gourmand\nTop Notes: Passionfruit, Mandarin Orange, Ozonic Accord\nHeart Notes: Raspberry, Rose, Orange Blossom, Sea Salt\nBase Notes: Praline, Toffee, Vanilla, Musk",
+   "gender": "women",
+   "families": [
+    "floral",
+    "gourmand",
+    "fruity"
+   ],
+   "notes": {
+    "top": [
+     "Passionfruit",
+     "Mandarin Orange",
+     "Ozonic Accord"
+    ],
+    "heart": [
+     "Raspberry",
+     "Rose",
+     "Orange Blossom",
+     "Sea Salt"
+    ],
+    "base": [
+     "Praline",
+     "Toffee",
+     "Vanilla",
+     "Musk"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "winter",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily"
+   ],
+   "tags": []
+  },
+  "LAT-166": {
+   "sourceHash": "jv0pad",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Shahd by Lattafa Perfumes 100 ml Women",
+   "nameEn": "Shahd by Lattafa Perfumes 100 ml Women",
+   "descriptionAr": "عطر Shahd by Lattafa Perfumes 100 ml Women من Lattafa نسائي بطابع زهري وخشبي وحلو.",
+   "descriptionEn": "Shahd by Lattafa Perfumes – 100 ml Eau de Parfum (Women)\nFragrance Family: Floral • Yellow Florals • Woody\nTop Notes: Frangipani, Ylang-Ylang\nMiddle Notes: Tuberose, Solar Notes\nBase Notes: Musk, Vanilla, Amber, Cedarwood",
+   "gender": "women",
+   "families": [
+    "floral",
+    "woody",
+    "gourmand"
+   ],
+   "notes": {
+    "top": [
+     "Frangipani",
+     "Ylang-Ylang"
+    ],
+    "heart": [
+     "Tuberose",
+     "Solar Notes"
+    ],
+    "base": [
+     "Musk",
+     "Vanilla",
+     "Amber",
+     "Cedarwood"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily"
+   ],
+   "tags": []
+  },
+  "LAT-167": {
+   "sourceHash": "251nl1",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Al Noble Ameer by Lattafa 100ml EDP Men",
+   "nameEn": "Al Noble Ameer by Lattafa 100ml EDP Men",
+   "descriptionAr": "عطر Al Noble Ameer by Lattafa 100ml EDP Men من Lattafa رجالي بطابع حلو ومسكي وعنبري.",
+   "descriptionEn": "Al Noble Ameer by Lattafa – 100 ml Eau de Parfum for Men\nFragrance Notes:\nTop Notes: Bergamot, Cardamom, Cinnamon\nHeart Notes: Amberwood, Lavender, Cedar\nBase Notes: Musk, Patchouli, Vanilla",
+   "gender": "men",
+   "families": [
+    "gourmand",
+    "musk",
+    "amber"
+   ],
+   "notes": {
+    "top": [
+     "Bergamot",
+     "Cardamom",
+     "Cinnamon"
+    ],
+    "heart": [
+     "Amberwood",
+     "Lavender",
+     "Cedar"
+    ],
+    "base": [
+     "Musk",
+     "Patchouli",
+     "Vanilla"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "winter",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily"
+   ],
+   "tags": []
+  },
+  "LAT-168": {
+   "sourceHash": "ipslq8",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Sheikh Al Shuyukh Concentrated by Lattafa 100ml",
+   "nameEn": "Sheikh Al Shuyukh Concentrated by Lattafa 100ml",
+   "descriptionAr": "عطر Sheikh Al Shuyukh Concentrated by Lattafa 100ml من Lattafa للجنسين بطابع عود وخشبي وشرقي.",
+   "descriptionEn": "Sheikh Al Shuyukh by Lattafa – 100 ml Eau de Parfum Unisex (Concentrated Edition)\nFragrance Family: Oriental • Woody • Oud\nTop Notes: Oud, Saffron, Cinnamon\nMiddle Notes: Amber, Rose, Vanilla\nBase Notes: Musk, Sandalwood, Patchouli",
+   "gender": "unisex",
+   "families": [
+    "oud",
+    "woody",
+    "oriental"
+   ],
+   "notes": {
+    "top": [
+     "Oud",
+     "Saffron",
+     "Cinnamon"
+    ],
+    "heart": [
+     "Amber",
+     "Rose",
+     "Vanilla"
+    ],
+    "base": [
+     "Musk",
+     "Sandalwood",
+     "Patchouli"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "winter",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [],
+   "tags": []
+  },
+  "LAT-169": {
+   "sourceHash": "1u7winl",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Art of Nature II Horse by Lattafa Pride 100ml EDP",
+   "nameEn": "Art of Nature II Horse by Lattafa Pride 100ml EDP",
+   "descriptionAr": "عطر Art of Nature II Horse by Lattafa Pride 100ml EDP من Lattafa Pride للجنسين بطابع خشبي وشرقي وحلو.",
+   "descriptionEn": "Art of Nature II (Horse) by Lattafa Pride – 100 ml Eau de Parfum.\nArt of Nature II (Horse) ni bau dia mewah, warm dan woody–ada saffron pedas lembut, pepper hangat, lepas tu masuk amber woods yang creamy dan resinous. Base dia smoky-woody dengan sentuhan leather & amber vanilla yang tahan lama gila. Sesuai sangat untuk peminat perfume Arab yang suka bau berat, classy dan premium.\nTop Notes: Saffron, Pepper\nMiddle Notes: Amber Woods, Balsamic Notes\nBase Notes: Smoky Woods, Leather, Amber, Vanilla",
+   "gender": "unisex",
+   "families": [
+    "woody",
+    "oriental",
+    "gourmand"
+   ],
+   "notes": {
+    "top": [
+     "Saffron",
+     "Pepper"
+    ],
+    "heart": [
+     "Amber Woods",
+     "Balsamic Notes"
+    ],
+    "base": [
+     "Smoky Woods",
+     "Leather",
+     "Amber",
+     "Vanilla"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily",
+    "evening",
+    "special"
+   ],
+   "tags": []
+  },
+  "LAT-170": {
+   "sourceHash": "k7mkrs",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Washwasha by Lattafa Perfumes – 100 ml for Women",
+   "nameEn": "Washwasha by Lattafa Perfumes – 100 ml for Women",
+   "descriptionAr": "عطر Washwasha by Lattafa Perfumes – 100 ml for Women من Lattafa نسائي بطابع زهري وحلو وشرقي.",
+   "descriptionEn": "Washwasha by Lattafa Perfumes – 100 ml Eau de Parfum for Women\nFragrance Family: Floral • Sweet • Oriental\nTop Notes: Orange Blossom, Red Fruits, Soft Citrus\nMiddle Notes: Rose, Jasmine, Caramel, Warm Spices\nBase Notes: Vanilla, Musk, Amber, Light Woods",
+   "gender": "women",
+   "families": [
+    "floral",
+    "gourmand",
+    "oriental"
+   ],
+   "notes": {
+    "top": [
+     "Orange Blossom",
+     "Red Fruits",
+     "Soft Citrus"
+    ],
+    "heart": [
+     "Rose",
+     "Jasmine",
+     "Caramel",
+     "Warm Spices"
+    ],
+    "base": [
+     "Vanilla",
+     "Musk",
+     "Amber",
+     "Light Woods"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "winter",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily"
+   ],
+   "tags": []
+  },
+  "LAT-171": {
+   "sourceHash": "2sixmz",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T09:05:57.616Z",
+   "nameAr": "Maahir Black Edition by Lattafa 100ml for Men",
+   "nameEn": "Maahir Black Edition by Lattafa 100ml for Men",
+   "descriptionAr": "عطر Maahir Black Edition by Lattafa 100ml for Men من Lattafa رجالي بطابع خشبي وشرقي ومسكي.",
+   "descriptionEn": "Maahir Black Edition by Lattafa Perfumes – 100 ml Eau de Parfum (Men & Unisex)\nFragrance Family: Oriental • Woody • Resinous\nTop Notes: Black Pepper, Pink Pepper, Saffron\nMiddle Notes: Labdanum, Cade Oil, Gurjan Balsam, Rhubarb\nBase Notes: Leather, Cedarwood, Patchouli, Guaiac Wood, Moss, Musk",
+   "gender": "men",
+   "families": [
+    "woody",
+    "oriental",
+    "musk"
+   ],
+   "notes": {
+    "top": [
+     "Black Pepper",
+     "Pink Pepper",
+     "Saffron"
+    ],
+    "heart": [
+     "Labdanum",
+     "Cade Oil",
+     "Gurjan Balsam",
+     "Rhubarb"
+    ],
+    "base": [
+     "Leather",
+     "Cedarwood",
+     "Patchouli",
+     "Guaiac Wood",
+     "Moss",
+     "Musk"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "winter",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily"
+   ],
+   "tags": []
   }
  },
  "audit": {
-  "checked": 141,
+  "checked": 171,
   "issues": [
    {
     "sku": "LAT-001",
@@ -6258,6 +7395,24 @@
     "issues": [
      "الوصف عام ولا يصف الرائحة",
      "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "LAT-145",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة"
+    ]
+   },
+   {
+    "sku": "LAT-149",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة"
+    ]
+   },
+   {
+    "sku": "LAT-155",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة"
     ]
    }
   ]
