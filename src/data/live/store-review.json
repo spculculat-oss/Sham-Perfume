@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-16T21:29:10.899Z",
+ "updatedAt": "2026-10-16T22:58:38.492Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1114,
   "imported": 1063,
-  "ok": 529,
-  "warn": 585,
+  "ok": 528,
+  "warn": 586,
   "hidden": 0,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-16T21:28:36.818Z",
+  "at": "2026-10-16T22:57:33.252Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,8 +25,8 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1026,
-    "listingOnly": 60,
+    "listingProducts": 1025,
+    "listingOnly": 61,
     "listingComplete": true,
     "added": 0,
     "refreshed": 25,
@@ -34,7 +34,7 @@
     "failedCount": 0,
     "viaShaheen": 0,
     "deferred": 0,
-    "gone": 4
+    "gone": 3
    }
   ],
   "rate": 13.081,
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 34111
+  "durationMs": 65265
  },
  "items": [
   {
@@ -2014,7 +2014,8 @@
    "status": "warn",
    "issues": [
     "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
    ],
    "page": "p/al-areeq-gold-by-lattafa-pride-100ml-edp-293.html"
   },
@@ -2068,6 +2069,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/eclaire-pistache-by-lattafa-100ml-edp-unisex-305.html"
+  },
+  {
+   "sku": "LAT-306",
+   "id": 306,
+   "name": "Ramz Silver by Lattafa 100ml EDP for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ramz-silver-by-lattafa-100ml-edp-for-men-306.html"
   },
   {
    "sku": "LAT-307",
