@@ -14795,7 +14795,7 @@
       ],
       "barcode": "6291107450582",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر"
@@ -14872,7 +14872,7 @@
       ],
       "barcode": "6290360598352",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld"
     },
     {
@@ -14932,7 +14932,7 @@
       ],
       "barcode": "6290360592909",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "وصف المورد قصير",
@@ -14999,7 +14999,7 @@
       ],
       "barcode": "6290362345527",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر",
@@ -15072,7 +15072,7 @@
       ],
       "barcode": "6291108738306",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -15146,7 +15146,7 @@
       ],
       "barcode": "6291108738115",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld"
     },
     {
@@ -15219,7 +15219,7 @@
       ],
       "barcode": "6291107457086",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld"
     },
     {
@@ -15283,7 +15283,7 @@
       "occasionsSource": [],
       "barcode": "6290360591551",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld"
     },
     {
@@ -15300,9 +15300,7 @@
         "https://www.shamperfume.com/cdn/large/79f30443-e623-4f18-1009-bbd7e000cb00.jpg",
         "https://www.shamperfume.com/cdn/large/46f0c98b-816c-4a07-266d-537c5d258300.jpg",
         "https://www.shamperfume.com/cdn/large/17042bbd-d327-4edf-f883-a1bbdba4b800.jpg",
-        "https://www.shamperfume.com/cdn/large/f88b265c-8ecc-423c-725d-04095d69fb00.jpg",
-        "https://www.shamperfume.com/cdn/large/346c3346-d1b5-46b0-9a5c-78d597822000.jpg",
-        "https://www.shamperfume.com/cdn/large/dcedf7c0-1226-4639-bff0-dc2b4ef64100.jpg"
+        "https://www.shamperfume.com/cdn/OGImage/799b4ae6-8de7-4176-922b-2eba84ccb900.jpg"
       ],
       "category": "مختلط",
       "brand": "Lattafa Pride",
@@ -15353,7 +15351,7 @@
       ],
       "barcode": "6290360591957",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -15373,9 +15371,7 @@
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/mayar-cherry-intense-lattafa-100ml-edp-woman-perfume-malaysia-3.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/mayar-cherry-intense-lattafa-100ml-edp-woman-perfume-malaysia-4.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/mayar-cherry-intense-lattafa-100ml-edp-woman-perfume-malaysia-5.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/mayar-cherry-intense-lattafa-100ml-edp-woman-perfume-malaysia-6.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/mayar-cherry-intense-lattafa-100ml-edp-woman-perfume-malaysia-7.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/mayar-cherry-intense-lattafa-100ml-edp-woman-perfume-malaysia-9.jpg"
+        "https://www.shamperfume.com/cdn/OGImage/perfumes/lattafa/mayar-cherry-intense-lattafa-100ml-edp-woman-perfume-malaysia-1.jpg"
       ],
       "category": "نسائي",
       "brand": "Lattafa",
@@ -15422,7 +15418,7 @@
       "occasionsSource": [],
       "barcode": "6290360598963",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld"
     },
     {
@@ -15439,9 +15435,7 @@
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/badee-al-oud-honor-glory-lattafa-perfume-unisex-tahan-lama-sweet-oud-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/badee-al-oud-honor-glory-pavilion-kl-luxe-malaysia-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/badee-al-oud-honor-glory-sunway-pyramid-malaysia-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/badee-al-oud-honor-glory-trx-exchange-malaysia-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/badee-al-oud-honor-glory-midvalley-mall-malaysia-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/badee-al-oud-honor-glory-klcc-esplanade-malaysia-100ml-edp.jpg"
+        "https://www.shamperfume.com/cdn/OGImage/perfumes/lattafa/badee-al-oud-honor-glory-lattafa-perfume-unisex-sweet-woody-100ml-edp.jpg"
       ],
       "category": "مختلط",
       "brand": "Lattafa",
@@ -15487,7 +15481,7 @@
       "occasionsSource": [],
       "barcode": "6290360593135",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld"
     },
     {
@@ -15504,9 +15498,7 @@
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/fire-ice-lattafa-perfume-fresh-cool-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/fireonice-putrajayaboulevard-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/fireonice-ecopark-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/lattafa-fire-ice-edp-110-ml-100ml.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/lattafa-fire-ice-unisex-110ml-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/lattafa-fire-ice-edp-100ml.jpg"
+        "https://www.shamperfume.com/cdn/OGImage/perfumes/lattafa/fire-ice-lattafa-perfume-unisex-fresh-spicy-100ml-edp.jpg"
       ],
       "category": "مختلط",
       "brand": "Lattafa",
@@ -15553,7 +15545,7 @@
       ],
       "barcode": "6290360598901",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -15573,9 +15565,7 @@
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ramz-gold-100ml-edp-men-by-lattafa-perfumes-6.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ramz-gold-100ml-edp-men-by-lattafa-perfumes-2.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ramz-gold-100ml-edp-men-by-lattafa-perfumes-5.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ramz-gold-100ml-edp-men-by-lattafa-perfumes-22.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ramz-gold-100ml-edp-by-lattafa-perfumes.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/ramz-gold-100ml-edp-men-by-lattafa-perfumes-4.jpg"
+        "https://www.shamperfume.com/cdn/OGImage/perfumes/lattafa/ramz-gold-100ml-edp-men-by-lattafa-perfumes.jpg"
       ],
       "category": "نسائي",
       "brand": "Lattafa",
@@ -15625,7 +15615,7 @@
       ],
       "barcode": "6291106066715",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld"
     },
     {
@@ -15684,7 +15674,7 @@
       ],
       "barcode": "6290360598789",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "وصف المورد قصير",
@@ -15713,7 +15703,7 @@
       "brand": "Lattafa",
       "supplierPrice": 1818.26,
       "ourPrice": 2730,
-      "stockStatus": "out_of_stock",
+      "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -15764,11 +15754,8 @@
       ],
       "barcode": "6291106069020",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
-      "importedVia": "json-ld",
-      "reviewIssues": [
-        "غير متوفر عند المورد"
-      ]
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
+      "importedVia": "json-ld"
     },
     {
       "id": 267,
@@ -15828,7 +15815,7 @@
       ],
       "barcode": "6290360598321",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "وصف المورد قصير",
@@ -15902,7 +15889,7 @@
       "occasionsSource": [],
       "barcode": "6290360594149",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -15967,7 +15954,7 @@
       ],
       "barcode": "6291108731857",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر"
@@ -16039,7 +16026,7 @@
       ],
       "barcode": "6291108738207",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -16111,7 +16098,7 @@
       ],
       "barcode": "6291107452357",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld"
     },
     {
@@ -16178,7 +16165,7 @@
       "occasionsSource": [],
       "barcode": "6291108734032",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld"
     },
     {
@@ -16248,7 +16235,7 @@
       ],
       "barcode": "6297000201863",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld"
     },
     {
@@ -16327,7 +16314,7 @@
       ],
       "barcode": "6291108737866",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld"
     },
     {
@@ -16403,7 +16390,7 @@
       "occasionsSource": [],
       "barcode": "6290362341321",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld"
     },
     {
@@ -16475,7 +16462,7 @@
       ],
       "barcode": "6291108738191",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T21:29:10.880Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -31033,7 +31020,7 @@
       "brand": "Maison Alhambra",
       "supplierPrice": 2210.69,
       "ourPrice": 3320,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -31079,7 +31066,10 @@
       "barcode": "6290360590585",
       "importedAt": "2026-10-16T11:04:43.108Z",
       "refreshedAt": "2026-10-16T11:04:43.108Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 491,
@@ -41639,7 +41629,7 @@
       "brand": "Rue Broca",
       "supplierPrice": 3401.06,
       "ourPrice": 5105,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -41684,7 +41674,10 @@
       "barcode": "6290171010197",
       "importedAt": "2026-10-16T13:16:56.090Z",
       "refreshedAt": "2026-10-16T13:16:56.090Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 647,
@@ -42126,7 +42119,7 @@
       "brand": "Maison Alhambra",
       "supplierPrice": 1556.64,
       "ourPrice": 2335,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -42169,7 +42162,10 @@
       "barcode": "6291108730317",
       "importedAt": "2026-10-16T13:16:56.090Z",
       "refreshedAt": "2026-10-16T13:16:56.090Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 654,
@@ -50391,7 +50387,7 @@
       "brand": "Mood Perfume",
       "supplierPrice": 2747.01,
       "ourPrice": 4125,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -50441,7 +50437,10 @@
       "barcode": "8053629626757",
       "importedAt": "2026-10-16T13:35:47.267Z",
       "refreshedAt": "2026-10-16T13:35:47.267Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 775,

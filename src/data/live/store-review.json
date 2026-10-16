@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-16T21:01:18.698Z",
+ "updatedAt": "2026-10-16T21:29:10.899Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1114,
   "imported": 1063,
-  "ok": 532,
-  "warn": 582,
+  "ok": 529,
+  "warn": 585,
   "hidden": 0,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-16T21:00:07.865Z",
+  "at": "2026-10-16T21:28:36.818Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,10 +25,10 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1021,
+    "listingProducts": 1026,
     "listingOnly": 60,
     "listingComplete": true,
-    "added": 3,
+    "added": 0,
     "refreshed": 25,
     "failed": [],
     "failedCount": 0,
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 70865
+  "durationMs": 34111
  },
  "items": [
   {
@@ -1845,16 +1845,6 @@
    "page": "p/victoria-by-lattafa-100ml-edp-265.html"
   },
   {
-   "sku": "LAT-266",
-   "id": 266,
-   "name": "Ejaazi by Lattafa Perfume 100 ml for Men",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/ejaazi-by-lattafa-perfume-100-ml-for-men-266.html"
-  },
-  {
    "sku": "LAT-267",
    "id": 267,
    "name": "Mashrabya by Lattafa 100ml EDP",
@@ -2997,6 +2987,16 @@
    "page": "p/santorini-beaches-by-volare-100-ml-for-her-489.html"
   },
   {
+   "sku": "MAI-490",
+   "id": 490,
+   "name": "Infini Elixir Maison Alhambra 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/infini-elixir-maison-alhambra-100ml-edp-men-490.html"
+  },
+  {
    "sku": "ARD-492",
    "id": 492,
    "name": "Satwa by Ard Al Zaafaran 100 ml EDP Unisex",
@@ -3608,6 +3608,16 @@
    "page": "p/black-wood-60ml-by-maison-alhambra-edp-for-men-644.html"
   },
   {
+   "sku": "RUE-646",
+   "id": 646,
+   "name": "Touche Pour Homme Rue Broca 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/touche-pour-homme-rue-broca-100ml-edp-646.html"
+  },
+  {
    "sku": "ZIM-648",
    "id": 648,
    "name": "Tiramisu Caramel By Zimaya 100 ml EDP",
@@ -3636,6 +3646,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/nexa-immortal-by-rue-broca-100ml-edp-men-652.html"
+  },
+  {
+   "sku": "MAI-653",
+   "id": 653,
+   "name": "Victorioso by Maison Alhambra 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/victorioso-by-maison-alhambra-100ml-edp-men-653.html"
   },
   {
    "sku": "ZIM-654",
@@ -4009,6 +4029,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/shagaf-al-ward-by-al-wataniah-100ml-edp-women-769.html"
+  },
+  {
+   "sku": "MOO-774",
+   "id": 774,
+   "name": "Mood Naif For Her – 100 ml for Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/mood-naif-for-her-100-ml-for-women-774.html"
   },
   {
    "sku": "KHA-777",
