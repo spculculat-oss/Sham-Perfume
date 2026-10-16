@@ -17,6 +17,8 @@ for p in products:
         if isinstance(u, str) and u.startswith('http') and u not in urls:
             urls.append(u)
 print(len(urls), 'images', flush=True)
+random.seed(11)
+urls = random.sample(urls, min(int(os.environ.get('SCAN_SAMPLE', '400')), len(urls)))
 
 UA = {'User-Agent': 'Mozilla/5.0 (compatible; ShamPerfumeBot/1.0)'}
 def fetch(u):
@@ -42,10 +44,10 @@ def ocr(item):
     except Exception:
         return u, {'error': 'decode'}
     w, h = img.size
-    scale = 1600 / max(w, h) if max(w, h) < 1600 else 1
+    scale = 1
     big = img.resize((int(w * scale), int(h * scale))) if scale != 1 else img
     words = []
-    for lang in ('eng', 'ara'):
+    for lang in ('eng',):
         d = pytesseract.image_to_data(big, lang=lang, output_type=pytesseract.Output.DICT, config='--psm 11')
         for i, t in enumerate(d['text']):
             t = t.strip()
