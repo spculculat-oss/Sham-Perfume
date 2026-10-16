@@ -1,12 +1,12 @@
 {
  "version": 1,
- "updatedAt": "2026-10-16T08:32:36.809Z",
- "nextUpdateAt": "2026-10-16T20:32:36.809Z",
+ "updatedAt": "2026-10-16T10:45:54.494Z",
+ "nextUpdateAt": "2026-10-16T22:45:54.494Z",
  "intervalHours": 12,
  "editor": "shaheen",
  "digest": {
-  "ar": "تشهد صناعة العطور حراكاً واسعاً مع استثمار شركة Mane بقيمة 45 مليون يورو لإنشاء مركز جديد للتصميم العطري في فرنسا، وتوسيع Symrise لإنتاج مكونات المسك المستدامة في الهند. كما برزت إطلاقات مميزة ومعارض بارزة مثل معرض الإمارات للعطور والعود واستعدادات معرض Esxence، إلى جانب حضور قوي للعطور العربية في الأسواق الإقليمية والعالمية.",
-  "en": "The fragrance industry sees major developments with Mane's €45M investment in a new design center in France and Symrise expanding sustainable musk production in India. Notable launches and exhibitions, such as the UAE Perfume and Oud Exhibition and Esxence, highlight the vibrant market alongside strong regional and global releases."
+  "ar": "تشهد صناعة العطور حراكاً واسعاً مع استثمار كبرى الشركات مثل Symrise وMane في المواد المستدامة ومراكز التصميم الجديدة، إلى جانب إطلاق ابتكارات عطرية بارزة من دور عالمية وإقليمية وعودة معارض العطور الفنية والتراثية.",
+  "en": "The fragrance industry is experiencing a dynamic wave with major investments in sustainable ingredients and design centers by companies like Symrise and Mane, alongside notable fragrance launches and artistic perfume events."
  },
  "sources": [
   {
@@ -15,7 +15,11 @@
   },
   {
    "name": "Grazia",
-   "count": 4
+   "count": 3
+  },
+  {
+   "name": "Cosmetics Business",
+   "count": 2
   },
   {
    "name": "Now Smell This",
@@ -26,7 +30,7 @@
    "count": 1
   },
   {
-   "name": "Sharjah24",
+   "name": "Coty",
    "count": 1
   },
   {
@@ -34,7 +38,15 @@
    "count": 1
   },
   {
+   "name": "Sharjah24",
+   "count": 1
+  },
+  {
    "name": "Esquire Singapore",
+   "count": 1
+  },
+  {
+   "name": "Trend Hunter",
    "count": 1
   },
   {
@@ -50,15 +62,7 @@
    "count": 1
   },
   {
-   "name": "Trend Hunter",
-   "count": 1
-  },
-  {
    "name": "Masculin.com",
-   "count": 1
-  },
-  {
-   "name": "Cosmetics Business",
    "count": 1
   },
   {
@@ -96,10 +100,6 @@
   {
    "name": "BeautyNewsDaily",
    "count": 1
-  },
-  {
-   "name": "Boursorama",
-   "count": 1
   }
  ],
  "items": [
@@ -117,12 +117,12 @@
     "en": "Mane to invest EUR 45 million in new Fragrance Design Centre in France"
    },
    "summary": {
-    "ar": "وضعت شركة الأاروما والعطور الفرنسية Mane حجر الأساس لمركز تصميم العطور الجديد في منطقة غراس ببرتس تكلفة 45 مليون يورو.",
-    "en": "French flavor and fragrance manufacturer Mane laid the foundation stone for its future Fragrance Design Centre in Le Bar-sur-Loup, Grasse."
+    "ar": "أعلنت شركة الأომات والعطور الفرنسية Mane عن وضع حجر الأساس لمركز تصميم العطور الجديد (Fragrance Design Centre) في بلدة بار سور لوب بمنطقة غراس، على مساحة 8900 متر مربع.",
+    "en": "French flavor and fragrance manufacturer Mane has laid the first stone for its future Fragrance Design Centre in Le Bar-sur-Loup, Grasse, spanning an 8,900 sqm site dedicated to creation and evaluation."
    },
    "note": {
-    "ar": "هذا الاستثمار الضخم يعزز قدرات الابتكار في قطاع المواد الخام وتطوير التركيبات العطرية لصناع العطور.",
-    "en": "Such heavy investments in Grasse reinforce the future of high-end raw material innovation and formulation development."
+    "ar": "استثمار ضخم يعزز مستقبل الابتكار العطري في عاصمة العطور العالمية غراس.",
+    "en": "A massive investment reinforcing the future of scent innovation in the global perfume capital of Grasse."
    }
   },
   {
@@ -135,16 +135,82 @@
    "category": "ingredients",
    "importance": 5,
    "title": {
-    "ar": "شركة Symrise توسع إنتاج مادة Globalide في الهند لدعم إمدادات العطور المستدامة",
+    "ar": "شركة Symrise توسع إنتاج مادة Globalide المستدامة للمسك في الهند",
     "en": "Symrise Expands Globalide Production in India to Boost Sustainable Fragrance Supply"
    },
    "summary": {
-    "ar": "أعلنت شركة Symrise عن توسيع إنتاج مكون المسك المستدام Globalide في الهند لتعزيز سلاسل الإمداد العالمية.",
-    "en": "Symrise is expanding its Globalide production in India to boost the supply chain for sustainable fragrance ingredients."
+    "ar": "تقوم شركة Symrise بتوسيع الإنتاج العالمي لمكون المسك العطري المستدام 'Globalide' في الهند، بهدف تعزيز سلاسل توريد العطور المستدامة.",
+    "en": "Symrise is expanding global production of its sustainable musk fragrance ingredient 'Globalide' in India to boost sustainable supply chains."
    },
    "note": {
-    "ar": "الاستدامة وتوفير بدائل المسك الصديقة للبيئة باتت توجهاً رئيسياً يهم كل صانع عطور يهتم بالمصادر النظيفة.",
-    "en": "Sustainability in musk ingredients is crucial for modern perfumers looking for eco-friendly formulation options."
+    "ar": "هذه الخطوة تعكس التوجه المتزايد نحو الاستدامة وتوفير مكونات مسك صديقة للبيئة لصناع العطور.",
+    "en": "Reflects the growing shift toward sustainability and eco-friendly musk alternatives for perfumers."
+   }
+  },
+  {
+   "id": "nwio97q",
+   "url": "https://cosmeticsbusiness.com/dsm-firmenich-opens-new-york-fine-fragrance-space",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-16T10:37:00.000Z",
+   "original": "DSM-Firmenich opens New York fine fragrance space",
+   "lang": "en",
+   "category": "industry",
+   "importance": 4,
+   "title": {
+    "ar": "شركة DSM-Firmenich تفتتح مساحة جديدة للعطور الفاخرة في نيويورك",
+    "en": "DSM-Firmenich opens New York fine fragrance space"
+   },
+   "summary": {
+    "ar": "افتتحت شركة النكهات والعطور DSM-Firmenich مساحة جديدة وغامرة مخصصة للعطور الفاخرة في حي تشيلسي بمدينة نيويورك الأمريكية، لتجمع خبراء صناعة العطور والتركيب.",
+    "en": "DSM-Firmenich has opened a new 'open and immersive' fine fragrance space in the Chelsea district of New York City, bringing together perfumers and compounding capabilities."
+   },
+   "note": {
+    "ar": "مساحة إبداعية تلهم صانعي العطور وتسهل عملية الابتكار والتطوير المباشر.",
+    "en": "An inspiring creative space facilitating direct collaboration and innovation for perfumers."
+   }
+  },
+  {
+   "id": "nsdmrls",
+   "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1pTWxseGt2QVc2QXBmaS1ZajRHXy05ckNUbk1iS1RlZTR2MEExQU9fSjRpLWlfUjdOcTlhbjhBOFJkdVlUa0xzdVdZMWdMSmpiQ0ZJNXNDQjc5WFRxLWdXbGhmV21jY2d5cjcwTUh3?oc=5",
+   "source": "Coty",
+   "publishedAt": "2026-10-16T07:53:18.000Z",
+   "original": "Coty Launches Global Fragrance Club, A New Community for The Voices Shaping The Future of Fragrance",
+   "lang": "en",
+   "category": "market",
+   "importance": 4,
+   "title": {
+    "ar": "شركة Coty تطلق نادي العطور العالمي (Coty Fragrance Club)",
+    "en": "Coty Launches Global Fragrance Club"
+   },
+   "summary": {
+    "ar": "أعلنت شركة Coty عن إطلاق مجتمع عالمي جديد يسمى 'Coty Fragrance Club' ليكون منصة للأصوات المؤثرة التي تشكل مستقبل صناعة العطور.",
+    "en": "Coty has launched the Coty Fragrance Club, a new global community for the voices shaping the future of fragrance."
+   },
+   "note": {
+    "ar": "خطوة ذكية لربط العلامة التجارية بأبرز المؤثرين والمستهتمين بثقافة العطور الحديثة.",
+    "en": "A smart initiative connecting the brand with key voices shaping modern fragrance culture."
+   }
+  },
+  {
+   "id": "n1ysalbs",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNWnJjT0ZQVTVsUmxqRndiTUhtc19VSHB3T05PdV80Wll1RW1yaWZBYXg3bU16QnNWNnlTTmlGZ1JVLXkxbzBPVmRwV0hrazgxREpRbnJpcU5pUjRyUVBpaVBaWHlad0d3NVM5TU5hVFFRdEd6M1lQWWJVVHlhMTFiNDFaWmUxenNEMDV5a0FXZXVqNGhWOTZDMmJmbnk3Y1FJNW9WZWhuOGkwTHVDT1R3?oc=5",
+   "source": "WWD",
+   "publishedAt": "2026-10-15T17:40:41.000Z",
+   "original": "Esxence’s 16th Annual Event Returns With Focus on the World Of Artistic Fragrances",
+   "lang": "en",
+   "category": "events",
+   "importance": 4,
+   "title": {
+    "ar": "معرض Esxence يعلن عن تفاصيل دورته السادسة عشرة للتركيز على العطور الفنية",
+    "en": "Esxence’s 16th Annual Event Returns With Focus on the World Of Artistic Fragrances"
+   },
+   "summary": {
+    "ar": "يعود الحدث السنوي البارز Esxence في نسخته السادسة عشرة ليضع تركيزه الكامل على عالم العطور الفنية والمستقلة.",
+    "en": "Esxence's 16th annual event returns, putting its core focus back on the world of artistic and niche fragrances."
+   },
+   "note": {
+    "ar": "المعرض الأهم لمحبي العطور النادرة والمستقلة لاكتشاف أحدث الاتجاهات الفنية.",
+    "en": "The premier destination for niche and artistic perfume lovers to discover cutting-edge trends."
    }
   },
   {
@@ -158,37 +224,15 @@
    "importance": 4,
    "title": {
     "ar": "معرض الإمارات للعطور والعود يستقطب إقبالاً جماهيرياً لافتاً",
-    "en": "UAE Perfume and Oud Exhibition Attracts Strong Visitor Turnout"
+    "en": "UAE Perfumes and Oud Exhibition attracts remarkable visitor turnout"
    },
    "summary": {
-    "ar": "شهد معرض الإمارات للعطور والعود إقبالاً واسعاً من الزوار المهتمين بأحدث ابتكارات العطور الشرقية والعود.",
-    "en": "The UAE Perfume and Oud Exhibition drew significant attention from visitors exploring oriental fragrances and oud."
+    "ar": "يشهد معرض الإمارات للعطور والعود إقبالاً واسعاً من الزوار المهتمين باكتشاف أحدث ابتكارات العطور الشرقية والعود.",
+    "en": "The UAE Perfumes and Oud Exhibition has drawn remarkable interest and footfall from visitors exploring eastern and oud fragrances."
    },
    "note": {
-    "ar": "يؤكد هذا الإقبال المكانة المتنامية لعطور العود والشرقيات في خارطة الفعاليات العطرية الكبرى.",
-    "en": "This showcases the thriving market and cultural significance of oud and oriental perfumery in the region."
-   }
-  },
-  {
-   "id": "n1ysalbs",
-   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNWnJjT0ZQVTVsUmxqRndiTUhtc19VSHB3T05PdV80Wll1RW1yaWZBYXg3bU16QnNWNnlTTmlGZ1JVLXkxbzBPVmRwV0hrazgxREpRbnJpcU5pUjRyUVBpaVBaWHlad0d3NVM5TU5hVFFRdEd6M1lQWWJVVHlhMTFiNDFaWmUxenNEMDV5a0FXZXVqNGhWOTZDMmJmbnk3Y1FJNW9WZWhuOGkwTHVDT1R3?oc=5",
-   "source": "WWD",
-   "publishedAt": "2026-10-15T17:40:41.000Z",
-   "original": "Esxence’s 16th Annual Event Returns With Focus on the World Of Artistic Fragrances",
-   "lang": "en",
-   "category": "events",
-   "importance": 4,
-   "title": {
-    "ar": "معرض Esxence يعود في نسخته السادسة عشرة مسلطاً الضوء على العطور الفنية",
-    "en": "Esxence’s 16th Annual Event Returns With Focus on the World Of Artistic Fragrances"
-   },
-   "summary": {
-    "ar": "يستعد معرض Esxence العريق للعودة بدورته السادسة عشرة للتركيز على عالم العطور المستقلة والفنية.",
-    "en": "Esxence is returning for its 16th annual event, continuing its focus on niche and artistic perfumery."
-   },
-   "note": {
-    "ar": "المعرض هو الوجهة الأهم لكل محبي العطور النيش ومنسقي العطور المبدعين عالمياً.",
-    "en": "A key calendar date for indie perfumers and niche fragrance enthusiasts worldwide."
+    "ar": "يعكس شغف المنطقة المستمر بالعود والعطور الفاخرة وإبداعات دور العطور المحلية والإقليمية.",
+    "en": "Reflects the region's enduring passion for oud and luxury artisanal perfumery."
    }
   },
   {
@@ -199,18 +243,18 @@
    "original": "4711 Original Intense ~ new fragrance",
    "lang": "en",
    "category": "launch",
-   "importance": 4,
+   "importance": 3,
    "title": {
-    "ar": "علامة 4711 تطلق عطرها الجديد 4711 Original Intense",
-    "en": "Mäurer & Wirtz Launch 4711 Original Intense Fragrance"
+    "ar": "دار Mäurer & Wirtz تطلق عطر 4711 Original Intense الجديد",
+    "en": "Mäurer & Wirtz launch new 4711 Original Intense fragrance"
    },
    "summary": {
-    "ar": "أطلقت شركة Mäurer & Wirtz نسخة عطرية جديدة ومنتعشة تحمل اسم 4711 Original Intense.",
-    "en": "Mäurer & Wirtz have launched 4711 Original Intense, an aromatic fresh citrus variation of the classic cologne."
+    "ar": "أقدمت دار Mäurer & Wirtz على إطلاق عطر 4711 Original Intense، وهو إصدار جديد منعكس بنوتات عطرية حمضية ومنعشة مستوحاة من العطر الأصلي.",
+    "en": "Mäurer & Wirtz have launched 4711 Original Intense, a new aromatic fresh citrus flanker to the classic 4711 fragrance."
    },
    "note": {
-    "ar": "إصدار يجدد كلاسيكيات الكولونيا بنوتات عطرية أكثر عمقاً وحضوراً.",
-    "en": "A modern twist on a historic cologne profile, offering enhanced longevity and freshness."
+    "ar": "إعادة إحياء لعطر كلاسيكي بنسخة أكثر كثافة وحيوية لمحبي الحمضيات.",
+    "en": "A refreshing, intensified take on a timeless classic for citrus lovers."
    }
   },
   {
@@ -221,18 +265,40 @@
    "original": "Meet the Parfums de Marly Fragrance That's Reinventing Vanilla",
    "lang": "en",
    "category": "launch",
-   "importance": 4,
+   "importance": 3,
    "title": {
-    "ar": "Parfums de Marly تقدم رؤية جديدة لمكون الفانيلا",
+    "ar": "دار Parfums de Marly تعيد ابتكار نوتة الفانيليا في عطرها الجديد",
     "en": "Parfums de Marly Fragrance Reinvents Vanilla"
    },
    "summary": {
-    "ar": "سلطت تقارير الضوء على أحدث عطور دار Parfums de Marly وكيف أعادت ابتكار نوتة الفانيلا الكلاسيكية.",
-    "en": "Parfums de Marly's latest fragrance offering provides a fresh, modern reinvention of traditional vanilla notes."
+    "ar": "تسلط أحدث إصدارات دار Parfums de Marly الضوء على طريقة مبتكرة وفريدة في تقديم نوتة الفانيليا ضمن عالم العطور الفاخرة.",
+    "en": "Parfums de Marly is catching attention with a fragrance that puts a completely reinvented spin on vanilla."
    },
    "note": {
-    "ar": "الفانيلا مكون لا غنى عنه، وتطوير طابعها الفاخر يلهم عشاق العطور الشرقية الغورماند.",
-    "en": "An exciting development for vanilla lovers looking for sophisticated gourmand twists."
+    "ar": "توجيه جديد ومثير لمكون الفانيليا الكلاسيكي يهم عشاق العطور الشرقية والغورماند.",
+    "en": "An exciting twist on classic vanilla that gourmand lovers will want to test."
+   }
+  },
+  {
+   "id": "nfccohx",
+   "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE1XQWEtQTVSc3F0T3IyZWRqRGlocmEyQTdvdWxPOG9qRks1bXhIc0tPeDZTNy1ULWpmR3RKVHNuU1p4RmFhbVp1S0VyMWt1ei1SOUFJaHN6Wlkyc1JxMVVCN2ZEZFgyN21pVllfd1BTQXpBdw?oc=5",
+   "source": "Trend Hunter",
+   "publishedAt": "2026-10-15T16:40:27.000Z",
+   "original": "Nail Polish-Inspired Perfumes: Snif Introduces Lychee Lacquer with a Manicure-Inspired…",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "دار Snif تطلق عطر Lychee Lacquer المستوحى من طلاء الأظافر",
+    "en": "Snif Introduces Lychee Lacquer Inspired by Nail Polish"
+   },
+   "summary": {
+    "ar": "ابتكرت دار Snif عطراً جديداً باسم Lychee Lacquer يدمج بين روائح الفواكه المستوحاة من عالم العناية والمانيكير.",
+    "en": "Snif has introduced Lychee Lacquer, a new fragrance inspired by manicures and nail polish aesthetics."
+   },
+   "note": {
+    "ar": "تجربة عطرية غير تقليدية تظهر مدى مرونة الابتكار في دمج مفاهيم الجمال بالعطور.",
+    "en": "An unconventional scent concept showcasing playful innovation in beauty-inspired perfumery."
    }
   },
   {
@@ -245,16 +311,60 @@
    "category": "market",
    "importance": 3,
    "title": {
-    "ar": "عطر DHARI بتركيبة الفانيلا يكتسح أسواق الخليج بقيادة محمد دادي",
-    "en": "DHARI Fragrance Sweeps Gulf Markets Led by Mohamed Dadi"
+    "ar": "نجاح لافت لعطر DHARI بتركيبة الفانيلا في أسواق الإمارات والخليج",
+    "en": "DHARI fragrance achieves massive success in UAE and Gulf markets with vanilla notes"
    },
    "summary": {
-    "ar": "حقق العطر الإماراتي DHARI نجاحاً واسعاً في أسواق الخليج بتركيبته الساحرة المرتكزة على الفانيلا.",
-    "en": "The regional success story of DHARI, a vanilla-based fragrance dominating the UAE and Gulf markets."
+    "ar": "يحقق عطر DHARI بتركيبته الغنية بالفانيلا انتشاراً واسعاً ونجاحاً ملحوظاً في أسواق دولة الإمارات العربية المتحدة ومنطقة الخليج.",
+    "en": "The DHARI fragrance, led by its enchanting vanilla blend, is making waves across the UAE and Gulf markets."
    },
    "note": {
-    "ar": "دليل على قوة العلامات المحلية في ابتكار عطور ناجحة ومنافسة إقليمياً.",
-    "en": "Highlights the growing influence and success of regional independent perfume brands in the Gulf."
+    "ar": "نموذج ناجح للإبداع العطري المحلي الذي يلبي أذواق مستهلكي الخليج الباحثين عن الفخامة.",
+    "en": "A great example of local perfume success catering to the Gulf's love for rich compositions."
+   }
+  },
+  {
+   "id": "nwhlsv8",
+   "url": "https://nstperfume.com/2026/10/15/the-soul-of-french-perfume/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-15T13:58:09.000Z",
+   "original": "The Soul of French Perfume",
+   "lang": "en",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "متحف العطور Osmothèque في فرساي يكشف عن أسرار فن صناعة العطور الفرنسي",
+    "en": "The Osmothèque in Versailles Lifts the Veil on French Perfumery Secrets"
+   },
+   "summary": {
+    "ar": "يستعد متحف العطور الشهير Osmothèque في فرساي لتقديم معرض ومعارض حصرية تسلط الضوء على التاريخ العريق وأسرار صناعة العطور في فرنسا.",
+    "en": "The Osmothèque in Versailles, in partnership with espace Richaud, is lifting the veil on the secrets of the millennia-old craft of French perfumery."
+   },
+   "note": {
+    "ar": "فرصة ذهبية لكل شغوف بتاريخ العطور وتطور تركيباتها عبر الزمن.",
+    "en": "A treasure trove of historical knowledge for anyone passionate about vintage formulas."
+   }
+  },
+  {
+   "id": "n1xvlv6z",
+   "url": "https://cosmeticsbusiness.com/cpl-aromas-presents-resonance-at-beautyworld-middle-east",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-15T11:32:00.000Z",
+   "original": "CPL Aromas presents RESONANCE at BeautyWorld Middle East 2026",
+   "lang": "en",
+   "category": "events",
+   "importance": 3,
+   "title": {
+    "ar": "شركة CPL Aromas تعرض ابتكارها RESONANCE في معرض Beautyworld Middle East",
+    "en": "CPL Aromas presents RESONANCE at Beautyworld Middle East"
+   },
+   "summary": {
+    "ar": "قدمت شركة CPL Aromas مشروعها العطري 'RESONANCE' خلال معرض Beautyworld Middle East، مقدمة استكشافاً حسياً يجمع الشعر والعاطفة في العطور.",
+    "en": "CPL Aromas presented RESONANCE at Beautyworld Middle East as an olfactory exploration of poetry, emotion, and shared human experiences."
+   },
+   "note": {
+    "ar": "دمج رائع بين الفن والأدب وعلم العطور يثري تجارب الزوار في المعرض.",
+    "en": "A beautiful artistic blend of poetry and olfaction showcased at a major regional exhibition."
    }
   },
   {
@@ -302,28 +412,6 @@
    }
   },
   {
-   "id": "nfccohx",
-   "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE1XQWEtQTVSc3F0T3IyZWRqRGlocmEyQTdvdWxPOG9qRks1bXhIc0tPeDZTNy1ULWpmR3RKVHNuU1p4RmFhbVp1S0VyMWt1ei1SOUFJaHN6Wlkyc1JxMVVCN2ZEZFgyN21pVllfd1BTQXpBdw?oc=5",
-   "source": "Trend Hunter",
-   "publishedAt": "2026-10-15T16:40:27.000Z",
-   "original": "Nail Polish-Inspired Perfumes: Snif Introduces Lychee Lacquer with a Manicure-Inspired…",
-   "lang": "en",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "علامة Snif تطلق عطر Lychee Lacquer المستوحى من طلاء الأظافر",
-    "en": "Snif Introduces Lychee Lacquer Inspired by Nail Polish"
-   },
-   "summary": {
-    "ar": "أقدمت علامة Snif على ابتكار عطر جديد باسم Lychee Lacquer بلمسات مستوحاة من أجواء طلاء الأظافر والمستحضرات.",
-    "en": "Snif has introduced Lychee Lacquer, a unique fragrance blending fruity notes with a manicure-inspired concept."
-   },
-   "note": {
-    "ar": "التجارب غير التقليدية والربط بين حواس الجمال المختلفة يلهم صانعي العطور المستقلين.",
-    "en": "An innovative cross-industry concept bridging beauty routines and creative olfaction."
-   }
-  },
-  {
    "id": "nxavf1j",
    "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxQV3gzTzlCS2RqZGpHbHVRUF9tTVM5SHRaRTNybVlNTVdJWFByMG5ZWHRlbEk2MnZrWlZMUE5UcWJ1VktZYXRJYzZEYmJEcEJyUVh1S0RBTDFEZWswdE0wYVBJdHV4bGhvWElWQ29oUWhVZ0x3R2FCd3BtQ0JlVlFZY0xMbWxXVVRrMHRCeURHMXNHNzBFUnhvNXp4MG1haktUYmd1RDdCOTRJREhhTm1PNmJ2NGgxZjFYeGpMbkVfMFI4SUIyVUhMM25NcWk1Z0I4ZUh2MWlKcDV5Zw?oc=5",
    "source": "Masculin.com",
@@ -343,50 +431,6 @@
    "note": {
     "ar": "تحدٍ مثير لصناع العطور في دمج مكونات طعام نادرة لتوليد طابع فاخر وفريد.",
     "en": "A fascinating look at ultra-niche experimentation with savory and exotic notes in fine fragrance."
-   }
-  },
-  {
-   "id": "n1xvlv6z",
-   "url": "https://cosmeticsbusiness.com/cpl-aromas-presents-resonance-at-beautyworld-middle-east",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-10-15T11:32:00.000Z",
-   "original": "CPL Aromas presents RESONANCE at BeautyWorld Middle East 2026",
-   "lang": "en",
-   "category": "events",
-   "importance": 3,
-   "title": {
-    "ar": "شركة CPL Aromas تعرض ابتكار RESONANCE في معرض Beautyworld Middle East",
-    "en": "CPL Aromas Presents RESONANCE at Beautyworld Middle East"
-   },
-   "summary": {
-    "ar": "شاركت CPL Aromas بابتكارها العطري RESONANCE في معرض Beautyworld Middle East لاستكشاف الشعر والعاطفة.",
-    "en": "CPL Aromas showcased RESONANCE at Beautyworld Middle East, offering an olfactory exploration of poetry and emotion."
-   },
-   "note": {
-    "ar": "الفعاليات الإقليمية الكبرى تظل المنصة الأهم لعرض الابتكارات ومستقبل الروائح.",
-    "en": "Major trade shows in the Middle East continue to serve as prime launchpads for conceptual fragrance art."
-   }
-  },
-  {
-   "id": "nwhlsv8",
-   "url": "https://nstperfume.com/2026/10/15/the-soul-of-french-perfume/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-15T13:58:09.000Z",
-   "original": "The Soul of French Perfume",
-   "lang": "en",
-   "category": "culture",
-   "importance": 4,
-   "title": {
-    "ar": "متحف Osmothèque في فرساي يكشف عن أسرار فن صناعة العطور الفرنسية",
-    "en": "The Osmothèque in Versailles unveils secrets of French perfumery"
-   },
-   "summary": {
-    "ar": "يقدم متحف الأوسموتيك بالتعاون مع espace Richaud معرضاً يسلط الضوء على أسرار تاريخ العطور العريق في فرنسا.",
-    "en": "The Osmothèque in partnership with espace Richaud presents an exhibition highlighting secrets of the ancient art of perfumery in France."
-   },
-   "note": {
-    "ar": "مرجع أساسي لكل مهتم بتاريخ وتراث العطور العريقة.",
-    "en": "An essential reference for anyone interested in the heritage and history of fine perfumes."
    }
   },
   {
@@ -681,42 +725,6 @@
    "summary": {
     "ar": "Beauty Updates: Coty Fragrance Club, Ipsy Wellness & More",
     "en": "Beauty Updates: Coty Fragrance Club, Ipsy Wellness & More"
-   }
-  },
-  {
-   "id": "nws26ik",
-   "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5oNkdSeWtXSTQtQzBFWFdlUzB5VTVlZWVQczlNUGhIWXVyQTN5V2g5d1FkRC1QMEZfRGpaS0xsZXNDbzdmblFGRjVCczlEbjd3dmc?oc=5",
-   "source": "Boursorama",
-   "publishedAt": "2026-10-15T18:46:27.000Z",
-   "original": "INTERPARFUMS Cours Action ITP, Cotation Bourse Euronext Paris",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "INTERPARFUMS Cours Action ITP, Cotation Bourse Euronext Paris",
-    "en": "INTERPARFUMS Cours Action ITP, Cotation Bourse Euronext Paris"
-   },
-   "summary": {
-    "ar": "INTERPARFUMS Cours Action ITP, Cotation Bourse Euronext Paris",
-    "en": "INTERPARFUMS Cours Action ITP, Cotation Bourse Euronext Paris"
-   }
-  },
-  {
-   "id": "n16vfrmy",
-   "url": "https://news.google.com/rss/articles/CBMijAJBVV95cUxOd0JsV0QyRV9FRlJsdTJ6enBCVi0tYzRZb28yT2JQTmh4czRGWGExYndyM04wWGVzNy1DbjFPdUpjYk9sR2VNbVdzOTY5YzBQTGgyZ2lPNEQyT1FmS0xySHhLRnViYUJ6TU9wVFRtRWVHUDg2OGFtWGdZVmpKSGNpazlqcWNFMlhsUkxDM05qVzBtd2hUeTEyOWt0eG56MURfdEpoWFpFenAyd2xYd2FyNkFrcTBGWUdGT1pCUkYxdEN1MXBnR1N6MkpSU1BwV3R3YlgtWmJLR1BxY3ZwSXlKYS1TRVE1eFpxSU9keE5CRDNHOER1Z2Z2bGxFSmZFTDFUU0NydUJfdi1SZk10?oc=5",
-   "source": "Grazia",
-   "publishedAt": "2026-10-15T18:35:49.000Z",
-   "original": "\"Le plus populaire du monde\" : ce parfum Carolina Herrera a été noté 5/5 des milliers de fois, \"toutes les femmes devraient l'avoir\"",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "\"Le plus populaire du monde\" : ce parfum Carolina Herrera a été noté 5/5 des milliers de fois, \"toutes les femmes devraient l'avoir\"",
-    "en": "\"Le plus populaire du monde\" : ce parfum Carolina Herrera a été noté 5/5 des milliers de fois, \"toutes les femmes devraient l'avoir\""
-   },
-   "summary": {
-    "ar": "\"Le plus populaire du monde\" : ce parfum Carolina Herrera a été noté 5/5 des milliers de fois, \"toutes les femmes devraient l'avoir\"",
-    "en": "\"Le plus populaire du monde\" : ce parfum Carolina Herrera a été noté 5/5 des milliers de fois, \"toutes les femmes devraient l'avoir\""
    }
   }
  ]
