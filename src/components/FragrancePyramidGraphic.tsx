@@ -25,6 +25,7 @@ import { SupportedLanguage } from '../types/i18n';
 import { formatNum } from '../utils/calculations';
 import { useLanguage } from '../context/LanguageContext';
 import { LText, makeT, fmt, pickArEn } from '../utils/localize';
+import { uiLabel } from '../utils/uiTextL10n';
 import {
   enrichPyramidNote,
   sortNotesByVolatilityOrder,
@@ -557,7 +558,7 @@ export const FragrancePyramidGraphic: React.FC<FragrancePyramidGraphicProps> = (
         <div className="flex items-center justify-between px-2">
           <div className="flex items-center gap-2 text-xs font-bold text-stone-800">
             <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
-            <span>محاكاة خروج العطر وثباته على مسام الجلد والتبخر الزمني (Atomizer ➔ Skin Fixation ➔ Evaporation)</span>
+            <span>{uiLabel('sim_tagline', effectiveLang)}</span>
           </div>
           <button
             type="button"

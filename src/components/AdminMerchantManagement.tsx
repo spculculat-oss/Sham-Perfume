@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
 import { LText, makeT } from '../utils/localize';
+import { uiLabel } from '../utils/uiTextL10n';
 import {
   getAllMerchants, getMerchantById,
   saveMerchant, updateMerchant, deleteMerchant,
@@ -96,6 +97,7 @@ export const AdminMerchantManagement: React.FC<{
   currentLang: SupportedLanguage;
 }> = ({ onClose, currentLang }) => {
   const L = makeT(currentLang, S);
+  const CUR = uiLabel('currency_egp', currentLang);
   const [activeTab, setActiveTab] = useState<'all'|'pending'|'approved'|'suspended'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMerchantId, setSelectedMerchantId] = useState<string|null>(null);
@@ -246,7 +248,7 @@ export const AdminMerchantManagement: React.FC<{
         {/* Header */}
         <div className="px-6 py-4 border-b border-stone-200 flex items-center justify-between bg-stone-50 rounded-t-2xl shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-stone-900 to-amber-950 text-amber-400 flex items-center justify-center font-bold text-lg">شام</div>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-stone-900 to-amber-950 text-amber-400 flex items-center justify-center font-bold text-lg">Sham</div>
             <div>
               <h1 className="text-lg font-bold text-stone-900 font-serif-luxury">{L('page_title')}</h1>
               <p className="text-xs text-stone-500">{L('margin_desc')}</p>
@@ -291,7 +293,7 @@ export const AdminMerchantManagement: React.FC<{
                   <span className="text-xs font-bold text-stone-500">{l}</span>
                   <span className="text-sm font-bold text-stone-800">
                     {typeof v === 'number' && v > 0 ? v.toLocaleString() : v}
-                    {String(l).includes('revenue') ? ' جنيه' : ''}
+                    {String(l).includes('revenue') ? ' '+CUR : ''}
                   </span>
                 </div>
               ))}
@@ -337,8 +339,8 @@ export const AdminMerchantManagement: React.FC<{
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-stone-200 text-left">
-                      {['الشركة','هامش','المنتجات','الطلبات','الإيرادات','القنوات','الإجراءات'].map(h=>(
-                        <th key={h} className="py-3 px-4 text-xs font-bold text-stone-500 uppercase">{h}</th>
+                      {(['company_col','margin_col','products_col','requests_col','revenue_col','channels_col','actions_col'] as const).map(k=>(
+                        <th key={k} className="py-3 px-4 text-xs font-bold text-stone-500 uppercase">{uiLabel(k, currentLang)}</th>
                       ))}
                     </tr>
                   </thead>
@@ -373,7 +375,7 @@ export const AdminMerchantManagement: React.FC<{
                         }`}>{merchant!.status}</span>
                         {merchant!.approved && (
                           <span className="px-3 py-1 rounded-full bg-emerald-500/30 text-emerald-200 text-xs flex items-center gap-1">
-                            <CheckCircle className="w-3 h-3"/> معتمد
+                            <CheckCircle className="w-3 h-3"/> {uiLabel('approved', currentLang)}
                           </span>
                         )}
                       </div>
@@ -381,7 +383,7 @@ export const AdminMerchantManagement: React.FC<{
                     <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-3 text-sm text-amber-200/90">
                       <div><span className="text-amber-200/60 text-[10px] block">{L('margin_label')}</span><span className="font-bold text-lg">{merchant!.marginPercent}%</span></div>
                       <div><span className="text-amber-200/60 text-[10px] block">{L('stats_products')}</span><span className="font-bold text-lg">{merchant!.totalProducts}</span></div>
-                      <div><span className="text-amber-200/60 text-[10px] block">الطلبات</span><span className="font-bold text-lg">{merchant!.totalOrders}</span></div>
+                      <div><span className="text-amber-200/60 text-[10px] block">{uiLabel('requests_col', currentLang)}</span><span className="font-bold text-lg">{merchant!.totalOrders}</span></div>
                       <div><span className="text-amber-200/60 text-[10px] block">{L('stats_total_revenue')}</span><span className="font-bold text-lg">{merchant!.totalRevenue.toLocaleString()}</span></div>
                     </div>
                     <div className="mt-4 p-3 rounded-lg bg-white/10 border border-amber-500/30 grid grid-cols-3 gap-2 text-center">
@@ -389,8 +391,8 @@ export const AdminMerchantManagement: React.FC<{
                       <div className="text-xs text-amber-200/70">{L('margin_to_customer')}</div>
                       <div className="text-xs text-amber-200/70 font-bold">{L('platform_keeps')}</div>
                       <div className="mt-1 font-bold text-lg">{merchant!.marginPercent}%</div>
-                      <div className="mt-1 font-bold text-lg text-amber-300">× ١.٢٥</div>
-                      <div className="mt-1 font-bold text-lg text-amber-300">٢٥٪</div>
+                      <div className="mt-1 font-bold text-lg text-amber-300">{uiLabel('times_125', currentLang)}</div>
+                      <div className="mt-1 font-bold text-lg text-amber-300">{uiLabel('pct_25', currentLang)}</div>
                     </div>
                   </div>
 
@@ -398,7 +400,7 @@ export const AdminMerchantManagement: React.FC<{
                   <div className="p-4 rounded-xl border border-stone-200 bg-stone-50">
                     <div className="flex items-center justify-between mb-3">
                       <h3 className="text-sm font-bold text-stone-900">{L('notes_label')}</h3>
-                      <button onClick={()=>setShowNotes(!showNotes)} className="text-xs px-2 py-1 rounded-lg bg-stone-100 hover:bg-stone-200">{showNotes?'إخفاء':'عرض'}</button>
+                      <button onClick={()=>setShowNotes(!showNotes)} className="text-xs px-2 py-1 rounded-lg bg-stone-100 hover:bg-stone-200">{showNotes?uiLabel('hide', currentLang):L('view')}</button>
                     </div>
                     {showNotes ? (
                       <div className="space-y-3">
@@ -419,7 +421,7 @@ export const AdminMerchantManagement: React.FC<{
                               <p>{n.content}</p>
                             </div>
                           ))}
-                          {getAdminNotes(merchant!.id).length===0 && <p className="text-xs text-stone-400 text-center py-2">لا توجد ملاحظات</p>}
+                          {getAdminNotes(merchant!.id).length===0 && <p className="text-xs text-stone-400 text-center py-2">{uiLabel('no_notes', currentLang)}</p>}
                         </div>
                       </div>
                     ) : (
@@ -540,8 +542,8 @@ export const AdminMerchantManagement: React.FC<{
                               }`}>{L(`order_status_${o.status}` as keyof typeof S)}</span>
                             </div>
                             <div className="text-right font-mono text-xs">
-                              <div>الدفع: {o.subtotalRetail.toLocaleString()}</div>
-                              <div className="text-stone-500">ربح المنصة: {o.totalPlatformRevenue.toLocaleString()}</div>
+                              <div>{uiLabel('payment', currentLang)}: {o.subtotalRetail.toLocaleString()}</div>
+                              <div className="text-stone-500">{uiLabel('platform_profit', currentLang)}: {o.totalPlatformRevenue.toLocaleString()}</div>
                             </div>
                             <div className="flex items-center gap-1">
                               {o.status==='pending' && <button onClick={()=>updateOrderStatusHandler(o.id,'confirmed')} className="p-1 rounded hover:bg-emerald-100"><CheckCircle className="w-3 h-3 text-emerald-600"/></button>}
@@ -573,29 +575,29 @@ export const AdminMerchantManagement: React.FC<{
                   <p className="text-[10px] text-stone-400 mt-1">{L('margin_desc')}</p>
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-stone-700">اسم المنتج عربي</label>
-                  <input type="text" className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300" placeholder="عطر عود"/>
+                  <label className="text-xs font-medium text-stone-700">{uiLabel('product_name_ar', currentLang)}</label>
+                  <input type="text" className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300" placeholder={uiLabel('example_oud', currentLang)}/>
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-stone-700">اسم المنتج Engl</label>
+                  <label className="text-xs font-medium text-stone-700">{uiLabel('product_name_en', currentLang)}</label>
                   <input type="text" className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300" placeholder="Oud Perfume"/>
                 </div>
                 <div className="flex gap-2">
                   <div className="flex-1">
-                    <label className="text-xs font-medium text-stone-700">التصنيف</label>
+                    <label className="text-xs font-medium text-stone-700">{uiLabel('category_label', currentLang)}</label>
                     <select className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300">
-                      <option>عطور</option><option>خامات</option><option>أدوات</option><option>تغليف</option><option>غير ذلك</option>
+                      <option value="عطور">{uiLabel('cat_perfumes', currentLang)}</option><option value="خامات">{uiLabel('cat_materials', currentLang)}</option><option value="أدوات">{uiLabel('cat_tools', currentLang)}</option><option value="تغليف">{uiLabel('cat_packaging', currentLang)}</option><option value="غير ذلك">{uiLabel('cat_other', currentLang)}</option>
                     </select>
                   </div>
                   <div className="flex-1">
-                    <label className="text-xs font-medium text-stone-700">الوحدة</label>
+                    <label className="text-xs font-medium text-stone-700">{uiLabel('unit_label', currentLang)}</label>
                     <select className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300">
-                      <option>زجةقة</option><option>لتر</option><option>جرام</option><option>مجموعة</option><option>قطعة</option>
+                      <option value="زجاجة">{uiLabel('u_bottle', currentLang)}</option><option value="لتر">{uiLabel('u_liter', currentLang)}</option><option value="جرام">{uiLabel('u_gram', currentLang)}</option><option value="مجموعة">{uiLabel('u_set', currentLang)}</option><option value="قطعة">{uiLabel('u_piece', currentLang)}</option>
                     </select>
                   </div>
                 </div>
                 <div className="flex justify-end gap-2 pt-3">
-                  <button onClick={()=>setShowProductModal(false)} className="px-4 py-2 rounded-lg bg-stone-100 text-stone-700 text-sm font-medium hover:bg-stone-200">إلغاء</button>
+                  <button onClick={()=>setShowProductModal(false)} className="px-4 py-2 rounded-lg bg-stone-100 text-stone-700 text-sm font-medium hover:bg-stone-200">{uiLabel('cancel', currentLang)}</button>
                   <button onClick={addProduct} className="px-4 py-2 rounded-lg bg-amber-700 text-white text-sm font-medium hover:bg-amber-800">
                     <Plus className="w-4 h-4 inline mr-1"/> {L('add_product')}
                   </button>
@@ -615,7 +617,7 @@ export const AdminMerchantManagement: React.FC<{
               <h3 className="text-lg font-bold text-stone-900 mb-2">{L('delete')}</h3>
               <p className="text-sm text-stone-600 mb-4">{L('confirm_delete')}</p>
               <div className="flex gap-2">
-                <button onClick={()=>setConfirmDelete(null)} className="flex-1 px-4 py-2 rounded-lg bg-stone-100 text-stone-700 text-sm font-medium hover:bg-stone-200">إلغاء</button>
+                <button onClick={()=>setConfirmDelete(null)} className="flex-1 px-4 py-2 rounded-lg bg-stone-100 text-stone-700 text-sm font-medium hover:bg-stone-200">{uiLabel('cancel', currentLang)}</button>
                 <button onClick={handleDelete} className="flex-1 px-4 py-2 rounded-lg bg-red-600 text-white text-sm font-medium hover:bg-red-700">{L('delete')}</button>
               </div>
             </div>
@@ -632,7 +634,7 @@ export const AdminMerchantManagement: React.FC<{
               <h3 className="text-lg font-bold text-stone-900 mb-2">{L('suspend')}</h3>
               <p className="text-sm text-stone-600 mb-4">{L('confirm_suspend')}</p>
               <div className="flex gap-2">
-                <button onClick={()=>setConfirmSuspend(null)} className="flex-1 px-4 py-2 rounded-lg bg-stone-100 text-stone-700 text-sm font-medium hover:bg-stone-200">إلغاء</button>
+                <button onClick={()=>setConfirmSuspend(null)} className="flex-1 px-4 py-2 rounded-lg bg-stone-100 text-stone-700 text-sm font-medium hover:bg-stone-200">{uiLabel('cancel', currentLang)}</button>
                 <button onClick={handleSuspend} className="flex-1 px-4 py-2 rounded-lg bg-amber-700 text-white text-sm font-medium hover:bg-amber-800">{L('suspend')}</button>
               </div>
             </div>
