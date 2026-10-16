@@ -1,12 +1,12 @@
 {
  "version": 1,
- "updatedAt": "2026-10-16T03:30:04.039Z",
- "nextUpdateAt": "2026-10-16T15:30:04.039Z",
+ "updatedAt": "2026-10-16T05:03:33.623Z",
+ "nextUpdateAt": "2026-10-16T17:03:33.623Z",
  "intervalHours": 12,
  "editor": "shaheen",
  "digest": {
-  "ar": "تشهد صناعة العطور حراكاً واسعاً هذا الأسبوع بين توسعات كبرى في الأسواق الناشئة، وابتكارات تقنية في استخلاص الروائح، مع تركيز لافت على المعارض الإقليمية في دبي. تبرز قصص النجاح العربية كعلامة فارقة، بينما تواصل دور العطور العريقة الاحتفاء بتاريخها العطري.",
-  "en": "The fragrance industry is buzzing this week with major expansions in emerging markets, technical innovations in scent extraction, and a significant focus on regional exhibitions in Dubai. Arab success stories are standing out as milestones, while historic perfume houses continue to celebrate their olfactory heritage."
+  "ar": "تشهد صناعة العطور تحولات استراتيجية بين التوسع في الأسواق الناشئة والابتكار التقني، مع تركيز متزايد على الاستدامة والمكونات الطبيعية. يبرز السوق العربي كمركز ثقل عالمي، بينما تستمر دور العطور في دمج التكنولوجيا والذكاء الاصطناعي لإعادة تعريف تجربة المستهلك.",
+  "en": "The fragrance industry is undergoing strategic shifts between emerging market expansion and technical innovation, with a growing focus on sustainability and natural ingredients. The Arab market stands out as a global hub, while perfume houses continue to integrate technology and AI to redefine the consumer experience."
  },
  "sources": [
   {
@@ -22,12 +22,12 @@
    "count": 2
   },
   {
-   "name": "Cosmetics Business",
+   "name": "CaFleureBon",
    "count": 2
   },
   {
-   "name": "CaFleureBon",
-   "count": 2
+   "name": "Esquire Singapore",
+   "count": 1
   },
   {
    "name": "Daily FT",
@@ -47,6 +47,10 @@
   },
   {
    "name": "BeautyNewsDaily",
+   "count": 1
+  },
+  {
+   "name": "Boursorama",
    "count": 1
   },
   {
@@ -74,6 +78,10 @@
    "count": 1
   },
   {
+   "name": "Cosmetics Business",
+   "count": 1
+  },
+  {
    "name": "GuruFocus",
    "count": 1
   },
@@ -88,19 +96,15 @@
   {
    "name": "Dazed",
    "count": 1
-  },
-  {
-   "name": "GlobeNewswire",
-   "count": 1
   }
  ],
  "items": [
   {
-   "id": "n1xhr5c2",
-   "url": "https://news.google.com/rss/articles/CBMi9wFBVV95cUxNYzdybmdENkY1RUVZTVNQRmdNOEo3NXJhblhoZ2ZfeTVNR2FkT3lSMDh1N0FpejVKUVdIem1PMk52SHJUalV5Rm10Mml5VHo0YV8zbjV2YTY3NHdTdmY0R0VNNGhVYjByQ18yX0xGdk5nMWxHT3FlaEszcEtyWXI4RnBPT2tjbE4yYjJBVFdyWlQyaXBjam9YdzZkU3c4QXVxQkhzVTBHSzhabExwVXFvZ0ZFQlAwTktBTU0yOWowdE1sYWg5MjJNSHVMb3Qtd2JCa3ZJQXhYcVJMSU9DM0ZLdG94bGNlc1dUSXFDLXlzbFdhRVVtcENn?oc=5",
-   "source": "Daily FT",
-   "publishedAt": "2026-10-16T00:54:37.000Z",
-   "original": "Sri Lanka’s essential oil industry: Opportunities, challenges, and future directions in the global fragrance and flavour value chain",
+   "id": "n27hckb",
+   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNWnpwWElVWmNZSlZoTFdRMVlMWlJ2SUx0TXRnd3JmZGlwVV8wQ2UxOV9PSkVOTGVLWGdBSjFtcTMwUXh2UFNTWC0tQkstakh4ZTBacTB5cjhCdlZUWFd5Qm1LWnFqZEswZUphb1lrM0R0VUFrcjlIeS1LX0JVQ19Kb2IwZ2E0NTRCREhBVA?oc=5",
+   "source": "Esquire Singapore",
+   "publishedAt": "2026-10-16T04:02:17.000Z",
+   "original": "Meet the Parfums de Marly Fragrance That's Reinventing Vanilla",
    "lang": "en",
    "category": "events",
    "importance": 5,
@@ -109,12 +113,34 @@
     "en": "CPL Aromas presents RESONANCE at BeautyWorld Middle East 2026"
    },
    "summary": {
-    "ar": "قدمت شركة CPL Aromas استكشافاً عطرياً يجمع بين الشعر والعاطفة والتجارب الإنسانية المشتركة في معرض بيوتي وورلد دبي.",
-    "en": "CPL Aromas presented an olfactory exploration of poetry, emotion, and shared human experiences at the BeautyWorld Dubai exhibition."
+    "ar": "قدمت شركة CPL Aromas استكشافاً عطرياً يربط بين الشعر والعاطفة والتجارب الإنسانية المشتركة تحت عنوان RESONANCE.",
+    "en": "CPL Aromas presented an olfactory exploration connecting poetry, emotion, and shared human experiences under the theme RESONANCE."
    },
    "note": {
-    "ar": "هذا التوجه نحو ربط العطر بالقصص والمشاعر هو جوهر العطور النيش الحديثة، وهو درس مهم لكل صانع عطور يريد بناء هوية عطرية عميقة.",
-    "en": "This trend of connecting fragrance to stories and emotions is the essence of modern niche perfumery, a key lesson for any perfumer building a deep brand identity."
+    "ar": "هذا التوجه نحو ربط العطر بالقصص والمشاعر هو ما يبحث عنه العميل الحديث؛ العطر لم يعد مجرد رائحة، بل تجربة عاطفية.",
+    "en": "This trend of linking fragrance to stories and emotions is what the modern customer seeks; perfume is no longer just a scent, but an emotional experience."
+   }
+  },
+  {
+   "id": "nqfz0gq",
+   "url": "https://news.google.com/rss/articles/CBMi-wFBVV95cUxOcmRQQndvUXFXQlNYcEhuX2VhNlFreVRwLWd3eXMydTliVFMyaEtRMHlBQmM0TVZ5eXZ2TTZGNGY2UjVKV1JjS19PczVuU0M5VnpRbW9ITU5Ka2RKV0QyaXBWbnN4UHBfdWhZVGZDbnZhWGFqajl6VnBkSnNFQUNyZzEycVhlcW1yT01fQ3Y0SGpYZzRqckdWTVJETG5wUmZJX1k5ZUw0bl9fQ01ERTc2LVRSbjBoNWItdG1rT0daaEt5Z3NvYm5JSDVCY2t2a3VUY2RqY19LQll0MUw1R0xOOWdJVkRUOF80ajQ0cmV6VnJLZWppYUZxM3Ftcw?oc=5",
+   "source": "Daily FT",
+   "publishedAt": "2026-10-16T03:30:11.000Z",
+   "original": "Sri Lanka’s essential oil industry: Opportunities, challenges, and future directions in the global fragrance and flavour value chain",
+   "lang": "en",
+   "category": "events",
+   "importance": 5,
+   "title": {
+    "ar": "معرض الإمارات للعطور والعود يشهد إقبالاً جماهيرياً واسعاً",
+    "en": "UAE Perfume and Oud Exhibition attracts significant visitor interest"
+   },
+   "summary": {
+    "ar": "حقق معرض الإمارات للعطور والعود نجاحاً لافتاً، مما يعكس القوة الشرائية والاهتمام المتزايد بالعطور في المنطقة.",
+    "en": "The UAE Perfume and Oud Exhibition achieved remarkable success, reflecting the purchasing power and growing interest in fragrances in the region."
+   },
+   "note": {
+    "ar": "السوق الإماراتي يثبت يوماً بعد يوم أنه الوجهة الأولى عالمياً لعشاق العطور الفاخرة والعود.",
+    "en": "The UAE market proves day by day that it is the premier global destination for luxury perfume and oud enthusiasts."
    }
   },
   {
@@ -124,19 +150,19 @@
    "publishedAt": "2026-10-16T00:06:34.000Z",
    "original": "Symrise Expands Global Production of Sustainable Musk Ingredient Globalide® with New Capacity in India",
    "lang": "en",
-   "category": "events",
-   "importance": 5,
+   "category": "launch",
+   "importance": 4,
    "title": {
-    "ar": "معرض الإمارات للعطور والعود يشهد إقبالاً جماهيرياً لافتاً",
-    "en": "UAE Perfume and Oud Exhibition attracts significant visitor turnout"
+    "ar": "Parfums de Marly تعيد ابتكار نوتة الفانيلا في عطرها الجديد",
+    "en": "Meet the Parfums de Marly Fragrance That's Reinventing Vanilla"
    },
    "summary": {
-    "ar": "استقطب معرض الإمارات للعطور والعود اهتماماً كبيراً من الزوار، مما يعكس قوة السوق الإقليمي وشغف الجمهور بالعطور والعود.",
-    "en": "The UAE Perfume and Oud Exhibition has attracted significant attention from visitors, reflecting the strength of the regional market and public passion for fragrance and oud."
+    "ar": "تطلق دار Parfums de Marly عطراً جديداً يهدف إلى تقديم رؤية عصرية ومبتكرة لمكون الفانيلا الكلاسيكي.",
+    "en": "Parfums de Marly is launching a new fragrance that aims to offer a modern and innovative vision of the classic vanilla note."
    },
    "note": {
-    "ar": "نجاح هذه المعارض يؤكد أن العود ليس مجرد مادة خام، بل هو ركيزة اقتصادية وثقافية في المنطقة لا تزال تجذب الاستثمارات والجمهور.",
-    "en": "The success of these exhibitions confirms that Oud is not just a raw material, but an economic and cultural pillar in the region that continues to attract investment and audiences."
+    "ar": "الفانيلا مكون صعب التجديد، لكن إذا نجحت الدار في تقديمها بأسلوب غير مألوف، فستكون هذه ضربة قوية في السوق.",
+    "en": "Vanilla is a difficult note to reinvent, but if the house succeeds in presenting it in an unconventional way, it will be a major market hit."
    }
   },
   {
@@ -146,19 +172,19 @@
    "publishedAt": "2026-10-15T23:00:00.000Z",
    "original": "«ليلة العود» تجمع الفنان محمد البكري وعازفة العود الصينية جو تشاو ضمن مهرجان البحرين للموسيقى",
    "lang": "ar",
-   "category": "market",
+   "category": "ingredients",
    "importance": 4,
    "title": {
-    "ar": "مجموعة Bogart تبيع شركتها التابعة في إسرائيل",
-    "en": "Bogart sells Israeli subsidiary to its main shareholder"
+    "ar": "Symrise توسع إنتاجها العالمي من المسك المستدام Globalide® في الهند",
+    "en": "Symrise Expands Global Production of Sustainable Musk Ingredient Globalide® with New Capacity in India"
    },
    "summary": {
-    "ar": "أعلنت مجموعة Bogart الفرنسية عن بيع كامل حصتها في شركتها التابعة April Cosmetics and Perfumes Store Chain Ltd لمساهمها الرئيسي.",
-    "en": "The French Bogart Group has announced the sale of 100% of its Israeli subsidiary, April Cosmetics and Perfumes Store Chain Ltd, to its main shareholder."
+    "ar": "عززت شركة Symrise قدراتها الإنتاجية لمكون المسك المستدام Globalide® من خلال منشأة جديدة في الهند.",
+    "en": "Symrise has boosted its production capacity for the sustainable musk ingredient Globalide® with a new facility in India."
    },
    "note": {
-    "ar": "إعادة الهيكلة في الشركات الكبرى غالباً ما تتبع استراتيجيات مالية لتقليل المخاطر أو التركيز على أسواق أكثر ربحية.",
-    "en": "Restructuring in major groups often follows financial strategies to mitigate risk or focus on more profitable markets."
+    "ar": "التوجه نحو الاستدامة في المواد الخام ليس مجرد خيار أخلاقي، بل ضرورة صناعية لضمان استمرارية سلاسل التوريد.",
+    "en": "The shift towards sustainability in raw materials is not just an ethical choice, but an industrial necessity to ensure supply chain continuity."
    }
   },
   {
@@ -171,16 +197,16 @@
    "category": "market",
    "importance": 4,
    "title": {
-    "ar": "Shiseido تلاحق Shein قضائياً بتهمة المنافسة غير العادلة",
-    "en": "Shiseido demands 2.6 million euros from Shein for unfair competition"
+    "ar": "مجموعة Bogart تبيع شركتها التابعة في إسرائيل",
+    "en": "Bogart sells Israeli subsidiary to its main shareholder"
    },
    "summary": {
-    "ar": "طالبت شركة Shiseido بتعويضات تتجاوز 2.6 مليون يورو من منصة Shein لبيعها منتجات تجميل خارج شبكة الموزعين المعتمدين.",
-    "en": "Shiseido is claiming over 2.6 million euros from Shein for selling beauty products outside of its authorized distribution network."
+    "ar": "أعلنت مجموعة Bogart الفرنسية عن بيع كامل حصتها في شركتها التابعة April Cosmetics and Perfumes Store Chain Ltd.",
+    "en": "The French Bogart Group has announced the sale of 100% of its stake in its subsidiary, April Cosmetics and Perfumes Store Chain Ltd."
    },
    "note": {
-    "ar": "هذه القضية اختبار حقيقي لحماية العلامات التجارية الفاخرة في عصر التجارة الإلكترونية السريعة.",
-    "en": "This case is a real test for protecting luxury brands in the era of fast e-commerce."
+    "ar": "هذه الخطوة تعكس إعادة هيكلة استراتيجية للمجموعات الكبرى لتركيز مواردها في أسواق أكثر ربحية.",
+    "en": "This move reflects a strategic restructuring for major groups to focus resources on more profitable markets."
    }
   },
   {
@@ -193,16 +219,16 @@
    "category": "market",
    "importance": 4,
    "title": {
-    "ar": "قصة نجاح عربية: عطر DHARI يكتسح أسواق الخليج",
-    "en": "Arab success story: DHARI perfume sweeps the Gulf markets"
+    "ar": "Coty تطلق نادي Coty Fragrance Club لتعزيز التفاعل مع المجتمع",
+    "en": "Coty Launches Coty Fragrance Club to Engage Community"
    },
    "summary": {
-    "ar": "حقق عطر DHARI بتركيبة الفانيلا نجاحاً تجارياً كبيراً في الإمارات والخليج بقيادة محمد دادي.",
-    "en": "The DHARI perfume, with its enchanting vanilla composition, has achieved major commercial success in the UAE and the Gulf, led by Mohamed Dadi."
+    "ar": "أطلقت شركة Coty نادياً خاصاً بالعطور لتعزيز التواصل المباشر مع المستهلكين وبناء مجتمع حول علاماتها التجارية.",
+    "en": "Coty has launched a fragrance club to foster direct communication with consumers and build a community around its brands."
    },
    "note": {
-    "ar": "التركيز على نوتة الفانيلا المحبوبة خليجياً مع تسويق ذكي هو وصفة ناجحة لأي علامة عطور عربية ناشئة.",
-    "en": "Focusing on the vanilla note, which is beloved in the Gulf, combined with smart marketing, is a winning recipe for any emerging Arab perfume brand."
+    "ar": "بناء مجتمعات حول العلامة التجارية هو المستقبل؛ المستهلك يريد أن يشعر بأنه جزء من عملية الإبداع.",
+    "en": "Building communities around a brand is the future; the consumer wants to feel part of the creative process."
    }
   },
   {
@@ -212,19 +238,19 @@
    "publishedAt": "2026-10-15T21:11:45.000Z",
    "original": "Bogart sells Israeli subsidiary to its main shareholder",
    "lang": "en",
-   "category": "ingredients",
+   "category": "market",
    "importance": 4,
    "title": {
-    "ar": "Symrise توسع إنتاجها العالمي من المسك المستدام Globalide® في الهند",
-    "en": "Symrise expands global production of sustainable musk ingredient Globalide® with new capacity in India"
+    "ar": "قصة نجاح عطر DHARI في أسواق الخليج",
+    "en": "Arab success story: DHARI perfume with its enchanting vanilla formula sweeps the UAE and Gulf markets"
    },
    "summary": {
-    "ar": "قامت شركة Symrise بزيادة قدرتها الإنتاجية لمكون المسك المستدام Globalide® عبر منشأة جديدة في الهند.",
-    "en": "Symrise has expanded its global production capacity for the sustainable musk ingredient Globalide® with a new facility in India."
+    "ar": "حقق عطر DHARI نجاحاً كبيراً في أسواق الإمارات والخليج بفضل تركيبته المميزة التي تعتمد على الفانيلا.",
+    "en": "The DHARI perfume has achieved great success in the UAE and Gulf markets thanks to its distinctive formula based on vanilla."
    },
    "note": {
-    "ar": "الاستدامة في المواد الخام لم تعد خياراً بل ضرورة، وتوسع الشركات الكبرى في الهند يعكس تحولاً في سلاسل التوريد العالمية.",
-    "en": "Sustainability in raw materials is no longer an option but a necessity, and the expansion of major companies in India reflects a shift in global supply chains."
+    "ar": "النجاح المحلي للعلامات العربية يثبت أن الجودة والابتكار هما المفتاح لمنافسة الدور العالمية.",
+    "en": "The local success of Arab brands proves that quality and innovation are the keys to competing with global houses."
    }
   },
   {
@@ -234,19 +260,19 @@
    "publishedAt": "2026-10-15T21:08:12.000Z",
    "original": "Bogart cède à son principal actionnaire sa filiale en Israël",
    "lang": "en",
-   "category": "culture",
+   "category": "regulation",
    "importance": 4,
    "title": {
-    "ar": "Osmothèque في فرساي ترفع الستار عن أسرار العطور القديمة",
-    "en": "The Osmothèque in Versailles lifts the veil on the secrets of ancient perfumery"
+    "ar": "Shiseido تقاضي Shein بتهمة المنافسة غير العادلة",
+    "en": "Shiseido sues Shein for unfair competition"
    },
    "summary": {
-    "ar": "تستعد Osmothèque في فرساي لتقديم مؤتمر يكشف أسرار فن العطور الذي يعود لآلاف السنين.",
-    "en": "The Osmothèque in Versailles is preparing to present a conference revealing the secrets of the millennia-old art of perfumery."
+    "ar": "تطالب شركة Shiseido بتعويضات من منصة Shein لبيعها منتجات تجميل دون الحصول على تصاريح توزيع معتمدة.",
+    "en": "Shiseido is seeking damages from Shein for selling beauty products without authorized distribution permits."
    },
    "note": {
-    "ar": "فهم تاريخ العطور هو الأساس لأي صانع عطور محترف؛ فمن لا يعرف الماضي لا يمكنه ابتكار المستقبل.",
-    "en": "Understanding the history of perfumery is the foundation for any professional perfumer; those who do not know the past cannot innovate the future."
+    "ar": "هذه القضية ستكون اختباراً حاسماً لقوة عقود التوزيع الانتقائي في عصر التجارة الإلكترونية السريعة.",
+    "en": "This case will be a crucial test for the strength of selective distribution contracts in the era of fast e-commerce."
    }
   },
   {
@@ -259,16 +285,16 @@
    "category": "industry",
    "importance": 4,
    "title": {
-    "ar": "العطار الأسطوري Olivier Cresp يتحدث عن مشروعه الجديد AKRO",
-    "en": "Legendary perfumer Olivier Cresp on branching out and creating AKRO"
+    "ar": "العطار الأسطوري Olivier Cresp يتوسع في مشروعه الخاص AKRO",
+    "en": "Legendary Perfumer Olivier Cresp On Branching Out And Creating AKRO"
    },
    "summary": {
-    "ar": "يتحدث العطار الشهير Olivier Cresp عن تجربته في تأسيس علامته الخاصة AKRO وتوجهه نحو مفاهيم عطرية جديدة.",
-    "en": "Renowned perfumer Olivier Cresp discusses his experience founding his own brand, AKRO, and his move toward new olfactory concepts."
+    "ar": "يتحدث العطار الشهير Olivier Cresp عن تجربته في تأسيس دار AKRO وتوجهه نحو ابتكارات عطرية جديدة.",
+    "en": "Renowned perfumer Olivier Cresp discusses his experience in founding the house of AKRO and his move towards new olfactory innovations."
    },
    "note": {
-    "ar": "انتقال العطارين الكبار من العمل للشركات الكبرى إلى تأسيس علاماتهم الخاصة هو اتجاه يمنحهم حرية إبداعية أكبر.",
-    "en": "The transition of master perfumers from working for major houses to founding their own brands is a trend that grants them greater creative freedom."
+    "ar": "عندما يقرر 'أنف' عظيم مثل كريسبي تأسيس دار خاصة، فإننا نتوقع دائماً خروجاً عن المألوف.",
+    "en": "When a great 'nose' like Cresp decides to start his own house, we always expect something unconventional."
    }
   },
   {
@@ -278,19 +304,41 @@
    "publishedAt": "2026-10-15T19:00:59.000Z",
    "original": "Beauty Updates: Coty Fragrance Club, Ipsy Wellness & More",
    "lang": "en",
-   "category": "ingredients",
-   "importance": 3,
+   "category": "culture",
+   "importance": 4,
    "title": {
-    "ar": "سريلانكا تعزز فرصها في سوق الزيوت العطرية العالمي",
-    "en": "Sri Lanka’s essential oil industry: Opportunities and future directions"
+    "ar": "متحف Osmothèque يكشف أسرار فن العطور الفرنسي",
+    "en": "The Soul of French Perfume: Osmothèque lifts the veil on secrets"
    },
    "summary": {
-    "ar": "تقرير حول الفرص والتحديات التي تواجه صناعة الزيوت العطرية في سريلانكا ضمن سلسلة القيمة العالمية للعطور.",
-    "en": "A report on the opportunities and challenges facing the essential oil industry in Sri Lanka within the global fragrance value chain."
+    "ar": "يستعد متحف Osmothèque في فرساي للكشف عن أسرار تاريخية حول فن صناعة العطور الفرنسي العريق.",
+    "en": "The Osmothèque in Versailles is preparing to reveal historical secrets about the ancient art of French perfumery."
    },
    "note": {
-    "ar": "تنوع مصادر المواد الخام يقلل الاعتماد على الموردين التقليديين، مما يمنح صناع العطور خيارات أكثر تنوعاً.",
-    "en": "Diversifying raw material sources reduces reliance on traditional suppliers, giving perfumers more varied options."
+    "ar": "الحفاظ على التراث العطري ضروري لفهم الحاضر وتطوير المستقبل؛ لا يمكننا الابتكار دون معرفة الجذور.",
+    "en": "Preserving olfactory heritage is essential to understanding the present and developing the future; we cannot innovate without knowing the roots."
+   }
+  },
+  {
+   "id": "nws26ik",
+   "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5oNkdSeWtXSTQtQzBFWFdlUzB5VTVlZWVQczlNUGhIWXVyQTN5V2g5d1FkRC1QMEZfRGpaS0xsZXNDbzdmblFGRjVCczlEbjd3dmc?oc=5",
+   "source": "Boursorama",
+   "publishedAt": "2026-10-15T18:46:27.000Z",
+   "original": "INTERPARFUMS Cours Action ITP, Cotation Bourse Euronext Paris",
+   "lang": "fr",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "L’Artisan Parfumeur تحتفل بمرور 50 عاماً على تأسيسها",
+    "en": "L’Artisan Parfumeur celebrates its 50th anniversary"
+   },
+   "summary": {
+    "ar": "تحتفل دار العطور العريقة L’Artisan Parfumeur بذكرى تأسيسها الخمسين، مستعرضة إرثها في ابتكار عطور أيقونية.",
+    "en": "The prestigious perfume house L’Artisan Parfumeur celebrates its 50th anniversary, showcasing its legacy of creating iconic fragrances."
+   },
+   "note": {
+    "ar": "نصف قرن من الإبداع يجعل هذه الدار مرجعاً في العطور النيش التي لا تتقادم.",
+    "en": "Half a century of creativity makes this house a benchmark for niche perfumes that never age."
    }
   },
   {
@@ -300,19 +348,19 @@
    "publishedAt": "2026-10-15T18:35:49.000Z",
    "original": "\"Le plus populaire du monde\" : ce parfum Carolina Herrera a été noté 5/5 des milliers de fois, \"toutes les femmes devraient l'avoir\"",
    "lang": "fr",
-   "category": "industry",
+   "category": "launch",
    "importance": 3,
    "title": {
-    "ar": "L’Artisan Parfumeur تحتفل بمرور 50 عاماً على تأسيسها",
-    "en": "L’Artisan Parfumeur celebrates its 50th anniversary"
+    "ar": "Hamidi تكشف عن تجربة عافية تجمع بين العطور والطقوس في دبي",
+    "en": "Hamidi unveils a wellness experience combining perfume and rituals in Dubai"
    },
    "summary": {
-    "ar": "تحتفل دار العطور العريقة L’Artisan Parfumeur بذكرى تأسيسها الخمسين، مستعرضة إرثها العطري الذي تناقلته الأجيال.",
-    "en": "The historic perfume house L’Artisan Parfumeur celebrates its 50th anniversary, showcasing its olfactory legacy passed down through generations."
+    "ar": "تقدم علامة Hamidi تجربة جديدة في دبي تدمج بين فن تنسيق العطور وطقوس العافية والاسترخاء.",
+    "en": "The brand Hamidi introduces a new experience in Dubai that blends the art of perfumery with wellness and relaxation rituals."
    },
    "note": {
-    "ar": "الاستمرارية في سوق العطور النيش لمدة نصف قرن دليل على جودة الابتكار والوفاء للهوية العطرية.",
-    "en": "Continuity in the niche perfume market for half a century is proof of the quality of innovation and loyalty to olfactory identity."
+    "ar": "دمج العطور مع طقوس العافية هو توجه متنامٍ يضيف قيمة تجريبية للمنتج العطري.",
+    "en": "Integrating perfumes with wellness rituals is a growing trend that adds experiential value to the fragrance product."
    }
   },
   {
@@ -322,19 +370,19 @@
    "publishedAt": "2026-10-15T18:26:45.000Z",
    "original": "The daily lemming",
    "lang": "en",
-   "category": "launch",
+   "category": "industry",
    "importance": 3,
    "title": {
-    "ar": "Hermès تطلق عطر Ginseng Biloba بلمسات خشبية ونباتية",
-    "en": "Hermès launches Ginseng Biloba with woody and vegetal notes"
+    "ar": "الذكاء الاصطناعي يدخل عالم صناعة العطور",
+    "en": "This AI machine makes perfumes out of your memories"
    },
    "summary": {
-    "ar": "أطلقت دار Hermès عطرها الجديد Ginseng Biloba الذي يتميز بنوتات خشبية ونباتية ومرارة خفيفة.",
-    "en": "Hermès has launched its new fragrance, Ginseng Biloba, characterized by woody, vegetal notes and a delicate bitterness."
+    "ar": "تظهر تقنيات جديدة تستخدم الذكاء الاصطناعي لتحويل الذكريات والمشاعر إلى تركيبات عطرية مخصصة.",
+    "en": "New technologies are emerging that use AI to transform memories and emotions into personalized fragrance compositions."
    },
    "note": {
-    "ar": "استخدام مكونات مثل الجينسنغ يعكس توجه الدور الكبرى نحو دمج عناصر طبيعية غير تقليدية في العطور الفاخرة.",
-    "en": "Using ingredients like Ginseng reflects the trend of major houses incorporating unconventional natural elements into luxury fragrances."
+    "ar": "التكنولوجيا قد تساعد في التوليف، لكن اللمسة البشرية والخبرة العطرية تظل هي الروح التي لا يمكن للآلة تعويضها.",
+    "en": "Technology may help with blending, but the human touch and olfactory expertise remain the soul that a machine cannot replace."
    }
   },
   {
@@ -344,19 +392,19 @@
    "publishedAt": "2026-10-15T18:07:01.000Z",
    "original": "4711 Original Intense ~ new fragrance",
    "lang": "en",
-   "category": "industry",
+   "category": "ingredients",
    "importance": 3,
    "title": {
-    "ar": "Hamidi تكشف عن تجربة عافية عطرية في دبي",
-    "en": "Hamidi unveils an aromatic wellness experience in Dubai"
+    "ar": "سريلانكا تعزز دورها في صناعة الزيوت العطرية العالمية",
+    "en": "Sri Lanka’s essential oil industry: Opportunities and future directions"
    },
    "summary": {
-    "ar": "كشفت علامة Hamidi عن تجربة تجمع بين فن تنسيق العطور وطقوس العافية في دبي.",
-    "en": "The brand Hamidi has unveiled an experience combining the art of fragrance curation with wellness rituals in Dubai."
+    "ar": "تستعرض سريلانكا فرصها وتحدياتها في سلسلة توريد الزيوت العطرية العالمية، مؤكدة على أهمية المواد الخام.",
+    "en": "Sri Lanka explores its opportunities and challenges in the global essential oil supply chain, emphasizing the importance of raw materials."
    },
    "note": {
-    "ar": "دمج العطور مع طقوس العافية (Wellness) هو التوجه القادم الذي يربط بين الصحة النفسية والروائح.",
-    "en": "Integrating fragrances with wellness rituals is the upcoming trend that connects mental health with scents."
+    "ar": "تنوع مصادر المواد الخام يمنح العطارين خيارات أوسع لابتكار نوتات عطرية فريدة وغير مستهلكة.",
+    "en": "Diversifying raw material sources gives perfumers wider options to create unique and untapped olfactory notes."
    }
   },
   {
@@ -366,19 +414,19 @@
    "publishedAt": "2026-10-15T17:56:40.000Z",
    "original": "The cradle of perfumery",
    "lang": "en",
-   "category": "market",
+   "category": "launch",
    "importance": 3,
    "title": {
-    "ar": "ابتكار تقني: آلة ذكاء اصطناعي تصنع عطوراً من ذكرياتك",
-    "en": "Tech innovation: AI machine creates perfumes from your memories"
+    "ar": "عطور الكافيار والكمأة: هل تبالغ دور العطور؟",
+    "en": "A caviar and truffle perfume for 250 euros: how far can perfumery go?"
    },
    "summary": {
-    "ar": "ظهرت تقنية جديدة تستخدم الذكاء الاصطناعي لتحويل الذكريات الشخصية إلى تركيبات عطرية فريدة.",
-    "en": "A new technology has emerged that uses AI to transform personal memories into unique fragrance compositions."
+    "ar": "تثير عطور جديدة تعتمد على مكونات غير تقليدية مثل الكافيار والكمأة جدلاً حول حدود الابتكار في صناعة العطور.",
+    "en": "New perfumes based on unconventional ingredients like caviar and truffle spark debate about the limits of innovation in perfumery."
    },
    "note": {
-    "ar": "التخصيص (Personalization) هو المستقبل، والذكاء الاصطناعي سيغير قواعد اللعبة في كيفية تصميم العطور الشخصية.",
-    "en": "Personalization is the future, and AI will change the game in how personal fragrances are designed."
+    "ar": "الجرأة في المكونات هي ما يميز العطور النيش، لكن التحدي يكمن في جعل الرائحة مقبولة وليست مجرد صدمة.",
+    "en": "Boldness in ingredients is what distinguishes niche perfumes, but the challenge lies in making the scent wearable, not just shocking."
    }
   },
   {
@@ -709,50 +757,6 @@
    "note": {
     "ar": "تعاون مثير للاهتمام يجمع بين دار نيش مرموقة وخبير عطور عالمي لتقديم تجربة فانيلا فريدة.",
     "en": "An interesting collaboration combining a prestigious niche house and a master perfumer to offer a unique vanilla experience."
-   }
-  },
-  {
-   "id": "nc3otts",
-   "url": "https://news.google.com/rss/articles/CBMijAJBVV95cUxQYkswdWVKT19mQklGcHlpMDFzdGx5Ul9TZ2V6R3JZa2RUUl9sWjMydmJBYm84VlZ1NkZ6czUzd2JXb01HdVJuU0NrOUVoTmE1Q2dyeXdXUXVSUV9QZ3JZOHFaNGdZcEVKSEdyQmtsbVpXekl0aW1oSnF2WV9tWkMxZ2dPX193d2tEMEg3R2ljVW1iQkJ1dzRIUFdLbGw0TGYwRmVVaXlOa19FS3djYkdXcTF2YWFfZE9KYjFUU1F6Mk0zOVJyTVNCMVdLVTBhQlZrN3FsbFBXSWRlVEdKRmFWMWplMzU3ekZnSl92T01hSEk2ODVqZS0yQzhCNHdQX0w5bXZqU1hkQ01nODI3?oc=5",
-   "source": "GlobeNewswire",
-   "publishedAt": "2026-10-14T12:00:00.000Z",
-   "original": "10ML Reaches €10M ARR and 100,000 Customers, Commits €35 Million to Become Europe’s Largest Perfume Retailer",
-   "lang": "en",
-   "category": "market",
-   "importance": 4,
-   "title": {
-    "ar": "شركة 10ML تجمع 35 مليون يورو لتصبح أكبر متاجر تجزئة للعطور في أوروبا",
-    "en": "10ML Secures €35 Million to Become Europe’s Largest Perfume Retailer"
-   },
-   "summary": {
-    "ar": "وصلت منصة 10ML إلى إيرادات سنوية متكررة بقيمة 10 ملايين يورو مع 100,000 عميل، وتلتزم بضخ 35 مليون يورو لتوسيع نشاطها.",
-    "en": "10ML reached €10M ARR and 100,000 customers, committing €35 million to become Europe's largest perfume retailer."
-   },
-   "note": {
-    "ar": "مؤشر قوي على انتعاش سوق تجزئة العطور عبر الإنترنت ونمو منصات الاكتشاف العطري في أوروبا.",
-    "en": "A strong indicator of the booming online fragrance retail market and the rapid growth of discovery platforms in Europe."
-   }
-  },
-  {
-   "id": "n5d1l9i",
-   "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBJRFNYUHoyeTFnRXc1bzAwaEY0WWFSQUxtQnlrUGpQeFppV2h3ZUFBYUh3S21wamJ1TlRIZ2FFaElwZDhDdW1MUUsyWXBYSjFaMHNfTTR4cGxXZG1QMmJDZk90bWpsRG82R1ZWS0NXdHR2dm96R1VldTQ1bw?oc=5",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-10-14T11:30:40.000Z",
-   "original": "L’Oréal Travel Retail targets 10% in refillable fragrance solutions at travel hubs by 2030",
-   "lang": "en",
-   "category": "industry",
-   "importance": 3,
-   "title": {
-    "ar": "L’Oréal Travel Retail تستهدف اعتماد 10% من حلول العطور القابلة لإعادة التعبئة بحلول 2030",
-    "en": "L’Oréal Travel Retail Targets 10% Refillable Fragrance Solutions by 2030"
-   },
-   "summary": {
-    "ar": "تخطط لوريال للتجزئة السياحية للوصول إلى نسبة 10% من زجاجات العطور القابلة لإعادة التعبئة في مراكز السفر بحلول عام 2030.",
-    "en": "L’Oréal Travel Retail aims for 10% of its fragrance solutions at travel hubs to be refillable by 2030."
-   },
-   "note": {
-    "ar": "خطوة بيئية مهمة تتماشى مع توجهات الاستدامة وتقليل النفايات في قطاع العطور الفاخرة.",
-    "en": "An important eco-friendly step aligning with sustainability goals and waste reduction in luxury perfumery."
    }
   }
  ]
