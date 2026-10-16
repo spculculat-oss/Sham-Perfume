@@ -9401,7 +9401,7 @@
       "brand": "Lattafa",
       "supplierPrice": 1962.15,
       "ourPrice": 2945,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -9451,7 +9451,10 @@
       "barcode": "6291107456744",
       "importedAt": "2026-10-16T09:17:51.478Z",
       "refreshedAt": "2026-10-16T15:06:39.969Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 175,
@@ -10800,7 +10803,7 @@
       "brand": "Maison Alhambra",
       "supplierPrice": 1687.45,
       "ourPrice": 2535,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -10842,7 +10845,10 @@
       "barcode": "6291107459127",
       "importedAt": "2026-10-16T09:17:51.478Z",
       "refreshedAt": "2026-10-16T17:04:54.631Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 195,
@@ -11394,7 +11400,7 @@
       "occasionsSource": [],
       "barcode": "6290362341161",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld"
     },
     {
@@ -11457,7 +11463,7 @@
       ],
       "barcode": "6294019023776",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld"
     },
     {
@@ -11474,6 +11480,8 @@
         "https://www.shamperfume.com/cdn/large/perfumes/mood-perfume/mood-pretty-eau-de-parfum-100ml-box-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/mood-perfume/mood-unisex-pretty-edp-fragrances-8053629629741-100ml.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/mood-perfume/mood-pretty-her-100ml-post-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/mood-perfume/mood-studio-parfum-pretty-eau-de-parfum-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/mood-perfume/mood-pretty-eau-de-parfum-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/OGImage/products/migrated/490/mood-pretty-eau-de-parfum-100ml.jpg"
       ],
       "category": "نسائي",
@@ -11519,7 +11527,7 @@
       "occasionsSource": [],
       "barcode": "8053629629741",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld"
     },
     {
@@ -11536,7 +11544,9 @@
         "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/man-black-edition-maison-alhambra-perfume-warm-spicy-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/man-black-klcc-night-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/man-black-malay-man-holding-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/perfumes/maison-alhambra/man-black-edition-maison-alhambra-perfume-lelaki-amber-woody-100ml-edp.jpg"
+        "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/man-black-coffee-morning-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/man-black-marina-putrajaya-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/man-black-grooming-table-100ml-edp.jpg"
       ],
       "category": "رجالي",
       "brand": "Maison Alhambra",
@@ -11586,7 +11596,7 @@
       ],
       "barcode": "6291108730201",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld"
     },
     {
@@ -11603,7 +11613,9 @@
         "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/rihanna-perfume-box-100ml-woman-ard-al-zaafaran-her-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/rihanna-perfume-edp-woman-ard-al-zaafaran-100ml.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/rihanna-perfume-edp-100ml-woman-ard-al-zaafaran-her-ladies.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/perfumes/ard-al-zaafaran/rihanna-perfume-edp-100ml-woman-ard-al-zaafaran.jpg"
+        "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/rihanna-perfume-edp-100ml-woman-ard-al-zaafaran-her-ladies-perfume.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/rihanna-perfume-edp-100ml-woman-ard-al-zaafaran-her-ladies-store.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/rihanna-perfume-edp-100ml-woman-ard-al-zaafaran-her-store.jpg"
       ],
       "category": "نسائي",
       "brand": "Ard Al Zaafaran",
@@ -11660,7 +11672,7 @@
       "occasionsSource": [],
       "barcode": "6266515361836",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld"
     },
     {
@@ -11731,7 +11743,7 @@
       ],
       "barcode": "5055810042844",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld"
     },
     {
@@ -11802,7 +11814,7 @@
       ],
       "barcode": "5055810039264",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld"
     },
     {
@@ -11819,6 +11831,8 @@
         "https://www.shamperfume.com/cdn/large/imperial-by-maison-asrar-100ml-edp-unisex-3.jpg",
         "https://www.shamperfume.com/cdn/large/imperial-by-maison-asrar-100ml-edp-unisex-4.jpg",
         "https://www.shamperfume.com/cdn/large/imperial-by-maison-asrar-100ml-edp-unisex-5.jpg",
+        "https://www.shamperfume.com/cdn/large/imperial-by-maison-asrar-100ml-edp-unisex-6.jpg",
+        "https://www.shamperfume.com/cdn/large/imperial-by-maison-asrar-100ml-edp-unisex-7.jpg",
         "https://www.shamperfume.com/cdn/OGImage/imperial-by-maison-asrar-100ml-edp-unisex-1.jpg"
       ],
       "category": "مختلط",
@@ -11875,7 +11889,7 @@
       ],
       "barcode": "6290362161653",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld"
     },
     {
@@ -11941,7 +11955,7 @@
       ],
       "barcode": "5055810030094",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld"
     },
     {
@@ -12003,7 +12017,7 @@
       ],
       "barcode": "6290171075684",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -12023,7 +12037,9 @@
         "https://www.shamperfume.com/cdn/large/treasure-by-maison-asrar-100ml-edp-unisex-3.jpg",
         "https://www.shamperfume.com/cdn/large/treasure-by-maison-asrar-100ml-edp-unisex-4.jpg",
         "https://www.shamperfume.com/cdn/large/treasure-by-maison-asrar-100ml-edp-unisex-7.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/treasure-by-maison-asrar-100ml-edp-unisex-1.jpg"
+        "https://www.shamperfume.com/cdn/large/treasure-by-maison-asrar-100ml-edp-unisex-6.jpg",
+        "https://www.shamperfume.com/cdn/large/treasure-by-maison-asrar-100ml-edp-unisex-8.jpg",
+        "https://www.shamperfume.com/cdn/large/treasure-by-maison-asrar-100ml-edp-unisex-9.jpg"
       ],
       "category": "مختلط",
       "brand": "Maison Asrar",
@@ -12078,7 +12094,7 @@
       ],
       "barcode": "6291107015514",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -12132,7 +12148,7 @@
       "occasionsSource": [],
       "barcode": "6291108735480",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر",
@@ -12153,7 +12169,9 @@
         "https://www.shamperfume.com/cdn/large/lynked-freedom-by-afnan-100ml-eau-de-parfum-2.jpg",
         "https://www.shamperfume.com/cdn/large/lynked-freedom-by-afnan-100ml-eau-de-parfum-3.jpg",
         "https://www.shamperfume.com/cdn/large/lynked-freedom-by-afnan-100ml-eau-de-parfum-4.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/lynked-freedom-by-afnan-100ml-eau-de-parfum-11.jpg"
+        "https://www.shamperfume.com/cdn/large/lynked-freedom-by-afnan-100ml-eau-de-parfum-5.jpg",
+        "https://www.shamperfume.com/cdn/large/lynked-freedom-by-afnan-100ml-eau-de-parfum-6.jpg",
+        "https://www.shamperfume.com/cdn/large/lynked-freedom-by-afnan-100ml-eau-de-parfum-8.jpg"
       ],
       "category": "رجالي",
       "brand": "Afnan",
@@ -12194,7 +12212,7 @@
       ],
       "barcode": "6290171077428",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر",
@@ -12270,7 +12288,7 @@
       ],
       "barcode": "6291108730102",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -12337,7 +12355,7 @@
       ],
       "barcode": "6290171075073",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -12384,7 +12402,7 @@
       "occasionsSource": [],
       "barcode": "5055810038779",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر",
@@ -12446,7 +12464,7 @@
       ],
       "barcode": "6290360591605",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "وصف المورد قصير",
@@ -12517,7 +12535,7 @@
       ],
       "barcode": "6294015132120",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -12580,7 +12598,7 @@
       "occasionsSource": [],
       "barcode": "5055810030117",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -12627,7 +12645,7 @@
       "occasionsSource": [],
       "barcode": "5055810025182",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر",
@@ -12648,7 +12666,9 @@
         "https://www.shamperfume.com/cdn/large/perfumes/rue-broca/minyak-wangi-lelaki-time-rue-broca-tahan-lama-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/rue-broca/beli-perfume-time-pour-homme-original-malaysia-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/rue-broca/perfume-time-rue-broca-haruman-lelaki-malaysia-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/perfumes/rue-broca/time-pour-homme-rue-broca-100ml-edp-men-malaysia.jpg"
+        "https://www.shamperfume.com/cdn/large/perfumes/rue-broca/rue-broca-time-wood-vetiver-ritual-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/rue-broca/rue-broca-time-rain-drive-reflection-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/rue-broca/rue-broca-time-pour-hommr-100ml-edp.jpg"
       ],
       "category": "رجالي",
       "brand": "Rue Broca",
@@ -12696,7 +12716,7 @@
       ],
       "barcode": "6290171074045",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -12770,7 +12790,7 @@
       ],
       "barcode": "6290171073994",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -12839,7 +12859,7 @@
       "occasionsSource": [],
       "barcode": "6290171072867",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -12859,7 +12879,9 @@
         "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/karat-alhambra-perfume-sweet-musky-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/karat-home-entryway-malay-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/karat-home-livingroom-malay-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/perfumes/maison-alhambra/karat-alhambra-perfume-sweet-amber-100ml-edp.jpg"
+        "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/karat-car-night-kl-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/karat-car-backseat-kl-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/karat-alhambra-fragrance-floral-fruity-100ml-edp.jpg"
       ],
       "category": "نسائي",
       "brand": "Maison Alhambra",
@@ -12905,7 +12927,7 @@
       "occasionsSource": [],
       "barcode": "6291107459240",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -12925,6 +12947,8 @@
         "https://www.shamperfume.com/cdn/large/perfumes/armaf/minyak-wangi-island-bliss-armaf-tahan-lama-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/armaf/armaf-island-bliss-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/armaf/island-bliss-armaf-100ml-edp-wanita-malaysia.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/armaf/islandbliss-car-gear-pink-night-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/armaf/perfume-island-bliss-armaf-wanita-malaysia-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/OGImage/perfumes/armaf/island-bliss-by-armaf-perfume-wanita-malaysia-100ml-edp.jpg"
       ],
       "category": "نسائي",
@@ -12972,7 +12996,7 @@
       ],
       "barcode": "6295199800942",
       "importedAt": "2026-10-16T09:17:51.478Z",
-      "refreshedAt": "2026-10-16T09:17:51.478Z",
+      "refreshedAt": "2026-10-16T19:06:42.278Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -19640,7 +19664,7 @@
       "brand": "Lattafa",
       "supplierPrice": 1818.26,
       "ourPrice": 2730,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -19686,7 +19710,10 @@
       "barcode": "6291107453668",
       "importedAt": "2026-10-16T10:48:24.939Z",
       "refreshedAt": "2026-10-16T10:48:24.939Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 323,
@@ -31425,7 +31452,7 @@
       "brand": "Maison Alhambra",
       "supplierPrice": 2223.77,
       "ourPrice": 3340,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -31477,7 +31504,10 @@
       "barcode": "6290362340690",
       "importedAt": "2026-10-16T11:04:43.108Z",
       "refreshedAt": "2026-10-16T11:04:43.108Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 497,
@@ -42292,7 +42322,7 @@
       "brand": "Volare",
       "supplierPrice": 2877.82,
       "ourPrice": 4320,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -42331,7 +42361,10 @@
       "barcode": "6294019020959",
       "importedAt": "2026-10-16T13:16:56.090Z",
       "refreshedAt": "2026-10-16T13:16:56.090Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 657,

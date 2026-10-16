@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-16T17:04:54.644Z",
+ "updatedAt": "2026-10-16T19:06:42.295Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1111,
   "imported": 1060,
-  "ok": 538,
-  "warn": 573,
+  "ok": 533,
+  "warn": 578,
   "hidden": 0,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-16T17:03:02.932Z",
+  "at": "2026-10-16T19:05:27.976Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,10 +25,10 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1019,
+    "listingProducts": 1016,
     "listingOnly": 56,
     "listingComplete": true,
-    "added": 40,
+    "added": 0,
     "refreshed": 25,
     "failed": [],
     "failedCount": 0,
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 111731
+  "durationMs": 74350
  },
  "items": [
   {
@@ -1454,6 +1454,16 @@
    "page": "p/mazaaji-by-lattafa-100ml-edp-for-women-172.html"
   },
   {
+   "sku": "LAT-174",
+   "id": 174,
+   "name": "Maahir by Lattafa 100ml EDP for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/maahir-by-lattafa-100ml-edp-for-men-174.html"
+  },
+  {
    "sku": "LAT-176",
    "id": 176,
    "name": "Ana Abiyedh by Lattafa 60ml EDP Unisex",
@@ -1512,6 +1522,16 @@
     "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/blush-amber-100ml-by-grandeur-185.html"
+  },
+  {
+   "sku": "MAI-194",
+   "id": 194,
+   "name": "B.A.D. Femme by Maison Alhambra 100 ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/b-a-d-femme-by-maison-alhambra-100-ml-194.html"
   },
   {
    "sku": "ZIM-211",
@@ -2139,6 +2159,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/yara-tous-by-lattafa-100ml-edp-women-321.html"
+  },
+  {
+   "sku": "LAT-322",
+   "id": 322,
+   "name": "Azeezah by Lattafa 100ml for Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/azeezah-by-lattafa-100ml-for-women-322.html"
   },
   {
    "sku": "ARD-326",
@@ -2987,6 +3017,16 @@
    "page": "p/exclusif-oud-by-maison-alhambra-100-ml-unisex-494.html"
   },
   {
+   "sku": "MAI-496",
+   "id": 496,
+   "name": "Spectrum by Maison Alhambra 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/spectrum-by-maison-alhambra-100ml-edp-men-496.html"
+  },
+  {
    "sku": "ARD-500",
    "id": 500,
    "name": "Desert Sultan Sapphire Ard Al Zaafaran 100ml",
@@ -3597,6 +3637,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/armaf-club-de-nuit-intense-man-parfum-150ml-655.html"
+  },
+  {
+   "sku": "VOL-656",
+   "id": 656,
+   "name": "Amara by Volare 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/amara-by-volare-100ml-edp-656.html"
   },
   {
    "sku": "AFN-657",
