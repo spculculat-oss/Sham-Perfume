@@ -105,6 +105,7 @@ jobs:
           pip install -q rapidocr_onnxruntime pillow numpy
           python3 scripts/shaheen-images/test_detect.py
           python3 scripts/shaheen-images/clean.py
+      - name: Shaheen writes the Arabic names and descriptions of the new products
         continue-on-error: true
         run: node --import tsx scripts/shaheen-store/run.mts
       - name: «ذاكرة شاهين» collects and curates what Shaheen learned (no AI call)
