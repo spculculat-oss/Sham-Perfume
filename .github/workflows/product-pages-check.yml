@@ -1,0 +1,59 @@
+name: Product pages check (live store on a phone)
+
+# Opens the live GitHub Pages store like a customer on a phone: several product pages (p/<slug>.html) and
+# the store page. Checks the Arabic name, the EGP price, that every photo loads, that the order button opens
+# the product in the store, that nothing about the supplier or any AI vendor shows, and that the brand filter
+# lists every brand once. Results are annotations; screenshots are attached to the run.
+# Code: scripts/inspect/products.mjs.
+on:
+  workflow_run:
+    workflows: ['Build, test and deploy Pages']
+    types: [completed]
+    branches: [main]
+  schedule:
+    - cron: '50 5 * * *'
+  workflow_dispatch:
+  push:
+    branches: ['arena/**']
+    paths: ['scripts/inspect/products.mjs', '.github/workflows/product-pages-check.yml']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: product-pages-check
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Check the live product pages
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          sparse-checkout: scripts/inspect
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Install headless browser driver
+        run: mkdir -p /tmp/pp && cd /tmp/pp && npm init -y >/dev/null && npm i --no-audit --no-fund puppeteer-core@24 >/dev/null
+      - name: Give the Pages CDN a moment after a deploy
+        if: github.event_name == 'workflow_run'
+        run: sleep 60
+      - name: Product pages and store on a phone
+        run: node scripts/inspect/products.mjs
+        env:
+          INSPECT_SITE: ${{ vars.PAGES_SITE_URL || 'https://spculculat-oss.github.io/Sham-Perfume/' }}
+          INSPECT_SHOTS: /tmp/shots
+          PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js
+      - name: Screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: product-pages-screenshots
+          path: /tmp/shots
+          retention-days: 7
+          if-no-files-found: ignore

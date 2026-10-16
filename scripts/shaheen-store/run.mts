@@ -36,14 +36,20 @@ let resumeAt = 0;
 if (ask && stale.length) {
   for (let i = 0; i < stale.length; i += BATCH) {
     const batch = stale.slice(i, i + BATCH);
-    try {
-      const got = entriesFromShaheen(parseJson(await ask(SYSTEM, storePrompt(batch))), batch, now.toISOString());
-      Object.assign(fresh, got);
-      say(`Shaheen rewrote ${Object.keys(got).length}/${batch.length} products`);
-    } catch (error) {
-      if (error instanceof QuotaExhaustedError) { resumeAt = error.resumeAt; break; }
-      say(`Batch skipped (${(error as Error).message.slice(0, 120)})`);
+    // A malformed reply is retried once in the same run (with a reminder) instead of waiting 2 hours.
+    for (let attempt = 1; attempt <= 2 && !resumeAt; attempt++) {
+      try {
+        const prompt = storePrompt(batch) + (attempt > 1 ? '\n\nتنبيه: ردك السابق لم يكن JSON صالحاً. أعد JSON صالحاً فقط بدون أي نص أو فواصل زائدة.' : '');
+        const got = entriesFromShaheen(parseJson(await ask(SYSTEM, prompt)), batch, now.toISOString());
+        Object.assign(fresh, got);
+        say(`Shaheen rewrote ${Object.keys(got).length}/${batch.length} products${attempt > 1 ? ' (second try)' : ''}`);
+        break;
+      } catch (error) {
+        if (error instanceof QuotaExhaustedError) { resumeAt = error.resumeAt; break; }
+        say(attempt > 1 ? `Batch skipped (${(error as Error).message.slice(0, 120)})` : `Batch reply unreadable — retrying once`);
+      }
     }
+    if (resumeAt) break;
   }
 } else say(ask ? 'Every product is already trained' : 'No AI engine configured: rule-based clean-up only');
 const left = Math.max(0, pendingAll - Object.keys(fresh).length);

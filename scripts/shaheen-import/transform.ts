@@ -37,8 +37,33 @@ export type ImportedProduct = RawProduct & ImportedFields;
 /** The scenario's markup: our price = supplier price × 1.5, rounded up to a clean 5 EGP. */
 export const PRICE_MARKUP = 1.5;
 export const priceInEgp = (supplierPrice: number, rate: number) => Math.round(supplierPrice * rate * 100) / 100;
-export const ourPriceOf = (supplierEgp: number, markup = PRICE_MARKUP) => Math.ceil((supplierEgp * markup) / 5) * 5;
+/**
+ * The merchant's price rule (repository variables, all optional — the defaults are the scenario's ×1.5):
+ * cost = supplier price in EGP + a fixed shipping/handling cost per bottle; profit = cost × (markup − 1),
+ * but never more than maxProfitEgp; our price = cost + profit, rounded up to a clean 5 EGP.
+ */
+export interface PriceRule { markup?: number; shippingEgp?: number; maxProfitEgp?: number }
+export const ourPriceOf = (supplierEgp: number, rule: number | PriceRule = PRICE_MARKUP) => {
+  const r: PriceRule = typeof rule === 'number' ? { markup: rule } : rule;
+  const markup = r.markup && r.markup >= 1 ? r.markup : PRICE_MARKUP;
+  const cost = supplierEgp + (r.shippingEgp && r.shippingEgp > 0 ? r.shippingEgp : 0);
+  let profit = cost * (markup - 1);
+  if (r.maxProfitEgp && r.maxProfitEgp > 0) profit = Math.min(profit, r.maxProfitEgp);
+  return Math.ceil(Math.round((cost + profit) * 100) / 100 / 5) * 5;
+};
 
+
+/** The price picture of the imported products (min / median / max and the most expensive ones) for the merchant. */
+export function priceReport(products: RawProduct[], top = 5) {
+  const items = products.filter(isImported).map((p) => p as ImportedProduct).filter((p) => Number(p.ourPrice) > 0 && p.published !== false)
+    .sort((a, b) => Number(b.ourPrice) - Number(a.ourPrice));
+  const prices = items.map((p) => Number(p.ourPrice)).sort((a, b) => a - b);
+  const median = prices.length ? (prices.length % 2 ? prices[prices.length >> 1] : (prices[prices.length / 2 - 1] + prices[prices.length / 2]) / 2) : 0;
+  return {
+    count: prices.length, min: prices[0] || 0, median, max: prices.at(-1) || 0,
+    top: items.slice(0, top).map((p) => ({ sku: p.sku, name: p.nameEn, price: Number(p.ourPrice), supplierEgp: Number(p.supplierPrice), sizeMl: p.sizeMl })),
+  };
+}
 
 /** «Kenz de Rasasi» → KEN, «Lattafa» → LAT (the scenario's BRAND-PREFIX). */
 export const brandPrefix = (brand?: string) => {
@@ -71,7 +96,7 @@ export const isImported = (p: RawProduct): p is ImportedProduct => typeof (p as 
 /** Key used to never import the same supplier product twice. */
 export const sourceKey = (supplierId: string, supplierSku: string) => `${supplierId}:${supplierSku.toUpperCase()}`;
 
-export interface BuildOptions { source: ImportSource; rate: number; now: string; nextId: number; existing?: ImportedProduct; markup?: number }
+export interface BuildOptions { source: ImportSource; rate: number; now: string; nextId: number; existing?: ImportedProduct; markup?: number | PriceRule }
 
 export function toStoreProduct(x: ExtractedProduct, o: BuildOptions): ImportedProduct {
   const regular = x.regularPrice && x.regularPrice > x.price ? x.regularPrice : x.price;

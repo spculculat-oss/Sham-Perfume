@@ -66,11 +66,24 @@ ${lines.join('\n')}
 families من 1 إلى 3، وseasons وoccasions من 1 إلى 3، وtags من 3 إلى 8. اكتب منتجاً لكل sku بالضبط.`;
 }
 
+/**
+ * Reads the JSON object in an AI reply. Common slips (seen in real runs: a trailing comma before «}»,
+ * «Expected double-quoted property name») are repaired; anything else still throws, so the batch is retried.
+ */
 export function parseJson(text: string): unknown {
   const body = text.replace(/```(?:json)?/gi, '').trim();
   const start = body.indexOf('{'); const end = body.lastIndexOf('}');
   if (start < 0 || end <= start) throw new Error('No JSON object in the reply');
-  return JSON.parse(body.slice(start, end + 1));
+  const raw = body.slice(start, end + 1);
+  try {
+    return JSON.parse(raw);
+  } catch (error) {
+    const repaired = raw
+      .replace(/[\u201C\u201D]/g, '"')
+      .replace(/^\s*\/\/.*$/gm, '')
+      .replace(/,(\s*[}\]])/g, '$1');
+    try { return JSON.parse(repaired); } catch { throw error; }
+  }
 }
 
 const pickEnum = <T extends string>(values: readonly T[], input: unknown, max: number): T[] =>

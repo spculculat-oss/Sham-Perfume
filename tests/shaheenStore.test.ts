@@ -213,3 +213,9 @@ test("the supervisor's store probes read the catalog file and the advisor's answ
   assert.equal(advisor.length, 2);
   assert.ok(advisor.every((p) => p.ok && !p.findings.some((f) => f.severe)));
 });
+
+test('store: a reply with a trailing comma (seen in a real run) is repaired; real garbage still throws', () => {
+  const reply = parseJson('```json\n{ "products": [ { "sku": "A-1", "nameAr": "عطر", }, ], }\n```') as { products: { sku: string }[] };
+  assert.equal(reply.products[0].sku, 'A-1');
+  assert.throws(() => parseJson('{ products: nope }'));
+});
