@@ -1,20 +1,20 @@
 {
  "version": 1,
- "updatedAt": "2026-10-16T06:10:02.114Z",
- "nextUpdateAt": "2026-10-16T18:10:02.114Z",
+ "updatedAt": "2026-10-16T06:27:25.014Z",
+ "nextUpdateAt": "2026-10-16T18:27:25.014Z",
  "intervalHours": 12,
- "editor": "feeds",
+ "editor": "shaheen",
  "digest": {
-  "ar": "تشهد صناعة العطور تحولات استراتيجية بين التوسع في الأسواق الناشئة والابتكار التقني، مع تركيز متزايد على الاستدامة والمكونات الطبيعية. يبرز السوق العربي كمركز ثقل عالمي، بينما تستمر دور العطور في دمج التكنولوجيا والذكاء الاصطناعي لإعادة تعريف تجربة المستهلك.",
-  "en": "The fragrance industry is undergoing strategic shifts between emerging market expansion and technical innovation, with a growing focus on sustainability and natural ingredients. The Arab market stands out as a global hub, while perfume houses continue to integrate technology and AI to redefine the consumer experience."
+  "ar": "تشهد صناعة العطور توسعاً استثمارياً كبيراً مع إعلان شركة Mane عن مركز تصميم جديد، بينما تواصل العلامات التجارية الابتكار في المكونات المستدامة والتعاونات الفنية. كما يبرز اهتمام الأسواق العربية والخليجية كمركز حيوي للمعارض والابتكارات العطرية المحلية والعالمية.",
+  "en": "The fragrance industry is witnessing significant investment with Mane's new design center, while brands continue to innovate in sustainable ingredients and artistic collaborations. The Arab and Gulf markets remain a vibrant hub for both local and international fragrance exhibitions and innovations."
  },
  "sources": [
   {
-   "name": "Now Smell This",
-   "count": 5
+   "name": "Premium Beauty News",
+   "count": 4
   },
   {
-   "name": "Premium Beauty News",
+   "name": "Now Smell This",
    "count": 4
   },
   {
@@ -22,15 +22,43 @@
    "count": 3
   },
   {
+   "name": "Sharjah24",
+   "count": 1
+  },
+  {
+   "name": "Chemical Industry Digest",
+   "count": 1
+  },
+  {
+   "name": "Cosmetics Business",
+   "count": 1
+  },
+  {
+   "name": "بوابة الأهرام",
+   "count": 1
+  },
+  {
+   "name": "Boutique Hotelier USA",
+   "count": 1
+  },
+  {
+   "name": "Femina",
+   "count": 1
+  },
+  {
+   "name": "Dazed",
+   "count": 1
+  },
+  {
+   "name": "Masculin.com",
+   "count": 1
+  },
+  {
    "name": "Esquire Singapore",
    "count": 1
   },
   {
    "name": "Daily FT",
-   "count": 1
-  },
-  {
-   "name": "citybuzz -",
    "count": 1
   },
   {
@@ -62,35 +90,11 @@
    "count": 1
   },
   {
-   "name": "Sharjah24",
-   "count": 1
-  },
-  {
    "name": "25H",
    "count": 1
   },
   {
    "name": "Layalina Privee",
-   "count": 1
-  },
-  {
-   "name": "بوابة الأهرام",
-   "count": 1
-  },
-  {
-   "name": "Cosmetics Business",
-   "count": 1
-  },
-  {
-   "name": "CaFleureBon",
-   "count": 1
-  },
-  {
-   "name": "GuruFocus",
-   "count": 1
-  },
-  {
-   "name": "Daily Mail",
    "count": 1
   }
  ],
@@ -102,15 +106,217 @@
    "publishedAt": "2026-10-16T05:54:55.000Z",
    "original": "Mane to invest EUR 45 million in new Fragrance Design Centre in France",
    "lang": "en",
-   "category": "launch",
-   "importance": 2,
+   "category": "industry",
+   "importance": 5,
    "title": {
-    "ar": "Mane to invest EUR 45 million in new Fragrance Design Centre in France",
+    "ar": "شركة Mane تستثمر 45 مليون يورو في مركز تصميم عطور جديد بفرنسا",
     "en": "Mane to invest EUR 45 million in new Fragrance Design Centre in France"
    },
    "summary": {
-    "ar": "Mane to invest EUR 45 million in new Fragrance Design Centre in France",
-    "en": "Mane to invest EUR 45 million in new Fragrance Design Centre in France"
+    "ar": "أعلنت شركة Mane الفرنسية الرائدة عن بدء بناء مركز جديد لتصميم العطور في منطقة غراس، مخصص للابتكار والتطوير الإبداعي.",
+    "en": "French fragrance giant Mane has broken ground on a new Fragrance Design Centre in the Grasse region, dedicated to creative development and innovation."
+   },
+   "note": {
+    "ar": "هذا الاستثمار الضخم يعزز مكانة غراس كعاصمة عالمية للعطور ويشير إلى توجه الشركة نحو تعزيز قدراتها في الابتكار التقني.",
+    "en": "This massive investment reinforces Grasse's status as the global perfume capital and signals the company's commitment to technical innovation."
+   }
+  },
+  {
+   "id": "nrbw4f1",
+   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBPeWV0TjVDZHdRbHRSSzdaMDdKUk9YdUxzNjRURWt5ek1WQUNheUZCcWNDaklkWElnQWJ6ZWg1d2t6UVcydjdtcnd6NEVqZU9rcERQTTNYS2xzSldZ?oc=5",
+   "source": "Sharjah24",
+   "publishedAt": "2026-10-15T09:54:36.000Z",
+   "original": "معرض الإمارات للعطور والعود يستقطب إقبالاً لافتاً من الزوار",
+   "lang": "ar",
+   "category": "events",
+   "importance": 5,
+   "title": {
+    "ar": "معرض الإمارات للعطور والعود يشهد إقبالاً جماهيرياً واسعاً",
+    "en": "UAE Perfume and Oud Exhibition attracts significant visitor turnout"
+   },
+   "summary": {
+    "ar": "استقطب معرض الإمارات للعطور والعود عدداً كبيراً من الزوار، مما يعكس النمو المستمر في شغف الجمهور بالعطور الشرقية والعود.",
+    "en": "The UAE Perfume and Oud Exhibition has attracted a large number of visitors, reflecting the growing public passion for oriental fragrances and oud."
+   },
+   "note": {
+    "ar": "تؤكد هذه الفعاليات أن السوق الخليجي لا يزال المحرك الأقوى لثقافة العطور الفاخرة والعود في المنطقة.",
+    "en": "Such events confirm that the Gulf market remains the strongest driver for luxury fragrance and oud culture in the region."
+   }
+  },
+  {
+   "id": "n1ivylst",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQVExQWm8wYUxnMFVaZjhDcWctMi1LWkVUa1NPSjRGVkQ0ZDhRSl9sbmw2X3JsaDFIT1JmRE05bFRZdjYyMTU4eDBlS1NJV0h1eDlvQ0E2YUZYMFF3TzlicE1lcGNscF9Cek1CZnlBTC0zUzJFeXloSmFXM0YzVmJCTjBQSzJiSmJ3NTlWUmhrV3oyZ01oRUxLeDZxV0JrZkhQWXc?oc=5",
+   "source": "Chemical Industry Digest",
+   "publishedAt": "2026-10-16T06:10:26.000Z",
+   "original": "Symrise Expands Global Production of Sustainable Musk Fragrance Ingredient",
+   "lang": "en",
+   "category": "ingredients",
+   "importance": 4,
+   "title": {
+    "ar": "Symrise توسع إنتاجها العالمي لمكون المسك المستدام",
+    "en": "Symrise Expands Global Production of Sustainable Musk Fragrance Ingredient"
+   },
+   "summary": {
+    "ar": "قامت شركة Symrise بزيادة طاقتها الإنتاجية لمكون المسك المستدام، استجابةً للطلب المتزايد على المكونات الصديقة للبيئة.",
+    "en": "Symrise has increased its global production capacity for sustainable musk, responding to the rising demand for eco-friendly fragrance ingredients."
+   },
+   "note": {
+    "ar": "الاستدامة ليست مجرد شعار، بل أصبحت ضرورة صناعية تفرضها توجهات السوق العالمية نحو منتجات أكثر رفقاً بالبيئة.",
+    "en": "Sustainability is no longer just a slogan; it has become an industrial necessity driven by global market trends toward eco-conscious products."
+   }
+  },
+  {
+   "id": "n1xvlv6z",
+   "url": "https://cosmeticsbusiness.com/cpl-aromas-presents-resonance-at-beautyworld-middle-east",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-15T11:32:00.000Z",
+   "original": "CPL Aromas presents RESONANCE at BeautyWorld Middle East 2026",
+   "lang": "en",
+   "category": "events",
+   "importance": 4,
+   "title": {
+    "ar": "CPL Aromas تستعرض مفهوم RESONANCE في معرض BeautyWorld Middle East",
+    "en": "CPL Aromas presents RESONANCE at BeautyWorld Middle East 2026"
+   },
+   "summary": {
+    "ar": "قدمت شركة CPL Aromas مفهومها الجديد 'RESONANCE' الذي يدمج بين الشعر والعاطفة في تجربة عطرية فريدة خلال معرض BeautyWorld.",
+    "en": "CPL Aromas showcased its new 'RESONANCE' concept, blending poetry and emotion into a unique olfactory experience at BeautyWorld."
+   },
+   "note": {
+    "ar": "الربط بين الفنون (الشعر) والعطور هو اتجاه متصاعد يهدف إلى خلق قصص عاطفية خلف كل رائحة.",
+    "en": "Bridging the arts (poetry) with perfumery is a growing trend aimed at creating emotional narratives behind every scent."
+   }
+  },
+  {
+   "id": "n1eplyxd",
+   "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE1JR2Vwb3U2T2YyTFR1X0k0SmZ5ZTBVbDJ0TGlYb21saDhfVFF3WVB1UERKR0VfWVNiQm1nQnlsSVBVcDhLeFNWb2tYaDZjcWpLU2lpZzNn?oc=5",
+   "source": "بوابة الأهرام",
+   "publishedAt": "2026-10-15T14:32:00.000Z",
+   "original": "قصة نجاح عربية ملهمة: عطر DHARI بتركيبة الفانيلا الساحرة يكتسح أسواق الإمارات والخليج بقيادة محمد دادي",
+   "lang": "ar",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "عطر DHARI بتركيبة الفانيلا يكتسح أسواق الخليج",
+    "en": "DHARI fragrance with vanilla notes sweeps the Gulf markets"
+   },
+   "summary": {
+    "ar": "حقق عطر DHARI نجاحاً لافتاً في أسواق الإمارات والخليج بفضل تركيبته المميزة التي تركز على نوتات الفانيلا.",
+    "en": "The DHARI fragrance has achieved remarkable success in the UAE and Gulf markets, thanks to its distinctive composition focusing on vanilla notes."
+   },
+   "note": {
+    "ar": "الفانيلا مكون كلاسيكي، ولكن نجاحه يعتمد دائماً على كيفية مزجه بلمسات شرقية تجعله مألوفاً ومبتكراً في آن واحد.",
+    "en": "Vanilla is a classic ingredient, but its success always depends on how it is blended with oriental touches to make it both familiar and innovative."
+   }
+  },
+  {
+   "id": "n18lozqm",
+   "url": "https://nstperfume.com/2026/10/15/4711-original-intense-new-fragrance/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-15T18:07:01.000Z",
+   "original": "4711 Original Intense ~ new fragrance",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "إطلاق عطر 4711 Original Intense الجديد",
+    "en": "4711 Original Intense ~ new fragrance launch"
+   },
+   "summary": {
+    "ar": "أطلقت دار Mäurer & Wirtz نسخة مكثفة من عطرها الكلاسيكي الشهير 4711، مع الحفاظ على الطابع الحمضي المنعش.",
+    "en": "Mäurer & Wirtz has launched an intense version of its iconic classic 4711, while maintaining its fresh citrus character."
+   },
+   "note": {
+    "ar": "إعادة إحياء العطور الكلاسيكية بنسخ 'Intense' هي استراتيجية ذكية لجذب جيل جديد مع الحفاظ على ولاء العملاء القدامى.",
+    "en": "Reviving classic fragrances with 'Intense' versions is a smart strategy to attract a new generation while retaining the loyalty of long-time customers."
+   }
+  },
+  {
+   "id": "nuv4s8d",
+   "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBxZnZSZ1c3aENtcGVCSjJlSVVfcEl2RTNvVGoxZjdfbElDYXVSMTBjWEh5ckZ1ZWdmbm9QMldqSHBmbUFNY2ltTGE1MmRBdUpjZklodUNOWkNIUDU4TnFoc2Q4eDlweFFuYXdoU0RMbUpyUDhubDYtRTZZRQ?oc=5",
+   "source": "Boutique Hotelier USA",
+   "publishedAt": "2026-10-15T14:34:20.000Z",
+   "original": "Parfums De Marly partners with Buzz on new hotel collection",
+   "lang": "en",
+   "category": "market",
+   "importance": 3,
+   "title": {
+    "ar": "شراكة بين Parfums de Marly وBuzz لتقديم مجموعة عطرية فندقية",
+    "en": "Parfums De Marly partners with Buzz on new hotel collection"
+   },
+   "summary": {
+    "ar": "تعاونت دار Parfums de Marly مع شركة Buzz لإطلاق مجموعة عطرية خاصة بقطاع الفنادق الفاخرة.",
+    "en": "Parfums De Marly has partnered with Buzz to launch a fragrance collection specifically for the luxury hotel sector."
+   },
+   "note": {
+    "ar": "توسع العلامات الفاخرة في قطاع الضيافة يعزز من تجربة العميل ويجعل العطر جزءاً لا يتجزأ من نمط الحياة الفاخر.",
+    "en": "The expansion of luxury brands into the hospitality sector enhances the customer experience and makes fragrance an integral part of a luxury lifestyle."
+   }
+  },
+  {
+   "id": "nz9rzqi",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPTDE4S3lwVWpSOV9jMm5XTF8tdTVlc1E5cy15Q2YwWGpTZTVaaDFiekVhWS1iLXBQZTI1ZG5aWHRhR0dVU1Y2ZEpaSV9JVHlZek5fVXlNLU1RZFRVQk81V2ZRaE5WVzRHZjdQY2dGdjBITWtnSzc4WnU0Q0FWaVFqRzRtYUQzM21OZzlBSlZwZk9ySTQ0TjZCVWxMSmtGQ1VQUWhfQ3FkV2tIaUl0ODBvMHA3dXpOT1nSAbcBQVVfeXFMT0wxOEt5cFVqUjlfYzJuV0xfLXU1ZXNROXMteUNmMFhqU2U1WmgxYnpFYVktYi1wUGUyNWRuWlh0YUdHVVNWNmRKWklfSVR5WXpOX1V5TS1NUWRUVUJPNVdmUWhOVlc0R2Y3UGNnRnYwSE1rZ0s3OFp1NENBVmlRakc0bWFEMzNtTmc5QUpWcGZPckk0NE42QlVsTEprRkNVUFFoX0NxZFdrSGlJdDgwbzBwN3V6Tk9Z?oc=5",
+   "source": "Femina",
+   "publishedAt": "2026-10-15T12:05:54.000Z",
+   "original": "Legendary Perfumer Olivier Cresp On Branching Out And Creating AKRO",
+   "lang": "en",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "العطار الأسطوري Olivier Cresp يتحدث عن علامته AKRO",
+    "en": "Legendary Perfumer Olivier Cresp On Branching Out And Creating AKRO"
+   },
+   "summary": {
+    "ar": "يشارك العطار الشهير Olivier Cresp رؤيته حول تأسيس علامته الخاصة AKRO وتوجهه نحو ابتكارات عطرية خارج النطاق التقليدي.",
+    "en": "Renowned perfumer Olivier Cresp shares his vision on founding his own brand, AKRO, and his move toward fragrance innovations beyond the traditional scope."
+   },
+   "note": {
+    "ar": "عندما يقرر 'أنف' عطرية عالمي إطلاق علامته الخاصة، فإننا نتوقع دائماً جرأة أكبر في اختيار المكونات والتركيبات.",
+    "en": "When a world-class 'nose' decides to launch their own brand, we always expect greater boldness in the choice of ingredients and compositions."
+   }
+  },
+  {
+   "id": "n1hg39ae",
+   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNMmFjSlY3Y0Zock93ZndtVjJaTVNPdDBtWG5SeHpQWGlsTmktUk9lVTFieEd0ajBwWTlha2hjYWRVdEJoMjVHMWVwTHp5M1JkOXRBcVluOVFRTTZONEE1Q2JFbkFycWoyNDVIbkJyR3RxbUFaQ05DR2VlTjlSTEpobGgzUjQ1YXBkUG5DMkhobmoteC1UdG02YzNaWmNtVXZUMWRIMk5pWGt3cG1OUG0waEgtRHZjNUNZcFoyMw?oc=5",
+   "source": "Dazed",
+   "publishedAt": "2026-10-15T10:36:00.000Z",
+   "original": "This AI machine makes perfumes out of your memories",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "آلة ذكاء اصطناعي تبتكر عطوراً مستوحاة من الذكريات",
+    "en": "This AI machine makes perfumes out of your memories"
+   },
+   "summary": {
+    "ar": "ظهرت تقنية جديدة تستخدم الذكاء الاصطناعي لتحويل الذكريات الشخصية إلى تركيبات عطرية فريدة.",
+    "en": "A new technology has emerged that uses artificial intelligence to translate personal memories into unique fragrance compositions."
+   },
+   "note": {
+    "ar": "الذكاء الاصطناعي يغير قواعد اللعبة في التخصيص، لكن يبقى 'الأنف' البشري هو الحكم النهائي على جودة العطر.",
+    "en": "AI is changing the game in personalization, but the human 'nose' remains the final judge of a fragrance's quality."
+   }
+  },
+  {
+   "id": "nxavf1j",
+   "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxQV3gzTzlCS2RqZGpHbHVRUF9tTVM5SHRaRTNybVlNTVdJWFByMG5ZWHRlbEk2MnZrWlZMUE5UcWJ1VktZYXRJYzZEYmJEcEJyUVh1S0RBTDFEZWswdE0wYVBJdHV4bGhvWElWQ29oUWhVZ0x3R2FCd3BtQ0JlVlFZY0xMbWxXVVRrMHRCeURHMXNHNzBFUnhvNXp4MG1haktUYmd1RDdCOTRJREhhTm1PNmJ2NGgxZjFYeGpMbkVfMFI4SUIyVUhMM25NcWk1Z0I4ZUh2MWlKcDV5Zw?oc=5",
+   "source": "Masculin.com",
+   "publishedAt": "2026-10-15T14:08:00.000Z",
+   "original": "Un parfum au caviar et à la truffe à 250 euros : jusqu’où peut aller la parfumerie pour nous faire craquer",
+   "lang": "fr",
+   "category": "market",
+   "importance": 2,
+   "title": {
+    "ar": "عطر بالكافيار والكمأة بسعر 250 يورو يثير الجدل",
+    "en": "A caviar and truffle perfume at 250 euros: how far can perfumery go?"
+   },
+   "summary": {
+    "ar": "أثار إطلاق عطر يحتوي على نوتات الكافيار والكمأة بسعر مرتفع تساؤلات حول حدود الابتكار في عالم العطور.",
+    "en": "The launch of a perfume featuring caviar and truffle notes at a high price point has raised questions about the limits of innovation in perfumery."
+   },
+   "note": {
+    "ar": "استخدام مكونات غذائية غير تقليدية هو وسيلة لجذب الانتباه، لكن التحدي الحقيقي هو جعل الرائحة مقبولة وقابلة للارتداء.",
+    "en": "Using unconventional food ingredients is a way to grab attention, but the real challenge is making the scent wearable and pleasant."
    }
   },
   {
@@ -165,24 +371,6 @@
    "summary": {
     "ar": "Sri Lanka’s essential oil industry: Opportunities, challenges, and future directions in the global fragrance and flavour value chain",
     "en": "Sri Lanka’s essential oil industry: Opportunities, challenges, and future directions in the global fragrance and flavour value chain"
-   }
-  },
-  {
-   "id": "n1sfkofm",
-   "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxOMXFaZVNRMXI1WHVWcDlHYmY0NkVsMDhhRm9rTkVic3V3NkZJcXQyQVlHbjJRTDNkeVVpVzVqUXJFeVUwNTNTSnA2NXVfTkpNNWNyTmQ0ODN2RWVjNS1RVFF4UWFoVTF6cURpZUxQUk1QQ1l6ODg2ME5DSVhublhXQjNMMm40T1dMR2tKVjJJSjNobE9MQm1ZTXVQenJqVmF1UjQzV0NJaWVzR2h1OThNeW40S1NjU0twQWdlLXoyNTN4Y0NpVmNXaWZGRzFBeDhTMm5MMg?oc=5",
-   "source": "citybuzz -",
-   "publishedAt": "2026-10-16T00:06:34.000Z",
-   "original": "Symrise Expands Global Production of Sustainable Musk Ingredient Globalide® with New Capacity in India",
-   "lang": "en",
-   "category": "ingredients",
-   "importance": 2,
-   "title": {
-    "ar": "Symrise Expands Global Production of Sustainable Musk Ingredient Globalide® with New Capacity in India",
-    "en": "Symrise Expands Global Production of Sustainable Musk Ingredient Globalide® with New Capacity in India"
-   },
-   "summary": {
-    "ar": "Symrise Expands Global Production of Sustainable Musk Ingredient Globalide® with New Capacity in India",
-    "en": "Symrise Expands Global Production of Sustainable Musk Ingredient Globalide® with New Capacity in India"
    }
   },
   {
@@ -366,24 +554,6 @@
    }
   },
   {
-   "id": "n18lozqm",
-   "url": "https://nstperfume.com/2026/10/15/4711-original-intense-new-fragrance/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-15T18:07:01.000Z",
-   "original": "4711 Original Intense ~ new fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 2,
-   "title": {
-    "ar": "4711 Original Intense ~ new fragrance",
-    "en": "4711 Original Intense ~ new fragrance"
-   },
-   "summary": {
-    "ar": "Mäurer & Wirtz have launched 4711 Original Intense, a new aromatic fresh citrus flanker to the original 4711 fragrance...",
-    "en": "Mäurer & Wirtz have launched 4711 Original Intense, a new aromatic fresh citrus flanker to the original 4711 fragrance..."
-   }
-  },
-  {
    "id": "nkru4xj",
    "url": "https://nstperfume.com/2026/10/15/the-cradle-of-perfumery/",
    "source": "Now Smell This",
@@ -478,28 +648,6 @@
    }
   },
   {
-   "id": "nrbw4f1",
-   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBPeWV0TjVDZHdRbHRSSzdaMDdKUk9YdUxzNjRURWt5ek1WQUNheUZCcWNDaklkWElnQWJ6ZWg1d2t6UVcydjdtcnd6NEVqZU9rcERQTTNYS2xzSldZ?oc=5",
-   "source": "Sharjah24",
-   "publishedAt": "2026-10-15T09:54:36.000Z",
-   "original": "معرض الإمارات للعطور والعود يستقطب إقبالاً لافتاً من الزوار",
-   "lang": "ar",
-   "category": "events",
-   "importance": 5,
-   "title": {
-    "ar": "معرض الإمارات للعطور والعود يستقطب إقبالاً لافتاً من الزوار",
-    "en": "Emirates Perfumes and Oud Exhibition Attracts Remarkable Visitor Turnout"
-   },
-   "summary": {
-    "ar": "شهد معرض الإمارات للعطور والعود إقبالاً واسعاً من الزوار، وسط مشاركة واسعة من العلامات التجارية المحلية والإقليمية.",
-    "en": "The Emirates Perfumes and Oud Exhibition witnessed a wide turnout of visitors, amid extensive participation from local and regional brands."
-   },
-   "note": {
-    "ar": "يعكس هذا الإقبال قوة سوق العطور والعود في المنطقة ونمو الفعاليات المتخصصة التي تجمع صناع العطور بالمستهلكين.",
-    "en": "This turnout reflects the strength of the perfume and oud market in the region and the growth of specialized events connecting perfumers with consumers."
-   }
-  },
-  {
    "id": "ngers87",
    "url": "https://news.google.com/rss/articles/CBMiwgJBVV95cUxNR3ZRYUtTU2tjcnRXWWdNN0RtSkNJWko4bzU3N1NOLWdEbWV4QVl4clZKMFluMTA2OEZERnBWUUFuU3padHRqOG93eG9ULTU0UUlscFlqcFIyQ3dwVHZBRndySmF2bVhYTUNVd1Z3ZFZTcF9iUk5YSHZrYkFEd0RuOUswQVgwYWlOT0dRemxHMlUtUGhremJ3YVFyT0RTdURaOXRTU09YVlYxQlFxZzNrSE1kYk1hLXpJRXBOajF3ZFh5TWF3REFTNGNTRVN5TEpQQXlESm1nTFk4MTN6Y1NETDhmdFo2TkRwN2s4emR1Z3ZhcjNwcldWaGtpUEx2Y19LS19YUTZYaWxrY25MNkNsRUo4MTlubWdaYVhOSzhPaUR2UlJrRmJ4Y185OWFzRDY4Nmh2dWRyME9RZWRtbEtXUnJn?oc=5",
    "source": "25H",
@@ -541,138 +689,6 @@
    "note": {
     "ar": "إصدار زهري راقٍ يعكس خبرة الدار العريقة في قطاع الأزهار البيضاء والعطور الفاخرة.",
     "en": "An elegant floral release reflecting the heritage house's expertise in white florals and fine fragrances."
-   }
-  },
-  {
-   "id": "n1eplyxd",
-   "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE1JR2Vwb3U2T2YyTFR1X0k0SmZ5ZTBVbDJ0TGlYb21saDhfVFF3WVB1UERKR0VfWVNiQm1nQnlsSVBVcDhLeFNWb2tYaDZjcWpLU2lpZzNn?oc=5",
-   "source": "بوابة الأهرام",
-   "publishedAt": "2026-10-15T14:32:00.000Z",
-   "original": "قصة نجاح عربية ملهمة: عطر DHARI بتركيبة الفانيلا الساحرة يكتسح أسواق الإمارات والخليج بقيادة محمد دادي",
-   "lang": "ar",
-   "category": "market",
-   "importance": 4,
-   "title": {
-    "ar": "عطر DHARI بتركيبة الفانيلا يكتسح أسواق الإمارات والخليج",
-    "en": "DHARI Vanilla Fragrance Sweeps UAE and Gulf Markets"
-   },
-   "summary": {
-    "ar": "حقق عطر DHARI بتركيبته الغنية بالفانيلا نجاحاً ملحوظاً واكتسح أسواق الإمارات والخليج بقيادة محمد دادي.",
-    "en": "The vanilla-rich fragrance DHARI has achieved remarkable success, sweeping the UAE and Gulf markets under the leadership of Mohammed Dady."
-   },
-   "note": {
-    "ar": "قصص النجاح الإقليمية هذه تثبت قدرة العلامات العربية على المنافسة بقوة وتقديم تولنجات فانيلا آسرة.",
-    "en": "Such regional success stories prove the ability of Arab brands to strongly compete and offer captivating vanilla blends."
-   }
-  },
-  {
-   "id": "n1xvlv6z",
-   "url": "https://cosmeticsbusiness.com/cpl-aromas-presents-resonance-at-beautyworld-middle-east",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-10-15T11:32:00.000Z",
-   "original": "CPL Aromas presents RESONANCE at BeautyWorld Middle East 2026",
-   "lang": "en",
-   "category": "events",
-   "importance": 3,
-   "title": {
-    "ar": "شركة CPL Aromas تعرض عطر RESONANCE في معرض BeautyWorld Middle East 2026",
-    "en": "CPL Aromas Presents RESONANCE at BeautyWorld Middle East 2026"
-   },
-   "summary": {
-    "ar": "قدمت شركة CPL Aromas ابتكارها العطري RESONANCE في معرض BeautyWorld Middle East 2026 كاستكشاف عطري للشعر والمشاعر.",
-    "en": "CPL Aromas presented its olfactory creation RESONANCE at BeautyWorld Middle East 2026 as an exploration of poetry and emotion."
-   },
-   "note": {
-    "ar": "استعراض الابتكارات الجديدة في المعارض الكبرى يسلط الضوء على أحدث الاتجاهات العطرية المستقبلية.",
-    "en": "Showcasing new innovations at major exhibitions highlights the latest future fragrance trends."
-   }
-  },
-  {
-   "id": "n1796pjx",
-   "url": "https://cafleurebon.com/sylhouette-parfums-desire-noir-winner/?utm_source=rss&utm_medium=rss&utm_campaign=sylhouette-parfums-desire-noir-winner",
-   "source": "CaFleureBon",
-   "publishedAt": "2026-10-15T14:05:01.000Z",
-   "original": "Sylhouette Parfums Desire Noir Winner",
-   "lang": "en",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "عطر Sylhouette Parfums Desire Noir يفوز بتقدير واسع لنغمات السوسن والدخان",
-    "en": "Sylhouette Parfums Desire Noir Wins Wide Recognition for Iris and Smoke Notes"
-   },
-   "summary": {
-    "ar": "فاز عطر Desire Noir من دار Sylhouette Parfums، بتوقيع صانع العطور Sy Truong، بتقدير خاص بفضل مزيجه الغني بالسوسن ونفحات الدخان الخفيفة.",
-    "en": "Sylhouette Parfums' Desire Noir, created by perfumer Sy Truong, won recognition for its rich blend of powdery iris and soft smoke notes."
-   },
-   "note": {
-    "ar": "يبرز هذا الاختيار تزايد تقدير عطور النيش التي تدمج السوسن البودري مع نغمات داكنة ومبتكرة.",
-    "en": "This highlights the growing appreciation for niche fragrances combining powdery iris with dark, innovative notes."
-   }
-  },
-  {
-   "id": "n8w2lho",
-   "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPODQ2X3d2Sm56ckFlMXNqbHhTeVJYOTdaQnAtNW9pRG0zN0NuZHhJbmh6cUJpdy1MUHdOdEY3R0EwVE1tS1hNN1FOc1lxTGZUZ1dBZnBWWVdrTktqblp2d3l4NGtseEs2eVhWbzlEa2VWeEUxZEUxaERHb3pLVU1xbWk3OWppRGlSTU1XR3VvYVBjOE45U0pEZ2V4X2NYX1hCeXh5OUktUGRKdGJkLUxkLUtSeVZYcG4wc0pmOWRESWsyOFVGbERBT1kxSTd3TjQ?oc=5",
-   "source": "GuruFocus",
-   "publishedAt": "2026-10-15T14:04:44.000Z",
-   "original": "Coty Launches Coty Fragrance Club to Engage Community, Shares Tr",
-   "lang": "en",
-   "category": "industry",
-   "importance": 3,
-   "title": {
-    "ar": "شركة Coty تطلق نادي Coty Fragrance لتعزيز التواصل المجتمعي",
-    "en": "Coty Launches Coty Fragrance Club to Engage Community"
-   },
-   "summary": {
-    "ar": "أعلنت شركة Coty عن إطلاق نادي Coty Fragrance لتعزيز التفاعل والتواصل المجتمعي مع عشاق العطور.",
-    "en": "Coty has announced the launch of the Coty Fragrance Club to foster community engagement and connection with fragrance enthusiasts."
-   },
-   "note": {
-    "ar": "خطوة تعكس توجه الشركات الكبرى نحو بناء مجتمعات تفاعلية مباشرة مع المستهلكين حول العالم.",
-    "en": "A step reflecting major corporations' trend toward building direct interactive communities with consumers worldwide."
-   }
-  },
-  {
-   "id": "n1im0k4h",
-   "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxORGpTZl9uZzhCVmFoVlJFT21Ob0RGOXBZVHJNajZJTEJKMWltVmo2cVFvTGpId091TkFiY3lqQVoyLS1lOHI0RDVDZEkyakw0cGxIZ3VJeHlPRTQwNEduRDFFeEt4T19sam83WVlKejFrN3ltbEpZYWlOSGNkTW9kNlRHUVYtZXBDeVc1OGJlWVJPMDNWZ2tqbU0tcFlDbjlhOVBSRlJ2c0VQRWRrbjhJVEpBY0xVUUJRX0pGR3VfRkxhNVZGQXhJLdIBzgFBVV95cUxQZGdxVnoxR1pjVFRYU1lVWjZTeHNrekFRSi1VdVYzeFMxaXprc29LSnNsVEk3WkVhVnZjX2ZPeThmUXo0VUNzWF9lWHJtaUxsVmdHWVZwcTRhWS1sNkR1LVJxVy1OZlJjc3d1WURlUjdBOXp6anRMNV8zU3g4LU9YLXAzVnpVVzE4NEZnV29GamdsUmRsd1pEUUZpZDFGcXU1X0htbUFOZ19UQjFLOHRzT0ZJdENMaXhKWG9pM083eW1SdXRuMVRISTF2ZVdSdw?oc=5",
-   "source": "Daily Mail",
-   "publishedAt": "2026-10-15T07:55:15.000Z",
-   "original": "Jamie and Frida Redknapp hit the town for a rare date night as they attend Taika Waititi's perfume brand launch",
-   "lang": "en",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "إطلاق العلامة التجارية الجديدة لعطور Taika Waititi في حدث بارز",
-    "en": "Taika Waititi's New Fragrance Brand Launched at a Prominent Event"
-   },
-   "summary": {
-    "ar": "شهد المجتمع الفني والإعلامي حضور إطلاق علامة العطور الجديدة للمخرج Taika Waititi وسط اهتمام واسع.",
-    "en": "The arts and media community attended the launch of director Taika Waititi's new perfume brand amid wide attention."
-   },
-   "note": {
-    "ar": "دخول المشاهير عالم العطور يعزز من جاذبية هذا القطاع ويجذب شرائح جماهيرية جديدة.",
-    "en": "Celebrity entry into the fragrance world enhances the sector's appeal and attracts new consumer demographics."
-   }
-  },
-  {
-   "id": "nlwswt1",
-   "url": "https://nstperfume.com/2026/10/14/profumum-dolce-artica-new-fragrance/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-14T15:40:47.000Z",
-   "original": "Profumum Dolce Artica ~ new fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "دار Profumum تطلق عطر Dolce Artica حصرياً",
-    "en": "Profumum Launches Dolce Artica Fragrance Exclusively"
-   },
-   "summary": {
-    "ar": "أطلقت دار العطور الإيطالية النيش Profumum عطراً جديداً يحمل اسم Dolce Artica كإصدار حصري.",
-    "en": "Italian niche fragrance line Profumum has launched a new fragrance named Dolce Artica as an exclusive release."
-   },
-   "note": {
-    "ar": "الإصدارات الحصرية تزيد من شغف هواة العطور النيش للبحث عن التركيبات الفريدة والمحدودة.",
-    "en": "Exclusive releases increase niche perfume enthusiasts' passion for seeking unique and limited compositions."
    }
   }
  ]
