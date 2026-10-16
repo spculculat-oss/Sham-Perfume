@@ -114,6 +114,8 @@ test("the store product follows the scenario: regular price → EGP → × 1.5, 
   assert.equal(later.stockStatus, 'out_of_stock');
   assert.equal(later.ourPrice, ourPriceOf(1800));
   assert.equal(brandPrefix('Kenz de Rasasi'), 'KEN');
+  assert.equal(toStoreProduct({ ...x, brand: 'RASASI' }, { source: SOURCES[0], rate: 11.5, now, nextId: 60 }).brand, 'Rasasi');
+  assert.equal(toStoreProduct({ ...x, brand: 'Kenz de Rasasi' }, { source: SOURCES[0], rate: 11.5, now, nextId: 60 }).brand, 'Kenz de Rasasi');
   assert.equal(brandPrefix(''), 'IMP');
   assert.equal(cleanName('Khamrah Mira by Lattafa Malaysia'), 'Khamrah Mira by Lattafa');
   assert.equal(nextIdOf([{ id: 3 }, { id: '51' }, { id: 'x' }] as RawProduct[]), 52);

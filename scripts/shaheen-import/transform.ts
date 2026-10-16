@@ -46,6 +46,14 @@ export const brandPrefix = (brand?: string) => {
   return (letters.slice(0, 3) || 'IMP').padEnd(3, 'X');
 };
 
+/** «RASASI» → «Rasasi» (the store already sells «Rasasi»; one brand must not appear twice in the filter). */
+export const normalizeBrand = (brand?: string) => {
+  const b = (brand || '').trim().replace(/\s+/g, ' ');
+  return b.length > 3 && b === b.toUpperCase() && /[A-Z]/.test(b)
+    ? b.toLowerCase().replace(/(^|[\s-])([a-z])/g, (_, sep: string, c: string) => sep + c.toUpperCase())
+    : b;
+};
+
 /** Gender in the store's Arabic category words (the store's filters understand them). */
 export const CATEGORY_AR = { men: 'رجالي', women: 'نسائي', unisex: 'مختلط' } as const;
 
@@ -71,7 +79,8 @@ export function toStoreProduct(x: ExtractedProduct, o: BuildOptions): ImportedPr
   const name = cleanName(x.name);
   const e = o.existing;
   const id = e?.id ?? o.nextId;
-  const sku = e?.sku || `${brandPrefix(x.brand)}-${String(id).padStart(3, '0')}`;
+  const brand = normalizeBrand(x.brand);
+  const sku = e?.sku || `${brandPrefix(brand)}-${String(id).padStart(3, '0')}`;
   const desc = cleanDescription(x.description);
   const product: ImportedProduct = {
     id, sku,
@@ -83,7 +92,7 @@ export function toStoreProduct(x: ExtractedProduct, o: BuildOptions): ImportedPr
     imageUrl: x.images[0] || null,
     images: x.images,
     category: x.gender ? CATEGORY_AR[x.gender] : (e?.category || 'عطور'),
-    brand: x.brand || e?.brand || 'Unknown',
+    brand: brand || normalizeBrand(e?.brand) || 'Unknown',
     supplierPrice,
     ourPrice: ourPriceOf(supplierPrice, o.markup),
     stockStatus: x.inStock ? 'in_stock' : 'out_of_stock',
