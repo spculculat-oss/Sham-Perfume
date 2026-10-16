@@ -1,4 +1,13 @@
 {
- "updatedAt": "2026-10-16T06:27:43.283Z",
- "engines": {}
+ "updatedAt": "2026-10-16T07:17:11.091Z",
+ "engines": {
+  "deepseek": {
+   "pausedUntil": "2026-10-16T08:05:00.000Z",
+   "reason": "no_credit"
+  },
+  "openai": {
+   "pausedUntil": "2026-10-16T08:05:00.000Z",
+   "reason": "no_credit"
+  }
+ }
 }

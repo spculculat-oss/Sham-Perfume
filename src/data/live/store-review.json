@@ -1,0 +1,942 @@
+{
+ "version": 1,
+ "updatedAt": "2026-10-16T07:14:07.459Z",
+ "reviewer": "مراجع الصفحات",
+ "summary": {
+  "total": 81,
+  "imported": 30,
+  "ok": 1,
+  "warn": 80,
+  "hidden": 0,
+  "imagesChecked": 30,
+  "brokenImages": 0
+ },
+ "import": {
+  "at": "2026-10-16T07:13:30.053Z",
+  "markup": 1.5,
+  "sources": [
+   {
+    "id": "shamperfume",
+    "currency": "MYR",
+    "rate": 13.081,
+    "rateFrom": "open.er-api.com",
+    "sitemapProducts": 999,
+    "added": 30,
+    "refreshed": 0,
+    "failed": [],
+    "failedCount": 0,
+    "viaShaheen": 0,
+    "deferred": 0,
+    "gone": 0
+   }
+  ],
+  "rate": 13.081,
+  "durationMs": 37407
+ },
+ "items": [
+  {
+   "sku": "LAT-001",
+   "id": 1,
+   "name": "Lattafa Black Oud",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج"
+   ],
+   "page": "p/lattafa-black-oud-1.html"
+  },
+  {
+   "sku": "LAT-002",
+   "id": 2,
+   "name": "Lattafa Fakhar Black",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج"
+   ],
+   "page": "p/lattafa-fakhar-black-2.html"
+  },
+  {
+   "sku": "LAT-003",
+   "id": 3,
+   "name": "Lattafa White Oud",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج"
+   ],
+   "page": "p/lattafa-white-oud-3.html"
+  },
+  {
+   "sku": "LAT-004",
+   "id": 4,
+   "name": "Lattafa Ameer Al Oudh",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/lattafa-ameer-al-oudh-4.html"
+  },
+  {
+   "sku": "LAT-005",
+   "id": 5,
+   "name": "Lattafa Noir",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج"
+   ],
+   "page": "p/lattafa-noir-5.html"
+  },
+  {
+   "sku": "LAT-006",
+   "id": 6,
+   "name": "Rasasi La Yuya",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/rasasi-la-yuya-6.html"
+  },
+  {
+   "sku": "LAT-007",
+   "id": 7,
+   "name": "Rasasi Hawas",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/rasasi-hawas-7.html"
+  },
+  {
+   "sku": "LAT-008",
+   "id": 8,
+   "name": "De Pronom Mon Guerlain",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/de-pronom-mon-guerlain-8.html"
+  },
+  {
+   "sku": "ALR-001",
+   "id": 9,
+   "name": "Al-Rehab Malika",
+   "status": "warn",
+   "issues": [
+    "سعر غير منطقي (22.5 جنيه)",
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج"
+   ],
+   "page": "p/al-rehab-malika-9.html"
+  },
+  {
+   "sku": "ALR-002",
+   "id": 10,
+   "name": "Al-Rehab Rumman",
+   "status": "warn",
+   "issues": [
+    "سعر غير منطقي (18 جنيه)",
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/al-rehab-rumman-10.html"
+  },
+  {
+   "sku": "ALR-003",
+   "id": 11,
+   "name": "Al-Rehab Dubai",
+   "status": "warn",
+   "issues": [
+    "سعر غير منطقي (15 جنيه)",
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/al-rehab-dubai-11.html"
+  },
+  {
+   "sku": "ALR-004",
+   "id": 12,
+   "name": "Al-Rehab Honey Glow",
+   "status": "warn",
+   "issues": [
+    "سعر غير منطقي (19.5 جنيه)",
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/al-rehab-honey-glow-12.html"
+  },
+  {
+   "sku": "ALR-005",
+   "id": 13,
+   "name": "Al-Rehab Rose",
+   "status": "warn",
+   "issues": [
+    "سعر غير منطقي (16.5 جنيه)",
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/al-rehab-rose-13.html"
+  },
+  {
+   "sku": "UNI-001",
+   "id": 14,
+   "name": "Baccarat Rouge 540",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/baccarat-rouge-540-14.html"
+  },
+  {
+   "sku": "UNI-002",
+   "id": 15,
+   "name": "Dior Sauvage",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج"
+   ],
+   "page": "p/dior-sauvage-15.html"
+  },
+  {
+   "sku": "UNI-003",
+   "id": 16,
+   "name": "Yves Saint Laurent Libre",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/yves-saint-laurent-libre-16.html"
+  },
+  {
+   "sku": "GEN-017",
+   "id": 17,
+   "name": "عطر عربى جديد 1",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "منتج احتياطي أضافه السكرابر القديم عند فشل الاتصال — ليس منتجاً حقيقياً من المورد",
+    "الوصف عام"
+   ],
+   "page": "p/gen-017-17.html"
+  },
+  {
+   "sku": "GEN-018",
+   "id": 18,
+   "name": "عطر انجليزى فاخر 2",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "منتج احتياطي أضافه السكرابر القديم عند فشل الاتصال — ليس منتجاً حقيقياً من المورد",
+    "الوصف عام"
+   ],
+   "page": "p/gen-018-18.html"
+  },
+  {
+   "sku": "GEN-019",
+   "id": 19,
+   "name": "عطر اسبانى متميز 3",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "منتج احتياطي أضافه السكرابر القديم عند فشل الاتصال — ليس منتجاً حقيقياً من المورد",
+    "الوصف عام"
+   ],
+   "page": "p/gen-019-19.html"
+  },
+  {
+   "sku": "SHM-020",
+   "id": 20,
+   "name": "Dahab",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/dahab-20.html"
+  },
+  {
+   "sku": "SHM-021",
+   "id": 21,
+   "name": "Layl",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/layl-21.html"
+  },
+  {
+   "sku": "SHM-022",
+   "id": 22,
+   "name": "Amiri",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/amiri-22.html"
+  },
+  {
+   "sku": "SHM-023",
+   "id": 23,
+   "name": "Mirage",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/mirage-23.html"
+  },
+  {
+   "sku": "SHM-024",
+   "id": 24,
+   "name": "Khanjar",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/khanjar-24.html"
+  },
+  {
+   "sku": "SHM-025",
+   "id": 25,
+   "name": "Fidji",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/fidji-25.html"
+  },
+  {
+   "sku": "SHM-026",
+   "id": 26,
+   "name": "White Oud",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/white-oud-26.html"
+  },
+  {
+   "sku": "SHM-027",
+   "id": 27,
+   "name": "Reem",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/reem-27.html"
+  },
+  {
+   "sku": "SHM-028",
+   "id": 28,
+   "name": "Khalifa",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/khalifa-28.html"
+  },
+  {
+   "sku": "SHM-029",
+   "id": 29,
+   "name": "No.5",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/shama-shm-029-29.html"
+  },
+  {
+   "sku": "SHM-030",
+   "id": 30,
+   "name": "Safwa",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/safwa-30.html"
+  },
+  {
+   "sku": "SHM-031",
+   "id": 31,
+   "name": "Wadi",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/wadi-31.html"
+  },
+  {
+   "sku": "SHM-032",
+   "id": 32,
+   "name": "Sama",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/sama-32.html"
+  },
+  {
+   "sku": "SHM-033",
+   "id": 33,
+   "name": "1977",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/shama-shm-033-33.html"
+  },
+  {
+   "sku": "SHM-034",
+   "id": 34,
+   "name": "Taif",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/taif-34.html"
+  },
+  {
+   "sku": "SHM-035",
+   "id": 35,
+   "name": "Sougha",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/sougha-35.html"
+  },
+  {
+   "sku": "SHM-036",
+   "id": 36,
+   "name": "Raghad",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/raghad-36.html"
+  },
+  {
+   "sku": "SHM-037",
+   "id": 37,
+   "name": "Oud Ma'attar Shama",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/oud-ma-attar-shama-37.html"
+  },
+  {
+   "sku": "SHM-038",
+   "id": 38,
+   "name": "Hindi Digga Saghir Khas",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/hindi-digga-saghir-khas-38.html"
+  },
+  {
+   "sku": "SHM-039",
+   "id": 39,
+   "name": "Hindi Digga Saghir VIP",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/hindi-digga-saghir-vip-39.html"
+  },
+  {
+   "sku": "SHM-040",
+   "id": 40,
+   "name": "Hindi Syufi Khas",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/hindi-syufi-khas-40.html"
+  },
+  {
+   "sku": "SHM-041",
+   "id": 41,
+   "name": "Hindi Syufi Khas VIP",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/hindi-syufi-khas-vip-41.html"
+  },
+  {
+   "sku": "SHM-042",
+   "id": 42,
+   "name": "Hindi Digga Khas",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/hindi-digga-khas-42.html"
+  },
+  {
+   "sku": "SHM-043",
+   "id": 43,
+   "name": "Dehnal Oud Asli",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/dehnal-oud-asli-43.html"
+  },
+  {
+   "sku": "SHM-044",
+   "id": 44,
+   "name": "Dehnal Oud Khussusi Kadim",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/dehnal-oud-khussusi-kadim-44.html"
+  },
+  {
+   "sku": "SHM-045",
+   "id": 45,
+   "name": "Dehnal Oud Kalakasi",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/dehnal-oud-kalakasi-45.html"
+  },
+  {
+   "sku": "SHM-046",
+   "id": 46,
+   "name": "Dehnal Oud Silani",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/dehnal-oud-silani-46.html"
+  },
+  {
+   "sku": "SHM-047",
+   "id": 47,
+   "name": "Dehnal Oud Hindi Ateeq",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/dehnal-oud-hindi-ateeq-47.html"
+  },
+  {
+   "sku": "SHM-048",
+   "id": 48,
+   "name": "Dehnal Oud Royal Philippini",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/dehnal-oud-royal-philippini-48.html"
+  },
+  {
+   "sku": "SHM-049",
+   "id": 49,
+   "name": "Oud Discovery Set",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/oud-discovery-set-49.html"
+  },
+  {
+   "sku": "SHM-050",
+   "id": 50,
+   "name": "Royal Oil Gift Set",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/royal-oil-gift-set-50.html"
+  },
+  {
+   "sku": "SHM-051",
+   "id": 51,
+   "name": "Legacy Mukhallat Box",
+   "status": "warn",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/legacy-mukhallat-box-51.html"
+  },
+  {
+   "sku": "RAS-053",
+   "id": 53,
+   "name": "Hawas Ice by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-ice-by-rasasi-100ml-edp-53.html"
+  },
+  {
+   "sku": "RAS-054",
+   "id": 54,
+   "name": "Hawas Malibu by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-malibu-by-rasasi-100ml-edp-54.html"
+  },
+  {
+   "sku": "RAS-055",
+   "id": 55,
+   "name": "Hawas Verde by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-verde-by-rasasi-100ml-edp-55.html"
+  },
+  {
+   "sku": "RAS-056",
+   "id": 56,
+   "name": "Hawas Majestic by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-majestic-by-rasasi-100ml-edp-56.html"
+  },
+  {
+   "sku": "RAS-057",
+   "id": 57,
+   "name": "Hawas Reina by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-reina-by-rasasi-100ml-edp-57.html"
+  },
+  {
+   "sku": "RAS-058",
+   "id": 58,
+   "name": "Hawas Chrome For Him by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-chrome-for-him-by-rasasi-100ml-edp-58.html"
+  },
+  {
+   "sku": "RAS-059",
+   "id": 59,
+   "name": "Hawas Venom by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-venom-by-rasasi-100ml-edp-59.html"
+  },
+  {
+   "sku": "RAS-060",
+   "id": 60,
+   "name": "Hawas Nautilus by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-nautilus-by-rasasi-100ml-edp-60.html"
+  },
+  {
+   "sku": "RAS-061",
+   "id": 61,
+   "name": "Hawas Private Terra by Rasasi Extrait de Parfum 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-private-terra-by-rasasi-extrait-de-parfum-100ml-61.html"
+  },
+  {
+   "sku": "RAS-062",
+   "id": 62,
+   "name": "Hawas Atlantis by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-atlantis-by-rasasi-100ml-edp-62.html"
+  },
+  {
+   "sku": "RAS-063",
+   "id": 63,
+   "name": "Hawas Private Dulce by Rasasi Extrait de Parfum 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-private-dulce-by-rasasi-extrait-de-parfum-100ml-63.html"
+  },
+  {
+   "sku": "RAS-064",
+   "id": 64,
+   "name": "Hawas Gold Digger by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-gold-digger-by-rasasi-100ml-edp-64.html"
+  },
+  {
+   "sku": "RAS-065",
+   "id": 65,
+   "name": "Hawas Thunder by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-thunder-by-rasasi-100ml-edp-65.html"
+  },
+  {
+   "sku": "RAS-066",
+   "id": 66,
+   "name": "Hawas Viper by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-viper-by-rasasi-100ml-edp-66.html"
+  },
+  {
+   "sku": "RAS-067",
+   "id": 67,
+   "name": "Hawas Kobra by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-kobra-by-rasasi-100ml-edp-67.html"
+  },
+  {
+   "sku": "RAS-068",
+   "id": 68,
+   "name": "Hawas For Him La Mer by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-for-him-la-mer-by-rasasi-100ml-edp-68.html"
+  },
+  {
+   "sku": "RAS-069",
+   "id": 69,
+   "name": "Hawas Eclat by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-eclat-by-rasasi-100ml-edp-69.html"
+  },
+  {
+   "sku": "RAS-070",
+   "id": 70,
+   "name": "Hawas Rouge by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-rouge-by-rasasi-100ml-edp-70.html"
+  },
+  {
+   "sku": "RAS-071",
+   "id": 71,
+   "name": "Hawas Lava Gold by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-lava-gold-by-rasasi-100ml-edp-71.html"
+  },
+  {
+   "sku": "RAS-072",
+   "id": 72,
+   "name": "Hawas Fire by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-fire-by-rasasi-100ml-edp-72.html"
+  },
+  {
+   "sku": "RAS-073",
+   "id": 73,
+   "name": "Hawas Tropical by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-tropical-by-rasasi-100ml-edp-73.html"
+  },
+  {
+   "sku": "RAS-074",
+   "id": 74,
+   "name": "Hawas Ice Freeze by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-ice-freeze-by-rasasi-100ml-edp-74.html"
+  },
+  {
+   "sku": "RAS-075",
+   "id": 75,
+   "name": "Hawas Highness by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-highness-by-rasasi-100ml-edp-75.html"
+  },
+  {
+   "sku": "RAS-076",
+   "id": 76,
+   "name": "Hawas Overdose by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-overdose-by-rasasi-100ml-edp-76.html"
+  },
+  {
+   "sku": "RAS-077",
+   "id": 77,
+   "name": "Hawas Addiction by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-addiction-by-rasasi-100ml-edp-77.html"
+  },
+  {
+   "sku": "RAS-078",
+   "id": 78,
+   "name": "Hawas Exotic by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-exotic-by-rasasi-100ml-edp-78.html"
+  },
+  {
+   "sku": "RAS-079",
+   "id": 79,
+   "name": "Hawas Blanche by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-blanche-by-rasasi-100ml-edp-79.html"
+  },
+  {
+   "sku": "RAS-080",
+   "id": 80,
+   "name": "Hawas Love For Her by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-love-for-her-by-rasasi-100ml-edp-80.html"
+  },
+  {
+   "sku": "RAS-081",
+   "id": 81,
+   "name": "Hawas Diva by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-diva-by-rasasi-100ml-edp-81.html"
+  }
+ ]
+}

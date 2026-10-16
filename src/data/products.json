@@ -10,7 +10,7 @@
       "imageUrl": "https://images.unsplash.com/photo-1594032445763-59aef710e0ba?w=300&h=300&fit=crop",
       "category": "رجالي",
       "brand": "Lattafa",
-      "supplierPrice": 35.0,
+      "supplierPrice": 35,
       "ourPrice": 52.5,
       "stockStatus": "in_stock",
       "url": null,
@@ -18,7 +18,7 @@
       "isNew": true,
       "supplierId": null,
       "supplierName": null,
-      "rating": 4.0,
+      "rating": 4,
       "reviewCount": 120,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
@@ -34,15 +34,15 @@
       "imageUrl": "https://images.unsplash.com/photo-1612406687582-f4458119aa5a?w=300&h=300&fit=crop",
       "category": "رجالي",
       "brand": "Lattafa",
-      "supplierPrice": 28.0,
-      "ourPrice": 42.0,
+      "supplierPrice": 28,
+      "ourPrice": 42,
       "stockStatus": "in_stock",
       "url": null,
       "isFeatured": true,
       "isNew": true,
       "supplierId": null,
       "supplierName": null,
-      "rating": 4.0,
+      "rating": 4,
       "reviewCount": 120,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
@@ -58,15 +58,15 @@
       "imageUrl": "https://images.unsplash.com/photo-1541643600913-80f5f10a3b08?w=300&h=300&fit=crop",
       "category": "رجالي",
       "brand": "Lattafa",
-      "supplierPrice": 32.0,
-      "ourPrice": 48.0,
+      "supplierPrice": 32,
+      "ourPrice": 48,
       "stockStatus": "in_stock",
       "url": null,
       "isFeatured": true,
       "isNew": true,
       "supplierId": null,
       "supplierName": null,
-      "rating": 4.0,
+      "rating": 4,
       "reviewCount": 120,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
@@ -82,7 +82,7 @@
       "imageUrl": "https://images.unsplash.com/photo-1588432257538-e8f7b5ab25b3?w=300&h=300&fit=crop",
       "category": "رجالي",
       "brand": "Lattafa",
-      "supplierPrice": 45.0,
+      "supplierPrice": 45,
       "ourPrice": 67.5,
       "stockStatus": "in_stock",
       "url": null,
@@ -90,7 +90,7 @@
       "isNew": true,
       "supplierId": null,
       "supplierName": null,
-      "rating": 4.0,
+      "rating": 4,
       "reviewCount": 120,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
@@ -106,15 +106,15 @@
       "imageUrl": "https://images.unsplash.com/photo-1599058670279-6842666a664c?w=300&h=300&fit=crop",
       "category": "رجالي",
       "brand": "Lattafa",
-      "supplierPrice": 38.0,
-      "ourPrice": 57.0,
+      "supplierPrice": 38,
+      "ourPrice": 57,
       "stockStatus": "in_stock",
       "url": null,
       "isFeatured": true,
       "isNew": true,
       "supplierId": null,
       "supplierName": null,
-      "rating": 4.0,
+      "rating": 4,
       "reviewCount": 120,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
@@ -130,7 +130,7 @@
       "imageUrl": "https://images.unsplash.com/photo-1600585154340-be616c8b5825?w=300&h=300&fit=crop",
       "category": "رجالي",
       "brand": "Rasasi",
-      "supplierPrice": 25.0,
+      "supplierPrice": 25,
       "ourPrice": 37.5,
       "stockStatus": "in_stock",
       "url": null,
@@ -154,8 +154,8 @@
       "imageUrl": "https://images.unsplash.com/photo-1607706689826-1848515763984?w=300&h=300&fit=crop",
       "category": "رجالي",
       "brand": "Rasasi",
-      "supplierPrice": 40.0,
-      "ourPrice": 60.0,
+      "supplierPrice": 40,
+      "ourPrice": 60,
       "stockStatus": "in_stock",
       "url": null,
       "isFeatured": true,
@@ -178,8 +178,8 @@
       "imageUrl": "https://images.unsplash.com/photo-1599746107971-f496a10867a0?w=300&h=300&fit=crop",
       "category": "رجالي",
       "brand": "De Pronom",
-      "supplierPrice": 60.0,
-      "ourPrice": 90.0,
+      "supplierPrice": 60,
+      "ourPrice": 90,
       "stockStatus": "in_stock",
       "url": null,
       "isFeatured": true,
@@ -202,7 +202,7 @@
       "imageUrl": "https://images.unsplash.com/photo-1595425236092-40728526dc67?w=300&h=300&fit=crop",
       "category": "نسائي",
       "brand": "Al-Rehab",
-      "supplierPrice": 15.0,
+      "supplierPrice": 15,
       "ourPrice": 22.5,
       "stockStatus": "in_stock",
       "url": null,
@@ -226,8 +226,8 @@
       "imageUrl": "https://images.unsplash.com/photo-1523275335684-379982092019?w=300&h=300&fit=crop",
       "category": "نسائي",
       "brand": "Al-Rehab",
-      "supplierPrice": 12.0,
-      "ourPrice": 18.0,
+      "supplierPrice": 12,
+      "ourPrice": 18,
       "stockStatus": "in_stock",
       "url": null,
       "isFeatured": false,
@@ -250,8 +250,8 @@
       "imageUrl": "https://images.unsplash.com/photo-1579584425555-c3ce1af17cbb?w=300&h=300&fit=crop",
       "category": "نسائي",
       "brand": "Al-Rehab",
-      "supplierPrice": 10.0,
-      "ourPrice": 15.0,
+      "supplierPrice": 10,
+      "ourPrice": 15,
       "stockStatus": "in_stock",
       "url": null,
       "isFeatured": false,
@@ -274,7 +274,7 @@
       "imageUrl": "https://images.unsplash.com/photo-1588172091045-01f41c8d0da8?w=300&h=300&fit=crop",
       "category": "نسائي",
       "brand": "Al-Rehab",
-      "supplierPrice": 13.0,
+      "supplierPrice": 13,
       "ourPrice": 19.5,
       "stockStatus": "in_stock",
       "url": null,
@@ -298,7 +298,7 @@
       "imageUrl": "https://images.unsplash.com/photo-1549955239-7e4662108919?w=300&h=300&fit=crop",
       "category": "نسائي",
       "brand": "Al-Rehab",
-      "supplierPrice": 11.0,
+      "supplierPrice": 11,
       "ourPrice": 16.5,
       "stockStatus": "in_stock",
       "url": null,
@@ -322,15 +322,15 @@
       "imageUrl": "https://images.unsplash.com/photo-1606787366850-de0944b7f6ff?w=300&h=300&fit=crop",
       "category": "مختلط",
       "brand": "Baccarat",
-      "supplierPrice": 80.0,
-      "ourPrice": 120.0,
+      "supplierPrice": 80,
+      "ourPrice": 120,
       "stockStatus": "in_stock",
       "url": null,
       "isFeatured": true,
       "isNew": true,
       "supplierId": null,
       "supplierName": null,
-      "rating": 4.0,
+      "rating": 4,
       "reviewCount": 45,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
@@ -346,7 +346,7 @@
       "imageUrl": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=300&h=300&fit=crop",
       "category": "رجالي",
       "brand": "Dior",
-      "supplierPrice": 95.0,
+      "supplierPrice": 95,
       "ourPrice": 142.5,
       "stockStatus": "in_stock",
       "url": null,
@@ -354,7 +354,7 @@
       "isNew": true,
       "supplierId": null,
       "supplierName": null,
-      "rating": 4.0,
+      "rating": 4,
       "reviewCount": 45,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
@@ -370,7 +370,7 @@
       "imageUrl": "https://images.unsplash.com/photo-1568554661843-004974f4f1b4?w=300&h=300&fit=crop",
       "category": "نسائي",
       "brand": "YSL",
-      "supplierPrice": 75.0,
+      "supplierPrice": 75,
       "ourPrice": 112.5,
       "stockStatus": "in_stock",
       "url": null,
@@ -395,14 +395,14 @@
       "category": "نسائي",
       "brand": "Unknown",
       "supplierPrice": 40,
-      "ourPrice": 60.0,
+      "ourPrice": 60,
       "stockStatus": "in_stock",
       "url": null,
       "isFeatured": true,
       "isNew": true,
       "supplierId": "scraped",
       "supplierName": "Scraped",
-      "rating": 4.0,
+      "rating": 4,
       "reviewCount": 0,
       "unit": "قطن",
       "createdAt": "2026-10-15 14:30:07",
@@ -426,7 +426,7 @@
       "isNew": true,
       "supplierId": "scraped",
       "supplierName": "Scraped",
-      "rating": 4.0,
+      "rating": 4,
       "reviewCount": 0,
       "unit": "قطن",
       "createdAt": "2026-10-15 14:30:07",
@@ -450,7 +450,7 @@
       "isNew": true,
       "supplierId": "scraped",
       "supplierName": "Scraped",
-      "rating": 4.0,
+      "rating": 4,
       "reviewCount": 0,
       "unit": "قطن",
       "createdAt": "2026-10-15 14:30:07",
@@ -466,7 +466,7 @@
       "supplierName": "Shama Perfumes",
       "imageUrl": "https://images.unsplash.com/photo-1579584425555-c3ce1af17cbb?w=300&h=300&fit=crop",
       "sku": "SHM-020",
-      "ourPrice": 450.0,
+      "ourPrice": 450,
       "stockStatus": "in_stock",
       "isFeatured": true,
       "isNew": true,
@@ -642,7 +642,7 @@
       "supplierName": "Shama Perfumes",
       "imageUrl": "https://images.unsplash.com/photo-1607706689826-1848515763984?w=300&h=300&fit=crop",
       "sku": "SHM-028",
-      "ourPrice": 225.0,
+      "ourPrice": 225,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -686,7 +686,7 @@
       "supplierName": "Shama Perfumes",
       "imageUrl": "https://images.unsplash.com/photo-1595425236092-40728526dc67?w=300&h=300&fit=crop",
       "sku": "SHM-030",
-      "ourPrice": 282.0,
+      "ourPrice": 282,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -708,7 +708,7 @@
       "supplierName": "Shama Perfumes",
       "imageUrl": "https://images.unsplash.com/photo-1594032445763-59aef710e0ba?w=300&h=300&fit=crop",
       "sku": "SHM-031",
-      "ourPrice": 282.0,
+      "ourPrice": 282,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -730,7 +730,7 @@
       "supplierName": "Shama Perfumes",
       "imageUrl": "https://images.unsplash.com/photo-1512244301671-38c34e5b524e?w=300&h=300&fit=crop",
       "sku": "SHM-032",
-      "ourPrice": 282.0,
+      "ourPrice": 282,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -752,7 +752,7 @@
       "supplierName": "Shama Perfumes",
       "imageUrl": "https://images.unsplash.com/photo-1600585154340-be616c8b5825?w=300&h=300&fit=crop",
       "sku": "SHM-033",
-      "ourPrice": 282.0,
+      "ourPrice": 282,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -774,7 +774,7 @@
       "supplierName": "Shama Perfumes",
       "imageUrl": "https://images.unsplash.com/photo-1602810316605-326e2f81f218?w=300&h=300&fit=crop",
       "sku": "SHM-034",
-      "ourPrice": 282.0,
+      "ourPrice": 282,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -796,7 +796,7 @@
       "supplierName": "Shama Perfumes",
       "imageUrl": "https://images.unsplash.com/photo-1541643600913-80f5f10a3b08?w=300&h=300&fit=crop",
       "sku": "SHM-035",
-      "ourPrice": 282.0,
+      "ourPrice": 282,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -818,7 +818,7 @@
       "supplierName": "Shama Perfumes",
       "imageUrl": "https://images.unsplash.com/photo-1599058670279-6842666a664c?w=300&h=300&fit=crop",
       "sku": "SHM-036",
-      "ourPrice": 282.0,
+      "ourPrice": 282,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -840,7 +840,7 @@
       "supplierName": "Shama Perfumes",
       "imageUrl": "https://images.unsplash.com/photo-1606787366850-de0944b7f6ff?w=300&h=300&fit=crop",
       "sku": "SHM-037",
-      "ourPrice": 150.0,
+      "ourPrice": 150,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -928,7 +928,7 @@
       "supplierName": "Shama Perfumes",
       "imageUrl": "https://images.unsplash.com/photo-1600585154340-be616c8b5825?w=300&h=300&fit=crop",
       "sku": "SHM-041",
-      "ourPrice": 600.0,
+      "ourPrice": 600,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -950,7 +950,7 @@
       "supplierName": "Shama Perfumes",
       "imageUrl": "https://images.unsplash.com/photo-1579584425555-c3ce1af17cbb?w=300&h=300&fit=crop",
       "sku": "SHM-042",
-      "ourPrice": 825.0,
+      "ourPrice": 825,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -972,7 +972,7 @@
       "supplierName": "Shama Perfumes",
       "imageUrl": "https://images.unsplash.com/photo-1595425236092-40728526dc67?w=300&h=300&fit=crop",
       "sku": "SHM-043",
-      "ourPrice": 60.0,
+      "ourPrice": 60,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -994,7 +994,7 @@
       "supplierName": "Shama Perfumes",
       "imageUrl": "https://images.unsplash.com/photo-1594032445763-59aef710e0ba?w=300&h=300&fit=crop",
       "sku": "SHM-044",
-      "ourPrice": 150.0,
+      "ourPrice": 150,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -1038,7 +1038,7 @@
       "supplierName": "Shama Perfumes",
       "imageUrl": "https://images.unsplash.com/photo-1588432257538-e8f7b5ab25b3?w=300&h=300&fit=crop",
       "sku": "SHM-046",
-      "ourPrice": 375.0,
+      "ourPrice": 375,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -1060,7 +1060,7 @@
       "supplierName": "Shama Perfumes",
       "imageUrl": "https://images.unsplash.com/photo-1599058670279-6842666a664c?w=300&h=300&fit=crop",
       "sku": "SHM-047",
-      "ourPrice": 750.0,
+      "ourPrice": 750,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -1104,7 +1104,7 @@
       "supplierName": "Shama Perfumes",
       "imageUrl": "https://images.unsplash.com/photo-1512244301671-38c34e5b524e?w=300&h=300&fit=crop",
       "sku": "SHM-049",
-      "ourPrice": 450.0,
+      "ourPrice": 450,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -1159,6 +1159,1911 @@
       "descriptionEn": "Legacy Mukhallat Box perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
       "updatedAt": "2026-10-15 17:35:00"
+    },
+    {
+      "id": 52,
+      "sku": "LAT-052",
+      "nameAr": "Oud Mood 30ml by Lattafa EDP Unisex",
+      "nameEn": "Oud Mood 30ml by Lattafa EDP Unisex",
+      "descriptionAr": "",
+      "descriptionEn": "Oud Mood 30ml by Lattafa EDP Unisex\nLattafa Oud Mood in the 30ml size offers a rich fragrance experience in a bottle that is easy to carry. Rose, saffron and pimento give the opening a warm floral-spicy feel. At the heart, oud meets caramel, floral notes and patchouli, balancing woody depth with sweetness. Amber, resins, incense, musk and other woods complete the smoky, comforting finish. Consider this Eau de Parfum for evening dinners, special plans or whenever you prefer a bolder oriental profile over light fresh scents. The compact 30ml format also makes it practical to pack for travel. Explore Oud Mood at Sham perfume.\nFragrance Notes\nTop: Rose, Saffron, Pimento\nMiddle: Agarwood (Oud), Caramel, Floral Notes, Patchouli\nBase: Woody Notes, Amber, Resins, Incense, Musk",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/oud-mood-30ml-by-lattafa-edp-unisex-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/oud-mood-30ml-by-lattafa-edp-unisex-1.jpg",
+        "https://www.shamperfume.com/cdn/large/oud-mood-30ml-by-lattafa-edp-unisex-2.jpg",
+        "https://www.shamperfume.com/cdn/large/oud-mood-30ml-by-lattafa-edp-unisex-6.jpg",
+        "https://www.shamperfume.com/cdn/large/oud-mood-30ml-by-lattafa-edp-unisex-3.jpg",
+        "https://www.shamperfume.com/cdn/large/oud-mood-30ml-by-lattafa-edp-unisex-4.jpg",
+        "https://www.shamperfume.com/cdn/large/oud-mood-30ml-by-lattafa-edp-unisex-5.jpg",
+        "https://www.shamperfume.com/cdn/large/oud-mood-30ml-by-lattafa-edp-unisex-7.jpg",
+        "https://www.shamperfume.com/cdn/large/oud-mood-30ml-by-lattafa-edp-unisex-8.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "Lattafa",
+      "supplierPrice": 981.08,
+      "ourPrice": 1475,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "LATTAFA-OUD-MOOD-30ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 75,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/lattafa/oud-mood-30ml/",
+      "slug": "oud-mood-30ml-by-lattafa-edp-unisex-52",
+      "sizeMl": 30,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [
+          "Rose",
+          "Saffron",
+          "Pimento"
+        ],
+        "heart": [
+          "Agarwood (Oud)",
+          "Caramel",
+          "Floral Notes",
+          "Patchouli"
+        ],
+        "base": [
+          "Woody Notes",
+          "Amber",
+          "Resins",
+          "Incense",
+          "Musk"
+        ]
+      },
+      "families": [
+        "Oriental"
+      ],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Date Night",
+        "Special Event",
+        "Dinner"
+      ],
+      "barcode": "6291108731246",
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld"
+    },
+    {
+      "id": 53,
+      "sku": "RAS-053",
+      "nameAr": "Hawas Ice by Rasasi 100ml EDP",
+      "nameEn": "Hawas Ice by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Ice by Rasasi – 100ml\nHawas Ice opens with crisp green apple, Italian bergamot and bright lemon, accented by aromatic star anise. Orange blossom joins marine notes, plum and cardamom in the heart, giving the scent both watery freshness and a subtle fruity-spicy dimension. Moss, driftwood, amber and musk define the base, replacing the Hawas's warmer patchouli direction with a cooler, mossy impression. The fragrance balances citrus, crisp fruit and woods without depending on dense sweetness. Ice suits those who enjoy aromatic freshness but want more variety than a simple lemon scent. This 100ml Eau de Parfum is a flanker in the Hawas collection.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/perfumes/rasasi/hawasice3-100ml-edp.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/perfumes/rasasi/hawasice3-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/rasasi/hawasice4-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/rasasi/hawasice7-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/rasasi/hawasice5-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/rasasi/hawasice6-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/rasasi/hawasice-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/rasasi/hawasice1-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/rasasi/hawasice2-100ml-edp.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 3270.25,
+      "ourPrice": 4910,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "Hawas-Ice-49",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 250,
+      "supplierSalePrice": 198,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/rasasi-hawas-ice-for-him/",
+      "slug": "hawas-ice-by-rasasi-100ml-edp-53",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Aromatic Woody Fruity"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Casual"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 54,
+      "sku": "RAS-054",
+      "nameAr": "Hawas Malibu by Rasasi 100ml EDP",
+      "nameEn": "Hawas Malibu by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Malibu by Rasasi – 100ml\nPineapple gives Hawas Malibu a bright, tropical character, sharpened by orange and tangy grapefruit. This bright fruit opening gradually reveals a softer centre of amber, iris and lavender. The floral-powdery quality of iris keeps the composition from remaining juicy, while lavender contributes a clean aromatic edge. In the base, tonka bean and musk bring warmth; patchouli adds a gentle woody finish. Malibu balances playful fruit with a settled amber character rather than relying on coconut-heavy sweetness. It suits someone looking for a fresh fruity fragrance with a warm transition from daytime to evening. Available as a 100ml Eau de Parfum.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-malibu-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-malibu-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-malibu-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-malibu-by-rasasi-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-malibu-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-malibu-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-malibu-by-rasasi-100ml-edp-8.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-malibu-by-rasasi-100ml-edp-9.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-malibu-by-rasasi-100ml-edp-1.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 3401.06,
+      "ourPrice": 5105,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-MALIBU-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 260,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-malibu-rasasi-100ml-edp/",
+      "slug": "hawas-malibu-by-rasasi-100ml-edp-54",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Fresh",
+        "Fruity",
+        "Amber"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Evening",
+        "Casual"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 55,
+      "sku": "RAS-055",
+      "nameAr": "Hawas Verde by Rasasi 100ml EDP",
+      "nameEn": "Hawas Verde by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Verde by Rasasi – 100ml\nLime, rosemary and green apple give Hawas Verde its lively citrus-aromatic character. The lime feels sharp, while apple adds crisp fruit without pushing the composition toward thick sweetness. Rosemary brings an herbal edge that makes the scent recognisably green. Patchouli adds earthiness, and amber introduces a measured warmth behind the fresh notes. Together, these ingredients balance brightness with a grounded woody aspect. Verde is particularly interesting for wearers who prefer herbs and fresh fruit to creamy vanilla or dense gourmand accords. Even so, the contrast between citrus, herbs and patchouli gives the fragrance a distinct identity in the Hawas range.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-verde-by-rasasi-100ml-edp-7.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-verde-by-rasasi-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-verde-by-rasasi-100ml-edp-9.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-verde-by-rasasi-100ml-edp-8.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-verde-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-verde-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-verde-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-verde-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-verde-by-rasasi-100ml-edp-6.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 3335.66,
+      "ourPrice": 5005,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-VERDE-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 255,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-verde-rasasi-100ml-edp/",
+      "slug": "hawas-verde-by-rasasi-100ml-edp-55",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Citrus Aromatic"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Casual"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 56,
+      "sku": "RAS-056",
+      "nameAr": "Hawas Majestic by Rasasi 100ml EDP",
+      "nameEn": "Hawas Majestic by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Majestic by Rasasi – 100ml\nHawas Majestic combines saffron with citrus, jasmine and green leaves for an opening that feels spicy and bright. The character changes in the middle as mineral notes, ambergris, woody amber and dry woods introduce a textured, almost stony quality. Oakmoss, musk, cedar and fir then create a green forest impression in the base. What distinguishes this fragrance is the contrast between the opening's aromatic lift and its drier, mineral-woody core. It is less focused on sugary fruit than on saffron, amber and the smell of timber. This 100ml Eau de Parfum is for fans of structured woody fragrances with depth.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-majestic-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-majestic-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-majestic-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-majestic-by-rasasi-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-majestic-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-majestic-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-majestic-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-majestic-by-rasasi-100ml-edp-9.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-majestic-by-rasasi-100ml-edp-1.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "RASASI",
+      "supplierPrice": 3479.55,
+      "ourPrice": 5220,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-MAJESTIC-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 266,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-majestic-rasasi-100ml-edp/",
+      "slug": "hawas-majestic-by-rasasi-100ml-edp-56",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Oriental",
+        "Spicy"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Date Night",
+        "Special Event"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 57,
+      "sku": "RAS-057",
+      "nameAr": "Hawas Reina by Rasasi 100ml EDP",
+      "nameEn": "Hawas Reina by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Reina by Rasasi – 100ml\nApricot and pear make Hawas Reina fruity at the start, while cinnamon contributes a gentle spicy warmth. The heart is fuller and floral: jasmine, frangipani and orange blossom meet coconut and a coffee nuance. Vanilla, white musk, amber, sandalwood and sugar then create a creamy, sweet base. The composition moves from juicy stone fruit into tropical flowers before settling into soft woods and vanilla. Coffee adds depth rather than dominating the fragrance. Reina will appeal to those who enjoy floral vanilla scents with a fruity opening and a smooth gourmand touch. It comes in a 100ml Eau de Parfum presentation.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-reina-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-reina-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-reina-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-reina-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-reina-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-reina-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-reina-by-rasasi-100ml-edp-10.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-reina-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-reina-by-rasasi-100ml-edp-8.jpg"
+      ],
+      "category": "نسائي",
+      "brand": "RASASI",
+      "supplierPrice": 3387.98,
+      "ourPrice": 5085,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-REINA-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 259,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-reina-rasasi-100ml-edp/",
+      "slug": "hawas-reina-by-rasasi-100ml-edp-57",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Oriental Vanilla"
+      ],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Date Night",
+        "Special Event"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 58,
+      "sku": "RAS-058",
+      "nameAr": "Hawas Chrome For Him by Rasasi 100ml EDP",
+      "nameEn": "Hawas Chrome For Him by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Chrome For Him by Rasasi – 100ml EDP\nJuicy peach, yellow fruits and sweet orange introduce Hawas Chrome For Him, a 100ml Rasasi Eau de Parfum with a distinctly tropical direction. Mango and passion fruit then meet a watery accord in the heart, bringing freshness without turning the scent sharply green. Musk, amber and vanilla add softness underneath the fruit. Chrome is defined by the transition from bright yellow fruits to a smoother, musky finish while keeping the tropical character noticeable.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-chrome-for-him-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-chrome-for-him-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-chrome-for-him-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-chrome-for-him-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-chrome-for-him-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-chrome-for-him-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-chrome-for-him-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-chrome-for-him-by-rasasi-100ml-edp-8.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-chrome-for-him-by-rasasi-100ml-edp-1.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 3270.25,
+      "ourPrice": 4910,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-CHROME-FOR-HIM-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 250,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-chrome-for-him-rasasi-100ml-edp/",
+      "slug": "hawas-chrome-for-him-by-rasasi-100ml-edp-58",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Fruity",
+        "Amber"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Evening",
+        "Casual"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 59,
+      "sku": "RAS-059",
+      "nameAr": "Hawas Venom by Rasasi 100ml EDP",
+      "nameEn": "Hawas Venom by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Venom by Rasasi – 100ml\nIncense defines Hawas Venom from the first impression, supported by the resinous warmth of labdanum. A leather note sits in the middle and keeps the composition dark rather than floral or fruity. Incense returns in the base alongside patchouli and vanilla, creating continuity between the smoky opening and the softer finish. The vanilla rounds the edges but does not erase the leathery, earthy character. Venom is built around few accords, which makes its direction clear: resin, leather and a touch of sweetness. Presented as a 100ml Eau de Parfum, it is a choice for anyone drawn to incense-led woody fragrances.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-venom-by-rasasi-100ml-edp-2.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-venom-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-venom-by-rasasi-100ml-edp-9.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-venom-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-venom-by-rasasi-100ml-edp-8.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-venom-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-venom-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-venom-by-rasasi-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-venom-by-rasasi-100ml-edp-2.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 3335.66,
+      "ourPrice": 5005,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-VENOM-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 255,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-venom-rasasi-100ml-edp/",
+      "slug": "hawas-venom-by-rasasi-100ml-edp-59",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Oriental Woody"
+      ],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Date Night",
+        "Special Event"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 60,
+      "sku": "RAS-060",
+      "nameAr": "Hawas Nautilus by Rasasi 100ml EDP",
+      "nameEn": "Hawas Nautilus by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Nautilus by Rasasi – 100ml\nHawas Nautilus centres on the smell of the coast. Seawater and ambergris introduce a salty, airy impression that sets the direction of this woody aquatic fragrance. Cypress and cedar create a drier, green-wooded middle, giving structure to the marine accords. Driftwood and sand shape the base with a weathered, shorelike character. There is little emphasis on syrupy fruit or heavy vanilla; the interest comes from the meeting of salt, timber and mineral textures. Its restrained profile makes it a practical option for daytime wear, particularly when a fresh yet distinctly woody fragrance is preferred. Presented in 100ml Eau de Parfum.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-nautilus-by-rasasi-100ml-edp-10.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-nautilus-by-rasasi-100ml-edp-10.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-nautilus-by-rasasi-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-nautilus-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-nautilus-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-nautilus-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-nautilus-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-nautilus-by-rasasi-100ml-edp-9.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-nautilus-by-rasasi-100ml-edp-10.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 3466.46,
+      "ourPrice": 5200,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-NAUTILUS-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 265,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-nautilus-rasasi-100ml-edp/",
+      "slug": "hawas-nautilus-by-rasasi-100ml-edp-60",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Woody",
+        "Aquatic"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Casual"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 61,
+      "sku": "RAS-061",
+      "nameAr": "Hawas Private Terra by Rasasi Extrait de Parfum 100ml",
+      "nameEn": "Hawas Private Terra by Rasasi Extrait de Parfum 100ml",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Private Terra by Rasasi – 100ml Extrait de Parfum\nHawas Private Terra Extrait de Parfum begins with saffron, jasmine and cardamom, combining floral detail with a dry spicy edge. Driftwood, cedarwood and iris give its heart a smooth but structured woody character. Oakmoss and cypriol shape a base that feels earthy, mossy, dry and subtly mineral. Unlike a sweet amber fragrance, Terra keeps its attention on woods, texture and restrained spice. Iris helps soften the sharper facets without removing the dry finish. The contrast of floral spice and moss-covered timber is the composition's defining feature. This 100ml Extrait de Parfum suits those seeking a woody fragrance with understated complexity.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-private-terra-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-private-terra-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-private-terra-by-rasasi-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-private-terra-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-private-terra-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-private-terra-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-private-terra-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-private-terra-by-rasasi-100ml-edp-9.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-private-terra-by-rasasi-100ml-edp-10.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "RASASI",
+      "supplierPrice": 3858.9,
+      "ourPrice": 5790,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-PRIVATE-TERRA-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 295,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-private-terra-rasasi-100ml/",
+      "slug": "hawas-private-terra-by-rasasi-extrait-de-parfum-100ml-61",
+      "sizeMl": 100,
+      "concentration": "Extrait de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Woody Spicy"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Date Night",
+        "Special Event"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 62,
+      "sku": "RAS-062",
+      "nameAr": "Hawas Atlantis by Rasasi 100ml EDP",
+      "nameEn": "Hawas Atlantis by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Atlantis by Rasasi – 100ml EDP\nBergamot and green galbanum open Hawas Atlantis with a restrained citrus-herbal impression. Ginger brings a spicy touch to the mineral and salty accords in the heart, creating a marine profile that leans away from sugary fruit. Sandalwood and cedarwood provide a drier woody base. In this 100ml Rasasi Eau de Parfum, the contrast between mineral freshness, aromatic ginger and smooth woods gives Atlantis its coastal-inspired identity.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-atlantis-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-atlantis-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-atlantis-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-atlantis-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-atlantis-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-atlantis-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-atlantis-by-rasasi-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-atlantis-by-rasasi-100ml-edp-8.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-atlantis-by-rasasi-100ml-edp-1.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 2943.23,
+      "ourPrice": 4415,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-ATLANTIS-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 225,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-atlantis-rasasi-100ml-edp/",
+      "slug": "hawas-atlantis-by-rasasi-100ml-edp-62",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Marine",
+        "Mineral",
+        "Woody"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Casual"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 63,
+      "sku": "RAS-063",
+      "nameAr": "Hawas Private Dulce by Rasasi Extrait de Parfum 100ml",
+      "nameEn": "Hawas Private Dulce by Rasasi Extrait de Parfum 100ml",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Private Dulce by Rasasi – 100ml Extrait de Parfum\nHawas Private Dulce Extrait de Parfum places hazelnut beside passion fruit and pink pepper for a nutty, tart and spicy opening. Cacao, jasmine sambac and coconut form the heart, mixing chocolate richness with floral and creamy accents. Patchouli and vetiver keep the base earthy, while soft musk, tonka bean and caramel contribute softness and sweetness. Dulce's appeal lies in contrast: edible notes are present, but dry woods and green roots prevent a single sugary impression. It is a more textured take on a gourmand scent, moving from toasted nuts toward cacao and caramel. The bottle contains 100ml Extrait de Parfum.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-private-dulce-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-private-dulce-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-private-dulce-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-private-dulce-by-rasasi-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-private-dulce-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-private-dulce-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-private-dulce-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-private-dulce-by-rasasi-100ml-edp-9.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-private-dulce-by-rasasi-100ml-edp-1.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "RASASI",
+      "supplierPrice": 3793.49,
+      "ourPrice": 5695,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-PRIVATE-DULCE-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 290,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-private-dulce-rasasi-100ml/",
+      "slug": "hawas-private-dulce-by-rasasi-extrait-de-parfum-100ml-63",
+      "sizeMl": 100,
+      "concentration": "Extrait de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Floral Fruity",
+        "Gourmand"
+      ],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Date Night",
+        "Special Event"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 64,
+      "sku": "RAS-064",
+      "nameAr": "Hawas Gold Digger by Rasasi 100ml EDP",
+      "nameEn": "Hawas Gold Digger by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Gold Digger by Rasasi – 100ml EDP\nPear and mint give Hawas Gold Digger a bright opening that feels fruity without losing its herbal edge. Lavender and bergamot reinforce the freshness before cinnamon and sage introduce a warmer, aromatic middle. As the scent settles, vanilla meets amber, cedarwood and patchouli. These base notes keep the sweetness grounded in a woody finish rather than letting it become a simple dessert accord. Gold Digger changes character steadily: crisp fruit first, seasoned herbs next, then soft vanilla over dry woods. The combination provides an option for wearers who appreciate recognisable aromatic details alongside a comfortable, gently warm Eau de Parfum.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-gold-digger-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-gold-digger-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-gold-digger-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-gold-digger-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-gold-digger-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-gold-digger-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-gold-digger-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-gold-digger-by-rasasi-100ml-edp-9.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-gold-digger-by-rasasi-100ml-edp-1.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 3074.04,
+      "ourPrice": 4615,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-GOLD-DIGGER-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 235,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-gold-digger-rasasi-100ml-edp/",
+      "slug": "hawas-gold-digger-by-rasasi-100ml-edp-64",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Woody Aromatic"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Date Night",
+        "Casual"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 65,
+      "sku": "RAS-065",
+      "nameAr": "Hawas Thunder by Rasasi 100ml EDP",
+      "nameEn": "Hawas Thunder by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Thunder by Rasasi – 100ml\nHawas Thunder begins with apple, bergamot and ginger, with cedarwood and mandarin for a crisp fruity-woody opening. Orange blossom and peony introduce a floral layer in the heart, while maté and patchouli keep the centre green and aromatic. Musk, tonka bean, vanilla, ambergris and cedarwood make the base warmer and smoother. The transition is from sparkling fruit and ginger toward woods with restrained sweetness. Thunder offers several contrasting textures without moving completely into a gourmand style. It suits casual, energetic daytime wear while remaining comfortable on relaxed, informal weekend evenings. It is presented in a 100ml Eau de Parfum bottle.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-thunder-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-thunder-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-thunder-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-thunder-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-thunder-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-thunder-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-thunder-by-rasasi-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-thunder-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-thunder-by-rasasi-100ml-edp-9.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 3505.71,
+      "ourPrice": 5260,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-THUNDER-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 268,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-thunder-rasasi-100ml-edp/",
+      "slug": "hawas-thunder-by-rasasi-100ml-edp-65",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Fruity Floral",
+        "Woody"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Evening",
+        "Casual"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 66,
+      "sku": "RAS-066",
+      "nameAr": "Hawas Viper by Rasasi 100ml EDP",
+      "nameEn": "Hawas Viper by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Viper by Rasasi – 100ml EDP\nHawas Viper begins with green notes, davana, saffron and thyme, giving the opening a leafy, aromatic spice. Coffee and cinnamon shape the heart, while violet and raspberry offer a subtle floral-fruit contrast. Tonka bean, musk and gurjan balsam form a warm, resinous base. The transition from green herbs to roasted coffee and balsamic sweetness gives this 100ml Eau de Parfum its darker character without relying on a sharp citrus profile.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-viper-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-viper-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-viper-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-viper-by-rasasi-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-viper-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-viper-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-viper-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-viper-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-viper-by-rasasi-100ml-edp-10.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 3270.25,
+      "ourPrice": 4910,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-VIPER-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 250,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-viper-rasasi-100ml-edp/",
+      "slug": "hawas-viper-by-rasasi-100ml-edp-66",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Spicy",
+        "Smoky",
+        "Oriental",
+        "Gourmand"
+      ],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Date Night",
+        "Special Event"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 67,
+      "sku": "RAS-067",
+      "nameAr": "Hawas Kobra by Rasasi 100ml EDP",
+      "nameEn": "Hawas Kobra by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Kobra by Rasasi – 100ml EDP\nGinger leads Hawas Kobra with a crisp, spicy bite, while bergamot and tangerine add a citrus lift. The fragrance then makes an unusual turn towards green tea, neroli and cinnamon. Tea keeps the heart clean and slightly leafy, whereas cinnamon supplies a measured touch of warmth. Musk, woods and amber settle underneath, reducing the brightness without turning the scent overly sweet. The central tea accord distinguishes Kobra from fruit-heavy fragrances in the Hawas family. In a 100ml Eau de Parfum format, it offers a fresh aromatic direction balanced by gentle spice and a restrained, woody conclusion suited to everyday wear.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-kobra-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-kobra-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-kobra-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-kobra-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-kobra-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-kobra-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-kobra-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-kobra-by-rasasi-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-kobra-by-rasasi-100ml-edp-8.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 3008.63,
+      "ourPrice": 4515,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-KOBRA-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 230,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-kobra-rasasi-100ml-edp/",
+      "slug": "hawas-kobra-by-rasasi-100ml-edp-67",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Oriental Woody"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Casual"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 68,
+      "sku": "RAS-068",
+      "nameAr": "Hawas For Him La Mer by Rasasi 100ml EDP",
+      "nameEn": "Hawas For Him La Mer by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas For Him La Mer by Rasasi – 100ml EDP\nThe marine feel of Hawas For Him La Mer comes from contrast rather than a listed seawater accord. Peppermint, mandarin and bergamot establish an aromatic citrus opening with a cool edge. Blackcurrant then adds fruit, while carrot and jasmine contribute an unusual earthy-floral middle. Fig, amber and woody notes settle beneath, creating a warmer finish than the first minty impression suggests. This progression distinguishes La Mer from fragrances that rely only on bright citrus. Its 100ml Rasasi Eau de Parfum blends fresh herbs, dark fruit and subtle earthiness, making the scent especially interesting without the need for exaggerated performance claims.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-for-him-la-mer-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-for-him-la-mer-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-for-him-la-mer-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-for-him-la-mer-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-for-him-la-mer-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-for-him-la-mer-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-for-him-la-mer-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-for-him-la-mer-by-rasasi-100ml-edp-8.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-for-him-la-mer-by-rasasi-100ml-edp-1.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 3204.85,
+      "ourPrice": 4810,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-FOR-HIM-LA-MER-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 245,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-for-him-la-mer-rasasi-100ml-edp/",
+      "slug": "hawas-for-him-la-mer-by-rasasi-100ml-edp-68",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Woody Aromatic"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Casual"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 69,
+      "sku": "RAS-069",
+      "nameAr": "Hawas Eclat by Rasasi 100ml EDP",
+      "nameEn": "Hawas Eclat by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Eclat by Rasasi – 100ml EDP\nLychee gives Hawas Eclat a juicy beginning, balanced by bergamot, pear and a small pistachio accent. The heart keeps the composition focused: rose develops beside incense, pairing floral softness with a gentle resinous shadow. Amber, musk and woody notes then shape the base, reducing the fruitiness without removing its warmth. Eclat is notable for its contrast between bright fruit and an understated, gently smoky floral middle. Pistachio appears in the opening rather than turning the whole scent into a heavy nutty dessert. Presented in a 100ml Rasasi Eau de Parfum bottle, it explores a fruity-floral style with an amber foundation.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-eclat-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-eclat-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-eclat-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-eclat-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-eclat-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-eclat-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-eclat-by-rasasi-100ml-edp-8.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-eclat-by-rasasi-100ml-edp-9.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-eclat-by-rasasi-100ml-edp-1.jpg"
+      ],
+      "category": "نسائي",
+      "brand": "RASASI",
+      "supplierPrice": 3204.85,
+      "ourPrice": 4810,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-ECLAT-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 245,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-eclat-rasasi-100ml-edp/",
+      "slug": "hawas-eclat-by-rasasi-100ml-edp-69",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Fruity Floral",
+        "Amber"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Fall"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Date Night"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 70,
+      "sku": "RAS-070",
+      "nameAr": "Hawas Rouge by Rasasi 100ml EDP",
+      "nameEn": "Hawas Rouge by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Rouge by Rasasi – 100ml\nHawas Rouge explores a richer fruity-floral gourmand profile. Tangerine and raspberry bring brightness to the opening, while chocolate adds an unusual dark sweetness. Rose, orange blossom, tuberose and iris then move the fragrance toward a floral centre. Vanilla, musk, coffee and dry woods create the base, where sweetness meets a roasted, woody impression. The contrast between chocolate in the opening and coffee in the finish gives Rouge its character. It is layered beyond a simple fruit scent, with flowers linking the edible notes. This 100ml Eau de Parfum is suited to people who enjoy warm florals with a dessert-like accent.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-rouge-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-rouge-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-rouge-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-rouge-by-rasasi-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-rouge-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-rouge-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-rouge-by-rasasi-100ml-edp-9.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-rouge-by-rasasi-100ml-edp-10.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-rouge-by-rasasi-100ml-edp-1.jpg"
+      ],
+      "category": "نسائي",
+      "brand": "RASASI",
+      "supplierPrice": 3518.79,
+      "ourPrice": 5280,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-ROUGE-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 269,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-rouge-rasasi-100ml-edp/",
+      "slug": "hawas-rouge-by-rasasi-100ml-edp-70",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Fruity Floral",
+        "Gourmand",
+        "Woody"
+      ],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Date Night",
+        "Special Event"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 71,
+      "sku": "RAS-071",
+      "nameAr": "Hawas Lava Gold by Rasasi 100ml EDP",
+      "nameEn": "Hawas Lava Gold by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Lava Gold by Rasasi – 100ml EDP\nThe contrast between sparkling fruit and darker woods defines Hawas Lava Gold. Pineapple, grapefruit, apple and lemon establish a bright, juicy introduction with a tart citrus edge. Leather, saffron and oud then alter the direction of the scent, while raspberry introduces a small fruity link between the two stages. Amber and patchouli bring warmth below the leather, complemented by moss and a caramel nuance. Instead of maintaining the same freshness throughout, Lava Gold gradually becomes deeper and sweeter. Its layered structure will interest wearers who enjoy a pronounced gradual change from an energetic opening to a more substantial woody finish.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-lava-gold-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-lava-gold-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-lava-gold-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-lava-gold-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-lava-gold-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-lava-gold-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-lava-gold-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-lava-gold-by-rasasi-100ml-edp-8.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-lava-gold-by-rasasi-100ml-edp-1.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 3047.87,
+      "ourPrice": 4575,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-LAVA-GOLD-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 233,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-lava-gold-rasasi-100ml-edp/",
+      "slug": "hawas-lava-gold-by-rasasi-100ml-edp-71",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Oriental Woody"
+      ],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Date Night",
+        "Special Event"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 72,
+      "sku": "RAS-072",
+      "nameAr": "Hawas Fire by Rasasi 100ml EDP",
+      "nameEn": "Hawas Fire by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Fire by Rasasi – 100ml\nFresh French clary sage gives Hawas Fire an aromatic, herbal opening rather than a sweet fruit introduction. Egyptian jasmine and marine notes emerge in the heart, combining white flowers with a sea-breeze character. Ambergris and amber bring a warmer, subtly salty finish to the base. The composition develops from crisp herbs to watery florals and then to mineral warmth, making the contrast between freshness and amber its central idea. Fire is appealing to those who enjoy aquatic fragrances with more aromatic texture than a citrus cologne. The scent is presented as a 100ml Eau de Parfum in the Hawas collection.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/perfumes/rasasi/rasasihawasfireeaudeparfum100mlunisexperfume4-edp.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/perfumes/rasasi/rasasihawasfireeaudeparfum100mlunisexperfume4-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/rasasi/rasasihawasfireeaudeparfum100mlunisexperfume-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/rasasi/rasasihawasfireeaudeparfum100mlunisexperfume2-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/rasasi/rasasihawasfireeaudeparfum100mlunisexperfume3-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/rasasi/rasasihawasfireeaudeparfum100mlunisexperfume5-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/rasasi/rasasihawasfireeaudeparfum100mlunisexperfume6-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/rasasi/rasasihawasfireeaudeparfum100mlunisexperfume7-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/rasasi/rasasihawasfireeaudeparfum100mlunisexperfume8-edp.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 3728.09,
+      "ourPrice": 5595,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "Fire-For-Him",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 285,
+      "supplierSalePrice": 190,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/rasasi-hawas-fire/",
+      "slug": "hawas-fire-by-rasasi-100ml-edp-72",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Moderate",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Aromatic Aquatic"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Casual",
+        "Evening"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 73,
+      "sku": "RAS-073",
+      "nameAr": "Hawas Tropical by Rasasi 100ml EDP",
+      "nameEn": "Hawas Tropical by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Tropical by Rasasi – 100ml\nHawas Tropical approaches coconut from a fresh, green angle. Coconut water, fig leaf and ginger create an airy opening, with the ginger adding a lively edge to the leafy notes. Coconut and fig develop in the middle, accompanied by mint that keeps the fragrance from becoming overly creamy. Sandalwood, tonka bean and musk form a smooth base beneath the tropical accord. The effect balances fruit, greenery and soft woods rather than delivering a heavy dessert scent. This offers coconut without excessive sweetness. Hawas Tropical is offered as a 100ml Eau de Parfum with an aromatic green profile for warmer days.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-tropical-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-tropical-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-tropical-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-tropical-by-rasasi-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-tropical-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-tropical-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-tropical-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-tropical-by-rasasi-100ml-edp-9.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-tropical-by-rasasi-100ml-edp-1.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 3401.06,
+      "ourPrice": 5105,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-TROPICAL-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 260,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-tropical-rasasi-100ml-edp/",
+      "slug": "hawas-tropical-by-rasasi-100ml-edp-73",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Aromatic",
+        "Green"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Casual"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 74,
+      "sku": "RAS-074",
+      "nameAr": "Hawas Ice Freeze by Rasasi 100ml EDP",
+      "nameEn": "Hawas Ice Freeze by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Ice Freeze by Rasasi – 100ml EDP\nBergamot, mandarin and orange create a lively citrus start for Hawas Ice Freeze. The fruit notes are soon sharpened by ginger and mint, with lily of the valley introducing a delicate floral accent. As the brighter notes fade, sandalwood and musk provide a smoother texture while ambergris adds depth. The contrast is between cooling aromatic freshness and a calm, woody base, not a heavy gourmand sweetness. Ice Freeze is suited to those who prefer citrus scents with a noticeable herbal middle. Its 100ml Eau de Parfum presentation keeps the focus on the complete composition, from zesty opening to soft finish.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-ice-freeze-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-ice-freeze-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-ice-freeze-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-ice-freeze-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-ice-freeze-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-ice-freeze-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-ice-freeze-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-ice-freeze-by-rasasi-100ml-edp-8.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-ice-freeze-by-rasasi-100ml-edp-9.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 3008.63,
+      "ourPrice": 4515,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-ICE-FREEZE-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 230,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-ice-freeze-rasasi-100ml-edp/",
+      "slug": "hawas-ice-freeze-by-rasasi-100ml-edp-74",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Aromatic",
+        "Fresh"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Casual"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 75,
+      "sku": "RAS-075",
+      "nameAr": "Hawas Highness by Rasasi 100ml EDP",
+      "nameEn": "Hawas Highness by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Highness by Rasasi – 100ml EDP\nHawas Highness begins with citrus, spice and amber appearing together, so warmth is present from the first impression. The floral centre introduces jasmine, violet and rose, moving away from the sharper opening without losing its underlying richness. Cedarwood, vetiver and patchouli create a dry, earthy final stage. What stands out is the arrangement of amber ahead of the flowers, rather than waiting until the base to introduce depth. The resulting profile combines floral softness with an aromatic, woody structure. Highness is a Rasasi 100ml Eau de Parfum for anyone looking beyond a purely sweet floral or a straightforward citrus fragrance.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-highness-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-highness-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-highness-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-highness-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-highness-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-highness-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-highness-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-highness-by-rasasi-100ml-edp-8.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-highness-by-rasasi-100ml-edp-1.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 3204.85,
+      "ourPrice": 4810,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-HIGHNESS-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 245,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-highness-rasasi-100ml-edp/",
+      "slug": "hawas-highness-by-rasasi-100ml-edp-75",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Oriental Floral"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Special Event"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 76,
+      "sku": "RAS-076",
+      "nameAr": "Hawas Overdose by Rasasi 100ml EDP",
+      "nameEn": "Hawas Overdose by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Overdose by Rasasi – 100ml\nHawas Overdose takes an aromatic opening into a sweeter, amber-rich direction. Spicy and herbal impressions lead before orange blossom adds a floral accent alongside warm amber and guaiac wood. As the fragrance settles, vanilla, chocolate and praline become more prominent, creating a dessert-like effect without losing the underlying woody texture. Ambergris provides a contrasting mineral warmth in the base. The composition is most distinctive in the shift from dry spice to soft confectionery notes. Those who enjoy gourmand fragrances with an aromatic introduction may appreciate this contrast, especially for evenings or cooler surroundings. The 100ml bottle contains Eau de Parfum.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-overdose-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-overdose-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-overdose-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-overdose-by-rasasi-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-overdose-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-overdose-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-overdose-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-overdose-by-rasasi-100ml-edp-9.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-overdose-by-rasasi-100ml-edp-1.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 3662.68,
+      "ourPrice": 5495,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-OVERDOSE-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 280,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-overdose-rasasi-100ml-edp/",
+      "slug": "hawas-overdose-by-rasasi-100ml-edp-76",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Oriental",
+        "Spicy",
+        "Gourmand"
+      ],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Date Night",
+        "Special Event"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 77,
+      "sku": "RAS-077",
+      "nameAr": "Hawas Addiction by Rasasi 100ml EDP",
+      "nameEn": "Hawas Addiction by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Addiction by Rasasi – 100ml EDP\nVanilla, cotton candy, marshmallow, caramel and an ice-cream accord set a dessert-like tone in Hawas Addiction. Coconut milk, vanilla and milk continue that creamy direction through the heart. As the scent develops, amber, cedarwood and moss offer a woody counterweight to the sweetness. This 100ml Rasasi Eau de Parfum is firmly gourmand, yet its base provides a different texture from the confectionery opening. The combination will interest those who prefer milky vanilla styles over citrus-led freshness.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-addiction-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-addiction-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-addiction-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-addiction-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-addiction-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-addiction-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-addiction-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-addiction-by-rasasi-100ml-edp-8.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-addiction-by-rasasi-100ml-edp-1.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "RASASI",
+      "supplierPrice": 2877.82,
+      "ourPrice": 4320,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-ADDICTION-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 220,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-addiction-rasasi-100ml-edp/",
+      "slug": "hawas-addiction-by-rasasi-100ml-edp-77",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Oriental Vanilla",
+        "Gourmand"
+      ],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Date Night",
+        "Special Event"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 78,
+      "sku": "RAS-078",
+      "nameAr": "Hawas Exotic by Rasasi 100ml EDP",
+      "nameEn": "Hawas Exotic by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Exotic by Rasasi – 100ml EDP\nHawas Exotic has a detailed and varied opening, where coconut meets mugwort, lavender, cardamom, carrot and bergamot. That combination introduces creamy, herbal and lightly spicy facets at once. Orris and jasmine lead the floral middle with lily of the valley, freesia and cinnamon adding contrast. The base then shifts towards cypriol, musk, patchouli, ambergris, benzoin and labdanum. These deeper notes give the composition an earthy, resinous finish. Exotic is less straightforward than a conventional citrus scent: its interest comes from the movement between coconut, powdery flowers and textured woods. Rasasi presents this edition in a 100ml Eau de Parfum bottle.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-exotic-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-exotic-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-exotic-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-exotic-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-exotic-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-exotic-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-exotic-by-rasasi-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-exotic-by-rasasi-100ml-edp-8.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-exotic-by-rasasi-100ml-edp-1.jpg"
+      ],
+      "category": "رجالي",
+      "brand": "RASASI",
+      "supplierPrice": 3191.76,
+      "ourPrice": 4790,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-EXOTIC-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 244,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-exotic-rasasi-100ml-edp/",
+      "slug": "hawas-exotic-by-rasasi-100ml-edp-78",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Oriental Floral"
+      ],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Date Night",
+        "Special Event"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 79,
+      "sku": "RAS-079",
+      "nameAr": "Hawas Blanche by Rasasi 100ml EDP",
+      "nameEn": "Hawas Blanche by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Blanche by Rasasi – 100ml EDP\nHawas Blanche begins with blackcurrant, mandarin, bergamot and apple, balancing dark berries against crisp citrus fruit. Wormwood and basil then introduce a herbal character, while geranium and patchouli bring floral-green and earthy detail to the middle. Sandalwood, moss, musk and dry woods form a composed base beneath the fruit. Blanche does not stay purely juicy; the herbs gradually change its direction towards a greener, more structured scent. The contrast between blackcurrant and aromatic leaves is the central feature of this edition. Rasasi offers it in a 100ml Eau de Parfum format with a distinct fruity-woody progression rather than heavy sweetness.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-blanche-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-blanche-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-blanche-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-blanche-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-blanche-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-blanche-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-blanche-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-blanche-by-rasasi-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-blanche-by-rasasi-100ml-edp-1.jpg"
+      ],
+      "category": "مختلط",
+      "brand": "RASASI",
+      "supplierPrice": 3204.85,
+      "ourPrice": 4810,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-BLANCHE-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 245,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-blanche-rasasi-100ml-edp/",
+      "slug": "hawas-blanche-by-rasasi-100ml-edp-79",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Fruity",
+        "Citrus",
+        "Aromatic",
+        "Woody"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Summer",
+        "Fall"
+      ],
+      "occasionsSource": [
+        "Daily",
+        "Office",
+        "Casual"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 80,
+      "sku": "RAS-080",
+      "nameAr": "Hawas Love For Her by Rasasi 100ml EDP",
+      "nameEn": "Hawas Love For Her by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Love For Her by Rasasi – 100ml EDP\nA peppery sparkle gives Hawas Love For Her its first impression. Pink pepper and cardamom sit alongside mandarin, creating a balance of spice and citrus rather than an entirely sugary opening. Orange blossom, jasmine and ylang ylang take over in the heart, where the fragrance becomes noticeably more floral. Tonka bean, vanilla and praline bring a rounded, nutty sweetness to its later stages. The movement from bright spice to white flowers is central to this composition. It suits anyone drawn to warm florals with a soft gourmand edge, especially when a richer finish is preferable to a purely fresh scent.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-love-for-her-by-rasasi-100ml-edp-1.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-love-for-her-by-rasasi-100ml-edp-1.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-love-for-her-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-love-for-her-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-love-for-her-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-love-for-her-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-love-for-her-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-love-for-her-by-rasasi-100ml-edp-8.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-love-for-her-by-rasasi-100ml-edp-1.jpg"
+      ],
+      "category": "نسائي",
+      "brand": "RASASI",
+      "supplierPrice": 3139.44,
+      "ourPrice": 4710,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-LOVE-FOR-HER-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 240,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-love-for-her-rasasi-100ml-edp/",
+      "slug": "hawas-love-for-her-by-rasasi-100ml-edp-80",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Oriental Floral"
+      ],
+      "seasonsSource": [
+        "Spring",
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Date Night",
+        "Special Event"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
+    },
+    {
+      "id": 81,
+      "sku": "RAS-081",
+      "nameAr": "Hawas Diva by Rasasi 100ml EDP",
+      "nameEn": "Hawas Diva by Rasasi 100ml EDP",
+      "descriptionAr": "",
+      "descriptionEn": "Hawas Diva by Rasasi – 100ml EDP\nHawas Diva by Rasasi opens with red fruits, tart rhubarb and lychee. The rhubarb gives the juicy opening a sharp counterpoint before rose, frankincense and cedar shape a floral-resinous heart. Vanilla, musk and ambergris form the warmer base. Rather than remaining purely fruity, this 100ml Eau de Parfum gradually moves toward rose and soft woods. The contrast between lively lychee, aromatic incense and creamy vanilla is what distinguishes Hawas Diva within the collection.",
+      "imageUrl": "https://www.shamperfume.com/cdn/large/hawas-diva-by-rasasi-100ml-edp-9.jpg",
+      "images": [
+        "https://www.shamperfume.com/cdn/large/hawas-diva-by-rasasi-100ml-edp-9.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-diva-by-rasasi-100ml-edp-2.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-diva-by-rasasi-100ml-edp-5.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-diva-by-rasasi-100ml-edp-3.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-diva-by-rasasi-100ml-edp-4.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-diva-by-rasasi-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/hawas-diva-by-rasasi-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/OGImage/hawas-diva-by-rasasi-100ml-edp-9.jpg"
+      ],
+      "category": "نسائي",
+      "brand": "RASASI",
+      "supplierPrice": 3191.76,
+      "ourPrice": 4790,
+      "stockStatus": "in_stock",
+      "isFeatured": false,
+      "isNew": true,
+      "reviewCount": 0,
+      "createdAt": "2026-10-16T07:14:07.456Z",
+      "supplierId": "shamperfume",
+      "supplierName": "Sham perfume",
+      "supplierSku": "RASASI-HAWAS-DIVA-100ML",
+      "supplierCurrency": "MYR",
+      "supplierPriceOriginal": 244,
+      "exchangeRate": 13.081,
+      "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-diva-rasasi-100ml-edp/",
+      "slug": "hawas-diva-by-rasasi-100ml-edp-81",
+      "sizeMl": 100,
+      "concentration": "Eau de Parfum",
+      "longevity": "Lasting (6-8 hours)",
+      "notes": {
+        "top": [],
+        "heart": [],
+        "base": []
+      },
+      "families": [
+        "Oriental Floral"
+      ],
+      "seasonsSource": [
+        "Fall",
+        "Winter"
+      ],
+      "occasionsSource": [
+        "Evening",
+        "Date Night",
+        "Special Event"
+      ],
+      "importedAt": "2026-10-16T07:14:07.456Z",
+      "refreshedAt": "2026-10-16T07:14:07.456Z",
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "المورد لم ينشر نوتات العطر"
+      ]
     }
   ]
 }

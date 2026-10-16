@@ -1,7 +1,7 @@
 {
  "version": 1,
- "updatedAt": "2026-10-16T06:27:43.281Z",
- "nextUpdateAt": "2026-10-16T18:27:43.281Z",
+ "updatedAt": "2026-10-16T07:14:09.752Z",
+ "nextUpdateAt": "2026-10-16T19:14:09.752Z",
  "editor": "shaheen",
  "entries": {
   "LAT-001": {
@@ -1784,10 +1784,1197 @@
     "هدايا",
     "عطر شرقي"
    ]
+  },
+  "LAT-052": {
+   "sourceHash": "m2owzk",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "Oud Mood 30ml by Lattafa EDP Unisex",
+   "nameEn": "Oud Mood 30ml by Lattafa EDP Unisex",
+   "descriptionAr": "عطر Oud Mood 30ml by Lattafa EDP Unisex من Lattafa للجنسين بطابع شرقي وعود وزهري.",
+   "descriptionEn": "Oud Mood 30ml by Lattafa EDP Unisex\nLattafa Oud Mood in the 30ml size offers a rich fragrance experience in a bottle that is easy to carry. Rose, saffron and pimento give the opening a warm floral-spicy feel. At the heart, oud meets caramel, floral notes and patchouli, balancing woody depth with sweetness. Amber, resins, incense, musk and other woods complete the smoky, comforting finish. Consider this Eau de Parfum for evening dinners, special plans or whenever you prefer a bolder oriental profile over light fresh scents. The compact 30ml format also makes it practical to pack for travel. Explore Oud Mood at Sham perfume.\nFragrance Notes\nTop: Rose, Saffron, Pimento\nMiddle: Agarwood (Oud), Caramel, Floral Notes, Patchouli\nBase: Woody Notes, Amber, Resins, Incense, Musk",
+   "gender": "unisex",
+   "families": [
+    "oriental",
+    "oud",
+    "floral"
+   ],
+   "notes": {
+    "top": [
+     "Rose",
+     "Saffron",
+     "Pimento"
+    ],
+    "heart": [
+     "Agarwood (Oud)",
+     "Caramel",
+     "Floral Notes",
+     "Patchouli"
+    ],
+    "base": [
+     "Woody Notes",
+     "Amber",
+     "Resins",
+     "Incense",
+     "Musk"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": []
+  },
+  "RAS-053": {
+   "sourceHash": "34vdeb",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "Hawas Ice by Rasasi 100ml EDP",
+   "nameEn": "Hawas Ice by Rasasi 100ml EDP",
+   "descriptionAr": "عطر Hawas Ice by Rasasi 100ml EDP من RASASI رجالي بطابع خشبي وفواكه وحلو.",
+   "descriptionEn": "Hawas Ice by Rasasi – 100ml\nHawas Ice opens with crisp green apple, Italian bergamot and bright lemon, accented by aromatic star anise. Orange blossom joins marine notes, plum and cardamom in the heart, giving the scent both watery freshness and a subtle fruity-spicy dimension. Moss, driftwood, amber and musk define the base, replacing the Hawas's warmer patchouli direction with a cooler, mossy impression. The fragrance balances citrus, crisp fruit and woods without depending on dense sweetness. Ice suits those who enjoy aromatic freshness but want more variety than a simple lemon scent. This 100ml Eau de Parfum is a flanker in the Hawas collection.",
+   "gender": "men",
+   "families": [
+    "woody",
+    "fruity",
+    "gourmand"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "summer",
+    "spring"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": []
+  },
+  "RAS-054": {
+   "sourceHash": "1dtqe8o",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "Hawas Malibu by Rasasi 100ml EDP",
+   "nameEn": "Hawas Malibu by Rasasi 100ml EDP",
+   "descriptionAr": "عطر Hawas Malibu by Rasasi 100ml EDP من RASASI رجالي بطابع عنبري ومنعش وفواكه.",
+   "descriptionEn": "Hawas Malibu by Rasasi – 100ml\nPineapple gives Hawas Malibu a bright, tropical character, sharpened by orange and tangy grapefruit. This bright fruit opening gradually reveals a softer centre of amber, iris and lavender. The floral-powdery quality of iris keeps the composition from remaining juicy, while lavender contributes a clean aromatic edge. In the base, tonka bean and musk bring warmth; patchouli adds a gentle woody finish. Malibu balances playful fruit with a settled amber character rather than relying on coconut-heavy sweetness. It suits someone looking for a fresh fruity fragrance with a warm transition from daytime to evening. Available as a 100ml Eau de Parfum.",
+   "gender": "men",
+   "families": [
+    "amber",
+    "fresh",
+    "fruity"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "summer",
+    "spring"
+   ],
+   "occasions": [
+    "daily",
+    "evening"
+   ],
+   "tags": []
+  },
+  "RAS-055": {
+   "sourceHash": "1bocx8m",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "Hawas Verde by Rasasi 100ml EDP",
+   "nameEn": "Hawas Verde by Rasasi 100ml EDP",
+   "descriptionAr": "عطر Hawas Verde by Rasasi 100ml EDP من RASASI رجالي بطابع حمضي وزهري وحلو.",
+   "descriptionEn": "Hawas Verde by Rasasi – 100ml\nLime, rosemary and green apple give Hawas Verde its lively citrus-aromatic character. The lime feels sharp, while apple adds crisp fruit without pushing the composition toward thick sweetness. Rosemary brings an herbal edge that makes the scent recognisably green. Patchouli adds earthiness, and amber introduces a measured warmth behind the fresh notes. Together, these ingredients balance brightness with a grounded woody aspect. Verde is particularly interesting for wearers who prefer herbs and fresh fruit to creamy vanilla or dense gourmand accords. Even so, the contrast between citrus, herbs and patchouli gives the fragrance a distinct identity in the Hawas range.",
+   "gender": "men",
+   "families": [
+    "citrus",
+    "floral",
+    "gourmand"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "summer",
+    "spring"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": []
+  },
+  "RAS-056": {
+   "sourceHash": "w0ijxe",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "Hawas Majestic by Rasasi 100ml EDP",
+   "nameEn": "Hawas Majestic by Rasasi 100ml EDP",
+   "descriptionAr": "عطر Hawas Majestic by Rasasi 100ml EDP من RASASI للجنسين بطابع توابل وشرقي وزهري.",
+   "descriptionEn": "Hawas Majestic by Rasasi – 100ml\nHawas Majestic combines saffron with citrus, jasmine and green leaves for an opening that feels spicy and bright. The character changes in the middle as mineral notes, ambergris, woody amber and dry woods introduce a textured, almost stony quality. Oakmoss, musk, cedar and fir then create a green forest impression in the base. What distinguishes this fragrance is the contrast between the opening's aromatic lift and its drier, mineral-woody core. It is less focused on sugary fruit than on saffron, amber and the smell of timber. This 100ml Eau de Parfum is for fans of structured woody fragrances with depth.",
+   "gender": "unisex",
+   "families": [
+    "spicy",
+    "oriental",
+    "floral"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": []
+  },
+  "RAS-057": {
+   "sourceHash": "16gf6sg",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "Hawas Reina by Rasasi 100ml EDP",
+   "nameEn": "Hawas Reina by Rasasi 100ml EDP",
+   "descriptionAr": "عطر Hawas Reina by Rasasi 100ml EDP من RASASI نسائي بطابع حلو وشرقي وزهري.",
+   "descriptionEn": "Hawas Reina by Rasasi – 100ml\nApricot and pear make Hawas Reina fruity at the start, while cinnamon contributes a gentle spicy warmth. The heart is fuller and floral: jasmine, frangipani and orange blossom meet coconut and a coffee nuance. Vanilla, white musk, amber, sandalwood and sugar then create a creamy, sweet base. The composition moves from juicy stone fruit into tropical flowers before settling into soft woods and vanilla. Coffee adds depth rather than dominating the fragrance. Reina will appeal to those who enjoy floral vanilla scents with a fruity opening and a smooth gourmand touch. It comes in a 100ml Eau de Parfum presentation.",
+   "gender": "women",
+   "families": [
+    "gourmand",
+    "oriental",
+    "floral"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": []
+  },
+  "RAS-058": {
+   "sourceHash": "1yp4737",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "Hawas Chrome For Him by Rasasi 100ml EDP",
+   "nameEn": "Hawas Chrome For Him by Rasasi 100ml EDP",
+   "descriptionAr": "عطر Hawas Chrome For Him by Rasasi 100ml EDP من RASASI رجالي بطابع عنبري وفواكه وحلو.",
+   "descriptionEn": "Hawas Chrome For Him by Rasasi – 100ml EDP\nJuicy peach, yellow fruits and sweet orange introduce Hawas Chrome For Him, a 100ml Rasasi Eau de Parfum with a distinctly tropical direction. Mango and passion fruit then meet a watery accord in the heart, bringing freshness without turning the scent sharply green. Musk, amber and vanilla add softness underneath the fruit. Chrome is defined by the transition from bright yellow fruits to a smoother, musky finish while keeping the tropical character noticeable.",
+   "gender": "men",
+   "families": [
+    "amber",
+    "fruity",
+    "gourmand"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "summer",
+    "spring"
+   ],
+   "occasions": [
+    "daily",
+    "evening"
+   ],
+   "tags": []
+  },
+  "RAS-059": {
+   "sourceHash": "1u64wug",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "Hawas Venom by Rasasi 100ml EDP",
+   "nameEn": "Hawas Venom by Rasasi 100ml EDP",
+   "descriptionAr": "عطر Hawas Venom by Rasasi 100ml EDP من RASASI رجالي بطابع خشبي وشرقي وزهري.",
+   "descriptionEn": "Hawas Venom by Rasasi – 100ml\nIncense defines Hawas Venom from the first impression, supported by the resinous warmth of labdanum. A leather note sits in the middle and keeps the composition dark rather than floral or fruity. Incense returns in the base alongside patchouli and vanilla, creating continuity between the smoky opening and the softer finish. The vanilla rounds the edges but does not erase the leathery, earthy character. Venom is built around few accords, which makes its direction clear: resin, leather and a touch of sweetness. Presented as a 100ml Eau de Parfum, it is a choice for anyone drawn to incense-led woody fragrances.",
+   "gender": "men",
+   "families": [
+    "woody",
+    "oriental",
+    "floral"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": []
+  },
+  "RAS-060": {
+   "sourceHash": "1t03ot4",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "Hawas Nautilus by Rasasi 100ml EDP",
+   "nameEn": "Hawas Nautilus by Rasasi 100ml EDP",
+   "descriptionAr": "عطر Hawas Nautilus by Rasasi 100ml EDP من RASASI رجالي بطابع مائي وخشبي وحلو.",
+   "descriptionEn": "Hawas Nautilus by Rasasi – 100ml\nHawas Nautilus centres on the smell of the coast. Seawater and ambergris introduce a salty, airy impression that sets the direction of this woody aquatic fragrance. Cypress and cedar create a drier, green-wooded middle, giving structure to the marine accords. Driftwood and sand shape the base with a weathered, shorelike character. There is little emphasis on syrupy fruit or heavy vanilla; the interest comes from the meeting of salt, timber and mineral textures. Its restrained profile makes it a practical option for daytime wear, particularly when a fresh yet distinctly woody fragrance is preferred. Presented in 100ml Eau de Parfum.",
+   "gender": "men",
+   "families": [
+    "aquatic",
+    "woody",
+    "gourmand"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "summer",
+    "spring"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": []
+  },
+  "RAS-061": {
+   "sourceHash": "rb5s8d",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "Hawas Private Terra by Rasasi Extrait de Parfum 100ml",
+   "nameEn": "Hawas Private Terra by Rasasi Extrait de Parfum 100ml",
+   "descriptionAr": "عطر Hawas Private Terra by Rasasi Extrait de Parfum 100ml من RASASI للجنسين بطابع خشبي وتوابل وزهري.",
+   "descriptionEn": "Hawas Private Terra by Rasasi – 100ml Extrait de Parfum\nHawas Private Terra Extrait de Parfum begins with saffron, jasmine and cardamom, combining floral detail with a dry spicy edge. Driftwood, cedarwood and iris give its heart a smooth but structured woody character. Oakmoss and cypriol shape a base that feels earthy, mossy, dry and subtly mineral. Unlike a sweet amber fragrance, Terra keeps its attention on woods, texture and restrained spice. Iris helps soften the sharper facets without removing the dry finish. The contrast of floral spice and moss-covered timber is the composition's defining feature. This 100ml Extrait de Parfum suits those seeking a woody fragrance with understated complexity.",
+   "gender": "unisex",
+   "families": [
+    "woody",
+    "spicy",
+    "floral"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": []
+  },
+  "RAS-062": {
+   "sourceHash": "1t8ncnu",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "Hawas Atlantis by Rasasi 100ml EDP",
+   "nameEn": "Hawas Atlantis by Rasasi 100ml EDP",
+   "descriptionAr": "عطر Hawas Atlantis by Rasasi 100ml EDP من RASASI رجالي بطابع مائي وخشبي ومنعش.",
+   "descriptionEn": "Hawas Atlantis by Rasasi – 100ml EDP\nBergamot and green galbanum open Hawas Atlantis with a restrained citrus-herbal impression. Ginger brings a spicy touch to the mineral and salty accords in the heart, creating a marine profile that leans away from sugary fruit. Sandalwood and cedarwood provide a drier woody base. In this 100ml Rasasi Eau de Parfum, the contrast between mineral freshness, aromatic ginger and smooth woods gives Atlantis its coastal-inspired identity.",
+   "gender": "men",
+   "families": [
+    "aquatic",
+    "woody",
+    "fresh"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "summer",
+    "spring"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": []
+  },
+  "RAS-063": {
+   "sourceHash": "2m3k22",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "Hawas Private Dulce by Rasasi Extrait de Parfum 100ml",
+   "nameEn": "Hawas Private Dulce by Rasasi Extrait de Parfum 100ml",
+   "descriptionAr": "عطر Hawas Private Dulce by Rasasi Extrait de Parfum 100ml من RASASI للجنسين بطابع زهري وحلو وفواكه.",
+   "descriptionEn": "Hawas Private Dulce by Rasasi – 100ml Extrait de Parfum\nHawas Private Dulce Extrait de Parfum places hazelnut beside passion fruit and pink pepper for a nutty, tart and spicy opening. Cacao, jasmine sambac and coconut form the heart, mixing chocolate richness with floral and creamy accents. Patchouli and vetiver keep the base earthy, while soft musk, tonka bean and caramel contribute softness and sweetness. Dulce's appeal lies in contrast: edible notes are present, but dry woods and green roots prevent a single sugary impression. It is a more textured take on a gourmand scent, moving from toasted nuts toward cacao and caramel. The bottle contains 100ml Extrait de Parfum.",
+   "gender": "unisex",
+   "families": [
+    "floral",
+    "gourmand",
+    "fruity"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": []
+  },
+  "RAS-064": {
+   "sourceHash": "sap4ij",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "Hawas Gold Digger by Rasasi 100ml EDP",
+   "nameEn": "Hawas Gold Digger by Rasasi 100ml EDP",
+   "descriptionAr": "عطر Hawas Gold Digger by Rasasi 100ml EDP من RASASI رجالي بطابع خشبي وحلو وعنبري.",
+   "descriptionEn": "Hawas Gold Digger by Rasasi – 100ml EDP\nPear and mint give Hawas Gold Digger a bright opening that feels fruity without losing its herbal edge. Lavender and bergamot reinforce the freshness before cinnamon and sage introduce a warmer, aromatic middle. As the scent settles, vanilla meets amber, cedarwood and patchouli. These base notes keep the sweetness grounded in a woody finish rather than letting it become a simple dessert accord. Gold Digger changes character steadily: crisp fruit first, seasoned herbs next, then soft vanilla over dry woods. The combination provides an option for wearers who appreciate recognisable aromatic details alongside a comfortable, gently warm Eau de Parfum.",
+   "gender": "men",
+   "families": [
+    "woody",
+    "gourmand",
+    "amber"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily",
+    "evening"
+   ],
+   "tags": []
+  },
+  "RAS-065": {
+   "sourceHash": "6fxpf",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "Hawas Thunder by Rasasi 100ml EDP",
+   "nameEn": "Hawas Thunder by Rasasi 100ml EDP",
+   "descriptionAr": "عطر Hawas Thunder by Rasasi 100ml EDP من RASASI رجالي بطابع زهري وخشبي وفواكه.",
+   "descriptionEn": "Hawas Thunder by Rasasi – 100ml\nHawas Thunder begins with apple, bergamot and ginger, with cedarwood and mandarin for a crisp fruity-woody opening. Orange blossom and peony introduce a floral layer in the heart, while maté and patchouli keep the centre green and aromatic. Musk, tonka bean, vanilla, ambergris and cedarwood make the base warmer and smoother. The transition is from sparkling fruit and ginger toward woods with restrained sweetness. Thunder offers several contrasting textures without moving completely into a gourmand style. It suits casual, energetic daytime wear while remaining comfortable on relaxed, informal weekend evenings. It is presented in a 100ml Eau de Parfum bottle.",
+   "gender": "men",
+   "families": [
+    "floral",
+    "woody",
+    "fruity"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "summer",
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily",
+    "evening"
+   ],
+   "tags": []
+  },
+  "RAS-066": {
+   "sourceHash": "43tkub",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "هاواس فايبر من رصاصي",
+   "nameEn": "Hawas Viper by Rasasi 100ml EDP",
+   "descriptionAr": "عطر رجالي يجمع بين التوابل والأخشاب مع لمسة غنية من القهوة والتوابل الدافئة. يقدم تجربة عطرية عميقة وجذابة تناسب الأوقات المسائية.",
+   "descriptionEn": "Hawas Viper begins with green notes, davana, saffron and thyme, giving the opening a leafy, aromatic spice. Coffee and cinnamon shape the heart, while violet and raspberry offer a subtle floral-fruit contrast. Tonka bean, musk and gurjan balsam form a warm, resinous base.",
+   "gender": "men",
+   "families": [
+    "spicy",
+    "oriental",
+    "gourmand"
+   ],
+   "notes": {
+    "top": [
+     "green notes",
+     "davana",
+     "saffron",
+     "thyme"
+    ],
+    "heart": [
+     "coffee",
+     "cinnamon",
+     "violet",
+     "raspberry"
+    ],
+    "base": [
+     "tonka bean",
+     "musk",
+     "gurjan balsam"
+    ]
+   },
+   "seasons": [
+    "autumn",
+    "winter"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "رصاصي",
+    "هاواس",
+    "عطر رجالي",
+    "توابل",
+    "قهوة"
+   ]
+  },
+  "RAS-067": {
+   "sourceHash": "tu4juv",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "هاواس كوبرا من رصاصي",
+   "nameEn": "Hawas Kobra by Rasasi 100ml EDP",
+   "descriptionAr": "عطر رجالي منعش بنكهة الشاي الأخضر والزنجبيل الدافئ لتجربة يومية مميزة. يوازن بين الانتعاش والتوابل الخفيفة بأسلوب أنيق.",
+   "descriptionEn": "Ginger leads Hawas Kobra with a crisp, spicy bite, while bergamot and tangerine add a citrus lift. The fragrance then makes an unusual turn towards green tea, neroli and cinnamon. Musk, woods and amber settle underneath.",
+   "gender": "men",
+   "families": [
+    "fresh",
+    "spicy",
+    "woody"
+   ],
+   "notes": {
+    "top": [
+     "ginger",
+     "bergamot",
+     "tangerine"
+    ],
+    "heart": [
+     "green tea",
+     "neroli",
+     "cinnamon"
+    ],
+    "base": [
+     "musk",
+     "woods",
+     "amber"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "رصاصي",
+    "هاواس كوبرا",
+    "عطر رجالي",
+    "شاي أخضر",
+    "منعش"
+   ]
+  },
+  "RAS-068": {
+   "sourceHash": "19cr8i8",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "هاواس فور هيم لا مير من رصاصي",
+   "nameEn": "Hawas For Him La Mer by Rasasi 100ml EDP",
+   "descriptionAr": "عطر رجالي مستوحى من نسيم البحر مع لمسات عطرية منعشة وفواكه داكنة. يمنحك شعوراً بالحيوية والجاذبية في الأيام الحارة.",
+   "descriptionEn": "Peppermint, mandarin and bergamot establish an aromatic citrus opening with a cool edge. Blackcurrant then adds fruit, while carrot and jasmine contribute an unusual earthy-floral middle. Fig, amber and woody notes settle beneath.",
+   "gender": "men",
+   "families": [
+    "aquatic",
+    "citrus",
+    "woody"
+   ],
+   "notes": {
+    "top": [
+     "peppermint",
+     "mandarin",
+     "bergamot"
+    ],
+    "heart": [
+     "blackcurrant",
+     "carrot",
+     "jasmine"
+    ],
+    "base": [
+     "fig",
+     "amber",
+     "woody notes"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "spring"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "رصاصي",
+    "لا مير",
+    "عطر رجالي",
+    "بحري",
+    "منعش"
+   ]
+  },
+  "RAS-069": {
+   "sourceHash": "1v239b8",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "هاواس إيكلا من رصاصي",
+   "nameEn": "Hawas Eclat by Rasasi 100ml EDP",
+   "descriptionAr": "عطر نسائي يجمع بين الفواكه العصارية والورود الناعمة مع قاعدة دافئة من العنبر. يمنحك إطلالة أنثوية أنيقة ومميزة في كل الأوقات.",
+   "descriptionEn": "Lychee gives Hawas Eclat a juicy beginning, balanced by bergamot, pear and a small pistachio accent. The heart keeps the composition focused: rose develops beside incense. Amber, musk and woody notes then shape the base.",
+   "gender": "women",
+   "families": [
+    "fruity",
+    "floral",
+    "amber"
+   ],
+   "notes": {
+    "top": [
+     "lychee",
+     "bergamot",
+     "pear",
+     "pistachio"
+    ],
+    "heart": [
+     "rose",
+     "incense"
+    ],
+    "base": [
+     "amber",
+     "musk",
+     "woody notes"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily",
+    "evening"
+   ],
+   "tags": [
+    "رصاصي",
+    "هاواس إيكلا",
+    "عطر نسائي",
+    "فواكه",
+    "زهور"
+   ]
+  },
+  "RAS-070": {
+   "sourceHash": "m1yps7",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "هاواس روج من رصاصي",
+   "nameEn": "Hawas Rouge by Rasasi 100ml EDP",
+   "descriptionAr": "عطر نسائي غني بنغمات الشوكولاتة والفواكه الدافئة مع لمسات زهرية ساحرة. مثالي لمن يبحث عن الدفء والجاذبية في العطور الشرقية.",
+   "descriptionEn": "Tangerine and raspberry bring brightness to the opening, while chocolate adds an unusual dark sweetness. Rose, orange blossom, tuberose and iris then move the fragrance toward a floral centre. Vanilla, musk, coffee and dry woods create the base.",
+   "gender": "women",
+   "families": [
+    "gourmand",
+    "fruity",
+    "floral"
+   ],
+   "notes": {
+    "top": [
+     "tangerine",
+     "raspberry",
+     "chocolate"
+    ],
+    "heart": [
+     "rose",
+     "orange blossom",
+     "tuberose",
+     "iris"
+    ],
+    "base": [
+     "vanilla",
+     "musk",
+     "coffee",
+     "dry woods"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "رصاصي",
+    "هاواس روج",
+    "عطر نسائي",
+    "شوكولاتة",
+    "غورماند"
+   ]
+  },
+  "RAS-071": {
+   "sourceHash": "1atb8tu",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "هاواس لافا جولد من رصاصي",
+   "nameEn": "Hawas Lava Gold by Rasasi 100ml EDP",
+   "descriptionAr": "عطر رجالي يجمع بين انتعاش الفواكه وجاذبية الجلود والأخشاب العميقة. يقدم تجربة عطرية فاخرة ومميزة للمناسبات الخاصة.",
+   "descriptionEn": "Pineapple, grapefruit, apple and lemon establish a bright, juicy introduction. Leather, saffron and oud then alter the direction of the scent, while raspberry introduces a small fruity link. Amber, patchouli, moss and a caramel nuance form the base.",
+   "gender": "men",
+   "families": [
+    "woody",
+    "oud",
+    "oriental"
+   ],
+   "notes": {
+    "top": [
+     "pineapple",
+     "grapefruit",
+     "apple",
+     "lemon"
+    ],
+    "heart": [
+     "leather",
+     "saffron",
+     "oud",
+     "raspberry"
+    ],
+    "base": [
+     "amber",
+     "patchouli",
+     "moss",
+     "caramel"
+    ]
+   },
+   "seasons": [
+    "autumn",
+    "winter"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "رصاصي",
+    "لافا جولد",
+    "عطر رجالي",
+    "عود",
+    "جلود"
+   ]
+  },
+  "RAS-072": {
+   "sourceHash": "crzh8h",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "هاواس فاير من رصاصي",
+   "nameEn": "Hawas Fire by Rasasi 100ml EDP",
+   "descriptionAr": "عطر رجالي يجمع بين الأعشاب العطرية المنعشة ونسيم البحر المالح الدافئ. يمنحك شعوراً فريداً بالانتعاش والجاذبية طوال اليوم.",
+   "descriptionEn": "Fresh French clary sage gives Hawas Fire an aromatic, herbal opening. Egyptian jasmine and marine notes emerge in the heart, combining white flowers with a sea-breeze character. Ambergris and amber bring a warmer, subtly salty finish.",
+   "gender": "men",
+   "families": [
+    "aquatic",
+    "fresh"
+   ],
+   "notes": {
+    "top": [
+     "clary sage"
+    ],
+    "heart": [
+     "egyptian jasmine",
+     "marine notes"
+    ],
+    "base": [
+     "ambergris",
+     "amber"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "spring"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "رصاصي",
+    "هاواس فاير",
+    "عطر رجالي",
+    "مائي",
+    "منعش"
+   ]
+  },
+  "RAS-073": {
+   "sourceHash": "fn1s1b",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "هاواس تروبيكال من رصاصي",
+   "nameEn": "Hawas Tropical by Rasasi 100ml EDP",
+   "descriptionAr": "عطر رجالي استوائي يدمج نكهة جوز الهند المنعشة مع لمسات الزنجبيل الحيوية. خيار مثالي لأيام الصيف والأوقات الدافئة.",
+   "descriptionEn": "Coconut water, fig leaf and ginger create an airy opening. Coconut and fig develop in the middle, accompanied by mint. Sandalwood, tonka bean and musk form a smooth base beneath the tropical accord.",
+   "gender": "men",
+   "families": [
+    "fresh",
+    "woody"
+   ],
+   "notes": {
+    "top": [
+     "coconut water",
+     "fig leaf",
+     "ginger"
+    ],
+    "heart": [
+     "coconut",
+     "fig",
+     "mint"
+    ],
+    "base": [
+     "sandalwood",
+     "tonka bean",
+     "musk"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "spring"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "رصاصي",
+    "تروبيكال",
+    "عطر رجالي",
+    "جوز الهند",
+    "صيفي"
+   ]
+  },
+  "RAS-074": {
+   "sourceHash": "4dvbkp",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "هاواس آيس فريز من رصاصي",
+   "nameEn": "Hawas Ice Freeze by Rasasi 100ml EDP",
+   "descriptionAr": "عطر رجالي فائق الانتعاش يمزج الحمضيات الحيوية مع النعناع والزنجبيل البارد. يمنحك طاقة متجددة وإطلالة مفعمة بالحيوية.",
+   "descriptionEn": "Bergamot, mandarin and orange create a lively citrus start. Ginger and mint sharpen the fruit notes, with lily of the valley introducing a delicate floral accent. Sandalwood, musk and ambergris provide a smoother texture and depth.",
+   "gender": "men",
+   "families": [
+    "fresh",
+    "citrus"
+   ],
+   "notes": {
+    "top": [
+     "bergamot",
+     "mandarin",
+     "orange"
+    ],
+    "heart": [
+     "ginger",
+     "mint",
+     "lily of the valley"
+    ],
+    "base": [
+     "sandalwood",
+     "musk",
+     "ambergris"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "spring"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "رصاصي",
+    "آيس فريز",
+    "عطر رجالي",
+    "منعش",
+    "حمضيات"
+   ]
+  },
+  "RAS-075": {
+   "sourceHash": "1hjoxf0",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "هاواس هايغنس من رصاصي",
+   "nameEn": "Hawas Highness by Rasasi 100ml EDP",
+   "descriptionAr": "عطر رجالي شرقي يجمع بين التوابل الدافئة والزهور الفاخرة مع قاعدة خشبية عميقة. يعكس الفخامة والأناقة في كل مناسبة.",
+   "descriptionEn": "Hawas Highness begins with citrus, spice and amber appearing together. The floral centre introduces jasmine, violet and rose. Cedarwood, vetiver and patchouli create a dry, earthy final stage.",
+   "gender": "men",
+   "families": [
+    "oriental",
+    "floral",
+    "woody"
+   ],
+   "notes": {
+    "top": [
+     "citrus",
+     "spice",
+     "amber"
+    ],
+    "heart": [
+     "jasmine",
+     "violet",
+     "rose"
+    ],
+    "base": [
+     "cedarwood",
+     "vetiver",
+     "patchouli"
+    ]
+   },
+   "seasons": [
+    "autumn",
+    "winter"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "رصاصي",
+    "هايغنس",
+    "عطر رجالي",
+    "شرقي",
+    "زهور"
+   ]
+  },
+  "RAS-076": {
+   "sourceHash": "1hjid0d",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "هاواس أفرودوز من رصاصي",
+   "nameEn": "Hawas Overdose by Rasasi 100ml EDP",
+   "descriptionAr": "عطر رجالي جريء يمزج التوابل الحارة مع الشوكولاتة والفانيليا الدافئة. خيار مثالي للأمسيات الباردة والمناسبات الخاصة.",
+   "descriptionEn": "Spicy and herbal impressions lead before orange blossom adds a floral accent alongside warm amber and guaiac wood. Vanilla, chocolate and praline become more prominent, creating a dessert-like effect. Ambergris provides contrasting mineral warmth.",
+   "gender": "men",
+   "families": [
+    "oriental",
+    "gourmand",
+    "spicy"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [
+     "orange blossom",
+     "amber",
+     "guaiac wood"
+    ],
+    "base": [
+     "vanilla",
+     "chocolate",
+     "praline",
+     "ambergris"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "رصاصي",
+    "أفرودوز",
+    "عطر رجالي",
+    "شوكولاتة",
+    "فانيليا"
+   ]
+  },
+  "RAS-077": {
+   "sourceHash": "1260pfo",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "هاواس أ شن من رصاصي",
+   "nameEn": "Hawas Addiction by Rasasi 100ml EDP",
+   "descriptionAr": "عطر للجنسين غني بنكهات الحلويات والفانيليا الكريمية الدافئة. يمنحك شعوراً فريداً بالراحة والجاذبية بفضل طابعه الغورماند المميز.",
+   "descriptionEn": "Vanilla, cotton candy, marshmallow, caramel and an ice-cream accord set a dessert-like tone. Coconut milk, vanilla and milk continue that creamy direction through the heart. Amber, cedarwood and moss offer a woody counterweight.",
+   "gender": "unisex",
+   "families": [
+    "gourmand",
+    "oriental",
+    "musk"
+   ],
+   "notes": {
+    "top": [
+     "vanilla",
+     "cotton candy",
+     "marshmallow",
+     "caramel",
+     "ice-cream accord"
+    ],
+    "heart": [
+     "coconut milk",
+     "vanilla",
+     "milk"
+    ],
+    "base": [
+     "amber",
+     "cedarwood",
+     "moss"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "daily"
+   ],
+   "tags": [
+    "رصاصي",
+    "أديشن",
+    "عطر للجنسين",
+    "فانيليا",
+    "حلويات"
+   ]
+  },
+  "RAS-078": {
+   "sourceHash": "jfoxb",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "هاواس إكزوتيك من رصاصي",
+   "nameEn": "Hawas Exotic by Rasasi 100ml EDP",
+   "descriptionAr": "عطر رجالي استثنائي يجمع بين جوز الهند والأعشاب الطازجة مع لمسات خشبية راتنجية غنية. يمنحك حضوراً فريداً ومعقداً يثير الإعجاب.",
+   "descriptionEn": "Coconut meets mugwort, lavender, cardamom, carrot and bergamot. Orris and jasmine lead the floral middle with lily of the valley, freesia and cinnamon. Cypriol, musk, patchouli, ambergris, benzoin and labdanum form the base.",
+   "gender": "men",
+   "families": [
+    "oriental",
+    "floral",
+    "woody"
+   ],
+   "notes": {
+    "top": [
+     "coconut",
+     "mugwort",
+     "lavender",
+     "cardamom",
+     "carrot",
+     "bergamot"
+    ],
+    "heart": [
+     "orris",
+     "jasmine",
+     "lily of the valley",
+     "freesia",
+     "cinnamon"
+    ],
+    "base": [
+     "cypriol",
+     "musk",
+     "patchouli",
+     "ambergris",
+     "benzoin",
+     "labdanum"
+    ]
+   },
+   "seasons": [
+    "autumn",
+    "spring"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "رصاصي",
+    "إكزوتيك",
+    "عطر رجالي",
+    "جوز الهند",
+    "شرقي"
+   ]
+  },
+  "RAS-079": {
+   "sourceHash": "e2oz22",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "هاواس بلانش من رصاصي",
+   "nameEn": "Hawas Blanche by Rasasi 100ml EDP",
+   "descriptionAr": "عطر للجنسين يوازن بين الفواكه الداكنة والحمضيات المنعشة مع لمسات عشبية خضراء. يقدم تجربة عطرية حيوية ومتوازنة لكل الأوقات.",
+   "descriptionEn": "Blackcurrant, mandarin, bergamot and apple balance dark berries against crisp citrus fruit. Wormwood and basil introduce a herbal character, while geranium and patchouli bring floral-green detail. Sandalwood, moss, musk and dry woods form the base.",
+   "gender": "unisex",
+   "families": [
+    "fruity",
+    "citrus"
+   ],
+   "notes": {
+    "top": [
+     "blackcurrant",
+     "mandarin",
+     "bergamot",
+     "apple"
+    ],
+    "heart": [
+     "wormwood",
+     "basil",
+     "geranium",
+     "patchouli"
+    ],
+    "base": [
+     "sandalwood",
+     "moss",
+     "musk",
+     "dry woods"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "رصاصي",
+    "بلانش",
+    "عطر للجنسين",
+    "فواكه",
+    "منعش"
+   ]
+  },
+  "RAS-080": {
+   "sourceHash": "1d8p8z7",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "هواس لوف فور هير من رصاصي",
+   "nameEn": "Hawas Love For Her by Rasasi",
+   "descriptionAr": "تتميز افتتاحية العطر بلمسة منعشة من الفلفل الوردي والهيل والماندارين لتووازن بين التوابل والحمضيات. يليه قلب عطري غني بزهور البرتقال الياسمين والإيلنغ ليمنحك طابعاً زهرياً دافئاً.",
+   "descriptionEn": "A peppery sparkle of pink pepper, cardamom and mandarin gives Hawas Love For Her its first impression. Orange blossom, jasmine and ylang take over in the heart, ending with a warm base of tonka bean, vanilla and praline.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "oriental",
+    "gourmand"
+   ],
+   "notes": {
+    "top": [
+     "Pink pepper",
+     "Cardamom",
+     "Mandarin"
+    ],
+    "heart": [
+     "Orange blossom",
+     "Jasmine",
+     "Ylang ylang"
+    ],
+    "base": [
+     "Tonka bean",
+     "Vanilla",
+     "Praline"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "autumn",
+    "winter"
+   ],
+   "occasions": [
+    "daily",
+    "evening"
+   ],
+   "tags": [
+    "رصاصي",
+    "هواس نسائي",
+    "عطر فانيليا",
+    "عطر زهري"
+   ]
+  },
+  "RAS-081": {
+   "sourceHash": "1654s2h",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-16T07:14:09.752Z",
+   "nameAr": "هواس ديفا من رصاصي",
+   "nameEn": "Hawas Diva by Rasasi",
+   "descriptionAr": "يفتتح العطر بنفحات منعشة من الفواكه الحمراء والراوند والليتشي لمزيج حيوي ومميز. يتطور القلب ليضم الورد والبخور وخشب الأدرار بينما تستقر القاعدة على الفانيليا والمسك والعنبر.",
+   "descriptionEn": "Hawas Diva opens with red fruits, tart rhubarb and lychee before moving into a floral-resinous heart of rose, frankincense and cedar. Vanilla, musk and ambergris form the warmer base.",
+   "gender": "women",
+   "families": [
+    "fruity",
+    "floral",
+    "oriental"
+   ],
+   "notes": {
+    "top": [
+     "Red fruits",
+     "Rhubarb",
+     "Lychee"
+    ],
+    "heart": [
+     "Rose",
+     "Frankincense",
+     "Cedar"
+    ],
+    "base": [
+     "Vanilla",
+     "Musk",
+     "Ambergris"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "summer",
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "رصاصي ديفا",
+    "هواس ديفا",
+    "عطر فواكه",
+    "عطر نسائي"
+   ]
   }
  },
  "audit": {
-  "checked": 51,
+  "checked": 81,
   "issues": [
    {
     "sku": "LAT-001",
