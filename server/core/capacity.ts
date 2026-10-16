@@ -21,14 +21,8 @@ import { createHash } from 'node:crypto';
 type Env = Record<string, string | undefined>;
 
 /** Same question, written slightly differently → same cache entry (case, spaces, tashkeel, ?!). */
-export function normalizeQuestion(text: string): string {
-  return text.normalize('NFKC').toLowerCase()
-    .replace(/[\u064B-\u065F\u0670\u0640]/g, '') // Arabic diacritics and tatweel
-    .replace(/[إأآٱ]/g, 'ا').replace(/ى/g, 'ي')
-    .replace(/[\s\u200c\u200f\u200e]+/g, ' ')
-    .replace(/^[\s?!.,؟،؛:…]+|[\s?!.,؟،؛:…]+$/g, '')
-    .trim();
-}
+// One definition shared with «ذاكرة شاهين» (src/utils/shaheenMemory.ts) and the visitor's browser.
+export { normalizeQuestion } from '../../src/utils/shaheenMemory';
 
 export const cacheKey = (parts: unknown[]) => createHash('sha256').update(JSON.stringify(parts)).digest('base64url');
 

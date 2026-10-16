@@ -18,6 +18,8 @@ import { callEngine, engineStatuses, type EngineFailure } from './core/engines';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { AnswerCache, GateBusyError, ProviderGate, VISITOR_ID, cacheKey, capacityConfig, normalizeQuestion, retryHintMs } from './core/capacity';
 import type { ShaheenRuntime } from './core/maintenance';
+import type { ShaheenMemory } from './core/memory';
+import { offlineNote } from '../src/utils/shaheenMemory';
 import { councilAvailable, runCouncil } from './core/council';
 import type { Repository } from './core/repository';
 import type { CouncilSettings, ModelEngineId, ShaheenSettings } from './core/types';
@@ -283,7 +285,7 @@ export async function probeEngines(settings: ShaheenSettings, options: { env?: E
 }
 
 /** Public routes: GET /api/models and POST /api/chat (rate limited, settings from the shared store). */
-export function createShaheenRouter(options: { repo: Repository; env?: Environment; fetch?: typeof fetch; runtime?: ShaheenRuntime }) {
+export function createShaheenRouter(options: { repo: Repository; env?: Environment; fetch?: typeof fetch; runtime?: ShaheenRuntime; memory?: ShaheenMemory }) {
   const env = options.env || process.env;
   const router = express.Router();
   const capacity = capacityConfig(env);
@@ -296,6 +298,8 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
   const gate = new ProviderGate(capacity.maxConcurrent, capacity.queueWaitMs, capacity.providerRpm);
   const answers = new AnswerCache<ChatAnswer>(capacity.cacheEntries, capacity.cacheTtlMs);
   const runtime = options.runtime;
+  // «ذاكرة شاهين»: repeated questions without any AI call, and answers when no engine is reachable.
+  const memory = options.memory;
   runtime?.attach({ gate, answers: answers as AnswerCache<unknown> });
   // Settings change rarely; reading them once per message would cost a store read per visitor.
   // Saved in this instance → refreshed at once (revision); saved elsewhere (shared store) → within 3 s.
@@ -322,6 +326,7 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
     const started = Date.now();
     const controller = new AbortController();
     const cancel = () => { if (!res.writableEnded) controller.abort(); };
+    let chatInput: { input: ChatRequest; mode: string; useMemory: boolean } | undefined;
     res.on('close', cancel);
     try {
       const input = validateChatRequest(req.body);
@@ -333,6 +338,19 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       if (input.model === 'council' && shaheen.allowVisitorChoice && !councilLimiter.allow(visitor)) {
         throw new ChatError(429, 'RATE_LIMITED', 'Too many expert-council questions, try the other modes');
       }
+      // The supervisor's probes send memory:false so they keep testing the live engines.
+      const opening = !input.conversationHistory.length;
+      const useMemory = Boolean(memory && shaheen.enabled && req.body?.memory !== false);
+      const mode = shaheen.allowVisitorChoice ? input.model : 'auto';
+      if (useMemory && opening) {
+        const hit = await memory!.recall(input.message, input.language, mode).catch(() => undefined);
+        if (hit) {
+          if (!res.destroyed) res.json({ ...publicChatResult({ reply: hit.entry.answer, mode }, input.message), memory: 'exact' });
+          runtime?.record({ ms: Date.now() - started, status: 200 });
+          return;
+        }
+      }
+      chatInput = { input, mode, useMemory };
       const run = (signal?: AbortSignal) => executeChat(input, { env, fetch: options.fetch, signal, settings: shaheen, council, gate });
       let result: ChatAnswer;
       if (!input.conversationHistory.length && capacity.cacheTtlMs > 0 && capacity.cacheEntries > 0) {
@@ -345,8 +363,22 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       }
       if (!res.destroyed) res.json(publicChatResult(result, input.message));
       runtime?.record({ ms: Date.now() - started, status: 200 });
+      if (memory && opening && mode !== 'council' && result.reply) {
+        await memory.learn({ question: input.message, lang: input.language, mode, answer: publicChatResult(result, input.message).reply }).catch(() => undefined);
+      }
     } catch (error) {
       if (res.destroyed) return;
+      // No engine answered: the closest question Shaheen answered before, marked as coming from memory.
+      if (error instanceof ChatError && OFFLINE_CODES.has(error.code) && chatInput?.useMemory) {
+        const { input, mode } = chatInput;
+        const hit = await memory!.recallSimilar(input.message, input.language).catch(() => undefined);
+        if (hit && !res.destroyed) {
+          res.json({ ...publicChatResult({ reply: hit.entry.answer + offlineNote(input.language, hit.exact), mode }, input.message), memory: hit.exact ? 'exact' : 'similar' });
+          // Still an engine outage for the maintenance agent, even though the visitor got an answer.
+          runtime?.record({ ms: Date.now() - started, status: error.status, code: `${error.code}+MEMORY` });
+          return;
+        }
+      }
       if (error instanceof ChatError) runtime?.record({ ms: Date.now() - started, status: error.status, code: error.code });
       else runtime?.record({ ms: Date.now() - started, status: 500, code: 'CHAT_FAILED' });
       if (error instanceof ChatError) {
@@ -361,6 +393,9 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
   });
   return router;
 }
+
+/** Failures where the visitor gets a remembered answer instead of an error (when one is close enough). */
+const OFFLINE_CODES = new Set(['PROVIDER_UNAVAILABLE', 'PROVIDER_TIMEOUT', 'PROVIDER_NOT_CONFIGURED', 'SHAHEEN_BUSY', 'COUNCIL_UNAVAILABLE']);
 
 /** Stop waiting when this visitor leaves (the shared work itself keeps going for the others). */
 function abortable<T>(promise: Promise<T>, signal: AbortSignal): Promise<T> {

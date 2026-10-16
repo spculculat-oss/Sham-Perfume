@@ -86,6 +86,12 @@ jobs:
       - name: Shaheen writes the Arabic names and descriptions of the new products
         continue-on-error: true
         run: node --import tsx scripts/shaheen-store/run.mts
+      - name: «ذاكرة شاهين» collects and curates what Shaheen learned (no AI call)
+        continue-on-error: true
+        env:
+          # Optional: with it, the visitors' answers the live server learned join the shared memory.
+          SHAM_ADMIN_TOKEN: ${{ secrets.SHAM_ADMIN_TOKEN }}
+        run: node --import tsx scripts/shaheen-memory/run.mts
       - name: Every product gets its own page (build check)
         run: node --import tsx scripts/product-pages.mts dist && ls dist/p | wc -l
       - name: Regression tests with the new products

@@ -15,6 +15,7 @@ import { runProbes, type Finding, type ProbeContext } from './probes';
 import { ISSUE_LABEL, ISSUE_TITLE, eventComment, readState, renderBody, type ActionLog } from './report';
 import { attemptFix, VERIFY_COMMANDS, type FixDeps } from './fixer';
 import type { GitHub } from './github';
+import type { AnswerBook } from './answers';
 
 type Env = Record<string, string | undefined>;
 export interface Shell { (command: string, timeoutMs?: number): Promise<{ ok: boolean; output: string }> }
@@ -348,15 +349,19 @@ export function quotaBook(path?: URL, now: () => number = Date.now) {
 export type QuotaBook = ReturnType<typeof quotaBook>;
 
 /** The doctor thinks with the same AI engines (and keys) as Shaheen, in the admin's failover order. */
-export async function makeAsk(env: Env, options: { quota?: QuotaBook; maxWaitMs?: number; sleep?: (ms: number) => Promise<void>; request?: typeof fetch } = {}): Promise<DoctorOptions['ask']> {
+export async function makeAsk(env: Env, options: { quota?: QuotaBook; memory?: AnswerBook; maxWaitMs?: number; sleep?: (ms: number) => Promise<void>; request?: typeof fetch } = {}): Promise<DoctorOptions['ask']> {
   const { callEngine, engineStatuses } = await import('../../server/core/engines');
   const order = ['gemini', 'deepseek', 'openai', 'claude', 'openrouter', 'self_hosted'] as const;
   const ready = order.filter((id) => engineStatuses(env).find((e) => e.id === id)?.configured);
-  if (!ready.length) return undefined;
+  const memory = options.memory;
+  // With memory, a question the bots already asked is answered even with no engine configured.
+  if (!ready.length && !memory) return undefined;
   const quota = options.quota;
   const sleep = options.sleep || ((ms: number) => new Promise((r) => setTimeout(r, ms)));
   let waited = 0;
   const ask = async (system: string, prompt: string): Promise<string> => {
+    const known = memory?.get(system, prompt);
+    if (known) return known;
     for (const id of ready) {
       if (quota?.pausedUntil(id)) continue;
       let refused: { until: number; reason: string; detail: string } | undefined;
@@ -367,10 +372,10 @@ export async function makeAsk(env: Env, options: { quota?: QuotaBook; maxWaitMs?
           if (until) refused = { until, reason: failure, detail };
         },
       }).catch(() => undefined);
-      if (reply?.trim()) { quota?.clear(id); return reply; }
+      if (reply?.trim()) { quota?.clear(id); memory?.put(system, prompt, reply); return reply; }
       if (refused && quota) quota.pause(id, refused.until, refused.reason, refused.detail);
     }
-    if (quota) {
+    if (quota && ready.length) {
       const paused = ready.map((id) => quota.pausedUntil(id)).filter(Boolean);
       if (paused.length === ready.length) {
         const resumeAt = Math.min(...paused);

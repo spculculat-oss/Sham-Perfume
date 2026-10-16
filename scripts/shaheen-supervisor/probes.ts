@@ -72,8 +72,9 @@ const post = (body: unknown, headers: Record<string, string> = {}): RequestInit 
 async function chatProbes(ctx: ProbeContext): Promise<Probe[]> {
   const out: Probe[] = [];
   for (const { q, lang } of rotate(QUESTIONS.shaheen_chat, ctx.run, 3)) {
-    const r = await timed(() => json<{ reply?: string }>(ctx.fetch, `${ctx.site}/api/chat`, post({ message: q, model: 'auto', language: lang, conversationHistory: [], visitorId: VISITOR })));
+    const r = await timed(() => json<{ reply?: string }>(ctx.fetch, `${ctx.site}/api/chat`, post({ message: q, model: 'auto', language: lang, conversationHistory: [], visitorId: VISITOR, memory: false })));
     const answer = r.value?.reply || '';
+    // memory:false — the supervisor tests the live engines, not «ذاكرة شاهين»'s saved answers.
     out.push({ tool: 'shaheen_chat', question: q, answer, ms: r.ms, ok: !r.error, error: r.error, findings: r.error ? [] : inspectAnswer(answer, { language: lang, ms: r.ms }) });
   }
   return out;

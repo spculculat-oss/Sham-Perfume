@@ -54,6 +54,9 @@ async function load<T extends { updatedAt: string }>(file: string, bundled: T, v
   return entry.data;
 }
 
+/** Any other published file (e.g. «ذاكرة شاهين»): the bundled copy, refreshed from the repository like the rest. */
+export const loadLive = load;
+
 const isTraining = (d: unknown): d is TrainingFile => Boolean(d && typeof d === 'object' && typeof (d as TrainingFile).updatedAt === 'string' && Array.isArray((d as TrainingFile).docs));
 const isNews = (d: unknown): d is LiveNews => Boolean(d && typeof d === 'object' && typeof (d as LiveNews).updatedAt === 'string' && Array.isArray((d as LiveNews).items));
 

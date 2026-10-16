@@ -11,7 +11,8 @@
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { AI_TOOLS, type AiToolId } from '../../src/utils/aiTools';
 import { buildReport, INTERVAL_HOURS, parseJson, readReview, REVIEW_SYSTEM, reviewPrompt, type Ask, type Probe, type Review, type SupervisorFile } from './checks';
-import { PROBES } from './probes';
+import { PROBES, QUESTIONS } from './probes';
+import { curateMemory, emptyMemory, isMemoryFile, remember, type MemoryFile } from '../../src/utils/shaheenMemory';
 import { makeAsk } from '../doctor/agent';
 
 const env = process.env;
@@ -50,6 +51,16 @@ if (reviewNote) console.log(reviewNote);
 const report = buildReport({ previous, probes, review, now });
 mkdirSync(DIR, { recursive: true });
 writeFileSync(FILE, `${JSON.stringify(report, null, 1)}\n`);
+
+// 5) «ذاكرة شاهين» learns the probe answers that passed every check (asked again later = no AI call).
+const MEMORY = new URL('shaheen-memory.json', DIR);
+const memory: MemoryFile = (() => { try { const d: unknown = JSON.parse(readFileSync(MEMORY, 'utf8')); return isMemoryFile(d) ? d : emptyMemory(); } catch { return emptyMemory(); } })();
+let learned = 0;
+for (const p of probes.shaheen_chat || []) {
+  const lang = QUESTIONS.shaheen_chat.find((x) => x.q === p.question)?.lang;
+  if (lang && p.ok && p.answer && !p.findings.some((f) => f.severe) && remember(memory, { question: p.question, lang, mode: 'auto', answer: p.answer, source: 'probe' }, now)) learned++;
+}
+if (learned) { writeFileSync(MEMORY, `${JSON.stringify(curateMemory(memory, now.getTime()).file, null, 1)}\n`); console.log(`Shaheen's memory learned ${learned} checked answers`); }
 
 const rows = AI_TOOLS.map((t) => ({ t, r: report.tools[t.id] })).filter(({ r }) => r);
 const icon = { ok: '✅', warn: '⚠️', fail: '❌', skipped: '⏭️' } as const;
