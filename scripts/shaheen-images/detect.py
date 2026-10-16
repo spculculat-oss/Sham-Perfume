@@ -1,41 +1,123 @@
-"""Finds the supplier's contact marks (site, phone/WhatsApp, e-mail, social handles) printed on a product photo.
+"""Which text on a product photo is a source/contact mark to remove (pure rules; OCR is done by the caller).
 
-    marks = find_marks(engine, image)   # [{'text', 'kind', 'box': [x0, y0, x1, y1], 'score'}]
+A photo copied around the internet can carry the supplier's or another shop's contact details printed over
+it (e.g. «SOUQSCENT.COM», «www.joveychic.net / instagram : joveychic»). Those are removed. Text that belongs
+to the product stays: the brand's or maker's own site printed on the box (www.lattafa.com, afnan.com,
+mahabubperfumes.com…), the names, sizes and the box's decorative patterns.
 
-kind = 'source'  : the supplier itself (shamperfume, its phone, its handles) — always removed
-       'contact' : any other contact overlay (www/http, @handle, wa.me, a phone number) — removed too,
-                   except text that belongs to the product (the brand's own site printed on the box is kept
-                   because it does not match a contact pattern on its own: «LATTAFA» is not a contact).
+    boxes = [{'text', 'score', 'box': [x0, y0, x1, y1]}, ...]   # every OCR line of the photo
+    plan(boxes, brand_tokens) -> {'remove': [boxes to erase], 'marks': [texts removed], 'review': [texts left for a human]}
 """
 import re
+from difflib import SequenceMatcher
 
+DETECTOR_VERSION = 1
+
+# The supplier itself (shamperfume.com, its phone/WhatsApp, e-mail and social handles): always removed.
 SOURCE = re.compile(
-    r'sham\s*-?\s*perfum|shamperf|perfume\s*store|shamp[ae]rf|'
+    r'sham\s*-?\s*perfum|shamperf|shamp[ae]rf|'
     r'(?:\+?\s*6\s*0|0)\s*1\s*7\s*[-\s.]*8\s*7\s*3\s*[-\s.]*6\s*8\s*7\s*7|873\s*[-\s.]?\s*6877|'
     r'support@|@\s*sham', re.I)
+# Any contact overlay: a web address, a social network, a handle, a phone number.
 CONTACT = re.compile(
-    r'www\s*\.|https?\s*:|\.com\b|\.my\b|\.net\b|wa\.me|whats\s*app|instagram|facebook|tiktok|telegram|'
-    r'(?<![\w.])@[a-z0-9_.]{3,}|'
-    r'(?:\+|00)\s*\d[\d\s-]{8,}\d|\b0\d{2}[-\s]?\d{3,4}[-\s]?\d{3,4}\b', re.I)
+    r'www\s*\.|https?\s*:|\.(?:com|net|my|co|shop|store|org)\b|wa\.me|whats\s*app|instagram|facebook|tiktok|telegram|'
+    r'(?<![\w.])@[a-z0-9_.]{3,}|(?:\+|00)\s*\d[\d\s-]{8,}\d|\b0\d{2}[-\s]?\d{3,4}[-\s]?\d{3,4}\b', re.I)
+SOCIAL_WORD = re.compile(r'instagram|facebook|tiktok|telegram|whats\s*app', re.I)
+# Makers whose site is printed on the boxes of the brands we sell (besides the brand names themselves).
+MAKERS = ['lattafa', 'lattafaperfumes', 'afnan', 'armaf', 'sterling', 'sterlingparfums', 'mahabub', 'mahabubperfumes',
+          'rasasi', 'zimaya', 'alhambra', 'maisonalhambra', 'ardalzaafaran', 'zaafaran', 'alrehab', 'crownperfumes',
+          'gulforchid', 'alwataniah', 'grandeur', 'grandeurelite', 'volare', 'ruebroca', 'maisonasrar', 'shama', 'khadlaj',
+          'fragranceworld', 'paris corner', 'emper', 'dior', 'ysl', 'baccarat']
+MIN_SCORE = 0.85  # a clean read: misread tiny print («wwtaba.com», «o.com») is never erased on a guess
 
 
-def classify(text):
-    if SOURCE.search(text):
+def letters(text):
+    return re.sub(r'[^a-z]', '', text.lower())
+
+
+def brand_tokens(brands):
+    tokens = {letters(t) for t in MAKERS}
+    for b in brands:
+        if b and b != 'Unknown':
+            tokens.add(letters(b))
+            tokens.update(letters(w) for w in b.split() if len(letters(w)) >= 4)
+    return {t for t in tokens if len(t) >= 3}
+
+
+def core(text):
+    """The name in a web address / handle: «www.souqscent.com» -> «souqscent»."""
+    t = text.lower()
+    t = re.sub(r'https?\s*:\s*/*|www\s*\.?', '', t)
+    t = re.sub(r'\.(com|net|my|co|shop|store|org)\b.*$', '', t)
+    t = re.sub(r'instagram|facebook|tiktok|telegram|whats\s*app|follow|us\b', '', t)
+    return letters(t)
+
+
+def is_packaging(text, tokens):
+    c = core(text)
+    if not c:
+        return False
+    for t in tokens:
+        if len(t) >= 4 and (t in c or (len(c) >= 5 and c in t)):
+            return True
+        if len(t) >= 4 and SequenceMatcher(None, c, t).ratio() >= 0.8:
+            return True
+    return False
+
+
+def meaningful(text):
+    """A real contact, not a misread pattern: a name of 4+ letters, a social network, or a varied phone number."""
+    if SOURCE.search(text) or SOCIAL_WORD.search(text):
+        return True
+    digits = re.sub(r'\D', '', text)
+    if len(digits) >= 8 and not core(text):
+        return len(set(digits)) >= 4
+    return len(core(text)) >= 4
+
+
+def classify(box, tokens):
+    """'source' | 'contact' (both removed) | 'review' (contact-like but not sure) | None."""
+    text, score = box['text'], float(box['score'])
+    if SOURCE.search(text) and score >= 0.4:
         return 'source'
-    if CONTACT.search(text):
-        return 'contact'
-    return None
+    if not CONTACT.search(text):
+        return None
+    if is_packaging(text, tokens) or not meaningful(text):
+        return None
+    return 'contact' if score >= MIN_SCORE else 'review'
 
 
-def find_marks(engine, image):
-    """`engine` is a rapidocr_onnxruntime.RapidOCR; `image` a numpy RGB array or a path."""
-    result, _ = engine(image)
-    marks = []
-    for box, text, score in result or []:
-        kind = classify(text)
-        if not kind or float(score) < 0.5:
-            continue
-        xs = [p[0] for p in box]; ys = [p[1] for p in box]
-        marks.append({'text': text, 'kind': kind, 'score': round(float(score), 2),
-                      'box': [int(min(xs)), int(min(ys)), int(max(xs)), int(max(ys))]})
-    return marks
+def _h(b):
+    return b['box'][3] - b['box'][1]
+
+
+def _near(a, b):
+    """b is the next/previous line of the same overlay block as a."""
+    ax0, ay0, ax1, ay1 = a['box']; bx0, by0, bx1, by1 = b['box']
+    line = max(_h(a), 8)
+    gap = max(by0 - ay1, ay0 - by1)
+    overlap = min(ax1, bx1) - max(ax0, bx0)
+    return gap <= 1.2 * line and overlap > 0 and _h(b) <= 2.2 * line
+
+
+def plan(boxes, tokens):
+    kinds = [classify(b, tokens) for b in boxes]
+    remove = [i for i, k in enumerate(kinds) if k in ('source', 'contact')]
+    # The rest of the same overlay (a line the OCR could not read cleanly, or another contact line).
+    for i in list(remove):
+        for j, b in enumerate(boxes):
+            if j not in remove and _near(boxes[i], b) and (float(b['score']) < MIN_SCORE or kinds[j] in ('review', 'source', 'contact')
+                                                            or CONTACT.search(b['text'])):
+                remove.append(j)
+    review = [boxes[i]['text'] for i, k in enumerate(kinds) if k == 'review' and i not in remove]
+    return {'remove': [boxes[i] for i in remove], 'marks': [boxes[i]['text'] for i in remove], 'review': review}
+
+
+def mask_boxes(remove, width, height):
+    """Rectangles to erase, padded so no edge of a letter is left behind."""
+    out = []
+    for b in remove:
+        x0, y0, x1, y1 = b['box']
+        pad = max(5, int(0.4 * (y1 - y0)))
+        out.append([max(0, x0 - pad), max(0, y0 - pad), min(width, x1 + pad), min(height, y1 + pad)])
+    return out
