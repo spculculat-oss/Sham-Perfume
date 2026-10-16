@@ -1,19 +1,22 @@
 {
  "version": 1,
- "updatedAt": "2026-10-16T07:24:57.492Z",
+ "updatedAt": "2026-10-16T08:33:21.337Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
-  "total": 111,
-  "imported": 60,
-  "ok": 6,
-  "warn": 105,
+  "total": 141,
+  "imported": 90,
+  "ok": 24,
+  "warn": 117,
   "hidden": 0,
-  "imagesChecked": 60,
+  "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-16T07:23:52.439Z",
+  "at": "2026-10-16T08:32:37.824Z",
   "markup": 1.5,
+  "pricing": {
+   "markup": 1.5
+  },
   "sources": [
    {
     "id": "shamperfume",
@@ -31,7 +34,50 @@
    }
   ],
   "rate": 13.081,
-  "durationMs": 65054
+  "prices": {
+   "count": 90,
+   "min": 985,
+   "median": 4397.5,
+   "max": 5890,
+   "top": [
+    {
+     "sku": "RAS-092",
+     "name": "Hawas Private Luceo by Rasasi Extrait de Parfum 100ml",
+     "price": 5890,
+     "supplierEgp": 3924.3,
+     "sizeMl": 100
+    },
+    {
+     "sku": "RAS-061",
+     "name": "Hawas Private Terra by Rasasi Extrait de Parfum 100ml",
+     "price": 5790,
+     "supplierEgp": 3858.9,
+     "sizeMl": 100
+    },
+    {
+     "sku": "RAS-063",
+     "name": "Hawas Private Dulce by Rasasi Extrait de Parfum 100ml",
+     "price": 5695,
+     "supplierEgp": 3793.49,
+     "sizeMl": 100
+    },
+    {
+     "sku": "LAT-129",
+     "name": "Bade'e Al Oud Amethyst Fusion 100ml by Lattafa",
+     "price": 5695,
+     "supplierEgp": 3793.49,
+     "sizeMl": 100
+    },
+    {
+     "sku": "RAS-082",
+     "name": "Hawas For Him by Rasasi 100ml EDP",
+     "price": 5675,
+     "supplierEgp": 3780.41,
+     "sizeMl": 100
+    }
+   ]
+  },
+  "durationMs": 43514
  },
  "items": [
   {
@@ -1189,6 +1235,126 @@
     "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/musamam-eau-de-parfum-100ml-by-lattafa-111.html"
+  },
+  {
+   "sku": "LAT-113",
+   "id": 113,
+   "name": "Oud Mood Reminiscence Lattafa 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/oud-mood-reminiscence-lattafa-100ml-113.html"
+  },
+  {
+   "sku": "ALR-114",
+   "id": 114,
+   "name": "Spanish Vanilla Eau De Parfum 100ml by Al Rehab",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/spanish-vanilla-eau-de-parfum-100ml-by-al-rehab-114.html"
+  },
+  {
+   "sku": "LAT-121",
+   "id": 121,
+   "name": "Najdia Intense Lattafa Men 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/najdia-intense-lattafa-men-100ml-edp-121.html"
+  },
+  {
+   "sku": "LAT-122",
+   "id": 122,
+   "name": "Dalal Lattafa Women 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/dalal-lattafa-women-100ml-edp-122.html"
+  },
+  {
+   "sku": "LAT-123",
+   "id": 123,
+   "name": "Fakhar Silver by Lattafa 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/fakhar-silver-by-lattafa-100ml-edp-men-123.html"
+  },
+  {
+   "sku": "LAT-124",
+   "id": 124,
+   "name": "Ajwad Pink 2 Pink Creamy Elixir Lattafa 60ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ajwad-pink-2-pink-creamy-elixir-lattafa-60ml-124.html"
+  },
+  {
+   "sku": "LAT-127",
+   "id": 127,
+   "name": "Angham Second Song by Lattafa 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/angham-second-song-by-lattafa-100ml-127.html"
+  },
+  {
+   "sku": "LAT-129",
+   "id": 129,
+   "name": "Bade'e Al Oud Amethyst Fusion 100ml by Lattafa",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/bade-e-al-oud-amethyst-fusion-100ml-by-lattafa-129.html"
+  },
+  {
+   "sku": "LAT-132",
+   "id": 132,
+   "name": "Qaed Al Fursan Lattafa 90ml for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/qaed-al-fursan-lattafa-90ml-for-men-132.html"
+  },
+  {
+   "sku": "LAT-133",
+   "id": 133,
+   "name": "Asad Elixir Lattafa 100ml for Men",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/asad-elixir-lattafa-100ml-for-men-133.html"
+  },
+  {
+   "sku": "LAT-134",
+   "id": 134,
+   "name": "Afeef by Lattafa 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/afeef-by-lattafa-100ml-edp-134.html"
+  },
+  {
+   "sku": "LAT-138",
+   "id": 138,
+   "name": "Dynasty by Lattafa 100ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/dynasty-by-lattafa-100ml-edp-unisex-138.html"
   }
  ]
 }
