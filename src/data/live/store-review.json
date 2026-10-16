@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-16T19:06:42.295Z",
+ "updatedAt": "2026-10-16T21:01:18.698Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
-  "total": 1111,
-  "imported": 1060,
-  "ok": 533,
-  "warn": 578,
+  "total": 1114,
+  "imported": 1063,
+  "ok": 532,
+  "warn": 582,
   "hidden": 0,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-16T19:05:27.976Z",
+  "at": "2026-10-16T21:00:07.865Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,21 +25,21 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1016,
-    "listingOnly": 56,
+    "listingProducts": 1021,
+    "listingOnly": 60,
     "listingComplete": true,
-    "added": 0,
+    "added": 3,
     "refreshed": 25,
     "failed": [],
     "failedCount": 0,
     "viaShaheen": 0,
     "deferred": 0,
-    "gone": 5
+    "gone": 4
    }
   ],
   "rate": 13.081,
   "prices": {
-   "count": 1060,
+   "count": 1063,
    "min": 750,
    "median": 3340,
    "max": 7830,
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 74350
+  "durationMs": 70865
  },
  "items": [
   {
@@ -3100,6 +3100,16 @@
    "page": "p/shams-al-emarat-khususi-100ml-edp-unisex-515.html"
   },
   {
+   "sku": "MAI-516",
+   "id": 516,
+   "name": "Your Touch Man by Maison Alhambra – 100 ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/your-touch-man-by-maison-alhambra-100-ml-516.html"
+  },
+  {
    "sku": "GRA-518",
    "id": 518,
    "name": "Strawberry by Grandeur Tubbees 50ml Woman",
@@ -3118,6 +3128,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/musk-vanille-by-maison-alhambra-100ml-edp-526.html"
+  },
+  {
+   "sku": "MAI-527",
+   "id": 527,
+   "name": "Luxe Nightlife by Maison Alhambra Unisex 100 ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/luxe-nightlife-by-maison-alhambra-unisex-100-ml-527.html"
   },
   {
    "sku": "ALW-529",
@@ -3969,6 +3989,16 @@
     "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/gallant-perfume-man-edp-100ml-for-him-grandeur-aromatic-757.html"
+  },
+  {
+   "sku": "MAI-763",
+   "id": 763,
+   "name": "Zeno by Maison Alhambra – 100 ml for Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/zeno-by-maison-alhambra-100-ml-for-women-763.html"
   },
   {
    "sku": "ALW-769",
@@ -5051,6 +5081,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/paudree-f-roses-and-musk-75ml-edp-977.html"
+  },
+  {
+   "sku": "PAR-980",
+   "id": 980,
+   "name": "Fayora Paris Corner EDP 100ml Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/fayora-paris-corner-edp-100ml-women-980.html"
   },
   {
    "sku": "PAR-984",
