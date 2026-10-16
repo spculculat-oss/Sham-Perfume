@@ -1,6 +1,6 @@
-name: Shaheen product importer and page reviewer (every 12 hours)
+name: Shaheen product importer and page reviewer (every 2 hours)
 
-# «مستورد شاهين»: every 12 hours «الخبير شاهين» transfers the supplier's products into «متجر شام» with
+# «مستورد شاهين»: every 2 hours «الخبير شاهين» transfers the supplier's products into «متجر شام» with
 # all their data and photos (sitemap + schema.org Product data on each product page; when a page has no
 # structured data, Shaheen reads it and his answer is checked against the page). Prices follow the store's
 # scenario: supplier price → EGP at today's rate → × 1.5. Then «مراجع الصفحات» reviews every product
@@ -8,12 +8,13 @@ name: Shaheen product importer and page reviewer (every 12 hours)
 # Shaheen then writes the Arabic names/descriptions (scripts/shaheen-store) and GitHub Pages is rebuilt,
 # which generates a standalone page for every product (p/<slug>.html). Code: scripts/shaheen-import/.
 # Settings (repository variables, all optional): IMPORT_MAX_NEW (default 30 new products per run),
-# IMPORT_MAX_REFRESH (default 40), IMPORT_RATE_MYR_EGP (fallback exchange rate), IMPORT_MARKUP (default 1.5).
+# IMPORT_MAX_REFRESH (default 25), IMPORT_RATE_MYR_EGP (fallback exchange rate), IMPORT_MARKUP (default 1.5).
 
 on:
   schedule:
-    # 02:37 and 14:37 UTC = 05:37 and 17:37 Cairo.
-    - cron: '37 2,14 * * *'
+    # Every 2 hours (minute 37). The AI packages are used as far as they go: when a quota runs out the run
+    # records when it renews (src/data/live/ai-quota.json) and a later run continues from there.
+    - cron: '37 */2 * * *'
   workflow_dispatch:
     inputs:
       max_new:
@@ -41,9 +42,11 @@ jobs:
       # Branch pushes rehearse only: the result is shown in the job summary, nothing is committed.
       IMPORT_COMMIT: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
       IMPORT_MAX_NEW: ${{ github.event.inputs.max_new || vars.IMPORT_MAX_NEW || (github.ref == 'refs/heads/main' && '30' || '6') }}
-      IMPORT_MAX_REFRESH: ${{ vars.IMPORT_MAX_REFRESH || (github.ref == 'refs/heads/main' && '40' || '2') }}
+      IMPORT_MAX_REFRESH: ${{ vars.IMPORT_MAX_REFRESH || (github.ref == 'refs/heads/main' && '25' || '2') }}
       IMPORT_RATE_MYR_EGP: ${{ vars.IMPORT_RATE_MYR_EGP }}
       IMPORT_MARKUP: ${{ vars.IMPORT_MARKUP || '1.5' }}
+      # Arabic text for up to 8 × 14 products per run, while the AI quota lasts.
+      STORE_MAX_BATCHES: ${{ vars.STORE_MAX_BATCHES || '8' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

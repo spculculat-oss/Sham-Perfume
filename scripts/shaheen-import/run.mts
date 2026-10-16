@@ -12,7 +12,7 @@
 import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { guidanceBlock } from '../../src/utils/aiTools';
 import type { RawProduct } from '../../src/utils/storeCatalog';
-import { makeAsk } from '../doctor/agent';
+import { makeAsk, QuotaExhaustedError, quotaBook } from '../doctor/agent';
 import { extractProduct, pageImages, pageText, parseSitemap, parseSitemapIndex, validateShaheenReading, type ExtractedProduct, type SitemapEntry } from './extract';
 import { reviewStore, type ReviewFile } from './review';
 import { SOURCES } from './sources';
@@ -23,7 +23,7 @@ const PRODUCTS = new URL('../../src/data/products.json', import.meta.url);
 const REVIEW = new URL('../../src/data/live/store-review.json', import.meta.url);
 const UA = 'Mozilla/5.0 (compatible; ShaheenImporter/1.0; +https://spculculat-oss.github.io/Sham-Perfume/)';
 const MAX_NEW = Number(env.IMPORT_MAX_NEW ?? 30);
-const MAX_REFRESH = Number(env.IMPORT_MAX_REFRESH ?? 40);
+const MAX_REFRESH = Number(env.IMPORT_MAX_REFRESH ?? 25);
 // The scenario's markup (×1.5); a repository variable can change it without touching the code.
 const MARKUP = Number(env.IMPORT_MARKUP) >= 1 ? Number(env.IMPORT_MARKUP) : undefined;
 const CONCURRENCY = Math.max(1, Math.min(6, Number(env.IMPORT_CONCURRENCY ?? 3)));
@@ -83,8 +83,11 @@ const products: RawProduct[] = read<{ products?: RawProduct[] }>(PRODUCTS)?.prod
 const previous = read<ReviewFile>(REVIEW);
 const before = products.length;
 const importInfo: Record<string, unknown> = { at: new Date().toISOString(), markup: MARKUP ?? 1.5, sources: [] as unknown[] };
+// AI packages: Shaheen reads pages only while the quota lasts; pages left unread wait for its renewal.
+const quota = quotaBook(new URL('../../src/data/live/ai-quota.json', import.meta.url));
 let ask: Awaited<ReturnType<typeof makeAsk>>;
-try { ask = await makeAsk(env); } catch { ask = undefined; }
+try { ask = await makeAsk(env, { quota }); } catch { ask = undefined; }
+let aiResumeAt = 0;
 
 const SHAHEEN_READER = `أنت «الخبير شاهين» وتقرأ صفحة منتج عطر من متجر مورّد. استخرج البيانات المكتوبة في الصفحة فقط ولا تخمّن.
 أعد JSON فقط: {"name":"","brand":"","price":0,"sku":"","description":"","images":["رابط كامل من القائمة"],"size":"100ml","concentration":"","gender":"men|women|unisex","inStock":true}
@@ -119,6 +122,7 @@ for (const source of SOURCES.filter((s) => !env.IMPORT_SOURCE || env.IMPORT_SOUR
 
   const jobs = [...plan.fresh.map((u) => ({ url: u.url, fresh: true })), ...plan.refresh.map((u) => ({ url: u.url, fresh: false }))];
   const failed: string[] = [];
+  const deferred: string[] = [];
   let viaShaheen = 0; let added = 0; let refreshed = 0;
   const bySourceKey = new Map(mine.map((p) => [sourceKey(source.id, p.supplierSku), p]));
   const byUrl = new Map(mine.map((p) => [p.url.replace(/\/+$/, ''), p]));
@@ -136,6 +140,7 @@ for (const source of SOURCES.filter((s) => !env.IMPORT_SOURCE || env.IMPORT_SOUR
         continue;
       }
       let x = extractProduct(page.body, job.url, imagesByUrl.get(job.url.replace(/\/+$/, '')) || []);
+      if (!x && ask && aiResumeAt) { deferred.push(job.url); continue; }
       if (!x && ask) {
         // No structured data: Shaheen reads the page; his answer must match the page or it is dropped.
         const imgs = pageImages(page.body, job.url).slice(0, 40);
@@ -145,7 +150,11 @@ for (const source of SOURCES.filter((s) => !env.IMPORT_SOURCE || env.IMPORT_SOUR
           const body = (reply || '').replace(/```(?:json)?/gi, '');
           x = validateShaheenReading(JSON.parse(body.slice(body.indexOf('{'), body.lastIndexOf('}') + 1)), page.body, job.url, source.currency);
           if (x) viaShaheen++;
-        } catch { x = null; }
+        } catch (error) {
+          // Quota used up: this page (and the next ones needing Shaheen) wait for the renewal — not failures.
+          if (error instanceof QuotaExhaustedError) { aiResumeAt = error.resumeAt; deferred.push(job.url); continue; }
+          x = null;
+        }
       }
       if (!x || x.currency !== source.currency) { failed.push(`${job.url} (${x ? `currency ${x.currency}` : 'no product data'})`); continue; }
       results.push(x);
@@ -161,9 +170,12 @@ for (const source of SOURCES.filter((s) => !env.IMPORT_SOURCE || env.IMPORT_SOUR
     byUrl.set(x.url.replace(/\/+$/, ''), product);
   }
   for (const p of plan.gone) p.stockStatus = 'out_of_stock';
-  Object.assign(info, { added, refreshed, failed: failed.slice(0, 20), failedCount: failed.length, viaShaheen, gone: plan.gone.length });
-  say(`${source.id}: +${added} new, ${refreshed} refreshed, ${failed.length} unreadable${viaShaheen ? `, ${viaShaheen} read by Shaheen` : ''}`);
+  Object.assign(info, { added, refreshed, failed: failed.slice(0, 20), failedCount: failed.length, viaShaheen, deferred: deferred.length, gone: plan.gone.length });
+  say(`${source.id}: +${added} new, ${refreshed} refreshed, ${failed.length} unreadable${viaShaheen ? `, ${viaShaheen} read by Shaheen` : ''}${deferred.length ? `, ${deferred.length} wait for the AI renewal` : ''}`);
 }
+
+if (aiResumeAt) { importInfo.aiResumeAt = new Date(aiResumeAt).toISOString(); say(`AI packages used up until ${importInfo.aiResumeAt}; the import continues then`); }
+quota.save();
 
 // «مراجع الصفحات» reviews the whole store after the import.
 importInfo.durationMs = Date.now() - started;
