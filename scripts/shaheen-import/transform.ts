@@ -144,6 +144,25 @@ export function toStoreProduct(x: ExtractedProduct, o: BuildOptions): ImportedPr
 }
 
 /** Next free numeric id in products.json. */
+/**
+ * «منقّح الصور» (scripts/shaheen-images/clean.py) keeps a clean copy in the site of every supplier photo that
+ * carried a source/contact mark (src/data/live/image-clean.json). A refreshed product gets the supplier's links
+ * again, so every run puts the clean copies back. Returns how many products changed.
+ */
+export interface ImageRegistry { images?: Record<string, string | { s?: string; f?: string }> }
+export function useCleanPhotos(products: RawProduct[], registry: ImageRegistry | undefined): number {
+  const images = registry?.images || {};
+  const clean = (u: string) => { const v = images[u]; return v && typeof v === 'object' && typeof v.f === 'string' && v.f ? v.f : u; };
+  let changed = 0;
+  for (const p of products) {
+    const list = Array.isArray(p.images) ? p.images : [];
+    const next = list.map((u) => (typeof u === 'string' ? clean(u) : u));
+    const first = typeof p.imageUrl === 'string' ? clean(p.imageUrl) : p.imageUrl;
+    if (next.some((u, i) => u !== list[i]) || first !== p.imageUrl) { p.images = next; p.imageUrl = first; changed++; }
+  }
+  return changed;
+}
+
 export const nextIdOf = (products: RawProduct[]) => products.reduce((m, p) => Math.max(m, Number(p.id) || 0), 0) + 1;
 
 /**

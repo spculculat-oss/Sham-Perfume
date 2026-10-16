@@ -24,7 +24,8 @@ export function auditProduct(p: RawProduct): string[] {
   if (!p.brand || p.brand === 'Unknown') issues.push('العلامة التجارية غير معروفة');
   if (!(Number(p.ourPrice) > 0)) issues.push('بدون سعر بيع');
   else if (Number(p.supplierPrice) > 0 && Number(p.ourPrice) <= Number(p.supplierPrice)) issues.push('سعر البيع لا يزيد عن سعر التوريد');
-  if (!p.imageUrl || !/^https:\/\//.test(p.imageUrl)) issues.push('بدون صورة');
+  // A photo cleaned by «منقّح الصور» lives in the site itself (store-images/…), not on another server.
+  if (!p.imageUrl || !/^(?:https:\/\/|store-images\/)/.test(p.imageUrl)) issues.push('بدون صورة');
   if (p.rating && !p.reviewCount) issues.push('تقييم بدون مراجعات');
   return issues;
 }

@@ -143,9 +143,10 @@ const sourceNotes = (p: RawProduct): StoreEntry['notes'] => {
   return { top: clean(p.notes?.top), heart: clean(p.notes?.heart), base: clean(p.notes?.base) };
 };
 const hasNotes = (n: StoreEntry['notes']) => Boolean(n.top.length || n.heart.length || n.base.length);
-/** Photos the store can show: https URLs, or files mirrored into the site (store/…). */
+/** Photos the store can show: https URLs, or files kept in the site itself (store/…, and store-images/… —
+ * the supplier photos «منقّح الصور» cleaned of another source's contact marks). */
 export const productImages = (p: RawProduct): string[] => [...new Set([p.imageUrl, ...(Array.isArray(p.images) ? p.images : [])]
-  .filter((u): u is string => typeof u === 'string' && (/^https:\/\//.test(u) || /^store\/[\w./-]+$/.test(u))))].slice(0, 8);
+  .filter((u): u is string => typeof u === 'string' && (/^https:\/\//.test(u) || /^store(?:-images)?\/[\w./-]+$/.test(u))))].slice(0, 8);
 const genderOf = (p: RawProduct): Gender | undefined => {
   const t = `${p.category || ''} ${p.nameAr || ''} ${p.nameEn || ''} ${p.descriptionAr || ''}`;
   if (/مختلط|للجنسين|unisex/i.test(t)) return 'unisex';

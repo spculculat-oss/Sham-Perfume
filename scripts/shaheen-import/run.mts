@@ -17,7 +17,7 @@ import { answerBook } from '../doctor/answers';
 import { extractProduct, pageImages, pageText, parseListing, parseSitemap, parseSitemapIndex, validateShaheenReading, type ExtractedProduct, type SitemapEntry } from './extract';
 import { reviewStore, type ReviewFile } from './review';
 import { SOURCES } from './sources';
-import { isImported, nextIdOf, normalizeBrand, ourPriceOf, planRun, priceReport, sourceKey, toStoreProduct, type ImportedProduct, type ImportSource, type PriceRule } from './transform';
+import { isImported, nextIdOf, normalizeBrand, ourPriceOf, planRun, priceReport, sourceKey, toStoreProduct, useCleanPhotos, type ImageRegistry, type ImportedProduct, type ImportSource, type PriceRule } from './transform';
 
 const env = process.env;
 const PRODUCTS = new URL('../../src/data/products.json', import.meta.url);
@@ -247,6 +247,11 @@ if (repriced) say(`Price rule ×${MARKUP.markup}${MARKUP.shippingEgp ? ` + ${MAR
 const prices = priceReport(products);
 importInfo.prices = prices;
 if (prices.count) say(`Prices of ${prices.count} imported products: ${prices.min}–${prices.max} EGP (median ${prices.median})`);
+
+// Photos whose source/contact marks were removed by «منقّح الصور»: the clean copy in the site, never the supplier's.
+const cleanRegistry = read<ImageRegistry>(new URL('../../src/data/live/image-clean.json', import.meta.url));
+const cleaned = useCleanPhotos(products, cleanRegistry);
+if (cleaned) say(`${cleaned} products use their cleaned photos`);
 
 // «مراجع الصفحات» reviews the whole store after the import.
 importInfo.durationMs = Date.now() - started;

@@ -69,10 +69,10 @@ for (let attempt = 1; attempt <= 6; attempt++) {
   git('reset', '-q', '--hard', 'origin/main');
   for (const f of mine) {
     if (deleted.has(f)) { if (existsSync(f)) git('rm', '-q', '--', f); continue; }
-    const ours = readFileSync(join(keep, f), 'utf8');
-    if (f === QUOTA && existsSync(f)) writeFileSync(f, mergeQuota(readFileSync(f, 'utf8'), ours));
-    else if (MEMORIES.has(f) && existsSync(f)) writeFileSync(f, mergeMemoryText(readFileSync(f, 'utf8'), ours));
-    else { mkdirSync(dirname(f), { recursive: true }); writeFileSync(f, ours); }
+    if (f === QUOTA && existsSync(f)) writeFileSync(f, mergeQuota(readFileSync(f, 'utf8'), readFileSync(join(keep, f), 'utf8')));
+    else if (MEMORIES.has(f) && existsSync(f)) writeFileSync(f, mergeMemoryText(readFileSync(f, 'utf8'), readFileSync(join(keep, f), 'utf8')));
+    // Copied byte for byte: the cleaned product photos (public/store-images) are not text.
+    else { mkdirSync(dirname(f), { recursive: true }); copyFileSync(join(keep, f), f); }
   }
   const broken = mine.filter((f) => f.endsWith('.json') && existsSync(f)).filter((f) => { try { JSON.parse(readFileSync(f, 'utf8')); return false; } catch { return true; } });
   if (broken.length) { console.log(`::error::Invalid JSON after merging: ${broken.join(', ')}`); process.exit(1); }
