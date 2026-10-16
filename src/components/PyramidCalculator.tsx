@@ -24,8 +24,8 @@ import { PerfumeSpraySimulator } from './PerfumeSpraySimulator';
 import { CalculatorCriteriaGuide } from './CalculatorCriteriaGuide';
 import compoundingImg from '../assets/images/perfume_lab_compounding_1791692420116.jpg';
 import { SupportedLanguage } from '../types/i18n';
-import { isRTL } from '../utils/localizedContent';
-import { LText, makeT, fmt, pickArEn } from '../utils/localize';
+import { isRTL } from '../لغات/localizedContent';
+import { LText, makeT, fmt, pickArEn } from '../لغات/localize';
 
 interface PyramidCalculatorProps {
   currentLang?: SupportedLanguage;

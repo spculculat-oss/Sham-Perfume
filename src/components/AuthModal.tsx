@@ -17,8 +17,8 @@ import { UserProfile } from '../types/auth';
 import { loginUser, registerUser } from '../utils/authStorage';
 import { WORLD_COUNTRIES } from '../data/worldCountries';
 import { SupportedLanguage } from '../types/i18n';
-import { isRTL } from '../utils/localizedContent';
-import { LText, makeT, pickArEn } from '../utils/localize';
+import { isRTL } from '../لغات/localizedContent';
+import { LText, makeT, pickArEn } from '../لغات/localize';
 
 interface AuthModalProps {
   currentLang?: SupportedLanguage;

@@ -24,8 +24,8 @@ import {
   Save,
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
-import { LText, loc, makeT } from '../utils/localize';
-import { uiLabel } from '../utils/uiTextL10n';
+import { LText, loc, makeT } from '../لغات/localize';
+import { uiLabel } from '../لغات/uiTextL10n';
 import {
   getMerchantById,
   updateMerchant,

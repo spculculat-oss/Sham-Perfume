@@ -20,8 +20,8 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
-import { isRTL } from '../utils/localizedContent';
-import { LText, loc, makeT, fmt, localeDate } from '../utils/localize';
+import { isRTL } from '../لغات/localizedContent';
+import { LText, loc, makeT, fmt, localeDate } from '../لغات/localize';
 
 interface MacerationTimeSimulatorProps {
   currentLang?: SupportedLanguage;

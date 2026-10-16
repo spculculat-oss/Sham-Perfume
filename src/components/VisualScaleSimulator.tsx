@@ -16,8 +16,8 @@ import {
 import { CalculationResult, FormulationState, PyramidNote } from '../types/perfume';
 import { SupportedLanguage } from '../types/i18n';
 import { formatNum } from '../utils/calculations';
-import { isRTL } from '../utils/localizedContent';
-import { LText, loc, makeT, fmt, pickArEn } from '../utils/localize';
+import { isRTL } from '../لغات/localizedContent';
+import { LText, loc, makeT, fmt, pickArEn } from '../لغات/localize';
 
 interface VisualScaleSimulatorProps {
   formulation: FormulationState;

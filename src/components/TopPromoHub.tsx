@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, ShoppingBag, Sparkles } from 'lucide-react';
-import { makeT } from '../utils/localize';
-import { isRTL } from '../utils/localizedContent';
+import { makeT } from '../لغات/localize';
+import { isRTL } from '../لغات/localizedContent';
+import type { SupportedLanguage } from '../types/i18n';
 import campaignLifestyle from '../assets/images/store_campaign_lifestyle.jpg';
 import productsData from '../data/products.json';
 
@@ -27,7 +28,7 @@ const S = {
 } satisfies Record<string, { ar: string; en: string }>;
 
 interface TopPromoHubProps {
-  currentLang?: 'ar' | 'en';
+  currentLang?: SupportedLanguage;
   onViewStore?: () => void;
 }
 

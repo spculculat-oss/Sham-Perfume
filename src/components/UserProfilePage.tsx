@@ -25,10 +25,10 @@ import {
   getUserExperiences, getUserOrders, getUserAnalytics, updateUserAnalytics, saveUserExperience, clearUserSessionData, UserExperience 
 } from '../utils/userExperienceStore';
 import { SupportedLanguage } from '../types/i18n';
-import { t } from '../utils/i18n';
-import { LText, makeT, pickArEn, localeDate } from '../utils/localize';
-import { uiLabel } from '../utils/uiTextL10n';
-import { isRTL } from '../utils/localizedContent';
+import { t } from '../لغات/i18n';
+import { LText, makeT, pickArEn, localeDate } from '../لغات/localize';
+import { uiLabel } from '../لغات/uiTextL10n';
+import { isRTL } from '../لغات/localizedContent';
 
 interface UserProfilePageProps {
   user: UserProfile;

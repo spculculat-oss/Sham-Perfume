@@ -30,8 +30,8 @@ import { NEWS_IMAGE_LIST, getEditorialImageForCategory } from '../data/newsImage
 import { PyramidNote } from '../types/perfume';
 import { ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
 import { SupportedLanguage } from '../types/i18n';
-import { getLocalizedNewsArticle, isRTL } from '../utils/localizedContent';
-import { LText, makeT, fmt, loc, LOCALE_MAP } from '../utils/localize';
+import { getLocalizedNewsArticle, isRTL } from '../لغات/localizedContent';
+import { LText, makeT, fmt, loc, LOCALE_MAP } from '../لغات/localize';
 import { ApiError, isStaticHosting, requestApi } from '../utils/api';
 import { isNewsArticle, mergeNewsArticles, restoreNewsCache, resolveNewsImage } from '../utils/newsCache';
 import { StaticHostingNotice, API_ERROR_NOTICE } from './StaticHostingNotice';

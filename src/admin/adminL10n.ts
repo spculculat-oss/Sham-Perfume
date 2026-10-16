@@ -10,7 +10,7 @@
  * therefore never stored explicitly.
  */
 import { useEffect, useState } from 'react';
-import { getInitialLanguage } from '../utils/i18n';
+import { getInitialLanguage } from '../لغات/i18n';
 import { SUPPORTED_LANGUAGES } from '../types/i18n';
 import type { SupportedLanguage } from '../types/i18n';
 

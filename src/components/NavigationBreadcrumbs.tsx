@@ -20,9 +20,9 @@ import {
   Bot,
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
-import { t } from '../utils/i18n';
-import { LText, makeT } from '../utils/localize';
-import { isRTL } from '../utils/localizedContent';
+import { t } from '../لغات/i18n';
+import { LText, makeT } from '../لغات/localize';
+import { isRTL } from '../لغات/localizedContent';
 
 
 const S = {

@@ -17,13 +17,13 @@ import {
   Store,
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
-import { t } from '../utils/i18n';
+import { t } from '../لغات/i18n';
 import { LanguageSelector } from './LanguageSelector';
 import { AdminMerchantManagement } from './AdminMerchantManagement';
 import { UserProfile } from '../types/auth';
 import { UserEnvironmentProfile } from '../utils/environmentAdapter';
-import { LText, makeT, pickArEn } from '../utils/localize';
-import { uiLabel } from '../utils/uiTextL10n';
+import { LText, makeT, pickArEn } from '../لغات/localize';
+import { uiLabel } from '../لغات/uiTextL10n';
 
 
 const S = {
