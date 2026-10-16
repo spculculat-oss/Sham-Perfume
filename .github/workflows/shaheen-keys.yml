@@ -66,9 +66,6 @@ jobs:
       - name: Verify each AI key with a real request
         run: node --import tsx scripts/verify-ai-keys.mts
       - name: Verify the payment keys (Kashier) with a real test session
-        env:
-          # Read for the secret NAMES only (to spot a misspelt Kashier secret); no value is ever printed.
-          SHAM_SECRET_NAMES_JSON: ${{ toJSON(secrets) }}
         run: node --import tsx scripts/verify-payments.mts
       - name: Sync working keys to Vercel and redeploy
         run: node scripts/sync-vercel-env.mjs
