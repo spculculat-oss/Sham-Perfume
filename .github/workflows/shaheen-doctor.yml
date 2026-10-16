@@ -1,76 +1,53 @@
-name: Shaheen Doctor (automatic maintenance)
-
-# «طبيب شاهين» checks «الخبير شاهين» every 10 minutes from GitHub's machines (never from the website's
-# servers, so visitors feel nothing) and fixes what it finds by itself:
-#   runtime reset through the admin API · re-run Pages / key sync · Vercel redeploy · AI code fixes that must
-#   pass every test before they are merged, watched after deploy and reverted automatically if they hurt.
-# Status board and log: the open issue labelled "shaheen-doctor". Code: scripts/doctor/.
-# Secrets (Settings → Secrets and variables → Actions), all optional:
-#   GEMINI_API_KEY (or another AI key)  → the doctor can write code fixes
-#   SHAM_ADMIN_TOKEN (same value as on Vercel) → server counters + runtime remedies
-#   VERCEL_TOKEN → redeploy Vercel directly instead of waiting / nudging with a commit
+name: Shaheen Doctor (Automated Maintenance)
 
 on:
   schedule:
+    # Every 10 minutes
     - cron: '*/10 * * * *'
   workflow_dispatch:
     inputs:
-      mode:
-        description: 'live = fix problems, dry = report only'
+      check_type:
+        description: 'Type of check to perform'
+        required: false
+        default: 'full'
         type: choice
-        options: [live, dry]
-        default: live
-  push:
-    branches: ['arena/**']
-    paths: ['scripts/doctor/**', '.github/workflows/shaheen-doctor.yml']
-
-permissions:
-  contents: write
-  pull-requests: write
-  issues: write
-  actions: write
-  statuses: read
-  checks: read
-
-concurrency:
-  group: shaheen-doctor
-  cancel-in-progress: false
+        options:
+          - full
+          - products
+          - images
+          - store
+          - deploy
 
 jobs:
-  doctor:
-    name: Check and heal Shaheen
+  doctor-check:
+    name: Shaheen Doctor Check
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
-    env:
-      # Branch pushes only rehearse (report to the job summary, change nothing).
-      DOCTOR_MODE: ${{ github.event_name == 'push' && 'dry' || inputs.mode || 'live' }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      SHAM_ADMIN_TOKEN: ${{ secrets.SHAM_ADMIN_TOKEN }}
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      VERCEL_SCOPE: ${{ vars.VERCEL_SCOPE || 'sham-de37' }}
-      DOCTOR_VERCEL_PROJECT: ${{ vars.DOCTOR_VERCEL_PROJECT || 'sham-perfume-49bf' }}
-      DOCTOR_SITE_URL: ${{ vars.DOCTOR_SITE_URL || 'https://sham-perfume-49bf.vercel.app' }}
-      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+    timeout-minutes: 5
+    
     steps:
-      - name: Checkout source
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          fetch-depth: 50
-      - name: Set up Node.js
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version-file: .nvmrc
-          package-manager-cache: false
-      - name: Set up pinned Bun
-        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
-        with:
-          bun-version-file: package.json
+          python-version: '3.11'
+          cache: 'pip'
+          
       - name: Install dependencies
-        # A broken lockfile on main must not stop the doctor (it is one of the things it repairs).
-        run: bun install --frozen-lockfile || bun install
-      - name: Check and heal
-        run: node --import tsx scripts/doctor/run.mts
+        run: |
+          pip install requests --quiet
+          
+      - name: Run Shaheen Doctor
+        env:
+          DOCTOR_DAEMON: '0'
+          CHECK_TYPE: ${{ github.event.inputs.check_type || 'full' }}
+        run: |
+          python scripts/doctor/shaheen_doctor.py
+          
+      - name: Summary
+        run: |
+          echo "## Shaheen Doctor Results" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: ✅ Check completed" >> $GITHUB_STEP_SUMMARY
+          echo "- Time: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- Next check: in 10 minutes" >> $GITHUB_STEP_SUMMARY
