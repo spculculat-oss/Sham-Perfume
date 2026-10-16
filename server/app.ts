@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { createShaheenRouter } from './shaheen';
 import { createMediaRouter } from './media';
+import { createStoreRouter } from './store';
 import { createShamCore } from './core/http';
 import { callEngine, engineStatuses } from './core/engines';
 import { supervisorGuidance } from './core/liveData';
@@ -40,6 +41,8 @@ app.get('/api/health', (_req, res) => {
 // admin dashboard, so both sites (Vercel and GitHub Pages, which calls this API) behave the same.
 app.use('/api', createShaheenRouter({ repo: shamCore.repo, runtime: shamCore.runtime }));
 app.use('/api', createMediaRouter());
+// «اسأل شاهين» in «متجر شام»: POST /api/store/advise (server/store.ts).
+app.use('/api', createStoreRouter({ repo: shamCore.repo }));
 
 // ============================================================================
 // DAILY PERFUME NEWS ENGINE (MASTER SHAHEEN AI CURATION & REFRESH)

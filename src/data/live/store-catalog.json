@@ -1,0 +1,1369 @@
+{
+ "version": 1,
+ "updatedAt": "2026-10-16T04:57:32.834Z",
+ "nextUpdateAt": "2026-10-16T16:57:32.834Z",
+ "editor": "rules",
+ "entries": {
+  "LAT-001": {
+   "sourceHash": "1sv9k5a",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر لطافة سوداء",
+   "nameEn": "Lattafa Black Oud",
+   "descriptionAr": "عطر لطافة سوداء من Lattafa رجالي بطابع عود.",
+   "descriptionEn": "Lattafa Black Oud by Lattafa for men with an oud character.",
+   "gender": "men",
+   "families": [
+    "oud"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "LAT-002": {
+   "sourceHash": "1njla",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر لطافة fakhar",
+   "nameEn": "Lattafa Fakhar Black",
+   "descriptionAr": "عطر شيق بأسعار معقولة للشباب",
+   "descriptionEn": "Lattafa Fakhar Black by Lattafa for men.",
+   "gender": "men",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "LAT-003": {
+   "sourceHash": "1o6soxi",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر لطافة white",
+   "nameEn": "Lattafa White Oud",
+   "descriptionAr": "عطر نقي بلمسة بيضاء أنيقة",
+   "descriptionEn": "Lattafa White Oud by Lattafa for men with an oud character.",
+   "gender": "men",
+   "families": [
+    "oud"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "LAT-004": {
+   "sourceHash": "1cyobri",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "Lattafa Ameer Al Oudh",
+   "nameEn": "Lattafa Ameer Al Oudh",
+   "descriptionAr": "عطر Lattafa Ameer Al Oudh من Lattafa رجالي بطابع عود وشرقي.",
+   "descriptionEn": "Lattafa Ameer Al Oudh by Lattafa for men with an oud and oriental character.",
+   "gender": "men",
+   "families": [
+    "oud",
+    "oriental"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "LAT-005": {
+   "sourceHash": "1ix7jzv",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر لطافة night",
+   "nameEn": "Lattafa Noir",
+   "descriptionAr": "عطر ليل مميز بعمق ورفاهية",
+   "descriptionEn": "Lattafa Noir by Lattafa for men.",
+   "gender": "men",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "LAT-006": {
+   "sourceHash": "g673dr",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "Rasasi La Yuya",
+   "nameEn": "Rasasi La Yuya",
+   "descriptionAr": "عطر Rasasi La Yuya من Rasasi رجالي بطابع منعش.",
+   "descriptionEn": "Rasasi La Yuya by Rasasi for men with a fresh character.",
+   "gender": "men",
+   "families": [
+    "fresh"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "LAT-007": {
+   "sourceHash": "mxref2",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "Rasasi Hawas",
+   "nameEn": "Rasasi Hawas",
+   "descriptionAr": "عطر Rasasi Hawas من Rasasi رجالي.",
+   "descriptionEn": "Rasasi Hawas by Rasasi for men.",
+   "gender": "men",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "LAT-008": {
+   "sourceHash": "1ln5zzb",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر ديوان",
+   "nameEn": "De Pronom Mon Guerlain",
+   "descriptionAr": "عطر ديوان من De Pronom رجالي.",
+   "descriptionEn": "De Pronom Mon Guerlain by De Pronom for men.",
+   "gender": "men",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "ALR-001": {
+   "sourceHash": "1ohaop8",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر الرحاب ملكات",
+   "nameEn": "Al-Rehab Malika",
+   "descriptionAr": "عطر نسائي فاخر بلمسة ملكية",
+   "descriptionEn": "Al-Rehab Malika by Al-Rehab for women.",
+   "gender": "women",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "ALR-002": {
+   "sourceHash": "wt84wn",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر الرحاب رماد",
+   "nameEn": "Al-Rehab Rumman",
+   "descriptionAr": "عطر الرحاب رماد من Al-Rehab نسائي بطابع توابل وشرقي.",
+   "descriptionEn": "Al-Rehab Rumman by Al-Rehab for women with a spicy and oriental character.",
+   "gender": "women",
+   "families": [
+    "spicy",
+    "oriental"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "ALR-003": {
+   "sourceHash": "1kcom5u",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر الرحاب دبي",
+   "nameEn": "Al-Rehab Dubai",
+   "descriptionAr": "عطر الرحاب دبي من Al-Rehab نسائي بطابع منعش.",
+   "descriptionEn": "Al-Rehab Dubai by Al-Rehab for women with a fresh character.",
+   "gender": "women",
+   "families": [
+    "fresh"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "ALR-004": {
+   "sourceHash": "1ajeur9",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر الرحاب عسل",
+   "nameEn": "Al-Rehab Honey Glow",
+   "descriptionAr": "عطر الرحاب عسل من Al-Rehab نسائي بطابع حلو.",
+   "descriptionEn": "Al-Rehab Honey Glow by Al-Rehab for women with a gourmand character.",
+   "gender": "women",
+   "families": [
+    "gourmand"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "ALR-005": {
+   "sourceHash": "1bvifwn",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر الرحاب ورد",
+   "nameEn": "Al-Rehab Rose",
+   "descriptionAr": "عطر الرحاب ورد من Al-Rehab نسائي بطابع زهري.",
+   "descriptionEn": "Al-Rehab Rose by Al-Rehab for women with a floral character.",
+   "gender": "women",
+   "families": [
+    "floral"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "UNI-001": {
+   "sourceHash": "exsdpj",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "Baccarat Rouge 540",
+   "nameEn": "Baccarat Rouge 540",
+   "descriptionAr": "عطر Baccarat Rouge 540 من Baccarat للجنسين.",
+   "descriptionEn": "Baccarat Rouge 540 by Baccarat for unisex.",
+   "gender": "unisex",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "UNI-002": {
+   "sourceHash": "c4nvhn",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "Dior Sauvage",
+   "nameEn": "Dior Sauvage",
+   "descriptionAr": "عطر Dior Sauvage من Dior رجالي بطابع مائي.",
+   "descriptionEn": "Dior Sauvage by Dior for men with an aquatic character.",
+   "gender": "men",
+   "families": [
+    "aquatic"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "UNI-003": {
+   "sourceHash": "2fuexk",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "Yves Saint Laurent Libre",
+   "nameEn": "Yves Saint Laurent Libre",
+   "descriptionAr": "عطر Yves Saint Laurent Libre من YSL نسائي.",
+   "descriptionEn": "Yves Saint Laurent Libre by YSL for women.",
+   "gender": "women",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "GEN-017": {
+   "sourceHash": "5jgrok",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر عربى جديد 1",
+   "nameEn": "عطر عربى جديد 1",
+   "descriptionAr": "عطر عربى جديد 1 نسائي.",
+   "descriptionEn": "عطر عربى جديد 1 for women.",
+   "gender": "women",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "GEN-018": {
+   "sourceHash": "10z0500",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر انجليزى فاخر 2",
+   "nameEn": "عطر انجليزى فاخر 2",
+   "descriptionAr": "عطر انجليزى فاخر 2 نسائي.",
+   "descriptionEn": "عطر انجليزى فاخر 2 for women.",
+   "gender": "women",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "GEN-019": {
+   "sourceHash": "1gvhyz4",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر اسبانى متميز 3",
+   "nameEn": "عطر اسبانى متميز 3",
+   "descriptionAr": "عطر اسبانى متميز 3 نسائي.",
+   "descriptionEn": "عطر اسبانى متميز 3 for women.",
+   "gender": "women",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-020": {
+   "sourceHash": "jnmk5e",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر داهب",
+   "nameEn": "Dahab",
+   "descriptionAr": "عطر داهب من Shama رجالي.",
+   "descriptionEn": "Dahab by Shama for men.",
+   "gender": "men",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-021": {
+   "sourceHash": "1dlava6",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر ليل",
+   "nameEn": "Layl",
+   "descriptionAr": "عطر ليل من Shama نسائي.",
+   "descriptionEn": "Layl by Shama for women.",
+   "gender": "women",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-022": {
+   "sourceHash": "1wwue2e",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر أميري",
+   "nameEn": "Amiri",
+   "descriptionAr": "عطر أميري من Shama رجالي.",
+   "descriptionEn": "Amiri by Shama for men.",
+   "gender": "men",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-023": {
+   "sourceHash": "en4ryg",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر مرايج",
+   "nameEn": "Mirage",
+   "descriptionAr": "عطر مرايج من Shama رجالي.",
+   "descriptionEn": "Mirage by Shama for men.",
+   "gender": "men",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-024": {
+   "sourceHash": "1l8d4ew",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر خنجر",
+   "nameEn": "Khanjar",
+   "descriptionAr": "عطر خنجر من Shama رجالي.",
+   "descriptionEn": "Khanjar by Shama for men.",
+   "gender": "men",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-025": {
+   "sourceHash": "1nmuhz4",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر فيجو",
+   "nameEn": "Fidji",
+   "descriptionAr": "عطر فيجو من Shama نسائي.",
+   "descriptionEn": "Fidji by Shama for women.",
+   "gender": "women",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-026": {
+   "sourceHash": "1lov7dg",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر أود أبيض",
+   "nameEn": "White Oud",
+   "descriptionAr": "عطر أود أبيض من Shama رجالي بطابع عود.",
+   "descriptionEn": "White Oud by Shama for men with an oud character.",
+   "gender": "men",
+   "families": [
+    "oud"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-027": {
+   "sourceHash": "1y9ugzs",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر ريم",
+   "nameEn": "Reem",
+   "descriptionAr": "عطر ريم من Shama نسائي.",
+   "descriptionEn": "Reem by Shama for women.",
+   "gender": "women",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-028": {
+   "sourceHash": "16r7fhg",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر خليفة",
+   "nameEn": "Khalifa",
+   "descriptionAr": "عطر خليفة من Shama رجالي.",
+   "descriptionEn": "Khalifa by Shama for men.",
+   "gender": "men",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-029": {
+   "sourceHash": "8yx8b4",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر رقم 5",
+   "nameEn": "No.5",
+   "descriptionAr": "عطر رقم 5 من Shama نسائي.",
+   "descriptionEn": "No.5 by Shama for women.",
+   "gender": "women",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-030": {
+   "sourceHash": "xag0ys",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر صفوا",
+   "nameEn": "Safwa",
+   "descriptionAr": "عطر صفوا من Shama نسائي.",
+   "descriptionEn": "Safwa by Shama for women.",
+   "gender": "women",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-031": {
+   "sourceHash": "11kjwuq",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر وادي",
+   "nameEn": "Wadi",
+   "descriptionAr": "عطر وادي من Shama رجالي.",
+   "descriptionEn": "Wadi by Shama for men.",
+   "gender": "men",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-032": {
+   "sourceHash": "1a5pliw",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر سما",
+   "nameEn": "Sama",
+   "descriptionAr": "عطر سما من Shama نسائي.",
+   "descriptionEn": "Sama by Shama for women.",
+   "gender": "women",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-033": {
+   "sourceHash": "5aekgo",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر 1977",
+   "nameEn": "1977",
+   "descriptionAr": "عطر 1977 من Shama رجالي.",
+   "descriptionEn": "1977 by Shama for men.",
+   "gender": "men",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-034": {
+   "sourceHash": "nkip3m",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر طايف",
+   "nameEn": "Taif",
+   "descriptionAr": "عطر طايف من Shama رجالي.",
+   "descriptionEn": "Taif by Shama for men.",
+   "gender": "men",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-035": {
+   "sourceHash": "1jdvu00",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر سوغة",
+   "nameEn": "Sougha",
+   "descriptionAr": "عطر سوغة من Shama نسائي.",
+   "descriptionEn": "Sougha by Shama for women.",
+   "gender": "women",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-036": {
+   "sourceHash": "wb5mpk",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عطر رغد",
+   "nameEn": "Raghad",
+   "descriptionAr": "عطر رغد من Shama نسائي.",
+   "descriptionEn": "Raghad by Shama for women.",
+   "gender": "women",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-037": {
+   "sourceHash": "i5i2ju",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "عود مؤطر شاما",
+   "nameEn": "Oud Ma'attar Shama",
+   "descriptionAr": "عطر عود مؤطر شاما من Shama بطابع عود.",
+   "descriptionEn": "Oud Ma'attar Shama by Shama with an oud character.",
+   "families": [
+    "oud"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-038": {
+   "sourceHash": "1rr5pgw",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "هندي دغفة خاس",
+   "nameEn": "Hindi Digga Saghir Khas",
+   "descriptionAr": "عطر هندي دغفة خاس من Shama بطابع عود.",
+   "descriptionEn": "Hindi Digga Saghir Khas by Shama with an oud character.",
+   "families": [
+    "oud"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-039": {
+   "sourceHash": "122yj3i",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "هندي دغفة خاس فليب",
+   "nameEn": "Hindi Digga Saghir VIP",
+   "descriptionAr": "عطر هندي دغفة خاس فليب من Shama بطابع عود وزهري.",
+   "descriptionEn": "Hindi Digga Saghir VIP by Shama with an oud and floral character.",
+   "families": [
+    "oud",
+    "floral"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-040": {
+   "sourceHash": "1mwwc3q",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "هندي صوفي خاس",
+   "nameEn": "Hindi Syufi Khas",
+   "descriptionAr": "عطر هندي صوفي خاس من Shama بطابع عود.",
+   "descriptionEn": "Hindi Syufi Khas by Shama with an oud character.",
+   "families": [
+    "oud"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-041": {
+   "sourceHash": "1kiahaq",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "هندي صوفي خاس فليب",
+   "nameEn": "Hindi Syufi Khas VIP",
+   "descriptionAr": "عطر هندي صوفي خاس فليب من Shama بطابع عود وزهري.",
+   "descriptionEn": "Hindi Syufi Khas VIP by Shama with an oud and floral character.",
+   "families": [
+    "oud",
+    "floral"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-042": {
+   "sourceHash": "1cx2eww",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "هندي دغفة خاس كبير",
+   "nameEn": "Hindi Digga Khas",
+   "descriptionAr": "عطر هندي دغفة خاس كبير من Shama بطابع عود.",
+   "descriptionEn": "Hindi Digga Khas by Shama with an oud character.",
+   "families": [
+    "oud"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-043": {
+   "sourceHash": "1baix9y",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "دينال عود أساسي",
+   "nameEn": "Dehnal Oud Asli",
+   "descriptionAr": "عطر دينال عود أساسي من Shama بطابع عود.",
+   "descriptionEn": "Dehnal Oud Asli by Shama with an oud character.",
+   "families": [
+    "oud"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-044": {
+   "sourceHash": "b59q9s",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "دينال عود خصي كبير",
+   "nameEn": "Dehnal Oud Khussusi Kadim",
+   "descriptionAr": "عطر دينال عود خصي كبير من Shama بطابع عود.",
+   "descriptionEn": "Dehnal Oud Khussusi Kadim by Shama with an oud character.",
+   "families": [
+    "oud"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-045": {
+   "sourceHash": "ejsjmk",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "دينال عود كالكاسي",
+   "nameEn": "Dehnal Oud Kalakasi",
+   "descriptionAr": "عطر دينال عود كالكاسي من Shama بطابع عود.",
+   "descriptionEn": "Dehnal Oud Kalakasi by Shama with an oud character.",
+   "families": [
+    "oud"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-046": {
+   "sourceHash": "16k7vgg",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "دينال عود سيلاني",
+   "nameEn": "Dehnal Oud Silani",
+   "descriptionAr": "عطر دينال عود سيلاني من Shama بطابع عود.",
+   "descriptionEn": "Dehnal Oud Silani by Shama with an oud character.",
+   "families": [
+    "oud"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-047": {
+   "sourceHash": "ri1k5i",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "دينال عود الهندي اتيك",
+   "nameEn": "Dehnal Oud Hindi Ateeq",
+   "descriptionAr": "عطر دينال عود الهندي اتيك من Shama بطابع عود.",
+   "descriptionEn": "Dehnal Oud Hindi Ateeq by Shama with an oud character.",
+   "families": [
+    "oud"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-048": {
+   "sourceHash": "1diw0ku",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "دينال عود فلسطينى جمهورى",
+   "nameEn": "Dehnal Oud Royal Philippini",
+   "descriptionAr": "عطر دينال عود فلسطينى جمهورى من Shama بطابع عود وزهري.",
+   "descriptionEn": "Dehnal Oud Royal Philippini by Shama with an oud and floral character.",
+   "families": [
+    "oud",
+    "floral"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-049": {
+   "sourceHash": "3mz0ay",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "مجموعة عود استكشاف",
+   "nameEn": "Oud Discovery Set",
+   "descriptionAr": "عطر مجموعة عود استكشاف من Shama بطابع عود.",
+   "descriptionEn": "Oud Discovery Set by Shama with an oud character.",
+   "families": [
+    "oud"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-050": {
+   "sourceHash": "9tfyqs",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "مجموعة زيت ملكى",
+   "nameEn": "Royal Oil Gift Set",
+   "descriptionAr": "عطر مجموعة زيت ملكى من Shama.",
+   "descriptionEn": "Royal Oil Gift Set by Shama.",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  },
+  "SHM-051": {
+   "sourceHash": "1x5b6bk",
+   "editor": "rules",
+   "updatedAt": "2026-10-16T04:57:32.834Z",
+   "nameAr": "مجموعة مخللات تراث",
+   "nameEn": "Legacy Mukhallat Box",
+   "descriptionAr": "عطر مجموعة مخللات تراث من Shama.",
+   "descriptionEn": "Legacy Mukhallat Box by Shama.",
+   "families": [],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [],
+   "occasions": [],
+   "tags": []
+  }
+ },
+ "audit": {
+  "checked": 51,
+  "issues": [
+   {
+    "sku": "LAT-001",
+    "issues": [
+     "الوصف فيه حروف غريبة من لغات أخرى"
+    ]
+   },
+   {
+    "sku": "LAT-004",
+    "issues": [
+     "الاسم العربي فيه حروف غريبة من لغات أخرى",
+     "الوصف فيه حروف غريبة من لغات أخرى",
+     "الوصف عام ولا يصف الرائحة"
+    ]
+   },
+   {
+    "sku": "LAT-006",
+    "issues": [
+     "الاسم العربي فيه حروف غريبة من لغات أخرى",
+     "الوصف عام ولا يصف الرائحة"
+    ]
+   },
+   {
+    "sku": "LAT-007",
+    "issues": [
+     "الاسم العربي فيه حروف غريبة من لغات أخرى",
+     "الوصف فيه حروف غريبة من لغات أخرى",
+     "الوصف عام ولا يصف الرائحة"
+    ]
+   },
+   {
+    "sku": "LAT-008",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة"
+    ]
+   },
+   {
+    "sku": "ALR-002",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة"
+    ]
+   },
+   {
+    "sku": "ALR-003",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة"
+    ]
+   },
+   {
+    "sku": "ALR-004",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة"
+    ]
+   },
+   {
+    "sku": "ALR-005",
+    "issues": [
+     "الوصف فيه حروف غريبة من لغات أخرى",
+     "الوصف عام ولا يصف الرائحة"
+    ]
+   },
+   {
+    "sku": "UNI-001",
+    "issues": [
+     "الاسم العربي فيه حروف غريبة من لغات أخرى",
+     "الوصف فيه حروف غريبة من لغات أخرى",
+     "الوصف عام ولا يصف الرائحة"
+    ]
+   },
+   {
+    "sku": "UNI-002",
+    "issues": [
+     "الاسم العربي فيه حروف غريبة من لغات أخرى",
+     "الوصف فيه حروف غريبة من لغات أخرى"
+    ]
+   },
+   {
+    "sku": "UNI-003",
+    "issues": [
+     "الاسم العربي فيه حروف غريبة من لغات أخرى",
+     "الوصف فيه حروف غريبة من لغات أخرى",
+     "الوصف عام ولا يصف الرائحة"
+    ]
+   },
+   {
+    "sku": "GEN-017",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "العلامة التجارية غير معروفة",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "GEN-018",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "العلامة التجارية غير معروفة",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "GEN-019",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "العلامة التجارية غير معروفة",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-020",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-021",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-022",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-023",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-024",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-025",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-026",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-027",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-028",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-029",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-030",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-031",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-032",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-033",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-034",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-035",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-036",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "كلمة مكررة في الوصف",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-037",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-038",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-039",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-040",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-041",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-042",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-043",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-044",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-045",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-046",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-047",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-048",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-049",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-050",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "تقييم بدون مراجعات"
+    ]
+   },
+   {
+    "sku": "SHM-051",
+    "issues": [
+     "الوصف عام ولا يصف الرائحة",
+     "تقييم بدون مراجعات"
+    ]
+   }
+  ]
+ }
+}

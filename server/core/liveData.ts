@@ -6,6 +6,8 @@
 import bundledNews from '../../src/data/live/shaheen-news.json';
 import bundledTraining from '../../src/data/live/sham-training.json';
 import bundledSupervisor from '../../src/data/live/ai-supervisor.json';
+import bundledStore from '../../src/data/live/store-catalog.json';
+import { isCatalogFile, type StoreCatalogFile } from '../../src/utils/storeCatalog';
 import { guidanceBlock, type AiToolId } from '../../src/utils/aiTools';
 import type { KnowledgeDoc } from './types';
 
@@ -93,4 +95,9 @@ export async function supervisorGuidance(tool: AiToolId, env: Env = process.env,
   const file = await load('ai-supervisor.json', bundledSupervisor as SupervisorFile, isSupervisor, env, request).catch(() => undefined);
   const text = file?.tools?.[tool]?.guidance?.text;
   return typeof text === 'string' ? guidanceBlock(text.slice(0, 1200)) : '';
+}
+
+/** Shaheen's enrichment of the store products (scripts/shaheen-store); the bundled copy in tests and dev. */
+export async function liveStoreCatalog(env: Env = process.env, request: typeof fetch = fetch): Promise<StoreCatalogFile> {
+  return load('store-catalog.json', bundledStore as unknown as StoreCatalogFile, isCatalogFile, env, request);
 }
