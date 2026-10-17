@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-17T03:01:05.481Z",
+ "updatedAt": "2026-10-17T04:59:37.396Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1114,
   "imported": 1063,
-  "ok": 525,
-  "warn": 589,
+  "ok": 523,
+  "warn": 591,
   "hidden": 0,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-17T02:59:59.932Z",
+  "at": "2026-10-17T04:58:36.331Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,7 +25,7 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1017,
+    "listingProducts": 1020,
     "listingOnly": 58,
     "listingComplete": true,
     "added": 0,
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 65579
+  "durationMs": 61089
  },
  "items": [
   {
@@ -1855,6 +1855,16 @@
    "page": "p/victoria-by-lattafa-100ml-edp-265.html"
   },
   {
+   "sku": "LAT-266",
+   "id": 266,
+   "name": "Ejaazi by Lattafa Perfume 100 ml for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ejaazi-by-lattafa-perfume-100-ml-for-men-266.html"
+  },
+  {
    "sku": "LAT-267",
    "id": 267,
    "name": "Mashrabya by Lattafa 100ml EDP",
@@ -2081,6 +2091,16 @@
    "page": "p/eclaire-pistache-by-lattafa-100ml-edp-unisex-305.html"
   },
   {
+   "sku": "LAT-306",
+   "id": 306,
+   "name": "Ramz Silver by Lattafa 100ml EDP for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ramz-silver-by-lattafa-100ml-edp-for-men-306.html"
+  },
+  {
    "sku": "LAT-307",
    "id": 307,
    "name": "Mayar by Lattafa EDP 100ml Woman",
@@ -2162,14 +2182,14 @@
    "page": "p/yara-tous-by-lattafa-100ml-edp-women-321.html"
   },
   {
-   "sku": "ARD-326",
-   "id": 326,
-   "name": "Ajmal Ehsas Bloom by Ard Al Zaafaran 100ml",
+   "sku": "LAT-322",
+   "id": 322,
+   "name": "Azeezah by Lattafa 100ml for Women",
    "status": "warn",
    "issues": [
     "غير متوفر عند المورد"
    ],
-   "page": "p/ajmal-ehsas-bloom-by-ard-al-zaafaran-100ml-326.html"
+   "page": "p/azeezah-by-lattafa-100ml-for-women-322.html"
   },
   {
    "sku": "MAI-341",
