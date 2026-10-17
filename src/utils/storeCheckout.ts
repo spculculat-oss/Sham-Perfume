@@ -3,6 +3,7 @@ import { apiUrl, isStaticHosting } from './api';
 import { BUNDLED_FX, COUNTRY_CODES, currencyFor, guessCountry, isCountry, priceIn, quote, type Quote, type QuoteLine } from './pricing';
 import { LOCALE_MAP } from '../لغات/localize';
 import type { SupportedLanguage } from '../types/i18n';
+import { getSessionToken } from '../community/api';
 
 /**
  * The visitor's side of «الدفع في متجر شام»: their country (and so currency + shipping), prices in that
@@ -108,7 +109,8 @@ export async function startCheckout(items: { sku: string; qty: number }[], count
   let response: Response;
   try {
     response = await fetch(apiUrl('/api/store/checkout'), {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: AbortSignal.timeout(25_000),
+      // Signed-in members: the order is also saved in «بوابتي» and reaches the merchants of «متاجر شام».
+      method: 'POST', headers: { 'Content-Type': 'application/json', ...(getSessionToken() ? { Authorization: `Bearer ${getSessionToken()}` } : {}) }, signal: AbortSignal.timeout(25_000),
       body: JSON.stringify({
         items, country, lang: lang === 'ar' ? 'ar' : 'en', returnUrl: `${location.origin}${location.pathname}`,
         contact: { name: form.name, email: form.email, phone: form.phone }, address: { city: form.city, line: form.line },

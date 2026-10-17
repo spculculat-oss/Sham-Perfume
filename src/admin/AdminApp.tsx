@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import UpdatesPanel from './UpdatesPanel';
 import SupervisorPanel from './SupervisorPanel';
+import CommunityPanel from './CommunityPanel';
 import type {
   Conversation, CoreSettings, CouncilMember, CouncilRole, CouncilTranscript, EngineId, KnowledgeDoc, KnowledgeGap, ModelEngineId, Product, RequestStatus, ServiceDef, ServiceRequest, ShaheenSettings,
 } from '../../server/core/types';
@@ -16,7 +17,7 @@ import { AdminApiError, adminRequest, getToken, send, setToken } from './adminAp
 import { apiUrl, isStaticHosting } from '../utils/api';
 import { parseDoctorIssue, type DoctorReport } from './doctorReport';
 
-type Tab = 'overview' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'emails' | 'doctor' | 'supervisor' | 'sandbox' | 'updates';
+type Tab = 'overview' | 'community' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'emails' | 'doctor' | 'supervisor' | 'sandbox' | 'updates';
 interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: string }
 interface Overview {
   storage: { kind: string; persistent: boolean; error?: string };
@@ -30,6 +31,7 @@ interface FeedbackItem { conversationId: string; messageId?: string; rating: 'up
 
 const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'overview', label: T('نظرة عامة'), icon: <LayoutDashboard className="w-4 h-4" /> },
+  { id: 'community', label: T('المجتمع'), icon: <Users className="w-4 h-4" /> },
   { id: 'agent', label: T('المساعد الإداري'), icon: <Wand2 className="w-4 h-4" /> },
   { id: 'quality', label: T('الجودة والتعلّم'), icon: <Lightbulb className="w-4 h-4" /> },
   { id: 'requests', label: T('الطلبات والعروض'), icon: <ClipboardList className="w-4 h-4" /> },
@@ -130,6 +132,7 @@ export default function AdminApp() {
         </aside>
         <main className="flex-1 p-4 lg:p-6 min-w-0">
           {tab === 'overview' && <OverviewPanel go={setTab} />}
+          {tab === 'community' && <CommunityPanel />}
           {tab === 'agent' && <AgentPanel go={setTab} />}
           {tab === 'quality' && <QualityPanel />}
           {tab === 'requests' && <RequestsPanel />}

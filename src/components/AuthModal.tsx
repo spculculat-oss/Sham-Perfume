@@ -305,16 +305,16 @@ const S = {
     fa: 'لطفاً نام خود یا نام آزمایشگاه را وارد کنید',
   },
   err_password: {
-    ar: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل',
-    en: 'Password must be at least 6 characters',
-    fr: 'Le mot de passe doit contenir au moins 6 caractères',
-    es: 'La contraseña debe tener al menos 6 caracteres',
-    it: 'La password deve contenere almeno 6 caratteri',
-    de: 'Das Passwort muss mindestens 6 Zeichen haben',
-    ru: 'Пароль должен содержать минимум 6 символов',
-    zh: '密码至少需要 6 个字符',
-    tr: 'Parola en az 6 karakter olmalı',
-    fa: 'گذرواژه باید حداقل ۶ نویسه باشد',
+    ar: 'كلمة المرور لازم تكون 8 أحرف على الأقل وفيها حروف وأرقام',
+    en: 'Password must be at least 8 characters with letters and numbers',
+    fr: 'Le mot de passe doit contenir au moins 8 caractères, avec lettres et chiffres',
+    es: 'La contraseña debe tener al menos 8 caracteres, con letras y números',
+    it: 'La password deve avere almeno 8 caratteri, con lettere e numeri',
+    de: 'Das Passwort muss mindestens 8 Zeichen mit Buchstaben und Zahlen haben',
+    ru: 'Пароль: минимум 8 символов, буквы и цифры',
+    zh: '密码至少 8 个字符，且包含字母和数字',
+    tr: 'Şifre en az 8 karakter olmalı, harf ve rakam içermeli',
+    fa: 'رمز عبور باید حداقل ۸ کاراکتر و شامل حروف و اعداد باشد',
   },
   err_privacy: {
     ar: 'يرجى الموافقة على شروط حماية البيانات وخصوصية المستخدم',
@@ -375,7 +375,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           setIsLoading(false);
           return;
         }
-        if (password.length < 6) {
+        if (password.length < 8 || !/\d/.test(password) || !/[A-Za-z\u0600-\u06FF]/.test(password)) {
           setErrorMsg(L('err_password'));
           setIsLoading(false);
           return;

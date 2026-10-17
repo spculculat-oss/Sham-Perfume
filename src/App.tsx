@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense, useCallback } from 'react';
 import { Header } from './components/Header';
 import { UserProfilePage } from './components/UserProfilePage';
 import { Hero } from './components/Hero';
@@ -58,6 +58,13 @@ import { UserProfile } from './types/auth';
 import { getCurrentUserSession, logoutUser } from './utils/authStorage';
 import { decodeFormulaPayload } from './utils/formulaShare';
 import { Check, X, BookmarkPlus } from 'lucide-react';
+import { syncRecipeToAccount, trackLearning } from './community/sync';
+import { getSessionToken } from './community/api';
+import { profileFromMember, saveCurrentUserProfile } from './utils/authStorage';
+import { useSessionPick } from './community/session';
+
+// «مجتمع شام» (social, messenger, member and merchant portals): its own bundle, loaded on the first #community visit.
+const CommunityApp = lazy(() => import('./community/CommunityApp'));
 
 const LOCAL_STORAGE_KEY = 'miyaar_perfume_saved_formulas';
 
@@ -603,6 +610,20 @@ export default function App() {
     setProfileUser(null);
   };
 
+  // A community account (signed in from «مجتمع شام») is also the site's account, and signing out there signs out here.
+  const communitySession = { me: useSessionPick((x) => x.me), status: useSessionPick((x) => x.status) };
+  const syncCommunityUser = useCallback(() => {
+    const me = communitySession.me;
+    if (!me) return;
+    setCurrentUser((prev) => (prev?.id === me.id && prev.name === me.name && prev.avatar === (me.avatar || undefined) ? prev : saveCurrentUserProfile(profileFromMember(me))));
+  }, [communitySession.me]);
+  useEffect(() => { syncCommunityUser(); }, [syncCommunityUser]);
+  useEffect(() => {
+    if (communitySession.status === 'guest' && currentUser?.id.startsWith('u_') && !getSessionToken()) { logoutUser(); setCurrentUser(null); }
+  }, [communitySession.status, currentUser?.id]);
+  // Learning progress in «بوابتي»: sections the member opens on the site.
+  useEffect(() => trackLearning(activeTab, currentLang), [activeTab, currentLang, communitySession.status]);
+
   const handleLogout = () => {
     logoutUser();
     setCurrentUser(null);
@@ -688,6 +709,7 @@ export default function App() {
     };
 
     setSavedFormulas((prev) => [newEntry, ...prev]);
+    syncRecipeToAccount(newEntry);
     showToast(fmt(L('toast_saved_lib_tpl'), { title: formula.title }));
   };
 
@@ -812,6 +834,7 @@ export default function App() {
     };
 
     setSavedFormulas((prev) => [newFormula, ...prev]);
+    syncRecipeToAccount(newFormula);
     handleCloseSaveModal();
     showToast(fmt(L('toast_formula_saved_tpl'), { title: newFormula.title }));
   };
@@ -858,7 +881,7 @@ export default function App() {
           currentEnvironment={currentEnvironment}
           onOpenEnvironmentModal={handleOpenEnvironmentModal}
           onOpenPrivacyModal={handleOpenPrivacyModal}
-          onOpenProfilePage={() => currentUser && handleOpenProfilePage(currentUser)}
+          onOpenProfilePage={() => currentUser && (getSessionToken() ? navigateToTab('community/me') : handleOpenProfilePage(currentUser))}
         />
 
         {/* Store Promo Hub: promotional banner with store deals */}
@@ -1031,6 +1054,12 @@ export default function App() {
               onNavigateToTab={(tab) => navigateToTab(tab)}
             />
           </div>
+        )}
+
+        {(activeTab === 'community' || activeTab.startsWith('community/')) && (
+          <Suspense fallback={<div className="py-24 text-center text-sm text-stone-500">…</div>}>
+            <CommunityApp lang={currentLang} route={activeTab.slice('community/'.length)} navigate={navigateToTab} onSignedIn={syncCommunityUser} />
+          </Suspense>
         )}
 
         {activeTab === 'store' && (

@@ -1,4 +1,31 @@
 import { UserProfile, CraftLevel } from '../types/auth';
+import { CommunityApiError, cx, getSessionToken, setSessionToken, type AuthResult, type Me } from '../community/api';
+
+/**
+ * Accounts live on the server («مجتمع شام»: hashed passwords, encrypted private data, one account on every
+ * device). Only when the server has no community database yet does the site fall back to the old
+ * device-only accounts, so signing in never breaks.
+ */
+const serverUnavailable = (error: unknown) => error instanceof CommunityApiError
+  && (error.code === 'COMMUNITY_NOT_CONFIGURED' || error.code === 'NETWORK' || error.code === 'TIMEOUT' || error.status === 404);
+
+/** Stores the signed-in profile for the rest of the site (header, calculator) and returns it. */
+export function saveCurrentUserProfile(user: UserProfile): UserProfile {
+  try { localStorage.setItem(USER_AUTH_STORAGE_KEY, JSON.stringify(user)); } catch { /* private mode */ }
+  return user;
+}
+
+export function profileFromMember(me: Me): UserProfile {
+  return {
+    id: me.id, name: me.name, email: me.email, craftLevel: (me.craftLevel as CraftLevel) || 'hobbyist', createdAt: me.createdAt,
+    countryCode: me.country || undefined, avatar: me.avatar || undefined, language: me.lang as UserProfile['language'],
+  };
+}
+
+const SERVER_ERRORS: Record<string, string> = {
+  INVALID_LOGIN: 'err_wrong_password', EMAIL_EXISTS: 'err_email_exists', WEAK_PASSWORD: 'err_password', INVALID_EMAIL: 'err_missing_fields',
+  ACCOUNT_SUSPENDED: 'err_login_failed', RATE_LIMITED: 'err_login_failed',
+};
 
 export const USER_AUTH_STORAGE_KEY = 'sham_perfume_current_user_session';
 export const REGISTERED_USERS_KEY = 'sham_perfume_registered_users_db';
@@ -26,6 +53,15 @@ export async function loginUser(email: string, password: string): Promise<AuthRe
   try {
     if (!email || !password) {
       return { success: false, error: 'err_missing_fields' };
+    }
+    try {
+      const result = await cx<AuthResult>('/community/auth/login', { body: { email, password } });
+      setSessionToken(result.token);
+      const user = profileFromMember(result.me);
+      localStorage.setItem(USER_AUTH_STORAGE_KEY, JSON.stringify(user));
+      return { success: true, user };
+    } catch (error) {
+      if (!serverUnavailable(error)) return { success: false, error: SERVER_ERRORS[(error as CommunityApiError).code] || 'err_login_failed' };
     }
 
     const rawUsers = localStorage.getItem(REGISTERED_USERS_KEY);
@@ -66,6 +102,15 @@ export async function registerUser(
   regionId?: string
 ): Promise<AuthResponse> {
   try {
+    try {
+      const result = await cx<AuthResult>('/community/auth/register', { body: { name, email, password, craftLevel, lang: document.documentElement.lang || 'ar' } });
+      setSessionToken(result.token);
+      const user = { ...profileFromMember(result.me), regionId };
+      localStorage.setItem(USER_AUTH_STORAGE_KEY, JSON.stringify(user));
+      return { success: true, user };
+    } catch (error) {
+      if (!serverUnavailable(error)) return { success: false, error: SERVER_ERRORS[(error as CommunityApiError).code] || 'err_register_failed' };
+    }
     const rawUsers = localStorage.getItem(REGISTERED_USERS_KEY);
     const users: Array<UserProfile & { password?: string }> = rawUsers ? JSON.parse(rawUsers) : [];
 
@@ -94,6 +139,8 @@ export async function registerUser(
 
 export function logoutUser(): void {
   try {
+    if (getSessionToken()) void cx('/community/auth/logout', { body: {} }).catch(() => {});
+    setSessionToken('');
     localStorage.removeItem(USER_AUTH_STORAGE_KEY);
   } catch (e) {}
 }

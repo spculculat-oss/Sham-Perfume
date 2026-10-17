@@ -26,6 +26,16 @@ type Env = Record<string, string | undefined>;
 export interface CheckoutRouterOptions {
   env?: Env; fetch?: typeof fetch; products?: RawProduct[];
   catalog?: () => Promise<StoreCatalogFile | undefined>; fx?: () => Promise<FxTable>; shipping?: ShippingTable;
+  /** «متاجر شام»: registered merchants' published products (`mp_…` skus), priced on the server (merchant price + 50 %). */
+  merchantProducts?: (skus: string[]) => Promise<{ sku: string; price: number; inStock: boolean }[]>;
+  /** Called once the payment page is open (records the merchants' orders). Failures never block the payment. */
+  onCheckout?: (info: {
+    ref: string; req: express.Request; input: CheckoutInput; shippingUsd: number; total: number; currency: string;
+    /** The site's own products in this order (name, picture and EGP price from the catalog). */
+    catalogLines: { sku: string; qty: number; price: number; name: string; image?: string }[];
+  }) => Promise<void>;
+  /** Called when Kashier confirms a payment (verified server-side). */
+  onPaid?: (ref: string) => Promise<void>;
 }
 
 export const DEFAULT_RETURN_URL = 'https://spculculat-oss.github.io/Sham-Perfume/';
@@ -120,7 +130,11 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     if ('error' in input) { res.status(400).json({ error: 'Invalid order', code: input.error }); return; }
 
     const list: StoreProduct[] = mergeCatalog(products, await catalog().catch(() => undefined));
-    const bySku = new Map(list.map((p) => [p.sku, p]));
+    const bySku = new Map<string, { inStock: boolean; price: number }>(list.map((p) => [p.sku, p]));
+    const merchantSkus = input.items.map((i) => i.sku).filter((sku) => sku.startsWith('mp_'));
+    if (merchantSkus.length && options.merchantProducts) {
+      for (const p of await options.merchantProducts(merchantSkus).catch(() => [])) bySku.set(p.sku, p);
+    }
     const missing = input.items.find((i) => !bySku.get(i.sku)?.inStock || !(bySku.get(i.sku)!.price > 0));
     if (missing) { res.status(409).json({ error: 'A product is no longer available', code: 'UNAVAILABLE', sku: missing.sku }); return; }
 
@@ -148,6 +162,15 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
           displayNotes: { Order: ref, Items: itemsText.slice(0, 200) },
         },
       }, request);
+      if (options.onCheckout) {
+        const catalogBySku = new Map(list.map((p) => [p.sku, p]));
+        const catalogLines = input.items.filter((i) => catalogBySku.has(i.sku) && !i.sku.startsWith('mp_')).map((i) => {
+          const p = catalogBySku.get(i.sku)!;
+          return { sku: i.sku, qty: i.qty, price: p.price, name: input.lang === 'ar' ? p.name.ar || p.name.en : p.name.en || p.name.ar, image: p.imageUrl };
+        });
+        await options.onCheckout({ ref, req, input, catalogLines, shippingUsd: quote(lines, input.country, { fx: rates, shipping: options.shipping, currency: 'USD' }).shipping, total: charge.total, currency: charge.currency })
+          .catch((error) => console.error('[checkout] order record failed:', error instanceof Error ? error.message : error));
+      }
       res.json({ ref, sessionId: session.id, sessionUrl: session.sessionUrl, mode: cfg.mode, charge: { total: charge.total, currency: charge.currency, shipping: charge.shipping }, display: { total: display.total, currency: display.currency } });
     } catch (error) {
       const code = error instanceof KashierError ? error.code : 'FAILED';
@@ -162,6 +185,7 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     try {
       const payment = await sessionPayment(cfg, String(req.params.sessionId), request);
       if (payment.state === 'paid') {
+        await options.onPaid?.(payment.order).catch(() => {});
         const m = payment.metaData || {};
         await announce(payment.order, `🛒 طلب مدفوع ${payment.order}: ${payment.amount} ${payment.currency} — ${String(m.items || '')} — ${String(m.name || '')} ${String(m.phone || '')} (${String(m.country || '')})`, { order: payment.order, amount: payment.amount, currency: payment.currency, method: payment.method, ...m });
       }
@@ -181,6 +205,7 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     // Notify before answering: a serverless function may be frozen right after it responds (4 s cap).
     if (paymentState(String(d.status || '')) === 'paid' && (req.body as { event?: string }).event === 'pay') {
       const order = String(d.merchantOrderId || '');
+      await options.onPaid?.(order).catch(() => {});
       await announce(order, `🛒 طلب مدفوع ${order}: ${String(d.amount)} ${String(d.currency)} (Kashier)`, { order, amount: d.amount, currency: d.currency, method: d.method, transactionId: d.transactionId });
     }
     res.status(200).end(); // Kashier only reads the status code.

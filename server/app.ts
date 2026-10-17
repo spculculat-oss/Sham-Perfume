@@ -9,6 +9,8 @@ import { callEngine, engineStatuses } from './core/engines';
 import { supervisorGuidance } from './core/liveData';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { corsMiddleware } from './cors';
+import { createCommunity, createCommunityRouter } from './community/router';
+import { productsForCheckout, recordCheckout, markPaid } from './community/service';
 
 dotenv.config();
 
@@ -20,6 +22,8 @@ if (trustProxy) app.set('trust proxy', /^\d+$/.test(trustProxy) ? Number(trustPr
 
 // The GitHub Pages build calls this API cross-origin (see server/cors.ts). Must run before body parsing.
 app.use('/api', corsMiddleware(process.env.SHAM_CORS_ORIGINS));
+// «مجتمع شام» carries pictures and voice notes: a larger body limit only on its routes (parsed once).
+app.use(['/api/community', '/api/admin/community'], express.json({ limit: '3mb' }));
 app.use(express.json({ limit: '128kb' }));
 app.use((error: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
   if (error?.type === 'entity.parse.failed' || error?.type === 'entity.too.large') {
@@ -45,7 +49,23 @@ app.use('/api', createMediaRouter());
 // «اسأل شاهين» in «متجر شام»: POST /api/store/advise (server/store.ts).
 app.use('/api', createStoreRouter({ repo: shamCore.repo }));
 // «الدفع في متجر شام»: country, Kashier payment sessions and their verified results (server/checkout.ts).
-app.use('/api', createCheckoutRouter());
+// «مجتمع شام»: accounts, merchants' and users' portals, «بوابة السوشيال» and the messenger (server/community).
+const community = createCommunity();
+app.use('/api', createCommunityRouter(community));
+app.use('/api', createCheckoutRouter({
+  merchantProducts: async (skus) => { const ctx = await community.ready(); return ctx ? productsForCheckout(ctx, skus) : []; },
+  onCheckout: async ({ ref, req, input, shippingUsd, total, currency, catalogLines }) => {
+    const hasMerchantItems = input.items.some((i) => i.sku.startsWith('mp_'));
+    if (!hasMerchantItems && !req.headers.authorization) return; // a visitor without an account buying the site's own products
+    const ctx = await community.ready();
+    if (!ctx) return;
+    const buyer = await community.userFrom(req);
+    if (!hasMerchantItems && !buyer) return;
+    await recordCheckout(ctx, { ref, buyerId: buyer?.id, country: input.country, items: input.items, catalog: buyer ? catalogLines : [], shippingUsd, total, currency,
+      address: { name: input.contact.name, email: input.contact.email, phone: input.contact.phone, city: input.address.city, line: input.address.line } });
+  },
+  onPaid: async (ref) => { const ctx = await community.ready(); if (ctx) await markPaid(ctx, ref); },
+}));
 
 // ============================================================================
 // DAILY PERFUME NEWS ENGINE (MASTER SHAHEEN AI CURATION & REFRESH)
