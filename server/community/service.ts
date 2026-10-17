@@ -289,7 +289,7 @@ export async function updateMerchant(ctx: Ctx, userId: string, input: MerchantIn
 
 /* ---------------------------------------- merchant products ---------------------------------------- */
 
-const CATEGORIES = ['perfume', 'oil', 'raw_material', 'alcohol', 'bottle', 'packaging', 'tool', 'other'];
+const CATEGORIES = ['perfume', 'oil', 'incense', 'raw_material', 'alcohol', 'bottle', 'packaging', 'tool', 'other'];
 export interface ProductInput {
   name?: unknown; description?: unknown; category?: unknown; images?: unknown; price?: unknown; currency?: unknown; stock?: unknown;
   /** Private between the merchant and the site: where the product is, supplier links, internal notes. */

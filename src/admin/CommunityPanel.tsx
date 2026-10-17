@@ -12,6 +12,8 @@ import { BUNDLED_FX, convert, tidy } from '../utils/pricing';
 
 const card = 'rounded-2xl border border-stone-200 bg-white p-4 shadow-sm';
 const input = 'w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400';
+const picker = 'w-auto min-w-40 rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400';
+const CATEGORY: Record<string, string> = { perfume: 'عطور جاهزة', oil: 'زيوت عطرية', raw_material: 'خامات', alcohol: 'كحول ومذيبات', bottle: 'زجاجات', packaging: 'تغليف', tool: 'أدوات', incense: 'بخور', other: 'أخرى' };
 const btn = 'inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-sm font-semibold disabled:opacity-50 cursor-pointer';
 const sale = (price: number, currency: string) => tidy(convert(price, currency, 'EGP', BUNDLED_FX) * 1.5);
 const date = (iso?: string | null) => (iso ? new Date(iso).toLocaleString('ar-EG', { dateStyle: 'medium', timeStyle: 'short' }) : '—');
@@ -88,16 +90,15 @@ function Setup({ reason, code }: { reason: string; code: string }) {
       <p className="text-sm text-stone-600">{code}: {reason}</p>
       <ol className="list-decimal space-y-2 ps-5 text-sm leading-relaxed text-stone-700">
         <li>{T('افتح مشروع sham-perfume-49bf على Vercel ← Storage ← Create Database ← Neon (Postgres) ← Connect. ده بيضيف DATABASE_URL تلقائياً.')}</li>
-        <li>{T('Settings ← Environment Variables: أضف SHAM_DATA_KEY = جملة سرية طويلة (24 حرف أو أكثر). لا تغيّرها أبداً بعد كده — هي مفتاح تشفير بيانات الأعضاء.')}</li>
-        <li>{T('تأكد إن SHAM_ADMIN_TOKEN موجود (نفس رمز دخول لوحة الإدارة).')}</li>
-        <li>{T('اعمل Redeploy للمشروع، وبعدها حدّث الصفحة دي.')}</li>
+        <li>{T('اعمل Redeploy للمشروع، وبعدها حدّث الصفحة دي. مفتاح التشفير بيتعمل لوحده أول مرة.')}</li>
+        <li className="text-stone-500">{T('اختياري لحماية أعلى: أضف SHAM_DATA_KEY (24 حرف أو أكثر) في Environment Variables. السيرفر بيقفل بيه مفتاح التشفير، ولازم يفضل ثابت بعد كده.')}</li>
       </ol>
     </div>
   );
 }
 
-function Stat({ label, value, onClick, tone = 'text-stone-900' }: { label: string; value: React.ReactNode; onClick?: () => void; tone?: string }) {
-  return <button type="button" onClick={onClick} className={`${card} text-start ${onClick ? 'hover:border-amber-300 cursor-pointer' : 'cursor-default'}`}><p className={`text-2xl font-black ${tone}`}>{value}</p><p className="text-xs text-stone-500">{label}</p></button>;
+function Stat({ label, value, note, onClick, tone = 'text-stone-900' }: { label: string; value: React.ReactNode; note?: string; onClick?: () => void; tone?: string }) {
+  return <button type="button" onClick={onClick} className={`${card} text-start ${onClick ? 'hover:border-amber-300 cursor-pointer' : 'cursor-default'}`}><p className={`text-2xl font-black ${tone}`}>{value}</p><p className="text-xs text-stone-500">{label}</p>{note && <p className="mt-1 inline-block rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-bold text-amber-800">{note}</p>}</button>;
 }
 
 function OverviewView({ data, go }: { data?: Any; go: (s: Sub) => void }) {
@@ -108,9 +109,9 @@ function OverviewView({ data, go }: { data?: Any; go: (s: Sub) => void }) {
       <Stat label={T('متصلين الآن')} value={data.online} tone="text-emerald-700" />
       <Stat label={T('جدد هذا الأسبوع')} value={data.new_week} />
       <Stat label={T('موقوفين')} value={data.suspended} tone="text-rose-700" />
-      <Stat label={T('التجار')} value={`${data.merchants} (${data.merchants_pending} ${T('للمراجعة')})`} onClick={() => go('merchants')} />
-      <Stat label={T('منتجات التجار')} value={`${data.products} (${data.products_pending} ${T('للمراجعة')})`} onClick={() => go('products')} />
-      <Stat label={T('طلبات مدفوعة')} value={`${data.orders} (${data.orders_to_ship} ${T('للشحن')})`} onClick={() => go('orders')} />
+      <Stat label={T('التجار')} value={data.merchants} note={`${data.merchants_pending} ${T('للمراجعة')}`} onClick={() => go('merchants')} />
+      <Stat label={T('منتجات التجار')} value={data.products} note={`${data.products_pending} ${T('للمراجعة')}`} onClick={() => go('products')} />
+      <Stat label={T('طلبات مدفوعة')} value={data.orders} note={`${data.orders_to_ship} ${T('للشحن')}`} onClick={() => go('orders')} />
       <Stat label={T('ربح الموقع من التجار')} value={fmt(data.margin_egp || 0, 'EGP')} tone="text-amber-800" />
       <Stat label={T('منشورات')} value={data.posts} />
       <Stat label={T('محادثات / رسائل')} value={`${data.conversations} / ${data.messages}`} />
@@ -136,7 +137,7 @@ function UsersView({ open }: { open: (id: string) => void }) {
     <div className="space-y-3">
       <form className="flex flex-wrap gap-2" onSubmit={(e) => { e.preventDefault(); setQuery(q); }}>
         <div className="relative min-w-[220px] flex-1"><Search className="absolute inset-y-0 start-3 my-auto h-4 w-4 text-stone-400" /><input className={`${input} ps-9`} value={q} onChange={(e) => setQ(e.target.value)} placeholder={T('اسم، اسم مستخدم، أو بريد كامل')} /></div>
-        <select className={`${input} w-auto`} value={role} onChange={(e) => setRole(e.target.value)}><option value="">{T('الكل')}</option><option value="user">{T('أعضاء')}</option><option value="merchant">{T('تجار')}</option></select>
+        <select className={picker} value={role} onChange={(e) => setRole(e.target.value)}><option value="">{T('الكل')}</option><option value="user">{T('أعضاء')}</option><option value="merchant">{T('تجار')}</option></select>
         <button type="submit" className={`${btn} bg-stone-900 text-white`}>{T('بحث')}</button>
       </form>
       {loading ? <Loading /> : (
@@ -175,7 +176,7 @@ function MerchantsView({ open, onChange }: { open: (id: string) => void; onChang
   };
   return (
     <div className="space-y-3">
-      <select className={`${input} w-auto`} value={status} onChange={(e) => setStatus(e.target.value)}>
+      <select className={picker} value={status} onChange={(e) => setStatus(e.target.value)}>
         {['pending', 'approved', 'rejected', 'suspended', ''].map((s) => <option key={s} value={s}>{s ? T(STATUS_AR[s]) : T('الكل')}</option>)}
       </select>
       {loading ? <Loading /> : !data?.length ? <p className={`${card} text-center text-sm text-stone-500`}>{T('لا يوجد')}</p> : data.map((m) => (
@@ -213,7 +214,7 @@ function ProductsView({ onChange }: { onChange: () => void }) {
   };
   return (
     <div className="space-y-3">
-      <select className={`${input} w-auto`} value={status} onChange={(e) => setStatus(e.target.value)}>
+      <select className={picker} value={status} onChange={(e) => setStatus(e.target.value)}>
         {['pending', 'approved', 'rejected', 'paused', ''].map((s) => <option key={s} value={s}>{s ? T(STATUS_AR[s]) : T('الكل')}</option>)}
       </select>
       {loading ? <Loading /> : !data?.length ? <p className={`${card} text-center text-sm text-stone-500`}>{T('لا يوجد')}</p> : (
@@ -221,7 +222,7 @@ function ProductsView({ onChange }: { onChange: () => void }) {
           <div key={p.id} className={`${card} space-y-2`}>
             <div className="flex gap-1.5 overflow-x-auto">{p.images.map((src: string, i: number) => <a key={i} href={src} target="_blank" rel="noreferrer"><img src={src} alt="" className="h-24 w-24 shrink-0 rounded-xl object-cover" /></a>)}</div>
             <p className="font-bold">{p.name} <St s={p.status} /></p>
-            <p className="text-xs text-stone-500">🏪 {p.storeName} · {p.category} · {T('المخزون')}: {p.stock}</p>
+            <p className="text-xs text-stone-500">🏪 {p.storeName} · {T(CATEGORY[p.category] || p.category)} · {T('المخزون')}: {p.stock}</p>
             <p className="text-sm">{T('سعر التاجر')}: <b>{fmt(p.price, p.currency)}</b> → {T('سعر البيع')}: <b className="text-amber-800">{fmt(sale(p.price, p.currency), 'EGP')}</b></p>
             {p.description && <p className="max-h-28 overflow-y-auto whitespace-pre-wrap text-sm text-stone-700">{p.description}</p>}
             <div className="rounded-xl bg-emerald-50/60 p-2.5 text-xs"><p className="mb-1 flex items-center gap-1 font-bold text-emerald-900"><Lock className="h-3 w-3" />{T('روابط المصدر الخاصة (لا تظهر للعملاء)')}</p>
@@ -251,7 +252,7 @@ function OrdersView({ onChange }: { onChange: () => void }) {
   };
   return (
     <div className="space-y-3">
-      <select className={`${input} w-auto`} value={status} onChange={(e) => setStatus(e.target.value)}>
+      <select className={picker} value={status} onChange={(e) => setStatus(e.target.value)}>
         <option value="">{T('كل الطلبات المدفوعة')}</option>{['awaiting_payment', ...ORDER_NEXT].map((s) => <option key={s} value={s}>{T(STATUS_AR[s])}</option>)}
       </select>
       {loading ? <Loading /> : !data?.length ? <p className={`${card} text-center text-sm text-stone-500`}>{T('لا يوجد')}</p> : data.map((o) => (

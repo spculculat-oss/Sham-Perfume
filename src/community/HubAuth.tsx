@@ -56,7 +56,7 @@ export default function HubAuth({ lang, onDone, initial = 'login' }: { lang: Lan
   ];
 
   return (
-    <div className="mx-auto grid max-w-6xl gap-6 px-3 py-6 sm:px-4 lg:grid-cols-[1.05fr_1fr] lg:py-10">
+    <div className="mx-auto grid grid-cols-[minmax(0,1fr)] max-w-6xl gap-6 px-3 py-6 sm:px-4 lg:grid-cols-[1.05fr_1fr] lg:py-10">
       <section className="relative overflow-hidden rounded-3xl bg-stone-950 p-6 text-white sm:p-8">
         <div className="pointer-events-none absolute -top-24 end-[-6rem] h-72 w-72 rounded-full bg-amber-500/25 blur-3xl" />
         <div className="pointer-events-none absolute bottom-[-6rem] start-[-4rem] h-64 w-64 rounded-full bg-rose-500/10 blur-3xl" />

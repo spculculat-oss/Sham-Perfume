@@ -1,3 +1,4 @@
+import { randomBytes } from 'node:crypto';
 /**
  * «مجتمع شام» — PostgreSQL. Production: any Postgres URL (Neon from the Vercel dashboard → Storage, or
  * Supabase) in `DATABASE_URL` / `POSTGRES_URL` / `SHAM_DATABASE_URL`. Tests and local dev: PGlite (the real
@@ -282,4 +283,52 @@ export async function migrate(sql: Sql): Promise<void> {
     for (const statement of SCHEMA) await t.query(statement);
     await t.query(`INSERT INTO community_meta (key, value) VALUES ('schema', $1) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value`, [String(SCHEMA_VERSION)]);
   });
+}
+
+/**
+ * The encryption key of members' private data (envelope encryption).
+ *
+ *  - No SHAM_DATA_KEY: the server creates a random data key on first start and keeps it in `community_meta`
+ *    («auto» — the community works as soon as a database is connected, nothing else to set).
+ *  - SHAM_DATA_KEY set later: the stored data key gets wrapped with it («wrapped»), so a copy of the database
+ *    alone no longer opens anything. Changing SHAM_DATA_KEY afterwards needs the old one.
+ *  - Databases that started with SHAM_DATA_KEY keep using it directly («env»).
+ */
+export type KeyMode = 'auto' | 'wrapped' | 'env';
+export class DataKeyError extends Error {}
+
+export async function loadDataKey(sql: Sql, envKey: string, wrap: (secret: string) => { seal(v: string): string | null; open(v: string): string }): Promise<{ secret: string; mode: KeyMode }> {
+  const read = async () => (await sql.query(`SELECT value FROM community_meta WHERE key = 'data_key'`))[0]?.value as string | undefined;
+  let row = await read();
+  const strong = envKey.length >= 24;
+  if (!row) {
+    if (strong) {
+      // A database that already holds members was encrypted with SHAM_DATA_KEY itself.
+      await sql.query(`INSERT INTO community_meta (key, value) VALUES ('data_key', 'env') ON CONFLICT (key) DO NOTHING`);
+    } else {
+      const fresh = randomBytes(32).toString('base64url');
+      await sql.query(`INSERT INTO community_meta (key, value) VALUES ('data_key', $1) ON CONFLICT (key) DO NOTHING`, [`plain:${fresh}`]);
+    }
+    row = await read(); // another server instance may have won the race
+  }
+  if (row === 'env') {
+    if (!strong) throw new DataKeyError('This database was encrypted with SHAM_DATA_KEY: set it again');
+    return { secret: envKey, mode: 'env' };
+  }
+  if (row?.startsWith('plain:')) {
+    const secret = row.slice('plain:'.length);
+    if (strong) {
+      const sealed = wrap(envKey).seal(secret);
+      await sql.query(`UPDATE community_meta SET value = $1 WHERE key = 'data_key' AND value = $2`, [`wrapped:${sealed}`, row]);
+      return { secret, mode: 'wrapped' };
+    }
+    return { secret, mode: 'auto' };
+  }
+  if (row?.startsWith('wrapped:')) {
+    if (!strong) throw new DataKeyError('The data key is wrapped with SHAM_DATA_KEY: set it again');
+    const secret = wrap(envKey).open(row.slice('wrapped:'.length));
+    if (!secret) throw new DataKeyError('SHAM_DATA_KEY does not match the one this database was protected with');
+    return { secret, mode: 'wrapped' };
+  }
+  throw new DataKeyError('Unknown data key record');
 }

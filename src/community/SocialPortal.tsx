@@ -42,7 +42,7 @@ export function SocialFeed({ lang, session, go, toast }: Props) {
   const remove = (id: string) => setPosts((list) => list.filter((x) => x.id !== id));
 
   return (
-    <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
       <div className="space-y-4">
         <Composer lang={lang} session={session} onPosted={(p) => setPosts((list) => [p, ...list])} toast={toast} />
         <div className="flex gap-2">
