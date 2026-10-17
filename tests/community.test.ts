@@ -1,0 +1,337 @@
+import assert from 'node:assert/strict';
+import type { AddressInfo } from 'node:net';
+import { after, before, test } from 'node:test';
+import express from 'express';
+import { Vault, hashPassword, verifyPassword } from '../server/community/crypto';
+import { connectPglite, migrate, type Sql } from '../server/community/db';
+import * as svc from '../server/community/service';
+import * as social from '../server/community/social';
+import * as chat from '../server/community/messenger';
+import * as admin from '../server/community/admin';
+import { createCommunity, createCommunityRouter } from '../server/community/router';
+import type { FxTable } from '../src/utils/pricing';
+
+const KEY = 'test-data-key-0123456789-abcdefghijklmnop';
+const FX: FxTable = { base: 'USD', updatedAt: '2026-10-01T00:00:00Z', rates: { USD: 1, EGP: 50, EUR: 0.9, SAR: 3.75 } };
+let sql: Sql;
+let ctx: svc.Ctx;
+let seq = 0;
+const email = (name: string) => `${name}.${++seq}@example.com`;
+const PASSWORD = 'Sham2026pass';
+
+before(async () => {
+  sql = await connectPglite();
+  await migrate(sql);
+  await migrate(sql); // idempotent
+  ctx = { sql, vault: new Vault(KEY), fx: async () => FX };
+});
+after(async () => { await sql?.close(); });
+
+const newMember = async (name: string, extra: Record<string, unknown> = {}) => (await svc.register(ctx, { name, email: email(name.toLowerCase()), password: PASSWORD, country: 'EG', ...extra })).me;
+const raw = async (query: string, params: unknown[] = []) => JSON.stringify(await sql.query(query, params));
+
+/* --------------------------------------------- security --------------------------------------------- */
+
+test('passwords are scrypt-hashed and private data is AES-GCM encrypted with a server key', async () => {
+  const hash = await hashPassword('Secret123');
+  assert.match(hash, /^scrypt\$32768\$/);
+  assert.equal(await verifyPassword('Secret123', hash), true);
+  assert.equal(await verifyPassword('Secret124', hash), false);
+  const vault = new Vault(KEY);
+  const sealed = vault.seal('رسالة سرية')!;
+  assert.doesNotMatch(sealed, /رسالة/);
+  assert.equal(vault.open(sealed), 'رسالة سرية');
+  assert.notEqual(vault.seal('x'), vault.seal('x'), 'random IV per value');
+  assert.equal(new Vault(`${KEY}-other`).open(sealed), '', 'another key cannot read it');
+  const parts = sealed.split('.'); parts[3] = `${parts[3].slice(0, -2)}AA`;
+  assert.equal(vault.open(parts.join('.')), '', 'tampering is detected');
+  assert.equal(vault.index('A@B.com '), vault.index('a@b.com'));
+  assert.throws(() => new Vault('short'));
+});
+
+test('accounts: register, log in, sessions, generic login errors, suspended accounts', async () => {
+  const address = email('mona');
+  const { token, me } = await svc.register(ctx, { name: 'منى', email: address, password: PASSWORD, country: 'EG', phone: '01001234567' });
+  assert.equal(me.email, address);
+  assert.deepEqual(me.private, { phone: '01001234567', city: '' });
+  const stored = await raw(`SELECT * FROM users WHERE id = $1`, [me.id]);
+  assert.doesNotMatch(stored, new RegExp(address.replace('.', '\\.')), 'the e-mail is not stored in clear');
+  assert.doesNotMatch(stored, /01001234567|Sham2026pass/);
+  assert.doesNotMatch(await raw(`SELECT * FROM sessions`), new RegExp(token), 'only the token hash is stored');
+  assert.equal((await svc.authenticate(ctx, token))?.id, me.id);
+  await assert.rejects(svc.register(ctx, { name: 'Mona', email: address.toUpperCase(), password: PASSWORD }), { code: 'EMAIL_EXISTS' });
+  await assert.rejects(svc.register(ctx, { name: 'X', email: email('x'), password: 'short' }), { code: 'INVALID_FIELD' });
+  await assert.rejects(svc.register(ctx, { name: 'Weak', email: email('weak'), password: 'onlyletters' }), { code: 'WEAK_PASSWORD' });
+  await assert.rejects(svc.login(ctx, { email: address, password: 'Wrong2026pass' }), { code: 'INVALID_LOGIN' });
+  await assert.rejects(svc.login(ctx, { email: 'nobody@example.com', password: PASSWORD }), { code: 'INVALID_LOGIN' }, 'same answer for an unknown e-mail');
+  const second = await svc.login(ctx, { email: address, password: PASSWORD });
+  await svc.logout(ctx, second.token);
+  assert.equal(await svc.authenticate(ctx, second.token), undefined);
+  assert.ok(await svc.authenticate(ctx, token), 'other sessions stay');
+  await admin.setUserStatus(ctx, me.id, 'suspended');
+  assert.equal(await svc.authenticate(ctx, token), undefined, 'suspension signs out everywhere');
+  await assert.rejects(svc.login(ctx, { email: address, password: PASSWORD }), { code: 'ACCOUNT_SUSPENDED' });
+});
+
+/* ------------------------------------------ merchants & store ------------------------------------------ */
+
+test('merchants: review before publishing, private source links, +50 % price, no contacts on the public page', async () => {
+  const seller = await newMember('Seller');
+  await assert.rejects(svc.createProduct(ctx, seller.id, { name: 'x', price: 1, currency: 'EGP' }), { code: 'NOT_MERCHANT' });
+  const store = await svc.applyMerchant(ctx, seller.id, {
+    storeName: 'Oud House', about: 'Best oud. Call 01001234567 or visit https://oudhouse.example.com', country: 'EG', currency: 'USD',
+    legal: { legalName: 'Oud House LLC', phone: '+20 100 123 4567', taxId: 'TAX-1' }, payout: { method: 'bank', iban: 'EG380019000500000000263180002' },
+  });
+  assert.equal(store.status, 'pending');
+  assert.equal(store.payout.iban, 'EG380019000500000000263180002');
+  assert.doesNotMatch(await raw(`SELECT * FROM merchants WHERE user_id = $1`, [seller.id]), /EG3800190005|TAX-1/, 'legal and payout data are encrypted');
+
+  const product = await svc.createProduct(ctx, seller.id, {
+    name: 'Royal Oud 50ml', description: 'Rich oud. WhatsApp +201001234567, shop at www.oudhouse.example.com', category: 'perfume', price: 20, currency: 'USD', stock: 5,
+    images: ['https://cdn.example.com/oud.jpg'], source: { links: 'https://supplier.example.com/oud?id=7', notes: 'warehouse B' },
+  });
+  assert.equal(product.status, 'pending');
+  assert.doesNotMatch(product.description, /\+?201001234567|www\./, 'contacts are stripped from what buyers read');
+  assert.deepEqual(product.source, { links: ['https://supplier.example.com/oud?id=7'], notes: 'warehouse B' });
+  assert.doesNotMatch(await raw(`SELECT * FROM merchant_products WHERE id = $1`, [product.id]), /supplier\.example/, 'source links are encrypted');
+
+  await assert.rejects(svc.storePage(ctx, store.slug), { code: 'NOT_FOUND' }, 'not public before approval');
+  await admin.reviewMerchant(ctx, seller.id, { status: 'approved' });
+  assert.equal((await svc.storePage(ctx, store.slug)).products.length, 0, 'a pending product is not published');
+  await admin.reviewProduct(ctx, product.id, { status: 'approved' });
+  const page = await svc.storePage(ctx, store.slug);
+  assert.equal(page.products.length, 1);
+  assert.equal(page.products[0].priceEgp, 1500, '20 USD × 50 EGP × 1.5');
+  assert.equal(svc.sellingPriceEgp(20, 'USD', FX), 1500);
+  const pageJson = JSON.stringify(page);
+  assert.doesNotMatch(pageJson, /supplier|warehouse|01001234567|oudhouse|IBAN|EG3800|"price":20/, 'no source, contact, payout or merchant price in public');
+  assert.ok((await svc.storeDirectory(ctx)).some((s) => s.slug === store.slug));
+
+  // Changing what buyers see sends the product back to review; stock alone does not.
+  assert.equal((await svc.updateProduct(ctx, seller.id, product.id, { stock: 9 })).status, 'approved');
+  assert.equal((await svc.updateProduct(ctx, seller.id, product.id, { price: 25 })).status, 'pending');
+  await admin.reviewProduct(ctx, product.id, { status: 'approved' });
+  const notes = await social.notifications(ctx, seller.id);
+  assert.ok(notes.some((n) => n.kind === 'merchant_approved') && notes.some((n) => n.kind === 'product_approved'));
+
+  // Checkout: server-side price, one order per merchant, stock reserved when paid, buyer address encrypted.
+  const buyer = await newMember('Buyer');
+  const [priced] = await svc.productsForCheckout(ctx, [product.id, 'mp_unknownproduct1']);
+  assert.equal(priced.price, 1900, '25 USD × 50 × 1.5 = 1875, rounded up to a tidy price like the rest of the store');
+  assert.equal(await svc.recordCheckout(ctx, { ref: 'SP-TEST-1', buyerId: buyer.id, country: 'EG', items: [{ sku: product.id, qty: 2 }],
+    address: { name: 'Buyer', phone: '01112223334', city: 'Giza', line: '12 Pyramids St' }, shippingUsd: 18, total: 4650, currency: 'EGP' }), 1);
+  assert.equal((await svc.merchantOrders(ctx, seller.id)).length, 0, 'unpaid orders are not shown to the merchant');
+  assert.doesNotMatch(await raw(`SELECT * FROM orders`), /Pyramids|01112223334/);
+  assert.equal(await svc.markPaid(ctx, 'SP-TEST-1'), 1);
+  assert.equal(await svc.markPaid(ctx, 'SP-TEST-1'), 0, 'idempotent');
+  const [order] = await svc.merchantOrders(ctx, seller.id);
+  assert.equal(order.amount, 50, 'the merchant sees their own price × qty');
+  assert.equal(JSON.stringify(order).includes('Pyramids'), false, 'not the buyer address');
+  assert.equal((await svc.myProducts(ctx, seller.id))[0].stock, 7);
+  assert.equal((await svc.myOrders(ctx, buyer.id))[0].store, 'Oud House');
+  const [adminOrder] = await admin.orders(ctx);
+  assert.equal(adminOrder.address.line, '12 Pyramids St');
+  assert.equal(adminOrder.marginEgp, 1300, 'the site margin (2 × (1900 − 1250 EGP)) is recorded for the administration');
+  await svc.merchantOrderReady(ctx, seller.id, order.id);
+  await admin.setOrderStatus(ctx, order.id, 'shipped');
+  assert.equal((await svc.myOrders(ctx, buyer.id))[0].status, 'shipped');
+});
+
+/* ------------------------------------------- user portal ------------------------------------------- */
+
+test('recipes and learning belong to their owner; sharing follows the chosen visibility', async () => {
+  const a = await newMember('Amal'); const b = await newMember('Badr');
+  const recipe = await svc.saveRecipe(ctx, a.id, { title: 'عود ملكي', data: { oils: [{ name: 'Oud', pct: 20 }] }, visibility: 'private' });
+  await assert.rejects(svc.getRecipe(ctx, b.id, recipe.id), { code: 'NOT_FOUND' });
+  await svc.saveRecipe(ctx, a.id, { id: recipe.id, title: 'عود ملكي', data: recipe.data, visibility: 'friends' });
+  await assert.rejects(svc.getRecipe(ctx, b.id, recipe.id), { code: 'NOT_FOUND' });
+  await social.requestFriend(ctx, b.id, a.id); await social.acceptFriend(ctx, a.id, b.id);
+  assert.equal((await svc.getRecipe(ctx, b.id, recipe.id)).title, 'عود ملكي');
+  await assert.rejects(svc.saveRecipe(ctx, b.id, { id: recipe.id, title: 'stolen' }), { code: 'NOT_FOUND' });
+  await svc.saveLearning(ctx, a.id, { itemId: 'guide:fixatives', kind: 'guide', title: 'المثبتات', progress: 60 });
+  const learning = await svc.saveLearning(ctx, a.id, { itemId: 'guide:fixatives', kind: 'guide', title: 'المثبتات', progress: 30 });
+  assert.equal(learning[0].progress, 60, 'progress never goes back');
+  const exported = await svc.exportMyData(ctx, a.id);
+  assert.equal(exported.recipes.length, 1);
+  assert.equal(exported.learning.length, 1);
+});
+
+/* ------------------------------------------------ social ------------------------------------------------ */
+
+test('social: public and friends-only posts, reactions, comments, friend requests, blocking, reports', async () => {
+  const sara = await newMember('Sara'); const omar = await newMember('Omar'); const lina = await newMember('Lina');
+  const pub = await social.createPost(ctx, sara.id, { body: 'أول تجربة عود 🌹', visibility: 'public' });
+  const priv = await social.createPost(ctx, sara.id, { body: 'للأصدقاء فقط', visibility: 'friends' });
+  let omarFeed = await social.feed(ctx, omar.id);
+  assert.ok(omarFeed.some((p) => p.id === pub.id));
+  assert.ok(!omarFeed.some((p) => p.id === priv.id), 'friends-only is hidden from non-friends');
+  await assert.rejects(social.getPost(ctx, omar.id, priv.id), { code: 'NOT_FOUND' });
+
+  assert.equal(await social.requestFriend(ctx, omar.id, sara.id), 'requested');
+  assert.equal(await social.relation(ctx, sara.id, omar.id), 'incoming');
+  assert.equal((await social.friends(ctx, sara.id)).incoming[0].id, omar.id);
+  assert.equal(await social.acceptFriend(ctx, sara.id, omar.id), 'friends');
+  omarFeed = await social.feed(ctx, omar.id);
+  assert.ok(omarFeed.some((p) => p.id === priv.id), 'friends see it');
+  assert.equal((await social.feed(ctx, omar.id, { scope: 'friends' })).every((p) => p.author.id === sara.id || p.author.id === omar.id), true);
+
+  const reacted = await social.react(ctx, omar.id, pub.id, 'love');
+  assert.deepEqual(reacted.reactions, { love: 1 });
+  assert.equal(reacted.myReaction, 'love');
+  await assert.rejects(social.react(ctx, omar.id, pub.id, 'angry-bird'), { code: 'INVALID_REACTION' });
+  const thread = await social.addComment(ctx, omar.id, pub.id, 'رائع!');
+  assert.equal(thread.length, 1);
+  await social.deleteComment(ctx, sara.id, thread[0].id); // the post's author may remove comments
+  assert.equal((await social.comments(ctx, omar.id, pub.id)).length, 0);
+  const kinds = (await social.notifications(ctx, sara.id)).map((n) => n.kind);
+  assert.ok(kinds.includes('friend_request') && kinds.includes('reaction') && kinds.includes('comment'));
+
+  const profile = await social.profile(ctx, lina.id, sara.handle);
+  assert.equal(profile.relation, 'none');
+  assert.ok(profile.posts.every((p) => p.visibility === 'public'));
+  assert.ok((await social.searchPeople(ctx, lina.id, 'sar')).some((u) => u.id === sara.id));
+  assert.ok((await social.suggestions(ctx, lina.id)).length > 0);
+
+  await social.block(ctx, sara.id, lina.id);
+  assert.ok(!(await social.feed(ctx, lina.id)).some((p) => p.author.id === sara.id), 'blocked people disappear from the feed');
+  assert.ok(!(await social.searchPeople(ctx, lina.id, 'sar')).some((u) => u.id === sara.id));
+  await assert.rejects(social.profile(ctx, lina.id, sara.handle), { code: 'NOT_FOUND' });
+  await assert.rejects(social.requestFriend(ctx, lina.id, sara.id), { code: 'NOT_FOUND' });
+  await social.report(ctx, lina.id, { kind: 'post', id: pub.id, reason: 'spam' });
+  assert.equal((await admin.reports(ctx)).filter((r) => r.targetId === pub.id).length, 1);
+  await admin.moderate(ctx, 'post', pub.id, 'hidden', 'reported');
+  assert.ok(!(await social.feed(ctx, omar.id)).some((p) => p.id === pub.id), 'hidden by the administration');
+});
+
+/* ----------------------------------------------- messenger ----------------------------------------------- */
+
+test('messenger: encrypted messages, replies, edits, delete for everyone, reactions, receipts, typing, polling', async () => {
+  const hana = await newMember('Hana'); const karim = await newMember('Karim'); const zaid = await newMember('Zaid');
+  const id = await chat.openDirect(ctx, hana.id, karim.id);
+  assert.equal(await chat.openDirect(ctx, karim.id, hana.id), id, 'one conversation per pair');
+  const first = await chat.send(ctx, hana.id, id, { text: 'أهلاً كريم، عندك عود كمبودي؟' });
+  assert.doesNotMatch(await raw(`SELECT * FROM messages`), /كمبودي/, 'the database holds ciphertext only');
+  const reply = await chat.send(ctx, karim.id, id, { text: 'أيوه، عندي 12 جرام', replyTo: first.id });
+  await assert.rejects(chat.messages(ctx, zaid.id, id), { code: 'NOT_FOUND' }, 'only members can read');
+
+  let inbox = await chat.conversations(ctx, hana.id);
+  assert.equal(inbox[0].unread, 1);
+  assert.equal(inbox[0].last?.text, 'أيوه، عندي 12 جرام');
+  assert.equal((await chat.pulse(ctx, hana.id)).messages, 1);
+  const view = await chat.messages(ctx, hana.id, id);
+  assert.equal(view.messages.length, 2);
+  assert.equal(view.messages[1].replyTo?.text, 'أهلاً كريم، عندك عود كمبودي؟');
+  await chat.markRead(ctx, hana.id, id);
+  assert.equal((await chat.pulse(ctx, hana.id)).messages, 0);
+  const karimView = await chat.messages(ctx, karim.id, id);
+  const hanaMember = karimView.members.find((m) => m.id === hana.id)!;
+  assert.ok(new Date(hanaMember.lastReadAt!) >= new Date(karimView.messages[1].createdAt!), 'read receipt (✓✓)');
+
+  await chat.typing(ctx, karim.id, id);
+  assert.equal((await chat.messages(ctx, hana.id, id)).members.find((m) => m.id === karim.id)?.typing, true);
+  assert.deepEqual((await chat.conversations(ctx, hana.id))[0].typing, ['Karim']);
+
+  // Polling sees edits, reactions and deletions since the last look.
+  const since = view.serverTime!;
+  await chat.reactMessage(ctx, hana.id, reply.id, '🔥');
+  await chat.editMessage(ctx, hana.id, first.id, 'أهلاً كريم، عندك عود هندي؟');
+  await assert.rejects(chat.editMessage(ctx, karim.id, first.id, 'hack'), { code: 'NOT_FOUND' });
+  let changes = (await chat.messages(ctx, karim.id, id, { since })).messages;
+  assert.deepEqual(changes.map((m) => m.id).sort(), [first.id, reply.id].sort());
+  assert.deepEqual(changes.find((m) => m.id === reply.id)?.reactions, { '🔥': 1 });
+  assert.equal(changes.find((m) => m.id === first.id)?.text, 'أهلاً كريم، عندك عود هندي؟');
+  await chat.deleteMessage(ctx, hana.id, first.id);
+  changes = (await chat.messages(ctx, karim.id, id, { since })).messages;
+  const gone = changes.find((m) => m.id === first.id)!;
+  assert.equal(gone.deleted, true);
+  assert.equal(gone.text, '');
+  const [stored] = await sql.query(`SELECT body_enc FROM messages WHERE id = $1`, [first.id]);
+  assert.equal(stored.body_enc, null, 'deleted for everyone = erased');
+
+  // Pictures and voice notes; recipes; size and type checks.
+  const png = `data:image/png;base64,${Buffer.from('fake-png').toString('base64')}`;
+  assert.equal((await chat.send(ctx, karim.id, id, { kind: 'image', attachment: png })).attachment, png);
+  const voice = `data:audio/webm;codecs=opus;base64,${Buffer.from('opus').toString('base64')}`;
+  assert.equal((await chat.send(ctx, karim.id, id, { kind: 'voice', attachment: voice })).kind, 'voice');
+  await assert.rejects(chat.send(ctx, karim.id, id, { kind: 'image', attachment: 'javascript:alert(1)' }), { code: 'INVALID_IMAGE' });
+  const recipe = await svc.saveRecipe(ctx, hana.id, { title: 'مسك أبيض', data: { musk: 30 } });
+  const shared = await chat.send(ctx, hana.id, id, { kind: 'recipe', recipeId: recipe.id });
+  assert.equal(JSON.parse(shared.attachment!).title, 'مسك أبيض');
+
+  // Groups need friends; blocking stops a direct chat.
+  await assert.rejects(chat.createGroup(ctx, hana.id, { title: 'صناع العطور', members: [karim.id] }), { code: 'NOT_FRIENDS' });
+  await social.requestFriend(ctx, hana.id, karim.id); await social.acceptFriend(ctx, karim.id, hana.id);
+  await social.requestFriend(ctx, hana.id, zaid.id); await social.acceptFriend(ctx, zaid.id, hana.id);
+  const group = await chat.createGroup(ctx, hana.id, { title: 'صناع العطور', members: [karim.id] });
+  await chat.updateGroup(ctx, hana.id, group, { add: [zaid.id], title: 'صناع العطور 🌹' });
+  await chat.send(ctx, zaid.id, group, { text: 'سلام عليكم' });
+  assert.equal((await chat.conversations(ctx, karim.id)).find((c) => c.id === group)?.title, 'صناع العطور 🌹');
+  await chat.updateGroup(ctx, karim.id, group, { muted: true });
+  await chat.markRead(ctx, karim.id, id); // Hana's shared recipe in the direct chat
+  assert.equal((await chat.pulse(ctx, karim.id)).messages, 0, 'muted chats do not count');
+  await social.block(ctx, karim.id, hana.id);
+  await assert.rejects(chat.send(ctx, hana.id, id, { text: 'hello?' }), { code: 'BLOCKED' });
+
+  // The administration reads a conversation only with a reason, and it is audited.
+  await assert.rejects(admin.readConversation(ctx, id, ''), { code: 'REASON_REQUIRED' });
+  const file = await admin.readConversation(ctx, id, 'بلاغ عن احتيال');
+  assert.ok(file.messages.some((m) => m.text === 'أيوه، عندي 12 جرام'));
+  assert.ok((await admin.auditLog(ctx)).some((a) => a.action === 'read_conversation' && a.detail === 'بلاغ عن احتيال'));
+});
+
+/* ---------------------------------------------- HTTP API ---------------------------------------------- */
+
+async function withApi(env: Record<string, string>, run: (base: string) => Promise<void>, withDb = true) {
+  const app = express();
+  app.use(['/api/community', '/api/admin/community'], express.json({ limit: '3mb' }));
+  app.use(express.json({ limit: '128kb' }));
+  const community = createCommunity({ env, sql: withDb ? sql : undefined, fx: async () => FX });
+  app.use('/api', createCommunityRouter(community, { env }));
+  const server = app.listen(0, '127.0.0.1');
+  await new Promise((done) => server.once('listening', done));
+  try { await run(`http://127.0.0.1:${(server.address() as AddressInfo).port}/api`); } finally { await new Promise((done) => server.close(done)); }
+}
+const call = async (base: string, path: string, init: { method?: string; body?: unknown; token?: string } = {}) => {
+  const res = await fetch(`${base}${path}`, {
+    method: init.method || (init.body ? 'POST' : 'GET'),
+    headers: { 'content-type': 'application/json', ...(init.token ? { authorization: `Bearer ${init.token}` } : {}) },
+    body: init.body === undefined ? undefined : JSON.stringify(init.body),
+  });
+  return { status: res.status, data: await res.json().catch(() => null) as any };
+};
+
+test('HTTP: not configured without a database or key; members, public stores and the administration', async () => {
+  await withApi({}, async (base) => {
+    assert.deepEqual((await call(base, '/community/status')).data, { enabled: false, reason: 'key' });
+    assert.equal((await call(base, '/community/auth/login', { body: { email: 'a@b.co', password: 'x' } })).data.code, 'COMMUNITY_NOT_CONFIGURED');
+  }, false);
+  await withApi({ SHAM_DATA_KEY: KEY }, async (base) => {
+    assert.deepEqual((await call(base, '/community/status')).data, { enabled: false, reason: 'database' });
+  }, false);
+
+  await withApi({ SHAM_DATA_KEY: KEY, SHAM_ADMIN_TOKEN: 'admin-token-for-tests' }, async (base) => {
+    assert.equal((await call(base, '/community/status')).data.enabled, true);
+    const address = email('http');
+    const reg = await call(base, '/community/auth/register', { body: { name: 'Http User', email: address, password: PASSWORD } });
+    assert.equal(reg.status, 200);
+    const token = reg.data.token as string;
+    assert.equal((await call(base, '/community/me')).status, 401);
+    assert.equal((await call(base, '/community/me', { token })).data.email, address);
+    const post = await call(base, '/community/posts', { token, body: { body: 'مرحبا مجتمع شام', image: `data:image/jpeg;base64,${'A'.repeat(200_000)}` } });
+    assert.equal(post.status, 200, 'pictures fit (larger body limit on community routes)');
+    assert.equal((await call(base, '/community/feed', { token })).data[0].body, 'مرحبا مجتمع شام');
+    assert.equal((await call(base, '/community/pulse', { token })).data.messages, 0);
+    assert.ok(Array.isArray((await call(base, '/community/stores')).data), 'stores are public');
+
+    assert.equal((await call(base, '/admin/community/overview')).status, 401);
+    assert.equal((await call(base, '/admin/community/overview', { token })).status, 401, 'a member token is not an admin token');
+    const overview = await call(base, '/admin/community/overview', { token: 'admin-token-for-tests' });
+    assert.ok(overview.data.users >= 1);
+    const found = await call(base, `/admin/community/users?q=${encodeURIComponent(address)}`, { token: 'admin-token-for-tests' });
+    assert.equal(found.data[0].email, address, 'the administration finds a member by e-mail (blind index)');
+    const file = await call(base, `/admin/community/users/${found.data[0].id}`, { token: 'admin-token-for-tests' });
+    assert.equal(file.data.account.email, address);
+    assert.equal((await call(base, '/community/auth/logout', { token, body: {} })).status, 200);
+    assert.equal((await call(base, '/community/me', { token })).status, 401);
+  });
+});
