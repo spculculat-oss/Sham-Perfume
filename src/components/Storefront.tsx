@@ -534,18 +534,20 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
 
   const price = money.price;
 
-  // Luxury Card Rendering adhering strictly to the zero-pill discipline
+  // Luxury Card Rendering adhering strictly to the zero-pill discipline with subtle warm gradient
   const card = (p: StoreProduct, why?: string, pick?: boolean) => {
     const isAdded = justAdded === p.sku;
     return (
       <article
         key={p.sku}
-        className={`group bg-white rounded-2xl border ${
-          pick ? 'border-amber-400 shadow-md ring-1 ring-amber-300/40' : 'border-stone-200/80 hover:border-amber-300/80 hover:shadow-xl'
-        } overflow-hidden flex flex-col transition-all duration-300`}
+        className={`group bg-gradient-to-b ${
+          pick
+            ? 'from-amber-50/70 via-white to-amber-50/40 border-amber-400 shadow-md ring-1 ring-amber-300/40'
+            : 'from-white via-stone-50/30 to-amber-50/25 hover:from-white hover:via-amber-50/15 hover:to-amber-50/40 border-stone-200/80 hover:border-amber-300/80 hover:shadow-xl'
+        } rounded-2xl border overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-0.5`}
         data-testid={pick ? 'store-pick' : 'store-product'}
       >
-        <div className="relative overflow-hidden aspect-square bg-stone-50">
+        <div className="relative overflow-hidden aspect-square bg-gradient-to-b from-stone-100/60 via-stone-50/40 to-transparent">
           <button
             type="button"
             onClick={() => openDetails(p)}

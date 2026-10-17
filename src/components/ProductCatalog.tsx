@@ -322,7 +322,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({ onClose, current
                 {filteredProducts.map(product => {
                   const merchant = merchantMap.get(product.merchantId);
                   return (
-                    <div key={product.id} className="p-4 rounded-xl border border-stone-200 hover:shadow-md transition-shadow group">
+                    <div key={product.id} className="p-4 rounded-xl border border-stone-200/90 hover:border-amber-300 hover:shadow-md transition-all group bg-gradient-to-b from-white via-white to-amber-50/20 hover:to-amber-50/40">
                       <div className="relative">
                         <div className="w-full h-32 rounded-lg bg-gradient-to-br from-amber-50 to-stone-100 flex items-center justify-center">
                           <Package className="w-8 h-8 text-amber-400/60"/>
