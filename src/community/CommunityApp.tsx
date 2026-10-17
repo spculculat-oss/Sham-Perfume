@@ -24,6 +24,12 @@ export default function CommunityApp({ lang: siteLang, route, navigate, onSigned
   const [page, a] = parts;
   const member = session.status === 'member' && session.me;
   useEffect(() => { if (member) onSignedIn?.(); }, [member, onSignedIn]);
+  // The site's floating helpers (Shaheen, «مساعد شام») would cover the message box while chatting.
+  useEffect(() => {
+    if (page !== 'messenger') return;
+    document.body.dataset.shamFocus = 'messenger';
+    return () => { delete document.body.dataset.shamFocus; };
+  }, [page]);
 
   const pulse = session.pulse;
   const tabs: { id: string; label: string; icon: React.ReactNode; badge?: number }[] = [
@@ -56,19 +62,19 @@ export default function CommunityApp({ lang: siteLang, route, navigate, onSigned
     <div dir={lang === 'ar' ? 'rtl' : 'ltr'} className="min-h-[70vh] bg-stone-50 pb-16">
       {showChrome && (
         <div className="sticky top-0 z-30 border-b border-stone-200 bg-white/95 backdrop-blur">
-          <div className="mx-auto flex max-w-6xl items-center gap-1 overflow-x-auto px-2 py-2 sm:px-4">
-            <button type="button" onClick={() => go('')} className="me-2 flex shrink-0 items-center gap-2 font-black text-stone-900 cursor-pointer"><Users className="h-5 w-5 text-amber-600" /><span className="hidden sm:inline">{t('مجتمع شام', 'Sham Community')}</span></button>
+          <div className="mx-auto flex max-w-6xl items-center gap-0.5 overflow-x-auto px-2 py-2 sm:gap-1 sm:px-4">
+            <button type="button" onClick={() => go('')} className="me-1 flex shrink-0 items-center gap-2 font-black sm:me-2 text-stone-900 cursor-pointer"><Users className="h-5 w-5 text-amber-600" /><span className="hidden sm:inline">{t('مجتمع شام', 'Sham Community')}</span></button>
             {tabs.filter((tab) => member || tab.id === 'stores').map((tab) => (
               <button key={tab.id} type="button" onClick={() => go(tab.id)}
-                className={`flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-semibold transition cursor-pointer ${active === tab.id ? 'bg-amber-100 text-amber-900' : 'text-stone-600 hover:bg-stone-100'}`}>
+                className={`flex shrink-0 items-center gap-1.5 rounded-xl px-2.5 py-2 text-sm sm:px-3 font-semibold transition cursor-pointer ${active === tab.id ? 'bg-amber-100 text-amber-900' : 'text-stone-600 hover:bg-stone-100'}`}>
                 {tab.icon}<span className="hidden md:inline">{tab.label}</span><Badge n={tab.badge} />
               </button>
             ))}
             <span className="ms-auto" />
             {member ? (
-              <div className="flex shrink-0 items-center gap-2">
-                <button type="button" onClick={() => go(`u/${member.handle}`)} className="cursor-pointer" title={member.name}><Avatar user={member} size={34} ring /></button>
-                <button type="button" title={t('تسجيل الخروج', 'Sign out')} onClick={() => void signOut().then(() => go(''))} className="rounded-full p-2 text-stone-500 hover:bg-stone-100 cursor-pointer"><LogOut className="h-4 w-4" /></button>
+              <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+                <button type="button" onClick={() => go(`u/${member.handle}`)} className="cursor-pointer" title={member.name}><Avatar user={member} size={32} ring /></button>
+                <button type="button" title={t('تسجيل الخروج', 'Sign out')} onClick={() => void signOut().then(() => go(''))} className="rounded-full p-1.5 text-stone-500 hover:bg-stone-100 cursor-pointer sm:p-2"><LogOut className="h-4 w-4" /></button>
               </div>
             ) : <Btn small onClick={() => go('login')}>{t('دخول / حساب جديد', 'Sign in / Join')}</Btn>}
           </div>

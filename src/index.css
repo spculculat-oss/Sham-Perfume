@@ -1,1 +1,4 @@
 @import "tailwindcss";
+
+/* «مجتمع شام» messenger: hide the site's floating helpers so they never cover the message box. */
+body[data-sham-focus='messenger'] .sham-floating { display: none !important; }

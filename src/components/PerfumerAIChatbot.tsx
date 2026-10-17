@@ -1010,7 +1010,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   return (
     <div style={{ display: hidden ? 'none' : 'contents' }} data-testid="floating-chat-root">
       {/* Floating Trigger Button */}
-      <div className={`fixed bottom-6 ${rtl ? 'right-6' : 'left-6'} z-40 no-print flex items-center gap-3`}>
+      <div className={`fixed bottom-6 ${rtl ? 'right-6' : 'left-6'} z-40 no-print sham-floating flex items-center gap-3`}>
         <AnimatePresence>
           {!isOpen && (
             <motion.div

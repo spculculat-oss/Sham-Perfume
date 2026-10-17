@@ -15,7 +15,7 @@ import { Btn, Card, Empty, Field, Sheet, Spinner, errorText, inputClass, money, 
 const MARGIN = 0.5;
 const CURRENCIES = ['EGP', 'USD', 'EUR', 'GBP', 'SAR', 'AED', 'KWD', 'QAR', 'BHD', 'OMR', 'JOD', 'MYR', 'TRY', 'MAD', 'IQD', 'LYD', 'DZD', 'TND'].filter((c) => c === 'USD' || BUNDLED_FX.rates[c]);
 const CATEGORIES: [string, string, string][] = [
-  ['perfume', 'عطور جاهزة', 'Perfumes'], ['oil', 'زيوت عطرية', 'Fragrance oils'], ['raw_material', 'خامات', 'Raw materials'], ['alcohol', 'كحول ومذيبات', 'Alcohol & solvents'],
+  ['perfume', 'عطور جاهزة', 'Perfumes'], ['oil', 'زيوت عطرية', 'Fragrance oils'], ['incense', 'بخور ومعمول', 'Incense & bakhoor'], ['raw_material', 'خامات', 'Raw materials'], ['alcohol', 'كحول ومذيبات', 'Alcohol & solvents'],
   ['bottle', 'زجاجات', 'Bottles'], ['packaging', 'تغليف', 'Packaging'], ['tool', 'أدوات', 'Tools'], ['other', 'أخرى', 'Other'],
 ];
 const PRODUCT_STATUS: Record<string, [string, string, string]> = {
@@ -44,7 +44,7 @@ export default function MerchantPortal({ lang, session, section, go, toast }: Pr
       <Card className="overflow-hidden">
         <div className="flex flex-wrap items-center gap-4 bg-gradient-to-br from-stone-950 to-stone-800 p-5 text-white">
           {m.logo ? <img src={m.logo} alt="" className="h-16 w-16 rounded-2xl bg-white object-cover" /> : <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500 text-2xl">🏪</span>}
-          <div className="min-w-0 flex-1"><p className="text-xs text-amber-300">{t('بوابة التاجر', 'Merchant portal')}</p><h2 className="truncate text-2xl font-black">{m.storeName}</h2><p className="text-sm text-stone-300">{merchantStatus(m.status, lang)}</p></div>
+          <div className="min-w-[11rem] flex-1"><p className="text-xs text-amber-300">{t('بوابة التاجر', 'Merchant portal')}</p><h2 className="truncate text-xl font-black sm:text-2xl">{m.storeName}</h2><p className="text-sm text-stone-300">{merchantStatus(m.status, lang)}</p></div>
           {m.status === 'approved' && <Btn variant="soft" onClick={() => go(`store/${m.slug}`)}><ExternalLink className="h-4 w-4" />{t('صفحة متجري', 'My store page')}</Btn>}
         </div>
         {m.status !== 'approved' && (

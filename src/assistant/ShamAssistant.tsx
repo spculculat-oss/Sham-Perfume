@@ -319,7 +319,7 @@ export function ShamAssistant({ currentLang }: Props) {
 
   return (
     <>
-      <div className={`fixed bottom-6 ${rtl ? 'left-6' : 'right-6'} z-40 no-print flex items-center gap-2 ${rtl ? 'flex-row' : 'flex-row-reverse'}`}>
+      <div className={`fixed bottom-6 ${rtl ? 'left-6' : 'right-6'} z-40 no-print sham-floating flex items-center gap-2 ${rtl ? 'flex-row' : 'flex-row-reverse'}`}>
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}

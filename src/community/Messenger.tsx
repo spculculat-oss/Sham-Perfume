@@ -33,7 +33,7 @@ export default function Messenger({ lang, session, chatId, go, toast }: Props) {
   const shown = useMemo(() => (chats || []).filter((c) => !filter.trim() || c.title.toLowerCase().includes(filter.trim().toLowerCase())), [chats, filter]);
 
   return (
-    <Card className="grid h-[calc(100vh-190px)] min-h-[520px] overflow-hidden md:grid-cols-[320px_minmax(0,1fr)]">
+    <Card className="grid grid-cols-[minmax(0,1fr)] h-[calc(100vh-190px)] min-h-[520px] overflow-hidden md:grid-cols-[320px_minmax(0,1fr)]">
       <aside className={`flex min-h-0 flex-col border-e border-stone-100 ${chatId ? 'hidden md:flex' : 'flex'}`}>
         <div className="space-y-3 border-b border-stone-100 p-3">
           <div className="flex items-center justify-between">

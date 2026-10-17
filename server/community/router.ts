@@ -5,17 +5,17 @@
  *   /api/community/stores*  public store pages (published products only, no source links, no contacts)
  *   /api/admin/community/*  the administration (Bearer SHAM_ADMIN_TOKEN): everything, decrypted, audited
  *
- * Needs two server settings (Vercel → Settings → Environment Variables, or the Neon integration):
- *   DATABASE_URL     a PostgreSQL database (Neon / Supabase)
- *   SHAM_DATA_KEY    a long secret phrase — the encryption key of private data (never change it)
- * Without them the API answers 503 COMMUNITY_NOT_CONFIGURED and the site keeps its local accounts.
+ * Needs one server setting — a PostgreSQL database (Vercel → Storage → Neon → Connect adds DATABASE_URL).
+ * SHAM_DATA_KEY is optional: without it the server creates its own data key in the database; set it later to
+ * wrap that key (see loadDataKey). Without a database the API answers 503 COMMUNITY_NOT_CONFIGURED and the site
+ * keeps its local accounts.
  */
 import express from 'express';
 import { timingSafeEqual } from 'node:crypto';
 import { RateLimiter, clientKey } from '../core/rateLimit';
 import type { FxTable } from '../../src/utils/pricing';
 import { Vault } from './crypto';
-import { connectPglite, connectPostgres, databaseUrl, migrate, type Sql } from './db';
+import { DataKeyError, connectPglite, connectPostgres, databaseUrl, loadDataKey, migrate, type KeyMode, type Sql } from './db';
 import * as svc from './service';
 import * as social from './social';
 import * as chat from './messenger';
@@ -34,7 +34,7 @@ export interface CommunityOptions {
 export interface Community {
   /** The context when the database and key are configured (connects and migrates once). */
   ready(): Promise<svc.Ctx | undefined>;
-  status(): Promise<{ enabled: boolean; reason?: 'database' | 'key' | 'error'; store?: string }>;
+  status(): Promise<{ enabled: boolean; reason?: 'database' | 'key' | 'error'; store?: string; keyMode?: KeyMode }>;
   /** The signed-in member of a request (for the checkout), if any. */
   userFrom(req: express.Request): Promise<svc.SessionUser | undefined>;
 }
@@ -43,9 +43,9 @@ export function createCommunity(options: CommunityOptions = {}): Community {
   const env = options.env || process.env;
   let ctx: Promise<svc.Ctx | undefined> | undefined;
   let reason: 'database' | 'key' | 'error' | undefined;
+  let keyMode: KeyMode | undefined;
   const ready = () => (ctx ||= (async () => {
     const key = env.SHAM_DATA_KEY?.trim() || '';
-    if (key.length < 24) { reason = 'key'; return undefined; }
     let sql = options.sql;
     if (!sql) {
       const url = databaseUrl(env);
@@ -54,7 +54,16 @@ export function createCommunity(options: CommunityOptions = {}): Community {
     }
     if (!sql) { reason = 'database'; return undefined; }
     await migrate(sql);
-    return { sql, vault: new Vault(key), fx: options.fx };
+    try {
+      const { secret, mode } = await loadDataKey(sql, key, (s) => new Vault(s));
+      keyMode = mode;
+      return { sql, vault: new Vault(secret), fx: options.fx };
+    } catch (error) {
+      if (!(error instanceof DataKeyError)) throw error;
+      console.error('[community]', error.message);
+      reason = 'key'; // fixed by setting the right SHAM_DATA_KEY (a redeploy restarts the server)
+      return undefined;
+    }
   })().catch((error) => {
     console.error('[community] database unavailable:', error instanceof Error ? error.message : error);
     reason = 'error'; ctx = undefined; // retry on the next request
@@ -64,7 +73,7 @@ export function createCommunity(options: CommunityOptions = {}): Community {
     ready,
     async status() {
       const c = await ready();
-      return c ? { enabled: true, store: c.sql.kind } : { enabled: false, reason };
+      return c ? { enabled: true, store: c.sql.kind, keyMode } : { enabled: false, reason };
     },
     async userFrom(req) {
       const c = await ready();

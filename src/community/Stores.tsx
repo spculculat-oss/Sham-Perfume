@@ -63,9 +63,9 @@ export function StorePage({ lang, go, slug }: Props & { slug: string }) {
             <button type="button" onClick={() => setOpen(p)} className="aspect-square bg-stone-100 cursor-pointer">{p.images[0] ? <img src={p.images[0]} alt="" loading="lazy" className="h-full w-full object-cover" /> : <span className="flex h-full items-center justify-center text-4xl">🧴</span>}</button>
             <div className="flex flex-1 flex-col gap-1.5 p-3">
               <button type="button" onClick={() => setOpen(p)} className="line-clamp-2 text-start text-sm font-bold text-stone-900 hover:text-amber-800 cursor-pointer">{p.name}</button>
-              <div className="mt-auto flex items-center justify-between gap-2 pt-1">
-                <span className="text-sm font-bold text-amber-900">{money.price(p.priceEgp)}</span>
-                <button type="button" disabled={!p.inStock} onClick={() => add(p.sku)} className="rounded-lg bg-amber-700 px-2.5 py-1.5 text-[11px] text-white hover:bg-amber-800 disabled:bg-stone-300 cursor-pointer">
+              <div className="mt-auto flex flex-wrap items-center justify-between gap-2 pt-1">
+                <span className="whitespace-nowrap text-sm font-bold text-amber-900">{money.price(p.priceEgp)}</span>
+                <button type="button" disabled={!p.inStock} onClick={() => add(p.sku)} className="whitespace-nowrap rounded-lg bg-amber-700 px-2.5 py-1.5 text-[11px] text-white hover:bg-amber-800 disabled:bg-stone-300 cursor-pointer">
                   {!p.inStock ? t('نفد', 'Sold out') : added === p.sku ? <Check className="h-4 w-4" /> : t('أضف للسلة', 'Add')}</button>
               </div>
             </div>

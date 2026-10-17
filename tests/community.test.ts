@@ -315,7 +315,7 @@ const call = async (base: string, path: string, init: { method?: string; body?: 
 
 test('HTTP: not configured without a database or key; members, public stores and the administration', async () => {
   await withApi({}, async (base) => {
-    assert.deepEqual((await call(base, '/community/status')).data, { enabled: false, reason: 'key' });
+    assert.deepEqual((await call(base, '/community/status')).data, { enabled: false, reason: 'database' });
     assert.equal((await call(base, '/community/auth/login', { body: { email: 'a@b.co', password: 'x' } })).data.code, 'COMMUNITY_NOT_CONFIGURED');
   }, false);
   await withApi({ SHAM_DATA_KEY: KEY }, async (base) => {
@@ -347,4 +347,31 @@ test('HTTP: not configured without a database or key; members, public stores and
     assert.equal((await call(base, '/community/auth/logout', { token, body: {} })).status, 200);
     assert.equal((await call(base, '/community/me', { token })).status, 401);
   });
+});
+
+test('data key: a database alone is enough (auto key), SHAM_DATA_KEY added later wraps it, a wrong one is refused', async () => {
+  const fresh = await connectPglite();
+  try {
+    const open = async (env: Record<string, string>) => createCommunity({ env, sql: fresh, fx: async () => FX });
+    const auto = await open({});
+    assert.deepEqual(await auto.status(), { enabled: true, store: 'pglite', keyMode: 'auto' });
+    const ctx = (await auto.ready())!;
+    const reg = await svc.register(ctx, { name: 'Auto Key', email: 'auto@key.test', password: PASSWORD }, 'test');
+    const [stored] = await fresh.query(`SELECT value FROM community_meta WHERE key = 'data_key'`);
+    assert.match(stored.value, /^plain:/);
+
+    const wrapped = await open({ SHAM_DATA_KEY: KEY });
+    assert.equal((await wrapped.status()).keyMode, 'wrapped');
+    const [after] = await fresh.query(`SELECT value FROM community_meta WHERE key = 'data_key'`);
+    assert.match(after.value, /^wrapped:/, 'the key is no longer readable from the database alone');
+    const ctx2 = (await wrapped.ready())!;
+    const login = await svc.login(ctx2, { email: 'auto@key.test', password: PASSWORD }, 'test');
+    assert.equal(login.me.id, reg.me.id, 'members created before the key was wrapped still sign in');
+    assert.equal((await svc.me(ctx2, reg.me.id)).email, 'auto@key.test', 'and their encrypted data still opens');
+
+    assert.deepEqual(await (await open({ SHAM_DATA_KEY: 'a-completely-different-key-0123456789' })).status(), { enabled: false, reason: 'key' });
+    assert.deepEqual(await (await open({})).status(), { enabled: false, reason: 'key' });
+  } finally {
+    await fresh.close();
+  }
 });

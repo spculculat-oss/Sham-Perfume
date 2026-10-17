@@ -26,10 +26,10 @@ export default function UserPortal({ lang, session, section, go, toast }: Props)
     ['security', t('الأمان والخصوصية', 'Security & privacy'), <ShieldCheck key="s" className="h-4 w-4" />],
   ];
   return (
-    <div className="grid gap-5 lg:grid-cols-[240px_minmax(0,1fr)]">
-      <Card className="h-fit p-2">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[240px_minmax(0,1fr)]">
+      <Card className="h-fit min-w-0 p-2">
         <div className="flex items-center gap-3 p-3"><Avatar user={me} size={48} /><div className="min-w-0"><p className="truncate font-bold">{me.name}</p><p className="truncate text-xs text-stone-500">@{me.handle}</p></div></div>
-        <nav className="flex gap-1 overflow-x-auto lg:flex-col">
+        <nav className="flex max-w-full gap-1 overflow-x-auto lg:flex-col">
           {nav.map(([id, label, icon]) => (
             <button key={id} type="button" onClick={() => go(`me/${id}`)} className={`flex shrink-0 items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold cursor-pointer ${current === id ? 'bg-amber-100 text-amber-900' : 'text-stone-600 hover:bg-stone-50'}`}>{icon}{label}</button>
           ))}
@@ -58,10 +58,16 @@ function Overview({ lang, me, go }: { lang: Lang; me: Me; go: (r: string) => voi
   return (
     <div className="space-y-4">
       <Card className="overflow-hidden">
-        <div className="bg-gradient-to-br from-stone-900 to-amber-800 p-5 text-white">
-          <p className="text-sm text-amber-200">{t('أهلاً بيك في بوابتك', 'Welcome to your portal')}</p>
-          <h2 className="mt-1 text-2xl font-black">{me.name}</h2>
-          <p className="mt-1 text-xs text-stone-300">{t('عضو منذ', 'Member since')} {new Date(me.createdAt).toLocaleDateString(lang === 'ar' ? 'ar-EG' : 'en-GB', { month: 'long', year: 'numeric' })}</p>
+        <div className="flex items-center gap-4 bg-gradient-to-br from-stone-900 to-amber-800 p-5 text-white">
+          <Avatar user={me} size={64} ring />
+          <div className="min-w-0 flex-1">
+            <p className="text-sm text-amber-200">{t('أهلاً بيك في بوابتك', 'Welcome to your portal')}</p>
+            <h2 className="mt-0.5 truncate text-2xl font-black">{me.name}</h2>
+            <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-stone-300">
+              <span className="rounded-full bg-white/15 px-2 py-0.5 font-semibold text-amber-100">{craftLabel(me.craftLevel, lang)}</span>
+              {t('عضو منذ', 'Member since')} {new Date(me.createdAt).toLocaleDateString(lang === 'ar' ? 'ar-EG' : 'en-GB', { month: 'long', year: 'numeric' })}
+            </p>
+          </div>
         </div>
         <div className="grid grid-cols-2 gap-px bg-stone-100 sm:grid-cols-4">
           {tiles.map(([label, n, route, icon]) => (
@@ -78,6 +84,10 @@ function Overview({ lang, me, go }: { lang: Lang; me: Me; go: (r: string) => voi
           <Btn variant="soft" onClick={() => go('merchant')}>{t('بوابة التاجر', 'Merchant portal')}</Btn>
         </Card>
       )}
+      <div className="grid gap-4 lg:grid-cols-2">
+        <LearningSummary lang={lang} go={go} />
+        <LatestRecipes lang={lang} go={go} />
+      </div>
       <div className="grid gap-3 sm:grid-cols-3">
         <QuickLink title={t('اكتب منشور', 'Write a post')} body={t('شارك المجتمع تجربتك', 'Share with the community')} onClick={() => go('social')} />
         <QuickLink title={t('افتح الماسنجر', 'Open messenger')} body={t('راسل أصدقاءك', 'Message your friends')} onClick={() => go('messenger')} />
@@ -86,6 +96,84 @@ function Overview({ lang, me, go }: { lang: Lang; me: Me; go: (r: string) => voi
     </div>
   );
 }
+const craftLabel = (level: string, lang: Lang) => {
+  const t = tx(lang);
+  return level === 'master_lab' ? t('خبير / معمل', 'Master / lab') : level === 'perfumer' ? t('عطّار', 'Perfumer') : t('هاوي', 'Hobbyist');
+};
+
+/** «رحلة التعلّم» at a glance: overall progress and the sections to continue. */
+function LearningSummary({ lang, go }: { lang: Lang; go: (r: string) => void }) {
+  const t = tx(lang);
+  const { data, loading } = useLoad(() => cx<Learning[]>('/community/me/learning'));
+  const items = data || [];
+  const done = items.filter((l) => l.progress >= 100).length;
+  const overall = items.length ? Math.round(items.reduce((s, l) => s + Math.min(100, l.progress), 0) / items.length) : 0;
+  const next = [...items].sort((a, b) => (a.progress >= 100 ? 1 : 0) - (b.progress >= 100 ? 1 : 0) || b.updatedAt.localeCompare(a.updatedAt)).slice(0, 3);
+  return (
+    <Card className="p-5">
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <h3 className="flex items-center gap-2 font-bold"><BookOpen className="h-5 w-5 text-amber-600" />{t('رحلة التعلّم', 'Learning journey')}</h3>
+        <button type="button" onClick={() => go('me/learning')} className="text-xs font-semibold text-amber-700 hover:underline cursor-pointer">{t('الكل', 'All')}</button>
+      </div>
+      {loading ? <Spinner /> : !items.length ? (
+        <p className="text-sm text-stone-500">{t('افتح أي قسم في الموقع وإنت مسجّل، وتقدّمك هيتسجّل هنا.', 'Open any section while signed in and your progress shows here.')}</p>
+      ) : (
+        <>
+          <div className="mb-4 flex items-center gap-4">
+            <div className="relative h-16 w-16 shrink-0 rounded-full" style={{ background: `conic-gradient(#b45309 ${overall * 3.6}deg, #f5f5f4 0)` }}>
+              <span className="absolute inset-1.5 flex items-center justify-center rounded-full bg-white text-sm font-black text-stone-900">{overall}%</span>
+            </div>
+            <p className="text-sm text-stone-600">{t(`خلّصت ${done} من ${items.length} أقسام`, `${done} of ${items.length} sections completed`)}</p>
+          </div>
+          <div className="space-y-2.5">{next.map((l) => (
+            <button key={l.itemId} type="button" onClick={() => { window.location.hash = l.itemId.replace(/^section:/, ''); }} className="block w-full text-start cursor-pointer">
+              <span className="flex justify-between text-xs"><span className="font-semibold text-stone-800">{l.title}</span><span className="text-stone-500">{l.progress >= 100 ? '✓' : `${l.progress}%`}</span></span>
+              <span className="mt-1 block h-1.5 overflow-hidden rounded-full bg-stone-100"><span className={`block h-full rounded-full ${l.progress >= 100 ? 'bg-emerald-500' : 'bg-amber-500'}`} style={{ width: `${Math.min(100, l.progress)}%` }} /></span>
+            </button>
+          ))}</div>
+        </>
+      )}
+    </Card>
+  );
+}
+
+function LatestRecipes({ lang, go }: { lang: Lang; go: (r: string) => void }) {
+  const t = tx(lang);
+  const { data, loading } = useLoad(() => cx<Recipe[]>('/community/me/recipes'));
+  const list = (data || []).slice(0, 3);
+  return (
+    <Card className="p-5">
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <h3 className="flex items-center gap-2 font-bold"><FlaskConical className="h-5 w-5 text-amber-600" />{t('آخر تركيباتي', 'Latest recipes')}</h3>
+        <button type="button" onClick={() => go('me/recipes')} className="text-xs font-semibold text-amber-700 hover:underline cursor-pointer">{t('الكل', 'All')}</button>
+      </div>
+      {loading ? <Spinner /> : !list.length ? (
+        <div className="text-sm text-stone-500">
+          <p>{t('أي تركيبة تحفظها من الحاسبة وإنت مسجّل بتظهر هنا.', 'Recipes you save in the calculator appear here.')}</p>
+          <Btn small variant="soft" className="mt-3" onClick={() => { window.location.hash = 'concentration'; }}>{t('افتح الحاسبة', 'Open the calculator')}</Btn>
+        </div>
+      ) : (
+        <ul className="space-y-2">{list.map((r) => {
+          const f = (r.data?.formulation || {}) as { concentrationPercent?: number; bottleVolumeMl?: number };
+          const notes = Array.isArray(r.data?.pyramidNotes) ? (r.data.pyramidNotes as { nameAr?: string; nameEn?: string }[]).slice(0, 3).map((n) => (lang === 'ar' ? n.nameAr : n.nameEn) || n.nameAr || n.nameEn).filter(Boolean).join(' · ') : '';
+          return (
+            <li key={r.id}>
+              <button type="button" onClick={() => go('me/recipes')} className="flex w-full items-center gap-3 rounded-xl border border-stone-100 p-3 text-start hover:border-amber-300 cursor-pointer">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-700"><FlaskConical className="h-5 w-5" /></span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-sm font-bold text-stone-900">{r.title}</span>
+                  <span className="block truncate text-[11px] text-stone-500">{f.concentrationPercent != null ? `${f.concentrationPercent}% · ${f.bottleVolumeMl} ml` : ''}{notes ? ` — ${notes}` : ''}</span>
+                </span>
+                <span className="text-[10px] text-stone-400">{r.visibility === 'private' ? '🔒' : r.visibility === 'friends' ? '👥' : '🌍'}</span>
+              </button>
+            </li>
+          );
+        })}</ul>
+      )}
+    </Card>
+  );
+}
+
 const QuickLink = ({ title, body, onClick }: { title: string; body: string; onClick: () => void }) => (
   <button type="button" onClick={onClick} className="rounded-2xl border border-stone-200 bg-white p-4 text-start shadow-sm transition hover:-translate-y-0.5 hover:border-amber-300 cursor-pointer">
     <span className="block font-bold text-stone-900">{title}</span><span className="text-xs text-stone-500">{body}</span>
