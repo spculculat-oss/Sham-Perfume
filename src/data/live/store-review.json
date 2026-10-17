@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-17T13:05:41.310Z",
+ "updatedAt": "2026-10-17T14:56:14.476Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1114,
@@ -12,7 +12,7 @@
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-17T13:04:38.227Z",
+  "at": "2026-10-17T14:55:09.706Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,7 +25,7 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1022,
+    "listingProducts": 1024,
     "listingOnly": 61,
     "listingComplete": true,
     "added": 0,
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 63100
+  "durationMs": 64839
  },
  "items": [
   {
