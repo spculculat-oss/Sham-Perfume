@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-17T18:59:47.444Z",
+ "updatedAt": "2026-10-17T20:57:52.134Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1114,
   "imported": 1063,
-  "ok": 516,
-  "warn": 598,
+  "ok": 517,
+  "warn": 597,
   "hidden": 0,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-17T18:58:42.639Z",
+  "at": "2026-10-17T20:56:53.132Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,7 +25,7 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1018,
+    "listingProducts": 1024,
     "listingOnly": 63,
     "listingComplete": true,
     "added": 0,
@@ -62,7 +62,7 @@
      "sku": "ARM-480",
      "name": "Club De Nuit Intense Limited by Armaf 105ml EDP Men CDNI",
      "price": 7755,
-     "supplierEgp": 5167,
+     "supplierEgp": 5169.17,
      "sizeMl": 105
     },
     {
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 64827
+  "durationMs": 59024
  },
  "items": [
   {
@@ -1780,6 +1780,16 @@
    "page": "p/sabaya-by-al-rehab-50ml-edp-236.html"
   },
   {
+   "sku": "LAT-245",
+   "id": 245,
+   "name": "Oudain by Lattafa Perfumes 100ml EDP for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/oudain-by-lattafa-perfumes-100ml-edp-for-men-245.html"
+  },
+  {
    "sku": "LAT-250",
    "id": 250,
    "name": "Musk Al Aroos by Lattafa 80ml EDP",
@@ -3028,16 +3038,6 @@
    "page": "p/santorini-beaches-by-volare-100-ml-for-her-489.html"
   },
   {
-   "sku": "MAI-490",
-   "id": 490,
-   "name": "Infini Elixir Maison Alhambra 100ml EDP Men",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/infini-elixir-maison-alhambra-100ml-edp-men-490.html"
-  },
-  {
    "sku": "ARD-492",
    "id": 492,
    "name": "Satwa by Ard Al Zaafaran 100 ml EDP Unisex",
@@ -3056,16 +3056,6 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/exclusif-oud-by-maison-alhambra-100-ml-unisex-494.html"
-  },
-  {
-   "sku": "MAI-496",
-   "id": 496,
-   "name": "Spectrum by Maison Alhambra 100ml EDP Men",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/spectrum-by-maison-alhambra-100ml-edp-men-496.html"
   },
   {
    "sku": "ARD-500",
