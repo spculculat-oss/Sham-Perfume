@@ -3,7 +3,7 @@ import type { AddressInfo } from 'node:net';
 import { after, before, test } from 'node:test';
 import express from 'express';
 import { Vault, hashPassword, verifyPassword } from '../server/community/crypto';
-import { connectPglite, migrate, type Sql } from '../server/community/db';
+import { connectPglite, databaseErrorKind, databaseHints, findDatabase, migrate, type Sql } from '../server/community/db';
 import * as svc from '../server/community/service';
 import * as social from '../server/community/social';
 import * as chat from '../server/community/messenger';
@@ -315,11 +315,11 @@ const call = async (base: string, path: string, init: { method?: string; body?: 
 
 test('HTTP: not configured without a database or key; members, public stores and the administration', async () => {
   await withApi({}, async (base) => {
-    assert.deepEqual((await call(base, '/community/status')).data, { enabled: false, reason: 'database' });
+    assert.deepEqual((await call(base, '/community/status')).data, { enabled: false, reason: 'database', found: [] });
     assert.equal((await call(base, '/community/auth/login', { body: { email: 'a@b.co', password: 'x' } })).data.code, 'COMMUNITY_NOT_CONFIGURED');
   }, false);
   await withApi({ SHAM_DATA_KEY: KEY }, async (base) => {
-    assert.deepEqual((await call(base, '/community/status')).data, { enabled: false, reason: 'database' });
+    assert.deepEqual((await call(base, '/community/status')).data, { enabled: false, reason: 'database', found: [] });
   }, false);
 
   await withApi({ SHAM_DATA_KEY: KEY, SHAM_ADMIN_TOKEN: 'admin-token-for-tests' }, async (base) => {
@@ -374,4 +374,23 @@ test('data key: a database alone is enough (auto key), SHAM_DATA_KEY added later
   } finally {
     await fresh.close();
   }
+});
+
+test('database setting: found under any name the dashboard gives it; status lists names only', () => {
+  const url = 'postgresql://u:p@ep-x.neon.tech/db?sslmode=require';
+  assert.deepEqual(findDatabase({}), { url: '' });
+  assert.deepEqual(findDatabase({ DATABASE_URL: url }), { url, name: 'DATABASE_URL' });
+  assert.deepEqual(findDatabase({ POSTGRES_URL: url, SHAM_DATABASE_URL: 'postgres://a/b' }), { url: 'postgres://a/b', name: 'SHAM_DATABASE_URL' });
+  // a custom prefix from Vercel → Storage → Connect; the pooled URL wins over the unpooled one
+  assert.deepEqual(findDatabase({ STORAGE_DATABASE_URL_UNPOOLED: 'postgres://direct/db', STORAGE_DATABASE_URL: url }), { url, name: 'STORAGE_DATABASE_URL' });
+  assert.deepEqual(findDatabase({ sham_POSTGRES_URL: url }), { url, name: 'sham_POSTGRES_URL' });
+  assert.equal(findDatabase({ STORAGE_DATABASE_URL: 'not a url' }).url, '');
+  // Neon's separate parts
+  const parts = findDatabase({ NEON_PGHOST: 'ep-x.neon.tech', NEON_PGUSER: 'me', NEON_PGPASSWORD: 'p@ss', NEON_PGDATABASE: 'neondb' });
+  assert.equal(parts.url, 'postgresql://me:p%40ss@ep-x.neon.tech/neondb?sslmode=require');
+  // any setting holding a postgres URL
+  assert.equal(findDatabase({ MY_DB: url, GEMINI_API_KEY: 'x' }).name, 'MY_DB');
+  assert.deepEqual(databaseHints({ GEMINI_API_KEY: 'x', NEON_PROJECT_ID: 'y', STORAGE_PGHOST: 'z', DATABASE_URL: '' }), ['DATABASE_URL', 'NEON_PROJECT_ID', 'STORAGE_PGHOST']);
+  assert.equal(databaseErrorKind(new Error('password authentication failed for user "x"')), 'auth');
+  assert.equal(databaseErrorKind(Object.assign(new Error('getaddrinfo ENOTFOUND ep-x'), { code: 'ENOTFOUND' })), 'network');
 });

@@ -5,6 +5,7 @@
  * Every access is recorded server-side.
  */
 import React, { useCallback, useEffect, useState } from 'react';
+import { apiUrl } from '../utils/api';
 import { CheckCircle2, ClipboardList, Eye, Flag, Loader2, Lock, RefreshCw, ScrollText, Search, ShieldAlert, Store, Users, X } from 'lucide-react';
 import { T } from './adminL10n';
 import { AdminApiError, adminRequest, send } from './adminApi';
@@ -83,13 +84,26 @@ export default function CommunityPanel() {
   );
 }
 
+/** What the server sees right now (setting names only) — so the fix is obvious without screenshots. */
+function SetupDiagnosis() {
+  const [s, setS] = React.useState<Any>();
+  React.useEffect(() => { fetch(apiUrl('/api/community/status')).then((r) => r.json()).then(setS, () => setS(undefined)); }, []);
+  if (!s) return null;
+  const line = s.reason === 'database'
+    ? (s.found?.length ? `${T('السيرفر شايف الإعدادات دي بس مفيهاش رابط قاعدة بيانات صالح')}: ${s.found.join('، ')}` : T('السيرفر مش شايف أي إعداد لقاعدة البيانات — الربط لسه ماتمّش على المشروع ده، أو محتاج Redeploy بعد الربط.'))
+    : s.reason === 'error' ? `${T('قاعدة البيانات موجودة بس الاتصال فشل')} (${({ auth: T('كلمة سر قاعدة البيانات غلط'), network: T('السيرفر مش قادر يوصل لقاعدة البيانات'), ssl: T('مشكلة تشفير الاتصال'), other: T('سبب آخر') } as Record<string, string>)[s.errorKind] || '—'})`
+    : s.reason === 'key' ? T('مفتاح SHAM_DATA_KEY مش مطابق للمفتاح اللي اتعمل بيه التشفير.') : '';
+  return line ? <p className="rounded-xl bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-900">{line}{s.vercelEnv ? ` · ${s.vercelEnv}` : ''}</p> : null;
+}
+
 function Setup({ reason, code }: { reason: string; code: string }) {
   return (
     <div className={`${card} space-y-3`}>
       <h2 className="flex items-center gap-2 text-lg font-bold"><ShieldAlert className="h-5 w-5 text-amber-600" />{T('مجتمع شام محتاج تفعيل على Vercel')}</h2>
       <p className="text-sm text-stone-600">{code}: {reason}</p>
+      <SetupDiagnosis />
       <ol className="list-decimal space-y-2 ps-5 text-sm leading-relaxed text-stone-700">
-        <li>{T('افتح مشروع sham-perfume-49bf على Vercel ← Storage ← Create Database ← Neon (Postgres) ← Connect. ده بيضيف DATABASE_URL تلقائياً.')}</li>
+        <li>{T('افتح مشروع sham-perfume-49bf على Vercel ← Storage ← Create Database ← Neon (Postgres) ← Connect (علّم Production). ده بيضيف رابط قاعدة البيانات تلقائياً — بأي اسم، السيرفر بيلاقيه.')}</li>
         <li>{T('اعمل Redeploy للمشروع، وبعدها حدّث الصفحة دي. مفتاح التشفير بيتعمل لوحده أول مرة.')}</li>
         <li className="text-stone-500">{T('اختياري لحماية أعلى: أضف SHAM_DATA_KEY (24 حرف أو أكثر) في Environment Variables. السيرفر بيقفل بيه مفتاح التشفير، ولازم يفضل ثابت بعد كده.')}</li>
       </ol>

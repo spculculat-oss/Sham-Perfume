@@ -15,7 +15,44 @@ export interface Sql {
 }
 
 type Env = Record<string, string | undefined>;
-export const databaseUrl = (env: Env) => (env.SHAM_DATABASE_URL || env.DATABASE_URL || env.POSTGRES_URL || '').trim();
+const isPostgresUrl = (v?: string) => /^postgres(ql)?:\/\/\S+$/i.test((v || '').trim());
+/** Pooled URLs first (best for serverless), then direct ones. */
+const DB_SUFFIXES = ['DATABASE_URL', 'POSTGRES_URL', 'POSTGRES_PRISMA_URL', 'DATABASE_URL_UNPOOLED', 'POSTGRES_URL_NON_POOLING', 'POSTGRES_URL_NO_SSL'];
+
+/**
+ * Finds the database whatever the dashboard named it: the plain names, names with a custom prefix
+ * (Vercel → Storage → Connect can add one, e.g. `STORAGE_DATABASE_URL`), Neon's PGHOST/PGUSER/… parts,
+ * or any variable holding a postgres:// URL. Returns the variable's name too (never shown with its value).
+ */
+export function findDatabase(env: Env): { url: string; name?: string } {
+  for (const name of ['SHAM_DATABASE_URL', 'DATABASE_URL', 'POSTGRES_URL']) {
+    const v = env[name]?.trim();
+    if (v) return { url: v, name };
+  }
+  const keys = Object.keys(env).sort();
+  for (const suffix of DB_SUFFIXES) {
+    const name = keys.find((k) => (k === suffix || k.endsWith(`_${suffix}`)) && isPostgresUrl(env[k]));
+    if (name) return { url: env[name]!.trim(), name };
+  }
+  for (const k of keys.filter((k) => k === 'PGHOST' || k.endsWith('_PGHOST'))) {
+    const pre = k.slice(0, -'PGHOST'.length);
+    const [host, user, pass, db] = ['PGHOST', 'PGUSER', 'PGPASSWORD', 'PGDATABASE'].map((n) => env[pre + n]?.trim());
+    if (host && user && pass && db) return { url: `postgresql://${encodeURIComponent(user)}:${encodeURIComponent(pass)}@${host}/${encodeURIComponent(db)}?sslmode=require`, name: `${pre}PGHOST…` };
+  }
+  const name = keys.find((k) => isPostgresUrl(env[k]));
+  return name ? { url: env[name]!.trim(), name } : { url: '' };
+}
+export const databaseUrl = (env: Env) => findDatabase(env).url;
+/** Names (only) of the settings that look database-related — shown by /api/community/status when none works. */
+export const databaseHints = (env: Env) => Object.keys(env).filter((k) => /DATABASE|POSTGRES|NEON|(^|_)PG[A-Z]/i.test(k)).sort().slice(0, 20);
+/** A connection failure, in words the admin can act on (no hosts or secrets). */
+export function databaseErrorKind(error: unknown): 'auth' | 'network' | 'ssl' | 'other' {
+  const m = String((error as any)?.code || '') + ' ' + (error instanceof Error ? error.message : String(error));
+  if (/password|authentication|28P01|28000|role .* does not exist/i.test(m)) return 'auth';
+  if (/ENOTFOUND|ECONNREFUSED|ETIMEDOUT|EAI_AGAIN|timeout|getaddrinfo|ECONNRESET/i.test(m)) return 'network';
+  if (/ssl|tls|certificate/i.test(m)) return 'ssl';
+  return 'other';
+}
 
 /** Postgres over TCP (the `postgres` driver: pure JS, works in Vercel functions). */
 export async function connectPostgres(url: string): Promise<Sql> {
