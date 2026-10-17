@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-17T04:59:37.396Z",
+ "updatedAt": "2026-10-17T08:58:34.696Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1114,
   "imported": 1063,
-  "ok": 523,
-  "warn": 591,
+  "ok": 520,
+  "warn": 594,
   "hidden": 0,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-17T04:58:36.331Z",
+  "at": "2026-10-17T08:57:28.596Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 61089
+  "durationMs": 66217
  },
  "items": [
   {
@@ -1542,6 +1542,26 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/oud-elixir-by-grandeur-elite-100-ml-eau-de-parfum-for-men-195.html"
+  },
+  {
+   "sku": "ARD-197",
+   "id": 197,
+   "name": "Oud 24 Hours Ard Al Zaafaran 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/oud-24-hours-ard-al-zaafaran-100ml-edp-197.html"
+  },
+  {
+   "sku": "ARD-199",
+   "id": 199,
+   "name": "Arabian Night – 100 ml Eau de Parfum for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/arabian-night-100-ml-eau-de-parfum-for-men-199.html"
   },
   {
    "sku": "ZIM-211",
@@ -3189,6 +3209,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/rare-passion-by-afnan-100ml-edp-woman-532.html"
+  },
+  {
+   "sku": "MAI-534",
+   "id": 534,
+   "name": "Smoky Touch by Maison Alhambra 80ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/smoky-touch-by-maison-alhambra-80ml-edp-534.html"
   },
   {
    "sku": "MAI-543",
