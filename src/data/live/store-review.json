@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-17T14:56:14.476Z",
+ "updatedAt": "2026-10-17T16:57:50.585Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1114,
   "imported": 1063,
-  "ok": 520,
-  "warn": 594,
+  "ok": 516,
+  "warn": 598,
   "hidden": 0,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-17T14:55:09.706Z",
+  "at": "2026-10-17T16:56:38.304Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,8 +25,8 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1024,
-    "listingOnly": 61,
+    "listingProducts": 1028,
+    "listingOnly": 57,
     "listingComplete": true,
     "added": 0,
     "refreshed": 25,
@@ -34,7 +34,7 @@
     "failedCount": 0,
     "viaShaheen": 0,
     "deferred": 0,
-    "gone": 3
+    "gone": 7
    }
   ],
   "rate": 13.0865,
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 64839
+  "durationMs": 72312
  },
  "items": [
   {
@@ -2968,6 +2968,16 @@
    "page": "p/opera-noir-by-maison-alhambra-100ml-edp-464.html"
   },
   {
+   "sku": "MAI-469",
+   "id": 469,
+   "name": "Smoked Oud & Vanilla by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/smoked-oud-and-vanilla-by-maison-alhambra-100ml-edp-469.html"
+  },
+  {
    "sku": "ALW-471",
    "id": 471,
    "name": "Special Oud by Al Wataniah – 100 ml Eau de Parfum",
@@ -3262,6 +3272,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/armaf-club-de-nuit-iconic-10ml-edp-547.html"
+  },
+  {
+   "sku": "ARD-557",
+   "id": 557,
+   "name": "Fakhar Al Oud by Ard Al Zaafaran – 100 ml Man",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/fakhar-al-oud-by-ard-al-zaafaran-100-ml-man-557.html"
   },
   {
    "sku": "ZIM-562",
@@ -3843,6 +3863,16 @@
    "page": "p/my-party-maison-alhambra-100ml-edp-woman-673.html"
   },
   {
+   "sku": "RUE-675",
+   "id": 675,
+   "name": "Exotic Heritage by Rue Broca 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/exotic-heritage-by-rue-broca-100ml-edp-men-675.html"
+  },
+  {
    "sku": "MAI-679",
    "id": 679,
    "name": "Narissa Poudree 100ml by Maison Alhambra",
@@ -3851,6 +3881,16 @@
     "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/narissa-poudree-100ml-by-maison-alhambra-679.html"
+  },
+  {
+   "sku": "MAI-683",
+   "id": 683,
+   "name": "Your Touch Women by Maison Alhambra – 100 ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/your-touch-women-by-maison-alhambra-100-ml-683.html"
   },
   {
    "sku": "MAI-692",
