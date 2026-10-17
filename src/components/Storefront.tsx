@@ -8,6 +8,7 @@ import type { SupportedLanguage } from '../types/i18n';
 import { askShaheenStore, loadStoreCatalog, localSuggestion, storeImageSrc, type StoreSuggestion } from '../utils/liveStore';
 import { addToCart, cartSummary, clearCart, orderMessage, setCartQty, useCart } from '../utils/storeCart';
 import { CheckoutError, countryOptions, returnedPayment, startCheckout, usePayments, useStoreMoney, type CheckoutForm, type PaymentResult } from '../utils/storeCheckout';
+import { useMerchantCartProducts } from '../community/cartItems';
 
 /**
  * كل نص في واجهة المتجر — من مفتاح واحد في src/لغات/storeL10n.ts، في أي لغة من لغات المنصة.
@@ -154,7 +155,8 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
 
   // Cart
   const cart = useCart();
-  const summary = cartSummary(cart, products);
+  const merchantItems = useMerchantCartProducts(cart);
+  const summary = cartSummary(cart, merchantItems.length ? [...products, ...merchantItems] : products);
   const [cartOpen, setCartOpen] = useState(false);
   const [justAdded, setJustAdded] = useState('');
   const add = (p: StoreProduct) => { addToCart(p.sku); setJustAdded(p.sku); setTimeout(() => setJustAdded((s) => (s === p.sku ? '' : s)), 1500); };

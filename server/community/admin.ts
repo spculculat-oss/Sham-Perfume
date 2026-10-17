@@ -5,7 +5,7 @@
  */
 import type { Row } from './db';
 import { newId } from './crypto';
-import { USER_COLUMNS, USER_FROM, clean, fail, publicUser, type Ctx } from './service';
+import { SITE_STORE, USER_COLUMNS, USER_FROM, clean, fail, publicUser, type Ctx } from './service';
 
 const iso = (v: unknown) => (v ? new Date(v as string).toISOString() : null);
 
@@ -177,9 +177,9 @@ export async function reviewProduct(ctx: Ctx, productId: string, input: { status
 
 function orderView(ctx: Ctx, o: Row) {
   return {
-    id: o.id, number: o.number, buyerId: o.buyer_id, merchantId: o.merchant_id, storeName: o.store_name, buyerName: o.buyer_name,
+    id: o.id, number: o.number, buyerId: o.buyer_id, merchantId: o.merchant_id, storeName: o.merchant_id ? o.store_name : SITE_STORE, buyerName: o.buyer_name,
     items: o.items, merchantTotal: o.merchant_total, merchantCurrency: o.merchant_currency, marginEgp: o.margin_egp, shippingUsd: o.shipping_usd,
-    total: o.total_charged, currency: o.charge_currency, country: o.country, address: ctx.vault.openJson(o.address_enc, {}), status: o.status,
+    total: o.total_charged, currency: o.charge_currency, country: o.country, address: ctx.vault.openJson<Record<string, string>>(o.address_enc, {}), status: o.status,
     paymentRef: o.payment_ref, createdAt: iso(o.created_at), updatedAt: iso(o.updated_at),
   };
 }

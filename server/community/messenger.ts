@@ -158,6 +158,8 @@ export async function messages(ctx: Ctx, userId: string, conversationId: string,
     params.push(options.before);
     where += ` AND created_at < $3`;
   }
+  // Taken before reading, so a message written meanwhile is picked up by the next `since` poll.
+  const [{ server_now }] = await ctx.sql.query(`SELECT clock_timestamp() AS server_now`);
   const rows = await ctx.sql.query(`SELECT * FROM messages WHERE ${where} ORDER BY ${order === 'ASC' ? 'touched_at' : 'created_at'} ${order} LIMIT ${order === 'ASC' ? 200 : 40}`, params);
   const list = order === 'DESC' ? rows.reverse() : rows;
   const ids = list.map((r) => r.id);
@@ -169,7 +171,6 @@ export async function messages(ctx: Ctx, userId: string, conversationId: string,
   ]);
   const replies = new Map(replyRows.map((r) => [r.id, r]));
   const now = Date.now();
-  const [{ server_now }] = await ctx.sql.query(`SELECT clock_timestamp() AS server_now`);
   return {
     conversation: { id: conversationId, kind: m.kind, title: m.title, muted: m.muted },
     members: people.map((p) => ({ ...publicUser(p), role: p.member_role, lastReadAt: iso(p.last_read_at), typing: Boolean(p.typing_until && new Date(p.typing_until).getTime() > now && p.id !== userId) })),

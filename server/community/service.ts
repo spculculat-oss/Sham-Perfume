@@ -239,9 +239,15 @@ export async function applyMerchant(ctx: Ctx, userId: string, input: MerchantInp
   if (legal.phone.replace(/\D/g, '').length < 7) fail(400, 'INVALID_FIELD', 'phone');
   const currency = clean(input.currency, 3).toUpperCase();
   const country = clean(input.country, 2).toUpperCase();
-  let slug = slugOf(storeName) || 'store';
-  const [taken] = await ctx.sql.query(`SELECT 1 FROM merchants WHERE slug = $1`, [slug]);
-  if (taken) slug = `${slug}-${Math.floor(100 + Math.random() * 900)}`;
+  // Arabic names have no Latin letters: the store address then follows the owner's username («omar-store»).
+  const latin = slugOf(storeName);
+  const [owner] = await ctx.sql.query(`SELECT handle FROM users WHERE id = $1`, [userId]);
+  let slug = latin.length >= 3 ? latin : `${slugOf(String(owner?.handle || '')) || 'sham'}-store`;
+  for (let i = 0; i < 5; i++) {
+    const [taken] = await ctx.sql.query(`SELECT 1 FROM merchants WHERE slug = $1`, [slug]);
+    if (!taken) break;
+    slug = `${slug.replace(/-\d{3,4}$/, '')}-${Math.floor(100 + Math.random() * 9000)}`;
+  }
   await ctx.sql.tx(async (t) => {
     await t.query(
       `INSERT INTO merchants (user_id, slug, store_name, about, logo, country, currency, legal_enc, payout_enc) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
@@ -428,6 +434,13 @@ export async function storePage(ctx: Ctx, slug: string) {
 }
 
 /** Published merchant products by sku, priced for the checkout (server-side, never trusted from the browser). */
+/** The cart's merchant items as the public sees them (name, picture, price) — for the basket in «متجر شام». */
+export async function storeItems(ctx: Ctx, skus: string[]) {
+  return (await productsForCheckout(ctx, skus.slice(0, 50))).map((p) => ({
+    sku: p.sku, id: p.id, name: p.name, description: p.description, category: p.category, images: p.images, priceEgp: p.priceEgp, inStock: p.inStock, store: p.store,
+  }));
+}
+
 export async function productsForCheckout(ctx: Ctx, skus: string[]) {
   const ids = skus.filter((s) => /^mp_[A-Za-z0-9_-]{8,40}$/.test(s));
   if (!ids.length) return [];
@@ -452,6 +465,8 @@ export const orderNumber = () => `SO-${new Date().getUTCFullYear()}-${Math.rando
 export async function recordCheckout(ctx: Ctx, input: {
   ref: string; buyerId?: string; country: string; items: { sku: string; qty: number }[];
   address: Record<string, unknown>; shippingUsd: number; total: number; currency: string;
+  /** The site's own products («متجر شام»), recorded for signed-in buyers so they appear in «مشترياتي». */
+  catalog?: { sku: string; qty: number; price: number; name: string; image?: string }[];
 }) {
   const products = await productsForCheckout(ctx, input.items.map((i) => i.sku));
   const byMerchant = new Map<string, typeof products>();
@@ -471,22 +486,39 @@ export async function recordCheckout(ctx: Ctx, input: {
         Math.round(marginEgp * 100) / 100, input.shippingUsd, input.total, input.currency, input.country,
         ctx.vault.sealJson(input.address), input.ref]);
   }
+  if (input.buyerId && input.catalog?.length) {
+    const items = input.catalog.map((l) => ({ sku: l.sku, name: clean(l.name, 200), qty: l.qty, unitEgp: l.price, image: l.image && /^https:\/\//.test(l.image) ? l.image : undefined }));
+    await ctx.sql.query(
+      `INSERT INTO orders (id, number, buyer_id, merchant_id, items, merchant_total, merchant_currency, margin_egp, shipping_usd, total_charged, charge_currency, country, address_enc, payment_ref)
+       VALUES ($1,$2,$3,NULL,$4::jsonb,0,'EGP',0,$5,$6,$7,$8,$9,$10)`,
+      [newId('o'), orderNumber(), input.buyerId, JSON.stringify(items), input.shippingUsd, input.total, input.currency, input.country, ctx.vault.sealJson(input.address), input.ref]);
+  }
   return byMerchant.size;
 }
 
 /** Kashier confirmed the payment (verified server-side): the merchants' orders become «paid», stock is reserved. */
 export async function markPaid(ctx: Ctx, ref: string) {
   const rows = await ctx.sql.query(`UPDATE orders SET status = 'paid', updated_at = now() WHERE payment_ref = $1 AND status = 'awaiting_payment' RETURNING merchant_id, items`, [ref]);
+  let merchantOrders = 0;
   for (const row of rows) {
+    if (!row.merchant_id) continue; // the site's own products: shipped by the administration
+    merchantOrders++;
     for (const item of row.items as { sku: string; qty: number }[]) {
       await ctx.sql.query(`UPDATE merchant_products SET stock = greatest(0, stock - $1) WHERE id = $2`, [item.qty, item.sku]);
     }
     await ctx.sql.query(`INSERT INTO notifications (id, user_id, kind, ref) VALUES ($1, $2, 'order_paid', $3)`, [newId('n'), row.merchant_id, ref]);
   }
-  return rows.length;
+  return merchantOrders;
 }
 
-const orderView = (row: Row, side: 'buyer' | 'merchant') => ({
+export const SITE_STORE = 'متجر شام';
+
+export interface OrderView {
+  id: string; number: string; status: string; createdAt: string | null; updatedAt: string | null; country: string;
+  items: { sku: string; name: string; qty: number; image?: string; unit?: number }[];
+  amount?: number; total?: number; currency: string; store?: string;
+}
+const orderView = (row: Row, side: 'buyer' | 'merchant'): OrderView => ({
   id: row.id, number: row.number, status: row.status, createdAt: iso(row.created_at), updatedAt: iso(row.updated_at), country: row.country,
   items: (row.items as Row[]).map((i) => ({ sku: i.sku, name: i.name, qty: i.qty, image: i.image, ...(side === 'merchant' ? { unit: i.merchantUnit } : {}) })),
   ...(side === 'merchant' ? { amount: row.merchant_total, currency: row.merchant_currency } : { total: row.total_charged, currency: row.charge_currency, store: row.m_store }),
@@ -494,8 +526,15 @@ const orderView = (row: Row, side: 'buyer' | 'merchant') => ({
 
 export async function myOrders(ctx: Ctx, userId: string) {
   const rows = await ctx.sql.query(
-    `SELECT o.*, m.store_name AS m_store FROM orders o LEFT JOIN merchants m ON m.user_id = o.merchant_id WHERE o.buyer_id = $1 ORDER BY o.created_at DESC LIMIT 200`, [userId]);
-  return rows.map((r) => orderView(r, 'buyer'));
+    `SELECT o.*, m.store_name AS m_store FROM orders o LEFT JOIN merchants m ON m.user_id = o.merchant_id WHERE o.buyer_id = $1 ORDER BY o.created_at DESC, o.id LIMIT 200`, [userId]);
+  // One payment can cover several stores: its total is shown once, on the first of its orders.
+  const seen = new Set<string>();
+  return rows.map((r) => {
+    const view = orderView(r, 'buyer');
+    if (!r.merchant_id) view.store = SITE_STORE;
+    if (r.payment_ref && seen.has(r.payment_ref)) view.total = undefined; else if (r.payment_ref) seen.add(r.payment_ref);
+    return view;
+  });
 }
 
 export async function merchantOrders(ctx: Ctx, userId: string) {

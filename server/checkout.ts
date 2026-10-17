@@ -29,7 +29,11 @@ export interface CheckoutRouterOptions {
   /** «متاجر شام»: registered merchants' published products (`mp_…` skus), priced on the server (merchant price + 50 %). */
   merchantProducts?: (skus: string[]) => Promise<{ sku: string; price: number; inStock: boolean }[]>;
   /** Called once the payment page is open (records the merchants' orders). Failures never block the payment. */
-  onCheckout?: (info: { ref: string; req: express.Request; input: CheckoutInput; shippingUsd: number; total: number; currency: string }) => Promise<void>;
+  onCheckout?: (info: {
+    ref: string; req: express.Request; input: CheckoutInput; shippingUsd: number; total: number; currency: string;
+    /** The site's own products in this order (name, picture and EGP price from the catalog). */
+    catalogLines: { sku: string; qty: number; price: number; name: string; image?: string }[];
+  }) => Promise<void>;
   /** Called when Kashier confirms a payment (verified server-side). */
   onPaid?: (ref: string) => Promise<void>;
 }
@@ -159,7 +163,12 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
         },
       }, request);
       if (options.onCheckout) {
-        await options.onCheckout({ ref, req, input, shippingUsd: quote(lines, input.country, { fx: rates, shipping: options.shipping, currency: 'USD' }).shipping, total: charge.total, currency: charge.currency })
+        const catalogBySku = new Map(list.map((p) => [p.sku, p]));
+        const catalogLines = input.items.filter((i) => catalogBySku.has(i.sku) && !i.sku.startsWith('mp_')).map((i) => {
+          const p = catalogBySku.get(i.sku)!;
+          return { sku: i.sku, qty: i.qty, price: p.price, name: input.lang === 'ar' ? p.name.ar || p.name.en : p.name.en || p.name.ar, image: p.imageUrl };
+        });
+        await options.onCheckout({ ref, req, input, catalogLines, shippingUsd: quote(lines, input.country, { fx: rates, shipping: options.shipping, currency: 'USD' }).shipping, total: charge.total, currency: charge.currency })
           .catch((error) => console.error('[checkout] order record failed:', error instanceof Error ? error.message : error));
       }
       res.json({ ref, sessionId: session.id, sessionUrl: session.sessionUrl, mode: cfg.mode, charge: { total: charge.total, currency: charge.currency, shipping: charge.shipping }, display: { total: display.total, currency: display.currency } });

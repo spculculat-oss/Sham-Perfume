@@ -15,6 +15,7 @@ import {
   MapPin,
   Home,
   Store,
+  Users,
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
 import { t } from '../لغات/i18n';
@@ -167,6 +168,14 @@ export const Header: React.FC<HeaderProps> = ({
       iconColor: 'text-emerald-500',
     },
     {
+      id: 'community',
+      type: 'single',
+      label: currentLang === 'ar' ? 'المجتمع' : 'Community',
+      fullLabel: currentLang === 'ar' ? 'مجتمع شام — السوشيال والماسنجر وبوابات الأعضاء والتجار' : 'Sham Community — social, messenger, member and merchant portals',
+      icon: Users,
+      iconColor: 'text-rose-500',
+    },
+    {
       id: 'store',
       type: 'single',
       label: currentLang === 'ar' ? 'التسوق' : 'Shop',
@@ -224,7 +233,7 @@ export const Header: React.FC<HeaderProps> = ({
                   key={group.id}
                   onClick={() => setActiveTab(group.id)}
                   className={`transition-all py-1.5 px-2.5 rounded-lg flex items-center gap-1.5 cursor-pointer ${
-                    activeTab === group.id
+                    (activeTab === group.id || activeTab.startsWith(`${group.id}/`))
                       ? 'text-stone-950 font-bold bg-stone-100 shadow-2xs border border-stone-200/80'
                       : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50'
                   }`}
@@ -473,7 +482,7 @@ export const Header: React.FC<HeaderProps> = ({
                 key={group.id}
                 onClick={() => setActiveTab(group.id)}
                 className={`whitespace-nowrap px-3 py-1.5 rounded-lg flex items-center gap-1.5 shrink-0 ${
-                  activeTab === group.id
+                  (activeTab === group.id || activeTab.startsWith(`${group.id}/`))
                     ? 'bg-amber-900 text-white font-bold shadow-xs'
                     : 'text-stone-700 hover:text-stone-900 bg-stone-100/90 font-medium'
                 }`}

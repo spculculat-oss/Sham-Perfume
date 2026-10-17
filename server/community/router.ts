@@ -180,6 +180,7 @@ export function createCommunityRouter(community: Community, options: { env?: Env
   router.post('/community/merchant/orders/:id/ready', member(async (ctx, u, req) => { await svc.merchantOrderReady(ctx, u.id, p(req, 'id')); }));
 
   router.get('/community/stores', open((ctx) => svc.storeDirectory(ctx)));
+  router.get('/community/stores/items', open((ctx, req) => svc.storeItems(ctx, String(req.query.skus || '').split(',').filter(Boolean))));
   router.get('/community/stores/:slug', open((ctx, req) => svc.storePage(ctx, p(req, 'slug'))));
 
   /* ------------------------------------------------- social ------------------------------------------------- */

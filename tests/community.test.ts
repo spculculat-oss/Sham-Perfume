@@ -106,6 +106,9 @@ test('merchants: review before publishing, private source links, +50 % price, no
   const pageJson = JSON.stringify(page);
   assert.doesNotMatch(pageJson, /supplier|warehouse|01001234567|oudhouse|IBAN|EG3800|"price":20/, 'no source, contact, payout or merchant price in public');
   assert.ok((await svc.storeDirectory(ctx)).some((s) => s.slug === store.slug));
+  const arabic = await newMember('Musk');
+  const musk = await svc.applyMerchant(ctx, arabic.id, { storeName: 'بيت المسك', legal: { phone: '01000000001' } });
+  assert.match(musk.slug, /^[a-z0-9-]+-store$/, 'an Arabic store name gets an address from the owner’s username');
 
   // Changing what buyers see sends the product back to review; stock alone does not.
   assert.equal((await svc.updateProduct(ctx, seller.id, product.id, { stock: 9 })).status, 'approved');
@@ -135,6 +138,16 @@ test('merchants: review before publishing, private source links, +50 % price, no
   await svc.merchantOrderReady(ctx, seller.id, order.id);
   await admin.setOrderStatus(ctx, order.id, 'shipped');
   assert.equal((await svc.myOrders(ctx, buyer.id))[0].status, 'shipped');
+
+  // One payment with a merchant's product and the site's own product: two orders, the total shown once.
+  assert.equal(await svc.recordCheckout(ctx, { ref: 'SP-TEST-2', buyerId: buyer.id, country: 'EG', items: [{ sku: product.id, qty: 1 }, { sku: 'sham-oud-1', qty: 1 }],
+    catalog: [{ sku: 'sham-oud-1', qty: 1, price: 900, name: 'عود شام', image: 'https://example.com/oud.jpg' }],
+    address: { name: 'Buyer', city: 'Giza', line: 'x' }, shippingUsd: 18, total: 3700, currency: 'EGP' }), 1);
+  assert.equal(await svc.markPaid(ctx, 'SP-TEST-2'), 1, 'only the merchant order notifies a merchant');
+  const second = (await svc.myOrders(ctx, buyer.id)).filter((o) => o.status === 'paid');
+  assert.deepEqual(second.map((o) => o.store).sort(), ['Oud House', svc.SITE_STORE].sort());
+  assert.equal(second.filter((o) => o.total === 3700).length, 1, 'the payment total appears once');
+  assert.ok((await admin.orders(ctx)).some((o) => o.storeName === svc.SITE_STORE && o.items.some((i: { sku: string }) => i.sku === 'sham-oud-1')));
 });
 
 /* ------------------------------------------- user portal ------------------------------------------- */

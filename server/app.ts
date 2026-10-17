@@ -54,12 +54,14 @@ const community = createCommunity();
 app.use('/api', createCommunityRouter(community));
 app.use('/api', createCheckoutRouter({
   merchantProducts: async (skus) => { const ctx = await community.ready(); return ctx ? productsForCheckout(ctx, skus) : []; },
-  onCheckout: async ({ ref, req, input, shippingUsd, total, currency }) => {
-    if (!input.items.some((i) => i.sku.startsWith('mp_'))) return;
+  onCheckout: async ({ ref, req, input, shippingUsd, total, currency, catalogLines }) => {
+    const hasMerchantItems = input.items.some((i) => i.sku.startsWith('mp_'));
+    if (!hasMerchantItems && !req.headers.authorization) return; // a visitor without an account buying the site's own products
     const ctx = await community.ready();
     if (!ctx) return;
     const buyer = await community.userFrom(req);
-    await recordCheckout(ctx, { ref, buyerId: buyer?.id, country: input.country, items: input.items, shippingUsd, total, currency,
+    if (!hasMerchantItems && !buyer) return;
+    await recordCheckout(ctx, { ref, buyerId: buyer?.id, country: input.country, items: input.items, catalog: buyer ? catalogLines : [], shippingUsd, total, currency,
       address: { name: input.contact.name, email: input.contact.email, phone: input.contact.phone, city: input.address.city, line: input.address.line } });
   },
   onPaid: async (ref) => { const ctx = await community.ready(); if (ctx) await markPaid(ctx, ref); },
