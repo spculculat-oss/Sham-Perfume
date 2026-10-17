@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-17T01:11:41.240Z",
+ "updatedAt": "2026-10-17T03:01:05.481Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1114,
   "imported": 1063,
-  "ok": 528,
-  "warn": 586,
+  "ok": 525,
+  "warn": 589,
   "hidden": 0,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-17T01:10:34.675Z",
+  "at": "2026-10-17T02:59:59.932Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,8 +25,8 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1029,
-    "listingOnly": 62,
+    "listingProducts": 1017,
+    "listingOnly": 58,
     "listingComplete": true,
     "added": 0,
     "refreshed": 25,
@@ -34,7 +34,7 @@
     "failedCount": 0,
     "viaShaheen": 0,
     "deferred": 0,
-    "gone": 2
+    "gone": 6
    }
   ],
   "rate": 13.0865,
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 66597
+  "durationMs": 65579
  },
  "items": [
   {
@@ -1534,6 +1534,16 @@
    "page": "p/b-a-d-femme-by-maison-alhambra-100-ml-194.html"
   },
   {
+   "sku": "GRA-195",
+   "id": 195,
+   "name": "Oud Elixir by Grandeur Elite – 100 ml Eau de Parfum for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/oud-elixir-by-grandeur-elite-100-ml-eau-de-parfum-for-men-195.html"
+  },
+  {
    "sku": "ZIM-211",
    "id": 211,
    "name": "Reverie Aqua by Zimaya 100ml EDP Men",
@@ -2014,7 +2024,8 @@
    "status": "warn",
    "issues": [
     "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
    ],
    "page": "p/al-areeq-gold-by-lattafa-pride-100ml-edp-293.html"
   },
@@ -2149,16 +2160,6 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/yara-tous-by-lattafa-100ml-edp-women-321.html"
-  },
-  {
-   "sku": "LAT-322",
-   "id": 322,
-   "name": "Azeezah by Lattafa 100ml for Women",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/azeezah-by-lattafa-100ml-for-women-322.html"
   },
   {
    "sku": "ARD-326",
@@ -3526,6 +3527,16 @@
    "page": "p/dark-aoud-by-maison-alhambra-80ml-edp-621.html"
   },
   {
+   "sku": "GRA-622",
+   "id": 622,
+   "name": "Dakota by Grandeur Elite 100ml EDP – Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/dakota-by-grandeur-elite-100ml-edp-women-622.html"
+  },
+  {
    "sku": "LAT-626",
    "id": 626,
    "name": "Najdia Tribute by Lattafa 100ml EDP",
@@ -4552,6 +4563,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/jean-lowe-noir-maison-alhambra-100ml-edp-877.html"
+  },
+  {
+   "sku": "ZIM-878",
+   "id": 878,
+   "name": "Al Barari Shore by Zimaya 100 ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/al-barari-shore-by-zimaya-100-ml-edp-878.html"
   },
   {
    "sku": "AFN-879",
@@ -5904,6 +5925,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/velixir-icarus-100ml-edp-1071.html"
+  },
+  {
+   "sku": "MOO-1072",
+   "id": 1072,
+   "name": "Aroma Mood 100ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/aroma-mood-100ml-edp-unisex-1072.html"
   },
   {
    "sku": "VEL-1074",
