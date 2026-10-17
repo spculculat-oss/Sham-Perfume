@@ -26,9 +26,14 @@ await build({
 await writeFile(new URL('.vc-config.json', functionDirectory), JSON.stringify({
   runtime: 'nodejs22.x', handler: 'index.cjs', launcherType: 'Nodejs', maxDuration: 60, supportsResponseStreaming: true,
 }, null, 2));
+// The second Vercel project (sham-perfume.vercel.app) is not used: no keys, no database. Anyone who lands
+// on it is sent to the main site, and scripts/vercel-ignore.sh stops it from rebuilding on every update.
+const BACKUP_HOST = process.env.SHAM_BACKUP_HOST || 'sham-perfume.vercel.app';
+const MAIN_SITE = (process.env.SHAM_MAIN_SITE || 'https://sham-perfume-49bf.vercel.app').replace(/\/+$/, '');
 await writeFile(new URL('config.json', output), JSON.stringify({
   version: 3,
   routes: [
+    { src: '/(.*)', has: [{ type: 'host', value: BACKUP_HOST }], status: 307, headers: { Location: `${MAIN_SITE}/$1` } },
     // API requests must never fall through to the SPA or a static 404.
     { src: '/api(?:/.*)?', dest: '/api' },
     { handle: 'filesystem' },

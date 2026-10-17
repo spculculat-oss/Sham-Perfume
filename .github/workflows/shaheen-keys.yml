@@ -45,7 +45,7 @@ jobs:
       KASHIER_CURRENCIES: ${{ vars.KASHIER_CURRENCIES || 'EGP' }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_SCOPE: ${{ vars.VERCEL_SCOPE || 'sham-de37' }}
-      VERCEL_PROJECTS: ${{ vars.VERCEL_PROJECTS || 'sham-perfume-49bf,sham-perfume' }}
+      VERCEL_PROJECTS: ${{ vars.VERCEL_PROJECTS || 'sham-perfume-49bf' }}
       SHAM_VERIFY_FILE: ${{ github.workspace }}/../shaheen-verify.json
     steps:
       - name: Checkout source

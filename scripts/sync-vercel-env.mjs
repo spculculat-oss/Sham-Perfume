@@ -4,7 +4,7 @@
  *
  *   VERCEL_TOKEN     (required) https://vercel.com/account/tokens — scoped to the team
  *   VERCEL_SCOPE     team slug (default sham-de37)
- *   VERCEL_PROJECTS  comma list (default sham-perfume-49bf,sham-perfume)
+ *   VERCEL_PROJECTS  comma list (default sham-perfume-49bf — the second project only redirects to it)
  *   SHAM_VERIFY_FILE optional JSON from verify-ai-keys.mts: keys proven invalid/without credit are
  *                    NOT pushed, so a bad GitHub secret can never replace a working production key.
  *
@@ -15,7 +15,7 @@ import { existsSync, readFileSync } from 'node:fs';
 const API = process.env.VERCEL_API_URL?.trim() || 'https://api.vercel.com';
 const token = process.env.VERCEL_TOKEN?.trim();
 const scope = process.env.VERCEL_SCOPE?.trim() || 'sham-de37';
-const projects = (process.env.VERCEL_PROJECTS || 'sham-perfume-49bf,sham-perfume').split(',').map((p) => p.trim()).filter(Boolean);
+const projects = (process.env.VERCEL_PROJECTS || 'sham-perfume-49bf').split(',').map((p) => p.trim()).filter(Boolean);
 const TARGETS = ['production', 'preview', 'development'];
 const KEYS = {
   GEMINI_API_KEY: 'gemini', OPENAI_API_KEY: 'openai', ANTHROPIC_API_KEY: 'claude',
