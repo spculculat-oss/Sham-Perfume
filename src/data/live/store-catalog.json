@@ -1,7 +1,7 @@
 {
  "version": 1,
- "updatedAt": "2026-10-17T14:57:07.595Z",
- "nextUpdateAt": "2026-10-18T02:57:07.595Z",
+ "updatedAt": "2026-10-17T15:25:46.670Z",
+ "nextUpdateAt": "2026-10-18T03:25:46.670Z",
  "editor": "shaheen",
  "entries": {
   "LAT-001": {
@@ -43383,17 +43383,17 @@
   },
   "FRE-971": {
    "sourceHash": "rsxweu",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Aromatix Magnetiq by French Avenue 100ml",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "أروماتكس ماغنيتيك فرنش أفينيو",
    "nameEn": "Aromatix Magnetiq by French Avenue 100ml",
-   "descriptionAr": "عطر Aromatix Magnetiq by French Avenue 100ml من French Avenue للجنسين بطابع خشبي وزهري وحلو.",
-   "descriptionEn": "Aromatix Magnetiq by French Avenue – 100ml Eau de Parfum Unisex\nAromatix Magnetiq by French Avenue is a fresh, elegant woody-aromatic fragrance for women and men. It opens with bright bergamot, pink pepper and lavender, creating a clean citrus-spicy start. The heart combines rosemary, orange blossom, neroli, iris and musk, adding an aromatic, floral and softly powdery character. The fragrance settles into a warm base of sandalwood, cedarwood, oakmoss, vanilla, myrrh and amber, leaving a smooth, woody and gently sweet trail suitable for daily wear, work and evening outings.\nFragrance Notes:\nTop: Bergamot, Pink Pepper, Lavender\nMiddle: Rosemary, Orange Blossom, Neroli, Iris, Musk\nBase: Sandalwood, Cedarwood, Oakmoss, Vanilla, Myrrh, Amber",
+   "descriptionAr": "عطر خشبي عطري أنيق ومنعش يناسب الرجال والنساء. يجمع بين نفحات الحمضيات والأزهار مع قاعدة دافئة من خشب الصندل والفانيليا.",
+   "descriptionEn": "Aromatix Magnetiq by French Avenue is a fresh, elegant woody-aromatic fragrance for women and men, featuring a blend of bright citrus, soothing florals, and a warm woody base.",
    "gender": "unisex",
    "families": [
     "woody",
-    "floral",
-    "gourmand"
+    "fresh",
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -43418,30 +43418,35 @@
     ]
    },
    "seasons": [
-    "summer",
     "spring",
-    "autumn"
+    "summer",
+    "all"
    ],
    "occasions": [
     "daily",
     "work",
     "evening"
    ],
-   "tags": []
+   "tags": [
+    "فرنش أفينيو",
+    "عطر للجنسين",
+    "عطر خشبي",
+    "عطور منعخة"
+   ]
   },
   "FRE-972": {
    "sourceHash": "m64rhw",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Aromatix Teas Me by French Avenue 100ml",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "أروماتكس تياس مي فرنش أفينيو",
    "nameEn": "Aromatix Teas Me by French Avenue 100ml",
-   "descriptionAr": "عطر Aromatix Teas Me by French Avenue 100ml من French Avenue للجنسين بطابع خشبي وشرقي وزهري.",
-   "descriptionEn": "Aromatix Teas Me by French Avenue – 100ml Eau de Parfum Unisex\nAromatix Teas Me by French Avenue is a sophisticated oriental-woody fragrance for women and men. It opens with vibrant lime, ginger and teakwood, creating a fresh citrus-spicy impression. The heart combines black tea, cardamom, hedione and geranium absolute, adding an aromatic, green and lightly floral character. The fragrance settles into a warm base of amber, patchouli, vanilla, tonka bean and olibanum, leaving a smooth, gently sweet and resinous woody trail.\nFragrance Notes:\nTop: Lime, Ginger, Teakwood\nMiddle: Black Tea, Cardamom, Hedione, Geranium Absolute\nBase: Amber, Patchouli, Vanilla, Tonka Bean, Olibanum",
+   "descriptionAr": "عطر شرقي خشبي راقٍ للجنسين يفتتح بنفحات منعشة من الليمون والزنجبيل. يمتزج قلبه مع الشاي الأسود والهيل ويستقر على قاعدة من العنبر والفانيليا.",
+   "descriptionEn": "Aromatix Teas Me by French Avenue is a sophisticated oriental-woody fragrance for women and men, opening with vibrant citrus and settling into a warm, resinous woody trail.",
    "gender": "unisex",
    "families": [
-    "woody",
     "oriental",
-    "floral"
+    "woody",
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -43464,30 +43469,35 @@
     ]
    },
    "seasons": [
-    "summer",
-    "spring",
-    "autumn"
+    "autumn",
+    "winter",
+    "all"
    ],
    "occasions": [
     "daily",
-    "work",
-    "evening"
+    "evening",
+    "work"
    ],
-   "tags": []
+   "tags": [
+    "فرنش أفينيو",
+    "عطر شاي",
+    "عطر شرقي",
+    "عطور للجنسين"
+   ]
   },
   "FRE-973": {
    "sourceHash": "pel369",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Imperial Ocean French Avenue 100ml for Men",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "إمبريال أوشن فرنش أفينيو للرجال",
    "nameEn": "Imperial Ocean French Avenue 100ml for Men",
-   "descriptionAr": "عطر Imperial Ocean French Avenue 100ml for Men من French Avenue رجالي بطابع شرقي وعنبري ومنعش.",
-   "descriptionEn": "Imperial Ocean by French Avenue – 100ml Eau de Parfum for Men\nImperial Ocean by French Avenue is a fresh aquatic-aromatic fragrance for men with salty, citrus and woody nuances. It opens with bright bergamot, ginger and sea salt. The heart blends lily of the valley, seaweed and vetiver, adding a clean marine and green character. The fragrance settles into a smooth base of ambergris and cedarwood, creating a modern scent suited to daily wear, work, casual outings and warm weather.\nFragrance Notes:\nTop: Bergamot, Ginger, Sea Salt\nMiddle: Lily of the Valley, Seaweed, Vetiver\nBase: Ambergris, Cedarwood",
+   "descriptionAr": "عطر مائي خشبي منعش للرجال يبرز بنفحات بحرية وليمونية جذابة. يجمع في قلبه بين الأعشاب البحرية ونجيل الهند ليمنحك شعوراً بالحيوية طوال اليوم.",
+   "descriptionEn": "Imperial Ocean by French Avenue is a fresh aquatic-aromatic fragrance for men with salty, citrus and woody nuances, perfect for daily wear and warm weather.",
    "gender": "men",
    "families": [
-    "oriental",
-    "amber",
-    "fresh"
+    "aquatic",
+    "fresh",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -43507,28 +43517,33 @@
    },
    "seasons": [
     "summer",
-    "spring",
-    "autumn"
+    "spring"
    ],
    "occasions": [
     "daily",
-    "work"
+    "work",
+    "special"
    ],
-   "tags": []
+   "tags": [
+    "عطر رجالي",
+    "عطر مائي",
+    "فرنش أفينيو",
+    "عطور صيفية"
+   ]
   },
   "PAR-974": {
    "sourceHash": "pzqis8",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Khair Pistachio by Paris Corner 100ml EDP",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "خير بيستاشيو باريس كورنر",
    "nameEn": "Khair Pistachio by Paris Corner 100ml EDP",
-   "descriptionAr": "عطر Khair Pistachio by Paris Corner 100ml EDP من Paris Corner للجنسين بطابع زهري وحلو وفواكه.",
-   "descriptionEn": "Khair Pistachio by Paris Corner – 100 ml Eau de Parfum (Unisex)\nFragrance Family: Gourmand • Floral • Fruity\nTop Notes: Pistachio Gelato, Hazelnut, Bergamot, Sweet Rum, Cardamom\nMiddle Notes: Pear, White Peach, Raspberry, Jasmine, Geranium, Peony\nBase Notes: Whipped Cream, Marshmallow, Cotton Candy, Tonka Bean, Cedarwood, Sandalwood",
+   "descriptionAr": "عطر غورماند فاخر يجمع بين حلاوة الآيس كريم بالفستق والفواكه الطازجة. يرتكز على قاعدة ناعمة من الكريمة المخفوقة والمارشميلو والفانيليا.",
+   "descriptionEn": "Khair Pistachio by Paris Corner is a delightful gourmand, floral and fruity fragrance featuring pistachio gelato, mixed fruits, and a sweet, creamy base of marshmallow and whipped cream.",
    "gender": "unisex",
    "families": [
-    "floral",
     "gourmand",
-    "fruity"
+    "fruity",
+    "floral"
    ],
    "notes": {
     "top": [
@@ -43556,27 +43571,35 @@
     ]
    },
    "seasons": [
-    "summer",
+    "autumn",
     "winter",
-    "spring",
-    "autumn"
+    "all"
    ],
-   "occasions": [],
-   "tags": []
+   "occasions": [
+    "daily",
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "باريس كورنر",
+    "عطر فستق",
+    "عطر غورماند",
+    "عطور حلوة"
+   ]
   },
   "PAR-975": {
    "sourceHash": "1fmmqqz",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "The Blue by Paris Corner 100ml EDP Men",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "ذا بلو باريس كورنر للرجال",
    "nameEn": "The Blue by Paris Corner 100ml EDP Men",
-   "descriptionAr": "عطر The Blue by Paris Corner 100ml EDP Men من Paris Corner رجالي بطابع زهري ومسكي وحمضي.",
-   "descriptionEn": "The Blue by Paris Corner Pendora Scents – 100 ml Eau͏ De͏ Parfum for Men\nFragrance Notes (approx.):\nTop: Grapefruit, Lemon, Mint, Pink Pepper\nHeart: Ginger, Nutmeg, Jasmine\nBase: Woody Notes, Musk",
+   "descriptionAr": "عطر رجالي منعش وحيوي ينبض بانتشار الحمضيات والنعناع في المقدمة. يمنحك لمسة ذكورية أنيقة بفضل قلب الزنجبيل وجوزة الطيب مع قاعدة خشبية مسكية.",
+   "descriptionEn": "The Blue by Paris Corner is a dynamic men's fragrance opening with a zesty burst of citrus and mint, evolving into a spicy heart and settling on a warm woody-musky base.",
    "gender": "men",
    "families": [
-    "floral",
-    "musk",
-    "citrus"
+    "fresh",
+    "citrus",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -43596,28 +43619,33 @@
     ]
    },
    "seasons": [
-    "summer",
     "spring",
-    "autumn"
+    "summer"
    ],
    "occasions": [
-    "daily"
+    "daily",
+    "work"
    ],
-   "tags": []
+   "tags": [
+    "باريس كورنر",
+    "عطر رجالي",
+    "عطر منعش",
+    "عطور صيفية"
+   ]
   },
   "PAR-976": {
    "sourceHash": "o7m5d",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Lueur D Espoir Ambre by Emir Paris Corner 100ml",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "لور ديسبوار أمبر أمير باريس كورنر",
    "nameEn": "Lueur D Espoir Ambre by Emir Paris Corner 100ml",
-   "descriptionAr": "عطر Lueur D Espoir Ambre by Emir Paris Corner 100ml من Paris Corner للجنسين بطابع حلو ومسكي وعنبري.",
-   "descriptionEn": "Lueur D Espoir Ambre by Emir Paris Corner – 100 ml Eau de Parfum Unisex\nFragrance Notes:\nTop Notes: Amber, Labdanum\nHeart Notes: Musk, Sandalwood\nBase Notes: Cedarwood, Resin, Vanilla",
+   "descriptionAr": "عطر عنبري دافئ للجنسين يمزج بين نفحات اللابدانوم والعنبر الفاخر. يلف الحواس بقاعدة غنية من الصندل والفانيليا والراتنجات العطرية.",
+   "descriptionEn": "Lueur D Espoir Ambre by Emir Paris Corner is a rich, warm unisex fragrance featuring prominent amber and labdanum, complemented by a smooth base of resin and vanilla.",
    "gender": "unisex",
    "families": [
-    "gourmand",
-    "musk",
-    "amber"
+    "amber",
+    "woody",
+    "oriental"
    ],
    "notes": {
     "top": [
@@ -43635,20 +43663,28 @@
     ]
    },
    "seasons": [
-    "winter",
-    "autumn"
+    "autumn",
+    "winter"
    ],
-   "occasions": [],
-   "tags": []
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "باريس كورنر",
+    "عطر عنبر",
+    "عطر شرقي",
+    "عطور دافئة"
+   ]
   },
   "OSM-977": {
    "sourceHash": "1lcujkj",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Paudree F Roses & Musk 75ml EDP",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "بودري أف روزز آند مسك أوسما",
    "nameEn": "Paudree F Roses & Musk 75ml EDP",
-   "descriptionAr": "عطر Paudree F Roses & Musk 75ml EDP من Osma للجنسين بطابع زهري ومسكي وبودري.",
-   "descriptionEn": "Paudree F – Roses & Musk 75 ml Eau de Parfum\nPaudree F by Osma stands out in a world of mass-produced fragrances with its unique, human touch. Crafted to celebrate depth and elegance, it opens with luminous jasmine for brightness, unfolds into a romantic rose heart, and finishes on a soft musk base that lingers with subtle sophistication. This 75 ml Eau de Parfum balances florals with powdery warmth, making it versatile for women and men. A Clearly structured fragrance that feels timeless, elegant, and confidently unisex.",
+   "descriptionAr": "عطر فاخر يجمع بين انتعاش الياسمين ورومانسية الورد في القلب. يستقر على قاعدة ناعمة ومخملية من المسك الصافي تترك انطباعاً خالداً.",
+   "descriptionEn": "Paudree F by Osma is a timeless fragrance blending luminous jasmine with a romantic rose heart, finishing on a soft, lingering musk base suitable for everyone.",
    "gender": "unisex",
    "families": [
     "floral",
@@ -43656,31 +43692,46 @@
     "powdery"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Jasmine"
+    ],
+    "heart": [
+     "Rose"
+    ],
+    "base": [
+     "Musk"
+    ]
    },
    "seasons": [
-    "summer",
     "spring",
-    "autumn"
+    "summer",
+    "all"
    ],
-   "occasions": [],
-   "tags": []
+   "occasions": [
+    "daily",
+    "work",
+    "special"
+   ],
+   "tags": [
+    "أوسما",
+    "عطر مسك",
+    "عطر ورد",
+    "عطور بودرية"
+   ]
   },
   "PAR-978": {
    "sourceHash": "1ia3wrw",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Qissa Pink by Paris Corner 100ml for Women",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "قصة بينك باريس كورنر للنساء",
    "nameEn": "Qissa Pink by Paris Corner 100ml for Women",
-   "descriptionAr": "عطر Qissa Pink by Paris Corner 100ml for Women من Paris Corner نسائي بطابع زهري وحلو وخشبي.",
-   "descriptionEn": "Qissa Pink by Paris Corner – 100 ml Eau de Parfum for Women\nFragrance Family: Fruity • Floral • Gourmand • Woody\nTop Notes: Apple, Coconut\nMiddle Notes: Violet, Jasmine, Rose, Heliotrope\nBase Notes: Vanilla, Sugar, Sandalwood, Cedarwood, Patchouli, Cashmeran",
+   "descriptionAr": "عطر نسائي جذاب يفتتح بنفحات منعشة من التفاح وجوز الهند. يضم قلباً زهرياً غنياً ويستقر على قاعدة دافئة من الفانيليا والسكر والأخشاب.",
+   "descriptionEn": "Qissa Pink by Paris Corner is an enchanting women's fragrance combining fruity top notes of apple and coconut with a rich floral heart and a sweet, woody-vanilla base.",
    "gender": "women",
    "families": [
+    "fruity",
     "floral",
-    "gourmand",
-    "woody"
+    "gourmand"
    ],
    "notes": {
     "top": [
@@ -43703,28 +43754,35 @@
     ]
    },
    "seasons": [
-    "summer",
     "spring",
-    "autumn"
+    "summer",
+    "all"
    ],
    "occasions": [
-    "daily"
+    "daily",
+    "evening",
+    "special"
    ],
-   "tags": []
+   "tags": [
+    "باريس كورنر",
+    "عطر نسائي",
+    "عطر فواكه",
+    "عطور حلوة"
+   ]
   },
   "FRE-979": {
    "sourceHash": "c1rmhj",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Sacred Smoke by French Avenue 100ml EDP Unisex",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "ساكريد سموك فرنش أفينيو",
    "nameEn": "Sacred Smoke by French Avenue 100ml EDP Unisex",
-   "descriptionAr": "عطر Sacred Smoke by French Avenue 100ml EDP Unisex من French Avenue للجنسين بطابع عنبري وتوابل وحلو.",
-   "descriptionEn": "Sacred Smoke by French Avenue – 100ml Eau de Parfum Unisex\nSacred Smoke by French Avenue is a 2026 unisex Eau de Parfum with a spicy, aromatic and amber character. For this listing, the scent profile follows cardamom, bergamot and pink pepper in the opening, frankincense, myrrh and juniper berries in the heart, and vanilla, cedarwood and patchouli in the dry down.\nFragrance Notes:\nTop: Cardamom, Bergamot, Pink Pepper\nMiddle: Frankincense, Myrrh, Juniper Berries\nBase: Vanilla, Cedarwood, Patchouli",
+   "descriptionAr": "عطر دافئ وعطري للجنسين يتميز بطابع بخوري وتوابل غنية. يفتتح بالهيل والبرغموت ويمتزج بقلب من المر واللبان ليمنحك جاذبية فريدة.",
+   "descriptionEn": "Sacred Smoke by French Avenue is an aromatic, spicy and amber unisex fragrance featuring opening notes of cardamom, a rich heart of frankincense and myrrh, and a warm vanilla base.",
    "gender": "unisex",
    "families": [
     "amber",
     "spicy",
-    "gourmand"
+    "woody"
    ],
    "notes": {
     "top": [
@@ -43744,29 +43802,33 @@
     ]
    },
    "seasons": [
-    "winter",
-    "spring",
-    "autumn"
+    "autumn",
+    "winter"
    ],
    "occasions": [
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "فرنش أفينيو",
+    "عطر بخور",
+    "عطر شرقي",
+    "عطور شتوية"
+   ]
   },
   "PAR-980": {
    "sourceHash": "l4x5t8",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Fayora Paris Corner EDP 100ml Women",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "فايورا باريس كورنر للنساء",
    "nameEn": "Fayora Paris Corner EDP 100ml Women",
-   "descriptionAr": "عطر Fayora Paris Corner EDP 100ml Women من Paris Corner نسائي بطابع زهري وحلو ومسكي.",
-   "descriptionEn": "Fayora by Paris Corner – Eau de Parfum 100ml\nFayora by Paris Corner is an elegant women’s fragrance that blends floral sweetness with sensual warmth. The scent opens with refreshing pear and bergamot, followed by a romantic heart of jasmine, rose, and vanilla orchid. The base reveals smooth amber, musk, and tonka bean, creating a and sophisticated aroma. Perfect for women who love luxury, elegance, and timeless beauty.\nFragrance Notes:\nTop: Pear, Bergamot\nHeart: Jasmine, Rose, Vanilla Orchid\nBase: Amber, Musk, Tonka Bean\nHaruman Wanita Eksklusif\nFayora oleh Paris Corner ialah minyak wangi wanita yang menggabungkan aroma bunga yang manis dengan kehangatan sensual. Ia bermula dengan pear dan bergamot, diikuti oleh jasmine, rose dan vanilla orchid. Akhirnya disempurnakan dengan amber, musk dan tonka bean yang tahan lama.",
+   "descriptionAr": "عطر نسائي أنيق يمزج بين حلاوة الزهور ودفء المكونات الحسية. يبدأ بنفحات الكمثرى والبرغموت وينتهي بقاعدة ناعمة من المسك والعنبر.",
+   "descriptionEn": "Fayora by Paris Corner is an elegant women's fragrance blending sweet floral notes with sensual warmth, anchored by a smooth and sophisticated base of amber and musk.",
    "gender": "women",
    "families": [
     "floral",
-    "gourmand",
-    "musk"
+    "fruity",
+    "amber"
    ],
    "notes": {
     "top": [
@@ -43784,26 +43846,34 @@
     ]
    },
    "seasons": [
-    "summer",
     "spring",
-    "autumn"
+    "summer",
+    "all"
    ],
-   "occasions": [],
-   "tags": []
+   "occasions": [
+    "daily",
+    "work",
+    "evening"
+   ],
+   "tags": [
+    "باريس كورنر",
+    "عطر نسائي",
+    "عطر زهور",
+    "عطور أنيقة"
+   ]
   },
   "PAR-981": {
    "sourceHash": "1ysbrte",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Beyond Pour Homme by Paris Corner 100ml EDP for Men",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "بيوند بور هوم باريس كورنر للرجال",
    "nameEn": "Beyond Pour Homme by Paris Corner 100ml EDP for Men",
-   "descriptionAr": "عطر Beyond Pour Homme by Paris Corner 100ml EDP for Men من Paris Corner رجالي بطابع خشبي وفواكه وزهري.",
-   "descriptionEn": "Beyond Pour Homme by Paris Corner – 100 ml Eau de Parfum for Men\nFragrance Family: Woody • Aromatic • Fruity\nTop Notes: Bergamot, Pineapple, Blackcurrant\nMiddle Notes: Birch, Patchouli, Jasmine\nBase Notes: Oakmoss, Ambergris, Musk",
+   "descriptionAr": "عطر رجالي خشبي وعطري يجمع بين انتعاش الفواكه ونفحات الأخشاب. يحتوي على مقدمة من البرغموت والأناناس وقلب من البتولا والباتشولي.",
+   "descriptionEn": "Beyond Pour Homme by Paris Corner is a woody, aromatic and fruity men's fragrance featuring top notes of pineapple and bergamot, complemented by a rich mossy and musky drydown.",
    "gender": "men",
    "families": [
     "woody",
-    "fruity",
-    "floral"
+    "fruity"
    ],
    "notes": {
     "top": [
@@ -43823,26 +43893,33 @@
     ]
    },
    "seasons": [
-    "summer",
     "spring",
-    "autumn"
+    "summer",
+    "all"
    ],
    "occasions": [
-    "daily"
+    "daily",
+    "work",
+    "evening"
    ],
-   "tags": []
+   "tags": [
+    "باريس كورنر",
+    "عطر رجالي",
+    "عطر خشبي",
+    "عطور فواكه"
+   ]
   },
   "PAR-982": {
    "sourceHash": "2lkhjk",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Rifaaqat Adorn by Paris Corner 85ml EDP",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "رفاهية أدورن باريس كورنر",
    "nameEn": "Rifaaqat Adorn by Paris Corner 85ml EDP",
-   "descriptionAr": "عطر Rifaaqat Adorn by Paris Corner 85ml EDP من Paris Corner للجنسين بطابع مسكي وعنبري وحمضي.",
-   "descriptionEn": "Rifaaqat Adorn by Paris Corner – 85 ml Eau de Parfum Unisex\nFragrance Notes:\nTop: Bergamot, Lemon\nHeart: Patchouli, Cedarwood, Oakmoss\nBase: Amber, Musk, Sandalwood",
+   "descriptionAr": "عطر فاخر ومتوازن للجنسين يفتتح بنفحات منعشة من البرغموت والليمون. يرتكز على قاعدة عميقة من العنبر والمسسك وخشب الصندل.",
+   "descriptionEn": "Rifaaqat Adorn by Paris Corner is a balanced unisex Eau de Parfum opening with bright citrus and evolving into a warm, woody base of amber and sandalwood.",
    "gender": "unisex",
    "families": [
-    "musk",
+    "woody",
     "amber",
     "citrus"
    ],
@@ -43863,28 +43940,34 @@
     ]
    },
    "seasons": [
-    "summer",
-    "winter",
+    "all",
     "spring",
     "autumn"
    ],
    "occasions": [
-    "daily"
+    "daily",
+    "work",
+    "evening"
    ],
-   "tags": []
+   "tags": [
+    "باريس كورنر",
+    "عطر للجنسين",
+    "عطر خشبي",
+    "عطور أنيقة"
+   ]
   },
   "PAR-983": {
    "sourceHash": "i5m0sl",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Night of the Man by Pendora Scents Paris 100ml",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "نايت آف ذا مان بندورا سنتس للرجال",
    "nameEn": "Night of the Man by Pendora Scents Paris 100ml",
-   "descriptionAr": "عطر Night of the Man by Pendora Scents Paris 100ml من Paris Corner رجالي بطابع خشبي وتوابل وشرقي.",
-   "descriptionEn": "Night of the Man by Pendora Scents – 100 ml Eau de Parfum for Men\nFragrance Family: Spicy • Woody • Oriental\nTop Notes: Grapefruit, Cardamom\nHeart Notes: Sage, Leather, Lavender\nBase Notes: Patchouli, Sandalwood, Goldenrod, Tonka Bean",
+   "descriptionAr": "عطر رجالي شرقي حار يضفي لمسة من الجاذبية والغموض. يجمع بين نفحات الجريب فروت والهيل في المقدمة مع قلب من الجلد واللابدانوم.",
+   "descriptionEn": "Night of the Man by Pendora Scents is a spicy, woody and oriental fragrance for men, featuring an intriguing blend of cardamom, leather, and warm tonka bean.",
    "gender": "men",
    "families": [
-    "woody",
     "spicy",
+    "woody",
     "oriental"
    ],
    "notes": {
@@ -43905,56 +43988,81 @@
     ]
    },
    "seasons": [
-    "summer",
-    "winter",
-    "spring",
-    "autumn"
+    "autumn",
+    "winter"
    ],
-   "occasions": [],
-   "tags": []
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "بندورا سنتس",
+    "عطر رجالي",
+    "عطر جلدي",
+    "عطور ليلية"
+   ]
   },
   "PAR-984": {
    "sourceHash": "qt9amo",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Just Bergamot Emir Factory Edition 100ml EDP",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "جست بيرغاموت أمير فاكتوري إيديشن",
    "nameEn": "Just Bergamot Emir Factory Edition 100ml EDP",
-   "descriptionAr": "عطر Just Bergamot Emir Factory Edition 100ml EDP من Paris Corner للجنسين بطابع خشبي وزهري وحلو.",
-   "descriptionEn": "Just Bergamot Emir Factory Edition by Paris Corner – 100ml Eau de Parfum for Women and Men.\nJust Bergamot Emir Factory Edition A fresh woody aromatic fragrance built around bright citrus, clean vetiver and soft musky woods. It opens with bergamot, vetiver and grapefruit, creating a crisp blend of zesty citrus, green freshness and gentle earthy depth. The heart combines nutmeg, orange blossom, aspic, petitgrain and amber for an aromatic, floral and lightly spicy character. Musk, cedar and vanilla form the base, adding clean softness, dry woods and a smooth hint of sweetness. Suitable for women and men who enjoy uplifting citrus fragrances for daily wear and warm weather.",
+   "descriptionAr": "عطر منعش وخشبي عطري للجنسين يرتكز على البرغموت الساطع ونجيل الهند النقي. يمنحك شعوراً بالانتعاش والحيوية طوال اليوم.",
+   "descriptionEn": "Just Bergamot Emir Factory Edition by Paris Corner is a fresh woody aromatic fragrance built around bright citrus, clean vetiver and soft musky woods for daily wear.",
    "gender": "unisex",
    "families": [
-    "woody",
-    "floral",
-    "gourmand"
+    "fresh",
+    "citrus",
+    "woody"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Bergamot",
+     "Vetiver",
+     "Grapefruit"
+    ],
+    "heart": [
+     "Nutmeg",
+     "Orange Blossom",
+     "Aspic",
+     "Petitgrain",
+     "Amber"
+    ],
+    "base": [
+     "Musk",
+     "Cedar",
+     "Vanilla"
+    ]
    },
    "seasons": [
-    "summer",
-    "spring"
+    "spring",
+    "summer"
    ],
    "occasions": [
     "daily",
     "work"
    ],
-   "tags": []
+   "tags": [
+    "باريس كورنر",
+    "عطر برغموت",
+    "عطر منعش",
+    "عطور صيفية"
+   ]
   },
   "PAR-985": {
    "sourceHash": "1l1f03g",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Eshal Vanilla by Paris Corner EDP 100ml",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "إيشال فانيلا من باريس كورنر",
    "nameEn": "Eshal Vanilla by Paris Corner EDP 100ml",
-   "descriptionAr": "عطر Eshal Vanilla by Paris Corner EDP 100ml من Paris Corner نسائي بطابع زهري وحلو ومسكي.",
-   "descriptionEn": "Eshal Vanilla – Eau de Parfum 100ml by Paris Corner\nEshal Vanilla by Paris Corner is a charming feminine fragrance that blends sweetness, elegance, and warmth. The perfume opens with creamy vanilla and soft floral notes, leading into a heart of amber and white musk. The result is a smooth scent that feels both comforting and sophisticated — perfect for daily wear or romantic evenings.\nHaruman Wanita Mewah Dari Paris Corner\nEshal Vanilla ialah minyak wangi wanita yang lembut dan elegan. Ia bermula dengan aroma vanilla yang manis bersama bunga halus, diikuti oleh amber dan musk putih yang memberi keharuman tahan lama. Haruman ini sesuai untuk wanita moden yang suka gaya anggun dan memikat, dengan sentuhan mewah dari Dubai.\nFragrance Notes:\nTop: Vanilla, Floral Notes\nHeart: Amber, White Musk\nBase: Sweet Woods, Musk",
+   "descriptionAr": "عطر نسائي ساحر يمزج بين الحلاوة والأناقة والدفء. يفتتح بنوتات كريمية من الفانيليا والأزهار الناعمة ليمنحك شعوراً بالجاذبية والراحة.",
+   "descriptionEn": "Eshal Vanilla by Paris Corner is a charming feminine fragrance that blends sweetness, elegance, and warmth with creamy vanilla, amber, and white musk.",
    "gender": "women",
    "families": [
-    "floral",
     "gourmand",
-    "musk"
+    "floral",
+    "amber"
    ],
    "notes": {
     "top": [
@@ -43971,27 +44079,36 @@
     ]
    },
    "seasons": [
-    "summer",
     "winter",
-    "spring",
-    "autumn"
+    "autumn",
+    "spring"
    ],
-   "occasions": [],
-   "tags": []
+   "occasions": [
+    "daily",
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "إيشال فانيلا",
+    "باريس كورنر",
+    "عطر نسائي",
+    "فانيليا",
+    "Eshal Vanilla"
+   ]
   },
   "BUJ-986": {
    "sourceHash": "in2xga",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Oud Money by Bujairami 100ml Extrait de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "اود موني من بوجيرامي",
    "nameEn": "Oud Money by Bujairami 100ml Extrait de Parfum",
-   "descriptionAr": "عطر Oud Money by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع خشبي وتوابل وعود.",
-   "descriptionEn": "Oud Money by Bujairami 100ml Extrait de Parfum\nOud Money by Bujairami is a 100ml Extrait de Parfum for women and men with a woody oud scent profile. Its documented notes include Agarwood (Oud), Brazilian Rosewood, Cardamom, Sandalwood, and Vanilla. It is suited to work, evenings, and special occasions.\nFragrance Notes: Agarwood (Oud), Brazilian Rosewood, Cardamom, Sandalwood, Vanilla, Vetiver, Tonka Bean, Amber",
+   "descriptionAr": "عطر فاخر للجنسين يتميز بطابع خشبي عميق بتركيز مستخلص العطر. يجمع بين نفحات العود الفاخر وخشب الورد والهيل والفانيليا ليناسب أوقات العمل والمناسبات الخاصة.",
+   "descriptionEn": "Oud Money by Bujairami is an Extrait de Parfum for women and men featuring a woody oud profile with Agarwood, Brazilian Rosewood, Cardamom, Sandalwood, and Vanilla.",
    "gender": "unisex",
    "families": [
+    "oud",
     "woody",
-    "spicy",
-    "oud"
+    "spicy"
    ],
    "notes": {
     "top": [],
@@ -44000,28 +44117,35 @@
    },
    "seasons": [
     "winter",
-    "autumn"
+    "autumn",
+    "all"
    ],
    "occasions": [
     "work",
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "اود موني",
+    "بوجيرامي",
+    "عطر عود",
+    "Extrait de Parfum",
+    "Oud Money"
+   ]
   },
   "ASD-987": {
    "sourceHash": "1icgyt",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Sougha by Asdaaf 100ml EDP Women",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "سوغا من أصداف",
    "nameEn": "Sougha by Asdaaf 100ml EDP Women",
-   "descriptionAr": "عطر Sougha by Asdaaf 100ml EDP Women من Asdaaf نسائي بطابع زهري وخشبي وحلو.",
-   "descriptionEn": "Sougha by Asdaaf – 100ml Eau de Parfum for Women\nSougha by Asdaaf is a rich floral-woody fragrance for women with fruity, nutty, spicy and creamy facets. It opens with rose water, pear, hazelnut, bitter almond, frankincense and pink pepper. The heart blends rose, osmanthus, saffron and jasmine sambac for a warm floral character. In the dry down, sandalwood, akigalawood, vanilla, ambrette, ambergris, labdanum, georgywood and cypriol create a deep, creamy and woody finish.\nFragrance Notes:\nTop: Rose Water, Pear, Hazelnut, Bitter Almond, Frankincense, Pink Pepper\nMiddle: Rose, Osmanthus, Saffron, Jasmine Sambac\nBase: Sandalwood, Akigalawood, Vanilla, Ambrette, Ambergris, Labdanum, Georgywood, Cypriol",
+   "descriptionAr": "عطر نسائي غني بالنفحات الزهرية والخشبية مع لمسات فاكهية وتوابل دافئة. يفتتح بماء الورد والكمثرى والبندق لينتهي بقاعدة عميقة من خشب الصندل والفانيليا والعنبر.",
+   "descriptionEn": "Sougha by Asdaaf is a rich floral-woody fragrance for women opening with rose water and pear, leading to a warm floral heart and a creamy woody finish.",
    "gender": "women",
    "families": [
     "floral",
     "woody",
-    "gourmand"
+    "fruity"
    ],
    "notes": {
     "top": [
@@ -44051,28 +44175,35 @@
    },
    "seasons": [
     "winter",
-    "spring",
-    "autumn"
+    "autumn",
+    "spring"
    ],
    "occasions": [
+    "daily",
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "سوغا",
+    "أصداف",
+    "عطر نسائي",
+    "عطر خشبي زهري",
+    "Sougha"
+   ]
   },
   "BUJ-988": {
    "sourceHash": "1ro8fb5",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Dead Serious Bujairami 100ml Extrait Perfume Unisex",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "ديد سيريس من بوجيرامي",
    "nameEn": "Dead Serious Bujairami 100ml Extrait Perfume Unisex",
-   "descriptionAr": "عطر Dead Serious Bujairami 100ml Extrait Perfume Unisex من Bujairami للجنسين بطابع شرقي وزهري ومسكي.",
-   "descriptionEn": "Dead Serious by Bujairami 100ml Extrait Perfume\nDead Serious by Bujairami is a 100ml Extrait unisex perfume with a soft woody-floral, musky character and an Oriental fragrance profile. It opens with sapodilla and ambrette, creating a smooth fruity-musky first impression. The heart combines magnolia, violet and sandalwood for a creamy, floral and powdery feel. In the dry down, musk, amber and cedarwood give the fragrance a clean, warm and softly woody finish.\nFragrance Notes\nTop notes: Sapodilla, Ambrette\nMiddle notes: Magnolia, Violet, Sandalwood\nBase notes: Musk, Amber, Cedarwood\nProduct Details\nBrand: Bujairami Fragrance: Dead Serious Perfumer: Adam Bujairami Size: 100mlConcentration: Extrait Gender: Unisex Fragrance family: Oriental Longevity: Long-lasting Launch year: 2026",
+   "descriptionAr": "عطر أنيق للجنسين بتركيبة شرقية ناعمة ذات طابع خشبي زهري ومسكّي. يمنحك حضوراً هادئاً ونظيفاً يجمع بين الماجنوليا والبنفسج والمسك الدافئ.",
+   "descriptionEn": "Dead Serious by Bujairami is an Extrait unisex perfume with a soft woody-floral, musky character, opening with sapodilla and ambrette over a warm amber base.",
    "gender": "unisex",
    "families": [
     "oriental",
-    "floral",
-    "musk"
+    "woody",
+    "floral"
    ],
    "notes": {
     "top": [
@@ -44087,30 +44218,35 @@
     "base": []
    },
    "seasons": [
-    "winter",
+    "all",
     "spring",
     "autumn"
    ],
    "occasions": [
     "daily",
-    "work",
-    "evening"
+    "work"
    ],
-   "tags": []
+   "tags": [
+    "ديد سيريس",
+    "بوجيرامي",
+    "عطر للجنسين",
+    "مسك",
+    "Dead Serious"
+   ]
   },
   "BUJ-989": {
    "sourceHash": "1lmil2u",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Tempted Bujairami 100ml Extrait Perfume Unisex",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "تمبتد من بوجيرامي",
    "nameEn": "Tempted Bujairami 100ml Extrait Perfume Unisex",
-   "descriptionAr": "عطر Tempted Bujairami 100ml Extrait Perfume Unisex من Bujairami للجنسين بطابع خشبي وزهري ومسكي.",
-   "descriptionEn": "Tempted by Bujairami 100ml Extrait Perfume\nTempted by Bujairami is a 100ml Extrait unisex perfume with a floral-fresh, fruity and spicy opening over a warm woody oriental base. Spicy ginger, pink pepper and dark berries create a lively first impression, followed by fresh rose and rich jasmine in the heart. As it settles, warm woods, musk and amber give the fragrance a smooth, warm and deeper dry down.\nFragrance Notes\nTop notes: Spicy Ginger, Pink Pepper, Dark Berries\nMiddle notes: Fresh Rose, Rich Jasmine\nBase notes: Warm Woods, Musk, Amber\nProduct Details\nBrand: Bujairami Fragrance: Tempted Size: 100mlConcentration: Extrait Gender: Unisex Fragrance family: Woody Oriental Longevity: Long-lasting",
+   "descriptionAr": "عطر حيوي للجنسين يجمع بين الانتعاش الفاكهي والتوابل الحارة في الافتتاحية مع قاعدة شرقية خشبية دافئة. يضم الزنجبيل والتوت الداكن والورد والياسمين.",
+   "descriptionEn": "Tempted by Bujairami is an Extrait unisex perfume featuring a floral-fresh, fruity, and spicy opening over a warm woody oriental base of woods, musk, and amber.",
    "gender": "unisex",
    "families": [
+    "oriental",
     "woody",
-    "floral",
-    "musk"
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -44125,29 +44261,36 @@
     "base": []
    },
    "seasons": [
-    "summer",
+    "all",
     "spring",
-    "autumn"
+    "summer"
    ],
    "occasions": [
     "daily",
-    "evening"
+    "evening",
+    "work"
    ],
-   "tags": []
+   "tags": [
+    "تمبتد",
+    "بوجيرامي",
+    "عطر للجنسين",
+    "توابل",
+    "Tempted"
+   ]
   },
   "RAY-990": {
    "sourceHash": "rw47lh",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Corium by Rayhaan 100ml EDP",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "كوريوم من ريحان",
    "nameEn": "Corium by Rayhaan 100ml EDP",
-   "descriptionAr": "عطر Corium by Rayhaan 100ml EDP من Rayhaan رجالي بطابع جلدي وعود وحلو.",
-   "descriptionEn": "Corium by Rayhaan 100ml Eau de Parfum\nCorium by Rayhaan is a 100ml Eau de Parfum for men with a rich leather, oud and woody character. It opens with chestnut, spices and elemi, moves into sage and lavendin, then settles into vanilla, oud accord, guaiac wood and leather. The profile is warm, deep and confident, making it well suited to evenings, special occasions and cooler weather.\nFragrance Notes:Top: Chesnut, Spices, ElemiMiddle: Sage, LavendinBase: Vanilla, Oud Accord, Guaic Wood, Leather",
+   "descriptionAr": "عطر رجالي دافئ وجريء يرتكز على توليفة فاخرة من الجلود والعود والأخشاب. يبرز بوضوح في الأمسيات الباردة والمناسبات الخاصة بفضل بصمته الواثقة.",
+   "descriptionEn": "Corium by Rayhaan is an Eau de Parfum for men with a rich leather, oud, and woody character, complemented by warm spices, sage, and vanilla.",
    "gender": "men",
    "families": [
     "leather",
     "oud",
-    "gourmand"
+    "woody"
    ],
    "notes": {
     "top": [],
@@ -44164,25 +44307,29 @@
     "autumn"
    ],
    "occasions": [
-    "work",
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "كوريوم",
+    "ريحان",
+    "عطر رجالي",
+    "جلد",
+    "Corium"
+   ]
   },
   "RAY-991": {
    "sourceHash": "ufzmbi",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Tiger Cal Cologne by Rayhaan 100ml Eau de Parfum for Men",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "تيجر كال كولون من ريحان",
    "nameEn": "Tiger Cal Cologne by Rayhaan 100ml Eau de Parfum for Men",
-   "descriptionAr": "عطر Tiger Cal Cologne by Rayhaan 100ml Eau de Parfum for Men من Rayhaan رجالي بطابع عنبري وتوابل وزهري.",
-   "descriptionEn": "Tiger Cal Cologne by Rayhaan 100ml Eau de Parfum for Men\nTiger Cal Cologne by Rayhaan is a 100ml Eau de Parfum for men with a warm spicy amber scent profile. It opens with Nutmeg, Clove, and Lemon, moves into Rose, Davana, Milk, and Lactonic Notes, and settles into Labdanum, Patchouli, Frankincense, and Amber. It is suited to evenings, date nights, and special occasions.\nFragrance Notes:\nTop: Nutmeg, Clove, Lemon\nMiddle: Rose, Davana, Milk, Lactonic Notes\nBase: Labdanum, Patchouli, Frankincense, Amber",
+   "descriptionAr": "عطر رجالي يفيض بالدفء والتوابل الشرقية مع لمسات عنبرية ساحرة. يفتتح بنوتات جوزة الطيب والقرنفل والليمون لينتهي بقاعدة غنية باللبدانوم والباتشولي والمسك والعنبر.",
+   "descriptionEn": "Tiger Cal Cologne by Rayhaan is an Eau de Parfum for men with a warm spicy amber scent profile, featuring nutmeg, clove, rose, labdanum, and amber.",
    "gender": "men",
    "families": [
     "amber",
-    "spicy",
-    "floral"
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -44211,16 +44358,22 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "تيجر كال",
+    "ريحان",
+    "عطر رجالي",
+    "عنبر",
+    "Tiger Cal"
+   ]
   },
   "RAY-992": {
    "sourceHash": "pobsja",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Crimson by Rayhaan 100ml Eau de Parfum for Men",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "كريمسون من ريحان",
    "nameEn": "Crimson by Rayhaan 100ml Eau de Parfum for Men",
-   "descriptionAr": "عطر Crimson by Rayhaan 100ml Eau de Parfum for Men من Rayhaan رجالي بطابع عنبري وتوابل وحلو.",
-   "descriptionEn": "Crimson by Rayhaan 100ml Eau de Parfum for Men\nCrimson by Rayhaan is a 100ml Eau de Parfum for men with a warm spicy vanilla scent profile. It opens with Cinnamon, Cardamom, and Pink Pepper, moves into Patchouli and Heliotropin, and settles into Benzoin, Vanilla, and Tonka Bean. It is suited to evenings, date nights, and special occasions.\nFragrance Notes:\nTop: Cinnamon, Cardamom, Pink Pepper\nMiddle: Patchouli, Heliotropin\nBase: Benzoin, Vanilla, Tonka Bean",
+   "descriptionAr": "عطر رجالي دافئ يجمع بين التوابل الحارة ونفحات الفانيليا الغنية. يتألق بمزيج القرفة والهل، والباتشولي مع قاعدة عميقة من البنزوين وحبوب التونكا.",
+   "descriptionEn": "Crimson by Rayhaan is an Eau de Parfum for men featuring a warm spicy vanilla profile with cinnamon, cardamom, patchouli, benzoin, and tonka bean.",
    "gender": "men",
    "families": [
     "amber",
@@ -44251,21 +44404,26 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "كريمسون",
+    "ريحان",
+    "عطر رجالي",
+    "فانيليا",
+    "Crimson"
+   ]
   },
   "RAY-993": {
    "sourceHash": "1ghz84j",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Pacific Aura by Rayhaan 100ml Eau de Parfum for Men",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "باسيفيك أورا من ريحان",
    "nameEn": "Pacific Aura by Rayhaan 100ml Eau de Parfum for Men",
-   "descriptionAr": "عطر Pacific Aura by Rayhaan 100ml Eau de Parfum for Men من Rayhaan رجالي بطابع حمضي وزهري وعنبري.",
-   "descriptionEn": "Pacific Aura by Rayhaan 100ml Eau de Parfum for Men\nPacific Aura by Rayhaan is a 100ml Eau de Parfum for men with a fresh citrus aromatic scent profile. It opens with Citron, Mint, Orange, Lemon, Black Currant, and Coriander, moves into Apricot, Basil, Carrot Seeds, and May Rose, and settles into Fig, Dates, and Ambrette. It is suited to everyday wear, casual outings, and travel.\nFragrance Notes:Top: Citron, Mint, Orange, Lemon, Black Currant, CorianderMiddle: Apricot, Basil, Carrot Seeds, May RoseBase: Fig, Dates, Ambrette",
+   "descriptionAr": "عطر رجالي منعش يجمع بين الحمضيات الحيوية والأعشاب العطرية. يمنحك شعوراً بالحيوية اليومية بفضل مزيج الليمون والنعناع والمشمش والتين.",
+   "descriptionEn": "Pacific Aura by Rayhaan is an Eau de Parfum for men with a fresh citrus aromatic scent profile, featuring citron, mint, orange, apricot, fig, and ambrette.",
    "gender": "men",
    "families": [
     "citrus",
-    "floral",
-    "amber"
+    "fresh"
    ],
    "notes": {
     "top": [],
@@ -44281,18 +44439,25 @@
     "spring"
    ],
    "occasions": [
-    "daily"
+    "daily",
+    "work"
    ],
-   "tags": []
+   "tags": [
+    "باسيفيك أورا",
+    "ريحان",
+    "عطر رجالي",
+    "منعش",
+    "Pacific Aura"
+   ]
   },
   "RAY-994": {
    "sourceHash": "q5fgv4",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Wood Noir by Rayhaan 100ml Eau de Parfum for Men",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "وود نوار من ريحان",
    "nameEn": "Wood Noir by Rayhaan 100ml Eau de Parfum for Men",
-   "descriptionAr": "عطر Wood Noir by Rayhaan 100ml Eau de Parfum for Men من Rayhaan رجالي بطابع خشبي وتوابل وعود.",
-   "descriptionEn": "Wood Noir by Rayhaan 100ml Eau de Parfum for Men\nWood Noir by Rayhaan is a 100ml Eau de Parfum for men with a woody spicy scent profile. It opens with Rosewood, Cardamom, and Chinese Pepper, moves into Oud, Sandalwood, and Vetiver, and settles into Tonka Bean, Vanilla, and Amber. It is suited to work, evenings, and special occasions.\nFragrance Notes:\nTop: Rosewood, Cardamom, Chinese Pepper\nMiddle: Oud, Sandalwood, Vetiver\nBase: Tonka Bean, Vanilla, Amber",
+   "descriptionAr": "عطر رجالي خشبي وتوابل يجمع بين الأناقة والعمق. يبرز فيه خشب الورد والهيل والعود الفاخر مع لمسة دافئة من الفانيليا والعنبر.",
+   "descriptionEn": "Wood Noir by Rayhaan is an Eau de Parfum for men with a woody spicy scent profile, featuring rosewood, cardamom, oud, sandalwood, vanilla, and amber.",
    "gender": "men",
    "families": [
     "woody",
@@ -44325,21 +44490,26 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "وود نوار",
+    "ريحان",
+    "عطر رجالي",
+    "عود",
+    "Wood Noir"
+   ]
   },
   "RAY-995": {
    "sourceHash": "8uc3pk",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Wolf by Rayhaan 100ml Eau de Parfum for Men",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "وولف من ريحان",
    "nameEn": "Wolf by Rayhaan 100ml Eau de Parfum for Men",
-   "descriptionAr": "عطر Wolf by Rayhaan 100ml Eau de Parfum for Men من Rayhaan رجالي بطابع حلو وعنبري وخشبي.",
-   "descriptionEn": "Wolf by Rayhaan 100ml Eau de Parfum for Men\nWolf by Rayhaan is a 100ml Eau de Parfum for men with a warm sweet amber gourmand scent profile. It opens with Cardamom, moves into Toffee, and settles into Amberwood. It is suited to evenings, date nights, and special occasions.\nFragrance Notes:\nTop: Cardamom\nMiddle: Toffee\nBase: Amberwood",
+   "descriptionAr": "عطر رجالي عنبري غورماند دافئ وحلو. يعتمد على توليفة مميزة تبدأ بالهيل المتبل وتنتقل إلى قلب من التوفي الحلو وقاعدة من خشب العنبر.",
+   "descriptionEn": "Wolf by Rayhaan is an Eau de Parfum for men with a warm sweet amber gourmand scent profile, featuring cardamom, toffee, and amberwood.",
    "gender": "men",
    "families": [
-    "gourmand",
     "amber",
-    "woody"
+    "gourmand"
    ],
    "notes": {
     "top": [
@@ -44360,20 +44530,26 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "وولف",
+    "ريحان",
+    "عطر رجالي",
+    "توفي",
+    "Wolf"
+   ]
   },
   "RAY-996": {
    "sourceHash": "1juqnja",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Adonis Icarus by Rayhaan 100ml Eau de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "أدونيس إيكاروس من ريحان",
    "nameEn": "Adonis Icarus by Rayhaan 100ml Eau de Parfum",
-   "descriptionAr": "عطر Adonis Icarus by Rayhaan 100ml Eau de Parfum من Rayhaan للجنسين بطابع خشبي وزهري ومسكي.",
-   "descriptionEn": "Adonis Icarus by Rayhaan 100ml Eau de Parfum\nAdonis Icarus by Rayhaan is a 100ml Eau de Parfum for women and men with a woody aromatic scent profile. It opens with Citrus and Aromatic Notes, moves into Floral Notes and Spices, and settles into Amber, Woody Notes, and Musk. It is suited to everyday wear, work, and casual outings.\nFragrance Notes:\nTop: Citrus, Aromatic Notes\nMiddle: Floral Notes, Spices\nBase: Amber, Woody Notes, Musk",
+   "descriptionAr": "عطر متوازن للجنسين بطابع خشبي وعطري منعش. يجمع بين نفحات الحمضيات والأزهار والتوابل مع قاعدة دافئة من العنبر والأخشاب والمسك.",
+   "descriptionEn": "Adonis Icarus by Rayhaan is an Eau de Parfum for women and men with a woody aromatic scent profile, featuring citrus, floral notes, spices, amber, and musk.",
    "gender": "unisex",
    "families": [
     "woody",
-    "floral",
+    "fresh",
     "musk"
    ],
    "notes": {
@@ -44392,30 +44568,35 @@
     ]
    },
    "seasons": [
-    "winter",
+    "all",
     "spring",
-    "autumn"
+    "summer"
    ],
    "occasions": [
     "daily",
-    "work",
-    "evening"
+    "work"
    ],
-   "tags": []
+   "tags": [
+    "أدونيس إيكاروس",
+    "ريحان",
+    "عطر للجنسين",
+    "خشبي",
+    "Adonis Icarus"
+   ]
   },
   "RAY-997": {
    "sourceHash": "1q2drap",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Imperia by Rayhaan 100ml Eau de Parfum for Men",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "إمبيريا من ريحان",
    "nameEn": "Imperia by Rayhaan 100ml Eau de Parfum for Men",
-   "descriptionAr": "عطر Imperia by Rayhaan 100ml Eau de Parfum for Men من Rayhaan رجالي بطابع خشبي وزهري ومسكي.",
-   "descriptionEn": "Imperia by Rayhaan 100ml Eau de Parfum for Men\nImperia by Rayhaan is a 100ml Eau de Parfum for men with a fresh woody chypre scent profile. It opens with Bergamot Italy, Apple, Mint, and Elemi Philippines, moves into Jasmine, Rose, Patchouli Indonesia, and Sandalwood, and settles into Oakmoss, Musk, Amber, and Cedar Virginia. It is suited to everyday wear, work, and casual outings.\nFragrance Notes:\nTop: Bergamot Italy, Apple, Mint, Elemi Philippines\nMiddle: Jasmine, Rose, Patchouli Indonesia, Sandalwood\nBase: Oakmoss, Musk, Amber, Cedar Virginia",
+   "descriptionAr": "عطر رجالي منعش بلمسات خشبية وتشيبر أنيقة. يفتتح بالبرغموت والنعناع والتفاح ليستقر على قاعدة غنية بطحلب السنديان والمسك والأخشاب.",
+   "descriptionEn": "Imperia by Rayhaan is an Eau de Parfum for men with a fresh woody chypre scent profile, featuring bergamot, apple, mint, patchouli, oakmoss, and cedarwood.",
    "gender": "men",
    "families": [
     "woody",
-    "floral",
-    "musk"
+    "fresh",
+    "citrus"
    ],
    "notes": {
     "top": [
@@ -44438,30 +44619,35 @@
     ]
    },
    "seasons": [
-    "summer",
+    "all",
     "spring",
-    "autumn"
+    "summer"
    ],
    "occasions": [
     "daily",
-    "work",
-    "special"
+    "work"
    ],
-   "tags": []
+   "tags": [
+    "إمبيريا",
+    "ريحان",
+    "عطر رجالي",
+    "منعش",
+    "Imperia"
+   ]
   },
   "RAY-998": {
    "sourceHash": "vkpfoo",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Pacific by Rayhaan 100ml Eau de Parfum for Men",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "باسيفيك من ريحان",
    "nameEn": "Pacific by Rayhaan 100ml Eau de Parfum for Men",
-   "descriptionAr": "عطر Pacific by Rayhaan 100ml Eau de Parfum for Men من Rayhaan رجالي بطابع حمضي وخشبي ومسكي.",
-   "descriptionEn": "Pacific by Rayhaan 100ml Eau de Parfum for Men\nPacific by Rayhaan is a 100ml Eau de Parfum for men with a fresh citrus woody scent profile. It opens with Bergamot, Lemon, Tangerine, and Cardamom, moves into Lavender, Laurel, and Cypress, and settles into Woody, Marine, Amber, and Musky. It is suited to everyday wear, work, and casual outings.\nFragrance Notes:\nTop: Bergamot, Lemon, Tangerine, Cardamom\nMiddle: Lavender, Laurel, Cypress\nBase: Woody, Marine, Amber, Musky",
+   "descriptionAr": "عطر رجالي منعش يجمع بين نفحات الحمضيات والأخشاب البحرية. يمنحك شعوراً بالحيوية طوال اليوم بفضل مزيج البرغموت والليمون والخزامى والأخشاب.",
+   "descriptionEn": "Pacific by Rayhaan is an Eau de Parfum for men with a fresh citrus woody scent profile, featuring bergamot, lemon, lavender, marine notes, and musk.",
    "gender": "men",
    "families": [
     "citrus",
     "woody",
-    "musk"
+    "aquatic"
    ],
    "notes": {
     "top": [
@@ -44490,21 +44676,26 @@
     "daily",
     "work"
    ],
-   "tags": []
+   "tags": [
+    "باسيفيك",
+    "ريحان",
+    "عطر رجالي",
+    "بحري",
+    "Pacific"
+   ]
   },
   "RAY-999": {
    "sourceHash": "1v51dcm",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Lion by Rayhaan 100ml Eau de Parfum for Men",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "ليون باي ريحان",
    "nameEn": "Lion by Rayhaan 100ml Eau de Parfum for Men",
-   "descriptionAr": "عطر Lion by Rayhaan 100ml Eau de Parfum for Men من Rayhaan رجالي بطابع عنبري وتوابل وحلو.",
-   "descriptionEn": "Lion by Rayhaan 100ml Eau de Parfum for Men\nLion by Rayhaan is a 100ml Eau de Parfum for men with a warm spicy vanilla scent profile. It opens with Pear, Lavender, Mint, and Bergamot, moves into Cinnamon, Clary Sage, and Cumin, and settles into Vanilla, Amber, Patchouli, and Cedar. It is suited to evenings, date nights, and special occasions.\nFragrance Notes:\nTop: Pear, Lavender, Mint, Bergamot\nMiddle: Cinnamon, Clary Sage, Cumin\nBase: Vanilla, Amber, Patchouli, Cedar",
+   "descriptionAr": "عطر رجالي دافئ بنفحات التوابل والفانيليا. يمنحك حضوراً جذاباً يناسب السهرات والأوقات المميزة.",
+   "descriptionEn": "Lion by Rayhaan is a 100ml Eau de Parfum for men with a warm spicy vanilla scent profile. It opens with Pear, Lavender, Mint, and Bergamot, moves into Cinnamon, Clary Sage, and Cumin, and settles into Vanilla, Amber, Patchouli, and Cedar. It is suited to evenings, date nights, and special occasions.",
    "gender": "men",
    "families": [
     "amber",
-    "spicy",
-    "gourmand"
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -44533,21 +44724,27 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "ريحان ليون",
+    "عطر رجالي فانيليا",
+    "عطر سهرات رجالي",
+    "ليون باي ريحان",
+    "عطر توابل دافئ"
+   ]
   },
   "RAY-1000": {
    "sourceHash": "1vsodl1",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Nocturno by Rayhaan 100ml Eau de Parfum for Men",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "نوكتورنو باي ريحان",
    "nameEn": "Nocturno by Rayhaan 100ml Eau de Parfum for Men",
-   "descriptionAr": "عطر Nocturno by Rayhaan 100ml Eau de Parfum for Men من Rayhaan رجالي بطابع خشبي وعنبري ومنعش.",
-   "descriptionEn": "Nocturno by Rayhaan 100ml Eau de Parfum for Men\nNocturno by Rayhaan is a 100ml Eau de Parfum for men with a fresh spicy woody scent profile. It opens with Bergamot, Mint, and Pepper, moves into Lavender, Geranium, and Pink Pepper, and settles into Amberwood and Cedar. It is suited to everyday wear, work, and evenings.\nFragrance Notes:\nTop: Bergamot, Mint, Pepper\nMiddle: Lavender, Geranium, Pink Pepper\nBase: Amberwood, Cedar",
+   "descriptionAr": "عطر رجالي منعش بلمسات خشبية وتوابل حيوية. يمنحك شعوراً بالحيوية يناسب الاستخدام اليومي وأوقات العمل.",
+   "descriptionEn": "Nocturno by Rayhaan is a 100ml Eau de Parfum for men with a fresh spicy woody scent profile. It opens with Bergamot, Mint, and Pepper, moves into Lavender, Geranium, and Pink Pepper, and settles into Amberwood and Cedar. It is suited to everyday wear, work, and evenings.",
    "gender": "men",
    "families": [
     "woody",
-    "amber",
-    "fresh"
+    "fresh",
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -44566,31 +44763,34 @@
     ]
    },
    "seasons": [
-    "winter",
     "spring",
-    "autumn"
+    "summer"
    ],
    "occasions": [
     "daily",
     "work",
-    "evening",
-    "special"
+    "evening"
    ],
-   "tags": []
+   "tags": [
+    "نوكتورنو ريحان",
+    "عطر رجالي منعش",
+    "عطر عملي رجالي",
+    "عطر خشبي فلفل",
+    "ريحان 100 مل"
+   ]
   },
   "RAY-1001": {
    "sourceHash": "1jm4tzv",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Elixir by Rayhaan 100ml Eau de Parfum for Men",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "إلكسير باي ريحان",
    "nameEn": "Elixir by Rayhaan 100ml Eau de Parfum for Men",
-   "descriptionAr": "عطر Elixir by Rayhaan 100ml Eau de Parfum for Men من Rayhaan رجالي بطابع عنبري وخشبي وحلو.",
-   "descriptionEn": "Elixir by Rayhaan 100ml Eau de Parfum for Men\nElixir by Rayhaan is a 100ml Eau de Parfum for men with a aromatic amber woody scent profile. It opens with Bergamot and Armoise, moves into Lavender and Benzoin, and settles into Vanilla and Tonka. It is suited to evenings, date nights, and special occasions.\nFragrance Notes:\nTop: Bergamot, Armoise\nMiddle: Lavender, Benzoin\nBase: Vanilla, Tonka",
+   "descriptionAr": "عطر رجالي ساحر يجمع بين الأخشاب والعنبر الفاخر. يضفي لمسة من الأناقة والجاذبية في المناسبات الخاصة.",
+   "descriptionEn": "Elixir by Rayhaan is a 100ml Eau de Parfum for men with a aromatic amber woody scent profile. It opens with Bergamot and Armoise, moves into Lavender and Benzoin, and settles into Vanilla and Tonka. It is suited to evenings, date nights, and special occasions.",
    "gender": "men",
    "families": [
     "amber",
-    "woody",
-    "gourmand"
+    "woody"
    ],
    "notes": {
     "top": [
@@ -44614,21 +44814,27 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "إلكسير ريحان",
+    "عطر رجالي عنبر",
+    "عطر سهرات فخم",
+    "ريحان إلكسير",
+    "عطر فانيليا وتونكا"
+   ]
   },
   "RAY-1002": {
    "sourceHash": "xdnfzc",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Tropical Vibe by Rayhaan 100ml Eau de Parfum Unisex",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "تروبيكال فيب باي ريحان",
    "nameEn": "Tropical Vibe by Rayhaan 100ml Eau de Parfum Unisex",
-   "descriptionAr": "عطر Tropical Vibe by Rayhaan 100ml Eau de Parfum Unisex من Rayhaan للجنسين بطابع مائي وفواكه وزهري.",
-   "descriptionEn": "Tropical Vibe by Rayhaan 100ml Eau de Parfum Unisex\nTropical Vibe by Rayhaan is a 100ml Eau de Parfum for women and men with a tropical fruity aquatic scent profile. It opens with Mango, Pineapple, Coconut, Bergamot, and Rum, moves into Coconut, White Flowers, and Marine Notes, and settles into Musk, Sandalwood, Amber, and Vetiver. It is suited to casual outings, travel, and beach outings.\nFragrance Notes:\nTop: Mango, Pineapple, Coconut, Bergamot, Rum\nMiddle: Coconut, White Flowers, Marine Notes\nBase: Musk, Sandalwood, Amber, Vetiver",
+   "descriptionAr": "عطر للجنسين مستوحى من الأجواء الاستوائية المنعشة والفواكه الحيوية. مثالي للأوقات الصيفية والرحلات والشواطئ.",
+   "descriptionEn": "Tropical Vibe by Rayhaan is a 100ml Eau de Parfum for women and men with a tropical fruity aquatic scent profile. It opens with Mango, Pineapple, Coconut, Bergamot, and Rum, moves into Coconut, White Flowers, and Marine Notes, and settles into Musk, Sandalwood, Amber, and Vetiver. It is suited to ca",
    "gender": "unisex",
    "families": [
-    "aquatic",
     "fruity",
-    "floral"
+    "aquatic",
+    "fresh"
    ],
    "notes": {
     "top": [
@@ -44655,23 +44861,30 @@
     "spring"
    ],
    "occasions": [
-    "daily"
+    "daily",
+    "special"
    ],
-   "tags": []
+   "tags": [
+    "تروبيكال فيب",
+    "عطر استوائي للجنسين",
+    "عطر مانجو وناجيل",
+    "عطر صيفي منعش",
+    "ريحان للجنسين"
+   ]
   },
   "BUJ-1003": {
    "sourceHash": "18fzxb3",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Boss Life by Bujairami 100ml Extrait de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "بوس لايف باي بجيرامي",
    "nameEn": "Boss Life by Bujairami 100ml Extrait de Parfum",
-   "descriptionAr": "عطر Boss Life by Bujairami 100ml Extrait de Parfum من Bujairami رجالي بطابع عنبري وتوابل وعود.",
-   "descriptionEn": "Boss Life by Bujairami 100ml Extrait de Parfum\nBoss Life by Bujairami is a 100ml Extrait de Parfum for men with an amber spicy oud scent profile. Opens with Frankincense, Elemi, and Cardamom, moves into Patchouli, Anise, and Coriander, and settles into Frankincense, Vanilla, and Benzoin. It is suited to evenings, special occasions, and dinners.\nFragrance Notes:\nTop: Frankincense, Elemi, Cardamom, Lemon, Sichuan Pepper, Bergamot\nMiddle: Patchouli, Anise, Coriander, Cumin, Orange Blossom, Saffron, Geranium, Wormwood, Rose\nBase: Frankincense, Vanilla, Benzoin, Amber, Oud, Opoponax, Birch, Ambergris, Maltol, Labdanum, Musk",
+   "descriptionAr": "عطر رجالي فخم يمزج بين العود والتوابل الشرقية الدافئة. خيار مثالي للسهرات والمناسبات الهامة.",
+   "descriptionEn": "Boss Life by Bujairami is a 100ml Extrait de Parfum for men with an amber spicy oud scent profile. Opens with Frankincense, Elemi, and Cardamom, moves into Patchouli, Anise, and Coriander, and settles into Frankincense, Vanilla, and Benzoin. It is suited to evenings, special occasions, and dinners.",
    "gender": "men",
    "families": [
+    "oud",
     "amber",
-    "spicy",
-    "oud"
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -44711,21 +44924,27 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "بوس لايف بجيرامي",
+    "عطر عود رجالي",
+    "عطر سهرات فاخر",
+    "اكستري دي بارفان",
+    "عطر توابل وعنبر"
+   ]
   },
   "RAY-1004": {
    "sourceHash": "19ejkqc",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Pharaoh by Rayhaan 100ml Eau de Parfum Unisex",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "فاراوه باي ريحان",
    "nameEn": "Pharaoh by Rayhaan 100ml Eau de Parfum Unisex",
-   "descriptionAr": "عطر Pharaoh by Rayhaan 100ml Eau de Parfum Unisex من Rayhaan للجنسين بطابع عنبري وتوابل وحلو.",
-   "descriptionEn": "Pharaoh by Rayhaan 100ml Eau de Parfum Unisex\nPharaoh by Rayhaan is a 100ml Eau de Parfum for women and men with a warm spicy amber scent profile. It opens with Boozy Notes, Saffron, Cardamom, and Cade Oil, moves into Coffee, Benzoin, and Suede, and settles into Guaiac Wood, Tonka Bean, Labdanum, Vanilla, and Amberwood. It is suited to evenings, date nights, and special occasions.\nFragrance Notes:\nTop: Boozy Notes, Saffron, Cardamom, Cade Oil\nMiddle: Coffee, Benzoin, Suede\nBase: Guaiac Wood, Tonka Bean, Labdanum, Vanilla, Amberwood",
+   "descriptionAr": "عطر شرقي دافئ للجنسين بغنى التوابل والجلود والقهوة. يمنح إحساساً فريداً ومميزاً في الأمسيات الخاصة.",
+   "descriptionEn": "Pharaoh by Rayhaan is a 100ml Eau de Parfum for women and men with a warm spicy amber scent profile. It opens with Boozy Notes, Saffron, Cardamom, and Cade Oil, moves into Coffee, Benzoin, and Suede, and settles into Guaiac Wood, Tonka Bean, Labdanum, Vanilla, and Amberwood. It is suited to evenings",
    "gender": "unisex",
    "families": [
     "amber",
     "spicy",
-    "gourmand"
+    "leather"
    ],
    "notes": {
     "top": [
@@ -44755,20 +44974,26 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "فاراوه ريحان",
+    "عطر قهوة وتوابل",
+    "عطر شرقي للجنسين",
+    "عطر سهرات فاخر",
+    "ريحان فارو"
+   ]
   },
   "BUJ-1005": {
    "sourceHash": "9iuybn",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Mafia Boss by Bujairami 100ml Extrait de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "مافيا بوس باي بجيرامي",
    "nameEn": "Mafia Boss by Bujairami 100ml Extrait de Parfum",
-   "descriptionAr": "عطر Mafia Boss by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع عنبري وزهري وحلو.",
-   "descriptionEn": "Mafia Boss by Bujairami 100ml Extrait de Parfum\nMafia Boss by Bujairami is a 100ml Extrait de Parfum for women and men with an amber tobacco scent profile. Opens with Rum, Olibanum, and Bitter Orange, moves into Dried Fruits, White Tobacco, and Tuberose, and settles into Tonka Bean, Myrrh, and Vanilla. It is suited to evenings, special occasions, and dinners.\nFragrance Notes:\nTop: Rum, Olibanum, Bitter Orange, Cardamom, Pink Pepper, Ginger, Bergamot, Grapefruit\nMiddle: Dried Fruits, White Tobacco, Tuberose, Sandalwood, Saffron, Osmanthus, Orris, Jasmine\nBase: Tonka Bean, Myrrh, Vanilla, Labdanum, Patchouli, Musk, Cedar, Vetiver",
+   "descriptionAr": "عطر فاخر للجنسين يجمع بين فخامة التبغ ولمسات العنبر الدافئة. يترك انطباعاً قوياً ومؤثراً في الأمسيات والمناسبات.",
+   "descriptionEn": "Mafia Boss by Bujairami is a 100ml Extrait de Parfum for women and men with an amber tobacco scent profile. Opens with Rum, Olibanum, and Bitter Orange, moves into Dried Fruits, White Tobacco, and Tuberose, and settles into Tonka Bean, Myrrh, and Vanilla. It is suited to evenings, special occasions,",
    "gender": "unisex",
    "families": [
     "amber",
-    "floral",
+    "spicy",
     "gourmand"
    ],
    "notes": {
@@ -44811,21 +45036,27 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "مافيا بوس",
+    "عطر تبغ وعنبر",
+    "عطر اكستري فخم",
+    "بجيرامي مافيا بوس",
+    "عطر سهرات مميز"
+   ]
   },
   "BUJ-1006": {
    "sourceHash": "17lwow7",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Breathless by Bujairami 100ml Extrait de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "بريثليس باي بجيرامي",
    "nameEn": "Breathless by Bujairami 100ml Extrait de Parfum",
-   "descriptionAr": "عطر Breathless by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع عود وزهري وخشبي.",
-   "descriptionEn": "Breathless by Bujairami 100ml Extrait de Parfum\nBreathless by Bujairami is a 100ml Extrait de Parfum for women and men with a rose oud scent profile. Opens with Rose and Saffron, moves into Agarwood (Oud), and settles into Ambergris and Black Pepper. It is suited to evenings, date nights, and special occasions.\nFragrance Notes:\nTop: Rose, Saffron\nMiddle: Agarwood (Oud)\nBase: Ambergris, Black Pepper",
+   "descriptionAr": "عطر ساحر للجنسين يمزج بين الورود الفاخرة وعمق العود الأصيل. تصميم راقٍ يناسب الأمسيات الخاصة.",
+   "descriptionEn": "Breathless by Bujairami is a 100ml Extrait de Parfum for women and men with a rose oud scent profile. Opens with Rose and Saffron, moves into Agarwood (Oud), and settles into Ambergris and Black Pepper. It is suited to evenings, date nights, and special occasions.",
    "gender": "unisex",
    "families": [
     "oud",
     "floral",
-    "woody"
+    "oriental"
    ],
    "notes": {
     "top": [
@@ -44848,21 +45079,27 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "بريثليس بجيرامي",
+    "عطر ورد وود",
+    "عطر عود فاخر",
+    "عطر سهرات للجنسين",
+    "اكستري دي بارفان عود"
+   ]
   },
   "BUJ-1007": {
    "sourceHash": "d38ihb",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Billion Dollar by Bujairami 100ml Extrait de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "بليون دولار باي بجيرامي",
    "nameEn": "Billion Dollar by Bujairami 100ml Extrait de Parfum",
-   "descriptionAr": "عطر Billion Dollar by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع حلو وعنبري وحمضي.",
-   "descriptionEn": "Billion Dollar by Bujairami 100ml Extrait de Parfum\nBillion Dollar by Bujairami is a 100ml Extrait de Parfum for women and men with an amber vanilla scent profile. Opens with Orange, Pink Pepper, and Lemon, moves into Rum, Cacao, and Cardamom, and settles into Bourbon Vanilla, Sandalwood, and Patchouli. It is suited to evenings, date nights, and special occasions.\nFragrance Notes:\nTop: Orange, Pink Pepper, Lemon\nMiddle: Rum, Cacao, Cardamom\nBase: Bourbon Vanilla, Sandalwood, Patchouli",
+   "descriptionAr": "عطر جذاب للجنسين يغمرك بنفحات العنبر والفانيليا الغنية. مثالي للأمسيات واللحظات الخاصة.",
+   "descriptionEn": "Billion Dollar by Bujairami is a 100ml Extrait de Parfum for women and men with an amber vanilla scent profile. Opens with Orange, Pink Pepper, and Lemon, moves into Rum, Cacao, and Cardamom, and settles into Bourbon Vanilla, Sandalwood, and Patchouli. It is suited to evenings, date nights, and spec",
    "gender": "unisex",
    "families": [
-    "gourmand",
     "amber",
-    "citrus"
+    "gourmand",
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -44889,21 +45126,27 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "بليون دولار بجيرامي",
+    "عطر فانيليا وعنبر",
+    "عطر كاكاو وروم",
+    "عطر اكستري فخم",
+    "عطر سهرات راقي"
+   ]
   },
   "BUJ-1008": {
    "sourceHash": "1sgz98a",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Born Nomad by Bujairami 100ml Extrait de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "بورن نوماد باي بجيرامي",
    "nameEn": "Born Nomad by Bujairami 100ml Extrait de Parfum",
-   "descriptionAr": "عطر Born Nomad by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع توابل وفواكه وحلو.",
-   "descriptionEn": "Born Nomad by Bujairami 100ml Extrait de Parfum\nBorn Nomad by Bujairami is a 100ml Extrait de Parfum for women and men with a fruity spicy scent profile. Opens with Honey, Apricot, and Pomegranate, moves into Cappuccino Accord, Black Tea, and Davana, and settles into Cedarwood, Vanilla, and Vetiver. It is suited to evenings, special occasions, and dinners.\nFragrance Notes:\nTop: Honey, Apricot, Pomegranate, Tangerine, Grapefruit, Mango, Cardamom, Ginger, Pink Pepper\nMiddle: Cappuccino Accord, Black Tea, Davana\nBase: Cedarwood, Vanilla, Vetiver, Tonka Bean, Patchouli, Labdanum, Cypriol",
+   "descriptionAr": "عطر فريد للجنسين يجمع بين حلاوة الفواكه وتوابل الكابتشينو الغنية. خيار جريء ومميز للسهرات والمناسبات.",
+   "descriptionEn": "Born Nomad by Bujairami is a 100ml Extrait de Parfum for women and men with a fruity spicy scent profile. Opens with Honey, Apricot, and Pomegranate, moves into Cappuccino Accord, Black Tea, and Davana, and settles into Cedarwood, Vanilla, and Vetiver. It is suited to evenings, special occasions, an",
    "gender": "unisex",
    "families": [
-    "spicy",
     "fruity",
-    "gourmand"
+    "spicy",
+    "amber"
    ],
    "notes": {
     "top": [
@@ -44939,16 +45182,22 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "بورن نوماد بجيرامي",
+    "عطر فواكه وتوابل",
+    "عطر كابتشينو وفانيليا",
+    "عطر اكستري مميز",
+    "عطر سهرات جريء"
+   ]
   },
   "BUJ-1009": {
    "sourceHash": "1952ozt",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Amber Eclipse by Bujairami 100ml Extrait de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "امبر إكليبس باي بجيرامي",
    "nameEn": "Amber Eclipse by Bujairami 100ml Extrait de Parfum",
-   "descriptionAr": "عطر Amber Eclipse by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع عنبري وتوابل ومسكي.",
-   "descriptionEn": "Amber Eclipse by Bujairami 100ml Extrait de Parfum\nAmber Eclipse by Bujairami is a 100ml Extrait de Parfum for women and men with an amber spicy scent profile. Opens with Cinnamon and Cardamom, moves into Spicy Notes, and settles into Amber and Musk. It is suited to evenings, date nights, and special occasions.\nFragrance Notes:\nTop: Cinnamon, Cardamom\nMiddle: Spicy Notes\nBase: Amber, Musk",
+   "descriptionAr": "عطر دافئ للجنسين يرتكز على غنى العنبر والتوابل العطرة. يناسب الأمسيات الهادئة والمناسبات الخاصة.",
+   "descriptionEn": "Amber Eclipse by Bujairami is a 100ml Extrait de Parfum for women and men with an amber spicy scent profile. Opens with Cinnamon and Cardamom, moves into Spicy Notes, and settles into Amber and Musk. It is suited to evenings, date nights, and special occasions.",
    "gender": "unisex",
    "families": [
     "amber",
@@ -44976,21 +45225,27 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "امبر إكليبس بجيرامي",
+    "عطر عنبر وتوابل",
+    "عطر قرفة وهيل",
+    "عطر سهرات دافئ",
+    "اكستري دي بارفان"
+   ]
   },
   "BUJ-1010": {
    "sourceHash": "1be67wd",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Boujee by Bujairami 100ml Eau de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "بوجي باي بجيرامي",
    "nameEn": "Boujee by Bujairami 100ml Eau de Parfum",
-   "descriptionAr": "عطر Boujee by Bujairami 100ml Eau de Parfum من Bujairami نسائي بطابع زهري وفواكه وحمضي.",
-   "descriptionEn": "Boujee by Bujairami 100ml Eau de Parfum\nBoujee by Bujairami is a 100ml Eau de Parfum for women with a fruity floral scent profile. Opens with Litchi, Ginger, and Bergamot, moves into Peony, Rose, and Cacao, and settles into Patchouli. It is suited to casual outings, date nights, and special occasions.\nFragrance Notes:\nTop: Litchi, Ginger, Bergamot\nMiddle: Peony, Rose, Cacao\nBase: Patchouli",
+   "descriptionAr": "عطر نسائي أنيق ينبض بالحيوية والنفحات الزهرية والفواكه المنعشة. خيار رائع للخروجات اليومية والأمسيات.",
+   "descriptionEn": "Boujee by Bujairami is a 100ml Eau de Parfum for women with a fruity floral scent profile. Opens with Litchi, Ginger, and Bergamot, moves into Peony, Rose, and Cacao, and settles into Patchouli. It is suited to casual outings, date nights, and special occasions.",
    "gender": "women",
    "families": [
-    "floral",
     "fruity",
-    "citrus"
+    "floral",
+    "gourmand"
    ],
    "notes": {
     "top": [
@@ -45008,30 +45263,35 @@
     ]
    },
    "seasons": [
-    "summer",
     "spring",
-    "autumn"
+    "summer"
    ],
    "occasions": [
     "daily",
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "بوجي بجيرامي",
+    "عطر نسائي فواكه",
+    "عطر زهور وليتشي",
+    "عطر نسائي أنيق",
+    "بجيرامي 100 مل"
+   ]
   },
   "BUJ-1011": {
    "sourceHash": "1e4f4vd",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "World Power by Bujairami 100ml Extrait de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "وورلد باور باي بجيرامي",
    "nameEn": "World Power by Bujairami 100ml Extrait de Parfum",
-   "descriptionAr": "عطر World Power by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع جلدي وعود وزهري.",
-   "descriptionEn": "World Power by Bujairami 100ml Extrait de Parfum\nWorld Power by Bujairami is a 100ml Extrait de Parfum for women and men with an oud cacao leather scent profile. Opens with Agarwood (Oud) and Cacao (Cocoa), moves into Saffron and Rose, and settles into Leather, Incense (Olibanum), and Patchouli. It is suited to evenings, date nights, and special occasions.\nFragrance Notes:\nTop: Agarwood (Oud), Cacao (Cocoa)\nMiddle: Saffron, Rose\nBase: Leather, Incense (Olibanum), Patchouli, Blackcurrant",
+   "descriptionAr": "عطر فخم للجنسين يجمع بين فخامة العود والكاكاو والجلد الراقي. يمنح حضوراً استثنائياً في السهرات.",
+   "descriptionEn": "World Power by Bujairami is a 100ml Extrait de Parfum for women and men with an oud cacao leather scent profile. Opens with Agarwood (Oud) and Cacao (Cocoa), moves into Saffron and Rose, and settles into Leather, Incense (Olibanum), and Patchouli. It is suited to evenings, date nights, and special o",
    "gender": "unisex",
    "families": [
-    "leather",
     "oud",
-    "floral"
+    "leather",
+    "gourmand"
    ],
    "notes": {
     "top": [
@@ -45057,21 +45317,27 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "وورلد باور بجيرامي",
+    "عطر عود وجلود",
+    "عطر كاكاو وعود",
+    "عطر سهرات فخم",
+    "اكستري دي بارفان قوي"
+   ]
   },
   "BUJ-1012": {
    "sourceHash": "p6wzo",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Imperial Oud by Bujairami 100ml Extrait de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "إمبريال عود باي بجيرامي",
    "nameEn": "Imperial Oud by Bujairami 100ml Extrait de Parfum",
-   "descriptionAr": "عطر Imperial Oud by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع خشبي وتوابل وعود.",
-   "descriptionEn": "Imperial Oud by Bujairami 100ml Extrait de Parfum\nImperial Oud by Bujairami is a 100ml Extrait de Parfum for women and men with a woody spicy oud scent profile. Opens with Spices, Frankincense, and Ginger, moves into May Rose, and settles into Licorice, Myrrh, and Tonka Bean. It is suited to evenings, date nights, and special occasions.\nFragrance Notes:\nTop: Spices, Frankincense, Ginger, Bergamot\nMiddle: May Rose\nBase: Licorice, Myrrh, Tonka Bean, Sandalwood, Patchouli, Oud",
+   "descriptionAr": "عطر ملكي للجنسين يمزج بين العود الأصيل والتوابل الدافئة بأسلوب راقٍ. يضفي هالة من الفخامة في المناسبات.",
+   "descriptionEn": "Imperial Oud by Bujairami is a 100ml Extrait de Parfum for women and men with a woody spicy oud scent profile. Opens with Spices, Frankincense, and Ginger, moves into May Rose, and settles into Licorice, Myrrh, and Tonka Bean. It is suited to evenings, date nights, and special occasions.",
    "gender": "unisex",
    "families": [
+    "oud",
     "woody",
-    "spicy",
-    "oud"
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -45100,21 +45366,27 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "إمبريال عود بجيرامي",
+    "عطر عود ملكي",
+    "عطر توابل وعود",
+    "عطر سهرات فخم",
+    "اكستري عود فاخر"
+   ]
   },
   "BUJ-1013": {
    "sourceHash": "34bwmm",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Cartel by Bujairami 100ml Extrait de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "كارتيل باي بوجيرامي",
    "nameEn": "Cartel by Bujairami 100ml Extrait de Parfum",
-   "descriptionAr": "عطر Cartel by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع عنبري وعود وزهري.",
-   "descriptionEn": "Cartel by Bujairami 100ml Extrait de Parfum\nCartel by Bujairami is a 100ml Extrait de Parfum for women and men with an oud tobacco scent profile. Opens with Passionfruit, Tobacco Leaf, and Hookah, moves into Saffron and Rose, and settles into Labdanum and Oud. It is suited to evenings, date nights, and special occasions.\nFragrance Notes:\nTop: Passionfruit, Tobacco Leaf, Hookah\nMiddle: Saffron, Rose\nBase: Labdanum, Oud",
+   "descriptionAr": "يتميز عطر كارتيل باي بوجيرامي بتركيبة ساحرة تجمع بين نفحات التباكو والعود الغنية. يمنحك حضوراً دافئاً وجذاباً يناسب الأمسيات الخاصة والمناسبات الهامة.",
+   "descriptionEn": "Cartel by Bujairami is a 100ml Extrait de Parfum for women and men with an oud tobacco scent profile. Opens with Passionfruit, Tobacco Leaf, and Hookah, moves into Saffron and Rose, and settles into Labdanum and Oud. It is suited to evenings, date nights, and special occasions.",
    "gender": "unisex",
    "families": [
-    "amber",
     "oud",
-    "floral"
+    "amber",
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -45139,21 +45411,27 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "كارتيل",
+    "بوجيرامي",
+    "عطر تباكو",
+    "عود",
+    "مستخلص العطر"
+   ]
   },
   "BUJ-1014": {
    "sourceHash": "va4b2s",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Sacred Skin by Bujairami 100ml Extrait de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "ساكريد سكين باي بوجيرامي",
    "nameEn": "Sacred Skin by Bujairami 100ml Extrait de Parfum",
-   "descriptionAr": "عطر Sacred Skin by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع زهري ومسكي وخشبي.",
-   "descriptionEn": "Sacred Skin by Bujairami 100ml Extrait de Parfum\nSacred Skin by Bujairami is a 100ml Extrait de Parfum for women and men with a warm floral woody scent profile. Opens with Pear, Hazelnut, and Olibanum, moves into Osmanthus, Rose, and Saffron, and settles into Sandalwood, Vanilla, and Akigalawood. It is suited to evenings, date nights, and special occasions.\nFragrance Notes:\nTop: Pear, Hazelnut, Olibanum\nMiddle: Osmanthus, Rose, Saffron, Jasmine Sambac\nBase: Sandalwood, Vanilla, Akigalawood, Ambergris, Labdanum",
+   "descriptionAr": "يقدم عطر ساكريد سكين باي بوجيرامي مزيجاً دافئاً من الزهور والأخشاب الفاخرة. يترك انطباعاً فريداً ومميزاً يلائم الأمسيات الرومانسية والمناسبات الخاصة.",
+   "descriptionEn": "Sacred Skin by Bujairami is a 100ml Extrait de Parfum for women and men with a warm floral woody scent profile. Opens with Pear, Hazelnut, and Olibanum, moves into Osmanthus, Rose, and Saffron, and settles into Sandalwood, Vanilla, and Akigalawood. It is suited to evenings, date nights, and special ",
    "gender": "unisex",
    "families": [
     "floral",
-    "musk",
-    "woody"
+    "woody",
+    "amber"
    ],
    "notes": {
     "top": [
@@ -45183,21 +45461,27 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "ساكريد سكين",
+    "بوجيرامي",
+    "عطر خشبي",
+    "زهري",
+    "مستخلص العطر"
+   ]
   },
   "BUJ-1015": {
    "sourceHash": "1jxm2vg",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Soul Fusion Intense by Bujairami 100ml Eau de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "سول فิวشن إنتنس باي بوجيرامي",
    "nameEn": "Soul Fusion Intense by Bujairami 100ml Eau de Parfum",
-   "descriptionAr": "عطر Soul Fusion Intense by Bujairami 100ml Eau de Parfum من Bujairami للجنسين بطابع زهري ومسكي وخشبي.",
-   "descriptionEn": "Soul Fusion Intense by Bujairami 100ml Eau de Parfum\nSoul Fusion Intense by Bujairami is a 100ml Eau de Parfum for women and men with a floral woody amber scent profile. Opens with Rose Water, Pear, and Hazelnut, moves into Rose, Osmanthus, and Saffron, and settles into Sandalwood, Akigalawood, and Vanilla. It is suited to evenings, date nights, and special occasions.\nFragrance Notes:\nTop: Rose Water, Pear, Hazelnut, Bitter Almond, Frankincense, Pink Pepper\nMiddle: Rose, Osmanthus, Saffron, Jasmine Sambac\nBase: Sandalwood, Akigalawood, Vanilla, Ambrette, Georgywood, Ambergris, Labdanum, Cypriol",
+   "descriptionAr": "يمزج عطر سول فิวشن إنتنس باي بوجيرامي بين النفحات الزهرية والخشبية والعنبرية العميقة. يعكس أناقة استثنائية تناسب الأوقات الخاصة والأمسيات المميزة.",
+   "descriptionEn": "Soul Fusion Intense by Bujairami is a 100ml Eau de Parfum for women and men with a floral woody amber scent profile. Opens with Rose Water, Pear, and Hazelnut, moves into Rose, Osmanthus, and Saffron, and settles into Sandalwood, Akigalawood, and Vanilla. It is suited to evenings, date nights, and s",
    "gender": "unisex",
    "families": [
     "floral",
-    "musk",
-    "woody"
+    "woody",
+    "amber"
    ],
    "notes": {
     "top": [
@@ -45227,28 +45511,33 @@
    },
    "seasons": [
     "winter",
-    "spring",
     "autumn"
    ],
    "occasions": [
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "سول فิวشن",
+    "بوجيرامي",
+    "عطر عنبري",
+    "خشبي",
+    "ماء عطور"
+   ]
   },
   "BUJ-1016": {
    "sourceHash": "rzwxwj",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Madness by Bujairami 100ml Eau de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "مادنيس باي بوجيرامي",
    "nameEn": "Madness by Bujairami 100ml Eau de Parfum",
-   "descriptionAr": "عطر Madness by Bujairami 100ml Eau de Parfum من Bujairami للجنسين بطابع عنبري وخشبي وعود.",
-   "descriptionEn": "Madness by Bujairami 100ml Eau de Parfum\nMadness by Bujairami is a 100ml Eau de Parfum for women and men with a smoky oud scent profile. Opens with Agarwood (Oud) and Incense, moves into Rose, Raspberry, and Birch, and settles into Benzoin, Amberwood, and Geranium. It is suited to evenings, date nights, and special occasions.\nFragrance Notes:\nTop: Agarwood (Oud), Incense\nMiddle: Rose, Raspberry, Birch, Saffron\nBase: Benzoin, Amberwood, Geranium",
+   "descriptionAr": "يعبر عطر مادنيس باي بوجيرامي عن الجرأة بفضل توليفته المدخنة من العود والبخور. يمنحك حضوراً طاغياً ولا يُنسى في الأمسيات والمناسبات الخاصة.",
+   "descriptionEn": "Madness by Bujairami is a 100ml Eau de Parfum for women and men with a smoky oud scent profile. Opens with Agarwood (Oud) and Incense, moves into Rose, Raspberry, and Birch, and settles into Benzoin, Amberwood, and Geranium. It is suited to evenings, date nights, and special occasions.",
    "gender": "unisex",
    "families": [
+    "oud",
     "amber",
-    "woody",
-    "oud"
+    "woody"
    ],
    "notes": {
     "top": [
@@ -45275,21 +45564,27 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "مادنيس",
+    "بوجيرامي",
+    "عطر مدخن",
+    "عود",
+    "ماء عطور"
+   ]
   },
   "BUJ-1017": {
    "sourceHash": "5e8asw",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Only Ever by Bujairami 100ml Eau de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "أونلي إيفر باي بوجيرامي",
    "nameEn": "Only Ever by Bujairami 100ml Eau de Parfum",
-   "descriptionAr": "عطر Only Ever by Bujairami 100ml Eau de Parfum من Bujairami للجنسين بطابع حلو وعنبري وحمضي.",
-   "descriptionEn": "Only Ever by Bujairami 100ml Eau de Parfum\nOnly Ever by Bujairami is a 100ml Eau de Parfum for women and men with a fruity vanilla scent profile. Opens with Passionfruit, Bitter Orange, and Lemon, moves into Solar Notes and Frangipani, and settles into Madagascar Vanilla, Benzoin, and Labdanum. It is suited to casual outings, evenings, and date nights.\nFragrance Notes:\nTop: Passionfruit, Bitter Orange, Lemon\nMiddle: Solar Notes, Frangipani\nBase: Madagascar Vanilla, Benzoin, Labdanum",
+   "descriptionAr": "يأتي عطر أونلي إيفر باي بوجيرامي بنفحات فاكهية وفانيلا حلوة ومميزة. يضفي لمسة من البهجة والانتعاش على إطلالتك في الخروجات اليومية والأمسيات.",
+   "descriptionEn": "Only Ever by Bujairami is a 100ml Eau de Parfum for women and men with a fruity vanilla scent profile. Opens with Passionfruit, Bitter Orange, and Lemon, moves into Solar Notes and Frangipani, and settles into Madagascar Vanilla, Benzoin, and Labdanum. It is suited to casual outings, evenings, and d",
    "gender": "unisex",
    "families": [
-    "gourmand",
+    "fruity",
     "amber",
-    "citrus"
+    "gourmand"
    ],
    "notes": {
     "top": [
@@ -45308,30 +45603,33 @@
     ]
    },
    "seasons": [
-    "winter",
     "spring",
-    "autumn"
+    "summer"
    ],
    "occasions": [
     "daily",
-    "evening",
-    "special"
+    "evening"
    ],
-   "tags": []
+   "tags": [
+    "أونلي إيفر",
+    "بوجيرامي",
+    "عطر فواكه",
+    "فانيلا",
+    "ماء عطور"
+   ]
   },
   "BUJ-1018": {
    "sourceHash": "1nwe2ye",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Non Stop by Bujairami 100ml Extrait de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "نون ستوب باي بوجيرامي",
    "nameEn": "Non Stop by Bujairami 100ml Extrait de Parfum",
-   "descriptionAr": "عطر Non Stop by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع فواكه وزهري وعنبري.",
-   "descriptionEn": "Non Stop by Bujairami 100ml Extrait de Parfum\nNon Stop by Bujairami is a 100ml Extrait de Parfum for women and men with a fruity aromatic scent profile. Opens with Orange, Green Lemon, and Mint, moves into Apricot, Basil, and Aqueous Accord, and settles into Dates, Fig, and Moss. It is suited to everyday wear, work, and casual outings.\nFragrance Notes:\nTop: Orange, Green Lemon, Mint, Black Currant\nMiddle: Apricot, Basil, Aqueous Accord, May Rose\nBase: Dates, Fig, Moss, Ambergris",
+   "descriptionAr": "يتميز عطر نون ستوب باي بوجيرامي بطابعه الفاكهي والعطري المنعش للغاية. يرافقك بحيويته طوال اليوم ليكون الخيار المثالي للاستخدام اليومي وأوقات العمل.",
+   "descriptionEn": "Non Stop by Bujairami is a 100ml Extrait de Parfum for women and men with a fruity aromatic scent profile. Opens with Orange, Green Lemon, and Mint, moves into Apricot, Basil, and Aqueous Accord, and settles into Dates, Fig, and Moss. It is suited to everyday wear, work, and casual outings.",
    "gender": "unisex",
    "families": [
     "fruity",
-    "floral",
-    "amber"
+    "fresh"
    ],
    "notes": {
     "top": [
@@ -45354,29 +45652,34 @@
     ]
    },
    "seasons": [
-    "summer",
     "spring",
-    "autumn"
+    "summer"
    ],
    "occasions": [
     "daily",
     "work"
    ],
-   "tags": []
+   "tags": [
+    "نون ستوب",
+    "بوجيرامي",
+    "عطر منعش",
+    "فاكهي",
+    "مستخلص العطر"
+   ]
   },
   "BUJ-1019": {
    "sourceHash": "1hyigjm",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "New York by Bujairami 100ml Eau de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "نيويورك باي بوجيرامي",
    "nameEn": "New York by Bujairami 100ml Eau de Parfum",
-   "descriptionAr": "عطر New York by Bujairami 100ml Eau de Parfum من Bujairami للجنسين بطابع حلو وعنبري وحمضي.",
-   "descriptionEn": "New York by Bujairami 100ml Eau de Parfum\nNew York by Bujairami is a 100ml Eau de Parfum for women and men with an amber vanilla scent profile. Opens with Bergamot and Coriander, moves into Apple, Ambroxan, and Vanilla, and settles into Ambergris, Tonka Bean, and Woody Notes. It is suited to work, casual outings, and evenings.\nFragrance Notes:\nTop: Bergamot, Coriander\nMiddle: Apple, Ambroxan, Vanilla\nBase: Ambergris, Tonka Bean, Woody Notes",
+   "descriptionAr": "يعكس عطر نيويورك باي بوجيرامي نبض المدينة بنفحاته العنبرية والفانيلا الدافئة. يناسب أوقات العمل والخروجات اليومية والأمسيات الهادئة.",
+   "descriptionEn": "New York by Bujairami is a 100ml Eau de Parfum for women and men with an amber vanilla scent profile. Opens with Bergamot and Coriander, moves into Apple, Ambroxan, and Vanilla, and settles into Ambergris, Tonka Bean, and Woody Notes. It is suited to work, casual outings, and evenings.",
    "gender": "unisex",
    "families": [
-    "gourmand",
     "amber",
-    "citrus"
+    "woody",
+    "gourmand"
    ],
    "notes": {
     "top": [
@@ -45395,29 +45698,34 @@
     ]
    },
    "seasons": [
-    "winter",
-    "spring",
-    "autumn"
+    "all"
    ],
    "occasions": [
     "daily",
     "work",
     "evening"
    ],
-   "tags": []
+   "tags": [
+    "نيويورك",
+    "بوجيرامي",
+    "عطر عنبر",
+    "فانيلا",
+    "ماء عطور"
+   ]
   },
   "BUJ-1020": {
    "sourceHash": "1lz3nwi",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Silent Halo by Bujairami 100ml Extrait de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "سايلنت هالو باي بوجيرامي",
    "nameEn": "Silent Halo by Bujairami 100ml Extrait de Parfum",
-   "descriptionAr": "عطر Silent Halo by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع خشبي وحمضي.",
-   "descriptionEn": "Silent Halo by Bujairami 100ml Extrait de Parfum\nSilent Halo by Bujairami is a 100ml Extrait de Parfum for women and men with a woody aromatic scent profile. Opens with Citron, Bergamot, and Juniper, moves into Lavender, Geranium, and Nutmeg, and settles into Ambrox Super, Patchouli, and Sandalwood. It is suited to everyday wear, work, and casual outings.\nFragrance Notes:\nTop: Citron, Bergamot, Juniper\nMiddle: Lavender, Geranium, Nutmeg, Cypress\nBase: Ambrox Super, Patchouli, Sandalwood",
+   "descriptionAr": "يقدم عطر سايلنت هالو باي بوجيرامي توليفة خشبية عطرية تنبض بالانتعاش والنقاء. خيار ممتاز للاستخدام اليومي وأوقات العمل بفضل طابعه المتوازن.",
+   "descriptionEn": "Silent Halo by Bujairami is a 100ml Extrait de Parfum for women and men with a woody aromatic scent profile. Opens with Citron, Bergamot, and Juniper, moves into Lavender, Geranium, and Nutmeg, and settles into Ambrox Super, Patchouli, and Sandalwood. It is suited to everyday wear, work, and casual ",
    "gender": "unisex",
    "families": [
     "woody",
-    "citrus"
+    "fresh",
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -45438,29 +45746,35 @@
     ]
    },
    "seasons": [
-    "summer",
     "spring",
-    "autumn"
+    "summer",
+    "all"
    ],
    "occasions": [
     "daily",
     "work"
    ],
-   "tags": []
+   "tags": [
+    "سايلنت هالو",
+    "بوجيرامي",
+    "عطر خشبي",
+    "عطري",
+    "مستخلص العطر"
+   ]
   },
   "BUJ-1021": {
    "sourceHash": "14fuc7u",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Sugar Rush by Bujairami 100ml Eau de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "شوغر راش باي بوجيرامي",
    "nameEn": "Sugar Rush by Bujairami 100ml Eau de Parfum",
-   "descriptionAr": "عطر Sugar Rush by Bujairami 100ml Eau de Parfum من Bujairami للجنسين بطابع حلو ومسكي وحمضي.",
-   "descriptionEn": "Sugar Rush by Bujairami 100ml Eau de Parfum\nSugar Rush by Bujairami is a 100ml Eau de Parfum for women and men with a sweet gourmand scent profile. Opens with Freesia, Italian Lemon, and Nectarine Blossom, moves into Marshmallow, Strawberry, and Coconut, and settles into Whipped Cream, Sugar, and Vanilla. It is suited to casual outings, evenings, and date nights.\nFragrance Notes:\nTop: Freesia, Italian Lemon, Nectarine Blossom, Apple\nMiddle: Marshmallow, Strawberry, Coconut, Orange Blossom\nBase: Whipped Cream, Sugar, Vanilla, Musk, Raspberry, Ambroxan",
+   "descriptionAr": "يمنحك عطر شوغر راش باي بوجيرامي تجربة عطرية حلوة وغورماند مليئة بالحيوية. يلائم الخروجات الكاجوال والأمسيات المفعمة بالبهجة.",
+   "descriptionEn": "Sugar Rush by Bujairami is a 100ml Eau de Parfum for women and men with a sweet gourmand scent profile. Opens with Freesia, Italian Lemon, and Nectarine Blossom, moves into Marshmallow, Strawberry, and Coconut, and settles into Whipped Cream, Sugar, and Vanilla. It is suited to casual outings, eveni",
    "gender": "unisex",
    "families": [
     "gourmand",
-    "musk",
-    "citrus"
+    "fruity",
+    "floral"
    ],
    "notes": {
     "top": [
@@ -45486,27 +45800,34 @@
    },
    "seasons": [
     "winter",
-    "autumn"
+    "autumn",
+    "spring"
    ],
    "occasions": [
     "daily",
     "evening"
    ],
-   "tags": []
+   "tags": [
+    "شوغر راش",
+    "بوجيرامي",
+    "عطر حلو",
+    "غورماند",
+    "ماء عطور"
+   ]
   },
   "BUJ-1022": {
    "sourceHash": "1hyn78g",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Sacred Order by Bujairami 100ml Extrait de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "ساكريد أوردر باي بوجيرامي",
    "nameEn": "Sacred Order by Bujairami 100ml Extrait de Parfum",
-   "descriptionAr": "عطر Sacred Order by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع عود وزهري وخشبي.",
-   "descriptionEn": "Sacred Order by Bujairami 100ml Extrait de Parfum\nSacred Order by Bujairami is a 100ml Extrait de Parfum for women and men with a fruity floral oud scent profile. Opens with Lychee, Raspberry, and Saffron, moves into Rose, Osmanthus, and Tonka Bean, and settles into Oud, Leather, and Ambery Woods. It is suited to evenings, date nights, and special occasions.\nFragrance Notes:\nTop: Lychee, Raspberry, Saffron\nMiddle: Rose, Osmanthus, Tonka Bean\nBase: Oud, Leather, Ambery Woods",
+   "descriptionAr": "يجمع عطر ساكريد أوردر باي بوجيرامي بين الفواكه والزهور ونفحات العود الفاخرة. يضفي لمسة من الفخامة والجاذبية على إطلالتك في الأمسيات والمناسبات.",
+   "descriptionEn": "Sacred Order by Bujairami is a 100ml Extrait de Parfum for women and men with a fruity floral oud scent profile. Opens with Lychee, Raspberry, and Saffron, moves into Rose, Osmanthus, and Tonka Bean, and settles into Oud, Leather, and Ambery Woods. It is suited to evenings, date nights, and special ",
    "gender": "unisex",
    "families": [
     "oud",
-    "floral",
-    "woody"
+    "fruity",
+    "floral"
    ],
    "notes": {
     "top": [
@@ -45533,19 +45854,26 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "ساكريد أوردر",
+    "بوجيرامي",
+    "عود فاخر",
+    "زهري",
+    "مستخلص العطر"
+   ]
   },
   "BUJ-1023": {
    "sourceHash": "9wgr7a",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Freeze by Bujairami 100ml Eau de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "فريز باي بوجيرامي",
    "nameEn": "Freeze by Bujairami 100ml Eau de Parfum",
-   "descriptionAr": "عطر Freeze by Bujairami 100ml Eau de Parfum من Bujairami للجنسين بطابع منعش.",
-   "descriptionEn": "Freeze by Bujairami 100ml Eau de Parfum\nFreeze by Bujairami is a 100ml Eau de Parfum for women and men with a fresh mint scent profile. Opens with Fresh Iced Mint and Ice, moves into Living Mint (Ourika Mint), Mint Tea, and Crisp Blue Sage, and settles into Ambroxan and Indonesian Patchouli. It is suited to everyday wear, casual outings, and workouts.\nFragrance Notes:\nTop: Fresh Iced Mint, Ice\nMiddle: Living Mint (Ourika Mint), Mint Tea, Crisp Blue Sage\nBase: Ambroxan, Indonesian Patchouli",
+   "descriptionAr": "يمنحك عطر فريز باي بوجيرامي شعوراً فائماً بالانتعاش بفضل نفحات النعناع الباردة. مثالي للاستخدام اليومي، أوقات الرياضة، والخروجات الصيفية.",
+   "descriptionEn": "Freeze by Bujairami is a 100ml Eau de Parfum for women and men with a fresh mint scent profile. Opens with Fresh Iced Mint and Ice, moves into Living Mint (Ourika Mint), Mint Tea, and Crisp Blue Sage, and settles into Ambroxan and Indonesian Patchouli. It is suited to everyday wear, casual outings, ",
    "gender": "unisex",
    "families": [
-    "fresh"
+    "fresh",
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -45567,23 +45895,30 @@
     "spring"
    ],
    "occasions": [
-    "daily"
+    "daily",
+    "work"
    ],
-   "tags": []
+   "tags": [
+    "فريز",
+    "بوجيرامي",
+    "عطر نعناع",
+    "منعش",
+    "ماء عطور"
+   ]
   },
   "BUJ-1024": {
    "sourceHash": "103kfww",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Mad Love by Bujairami 100ml Extrait de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "ماد لوف باي بوجيرامي",
    "nameEn": "Mad Love by Bujairami 100ml Extrait de Parfum",
-   "descriptionAr": "عطر Mad Love by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع عنبري وخشبي وعود.",
-   "descriptionEn": "Mad Love by Bujairami 100ml Extrait de Parfum\nMad Love by Bujairami is a 100ml Extrait de Parfum for women and men with a woody oud scent profile. Opens with Raspberry, Saffron, and Geranium, moves into Rose, Birch Wood, and Suede Leather, and settles into Oud Wood, Benzoin Balm, and Amberwood. It is suited to evenings, date nights, and special occasions.\nFragrance Notes:\nTop: Raspberry, Saffron, Geranium\nMiddle: Rose, Birch Wood, Suede Leather, Incense\nBase: Oud Wood, Benzoin Balm, Amberwood, Musk",
+   "descriptionAr": "يقدم عطر ماد لوف باي بوجيرامي توليفة خشبية وعود غنية بالدفء والجاذبية. يعبر عن الفخامة في الأمسيات الخاصة والمناسبات الهامة.",
+   "descriptionEn": "Mad Love by Bujairami is a 100ml Extrait de Parfum for women and men with a woody oud scent profile. Opens with Raspberry, Saffron, and Geranium, moves into Rose, Birch Wood, and Suede Leather, and settles into Oud Wood, Benzoin Balm, and Amberwood. It is suited to evenings, date nights, and special",
    "gender": "unisex",
    "families": [
-    "amber",
+    "oud",
     "woody",
-    "oud"
+    "amber"
    ],
    "notes": {
     "top": [
@@ -45612,21 +45947,27 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "ماد لوف",
+    "بوجيرامي",
+    "عود",
+    "خشبي",
+    "مستخلص العطر"
+   ]
   },
   "BUJ-1025": {
    "sourceHash": "z9tt87",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Lolita by Bujairami 100ml Extrait de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "لوليتا باي بوجيرامي",
    "nameEn": "Lolita by Bujairami 100ml Extrait de Parfum",
-   "descriptionAr": "عطر Lolita by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع خشبي وفواكه وحمضي.",
-   "descriptionEn": "Lolita by Bujairami 100ml Extrait de Parfum\nLolita by Bujairami is a 100ml Extrait de Parfum for women and men with a fruity woody scent profile. Opens with Fig Leaf, Bergamot, and Mandarin, moves into Fig, Ylang-Ylang, and Salt, and settles into Muscovado Sugar, Liquorice, and Patchouli. It is suited to everyday wear, casual outings, and evenings.\nFragrance Notes:\nTop: Fig Leaf, Bergamot, Mandarin, Pink Pepper\nMiddle: Fig, Ylang-Ylang, Salt\nBase: Muscovado Sugar, Liquorice, Patchouli, Vetiver",
+   "descriptionAr": "يتميز عطر لوليتا باي بوجيرامي بطابع فاكهي خشبي فريد ومميز. يضفي لمسة عصرية جذابة تناسب الاستخدام اليومي والأمسيات الأنيقة.",
+   "descriptionEn": "Lolita by Bujairami is a 100ml Extrait de Parfum for women and men with a fruity woody scent profile. Opens with Fig Leaf, Bergamot, and Mandarin, moves into Fig, Ylang-Ylang, and Salt, and settles into Muscovado Sugar, Liquorice, and Patchouli. It is suited to everyday wear, casual outings, and eve",
    "gender": "unisex",
    "families": [
-    "woody",
     "fruity",
-    "citrus"
+    "woody",
+    "gourmand"
    ],
    "notes": {
     "top": [
@@ -45648,29 +45989,35 @@
     ]
    },
    "seasons": [
-    "summer",
     "spring",
+    "summer",
     "autumn"
    ],
    "occasions": [
     "daily",
     "evening"
    ],
-   "tags": []
+   "tags": [
+    "لوليتا",
+    "بوجيرامي",
+    "عطر تين",
+    "خشبي",
+    "مستخلص العطر"
+   ]
   },
   "BUJ-1026": {
    "sourceHash": "adferq",
-   "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "Ya Habibi by Bujairami 100ml Extrait de Parfum",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
+   "nameAr": "يا حبيبي باي بوجيرامي",
    "nameEn": "Ya Habibi by Bujairami 100ml Extrait de Parfum",
-   "descriptionAr": "عطر Ya Habibi by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع عنبري وخشبي وعود.",
-   "descriptionEn": "Ya Habibi by Bujairami 100ml Extrait de Parfum\nYa Habibi by Bujairami is a 100ml Extrait de Parfum for women and men with a woody amber oud scent profile. Opens with Mandarin and Cinnamon, moves into White Pepper and Incense, and settles into Labdanum, Oud Wood, and Ambergris. It is suited to evenings, date nights, and special occasions.\nFragrance Notes:\nTop: Mandarin, Cinnamon\nMiddle: White Pepper, Incense\nBase: Labdanum, Oud Wood, Ambergris, Ambrette",
+   "descriptionAr": "يعبر عطر يا حبيبي باي بوجيرامي عن الأصالة والجاذبية بنفحات العود والعنبر الدافئة. مصمم خصيصاً ليترك انطباعاً ساحراً في الأمسيات والمناسبات الخاصة.",
+   "descriptionEn": "Ya Habibi by Bujairami is a 100ml Extrait de Parfum for women and men with a woody amber oud scent profile. Opens with Mandarin and Cinnamon, moves into White Pepper and Incense, and settles into Labdanum, Oud Wood, and Ambergris. It is suited to evenings, date nights, and special occasions.",
    "gender": "unisex",
    "families": [
+    "oud",
     "amber",
-    "woody",
-    "oud"
+    "woody"
    ],
    "notes": {
     "top": [
@@ -45696,12 +46043,18 @@
     "evening",
     "special"
    ],
-   "tags": []
+   "tags": [
+    "يا حبيبي",
+    "بوجيرامي",
+    "عطر شرقي",
+    "عود",
+    "مستخلص العطر"
+   ]
   },
   "BUJ-1027": {
    "sourceHash": "1tg2v8q",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Too Damn Good by Bujairami 100ml Extrait de Parfum",
    "nameEn": "Too Damn Good by Bujairami 100ml Extrait de Parfum",
    "descriptionAr": "عطر Too Damn Good by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع عنبري وخشبي ومسكي.",
@@ -45744,7 +46097,7 @@
   "BUJ-1028": {
    "sourceHash": "18dthk6",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Legacy by Bujairami 100ml Extrait de Parfum",
    "nameEn": "Legacy by Bujairami 100ml Extrait de Parfum",
    "descriptionAr": "عطر Legacy by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع حلو وعنبري ومسكي.",
@@ -45786,7 +46139,7 @@
   "BUJ-1029": {
    "sourceHash": "1a3wd43",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Vanilla Dream by Bujairami 100ml Eau de Parfum",
    "nameEn": "Vanilla Dream by Bujairami 100ml Eau de Parfum",
    "descriptionAr": "عطر Vanilla Dream by Bujairami 100ml Eau de Parfum من Bujairami للجنسين بطابع حلو ومسكي.",
@@ -45822,7 +46175,7 @@
   "BUJ-1030": {
    "sourceHash": "1tqyv3m",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Vibration by Bujairami 100ml Extrait de Parfum",
    "nameEn": "Vibration by Bujairami 100ml Extrait de Parfum",
    "descriptionAr": "عطر Vibration by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع حمضي وزهري ومسكي.",
@@ -45867,7 +46220,7 @@
   "BUJ-1031": {
    "sourceHash": "ugc2z8",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Chroma by Bujairami 100ml Eau de Parfum",
    "nameEn": "Chroma by Bujairami 100ml Eau de Parfum",
    "descriptionAr": "عطر Chroma by Bujairami 100ml Eau de Parfum من Bujairami رجالي بطابع خشبي وعنبري وحمضي.",
@@ -45911,7 +46264,7 @@
   "BUJ-1032": {
    "sourceHash": "r0t6bk",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Kingsman by Bujairami 100ml Extrait de Parfum",
    "nameEn": "Kingsman by Bujairami 100ml Extrait de Parfum",
    "descriptionAr": "عطر Kingsman by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع خشبي وفواكه وزهري.",
@@ -45959,7 +46312,7 @@
   "BUJ-1033": {
    "sourceHash": "1q02em5",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Executor by Bujairami 100ml Extrait de Parfum",
    "nameEn": "Executor by Bujairami 100ml Extrait de Parfum",
    "descriptionAr": "عطر Executor by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع زهري وعنبري وحلو.",
@@ -46002,7 +46355,7 @@
   "BUJ-1034": {
    "sourceHash": "ku2inf",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Ibiza by Bujairami 100ml Extrait de Parfum",
    "nameEn": "Ibiza by Bujairami 100ml Extrait de Parfum",
    "descriptionAr": "عطر Ibiza by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع زهري وفواكه ومسكي.",
@@ -46042,7 +46395,7 @@
   "BUJ-1035": {
    "sourceHash": "1miezmo",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Hectic by Bujairami 100ml Extrait de Parfum",
    "nameEn": "Hectic by Bujairami 100ml Extrait de Parfum",
    "descriptionAr": "عطر Hectic by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع حمضي وخشبي.",
@@ -46083,7 +46436,7 @@
   "BUJ-1036": {
    "sourceHash": "1qiwdu9",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Next Level by Bujairami 100ml Extrait de Parfum",
    "nameEn": "Next Level by Bujairami 100ml Extrait de Parfum",
    "descriptionAr": "عطر Next Level by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع حمضي وزهري وعنبري.",
@@ -46125,7 +46478,7 @@
   "BUJ-1037": {
    "sourceHash": "189km8a",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "No Limit by Bujairami 100ml Eau de Parfum",
    "nameEn": "No Limit by Bujairami 100ml Eau de Parfum",
    "descriptionAr": "عطر No Limit by Bujairami 100ml Eau de Parfum من Bujairami للجنسين بطابع فواكه وزهري وعنبري.",
@@ -46170,7 +46523,7 @@
   "BUJ-1038": {
    "sourceHash": "smdwm3",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Emperor by Bujairami 100ml Eau de Parfum",
    "nameEn": "Emperor by Bujairami 100ml Eau de Parfum",
    "descriptionAr": "عطر Emperor by Bujairami 100ml Eau de Parfum من Bujairami للجنسين بطابع خشبي وزهري وعنبري.",
@@ -46219,7 +46572,7 @@
   "BUJ-1039": {
    "sourceHash": "127kmn3",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Houdini by Bujairami 100ml Extrait de Parfum",
    "nameEn": "Houdini by Bujairami 100ml Extrait de Parfum",
    "descriptionAr": "عطر Houdini by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع زهري وحمضي وعود.",
@@ -46259,7 +46612,7 @@
   "BUJ-1040": {
    "sourceHash": "qoz4v3",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "First Class by Bujairami 100ml Extrait de Parfum",
    "nameEn": "First Class by Bujairami 100ml Extrait de Parfum",
    "descriptionAr": "عطر First Class by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع عنبري وخشبي وزهري.",
@@ -46298,7 +46651,7 @@
   "BUJ-1041": {
    "sourceHash": "onrjdy",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Shadow Script by Bujairami 100ml Extrait de Parfum",
    "nameEn": "Shadow Script by Bujairami 100ml Extrait de Parfum",
    "descriptionAr": "عطر Shadow Script by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع خشبي وتوابل وزهري.",
@@ -46343,7 +46696,7 @@
   "BUJ-1042": {
    "sourceHash": "lkhrmd",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Resolution by Bujairami 100ml Eau de Parfum",
    "nameEn": "Resolution by Bujairami 100ml Eau de Parfum",
    "descriptionAr": "عطر Resolution by Bujairami 100ml Eau de Parfum من Bujairami للجنسين بطابع خشبي وحلو وحمضي.",
@@ -46385,7 +46738,7 @@
   "BUJ-1043": {
    "sourceHash": "vl6bvm",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Ghost by Bujairami 100ml Eau de Parfum",
    "nameEn": "Ghost by Bujairami 100ml Eau de Parfum",
    "descriptionAr": "عطر Ghost by Bujairami 100ml Eau de Parfum من Bujairami للجنسين بطابع زهري ومسكي وخشبي.",
@@ -46426,7 +46779,7 @@
   "BUJ-1044": {
    "sourceHash": "u24h9h",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Real Deal by Bujairami 100ml Extrait de Parfum",
    "nameEn": "Real Deal by Bujairami 100ml Extrait de Parfum",
    "descriptionAr": "عطر Real Deal by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع حمضي ومسكي ومنعش.",
@@ -46470,7 +46823,7 @@
   "BUJ-1045": {
    "sourceHash": "1kzuw5z",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Psycho by Bujairami 100ml Extrait de Parfum",
    "nameEn": "Psycho by Bujairami 100ml Extrait de Parfum",
    "descriptionAr": "عطر Psycho by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع حمضي ومنعش وفواكه.",
@@ -46499,7 +46852,7 @@
   "BUJ-1046": {
    "sourceHash": "1ognz6s",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Perfect Life by Bujairami 100ml Eau de Parfum",
    "nameEn": "Perfect Life by Bujairami 100ml Eau de Parfum",
    "descriptionAr": "عطر Perfect Life by Bujairami 100ml Eau de Parfum من Bujairami للجنسين بطابع حمضي.",
@@ -46532,7 +46885,7 @@
   "BUJ-1047": {
    "sourceHash": "14nhz45",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Pulse Fiction by Bujairami 100ml Eau de Parfum",
    "nameEn": "Pulse Fiction by Bujairami 100ml Eau de Parfum",
    "descriptionAr": "عطر Pulse Fiction by Bujairami 100ml Eau de Parfum من Bujairami للجنسين بطابع خشبي وزهري وحمضي.",
@@ -46572,7 +46925,7 @@
   "BUJ-1048": {
    "sourceHash": "1wewhfj",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Drip No. 7 by Bujairami 100ml Eau de Parfum",
    "nameEn": "Drip No. 7 by Bujairami 100ml Eau de Parfum",
    "descriptionAr": "عطر Drip No. 7 by Bujairami 100ml Eau de Parfum من Bujairami للجنسين بطابع فواكه ومسكي وعنبري.",
@@ -46618,7 +46971,7 @@
   "BUJ-1049": {
    "sourceHash": "4tdj09",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Rizz by Bujairami 100ml Extrait de Parfum",
    "nameEn": "Rizz by Bujairami 100ml Extrait de Parfum",
    "descriptionAr": "عطر Rizz by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع حمضي.",
@@ -46657,7 +47010,7 @@
   "BUJ-1050": {
    "sourceHash": "1rtde8n",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Woodlands by Bujairami 100ml Extrait de Parfum",
    "nameEn": "Woodlands by Bujairami 100ml Extrait de Parfum",
    "descriptionAr": "عطر Woodlands by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع خشبي وحلو.",
@@ -46702,7 +47055,7 @@
   "BUJ-1051": {
    "sourceHash": "1mbr58n",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Blush by Bujairami 100ml Eau de Parfum",
    "nameEn": "Blush by Bujairami 100ml Eau de Parfum",
    "descriptionAr": "عطر Blush by Bujairami 100ml Eau de Parfum من Bujairami نسائي بطابع زهري وحلو وحمضي.",
@@ -46741,7 +47094,7 @@
   "BUJ-1052": {
    "sourceHash": "1payclf",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "The Rock Intensely by Bujairami 100ml Eau de Parfum",
    "nameEn": "The Rock Intensely by Bujairami 100ml Eau de Parfum",
    "descriptionAr": "عطر The Rock Intensely by Bujairami 100ml Eau de Parfum من Bujairami رجالي بطابع عنبري وتوابل وحلو.",
@@ -46782,7 +47135,7 @@
   "BUJ-1053": {
    "sourceHash": "kf5qxm",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Sovereign by Bujairami 100ml Eau de Parfum",
    "nameEn": "Sovereign by Bujairami 100ml Eau de Parfum",
    "descriptionAr": "عطر Sovereign by Bujairami 100ml Eau de Parfum من Bujairami رجالي بطابع خشبي وزهري وعنبري.",
@@ -46827,7 +47180,7 @@
   "BUJ-1054": {
    "sourceHash": "12cx3xt",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Too Damn Clean by Bujairami 100ml Extrait de Parfum",
    "nameEn": "Too Damn Clean by Bujairami 100ml Extrait de Parfum",
    "descriptionAr": "عطر Too Damn Clean by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع زهري ومسكي وخشبي.",
@@ -46870,7 +47223,7 @@
   "BUJ-1055": {
    "sourceHash": "1643vbn",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Ocean Eyes by Bujairami 100ml Extrait de Parfum",
    "nameEn": "Ocean Eyes by Bujairami 100ml Extrait de Parfum",
    "descriptionAr": "عطر Ocean Eyes by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع زهري ومسكي وخشبي.",
@@ -46899,7 +47252,7 @@
   "BUJ-1056": {
    "sourceHash": "1l2h4tl",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Red Static by Bujairami 100ml Eau de Parfum",
    "nameEn": "Red Static by Bujairami 100ml Eau de Parfum",
    "descriptionAr": "عطر Red Static by Bujairami 100ml Eau de Parfum من Bujairami للجنسين بطابع زهري وفواكه.",
@@ -46936,7 +47289,7 @@
   "BUJ-1057": {
    "sourceHash": "ezcxnr",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Unforgettable by Bujairami 100ml Eau de Parfum",
    "nameEn": "Unforgettable by Bujairami 100ml Eau de Parfum",
    "descriptionAr": "عطر Unforgettable by Bujairami 100ml Eau de Parfum من Bujairami للجنسين بطابع حمضي وفواكه.",
@@ -46964,7 +47317,7 @@
   "BUJ-1058": {
    "sourceHash": "1tfsyoc",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Enforcer by Bujairami 100ml Eau de Parfum",
    "nameEn": "Enforcer by Bujairami 100ml Eau de Parfum",
    "descriptionAr": "عطر Enforcer by Bujairami 100ml Eau de Parfum من Bujairami للجنسين بطابع خشبي وفواكه ومسكي.",
@@ -47005,7 +47358,7 @@
   "BUJ-1059": {
    "sourceHash": "d4otk9",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Red Eclipse by Bujairami 100ml Eau de Parfum",
    "nameEn": "Red Eclipse by Bujairami 100ml Eau de Parfum",
    "descriptionAr": "عطر Red Eclipse by Bujairami 100ml Eau de Parfum من Bujairami للجنسين بطابع زهري وفواكه وحلو.",
@@ -47046,7 +47399,7 @@
   "BUJ-1060": {
    "sourceHash": "14lww9g",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Drip by Bujairami 100ml Extrait de Parfum",
    "nameEn": "Drip by Bujairami 100ml Extrait de Parfum",
    "descriptionAr": "عطر Drip by Bujairami 100ml Extrait de Parfum من Bujairami للجنسين بطابع حمضي.",
@@ -47079,7 +47432,7 @@
   "PEN-1061": {
    "sourceHash": "113nf6z",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Destined Red 100ml by Pendora Scents",
    "nameEn": "Destined Red 100ml by Pendora Scents",
    "descriptionAr": "عطر Destined Red 100ml by Pendora Scents من Pendora للجنسين بطابع زهري وشرقي وحلو.",
@@ -47112,7 +47465,7 @@
   "ASD-1062": {
    "sourceHash": "16ihxln",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Ameerat Al Arab by Lattafa Women 100ml",
    "nameEn": "Ameerat Al Arab by Lattafa Women 100ml",
    "descriptionAr": "عطر Ameerat Al Arab by Lattafa Women 100ml من Asdaaf نسائي بطابع زهري وحلو وشرقي.",
@@ -47156,7 +47509,7 @@
   "VEL-1063": {
    "sourceHash": "weltdl",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Concordia 100ml EDP",
    "nameEn": "Velixir Concordia 100ml EDP",
    "descriptionAr": "عطر Velixir Concordia 100ml EDP من Velixir بطابع زهري وخشبي وحلو.",
@@ -47183,7 +47536,7 @@
   "RAV-1064": {
    "sourceHash": "92uisr",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Now Women Rave Perfumes 100ml",
    "nameEn": "Now Women Rave Perfumes 100ml",
    "descriptionAr": "عطر Now Women Rave Perfumes 100ml من Rave نسائي بطابع زهري وحلو وفواكه.",
@@ -47224,7 +47577,7 @@
   "VEL-1065": {
    "sourceHash": "5cubun",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Persephone 100ml EDP",
    "nameEn": "Velixir Persephone 100ml EDP",
    "descriptionAr": "عطر Velixir Persephone 100ml EDP من Velixir بطابع حلو وشرقي وزهري.",
@@ -47251,7 +47604,7 @@
   "VEL-1066": {
    "sourceHash": "1nuindn",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Orion 100ml EDP",
    "nameEn": "Velixir Orion 100ml EDP",
    "descriptionAr": "عطر Velixir Orion 100ml EDP من Velixir بطابع حلو وشرقي ومسكي.",
@@ -47279,7 +47632,7 @@
   "VEL-1067": {
    "sourceHash": "p8b56m",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Hera 100ml EDP",
    "nameEn": "Velixir Hera 100ml EDP",
    "descriptionAr": "عطر Velixir Hera 100ml EDP من Velixir بطابع زهري وخشبي وحلو.",
@@ -47308,7 +47661,7 @@
   "VEL-1068": {
    "sourceHash": "1x09rte",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Morpheus 100ml EDP",
    "nameEn": "Velixir Morpheus 100ml EDP",
    "descriptionAr": "عطر Velixir Morpheus 100ml EDP من Velixir بطابع منعش وزهري وحمضي.",
@@ -47336,7 +47689,7 @@
   "VEL-1069": {
    "sourceHash": "17w1igo",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Artemis 100ml EDP",
    "nameEn": "Velixir Artemis 100ml EDP",
    "descriptionAr": "عطر Velixir Artemis 100ml EDP من Velixir بطابع زهري ومائي وعنبري.",
@@ -47363,7 +47716,7 @@
   "VEL-1070": {
    "sourceHash": "j8dtvq",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Uranus 100ml EDP",
    "nameEn": "Velixir Uranus 100ml EDP",
    "descriptionAr": "عطر Velixir Uranus 100ml EDP من Velixir بطابع شرقي وزهري ومنعش.",
@@ -47391,7 +47744,7 @@
   "VEL-1071": {
    "sourceHash": "10eq71j",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Icarus 100ml EDP",
    "nameEn": "Velixir Icarus 100ml EDP",
    "descriptionAr": "عطر Velixir Icarus 100ml EDP من Velixir رجالي بطابع منعش وزهري وحلو.",
@@ -47421,7 +47774,7 @@
   "MOO-1072": {
    "sourceHash": "sfdd02",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Aroma Mood 100ml EDP Unisex",
    "nameEn": "Aroma Mood 100ml EDP Unisex",
    "descriptionAr": "عطر Aroma Mood 100ml EDP Unisex من Mood Perfume للجنسين بطابع زهري ومسكي وعنبري.",
@@ -47461,7 +47814,7 @@
   "GRA-1073": {
    "sourceHash": "10p8i87",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Codice Profumo Man by Grandeur Elite – 100 ml for Men",
    "nameEn": "Codice Profumo Man by Grandeur Elite – 100 ml for Men",
    "descriptionAr": "عطر Codice Profumo Man by Grandeur Elite – 100 ml for Men من Grandeur رجالي بطابع عنبري وخشبي وتوابل.",
@@ -47501,7 +47854,7 @@
   "VEL-1074": {
    "sourceHash": "jcrwo1",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Athena 100ml EDP",
    "nameEn": "Velixir Athena 100ml EDP",
    "descriptionAr": "عطر Velixir Athena 100ml EDP من Velixir بطابع زهري وخشبي ومسكي.",
@@ -47528,7 +47881,7 @@
   "VEL-1075": {
    "sourceHash": "1g2fcuu",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Poseidon 100ml EDP",
    "nameEn": "Velixir Poseidon 100ml EDP",
    "descriptionAr": "عطر Velixir Poseidon 100ml EDP من Velixir بطابع حلو وشرقي ومسكي.",
@@ -47555,7 +47908,7 @@
   "ASD-1076": {
    "sourceHash": "1y9qbd7",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Sa'ud by Asdaaf 100ml EDP Unisex",
    "nameEn": "Sa'ud by Asdaaf 100ml EDP Unisex",
    "descriptionAr": "عطر Sa'ud by Asdaaf 100ml EDP Unisex من Asdaaf للجنسين بطابع زهري ومائي وعود.",
@@ -47598,7 +47951,7 @@
   "PEN-1077": {
    "sourceHash": "19oce7q",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "One Pendora Scents For Him – 100 ml for Men",
    "nameEn": "One Pendora Scents For Him – 100 ml for Men",
    "descriptionAr": "عطر One Pendora Scents For Him – 100 ml for Men من Pendora رجالي بطابع منعش وخشبي وفواكه.",
@@ -47641,7 +47994,7 @@
   "PEN-1078": {
    "sourceHash": "cxwv0p",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Club Intense 100ml EDP Men Paris Corner Pendora",
    "nameEn": "Club Intense 100ml EDP Men Paris Corner Pendora",
    "descriptionAr": "عطر Club Intense 100ml EDP Men Paris Corner Pendora من Pendora رجالي بطابع خشبي وتوابل ومسكي.",
@@ -47679,7 +48032,7 @@
   "VEL-1079": {
    "sourceHash": "vyed52",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Adonis 100ml EDP",
    "nameEn": "Velixir Adonis 100ml EDP",
    "descriptionAr": "عطر Velixir Adonis 100ml EDP من Velixir للجنسين بطابع حلو وشرقي وعنبري.",
@@ -47708,7 +48061,7 @@
   "PEN-1080": {
    "sourceHash": "l3cwtc",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Noir En Leather by Pendora Scents 100 ml",
    "nameEn": "Noir En Leather by Pendora Scents 100 ml",
    "descriptionAr": "عطر Noir En Leather by Pendora Scents 100 ml من Pendora نسائي بطابع خشبي وشرقي وجلدي.",
@@ -47747,7 +48100,7 @@
   "ASD-1081": {
    "sourceHash": "3rlwaz",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Marj Perfume 100ml Lattafa Asdaaf Arabic For Women",
    "nameEn": "Marj Perfume 100ml Lattafa Asdaaf Arabic For Women",
    "descriptionAr": "عطر Marj Perfume 100ml Lattafa Asdaaf Arabic For Women من Asdaaf نسائي بطابع زهري وعود ومسكي.",
@@ -47770,7 +48123,7 @@
   "RAV-1082": {
    "sourceHash": "1u05vjz",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Nuit Parfaite by Rave 100ml EDP",
    "nameEn": "Nuit Parfaite by Rave 100ml EDP",
    "descriptionAr": "عطر Nuit Parfaite by Rave 100ml EDP من Rave للجنسين بطابع زهري ومائي.",
@@ -47798,7 +48151,7 @@
   "RAV-1083": {
    "sourceHash": "2x5hgv",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Pure Desire Gold by Rave 100ml EDP",
    "nameEn": "Pure Desire Gold by Rave 100ml EDP",
    "descriptionAr": "عطر Pure Desire Gold by Rave 100ml EDP من Rave للجنسين بطابع حلو وشرقي ومسكي.",
@@ -47838,7 +48191,7 @@
   "ASD-1084": {
    "sourceHash": "nyuhyx",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Ameerat Al Arab Prive Rose by Lattafa 100ml",
    "nameEn": "Ameerat Al Arab Prive Rose by Lattafa 100ml",
    "descriptionAr": "عطر Ameerat Al Arab Prive Rose by Lattafa 100ml من Asdaaf نسائي بطابع زهري وحلو ومسكي.",
@@ -47868,7 +48221,7 @@
   "RAV-1085": {
    "sourceHash": "xo0vza",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Now by Rave Perfume Lattafa 100ml For Man",
    "nameEn": "Now by Rave Perfume Lattafa 100ml For Man",
    "descriptionAr": "عطر Now by Rave Perfume Lattafa 100ml For Man من Rave رجالي بطابع منعش وخشبي ومسكي.",
@@ -47909,7 +48262,7 @@
   "ASD-1086": {
    "sourceHash": "kvm9cr",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Ameer Al Arab by Asdaaf 100ml EDP Men",
    "nameEn": "Ameer Al Arab by Asdaaf 100ml EDP Men",
    "descriptionAr": "عطر Ameer Al Arab by Asdaaf 100ml EDP Men من Asdaaf رجالي بطابع عود وزهري وحلو.",
@@ -47939,7 +48292,7 @@
   "ASD-1087": {
    "sourceHash": "106rmko",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Golden Oud by Lattafa Asdaaf 100 ml Unisex",
    "nameEn": "Golden Oud by Lattafa Asdaaf 100 ml Unisex",
    "descriptionAr": "عطر Golden Oud by Lattafa Asdaaf 100 ml Unisex من Asdaaf للجنسين بطابع عود وخشبي وشرقي.",
@@ -47976,7 +48329,7 @@
   "VEL-1088": {
    "sourceHash": "sgcmvg",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Asteria 100ml EDP",
    "nameEn": "Velixir Asteria 100ml EDP",
    "descriptionAr": "عطر Velixir Asteria 100ml EDP من Velixir للجنسين بطابع زهري ومائي ومسكي.",
@@ -48004,7 +48357,7 @@
   "ASD-1089": {
    "sourceHash": "19h3fb6",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Ameer Al Arab Imperium by Asdaaf 100ml EDP Men",
    "nameEn": "Ameer Al Arab Imperium by Asdaaf 100ml EDP Men",
    "descriptionAr": "عطر Ameer Al Arab Imperium by Asdaaf 100ml EDP Men من Asdaaf رجالي بطابع زهري وحلو ومسكي.",
@@ -48038,7 +48391,7 @@
   "VEL-1090": {
    "sourceHash": "1uapx6u",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Himeros 100ml EDP",
    "nameEn": "Velixir Himeros 100ml EDP",
    "descriptionAr": "عطر Velixir Himeros 100ml EDP من Velixir للجنسين بطابع خشبي ومنعش وحمضي.",
@@ -48068,7 +48421,7 @@
   "VEL-1091": {
    "sourceHash": "dd5v7h",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Galatea 100ml EDP",
    "nameEn": "Velixir Galatea 100ml EDP",
    "descriptionAr": "عطر Velixir Galatea 100ml EDP من Velixir للجنسين بطابع زهري وخشبي وحلو.",
@@ -48097,7 +48450,7 @@
   "VEL-1092": {
    "sourceHash": "1uuqog6",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Apollo 100ml EDP",
    "nameEn": "Velixir Apollo 100ml EDP",
    "descriptionAr": "عطر Velixir Apollo 100ml EDP من Velixir للجنسين بطابع خشبي وحلو وعنبري.",
@@ -48127,7 +48480,7 @@
   "VEL-1093": {
    "sourceHash": "vdl7s9",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Helios 100ml EDP",
    "nameEn": "Velixir Helios 100ml EDP",
    "descriptionAr": "عطر Velixir Helios 100ml EDP من Velixir للجنسين بطابع زهري وخشبي وحلو.",
@@ -48155,7 +48508,7 @@
   "VEL-1094": {
    "sourceHash": "1khqb4w",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Paladin 100ml EDP",
    "nameEn": "Velixir Paladin 100ml EDP",
    "descriptionAr": "عطر Velixir Paladin 100ml EDP من Velixir للجنسين بطابع حلو وشرقي ومنعش.",
@@ -48186,7 +48539,7 @@
   "PEN-1095": {
    "sourceHash": "1v9ztat",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Ultra Marine 100ml by Pendora Scents",
    "nameEn": "Ultra Marine 100ml by Pendora Scents",
    "descriptionAr": "عطر Ultra Marine 100ml by Pendora Scents من Pendora رجالي بطابع شرقي وزهري ومسكي.",
@@ -48218,7 +48571,7 @@
   "VEL-1096": {
    "sourceHash": "7iyd8g",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Nyx Velixir Parfums 100ml for Unisex",
    "nameEn": "Nyx Velixir Parfums 100ml for Unisex",
    "descriptionAr": "عطر Nyx Velixir Parfums 100ml for Unisex من Velixir للجنسين بطابع خشبي وشرقي وحلو.",
@@ -48248,7 +48601,7 @@
   "VEL-1097": {
    "sourceHash": "clcbtq",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Ares 100ml EDP",
    "nameEn": "Velixir Ares 100ml EDP",
    "descriptionAr": "عطر Velixir Ares 100ml EDP من Velixir للجنسين بطابع خشبي ومسكي وعنبري.",
@@ -48277,7 +48630,7 @@
   "VEL-1098": {
    "sourceHash": "152sp8v",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Aphrodite 100ml EDP",
    "nameEn": "Velixir Aphrodite 100ml EDP",
    "descriptionAr": "عطر Velixir Aphrodite 100ml EDP من Velixir للجنسين بطابع زهري وفواكه ومسكي.",
@@ -48305,7 +48658,7 @@
   "ASD-1099": {
    "sourceHash": "1mnrg34",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Majd Al Sultan by Asdaaf 100ml EDP",
    "nameEn": "Majd Al Sultan by Asdaaf 100ml EDP",
    "descriptionAr": "عطر Majd Al Sultan by Asdaaf 100ml EDP من Asdaaf رجالي بطابع شرقي وعود وحلو.",
@@ -48335,7 +48688,7 @@
   "VEL-1100": {
    "sourceHash": "1xyp0aj",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Selene Velixir Parfums 100ml",
    "nameEn": "Selene Velixir Parfums 100ml",
    "descriptionAr": "عطر Selene Velixir Parfums 100ml من Velixir للجنسين بطابع زهري وفواكه وحلو.",
@@ -48365,7 +48718,7 @@
   "VEL-1101": {
    "sourceHash": "1a0hftq",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Narcisus 100ml EDP",
    "nameEn": "Velixir Narcisus 100ml EDP",
    "descriptionAr": "عطر Velixir Narcisus 100ml EDP من Velixir للجنسين بطابع منعش وزهري وحلو.",
@@ -48394,7 +48747,7 @@
   "RAV-1102": {
    "sourceHash": "17isen8",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Now Intense by Rave 100ml EDP",
    "nameEn": "Now Intense by Rave 100ml EDP",
    "descriptionAr": "عطر Now Intense by Rave 100ml EDP من Rave رجالي بطابع حمضي ومسكي وعنبري.",
@@ -48434,7 +48787,7 @@
   "RAV-1103": {
    "sourceHash": "1p8ixte",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Now Rouge Perfume EDP 100ml by RAVE",
    "nameEn": "Now Rouge Perfume EDP 100ml by RAVE",
    "descriptionAr": "عطر Now Rouge Perfume EDP 100ml by RAVE من Rave للجنسين بطابع زهري وفواكه وحلو.",
@@ -48465,7 +48818,7 @@
   "VEL-1104": {
    "sourceHash": "ky638",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Harmonia Velixir Parfums 100ml for Unisex",
    "nameEn": "Harmonia Velixir Parfums 100ml for Unisex",
    "descriptionAr": "عطر Harmonia Velixir Parfums 100ml for Unisex من Velixir للجنسين بطابع شرقي وزهري ومنعش.",
@@ -48494,7 +48847,7 @@
   "VEL-1105": {
    "sourceHash": "pzwg2x",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Velixir Demeter 100ml EDP",
    "nameEn": "Velixir Demeter 100ml EDP",
    "descriptionAr": "عطر Velixir Demeter 100ml EDP من Velixir للجنسين بطابع زهري وخشبي ومسكي.",
@@ -48522,7 +48875,7 @@
   "RAV-1106": {
    "sourceHash": "12xlnos",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Au Soleil by Rave 100ml EDP",
    "nameEn": "Au Soleil by Rave 100ml EDP",
    "descriptionAr": "عطر Au Soleil by Rave 100ml EDP من Rave للجنسين بطابع زهري وفواكه.",
@@ -48550,7 +48903,7 @@
   "ASD-1107": {
    "sourceHash": "d6befr",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Shaghaf Man by Asdaaf (Lattafa) – 100 ml for Men",
    "nameEn": "Shaghaf Man by Asdaaf (Lattafa) – 100 ml for Men",
    "descriptionAr": "عطر Shaghaf Man by Asdaaf (Lattafa) – 100 ml for Men من Asdaaf رجالي بطابع حمضي وخشبي وشرقي.",
@@ -48594,7 +48947,7 @@
   "AHM-1108": {
    "sourceHash": "77y8l5",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Rose Noir by Ahmed Al Maghribi EDP Women",
    "nameEn": "Rose Noir by Ahmed Al Maghribi EDP Women",
    "descriptionAr": "عطر Rose Noir by Ahmed Al Maghribi EDP Women من Ahmed Al Maghribi نسائي بطابع زهري وحلو ومسكي.",
@@ -48633,7 +48986,7 @@
   "NAF-1109": {
    "sourceHash": "137xqug",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Oud Maluky by Nafahat 100ml Unisex",
    "nameEn": "Oud Maluky by Nafahat 100ml Unisex",
    "descriptionAr": "عطر Oud Maluky by Nafahat 100ml Unisex من Nafahat للجنسين بطابع عود ومسكي وعنبري.",
@@ -48668,7 +49021,7 @@
   "MAH-1110": {
    "sourceHash": "pqvu34",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Oud Al Khalifah by Mahabub Perfumes – 100 ml",
    "nameEn": "Oud Al Khalifah by Mahabub Perfumes – 100 ml",
    "descriptionAr": "عطر Oud Al Khalifah by Mahabub Perfumes – 100 ml من Mahabub Perfume للجنسين بطابع عود ومسكي وعنبري.",
@@ -48707,7 +49060,7 @@
   "NIC-1111": {
    "sourceHash": "18hulve",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Khanjar by Niche Emarati 85ml EDP",
    "nameEn": "Khanjar by Niche Emarati 85ml EDP",
    "descriptionAr": "عطر Khanjar by Niche Emarati 85ml EDP من Niche Emarati للجنسين بطابع عود وحلو ومسكي.",
@@ -48748,7 +49101,7 @@
   "FRE-1112": {
    "sourceHash": "8s0lqz",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Anatolia Absolus Les Extraits by French Avenue Unisex",
    "nameEn": "Anatolia Absolus Les Extraits by French Avenue Unisex",
    "descriptionAr": "عطر Anatolia Absolus Les Extraits by French Avenue Unisex من French Avenue للجنسين بطابع شرقي وعود وعنبري.",
@@ -48787,7 +49140,7 @@
   "FRE-1113": {
    "sourceHash": "kfn7kw",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Shadow Absolus by French Avenue Extrait Unisex",
    "nameEn": "Shadow Absolus by French Avenue Extrait Unisex",
    "descriptionAr": "عطر Shadow Absolus by French Avenue Extrait Unisex من French Avenue للجنسين بطابع خشبي وشرقي وعود.",
@@ -48829,7 +49182,7 @@
   "FRE-1114": {
    "sourceHash": "j0by1d",
    "editor": "rules",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-10-17T15:25:46.670Z",
    "nameAr": "Unknown Absolus Les Extraits by French Avenue",
    "nameEn": "Unknown Absolus Les Extraits by French Avenue",
    "descriptionAr": "عطر Unknown Absolus Les Extraits by French Avenue من French Avenue للجنسين بطابع خشبي وتوابل وزهري.",
