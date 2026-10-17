@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-17T16:57:50.585Z",
+ "updatedAt": "2026-10-17T18:59:47.444Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1114,
@@ -12,7 +12,7 @@
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-17T16:56:38.304Z",
+  "at": "2026-10-17T18:58:42.639Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,8 +25,8 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1028,
-    "listingOnly": 57,
+    "listingProducts": 1018,
+    "listingOnly": 63,
     "listingComplete": true,
     "added": 0,
     "refreshed": 25,
@@ -34,7 +34,7 @@
     "failedCount": 0,
     "viaShaheen": 0,
     "deferred": 0,
-    "gone": 7
+    "gone": 1
    }
   ],
   "rate": 13.0865,
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 72312
+  "durationMs": 64827
  },
  "items": [
   {
@@ -2968,16 +2968,6 @@
    "page": "p/opera-noir-by-maison-alhambra-100ml-edp-464.html"
   },
   {
-   "sku": "MAI-469",
-   "id": 469,
-   "name": "Smoked Oud & Vanilla by Maison Alhambra 100ml EDP",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/smoked-oud-and-vanilla-by-maison-alhambra-100ml-edp-469.html"
-  },
-  {
    "sku": "ALW-471",
    "id": 471,
    "name": "Special Oud by Al Wataniah – 100 ml Eau de Parfum",
@@ -3984,6 +3974,16 @@
     "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/oud-al-turas-100ml-by-ard-al-zaafaran-732.html"
+  },
+  {
+   "sku": "MAI-733",
+   "id": 733,
+   "name": "Philos Opus Noir by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/philos-opus-noir-by-maison-alhambra-100ml-edp-733.html"
   },
   {
    "sku": "GRA-734",
