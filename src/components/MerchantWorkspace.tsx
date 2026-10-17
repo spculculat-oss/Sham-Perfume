@@ -38,6 +38,7 @@ import {
   updateOrderStatus,
 } from '../utils/merchantDataStore';
 import { PLATFORM_MARGIN_PERCENT, calculateRetailPrice } from '../config/margin';
+import { StoreSalesCategoryChart } from './StoreSalesCategoryChart';
 
 const S: Record<string, LText> = {
   title: { ar:'لوحة التاجر', en:'Merchant Workspace', fr:'Espace Marchand', es:'Espacio Comerciante', it:'Spazio Mercante', de:'Händler Arbeitsbereich', ru:'Рабочее место Торговца', zh:'商家工作空间', tr:'Ticaretçi Çalışma Alanı', fa:'فضای کاری تجار' },
@@ -290,6 +291,13 @@ export const MerchantWorkspace: React.FC<{
                   </div>
                 ))}
               </div>
+
+              {/* Recharts Pie Chart: Category Sales Distribution */}
+              <StoreSalesCategoryChart
+                currentLang={currentLang}
+                merchantId={merchantId}
+                currencyCode={CUR}
+              />
 
               {/* Margin Info */}
               <div className="p-4 rounded-xl bg-gradient-to-r from-amber-50 to-stone-100 border border-amber-200/60">

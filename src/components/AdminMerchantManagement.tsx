@@ -29,6 +29,7 @@ import {
   getAdminNotes,
 } from '../utils/merchantDataStore';
 import { PLATFORM_MARGIN_PERCENT } from '../config/margin';
+import { StoreSalesCategoryChart } from './StoreSalesCategoryChart';
 
 const S: Record<string, LText> = {
   page_title: { ar:'لوحة تحكم الإدارة — التجار والطلبات', en:'Admin Dashboard — Merchants & Orders', fr:'Tableau de bord Admin — Marchands', es:'Panel de Admin — Mercaderes', it:'Dashboard Amministratore — Mercanti', de:'Admin-Dashboard — Händler', ru:'Панель администратора — Торговцы', zh:'管理员面板 — 商家', tr:'Yönetici Paneli — Ticaretçiler', fa:'پنل مدیریت — تجار' },
@@ -336,23 +337,28 @@ export const AdminMerchantManagement: React.FC<{
             {/* Content */}
             <div className="flex-1 overflow-auto p-4">
               {!selectedMerchantId ? (
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-stone-200 text-left">
-                      {(['company_col','margin_col','products_col','requests_col','revenue_col','channels_col','actions_col'] as const).map(k=>(
-                        <th key={k} className="py-3 px-4 text-xs font-bold text-stone-500 uppercase">{uiLabel(k, currentLang)}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredMerchants.length===0 ? (
-                      <tr><td colSpan={7} className="py-12 text-center text-stone-400">
-                        <Users className="w-12 h-12 mx-auto mb-3 opacity-50"/>
-                        <p className="text-sm">{L('no_data')}</p>
-                      </td></tr>
-                    ) : filteredMerchants.map(renderMerchantRow)}
-                  </tbody>
-                </table>
+                <div className="space-y-6">
+                  <StoreSalesCategoryChart currentLang={currentLang} currencyCode={CUR} />
+                  <div className="overflow-x-auto rounded-xl border border-stone-200 bg-white">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b border-stone-200 text-left">
+                          {(['company_col','margin_col','products_col','requests_col','revenue_col','channels_col','actions_col'] as const).map(k=>(
+                            <th key={k} className="py-3 px-4 text-xs font-bold text-stone-500 uppercase">{uiLabel(k, currentLang)}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredMerchants.length===0 ? (
+                          <tr><td colSpan={7} className="py-12 text-center text-stone-400">
+                            <Users className="w-12 h-12 mx-auto mb-3 opacity-50"/>
+                            <p className="text-sm">{L('no_data')}</p>
+                          </td></tr>
+                        ) : filteredMerchants.map(renderMerchantRow)}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               ) : (
                 <div className="space-y-4">
                   {/* Merchant Header */}
@@ -395,6 +401,8 @@ export const AdminMerchantManagement: React.FC<{
                       <div className="mt-1 font-bold text-lg text-amber-300">{uiLabel('pct_25', currentLang)}</div>
                     </div>
                   </div>
+
+                  <StoreSalesCategoryChart currentLang={currentLang} merchantId={selectedMerchantId || undefined} currencyCode={CUR} />
 
                   {/* Channels */}
                   <div className="p-4 rounded-xl border border-stone-200 bg-stone-50">

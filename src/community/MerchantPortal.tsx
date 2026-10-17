@@ -11,6 +11,8 @@ import { cx, resizeImage, type MerchantFile, type MerchantProduct, type Order } 
 import { refreshSession, type SessionState } from './session';
 import { ORDER_STATUS, merchantStatus } from './UserPortal';
 import { Btn, Card, Empty, Field, Sheet, Spinner, errorText, inputClass, money, timeAgo, tx, useLoad, type Lang } from './ui';
+import { StoreSalesCategoryChart } from '../components/StoreSalesCategoryChart';
+import type { SupportedLanguage } from '../types/i18n';
 
 const MARGIN = 0.5;
 const CURRENCIES = ['EGP', 'USD', 'EUR', 'GBP', 'SAR', 'AED', 'KWD', 'QAR', 'BHD', 'OMR', 'JOD', 'MYR', 'TRY', 'MAD', 'IQD', 'LYD', 'DZD', 'TND'].filter((c) => c === 'USD' || BUNDLED_FX.rates[c]);
@@ -82,6 +84,11 @@ function Dashboard({ lang, m, go }: { lang: Lang; m: MerchantFile; go: (r: strin
       <div className="grid grid-cols-2 gap-3 md:grid-cols-5">{tiles.map(([label, value, icon]) => (
         <Card key={label} className="p-4"><span className="text-amber-600">{icon}</span><p className="mt-1 text-xl font-black text-stone-900">{value}</p><p className="text-xs text-stone-500">{label}</p></Card>
       ))}</div>
+      <StoreSalesCategoryChart
+        currentLang={lang as SupportedLanguage}
+        merchantId={m.slug}
+        currencyCode={m.currency}
+      />
       <Card className="p-5">
         <h3 className="mb-3 font-bold">{t('إزاي البيع بيتم في شام؟', 'How selling works on Sham')}</h3>
         <ol className="space-y-2.5 text-sm leading-relaxed text-stone-700">
