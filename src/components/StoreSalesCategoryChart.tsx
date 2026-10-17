@@ -112,7 +112,7 @@ const L10N: Record<string, { ar: string; en: string }> = {
   },
 };
 
-function t(key: string, lang: SupportedLanguage): string {
+function chartL10n(key: string, lang: SupportedLanguage): string {
   const item = L10N[key];
   if (!item) return key;
   return lang === 'ar' ? item.ar : item.en;
@@ -198,7 +198,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
     const data: CategorySalesData[] = [
       {
         id: 'perfumes',
-        name: t('perfumes', currentLang),
+        name: chartL10n('perfumes', currentLang),
         nameEn: 'Fine Perfumes',
         value: perfumesRevenue,
         units: perfumesUnits,
@@ -208,11 +208,11 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
         borderLight: CATEGORY_COLORS.perfumes.border,
         textColor: CATEGORY_COLORS.perfumes.text,
         icon: Sparkles,
-        tagline: t('perfumes_tag', currentLang),
+        tagline: chartL10n('perfumes_tag', currentLang),
       },
       {
         id: 'oils',
-        name: t('oils', currentLang),
+        name: chartL10n('oils', currentLang),
         nameEn: 'Fragrance Oils',
         value: oilsRevenue,
         units: oilsUnits,
@@ -222,11 +222,11 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
         borderLight: CATEGORY_COLORS.oils.border,
         textColor: CATEGORY_COLORS.oils.text,
         icon: Droplets,
-        tagline: t('oils_tag', currentLang),
+        tagline: chartL10n('oils_tag', currentLang),
       },
       {
         id: 'raw_materials',
-        name: t('raw_materials', currentLang),
+        name: chartL10n('raw_materials', currentLang),
         nameEn: 'Raw Materials',
         value: rawMaterialsRevenue,
         units: rawMaterialsUnits,
@@ -236,12 +236,12 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
         borderLight: CATEGORY_COLORS.raw_materials.border,
         textColor: CATEGORY_COLORS.raw_materials.text,
         icon: FlaskConical,
-        tagline: t('raw_materials_tag', currentLang),
+        tagline: chartL10n('raw_materials_tag', currentLang),
       },
     ];
 
     const sorted = [...data].sort((a, b) => b.value - a.value);
-    const top = sorted[0]?.name || t('perfumes', currentLang);
+    const top = sorted[0]?.name || chartL10n('perfumes', currentLang);
 
     return {
       chartData: data,
@@ -290,19 +290,19 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
             <span>{item.name}</span>
           </div>
           <div className="text-stone-300 flex justify-between gap-4 font-mono-numbers">
-            <span>{t('revenue_label', currentLang)}</span>
+            <span>{chartL10n('revenue_label', currentLang)}</span>
             <span className="font-extrabold text-white">
               {item.value.toLocaleString()} {currencyCode}
             </span>
           </div>
           <div className="text-stone-300 flex justify-between gap-4 font-mono-numbers">
-            <span>{t('units_sold', currentLang)}:</span>
+            <span>{chartL10n('units_sold', currentLang)}:</span>
             <span>
-              {item.units} {t('units_suffix', currentLang)}
+              {item.units} {chartL10n('units_suffix', currentLang)}
             </span>
           </div>
           <div className="text-amber-400 font-bold pt-1 border-t border-stone-800 text-end font-mono-numbers">
-            {item.percentage}% {t('share_suffix', currentLang)}
+            {item.percentage}% {chartL10n('share_suffix', currentLang)}
           </div>
         </div>
       );
@@ -326,12 +326,12 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
           </div>
           <div>
             <h3 className="text-sm sm:text-base font-extrabold text-stone-900 flex items-center gap-2">
-              <span>{t('title', currentLang)}</span>
+              <span>{chartL10n('title', currentLang)}</span>
               <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
                 Recharts
               </span>
             </h3>
-            <p className="text-xs text-stone-500 mt-0.5">{t('subtitle', currentLang)}</p>
+            <p className="text-xs text-stone-500 mt-0.5">{chartL10n('subtitle', currentLang)}</p>
           </div>
         </div>
 
@@ -347,10 +347,10 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
                   ? 'bg-white text-stone-900 shadow-2xs'
                   : 'text-stone-600 hover:text-stone-900'
               }`}
-              title={t('view_pie', currentLang)}
+              title={chartL10n('view_pie', currentLang)}
             >
               <PieIcon className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">{t('view_pie', currentLang)}</span>
+              <span className="hidden sm:inline">{chartL10n('view_pie', currentLang)}</span>
             </button>
             <button
               type="button"
@@ -360,10 +360,10 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
                   ? 'bg-white text-stone-900 shadow-2xs'
                   : 'text-stone-600 hover:text-stone-900'
               }`}
-              title={t('view_bar', currentLang)}
+              title={chartL10n('view_bar', currentLang)}
             >
               <BarChart3 className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">{t('view_bar', currentLang)}</span>
+              <span className="hidden sm:inline">{chartL10n('view_bar', currentLang)}</span>
             </button>
           </div>
 
@@ -378,7 +378,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
                   : 'text-stone-600 hover:text-stone-900'
               }`}
             >
-              {t('metric_revenue', currentLang)}
+              {chartL10n('metric_revenue', currentLang)}
             </button>
             <button
               type="button"
@@ -389,7 +389,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
                   : 'text-stone-600 hover:text-stone-900'
               }`}
             >
-              {t('metric_units', currentLang)}
+              {chartL10n('metric_units', currentLang)}
             </button>
           </div>
 
@@ -406,7 +406,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
                     : 'text-stone-600 hover:text-stone-900'
                 }`}
               >
-                {t(`time_${filter}`, currentLang)}
+                {chartL10n(`time_${filter}`, currentLang)}
               </button>
             ))}
           </div>
@@ -416,17 +416,17 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
             type="button"
             onClick={handleExportCSV}
             className="p-1.5 sm:px-2.5 sm:py-1 rounded-xl border border-stone-200 text-stone-700 hover:bg-stone-50 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
-            title={t('export_csv', currentLang)}
+            title={chartL10n('export_csv', currentLang)}
           >
             {copiedExport ? (
               <>
                 <Check className="w-3.5 h-3.5 text-emerald-600" />
-                <span className="hidden sm:inline text-emerald-700">{t('export_success', currentLang)}</span>
+                <span className="hidden sm:inline text-emerald-700">{chartL10n('export_success', currentLang)}</span>
               </>
             ) : (
               <>
                 <Download className="w-3.5 h-3.5 text-stone-500" />
-                <span className="hidden sm:inline">{t('export_csv', currentLang)}</span>
+                <span className="hidden sm:inline">{chartL10n('export_csv', currentLang)}</span>
               </>
             )}
           </button>
@@ -437,7 +437,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div className="p-3.5 rounded-xl border border-stone-200/80 bg-stone-50/60">
           <span className="text-[11px] font-semibold text-stone-500 block">
-            {t('total_sales', currentLang)}
+            {chartL10n('total_sales', currentLang)}
           </span>
           <span className="text-lg font-extrabold text-stone-900 font-mono-numbers mt-0.5 block">
             {totalRevenue.toLocaleString()}{' '}
@@ -447,17 +447,17 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
 
         <div className="p-3.5 rounded-xl border border-stone-200/80 bg-stone-50/60">
           <span className="text-[11px] font-semibold text-stone-500 block">
-            {t('units_sold', currentLang)}
+            {chartL10n('units_sold', currentLang)}
           </span>
           <span className="text-lg font-extrabold text-stone-900 font-mono-numbers mt-0.5 block">
             {totalUnits.toLocaleString()}{' '}
-            <span className="text-xs text-stone-500 font-medium">{t('units_suffix', currentLang)}</span>
+            <span className="text-xs text-stone-500 font-medium">{chartL10n('units_suffix', currentLang)}</span>
           </span>
         </div>
 
         <div className="p-3.5 rounded-xl border border-amber-200/80 bg-amber-50/50">
           <span className="text-[11px] font-semibold text-amber-800 block">
-            {t('top_category', currentLang)}
+            {chartL10n('top_category', currentLang)}
           </span>
           <span className="text-base font-extrabold text-amber-950 truncate mt-0.5 block">
             {topCategoryName}
@@ -507,7 +507,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
               {/* Central Donut Readout */}
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                 <span className="text-[11px] font-semibold text-stone-500">
-                  {metric === 'revenue' ? t('total_sales', currentLang) : t('units_sold', currentLang)}
+                  {metric === 'revenue' ? chartL10n('total_sales', currentLang) : chartL10n('units_sold', currentLang)}
                 </span>
                 <span className="text-base font-extrabold text-stone-900 font-mono-numbers">
                   {metric === 'revenue'
@@ -515,7 +515,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
                     : totalUnits.toLocaleString()}
                 </span>
                 <span className="text-[10px] text-stone-400 font-medium">
-                  {metric === 'revenue' ? currencyCode : t('units_suffix', currentLang)}
+                  {metric === 'revenue' ? currencyCode : chartL10n('units_suffix', currentLang)}
                 </span>
               </div>
             </>
@@ -565,7 +565,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
           <div className="text-[11px] text-stone-400 flex items-center justify-between mb-1">
             <span className="flex items-center gap-1">
               <Info className="w-3.5 h-3.5" />
-              {t('click_hint', currentLang)}
+              {chartL10n('click_hint', currentLang)}
             </span>
             {selectedCategory && (
               <button
@@ -573,7 +573,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
                 onClick={() => setSelectedCategory(null)}
                 className="text-amber-800 font-bold hover:underline cursor-pointer"
               >
-                {t('reset_filter', currentLang)}
+                {chartL10n('reset_filter', currentLang)}
               </button>
             )}
           </div>
@@ -606,7 +606,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
                   </div>
                   <div className="flex items-center gap-2 font-mono-numbers">
                     <span className="font-bold text-xs text-stone-600">
-                      {item.units} {t('units_suffix', currentLang)}
+                      {item.units} {chartL10n('units_suffix', currentLang)}
                     </span>
                     <span className="font-extrabold text-xs text-stone-900">
                       {item.percentage}%
@@ -638,7 +638,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
                 {isSelected && (
                   <div className="mt-2.5 pt-2 border-t border-stone-200/80 flex items-center justify-between text-[11px] animate-in fade-in">
                     <span className="text-stone-500 font-medium">
-                      {t('avg_ticket', currentLang)}
+                      {chartL10n('avg_ticket', currentLang)}
                     </span>
                     <span className="font-extrabold text-stone-900 font-mono-numbers">
                       {avgUnitPrice.toLocaleString()} {currencyCode}
