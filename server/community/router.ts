@@ -15,7 +15,7 @@ import { timingSafeEqual } from 'node:crypto';
 import { RateLimiter, clientKey } from '../core/rateLimit';
 import type { FxTable } from '../../src/utils/pricing';
 import { Vault } from './crypto';
-import { DataKeyError, connectPglite, connectPostgres, databaseUrl, loadDataKey, migrate, type KeyMode, type Sql } from './db';
+import { DataKeyError, connectPglite, connectPostgres, databaseErrorKind, databaseHints, findDatabase, loadDataKey, migrate, type KeyMode, type Sql } from './db';
 import * as svc from './service';
 import * as social from './social';
 import * as chat from './messenger';
@@ -34,7 +34,11 @@ export interface CommunityOptions {
 export interface Community {
   /** The context when the database and key are configured (connects and migrates once). */
   ready(): Promise<svc.Ctx | undefined>;
-  status(): Promise<{ enabled: boolean; reason?: 'database' | 'key' | 'error'; store?: string; keyMode?: KeyMode }>;
+  status(): Promise<{
+    enabled: boolean; reason?: 'database' | 'key' | 'error'; store?: string; keyMode?: KeyMode;
+    /** The setting the database came from (name only), or — when none — the database-looking setting names found. */
+    databaseVar?: string; found?: string[]; errorKind?: ReturnType<typeof databaseErrorKind>; vercelEnv?: string;
+  }>;
   /** The signed-in member of a request (for the checkout), if any. */
   userFrom(req: express.Request): Promise<svc.SessionUser | undefined>;
 }
@@ -44,16 +48,20 @@ export function createCommunity(options: CommunityOptions = {}): Community {
   let ctx: Promise<svc.Ctx | undefined> | undefined;
   let reason: 'database' | 'key' | 'error' | undefined;
   let keyMode: KeyMode | undefined;
+  let databaseVar: string | undefined;
+  let errorKind: ReturnType<typeof databaseErrorKind> | undefined;
   const ready = () => (ctx ||= (async () => {
     const key = env.SHAM_DATA_KEY?.trim() || '';
     let sql = options.sql;
     if (!sql) {
-      const url = databaseUrl(env);
-      if (url) sql = await connectPostgres(url);
+      const db = findDatabase(env);
+      databaseVar = db.name;
+      if (db.url) sql = await connectPostgres(db.url);
       else if (!env.VERCEL && !env.SHAM_SERVERLESS && env.SHAM_COMMUNITY_DEV_DB) sql = await connectPglite(env.SHAM_COMMUNITY_DEV_DB === 'memory' ? undefined : env.SHAM_COMMUNITY_DEV_DB);
     }
     if (!sql) { reason = 'database'; return undefined; }
     await migrate(sql);
+    errorKind = undefined;
     try {
       const { secret, mode } = await loadDataKey(sql, key, (s) => new Vault(s));
       keyMode = mode;
@@ -66,20 +74,28 @@ export function createCommunity(options: CommunityOptions = {}): Community {
     }
   })().catch((error) => {
     console.error('[community] database unavailable:', error instanceof Error ? error.message : error);
-    reason = 'error'; ctx = undefined; // retry on the next request
+    reason = 'error'; errorKind = databaseErrorKind(error); ctx = undefined; // retry on the next request
     return undefined;
   }));
   return {
     ready,
     async status() {
-      const c = await ready();
-      return c ? { enabled: true, store: c.sql.kind, keyMode } : { enabled: false, reason };
+      const s = await statusOf();
+      return Object.fromEntries(Object.entries(s).filter(([, v]) => v !== undefined)) as typeof s; // no empty fields
     },
     async userFrom(req) {
       const c = await ready();
       return c ? svc.authenticate(c, bearer(req)) : undefined;
     },
   };
+  async function statusOf(): ReturnType<Community['status']> {
+    const c = await ready();
+    if (c) return { enabled: true, store: c.sql.kind, keyMode, databaseVar };
+    const vercelEnv = env.VERCEL_ENV || undefined;
+    if (reason === 'database') return { enabled: false, reason, found: databaseHints(env), vercelEnv };
+    if (reason === 'error') return { enabled: false, reason, databaseVar, errorKind, vercelEnv };
+    return { enabled: false, reason, databaseVar, vercelEnv };
+  }
 }
 
 const bearer = (req: express.Request) => (req.headers.authorization || '').replace(/^Bearer\s+/i, '').trim();
