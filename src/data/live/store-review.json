@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-17T20:57:52.134Z",
+ "updatedAt": "2026-10-17T22:54:30.378Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1114,
   "imported": 1063,
-  "ok": 517,
-  "warn": 597,
+  "ok": 515,
+  "warn": 599,
   "hidden": 0,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-17T20:56:53.132Z",
+  "at": "2026-10-17T22:53:27.118Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,8 +25,8 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1024,
-    "listingOnly": 63,
+    "listingProducts": 1020,
+    "listingOnly": 57,
     "listingComplete": true,
     "added": 0,
     "refreshed": 25,
@@ -34,7 +34,7 @@
     "failedCount": 0,
     "viaShaheen": 0,
     "deferred": 0,
-    "gone": 1
+    "gone": 7
    }
   ],
   "rate": 13.0865,
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 59024
+  "durationMs": 63288
  },
  "items": [
   {
@@ -3131,16 +3131,6 @@
    "page": "p/shams-al-emarat-khususi-100ml-edp-unisex-515.html"
   },
   {
-   "sku": "MAI-516",
-   "id": 516,
-   "name": "Your Touch Man by Maison Alhambra – 100 ml",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/your-touch-man-by-maison-alhambra-100-ml-516.html"
-  },
-  {
    "sku": "GRA-518",
    "id": 518,
    "name": "Strawberry by Grandeur Tubbees 50ml Woman",
@@ -3151,6 +3141,16 @@
    "page": "p/strawberry-by-grandeur-tubbees-50ml-woman-518.html"
   },
   {
+   "sku": "MAI-520",
+   "id": 520,
+   "name": "B.A.D. Homme by Maison Alhambra 100 ml for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/b-a-d-homme-by-maison-alhambra-100-ml-for-men-520.html"
+  },
+  {
    "sku": "MAI-526",
    "id": 526,
    "name": "Musk Vanille by Maison Alhambra 100ml EDP",
@@ -3159,16 +3159,6 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/musk-vanille-by-maison-alhambra-100ml-edp-526.html"
-  },
-  {
-   "sku": "MAI-527",
-   "id": 527,
-   "name": "Luxe Nightlife by Maison Alhambra Unisex 100 ml",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/luxe-nightlife-by-maison-alhambra-unisex-100-ml-527.html"
   },
   {
    "sku": "ALW-529",
@@ -4122,6 +4112,16 @@
    "page": "p/zeno-by-maison-alhambra-100-ml-for-women-763.html"
   },
   {
+   "sku": "GRA-767",
+   "id": 767,
+   "name": "Cherry Luxe by Grandeur Tubbees For Her 50ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/cherry-luxe-by-grandeur-tubbees-for-her-50ml-767.html"
+  },
+  {
    "sku": "ALW-769",
    "id": 769,
    "name": "Shagaf Al Ward by Al Wataniah 100ml EDP Women",
@@ -4480,6 +4480,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/kayaan-classic-by-al-wataniah-homme-intense-100ml-for-man-850.html"
+  },
+  {
+   "sku": "MAI-851",
+   "id": 851,
+   "name": "Versencia Noir by Maison Alhambra – 100 ml for Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/versencia-noir-by-maison-alhambra-100-ml-for-women-851.html"
   },
   {
    "sku": "MAI-852",
@@ -5201,6 +5211,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/khair-pistachio-by-paris-corner-100ml-edp-974.html"
+  },
+  {
+   "sku": "PAR-975",
+   "id": 975,
+   "name": "The Blue by Paris Corner 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/the-blue-by-paris-corner-100ml-edp-men-975.html"
   },
   {
    "sku": "PAR-976",
