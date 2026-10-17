@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense, useCallback } from 'react';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { Header } from './components/Header';
 import { UserProfilePage } from './components/UserProfilePage';
 import { Hero } from './components/Hero';
@@ -62,9 +62,10 @@ import { syncRecipeToAccount, trackLearning } from './community/sync';
 import { getSessionToken } from './community/api';
 import { profileFromMember, saveCurrentUserProfile } from './utils/authStorage';
 import { useSessionPick } from './community/session';
+import { ErrorBoundary, lazyWithReload } from './utils/lazyRetry';
 
 // «مجتمع شام» (social, messenger, member and merchant portals): its own bundle, loaded on the first #community visit.
-const CommunityApp = lazy(() => import('./community/CommunityApp'));
+const CommunityApp = lazyWithReload(() => import('./community/CommunityApp'));
 
 const LOCAL_STORAGE_KEY = 'miyaar_perfume_saved_formulas';
 
@@ -619,7 +620,7 @@ export default function App() {
   }, [communitySession.me]);
   useEffect(() => { syncCommunityUser(); }, [syncCommunityUser]);
   useEffect(() => {
-    if (communitySession.status === 'guest' && currentUser?.id.startsWith('u_') && !getSessionToken()) { logoutUser(); setCurrentUser(null); }
+    if (communitySession.status === 'guest' && String(currentUser?.id || '').startsWith('u_') && !getSessionToken()) { logoutUser(); setCurrentUser(null); }
   }, [communitySession.status, currentUser?.id]);
   // Learning progress in «بوابتي»: sections the member opens on the site.
   useEffect(() => trackLearning(activeTab, currentLang), [activeTab, currentLang, communitySession.status]);
@@ -1057,9 +1058,11 @@ export default function App() {
         )}
 
         {(activeTab === 'community' || activeTab.startsWith('community/')) && (
-          <Suspense fallback={<div className="py-24 text-center text-sm text-stone-500">…</div>}>
-            <CommunityApp lang={currentLang} route={activeTab.slice('community/'.length)} navigate={navigateToTab} onSignedIn={syncCommunityUser} />
-          </Suspense>
+          <ErrorBoundary key={activeTab} area="community" compact ar={currentLang === 'ar'}>
+            <Suspense fallback={<div className="py-24 text-center text-sm text-stone-500">…</div>}>
+              <CommunityApp lang={currentLang} route={activeTab.slice('community/'.length)} navigate={navigateToTab} onSignedIn={syncCommunityUser} />
+            </Suspense>
+          </ErrorBoundary>
         )}
 
         {activeTab === 'store' && (

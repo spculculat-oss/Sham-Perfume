@@ -9,6 +9,7 @@ import {
 import UpdatesPanel from './UpdatesPanel';
 import SupervisorPanel from './SupervisorPanel';
 import CommunityPanel from './CommunityPanel';
+import { ErrorBoundary } from '../utils/lazyRetry';
 import type {
   Conversation, CoreSettings, CouncilMember, CouncilRole, CouncilTranscript, EngineId, KnowledgeDoc, KnowledgeGap, ModelEngineId, Product, RequestStatus, ServiceDef, ServiceRequest, ShaheenSettings,
 } from '../../server/core/types';
@@ -131,6 +132,7 @@ export default function AdminApp() {
           </div>
         </aside>
         <main className="flex-1 p-4 lg:p-6 min-w-0">
+          <ErrorBoundary key={tab} area={`admin:${tab}`} compact ar>
           {tab === 'overview' && <OverviewPanel go={setTab} />}
           {tab === 'community' && <CommunityPanel />}
           {tab === 'agent' && <AgentPanel go={setTab} />}
@@ -147,6 +149,7 @@ export default function AdminApp() {
           {tab === 'supervisor' && <SupervisorPanel />}
           {tab === 'sandbox' && <SandboxPanel />}
           {tab === 'updates' && <UpdatesPanel />}
+          </ErrorBoundary>
         </main>
       </div>
     </Shell>
