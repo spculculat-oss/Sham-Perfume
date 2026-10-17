@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-16T22:58:38.492Z",
+ "updatedAt": "2026-10-17T01:11:41.240Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1114,
@@ -12,7 +12,7 @@
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-16T22:57:33.252Z",
+  "at": "2026-10-17T01:10:34.675Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -21,12 +21,12 @@
    {
     "id": "shamperfume",
     "currency": "MYR",
-    "rate": 13.081,
+    "rate": 13.0865,
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1025,
-    "listingOnly": 61,
+    "listingProducts": 1029,
+    "listingOnly": 62,
     "listingComplete": true,
     "added": 0,
     "refreshed": 25,
@@ -34,10 +34,10 @@
     "failedCount": 0,
     "viaShaheen": 0,
     "deferred": 0,
-    "gone": 3
+    "gone": 2
    }
   ],
-  "rate": 13.081,
+  "rate": 13.0865,
   "prices": {
    "count": 1063,
    "min": 750,
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 65265
+  "durationMs": 66597
  },
  "items": [
   {
@@ -2014,8 +2014,7 @@
    "status": "warn",
    "issues": [
     "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر",
-    "غير متوفر عند المورد"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/al-areeq-gold-by-lattafa-pride-100ml-edp-293.html"
   },
@@ -2069,16 +2068,6 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/eclaire-pistache-by-lattafa-100ml-edp-unisex-305.html"
-  },
-  {
-   "sku": "LAT-306",
-   "id": 306,
-   "name": "Ramz Silver by Lattafa 100ml EDP for Men",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/ramz-silver-by-lattafa-100ml-edp-for-men-306.html"
   },
   {
    "sku": "LAT-307",
@@ -3637,6 +3626,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/tiramisu-caramel-by-zimaya-100-ml-edp-648.html"
+  },
+  {
+   "sku": "VOL-650",
+   "id": 650,
+   "name": "Golden Hour by Volare 100ml EDP for Her",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/golden-hour-by-volare-100ml-edp-for-her-650.html"
   },
   {
    "sku": "AFN-651",
