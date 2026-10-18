@@ -1,12 +1,12 @@
 {
- "updatedAt": "2026-10-17T01:15:00.959Z",
+ "updatedAt": "2026-10-18T13:25:02.132Z",
  "engines": {
   "deepseek": {
-   "pausedUntil": "2026-10-17T08:05:00.000Z",
+   "pausedUntil": "2026-10-19T08:05:00.000Z",
    "reason": "no_credit"
   },
   "openai": {
-   "pausedUntil": "2026-10-17T08:05:00.000Z",
+   "pausedUntil": "2026-10-19T08:05:00.000Z",
    "reason": "no_credit"
   }
  }
