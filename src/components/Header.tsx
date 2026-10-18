@@ -76,7 +76,7 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
-  const [groupMenuStates, setGroupMenuStates] = useState<Record<string, boolean>>({});
+  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const appHeaderRef = useRef<HTMLElement>(null);
   const L = makeT(currentLang, S);
@@ -100,24 +100,18 @@ export const Header: React.FC<HeaderProps> = ({
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Element | null;
       if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
         setIsUserMenuOpen(false);
       }
-      // Close group menus when clicking outside
-      const groupButtons = document.querySelectorAll('[data-group-menu]');
-      const isGroupClick = Array.from(groupButtons).some(btn => btn.contains(e.target as Node));
-      if (!isGroupClick) {
-        setGroupMenuStates({});
+      // Close navigation dropdowns only if click is outside any nav group
+      if (!target?.closest('[data-nav-group]')) {
+        setOpenDropdownId(null);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  const isGroupMenuOpen = (id: string) => groupMenuStates[id] || false;
-  const setIsGroupMenuOpen = (id: string, open: boolean) => {
-    setGroupMenuStates(prev => ({ ...prev, [id]: open }));
-  };
 
   // Smart navigation groups - reduces 12 items to 4 main groups with dropdowns
   const navGroups = [
@@ -226,12 +220,16 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white/95 to-transparent pointer-events-none z-10"></div>
           {/* Gradient fade right edge */}
           <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white/95 to-transparent pointer-events-none z-10"></div>
-          <div className="flex items-center gap-2 relative z-20">
+          <div className="flex items-center gap-1.5 relative z-20">
             {navGroups.map((group) => (
               group.type === 'single' ? (
                 <button
                   key={group.id}
-                  onClick={() => setActiveTab(group.id)}
+                  type="button"
+                  onClick={() => {
+                    setActiveTab(group.id);
+                    setOpenDropdownId(null);
+                  }}
                   className={`transition-all py-1.5 px-2.5 rounded-lg flex items-center gap-1.5 cursor-pointer ${
                     (activeTab === group.id || activeTab.startsWith(`${group.id}/`))
                       ? 'text-stone-950 font-bold bg-stone-100 shadow-2xs border border-stone-200/80'
@@ -243,26 +241,28 @@ export const Header: React.FC<HeaderProps> = ({
                   <group.icon className={`w-4.5 h-4.5 ${group.iconColor} shrink-0`} />
                 </button>
               ) : (
-                <div key={group.id} className="relative">
+                <div key={group.id} className="relative" data-nav-group="true">
                   <button
-                    data-group-menu="true"
-                    onClick={() => setIsGroupMenuOpen(group.id, !isGroupMenuOpen(group.id))}
+                    type="button"
+                    onClick={() => setOpenDropdownId(prev => prev === group.id ? null : group.id)}
                     className={`transition-all py-1.5 px-2.5 rounded-lg flex items-center gap-1 cursor-pointer ${
-                      isGroupMenuOpen(group.id)
+                      openDropdownId === group.id || group.items?.some(it => activeTab === it.id)
                         ? 'text-stone-950 font-bold bg-stone-100 shadow-2xs border border-stone-200/80'
                         : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50'
                     }`}
                     title={group.fullLabel}
                     aria-label={group.fullLabel}
+                    aria-expanded={openDropdownId === group.id}
                   >
                     <group.icon className={`w-4.5 h-4.5 ${group.iconColor} shrink-0`} />
-                    <span className="absolute -top-1.5 -right-1.5 px-1 py-0 rounded-full bg-amber-500 text-white text-[9px] font-bold leading-none">
+                    <span className="text-xs font-semibold text-stone-800">{group.label}</span>
+                    <span className="px-1 py-0 rounded-full bg-amber-500 text-white text-[9px] font-bold leading-none">
                       {group.items?.length}
                     </span>
-                    <ChevronDown className="w-3 h-3 text-stone-400 ml-0.5 shrink-0" />
+                    <ChevronDown className={`w-3 h-3 text-stone-400 ml-0.5 shrink-0 transition-transform duration-200 ${openDropdownId === group.id ? 'rotate-180' : ''}`} />
                   </button>
-                  {isGroupMenuOpen(group.id) && (
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50 min-w-[280px] rounded-xl bg-white border border-stone-200 shadow-xl overflow-hidden animate-in fade-in zoom-in-95">
+                  {openDropdownId === group.id && (
+                    <div className="absolute top-full mt-2 z-50 min-w-[280px] rounded-xl bg-white border border-stone-200 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 ltr:left-0 rtl:right-0">
                       <div className="px-3 py-2 bg-amber-50 border-b border-amber-100 rounded-t-xl">
                         <div className="flex items-center gap-2">
                           <div className={`w-2 h-2 rounded-full ${group.iconColor?.replace('text-emerald-500', 'bg-emerald-500').replace('text-amber-700', 'bg-amber-500').replace('text-amber-600', 'bg-amber-500')}`}></div>
@@ -271,43 +271,47 @@ export const Header: React.FC<HeaderProps> = ({
                             {group.items?.length} {uiLabel('unit_tools', currentLang)}
                           </span>
                         </div>
-                        <p className="text-[10px] text-amber-700 mt-0.5 leading-tight">
+                        <p className="text-[10px] text-amber-700 mt-0.5 leading-tight text-start">
                           {group.id === 'tools' && uiLabel('group_tools_desc', currentLang)}
                           {group.id === 'explore' && uiLabel('group_explore_desc', currentLang)}
                           {group.id === 'home' && uiLabel('group_home_desc', currentLang)}
                           {group.id === 'master_ai' && uiLabel('group_ai_desc', currentLang)}
                         </p>
                       </div>
-                      <div className="p-1">
-                        {group.items?.map((item, idx) => (
-                        <button
-                          key={item.id}
-                          onClick={() => {
-                            setActiveTab(item.id);
-                            setIsGroupMenuOpen(group.id, false);
-                          }}
-                          className={`w-full px-3 py-2 text-left flex items-center gap-2.5 transition-colors cursor-pointer ${
-                            activeTab === item.id
-                              ? 'bg-amber-50 text-amber-900 font-semibold border-l-3 border-amber-500 rounded-l-lg pl-3'
-                              : 'hover:bg-stone-50 text-stone-700 rounded-lg'
-                          }`}
-                        >
-                          {item.isNew && (
-                            <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30 shrink-0 ml-1">
-                              NEW
-                            </span>
-                          )}
-                          <item.icon className="w-4 h-4 text-stone-500 shrink-0" />
-                          <span className="text-sm font-medium">{item.fullLabel}</span>
-                        </button>
-                      ))}  // end map
-                      </div>  // end items container
+                      <div className="p-1 space-y-0.5 max-h-[calc(100vh-140px)] overflow-y-auto">
+                        {group.items?.map((item) => (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => {
+                              setActiveTab(item.id);
+                              setOpenDropdownId(null);
+                            }}
+                            className={`w-full px-3 py-2 text-start flex items-center justify-between gap-2.5 transition-colors cursor-pointer rounded-lg ${
+                              activeTab === item.id
+                                ? 'bg-amber-50 text-amber-900 font-semibold border-s-3 border-amber-500 ps-3'
+                                : 'hover:bg-stone-50 text-stone-700'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2.5 min-w-0">
+                              <item.icon className={`w-4 h-4 shrink-0 ${activeTab === item.id ? 'text-amber-700' : 'text-stone-500'}`} />
+                              <span className="text-sm font-medium truncate">{item.fullLabel}</span>
+                            </div>
+                            {item.isNew && (
+                              <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30 shrink-0">
+                                NEW
+                              </span>
+                            )}
+                          </button>
+                        ))}
+                      </div>
                       <div className="mt-1 pt-1 border-t border-stone-100">
                         <button
-                          onClick={() => setIsGroupMenuOpen(group.id, false)}
-                          className="w-full px-3 py-1.5 text-center text-xs text-stone-500 hover:text-stone-700 hover:bg-stone-50 rounded-lg transition-colors"
+                          type="button"
+                          onClick={() => setOpenDropdownId(null)}
+                          className="w-full px-3 py-1.5 text-center text-xs text-stone-500 hover:text-stone-700 hover:bg-stone-50 rounded-lg transition-colors cursor-pointer"
                         >
-                          {activeTab === group.id ? uiLabel('close', currentLang) : uiLabel('close_menu', currentLang)}
+                          {uiLabel('close_menu', currentLang)}
                         </button>
                       </div>
                     </div>
@@ -473,74 +477,112 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Mobile & Tablet Navigation - Condensed grouped view */}
-      <div className="xl:hidden">
+      <div className="xl:hidden relative" data-nav-group="true">
         <div className="flex items-center gap-2 overflow-x-auto pt-2 mt-2 border-t border-stone-100 text-xs no-scrollbar">
           {/* Mobile nav groups as scrollable pills */}
-          {navGroups.map((group) => (
-            group.type === 'single' ? (
-              <button
-                key={group.id}
-                onClick={() => setActiveTab(group.id)}
-                className={`whitespace-nowrap px-3 py-1.5 rounded-lg flex items-center gap-1.5 shrink-0 ${
-                  (activeTab === group.id || activeTab.startsWith(`${group.id}/`))
-                    ? 'bg-amber-900 text-white font-bold shadow-xs'
-                    : 'text-stone-700 hover:text-stone-900 bg-stone-100/90 font-medium'
-                }`}
-                title={group.fullLabel}
-              >
-                <group.icon className={`w-3.5 h-3.5 ${group.iconColor.replace('text-emerald-500', 'text-emerald-400').replace('text-amber-700', 'text-amber-300').replace('text-amber-600', 'text-amber-500')} shrink-0`} />
-                <span className="text-[11px]">{group.label}</span>
-              </button>
-            ) : (
-              <div key={group.id} className="relative shrink-0">
-                {/* Group pill */}
+          {navGroups.map((group) => {
+            if (group.type === 'single') {
+              const isActive = activeTab === group.id || activeTab.startsWith(`${group.id}/`);
+              return (
                 <button
-                  onClick={() => setIsGroupMenuOpen(group.id, !isGroupMenuOpen(group.id))}
-                  className={`whitespace-nowrap px-3 py-1.5 rounded-lg flex items-center gap-1.5 shrink-0 ${
-                    isGroupMenuOpen(group.id)
+                  key={group.id}
+                  type="button"
+                  onClick={() => {
+                    setActiveTab(group.id);
+                    setOpenDropdownId(null);
+                  }}
+                  className={`whitespace-nowrap px-3 py-1.5 rounded-lg flex items-center gap-1.5 shrink-0 cursor-pointer transition-colors ${
+                    isActive
                       ? 'bg-amber-900 text-white font-bold shadow-xs'
                       : 'text-stone-700 hover:text-stone-900 bg-stone-100/90 font-medium'
                   }`}
                   title={group.fullLabel}
                 >
-                  <group.icon className={`w-3.5 h-3.5 ${group.iconColor.replace('text-emerald-500', 'text-emerald-400').replace('text-amber-700', 'text-amber-300').replace('text-amber-600', 'text-amber-500')} shrink-0`} />
+                  <group.icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-amber-300' : group.iconColor}`} />
                   <span className="text-[11px]">{group.label}</span>
-                  <span className="px-1 py-0.5 rounded-full bg-amber-100 text-[10px] font-medium text-amber-800 shrink-0">
-                    {group.items?.length}
-                  </span>
                 </button>
-                
-                {/* Group dropdown for mobile */}
-                {isGroupMenuOpen(group.id) && (
-                  <div className="absolute top-full left-0 mt-2 min-w-[240px] rounded-xl bg-white border border-stone-200 shadow-xl overflow-hidden animate-in fade-in zoom-in-95">
-                    {group.items?.map((item) => (
-                      <button
-                        key={item.id}
-                        onClick={() => {
-                          setActiveTab(item.id);
-                          setIsGroupMenuOpen(group.id, false);
-                        }}
-                        className={`w-full px-4 py-2 text-left flex items-center gap-2 transition-colors cursor-pointer ${
-                          activeTab === item.id
-                            ? 'bg-amber-50 text-amber-900 font-semibold'
-                            : 'hover:bg-stone-50 text-stone-700'
-                        }`}
-                      >
-                        {item.isNew && (
-                          <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30 shrink-0">
-                            NEW
-                          </span>
-                        )}
-                        <item.icon className="w-3.5 h-3.5 text-stone-500 shrink-0" />
-                        <span className="text-xs">{item.fullLabel}</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )
-          ))}
+              );
+            }
+            const isGroupActive = group.items?.some((it) => activeTab === it.id);
+            const isOpen = openDropdownId === group.id;
+            return (
+              <button
+                key={group.id}
+                type="button"
+                onClick={() => setOpenDropdownId(prev => prev === group.id ? null : group.id)}
+                className={`whitespace-nowrap px-3 py-1.5 rounded-lg flex items-center gap-1.5 shrink-0 cursor-pointer transition-colors ${
+                  isOpen || isGroupActive
+                    ? 'bg-amber-900 text-white font-bold shadow-xs'
+                    : 'text-stone-700 hover:text-stone-900 bg-stone-100/90 font-medium'
+                }`}
+                title={group.fullLabel}
+                aria-expanded={isOpen}
+              >
+                <group.icon className={`w-3.5 h-3.5 shrink-0 ${isOpen || isGroupActive ? 'text-amber-300' : group.iconColor}`} />
+                <span className="text-[11px]">{group.label}</span>
+                <span className={`px-1 py-0.5 rounded-full text-[10px] font-bold ${
+                  isOpen || isGroupActive ? 'bg-amber-800 text-amber-200' : 'bg-amber-100 text-amber-800'
+                }`}>
+                  {group.items?.length}
+                </span>
+                <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+              </button>
+            );
+          })}
         </div>
+
+        {/* Mobile Dropdown Panel — OUTSIDE the overflow-x-auto container so it is NEVER clipped */}
+        {openDropdownId && (() => {
+          const activeGroup = navGroups.find(g => g.id === openDropdownId);
+          if (!activeGroup || activeGroup.type !== 'dropdown') return null;
+          return (
+            <div className="mt-2 p-2.5 rounded-2xl bg-white border border-amber-200/90 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2">
+              <div className="flex items-center justify-between px-2.5 py-1.5 mb-2 border-b border-stone-100 bg-amber-50/80 rounded-xl">
+                <div className="flex items-center gap-2">
+                  <activeGroup.icon className={`w-4 h-4 ${activeGroup.iconColor}`} />
+                  <span className="text-xs font-bold text-amber-950">{activeGroup.fullLabel}</span>
+                  <span className="px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30">
+                    {activeGroup.items?.length} {uiLabel('unit_tools', currentLang)}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setOpenDropdownId(null)}
+                  className="text-[11px] font-semibold text-stone-500 hover:text-stone-800 px-2 py-0.5 rounded cursor-pointer"
+                >
+                  {uiLabel('close', currentLang)} ✕
+                </button>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 max-h-64 overflow-y-auto">
+                {activeGroup.items?.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => {
+                      setActiveTab(item.id);
+                      setOpenDropdownId(null);
+                    }}
+                    className={`w-full px-3 py-2 text-start flex items-center justify-between gap-2 rounded-xl transition-colors cursor-pointer ${
+                      activeTab === item.id
+                        ? 'bg-amber-100 text-amber-950 font-bold border-s-4 border-amber-600'
+                        : 'hover:bg-stone-50 text-stone-700 font-medium'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 min-w-0">
+                      <item.icon className={`w-3.5 h-3.5 shrink-0 ${activeTab === item.id ? 'text-amber-700' : 'text-stone-500'}`} />
+                      <span className="text-xs truncate">{item.fullLabel}</span>
+                    </div>
+                    {item.isNew && (
+                      <span className="px-1.5 py-0.2 rounded bg-amber-500 text-white text-[9px] font-bold shrink-0">
+                        NEW
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
       </div>
     </header>
     {/* Admin Management Modal */}
