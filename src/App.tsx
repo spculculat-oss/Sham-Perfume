@@ -27,6 +27,7 @@ import { CountryAndAddressModal } from './components/CountryAndAddressModal';
 import { AuthModal } from './components/AuthModal';
 import { DataPrivacyModal } from './components/DataPrivacyModal';
 import { LegalCenter } from './components/LegalCenter';
+import { CookieConsent } from './components/CookieConsent';
 import { useSeo } from './hooks/useSeo';
 import {
   FormulationState,
@@ -1302,6 +1303,9 @@ export default function App() {
           }}
         />
       )}
+
+      {/* Cookie Consent Banner — L-12 Fix: GDPR/ePrivacy consent */}
+      <CookieConsent currentLang={currentLang} onOpenPolicy={() => { setLegalInitialTab('cookies'); setIsLegalCenterOpen(true); activeModalsRef.current.legal = true; }} />
 
       </div>
     </LanguageProvider>

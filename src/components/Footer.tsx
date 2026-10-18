@@ -220,6 +220,11 @@ export const Footer: React.FC<FooterProps> = ({
               <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇪🇺 EU ODR</a>
               <a href="https://u.ae/en/information-and-services/social-affairs/having-a-consumer-complaint" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇦🇪 UAE</a>
             </div>
+            <div className="mt-2 flex flex-wrap gap-2 text-[10px] items-center">
+              <button onClick={() => window.dispatchEvent(new CustomEvent("open-cookie-settings"))} className="text-stone-400 hover:text-white underline cursor-pointer">🍪 Cookie Settings</button>
+              <span className="text-stone-600">·</span>
+              <span className="text-stone-500">DPO: dpo@sham-perfume.com</span>
+            </div>
           </div>
           <div className="md:col-span-4 bg-stone-900 rounded-xl border border-stone-800 p-3 space-y-1">
             <div className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">⚖️ {currentLang === 'ar' ? 'معلومات قانونية' : 'Legal Info'}</div>
