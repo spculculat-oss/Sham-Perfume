@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T01:11:53.520Z",
+ "updatedAt": "2026-10-18T03:00:48.395Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1114,
   "imported": 1063,
-  "ok": 515,
-  "warn": 599,
+  "ok": 516,
+  "warn": 598,
   "hidden": 0,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-18T01:10:50.745Z",
+  "at": "2026-10-18T02:59:39.635Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,8 +25,8 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1023,
-    "listingOnly": 58,
+    "listingProducts": 1028,
+    "listingOnly": 60,
     "listingComplete": true,
     "added": 0,
     "refreshed": 25,
@@ -34,7 +34,7 @@
     "failedCount": 0,
     "viaShaheen": 0,
     "deferred": 0,
-    "gone": 6
+    "gone": 4
    }
   ],
   "rate": 13.0813,
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 62807
+  "durationMs": 68793
  },
  "items": [
   {
@@ -3151,6 +3151,16 @@
    "page": "p/strawberry-by-grandeur-tubbees-50ml-woman-518.html"
   },
   {
+   "sku": "MAI-520",
+   "id": 520,
+   "name": "B.A.D. Homme by Maison Alhambra 100 ml for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/b-a-d-homme-by-maison-alhambra-100-ml-for-men-520.html"
+  },
+  {
    "sku": "MAI-526",
    "id": 526,
    "name": "Musk Vanille by Maison Alhambra 100ml EDP",
@@ -3234,16 +3244,6 @@
    "page": "p/armaf-club-de-nuit-iconic-10ml-edp-547.html"
   },
   {
-   "sku": "ARD-557",
-   "id": 557,
-   "name": "Fakhar Al Oud by Ard Al Zaafaran – 100 ml Man",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/fakhar-al-oud-by-ard-al-zaafaran-100-ml-man-557.html"
-  },
-  {
    "sku": "ZIM-562",
    "id": 562,
    "name": "Inekas Luna by Zimaya 100ml EDP Men",
@@ -3263,16 +3263,6 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/snow-white-200ml-for-man-silver-mountain-566.html"
-  },
-  {
-   "sku": "ZIM-569",
-   "id": 569,
-   "name": "Happy Oud by Zimaya 100ml Extrait Unisex",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/happy-oud-by-zimaya-100ml-extrait-unisex-569.html"
   },
   {
    "sku": "AFN-571",
