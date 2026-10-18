@@ -34701,7 +34701,7 @@
       "brand": "Maison Alhambra",
       "supplierPrice": 2158.41,
       "ourPrice": 3240,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -34740,7 +34740,8 @@
       "importedVia": "json-ld",
       "reviewIssues": [
         "وصف المورد قصير",
-        "المورد لم ينشر نوتات العطر"
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
       ]
     },
     {
@@ -40308,11 +40309,13 @@
         "https://www.shamperfume.com/cdn/large/perfumes/zimaya/minyak-wangi-oud-is-great-zimaya-tahan-lama-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/zimaya/zimaya-oud-is-great-100ml-edp-unisex-malaysia.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/zimaya/zimaya-oud-is-great-unisex-perfume-tahan-lama-malaysia-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/perfumes/zimaya/oud-is-great-zimaya-100ml-edp-unisex-malaysia.jpg"
+        "https://www.shamperfume.com/cdn/large/perfumes/zimaya/oud-is-great-zimaya-100ml-perfume-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/zimaya/oud-is-great-zimaya-suit-up-moment-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/zimaya/oud-is-great-zimaya-royal-oud-market-100ml-edp.jpg"
       ],
       "category": "مختلط",
       "brand": "Zimaya",
-      "supplierPrice": 2472.31,
+      "supplierPrice": 2472.37,
       "ourPrice": 3710,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -40325,7 +40328,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 189,
       "supplierSalePrice": 140,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/zimaya/oud-is-great/",
       "slug": "oud-is-great-by-zimaya-100ml-edp-unisex-627",
       "sizeMl": 100,
@@ -40353,7 +40356,7 @@
       "occasionsSource": [],
       "barcode": "6290171070269",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld"
     },
     {
@@ -40370,11 +40373,13 @@
         "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/fortnight-maison-alhambra-100ml-edp-men-perfume-malaysia-5.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/fortnight-maison-alhambra-100ml-edp-men-perfume-malaysia-6.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/fortnight-maison-alhambra-100ml-edp-men-perfume-malaysia-4.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/fortnight-maison-alhambra-100ml-edp-men-perfume-malaysia-7.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/fortnight-maison-alhambra-100ml-edp-men-perfume-malaysia-9.jpg",
         "https://www.shamperfume.com/cdn/OGImage/perfumes/maison-alhambra/fortnight-maison-alhambra-100ml-edp-men-perfume-malaysia-1.jpg"
       ],
       "category": "رجالي",
       "brand": "Maison Alhambra",
-      "supplierPrice": 1805.18,
+      "supplierPrice": 1805.22,
       "ourPrice": 2710,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -40386,7 +40391,7 @@
       "supplierSku": "Fortnight-6828",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 138,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/fortnight/",
       "slug": "fortnight-by-maison-alhambra-100ml-edp-men-628",
       "sizeMl": 100,
@@ -40423,7 +40428,7 @@
       ],
       "barcode": "6291107459219",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -40443,11 +40448,13 @@
         "https://www.shamperfume.com/cdn/large/perfumes/armaf/aoud-odyssey-armaf-perfume-oud-smoky-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/armaf/aoud-odyssey-car-look-guna-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/armaf/aoud-odyssey-klcc-tangga-pegang-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/perfumes/armaf/aoud-odyssey-armaf-perfume-lelaki-oud-woody-100ml-edp.jpg"
+        "https://www.shamperfume.com/cdn/large/perfumes/armaf/aoud-odyssey-home-mirror-tengok-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/armaf/aoud-odyssey-shop-kaunter-pegang-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/armaf/aoud-odyssey-armaf-men-fragrance-oud-amber-100ml-edp.jpg"
       ],
       "category": "رجالي",
       "brand": "Armaf",
-      "supplierPrice": 2550.8,
+      "supplierPrice": 2550.85,
       "ourPrice": 3830,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -40459,7 +40466,7 @@
       "supplierSku": "Aoud-Odyss-92",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 195,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/armaf/armaf-aoud-odyssey/",
       "slug": "armaf-aoud-odyssey-100ml-edp-men-629",
       "sizeMl": 100,
@@ -40492,7 +40499,7 @@
       ],
       "barcode": "6294015166149",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -40512,11 +40519,13 @@
         "https://www.shamperfume.com/cdn/large/magnate-noble-by-khadlaj-100ml-edp-3.jpg",
         "https://www.shamperfume.com/cdn/large/magnate-noble-by-khadlaj-100ml-edp-4.jpg",
         "https://www.shamperfume.com/cdn/large/magnate-noble-by-khadlaj-100ml-edp-5.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/magnate-noble-by-khadlaj-100ml-edp-1.jpg"
+        "https://www.shamperfume.com/cdn/large/magnate-noble-by-khadlaj-100ml-edp-6.jpg",
+        "https://www.shamperfume.com/cdn/large/magnate-noble-by-khadlaj-100ml-edp-7.jpg",
+        "https://www.shamperfume.com/cdn/large/magnate-noble-by-khadlaj-100ml-edp-8.jpg"
       ],
       "category": "رجالي",
       "brand": "Khadlaj",
-      "supplierPrice": 2210.69,
+      "supplierPrice": 2210.74,
       "ourPrice": 3320,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -40528,7 +40537,7 @@
       "supplierSku": "MAGNATE-NOBLE-KHADLAJ",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 169,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/khadlaj/magnate-noble-khadlaj/",
       "slug": "magnate-noble-by-khadlaj-100ml-edp-630",
       "sizeMl": 100,
@@ -40555,7 +40564,7 @@
       ],
       "barcode": "6291107975054",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر",
@@ -40580,7 +40589,7 @@
       ],
       "category": "مختلط",
       "brand": "Maison Alhambra",
-      "supplierPrice": 1700.53,
+      "supplierPrice": 1700.57,
       "ourPrice": 2555,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -40592,7 +40601,7 @@
       "supplierSku": "opulence-leather-88",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 130,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/opulence-leather/",
       "slug": "opulence-leather-by-maison-alhambra-100-ml-man-631",
       "sizeMl": 100,
@@ -40627,7 +40636,7 @@
       ],
       "barcode": "6291108730041",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -40653,7 +40662,7 @@
       ],
       "category": "رجالي",
       "brand": "Zimaya",
-      "supplierPrice": 4512.95,
+      "supplierPrice": 4513.05,
       "ourPrice": 6770,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -40666,7 +40675,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 345,
       "supplierSalePrice": 179,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/zimaya/modhesh-aura/",
       "slug": "modhesh-elegant-pour-homme-by-zimaya-100ml-edp-632",
       "sizeMl": 100,
@@ -40697,7 +40706,7 @@
       ],
       "barcode": "6290171075646",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld"
     },
     {
@@ -40714,15 +40723,13 @@
         "https://www.shamperfume.com/cdn/large/perfumes/gulf-orchid/minyak-wangi-sweet-heaven-gulf-orchid-unisex-tahan-lama-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/gulf-orchid/gulf-orchid-sweet-heaven-woody-sweet-perfume-malaysia-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/gulf-orchid/beli-perfume-sweet-heaven-original-malaysia-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/gulf-orchid/haruman-premium-sweet-heaven-gulf-orchid-unisex-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/gulf-orchid/sweet-heaven-100ml-edp-by-gulf-orchid-unisex-malaysia.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/gulf-orchid/perfume-sweet-heaven-gulf-orchid-haruman-premium-100ml-edp.jpg"
+        "https://www.shamperfume.com/cdn/OGImage/perfumes/gulf-orchid/sweet-heaven-gulf-orchid-100ml-edp-unisex-perfume-malaysia.jpg"
       ],
       "category": "مختلط",
       "brand": "Gulf Orchid",
-      "supplierPrice": 2485.39,
+      "supplierPrice": 2485.45,
       "ourPrice": 3730,
-      "stockStatus": "out_of_stock",
+      "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -40733,7 +40740,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 190,
       "supplierSalePrice": 105,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/gulf-orchid/sweet-heaven/",
       "slug": "sweet-heaven-by-gulf-orchid-100ml-edp-unisex-633",
       "sizeMl": 100,
@@ -40765,11 +40772,8 @@
       "occasionsSource": [],
       "barcode": "6291107019741",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
-      "importedVia": "json-ld",
-      "reviewIssues": [
-        "غير متوفر عند المورد"
-      ]
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
+      "importedVia": "json-ld"
     },
     {
       "id": 634,
@@ -40791,8 +40795,8 @@
       ],
       "category": "مختلط",
       "brand": "Volare",
-      "supplierPrice": 2419.99,
-      "ourPrice": 3630,
+      "supplierPrice": 2420.04,
+      "ourPrice": 3635,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
@@ -40804,7 +40808,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 185,
       "supplierSalePrice": 120,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/volare/society-974/",
       "slug": "society-974-volare-100-ml-edp-unisex-634",
       "sizeMl": 100,
@@ -40835,7 +40839,7 @@
       ],
       "barcode": "6294019022489",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر",
@@ -40935,7 +40939,7 @@
       ],
       "category": "نسائي",
       "brand": "Grandeur",
-      "supplierPrice": 2472.31,
+      "supplierPrice": 2472.37,
       "ourPrice": 3710,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -40948,7 +40952,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 189,
       "supplierSalePrice": 120,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/grandeur/opulent-bloom-red/",
       "slug": "opulent-bloom-red-by-grandeur-elite-100-ml-for-women-636",
       "sizeMl": 100,
@@ -40983,7 +40987,7 @@
       "occasionsSource": [],
       "barcode": "5055810035969",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld"
     },
     {
@@ -41000,13 +41004,11 @@
         "https://www.shamperfume.com/cdn/large/perfumes/armaf/hunter-intense-armaf-men-fragrance-fresh-woody-long-lasting-malaysia-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/armaf/hunter-intense-armaf-perfume-lelaki-tahan-lama-fresh-spicy-moden-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/armaf/hunter-intense-armaf-perfume-lelaki-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/armaf/armaf-hunter-intense-urban-arrival-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/armaf/armaf-hunter-intense-gym-locker-energy-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/armaf/armaf-hunter-intense-leather-momentum-100ml-edp.jpg"
+        "https://www.shamperfume.com/cdn/OGImage/perfumes/armaf/hunter-intense-armaf-perfume-lelaki-woody-spicy-long-lasting-100ml-edp.jpg"
       ],
       "category": "رجالي",
       "brand": "Armaf",
-      "supplierPrice": 2603.12,
+      "supplierPrice": 2603.18,
       "ourPrice": 3905,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -41018,7 +41020,7 @@
       "supplierSku": "Hunter-Int-62",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 199,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/armaf/hunter-intense/",
       "slug": "hunter-intense-armaf-100ml-edp-perfume-for-men-637",
       "sizeMl": 100,
@@ -41059,7 +41061,7 @@
       ],
       "barcode": "6294015102499",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -41085,7 +41087,7 @@
       ],
       "category": "نسائي",
       "brand": "Ard Al Zaafaran",
-      "supplierPrice": 1569.72,
+      "supplierPrice": 1569.76,
       "ourPrice": 2355,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -41098,7 +41100,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 120,
       "supplierSalePrice": 79,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/ard-al-zaafaran/zahoor-francee/",
       "slug": "zahoor-francee-by-ard-al-zaafaran-100ml-edp-638",
       "sizeMl": 100,
@@ -41132,7 +41134,7 @@
       "occasionsSource": [],
       "barcode": "6254523455340",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld"
     },
     {
@@ -41155,7 +41157,7 @@
       ],
       "category": "نسائي",
       "brand": "Maison Alhambra",
-      "supplierPrice": 2223.77,
+      "supplierPrice": 2223.82,
       "ourPrice": 3340,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -41168,7 +41170,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 170,
       "supplierSalePrice": 135,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/luxe-chic/",
       "slug": "luxe-chic-by-maison-alhambra-100-ml-women-639",
       "sizeMl": 100,
@@ -41204,7 +41206,7 @@
       "occasionsSource": [],
       "barcode": "6290362341147",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld"
     },
     {
@@ -41227,7 +41229,7 @@
       ],
       "category": "مختلط",
       "brand": "Lattafa",
-      "supplierPrice": 2485.39,
+      "supplierPrice": 2485.45,
       "ourPrice": 3730,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -41240,7 +41242,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 190,
       "supplierSalePrice": 130,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/khamrah-dukhan/",
       "slug": "khamrah-dukhan-by-lattafa-100ml-edp-unisex-640",
       "sizeMl": 100,
@@ -41274,7 +41276,7 @@
       ],
       "barcode": "6290362342373",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld"
     },
     {
@@ -41297,7 +41299,7 @@
       ],
       "category": "مختلط",
       "brand": "Afnan",
-      "supplierPrice": 4434.46,
+      "supplierPrice": 4434.56,
       "ourPrice": 6655,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -41310,7 +41312,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 339,
       "supplierSalePrice": 255,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/afnan/supremacy-in-oud/",
       "slug": "supremacy-in-oud-by-afnan-perfumes-100-ml-unisex-641",
       "sizeMl": 100,
@@ -41342,7 +41344,7 @@
       "occasionsSource": [],
       "barcode": "6290171070207",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld"
     },
     {
@@ -41365,7 +41367,7 @@
       ],
       "category": "نسائي",
       "brand": "Ard Al Zaafaran",
-      "supplierPrice": 1569.72,
+      "supplierPrice": 1569.76,
       "ourPrice": 2355,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -41378,7 +41380,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 120,
       "supplierSalePrice": 85,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/ard-al-zaafaran/romancea/",
       "slug": "romancea-by-ard-al-zaafaran-100-ml-for-women-642",
       "sizeMl": 100,
@@ -41413,7 +41415,7 @@
       "occasionsSource": [],
       "barcode": "6016346411442",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld"
     },
     {
@@ -41436,7 +41438,7 @@
       ],
       "category": "نسائي",
       "brand": "Maison Alhambra",
-      "supplierPrice": 2027.55,
+      "supplierPrice": 2027.6,
       "ourPrice": 3045,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -41449,7 +41451,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 155,
       "supplierSalePrice": 80,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/extravagant-lover/",
       "slug": "extravagant-lover-by-maison-alhambra-100-ml-643",
       "sizeMl": 100,
@@ -41485,7 +41487,7 @@
       "occasionsSource": [],
       "barcode": "6290362340843",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld"
     },
     {
@@ -41507,7 +41509,7 @@
       ],
       "category": "رجالي",
       "brand": "Maison Alhambra",
-      "supplierPrice": 1857.5,
+      "supplierPrice": 1857.54,
       "ourPrice": 2790,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -41519,7 +41521,7 @@
       "supplierSku": "Black-Wood-60ML",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 142,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/black-wood/",
       "slug": "black-wood-60ml-by-maison-alhambra-edp-for-men-644",
       "sizeMl": 60,
@@ -41554,7 +41556,7 @@
       ],
       "barcode": "6291108736647",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -41577,7 +41579,7 @@
       ],
       "category": "رجالي",
       "brand": "Ard Al Zaafaran",
-      "supplierPrice": 1818.26,
+      "supplierPrice": 1818.3,
       "ourPrice": 2730,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -41590,7 +41592,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 139,
       "supplierSalePrice": 85,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/ard-al-zaafaran/oud-al-sayad/",
       "slug": "oud-al-sayad-by-ard-al-zaafaran-100ml-edp-645",
       "sizeMl": 100,
@@ -41622,7 +41624,7 @@
       ],
       "barcode": "6266515361843",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld"
     },
     {
@@ -41645,9 +41647,9 @@
       ],
       "category": "رجالي",
       "brand": "Rue Broca",
-      "supplierPrice": 3401.06,
+      "supplierPrice": 3401.14,
       "ourPrice": 5105,
-      "stockStatus": "out_of_stock",
+      "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -41658,7 +41660,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 260,
       "supplierSalePrice": 133,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/rue-broca/touche-pour-homme/",
       "slug": "touche-pour-homme-rue-broca-100ml-edp-646",
       "sizeMl": 100,
@@ -41691,11 +41693,8 @@
       ],
       "barcode": "6290171010197",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
-      "importedVia": "json-ld",
-      "reviewIssues": [
-        "غير متوفر عند المورد"
-      ]
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
+      "importedVia": "json-ld"
     },
     {
       "id": 647,
@@ -41714,7 +41713,7 @@
       ],
       "category": "نسائي",
       "brand": "Al Wataniah",
-      "supplierPrice": 2210.69,
+      "supplierPrice": 2210.74,
       "ourPrice": 3320,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -41727,7 +41726,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 169,
       "supplierSalePrice": 99,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/al-wataniah/anwan/",
       "slug": "anwan-al-wataniah-woody-for-her-100ml-edp-647",
       "sizeMl": 100,
@@ -41757,7 +41756,7 @@
       "occasionsSource": [],
       "barcode": "5055810030278",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld"
     },
     {
@@ -41780,7 +41779,7 @@
       ],
       "category": "مختلط",
       "brand": "Zimaya",
-      "supplierPrice": 2603.12,
+      "supplierPrice": 2603.18,
       "ourPrice": 3905,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -41792,7 +41791,7 @@
       "supplierSku": "ZimayaTiramisuCaramel100ml",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 199,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/zimaya/tiramisu-caramel/",
       "slug": "tiramisu-caramel-by-zimaya-100-ml-edp-648",
       "sizeMl": 100,
@@ -41826,7 +41825,7 @@
       ],
       "barcode": "6290171075622",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -41852,7 +41851,7 @@
       ],
       "category": "مختلط",
       "brand": "Zimaya",
-      "supplierPrice": 3793.49,
+      "supplierPrice": 3793.58,
       "ourPrice": 5695,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -41865,7 +41864,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 290,
       "supplierSalePrice": 178,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/zimaya/siada-regal/",
       "slug": "siada-regal-by-zimaya-100-ml-edp-649",
       "sizeMl": 100,
@@ -41905,7 +41904,7 @@
       "occasionsSource": [],
       "barcode": "6290171075981",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld"
     },
     {
@@ -41928,9 +41927,9 @@
       ],
       "category": "مختلط",
       "brand": "Volare",
-      "supplierPrice": 2158.36,
+      "supplierPrice": 2158.41,
       "ourPrice": 3240,
-      "stockStatus": "out_of_stock",
+      "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -41941,7 +41940,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 165,
       "supplierSalePrice": 125,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/volare/golden-hour/",
       "slug": "golden-hour-by-volare-100ml-edp-for-her-650",
       "sizeMl": 100,
@@ -41973,11 +41972,8 @@
       ],
       "barcode": "6294019023769",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
-      "importedVia": "json-ld",
-      "reviewIssues": [
-        "غير متوفر عند المورد"
-      ]
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
+      "importedVia": "json-ld"
     },
     {
       "id": 651,
@@ -41999,7 +41995,7 @@
       ],
       "category": "مختلط",
       "brand": "Afnan",
-      "supplierPrice": 3191.76,
+      "supplierPrice": 3191.84,
       "ourPrice": 4790,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -42011,7 +42007,7 @@
       "supplierSku": "Pure-Musk-617",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 244,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/afnan/pure-musk/",
       "slug": "pure-musk-by-afnan-100ml-edp-unisex-651",
       "sizeMl": 100,
@@ -42042,7 +42038,7 @@
       ],
       "barcode": "6290171002130",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -42068,7 +42064,7 @@
       ],
       "category": "رجالي",
       "brand": "Rue Broca",
-      "supplierPrice": 3911.22,
+      "supplierPrice": 3911.31,
       "ourPrice": 5870,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -42080,7 +42076,7 @@
       "supplierSku": "NEXA-Immortal-100ml",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 299,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/rue-broca/nexa-immortal/",
       "slug": "nexa-immortal-by-rue-broca-100ml-edp-men-652",
       "sizeMl": 100,
@@ -42112,7 +42108,7 @@
       ],
       "barcode": "6290171074007",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T10:56:54.542Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -48065,7 +48061,7 @@
       "brand": "Gulf Orchid",
       "supplierPrice": 2158.36,
       "ourPrice": 3240,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -48114,7 +48110,10 @@
       "barcode": "6291107019710",
       "importedAt": "2026-10-16T13:16:56.090Z",
       "refreshedAt": "2026-10-16T13:16:56.090Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 741,
