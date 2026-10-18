@@ -42,6 +42,9 @@
     "scripts/shaheen-import/**/*.ts",
     "scripts/shaheen-import/**/*.mts",
     "scripts/product-pages/**/*.ts",
-    "scripts/product-pages.mts"
+    "scripts/product-pages.mts",
+    "scripts/seo-agent/**/*.ts",
+    "scripts/seo-agent/**/*.mts",
+    "scripts/seo-build.mts"
   ]
 }

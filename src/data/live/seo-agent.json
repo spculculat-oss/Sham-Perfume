@@ -1,0 +1,121 @@
+{
+ "version": 1,
+ "updatedAt": "2026-10-18T12:00:00.000Z",
+ "nextRunAt": "2026-10-18T18:00:00.000Z",
+ "intervalHours": 6,
+ "identity": {
+  "nameAr": "منارة شاهين",
+  "nameEn": "Manaret Shaheen",
+  "roleAr": "المندوب الإعلامي وخبير الظهور في محركات البحث",
+  "reportsToAr": "الخبير شاهين",
+  "bornAt": "2026-10-18T12:00:00.000Z"
+ },
+ "trust": {
+  "level": "trainee",
+  "since": "2026-10-18T12:00:00.000Z",
+  "cycles": 0,
+  "cyclesAtLevel": 0,
+  "noteAr": "بدأ التدريب: يدرس المنهج ويفحص الموقع ويقترح، بلا تغيير منشور."
+ },
+ "curriculum": {
+  "studied": [],
+  "notes": []
+ },
+ "audit": {
+  "at": "2026-10-18T12:00:00.000Z",
+  "score": 0,
+  "bySeverity": {
+   "critical": 0,
+   "major": 0,
+   "minor": 0
+  },
+  "byArea": {},
+  "findings": [],
+  "pagesChecked": 0
+ },
+ "history": [],
+ "applied": [],
+ "proposals": {},
+ "submissions": [],
+ "submissionBook": {
+  "urls": []
+ },
+ "coach": null,
+ "coachHistory": [],
+ "mediaReport": null,
+ "engines": {
+  "aiAvailable": false,
+  "studies": 0,
+  "failures": []
+ },
+ "searchEngines": [
+  {
+   "id": "google",
+   "nameAr": "Google",
+   "status": "ready"
+  },
+  {
+   "id": "bing",
+   "nameAr": "Bing",
+   "status": "submitted"
+  },
+  {
+   "id": "yandex",
+   "nameAr": "Yandex",
+   "status": "submitted"
+  },
+  {
+   "id": "naver",
+   "nameAr": "Naver",
+   "status": "submitted"
+  },
+  {
+   "id": "seznam",
+   "nameAr": "Seznam",
+   "status": "submitted"
+  },
+  {
+   "id": "yep",
+   "nameAr": "Yep",
+   "status": "submitted"
+  },
+  {
+   "id": "duckduckgo",
+   "nameAr": "DuckDuckGo",
+   "status": "ready"
+  },
+  {
+   "id": "ecosia",
+   "nameAr": "Ecosia",
+   "status": "ready"
+  },
+  {
+   "id": "yahoo",
+   "nameAr": "Yahoo",
+   "status": "ready"
+  },
+  {
+   "id": "brave",
+   "nameAr": "Brave Search",
+   "status": "ready"
+  },
+  {
+   "id": "perplexity",
+   "nameAr": "Perplexity",
+   "status": "ready"
+  },
+  {
+   "id": "copilot",
+   "nameAr": "Microsoft Copilot",
+   "status": "ready"
+  },
+  {
+   "id": "chatgpt-search",
+   "nameAr": "البحث في المساعدات الذكية",
+   "status": "ready"
+  }
+ ],
+ "nextActions": [],
+ "runs": [],
+ "notes": []
+}
