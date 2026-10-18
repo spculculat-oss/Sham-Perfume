@@ -40,9 +40,11 @@ const UA = 'Mozilla/5.0 (compatible; ShaheenImporter/1.0; +https://spculculat-os
 const started = Date.now();
 const BUDGET_MS = Number(env.DISCOVER_TIME_BUDGET_S ?? 900) * 1000;
 const MAX_ACTIVE = Math.max(1, Number(env.DISCOVER_MAX_ACTIVE ?? 20));
-const VET_PER_RUN = Math.max(1, Number(env.DISCOVER_VET_PER_RUN ?? 8));
+const VET_PER_RUN = Math.max(1, Number(env.DISCOVER_VET_PER_RUN ?? 10));
 const QUERIES = Math.max(0, Number(env.DISCOVER_QUERIES ?? 4));
 const BLOCK = (env.DISCOVER_BLOCK || '').split(/[\s,]+/).map(domainOf).filter(Boolean);
+/** Stores the merchant vouches for himself: their CV is still read and shown, a weak score does not stop them. */
+const TRUSTED = (env.DISCOVER_TRUSTED || '').split(/[\s,]+/).map(domainOf).filter(Boolean);
 const now = new Date();
 const iso = now.toISOString();
 const notes: string[] = [];
@@ -284,7 +286,12 @@ async function vet(s: LiveSource): Promise<void> {
   const cvLine = `CV ${cv.score}/100${cv.flags.length ? ` ⚑ ${cv.flags[0]}` : ''} [${cv.checks.filter((c) => c.ok).map((c) => c.id).join(',')}]${cv.checks.find((c) => c.id === 'platform')?.detail ? ` on ${cv.checks.find((c) => c.id === 'platform')?.detail}` : ''}`;
   // A red flag (copies, a brand-new domain, dangerous site…) is final: not retried next month.
   if (cv.verdict === 'rejected') { s.attempts = Math.max(s.attempts, 3); return fail(trustReason(cv), true); }
-  if (cv.score < TRUST_MIN) { say(`  ↳ ${s.host}: ${cvLine} (${pagesRead(cv)})`); return fail(trustReason(cv)); }
+  if (cv.score < TRUST_MIN) {
+    say(`  ↳ ${s.host}: ${cvLine} (${pagesRead(cv)})`);
+    if (!TRUSTED.some((h) => sameSite(h, s.host))) return fail(trustReason(cv));
+    cv.vouched = true;
+    say(`  ↳ ${s.host}: weak CV, but the merchant vouches for it (DISCOVER_TRUSTED)`);
+  }
   say(`  ↳ ${s.host}: ${cvLine}`);
   const { sitemaps, urls, refused, tried, trace } = await productSitemaps(base, robots.sitemaps.filter((u) => sameSite(domainOf(u), domainOf(base))));
   let allowed = urls.filter((u) => { try { return robots.allowed(new URL(u).pathname); } catch { return false; } });

@@ -41,6 +41,8 @@ export interface TrustProfile {
   /** Domain registration date (RDAP), when the registry publishes it. */
   registeredAt?: string;
   region?: Region;
+  /** The merchant vouches for this store (DISCOVER_TRUSTED): a weak score does not stop it; red flags still do. */
+  vouched?: boolean;
 }
 
 export type Region = 'arab' | 'europe' | 'americas' | 'east-asia' | 'central-asia' | 'south-asia' | 'oceania' | 'africa' | 'global';
@@ -330,8 +332,9 @@ export function assessTrust(i: TrustInput): TrustProfile {
   add({ id: 'platform', label: 'منصة متاجر معروفة', ok: platform ? true : null, points: platform ? 5 : 2, max: 5, detail: platform });
   const social = links.some((a) => SOCIAL.test(a.href));
   add({ id: 'social', label: 'حسابات رسمية على التواصل', ok: social, points: social ? 5 : 0, max: 5 });
-  const authentic = AUTHENTIC.test(text);
-  add({ id: 'authentic', label: 'يضمن أن المنتجات أصلية', ok: authentic, points: authentic ? 5 : 0, max: 5 });
+  // The brand's own house sells its own perfumes: original by definition.
+  const authentic = AUTHENTIC.test(text) || Boolean(brand);
+  add({ id: 'authentic', label: 'يضمن أن المنتجات أصلية', ok: authentic, points: authentic ? 5 : 0, max: 5, detail: !AUTHENTIC.test(text) && brand ? 'الماركة نفسها تبيع منتجاتها' : undefined });
 
   if (sellsCopies(i.homeHtml)) flags.push('يبيع عطوراً مقلّدة أو «مستوحاة» من ماركات أخرى');
   if (i.safeBrowsing === 'flagged') flags.push('مُدرج لدى Google كموقع خطر');

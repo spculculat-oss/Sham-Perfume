@@ -515,6 +515,8 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   'يضمن أن المنتجات أصلية': { en: 'Guarantees authentic products' },
   'الثقة {n}/100': { en: 'Trust {n}/100' },
   'السيرة الذاتية للمتجر': { en: 'Store CV' },
+  'أنت ضامنه': { en: 'You vouch for it' },
+  'الماركة نفسها تبيع منتجاتها': { en: 'The brand sells its own products' },
   'الموقع يمنع قراءة الصفحة آلياً': { en: 'The site forbids automated reading of this page' },
   'السجل لا ينشر تاريخ التسجيل': { en: 'The registry does not publish the registration date' },
   'يشحن دولياً': { en: 'Ships internationally' },

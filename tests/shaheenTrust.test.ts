@@ -144,6 +144,8 @@ test('global scout: regions take turns in the address book, the searches and the
   const cand: LiveSource = { id: 'c', host: 'c.example', name: 'C', base: 'https://c.example', status: 'candidate', foundBy: 'seed', foundAt: '2026-10-01T00:00:00.000Z', attempts: 0 };
   file.sources.push(cand, active);
   assert.deepEqual(vettingQueue(file, NOW, 5).map((s) => s.id), ['a', 'c'], 'an active store without a CV is reviewed first, even if checked yesterday');
+  file.sources.push({ ...cand, id: 'g', host: 'g.example', foundBy: 'brand-site', foundAt: '2026-01-01T00:00:00.000Z' }, { ...cand, id: 'k', host: 'k.example', foundBy: 'known-store', foundAt: '2026-10-10T00:00:00.000Z' });
+  assert.deepEqual(vettingQueue(file, NOW, 5).map((s) => s.id), ['a', 'c', 'k', 'g'], 'real shops before guessed brand domains, even older ones');
 });
 
 test('European price formats are read correctly (49,90 € is not 4990)', () => {

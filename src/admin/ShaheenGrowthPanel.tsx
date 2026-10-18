@@ -71,6 +71,7 @@ function TrustCv({ t }: { t: TrustProfile }) {
       <summary className="cursor-pointer text-[11px] text-stone-500">
         <span className={`me-1 rounded-full px-1.5 py-0.5 text-[10px] font-bold ${trustTone(t)}`}>{TP('الثقة {n}/100', { n: t.score })}</span>
         {T('السيرة الذاتية للمتجر')}
+        {t.vouched && <span className="ms-1 rounded-full bg-violet-100 px-1.5 py-0.5 text-[10px] font-bold text-violet-800">{T('أنت ضامنه')}</span>}
       </summary>
       <div className="mt-1 rounded-lg bg-stone-50 p-2">
         {t.flags.length > 0 && (

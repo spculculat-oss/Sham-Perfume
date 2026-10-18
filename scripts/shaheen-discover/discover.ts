@@ -277,7 +277,11 @@ export function vettingQueue(file: SourcesFile, now: number, limit: number): Liv
   const age = (s: LiveSource) => now - Date.parse(s.vettedAt || s.foundAt);
   // Active stores that were accepted before the CV existed are reviewed first: no store stays without one.
   const noCv = file.sources.filter((s) => s.status === 'active' && !s.trust);
-  const fresh = file.sources.filter((s) => s.status === 'candidate' && s.attempts < 3).sort((a, b) => Date.parse(a.foundAt) - Date.parse(b.foundAt));
+  // Real shops first (the merchant's, the council's, the address book, web search), guessed brand domains
+  // (often not even online) last; then fewer attempts, then the oldest.
+  const rank: Record<string, number> = { seed: 0, council: 1, 'known-store': 2, 'shaheen-search': 3, 'search-api': 3, 'brand-site': 5 };
+  const fresh = file.sources.filter((s) => s.status === 'candidate' && s.attempts < 3)
+    .sort((a, b) => (rank[a.foundBy] ?? 4) - (rank[b.foundBy] ?? 4) || a.attempts - b.attempts || Date.parse(a.foundAt) - Date.parse(b.foundAt));
   const recheck = file.sources.filter((s) => s.status === 'active' && s.trust && age(s) > 7 * DAY).sort((a, b) => age(b) - age(a));
   const retry = file.sources.filter((s) => (s.status === 'paused' || (s.status === 'rejected' && s.attempts < 3)) && age(s) > 30 * DAY);
   return [...noCv, ...fresh, ...recheck, ...retry].slice(0, limit);
