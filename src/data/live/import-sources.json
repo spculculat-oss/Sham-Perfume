@@ -1,17 +1,17 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T12:47:21.705Z",
+ "updatedAt": "2026-10-18T13:24:54.550Z",
  "sources": [
   {
    "id": "arabianoud-com",
    "host": "arabianoud.com",
    "name": "Arabian Oud Luxury Perfumes Fragrances",
    "base": "https://us.arabianoud.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-18T12:47:21.705Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-18T13:24:54.550Z",
    "sampleOk": 2,
    "sampleTotal": 7,
    "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (2/7)"
@@ -21,11 +21,11 @@
    "host": "ajmal.com",
    "name": "Ajmal",
    "base": "https://ajmal.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-18T12:47:21.705Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-18T13:24:54.550Z",
    "reason": "لا توجد خريطة منتجات (sitemap)"
   },
   {
@@ -33,11 +33,11 @@
    "host": "rasasi.com",
    "name": "Rasasi",
    "base": "https://rasasi.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-18T12:47:21.705Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-18T13:24:54.550Z",
    "sampleOk": 0,
    "sampleTotal": 6,
    "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
@@ -47,11 +47,11 @@
    "host": "swissarabian.com",
    "name": "Swiss Arabian Global",
    "base": "https://swissarabian.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-18T12:47:21.705Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-18T13:24:54.550Z",
    "sampleOk": 0,
    "sampleTotal": 1,
    "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)"
@@ -61,12 +61,12 @@
    "host": "maisonalhambra.com",
    "name": "MAISON ALHAMBRA",
    "base": "https://maisonalhambra.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Maison Alhambra",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-18T12:47:21.705Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-18T13:24:54.550Z",
    "reason": "لا توجد خريطة منتجات (sitemap)"
   },
   {
@@ -74,12 +74,12 @@
    "host": "maisonalhambraperfumes.com",
    "name": "maisonalhambraperfumes.com",
    "base": "https://maisonalhambraperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Maison Alhambra",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-18T12:47:21.705Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-18T13:24:54.550Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -87,12 +87,12 @@
    "host": "maisonalhambraparfums.com",
    "name": "maisonalhambraparfums.com",
    "base": "https://maisonalhambraparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Maison Alhambra",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-18T12:47:21.705Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-18T13:24:54.550Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -100,15 +100,15 @@
    "host": "lattafa.com",
    "name": "Best Lattafa Perfumes for Men &amp; Women",
    "base": "https://lattafa.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Lattafa",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-18T12:47:21.705Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-18T13:24:54.550Z",
    "sampleOk": 0,
-   "sampleTotal": 6,
-   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
+   "sampleTotal": 2,
+   "reason": "الموقع يرفض القراءة الآلية (حماية)"
   },
   {
    "id": "lattafaperfumes-com",
@@ -236,6 +236,112 @@
    "foundBy": "brand-site",
    "foundWith": "Zimaya",
    "foundAt": "2026-10-18T12:47:21.705Z",
+   "attempts": 0
+  },
+  {
+   "id": "myperfumeshop-ae",
+   "host": "myperfumeshop.ae",
+   "name": "myperfumeshop.ae",
+   "base": "https://myperfumeshop.ae",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T13:24:54.550Z",
+   "attempts": 0
+  },
+  {
+   "id": "perfumeboxuae-com",
+   "host": "perfumeboxuae.com",
+   "name": "perfumeboxuae.com",
+   "base": "https://perfumeboxuae.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T13:24:54.550Z",
+   "attempts": 0
+  },
+  {
+   "id": "niceonesa-com",
+   "host": "niceonesa.com",
+   "name": "niceonesa.com",
+   "base": "https://niceonesa.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T13:24:54.550Z",
+   "attempts": 0
+  },
+  {
+   "id": "goldenscent-com",
+   "host": "goldenscent.com",
+   "name": "goldenscent.com",
+   "base": "https://goldenscent.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T13:24:54.550Z",
+   "attempts": 0
+  },
+  {
+   "id": "grandeur-com",
+   "host": "grandeur.com",
+   "name": "grandeur.com",
+   "base": "https://grandeur.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Grandeur",
+   "foundAt": "2026-10-18T13:24:54.550Z",
+   "attempts": 0
+  },
+  {
+   "id": "grandeurperfumes-com",
+   "host": "grandeurperfumes.com",
+   "name": "grandeurperfumes.com",
+   "base": "https://grandeurperfumes.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Grandeur",
+   "foundAt": "2026-10-18T13:24:54.550Z",
+   "attempts": 0
+  },
+  {
+   "id": "grandeurparfums-com",
+   "host": "grandeurparfums.com",
+   "name": "grandeurparfums.com",
+   "base": "https://grandeurparfums.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Grandeur",
+   "foundAt": "2026-10-18T13:24:54.550Z",
+   "attempts": 0
+  },
+  {
+   "id": "bujairami-com",
+   "host": "bujairami.com",
+   "name": "bujairami.com",
+   "base": "https://bujairami.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Bujairami",
+   "foundAt": "2026-10-18T13:24:54.550Z",
+   "attempts": 0
+  },
+  {
+   "id": "bujairamiperfumes-com",
+   "host": "bujairamiperfumes.com",
+   "name": "bujairamiperfumes.com",
+   "base": "https://bujairamiperfumes.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Bujairami",
+   "foundAt": "2026-10-18T13:24:54.550Z",
+   "attempts": 0
+  },
+  {
+   "id": "bujairamiparfums-com",
+   "host": "bujairamiparfums.com",
+   "name": "bujairamiparfums.com",
+   "base": "https://bujairamiparfums.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Bujairami",
+   "foundAt": "2026-10-18T13:24:54.550Z",
    "attempts": 0
   }
  ],
@@ -522,6 +628,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-18T13:24:54.550Z",
+   "mode": "self",
+   "found": 10,
+   "vetted": 8,
+   "activated": 0,
+   "rejected": 8,
+   "notes": [
+    "Web search: AI quota used up — the scout continues by himself",
+    "10 new stores found this run (own methods, no AI)",
+    "✗ arabianoud.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (2/7)",
+    "  ↳ ajmal.com: sitemap.xml→404, sitemap_index.xml→404, wp-sitemap.xml→404, …, sitemap.xml→404, browsed 0 category pages → 0 product-like links",
+    "✗ ajmal.com: لا توجد خريطة منتجات (sitemap)",
+    "✗ rasasi.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "✗ swissarabian.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
+    "  ↳ maisonalhambra.com: sitemap.xml→404, sitemap_index.xml→200(not xml), wp-sitemap.xml→200(not xml), …, sitemap.xml→200(not xml), browsed 0 category pages → 0 product-like links",
+    "✗ maisonalhambra.com: لا توجد خريطة منتجات (sitemap)",
+    "✗ maisonalhambraperfumes.com: الموقع لا يفتح",
+    "✗ maisonalhambraparfums.com: الموقع لا يفتح",
+    "✗ lattafa.com: الموقع يرفض القراءة الآلية (حماية)"
+   ]
+  },
   {
    "at": "2026-10-18T12:47:21.705Z",
    "mode": "self",
