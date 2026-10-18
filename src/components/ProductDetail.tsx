@@ -10,6 +10,7 @@ import type { SupportedLanguage } from '../types/i18n';
 import { loadStoreCatalog, productPageUrl, storeImageSrc } from '../utils/liveStore';
 import { addToCart, useCart } from '../utils/storeCart';
 import { useStoreMoney } from '../utils/storeCheckout';
+import { LegalDisclaimer } from './LegalDisclaimer';
 
 /** كل نص في صفحة العطر — من src/لغات/storeL10n.ts بلغة الزائر (والإنجليزية كأرضية، لا عربية لغير العربي). */
 function detailLabels(lang: SupportedLanguage) {
@@ -161,6 +162,21 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
               className="col-span-2 mt-1 inline-flex items-center gap-1.5 text-amber-700 hover:underline text-xs"><ExternalLink className="w-3.5 h-3.5" />{L.page}</a>
           </div>
         </div>
+      </div>
+
+      {/* L-05 UN1266 + L-17 VAT Disclaimer */}
+      <div className="max-w-6xl mx-auto px-4 pb-4 space-y-3">
+        <LegalDisclaimer type="shipping" lang={currentLang} />
+        <div className="bg-stone-50 border border-stone-200 rounded-xl p-3 text-[11px] leading-relaxed text-stone-600 flex gap-2">
+          <span>🧾</span>
+          <span>{currentLang === 'ar' ? 'السعر لا يشمل الضريبة/الجمارك في بلدك (مصر 14%، السعودية 15%، الإمارات 5%، أوروبا ~20%). الفاتورة الضريبية تُصدر إلكترونيًا. التاجر البائع مسؤول قانونيًا عن مطابقة المنتج للوصف (مسؤولية البائع، المنصة وسيط).' : 'Price excludes VAT/customs in your country (Egypt 14%, Saudi 15%, UAE 5%, EU ~20%). E-invoice issued. Merchant seller is liable for product conformity (marketplace liability).'}</span>
+        </div>
+        {(product as any).supplierName && (
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[10px] leading-relaxed text-amber-900 flex gap-2">
+            <span>©</span>
+            <span>{currentLang === 'ar' ? `مصدر: ${(product as any).supplierName} — مستورد بترخيص. للاعتراض/DMCA: privacy@sham-perfume.com (رد 48س).` : `Source: ${(product as any).supplierName} — imported under license. DMCA: privacy@sham-perfume.com (48h).`}</span>
+          </div>
+        )}
       </div>
 
       {related.length > 0 && (

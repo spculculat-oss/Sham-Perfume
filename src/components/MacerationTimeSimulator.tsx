@@ -1,3 +1,4 @@
+import { LegalDisclaimer } from './LegalDisclaimer';
 import { LocalizedNumberInput } from './LocalizedNumberInput';
 import React, { useState, useMemo, useEffect } from 'react';
 import {
@@ -1937,6 +1938,7 @@ ${calculation.isFinished ? L('tag_status_done') : fmt(L('tag_status_progress_tpl
         )}
       </div>
 
+      <LegalDisclaimer type="chemical" lang={currentLang as SupportedLanguage} />
     </div>
   );
 };

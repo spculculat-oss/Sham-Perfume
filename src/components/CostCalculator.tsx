@@ -1,3 +1,4 @@
+import { LegalDisclaimer } from './LegalDisclaimer';
 import React, { useState, useEffect } from 'react';
 import {
   DollarSign,
@@ -2031,6 +2032,8 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
           </div>
         </div>
       </div>
+      {/* Cost is indicative only — L-04 Fix: not tax/financial advice, VAT 14%/15%/5% separate */}
+      <LegalDisclaimer type="chemical" lang={currentLang} />
     </div>
   );
 };

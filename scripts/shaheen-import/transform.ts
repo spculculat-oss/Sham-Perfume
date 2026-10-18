@@ -123,6 +123,9 @@ export const sourceKey = (supplierId: string, supplierSku: string) => `${supplie
 export interface BuildOptions { source: ImportSource; rate: number; now: string; nextId: number; existing?: ImportedProduct; markup?: number | PriceRule }
 
 export function toStoreProduct(x: ExtractedProduct, o: BuildOptions): ImportedProduct {
+  // L-03 Guard: block import unless env + permission file
+  if (process.env.SHAM_ALLOW_SCRAPE !== '1') throw new Error('⛔ SCRAPER BLOCKED (L-03): Set SHAM_ALLOW_SCRAPE=1 + docs/legal/scraper-permission.md');
+
   const regular = x.regularPrice && x.regularPrice > x.price ? x.regularPrice : x.price;
   const supplierPrice = priceInEgp(regular, o.rate);
   const name = cleanName(x.name);

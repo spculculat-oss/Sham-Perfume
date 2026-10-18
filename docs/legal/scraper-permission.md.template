@@ -1,0 +1,26 @@
+# Scraper Permission Template — انسخه إلى docs/legal/scraper-permission.md بعد توقيع الترخيص
+
+<!--
+  L-03 Fix: هذا الملف يجب أن يحتوي على PERMISSION GRANTED حتى يعمل الـ scraper.
+  املأ البيانات ووقّع ثم احفظه كـ docs/legal/scraper-permission.md (لا يُرفع إلا بعد التوقيع)
+-->
+
+PERMISSION GRANTED — ترخيص كتابي لاستيراد المنتجات
+
+Supplier: [اسم المورد مثل Sham Perfume Sdn Bhd]
+Website: https://www.shamperfume.com
+Contact: [email + phone]
+Date: YYYY-MM-DD
+Valid until: YYYY-MM-DD
+
+Scope:
+- Allowed: نسخ schema.org Product (name, price, images, notes) عبر sitemap
+- Rate limit: __ req/s, respect robots.txt
+- Attribution: ذكر المصدر في صفحة المنتج + رابط original URL
+
+Restrictions:
+- No scraping of user data, reviews with personal data
+- No bypass of paywall/auth
+- Takedown within 48h upon request (DMCA 512 / EU DSM Art.17)
+
+Signature: ____________________

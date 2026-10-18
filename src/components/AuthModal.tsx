@@ -197,16 +197,52 @@ const S = {
     fa: 'کشور / منطقه آزمایشگاه:',
   },
   privacy_check: {
-    ar: 'أوافق على سياسة حماية بيانات المستخدم المشفرة، وعدم مشاركة خلطاتي وسجلاتي مع أي طرف ثالث.',
-    en: 'I agree to the encrypted user-data protection policy and to never sharing my formulas or records with third parties.',
-    fr: 'J’accepte la politique de protection chiffrée des données et le non-partage de mes formules avec des tiers.',
-    es: 'Acepto la política de protección cifrada de datos y no compartir mis fórmulas con terceros.',
-    it: 'Accetto la politica di protezione cifrata dei dati e di non condividere le mie formule con terzi.',
-    de: 'Ich stimme der verschlüsselten Datenschutzrichtlinie zu und teile meine Formeln nicht mit Dritten.',
-    ru: 'Я согласен с политикой шифрованной защиты данных и неразглашением моих формул третьим лицам.',
-    zh: '我同意加密用户数据保护政策，且不与任何第三方共享我的配方与记录。',
-    tr: 'Şifreli veri koruma politikasını ve formüllerimin üçüncü taraflarla paylaşılmamasını kabul ediyorum.',
-    fa: 'با سیاست حفاظت رمزنگاری‌شده از داده‌های کاربر و عدم اشتراک‌گذاری فرمول‌ها با اشخاص ثالث موافقم.',
+    ar: 'أوافق على الشروط والأحكام وسياسة الخصوصية (GDPR/PDPL) وأقر بأن بياناتي تُعالج بموافقة صريحة قابلة للسحب، ولن تُشارك خلطاتي مع طرف ثالث.',
+    en: 'I agree to the Terms & Privacy Policy (GDPR/PDPL) and consent to processing my data (withdrawable), and that my formulas will never be shared with third parties.',
+    fr: 'J’accepte les conditions et la politique de confidentialité (RGPD) et consens au traitement de mes données (révocable).',
+    es: 'Acepto los Términos y la Política de Privacidad (GDPR/PDPL) y consiento el tratamiento de mis datos (revocable).',
+    it: 'Accetto i Termini e la Privacy Policy (GDPR/PDPL) e consento al trattamento dei miei dati (revocabile).',
+    de: 'Ich stimme den AGB und der Datenschutzrichtlinie (DSGVO) zu und willige in die Verarbeitung ein (widerruflich).',
+    ru: 'Я принимаю Условия и Политику конфиденциальности (GDPR/PDPL) и даю согласие на обработку данных (отзываемое).',
+    zh: '我同意条款与隐私政策（GDPR/PDPL），并同意处理我的数据（可撤回），且配方永不与第三方共享。',
+    tr: 'Şartlar ve Gizlilik Politikasını (KVKK/GDPR) kabul ediyor ve verilerimin işlenmesine (geri alınabilir) onay veriyorum.',
+    fa: 'با شرایط و سیاست حریم خصوصی (GDPR/PDPL) موافقم و به پردازش داده‌هایم (قابل پس‌گیری) رضایت می‌دهم.',
+  },
+  age_check: {
+    ar: 'أؤكد أن عمري 16 سنة أو أكثر (13 سنة للولايات المتحدة) وأتحمل مسؤولية استخدام المنصة.',
+    en: 'I confirm I am 16+ (13+ in the US) and responsible for using the platform.',
+    fr: 'Je confirme avoir 16 ans ou plus (13+ aux États-Unis) et être responsable de l’utilisation.',
+    es: 'Confirmo que tengo 16 años o más (13+ en EE. UU.) y soy responsable del uso.',
+    it: 'Confermo di avere 16 anni o più (13+ negli USA) e di essere responsabile dell’uso.',
+    de: 'Ich bestätige, 16+ (13+ in den USA) zu sein und verantwortlich zu nutzen.',
+    ru: 'Подтверждаю, что мне 16+ (13+ в США) и я несу ответственность за использование.',
+    zh: '我确认已年满 16 周岁（美国 13 周岁）并对使用本平台负责。',
+    tr: '16+ (ABD’de 13+) olduğumu ve platformu sorumluca kullanacağımı onaylıyorum.',
+    fa: 'تأیید می‌کنم ۱۶+ (در آمریکا ۱۳+) هستم و مسئول استفاده از پلتفرم می‌باشم.',
+  },
+  dob_label: {
+    ar: 'تاريخ الميلاد (للتحقق من العمر):',
+    en: 'Date of Birth (age verification):',
+    fr: 'Date de naissance (vérification d’âge) :',
+    es: 'Fecha de nacimiento (verificación de edad):',
+    it: 'Data di nascita (verifica età):',
+    de: 'Geburtsdatum (Altersprüfung):',
+    ru: 'Дата рождения (проверка возраста):',
+    zh: '出生日期（年龄验证）：',
+    tr: 'Doğum tarihi (yaş doğrulama):',
+    fa: 'تاریخ تولد (تأیید سن):',
+  },
+  err_age: {
+    ar: 'يجب أن يكون عمرك 16 سنة على الأقل (13 في أمريكا) لاستخدام المنصة',
+    en: 'You must be at least 16 (13 in the US) to use the platform',
+    fr: 'Vous devez avoir au moins 16 ans (13 aux États-Unis) pour utiliser la plateforme',
+    es: 'Debes tener al menos 16 años (13 en EE. UU.) para usar la plataforma',
+    it: 'Devi avere almeno 16 anni (13 negli USA) per usare la piattaforma',
+    de: 'Sie müssen mindestens 16 (13 in den USA) sein, um die Plattform zu nutzen',
+    ru: 'Вам должно быть не менее 16 лет (13 в США) для использования платформы',
+    zh: '您必须年满 16 周岁（美国 13 周岁）才能使用本平台',
+    tr: 'Platformu kullanmak için en az 16 (ABD’de 13) yaşında olmalısınız',
+    fa: 'برای استفاده از پلتفرم باید حداقل ۱۶ سال (در آمریکا ۱۳ سال) داشته باشید',
   },
   privacy_link: {
     ar: '(عرض وثيقة الخصوصية)',
@@ -365,7 +401,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [name, setName] = useState('');
   const [craftLevel, setCraftLevel] = useState<'hobbyist' | 'perfumer' | 'master_lab'>('perfumer');
   const [regionId, setRegionId] = useState('SA');
-  const [privacyAccepted, setPrivacyAccepted] = useState(true);
+  // L-02 Fix: GDPR Art.7 — الموافقة لا تكون افتراضية. يجب أن يختار المستخدم صراحةً.
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [ageConfirmed, setAgeConfirmed] = useState(false);
+  const [dob, setDob] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -429,6 +468,21 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           setErrorMsg(L('err_privacy'));
           setIsLoading(false);
           return;
+        }
+        // L-02 + L-17: تحقق العمر — GDPR Art.8 (16+) / COPPA (13+)
+        if (!ageConfirmed) {
+          setErrorMsg(L('err_age'));
+          setIsLoading(false);
+          return;
+        }
+        if (dob) {
+          const birth = new Date(dob);
+          const age = (Date.now() - birth.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
+          if (age < 13) {
+            setErrorMsg(L('err_age'));
+            setIsLoading(false);
+            return;
+          }
         }
 
         const res = await registerUser(name, email, password, craftLevel, regionId);
@@ -709,6 +763,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   checked={privacyAccepted}
                   onChange={(e) => setPrivacyAccepted(e.target.checked)}
                   className="mt-0.5 rounded text-amber-700 focus:ring-amber-700 cursor-pointer"
+                  required
                 />
                 <label htmlFor="privacy-check" className="text-[11px] text-stone-600 leading-snug">
                   {L('privacy_check')}
@@ -719,8 +774,42 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   >
                     {L('privacy_link')}
                   </button>
+                  <span className="text-red-600"> *</span>
                 </label>
               </div>
+
+              {/* L-02 + L-17: تأكيد العمر + تاريخ ميلاد اختياري للتحقق */}
+              <div className="flex items-start gap-2">
+                <input
+                  type="checkbox"
+                  id="age-check"
+                  checked={ageConfirmed}
+                  onChange={(e) => setAgeConfirmed(e.target.checked)}
+                  className="mt-0.5 rounded text-amber-700 focus:ring-amber-700 cursor-pointer"
+                  required
+                />
+                <label htmlFor="age-check" className="text-[11px] text-stone-600 leading-snug">
+                  {L('age_check')}
+                  <span className="text-red-600"> *</span>
+                </label>
+              </div>
+
+              <div>
+                <label className="font-semibold text-stone-800 block mb-1 text-[11px]">
+                  {L('dob_label')}
+                </label>
+                <input
+                  type="date"
+                  value={dob}
+                  onChange={(e) => setDob(e.target.value)}
+                  max={new Date().toISOString().split('T')[0]}
+                  className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-amber-700 text-xs"
+                />
+              </div>
+
+              <p className="text-[9px] text-stone-400 leading-snug bg-stone-50 p-2 rounded-lg border border-stone-200">
+                {currentLang === 'ar' ? '⚖️ بموافقتك، تُسجل موافقتك مع الطابع الزمني (GDPR Art.7). يمكنك سحبها anytime عبر "مسح بياناتي".' : '⚖️ Consent logged with timestamp (GDPR Art.7). Withdraw anytime via "Erase my data".'}
+              </p>
             </>
           )}
           </>

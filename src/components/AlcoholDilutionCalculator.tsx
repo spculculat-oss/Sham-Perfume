@@ -1,3 +1,4 @@
+import { LegalDisclaimer } from './LegalDisclaimer';
 import { LocalizedNumberInput } from './LocalizedNumberInput';
 import React, { useState } from 'react';
 import {
@@ -360,6 +361,11 @@ export const AlcoholDilutionCalculator: React.FC<AlcoholDilutionCalculatorProps>
               {L('law_desc')}
             </p>
           </div>
+        </div>
+
+        {/* IFRA Legal Disclaimer — L-04 Fix */}
+        <div className="lg:col-span-12">
+          <LegalDisclaimer type="chemical" lang={currentLang} />
         </div>
 
         {/* Right Column: Dilution Results */}

@@ -1,3 +1,4 @@
+import { LegalDisclaimer } from './LegalDisclaimer';
 import { LocalizedNumberInput } from './LocalizedNumberInput';
 import React, { useState, useMemo } from 'react';
 import {
@@ -1841,6 +1842,9 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
                 </div>
 
               </div>
+
+              {/* IFRA 51 Legal Disclaimer — L-04 Fix */}
+              <LegalDisclaimer type="chemical" lang={propLang || 'ar'} />
 
               {/* Quick Laboratory Note */}
               <div className="bg-stone-50 p-4 rounded-xl border border-stone-200/70 text-xs text-stone-600 space-y-2">

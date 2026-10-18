@@ -38,6 +38,7 @@ import { ShaheenMedia } from './ShaheenMedia';
 import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
 import { stripOpeningGreeting } from '../utils/shaheenText';
 import { ENGINE_BADGE, messageTime, modeBadge, visibleEngines, scrollChatToEnd } from './shaheenEngines';
+import { AIDisclosureBadge } from './LegalDisclaimer';
 import type { ShaheenModelChoice } from '../utils/chatStore';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
@@ -1150,6 +1151,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
               </div>
             </div>
 
+            <AIDisclosureBadge lang={currentLang} />
             <StaticHostingNotice currentLang={currentLang} />
             <ShaheenServiceStatus language={currentLang} models={modelStatus.models} failed={modelStatus.failed}
               enabled={modelStatus.enabled} selected={selectedModel} />
@@ -1313,6 +1315,14 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                         </div>
                       )}
 
+
+                      {/* EU AI Act Art.50 Fix: وسم AI في كل رسالة AI */}
+                      {msg.role === 'assistant' && !isError && msg.id !== 'welcome' && (
+                        <div className="flex items-center gap-1 text-[9px] font-mono px-2 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 w-fit">
+                          <span>🤖</span>
+                          <span>{currentLang === 'ar' ? 'تم إنشاؤه بالذكاء الاصطناعي — راجع أخصائيًا للاستخدام الآمن' : 'AI-generated — verify with a specialist'}</span>
+                        </div>
+                      )}
 
                       {/* Text Payload */}
                       {msg.role === 'assistant' && !isError ? (
@@ -1573,6 +1583,16 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                   </div>
                 </div>
               )}
+
+              {/* EU AI Act Transparency Notice — L-24 Fix */}
+              <div className="px-3 py-2 bg-amber-50 border-t border-amber-200 text-[10px] leading-relaxed text-amber-900 flex items-start gap-2">
+                <span className="text-amber-700 shrink-0">⚖️</span>
+                <span>
+                  {currentLang === 'ar'
+                    ? 'تنبيه قانوني: ردود شاهين مُولَّدة بالذكاء الاصطناعي — ليست نصيحة كيميائية/طبية/قانونية. التركيب الكيميائي للعطور يتطلب تحقق مخبري (IFRA 51) قبل الاستخدام.'
+                    : 'Legal notice: Shaheen replies are AI-generated — not chemical/medical/legal advice. Verify (IFRA 51) before use.'}
+                </span>
+              </div>
 
               <div ref={messagesEndRef} />
             </div>
