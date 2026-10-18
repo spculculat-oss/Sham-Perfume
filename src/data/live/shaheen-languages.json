@@ -1,7 +1,7 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-10-18T15:02:22.108Z",
+  "updatedAt": "2026-10-18T17:16:51.050Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
@@ -9,15 +9,15 @@
   "operatorNumberInputs": [
     {
       "file": "src/admin/AdminApp.tsx",
-      "line": 1201
+      "line": 1202
     },
     {
       "file": "src/admin/AdminApp.tsx",
-      "line": 1203
+      "line": 1204
     },
     {
       "file": "src/admin/AdminApp.tsx",
-      "line": 1250
+      "line": 1251
     },
     {
       "file": "src/community/MerchantPortal.tsx",
