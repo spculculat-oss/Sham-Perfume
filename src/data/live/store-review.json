@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T17:03:51.602Z",
+ "updatedAt": "2026-10-18T23:21:10.803Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1212,
@@ -12,79 +12,13 @@
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-18T16:57:54.565Z",
+  "at": "2026-10-18T23:21:10.764Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
   },
-  "sources": [
-   {
-    "id": "shamperfume",
-    "currency": "MYR",
-    "rate": 13.0813,
-    "rateFrom": "open.er-api.com",
-    "sitemapProducts": 999,
-    "listingPages": 45,
-    "listingProducts": 1021,
-    "listingOnly": 61,
-    "listingComplete": true,
-    "origin": "built-in",
-    "added": 0,
-    "refreshed": 25,
-    "failed": [],
-    "failedCount": 0,
-    "viaShaheen": 0,
-    "deferred": 0,
-    "gone": 3,
-    "via": {
-     "json-ld": 25
-    },
-    "learnedSkills": 0,
-    "notPerfume": 0,
-    "duplicates": 0
-   },
-   {
-    "id": "niceonesa-com",
-    "currency": "SAR",
-    "rate": 14.2559,
-    "rateFrom": "open.er-api.com",
-    "sitemapProducts": 504,
-    "origin": "discovered",
-    "added": 0,
-    "refreshed": 0,
-    "failed": [
-     "https://niceonesa.com/ar/makeup (no product data)",
-     "https://niceonesa.com/ar/vitamins-supplements (no product data)",
-     "https://niceonesa.com/ar/bed-bath (no product data)",
-     "https://niceonesa.com/ar/perfume (no product data)",
-     "https://niceonesa.com/ar/accessories-6 (no product data)",
-     "https://niceonesa.com/ar/devices (no product data)",
-     "https://niceonesa.com/ar/care (no product data)",
-     "https://niceonesa.com/ar/premium (no product data)",
-     "https://niceonesa.com/ar/nails (no product data)",
-     "https://niceonesa.com/ar/gifts (no product data)",
-     "https://niceonesa.com/ar/lenses (no product data)",
-     "https://niceonesa.com/ar/home-scents (no product data)",
-     "https://niceonesa.com/ar/makeup/face (no product data)",
-     "https://niceonesa.com/ar/makeup/face/foundation (no product data)",
-     "https://niceonesa.com/ar/makeup/face/concealers-and-correctors (no product data)",
-     "https://niceonesa.com/ar/makeup/face/powder (no product data)",
-     "https://niceonesa.com/ar/makeup/face/face-primer (no product data)",
-     "https://niceonesa.com/ar/makeup/face/makeup-spray (no product data)",
-     "https://niceonesa.com/ar/makeup/face/bb--cc-cream (no product data)",
-     "https://niceonesa.com/ar/makeup/face/face-sets (no product data)"
-    ],
-    "failedCount": 150,
-    "viaShaheen": 0,
-    "deferred": 0,
-    "gone": 0,
-    "via": {},
-    "learnedSkills": 0,
-    "notPerfume": 0,
-    "duplicates": 0
-   }
-  ],
-  "rate": 14.2559,
+  "sources": [],
+  "blocked": "L-03",
   "prices": {
    "count": 1161,
    "min": 750,
@@ -128,7 +62,7 @@
     }
    ]
   },
-  "durationMs": 357061
+  "durationMs": 74
  },
  "items": [
   {

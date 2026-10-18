@@ -50651,9 +50651,9 @@
       "importedAt": "2026-10-16T13:16:56.090Z",
       "refreshedAt": "2026-10-18T14:25:42.610Z",
       "importedVia": "json-ld",
-"vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
+      "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
       "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"reviewIssues": [
+      "reviewIssues": [
         "غير متوفر عند المورد"
       ]
     },
@@ -53359,12 +53359,10 @@
       ],
       "barcode": "6291107975856",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 779,
@@ -53438,12 +53436,10 @@
       ],
       "barcode": "6291107979557",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 780,
@@ -53515,12 +53511,10 @@
       ],
       "barcode": "6291107978789",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 781,
@@ -53593,12 +53587,10 @@
       ],
       "barcode": "6298043072458",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 782,
@@ -53656,12 +53648,10 @@
       "occasionsSource": [],
       "barcode": "6291107970875",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 783,
@@ -53797,12 +53787,10 @@
       ],
       "barcode": "6291107974156",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 785,
@@ -53865,12 +53853,10 @@
       ],
       "barcode": "6291107975504",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 786,
@@ -53943,12 +53929,10 @@
       ],
       "barcode": "6423080727133",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 787,
@@ -54017,12 +54001,10 @@
       ],
       "barcode": "6294015164152",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 788,
@@ -54174,12 +54156,10 @@
       "occasionsSource": [],
       "barcode": "6290362340799",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 790,
@@ -54240,12 +54220,10 @@
       ],
       "barcode": "5055810099466",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 791,
@@ -54312,12 +54290,10 @@
       ],
       "barcode": "6294015163513",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 792,
@@ -54383,12 +54359,10 @@
       ],
       "barcode": "6290360590592",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 793,
@@ -54460,12 +54434,10 @@
       ],
       "barcode": "8053629629796",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 794,
@@ -54536,12 +54508,10 @@
       ],
       "barcode": "5055810030452",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 795,
@@ -54601,12 +54571,10 @@
       "occasionsSource": [],
       "barcode": "6423080733202",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 796,
@@ -54742,12 +54710,10 @@
       ],
       "barcode": "5055810099510",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 798,
@@ -54810,12 +54776,10 @@
       "occasionsSource": [],
       "barcode": "6294019023462",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 799,
@@ -54884,12 +54848,10 @@
       "occasionsSource": [],
       "barcode": "6266515361805",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 800,
@@ -55032,12 +54994,10 @@
       ],
       "barcode": "6290362348115",
       "importedAt": "2026-10-16T13:35:47.267Z",
-"refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T16:58:58.594Z",
       "importedVia": "json-ld",
       "vatNote": "السعر لا يشمل VAT/الجمارك — الفاتورة الضريبية عند الطلب",
-      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout",
-"refreshedAt": "2026-10-18T16:58:58.594Z",
-      "importedVia": "json-ld"
+      "vatNoteEn": "Price excludes VAT/customs — tax invoice on checkout"
     },
     {
       "id": 802,
