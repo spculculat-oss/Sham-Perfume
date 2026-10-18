@@ -137,7 +137,11 @@ ${items.map((i) => `<item><title>${escapeXml(i.title)}</title><link>${escapeXml(
 /** Google/Bing verification files from environment values (nothing invented when unset). */
 export function verificationFiles(env: Record<string, string | undefined>): { name: string; content: string }[] {
   const files: { name: string; content: string }[] = [];
-  const google = env.GOOGLE_SITE_VERIFICATION?.trim();
+  // The site's own Search Console token is committed, so every build serves the verification file
+  // even when the environment is empty. A valid env token (another property) wins; junk is ignored
+  // instead of dropping verification altogether.
+  const googleToken = env.GOOGLE_SITE_VERIFICATION?.trim() || '';
+  const google = /^[A-Za-z0-9_-]{10,120}$/.test(googleToken) ? googleToken : SITE.googleVerification;
   if (google && /^[A-Za-z0-9_-]{10,120}$/.test(google)) files.push({ name: `google${google}.html`, content: `google-site-verification: google${google}.html` });
   const bing = env.BING_SITE_VERIFICATION?.trim();
   if (bing && /^[A-Za-z0-9_-]{10,120}$/.test(bing)) files.push({ name: 'BingSiteAuth.xml', content: `<?xml version="1.0"?>\n<users><user>${bing}</user></users>\n` });

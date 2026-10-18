@@ -22,6 +22,12 @@ export const SITE = {
   twitterCard: 'summary_large_image',
   /** Public IndexNow key (served at /<key>.txt). Not a secret. */
   indexNowKey: '743e07fcdce6be6d7bb0d495602ee830',
+  /**
+   * The token of the Search Console HTML verification file Google issued for this site.
+   * Served at /google<token>.html (also committed in public/, so every build path carries it).
+   * It is a public file by design — it proves control of the URL, it is not a secret.
+   */
+  googleVerification: '7ef3d5aa6cf98197',
   /** What the site is, in one honest sentence (used in llms.txt and the media kit). */
   summaryAr: 'منصة عربية لتصميم العطور وتركيبها: حاسبات المعمل، الهرم العطري، التعتيق والتخفيف، موسوعة المواد الخام، مكتبة العطور العالمية، ومتجر شام.',
   summaryEn: 'An Arabic perfume-design platform: lab calculators, fragrance pyramids, maceration and dilution, a raw-materials encyclopedia, an iconic-perfume library, and the Sham store.',
