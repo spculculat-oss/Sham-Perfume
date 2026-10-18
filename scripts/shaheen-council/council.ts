@@ -14,6 +14,8 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { AI_TOOLS, type AiToolId } from '../../src/utils/aiTools';
 import { similarity } from '../../src/utils/shaheenMemory';
+import { botOf } from '../../src/utils/shaheenOrg';
+import type { PrecheckFile } from './precheck';
 
 export type SeatId = 'manager' | 'store' | 'content' | 'experience' | 'reliability';
 export type Priority = 'high' | 'medium' | 'low';
@@ -52,6 +54,8 @@ export interface Decision {
   needsApproval?: boolean;
   status: 'applied' | 'queued' | 'skipped';
   note?: string;
+  /** Taken by the secretary on Shaheen's behalf (routine items, or the whole meeting under pressure). */
+  by?: 'secretary';
 }
 
 export interface SeatOpinion { seat: SeatId; engine?: string; ok: boolean; text: string }
@@ -64,6 +68,9 @@ export interface Meeting {
   decisions: Decision[];
   toolGoals: Partial<Record<AiToolId, string>>;
   chairEngine?: string;
+  /** Who chaired: Shaheen, or his secretary («مشرف شاهين») deputising — and why. */
+  chair?: 'shaheen' | 'secretary';
+  deputyReasons?: string[];
 }
 export interface Task {
   id: string;
@@ -89,7 +96,10 @@ export interface CouncilFile {
   /** Questions «مدرسة شاهين» studies next, stores «كشّاف المصادر» checks next (from the meetings). */
   study: { q: string; at: string }[];
   seeds: { domain: string; at: string }[];
+  /** What the secretary did on Shaheen's behalf; Shaheen reviews it at his next meeting (reviewedAt). */
+  delegations?: Delegation[];
 }
+export interface Delegation { date: string; at: string; reasons: string[]; decisions: string[]; reviewedAt?: string }
 
 export const emptyCouncil = (): CouncilFile => ({ version: 1, updatedAt: new Date(0).toISOString(), meetings: [], tasks: [], toolGoals: {}, study: [], seeds: [] });
 export const isCouncilFile = (d: unknown): d is CouncilFile =>
@@ -108,6 +118,8 @@ export interface LiveData {
   supervisor?: unknown; school?: unknown; sources?: unknown; review?: unknown; seo?: unknown; news?: unknown; quota?: unknown; skills?: unknown; manus?: unknown; intake?: unknown;
   /** «وكيل اللغات» — digit systems following the site language, bare-locale formatting, pack coverage. */
   languages?: unknown;
+  /** «الفحص الشامل قبل الاجتماع» (precheck.ts): every robot's own check, two hours before the meeting. */
+  precheck?: unknown;
 }
 
 /** What the bots report, in plain Arabic lines, plus rule-based signals (the agenda; the minutes without AI). */
@@ -221,9 +233,35 @@ export function buildBriefing(d: LiveData, now: number, openTasks: Task[] = []):
     if (bareCount > 0 && publicCount === 0) push({ area: 'experience', priority: 'low', text: `تنسيق أرقام/تواريخ بلا لغة صريحة في ${bareCount} موضع — الأرقام المعروضة قد تتبع لغة متصفح الزائر` });
   }
 
+  // «الفحص الشامل قبل الاجتماع»: every robot checked itself two hours ago; broken ones are on the agenda,
+  // and the help requests the secretary routed between the tools are reported (safe ones carry an action).
+  const pre = d.precheck as PrecheckFile | undefined;
+  if (pre && Array.isArray(pre.bots) && (hoursSince(pre.updatedAt, now) ?? 99) < 8) {
+    facts.push(pre.summaryAr);
+    for (const b of pre.bots) {
+      const bot = botOf(b.id);
+      if (!bot || (b.status !== 'fail' && b.status !== 'warn') || !b.problems.length) continue;
+      facts.push(`${bot.nameAr}: ${b.problems.slice(0, 2).join('، ')}${b.fixes[0] ? ` — الإصلاح المقترح: ${b.fixes[0]}` : ''}`);
+      const late = b.problems.every((p) => /متأخر/.test(p));
+      if (b.status === 'fail' && !late) {
+        push({ area: deptArea(bot.dept), priority: 'high', text: `عطل في ${bot.nameAr}: ${b.problems.join('، ')}`,
+          decision: { title: `إصلاح عطل: ${bot.nameAr}`, detail: `الفحص الشامل قبل الاجتماع:\n${b.problems.map((p) => `- ${p}`).join('\n')}${b.fixes.length ? `\nالإصلاح المقترح:\n${b.fixes.map((x) => `- ${x}`).join('\n')}` : ''}${b.lastRun?.url ? `\nسجل آخر تشغيل: ${b.lastRun.url}` : ''}`, area: deptArea(bot.dept), priority: 'high', kind: 'task' } });
+      }
+    }
+    const ideas = pre.bots.filter((b) => b.ideas.length).map((b) => `${botOf(b.id)?.nameAr}: ${b.ideas[0]}`);
+    if (ideas.length) facts.push(`أفكار تطوير من الأدوات: ${ideas.slice(0, 6).join(' | ')}`);
+    for (const h of pre.handoffs || []) {
+      facts.push(`تعاون: ${botOf(h.from)?.nameAr} ← ${botOf(h.to)?.nameAr}: ${h.textAr}`);
+      if (h.action?.type === 'rerun' && !signals.some((x) => JSON.stringify(x.decision?.action) === JSON.stringify(h.action))) push({ area: deptArea(botOf(h.to)?.dept), priority: 'medium', text: h.textAr,
+        decision: { title: `تشغيل ${botOf(h.to)?.nameAr}`, detail: h.textAr, area: deptArea(botOf(h.to)?.dept), priority: 'medium', kind: 'auto', action: h.action } });
+    }
+  }
+
   if (openTasks.length) facts.push(`مهام تطوير مفتوحة: ${openTasks.length} — ${openTasks.slice(0, 5).map((t) => t.title).join(' | ')}`);
   return { at: new Date(now).toISOString(), facts, signals };
 }
+
+const deptArea = (dept: string | undefined): Area => (dept === 'store' ? 'store' : dept === 'content' ? 'content' : dept === 'experience' ? 'experience' : dept === 'leadership' ? 'ai-tools' : 'reliability');
 
 // ── 2. Opinions and minutes ────────────────────────────────────────────────────────────────────────────────
 export const SEAT_SYSTEM = (seat: Seat) => `أنت «${seat.titleAr}» في الاجتماع اليومي لتطوير منصة «صمم عطرك مع شام» (موقع عطور عربي على GitHub Pages: متجر عطور، حاسبات تركيب، الخبير شاهين، مجتمع، أخبار).
@@ -242,9 +280,12 @@ export const CHAIR_SYSTEM = `أنت «الخبير شاهين»، مدير كل 
 - "task": مهمة تطوير برمجية لوكيل البرمجة (عنوان واضح وتفاصيل قابلة للتنفيذ: ماذا ولماذا وأين). needsApproval=true للتغييرات الكبيرة أو التي تمس الأسعار أو الدفع أو التصميم العام أو حذف شيء.
 لا تكرر مهمة موجودة في «مهام مفتوحة». لا تذكر أسماء شركات أو نماذج ذكاء اصطناعي في أهداف الأدوات. أعد JSON فقط.`;
 
-export function chairPrompt(b: Briefing, opinions: SeatOpinion[], openTasks: Task[]) {
+export function chairPrompt(b: Briefing, opinions: SeatOpinion[], openTasks: Task[], delegations: Delegation[] = []) {
   const toolIds = AI_TOOLS.map((t) => `${t.id} (${t.nameAr})`).join('، ');
-  return `${seatPrompt(b)}\n\nآراء الخبراء:\n${opinions.filter((x) => x.ok).map((x) => `### ${SEATS.find((s) => s.id === x.seat)?.titleAr}\n${x.text.slice(0, 2500)}`).join('\n\n')}\n\nمهام مفتوحة (لا تكررها):\n${openTasks.map((t) => `- ${t.title}`).join('\n') || '- لا شيء'}\n\nالأدوات: ${toolIds}\n
+  const deputy = delegations.length
+    ? `\n\nما فعله سكرتيرك («مشرف شاهين») بالنيابة عنك منذ آخر اجتماع لك — راجعه، وصحح أي قرار في محضرك:\n${delegations.map((x) => `- ${x.date} (${x.reasons.join('، ')}): ${x.decisions.join(' | ') || 'لا قرارات'}`).join('\n')}`
+    : '';
+  return `${seatPrompt(b)}${deputy}\n\nآراء الخبراء:\n${opinions.filter((x) => x.ok).map((x) => `### ${SEATS.find((s) => s.id === x.seat)?.titleAr}\n${x.text.slice(0, 2500)}`).join('\n\n')}\n\nمهام مفتوحة (لا تكررها):\n${openTasks.map((t) => `- ${t.title}`).join('\n') || '- لا شيء'}\n\nالأدوات: ${toolIds}\n
 أعد بالشكل:
 {"summary":"جملتان","decisions":[{"title":"…","detail":"…","area":"ai-tools|store|content|experience|reliability","priority":"high|medium|low","kind":"auto|task","action":{…},"tool":"<id اختياري>","needsApproval":false}],"toolGoals":{"<id>":"هدف تطوير واحد محدد لهذه الأداة في تخصصها"}}`;
 }
@@ -297,18 +338,38 @@ export function parseMinutes(reply: unknown, date: string): Pick<Meeting, 'summa
 }
 
 /** Minutes without any AI: the briefing's signals become decisions (most urgent first). */
-export function selfMinutes(b: Briefing, date: string): Pick<Meeting, 'summaryAr' | 'decisions' | 'toolGoals'> {
+export function selfMinutes(b: Briefing, date: string, deputyReasons: string[] = []): Pick<Meeting, 'summaryAr' | 'decisions' | 'toolGoals'> {
   const order = { high: 0, medium: 1, low: 2 } as const;
   const decisions = b.signals.filter((s) => s.decision).sort((a, c) => order[a.priority] - order[c.priority]).slice(0, 6)
-    .map((s) => ({ ...s.decision!, id: decisionId(date, s.decision!.title), status: 'queued' as const, needsApproval: Boolean(s.decision!.needsApproval) }));
+    .map((s) => ({ ...s.decision!, id: decisionId(date, s.decision!.title), status: 'queued' as const, needsApproval: Boolean(s.decision!.needsApproval), by: 'secretary' as const }));
   const urgent = b.signals.filter((s) => s.priority === 'high').length;
   return {
-    summaryAr: `اجتماع بدون ذكاء اصطناعي (من تقارير الأدوات): ${b.signals.length} ملاحظة، منها ${urgent} عاجلة. ${decisions.length ? `القرارات: ${decisions.map((d) => d.title).join('، ')}.` : 'لا قرارات جديدة اليوم.'}`,
+    summaryAr: `${deputyReasons.length ? `السكرتير (مشرف شاهين) أدار الاجتماع بالنيابة عن شاهين (${deputyReasons.join('، ')})، من تقارير الأدوات` : 'اجتماع بدون ذكاء اصطناعي (من تقارير الأدوات)'}: ${b.signals.length} ملاحظة، منها ${urgent} عاجلة. ${decisions.length ? `القرارات: ${decisions.map((d) => d.title).join('، ')}.` : 'لا قرارات جديدة اليوم.'}`,
     decisions,
     // A weak tool's own fix list becomes its development goal (the supervisor passes it to the tool's review).
     toolGoals: Object.fromEntries(decisions.filter((d) => d.tool).map((d) => [d.tool, d.detail.slice(0, 400)])),
   };
 }
+
+/**
+ * Under pressure with Shaheen still chairing: the secretary takes the routine — the safe actions the reports
+ * call for (reruns, help requests) — so Shaheen's discussion is only about what needs him.
+ */
+export function secretaryRoutine(b: Briefing, date: string, taken: Decision[]): Decision[] {
+  return b.signals.filter((s) => s.decision?.kind === 'auto' && s.decision.action)
+    .filter((s) => !taken.some((d) => d.action && JSON.stringify(d.action) === JSON.stringify(s.decision!.action)))
+    .map((s) => ({ ...s.decision!, id: decisionId(date, s.decision!.title), status: 'queued' as const, by: 'secretary' as const, needsApproval: false }));
+}
+
+/** Records what the secretary did on Shaheen's behalf; marks earlier records reviewed when Shaheen chairs. */
+export function recordDelegation(file: CouncilFile, meeting: Meeting): void {
+  const list = file.delegations || [];
+  if (meeting.chair === 'shaheen') { for (const x of list) if (!x.reviewedAt) x.reviewedAt = meeting.at; }
+  const mine = meeting.decisions.filter((d) => d.by === 'secretary').map((d) => `${d.title} (${d.note || d.status})`);
+  if (meeting.chair === 'secretary' || mine.length) list.unshift({ date: meeting.date, at: meeting.at, reasons: meeting.deputyReasons || [], decisions: mine, ...(meeting.chair === 'shaheen' ? { reviewedAt: meeting.at } : {}) });
+  file.delegations = list.slice(0, 30);
+}
+export const unreviewed = (file: CouncilFile) => (file.delegations || []).filter((x) => !x.reviewedAt);
 
 // ── 3. Applying decisions ───────────────────────────────────────────────────────────────────────────────────
 /** Same task already open (or done in the last 14 days)? Titles are compared by meaning. */
