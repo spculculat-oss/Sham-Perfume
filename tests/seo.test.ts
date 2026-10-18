@@ -6,13 +6,14 @@
  * page) before any of them reaches GitHub Pages or Vercel.
  */
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { HOME_PAGE, SEO_PAGES, allSeoPages, pageByPath, tabSeo } from '../src/seo/pages';
 import { SITE, absoluteUrl, canonicalSiteUrl, indexNowKeyPath } from '../src/seo/site';
-import { validateSeoCopy } from '../src/seo/audit';
+import { validateSeoCopy, visibleText } from '../src/seo/audit';
 import { SEO_AREAS, TOTAL_LESSONS, nextLesson } from '../src/seo/curriculum';
 import {
-  buildSitemapEntries, injectHomeHead, renderFeed, renderLlmsTxt, renderRobots, renderSitemap, renderToolPage,
+  buildSitemapEntries, injectHomeFallback, injectHomeHead, renderFeed, renderLlmsTxt, renderRobots, renderSitemap, renderToolPage,
   renderToolsIndex, verificationFiles,
 } from '../src/seo/artifacts';
 import { emptySeoState, readSeoState } from '../src/seo/agentState';
@@ -107,6 +108,26 @@ test('the tools index links every tool page and keeps the same canonical origin'
   const html = renderToolsIndex(SEO_PAGES, { siteUrl: site });
   assert.ok(html.includes(absoluteUrl('tools/', site)));
   for (const page of SEO_PAGES) assert.ok(html.includes(absoluteUrl(page.path, site)), page.path);
+});
+
+test('the served home page carries real content before React mounts', () => {
+  const source = '<!doctype html><html lang="ar" dir="rtl"><head></head><body><div id="root"></div></body></html>';
+  const html = injectHomeFallback(injectHomeHead(source, { siteUrl: site, env: {} }));
+  const words = visibleText(html).split(/\s+/).filter(Boolean);
+  assert.ok(words.length >= 300, `home visible text is only ${words.length} words`);
+  assert.equal((html.match(/<h1\b/g) || []).length, 1);
+  assert.ok((html.match(/<h2\b/g) || []).length >= 2);
+  assert.ok((html.match(/<a\s+href="tools\//g) || []).length >= 10, 'the home must link into the tool pages');
+  assert.ok(html.indexOf('<!--seo-agent:body:start-->') > html.indexOf('<div id="root">'));
+  assert.equal(injectHomeFallback(html), html, 'fallback injection must be idempotent');
+  assert.equal((html.match(/<!--seo-agent:body:start-->/g) || []).length, 1);
+});
+
+test('the real index.html keeps exactly one H1 once the static copy is injected', () => {
+  const source = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  const html = injectHomeFallback(injectHomeHead(source, { siteUrl: site, env: {} }));
+  assert.equal((html.match(/<h1\b/g) || []).length, 1);
+  assert.ok(visibleText(html).split(/\s+/).filter(Boolean).length >= 300);
 });
 
 test('injecting the home head twice never duplicates a tag (Google reads one canonical)', () => {

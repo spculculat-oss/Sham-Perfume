@@ -382,6 +382,89 @@ export function injectHomeHead(html: string, options: HomeHeadOptions): string {
   return out;
 }
 
+
+/* ---------- crawlable home fallback ----------
+ * The app is a client-rendered SPA, so the served HTML used to be a ten-word shell. React clears
+ * this block the moment it mounts (createRoot replaces the container's children), but before that —
+ * and for every crawler that does not run JavaScript — it is the real home page: an H1, sections,
+ * and working links into the tools. Keeping it inside #root means no duplicated content after boot.
+ */
+const HOME_TOOL_LINKS: { id: string; note: string }[] = [
+  { id: 'concentration', note: 'نسب الزيت والكحول والماء لأي حجم زجاجة وتركيز.' },
+  { id: 'alcohol', note: 'تخفيف الكحول إلى النسبة المناسبة قبل المزج.' },
+  { id: 'costing', note: 'تكلفة الزجاجة وسعر البيع وهامش الربح.' },
+  { id: 'pyramid', note: 'توزيع النوتات العليا والقلبية والقاعدية ومحاكاة الرش.' },
+  { id: 'maceration_simulator', note: 'متابعة التعتيق يوماً بيوم حتى ينضج العطر.' },
+  { id: 'guide', note: 'دليل المثبتات وطرق التعتيق خطوة بخطوة.' },
+  { id: 'raw_materials', note: 'بطاقات المواد الخام وخصائصها ونسب استخدامها.' },
+  { id: 'world_perfumes', note: 'أرشيف العطور الأيقونية ووصف كل عطر.' },
+  { id: 'perfume_news', note: 'مرصد أخبار العطور العالمية وتحديثات السوق.' },
+  { id: 'library', note: 'وصفات محفوظة جاهزة للتعديل والاستخدام.' },
+  { id: 'master_ai', note: 'مساعد خبير يجيب عن أسئلة التركيب والتصميم.' },
+  { id: 'store', note: 'عطور مختارة بعناية لمن يريد البدء بزجاجة جاهزة.' },
+];
+
+const homeLink = (id: string, note: string) => {
+  const page = SEO_PAGES.find((entry) => entry.id === id);
+  if (!page) return '';
+  return `<li style="margin:0 0 8px"><a href="${escapeHtml(page.path)}" style="color:#7a4a1d;font-weight:600;text-decoration:none">${escapeHtml(page.h1)}</a>`
+    + `<span style="color:#5d4b3c"> — ${escapeHtml(note)}</span></li>`;
+};
+
+const homeList = (ids: string[]) => `<ul style="margin:12px 0 0;padding:0 18px 0 0;line-height:1.9">${ids
+  .map((id) => { const item = HOME_TOOL_LINKS.find((entry) => entry.id === id); return item ? homeLink(item.id, item.note) : ''; })
+  .join('')}</ul>`;
+
+const homeSection = (title: string, body: string) => `<h2 style="font-size:1.35rem;margin:30px 0 10px;color:#3a2a1c">${escapeHtml(title)}</h2>${body}`;
+
+/** The static home page: real Arabic copy, one H1, five H2 sections and links into every tool. */
+export function renderHomeFallback(): string {
+  const body = [
+    `<p style="font-size:1.05rem;line-height:1.95;margin:14px 0">معمل شام مساحة عربية لتصميم العطر خطوة بخطوة: تبدأ بفكرة أو نوتة تحبها، `
+      + `تحسب نسب الزيت والكحول والماء، ترتّب الهرم العطري، ثم تحفظ الوصفة وتتابع تعتيقها. كل ذلك داخل المتصفح دون تنزيل برامج، `
+      + `مع مراجع عطرية ومتجر يضم خلاصات مختارة بعناية.</p>`,
+    homeSection('حاسبات التركيب والتكلفة',
+      `<p style="line-height:1.95;margin:12px 0">الحاسبة تحوّل الفكرة إلى أرقام: تدخل حجم الزجاجة والتركيز المطلوب، فتحصل على وزن كل مكوّن `
+        + `بالمليلتر والجرام بدقة 0.01. وإذا أردت معرفة تكلفة الزجاجة قبل أن تصنعها، فحاسبة التكلفة تجمع سعر الخامات وتحسب هامش الربح.</p>`
+        + homeList(['concentration', 'alcohol', 'costing'])),
+    homeSection('الهرم العطري والتعتيق',
+      `<p style="line-height:1.95;margin:12px 0">بعد أن تصبح النسب جاهزة يأتي دور التذوق: وزّع النوتات على الهرم العطري لتعرف ما ستشمه أولاً `
+        + `وما يبقى على الجلد، ثم اختبر أثر التعتيق قبل أن تلتزم بوصفتك. محاكي التعتيق يمنحك صورة عن تغيّر العطر مع الأسابيع، `
+        + `والدليل يشرح دور المثبتات وطرق التخزين.</p>`
+        + homeList(['pyramid', 'maceration_simulator', 'guide'])),
+    homeSection('مراجع للمبتدئ والمحترف',
+      `<p style="line-height:1.95;margin:12px 0">المواد الخام ليست أسماء غامضة: لكل مادة بطاقة توضح أصلها وثباتها ونسب استخدامها في التركيب. `
+        + `وإلى جانب الموسوعة تجد مكتبة العطور العالمية لقراءة وصفات أيقونات الصناعة، ومرصد الأخبار لمتابعة الإصدارات، `
+        + `ومكتبة الوصفات لتبدأ من صيغة جاهزة وتعدّلها.</p>`
+        + homeList(['raw_materials', 'world_perfumes', 'perfume_news', 'library', 'master_ai'])),
+    homeSection('كيف تبدأ في ثلاث خطوات؟',
+      `<ol style="margin:12px 0 0;padding:0 18px 0 0;line-height:1.95">`
+        + `<li>اختر التركيز والحجم: حدد سعة الزجاجة ونسبة الزيت، مثل EDP أو EDT، وراجع الكميات التي تظهر لك.</li>`
+        + `<li>رتّب النوتات: جرّب توزيع النوتات على الهرم العطري، واحفظ الوصفة في مكتبتك إذا أعجبتك الفكرة.</li>`
+        + `<li>اختبر ثم عدّل: راقب التعتيق، احسب التكلفة، وعدّل النسب قبل أن تعيد التصنيع.</li>`
+        + `</ol>`),
+    homeSection('لمن صُمم هذا المعمل؟',
+      `<p style="line-height:1.95;margin:12px 0">للمبتدئ الذي يريد أول تركيبة واضحة، ولصاحب المشروع الصغير الذي يحتاج حساباً دقيقاً للتكلفة `
+        + `قبل الشراء، وللمهتم بقراءة العطور وفهم موادها. كل الأدوات تعمل على الهاتف قبل الحاسوب، وتُحفظ وصفاتك على جهازك، `
+        + `ويمكنك التنقل بين الحاسبات دون أن تفقد ما كتبته.</p>`
+        + homeList(['store'])),
+  ].join('\n');
+
+  return `<!--seo-agent:body:start-->\n<div dir="rtl" lang="ar" style="max-width:880px;margin:0 auto;padding:28px 20px 44px;`
+    + `font-family:system-ui,-apple-system,'Segoe UI',Tahoma,sans-serif;color:#2c2118;background:#fffaf4;line-height:1.9">`
+    + `<h1 style="font-size:1.9rem;line-height:1.5;margin:0 0 12px;color:#3a2a1c">${escapeHtml(HOME_PAGE.h1)}</h1>\n`
+    + `${body}\n</div>\n<!--seo-agent:body:end-->`;
+}
+
+/** Injects the static home copy inside #root (idempotent). React replaces it on mount. */
+export function injectHomeFallback(html: string): string {
+  const block = renderHomeFallback();
+  const out = html.replace(/\n?<!--seo-agent:body:start-->[\s\S]*?<!--seo-agent:body:end-->\n?/i, '');
+  const root = /<div\s+id=["']root["'][^>]*>/i;
+  if (root.test(out)) return out.replace(root, (tag) => `${tag}\n${block}`);
+  return out.replace(/<body([^>]*)>/i, (tag) => `${tag}\n${block}`);
+}
+
 /** What the build learned, kept next to the generated files for the agent and the admin. */
 export function renderSeoBuildReport(input: { siteUrl: string; pages: number; products: number; sitemapUrls: number; now?: Date }) {
   return JSON.stringify({

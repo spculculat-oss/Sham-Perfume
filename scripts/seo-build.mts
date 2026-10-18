@@ -10,7 +10,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { mergeCatalog, type RawProduct, type StoreCatalogFile } from '../src/utils/storeCatalog';
 import {
-  buildSitemapEntries, injectHomeHead, renderFeed, renderLlmsTxt, renderRobots, renderSeoBuildReport, renderSitemap,
+  buildSitemapEntries, injectHomeFallback, injectHomeHead, renderFeed, renderLlmsTxt, renderRobots, renderSeoBuildReport, renderSitemap,
   renderToolPage, renderToolsIndex, verificationFiles,
 } from '../src/seo/artifacts';
 import { copyOverride, readPagesFile } from '../src/seo/agentState';
@@ -62,7 +62,7 @@ const indexPath = new URL(`${outDir}/index.html`, root);
 if (existsSync(indexPath)) {
   const source = readFileSync(indexPath, 'utf8');
   const homeOverride = copyOverride(livePages, HOME_PAGE.id);
-  const html = injectHomeHead(source, { siteUrl, override: homeOverride, env, now: new Date() });
+  const html = injectHomeFallback(injectHomeHead(source, { siteUrl, override: homeOverride, env, now: new Date() }));
   writeFileSync(indexPath, html);
   const notFound = new URL(`${outDir}/404.html`, root);
   if (existsSync(notFound)) writeFileSync(notFound, html);
