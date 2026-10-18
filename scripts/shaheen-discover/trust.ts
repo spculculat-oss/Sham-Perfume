@@ -59,6 +59,10 @@ export interface TrustInput {
   registeredAt?: string | null;
   /** Google Safe Browsing (only with the merchant's key). */
   safeBrowsing?: 'clean' | 'flagged';
+  /** Pages the site has but forbids automated readers to open (robots.txt): «could not check», not «missing». */
+  blocked?: TrustId[];
+  /** Brands the store sells: a years-old domain that is exactly a brand's name is that brand's own house. */
+  brands?: string[];
   now: number;
 }
 
@@ -184,6 +188,25 @@ export function registrableDomain(host: string): string {
   return parts.slice(-keep).join('.');
 }
 
+/** Which CV check a page address is for (contact, returns, legal → identity, shipping, privacy, terms). */
+export function pageKind(url: string): TrustId | undefined {
+  const u = decoded(url);
+  if (WORDS.legal.test(u) || /contact-information/i.test(u)) return 'identity';
+  for (const k of ['returns', 'shipping', 'privacy', 'terms', 'contact'] as const) if (WORDS[k].test(u)) return k;
+  return undefined;
+}
+
+const brandKey = (b: string) => b.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '');
+/** The brand whose official domain this is (afnan.com ← «Afnan», lattafa-perfumes.com ← «Lattafa Perfumes»). */
+export function officialBrandOf(host: string, brands: string[]): string | undefined {
+  const label = registrableDomain(host).split('.')[0].replace(/-/g, '');
+  if (label.length < 4) return undefined;
+  return brands.find((b) => {
+    const k = brandKey(b);
+    return k.length >= 4 && (label === k || label === `${k}perfumes` || label === `${k}parfums` || label === `${k}perfume` || label === k.replace(/(?:perfumes?|parfums?)$/, ''));
+  });
+}
+
 /** The registration date in an RDAP answer (events → «registration»). */
 export function rdapRegistered(json: unknown): string | undefined {
   const events = (json as { events?: { eventAction?: string; eventDate?: string }[] })?.events;
@@ -239,13 +262,21 @@ export function assessTrust(i: TrustInput): TrustProfile {
   const links = [...anchors(i.homeHtml, i.finalUrl), ...pages.flatMap((p) => anchors(p.html, p.url))];
   const linkText = links.map((a) => `${decoded(a.href)} ${a.text}`).join('\n');
   const has = (kind: keyof typeof WORDS) => WORDS[kind].test(linkText) || pages.some((p) => WORDS[kind].test(decoded(p.url)));
+  const blocked = new Set(i.blocked || []);
+  let years: number | undefined;
+  if (i.registeredAt) years = (i.now - Date.parse(i.registeredAt)) / (365.25 * 86_400_000);
+  // Benefit of the doubt only for an established site (3+ years): a young shop that hides its pages gets none.
+  const half = (max: number) => (years !== undefined && years >= 3 ? Math.ceil(max / 2) : 0);
+  const HIDDEN = 'الموقع يمنع قراءة الصفحة آلياً';
+  /** Found → full points; forbidden to read → «?» (half points for an established site); else missing. */
+  const policy = (id: TrustId, label: string, found: boolean, max: number): TrustCheck => (found
+    ? { id, label, ok: true, points: max, max }
+    : blocked.has(id) ? { id, label, ok: null, points: half(max), max, detail: HIDDEN } : { id, label, ok: false, points: 0, max });
   const checks: TrustCheck[] = [];
   const flags: string[] = [];
   const add = (c: TrustCheck) => checks.push(c);
 
   // 1. Domain age (RDAP).
-  let years: number | undefined;
-  if (i.registeredAt) years = (i.now - Date.parse(i.registeredAt)) / (365.25 * 86_400_000);
   if (years === undefined) add({ id: 'age', label: 'عمر النطاق', ok: null, points: 8, max: 20, detail: 'السجل لا ينشر تاريخ التسجيل' });
   else {
     const pts = years >= 5 ? 20 : years >= 3 ? 16 : years >= 1 ? 10 : years >= 0.5 ? 4 : 0;
@@ -263,24 +294,29 @@ export function assessTrust(i: TrustInput): TrustProfile {
   const phone = PHONE.test(text) || /href=["']tel:/i.test(allHtml);
   const contactPage = has('contact');
   const contactPts = (emails.length ? 4 : 0) + (phone ? 4 : 0) + (contactPage ? 2 : 0);
-  add({ id: 'contact', label: 'بيانات التواصل', ok: contactPts >= 6, points: Math.min(10, contactPts), max: 10, detail: [contactPage && 'صفحة تواصل', emails.length && 'بريد', phone && 'هاتف'].filter(Boolean).join(' + ') || 'لا توجد' });
+  if (contactPts < 6 && blocked.has('contact')) add({ id: 'contact', label: 'بيانات التواصل', ok: null, points: Math.max(contactPts, half(10)), max: 10, detail: HIDDEN });
+  else add({ id: 'contact', label: 'بيانات التواصل', ok: contactPts >= 6, points: Math.min(10, contactPts), max: 10, detail: [contactPage && 'صفحة تواصل', emails.length && 'بريد', phone && 'هاتف'].filter(Boolean).join(' + ') || 'لا توجد' });
 
   // 4. Legal identity: company / tax number, legal notice, address.
   const legalId = LEGAL_ID.test(text) || has('legal');
   const address = ADDRESS.test(text);
-  const idPts = (legalId ? 10 : 0) + (address ? 5 : 0);
-  add({ id: 'identity', label: 'هوية الشركة (سجل/رقم ضريبي/عنوان)', ok: legalId, points: idPts, max: 15, detail: [legalId && 'بيانات قانونية', address && 'عنوان'].filter(Boolean).join(' + ') || 'لا توجد' });
+  // The brand's own house: a domain that is exactly the brand's name, registered years ago.
+  const brand = years !== undefined && years >= 3 ? officialBrandOf(i.host, i.brands || []) : undefined;
+  const idPts = (legalId || brand ? 10 : 0) + (address ? 5 : 0);
+  const idCheck: TrustCheck = { id: 'identity', label: 'هوية الشركة (سجل/رقم ضريبي/عنوان)', ok: legalId || Boolean(brand), points: idPts, max: 15, detail: [legalId && 'بيانات قانونية', brand && `الموقع الرسمي لماركة ${brand}`, address && 'عنوان'].filter(Boolean).join(' + ') || 'لا توجد' };
+  if (!idCheck.ok && blocked.has('identity')) Object.assign(idCheck, { ok: null, points: Math.max(idPts, half(10)), detail: HIDDEN });
+  add(idCheck);
 
   // 5–8. Customer policies.
   const returns = has('returns') || /(?:return|refund|retour|rückgabe|widerruf|devoluci|reso|返品|退货|반품|возврат|iade|إرجاع|استرجاع)[^.]{0,60}(?:policy|polic|richtlinie|politique|política|politica|ポリシー|政策|정책|политик|politika|سياسة)/i.test(text);
-  add({ id: 'returns', label: 'سياسة الإرجاع والاسترداد', ok: returns, points: returns ? 10 : 0, max: 10 });
+  add(policy('returns', 'سياسة الإرجاع والاسترداد', returns, 10));
   const shippingPage = has('shipping');
   const worldwide = /ship(?:s|ping)? (?:worldwide|internationally|to over \d+ countries|to \d+\+? countries)|international (?:shipping|delivery)|worldwide (?:shipping|delivery)|livraison (?:internationale|dans le monde)|weltweite?r? versand|internationaler versand|envío internacional|envíos internacionales|spedizione internazionale|spedizioni in tutto il mondo|海外発送|海外配送|国际运输|全球配送|해외배송|международная доставка|yurt ?dışı kargo|شحن دولي|الشحن الدولي|شحن لجميع الدول|نشحن لجميع/i.test(text);
-  add({ id: 'shipping', label: 'سياسة الشحن', ok: shippingPage || worldwide, points: (shippingPage ? 3 : 0) + (worldwide ? 2 : 0), max: 5, detail: worldwide ? 'يشحن دولياً' : shippingPage ? 'محلي أو غير مذكور' : undefined });
-  const privacy = has('privacy');
-  add({ id: 'privacy', label: 'سياسة الخصوصية', ok: privacy, points: privacy ? 5 : 0, max: 5 });
-  const terms = has('terms');
-  add({ id: 'terms', label: 'الشروط والأحكام', ok: terms, points: terms ? 5 : 0, max: 5 });
+  add(shippingPage || worldwide || !blocked.has('shipping')
+    ? { id: 'shipping', label: 'سياسة الشحن', ok: shippingPage || worldwide, points: (shippingPage ? 3 : 0) + (worldwide ? 2 : 0), max: 5, detail: worldwide ? 'يشحن دولياً' : shippingPage ? 'محلي أو غير مذكور' : undefined }
+    : policy('shipping', 'سياسة الشحن', false, 5));
+  add(policy('privacy', 'سياسة الخصوصية', has('privacy'), 5));
+  add(policy('terms', 'الشروط والأحكام', has('terms'), 5));
 
   // 9. Payment methods.
   // Payment logos are pictures: their file names / alt texts count too (scripts do not).

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
-  anchors, assessTrust, copyShare, rdapRegistered, regionOf, registrableDomain, sellsCopies, trustLinks, trustReason, TRUST_MIN,
+  anchors, assessTrust, copyShare, officialBrandOf, pageKind, rdapRegistered, regionOf, registrableDomain, sellsCopies, trustLinks, trustReason, TRUST_MIN,
 } from '../scripts/shaheen-discover/trust';
 import { emptySources, interleave, KNOWN_STORES, KNOWN_STORES_BY_REGION, planQueries, vettingQueue, WORLD_QUERIES, type LiveSource } from '../scripts/shaheen-discover/discover';
 import { extractProduct, parsePrice } from '../scripts/shaheen-import/extract';
@@ -154,4 +154,24 @@ test('European price formats are read correctly (49,90 € is not 4990)', () => 
   assert.equal(extractProduct(page('49,90', 'EUR'), 'https://s.example/p/x1')?.price, 49.9);
   assert.equal(extractProduct(page('120.0000', 'USD'), 'https://s.example/p/x1')?.price, 120, 'the standard format stays as written');
   assert.equal(extractProduct(page('12800', 'JPY'), 'https://s.example/p/x1')?.price, 12800);
+});
+
+test('store CV: the brand\'s own house, and pages the site forbids reading', () => {
+  const home = `<html><head><script src="https://cdn.shopify.com/s/x.js"></script></head><body><a href="/products/oud">Oud</a><a href="https://instagram.com/brand">IG</a></body></html>`;
+  const blocked = ['identity', 'returns', 'shipping', 'privacy', 'terms'] as const;
+  assert.equal(pageKind('https://afnan.example/policies/refund-policy'), 'returns');
+  assert.equal(pageKind('https://afnan.example/policies/contact-information'), 'identity');
+  assert.equal(pageKind('https://afnan.example/pages/impressum'), 'identity');
+  assert.equal(officialBrandOf('us.afnan.com', ['Lattafa', 'Afnan']), 'Afnan');
+  assert.equal(officialBrandOf('lattafa-perfumes.com', ['Lattafa Perfumes']), 'Lattafa Perfumes');
+  assert.equal(officialBrandOf('afnan-sale.shop', ['Afnan']), undefined, 'a look-alike domain is not the brand');
+  const old = assessTrust({ host: 'afnan.com', finalUrl: 'https://afnan.com/', homeHtml: home, blocked: [...blocked], brands: ['Afnan'], registeredAt: YEARS(18), now: NOW });
+  const id = old.checks.find((c) => c.id === 'identity')!;
+  assert.equal(id.ok, true);
+  assert.match(id.detail || '', /الرسمي لماركة Afnan/);
+  const ret = old.checks.find((c) => c.id === 'returns')!;
+  assert.deepEqual([ret.ok, ret.points], [null, 5], 'forbidden page = «could not check», half points');
+  const young = assessTrust({ host: 'newshop.example.com', finalUrl: 'https://newshop.example.com/', homeHtml: home, blocked: [...blocked], brands: ['Afnan'], registeredAt: YEARS(1.5), now: NOW });
+  assert.equal(young.checks.find((c) => c.id === 'returns')?.points, 0, 'no benefit of the doubt for a young shop');
+  assert.ok(young.score < TRUST_MIN);
 });

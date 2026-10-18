@@ -31,7 +31,7 @@ import {
   addCandidates, brandSiteGuesses, CATEGORYISH, NOT_PRODUCT, oneLanguage, sameSite, domainOf, KNOWN_STORES, pageLinks, withPage, domainsFromSearch, emptySources, isNeverSource, isSourcesFile, judgeSamples,
   inferProductPattern, parseRobots, planQueries, productCandidates, spreadSample, summary, vettingQueue, type LiveSource, type Sample, type SourcesFile,
 } from './discover';
-import { assessTrust, copyShare, rdapRegistered, regionOf, registrableDomain, trustLinks, trustReason, TRUST_MIN, type TrustProfile } from './trust';
+import { assessTrust, copyShare, pageKind, rdapRegistered, regionOf, registrableDomain, trustLinks, trustReason, TRUST_MIN, type TrustId, type TrustProfile } from './trust';
 
 const env = process.env;
 const FILE = new URL('../../src/data/live/import-sources.json', import.meta.url);
@@ -218,8 +218,10 @@ async function rateToEgp(currency: string): Promise<number | undefined> {
  */
 async function readCv(host: string, base: string, homeHtml: string, robots: ReturnType<typeof parseRobots>, delay: number): Promise<TrustProfile> {
   const pages: { url: string; html: string }[] = [];
+  const blocked: TrustId[] = [];
   for (const url of trustLinks(homeHtml, base, 6)) {
-    try { if (!robots.allowed(new URL(url).pathname)) continue; } catch { continue; }
+    // A page robots.txt forbids is not opened (Shopify forbids /policies/): the check says «could not check».
+    try { if (!robots.allowed(new URL(url).pathname)) { const k = pageKind(url); if (k) blocked.push(k); continue; } } catch { continue; }
     if (timeLeft() < 60_000) break;
     await sleep(delay);
     const page = await get(url);
@@ -239,8 +241,9 @@ async function readCv(host: string, base: string, homeHtml: string, robots: Retu
     }).catch(() => undefined);
     if (r?.ok) { const d = await r.json().catch(() => ({})) as { matches?: unknown[] }; safeBrowsing = d.matches?.length ? 'flagged' : 'clean'; }
   }
-  const cv = assessTrust({ host, finalUrl: base, homeHtml, pages, registeredAt, safeBrowsing, now: now.getTime() });
+  const cv = assessTrust({ host, finalUrl: base, homeHtml, pages, registeredAt, safeBrowsing, blocked, brands, now: now.getTime() });
   cvPagesRead.set(cv, pages.map((p) => { try { return new URL(p.url).pathname; } catch { return p.url; } }));
+  if (blocked.length) cvPagesRead.set(cv, [...(cvPagesRead.get(cv) || []), `robots-blocked: ${blocked.join(',')}`]);
   return cv;
 }
 const cvPagesRead = new WeakMap<TrustProfile, string[]>();

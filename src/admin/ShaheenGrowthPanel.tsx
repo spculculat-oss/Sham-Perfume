@@ -82,7 +82,7 @@ function TrustCv({ t }: { t: TrustProfile }) {
               <span className={c.ok ? 'text-emerald-600' : c.ok === false ? 'text-red-500' : 'text-stone-400'}>{c.ok ? '✓' : c.ok === false ? '✗' : '?'}</span>
               <span>{(CHECK[c.id] || (() => c.label))()}</span>
               <span className="text-stone-400">{c.points}/{c.max}</span>
-              {c.detail && <span className="truncate text-stone-500" dir="auto">— {c.detail}</span>}
+              {c.detail && <span className="truncate text-stone-500" dir="auto">— {T(c.detail)}</span>}
             </li>
           ))}
         </ul>
