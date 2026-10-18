@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T03:00:48.395Z",
+ "updatedAt": "2026-10-18T05:00:24.242Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1114,
   "imported": 1063,
-  "ok": 516,
-  "warn": 598,
+  "ok": 512,
+  "warn": 602,
   "hidden": 0,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-18T02:59:39.635Z",
+  "at": "2026-10-18T04:59:21.138Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,8 +25,8 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1028,
-    "listingOnly": 60,
+    "listingProducts": 1018,
+    "listingOnly": 58,
     "listingComplete": true,
     "added": 0,
     "refreshed": 25,
@@ -34,7 +34,7 @@
     "failedCount": 0,
     "viaShaheen": 0,
     "deferred": 0,
-    "gone": 4
+    "gone": 6
    }
   ],
   "rate": 13.0813,
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 68793
+  "durationMs": 63136
  },
  "items": [
   {
@@ -2070,6 +2070,16 @@
    "page": "p/al-areeq-gold-by-lattafa-pride-100ml-edp-293.html"
   },
   {
+   "sku": "LAT-295",
+   "id": 295,
+   "name": "Nasheet by Lattafa Perfume 100ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/nasheet-by-lattafa-perfume-100ml-edp-unisex-295.html"
+  },
+  {
    "sku": "LAT-296",
    "id": 296,
    "name": "La Collection 1886 (Car) by Lattafa Pride 100ml EDP",
@@ -3131,6 +3141,16 @@
    "page": "p/exclusif-tabac-by-maison-alhambra-100-ml-unisex-512.html"
   },
   {
+   "sku": "RUE-514",
+   "id": 514,
+   "name": "Carino White Pour Femme Rue Broca 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/carino-white-pour-femme-rue-broca-100ml-edp-514.html"
+  },
+  {
    "sku": "ARD-515",
    "id": 515,
    "name": "Shams Al Emarat Khususi 100ml EDP Unisex",
@@ -3350,6 +3370,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/opera-rouge-by-maison-alhambra-for-women-100ml-582.html"
+  },
+  {
+   "sku": "ARD-583",
+   "id": 583,
+   "name": "Rave Now 50ml EDP for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/rave-now-50ml-edp-for-men-583.html"
   },
   {
    "sku": "ALW-584",
@@ -4755,6 +4785,16 @@
     "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/avento-perfume-man-100ml-edp-grandeur-896.html"
+  },
+  {
+   "sku": "GUL-897",
+   "id": 897,
+   "name": "Sham Perfume Woman Gulf Orchid – Her 100 ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sham-perfume-woman-gulf-orchid-her-100-ml-897.html"
   },
   {
    "sku": "ARM-900",
