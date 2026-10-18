@@ -21,8 +21,11 @@ export interface MemoryEntry {
   at: string;
   lastUsed?: string;
   hits: number;
-  /** chat = a visitor's question; probe = the supervisor's test question; seed = written by the team. */
-  source: 'chat' | 'probe' | 'seed';
+  /**
+   * chat = a visitor's question; probe = the supervisor's test question; seed = written by the team;
+   * study = «مدرسة شاهين»: a question Shaheen could not answer by himself, studied while an AI engine was up.
+   */
+  source: 'chat' | 'probe' | 'seed' | 'study';
 }
 export interface MemoryFile { version: 1; updatedAt: string; entries: MemoryEntry[] }
 
@@ -163,7 +166,9 @@ export function mergeMemory(base: MemoryFile, other: MemoryFile | undefined): Me
 export function curateMemory(file: MemoryFile, now = Date.now(), limits = MEMORY_LIMITS): { file: MemoryFile; removed: number } {
   const alive = file.entries.filter((e) => {
     const last = Date.parse(e.lastUsed || e.at);
-    return now - last <= limits.ttlDays * DAY && worthRemembering(e.question, e.answer);
+    // What «مدرسة شاهين» studied is kept 3× longer: it is his fallback for days when no engine answers.
+    const ttl = e.source === 'study' ? limits.ttlDays * 3 : limits.ttlDays;
+    return now - last <= ttl * DAY && worthRemembering(e.question, e.answer);
   });
   const ranked = alive.sort((a, b) => b.hits - a.hits || Date.parse(b.lastUsed || b.at) - Date.parse(a.lastUsed || a.at)).slice(0, limits.maxEntries);
   return { file: { version: 1, updatedAt: new Date(now).toISOString(), entries: ranked }, removed: file.entries.length - ranked.length };

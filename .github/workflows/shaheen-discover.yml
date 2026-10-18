@@ -1,0 +1,104 @@
+name: Shaheen source scout and school (every 6 hours)
+
+# «كشّاف المصادر» (scripts/shaheen-discover/): finds online perfume stores — with AI web search while the
+# packages last, by himself otherwise (official shops of the brands the store sells, stores found earlier,
+# DISCOVER_SEEDS) — checks each one politely (robots.txt, product sitemap, 6 product pages read without AI,
+# one currency, perfume) and turns the good ones into import sources (src/data/live/import-sources.json).
+# «مستورد شاهين» (shaheen-import.yml) then imports them with the original method: ×1.5 price rule, review,
+# photo cleaning, Arabic text, one page per product. The same perfume from two stores is kept once.
+# «مدرسة شاهين» (scripts/shaheen-school/): Shaheen examines himself on a question bank, learns what he can from
+# his own library (no AI), studies the rest while an AI engine is up, and keeps everything in his memory —
+# the memory the site answers from when no AI engine is available (GitHub Pages included).
+# Settings (repository variables, all optional): DISCOVER_MAX_ACTIVE (12 stores), DISCOVER_VET_PER_RUN (8),
+# DISCOVER_QUERIES (4 web searches per run), DISCOVER_BLOCK (sites never to use), DISCOVER_SEEDS (sites to
+# check), SCHOOL_MAX_STUDY (10 questions per run). Optional secret BRAVE_SEARCH_API_KEY (a search service).
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+  push:
+    # Branches: rehearsal only (nothing is committed); main: a change to the scout or the school runs at once.
+    branches: [main, 'arena/**']
+    paths: ['scripts/shaheen-discover/**', 'scripts/shaheen-school/**', 'scripts/shaheen-import/**', '.github/workflows/shaheen-discover.yml']
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: shaheen-discover-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  scout:
+    name: Find and check perfume stores, then Shaheen's school
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      DISCOVER_MAX_ACTIVE: ${{ vars.DISCOVER_MAX_ACTIVE || '12' }}
+      DISCOVER_VET_PER_RUN: ${{ vars.DISCOVER_VET_PER_RUN || (github.ref == 'refs/heads/main' && '8' || '5') }}
+      DISCOVER_QUERIES: ${{ vars.DISCOVER_QUERIES || (github.ref == 'refs/heads/main' && '4' || '2') }}
+      DISCOVER_TIME_BUDGET_S: ${{ github.ref == 'refs/heads/main' && '900' || '420' }}
+      DISCOVER_BLOCK: ${{ vars.DISCOVER_BLOCK }}
+      DISCOVER_SEEDS: ${{ vars.DISCOVER_SEEDS }}
+      SCHOOL_MAX_STUDY: ${{ vars.SCHOOL_MAX_STUDY || (github.ref == 'refs/heads/main' && '10' || '2') }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      BRAVE_SEARCH_API_KEY: ${{ secrets.BRAVE_SEARCH_API_KEY }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.ref == 'refs/heads/main' && 'main' || github.sha }}
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: «كشّاف المصادر» finds and checks perfume stores
+        id: scout
+        continue-on-error: true
+        run: node --import tsx scripts/shaheen-discover/run.mts
+      - name: Trial import from the new stores (rehearsal only, nothing is saved)
+        if: env.PUBLISH != 'true'
+        continue-on-error: true
+        env:
+          IMPORT_ONLY_DISCOVERED: '1'
+          IMPORT_MAX_NEW: '6'
+          IMPORT_MAX_REFRESH: '0'
+        run: node --import tsx scripts/shaheen-import/run.mts
+      - name: «مدرسة شاهين» — exam, self-study, study with AI while available
+        continue-on-error: true
+        run: node --import tsx scripts/shaheen-school/run.mts
+      - name: Regression tests
+        run: |
+          set -o pipefail
+          bun run test 2>&1 | tee /tmp/test.log || { grep -E 'not ok|error:' /tmp/test.log | head -8 | sed 's/^/::error title=test::/'; exit 1; }
+      - name: Publish on main
+        if: env.PUBLISH == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen scout bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          before=$(git rev-parse HEAD)
+          node scripts/ci/publish.mjs "كشّاف المصادر ومدرسة شاهين $(date -u +%Y-%m-%dT%H:%MZ)" \
+            src/data/live/import-sources.json src/data/live/shaheen-school.json src/data/live/shaheen-memory.json \
+            src/data/live/ai-memory.json src/data/live/ai-quota.json \
+            || { echo "::error::Could not push the scout's results"; exit 1; }
+          if [ "$(git rev-parse HEAD)" = "$before" ]; then exit 0; fi
+          # New stores: the importer starts at once instead of waiting for its next turn; Pages gets the new memory.
+          if [ "${{ steps.scout.outputs.activated || '0' }}" != "0" ]; then gh workflow run shaheen-import.yml --ref main || echo "::warning::Importer not started"; fi
+          gh workflow run pages.yml --ref main || echo "::warning::Pages rebuild not started"

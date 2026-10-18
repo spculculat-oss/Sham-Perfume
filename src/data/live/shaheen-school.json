@@ -1,0 +1,17 @@
+{
+ "version": 1,
+ "updatedAt": "1970-01-01T00:00:00.000Z",
+ "reliance": {
+  "score": 0,
+  "covered": 0,
+  "total": 0,
+  "fromMemory": 0,
+  "fromLibrary": 0,
+  "byLang": {}
+ },
+ "studiedTotal": 0,
+ "selfTaughtTotal": 0,
+ "history": [],
+ "lastStudied": [],
+ "pending": []
+}

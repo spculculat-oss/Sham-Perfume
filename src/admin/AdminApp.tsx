@@ -11,6 +11,7 @@ import UpdatesPanel from './UpdatesPanel';
 import SupervisorPanel from './SupervisorPanel';
 import SeoPanel from './SeoPanel';
 import CommunityPanel from './CommunityPanel';
+import ShaheenGrowthPanel from './ShaheenGrowthPanel';
 import { ErrorBoundary } from '../utils/lazyRetry';
 import type {
   Conversation, CoreSettings, CouncilMember, CouncilRole, CouncilTranscript, EngineId, KnowledgeDoc, KnowledgeGap, ModelEngineId, Product, RequestStatus, ServiceDef, ServiceRequest, ShaheenSettings,
@@ -146,7 +147,7 @@ export default function AdminApp() {
           {tab === 'knowledge' && <KnowledgePanel />}
           {tab === 'services' && <ServicesPanel />}
           {tab === 'engines' && <EnginesPanel />}
-          {tab === 'shaheen' && <ShaheenPanel />}
+          {tab === 'shaheen' && <><ShaheenGrowthPanel /><ShaheenPanel /></>}
           {tab === 'emails' && <EmailsPanel />}
           {tab === 'doctor' && <DoctorPanel />}
           {tab === 'supervisor' && <SupervisorPanel />}
