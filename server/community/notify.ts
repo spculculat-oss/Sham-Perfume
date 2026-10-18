@@ -67,10 +67,10 @@ export function codeMail(subject: string, code: string, minutes: number, noteAr:
       <h2 style="margin:0 0 8px;color:#7c5e10">شام للعطور</h2>
       <p style="color:#444">${noteAr}</p>
       <p style="font-size:30px;letter-spacing:8px;font-weight:bold;color:#1c1917;direction:ltr;text-align:center;background:#faf6ee;border-radius:12px;padding:12px">${code}</p>
-      <p style="color:#8a817c;font-size:12px">يكود صالح لمدة ${minutes} دقيقة. لو أنت مش اللي طلبته، متعملش حاجة — هيتجاهل.</p>
+      <p style="color:#8a817c;font-size:12px">الكود صالح لمدة ${minutes} دقيقة. لو أنت مش اللي طلبته، متعملش حاجة — هيتجاهل.</p>
       <hr style="border:none;border-top:1px solid #eee"/>
       <p style="color:#999;font-size:12px" dir="ltr">${noteEn} — the code is valid for ${minutes} minutes. If this was not you, you can ignore it.</p>
     </div>`,
-    text: `${noteAr}\n\n${code}\n\nيكود صالح لمدة ${minutes} دقيقة. لو أنت مش اللي طلبته، متعملش حاجة — هيتجاهل.`,
+    text: `${noteAr}\n\n${code}\n\nالكود صالح لمدة ${minutes} دقيقة. لو أنت مش اللي طلبته، متعملش حاجة — هيتجاهل.`,
   };
 }
