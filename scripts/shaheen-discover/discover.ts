@@ -142,6 +142,22 @@ export const CATEGORYISH = /\/(?:collections?(?:\/[^/]+)?|categor(?:y|ies)(?:\/[
 /** Page n of a category page («?page=2» unless the store already uses its own scheme). */
 export const withPage = (url: string, n: number) => (n <= 1 ? url : `${url}${url.includes('?') ? '&' : '?'}page=${n}`);
 
+/**
+ * A multilingual store lists every product once per language («/ar/…», «/en/…», «/fr/…»): one language is
+ * kept — English first (the importer writes the Arabic itself), then Arabic, else the most common.
+ */
+export function oneLanguage(urls: string[]): { urls: string[]; lang?: string } {
+  const langOf = (u: string) => { try { const s = new URL(u).pathname.split('/')[1] || ''; return /^[a-z]{2}(?:[-_][a-z]{2})?$/i.test(s) ? s.toLowerCase() : ''; } catch { return ''; } };
+  const count = new Map<string, number>();
+  for (const u of urls) { const l = langOf(u); if (l) count.set(l, (count.get(l) || 0) + 1); }
+  const langs = [...count.entries()].filter(([, n]) => n >= urls.length * 0.1);
+  if (langs.length < 2) return { urls };
+  const pick = langs.find(([l]) => l === 'en' || l.startsWith('en-') || l.startsWith('en_'))?.[0]
+    || langs.find(([l]) => l === 'ar' || l.startsWith('ar-') || l.startsWith('ar_'))?.[0]
+    || langs.sort((a, b) => b[1] - a[1])[0][0];
+  return { urls: urls.filter((u) => langOf(u) === pick || !langOf(u)), lang: pick };
+}
+
 /** Candidate product links of a mixed sitemap: the obvious product links, or everything that is not clearly something else. */
 export function productCandidates(urls: string[]): string[] {
   const productish = urls.filter((u) => PRODUCTISH.test(u) && !NOT_PRODUCT.test(u));

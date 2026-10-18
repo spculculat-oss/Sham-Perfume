@@ -22,7 +22,7 @@ import { extractGeneric } from '../shaheen-import/generic';
 import { SOURCES } from '../shaheen-import/sources';
 import { quotaBook } from '../doctor/agent';
 import {
-  addCandidates, brandSiteGuesses, CATEGORYISH, NOT_PRODUCT, sameSite, domainOf, KNOWN_STORES, pageLinks, withPage, domainsFromSearch, emptySources, isNeverSource, isSourcesFile, judgeSamples,
+  addCandidates, brandSiteGuesses, CATEGORYISH, NOT_PRODUCT, oneLanguage, sameSite, domainOf, KNOWN_STORES, pageLinks, withPage, domainsFromSearch, emptySources, isNeverSource, isSourcesFile, judgeSamples,
   inferProductPattern, parseRobots, planQueries, productCandidates, spreadSample, summary, vettingQueue, type LiveSource, type Sample, type SourcesFile,
 } from './discover';
 
@@ -156,8 +156,9 @@ async function productSitemaps(base: string, listed: string[]): Promise<{ sitema
   // A mixed sitemap (pages + posts + products): keep the links that look like product pages.
   const host = domainOf(base);
   const same = urls.filter((u) => sameSite(domainOf(u), host));
-  const urlsOut = generic ? productCandidates(same) : same;
-  if (urls.length) trace.push(`${same.length} on site, ${urlsOut.length} product-like`);
+  const single = oneLanguage(generic ? productCandidates(same) : same);
+  const urlsOut = single.urls;
+  if (urls.length) trace.push(`${same.length} on site, ${urlsOut.length} product-like${single.lang ? ` (language «${single.lang}» of several)` : ''}`);
   return { sitemaps: used, urls: urlsOut, refused, tried, trace };
 }
 
@@ -190,7 +191,7 @@ async function crawlProducts(base: string, homeHtml: string, robots: ReturnType<
     }
     if (added) pages.push(cat);
   }
-  return { pages, urls: [...urls] };
+  return { pages, urls: oneLanguage([...urls]).urls };
 }
 
 async function rateToEgp(currency: string): Promise<number | undefined> {

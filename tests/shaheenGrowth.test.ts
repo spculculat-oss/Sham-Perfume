@@ -5,7 +5,7 @@ import { adoptSkill, emptySkills, learnSkill, readWithSkill, recordUse, skillsSu
 import { addAltOffer, perfumeKey, type ImportedProduct } from '../scripts/shaheen-import/transform';
 import {
   addCandidates, brandSiteGuesses, domainOf, domainsFromSearch, emptySources, inferProductPattern, isNeverSource, isPerfume,
-  CATEGORYISH, judgeSamples, sameSite, pageLinks, parseRobots, planQueries, productCandidates, withPage, spreadSample, toImportSource, vettingQueue, type LiveSource, type Sample,
+  CATEGORYISH, judgeSamples, oneLanguage, sameSite, pageLinks, parseRobots, planQueries, productCandidates, withPage, spreadSample, toImportSource, vettingQueue, type LiveSource, type Sample,
 } from '../scripts/shaheen-discover/discover';
 import { buildBank, CURRICULUM, exam, importerShare, parseStudy, pickStudy, selfLesson, type TrainingDoc } from '../scripts/shaheen-school/school';
 import { emptyMemory, remember } from '../src/utils/shaheenMemory';
@@ -156,6 +156,9 @@ test('source scout: stores without a sitemap are browsed like a visitor (links, 
   assert.deepEqual(productCandidates(links), ['https://oud.example/products/royal-oud']);
   assert.ok(sameSite('us.arabianoud.com', 'arabianoud.com') && !sameSite('notarabianoud.com', 'arabianoud.com'));
   assert.ok(pageLinks('<a href="https://us.oud.example/p/1">', 'https://oud.example/').length === 1, 'a sub-domain of the store is the store');
+  const multi = ['ar', 'en', 'fr', 'de'].flatMap((l) => [`https://oud.example/${l}/royal/p111111`, `https://oud.example/${l}/musk/p222222`]);
+  assert.deepEqual(oneLanguage(multi), { urls: ['https://oud.example/en/royal/p111111', 'https://oud.example/en/musk/p222222'], lang: 'en' });
+  assert.deepEqual(oneLanguage(['https://x.example/products/a', 'https://x.example/products/b']).urls.length, 2, 'single-language stores untouched');
   assert.equal(withPage('https://oud.example/collections/oud', 1), 'https://oud.example/collections/oud');
   assert.equal(withPage('https://oud.example/collections/oud', 3), 'https://oud.example/collections/oud?page=3');
   assert.equal(withPage('https://oud.example/shop?sort=new', 2), 'https://oud.example/shop?sort=new&page=2');
