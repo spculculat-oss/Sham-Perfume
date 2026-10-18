@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T14:23:11.746Z",
+ "updatedAt": "2026-10-18T14:26:10.397Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
-  "total": 1114,
-  "imported": 1063,
-  "ok": 621,
-  "warn": 442,
+  "total": 1212,
+  "imported": 1161,
+  "ok": 641,
+  "warn": 520,
   "hidden": 51,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-18T14:22:29.236Z",
+  "at": "2026-10-18T14:24:42.178Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,8 +25,8 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1017,
-    "listingOnly": 58,
+    "listingProducts": 1021,
+    "listingOnly": 61,
     "listingComplete": true,
     "origin": "built-in",
     "added": 0,
@@ -35,20 +35,47 @@
     "failedCount": 0,
     "viaShaheen": 0,
     "deferred": 0,
-    "gone": 6,
+    "gone": 3,
     "via": {
      "json-ld": 25
     },
     "learnedSkills": 0,
     "notPerfume": 0,
     "duplicates": 0
+   },
+   {
+    "id": "afnan-com",
+    "currency": "AED",
+    "rate": 14.5568,
+    "rateFrom": "open.er-api.com",
+    "sitemapProducts": 102,
+    "origin": "discovered",
+    "added": 98,
+    "refreshed": 0,
+    "failed": [
+     "https://afnan.com/products/fakhar-al-jamaal (no product data)",
+     "https://afnan.com/products/lilia (no product data)",
+     "https://afnan.com/products/musk-silver (no product data)",
+     "https://afnan.com/products/supremacy-collectors-edition (no product data)"
+    ],
+    "failedCount": 4,
+    "viaShaheen": 0,
+    "deferred": 0,
+    "gone": 0,
+    "via": {
+     "generic": 81,
+     "json-ld": 17
+    },
+    "learnedSkills": 0,
+    "notPerfume": 0,
+    "duplicates": 0
    }
   ],
-  "rate": 13.0813,
+  "rate": 14.5568,
   "prices": {
-   "count": 1063,
+   "count": 1161,
    "min": 750,
-   "median": 3340,
+   "median": 3300,
    "max": 7830,
    "top": [
     {
@@ -88,7 +115,7 @@
     }
    ]
   },
-  "durationMs": 42538
+  "durationMs": 88249
  },
  "items": [
   {
@@ -2774,7 +2801,8 @@
    "name": "The Tux by Maison Alhambra 90ml EDP for Men",
    "status": "warn",
    "issues": [
-    "المورد لم ينشر نوتات العطر"
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
    ],
    "page": "p/the-tux-by-maison-alhambra-90ml-edp-for-men-618.html"
   },
@@ -3087,20 +3115,9 @@
    "name": "Oud Al Turas 100ml by Ard Al Zaafaran",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "وصف المورد قصير"
    ],
    "page": "p/oud-al-turas-100ml-by-ard-al-zaafaran-732.html"
-  },
-  {
-   "sku": "MAI-733",
-   "id": 733,
-   "name": "Philos Opus Noir by Maison Alhambra 100ml EDP",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/philos-opus-noir-by-maison-alhambra-100ml-edp-733.html"
   },
   {
    "sku": "GRA-734",
@@ -3121,26 +3138,6 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/narissa-ruby-rouge-maison-alhambra-100ml-739.html"
-  },
-  {
-   "sku": "GUL-740",
-   "id": 740,
-   "name": "Sunset Kiss Gulf Orchid 100ml EDP Woman",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/sunset-kiss-gulf-orchid-100ml-edp-woman-740.html"
-  },
-  {
-   "sku": "ZIM-741",
-   "id": 741,
-   "name": "Al Embratur Elixir by Zimaya 100ml EDP",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/al-embratur-elixir-by-zimaya-100ml-edp-741.html"
   },
   {
    "sku": "MAI-742",
@@ -5207,6 +5204,941 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/khanjar-by-niche-emarati-85ml-edp-1111.html"
+  },
+  {
+   "sku": "IMP-1115",
+   "id": 1115,
+   "name": "MIRSAAL OF TRUST",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/mirsaal-of-trust-1115.html"
+  },
+  {
+   "sku": "IMP-1116",
+   "id": 1116,
+   "name": "ORNAMENT POUR FEMME",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/ornament-pour-femme-1116.html"
+  },
+  {
+   "sku": "IMP-1117",
+   "id": 1117,
+   "name": "MIRSAAL WITH LOVE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/mirsaal-with-love-1117.html"
+  },
+  {
+   "sku": "IMP-1118",
+   "id": 1118,
+   "name": "RARE CARBON",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/rare-carbon-1118.html"
+  },
+  {
+   "sku": "IMP-1119",
+   "id": 1119,
+   "name": "ORNAMENT POUR HOMME",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/ornament-pour-homme-1119.html"
+  },
+  {
+   "sku": "IMP-1120",
+   "id": 1120,
+   "name": "SOUVENIR DESERT ROSE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/souvenir-desert-rose-1120.html"
+  },
+  {
+   "sku": "IMP-1121",
+   "id": 1121,
+   "name": "SOUVENIR FLORAL BOUQUET",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/souvenir-floral-bouquet-1121.html"
+  },
+  {
+   "sku": "IMP-1122",
+   "id": 1122,
+   "name": "SUPREMACY GOLD",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/supremacy-gold-1122.html"
+  },
+  {
+   "sku": "IMP-1123",
+   "id": 1123,
+   "name": "SUPREMACY IN HEAVEN",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/supremacy-in-heaven-1123.html"
+  },
+  {
+   "sku": "IMP-1124",
+   "id": 1124,
+   "name": "SUPREMACY INCENSE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/supremacy-incense-1124.html"
+  },
+  {
+   "sku": "IMP-1125",
+   "id": 1125,
+   "name": "SUPREMACY NOIR",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/supremacy-noir-1125.html"
+  },
+  {
+   "sku": "IMP-1126",
+   "id": 1126,
+   "name": "SUPREMACY PINK",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/supremacy-pink-1126.html"
+  },
+  {
+   "sku": "IMP-1127",
+   "id": 1127,
+   "name": "SUPREMACY PURPLE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/supremacy-purple-1127.html"
+  },
+  {
+   "sku": "IMP-1128",
+   "id": 1128,
+   "name": "SUPREMACY SILVER",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/supremacy-silver-1128.html"
+  },
+  {
+   "sku": "IMP-1129",
+   "id": 1129,
+   "name": "TRIBUTE BLUE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/tribute-blue-1129.html"
+  },
+  {
+   "sku": "IMP-1130",
+   "id": 1130,
+   "name": "VIOLET BOUQUET",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/violet-bouquet-1130.html"
+  },
+  {
+   "sku": "IMP-1131",
+   "id": 1131,
+   "name": "GIFT SET SUPREMACY SILVER & PINK",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/gift-set-supremacy-silver-and-pink-1131.html"
+  },
+  {
+   "sku": "IMP-1132",
+   "id": 1132,
+   "name": "GIFT SET DEHN AL OUD ABIYAD",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/gift-set-dehn-al-oud-abiyad-1132.html"
+  },
+  {
+   "sku": "IMP-1133",
+   "id": 1133,
+   "name": "GIFT SET SUPREMACY NOIR & PURPLE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/gift-set-supremacy-noir-and-purple-1133.html"
+  },
+  {
+   "sku": "IMP-1139",
+   "id": 1139,
+   "name": "SUPREMACY NOT ONLY INTENSE - LUXURY COLLECTION",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/supremacy-not-only-intense-luxury-collection-1139.html"
+  },
+  {
+   "sku": "IMP-1140",
+   "id": 1140,
+   "name": "SUPREMACY IN OUD - LUXURY COLLECTION",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/supremacy-in-oud-luxury-collection-1140.html"
+  },
+  {
+   "sku": "IMP-1141",
+   "id": 1141,
+   "name": "LA FLEUR BOUQUET",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/la-fleur-bouquet-1141.html"
+  },
+  {
+   "sku": "IMP-1142",
+   "id": 1142,
+   "name": "ORNAMENT PURPLE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/ornament-purple-1142.html"
+  },
+  {
+   "sku": "IMP-1144",
+   "id": 1144,
+   "name": "TRIBUTE PINK",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/tribute-pink-1144.html"
+  },
+  {
+   "sku": "IMP-1148",
+   "id": 1148,
+   "name": "PATCHOULI ON FIRE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/patchouli-on-fire-1148.html"
+  },
+  {
+   "sku": "IMP-1149",
+   "id": 1149,
+   "name": "TOBACCO RUSH",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/tobacco-rush-1149.html"
+  },
+  {
+   "sku": "IMP-1150",
+   "id": 1150,
+   "name": "HISTORIC DORIA",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/historic-doria-1150.html"
+  },
+  {
+   "sku": "IMP-1151",
+   "id": 1151,
+   "name": "HISTORIC OLMEDA",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/historic-olmeda-1151.html"
+  },
+  {
+   "sku": "IMP-1152",
+   "id": 1152,
+   "name": "EDICT MUSCTIQUE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/edict-musctique-1152.html"
+  },
+  {
+   "sku": "IMP-1153",
+   "id": 1153,
+   "name": "EDICT AMBERYTHME",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/edict-amberythme-1153.html"
+  },
+  {
+   "sku": "IMP-1154",
+   "id": 1154,
+   "name": "EDICT OUDDICTION",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/edict-ouddiction-1154.html"
+  },
+  {
+   "sku": "IMP-1155",
+   "id": 1155,
+   "name": "9 PM - Pour Femme",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/9-pm-pour-femme-1155.html"
+  },
+  {
+   "sku": "IMP-1156",
+   "id": 1156,
+   "name": "9 AM - Pour Femme",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/9-am-pour-femme-1156.html"
+  },
+  {
+   "sku": "IMP-1157",
+   "id": 1157,
+   "name": "RARE PASSION",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/rare-passion-1157.html"
+  },
+  {
+   "sku": "IMP-1158",
+   "id": 1158,
+   "name": "GIFT SET SUPREMACY SILVER",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/gift-set-supremacy-silver-1158.html"
+  },
+  {
+   "sku": "IMP-1159",
+   "id": 1159,
+   "name": "GIFT SET SOUVENIR FLORAL BOUQUET",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/gift-set-souvenir-floral-bouquet-1159.html"
+  },
+  {
+   "sku": "IMP-1160",
+   "id": 1160,
+   "name": "GIFT SET SUPREMACY FEMME",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/gift-set-supremacy-femme-1160.html"
+  },
+  {
+   "sku": "IMP-1161",
+   "id": 1161,
+   "name": "GIFT SET 9PM HOMME",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/gift-set-9pm-homme-1161.html"
+  },
+  {
+   "sku": "IMP-1162",
+   "id": 1162,
+   "name": "GIFT SET ORNAMENT FEMME",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/gift-set-ornament-femme-1162.html"
+  },
+  {
+   "sku": "IMP-1163",
+   "id": 1163,
+   "name": "GIFT SET SOUVENIR DESERT ROSE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/gift-set-souvenir-desert-rose-1163.html"
+  },
+  {
+   "sku": "IMP-1164",
+   "id": 1164,
+   "name": "GIFT SET SUPREMACY NOT ONLY INTENSE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/gift-set-supremacy-not-only-intense-1164.html"
+  },
+  {
+   "sku": "IMP-1165",
+   "id": 1165,
+   "name": "PORTRAIT ABSTRACT",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/portrait-abstract-1165.html"
+  },
+  {
+   "sku": "IMP-1166",
+   "id": 1166,
+   "name": "PORTRAIT REVIVAL",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/portrait-revival-1166.html"
+  },
+  {
+   "sku": "IMP-1167",
+   "id": 1167,
+   "name": "OUD RISING",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/oud-rising-1167.html"
+  },
+  {
+   "sku": "IMP-1168",
+   "id": 1168,
+   "name": "MYSTIQUE BOUQUET",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/mystique-bouquet-1168.html"
+  },
+  {
+   "sku": "IMP-1169",
+   "id": 1169,
+   "name": "SUPREMACY TAPIS ROUGE - LUXURY COLLECTION",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/supremacy-tapis-rouge-luxury-collection-1169.html"
+  },
+  {
+   "sku": "IMP-1170",
+   "id": 1170,
+   "name": "SUPREMACY GALA - LUXURY COLLECTION",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/supremacy-gala-luxury-collection-1170.html"
+  },
+  {
+   "sku": "IMP-1171",
+   "id": 1171,
+   "name": "SUPREMACY SILVER - 150 ML",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/supremacy-silver-150-ml-1171.html"
+  },
+  {
+   "sku": "IMP-1172",
+   "id": 1172,
+   "name": "SUPREMACY NOT ONLY INTENSE - LUXURY COLLECTION - 150 ML",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/supremacy-not-only-intense-luxury-collection-150-ml-1172.html"
+  },
+  {
+   "sku": "IMP-1173",
+   "id": 1173,
+   "name": "SUPREMACY IN OUD - LUXURY COLLECTION - 150ML",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/supremacy-in-oud-luxury-collection-150ml-1173.html"
+  },
+  {
+   "sku": "IMP-1174",
+   "id": 1174,
+   "name": "CHERRY BOUQUET",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/cherry-bouquet-1174.html"
+  },
+  {
+   "sku": "IMP-1175",
+   "id": 1175,
+   "name": "GIFT SET SUPREMACY IN OUD",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/gift-set-supremacy-in-oud-1175.html"
+  },
+  {
+   "sku": "IMP-1176",
+   "id": 1176,
+   "name": "SOUVENIR BLOOMING BLISS",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/souvenir-blooming-bliss-1176.html"
+  },
+  {
+   "sku": "IMP-1177",
+   "id": 1177,
+   "name": "GIFT SET 9 AM DIVE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/gift-set-9-am-dive-1177.html"
+  },
+  {
+   "sku": "IMP-1178",
+   "id": 1178,
+   "name": "GIFT SET TURATHI BLUE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/gift-set-turathi-blue-1178.html"
+  },
+  {
+   "sku": "IMP-1179",
+   "id": 1179,
+   "name": "GIFT SET 9 AM POUR FEMME",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/gift-set-9-am-pour-femme-1179.html"
+  },
+  {
+   "sku": "IMP-1180",
+   "id": 1180,
+   "name": "GIFT SET 9 PM POUR FEMME",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/gift-set-9-pm-pour-femme-1180.html"
+  },
+  {
+   "sku": "IMP-1181",
+   "id": 1181,
+   "name": "9 AM",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/9-am-1181.html"
+  },
+  {
+   "sku": "IMP-1182",
+   "id": 1182,
+   "name": "9 AM Dive",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/9-am-dive-1182.html"
+  },
+  {
+   "sku": "IMP-1183",
+   "id": 1183,
+   "name": "9 PM",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/9-pm-1183.html"
+  },
+  {
+   "sku": "IMP-1192",
+   "id": 1192,
+   "name": "Kiaana Angel",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/kiaana-angel-1192.html"
+  },
+  {
+   "sku": "IMP-1193",
+   "id": 1193,
+   "name": "Kiaana Crush",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/kiaana-crush-1193.html"
+  },
+  {
+   "sku": "IMP-1194",
+   "id": 1194,
+   "name": "9 PM Rebel",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/9-pm-rebel-1194.html"
+  },
+  {
+   "sku": "IMP-1195",
+   "id": 1195,
+   "name": "Delicious Bouquet",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/delicious-bouquet-1195.html"
+  },
+  {
+   "sku": "IMP-1196",
+   "id": 1196,
+   "name": "Turathi Electric",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/turathi-electric-1196.html"
+  },
+  {
+   "sku": "IMP-1197",
+   "id": 1197,
+   "name": "Rare Reef",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/rare-reef-1197.html"
+  },
+  {
+   "sku": "IMP-1198",
+   "id": 1198,
+   "name": "9 PM Elixir",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/9-pm-elixir-1198.html"
+  },
+  {
+   "sku": "IMP-1199",
+   "id": 1199,
+   "name": "Historic Sahara",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/historic-sahara-1199.html"
+  },
+  {
+   "sku": "IMP-1200",
+   "id": 1200,
+   "name": "GIFT SET COLLECTOR'S EDITION",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/gift-set-collector-s-edition-1200.html"
+  },
+  {
+   "sku": "IMP-1201",
+   "id": 1201,
+   "name": "Lynked Freedom",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/lynked-freedom-1201.html"
+  },
+  {
+   "sku": "IMP-1202",
+   "id": 1202,
+   "name": "Lynked Forever",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/lynked-forever-1202.html"
+  },
+  {
+   "sku": "IMP-1203",
+   "id": 1203,
+   "name": "9 PM Night Out",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/9-pm-night-out-1203.html"
+  },
+  {
+   "sku": "IMP-1204",
+   "id": 1204,
+   "name": "Kiaana Vibes",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/kiaana-vibes-1204.html"
+  },
+  {
+   "sku": "IMP-1205",
+   "id": 1205,
+   "name": "Ebdaa Concentrated Perfume Oil",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/ebdaa-concentrated-perfume-oil-1205.html"
+  },
+  {
+   "sku": "IMP-1206",
+   "id": 1206,
+   "name": "Malak",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/malak-1206.html"
+  },
+  {
+   "sku": "IMP-1207",
+   "id": 1207,
+   "name": "9 Series Discovery Kit",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/9-series-discovery-kit-1207.html"
+  },
+  {
+   "sku": "IMP-1208",
+   "id": 1208,
+   "name": "Supremacy Femme Series Discovery Kit",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/supremacy-femme-series-discovery-kit-1208.html"
+  },
+  {
+   "sku": "IMP-1209",
+   "id": 1209,
+   "name": "Bouquet Series Discovery Kit",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/bouquet-series-discovery-kit-1209.html"
+  },
+  {
+   "sku": "IMP-1210",
+   "id": 1210,
+   "name": "Supremacy Homme Series Discovery Kit",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/supremacy-homme-series-discovery-kit-1210.html"
+  },
+  {
+   "sku": "IMP-1211",
+   "id": 1211,
+   "name": "Mens Series Discovery Kit",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/mens-series-discovery-kit-1211.html"
+  },
+  {
+   "sku": "IMP-1212",
+   "id": 1212,
+   "name": "Stardust",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر",
+    "العلامة غير معروفة"
+   ],
+   "page": "p/stardust-1212.html"
   }
  ]
 }

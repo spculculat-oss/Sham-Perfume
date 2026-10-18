@@ -1,7 +1,7 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T14:24:02.533Z",
- "nextUpdateAt": "2026-10-19T02:24:02.533Z",
+ "updatedAt": "2026-10-18T14:28:45.891Z",
+ "nextUpdateAt": "2026-10-19T02:28:45.891Z",
  "editor": "shaheen",
  "entries": {
   "LAT-052": {
@@ -48044,10 +48044,3697 @@
     "عطر شرقي",
     "عطر للجنسين"
    ]
+  },
+  "IMP-1115": {
+   "sourceHash": "hp41eo",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "ميرسال أوف تراست",
+   "nameEn": "MIRSAAL OF TRUST",
+   "descriptionAr": "عطر يجسد القوة والثقة بتركيبة فاخرة تبدأ بنفحات غنية وتستقر على قاعدة دافئة من خشب العنبر والمسك. يمنحك حضوراً جذاباً يعكس الرقي والتميز في كل أوقاتك.",
+   "descriptionEn": "Discover Mirsaal of Trust Pour Homme, a fragrance that embodies strength and confidence. With intoxicating top notes of saffron, jasmine, and caramel, it opens with luxury and allure.",
+   "gender": "men",
+   "families": [
+    "oriental",
+    "woody",
+    "amber"
+   ],
+   "notes": {
+    "top": [
+     "Saffron",
+     "Jasmine",
+     "Caramel"
+    ],
+    "heart": [
+     "Oud",
+     "Ambergris"
+    ],
+    "base": [
+     "Cedar",
+     "Musk"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "ميرسال أوف تراست",
+    "عطر رجالي",
+    "عطور شرقية",
+    "عطر العود"
+   ]
+  },
+  "IMP-1116": {
+   "sourceHash": "1cma34u",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "أورنامنت فور فيم",
+   "nameEn": "ORNAMENT POUR FEMME",
+   "descriptionAr": "عطر نسائي فاخر يأخذك في رحلة إلى عالم ساحر بفضل توليبته المنعشة من الفواكه والزهور مع قاعدة دافئة. يضفي لمسة من الأنوثة والجاذبية المطلقة على إطلالتك.",
+   "descriptionEn": "Embrace femininity with Ornament Pour Femme by Afnan Perfumes, a luxurious fragrance for women. Opening with passionfruit, coconut, peach, and bergamot, it transports you to a tropical paradise.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "fruity",
+    "amber"
+   ],
+   "notes": {
+    "top": [
+     "Coconut",
+     "Peach",
+     "Bergamot"
+    ],
+    "heart": [
+     "Orange Flower",
+     "Vetiver",
+     "Amber",
+     "Vanilla",
+     "Musk"
+    ],
+    "base": []
+   },
+   "seasons": [
+    "summer",
+    "spring"
+   ],
+   "occasions": [
+    "daily",
+    "evening"
+   ],
+   "tags": [
+    "أورنامنت نسائي",
+    "عطر نسائي",
+    "عطور فواكه",
+    "عطر أنيق"
+   ]
+  },
+  "IMP-1117": {
+   "sourceHash": "14jzlhu",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "ميرسال ويذ لوف",
+   "nameEn": "MIRSAAL WITH LOVE",
+   "descriptionAr": "عطر نسائي ساحر يجمع بين عبير الزهور والتوابل مع قاعدة خشبية دافئة تترك انطباعاً لا يُنسى. الخيار المثالي لكل المناسبات ليمنحك حضوراً مليئاً بالرقي والغموض الشرقي.",
+   "descriptionEn": "Experience Mirsaal With Love, an irresistible feminine fragrance that captures the heart with its exquisite aroma. This versatile scent blends spicy floral notes of jasmine and saffron with a warm woody base.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "spicy",
+    "woody"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "all",
+    "autumn",
+    "winter"
+   ],
+   "occasions": [
+    "daily",
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "ميرسال ويذ لوف",
+    "عطر نسائي",
+    "عطور شرقية",
+    "هدية راقية"
+   ]
+  },
+  "IMP-1118": {
+   "sourceHash": "i96qpf",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "رير كاربون",
+   "nameEn": "RARE CARBON",
+   "descriptionAr": "عطر رجالي جريء يجمع بين نوتات الجلود والتوابل الحارة مع لمسات عميقة من الأخشاب والزهور. يعكس هذا العطر القوة والرجولة بأسلوب عصري وأنيق.",
+   "descriptionEn": "Experience Rare Carbon Pour Homme, a fragrance that defines sophistication and strength. This bold scent opens with a captivating blend of leather, violet leaf, cinnamon bark, and nutmeg.",
+   "gender": "men",
+   "families": [
+    "leather",
+    "woody",
+    "spicy"
+   ],
+   "notes": {
+    "top": [
+     "Leather",
+     "Violet Leaf",
+     "Cinnamon",
+     "Nutmeg"
+    ],
+    "heart": [
+     "Rose",
+     "Violet",
+     "Cedarwood",
+     "Oud"
+    ],
+    "base": [
+     "Vetiver",
+     "Sandalwood",
+     "Amber"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "work"
+   ],
+   "tags": [
+    "رير كاربون",
+    "عطر رجالي بالجلد",
+    "عطور فخمة",
+    "عطر رسمي"
+   ]
+  },
+  "IMP-1119": {
+   "sourceHash": "ed6nxq",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "أورنامنت فور هوم",
+   "nameEn": "ORNAMENT POUR HOMME",
+   "descriptionAr": "عطر رجالي راقٍ يفتح بنفحات منعشة من التفاح والأعشاب، لينطوي على قلب دافئ من خشب الصندل والباتشولي. يترك انطباعاً قوياً وجذاباً للرجل العصري.",
+   "descriptionEn": "Discover sophistication with Ornament Pour Homme by Afnan Perfumes. This men’s fragrance opens with fresh notes of apple, lavandin, and geranium, leading to a warm heart of sandalwood, patchouli, and amber.",
+   "gender": "men",
+   "families": [
+    "woody",
+    "fresh",
+    "spicy"
+   ],
+   "notes": {
+    "top": [
+     "Apple",
+     "Geranium"
+    ],
+    "heart": [
+     "Sandalwood",
+     "Patchouli",
+     "Amber"
+    ],
+    "base": [
+     "Cedarwood",
+     "Musk",
+     "Oakmoss"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "أورنامنت رجالي",
+    "عطر رجالي منعش",
+    "عطور الأخشاب",
+    "عطر يومي"
+   ]
+  },
+  "IMP-1120": {
+   "sourceHash": "1aj4o6k",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "سوفينير ديزرت روز",
+   "nameEn": "SOUVENIR DESERT ROSE",
+   "descriptionAr": "عطر للجنسين يجمع بين حلاوة الخوخ والتوت ونفحات الزهور الساحرة مع قاعدة دافئة من خشب الصندل والعنبر. يعبر هذا العطر عن سحر الطبيعة وجمال الصحراء الخالد.",
+   "descriptionEn": "Experience Souvenir Desert Rose, a captivating unisex fragrance that blends the essence of juicy peach, raspberry, and cassis with floral notes of heliotrope and lily of the valley.",
+   "gender": "unisex",
+   "families": [
+    "fruity",
+    "floral",
+    "amber"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "daily",
+    "gift"
+   ],
+   "tags": [
+    "سوفينير ديزرت روز",
+    "عطر للجنسين",
+    "عطور الفواكه",
+    "عطر صيفي"
+   ]
+  },
+  "IMP-1121": {
+   "sourceHash": "135d4f2",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "سوفينير فلورال بوكيه",
+   "nameEn": "SOUVENIR FLORAL BOUQUET",
+   "descriptionAr": "عطر نسائي مبهج يعكس سحر الحدائق المزهرة بنفحات منعشة من الليتشي والبرغموت وقلب زهري ساحر. يستقر على قاعدة دافئة من المسك وخشب الكشمير ليمنحك إطلالة أنثوية أنيقة.",
+   "descriptionEn": "Discover Souvenir Floral Bouquet Pour Femme, a delightful fragrance that captures the essence of a blooming garden. With refreshing notes of lychee, rhubarb, and bergamot, it unfolds into a floral heart.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "fruity",
+    "musk"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [
+     "Lychee",
+     "Rhubarb",
+     "Bergamot",
+     "Rose",
+     "Peony"
+    ],
+    "base": [
+     "Musk",
+     "Cashmere Wood",
+     "Amber"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "daily",
+    "work",
+    "gift"
+   ],
+   "tags": [
+    "سوفينير فلورال بوكيه",
+    "عطر نسائي زهري",
+    "عطور الربيع",
+    "عطر ناعم"
+   ]
+  },
+  "IMP-1122": {
+   "sourceHash": "jc1nv1",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "سوبرماسي جولد",
+   "nameEn": "SUPREMACY GOLD",
+   "descriptionAr": "عطر شرقي كلاسيكي من أفنان يترك أثراً أنيقاً ومميزاً يعزز من حضورك ورقي إطلالتك. يُعد الإضافة المثالية لكل مجموعة عطور تبحث عن الفخامة والجاذبية.",
+   "descriptionEn": "Experience Supremacy Gold, a classic oriental fragrance by Afnan that leaves an elegant and lasting trail. This special scent enhances your sophistication and panache, reminding you of the inner power within you.",
+   "gender": "women",
+   "families": [
+    "oriental",
+    "amber",
+    "spicy"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "سوبرماسي جولد",
+    "عطر شرقي",
+    "عطور فخمة",
+    "عطر نسائي مميز"
+   ]
+  },
+  "IMP-1123": {
+   "sourceHash": "1rh95m7",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "سوبرماسي إن هافن",
+   "nameEn": "SUPREMACY IN HEAVEN",
+   "descriptionAr": "عطر رجالي منعش يجمع بين الحمضيات وحيوية الشاي الأخضر ليغمرك بدفء يشبه الغابات المشمسة. الخيار الأمثل للرجل الباحث عن تجربة عطرية مميزة ومتوازنة.",
+   "descriptionEn": "Discover Supremacy in Heaven, a captivating citrus-woody fragrance by Afnan. This invigorating scent opens with zesty freshness and the soothing aroma of freshly brewed green tea.",
+   "gender": "men",
+   "families": [
+    "citrus",
+    "woody",
+    "fresh"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "summer",
+    "spring"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "سوبرماسي إن هافن",
+    "عطر رجالي منعش",
+    "عطور الحمضيات",
+    "عطر صيفي"
+   ]
+  },
+  "IMP-1124": {
+   "sourceHash": "19edo1o",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "سوبرماسي إنسينس",
+   "nameEn": "SUPREMACY INCENSE",
+   "descriptionAr": "عطر للجنسين يأخذك في رحلة حسية تعكس جمال الطبيعة بامتزاج منعش بين الحمضيات والتوابل والأخشاب. يمنحك شعوراً بالمغامرة والتميز في كل لحظة.",
+   "descriptionEn": "Embark on a sensory journey with Supremacy Incense by Afnan, a unisex fragrance that evokes the refreshing essence of a woodland hike. Experience the interplay of citrus and spice.",
+   "gender": "unisex",
+   "families": [
+    "woody",
+    "spicy",
+    "leather"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "autumn",
+    "winter"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "سوبرماسي إنسينس",
+    "عطر للجنسين",
+    "عطور الأخشاب",
+    "عطر دخاني"
+   ]
+  },
+  "IMP-1125": {
+   "sourceHash": "umhxl8",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "سوبرماسي نوار",
+   "nameEn": "SUPREMACY NOIR",
+   "descriptionAr": "عطر رجالي جذاب يجمع بين التوابل الحيوية ونفحات الصنوبر والأخشاب العميقة ليعبر عن الشجاعة والأناقة. الخيار المثالي للرجل العصري الساعي للجاذبية والتميز.",
+   "descriptionEn": "Experience the invigorating spice of Supremacy Noir by Afnan, a captivating men's fragrance that transports you to towering pine woods. With bold aromatic notes, light florals, and earthy undertones.",
+   "gender": "men",
+   "families": [
+    "spicy",
+    "woody",
+    "fresh"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "autumn",
+    "winter"
+   ],
+   "occasions": [
+    "evening",
+    "work"
+   ],
+   "tags": [
+    "سوبرماسي نوار",
+    "عطر رجالي",
+    "عطور توابل",
+    "عطر مسائي"
+   ]
+  },
+  "IMP-1126": {
+   "sourceHash": "1re6h7u",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "سوبرماسي بينك",
+   "nameEn": "SUPREMACY PINK",
+   "descriptionAr": "عطر نسائي ساحر يعبق بنفحات الزهور المتفتحة ليأسر الحواس ويترك انطباعاً لا يُنسى. يمثل هذا العطر احتفالاً بالأنوثة والأناقة في كل مناسبة.",
+   "descriptionEn": "Experience the enchanting aroma of Supremacy Pink, a captivating floral fragrance designed for women. Opening with a delicate flower bloom, this rejuvenating scent captivates the senses.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "fresh"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "daily",
+    "gift"
+   ],
+   "tags": [
+    "سوبرماسي بينك",
+    "عطر نسائي وردي",
+    "عطور الزهور",
+    "عطر ناعم"
+   ]
+  },
+  "IMP-1127": {
+   "sourceHash": "17v75kb",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "سوبرماسي بيربل",
+   "nameEn": "SUPREMACY PURPLE",
+   "descriptionAr": "عطر نسائي فريد يشع جاذبية وأناقة ليترك بصمة لا تُنسى في الذاكرة. يجسد هذا العطر قوة حضور المرأة العصرية ويضفي على إطلالتك سحراً خاصاً.",
+   "descriptionEn": "Discover Supremacy Purple, an enchanting feminine fragrance that radiates irresistible charm. With its luminous appeal and captivating aroma, this unique scent is designed to leave a lasting impression.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "oriental",
+    "amber"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "autumn",
+    "winter",
+    "spring"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "سوبرماسي بيربل",
+    "عطر نسائي",
+    "عطور فخمة",
+    "عطر سهرة"
+   ]
+  },
+  "IMP-1128": {
+   "sourceHash": "1ec55mt",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "سوبرماسي سيلفر",
+   "nameEn": "SUPREMACY SILVER",
+   "descriptionAr": "عطر رجالي آسر يعكس الأناقة والجاذبية بتصميم يبرز حضورك في المناسبات الخاصة والأمسيات. يمنحك تجربة حسية فريدة ومميزة تلفت الأنظار.",
+   "descriptionEn": "Unleash your charm with Supremacy Silver, a captivating fragrance designed for the modern man. This enchanting scent exudes radiance and sophistication, making it perfect for special occasions and evening outings.",
+   "gender": "men",
+   "families": [
+    "fruity",
+    "woody",
+    "musk"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "all",
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "evening",
+    "special",
+    "work"
+   ],
+   "tags": [
+    "سوبرماسي سيلفر",
+    "عطر رجالي مشهور",
+    "عطور فخمة",
+    "عطر رجالي فواح"
+   ]
+  },
+  "IMP-1129": {
+   "sourceHash": "1jx1zk5",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "ترايبوت بلو",
+   "nameEn": "TRIBUTE BLUE",
+   "descriptionAr": "عطر رجالي يجسد القوة والجاذبية بنفحات ساحرة من البرغموت والفلفل والجوز. يترك انطباعاً دافئاً ومميزاً بفضل خشب الكشمير والعنبر والمسك.",
+   "descriptionEn": "Discover Tribute Blue Pour Homme, a fragrance that embodies sophistication and strength. This captivating scent features top notes of bergamot, pimento, and nutmeg, evoking power and vitality.",
+   "gender": "men",
+   "families": [
+    "woody",
+    "spicy"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "work"
+   ],
+   "tags": [
+    "ترايبوت بلو",
+    "عطر رجالي",
+    "عطر خشبي",
+    "عطر فخم"
+   ]
+  },
+  "IMP-1130": {
+   "sourceHash": "1otx947",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "فايليت بوكيه",
+   "nameEn": "VIOLET BOUQUET",
+   "descriptionAr": "عطر نسائي أنيق يفتتح بنفحات خشبية من الزعفران والبرغموت لجاذبية راقية. يرتكز على قاعدة عميقة من العنبر وطحلب السنديان والأخشاب.",
+   "descriptionEn": "Experience the elegance of Violet Bouquet Pour Femme, a fragrance that opens with woody saffron and bergamot for a sophisticated start.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "oriental"
+   ],
+   "notes": {
+    "top": [
+     "Violet",
+     "Saffron",
+     "Bergamot"
+    ],
+    "heart": [],
+    "base": [
+     "Ambergris",
+     "Moss"
+    ]
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "فايليت بوكيه",
+    "عطر نسائي",
+    "عطر زهري",
+    "عطر راقي"
+   ]
+  },
+  "IMP-1131": {
+   "sourceHash": "wdzsim",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "طقم هدايا سبريماسي سيلفر اند بينك",
+   "nameEn": "GIFT SET SUPREMACY SILVER & PINK",
+   "descriptionAr": "مجموعة هدايا عطرية متنوعة تجمع بين انتعاش النفحات الفاكهية والزهرية ودفء العنبر والمسك. خيار مثالي لإهداء من تحب في مختلف المناسبات.",
+   "descriptionEn": "PERFUME NOTES SUPREMACY SILVER Top Notes: Fresh, Lemony, FruityMiddle Notes: Amber, Floral, MuskBase Notes: Musky, Smokey, Amber SUPREMACY PINK Top Notes: Pink Peppercorn, VioletMiddle Notes: Rose, Peony, MuguetBase Notes: Musk, Dry Amber",
+   "gender": "unisex",
+   "families": [
+    "fresh",
+    "floral",
+    "musk"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Musky",
+     "Smokey",
+     "Amber SUPREMACY PINK"
+    ]
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "gift",
+    "special"
+   ],
+   "tags": [
+    "طقم هدايا",
+    "سبريماسي",
+    "عطور منوعة",
+    "هدايا فخمة"
+   ]
+  },
+  "IMP-1132": {
+   "sourceHash": "1iz1lpl",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "طقم هدايا دهن العود أبيض",
+   "nameEn": "GIFT SET DEHN AL OUD ABIYAD",
+   "descriptionAr": "مجموعة عطرية مختلطة تتميز بنفحات منعشة من الحمضيات والمسك والأخشاب. تقدم تجربة عطرية شرقية متكاملة تناسب جميع الأوقات.",
+   "descriptionEn": "Unisex EDP 100 ML PERFUME NOTES Top Notes: CitrusyMiddle Notes: Musk and WoodyBase Notes: Green and Musky",
+   "gender": "unisex",
+   "families": [
+    "oud",
+    "musk",
+    "woody"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Green",
+     "Musky Unisex CPO 20 ML PERFUME NOTES"
+    ]
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "gift"
+   ],
+   "tags": [
+    "دهن العود أبيض",
+    "طقم هدايا",
+    "عطر شرقي",
+    "مسك وأخشاب"
+   ]
+  },
+  "IMP-1133": {
+   "sourceHash": "ivh2uv",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "طقم هدايا سبريماسي نوار اند بيربل",
+   "nameEn": "GIFT SET SUPREMACY NOIR & PURPLE",
+   "descriptionAr": "مجموعة عطور مميزة تجمع بين نفحات التوابل الحارة والمسك والفواكه. تمنحك إحساساً بالفخامة والتميز طوال اليوم.",
+   "descriptionEn": "PERFUME NOTES SUPREMACY NOIR Top Notes: Fresh, SpicyMiddle Notes: Woody, MuskyBase Notes: Spicy, Musky",
+   "gender": "unisex",
+   "families": [
+    "spicy",
+    "musk",
+    "fruity"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Spicy",
+     "Musky SUPREMACY PURPLE"
+    ]
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "evening",
+    "gift"
+   ],
+   "tags": [
+    "سبريماسي",
+    "طقم عطور",
+    "عطر توابل",
+    "هدايا رجالية ونسائية"
+   ]
+  },
+  "AFN-1134": {
+   "sourceHash": "rggp17",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "بيور مسك",
+   "nameEn": "PURE MUSK",
+   "descriptionAr": "عطر نسائي يجسد الجاذبية والأنقة بنفحات ناعمة من المسك الأبيض والزهور. يترك أثراً ساحراً يدوم طويلاً بفضل قاعدة المسك الحلو.",
+   "descriptionEn": "Pure Musk Pour Femme epitomizes feminine allure and elegance. Opening with delicate top notes of floral musk and white musk, it envelops you in a soft and sensual embrace.",
+   "gender": "women",
+   "families": [
+    "musk",
+    "floral"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Sweet Musk"
+    ]
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "بيور مسك",
+    "مسك أبيض",
+    "عطر نسائي",
+    "عطر ناعم"
+   ]
+  },
+  "AFN-1135": {
+   "sourceHash": "6r8xib",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "باريس عود",
+   "nameEn": "PARIS OUD",
+   "descriptionAr": "عطر مشترك يجمع بين انتعاش الحمضيات والفواكه ودفء الأخشاب والمسك والتونكا. تركيبة عطرية فخمة تناسب الأذواق الرفيعة.",
+   "descriptionEn": "Unisex EDP 100 ML PERFUME NOTES Top Notes: Orange, Wood Lemon and BlackcurrantMiddle Notes: Wood, Ylang-ylang and AmberBase Notes: Powder, Musk and Tonka",
+   "gender": "unisex",
+   "families": [
+    "oud",
+    "woody",
+    "amber"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Powder",
+     "Musk",
+     "Tonka"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "باريس عود",
+    "عطر عود",
+    "عطر مشترك",
+    "عطر فخم"
+   ]
+  },
+  "AFN-1136": {
+   "sourceHash": "1eajrr8",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "مودست دو",
+   "nameEn": "MODEST DEUX",
+   "descriptionAr": "عطر نسائي راقٍ يحتفي بالأنظار بافتتاحية حلوة من التوت والورد وال. يرتكز على قاعدة أنيقة من خشب الأرز والباتشولي والمسك الأبيض.",
+   "descriptionEn": "Modest Deux Pour Femme is a refined fragrance celebrating feminine grace. Its top notes of raspberry, rose, and cassis create a sweet and vibrant opening, reminiscent of blooming flowers.",
+   "gender": "women",
+   "families": [
+    "fruity",
+    "floral",
+    "woody"
+   ],
+   "notes": {
+    "top": [
+     "Raspberry",
+     "Rose",
+     "Cassis"
+    ],
+    "heart": [
+     "Pink Pepper",
+     "Peony",
+     "Jasmine"
+    ],
+    "base": [
+     "Virginia Cedar",
+     "Patchouli",
+     "White Musk"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily",
+    "evening"
+   ],
+   "tags": [
+    "مودست دو",
+    "عطر نسائي",
+    "عطر توت",
+    "عطر زهري"
+   ]
+  },
+  "AFN-1137": {
+   "sourceHash": "jzmqnb",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "مودست يون",
+   "nameEn": "MODEST UNE",
+   "descriptionAr": "عطر رجالي يفيض بالرجولة والجاذبية بنفحات البرغموت والفلفل والخزامى المنعشة. تضفي قاعدة الأمبروكسان ونجيل الهند طابعاً قوياً ومميزاً.",
+   "descriptionEn": "Indulge in the allure of Modest Une, a symphony of masculinity and sophistication. Crafted with top notes of Calabrian bergamot, pepper, and lavender, it captures attention.",
+   "gender": "men",
+   "families": [
+    "spicy",
+    "fresh",
+    "woody"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Ambroxan",
+     "Vetiver",
+     "Patchouli \""
+    ]
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "مودست يون",
+    "عطر رجالي",
+    "عطر منعش",
+    "عطر فلفل"
+   ]
+  },
+  "AFN-1138": {
+   "sourceHash": "5gqfz4",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "إنارا وايت",
+   "nameEn": "INARA WHITE",
+   "descriptionAr": "عطر مشترك يعكس النقاء والأناقة بنفحات الفواكه والياسمين المنعشة. يندمج خشب الأرز مع الفانيليا والعنبر ليترك بصمة دافئة وساحرة.",
+   "descriptionEn": "Inara White, a unisex fragrance, epitomizes purity and elegance. Its top notes of fruity essence and jasmine evoke a sense of freshness and vitality.",
+   "gender": "unisex",
+   "families": [
+    "floral",
+    "fruity",
+    "amber"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Woody",
+     "Amber \""
+    ]
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "إنارا وايت",
+    "عطر ياسمين",
+    "عطر فواكه",
+    "عطر مشترك"
+   ]
+  },
+  "IMP-1139": {
+   "sourceHash": "c9dhxv",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "سبريماسي نوت أونلي إنتنس - لوكجري كولكشن",
+   "nameEn": "SUPREMACY NOT ONLY INTENSE - LUXURY COLLECTION",
+   "descriptionAr": "عطر رجالي استثنائي يعزز الثقة بالنفس ويترك انطباعاً لا يُنسى. مصمم خصيصاً للرجل الذي يبحث عن التفرد وقوة الحضور.",
+   "descriptionEn": "Unleash your confidence with Supremacy Not Only Intense, a remarkable fragrance for men who embrace individuality. This powerful scent leaves an unforgettable impression.",
+   "gender": "men",
+   "families": [
+    "oriental",
+    "woody",
+    "spicy"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "سبريماسي",
+    "عطر رجالي فخم",
+    "عطر قوي",
+    "لوكجري كولكشن"
+   ]
+  },
+  "IMP-1140": {
+   "sourceHash": "3tnca8",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "سبريماسي إن أود - لوكجري كولكشن",
+   "nameEn": "SUPREMACY IN OUD - LUXURY COLLECTION",
+   "descriptionAr": "عطر مشترك فخم يتمحور حول جوهر العود الثمين ليعكس الفخامة الشرقية العريقة. يقدم رائحة غنية وساحرة تعلن عن حضورك بكل ثقة.",
+   "descriptionEn": "Immerse yourself in the opulence of Supremacy in Oud by Afnan, a rich and extraordinary unisex fragrance centered around precious oud.",
+   "gender": "unisex",
+   "families": [
+    "oud",
+    "oriental",
+    "woody"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "سبريماسي إن أود",
+    "عطر عود",
+    "عطر شرقي",
+    "عطر فخم"
+   ]
+  },
+  "IMP-1141": {
+   "sourceHash": "1iu628d",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "لا فلور بوكيه",
+   "nameEn": "LA FLEUR BOUQUET",
+   "descriptionAr": "عطر نسائي ساحر يفتح بزهور البرتقال والياسمين والفاوانيا ليحاكي حديقة مزهرة. يترك أثراً أنيقاً بقاعدة غنية بالمسك والموث والفاكهة.",
+   "descriptionEn": "Experience feminine charm with La Fleur Bouquet Pour Femme. This enchanting fragrance opens with orange blossom, jasmine, and peony, evoking a blooming garden.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "fruity",
+    "musk"
+   ],
+   "notes": {
+    "top": [
+     "Orange Blossom",
+     "Jasmine",
+     "Peony"
+    ],
+    "heart": [],
+    "base": [
+     "Litchi",
+     "Peach",
+     "Bergamot",
+     "Musk",
+     "Moss"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "daily",
+    "evening"
+   ],
+   "tags": [
+    "لا فلور بوكيه",
+    "عطر نسائي",
+    "عطر زهور",
+    "عطر فواكه"
+   ]
+  },
+  "IMP-1142": {
+   "sourceHash": "1isglyu",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "أورنامنت بيربل",
+   "nameEn": "ORNAMENT PURPLE",
+   "descriptionAr": "عطر نسائي ساحر مصمم ليترك أثراً مليئاً بالأناقة والجاذبية. يعد الخيار المثالي لمن تبحث عن رائحة استثنائية لا تُنسى.",
+   "descriptionEn": "Unveil your femininity with Ornament Purple by Afnan Perfumes. This captivating fragrance for women is crafted to leave a trail of elegance and allure.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "oriental"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "أورنامنت بيربل",
+    "عطر نسائي",
+    "عطر أنيق",
+    "عطور أفنان"
+   ]
+  },
+  "AFN-1143": {
+   "sourceHash": "bpz016",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "توراتي بيربل",
+   "nameEn": "TURATHI PURPLE",
+   "descriptionAr": "عطر نسائي شرقي يأخذك في رحلة حسية مليئة بالفخامة والجاذبية. يجمع بين نفحات التوابل والزهور وقاعدة دافئة من الفانيليا والباتشولي.",
+   "descriptionEn": "Embark on a sensorial journey with this oriental feminine fragrance. Created with passion, it will transport the modern women and fashion lovers to a world full of richness and sophistication.",
+   "gender": "women",
+   "families": [
+    "oriental",
+    "floral"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Vanilla",
+     "Moss",
+     "Patchouli"
+    ]
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "توراتي بيربل",
+    "عطر نسائي",
+    "عطور أفنان",
+    "عطر شرقي"
+   ]
+  },
+  "IMP-1144": {
+   "sourceHash": "1jt82d7",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "تريبيوت بينك",
+   "nameEn": "TRIBUTE PINK",
+   "descriptionAr": "عطر نسائي مبهج يعكس الأنوثة والجاذبية بفضل توليفة الفواكه والزهور والمسك. يمنحك حضوراً أنيقاً ومميزاً في كل الأوقات.",
+   "descriptionEn": "Embrace your femininity with Tribute Pink Pour Femme, a delightful fragrance that opens with vibrant notes of pink pepper, mandarin, and pineapple.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "fruity"
+   ],
+   "notes": {
+    "top": [
+     "Pink Pepper",
+     "Mandarin",
+     "Pineapple"
+    ],
+    "heart": [],
+    "base": [
+     "Jasmine",
+     "Rose",
+     "Violet",
+     "Patchouli",
+     "Musk",
+     "Sandalwood"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "تريبيوت بينك",
+    "عطر نسائي",
+    "عطر فواكه",
+    "عطور زهرية"
+   ]
+  },
+  "AFN-1145": {
+   "sourceHash": "hvanyk",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "توراتي براون هوم",
+   "nameEn": "TURATHI BROWN HOMME",
+   "descriptionAr": "عطر رجالي يجمع ببراعة بين الحمضيات المنعشة والتوابل والأخشاب الدافئة. يقدم لك تجربة عطرية حيوية وجذابة.",
+   "descriptionEn": "A brilliant amalgamation of fresh spices, this fragrance takes you on a journey of sheer enthrallment. Beginning at the valley of energising citrus pouring all through the air.",
+   "gender": "men",
+   "families": [
+    "woody",
+    "spicy",
+    "citrus"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [
+     "Fresh Spicy",
+     "Vanilla",
+     "Warm Spicy"
+    ],
+    "base": [
+     "Balsamic",
+     "Rose",
+     "Aquatic"
+    ]
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "توراتي براون",
+    "عطر رجالي",
+    "عطور أفنان",
+    "عطر خشبي"
+   ]
+  },
+  "AFN-1146": {
+   "sourceHash": "1wb8jmz",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "توراتي بلو",
+   "nameEn": "TURATHI BLUE",
+   "descriptionAr": "عطر غني ومميز يمزج بين انتعاش الحمضيات ودفء الأخشاب والمسك. يمنحك شعوراً بالثقة والانتعاش طوال اليوم.",
+   "descriptionEn": "Homme EDP 90ML Undeniably rich-smelling scent many will recognize, thanks to its mix of citrus and woody notes.",
+   "gender": "men",
+   "families": [
+    "citrus",
+    "woody",
+    "fresh"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Musk",
+     "Patchouli",
+     "Fresh Spicy"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "spring"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "توراتي بلو",
+    "عطر رجالي",
+    "عطور أفنان",
+    "عطر منعش"
+   ]
+  },
+  "AFN-1147": {
+   "sourceHash": "65joup",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "توراتي ريد",
+   "nameEn": "TURATHI RED",
+   "descriptionAr": "عطر نسائي ينبض بالأنوثة والرقي مع مزيج ساحر من الورد والمسك والزهور. يستقر على قاعدة دافئة من المشمش والفاوانيا.",
+   "descriptionEn": "Turathi Red Pour Femme evokes timeless sophistication and femininity. Opening with a captivating blend of rose, musk, and floral notes.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "musk"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Apricot",
+     "Musk",
+     "Peony"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "توراتي ريد",
+    "عطر نسائي",
+    "عطور أفنان",
+    "عطر ورد"
+   ]
+  },
+  "IMP-1148": {
+   "sourceHash": "1cyxu4p",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "باتشولي اون فاير",
+   "nameEn": "PATCHOULI ON FIRE",
+   "descriptionAr": "عطر للجنسين يجمع بين الحمضيات المنعشة ونفحات الباتشولي واللافندر الساحرة. يمنح حواسك طاقة متجددة وحضوراً قوياً.",
+   "descriptionEn": "Unisex EDP 80 ML A one of a kind mixture of fresh citrus ingredients and aromatic open land, bringing to your senses the limitless of your power.",
+   "gender": "unisex",
+   "families": [
+    "citrus",
+    "spicy",
+    "woody"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [
+     "Patchouli",
+     "Lavender",
+     "Citru"
+    ],
+    "base": []
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "evening"
+   ],
+   "tags": [
+    "باتشولي اون فاير",
+    "عطر للجنسين",
+    "عطور أفنان",
+    "عطر باتشولي"
+   ]
+  },
+  "IMP-1149": {
+   "sourceHash": "irbeu4",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "توباكو ريِش",
+   "nameEn": "TOBACCO RUSH",
+   "descriptionAr": "عطر دافئ وجذاب للجنسين يمزج بين التوابل والتبغ الفاخر مع لمسات خشبية وعنبرية غنية. يترك انطباعاً عميقاً وأنيقاً.",
+   "descriptionEn": "Experience the warmth and allure of Tobacco Rush, a captivating unisex fragrance. This scent opens with a rich blend of warm spices, tobacco, and woody accords.",
+   "gender": "unisex",
+   "families": [
+    "oriental",
+    "amber",
+    "woody"
+   ],
+   "notes": {
+    "top": [
+     "Tobacco"
+    ],
+    "heart": [
+     "Lavender"
+    ],
+    "base": [
+     "Amber",
+     "Cedar",
+     "Oud"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "توباكو ريش",
+    "عطر توباكو",
+    "عطر للجنسين",
+    "عطور دافئة"
+   ]
+  },
+  "IMP-1150": {
+   "sourceHash": "1rsyc4d",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "هيستوريك دوريا",
+   "nameEn": "HISTORIC DORIA",
+   "descriptionAr": "عطر نسائي دافئ وراقي يجمع بين الكلاسيكية الأنيقة واللمسات العصرية الجذابة. مصمم خصيصاً ليترك انطباعاً لا يُنسى.",
+   "descriptionEn": "Experience the enchanting allure of Historic Doria by Afnan, a captivating fragrance that takes you on an olfactory journey through time.",
+   "gender": "women",
+   "families": [
+    "oriental",
+    "floral"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "هيستوريك دوريا",
+    "عطر نسائي",
+    "عطور أفنان",
+    "عطر فخم"
+   ]
+  },
+  "IMP-1151": {
+   "sourceHash": "zqw04r",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "هيستوريك أولميدا",
+   "nameEn": "HISTORIC OLMEDA",
+   "descriptionAr": "عطر رجالي راقي يجمع بين الأصالة والعصرية بأسلوب ساحر. يمنحك حضراً مميزاً يعكس الثقة والأناقة.",
+   "descriptionEn": "Discover Historic Doria by Afnan, an exquisite blend that transcends time with its modern sophistication and timeless charm.",
+   "gender": "men",
+   "families": [
+    "woody",
+    "spicy"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "هيستوريك أولميدا",
+    "عطر رجالي",
+    "عطور أفنان",
+    "عطر كلاسيكي"
+   ]
+  },
+  "IMP-1152": {
+   "sourceHash": "139zk8y",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "إدكت مستيك",
+   "nameEn": "EDICT MUSCTIQUE",
+   "descriptionAr": "عطر فاخر للجنسين يعبر عن الرقي والأناقة الفردية. توليفة متناغمة تخطف الأنظار وتترك أثراً يدوم طويلاً.",
+   "descriptionEn": "Discover Edict Musctique by Afnan, a luxurious Eau de Parfum that transcends traditional fragrances.",
+   "gender": "unisex",
+   "families": [
+    "musk",
+    "oriental"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "إدكت مستيك",
+    "عطر مسك",
+    "عطر للجنسين",
+    "عطور فاخرة"
+   ]
+  },
+  "IMP-1153": {
+   "sourceHash": "1c6u9gi",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "إدكت أمبيريثم",
+   "nameEn": "EDICT AMBERYTHME",
+   "descriptionAr": "عطر دافئ ومترف للجنسين يلفك بسيمفونية من القرفة والعنبر والفانيليا. مثالي للاستمتاع بأجمل اللحظات الدافئة.",
+   "descriptionEn": "Experience Edict Amberythme by Afnan, a captivating unisex fragrance that embodies indulgence and celebration.",
+   "gender": "unisex",
+   "families": [
+    "amber",
+    "oriental",
+    "gourmand"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "إدكت أمبيريثم",
+    "عطر عنبر",
+    "عطر للجنسين",
+    "عطور دافئة"
+   ]
+  },
+  "IMP-1154": {
+   "sourceHash": "1s7l3vo",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "إدكت أوديكشن",
+   "nameEn": "EDICT OUDDICTION",
+   "descriptionAr": "عطر فخم ومميز للجنسين يبدأ بنفحات عود وزعفران غنية ويستقر على قاعدة جلدية وخشبية ساحرة. يمنحك حضوراً جريئاً ولا يُنسى.",
+   "descriptionEn": "Experience Edict Ouddiction by Afnan, a luxurious unisex fragrance that embodies opulence and intrigue.",
+   "gender": "unisex",
+   "families": [
+    "oud",
+    "oriental",
+    "leather"
+   ],
+   "notes": {
+    "top": [
+     "Agarwood",
+     "Saffron",
+     "Lavender",
+     "Bergamot"
+    ],
+    "heart": [
+     "Tonka Bean",
+     "Sandalwood",
+     "Cedar",
+     "Geranium",
+     "Tobacco"
+    ],
+    "base": [
+     "Leather",
+     "Patchouli",
+     "Amber",
+     "Rosewood",
+     "Vetiver"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "إدكت أوديكشن",
+    "عطر عود",
+    "عطر للجنسين",
+    "عطور شرقية"
+   ]
+  },
+  "IMP-1155": {
+   "sourceHash": "11dlo2c",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "ناين بي ام - للنساء",
+   "nameEn": "9 PM - Pour Femme",
+   "descriptionAr": "عطر نسائي ساحر بلمسات فواكه جريئة وقلب زهري غني وقاعدة دافئة وخشبية. الخيار المثالي لأمسياتك المميزة.",
+   "descriptionEn": "Indulge in 9 PM - Pour Femme by Afnan, a captivating women’s fragrance with a bold blend of fruity top notes, rich floral heart, and a warm, woody base.",
+   "gender": "women",
+   "families": [
+    "fruity",
+    "floral",
+    "woody"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "ناين بي ام",
+    "عطر نسائي",
+    "عطور أفنان",
+    "عطر سهرة"
+   ]
+  },
+  "IMP-1156": {
+   "sourceHash": "h28c7g",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "ناين ام - للنساء",
+   "nameEn": "9 AM - Pour Femme",
+   "descriptionAr": "عطر نسائي حيوى وراقي يعكس أناقة المرأة العصريّة بمزيج منعش وقاعدة حسية دافئة. يناسب جميع أوقاتك اليومية والمميزة.",
+   "descriptionEn": "Experience the sophistication of 9 AM - Pour Femme by Afnan, a vibrant and captivating fragrance crafted for the modern woman.",
+   "gender": "women",
+   "families": [
+    "fruity",
+    "floral",
+    "fresh"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "ناين ام",
+    "عطر نسائي",
+    "عطور أفنان",
+    "عطر نهاري"
+   ]
+  },
+  "IMP-1157": {
+   "sourceHash": "1kdm9w6",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "رار باشن",
+   "nameEn": "RARE PASSION",
+   "descriptionAr": "عطر نسائي ساحر ينبض بالجاذبية والأناقة، يجمع بين نفحات البرتقال والمسك والورد. يضيف قلب العطر دفئاً ورقياً بفضل مزيج العنبر والأخشاب وال لا.",
+   "descriptionEn": "A captivating fragrance that exudes allure and elegance with vibrant notes of orange, musk, and rose, settling into a warm base of vanilla and amber.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "fruity"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [
+     "Amber",
+     "Vanilla"
+    ],
+    "base": [
+     "Rose",
+     "Musk",
+     "Orange Blossom"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "daily",
+    "evening"
+   ],
+   "tags": [
+    "رار باشن",
+    "عطر نسائي",
+    "عطور",
+    "rare passion"
+   ]
+  },
+  "IMP-1158": {
+   "sourceHash": "1fll4w6",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "طقم سيبرماسي سيلفر",
+   "nameEn": "GIFT SET SUPREMACY SILVER",
+   "descriptionAr": "طقم هدايا مميز يضم عطر سيبرماسي سيلفر مع منتجات العناية برائحة منعشة ومثيرة. يتميز بتوليفة جذابة من التفاح والبرغموت والأخشاب.",
+   "descriptionEn": "A gift set featuring Supremacy Silver EDP along with complementary grooming products with notes of apple, bergamot, and birch.",
+   "gender": "men",
+   "families": [
+    "fresh",
+    "woody"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [
+     "Pineapple",
+     "Patchouli",
+     "Jasmine"
+    ],
+    "base": [
+     "Musk",
+     "Ambergris",
+     "Birch"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "summer",
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "gift"
+   ],
+   "tags": [
+    "سيبرماسي سيلفر",
+    "طقم هدايا",
+    "عطر رجالي",
+    "supremacy silver"
+   ]
+  },
+  "IMP-1159": {
+   "sourceHash": "1ixrry5",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "طقم سوفوفير فلورال بوكيه",
+   "nameEn": "GIFT SET SOUVENIR FLORAL BOUQUET",
+   "descriptionAr": "طقم هدايا رائع يضم عطر سوفوفير فلورال بوكيه مع مستحضرات العناية بتركيبة زهرية ساحرة. يمنحك تجربة عطرية منعشة ومفعمة بالأنوثة.",
+   "descriptionEn": "A luxurious gift set featuring Souvenir Floral Bouquet along with body lotion and shower gel with rich floral notes.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "fruity"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Musk",
+     "Cashmere Wood",
+     "Amber"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "daily",
+    "gift",
+    "special"
+   ],
+   "tags": [
+    "سوفوفير فلورال",
+    "طقم هدايا نسائي",
+    "عطور",
+    "floral bouquet"
+   ]
+  },
+  "IMP-1160": {
+   "sourceHash": "13ygnw8",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "طقم سيبرماسي فيم",
+   "nameEn": "GIFT SET SUPREMACY FEMME",
+   "descriptionAr": "طقم هدايا أنيق يضم عطر سيبرماسي فيم النسائي مع منتجات العناية بتركيبة فواحة ومغرية. يجمع بين انتعاش الفواكه ودفء المسك والفانيليا.",
+   "descriptionEn": "An elegant gift set featuring Supremacy Femme with body lotion and shower gel, highlighted by notes of orange, pear, and vanilla.",
+   "gender": "women",
+   "families": [
+    "fruity",
+    "floral"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Pear",
+     "Musk",
+     "Vanilla"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "autumn"
+   ],
+   "occasions": [
+    "daily",
+    "gift"
+   ],
+   "tags": [
+    "سيبرماسي فيم",
+    "طقم هدايا",
+    "عطور نسائية",
+    "supremacy femme"
+   ]
+  },
+  "IMP-1161": {
+   "sourceHash": "15fwviy",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "طقم ناين بي ام هوم",
+   "nameEn": "GIFT SET 9PM HOMME",
+   "descriptionAr": "طقم هدايا رجالي جذاب يضم عطر ناين بي ام مع منتجات العناية برائحة شرقية دافئة. يبرز بلمحات غنية من القرفة والتوابل والفانيليا.",
+   "descriptionEn": "A captivating men's gift set featuring 9 PM EDP along with deodorant and shower gel with rich spicy and vanilla notes.",
+   "gender": "men",
+   "families": [
+    "oriental",
+    "spicy"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Patchouli",
+     "Amber",
+     "Vanilla",
+     "Tonka Bean"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "gift",
+    "special"
+   ],
+   "tags": [
+    "ناين بي ام",
+    "طقم رجالي",
+    "عطور",
+    "9pm homme"
+   ]
+  },
+  "IMP-1162": {
+   "sourceHash": "1nt4y4g",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "طقم أورنامنت فيم",
+   "nameEn": "GIFT SET ORNAMENT FEMME",
+   "descriptionAr": "طقم هدايا فاخر للمرأة العصرية يضم عطر أورنامنت فيم مع مستحضرات العناية المعطرة. يمنحك إحساساً بالجاذبية والأناقة المتجددة.",
+   "descriptionEn": "A luxurious gift set for women featuring Ornament Femme EDP, body lotion, and shower gel with an alluring floral and fruity blend.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "fruity"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "spring",
+    "summer",
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "gift"
+   ],
+   "tags": [
+    "أورنامنت فيم",
+    "طقم هدايا نسائي",
+    "عطور",
+    "ornament femme"
+   ]
+  },
+  "IMP-1163": {
+   "sourceHash": "ksn895",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "طقم سوفوفير ديزرت روز",
+   "nameEn": "GIFT SET SOUVENIR DESERT ROSE",
+   "descriptionAr": "طقم هدايا راقي يضم عطر سوفوفير ديزرت روز مع منتجات العناية بتركيبة غنية ومميزة. يجمع بين انتعاش الفواكه ودفء الأخشاب والزهور.",
+   "descriptionEn": "A charming gift set featuring Souvenir Desert Rose along with body lotion and shower gel with rich fruity and floral notes.",
+   "gender": "unisex",
+   "families": [
+    "floral",
+    "fruity"
+   ],
+   "notes": {
+    "top": [
+     "Peach",
+     "Raspberry",
+     "Cassis"
+    ],
+    "heart": [
+     "Heliotrope",
+     "Lily of the Valley",
+     "White Musk"
+    ],
+    "base": [
+     "Sandalwood",
+     "Citrus",
+     "Amber"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "gift"
+   ],
+   "tags": [
+    "سوفوفير ديزرت روز",
+    "طقم هدايا",
+    "عطور",
+    "desert rose"
+   ]
+  },
+  "IMP-1164": {
+   "sourceHash": "m4ikzz",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "طقم سيبرماسي نوت أونلي إنتنس",
+   "nameEn": "GIFT SET SUPREMACY NOT ONLY INTENSE",
+   "descriptionAr": "طقم هدايا رجالي قوي وفاخر يضم عطر سيبرماسي نوت أونلي إنتنس مع مستحضرات العناية. يتميز بتوليفة غنية من الفواكه والتوابل والمسك.",
+   "descriptionEn": "An intense and sophisticated men's gift set featuring Supremacy Not Only Intense with shower gel and aftershave.",
+   "gender": "men",
+   "families": [
+    "woody",
+    "spicy"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Saffron",
+     "Musk",
+     "Ambergris"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn",
+    "all"
+   ],
+   "occasions": [
+    "evening",
+    "special",
+    "gift"
+   ],
+   "tags": [
+    "سيبرماسي إنتنس",
+    "طقم هدايا رجالي",
+    "عطور",
+    "not only intense"
+   ]
+  },
+  "IMP-1165": {
+   "sourceHash": "ql2a1l",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "بورتريت أبستراكت",
+   "nameEn": "PORTRAIT ABSTRACT",
+   "descriptionAr": "عطر للجنسين آسر ومميز يفتح بنفحات منعشة من الراوند والبخور، وينتقل إلى قلب غني بالورد والتونكا. تضفي قاعدة العشب والخشب والجلد عمقاً وأناقة تدوم طويلاً.",
+   "descriptionEn": "A captivating unisex fragrance featuring intriguing top notes of vetiver and incense, leading to a rich heart of rose and tonka bean, with a lasting woody base.",
+   "gender": "unisex",
+   "families": [
+    "woody",
+    "oriental"
+   ],
+   "notes": {
+    "top": [
+     "Vetiver",
+     "Rhubarb",
+     "Incense"
+    ],
+    "heart": [
+     "Rose",
+     "Tonka Bean"
+    ],
+    "base": [
+     "Sandalwood",
+     "Leather",
+     "Cedar",
+     "Amber"
+    ]
+   },
+   "seasons": [
+    "autumn",
+    "winter"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "بورتريت أبستراكت",
+    "عطر للجنسين",
+    "عطور",
+    "portrait abstract"
+   ]
+  },
+  "IMP-1166": {
+   "sourceHash": "3pwqrk",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "بورتريت ريفايفال",
+   "nameEn": "PORTRAIT REVIVAL",
+   "descriptionAr": "عطر للجنسين ينبض بالحنين والفخامة، يفتح بنفحات دافئة من القرفة والعسل والزعفران. يستقر على قاعدة غنية ومترفة من التمور والكراميل والشوكولاتة الداكنة.",
+   "descriptionEn": "A luxurious unisex fragrance bringing nostalgia with warm notes of cinnamon and honey, settling into a decadent base of dates, caramel, and dark chocolate.",
+   "gender": "unisex",
+   "families": [
+    "gourmand",
+    "oriental"
+   ],
+   "notes": {
+    "top": [
+     "Cinnamon",
+     "Honey",
+     "Saffron",
+     "Incense"
+    ],
+    "heart": [
+     "Tonka Bean",
+     "Praline"
+    ],
+    "base": [
+     "Dates",
+     "Sandalwood",
+     "Caramel",
+     "Dark Chocolate"
+    ]
+   },
+   "seasons": [],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "بورتريت ريفايفال",
+    "عطر شرقي",
+    "عطور للجنسين",
+    "portrait revival"
+   ]
+  },
+  "IMP-1167": {
+   "sourceHash": "14hw2dc",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "عود ريزينغ",
+   "nameEn": "OUD RISING",
+   "descriptionAr": "عطر فاخر للجنسين يجمع بين فخامة العود وانتعاش السرو والبرتقال في المقدمة. يمنحك حضوراً قوياً وجذاباً بفضل قاعدته الغنية بالمسك ونجيل الهند.",
+   "descriptionEn": "A unisex EDP featuring rich notes of agarwood, cypress, and cardamom, resting on a sophisticated base of vetiver, musk, and tonka bean.",
+   "gender": "unisex",
+   "families": [
+    "oud",
+    "oriental"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Vetiver",
+     "Musk",
+     "Tonka Bean"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "عود ريزينغ",
+    "عطر عود",
+    "عطور للجنسين",
+    "oud rising"
+   ]
+  },
+  "IMP-1168": {
+   "sourceHash": "1v4vx2m",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "ميستيك بوكيه",
+   "nameEn": "MYSTIQUE BOUQUET",
+   "descriptionAr": "عطر نسائي ساحر يفتح بمزيج نابض بالحياة من الخوخ الأبيض واليوسفي والليتشي. يترك قاعدة دافئة وفواحة من الأمبروكسان والمسك والفانيليا لإطلالة مليئة بالغموض والأناقة.",
+   "descriptionEn": "A captivating fragrance for women opening with a vibrant mix of white peach and litchi, settling into a warm base of ambroxan, musk, and vanilla.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "fruity"
+   ],
+   "notes": {
+    "top": [
+     "Peach",
+     "Mandarin Orange",
+     "Litchi"
+    ],
+    "heart": [
+     "Orange Blossom",
+     "Peony"
+    ],
+    "base": [
+     "Ambroxan",
+     "Musk",
+     "Vanilla"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "daily",
+    "evening"
+   ],
+   "tags": [
+    "ميستيك بوكيه",
+    "عطر نسائي",
+    "عطور",
+    "mystique bouquet"
+   ]
+  },
+  "IMP-1169": {
+   "sourceHash": "1gae0ev",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "سيبرماسي تابي روج",
+   "nameEn": "SUPREMACY TAPIS ROUGE - LUXURY COLLECTION",
+   "descriptionAr": "عطر نسائي فاخر من مجموعة اللخجري كولكشن، يجمع بين الكرز الأسود والبرقوق وزهور الياسمين. يمنحك أروما آسرة تعكس تفرد شخصيتك وجاذبيتك.",
+   "descriptionEn": "A luxurious women's fragrance featuring delightful notes of black cherry, peach, and plum, complemented by a floral heart and a vetiver base.",
+   "gender": "women",
+   "families": [
+    "fruity",
+    "floral"
+   ],
+   "notes": {
+    "top": [
+     "Cherry",
+     "Peach",
+     "Litchi"
+    ],
+    "heart": [
+     "Plum",
+     "Rose",
+     "Jasmine"
+    ],
+    "base": [
+     "Vetiver",
+     "Peony"
+    ]
+   },
+   "seasons": [
+    "autumn",
+    "spring"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "سيبرماسي تابي روج",
+    "عطر نسائي",
+    "عطور فاخرة",
+    "supremacy tapis rouge"
+   ]
+  },
+  "IMP-1170": {
+   "sourceHash": "1w15p9e",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "سيبرماسي جالا",
+   "nameEn": "SUPREMACY Gala - LUXURY COLLECTION",
+   "descriptionAr": "عطر نسائي عصري من مجموعة اللخجري كولكشن يمزج بين زهر الكمثرى واليوسفي وزهور الغاردينيا. يتألق بقاعدة غنية بالفانيليا والكراميل لتجربة عطرية لا تُنسى.",
+   "descriptionEn": "A contemporary fragrance for women blending fresh pear blossom and mandarin orange with rich vanilla, caramel, and patchouli.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "gourmand"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "spring",
+    "summer",
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "evening",
+    "work"
+   ],
+   "tags": [
+    "سيبرماسي جالا",
+    "عطر نسائي",
+    "عطور",
+    "supremacy gala"
+   ]
+  },
+  "IMP-1171": {
+   "sourceHash": "jrer19",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "سوبرماسي سيلفر",
+   "nameEn": "SUPREMACY SILVER - 150 ML",
+   "descriptionAr": "عطر رجالي جريء ومبهر يمنحك حضوراً جذاباً لا ينسى. يتميز بتركيبة عطرية منعشة وغنية تلفت الأنظار إليك.",
+   "descriptionEn": "Homme EDP 150 ML Are you a person who likes fragrance that get you noticed? If yes, then this could be the one for you! Bold, mysterious and sensually alluring! #CraftedbyAfnan PERFUME NOTES Top Notes: Apple, Bergamot and Oak MossMiddle Notes: Pineapple, Patchouli and Jasmine Base Notes: Musk, Amber",
+   "gender": "men",
+   "families": [
+    "fresh",
+    "fruity",
+    "woody"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [
+     "Pineapple",
+     "Patchouli",
+     "Jasmine"
+    ],
+    "base": [
+     "Musk",
+     "Ambergris",
+     "Birch"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "summer",
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "work",
+    "evening"
+   ],
+   "tags": [
+    "سوبرماسي سيلفر",
+    "عطر رجالي",
+    "عطر منعش",
+    "عطور",
+    "أفنان"
+   ]
+  },
+  "IMP-1172": {
+   "sourceHash": "lwtfkb",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "سوبرماسي نوت أوصلي إنتنس",
+   "nameEn": "SUPREMACY NOT ONLY INTENSE - LUXURY COLLECTION - 150 ML",
+   "descriptionAr": "عطر رجالي قوي يعزز ثقتك ويترك انطباعاً لا ينسى. يعبر عن القوة والتميز في كل رشة لمن يحبون التميز.",
+   "descriptionEn": "Unleash your confidence with Supremacy Not Only Intense, a remarkable fragrance for men who embrace individuality. This powerful scent leaves an unforgettable impression, celebrating strength and uniqueness in every spray. Perfect for those who dare to stand out.",
+   "gender": "men",
+   "families": [
+    "woody",
+    "amber",
+    "oriental"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "autumn",
+    "all"
+   ],
+   "occasions": [
+    "evening",
+    "special",
+    "work"
+   ],
+   "tags": [
+    "سوبرماسي إنتنس",
+    "عطر رجالي فخم",
+    "عطور رجالية",
+    "مناسبات",
+    "أفنان"
+   ]
+  },
+  "IMP-1173": {
+   "sourceHash": "1glitk8",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "سوبرماسي إن عود",
+   "nameEn": "SUPREMACY IN OUD - LUXURY COLLECTION - 150ML",
+   "descriptionAr": "عطر مختلط غني ومستوحى من أصالة الشرق الأوسط والأناقة الفاخرة للعود الثمين. يمنحك حضوراً طاغياً يعبر عن التقاليد والفخامة.",
+   "descriptionEn": "Immerse yourself in the opulence of Supremacy in Oud by Afnan, a rich and extraordinary unisex fragrance centered around precious oud. This perfume captures the essence of Middle Eastern elegance, offering a heady, intoxicating scent that lingers and announces your presence. Perfect for those who ap",
+   "gender": "unisex",
+   "families": [
+    "oud",
+    "oriental",
+    "amber"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special",
+    "gift"
+   ],
+   "tags": [
+    "سوبرماسي إن عود",
+    "عطر عود",
+    "عطر للجنسين",
+    "عطور شرقية",
+    "فخم"
+   ]
+  },
+  "IMP-1174": {
+   "sourceHash": "4k8qg2",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "تشيري بوكيت",
+   "nameEn": "CHERRY BOUQUET",
+   "descriptionAr": "عطر نسائي ساحر يفتح بحلاوة منعشة ويأسر الحواس بباقة زهرية غنية. يترك أثراً أنيقاً ينبض بالأنوثة والحيوية طوال اليوم.",
+   "descriptionEn": "Experience Cherry Bouquet by Afnan, an enchanting fragrance that opens with luscious sweetness and captivates the senses. The heart reveals a rich floral embrace, adding romantic depth, while a warm, seductive base lingers gracefully, leaving an elegant trail. Perfect for the confident, modern woman",
+   "gender": "women",
+   "families": [
+    "fruity",
+    "floral",
+    "gourmand"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "spring",
+    "summer",
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "evening",
+    "gift"
+   ],
+   "tags": [
+    "تشيري بوكيت",
+    "عطر نسائي",
+    "عطور فواكه",
+    "عطر زهري",
+    "أفنان"
+   ]
+  },
+  "IMP-1175": {
+   "sourceHash": "1i1yray",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "طقم هدايا سوبرماسي إن عود",
+   "nameEn": "GIFT SET SUPREMACY IN OUD",
+   "descriptionAr": "طقم هدايا فاخر يضم عطر سوبرماسي إن عود مع مستحضرات العناية بتركيبة غنية بالعود والأخشاب. خيار مثالي لإهداء من تحب في المناسبات الخاصة.",
+   "descriptionEn": "GIFT SET SUPREMACY IN OUD SUPREMACY IN OUD 100ML EDP SHOWER GEL 150ML DEODORANT 150ML PERFUME NOTES Top Notes: Saffron, Lavender and Nutmeg Middle Notes: Agarwood and SweetBase Notes: Musk and Patchouli",
+   "gender": "unisex",
+   "families": [
+    "oud",
+    "oriental",
+    "spicy"
+   ],
+   "notes": {
+    "top": [
+     "Saffron",
+     "Lavender",
+     "Nutmeg"
+    ],
+    "heart": [],
+    "base": [
+     "Musk",
+     "Patchouli"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn",
+    "all"
+   ],
+   "occasions": [
+    "gift",
+    "special",
+    "evening"
+   ],
+   "tags": [
+    "طقم هدايا",
+    "سوبرماسي إن عود",
+    "هدايا فخمة",
+    "عطور شرقية",
+    "أفنان"
+   ]
+  },
+  "IMP-1176": {
+   "sourceHash": "ko5w1h",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "سوفينير بلومينغ بليس",
+   "nameEn": "SOUVENIR BLOOMING BLISS",
+   "descriptionAr": "عطر نسائي ساحر مصمم للاحتفال بالتفرد والأناقة الخالدة. يقدم رحلة عطرية فريدة تترك انطباعاً لا ينسى.",
+   "descriptionEn": "Experience Souvenir Blooming Bliss, a captivating fragrance crafted for individuality and elegance. This exclusive feminine scent defies convention, offering a unique olfactory journey that inspires and enchants. Celebrate your uniqueness with Blooming Bliss, designed to leave a memorable impression",
+   "gender": "women",
+   "families": [
+    "floral",
+    "fresh",
+    "fruity"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "spring",
+    "summer",
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "work",
+    "gift"
+   ],
+   "tags": [
+    "سوفينير بلومينغ بليس",
+    "عطر نسائي",
+    "عطور زهرية",
+    "أنيق",
+    "أفنان"
+   ]
+  },
+  "IMP-1177": {
+   "sourceHash": "1a5lj2y",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "طقم هدايا ناين إيه إم دايڤ",
+   "nameEn": "GIFT SET 9 AM DIVE",
+   "descriptionAr": "طقم هدايا منعش يضم عطر ناين إيه إم دايڤ مع مستحضرات الاستحمام والعناية اليومية. يمنحك حيوية ونشاطاً مستوحى من انتعاش الصباح.",
+   "descriptionEn": "GIFT SET 9 AM Dive Shower Gel 150 ml Eau de parfum 100 ml Perfumed Deodorant Spray 150 ml PERFUME NOTES Top Notes: Lemon, Pink Pepper, Mint and Black CurrantMiddle Notes: Apple, Incense and CedarBase Notes: Patchouli, Jasmine, Ginger and Sandalwood",
+   "gender": "unisex",
+   "families": [
+    "fresh",
+    "aquatic",
+    "citrus"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Patchouli",
+     "Jasmine",
+     "Ginger",
+     "Sandalwood"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "spring",
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "gift",
+    "work"
+   ],
+   "tags": [
+    "طقم هدايا ناين إيه إم",
+    "ناين إيه إم دايڤ",
+    "عطر منعش",
+    "هدايا رجالية",
+    "أفنان"
+   ]
+  },
+  "IMP-1178": {
+   "sourceHash": "wjxil5",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "طقم هدايا توراتي بلو",
+   "nameEn": "GIFT SET TURATHI BLUE",
+   "descriptionAr": "طقم هدايا أنيق يضم عطر توراتي بلو المنعش مع منتجات العناية بالرجل. يجمع بين الانتعاش والحيوية ليكون الهدية المثالية.",
+   "descriptionEn": "GIFT SET TURATHI BLUE TURATHI BLUE 90ML EDP SHOWER GEL 100ML AFTER SHAVE BALM 100ML PERFUME NOTES Top Notes: Bergamot and MandarinMiddle Notes: Amber and WoodyBase Notes: Musk, Patchouli and Fresh Spicy",
+   "gender": "men",
+   "families": [
+    "fresh",
+    "citrus",
+    "woody"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Musk",
+     "Patchouli",
+     "Fresh Spicy"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "spring",
+    "all"
+   ],
+   "occasions": [
+    "gift",
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "توراتي بلو",
+    "طقم هدايا رجالي",
+    "عطر منعش",
+    "هدايا",
+    "أفنان"
+   ]
+  },
+  "IMP-1179": {
+   "sourceHash": "1h4jtck",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "طقم هدايا ناين إيه إم بور فام",
+   "nameEn": "GIFT SET 9 AM POUR FEMME",
+   "descriptionAr": "طقم هدايا نسائي متكامل يضم عطر ناين إيه إم مع لوشن الجسم ومعطر الجسم. يمنحك رائحة منعشة وأنثوية تدوم طويلاً.",
+   "descriptionEn": "GIFT SET 9 AM POUR FEMME 9 AM POUR FEMME 100ML EDP BODY MIST 150ML BODY LOTION 100ML GEL DOUCHE 100ML PERFUME NOTES Top Notes: Mandarin, Bergamot and GrapefruitMiddle Notes: Black Currant and RaspberryBase Notes: Musk, Orange and Amber",
+   "gender": "women",
+   "families": [
+    "citrus",
+    "fruity",
+    "floral"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Musk",
+     "Orange",
+     "Amber"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "summer",
+    "all"
+   ],
+   "occasions": [
+    "gift",
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "ناين إيه إم نسائي",
+    "طقم هدايا نسائي",
+    "عطور نسائية",
+    "هدايا",
+    "أفنان"
+   ]
+  },
+  "IMP-1180": {
+   "sourceHash": "13adpqz",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "طقم هدايا ناين بي إم بور فام",
+   "nameEn": "GIFT SET 9 PM POUR FEMME",
+   "descriptionAr": "طقم هدايا نسائي فاخر يضم عطر ناين بي إم مع مستحضرات العناية المرطبة والمعطرة. مثالي لإطلالة مسائية ساحرة ومليئة بالجاذبية.",
+   "descriptionEn": "GIFT SET 9 PM POUR FEMME 9 PM POUR FEMME 100ML EDP BODY MIST 150ML BODY LOTION 100ML GEL DOUCHE 100ML PERFUME NOTES Top Notes: Raspberry, Apple, Violet and OrangeMiddle Notes: Rose, Peony, Iris and JasmineBase Notes: Cedar, Cypress, Pine Tree and Amber",
+   "gender": "women",
+   "families": [
+    "fruity",
+    "floral",
+    "amber"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Cedar",
+     "Cypress",
+     "Pine Tree",
+     "Amber"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "gift",
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "ناين بي إم نسائي",
+    "طقم هدايا",
+    "عطور مسائية",
+    "هدايا نسائية",
+    "أفنان"
+   ]
+  },
+  "IMP-1181": {
+   "sourceHash": "ezevg3",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "ناين إيه إم",
+   "nameEn": "9 AM",
+   "descriptionAr": "عطر مختلط يتميز بأناقة الحمضيات الساطعة والزهور الرقيقة مع قاعدة دافئة ومستدامة. الخيار الأمثل للاستخدام اليومي ليمنحك حيوية ورقيّاً دائمين.",
+   "descriptionEn": "Discover the elegance of Afnan 9 AM, a sophisticated unisex perfume that awakens the senses with bright citrus notes, delicate florals, and a warm, lingering base. Perfect for daily wear, this refined fragrance brings vibrancy and class to any day. Ideal for men and women seeking a timeless scent.",
+   "gender": "unisex",
+   "families": [
+    "citrus",
+    "floral",
+    "fresh"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "spring",
+    "summer",
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "work",
+    "gift"
+   ],
+   "tags": [
+    "ناين إيه إم",
+    "عطر للجنسين",
+    "عطر يومي",
+    "عطور منعشة",
+    "أفنان"
+   ]
+  },
+  "IMP-1182": {
+   "sourceHash": "k2bre2",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "ناين إيه إم دايڤ",
+   "nameEn": "9 AM Dive",
+   "descriptionAr": "عطر مختلط منعش مستوحى من طاقة الصباح المفعمة بالحيوية والانتعاش المائي. مثالي للأوقات اليومية وللباحثين عن حضور ديناميكي ومفعم بالحياة.",
+   "descriptionEn": "Immerse yourself in 9 AM Dive by Afnan, a refreshing unisex fragrance inspired by mornins crisp energy. Opening with vibrant citrus and evolving into cool aquatic and ozonic notes, this scent brings the essence of a revitalizing plunge into crystal-clear waters. Ideal for daily wear, it’s the perfec",
+   "gender": "unisex",
+   "families": [
+    "aquatic",
+    "fresh",
+    "citrus"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "summer",
+    "spring",
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "work",
+    "special"
+   ],
+   "tags": [
+    "ناين إيه إم دايڤ",
+    "عطر منعش",
+    "عطر مائي",
+    "عطور للجنسين",
+    "أفنان"
+   ]
+  },
+  "IMP-1183": {
+   "sourceHash": "6rjui9",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "ناين بي إم",
+   "nameEn": "9 PM",
+   "descriptionAr": "عطر رجالي جريء وأنيق يجمع بين البرغموت والكمثرى مع لمسات دافئة من النعناع والقرفة. الخيار المثالي للأمسيات والمناسبات الخاصة ليترك انطباعاً لا ينسى.",
+   "descriptionEn": "Make a statement with 9 PM by Afnan, a bold and refined men’s fragrance blending fresh bergamot and pear with warm notes of mint, lavender, and cinnamon. Perfect for the modern man, this scent combines masculinity and sensuality for a lasting impression, ideal for evening wear and special occasions.",
+   "gender": "men",
+   "families": [
+    "amber",
+    "spicy",
+    "oriental"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special",
+    "daily"
+   ],
+   "tags": [
+    "ناين بي إم",
+    "عطر رجالي مسائي",
+    "عطور شرقية",
+    "مناسبات",
+    "أفنان"
+   ]
+  },
+  "AFN-1184": {
+   "sourceHash": "xpmwdu",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "أبييض صندل",
+   "nameEn": "ABIYAD SANDAL",
+   "descriptionAr": "عطر شرقي ساحر يبرز جوهر خشب الصندل الفاخر مع لمسات بلسمية وعنبرية دافئة. خيار كلاسيكي أنيق يناسب جميع الأوقات والمناسبات.",
+   "descriptionEn": "Sandal Abiyad by Afnan is a captivating oriental fragrance that beautifully highlights the essence of sandalwood. Top notes of sandalwood and balsamic give a vibrant introduction, while middle notes of amber and aromatic nuances enrich the experience. The fragrance concludes with a powdery sandalwoo",
+   "gender": "unisex",
+   "families": [
+    "woody",
+    "oriental",
+    "powdery"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Sandalwood",
+     "Powder"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn",
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "أبييض صندل",
+    "عطر صندل",
+    "عطور شرقية",
+    "عطر خشبي",
+    "أفنان"
+   ]
+  },
+  "AFN-1185": {
+   "sourceHash": "fxlc7u",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "أبييض مخلط",
+   "nameEn": "ABIYAD MUKHALLAT",
+   "descriptionAr": "عطر يجسد الفخامة والجاذبية بافتتاحية غنية من الزعفران والأخشاب والعنبر. يستقر على قاعدة دافئة من العود الحلو والمسك لترك بصمة عطرية تدوم.",
+   "descriptionEn": "Abiyad Mukhallat, a unisex fragrance that embodies opulence and allure. Opening with saffron, wood, and amber, it exudes warmth and sophistication.",
+   "gender": "unisex",
+   "families": [
+    "oud",
+    "oriental"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Sweet",
+     "Oud"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "أبييض مخلط",
+    "عطر عود",
+    "مخلط شرقي"
+   ]
+  },
+  "AFN-1186": {
+   "sourceHash": "ssvx8i",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "أبييض مسك",
+   "nameEn": "ABIYAD MUSK",
+   "descriptionAr": "عطر ينبض بالبساطة والجاذبية مع خلاصة نقية من المسك الأبيض الفاخر. يمنح الحواس دفئاً ناعماً يناسب كل الأوقات بلمساته الرقيقة.",
+   "descriptionEn": "Musk Abiyad is a captivating ode to simplicity and sensuality. Unveiling a pristine and pure essence, this unisex perfume oil encapsulates the allure of white musk.",
+   "gender": "unisex",
+   "families": [
+    "musk",
+    "floral"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Musk",
+     "Sandalwood"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "أبييض مسك",
+    "مسك أبيض",
+    "عطر هادئ"
+   ]
+  },
+  "AFN-1187": {
+   "sourceHash": "1gwtoiy",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "دهن العود أبييض",
+   "nameEn": "DEHN AL OUDH ABIYAD",
+   "descriptionAr": "مزيج عطري فريد يجمع بين نفحات البرغموت والقرفة ولمسات المسك والعرعر. يقدم تجربة عطرية متوازنة تناسب مختلف الأذواق والمناسبات.",
+   "descriptionEn": "Unisex CPO 20 ML with notes of bergamot, cinnamon, cedarwood, vanilla, juniper, and sweet nuances.",
+   "gender": "unisex",
+   "families": [
+    "oud",
+    "oriental"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Juniper",
+     "Sweet"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "دهن العود",
+    "عطر شرقي",
+    "أبييض"
+   ]
+  },
+  "AFN-1188": {
+   "sourceHash": "1k8er40",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "أضواء الشرق",
+   "nameEn": "ADWAA AL SHARQ",
+   "descriptionAr": "عطر يجمع بين نفحات الزعفران والياسمين والكراميل بأسلوب ساحر ومميز. يترك قاعدة غنية بخشب الأرز والمسك لتجربة شرقية لا تُنسى.",
+   "descriptionEn": "Unisex oil featuring a blend of saffron, jasmine, caramel, amberwood, and fir resin.",
+   "gender": "unisex",
+   "families": [
+    "oriental",
+    "amber"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Fir Resin",
+     "Cedar",
+     "Musk"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "أضواء الشرق",
+    "عطر شرقي",
+    "مسك وكراميل"
+   ]
+  },
+  "AFN-1189": {
+   "sourceHash": "19t3nvb",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "ورد العشاق",
+   "nameEn": "WARD AL USSHAQ",
+   "descriptionAr": "مزيج عطري يمزج بين الفواكه الحلوة وقلب من العنبر والياسمين الراقي. ينتهي بقاعدة ناعمة من المسك والزهور لإحساس دافئ ومشرق.",
+   "descriptionEn": "Unisex fragrance featuring fruity and sweet top notes with amber, jasmine, musk, and floral base.",
+   "gender": "unisex",
+   "families": [
+    "floral",
+    "fruity"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Musk",
+     "Floral"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "daily",
+    "gift"
+   ],
+   "tags": [
+    "ورد العشاق",
+    "عطر فواكه",
+    "مسك وزهور"
+   ]
+  },
+  "AFN-1190": {
+   "sourceHash": "aqfsig",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "زبرجد",
+   "nameEn": "ZABARJAD",
+   "descriptionAr": "عطر منعش وحلو يفتتح بنفحات عنبرية مميزة تتطور إلى قلب خشبي بنكهة الخوخ. يستقر على قاعدة دافئة من العسل وخشب الأرز.",
+   "descriptionEn": "Unisex fragrance featuring fresh, sweet, and amber notes with peach, honey, and cedarwood.",
+   "gender": "unisex",
+   "families": [
+    "amber",
+    "woody"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Honey",
+     "Powder",
+     "Cedarwood"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "زبرجد",
+    "عطر خشبي",
+    "عسل وعنبر"
+   ]
+  },
+  "AFN-1191": {
+   "sourceHash": "1s01s53",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "تسنيم",
+   "nameEn": "TASNEEM",
+   "descriptionAr": "عطر يجمع بين زهر الخوخ والمسك في افتتاحية ناعمة ومنعشة. يتطور لقلب حلو وعنبري ينتهي بقاعدة دافئة من الفانيليا والمسك.",
+   "descriptionEn": "Unisex fragrance with peach blossom, musk, amber, and vanilla notes.",
+   "gender": "unisex",
+   "families": [
+    "floral",
+    "musk"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": [
+     "Musky",
+     "Vanilla"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "daily",
+    "gift"
+   ],
+   "tags": [
+    "تسنيم",
+    "عطر مسك",
+    "فانيليا وزهر الخوخ"
+   ]
+  },
+  "IMP-1192": {
+   "sourceHash": "130co4t",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "كيانا أنجل",
+   "nameEn": "Kiaana Angel",
+   "descriptionAr": "عطر سماوي ساحر يفتتح بنفحات الحمضيات الحلوة وباقة من الياسمين والتوت والخوخ والكمثرى. يستقر على قاعدة مريحة من خشب الأرز وخشب الصندل وحبوب التونكا.",
+   "descriptionEn": "Experience the celestial allure of Afnan Kiaana Angel EDP with sweet citrus, jasmine, raspberry, peach, pear, cedarwood, sandalwood, and tonka bean.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "fruity"
+   ],
+   "notes": {
+    "top": [
+     "Jasmine",
+     "Raspberry",
+     "Peach",
+     "Pear"
+    ],
+    "heart": [],
+    "base": [
+     "Cedarwood",
+     "Sandalwood",
+     "Tonka Bean"
+    ]
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "daily",
+    "evening"
+   ],
+   "tags": [
+    "كيانا أنجل",
+    "عطر نسائي",
+    "ياسمين وتوت"
+   ]
+  },
+  "IMP-1193": {
+   "sourceHash": "18pgobx",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "كيانا كراش",
+   "nameEn": "Kiaana Crush",
+   "descriptionAr": "عطر آسر يفتتح بنفحات الزعفران الغامضة ليكشف عن قلب غني بفاكهة العاطفة والباتشولي والعود. ينتهي بقاعدة دافئة من فانيليا مدغشقر والمسك والبخور.",
+   "descriptionEn": "Delve into passion with Afnan Kiaana Crush featuring saffron, passionfruit, patchouli, agarwood, vanilla, ambroxan, musk, cedarwood, and incense.",
+   "gender": "women",
+   "families": [
+    "oriental",
+    "oud"
+   ],
+   "notes": {
+    "top": [
+     "Saffron"
+    ],
+    "heart": [
+     "Patchouli",
+     "Agarwood"
+    ],
+    "base": [
+     "Vanilla",
+     "Ambroxan",
+     "Musk",
+     "Cedarwood",
+     "Incense"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "كيانا كراش",
+    "عطر زعفران",
+    "عود وباتشولي"
+   ]
+  },
+  "IMP-1194": {
+   "sourceHash": "e9jdn4",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "ناين بي إم ريبل",
+   "nameEn": "9 PM Rebel",
+   "descriptionAr": "عطر يعبر عن الأناقة العصرية بلمسات فاكهية وخشبية وعنبرية مميزة. يقدم تجربة عطرية جريئة وشبابية تناسب جميع الأوقات والمناسبات.",
+   "descriptionEn": "Explore the refined elegance of 9 PM Rebel by Afnan, a captivating unisex fragrance with premium fruity, woody, and ambary notes.",
+   "gender": "unisex",
+   "families": [
+    "woody",
+    "amber"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "evening"
+   ],
+   "tags": [
+    "ناين بي إم",
+    "ريبل",
+    "عطر عصري"
+   ]
+  },
+  "IMP-1195": {
+   "sourceHash": "1ui9i03",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "ديلشس بوكيه",
+   "nameEn": "Delicious Bouquet",
+   "descriptionAr": "مزيج دافئ وحلو يجمع بين الكراميل والفانيليا والعسل مع لمسات زهرية ناعمة. يستقر على قاعدة مريحة من المسك لتجربة غنية ومميزة.",
+   "descriptionEn": "Indulge in the warm sweetness of Delicious Bouquet with caramel, vanilla, honey, floral accents, and a cozy musk base.",
+   "gender": "women",
+   "families": [
+    "gourmand",
+    "floral"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "daily",
+    "gift"
+   ],
+   "tags": [
+    "ديلشس بوكيه",
+    "عطر كراميل",
+    "فانيليا وعسل"
+   ]
+  },
+  "IMP-1196": {
+   "sourceHash": "19utqw4",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "توراثي إلكتريك",
+   "nameEn": "Turathi Electric",
+   "descriptionAr": "عطر حيوي ينبض بانتعاش الصيف بافتتاحية من البرغموت واللافندر والجريب فروت الوردي. يكتمل بقاعدة دافئة من الفانيليا والعنبر لتوازن مثالي بين الانتعاش والجاذبية.",
+   "descriptionEn": "Experience Turathi Electric by Afnan with top notes of bergamot, lavender, and pink grapefruit, and a warm base of vanilla and amber.",
+   "gender": "unisex",
+   "families": [
+    "fresh",
+    "citrus"
+   ],
+   "notes": {
+    "top": [
+     "Bergamot",
+     "Lavender",
+     "Pink Grapefruit"
+    ],
+    "heart": [],
+    "base": [
+     "Vanilla",
+     "Amber"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "spring"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "توراثي إلكتريك",
+    "عطر منعش",
+    "برغموت ولافندر"
+   ]
+  },
+  "IMP-1197": {
+   "sourceHash": "1gxonsf",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "ريير ريف",
+   "nameEn": "Rare Reef",
+   "descriptionAr": "عطر منعش ونقي يعكس هدوء المحيط بافتتاحية نابضة بالحياة من الكشمش الأسود والبرتقال والنعناع. يتطور لقلب زهري عشبي وينتهي بقاعدة دافئة من التين والتمور والعنبر.",
+   "descriptionEn": "Discover Rare Reef with black currant, orange, citron, mint, coriander, grapefruit, apricot, basil, rose, violet leaf, fig, dates, and ambrette.",
+   "gender": "unisex",
+   "families": [
+    "fresh",
+    "aquatic"
+   ],
+   "notes": {
+    "top": [
+     "Black Currant",
+     "Orange",
+     "Citron",
+     "Mint",
+     "Coriander",
+     "Grapefruit"
+    ],
+    "heart": [
+     "Apricot",
+     "Basil",
+     "Rose",
+     "Violet Leaf"
+    ],
+    "base": [
+     "Fig",
+     "Dates",
+     "Ambrette"
+    ]
+   },
+   "seasons": [
+    "summer",
+    "spring"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "ريير ريف",
+    "عطر بحري",
+    "انتعاش النعناع"
+   ]
+  },
+  "IMP-1198": {
+   "sourceHash": "7lpydb",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "ناين بي إم إكسير",
+   "nameEn": "9 PM Elixir",
+   "descriptionAr": "مزيج جريء يجمع بين التوابل والجلود والفانيليا لتجربة عطرية عميقة وآسرة. الخيار المثالي للأمسيات الواثقة التي لا تُنسى.",
+   "descriptionEn": "Experience 9PM Elixir by Afnan Perfumes – a bold blend of spice, leather & vanilla. Deep, sensual, and captivating.",
+   "gender": "men",
+   "families": [
+    "leather",
+    "spicy"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "ناين بي إم إكسير",
+    "عطر جلود",
+    "فانيليا وتوابل"
+   ]
+  },
+  "IMP-1199": {
+   "sourceHash": "2p4hzo",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "هيستوريك صحارى",
+   "nameEn": "Historic Sahara",
+   "descriptionAr": "عطر يجسد جاذبية الكثبان الذهبية والرحلات العريقة بنفحات دافئة ومميزة. يقدم تجربة عطرية غنية تتكشف تدريجياً لتترك انطباعاً ساحراً لا يُنسى.",
+   "descriptionEn": "Experience Historic Sahara by Afnan Perfumes—a fragrance that captures the timeless allure of golden dunes and ancient journeys. With top notes of bergamot, cinnamon, and cardamom, a heart of elemi, vanilla, and sugar, and a base of musk, almond, tonka, wood, praline, and ambroxan, this scent unfold",
+   "gender": "unisex",
+   "families": [
+    "oriental",
+    "amber",
+    "spicy"
+   ],
+   "notes": {
+    "top": [
+     "Bergamot",
+     "Cinnamon",
+     "Cardamom"
+    ],
+    "heart": [
+     "Elemi",
+     "Vanilla",
+     "Sugar"
+    ],
+    "base": [
+     "Musk",
+     "Almond",
+     "Tonka",
+     "Praline",
+     "Ambroxan"
+    ]
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "هيستوريك صحارى",
+    "عطر شرقي",
+    "عطور أفنان",
+    "توابل دافئة",
+    "Historic Sahara"
+   ]
+  },
+  "IMP-1200": {
+   "sourceHash": "rz68pk",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "جيفت ستيت كوليكتورز إيديشن",
+   "nameEn": "GIFT SET COLLECTOR'S EDITION",
+   "descriptionAr": "مجموعة عطرية جريئة ومنعشة غنية بنفحات العنبر لتناسب الأذواق الرفيعة والواثقة. تجمع بين العطر ومنتجات العناية الشخصية لتجربة متكاملة.",
+   "descriptionEn": "Supremacy Collector’s Edition: 100ml EDP, 150ml deodorant & shower gel. A bold, fresh, amber-rich scent for refined, confident men & women.",
+   "gender": "unisex",
+   "families": [
+    "amber",
+    "fresh"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "gift",
+    "daily"
+   ],
+   "tags": [
+    "مجموعة هدايا",
+    "عنبري منعش",
+    "كوليكتورز إيديشن",
+    "Gift Set",
+    "Supremacy"
+   ]
+  },
+  "IMP-1201": {
+   "sourceHash": "144xl73",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "لينكد فريدوم",
+   "nameEn": "Lynked Freedom",
+   "descriptionAr": "عطر عصري يمزج بين الطاقة المنعشة والعمق الدافئ ليمنحك حضوراً جريئاً وثابتاً. يناسب الشخصية الواثقة التي تبحث عن التميز.",
+   "descriptionEn": "Lynked Freedom by Afnan Perfumes blends fresh energy with warm depth - modern, masculine, and refined for a timeless yet daring signature",
+   "gender": "men",
+   "families": [
+    "fresh",
+    "woody"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "لينكد فريدوم",
+    "عطر رجالي",
+    "عطور منعشة",
+    "Lynked Freedom",
+    "أفنان"
+   ]
+  },
+  "IMP-1202": {
+   "sourceHash": "12a3w9s",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "لينكد فوريفر",
+   "nameEn": "Lynked Forever",
+   "descriptionAr": "عطر ساحر ومشرق يجمع بين الأزهار المتألقة والأخشاب الكريمية بأسلوب عصري وحسي. يمنحك بصمة عطرية تدوم بتميز وأناقة.",
+   "descriptionEn": "Lynked Forever by Afnan Perfumes is a luminous, captivating scent that blends radiant florals with creamy woods - modern, sensual, and timeless.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "woody"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "لينكد فوريفر",
+    "عطر نسائي",
+    "أزهار وأخشاب",
+    "Lynked Forever",
+    "عطور نسائية"
+   ]
+  },
+  "IMP-1203": {
+   "sourceHash": "js32hj",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "نايت أوت 9 بي إم",
+   "nameEn": "9 PM Night Out",
+   "descriptionAr": "عطر جريء بنفحات منعشة ودفء عصري صُم خصيصاً ليمنحك حضوراً لا يُنسى في السهرات. يترك انطباعاً عميقاً وجذاباً طوال الليل.",
+   "descriptionEn": "9PM Night Out by Afnan Perfumes is a bold unisex fragrance with vibrant freshness, modern warmth, and a deep, long-lasting signature made for unforgettable nights.",
+   "gender": "unisex",
+   "families": [
+    "fresh",
+    "amber",
+    "spicy"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "9 بي إم",
+    "نايت أوت",
+    "عطر سهرات",
+    "9PM Night Out",
+    "عطور للجنسين"
+   ]
+  },
+  "IMP-1204": {
+   "sourceHash": "1nqjatq",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "كيانا فايبس",
+   "nameEn": "Kiaana Vibes",
+   "descriptionAr": "عطر نسائي أنيق يجمع بين توليفة مميزة من الأزهار والفواكه المنعشة. خيار رائع لإطلالة حيوية ومفعمة بالأنوثة.",
+   "descriptionEn": "Shop Kiaana Vibes EDP by Afnan. Elegant women perfumes in UAE — floral fruity long lasting arabic EDP. Buy ladies perfumes online in UAE now.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "fruity"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "daily",
+    "work"
+   ],
+   "tags": [
+    "كيانا فايبس",
+    "عطر نسائي",
+    "أزهار وفواكه",
+    "Kiaana Vibes",
+    "عطور عربية"
+   ]
+  },
+  "IMP-1205": {
+   "sourceHash": "1caubbs",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "إبداع زيت عطري مركز",
+   "nameEn": "Ebdaa Concentrated Perfume Oil",
+   "descriptionAr": "زيت عطري مركز وابتكار شرقي يمنحك تجربة عطرية غنية وفواحة. مصمم بعناية ليقدم لك عبقاً عربياً أصيلاً.",
+   "descriptionEn": "Shop Ebdaa perfume oil by Afnan Perfumes. A creative Arabic perfume oil in UAE — long lasting. Buy perfume oil online in UAE from Afnan now.",
+   "gender": "unisex",
+   "families": [
+    "oriental",
+    "amber"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "special",
+    "daily"
+   ],
+   "tags": [
+    "زيت عطري إبداع",
+    "مسك وعطور عربية",
+    "دهن عطر",
+    "Ebdaa Oil",
+    "أفنان"
+   ]
+  },
+  "IMP-1206": {
+   "sourceHash": "1qi8qr7",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "ملاك",
+   "nameEn": "Malak",
+   "descriptionAr": "زيت عطري نسائي بلمسات ساحرة ونقية تلامس الحواس بأناقة بالغة. يمنحك حضوراً هادئاً وراقياً بعبير شرقي مميز.",
+   "descriptionEn": "Shop Malak by Afnan. Best perfume oil for women in UAE — angelic long lasting arabic perfume oil. Buy women perfume oil online in UAE.",
+   "gender": "women",
+   "families": [
+    "oriental",
+    "floral"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "evening"
+   ],
+   "tags": [
+    "عطر ملاك",
+    "زيت عطري نسائي",
+    "Malak",
+    "عطور عربية",
+    "أفنان"
+   ]
+  },
+  "IMP-1207": {
+   "sourceHash": "115ond5",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "مجموعة تجريبية سيريس 9",
+   "nameEn": "9 Series Discovery Kit",
+   "descriptionAr": "مجموعة عينات استكشافية تضم أشهر عطور مجموعتي 9 اي ام و9 بي ام الشهيرة. فرصة مثالية لتجربة الروائح العصرية المميزة.",
+   "descriptionEn": "Try Afnan's 9 Series discovery kit in UAE. Sample the best arabic perfumes in UAE — 9AM and 9PM range. Buy perfume online now.",
+   "gender": "unisex",
+   "families": [
+    "fresh",
+    "oriental"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "gift",
+    "daily"
+   ],
+   "tags": [
+    "مجموعة عينات",
+    "سيريس 9",
+    "9 Series",
+    "عطور أفنان",
+    "Discovery Kit"
+   ]
+  },
+  "IMP-1208": {
+   "sourceHash": "1b72pvp",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "مجموعة عينات سوبريمسي فيم",
+   "nameEn": "Supremacy Femme Series Discovery Kit",
+   "descriptionAr": "اكتشفي فخامة العطور النسائية الفاخرة من مجموعة سوبريمسي العريقة عبر هذه العينات المختارة. خيار مثالي للاستكشاف واختيار عطرك المفضل.",
+   "descriptionEn": "Try the Supremacy Femme discovery kit by Afnan in UAE. Best perfumes for women — sample luxury arabic EDPs. Buy perfume online in UAE.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "amber"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "gift",
+    "special"
+   ],
+   "tags": [
+    "سوبريمسي فيم",
+    "عينات عطور نسائية",
+    "Supremacy Femme",
+    "مجموعة تجريبية",
+    "عطور فاخرة"
+   ]
+  },
+  "IMP-1209": {
+   "sourceHash": "1hgva14",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "مجموعة عينات باقيت سيريس",
+   "nameEn": "Bouquet Series Discovery Kit",
+   "descriptionAr": "مجموعة استكشافية تضم باقة من أفضل العطور الزهرية النسائية الرائجة. استمتعي بتجربة روائح الأزهار الساحرة والمنعشة.",
+   "descriptionEn": "Try Afnan's Bouquet Series discovery kit in UAE. Sample the best floral arabic perfumes — popular perfumes for women. Buy online now.",
+   "gender": "women",
+   "families": [
+    "floral",
+    "fruity"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "occasions": [
+    "gift",
+    "daily"
+   ],
+   "tags": [
+    "باقيت سيريس",
+    "عينات أزهار",
+    "Bouquet Series",
+    "عطور نسائية",
+    "مجموعة تجريبية"
+   ]
+  },
+  "IMP-1210": {
+   "sourceHash": "1rgbcs5",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "مجموعة عينات سوبريمسي هوم",
+   "nameEn": "Supremacy Homme Series Discovery Kit",
+   "descriptionAr": "اكتشف مجموعة عطور سوبريمسي الرجالية الفاخرة عبر هذه العينات المصممة للرجل العصري. تجربة فريدة للتعرف على أرقى العطور الرجالية.",
+   "descriptionEn": "Try the Supremacy Homme discovery kit by Afnan in UAE. Best perfumes for men — sample luxury arabic EDPs in Dubai. Buy perfume online in UAE now.",
+   "gender": "men",
+   "families": [
+    "woody",
+    "oriental"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "gift",
+    "special"
+   ],
+   "tags": [
+    "سوبريمسي هوم",
+    "عينات رجالية",
+    "Supremacy Homme",
+    "عطور فاخرة",
+    "مجموعة تجريبية"
+   ]
+  },
+  "IMP-1211": {
+   "sourceHash": "ump39q",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "مجموعة عينات العطور الرجالية",
+   "nameEn": "Mens Series Discovery Kit",
+   "descriptionAr": "مجموعة مختارة بعناية لأبرز العطور الرجالية الثابتة والفاخرة من أفنان. استكشف مجموعة متنوعة من الأيقونات العطرية للرجال.",
+   "descriptionEn": "Try Afnan's men's series discovery kit in UAE. Best perfumes for men — top 10 long lasting perfumes for men sampled. Buy online in UAE.",
+   "gender": "men",
+   "families": [
+    "fresh",
+    "woody"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "all"
+   ],
+   "occasions": [
+    "gift",
+    "work"
+   ],
+   "tags": [
+    "عينات رجالية",
+    "مجموعة العطور الرجالية",
+    "Mens Discovery Kit",
+    "عطور أفنان",
+    "هدايا رجالية"
+   ]
+  },
+  "IMP-1212": {
+   "sourceHash": "a7kkqt",
+   "editor": "shaheen",
+   "updatedAt": "2026-10-18T14:28:45.891Z",
+   "nameAr": "ستاردست",
+   "nameEn": "Stardust",
+   "descriptionAr": "عطر فاخر بتركيز إكستريت يجمع بين الحمضيات المتألقة، الكراميل، والقرفة الدافئة. يرتكز على قاعدة غنية بالأخشاب والعنبر لجاذبية مطلقة.",
+   "descriptionEn": "Shop Stardust Extrait de Parfum by Afnan. A luxurious arabic fragrance in UAE with sparkling citrus, caramel, cinnamon and rich woody amber. Buy perfume online UAE.",
+   "gender": "unisex",
+   "families": [
+    "oriental",
+    "gourmand",
+    "amber"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "winter",
+    "autumn"
+   ],
+   "occasions": [
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "ستاردست",
+    "عطر إكستريت",
+    "كاراميل وقرفة",
+    "Stardust",
+    "عطور فاخرة"
+   ]
   }
  },
  "audit": {
-  "checked": 1063,
+  "checked": 1161,
   "issues": [
    {
     "sku": "LAT-145",
@@ -48263,6 +51950,492 @@
     "sku": "RAV-1106",
     "issues": [
      "الوصف عام ولا يصف الرائحة"
+    ]
+   },
+   {
+    "sku": "IMP-1115",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1116",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1117",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1118",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1119",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1120",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1121",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1122",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1123",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1124",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1125",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1126",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1127",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1128",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1129",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1130",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1131",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1132",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1133",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1139",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1140",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1141",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1142",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1144",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1148",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1149",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1150",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1151",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1152",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1153",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1154",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1155",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1156",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1157",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1158",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1159",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1160",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1161",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1162",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1163",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1164",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1165",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1166",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1167",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1168",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1169",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1170",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1171",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1172",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1173",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1174",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1175",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1176",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1177",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1178",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1179",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1180",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1181",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1182",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1183",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1192",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1193",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1194",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1195",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1196",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1197",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1198",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1199",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1200",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1201",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1202",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1203",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1204",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1205",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1206",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1207",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1208",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1209",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1210",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1211",
+    "issues": [
+     "العلامة التجارية غير معروفة"
+    ]
+   },
+   {
+    "sku": "IMP-1212",
+    "issues": [
+     "العلامة التجارية غير معروفة"
     ]
    }
   ]
