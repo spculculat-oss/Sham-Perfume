@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-17T22:54:30.378Z",
+ "updatedAt": "2026-10-18T01:11:53.520Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1114,
@@ -12,7 +12,7 @@
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-17T22:53:27.118Z",
+  "at": "2026-10-18T01:10:50.745Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -21,12 +21,12 @@
    {
     "id": "shamperfume",
     "currency": "MYR",
-    "rate": 13.0865,
+    "rate": 13.0813,
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1020,
-    "listingOnly": 57,
+    "listingProducts": 1023,
+    "listingOnly": 58,
     "listingComplete": true,
     "added": 0,
     "refreshed": 25,
@@ -34,10 +34,10 @@
     "failedCount": 0,
     "viaShaheen": 0,
     "deferred": 0,
-    "gone": 7
+    "gone": 6
    }
   ],
-  "rate": 13.0865,
+  "rate": 13.0813,
   "prices": {
    "count": 1063,
    "min": 750,
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 63288
+  "durationMs": 62807
  },
  "items": [
   {
@@ -2978,6 +2978,16 @@
    "page": "p/opera-noir-by-maison-alhambra-100ml-edp-464.html"
   },
   {
+   "sku": "VOL-466",
+   "id": 466,
+   "name": "Savour Blast Extreme by Volare 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/savour-blast-extreme-by-volare-100ml-edp-men-466.html"
+  },
+  {
    "sku": "ALW-471",
    "id": 471,
    "name": "Special Oud by Al Wataniah – 100 ml Eau de Parfum",
@@ -3141,16 +3151,6 @@
    "page": "p/strawberry-by-grandeur-tubbees-50ml-woman-518.html"
   },
   {
-   "sku": "MAI-520",
-   "id": 520,
-   "name": "B.A.D. Homme by Maison Alhambra 100 ml for Men",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/b-a-d-homme-by-maison-alhambra-100-ml-for-men-520.html"
-  },
-  {
    "sku": "MAI-526",
    "id": 526,
    "name": "Musk Vanille by Maison Alhambra 100ml EDP",
@@ -3189,16 +3189,6 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/rare-passion-by-afnan-100ml-edp-woman-532.html"
-  },
-  {
-   "sku": "MAI-534",
-   "id": 534,
-   "name": "Smoky Touch by Maison Alhambra 80ml EDP",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/smoky-touch-by-maison-alhambra-80ml-edp-534.html"
   },
   {
    "sku": "MAI-543",
@@ -3273,6 +3263,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/snow-white-200ml-for-man-silver-mountain-566.html"
+  },
+  {
+   "sku": "ZIM-569",
+   "id": 569,
+   "name": "Happy Oud by Zimaya 100ml Extrait Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/happy-oud-by-zimaya-100ml-extrait-unisex-569.html"
   },
   {
    "sku": "AFN-571",
