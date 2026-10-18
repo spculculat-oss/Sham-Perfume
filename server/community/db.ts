@@ -85,7 +85,7 @@ export async function connectPglite(dataDir?: string): Promise<Sql> {
   return wrap(db);
 }
 
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;
 
 export const SCHEMA: string[] = [
   `CREATE TABLE IF NOT EXISTS community_meta (key text PRIMARY KEY, value text NOT NULL)`,
@@ -144,6 +144,30 @@ export const SCHEMA: string[] = [
     agent text NOT NULL DEFAULT '',
     ip text NOT NULL DEFAULT '',
     expires_at timestamptz NOT NULL
+  )`,
+  /* v3 — passkeys (WebAuthn): credentials the device itself signs with (fingerprint / face / device
+     PIN — the way Google and Meta are moving their accounts), and the short-lived challenges they
+     answer. The private key never leaves the device; the server keeps only the public key. */
+  `CREATE TABLE IF NOT EXISTS passkeys (
+    id text PRIMARY KEY,
+    user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    cred_id text NOT NULL,
+    name text NOT NULL DEFAULT '',
+    pub_key text NOT NULL,
+    alg int NOT NULL DEFAULT -7,
+    sign_count bigint NOT NULL DEFAULT 0,
+    uv boolean NOT NULL DEFAULT false,
+    created_at timestamptz NOT NULL DEFAULT now(),
+    last_used_at timestamptz,
+    UNIQUE (user_id, cred_id)
+  )`,
+  `CREATE TABLE IF NOT EXISTS webauthn_challenges (
+    id text PRIMARY KEY,
+    user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    purpose text NOT NULL,
+    challenge text NOT NULL,
+    expires_at timestamptz NOT NULL,
+    used_at timestamptz
   )`,
   `CREATE TABLE IF NOT EXISTS merchants (
     user_id text PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,

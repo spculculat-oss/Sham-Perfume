@@ -12,9 +12,12 @@ import {
   EyeOff,
   Beaker,
   Award,
+  Fingerprint,
 } from 'lucide-react';
 import { UserProfile } from '../types/auth';
-import { completeTwoFactorLogin, confirmPasswordReset, loginUser, registerUser, requestPasswordReset } from '../utils/authStorage';
+import { completeTwoFactorLogin, confirmPasswordReset, loginUser, profileFromMember, registerUser, requestPasswordReset } from '../utils/authStorage';
+import { CommunityApiError, cx, type AuthResult, type PasskeyGetOptions } from '../community/api';
+import { usePasskey, webauthnAvailable } from '../community/passkeys';
 import { WORLD_COUNTRIES } from '../data/worldCountries';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
@@ -349,6 +352,8 @@ const S = {
   reset_submit: { ar: 'تغيير كلمة المرور', en: 'Reset password', fr: 'Réinitialiser', es: 'Restablecer', it: 'Reimposta', de: 'Zurücksetzen', ru: 'Сбросить', zh: '重置密码', tr: 'Parolayı sıfırla', fa: 'بازنشانی رمز عبور' },
   send_code: { ar: 'إرسال الكود', en: 'Send the code', fr: 'Envoyer le code', es: 'Enviar el código', it: 'Invia il codice', de: 'Code senden', ru: 'Отправить код', zh: '发送验证码', tr: 'Kodu gönder', fa: 'ارسال کد' },
   reset_done: { ar: 'اتغيرت كلمة السر. كل الأجهزة اتخارجت — سجّل دخول بالكلمة الجديدة', en: 'Password changed. Every device was signed out — sign in with the new password', fr: 'Mot de passe changé. Tous les appareils sont déconnectés — connectez-vous avec le nouveau mot de passe', es: 'Contraseña cambiada. Todos los dispositivos salieron — inicia sesión con la nueva contraseña', it: 'Password cambiata. Tutti i dispositivi sono usciti — accedi con la nuova password', de: 'Passwort geändert. Alle Geräte wurden abgemeldet — melden Sie sich mit dem neuen Passwort an', ru: 'Пароль изменён. Со всех устройств выполнен выход — войдите с новым паролем', zh: '密码已更改。所有设备已退出，请使用新密码登录', tr: 'Parola değişti. Tüm cihazlardan çıkış yapıldı — yeni parolanızla giriş yapın', fa: 'رمز عبور تغییر کرد. از همه دستگاه‌ها خارج شدید — با رمز جدید وارد شوید' },
+  passkey_btn: { ar: 'دخول بالبصمة أو الوجه', en: 'Sign in with fingerprint or face', fr: 'Se connecter avec l’empreinte ou le visage', es: 'Iniciar con huella o rostro', it: 'Accedi con impronta o volto', de: 'Mit Fingerabdruck oder Gesicht anmelden', ru: 'Вход по отпечатку или лицу', zh: '指纹或人脸登录', tr: 'Parmak izi veya yüzle giriş', fa: 'ورود با اثر انگشت یا صورت' },
+  err_passkey_none: { ar: 'مفيش بصمة مسجلة بالبريد ده — ضيف واحدة من بوابتك', en: 'No passkey is registered for this e-mail — add one from your portal', fr: 'Aucun passkey pour cet e-mail — ajoutez-en un depuis votre portail', es: 'No hay passkey para este correo — añade uno desde tu portal', it: 'Nessun passkey per questa e-mail — aggiungine uno dal tuo portale', de: 'Kein Passkey für diese E-Mail — fügen Sie einen in Ihrem Portal hinzu', ru: 'Для этой e-mail нет passkey — добавьте его в своём портале', zh: '该邮箱没有 passkey，请从您的个人中心添加', tr: 'Bu e-posta için passkey yok — portalınızdan ekleyin', fa: 'برای این ایمیل passkey‌ای نیست — از پورتالتان اضافه کنید' },
 } satisfies Record<string, LText>;
 
 export const AuthModal: React.FC<AuthModalProps> = ({
@@ -454,6 +459,24 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  /* Passkey sign-in: the device proves itself; no password typed at all. */
+  const [passkeyBusy, setPasskeyBusy] = useState(false);
+  const handlePasskeyLogin = async () => {
+    setErrorMsg(null);
+    setPasskeyBusy(true);
+    try {
+      const begin = await cx<PasskeyGetOptions>('/community/auth/passkey/begin', { body: { email } });
+      const res = await usePasskey(begin);
+      const result = await cx<AuthResult>('/community/auth/passkey/finish', { body: { challengeId: begin.id, ...res } });
+      finish(profileFromMember(result.me));
+    } catch (e) {
+      if (e instanceof Error && e.message === 'cancelled') setErrorMsg(null);
+      else setErrorMsg(e instanceof CommunityApiError && e.code === 'NOT_FOUND' ? L('err_passkey_none') : L('err_login'));
+    } finally {
+      setPasskeyBusy(false);
     }
   };
 
@@ -739,6 +762,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   : mode === 'login' ? L('submit_login') : L('submit_register')}
               </span>
             </button>
+
+            {mode === 'login' && stage === 'auth' && webauthnAvailable() && email.includes('@') && (
+              <button
+                type="button"
+                onClick={() => void handlePasskeyLogin()}
+                disabled={passkeyBusy}
+                className="w-full py-2.5 rounded-xl border border-amber-200 bg-amber-50 text-amber-900 font-semibold text-xs transition-colors hover:bg-amber-100 cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
+              >
+                <Fingerprint className="w-3.5 h-3.5 text-amber-700" />
+                <span>{passkeyBusy ? '…' : L('passkey_btn')}</span>
+              </button>
+            )}
 
             {mode === 'login' && stage === 'auth' && (
               <button

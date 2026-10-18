@@ -3,10 +3,11 @@
  * (account type → details → privacy), for members and merchants alike.
  */
 import { useMemo, useState } from 'react';
-import { ArrowLeft, ArrowRight, CheckCircle2, Eye, EyeOff, GraduationCap, Lock, MessageCircle, ShieldCheck, Store, Users } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, Eye, EyeOff, Fingerprint, GraduationCap, Lock, MessageCircle, ShieldCheck, Store, Users } from 'lucide-react';
 import { countryOptions, useStoreMoney } from '../utils/storeCheckout';
-import { PendingLoginError, completePendingLogin, signIn, signUp } from './session';
-import type { PendingLogin } from './api';
+import { PendingLoginError, completePendingLogin, setMe, signIn, signUp } from './session';
+import { CommunityApiError, cx, setSessionToken, type AuthResult, type PasskeyGetOptions, type PendingLogin } from './api';
+import { usePasskey, webauthnAvailable } from './passkeys';
 import { Btn, Field, errorText, inputClass, tx, type Lang } from './ui';
 
 function strength(pw: string) {
@@ -56,6 +57,22 @@ export default function HubAuth({ lang, onDone, initial = 'login' }: { lang: Lan
       const me = await completePendingLogin(pending.pendingToken, tfaCode);
       onDone(Boolean(me.merchant));
     } catch (e) { setError(errorText(e, lang)); } finally { setBusy(false); }
+  };
+  const passkeyLogin = async () => {
+    setBusy(true); setError('');
+    try {
+      const begin = await cx<PasskeyGetOptions>('/community/auth/passkey/begin', { body: { email: form.email.trim() } });
+      const res = await usePasskey(begin);
+      const result = await cx<AuthResult>('/community/auth/passkey/finish', { body: { challengeId: begin.id, ...res } });
+      setSessionToken(result.token);
+      setMe(result.me);
+      onDone(Boolean(result.me.merchant));
+    } catch (e) {
+      if (e instanceof Error && e.message === 'cancelled') setError('');
+      else setError(e instanceof CommunityApiError && e.code === 'NOT_FOUND'
+        ? t('البريد ده مفيش له بصمة — ضيف واحدة من بوابتك', 'No passkey is registered for this e-mail — add one from your portal')
+        : errorText(e, lang));
+    } finally { setBusy(false); }
   };
   const register = async () => {
     setBusy(true); setError('');
@@ -131,6 +148,11 @@ export default function HubAuth({ lang, onDone, initial = 'login' }: { lang: Lan
             </Field>
             {error && <p className="rounded-xl bg-rose-50 p-2.5 text-sm text-rose-700">{error}</p>}
             <Btn type="submit" busy={busy} disabled={!emailOk || !form.password} className="w-full">{t('دخول', 'Sign in')}</Btn>
+            {webauthnAvailable() && emailOk && (
+              <Btn type="button" variant="soft" busy={busy} onClick={() => void passkeyLogin()} className="w-full">
+                <Fingerprint className="h-4 w-4" />{t('دخول بالبصمة أو الوجه', 'Sign in with fingerprint or face')}
+              </Btn>
+            )}
             <p className="text-center text-xs text-stone-500">{t('نسيت كلمة المرور؟ افتح نافذة تسجيل الدخول في الموقع الرئيسي واستخدم «نسيت كلمة المرور؟» — هيوصلك كود على بريدك.', 'Forgot your password? Use the site’s main sign-in window and pick “Forgot your password?” — a code will reach your e-mail.')}</p>
           </form>
         ) : (

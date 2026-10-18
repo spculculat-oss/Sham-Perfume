@@ -537,3 +537,111 @@ test('changing the password signs out the other devices — the current one stay
   assert.equal(await svc.authenticate(ctx, token), undefined, 'the other device is out');
   assert.ok(await svc.authenticate(ctx, again.token), 'the device that changed it stays');
 });
+
+/* ------------------------------------- passkeys (WebAuthn) — study v2 ------------------------------------- */
+import { createHash, createSign, generateKeyPairSync } from 'node:crypto';
+
+const sha256 = (b: Buffer): Buffer => createHash('sha256').update(b).digest();
+
+test('passkeys: register a device credential, sign in with it, reject forgeries and clones', async () => {
+  /* A stand-in authenticator: node:crypto signs with a key the "device" keeps. */
+  const { publicKey, privateKey } = generateKeyPairSync('ec', { namedCurve: 'P-256' });
+  const jwk = publicKey.export({ format: 'jwk' }) as { x: string; y: string };
+  const x = Buffer.from(jwk.x, 'base64url'); const y = Buffer.from(jwk.y, 'base64url');
+  /* minimal CBOR encoder (small ints, byte strings, text, maps) */
+  const b1 = (n: number) => Buffer.from([n]);
+  const cborBytes = (buf: Buffer) => Buffer.concat([b1(0x58), b1(buf.length), buf]);
+  const cborText = (s: string) => { const b = Buffer.from(s, 'utf8'); return Buffer.concat([b1(0x60 + b.length), b]); };
+  const cborInt = (n: number) => (n >= 0 && n < 24 ? b1(n) : n >= 24 && n < 256 ? Buffer.from([0x18, n]) : n < 0 && n > -25 ? Buffer.from([0x20 + (-1 - n)]) : Buffer.from([0x38, -1 - n]));
+  const cborVal = (v: Buffer | string | number) => (Buffer.isBuffer(v) ? cborBytes(v) : typeof v === 'string' ? cborText(v) : cborInt(v));
+  const cborMap = (entries: [string | number, Buffer | string | number][]) =>
+    Buffer.concat([b1(0xa0 + entries.length), ...entries.flatMap(([k, v]) => [cborVal(k), cborVal(v)])]);
+  const coseKey = cborMap([[1, 2], [-1, -7], [3, x], [4, y]]);
+
+  const ORIGIN = 'https://spculculat-oss.github.io';
+  const rpIdHash = sha256(Buffer.from('spculculat-oss.github.io'));
+  const credId = Buffer.alloc(32, 7);
+  const b64u = (b: Buffer) => b.toString('base64url');
+  const clientData = (type: string, challenge: string, origin = ORIGIN) =>
+    b64u(Buffer.from(JSON.stringify({ type, challenge, origin, crossOrigin: false })));
+  const makeAuthData = (flags: number, signCount: number, withCred: boolean) => {
+    const base = Buffer.concat([rpIdHash, b1(flags), Buffer.from(signCount.toString(16).padStart(8, '0'), 'hex')]);
+    return withCred
+      ? Buffer.concat([base, Buffer.alloc(16), b1(credId.length).length ? Buffer.concat([b1(0), b1(credId.length)]) : b1(0), credId, coseKey])
+      : base;
+  };
+  const attestationOf = (challenge: string, signCount: number, origin = ORIGIN) => Buffer.concat([
+    b1(0xa3),
+    cborText('fmt'), cborText('none'),
+    cborText('attStmt'), b1(0xa0),
+    cborText('authData'), cborBytes(makeAuthData(0x0d, signCount, true)),
+  ]);
+  const assertOf = (challenge: string, signCount: number, key = privateKey, origin = ORIGIN) => {
+    const authData = makeAuthData(0x09, signCount, false);
+    const cd = Buffer.from(clientData('webauthn.get', challenge, origin), 'base64url');
+    const sig = createSign('sha256').update(Buffer.concat([authData, sha256(cd)])).sign(key);
+    return { clientDataJSON: b64u(cd), authenticatorData: b64u(authData), signature: b64u(sig) };
+  };
+
+  const address = email('passkey');
+  const reg = await svc.register(ctx, { name: 'Pk', email: address, password: PASSWORD });
+  if ('pending' in reg) throw new Error('unexpected pending login');
+
+  /* a passkey-less account and an unknown e-mail get the same quiet 404 */
+  const nobody = await svc.register(ctx, { name: 'NoPk', email: email('nopk'), password: PASSWORD });
+  await assert.rejects(svc.passkeyLoginBegin(ctx, { email: address }), { code: 'NOT_FOUND' });
+  await assert.rejects(svc.passkeyLoginBegin(ctx, { email: 'ghost@example.com' }), { code: 'NOT_FOUND' });
+  await assert.rejects(svc.passkeyLoginBegin(ctx, { email: email('nopk') && nobody.me.email }), { code: 'NOT_FOUND' }, 'registered but no passkey: the same 404');
+
+  /* register the device credential */
+  const begin = await svc.passkeyRegisterBegin(ctx, reg.me.id, 'موبايلي');
+  const created = { clientDataJSON: clientData('webauthn.create', begin.challenge), attestationObject: b64u(attestationOf(begin.challenge, 0)) };
+  const list = await svc.passkeyRegisterFinish(ctx, reg.me.id, { challengeId: begin.id, name: 'موبايلي', ...created });
+  assert.equal(list.length, 1);
+  assert.equal(list[0].name, 'موبايلي');
+  assert.ok((await sql.query(`SELECT cred_id FROM passkeys WHERE user_id = $1`, [reg.me.id])).length, 'the public key is stored');
+  const [storedKey] = await sql.query(`SELECT pub_key FROM passkeys WHERE user_id = $1`, [reg.me.id]);
+  assert.ok(storedKey.pub_key && !String(storedKey.pub_key).toLowerCase().includes('private'), 'the private key never reaches the DB');
+
+  /* forgeries at registration */
+  await assert.rejects(svc.passkeyRegisterFinish(ctx, reg.me.id, { challengeId: begin.id, ...created }), { code: 'CHALLENGE_INVALID' }, 'a used challenge is dead');
+  const begin2 = await svc.passkeyRegisterBegin(ctx, reg.me.id, 'x');
+  await assert.rejects(svc.passkeyRegisterFinish(ctx, reg.me.id, { challengeId: begin2.id, clientDataJSON: clientData('webauthn.create', begin2.challenge, 'https://evil.example'), attestationObject: b64u(attestationOf(begin2.challenge, 0, 'https://evil.example')) }), { code: 'PASSKEY_INVALID' }, 'a foreign origin is refused');
+  const begin3 = await svc.passkeyRegisterBegin(ctx, reg.me.id, 'x');
+  await assert.rejects(svc.passkeyRegisterFinish(ctx, reg.me.id, { challengeId: begin3.id, clientDataJSON: clientData('webauthn.get', begin3.challenge), attestationObject: b64u(attestationOf(begin3.challenge, 0)) }), { code: 'PASSKEY_INVALID' }, 'a get answer cannot create');
+
+  /* sign in with the passkey */
+  const lb = await svc.passkeyLoginBegin(ctx, { email: address });
+  assert.equal(lb.allowedCredentials[0].id, b64u(credId));
+  const proof = assertOf(lb.challenge, 1);
+  const done = await svc.passkeyLoginFinish(ctx, { challengeId: lb.id, credentialId: b64u(credId), ...proof }, 'passkey-agent', '6.6.6.6');
+  assert.ok(done.token);
+  assert.equal(done.me.id, reg.me.id);
+  assert.ok(await svc.authenticate(ctx, done.token), 'the session is live');
+  const [pkRow] = await sql.query(`SELECT sign_count, last_used_at FROM passkeys WHERE user_id = $1`, [reg.me.id]);
+  assert.equal(Number(pkRow.sign_count), 1);
+  assert.ok(pkRow.last_used_at);
+
+  /* replay, wrong signature, foreign credential */
+  await assert.rejects(svc.passkeyLoginFinish(ctx, { challengeId: lb.id, credentialId: b64u(credId), ...proof }), { code: 'CHALLENGE_INVALID' }, 'the challenge is single-use');
+  const lb2 = await svc.passkeyLoginBegin(ctx, { email: address });
+  const forged = assertOf(lb2.challenge, 2);
+  await assert.rejects(svc.passkeyLoginFinish(ctx, { challengeId: lb2.id, credentialId: b64u(credId), ...forged, signature: Buffer.from(forged.signature, 'base64url').subarray(0, 30).toString('base64url') }), { code: 'PASSKEY_INVALID' }, 'a mangled signature fails');
+  const lb3 = await svc.passkeyLoginBegin(ctx, { email: address });
+  await assert.rejects(svc.passkeyLoginFinish(ctx, { challengeId: lb3.id, credentialId: b64u(Buffer.alloc(32, 9)), ...assertOf(lb3.challenge, 2) }), { code: 'PASSKEY_INVALID' }, 'a credential that was never registered fails');
+
+  /* clone detection: a valid signature on a *backwards* counter */
+  const lb4 = await svc.passkeyLoginBegin(ctx, { email: address });
+  await assert.rejects(svc.passkeyLoginFinish(ctx, { challengeId: lb4.id, credentialId: b64u(credId), ...assertOf(lb4.challenge, 0) }), { code: 'PASSKEY_INVALID' }, 'the counter went backwards');
+  const audit = await sql.query(`SELECT action FROM audit WHERE actor = $1 ORDER BY id`, [reg.me.id]);
+  const actions = audit.map((r) => r.action);
+  for (const a of ['passkey_added', 'login_ok', 'passkey_clone_suspect']) assert.ok(actions.includes(a), `audit has ${a}`);
+
+  /* management */
+  const pkList = await svc.myPasskeys(ctx, reg.me.id);
+  assert.equal(pkList.length, 1);
+  await svc.deletePasskey(ctx, reg.me.id, pkList[0].id);
+  assert.equal((await svc.myPasskeys(ctx, reg.me.id)).length, 0);
+  await assert.rejects(svc.passkeyLoginBegin(ctx, { email: address }), { code: 'NOT_FOUND' }, 'no passkeys left: the same quiet 404');
+  void storedKey;
+});
