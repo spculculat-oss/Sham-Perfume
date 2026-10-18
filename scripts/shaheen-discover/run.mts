@@ -21,6 +21,7 @@ import { extractProduct, parseSitemap, parseSitemapIndex } from '../shaheen-impo
 import { extractGeneric } from '../shaheen-import/generic';
 import { SOURCES } from '../shaheen-import/sources';
 import { quotaBook } from '../doctor/agent';
+import { councilSeeds, readCouncil } from '../shaheen-council/council';
 import {
   addCandidates, brandSiteGuesses, CATEGORYISH, NOT_PRODUCT, oneLanguage, sameSite, domainOf, KNOWN_STORES, pageLinks, withPage, domainsFromSearch, emptySources, isNeverSource, isSourcesFile, judgeSamples,
   inferProductPattern, parseRobots, planQueries, productCandidates, spreadSample, summary, vettingQueue, type LiveSource, type Sample, type SourcesFile,
@@ -117,6 +118,7 @@ found += addCandidates(file, known.map((host) => ({ host, foundBy: 'known-store'
 const guesses = brandSiteGuesses(brands, 60).filter((g) => !file.sources.some((s) => s.host === g.host)).slice(0, 6);
 found += addCandidates(file, guesses.map((g) => ({ host: g.host, foundBy: 'brand-site' as const, foundWith: g.brand })), iso, block);
 found += addCandidates(file, (env.DISCOVER_SEEDS || '').split(/[\s,]+/).filter(Boolean).map((host) => ({ host, foundBy: 'seed' as const })), iso, block);
+found += addCandidates(file, councilSeeds(readCouncil(), now.getTime()).map((host) => ({ host, foundBy: 'council' as const, foundWith: 'اجتماع شاهين اليومي' })), iso, block);
 say(`${found} new stores found this run (${mode === 'ai' ? 'web search + own methods' : 'own methods, no AI'})`);
 
 // ── 2. Checking stores ────────────────────────────────────────────────────────────────────────────────────

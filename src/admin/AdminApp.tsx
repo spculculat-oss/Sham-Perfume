@@ -12,6 +12,7 @@ import SupervisorPanel from './SupervisorPanel';
 import SeoPanel from './SeoPanel';
 import CommunityPanel from './CommunityPanel';
 import ShaheenGrowthPanel from './ShaheenGrowthPanel';
+import ShaheenCouncilPanel from './ShaheenCouncilPanel';
 import { ErrorBoundary } from '../utils/lazyRetry';
 import type {
   Conversation, CoreSettings, CouncilMember, CouncilRole, CouncilTranscript, EngineId, KnowledgeDoc, KnowledgeGap, ModelEngineId, Product, RequestStatus, ServiceDef, ServiceRequest, ShaheenSettings,
@@ -47,7 +48,7 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'engines', label: T('المحركات والإعدادات'), icon: <Cpu className="w-4 h-4" /> },
   { id: 'shaheen', label: T('الخبير شاهين'), icon: <FlaskConical className="w-4 h-4" /> },
   { id: 'doctor', label: T('طبيب شاهين'), icon: <Stethoscope className="w-4 h-4" /> },
-  { id: 'supervisor', label: T('مشرف الذكاء الاصطناعي'), icon: <Sparkles className="w-4 h-4" /> },
+  { id: 'supervisor', label: T('إدارة الذكاء الاصطناعي'), icon: <Sparkles className="w-4 h-4" /> },
   { id: 'seo', label: T('منارة شاهين'), icon: <Search className="w-4 h-4" /> },
   { id: 'sandbox', label: T('مختبر المساعد'), icon: <FlaskConical className="w-4 h-4" /> },
   { id: 'updates', label: T('بيئة التحديثات'), icon: <ArrowDownToLine className="w-4 h-4" /> },
@@ -150,7 +151,7 @@ export default function AdminApp() {
           {tab === 'shaheen' && <><ShaheenGrowthPanel /><ShaheenPanel /></>}
           {tab === 'emails' && <EmailsPanel />}
           {tab === 'doctor' && <DoctorPanel />}
-          {tab === 'supervisor' && <SupervisorPanel />}
+          {tab === 'supervisor' && <><ShaheenCouncilPanel /><SupervisorPanel /></>}
           {tab === 'seo' && <SeoPanel />}
           {tab === 'sandbox' && <SandboxPanel />}
           {tab === 'updates' && <UpdatesPanel />}

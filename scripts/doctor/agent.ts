@@ -312,6 +312,11 @@ async function revert(action: Action, x: ExecContext) {
  * does not waste requests, and the job continues where it stopped once the quota is back.
  */
 export interface QuotaFile { updatedAt: string; engines: Record<string, { pausedUntil: string; reason: string; detail?: string }> }
+/** The engines that have a key here, in the order the bots use them. */
+export async function configuredEngines(env: Env): Promise<string[]> {
+  const { engineStatuses } = await import('../../server/core/engines');
+  return ['gemini', 'deepseek', 'openai', 'claude', 'openrouter', 'self_hosted'].filter((id) => engineStatuses(env).find((e) => e.id === id)?.configured);
+}
 export class QuotaExhaustedError extends Error {
   constructor(public resumeAt: number) { super(`AI quota exhausted until ${new Date(resumeAt).toISOString()}`); this.name = 'QuotaExhaustedError'; }
 }
@@ -349,10 +354,15 @@ export function quotaBook(path?: URL, now: () => number = Date.now) {
 export type QuotaBook = ReturnType<typeof quotaBook>;
 
 /** The doctor thinks with the same AI engines (and keys) as Shaheen, in the admin's failover order. */
-export async function makeAsk(env: Env, options: { quota?: QuotaBook; memory?: AnswerBook; maxWaitMs?: number; sleep?: (ms: number) => Promise<void>; request?: typeof fetch } = {}): Promise<DoctorOptions['ask']> {
+/**
+ * `prefer`: this engine is asked first (the daily council gives each seat its own engine when several are set).
+ * `onEngine`: told which engine answered (the admin panel shows it; visitors never see engine names).
+ */
+export async function makeAsk(env: Env, options: { quota?: QuotaBook; memory?: AnswerBook; maxWaitMs?: number; sleep?: (ms: number) => Promise<void>; request?: typeof fetch; prefer?: string; onEngine?: (id: string) => void } = {}): Promise<DoctorOptions['ask']> {
   const { callEngine, engineStatuses } = await import('../../server/core/engines');
   const order = ['gemini', 'deepseek', 'openai', 'claude', 'openrouter', 'self_hosted'] as const;
-  const ready = order.filter((id) => engineStatuses(env).find((e) => e.id === id)?.configured);
+  const configured = order.filter((id) => engineStatuses(env).find((e) => e.id === id)?.configured);
+  const ready = options.prefer && configured.includes(options.prefer as typeof configured[number]) ? [options.prefer as typeof configured[number], ...configured.filter((id) => id !== options.prefer)] : configured;
   const memory = options.memory;
   // With memory, a question the bots already asked is answered even with no engine configured.
   if (!ready.length && !memory) return undefined;
@@ -372,7 +382,7 @@ export async function makeAsk(env: Env, options: { quota?: QuotaBook; memory?: A
           if (until) refused = { until, reason: failure, detail };
         },
       }).catch(() => undefined);
-      if (reply?.trim()) { quota?.clear(id); memory?.put(system, prompt, reply); return reply; }
+      if (reply?.trim()) { quota?.clear(id); memory?.put(system, prompt, reply); options.onEngine?.(id); return reply; }
       if (refused && quota) quota.pause(id, refused.until, refused.reason, refused.detail);
     }
     if (quota && ready.length) {

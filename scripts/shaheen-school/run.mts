@@ -11,6 +11,7 @@ import { curateMemory, emptyMemory, isMemoryFile, remember, type MemoryFile } fr
 import { guidanceBlock } from '../../src/utils/aiTools';
 import { makeAsk, QuotaExhaustedError, quotaBook } from '../doctor/agent';
 import { answerBook } from '../doctor/answers';
+import { councilStudy, readCouncil } from '../shaheen-council/council';
 import { buildBank, emptySchool, exam, importerShare, isSchoolFile, parseStudy, pickStudy, selfLesson, STUDY_SYSTEM, type SchoolFile, type TrainingDoc } from './school';
 
 const env = process.env;
@@ -27,7 +28,7 @@ const docs: TrainingDoc[] = read<{ docs?: TrainingDoc[] }>(live('sham-training.j
 const schoolRaw = read<unknown>(live('shaheen-school.json'));
 const school: SchoolFile = isSchoolFile(schoolRaw) ? schoolRaw : emptySchool();
 
-const bank = buildBank(docs);
+const bank = buildBank(docs, councilStudy(readCouncil(), Date.now()));
 const first = exam(bank, memory, docs);
 say(`Exam: Shaheen answers ${first.reliance.covered} of ${first.reliance.total} questions by himself (${first.reliance.score}%); ${first.reliance.fromLibrary} more can be learned from his own library`);
 

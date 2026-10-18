@@ -1,0 +1,94 @@
+name: Shaheen council — daily development meeting
+
+# «مجلس شاهين»: once a day «الخبير شاهين», manager of every AI tool on the site, holds a group meeting
+# with five specialist seats (AI tools, store & import, content & search, visitor experience, reliability).
+# Each seat reads the bots' own reports (src/data/live/*.json) and proposes improvements; Shaheen writes the
+# minutes. Safe decisions are applied at once (rerun a bot, a question for «مدرسة شاهين», a store for
+# «كشّاف المصادر», a development goal per tool for «مشرف شاهين»); development work becomes GitHub issues
+# labelled «shaheen-task» that the coding agent in the chat carries out («نفذ مهام شاهين», see AGENTS.md).
+# Code: scripts/shaheen-council/. Result: src/data/live/shaheen-council.json (admin → «إدارة الذكاء الاصطناعي»).
+# Without any AI key the meeting still happens, with minutes written from the reports' rules.
+
+on:
+  schedule:
+    # 06:30 UTC = 09:30 Cairo (summer time), after the night's news, supervisor and scout runs.
+    - cron: '30 6 * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Meet again even if today''s meeting already took place'
+        type: boolean
+        default: false
+  push:
+    branches: [main, 'arena/**']
+    paths: ['scripts/shaheen-council/**', '.github/workflows/shaheen-council.yml']
+
+permissions:
+  contents: write
+  actions: write
+  issues: write
+
+concurrency:
+  group: shaheen-council-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  meet:
+    name: Shaheen's daily meeting
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      # Branch pushes rehearse: the meeting is held and shown in the job summary; no issues, nothing committed.
+      COUNCIL_COMMIT: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      COUNCIL_ISSUES: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      COUNCIL_FORCE: ${{ (github.ref != 'refs/heads/main' || inputs.force) && '1' || '' }}
+      COUNCIL_MAX_TASKS: ${{ vars.COUNCIL_MAX_TASKS || '3' }}
+      GITHUB_TOKEN: ${{ github.token }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Shaheen holds the meeting
+        id: council
+        run: node --import tsx scripts/shaheen-council/run.mts
+      - name: Regression tests with the minutes
+        run: bun run test
+      - name: Publish the minutes on main
+        if: env.COUNCIL_COMMIT == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen council bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "مجلس شاهين: محضر الاجتماع اليومي $(date -u +%Y-%m-%d)" src/data/live/shaheen-council.json src/data/live/ai-quota.json \
+            || { echo "::error::Could not push the meeting minutes"; exit 1; }
+      - name: Run the bots the meeting asked for
+        if: env.COUNCIL_COMMIT == 'true' && steps.council.outputs.reruns != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RERUNS: ${{ steps.council.outputs.reruns }}
+        run: |
+          for wf in $RERUNS; do
+            case "$wf" in
+              shaheen-import.yml|shaheen-discover.yml|shaheen-news.yml|shaheen-seo.yml)
+                gh workflow run "$wf" --ref main && echo "::notice::Started $wf" || echo "::warning::Could not start $wf" ;;
+              *) echo "::warning::Ignored unknown workflow $wf" ;;
+            esac
+          done

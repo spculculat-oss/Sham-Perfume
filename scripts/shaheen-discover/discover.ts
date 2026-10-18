@@ -8,7 +8,7 @@ import type { ExtractedProduct } from '../shaheen-import/extract';
 import type { ImportSource } from '../shaheen-import/transform';
 
 export type SourceStatus = 'candidate' | 'active' | 'paused' | 'rejected' | 'blocked';
-export type FoundBy = 'shaheen-search' | 'search-api' | 'brand-site' | 'known-store' | 'seed' | 'built-in';
+export type FoundBy = 'shaheen-search' | 'search-api' | 'brand-site' | 'known-store' | 'seed' | 'council' | 'built-in';
 
 export interface LiveSource {
   id: string;
