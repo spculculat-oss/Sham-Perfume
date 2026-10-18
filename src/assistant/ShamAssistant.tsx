@@ -92,7 +92,7 @@ export const STATUS_TEXT: Record<string, LText> = {
 };
 
 const OPTION_TEXT: Record<string, LText> = {
-  cash_on_delivery: { ar: 'الدفع عند الاستلام', en: 'Cash on delivery' }, bank_transfer: { ar: 'تحويل بنكي', en: 'Bank transfer' }, wallet: { ar: 'محفظة إلكترونية', en: 'Mobile wallet' },
+  card: { ar: 'بطاقة بنكية', en: 'Bank card' }, bank_transfer: { ar: 'تحويل بنكي', en: 'Bank transfer' }, wallet: { ar: 'محفظة إلكترونية', en: 'Mobile wallet' },
   oriental: { ar: 'شرقي', en: 'Oriental' }, woody: { ar: 'خشبي', en: 'Woody' }, floral: { ar: 'زهري', en: 'Floral' }, citrus: { ar: 'حمضي', en: 'Citrus' },
   fresh: { ar: 'منعش', en: 'Fresh' }, gourmand: { ar: 'جورماند', en: 'Gourmand' }, oud: { ar: 'عود', en: 'Oud' }, unsure: { ar: 'غير متأكد', en: 'Not sure' },
 };

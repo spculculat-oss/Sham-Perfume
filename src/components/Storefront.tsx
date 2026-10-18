@@ -523,9 +523,6 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
     } else if (paymentChoice === 'bnpl') {
       chosenProvider = 'tabby';
       chosenTitle = currentLang === 'ar' ? 'تابي - تقسيط 4 دفعات بدون فوائد' : 'Tabby - 4 Installments';
-    } else if (paymentChoice === 'cod') {
-      chosenProvider = 'cod';
-      chosenTitle = currentLang === 'ar' ? 'الدفع نقداً عند الاستلام' : 'Cash on Delivery';
     }
 
     const orderRef = `SP-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
@@ -543,7 +540,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
       authCode: `AUTH-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
     });
 
-    if (payments?.enabled && paymentChoice !== 'cod') {
+    if (payments?.enabled) {
       try {
         await startCheckout(
           summary.lines.map((l) => ({ sku: l.product.sku, qty: l.qty })),
@@ -593,7 +590,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [savedMethods, setSavedMethods] = useState<SavedPaymentMethod[]>([]);
   const [selectedMethodId, setSelectedMethodId] = useState<string>('');
-  const [paymentChoice, setPaymentChoice] = useState<'saved' | 'card' | 'wallet' | 'instapay' | 'bnpl' | 'cod'>('saved');
+  const [paymentChoice, setPaymentChoice] = useState<'saved' | 'card' | 'wallet' | 'instapay' | 'bnpl'>('saved');
   const [savePaymentForFuture, setSavePaymentForFuture] = useState(true);
   const [cardNumInput, setCardNumInput] = useState('');
   const [cardExpInput, setCardExpInput] = useState('');
@@ -1690,13 +1687,12 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                           <span className="text-[10px] font-bold text-stone-500 block mb-1">
                             {currentLang === 'ar' ? 'أو اختر وسيلة دفع أخرى:' : 'Or Select Another Method:'}
                           </span>
-                          <div className="grid grid-cols-3 gap-1 text-[11px]">
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-[11px]">
                             {[
-                              { id: 'card', labelAr: 'بطاقة جديدة', labelEn: 'New Card', icon: CreditCard },
+                              { id: 'card', labelAr: 'بطاقة بنكية', labelEn: 'Card', icon: CreditCard },
                               { id: 'wallet', labelAr: 'محفظة ذكية', labelEn: 'Wallet', icon: Smartphone },
                               { id: 'instapay', labelAr: 'إنستاباي', labelEn: 'InstaPay', icon: Landmark },
                               { id: 'bnpl', labelAr: 'تابي (تقسيط)', labelEn: 'Tabby BNPL', icon: Sparkles },
-                              { id: 'cod', labelAr: 'عند الاستلام', labelEn: 'Cash (COD)', icon: Wallet },
                             ].map((opt) => (
                               <button
                                 key={opt.id}

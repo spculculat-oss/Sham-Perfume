@@ -907,7 +907,7 @@ function EmailsPanel() {
                       serviceId: 'store',
                       status: activeTemplateStatus,
                       contact: { name: T('الأستاذ أحمد فؤاد'), email: 'ahmed@example.com', phone: '+201123456789' },
-                      fields: { [T('العنوان')]: T('التجمع الخامس، القاهرة'), [T('طريقة الدفع')]: T('الدفع عند الاستلام') },
+                      fields: { [T('العنوان')]: T('التجمع الخامس، القاهرة'), [T('طريقة الدفع')]: T('بطاقة بنكية / فيزا') },
                       items: [
                         { productId: 'oud', sku: 'OUD-ROYAL', name: T('عطر عود ملكي خاص (EdP)'), quantity: 1, unitPrice: 850, currency: 'EGP' },
                         { productId: 'rose', sku: 'ROSE-GRASSE', name: T('زيت ورد غراس النقي 30 مل'), quantity: 2, unitPrice: 380, currency: 'EGP' },

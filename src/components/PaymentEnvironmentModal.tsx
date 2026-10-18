@@ -66,7 +66,6 @@ const PROVIDER_METAS: Record<
   valu: { nameAr: 'فاليو (valU للتقسيط)', nameEn: 'valU', color: 'from-blue-800 via-cyan-900 to-stone-900', badge: 'VALU', type: 'bnpl' },
   apple_pay: { nameAr: 'آبل باي (Apple Pay)', nameEn: 'Apple Pay', color: 'from-stone-900 via-stone-800 to-black', badge: 'APPLE PAY', type: 'express' },
   google_pay: { nameAr: 'جوجل باي (Google Pay)', nameEn: 'Google Pay', color: 'from-stone-800 via-stone-900 to-black', badge: 'G PAY', type: 'express' },
-  cod: { nameAr: 'الدفع عند الاستلام', nameEn: 'Cash on Delivery', color: 'from-amber-800 via-amber-900 to-stone-900', badge: 'COD', type: 'cod' },
 };
 
 export const PaymentEnvironmentModal: React.FC<Props> = ({
@@ -755,7 +754,6 @@ export const PaymentEnvironmentModal: React.FC<Props> = ({
                       {meta.type === 'instapay' && (currentLang === 'ar' ? 'تحويل لحظي بالتعاون مع البنك المركزي المصري' : 'Direct instant account settlement')}
                       {meta.type === 'bnpl' && (currentLang === 'ar' ? 'تقسيم الفاتورة على 4 دفعات ميسرة بدون أي فوائد' : 'Split into 4 interest-free installments')}
                       {meta.type === 'express' && (currentLang === 'ar' ? 'سداد فوري بنقرة واحدة عبر بصمة الوجه أو الإصبع' : 'One-touch biometric express checkout')}
-                      {meta.type === 'cod' && (currentLang === 'ar' ? 'الدفع نقداً عند استلام الشحنة لباب المنزل' : 'Cash upon parcel delivery')}
                     </div>
                   </div>
                 ))}

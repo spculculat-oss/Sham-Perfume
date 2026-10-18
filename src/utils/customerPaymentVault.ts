@@ -10,8 +10,7 @@ export type PaymentServiceType =
   | 'wallet'
   | 'instapay'
   | 'bnpl'
-  | 'express'
-  | 'cod';
+  | 'express';
 
 export type PaymentProvider =
   | 'visa'
@@ -29,8 +28,7 @@ export type PaymentProvider =
   | 'tamara'
   | 'valu'
   | 'apple_pay'
-  | 'google_pay'
-  | 'cod';
+  | 'google_pay';
 
 export interface SavedPaymentMethod {
   id: string;
