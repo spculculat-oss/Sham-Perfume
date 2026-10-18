@@ -1,3 +1,4 @@
+import { LocalizedNumberInput } from '../components/LocalizedNumberInput';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
@@ -758,8 +759,8 @@ function RequestForm({ lang, serviceId, kind, fields, title, products, conversat
                 <p className="text-xs font-semibold truncate">{(ar ? p.nameAr : p.nameEn) || p.nameAr} {p.demo && <span className="text-[9px] bg-stone-200 rounded px-1">{L('demo')}</span>}</p>
                 <p className="text-[11px] text-stone-500">{p.price} {p.currency} / {p.unit}{p.stock <= 0 ? ` · ${L('out')}` : ''}</p>
               </div>
-              <input type="number" min={0} max={Math.max(0, p.stock)} disabled={p.stock <= 0} aria-label={`${L('qty')} ${p.sku}`}
-                value={qty[p.id] || 0} onChange={(e) => setQty((q) => ({ ...q, [p.id]: Math.max(0, Math.min(p.stock, Math.floor(Number(e.target.value) || 0))) }))}
+              <LocalizedNumberInput lang={lang} integer min={0} max={Math.max(0, p.stock)} disabled={p.stock <= 0} ariaLabel={`${L('qty')} ${p.sku}`}
+                value={qty[p.id] || 0} onValue={(n) => setQty((q) => ({ ...q, [p.id]: Math.max(0, Math.min(p.stock, Math.floor(n || 0))) }))}
                 className="w-16 rounded-lg border border-stone-300 px-2 py-1 text-sm text-center disabled:opacity-40" />
             </div>
           ))}

@@ -20,6 +20,7 @@ import { PerfumerMasterLabView } from './components/PerfumerMasterLabView';
 import { ShamAssistant } from './assistant/ShamAssistant';
 import { WorldPerfumeNews } from './components/WorldPerfumeNews';
 import { Footer } from './components/Footer';
+import { LocalizedNumberInput } from './components/LocalizedNumberInput';
 import { TopPromoHub } from './components/TopPromoHub';
 import { NavigationBreadcrumbs } from './components/NavigationBreadcrumbs';
 import { CountryAndAddressModal } from './components/CountryAndAddressModal';
@@ -1162,12 +1163,13 @@ export default function App() {
                 <label className="font-semibold text-stone-800 block mb-1">
                   {L('lbl_maceration')}
                 </label>
-                <input
-                  type="number"
-                  min="1"
-                  max="365"
+                <LocalizedNumberInput
+                  lang={currentLang}
+                  integer
+                  min={1}
+                  max={365}
                   value={macerationDays}
-                  onChange={(e) => setMacerationDays(parseInt(e.target.value) || 30)}
+                  onValue={(n) => setMacerationDays(Math.trunc(n) || 30)}
                   className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-xs font-mono-numbers text-stone-900 focus:outline-none focus:border-amber-700"
                 />
               </div>

@@ -1,3 +1,4 @@
+import { LocalizedNumberInput } from './LocalizedNumberInput';
 import React, { useState } from 'react';
 import {
   Beaker,
@@ -322,13 +323,12 @@ export const AlcoholDilutionCalculator: React.FC<AlcoholDilutionCalculatorProps>
                   {desiredFinalVolume} ml
                 </span>
               </div>
-              <input
-                type="number"
-                min="50"
-                max="50000"
-                step="50"
+              <LocalizedNumberInput
+                lang={currentLang}
+                min={50}
+                max={50000}
                 value={desiredFinalVolume}
-                onChange={(e) => setDesiredFinalVolume(Math.max(10, parseFloat(e.target.value) || 0))}
+                onValue={(n) => setDesiredFinalVolume(Math.max(10, n || 0))}
                 className={`w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-sm font-mono-numbers ${rtl ? 'text-right' : 'text-left'} focus:bg-white focus:outline-none focus:border-amber-700`}
               />
               <div className="flex gap-2">

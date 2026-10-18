@@ -37,4 +37,11 @@ When the merchant writes **«نفذ مهام شاهين»** (or "Run Shaheen's t
   when a quota runs out, wait for it to renew and never fake results.
 - Any new AI call site (`callEngine|executeChat|runCouncil|makeAsk(`) must be registered in
   `src/utils/aiTools.ts`, with a probe in `scripts/shaheen-supervisor/probes.ts`.
+- Numbers follow the SITE language, never the visitor's browser. Visitor-facing code must not use
+  native `<input type="number">` (the browser renders its own digits — e.g. ٦٥٠ on a German page);
+  use `LocalizedNumberInput` (`src/components`) and format display numbers with
+  `formatLocalizedNumber`/`storeNumber` from `src/لغات`. «وكيل اللغات»
+  (`scripts/shaheen-languages/`, daily workflow) audits this plus bare `.toLocaleString()` calls and
+  language-pack coverage into `src/data/live/shaheen-languages.json`, which the council briefing
+  reads; anything wrong can become a `shaheen-task` like the other bots'.
 - Checks: `npm run lint`, `npm test`, `npm run build`. Install with `bun install --frozen-lockfile`.

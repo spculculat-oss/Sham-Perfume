@@ -1,3 +1,4 @@
+import { LocalizedNumberInput } from './LocalizedNumberInput';
 import React, { useState } from 'react';
 import {
   MapPin,
@@ -1021,12 +1022,11 @@ export const CountryAndAddressModal: React.FC<CountryAndAddressModalProps> = ({
                   {/* Amount Input */}
                   <div className="md:col-span-3">
                     <label className="text-[11px] text-stone-400 block mb-1">{L('amount_lbl')}</label>
-                    <input
-                      type="number"
-                      min="0"
-                      step="1"
+                    <LocalizedNumberInput
+                      lang={currentLang}
+                      min={0}
                       value={calcAmount}
-                      onChange={(e) => setCalcAmount(parseFloat(e.target.value) || 0)}
+                      onValue={(n) => setCalcAmount(n || 0)}
                       className="w-full px-3 py-2 bg-stone-800 border border-stone-700 rounded-xl text-sm font-mono font-bold text-white focus:outline-none focus:border-amber-400"
                     />
                   </div>
