@@ -22,14 +22,20 @@ export const BANNER_PACKS: Partial<Record<SupportedLanguage, BannerRow>> = {
 
 const KEY_INDEX = new Map<BannerTextKey, number>(BANNER_KEYS.map((key, i) => [key, i]));
 
-export function bannerText(lang: SupportedLanguage, key: BannerTextKey): string {
-  const i = KEY_INDEX.get(key);
-  if (i === undefined) return key;
-  return BANNER_PACKS[lang]?.[i] || BANNER_PACKS.en?.[i] || BANNER_PACKS.ar?.[i] || key;
+export interface BannerVars {
+  count?: string | number;
 }
 
-export function makeBannerT(lang: SupportedLanguage): (key: BannerTextKey) => string {
-  return (key) => bannerText(lang, key);
+export function bannerText(lang: SupportedLanguage, key: BannerTextKey, vars?: BannerVars): string {
+  const i = KEY_INDEX.get(key);
+  if (i === undefined) return key;
+  const raw = BANNER_PACKS[lang]?.[i] || BANNER_PACKS.en?.[i] || BANNER_PACKS.ar?.[i] || key;
+  if (!vars || vars.count === undefined) return raw;
+  return raw.replace(/\{count\}/g, String(vars.count));
+}
+
+export function makeBannerT(lang: SupportedLanguage): (key: BannerTextKey, vars?: BannerVars) => string {
+  return (key, vars) => bannerText(lang, key, vars);
 }
 
 /** Languages that carry a full banner row, in platform order. */

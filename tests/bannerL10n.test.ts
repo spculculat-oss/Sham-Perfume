@@ -15,7 +15,7 @@ const ARABIC = /[؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿]/;
 const ARABIC_SCRIPT_HOME = new Set<SupportedLanguage>(['ar', 'fa', 'ur', 'ps', 'sd']);
 
 test('every platform language carries the full banner, translated, with no Arabic leaking', () => {
-  assert.equal(BANNER_KEYS.length, 21);
+  assert.equal(BANNER_KEYS.length, 46);
   assert.deepEqual(bannerLanguages(), SUPPORTED_LANGUAGES.map((l) => l.code));
   for (const { code } of SUPPORTED_LANGUAGES) {
     const row = BANNER_PACKS[code];
@@ -31,20 +31,35 @@ test('every platform language carries the full banner, translated, with no Arabi
         assert.ok(!ARABIC.test(value), `<${code}:${BANNER_KEYS[i]}> leaked Arabic: ${value}`);
       }
     }
+    for (const key of ['matching_count', 'search_products_placeholder'] as const) {
+      assert.ok(bannerText(code, key).includes('{count}'), `<${code}:${key}> lost its {count} slot`);
+    }
   }
 });
 
 test('bannerText resolves the visitor language first, with the Arabic and English originals intact', () => {
-  assert.equal(bannerText('ar', 'promo_title'), 'عالم عطور شام');
-  assert.equal(bannerText('ar', 'campaign_headline'), 'عطرك… توقيع لا يُنسى');
-  assert.equal(bannerText('en', 'promo_title'), 'The Sham Fragrance Edit');
-  assert.equal(bannerText('en', 'compact_eyebrow'), 'TODAY’S SHAM PICK');
-  assert.equal(bannerText('fr', 'campaign_headline'), 'Un parfum qui reste avec vous');
-  assert.equal(bannerText('ja', 'view_store'), 'この香水を購入');
-  assert.equal(bannerText('sw', 'compact_cta'), 'Nunua sasa');
-  assert.equal(bannerText('he', 'view_store'), 'לקנות את הבושם הזה');
-  assert.equal(bannerText('pl', 'price_label'), 'Cena');
-  assert.equal(makeBannerT('tr')('collapse'), bannerText('tr', 'collapse'));
+  assert.equal(bannerText('ar', 'screen_title'), 'مختارات دار شام الفاخرة');
+  assert.equal(bannerText('ar', 'live_commercial'), 'مختارات دار شام');
+  assert.equal(bannerText('ar', 'prev_product'), 'العطر السابق');
+  assert.equal(bannerText('ar', 'next_product'), 'العطر التالي');
+  assert.equal(bannerText('en', 'screen_badge'), 'SHAM CURATED SELECTION');
+  assert.equal(bannerText('en', 'screen_title'), 'Sham Curated Fragrance Selection');
+  assert.equal(bannerText('en', 'live_commercial'), 'Sham Selection');
+  assert.equal(bannerText('en', 'product_box_title'), 'SHOWCASE PRODUCTS & PRICES');
+  assert.equal(bannerText('en', 'scene_man_tag'), 'CINEMATIC AD · HAUTE PARFUMERIE POUR HOMME');
+  assert.equal(bannerText('en', 'prev_product'), 'Previous perfume');
+  assert.equal(bannerText('en', 'next_product'), 'Next perfume');
+  assert.equal(bannerText('fr', 'add_to_cart'), 'Ajouter au panier');
+  assert.equal(bannerText('fr', 'prev_product'), 'Parfum précédent');
+  assert.equal(bannerText('ja', 'scene_man_title'), 'シグネチャーミスト · 高貴な魅力と存在感');
+  assert.equal(bannerText('sw', 'expand_screen'), 'Onyesha bidhaa');
+  assert.equal(bannerText('he', 'add_to_cart'), 'הוספה לסל');
+  assert.equal(bannerText('pl', 'price_label'), 'Cena lokalna');
+  // {count} slots fill from vars and stay put without them.
+  assert.equal(makeBannerT('ar')('matching_count', { count: 3 }), '3 عطر مطابق');
+  assert.ok(bannerText('en', 'search_products_placeholder', { count: 42 }).includes('42'));
+  assert.ok(!bannerText('en', 'search_products_placeholder', { count: 42 }).includes('{count}'));
+  assert.equal(makeBannerT('tr')('collapse_screen'), bannerText('tr', 'collapse_screen'));
   for (const { code } of SUPPORTED_LANGUAGES) {
     for (const key of BANNER_KEYS) {
       assert.notEqual(bannerText(code, key), key, `<${code}:${key}> fell through to the raw key`);
@@ -93,23 +108,24 @@ test('a language the visitor picked beats entry-country detection, and detection
 });
 
 test('the banner itself renders in the visitor language without Arabic for non-Arabic visitors', () => {
-  const expected: Partial<Record<SupportedLanguage, string>> = {
-    fr: 'Un parfum qui reste avec vous',
-    ja: 'この香水を購入',
-    sw: 'Nunua harufu hii',
-    he: 'לקנות את הבושם הזה',
-    pl: 'Kup ten zapach',
-  };
-  for (const code of ['ar', 'fr', 'ja', 'sw', 'he', 'pl'] as SupportedLanguage[]) {
+  // React SSR escapes &, <, > (and quotes) — compare against the escaped form.
+  const esc = (s: string) =>
+    s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;');
+  for (const code of ['ar', 'en', 'fr', 'ja', 'sw', 'he', 'pl', 'ig'] as SupportedLanguage[]) {
     const html = renderToString(React.createElement(TopPromoHub, { currentLang: code }));
     assert.ok(html.length > 0);
-    if (code === 'ar') {
-      assert.ok(html.includes('عطرك… توقيع لا يُنسى'), 'the Arabic banner lost its headline');
-      continue;
+    if (code !== 'ar') {
+      assert.ok(!ARABIC.test(html), `<${code} banner> leaked Arabic into the page`);
     }
-    assert.ok(!ARABIC.test(html), `<${code} banner> leaked Arabic into the page`);
-    assert.ok(html.includes(expected[code] as string), `the ${code} banner lost its copy`);
-    assert.ok(/\d/.test(html), `the ${code} banner lost its price`);
+    // The SSR top bar, the opening cinematic scene and the (empty-catalog) product box must all speak `code`.
+    for (const key of ['screen_title', 'scene_man_tag', 'scene_man_title', 'scene_man_subtitle', 'loading_products'] as const) {
+      assert.ok(html.includes(esc(bannerText(code, key))), `the ${code} banner lost its ${key} copy`);
+    }
+    // The search box ships its {count} already filled by the resolver (empty catalog shows '…').
+    assert.ok(
+      html.includes(esc(bannerText(code, 'search_products_placeholder', { count: '…' }))),
+      `the ${code} banner lost its product-search placeholder`,
+    );
   }
 });
 

@@ -116,7 +116,9 @@ export * from './storeL10n';
 
 /**
  * نصوص بنر المنتجات (أعلى الصفحة الرئيسية) — كل لغة من لغات المنصة شايلة
- * الـ21 سلسلة كلها (bannerL10n.ts): `bannerText(lang, 'view_store')` أو `makeBannerT(lang)`.
+ * الـ46 سلسلة كلها (bannerL10n.ts): مشاهد البنر وصندوق المنتجات ومنتقي
+ * الدولة/العملة: `bannerText(lang, 'add_to_cart')` أو `makeBannerT(lang)`،
+ * ومفاتيح العدّاد بتاخد `{ count }`.
  */
 export * from './bannerKeys';
 export * from './bannerL10n';
