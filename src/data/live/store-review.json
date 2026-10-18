@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T08:58:57.611Z",
+ "updatedAt": "2026-10-18T10:56:54.561Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1114,
   "imported": 1063,
-  "ok": 509,
-  "warn": 605,
+  "ok": 511,
+  "warn": 603,
   "hidden": 0,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-18T08:57:48.808Z",
+  "at": "2026-10-18T10:55:43.797Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,7 +25,7 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1017,
+    "listingProducts": 1023,
     "listingOnly": 59,
     "listingComplete": true,
     "added": 0,
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 68829
+  "durationMs": 70796
  },
  "items": [
   {
@@ -3237,7 +3237,8 @@
    "status": "warn",
    "issues": [
     "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
    ],
    "page": "p/galactic-man-elixir-by-maison-alhambra-100ml-543.html"
   },
@@ -3638,16 +3639,6 @@
    "page": "p/opulence-leather-by-maison-alhambra-100-ml-man-631.html"
   },
   {
-   "sku": "GUL-633",
-   "id": 633,
-   "name": "Sweet Heaven by Gulf Orchid 100ml EDP Unisex",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/sweet-heaven-by-gulf-orchid-100ml-edp-unisex-633.html"
-  },
-  {
    "sku": "VOL-634",
    "id": 634,
    "name": "Society 974 Volare 100 ml EDP Unisex",
@@ -3689,16 +3680,6 @@
    "page": "p/black-wood-60ml-by-maison-alhambra-edp-for-men-644.html"
   },
   {
-   "sku": "RUE-646",
-   "id": 646,
-   "name": "Touche Pour Homme Rue Broca 100ml EDP",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/touche-pour-homme-rue-broca-100ml-edp-646.html"
-  },
-  {
    "sku": "ZIM-648",
    "id": 648,
    "name": "Tiramisu Caramel By Zimaya 100 ml EDP",
@@ -3707,16 +3688,6 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/tiramisu-caramel-by-zimaya-100-ml-edp-648.html"
-  },
-  {
-   "sku": "VOL-650",
-   "id": 650,
-   "name": "Golden Hour by Volare 100ml EDP for Her",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/golden-hour-by-volare-100ml-edp-for-her-650.html"
   },
   {
    "sku": "AFN-651",
@@ -4025,6 +3996,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/narissa-ruby-rouge-maison-alhambra-100ml-739.html"
+  },
+  {
+   "sku": "GUL-740",
+   "id": 740,
+   "name": "Sunset Kiss Gulf Orchid 100ml EDP Woman",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sunset-kiss-gulf-orchid-100ml-edp-woman-740.html"
   },
   {
    "sku": "MAI-742",
