@@ -77,6 +77,7 @@ test('robots.txt invites search and AI crawlers, points at the sitemap and block
   assert.doesNotMatch(robots, /^Disallow: \/\s*$/m, 'the whole site must never be blocked');
   for (const bot of lexicon.aiCrawlers) assert.match(robots, new RegExp(`User-agent: ${bot.replace('-', '\\-')}`));
   assert.doesNotMatch(robots, /noindex/i);
+  assert.match(robots, new RegExp(`Sitemap: ${site.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}feed\\.xml`), 'the feed is a second sitemap');
 });
 
 test('llms.txt and the RSS feed describe the same public site', () => {
@@ -85,7 +86,9 @@ test('llms.txt and the RSS feed describe the same public site', () => {
   assert.ok(llms.includes(absoluteUrl('tools/', site)));
   assert.ok(llms.includes(absoluteUrl('sitemap.xml', site)));
   const feed = renderFeed({ siteUrl: site, products: [{ id: 1, slug: 'oud-30', updatedAt: '2026-10-01T00:00:00.000Z' }] });
-  assert.match(feed, /<rss version="2.0">/);
+  assert.match(feed, /<rss version="2\.0"[^>]*xmlns:atom="http:\/\/www\.w3\.org\/2005\/Atom">/);
+  assert.ok(feed.includes(`<atom:link href="${absoluteUrl('feed.xml', site)}" rel="self"`), 'the feed must identify itself for WebSub');
+  assert.match(feed, /<atom:link href="https:\/\/[^"]+" rel="hub"\/>/, 'the feed must advertise a hub');
   assert.ok(feed.includes(absoluteUrl('p/oud-30.html', site)));
   assert.ok(feed.includes(SITE.nameAr));
 });

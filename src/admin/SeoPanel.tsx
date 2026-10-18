@@ -1,6 +1,6 @@
 import { T, TP, reactiveMap, adminLocale } from './adminL10n';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Activity, CheckCircle2, CircleAlert, ExternalLink, Loader2, Play, RefreshCw, Search, Send, ShieldCheck } from 'lucide-react';
+import { Activity, CheckCircle2, CircleAlert, ExternalLink, Globe2, Loader2, Play, RefreshCw, Search, Send, ShieldCheck } from 'lucide-react';
 import { adminRequest, send } from './adminApi';
 import type { SeoState } from '../seo/agentState';
 
@@ -175,6 +175,41 @@ export default function SeoPanel() {
         </section>
 
         <section className={card}>
+          <h2 className="font-bold mb-2 flex items-center gap-2"><Globe2 className="w-4 h-4 text-emerald-600" />{T('قنوات الظهور بلا حساب')}</h2>
+          <ul className="grid gap-1.5 text-sm">
+            <li className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-stone-100 px-2 py-1.5">
+              <span>{T('خريطة الموقع + الخلاصة في robots.txt')}</span>
+              <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] text-emerald-800">{T('جاهزة')}</span>
+            </li>
+            <li className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-stone-100 px-2 py-1.5">
+              <span>{T('إشعار تغيّر الخلاصة (WebSub)')}</span>
+              <span className="text-[11px] text-stone-500">
+                {state?.discovery.webSub
+                  ? `${when(state.discovery.webSub.at)} · ${state.discovery.webSub.ok ? T('تم') : T('لم يتم')}`
+                  : T('ينتظر أول تغيير في الخلاصة')}
+              </span>
+            </li>
+            <li className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-stone-100 px-2 py-1.5">
+              <span>{T('فحص وصول الزاحف')}</span>
+              <span className="text-[11px] text-stone-500">
+                {state?.discovery.crawl
+                  ? `${state.discovery.crawl.ok}/${state.discovery.crawl.checked} · ${when(state.discovery.crawl.at)}`
+                  : T('لم يُفحص بعد')}
+              </span>
+            </li>
+            <li className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-stone-100 px-2 py-1.5">
+              <span>{T('أداء الصفحة (Lighthouse عام)')}</span>
+              <span className="text-[11px] text-stone-500">
+                {state?.discovery.pageSpeed?.ok
+                  ? `${state.discovery.pageSpeed.scores.performance ?? '—'}/100 · ${when(state.discovery.pageSpeed.at)}`
+                  : state?.discovery.pageSpeed?.detail || T('لم يُقس بعد')}
+              </span>
+            </li>
+          </ul>
+          <p className="text-[11px] text-stone-500 mt-2">{T('كل هذه القنوات تعمل دون حساب أو بطاقة؛ لوحة المالك اختيارية ولا تُشترط للاكتشاف.')}</p>
+        </section>
+
+        <section className={card}>
           <h2 className="font-bold mb-2">{T('تقرير المندوب الإعلامي')}</h2>
           {state?.mediaReport ? (
             <div className="text-sm">
@@ -210,7 +245,7 @@ export default function SeoPanel() {
         </ul>
       </section>
 
-      <p className="text-[11px] text-stone-400 mt-3 flex items-center gap-1"><Send className="w-3 h-3" />{T('الإرسال يعتمد على IndexNow وخريطة الموقع؛ Google يُغذّى بالخريطة وملف التحقق وSearch Console عند ربط حساب الخدمة.')}</p>
+      <p className="text-[11px] text-stone-400 mt-3 flex items-center gap-1"><Send className="w-3 h-3" />{T('الاكتشاف يعمل بلا أي حساب: خريطة وخلاصة في robots.txt، وإشعار WebSub، وIndexNow للمحركات التي تقبله. البحث في لوحة المالك اختياري.')}</p>
     </>
   );
 }

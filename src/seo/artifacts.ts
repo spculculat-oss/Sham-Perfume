@@ -4,6 +4,7 @@
  * builders, so a test can prove each file before it reaches production.
  */
 import { absoluteUrl, SEO_AGENT, SITE } from './site';
+import { WEBSUB_DEFAULT_HUB, webSubLinks } from './discovery';
 import { HOME_PAGE, SEO_PAGES, type SeoFaq, type SeoPageDef } from './pages';
 import { escapeHtml, schemaTypes } from './audit';
 import type { SeoPageCopy } from './agentState';
@@ -74,8 +75,9 @@ export function renderRobots(siteUrl: string): string {
     '# AI search crawlers are welcome: discovery needs them.',
     ...lexicon.aiCrawlers.flatMap((bot) => [`User-agent: ${bot}`, 'Allow: /', '']),
     `Sitemap: ${absoluteUrl('sitemap.xml', siteUrl)}`,
+    `Sitemap: ${absoluteUrl('feed.xml', siteUrl)}`,
+    '# The RSS feed is listed as a second sitemap: search engines accept feeds as sitemaps.',
     `# llms.txt: ${absoluteUrl('llms.txt', siteUrl)}`,
-    `# Feed: ${absoluteUrl('feed.xml', siteUrl)}`,
     '',
   ].join('\n');
 }
@@ -98,6 +100,7 @@ export function renderLlmsTxt(siteUrl: string, products: ProductRef[] = []): str
     '## خريطة الموقع / Resources',
     `- [sitemap.xml](${absoluteUrl('sitemap.xml', siteUrl)}): كل الصفحات العامة.`,
     `- [robots.txt](${absoluteUrl('robots.txt', siteUrl)}): قواعد الزحف والسماح للزواحف البحثية.`,
+    `- [feed.xml](${absoluteUrl('feed.xml', siteUrl)}): خلاصة RSS لأحدث الأدوات والمنتجات.`,
     '',
     '## معلومات الناشر / Publisher',
     `- ${SITE.nameAr}: ${SITE.summaryAr}`,
@@ -112,19 +115,20 @@ export function renderLlmsTxt(siteUrl: string, products: ProductRef[] = []): str
   ].join('\n');
 }
 
-export function renderFeed(input: { siteUrl: string; products?: ProductRef[]; now?: Date }): string {
+export function renderFeed(input: { siteUrl: string; products?: ProductRef[]; now?: Date; hub?: string }): string {
   const now = input.now || new Date();
   const items: { title: string; link: string; description: string; date: string }[] = [
     ...SEO_PAGES.slice(0, 8).map((p) => ({ title: p.h1, link: absoluteUrl(p.path, input.siteUrl), description: p.description, date: now.toISOString() })),
     ...(input.products || []).slice(0, 20).map((p) => ({ title: `${(p as ProductRef & { nameAr?: string }).nameAr || p.slug} | متجر شام`, link: absoluteUrl(`p/${p.slug}.html`, input.siteUrl), description: 'منتج من متجر شام مع الصور والنوتات والسعر.', date: p.updatedAt && !Number.isNaN(Date.parse(p.updatedAt)) ? p.updatedAt : now.toISOString() })),
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0"><channel>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>
 <title>${escapeXml(SITE.nameAr)}</title>
 <link>${escapeXml(input.siteUrl)}</link>
 <description>${escapeXml(SITE.summaryAr)}</description>
 <language>ar</language>
 <lastBuildDate>${now.toUTCString()}</lastBuildDate>
+${webSubLinks(absoluteUrl('feed.xml', input.siteUrl), input.hub || WEBSUB_DEFAULT_HUB)}
 ${items.map((i) => `<item><title>${escapeXml(i.title)}</title><link>${escapeXml(i.link)}</link><description>${escapeXml(i.description)}</description><pubDate>${new Date(i.date).toUTCString()}</pubDate><guid>${escapeXml(i.link)}</guid></item>`).join('\n')}
 </channel></rss>
 `;
