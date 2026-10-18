@@ -19,7 +19,10 @@ elif [ -z "$prod" ]; then
 fi
 
 if [ "$backup" = 1 ]; then
-  if git diff --quiet HEAD^ HEAD -- vercel.json scripts/vercel-ignore.sh scripts/build-vercel.mjs; then
+  # The diff command is overridable so a test can prove both branches without depending on the
+  # repository's own history; production always runs the git diff.
+  diff_cmd="${VERCEL_IGNORE_DIFF_CMD:-git diff --quiet HEAD^ HEAD -- vercel.json scripts/vercel-ignore.sh scripts/build-vercel.mjs}"
+  if $diff_cmd; then
     echo "Second project: unused, redirects to the main site — skipping this build."; exit 0
   fi
   echo "Second project: redirect settings changed — building once."; exit 1

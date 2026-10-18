@@ -25,10 +25,17 @@ test('the main Vercel project always builds, whatever changed', () => {
   assert.match(result.stdout, /Main project: building/);
 });
 
-test('the unused second project still skips when only content changed', () => {
-  const result = run({ VERCEL_PROJECT_PRODUCTION_URL: 'sham-perfume.vercel.app' });
+test('the unused second project skips when its redirect settings did not change', () => {
+  // `true` stands in for "git diff found no change" so the test never depends on repo history.
+  const result = run({ VERCEL_PROJECT_PRODUCTION_URL: 'sham-perfume.vercel.app', VERCEL_IGNORE_DIFF_CMD: 'true' });
   assert.equal(result.status, 0, `second project should skip, got ${result.status}: ${result.stdout}${result.stderr}`);
   assert.match(result.stdout, /skipping this build/);
+});
+
+test('the second project builds once when its redirect settings changed', () => {
+  const result = run({ VERCEL_PROJECT_PRODUCTION_URL: 'sham-perfume.vercel.app', VERCEL_IGNORE_DIFF_CMD: 'false' });
+  assert.equal(result.status, 1, `second project should build, got ${result.status}: ${result.stdout}${result.stderr}`);
+  assert.match(result.stdout, /redirect settings changed/);
 });
 
 test('an unknown project is treated as the main project and builds', () => {
