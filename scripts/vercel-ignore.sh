@@ -1,9 +1,15 @@
 #!/bin/sh
 # Vercel "Ignored Build Step" — exit 0 skips the build, exit 1 builds.
 #
-# Main project (sham-perfume-49bf): builds when anything besides the bot's live data changed.
-# Second project (sham-perfume.vercel.app): unused (no keys, no database) and redirects to the main site,
-# so it only rebuilds when vercel.json changes — it stops using the free plan's daily build quota.
+# Main project (sham-perfume-49bf): ALWAYS build.
+# A skipped build does not just save minutes — it leaves the production alias on the previous
+# deployment. That is how the canonical host ended up serving a stale SPA shell: no robots.txt,
+# no sitemap.xml, no llms.txt, no Search Console verification file, and the same <title> for every
+# path (the live audit scored it 1/100). A stale canonical host is far more expensive than a build,
+# so the main project never opts out.
+#
+# Second project (sham-perfume.vercel.app): unused (no keys, no database) and redirects to the main
+# site, so it only rebuilds when the redirect settings change. That keeps it inside the free plan.
 prod="${VERCEL_PROJECT_PRODUCTION_URL:-}"
 url="${VERCEL_URL:-}"
 backup=0
@@ -19,7 +25,5 @@ if [ "$backup" = 1 ]; then
   echo "Second project: redirect settings changed — building once."; exit 1
 fi
 
-if git diff --quiet HEAD^ HEAD -- . ':(exclude)src/data/live'; then
-  echo "Only live data changed — skipping this build."; exit 0
-fi
-echo "Building."; exit 1
+echo "Main project: building (the production alias must never serve a stale build)."
+exit 1
