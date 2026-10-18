@@ -418,6 +418,7 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   'بحث شاهين على الويب': { en: 'Shaheen\'s web search' },
   'خدمة بحث': { en: 'Search service' },
   'المتجر الرسمي لماركة': { en: 'A brand\'s official shop' },
+  'متجر عطور معروف': { en: 'Well-known perfume shop' },
   'أضفته أنت': { en: 'Added by you' },
   'المورد الأصلي': { en: 'Original supplier' },
   'نمو شاهين — مصادر جديدة وتعلّم ذاتي': { en: 'Shaheen\'s growth — new sources and self-learning' },

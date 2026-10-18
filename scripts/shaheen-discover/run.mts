@@ -22,7 +22,7 @@ import { extractGeneric } from '../shaheen-import/generic';
 import { SOURCES } from '../shaheen-import/sources';
 import { quotaBook } from '../doctor/agent';
 import {
-  addCandidates, brandSiteGuesses, domainOf, domainsFromSearch, emptySources, isNeverSource, isSourcesFile, judgeSamples,
+  addCandidates, brandSiteGuesses, domainOf, KNOWN_STORES, domainsFromSearch, emptySources, isNeverSource, isSourcesFile, judgeSamples,
   parseRobots, planQueries, PRODUCTISH, spreadSample, summary, vettingQueue, type LiveSource, type Sample, type SourcesFile,
 } from './discover';
 
@@ -71,19 +71,25 @@ let mode: 'ai' | 'self' = 'self';
 let found = 0;
 const quota = quotaBook(new URL('../../src/data/live/ai-quota.json', import.meta.url));
 const geminiKey = env.GEMINI_API_KEY?.trim();
-const model = env.DISCOVER_MODEL?.trim() || env.GEMINI_MODEL?.trim() || 'gemini-flash-latest';
+// Grounded search has its own daily allowance per model: when one model's allowance is used up, the next one is tried.
+const models = [...new Set([env.DISCOVER_MODEL?.trim(), env.GEMINI_MODEL?.trim(), 'gemini-flash-latest', 'gemini-flash-lite-latest'].filter((m): m is string => Boolean(m)))];
 if (geminiKey && QUERIES && !quota.pausedUntil('gemini')) {
   for (const q of planQueries(file, brands, now.getTime(), QUERIES)) {
     const prompt = q.lang === 'ar'
       ? `${q.q}. اذكر أسماء نطاقات (domains) متاجر العطور الإلكترونية الحقيقية التي تبيع العطور مباشرة للعملاء بأسعار ظاهرة (ليست أسواقاً مثل أمازون ونون، وليست مواقع مراجعات). سطر لكل متجر: النطاق فقط.`
       : `${q.q}. List the domains of real online perfume shops that sell directly to customers with visible prices (not marketplaces like Amazon or noon, not review sites). One shop per line: the domain only.`;
     try {
-      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': geminiKey },
-        body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }], tools: [{ google_search: {} }], generationConfig: { temperature: 0.3 } }),
-        signal: AbortSignal.timeout(60_000),
-      });
-      if (r.status === 429) { say('Web search: AI quota used up — the scout continues by himself'); break; }
+      let r: Response | undefined;
+      while (models.length) {
+        r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${models[0]}:generateContent`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': geminiKey },
+          body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }], tools: [{ google_search: {} }], generationConfig: { temperature: 0.3 } }),
+          signal: AbortSignal.timeout(60_000),
+        });
+        if (r.status !== 429 && r.status !== 404) break;
+        models.shift();
+      }
+      if (!r || r.status === 429 || r.status === 404) { say('Web search: AI quota used up — the scout continues by himself'); break; }
       if (!r.ok) { say(`Web search unavailable (HTTP ${r.status}) — the scout continues by himself`); break; }
       const domains = domainsFromSearch(await r.json());
       const added = addCandidates(file, domains.map((host) => ({ host, foundBy: 'shaheen-search' as const, foundWith: q.q })), iso, block);
@@ -106,6 +112,8 @@ if (braveKey) {
   }
 }
 // By himself: official shops of the store's own brands (a few new ones per run) and the merchant's seeds.
+const known = KNOWN_STORES.filter((h) => !file.sources.some((s) => s.host === h)).slice(0, 4);
+found += addCandidates(file, known.map((host) => ({ host, foundBy: 'known-store' as const })), iso, block);
 const guesses = brandSiteGuesses(brands, 60).filter((g) => !file.sources.some((s) => s.host === g.host)).slice(0, 6);
 found += addCandidates(file, guesses.map((g) => ({ host: g.host, foundBy: 'brand-site' as const, foundWith: g.brand })), iso, block);
 found += addCandidates(file, (env.DISCOVER_SEEDS || '').split(/[\s,]+/).filter(Boolean).map((host) => ({ host, foundBy: 'seed' as const })), iso, block);

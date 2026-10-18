@@ -30,6 +30,7 @@ const FOUND_BY: Record<string, () => string> = {
   'shaheen-search': () => T('بحث شاهين على الويب'),
   'search-api': () => T('خدمة بحث'),
   'brand-site': () => T('المتجر الرسمي لماركة'),
+  'known-store': () => T('متجر عطور معروف'),
   seed: () => T('أضفته أنت'),
   'built-in': () => T('المورد الأصلي'),
 };

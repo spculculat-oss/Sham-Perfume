@@ -8,7 +8,7 @@ import type { ExtractedProduct } from '../shaheen-import/extract';
 import type { ImportSource } from '../shaheen-import/transform';
 
 export type SourceStatus = 'candidate' | 'active' | 'paused' | 'rejected' | 'blocked';
-export type FoundBy = 'shaheen-search' | 'search-api' | 'brand-site' | 'seed' | 'built-in';
+export type FoundBy = 'shaheen-search' | 'search-api' | 'brand-site' | 'known-store' | 'seed' | 'built-in';
 
 export interface LiveSource {
   id: string;
@@ -163,7 +163,8 @@ export function judgeSamples(samples: Sample[]): Verdict {
   const [currency] = [...currencies.entries()].sort((a, b) => b[1] - a[1])[0] || [];
   const via = good.filter((p) => p.via === 'json-ld').length >= good.length / 2 ? 'json-ld' : 'generic';
   const pattern = inferProductPattern(good.map((p) => samples.find((s) => s.product === p)!.url));
-  if (okCount < Math.max(2, Math.ceil(total * 0.6))) return { ok: false, reason: `صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (${okCount}/${total})`, okCount, total, perfumeShare, currency };
+  // Half the pages read by himself is enough: the importer reads the rest with a learned skill or the AI reader.
+  if (okCount < Math.max(2, Math.ceil(total * 0.5))) return { ok: false, reason: `صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (${okCount}/${total})`, okCount, total, perfumeShare, currency };
   if (perfumeShare < 0.6) return { ok: false, reason: `أغلب منتجاته ليست عطوراً (${Math.round(perfumeShare * 100)}%)`, okCount, total, perfumeShare, currency };
   if (currencies.size > 1 && (currencies.get(currency!) || 0) < okCount * 0.8) return { ok: false, reason: 'الأسعار بأكثر من عملة', okCount, total, perfumeShare, currency };
   if (!pattern) return { ok: false, reason: 'روابط المنتجات بلا نمط ثابت', okCount, total, perfumeShare, currency };
@@ -249,6 +250,18 @@ export function domainsFromSearch(reply: unknown): string[] {
   }
   return [...out];
 }
+
+/**
+ * Shaheen's own address book: well-known online perfume shops and houses (Arab world, Europe, America, Asia).
+ * Only candidates — every one is checked like any other store (robots.txt, sitemap, pages, perfume, currency),
+ * so a shop that closed or blocks readers is simply not used. Lets the scout work with no AI search at all.
+ */
+export const KNOWN_STORES = [
+  'arabianoud.com', 'ajmal.com', 'rasasi.com', 'swissarabian.com', 'abdulsamadalqurashi.com', 'afnan.com', 'nabeel.com', 'alharamainperfumes.com',
+  'myperfumeshop.ae', 'perfumeboxuae.com', 'niceonesa.com', 'goldenscent.com', 'faces.com', 'wojooh.com', 'fragrancebuy.ca', 'maxaromas.com',
+  'fragrancenet.com', 'fragrancex.com', 'perfumania.com', 'luckyscent.com', 'twisted-lily.com', 'theperfumeshop.com', 'perfumeprice.co.uk', 'jovoy.com',
+  'scentsplit.com', 'perfumehub.com.my', 'lattafa-usa.com', 'perfume.com',
+];
 
 /** Official-shop guesses for the brands the store sells (lattafa → lattafa.com, lattafaperfumes.com…). */
 export function brandSiteGuesses(brands: string[], max = 30): { host: string; brand: string }[] {

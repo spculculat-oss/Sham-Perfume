@@ -131,6 +131,7 @@ test('source scout: perfume-only, product pattern, sample verdicts', () => {
   assert.equal(v.ok, true);
   assert.equal(v.currency, 'AED');
   const unreadable: Sample[] = ok.map((s, i) => (i < 4 ? { ...s, product: null } : s));
+  assert.equal(judgeSamples(ok.map((s, i) => (i < 3 ? { ...s, product: null } : s))).ok, true, 'half read by himself is enough');
   assert.equal(judgeSamples(unreadable).ok, false);
   const shoes: Sample[] = ok.map((s, i) => ({ ...s, product: prod(i, { name: `Running shoes ${i}` }) as never }));
   assert.match(judgeSamples(shoes).reason || '', /ليست عطور/);
