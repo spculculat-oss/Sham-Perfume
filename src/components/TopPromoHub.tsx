@@ -95,6 +95,15 @@ const SCENES: CommercialScene[] = [
   },
 ];
 
+/** Deterministic particle field for the reel's drifting golden mist (stable across renders/SSR). */
+const REEL_PARTICLES = Array.from({ length: 18 }, (_, i) => ({
+  x: (i * 37 + 11) % 100,
+  size: 2 + ((i * 7) % 4),
+  dur: 9 + ((i * 5) % 8),
+  delay: -((i * 13) % 17),
+  alpha: 0.35 + ((i * 3) % 5) / 10,
+}));
+
 const L10N = {
   screen_badge: { ar: 'مختارات دار شام الفاخرة', en: 'SHAM CURATED SELECTION' },
   live_commercial: { ar: 'مختارات دار شام', en: 'SHAM SELECTION' },
@@ -392,7 +401,8 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                     <img
                       src={scene.image}
                       alt={currentLang === 'ar' ? scene.titleAr : scene.titleEn}
-                      className="h-full w-full object-cover object-center transform scale-100 transition-transform duration-[8000ms] ease-out hover:scale-105"
+                      className={`sham-reel-img sham-reel-motion-${idx % 3} h-full w-full object-cover object-center`}
+                      data-paused={isPlaying ? undefined : 'true'}
                       loading={idx === 0 ? 'eager' : 'lazy'}
                     />
                     {/* Cinema Vignette & Editorial Gradients */}
@@ -401,6 +411,25 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                     <div className="absolute inset-0 ring-1 ring-inset ring-white/10" />
                   </div>
                 ))}
+
+                {/* Living mist: golden particles drifting over the reel (pure CSS, no video weight) */}
+                <div aria-hidden="true" className="sham-reel-mist pointer-events-none absolute inset-0 z-[15] overflow-hidden" data-paused={isPlaying ? undefined : 'true'}>
+                  {REEL_PARTICLES.map((pt, i) => (
+                    <span
+                      key={i}
+                      className="sham-reel-particle"
+                      style={{
+                        left: `${pt.x}%`,
+                        width: `${pt.size}px`,
+                        height: `${pt.size}px`,
+                        animationDuration: `${pt.dur}s`,
+                        animationDelay: `${pt.delay}s`,
+                        opacity: pt.alpha,
+                      }}
+                    />
+                  ))}
+                  <div className="sham-reel-sheen absolute inset-0" />
+                </div>
 
                 {/* Watermark / Commercial Branding */}
                 <div className="absolute top-4 start-4 sm:top-6 sm:start-6 z-20">
@@ -416,7 +445,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
 
                 {/* Cinema Bottom Subtitles & Story Caption */}
                 <div className="absolute bottom-5 start-4 end-4 sm:bottom-7 sm:start-7 sm:end-7 z-20 max-w-xl">
-                  <div className="space-y-2">
+                  <div key={activeScene.id} className="sham-reel-caption space-y-2">
                     <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-400 uppercase tracking-widest">
                       <Sparkles className="h-3 w-3 text-amber-400" />
                       {currentLang === 'ar' ? activeScene.moodAr : activeScene.moodEn}

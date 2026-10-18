@@ -2,3 +2,39 @@
 
 /* «مجتمع شام» messenger: hide the site's floating helpers so they never cover the message box. */
 body[data-sham-focus='messenger'] .sham-floating { display: none !important; }
+
+/* ── Sham cinema reel (TopPromoHub): real motion on the scene stills ── */
+@keyframes sham-kb-0 { 0% { transform: scale(1.04) translate3d(0,0,0); } 100% { transform: scale(1.18) translate3d(-3%,-2%,0); } }
+@keyframes sham-kb-1 { 0% { transform: scale(1.2) translate3d(2%,1%,0); } 100% { transform: scale(1.05) translate3d(-1%,-1%,0); } }
+@keyframes sham-kb-2 { 0% { transform: scale(1.06) translate3d(3%,0,0); } 100% { transform: scale(1.16) translate3d(-3%,-1.5%,0); } }
+@keyframes sham-mist-rise {
+  0% { transform: translate3d(0,0,0) scale(.6); opacity: 0; }
+  12% { opacity: 1; }
+  70% { opacity: .8; }
+  100% { transform: translate3d(-40px,-520px,0) scale(1.15); opacity: 0; }
+}
+@keyframes sham-sheen { 0%,100% { opacity: .15; transform: translateX(-25%); } 50% { opacity: .45; transform: translateX(25%); } }
+@keyframes sham-caption-in { from { opacity: 0; transform: translateY(14px); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+
+.sham-reel-img { will-change: transform; transform-origin: center; animation: 16s ease-in-out infinite alternate both; }
+.sham-reel-motion-0 { animation-name: sham-kb-0; }
+.sham-reel-motion-1 { animation-name: sham-kb-1; animation-duration: 18s; }
+.sham-reel-motion-2 { animation-name: sham-kb-2; animation-duration: 15s; }
+.sham-reel-particle {
+  position: absolute; bottom: -12px; border-radius: 9999px;
+  background: radial-gradient(circle, rgba(255,236,179,.95) 0%, rgba(251,191,36,.55) 45%, rgba(251,191,36,0) 75%);
+  box-shadow: 0 0 6px rgba(251,191,36,.6);
+  animation: sham-mist-rise linear infinite;
+}
+.sham-reel-sheen {
+  background: radial-gradient(60% 45% at 50% 40%, rgba(253,230,138,.18), transparent 70%);
+  mix-blend-mode: screen; animation: sham-sheen 11s ease-in-out infinite;
+}
+.sham-reel-caption { animation: sham-caption-in .9s cubic-bezier(.2,.7,.2,1) both; }
+[data-paused='true'].sham-reel-img,
+[data-paused='true'] .sham-reel-particle,
+[data-paused='true'] .sham-reel-sheen { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .sham-reel-img, .sham-reel-particle, .sham-reel-sheen, .sham-reel-caption { animation: none !important; }
+  .sham-reel-particle { display: none; }
+}
