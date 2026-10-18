@@ -284,9 +284,37 @@ git push origin <your-working-branch>
 **الإرسال لمحركات البحث:**
 - **IndexNow** فوراً لـ Bing وYandex وNaver وSeznam وYep (وDuckDuckGo/Ecosia/Yahoo عبر فهرس Bing)، بحد أقصى 200 رابط في الدفعة وبتأجيل إن لم يوجد جديد كافٍ.
 - **Bing Webmaster API** عند وجود `BING_WEBMASTER_API_KEY`.
-- **Google** لا يشترك في IndexNow، ونقطة `sitemap ping` القديمة أُغلقت سنة 2023؛ لذلك يعتمد على `sitemap.xml` + `robots.txt` + ملف التحقق، ورفع الخريطة تلقائياً عبر Search Console عند وجود `GSC_SERVICE_ACCOUNT_JSON`.
+- **Google** لا يشترك في IndexNow، ونقطة `sitemap ping` القديمة أُغلقت سنة 2023؛ لذلك يعتمد على `sitemap.xml` + `feed.xml` المعلنتين في `robots.txt` + ملف التحقق، ورفع الخريطة تلقائياً عبر Search Console عند وجود `GSC_SERVICE_ACCOUNT_JSON` (اختياري).
 
-**في اللوحة:** `/#admin` ← تبويب **«منارة شاهين»**: التقييم والملاحظات والمرحلة والدروس والخطوات القادمة وحالة المحركات وتقرير المندوب وتقييم شاهين، وزر «تشغيل دورة الآن» (مع خيار الإرسال). الـAPI: `GET /api/admin/seo` و`POST /api/admin/seo/run` (202، و409 لو فيه دورة شغالة، بحد 4 تشغيلات كل 10 دقائق). وللعموم: `GET /api/seo/status` و`/sitemap.xml` و`/robots.txt` و`/llms.txt` و`/feed.xml` و`/<key>.txt`.
+**الظهور من غير حساب Search Console (كل ده شغال تلقائياً):**
+
+أول حاجة: Search Console نفسه **مجاني** ومش محتاج بطاقة، وما فيش اشتراك مدفوع. اللي بيطلب بطاقة هو مشروع Google Cloud لو حبيت تشغّل الـAPI بحساب خدمة — وده اختياري بالكامل. الوكيل مش متوقف عليه:
+
+1. **الخريطة في robots.txt:** `sitemap.xml` بتتبني مع كل نشر وبتتعلن، ومعاها `lastmod` حقيقي لكل رابط.
+2. **الخلاصة كخريطة تانية:** `feed.xml` معلنة كـ`Sitemap:` تانية؛ محركات البحث بتقبل خلاصات RSS كخرائط، فده اكتشاف مستقل عن الخريطة الأساسية.
+3. **إشعار WebSub:** الخلاصة فيها `<atom:link rel="hub">`، والوكيل بيبعت `hub.mode=publish` لمحاور عامة **بس لما محتوى الخلاصة يتغيّر فعلاً** (بصمة FNV-1a بتمنع الإشعارات المكررة). مش إرسال فهرسة، لكنه بيبلّغ القارئ بالتحديث قبل الزحف الجاي.
+4. **IndexNow مباشرة:** لو نقطة التجميع `api.indexnow.org` وقعت أو رفضت الدفعة، الوكيل بيجرّب المحركات نفسها بالترتيب (Bing → Yandex → Seznam → Naver → Yep) لحد أول قبول، والنتيجة بتتسجل في `state.submissions`.
+5. **فحص وصول الزاحف:** كل دورة بتطلب الرئيسية وصفحة الأدوات وأول أداة **بمعرّف Googlebot** وتفحص رمز الاستجابة و`X-Robots-Tag` و`<meta name="robots">`. ده بيكشف أي حاجز فهرسة من برّه الموقع — نفس اللي بيبان في تقرير التغطية، لكن من غير حساب. النتيجة في اللوحة: «فحص وصول الزاحف 3/3».
+6. **قياس الأداء بلا مفتاح:** `probePageSpeed` بيقرأ Lighthouse العام (جوّال: أداء/SEO/إتاحة/أفضل الممارسات + LCP وCLS وTBT) مرة كل 24 ساعة كحد أقصى، بديل لتقرير Core Web Vitals في لوحة المالك.
+
+**تفعيل Search Console (مجاني — والملف جاهز في المستودع):**
+
+Search Console نفسه مجاني بالكامل ومش محتاج بطاقة؛ اللي بيطلب بطاقة هو مشروع Cloud لو حبيت API بحساب خدمة. الملف اللي جوجل أصدرته للموقع اتحفظ في `public/google7ef3d5aa6cf98197.html`، وبيتبني في جذر `docs/` و`dist/`، فالخطوات:
+
+1. افتح `https://search.google.com/search-console` وسجّل الدخول بحساب Google عادي.
+2. أضف خاصية من نوع **بادئة عنوان URL** (URL prefix) — مش «Domain»؛ خاصية الـDomain تحتاج سجل DNS مش متاح على `github.io`.
+3. أضف الرابطين كخاصيتين منفصلتين (لكل واحدة ملف تحقق خاص بها عند جوجل):
+   - `https://spculculat-oss.github.io/Sham-Perfume/` (النسخة المنشورة على Pages)
+   - `https://sham-perfume-49bf.vercel.app/` (الأصل الأساسي canonical)
+4. اختار طريقة التحقق **ملف HTML**؛ جوجل هتقرأ `/google7ef3d5aa6cf98197.html` مباشرة من جذر الموقع بعد النشر. (لو جوجل أصدرت ملفاً بتوكن مختلف، حطّه في `public/` بنفس الاسم وسجّله في `SITE.googleVerification` — والاختبارات هتمنع أي تعارض.)
+5. بعد التحقق: **Sitemaps** ← أضف `sitemap.xml` ثم `feed.xml`. جوجل هتقرأ الخريطتين تلقائياً بعد كده، ومش محتاج أي ping.
+6. **URL Inspection** ← اطلب فحص الرئيسية وصفحات الأدوات واضغط «طلب فهرسة» — ده المسار الرسمي الوحيد لإرسال رابط بعينه لجوجل من غير IndexNow.
+
+لو حبيت أتمتة رفع الخريطة بعد كده: أنشئ حساب خدمة في Google Cloud وشاركه في Search Console كـ«Full» ثم ضع `GSC_SERVICE_ACCOUNT_JSON` و`GSC_SITE_URL`. اختياري تماماً؛ الملفات والخريطة بتشتغل من غيره.
+
+**اللي محتاج حساب فعلاً (ومش موجود هنا):** عدد الظهور والنقرات، كلمات البحث اللي جابت زوار، وتغطية الفهرسة التفصيلية. دي بيانات مالك الموقع، ومفيش طريقة شريفة للحصول عليها من برّه. لو حبيتها بعدين: Search Console مجاني (تحقّق بملف أو وسم، والوكيل بيحط الملف تلقائياً لو ضفت `GOOGLE_SITE_VERIFICATION`)، أو Bing Webmaster Tools (مجاني وبيدعم الاستيراد من Search Console).
+
+**في اللوحة:** `/#admin` ← تبويب **«منارة شاهين»**: التقييم والملاحظات والمرحلة والدروس والخطوات القادمة وحالة المحركات وقنوات الظهور بلا حساب (WebSub + فحص الزاحف + الأداء) وتقرير المندوب وتقييم شاهين، وزر «تشغيل دورة الآن» (مع خيار الإرسال). الـAPI: `GET /api/admin/seo` و`POST /api/admin/seo/run` (202، و409 لو فيه دورة شغالة، بحد 4 تشغيلات كل 10 دقائق). وللعموم: `GET /api/seo/status` و`/sitemap.xml` و`/robots.txt` و`/llms.txt` و`/feed.xml` و`/<key>.txt`.
 
 **التشغيل المحلي:**
 
@@ -296,7 +324,7 @@ node --import tsx scripts/seo-build.mts dist        # ملفات SEO وصفحا�
 npm run build:pages                                 # نفس الشيء لـ docs/ + فحص Pages
 ```
 
-**المتغيرات:** `SEO_SITE_URL` (الأصل الأساسي)، `SEO_SUBMIT`، `SEO_ENGINE_ORDER` (ترتيب المحركات، والافتراضي `gemini,deepseek,openai,claude,openrouter,self_hosted` بعد استبعاد غير المهيأ)، `GSC_SERVICE_ACCOUNT_JSON` و`GSC_SITE_URL`، `BING_WEBMASTER_API_KEY`، `GOOGLE_SITE_VERIFICATION`، `BING_SITE_VERIFICATION`. كلها اختيارية؛ من غير أي مفتاح يظل الوكيل يفحص ويدرس ويبني الملفات، ومن غير IndexNow/فهارس يظل كل شيء صادقاً.
+**المتغيرات:** `SEO_SITE_URL` (الأصل الأساسي)، `SEO_SUBMIT`، `SEO_ENGINE_ORDER`، `WEBSUB_HUBS` (اختياري؛ محاور إشعار الخلاصة) (ترتيب المحركات، والافتراضي `gemini,deepseek,openai,claude,openrouter,self_hosted` بعد استبعاد غير المهيأ)، `GSC_SERVICE_ACCOUNT_JSON` و`GSC_SITE_URL`، `BING_WEBMASTER_API_KEY`، `GOOGLE_SITE_VERIFICATION`، `BING_SITE_VERIFICATION`. كلها اختيارية، ومنها كل حساب Search Console/Bing؛ من غير أي مفتاح يظل الوكيل يفحص ويدرس ويبني الملفات، ومن غير IndexNow/فهارس يظل كل شيء صادقاً.
 
 ## السعة والزوار المتزامنون
 
