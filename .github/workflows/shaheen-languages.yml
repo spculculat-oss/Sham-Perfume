@@ -1,0 +1,52 @@
+name: Shaheen language agent (وكيل اللغات)
+
+on:
+  schedule:
+    - cron: '11 9 * * *' # daily, after the doctor and memory runs
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: shaheen-languages
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.SHAHEEN_TOKEN || github.token }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install app dependencies
+        run: npm ci --ignore-scripts --prefer-offline --no-audit --no-fund
+
+      - name: Test before reporting
+        run: npm test
+
+      - name: Guard the publish token (CI commits must never look like the merchant's)
+        env:
+          TOK: ${{ secrets.SHAHEEN_TOKEN }}
+        run: |
+          if [ -n "$TOK" ]; then
+            case "$TOK" in ghp_*|github_pat_*) echo "SHAHEEN_TOKEN is a personal token — refusing to publish as the merchant."; exit 1;; esac
+          fi
+
+      - name: Audit the languages (digit systems, locale formatting, pack coverage)
+        run: npx --yes tsx scripts/shaheen-languages/run.mts
+
+      - name: Save the report (merged to the tip of main, never a force push)
+        if: github.ref == 'refs/heads/main'
+        env:
+          TOK: ${{ secrets.SHAHEEN_TOKEN || github.token }}
+        run: node scripts/ci/publish.mjs "chore: تحديث تقرير وكيل اللغات" "src/data/live/shaheen-languages.json"

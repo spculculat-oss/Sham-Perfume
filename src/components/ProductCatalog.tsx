@@ -1,3 +1,5 @@
+import { formatLocalizedNumber } from '../لغات/numerals';
+import { LocalizedNumberInput } from './LocalizedNumberInput';
 import React, { useState, useMemo } from 'react';
 import {
   Search,
@@ -295,12 +297,12 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({ onClose, current
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <Coins className="w-3.5 h-3.5 text-stone-400"/>
-                  <input type="number" value={minPrice} onChange={e=>setMinPrice(parseFloat(e.target.value)||0)}
+                  <LocalizedNumberInput lang={currentLang} value={minPrice} onValue={n=>setMinPrice(n||0)}
                     className="flex-1 px-2 py-1 rounded border border-stone-200 text-xs focus:outline-none focus:ring-1 focus:ring-amber-300"/>
                 </div>
                 <div className="flex items-center gap-2">
                   <Coins className="w-3.5 h-3.5 text-stone-400"/>
-                  <input type="number" value={maxPrice} onChange={e=>setMaxPrice(parseFloat(e.target.value)||10000)}
+                  <LocalizedNumberInput lang={currentLang} value={maxPrice} onValue={n=>setMaxPrice(n||10000)}
                     className="flex-1 px-2 py-1 rounded border border-stone-200 text-xs focus:outline-none focus:ring-1 focus:ring-amber-300"/>
                 </div>
                 <button onClick={()=>{setMinPrice(0);setMaxPrice(10000);}} className="text-xs text-stone-400 hover:text-stone-600 w-full text-center py-1">
@@ -437,7 +439,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({ onClose, current
                                 </button>
                               </div>
                               <div className="text-right">
-                                <div className="text-sm font-bold text-stone-900">{(item.product.retailPrice * item.qty).toLocaleString()} {CUR}</div>
+                                <div className="text-sm font-bold text-stone-900">{formatLocalizedNumber(currentLang, item.product.retailPrice * item.qty, { maximumFractionDigits: 2 })} {CUR}</div>
                                 <button onClick={()=>removeFromCart(productId)} className="text-xs text-red-600 hover:text-red-800 mt-0.5 inline-block">
                                   <Trash2 className="w-3 h-3 inline"/> {L('cart_clear')}
                                 </button>
@@ -467,15 +469,15 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({ onClose, current
                       </div>
                       <div className="flex justify-between">
                         <span className="text-stone-600">{L('cart_platform_revenue_total')}:</span>
-                        <span className="text-amber-700 font-bold">{cartPlatformRevenue.toLocaleString()} {CUR}</span>
+                        <span className="text-amber-700 font-bold">{formatLocalizedNumber(currentLang, cartPlatformRevenue, { maximumFractionDigits: 2 })} {CUR}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-stone-500">{L('cart_total_cost')}:</span>
-                        <span className="text-blue-700 font-bold">{cartTotalCost.toLocaleString()} {CUR}</span>
+                        <span className="text-blue-700 font-bold">{formatLocalizedNumber(currentLang, cartTotalCost, { maximumFractionDigits: 2 })} {CUR}</span>
                       </div>
                       <div className="border-t border-stone-200 mt-2 pt-2 flex justify-between font-bold">
                         <span className="text-stone-900">{L('cart_total_retail')}:</span>
-                        <span className="text-emerald-700 text-lg">{cartTotalRetail.toLocaleString()} {CUR}</span>
+                        <span className="text-emerald-700 text-lg">{formatLocalizedNumber(currentLang, cartTotalRetail, { maximumFractionDigits: 2 })} {CUR}</span>
                       </div>
                     </div>
                     <div className="mt-4 p-3 rounded-lg bg-emerald-50 border border-emerald-200/60">

@@ -26,11 +26,13 @@ import {
   findCurrencyByCode,
   convertCurrency,
 } from '../data/worldCurrencies';
-import { calculatePerfumeCosting, formatNum } from '../utils/calculations';
+import { calculatePerfumeCosting } from '../utils/calculations';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
 import { LText, makeT, fmt, pickArEn } from '../لغات/localize';
 import { uiLabel } from '../لغات/uiTextL10n';
+import { LocalizedNumberInput } from './LocalizedNumberInput';
+import { formatLocalizedNumber } from '../لغات/numerals';
 
 interface CostCalculatorProps {
   currentLang?: SupportedLanguage;
@@ -1015,6 +1017,8 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
 }) => {
   const rtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
+  // Read-only numbers speak the site language too (digits + separators), never a fixed en-US.
+  const formatNum = (value: number, digits = 2): string => formatLocalizedNumber(currentLang, value, { fractionDigits: digits });
   const [costing, setCosting] = useState<CostingState>({
     oilCostPerKg: 650, // default SAR per kg for premium French/Oriental oil
     alcoholCostPerLiter: 35, // default SAR per liter
@@ -1218,15 +1222,13 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
                 <label className="text-xs font-medium text-stone-700 mb-1 block">
                   {fmt(L('oil_cost_tpl'), { cur: costing.currency })}
                 </label>
-                <input
-                  type="number"
-                  min="0"
-                  step="10"
+                <LocalizedNumberInput
+                  lang={currentLang}
                   value={costing.oilCostPerKg}
-                  onChange={(e) =>
+                  onValue={(n) =>
                     setCosting((prev) => ({
                       ...prev,
-                      oilCostPerKg: parseFloat(e.target.value) || 0,
+                      oilCostPerKg: (Number.isFinite(n) ? n : 0),
                     }))
                   }
                   className={`w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm font-mono-numbers text-stone-900 focus:outline-none focus:border-amber-700 ${rtl ? 'text-right' : 'text-left'}`}
@@ -1241,15 +1243,13 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
                 <label className="text-xs font-medium text-stone-700 mb-1 block">
                   {fmt(L('ethanol_cost_tpl'), { cur: costing.currency })}
                 </label>
-                <input
-                  type="number"
-                  min="0"
-                  step="5"
+                <LocalizedNumberInput
+                  lang={currentLang}
                   value={costing.alcoholCostPerLiter}
-                  onChange={(e) =>
+                  onValue={(n) =>
                     setCosting((prev) => ({
                       ...prev,
-                      alcoholCostPerLiter: parseFloat(e.target.value) || 0,
+                      alcoholCostPerLiter: (Number.isFinite(n) ? n : 0),
                     }))
                   }
                   className={`w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm font-mono-numbers text-stone-900 focus:outline-none focus:border-amber-700 ${rtl ? 'text-right' : 'text-left'}`}
@@ -1264,15 +1264,13 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
                 <label className="text-xs font-medium text-stone-700 mb-1 block">
                   {fmt(L('bottle_cost_tpl'), { cur: costing.currency })}
                 </label>
-                <input
-                  type="number"
-                  min="0"
-                  step="1"
+                <LocalizedNumberInput
+                  lang={currentLang}
                   value={costing.bottleUnitCost}
-                  onChange={(e) =>
+                  onValue={(n) =>
                     setCosting((prev) => ({
                       ...prev,
-                      bottleUnitCost: parseFloat(e.target.value) || 0,
+                      bottleUnitCost: (Number.isFinite(n) ? n : 0),
                     }))
                   }
                   className={`w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm font-mono-numbers text-stone-900 focus:outline-none focus:border-amber-700 ${rtl ? 'text-right' : 'text-left'}`}
@@ -1284,15 +1282,13 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
                 <label className="text-xs font-medium text-stone-700 mb-1 block">
                   {fmt(L('box_cost_tpl'), { cur: costing.currency })}
                 </label>
-                <input
-                  type="number"
-                  min="0"
-                  step="1"
+                <LocalizedNumberInput
+                  lang={currentLang}
                   value={costing.packagingUnitCost}
-                  onChange={(e) =>
+                  onValue={(n) =>
                     setCosting((prev) => ({
                       ...prev,
-                      packagingUnitCost: parseFloat(e.target.value) || 0,
+                      packagingUnitCost: (Number.isFinite(n) ? n : 0),
                     }))
                   }
                   className={`w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm font-mono-numbers text-stone-900 focus:outline-none focus:border-amber-700 ${rtl ? 'text-right' : 'text-left'}`}
@@ -1304,15 +1300,13 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
                 <label className="text-xs font-medium text-stone-700 mb-1 block">
                   {fmt(L('labor_cost_tpl'), { cur: costing.currency })}
                 </label>
-                <input
-                  type="number"
-                  min="0"
-                  step="1"
+                <LocalizedNumberInput
+                  lang={currentLang}
                   value={costing.laborAndOverheadPerUnit}
-                  onChange={(e) =>
+                  onValue={(n) =>
                     setCosting((prev) => ({
                       ...prev,
-                      laborAndOverheadPerUnit: parseFloat(e.target.value) || 0,
+                      laborAndOverheadPerUnit: (Number.isFinite(n) ? n : 0),
                     }))
                   }
                   className={`w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm font-mono-numbers text-stone-900 focus:outline-none focus:border-amber-700 ${rtl ? 'text-right' : 'text-left'}`}
@@ -1324,16 +1318,14 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
                 <label className="text-xs font-medium text-stone-700 mb-1 block">
                   {L('batch_label')}
                 </label>
-                <input
-                  type="number"
-                  min="1"
-                  max="10000"
-                  step="10"
+                <LocalizedNumberInput
+                  lang={currentLang}
+                  integer
                   value={costing.batchSize}
-                  onChange={(e) =>
+                  onValue={(n) =>
                     setCosting((prev) => ({
                       ...prev,
-                      batchSize: Math.max(1, parseInt(e.target.value) || 1),
+                      batchSize: Math.max(1, Math.trunc(Number.isFinite(n) ? n : NaN) || 1),
                     }))
                   }
                   className={`w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm font-mono-numbers text-stone-900 focus:outline-none focus:border-amber-700 ${rtl ? 'text-right' : 'text-left'}`}

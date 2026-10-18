@@ -127,7 +127,7 @@ export function formatProductPriceInCountry(
       maximumFractionDigits: maxFraction,
     }).format(localAmount);
   } catch {
-    numStr = localAmount.toLocaleString();
+    numStr = localAmount.toLocaleString('en-US');
   }
 
   const symbol = lang === 'ar' ? meta.symbolAr : meta.symbolEn;

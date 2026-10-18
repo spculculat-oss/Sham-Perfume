@@ -12,6 +12,7 @@
  *   languageReport('ar'); // «100 لغة مدعومة، الإعدادات كاملة…»
  */
 export * from './localize';
+export * from './numerals';
 export * from './i18n';
 export * from './localizedContent';
 export * from './contentLabels';

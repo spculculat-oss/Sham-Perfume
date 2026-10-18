@@ -57,6 +57,7 @@ if (!env.COUNCIL_FORCE && file.meetings[0]?.date === date) {
 const data: LiveData = {
   supervisor: read('ai-supervisor.json'), school: read('shaheen-school.json'), sources: read('import-sources.json'), review: read('store-review.json'),
   seo: read('seo-agent.json'), news: read('shaheen-news.json'), quota: read('ai-quota.json'), skills: read('shaheen-skills.json'), manus: read('manus-audit.json'), intake: read('aistudio-intake.json'),
+  languages: read('shaheen-languages.json'),
 };
 const openTasks = file.tasks.filter((t) => t.status === 'open');
 const briefing = buildBriefing(data, now, openTasks);

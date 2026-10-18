@@ -1,3 +1,4 @@
+import { LocalizedNumberInput } from './LocalizedNumberInput';
 import React, { useState } from 'react';
 import {
   Layers,
@@ -890,13 +891,12 @@ export const PyramidCalculator: React.FC<PyramidCalculatorProps> = ({
 
             <div className="sm:col-span-2">
               <div className="relative">
-                <input
-                  type="number"
-                  min="1"
-                  max="100"
-                  step="1"
+                <LocalizedNumberInput
+                  lang={currentLang}
+                  min={1}
+                  max={100}
                   value={newNotePct}
-                  onChange={(e) => setNewNotePct(parseFloat(e.target.value) || 0)}
+                  onValue={(n) => setNewNotePct(n || 0)}
                   className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-mono-numbers text-stone-900 focus:outline-none focus:border-amber-600"
                 />
                 <span className={`absolute ${rtl ? 'left-3' : 'right-3'} top-2.5 text-xs text-stone-400`}>%</span>
@@ -1126,13 +1126,12 @@ export const PyramidCalculator: React.FC<PyramidCalculatorProps> = ({
 
               <div className="sm:col-span-2">
                 <div className="relative">
-                  <input
-                    type="number"
-                    min="1"
-                    max="100"
-                    step="1"
+                  <LocalizedNumberInput
+                    lang={currentLang}
+                    min={1}
+                    max={100}
                     value={newNotePct}
-                    onChange={(e) => setNewNotePct(parseFloat(e.target.value) || 0)}
+                    onValue={(n) => setNewNotePct(n || 0)}
                     className="w-full px-2.5 py-2 bg-stone-50 border border-stone-200 rounded-lg text-xs font-mono-numbers text-stone-900 focus:outline-none focus:border-amber-700"
                   />
                   <span className={`absolute ${rtl ? 'left-2' : 'right-2'} top-2 text-xs text-stone-400`}>%</span>
@@ -1215,15 +1214,12 @@ export const PyramidCalculator: React.FC<PyramidCalculatorProps> = ({
 
                       {/* Percentage Controller */}
                       <div className="flex items-center gap-1">
-                        <input
-                          type="number"
-                          min="0"
-                          max="100"
-                          step="1"
+                        <LocalizedNumberInput
+                          lang={currentLang}
+                          min={0}
+                          max={100}
                           value={item.percentageOfOil}
-                          onChange={(e) =>
-                            handleUpdateNotePct(item.id, parseFloat(e.target.value) || 0)
-                          }
+                          onValue={(n) => handleUpdateNotePct(item.id, n || 0)}
                           className="w-14 px-2 py-1 bg-stone-50 border border-stone-200 rounded text-xs font-mono-numbers text-center text-stone-900"
                         />
                         <span className="text-[11px] text-stone-500">%</span>

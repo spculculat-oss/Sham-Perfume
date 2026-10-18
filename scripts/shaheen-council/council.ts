@@ -106,6 +106,8 @@ const hoursSince = (iso: unknown, now: number) => (typeof iso === 'string' && Da
 
 export interface LiveData {
   supervisor?: unknown; school?: unknown; sources?: unknown; review?: unknown; seo?: unknown; news?: unknown; quota?: unknown; skills?: unknown; manus?: unknown; intake?: unknown;
+  /** «وكيل اللغات» — digit systems following the site language, bare-locale formatting, pack coverage. */
+  languages?: unknown;
 }
 
 /** What the bots report, in plain Arabic lines, plus rule-based signals (the agenda; the minutes without AI). */
@@ -194,6 +196,30 @@ export function buildBriefing(d: LiveData, now: number, openTasks: Task[] = []):
     decision: { title: 'إصلاح الفحوص الفاشلة في آخر تحديث', detail: `الفحوص الفاشلة: ${failing.join('، ')} (src/data/live/aistudio-intake.json).`, area: 'reliability', priority: 'high', kind: 'task' } });
   const manusScore = n(o(d.manus).score);
   if (manusScore !== undefined) facts.push(`تدقيق الوكيل الخلفي: ${manusScore}/10.`);
+
+  // «وكيل اللغات» — the language specialist under Shaheen (digits follow the site language, packs measured)
+  const langReport = o(d.languages);
+  const langScore = n(langReport.score);
+  if (langScore !== undefined) {
+    const listing = (v: unknown, max = 6): string[] => (Array.isArray(v) ? v as unknown[] : []).map((h) => `${String(o(h).file || '')}:${n(o(h).line) ?? '?'}`).filter((s) => s.length > 1).slice(0, max);
+    const publicInputs = listing(langReport.publicNumberInputs, 8);
+    const publicCount = (Array.isArray(langReport.publicNumberInputs) ? langReport.publicNumberInputs as unknown[] : []).length;
+    const bareCount = (Array.isArray(langReport.bareLocaleFormatting) ? langReport.bareLocaleFormatting as unknown[] : []).length;
+    const clampCount = (Array.isArray(langReport.languageClamps) ? langReport.languageClamps as unknown[] : []).length;
+    const incomplete = (Array.isArray(langReport.incompletePacks) ? langReport.incompletePacks as unknown[] : []).map(o);
+    facts.push(`اللغات: ${n(langReport.languageCount) ?? '—'} لغة (${n(langReport.fullyCovered) ?? '—'} مكتملة الحزم)، نتيجة وكيل اللغات ${langScore}/100 — حقول أرقام الزوار بلغة المتصفح: ${publicCount}، تنسيق بلا لغة: ${bareCount}، تقليل عربي/إنجليزي: ${clampCount}.`);
+    if (publicCount > 0) {
+      push({ area: 'experience', priority: 'high', text: `حقول أرقام في واجهات الزوار تُظهر أرقام لغة متصفح الزائر لا لغة الموقع (${publicCount}): ${publicInputs.join('، ')}`,
+        decision: { title: 'توحيد أرقام حقول الزوار على لغة الموقع', detail: `وكيل اللغات وجد حقول <input type="number"> تتبع أرقام نظام الزائر (مثل ظهور ٦٥٠ على صفحة ألمانية). حوّلها إلى LocalizedNumberInput مع src/لغات/numerals.ts في: ${publicInputs.join('، ')} (src/data/live/shaheen-languages.json).`, area: 'experience', priority: 'high', kind: 'task' } });
+    }
+    if (incomplete.length) {
+      const names = incomplete.map((p) => `${String(p.lang)} (متجر ${String(p.storeCore)}، بنر ${String(p.banner)})`).join('، ');
+      push({ area: 'experience', priority: 'medium', text: `حزم لغات غير مكتملة (احتياطي إنجليزي): ${names}`,
+        decision: { title: 'استكمال حزم اللغات الناقصة', detail: `لغات ينقصها مترجمات حزم المتجر/البنر: ${names}. أضف النصوص الناقصة في src/لغات (storeL10nExt/bannerL10nData) مع الحفاظ على الاحتياطي الإنجليزي.`, area: 'experience', priority: 'medium', kind: 'task' } });
+    }
+    if (clampCount > 0) push({ area: 'experience', priority: 'medium', text: `تقليل صارم للغة إلى عربي/إنجليزي في ${clampCount} موضع (راجع تقرير وكيل اللغات)` });
+    if (bareCount > 0 && publicCount === 0) push({ area: 'experience', priority: 'low', text: `تنسيق أرقام/تواريخ بلا لغة صريحة في ${bareCount} موضع — الأرقام المعروضة قد تتبع لغة متصفح الزائر` });
+  }
 
   if (openTasks.length) facts.push(`مهام تطوير مفتوحة: ${openTasks.length} — ${openTasks.slice(0, 5).map((t) => t.title).join(' | ')}`);
   return { at: new Date(now).toISOString(), facts, signals };

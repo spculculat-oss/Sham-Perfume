@@ -21,6 +21,7 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
+import { formatLocalizedNumber, numeralLocaleTag } from '../لغات/numerals';
 import { isRTL } from '../لغات/localizedContent';
 import {
   getSavedPaymentMethods,
@@ -857,12 +858,12 @@ export const PaymentEnvironmentModal: React.FC<Props> = ({
                           </span>
                         </div>
                         <div className="text-[11px] text-stone-500">
-                          {tx.paymentMethodTitle} · {new Date(tx.createdAt).toLocaleDateString()}
+                          {tx.paymentMethodTitle} · {new Date(tx.createdAt).toLocaleDateString(numeralLocaleTag(currentLang))}
                         </div>
                       </div>
                       <div className="text-end font-mono">
                         <div className="font-extrabold text-stone-900 text-sm">
-                          {tx.amount.toLocaleString()} {tx.currency}
+                          {formatLocalizedNumber(currentLang, tx.amount, { maximumFractionDigits: 2 })} {tx.currency}
                         </div>
                         <div className="text-[10px] text-stone-400">Auth: {tx.authCode}</div>
                       </div>
