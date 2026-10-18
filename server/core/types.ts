@@ -1,3 +1,4 @@
+import type { FinanceOrder, FinanceSession, FinanceEntry, FinanceAttempt, FinanceIssue, PaymentRegistration, FinanceReport, FinanceReview, FinanceRun } from '../finance/types';
 /**
  * Sham Core — shared domain types.
  * Every entity is owned by Sham's own storage; no provider ever owns business data.
@@ -280,6 +281,15 @@ export interface CoreSettings {
 }
 
 export interface Collections {
+  financeOrders: FinanceOrder;
+  financeSessions: FinanceSession;
+  financeEntries: FinanceEntry;
+  financeAttempts: FinanceAttempt;
+  financeIssues: FinanceIssue;
+  paymentRegistrations: PaymentRegistration;
+  financeReports: FinanceReport;
+  financeReviews: FinanceReview;
+  financeRuns: FinanceRun;
   services: ServiceDef;
   products: Product;
   knowledge: KnowledgeDoc;

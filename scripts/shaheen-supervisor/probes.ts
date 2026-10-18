@@ -277,7 +277,21 @@ function seoAgentProbes(ctx: ProbeContext): Probe[] {
   return [{ tool: 'seo_agent', question: 'حالة منارة شاهين (SEO والمندوب الإعلامي)', answer, ms: 0, ok: true, findings: [...findings, ...(state.audit.bySeverity.critical > 0 ? [{ severe: false, text: state.audit.findings.find((f) => f.severity === 'critical')?.title || '' }].filter((f) => f.text) : [])] }];
 }
 
+/** Only a redacted health status reaches the supervisor's public report. Never export the ledger. */
+async function financeProbes(ctx: ProbeContext): Promise<Probe[]> {
+  if (!ctx.adminToken) return [];
+  const r = await timed(() => json<{ persistent: boolean; overdue: boolean; criticalIssues: number; lastRunAt: string | null }>(ctx.fetch,
+    `${ctx.site}/api/admin/finance/status`, { headers: { Authorization: `Bearer ${ctx.adminToken}` } }, 15000));
+  const findings: Probe['findings'] = [];
+  if (r.value && !r.value.persistent) findings.push({ severe: true, text: 'الإدارة المالية بلا تخزين دائم — الدفع الحي محجوب' });
+  if (r.value?.overdue) findings.push({ severe: false, text: 'الفحص المالي الدوري لم يعمل أو تجاوز 36 ساعة' });
+  if (r.value?.criticalIssues) findings.push({ severe: true, text: 'توجد ملاحظات مالية حرجة في لوحة الإدارة الخاصة' });
+  return [{ tool: 'finance_agent', question: 'سلامة الإدارة المالية والجدولة', answer: r.value ? 'فحص حالة أمين شاهين فقط؛ التفاصيل المالية وبيانات الطلبات لا تخرج من لوحة الإدارة.' : '',
+    ms: r.ms, ok: Boolean(r.value), error: r.error ? 'تعذّر فحص الإدارة المالية' : undefined, findings }];
+}
+
 export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<Probe[]>> = {
+  finance_agent: financeProbes,
   shaheen_chat: chatProbes,
   sham_assistant: assistantProbes,
   news_articles: newsArticleProbes,

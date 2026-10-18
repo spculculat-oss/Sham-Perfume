@@ -21,11 +21,12 @@ export function kashierConfig(env: Env = process.env): KashierConfig | undefined
   const merchantId = env.KASHIER_MERCHANT_ID?.trim() || '';
   const apiKey = env.KASHIER_API_KEY?.trim() || '';
   const secretKey = env.KASHIER_SECRET_KEY?.trim() || '';
-  if (!/^MID-\d+-\d+$/i.test(merchantId) || !apiKey || !secretKey) return undefined;
-  const mode = env.KASHIER_MODE?.trim().toLowerCase() === 'live' ? 'live' : 'test';
+  const selectedMode = env.KASHIER_MODE?.trim().toLowerCase() || 'test';
+  if (!/^MID-\d+-\d+$/i.test(merchantId) || !apiKey || !secretKey || apiKey === secretKey || !['test', 'live'].includes(selectedMode)) return undefined;
+  const mode = selectedMode as 'test' | 'live';
   const wanted = (env.KASHIER_CURRENCIES || 'EGP').toUpperCase().split(',').map((c) => c.trim());
-  const currencies = wanted.filter((c): c is string => (KASHIER_CURRENCIES as readonly string[]).includes(c));
-  return { merchantId, apiKey, secretKey, mode, currencies: currencies.length ? currencies : ['EGP'] };
+  if (wanted.some((c) => !(KASHIER_CURRENCIES as readonly string[]).includes(c))) return undefined;
+  return { merchantId, apiKey, secretKey, mode, currencies: [...new Set(wanted)] };
 }
 
 export const kashierApi = (mode: 'test' | 'live') => (mode === 'live' ? 'https://api.kashier.io' : 'https://test-api.kashier.io');
@@ -37,7 +38,7 @@ export class KashierError extends Error {
 export interface SessionRequest {
   order: string; amount: number; currency: string; merchantRedirect: string; serverWebhook?: string;
   display: 'ar' | 'en'; description: string; customer: { email: string; reference: string };
-  metaData: Record<string, unknown>; expireMinutes?: number;
+  metaData: Record<string, unknown>; expireMinutes?: number; allowedMethods?: ('card' | 'wallet')[];
 }
 
 /** POST /v3/payment/sessions → the hosted checkout page the visitor is sent to. */
@@ -46,8 +47,8 @@ export async function createSession(cfg: KashierConfig, input: SessionRequest, r
     expireAt: new Date(Date.now() + (input.expireMinutes || 60) * 60_000).toISOString(),
     maxFailureAttempts: 3, paymentType: 'credit', amount: input.amount.toFixed(2), currency: input.currency,
     order: input.order, merchantRedirect: input.merchantRedirect, display: input.display, type: 'one-time',
-    allowedMethods: 'card,wallet', merchantId: cfg.merchantId, failureRedirect: false, brandColor: '#b45309',
-    defaultMethod: 'card', description: input.description.slice(0, 118), customer: input.customer,
+    allowedMethods: (input.allowedMethods || ['card', 'wallet']).join(','), merchantId: cfg.merchantId, failureRedirect: false, brandColor: '#b45309',
+    defaultMethod: input.allowedMethods?.[0] || 'card', description: input.description.slice(0, 118), customer: input.customer,
     metaData: input.metaData, ...(input.serverWebhook ? { serverWebhook: input.serverWebhook } : {}),
   };
   let response: Response;
@@ -59,15 +60,17 @@ export async function createSession(cfg: KashierConfig, input: SessionRequest, r
   } catch { throw new KashierError('UNREACHABLE', 0); }
   const data = await response.json().catch(() => ({})) as { _id?: string; sessionUrl?: string; message?: string; code?: string; error?: { code?: string } };
   if (!response.ok || !data.sessionUrl || !data._id) {
-    throw new KashierError(String(data.code || data.error?.code || (response.status === 401 || response.status === 403 ? 'INVALID_KEYS' : 'REJECTED')), response.status);
+    throw new KashierError(response.status === 401 || response.status === 403 ? 'INVALID_KEYS' : 'REJECTED', response.status);
   }
+  if (!safeKashierSessionUrl(data.sessionUrl) || !/^[A-Za-z0-9_-]{6,64}$/.test(data._id)) throw new KashierError('INVALID_RESPONSE', 502);
   return { id: data._id, sessionUrl: data.sessionUrl };
 }
 
 export type PaymentState = 'paid' | 'failed' | 'pending';
 export interface SessionPayment { state: PaymentState; status: string; order: string; amount: number; currency: string; method?: string; metaData?: Record<string, unknown> }
 
-const PAID = new Set(['PAID', 'SUCCESS', 'CAPTURED', 'COMPLETED', 'APPROVED']);
+// APPROVED/AUTHORIZED is not necessarily captured; it must never count as collected money.
+const PAID = new Set(['PAID', 'SUCCESS', 'CAPTURED', 'COMPLETED']);
 const FAILED = new Set(['FAILED', 'FAILURE', 'EXPIRED', 'ABANDONED', 'CANCELLED', 'CANCELED', 'DECLINED', 'VOIDED', 'REFUNDED']);
 export const paymentState = (status: string): PaymentState => (PAID.has(status.toUpperCase()) ? 'paid' : FAILED.has(status.toUpperCase()) ? 'failed' : 'pending');
 
@@ -84,7 +87,9 @@ export async function sessionPayment(cfg: KashierConfig, sessionId: string, requ
   if (!response.ok || !body.data) throw new KashierError(response.status === 404 ? 'NOT_FOUND' : 'REJECTED', response.status);
   const d = body.data;
   const status = String(d.status || 'UNKNOWN');
-  return { state: paymentState(status), status, order: String(d.merchantOrderId || ''), amount: Number(d.amount) || 0, currency: String(d.currency || ''), method: d.method, metaData: d.metaData };
+  const amount = Number(d.amount);
+  if (!Number.isFinite(amount) || amount <= 0 || !/^[A-Z]{3}$/.test(String(d.currency)) || !/^[A-Za-z0-9_-]{3,100}$/.test(String(d.merchantOrderId))) throw new KashierError('INVALID_RESPONSE', 502);
+  return { state: paymentState(status), status, order: String(d.merchantOrderId), amount, currency: String(d.currency), method: d.method, metaData: d.metaData };
 }
 
 /**
@@ -98,8 +103,18 @@ export function webhookSignature(data: Record<string, unknown>, apiKey: string):
 }
 
 export function verifyWebhook(data: unknown, signature: string | undefined, apiKey: string): data is Record<string, unknown> {
-  if (!data || typeof data !== 'object' || !signature) return false;
+  if (!data || typeof data !== 'object' || Array.isArray(data) || !apiKey || !signature || !/^[a-f0-9]{64}$/i.test(signature.trim())) return false;
+  const d = data as Record<string, unknown>;
+  const keys = d.signatureKeys;
+  if (!Array.isArray(keys) || !keys.length || new Set(keys).size !== keys.length ||
+    keys.some((k) => typeof k !== 'string' || !Object.hasOwn(d, k) || !['string', 'number', 'boolean'].includes(typeof d[k])) ||
+    ['amount', 'currency', 'merchantOrderId', 'status'].some((k) => !keys.includes(k))) return false;
   const expected = Buffer.from(webhookSignature(data as Record<string, unknown>, apiKey));
   const given = Buffer.from(signature.trim().toLowerCase());
   return expected.length === given.length && timingSafeEqual(expected, given);
+}
+
+/** The browser may be redirected only to the documented provider-hosted checkout. */
+export function safeKashierSessionUrl(value: string): boolean {
+  try { const u = new URL(value); return u.protocol === 'https:' && u.hostname === 'payments.kashier.io' && !u.port && !u.username && !u.password && /^\/session\/[A-Za-z0-9_-]{6,64}$/.test(u.pathname); } catch { return false; }
 }

@@ -4,6 +4,8 @@
  *   /api/admin/*      management API (Bearer SHAM_ADMIN_TOKEN, constant-time compare)
  */
 import express from 'express';
+import { FinanceService } from '../finance/service';
+import { createFinanceRouter } from '../finance/router';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { Repository, ValidationError, publicView } from './repository';
 import { ShaheenMemory } from './memory';
@@ -53,6 +55,7 @@ export function createShamCore(options: CoreOptions = {}) {
     store = createStore({ SHAM_STORE: 'memory' });
   }
   const repo = new Repository(store, env);
+  const finance = new FinanceService(store, env, { fetch: options.fetch });
   // Shared with the Shaheen chat router: outcomes + capacity parts, read by the maintenance agent.
   const runtime = options.runtime || new ShaheenRuntime(runningVersion(env));
   const orchestrator = new Orchestrator(repo, { env, fetch: options.fetch });
@@ -222,6 +225,8 @@ export function createShamCore(options: CoreOptions = {}) {
     }
     next();
   });
+
+  admin.use('/finance', createFinanceRouter(finance));
 
   // What this server learned (questions + answers, no visitor data): merged into
   // src/data/live/shaheen-memory.json by scripts/shaheen-memory every two hours.
@@ -527,5 +532,5 @@ export function createShamCore(options: CoreOptions = {}) {
     res.json(out);
   }));
 
-  return { assistant, admin, repo, orchestrator, store, runtime, memory, seo };
+  return { assistant, admin, repo, orchestrator, store, runtime, memory, seo, finance };
 }

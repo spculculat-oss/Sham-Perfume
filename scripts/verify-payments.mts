@@ -32,17 +32,17 @@ const mid = env.KASHIER_MERCHANT_ID!.trim();
 const secret = env.KASHIER_SECRET_KEY!.trim();
 const apiKey = env.KASHIER_API_KEY!.trim();
 if (!/^MID-\d+-\d+$/i.test(mid)) note('warning', 'Kashier KASHIER_MERCHANT_ID', 'should look like MID-12345-123 (shown under your name in the Kashier dashboard)');
-if (!secret.includes('$')) note('warning', 'Kashier KASHIER_SECRET_KEY', `does not look like a Kashier Secret Key (expected two parts joined by $, length ${secret.length}). If you saved your login password here, delete it and change the password.`);
+if (!secret.includes('$')) note('warning', 'Kashier KASHIER_SECRET_KEY', `does not look like a Kashier Secret Key (expected two parts joined by $). If you saved your login password here, delete it and change the password.`);
 if (apiKey === secret) note('warning', 'Kashier keys', 'KASHIER_API_KEY and KASHIER_SECRET_KEY are the same value — they are two different keys');
 const mode = env.KASHIER_MODE?.trim().toLowerCase() || 'test';
-if (!['test', 'live'].includes(mode)) note('warning', 'Kashier KASHIER_MODE', 'must be test or live (using test)');
+if (!['test', 'live'].includes(mode)) note('warning', 'Kashier KASHIER_MODE', 'must be test or live; verification is disabled until corrected');
 
 const cfg = kashierConfig(env);
 if (!cfg) { note('error', 'Kashier', 'the secrets are not usable (check KASHIER_MERCHANT_ID)'); record('invalid_key'); process.exit(0); }
 
 async function attempt(m: 'test' | 'live') {
   return createSession({ ...cfg!, mode: m }, {
-    order: `VERIFY-${Date.now()}`, amount: 1, currency: 'EGP', display: 'en', expireMinutes: 15,
+    order: `VERIFY-${Date.now()}`, allowedMethods: ['card'], amount: 1, currency: 'EGP', display: 'en', expireMinutes: 15,
     merchantRedirect: 'https://spculculat-oss.github.io/Sham-Perfume/', description: 'Sham Store key check (not a real order)',
     customer: { email: 'verify@sham-perfume.invalid', reference: 'key-check' }, metaData: { purpose: 'key-check' },
   });
@@ -50,16 +50,15 @@ async function attempt(m: 'test' | 'live') {
 
 try {
   const session = await attempt(cfg.mode);
-  note('notice', `Kashier ${cfg.mode}`, `ok — keys work, a ${cfg.mode} payment page opened (${new URL(session.sessionUrl).host}); MID ${mid}`);
+  note('notice', `Kashier ${cfg.mode}`, `ok — keys work, a ${cfg.mode} payment page opened (${new URL(session.sessionUrl).host}); this does not prove live account or method approval`);
   summary(`- Kashier (${cfg.mode}): ✅ keys work`);
   record('ok');
 } catch (error) {
   const e = error instanceof KashierError ? error : new KashierError('FAILED', 0);
   let hint = '';
   if (e.status === 401 || e.status === 403 || e.code === 'INVALID_KEYS') {
-    // Keys are mode-scoped: tell the owner if they belong to the other mode.
-    const other = cfg.mode === 'test' ? 'live' : 'test';
-    try { await attempt(other); hint = ` — these keys are ${other.toUpperCase()} keys: set KASHIER_MODE=${other} or copy the ${cfg.mode} keys`; } catch { hint = ' — check that the Payment API Key and the Secret Key were copied from Kashier → Integrate now (same mode as KASHIER_MODE)'; }
+    // Never probe the opposite environment or silently recommend switching to live keys.
+    hint = ' — check that the Payment API Key and Secret Key are from the configured mode in the provider dashboard';
   }
   note('error', `Kashier ${cfg.mode}`, `failed: ${e.code} (HTTP ${e.status})${hint}`);
   summary(`- Kashier (${cfg.mode}): ❌ ${e.code} (HTTP ${e.status})${hint}`);

@@ -12,7 +12,7 @@ name: Shaheen AI keys (verify + sync to Vercel)
 
 on:
   push:
-    branches: [main, 'arena/**']
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -24,6 +24,8 @@ concurrency:
 
 jobs:
   keys:
+    # A PR/rehearsal must not copy payment keys or redeploy production.
+    if: github.ref == 'refs/heads/main'
     name: Verify and sync Shaheen keys
     runs-on: ubuntu-24.04
     timeout-minutes: 15

@@ -15,6 +15,8 @@ export interface Store {
   get<C extends CollectionName>(collection: C, id: string): Promise<Collections[C] | undefined>;
   list<C extends CollectionName>(collection: C): Promise<Collections[C][]>;
   put<C extends CollectionName>(collection: C, id: string, value: Collections[C]): Promise<void>;
+  /** Atomic insert. false means the document already exists; used for immutable, replay-safe ledgers. */
+  create<C extends CollectionName>(collection: C, id: string, value: Collections[C]): Promise<boolean>;
   delete(collection: CollectionName, id: string): Promise<boolean>;
 }
 
@@ -35,8 +37,16 @@ export class MemoryStore implements Store {
   }
   async put<C extends CollectionName>(collection: C, id: string, value: Collections[C]) {
     const bucket = (this.data[collection] ||= {}) as Record<string, Collections[C]>;
+    const previous = bucket[id];
     bucket[id] = clone(value);
-    await this.changed();
+    try { await this.changed(); } catch (error) { if (previous) bucket[id] = previous; else delete bucket[id]; throw error; }
+  }
+  async create<C extends CollectionName>(collection: C, id: string, value: Collections[C]) {
+    const bucket = (this.data[collection] ||= {}) as Record<string, Collections[C]>;
+    if (Object.hasOwn(bucket, id)) return false;
+    bucket[id] = clone(value);
+    try { await this.changed(); } catch (error) { delete bucket[id]; throw error; }
+    return true;
   }
   async delete(collection: CollectionName, id: string) {
     const bucket = this.data[collection] as Record<string, unknown> | undefined;
@@ -53,6 +63,12 @@ export class FileStore extends MemoryStore {
   override readonly persistent = true;
   private loaded: Promise<void>;
   private writing: Promise<void> = Promise.resolve();
+  private mutating: Promise<unknown> = Promise.resolve();
+  private mutate<T>(work: () => Promise<T>): Promise<T> {
+    const operation = this.mutating.catch(() => {}).then(work);
+    this.mutating = operation.catch(() => {});
+    return operation;
+  }
 
   constructor(private path: string) {
     super();
@@ -62,18 +78,19 @@ export class FileStore extends MemoryStore {
         if (error.code !== 'ENOENT') throw new Error(`Cannot read Sham Core data file ${path}: ${error.message}`);
       });
   }
-  override async get<C extends CollectionName>(c: C, id: string) { await this.loaded; return super.get(c, id); }
-  override async list<C extends CollectionName>(c: C) { await this.loaded; return super.list(c); }
-  override async put<C extends CollectionName>(c: C, id: string, v: Collections[C]) { await this.loaded; return super.put(c, id, v); }
-  override async delete(c: CollectionName, id: string) { await this.loaded; return super.delete(c, id); }
+  override async get<C extends CollectionName>(c: C, id: string) { await this.loaded; await this.mutating; return super.get(c, id); }
+  override async list<C extends CollectionName>(c: C) { await this.loaded; await this.mutating; return super.list(c); }
+  override async put<C extends CollectionName>(c: C, id: string, v: Collections[C]) { await this.loaded; return this.mutate(() => super.put(c, id, v)); }
+  override async create<C extends CollectionName>(c: C, id: string, v: Collections[C]) { await this.loaded; return this.mutate(() => super.create(c, id, v)); }
+  override async delete(c: CollectionName, id: string) { await this.loaded; return this.mutate(() => super.delete(c, id)); }
 
   protected override changed() {
     // Serialise writes; write to a temp file then rename so a crash never leaves half a JSON file.
     const snapshot = JSON.stringify(this.data);
-    this.writing = this.writing.then(async () => {
+    this.writing = this.writing.catch(() => {}).then(async () => {
       await mkdir(dirname(this.path), { recursive: true });
       const temp = `${this.path}.${process.pid}.tmp`;
-      await writeFile(temp, snapshot, 'utf8');
+      await writeFile(temp, snapshot, { encoding: 'utf8', mode: 0o600 });
       await rename(temp, this.path);
     });
     return this.writing;

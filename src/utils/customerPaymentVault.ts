@@ -1,8 +1,6 @@
-/**
- * Customer Payment Vault — نظام إدارة وتخزين وسائل الدفع المعتمدة للمستخدمين والعملاء
- * تشفير آمن لبيانات الدفع (Tokenization & Masking) مع دعم كافة خدمات الدفع العربية والعالمية:
- * البطاقات الائتمانية (Visa, Mastercard, Mada, Meeza)، المحافظ الذكية (Vodafone, Orange, WE, Etisalat, STC Pay)،
- * خدمات إنستاباي (InstaPay)، التقسيط المرن (Tabby, Tamara, valU)، وExpress Pay.
+/** Local, UNVERIFIED payment preferences. Legacy XOR encoding is obfuscation, NOT encryption or
+ * provider tokenization. Never use this browser-controlled data to authorize payments or calculate profit.
+ * New checkout stores no card/wallet data; the provider hosts all payment fields.
  */
 
 export type PaymentServiceType =
@@ -63,7 +61,7 @@ export interface PaymentTransactionRecord {
   paymentMethodId?: string;
   paymentMethodTitle: string;
   provider: PaymentProvider;
-  status: 'succeeded' | 'pending' | 'failed' | 'refunded';
+  status: 'succeeded' | 'pending' | 'failed' | 'refunded' | 'unverified';
   authCode: string;
   createdAt: string;
 }
@@ -72,7 +70,7 @@ const VAULT_STORAGE_KEY_PREFIX = 'sham_payment_vault_v1_';
 const VAULT_TRANSACTIONS_KEY_PREFIX = 'sham_payment_tx_v1_';
 const VAULT_SECRET_KEY = 'sham-perfume-vault-key-2026';
 
-// ─── التشفير الآمن (TextEncoder + XOR + Base64) ───────────────
+// Legacy reversible obfuscation only (retained to read existing local preferences).
 
 function encryptPayload(data: unknown): string {
   try {
@@ -124,107 +122,14 @@ function getTxStorageKey(customerId?: string): string {
   return `${VAULT_TRANSACTIONS_KEY_PREFIX}${cleanId}`;
 }
 
-// ─── بيانات افتراضية نموذجية للمعاينة الفورية ─────────────────
-
-const SEED_PAYMENT_METHODS: SavedPaymentMethod[] = [
-  {
-    id: 'pay_card_seed_01',
-    customerId: 'guest_client',
-    type: 'card',
-    title: 'بطاقة فيزا البلاتينية',
-    titleEn: 'Platinum Visa Card',
-    provider: 'visa',
-    identifier: '•••• •••• •••• 4242',
-    holderName: 'عميل شام المميّز',
-    expiry: '12/28',
-    isDefault: true,
-    createdAt: new Date(Date.now() - 15 * 86400000).toISOString(),
-    updatedAt: new Date(Date.now() - 15 * 86400000).toISOString(),
-    metadata: {
-      last4: '4242',
-      brandName: 'Visa',
-      bankName: 'البنك الأهلي / CIB',
-      colorGradient: 'from-amber-700 via-amber-800 to-stone-900',
-    },
-  },
-  {
-    id: 'pay_mada_seed_02',
-    customerId: 'guest_client',
-    type: 'card',
-    title: 'بطاقة مدى الرقمية',
-    titleEn: 'Mada Digital Card',
-    provider: 'mada',
-    identifier: '•••• •••• •••• 8819',
-    holderName: 'عميل شام المميّز',
-    expiry: '09/27',
-    isDefault: false,
-    createdAt: new Date(Date.now() - 7 * 86400000).toISOString(),
-    updatedAt: new Date(Date.now() - 7 * 86400000).toISOString(),
-    metadata: {
-      last4: '8819',
-      brandName: 'Mada',
-      bankName: 'مصرف الراجحي / الرياض',
-      colorGradient: 'from-emerald-800 via-teal-900 to-stone-900',
-    },
-  },
-  {
-    id: 'pay_wallet_seed_03',
-    customerId: 'guest_client',
-    type: 'wallet',
-    title: 'محفظة فودافون كاش الذكية',
-    titleEn: 'Vodafone Cash Wallet',
-    provider: 'vodafone_cash',
-    identifier: '010 •••• 9245',
-    holderName: 'عميل شام المميّز',
-    isDefault: false,
-    createdAt: new Date(Date.now() - 3 * 86400000).toISOString(),
-    updatedAt: new Date(Date.now() - 3 * 86400000).toISOString(),
-    metadata: {
-      phone: '01098769245',
-      brandName: 'Vodafone Cash',
-      colorGradient: 'from-rose-700 via-red-800 to-stone-900',
-    },
-  },
-  {
-    id: 'pay_instapay_seed_04',
-    customerId: 'guest_client',
-    type: 'instapay',
-    title: 'عنوان إنستاباي للدفع اللحظي',
-    titleEn: 'InstaPay Direct IPA',
-    provider: 'instapay',
-    identifier: 'perfumer@instapay',
-    holderName: 'عميل شام المميّز',
-    isDefault: false,
-    createdAt: new Date(Date.now() - 1 * 86400000).toISOString(),
-    updatedAt: new Date(Date.now() - 1 * 86400000).toISOString(),
-    metadata: {
-      ipaHandle: 'perfumer@instapay',
-      brandName: 'InstaPay',
-      colorGradient: 'from-purple-800 via-indigo-900 to-stone-900',
-    },
-  },
-];
-
-// ─── دوال إدارة وسائل الدفع ───────────────────────────────────
-
 export function getSavedPaymentMethods(customerId?: string): SavedPaymentMethod[] {
   if (typeof window === 'undefined') return [];
-  const key = getStorageKey(customerId);
   try {
-    const raw = localStorage.getItem(key);
-    if (!raw) {
-      // حفظ البيانات النموذجية أول مرة لتسهيل التجربة
-      const seedList = SEED_PAYMENT_METHODS.map((m) => ({
-        ...m,
-        customerId: customerId || 'guest_client',
-      }));
-      localStorage.setItem(key, encryptPayload(seedList));
-      return seedList;
-    }
-    return decryptPayload<SavedPaymentMethod[]>(raw, []);
-  } catch {
-    return [];
-  }
+    const raw = localStorage.getItem(getStorageKey(customerId));
+    const list = raw ? decryptPayload<SavedPaymentMethod[]>(raw, []) : [];
+    // Remove ONLY the old generated preview examples from the view, never a customer's own aliases.
+    return Array.isArray(list) ? list.filter((m) => m && !/^pay_(card|mada|wallet|instapay)_seed_/.test(m.id)) : [];
+  } catch { return []; }
 }
 
 export function savePaymentMethod(
@@ -311,7 +216,8 @@ export function getPaymentTransactions(customerId?: string): PaymentTransactionR
   try {
     const raw = localStorage.getItem(key);
     if (!raw) return [];
-    return decryptPayload<PaymentTransactionRecord[]>(raw, []);
+    const list = decryptPayload<PaymentTransactionRecord[]>(raw, []);
+    return Array.isArray(list) ? list.map((tx) => ({ ...tx, status: 'unverified' as const, authCode: '' })) : [];
   } catch {
     return [];
   }
@@ -324,6 +230,7 @@ export function recordPaymentTransaction(
   const current = getPaymentTransactions(customerId);
   const newTx: PaymentTransactionRecord = {
     ...tx,
+    status: 'unverified', authCode: '',
     id: `tx_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
     createdAt: new Date().toISOString(),
   };

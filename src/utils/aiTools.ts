@@ -6,7 +6,7 @@
  */
 export type AiToolId =
   | 'shaheen_chat' | 'sham_assistant' | 'news_articles' | 'news_bulletin' | 'assistant_training' | 'media' | 'admin_agent'
-  | 'store_advisor' | 'store_catalog' | 'store_import' | 'shaheen_school' | 'seo_agent' | 'shaheen_council';
+  | 'store_advisor' | 'store_catalog' | 'store_import' | 'shaheen_school' | 'seo_agent' | 'shaheen_council' | 'finance_agent';
 
 export interface AiToolDef {
   id: AiToolId;
@@ -22,6 +22,11 @@ export interface AiToolDef {
 }
 
 export const AI_TOOLS: AiToolDef[] = [
+  {
+    id: 'finance_agent', nameAr: 'أمين شاهين — الإدارة المالية', nameEn: 'Shaheen Finance',
+    descriptionAr: 'وكيل قواعد محاسبية تحت إدارة شاهين: سجل تحصيل موثق، تقارير يومية وأسبوعية وشهرية، فحص بيانات الدفع والأداء، وبلاغات خاصة. لا نموذج يولّد الأرقام ولا تحويلات أو استردادات تلقائية.',
+    sources: ['server/finance/service.ts', 'scripts/shaheen-finance/run.mts'], routes: ['/api/admin/finance', '/api/admin/finance/run'], acceptsGuidance: false,
+  },
   {
     id: 'shaheen_chat', nameAr: 'شات الخبير شاهين', nameEn: 'Master Shahin chat',
     descriptionAr: 'المحادثة العائمة وصفحة خبير المعمل: تصميم التركيبات، الحسابات، التعتيق، التخفيف، مع روابط الأدوات والوسائط.',
