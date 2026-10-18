@@ -1,7 +1,178 @@
 {
- "updatedAt": "1970-01-01T00:00:00.000Z",
- "authors": ["s.p.culculat@gmail.com"],
- "checks": { "lint": "skipped", "test": "skipped", "build": "skipped", "pages": "skipped" },
- "commits": [],
- "reviewed": []
+ "updatedAt": "2026-10-18T09:51:46.407Z",
+ "authors": [
+  "s.p.culculat@gmail.com"
+ ],
+ "checks": {
+  "lint": "success",
+  "test": "success",
+  "build": "success",
+  "pages": "success",
+  "at": "2026-10-18T09:51:46.407Z",
+  "sha": "7177e86f8a2ba32af955f7c754aae936a1f5897e"
+ },
+ "commits": [
+  {
+   "sha": "6271a804f4d5242ab1a01cfed2cbd7cb5b300638",
+   "date": "2026-10-18T12:41:04+03:00",
+   "title": "feat(ui): add product search and filtering to TopPromoHub",
+   "summary": "Implement search and category filtering for the product showcase in the promo hub to enhance user navigation through the catalog.",
+   "files": 1,
+   "additions": 217,
+   "deletions": 82,
+   "added": [],
+   "deleted": [],
+   "modified": 1,
+   "flags": [],
+   "verdict": "received"
+  },
+  {
+   "sha": "5e3b1f2d2b244e8b3078bedea92d8f09398bd0af",
+   "date": "2026-10-18T12:28:34+03:00",
+   "title": "refactor(TopPromoHub): update branding and remove video UI",
+   "summary": "Rebrand promo headers to focus on Sham's curated collection and remove cinematic video controls to streamline the component.",
+   "files": 1,
+   "additions": 18,
+   "deletions": 32,
+   "added": [],
+   "deleted": [],
+   "modified": 1,
+   "flags": [],
+   "verdict": "received"
+  },
+  {
+   "sha": "c45410acc295345dc195b62ff9f200b099e949f2",
+   "date": "2026-10-18T12:23:20+03:00",
+   "title": "refactor(ui): optimize header dropdown state management",
+   "summary": "Replace individual state tracking with a single active dropdown ID to ensure only one navigation menu remains open at a time and improve click-outside handling.",
+   "files": 1,
+   "additions": 144,
+   "deletions": 102,
+   "added": [],
+   "deleted": [],
+   "modified": 1,
+   "flags": [],
+   "verdict": "received"
+  },
+  {
+   "sha": "a0582163ed1d5dcf4cbee32a0e0ad096403708e4",
+   "date": "2026-10-18T12:09:16+03:00",
+   "title": "feat: update payment methods to support bank cards",
+   "summary": "Replace \"Cash on Delivery\" with \"Bank Card\" in order details and assistant options to reflect updated payment preferences.",
+   "files": 10,
+   "additions": 726,
+   "deletions": 213,
+   "added": [
+    "src/assets/images/perfume_art_spray_man_1792313195183.jpg",
+    "src/assets/images/perfume_art_spray_woman_1792313196930.jpg",
+    "src/assets/images/perfume_mist_cinematic_1792313197406.jpg",
+    "src/utils/countryCurrencyMeta.ts"
+   ],
+   "deleted": [],
+   "modified": 6,
+   "flags": [
+    {
+     "level": "low",
+     "kind": "heavy",
+     "file": "src/assets/images/perfume_art_spray_man_1792313195183.jpg",
+     "text": "صورة/ملف تقيل 0.6 ميجا — بيبطّأ الموقع على الموبايل"
+    },
+    {
+     "level": "low",
+     "kind": "heavy",
+     "file": "src/assets/images/perfume_art_spray_woman_1792313196930.jpg",
+     "text": "صورة/ملف تقيل 0.7 ميجا — بيبطّأ الموقع على الموبايل"
+    },
+    {
+     "level": "low",
+     "kind": "heavy",
+     "file": "src/assets/images/perfume_mist_cinematic_1792313197406.jpg",
+     "text": "صورة/ملف تقيل 0.8 ميجا — بيبطّأ الموقع على الموبايل"
+    }
+   ],
+   "verdict": "received"
+  },
+  {
+   "sha": "89c6f944691ad79addfbb4f1a8db53cb908e9e6a",
+   "date": "2026-10-17T10:32:51+03:00",
+   "title": "feat: implement customer payment vault",
+   "summary": "Add secure payment management system to support saved cards, digital wallets, InstaPay, and BNPL services. Integrate payment environment modal and storage utilities to facilitate 1-click checkout and transaction tracking.",
+   "files": 6,
+   "additions": 1965,
+   "deletions": 56,
+   "added": [
+    "src/components/PaymentEnvironmentModal.tsx",
+    "src/utils/customerPaymentVault.ts",
+    "tests/customerPaymentVault.test.ts"
+   ],
+   "deleted": [],
+   "modified": 3,
+   "flags": [
+    {
+     "level": "low",
+     "kind": "card",
+     "file": "tests/customerPaymentVault.test.ts",
+     "text": "رقم شكله بطاقة في ملف اختبار (5888…90) — غالباً رقم تجريبي، الأفضل يكون من أرقام الاختبار المعروفة"
+    },
+    {
+     "level": "info",
+     "kind": "tests",
+     "text": "ضاف/حدّث 1 ملف اختبارات"
+    }
+   ],
+   "verdict": "received"
+  },
+  {
+   "sha": "eef70b421e951b5bf6ae05d41e1f15dc0717918f",
+   "date": "2026-10-17T10:20:53+03:00",
+   "title": "feat(ui): enhance product card aesthetics with subtle gradients",
+   "summary": "Apply updated gradient backgrounds and hover animations to product cards in both the catalog and storefront to improve visual appeal and consistency.",
+   "files": 2,
+   "additions": 8,
+   "deletions": 6,
+   "added": [],
+   "deleted": [],
+   "modified": 2,
+   "flags": [],
+   "verdict": "received"
+  },
+  {
+   "sha": "46af362519b1c174cedbb72baebd36920d4e8283",
+   "date": "2026-10-17T09:59:34+03:00",
+   "title": "feat: add sales category charts",
+   "summary": "Integrate Recharts to visualize merchant sales data by category in both the Merchant Portal and Admin Dashboard.",
+   "files": 10,
+   "additions": 2411,
+   "deletions": 261,
+   "added": [
+    "src/components/StoreSalesCategoryChart.tsx",
+    "tests/storeSalesCategoryChart.test.ts"
+   ],
+   "deleted": [],
+   "modified": 8,
+   "flags": [
+    {
+     "level": "info",
+     "kind": "dependency",
+     "text": "مكتبات جديدة: recharts"
+    },
+    {
+     "level": "info",
+     "kind": "tests",
+     "text": "ضاف/حدّث 1 ملف اختبارات"
+    }
+   ],
+   "verdict": "received"
+  }
+ ],
+ "reviewed": [
+  "46af362519b1c174cedbb72baebd36920d4e8283",
+  "eef70b421e951b5bf6ae05d41e1f15dc0717918f",
+  "89c6f944691ad79addfbb4f1a8db53cb908e9e6a",
+  "a0582163ed1d5dcf4cbee32a0e0ad096403708e4",
+  "c45410acc295345dc195b62ff9f200b099e949f2",
+  "5e3b1f2d2b244e8b3078bedea92d8f09398bd0af",
+  "6271a804f4d5242ab1a01cfed2cbd7cb5b300638"
+ ],
+ "head": "7177e86f8a2ba32af955f7c754aae936a1f5897e"
 }
