@@ -1,6 +1,7 @@
 import { T, adminDir, useAdminLanguage, reactiveMap, TP, listSep, adminLocale } from './adminL10n';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
+  Search,
   Activity, ArrowRight, ArrowDownToLine, BookOpen, Bot, Boxes, ClipboardList, Cpu, Database, Download, FlaskConical, Headset, KeyRound,
   BellRing, CheckCircle2, CircleAlert, EyeOff, LayoutDashboard, Lightbulb, Loader2, LogOut, MessagesSquare, Plus, RefreshCw, Save, Send,
   Settings2, Stethoscope, ThumbsDown, ThumbsUp, Trash2, TriangleAlert, Users, Wand2,
@@ -8,6 +9,7 @@ import {
 } from 'lucide-react';
 import UpdatesPanel from './UpdatesPanel';
 import SupervisorPanel from './SupervisorPanel';
+import SeoPanel from './SeoPanel';
 import CommunityPanel from './CommunityPanel';
 import ShaheenGrowthPanel from './ShaheenGrowthPanel';
 import { ErrorBoundary } from '../utils/lazyRetry';
@@ -19,7 +21,7 @@ import { AdminApiError, adminRequest, getToken, send, setToken } from './adminAp
 import { apiUrl, isStaticHosting } from '../utils/api';
 import { parseDoctorIssue, type DoctorReport } from './doctorReport';
 
-type Tab = 'overview' | 'community' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'emails' | 'doctor' | 'supervisor' | 'sandbox' | 'updates';
+type Tab = 'overview' | 'community' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'emails' | 'doctor' | 'supervisor' | 'seo' | 'sandbox' | 'updates';
 interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: string }
 interface Overview {
   storage: { kind: string; persistent: boolean; error?: string };
@@ -46,6 +48,7 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'shaheen', label: T('الخبير شاهين'), icon: <FlaskConical className="w-4 h-4" /> },
   { id: 'doctor', label: T('طبيب شاهين'), icon: <Stethoscope className="w-4 h-4" /> },
   { id: 'supervisor', label: T('مشرف الذكاء الاصطناعي'), icon: <Sparkles className="w-4 h-4" /> },
+  { id: 'seo', label: T('منارة شاهين'), icon: <Search className="w-4 h-4" /> },
   { id: 'sandbox', label: T('مختبر المساعد'), icon: <FlaskConical className="w-4 h-4" /> },
   { id: 'updates', label: T('بيئة التحديثات'), icon: <ArrowDownToLine className="w-4 h-4" /> },
 ];
@@ -148,6 +151,7 @@ export default function AdminApp() {
           {tab === 'emails' && <EmailsPanel />}
           {tab === 'doctor' && <DoctorPanel />}
           {tab === 'supervisor' && <SupervisorPanel />}
+          {tab === 'seo' && <SeoPanel />}
           {tab === 'sandbox' && <SandboxPanel />}
           {tab === 'updates' && <UpdatesPanel />}
           </ErrorBoundary>

@@ -5,6 +5,7 @@ import { createMediaRouter } from './media';
 import { createStoreRouter } from './store';
 import { createCheckoutRouter } from './checkout';
 import { createShamCore } from './core/http';
+import { createSeoRootRouter, createSeoRouter } from './seo/router';
 import { callEngine, engineStatuses } from './core/engines';
 import { supervisorGuidance } from './core/liveData';
 import { RateLimiter, clientKey } from './core/rateLimit';
@@ -46,6 +47,10 @@ app.get('/api/health', (_req, res) => {
 // admin dashboard, so both sites (Vercel and GitHub Pages, which calls this API) behave the same.
 app.use('/api', createShaheenRouter({ repo: shamCore.repo, runtime: shamCore.runtime, memory: shamCore.memory }));
 app.use('/api', createMediaRouter());
+// «منارة شاهين»: the live SEO files and the public status snapshot. The static build also ships copies of
+// robots/sitemap/llms/feed, so crawlers are served even on GitHub Pages.
+app.use('/api', createSeoRouter(shamCore.seo));
+app.use(createSeoRootRouter(shamCore.seo));
 // «اسأل شاهين» in «متجر شام»: POST /api/store/advise (server/store.ts).
 app.use('/api', createStoreRouter({ repo: shamCore.repo }));
 // «الدفع في متجر شام»: country, Kashier payment sessions and their verified results (server/checkout.ts).

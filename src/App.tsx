@@ -25,6 +25,7 @@ import { NavigationBreadcrumbs } from './components/NavigationBreadcrumbs';
 import { CountryAndAddressModal } from './components/CountryAndAddressModal';
 import { AuthModal } from './components/AuthModal';
 import { DataPrivacyModal } from './components/DataPrivacyModal';
+import { useSeo } from './hooks/useSeo';
 import {
   FormulationState,
   PyramidNote,
@@ -153,6 +154,7 @@ export default function App() {
       return null;
     }
   });
+  useSeo(activeTab);
   const [historyStack, setHistoryStack] = useState<string[]>(() => {
     try {
       const hash = window.location.hash.replace('#', '');
