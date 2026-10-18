@@ -14,6 +14,7 @@ import { CouncilConfigError, defaultCouncil, normalizeCouncil } from './council'
 import { ShaheenConfigError, normalizeShaheen, withShaheenDefaults } from '../config/shaheen';
 import { Bm25Index, tokenize, type IndexedDoc } from './text';
 import { stripIntro } from './router';
+import type { SeoState } from '../../src/seo/agentState';
 
 export class ValidationError extends Error {
   constructor(public code: string, message: string, public status = 400) { super(message); }
@@ -120,6 +121,17 @@ export class Repository {
     await this.store.put('settings', 'core', saved as CoreSettings & { id: string });
     this.settingsRevision++; // cached readers (Shaheen's router) pick the change up immediately
     return { ...saved, shaheen: withShaheenDefaults(shaheenOverride) };
+  }
+
+  // ---------- «منارة شاهين» (SEO agent) ----------
+  /** The last state saved on this deployment; undefined = use the published live file. */
+  async seoState(): Promise<SeoState | undefined> {
+    await this.ready();
+    return this.store.get('seo', 'state') as Promise<SeoState | undefined>;
+  }
+  async saveSeoState(state: SeoState): Promise<void> {
+    await this.ready();
+    await this.store.put('seo', 'state', state);
   }
 
   // ---------- services ----------
