@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-18T12:55:42.424Z",
-  "nextRunAt": "2026-10-18T18:55:42.424Z",
+  "updatedAt": "2026-10-18T14:22:34.063Z",
+  "nextRunAt": "2026-10-18T20:22:34.063Z",
   "intervalHours": 6,
   "identity": {
     "nameAr": "منارة شاهين",
@@ -13,15 +13,16 @@
   "trust": {
     "level": "trainee",
     "since": "2026-10-18T12:00:00.000Z",
-    "cycles": 3,
-    "cyclesAtLevel": 3,
+    "cycles": 4,
+    "cyclesAtLevel": 4,
     "noteAr": "بدأ التدريب: يدرس المنهج ويفحص الموقع ويقترح، بلا تغيير منشور."
   },
   "curriculum": {
     "studied": [
       "seo-01",
       "seo-02",
-      "seo-03"
+      "seo-03",
+      "seo-04"
     ],
     "notes": [
       {
@@ -59,306 +60,32 @@
           "إزالة أي كلمات حشو أو وعود مطلقة أو أرقام غير موثقة من جميع عناوين صفحات الموقع.",
           "مراجعة سجل التغييرات للتأكد من عدم تكرار العناوين عبر صفحات الأدوات الـ12 واعتماد العناوين الجديدة بعد الفحص الآلي."
         ]
+      },
+      {
+        "id": "seo-04",
+        "titleAr": "وصف التعريف الذي يرفع النقرات",
+        "at": "2026-10-18T14:22:34.063Z",
+        "takeaway": "يتولى «منارة شاهين» مراجعة وصياغة أوصاف التعريف لصفحات الأدوات الاثنتي عشرة وقوالب منتجات المتجر البالغ عددها 1115 منتجاً، بحيث يتراوح طول كل وصف بدقة بين 120 و160 حرفاً مع إبراز الفائدة العملية المباشرة للمستخدم مثل حساب نسب التخفيف أو استكشاف الهرم العطري دون تكرار حرفي للعناوين. كما يحرص على ضمان فرادة كل وصف واحتوائه على الكلمة المفتاحية بسياق طبيعي غير متكلف، مقترناً بعبارة حث على اتخاذ إجراء ملائمة لرفع معدل النقر الطبيعي باحترافية وأمان.",
+        "checklist": [
+          "فحص طول وسم الوصف meta description والتأكد الصارم من بقائه بين 120 و160 حرفاً لصفحات الأدوات وقوالب المنتجات.",
+          "التأكد من فرادة الوصف لكل صفحة ومنتج، ومنع تكرار النصوص أو مطابقتها الحرفية لوسم العنوان title.",
+          "إدراج الكلمة المفتاحية المستهدفة مرة واحدة وبصياغة لغوية طبيعية تشرح ما سيجده الزائر بدقة وتجنب حشو الكلمات.",
+          "تضمين دعوة واضحة ومناسبة لاتخاذ إجراء، مثل تجربة حاسبة المعمل أو استعراض مكونات العطر، دون إطلاق وعود غير واقعية."
+        ]
       }
     ]
   },
   "audit": {
-    "at": "2026-10-18T12:55:42.424Z",
-    "score": 1,
+    "at": "2026-10-18T14:22:34.063Z",
+    "score": 100,
     "bySeverity": {
       "critical": 0,
-      "major": 15,
-      "minor": 16
+      "major": 0,
+      "minor": 0
     },
-    "byArea": {
-      "crawl": 7,
-      "content": 16,
-      "schema": 3,
-      "international": 3,
-      "indexing": 2
-    },
-    "findings": [
-      {
-        "id": "crawl:/:canonical",
-        "area": "crawl",
-        "severity": "major",
-        "page": "/",
-        "title": "لا يوجد canonical",
-        "detail": "لا يشير أي وسم canonical إلى النسخة الأساسية.",
-        "fix": "أضف <link rel=\"canonical\"> بعنوان مطلق https يطابق عنوان الصفحة."
-      },
-      {
-        "id": "content:/:h1",
-        "area": "content",
-        "severity": "major",
-        "page": "/",
-        "title": "لا يوجد H1",
-        "detail": "الصفحة بلا عنوان رئيسي HTML.",
-        "fix": "أضف H1 واحداً يطابق موضوع الصفحة."
-      },
-      {
-        "id": "content:/:headings",
-        "area": "content",
-        "severity": "minor",
-        "page": "/",
-        "title": "بنية محتوى بسيطة",
-        "detail": "0 أقسام H2.",
-        "fix": "أضف أقساماً: كيف يعمل، خطوات، أسئلة شائعة."
-      },
-      {
-        "id": "content:/:words",
-        "area": "content",
-        "severity": "major",
-        "page": "/",
-        "title": "محتوى رقيق",
-        "detail": "النص المرئي 9 كلمة فقط.",
-        "fix": "أضف شرحاً وخطوات وأسئلة شائعة (300 كلمة فأكثر) تجيب نية البحث."
-      },
-      {
-        "id": "content:/:og",
-        "area": "content",
-        "severity": "minor",
-        "page": "/",
-        "title": "وسم og:site_name غائب",
-        "detail": "معاينة المشاركة على الشبكات الاجتماعية ناقصة.",
-        "fix": "أضف <meta property=\"og:site_name\"> بقيمة صحيحة."
-      },
-      {
-        "id": "content:/:twitter",
-        "area": "content",
-        "severity": "minor",
-        "page": "/",
-        "title": "حقول Twitter/X ناقصة",
-        "detail": "العنوان أو الصورة غير معرّفين.",
-        "fix": "أضف twitter:title وtwitter:description وtwitter:image."
-      },
-      {
-        "id": "schema:/:schema",
-        "area": "schema",
-        "severity": "major",
-        "page": "/",
-        "title": "لا توجد بيانات منظمة",
-        "detail": "لا يوجد JSON-LD صالح على الصفحة.",
-        "fix": "أضف Organization/WebSite للرئيسية، وFAQPage/BreadcrumbList للأدوات، وProduct للمنتجات."
-      },
-      {
-        "id": "international:/:hreflang",
-        "area": "international",
-        "severity": "minor",
-        "page": "/",
-        "title": "لا يوجد x-default",
-        "detail": "لا توجد إشارة hreflang للنسخة الافتراضية.",
-        "fix": "أضف <link rel=\"alternate\" hreflang=\"x-default\"> للصفحة نفسها إذا كانت لغة واحدة تخدم الجميع."
-      },
-      {
-        "id": "crawl:/:links",
-        "area": "crawl",
-        "severity": "minor",
-        "page": "/",
-        "title": "روابط داخلية قليلة",
-        "detail": "0 روابط داخلية فقط.",
-        "fix": "أضف روابط إلى الأدوات والمتجر والمحتوى ذي الصلة."
-      },
-      {
-        "id": "crawl:site:robots",
-        "area": "crawl",
-        "severity": "major",
-        "page": "/",
-        "title": "robots بلا خريطة موقع",
-        "detail": "لا يوجد سطر Sitemap.",
-        "fix": "أضف Sitemap: https://الموقع/sitemap.xml إلى robots.txt."
-      },
-      {
-        "id": "indexing:site:sitemap",
-        "area": "indexing",
-        "severity": "major",
-        "page": "/",
-        "title": "صفحة مهمة غائبة عن الخريطة",
-        "detail": "الصفحة p/ غير مدرجة.",
-        "fix": "أضف كل صفحة أدوات ومنتج قابلة للفهرسة إلى الخريطة."
-      },
-      {
-        "id": "indexing:site:indexnow",
-        "area": "indexing",
-        "severity": "major",
-        "page": "/",
-        "title": "مفتاح IndexNow لا يطابق الملف",
-        "detail": "محتوى الملف مختلف عن المفتاح المستخدم.",
-        "fix": "اجعل ملف المفتاح يحتوي المفتاح حرفياً."
-      },
-      {
-        "id": "crawl:/tools/:canonical",
-        "area": "crawl",
-        "severity": "major",
-        "page": "/tools/",
-        "title": "لا يوجد canonical",
-        "detail": "لا يشير أي وسم canonical إلى النسخة الأساسية.",
-        "fix": "أضف <link rel=\"canonical\"> بعنوان مطلق https يطابق عنوان الصفحة."
-      },
-      {
-        "id": "content:/tools/:h1",
-        "area": "content",
-        "severity": "major",
-        "page": "/tools/",
-        "title": "لا يوجد H1",
-        "detail": "الصفحة بلا عنوان رئيسي HTML.",
-        "fix": "أضف H1 واحداً يطابق موضوع الصفحة."
-      },
-      {
-        "id": "content:/tools/:headings",
-        "area": "content",
-        "severity": "minor",
-        "page": "/tools/",
-        "title": "لا أقسام H2",
-        "detail": "الصفحة بلا بنية عناوين فرعية.",
-        "fix": "قسّم المحتوى بأقسام H2 واضحة."
-      },
-      {
-        "id": "content:/tools/:og",
-        "area": "content",
-        "severity": "minor",
-        "page": "/tools/",
-        "title": "وسم og:site_name غائب",
-        "detail": "معاينة المشاركة على الشبكات الاجتماعية ناقصة.",
-        "fix": "أضف <meta property=\"og:site_name\"> بقيمة صحيحة."
-      },
-      {
-        "id": "content:/tools/:twitter",
-        "area": "content",
-        "severity": "minor",
-        "page": "/tools/",
-        "title": "حقول Twitter/X ناقصة",
-        "detail": "العنوان أو الصورة غير معرّفين.",
-        "fix": "أضف twitter:title وtwitter:description وtwitter:image."
-      },
-      {
-        "id": "schema:/tools/:schema",
-        "area": "schema",
-        "severity": "major",
-        "page": "/tools/",
-        "title": "لا توجد بيانات منظمة",
-        "detail": "لا يوجد JSON-LD صالح على الصفحة.",
-        "fix": "أضف Organization/WebSite للرئيسية، وFAQPage/BreadcrumbList للأدوات، وProduct للمنتجات."
-      },
-      {
-        "id": "international:/tools/:hreflang",
-        "area": "international",
-        "severity": "minor",
-        "page": "/tools/",
-        "title": "لا يوجد x-default",
-        "detail": "لا توجد إشارة hreflang للنسخة الافتراضية.",
-        "fix": "أضف <link rel=\"alternate\" hreflang=\"x-default\"> للصفحة نفسها إذا كانت لغة واحدة تخدم الجميع."
-      },
-      {
-        "id": "crawl:/tools/:links",
-        "area": "crawl",
-        "severity": "minor",
-        "page": "/tools/",
-        "title": "روابط داخلية قليلة",
-        "detail": "0 روابط داخلية فقط.",
-        "fix": "أضف روابط إلى الأدوات والمتجر والمحتوى ذي الصلة."
-      },
-      {
-        "id": "crawl:/tools/perfume-formulation-calculator.html:canonical",
-        "area": "crawl",
-        "severity": "major",
-        "page": "/tools/perfume-formulation-calculator.html",
-        "title": "لا يوجد canonical",
-        "detail": "لا يشير أي وسم canonical إلى النسخة الأساسية.",
-        "fix": "أضف <link rel=\"canonical\"> بعنوان مطلق https يطابق عنوان الصفحة."
-      },
-      {
-        "id": "content:/tools/perfume-formulation-calculator.html:h1",
-        "area": "content",
-        "severity": "major",
-        "page": "/tools/perfume-formulation-calculator.html",
-        "title": "لا يوجد H1",
-        "detail": "الصفحة بلا عنوان رئيسي HTML.",
-        "fix": "أضف H1 واحداً يطابق موضوع الصفحة."
-      },
-      {
-        "id": "content:/tools/perfume-formulation-calculator.html:headings",
-        "area": "content",
-        "severity": "minor",
-        "page": "/tools/perfume-formulation-calculator.html",
-        "title": "بنية محتوى بسيطة",
-        "detail": "0 أقسام H2.",
-        "fix": "أضف أقساماً: كيف يعمل، خطوات، أسئلة شائعة."
-      },
-      {
-        "id": "content:/tools/perfume-formulation-calculator.html:words",
-        "area": "content",
-        "severity": "major",
-        "page": "/tools/perfume-formulation-calculator.html",
-        "title": "محتوى رقيق",
-        "detail": "النص المرئي 9 كلمة فقط.",
-        "fix": "أضف شرحاً وخطوات وأسئلة شائعة (300 كلمة فأكثر) تجيب نية البحث."
-      },
-      {
-        "id": "content:/tools/perfume-formulation-calculator.html:og",
-        "area": "content",
-        "severity": "minor",
-        "page": "/tools/perfume-formulation-calculator.html",
-        "title": "وسم og:site_name غائب",
-        "detail": "معاينة المشاركة على الشبكات الاجتماعية ناقصة.",
-        "fix": "أضف <meta property=\"og:site_name\"> بقيمة صحيحة."
-      },
-      {
-        "id": "content:/tools/perfume-formulation-calculator.html:twitter",
-        "area": "content",
-        "severity": "minor",
-        "page": "/tools/perfume-formulation-calculator.html",
-        "title": "حقول Twitter/X ناقصة",
-        "detail": "العنوان أو الصورة غير معرّفين.",
-        "fix": "أضف twitter:title وtwitter:description وtwitter:image."
-      },
-      {
-        "id": "schema:/tools/perfume-formulation-calculator.html:schema",
-        "area": "schema",
-        "severity": "major",
-        "page": "/tools/perfume-formulation-calculator.html",
-        "title": "لا توجد بيانات منظمة",
-        "detail": "لا يوجد JSON-LD صالح على الصفحة.",
-        "fix": "أضف Organization/WebSite للرئيسية، وFAQPage/BreadcrumbList للأدوات، وProduct للمنتجات."
-      },
-      {
-        "id": "international:/tools/perfume-formulation-calculator.html:hreflang",
-        "area": "international",
-        "severity": "minor",
-        "page": "/tools/perfume-formulation-calculator.html",
-        "title": "لا يوجد x-default",
-        "detail": "لا توجد إشارة hreflang للنسخة الافتراضية.",
-        "fix": "أضف <link rel=\"alternate\" hreflang=\"x-default\"> للصفحة نفسها إذا كانت لغة واحدة تخدم الجميع."
-      },
-      {
-        "id": "crawl:/tools/perfume-formulation-calculator.html:links",
-        "area": "crawl",
-        "severity": "minor",
-        "page": "/tools/perfume-formulation-calculator.html",
-        "title": "روابط داخلية قليلة",
-        "detail": "0 روابط داخلية فقط.",
-        "fix": "أضف روابط إلى الأدوات والمتجر والمحتوى ذي الصلة."
-      },
-      {
-        "id": "content:https://sham-perfume-49bf.vercel.app/tools/:duplicatedTitle",
-        "area": "content",
-        "severity": "major",
-        "page": "https://sham-perfume-49bf.vercel.app/tools/",
-        "title": "عنوان مكرر بين صفحات",
-        "detail": "العنوان «صمم عطرك مع شام | حاسبة تركيب وصناعة العطور» يظهر في 3 صفحات.",
-        "fix": "اجعل عنوان كل صفحة فريداً ويصف محتواها."
-      },
-      {
-        "id": "content:https://sham-perfume-49bf.vercel.app/tools/:duplicatedDescription",
-        "area": "content",
-        "severity": "minor",
-        "page": "https://sham-perfume-49bf.vercel.app/tools/",
-        "title": "وصف تعريف مكرر",
-        "detail": "نفس الوصف يظهر في 3 صفحات.",
-        "fix": "اكتب وصفاً خاصاً بكل صفحة."
-      }
-    ],
-    "pagesChecked": 3
+    "byArea": {},
+    "findings": [],
+    "pagesChecked": 4
   },
   "history": [
     {
@@ -381,6 +108,13 @@
       "applied": 0,
       "shaheen": 1,
       "level": "trainee"
+    },
+    {
+      "at": "2026-10-18T14:22:34.063Z",
+      "score": 100,
+      "applied": 0,
+      "shaheen": 7,
+      "level": "trainee"
     }
   ],
   "applied": [],
@@ -393,24 +127,242 @@
       "urls": 2,
       "ok": true,
       "detail": "أُشعر 2 من 2 محاور بأن الخلاصة تغيّرت."
+    },
+    {
+      "engine": "IndexNow (Bing, Yandex, Naver, Seznam, Yep)",
+      "method": "indexnow",
+      "at": "2026-10-18T14:22:34.063Z",
+      "urls": 200,
+      "ok": true,
+      "detail": "قُبل الدفع عبر search.seznam.cz بعد تعذّر النقطة المشتركة (HTTP 403 {\"errorCode\":\"SiteVerificationNotCompleted\",\"message\":\"Site Verification is not completed. Please wait for some time for)."
+    },
+    {
+      "engine": "WebSub (خلاصة RSS)",
+      "method": "websub",
+      "at": "2026-10-18T14:22:34.063Z",
+      "urls": 2,
+      "ok": true,
+      "detail": "أُشعر 2 من 2 محاور بأن الخلاصة تغيّرت."
     }
   ],
   "submissionBook": {
-    "urls": []
+    "lastIndexNowAt": "2026-10-18T14:22:34.063Z",
+    "urls": [
+      "https://spculculat-oss.github.io/Sham-Perfume/",
+      "https://spculculat-oss.github.io/Sham-Perfume/tools/",
+      "https://spculculat-oss.github.io/Sham-Perfume/tools/perfume-formulation-calculator.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/tools/alcohol-dilution-calculator.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/tools/fragrance-pyramid.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/tools/maceration-simulator.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/tools/perfume-cost-calculator.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/tools/raw-materials-encyclopedia.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/tools/iconic-perfumes-library.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/tools/perfume-news.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/tools/fixatives-and-maceration-guide.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/tools/formula-library.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/tools/shaheen-perfume-expert.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/tools/sham-perfume-store.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/lattafa-black-oud-1.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/lattafa-fakhar-black-2.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/lattafa-white-oud-3.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/lattafa-ameer-al-oudh-4.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/lattafa-noir-5.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/rasasi-la-yuya-6.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/rasasi-hawas-7.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/de-pronom-mon-guerlain-8.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-rehab-malika-9.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-rehab-rumman-10.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-rehab-dubai-11.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-rehab-honey-glow-12.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-rehab-rose-13.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/baccarat-rouge-540-14.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/dior-sauvage-15.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/yves-saint-laurent-libre-16.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/gen-017-17.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/gen-018-18.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/gen-019-19.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/dahab-20.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/layl-21.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/amiri-22.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/mirage-23.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/khanjar-24.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/fidji-25.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/white-oud-26.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/reem-27.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/khalifa-28.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/shama-shm-029-29.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/safwa-30.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/wadi-31.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/sama-32.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/shama-shm-033-33.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/taif-34.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/sougha-35.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/raghad-36.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/oud-ma-attar-shama-37.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hindi-digga-saghir-khas-38.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hindi-digga-saghir-vip-39.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hindi-syufi-khas-40.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hindi-syufi-khas-vip-41.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hindi-digga-khas-42.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/dehnal-oud-asli-43.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/dehnal-oud-khussusi-kadim-44.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/dehnal-oud-kalakasi-45.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/dehnal-oud-silani-46.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/dehnal-oud-hindi-ateeq-47.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/dehnal-oud-royal-philippini-48.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/oud-discovery-set-49.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/royal-oil-gift-set-50.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/legacy-mukhallat-box-51.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/oud-mood-30ml-by-lattafa-edp-unisex-52.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-ice-by-rasasi-100ml-edp-53.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-malibu-by-rasasi-100ml-edp-54.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-verde-by-rasasi-100ml-edp-55.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-majestic-by-rasasi-100ml-edp-56.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-reina-by-rasasi-100ml-edp-57.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-chrome-for-him-by-rasasi-100ml-edp-58.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-venom-by-rasasi-100ml-edp-59.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-nautilus-by-rasasi-100ml-edp-60.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-private-terra-by-rasasi-extrait-de-parfum-100ml-61.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-atlantis-by-rasasi-100ml-edp-62.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-private-dulce-by-rasasi-extrait-de-parfum-100ml-63.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-gold-digger-by-rasasi-100ml-edp-64.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-thunder-by-rasasi-100ml-edp-65.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-viper-by-rasasi-100ml-edp-66.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-kobra-by-rasasi-100ml-edp-67.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-for-him-la-mer-by-rasasi-100ml-edp-68.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-eclat-by-rasasi-100ml-edp-69.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-rouge-by-rasasi-100ml-edp-70.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-lava-gold-by-rasasi-100ml-edp-71.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-fire-by-rasasi-100ml-edp-72.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-tropical-by-rasasi-100ml-edp-73.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-ice-freeze-by-rasasi-100ml-edp-74.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-highness-by-rasasi-100ml-edp-75.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-overdose-by-rasasi-100ml-edp-76.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-addiction-by-rasasi-100ml-edp-77.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-exotic-by-rasasi-100ml-edp-78.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-blanche-by-rasasi-100ml-edp-79.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-love-for-her-by-rasasi-100ml-edp-80.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-diva-by-rasasi-100ml-edp-81.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-for-him-by-rasasi-100ml-edp-82.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-london-by-rasasi-100ml-edp-83.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-dreams-by-rasasi-100ml-edp-84.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-boa-by-rasasi-100ml-edp-85.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-black-for-him-by-rasasi-100ml-edp-86.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-crystelle-by-rasasi-100ml-edp-87.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-pink-by-rasasi-100ml-edp-88.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-sapphire-fb-fragrances-edition-by-rasasi-100ml-edp-89.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-elixir-by-rasasi-100ml-edp-90.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-glitz-by-rasasi-100ml-edp-91.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-private-luceo-by-rasasi-extrait-de-parfum-100ml-92.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hawas-for-him-alpha-by-rasasi-100ml-edp-93.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ana-abiyedh-rouge-lattafa-60ml-edp-94.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/khamrah-mira-by-lattafa-95.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/fearless-by-lattafa-100ml-edp-men-96.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/yara-by-lattafa-100ml-edp-women-97.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/blue-oud-elixir-by-lattafa-100ml-edp-unisex-98.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/beyond-precious-by-lattafa-100ml-edp-women-99.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/bade-e-al-oud-black-exposed-lattafa-100ml-100.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/jouri-lattafa-women-100ml-edp-101.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/opulent-milano-by-lattafa-100ml-men-102.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/sheikh-al-shuyukh-supreme-by-lattafa-100ml-103.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/maharjan-gold-by-lattafa-pride-100ml-104.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ana-abiyedh-leather-60ml-by-lattafa-perfumes-105.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/bayaan-eau-de-parfum-100ml-by-lattafa-106.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/khamrah-waha-lattafa-perfumes-100ml-edp-107.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/choco-musk-by-al-rehab-50ml-edp-unisex-108.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/tamima-by-lattafa-100-ml-eau-de-parfum-109.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ana-abiyedh-poudree-by-lattafa-60ml-110.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/musamam-eau-de-parfum-100ml-by-lattafa-111.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/khamrah-qahwa-by-lattafa-100ml-edp-unisex-112.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/oud-mood-reminiscence-lattafa-100ml-113.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/spanish-vanilla-eau-de-parfum-100ml-by-al-rehab-114.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/sutoor-100ml-edp-for-women-by-lattafa-perfumes-115.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/confidential-private-gold-100ml-edp-for-women-by-lattafa-116.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/atlas-glacial-valley-by-lattafa-55ml-unisex-117.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/khamrah-by-lattafa-100ml-edp-unisex-118.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/angham-by-lattafa-edp-100ml-women-119.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/maahir-legacy-by-lattafa-100ml-edp-man-120.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/najdia-intense-lattafa-men-100ml-edp-121.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/dalal-lattafa-women-100ml-edp-122.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/fakhar-silver-by-lattafa-100ml-edp-men-123.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ajwad-pink-2-pink-creamy-elixir-lattafa-60ml-124.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/asad-lattafa-edp-100ml-men-125.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/asad-bourbon-lattafa-100ml-for-men-126.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/angham-second-song-by-lattafa-100ml-127.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/atlas-canyon-lattafa-55ml-unisex-128.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/bade-e-al-oud-amethyst-fusion-100ml-by-lattafa-129.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/oud-mood-lattafa-arabian-100ml-edp-130.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/oud-najdia-lattafa-100ml-edp-131.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/qaed-al-fursan-lattafa-90ml-for-men-132.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/asad-elixir-lattafa-100ml-for-men-133.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/afeef-by-lattafa-100ml-edp-134.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/her-confession-lattafa-100ml-edp-135.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/yara-candy-by-lattafa-100ml-edp-women-136.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/yara-moi-by-lattafa-100ml-edp-women-137.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/dynasty-by-lattafa-100ml-edp-unisex-138.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/suqraat-by-lattafa-100ml-edp-men-139.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/qaed-al-fursan-unlimited-by-lattafa-90ml-edp-140.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/eclaire-by-lattafa-100ml-edp-women-141.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/simply-oud-by-lattafa-100ml-edp-for-men-142.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/french-coffee-al-rehab-100ml-edp-women-143.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/angel-by-lamuse-lattafa-100-ml-for-women-144.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-nashama-caprice-by-lattafa-100ml-edp-145.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/rouat-al-oud-by-lattafa-100ml-edp-unisex-146.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/pure-musk-by-lattafa-khalis-musk-100ml-edp-147.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/maahir-honor-100ml-by-lattafa-148.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-qiam-gold-by-lattafa-pride-100ml-edp-149.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/qaed-al-fursan-untamed-lattafa-90ml-edp-150.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/nebras-elixir-by-lattafa-for-her-100-ml-151.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/wajood-by-lattafa-100-ml-eau-de-parfum-for-men-152.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/shaheen-gold-by-lattafa-perfumes-unisex-100-ml-153.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hala-by-lattafa-100-ml-eau-de-parfum-for-men-154.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/afaq-gold-by-lattafa-edp-100-ml-unisex-155.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/nebras-by-lattafa-pride-100ml-edp-women-156.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-ameed-by-lattafa-edp-100ml-for-him-157.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/sheikh-al-shuyukh-by-lattafa-50ml-edp-men-158.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/lail-maleki-by-lattafa-100ml-edp-unisex-159.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/tharwah-gold-by-lattafa-pride-100ml-edp-160.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/thouq-by-lattafa-pride-80ml-edp-161.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/awraq-al-oud-by-lattafa-100ml-man-162.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/pure-crystal-by-lattafa-pride-100ml-edp-163.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/rouat-al-musk-by-lattafa-100ml-for-women-164.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/sakeena-by-lattafa-100ml-edp-women-165.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/shahd-by-lattafa-perfumes-100-ml-women-166.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-noble-ameer-by-lattafa-100ml-edp-men-167.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/sheikh-al-shuyukh-concentrated-by-lattafa-100ml-168.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/art-of-nature-ii-horse-by-lattafa-pride-100ml-edp-169.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/washwasha-by-lattafa-perfumes-100-ml-for-women-170.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/maahir-black-edition-by-lattafa-100ml-for-men-171.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/mazaaji-by-lattafa-100ml-edp-for-women-172.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/tharwah-silver-by-lattafa-pride-100ml-edp-173.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/maahir-by-lattafa-100ml-edp-for-men-174.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/his-confession-by-lattafa-perfume-100ml-175.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ana-abiyedh-by-lattafa-60ml-edp-unisex-176.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ana-abiyedh-scarlet-by-lattafa-60ml-edp-women-177.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/raghba-for-men-lattafa-100ml-edp-178.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/queen-of-arabia-by-lattafa-pride-100ml-edp-179.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/atheeri-by-lattafa-100-ml-for-women-180.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/teriaq-intense-by-lattafa-100ml-eau-de-parfum-181.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/mood-velvet-for-her-100-ml-edp-182.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/coral-blush-by-maison-alhambra-80ml-edp-183.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/tahara-vanilla-body-mist-by-gulf-orchid-250ml-woman-184.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/blush-amber-100ml-by-grandeur-185.html"
+    ]
   },
   "coach": {
-    "at": "2026-10-18T12:55:42.424Z",
-    "score": 1,
+    "at": "2026-10-18T14:22:34.063Z",
+    "score": 7,
     "strengths": [
-      "أتم الدورات الأولى وبدأ في تلقي تقارير الفحص."
+      "أداء ممتاز في الفحص الفني الأولي بصفحات خالية من الأخطاء الحرجة أو الكبيرة",
+      "التزام بالدقة ومراعاة القواعد العامة للظهور النظيف"
     ],
     "issues": [
-      "التقييم منخفض جداً (1 من 100) ويوجد مشكلات رئيسية متعددة في المحتوى والزحف والفهرسة والبيانات المنظمة.",
-      "لم ينشر أي تحسينات بعد.",
-      "عدد الدروس المكتملة (2) والدورات (2) لا يزال بعيداً جداً عن شروط الاعتماد (20 درساً و4 دورات)."
+      "إنجاز 3 دروس فقط من أصل 24 درساً مطلوباً",
+      "عدم اكتمال الحد الأدنى لعدد الدورات والدروس اللازمة للاستقلالية"
     ],
     "readyForAutonomy": false,
-    "note": "الوكيل في مرحلة مبكرة جداً ويحتاج إلى تصحيح الأخطاء الأساسية وإتمام مساره التعليمي بالكامل."
+    "note": "الوكيل يسير بخطى ثابتة فحصياً لكنه لم يستوفِ شروط الكم والدروس المطلوبة للانتقال."
   },
   "coachHistory": [
     {
@@ -426,6 +378,11 @@
     {
       "at": "2026-10-18T12:55:42.424Z",
       "score": 1,
+      "readyForAutonomy": false
+    },
+    {
+      "at": "2026-10-18T14:22:34.063Z",
+      "score": 7,
       "readyForAutonomy": false
     }
   ],
@@ -451,7 +408,7 @@
   },
   "engines": {
     "aiAvailable": true,
-    "studies": 3,
+    "studies": 4,
     "failures": []
   },
   "searchEngines": [
@@ -459,48 +416,64 @@
       "id": "google",
       "nameAr": "Google",
       "status": "ready",
-      "at": "2026-10-18T12:55:42.424Z",
+      "at": "2026-10-18T14:22:34.063Z",
       "detail": "خريطة + خلاصة معلنتان في robots.txt — الوصول لا يحتاج حساباً."
     },
     {
       "id": "bing",
       "nameAr": "Bing",
-      "status": "submitted"
+      "status": "submitted",
+      "at": "2026-10-18T14:22:34.063Z",
+      "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "yandex",
       "nameAr": "Yandex",
-      "status": "submitted"
+      "status": "submitted",
+      "at": "2026-10-18T14:22:34.063Z",
+      "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "naver",
       "nameAr": "Naver",
-      "status": "submitted"
+      "status": "submitted",
+      "at": "2026-10-18T14:22:34.063Z",
+      "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "seznam",
       "nameAr": "Seznam",
-      "status": "submitted"
+      "status": "submitted",
+      "at": "2026-10-18T14:22:34.063Z",
+      "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "yep",
       "nameAr": "Yep",
-      "status": "submitted"
+      "status": "submitted",
+      "at": "2026-10-18T14:22:34.063Z",
+      "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "duckduckgo",
       "nameAr": "DuckDuckGo",
-      "status": "ready"
+      "status": "submitted",
+      "at": "2026-10-18T14:22:34.063Z",
+      "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "ecosia",
       "nameAr": "Ecosia",
-      "status": "ready"
+      "status": "submitted",
+      "at": "2026-10-18T14:22:34.063Z",
+      "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "yahoo",
       "nameAr": "Yahoo",
-      "status": "ready"
+      "status": "submitted",
+      "at": "2026-10-18T14:22:34.063Z",
+      "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "brave",
@@ -515,7 +488,9 @@
     {
       "id": "copilot",
       "nameAr": "Microsoft Copilot",
-      "status": "ready"
+      "status": "submitted",
+      "at": "2026-10-18T14:22:34.063Z",
+      "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "chatgpt-search",
@@ -525,42 +500,42 @@
   ],
   "discovery": {
     "webSub": {
-      "at": "2026-10-18T12:08:48.653Z",
+      "at": "2026-10-18T14:22:34.063Z",
       "ok": true,
-      "feedHash": "820a4a2c",
+      "feedHash": "6dd72992",
       "hubs": [
         {
           "url": "https://pubsubhubbub.appspot.com/",
-          "ok": true,
-          "status": 204
+          "status": 204,
+          "ok": true
         },
         {
           "url": "https://pubsubhubbub.superfeedr.com/",
-          "ok": true,
-          "status": 204
+          "status": 204,
+          "ok": true
         }
       ]
     },
     "crawl": {
-      "at": "2026-10-18T12:55:42.677Z",
+      "at": "2026-10-18T14:22:34.538Z",
       "ua": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
       "checked": 3,
       "ok": 3,
       "results": [
         {
-          "url": "https://sham-perfume-49bf.vercel.app/",
+          "url": "https://spculculat-oss.github.io/Sham-Perfume/",
           "status": 200,
           "ok": true,
           "reason": "الصفحة متاحة والفهرسة غير محجوبة"
         },
         {
-          "url": "https://sham-perfume-49bf.vercel.app/tools/",
+          "url": "https://spculculat-oss.github.io/Sham-Perfume/tools/",
           "status": 200,
           "ok": true,
           "reason": "الصفحة متاحة والفهرسة غير محجوبة"
         },
         {
-          "url": "https://sham-perfume-49bf.vercel.app/tools/perfume-formulation-calculator.html",
+          "url": "https://spculculat-oss.github.io/Sham-Perfume/tools/perfume-formulation-calculator.html",
           "status": 200,
           "ok": true,
           "reason": "الصفحة متاحة والفهرسة غير محجوبة"
@@ -579,29 +554,29 @@
   },
   "nextActions": [
     {
-      "textAr": "إضافة وسم H1 فريد ومحتوى تعريفي لا يقل عن 300 كلمة في الصفحة الرئيسية يطابق نية البحث.",
-      "area": "content",
-      "severity": "major"
-    },
-    {
-      "textAr": "جعل عنوان كل صفحة فريداً ويعبر بدقة عن محتواها لتجنب التكرار في نتائج البحث.",
+      "textAr": "تحسين وصف التعريف لصفحات العطور الثابتة لزيادة الجاذبية ورفع معدل النقرات في نتائج البحث.",
       "area": "titles",
-      "severity": "major"
+      "severity": "minor"
     },
     {
-      "textAr": "إضافة وسوم Canonical وملف Sitemap وملف IndexNow بالتنسيق الصحيح لتعزيز الزحف والفهرسة.",
-      "area": "crawl",
-      "severity": "major"
+      "textAr": "مراجعة العناوين الرئيسية لضمان دقتها وملاءمتها لنية البحث للزوار بشكل مستمر.",
+      "area": "titles",
+      "severity": "minor"
     },
     {
-      "textAr": "إدراج جميع الصفحات المهمة والأدوات القابلة للفهرسة داخل خريطة الموقع الرسمية.",
-      "area": "indexing",
-      "severity": "major"
+      "textAr": "التحقق من اكتمال البيانات المنظمة الخاصة بالمنتجات لتسهيل قراءتها من محركات البحث.",
+      "area": "content",
+      "severity": "minor"
     },
     {
-      "textAr": "إضافة بيانات منظمة بصيغة JSON-LD مناسبة لكل صفحة مثل Organization وFAQPage وProduct.",
-      "area": "schema",
-      "severity": "major"
+      "textAr": "تحديث خريطة الموقع بانتظام لضمان أرشفة الصفحات الجديدة والصفحات الثابتة بسلاسة.",
+      "area": "content",
+      "severity": "minor"
+    },
+    {
+      "textAr": "مراقبة سرعة تحميل الصفحات والمحتوى لضمان تجربة مستخدم سريعة ومستقرة.",
+      "area": "performance",
+      "severity": "minor"
     }
   ],
   "runs": [
@@ -643,6 +618,17 @@
         "إرسال دوري لأهم الصفحات عبر IndexNow."
       ],
       "ms": 4548
+    },
+    {
+      "at": "2026-10-18T14:22:34.063Z",
+      "trigger": "schedule",
+      "auditScore": 100,
+      "findings": 0,
+      "applied": 0,
+      "lessonId": "seo-04",
+      "submitted": 200,
+      "notes": [],
+      "ms": 18698
     }
   ],
   "notes": []
