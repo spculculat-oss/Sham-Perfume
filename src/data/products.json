@@ -3723,7 +3723,7 @@
       ],
       "category": "مختلط",
       "brand": "Rasasi",
-      "supplierPrice": 3924.3,
+      "supplierPrice": 3924.39,
       "ourPrice": 5890,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -3735,7 +3735,7 @@
       "supplierSku": "RASASI-HAWAS-PRIVATE-LUCEO-100ML",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 300,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-private-luceo-rasasi-100ml/",
       "slug": "hawas-private-luceo-by-rasasi-extrait-de-parfum-100ml-92",
       "sizeMl": 100,
@@ -3759,7 +3759,7 @@
         "Evening"
       ],
       "importedAt": "2026-10-16T07:24:57.489Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر"
@@ -3785,7 +3785,7 @@
       ],
       "category": "رجالي",
       "brand": "Rasasi",
-      "supplierPrice": 3335.66,
+      "supplierPrice": 3335.73,
       "ourPrice": 5005,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -3797,7 +3797,7 @@
       "supplierSku": "RASASI-HAWAS-FOR-HIM-ALPHA-100ML",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 255,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-for-him-alpha-rasasi-100ml-edp/",
       "slug": "hawas-for-him-alpha-by-rasasi-100ml-edp-93",
       "sizeMl": 100,
@@ -3821,7 +3821,7 @@
         "Special Event"
       ],
       "importedAt": "2026-10-16T07:24:57.489Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر"
@@ -3847,7 +3847,7 @@
       ],
       "category": "مختلط",
       "brand": "Lattafa",
-      "supplierPrice": 1818.26,
+      "supplierPrice": 1818.3,
       "ourPrice": 2730,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -3860,7 +3860,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 139,
       "supplierSalePrice": 120,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/ana-abiyedh-rouge/",
       "slug": "ana-abiyedh-rouge-lattafa-60ml-edp-94",
       "sizeMl": 60,
@@ -3887,7 +3887,7 @@
       ],
       "barcode": "6291107454412",
       "importedAt": "2026-10-16T07:24:57.489Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld"
     },
     {
@@ -3910,7 +3910,7 @@
       ],
       "category": "مختلط",
       "brand": "Lattafa",
-      "supplierPrice": 3139.44,
+      "supplierPrice": 3139.51,
       "ourPrice": 4710,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -3922,7 +3922,7 @@
       "supplierSku": "LATTAFA-KHAMRAH-MIRA",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 240,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/khamrah-mira-by-lattafa/",
       "slug": "khamrah-mira-by-lattafa-95",
       "sizeMl": 100,
@@ -3960,7 +3960,7 @@
         "Dinner"
       ],
       "importedAt": "2026-10-16T07:24:57.489Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld"
     },
     {
@@ -3983,7 +3983,7 @@
       ],
       "category": "رجالي",
       "brand": "Lattafa",
-      "supplierPrice": 2877.82,
+      "supplierPrice": 2877.89,
       "ourPrice": 4320,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -3995,7 +3995,7 @@
       "supplierSku": "LATTAFA-FEARLESS-100ML",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 220,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/fearless-lattafa/",
       "slug": "fearless-by-lattafa-100ml-edp-men-96",
       "sizeMl": 100,
@@ -4033,7 +4033,7 @@
         "Dinner"
       ],
       "importedAt": "2026-10-16T07:24:57.489Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -4059,7 +4059,7 @@
       ],
       "category": "نسائي",
       "brand": "Lattafa",
-      "supplierPrice": 1896.75,
+      "supplierPrice": 1896.79,
       "ourPrice": 2850,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -4072,7 +4072,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 145,
       "supplierSalePrice": 114,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/yara/",
       "slug": "yara-by-lattafa-100ml-edp-women-97",
       "sizeMl": 100,
@@ -4104,7 +4104,7 @@
       ],
       "barcode": "6291108730515",
       "importedAt": "2026-10-16T07:24:57.489Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld"
     },
     {
@@ -4127,8 +4127,8 @@
       ],
       "category": "مختلط",
       "brand": "Lattafa",
-      "supplierPrice": 2419.99,
-      "ourPrice": 3630,
+      "supplierPrice": 2420.04,
+      "ourPrice": 3635,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
@@ -4139,7 +4139,7 @@
       "supplierSku": "LATTAFA-BLUE-OUD-ELIXIR-100ML",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 185,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/blue-oud-elixir/",
       "slug": "blue-oud-elixir-by-lattafa-100ml-edp-unisex-98",
       "sizeMl": 100,
@@ -4178,7 +4178,7 @@
       ],
       "barcode": "6290362349761",
       "importedAt": "2026-10-16T07:24:57.489Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -4204,7 +4204,7 @@
       ],
       "category": "نسائي",
       "brand": "Lattafa",
-      "supplierPrice": 3139.44,
+      "supplierPrice": 3139.51,
       "ourPrice": 4710,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -4216,7 +4216,7 @@
       "supplierSku": "LATTAFA-BEYOND-PRECIOUS-100ML",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 240,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/beyond-precious-lattafa/",
       "slug": "beyond-precious-by-lattafa-100ml-edp-women-99",
       "sizeMl": 100,
@@ -4256,7 +4256,7 @@
       ],
       "barcode": "6290360598949",
       "importedAt": "2026-10-16T07:24:57.489Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -4282,7 +4282,7 @@
       ],
       "category": "مختلط",
       "brand": "Lattafa",
-      "supplierPrice": 3401.06,
+      "supplierPrice": 3401.14,
       "ourPrice": 5105,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -4295,7 +4295,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 260,
       "supplierSalePrice": 166,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/bade-e-al-oud-black-exposed-lattafa-100ml/",
       "slug": "bade-e-al-oud-black-exposed-lattafa-100ml-100",
       "sizeMl": 100,
@@ -4333,7 +4333,7 @@
       ],
       "barcode": "6298043160049",
       "importedAt": "2026-10-16T07:24:57.489Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld"
     },
     {
@@ -4356,7 +4356,7 @@
       ],
       "category": "نسائي",
       "brand": "Lattafa",
-      "supplierPrice": 2747.01,
+      "supplierPrice": 2747.07,
       "ourPrice": 4125,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -4368,7 +4368,7 @@
       "supplierSku": "LATTAFA-JOURI-100ML",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 210,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/jouri-lattafa-100ml/",
       "slug": "jouri-lattafa-women-100ml-edp-101",
       "sizeMl": 100,
@@ -4406,7 +4406,7 @@
       ],
       "barcode": "6290362347156",
       "importedAt": "2026-10-16T07:24:57.489Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -7172,7 +7172,7 @@
       ],
       "category": "رجالي",
       "brand": "Lattafa",
-      "supplierPrice": 1635.13,
+      "supplierPrice": 1635.16,
       "ourPrice": 2455,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -7185,7 +7185,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 125,
       "supplierSalePrice": 87,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/simply-oud/",
       "slug": "simply-oud-by-lattafa-100ml-edp-for-men-142",
       "sizeMl": 100,
@@ -7211,7 +7211,7 @@
       ],
       "barcode": "6291107457079",
       "importedAt": "2026-10-16T09:05:55.583Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld"
     },
     {
@@ -7234,7 +7234,7 @@
       ],
       "category": "نسائي",
       "brand": "Al Rehab",
-      "supplierPrice": 1896.75,
+      "supplierPrice": 1896.79,
       "ourPrice": 2850,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -7247,7 +7247,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 145,
       "supplierSalePrice": 89,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/al-rehab/french-coffee/",
       "slug": "french-coffee-al-rehab-100ml-edp-women-143",
       "sizeMl": 100,
@@ -7273,7 +7273,7 @@
       "occasionsSource": [],
       "barcode": "6291110100078",
       "importedAt": "2026-10-16T09:05:55.583Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر"
@@ -7298,7 +7298,7 @@
       ],
       "category": "نسائي",
       "brand": "Lattafa",
-      "supplierPrice": 1438.91,
+      "supplierPrice": 1438.94,
       "ourPrice": 2160,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -7310,7 +7310,7 @@
       "supplierSku": "ANGEL-perf-2765",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 110,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/angel/",
       "slug": "angel-by-lamuse-lattafa-100-ml-for-women-144",
       "sizeMl": 100,
@@ -7345,7 +7345,7 @@
       "occasionsSource": [],
       "barcode": "6291106067187",
       "importedAt": "2026-10-16T09:05:55.583Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -7371,7 +7371,7 @@
       ],
       "category": "مختلط",
       "brand": "Lattafa",
-      "supplierPrice": 2485.39,
+      "supplierPrice": 2485.45,
       "ourPrice": 3730,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -7384,7 +7384,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 190,
       "supplierSalePrice": 132,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/al-nashama-caprice/",
       "slug": "al-nashama-caprice-by-lattafa-100ml-edp-145",
       "sizeMl": 100,
@@ -7400,7 +7400,7 @@
       "occasionsSource": [],
       "barcode": "6290360593173",
       "importedAt": "2026-10-16T09:05:55.583Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "وصف المورد قصير",
@@ -7427,7 +7427,7 @@
       ],
       "category": "مختلط",
       "brand": "Lattafa",
-      "supplierPrice": 1765.94,
+      "supplierPrice": 1765.98,
       "ourPrice": 2650,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -7440,7 +7440,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 135,
       "supplierSalePrice": 100,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/rouat-al-oud/",
       "slug": "rouat-al-oud-by-lattafa-100ml-edp-unisex-146",
       "sizeMl": 100,
@@ -7476,7 +7476,7 @@
       ],
       "barcode": "6291106064841",
       "importedAt": "2026-10-16T09:05:55.583Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld"
     },
     {
@@ -7499,7 +7499,7 @@
       ],
       "category": "عطور",
       "brand": "Lattafa",
-      "supplierPrice": 1569.72,
+      "supplierPrice": 1569.76,
       "ourPrice": 2355,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -7512,7 +7512,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 120,
       "supplierSalePrice": 90,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/pure-musk-by-lattafa/",
       "slug": "pure-musk-by-lattafa-khalis-musk-100ml-edp-147",
       "sizeMl": 100,
@@ -7546,7 +7546,7 @@
       "occasionsSource": [],
       "barcode": "6291106060546",
       "importedAt": "2026-10-16T09:05:55.583Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld"
     },
     {
@@ -7569,7 +7569,7 @@
       ],
       "category": "مختلط",
       "brand": "Lattafa",
-      "supplierPrice": 3793.49,
+      "supplierPrice": 3793.58,
       "ourPrice": 5695,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -7581,7 +7581,7 @@
       "supplierSku": "MAAHIR-HONOR-100ML",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 290,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/maahir-honor-lattafa-100ml/",
       "slug": "maahir-honor-100ml-by-lattafa-148",
       "sizeMl": 100,
@@ -7609,7 +7609,7 @@
       ],
       "barcode": "6290362347002",
       "importedAt": "2026-10-16T09:05:55.583Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر",
@@ -7635,7 +7635,7 @@
       ],
       "category": "مختلط",
       "brand": "Lattafa Pride",
-      "supplierPrice": 3074.04,
+      "supplierPrice": 3074.11,
       "ourPrice": 4615,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -7647,7 +7647,7 @@
       "supplierSku": "AL-QIAM-GOLD",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 235,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa-pride/al-qiam-gold/",
       "slug": "al-qiam-gold-by-lattafa-pride-100ml-edp-149",
       "sizeMl": 100,
@@ -7683,7 +7683,7 @@
       ],
       "barcode": "6291108738214",
       "importedAt": "2026-10-16T09:05:55.583Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "وصف المورد قصير",
@@ -7710,7 +7710,7 @@
       ],
       "category": "رجالي",
       "brand": "Lattafa",
-      "supplierPrice": 2341.5,
+      "supplierPrice": 2341.55,
       "ourPrice": 3515,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -7723,7 +7723,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 179,
       "supplierSalePrice": 85,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/qaed-al-fursan-untamed/",
       "slug": "qaed-al-fursan-untamed-lattafa-90ml-edp-150",
       "sizeMl": 90,
@@ -7749,7 +7749,7 @@
       ],
       "barcode": "6290362340645",
       "importedAt": "2026-10-16T09:05:55.583Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld"
     },
     {
@@ -7772,7 +7772,7 @@
       ],
       "category": "مختلط",
       "brand": "Lattafa Pride",
-      "supplierPrice": 3401.06,
+      "supplierPrice": 3401.14,
       "ourPrice": 5105,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -7785,7 +7785,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 260,
       "supplierSalePrice": 168.98,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa-pride/nebras-elixir/",
       "slug": "nebras-elixir-by-lattafa-for-her-100-ml-151",
       "sizeMl": 100,
@@ -7820,7 +7820,7 @@
       "occasionsSource": [],
       "barcode": "6290362348054",
       "importedAt": "2026-10-16T09:05:55.583Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld"
     },
     {
@@ -39957,9 +39957,9 @@
       ],
       "category": "نسائي",
       "brand": "Grandeur",
-      "supplierPrice": 1949.07,
+      "supplierPrice": 1949.11,
       "ourPrice": 2925,
-      "stockStatus": "out_of_stock",
+      "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -39970,7 +39970,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 149,
       "supplierSalePrice": 115,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/grandeur/dakota/",
       "slug": "dakota-by-grandeur-elite-100ml-edp-women-622",
       "sizeMl": 100,
@@ -40003,11 +40003,8 @@
       "occasionsSource": [],
       "barcode": "5055810029746",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
-      "importedVia": "json-ld",
-      "reviewIssues": [
-        "غير متوفر عند المورد"
-      ]
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
+      "importedVia": "json-ld"
     },
     {
       "id": 623,
@@ -40023,11 +40020,13 @@
         "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/perfume-lelaki-mousuf-ramadi-original-malaysia-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/minyak-wangi-lelaki-mousuf-ramadi-silver-tahan-lama-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/beli-perfume-mousuf-ramadi-original-malaysia-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/perfumes/ard-al-zaafaran/perfume-lelaki-mousuf-ramadi-haruman-amber-segar-100ml-edp.jpg"
+        "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/mousuf-ramadi-silver-by-ard-al-zaafaran-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/ard-al-zaafaran-mousuf-ramadi-silver-perfume-men-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/ard-al-zaafaran-mousuf-ramadi-perfume-men-100ml-edp.jpg"
       ],
       "category": "رجالي",
       "brand": "Ard Al Zaafaran",
-      "supplierPrice": 1438.91,
+      "supplierPrice": 1438.94,
       "ourPrice": 2160,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -40040,7 +40039,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 110,
       "supplierSalePrice": 87,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/ard-al-zaafaran/mousuf-ramadi/",
       "slug": "mousuf-ramadi-by-ard-al-zaafaran-100-ml-for-men-623",
       "sizeMl": 100,
@@ -40077,7 +40076,7 @@
       ],
       "barcode": "6432354785304",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld"
     },
     {
@@ -40098,7 +40097,7 @@
       ],
       "category": "رجالي",
       "brand": "Armaf",
-      "supplierPrice": 3871.98,
+      "supplierPrice": 3872.06,
       "ourPrice": 5810,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -40111,7 +40110,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 296,
       "supplierSalePrice": 218,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/armaf/club-de-nuit-lionheart/",
       "slug": "club-de-nuit-lionheart-by-armaf-100ml-edp-men-624",
       "sizeMl": 100,
@@ -40145,7 +40144,7 @@
       ],
       "barcode": "6294015196450",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld"
     },
     {
@@ -40162,11 +40161,13 @@
         "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/minyak-wangi-salvo-elixir-tahan-lama-60ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/maison-alhambra-salvo-elixir-woody-amber-perfume-60ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/beli-perfume-salvo-elixir-original-malaysia-60ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/perfumes/maison-alhambra/salvo-elixir-maison-alhambra-60ml-edp-men-perfume-malaysia.jpg"
+        "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/perfume-lelaki-salvo-elixir-haruman-maskulin-60ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/haruman-premium-salvo-elixir-maison-alhambra-malaysia-60ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/maison-alhambra/maison-alhambra-salvo-elixir-perfume-men-malaysia-60ml-edp.jpg"
       ],
       "category": "رجالي",
       "brand": "Maison Alhambra",
-      "supplierPrice": 1765.94,
+      "supplierPrice": 1765.98,
       "ourPrice": 2650,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -40179,7 +40180,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 135,
       "supplierSalePrice": 98,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/salvo-elixir/",
       "slug": "salvo-elixir-by-maison-alhambra-60-ml-for-men-625",
       "sizeMl": 60,
@@ -40215,7 +40216,7 @@
       "occasionsSource": [],
       "barcode": "6290360590776",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
       "importedVia": "json-ld"
     },
     {
@@ -40232,13 +40233,15 @@
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/68f547afa8dc01760905135-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/imgi126lattafa-najdia-tribute-eau-de-parfum-100ml-lmching-group-limited-1800x0930afa1-e0e1-45ff-b408-3079fa67f71a-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/lattafa/imgi129lattafa-najdia-tribute-edp-100ml.jpg",
-        "https://www.shamperfume.com/cdn/OGImage/perfumes/lattafa/68f547af5202c1760905135-100ml-edp.jpg"
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/imgi138lattafanajdiatributeeaudeparfum100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/imgi159najdia3-100ml-edp.jpg",
+        "https://www.shamperfume.com/cdn/large/perfumes/lattafa/imgi194imagec0d-100ml-edp.jpg"
       ],
       "category": "مختلط",
       "brand": "Lattafa",
-      "supplierPrice": 1818.26,
+      "supplierPrice": 1818.3,
       "ourPrice": 2730,
-      "stockStatus": "out_of_stock",
+      "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -40249,7 +40252,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 139,
       "supplierSalePrice": 100,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/najdia-tribute/",
       "slug": "najdia-tribute-by-lattafa-100ml-edp-626",
       "sizeMl": 100,
@@ -40288,11 +40291,8 @@
       "occasionsSource": [],
       "barcode": "6291108733882",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
-      "importedVia": "json-ld",
-      "reviewIssues": [
-        "غير متوفر عند المورد"
-      ]
+      "refreshedAt": "2026-10-18T08:58:57.598Z",
+      "importedVia": "json-ld"
     },
     {
       "id": 627,
@@ -40722,7 +40722,7 @@
       "brand": "Gulf Orchid",
       "supplierPrice": 2485.39,
       "ourPrice": 3730,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -40766,7 +40766,10 @@
       "barcode": "6291107019741",
       "importedAt": "2026-10-16T13:16:56.090Z",
       "refreshedAt": "2026-10-16T13:16:56.090Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 634,
@@ -55166,7 +55169,7 @@
       "brand": "Zimaya",
       "supplierPrice": 3217.93,
       "ourPrice": 4830,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -55219,7 +55222,10 @@
       "barcode": "6290171074366",
       "importedAt": "2026-10-16T13:35:47.267Z",
       "refreshedAt": "2026-10-16T13:35:47.267Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 846,

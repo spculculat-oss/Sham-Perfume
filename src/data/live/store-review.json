@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T07:11:20.182Z",
+ "updatedAt": "2026-10-18T08:58:57.611Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1114,
@@ -12,7 +12,7 @@
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-18T07:10:16.253Z",
+  "at": "2026-10-18T08:57:48.808Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,8 +25,8 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1013,
-    "listingOnly": 57,
+    "listingProducts": 1017,
+    "listingOnly": 59,
     "listingComplete": true,
     "added": 0,
     "refreshed": 25,
@@ -34,7 +34,7 @@
     "failedCount": 0,
     "viaShaheen": 0,
     "deferred": 0,
-    "gone": 7
+    "gone": 5
    }
   ],
   "rate": 13.0813,
@@ -81,7 +81,7 @@
     }
    ]
   },
-  "durationMs": 63961
+  "durationMs": 68829
  },
  "items": [
   {
@@ -3597,26 +3597,6 @@
    "page": "p/dark-aoud-by-maison-alhambra-80ml-edp-621.html"
   },
   {
-   "sku": "GRA-622",
-   "id": 622,
-   "name": "Dakota by Grandeur Elite 100ml EDP – Women",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/dakota-by-grandeur-elite-100ml-edp-women-622.html"
-  },
-  {
-   "sku": "LAT-626",
-   "id": 626,
-   "name": "Najdia Tribute by Lattafa 100ml EDP",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/najdia-tribute-by-lattafa-100ml-edp-626.html"
-  },
-  {
    "sku": "MAI-628",
    "id": 628,
    "name": "Fortnight by Maison Alhambra 100ml EDP Men",
@@ -3656,6 +3636,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/opulence-leather-by-maison-alhambra-100-ml-man-631.html"
+  },
+  {
+   "sku": "GUL-633",
+   "id": 633,
+   "name": "Sweet Heaven by Gulf Orchid 100ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sweet-heaven-by-gulf-orchid-100ml-edp-unisex-633.html"
   },
   {
    "sku": "VOL-634",
@@ -4489,6 +4479,16 @@
     "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/exclusif-rose-maison-alhambra-100ml-edp-842.html"
+  },
+  {
+   "sku": "ZIM-845",
+   "id": 845,
+   "name": "Wameed by Zimaya 100ml Unisex EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/wameed-by-zimaya-100ml-unisex-edp-845.html"
   },
   {
    "sku": "RUE-848",
