@@ -120,12 +120,13 @@ found += addCandidates(file, (env.DISCOVER_SEEDS || '').split(/[\s,]+/).filter(B
 say(`${found} new stores found this run (${mode === 'ai' ? 'web search + own methods' : 'own methods, no AI'})`);
 
 // ── 2. Checking stores ────────────────────────────────────────────────────────────────────────────────────
-async function productSitemaps(base: string, listed: string[]): Promise<{ sitemaps: string[]; urls: string[]; refused: number; tried: number }> {
+async function productSitemaps(base: string, listed: string[]): Promise<{ sitemaps: string[]; urls: string[]; refused: number; tried: number; trace: string[] }> {
   // Without a sitemap in robots.txt: where WordPress/Yoast, Shopify, Salla, Zid, Magento and others put theirs.
   const queue = listed.length ? [...listed] : ['sitemap.xml', 'sitemap_index.xml', 'wp-sitemap.xml', 'product-sitemap.xml', 'sitemap_products_1.xml', 'sitemap/sitemap.xml', 'media/sitemap.xml', 'pub/media/sitemap.xml'].map((p) => new URL(p, base).href);
   const seen = new Set<string>(); const used: string[] = []; const urls: string[] = [];
   let generic = false;
   let refused = 0; let tried = 0;
+  const trace: string[] = [];
   while (queue.length && seen.size < 12 && urls.length < 60_000 && timeLeft() > 30_000) {
     const url = queue.shift()!;
     if (seen.has(url)) continue;
@@ -134,8 +135,11 @@ async function productSitemaps(base: string, listed: string[]): Promise<{ sitema
     tried++;
     // 403/429/503 or a «checking your browser» page instead of XML: the site refuses automated readers.
     if (status === 403 || status === 429 || status === 503 || (status === 200 && /<html/i.test(body.slice(0, 2000)) && /challenge|captcha|just a moment|cf-/i.test(body.slice(0, 20_000)))) refused++;
-    if (status !== 200 || !/<(?:urlset|sitemapindex)/.test(body)) continue;
+    const xml = /<(?:urlset|sitemapindex)/.test(body);
+    const short = (() => { try { const u = new URL(url); return u.pathname.split('/').pop() || u.pathname; } catch { return url; } })();
+    if (status !== 200 || !xml) { trace.push(`${short}→${status}${status === 200 ? '(not xml)' : ''}`); continue; }
     const children = parseSitemapIndex(body);
+    trace.push(`${short}→${children.length ? `${children.length} maps` : `${parseSitemap(body).length} links`}`);
     if (children.length) {
       const products = children.filter((c) => /product|perfume|parfum|fragrance|item|catalog/i.test(c));
       queue.unshift(...(products.length ? products : children.slice(0, 4)));
@@ -152,7 +156,9 @@ async function productSitemaps(base: string, listed: string[]): Promise<{ sitema
   // A mixed sitemap (pages + posts + products): keep the links that look like product pages.
   const host = domainOf(base);
   const same = urls.filter((u) => domainOf(u) === host);
-  return { sitemaps: used, urls: generic ? productCandidates(same) : same, refused, tried };
+  const urlsOut = generic ? productCandidates(same) : same;
+  if (urls.length) trace.push(`${same.length} on site, ${urlsOut.length} product-like`);
+  return { sitemaps: used, urls: urlsOut, refused, tried, trace };
 }
 
 async function rateToEgp(currency: string): Promise<number | undefined> {
@@ -188,9 +194,11 @@ async function vet(s: LiveSource): Promise<void> {
   const robotsText = await get(new URL('/robots.txt', base).href);
   const robots = parseRobots(robotsText.status === 200 ? robotsText.body : '');
   if (!robots.allowed('/')) return fail('ملف robots.txt يمنع القراءة الآلية', true);
-  const { sitemaps, urls, refused, tried } = await productSitemaps(base, robots.sitemaps.filter((u) => domainOf(u) === domainOf(base)));
+  const { sitemaps, urls, refused, tried, trace } = await productSitemaps(base, robots.sitemaps.filter((u) => domainOf(u) === domainOf(base)));
   const allowed = urls.filter((u) => { try { return robots.allowed(new URL(u).pathname); } catch { return false; } });
   if (!allowed.length) {
+    console.log(`  ${s.host} sitemap trace: ${trace.join(', ')}`);
+    notes.push(`  ↳ ${s.host}: ${trace.slice(0, 6).join(', ')}`);
     return fail(urls.length ? 'روابط المنتجات ممنوعة في robots.txt'
       : refused && refused >= tried / 2 ? 'الموقع يرفض القراءة الآلية (حماية)' : 'لا توجد خريطة منتجات (sitemap)');
   }
@@ -261,7 +269,7 @@ say(`Sources: ${after.active} active (~${after.products} perfumes), ${after.cand
 if (env.GITHUB_ACTIONS) {
   const clean = (t: string) => t.replace(/[\r\n%]/g, ' ').slice(0, 900);
   // Two notices: how stores were found (web search / own methods), and what the checks decided.
-  const checks = notes.filter((n) => /^[✓✗…]/.test(n));
+  const checks = notes.filter((n) => /^(?:[✓✗…]|  ↳)/.test(n));
   console.log(`::notice title=كشّاف المصادر — البحث::${clean(notes.filter((n) => !checks.includes(n) && !/^Sources:/.test(n)).join(' | '))}`);
   console.log(`::notice title=كشّاف المصادر — الفحص::${clean([...checks.slice(-8), notes[notes.length - 1]].join(' | '))}`);
   if (env.GITHUB_OUTPUT) appendFileSync(env.GITHUB_OUTPUT, `activated=${Math.max(0, after.active - before.active)}\n`);
