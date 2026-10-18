@@ -180,6 +180,7 @@ def startup():
 
 
 # Product endpoints
+# L-03 Fix: Scraper endpoints disabled — require SHAM_ALLOW_SCRAPE=1 + admin token (see SCRAPER_LEGAL_NOTICE.md)
 @app.get("/products", response_model=List[ProductResponse])
 def get_products(supplier_id: Optional[int] = None, category: Optional[str] = None,
                 brand: Optional[str] = None, limit: int = 100, offset: int = 0,

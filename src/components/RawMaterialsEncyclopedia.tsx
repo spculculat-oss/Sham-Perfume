@@ -1,3 +1,4 @@
+import { LegalDisclaimer } from './LegalDisclaimer';
 import React, { useState } from 'react';
 import {
   FlaskConical,
@@ -714,6 +715,7 @@ export const RawMaterialsEncyclopedia: React.FC<RawMaterialsEncyclopediaProps> =
           );
         })}
       </div>
+      <LegalDisclaimer type="chemical" lang={currentLang} />
     </div>
   );
 };

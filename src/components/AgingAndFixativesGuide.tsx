@@ -1,3 +1,4 @@
+import { LegalDisclaimer } from './LegalDisclaimer';
 import React from 'react';
 import {
   Clock,
@@ -890,6 +891,7 @@ export const AgingAndFixativesGuide: React.FC<AgingAndFixativesGuideProps> = ({
           </div>
         </div>
       </div>
+      <LegalDisclaimer type="chemical" lang={currentLang} />
     </div>
   );
 };

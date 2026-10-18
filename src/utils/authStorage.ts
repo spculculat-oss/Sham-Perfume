@@ -5,6 +5,10 @@ import { CommunityApiError, cx, getSessionToken, setSessionToken, type AuthResul
  * Accounts live on the server («مجتمع شام»: hashed passwords, encrypted private data, one account on every
  * device). Only when the server has no community database yet does the site fall back to the old
  * device-only accounts, so signing in never breaks.
+ *
+ * ⚖️ L-01 Fix (GDPR Art.32 / مصر 151/2020 / SA PDPL): لا يُخزن أي كلمة مرور Plain أبدًا في localStorage.
+ * كلمات المرور في الخادم مشفرة بـ scrypt/Argon2. في وضع Fallback المحلي (عند غياب الخادم)،
+ * نخزن فقط hash مشتق بـ SHA-256 مع salt، ولا نخزن Plain أبدًا.
  */
 const serverUnavailable = (error: unknown) => error instanceof CommunityApiError
   && (error.code === 'COMMUNITY_NOT_CONFIGURED' || error.code === 'NETWORK' || error.code === 'TIMEOUT' || error.status === 404);
@@ -29,6 +33,55 @@ const SERVER_ERRORS: Record<string, string> = {
 
 export const USER_AUTH_STORAGE_KEY = 'sham_perfume_current_user_session';
 export const REGISTERED_USERS_KEY = 'sham_perfume_registered_users_db';
+
+// ─── L-01: تجزئة آمنة لكلمة المرور في وضع Fallback المحلي ──────────────────
+// نستخدم SHA-256 عبر Web Crypto API (متاح في كل المتصفحات الحديثة). لا يُخزن Plain.
+// هذا ليس بديلاً عن scrypt/Argon2 في الخادم، لكنه يمنع كشف Plain عند XSS/سرقة localStorage.
+export async function hashClientPassword(password: string): Promise<string> {
+  try {
+    if (typeof crypto !== 'undefined' && crypto.subtle && typeof TextEncoder !== 'undefined') {
+      const enc = new TextEncoder().encode(`sham-salt-v1:${password}`);
+      const buf = await crypto.subtle.digest('SHA-256', enc);
+      const hex = Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, '0')).join('');
+      return `sha256$${hex}`;
+    }
+  } catch { /* fallback below */ }
+  // Fallback ضعيف (للبيئات القديمة) — أفضل من Plain، لكن الخادم هو الآمن الحقيقي
+  let h = 0x811c9dc5;
+  for (let i = 0; i < password.length; i++) {
+    h ^= password.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return `fallback$${(h >>> 0).toString(16)}`;
+}
+
+export async function verifyClientPassword(password: string, hash: string): Promise<boolean> {
+  const computed = await hashClientPassword(password);
+  // مقارنة زمن ثابت تقريبي
+  if (computed.length !== hash.length) return false;
+  let diff = 0;
+  for (let i = 0; i < computed.length; i++) diff |= computed.charCodeAt(i) ^ hash.charCodeAt(i);
+  return diff === 0;
+}
+
+// هجرة: إذا وجدت حسابات قديمة بكلمة مرور Plain، حوّلها إلى hash أو احذفها
+function migrateLegacyUsers(users: Array<Record<string, unknown>>): Array<Record<string, unknown>> {
+  let migrated = false;
+  for (const u of users) {
+    if (typeof u.password === 'string' && u.password.length > 0) {
+      // لا يمكننا تجزئة Plain بدون كلمة المرور الأصلية هنا (نحتاج await)،
+      // لذا نُعلم أن هذه الحسابات تحتاج إعادة تعيين. نحذف Plain فورًا.
+      // الحسابات التي كانت Plain ستُطلب منها إعادة التسجيل/تسجيل دخول جديد ينشئ hash.
+      console.warn('[Legal L-01] Migrating legacy plain password — removing plain field for', (u as { email?: string }).email);
+      delete u.password;
+      migrated = true;
+    }
+  }
+  if (migrated) {
+    try { localStorage.setItem(REGISTERED_USERS_KEY, JSON.stringify(users)); } catch { /* ignore */ }
+  }
+  return users;
+}
 
 export interface AuthResponse {
   success: boolean;
@@ -64,20 +117,38 @@ export async function loginUser(email: string, password: string): Promise<AuthRe
       if (!serverUnavailable(error)) return { success: false, error: SERVER_ERRORS[(error as CommunityApiError).code] || 'err_login_failed' };
     }
 
+    // Fallback محلي آمن: نقارن hash فقط، لا Plain
     const rawUsers = localStorage.getItem(REGISTERED_USERS_KEY);
-    const users: Array<UserProfile & { password?: string }> = rawUsers ? JSON.parse(rawUsers) : [];
+    let users: Array<UserProfile & { passwordHash?: string; password?: string }> = rawUsers ? JSON.parse(rawUsers) : [];
+    users = migrateLegacyUsers(users as unknown as Array<Record<string, unknown>>) as unknown as typeof users;
 
     const existing = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
     if (existing) {
-      if (existing.password && existing.password !== password) {
-        return { success: false, error: 'err_wrong_password' };
+      // حساب قديم فيه Plain (بعد الهجرة أصبح بدون hash) — اطلب إعادة إنشاء
+      if (!existing.passwordHash) {
+        // حاول التوافق مع Plain القديم لمرة واحدة ثم هاجر
+        if ((existing as unknown as { password?: string }).password) {
+          const plain = (existing as unknown as { password?: string }).password!;
+          if (plain !== password) return { success: false, error: 'err_wrong_password' };
+          // هجرة فورية إلى hash
+          const newHash = await hashClientPassword(password);
+          existing.passwordHash = newHash;
+          delete (existing as unknown as { password?: string }).password;
+          localStorage.setItem(REGISTERED_USERS_KEY, JSON.stringify(users));
+        } else {
+          return { success: false, error: 'err_login_failed' };
+        }
+      } else {
+        const ok = await verifyClientPassword(password, existing.passwordHash);
+        if (!ok) return { success: false, error: 'err_wrong_password' };
       }
-      const { password: _, ...cleanUser } = existing;
+      // لا نُعيد كلمة المرور أبدًا في session
+      const { passwordHash: _ph, password: _p, ...cleanUser } = existing as UserProfile & { passwordHash?: string; password?: string };
       localStorage.setItem(USER_AUTH_STORAGE_KEY, JSON.stringify(cleanUser));
-      return { success: true, user: cleanUser };
+      return { success: true, user: cleanUser as UserProfile };
     }
 
-    // Auto-create for convenience if valid email
+    // Auto-create for convenience if valid email — نخزن hash فقط
     const newUser: UserProfile = {
       id: 'usr-' + Date.now(),
       name: email.split('@')[0],
@@ -85,11 +156,12 @@ export async function loginUser(email: string, password: string): Promise<AuthRe
       craftLevel: 'perfumer',
       createdAt: new Date().toISOString(),
     };
-    users.push({ ...newUser, password });
+    const passwordHash = await hashClientPassword(password);
+    users.push({ ...newUser, passwordHash } as unknown as UserProfile & { passwordHash: string });
     localStorage.setItem(REGISTERED_USERS_KEY, JSON.stringify(users));
     localStorage.setItem(USER_AUTH_STORAGE_KEY, JSON.stringify(newUser));
     return { success: true, user: newUser };
-  } catch (e: any) {
+  } catch (e: unknown) {
     return { success: false, error: 'err_login_failed' };
   }
 }
@@ -112,7 +184,8 @@ export async function registerUser(
       if (!serverUnavailable(error)) return { success: false, error: SERVER_ERRORS[(error as CommunityApiError).code] || 'err_register_failed' };
     }
     const rawUsers = localStorage.getItem(REGISTERED_USERS_KEY);
-    const users: Array<UserProfile & { password?: string }> = rawUsers ? JSON.parse(rawUsers) : [];
+    let users: Array<UserProfile & { passwordHash?: string; password?: string }> = rawUsers ? JSON.parse(rawUsers) : [];
+    users = migrateLegacyUsers(users as unknown as Array<Record<string, unknown>>) as unknown as typeof users;
 
     const existing = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
     if (existing) {
@@ -128,11 +201,12 @@ export async function registerUser(
       regionId,
     };
 
-    users.push({ ...newUser, password });
+    const passwordHash = await hashClientPassword(password);
+    users.push({ ...newUser, passwordHash } as unknown as UserProfile & { passwordHash: string });
     localStorage.setItem(REGISTERED_USERS_KEY, JSON.stringify(users));
     localStorage.setItem(USER_AUTH_STORAGE_KEY, JSON.stringify(newUser));
     return { success: true, user: newUser };
-  } catch (e: any) {
+  } catch (e: unknown) {
     return { success: false, error: 'err_register_failed' };
   }
 }
@@ -152,6 +226,17 @@ export function wipeAllUserData(): void {
     localStorage.removeItem('miyaar_perfume_saved_formulas');
     localStorage.removeItem('sham_perfume_user_detailed_address');
     localStorage.removeItem('sham_perfume_user_environment_profile');
+    // L-24 Fix: مسح إضافي لضمان حق النسيان الكامل
+    localStorage.removeItem('sham_community_session_v1');
+    localStorage.removeItem('miyaar_daily_perfume_news_v2');
+    localStorage.removeItem('miyaar_perfume_news_last_refresh_date');
+    // تنظيف أي بقايا plain قديمة
+    try {
+      const raw = localStorage.getItem(REGISTERED_USERS_KEY);
+      if (raw && raw.includes('"password"')) {
+        localStorage.removeItem(REGISTERED_USERS_KEY);
+      }
+    } catch {}
   } catch (e) {}
 }
 
@@ -159,11 +244,21 @@ export function exportAllUserData(user: UserProfile): void {
   try {
     const rawFormulas = localStorage.getItem('miyaar_perfume_saved_formulas');
     const rawAddress = localStorage.getItem('sham_perfume_user_detailed_address');
+    const rawEnv = localStorage.getItem('sham_perfume_user_environment_profile');
+    const rawCommunity = (() => {
+      try { return localStorage.getItem('sham_community_session_v1') ? '[session active — export via /api/community/export]' : null; } catch { return null; }
+    })();
     const exportData = {
       user,
       exportedAt: new Date().toISOString(),
+      // L-24: تصدير شامل — نذكر أن المجتمع يُصدّر من الخادم
+      noticeAr: 'هذا التصدير يشمل البيانات المحلية. بيانات المجتمع (منشورات/رسائل/أصدقاء) تُصدّر عبر الخادم: /api/community/export',
+      noticeEn: 'Local export. Community data (posts/messages/friends) via server: /api/community/export',
       formulas: rawFormulas ? JSON.parse(rawFormulas) : [],
       detailedAddress: rawAddress ? JSON.parse(rawAddress) : null,
+      environmentProfile: rawEnv ? JSON.parse(rawEnv) : null,
+      hasCommunitySession: !!rawCommunity,
+      legalBasis: 'GDPR Art.20 / مصر 151/2020 / SA PDPL — حق نقل البيانات',
     };
     const blob = new Blob([JSON.stringify(exportData, null, 2)], {
       type: 'application/json',

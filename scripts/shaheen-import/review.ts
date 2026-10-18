@@ -11,6 +11,7 @@
  */
 import { isGarbled, isGenericDescription, productSlug, skuOf, type RawProduct } from '../../src/utils/storeCatalog';
 import { isImported, ourPriceOf, type ImportedProduct, type PriceRule } from './transform';
+import { assertScrapeAllowed } from './guard';
 
 export type ReviewStatus = 'ok' | 'warn' | 'hidden';
 export interface ReviewItem { sku: string; id: number | string; name: string; status: ReviewStatus; issues: string[]; page?: string }
@@ -78,6 +79,7 @@ export interface ReviewOptions {
 
 /** Reviews every product, hides the ones with critical problems and returns the report. */
 export async function reviewStore(products: RawProduct[], o: ReviewOptions = {}): Promise<{ products: RawProduct[]; report: ReviewFile }> {
+  // L-03 Guard: review may still run for existing catalog, but re-import blocked by guard.ts
   const now = o.now || new Date().toISOString();
   const previousBroken = new Map((o.previous?.items || []).filter((i) => i.issues.some((x) => x.startsWith('الصورة لا تفتح'))).map((i) => [i.sku, i]));
   // Imported products with photos are checked first: new ones, then those flagged last time, then the rest in turn.

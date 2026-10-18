@@ -47,6 +47,7 @@ import { makeStoreT, storeFamilyLabel, storeGenderLabel, storeLocalized, storeNu
 import { isRTL } from '../لغات/localizedContent';
 import type { SupportedLanguage } from '../types/i18n';
 import { askShaheenStore, loadStoreCatalog, localSuggestion, storeImageSrc, type StoreSuggestion } from '../utils/liveStore';
+import { LegalDisclaimer } from './LegalDisclaimer';
 import { addToCart, cartSummary, clearCart, orderMessage, setCartQty, useCart } from '../utils/storeCart';
 import {
   CheckoutError,
@@ -1590,6 +1591,11 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                     <span data-testid="store-cart-total" className="font-mono-numbers text-amber-900">
                       {money.money(bill.total)}
                     </span>
+                  </p>
+                  {/* L-05 UN1266 + L-17 Tax/Refund Fix */}
+                  <LegalDisclaimer type="shipping" lang={currentLang} compact />
+                  <p className="text-[10px] text-stone-500 leading-relaxed">
+                    {currentLang === 'ar' ? 'الأسعار لا تشمل ضريبة بلدك/الجمارك. الإرجاع: تواصل خلال 14 يومًا عبر التاجر المسؤول (المنصة وسيط).' : 'Prices exclude your country VAT/customs. Returns: contact merchant within 14 days (platform is intermediary).'}
                   </p>
 
                   {step === 'form' ? (

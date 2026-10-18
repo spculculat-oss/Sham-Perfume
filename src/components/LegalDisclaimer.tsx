@@ -61,20 +61,28 @@ const S = {
   },
 };
 
-type Variant = 'chemical' | 'ai' | 'dangerous';
+type Variant = 'chemical' | 'ai' | 'dangerous' | 'shipping';
+type VariantInput = Variant | 'chemical' | 'shipping';
 
 interface Props {
-  variant: Variant;
+  variant?: Variant;
+  type?: VariantInput;
   currentLang?: SupportedLanguage;
+  lang?: SupportedLanguage;
   onLearnMore?: () => void;
   compact?: boolean;
 }
 
-export const LegalDisclaimer: React.FC<Props> = ({ variant, currentLang = 'ar', onLearnMore, compact = false }) => {
+export const LegalDisclaimer: React.FC<Props> = ({ variant, type, currentLang = 'ar', lang, onLearnMore, compact = false }) => {
+  const resolvedLang = (lang || currentLang || 'ar') as SupportedLanguage;
+  const rawVariant = (variant || type || 'chemical') as string;
+  const normVariant: Variant = rawVariant === 'shipping' ? 'dangerous' : (rawVariant as Variant);
+  variant = normVariant;
+  currentLang = resolvedLang;
   const rtl = isRTL(currentLang);
   const T = makeT(currentLang, S);
 
-  const config = {
+  const configMap = {
     chemical: {
       icon: <FlaskConical className="w-4 h-4 text-amber-700" />,
       titleKey: 'chem_title' as const,
@@ -96,7 +104,15 @@ export const LegalDisclaimer: React.FC<Props> = ({ variant, currentLang = 'ar', 
       bg: 'bg-red-50 border-red-200',
       titleColor: 'text-red-900',
     },
-  }[variant];
+    shipping: {
+      icon: <AlertTriangle className="w-4 h-4 text-red-700" />,
+      titleKey: 'dg_title' as const,
+      bodyKey: 'dg_body' as const,
+      bg: 'bg-red-50 border-red-200',
+      titleColor: 'text-red-900',
+    },
+  } as const;
+  const config = configMap[variant as keyof typeof configMap] || configMap.chemical;
 
   if (compact) {
     return (
@@ -129,6 +145,19 @@ export const LegalDisclaimer: React.FC<Props> = ({ variant, currentLang = 'ar', 
       </div>
     </div>
   );
+};
+
+// Aliases for callers using semantic prop names (type=chemical/shipping/ai)
+export const AIDisclosureBadge: React.FC<{ lang?: SupportedLanguage }> = ({ lang = 'ar' }) => (
+  <LegalDisclaimer variant="ai" currentLang={lang} compact />
+);
+export const ShippingDisclaimer: React.FC<{ lang?: SupportedLanguage }> = ({ lang = 'ar' }) => (
+  <LegalDisclaimer variant="dangerous" currentLang={lang} />
+);
+// Support `type` + `lang` prop names used by some callers
+export const LegalDisclaimerCompat: React.FC<{ type: 'chemical' | 'shipping' | 'ai'; lang?: SupportedLanguage; compact?: boolean }> = ({ type, lang, compact }) => {
+  const variant = type === 'shipping' ? 'dangerous' : type === 'ai' ? 'ai' : 'chemical';
+  return <LegalDisclaimer variant={variant} currentLang={lang} compact={compact} />;
 };
 
 export default LegalDisclaimer;

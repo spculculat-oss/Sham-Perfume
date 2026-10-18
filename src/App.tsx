@@ -26,6 +26,7 @@ import { NavigationBreadcrumbs } from './components/NavigationBreadcrumbs';
 import { CountryAndAddressModal } from './components/CountryAndAddressModal';
 import { AuthModal } from './components/AuthModal';
 import { DataPrivacyModal } from './components/DataPrivacyModal';
+import { LegalCenter } from './components/LegalCenter';
 import { useSeo } from './hooks/useSeo';
 import {
   FormulationState,
@@ -174,6 +175,8 @@ export default function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isEnvironmentModalOpen, setIsEnvironmentModalOpen] = useState(false);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+  const [isLegalCenterOpen, setIsLegalCenterOpen] = useState(false);
+  const [legalInitialTab, setLegalInitialTab] = useState<string>('overview');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Synchronous modal tracker ref for browser popstate
@@ -183,7 +186,19 @@ export default function App() {
     auth: false,
     env: false,
     privacy: false,
+    legal: false,
   });
+  // Listen for Footer legal center open (L-08..L-20 Fix)
+  React.useEffect(() => {
+    const onOpenLegal = (e: Event) => {
+      const tab = (e as CustomEvent).detail || 'overview';
+      setLegalInitialTab(tab);
+      setIsLegalCenterOpen(true);
+      activeModalsRef.current.legal = true;
+    };
+    window.addEventListener('open-legal-center', onOpenLegal);
+    return () => window.removeEventListener('open-legal-center', onOpenLegal);
+  }, []);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -193,12 +208,13 @@ export default function App() {
   };
 
   const closeAllModalsDirectly = () => {
-    activeModalsRef.current = { spec: false, save: false, auth: false, env: false, privacy: false };
+    activeModalsRef.current = { spec: false, save: false, auth: false, env: false, privacy: false, legal: false };
     setIsSpecModalOpen(false);
     setIsSaveModalOpen(false);
     setIsAuthModalOpen(false);
     setIsEnvironmentModalOpen(false);
     setIsPrivacyModalOpen(false);
+    setIsLegalCenterOpen(false);
   };
 
   const handleOpenSpecModal = () => {
@@ -1272,6 +1288,18 @@ export default function App() {
           currentUser={currentUser}
           onUserDataWiped={handleUserDataWiped}
           onClose={handleClosePrivacyModal}
+        />
+      )}
+
+      {/* Legal Center — L-08..L-20, L-37 Fix: شامل الشروط والخصوصية وUN1266 وAI */}
+      {isLegalCenterOpen && (
+        <LegalCenter
+          currentLang={currentLang}
+          initialTab={legalInitialTab as any}
+          onClose={() => {
+            activeModalsRef.current.legal = false;
+            setIsLegalCenterOpen(false);
+          }}
         />
       )}
 

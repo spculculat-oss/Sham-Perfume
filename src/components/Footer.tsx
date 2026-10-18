@@ -34,13 +34,19 @@ const S = {
 interface FooterProps {
   setActiveTab: (tab: string) => void;
   currentLang?: SupportedLanguage;
+  onOpenLegal?: (tab: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
   setActiveTab,
   currentLang = 'ar',
+  onOpenLegal,
 }) => {
   const L = makeT(currentLang, S);
+  const openLegal = (tab: string) => {
+    if (onOpenLegal) onOpenLegal(tab);
+    else window.dispatchEvent(new CustomEvent('open-legal-center', { detail: tab }));
+  };
   return (
     <footer className="bg-stone-950 text-stone-300 border-t border-stone-800 mt-20 pt-14 pb-12 no-print">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
@@ -181,12 +187,68 @@ export const Footer: React.FC<FooterProps> = ({
 
         </div>
 
+        {/* Legal Center Bar — L-08..L-20, L-37 Fix: روابط قانونية واضحة + شكاوى حكومية */}
+        <div className="py-6 border-b border-stone-850 grid grid-cols-1 md:grid-cols-12 gap-6 text-xs">
+          <div className="md:col-span-8">
+            <div className="font-bold text-white text-xs tracking-wider uppercase mb-3 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span>{currentLang === 'ar' ? 'المركز القانوني — حقوقك وشروطنا' : 'Legal Center — Your Rights & Our Terms'}</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { id: 'terms', ar: 'الشروط والأحكام', en: 'Terms' },
+                { id: 'privacy', ar: 'سياسة الخصوصية', en: 'Privacy' },
+                { id: 'returns', ar: 'الإرجاع والاسترداد', en: 'Returns' },
+                { id: 'shipping', ar: 'الشحن UN1266', en: 'Shipping UN1266' },
+                { id: 'cookies', ar: 'الكوكيز', en: 'Cookies' },
+                { id: 'ai', ar: 'الذكاء الاصطناعي', en: 'AI Disclosure' },
+                { id: 'contact', ar: 'اتصل بنا قانونيًا', en: 'Legal Contact' },
+              ].map((link) => (
+                <button
+                  key={link.id}
+                  onClick={() => openLegal(link.id)}
+                  className="px-3 py-1.5 rounded-full bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white border border-stone-800 text-[11px] font-medium transition-colors cursor-pointer"
+                >
+                  {currentLang === 'ar' ? link.ar : link.en}
+                </button>
+              ))}
+            </div>
+            <div className="mt-3 flex flex-wrap gap-2 text-[10px] text-stone-500">
+              <span className="font-semibold text-stone-400">{currentLang === 'ar' ? 'شكاوى حكومية:' : 'Gov complaints:'}</span>
+              <a href="https://maroof.sa" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇸🇦 معروف</a>
+              <a href="https://www.cpa.gov.eg" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇪🇬 حماية المستهلك</a>
+              <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇪🇺 EU ODR</a>
+              <a href="https://u.ae/en/information-and-services/social-affairs/having-a-consumer-complaint" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇦🇪 UAE</a>
+            </div>
+          </div>
+          <div className="md:col-span-4 bg-stone-900 rounded-xl border border-stone-800 p-3 space-y-1">
+            <div className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">⚖️ {currentLang === 'ar' ? 'معلومات قانونية' : 'Legal Info'}</div>
+            <div className="text-[11px] text-stone-400 leading-relaxed">
+              {currentLang === 'ar'
+                ? 'السجل التجاري: [يُعبأ] | الرقم الضريبي: [يُعبأ] | privacy@sham-perfume.com'
+                : 'CR: [fill] | VAT: [fill] | privacy@sham-perfume.com'}
+            </div>
+            <div className="text-[10px] text-stone-500">
+              {currentLang === 'ar'
+                ? '🤖 ردود شاهين مولدة بالذكاء الاصطناعي — ليست نصيحة مهنية. العطور UN1266 قابل للاشتعال.'
+                : '🤖 Shaheen replies are AI-generated — not professional advice. Perfumes UN1266 flammable.'}
+            </div>
+            <div className="text-[10px] text-stone-500">
+              {currentLang === 'ar' ? 'النص العربي هو المرجع الملزم عند التعارض.' : 'Arabic is binding on conflict.'}
+            </div>
+          </div>
+        </div>
+
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
           <div>
             {fmt(L('copyright_tpl'), { y: new Date().getFullYear() })}
           </div>
-
+          <div className="flex items-center gap-2 text-[10px]">
+            <span className="px-2 py-1 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-300 font-mono">✓ GDPR/PDPL</span>
+            <span className="px-2 py-1 rounded-full bg-blue-950 border border-blue-800 text-blue-300 font-mono">✓ IFRA 51</span>
+            <span className="px-2 py-1 rounded-full bg-amber-950 border border-amber-800 text-amber-300 font-mono">✓ UN1266</span>
+          </div>
         </div>
       </div>
     </footer>

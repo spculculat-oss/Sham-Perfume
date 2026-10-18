@@ -1,3 +1,4 @@
+import { LegalDisclaimer } from './LegalDisclaimer';
 import { LocalizedNumberInput } from './LocalizedNumberInput';
 import React, { useState } from 'react';
 import {
@@ -1315,6 +1316,7 @@ export const PyramidCalculator: React.FC<PyramidCalculatorProps> = ({
         </div>
       </div>
       )}
+      <LegalDisclaimer type="chemical" lang={currentLang} />
     </div>
   );
 };
