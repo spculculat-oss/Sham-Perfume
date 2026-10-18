@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T10:56:54.561Z",
+ "updatedAt": "2026-10-18T11:48:10.356Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1114,
   "imported": 1063,
-  "ok": 511,
-  "warn": 603,
+  "ok": 513,
+  "warn": 601,
   "hidden": 0,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-18T10:55:43.797Z",
+  "at": "2026-10-18T11:47:07.200Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,16 +25,23 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1023,
-    "listingOnly": 59,
+    "listingProducts": 1020,
+    "listingOnly": 60,
     "listingComplete": true,
+    "origin": "built-in",
     "added": 0,
     "refreshed": 25,
     "failed": [],
     "failedCount": 0,
     "viaShaheen": 0,
     "deferred": 0,
-    "gone": 5
+    "gone": 4,
+    "via": {
+     "json-ld": 25
+    },
+    "learnedSkills": 0,
+    "notPerfume": 0,
+    "duplicates": 0
    }
   ],
   "rate": 13.0813,
@@ -81,7 +88,7 @@
     }
    ]
   },
-  "durationMs": 70796
+  "durationMs": 63185
  },
  "items": [
   {
@@ -3710,16 +3717,6 @@
    "page": "p/nexa-immortal-by-rue-broca-100ml-edp-men-652.html"
   },
   {
-   "sku": "MAI-653",
-   "id": 653,
-   "name": "Victorioso by Maison Alhambra 100ml EDP Men",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/victorioso-by-maison-alhambra-100ml-edp-men-653.html"
-  },
-  {
    "sku": "ZIM-654",
    "id": 654,
    "name": "Reflect by Zimaya 100ml EDP Unisex",
@@ -3739,16 +3736,6 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/armaf-club-de-nuit-intense-man-parfum-150ml-655.html"
-  },
-  {
-   "sku": "VOL-656",
-   "id": 656,
-   "name": "Amara by Volare 100ml EDP",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/amara-by-volare-100ml-edp-656.html"
   },
   {
    "sku": "AFN-657",
@@ -3832,16 +3819,6 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/my-party-maison-alhambra-100ml-edp-woman-673.html"
-  },
-  {
-   "sku": "RUE-675",
-   "id": 675,
-   "name": "Exotic Heritage by Rue Broca 100ml EDP Men",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/exotic-heritage-by-rue-broca-100ml-edp-men-675.html"
   },
   {
    "sku": "MAI-679",
@@ -4643,6 +4620,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/9-am-pour-femme-by-afnan-perfumes-100-ml-for-women-870.html"
+  },
+  {
+   "sku": "ZIM-871",
+   "id": 871,
+   "name": "Fatima Velvet Love by Zimaya 100ml Extrait Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/fatima-velvet-love-by-zimaya-100ml-extrait-women-871.html"
   },
   {
    "sku": "GRA-872",
