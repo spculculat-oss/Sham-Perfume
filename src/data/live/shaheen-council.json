@@ -112,9 +112,10 @@
    "needsApproval": true,
    "createdAt": "2026-10-18T13:24:54.809Z",
    "meeting": "2026-10-18",
-   "status": "open",
+   "status": "done",
    "issue": 132,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/132"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/132",
+   "closedAt": "2026-10-18T14:22:19Z"
   },
   {
    "id": "2026-10-18-3-تنقية-بيانات-كتالوج-المت",
@@ -125,9 +126,10 @@
    "needsApproval": true,
    "createdAt": "2026-10-18T13:24:54.809Z",
    "meeting": "2026-10-18",
-   "status": "open",
+   "status": "done",
    "issue": 133,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/133"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/133",
+   "closedAt": "2026-10-18T14:22:19Z"
   },
   {
    "id": "2026-10-18-4-تشغيل-مستورد-شاهين-لفحص-",
@@ -138,9 +140,10 @@
    "needsApproval": false,
    "createdAt": "2026-10-18T13:24:54.809Z",
    "meeting": "2026-10-18",
-   "status": "open",
+   "status": "done",
    "issue": 134,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/134"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/134",
+   "closedAt": "2026-10-18T14:22:20Z"
   }
  ],
  "toolGoals": {
