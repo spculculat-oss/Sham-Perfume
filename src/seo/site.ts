@@ -10,10 +10,16 @@ export const SITE = {
   nameAr: 'صمم عطرك مع شام',
   nameEn: 'Design Your Perfume with Sham',
   shortNameAr: 'شام',
-  /** The canonical public origin: the same URL every page's rel=canonical points at. */
-  url: 'https://sham-perfume-49bf.vercel.app/',
-  /** The static mirror on GitHub Pages (same app, calls the Vercel API). */
+  /**
+   * The canonical public origin: the main site on GitHub Pages. Every page's rel=canonical points here,
+   * from both builds — the Vercel copy is the engine (API, Shaheen, payment, community), so its static pages
+   * point back here instead of competing with the main site in search results.
+   */
+  url: 'https://spculculat-oss.github.io/Sham-Perfume/',
+  /** Same as `url` (kept for older callers): the GitHub Pages build. */
   mirrorUrl: 'https://spculculat-oss.github.io/Sham-Perfume/',
+  /** The engine on Vercel (API and server features). Not a canonical address. */
+  engineUrl: 'https://sham-perfume-49bf.vercel.app/',
   github: 'https://github.com/spculculat-oss/Sham-Perfume',
   locale: 'ar_EG',
   language: 'ar',
@@ -100,10 +106,10 @@ export function hasGoogleConsole(env: Record<string, string | undefined>) {
 }
 export const hasBingWebmaster = (env: Record<string, string | undefined>) => Boolean(env.BING_WEBMASTER_API_KEY?.trim());
 
-/** Canonical origin for this deployment: an explicit env wins, otherwise the primary Vercel site. */
+/** Canonical origin: an explicit SEO_SITE_URL wins, otherwise the main site (GitHub Pages) — on every host. */
 export function canonicalSiteUrl(env: Record<string, string | undefined> = {}): string {
-  const vercel = env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
-  const raw = env.SEO_SITE_URL?.trim() || env.APP_URL?.trim() || (vercel ? `https://${vercel.replace(/^https?:\/\//, '').replace(/\/+$/, '')}/` : '') || SITE.url;
+  // Not APP_URL / VERCEL_PROJECT_PRODUCTION_URL: the engine's own address must never become canonical.
+  const raw = env.SEO_SITE_URL?.trim() || SITE.url;
   try {
     const url = new URL(raw);
     if (url.protocol !== 'https:' && !/^(localhost|127\.0\.0\.1)$/.test(url.hostname)) return SITE.url;

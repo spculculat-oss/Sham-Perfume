@@ -8,6 +8,7 @@
  *      validated against the page: a price or image that is not on the page is rejected.
  * Nothing here ever invents a product: an unreadable page returns `null` and the run reports it.
  */
+import { proseNotes } from './proseNotes';
 
 export interface SitemapEntry { url: string; lastmod?: string; images: string[] }
 
@@ -142,7 +143,9 @@ export function parseNotes(text: string): ExtractedProduct['notes'] {
     const m = t.match(new RegExp(`(?:${labels})\\s*(?:notes?)?\\s*[:：-]\\s*([^.:]+?)(?=\\s+(?:Top|Head|Middle|Heart|Base|Dry ?down)\\s*(?:notes?)?\\s*[:：-]|\\.|$)`, 'i'));
     return m ? list(m[1]).slice(0, 10) : [];
   };
-  return { top: grab('Top|Head|Opening'), heart: grab('Middle|Heart'), base: grab('Base|Dry ?down') };
+  const labelled = { top: grab('Top|Head|Opening'), heart: grab('Middle|Heart'), base: grab('Base|Dry ?down') };
+  // No «Top: …» labels: the notes the supplier wrote in prose (literal words only, never invented).
+  return labelled.top.length || labelled.heart.length || labelled.base.length ? labelled : proseNotes(t);
 }
 
 /** Value of a label in the visible spec table, e.g. «Concentration Eau de Parfum Family …». */

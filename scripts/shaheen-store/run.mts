@@ -15,7 +15,8 @@ const env = process.env;
 const DIR = new URL('../../src/data/live/', import.meta.url);
 const FILE = new URL('store-catalog.json', DIR);
 const read = <T,>(url: URL): T | undefined => { try { return existsSync(url) ? JSON.parse(readFileSync(url, 'utf8')) as T : undefined; } catch { return undefined; } };
-const products = read<{ products?: RawProduct[] }>(new URL('../products.json', DIR))?.products || [];
+// Products the merchant hid (published: false) are not in the store: Shaheen does not spend AI on them.
+const products = (read<{ products?: RawProduct[] }>(new URL('../products.json', DIR))?.products || []).filter((p) => p.published !== false);
 const previous = read<StoreCatalogFile>(FILE);
 const supervisor = read<{ tools?: Record<string, { guidance?: { text?: string } }> }>(new URL('ai-supervisor.json', DIR));
 const SYSTEM = STORE_SYSTEM + guidanceBlock(supervisor?.tools?.store_catalog?.guidance?.text);

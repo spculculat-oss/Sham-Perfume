@@ -8,7 +8,7 @@
  * search engines when SEO_SUBMIT=1, then writes the state and page overrides back. Publishing the two
  * JSON files is the workflow's job (scripts/ci/publish.mjs), never this script's.
  *
- * Env: SEO_SITE_URL (defaults to the canonical Vercel origin), SEO_SUBMIT=1, SEO_ENGINE_ORDER
+ * Env: SEO_SITE_URL (defaults to the main site on GitHub Pages), SEO_SUBMIT=1, SEO_ENGINE_ORDER
  * (comma-separated ids, default gemini,deepseek,openai,claude,openrouter,self_hosted) and the engine
  * API keys the site already uses. With no key the cycle still audits, studies and plans.
  */

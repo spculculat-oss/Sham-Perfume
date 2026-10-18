@@ -9,7 +9,7 @@ name: Manaret Shaheen — SEO cycle and search-engine submissions (every 6 hours
 # Branch pushes rehearse (SEO_SUBMIT=0, no commit); scheduled runs on main submit and publish.
 #
 # Optional secrets: the AI engine keys, BING_WEBMASTER_API_KEY, GSC_SERVICE_ACCOUNT_JSON.
-# Var: SEO_SITE_URL (defaults to the canonical Vercel origin).
+# Var: SEO_SITE_URL (defaults to the main site on GitHub Pages — the address visitors and search engines use).
 
 on:
   schedule:
@@ -41,7 +41,7 @@ jobs:
     env:
       SEO_COMMIT: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
       SEO_SUBMIT: ${{ github.ref == 'refs/heads/main' && '1' || '0' }}
-      SEO_SITE_URL: ${{ vars.SEO_SITE_URL || vars.DOCTOR_SITE_URL || 'https://sham-perfume-49bf.vercel.app' }}
+      SEO_SITE_URL: ${{ vars.SEO_SITE_URL || 'https://spculculat-oss.github.io/Sham-Perfume/' }}
       # Shaheen's supervisor guidance for this tool (server/core/liveData → supervisorGuidance).
       SHAM_LIVE_DATA: ${{ vars.SHAM_LIVE_DATA }}
       SHAM_LIVE_DATA_URL: ${{ vars.SHAM_LIVE_DATA_URL }}

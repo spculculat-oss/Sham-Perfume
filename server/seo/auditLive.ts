@@ -110,12 +110,26 @@ export async function auditLiveSite(input: { siteUrl: string; fetch?: Fetch; now
   const toolsIndex = await get(abs('tools/'), request);
   const tool = await get(toolUrl, request);
   const product = productUrl ? await get(productUrl, request) : undefined;
+  // An old deployment (or a host without the static pages) answers every path with the app shell: the
+  // same page as the home, no H1. That is one problem — the published copy is out of date — not dozens.
+  const homeTitle = titleOf(home.text);
+  const isShell = (html?: string) => Boolean(html && homeTitle && titleOf(html) === homeTitle && !/<h1[\s>]/i.test(html));
+  const shells = [toolsIndex, tool, product].filter((p) => isShell(p?.text)).length;
+  if (shells >= 2) {
+    findings.push({
+      id: 'crawl:site:staleDeployment', area: 'crawl', severity: 'critical', page: '/',
+      title: 'النسخة المنشورة قديمة', detail: `صفحات الأدوات والمنتجات على ${siteUrl} تعرض صفحة التطبيق الرئيسية بدل محتواها: النسخة المنشورة على هذا العنوان أقدم من الكود الحالي.`,
+      fix: 'انشر آخر نسخة على هذا العنوان (أو اجعل الفحص على الموقع الأساسي)، ثم أعد الفحص.',
+    });
+    notes.push('النسخة المنشورة قديمة: صفحات الأدوات والمنتجات غير موجودة على هذا العنوان، فلم تُفحص صفحة صفحة.');
+  }
   for (const [url, kind, fetched] of [
     [abs('tools/'), 'other', toolsIndex],
     [toolUrl, 'tool', tool],
     ...(productUrl ? [[productUrl, 'product', product] as const] : []),
   ] as const) {
     if (!fetched) { notes.push(`تعذّر تحميل ${url}`); continue; }
+    if (shells >= 2 && isShell(fetched.text)) continue;
     pages.push({ url, html: fetched.text, status: fetched.status, ms: fetched.ms, bytes: fetched.bytes });
     findings.push(...auditPage({ url, html: fetched.text, kind, bytes: fetched.bytes }));
   }

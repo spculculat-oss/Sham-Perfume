@@ -22,7 +22,8 @@
       "reviewCount": 120,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
-      "updatedAt": "2026-10-15 12:53:28"
+      "updatedAt": "2026-10-15 12:53:28",
+      "published": false
     },
     {
       "id": 2,
@@ -46,7 +47,8 @@
       "reviewCount": 120,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
-      "updatedAt": "2026-10-15 12:53:28"
+      "updatedAt": "2026-10-15 12:53:28",
+      "published": false
     },
     {
       "id": 3,
@@ -70,7 +72,8 @@
       "reviewCount": 120,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
-      "updatedAt": "2026-10-15 12:53:28"
+      "updatedAt": "2026-10-15 12:53:28",
+      "published": false
     },
     {
       "id": 4,
@@ -94,7 +97,8 @@
       "reviewCount": 120,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
-      "updatedAt": "2026-10-15 12:53:28"
+      "updatedAt": "2026-10-15 12:53:28",
+      "published": false
     },
     {
       "id": 5,
@@ -118,7 +122,8 @@
       "reviewCount": 120,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
-      "updatedAt": "2026-10-15 12:53:28"
+      "updatedAt": "2026-10-15 12:53:28",
+      "published": false
     },
     {
       "id": 6,
@@ -142,7 +147,8 @@
       "reviewCount": 45,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
-      "updatedAt": "2026-10-15 12:53:28"
+      "updatedAt": "2026-10-15 12:53:28",
+      "published": false
     },
     {
       "id": 7,
@@ -166,7 +172,8 @@
       "reviewCount": 45,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
-      "updatedAt": "2026-10-15 12:53:28"
+      "updatedAt": "2026-10-15 12:53:28",
+      "published": false
     },
     {
       "id": 8,
@@ -190,7 +197,8 @@
       "reviewCount": 45,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
-      "updatedAt": "2026-10-15 12:53:28"
+      "updatedAt": "2026-10-15 12:53:28",
+      "published": false
     },
     {
       "id": 9,
@@ -214,7 +222,8 @@
       "reviewCount": 45,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
-      "updatedAt": "2026-10-15 12:53:28"
+      "updatedAt": "2026-10-15 12:53:28",
+      "published": false
     },
     {
       "id": 10,
@@ -238,7 +247,8 @@
       "reviewCount": 45,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
-      "updatedAt": "2026-10-15 12:53:28"
+      "updatedAt": "2026-10-15 12:53:28",
+      "published": false
     },
     {
       "id": 11,
@@ -262,7 +272,8 @@
       "reviewCount": 45,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
-      "updatedAt": "2026-10-15 12:53:28"
+      "updatedAt": "2026-10-15 12:53:28",
+      "published": false
     },
     {
       "id": 12,
@@ -286,7 +297,8 @@
       "reviewCount": 45,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
-      "updatedAt": "2026-10-15 12:53:28"
+      "updatedAt": "2026-10-15 12:53:28",
+      "published": false
     },
     {
       "id": 13,
@@ -310,7 +322,8 @@
       "reviewCount": 45,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
-      "updatedAt": "2026-10-15 12:53:28"
+      "updatedAt": "2026-10-15 12:53:28",
+      "published": false
     },
     {
       "id": 14,
@@ -334,7 +347,8 @@
       "reviewCount": 45,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
-      "updatedAt": "2026-10-15 12:53:28"
+      "updatedAt": "2026-10-15 12:53:28",
+      "published": false
     },
     {
       "id": 15,
@@ -358,7 +372,8 @@
       "reviewCount": 45,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
-      "updatedAt": "2026-10-15 12:53:28"
+      "updatedAt": "2026-10-15 12:53:28",
+      "published": false
     },
     {
       "id": 16,
@@ -382,7 +397,8 @@
       "reviewCount": 45,
       "unit": "قطن",
       "createdAt": "2026-10-15 12:53:28",
-      "updatedAt": "2026-10-15 12:53:28"
+      "updatedAt": "2026-10-15 12:53:28",
+      "published": false
     },
     {
       "id": 17,
@@ -406,7 +422,8 @@
       "reviewCount": 0,
       "unit": "قطن",
       "createdAt": "2026-10-15 14:30:07",
-      "updatedAt": "2026-10-15 14:30:07"
+      "updatedAt": "2026-10-15 14:30:07",
+      "published": false
     },
     {
       "id": 18,
@@ -430,7 +447,8 @@
       "reviewCount": 0,
       "unit": "قطن",
       "createdAt": "2026-10-15 14:30:07",
-      "updatedAt": "2026-10-15 14:30:07"
+      "updatedAt": "2026-10-15 14:30:07",
+      "published": false
     },
     {
       "id": 19,
@@ -454,7 +472,8 @@
       "reviewCount": 0,
       "unit": "قطن",
       "createdAt": "2026-10-15 14:30:07",
-      "updatedAt": "2026-10-15 14:30:07"
+      "updatedAt": "2026-10-15 14:30:07",
+      "published": false
     },
     {
       "id": 20,
@@ -476,7 +495,8 @@
       "descriptionAr": "عطر عطر داهب من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Dahab perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 21,
@@ -498,7 +518,8 @@
       "descriptionAr": "عطر عطر ليل من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Layl perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 22,
@@ -520,7 +541,8 @@
       "descriptionAr": "عطر عطر أميري من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Amiri perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 23,
@@ -542,7 +564,8 @@
       "descriptionAr": "عطر عطر مرايج من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Mirage perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 24,
@@ -564,7 +587,8 @@
       "descriptionAr": "عطر عطر خنجر من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Khanjar perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 25,
@@ -586,7 +610,8 @@
       "descriptionAr": "عطر عطر فيجو من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Fidji perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 26,
@@ -608,7 +633,8 @@
       "descriptionAr": "عطر عطر أود أبيض من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "White Oud perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 27,
@@ -630,7 +656,8 @@
       "descriptionAr": "عطر عطر ريم من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Reem perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 28,
@@ -652,7 +679,8 @@
       "descriptionAr": "عطر عطر خليفة من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Khalifa perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 29,
@@ -674,7 +702,8 @@
       "descriptionAr": "عطر عطر رقم 5 من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "No.5 perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 30,
@@ -696,7 +725,8 @@
       "descriptionAr": "عطر عطر صفوا من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Safwa perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 31,
@@ -718,7 +748,8 @@
       "descriptionAr": "عطر عطر وادي من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Wadi perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 32,
@@ -740,7 +771,8 @@
       "descriptionAr": "عطر عطر سما من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Sama perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 33,
@@ -762,7 +794,8 @@
       "descriptionAr": "عطر عطر 1977 من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "1977 perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 34,
@@ -784,7 +817,8 @@
       "descriptionAr": "عطر عطر طايف من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Taif perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 35,
@@ -806,7 +840,8 @@
       "descriptionAr": "عطر عطر سوغة من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Sougha perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 36,
@@ -828,7 +863,8 @@
       "descriptionAr": "عطر عطر رغد من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Raghad perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 37,
@@ -850,7 +886,8 @@
       "descriptionAr": "عطر عود مؤطر شاما من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Oud Ma'attar Shama perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 38,
@@ -872,7 +909,8 @@
       "descriptionAr": "عطر هندي دغفة خاس من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Hindi Digga Saghir Khas perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 39,
@@ -894,7 +932,8 @@
       "descriptionAr": "عطر هندي دغفة خاس فليب من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Hindi Digga Saghir VIP perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 40,
@@ -916,7 +955,8 @@
       "descriptionAr": "عطر هندي صوفي خاس من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Hindi Syufi Khas perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 41,
@@ -938,7 +978,8 @@
       "descriptionAr": "عطر هندي صوفي خاس فليب من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Hindi Syufi Khas VIP perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 42,
@@ -960,7 +1001,8 @@
       "descriptionAr": "عطر هندي دغفة خاس كبير من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Hindi Digga Khas perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 43,
@@ -982,7 +1024,8 @@
       "descriptionAr": "عطر دينال عود أساسي من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Dehnal Oud Asli perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 44,
@@ -1004,7 +1047,8 @@
       "descriptionAr": "عطر دينال عود خصي كبير من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Dehnal Oud Khussusi Kadim perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 45,
@@ -1026,7 +1070,8 @@
       "descriptionAr": "عطر دينال عود كالكاسي من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Dehnal Oud Kalakasi perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 46,
@@ -1048,7 +1093,8 @@
       "descriptionAr": "عطر دينال عود سيلاني من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Dehnal Oud Silani perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 47,
@@ -1070,7 +1116,8 @@
       "descriptionAr": "عطر دينال عود الهندي اتيك من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Dehnal Oud Hindi Ateeq perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 48,
@@ -1092,7 +1139,8 @@
       "descriptionAr": "عطر دينال عود فلسطينى جمهورى من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Dehnal Oud Royal Philippini perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 49,
@@ -1114,7 +1162,8 @@
       "descriptionAr": "عطر مجموعة عود استكشاف من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Oud Discovery Set perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 50,
@@ -1136,7 +1185,8 @@
       "descriptionAr": "عطر مجموعة زيت ملكى من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Royal Oil Gift Set perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 51,
@@ -1158,7 +1208,8 @@
       "descriptionAr": "عطر مجموعة مخللات تراث من شاما - جودة عالية واسعار مميزة",
       "descriptionEn": "Legacy Mukhallat Box perfume from Shama - High quality at special prices",
       "createdAt": "2026-10-15 17:35:00",
-      "updatedAt": "2026-10-15 17:35:00"
+      "updatedAt": "2026-10-15 17:35:00",
+      "published": false
     },
     {
       "id": 52,
@@ -1276,9 +1327,24 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Green Apple",
+          "Bergamot",
+          "Lemon",
+          "Star Anise"
+        ],
+        "heart": [
+          "Orange Blossom",
+          "Marine Notes",
+          "Plum",
+          "Cardamom"
+        ],
+        "base": [
+          "Moss",
+          "Driftwood",
+          "Amber",
+          "Musk"
+        ]
       },
       "families": [
         "Aromatic Woody Fruity"
@@ -1339,8 +1405,16 @@
       "longevity": "Lasting (6-8 hours)",
       "notes": {
         "top": [],
-        "heart": [],
-        "base": []
+        "heart": [
+          "Amber",
+          "Iris",
+          "Lavender"
+        ],
+        "base": [
+          "Tonka Bean",
+          "Musk",
+          "Patchouli"
+        ]
       },
       "families": [
         "Fresh",
@@ -1464,9 +1538,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Saffron",
+          "Jasmine",
+          "Green Leaves"
+        ],
+        "heart": [
+          "Ambergris",
+          "Amber"
+        ],
+        "base": [
+          "Oakmoss",
+          "Musk",
+          "Cedar",
+          "Fir"
+        ]
       },
       "families": [
         "Oriental",
@@ -1528,9 +1614,25 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Apricot",
+          "Pear",
+          "Cinnamon"
+        ],
+        "heart": [
+          "Jasmine",
+          "Frangipani",
+          "Orange Blossom",
+          "Coconut",
+          "Coffee"
+        ],
+        "base": [
+          "Vanilla",
+          "White Musk",
+          "Amber",
+          "Sandalwood",
+          "Sugar"
+        ]
       },
       "families": [
         "Oriental Vanilla"
@@ -1590,8 +1692,14 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
+        "top": [
+          "Peach",
+          "Sweet Orange"
+        ],
+        "heart": [
+          "Mango",
+          "Passion Fruit"
+        ],
         "base": []
       },
       "families": [
@@ -1653,9 +1761,17 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Incense",
+          "Labdanum"
+        ],
+        "heart": [
+          "Leather"
+        ],
+        "base": [
+          "Patchouli",
+          "Vanilla"
+        ]
       },
       "families": [
         "Oriental Woody"
@@ -1715,9 +1831,16 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Ambergris"
+        ],
+        "heart": [
+          "Cypress",
+          "Cedar"
+        ],
+        "base": [
+          "Driftwood"
+        ]
       },
       "families": [
         "Woody",
@@ -1778,9 +1901,20 @@
       "concentration": "Extrait de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Saffron",
+          "Jasmine",
+          "Cardamom"
+        ],
+        "heart": [
+          "Driftwood",
+          "Cedarwood",
+          "Iris"
+        ],
+        "base": [
+          "Oakmoss",
+          "Cypriol"
+        ]
       },
       "families": [
         "Woody Spicy"
@@ -1841,9 +1975,17 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Galbanum"
+        ],
+        "heart": [
+          "Ginger"
+        ],
+        "base": [
+          "Sandalwood",
+          "Cedarwood"
+        ]
       },
       "families": [
         "Marine",
@@ -1905,9 +2047,25 @@
       "concentration": "Extrait de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Hazelnut",
+          "Passion Fruit",
+          "Pink Pepper"
+        ],
+        "heart": [
+          "Cacao",
+          "Jasmine",
+          "Sambac",
+          "Coconut",
+          "Chocolate"
+        ],
+        "base": [
+          "Patchouli",
+          "Vetiver",
+          "Musk",
+          "Tonka Bean",
+          "Caramel"
+        ]
       },
       "families": [
         "Floral Fruity",
@@ -1968,9 +2126,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
+        "top": [
+          "Pear",
+          "Mint",
+          "Lavender",
+          "Bergamot",
+          "Cinnamon",
+          "Sage"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Vanilla",
+          "Amber",
+          "Cedarwood",
+          "Patchouli"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -2031,9 +2201,24 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Apple",
+          "Bergamot",
+          "Ginger",
+          "Cedarwood",
+          "Mandarin",
+          "Orange Blossom",
+          "Peony"
+        ],
+        "heart": [
+          "Patchouli"
+        ],
+        "base": [
+          "Musk",
+          "Tonka Bean",
+          "Vanilla",
+          "Ambergris"
+        ]
       },
       "families": [
         "Fruity Floral",
@@ -2095,9 +2280,23 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Green Notes",
+          "Davana",
+          "Saffron",
+          "Thyme"
+        ],
+        "heart": [
+          "Coffee",
+          "Cinnamon",
+          "Violet",
+          "Raspberry"
+        ],
+        "base": [
+          "Tonka Bean",
+          "Musk",
+          "Balsam"
+        ]
       },
       "families": [
         "Spicy",
@@ -2161,8 +2360,14 @@
       "longevity": "Lasting (6-8 hours)",
       "notes": {
         "top": [],
-        "heart": [],
-        "base": []
+        "heart": [
+          "Tea",
+          "Cinnamon"
+        ],
+        "base": [
+          "Musk",
+          "Amber"
+        ]
       },
       "families": [
         "Oriental Woody"
@@ -2223,9 +2428,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Peppermint",
+          "Mandarin",
+          "Bergamot"
+        ],
+        "heart": [
+          "Blackcurrant",
+          "Jasmine"
+        ],
+        "base": [
+          "Fig",
+          "Amber"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -2285,9 +2500,17 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Pistachio"
+        ],
+        "heart": [
+          "Rose",
+          "Incense"
+        ],
+        "base": [
+          "Amber",
+          "Musk"
+        ]
       },
       "families": [
         "Fruity Floral",
@@ -2347,9 +2570,22 @@
       "sizeMl": 100,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Tangerine",
+          "Raspberry",
+          "Chocolate"
+        ],
+        "heart": [
+          "Rose",
+          "Orange Blossom",
+          "Tuberose",
+          "Iris"
+        ],
+        "base": [
+          "Vanilla",
+          "Musk",
+          "Coffee"
+        ]
       },
       "families": [
         "Fruity Floral",
@@ -2474,9 +2710,18 @@
       "concentration": "Eau de Parfum",
       "longevity": "Moderate",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Clary Sage"
+        ],
+        "heart": [
+          "Jasmine",
+          "Marine Notes",
+          "White Flowers"
+        ],
+        "base": [
+          "Ambergris",
+          "Amber"
+        ]
       },
       "families": [
         "Aromatic Aquatic"
@@ -2537,9 +2782,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Coconut",
+          "Fig Leaf",
+          "Ginger"
+        ],
+        "heart": [
+          "Fig",
+          "Mint"
+        ],
+        "base": [
+          "Sandalwood",
+          "Tonka Bean",
+          "Musk"
+        ]
       },
       "families": [
         "Aromatic",
@@ -2724,9 +2980,16 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
+        "top": [
+          "Amber"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Vanilla",
+          "Chocolate",
+          "Praline",
+          "Ambergris"
+        ]
       },
       "families": [
         "Oriental",
@@ -2851,9 +3114,27 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Coconut",
+          "Lavender",
+          "Cardamom",
+          "Bergamot"
+        ],
+        "heart": [
+          "Orris",
+          "Jasmine",
+          "Lily Of The Valley",
+          "Freesia",
+          "Cinnamon"
+        ],
+        "base": [
+          "Cypriol",
+          "Musk",
+          "Patchouli",
+          "Ambergris",
+          "Benzoin",
+          "Labdanum"
+        ]
       },
       "families": [
         "Oriental Floral"
@@ -2913,9 +3194,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
+        "top": [
+          "Blackcurrant",
+          "Mandarin",
+          "Bergamot",
+          "Apple",
+          "Basil",
+          "Geranium",
+          "Patchouli"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Sandalwood",
+          "Moss",
+          "Musk"
+        ]
       },
       "families": [
         "Fruity",
@@ -3042,9 +3335,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
+        "top": [
+          "Rhubarb",
+          "Lychee",
+          "Rose",
+          "Frankincense",
+          "Cedar"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Vanilla",
+          "Musk",
+          "Ambergris"
+        ]
       },
       "families": [
         "Oriental Floral"
@@ -3104,9 +3407,23 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Apple",
+          "Lemon",
+          "Bergamot",
+          "Cinnamon"
+        ],
+        "heart": [
+          "Plum",
+          "Orange Blossom",
+          "Cardamom"
+        ],
+        "base": [
+          "Ambergris",
+          "Musk",
+          "Patchouli",
+          "Driftwood"
+        ]
       },
       "families": [
         "Aromatic Aquatic"
@@ -3168,8 +3485,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
+        "top": [
+          "Pear",
+          "Saffron",
+          "Pink Pepper",
+          "Rose",
+          "Frankincense",
+          "White Flowers"
+        ],
+        "heart": [
+          "Amber",
+          "Musk",
+          "Vanilla",
+          "Incense"
+        ],
         "base": []
       },
       "families": [
@@ -3230,9 +3559,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Blood Orange",
+          "Grapefruit"
+        ],
+        "heart": [
+          "Jasmine",
+          "White Musk"
+        ],
+        "base": [
+          "Vetiver",
+          "Cedar",
+          "Iris"
+        ]
       },
       "families": [
         "Woody",
@@ -3293,9 +3632,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Pear",
+          "Green Apple",
+          "Orange Blossom",
+          "Tonka Bean",
+          "Driftwood"
+        ],
+        "heart": [
+          "Frankincense"
+        ],
+        "base": [
+          "Sandalwood",
+          "Vetiver",
+          "Vanilla"
+        ]
       },
       "families": [
         "Fresh",
@@ -3359,9 +3710,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
+        "top": [
+          "Pineapple",
+          "Grapefruit",
+          "Bergamot",
+          "Cedarwood",
+          "Patchouli",
+          "Jasmine",
+          "Oakmoss",
+          "Amber"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Moss"
+        ]
       },
       "families": [
         "Fruity Woody",
@@ -3423,9 +3785,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
+        "top": [
+          "Bergamot",
+          "Grapefruit",
+          "Elemi",
+          "Pepper",
+          "Lavender",
+          "Cedarwood",
+          "Saffron"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Vanilla",
+          "Tonka"
+        ]
       },
       "families": [
         "Citrus",
@@ -3488,8 +3861,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
+        "top": [
+          "Neroli",
+          "Cinnamon",
+          "Nutmeg",
+          "Vanilla",
+          "Cotton Candy",
+          "Tonka Bean"
+        ],
+        "heart": [
+          "Orange Blossom",
+          "Tuberose",
+          "Marshmallow"
+        ],
         "base": []
       },
       "families": [
@@ -3552,9 +3936,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Blackcurrant"
+        ],
+        "heart": [
+          "Orange Blossom",
+          "Sandalwood"
+        ],
+        "base": [
+          "Musk",
+          "Tonka Bean",
+          "Ambergris"
+        ]
       },
       "families": [
         "Citrus",
@@ -3617,9 +4011,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Lavender"
+        ],
+        "heart": [
+          "Dark Chocolate",
+          "Benzoin"
+        ],
+        "base": [
+          "White Musk",
+          "Tonka Bean",
+          "Vanilla",
+          "Chocolate"
+        ]
       },
       "families": [
         "Aromatic",
@@ -3680,9 +4085,23 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Pear"
+        ],
+        "heart": [
+          "Rose",
+          "Orris",
+          "Amber",
+          "Orange Blossom",
+          "Geranium"
+        ],
+        "base": [
+          "Sandalwood",
+          "Vanilla",
+          "Musk",
+          "Caramel"
+        ]
       },
       "families": [
         "Oriental Floral"
@@ -3742,9 +4161,22 @@
       "concentration": "Extrait de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Ginger",
+          "Bergamot",
+          "Lemon"
+        ],
+        "heart": [
+          "Cardamom",
+          "Nutmeg",
+          "Magnolia"
+        ],
+        "base": [
+          "Vetiver",
+          "Patchouli",
+          "Cedarwood",
+          "Amber"
+        ]
       },
       "families": [
         "Woody Spicy"
@@ -3804,9 +4236,17 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
+        "top": [
+          "Ginger",
+          "Pink Grapefruit",
+          "Bergamot"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Patchouli",
+          "Ambergris",
+          "Leather"
+        ]
       },
       "families": [
         "Leather"
@@ -4527,9 +4967,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Cinnamon",
+          "Rose",
+          "Saffron",
+          "Vanilla"
+        ],
+        "heart": [
+          "Caramel",
+          "Patchouli"
+        ],
+        "base": [
+          "Ambroxan",
+          "Amber"
+        ]
       },
       "families": [
         "Fresh"
@@ -4592,9 +5043,22 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Lavender",
+          "Pepper"
+        ],
+        "heart": [
+          "Jasmine",
+          "Tuberose",
+          "White-Floral"
+        ],
+        "base": [
+          "Incense",
+          "Cedarwood",
+          "Caramel",
+          "Cashmeran",
+          "Amber"
+        ]
       },
       "families": [
         "Oriental"
@@ -4657,9 +5121,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Leather",
+          "Raspberry",
+          "Saffron",
+          "Thyme"
+        ],
+        "heart": [
+          "Olibanum",
+          "Jasmine"
+        ],
+        "base": [
+          "Suede",
+          "Amber"
+        ]
       },
       "families": [
         "Oriental Amber"
@@ -4721,9 +5196,22 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Cassis",
+          "Pink Pepper",
+          "Lychee"
+        ],
+        "heart": [
+          "Rose",
+          "Cardamom",
+          "Praline"
+        ],
+        "base": [
+          "Vanilla",
+          "Moss",
+          "Oud",
+          "Amber"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -4788,9 +5276,22 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Juniper",
+          "Yuzu",
+          "Ginger"
+        ],
+        "heart": [
+          "Iris",
+          "Sage",
+          "Sea Salt"
+        ],
+        "base": [
+          "Tonka",
+          "Vanilla",
+          "Musk"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -4850,9 +5351,18 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Vanilla",
+          "Chocolate"
+        ],
+        "heart": [
+          "Musk",
+          "Cinnamon"
+        ],
+        "base": [
+          "Sandalwood",
+          "Rose"
+        ]
       },
       "families": [
         "Oriental"
@@ -4982,9 +5492,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Orange Blossom",
+          "Rose",
+          "Jasmine"
+        ],
+        "heart": [
+          "Musk"
+        ],
+        "base": [
+          "Vanilla",
+          "Tonka Bean",
+          "Cedarwood",
+          "Amber"
+        ]
       },
       "families": [
         "Floral Fruity"
@@ -5050,9 +5571,18 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Mandarin",
+          "Lavender",
+          "Saffron"
+        ],
+        "heart": [
+          "Cedar",
+          "Geranium"
+        ],
+        "base": [
+          "Incense"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -5186,9 +5716,29 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Raspberry",
+          "Orange",
+          "Saffron"
+        ],
+        "heart": [
+          "Amber",
+          "Geranium",
+          "Lavender",
+          "Cardamom",
+          "Caramel",
+          "Nutmeg"
+        ],
+        "base": [
+          "Sandalwood",
+          "Cedarwood",
+          "Oakmoss",
+          "Resins",
+          "Vetiver",
+          "Oud",
+          "Vanilla",
+          "Musk"
+        ]
       },
       "families": [
         "Oriental Amber"
@@ -6308,9 +6858,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Oud",
+          "Mandarin",
+          "Rum"
+        ],
+        "heart": [
+          "Patchouli",
+          "Caramel",
+          "Amber"
+        ],
+        "base": [
+          "Sandalwood",
+          "Vanilla",
+          "Benzoin"
+        ]
       },
       "families": [
         "Oriental"
@@ -6586,9 +7148,17 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
+        "top": [
+          "Lavender",
+          "Nutmeg",
+          "Cardamom",
+          "Incense",
+          "Myrrh"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Amber"
+        ]
       },
       "families": [
         "Oriental"
@@ -7588,9 +8158,22 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Pineapple",
+          "Bergamot",
+          "Pink Pepper"
+        ],
+        "heart": [
+          "Jasmine",
+          "Tuberose",
+          "Magnolia"
+        ],
+        "base": [
+          "Sandalwood",
+          "Amber",
+          "Musk",
+          "Vetiver"
+        ]
       },
       "families": [
         "Floral Woody"
@@ -10192,9 +10775,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Amber"
+        ],
+        "heart": [
+          "Jasmine",
+          "Rose",
+          "Orange Blossom"
+        ],
+        "base": [
+          "Vanilla",
+          "Musk",
+          "Sandalwood"
+        ]
       },
       "families": [
         "Oriental Vanilla"
@@ -12201,9 +12794,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Grapefruit",
+          "Sage"
+        ],
+        "heart": [
+          "Lavender",
+          "Juniper"
+        ],
+        "base": [
+          "Vetiver",
+          "Caramel"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -13688,9 +14291,17 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Green Leaves"
+        ],
+        "heart": [
+          "Rose",
+          "Jasmine"
+        ],
+        "base": [
+          "White Musk",
+          "Sandalwood"
+        ]
       },
       "families": [
         "Floral Fruity"
@@ -14655,9 +15266,18 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "White Musk",
+          "Ambroxan"
+        ],
+        "heart": [
+          "Sandalwood"
+        ],
+        "base": [
+          "Cedar",
+          "Vanilla",
+          "Amber"
+        ]
       },
       "families": [
         "Musk"
@@ -14721,9 +15341,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Saffron"
+        ],
+        "heart": [
+          "Balsam",
+          "Fir",
+          "Jasmine"
+        ],
+        "base": [
+          "Ambergris",
+          "Musk",
+          "Cashmeran",
+          "Moss",
+          "Cedarwood"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -14786,9 +15418,18 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Lavender",
+          "Cedarwood",
+          "Saffron"
+        ],
+        "heart": [
+          "Myrrh"
+        ],
+        "base": [
+          "Oud",
+          "Amber"
+        ]
       },
       "families": [
         "Oriental Woody"
@@ -14989,9 +15630,23 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Mandarin",
+          "Black Pepper"
+        ],
+        "heart": [
+          "Saffron",
+          "Lavender",
+          "Cedarwood"
+        ],
+        "base": [
+          "Incense",
+          "Amber",
+          "Patchouli",
+          "Sandalwood",
+          "Musk"
+        ]
       },
       "families": [
         "Woody Spicy"
@@ -15948,9 +16603,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Apple",
+          "Pineapple",
+          "Bergamot"
+        ],
+        "heart": [
+          "Violet Leaf",
+          "Clary Sage"
+        ],
+        "base": [
+          "Cashmeran",
+          "Labdanum"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -16661,8 +17326,14 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
+        "top": [
+          "Cinnamon",
+          "Saffron"
+        ],
+        "heart": [
+          "Rose",
+          "Patchouli"
+        ],
         "base": []
       },
       "families": [
@@ -16725,9 +17396,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Pink Pepper"
+        ],
+        "heart": [
+          "Lavender",
+          "Geranium",
+          "Cedarwood"
+        ],
+        "base": [
+          "Amber",
+          "Patchouli",
+          "Vetiver",
+          "Musk"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -21899,8 +22582,15 @@
       "longevity": "Lasting (6-8 hours)",
       "notes": {
         "top": [],
-        "heart": [],
-        "base": []
+        "heart": [
+          "Lavender"
+        ],
+        "base": [
+          "Amber",
+          "Patchouli",
+          "Cedarwood",
+          "Musk"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -21964,9 +22654,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Nutmeg",
+          "Mandarin"
+        ],
+        "heart": [
+          "Violet Leaf",
+          "Musk",
+          "Amber"
+        ],
+        "base": [
+          "Patchouli",
+          "Vetiver",
+          "Labdanum"
+        ]
       },
       "families": [
         "Fresh Aquatic"
@@ -22031,9 +22733,18 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Amber",
+          "Saffron",
+          "Jasmine"
+        ],
+        "heart": [
+          "Ambergris"
+        ],
+        "base": [
+          "Fir",
+          "Cedar"
+        ]
       },
       "families": [
         "Oriental Amber"
@@ -22097,9 +22808,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Vanilla",
+          "Cinnamon"
+        ],
+        "heart": [
+          "Jasmine",
+          "Sambac",
+          "Thyme"
+        ],
+        "base": [
+          "Sandalwood",
+          "Cedar"
+        ]
       },
       "families": [
         "Floral Fruity"
@@ -22229,9 +22950,22 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Grapefruit",
+          "Black Pepper"
+        ],
+        "heart": [
+          "Lavender",
+          "Cedarwood",
+          "Geranium"
+        ],
+        "base": [
+          "Amber",
+          "Vetiver",
+          "Patchouli",
+          "Musk"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -22295,9 +23029,23 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Orchid",
+          "Bergamot",
+          "Pear",
+          "Pink Pepper"
+        ],
+        "heart": [
+          "Jasmine",
+          "Rose",
+          "Orange Blossom"
+        ],
+        "base": [
+          "Vanilla",
+          "Amber",
+          "White Musk",
+          "Sandalwood"
+        ]
       },
       "families": [
         "Floral Aquatic"
@@ -22363,8 +23111,17 @@
       "longevity": "Lasting (6-8 hours)",
       "notes": {
         "top": [],
-        "heart": [],
-        "base": []
+        "heart": [
+          "Rose",
+          "Jasmine",
+          "Cedarwood"
+        ],
+        "base": [
+          "Amber",
+          "Musk",
+          "Vanilla",
+          "Sandalwood"
+        ]
       },
       "families": [
         "Oriental Floral"
@@ -22494,9 +23251,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Lemon",
+          "Black Pepper"
+        ],
+        "heart": [
+          "Lavender",
+          "Cedarwood"
+        ],
+        "base": [
+          "Amber",
+          "Patchouli",
+          "Vetiver",
+          "Musk"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -22562,8 +23331,17 @@
       "longevity": "Lasting (6-8 hours)",
       "notes": {
         "top": [],
-        "heart": [],
-        "base": []
+        "heart": [
+          "Jasmine",
+          "Rose",
+          "Orange Blossom"
+        ],
+        "base": [
+          "Vanilla",
+          "Amber",
+          "Musk",
+          "Sandalwood"
+        ]
       },
       "families": [
         "Floral Fruity"
@@ -22627,9 +23405,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Honey",
+          "Bitter Orange"
+        ],
+        "heart": [
+          "Tuberose",
+          "Cherry",
+          "Orange Blossom",
+          "Pear"
+        ],
+        "base": [
+          "Tonka Bean",
+          "Vanilla",
+          "Patchouli"
+        ]
       },
       "families": [
         "Oriental Floral"
@@ -22692,8 +23482,14 @@
       "longevity": "Lasting (6-8 hours)",
       "notes": {
         "top": [],
-        "heart": [],
-        "base": []
+        "heart": [
+          "Jasmine",
+          "Rose"
+        ],
+        "base": [
+          "Amber",
+          "Vanilla"
+        ]
       },
       "families": [
         "Oriental"
@@ -22754,9 +23550,18 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Jasmine"
+        ],
+        "heart": [
+          "Tuberose",
+          "Honeysuckle"
+        ],
+        "base": [
+          "Orris",
+          "Sandalwood",
+          "Vanilla"
+        ]
       },
       "families": [
         "Floral Fruity"
@@ -22820,9 +23625,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Orchid"
+        ],
+        "heart": [
+          "Jasmine",
+          "Rose",
+          "White Flowers"
+        ],
+        "base": [
+          "Vanilla",
+          "Amber",
+          "Musk",
+          "Sandalwood"
+        ]
       },
       "families": [
         "Oriental Vanilla"
@@ -22886,9 +23702,22 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Rose",
+          "Orange",
+          "Peach",
+          "Pear"
+        ],
+        "heart": [
+          "Violet",
+          "Peony",
+          "Musk"
+        ],
+        "base": [
+          "Vanilla",
+          "Vetiver",
+          "Amber"
+        ]
       },
       "families": [
         "Floral Fruity"
@@ -22950,9 +23779,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Rose",
+          "Cherry"
+        ],
+        "heart": [
+          "Pink Pepper",
+          "Tonka Bean"
+        ],
+        "base": [
+          "Patchouli",
+          "Vanilla",
+          "Musk"
+        ]
       },
       "families": [
         "Oriental Floral"
@@ -23015,9 +23854,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Grapefruit"
+        ],
+        "heart": [
+          "Lavender",
+          "Geranium",
+          "Cedarwood"
+        ],
+        "base": [
+          "Amber",
+          "Patchouli",
+          "Musk",
+          "Vetiver"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -23149,9 +24000,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Apple"
+        ],
+        "heart": [
+          "Lavender",
+          "Orange Blossom",
+          "Cinnamon"
+        ],
+        "base": [
+          "Vanilla",
+          "Tonka Bean",
+          "Amber",
+          "Patchouli"
+        ]
       },
       "families": [
         "Aromatic"
@@ -23277,9 +24140,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Oud",
+          "Saffron",
+          "Nutmeg",
+          "Lavender"
+        ],
+        "heart": [
+          "Agarwood",
+          "Patchouli"
+        ],
+        "base": [
+          "Musk"
+        ]
       },
       "families": [
         "Oriental Woody"
@@ -23341,9 +24214,23 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Rose",
+          "Pink Pepper",
+          "Almond"
+        ],
+        "heart": [
+          "Saffron",
+          "Jasmine",
+          "Musk",
+          "Frankincense"
+        ],
+        "base": [
+          "Sandalwood",
+          "Vanilla",
+          "Amber",
+          "Labdanum"
+        ]
       },
       "families": [
         "Floral Aquatic"
@@ -23406,8 +24293,14 @@
       "longevity": "Lasting (6-8 hours)",
       "notes": {
         "top": [],
-        "heart": [],
-        "base": []
+        "heart": [
+          "Jasmine",
+          "Rose"
+        ],
+        "base": [
+          "Vanilla",
+          "Amber"
+        ]
       },
       "families": [
         "Aromatic"
@@ -23531,9 +24424,25 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Champagne",
+          "Cassis",
+          "Heliotrope",
+          "Violet"
+        ],
+        "heart": [
+          "Oud",
+          "Orris",
+          "Patchouli"
+        ],
+        "base": [
+          "Guaiac Wood",
+          "Vanilla",
+          "Myrrh",
+          "Caramel",
+          "Tobacco",
+          "Musk"
+        ]
       },
       "families": [
         "Oriental Woody"
@@ -23716,9 +24625,22 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Pear",
+          "Pink Pepper"
+        ],
+        "heart": [
+          "Jasmine",
+          "Rose",
+          "Orange Blossom"
+        ],
+        "base": [
+          "Vanilla",
+          "Amber",
+          "Patchouli",
+          "White Musk"
+        ]
       },
       "families": [
         "Floral"
@@ -23782,9 +24704,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Ginger",
+          "Black Currant",
+          "Cardamom"
+        ],
+        "heart": [
+          "Orange Blossom",
+          "Lavender",
+          "Musk"
+        ],
+        "base": [
+          "Amber",
+          "Patchouli"
+        ]
       },
       "families": [
         "Oriental"
@@ -23849,9 +24783,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Pear",
+          "Bergamot"
+        ],
+        "heart": [
+          "Gardenia",
+          "Jasmine"
+        ],
+        "base": [
+          "Musk",
+          "Cedarwood",
+          "Sandalwood"
+        ]
       },
       "families": [
         "Floral Woody"
@@ -24172,9 +25116,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Lemon",
+          "Sage"
+        ],
+        "heart": [
+          "Cinnamon",
+          "Cardamom"
+        ],
+        "base": [
+          "Rosewood",
+          "Patchouli",
+          "Amber"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -25112,8 +26066,13 @@
       "longevity": "Lasting (6-8 hours)",
       "notes": {
         "top": [],
-        "heart": [],
-        "base": []
+        "heart": [
+          "White Flowers"
+        ],
+        "base": [
+          "Musk",
+          "Vanilla"
+        ]
       },
       "families": [
         "Floral Fruity"
@@ -25246,9 +26205,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bitter Almond",
+          "Saffron"
+        ],
+        "heart": [
+          "Jasmine",
+          "Cedarwood"
+        ],
+        "base": [
+          "Ambergris",
+          "Musk",
+          "Amber"
+        ]
       },
       "families": [
         "Fresh Citrus"
@@ -28046,9 +29015,21 @@
       "sizeMl": 100,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Cinnamon",
+          "Pepper",
+          "Lemon"
+        ],
+        "heart": [
+          "Lavender",
+          "Clary Sage",
+          "Patchouli"
+        ],
+        "base": [
+          "Vanilla",
+          "Amber",
+          "Cedarwood"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -28103,8 +29084,14 @@
       "sizeMl": 50,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
-        "heart": [],
+        "top": [
+          "Coconut",
+          "Milk"
+        ],
+        "heart": [
+          "Caramel",
+          "Cotton Candy"
+        ],
         "base": []
       },
       "families": [],
@@ -28398,9 +29385,26 @@
       "sizeMl": 100,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Neroli",
+          "Lemon",
+          "Black Pepper"
+        ],
+        "heart": [
+          "Jasmine",
+          "Rose",
+          "Lily Of The Valley",
+          "Lavender",
+          "Tobacco",
+          "Geranium"
+        ],
+        "base": [
+          "Musk",
+          "Sandalwood",
+          "Amber",
+          "Vetiver"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -28456,9 +29460,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Moderate",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Jasmine",
+          "Saffron"
+        ],
+        "heart": [
+          "Bitter Almond",
+          "Cedarwood"
+        ],
+        "base": [
+          "Musk",
+          "Ambergris",
+          "Amber"
+        ]
       },
       "families": [
         "Oriental"
@@ -28590,9 +29604,22 @@
       "concentration": "Eau de Parfum",
       "longevity": "Moderate",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Pear"
+        ],
+        "heart": [
+          "Jasmine",
+          "Rose",
+          "Orange Blossom"
+        ],
+        "base": [
+          "Vanilla",
+          "Patchouli",
+          "Musk",
+          "Cedarwood",
+          "Amber"
+        ]
       },
       "families": [
         "Floral Aquatic"
@@ -28910,9 +29937,20 @@
       "sizeMl": 100,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Saffron"
+        ],
+        "heart": [
+          "Rose",
+          "Jasmine",
+          "Cedarwood"
+        ],
+        "base": [
+          "Oud",
+          "Amber",
+          "Musk",
+          "Patchouli"
+        ]
       },
       "families": [
         "Oriental Woody"
@@ -36799,9 +37837,21 @@
       "sizeMl": 100,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Mint",
+          "Mandarin Orange",
+          "Sage",
+          "Cypress"
+        ],
+        "heart": [
+          "Pepper",
+          "Cedarwood"
+        ],
+        "base": [
+          "Tonka Bean",
+          "Musk",
+          "Sandalwood"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -37057,9 +38107,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Pineapple",
+          "Saffron"
+        ],
+        "heart": [
+          "Jasmine",
+          "Fir",
+          "Balsam"
+        ],
+        "base": [
+          "Oud",
+          "Cedarwood",
+          "Amber"
+        ]
       },
       "families": [
         "Floral Fruity"
@@ -37168,9 +38229,25 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Mandarin",
+          "Apple",
+          "Lavender"
+        ],
+        "heart": [
+          "Geranium",
+          "Violet",
+          "Jasmine"
+        ],
+        "base": [
+          "Amber",
+          "Cardamom",
+          "Guaiac Wood",
+          "Sandalwood",
+          "Pepper",
+          "Patchouli"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -37235,9 +38312,16 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Juniper"
+        ],
+        "heart": [
+          "Apricot"
+        ],
+        "base": [
+          "Cotton Flower",
+          "Musk"
+        ]
       },
       "families": [
         "Floral"
@@ -37302,9 +38386,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Cherry",
+          "Mandarin"
+        ],
+        "heart": [
+          "Jasmine",
+          "Tea",
+          "Orange Blossom"
+        ],
+        "base": [
+          "Vanilla",
+          "Coffee",
+          "Patchouli"
+        ]
       },
       "families": [
         "Oriental Floral"
@@ -37448,8 +38543,15 @@
       "longevity": "Lasting (6-8 hours)",
       "notes": {
         "top": [],
-        "heart": [],
-        "base": []
+        "heart": [
+          "Lavender"
+        ],
+        "base": [
+          "Amber",
+          "Cedarwood",
+          "Patchouli",
+          "Musk"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -37513,9 +38615,24 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Cashmere",
+          "Bergamot",
+          "Pink Pepper",
+          "Pear"
+        ],
+        "heart": [
+          "Jasmine",
+          "Iris",
+          "Orange Blossom"
+        ],
+        "base": [
+          "Cashmere Wood",
+          "Amber",
+          "Vanilla",
+          "Musk",
+          "Sandalwood"
+        ]
       },
       "families": [
         "Floral Fruity"
@@ -40547,9 +41664,22 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Grapefruit",
+          "Cardamom"
+        ],
+        "heart": [
+          "Cedarwood",
+          "Geranium",
+          "Lavender"
+        ],
+        "base": [
+          "Amber",
+          "Sandalwood",
+          "Patchouli",
+          "Vanilla"
+        ]
       },
       "families": [
         "Oriental"
@@ -42289,9 +43419,24 @@
       "concentration": "Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Lemon",
+          "Pineapple",
+          "Bergamot",
+          "Black Currant",
+          "Apple"
+        ],
+        "heart": [
+          "Birch",
+          "Jasmine",
+          "Rose"
+        ],
+        "base": [
+          "Musk",
+          "Ambergris",
+          "Patchouli",
+          "Vanilla"
+        ]
       },
       "families": [
         "Woody Spicy"
@@ -42768,9 +43913,18 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Lavender",
+          "Lemon"
+        ],
+        "heart": [
+          "Green Apple",
+          "Patchouli"
+        ],
+        "base": [
+          "Vanilla",
+          "Vetiver"
+        ]
       },
       "families": [
         "Floral Aquatic"
@@ -43087,9 +44241,25 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Black Currant",
+          "Lemon",
+          "Lime",
+          "Violet Leaf",
+          "Ginger"
+        ],
+        "heart": [
+          "Rose",
+          "Iris",
+          "Jasmine"
+        ],
+        "base": [
+          "Ambroxan",
+          "Musk",
+          "Sandalwood",
+          "Cedar"
+        ]
       },
       "families": [
         "Oriental"
@@ -43885,9 +45055,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Jasmine",
+          "Rose"
+        ],
+        "heart": [
+          "Orange Blossom",
+          "Musk"
+        ],
+        "base": [
+          "Vetiver",
+          "Cedarwood",
+          "Patchouli"
+        ]
       },
       "families": [
         "Floral"
@@ -44767,9 +45947,22 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Pear",
+          "Pink Pepper"
+        ],
+        "heart": [
+          "Jasmine",
+          "Orange Blossom",
+          "Rose"
+        ],
+        "base": [
+          "Vanilla",
+          "Amber",
+          "Patchouli",
+          "White Musk"
+        ]
       },
       "families": [
         "Oriental Amber"
@@ -46223,9 +47416,23 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Green Notes"
+        ],
+        "heart": [
+          "Freesia",
+          "Heliotrope",
+          "Jasmine",
+          "Orange Blossom",
+          "Iris"
+        ],
+        "base": [
+          "Musk",
+          "Leather",
+          "Amber",
+          "Tonka Bean",
+          "Vanilla"
+        ]
       },
       "families": [
         "Oriental Floral"
@@ -46493,8 +47700,16 @@
       "longevity": "Lasting (6-8 hours)",
       "notes": {
         "top": [],
-        "heart": [],
-        "base": []
+        "heart": [
+          "Jasmine",
+          "Rose"
+        ],
+        "base": [
+          "Amber",
+          "Vanilla",
+          "Musk",
+          "Sandalwood"
+        ]
       },
       "families": [
         "Oriental Floral"
@@ -47321,9 +48536,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Sea Notes",
+          "Bergamot"
+        ],
+        "heart": [
+          "Sage",
+          "Rosemary",
+          "Rose",
+          "Geranium"
+        ],
+        "base": [
+          "Incense",
+          "Patchouli"
+        ]
       },
       "families": [
         "Fresh"
@@ -47800,9 +49026,22 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Grapefruit",
+          "Black Pepper"
+        ],
+        "heart": [
+          "Lavender",
+          "Geranium",
+          "Cedarwood"
+        ],
+        "base": [
+          "Amber",
+          "Patchouli",
+          "Vetiver",
+          "Musk"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -47997,9 +49236,22 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Musk",
+          "Vanilla",
+          "Iris",
+          "Rose"
+        ],
+        "heart": [
+          "Tuberose",
+          "Orange Blossom"
+        ],
+        "base": [
+          "Tonka Bean",
+          "Cedar",
+          "Vetiver",
+          "Sandalwood"
+        ]
       },
       "families": [
         "Floral Fruity"
@@ -48208,9 +49460,22 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Pear",
+          "Pink Pepper"
+        ],
+        "heart": [
+          "Jasmine",
+          "Peony",
+          "Orange Blossom"
+        ],
+        "base": [
+          "Vanilla",
+          "Amber",
+          "White Musk",
+          "Sandalwood"
+        ]
       },
       "families": [
         "Oriental Vanilla"
@@ -48345,8 +49610,15 @@
       "longevity": "Lasting (6-8 hours)",
       "notes": {
         "top": [],
-        "heart": [],
-        "base": []
+        "heart": [
+          "Rose"
+        ],
+        "base": [
+          "Oud",
+          "Amber",
+          "Musk",
+          "Cedarwood"
+        ]
       },
       "families": [
         "Oriental Woody"
@@ -48552,9 +49824,22 @@
       "concentration": "Eau de Parfum",
       "longevity": "Moderate",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Dark Chocolate",
+          "Hazelnut",
+          "Cocoa"
+        ],
+        "heart": [
+          "Chocolate",
+          "Cream",
+          "Caramel",
+          "Bitter Almond"
+        ],
+        "base": [
+          "Praline",
+          "Vanilla",
+          "Sandalwood"
+        ]
       },
       "families": [
         "Gourmand"
@@ -49236,9 +50521,21 @@
       "sizeMl": 100,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Pineapple",
+          "Bergamot"
+        ],
+        "heart": [
+          "Red Apple",
+          "Cardamom",
+          "Jasmine"
+        ],
+        "base": [
+          "Tonka Bean",
+          "Amber",
+          "Cedar",
+          "Oakmoss"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -50793,9 +52090,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Red Berries"
+        ],
+        "heart": [
+          "Jasmine",
+          "Orange Blossom",
+          "Cotton Candy"
+        ],
+        "base": [
+          "Vanilla",
+          "Musk",
+          "Sandalwood",
+          "Amber"
+        ]
       },
       "families": [
         "Fresh Citrus"
@@ -50861,8 +52169,17 @@
       "longevity": "Lasting (6-8 hours)",
       "notes": {
         "top": [],
-        "heart": [],
-        "base": []
+        "heart": [
+          "Lavender",
+          "Geranium",
+          "Cedarwood"
+        ],
+        "base": [
+          "Amber",
+          "Musk",
+          "Patchouli",
+          "Vetiver"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -51402,9 +52719,25 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Cardamom",
+          "Heliotrope",
+          "Pepper",
+          "Bergamot"
+        ],
+        "heart": [
+          "Lavender",
+          "Jasmine",
+          "Geranium"
+        ],
+        "base": [
+          "Almond",
+          "Vanilla",
+          "Guaiac Wood",
+          "Sandalwood",
+          "Ambergris",
+          "Amber"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -53859,9 +55192,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Oud",
+          "Rose",
+          "Violet"
+        ],
+        "heart": [
+          "Benzoin",
+          "Vanilla"
+        ],
+        "base": [
+          "Amber",
+          "Cedarwood"
+        ]
       },
       "families": [
         "Oriental Woody"
@@ -54838,9 +56181,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Amber",
+          "Leather",
+          "Cardamom"
+        ],
+        "heart": [
+          "Jasmine",
+          "Sambac"
+        ],
+        "base": [
+          "Moss",
+          "Patchouli"
+        ]
       },
       "families": [
         "Amber"
@@ -55460,9 +56813,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Grapefruit"
+        ],
+        "heart": [
+          "Lavender",
+          "Geranium",
+          "Cedarwood"
+        ],
+        "base": [
+          "Amber",
+          "Patchouli",
+          "Vetiver",
+          "Musk"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -56629,9 +57994,19 @@
       "sizeMl": 10,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot"
+        ],
+        "heart": [
+          "Jasmine",
+          "Rose",
+          "Geranium"
+        ],
+        "base": [
+          "Patchouli",
+          "Amber",
+          "Musk"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -57521,9 +58896,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Mandarin"
+        ],
+        "heart": [
+          "Gardenia",
+          "Tuberose",
+          "White Floral"
+        ],
+        "base": [
+          "Coconut",
+          "Sandalwood",
+          "Musk"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -61059,9 +62444,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Caramel",
+          "Milk"
+        ],
+        "heart": [
+          "Tonka Bean",
+          "Honey",
+          "White Flowers"
+        ],
+        "base": [
+          "Vanilla",
+          "Praline",
+          "Musk",
+          "Amber"
+        ]
       },
       "families": [
         "Gourmand"
@@ -61122,9 +62519,18 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Oud",
+          "Saffron",
+          "Lavender",
+          "Nutmeg"
+        ],
+        "heart": [
+          "Patchouli"
+        ],
+        "base": [
+          "Musk"
+        ]
       },
       "families": [
         "Oriental Woody"
@@ -61185,9 +62591,22 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Grapefruit",
+          "Black Pepper"
+        ],
+        "heart": [
+          "Lavender",
+          "Geranium",
+          "Cedarwood"
+        ],
+        "base": [
+          "Amber",
+          "Patchouli",
+          "Vetiver",
+          "Musk"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -61250,9 +62669,20 @@
       "sizeMl": 100,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Cardamom",
+          "Violet",
+          "Papyrus"
+        ],
+        "heart": [
+          "Iris",
+          "Amber"
+        ],
+        "base": [
+          "Leather",
+          "Sandalwood",
+          "Cedarwood"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -61367,9 +62797,17 @@
       "sizeMl": 75,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Tuberose",
+          "Musk"
+        ],
+        "heart": [
+          "Amber",
+          "Vanilla"
+        ],
+        "base": [
+          "Leather"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -61427,9 +62865,23 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Pear",
+          "Lavender",
+          "Mint",
+          "Bergamot",
+          "Lemon"
+        ],
+        "heart": [
+          "Cinnamon",
+          "Clary Sage"
+        ],
+        "base": [
+          "Vanilla",
+          "Amber",
+          "Patchouli",
+          "Cedar"
+        ]
       },
       "families": [
         "Oriental"
@@ -61492,9 +62944,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (9-10 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Aldehydes",
+          "Grapefruit",
+          "Bergamot"
+        ],
+        "heart": [
+          "Myrrh",
+          "Jasmine",
+          "Labdanum"
+        ],
+        "base": [
+          "Vanilla",
+          "Amber",
+          "Tonka Bean"
+        ]
       },
       "families": [
         "Oriental Woody"
@@ -61688,9 +63152,25 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Ginger",
+          "Bergamot",
+          "Pink Pepper"
+        ],
+        "heart": [
+          "Black Currant",
+          "Cardamom",
+          "Rose"
+        ],
+        "base": [
+          "Vanilla",
+          "Sandalwood",
+          "Benzoin",
+          "Cedar",
+          "Patchouli",
+          "Amber",
+          "Musk"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -61752,9 +63232,16 @@
       "sizeMl": 150,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Pink Pepper"
+        ],
+        "heart": [
+          "Jasmine",
+          "Sambac"
+        ],
+        "base": [
+          "Sandalwood"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -61812,9 +63299,14 @@
       "sizeMl": 75,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
+        "top": [
+          "Cherry",
+          "Rose"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Oud"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -61870,8 +63362,13 @@
       "sizeMl": 75,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
-        "heart": [],
+        "top": [
+          "Ginger",
+          "Sandalwood"
+        ],
+        "heart": [
+          "Amber"
+        ],
         "base": []
       },
       "families": [],
@@ -61929,9 +63426,14 @@
       "sizeMl": 75,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
+        "top": [
+          "Black Currant",
+          "Rose"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Amber"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -61989,9 +63491,14 @@
       "sizeMl": 75,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
+        "top": [
+          "Pineapple",
+          "Leather"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Amber"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -62108,9 +63615,14 @@
       "sizeMl": 75,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
+        "top": [
+          "Mango",
+          "Leather"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Guaiac Wood"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -62168,9 +63680,14 @@
       "sizeMl": 150,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
+        "top": [
+          "Pear",
+          "Tobacco"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Musk"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -62288,9 +63805,14 @@
       "sizeMl": 75,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
+        "top": [
+          "Black Currant",
+          "Rose"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Cedarwood"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -62345,9 +63867,14 @@
       "sizeMl": 75,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
+        "top": [
+          "Black Currant",
+          "Rose"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Amber"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -62404,9 +63931,14 @@
       "sizeMl": 150,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
+        "top": [
+          "Grapefruit",
+          "Leather"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Cedarwood"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -62464,9 +63996,14 @@
       "sizeMl": 75,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
+        "top": [
+          "Red Berries",
+          "Rose"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "White Musk"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -62579,9 +64116,14 @@
       "sizeMl": 75,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
+        "top": [
+          "Mandarin",
+          "Rose"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Amber"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -62637,9 +64179,16 @@
       "sizeMl": 75,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Red Berries"
+        ],
+        "heart": [
+          "Rose"
+        ],
+        "base": [
+          "Sandalwood",
+          "Oud"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -62695,9 +64244,14 @@
       "sizeMl": 75,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
+        "top": [
+          "Pineapple",
+          "Oakmoss"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Vetiver"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -62755,9 +64309,14 @@
       "sizeMl": 150,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
+        "top": [
+          "Pineapple",
+          "Coconut"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Vanilla"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -63149,9 +64708,17 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Freesia",
+          "Plum"
+        ],
+        "heart": [
+          "Amber"
+        ],
+        "base": [
+          "Labdanum",
+          "Vanilla"
+        ]
       },
       "families": [
         "Oriental Woody"
@@ -63479,9 +65046,14 @@
       "sizeMl": 150,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
+        "top": [
+          "Pineapple",
+          "Coconut"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Vanilla"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -64063,9 +65635,14 @@
       "sizeMl": 75,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
+        "top": [
+          "Jasmine",
+          "Rose"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Musk"
+        ]
       },
       "families": [],
       "seasonsSource": [
@@ -64554,9 +66131,22 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Vetiver",
+          "Grapefruit"
+        ],
+        "heart": [
+          "Nutmeg",
+          "Orange Blossom",
+          "Petitgrain",
+          "Amber"
+        ],
+        "base": [
+          "Musk",
+          "Cedar",
+          "Vanilla"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -70312,9 +71902,14 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
+        "top": [
+          "Grapefruit"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Musk",
+          "Amber"
+        ]
       },
       "families": [
         "Floral Woody"
@@ -70449,9 +72044,17 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Mandarin",
+          "Pear"
+        ],
+        "heart": [
+          "Ambrette"
+        ],
+        "base": [
+          "Benzoin",
+          "Musk"
+        ]
       },
       "families": [
         "Oriental Vanilla"
@@ -70511,9 +72114,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Cinnamon"
+        ],
+        "heart": [
+          "Bourbon Vanilla",
+          "Praline",
+          "Ambroxan"
+        ],
+        "base": [
+          "Amber",
+          "Musk",
+          "Heliotrope"
+        ]
       },
       "families": [
         "Oriental Vanilla"
@@ -70571,9 +72185,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Pear",
+          "Mandarin Orange"
+        ],
+        "heart": [
+          "Lavender",
+          "Violet"
+        ],
+        "base": [
+          "Musk",
+          "Sandalwood",
+          "Vanilla",
+          "Patchouli"
+        ]
       },
       "families": [
         "Floral Woody"
@@ -70634,9 +72259,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Citron",
+          "Bergamot",
+          "Orange"
+        ],
+        "heart": [
+          "Neroli",
+          "Ginger"
+        ],
+        "base": [
+          "Black Tea",
+          "Ambroxan",
+          "Guaiac Wood"
+        ]
       },
       "families": [
         "Fresh"
@@ -70695,9 +72331,17 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Pear",
+          "Ambrette"
+        ],
+        "heart": [
+          "Jasmine",
+          "Ylang-Ylang"
+        ],
+        "base": [
+          "Patchouli"
+        ]
       },
       "families": [
         "Floral Aquatic"
@@ -70756,9 +72400,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Orange",
+          "Bergamot"
+        ],
+        "heart": [
+          "Neroli",
+          "Pink Pepper",
+          "Cardamom",
+          "Nutmeg"
+        ],
+        "base": [
+          "Vetiver"
+        ]
       },
       "families": [
         "Oriental"
@@ -70818,9 +72472,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Mandarin Orange",
+          "Pear"
+        ],
+        "heart": [
+          "Ginger",
+          "Orange Blossom"
+        ],
+        "base": [
+          "Cedarwood",
+          "Musk",
+          "Amber"
+        ]
       },
       "families": [
         "Fresh"
@@ -71082,9 +72747,16 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Mandarin Orange"
+        ],
+        "heart": [
+          "Ginger"
+        ],
+        "base": [
+          "Ambergris"
+        ]
       },
       "families": [
         "Oriental Vanilla"
@@ -71362,9 +73034,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Lavender",
+          "Mint"
+        ],
+        "heart": [
+          "Vanilla",
+          "Benzoin"
+        ],
+        "base": [
+          "Amber",
+          "Tonka Bean",
+          "Honey",
+          "Tobacco"
+        ]
       },
       "families": [
         "Oriental Vanilla"
@@ -71945,9 +73628,17 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
+        "top": [
+          "Blood Orange",
+          "Mandarin",
+          "Bergamot",
+          "Lemon"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Sandalwood",
+          "Musk"
+        ]
       },
       "families": [
         "Floral Aquatic"
@@ -72068,9 +73759,17 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Green Notes",
+          "Bergamot"
+        ],
+        "heart": [
+          "Ginger"
+        ],
+        "base": [
+          "Sandalwood",
+          "Cedarwood"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -72132,9 +73831,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Caramel"
+        ],
+        "heart": [
+          "Milk",
+          "Honey",
+          "Sugar",
+          "Tonka Bean"
+        ],
+        "base": [
+          "Vanilla",
+          "Praline",
+          "Amber",
+          "White Musk"
+        ]
       },
       "families": [
         "Floral Woody"
@@ -72194,9 +73905,20 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Green Apple",
+          "Ginger",
+          "Bergamot"
+        ],
+        "heart": [
+          "Clary Sage",
+          "Juniper Berries"
+        ],
+        "base": [
+          "Cedar",
+          "Tonka Bean",
+          "Vetiver"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -72318,9 +74040,15 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Vanilla"
+        ],
+        "heart": [
+          "Lavender"
+        ],
+        "base": [
+          "Vetiver"
+        ]
       },
       "families": [
         "Oriental Vanilla"
@@ -72381,9 +74109,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Lemon"
+        ],
+        "heart": [
+          "Lavender",
+          "Rosemary",
+          "Geranium"
+        ],
+        "base": [
+          "Cedarwood",
+          "Amber",
+          "Musk",
+          "Patchouli"
+        ]
       },
       "families": [
         "Oriental"
@@ -72445,9 +74185,14 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
+        "top": [
+          "Sandalwood",
+          "Incense"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Amber"
+        ]
       },
       "families": [
         "Woody Oriental"
@@ -72508,9 +74253,19 @@
       "sizeMl": 100,
       "concentration": "Eau de Parfum",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Grapefruit",
+          "Mandarin Orange"
+        ],
+        "heart": [
+          "Sandalwood",
+          "Cedarwood"
+        ],
+        "base": [
+          "Amber",
+          "Musk",
+          "Patchouli"
+        ]
       },
       "families": [
         "Woody Aromatic"
@@ -72570,9 +74325,19 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Litchi",
+          "Ginger"
+        ],
+        "heart": [
+          "Rose",
+          "Peony",
+          "Cacao"
+        ],
+        "base": [
+          "Patchouli"
+        ]
       },
       "families": [
         "Floral Fruity"
@@ -72633,9 +74398,21 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Incense",
+          "Apple"
+        ],
+        "heart": [
+          "Myrrh",
+          "Saffron",
+          "Amber"
+        ],
+        "base": [
+          "Vanilla",
+          "Cedarwood",
+          "Oud",
+          "White Musk"
+        ]
       },
       "families": [
         "Oriental"
@@ -72695,8 +74472,18 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
+        "top": [
+          "Raspberry"
+        ],
+        "heart": [
+          "Peony",
+          "Magnolia",
+          "Jasmine",
+          "Sambac",
+          "Rose",
+          "Geranium",
+          "White-Floral"
+        ],
         "base": []
       },
       "families": [
@@ -72759,9 +74546,16 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot"
+        ],
+        "heart": [
+          "Orange Blossom",
+          "White Floral"
+        ],
+        "base": [
+          "Patchouli"
+        ]
       },
       "families": [
         "Fresh"
@@ -72960,9 +74754,14 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (9-10 hours)",
       "notes": {
-        "top": [],
+        "top": [
+          "Tea"
+        ],
         "heart": [],
-        "base": []
+        "base": [
+          "Rose",
+          "Magnolia"
+        ]
       },
       "families": [
         "Oriental"
@@ -73023,9 +74822,22 @@
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Mint",
+          "Lemon",
+          "Basil",
+          "Thyme"
+        ],
+        "heart": [
+          "Blackcurrant",
+          "Lavender",
+          "Jasmine",
+          "Rosemary"
+        ],
+        "base": [
+          "Musk",
+          "Cedarwood"
+        ]
       },
       "families": [
         "Floral Woody"
