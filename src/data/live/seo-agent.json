@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-18T11:40:26.662Z",
-  "nextRunAt": "2026-10-18T17:40:26.662Z",
+  "updatedAt": "2026-10-18T12:08:48.653Z",
+  "nextRunAt": "2026-10-18T18:08:48.653Z",
   "intervalHours": 6,
   "identity": {
     "nameAr": "منارة شاهين",
@@ -13,13 +13,14 @@
   "trust": {
     "level": "trainee",
     "since": "2026-10-18T12:00:00.000Z",
-    "cycles": 1,
-    "cyclesAtLevel": 1,
+    "cycles": 2,
+    "cyclesAtLevel": 2,
     "noteAr": "بدأ التدريب: يدرس المنهج ويفحص الموقع ويقترح، بلا تغيير منشور."
   },
   "curriculum": {
     "studied": [
-      "seo-01"
+      "seo-01",
+      "seo-02"
     ],
     "notes": [
       {
@@ -33,11 +34,23 @@
           "مراجعة الروابط الداخلية للتأكد من إمكانية الوصول إلى كل صفحة أدوات مباشرة من الصفحة الرئيسية أو الخريطة.",
           "إضافة وسوم الـ Canonical وتجنب الروابط المكررة أو معاملات البحث الزائدة لضمان عدم إهدار ميزانية الزحف."
         ]
+      },
+      {
+        "id": "seo-02",
+        "titleAr": "خريطة الموقع والفهرسة السريعة",
+        "at": "2026-10-18T12:08:48.653Z",
+        "takeaway": "يبدأ منارة شاهين الآن بتطبيق معايير الفهرسة الصحيحة عبر إنشاء خريطة موقع XML صالحة تشمل الصفحات الثابتة والأدوات، وتضمينها في ملف robots.txt. كما يتولى ربط المنصة بأدوات المشرفين، وتفعيل إرسال الروابط عبر بروتوكول IndexNow لضمان اكتشاف المحتوى الجديد وسرعة فهرسته بالطرق البيضاء.",
+        "checklist": [
+          "التحقق من صحة روابط خريطة الموقع (sitemap.xml) واحتوائها حصرياً على الصفحات القابلة للفهرسة بروابط مطلقة تبدأ بـ https.",
+          "إضافة رابط خريطة الموقع بشكل صريح داخل ملف robots.txt لتسهيل وصول زحف محركات البحث إليها.",
+          "تسجيل خريطة الموقع في أدوات مشرفي المواقع (Search Console وBing Webmaster) ومتابعة حالة الفهرسة.",
+          "التحقق من مطابقة مفتاح IndexNow للملف الفعلي على الخادم لضمان سلامة إرسال التحديثات السريعة للمحركات."
+        ]
       }
     ]
   },
   "audit": {
-    "at": "2026-10-18T11:40:26.662Z",
+    "at": "2026-10-18T12:08:48.653Z",
     "score": 1,
     "bySeverity": {
       "critical": 0,
@@ -341,31 +354,53 @@
       "applied": 0,
       "shaheen": 1,
       "level": "trainee"
+    },
+    {
+      "at": "2026-10-18T12:08:48.653Z",
+      "score": 1,
+      "applied": 0,
+      "shaheen": 1,
+      "level": "trainee"
     }
   ],
   "applied": [],
   "proposals": {},
-  "submissions": [],
+  "submissions": [
+    {
+      "engine": "WebSub (خلاصة RSS)",
+      "method": "websub",
+      "at": "2026-10-18T12:08:48.653Z",
+      "urls": 2,
+      "ok": true,
+      "detail": "أُشعر 2 من 2 محاور بأن الخلاصة تغيّرت."
+    }
+  ],
   "submissionBook": {
     "urls": []
   },
   "coach": {
-    "at": "2026-10-18T11:40:26.662Z",
+    "at": "2026-10-18T12:08:48.653Z",
     "score": 1,
     "strengths": [
-      "لا توجد نقاط قوة مسجلة في هذه البداية المبكرة."
+      "بدء التعلم والانخراط في الدورة الأولى"
     ],
     "issues": [
-      "الوكيل لم يكمل أي دورة أو درس (0/24).",
-      "تقييم الفحص منخفض جداً (1/100) مع وجود مشكلات كبيرة عديدة في المحتوى والزحف والفهرسة والبيانات المنظمة.",
-      "غياب وسم H1 والمحتوى الرقيق ووسم Canonical في الصفحة الرئيسية."
+      "تقييم الفحص منخفض جداً (1/100)",
+      "وجود مشاكل كبيرة في المحتوى مثل غياب H1 ومحتوى رقيق",
+      "مشاكل في الفهرسة والزحف مثل غياب الوسم الأساسي canonical ورابط خريطة الموقع في ملف robots.txt",
+      "غياب البيانات المنظمة JSON-LD ومفتاح IndexNow غير مطابق"
     ],
     "readyForAutonomy": false,
-    "note": "لا يزال الوكيل في مرحلة التدريب الأولى ولم يستوفِ الشروط الأساسية للاعتماد."
+    "note": "الوكيل في بداياته ولم ينهِ المتطلبات اللازمة للانتقال للمرحلة التالية."
   },
   "coachHistory": [
     {
       "at": "2026-10-18T11:40:26.662Z",
+      "score": 1,
+      "readyForAutonomy": false
+    },
+    {
+      "at": "2026-10-18T12:08:48.653Z",
       "score": 1,
       "readyForAutonomy": false
     }
@@ -392,14 +427,16 @@
   },
   "engines": {
     "aiAvailable": true,
-    "studies": 1,
+    "studies": 2,
     "failures": []
   },
   "searchEngines": [
     {
       "id": "google",
       "nameAr": "Google",
-      "status": "ready"
+      "status": "ready",
+      "at": "2026-10-18T12:08:48.653Z",
+      "detail": "خريطة + خلاصة معلنتان في robots.txt — الوصول لا يحتاج حساباً."
     },
     {
       "id": "bing",
@@ -462,30 +499,83 @@
       "status": "ready"
     }
   ],
+  "discovery": {
+    "crawl": {
+      "at": "2026-10-18T12:08:49.569Z",
+      "ua": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+      "checked": 3,
+      "ok": 3,
+      "results": [
+        {
+          "url": "https://sham-perfume-49bf.vercel.app/",
+          "status": 200,
+          "ok": true,
+          "reason": "الصفحة متاحة والفهرسة غير محجوبة"
+        },
+        {
+          "url": "https://sham-perfume-49bf.vercel.app/tools/",
+          "status": 200,
+          "ok": true,
+          "reason": "الصفحة متاحة والفهرسة غير محجوبة"
+        },
+        {
+          "url": "https://sham-perfume-49bf.vercel.app/tools/perfume-formulation-calculator.html",
+          "status": 200,
+          "ok": true,
+          "reason": "الصفحة متاحة والفهرسة غير محجوبة"
+        }
+      ]
+    },
+    "webSub": {
+      "at": "2026-10-18T12:08:48.653Z",
+      "ok": true,
+      "feedHash": "820a4a2c",
+      "hubs": [
+        {
+          "url": "https://pubsubhubbub.appspot.com/",
+          "status": 204,
+          "ok": true
+        },
+        {
+          "url": "https://pubsubhubbub.superfeedr.com/",
+          "status": 204,
+          "ok": true
+        }
+      ]
+    },
+    "pageSpeed": {
+      "at": "2026-10-18T12:08:55.592Z",
+      "ok": false,
+      "url": "https://sham-perfume-49bf.vercel.app/",
+      "status": 429,
+      "scores": {},
+      "detail": "تعذّر القياس: Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'pagespeedonline.googleapis.com' for consumer 'project_number:583797351490'."
+    }
+  },
   "nextActions": [
     {
-      "textAr": "إضافة وسم H1 فريد ومحتوى مفيد يتجاوز 300 كلمة للصفحة الرئيسية لتوضيح نية البحث.",
+      "textAr": "إضافة عنوان رئيسي H1 واحد يطابق موضوع الصفحة الرئيسية لضمان فهم محتواها بشكل صحيح.",
       "area": "content",
       "severity": "major"
     },
     {
-      "textAr": "جعل عناوين الصفحات فريدة لكل صفحة لتعكس محتواها بدقة وتجنب التكرار.",
+      "textAr": "توسيع محتوى الصفحة الرئيسية ليشمل شرحاً وخطوات وأسئلة شائعة تفيد الزائر وتجيب نية البحث بدقة.",
+      "area": "content",
+      "severity": "major"
+    },
+    {
+      "textAr": "جعل عنوان كل صفحة فريداً ويعبر بدقة عن محتواها لمنع تكرار العناوين بين الصفحات.",
       "area": "titles",
       "severity": "major"
     },
     {
-      "textAr": "إضافة وسم canonical وملف robots.txt يحتوي على رابط خريطة الموقع الصحيح.",
+      "textAr": "إضافة وسوم Canonical بصيغة مطلقة تبدأ بـ https وتطابق عنوان كل صفحة أساسية بدقة.",
       "area": "crawl",
       "severity": "major"
     },
     {
-      "textAr": "إضافة البيانات المنظمة بنجاح بصيغة JSON-LD للصفحات حسب طبيعة كل صفحة.",
-      "area": "schema",
-      "severity": "major"
-    },
-    {
-      "textAr": "إدراج جميع صفحات الأدوات والمنتجات القابلة للفهرسة داخل خريطة الموقع الرسمية.",
-      "area": "indexing",
+      "textAr": "إضافة رابط خريطة الموقع Sitemap إلى ملف robots.txt وإدراج كافة الصفحات القابلة للفهرسة.",
+      "area": "crawl",
       "severity": "major"
     }
   ],
@@ -502,6 +592,19 @@
         "إرسال دوري لأهم الصفحات عبر IndexNow."
       ],
       "ms": 7254
+    },
+    {
+      "at": "2026-10-18T12:08:48.653Z",
+      "trigger": "schedule",
+      "auditScore": 1,
+      "findings": 31,
+      "applied": 0,
+      "lessonId": "seo-02",
+      "submitted": 0,
+      "notes": [
+        "إرسال دوري لأهم الصفحات عبر IndexNow."
+      ],
+      "ms": 7048
     }
   ],
   "notes": []

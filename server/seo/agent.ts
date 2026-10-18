@@ -15,7 +15,12 @@ import { nextLesson, SEO_AREAS, type SeoArea } from '../../src/seo/curriculum';
 import { SEO_PAGES, HOME_PAGE, seoPage } from '../../src/seo/pages';
 import { SITE, SEO_AGENT, absoluteUrl } from '../../src/seo/site';
 import { topFixes, validateSeoCopy } from '../../src/seo/audit';
-import { submitBing, submitGoogleSitemap, submitIndexNow, type SubmitResult } from './search';
+import {
+  probeCrawlerAccess, probePageSpeed, submitBing, submitGoogleSitemap, submitIndexNow, submitWebSub,
+  type SubmitResult,
+} from './search';
+import { feedFingerprint } from '../../src/seo/discovery';
+import { renderFeed } from '../../src/seo/artifacts';
 
 type Env = Record<string, string | undefined>;
 export type SeoAsk = (system: string, prompt: string) => Promise<string>;
@@ -269,6 +274,8 @@ function applySubmissionState(state: SeoState, at: string, results: { indexNow?:
   if (results.bing?.ok) mark(['bing'], 'submitted', 'Bing Webmaster API');
   if (results.google?.ok) mark(['google'], 'submitted', 'Search Console: خريطة الموقع');
   else if (env.GSC_SERVICE_ACCOUNT_JSON?.trim()) mark(['google'], 'ready', 'حساب الخدمة مضبوط؛ يُعاد الإرسال في الدورة القادمة.');
+  // Without any account Google still discovers the site: sitemap + feed declared in robots.txt, honest lastmod.
+  else mark(['google'], 'ready', 'خريطة + خلاصة معلنتان في robots.txt — الوصول لا يحتاج حساباً.');
 }
 
 export async function runSeoCycle(input: CycleInput): Promise<CycleResult> {
@@ -288,6 +295,14 @@ export async function runSeoCycle(input: CycleInput): Promise<CycleResult> {
     findings: audit.findings.slice(0, 120), pagesChecked: audit.pagesChecked,
   };
   log(`الفحص: ${audit.score}/100 (${audit.findings.length} ملاحظة، ${audit.pagesChecked} صفحات).`);
+
+  // 1b) prove the crawler's view from outside: status, headers and robots directives of the key pages.
+  state.discovery.crawl = await probeCrawlerAccess({
+    urls: [input.siteUrl, absoluteUrl('tools/', input.siteUrl), absoluteUrl(SEO_PAGES[0]?.path || 'tools/', input.siteUrl)],
+    fetch: input.fetch, limit: 3,
+  });
+  const blocked = state.discovery.crawl.checked - state.discovery.crawl.ok;
+  log(`وصول الزاحف: ${state.discovery.crawl.ok}/${state.discovery.crawl.checked} صفحة متاحة${blocked ? ` · ${blocked} محجوبة` : ''}.`);
 
   // 2) study
   const studyResult = await study(input, audit, audit.sitemapUrls.filter((u) => /\/p\//.test(u.loc)).length, log);
@@ -344,6 +359,26 @@ export async function runSeoCycle(input: CycleInput): Promise<CycleResult> {
       if (indexNowResult.ok) state.submissionBook = { lastIndexNowAt: at, urls: [...new Set([...plan.urls, ...state.submissionBook.urls])].slice(-600) };
       log(`IndexNow: ${indexNowResult.ok ? `${indexNowResult.submitted} رابطاً` : indexNowResult.detail}`);
     } else { notes.push(plan.reason); log(plan.reason); }
+    // The feed is a second sitemap and a WebSub publisher: ping the hubs only when its content changed.
+    const feedHash = feedFingerprint(renderFeed({ siteUrl: input.siteUrl, products: [], now: new Date(0) }));
+    if (state.discovery.webSub?.feedHash !== feedHash) {
+      const webSub = await submitWebSub({ siteUrl: input.siteUrl, env, fetch: input.fetch });
+      state.discovery.webSub = { at, ok: webSub.ok, feedHash, hubs: webSub.hubs };
+      results.push({ ok: webSub.ok, status: webSub.status, detail: webSub.detail, submitted: webSub.submitted });
+      state.submissions = [...state.submissions, { engine: 'WebSub (خلاصة RSS)', method: 'websub' as const, at, urls: webSub.submitted, ok: webSub.ok, detail: webSub.detail }].slice(-80);
+      log(`WebSub: ${webSub.detail}`);
+    } else { log('WebSub: الخلاصة لم تتغيّر منذ آخر إشعار — لا إشعار مكرر.'); }
+
+    // Performance is measured once a day at most: the public endpoint is rate-limited and keyless.
+    const psiAge = state.discovery.pageSpeed ? now.getTime() - Date.parse(state.discovery.pageSpeed.at) : Infinity;
+    if (!state.discovery.pageSpeed || psiAge > 24 * 3600_000) {
+      const psi = await probePageSpeed({ url: input.siteUrl, fetch: input.fetch });
+      state.discovery.pageSpeed = {
+        at: psi.at, ok: psi.ok, url: psi.url, status: psi.status, scores: psi.scores, vitals: psi.vitals, detail: psi.detail,
+      };
+      log(`الأداء: ${psi.ok ? `أداء ${psi.scores.performance ?? '—'}/100 · SEO ${psi.scores.seo ?? '—'}/100` : psi.detail}`);
+    }
+
     if (env.BING_WEBMASTER_API_KEY?.trim()) {
       bingResult = await submitBing({ siteUrl: input.siteUrl, urls: audit.sitemapUrls.map((u) => u.loc).slice(0, 400), env, fetch: input.fetch });
       results.push(bingResult);
@@ -376,7 +411,8 @@ export async function runSeoCycle(input: CycleInput): Promise<CycleResult> {
     `درس ${studyResult.lesson.id}`,
     applied ? `${applied} تحسيناً منشوراً` : 'لا تغيير منشور هذه الدورة',
     submitted ? `${submitted} رابطاً أُرسل` : 'لا إرسال',
-  ].join(' · ');
+    state.discovery.crawl ? `وصول الزاحف ${state.discovery.crawl.ok}/${state.discovery.crawl.checked}` : '',
+  ].filter(Boolean).join(' · ');
   log(summary);
   return { state, pagesFile: pages, audit, summary, submissions: results, next: state.nextRunAt };
 }

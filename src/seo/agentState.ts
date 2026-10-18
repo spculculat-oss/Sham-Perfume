@@ -53,7 +53,7 @@ export interface SeoCoach {
 }
 export interface SeoSubmission {
   engine: string;
-  method: 'indexnow' | 'bing-api' | 'gsc' | 'sitemap';
+  method: 'indexnow' | 'bing-api' | 'gsc' | 'sitemap' | 'websub';
   at: string;
   urls: number;
   ok: boolean;
@@ -87,6 +87,19 @@ export interface SeoEngineReport {
   detail?: string;
   at?: string;
 }
+/** What the agent can verify without any account (see src/seo/discovery.ts for the catalogue). */
+export interface SeoWebSubHub { url: string; status?: number; ok: boolean }
+export interface SeoWebSubState { at: string; ok: boolean; feedHash: string; hubs: SeoWebSubHub[] }
+export interface SeoCrawlCheck { url: string; status?: number; ok: boolean; reason: string }
+export interface SeoCrawlState { at: string; ua: string; checked: number; ok: number; results: SeoCrawlCheck[] }
+export interface SeoPageSpeedState {
+  at: string; ok: boolean; url: string; status?: number;
+  scores: { performance?: number; seo?: number; accessibility?: number; bestPractices?: number };
+  vitals?: { lcpMs?: number; cls?: number; tbtMs?: number };
+  detail: string;
+}
+export interface SeoDiscoveryState { webSub?: SeoWebSubState; crawl?: SeoCrawlState; pageSpeed?: SeoPageSpeedState }
+
 export interface SeoTrustState {
   level: SeoTrustLevel;
   since: string;
@@ -113,6 +126,8 @@ export interface SeoState {
   mediaReport: SeoMediaReport | null;
   engines: { aiAvailable: boolean; lastEngine?: string; studies: number; failures: string[] };
   searchEngines: SeoEngineReport[];
+  /** Account-free discovery evidence: last hub ping, crawler-access probe, performance report. */
+  discovery: SeoDiscoveryState;
   nextActions: { textAr: string; area?: string; severity?: Severity }[];
   runs: SeoRun[];
   notes: string[];
@@ -142,6 +157,7 @@ export function emptySeoState(now = new Date()): SeoState {
     mediaReport: null,
     engines: { aiAvailable: false, studies: 0, failures: [] },
     searchEngines: SEARCH_ENGINES.map((e) => ({ id: e.id, nameAr: e.nameAr, status: e.status })),
+    discovery: {},
     nextActions: [],
     runs: [],
     notes: [],
@@ -149,6 +165,50 @@ export function emptySeoState(now = new Date()): SeoState {
 }
 
 const isObject = (v: unknown): v is Record<string, unknown> => Boolean(v && typeof v === 'object' && !Array.isArray(v));
+
+const finite = (value: unknown): number | undefined => (typeof value === 'number' && Number.isFinite(value) ? value : undefined);
+const shortText = (value: unknown, max = 240): string => (typeof value === 'string' ? value.slice(0, max) : '');
+
+/** Only well-formed evidence survives a read; a corrupt discovery block must never break the cycle. */
+function readDiscovery(value: unknown): SeoDiscoveryState {
+  const out: SeoDiscoveryState = {};
+  if (!isObject(value)) return out;
+  if (isObject(value.webSub) && typeof value.webSub.at === 'string') {
+    out.webSub = {
+      at: shortText(value.webSub.at, 40),
+      ok: Boolean(value.webSub.ok),
+      feedHash: shortText(value.webSub.feedHash, 32),
+      hubs: Array.isArray(value.webSub.hubs)
+        ? value.webSub.hubs.filter(isObject).slice(0, 4).map((hub) => ({ url: shortText(hub.url, 200), ok: Boolean(hub.ok), status: finite(hub.status) }))
+        : [],
+    };
+  }
+  if (isObject(value.crawl) && typeof value.crawl.at === 'string') {
+    const results = Array.isArray(value.crawl.results)
+      ? value.crawl.results.filter(isObject).slice(0, 6).map((row) => ({
+          url: shortText(row.url, 300), ok: Boolean(row.ok), status: finite(row.status), reason: shortText(row.reason, 200),
+        }))
+      : [];
+    out.crawl = {
+      at: shortText(value.crawl.at, 40), ua: shortText(value.crawl.ua, 160),
+      checked: results.length, ok: results.filter((row) => row.ok).length, results,
+    };
+  }
+  if (isObject(value.pageSpeed) && typeof value.pageSpeed.at === 'string') {
+    const scoresRaw = isObject(value.pageSpeed.scores) ? value.pageSpeed.scores : {};
+    const vitalsRaw = isObject(value.pageSpeed.vitals) ? value.pageSpeed.vitals : {};
+    out.pageSpeed = {
+      at: shortText(value.pageSpeed.at, 40), ok: Boolean(value.pageSpeed.ok), url: shortText(value.pageSpeed.url, 300),
+      status: finite(value.pageSpeed.status), detail: shortText(value.pageSpeed.detail),
+      scores: {
+        performance: finite(scoresRaw.performance), seo: finite(scoresRaw.seo),
+        accessibility: finite(scoresRaw.accessibility), bestPractices: finite(scoresRaw.bestPractices),
+      },
+      vitals: { lcpMs: finite(vitalsRaw.lcpMs), cls: finite(vitalsRaw.cls), tbtMs: finite(vitalsRaw.tbtMs) },
+    };
+  }
+  return out;
+}
 /** Defensive reader for the live JSON (a corrupt file must never break the site or the admin). */
 export function readSeoState(value: unknown, now = new Date()): SeoState {
   const empty = emptySeoState(now);
@@ -177,6 +237,7 @@ export function readSeoState(value: unknown, now = new Date()): SeoState {
     history: Array.isArray(raw.history) ? raw.history.filter(isObject) as unknown as SeoState['history'] : [],
     runs: Array.isArray(raw.runs) ? raw.runs.filter(isObject) as unknown as SeoRun[] : [],
     searchEngines: engines.length ? engines : empty.searchEngines,
+    discovery: readDiscovery(raw.discovery),
     nextActions: Array.isArray(raw.nextActions) ? raw.nextActions as SeoState['nextActions'] : [],
     notes: Array.isArray(raw.notes) ? raw.notes.filter((n): n is string => typeof n === 'string') : [],
   };

@@ -22,6 +22,12 @@ export const SITE = {
   twitterCard: 'summary_large_image',
   /** Public IndexNow key (served at /<key>.txt). Not a secret. */
   indexNowKey: '743e07fcdce6be6d7bb0d495602ee830',
+  /**
+   * The token of the Search Console HTML verification file Google issued for this site.
+   * Served at /google<token>.html (also committed in public/, so every build path carries it).
+   * It is a public file by design — it proves control of the URL, it is not a secret.
+   */
+  googleVerification: '7ef3d5aa6cf98197',
   /** What the site is, in one honest sentence (used in llms.txt and the media kit). */
   summaryAr: 'منصة عربية لتصميم العطور وتركيبها: حاسبات المعمل، الهرم العطري، التعتيق والتخفيف، موسوعة المواد الخام، مكتبة العطور العالمية، ومتجر شام.',
   summaryEn: 'An Arabic perfume-design platform: lab calculators, fragrance pyramids, maceration and dilution, a raw-materials encyclopedia, an iconic-perfume library, and the Sham store.',
@@ -69,19 +75,20 @@ export interface SearchEngineDef {
  * Honest coverage map (2026): Google has no IndexNow and no public general-purpose indexing API;
  * sitemaps + Search Console are its channels. Bing/Yandex/Naver/Seznam/Yep consume IndexNow directly.
  * DuckDuckGo, Ecosia, Yahoo and Copilot read Bing's index; Perplexity/AI answers read llms.txt and
- * crawl openly. Nothing here claims a ranking — only discovery.
+ * crawl openly. Every entry works without an owner account; a Search Console or Bing Webmaster login
+ * only adds reporting. Nothing here claims a ranking — only discovery.
  */
 export const SEARCH_ENGINES: SearchEngineDef[] = [
-  { id: 'google', nameAr: 'Google', nameEn: 'Google', methodAr: 'خريطة الموقع + ملف التحقق + Search Console (تسليم الخريطة آلي عند ربط حساب الخدمة)', status: 'ready', via: 'gsc' },
-  { id: 'bing', nameAr: 'Bing', nameEn: 'Bing', methodAr: 'IndexNow فوراً + خريطة الموقع (ويربط Bing Webmaster API إن وُجد المفتاح)', status: 'ready', via: 'indexnow' },
-  { id: 'yandex', nameAr: 'Yandex', nameEn: 'Yandex', methodAr: 'IndexNow فوراً + خريطة الموقع', status: 'ready', via: 'indexnow' },
+  { id: 'google', nameAr: 'Google', nameEn: 'Google', methodAr: 'خريطة وخلاصة معلنتان في robots.txt + إشعار WebSub — بلا حساب؛ Search Console اختياري', status: 'ready', via: 'sitemap' },
+  { id: 'bing', nameAr: 'Bing', nameEn: 'Bing', methodAr: 'IndexNow فوراً ومباشرة بلا حساب + خريطة الموقع', status: 'ready', via: 'indexnow' },
+  { id: 'yandex', nameAr: 'Yandex', nameEn: 'Yandex', methodAr: 'IndexNow فوراً ومباشرة بلا حساب + خريطة الموقع', status: 'ready', via: 'indexnow' },
   { id: 'naver', nameAr: 'Naver', nameEn: 'Naver', methodAr: 'IndexNow فوراً', status: 'ready', via: 'indexnow' },
   { id: 'seznam', nameAr: 'Seznam', nameEn: 'Seznam', methodAr: 'IndexNow فوراً', status: 'ready', via: 'indexnow' },
   { id: 'yep', nameAr: 'Yep', nameEn: 'Yep', methodAr: 'IndexNow فوراً', status: 'ready', via: 'indexnow' },
   { id: 'duckduckgo', nameAr: 'DuckDuckGo', nameEn: 'DuckDuckGo', methodAr: 'يقرأ فهرس Bing: يصل عبر IndexNow وخريطة الموقع', status: 'ready', via: 'owned-index' },
   { id: 'ecosia', nameAr: 'Ecosia', nameEn: 'Ecosia', methodAr: 'يقرأ فهرس Bing: يصل عبر IndexNow وخريطة الموقع', status: 'ready', via: 'owned-index' },
   { id: 'yahoo', nameAr: 'Yahoo', nameEn: 'Yahoo', methodAr: 'يقرأ فهرس Bing: يصل عبر IndexNow وخريطة الموقع', status: 'ready', via: 'owned-index' },
-  { id: 'brave', nameAr: 'Brave Search', nameEn: 'Brave Search', methodAr: 'فهرسه مستقل: يعتمد خريطة الموقع والزحف العادي', status: 'ready', via: 'sitemap' },
+  { id: 'brave', nameAr: 'Brave Search', nameEn: 'Brave Search', methodAr: 'فهرسه مستقل: يعتمد خريطة الموقع والخلاصة والزحف العادي', status: 'ready', via: 'sitemap' },
   { id: 'perplexity', nameAr: 'Perplexity', nameEn: 'Perplexity', methodAr: 'يلجأ إلى llms.txt والزحف المفتوح (مسموح في robots)', status: 'ready', via: 'llms' },
   { id: 'copilot', nameAr: 'Microsoft Copilot', nameEn: 'Microsoft Copilot', methodAr: 'يقرأ فهرس Bing وIndexNow', status: 'ready', via: 'owned-index' },
   { id: 'chatgpt-search', nameAr: 'البحث في المساعدات الذكية', nameEn: 'AI assistants search', methodAr: 'llms.txt + سماح صريح للزوار الآليين المحترمين', status: 'ready', via: 'llms' },

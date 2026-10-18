@@ -53,6 +53,8 @@ jobs:
       BING_WEBMASTER_API_KEY: ${{ secrets.BING_WEBMASTER_API_KEY }}
       GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
       GSC_SITE_URL: ${{ vars.GSC_SITE_URL }}
+      # Optional: comma-separated WebSub hubs. Empty uses the public defaults.
+      WEBSUB_HUBS: ${{ vars.WEBSUB_HUBS }}
     steps:
       - name: Checkout source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
