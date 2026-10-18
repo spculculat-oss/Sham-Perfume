@@ -112,15 +112,19 @@ found += addCandidates(file, (env.DISCOVER_SEEDS || '').split(/[\s,]+/).filter(B
 say(`${found} new stores found this run (${mode === 'ai' ? 'web search + own methods' : 'own methods, no AI'})`);
 
 // ── 2. Checking stores ────────────────────────────────────────────────────────────────────────────────────
-async function productSitemaps(base: string, listed: string[]): Promise<{ sitemaps: string[]; urls: string[] }> {
+async function productSitemaps(base: string, listed: string[]): Promise<{ sitemaps: string[]; urls: string[]; refused: number; tried: number }> {
   const queue = listed.length ? [...listed] : ['sitemap.xml', 'sitemap_index.xml', 'wp-sitemap.xml', 'product-sitemap.xml'].map((p) => new URL(p, base).href);
   const seen = new Set<string>(); const used: string[] = []; const urls: string[] = [];
   let generic = false;
+  let refused = 0; let tried = 0;
   while (queue.length && seen.size < 12 && urls.length < 60_000 && timeLeft() > 30_000) {
     const url = queue.shift()!;
     if (seen.has(url)) continue;
     seen.add(url);
     const { status, body } = await get(url);
+    tried++;
+    // 403/429/503 or a «checking your browser» page instead of XML: the site refuses automated readers.
+    if (status === 403 || status === 429 || status === 503 || (status === 200 && /<html/i.test(body.slice(0, 2000)) && /challenge|captcha|just a moment|cf-/i.test(body.slice(0, 20_000)))) refused++;
     if (status !== 200 || !/<(?:urlset|sitemapindex)/.test(body)) continue;
     const children = parseSitemapIndex(body);
     if (children.length) {
@@ -139,7 +143,7 @@ async function productSitemaps(base: string, listed: string[]): Promise<{ sitema
   // A mixed sitemap (pages + posts + products): keep the links that look like product pages.
   const host = domainOf(base);
   const same = urls.filter((u) => domainOf(u) === host);
-  return { sitemaps: used, urls: generic ? same.filter((u) => PRODUCTISH.test(u)) : same };
+  return { sitemaps: used, urls: generic ? same.filter((u) => PRODUCTISH.test(u)) : same, refused, tried };
 }
 
 async function rateToEgp(currency: string): Promise<number | undefined> {
@@ -175,9 +179,12 @@ async function vet(s: LiveSource): Promise<void> {
   const robotsText = await get(new URL('/robots.txt', base).href);
   const robots = parseRobots(robotsText.status === 200 ? robotsText.body : '');
   if (!robots.allowed('/')) return fail('ملف robots.txt يمنع القراءة الآلية', true);
-  const { sitemaps, urls } = await productSitemaps(base, robots.sitemaps.filter((u) => domainOf(u) === domainOf(base)));
+  const { sitemaps, urls, refused, tried } = await productSitemaps(base, robots.sitemaps.filter((u) => domainOf(u) === domainOf(base)));
   const allowed = urls.filter((u) => { try { return robots.allowed(new URL(u).pathname); } catch { return false; } });
-  if (!allowed.length) return fail(urls.length ? 'روابط المنتجات ممنوعة في robots.txt' : 'لا توجد خريطة منتجات (sitemap)');
+  if (!allowed.length) {
+    return fail(urls.length ? 'روابط المنتجات ممنوعة في robots.txt'
+      : refused && refused >= tried / 2 ? 'الموقع يرفض القراءة الآلية (حماية)' : 'لا توجد خريطة منتجات (sitemap)');
+  }
   const delay = Math.max(600, robots.crawlDelayMs || 0);
   const samples: Sample[] = [];
   for (const url of spreadSample(allowed, 6)) {
@@ -228,7 +235,10 @@ say(`Sources: ${after.active} active (~${after.products} perfumes), ${after.cand
 
 if (env.GITHUB_ACTIONS) {
   const clean = (t: string) => t.replace(/[\r\n%]/g, ' ').slice(0, 900);
-  console.log(`::notice title=كشّاف المصادر::${clean(notes.slice(-6).join(' | '))}`);
+  // Two notices: how stores were found (web search / own methods), and what the checks decided.
+  const checks = notes.filter((n) => /^[✓✗…]/.test(n));
+  console.log(`::notice title=كشّاف المصادر — البحث::${clean(notes.filter((n) => !checks.includes(n) && !/^Sources:/.test(n)).join(' | '))}`);
+  console.log(`::notice title=كشّاف المصادر — الفحص::${clean([...checks.slice(-8), notes[notes.length - 1]].join(' | '))}`);
   if (env.GITHUB_OUTPUT) appendFileSync(env.GITHUB_OUTPUT, `activated=${Math.max(0, after.active - before.active)}\n`);
 }
 if (env.GITHUB_STEP_SUMMARY) {
