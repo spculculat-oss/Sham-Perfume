@@ -1,25 +1,21 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T13:24:57.984Z",
- "nextUpdateAt": "2026-10-19T01:24:57.984Z",
+ "updatedAt": "2026-10-18T14:22:28.522Z",
+ "nextUpdateAt": "2026-10-19T02:22:28.522Z",
  "intervalHours": 12,
  "editor": "shaheen",
  "digest": {
-  "ar": "تشهد نشرة اليوم إطلاقات عطور جديدة ومتميزة مثل عطر Cherry Amber الحصري لمنطقة الشرق الأوسط من Matière Première وعطر Festin من دار L’Entropiste، إلى جانب استثمار شركة Mane لمبلغ 45 مليون يورو لإنشاء مركز جديد لتصميم العطور في فرنسا، وافتتاح متحف تاريخ العطور في إيطاليا.",
-  "en": "Today's bulletin highlights exciting new fragrance launches such as Matière Première's Middle East exclusive Cherry Amber and L’Entropiste's Festin, alongside Mane's €45 million investment in a new fragrance design center in France, and the opening of a new perfume history museum in Italy."
+  "ar": "تشهد صناعة العطور حراكاً استثمارياً وتقنياً بارزاً بافتتاح مراكز إبداعية جديدة لكبرى الشركات العالمية مثل Symrise وDSM-Firmenich وتوسيع إنتاج جزيئات المسك المستدامة. في المقابل، تواصل دور النيش إطلاق ابتكارات حصرية للمنطقة كعطر Cherry Amber من Matière Première، وسط تنامي ظاهرة نوادي العطور الواقعية والمتاحف المتخصصة.",
+  "en": "The fragrance industry is witnessing major corporate and creative expansions with Symrise and DSM-Firmenich inaugurating new creative centers and boosting sustainable musk production. Meanwhile, niche houses continue to unveil regional exclusives like Matière Première's Cherry Amber, as real-life perfume clubs and heritage fragrance museums gain strong momentum."
  },
  "sources": [
   {
    "name": "Now Smell This",
-   "count": 5
+   "count": 4
   },
   {
    "name": "Premium Beauty News",
    "count": 3
-  },
-  {
-   "name": "Orange Actualités",
-   "count": 2
   },
   {
    "name": "Grazia",
@@ -30,7 +26,35 @@
    "count": 1
   },
   {
+   "name": "Cosmetics Business",
+   "count": 1
+  },
+  {
    "name": "ChemAnalyst",
+   "count": 1
+  },
+  {
+   "name": "CaFleureBon",
+   "count": 1
+  },
+  {
+   "name": "https://streamlinefeed.co.ke/",
+   "count": 1
+  },
+  {
+   "name": "BFM",
+   "count": 1
+  },
+  {
+   "name": "Tribuca.net",
+   "count": 1
+  },
+  {
+   "name": "NationalWorld",
+   "count": 1
+  },
+  {
+   "name": "صحيفة الوطن السورية",
    "count": 1
   },
   {
@@ -42,19 +66,7 @@
    "count": 1
   },
   {
-   "name": "https://streamlinefeed.co.ke/",
-   "count": 1
-  },
-  {
    "name": "South Florida Reporter",
-   "count": 1
-  },
-  {
-   "name": "Cosmetics Business",
-   "count": 1
-  },
-  {
-   "name": "CaFleureBon",
    "count": 1
   },
   {
@@ -70,11 +82,11 @@
    "count": 1
   },
   {
-   "name": "صحيفة الوطن السورية",
+   "name": "The Sun Nigeria",
    "count": 1
   },
   {
-   "name": "The Sun Nigeria",
+   "name": "Orange Actualités",
    "count": 1
   },
   {
@@ -92,10 +104,6 @@
   {
    "name": "Paris Select Book",
    "count": 1
-  },
-  {
-   "name": "Tribuca.net",
-   "count": 1
   }
  ],
  "items": [
@@ -109,16 +117,302 @@
    "category": "launch",
    "importance": 5,
    "title": {
-    "ar": "دار Matière Première تطلق عطر Cherry Amber حصرياً في الشرق الأوسط",
-    "en": "Matière Première Launches Cherry Amber Exclusively in the Middle East"
+    "ar": "دار Matière Première تطلق عطر Cherry Amber حصرياً للشرق الأوسط",
+    "en": "Matière Première Launches Cherry Amber Exclusively for the Middle East"
    },
    "summary": {
-    "ar": "أطلقت دار العطور النيش الفرنسية Matière Première، بتوقيع العطار أوريليان غيشارد، عطرها الجديد والجنساني Cherry Amber حصرياً لمنطقة الشرق الأوسط.",
-    "en": "French niche perfume house Matière Première, by perfumer Aurélien Guichard, has launched its new unisex fragrance Cherry Amber, currently exclusive to the Middle East."
+    "ar": "أطلقت دار العطور النيش الفرنسية Matière Première، بإشراف العطّار أوريليان غيشار (Aurélien Guichard)، عطرها الجديد الموجه للجنسين Cherry Amber المخصص حالياً لأسواق الشرق الأوسط.",
+    "en": "French niche perfume house Matière Première, founded by perfumer Aurélien Guichard, has launched Cherry Amber, a new unisex fragrance currently exclusive to the Middle East."
    },
    "note": {
-    "ar": "هذا الإطلاق يسلط الضوء على الأهمية الكبيرة لسوق الشرق الأوسط في استراتيجيات دور العطور النيش العالمية.",
-    "en": "This launch highlights the strategic importance of the Middle East market for global niche fragrance houses."
+    "ar": "توليفة الكرز مع العنبر تجسد التوجه الحالي لدور النيش نحو تقديم نوتات الفواكه الداكنة بأسلوب شرقي فخم يناسب الذائقة الإقليمية.",
+    "en": "توليفة الكرز مع العنبر تجسد التوجه الحالي لدور النيش نحو تقديم نوتات الفواكه الداكنة بأسلوب شرقي فخم يناسب الذائقة الإقليمية."
+   }
+  },
+  {
+   "id": "nl1ioaz",
+   "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxPT2ZzRU1Tb3lZT3hvYnRCUHdlWldxeERDYkFJOVVQREpMRWNKVi04TnhsZlg2QzVlTVp6VjE5VDF5Z29ZVVY3STkxR1FVR3lEY2k1TlZNaURzbHUtOHBycndZUURyc1NLeTdXWndGUWd3STVXdEl1amFJR1hQZUFNNW9NclZXZkVscE1nTXBJNHBOa0NZOUdubmhxUVRGNk9JTFM0dUxxRzJuNHllX2RRZmFGVHExSDhWZ0hYcVQyRlVFaWl5OTNlelhxOEFQZEpxckt5S9IB2wFBVV95cUxOUzJneVVMdlA0YjFYMDdSZ3p0SVZZYTdRLThWLUFaVEhiUVFjYkVJZWZXeERKZ2FCdmpFYXN6XzJMUGZKRURUeTZDeGJuTU1RdTZ3b2NvdHo0RklCejVhVno2aWxLa2V1ZFNQUzAtMG9TNXhlUFpuaDQzQTYya0xBMFAxSFpqMkVQWXRVeGZEUjUxVGFWUnp1UTVubUVvY3pGdHQ4WENfU0JFRzdtbXVQanRhZHRvVnExVlhvTFJmcTNaZVk0dUxZclphUnpsTDU0UEtkQmV1NU54XzQ?oc=5",
+   "source": "Indian Chemical News",
+   "publishedAt": "2026-10-16T12:37:59.000Z",
+   "original": "Symrise opens Singapore Scent Creative Center to accelerate fragrance innovation in Asia",
+   "lang": "en",
+   "category": "industry",
+   "importance": 5,
+   "title": {
+    "ar": "شركة Symrise تدشن مركزاً إبداعياً للعطور في سنغافورة لدعم الابتكار في آسيا",
+    "en": "Symrise Opens Singapore Scent Creative Center to Accelerate Fragrance Innovation in Asia"
+   },
+   "summary": {
+    "ar": "افتتحت شركة سيمرايز (Symrise) مركزاً إبداعياً جديداً للروائح في سنغافورة بهدف تسريع وتيرة الابتكار العطري وتلبية احتياجات الأسواق الآسيوية المتنامية.",
+    "en": "Symrise has opened a new Scent Creative Center in Singapore designed to accelerate fragrance innovation and cater to the expanding Asian market."
+   },
+   "note": {
+    "ar": "هذه الخطوة تبرز انتقال ثقل صناعة وابتكار العطور نحو الشرق لتطوير جزيئات وتركيبات تحاكي الهوية العطرية الآسيوية الحديثة.",
+    "en": "هذه الخطوة تبرز انتقال ثقل صناعة وابتكار العطور نحو الشرق لتطوير جزيئات وتركيبات تحاكي الهوية العطرية الآسيوية الحديثة."
+   }
+  },
+  {
+   "id": "ncaoeuq",
+   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOWHIxZ21Yb2RRM01zZE9WZHV6M2VsQjNXZk9LVGc2TlVNMVBJSU5wdUpFajFDWmFxUVZSbnZKSGYyMS0ta0owb1ZLOEJSVndSR2syRURnVzlIYW5aU0FlWWtXcXFoT2hNalpZc3BESTlUek1yNGFVRHdPZmRkMC1PQzUyYkJEUQ?oc=5",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-16T11:30:04.000Z",
+   "original": "DSM-Firmenich opens New York fine fragrance space",
+   "lang": "en",
+   "category": "industry",
+   "importance": 5,
+   "title": {
+    "ar": "شركة DSM-Firmenich تفتتح مقراً متخصصاً للعطور الراقية في نيويورك",
+    "en": "DSM-Firmenich Opens New York Fine Fragrance Space"
+   },
+   "summary": {
+    "ar": "دشنت شركة دي إس إم-فيرمنيش (DSM-Firmenich) مساحة متطورة مخصصة لقطاع العطور الراقية (Fine Fragrance) في مدينة نيويورك لدعم عطاريها وعملائها.",
+    "en": "DSM-Firmenich has inaugurated a dedicated fine fragrance space in New York to bolster collaboration among perfumers and brand partners."
+   },
+   "note": {
+    "ar": "توفير مساحات إبداعية مخصصة للعطور الفاخرة يمنح صناع العطور بيئة ملهمة لتطوير تركيبات نيش وتجارية ذات بصمة متميزة.",
+    "en": "توفير مساحات إبداعية مخصصة للعطور الفاخرة يمنح صناع العطور بيئة ملهمة لتطوير تركيبات نيش وتجارية ذات بصمة متميزة."
+   }
+  },
+  {
+   "id": "nef9089",
+   "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQNWwzZEozUWNFNUpjQ2lWQ1pnSkF1bGVpbHprbWJJZTUwWGNiVFlWd05IT3FvR0FmSEF0TVY2MXZRVkV2UkRRRUJzNW5hSXVKTVdhdjU4MTI2by00Smc2MXc5bTVnanhNYWRnVVpkZzdVOHdoUmxRODhiTnFLNTFTYjJPWnVreFpsXzd4cmZ1UG5YYlVSVlY5UVQtcDJYNE4zQjM1a1VXaWxib1lyTmd6c05kUHFPQ0VVa2toQTlmdUtkWVE?oc=5",
+   "source": "ChemAnalyst",
+   "publishedAt": "2026-10-16T06:55:14.000Z",
+   "original": "Symrise Expands Globalide Production in India to Boost Sustainable Fragrance Supply",
+   "lang": "en",
+   "category": "ingredients",
+   "importance": 4,
+   "title": {
+    "ar": "شركة Symrise توسع إنتاج مادة Globalide في الهند لدعم استدامة جزيئات العطور",
+    "en": "Symrise Expands Globalide Production in India to Boost Sustainable Fragrance Supply"
+   },
+   "summary": {
+    "ar": "قامت شركة سيمرايز بتوسيع خطوط إنتاج جزيء المسك المستدام غلوباليد (Globalide) في الهند لتعزيز سلاسل إمداد المكونات العطرية الصديقة للبيئة.",
+    "en": "Symrise has expanded its production capacity for Globalide in India, aiming to strengthen the global supply chain for sustainable fragrance ingredients."
+   },
+   "note": {
+    "ar": "جزيئات المسك النظيفة والمستدامة كـ Globalide تشكل حجر الأساس في تثبيت قواعد العطور المعاصرة دون الإضرار بالبيئة.",
+    "en": "جزيئات المسك النظيفة والمستدامة كـ Globalide تشكل حجر الأساس في تثبيت قواعد العطور المعاصرة دون الإضرار بالبيئة."
+   }
+  },
+  {
+   "id": "n98s9ql",
+   "url": "https://nstperfume.com/2026/10/16/lentropiste-festin-new-fragrance/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-16T15:39:42.000Z",
+   "original": "L’Entropiste Festin ~ new fragrance",
+   "lang": "en",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "العطّار برتراند دوشوفور يطلق عطر Festin الجلدي الخشبي عبر دار L’Entropiste",
+    "en": "Perfumer Bertrand Duchaufour Launches Festin Under L’Entropiste"
+   },
+   "summary": {
+    "ar": "كشفت علامة L’Entropiste التابعة للعطار برتراند دوشوفور عن عطرها الجديد الموجه للجنسين Festin، الذي يتميز بتوليفة جلدية خشبية غنية.",
+    "en": "Bertrand Duchaufour's fragrance brand L’Entropiste has launched Festin, a new unisex fragrance featuring a woody leather profile."
+   },
+   "note": {
+    "ar": "دوشوفور معروف بجرأته في معالجة الجلود والأخشاب؛ وتجربة هذا العمل تقدم درساً لصناع العطور في كيفية موازنة النوتات الثقيلة.",
+    "en": "دوشوفور معروف بجرأته في معالجة الجلود والأخشاب؛ وتجربة هذا العمل تقدم درساً لصناع العطور في كيفية موازنة النوتات الثقيلة."
+   }
+  },
+  {
+   "id": "n1vze3yj",
+   "url": "https://nstperfume.com/2026/10/17/the-history-of-perfume-in-italy/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-17T15:08:09.000Z",
+   "original": "The history of perfume in Italy",
+   "lang": "en",
+   "category": "culture",
+   "importance": 4,
+   "title": {
+    "ar": "افتتاح متحف لتاريخ العطور الإيطالية في ميلانو يضم أكثر من 3000 قطعة",
+    "en": "Perfume Passage Foundation Opens Italian Perfume History Museum in Milan"
+   },
+   "summary": {
+    "ar": "افتتحت مؤسسة Perfume Passage متحفاً متخصصاً بتاريخ العطور في إيطاليا على مساحة 1000 متر مربع بميلانو، يضم أكثر من 3000 قطعة تؤرخ للصناعة بين القرن الـ19 والسبعينيات.",
+    "en": "The Perfume Passage Foundation has opened a 1,000-sqm museum in Milan dedicated to Italian perfume history, exhibiting over 3,000 items dating from the 19th century to the 1970s."
+   },
+   "note": {
+    "ar": "توثيق التراث العطري يحمي الذاكرة الشمية ويمنح المصمم المستقل فهماً عميقاً لتطور الزجاجات وتركيبات الكولونيا الكلاسيكية.",
+    "en": "توثيق التراث العطري يحمي الذاكرة الشمية ويمنح المصمم المستقل فهماً عميقاً لتطور الزجاجات وتركيبات الكولونيا الكلاسيكية."
+   }
+  },
+  {
+   "id": "n1lxmnm4",
+   "url": "https://cafleurebon.com/lesser-known-notes-in-perfume-spices/?utm_source=rss&utm_medium=rss&utm_campaign=lesser-known-notes-in-perfume-spices",
+   "source": "CaFleureBon",
+   "publishedAt": "2026-10-17T20:07:31.000Z",
+   "original": "Lesser Known Notes in Perfume: Spices",
+   "lang": "en",
+   "category": "ingredients",
+   "importance": 4,
+   "title": {
+    "ar": "تسليط الضوء على توابل نادرة في تركيب العطور: الحلتيت والكركم والخولنجان",
+    "en": "Exploring Lesser-Known Spice Notes in Perfumery: Turmeric, Asafoetida, and Galangal"
+   },
+   "summary": {
+    "ar": "استعرض تقرير تخصصي استخدام نوتات التوابل غير الشائعة في العطور مثل الحلتيت، الكركم، الشمر، الكراوية، الشبت، الخولنجان، وبزر البسباسة وقشرة جوزة الطيب.",
+    "en": "An exploration into perfumery's lesser-known spice notes highlights raw materials such as asafoetida, turmeric, caraway, fennel, dill, galangal, mace, and allspice."
+   },
+   "note": {
+    "ar": "توظيف هذه التوابل غير المألوفة يمنح العطار المبتكر لمسات ترابية وتابلية فريدة تميز عطره عن الاتجاهات المكررة.",
+    "en": "توظيف هذه التوابل غير المألوفة يمنح العطار المبتكر لمسات ترابية وتابلية فريدة تميز عطره عن الاتجاهات المكررة."
+   }
+  },
+  {
+   "id": "n1knef3j",
+   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNaWdoRmd1UFMxSk1RRDAwMjNCc1JVd3JMODFOdHBlVkE3dFBmXzZVUGsxQ1NmcFE2SVQtZkZrTDVnOEJCOW9LelJ6S0dnNGVDT19JMURBMWMtWHM0a2RfV3QtVUhDckQxWEFhcC1GZjNELS10TllsVmJZck5DQXJfbnBiVXpmTlhldmhsUFdBRncxTmNCaEEzN0dPanlSQm1pSjJNT0pCUUJWWUt3?oc=5",
+   "source": "https://streamlinefeed.co.ke/",
+   "publishedAt": "2026-10-16T07:07:04.000Z",
+   "original": "Health experts dismiss viral claims linking neck perfume to thyroid cancer",
+   "lang": "en",
+   "category": "regulation",
+   "importance": 4,
+   "title": {
+    "ar": "خبراء الصحة ينفون الشائعات حول ارتباط رش العطر على الرقبة بسرطان الغدة الدرقية",
+    "en": "Health Experts Dismiss Viral Claims Linking Neck Perfume to Thyroid Cancer"
+   },
+   "summary": {
+    "ar": "فند خبراء الصحة والمختصون ادعاءات انتشرت مؤخراً تربط بين تطبيق العطور على منطقة الرقبة والإصابة بسرطان الغدة الدرقية، مؤكدين عدم استنادها إلى أي دليل علمي.",
+    "en": "Health authorities have refuted viral online claims alleging a link between spraying perfume on the neck and thyroid cancer, citing a lack of scientific validity."
+   },
+   "note": {
+    "ar": "العطور المعتمدة تخضع لمعايير IFRA الصارمة للسلامة؛ ومن المهم لمحبي العطور ومصنعيها استقاء المعلومات الصحية من المراجع العلمية الموثوقة.",
+    "en": "العطور المعتمدة تخضع لمعايير IFRA الصارمة للسلامة؛ ومن المهم لمحبي العطور ومصنعيها استقاء المعلومات الصحية من المراجع العلمية الموثوقة."
+   }
+  },
+  {
+   "id": "nnws6tn",
+   "url": "https://news.google.com/rss/articles/CBMipAJBVV95cUxQWk1BT2VYRURQSDlaV1VsVDB2LVZlX1I5dTdsTU0yYWNlVmQ1U0l2ZlNkcFkydGdUS1htVF9TSlRINnE5VjFBQWJ1d0UtX2Q3X0Vvcm9waUY5bGx1WWk1ZHV4VFVXZl85V3pTcmNDbGhobkc2Vk1ZV0doY1l4V3NPRmNYaExfM1F0UXp0SFF4R19tSWF2bW0yQ1NoZ3dHZVh6WGZBNFVIc0tjNFprSWxfWGR4a3JDWGFVcXA1bEl1enBDenllUHVUSTQzcl9lemZTSmV1RzVzOC1QVnBjUmdIVk1raVlVbS1pNEZyMXhFRFBteU9IUEt0bFl0MHJwV1h2eU1YSUpPeEt6dXBVNGJzamtCcnp0ZXFxYXpIN0tCaEFOaUxn?oc=5",
+   "source": "BFM",
+   "publishedAt": "2026-10-18T13:25:42.000Z",
+   "original": "\"Oh, ça sent Rituals!\": face à une avalanche de 6.000 nouveaux parfums par an, Rituals lance le sien à 80 euros pour profiter du boom des fragrances de luxe",
+   "lang": "fr",
+   "category": "market",
+   "importance": 3,
+   "title": {
+    "ar": "علامة Rituals تدخل سوق العطور الفاخرة بعطر بسعر 80 يورو",
+    "en": "Rituals Enters Luxury Fragrance Market with €80 Scent Amid Market Boom"
+   },
+   "summary": {
+    "ar": "في ظل طرح نحو 6000 عطر جديد سنوياً، أطلقت علامة Rituals عطراً بقيمة 80 يورو للاستفادة من طفرة الطلب المتزايد على العطور الفاخرة.",
+    "en": "Facing an avalanche of 6,000 new perfumes launched annually, Rituals has introduced an €80 fragrance to capitalize on the luxury perfume boom."
+   },
+   "note": {
+    "ar": "تحول علامات العناية بالجسم نحو إنتاج عطور فاخرة بأسعار متوسطة يعكس التنافس الشرس على اقتناص شريحة عطور النيش الميسورة.",
+    "en": "تحول علامات العناية بالجسم نحو إنتاج عطور فاخرة بأسعار متوسطة يعكس التنافس الشرس على اقتناص شريحة عطور النيش الميسورة."
+   }
+  },
+  {
+   "id": "n1v1d446",
+   "url": "https://www.premiumbeautynews.com/fr/reel-contre-virtuel-les-clubs-de,28358",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-10-16T16:00:53.000Z",
+   "original": "Réel contre virtuel : Les clubs de parfum, nouvelle obsession des marques ?",
+   "lang": "en",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "نوادي العطور الواقعية تجذب عشاق العطور في أمريكا وأوروبا والصين",
+    "en": "Perfume Clubs: Fragrance Enthusiasts Embrace In-Person Olfactory Social Communities"
+   },
+   "summary": {
+    "ar": "تشهد مدن في أمريكا وأوروبا والصين نشأة نوادٍ ولقاءات واقعية لتبادل وتذوق العطور بعيداً عن الشاشات الافتراضية، وهو اتجاه بدأت العلامات التجارية في دعمه وتنظيمه.",
+    "en": "Perfume clubs and real-life scent communities are emerging across the US, Europe, and China, turning fragrance discovery into a tactile, social offline experience."
+   },
+   "note": {
+    "ar": "التواصل المباشر واختبار العطور على الجلد وتداول الانطباعات في لقاءات حية يظل هو الجوهر الحقيقي لفهم النوتات وتطوير الشغف.",
+    "en": "التواصل المباشر واختبار العطور على الجلد وتداول الانطباعات في لقاءات حية يظل هو الجوهر الحقيقي لفهم النوتات وتطوير الشغف."
+   }
+  },
+  {
+   "id": "nat4dfh",
+   "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQSjVzYk55LWZTTzY2WUYyTkJWWFNDV2VaekRRTVUtZkJ5TDBfQS1XbEFvczZzZzJ2OWd6cVBaOFRhMmdaZE9rNy1YTUN0ZTRtSVc3X21LSFYtNXNDRjVJNXNpTGdGTkkxVXFfeEhtamloSGxhbXVJYWExRzExcVRWaGVnYUpVZk1PbjlBTHBBdVhYN0xiY2Z4UEk1RXgxMUEzWU1vNA?oc=5",
+   "source": "Tribuca.net",
+   "publishedAt": "2026-10-17T13:30:02.000Z",
+   "original": "Pays de Grasse : COSMED soutient cinq projets sur la filière parfums et cosmétiques",
+   "lang": "fr",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "اتحاد COSMED يدعم 5 مشاريع لتطوير قطاع العطور والتجميل في غراس",
+    "en": "COSMED Supports Five Projects Across the Fragrance and Cosmetics Sector in Grasse"
+   },
+   "summary": {
+    "ar": "أعلنت منظمة COSMED في منطقة غراس الفرنسية عن دعم خمسة مشاريع استراتيجية تهدف إلى تعزيز وتطوير سلسلة توريد وصناعة العطور ومستحضرات التجميل.",
+    "en": "In the Pays de Grasse region, COSMED has backed five strategic projects focused on strengthening the fragrance and cosmetics supply chain."
+   },
+   "note": {
+    "ar": "استمرار دعم حاضنة غراس يضمن صون الحرفية التقليدية وتطوير آليات زراعة واستخلاص النباتات العطرية بأعلى المعايير.",
+    "en": "استمرار دعم حاضنة غراس يضمن صون الحرفية التقليدية وتطوير آليات زراعة واستخلاص النباتات العطرية بأعلى المعايير."
+   }
+  },
+  {
+   "id": "n1vqfnjp",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQZkR4TzFMVjdvX2dNdHRxYzAyZlFUdzV4NDZCdTVUQVhjVVR4SnphNFpsdUtkZ1hKcG5oNGI0djlua3U2WGNsZFFXN3UwcUQyTmZacDh5WXdKQmZIc293WHRQWHgzQ0xaU0xTb1lERUVYemJPOFVTemxGUEYxeXlxQzJUY2dnV2s1b3p3bjFLeGFyVmJjaU12OW5Yd1JVYTJ2MW1mRTVCWkJFZTA0NzE1RkJtYVRyVmlRVlhreldZWHo?oc=5",
+   "source": "NationalWorld",
+   "publishedAt": "2026-10-17T21:26:10.000Z",
+   "original": "Jo Malone London has launched a whisky and vanilla perfume and I'm obsessed",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "دار Jo Malone London تطلق عطراً جديداً يجمع بين الويسكي والفانيليا",
+    "en": "Jo Malone London Introduces New Whisky and Vanilla Fragrance"
+   },
+   "summary": {
+    "ar": "طرحت دار Jo Malone London عطراً جديداً يرتكز على مزيج نوتات الفانيليا الدافئة ولمسات الويسكي، مستقطباً اهتماماً واسعاً من هواة العطور الخريفية.",
+    "en": "Jo Malone London has unveiled a new fragrance combining notes of warm vanilla and rich whisky, targeting fall scent enthusiasts."
+   },
+   "note": {
+    "ar": "الجمع بين النوتات الروحية (Boozy notes) والبلسميات الحلوة كالفانيليا يعد خياراً مثالياً لأجواء الطقس البارد وتركيبات المساء.",
+    "en": "الجمع بين النوتات الروحية (Boozy notes) والبلسميات الحلوة كالفانيليا يعد خياراً مثالياً لأجواء الطقس البارد وتركيبات المساء."
+   }
+  },
+  {
+   "id": "n1adr5ay",
+   "url": "https://news.google.com/rss/articles/CBMitgJBVV95cUxQaFlqMnVhb1hObzg4dGIwT2FLd0R5TEU5N2w5REdrRFVfS2pJQy1hZjlsYXYwRG9ONVR0eUNoWHZXMXZqRDM2c1V1blFOSmJfMkNpMy16RjVIWVZERGNnVUxucW8xTjNxaHJMUHNsMk10dTlEaGlfUERLc1dScnJ0eFNUT25uZGlMVzlkUGV4UUUycjdnM1Bvb1ktbkVwUmFTSlByd2p5dWNxTXN4ZEtnakhmUF9DMjYzZjZ0RGlDMlBpenlZbEpLcm5KQ3ZFU1J5RWZrN3JrNkEzUk5HWlVkSjVodmNOZDFXZjhGWXRzRko2Q2ZUTTFpUmRHc3BhMlN2SE14QTlHLUNSWkFvS3lZbUlfUW9wMW9EU0FMUmtPRnFqRDd3RzNhYzVNdm5BOUpOMjlSZUZ3?oc=5",
+   "source": "صحيفة الوطن السورية",
+   "publishedAt": "2026-10-17T12:06:25.000Z",
+   "original": "غوتشي وديور في دمشق…. 400 دولار للعطر… فمن يشتري؟",
+   "lang": "ar",
+   "category": "market",
+   "importance": 3,
+   "title": {
+    "ar": "عطور ديور وغوتشي الفاخرة بـ 400 دولار تثير الجدل في أسواق دمشق",
+    "en": "Gucci and Dior Perfumes at $400 Spark Economic Debate in Damascus"
+   },
+   "summary": {
+    "ar": "سلط تقرير اقتصادي الضوء على وجود عطور دور فاخرة مثل Gucci وDior بأسعار تصل إلى 400 دولار في متاجر دمشق، متسائلاً عن القدرة الشرائية والشريحة المستهدفة.",
+    "en": "An economic report highlights the presence of luxury perfumes from brands like Gucci and Dior priced up to $400 in Damascus, analyzing consumer demand."
+   },
+   "note": {
+    "ar": "ارتفاع أسعار العطور التجارية الفاخرة في الأسواق المحلية يفتح آفاقاً واسعة أمام مصممي العطور البديلة والتركيبات المستقلة ذات الجودة والأسعار العادلة.",
+    "en": "ارتفاع أسعار العطور التجارية الفاخرة في الأسواق المحلية يفتح آفاقاً واسعة أمام مصممي العطور البديلة والتركيبات المستقلة ذات الجودة والأسعار العادلة."
+   }
+  },
+  {
+   "id": "n124qllk",
+   "url": "https://nstperfume.com/2026/10/16/astier-de-villatte-tanger-new-fragrance/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-16T15:11:29.000Z",
+   "original": "Astier de Villatte Tanger ~ new fragrance",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "دار Astier de Villatte تطلق عطرها الجديد Tanger المستوحى من مدينة طنجة",
+    "en": "Astier de Villatte Launches New Fragrance 'Tanger'"
+   },
+   "summary": {
+    "ar": "أعلنت الدار الفرنسية Astier de Villatte عن إطلاق عطر جديد يحمل اسم Tanger، في إضافة جديدة لمجموعتها العطرية المستوحاة من المدن والترحال.",
+    "en": "French brand Astier de Villatte has released Tanger, a new fragrance inspired by the atmosphere and heritage of Tangier."
+   },
+   "note": {
+    "ar": "تجسيد المدن العربية والمغاربية في زجاجات عطرية يبرز غنى ثقافة المنطقة ومخزونها الشمي كمصدر إلهام دائم لدور النيش الأوروبية.",
+    "en": "تجسيد المدن العربية والمغاربية في زجاجات عطرية يبرز غنى ثقافة المنطقة ومخزونها الشمي كمصدر إلهام دائم لدور النيش الأوروبية."
    }
   },
   {
@@ -141,94 +435,6 @@
    "note": {
     "ar": "استثمار ضخم يعزز الابتكار المستقبلي وتطوير التركيبات العطرية في مهد صناعة العطور.",
     "en": "A massive investment reinforcing future innovation and fragrance development in the cradle of perfumery."
-   }
-  },
-  {
-   "id": "n1vze3yj",
-   "url": "https://nstperfume.com/2026/10/17/the-history-of-perfume-in-italy/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-17T15:08:09.000Z",
-   "original": "The history of perfume in Italy",
-   "lang": "en",
-   "category": "culture",
-   "importance": 4,
-   "title": {
-    "ar": "افتتاح متحف جديد لتاريخ العطور في ميلانو بإيطاليا",
-    "en": "A New Museum Dedicated to the History of Perfume Opens in Milan, Italy"
-   },
-   "summary": {
-    "ar": "افتتحت مؤسسة Perfume Passage Foundation متحفاً جديداً في ميلانو يمتد على مساحة 1000 متر مربع ويضم أكثر من 3000 قطعة أثرية تعود للقرن التاسع عشر وحتى السبعينيات.",
-    "en": "The Perfume Passage Foundation has opened a 1,000 sqm museum in Milan featuring over 3,000 items dating from the 19th century to the 1970s."
-   },
-   "note": {
-    "ar": "وجهة رائعة لعشاق تاريخ العطور وعشاق جمع الزجاجات العتيقة.",
-    "en": "A wonderful destination for perfume history buffs and vintage bottle collectors."
-   }
-  },
-  {
-   "id": "n98s9ql",
-   "url": "https://nstperfume.com/2026/10/16/lentropiste-festin-new-fragrance/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-16T15:39:42.000Z",
-   "original": "L’Entropiste Festin ~ new fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "دار L’Entropiste تطلق عطر Festin الجلدي الخشبي الجديد",
-    "en": "L’Entropiste Launches New Woody Leather Fragrance Festin"
-   },
-   "summary": {
-    "ar": "أطلقت علامة L’Entropiste للعطار برتراند دوشوفور عطرها الجديد والجنساني Festin الذي يجمع بين النفحات الخشبية والجلدية.",
-    "en": "Perfumer Bertrand Duchaufour's L’Entropiste brand has launched Festin, a new unisex woody leather fragrance."
-   },
-   "note": {
-    "ar": "إضافة مميزة لمحبي العطور الجلدية ذات الطابع الفني المعقد.",
-    "en": "A notable addition for lovers of complex, artistic leather fragrances."
-   }
-  },
-  {
-   "id": "nl1ioaz",
-   "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxPT2ZzRU1Tb3lZT3hvYnRCUHdlWldxeERDYkFJOVVQREpMRWNKVi04TnhsZlg2QzVlTVp6VjE5VDF5Z29ZVVY3STkxR1FVR3lEY2k1TlZNaURzbHUtOHBycndZUURyc1NLeTdXWndGUWd3STVXdEl1amFJR1hQZUFNNW9NclZXZkVscE1nTXBJNHBOa0NZOUdubmhxUVRGNk9JTFM0dUxxRzJuNHllX2RRZmFGVHExSDhWZ0hYcVQyRlVFaWl5OTNlelhxOEFQZEpxckt5S9IB2wFBVV95cUxOUzJneVVMdlA0YjFYMDdSZ3p0SVZZYTdRLThWLUFaVEhiUVFjYkVJZWZXeERKZ2FCdmpFYXN6XzJMUGZKRURUeTZDeGJuTU1RdTZ3b2NvdHo0RklCejVhVno2aWxLa2V1ZFNQUzAtMG9TNXhlUFpuaDQzQTYya0xBMFAxSFpqMkVQWXRVeGZEUjUxVGFWUnp1UTVubUVvY3pGdHQ4WENfU0JFRzdtbXVQanRhZHRvVnExVlhvTFJmcTNaZVk0dUxZclphUnpsTDU0UEtkQmV1NU54XzQ?oc=5",
-   "source": "Indian Chemical News",
-   "publishedAt": "2026-10-16T12:37:59.000Z",
-   "original": "Symrise opens Singapore Scent Creative Center to accelerate fragrance innovation in Asia",
-   "lang": "en",
-   "category": "industry",
-   "importance": 4,
-   "title": {
-    "ar": "شركة Symrise تفتتح مركزاً إبداعياً للروائح في سنغافورة",
-    "en": "Symrise Opens Singapore Scent Creative Center"
-   },
-   "summary": {
-    "ar": "افتتحت شركة Symrise مركزاً جديداً للإبداع العطري في سنغافورة بهدف تسريع وتيرة الابتكار في قطاع العطور في قارة آسيا.",
-    "en": "Symrise has opened a new Scent Creative Center in Singapore to accelerate fragrance innovation across Asia."
-   },
-   "note": {
-    "ar": "يعكس هذا التوسع اهتمام الشركات الكبرى بالأسواق الآسيوية الناشئة في مجال العطور.",
-    "en": "This expansion reflects major companies' focus on emerging Asian fragrance markets."
-   }
-  },
-  {
-   "id": "nef9089",
-   "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQNWwzZEozUWNFNUpjQ2lWQ1pnSkF1bGVpbHprbWJJZTUwWGNiVFlWd05IT3FvR0FmSEF0TVY2MXZRVkV2UkRRRUJzNW5hSXVKTVdhdjU4MTI2by00Smc2MXc5bTVnanhNYWRnVVpkZzdVOHdoUmxRODhiTnFLNTFTYjJPWnVreFpsXzd4cmZ1UG5YYlVSVlY5UVQtcDJYNE4zQjM1a1VXaWxib1lyTmd6c05kUHFPQ0VVa2toQTlmdUtkWVE?oc=5",
-   "source": "ChemAnalyst",
-   "publishedAt": "2026-10-16T06:55:14.000Z",
-   "original": "Symrise Expands Globalide Production in India to Boost Sustainable Fragrance Supply",
-   "lang": "en",
-   "category": "ingredients",
-   "importance": 3,
-   "title": {
-    "ar": "توسيع إنتاج مادة Globalide في الهند لدعم إمدادات العطور المستدامة",
-    "en": "Globalide Production Expanded in India to Support Sustainable Fragrance Supply"
-   },
-   "summary": {
-    "ar": "أعلنت شركة Symrise عن توسيع إنتاج مكون Globalide المسكي في الهند لتعزيز سلاسل الإمداد المستدامة لصناعة العطور.",
-    "en": "Symrise is expanding Globalide production in India to boost sustainable fragrance supply chains."
-   },
-   "note": {
-    "ar": "الاستدامة وتأمين المواد الخام أصبحت أولوية قصوى لمصنعي العطور حول العالم.",
-    "en": "Sustainability and securing raw materials have become top priorities for perfumery worldwide."
    }
   },
   {
@@ -276,28 +482,6 @@
    }
   },
   {
-   "id": "n124qllk",
-   "url": "https://nstperfume.com/2026/10/16/astier-de-villatte-tanger-new-fragrance/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-16T15:11:29.000Z",
-   "original": "Astier de Villatte Tanger ~ new fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "علامة Astier de Villatte تطلق عطر Tanger الجديد",
-    "en": "Astier de Villatte Launches New Fragrance Tanger"
-   },
-   "summary": {
-    "ar": "أطلقت علامة السيراميك والمنتجات الفرنسية Astier de Villatte عطرها الجديد المعنون باسم Tanger.",
-    "en": "French ceramics and lifestyle brand Astier de Villatte has launched a new fragrance named Tanger."
-   },
-   "note": {
-    "ar": "تجسيد جديد للتداخل الجميل بين الفنون الحرفية وصناعة العطور النيش.",
-    "en": "A new embodiment of the beautiful intersection between artisanal crafts and niche perfumery."
-   }
-  },
-  {
    "id": "n1df19q9",
    "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQYjVFS0tqbmZ0a09GdFZEbDNNTHhWdE9veXMwdkNjR1pMamJ5aFMtcWRUWU8tVEU0YVlFUUdJejFtRE84dnpQUENRYU1FRXZRTExnU241aVlnZ3lsTmVZTEgtdnZoSUtMR0I0UEx2WTNyY3VpY05VVkZIOE11OVd4VVh1bmw5bUpWTE5TTGtvT0FxcklldUpqdWJOTzdnaDdtS3N0dmJ4TWFkaXcxeld3SUdscGZmUQ?oc=5",
    "source": "WWD",
@@ -320,28 +504,6 @@
    }
   },
   {
-   "id": "n1knef3j",
-   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNaWdoRmd1UFMxSk1RRDAwMjNCc1JVd3JMODFOdHBlVkE3dFBmXzZVUGsxQ1NmcFE2SVQtZkZrTDVnOEJCOW9LelJ6S0dnNGVDT19JMURBMWMtWHM0a2RfV3QtVUhDckQxWEFhcC1GZjNELS10TllsVmJZck5DQXJfbnBiVXpmTlhldmhsUFdBRncxTmNCaEEzN0dPanlSQm1pSjJNT0pCUUJWWUt3?oc=5",
-   "source": "https://streamlinefeed.co.ke/",
-   "publishedAt": "2026-10-16T07:07:04.000Z",
-   "original": "Health experts dismiss viral claims linking neck perfume to thyroid cancer",
-   "lang": "en",
-   "category": "regulation",
-   "importance": 2,
-   "title": {
-    "ar": "خبراء الصحة ينفون الشائعات حول ارتباط رش العطر على الرقبة بسرطان الغدة الدرقية",
-    "en": "Health Experts Dismiss Viral Claims Linking Neck Perfume to Thyroid Cancer"
-   },
-   "summary": {
-    "ar": "أكد خبراء الصحة بطلان الادعاءات المتداولة على وسائل التواصل الاجتماعي والتي تربط بين وضع العطر على العنق والإصابة بسرطان الغدة الدرقية.",
-    "en": "Health experts have dismissed viral claims circulating on social media linking applying perfume to the neck with thyroid cancer."
-   },
-   "note": {
-    "ar": "معلومة مطمئنة لمحبي التعطر بالطريقة التقليدية على نقاط النبض.",
-    "en": "Reassuring news for fragrance lovers who apply scent to pulse points."
-   }
-  },
-  {
    "id": "n9ex62s",
    "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTFBCRThGdmdmZ3RVdy00X28zck9lWno3Y3FreHBGLXN2ZEREODlIVVRURXJRZzNOTXBPVWQxOC0zN0RsOEhGUWY2dlRKZVBZSjQtRC1UaEtNUDBYNFpLLTlITUpKeC01ZkprclJmY0ZuVEJ5ZWxPTFVMUA?oc=5",
    "source": "South Florida Reporter",
@@ -361,50 +523,6 @@
    "note": {
     "ar": "العطور الشرقية الاقتصادية ذات الأداء العالي تثبت حضورها القوي في الأسواق.",
     "en": "Affordable high-performance oriental fragrances continue to prove their strong market presence."
-   }
-  },
-  {
-   "id": "ncaoeuq",
-   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOWHIxZ21Yb2RRM01zZE9WZHV6M2VsQjNXZk9LVGc2TlVNMVBJSU5wdUpFajFDWmFxUVZSbnZKSGYyMS0ta0owb1ZLOEJSVndSR2syRURnVzlIYW5aU0FlWWtXcXFoT2hNalpZc3BESTlUek1yNGFVRHdPZmRkMC1PQzUyYkJEUQ?oc=5",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-10-16T11:30:04.000Z",
-   "original": "DSM-Firmenich opens New York fine fragrance space",
-   "lang": "en",
-   "category": "industry",
-   "importance": 5,
-   "title": {
-    "ar": "شركة dsm-firmenich تفتتح مساحة جديدة مخصصة للعطور الراقية في نيويورك",
-    "en": "DSM-Firmenich Opens New York Fine Fragrance Space"
-   },
-   "summary": {
-    "ar": "افتتحت شركة dsm-firmenich مساحة جديدة كلياً مخصصة للعطور الراقية في مدينة نيويورك، لتعزيز الابتكار والتعاون في صناعة العطور.",
-    "en": "DSM-Firmenich has opened a new fine fragrance space in New York to boost innovation and collaboration in the perfumery industry."
-   },
-   "note": {
-    "ar": "هذه الخطوة تؤكد استمرار الاستثمار الضخم من كبرى شركات الابتكار العطري لتطوير تجارب المستقبل.",
-    "en": "This step confirms the continued massive investment by major fragrance innovators to develop future experiences."
-   }
-  },
-  {
-   "id": "n1lxmnm4",
-   "url": "https://cafleurebon.com/lesser-known-notes-in-perfume-spices/?utm_source=rss&utm_medium=rss&utm_campaign=lesser-known-notes-in-perfume-spices",
-   "source": "CaFleureBon",
-   "publishedAt": "2026-10-17T20:07:31.000Z",
-   "original": "Lesser Known Notes in Perfume: Spices",
-   "lang": "en",
-   "category": "ingredients",
-   "importance": 4,
-   "title": {
-    "ar": "استكشاف التوابل الأقل شهرة في صناعة العطور",
-    "en": "Lesser Known Spices in Perfumery Explored"
-   },
-   "summary": {
-    "ar": "سلطت تقارير عطرية الضوء على استخدام التوابل غير التقليدية في صناعة العطور مثل الكركم، الكراوية، الشمر، والخولنجان لإضفاء طابع فريد.",
-    "en": "Fragrance reports highlighted the use of unconventional spices in perfumery such as turmeric, caraway, fennel, and galangal for unique profiles."
-   },
-   "note": {
-    "ar": "لمن يصمم عطره الخاص، دمج هذه المكونات غير العادية يمكن أن يمنح العطر توقيعاً عطرياً مميزاً وغير متوقع.",
-    "en": "For custom perfumers, incorporating these unusual notes can grant a distinctive and unexpected olfactory signature."
    }
   },
   {
@@ -471,28 +589,6 @@
    "note": {
     "ar": "السوق اليوم يعطي أولوية مطلقة للتميز والإبداع المستقل بعيداً عن الخطوط التجاريّة المعتادة.",
     "en": "Today's market prioritizes absolute distinction and independent creativity over mainstream commercial lines."
-   }
-  },
-  {
-   "id": "n1adr5ay",
-   "url": "https://news.google.com/rss/articles/CBMitgJBVV95cUxQaFlqMnVhb1hObzg4dGIwT2FLd0R5TEU5N2w5REdrRFVfS2pJQy1hZjlsYXYwRG9ONVR0eUNoWHZXMXZqRDM2c1V1blFOSmJfMkNpMy16RjVIWVZERGNnVUxucW8xTjNxaHJMUHNsMk10dTlEaGlfUERLc1dScnJ0eFNUT25uZGlMVzlkUGV4UUUycjdnM1Bvb1ktbkVwUmFTSlByd2p5dWNxTXN4ZEtnakhmUF9DMjYzZjZ0RGlDMlBpenlZbEpLcm5KQ3ZFU1J5RWZrN3JrNkEzUk5HWlVkSjVodmNOZDFXZjhGWXRzRko2Q2ZUTTFpUmRHc3BhMlN2SE14QTlHLUNSWkFvS3lZbUlfUW9wMW9EU0FMUmtPRnFqRDd3RzNhYzVNdm5BOUpOMjlSZUZ3?oc=5",
-   "source": "صحيفة الوطن السورية",
-   "publishedAt": "2026-10-17T12:06:25.000Z",
-   "original": "غوتشي وديور في دمشق…. 400 دولار للعطر… فمن يشتري؟",
-   "lang": "ar",
-   "category": "market",
-   "importance": 3,
-   "title": {
-    "ar": "تحديات سوق العطور الفاخرة وأسعارها في الأسواق العربية المحلية",
-    "en": "Luxury Fragrance Market Dynamics and Pricing Challenges in Local Arab Markets"
-   },
-   "summary": {
-    "ar": "تناقش تقارير محلية واقع توافر العطور العالمية الشهيرة مثل ديور وغوتشي في الأسواق المحلية والتحديات الاقتصادية المحيطة بحركتها الشرائية.",
-    "en": "Local reports examine the market presence of renowned global brands like Dior and Gucci, alongside the economic challenges surrounding their retail landscape."
-   },
-   "note": {
-    "ar": "يلقي الضوء على تباين الأسواق وقدرة المستهلك على اقتناء العطور الفاخرة في ظل المتغيرات الاقتصادية.",
-    "en": "Sheds light on market variances and consumer purchasing power for luxury perfumes amid economic shifts."
    }
   },
   {
@@ -669,94 +765,6 @@
    "note": {
     "ar": "عودة التبغ تعكس تشبع السوق من الروائح السكرية الخفيفة؛ التبغ ورقة رابحة في التراكيب الخريفية والشتوية، خصوصاً حين يدمج مع الفانيليا أو الراتنجات الخشبية.",
     "en": "عودة التبغ تعكس تشبع السوق من الروائح السكرية الخفيفة؛ التبغ ورقة رابحة في التراكيب الخريفية والشتوية، خصوصاً حين يدمج مع الفانيليا أو الراتنجات الخشبية."
-   }
-  },
-  {
-   "id": "n13zpen6",
-   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxQWTZuVXAwRVZ0Q2hwZ0NSRksydllkc2pUTUtNYmdWeThOWl8zNFVEQW5MS1dxNFVYR3pvZkdneVlIcERRcHVjbXlPeGVPcHVVaFY5MEx6bmFLb3pQZW9Qa2lVSGdzdnRKMjJiT3hBTFdxZ2U0WnhNbU50TVd1S3hDZVFaWlBiQnJ0Z1pMXzhwME1YRzVsVHZiTld0WGZpVXBiZXZyd2lHT1RqZndWcktZOW1SWGZlYUpN?oc=5",
-   "source": "Orange Actualités",
-   "publishedAt": "2026-10-17T16:28:28.000Z",
-   "original": "Le box office des parfums: Le parfum d'Azzedine Alaïa - 31/05",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 3,
-   "title": {
-    "ar": "اتحاد COSMED يدعم 5 مشاريع مبتكرة لتطوير قطاع العطور ومستحضرات التجميل في غراس",
-    "en": "COSMED Backs Five Fragrance and Cosmetics Projects in Pays de Grasse"
-   },
-   "summary": {
-    "ar": "قدمت جمعية COSMED الدعم لخمسة مشاريع ريادية في منطقة غراس تهدف إلى تطوير سلاسل التوريد والابتكار التقني في قطاع العطور ومستحضرات التجميل.",
-    "en": "Industry association COSMED announced support for five innovative initiatives in the Pays de Grasse region to boost fragrance and cosmetic development."
-   },
-   "note": {
-    "ar": "الدعم المؤسسي للشركات الصغيرة والمتوسطة في مهد العطور يضمن حماية الحرفية التراثية وتحديثها بأساليب إنتاج مستدامة تلبي المعايير الأوروبية الحديثة.",
-    "en": "الدعم المؤسسي للشركات الصغيرة والمتوسطة في مهد العطور يضمن حماية الحرفية التراثية وتحديثها بأساليب إنتاج مستدامة تلبي المعايير الأوروبية الحديثة."
-   }
-  },
-  {
-   "id": "ntrcaqg",
-   "url": "https://nstperfume.com/2026/10/17/lazy-3-day-weekend-poll-fall-reading-list-edition-8/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-17T15:46:12.000Z",
-   "original": "Lazy 3-day weekend poll ~ fall reading list, edition 8",
-   "lang": "en",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "تعاون فني بين Byredo وIittala يدمج الضوء والرائحة في مجسمات زجاجية",
-    "en": "Byredo and Iittala Combine Light and Scent in Sculptural Objects"
-   },
-   "summary": {
-    "ar": "تعاونت علامة Byredo المتخصصة في عطور النيش مع دار التصميم الفنلندية Iittala لابتكار قطع فنية زجاجية تجمع بين تصميم الإضاءة وتجربة نشر العطور المنزلية.",
-    "en": "Niche fragrance brand Byredo collaborated with Finnish design house Iittala to craft sculptural glass objects combining lighting with ambient scent."
-   },
-   "note": {
-    "ar": "تداخل العطور مع الديكور الفاخر وتصميم الزجاج يعزز تجربة العطر كعنصر بصري وحسي متكامل في المساحات المعيشية، وهو قطاع يشهد نمواً ملحوظاً.",
-    "en": "تداخل العطور مع الديكور الفاخر وتصميم الزجاج يعزز تجربة العطر كعنصر بصري وحسي متكامل في المساحات المعيشية، وهو قطاع يشهد نمواً ملحوظاً."
-   }
-  },
-  {
-   "id": "nat4dfh",
-   "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQSjVzYk55LWZTTzY2WUYyTkJWWFNDV2VaekRRTVUtZkJ5TDBfQS1XbEFvczZzZzJ2OWd6cVBaOFRhMmdaZE9rNy1YTUN0ZTRtSVc3X21LSFYtNXNDRjVJNXNpTGdGTkkxVXFfeEhtamloSGxhbXVJYWExRzExcVRWaGVnYUpVZk1PbjlBTHBBdVhYN0xiY2Z4UEk1RXgxMUEzWU1vNA?oc=5",
-   "source": "Tribuca.net",
-   "publishedAt": "2026-10-17T13:30:02.000Z",
-   "original": "Pays de Grasse : COSMED soutient cinq projets sur la filière parfums et cosmétiques",
-   "lang": "fr",
-   "category": "market",
-   "importance": 2,
-   "title": {
-    "ar": "تقرير يرصد وصول أسعار عطور ديور وغوتشي الفاخرة إلى 400 دولار في دمشق",
-    "en": "Report Highlights Luxury Perfume Prices Reaching $400 in Damascus"
-   },
-   "summary": {
-    "ar": "تناولت صحيفة الوطن السورية واقع سوق العطور المستوردة الفاخرة في دمشق، مشيرة إلى وصول أسعار زجاجات علامات كبرى مثل ديور وغوتشي إلى نحو 400 دولار وسط تباين في حركة الشراء.",
-    "en": "Syrian newspaper Al-Watan reported on the luxury fragrance market in Damascus, highlighting that imported bottles from Dior and Gucci reach up to $400 amid shifting consumer purchasing power."
-   },
-   "note": {
-    "ar": "ارتفاع أسعار العطور العالمية في الأسواق المحلية يفتح باباً كبيراً لمصممي العطور المحليين لتقديم بدائل راقية بجودة عالية وأسعار تنافسية تلائم تطلعات الجمهور.",
-    "en": "ارتفاع أسعار العطور العالمية في الأسواق المحلية يفتح باباً كبيراً لمصممي العطور المحليين لتقديم بدائل راقية بجودة عالية وأسعار تنافسية تلائم تطلعات الجمهور."
-   }
-  },
-  {
-   "id": "n1o5viui",
-   "url": "https://www.premiumbeautynews.com/fr/mane-investit-45-millions-d-euros,28356",
-   "source": "Premium Beauty News",
-   "publishedAt": "2026-10-16T05:47:41.000Z",
-   "original": "Mane investit 45 millions d'euros dans un nouveau centre créatif en pays grassois",
-   "lang": "en",
-   "category": "industry",
-   "importance": 5,
-   "title": {
-    "ar": "شركة Mane تستثمر 45 مليون يورو لإنشاء مركز جديد لتصميم العطور في فرنسا",
-    "en": "Mane Invests EUR 45 Million in New Fragrance Design Centre in France"
-   },
-   "summary": {
-    "ar": "وضعت شركة العطور والنكهات الفرنسية Mane حجر الأساس لمركزها الجديد لتصميم العطور (Fragrance Design Centre) في بلدة بار سور لوب بمنطقة غراس، على مساحة 8900 متر مربع.",
-    "en": "French flavor and fragrance manufacturer Mane has laid the first stone for its future Fragrance Design Centre in Bar-sur-Loup, Grasse, spanning 8,900 square meters."
-   },
-   "note": {
-    "ar": "استثمار ضخم يعزز مستقبل الابتكار العطري في عاصمة العطور التاريخية غراس، مما ينعكس إيجاباً على جودة وتطور المواد والتركيبات المستقبلية.",
-    "en": "A massive investment reinforcing the future of scent innovation in the historical capital of perfumery, Grasse."
    }
   }
  ]
