@@ -1,17 +1,148 @@
 {
  "version": 1,
- "updatedAt": "1970-01-01T00:00:00.000Z",
+ "updatedAt": "2026-10-18T11:52:11.697Z",
  "reliance": {
-  "score": 0,
-  "covered": 0,
-  "total": 0,
-  "fromMemory": 0,
-  "fromLibrary": 0,
-  "byLang": {}
+  "score": 44,
+  "covered": 36,
+  "total": 82,
+  "fromMemory": 36,
+  "fromLibrary": 2,
+  "byLang": {
+   "ar": {
+    "covered": 36,
+    "total": 67
+   },
+   "en": {
+    "covered": 0,
+    "total": 15
+   }
+  }
  },
- "studiedTotal": 0,
- "selfTaughtTotal": 0,
- "history": [],
- "lastStudied": [],
- "pending": []
+ "studiedTotal": 8,
+ "selfTaughtTotal": 24,
+ "history": [
+  {
+   "at": "2026-10-18T11:52:11.697Z",
+   "score": 44,
+   "studied": 32,
+   "mode": "ai"
+  }
+ ],
+ "lastStudied": [
+  {
+   "q": "ايه فايدة محاكي التعتيق في الموقع؟",
+   "lang": "ar",
+   "at": "2026-10-18T11:52:11.697Z",
+   "variants": 4
+  },
+  {
+   "q": "ازاي اختار عطر مناسب للشتاء؟",
+   "lang": "ar",
+   "at": "2026-10-18T11:52:11.697Z",
+   "variants": 4
+  },
+  {
+   "q": "ازاي اختار عطر مناسب للصيف؟",
+   "lang": "ar",
+   "at": "2026-10-18T11:52:11.697Z",
+   "variants": 4
+  },
+  {
+   "q": "فين احط العطر على الجسم؟",
+   "lang": "ar",
+   "at": "2026-10-18T11:52:11.697Z",
+   "variants": 4
+  },
+  {
+   "q": "ازاي اخلي العطر يثبت اطول؟",
+   "lang": "ar",
+   "at": "2026-10-18T11:52:11.697Z",
+   "variants": 3
+  },
+  {
+   "q": "ازاي اعمل عطر في البيت خطوة بخطوة؟",
+   "lang": "ar",
+   "at": "2026-10-18T11:52:11.697Z",
+   "variants": 4
+  },
+  {
+   "q": "ايه هو العنبر في العطور؟",
+   "lang": "ar",
+   "at": "2026-10-18T11:52:11.697Z",
+   "variants": 4
+  },
+  {
+   "q": "ايه هو العود وليه غالي؟",
+   "lang": "ar",
+   "at": "2026-10-18T11:52:11.697Z",
+   "variants": 3
+  }
+ ],
+ "pending": [
+  {
+   "q": "ايه الفرق بين او دو بارفان واو دو تواليت؟",
+   "lang": "ar",
+   "topic": "basics"
+  },
+  {
+   "q": "يعني ايه تركيز العطر وايه انواعه؟",
+   "lang": "ar",
+   "topic": "basics"
+  },
+  {
+   "q": "ايه هي مكونات العطر الاساسية؟",
+   "lang": "ar",
+   "topic": "basics"
+  },
+  {
+   "q": "يعني ايه النوتات العليا والقلب والقاعدة؟",
+   "lang": "ar",
+   "topic": "pyramid"
+  },
+  {
+   "q": "ليه ريحة العطر بتتغير بعد ساعة من رشه؟",
+   "lang": "ar",
+   "topic": "pyramid"
+  },
+  {
+   "q": "يعني ايه عطر فوجير؟",
+   "lang": "ar",
+   "topic": "families"
+  },
+  {
+   "q": "ايه هو عطر الشيبر؟",
+   "lang": "ar",
+   "topic": "families"
+  },
+  {
+   "q": "ايه هو الامبروكسان؟",
+   "lang": "ar",
+   "topic": "materials"
+  },
+  {
+   "q": "ايه هي الزيوت العطرية الطبيعية؟",
+   "lang": "ar",
+   "topic": "materials"
+  },
+  {
+   "q": "ايه هو الفانيليا في العطور وبيدي ايه؟",
+   "lang": "ar",
+   "topic": "materials"
+  },
+  {
+   "q": "ايه نسبة الزيت للكحول في العطر؟",
+   "lang": "ar",
+   "topic": "making"
+  },
+  {
+   "q": "ليه العطر بيعكر بعد ما اخلطه؟",
+   "lang": "ar",
+   "topic": "making"
+  }
+ ],
+ "importer": {
+  "localShare": 100,
+  "aiReadings": 0,
+  "localReadings": 0
+ }
 }

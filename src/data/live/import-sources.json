@@ -1,7 +1,442 @@
 {
  "version": 1,
- "updatedAt": "1970-01-01T00:00:00.000Z",
- "sources": [],
- "queries": [],
- "runs": []
+ "updatedAt": "2026-10-18T11:47:06.809Z",
+ "sources": [
+  {
+   "id": "arabianoud-com",
+   "host": "arabianoud.com",
+   "name": "Arabian Oud Luxury Perfumes Fragrances",
+   "base": "https://us.arabianoud.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-18T11:47:06.809Z",
+   "sampleOk": 2,
+   "sampleTotal": 7,
+   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (2/7)"
+  },
+  {
+   "id": "ajmal-com",
+   "host": "ajmal.com",
+   "name": "Ajmal",
+   "base": "https://ajmal.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-18T11:47:06.809Z",
+   "reason": "لا توجد خريطة منتجات (sitemap)"
+  },
+  {
+   "id": "rasasi-com",
+   "host": "rasasi.com",
+   "name": "Rasasi",
+   "base": "https://rasasi.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-18T11:47:06.809Z",
+   "sampleOk": 0,
+   "sampleTotal": 6,
+   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
+  },
+  {
+   "id": "swissarabian-com",
+   "host": "swissarabian.com",
+   "name": "Swiss Arabian Global",
+   "base": "https://swissarabian.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-18T11:47:06.809Z",
+   "sampleOk": 0,
+   "sampleTotal": 1,
+   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)"
+  },
+  {
+   "id": "maisonalhambra-com",
+   "host": "maisonalhambra.com",
+   "name": "MAISON ALHAMBRA",
+   "base": "https://maisonalhambra.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Maison Alhambra",
+   "foundAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-18T11:47:06.809Z",
+   "reason": "لا توجد خريطة منتجات (sitemap)"
+  },
+  {
+   "id": "maisonalhambraperfumes-com",
+   "host": "maisonalhambraperfumes.com",
+   "name": "maisonalhambraperfumes.com",
+   "base": "https://maisonalhambraperfumes.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Maison Alhambra",
+   "foundAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-18T11:47:06.809Z",
+   "reason": "الموقع لا يفتح"
+  },
+  {
+   "id": "maisonalhambraparfums-com",
+   "host": "maisonalhambraparfums.com",
+   "name": "maisonalhambraparfums.com",
+   "base": "https://maisonalhambraparfums.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Maison Alhambra",
+   "foundAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-18T11:47:06.809Z",
+   "reason": "الموقع لا يفتح"
+  },
+  {
+   "id": "lattafa-com",
+   "host": "lattafa.com",
+   "name": "Best Lattafa Perfumes for Men &amp; Women",
+   "base": "https://lattafa.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Lattafa",
+   "foundAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-18T11:47:06.809Z",
+   "sampleOk": 0,
+   "sampleTotal": 6,
+   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
+  },
+  {
+   "id": "lattafaperfumes-com",
+   "host": "lattafaperfumes.com",
+   "name": "lattafaperfumes.com",
+   "base": "https://lattafaperfumes.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Lattafa",
+   "foundAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 0
+  },
+  {
+   "id": "lattafaparfums-com",
+   "host": "lattafaparfums.com",
+   "name": "lattafaparfums.com",
+   "base": "https://lattafaparfums.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Lattafa",
+   "foundAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 0
+  }
+ ],
+ "queries": [
+  {
+   "q": "أفضل متاجر العطور الأصلية أونلاين في مصر مع الأسعار",
+   "lang": "ar",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "أفضل متاجر العطور الأصلية أونلاين في السعودية مع الأسعار",
+   "lang": "ar",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "أفضل متاجر العطور الأصلية أونلاين في الإمارات مع الأسعار",
+   "lang": "ar",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "أفضل متاجر العطور الأصلية أونلاين في الكويت مع الأسعار",
+   "lang": "ar",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "أفضل متاجر العطور الأصلية أونلاين في قطر مع الأسعار",
+   "lang": "ar",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "أفضل متاجر العطور الأصلية أونلاين في البحرين مع الأسعار",
+   "lang": "ar",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "أفضل متاجر العطور الأصلية أونلاين في عمان مع الأسعار",
+   "lang": "ar",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "أفضل متاجر العطور الأصلية أونلاين في الأردن مع الأسعار",
+   "lang": "ar",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "online perfume store Egypt buy original Arabic and niche perfumes",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "online perfume store Saudi Arabia buy original Arabic and niche perfumes",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "online perfume store UAE buy original Arabic and niche perfumes",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "online perfume store Kuwait buy original Arabic and niche perfumes",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "online perfume store Malaysia buy original Arabic and niche perfumes",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "online perfume store UK buy original Arabic and niche perfumes",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "online perfume store USA buy original Arabic and niche perfumes",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Maison Alhambra perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Lattafa perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Ard Al Zaafaran perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Zimaya perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Grandeur perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Bujairami perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Armaf perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Rasasi perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Al Wataniah perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Lattafa Pride perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Volare perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Shama perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Afnan perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Osma perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Paris Corner perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Velixir perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Rue Broca perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Khadlaj perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "French Avenue perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Rayhaan perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Maison Asrar perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Gulf Orchid perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Asdaaf perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "TADangel perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Kenz de Rasasi perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  }
+ ],
+ "runs": [
+  {
+   "at": "2026-10-18T11:47:06.809Z",
+   "mode": "self",
+   "found": 10,
+   "vetted": 8,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "Web search: AI quota used up — the scout continues by himself",
+    "10 new stores found this run (own methods, no AI)",
+    "✗ arabianoud.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (2/7)",
+    "  ↳ ajmal.com: sitemap.xml→404, sitemap_index.xml→404, wp-sitemap.xml→404, …, sitemap.xml→404, browsed 0 category pages → 0 product-like links",
+    "✗ ajmal.com: لا توجد خريطة منتجات (sitemap)",
+    "✗ rasasi.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "✗ swissarabian.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
+    "  ↳ maisonalhambra.com: sitemap.xml→404, sitemap_index.xml→200(not xml), wp-sitemap.xml→200(not xml), …, sitemap.xml→200(not xml), browsed 0 category pages → 0 product-like links",
+    "✗ maisonalhambra.com: لا توجد خريطة منتجات (sitemap)",
+    "✗ maisonalhambraperfumes.com: الموقع لا يفتح",
+    "✗ maisonalhambraparfums.com: الموقع لا يفتح",
+    "✗ lattafa.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
+   ]
+  }
+ ]
 }
