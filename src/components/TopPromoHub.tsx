@@ -1,32 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, ShoppingBag, Sparkles } from 'lucide-react';
-import { makeT } from '../لغات/localize';
+import { makeBannerT } from '../لغات/bannerL10n';
+import { storeFamilyLabel, storeGenderLabel, storeLocalized, storeNumber, storeText } from '../لغات/storeL10n';
 import { isRTL } from '../لغات/localizedContent';
 import type { SupportedLanguage } from '../types/i18n';
 import campaignLifestyle from '../assets/images/store_campaign_lifestyle.jpg';
 import productsData from '../data/products.json';
 import { storeImageSrc } from '../utils/liveStore';
 
-const S = {
-  promo_title: { ar: 'عالم عطور شام', en: 'The Sham Fragrance Edit' },
-  campaign_kicker: { ar: 'حكاية عطر · شام', en: 'A SCENT STORY · SHAM' },
-  campaign_headline: { ar: 'عطرك… توقيع لا يُنسى', en: 'A scent that stays with you' },
-  campaign_sub: { ar: 'اختار عطراً يعبّر عن حضورك، واكتشف تشكيلتنا المختارة.', en: 'Find a fragrance that feels like you. Explore our curated selection.' },
-  featured_label: { ar: 'العطر المختار', en: 'THE SCENT EDIT' },
-  featured_note: { ar: 'اختيار شام', en: 'SHAM SELECTION' },
-  product_copy: { ar: 'تفاصيل العطر وتشكيلة شام الكاملة في انتظارك داخل المتجر.', en: 'Discover the fragrance details and explore the full Sham collection.' },
-  price_label: { ar: 'السعر', en: 'PRICE' },
-  view_store: { ar: 'تسوّق العطر', en: 'Shop this scent' },
-  compact_eyebrow: { ar: 'اختيار شام لهذا اليوم', en: 'TODAY’S SHAM PICK' },
-  compact_cta: { ar: 'تسوّق الآن', en: 'Shop now' },
-  previous: { ar: 'العطر السابق', en: 'Previous scent' },
-  next: { ar: 'العطر التالي', en: 'Next scent' },
-  show_product: { ar: 'اعرض العطر', en: 'Show this scent' },
-  collapse: { ar: 'اضغط زجاجة العطر لطيّ الإعلان', en: 'Tap the perfume bottle to collapse' },
-  expand: { ar: 'افتح عرض العطور', en: 'Expand fragrance showcase' },
-  no_image: { ar: 'عطر شام', en: 'Sham perfume' },
-  curated: { ar: 'مختار بعناية من متجر شام', en: 'Selected from the Sham store' },
-} satisfies Record<string, { ar: string; en: string }>;
 
 interface TopPromoHubProps {
   currentLang?: SupportedLanguage;
@@ -63,7 +44,7 @@ function PerfumeBottleToggle({ expanded, label, onClick }: { expanded: boolean; 
 
 export const TopPromoHub: React.FC<TopPromoHubProps> = ({ currentLang = 'ar', onViewStore }) => {
   const rtl = isRTL(currentLang);
-  const L = makeT(currentLang, S);
+  const L = makeBannerT(currentLang);
   const [expanded, setExpanded] = useState(true);
   const [slideIndex, setSlideIndex] = useState(0);
   const [failedProductImage, setFailedProductImage] = useState<number | string | null>(null);
@@ -74,20 +55,28 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({ currentLang = 'ar', on
     .sort((a, b) => (b.ourPrice || 0) - (a.ourPrice || 0))
     .slice(0, 5);
   const activeProduct = topDeals[slideIndex] || topDeals[0];
-  const productName = activeProduct
-    ? (currentLang === 'ar' ? activeProduct.nameAr || activeProduct.nameEn : activeProduct.nameEn || activeProduct.nameAr)
-    : L('no_image');
+  const productName = storeLocalized(
+    activeProduct ? { ar: activeProduct.nameAr, en: activeProduct.nameEn } : undefined,
+    currentLang,
+  ) || L('no_image');
   const brand = activeProduct?.brand && activeProduct.brand !== 'Unknown' ? activeProduct.brand : L('curated');
   const formattedPrice = activeProduct?.ourPrice
-    ? `${Number(activeProduct.ourPrice).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US')} ${currentLang === 'ar' ? 'ج.م' : 'EGP'}`
+    ? `${storeNumber(Number(activeProduct.ourPrice), currentLang)} ${storeText(currentLang, 'sf_currency')}`
     : '—';
-  const productCategory = /رجالي/.test(activeProduct?.category || '')
-    ? (currentLang === 'ar' ? 'رجالي' : 'For him')
-    : /نسائي/.test(activeProduct?.category || '')
-      ? (currentLang === 'ar' ? 'نسائي' : 'For her')
-      : /مختلط/.test(activeProduct?.category || '')
-        ? (currentLang === 'ar' ? 'للجنسين' : 'Unisex')
-        : activeProduct?.category;
+  const rawCategory = activeProduct?.category || '';
+  const productCategory = /رجالي/.test(rawCategory)
+    ? storeGenderLabel('men', currentLang)
+    : /نسائي/.test(rawCategory)
+      ? storeGenderLabel('women', currentLang)
+      : /مختلط/.test(rawCategory)
+        ? storeGenderLabel('unisex', currentLang)
+        : /عود/.test(rawCategory)
+          ? storeFamilyLabel('oud', currentLang)
+          : /مجموعات/.test(rawCategory)
+            ? L('cat_sets')
+            : /عطور/.test(rawCategory)
+              ? L('cat_perfumes')
+              : '';
   const PreviousIcon = rtl ? ChevronRight : ChevronLeft;
   const NextIcon = rtl ? ChevronLeft : ChevronRight;
   const StoreArrow = rtl ? ArrowLeft : ArrowRight;
@@ -125,7 +114,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({ currentLang = 'ar', on
               <div className="relative min-h-[205px] overflow-hidden sm:min-h-[250px] lg:min-h-[375px]">
                 <img
                   src={campaignLifestyle}
-                  alt={currentLang === 'ar' ? 'امرأة تضع العطر على معصمها' : 'A woman applying fragrance to her wrist'}
+                  alt={L('campaign_alt')}
                   className="absolute inset-0 h-full w-full object-cover object-[31%_center] transition-transform duration-700 hover:scale-[1.025]"
                   loading="eager"
                 />

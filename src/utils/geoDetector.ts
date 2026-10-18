@@ -1,4 +1,4 @@
-import { SupportedLanguage } from '../types/i18n';
+import { SupportedLanguage, SUPPORTED_LANGUAGES } from '../types/i18n';
 import { WORLD_COUNTRIES, WorldCountryData, findCountryByCode } from '../data/worldCountries';
 
 export interface GeoDetectionResult {
@@ -932,4 +932,98 @@ export async function forceRedetectLocation(): Promise<GeoDetectionResult> {
     // ignore
   }
   return detectUserLocationAsync();
+}
+
+/* ------------------------------------------------------------------ */
+/*  Entry-country language                                             */
+/*                                                                     */
+/*  The platform opens in the language of the country it was entered  */
+/*  from, unless the visitor has picked a language themselves (the   */
+/*  USER_LANGUAGE_MANUAL_OVERRIDE_KEY flag). Unlike                    */
+/*  detectUserCountryAndLanguage() — which prefers a country stored   */
+/*  on an earlier visit and feeds the climate environment — these     */
+/*  helpers always read the CURRENT entry signals, so travelling to   */
+/*  a new country re-opens the platform in that country's language.   */
+/* ------------------------------------------------------------------ */
+
+const SUPPORTED_LANGUAGE_CODES = new Set<string>(SUPPORTED_LANGUAGES.map((l) => l.code));
+
+/** Browser tags that name a supported language under a different code. */
+const LANGUAGE_TAG_ALIASES: Record<string, SupportedLanguage> = {
+  nb: 'no',
+  nn: 'no',
+  fil: 'tl',
+  iw: 'he',
+  in: 'id',
+};
+
+/** First supported language named by a list of BCP-47 tags (e.g. navigator.languages). */
+export function languageFromLanguageTags(tags: readonly (string | null | undefined)[]): SupportedLanguage | null {
+  for (const tag of tags) {
+    if (!tag) continue;
+    const primary = tag.split('-')[0].toLowerCase();
+    const code = LANGUAGE_TAG_ALIASES[primary] || primary;
+    if (SUPPORTED_LANGUAGE_CODES.has(code)) {
+      return code as SupportedLanguage;
+    }
+  }
+  return null;
+}
+
+/** The platform language of a country, from the world-countries catalogue. */
+export function languageForCountryCode(code: string | null | undefined): SupportedLanguage | null {
+  if (!code) return null;
+  const match = findCountryByCode(code);
+  return match ? match.primaryLanguage : null;
+}
+
+/**
+ * Language of the country the site is being entered from right now:
+ * timezone country, then the region in the browser locale, then the
+ * browser's own language list. Null when nothing can be detected.
+ */
+export function detectEntryLanguage(): SupportedLanguage | null {
+  try {
+    const byTimezone = languageForCountryCode(getCountryFromTimezone());
+    if (byTimezone) return byTimezone;
+    const byRegion = languageForCountryCode(getCountryFromBrowserLocale());
+    if (byRegion) return byRegion;
+    if (typeof navigator !== 'undefined') {
+      return languageFromLanguageTags(navigator.languages || [navigator.language]);
+    }
+  } catch (e) {
+    // ignore — detection is best effort
+  }
+  return null;
+}
+
+export interface EntryLanguageHit {
+  language: SupportedLanguage;
+  countryCode: string;
+  source: 'ip';
+}
+
+/**
+ * Refines the entry language with an IP-based country lookup (1200ms budget).
+ * Returns null on any failure — it never falls back to a stored country,
+ * so a failed lookup can never drag the language back to an old visit.
+ */
+export async function detectEntryLanguageAsync(): Promise<EntryLanguageHit | null> {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 1200);
+    const res = await fetch('https://api.country.is/', { signal: controller.signal });
+    clearTimeout(timeoutId);
+    if (res.ok) {
+      const data = await res.json();
+      const countryCode = data && typeof data.country === 'string' ? data.country.toUpperCase() : null;
+      const language = languageForCountryCode(countryCode);
+      if (language && countryCode) {
+        return { language, countryCode, source: 'ip' };
+      }
+    }
+  } catch (e) {
+    // Network error or timeout — keep whatever language is already showing
+  }
+  return null;
 }

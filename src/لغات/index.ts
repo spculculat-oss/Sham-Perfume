@@ -113,3 +113,10 @@ export function isLanguageSupported(code: string): code is SupportedLanguage {
  */
 export * from './storeKeys';
 export * from './storeL10n';
+
+/**
+ * نصوص بنر المنتجات (أعلى الصفحة الرئيسية) — كل لغة من لغات المنصة شايلة
+ * الـ21 سلسلة كلها (bannerL10n.ts): `bannerText(lang, 'view_store')` أو `makeBannerT(lang)`.
+ */
+export * from './bannerKeys';
+export * from './bannerL10n';

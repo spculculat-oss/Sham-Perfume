@@ -1,4 +1,5 @@
 import { SupportedLanguage, TranslationKey, SUPPORTED_LANGUAGES } from "../types/i18n";
+import { detectEntryLanguage, USER_LANGUAGE_MANUAL_OVERRIDE_KEY } from "../utils/geoDetector";
 import { I18N_EXT_1 } from "./i18nExt1";
 import { I18N_EXT_2 } from "./i18nExt2";
 import { I18N_EXT_3 } from "./i18nExt3";
@@ -78,20 +79,33 @@ for (const [lang, pack] of Object.entries(I18N_PROFILE)) {
 }
 
 export function getInitialLanguage(): SupportedLanguage {
+  let saved: SupportedLanguage | null = null;
+  let manual = false;
   try {
-    const saved = localStorage.getItem(USER_LANG_STORAGE_KEY) as SupportedLanguage;
-    if (saved && SUPPORTED_LANGUAGES.some(l => l.code === saved)) {
-      return saved;
+    const raw = localStorage.getItem(USER_LANG_STORAGE_KEY) as SupportedLanguage | null;
+    if (raw && SUPPORTED_LANGUAGES.some(l => l.code === raw)) {
+      saved = raw;
+    }
+    manual = !!localStorage.getItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY);
+  } catch (e) {}
+
+  // A language the visitor picked themselves always wins, wherever they are.
+  if (manual && saved) {
+    return saved;
+  }
+
+  // Otherwise the platform opens in the language of the country it is
+  // entered from (timezone, browser locale region, browser languages).
+  try {
+    const entry = detectEntryLanguage();
+    if (entry) {
+      return entry;
     }
   } catch (e) {}
 
-  try {
-    const nav = navigator.language || "";
-    const shortCode = nav.split("-")[0].toLowerCase() as SupportedLanguage;
-    if (SUPPORTED_LANGUAGES.some(l => l.code === shortCode)) {
-      return shortCode;
-    }
-  } catch (e) {}
+  if (saved) {
+    return saved;
+  }
 
   return "ar";
 }
