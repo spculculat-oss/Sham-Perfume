@@ -6,6 +6,7 @@ import {
   listInstalledDevelopments, parseDevelopmentPackage, receiveDevelopment, restoreDevelopment,
 } from '../updates/updateGateway';
 import type { ItemDecision, UpdateReport } from '../updates/types';
+import AiStudioIntakePanel from './AiStudioIntakePanel';
 
 /**
  * بيئة استقبال التحديثات — الواجهة الإدارية لبوابة التحديثات.
@@ -112,6 +113,8 @@ export default function UpdatesPanel() {
         title={T('بيئة استقبال التحديثات')}
         subtitle={T('أول ما يستقبل أي تطوير قادم من أي منصة: تحليل، مقارنة بالموجود، تطبيق الزيادة فقط، وإبقاء الملغي ملغياً — دون لمس بيانات المستخدمين.')}
       />
+
+      <AiStudioIntakePanel />
 
       <div className={card}>
         <div className="flex flex-wrap items-center justify-between gap-2 mb-2">

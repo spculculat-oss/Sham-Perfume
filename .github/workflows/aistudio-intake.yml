@@ -1,0 +1,100 @@
+name: AI Studio intake (review every AI Studio update)
+
+# «استقبال تحديثات AI Studio»: every change made in Google AI Studio reaches main as a commit by the owner.
+# After the site's own pipeline (Build, test and deploy Pages) finishes for a version, «الخبير شاهين» reviews
+# every new AI Studio commit up to it: an older copy of a file put back (newer work silently undone), deleted
+# core files, keys or real card numbers in the code, very heavy images, new libraries. The pipeline's results
+# (type check, tests, build, GitHub Pages deploy) are recorded with it. Report: job summary + annotations, and
+# src/data/live/aistudio-intake.json → admin «بيئة التحديثات». The run turns red when something needs the
+# owner (GitHub e-mails him). Code: scripts/aistudio/. Variable (optional): AISTUDIO_AUTHORS.
+
+on:
+  workflow_run:
+    workflows: ['Build, test and deploy Pages']
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+  push:
+    branches: ['arena/**']
+    paths: ['scripts/aistudio/**', '.github/workflows/aistudio-intake.yml']
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: aistudio-intake
+  cancel-in-progress: false
+
+jobs:
+  intake:
+    name: Review AI Studio updates
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      # Branch pushes rehearse only: the report is shown in the job summary, nothing is committed.
+      INTAKE_COMMIT: ${{ github.event_name != 'push' && 'true' || 'false' }}
+      INTAKE_REF: ${{ github.event.workflow_run.head_sha || github.sha }}
+      AISTUDIO_AUTHORS: ${{ vars.AISTUDIO_AUTHORS }}
+    steps:
+      - name: Checkout source (with history, to compare every file with its earlier versions)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event_name == 'push' && github.ref || 'main' }}
+          fetch-depth: 400
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Find new AI Studio updates
+        id: detect
+        run: node --import tsx scripts/aistudio/run.mts detect
+      - name: Read the site pipeline's results for this version
+        if: steps.detect.outputs.pending != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          if [ -z "$RUN_ID" ]; then
+            RUN_ID=$(gh run list --workflow pages.yml --commit "$INTAKE_REF" --limit 1 --json databaseId -q '.[0].databaseId' || true)
+          fi
+          lint=skipped; test=skipped; build=skipped; pages=skipped
+          if [ -n "$RUN_ID" ]; then
+            jobs=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/jobs?per_page=50")
+            step() { echo "$jobs" | jq -r --arg s "$1" '[.jobs[] | select(.name == "Check and build React") | .steps[] | select(.name == $s) | (.conclusion // "pending")][0] // "skipped"'; }
+            lint=$(step "Type check"); test=$(step "Regression tests"); build=$(step "Build current source for Pages")
+            pages=$(echo "$jobs" | jq -r '[.jobs[] | select(.name == "Deploy to GitHub Pages") | (.conclusion // "pending")][0] // "skipped"')
+          else
+            # No pipeline run for this version (branch rehearsal): run the same checks here.
+            bun run lint >/dev/null 2>&1 && lint=success || lint=failure
+            bun run test >/dev/null 2>&1 && test=success || test=failure
+            bun run build >/dev/null 2>&1 && build=success || build=failure
+          fi
+          echo "Pipeline run ${RUN_ID:-none}: lint=$lint test=$test build=$build pages=$pages"
+          { echo "CHECK_LINT=$lint"; echo "CHECK_TEST=$test"; echo "CHECK_BUILD=$build"; echo "CHECK_PAGES=$pages"; } >> "$GITHUB_ENV"
+      - name: Review every new AI Studio update
+        id: review
+        if: steps.detect.outputs.pending != '0'
+        continue-on-error: true
+        run: node --import tsx scripts/aistudio/run.mts review
+      - name: Publish the intake report on main
+        if: steps.detect.outputs.pending != '0' && env.INTAKE_COMMIT == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen AI Studio intake bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "استقبال AI Studio: مراجعة التحديثات الجديدة $(date -u +%Y-%m-%dT%H:%MZ)" src/data/live/aistudio-intake.json \
+            || { echo "::error::Could not publish the intake report"; exit 1; }
+      - name: Needs the owner's attention?
+        if: steps.review.outcome == 'failure'
+        run: |
+          echo "::error::An AI Studio update needs attention — see the report above (admin → «بيئة التحديثات»)."
+          exit 1
