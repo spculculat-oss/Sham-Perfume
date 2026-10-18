@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T11:47:06.809Z",
+ "updatedAt": "2026-10-18T12:47:21.705Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -10,8 +10,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-18T12:47:21.705Z",
    "sampleOk": 2,
    "sampleTotal": 7,
    "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (2/7)"
@@ -24,8 +24,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-18T12:47:21.705Z",
    "reason": "لا توجد خريطة منتجات (sitemap)"
   },
   {
@@ -36,8 +36,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-18T12:47:21.705Z",
    "sampleOk": 0,
    "sampleTotal": 6,
    "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
@@ -50,8 +50,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-18T12:47:21.705Z",
    "sampleOk": 0,
    "sampleTotal": 1,
    "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)"
@@ -65,8 +65,8 @@
    "foundBy": "brand-site",
    "foundWith": "Maison Alhambra",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-18T12:47:21.705Z",
    "reason": "لا توجد خريطة منتجات (sitemap)"
   },
   {
@@ -78,8 +78,8 @@
    "foundBy": "brand-site",
    "foundWith": "Maison Alhambra",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-18T12:47:21.705Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -91,8 +91,8 @@
    "foundBy": "brand-site",
    "foundWith": "Maison Alhambra",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-18T12:47:21.705Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -104,8 +104,8 @@
    "foundBy": "brand-site",
    "foundWith": "Lattafa",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-18T12:47:21.705Z",
    "sampleOk": 0,
    "sampleTotal": 6,
    "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
@@ -130,6 +130,112 @@
    "foundBy": "brand-site",
    "foundWith": "Lattafa",
    "foundAt": "2026-10-18T11:47:06.809Z",
+   "attempts": 0
+  },
+  {
+   "id": "abdulsamadalqurashi-com",
+   "host": "abdulsamadalqurashi.com",
+   "name": "abdulsamadalqurashi.com",
+   "base": "https://abdulsamadalqurashi.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T12:47:21.705Z",
+   "attempts": 0
+  },
+  {
+   "id": "afnan-com",
+   "host": "afnan.com",
+   "name": "afnan.com",
+   "base": "https://afnan.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T12:47:21.705Z",
+   "attempts": 0
+  },
+  {
+   "id": "nabeel-com",
+   "host": "nabeel.com",
+   "name": "nabeel.com",
+   "base": "https://nabeel.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T12:47:21.705Z",
+   "attempts": 0
+  },
+  {
+   "id": "alharamainperfumes-com",
+   "host": "alharamainperfumes.com",
+   "name": "alharamainperfumes.com",
+   "base": "https://alharamainperfumes.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T12:47:21.705Z",
+   "attempts": 0
+  },
+  {
+   "id": "ardalzaafaran-com",
+   "host": "ardalzaafaran.com",
+   "name": "ardalzaafaran.com",
+   "base": "https://ardalzaafaran.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Ard Al Zaafaran",
+   "foundAt": "2026-10-18T12:47:21.705Z",
+   "attempts": 0
+  },
+  {
+   "id": "ardalzaafaranperfumes-com",
+   "host": "ardalzaafaranperfumes.com",
+   "name": "ardalzaafaranperfumes.com",
+   "base": "https://ardalzaafaranperfumes.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Ard Al Zaafaran",
+   "foundAt": "2026-10-18T12:47:21.705Z",
+   "attempts": 0
+  },
+  {
+   "id": "ardalzaafaranparfums-com",
+   "host": "ardalzaafaranparfums.com",
+   "name": "ardalzaafaranparfums.com",
+   "base": "https://ardalzaafaranparfums.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Ard Al Zaafaran",
+   "foundAt": "2026-10-18T12:47:21.705Z",
+   "attempts": 0
+  },
+  {
+   "id": "zimaya-com",
+   "host": "zimaya.com",
+   "name": "zimaya.com",
+   "base": "https://zimaya.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Zimaya",
+   "foundAt": "2026-10-18T12:47:21.705Z",
+   "attempts": 0
+  },
+  {
+   "id": "zimayaperfumes-com",
+   "host": "zimayaperfumes.com",
+   "name": "zimayaperfumes.com",
+   "base": "https://zimayaperfumes.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Zimaya",
+   "foundAt": "2026-10-18T12:47:21.705Z",
+   "attempts": 0
+  },
+  {
+   "id": "zimayaparfums-com",
+   "host": "zimayaparfums.com",
+   "name": "zimayaparfums.com",
+   "base": "https://zimayaparfums.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Zimaya",
+   "foundAt": "2026-10-18T12:47:21.705Z",
    "attempts": 0
   }
  ],
@@ -416,6 +522,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-18T12:47:21.705Z",
+   "mode": "self",
+   "found": 10,
+   "vetted": 8,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "Web search: AI quota used up — the scout continues by himself",
+    "10 new stores found this run (own methods, no AI)",
+    "✗ arabianoud.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (2/7)",
+    "  ↳ ajmal.com: sitemap.xml→404, sitemap_index.xml→404, wp-sitemap.xml→404, …, sitemap.xml→404, browsed 0 category pages → 0 product-like links",
+    "✗ ajmal.com: لا توجد خريطة منتجات (sitemap)",
+    "✗ rasasi.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "✗ swissarabian.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
+    "  ↳ maisonalhambra.com: sitemap.xml→404, sitemap_index.xml→200(not xml), wp-sitemap.xml→200(not xml), …, sitemap.xml→200(not xml), browsed 0 category pages → 0 product-like links",
+    "✗ maisonalhambra.com: لا توجد خريطة منتجات (sitemap)",
+    "✗ maisonalhambraperfumes.com: الموقع لا يفتح",
+    "✗ maisonalhambraparfums.com: الموقع لا يفتح",
+    "✗ lattafa.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
+   ]
+  },
   {
    "at": "2026-10-18T11:47:06.809Z",
    "mode": "self",
