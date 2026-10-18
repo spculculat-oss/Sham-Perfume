@@ -14,7 +14,7 @@ import {
   Award,
 } from 'lucide-react';
 import { UserProfile } from '../types/auth';
-import { loginUser, registerUser } from '../utils/authStorage';
+import { completeTwoFactorLogin, confirmPasswordReset, loginUser, registerUser, requestPasswordReset } from '../utils/authStorage';
 import { WORLD_COUNTRIES } from '../data/worldCountries';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
@@ -333,6 +333,22 @@ const S = {
   err_login_failed: { ar: 'حدث خطأ أثناء تسجيل الدخول', en: 'An error occurred during login', fr: 'Une erreur est survenue lors de la connexion', es: 'Ocurrió un error al iniciar sesión', it: 'Errore durante l’accesso', de: 'Beim Anmelden ist ein Fehler aufgetreten', ru: 'Произошла ошибка входа', zh: '登录时发生错误', tr: 'Giriş sırasında bir hata oluştu', fa: 'هنگام ورود خطایی رخ داد' },
   err_email_exists: { ar: 'البريد الإلكتروني مسجل بالفعل، يرجى تسجيل الدخول', en: 'Email already registered, please log in', fr: 'E-mail déjà enregistré, connectez-vous', es: 'Correo ya registrado, inicia sesión', it: 'Email già registrata, accedi', de: 'E-Mail bereits registriert, bitte anmelden', ru: 'E-mail уже зарегистрирован, войдите', zh: '该邮箱已注册，请直接登录', tr: 'E-posta zaten kayıtlı, lütfen giriş yapın', fa: 'این ایمیل قبلاً ثبت شده است؛ وارد شوید' },
   err_register_failed: { ar: 'حدث خطأ أثناء إنشاء الحساب', en: 'An error occurred while creating your account', fr: 'Une erreur est survenue lors de la création du compte', es: 'Ocurrió un error al crear la cuenta', it: 'Errore durante la creazione dell’account', de: 'Beim Erstellen des Kontos ist ein Fehler aufgetreten', ru: 'Произошла ошибка при создании аккаунта', zh: '创建账户时发生错误', tr: 'Hesap oluşturulurken bir hata oluştu', fa: 'هنگام ایجاد حساب خطایی رخ داد' },
+  err_account_locked: { ar: 'محاولات كثيرة خاطئة — الحساب مقفول لمدة 15 دقيقة', en: 'Too many wrong attempts — the account is locked for 15 minutes', fr: 'Trop de tentatives — compte verrouillé 15 minutes', es: 'Demasiados intentos: cuenta bloqueada 15 minutos', it: 'Troppi tentativi: account bloccato 15 minuti', de: 'Zu viele Fehlversuche — Konto 15 Minuten gesperrt', ru: 'Слишком много попыток — аккаунт заблокирован на 15 минут', zh: '错误尝试过多，账户已锁定 15 分钟', tr: 'Çok fazla hatalı deneme — hesap 15 dakika kilitli', fa: 'تلاش‌های ناموفق زیاد — حساب ۱۵ دقیقه قفل شد' },
+  err_email_unavailable: { ar: 'خدمة البريد غير مفعّلة على السيرفر — كلم الإدارة', en: 'The e-mail service is not configured on this server — contact administration', fr: 'Le service e-mail n’est pas configuré sur ce serveur', es: 'El servicio de correo no está configurado en este servidor', it: 'Il servizio e-mail non è configurato su questo server', de: 'Der E-Mail-Dienst ist auf diesem Server nicht eingerichtet', ru: 'E-mail-сервер не настроен на этом сервере', zh: '此服务器未配置邮件服务，请联系管理员', tr: 'Bu sunucuda e-posta servisi yapılandırılmadı', fa: 'سرویس ایمیل روی این سرور تنظیم نشده است' },
+  err_code_limited: { ar: 'أكواد كثيرة في فترة قصيرة — استنى شوية وجرّب تاني', en: 'Too many codes in a short time — wait a moment and retry', fr: 'Trop de codes — patientez puis réessayez', es: 'Demasiados códigos — espera y reintenta', it: 'Troppi codici — attendi e riprova', de: 'Zu viele Codes — bitte warten und erneut versuchen', ru: 'Слишком много кодов — подождите и повторите', zh: '短时间内请求的验证码过多，请稍候再试', tr: 'Kısa sürede çok fazla kod — bekleyip tekrar deneyin', fa: 'کدهای زیاد در زمان کوتاه — صبر کنید و دوباره امتحان کنید' },
+  err_code_invalid: { ar: 'الكود مش صحيح أو انتهى — اطلب كود جديد', en: 'The code is not valid or has expired — request a new one', fr: 'Code invalide ou expiré — demandez-en un autre', es: 'Código no válido o caducado — solicita otro', it: 'Codice non valido o scaduto — richiedine uno', de: 'Code ungültig oder abgelaufen — bitte neuen anfordern', ru: 'Код недействителен или просрочен — запросите новый', zh: '验证码无效或已过期，请重新获取', tr: 'Kod geçersiz veya süresi dolmuş — yenisini isteyin', fa: 'کد معتبر نیست یا منقضی شده — کد جدید بگیرید' },
+  forgot_link: { ar: 'نسيت كلمة المرور؟', en: 'Forgot your password?', fr: 'Mot de passe oublié ?', es: '¿Olvidaste tu contraseña?', it: 'Password dimenticata?', de: 'Passwort vergessen?', ru: 'Забыли пароль?', zh: '忘记密码？', tr: 'Parolanızı mı unuttunuz?', fa: 'رمز عبور را فراموش کردید؟' },
+  totp_title: { ar: 'التحقق بخطوتين', en: 'Two-step verification', fr: 'Vérification en deux étapes', es: 'Verificación en dos pasos', it: 'Verifica in due passaggi', de: 'Zwei-Faktor-Prüfung', ru: 'Двухфакторная проверка', zh: '两步验证', tr: 'İki aşamalı doğrulama', fa: 'تأیید دو مرحله‌ای' },
+  totp_hint: { ar: 'اكتب الكود الست أرقام من تطبيق التحقق على موبايلك', en: 'Enter the 6-digit code from your authenticator app', fr: 'Saisissez le code à 6 chiffres de votre application d’authentification', es: 'Introduce el código de 6 dígitos de tu app de autenticación', it: 'Inserisci il codice a 6 cifre della tua app di autenticazione', de: 'Geben Sie den 6-stelligen Code Ihrer Authenticator-App ein', ru: 'Введите 6-значный код из приложения-аутентификатора', zh: '请输入验证应用中的 6 位验证码', tr: 'Doğrulayıcı uygulamanızdaki 6 haneli kodu girin', fa: 'کد ۶ رقمی از برنامه احراز هویت را وارد کنید' },
+  totp_submit: { ar: 'تأكيد', en: 'Verify', fr: 'Vérifier', es: 'Verificar', it: 'Verifica', de: 'Bestätigen', ru: 'Подтвердить', zh: '确认', tr: 'Doğrula', fa: 'تأیید' },
+  totp_back: { ar: 'رجوع لتسجيل الدخول', en: 'Back to sign in', fr: 'Retour à la connexion', es: 'Volver a iniciar sesión', it: 'Torna all’accesso', de: 'Zurück zur Anmeldung', ru: 'Назад ко входу', zh: '返回登录', tr: 'Girişe dön', fa: 'بازگشت به ورود' },
+  forgot_title: { ar: 'تغيير كلمة المرور', en: 'Reset your password', fr: 'Réinitialiser votre mot de passe', es: 'Restablecer tu contraseña', it: 'Reimposta la password', de: 'Passwort zurücksetzen', ru: 'Восстановление пароля', zh: '重置密码', tr: 'Parolanızı sıfırlayın', fa: 'بازنشانی رمز عبور' },
+  forgot_sent: { ar: 'لو البريد ده مسجل عندنا، هيوصلك كود تغيير كلمة المرور. أدخله هنا مع كلمة السر الجديدة:', en: 'If this e-mail is registered, a reset code is on its way. Enter it with your new password:', fr: 'Si cet e-mail est enregistré, un code de réinitialisation arrive. Saisissez-le avec votre nouveau mot de passe :', es: 'Si este correo está registrado, llegará un código de restablecimiento. Introdúcelo con tu nueva contraseña:', it: 'Se questa e-mail è registrata, arriverà un codice di reimpostazione. Inseriscilo con la nuova password:', de: 'Falls diese E-Mail registriert ist, ist ein Code unterwegs. Geben Sie ihn mit dem neuen Passwort ein:', ru: 'Если эта e-mail зарегистрирована, будет отправлен код. Введите его вместе с новым паролем:', zh: '如果该邮箱已注册，重置验证码正在发送。请输入验证码和新密码：', tr: 'Bu e-posta kayıtlıysa sıfırlama kodu yolda. Yeni parolanızla birlikte girin:', fa: 'اگر این ایمیل ثبت شده، کد بازنشانی ارسال می‌شود. آن را با رمز عبور جدید وارد کنید:' },
+  code_label: { ar: 'الكود', en: 'Code', fr: 'Code', es: 'Código', it: 'Codice', de: 'Code', ru: 'Код', zh: '验证码', tr: 'Kod', fa: 'کد' },
+  new_pw_label: { ar: 'كلمة السر الجديدة', en: 'New password', fr: 'Nouveau mot de passe', es: 'Nueva contraseña', it: 'Nuova password', de: 'Neues Passwort', ru: 'Новый пароль', zh: '新密码', tr: 'Yeni parola', fa: 'رمز عبور جدید' },
+  reset_submit: { ar: 'تغيير كلمة المرور', en: 'Reset password', fr: 'Réinitialiser', es: 'Restablecer', it: 'Reimposta', de: 'Zurücksetzen', ru: 'Сбросить', zh: '重置密码', tr: 'Parolayı sıfırla', fa: 'بازنشانی رمز عبور' },
+  send_code: { ar: 'إرسال الكود', en: 'Send the code', fr: 'Envoyer le code', es: 'Enviar el código', it: 'Invia il codice', de: 'Code senden', ru: 'Отправить код', zh: '发送验证码', tr: 'Kodu gönder', fa: 'ارسال کد' },
+  reset_done: { ar: 'اتغيرت كلمة السر. كل الأجهزة اتخارجت — سجّل دخول بالكلمة الجديدة', en: 'Password changed. Every device was signed out — sign in with the new password', fr: 'Mot de passe changé. Tous les appareils sont déconnectés — connectez-vous avec le nouveau mot de passe', es: 'Contraseña cambiada. Todos los dispositivos salieron — inicia sesión con la nueva contraseña', it: 'Password cambiata. Tutti i dispositivi sono usciti — accedi con la nuova password', de: 'Passwort geändert. Alle Geräte wurden abgemeldet — melden Sie sich mit dem neuen Passwort an', ru: 'Пароль изменён. Со всех устройств выполнен выход — войдите с новым паролем', zh: '密码已更改。所有设备已退出，请使用新密码登录', tr: 'Parola değişti. Tüm cihazlardan çıkış yapıldı — yeni parolanızla giriş yapın', fa: 'رمز عبور تغییر کرد. از همه دستگاه‌ها خارج شدید — با رمز جدید وارد شوید' },
 } satisfies Record<string, LText>;
 
 export const AuthModal: React.FC<AuthModalProps> = ({
@@ -355,21 +371,50 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   const [isLoading, setIsLoading] = useState(false);
 
+  /* Account-security steps: the two-factor code, and forgot-password (e-mail code + new password). */
+  const [stage, setStage] = useState<'auth' | 'totp' | 'forgot' | 'forgot_code'>('auth');
+  const [pendingToken, setPendingToken] = useState('');
+  const [code, setCode] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+
+  const toStep = (next: 'auth' | 'totp' | 'forgot' | 'forgot_code') => { setStage(next); setErrorMsg(null); setCode(''); setNewPassword(''); };
+
+  const finish = (user: UserProfile) => { onSuccess(user); onClose(); };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
     setIsLoading(true);
 
     try {
+      if (stage === 'totp') {
+        const res = await completeTwoFactorLogin(pendingToken, code);
+        if (res.success && res.user) { finish(res.user); return; }
+        setErrorMsg(res.error ? (S[res.error as keyof typeof S] ? L(res.error as keyof typeof S) : res.error) : L('err_login'));
+        return;
+      }
+      if (stage === 'forgot') {
+        const res = await requestPasswordReset(email);
+        if (!res.success) { setErrorMsg(res.error ? (S[res.error as keyof typeof S] ? L(res.error as keyof typeof S) : res.error) : L('err_login')); return; }
+        toStep('forgot_code');
+        return;
+      }
+      if (stage === 'forgot_code') {
+        const res = await confirmPasswordReset(email, code, newPassword);
+        if (!res.success) { setErrorMsg(res.error ? (S[res.error as keyof typeof S] ? L(res.error as keyof typeof S) : res.error) : L('err_login')); return; }
+        toStep('auth');
+        setPassword('');
+        setErrorMsg(L('reset_done'));
+        return;
+      }
       if (mode === 'login') {
         const res = await loginUser(email, password);
-        if (res.success && res.user) {
-          onSuccess(res.user);
-          onClose();
-        } else {
-          setErrorMsg(res.error ? (S[res.error as keyof typeof S] ? L(res.error as keyof typeof S) : res.error) : L('err_login'));
-        }
-      } else {
+        if (res.success && res.user) { finish(res.user); return; }
+        if (res.error === 'totp_required') { setPendingToken(res.pendingToken || ''); toStep('totp'); return; }
+        setErrorMsg(res.error ? (S[res.error as keyof typeof S] ? L(res.error as keyof typeof S) : res.error) : L('err_login'));
+        return;
+      }
+      if (mode === 'register') {
         if (!name.trim()) {
           setErrorMsg(L('err_name'));
           setIsLoading(false);
@@ -445,7 +490,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </div>
             <div>
               <h3 className="text-lg font-bold font-serif-luxury">
-                {mode === 'login' ? L('login_title') : L('register_title')}
+                {stage === 'totp' ? L('totp_title')
+                  : stage === 'forgot' || stage === 'forgot_code' ? L('forgot_title')
+                  : mode === 'login' ? L('login_title') : L('register_title')}
               </h3>
               <p className="text-[11px] text-stone-300">
                 {L('header_sub')}
@@ -466,7 +513,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <button
             onClick={() => {
               setMode('login');
-              setErrorMsg(null);
+              toStep('auth');
             }}
             className={`flex-1 py-3 text-center transition-colors cursor-pointer ${
               mode === 'login'
@@ -479,7 +526,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <button
             onClick={() => {
               setMode('register');
-              setErrorMsg(null);
+              toStep('auth');
             }}
             className={`flex-1 py-3 text-center transition-colors cursor-pointer ${
               mode === 'register'
@@ -500,6 +547,65 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </div>
           )}
 
+          {stage === 'totp' && (
+            <>
+              <div>
+                <label className="font-semibold text-stone-800 block mb-1">{L('totp_title')}</label>
+                <p className="text-[11px] text-stone-500 mb-2">{L('totp_hint')}</p>
+                <div className="relative">
+                  <ShieldCheck className={`w-4 h-4 absolute ${rtl ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 text-amber-600`} />
+                  <input
+                    type="text" required inputMode="numeric" maxLength={6} autoComplete="one-time-code"
+                    placeholder="••••••" value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
+                    className={`w-full ${rtl ? 'pl-3 pr-9' : 'pl-9 pr-3'} py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 tracking-[0.4em] text-center focus:outline-none focus:border-amber-700`}
+                    dir="ltr"
+                  />
+                </div>
+              </div>
+              <button type="button" onClick={() => toStep('auth')} className="text-[11px] text-amber-800 underline cursor-pointer self-start">{L('totp_back')}</button>
+            </>
+          )}
+
+          {stage === 'forgot' && (
+            <div>
+              <label className="font-semibold text-stone-800 block mb-1">{L('forgot_title')}</label>
+              <div className="relative">
+                <Mail className={`w-4 h-4 absolute ${rtl ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 text-stone-400`} />
+                <input
+                  type="email" required placeholder="perfumer@domain.com" value={email} onChange={(e) => setEmail(e.target.value)}
+                  className={`w-full ${rtl ? 'pl-3 pr-9' : 'pl-9 pr-3'} py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-amber-700 text-left font-mono`}
+                  dir="ltr"
+                />
+              </div>
+            </div>
+          )}
+
+          {stage === 'forgot_code' && (
+            <>
+              <p className="text-[11px] text-stone-600 leading-snug">{L('forgot_sent')}</p>
+              <div>
+                <label className="font-semibold text-stone-800 block mb-1">{L('code_label')}</label>
+                <input
+                  type="text" required inputMode="numeric" maxLength={6} autoComplete="one-time-code"
+                  placeholder="••••••" value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
+                  className="w-full px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 tracking-[0.4em] text-center focus:outline-none focus:border-amber-700"
+                  dir="ltr"
+                />
+              </div>
+              <div>
+                <label className="font-semibold text-stone-800 block mb-1">{L('new_pw_label')}</label>
+                <input
+                  type="password" required placeholder="••••••••" value={newPassword} onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-amber-700 text-left font-mono"
+                  dir="ltr" autoComplete="new-password"
+                />
+              </div>
+              <button type="button" onClick={() => toStep('forgot')} className="text-[11px] text-amber-800 underline cursor-pointer self-start">{L('totp_back')}</button>
+            </>
+          )}
+
+          {stage === 'auth' && (
+          <>
           {mode === 'register' && (
             <div>
               <label className="font-semibold text-stone-800 block mb-1">
@@ -617,6 +723,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </div>
             </>
           )}
+          </>
+          )}
 
           <div className="pt-2 space-y-2">
             <button
@@ -624,10 +732,25 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               className="w-full py-3 rounded-xl bg-amber-800 hover:bg-amber-900 text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
             >
               <ShieldCheck className="w-4 h-4 text-amber-300" />
-              <span>{mode === 'login' ? L('submit_login') : L('submit_register')}</span>
+              <span>
+                {stage === 'totp' ? L('totp_submit')
+                  : stage === 'forgot' ? L('send_code')
+                  : stage === 'forgot_code' ? L('reset_submit')
+                  : mode === 'login' ? L('submit_login') : L('submit_register')}
+              </span>
             </button>
 
-            {mode === 'login' && (
+            {mode === 'login' && stage === 'auth' && (
+              <button
+                type="button"
+                onClick={() => toStep('forgot')}
+                className="w-full py-2 text-amber-800 hover:text-amber-900 font-semibold text-xs transition-colors cursor-pointer"
+              >
+                {L('forgot_link')}
+              </button>
+            )}
+
+            {mode === 'login' && stage === 'auth' && (
               <button
                 type="button"
                 onClick={handleDemoLogin}

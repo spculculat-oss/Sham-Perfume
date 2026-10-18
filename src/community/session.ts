@@ -4,7 +4,7 @@
  * notifications and friend requests.
  */
 import { useSyncExternalStore } from 'react';
-import { cx, getSessionToken, setSessionToken, CommunityApiError, type AuthResult, type Me, type Pulse } from './api';
+import { cx, getSessionToken, setSessionToken, CommunityApiError, type AuthResult, type Me, type PendingLogin, type Pulse } from './api';
 
 export interface SessionState {
   status: 'loading' | 'disabled' | 'guest' | 'member' | 'offline';
@@ -43,8 +43,21 @@ export async function pulseNow() {
 
 export function setMe(me: Me) { publish({ ...state, status: 'member', me }); }
 
+/** Two-factor accounts stop the password step here; the caller finishes it with `completePendingLogin`. */
+export class PendingLoginError extends Error {
+  constructor(public pending: PendingLogin) { super('totp_required'); }
+}
+
 export async function signIn(email: string, password: string): Promise<Me> {
-  const result = await cx<AuthResult>('/community/auth/login', { body: { email, password } });
+  const result = await cx<AuthResult | PendingLogin>('/community/auth/login', { body: { email, password } });
+  if ('pending' in result) throw new PendingLoginError(result);
+  setSessionToken(result.token);
+  publish({ status: 'member', me: result.me });
+  return result.me;
+}
+
+export async function completePendingLogin(pendingToken: string, code: string): Promise<Me> {
+  const result = await cx<AuthResult>('/community/auth/login/2fa', { body: { pendingToken, code } });
   setSessionToken(result.token);
   publish({ status: 'member', me: result.me });
   return result.me;
