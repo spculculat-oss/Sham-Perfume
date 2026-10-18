@@ -5,7 +5,7 @@ import { adoptSkill, emptySkills, learnSkill, readWithSkill, recordUse, skillsSu
 import { addAltOffer, perfumeKey, type ImportedProduct } from '../scripts/shaheen-import/transform';
 import {
   addCandidates, brandSiteGuesses, domainOf, domainsFromSearch, emptySources, inferProductPattern, isNeverSource, isPerfume,
-  CATEGORYISH, judgeSamples, pageLinks, parseRobots, planQueries, productCandidates, withPage, spreadSample, toImportSource, vettingQueue, type LiveSource, type Sample,
+  CATEGORYISH, judgeSamples, sameSite, pageLinks, parseRobots, planQueries, productCandidates, withPage, spreadSample, toImportSource, vettingQueue, type LiveSource, type Sample,
 } from '../scripts/shaheen-discover/discover';
 import { buildBank, CURRICULUM, exam, importerShare, parseStudy, pickStudy, selfLesson, type TrainingDoc } from '../scripts/shaheen-school/school';
 import { emptyMemory, remember } from '../src/utils/shaheenMemory';
@@ -154,6 +154,8 @@ test('source scout: stores without a sitemap are browsed like a visitor (links, 
   assert.deepEqual(links, ['https://www.oud.example/collections/oud', 'https://oud.example/products/royal-oud', 'https://www.oud.example/ar/perfumes/c55555', 'https://www.oud.example/pages/about-us']);
   assert.deepEqual(links.filter((u) => CATEGORYISH.test(u)), ['https://www.oud.example/collections/oud', 'https://www.oud.example/ar/perfumes/c55555']);
   assert.deepEqual(productCandidates(links), ['https://oud.example/products/royal-oud']);
+  assert.ok(sameSite('us.arabianoud.com', 'arabianoud.com') && !sameSite('notarabianoud.com', 'arabianoud.com'));
+  assert.ok(pageLinks('<a href="https://us.oud.example/p/1">', 'https://oud.example/').length === 1, 'a sub-domain of the store is the store');
   assert.equal(withPage('https://oud.example/collections/oud', 1), 'https://oud.example/collections/oud');
   assert.equal(withPage('https://oud.example/collections/oud', 3), 'https://oud.example/collections/oud?page=3');
   assert.equal(withPage('https://oud.example/shop?sort=new', 2), 'https://oud.example/shop?sort=new&page=2');

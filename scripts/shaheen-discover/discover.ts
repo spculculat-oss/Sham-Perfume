@@ -55,6 +55,8 @@ export function domainOf(input: string): string {
     return /^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(host) && !/^\d+(\.\d+)+$/.test(host) ? host : '';
   } catch { return ''; }
 }
+/** One store across its sub-domains (arabianoud.com ↔ us.arabianoud.com, shop.x.com ↔ x.com). */
+export const sameSite = (a: string, b: string) => Boolean(a && b) && (a === b || a.endsWith(`.${b}`) || b.endsWith(`.${a}`));
 export const sourceIdOf = (host: string) => host.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40);
 
 /**
@@ -126,7 +128,7 @@ export function pageLinks(html: string, base: string): string[] {
   for (const m of html.matchAll(/<a\b[^>]*\bhref\s*=\s*["']([^"']+)["']/gi)) {
     try {
       const u = new URL(m[1].replace(/&amp;/g, '&'), base);
-      if (!/^https?:$/.test(u.protocol) || domainOf(u.href) !== host) continue;
+      if (!/^https?:$/.test(u.protocol) || !sameSite(domainOf(u.href), host)) continue;
       u.hash = ''; u.search = '';
       out.add(u.href);
     } catch { /* not a link */ }
@@ -155,8 +157,9 @@ export function productCandidates(urls: string[]): string[] {
 export function inferProductPattern(urls: string[]): string | undefined {
   const parsed = urls.map((u) => { try { return new URL(u); } catch { return undefined; } }).filter((u): u is URL => Boolean(u));
   if (!parsed.length) return undefined;
-  const host = parsed[0].hostname.replace(/^www\./, '');
-  if (parsed.some((u) => u.hostname.replace(/^www\./, '') !== host)) return undefined;
+  const hosts = parsed.map((u) => u.hostname.replace(/^www\./, ''));
+  const host = [...hosts].sort((a, b) => a.length - b.length)[0];
+  if (hosts.some((h) => !sameSite(h, host))) return undefined;
   const segs = parsed.map((u) => u.pathname.split('/').filter(Boolean));
   const prefix: string[] = [];
   for (let i = 0; ; i++) {
@@ -165,7 +168,7 @@ export function inferProductPattern(urls: string[]): string | undefined {
     if (s === undefined || segs.some((x) => x[i] !== s || x.length <= i + 1) || (s.length > 12 && s.includes('-')) || /\d{3,}/.test(s)) break;
     prefix.push(s);
   }
-  const hostRe = `^https?://(?:www\\.)?${host.replace(/[.]/g, '\\.')}/`;
+  const hostRe = `^https?://(?:[a-z0-9-]+\\.)*${host.replace(/[.]/g, '\\.')}/`;
   const pre = prefix.map((s) => `${s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/`).join('');
   const last = segs.map((x) => x[x.length - 1] || '');
   const letters = last.map((l) => (l.match(/^([a-z]{1,3})\d{3,}$/i) || [])[1]?.toLowerCase());

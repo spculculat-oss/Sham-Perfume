@@ -22,7 +22,7 @@ import { extractGeneric } from '../shaheen-import/generic';
 import { SOURCES } from '../shaheen-import/sources';
 import { quotaBook } from '../doctor/agent';
 import {
-  addCandidates, brandSiteGuesses, CATEGORYISH, domainOf, KNOWN_STORES, pageLinks, withPage, domainsFromSearch, emptySources, isNeverSource, isSourcesFile, judgeSamples,
+  addCandidates, brandSiteGuesses, CATEGORYISH, NOT_PRODUCT, sameSite, domainOf, KNOWN_STORES, pageLinks, withPage, domainsFromSearch, emptySources, isNeverSource, isSourcesFile, judgeSamples,
   inferProductPattern, parseRobots, planQueries, productCandidates, spreadSample, summary, vettingQueue, type LiveSource, type Sample, type SourcesFile,
 } from './discover';
 
@@ -155,7 +155,7 @@ async function productSitemaps(base: string, listed: string[]): Promise<{ sitema
   }
   // A mixed sitemap (pages + posts + products): keep the links that look like product pages.
   const host = domainOf(base);
-  const same = urls.filter((u) => domainOf(u) === host);
+  const same = urls.filter((u) => sameSite(domainOf(u), host));
   const urlsOut = generic ? productCandidates(same) : same;
   if (urls.length) trace.push(`${same.length} on site, ${urlsOut.length} product-like`);
   return { sitemaps: used, urls: urlsOut, refused, tried, trace };
@@ -169,9 +169,13 @@ async function crawlProducts(base: string, homeHtml: string, robots: ReturnType<
   const ok = (u: string) => { try { return robots.allowed(new URL(u).pathname); } catch { return false; } };
   const homeLinks = pageLinks(homeHtml, base).filter(ok);
   const shopify = /cdn\.shopify\.com|Shopify\.theme/i.test(homeHtml);
-  const categories = [...new Set([...(shopify ? [new URL('/collections/all', base).href] : []), ...homeLinks.filter((u) => CATEGORYISH.test(u))])].slice(0, 8);
+  // Category links by their usual names; without any, the site's menu links (short paths that are not store pages).
+  const named = homeLinks.filter((u) => CATEGORYISH.test(u));
+  const menu = homeLinks.filter((u) => { try { const d = new URL(u).pathname.split('/').filter(Boolean).length; return d >= 1 && d <= 2 && !NOT_PRODUCT.test(u); } catch { return false; } });
+  const categories = [...new Set([...(shopify ? [new URL('/collections/all', base).href] : []), ...(named.length ? named : menu.slice(0, 6))])].slice(0, 8);
   const urls = new Set(productCandidates(homeLinks));
-  const pages: string[] = [];
+  // The home page itself lists products on many stores: it is browsed every run too.
+  const pages: string[] = urls.size >= 3 ? [base] : [];
   for (const cat of categories) {
     if (timeLeft() < 60_000) break;
     let added = 0;
@@ -222,7 +226,7 @@ async function vet(s: LiveSource): Promise<void> {
   const robotsText = await get(new URL('/robots.txt', base).href);
   const robots = parseRobots(robotsText.status === 200 ? robotsText.body : '');
   if (!robots.allowed('/')) return fail('ملف robots.txt يمنع القراءة الآلية', true);
-  const { sitemaps, urls, refused, tried, trace } = await productSitemaps(base, robots.sitemaps.filter((u) => domainOf(u) === domainOf(base)));
+  const { sitemaps, urls, refused, tried, trace } = await productSitemaps(base, robots.sitemaps.filter((u) => sameSite(domainOf(u), domainOf(base))));
   let allowed = urls.filter((u) => { try { return robots.allowed(new URL(u).pathname); } catch { return false; } });
   let crawlPages: string[] = [];
   if (!allowed.length && !(refused && refused >= tried / 2)) {
