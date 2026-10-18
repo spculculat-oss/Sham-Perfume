@@ -104,8 +104,9 @@ export async function reviewStore(products: RawProduct[], o: ReviewOptions = {})
     const img = imageResults.get(sku);
     if (img && !img.ok) critical.push(`الصورة لا تفتح: ${img.reason}`);
     else if (!img && previousBroken.has(sku) && isImported(p)) critical.push(...previousBroken.get(sku)!.issues.filter((x) => x.startsWith('الصورة لا تفتح')));
-    // Only imported products are hidden automatically; the merchant's own products are reported, never hidden.
-    const hide = isImported(p) && critical.length > 0;
+    // Only imported products are hidden automatically; the merchant's own products are reported, never hidden —
+    // unless the merchant hid them himself (published: false), which the report then shows as hidden.
+    const hide = isImported(p) ? critical.length > 0 : p.published === false;
     const status: ReviewStatus = hide ? 'hidden' : critical.length || warnings.length ? 'warn' : 'ok';
     const issues = [...critical, ...warnings];
     items.push({ sku, id: p.id, name: p.nameEn || p.nameAr || sku, status, issues, page: `p/${productSlug(p)}.html` });

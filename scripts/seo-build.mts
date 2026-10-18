@@ -24,9 +24,8 @@ const root = new URL('../', import.meta.url);
 const readJson = <T,>(path: string): T | undefined => {
   try { return JSON.parse(readFileSync(new URL(path, root), 'utf8')) as T; } catch { return undefined; }
 };
-const defaultSite = outDir.startsWith('docs')
-  ? env.PAGES_SITE_URL || SITE.mirrorUrl
-  : env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${env.VERCEL_PROJECT_PRODUCTION_URL}/` : SITE.url;
+// One canonical address for both builds: the main site on GitHub Pages (the Vercel engine's copy points to it).
+const defaultSite = (outDir.startsWith('docs') && env.PAGES_SITE_URL) || SITE.url;
 const siteUrl = (siteArg || env.SEO_SITE_URL || defaultSite).replace(/\/?$/, '/');
 const write = (path: string, content: string) => {
   const target = new URL(`${outDir}/${path}`, root);
