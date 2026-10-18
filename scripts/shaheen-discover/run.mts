@@ -233,7 +233,7 @@ async function vet(s: LiveSource): Promise<void> {
   }
   if (!allowed.length) {
     console.log(`  ${s.host} sitemap trace: ${trace.join(', ')}`);
-    notes.push(`  ↳ ${s.host}: ${trace.slice(0, 6).join(', ')}`);
+    notes.push(`  ↳ ${s.host}: ${[...trace.slice(0, 3), ...(trace.length > 5 ? ['…'] : trace.slice(3, 5)), ...(trace.length > 5 ? trace.slice(-2) : [])].join(', ')}`);
     return fail(urls.length ? 'روابط المنتجات ممنوعة في robots.txt'
       : refused && refused >= tried / 2 ? 'الموقع يرفض القراءة الآلية (حماية)' : 'لا توجد خريطة منتجات (sitemap)');
   }
@@ -302,11 +302,11 @@ writeFileSync(FILE, `${JSON.stringify(file, null, 1)}\n`);
 say(`Sources: ${after.active} active (~${after.products} perfumes), ${after.candidate} waiting, ${after.rejected} rejected, ${after.blocked} blocked`);
 
 if (env.GITHUB_ACTIONS) {
-  const clean = (t: string) => t.replace(/[\r\n%]/g, ' ').slice(0, 900);
+  const clean = (t: string) => t.replace(/[\r\n%]/g, ' ').slice(0, 3000);
   // Two notices: how stores were found (web search / own methods), and what the checks decided.
   const checks = notes.filter((n) => /^(?:[✓✗…]|  ↳)/.test(n));
   console.log(`::notice title=كشّاف المصادر — البحث::${clean(notes.filter((n) => !checks.includes(n) && !/^Sources:/.test(n)).join(' | '))}`);
-  console.log(`::notice title=كشّاف المصادر — الفحص::${clean([...checks.slice(-8), notes[notes.length - 1]].join(' | '))}`);
+  console.log(`::notice title=كشّاف المصادر — الفحص::${clean([...checks.slice(-16), notes[notes.length - 1]].join(' | '))}`);
   if (env.GITHUB_OUTPUT) appendFileSync(env.GITHUB_OUTPUT, `activated=${Math.max(0, after.active - before.active)}\n`);
 }
 if (env.GITHUB_STEP_SUMMARY) {
