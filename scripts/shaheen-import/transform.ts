@@ -30,6 +30,11 @@ export interface ImportSource {
    */
   listing?: { url: string; maxPages: number };
   /**
+   * A store without a public sitemap («كشّاف المصادر» found it by browsing): its category pages, read with
+   * ?page=2, 3… until no new product link appears; their product links are imported like sitemap links.
+   */
+  crawl?: { pages: string[]; maxPages: number };
+  /**
    * Stores found by «كشّاف المصادر» sell more than perfume: only products that are clearly perfume
    * (perfume words in the name, description, category or link) are imported from them.
    */

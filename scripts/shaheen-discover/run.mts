@@ -22,7 +22,7 @@ import { extractGeneric } from '../shaheen-import/generic';
 import { SOURCES } from '../shaheen-import/sources';
 import { quotaBook } from '../doctor/agent';
 import {
-  addCandidates, brandSiteGuesses, domainOf, KNOWN_STORES, domainsFromSearch, emptySources, isNeverSource, isSourcesFile, judgeSamples,
+  addCandidates, brandSiteGuesses, CATEGORYISH, domainOf, KNOWN_STORES, pageLinks, withPage, domainsFromSearch, emptySources, isNeverSource, isSourcesFile, judgeSamples,
   inferProductPattern, parseRobots, planQueries, productCandidates, spreadSample, summary, vettingQueue, type LiveSource, type Sample, type SourcesFile,
 } from './discover';
 
@@ -161,6 +161,34 @@ async function productSitemaps(base: string, listed: string[]): Promise<{ sitema
   return { sitemaps: used, urls: urlsOut, refused, tried, trace };
 }
 
+/**
+ * No public sitemap: Shaheen browses the store like a visitor — the home page, then its category pages
+ * (page 1 and 2) — and collects the links that look like products. Robots.txt is respected for every page.
+ */
+async function crawlProducts(base: string, homeHtml: string, robots: ReturnType<typeof parseRobots>, delay: number): Promise<{ pages: string[]; urls: string[] }> {
+  const ok = (u: string) => { try { return robots.allowed(new URL(u).pathname); } catch { return false; } };
+  const homeLinks = pageLinks(homeHtml, base).filter(ok);
+  const shopify = /cdn\.shopify\.com|Shopify\.theme/i.test(homeHtml);
+  const categories = [...new Set([...(shopify ? [new URL('/collections/all', base).href] : []), ...homeLinks.filter((u) => CATEGORYISH.test(u))])].slice(0, 8);
+  const urls = new Set(productCandidates(homeLinks));
+  const pages: string[] = [];
+  for (const cat of categories) {
+    if (timeLeft() < 60_000) break;
+    let added = 0;
+    for (let n = 1; n <= 2; n++) {
+      await sleep(delay);
+      const page = await get(withPage(cat, n));
+      if (page.status !== 200) break;
+      const before = urls.size;
+      for (const u of productCandidates(pageLinks(page.body, base).filter(ok))) if (!CATEGORYISH.test(u)) urls.add(u);
+      added += urls.size - before;
+      if (urls.size === before) break;
+    }
+    if (added) pages.push(cat);
+  }
+  return { pages, urls: [...urls] };
+}
+
 async function rateToEgp(currency: string): Promise<number | undefined> {
   if (currency === 'EGP') return 1;
   try {
@@ -195,7 +223,14 @@ async function vet(s: LiveSource): Promise<void> {
   const robots = parseRobots(robotsText.status === 200 ? robotsText.body : '');
   if (!robots.allowed('/')) return fail('ملف robots.txt يمنع القراءة الآلية', true);
   const { sitemaps, urls, refused, tried, trace } = await productSitemaps(base, robots.sitemaps.filter((u) => domainOf(u) === domainOf(base)));
-  const allowed = urls.filter((u) => { try { return robots.allowed(new URL(u).pathname); } catch { return false; } });
+  let allowed = urls.filter((u) => { try { return robots.allowed(new URL(u).pathname); } catch { return false; } });
+  let crawlPages: string[] = [];
+  if (!allowed.length && !(refused && refused >= tried / 2)) {
+    // No sitemap: browse the store's categories instead.
+    const crawl = await crawlProducts(base, home.body, robots, Math.max(600, robots.crawlDelayMs || 0));
+    trace.push(`browsed ${crawl.pages.length} category pages → ${crawl.urls.length} product-like links`);
+    if (crawl.pages.length && crawl.urls.length >= 3) { allowed = crawl.urls; crawlPages = crawl.pages; }
+  }
   if (!allowed.length) {
     console.log(`  ${s.host} sitemap trace: ${trace.join(', ')}`);
     notes.push(`  ↳ ${s.host}: ${trace.slice(0, 6).join(', ')}`);
@@ -234,7 +269,7 @@ async function vet(s: LiveSource): Promise<void> {
   if (!rate) return fail(`لا يوجد سعر صرف للعملة ${verdict.currency}`);
   const pattern = new RegExp(verdict.pattern!, 'i');
   Object.assign(s, {
-    currency: verdict.currency, rateToEgp: rate, productPattern: verdict.pattern, sitemaps, via: verdict.via,
+    currency: verdict.currency, rateToEgp: rate, productPattern: verdict.pattern, sitemaps, via: verdict.via, crawlPages: crawlPages.length ? crawlPages : undefined,
     productsEstimate: allowed.filter((u) => pattern.test(u)).length, crawlDelayMs: robots.crawlDelayMs, reason: undefined,
   });
   const activeNow = file.sources.filter((x) => x.status === 'active' && x !== s).length;
@@ -244,7 +279,7 @@ async function vet(s: LiveSource): Promise<void> {
       const q = file.queries.find((x) => x.q === s.foundWith);
       if (q) q.activated += 1;
     }
-    say(`✓ ${s.host}: ${s.productsEstimate} perfumes, ${verdict.okCount}/${verdict.total} pages read without AI, ${verdict.currency} (1 = ${rate} EGP)${wasActive ? ' — still good' : ' — added to the importer'}`);
+    say(`✓ ${s.host}: ${s.productsEstimate}${crawlPages.length ? '+ (by browsing)' : ''} perfumes, ${verdict.okCount}/${verdict.total} pages read without AI, ${verdict.currency} (1 = ${rate} EGP)${wasActive ? ' — still good' : ' — added to the importer'}`);
   } else {
     s.status = 'candidate';
     s.reason = `صالح — ينتظر مكاناً (الحد ${MAX_ACTIVE} مصادر نشطة)`;

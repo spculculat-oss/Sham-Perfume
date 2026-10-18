@@ -19,7 +19,7 @@ import { reviewStore, type ReviewFile } from './review';
 import { loadSources } from './sources';
 import { extractGeneric } from './generic';
 import { adoptSkill, emptySkills, hostOf, isSkillsFile, learnSkill, readWithSkill, recordUse, skillsSummary, type SkillsFile } from './skills';
-import { isPerfume, parseRobots } from '../shaheen-discover/discover';
+import { isPerfume, pageLinks, parseRobots, withPage } from '../shaheen-discover/discover';
 import { addAltOffer, isImported, nextIdOf, normalizeBrand, ourPriceOf, perfumeKey, planRun, priceInEgp, priceReport, sourceKey, toStoreProduct, useCleanPhotos, type ImageRegistry, type ImportedProduct, type ImportSource, type PriceRule } from './transform';
 
 const env = process.env;
@@ -94,6 +94,33 @@ async function sitemapEntries(source: ImportSource): Promise<SitemapEntry[]> {
 }
 
 /**
+ * A store without a public sitemap: its product links, collected from its category pages (page 1, 2, … until
+ * no new product appears). Robots.txt is respected for every page; at most 80 pages per run.
+ */
+async function crawlEntries(source: ImportSource): Promise<SitemapEntry[]> {
+  if (!source.crawl?.pages.length) return [];
+  const robotsPage = await get(new URL('/robots.txt', source.base).href, 1);
+  const robots = parseRobots(robotsPage.status === 200 ? robotsPage.body : '');
+  const found = new Set<string>();
+  let read = 0;
+  for (const cat of source.crawl.pages) {
+    for (let n = 1; n <= source.crawl.maxPages && read < 80; n++) {
+      const url = withPage(cat, n);
+      try { if (!robots.allowed(new URL(url).pathname)) break; } catch { break; }
+      await sleep(Math.max(600, source.delayMs || 0));
+      const page = await get(url, 1);
+      read++;
+      if (page.status !== 200) break;
+      const before = found.size;
+      for (const u of pageLinks(page.body, source.base)) if (source.productUrl.test(u) && !source.excludeUrl?.test(u)) found.add(u);
+      if (found.size === before) break;
+    }
+  }
+  say(`${source.id}: ${found.size} products found by browsing ${read} category pages`);
+  return [...found].map((url) => ({ url, images: [] }));
+}
+
+/**
  * Products on the store's own listing that its sitemap lacks. `complete` is false when a listing page could
  * not be read — then no product is treated as gone because it was missing from the listing.
  */
@@ -161,7 +188,7 @@ for (const [sourceIndex, source] of selected.entries()) {
   if (!(rate > 0)) { say(`${source.id}: no exchange rate — import skipped (nothing is priced without a rate)`); continue; }
   say(`${source.id}: 1 ${source.currency} = ${rate} EGP (${from})`);
 
-  const sitemap = await sitemapEntries(source);
+  const sitemap = [...(source.sitemaps.length ? await sitemapEntries(source) : []), ...await crawlEntries(source)];
   info.sitemapProducts = sitemap.length;
   say(`${source.id}: ${sitemap.length} products in the sitemap`);
   if (!sitemap.length) { say(`${source.id}: sitemap unreadable — existing products kept as they are`); continue; }

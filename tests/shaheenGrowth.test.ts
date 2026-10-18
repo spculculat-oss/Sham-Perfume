@@ -5,7 +5,7 @@ import { adoptSkill, emptySkills, learnSkill, readWithSkill, recordUse, skillsSu
 import { addAltOffer, perfumeKey, type ImportedProduct } from '../scripts/shaheen-import/transform';
 import {
   addCandidates, brandSiteGuesses, domainOf, domainsFromSearch, emptySources, inferProductPattern, isNeverSource, isPerfume,
-  judgeSamples, parseRobots, planQueries, productCandidates, spreadSample, toImportSource, vettingQueue, type LiveSource, type Sample,
+  CATEGORYISH, judgeSamples, pageLinks, parseRobots, planQueries, productCandidates, withPage, spreadSample, toImportSource, vettingQueue, type LiveSource, type Sample,
 } from '../scripts/shaheen-discover/discover';
 import { buildBank, CURRICULUM, exam, importerShare, parseStudy, pickStudy, selfLesson, type TrainingDoc } from '../scripts/shaheen-school/school';
 import { emptyMemory, remember } from '../src/utils/shaheenMemory';
@@ -145,6 +145,22 @@ test('source scout: perfume-only, product pattern, sample verdicts', () => {
   const blocked: Sample[] = ok.map((s) => ({ ...s, product: null, status: 403 }));
   assert.match(judgeSamples(blocked).reason || '', /حماية/);
   assert.deepEqual(spreadSample([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 3), [1, 5, 10]);
+});
+
+test('source scout: stores without a sitemap are browsed like a visitor (links, categories, pages)', () => {
+  const home = `<a href="/collections/oud">Oud</a><a href="https://oud.example/products/royal-oud?variant=1#top">Royal</a>
+<a href="/ar/perfumes/c55555">عطور</a><a href="https://other.example/x">x</a><a href="mailto:a@b.c">mail</a><a href="/pages/about-us">About</a>`;
+  const links = pageLinks(home, 'https://www.oud.example/');
+  assert.deepEqual(links, ['https://www.oud.example/collections/oud', 'https://oud.example/products/royal-oud', 'https://www.oud.example/ar/perfumes/c55555', 'https://www.oud.example/pages/about-us']);
+  assert.deepEqual(links.filter((u) => CATEGORYISH.test(u)), ['https://www.oud.example/collections/oud', 'https://www.oud.example/ar/perfumes/c55555']);
+  assert.deepEqual(productCandidates(links), ['https://oud.example/products/royal-oud']);
+  assert.equal(withPage('https://oud.example/collections/oud', 1), 'https://oud.example/collections/oud');
+  assert.equal(withPage('https://oud.example/collections/oud', 3), 'https://oud.example/collections/oud?page=3');
+  assert.equal(withPage('https://oud.example/shop?sort=new', 2), 'https://oud.example/shop?sort=new&page=2');
+  const src = toImportSource({ id: 'b', host: 'oud.example', name: 'B', base: 'https://oud.example', status: 'active', foundBy: 'known-store', foundAt: 't', attempts: 1, crawlPages: ['https://oud.example/collections/oud'], productPattern: '^https://oud\\.example/products/[^?#]+$', currency: 'SAR', rateToEgp: 13 });
+  assert.ok(src);
+  assert.deepEqual(src.sitemaps, []);
+  assert.deepEqual(src.crawl, { pages: ['https://oud.example/collections/oud'], maxPages: 12 });
 });
 
 test('source scout: candidates, vetting order, queries, search parsing, import source', () => {

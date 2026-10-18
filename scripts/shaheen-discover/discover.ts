@@ -32,6 +32,8 @@ export interface LiveSource {
   sampleOk?: number;
   sampleTotal?: number;
   via?: 'json-ld' | 'generic';
+  /** No public sitemap: the category pages its product links are collected from (by browsing). */
+  crawlPages?: string[];
   crawlDelayMs?: number;
   attempts: number;
 }
@@ -117,6 +119,27 @@ export const PRODUCTISH = /\/(?:products?|shop|store|item|p|perfumes?|fragrances
 /** Links that are clearly not a product page (store pages, categories, blog, account…), any platform. */
 export const NOT_PRODUCT = /\/(?:blogs?|news|articles?|pages?|policies|polic(?:y|ies)|privacy|terms|categor(?:y|ies)|collections?|brands?|tags?|author|contact(?:-us)?|about(?:-us)?|faqs?|cart|checkout|account|login|register|search|wishlist|compare|stores?-locator|sitemap)(?:\/|$|\.html?$)|\/c\d+\/?$/i;
 
+/** Links of a page on the same site (absolute, no #fragment, no ?query), in page order, once each. */
+export function pageLinks(html: string, base: string): string[] {
+  const host = domainOf(base);
+  const out = new Set<string>();
+  for (const m of html.matchAll(/<a\b[^>]*\bhref\s*=\s*["']([^"']+)["']/gi)) {
+    try {
+      const u = new URL(m[1].replace(/&amp;/g, '&'), base);
+      if (!/^https?:$/.test(u.protocol) || domainOf(u.href) !== host) continue;
+      u.hash = ''; u.search = '';
+      out.add(u.href);
+    } catch { /* not a link */ }
+  }
+  return [...out];
+}
+
+/** Category / «all products» pages, any platform (Shopify collections, Salla «/c123», Woo «/shop/», …). */
+export const CATEGORYISH = /\/(?:collections?(?:\/[^/]+)?|categor(?:y|ies)(?:\/[^/]+)?|shop|store|perfumes?|fragrances?|parfums?|men|women|unisex|new-arrivals?|best-?sellers?|all-products|products|عطور|عطور-[^/]+)\/?$|\/c\d+\/?$/i;
+
+/** Page n of a category page («?page=2» unless the store already uses its own scheme). */
+export const withPage = (url: string, n: number) => (n <= 1 ? url : `${url}${url.includes('?') ? '&' : '?'}page=${n}`);
+
 /** Candidate product links of a mixed sitemap: the obvious product links, or everything that is not clearly something else. */
 export function productCandidates(urls: string[]): string[] {
   const productish = urls.filter((u) => PRODUCTISH.test(u) && !NOT_PRODUCT.test(u));
@@ -195,11 +218,12 @@ export function spreadSample<T>(items: T[], n: number): T[] {
 
 /** An active store as an import source (the importer's own type). */
 export function toImportSource(s: LiveSource): ImportSource | undefined {
-  if (s.status !== 'active' || !s.productPattern || !s.sitemaps?.length || !s.currency) return undefined;
+  if (s.status !== 'active' || !s.productPattern || !(s.sitemaps?.length || s.crawlPages?.length) || !s.currency) return undefined;
   let productUrl: RegExp;
   try { productUrl = new RegExp(s.productPattern, 'i'); } catch { return undefined; }
   return {
-    id: s.id, name: s.name, base: s.base, sitemaps: s.sitemaps, productUrl, currency: s.currency,
+    id: s.id, name: s.name, base: s.base, sitemaps: s.sitemaps || [], productUrl, currency: s.currency,
+    ...(s.crawlPages?.length ? { crawl: { pages: s.crawlPages, maxPages: 12 } } : {}),
     fallbackRateToEgp: s.rateToEgp, perfumeOnly: true, delayMs: s.crawlDelayMs, origin: 'discovered',
   };
 }
