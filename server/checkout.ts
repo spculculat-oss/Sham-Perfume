@@ -7,16 +7,20 @@
  *   GET  /api/store/checkout/:sessionId the payment result, read from Kashier (never from the browser)
  *   POST /api/store/kashier/webhook     Kashier's server-to-server event (HMAC-verified)
  *
- * Stateless on purpose (Vercel functions keep no disk): the whole order — items, contact, address,
- * country — travels in the Kashier session's metaData, so every order is in the Kashier dashboard, and
- * the owner is also notified through SHAM_WEBHOOK_URL (server/core/notify.ts) once it is paid.
+ * Every order is saved to the private finance ledger BEFORE opening a payment session.
+ * Both callbacks re-read the provider result and match the original amount/currency/session.
+ * Test payments never trigger fulfilment or enter real profit reports.
  */
 import express from 'express';
 import { randomBytes } from 'node:crypto';
+import { FinanceService } from './finance/service';
+import { MemoryStore } from './core/store';
+import { ValidationError } from './core/repository';
+import { toMinor } from '../src/finance/money';
 import productsData from '../src/data/products.json';
 import { mergeCatalog, type RawProduct, type StoreCatalogFile, type StoreProduct } from '../src/utils/storeCatalog';
 import { BUNDLED_FX, chargeCurrency, currencyFor, isCountry, isFxTable, quote, type FxTable, type ShippingTable } from '../src/utils/pricing';
-import { createSession, kashierConfig, KashierError, sessionPayment, verifyWebhook, paymentState, type KashierConfig } from './core/kashier';
+import { createSession, kashierConfig, KashierError, sessionPayment, verifyWebhook, type KashierConfig } from './core/kashier';
 import { createNotifier } from './core/notify';
 import { liveStoreCatalog, loadLive } from './core/liveData';
 import { RateLimiter, clientKey } from './core/rateLimit';
@@ -24,6 +28,7 @@ import { corsOrigins } from './cors';
 
 type Env = Record<string, string | undefined>;
 export interface CheckoutRouterOptions {
+  finance?: FinanceService;
   env?: Env; fetch?: typeof fetch; products?: RawProduct[];
   catalog?: () => Promise<StoreCatalogFile | undefined>; fx?: () => Promise<FxTable>; shipping?: ShippingTable;
   /** «متاجر شام»: registered merchants' published products (`mp_…` skus), priced on the server (merchant price + 50 %). */
@@ -52,22 +57,26 @@ export function countryFromHeaders(headers: Record<string, string | string[] | u
 }
 
 export interface CheckoutInput {
-  items: { sku: string; qty: number }[]; country: string; lang: 'ar' | 'en';
+  items: { sku: string; qty: number }[]; country: string; lang: 'ar' | 'en'; method?: 'card' | 'wallet';
   contact: { name: string; email: string; phone: string }; address: { city: string; line: string }; returnUrl?: string;
 }
 
 /** Validates the visitor's form. Returns an error code or the clean input. */
 export function readCheckout(body: unknown): CheckoutInput | { error: string } {
   const b = (body && typeof body === 'object' ? body : {}) as Record<string, unknown>;
-  const rawItems = Array.isArray(b.items) ? b.items.slice(0, 30) : [];
+  if (!Array.isArray(b.items) || b.items.length > 30) return { error: 'INVALID_ITEM' };
+  if (b.method !== undefined && !['card', 'wallet'].includes(String(b.method))) return { error: 'METHOD_UNAVAILABLE' };
+  const rawItems = b.items;
   const merged = new Map<string, number>();
   for (const raw of rawItems as { sku?: unknown; qty?: unknown }[]) {
     const qty = Number(raw?.qty);
     if (typeof raw?.sku !== 'string' || !raw.sku || !Number.isInteger(qty) || qty < 1 || qty > 99) return { error: 'INVALID_ITEM' };
-    merged.set(raw.sku, Math.min(99, (merged.get(raw.sku) || 0) + qty));
+    const total = (merged.get(raw.sku) || 0) + qty;
+    if (total > 99) return { error: 'INVALID_ITEM' };
+    merged.set(raw.sku, total);
   }
   if (!merged.size) return { error: 'EMPTY_ORDER' };
-  const country = str(b.country, 2).toUpperCase();
+  const country = typeof b.country === 'string' ? b.country.trim().toUpperCase() : '';
   if (!isCountry(country)) return { error: 'INVALID_COUNTRY' };
   const c = (b.contact && typeof b.contact === 'object' ? b.contact : {}) as Record<string, unknown>;
   const a = (b.address && typeof b.address === 'object' ? b.address : {}) as Record<string, unknown>;
@@ -77,7 +86,7 @@ export function readCheckout(body: unknown): CheckoutInput | { error: string } {
   if (!isEmail(contact.email)) return { error: 'INVALID_EMAIL' };
   if (contact.phone.replace(/\D/g, '').length < 7) return { error: 'INVALID_PHONE' };
   if (!address.city || address.line.length < 5) return { error: 'MISSING_ADDRESS' };
-  return { items: [...merged].map(([sku, qty]) => ({ sku, qty })), country, lang: b.lang === 'ar' ? 'ar' : 'en', contact, address, returnUrl: str(b.returnUrl, 500) || undefined };
+  return { items: [...merged].map(([sku, qty]) => ({ sku, qty })), country, ...(b.method ? { method: b.method as 'card' | 'wallet' } : {}), lang: b.lang === 'ar' ? 'ar' : 'en', contact, address, returnUrl: str(b.returnUrl, 500) || undefined };
 }
 
 /** Where Kashier sends the visitor back: their page, only if it is one of the site's own origins. */
@@ -95,6 +104,15 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
   const env = options.env || process.env;
   const request = options.fetch || fetch;
   const router = express.Router();
+  // Isolated routers default to a non-persistent sandbox. The application injects Sham Core's store.
+  const finance = options.finance || new FinanceService(new MemoryStore(), env, { fetch: request });
+  if (options.onPaid) finance.onPaid = options.onPaid;
+  const wrap = (work: (req: express.Request, res: express.Response) => Promise<unknown>) => (req: express.Request, res: express.Response) => {
+    work(req, res).catch((e) => {
+      res.status(e instanceof ValidationError ? e.status : 503).json({ code: e instanceof ValidationError ? e.code : 'FINANCE_UNAVAILABLE', error: 'Payment could not be verified or recorded. Please retry.' });
+    });
+  };
+  const verifyLimiter = new RateLimiter(60, 60_000);
   const products = options.products || (productsData as { products?: RawProduct[] }).products || [];
   const catalog = options.catalog || (() => liveStoreCatalog(env, request));
   const bundledFx = { ...BUNDLED_FX, updatedAt: BUNDLED_FX.updatedAt || '1970-01-01T00:00:00Z' };
@@ -117,12 +135,19 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     res.json({ country: country || null, source: country ? 'edge' : 'unknown' });
   });
 
-  router.get('/store/payments', (_req, res) => {
+  router.get('/store/payments', wrap(async (req, res) => {
+    res.setHeader('Cache-Control', 'private, no-store');
+    const country = req.query.country === undefined ? 'EG' : String(req.query.country);
+    if (!isCountry(country)) { res.status(400).json({ code: 'INVALID_COUNTRY' }); return; }
     const cfg = config();
-    res.json(cfg ? { enabled: true, provider: 'kashier', mode: cfg.mode, currencies: cfg.currencies } : { enabled: false });
-  });
+    if (!cfg) { res.json({ enabled: false, country, methods: [] }); return; }
+    const currency = chargeCurrency(currencyFor(country, BUNDLED_FX), cfg.currencies);
+    const methods = await finance.methods(country, currency);
+    res.json({ enabled: methods.length > 0, mode: cfg.mode, currencies: cfg.currencies, currency, country, methods });
+  }));
 
-  router.post('/store/checkout', async (req, res) => {
+  router.post('/store/checkout', wrap(async (req, res) => {
+    res.setHeader('Cache-Control', 'private, no-store');
     const cfg = config();
     if (!cfg) { res.status(503).json({ error: 'Online payment is not configured yet', code: 'PAYMENTS_NOT_CONFIGURED' }); return; }
     if (!limiter.allow(clientKey(req))) { res.status(429).json({ error: 'Too many requests, please wait a minute', code: 'RATE_LIMITED' }); return; }
@@ -143,13 +168,22 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     const display = quote(lines, input.country, { fx: rates, shipping: options.shipping });
     const charge = quote(lines, input.country, { fx: rates, shipping: options.shipping, currency: chargeCurrency(currencyFor(input.country, rates), cfg.currencies) });
 
+    const methods = await finance.methods(input.country, charge.currency);
+    if (!methods.length || (input.method && !methods.some((m) => m.id === input.method))) {
+      res.status(409).json({ error: 'No approved payment method for this country and currency', code: 'METHOD_UNAVAILABLE' }); return;
+    }
     const ref = newOrderRef();
-    const host = String(req.headers['x-forwarded-host'] || req.headers.host || '');
-    const webhookBase = env.SHAM_PUBLIC_API_URL?.trim() || (host ? `https://${host}` : '');
+    // Never construct an authenticated provider callback from a visitor-controlled Host header.
+    const webhookBase = env.SHAM_PUBLIC_API_URL?.trim().replace(/\/$/, '') || '';
+    await finance.recordOrder({ ref, provider: 'kashier', mode: cfg.mode, country: input.country, currency: charge.currency,
+      totalMinor: toMinor(charge.total, charge.currency), shippingChargedMinor: toMinor(charge.shipping, charge.currency),
+      lines: charge.lines.map((l) => ({ sku: l.sku, qty: l.qty, unitMinor: toMinor(l.unit, charge.currency) })) });
+    const started = Date.now();
     const itemsText = input.items.map((i) => `${i.sku}×${i.qty}`).join(', ');
     try {
       const session = await createSession(cfg, {
         order: ref, amount: charge.total, currency: charge.currency, display: input.lang,
+        allowedMethods: (input.method ? [input.method] : methods.map((m) => m.id)) as ('card' | 'wallet')[],
         merchantRedirect: `${safeReturnUrl(input.returnUrl, allowed)}?checkout=${encodeURIComponent(ref)}`,
         serverWebhook: webhookBase ? `${webhookBase.replace(/\/$/, '')}/api/store/kashier/webhook` : undefined,
         description: `Sham Store ${ref} — ${input.items.reduce((s, i) => s + i.qty, 0)} item(s)`,
@@ -162,54 +196,74 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
           displayNotes: { Order: ref, Items: itemsText.slice(0, 200) },
         },
       }, request);
-      if (options.onCheckout) {
+      await finance.recordSession(ref, cfg.mode, session.id);
+      await finance.observation(cfg.mode, 'create', true, Date.now() - started);
+      if (options.onCheckout && cfg.mode === 'live') {
         const catalogBySku = new Map(list.map((p) => [p.sku, p]));
         const catalogLines = input.items.filter((i) => catalogBySku.has(i.sku) && !i.sku.startsWith('mp_')).map((i) => {
           const p = catalogBySku.get(i.sku)!;
           return { sku: i.sku, qty: i.qty, price: p.price, name: input.lang === 'ar' ? p.name.ar || p.name.en : p.name.en || p.name.ar, image: p.imageUrl };
         });
         await options.onCheckout({ ref, req, input, catalogLines, shippingUsd: quote(lines, input.country, { fx: rates, shipping: options.shipping, currency: 'USD' }).shipping, total: charge.total, currency: charge.currency })
-          .catch((error) => console.error('[checkout] order record failed:', error instanceof Error ? error.message : error));
+          .catch(async () => { await finance.issue('ORDER_SYNC_FAILED', 'تعذّر إرسال الطلب للمجتمع', 'السجل المالي محفوظ؛ طابق الطلب مع بوابة التجار قبل التسليم.', 'critical', ref); });
       }
       res.json({ ref, sessionId: session.id, sessionUrl: session.sessionUrl, mode: cfg.mode, charge: { total: charge.total, currency: charge.currency, shipping: charge.shipping }, display: { total: display.total, currency: display.currency } });
     } catch (error) {
-      const code = error instanceof KashierError ? error.code : 'FAILED';
+      await finance.observation(cfg.mode, 'create', false, Date.now() - started, error instanceof KashierError ? error.code : 'FAILED');
+      const code = error instanceof KashierError ? error.code : 'FINANCE_UNAVAILABLE';
       res.status(502).json({ error: 'The payment page could not be opened, please try again', code });
     }
-  });
+  }));
 
-  router.get('/store/checkout/:sessionId', async (req, res) => {
+  const confirm = async (payment: Awaited<ReturnType<typeof sessionPayment>>, cfg: KashierConfig, sessionId: string) => {
+    const first = await finance.confirmPayment(payment, cfg.mode, sessionId);
+    if (payment.state === 'paid' && cfg.mode === 'live') {
+      if (first) await announce(payment.order, `🛒 طلب مدفوع ${payment.order}: ${payment.amount} ${payment.currency}`, { order: payment.order, amount: payment.amount, currency: payment.currency });
+    }
+  };
+
+  router.get('/store/checkout/:sessionId', wrap(async (req, res) => {
     const cfg = config();
-    if (!cfg) { res.status(503).json({ error: 'Online payment is not configured yet', code: 'PAYMENTS_NOT_CONFIGURED' }); return; }
+    if (!cfg) { res.status(503).json({ code: 'PAYMENTS_NOT_CONFIGURED' }); return; }
+    if (!verifyLimiter.allow(clientKey(req))) { res.status(429).json({ code: 'RATE_LIMITED' }); return; }
     res.setHeader('Cache-Control', 'no-store');
+    const started = Date.now();
     try {
       const payment = await sessionPayment(cfg, String(req.params.sessionId), request);
-      if (payment.state === 'paid') {
-        await options.onPaid?.(payment.order).catch(() => {});
-        const m = payment.metaData || {};
-        await announce(payment.order, `🛒 طلب مدفوع ${payment.order}: ${payment.amount} ${payment.currency} — ${String(m.items || '')} — ${String(m.name || '')} ${String(m.phone || '')} (${String(m.country || '')})`, { order: payment.order, amount: payment.amount, currency: payment.currency, method: payment.method, ...m });
-      }
-      res.json({ ref: payment.order, state: payment.state, status: payment.status, amount: payment.amount, currency: payment.currency });
+      await confirm(payment, cfg, String(req.params.sessionId));
+      await finance.observation(cfg.mode, 'verify', true, Date.now() - started);
+      res.json({ ref: payment.order, state: payment.state, status: payment.status, amount: payment.amount, currency: payment.currency, mode: cfg.mode });
     } catch (error) {
+      await finance.observation(cfg.mode, 'verify', false, Date.now() - started, error instanceof KashierError || error instanceof ValidationError ? error.code : 'FAILED');
+      if (error instanceof ValidationError) { res.status(error.status).json({ code: error.code, error: 'Payment not matched to the order' }); return; }
       const e = error instanceof KashierError ? error : new KashierError('FAILED', 502);
       res.status(e.status === 404 || e.status === 400 ? e.status : 502).json({ error: 'Could not read the payment', code: e.code });
     }
-  });
+  }));
 
-  router.post('/store/kashier/webhook', async (req, res) => {
+  router.post('/store/kashier/webhook', wrap(async (req, res) => {
     const cfg = config();
     const data = (req.body as { data?: unknown } | undefined)?.data;
     const signature = String(req.headers['x-kashier-signature'] || '');
     if (!cfg || !verifyWebhook(data, signature, cfg.apiKey)) { res.status(401).end(); return; }
     const d = data as Record<string, unknown>;
-    // Notify before answering: a serverless function may be frozen right after it responds (4 s cap).
-    if (paymentState(String(d.status || '')) === 'paid' && (req.body as { event?: string }).event === 'pay') {
-      const order = String(d.merchantOrderId || '');
-      await options.onPaid?.(order).catch(() => {});
-      await announce(order, `🛒 طلب مدفوع ${order}: ${String(d.amount)} ${String(d.currency)} (Kashier)`, { order, amount: d.amount, currency: d.currency, method: d.method, transactionId: d.transactionId });
+    const ref = String(d.merchantOrderId || '');
+    const session = await finance.sessionFor(ref, cfg.mode);
+    // Signed webhook is a hint, not proof of capture: event name is not among signatureKeys.
+    // Re-read our stored session, then match BOTH the signed amount and the provider's result.
+    await finance.validatePayment({ order: ref, amount: Number(d.amount), currency: String(d.currency), state: 'pending', status: String(d.status) }, cfg.mode);
+    if (!session) { res.status(503).end(); return; } // creation race: provider retries, do not drop it
+    const started = Date.now();
+    try {
+      const payment = await sessionPayment(cfg, session.sessionId, request);
+      await confirm(payment, cfg, session.sessionId);
+      await finance.observation(cfg.mode, 'verify', true, Date.now() - started);
+    } catch (error) {
+      await finance.observation(cfg.mode, 'verify', false, Date.now() - started, error instanceof ValidationError ? error.code : 'FAILED');
+      throw error; // non-2xx: retry rather than silently losing a financial event
     }
-    res.status(200).end(); // Kashier only reads the status code.
-  });
+    res.status(200).end();
+  }));
 
   return router;
 }

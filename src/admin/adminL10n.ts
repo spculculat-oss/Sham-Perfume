@@ -18,6 +18,7 @@ type AdminDict = Partial<Record<SupportedLanguage, string>>;
 
 export const ADMIN_STRINGS: Record<string, AdminDict> = {
   // ── Tabs / navigation ──────────────────────────────────────────────────
+  'الإدارة المالية': { en: 'Finance department' },
   'نظرة عامة': { en: 'Overview' },
   'المساعد الإداري': { en: 'Admin assistant' },
   'الجودة والتعلّم': { en: 'Quality & learning' },

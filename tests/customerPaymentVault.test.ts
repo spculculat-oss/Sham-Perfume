@@ -47,9 +47,9 @@ test('customer payment vault: full customer lifecycle - save, set default, trans
 
   const customerId = 'cust_test_vip_99';
 
-  // 1. Initially contains the 4 standard preview payment services
+  // 1. An empty device must never invent bank accounts or approved payment methods.
   const initial = getSavedPaymentMethods(customerId);
-  assert.equal(initial.length, 4);
+  assert.equal(initial.length, 0);
 
   // 2. Save a Visa card
   const visaCard = savePaymentMethod(
@@ -121,9 +121,9 @@ test('customer payment vault: full customer lifecycle - save, set default, trans
   );
   assert.ok(tabbyBnpl.id);
 
-  // Verify list (4 seed + 4 newly added)
+  // Only the customer's own local preferences, never seeded bank accounts.
   const list = getSavedPaymentMethods(customerId);
-  assert.equal(list.length, 8);
+  assert.equal(list.length, 4);
 
   // 6. Change default method to Tabby
   setDefaultPaymentMethod(tabbyBnpl.id, customerId);
@@ -146,7 +146,8 @@ test('customer payment vault: full customer lifecycle - save, set default, trans
     customerId
   );
   assert.ok(tx.id);
-  assert.equal(tx.status, 'succeeded');
+  assert.equal(tx.status, 'unverified');
+  assert.equal(tx.authCode, '', 'the browser cannot mint bank authorizations');
   assert.equal(tx.amount, 1450);
 
   const txs = getPaymentTransactions(customerId);
@@ -156,6 +157,6 @@ test('customer payment vault: full customer lifecycle - save, set default, trans
   // 8. Delete a method
   deletePaymentMethod(vfWallet.id, customerId);
   const remaining = getSavedPaymentMethods(customerId);
-  assert.equal(remaining.length, 7);
+  assert.equal(remaining.length, 3);
   assert.ok(!remaining.some((m) => m.id === vfWallet.id));
 });

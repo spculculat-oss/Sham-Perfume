@@ -130,6 +130,7 @@ const S = {
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>(() => {
     try {
+      if (new URLSearchParams(window.location.search).has('checkout')) return 'store';
       const hash = window.location.hash.replace('#', '');
       const clean = hash.split('?')[0];
       if (clean === 'formula' || clean === 'spec') return 'concentration';

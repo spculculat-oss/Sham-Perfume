@@ -9,6 +9,7 @@ import { STORE_BASE_LANGS } from './storeKeys';
  * contains Arabic script, so a new key cannot ship half-translated.
  */
 export const STORE_TEXT_BASE: Record<StoreTextKey, readonly string[]> = {
+  sf_buy_now: ['شراء مباشر', 'Buy now', 'Acheter maintenant', 'Comprar ahora', 'Acquista ora', 'Jetzt kaufen', 'Купить сейчас', '立即购买', 'Hemen satın al', 'خرید مستقیم'],
   // [ar, en, fr, es, it, de, ru, zh, tr, fa]
   sf_store_name: ['متجر شام', 'Sham Store', 'Boutique Sham', 'Tienda Sham', 'Negozio Sham', 'Sham-Laden', 'Магазин Sham', '沙姆商店', 'Sham Mağazası', 'فروشگاه شام'],
   sf_tagline: ['عطور مختارة بعناية', 'Scents chosen with care', 'Des parfums choisis avec soin', 'Fragancias elegidas con cuidado', 'Profumi scelti con cura', 'Düfte mit Sorgfalt gewählt', 'Ароматы, отобранные с заботой', '精心挑选的香氛', 'Özenle seçilmiş kokular', 'عطرهای دست‌چین‌شده'],

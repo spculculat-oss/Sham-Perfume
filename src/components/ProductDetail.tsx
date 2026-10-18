@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, ArrowRight, ExternalLink, MessageCircle, Package, ShoppingCart, Sparkles, Star } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ExternalLink, MessageCircle, Package, CreditCard, ShoppingCart, Sparkles, Star } from 'lucide-react';
 import { type StoreProduct } from '../utils/storeCatalog';
 import {
   makeStoreT, storeFamilyLabel, storeGenderLabel, storeLocalized, storeNumber,
@@ -9,6 +9,7 @@ import { isRTL } from '../لغات/localizedContent';
 import type { SupportedLanguage } from '../types/i18n';
 import { loadStoreCatalog, productPageUrl, storeImageSrc } from '../utils/liveStore';
 import { addToCart, useCart } from '../utils/storeCart';
+import { requestDirectPurchase } from '../utils/directPurchase';
 import { useStoreMoney } from '../utils/storeCheckout';
 import { LegalDisclaimer } from './LegalDisclaimer';
 
@@ -19,7 +20,7 @@ function detailLabels(lang: SupportedLanguage) {
     heading: t('sf_store_name'), back: t('pd_back'), notFound: t('pd_not_found'), description: t('pd_description'),
     profile: t('pd_scent_profile'), family: t('pd_family'), gender: t('pd_gender'), seasons: t('pd_seasons'),
     occasions: t('pd_occasions'), top: t('pd_top'), heart: t('pd_heart'), base: t('pd_base'),
-    brand: t('pd_brand'), category: t('pd_category'), sku: t('pd_sku'), addToCart: t('sf_add_to_cart'),
+    brand: t('pd_brand'), category: t('pd_category'), sku: t('pd_sku'), addToCart: t('sf_add_to_cart'), buyNow: t('sf_buy_now'),
     inCart: t('pd_in_cart'), qty: t('pd_qty'), outOfStock: t('sf_out_of_stock'), currency: t('sf_currency'),
     related: t('pd_related'), askShaheen: t('pd_ask_shaheen'), reviewed: t('pd_reviewed'), loading: t('pd_loading'),
     size: t('pd_size'), ml: t('pd_ml'), concentration: t('pd_concentration'), longevity: t('pd_longevity'),
@@ -117,15 +118,18 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
             <h1 className="text-2xl font-bold text-stone-900">{storeLocalized(product.name, currentLang)}</h1>
             <p className="text-3xl font-bold text-amber-900">{price(product.price)}</p>
             {product.inStock ? (
-              <div className="flex items-center gap-2">
-                <div className="flex items-center border rounded-lg" aria-label={L.qty}>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center self-start border rounded-lg" aria-label={L.qty}>
                   <button type="button" onClick={() => setQty(Math.max(1, qty - 1))} className="px-3 py-2 cursor-pointer">−</button>
-                  <span className="w-8 text-center">{qty}</span>
+                  <span className="w-8 text-center">{storeNumber(qty, currentLang)}</span>
                   <button type="button" onClick={() => setQty(Math.min(99, qty + 1))} className="px-3 py-2 cursor-pointer">+</button>
                 </div>
-                <button type="button" onClick={add} className="flex-1 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-semibold inline-flex items-center justify-center gap-2 cursor-pointer">
-                  <ShoppingCart className="w-4 h-4" />{cart[product.sku] ? L.inCart.replace('{n}', String(cart[product.sku])) : L.addToCart}
-                </button>
+                <div className="grid grid-cols-2 gap-2">
+                  <button type="button" onClick={add} data-testid="product-add-to-cart" className="min-w-0 px-2 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-semibold inline-flex items-center justify-center gap-2 cursor-pointer">
+                    <ShoppingCart className="w-4 h-4" />{cart[product.sku] ? L.inCart.replace('{n}', storeNumber(cart[product.sku], currentLang)) : L.addToCart}
+                  </button>
+                  <button type="button" onClick={() => requestDirectPurchase(product.sku, qty)} data-testid="product-buy-now" className="min-w-0 px-2 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold inline-flex items-center justify-center gap-2 cursor-pointer"><CreditCard className="w-4 h-4 shrink-0" />{L.buyNow}</button>
+                </div>
               </div>
             ) : <p className="py-2.5 rounded-xl bg-stone-100 text-stone-500 text-center">{L.outOfStock}</p>}
             <button type="button" onClick={askShaheen} data-testid="product-ask-shaheen"

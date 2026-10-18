@@ -49,6 +49,7 @@
     "scripts/product-pages.mts",
     "scripts/seo-agent/**/*.ts",
     "scripts/seo-agent/**/*.mts",
+    "scripts/shaheen-finance/**/*.mts",
     "scripts/seo-build.mts"
   ]
 }

@@ -34,6 +34,18 @@ export function setCartQty(sku: string, qty: number) {
   write(cart);
 }
 export const clearCart = () => write({});
+/** Remove only the paid cart snapshot. Direct purchases never touch the visitor's existing basket. */
+export function removePurchasedItems(items: { sku: string; qty: number }[]) {
+  const cart = readCart();
+  for (const item of items) {
+    if (!Number.isInteger(item.qty) || item.qty < 1 || item.qty > 99) continue;
+    if (cart[item.sku]) {
+      const remaining = cart[item.sku] - item.qty;
+      if (remaining > 0) cart[item.sku] = remaining; else delete cart[item.sku];
+    }
+  }
+  write(cart);
+}
 
 export function useCart(): Cart {
   const [cart, setCart] = useState<Cart>(() => (typeof window === 'undefined' ? {} : readCart()));

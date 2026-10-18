@@ -67,8 +67,8 @@ export const StoreInvoiceBreakdown: React.FC<{
         <Info className="w-3 h-3 shrink-0 mt-0.5 text-amber-700" />
         <span>
           {lang === 'ar'
-            ? `الأسعار لا تشمل ضريبة بلدك/الجمارك إلا ما هو موضح. الفاتورة الضريبية الرسمية تُصدر إلكترونيًا (${country === 'EG' ? 'EDA مصر' : country === 'SA' ? 'ZATCA السعودية' : 'حسب بلدك'}). هامش المنصة مضمّن في سعر المنتج.`
-            : `Prices exclude your country's VAT/customs except as shown. Official e-invoice issued per your country. Platform margin included in product price.`}
+            ? 'هذا تقدير استرشادي وليس فاتورة ضريبية أو مبلغاً محصّلاً. قد تُستحق ضرائب أو جمارك منفصلة حسب الطلب والبلد. مبلغ الدفع الفعلي يظهر في صفحة البوابة؛ الفاتورة الرسمية عند وجوبها مسؤولية التاجر.'
+            : 'This is an indicative estimate, not a tax invoice or a collected amount. Separate taxes or duties may apply to the order and country. The gateway shows the actual charge; the merchant is responsible for any required official invoice.'}
         </span>
       </div>
       <div className="text-[10px] text-stone-400">

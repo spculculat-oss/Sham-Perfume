@@ -50,6 +50,7 @@ export type StoreTextKey =
   | 'sf_no_results'
   | 'sf_clear_filters'
   | 'sf_add_to_cart'
+  | 'sf_buy_now'
   | 'sf_added'
   | 'sf_details'
   | 'sf_out_of_stock'

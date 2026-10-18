@@ -29,18 +29,8 @@ import {
   CheckCircle2,
   Building,
 } from 'lucide-react';
-import { StoreSalesCategoryChart } from './StoreSalesCategoryChart';
 import { PaymentEnvironmentModal } from './PaymentEnvironmentModal';
-import {
-  getSavedPaymentMethods,
-  recordPaymentTransaction,
-  savePaymentMethod,
-  detectCardBrand,
-  formatCardNumber,
-  formatExpiry,
-  type SavedPaymentMethod,
-  type PaymentProvider,
-} from '../utils/customerPaymentVault';
+import { StoreSalesCategoryChart } from './StoreSalesCategoryChart';
 import { saveMerchant } from '../utils/merchantDataStore';
 import { FAMILIES, searchText, type Family, type Gender, type StoreProduct } from '../utils/storeCatalog';
 import { makeStoreT, storeFamilyLabel, storeGenderLabel, storeLocalized, storeNumber } from '../لغات/storeL10n';
@@ -49,7 +39,7 @@ import type { SupportedLanguage } from '../types/i18n';
 import { askShaheenStore, loadStoreCatalog, localSuggestion, storeImageSrc, type StoreSuggestion } from '../utils/liveStore';
 import { LegalDisclaimer } from './LegalDisclaimer';
 import { StoreInvoiceBreakdown } from './StoreInvoiceBreakdown';
-import { addToCart, cartSummary, clearCart, orderMessage, setCartQty, useCart } from '../utils/storeCart';
+import { addToCart, cartSummary, clearCart, orderMessage, removePurchasedItems, setCartQty, useCart } from '../utils/storeCart';
 import {
   CheckoutError,
   countryOptions,
@@ -60,6 +50,8 @@ import {
   type CheckoutForm,
   type PaymentResult,
 } from '../utils/storeCheckout';
+import { DIRECT_PURCHASE_EVENT, takeDirectPurchase, type DirectPurchase } from '../utils/directPurchase';
+import { quote } from '../utils/pricing';
 import { useMerchantCartProducts } from '../community/cartItems';
 
 /**
@@ -105,6 +97,7 @@ function storeLabels(lang: SupportedLanguage) {
     clear: t('sf_clear_filters'),
     clearSearch: t('sf_clear_search'),
     addToCart: t('sf_add_to_cart'),
+    buyNow: t('sf_buy_now'),
     added: t('sf_added'),
     details: t('sf_details'),
     currency: t('sf_currency'),
@@ -435,8 +428,11 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
 
   // Cart
   const cart = useCart();
-  const merchantItems = useMerchantCartProducts(cart);
-  const summary = cartSummary(cart, merchantItems.length ? [...products, ...merchantItems] : products);
+  const [directPurchase, setDirectPurchase] = useState<DirectPurchase | null>(null);
+  const basketCount = Object.values(cart).reduce((n, qty) => n + qty, 0);
+  const checkoutItems = directPurchase ? { [directPurchase.sku]: directPurchase.qty } : cart;
+  const merchantItems = useMerchantCartProducts(checkoutItems);
+  const summary = cartSummary(checkoutItems, merchantItems.length ? [...products, ...merchantItems] : products);
   const [cartOpen, setCartOpen] = useState(false);
   const [justAdded, setJustAdded] = useState('');
 
@@ -455,7 +451,10 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
   // Pricing & Payments
   const money = useStoreMoney(currentLang, L.currency);
   const countries = useMemo(() => countryOptions(currentLang), [currentLang]);
-  const payments = usePayments();
+  const payments = usePayments(money.country);
+  const [paymentMethod, setPaymentMethod] = useState<'card' | 'wallet'>('card');
+  const chosenMethod = payments?.methods.some((m) => m.id === paymentMethod) ? paymentMethod : payments?.methods[0]?.id;
+  const chargedBill = payments?.currency ? quote(summary.lines.map((l) => ({ sku: l.product.sku, price: l.product.price, qty: l.qty })), money.country, { currency: payments.currency }) : null;
   const bill = money.quote(summary.lines.map((l) => ({ sku: l.product.sku, price: l.product.price, qty: l.qty })));
   const lineTotal = new Map(bill.lines.map((l) => [l.sku, l.subtotal]));
   const [step, setStep] = useState<'cart' | 'form'>('cart');
@@ -468,100 +467,40 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
     void returnedPayment().then((result) => {
       if (!result) return;
       setPayResult(result);
-      if (result.state === 'paid') clearCart();
+      if (result.state === 'paid' && result.mode === 'live' && result.cartItems) removePurchasedItems(result.cartItems);
     });
   }, []);
+
+  const buyNow = (product: StoreProduct, qty = 1) => {
+    if (!product.inStock) return;
+    setDirectPurchase({ sku: product.sku, qty, at: Date.now() });
+    setCartOpen(true); setStep('form'); setPayMessage(''); setSearchFocused(false);
+  };
+  useEffect(() => {
+    const receive = () => {
+      const intent = takeDirectPurchase();
+      if (intent) { setDirectPurchase(intent); setCartOpen(true); setStep('form'); setPayMessage(''); }
+    };
+    receive();
+    window.addEventListener(DIRECT_PURCHASE_EVENT, receive);
+    return () => window.removeEventListener(DIRECT_PURCHASE_EVENT, receive);
+  }, []);
+  const changeCheckoutQty = (sku: string, qty: number) => {
+    if (directPurchase) setDirectPurchase({ ...directPurchase, qty: Math.min(99, Math.max(1, qty)) });
+    else setCartQty(sku, qty);
+  };
 
   const pay = async (e: React.FormEvent) => {
     e.preventDefault();
     if (paying) return;
-    setPaying(true);
-    setPayMessage('');
-
-    // Determine chosen payment method
-    const selectedSaved = savedMethods.find((m) => m.id === selectedMethodId);
-    let chosenTitle = selectedSaved ? (currentLang === 'ar' ? selectedSaved.title : selectedSaved.titleEn) : '';
-    let chosenProvider: PaymentProvider = selectedSaved ? selectedSaved.provider : 'visa';
-
-    if (paymentChoice === 'card') {
-      const cleanDigits = cardNumInput.replace(/\D/g, '');
-      const last4 = cleanDigits.slice(-4) || '1234';
-      chosenProvider = detectCardBrand(cardNumInput);
-      chosenTitle = currentLang === 'ar' ? `بطاقة بنكية (•••• ${last4})` : `Bank Card (•••• ${last4})`;
-
-      if (savePaymentForFuture && cleanDigits.length >= 12) {
-        savePaymentMethod({
-          customerId: 'guest_client',
-          type: 'card',
-          title: `بطاقة •••• ${last4}`,
-          titleEn: `Card •••• ${last4}`,
-          provider: chosenProvider,
-          identifier: `•••• •••• •••• ${last4}`,
-          holderName: payForm.name || 'Customer',
-          expiry: cardExpInput || '12/28',
-          isDefault: savedMethods.length === 0,
-        });
-      }
-    } else if (paymentChoice === 'wallet') {
-      const ph = walletPhoneInput.trim() || payForm.phone.trim();
-      chosenProvider = 'vodafone_cash';
-      chosenTitle = currentLang === 'ar' ? `محفظة إلكترونية (${ph})` : `Mobile Wallet (${ph})`;
-      if (savePaymentForFuture && ph) {
-        savePaymentMethod({
-          customerId: 'guest_client',
-          type: 'wallet',
-          title: `محفظة (${ph})`,
-          titleEn: `Wallet (${ph})`,
-          provider: 'vodafone_cash',
-          identifier: ph,
-          holderName: payForm.name || 'Customer',
-          isDefault: savedMethods.length === 0,
-        });
-      }
-    } else if (paymentChoice === 'instapay') {
-      const h = instapayHandleInput.trim() || `${payForm.email.split('@')[0]}@instapay`;
-      chosenProvider = 'instapay';
-      chosenTitle = `InstaPay (${h})`;
-    } else if (paymentChoice === 'bnpl') {
-      chosenProvider = 'tabby';
-      chosenTitle = currentLang === 'ar' ? 'تابي - تقسيط 4 دفعات بدون فوائد' : 'Tabby - 4 Installments';
-    }
-
-    const orderRef = `SP-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
-
-    // Record transaction securely in customer payment vault
-    recordPaymentTransaction({
-      customerId: 'guest_client',
-      orderRef,
-      amount: summary.total,
-      currency: L.currency,
-      paymentMethodId: selectedSaved?.id,
-      paymentMethodTitle: chosenTitle || (currentLang === 'ar' ? 'مدفوعات شام الإلكترونية' : 'Sham Digital Pay'),
-      provider: chosenProvider,
-      status: 'succeeded',
-      authCode: `AUTH-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
-    });
-
-    if (payments?.enabled) {
-      try {
-        await startCheckout(
-          summary.lines.map((l) => ({ sku: l.product.sku, qty: l.qty })),
-          money.country,
-          payForm,
-          currentLang
-        );
-        return;
-      } catch {
-        // Fall back to immediate authorized order receipt
-      }
-    }
-
-    // Direct successful fulfillment
-    setPayResult({ ref: orderRef, state: 'paid' });
-    clearCart();
-    setPaying(false);
-    setStep('cart');
-    setCartOpen(false);
+    if (!payments?.enabled || !chosenMethod) { setPayMessage(L.payError); return; }
+    setPaying(true); setPayMessage('');
+    try {
+      await startCheckout(summary.lines.map((l) => ({ sku: l.product.sku, qty: l.qty })), money.country, payForm, currentLang, chosenMethod, directPurchase ? 'direct' : 'cart');
+    } catch (error) {
+      setPayMessage(error instanceof CheckoutError && ['INVALID_EMAIL', 'INVALID_PHONE', 'MISSING_ADDRESS', 'MISSING_NAME'].includes(error.code) ? L.payInvalid : L.payError);
+      // Keep the cart and delivery details. A failed redirect or gateway call is NEVER a payment.
+    } finally { setPaying(false); }
   };
 
   const countryPicker = (testId: string) => (
@@ -590,31 +529,6 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
   const [showReg, setShowReg] = useState(false);
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [savedMethods, setSavedMethods] = useState<SavedPaymentMethod[]>([]);
-  const [selectedMethodId, setSelectedMethodId] = useState<string>('');
-  const [paymentChoice, setPaymentChoice] = useState<'saved' | 'card' | 'wallet' | 'instapay' | 'bnpl'>('saved');
-  const [savePaymentForFuture, setSavePaymentForFuture] = useState(true);
-  const [cardNumInput, setCardNumInput] = useState('');
-  const [cardExpInput, setCardExpInput] = useState('');
-  const [walletPhoneInput, setWalletPhoneInput] = useState('');
-  const [instapayHandleInput, setInstapayHandleInput] = useState('');
-
-  const refreshPayments = () => {
-    const list = getSavedPaymentMethods();
-    setSavedMethods(list);
-    const def = list.find((m) => m.isDefault) || list[0];
-    if (def && !selectedMethodId) {
-      setSelectedMethodId(def.id);
-    }
-  };
-
-  useEffect(() => {
-    refreshPayments();
-    const handleUpdate = () => refreshPayments();
-    window.addEventListener('sham-payment-methods-updated', handleUpdate);
-    return () => window.removeEventListener('sham-payment-methods-updated', handleUpdate);
-  }, []);
-
   const [form, setForm] = useState({ nameAr: '', email: '', phone: '', pass: '' });
   const register = (e: React.FormEvent) => {
     e.preventDefault();
@@ -744,17 +658,19 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
           )}
 
           {/* Price & Action */}
-          <div className="mt-auto pt-3 border-t border-stone-100 flex items-center justify-between gap-2">
+          <div className="mt-auto pt-3 border-t border-stone-100 space-y-2">
             <div>
               <span className="text-base font-extrabold text-stone-900 font-mono-numbers">
                 {price(p.price)}
               </span>
             </div>
+            <div className="grid grid-cols-2 gap-2">
             <button
               type="button"
+              data-testid="store-add-to-cart"
               disabled={!p.inStock}
               onClick={() => add(p)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs ${
+              className={`px-2 py-2.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1 shadow-2xs ${
                 isAdded
                   ? 'bg-emerald-700 text-white'
                   : 'bg-stone-900 hover:bg-amber-700 disabled:bg-stone-200 disabled:text-stone-400 text-white active:scale-95'
@@ -772,6 +688,10 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                 </>
               )}
             </button>
+            <button type="button" onClick={() => buyNow(p)} disabled={!p.inStock} data-testid="store-buy-now" className="px-2 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 disabled:bg-stone-200 disabled:text-stone-400 text-white text-[11px] sm:text-xs font-bold inline-flex items-center justify-center gap-1 transition-colors cursor-pointer">
+              <CreditCard className="w-3.5 h-3.5 shrink-0" /><span>{L.buyNow}</span>
+            </button>
+            </div>
           </div>
         </div>
       </article>
@@ -936,6 +856,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                               >
                                 <ShoppingCart className="w-3.5 h-3.5" />
                               </button>
+                              <button type="button" disabled={!product.inStock} onClick={() => buyNow(product)} title={L.buyNow} aria-label={L.buyNow} className="p-1.5 rounded-lg bg-amber-700 hover:bg-amber-800 disabled:bg-stone-200 text-white transition-colors"><CreditCard className="w-3.5 h-3.5" /></button>
                             </div>
                           </div>
                         ))}
@@ -1043,16 +964,16 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
           {/* Cart Opener */}
           <button
             type="button"
-            onClick={() => setCartOpen(true)}
+            onClick={() => { setDirectPurchase(null); setStep('cart'); setPayMessage(''); setCartOpen(true); }}
             className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/5 transition hover:border-amber-300/40 hover:bg-amber-400/10 cursor-pointer"
             title={L.cart}
             aria-label={L.cart}
             data-testid="store-cart-button"
           >
             <ShoppingCart className="h-5 w-5 text-white" />
-            {summary.count > 0 && (
+            {basketCount > 0 && (
               <span className="absolute -top-1 -end-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500 px-1 text-xs font-extrabold text-stone-950 shadow-sm">
-                {summary.count}
+                {storeNumber(basketCount, currentLang)}
               </span>
             )}
           </button>
@@ -1109,7 +1030,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
             }`}
           >
             <span>
-              {(payResult.state === 'paid' ? L.paid : payResult.state === 'failed' ? L.payFailed : L.payPending).replace(
+              {(payResult.mode === 'test' ? L.testMode : payResult.state === 'paid' ? L.paid : payResult.state === 'failed' ? L.payFailed : L.payPending).replace(
                 '{ref}',
                 payResult.ref
               )}
@@ -1516,14 +1437,15 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
       {cartOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex justify-end" onClick={() => setCartOpen(false)}>
           <aside
-            className="w-full max-w-sm h-full bg-white p-5 flex flex-col shadow-2xl"
+            className="w-full max-w-sm h-full bg-white p-5 flex flex-col overflow-y-auto shadow-2xl"
+            role="dialog" aria-modal="true" aria-label={directPurchase ? L.buyNow : L.cart}
             onClick={(e) => e.stopPropagation()}
             data-testid="store-cart"
           >
             <div className="flex items-center justify-between pb-3 border-b border-stone-100">
               <h3 className="font-extrabold text-lg text-stone-900 flex items-center gap-2">
                 <ShoppingCart className="w-5 h-5 text-amber-700" />
-                <span>{L.cart}</span>
+                <span>{directPurchase ? L.buyNow : L.cart}</span>
               </h3>
               <button
                 type="button"
@@ -1535,9 +1457,10 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
               </button>
             </div>
 
+            {directPurchase && <p className="text-xs text-amber-900 bg-amber-50 p-2 rounded-lg my-2">{currentLang === 'ar' ? 'شراء هذا المنتج فقط. محتويات سلتك الأخرى محفوظة كما هي.' : 'Buy only this product. Your existing basket stays unchanged.'}</p>}
             {summary.lines.length ? (
               <>
-                <div className="flex-1 overflow-y-auto divide-y divide-stone-100 py-2">
+                <div className="shrink-0 divide-y divide-stone-100 py-2">
                   {summary.lines.map(({ product, qty }) => (
                     <div key={product.sku} className="py-3 flex items-center gap-3">
                       <ProductImage product={product} className="w-12 h-12 rounded-xl shrink-0 border border-stone-200" />
@@ -1552,15 +1475,19 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                       <div className="flex items-center gap-1 bg-stone-100 rounded-lg p-0.5">
                         <button
                           type="button"
-                          onClick={() => setCartQty(product.sku, qty - 1)}
+                          onClick={() => changeCheckoutQty(product.sku, qty - 1)}
+                          disabled={Boolean(directPurchase && qty <= 1) || paying}
+                          aria-label={currentLang === 'ar' ? 'تقليل الكمية' : 'Decrease quantity'}
                           className="p-1 rounded hover:bg-white text-stone-700 cursor-pointer"
                         >
                           <Minus className="w-3 h-3" />
                         </button>
-                        <span className="w-6 text-center text-xs font-bold font-mono-numbers">{qty}</span>
+                        <span className="w-6 text-center text-xs font-bold font-mono-numbers">{storeNumber(qty, currentLang)}</span>
                         <button
                           type="button"
-                          onClick={() => setCartQty(product.sku, qty + 1)}
+                          onClick={() => changeCheckoutQty(product.sku, qty + 1)}
+                          disabled={qty >= 99 || paying}
+                          aria-label={currentLang === 'ar' ? 'زيادة الكمية' : 'Increase quantity'}
                           className="p-1 rounded hover:bg-white text-stone-700 cursor-pointer"
                         >
                           <Plus className="w-3 h-3" />
@@ -1604,14 +1531,6 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                     <form onSubmit={pay} className="space-y-3" data-testid="store-checkout-form">
                       <div className="flex items-center justify-between pt-1">
                         <p className="text-sm font-bold text-stone-900">{L.deliveryDetails}</p>
-                        <button
-                          type="button"
-                          onClick={() => setShowPaymentModal(true)}
-                          className="text-[11px] font-bold text-amber-800 hover:underline flex items-center gap-1 cursor-pointer"
-                        >
-                          <CreditCard className="w-3.5 h-3.5 text-amber-700" />
-                          <span>{currentLang === 'ar' ? 'المحفظة والبطاقات' : 'Payment Vault'}</span>
-                        </button>
                       </div>
 
                       {payments?.mode === 'test' && (
@@ -1639,173 +1558,16 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                         />
                       ))}
 
-                      {/* Payment Method Selector & Vault Integration */}
-                      <div className="pt-2 border-t border-stone-100 space-y-2">
-                        <div className="flex items-center justify-between text-xs">
-                          <span className="font-bold text-stone-800 flex items-center gap-1">
-                            <Lock className="w-3.5 h-3.5 text-emerald-600" />
-                            <span>{currentLang === 'ar' ? 'طريقة السداد الآمنة' : 'Payment Method'}</span>
-                          </span>
-                          <span className="text-[10px] text-stone-400">256-Bit SSL</span>
-                        </div>
-
-                        {/* If user has saved methods */}
-                        {savedMethods.length > 0 && (
-                          <div className="space-y-1.5">
-                            <span className="text-[10px] font-bold text-stone-500 uppercase">
-                              {currentLang === 'ar' ? 'وسائل الدفع المحفوظة لديك:' : 'Your Saved Payment Methods:'}
-                            </span>
-                            <div className="space-y-1">
-                              {savedMethods.map((sm) => (
-                                <label
-                                  key={sm.id}
-                                  className={`flex items-center justify-between p-2 rounded-xl border text-xs cursor-pointer transition-all ${
-                                    paymentChoice === 'saved' && selectedMethodId === sm.id
-                                      ? 'border-amber-600 bg-amber-50/80 ring-1 ring-amber-500'
-                                      : 'border-stone-200 bg-white hover:bg-stone-50'
-                                  }`}
-                                >
-                                  <div className="flex items-center gap-2">
-                                    <input
-                                      type="radio"
-                                      name="paymentMethod"
-                                      checked={paymentChoice === 'saved' && selectedMethodId === sm.id}
-                                      onChange={() => {
-                                        setPaymentChoice('saved');
-                                        setSelectedMethodId(sm.id);
-                                      }}
-                                      className="accent-amber-700"
-                                    />
-                                    <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-stone-900 text-white font-bold">
-                                      {sm.provider.toUpperCase()}
-                                    </span>
-                                    <span className="font-bold text-stone-800">
-                                      {currentLang === 'ar' ? sm.title : sm.titleEn}
-                                    </span>
-                                  </div>
-                                  <span className="font-mono text-[11px] text-stone-500">{sm.identifier}</span>
-                                </label>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Alternate / New Payment Options */}
-                        <div className="pt-1">
-                          <span className="text-[10px] font-bold text-stone-500 block mb-1">
-                            {currentLang === 'ar' ? 'أو اختر وسيلة دفع أخرى:' : 'Or Select Another Method:'}
-                          </span>
-                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-[11px]">
-                            {[
-                              { id: 'card', labelAr: 'بطاقة بنكية', labelEn: 'Card', icon: CreditCard },
-                              { id: 'wallet', labelAr: 'محفظة ذكية', labelEn: 'Wallet', icon: Smartphone },
-                              { id: 'instapay', labelAr: 'إنستاباي', labelEn: 'InstaPay', icon: Landmark },
-                              { id: 'bnpl', labelAr: 'تابي (تقسيط)', labelEn: 'Tabby BNPL', icon: Sparkles },
-                            ].map((opt) => (
-                              <button
-                                key={opt.id}
-                                type="button"
-                                onClick={() => setPaymentChoice(opt.id as any)}
-                                className={`p-1.5 rounded-lg border text-center transition-all cursor-pointer flex flex-col items-center gap-0.5 ${
-                                  paymentChoice === opt.id
-                                    ? 'border-amber-600 bg-amber-50 text-amber-900 font-bold ring-1 ring-amber-500'
-                                    : 'border-stone-200 bg-white hover:bg-stone-50 text-stone-600'
-                                }`}
-                              >
-                                <opt.icon className="w-3.5 h-3.5 text-amber-700" />
-                                <span className="truncate">{currentLang === 'ar' ? opt.labelAr : opt.labelEn}</span>
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Dynamic Input based on payment choice */}
-                        {paymentChoice === 'card' && (
-                          <div className="p-2.5 rounded-xl bg-stone-50 border border-stone-200 space-y-2 animate-in fade-in">
-                            <input
-                              type="text"
-                              maxLength={19}
-                              placeholder="4242 •••• •••• 4242"
-                              value={cardNumInput}
-                              onChange={(e) => setCardNumInput(formatCardNumber(e.target.value))}
-                              className="w-full px-2.5 py-1.5 bg-white border border-stone-200 rounded-lg text-xs font-mono"
-                            />
-                            <div className="grid grid-cols-2 gap-2">
-                              <input
-                                type="text"
-                                maxLength={5}
-                                placeholder="MM/YY"
-                                value={cardExpInput}
-                                onChange={(e) => setCardExpInput(formatExpiry(e.target.value))}
-                                className="w-full px-2.5 py-1.5 bg-white border border-stone-200 rounded-lg text-xs font-mono"
-                              />
-                              <input
-                                type="password"
-                                maxLength={4}
-                                placeholder="CVV"
-                                className="w-full px-2.5 py-1.5 bg-white border border-stone-200 rounded-lg text-xs font-mono"
-                              />
-                            </div>
-                          </div>
-                        )}
-
-                        {paymentChoice === 'wallet' && (
-                          <div className="p-2.5 rounded-xl bg-rose-50/70 border border-rose-200 space-y-1.5 animate-in fade-in">
-                            <span className="text-[10px] text-rose-900 font-bold block">
-                              {currentLang === 'ar' ? 'فودافون كاش / أورنج / وي / إتصالات / STC Pay:' : 'Vodafone / Orange / WE / Etisalat / STC Pay:'}
-                            </span>
-                            <input
-                              type="tel"
-                              placeholder={payForm.phone || '010XXXXXXXX'}
-                              value={walletPhoneInput}
-                              onChange={(e) => setWalletPhoneInput(e.target.value)}
-                              className="w-full px-2.5 py-1.5 bg-white border border-rose-200 rounded-lg text-xs font-mono"
-                            />
-                          </div>
-                        )}
-
-                        {paymentChoice === 'instapay' && (
-                          <div className="p-2.5 rounded-xl bg-purple-50 border border-purple-200 space-y-1.5 animate-in fade-in">
-                            <span className="text-[10px] text-purple-900 font-bold block">
-                              {currentLang === 'ar' ? 'عنوان الدفع اللحظي (IPA) أو رقم المحفظة:' : 'InstaPay IPA Handle:'}
-                            </span>
-                            <input
-                              type="text"
-                              placeholder="username@instapay"
-                              value={instapayHandleInput}
-                              onChange={(e) => setInstapayHandleInput(e.target.value)}
-                              className="w-full px-2.5 py-1.5 bg-white border border-purple-200 rounded-lg text-xs font-mono"
-                            />
-                          </div>
-                        )}
-
-                        {paymentChoice === 'bnpl' && (
-                          <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 space-y-1 animate-in fade-in text-[10px] text-emerald-950 font-mono-numbers">
-                            <div className="font-bold flex justify-between">
-                              <span>{currentLang === 'ar' ? 'قسّمها على 4 دفعات بدون فوائد:' : 'Split into 4 interest-free payments:'}</span>
-                              <span className="font-extrabold">{money.money(Math.round(bill.total / 4))}</span>
-                            </div>
-                            <div className="text-emerald-700">
-                              {currentLang === 'ar' ? 'الدفعة الأولى اليوم والباقي شهرياً' : '1st payment today, remainder monthly'}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Save Payment for Future Orders Checkbox */}
-                        <label className="flex items-center gap-1.5 text-[11px] text-stone-600 cursor-pointer pt-1">
-                          <input
-                            type="checkbox"
-                            checked={savePaymentForFuture}
-                            onChange={(e) => setSavePaymentForFuture(e.target.checked)}
-                            className="accent-amber-700 rounded"
-                          />
-                          <span>
-                            {currentLang === 'ar'
-                              ? 'حفظ وسيلة الدفع بأمان لمشترياتي القادمة'
-                              : 'Securely save this payment method for future orders'}
-                          </span>
-                        </label>
-                      </div>
+                      <fieldset className="rounded-xl border border-stone-200 bg-stone-50 p-3 space-y-3" data-testid="real-payment-methods">
+                        <legend className="text-xs font-bold px-1">{currentLang === 'ar' ? 'وسائل الدفع المفعّلة لبلدك' : 'Enabled methods for your country'}</legend>
+                        {payments?.methods.map((m) => <label key={m.id} className="flex items-center gap-2 text-xs">
+                          <input type="radio" name="paymentMethod" value={m.id} checked={chosenMethod === m.id} onChange={() => setPaymentMethod(m.id)} />
+                          {m.id === 'card' ? (currentLang === 'ar' ? 'بطاقة بنكية' : 'Bank card') : (currentLang === 'ar' ? 'محفظة مصرية' : 'Egyptian mobile wallet')}
+                        </label>)}
+                        {!payments?.enabled && <p role="status" className="text-xs text-amber-800">{currentLang === 'ar' ? 'لا توجد وسيلة دفع إلكتروني جاهزة لهذا البلد حالياً. تواصل مع المساعد لترتيب الطلب؛ لن نعتبره مدفوعاً.' : 'No online method is ready for this country. Contact the assistant to arrange the order; it will not be marked paid.'}</p>}
+                        <p className="text-[11px] text-stone-600 flex items-start gap-2"><ShieldCheck className="w-4 h-4 shrink-0" />{currentLang === 'ar' ? 'تُدخل بيانات البطاقة أو المحفظة داخل صفحة البوابة فقط. لا تحفظ شام رقم البطاقة أو رمز CVV، والتأكيد من البوابة هو إثبات الدفع.' : 'Enter card or wallet details only on the gateway page. Sham does not save card numbers or CVVs; only a verified gateway response confirms payment.'}</p>
+                        {chargedBill && <p className="text-xs font-semibold" data-testid="charge-currency">{L.payCharge.replace('{amount}', `${chargedBill.total} ${chargedBill.currency}`)}</p>}
+                      </fieldset>
 
                       {payMessage && (
                         <p className="text-xs text-red-700" role="alert">
@@ -1815,7 +1577,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
 
                       <button
                         type="submit"
-                        disabled={paying}
+                        disabled={paying || !payments?.enabled || !chosenMethod}
                         data-testid="store-pay"
                         className="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 disabled:bg-stone-400 text-white text-sm font-bold cursor-pointer inline-flex items-center justify-center gap-2 transition-all shadow-xs"
                       >
@@ -1828,6 +1590,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                           L.payContinue
                         )}
                       </button>
+                      {!payments?.enabled && <button type="button" onClick={checkout} className="w-full py-2 text-xs text-amber-800 font-bold">{L.orAssistant}</button>}
                       <button
                         type="button"
                         onClick={() => setStep('cart')}
@@ -1855,26 +1618,13 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                       </button>
                     </>
                   ) : (
-                    <>
-                      <button
-                        type="button"
-                        onClick={() => setStep('form')}
-                        data-testid="store-pay-start"
-                        className="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-bold cursor-pointer transition-all shadow-xs"
-                      >
-                        {L.payNow}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={checkout}
-                        className="w-full py-1.5 text-xs text-amber-800 hover:underline cursor-pointer text-center"
-                      >
-                        {L.checkout}
-                      </button>
-                    </>
+                    <div className="space-y-2">
+                      <p className="text-xs text-stone-600" role="status">{payments === null ? L.loading : currentLang === 'ar' ? 'الدفع الإلكتروني غير جاهز لبلدك حالياً. يمكنك ترتيب الطلب مع المساعد بدون تسجيل دفع وهمي.' : 'Online payment is not ready for your country. Arrange your order with the assistant; no payment is recorded.'}</p>
+                      <button type="button" onClick={checkout} className="w-full py-2 rounded-xl bg-stone-900 text-white text-xs font-bold">{L.checkout}</button>
+                    </div>
                   )}
 
-                  {step === 'cart' && (
+                  {step === 'cart' && !directPurchase && (
                     <button
                       type="button"
                       onClick={clearCart}
@@ -1889,7 +1639,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
             ) : (
               <div className="py-16 text-center space-y-2">
                 <ShoppingCart className="w-8 h-8 text-stone-300 mx-auto" />
-                <p className="text-sm font-semibold text-stone-500">{L.cartEmpty}</p>
+                <p className="text-sm font-semibold text-stone-500">{directPurchase && loading ? L.loading : directPurchase ? L.outOfStock : L.cartEmpty}</p>
               </div>
             )}
           </aside>
@@ -1917,22 +1667,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
       )}
 
       {/* Customer Payment Vault & Professional Environment Modal */}
-      {showPaymentModal && (
-        <PaymentEnvironmentModal
-          currentLang={currentLang}
-          customerId="guest_client"
-          customerName={payForm.name || (currentLang === 'ar' ? 'عميل شام المميّز' : 'Sham Distinguished Client')}
-          onClose={() => {
-            setShowPaymentModal(false);
-            setSavedMethods(getSavedPaymentMethods('guest_client'));
-          }}
-          onSelectMethod={(method) => {
-            setPaymentChoice('saved');
-            setSelectedMethodId(method.id);
-            setShowPaymentModal(false);
-          }}
-        />
-      )}
+      {showPaymentModal && <PaymentEnvironmentModal currentLang={currentLang} onClose={() => setShowPaymentModal(false)} />}
 
       {/* Merchant Registration Modal */}
       {showReg && (

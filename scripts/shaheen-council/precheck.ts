@@ -75,6 +75,23 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       if (mid.length) f.push({ level: 'note', idea: `رفع ${mid.slice(0, 3).join('، ')} لـ 8/10 أو أكتر` });
       break;
     }
+    case 'finance': {
+      // The finance ledger stays private. Only read the supervisor's already-redacted health result;
+      // never copy arbitrary issues, notes, references or amounts into the public meeting report.
+      const tool = o(o(r.tools).finance_agent);
+      const checked = Date.parse(String(tool.checkedAt || ''));
+      const score = n(tool.score) ?? n(tool.autoScore);
+      if (!Object.keys(tool).length || tool.status === 'skipped' || !Number.isFinite(checked)) {
+        f.push({ level: 'warn', problem: 'الفحص المالي الخاص لم يُتحقق منه', fix: 'راجع إعدادات المصادقة والجدولة في لوحة المالية؛ لا تنشر السجل المالي' });
+      } else if (now - checked > 36 * 3_600_000) {
+        f.push({ level: 'warn', problem: 'حالة الفحص المالي متأخرة', fix: 'راجع آخر فحص خاص وإعدادات المشرف؛ لا تعاود خصم أي مبلغ' });
+      } else if (tool.status === 'fail' || (score ?? 10) < 6) {
+        f.push({ level: 'fail', problem: 'فحص الإدارة المالية غير سليم', fix: 'راجع بلاغات لوحة المالية الخاصة؛ اعتماد الحساب والتسوية قرار صاحب المتجر' });
+      } else if (tool.status === 'warn') {
+        f.push({ level: 'warn', problem: 'الإدارة المالية تحتاج مراجعة خاصة', fix: 'راجع آخر فحص وبلاغات لوحة المالية' });
+      }
+      break;
+    }
     case 'scout': {
       const s = arr(r.sources).map(o);
       const active = s.filter((x) => x.status === 'active').length;
@@ -163,6 +180,7 @@ export function findHandoffs(reports: Record<string, unknown>, checks: BotCheck[
   if (arr(audit.issues).length && (n(audit.score) ?? 100) < 80) out.push({ from: 'design_audit', to: 'languages', textAr: `${arr(audit.issues).length} ملاحظة تصميم وترجمة — وكيل اللغات يقيسها في فحصه` });
   const paused = Object.entries(o(o(reports['ai-quota.json']).engines)).filter(([, e]) => Date.parse(String(o(e).pausedUntil || '')) > now).length;
   if (paused) out.push({ from: 'keys', to: 'secretary', textAr: `${paused} محرك متوقف — السكرتير جاهز ينوب عن شاهين` });
+  if (checks.some((c) => c.id === 'finance' && ['warn', 'fail'].includes(c.status))) out.push({ from: 'finance', to: 'secretary', textAr: 'الإدارة المالية تحتاج مراجعة في اللوحة الخاصة؛ لا مبالغ أو بيانات طلبات في التقرير العام' });
   // A late robot whose workflow may be rerun safely: the secretary starts it (once per workflow).
   const started = new Set<string>();
   for (const c of checks) {

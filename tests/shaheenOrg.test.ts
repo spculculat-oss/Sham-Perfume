@@ -143,3 +143,18 @@ test('the meeting takes the check as its agenda; the secretary chairs or takes t
   assert.equal(unreviewed(file).length, 0);
   assert.equal(file.delegations!.length, 2);
 });
+
+test('finance joins Shaheen leadership without publishing ledger content or inventing a healthy check', () => {
+  assert.equal(botOf('finance')?.dept, 'leadership');
+  assert.equal(botOf('finance')?.workflow, 'shaheen-finance.yml');
+  for (const tool of [undefined, { status: 'skipped' }, { status: 'ok', checkedAt: ago(40), score: 10 }]) {
+    const r = runPrecheck({ 'ai-supervisor.json': { updatedAt: ago(1), tools: { finance_agent: tool } } }, {}, NOW);
+    assert.equal(r.bots.find((b) => b.id === 'finance')?.status, 'warn');
+  }
+  const r = runPrecheck({ 'ai-supervisor.json': { updatedAt: ago(1), tools: { finance_agent: {
+    status: 'fail', checkedAt: ago(1), score: 3, issues: ['PRIVATE-LEDGER-NOTE'], amount: 123456,
+  } } } }, {}, NOW);
+  assert.equal(r.bots.find((b) => b.id === 'finance')?.status, 'fail');
+  assert.ok(r.handoffs.some((h) => h.from === 'finance' && h.to === 'secretary' && !h.action));
+  assert.ok(!JSON.stringify(r).includes('PRIVATE-LEDGER-NOTE')); assert.ok(!JSON.stringify(r).includes('123456'));
+});

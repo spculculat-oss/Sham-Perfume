@@ -1,5 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
+import { FinanceService } from '../server/finance/service';
+import { MemoryStore } from '../server/core/store';
+import { emptyRegistration } from '../server/finance/payments';
 import { createHmac } from 'node:crypto';
 import express from 'express';
 import type { AddressInfo } from 'node:net';
@@ -23,7 +26,7 @@ const RAW: RawProduct[] = [
   { id: 2, sku: 'SHM-002', nameAr: 'ورد', nameEn: 'Rose', descriptionAr: 'ورد', descriptionEn: '', category: 'نسائي', brand: 'Shama', supplierPrice: 90, ourPrice: 500, stockStatus: 'in_stock', imageUrl: '' },
   { id: 3, sku: 'OUT-003', nameAr: 'نفد', nameEn: 'Gone', descriptionAr: 'نفد', descriptionEn: '', category: 'عود', brand: 'X', supplierPrice: 90, ourPrice: 500, stockStatus: 'out_of_stock', imageUrl: '' },
 ];
-const KEYS = { KASHIER_MERCHANT_ID: 'MID-123-456', KASHIER_API_KEY: 'test-api-key', KASHIER_SECRET_KEY: 'abc$def', KASHIER_MODE: 'test', SHAM_CHECKOUT_RATE_PER_MIN: '100' };
+const KEYS = { KASHIER_MERCHANT_ID: 'MID-123-456', KASHIER_API_KEY: 'test-api-key', KASHIER_SECRET_KEY: 'abc$def', KASHIER_MODE: 'test', SHAM_CHECKOUT_RATE_PER_MIN: '100', SHAM_PUBLIC_API_URL: 'https://engine.example' };
 
 test('pricing: tidy prices, the visitor currency, and Egypt keeps the catalog price', () => {
   assert.equal(tidy(1247), 1250);
@@ -71,10 +74,13 @@ test('pricing: the country guess prefers the time zone, then the language region
 test('kashier: configuration needs all three keys and never invents a mode', () => {
   assert.equal(kashierConfig({}), undefined);
   assert.equal(kashierConfig({ ...KEYS, KASHIER_MERCHANT_ID: 'my password' }), undefined);
-  const cfg = kashierConfig({ ...KEYS, KASHIER_MODE: 'LIVE', KASHIER_CURRENCIES: 'egp, usd, xyz' })!;
+  const cfg = kashierConfig({ ...KEYS, KASHIER_MODE: 'LIVE', KASHIER_CURRENCIES: 'egp, usd' })!;
   assert.equal(cfg.mode, 'live');
   assert.deepEqual(cfg.currencies, ['EGP', 'USD']);
   assert.equal(kashierConfig(KEYS)!.mode, 'test');
+  assert.equal(kashierConfig({ ...KEYS, KASHIER_CURRENCIES: 'EGP,xyz' }), undefined);
+  assert.equal(kashierConfig({ ...KEYS, KASHIER_MODE: 'typo' }), undefined);
+  assert.equal(paymentState('APPROVED'), 'pending', 'authorization is not collection');
   assert.equal(paymentState('PAID'), 'paid');
   assert.equal(paymentState('EXPIRED'), 'failed');
   assert.equal(paymentState('OPENED'), 'pending');
@@ -112,10 +118,12 @@ async function serve(env: Record<string, string>, kashier: (url: string, init?: 
   const fake = (async (input: string | URL, init?: RequestInit) => { const url = String(input); calls.push({ url, init }); return kashier(url, init); }) as typeof fetch;
   const app = express();
   app.use(express.json());
-  app.use('/api', createCheckoutRouter({ env, fetch: fake, products: RAW, catalog: async () => undefined, fx: async () => FX, shipping: SHIP }));
+  const finance = new FinanceService(new MemoryStore(), env, { fetch: fake });
+  await finance.saveRegistration({ ...emptyRegistration(), buyerCountries: ['EG', 'SA'] });
+  app.use('/api', createCheckoutRouter({ env, finance, fetch: fake, products: RAW, catalog: async () => undefined, fx: async () => FX, shipping: SHIP }));
   const server = app.listen(0);
   const base = `http://127.0.0.1:${(server.address() as AddressInfo).port}/api`;
-  return { base, calls, close: () => server.close() };
+  return { base, calls, finance, close: () => server.close() };
 }
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
 const order = { items: [{ sku: 'LAT-001', qty: 2 }], country: 'SA', lang: 'ar', contact: { name: 'Ali', email: 'ali@example.com', phone: '+966500000000' }, address: { city: 'Riyadh', line: 'King Fahd Rd 10' }, returnUrl: 'https://spculculat-oss.github.io/Sham-Perfume/' };
@@ -123,7 +131,7 @@ const order = { items: [{ sku: 'LAT-001', qty: 2 }], country: 'SA', lang: 'ar', 
 test('checkout: without Kashier keys the store says so (the assistant flow stays)', async () => {
   const s = await serve({}, () => json({}));
   try {
-    assert.deepEqual(await (await fetch(`${s.base}/store/payments`)).json(), { enabled: false });
+    assert.deepEqual(await (await fetch(`${s.base}/store/payments`)).json(), { enabled: false, country: 'EG', methods: [] });
     const r = await fetch(`${s.base}/store/checkout`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(order) });
     assert.equal(r.status, 503);
     assert.equal(s.calls.length, 0);
@@ -134,7 +142,10 @@ test('checkout: the server prices the cart itself and opens a Kashier session', 
   const s = await serve(KEYS, (url) => (url.endsWith('/v3/payment/sessions') ? json({ _id: 'sess_123456', sessionUrl: 'https://payments.kashier.io/session/sess_123456?mode=test' }) : json({}, 404)));
   try {
     const info = await (await fetch(`${s.base}/store/payments`)).json();
-    assert.deepEqual(info, { enabled: true, provider: 'kashier', mode: 'test', currencies: ['EGP'] });
+    assert.equal(info.enabled, true);
+    assert.equal(info.mode, 'test');
+    assert.deepEqual(info.currencies, ['EGP']);
+    assert.deepEqual(info.methods.map((m: { id: string }) => m.id), ['card', 'wallet']);
     assert.ok(!JSON.stringify(info).includes('abc$def'), 'no key in public answers');
     // A tampered price in the browser changes nothing: only sku + qty are read.
     const r = await fetch(`${s.base}/store/checkout`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...order, items: [{ sku: 'LAT-001', qty: 2, price: 1 }] }) });
@@ -152,7 +163,7 @@ test('checkout: the server prices the cart itself and opens a Kashier session', 
     assert.equal(sent.currency, 'EGP');
     assert.equal(sent.order, body.ref);
     assert.equal(sent.merchantRedirect, `https://spculculat-oss.github.io/Sham-Perfume/?checkout=${body.ref}`);
-    assert.match(sent.serverWebhook, /\/api\/store\/kashier\/webhook$/);
+    assert.equal(sent.serverWebhook, 'https://engine.example/api/store/kashier/webhook');
     assert.equal(sent.metaData.items, 'LAT-001×2');
     assert.equal(sent.metaData.country, 'SA');
     assert.equal(body.display.currency, 'SAR');
@@ -168,28 +179,37 @@ test('checkout: unavailable products are refused before Kashier is called', asyn
   } finally { s.close(); }
 });
 
-test('checkout: the result is read from Kashier, and the owner is notified once', async () => {
+test('checkout: the result is matched to the ledger and test payments never notify fulfilment', async () => {
   const env = { ...KEYS, SHAM_WEBHOOK_URL: 'https://hooks.example/sham' };
   const s = await serve(env, (url) => (url.includes('/payment/sessions/sess_123456/payment')
     ? json({ message: 'success', data: { status: 'PAID', merchantOrderId: 'SP-1', amount: '2900.00', currency: 'EGP', method: 'card', metaData: { items: 'LAT-001×2', name: 'Ali' } } })
     : json({ ok: true })));
   try {
+    await seed(s.finance, 'SP-1');
     const first = await (await fetch(`${s.base}/store/checkout/sess_123456`)).json();
-    assert.deepEqual(first, { ref: 'SP-1', state: 'paid', status: 'PAID', amount: 2900, currency: 'EGP' });
+    assert.deepEqual(first, { ref: 'SP-1', state: 'paid', status: 'PAID', amount: 2900, currency: 'EGP', mode: 'test' });
     await fetch(`${s.base}/store/checkout/sess_123456`);
-    assert.equal(s.calls.filter((c) => c.url === env.SHAM_WEBHOOK_URL).length, 1);
+    assert.equal(s.calls.filter((c) => c.url === env.SHAM_WEBHOOK_URL).length, 0);
     assert.equal((await fetch(`${s.base}/store/checkout/bad id!`)).status, 400);
   } finally { s.close(); }
 });
 
 test('checkout: webhooks are accepted only with a valid Kashier signature', async () => {
-  const s = await serve({ ...KEYS, SHAM_WEBHOOK_URL: 'https://hooks.example/sham' }, () => json({ ok: true }));
+  const s = await serve({ ...KEYS, SHAM_WEBHOOK_URL: 'https://hooks.example/sham' }, () => json({ data: { status: 'PAID', merchantOrderId: 'SP-2', amount: 2900, currency: 'EGP' } }));
+  await seed(s.finance, 'SP-2');
   try {
     const data = { amount: 2900, currency: 'EGP', status: 'SUCCESS', merchantOrderId: 'SP-2', signatureKeys: ['amount', 'currency', 'merchantOrderId', 'status'] };
     const send = (signature: string) => fetch(`${s.base}/store/kashier/webhook`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-kashier-signature': signature }, body: JSON.stringify({ event: 'pay', data }) });
     assert.equal((await send('0'.repeat(64))).status, 401);
     assert.equal(s.calls.length, 0);
     assert.equal((await send(webhookSignature(data, KEYS.KASHIER_API_KEY))).status, 200);
-    assert.equal(s.calls.length, 1, 'the owner is told about the paid order');
+    assert.equal(s.calls.length, 1, 'the provider is re-read; a test payment never triggers fulfilment');
+    assert.ok(s.calls[0].url.endsWith('/sess_123456/payment'));
+    assert.equal((await s.finance.store.list('financeEntries')).length, 1);
   } finally { s.close(); }
 });
+
+async function seed(finance: FinanceService, ref: string) {
+  await finance.recordOrder({ ref, provider: 'kashier', mode: 'test', country: 'SA', currency: 'EGP', totalMinor: 290000, shippingChargedMinor: 75000, lines: [{ sku: 'LAT-001', qty: 2, unitMinor: 107500 }] });
+  await finance.recordSession(ref, 'test', 'sess_123456');
+}

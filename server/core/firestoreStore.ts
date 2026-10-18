@@ -102,6 +102,21 @@ export class FirestoreStore implements Store {
     if (!response.ok) throw new Error(`Firestore write failed (${response.status})`);
   }
 
+  async create<C extends CollectionName>(collection: C, id: string, value: Collections[C]) {
+    // The precondition is evaluated by Firestore, not this function instance. Concurrent webhook
+    // deliveries cannot both insert the same sale, even on different serverless instances.
+    const response = await this.call(`${this.base(collection)}/${encodeURIComponent(id)}?currentDocument.exists=false`, {
+      method: 'PATCH', body: JSON.stringify({ fields: { json: { stringValue: JSON.stringify(value) } } }),
+    });
+    if (response.status === 409 || response.status === 412) return false;
+    if (response.status === 400) {
+      const body = await response.json().catch(() => ({})) as { error?: { status?: string } };
+      if (body.error?.status === 'FAILED_PRECONDITION' || body.error?.status === 'ALREADY_EXISTS') return false;
+    }
+    if (!response.ok) throw new Error(`Firestore create failed (${response.status})`);
+    return true;
+  }
+
   async delete(collection: CollectionName, id: string) {
     const existing = await this.get(collection, id);
     if (!existing) return false;

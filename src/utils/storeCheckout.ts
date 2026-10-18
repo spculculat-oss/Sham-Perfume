@@ -84,46 +84,51 @@ export function useStoreMoney(lang: SupportedLanguage, egpLabel: string) {
   };
 }
 
-export interface PaymentsInfo { enabled: boolean; mode?: 'test' | 'live'; currencies?: string[] }
-let paymentsInfo: Promise<PaymentsInfo> | undefined;
-/** Whether the server can take card payments (false on a static build or before Kashier is set up). */
-export function usePayments(): PaymentsInfo | null {
+export interface PaymentsInfo { enabled: boolean; country: string; mode?: 'test' | 'live'; currency?: string; currencies?: string[]; methods: { id: 'card' | 'wallet'; name: string }[] }
+/** Country-scoped, short-lived result. Changing country never reuses another country's eligibility. */
+export function usePayments(country = 'EG'): PaymentsInfo | null {
   const [info, setInfo] = useState<PaymentsInfo | null>(null);
   useEffect(() => {
-    if (isStaticHosting) { setInfo({ enabled: false }); return; }
-    paymentsInfo ??= fetch(apiUrl('/api/store/payments'), { signal: AbortSignal.timeout(6000) })
-      .then((r) => (r.ok ? r.json() as Promise<PaymentsInfo> : { enabled: false }))
-      .catch(() => { paymentsInfo = undefined; return { enabled: false }; });
-    let live = true;
-    void paymentsInfo.then((d) => { if (live) setInfo({ enabled: Boolean(d.enabled), mode: d.mode, currencies: d.currencies }); });
-    return () => { live = false; };
-  }, []);
-  return info;
+    const disabled: PaymentsInfo = { enabled: false, country, methods: [] };
+    if (isStaticHosting) { setInfo(disabled); return; }
+    const controller = new AbortController();
+    setInfo(null);
+    fetch(apiUrl(`/api/store/payments?country=${encodeURIComponent(country)}`), { signal: AbortSignal.any([controller.signal, AbortSignal.timeout(6000)]) })
+      .then(async (r) => r.ok ? await r.json() as PaymentsInfo : disabled)
+      .then((d) => { if (!controller.signal.aborted) setInfo({ ...d, country, enabled: Boolean(d.enabled && d.methods?.length), methods: d.methods || [] }); })
+      .catch(() => { if (!controller.signal.aborted) setInfo(disabled); });
+    return () => controller.abort();
+  }, [country]);
+  return info?.country === country ? info : null;
 }
 
 export interface CheckoutForm { name: string; email: string; phone: string; city: string; line: string }
 export class CheckoutError extends Error { constructor(readonly code: string) { super(code); } }
 
 /** Opens a Kashier payment page for the cart and sends the visitor there. */
-export async function startCheckout(items: { sku: string; qty: number }[], country: string, form: CheckoutForm, lang: SupportedLanguage): Promise<void> {
+export async function startCheckout(items: { sku: string; qty: number }[], country: string, form: CheckoutForm, lang: SupportedLanguage, method?: 'card' | 'wallet', context: 'cart' | 'direct' = 'cart'): Promise<void> {
   let response: Response;
   try {
     response = await fetch(apiUrl('/api/store/checkout'), {
       // Signed-in members: the order is also saved in «بوابتي» and reaches the merchants of «متاجر شام».
       method: 'POST', headers: { 'Content-Type': 'application/json', ...(getSessionToken() ? { Authorization: `Bearer ${getSessionToken()}` } : {}) }, signal: AbortSignal.timeout(25_000),
       body: JSON.stringify({
-        items, country, lang: lang === 'ar' ? 'ar' : 'en', returnUrl: `${location.origin}${location.pathname}`,
+        items, country, method, lang: lang === 'ar' ? 'ar' : 'en', returnUrl: `${location.origin}${location.pathname}`,
         contact: { name: form.name, email: form.email, phone: form.phone }, address: { city: form.city, line: form.line },
       }),
     });
   } catch { throw new CheckoutError('NETWORK'); }
   const data = await response.json().catch(() => ({})) as { code?: string; ref?: string; sessionId?: string; sessionUrl?: string };
   if (!response.ok || !data.sessionUrl || !data.sessionId || !data.ref) throw new CheckoutError(data.code || 'FAILED');
-  try { localStorage.setItem(PENDING_KEY, JSON.stringify({ ref: data.ref, sessionId: data.sessionId, at: Date.now() })); } catch { /* the result is still in Kashier */ }
+  try {
+    const u = new URL(data.sessionUrl);
+    if (u.protocol !== 'https:' || u.hostname !== 'payments.kashier.io' || u.port || u.username || u.password || !/^\/session\/[A-Za-z0-9_-]{6,64}$/.test(u.pathname)) throw new Error();
+  } catch { throw new CheckoutError('INVALID_PAYMENT_URL'); }
+  try { localStorage.setItem(PENDING_KEY, JSON.stringify({ ref: data.ref, sessionId: data.sessionId, at: Date.now(), items, context })); } catch { /* the result is still in Kashier */ }
   window.location.assign(data.sessionUrl);
 }
 
-export interface PaymentResult { ref: string; state: 'paid' | 'failed' | 'pending' }
+export interface PaymentResult { ref: string; state: 'paid' | 'failed' | 'pending'; mode?: 'test' | 'live'; cartItems?: { sku: string; qty: number }[] }
 
 /** Back from Kashier (?checkout=<ref>): asks the server what Kashier really recorded. */
 export async function returnedPayment(): Promise<PaymentResult | null> {
@@ -131,16 +136,20 @@ export async function returnedPayment(): Promise<PaymentResult | null> {
   const params = new URLSearchParams(location.search);
   const ref = params.get('checkout');
   if (!ref) return null;
-  let pending: { ref?: string; sessionId?: string } = {};
-  try { pending = JSON.parse(localStorage.getItem(PENDING_KEY) || '{}'); } catch { /* none */ }
+  let pending: { ref?: string; sessionId?: string; context?: string; items?: { sku: string; qty: number }[] } = {};
+  try {
+    const stored: unknown = JSON.parse(localStorage.getItem(PENDING_KEY) || '{}');
+    if (stored && typeof stored === 'object' && !Array.isArray(stored)) pending = stored;
+  } catch { /* none */ }
   // Kashier appends its own query (paymentStatus, signature…): keep the address bar clean either way.
   history.replaceState(null, '', `${location.pathname}${location.hash}`);
   if (pending.ref !== ref || !pending.sessionId) return { ref, state: 'pending' };
   try {
     const r = await fetch(apiUrl(`/api/store/checkout/${encodeURIComponent(pending.sessionId)}`), { signal: AbortSignal.timeout(15_000) });
-    const d = await r.json() as { ref?: string; state?: PaymentResult['state'] };
-    const state = r.ok && d.ref === ref && d.state ? d.state : 'pending';
+    const d = await r.json() as { ref?: string; state?: PaymentResult['state']; mode?: PaymentResult['mode'] };
+    const state = r.ok && d.ref === ref && ['paid', 'failed', 'pending'].includes(d.state || '') && ['live', 'test'].includes(d.mode || '') ? d.state! : 'pending';
     if (state === 'paid') { try { localStorage.removeItem(PENDING_KEY); } catch { /* ignore */ } }
-    return { ref, state };
+    const cartItems = pending.context === 'cart' && Array.isArray(pending.items) ? pending.items.filter((i) => i && typeof i.sku === 'string' && Number.isInteger(i.qty) && i.qty > 0 && i.qty <= 99).slice(0, 30) : undefined;
+    return { ref, state, mode: d.mode, cartItems };
   } catch { return { ref, state: 'pending' }; }
 }

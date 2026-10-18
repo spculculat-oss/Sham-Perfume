@@ -32,7 +32,7 @@ export const DEPARTMENTS: Department[] = [
 ];
 
 export type BotId =
-  | 'council' | 'secretary' | 'precheck'
+  | 'council' | 'secretary' | 'precheck' | 'finance'
   | 'scout' | 'importer' | 'images' | 'catalog' | 'product_pages' | 'store_advisor'
   | 'news' | 'seo'
   | 'chat' | 'languages' | 'design_audit' | 'inspect'
@@ -59,6 +59,7 @@ export const BOTS: Bot[] = [
   { id: 'council', nameAr: 'مجلس شاهين (الاجتماع اليومي)', nameEn: "Shaheen's council (daily meeting)", dept: 'leadership', workflow: 'shaheen-council.yml', report: 'shaheen-council.json', everyHours: 24, aiTools: ['shaheen_council'], dutiesAr: 'يجمع رؤساء الأقسام كل يوم 9:30 الصبح، يكتب المحضر، ينفذ الآمن ويحوّل الباقي لمهام تطوير.' },
   { id: 'secretary', nameAr: 'السكرتير — مشرف شاهين', nameEn: 'Secretary — Shaheen\'s supervisor', dept: 'leadership', workflow: 'shaheen-news.yml', report: 'ai-supervisor.json', everyHours: 12, dutiesAr: 'يقيس كل أداة ذكاء اصطناعي ويكتب لها توجيهات، يجهز جدول الأعمال، وينوب عن شاهين في الاجتماع وقت الضغط أو لو مفيش محرك ذكاء اصطناعي.' },
   { id: 'precheck', nameAr: 'الفحص الشامل قبل الاجتماع', nameEn: 'Pre-meeting full check', dept: 'leadership', workflow: 'shaheen-precheck.yml', report: 'shaheen-precheck.json', everyHours: 24, dutiesAr: 'قبل الاجتماع بساعتين: كل روبوت يفحص نفسه ويكتب مشاكله والإصلاح المقترح وأفكار التطوير، والسكرتير يوزع طلبات المساعدة بين الأدوات.' },
+  { id: 'finance', nameAr: 'أمين شاهين — الإدارة المالية', nameEn: 'Shaheen Finance', dept: 'leadership', workflow: 'shaheen-finance.yml', report: 'ai-supervisor.json', everyHours: 24, aiTools: ['finance_agent'], dutiesAr: 'تحصيل موثّق وتقارير يومية وأسبوعية وشهرية ومراجعة الدفع. التفاصيل داخل لوحة مالية خاصة؛ التقرير العام يحتوي حالة الفحص المنقحة من المشرف فقط. لا تحويلات أو استردادات أو اعتماد حسابات تلقائياً.' },
   // ── Store & import ──
   { id: 'scout', nameAr: 'كشّاف المصادر', nameEn: 'Source scout', dept: 'store', workflow: 'shaheen-discover.yml', report: 'import-sources.json', everyHours: 6, dutiesAr: 'يدوّر على متاجر عطور موثوقة في العالم كله ويراجع سيرتها الذاتية قبل ما تدخل.' },
   { id: 'importer', nameAr: 'مستورد شاهين + مراجع الصفحات', nameEn: 'Shaheen importer + page reviewer', dept: 'store', workflow: 'shaheen-import.yml', report: 'store-review.json', everyHours: 2, aiTools: ['store_import'], dutiesAr: 'ينقل منتجات المتاجر المقبولة ويسعّرها ويراجع كل صفحة ويخفي المعيب.' },
@@ -99,6 +100,9 @@ export const SECRETARY = {
 /** Who helps whom: the cooperation map (from → to, and why). */
 export interface Link { from: BotId; to: BotId; whyAr: string }
 export const LINKS: Link[] = [
+  { from: 'finance', to: 'secretary', whyAr: 'حالة الفحص المنقحة فقط؛ الأرقام والطلبات تبقى خاصة' },
+  { from: 'finance', to: 'council', whyAr: 'تصعيد أعطال الدفع والتسجيل للمراجعة دون أسرار أو تحويل أموال' },
+  { from: 'keys', to: 'finance', whyAr: 'جاهزية إعدادات الخادم؛ اعتماد الحساب قرار صاحب المتجر' },
   { from: 'precheck', to: 'council', whyAr: 'تقارير كل الأدوات = جدول أعمال الاجتماع' },
   { from: 'secretary', to: 'council', whyAr: 'ينوب عن شاهين وقت الضغط' },
   { from: 'council', to: 'scout', whyAr: 'متاجر يفحصها' },
