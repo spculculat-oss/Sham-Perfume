@@ -1,7 +1,27 @@
 {
  "version": 1,
- "updatedAt": "2026-10-17T15:26:53.193Z",
+ "updatedAt": "2026-10-18T03:29:27.555Z",
  "entries": [
+  {
+   "id": "ar|auto|ليه العطر بيختفي بسرعة علي جلدي؟ وازود الثبات ازاي",
+   "question": "ليه العطر بيختفي بسرعة على جلدي؟ وأزود الثبات ازاي؟",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "### أسباب تطاير العطر بسرعة عن الجلد\n\n- **طبيعة الجلد (الجاف مقابل الدهني):** البشرة الجافة تفتقر للرطوبة الكافية التي تمتص الزيوت العطرية وتثبتها، مما يجعل الجزيئات تتطاير بسرعة مقارنة بالبشرة الدهنية التي تحبس العطر لفترة أطول.\n- **تركيز العطر:** العطور ذات التركيز المنخفض مثل أو دي كولون أو أو دي تواليت تحتوي على نسبة أقل من الزيوت العطرية ونسبة أعلى من الكحول، مما يجعلها تختفي أسرع من أو دي بارفان أو العطور المركزة.\n- **نوع المكونات العطرية:** العطور المكونة من نوتات عليا خفيفة (مثل الحمضيات والأعشاب) تتطاير خلال دقائق، بينما النوتات القاعدة الثقيلة (مثل العود، الأخشاب، والمسك) تبقى لفترات أطول.\n- **التخزين الخاطئ:** تعرض العطر للحرارة العالية أو الضوء المباشر يفكك تركيبته ويفقده ثباته وقوته.\n\n### طرق عملية لزيادة ثبات العطر\n\n- **ترطيب الجلد مسبقاً:** ضع مرطباً عديم الرائحة أو فازلين على نقاط النبض قبل رش العطر؛ الجلد المرطب يعمل كحاجز يقلل من سرعة تبخر الكحول والزيوت.\n- **الرش على نقاط النبض:** وزع العطر على المناطق الدافئة في الجسم التي ينبض فيها الدم (مثل المعصمين، خلف الأذنين، ومنقوشة الرقبة)، حيث تساعد حرارة الجسم على نشر العطر ببطء.\n- **الرش على الملابس والشعر:** الأنسجة الطبيعية (مثل القطن والصوف) تحتفظ برائحة العطر لفترة أطول بكثير من الجلد، وكذلك خصلات الشعر.\n- **تجنب فرك المعصمين:** فرك المعصمين ببعضهما بعد الرش يولد حرارة تفكك جزيئات النوتات العليا وتسرع من تطاير العطر.\n- **استخدام منتجات متطابقة (الطبقات العطرية):** استخدم جل الاستحمام أو مرطب الجسم بنفس الخط العطري أو برائحة متوافقة لتعزيز قوة وثبات الرائحة طوال اليوم.\n\nهل ترغب في تعديل أو تصميم تركيبة عطرية بمكونات قاعدة أثقل لضمان ثبات أعلى؟",
+   "at": "2026-10-18T03:29:27.555Z",
+   "hits": 0,
+   "source": "probe"
+  },
+  {
+   "id": "ar|auto|اقترح نوتات لعطر صيفي منعش للرجال",
+   "question": "اقترح نوتات لعطر صيفي منعش للرجال",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "### مقترح تجريبي لعطر صيفي منعش للرجال\n\nإليك تركيبة عطرية صيفية منعحة ومتوازنة، بحجم 50 مل وبتركيز ماء عطر (EDP) بنسبة 20%.\n\n| المكون | الفئة | النسبة من الزيت |\n| :--- | :--- | :--- |\n| البرغموت والليمون | القمة | 40% |\n| النعناع المائي والخزامى | القلب | 35% |\n| نجيل الهند وخشب الأرز | القاعدة | 25% |\n\nكمية الزيت العطري = 10 مل (50 × 20 ÷ 100)\nكمية الكحول (96%) = 40 مل (50 - 10)\n\nهذه التركيبة تجريبية وتتطلب مراجعة السلامة والتوافق وإجراء اختبار مصغر.\n\nهل تود تعديل أي من هذه النوتات أو إضافة مسحة خفيفة من المسك لتثبيت القاعدة؟\n\n```sham-formula\n{\"title\":\"عطر صيفي منعش للرجال\",\"author\":\"شاهين — مقترح تجريبي\",\"concentrationPercent\":20,\"concentrationType\":\"edp\",\"bottleVolumeMl\":50,\"alcoholPercentage\":96,\"waterPercent\":0,\"fixativePercent\":0,\"macerationDays\":30,\"summary\":\"مقترح يحتاج مراجعة السلامة\",\"pyramidNotes\":[{\"id\":\"note-1\",\"nameAr\":\"البرغموت والليمون\",\"nameEn\":\"Bergamot and Lemon\",\"category\":\"top\",\"percentageOfOil\":40},{\"id\":\"note-2\",\"nameAr\":\"النعناع المائي والخزامى\",\"nameEn\":\"Water Mint and Lavender\",\"category\":\"heart\",\"percentageOfOil\":35},{\"id\":\"note-3\",\"nameAr\":\"نجيل الهند وخشب الأرز\",\"nameEn\":\"Vetiver and Cedarwood\",\"category\":\"base\",\"percentageOfOil\":25}]}\n```\n\n```sham-tool\n{\"tools\":[{\"tool\":\"concentration\",\"bottleVolumeMl\":50,\"concentrationPercent\":20,\"concentrationType\":\"edp\",\"alcoholPercentage\":96,\"waterPercent\":0,\"fixativePercent\":0},{\"tool\":\"maceration\",\"macerationDays\":30}]}\n```",
+   "at": "2026-10-18T03:29:27.555Z",
+   "hits": 0,
+   "source": "probe"
+  },
   {
    "id": "ar|auto|كم يوم اعتق عطر فيه مسك وعنبر وعود",
    "question": "كم يوم أعتق عطر فيه مسك وعنبر وعود؟",
@@ -69,26 +89,6 @@
    "style": "auto",
    "answer": "For a citrus cologne, fixatives that do not overpower the bright, volatile top notes work best. Excellent choices include Ambroxan, Iso E Super, and Triethyl Citrate, as they add subtle warmth, longevity, and blending power without masking the fresh citrus character.\n\n### Recommended Fixatives for Citrus Colognes\n\n| Fixative | Ideal Percentage (of Oil Concentrate) | Olfactory Profile & Role |\n| :--- | :--- | :--- |\n| **Ambroxan** | 5% to 15% | Clean, ambery, woody; provides exceptional modern longevity. |\n| **Iso E Super** | 10% to 30% | Velvety, cedar-like, transparent; boosts projection and smooths sharp edges. |\n| **Triethyl Citrate** | 5% to 10% | Mild, neutral; acts as an effective solvent and slow-release agent. |\n\nIn a standard citrus cologne (typically prepared at an Eau de Cologne concentration of 5% to 10% fragrance oils, or Eau de Parfum at 20% in a 50 ml bottle, using 96% alcohol), fixatives are generally kept at modest levels to maintain the refreshing character of the fragrance. These proposed formulations are experimental and require safety reviews, compatibility checks, and small-scale testing.\n\nWould you like to adjust the concentration or explore specific citrus notes like bergamot or lemon to pair with your fixative?",
    "at": "2026-10-16T21:29:24.655Z",
-   "hits": 0,
-   "source": "probe"
-  },
-  {
-   "id": "ar|auto|ليه العطر بيختفي بسرعة علي جلدي؟ وازود الثبات ازاي",
-   "question": "ليه العطر بيختفي بسرعة على جلدي؟ وأزود الثبات ازاي؟",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "### الأسباب الرئيسية لاختفاء العطر بسرعة عن الجلد\n\n* **جفاف الجلد:** البشرة الجافة تمتص الزيوت العطرية بسرعة وتسمح لها بالتبخر دون ترك أثر، على عكس البشرة الرطبة أو الدهنية التي تحتفظ بالجزيئات العطرية لفترة أطول.\n* **طبيعة النوتات العطرية:** العطور التي تعتمد على النفحات المنعشة والحمضية أو الزهرية الخفيفة تتكون من جزيئات خفيفة ومتطايرة تختفي عادة خلال ساعة أو ساعتين، مقارنة بالقواعد الخشبية أو العنبرية الثقيلة.\n* **نوع التركيز:** العطور الخفيفة مثل الكولونيا أو ماء التواليت تحتوي على نسب أقل من الزيت العطري مقارنة بماء العطور أو المستخلصات المركزة.\n* **أماكن النبض:** رش العطر على مناطق غير مناسبة أو فرك المعصمين بعنف بعد الرش يؤدي إلى تكسير جزيئات العطر وتسريع تبخرها.\n\n---\n\n### طرق عملية لزيادة ثبات العطر\n\n* **ترطيب البشرة أولاً:** استخدم مرطباً خفيفاً عديم الرائحة أو فازلين طبقة خفيفة على أماكن النبض قبل رش العطر؛ فالقاعدة الدهنية تمسك الجزيئات العطرية وتمنع تبخرها السريع.\n* **الرش في أماكن النبض:** ركّز العطر على نقاط النبض حيث تدفأ البشرة وتنشر العطر ببطء، مثل خلف الأذنين، قاعدة الرقبة، ومثبتات المرفقين والمعصمين (دون فرك).\n* **تعطير الملابس والشعر:** الأنسجة القماشية والشعر تحتفظ بالروائح لفترات أطول بكثير من الجلد، لذا يمكنك رش القليل على أطراف الشعر أو البطانة الداخلية للملابس (مع الانتباه للأقمشة الحساسة).\n* **اختيار التركيز المناسب:** الانتقال إلى تركيزات أعلى مثل ماء العطر أو استخدام زيوت أساسية مركزة.\n\n---\n\nهذه المقترحات تجريبية وتعتمد استجابتها على التفاعل الكيميائي الفريد لكل بشرة. هل تبحث عن نوع معين من المكونات الثقيلة لتعزيز ثبات عطرك القادم؟",
-   "at": "2026-10-16T19:24:41.217Z",
-   "hits": 0,
-   "source": "probe"
-  },
-  {
-   "id": "ar|auto|اقترح نوتات لعطر صيفي منعش للرجال",
-   "question": "اقترح نوتات لعطر صيفي منعش للرجال",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "### مقترح تجريبي لعطر صيفي منعش للرجال\n\nإليك مقترح متوازن لنفحات عطرية صيفية منعشة للرجال، يجمع بين الحمضيات الحيوية والأعشاب العطرية مع قاعدة خشبية ناعمة.\n\n#### الهرم العطري\n* **قمة العطر (Top Notes - 30%)**:\n  * برغموت إيطالي (15%)\n  * ليمون صقلي (10%)\n  * نعناع عشبي (5%)\n* **قلب العطر (Heart Notes - 40%)**:\n  * لافندر فرنسي (20%)\n  * إكليل الجبل - روزماري (10%)\n  * إبرة الراعي - جيرانيوم (10%)\n* **قاعدة العطر (Base Notes - 30%)**:\n  * خشب الأرز (15%)\n  * المسك الأبيض (10%)\n  * نجيل الهند - فيتيفر (5%)\n\n#### مواصفات التركيبة (حجم 50 مل، تركيز ماء عطر EDP بنسبة 20%)\n* **الزيت العطري**: 10 مل (20%)\n* **الكحول العطري (96%)**: 40 مل (80%)\n* **الماء أو المثبت**: 0 مل (0%)\n* **مدة التعتيق المقترحة**: 30 يوماً\n\n```sham-formula\n{\n  \"title\": \"صيفي منعش رجالي\",\n  \"author\": \"شاهين — مقترح تجريبي\",\n  \"concentrationPercent\": 20,\n  \"concentrationType\": \"edp\",\n  \"bottleVolumeMl\": 50,\n  \"alcoholPercentage\": 96,\n  \"waterPercent\": 0,\n  \"fixativePercent\": 0,\n  \"macerationDays\": 30,\n  \"summary\": \"مقترح يحتاج مراجعة السلامة\",\n  \"pyramidNotes\": [\n    {\n      \"id\": \"note-1\",\n      \"nameAr\": \"برغموت إيطالي\",\n      \"nameEn\": \"Italian Bergamot\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 15\n    },\n    {\n      \"id\": \"note-2\",\n      \"nameAr\": \"ليمون صقلي\",\n      \"nameEn\": \"Sicilian Lemon\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 10\n    },\n    {\n      \"id\": \"note-3\",\n      \"nameAr\": \"نعناع عشبي\",\n      \"nameEn\": \"Herbal Mint\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 5\n    },\n    {\n      \"id\": \"note-4\",\n      \"nameAr\": \"لافندر فرنسي\",\n      \"nameEn\": \"French Lavender\",\n      \"category\": \"heart\",\n      \"percentageOfOil\": 20\n    },\n    {\n      \"id\": \"note-5\",\n      \"nameAr\": \"إكليل الجبل\",\n      \"nameEn\": \"Rosemary\",\n      \"category\": \"heart\",\n      \"percentageOfOil\": 10\n    },\n    {\n      \"id\": \"note-6\",\n      \"nameAr\": \"إبرة الراعي\",\n      \"nameEn\": \"Geranium\",\n      \"category\": \"heart\",\n      \"percentageOfOil\": 10\n    },\n    {\n      \"id\": \"note-7\",\n      \"nameAr\": \"خشب الأرز\",\n      \"nameEn\": \"Cedarwood\",\n      \"category\": \"base\",\n      \"percentageOfOil\": 15\n    },\n    {\n      \"id\": \"note-8\",\n      \"nameAr\": \"المسك الأبيض\",\n      \"nameEn\": \"White Musk\",\n      \"category\": \"base\",\n      \"percentageOfOil\": 10\n    },\n    {\n      \"id\": \"note-9\",\n      \"nameAr\": \"نجيل الهند\",\n      \"nameEn\": \"Vetiver\",\n      \"category\": \"base\",\n      \"percentageOfOil\": 5\n    }\n  ]\n}\n```\n\nهل تفضل إضافة لمسة بحرية (Marine Notes) لزيادة الانتعاش، أم ترغب في تعديل نسبة الحمضيات في القمة؟",
-   "at": "2026-10-16T10:46:45.896Z",
    "hits": 0,
    "source": "probe"
   }
