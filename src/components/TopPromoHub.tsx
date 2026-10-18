@@ -13,6 +13,7 @@ import {
   Pause,
   Play,
   RotateCcw,
+  Search,
   ShoppingBag,
   Sparkles,
   Volume2,
@@ -131,25 +132,52 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
   const [addedSku, setAddedSku] = useState<string | null>(null);
   const [showCountryPicker, setShowCountryPicker] = useState(false);
   const [countrySearch, setCountrySearch] = useState('');
+  const [productSearch, setProductSearch] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'men' | 'women' | 'unisex'>('all');
 
   // Auto-detected visitor country from device & edge
   const [currentCountry, setCurrentCountry] = useStoreCountry();
   const countryMeta = useMemo(() => getCountryMeta(currentCountry, currentLang), [currentCountry, currentLang]);
 
-  // Curated showcase products with real photos & valid prices
-  const showcaseProducts = useMemo(() => {
-    return productsData.products
-      .filter((p) => p.ourPrice > 0 && p.stockStatus !== 'out_of_stock' && typeof p.imageUrl === 'string' && !p.imageUrl.includes('unsplash.com'))
-      .sort((a, b) => (b.ourPrice || 0) - (a.ourPrice || 0))
-      .slice(0, 8);
+  // All store products (1,114+ products from the catalog)
+  const allStoreProducts = useMemo(() => {
+    return (productsData.products || []).filter((p) => (p.ourPrice || 0) > 0);
   }, []);
 
-  const activeProduct = showcaseProducts[productSlideIndex] || showcaseProducts[0];
+  // Filtered showcase products based on search & category
+  const showcaseProducts = useMemo(() => {
+    let list = allStoreProducts;
+    if (selectedCategory === 'men') {
+      list = list.filter((p) => p.category?.includes('رجالي'));
+    } else if (selectedCategory === 'women') {
+      list = list.filter((p) => p.category?.includes('نسائي'));
+    } else if (selectedCategory === 'unisex') {
+      list = list.filter((p) => p.category?.includes('مختلط'));
+    }
+    if (productSearch.trim()) {
+      const q = productSearch.toLowerCase().trim();
+      list = list.filter((p) =>
+        (p.nameAr && p.nameAr.toLowerCase().includes(q)) ||
+        (p.nameEn && p.nameEn.toLowerCase().includes(q)) ||
+        (p.brand && p.brand.toLowerCase().includes(q)) ||
+        (p.descriptionAr && p.descriptionAr.toLowerCase().includes(q)) ||
+        (p.descriptionEn && p.descriptionEn.toLowerCase().includes(q))
+      );
+    }
+    return list;
+  }, [allStoreProducts, selectedCategory, productSearch]);
+
+  const activeProduct = showcaseProducts[productSlideIndex] || showcaseProducts[0] || allStoreProducts[0];
 
   // Active scene
   const activeScene = SCENES[sceneIndex] || SCENES[0];
 
-  // Autoplay timer for the cinema commercial scenes
+  // Reset slide index when search or category filter changes
+  useEffect(() => {
+    setProductSlideIndex(0);
+  }, [selectedCategory, productSearch]);
+
+  // Autoplay timer for the commercial scenes
   useEffect(() => {
     if (!expanded || !isPlaying) return;
     const interval = window.setInterval(() => {
@@ -158,14 +186,14 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
     return () => window.clearInterval(interval);
   }, [expanded, isPlaying]);
 
-  // Product slide auto-advance (subtle sync with scene or independent)
+  // Product slide auto-advance (pauses if user is searching)
   useEffect(() => {
-    if (!expanded || showcaseProducts.length < 2) return;
+    if (!expanded || showcaseProducts.length < 2 || productSearch.trim()) return;
     const interval = window.setInterval(() => {
       setProductSlideIndex((prev) => (prev + 1) % showcaseProducts.length);
     }, 8500);
     return () => window.clearInterval(interval);
-  }, [expanded, showcaseProducts.length]);
+  }, [expanded, showcaseProducts.length, productSearch]);
 
   const handleNextScene = () => {
     setSceneIndex((prev) => (prev + 1) % SCENES.length);
@@ -176,10 +204,12 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
   };
 
   const handleNextProduct = () => {
+    if (showcaseProducts.length === 0) return;
     setProductSlideIndex((prev) => (prev + 1) % showcaseProducts.length);
   };
 
   const handlePrevProduct = () => {
+    if (showcaseProducts.length === 0) return;
     setProductSlideIndex((prev) => (prev - 1 + showcaseProducts.length) % showcaseProducts.length);
   };
 
@@ -433,21 +463,26 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                 </div>
               </div>
 
-              {/* INTEGRATED PRODUCT SHOWCASE BOX (خانة عرض المنتجات بالأسعار داخل البنر) */}
-              <div className="relative z-20 flex flex-col justify-between border-t lg:border-t-0 lg:border-s border-amber-500/20 bg-gradient-to-b from-[#1b130e]/95 via-[#130d09]/98 to-[#0a0705]/98 p-4 sm:p-6 backdrop-blur-xl">
+              {/* INTEGRATED PRODUCT SHOWCASE BOX (خانة عرض كافة منتجات المتجر) */}
+              <div className="relative z-20 flex flex-col justify-between border-t lg:border-t-0 lg:border-s border-amber-500/20 bg-gradient-to-b from-[#1b130e]/95 via-[#130d09]/98 to-[#0a0705]/98 p-4 sm:p-5 backdrop-blur-xl">
                 {/* Box Header */}
                 <div>
-                  <div className="flex items-center justify-between gap-2 pb-3 border-b border-white/10">
+                  <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-white/10">
                     <div className="flex items-center gap-2">
                       <span className="flex h-7 w-7 items-center justify-center rounded-xl bg-amber-400/20 text-amber-300 border border-amber-400/30">
                         <ShoppingBag className="h-4 w-4" />
                       </span>
                       <div>
-                        <h3 className="text-xs sm:text-sm font-bold text-white tracking-wide">
-                          {L('product_box_title')}
-                        </h3>
+                        <div className="flex items-center gap-1.5">
+                          <h3 className="text-xs sm:text-sm font-bold text-white tracking-wide">
+                            {L('product_box_title')}
+                          </h3>
+                          <span className="px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-200 text-[10px] font-mono font-bold border border-amber-500/30">
+                            {allStoreProducts.length}
+                          </span>
+                        </div>
                         <p className="text-[10px] text-amber-300/80 font-medium">
-                          {L('product_box_kicker')}
+                          {currentLang === 'ar' ? `كل عطور المتجر (${showcaseProducts.length} معروضة)` : `All store perfumes (${showcaseProducts.length} shown)`}
                         </p>
                       </div>
                     </div>
@@ -458,15 +493,61 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                     </span>
                   </div>
 
+                  {/* Quick Search & Category Filter for all 1,114 products */}
+                  <div className="mt-2.5 space-y-1.5">
+                    <div className="relative">
+                      <Search className="absolute start-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-stone-400 pointer-events-none" />
+                      <input
+                        type="text"
+                        placeholder={currentLang === 'ar' ? `ابحث في كل عطور المتجر (${allStoreProducts.length} عطر)…` : `Search all perfumes (${allStoreProducts.length})…`}
+                        value={productSearch}
+                        onChange={(e) => setProductSearch(e.target.value)}
+                        className="w-full rounded-xl border border-white/10 bg-black/50 ps-8 pe-8 py-1 text-xs text-white placeholder-stone-500 focus:border-amber-400 focus:outline-none transition-colors"
+                      />
+                      {productSearch && (
+                        <button
+                          type="button"
+                          onClick={() => setProductSearch('')}
+                          className="absolute end-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-white text-xs cursor-pointer"
+                        >
+                          ✕
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Category Filter Pills */}
+                    <div className="flex items-center gap-1 overflow-x-auto text-[10px] no-scrollbar py-0.5">
+                      {[
+                        { id: 'all', labelAr: 'الكل', labelEn: 'All' },
+                        { id: 'men', labelAr: 'رجالي', labelEn: 'Men' },
+                        { id: 'women', labelAr: 'نسائي', labelEn: 'Women' },
+                        { id: 'unisex', labelAr: 'مختلط', labelEn: 'Unisex' },
+                      ].map((cat) => (
+                        <button
+                          key={cat.id}
+                          type="button"
+                          onClick={() => setSelectedCategory(cat.id as any)}
+                          className={`px-2 py-0.5 rounded-lg whitespace-nowrap transition-colors cursor-pointer font-medium ${
+                            selectedCategory === cat.id
+                              ? 'bg-amber-400 text-stone-950 font-bold'
+                              : 'bg-white/5 text-stone-300 hover:bg-white/10'
+                          }`}
+                        >
+                          {currentLang === 'ar' ? cat.labelAr : cat.labelEn}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
                   {/* Active Product Showcase Card */}
-                  {activeProduct && (
+                  {activeProduct ? (
                     <div
                       key={activeProduct.id}
                       onClick={() => handleProductClick(activeProduct.id)}
-                      className="group relative mt-4 cursor-pointer rounded-2xl border border-white/15 bg-gradient-to-b from-stone-900/80 to-stone-950/90 p-3.5 transition-all hover:border-amber-400/50 hover:shadow-xl hover:shadow-amber-950/40"
+                      className="group relative mt-2.5 cursor-pointer rounded-2xl border border-white/15 bg-gradient-to-b from-stone-900/80 to-stone-950/90 p-3 transition-all hover:border-amber-400/50 hover:shadow-xl hover:shadow-amber-950/40"
                     >
                       {/* Product Image Stage */}
-                      <div className="relative mx-auto flex aspect-square w-full max-w-[200px] items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-[radial-gradient(ellipse_at_center,#2d2116_0%,#150e09_100%)] p-2">
+                      <div className="relative mx-auto flex aspect-square w-full max-w-[170px] sm:max-w-[190px] items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-[radial-gradient(ellipse_at_center,#2d2116_0%,#150e09_100%)] p-2">
                         {activeProduct.imageUrl && !failedImages[activeProduct.id] ? (
                           <img
                             src={storeImageSrc(activeProduct.imageUrl)}
@@ -481,91 +562,145 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                         <span className="absolute top-2 start-2 rounded-full border border-amber-300/30 bg-black/70 px-2 py-0.5 text-[9px] font-bold text-amber-200">
                           {activeProduct.brand}
                         </span>
-                        <span className="absolute bottom-2 end-2 rounded-md bg-emerald-950/80 border border-emerald-500/40 px-1.5 py-0.5 text-[8px] font-bold text-emerald-300">
-                          {L('in_stock')}
-                        </span>
+                        {activeProduct.stockStatus === 'out_of_stock' ? (
+                          <span className="absolute bottom-2 end-2 rounded-md bg-stone-900/90 border border-stone-600/50 px-1.5 py-0.5 text-[8px] font-bold text-stone-400">
+                            {currentLang === 'ar' ? 'غير متوفر' : 'Out of stock'}
+                          </span>
+                        ) : (
+                          <span className="absolute bottom-2 end-2 rounded-md bg-emerald-950/80 border border-emerald-500/40 px-1.5 py-0.5 text-[8px] font-bold text-emerald-300">
+                            {L('in_stock')}
+                          </span>
+                        )}
                       </div>
 
                       {/* Product Details */}
-                      <div className="mt-3 space-y-1">
-                        <h4 className="line-clamp-1 font-serif text-base font-bold text-white group-hover:text-amber-200 transition-colors">
+                      <div className="mt-2.5 space-y-0.5">
+                        <h4 className="line-clamp-1 font-serif text-sm sm:text-base font-bold text-white group-hover:text-amber-200 transition-colors">
                           {currentLang === 'ar' ? activeProduct.nameAr : activeProduct.nameEn}
                         </h4>
-                        <p className="line-clamp-2 text-[11px] leading-relaxed text-stone-400">
+                        <p className="line-clamp-1 text-[11px] leading-relaxed text-stone-400">
                           {currentLang === 'ar' ? activeProduct.descriptionAr : activeProduct.descriptionEn}
                         </p>
                       </div>
 
-                      {/* CONVERTED PRICE DISPLAY (بلسان وعملة دولة الجهاز) */}
-                      <div className="mt-3.5 flex items-end justify-between border-t border-white/10 pt-2.5">
+                      {/* CONVERTED PRICE DISPLAY */}
+                      <div className="mt-3 flex items-end justify-between border-t border-white/10 pt-2">
                         <div>
                           <span className="block text-[9px] text-stone-400 font-medium">
                             {L('price_label')} ({countryMeta.countryName})
                           </span>
                           <div className="flex items-baseline gap-1.5">
-                            <span className="font-mono text-xl sm:text-2xl font-black text-amber-300 tracking-tight">
+                            <span className="font-mono text-lg sm:text-xl font-black text-amber-300 tracking-tight">
                               {activePriceData.formatted}
                             </span>
                           </div>
                         </div>
 
-                        {/* Interactive Add to Cart button right inside the banner */}
-                        <button
-                          type="button"
-                          onClick={(e) => handleAddToCart(e, activeProduct)}
-                          className={`flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all shadow-md ${
-                            addedSku === activeProduct.sku
-                              ? 'bg-emerald-500 text-white shadow-emerald-900/50 scale-105'
-                              : 'bg-gradient-to-r from-amber-400 to-orange-500 text-stone-950 hover:brightness-110 active:scale-95'
-                          }`}
-                        >
-                          {addedSku === activeProduct.sku ? (
-                            <>
-                              <Check className="h-3.5 w-3.5" />
-                              <span>{L('added')}</span>
-                            </>
-                          ) : (
-                            <>
-                              <ShoppingBag className="h-3.5 w-3.5" />
-                              <span>{L('add_to_cart')}</span>
-                            </>
-                          )}
-                        </button>
+                        {/* Interactive Add to Cart button */}
+                        {activeProduct.stockStatus === 'out_of_stock' ? (
+                          <button
+                            type="button"
+                            disabled
+                            className="flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold bg-stone-800 text-stone-400 cursor-not-allowed opacity-75"
+                          >
+                            <span>{currentLang === 'ar' ? 'نفد المخزون' : 'Out of stock'}</span>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={(e) => handleAddToCart(e, activeProduct)}
+                            className={`flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all shadow-md cursor-pointer ${
+                              addedSku === activeProduct.sku
+                                ? 'bg-emerald-500 text-white shadow-emerald-900/50 scale-105'
+                                : 'bg-gradient-to-r from-amber-400 to-orange-500 text-stone-950 hover:brightness-110 active:scale-95'
+                            }`}
+                          >
+                            {addedSku === activeProduct.sku ? (
+                              <>
+                                <Check className="h-3.5 w-3.5" />
+                                <span>{L('added')}</span>
+                              </>
+                            ) : (
+                              <>
+                                <ShoppingBag className="h-3.5 w-3.5" />
+                                <span>{L('add_to_cart')}</span>
+                              </>
+                            )}
+                          </button>
+                        )}
                       </div>
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-stone-400 text-xs">
+                      {currentLang === 'ar' ? 'لا توجد منتجات مطابقة للبحث' : 'No products match search'}
                     </div>
                   )}
 
-                  {/* Product Carousel Thumbnails & Switcher */}
-                  <div className="mt-3 flex items-center justify-between gap-1">
-                    <button
-                      type="button"
-                      onClick={handlePrevProduct}
-                      className="flex h-7 w-7 items-center justify-center rounded-lg border border-white/10 bg-white/5 hover:bg-white/15 text-stone-300 transition-colors"
-                    >
-                      <PreviousIcon className="h-3.5 w-3.5" />
-                    </button>
-                    <div className="flex items-center gap-1 overflow-x-auto max-w-[200px] py-1 px-1">
-                      {showcaseProducts.map((p, idx) => (
-                        <button
-                          key={p.id}
-                          type="button"
-                          onClick={() => setProductSlideIndex(idx)}
-                          className={`h-2 rounded-full transition-all duration-300 ${
-                            idx === productSlideIndex
-                              ? 'w-5 bg-amber-400'
-                              : 'w-2 bg-stone-700 hover:bg-stone-500'
-                          }`}
-                        />
-                      ))}
+                  {/* Product Carousel Thumbnails & Switcher for all products */}
+                  {showcaseProducts.length > 0 && (
+                    <div className="mt-3 flex items-center justify-between gap-1.5">
+                      <button
+                        type="button"
+                        onClick={handlePrevProduct}
+                        aria-label={L('prev_scene')}
+                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 hover:bg-white/15 text-stone-300 transition-colors cursor-pointer"
+                      >
+                        <PreviousIcon className="h-3.5 w-3.5" />
+                      </button>
+
+                      {/* Visible Mini Thumbnails Strip of neighboring products */}
+                      <div className="flex items-center gap-1 overflow-x-auto py-0.5 px-0.5 no-scrollbar">
+                        {(() => {
+                          const total = showcaseProducts.length;
+                          const visibleCount = Math.min(5, total);
+                          const half = Math.floor(visibleCount / 2);
+                          let start = productSlideIndex - half;
+                          if (start < 0) start = 0;
+                          if (start + visibleCount > total) start = Math.max(0, total - visibleCount);
+                          const slice = showcaseProducts.slice(start, start + visibleCount);
+
+                          return slice.map((p, i) => {
+                            const actualIdx = start + i;
+                            const isSelected = actualIdx === productSlideIndex;
+                            return (
+                              <button
+                                key={p.id}
+                                type="button"
+                                onClick={() => setProductSlideIndex(actualIdx)}
+                                title={currentLang === 'ar' ? p.nameAr : p.nameEn}
+                                className={`relative h-7 w-7 rounded-lg overflow-hidden border transition-all shrink-0 cursor-pointer ${
+                                  isSelected
+                                    ? 'border-amber-400 ring-2 ring-amber-400/50 scale-105'
+                                    : 'border-white/10 hover:border-white/30 opacity-60 hover:opacity-100'
+                                }`}
+                              >
+                                <img
+                                  src={storeImageSrc(p.imageUrl)}
+                                  alt=""
+                                  className="h-full w-full object-cover"
+                                  loading="lazy"
+                                />
+                              </button>
+                            );
+                          });
+                        })()}
+                      </div>
+
+                      {/* Product counter */}
+                      <span className="font-mono text-[10px] sm:text-[11px] text-amber-300 whitespace-nowrap bg-black/50 px-2 py-0.5 rounded-md border border-white/10">
+                        {productSlideIndex + 1} / {showcaseProducts.length}
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={handleNextProduct}
+                        aria-label={L('next_scene')}
+                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 hover:bg-white/15 text-stone-300 transition-colors cursor-pointer"
+                      >
+                        <NextIcon className="h-3.5 w-3.5" />
+                      </button>
                     </div>
-                    <button
-                      type="button"
-                      onClick={handleNextProduct}
-                      className="flex h-7 w-7 items-center justify-center rounded-lg border border-white/10 bg-white/5 hover:bg-white/15 text-stone-300 transition-colors"
-                    >
-                      <NextIcon className="h-3.5 w-3.5" />
-                    </button>
-                  </div>
+                  )}
                 </div>
 
                 {/* Bottom CTA Button */}
