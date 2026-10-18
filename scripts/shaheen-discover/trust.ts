@@ -102,7 +102,7 @@ const PAYMENTS: [string, RegExp][] = [
 ];
 const RISKY_PAYMENT = /western union|moneygram|bitcoin only|crypto(?:currency)? only|pay (?:with|by) gift ?cards?|bank transfer only|wire transfer only/i;
 const PLATFORMS: [string, RegExp][] = [
-  ['Shopify', /cdn\.shopify\.com|Shopify\.(?:theme|shop|routes|locale)|myshopify\.com|["'(]\/cdn\/shop\/(?:files|products|t)\/|shopify-section|window\.Shopify/i], ['WooCommerce', /woocommerce/i], ['Magento', /Magento|mage\/cookies|\/static\/version\d+\//i],
+  ['Shopify', /cdn\.shopify\.com|Shopify\.(?:theme|shop|routes|locale)|myshopify\.com|\/cdn\/shop\/(?:files|products|t)\/|shopify-section|window\.Shopify/i], ['WooCommerce', /woocommerce/i], ['Magento', /Magento|mage\/cookies|\/static\/version\d+\//i],
   ['Salla', /salla\.(?:sa|network)|cdn\.salla/i], ['Zid', /zid\.(?:sa|store)|zidcdn/i], ['BigCommerce', /bigcommerce/i], ['Shopware', /shopware/i], ['PrestaShop', /prestashop/i],
   ['Salesforce Commerce', /demandware|\/on\/demandware\.store/i], ['commercetools', /commercetools/i], ['Wix Stores', /wixstatic|wix-ecommerce/i], ['Squarespace', /squarespace/i],
   ['Ecwid', /ecwid/i], ['OpenCart', /route=product\/product|catalog\/view\/theme/i], ['YouCan', /youcan\.shop/i], ['Cafe24', /cafe24/i], ['MakeShop', /makeshop/i], ['Shopline', /shopline/i],
