@@ -16,8 +16,11 @@ import { makeAsk, QuotaExhaustedError, quotaBook } from '../doctor/agent';
 import { answerBook } from '../doctor/answers';
 import { extractProduct, pageImages, pageText, parseListing, parseSitemap, parseSitemapIndex, validateShaheenReading, type ExtractedProduct, type SitemapEntry } from './extract';
 import { reviewStore, type ReviewFile } from './review';
-import { SOURCES } from './sources';
-import { isImported, nextIdOf, normalizeBrand, ourPriceOf, planRun, priceReport, sourceKey, toStoreProduct, useCleanPhotos, type ImageRegistry, type ImportedProduct, type ImportSource, type PriceRule } from './transform';
+import { loadSources } from './sources';
+import { extractGeneric } from './generic';
+import { adoptSkill, emptySkills, hostOf, isSkillsFile, learnSkill, readWithSkill, recordUse, skillsSummary, type SkillsFile } from './skills';
+import { isPerfume, parseRobots } from '../shaheen-discover/discover';
+import { addAltOffer, isImported, nextIdOf, normalizeBrand, ourPriceOf, perfumeKey, planRun, priceInEgp, priceReport, sourceKey, toStoreProduct, useCleanPhotos, type ImageRegistry, type ImportedProduct, type ImportSource, type PriceRule } from './transform';
 
 const env = process.env;
 const PRODUCTS = new URL('../../src/data/products.json', import.meta.url);
@@ -34,6 +37,10 @@ const MARKUP: PriceRule = {
   maxProfitEgp: positive(env.IMPORT_MAX_PROFIT_EGP),
 };
 const CONCURRENCY = Math.max(1, Math.min(6, Number(env.IMPORT_CONCURRENCY ?? 3)));
+// Size limits of the store (every product is part of the site's store download and gets its own page):
+// IMPORT_MAX_TOTAL products in all, IMPORT_MAX_PER_SOURCE from one store. Beyond them only refreshes run.
+const MAX_TOTAL = Math.max(100, Number(env.IMPORT_MAX_TOTAL ?? 5000));
+const MAX_PER_SOURCE = Math.max(10, Number(env.IMPORT_MAX_PER_SOURCE ?? 1500));
 const started = Date.now();
 const log: string[] = [];
 const say = (line: string) => { console.log(line); log.push(line); };
@@ -126,6 +133,16 @@ let ask: Awaited<ReturnType<typeof makeAsk>>;
 const memory = answerBook(new URL('../../src/data/live/ai-memory.json', import.meta.url));
 try { ask = await makeAsk(env, { quota, memory }); } catch { ask = undefined; }
 let aiResumeAt = 0;
+// «مهارات شاهين»: how to read each store without AI, learned from AI readings that passed the checks.
+const SKILLS = new URL('../../src/data/live/shaheen-skills.json', import.meta.url);
+const skills: SkillsFile = (() => { const d = read<unknown>(SKILLS); return isSkillsFile(d) ? d : emptySkills(); })();
+let skillsChanged = false;
+const sources = loadSources();
+const only = (env.IMPORT_SOURCE || '').split(',').map((x) => x.trim()).filter(Boolean);
+const selected = sources.filter((s) => (!only.length || only.includes(s.id)) && (env.IMPORT_ONLY_DISCOVERED !== '1' || s.origin === 'discovered'));
+// The new-product budget of the run is shared between the stores (each gets its turn, unused budget moves on).
+let newBudget = Math.max(0, Math.min(MAX_NEW, MAX_TOTAL - products.length));
+if (MAX_NEW > 0 && newBudget === 0) say(`Store size limit reached (${MAX_TOTAL} products, IMPORT_MAX_TOTAL): only refreshes this run`);
 
 const SHAHEEN_READER = `أنت «الخبير شاهين» وتقرأ صفحة منتج عطر من متجر مورّد. استخرج البيانات المكتوبة في الصفحة فقط ولا تخمّن.
 أعد JSON فقط: {"name":"","brand":"","price":0,"sku":"","description":"","images":["رابط كامل من القائمة"],"size":"100ml","concentration":"","gender":"men|women|unisex","inStock":true}
@@ -135,7 +152,7 @@ const SHAHEEN_READER = `أنت «الخبير شاهين» وتقرأ صفحة �
 const supervisor = read<{ tools?: Record<string, { guidance?: { text?: string } }> }>(new URL('../../src/data/live/ai-supervisor.json', import.meta.url));
 const READER = SHAHEEN_READER + guidanceBlock(supervisor?.tools?.store_import?.guidance?.text);
 
-for (const source of SOURCES.filter((s) => !env.IMPORT_SOURCE || env.IMPORT_SOURCE === s.id)) {
+for (const [sourceIndex, source] of selected.entries()) {
   const info: Record<string, unknown> = { id: source.id, currency: source.currency };
   (importInfo.sources as unknown[]).push(info);
   const { rate, from } = await rateToEgp(source, previous);
@@ -158,7 +175,15 @@ for (const source of SOURCES.filter((s) => !env.IMPORT_SOURCE || env.IMPORT_SOUR
     Object.assign(info, { listingPages: listing.pages, listingProducts: listing.seen, listingOnly: listing.extras.length, listingComplete: listing.complete });
     say(`${source.id}: listing ${listing.seen} products on ${listing.pages} pages, ${listing.extras.length} missing from the sitemap${listing.complete ? '' : ' (some pages unreadable)'}`);
   }
-  const entries = [...listing.extras, ...sitemap];
+  let entries = [...listing.extras, ...sitemap];
+  // Stores found by the scout: their robots.txt is respected on every run (it can change).
+  if (source.origin === 'discovered') {
+    const robotsPage = await get(new URL('/robots.txt', source.base).href, 1);
+    const robots = parseRobots(robotsPage.status === 200 ? robotsPage.body : '');
+    const before = entries.length;
+    entries = entries.filter((e) => { try { return robots.allowed(new URL(e.url).pathname); } catch { return false; } });
+    if (before !== entries.length) say(`${source.id}: ${before - entries.length} links skipped (robots.txt)`);
+  }
   // A listing page that could not be read must not make its products look «gone» from the supplier.
   if (!listing.complete) for (const p of mine) if (!inSitemap.has(p.url.replace(/\/+$/, '')) && !listingOnly.has(p.url.replace(/\/+$/, ''))) entries.push({ url: p.url, images: [] });
   // Brands the store already sells come first, so the catalog grows around what customers know.
@@ -166,14 +191,16 @@ for (const source of SOURCES.filter((s) => !env.IMPORT_SOURCE || env.IMPORT_SOUR
   const brandOf = (u: string) => (u.match(/\/perfumes\/([^/]+)\//) || [])[1]?.replace(/[^a-z]/g, '') || '';
   const first = (u: string) => (listingOnly.has(u.replace(/\/+$/, '')) ? 2 : 0) + Number([...known].some((k) => brandOf(u).startsWith(k)));
   const ordered = [...entries].sort((a, b) => first(b.url) - first(a.url));
-  const plan = planRun(ordered, mine, MAX_NEW, MAX_REFRESH);
+  const share = Math.ceil(newBudget / Math.max(1, selected.length - sourceIndex));
+  const plan = planRun(ordered, mine, Math.max(0, Math.min(share, MAX_PER_SOURCE - mine.length)), MAX_REFRESH);
   const imagesByUrl = new Map(entries.map((e) => [e.url.replace(/\/+$/, ''), e.images]));
   say(`${source.id}: ${mine.length} already imported; this run: ${plan.fresh.length} new, ${plan.refresh.length} to refresh, ${plan.gone.length} left the supplier`);
 
   const jobs = [...plan.fresh.map((u) => ({ url: u.url, fresh: true })), ...plan.refresh.map((u) => ({ url: u.url, fresh: false }))];
   const failed: string[] = [];
   const deferred: string[] = [];
-  let viaShaheen = 0; let added = 0; let refreshed = 0;
+  let viaShaheen = 0; let added = 0; let refreshed = 0; let learnedSkills = 0; let notPerfume = 0; let duplicates = 0;
+  const via: Record<string, number> = {};
   const bySourceKey = new Map(mine.map((p) => [sourceKey(source.id, p.supplierSku), p]));
   const byUrl = new Map(mine.map((p) => [p.url.replace(/\/+$/, ''), p]));
   let cursor = 0;
@@ -181,7 +208,7 @@ for (const source of SOURCES.filter((s) => !env.IMPORT_SOURCE || env.IMPORT_SOUR
   await Promise.all(Array.from({ length: CONCURRENCY }, async () => {
     while (cursor < jobs.length) {
       const job = jobs[cursor++];
-      await sleep(400); // polite to the supplier
+      await sleep(Math.max(400, source.delayMs || 0)); // polite to the supplier
       const page = await get(job.url);
       if (page.status !== 200) {
         failed.push(`${job.url} (HTTP ${page.status})`);
@@ -190,6 +217,15 @@ for (const source of SOURCES.filter((s) => !env.IMPORT_SOURCE || env.IMPORT_SOUR
         continue;
       }
       let x = extractProduct(page.body, job.url, imagesByUrl.get(job.url.replace(/\/+$/, '')) || []);
+      // No JSON-LD: Shaheen reads the page by himself — first with what he learned about this store, then
+      // from the OpenGraph/microdata signals every platform publishes — before any AI is asked.
+      const host = hostOf(job.url);
+      const skill = skills.sites[host];
+      if (!x && skill && skill.status !== 'retired') {
+        x = readWithSkill(page.body, job.url, skill, source.currency);
+        recordUse(skill, Boolean(x)); skillsChanged = true;
+      }
+      if (!x) x = extractGeneric(page.body, job.url, source.currency);
       if (!x && ask && aiResumeAt) { deferred.push(job.url); continue; }
       // A link found only on a listing page is imported only from real product data (no AI spent on
       // a page that may not be a product at all).
@@ -202,7 +238,12 @@ for (const source of SOURCES.filter((s) => !env.IMPORT_SOURCE || env.IMPORT_SOUR
           const reply = await ask(READER, prompt);
           const body = (reply || '').replace(/```(?:json)?/gi, '');
           x = validateShaheenReading(JSON.parse(body.slice(body.indexOf('{'), body.lastIndexOf('}') + 1)), page.body, job.url, source.currency);
-          if (x) viaShaheen++; else memory.forget(READER, prompt);
+          if (x) {
+            viaShaheen++;
+            // Shaheen learns from the checked reading where this store keeps each value (no AI next time).
+            const learned = learnSkill(page.body, x);
+            if (learned && adoptSkill(skills, learned)) { skillsChanged = true; learnedSkills++; }
+          } else memory.forget(READER, prompt);
         } catch (error) {
           // Quota used up: this page (and the next ones needing Shaheen) wait for the renewal — not failures.
           if (error instanceof QuotaExhaustedError) { aiResumeAt = error.resumeAt; deferred.push(job.url); continue; }
@@ -211,26 +252,50 @@ for (const source of SOURCES.filter((s) => !env.IMPORT_SOURCE || env.IMPORT_SOUR
         }
       }
       if (!x || x.currency !== source.currency) { failed.push(`${job.url} (${x ? `currency ${x.currency}` : 'no product data'})`); continue; }
+      // A store that also sells cosmetics/clothes: only its perfumes come into «متجر شام».
+      if (source.perfumeOnly && !isPerfume(x)) { notPerfume++; continue; }
+      via[x.via] = (via[x.via] || 0) + 1;
       results.push(x);
     }
   }));
 
   const now = new Date().toISOString();
+  const byPerfume = new Map<string, ImportedProduct>();
+  for (const p of products) if (isImported(p)) { const k = perfumeKey(p.brand, String(p.nameEn || ""), p.sizeMl); if (k && !byPerfume.has(k)) byPerfume.set(k, p); }
   for (const x of results) {
     const existing = bySourceKey.get(sourceKey(source.id, x.supplierSku)) || byUrl.get(x.url.replace(/\/+$/, ''));
+    // The same perfume from another store is not added twice: it becomes a second place to buy it from.
+    if (!existing) {
+      const key = perfumeKey(x.brand, x.name, x.sizeMl);
+      const twin = key ? byPerfume.get(key) : undefined;
+      if (twin && twin.supplierId !== source.id) {
+        addAltOffer(twin, { supplierId: source.id, url: x.url, priceEgp: priceInEgp(x.regularPrice && x.regularPrice > x.price ? x.regularPrice : x.price, rate), inStock: x.inStock, at: now });
+        duplicates++;
+        continue;
+      }
+    }
     const product = toStoreProduct(x, { source, rate, now, nextId: nextIdOf(products), existing, markup: MARKUP });
-    if (existing) { products[products.indexOf(existing)] = product; refreshed++; } else { products.push(product); added++; }
+    if (existing) { products[products.indexOf(existing)] = product; refreshed++; } else { products.push(product); added++; newBudget = Math.max(0, newBudget - 1); }
+    const key = perfumeKey(product.brand, String(product.nameEn || ""), product.sizeMl);
+    if (key && !byPerfume.has(key)) byPerfume.set(key, product);
     bySourceKey.set(sourceKey(source.id, x.supplierSku), product);
     byUrl.set(x.url.replace(/\/+$/, ''), product);
   }
   for (const p of plan.gone) p.stockStatus = 'out_of_stock';
-  Object.assign(info, { added, refreshed, failed: failed.slice(0, 20), failedCount: failed.length, viaShaheen, deferred: deferred.length, gone: plan.gone.length });
-  say(`${source.id}: +${added} new, ${refreshed} refreshed, ${failed.length} unreadable${viaShaheen ? `, ${viaShaheen} read by Shaheen` : ''}${deferred.length ? `, ${deferred.length} wait for the AI renewal` : ''}`);
+  Object.assign(info, { origin: source.origin || 'built-in', added, refreshed, failed: failed.slice(0, 20), failedCount: failed.length, viaShaheen, deferred: deferred.length, gone: plan.gone.length, via, learnedSkills, notPerfume, duplicates });
+  say(`${source.id}: +${added} new, ${refreshed} refreshed, ${failed.length} unreadable${viaShaheen ? `, ${viaShaheen} read by Shaheen` : ''}${via.skill ? `, ${via.skill} read with a learned skill` : ''}${via.generic ? `, ${via.generic} read by Shaheen's own reader` : ''}${learnedSkills ? `, ${learnedSkills} new skill learned` : ''}${duplicates ? `, ${duplicates} already sold (kept as a second offer)` : ''}${notPerfume ? `, ${notPerfume} non-perfume skipped` : ''}${deferred.length ? `, ${deferred.length} wait for the AI renewal` : ''}`);
 }
 
 if (aiResumeAt) { importInfo.aiResumeAt = new Date(aiResumeAt).toISOString(); say(`AI packages used up until ${importInfo.aiResumeAt}; the import continues then`); }
 quota.save();
 memory.save();
+if (skillsChanged) {
+  skills.updatedAt = new Date().toISOString();
+  writeFileSync(SKILLS, `${JSON.stringify(skills, null, 1)}\n`);
+  const sk = skillsSummary(skills);
+  importInfo.skills = sk;
+  say(`Shaheen's skills: ${sk.sites} stores (${sk.trusted} trusted), ${sk.readings} pages read with them without AI`);
+}
 if (memory.hits()) say(`${memory.hits()} page readings answered from Shaheen's memory (no AI call)`);
 
 // A changed price rule applies to every imported product at once (the price is a pure function of the

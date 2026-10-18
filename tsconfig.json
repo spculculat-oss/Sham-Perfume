@@ -41,6 +41,10 @@
     "scripts/shaheen-store/**/*.mts",
     "scripts/shaheen-import/**/*.ts",
     "scripts/shaheen-import/**/*.mts",
+    "scripts/shaheen-discover/**/*.ts",
+    "scripts/shaheen-discover/**/*.mts",
+    "scripts/shaheen-school/**/*.ts",
+    "scripts/shaheen-school/**/*.mts",
     "scripts/product-pages/**/*.ts",
     "scripts/product-pages.mts"
   ]

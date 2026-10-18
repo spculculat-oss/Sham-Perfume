@@ -6,7 +6,7 @@
  */
 export type AiToolId =
   | 'shaheen_chat' | 'sham_assistant' | 'news_articles' | 'news_bulletin' | 'assistant_training' | 'media' | 'admin_agent'
-  | 'store_advisor' | 'store_catalog' | 'store_import';
+  | 'store_advisor' | 'store_catalog' | 'store_import' | 'shaheen_school';
 
 export interface AiToolDef {
   id: AiToolId;
@@ -65,7 +65,12 @@ export const AI_TOOLS: AiToolDef[] = [
   {
     id: 'store_import', nameAr: 'مستورد شاهين + مراجع الصفحات', nameEn: 'Shaheen product importer + page reviewer',
     descriptionAr: 'كل 12 ساعة ينقل شاهين منتجات المورد إلى «متجر شام» بكل بياناتها وصورها (من خريطة الموقع وبيانات schema.org، ويقرأ الصفحة بنفسه إن لزم)، ويسعّرها بمعادلة المتجر، ثم يراجع «مراجع الصفحات» كل منتج وصورته وسعره وصفحته ويخفي المعيب.',
-    sources: ['scripts/shaheen-import/run.mts'], routes: [], acceptsGuidance: true,
+    sources: ['scripts/shaheen-import/run.mts', 'scripts/shaheen-discover/run.mts'], routes: [], acceptsGuidance: true,
+  },
+  {
+    id: 'shaheen_school', nameAr: 'مدرسة شاهين (الاعتماد على النفس)', nameEn: "Shaheen's school (self-reliance)",
+    descriptionAr: 'كل 6 ساعات يمتحن شاهين نفسه على أسئلة العطور والموقع، يتعلم من مكتبته بدون ذكاء اصطناعي، ويذاكر الباقي مع محرك متاح ويحفظه في ذاكرته ليرد بها لو توقفت كل الخدمات.',
+    sources: ['scripts/shaheen-school/run.mts'], routes: [], acceptsGuidance: true,
   },
   {
     id: 'admin_agent', nameAr: 'المساعد الإداري', nameEn: 'Admin operations agent',

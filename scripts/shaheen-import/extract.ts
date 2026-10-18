@@ -11,6 +11,8 @@
 
 export interface SitemapEntry { url: string; lastmod?: string; images: string[] }
 
+export type ExtractVia = 'json-ld' | 'generic' | 'skill' | 'shaheen';
+
 export interface ExtractedProduct {
   url: string;
   supplierSku: string;
@@ -34,8 +36,11 @@ export interface ExtractedProduct {
   longevity?: string;
   barcode?: string;
   category?: string;
-  /** Which layer produced the record. */
-  via: 'json-ld' | 'shaheen';
+  /**
+   * Which layer produced the record: the page's JSON-LD, Shaheen's own reader (OpenGraph/microdata, no AI),
+   * a site skill Shaheen learned from an earlier AI reading (no AI), or an AI reading checked against the page.
+   */
+  via: ExtractVia;
 }
 
 const decode = (s: string) => s

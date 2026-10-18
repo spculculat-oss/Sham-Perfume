@@ -80,7 +80,7 @@ test('reactiveMap re-translates its labels when the language changes', () => {
 test('no admin screen still ships a hard-coded Arabic label', () => {
   // The only Arabic that may stay in code is the comma inside the CSV split regex.
   const allow = /[,،]/;
-  for (const file of ['AdminApp.tsx', 'SupervisorPanel.tsx', 'UpdatesPanel.tsx']) {
+  for (const file of ['AdminApp.tsx', 'SupervisorPanel.tsx', 'UpdatesPanel.tsx', 'ShaheenGrowthPanel.tsx']) {
     let src = readFileSync(new URL(`../src/admin/${file}`, import.meta.url), 'utf8');
     src = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
     src = src.replace(/TP\('(?:[^'\\]|\\.)*'[^)]*\)/g, '').replace(/T\('(?:[^'\\]|\\.)*'\)/g, '');

@@ -210,6 +210,25 @@ function storeImportProbes(ctx: ProbeContext): Probe[] {
   return [{ tool: 'store_import', question: 'مستورد شاهين ومراجع الصفحات', answer, ms: 0, ok: true, findings }];
 }
 
+function schoolProbes(ctx: ProbeContext): Probe[] {
+  type School = { updatedAt: string; reliance: { score: number; covered: number; total: number }; lastStudied: { q: string; lang: string }[] };
+  type Memory = { entries: { question: string; lang: string; answer: string; source: string }[] };
+  const school = readLive<School>(ctx, 'shaheen-school.json');
+  if (!school) return [{ tool: 'shaheen_school', question: 'تقرير مدرسة شاهين', answer: '', ms: 0, ok: false, error: 'التقرير غير موجود (لم تعمل المدرسة بعد)', findings: [] }];
+  const findings = [] as Probe['findings'];
+  const ageH = (ctx.now - Date.parse(school.updatedAt)) / 3600_000;
+  if (ageH > 13) findings.push({ severe: false, text: `المدرسة لم تعمل منذ ${Math.round(ageH)} ساعة` });
+  if (school.reliance.score < 50) findings.push({ severe: false, text: `شاهين يرد وحده على ${school.reliance.score}% فقط من أسئلة الامتحان` });
+  // What he studied is what visitors get when every engine is down: the answers are checked like any other.
+  const memory = readLive<Memory>(ctx, 'shaheen-memory.json');
+  const studied = (memory?.entries || []).filter((e) => e.source === 'study');
+  const sample = rotate(studied, ctx.run, 2);
+  for (const e of sample) findings.push(...inspectAnswer(e.answer, { language: e.lang === 'en' ? 'en' : 'ar' }).filter((f) => f.severe));
+  const answer = [`يرد وحده على ${school.reliance.covered}/${school.reliance.total} (${school.reliance.score}%) — ${studied.length} إجابة مذاكرة في ذاكرته`,
+    ...sample.map((e) => `## ${e.question}\n${e.answer}`)].join('\n\n');
+  return [{ tool: 'shaheen_school', question: 'مدرسة شاهين', answer, ms: 0, ok: true, findings }];
+}
+
 export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<Probe[]>> = {
   shaheen_chat: chatProbes,
   sham_assistant: assistantProbes,
@@ -221,4 +240,5 @@ export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<P
   store_advisor: storeAdvisorProbes,
   store_catalog: storeCatalogProbes,
   store_import: storeImportProbes,
+  shaheen_school: schoolProbes,
 };
