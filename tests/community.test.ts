@@ -23,7 +23,7 @@ before(async () => {
   sql = await connectPglite();
   await migrate(sql);
   await migrate(sql); // idempotent
-  ctx = { sql, vault: new Vault(KEY), fx: async () => FX };
+  ctx = { sql, vault: new Vault(KEY), fx: async () => FX, env: {} }; // empty env: no e-mail provider can leak into the tests
 });
 after(async () => { await sql?.close(); });
 
@@ -65,6 +65,7 @@ test('accounts: register, log in, sessions, generic login errors, suspended acco
   await assert.rejects(svc.login(ctx, { email: address, password: 'Wrong2026pass' }), { code: 'INVALID_LOGIN' });
   await assert.rejects(svc.login(ctx, { email: 'nobody@example.com', password: PASSWORD }), { code: 'INVALID_LOGIN' }, 'same answer for an unknown e-mail');
   const second = await svc.login(ctx, { email: address, password: PASSWORD });
+  if ('pending' in second) throw new Error('unexpected pending login');
   await svc.logout(ctx, second.token);
   assert.equal(await svc.authenticate(ctx, second.token), undefined);
   assert.ok(await svc.authenticate(ctx, token), 'other sessions stay');
@@ -366,6 +367,7 @@ test('data key: a database alone is enough (auto key), SHAM_DATA_KEY added later
     assert.match(after.value, /^wrapped:/, 'the key is no longer readable from the database alone');
     const ctx2 = (await wrapped.ready())!;
     const login = await svc.login(ctx2, { email: 'auto@key.test', password: PASSWORD }, 'test');
+    if ('pending' in login) throw new Error('unexpected pending login');
     assert.equal(login.me.id, reg.me.id, 'members created before the key was wrapped still sign in');
     assert.equal((await svc.me(ctx2, reg.me.id)).email, 'auto@key.test', 'and their encrypted data still opens');
 
@@ -393,4 +395,145 @@ test('database setting: found under any name the dashboard gives it; status list
   assert.deepEqual(databaseHints({ GEMINI_API_KEY: 'x', NEON_PROJECT_ID: 'y', STORAGE_PGHOST: 'z', DATABASE_URL: '' }), ['DATABASE_URL', 'NEON_PROJECT_ID', 'STORAGE_PGHOST']);
   assert.equal(databaseErrorKind(new Error('password authentication failed for user "x"')), 'auth');
   assert.equal(databaseErrorKind(Object.assign(new Error('getaddrinfo ENOTFOUND ep-x'), { code: 'ENOTFOUND' })), 'network');
+});
+
+/* ------------------- account security v2 — the Google/Apple/Meta study (SHAM_AUTH.md) ------------------- */
+import { issueCode } from '../server/community/codes';
+import { totpCode, totpCounter } from '../server/community/totp';
+
+test('common passwords are refused: the top-10k breached list blocks sign-up and changes', async () => {
+  await assert.rejects(svc.register(ctx, { name: 'Weak', email: email('common1'), password: 'password123' }), { code: 'COMMON_PASSWORD' });
+  await assert.rejects(svc.register(ctx, { name: 'Weak', email: email('common2'), password: 'Qwerty123' }), { code: 'COMMON_PASSWORD' });
+  await assert.rejects(svc.changePassword(ctx, (await svc.register(ctx, { name: 'Wk', email: email('common3'), password: PASSWORD })).me.id, { current: PASSWORD, next: 'welcome1' }), { code: 'COMMON_PASSWORD' });
+  const strong = await newMember('Strong', { password: 'Xk9mP2vQ8wL4nZ' });
+  assert.ok(strong.id, 'an uncommon password is accepted');
+});
+
+test('per-account lockout after 5 wrong passwords, with the security audit trail', async () => {
+  const address = email('locked');
+  const { me } = await svc.register(ctx, { name: 'Lock', email: address, password: PASSWORD });
+  for (let i = 0; i < 4; i++) await assert.rejects(svc.login(ctx, { email: address, password: 'Wrong9999xx' }), { code: 'INVALID_LOGIN' });
+  const [row] = await sql.query(`SELECT failed_logins FROM users WHERE id = $1`, [me.id]);
+  assert.equal(row.failed_logins, 4, 'the counter climbs one per failure');
+  await assert.rejects(svc.login(ctx, { email: address, password: 'Wrong9999xx' }), { code: 'INVALID_LOGIN' }); // the fifth one locks
+  const [row2] = await sql.query(`SELECT failed_logins, locked_until FROM users WHERE id = $1`, [me.id]);
+  assert.ok(row2.locked_until && new Date(row2.locked_until).getTime() > Date.now(), 'locked for the window');
+  await assert.rejects(svc.login(ctx, { email: address, password: PASSWORD }), { code: 'ACCOUNT_LOCKED' }, 'even the right password waits');
+  await sql.query(`UPDATE users SET locked_until = now() - interval '1 second' WHERE id = $1`, [me.id]); // the clock moves on
+  const back = await svc.login(ctx, { email: address, password: PASSWORD });
+  if ('pending' in back) throw new Error('unexpected pending login');
+  const audit = await sql.query(`SELECT action FROM audit WHERE actor = $1 ORDER BY id`, [me.id]);
+  const actions = audit.map((r) => r.action);
+  for (const a of ['register', 'login_fail', 'account_locked', 'login_ok']) assert.ok(actions.includes(a), `audit has ${a}`);
+});
+
+test('e-mail verification: soft at register, the code sets the flag, single use, honest e-mail', async () => {
+  const address = email('verify');
+  const { me } = await svc.register(ctx, { name: 'Vera', email: address, password: PASSWORD });
+  assert.equal(me.emailVerified, null, 'unverified until the code is entered');
+  const code = await issueCode(ctx, me.id, 'verify_email'); // the test stands in for the e-mail provider
+  const after = await svc.verifyEmail(ctx, me.id, code);
+  assert.ok(after.emailVerified, 'the flag is set');
+  await assert.rejects(svc.verifyEmail(ctx, me.id, code), { code: 'CODE_INVALID' }, 'the code is single-use');
+  await assert.rejects(svc.resendVerification(ctx, me.id), { code: 'EMAIL_UNAVAILABLE' }, 'no provider → no fake code');
+  // the rolling limit: five codes in the window, the sixth waits
+  const limiter = email('verifylimit');
+  const limited = await svc.register(ctx, { name: 'Lim', email: limiter, password: PASSWORD });
+  if ('pending' in limited) throw new Error('unexpected pending login');
+  for (let i = 0; i < 4; i++) await issueCode(ctx, limited.me.id, 'verify_email'); // register issued the first
+  await assert.rejects(issueCode(ctx, limited.me.id, 'verify_email'), { code: 'CODE_LIMITED' });
+});
+
+test('password reset: identical answers either way, single-use codes, every session dies', async () => {
+  const address = email('reset');
+  const { token, me } = await svc.register(ctx, { name: 'Reset', email: address, password: PASSWORD });
+  await assert.rejects(svc.requestPasswordReset(ctx, { email: address }), { code: 'EMAIL_UNAVAILABLE' }, 'no provider → honest 503');
+  assert.ok((await svc.requestPasswordReset(ctx, { email: 'ghost@example.com' })).ok, 'unknown e-mail: the same quiet answer');
+  const code = await issueCode(ctx, me.id, 'reset_password');
+  await assert.rejects(svc.confirmPasswordReset(ctx, { email: address, code: code === '000000' ? '111111' : '000000', next: 'NewPass99xx' }), { code: 'CODE_INVALID' });
+  await assert.rejects(svc.confirmPasswordReset(ctx, { email: 'ghost@example.com', code, next: 'NewPass99xx' }), { code: 'CODE_INVALID' }, 'the code never crosses e-mails');
+  await svc.confirmPasswordReset(ctx, { email: address, code, next: 'NewPass99xx' });
+  assert.equal(await svc.authenticate(ctx, token), undefined, 'the old session is dead');
+  const back = await svc.login(ctx, { email: address, password: 'NewPass99xx' });
+  if ('pending' in back) throw new Error('unexpected pending login');
+  const audit = await sql.query(`SELECT action FROM audit WHERE actor = $1 ORDER BY id`, [me.id]);
+  assert.ok(audit.map((r) => r.action).includes('password_reset'));
+  // a weak new password is refused even with a valid code
+  const code2 = await issueCode(ctx, me.id, 'reset_password');
+  await assert.rejects(svc.confirmPasswordReset(ctx, { email: address, code: code2, next: 'short' }), { code: 'WEAK_PASSWORD' });
+});
+
+test('devices: listed with ip, the current one flagged, revoking one leaves the rest', async () => {
+  const address = email('devices');
+  const { token, me } = await svc.register(ctx, { name: 'Dev', email: address, password: PASSWORD }, 'Mozilla/1.0 (device-one)', '1.2.3.4');
+  const again = await svc.login(ctx, { email: address, password: PASSWORD }, 'Mozilla/2.0 (device-two)', '5.6.7.8');
+  if ('pending' in again) throw new Error('unexpected pending login');
+  const sessions = await svc.mySessions(ctx, me.id, again.token);
+  assert.equal(sessions.length, 2);
+  const current = sessions.find((s) => s.current)!;
+  assert.ok(current.agent.includes('device-two') && current.ip === '5.6.7.8');
+  const other = sessions.find((s) => !s.current)!;
+  const notes = await social.notifications(ctx, me.id);
+  assert.ok(notes.some((n) => n.kind === 'security'), 'the second sign-in raised the new-device alert');
+  await svc.revokeSession(ctx, me.id, other.id, again.token);
+  assert.equal(await svc.authenticate(ctx, token), undefined, 'the revoked device is out');
+  assert.ok(await svc.authenticate(ctx, again.token), 'the current device stays');
+  const now = await svc.mySessions(ctx, me.id, again.token);
+  await assert.rejects(svc.revokeSession(ctx, me.id, now.find((s) => s.current)!.id, again.token), { code: 'INVALID_FIELD' }, 'the current device uses sign-out');
+  await assert.rejects(svc.revokeSession(ctx, me.id, 'missing', again.token), { code: 'NOT_FOUND' });
+});
+
+test('two-factor: setup proves the password, login is gated, replays refused, disable needs both', async () => {
+  // A frozen clock makes the 30-second counters deterministic: each accepted code advances the
+  // replay guard, so every step of the flow uses the *next* window.
+  const realNow = Date.now;
+  const base = totpCounter();
+  let clockStep = 0;
+  const tick = (steps = 0) => { clockStep = steps; };
+  Date.now = () => (base + clockStep) * 30_000 + 5_000;
+  try {
+    const address = email('tfa');
+    const { me } = await svc.register(ctx, { name: 'Tfa', email: address, password: PASSWORD });
+    await assert.rejects(svc.totpSetup(ctx, me.id, 'Wrong9999xx'), { code: 'WRONG_PASSWORD' });
+    const { secret, uri } = await svc.totpSetup(ctx, me.id, PASSWORD);
+    assert.ok(uri.startsWith('otpauth://totp/') && uri.includes(secret));
+    await assert.rejects(svc.totpConfirm(ctx, me.id, '999999'), { code: 'CODE_INVALID' }, 'a wrong code does not enable it');
+    await svc.totpConfirm(ctx, me.id, totpCode(secret, totpCounter())); // consumes window 0
+    assert.equal((await svc.me(ctx, me.id)).totp, true);
+    // the password alone now stops at the pending login
+    const mid = await svc.login(ctx, { email: address, password: PASSWORD }, 'agent', '9.9.9.9');
+    if (!('pending' in mid)) throw new Error('expected a pending two-factor login');
+    await assert.rejects(svc.loginTwoFactor(ctx, { pendingToken: 'tooshort', code: '000000' }), { code: 'INVALID_FIELD' });
+    await assert.rejects(svc.loginTwoFactor(ctx, { pendingToken: mid.pendingToken, code: '000000' }), { code: 'INVALID_LOGIN' });
+    await assert.rejects(svc.loginTwoFactor(ctx, { pendingToken: mid.pendingToken, code: totpCode(secret, totpCounter()) }), { code: 'INVALID_LOGIN' }, 'the just-confirmed code is a replay');
+    const done = await svc.loginTwoFactor(ctx, { pendingToken: mid.pendingToken, code: totpCode(secret, totpCounter() + 1) }); // the next window
+    assert.ok(done.token && done.me.id === me.id);
+    await assert.rejects(svc.loginTwoFactor(ctx, { pendingToken: mid.pendingToken, code: totpCode(secret, totpCounter() + 2) }), { code: 'INVALID_LOGIN' }, 'the pending token is single-use');
+    // replay guard on a fresh pending login: every accepted window so far is dead
+    const mid2 = await svc.login(ctx, { email: address, password: PASSWORD });
+    if (!('pending' in mid2)) throw new Error('expected a pending two-factor login');
+    await assert.rejects(svc.loginTwoFactor(ctx, { pendingToken: mid2.pendingToken, code: totpCode(secret, totpCounter()) }), { code: 'INVALID_LOGIN' });
+    await assert.rejects(svc.loginTwoFactor(ctx, { pendingToken: mid2.pendingToken, code: totpCode(secret, totpCounter() + 1) }), { code: 'INVALID_LOGIN' }, 'window 1 was already accepted');
+    tick(1);
+    const done2 = await svc.loginTwoFactor(ctx, { pendingToken: mid2.pendingToken, code: totpCode(secret, totpCounter() + 1) });
+    assert.ok(done2.token, 'a fresh window still works');
+    await assert.rejects(svc.totpDisable(ctx, me.id, 'Wrong9999xx', totpCode(secret, totpCounter() + 2)), { code: 'WRONG_PASSWORD' });
+    tick(2);
+    await svc.totpDisable(ctx, me.id, PASSWORD, totpCode(secret, totpCounter() + 1));
+    assert.equal((await svc.me(ctx, me.id)).totp, false, 'off again');
+    const plain = await svc.login(ctx, { email: address, password: PASSWORD });
+    if ('pending' in plain) throw new Error('plain login after disable');
+  } finally {
+    Date.now = realNow;
+  }
+});
+
+test('changing the password signs out the other devices — the current one stays', async () => {
+  const address = email('chpw');
+  const { token, me } = await svc.register(ctx, { name: 'Chpw', email: address, password: PASSWORD });
+  const again = await svc.login(ctx, { email: address, password: PASSWORD });
+  if ('pending' in again) throw new Error('unexpected pending login');
+  await svc.changePassword(ctx, me.id, { current: PASSWORD, next: 'Fresh99xx' }, again.token);
+  assert.equal(await svc.authenticate(ctx, token), undefined, 'the other device is out');
+  assert.ok(await svc.authenticate(ctx, again.token), 'the device that changed it stays');
 });
