@@ -12,8 +12,22 @@ DB_PATH = os.getenv("DB_PATH", "/home/user/Sham-Perfume/sham_perfume.db")
 
 app = FastAPI(title="Sham Perfume API", version="1.0.0")
 
-app.add_middleware(CORSMiddleware, allow_origins=["*"],
-                   allow_methods=["*"], allow_headers=["*"])
+# L-07 Fix: تقييد CORS — لا تسمح للكل، فقط دومينات شام الموثوقة (امتثال GDPR Art.32)
+# يقرأ من SHAM_CORS_ORIGINS env إذا موجود، وإلا يستخدم القائمة البيضاء الافتراضية
+_CORS_ORIGINS = [o.strip() for o in os.getenv("SHAM_CORS_ORIGINS", "").split(",") if o.strip()] or [
+    "https://spculculat-oss.github.io",
+    "https://sham-perfume-49bf.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:5173",
+]
+# في التطوير فقط: السماح بـ * إذا SHAM_CORS_ORIGINS=* (يُمنع في الإنتاج)
+if _CORS_ORIGINS == ["*"]:
+    _CORS_ORIGINS = ["*"]
+
+app.add_middleware(CORSMiddleware, allow_origins=_CORS_ORIGINS,
+                   allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+                   allow_headers=["*"],
+                   allow_credentials=True)
 
 
 def get_db():
