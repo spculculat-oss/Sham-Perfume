@@ -163,6 +163,7 @@ test('store CV: the brand\'s own house, and pages the site forbids reading', () 
   assert.equal(pageKind('https://afnan.example/policies/contact-information'), 'identity');
   assert.equal(pageKind('https://afnan.example/pages/impressum'), 'identity');
   assert.equal(officialBrandOf('us.afnan.com', ['Lattafa', 'Afnan']), 'Afnan');
+  assert.ok(trustLinks('<img src="//us.afnan.example/cdn/shop/files/a.png"><a href="/products/x">x</a>', 'https://us.afnan.example').includes('https://us.afnan.example/policies/refund-policy'), 'Shopify on its own domain (/cdn/shop/)');
   assert.equal(officialBrandOf('lattafa-perfumes.com', ['Lattafa Perfumes']), 'Lattafa Perfumes');
   assert.equal(officialBrandOf('afnan-sale.shop', ['Afnan']), undefined, 'a look-alike domain is not the brand');
   const old = assessTrust({ host: 'afnan.com', finalUrl: 'https://afnan.com/', homeHtml: home, blocked: [...blocked], brands: ['Afnan'], registeredAt: YEARS(18), now: NOW });

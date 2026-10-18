@@ -278,7 +278,7 @@ async function vet(s: LiveSource): Promise<void> {
   const cv = await readCv(s.host, base, home.body, robots, Math.max(600, robots.crawlDelayMs || 0));
   s.trust = cv;
   s.region = regionOf(domainOf(base) || s.host, s.currency);
-  const cvLine = `CV ${cv.score}/100${cv.flags.length ? ` ⚑ ${cv.flags[0]}` : ''} [${cv.checks.filter((c) => c.ok).map((c) => c.id).join(',')}]`;
+  const cvLine = `CV ${cv.score}/100${cv.flags.length ? ` ⚑ ${cv.flags[0]}` : ''} [${cv.checks.filter((c) => c.ok).map((c) => c.id).join(',')}]${cv.checks.find((c) => c.id === 'platform')?.detail ? ` on ${cv.checks.find((c) => c.id === 'platform')?.detail}` : ''}`;
   // A red flag (copies, a brand-new domain, dangerous site…) is final: not retried next month.
   if (cv.verdict === 'rejected') { s.attempts = Math.max(s.attempts, 3); return fail(trustReason(cv), true); }
   if (cv.score < TRUST_MIN) { say(`  ↳ ${s.host}: ${cvLine} (${pagesRead(cv)})`); return fail(trustReason(cv)); }
