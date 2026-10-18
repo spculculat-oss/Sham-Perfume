@@ -23,7 +23,7 @@ import { SOURCES } from '../shaheen-import/sources';
 import { quotaBook } from '../doctor/agent';
 import {
   addCandidates, brandSiteGuesses, domainOf, KNOWN_STORES, domainsFromSearch, emptySources, isNeverSource, isSourcesFile, judgeSamples,
-  parseRobots, planQueries, PRODUCTISH, spreadSample, summary, vettingQueue, type LiveSource, type Sample, type SourcesFile,
+  inferProductPattern, parseRobots, planQueries, productCandidates, spreadSample, summary, vettingQueue, type LiveSource, type Sample, type SourcesFile,
 } from './discover';
 
 const env = process.env;
@@ -121,7 +121,8 @@ say(`${found} new stores found this run (${mode === 'ai' ? 'web search + own met
 
 // ── 2. Checking stores ────────────────────────────────────────────────────────────────────────────────────
 async function productSitemaps(base: string, listed: string[]): Promise<{ sitemaps: string[]; urls: string[]; refused: number; tried: number }> {
-  const queue = listed.length ? [...listed] : ['sitemap.xml', 'sitemap_index.xml', 'wp-sitemap.xml', 'product-sitemap.xml'].map((p) => new URL(p, base).href);
+  // Without a sitemap in robots.txt: where WordPress/Yoast, Shopify, Salla, Zid, Magento and others put theirs.
+  const queue = listed.length ? [...listed] : ['sitemap.xml', 'sitemap_index.xml', 'wp-sitemap.xml', 'product-sitemap.xml', 'sitemap_products_1.xml', 'sitemap/sitemap.xml', 'media/sitemap.xml', 'pub/media/sitemap.xml'].map((p) => new URL(p, base).href);
   const seen = new Set<string>(); const used: string[] = []; const urls: string[] = [];
   let generic = false;
   let refused = 0; let tried = 0;
@@ -151,7 +152,7 @@ async function productSitemaps(base: string, listed: string[]): Promise<{ sitema
   // A mixed sitemap (pages + posts + products): keep the links that look like product pages.
   const host = domainOf(base);
   const same = urls.filter((u) => domainOf(u) === host);
-  return { sitemaps: used, urls: generic ? same.filter((u) => PRODUCTISH.test(u)) : same, refused, tried };
+  return { sitemaps: used, urls: generic ? productCandidates(same) : same, refused, tried };
 }
 
 async function rateToEgp(currency: string): Promise<number | undefined> {
@@ -194,15 +195,31 @@ async function vet(s: LiveSource): Promise<void> {
       : refused && refused >= tried / 2 ? 'الموقع يرفض القراءة الآلية (حماية)' : 'لا توجد خريطة منتجات (sitemap)');
   }
   const delay = Math.max(600, robots.crawlDelayMs || 0);
-  const samples: Sample[] = [];
-  for (const url of spreadSample(allowed, 6)) {
-    if (timeLeft() < 20_000) break;
-    await sleep(delay);
-    const page = await get(url);
-    const product = page.status === 200 ? (extractProduct(page.body, url) || extractGeneric(page.body, url, '')) : null;
-    samples.push({ url, product, status: page.status });
+  const readPages = async (urls: string[]) => {
+    const out: Sample[] = [];
+    for (const url of urls) {
+      if (timeLeft() < 20_000) break;
+      await sleep(delay);
+      const page = await get(url);
+      const product = page.status === 200 ? (extractProduct(page.body, url) || extractGeneric(page.body, url, '')) : null;
+      out.push({ url, product, status: page.status });
+    }
+    return out;
+  };
+  let samples = await readPages(spreadSample(allowed, 6));
+  let verdict = judgeSamples(samples);
+  // A sitemap that mixes products with other pages: learn the product-link shape from the pages that were
+  // products, keep only the links of that shape, and judge the store on a fresh sample of them.
+  const goodUrls = samples.filter((x) => x.product).map((x) => x.url);
+  if (!verdict.ok && goodUrls.length && verdict.reason !== 'الموقع يرفض القراءة الآلية (حماية)') {
+    const shape = inferProductPattern(goodUrls);
+    const re = shape ? new RegExp(shape, 'i') : undefined;
+    const narrowed = re ? allowed.filter((u) => re.test(u) && !goodUrls.includes(u)) : [];
+    if (re && narrowed.length >= 3 && narrowed.length < allowed.length) {
+      samples = [...samples.filter((x) => x.product), ...await readPages(spreadSample(narrowed, 5))];
+      verdict = judgeSamples(samples);
+    }
   }
-  const verdict = judgeSamples(samples);
   s.sampleOk = verdict.okCount; s.sampleTotal = verdict.total;
   if (!verdict.ok) return fail(verdict.reason || 'غير صالح');
   const rate = await rateToEgp(verdict.currency!);

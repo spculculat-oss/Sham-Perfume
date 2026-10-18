@@ -5,7 +5,7 @@ import { adoptSkill, emptySkills, learnSkill, readWithSkill, recordUse, skillsSu
 import { addAltOffer, perfumeKey, type ImportedProduct } from '../scripts/shaheen-import/transform';
 import {
   addCandidates, brandSiteGuesses, domainOf, domainsFromSearch, emptySources, inferProductPattern, isNeverSource, isPerfume,
-  judgeSamples, parseRobots, planQueries, spreadSample, toImportSource, vettingQueue, type LiveSource, type Sample,
+  judgeSamples, parseRobots, planQueries, productCandidates, spreadSample, toImportSource, vettingQueue, type LiveSource, type Sample,
 } from '../scripts/shaheen-discover/discover';
 import { buildBank, CURRICULUM, exam, importerShare, parseStudy, pickStudy, selfLesson, type TrainingDoc } from '../scripts/shaheen-school/school';
 import { emptyMemory, remember } from '../src/utils/shaheenMemory';
@@ -125,6 +125,13 @@ test('source scout: perfume-only, product pattern, sample verdicts', () => {
   assert.ok(pattern);
   assert.ok(new RegExp(pattern).test('https://s.example/products/new-one'));
   assert.ok(!new RegExp(pattern).test('https://s.example/blog/post'));
+  // Salla-style links: the product shape is learned from the last part («…/p123456»), categories («…/c123») excluded.
+  const salla = inferProductPattern(['https://oud.example/ar/oud-royal/p1234567', 'https://oud.example/ar/musk-tahara/p7654321']);
+  assert.ok(salla && new RegExp(salla).test('https://oud.example/ar/amber-night/p9999999'));
+  assert.ok(salla && !new RegExp(salla).test('https://oud.example/ar/perfumes/c123456'));
+  const one = inferProductPattern(['https://oud.example/ar/oud-royal-intense/p1234567']);
+  assert.ok(one && new RegExp(one).test('https://oud.example/ar/rose-musk-night/p7777777'), 'one example: the slug is not part of the pattern');
+  assert.deepEqual(productCandidates(['https://oud.example/ar/oud-royal/p1234567', 'https://oud.example/ar/blog/how-to', 'https://oud.example/ar/perfumes/c12345', 'https://oud.example/']), ['https://oud.example/ar/oud-royal/p1234567']);
   const prod = (n: number, extra: Partial<{ name: string; currency: string }> = {}) => ({ url: `https://s.example/products/p${n}`, supplierSku: `p${n}`, name: extra.name || `Oud Perfume ${n} 100ml`, description: '', images: ['https://s.example/i.jpg'], price: 100 + n, currency: extra.currency || 'AED', inStock: true, families: [], notes: { top: [], heart: [], base: [] }, seasons: [], occasions: [], via: 'generic' as const });
   const ok: Sample[] = [1, 2, 3, 4, 5, 6].map((n) => ({ url: `https://s.example/products/p${n}`, product: prod(n) as never, status: 200 }));
   const v = judgeSamples(ok);

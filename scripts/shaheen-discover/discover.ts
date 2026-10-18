@@ -114,9 +114,20 @@ export function parseRobots(text: string, agent = 'ShaheenImporter'): Robots {
 /** Links of a sitemap that look like product pages (when the sitemap mixes pages, posts and products). */
 export const PRODUCTISH = /\/(?:products?|shop|store|item|p|perfumes?|fragrances?|parfums?|عطور|عطر|منتج)\/[^/?#]+\/?$|\.html?$|-\d+ml\b|\/[^/?#]*(?:perfume|parfum|eau-de|edp|edt|oud|attar|عطر)[^/?#]*\/?$/i;
 
+/** Links that are clearly not a product page (store pages, categories, blog, account…), any platform. */
+export const NOT_PRODUCT = /\/(?:blogs?|news|articles?|pages?|policies|polic(?:y|ies)|privacy|terms|categor(?:y|ies)|collections?|brands?|tags?|author|contact(?:-us)?|about(?:-us)?|faqs?|cart|checkout|account|login|register|search|wishlist|compare|stores?-locator|sitemap)(?:\/|$|\.html?$)|\/c\d+\/?$/i;
+
+/** Candidate product links of a mixed sitemap: the obvious product links, or everything that is not clearly something else. */
+export function productCandidates(urls: string[]): string[] {
+  const productish = urls.filter((u) => PRODUCTISH.test(u) && !NOT_PRODUCT.test(u));
+  if (productish.length >= 6) return productish;
+  return urls.filter((u) => { try { const p = new URL(u).pathname; return p.replace(/\/+$/, '').split('/').filter(Boolean).length >= 1 && !NOT_PRODUCT.test(u); } catch { return false; } });
+}
+
 /**
  * The store's product-link pattern from links that really were products: the shared leading path
- * («/products/», «/ar/p/»…) or, without one, any page on the host one level or more deep.
+ * («/products/», «/ar/p/»…) plus the shape of the last part when all share one (Salla «…/p123456»,
+ * Magento «….html»); without either, any page on the host one level or more deep.
  */
 export function inferProductPattern(urls: string[]): string | undefined {
   const parsed = urls.map((u) => { try { return new URL(u); } catch { return undefined; } }).filter((u): u is URL => Boolean(u));
@@ -127,11 +138,16 @@ export function inferProductPattern(urls: string[]): string | undefined {
   const prefix: string[] = [];
   for (let i = 0; ; i++) {
     const s = segs[0][i];
-    if (s === undefined || segs.some((x) => x[i] !== s || x.length <= i + 1)) break;
+    // A product's own slug («oud-royal-100ml») is never part of the shared path, even with only one example.
+    if (s === undefined || segs.some((x) => x[i] !== s || x.length <= i + 1) || (s.length > 12 && s.includes('-')) || /\d{3,}/.test(s)) break;
     prefix.push(s);
   }
   const hostRe = `^https?://(?:www\\.)?${host.replace(/[.]/g, '\\.')}/`;
   const pre = prefix.map((s) => `${s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/`).join('');
+  const last = segs.map((x) => x[x.length - 1] || '');
+  const letters = last.map((l) => (l.match(/^([a-z]{1,3})\d{3,}$/i) || [])[1]?.toLowerCase());
+  if (letters[0] && letters.every((l) => l === letters[0])) return `${hostRe}${pre}(?:[^?#]*/)?${letters[0]}\\d+/?$`;
+  if (last.every((l) => /\.html?$/i.test(l))) return `${hostRe}${pre}[^?#]+\\.html?$`;
   return `${hostRe}${pre}[^?#]+$`;
 }
 
