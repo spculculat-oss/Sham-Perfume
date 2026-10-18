@@ -7,7 +7,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Eye,
-  Film,
   Flame,
   Globe,
   Maximize2,
@@ -16,7 +15,6 @@ import {
   RotateCcw,
   ShoppingBag,
   Sparkles,
-  Tv,
   Volume2,
   VolumeX,
 } from 'lucide-react';
@@ -97,8 +95,8 @@ const SCENES: CommercialScene[] = [
 ];
 
 const L10N = {
-  screen_badge: { ar: 'شاشة العرض السينمائية 4K', en: '4K CINEMA DISPLAY SCREEN' },
-  live_commercial: { ar: 'إعلان عمل فني سينمائي مباشر', en: 'LIVE ART COMMERCIAL SHOWCASE' },
+  screen_badge: { ar: 'مختارات دار شام الفاخرة', en: 'SHAM CURATED SELECTION' },
+  live_commercial: { ar: 'مختارات دار شام', en: 'SHAM SELECTION' },
   product_box_title: { ar: 'العطور المعروضة بالأسعار', en: 'SHOWCASE PRODUCTS & PRICES' },
   product_box_kicker: { ar: 'مختارات دار شام الفاخرة', en: 'SHAM CURATED SELECTION' },
   add_to_cart: { ar: 'أضف للسلة', en: 'Add to Cart' },
@@ -108,14 +106,12 @@ const L10N = {
   change_country: { ar: 'تغيير العملة والدولة', en: 'Change country/currency' },
   choose_country: { ar: 'اختر دولة التوصيل والعملة المحلية:', en: 'Select shipping country & local currency:' },
   price_label: { ar: 'السعر بالعملة المحلية', en: 'Local price' },
-  prev_scene: { ar: 'المشهد الإعلاني السابق', en: 'Previous Scene' },
-  next_scene: { ar: 'المشهد الإعلاني التالي', en: 'Next Scene' },
-  pause_reel: { ar: 'إيقاف مؤقت للإعلان', en: 'Pause Commercial' },
-  play_reel: { ar: 'تشغيل الإعلان السينمائي', en: 'Play Commercial' },
-  collapse_screen: { ar: 'تصغير شاشة العرض', en: 'Minimize Screen' },
-  expand_screen: { ar: 'فتح شاشة العرض السينمائية', en: 'Expand Cinema Screen' },
-  scene_counter: { ar: 'المشهد', en: 'SCENE' },
-  of: { ar: 'من', en: 'OF' },
+  prev_scene: { ar: 'السابق', en: 'Previous' },
+  next_scene: { ar: 'التالي', en: 'Next' },
+  pause_reel: { ar: 'إيقاف مؤقت', en: 'Pause' },
+  play_reel: { ar: 'تشغيل', en: 'Play' },
+  collapse_screen: { ar: 'تصغير العرض', en: 'Minimize' },
+  expand_screen: { ar: 'عرض المختارات والمنتجات', en: 'Show Products' },
   in_stock: { ar: 'متوفر للشحن الفوري', en: 'In Stock & Ready to Ship' },
 };
 
@@ -253,15 +249,11 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
             {/* SCREEN TOP BEZEL / CINEMA METRICS BAR */}
             <div className="relative z-20 flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-gradient-to-r from-stone-950/95 via-[#18110c]/95 to-stone-950/95 px-3 py-2 text-[10px] sm:px-5 sm:py-2.5 sm:text-xs backdrop-blur-md">
               <div className="flex items-center gap-2">
-                <span className="flex h-5 w-5 items-center justify-center rounded-lg bg-red-600/20 text-red-400 border border-red-500/30 animate-pulse">
-                  <Film className="h-3 w-3" />
+                <span className="flex h-5 w-5 items-center justify-center rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                  <Sparkles className="h-3 w-3" />
                 </span>
-                <span className="font-mono font-bold tracking-widest text-amber-200">
-                  {L('screen_badge')}
-                </span>
-                <span className="hidden sm:inline-block h-3 w-px bg-white/20" />
-                <span className="hidden sm:inline-block text-[11px] text-stone-400 font-medium">
-                  {L('live_commercial')}
+                <span className="text-xs font-bold tracking-wide text-amber-200">
+                  {currentLang === 'ar' ? 'مختارات دار شام الفاخرة' : 'Sham Curated Fragrance Selection'}
                 </span>
               </div>
 
@@ -390,13 +382,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                   </div>
                 </div>
 
-                {/* Scene Index Indicators */}
-                <div className="absolute top-4 end-4 sm:top-6 sm:end-6 z-20 flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/15">
-                  <span className="text-[10px] font-mono text-stone-400">{L('scene_counter')}</span>
-                  <span className="font-mono text-xs font-extrabold text-amber-300">0{sceneIndex + 1}</span>
-                  <span className="text-[10px] text-stone-500">/</span>
-                  <span className="font-mono text-[10px] text-stone-400">0{SCENES.length}</span>
-                </div>
+
 
                 {/* Cinema Bottom Subtitles & Story Caption */}
                 <div className="absolute bottom-5 start-4 end-4 sm:bottom-7 sm:start-7 sm:end-7 z-20 max-w-xl">
@@ -609,11 +595,11 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
         /* MINIMIZED DISPLAY BAR WITH ACCESSIBILITY TO EXPAND */
         <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-2 sm:px-6">
           <div className="flex items-center gap-2.5">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-red-600/20 text-red-400 border border-red-500/30">
-              <Film className="h-3.5 w-3.5" />
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30">
+              <Sparkles className="h-3.5 w-3.5" />
             </span>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-amber-200">{L('screen_badge')}</span>
+              <span className="text-xs font-bold text-amber-200">{currentLang === 'ar' ? 'مختارات دار شام' : 'Sham Selection'}</span>
               <span className="hidden sm:inline-block text-[11px] text-stone-400">· {currentLang === 'ar' ? activeScene.titleAr : activeScene.titleEn}</span>
             </div>
           </div>
@@ -626,9 +612,9 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
             <button
               type="button"
               onClick={() => setExpanded(true)}
-              className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 px-3 py-1.5 text-xs font-bold text-stone-950 hover:brightness-110 shadow-sm"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 px-3 py-1.5 text-xs font-bold text-stone-950 hover:brightness-110 shadow-sm cursor-pointer"
             >
-              <Tv className="h-3.5 w-3.5" />
+              <Sparkles className="h-3.5 w-3.5" />
               <span>{L('expand_screen')}</span>
             </button>
           </div>
