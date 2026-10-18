@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Beaker,
   Scale,
@@ -15,6 +15,8 @@ import {
   ChevronDown,
   ChevronUp,
   AlertTriangle,
+  ShieldAlert,
+  ShieldCheck,
   Lightbulb,
   ExternalLink,
   Sliders,
@@ -144,6 +146,15 @@ const S = {
   clip_fixative: { ar: 'المثبت: {w} جم ({v} مل)', en: 'Fixative: {w}g ({v}ml)', fr: 'Fixateur : {w} g ({v} ml)', es: 'Fijador: {w} g ({v} ml)', it: 'Fissante: {w} g ({v} ml)', de: 'Fixativ: {w} g ({v} ml)', ru: 'Фиксатор: {w} г ({v} мл)', zh: '固定剂：{w}g（{v}ml）', tr: 'Sabitleyici: {w} g ({v} ml)', fa: 'ثابت‌کننده: {w} گرم ({v} میلی‌لیتر)' },
   clip_total: { ar: 'الوزن الإجمالي للزجاجة: {w} جم', en: 'Net Bottle Total: {w}g', fr: 'Poids net flacon : {w} g', es: 'Peso neto frasco: {w} g', it: 'Peso netto flacone: {w} g', de: 'Flasche netto: {w} g', ru: 'Итого во флаконе: {w} г', zh: '瓶内总重量：{w}g', tr: 'Şişe net toplam: {w} g', fa: 'وزن کل بطری: {w} گرم' },
   shahin_prompt_tpl: { ar: 'أيها الخبير شاهين (شيخ العطارين)، أعمل على تركيبة بتركيز {c}% بحجم {v} مل (وزن الزيت: {ow} جم، الكحول: {aw} جم).\nمدة التعتيق المقررة: {d} يوماً، وتاريخ الانتهاء المتوقع: {date}.\nما هو تقييمك المخبري لتوازن هذه النسب؟ وكيف أضمن أعلى ثبات وفوحان وأفضل نتيجة تعتيق؟', en: 'Dear Master Shahin (Dean of Perfumers), I am working on a {c}% concentration formula in a {v}ml bottle (oil: {ow}g, ethanol: {aw}g).\nPlanned maceration: {d} days, expected completion: {date}.\nWhat is your lab assessment of these ratios, and how do I secure maximum longevity, sillage, and maturation quality?', fr: 'Cher Maître Shahin, je travaille sur une formule à {c} % dans un flacon de {v} ml (huile : {ow} g, éthanol : {aw} g).\nMacération prévue : {d} jours, achèvement : {date}.\nQuelle est votre évaluation de ces ratios et comment maximiser tenue, sillage et maturation ?', es: 'Querido Maestro Shahin, trabajo en una fórmula al {c}% en un frasco de {v} ml (aceite: {ow} g, etanol: {aw} g).\nMaceración prevista: {d} días, finalización: {date}.\n¿Cuál es su evaluación de estas proporciones y cómo logro máxima fijación, estela y maduración?', it: 'Caro Maestro Shahin, sto lavorando a una formula al {c}% in flacone da {v} ml (olio: {ow} g, etanolo: {aw} g).\nMacerazione prevista: {d} giorni, completamento: {date}.\nQual è la sua valutazione di questi rapporti e come ottengo massima tenacia, scia e maturazione?', de: 'Lieber Meister Shahin, ich arbeite an einer {c}%-Formel in einem {v}-ml-Fläschchen (Öl: {ow} g, Ethanol: {aw} g).\nGeplante Mazeration: {d} Tage, Fertigstellung: {date}.\nWie bewerten Sie diese Verhältnisse und wie erreiche ich maximale Haltbarkeit, Sillage und Reifung?', ru: 'Уважаемый мастер Шахин, работаю над формулой {c}% во флаконе {v} мл (масло: {ow} г, этанол: {aw} г).\nМацерация: {d} дней, завершение: {date}.\nОцените эти пропорции: как добиться максимальной стойкости, шлейфа и качества настаивания?', zh: '尊敬的 Shahin 大师，我正在调配一款 {c}% 浓度、{v}ml 瓶装的配方（油：{ow}g，乙醇：{aw}g）。\n计划浸置 {d} 天，预计完成：{date}。\n请评估这些比例，并指导如何获得最佳持久度、扩散与熟成效果？', tr: 'Sayın Usta Shahin, {v} ml\'lik şişede %{c} konsantrasyonlu bir formül üzerinde çalışıyorum (yağ: {ow} g, etanol: {aw} g).\nPlanlanan maserasyon: {d} gün, tahmini bitiş: {date}.\nBu oranları nasıl bulursunuz ve en iyi kalıcılık, iz ve olgunlaşma için ne önerirsiniz?', fa: 'استاد شاهین گرامی، روی فرمولی با غلظت {c}٪ در بطری {v} میلی‌لیتری کار می‌کنم (روغن: {ow} گرم، اتانول: {aw} گرم).\nتعریف برنامه‌ریزی‌شده: {d} روز، پایان مورد انتظار: {date}.\nارزیابی شما درباره این نسبت‌ها چیست و چگونه بیشترین ماندگاری، انتشار و کیفیت تعریف را به دست آورم؟' },
+  ifra_warning_title: { ar: '⚠️ تنبيه معايير IFRA الدولية: تجاوز سقف الأمان (30%)', en: '⚠️ IFRA Safety Alert: Concentration Exceeds Safe Benchmark (30%)', fr: '⚠️ Alerte de sécurité IFRA : concentration excessive (> 30 %)', es: '⚠️ Alerta de seguridad IFRA: concentración superior al 30%', it: '⚠️ Avviso di sicurezza IFRA: concentrazione oltre il 30%', de: '⚠️ IFRA-Sicherheitswarnung: Konzentration über 30 %', ru: '⚠️ Предупреждение IFRA: концентрация выше 30%', zh: '⚠️ 国际 IFRA 安全警报：浓度超过安全上限（30%）', tr: '⚠️ IFRA Güvenlik Uyarısı: Konsantrasyon %30 sınırını aşıyor', fa: '⚠️ هشدار استانداردهای بین‌المللی IFRA: غلظت بیش از ۳۰٪' },
+  ifra_warning_desc: { ar: 'نسبة الزيت العطري الحالية ({c}%) تتجاوز الحد الأقصى الآمن الموصى به لمعايير IFRA الفئة 4 (عطور الرش). الاستخدام بتركيز أعلى من 30% قد يسبب تحسساً تلامسياً للبشرة، انسداداً في أنبوب الرشاش، وترك بقع زيتية على الأقمشة.', en: 'Current fragrance concentration ({c}%) exceeds the 30% safe ceiling recommended under IFRA Category 4 standards (fine spray perfumes). Over-concentration risks contact dermal sensitization, atomizer tube clogging, and textile staining.', fr: 'La concentration actuelle ({c} %) dépasse le seuil sûr de 30 % recommandé par l’IFRA Catégorie 4. Risque d’irritation cutanée, de buse bouchée et de taches.', es: 'La concentración actual ({c}%) supera el límite seguro del 30% de IFRA Categoría 4. Riesgo de sensibilización dérmica, obstrucción del pulverizador y manchas en tejidos.', it: 'La concentrazione ({c}%) supera la soglia sicura del 30% raccomandata da IFRA Categoria 4. Rischio di sensibilizzazione cutanea, blocco dello spray e macchie.', de: 'Die Konzentration ({c} %) überschreitet die empfohlene 30-%-Grenze (IFRA Kategorie 4). Risiko von Hautreizungen, verstopftem Zerstäuber und Flecken.', ru: 'Концентрация ({c}%) превышает безопасный предел 30% (IFRA Категория 4). Риск аллергической реакции кожи, засорения распылителя и пятен на одежде.', zh: '当前香精油浓度（{c}%）超过国际 IFRA 第 4 类标准推荐的 30% 安全阈值。浓度过高可能引发接触性皮炎、喷头导管堵塞并在织物上残留油渍。', tr: 'Mevcut yağ konsantrasyonu (%{c}), IFRA Kategori 4 uyarınca %30 güvenli tavanını aşıyor. Ciltte tahriş, sprey tüpü tıkanması ve kumaş lekesi riski taşır.', fa: 'غلظت روغن کنونی ({c}٪) از سقف ۳۰٪ توصیه‌شده استانداردهای IFRA رده ۴ فراتر است. خطر بروز حساسیت پوستی، گرفتگی لوله افشانه و ایجاد لکه روغنی روی لباس.' },
+  ifra_adjust_safe: { ar: 'ضبط تلقائي للحد الآمن (30%) ⚡', en: 'Auto-adjust to Safe Limit (30%) ⚡', fr: 'Ajuster à la limite sûre (30 %) ⚡', es: 'Ajustar al límite seguro (30%) ⚡', it: 'Regola alla soglia sicura (30%) ⚡', de: 'Auf sichere 30 % einstellen ⚡', ru: 'Установить безопасные 30% ⚡', zh: '一键调至安全上限（30%）⚡', tr: 'Güvenli sınıra ayarla (%30) ⚡', fa: 'تنظیم خودکار به حد مجاز (۳۰٪) ⚡' },
+  ifra_safe_badge: { ar: 'معتمد وفق معايير IFRA الدولية (الفئة 4: آمن للبشرة)', en: 'Compliant with IFRA Category 4 Standards (Skin-safe fine fragrance)', fr: 'Conforme aux normes IFRA Catégorie 4 (sûr pour la peau)', es: 'Conforme a estándares IFRA Categoría 4 (seguro para la piel)', it: 'Conforme agli standard IFRA Categoria 4 (sicuro per la pelle)', de: 'IFRA-Kategorie 4 konform (hautsicherer Feinduft)', ru: 'Соответствует стандартам IFRA Категории 4 (безопасно для кожи)', zh: '符合国际 IFRA 第 4 类安全标准（亲肤安全）', tr: 'IFRA Kategori 4 standartlarına tam uyumlu (cilt dostu)', fa: 'منطبق بر استانداردهای IFRA رده ۴ (ایمن برای پوست)' },
+  ifra_risk_title: { ar: 'مخاطر التركيز غير المتوافق مع IFRA:', en: 'Risks of non-compliant concentration:', fr: 'Risques d’une concentration non conforme :', es: 'Riesgos de una concentración no conforme:', it: 'Rischi di una concentrazione non conforme:', de: 'Risiken einer nicht konformen Konzentration:', ru: 'Риски несоответствия нормам IFRA:', zh: '不符合 IFRA 标准的潜在风险：', tr: 'IFRA uyumsuz konsantrasyon riskleri:', fa: 'خطرات غلظت ناسازگار با IFRA:' },
+  ifra_risk_skin: { ar: 'التحسس التلامسي والتهيج الجلدي بسبب فرط تركيز الجزيئات العطرية', en: 'Contact dermal sensitization & irritation due to excess aroma chemical density', fr: 'Sensibilisation cutanée de contact par excès de composés aromatiques', es: 'Sensibilización dérmica por exceso de concentración aromática', it: 'Sensibilizzazione cutanea da eccesso di molecole aromatiche', de: 'Kontaktdermatitis durch zu hohe Riechstoffdichte', ru: 'Контактная сенсибилизация кожи из-за переизбытка аромавеществ', zh: '香精分子过载引起的接触性皮炎与皮肤刺激', tr: 'Aşırı koku molekülü yoğunluğuna bağlı temas hassasiyeti', fa: 'حساسیت تماسی پوست به دلیل تراکم بیش از حد مولکول‌های عطری' },
+  ifra_risk_atomizer: { ar: 'انسداد مرشاش الزجاجة وعدم انسياب الرذاذ الدقيق لكثافة السائل الزيتي', en: 'Atomizer clogging & uneven mist due to excessive liquid viscosity', fr: 'Buse obstruée et brumisation irrégulière par viscosité élevée', es: 'Obstrucción del atomizador y nebulización deficiente por viscosidad', it: 'Intasamento dello spray e nebulizzazione irregolare per alta viscosità', de: 'Verstopfter Zerstäuber durch zu hohe Viskosität', ru: 'Засорение распылителя и неравномерное распыление из-за вязкости', zh: '液体粘度过高导致喷头喷管堵塞与水雾不均', tr: 'Aşırı viskozite nedeniyle püskürtücü tıkanması ve damlacık sorunu', fa: 'گرفتگی افشانه و اختلال در پاشش یکنواخت به علت ویسکوزیته بالا' },
+  ifra_risk_stain: { ar: 'ترك بقع زيتية داكنة على الأقمشة البيضاء والحريرية صعبة الإزالة', en: 'Dark oil staining on white fabrics and silk resistant to dry cleaning', fr: 'Taches d’huile tenaces sur les tissus blancs et la soie', es: 'Manchas de aceite en tejidos blancos y seda difíciles de eliminar', it: 'Macchie oleose persistenti su tessuti bianchi e seta', de: 'Ölflecken auf hellen Stoffen und Seide', ru: 'Трудновыводимые масляные пятна на белых и шёлковых тканях', zh: '浅色衣物与丝绸织物上残留难洗的油渍斑点', tr: 'Açık renk ve ipek kumaşlarda zor çıkan yağ lekeleri', fa: 'بر جای ماندن لکه‌های روغنی تیره روی پارچه‌های سفید و ابریشم' },
+  ifra_restricted_detected: { ar: 'تنبيه مكون مقيد وفق IFRA 51:', en: 'IFRA 51 Restricted Ingredient Detected:', fr: 'Composant restreint IFRA 51 détecté :', es: 'Ingrediente restringido IFRA 51 detectado:', it: 'Ingrediente limitato IFRA 51 rilevato:', de: 'IFRA 51 beschränkter Inhaltsstoff erkannt:', ru: 'Обнаружен ограниченный компонент по IFRA 51:', zh: '检测到 IFRA 51 受限成分：', tr: 'IFRA 51 kısıtlı bileşeni tespit edildi:', fa: 'ماده محدودشده بر اساس استانداردهای IFRA 51 شناسایی شد:' },
 } satisfies Record<string, LText>;
 
 interface ConcentrationCalculatorProps {
@@ -223,6 +234,42 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
       return 5;
     }
   });
+
+  // IFRA Standards & Category 4 Safety Check
+  const restrictedNotesBreaches = useMemo(() => {
+    if (!pyramidNotes || !pyramidNotes.length) return [];
+    const restrictions: Array<{ pattern: RegExp; name: string; limit: number; reason: string }> = [
+      { pattern: /oakmoss|evernia|طحلب السنديان/i, name: isRTL ? 'طحلب السنديان (Oakmoss)' : 'Oakmoss (Evernia)', limit: 0.1, reason: isRTL ? 'يحتوي على الأترانورين المسبب للحساسية التلامسية' : 'Restricted to 0.1% due to dermal allergens' },
+      { pattern: /damascenone|داماسينون/i, name: isRTL ? 'بيتا داماسينون (beta-Damascenone)' : 'beta-Damascenone', limit: 0.043, reason: isRTL ? 'كيتون وردي فائق القوة مقيد وفق IFRA 51' : 'Potent rose ketone capped at 0.043% under IFRA 51' },
+      { pattern: /coumarin|تونكا|كومارين/i, name: isRTL ? 'كومارين / بذور التونكا (Coumarin)' : 'Coumarin / Tonka Extract', limit: 1.5, reason: isRTL ? 'محدد بنسبة 1.5% لتفادي الحساسية الجلدية' : 'Capped at 1.5% to prevent dermal sensitization' },
+      { pattern: /cinnamon|قرفة|سينامالدهيد|cinnamaldehyde/i, name: isRTL ? 'سينامالدهيد / زيت القرفة' : 'Cinnamaldehyde / Cinnamon Oil', limit: 0.05, reason: isRTL ? 'مهيج قوي للبشرة مقيد بنسبة 0.05%' : 'Strong skin irritant capped at 0.05%' },
+      { pattern: /eugenol|clove|قرنفل|يوجينول/i, name: isRTL ? 'يوجينول / زيت القرنفل (Eugenol)' : 'Eugenol / Clove Oil', limit: 0.5, reason: isRTL ? 'مقيد بنسبة 0.5% لتفادي الحساسية' : 'Restricted to 0.5% max limit' },
+      { pattern: /cashmeran|كشميران/i, name: isRTL ? 'كشميران (Cashmeran)' : 'Cashmeran', limit: 3.8, reason: isRTL ? 'الحد الأقصى في عطور الفئة 4 هو 3.8%' : 'Category 4 ceiling is 3.8%' },
+      { pattern: /iso e super|إيزو إي سوبر/i, name: isRTL ? 'إيزو إي سوبر (Iso E Super)' : 'Iso E Super', limit: 21.4, reason: isRTL ? 'الحد الأقصى المسموح به 21.4%' : 'Category 4 ceiling is 21.4%' },
+    ];
+
+    const breaches: Array<{ name: string; actualPct: number; limit: number; reason: string }> = [];
+    for (const note of pyramidNotes) {
+      const combined = `${note.nameAr || ''} ${note.nameEn || ''}`;
+      for (const r of restrictions) {
+        if (r.pattern.test(combined)) {
+          const finishedPct = (Number(note.percentageOfOil || 0) / 100) * (formulation.concentrationPercent / 100) * 100;
+          if (finishedPct > r.limit) {
+            breaches.push({
+              name: r.name,
+              actualPct: Number(finishedPct.toFixed(3)),
+              limit: r.limit,
+              reason: r.reason,
+            });
+          }
+        }
+      }
+    }
+    return breaches;
+  }, [pyramidNotes, formulation.concentrationPercent, isRTL]);
+
+  const isOver30 = formulation.concentrationPercent > 30;
+  const hasIfraWarning = isOver30 || restrictedNotesBreaches.length > 0;
 
   const handleUpdatePrice = (
     key: 'oil' | 'alcohol' | 'fixative' | 'water',
@@ -665,6 +712,106 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
                     className="w-full accent-amber-800 cursor-pointer"
                   />
                 </div>
+
+                {/* IFRA International Standards Visual Warning System */}
+                {hasIfraWarning ? (
+                  <div
+                    className="mt-3 p-4 rounded-xl border-2 border-rose-500/80 bg-gradient-to-br from-rose-950/20 via-amber-950/15 to-stone-900/40 text-stone-900 shadow-md animate-in fade-in space-y-3"
+                    role="alert"
+                    data-testid="ifra-warning-alert"
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                      <div className="flex items-start gap-2.5">
+                        <div className="p-2 rounded-xl bg-rose-500/20 text-rose-600 border border-rose-400/40 shrink-0">
+                          <ShieldAlert className="w-5 h-5 text-rose-600 animate-pulse" />
+                        </div>
+                        <div>
+                          <h4 className="text-xs sm:text-sm font-extrabold text-rose-900 flex items-center gap-1.5 flex-wrap">
+                            <span>{L('ifra_warning_title')}</span>
+                            <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-100 text-rose-800 border border-rose-300">
+                              {formulation.concentrationPercent}%
+                            </span>
+                          </h4>
+                          <p className="text-[11px] leading-relaxed text-rose-950 mt-1">
+                            {fmt(L('ifra_warning_desc'), { c: formulation.concentrationPercent })}
+                          </p>
+                        </div>
+                      </div>
+                      {isOver30 && (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setFormulation((prev) => ({
+                              ...prev,
+                              concentrationPercent: 30,
+                              concentrationType: 'extrait',
+                            }))
+                          }
+                          className="self-start sm:self-center shrink-0 px-3 py-1.5 rounded-lg bg-rose-700 hover:bg-rose-800 text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1 cursor-pointer"
+                          title="Auto-adjust to 30%"
+                        >
+                          <span>{L('ifra_adjust_safe')}</span>
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Scientific risks breakdown */}
+                    <div className="pt-2 border-t border-rose-200/60">
+                      <div className="text-[11px] font-bold text-rose-900 mb-1.5 flex items-center gap-1">
+                        <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />
+                        <span>{L('ifra_risk_title')}</span>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[10px]">
+                        <div className="p-2 rounded-lg bg-white/90 border border-rose-200 text-rose-900 flex items-start gap-1.5">
+                          <AlertTriangle className="w-3.5 h-3.5 text-rose-600 shrink-0 mt-0.5" />
+                          <span>{L('ifra_risk_skin')}</span>
+                        </div>
+                        <div className="p-2 rounded-lg bg-white/90 border border-rose-200 text-rose-900 flex items-start gap-1.5">
+                          <Droplets className="w-3.5 h-3.5 text-rose-600 shrink-0 mt-0.5" />
+                          <span>{L('ifra_risk_atomizer')}</span>
+                        </div>
+                        <div className="p-2 rounded-lg bg-white/90 border border-rose-200 text-rose-900 flex items-start gap-1.5">
+                          <Layers className="w-3.5 h-3.5 text-rose-600 shrink-0 mt-0.5" />
+                          <span>{L('ifra_risk_stain')}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Restricted Ingredient Breaches */}
+                    {restrictedNotesBreaches.length > 0 && (
+                      <div className="p-2.5 rounded-lg bg-amber-50 border border-amber-300 text-amber-950 text-xs space-y-1">
+                        <div className="font-bold text-[11px] flex items-center gap-1 text-amber-900">
+                          <AlertTriangle className="w-3.5 h-3.5 text-amber-700" />
+                          <span>{L('ifra_restricted_detected')}</span>
+                        </div>
+                        {restrictedNotesBreaches.map((b, idx) => (
+                          <div
+                            key={idx}
+                            className="text-[10px] text-amber-900 flex items-center justify-between border-b border-amber-200/60 pb-1 last:border-0 last:pb-0"
+                          >
+                            <span>{b.name} — {b.reason}</span>
+                            <span className="font-mono-numbers font-bold text-rose-700">
+                              {b.actualPct}% &gt; {b.limit}%
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div
+                    className="mt-2.5 px-3 py-2 rounded-lg bg-emerald-50/90 border border-emerald-200/80 flex items-center justify-between text-xs text-emerald-900"
+                    data-testid="ifra-safe-indicator"
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span className="text-[11px] font-semibold">{L('ifra_safe_badge')}</span>
+                    </div>
+                    <span className="text-[10px] font-mono-numbers font-bold text-emerald-800 bg-emerald-100/90 px-2 py-0.5 rounded border border-emerald-300">
+                      {formulation.concentrationPercent}% ≤ 30%
+                    </span>
+                  </div>
+                )}
 
                 {/* Visual Real-Time Raw Materials Weight Simulation Banner */}
                 <div className="mt-3 p-3.5 bg-gradient-to-br from-amber-50 to-stone-50 border border-amber-200/90 rounded-xl space-y-2.5 shadow-2xs">

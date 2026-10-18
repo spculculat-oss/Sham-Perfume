@@ -9,6 +9,7 @@ import { type StoreProduct } from '../../src/utils/storeCatalog';
 import { STORE_BASE_LANGS, type StoreTextKey } from '../../src/لغات/storeKeys';
 import { storeText } from '../../src/لغات/storeL10n';
 import { SUPPORTED_LANGUAGES } from '../../src/types/i18n';
+import { SITE } from '../../src/seo/site';
 
 const esc = (s: unknown) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 /** Photos mirrored into the site are relative to the site root; pages live one folder down (p/). */
@@ -31,7 +32,7 @@ h1{font-size:1.7rem;margin:.2em 0}.en{color:#78716c;direction:ltr;text-align:sta
 .btn.alt{background:#1c1917}.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.notes div{background:#fff;border:1px solid #e7e5e4;border-radius:12px;padding:10px}
 .notes b{display:block;color:#92400e}section{margin-top:18px}.specs td{padding:4px 10px;border-bottom:1px solid #e7e5e4}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}.card{background:#fff;border:1px solid #e7e5e4;border-radius:14px;padding:10px;text-decoration:none;color:inherit}
-.card img{width:100%;aspect-ratio:1/1;object-fit:contain;border-radius:10px}.card .p{color:#b45309;font-weight:700}footer{color:#78716c;text-align:center;padding:30px;font-size:.9rem}`;
+.card img{width:100%;aspect-ratio:1/1;object-fit:contain;border-radius:10px}.card .p{color:#b45309;font-weight:700}.crumb{font-size:.82rem;color:#78716c;margin-bottom:14px}.small{font-size:.8rem;color:#78716c}footer{color:#78716c;text-align:center;padding:30px;font-size:.9rem}footer nav{display:flex;gap:14px;justify-content:center;margin-top:6px}`;
 
 export interface PageOptions { siteUrl: string }
 
@@ -95,19 +96,61 @@ const dl = (key: StoreTextKey) => ` data-l="${key}"`;
 const chip = (key: StoreTextKey) => `<span class="chip"${dl(key)}>${arLabel(key)}</span>`;
 
 export function productJsonLd(p: StoreProduct, o: PageOptions) {
+  const pageUrl = new URL(`p/${p.slug}.html`, o.siteUrl).href;
   return {
     '@context': 'https://schema.org', '@type': 'Product', name: p.name.ar, alternateName: p.name.en !== p.name.ar ? p.name.en : undefined,
     sku: p.sku, brand: p.brand ? { '@type': 'Brand', name: p.brand } : undefined, description: p.description.ar,
-    image: p.images.map((u) => img(u, o.siteUrl, true)), url: new URL(`p/${p.slug}.html`, o.siteUrl).href,
-    offers: { '@type': 'Offer', priceCurrency: 'EGP', price: p.price, availability: `https://schema.org/${p.inStock ? 'InStock' : 'OutOfStock'}`, url: new URL(`#product=${p.id}`, o.siteUrl).href },
+    image: p.images.length ? p.images.map((u) => img(u, o.siteUrl, true)) : [new URL(SITE.ogImage, o.siteUrl).href],
+    url: pageUrl, mainEntityOfPage: pageUrl, category: p.category,
+    offers: {
+      '@type': 'Offer', priceCurrency: 'EGP', price: p.price, itemCondition: 'https://schema.org/NewCondition',
+      availability: `https://schema.org/${p.inStock ? 'InStock' : 'OutOfStock'}`, url: pageUrl,
+      seller: { '@type': 'Organization', name: SITE.nameAr, url: o.siteUrl },
+    },
+  };
+}
+
+/** 50–60 characters where possible: the product leads, the store name fits if it can. */
+export function productSeoTitle(p: StoreProduct) {
+  const brand = p.brand && !p.name.ar.includes(p.brand) ? ` — ${p.brand}` : '';
+  const full = `${p.name.ar}${brand} | متجر شام`;
+  if (full.length <= 60) return full;
+  const short = `${p.name.ar} | متجر شام`;
+  if (short.length <= 60) return short;
+  return `${p.name.ar.slice(0, 46).trim()}… | شام`;
+}
+
+/** 120–160 characters built only from the product's own data (no invented offer or rating). */
+export function productSeoDescription(p: StoreProduct) {
+  const clean = (text: string) => text.replace(/\s+/g, ' ').trim();
+  let desc = clean(p.description.ar);
+  if (desc.length < 110) {
+    const notes = [...p.notes.top, ...p.notes.heart, ...p.notes.base].filter(Boolean).slice(0, 5);
+    if (notes.length) desc = `${desc} النوتات: ${notes.join('، ')}.`.trim();
+  }
+  if (desc.length < 110) desc = `${desc} ${p.brand ? `من ${p.brand}. ` : ''}تفاصيل المنتج والسعر في متجر شام.`.trim();
+  if (desc.length > 160) desc = `${desc.slice(0, 157).trimEnd()}…`;
+  return desc;
+}
+
+function breadcrumbJsonLd(p: StoreProduct, o: PageOptions) {
+  return {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: SITE.nameAr, item: o.siteUrl },
+      { '@type': 'ListItem', position: 2, name: 'متجر شام', item: new URL('p/', o.siteUrl).href },
+      { '@type': 'ListItem', position: 3, name: p.name.ar, item: new URL(`p/${p.slug}.html`, o.siteUrl).href },
+    ],
   };
 }
 
 export function renderProductPage(p: StoreProduct, related: StoreProduct[], o: PageOptions): string {
   const url = new URL(`p/${p.slug}.html`, o.siteUrl).href;
+  const homeUrl = o.siteUrl;
   const store = `../#product=${encodeURIComponent(String(p.id))}`;
-  const title = `${p.name.ar}${p.brand && !p.name.ar.includes(p.brand) ? ` — ${p.brand}` : ''} | متجر شام`;
-  const desc = p.description.ar.slice(0, 160);
+  const title = productSeoTitle(p);
+  const desc = productSeoDescription(p);
+  const ogImage = p.images[0] ? img(p.images[0], o.siteUrl, true) : new URL(SITE.ogImage, o.siteUrl).href;
   // Every chip is a store label with a key, so the switcher can read it in the visitor's language.
   const chips = [
     p.gender && chip(`gender_${p.gender}` as StoreTextKey), ...p.families.filter((f) => isFamilyCode(f)).map((f) => chip(familyKey(f))),
@@ -119,15 +162,20 @@ export function renderProductPage(p: StoreProduct, related: StoreProduct[], o: P
     ['pd_concentration', esc(p.concentration)], ['pd_longevity', esc(p.longevity)], ['pd_sku', esc(p.sku)],
   ] as const).filter(([, v]) => v);
   const ld = JSON.stringify(productJsonLd(p, o)).replace(/</g, '\\u003c');
+  const breadcrumb = JSON.stringify(breadcrumbJsonLd(p, o)).replace(/</g, '\\u003c');
   return `<!doctype html>
 <html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(title)}</title><meta name="description" content="${esc(desc)}"><link rel="canonical" href="${esc(url)}">
-<meta property="og:type" content="product"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}">
-<meta property="og:url" content="${esc(url)}">${p.images[0] ? `<meta property="og:image" content="${esc(img(p.images[0], o.siteUrl, true))}">` : ''}
-<meta property="product:price:amount" content="${p.price}"><meta property="product:price:currency" content="EGP"><meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">${ld}</script><style>${STYLE}</style><script>${NO_IMG_FN}</script></head>
+<title>${esc(title)}</title><meta name="description" content="${esc(desc)}"><meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="${esc(url)}"><link rel="alternate" hreflang="ar" href="${esc(url)}"><link rel="alternate" hreflang="x-default" href="${esc(url)}">
+<meta property="og:type" content="product"><meta property="og:site_name" content="${esc(SITE.nameAr)}"><meta property="og:locale" content="${SITE.locale}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}">
+<meta property="og:url" content="${esc(url)}"><meta property="og:image" content="${esc(ogImage)}"><meta property="og:image:alt" content="${esc(p.name.ar)}">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(title)}"><meta name="twitter:description" content="${esc(desc)}"><meta name="twitter:image" content="${esc(ogImage)}">
+<meta property="product:price:amount" content="${p.price}"><meta property="product:price:currency" content="EGP"><meta name="theme-color" content="${SITE.themeColor}">
+<link rel="alternate" type="application/rss+xml" title="${esc(SITE.nameAr)}" href="${esc(new URL('feed.xml', o.siteUrl).href)}"><link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">${ld}</script><script type="application/ld+json">${breadcrumb}</script><style>${STYLE}</style><script>${NO_IMG_FN}</script></head>
 <body><header><a href="../">صمم عطرك مع شام</a><a href="index.html"${dl('pd_index')}>كل منتجات المتجر</a></header>
-<main><div class="grid"><div class="gallery">${p.images[0] ? `<img src="${esc(img(p.images[0], o.siteUrl))}" alt="${esc(p.name.ar)}" id="main" onerror="noImg(this)">` : ''}
+<main><nav class="crumb" aria-label="مسار التنقل"><a href="${esc(homeUrl)}">الرئيسية</a> ← <a href="index.html">متجر شام</a> ← ${esc(p.name.ar)}</nav>
+<div class="grid"><div class="gallery">${p.images[0] ? `<img src="${esc(img(p.images[0], o.siteUrl))}" alt="${esc(p.name.ar)}" width="800" height="800" id="main" onerror="noImg(this)">` : ''}
 <div class="thumbs">${p.images.map((u, i) => `<a href="${esc(img(u, o.siteUrl))}" onclick="document.getElementById('main').src=this.href;return false"><img src="${esc(img(u, o.siteUrl))}" alt="${esc(`${p.name.ar} ${i + 1}`)}" loading="lazy" onerror="noImg(this,1)"></a>`).join('')}</div></div>
 <div><h1 data-name data-ar="${esc(p.name.ar)}" data-en="${esc(p.name.en)}">${esc(p.name.ar)}</h1>${p.name.en !== p.name.ar ? `<div class="en">${esc(p.name.en)}</div>` : ''}
 <p class="price" data-price="${p.price}">${esc(egp(p.price))}</p><p>${p.inStock ? `✅ <span${dl('pd_in_stock')}>متوفر</span>` : `⛔ <span${dl('sf_out_of_stock')}>غير متوفر حالياً</span>`}</p>
@@ -137,8 +185,9 @@ ${specs.length ? `<section><table class="specs">${specs.map(([k, v]) => `<tr><td
 </div></div>
 ${notes.length ? `<section><h2${dl('pd_notes_pyramid')}>الهرم العطري</h2><div class="notes">${notes.map(([k, l]) => `<div><b${dl(k)}>${arLabel(k)}</b>${esc(l.join('، '))}</div>`).join('')}</div></section>` : ''}
 <section><h2${dl('pd_description')}>الوصف</h2><p data-name data-ar="${esc(p.description.ar)}" data-en="${esc(p.description.en || p.description.ar)}">${esc(p.description.ar)}</p>${p.description.en && p.description.en !== p.description.ar ? `<p class="en" dir="ltr">${esc(p.description.en).replace(/\n/g, '<br>')}</p>` : ''}</section>
+<p class="small">آخر تحديث لبيانات المنتج: ${esc((p.createdAt || new Date().toISOString()).slice(0, 10))} · <a href="../">كل أدوات المعمل</a> · <a href="../tools/">أدوات شام</a></p>
 ${related.length ? `<section><h2${dl('pd_related')}>قد يعجبك أيضاً</h2><div class="cards">${related.map(card).join('')}</div></section>` : ''}
-</main><footer${dl('pd_footer')}>متجر شام — راجع «الخبير شاهين» بيانات هذا المنتج</footer>${SWITCHER(JSON.stringify(pageLabelTable()).replace(/</g, '\\u003c'))}</body></html>
+</main><footer${dl('pd_footer')}>متجر شام — راجع «الخبير شاهين» بيانات هذا المنتج<nav><a href="../">الرئيسية</a><a href="index.html">كل المنتجات</a><a href="../tools/">الأدوات</a></nav></footer>${SWITCHER(JSON.stringify(pageLabelTable()).replace(/</g, '\\u003c'))}</body></html>
 `;
 }
 

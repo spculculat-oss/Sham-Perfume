@@ -19,11 +19,16 @@ import {
   Flame,
   AlertCircle,
   Trash2,
+  CreditCard,
+  Smartphone,
+  Sparkles,
 } from 'lucide-react';
 import { UserProfile } from '../types/auth';
 import { 
   getUserExperiences, getUserOrders, getUserAnalytics, updateUserAnalytics, saveUserExperience, clearUserSessionData, UserExperience 
 } from '../utils/userExperienceStore';
+import { PaymentEnvironmentModal } from './PaymentEnvironmentModal';
+import { getSavedPaymentMethods, getPaymentTransactions } from '../utils/customerPaymentVault';
 import { SupportedLanguage } from '../types/i18n';
 import { t } from '../لغات/i18n';
 import { LText, makeT, pickArEn, localeDate } from '../لغات/localize';
@@ -423,6 +428,66 @@ const S = {
     tr: '🔒 Şifrelenmiş',
     fa: '🔒 رمزنگاری‌شده',
   },
+  vault_title: {
+    ar: 'محفظة الدفع والبطاقات المحفوظة',
+    en: 'Payment Vault & Saved Cards',
+    fr: 'Portefeuille de Paiement Sécurisé',
+    es: 'Billetera de Pago y Tarjetas Guardadas',
+    it: 'Portafoglio Pagamenti e Carte Salvate',
+    de: 'Zahlungstresor & Gespeicherte Karten',
+    ru: 'Платежный Сейф и Карты',
+    zh: '安全支付金库与已存卡片',
+    tr: 'Ödeme Kasası ve Kayıtlı Kartlar',
+    fa: 'کیف پرداخت و کارت‌های ذخیره‌شده',
+  },
+  vault_subtitle: {
+    ar: 'إدارة وتأمين وسائل الدفع المصرفية والمحافظ وخدمات إنستاباي والتقسيط للدفع الفوري',
+    en: 'Manage and tokenize bank cards, wallets, InstaPay, and BNPL for 1-click checkout',
+    fr: 'Gérez et sécurisez vos cartes, portefeuilles et paiements échelonnés',
+    es: 'Administra y tokeniza tarjetas, billeteras y cuotas',
+    it: 'Gestisci e rendi sicure carte, portafogli e pagamenti a rate',
+    de: 'Verwalten und sichern Sie Karten, Wallets und Ratenzahlung',
+    ru: 'Управление токенизированными картами и кошельками',
+    zh: '安全管理和令牌化银行卡、电子钱包及分期付款',
+    tr: 'Kartları, cüzdanları ve taksitli ödeme yöntemlerini güvenle yönetin',
+    fa: 'مدیریت و امن‌سازی کارت‌های بانکی، کیف‌پول‌ها و اقساط',
+  },
+  vault_manage: {
+    ar: 'إدارة وتأمين وسائل الدفع',
+    en: 'Manage & Secure Payment Methods',
+    fr: 'Gérer les Moyens de Paiement',
+    es: 'Gestionar Métodos de Pago',
+    it: 'Gestisci Metodi di Pagamento',
+    de: 'Zahlungsmethoden Verwalten',
+    ru: 'Управление Способами Оплаты',
+    zh: '管理并保护支付方式',
+    tr: 'Ödeme Yöntemlerini Yönet',
+    fa: 'مدیریت روش‌های پرداخت',
+  },
+  vault_methods_count: {
+    ar: 'وسائل دفع مفعلة',
+    en: 'Active Payment Methods',
+    fr: 'Moyens de Paiement Actifs',
+    es: 'Métodos de Pago Activos',
+    it: 'Metodi di Pagamento Attivi',
+    de: 'Aktive Zahlungsmethoden',
+    ru: 'Активных Способов Оплаты',
+    zh: '已激活支付方式',
+    tr: 'Aktif Ödeme Yöntemi',
+    fa: 'روش‌های پرداخت فعال',
+  },
+  vault_tx_count: {
+    ar: 'معاملة مسجلة',
+    en: 'Recorded Transactions',
+    fr: 'Transactions Enregistrées',
+    es: 'Transacciones Registradas',
+    it: 'Transazioni Registrate',
+    de: 'Erfasste Transaktionen',
+    ru: 'Зафиксированных Операций',
+    zh: '已记录交易',
+    tr: 'Kayıtlı İşlem',
+    fa: 'تراکنش‌های ثبت‌شده',
+  },
 };
 
 const experienceIcons: Record<string, React.ReactNode> = {
@@ -455,6 +520,14 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, currentL
   const [orders, setOrders] = React.useState<ReturnType<typeof getUserOrders>>([]);
   const [analytics, setAnalytics] = React.useState<ReturnType<typeof getUserAnalytics>>(null);
   const [confirmClear, setConfirmClear] = React.useState(false);
+  const [showPaymentVault, setShowPaymentVault] = React.useState(false);
+  const [savedMethods, setSavedMethods] = React.useState(() => getSavedPaymentMethods(user.id));
+  const [savedTxCount, setSavedTxCount] = React.useState(() => getPaymentTransactions(user.id).length);
+
+  const refreshPayments = () => {
+    setSavedMethods(getSavedPaymentMethods(user.id));
+    setSavedTxCount(getPaymentTransactions(user.id).length);
+  };
 
   useEffect(() => {
     const exps = getUserExperiences(user.id);
@@ -463,6 +536,7 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, currentL
     setExperiences(exps);
     setOrders(ords);
     setAnalytics(anls);
+    refreshPayments();
     
     // Update last login
     updateUserAnalytics(user, 'login');
@@ -470,6 +544,10 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, currentL
     // Re-fetch after update
     const updated = getUserAnalytics(user.id);
     setAnalytics(updated);
+
+    const handleUpdate = () => refreshPayments();
+    window.addEventListener('sham-payment-methods-updated', handleUpdate);
+    return () => window.removeEventListener('sham-payment-methods-updated', handleUpdate);
   }, [user.id]);
 
   const handleAddExperience = (type: UserExperience['type'], titleAr: string, titleEn: string, descAr?: string, descEn?: string) => {
@@ -581,6 +659,67 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, currentL
             <span className="ml-auto px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 text-[10px] font-semibold">
               {L('encrypted_badge')}
             </span>
+          </div>
+
+          {/* Customer Payment Vault & Professional Environment */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-stone-900 via-stone-850 to-amber-950 text-white border border-amber-900/40 shadow-md space-y-3">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold border border-amber-500/30 shrink-0">
+                  <CreditCard className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h5 className="font-extrabold text-sm sm:text-base text-white">
+                      {L('vault_title')}
+                    </h5>
+                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">
+                      PCI-DSS Level 1 · Tokenized
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-stone-300 mt-0.5 max-w-lg">
+                    {L('vault_subtitle')}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Metrics & Badges */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1 text-xs">
+              <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+                <span className="text-[10px] text-stone-400 block">{L('vault_methods_count')}</span>
+                <span className="font-mono text-base font-extrabold text-amber-300">
+                  {savedMethods.length}
+                </span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+                <span className="text-[10px] text-stone-400 block">{L('vault_tx_count')}</span>
+                <span className="font-mono text-base font-extrabold text-emerald-300">
+                  {savedTxCount}
+                </span>
+              </div>
+              <div className="col-span-2 sm:col-span-1 p-2.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <span className="text-[10px] text-stone-400 block">{currentLang === 'ar' ? 'الشبكات المعتمدة' : 'Gateways'}</span>
+                  <div className="flex items-center gap-1 text-[9px] font-mono text-stone-300">
+                    <span className="px-1 rounded bg-white/10 font-bold">VISA</span>
+                    <span className="px-1 rounded bg-white/10 font-bold">MADA</span>
+                    <span className="px-1 rounded bg-white/10 font-bold">VF CASH</span>
+                    <span className="px-1 rounded bg-white/10 font-bold">TABBY</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Manage Vault Button */}
+            <button
+              type="button"
+              onClick={() => setShowPaymentVault(true)}
+              className="w-full py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 rounded-xl text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <CreditCard className="w-4 h-4" />
+              <span>{L('vault_manage')}</span>
+            </button>
           </div>
 
           {/* Experiences */}
@@ -814,6 +953,18 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, currentL
           </div>
         </div>
       </div>
+
+      {showPaymentVault && (
+        <PaymentEnvironmentModal
+          currentLang={currentLang}
+          customerId={user.id}
+          customerName={user.name || user.email}
+          onClose={() => {
+            setShowPaymentVault(false);
+            refreshPayments();
+          }}
+        />
+      )}
     </div>
   );
 };

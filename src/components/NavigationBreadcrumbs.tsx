@@ -18,6 +18,7 @@ import {
   BookMarked,
   Hourglass,
   Bot,
+  Users,
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
 import { t } from '../لغات/i18n';
@@ -87,7 +88,11 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
     guide: { label: t('nav_guide', currentLang), icon: BookOpen },
   };
 
-  const currentConfig = tabConfigs[activeTab] || { label: activeTab, icon: Sparkles };
+  // Deep routes («community/messenger/<id>», «store/<slug>»…) show their section's name, never the raw route.
+  tabConfigs.community = { label: currentLang === 'ar' ? 'مجتمع شام' : 'Sham Community', icon: Users };
+  const configFor = (tab: string) => tabConfigs[tab] || tabConfigs[tab.split('/')[0]];
+  const prettify = (tab: string) => tab.split('/')[0].replace(/_/g, ' ');
+  const currentConfig = configFor(activeTab) || { label: prettify(activeTab), icon: Sparkles };
   const TabIcon = currentConfig.icon;
 
   const quickLinks = [
@@ -131,7 +136,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
               <span>{L('back_btn')}</span>
               {previousTabLabel && (
                 <span className="hidden md:inline text-stone-500 text-[11px]">
-                  ({tabConfigs[previousTabLabel]?.label || previousTabLabel.replace(/_/g, ' ')})
+                  ({configFor(previousTabLabel)?.label || prettify(previousTabLabel)})
                 </span>
               )}
             </button>
@@ -148,7 +153,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
             <Separator className="w-3.5 h-3.5 text-stone-400" />
             <div className="flex items-center gap-1.5 font-bold text-stone-900 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200/60">
               <TabIcon className="w-3.5 h-3.5 text-amber-700" />
-              <span>{currentConfig.label}</span>
+              <span className="max-w-[55vw] truncate">{currentConfig.label}</span>
             </div>
           </div>
         </div>

@@ -1,0 +1,5 @@
+{
+  "note": "Machine denylists, not copy. Vendor names are rejected from AI-written meta text; crawler names are allowed explicitly in robots.txt so AI search engines can read the site.",
+  "vendorNames": ["Gemini", "DeepSeek", "ChatGPT", "GPT-\\d", "Claude", "OpenAI", "Anthropic", "OpenRouter", "Llama", "Qwen", "Mistral", "Copilot"],
+  "aiCrawlers": ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "PerplexityBot", "ClaudeBot", "Claude-SearchBot", "Google-Extended", "CCBot", "Applebot-Extended"]
+}

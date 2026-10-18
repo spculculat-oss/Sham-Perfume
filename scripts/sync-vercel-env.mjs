@@ -4,7 +4,7 @@
  *
  *   VERCEL_TOKEN     (required) https://vercel.com/account/tokens — scoped to the team
  *   VERCEL_SCOPE     team slug (default sham-de37)
- *   VERCEL_PROJECTS  comma list (default sham-perfume-49bf,sham-perfume)
+ *   VERCEL_PROJECTS  comma list (default sham-perfume-49bf — the second project only redirects to it)
  *   SHAM_VERIFY_FILE optional JSON from verify-ai-keys.mts: keys proven invalid/without credit are
  *                    NOT pushed, so a bad GitHub secret can never replace a working production key.
  *
@@ -15,15 +15,17 @@ import { existsSync, readFileSync } from 'node:fs';
 const API = process.env.VERCEL_API_URL?.trim() || 'https://api.vercel.com';
 const token = process.env.VERCEL_TOKEN?.trim();
 const scope = process.env.VERCEL_SCOPE?.trim() || 'sham-de37';
-const projects = (process.env.VERCEL_PROJECTS || 'sham-perfume-49bf,sham-perfume').split(',').map((p) => p.trim()).filter(Boolean);
+const projects = (process.env.VERCEL_PROJECTS || 'sham-perfume-49bf').split(',').map((p) => p.trim()).filter(Boolean);
 const TARGETS = ['production', 'preview', 'development'];
 const KEYS = {
   GEMINI_API_KEY: 'gemini', OPENAI_API_KEY: 'openai', ANTHROPIC_API_KEY: 'claude',
   DEEPSEEK_API_KEY: 'deepseek', OPENROUTER_API_KEY: 'openrouter', AI_GATEWAY_API_KEY: 'self_hosted',
   // Not an AI engine: real videos under Shaheen's answers (YouTube Data API v3). Synced as is.
   YOUTUBE_API_KEY: 'youtube',
+  // «الدفع في متجر شام»: the payment server needs them (verified by scripts/verify-payments.mts as `kashier`).
+  KASHIER_MERCHANT_ID: 'kashier', KASHIER_API_KEY: 'kashier', KASHIER_SECRET_KEY: 'kashier', KASHIER_MODE: 'kashier', KASHIER_CURRENCIES: 'kashier',
 };
-const BLOCKING = new Set(['invalid_key', 'no_credit']);
+const BLOCKING = new Set(['invalid_key', 'no_credit', 'missing']);
 const gh = Boolean(process.env.GITHUB_ACTIONS);
 const note = (level, title, msg) => { console.log(gh ? `::${level} title=${title}::${msg}` : `[${level}] ${title}: ${msg}`); };
 

@@ -12,6 +12,7 @@ import { createNotifier } from './notify';
 import { runAdminAgent } from './adminAgent';
 import { createStore, type Store } from './store';
 import { RateLimiter, clientKey } from './rateLimit';
+import { createSeoService } from '../seo/service';
 import { probeEngines } from '../shaheen';
 import { SHAHEEN_SITE_SETTINGS } from '../config/shaheen';
 import { engineStatuses } from './engines';
@@ -58,6 +59,9 @@ export function createShamCore(options: CoreOptions = {}) {
   // «ذاكرة شاهين»: shared with the Shaheen chat router (server/app.ts); exported to the bots below.
   const memory = new ShaheenMemory(store, env, options.fetch);
   const notifier = createNotifier(env, options.fetch);
+  // «منارة شاهين»: SEO/media agent — its own state, engines follow the admin policy, runs are manual or scheduled.
+  const seo = createSeoService({ repo, env, fetch: options.fetch });
+  const seoRunLimiter = new RateLimiter(4, 10 * 60_000);
   const feedbackLimiter = new RateLimiter(60, 10 * 60_000);
   const privacyLimiter = new RateLimiter(10, 10 * 60_000);
   const VISITOR = /^[A-Za-z0-9_-]{8,80}$/;
@@ -495,6 +499,26 @@ export function createShamCore(options: CoreOptions = {}) {
     res.json({ results: (requested as MaintenanceAction[]).map((a) => runtime.act(a)), snapshot: runtime.snapshot() });
   }));
 
+  // ---- «منارة شاهين»: the SEO/media agent (state, files, engines, one run at a time) ----
+  admin.get('/seo', wrap(async (_req, res) => {
+    const state = await seo.loadState();
+    const pages = await seo.pagesFile();
+    res.json({
+      state, pages, siteUrl: seo.siteUrl, busy: seo.busy(),
+      sitemapUrls: seo.sitemapCount(),
+      engines: engineStatuses(env).filter((e) => e.id !== 'sham_local').map(({ id, model, configured }) => ({ id, model, configured })),
+      storage: { kind: store.kind, persistent: store.persistent, error: storeError },
+    });
+  }));
+  /** 202: the cycle (audit + AI review + submissions) outlives the HTTP request; the panel polls /seo. */
+  admin.post('/seo/run', wrap(async (req, res) => {
+    if (!seoRunLimiter.allow(clientKey(req))) throw new AssistantError(429, 'RATE_LIMITED', 'Too many SEO runs, wait a few minutes');
+    if (seo.busy()) throw new AssistantError(409, 'SEO_BUSY', 'A SEO cycle is already running');
+    const submit = req.body?.submit === true;
+    void seo.run({ submit, trigger: 'admin' }).catch((error) => console.error('[SEO] run failed:', error));
+    res.status(202).json({ accepted: true, submit, startedAt: new Date().toISOString() });
+  }));
+
   admin.get('/export', wrap(async (_req, res) => {
     const collections: CollectionName[] = ['settings', 'services', 'products', 'knowledge', 'requests', 'conversations', 'gaps', 'visitors'];
     const out: Record<string, unknown> = { exportedAt: new Date().toISOString(), storage: store.kind };
@@ -503,5 +527,5 @@ export function createShamCore(options: CoreOptions = {}) {
     res.json(out);
   }));
 
-  return { assistant, admin, repo, orchestrator, store, runtime, memory };
+  return { assistant, admin, repo, orchestrator, store, runtime, memory, seo };
 }

@@ -1,0 +1,13 @@
+{
+  "currency": "USD",
+  "note": "مصاريف الشحن بالدولار لكل منطقة: firstItem = أول زجاجة، extraItem = كل زجاجة زيادة في نفس الطلب (0 = سعر ثابت للطلب). عدّل الأرقام هنا وارفع على main — الموقعان والسيرفر يقرؤون نفس الملف.",
+  "zones": [
+    { "id": "egypt", "name": { "ar": "مصر", "en": "Egypt" }, "countries": ["EG"], "firstItem": 15, "extraItem": 3, "days": "7-14" },
+    { "id": "gulf", "name": { "ar": "دول الخليج", "en": "Gulf countries" }, "countries": ["SA", "AE", "KW", "QA", "BH", "OM"], "firstItem": 14, "extraItem": 3, "days": "5-10" },
+    { "id": "arab", "name": { "ar": "باقي الدول العربية", "en": "Other Arab countries" }, "countries": ["JO", "LB", "IQ", "SY", "PS", "YE", "LY", "TN", "DZ", "MA", "SD", "MR", "SO", "DJ", "KM"], "firstItem": 18, "extraItem": 4, "days": "7-15" },
+    { "id": "southeast_asia", "name": { "ar": "جنوب شرق آسيا", "en": "Southeast Asia" }, "countries": ["MY", "SG", "BN", "ID", "TH", "PH", "VN", "KH", "LA", "MM"], "firstItem": 6, "extraItem": 1.5, "days": "3-7" },
+    { "id": "europe", "name": { "ar": "أوروبا", "en": "Europe" }, "countries": ["GB", "IE", "FR", "DE", "IT", "ES", "PT", "NL", "BE", "LU", "AT", "CH", "SE", "NO", "DK", "FI", "IS", "PL", "CZ", "SK", "HU", "RO", "BG", "GR", "HR", "SI", "RS", "BA", "ME", "MK", "AL", "EE", "LV", "LT", "CY", "MT", "UA", "MD", "TR"], "firstItem": 22, "extraItem": 5, "days": "7-14" },
+    { "id": "north_america", "name": { "ar": "أمريكا الشمالية", "en": "North America" }, "countries": ["US", "CA", "MX"], "firstItem": 25, "extraItem": 5, "days": "7-14" }
+  ],
+  "default": { "id": "world", "name": { "ar": "باقي دول العالم", "en": "Rest of the world" }, "firstItem": 28, "extraItem": 6, "days": "10-20" }
+}

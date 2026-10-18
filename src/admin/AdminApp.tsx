@@ -1,6 +1,7 @@
 import { T, adminDir, useAdminLanguage, reactiveMap, TP, listSep, adminLocale } from './adminL10n';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
+  Search,
   Activity, ArrowRight, ArrowDownToLine, BookOpen, Bot, Boxes, ClipboardList, Cpu, Database, Download, FlaskConical, Headset, KeyRound,
   BellRing, CheckCircle2, CircleAlert, EyeOff, LayoutDashboard, Lightbulb, Loader2, LogOut, MessagesSquare, Plus, RefreshCw, Save, Send,
   Settings2, Stethoscope, ThumbsDown, ThumbsUp, Trash2, TriangleAlert, Users, Wand2,
@@ -8,6 +9,10 @@ import {
 } from 'lucide-react';
 import UpdatesPanel from './UpdatesPanel';
 import SupervisorPanel from './SupervisorPanel';
+import SeoPanel from './SeoPanel';
+import CommunityPanel from './CommunityPanel';
+import ShaheenGrowthPanel from './ShaheenGrowthPanel';
+import { ErrorBoundary } from '../utils/lazyRetry';
 import type {
   Conversation, CoreSettings, CouncilMember, CouncilRole, CouncilTranscript, EngineId, KnowledgeDoc, KnowledgeGap, ModelEngineId, Product, RequestStatus, ServiceDef, ServiceRequest, ShaheenSettings,
 } from '../../server/core/types';
@@ -16,7 +21,7 @@ import { AdminApiError, adminRequest, getToken, send, setToken } from './adminAp
 import { apiUrl, isStaticHosting } from '../utils/api';
 import { parseDoctorIssue, type DoctorReport } from './doctorReport';
 
-type Tab = 'overview' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'emails' | 'doctor' | 'supervisor' | 'sandbox' | 'updates';
+type Tab = 'overview' | 'community' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'emails' | 'doctor' | 'supervisor' | 'seo' | 'sandbox' | 'updates';
 interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: string }
 interface Overview {
   storage: { kind: string; persistent: boolean; error?: string };
@@ -30,6 +35,7 @@ interface FeedbackItem { conversationId: string; messageId?: string; rating: 'up
 
 const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'overview', label: T('نظرة عامة'), icon: <LayoutDashboard className="w-4 h-4" /> },
+  { id: 'community', label: T('المجتمع'), icon: <Users className="w-4 h-4" /> },
   { id: 'agent', label: T('المساعد الإداري'), icon: <Wand2 className="w-4 h-4" /> },
   { id: 'quality', label: T('الجودة والتعلّم'), icon: <Lightbulb className="w-4 h-4" /> },
   { id: 'requests', label: T('الطلبات والعروض'), icon: <ClipboardList className="w-4 h-4" /> },
@@ -42,6 +48,7 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'shaheen', label: T('الخبير شاهين'), icon: <FlaskConical className="w-4 h-4" /> },
   { id: 'doctor', label: T('طبيب شاهين'), icon: <Stethoscope className="w-4 h-4" /> },
   { id: 'supervisor', label: T('مشرف الذكاء الاصطناعي'), icon: <Sparkles className="w-4 h-4" /> },
+  { id: 'seo', label: T('منارة شاهين'), icon: <Search className="w-4 h-4" /> },
   { id: 'sandbox', label: T('مختبر المساعد'), icon: <FlaskConical className="w-4 h-4" /> },
   { id: 'updates', label: T('بيئة التحديثات'), icon: <ArrowDownToLine className="w-4 h-4" /> },
 ];
@@ -129,7 +136,9 @@ export default function AdminApp() {
           </div>
         </aside>
         <main className="flex-1 p-4 lg:p-6 min-w-0">
+          <ErrorBoundary key={tab} area={`admin:${tab}`} compact ar>
           {tab === 'overview' && <OverviewPanel go={setTab} />}
+          {tab === 'community' && <CommunityPanel />}
           {tab === 'agent' && <AgentPanel go={setTab} />}
           {tab === 'quality' && <QualityPanel />}
           {tab === 'requests' && <RequestsPanel />}
@@ -138,12 +147,14 @@ export default function AdminApp() {
           {tab === 'knowledge' && <KnowledgePanel />}
           {tab === 'services' && <ServicesPanel />}
           {tab === 'engines' && <EnginesPanel />}
-          {tab === 'shaheen' && <ShaheenPanel />}
+          {tab === 'shaheen' && <><ShaheenGrowthPanel /><ShaheenPanel /></>}
           {tab === 'emails' && <EmailsPanel />}
           {tab === 'doctor' && <DoctorPanel />}
           {tab === 'supervisor' && <SupervisorPanel />}
+          {tab === 'seo' && <SeoPanel />}
           {tab === 'sandbox' && <SandboxPanel />}
           {tab === 'updates' && <UpdatesPanel />}
+          </ErrorBoundary>
         </main>
       </div>
     </Shell>
@@ -901,7 +912,7 @@ function EmailsPanel() {
                       serviceId: 'store',
                       status: activeTemplateStatus,
                       contact: { name: T('الأستاذ أحمد فؤاد'), email: 'ahmed@example.com', phone: '+201123456789' },
-                      fields: { [T('العنوان')]: T('التجمع الخامس، القاهرة'), [T('طريقة الدفع')]: T('الدفع عند الاستلام') },
+                      fields: { [T('العنوان')]: T('التجمع الخامس، القاهرة'), [T('طريقة الدفع')]: T('بطاقة بنكية / فيزا') },
                       items: [
                         { productId: 'oud', sku: 'OUD-ROYAL', name: T('عطر عود ملكي خاص (EdP)'), quantity: 1, unitPrice: 850, currency: 'EGP' },
                         { productId: 'rose', sku: 'ROSE-GRASSE', name: T('زيت ورد غراس النقي 30 مل'), quantity: 2, unitPrice: 380, currency: 'EGP' },

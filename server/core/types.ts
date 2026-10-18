@@ -4,6 +4,7 @@
  */
 import type { MemoryEntry } from '../../src/utils/shaheenMemory';
 import type { SupportedLanguage } from '../../src/types/i18n';
+import type { SeoState } from '../../src/seo/agentState';
 
 export type Lang = SupportedLanguage;
 
@@ -289,5 +290,7 @@ export interface Collections {
   visitors: VisitorProfile;
   /** «ذاكرة شاهين»: answers Shaheen gave, reused for repeated questions and when no AI engine answers. */
   memory: MemoryEntry;
+  /** «منارة شاهين»: SEO/media agent state and learning history (one record: id 'state'). */
+  seo: SeoState;
 }
 export type CollectionName = keyof Collections;

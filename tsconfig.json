@@ -29,6 +29,8 @@
     "server/**/*.ts",
     "server/**/*.cts",
     "cloud-functions/**/*.ts",
+    "scripts/aistudio/**/*.ts",
+    "scripts/aistudio/**/*.mts",
     "scripts/doctor/**/*.ts",
     "scripts/doctor/**/*.mts",
     "scripts/shaheen-news/**/*.ts",
@@ -39,7 +41,14 @@
     "scripts/shaheen-store/**/*.mts",
     "scripts/shaheen-import/**/*.ts",
     "scripts/shaheen-import/**/*.mts",
+    "scripts/shaheen-discover/**/*.ts",
+    "scripts/shaheen-discover/**/*.mts",
+    "scripts/shaheen-school/**/*.ts",
+    "scripts/shaheen-school/**/*.mts",
     "scripts/product-pages/**/*.ts",
-    "scripts/product-pages.mts"
+    "scripts/product-pages.mts",
+    "scripts/seo-agent/**/*.ts",
+    "scripts/seo-agent/**/*.mts",
+    "scripts/seo-build.mts"
   ]
 }

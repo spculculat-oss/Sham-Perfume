@@ -1,0 +1,508 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-18T11:40:26.662Z",
+  "nextRunAt": "2026-10-18T17:40:26.662Z",
+  "intervalHours": 6,
+  "identity": {
+    "nameAr": "منارة شاهين",
+    "nameEn": "Manaret Shaheen",
+    "roleAr": "المندوب الإعلامي وخبير الظهور في محركات البحث",
+    "reportsToAr": "الخبير شاهين",
+    "bornAt": "2026-10-18T12:00:00.000Z"
+  },
+  "trust": {
+    "level": "trainee",
+    "since": "2026-10-18T12:00:00.000Z",
+    "cycles": 1,
+    "cyclesAtLevel": 1,
+    "noteAr": "بدأ التدريب: يدرس المنهج ويفحص الموقع ويقترح، بلا تغيير منشور."
+  },
+  "curriculum": {
+    "studied": [
+      "seo-01"
+    ],
+    "notes": [
+      {
+        "id": "seo-01",
+        "titleAr": "كيف يزحف Googlebot ويصل إلى صفحاتك",
+        "at": "2026-10-18T11:40:26.662Z",
+        "takeaway": "يتعين على منصة «صمم عطرك مع شام» تسهيل وصول محرك البحث إلى صفحات الأدوات الثابتة والصفحة الرئيسية عبر ضبط ملف robots.txt ليشير إلى خريطة الموقع، مع تحديث الروابط الداخلية ووضع وسوم الأوصاف والبيانات الأساسية لضمان زحف دقيق وفهرسة صحيحة.",
+        "checklist": [
+          "تحديث ملف robots.txt ليسمح بالوصول إلى الصفحات المهمة ويشير بوضوح إلى رابط خريطة الموقع (sitemap.xml).",
+          "التحقق من أن جميع صفحات الأدوات الـ12 والصفحة الرئيسية تُرجع حالة الاستجابة السليمة (200) وخالية من موانع الزحف.",
+          "مراجعة الروابط الداخلية للتأكد من إمكانية الوصول إلى كل صفحة أدوات مباشرة من الصفحة الرئيسية أو الخريطة.",
+          "إضافة وسوم الـ Canonical وتجنب الروابط المكررة أو معاملات البحث الزائدة لضمان عدم إهدار ميزانية الزحف."
+        ]
+      }
+    ]
+  },
+  "audit": {
+    "at": "2026-10-18T11:40:26.662Z",
+    "score": 1,
+    "bySeverity": {
+      "critical": 0,
+      "major": 15,
+      "minor": 16
+    },
+    "byArea": {
+      "crawl": 7,
+      "content": 16,
+      "schema": 3,
+      "international": 3,
+      "indexing": 2
+    },
+    "findings": [
+      {
+        "id": "crawl:/:canonical",
+        "area": "crawl",
+        "severity": "major",
+        "page": "/",
+        "title": "لا يوجد canonical",
+        "detail": "لا يشير أي وسم canonical إلى النسخة الأساسية.",
+        "fix": "أضف <link rel=\"canonical\"> بعنوان مطلق https يطابق عنوان الصفحة."
+      },
+      {
+        "id": "content:/:h1",
+        "area": "content",
+        "severity": "major",
+        "page": "/",
+        "title": "لا يوجد H1",
+        "detail": "الصفحة بلا عنوان رئيسي HTML.",
+        "fix": "أضف H1 واحداً يطابق موضوع الصفحة."
+      },
+      {
+        "id": "content:/:headings",
+        "area": "content",
+        "severity": "minor",
+        "page": "/",
+        "title": "بنية محتوى بسيطة",
+        "detail": "0 أقسام H2.",
+        "fix": "أضف أقساماً: كيف يعمل، خطوات، أسئلة شائعة."
+      },
+      {
+        "id": "content:/:words",
+        "area": "content",
+        "severity": "major",
+        "page": "/",
+        "title": "محتوى رقيق",
+        "detail": "النص المرئي 9 كلمة فقط.",
+        "fix": "أضف شرحاً وخطوات وأسئلة شائعة (300 كلمة فأكثر) تجيب نية البحث."
+      },
+      {
+        "id": "content:/:og",
+        "area": "content",
+        "severity": "minor",
+        "page": "/",
+        "title": "وسم og:site_name غائب",
+        "detail": "معاينة المشاركة على الشبكات الاجتماعية ناقصة.",
+        "fix": "أضف <meta property=\"og:site_name\"> بقيمة صحيحة."
+      },
+      {
+        "id": "content:/:twitter",
+        "area": "content",
+        "severity": "minor",
+        "page": "/",
+        "title": "حقول Twitter/X ناقصة",
+        "detail": "العنوان أو الصورة غير معرّفين.",
+        "fix": "أضف twitter:title وtwitter:description وtwitter:image."
+      },
+      {
+        "id": "schema:/:schema",
+        "area": "schema",
+        "severity": "major",
+        "page": "/",
+        "title": "لا توجد بيانات منظمة",
+        "detail": "لا يوجد JSON-LD صالح على الصفحة.",
+        "fix": "أضف Organization/WebSite للرئيسية، وFAQPage/BreadcrumbList للأدوات، وProduct للمنتجات."
+      },
+      {
+        "id": "international:/:hreflang",
+        "area": "international",
+        "severity": "minor",
+        "page": "/",
+        "title": "لا يوجد x-default",
+        "detail": "لا توجد إشارة hreflang للنسخة الافتراضية.",
+        "fix": "أضف <link rel=\"alternate\" hreflang=\"x-default\"> للصفحة نفسها إذا كانت لغة واحدة تخدم الجميع."
+      },
+      {
+        "id": "crawl:/:links",
+        "area": "crawl",
+        "severity": "minor",
+        "page": "/",
+        "title": "روابط داخلية قليلة",
+        "detail": "0 روابط داخلية فقط.",
+        "fix": "أضف روابط إلى الأدوات والمتجر والمحتوى ذي الصلة."
+      },
+      {
+        "id": "crawl:site:robots",
+        "area": "crawl",
+        "severity": "major",
+        "page": "/",
+        "title": "robots بلا خريطة موقع",
+        "detail": "لا يوجد سطر Sitemap.",
+        "fix": "أضف Sitemap: https://الموقع/sitemap.xml إلى robots.txt."
+      },
+      {
+        "id": "indexing:site:sitemap",
+        "area": "indexing",
+        "severity": "major",
+        "page": "/",
+        "title": "صفحة مهمة غائبة عن الخريطة",
+        "detail": "الصفحة p/ غير مدرجة.",
+        "fix": "أضف كل صفحة أدوات ومنتج قابلة للفهرسة إلى الخريطة."
+      },
+      {
+        "id": "indexing:site:indexnow",
+        "area": "indexing",
+        "severity": "major",
+        "page": "/",
+        "title": "مفتاح IndexNow لا يطابق الملف",
+        "detail": "محتوى الملف مختلف عن المفتاح المستخدم.",
+        "fix": "اجعل ملف المفتاح يحتوي المفتاح حرفياً."
+      },
+      {
+        "id": "crawl:/tools/:canonical",
+        "area": "crawl",
+        "severity": "major",
+        "page": "/tools/",
+        "title": "لا يوجد canonical",
+        "detail": "لا يشير أي وسم canonical إلى النسخة الأساسية.",
+        "fix": "أضف <link rel=\"canonical\"> بعنوان مطلق https يطابق عنوان الصفحة."
+      },
+      {
+        "id": "content:/tools/:h1",
+        "area": "content",
+        "severity": "major",
+        "page": "/tools/",
+        "title": "لا يوجد H1",
+        "detail": "الصفحة بلا عنوان رئيسي HTML.",
+        "fix": "أضف H1 واحداً يطابق موضوع الصفحة."
+      },
+      {
+        "id": "content:/tools/:headings",
+        "area": "content",
+        "severity": "minor",
+        "page": "/tools/",
+        "title": "لا أقسام H2",
+        "detail": "الصفحة بلا بنية عناوين فرعية.",
+        "fix": "قسّم المحتوى بأقسام H2 واضحة."
+      },
+      {
+        "id": "content:/tools/:og",
+        "area": "content",
+        "severity": "minor",
+        "page": "/tools/",
+        "title": "وسم og:site_name غائب",
+        "detail": "معاينة المشاركة على الشبكات الاجتماعية ناقصة.",
+        "fix": "أضف <meta property=\"og:site_name\"> بقيمة صحيحة."
+      },
+      {
+        "id": "content:/tools/:twitter",
+        "area": "content",
+        "severity": "minor",
+        "page": "/tools/",
+        "title": "حقول Twitter/X ناقصة",
+        "detail": "العنوان أو الصورة غير معرّفين.",
+        "fix": "أضف twitter:title وtwitter:description وtwitter:image."
+      },
+      {
+        "id": "schema:/tools/:schema",
+        "area": "schema",
+        "severity": "major",
+        "page": "/tools/",
+        "title": "لا توجد بيانات منظمة",
+        "detail": "لا يوجد JSON-LD صالح على الصفحة.",
+        "fix": "أضف Organization/WebSite للرئيسية، وFAQPage/BreadcrumbList للأدوات، وProduct للمنتجات."
+      },
+      {
+        "id": "international:/tools/:hreflang",
+        "area": "international",
+        "severity": "minor",
+        "page": "/tools/",
+        "title": "لا يوجد x-default",
+        "detail": "لا توجد إشارة hreflang للنسخة الافتراضية.",
+        "fix": "أضف <link rel=\"alternate\" hreflang=\"x-default\"> للصفحة نفسها إذا كانت لغة واحدة تخدم الجميع."
+      },
+      {
+        "id": "crawl:/tools/:links",
+        "area": "crawl",
+        "severity": "minor",
+        "page": "/tools/",
+        "title": "روابط داخلية قليلة",
+        "detail": "0 روابط داخلية فقط.",
+        "fix": "أضف روابط إلى الأدوات والمتجر والمحتوى ذي الصلة."
+      },
+      {
+        "id": "crawl:/tools/perfume-formulation-calculator.html:canonical",
+        "area": "crawl",
+        "severity": "major",
+        "page": "/tools/perfume-formulation-calculator.html",
+        "title": "لا يوجد canonical",
+        "detail": "لا يشير أي وسم canonical إلى النسخة الأساسية.",
+        "fix": "أضف <link rel=\"canonical\"> بعنوان مطلق https يطابق عنوان الصفحة."
+      },
+      {
+        "id": "content:/tools/perfume-formulation-calculator.html:h1",
+        "area": "content",
+        "severity": "major",
+        "page": "/tools/perfume-formulation-calculator.html",
+        "title": "لا يوجد H1",
+        "detail": "الصفحة بلا عنوان رئيسي HTML.",
+        "fix": "أضف H1 واحداً يطابق موضوع الصفحة."
+      },
+      {
+        "id": "content:/tools/perfume-formulation-calculator.html:headings",
+        "area": "content",
+        "severity": "minor",
+        "page": "/tools/perfume-formulation-calculator.html",
+        "title": "بنية محتوى بسيطة",
+        "detail": "0 أقسام H2.",
+        "fix": "أضف أقساماً: كيف يعمل، خطوات، أسئلة شائعة."
+      },
+      {
+        "id": "content:/tools/perfume-formulation-calculator.html:words",
+        "area": "content",
+        "severity": "major",
+        "page": "/tools/perfume-formulation-calculator.html",
+        "title": "محتوى رقيق",
+        "detail": "النص المرئي 9 كلمة فقط.",
+        "fix": "أضف شرحاً وخطوات وأسئلة شائعة (300 كلمة فأكثر) تجيب نية البحث."
+      },
+      {
+        "id": "content:/tools/perfume-formulation-calculator.html:og",
+        "area": "content",
+        "severity": "minor",
+        "page": "/tools/perfume-formulation-calculator.html",
+        "title": "وسم og:site_name غائب",
+        "detail": "معاينة المشاركة على الشبكات الاجتماعية ناقصة.",
+        "fix": "أضف <meta property=\"og:site_name\"> بقيمة صحيحة."
+      },
+      {
+        "id": "content:/tools/perfume-formulation-calculator.html:twitter",
+        "area": "content",
+        "severity": "minor",
+        "page": "/tools/perfume-formulation-calculator.html",
+        "title": "حقول Twitter/X ناقصة",
+        "detail": "العنوان أو الصورة غير معرّفين.",
+        "fix": "أضف twitter:title وtwitter:description وtwitter:image."
+      },
+      {
+        "id": "schema:/tools/perfume-formulation-calculator.html:schema",
+        "area": "schema",
+        "severity": "major",
+        "page": "/tools/perfume-formulation-calculator.html",
+        "title": "لا توجد بيانات منظمة",
+        "detail": "لا يوجد JSON-LD صالح على الصفحة.",
+        "fix": "أضف Organization/WebSite للرئيسية، وFAQPage/BreadcrumbList للأدوات، وProduct للمنتجات."
+      },
+      {
+        "id": "international:/tools/perfume-formulation-calculator.html:hreflang",
+        "area": "international",
+        "severity": "minor",
+        "page": "/tools/perfume-formulation-calculator.html",
+        "title": "لا يوجد x-default",
+        "detail": "لا توجد إشارة hreflang للنسخة الافتراضية.",
+        "fix": "أضف <link rel=\"alternate\" hreflang=\"x-default\"> للصفحة نفسها إذا كانت لغة واحدة تخدم الجميع."
+      },
+      {
+        "id": "crawl:/tools/perfume-formulation-calculator.html:links",
+        "area": "crawl",
+        "severity": "minor",
+        "page": "/tools/perfume-formulation-calculator.html",
+        "title": "روابط داخلية قليلة",
+        "detail": "0 روابط داخلية فقط.",
+        "fix": "أضف روابط إلى الأدوات والمتجر والمحتوى ذي الصلة."
+      },
+      {
+        "id": "content:https://sham-perfume-49bf.vercel.app/tools/:duplicatedTitle",
+        "area": "content",
+        "severity": "major",
+        "page": "https://sham-perfume-49bf.vercel.app/tools/",
+        "title": "عنوان مكرر بين صفحات",
+        "detail": "العنوان «صمم عطرك مع شام | حاسبة تركيب وصناعة العطور» يظهر في 3 صفحات.",
+        "fix": "اجعل عنوان كل صفحة فريداً ويصف محتواها."
+      },
+      {
+        "id": "content:https://sham-perfume-49bf.vercel.app/tools/:duplicatedDescription",
+        "area": "content",
+        "severity": "minor",
+        "page": "https://sham-perfume-49bf.vercel.app/tools/",
+        "title": "وصف تعريف مكرر",
+        "detail": "نفس الوصف يظهر في 3 صفحات.",
+        "fix": "اكتب وصفاً خاصاً بكل صفحة."
+      }
+    ],
+    "pagesChecked": 3
+  },
+  "history": [
+    {
+      "at": "2026-10-18T11:40:26.662Z",
+      "score": 1,
+      "applied": 0,
+      "shaheen": 1,
+      "level": "trainee"
+    }
+  ],
+  "applied": [],
+  "proposals": {},
+  "submissions": [],
+  "submissionBook": {
+    "urls": []
+  },
+  "coach": {
+    "at": "2026-10-18T11:40:26.662Z",
+    "score": 1,
+    "strengths": [
+      "لا توجد نقاط قوة مسجلة في هذه البداية المبكرة."
+    ],
+    "issues": [
+      "الوكيل لم يكمل أي دورة أو درس (0/24).",
+      "تقييم الفحص منخفض جداً (1/100) مع وجود مشكلات كبيرة عديدة في المحتوى والزحف والفهرسة والبيانات المنظمة.",
+      "غياب وسم H1 والمحتوى الرقيق ووسم Canonical في الصفحة الرئيسية."
+    ],
+    "readyForAutonomy": false,
+    "note": "لا يزال الوكيل في مرحلة التدريب الأولى ولم يستوفِ الشروط الأساسية للاعتماد."
+  },
+  "coachHistory": [
+    {
+      "at": "2026-10-18T11:40:26.662Z",
+      "score": 1,
+      "readyForAutonomy": false
+    }
+  ],
+  "mediaReport": {
+    "at": "2026-10-18T11:40:26.662Z",
+    "headline": "تقرير الأداء الأسبوعي لمنصة «صمم عطرك مع شام»: رصد الحالة الفنية والأولويات التقنية لتحسين ظهور الأدوات في محركات البحث",
+    "paragraphs": [
+      "صدر التقرير الأسبوعي للمندوب الإعلامي لمنصة «صمم عطرك مع شام» تحت إشراف الخبير شاهين، مستعرضاً مؤشرات الحالة الفنية الحالية. تُظهر المعطيات أن عدد الصفحات الثابتة للأدوات بلغ اثنتي عشرة صفحة، بينما بلغ عدد منتجات المتجر صفحة واحدة خالية حال",
+      "سجلت الحالة الفنية تقييماً منخفضاً يتطلب تدخلاً عاجلاً وفق الطرق البيضاء فقط، حيث رصد التقرير مشكلات حرجة وأخرى كبيرة تشمل غياب وسوم العنوان الرئيسي وهشاشة المحتوى في بعض الصفحات. كما تبين وجود تكرار في العناوين بين الصفحات وغياب وسوم الربط",
+      "يستهدف محتوى المنصة الجمهور العربي المهتم بعلوم العطور وتصميمها وتركيبها، ويشمل ذلك عشاق العطور في مصر والخليج والشام، ومن يسعون لتركيب عطورهم بأنفسهم، إضافة إلى أصحاب مشاريع العطور الصاعدة. يركز العمل القادم على معالجة الأولويات التقنية ال"
+    ],
+    "boilerplate": "منصة عربية متخصصة في تصميم العطور وتركيبها، توفر حاسبات معملية، والهرم العطري، وأدوات التعتيق والتخفيف، وموسوعة للمواد الخام ومكتبة العطور العالمية، إضافة إلى متجر مخصص لخدمة عشاق العطور وأصحاب المشاريع.",
+    "social": [
+      "كيف تبدأ في تركيب عطرك الخاص؟ تعرف على أدوات منصة «صمم عطرك مع شام» وحاسبات المعمل المخصصة للمهتمين بعلوم العطور في العالم العربي.",
+      "نعمل على تحسين البنية الفنية لصفحات منصة «صمم عطرك مع شام» وفق معايير المحتوى الصحيح والواضح لخدمة عشاق العطور وأصحاب المشاريع.",
+      "استكشف موسوعة المواد الخام ومكتبة العطور العالمية عبر منصة «صمم عطرك مع شام» المصممة خصيصاً لتلبية احتياجات الجمهور العربي."
+    ],
+    "ideas": [
+      "إعداد دليل صحفي مبسط يشرح كيفية استخدام حاسبات المعمل والهرم العطري للمبتدئين في مجال تركيب العطور.",
+      "كتابة مقال تعريفي حول أهمية التعتيق والتخفيف في صناعة العطور المنزلية والمشاريع الصغيرة."
+    ],
+    "source": "ai"
+  },
+  "engines": {
+    "aiAvailable": true,
+    "studies": 1,
+    "failures": []
+  },
+  "searchEngines": [
+    {
+      "id": "google",
+      "nameAr": "Google",
+      "status": "ready"
+    },
+    {
+      "id": "bing",
+      "nameAr": "Bing",
+      "status": "submitted"
+    },
+    {
+      "id": "yandex",
+      "nameAr": "Yandex",
+      "status": "submitted"
+    },
+    {
+      "id": "naver",
+      "nameAr": "Naver",
+      "status": "submitted"
+    },
+    {
+      "id": "seznam",
+      "nameAr": "Seznam",
+      "status": "submitted"
+    },
+    {
+      "id": "yep",
+      "nameAr": "Yep",
+      "status": "submitted"
+    },
+    {
+      "id": "duckduckgo",
+      "nameAr": "DuckDuckGo",
+      "status": "ready"
+    },
+    {
+      "id": "ecosia",
+      "nameAr": "Ecosia",
+      "status": "ready"
+    },
+    {
+      "id": "yahoo",
+      "nameAr": "Yahoo",
+      "status": "ready"
+    },
+    {
+      "id": "brave",
+      "nameAr": "Brave Search",
+      "status": "ready"
+    },
+    {
+      "id": "perplexity",
+      "nameAr": "Perplexity",
+      "status": "ready"
+    },
+    {
+      "id": "copilot",
+      "nameAr": "Microsoft Copilot",
+      "status": "ready"
+    },
+    {
+      "id": "chatgpt-search",
+      "nameAr": "البحث في المساعدات الذكية",
+      "status": "ready"
+    }
+  ],
+  "nextActions": [
+    {
+      "textAr": "إضافة وسم H1 فريد ومحتوى مفيد يتجاوز 300 كلمة للصفحة الرئيسية لتوضيح نية البحث.",
+      "area": "content",
+      "severity": "major"
+    },
+    {
+      "textAr": "جعل عناوين الصفحات فريدة لكل صفحة لتعكس محتواها بدقة وتجنب التكرار.",
+      "area": "titles",
+      "severity": "major"
+    },
+    {
+      "textAr": "إضافة وسم canonical وملف robots.txt يحتوي على رابط خريطة الموقع الصحيح.",
+      "area": "crawl",
+      "severity": "major"
+    },
+    {
+      "textAr": "إضافة البيانات المنظمة بنجاح بصيغة JSON-LD للصفحات حسب طبيعة كل صفحة.",
+      "area": "schema",
+      "severity": "major"
+    },
+    {
+      "textAr": "إدراج جميع صفحات الأدوات والمنتجات القابلة للفهرسة داخل خريطة الموقع الرسمية.",
+      "area": "indexing",
+      "severity": "major"
+    }
+  ],
+  "runs": [
+    {
+      "at": "2026-10-18T11:40:26.662Z",
+      "trigger": "schedule",
+      "auditScore": 1,
+      "findings": 31,
+      "applied": 0,
+      "lessonId": "seo-01",
+      "submitted": 0,
+      "notes": [
+        "إرسال دوري لأهم الصفحات عبر IndexNow."
+      ],
+      "ms": 7254
+    }
+  ],
+  "notes": []
+}

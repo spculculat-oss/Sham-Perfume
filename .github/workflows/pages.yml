@@ -52,6 +52,9 @@ jobs:
         # Override with the PAGES_API_BASE_URL repository variable ("none" = no server features).
         env:
           VITE_API_BASE_URL: ${{ vars.PAGES_API_BASE_URL || 'https://sham-perfume-49bf.vercel.app' }}
+          # Public verification tokens (not secrets): the build writes google<token>.html / BingSiteAuth.xml.
+          GOOGLE_SITE_VERIFICATION: ${{ vars.GOOGLE_SITE_VERIFICATION }}
+          BING_SITE_VERIFICATION: ${{ vars.BING_SITE_VERIFICATION }}
         run: bun run build:pages
       - name: Verify published paths and fallback
         env:

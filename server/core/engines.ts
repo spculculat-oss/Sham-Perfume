@@ -112,6 +112,7 @@ async function* sseData(body: ReadableStream<Uint8Array>): AsyncGenerator<string
  */
 export function geminiThinking(model: string, maxTokens: number): Record<string, unknown> {
   const m = model.toLowerCase();
+  if (isGemma(m)) return { maxOutputTokens: maxTokens };
   if (/gemini-2\.5-pro/.test(m)) return { maxOutputTokens: maxTokens + 1024, thinkingConfig: { thinkingBudget: 128 } };
   if (/gemini-2\.5-flash/.test(m)) return { maxOutputTokens: maxTokens, thinkingConfig: { thinkingBudget: 0 } };
   if (/gemini-[3-9]/.test(m)) return { maxOutputTokens: maxTokens + 2048, thinkingConfig: { thinkingLevel: 'low' } };
@@ -151,15 +152,45 @@ export function pickGeminiModel(models: GeminiModelInfo[]): string | undefined {
   return rankGeminiModels(models)[0];
 }
 
+/** Google's open Gemma models, served with the same key and their own (much larger) free quota. */
+export const isGemma = (model: string) => /^gemma-/i.test(model);
+
+/** Instruction-tuned Gemma chat models the key can use, largest first (27b → 12b → 4b); tiny ones skipped. */
+export function rankGemmaModels(models: GeminiModelInfo[]): string[] {
+  const size = (id: string) => Number(id.match(/-(\d+(?:\.\d+)?)b(?:-|$)/)?.[1] || 0);
+  const version = (id: string) => Number(id.match(/^gemma-(\d+(?:\.\d+)?)/)?.[1] || 0);
+  return models
+    .filter((m) => typeof m.name === 'string' && (m.supportedGenerationMethods || []).includes('generateContent'))
+    .map((m) => m.name!.replace(/^models\//, ''))
+    .filter((id) => isGemma(id) && /-it$/.test(id) && size(id) >= 4)
+    .sort((a, b) => version(b) - version(a) || size(b) - size(a));
+}
+
 /**
  * Gemini quotas are per model: when one is exhausted (429), these are tried next — Lite first
- * (largest free quota), then other chat models. The model that just failed is excluded.
+ * (largest free quota), then other chat models, then the largest Gemma model (separate quota), so a busy
+ * day does not end in «شاهين مشغول». The model that just failed is excluded.
  */
 export function geminiQuotaFallbacks(models: GeminiModelInfo[], failed: string, limit = 3): string[] {
   const ranked = rankGeminiModels(models).filter((id) => id !== failed);
   const lite = ranked.filter((id) => /lite/.test(id) && !/(preview|exp)/.test(id))
     .sort((a, b) => Number(/-latest$/.test(b)) - Number(/-latest$/.test(a)));
-  return [...new Set([...lite, ...ranked])].slice(0, limit);
+  const gemma = rankGemmaModels(models).filter((id) => id !== failed).slice(0, 1);
+  return [...new Set([...lite, ...ranked])].slice(0, limit).concat(gemma);
+}
+
+/**
+ * The generateContent body for a model. Gemma has no separate system instruction on this API, so the
+ * instruction leads the first user turn there instead.
+ */
+export function geminiBody(model: string, system: string, turns: EngineTurn[], temperature: number, maxTokens: number): Record<string, unknown> {
+  const contents = turns.map((t) => ({ role: t.role === 'assistant' ? 'model' : 'user', parts: [{ text: t.text }] }));
+  const generationConfig = { temperature, ...geminiThinking(model, maxTokens) };
+  if (!isGemma(model)) return { systemInstruction: { parts: [{ text: system }] }, contents, generationConfig };
+  const first = contents.findIndex((c) => c.role === 'user');
+  if (first >= 0) contents[first] = { role: 'user', parts: [{ text: `${system}\n\n---\n\n${contents[first].parts[0].text}` }] };
+  else contents.unshift({ role: 'user', parts: [{ text: system }] });
+  return { contents, generationConfig };
 }
 
 /**
@@ -283,11 +314,7 @@ export async function callEngine(
   } else if (id === 'gemini') {
     url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(status.model)}:${stream ? 'streamGenerateContent?alt=sse' : 'generateContent'}`;
     headers['x-goog-api-key'] = env.GEMINI_API_KEY!.trim();
-    body = {
-      systemInstruction: { parts: [{ text: system }] },
-      contents: turns.map((t) => ({ role: t.role === 'assistant' ? 'model' : 'user', parts: [{ text: t.text }] })),
-      generationConfig: { temperature: options.temperature, ...geminiThinking(status.model, maxTokens) },
-    };
+    body = geminiBody(status.model, system, turns, options.temperature, maxTokens);
   } else if (id === 'claude') {
     url = 'https://api.anthropic.com/v1/messages';
     headers = { ...headers, 'x-api-key': env.ANTHROPIC_API_KEY!.trim(), 'anthropic-version': '2023-06-01' };
@@ -312,7 +339,7 @@ export async function callEngine(
     if (better && better !== status.model) {
       usedModel = better;
       url = url.replace(`/models/${encodeURIComponent(status.model)}:`, `/models/${encodeURIComponent(better)}:`);
-      body = { ...body, generationConfig: { temperature: options.temperature, ...geminiThinking(better, maxTokens) } };
+      body = geminiBody(better, system, turns, options.temperature, maxTokens);
       response = await request(url, { method: 'POST', headers, body: JSON.stringify(body), signal: options.signal });
     }
   }
@@ -329,7 +356,7 @@ export async function callEngine(
     for (const next of geminiQuotaFallbacks(await listGeminiModels(apiKey, request, options.signal), failed)) {
       if (options.signal.aborted) break;
       const nextUrl = url.replace(`/models/${encodeURIComponent(failed)}:`, `/models/${encodeURIComponent(next)}:`);
-      const nextBody = { ...body, generationConfig: { temperature: options.temperature, ...geminiThinking(next, maxTokens) } };
+      const nextBody = geminiBody(next, system, turns, options.temperature, maxTokens);
       const attempt = await request(nextUrl, { method: 'POST', headers, body: JSON.stringify(nextBody), signal: options.signal });
       if (attempt.ok) {
         geminiSubstitutes.set(geminiCacheKey(apiKey, requestedModel), { model: next, at: Date.now(), ttl: exhausted ? 3600_000 : 10 * 60_000 });

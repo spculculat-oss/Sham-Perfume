@@ -1,10 +1,11 @@
-import { Suspense, lazy, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
+import { ErrorBoundary, lazyWithReload } from './utils/lazyRetry';
 
 // The management dashboard is a separate lazily-loaded bundle reachable at #admin.
-const AdminApp = lazy(() => import('./admin/AdminApp.tsx'));
+const AdminApp = lazyWithReload(() => import('./admin/AdminApp.tsx'));
 const isAdminRoute = () => window.location.hash.replace(/^#\/?/, '').startsWith('admin');
 
 function Root() {
@@ -24,4 +25,5 @@ function Root() {
   return <App />;
 }
 
-createRoot(document.getElementById('root')!).render(<Root />);
+// Never a blank page: a crash anywhere shows a message with a reload button instead.
+createRoot(document.getElementById('root')!).render(<ErrorBoundary area="site"><Root /></ErrorBoundary>);

@@ -79,8 +79,17 @@ test('Vercel config builds explicit full-stack output instead of Vite-only dist'
   assert.ok((await stat(path.join(output, 'static/index.html'))).isFile());
 });
 
+test('the unused second Vercel project redirects to the main site and does not rebuild', async () => {
+  const redirect = config.routes[0];
+  assert.deepEqual(redirect.has, [{ type: 'host', value: 'sham-perfume.vercel.app' }]);
+  assert.equal(redirect.status, 307);
+  assert.equal(redirect.headers.Location, 'https://sham-perfume-49bf.vercel.app/$1');
+  const settings = JSON.parse(await readFile('vercel.json', 'utf8'));
+  assert.equal(settings.ignoreCommand, 'sh scripts/vercel-ignore.sh');
+});
+
 test('all API methods/paths route before the filesystem and SPA fallback', () => {
-  const route = config.routes[0];
+  const route = config.routes[1];
   const pattern = new RegExp(`^(?:${route.src})$`);
   for (const url of ['/api', '/api/health', '/api/models', '/api/chat', '/api/news', '/api/news/refresh', '/api/assistant/chat', '/api/admin/overview', '/api/missing']) {
     assert.ok(pattern.test(url), url);
@@ -88,9 +97,9 @@ test('all API methods/paths route before the filesystem and SPA fallback', () =>
   for (const url of ['/', '/home', '/apiary', '/assets/index.js']) assert.equal(pattern.test(url), false, url);
   assert.equal(route.dest, '/api');
   assert.equal(route.methods, undefined); // including POST; GET-only routes would break chat
-  assert.deepEqual(config.routes[1], { handle: 'filesystem' });
+  assert.deepEqual(config.routes[2], { handle: 'filesystem' });
   assert.equal(config.routes.at(-1).dest, '/index.html');
-  const missingAsset = config.routes[2];
+  const missingAsset = config.routes[3];
   assert.ok(new RegExp(missingAsset.src).test('/assets/missing.js'));
   assert.equal(missingAsset.status, 404);
 });

@@ -86,10 +86,11 @@ const placeOk = place.status === 200 && placeData && Math.abs(placeData.lat - 43
 report('Shaheen map places', Boolean(placeOk), `HTTP ${place.status}${placeData ? ` · Grasse → ${placeData.lat}, ${placeData.lon} (${placeData.label})` : ' · not located'}`,
   placeOk ? undefined : place.status === 400 || place.status === 404 ? 'warning' : undefined);
 
-// 4) Second Vercel project (informational: it only gets keys once VERCEL_TOKEN syncs them).
-const second = json((await get(`${SECOND}/api/models`)).text);
-const secondReady = (second?.models || []).some((m) => m.hasApiKey);
-report('Second Vercel project', secondReady, secondReady ? `${SECOND} has working keys` : `${SECOND} has no AI keys — add the VERCEL_TOKEN secret (or the keys in its Vercel settings)`, secondReady ? undefined : 'warning');
+// 4) Second Vercel project: unused, it only redirects visitors to the main site.
+const second = await get(`${SECOND}/`, { redirect: 'manual' });
+const secondTarget = second.headers.get('location') || '';
+const secondOk = second.status >= 300 && second.status < 400 && secondTarget.startsWith(SITE);
+report('Second Vercel project', secondOk, secondOk ? `${SECOND} → ${secondTarget}` : `HTTP ${second.status} — ${SECOND} still serves its own copy (it rebuilds only when vercel.json changes)`, secondOk ? undefined : 'warning');
 
 const out = ['## Live site check', '', '| Check | Result | Details |', '|---|---|---|', ...rows].join('\n');
 if (process.env.GITHUB_STEP_SUMMARY) {

@@ -6,7 +6,7 @@
  */
 export type AiToolId =
   | 'shaheen_chat' | 'sham_assistant' | 'news_articles' | 'news_bulletin' | 'assistant_training' | 'media' | 'admin_agent'
-  | 'store_advisor' | 'store_catalog' | 'store_import';
+  | 'store_advisor' | 'store_catalog' | 'store_import' | 'shaheen_school' | 'seo_agent';
 
 export interface AiToolDef {
   id: AiToolId;
@@ -65,7 +65,17 @@ export const AI_TOOLS: AiToolDef[] = [
   {
     id: 'store_import', nameAr: 'مستورد شاهين + مراجع الصفحات', nameEn: 'Shaheen product importer + page reviewer',
     descriptionAr: 'كل 12 ساعة ينقل شاهين منتجات المورد إلى «متجر شام» بكل بياناتها وصورها (من خريطة الموقع وبيانات schema.org، ويقرأ الصفحة بنفسه إن لزم)، ويسعّرها بمعادلة المتجر، ثم يراجع «مراجع الصفحات» كل منتج وصورته وسعره وصفحته ويخفي المعيب.',
-    sources: ['scripts/shaheen-import/run.mts'], routes: [], acceptsGuidance: true,
+    sources: ['scripts/shaheen-import/run.mts', 'scripts/shaheen-discover/run.mts'], routes: [], acceptsGuidance: true,
+  },
+  {
+    id: 'shaheen_school', nameAr: 'مدرسة شاهين (الاعتماد على النفس)', nameEn: "Shaheen's school (self-reliance)",
+    descriptionAr: 'كل 6 ساعات يمتحن شاهين نفسه على أسئلة العطور والموقع، يتعلم من مكتبته بدون ذكاء اصطناعي، ويذاكر الباقي مع محرك متاح ويحفظه في ذاكرته ليرد بها لو توقفت كل الخدمات.',
+    sources: ['scripts/shaheen-school/run.mts'], routes: [], acceptsGuidance: true,
+  },
+  {
+    id: 'seo_agent', nameAr: 'منارة شاهين — المندوب الإعلامي', nameEn: 'Manaret Shaheen — SEO & media agent',
+    descriptionAr: 'خبير الظهور في محركات البحث تحت قيادة شاهين: يدرس منهجية SEO كل 6 ساعات، يفحص الموقع الحقيقي، يكتب العناوين والأوصاف ويطبقها بعد فحص، يرسل الصفحات عبر IndexNow وخريطة الموقع، ويكتب تقرير المندوب الإعلامي — ويتدرج من التدريب إلى الاعتماد على النفس بتقييم شاهين.',
+    sources: ['server/seo/agent.ts', 'server/seo/service.ts', 'scripts/seo-agent/run.mts'], routes: ['/api/admin/seo/run', '/api/seo/status'], acceptsGuidance: true,
   },
   {
     id: 'admin_agent', nameAr: 'المساعد الإداري', nameEn: 'Admin operations agent',

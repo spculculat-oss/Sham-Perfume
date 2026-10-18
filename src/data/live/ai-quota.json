@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-16T09:06:02.602Z",
+ "updatedAt": "2026-10-17T01:15:00.959Z",
  "engines": {
   "deepseek": {
    "pausedUntil": "2026-10-17T08:05:00.000Z",
@@ -8,11 +8,6 @@
   "openai": {
    "pausedUntil": "2026-10-17T08:05:00.000Z",
    "reason": "no_credit"
-  },
-  "gemini": {
-   "pausedUntil": "2026-10-17T00:00:32.990Z",
-   "reason": "no_credit",
-   "detail": "RESOURCE_EXHAUSTED · GenerateRequestsPerDayPerProjectPerModel-FreeTier limit 20 · retry in 53642s"
   }
  }
 }

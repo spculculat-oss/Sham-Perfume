@@ -7,7 +7,9 @@
 import { slugify, type RawProduct } from '../../src/utils/storeCatalog';
 
 export { slugify };
-import type { ExtractedProduct } from './extract';
+import type { ExtractedProduct, ExtractVia } from './extract';
+
+export interface AltOffer { supplierId: string; url: string; priceEgp: number; inStock: boolean; at: string }
 
 export interface ImportSource {
   id: string;
@@ -27,6 +29,20 @@ export interface ImportSource {
    * shows 1060): every product on the listing that the sitemap lacks is imported too.
    */
   listing?: { url: string; maxPages: number };
+  /**
+   * A store without a public sitemap («كشّاف المصادر» found it by browsing): its category pages, read with
+   * ?page=2, 3… until no new product link appears; their product links are imported like sitemap links.
+   */
+  crawl?: { pages: string[]; maxPages: number };
+  /**
+   * Stores found by «كشّاف المصادر» sell more than perfume: only products that are clearly perfume
+   * (perfume words in the name, description, category or link) are imported from them.
+   */
+  perfumeOnly?: boolean;
+  /** Pause between two pages of this store (its robots.txt Crawl-delay), at least the importer's 400 ms. */
+  delayMs?: number;
+  /** Where the source came from: the built-in supplier list or «كشّاف المصادر». */
+  origin?: 'built-in' | 'discovered';
 }
 
 export interface ImportedFields {
@@ -35,7 +51,9 @@ export interface ImportedFields {
   supplierPriceOriginal: number; supplierSalePrice?: number; exchangeRate: number;
   url: string; slug: string; images: string[]; sizeMl?: number; concentration?: string; longevity?: string;
   notes?: { top: string[]; heart: string[]; base: string[] }; families?: string[]; seasonsSource?: string[]; occasionsSource?: string[];
-  barcode?: string; importedAt: string; refreshedAt: string; importedVia: 'json-ld' | 'shaheen';
+  barcode?: string; importedAt: string; refreshedAt: string; importedVia: ExtractVia;
+  /** The same perfume offered by other approved stores (cheapest first): a second place to buy it from. */
+  altOffers?: AltOffer[];
   published?: boolean; reviewIssues?: string[];
 }
 export type ImportedProduct = RawProduct & ImportedFields;
@@ -137,7 +155,7 @@ export function toStoreProduct(x: ExtractedProduct, o: BuildOptions): ImportedPr
     sizeMl: x.sizeMl, concentration: x.concentration, longevity: x.longevity,
     notes: x.notes, families: x.families, seasonsSource: x.seasons, occasionsSource: x.occasions,
     barcode: x.barcode, importedAt: e?.importedAt || o.now, refreshedAt: o.now, importedVia: x.via,
-    published: e?.published, reviewIssues: e?.reviewIssues,
+    published: e?.published, reviewIssues: e?.reviewIssues, altOffers: e?.altOffers,
   };
   for (const k of Object.keys(product) as (keyof ImportedProduct)[]) if (product[k] === undefined) delete product[k];
   return product;
@@ -178,4 +196,25 @@ export function planRun(urls: { url: string; lastmod?: string }[], imported: Imp
   // Imported products that left the supplier's sitemap are no longer sold there.
   const gone = imported.filter((p) => !listed.has(p.url.replace(/\/+$/, '')));
   return { fresh, refresh, gone };
+}
+
+/**
+ * One perfume across stores: brand + name words + size («Lattafa Khamrah EDP 100ml» from two shops → same key).
+ * Empty when there is not enough to be sure (no brand or no size): then nothing is merged.
+ */
+export function perfumeKey(brand: string | undefined, name: string, sizeMl?: number): string {
+  const b = normalizeBrand(brand).toLowerCase().normalize('NFKD').replace(/[^a-z0-9]/g, '');
+  if (!b || b === 'unknown' || !(Number(sizeMl) > 0)) return '';
+  const words = cleanName(name).toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/\b(?:by|for|men|women|unisex|him|her|pour|homme|femme|eau|de|du|la|le|parfum|perfume|toilette|edp|edt|spray|ml|\d+(?:\.\d+)?\s?ml|tester|new|original)\b/g, ' ')
+    .replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter((w) => w && w !== b && !b.includes(w));
+  if (!words.length) return '';
+  return `${b}|${[...new Set(words)].sort().join(' ')}|${Number(sizeMl)}`;
+}
+
+/** Records another store's offer for a product (one per store, newest wins, cheapest first, at most 5). */
+export function addAltOffer(product: ImportedProduct, offer: AltOffer) {
+  const list = (product.altOffers || []).filter((o) => o.supplierId !== offer.supplierId);
+  list.push(offer);
+  product.altOffers = list.sort((a, b) => Number(b.inStock) - Number(a.inStock) || a.priceEgp - b.priceEgp).slice(0, 5);
 }

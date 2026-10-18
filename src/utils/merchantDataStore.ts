@@ -15,23 +15,41 @@ const SECRET_KEY = 'sham-perfume-mediation-v1-secret';
 
 // ─── التشفير (XOR + Base64 — نفس النظام) ────────────────────
 
-function xorCipher(str: string, key: string): string {
-  let result = '';
-  for (let i = 0; i < str.length; i++) {
-    result += String.fromCharCode(str.charCodeAt(i) ^ key.charCodeAt(i % key.length));
-  }
-  return result;
-}
-
 function encrypt(data: unknown): string {
-  const xored = xorCipher(JSON.stringify(data), SECRET_KEY);
-  return btoa(xored);
+  try {
+    const jsonStr = JSON.stringify(data);
+    const encoder = new TextEncoder();
+    const dataBytes = encoder.encode(jsonStr);
+    const keyBytes = encoder.encode(SECRET_KEY);
+    const encrypted = new Uint8Array(dataBytes.length);
+    for (let i = 0; i < dataBytes.length; i++) {
+      encrypted[i] = dataBytes[i] ^ keyBytes[i % keyBytes.length];
+    }
+    // Convert bytes to Latin1 string safely for btoa in all environments
+    let bin = '';
+    const chunk = 8192;
+    for (let i = 0; i < encrypted.length; i += chunk) {
+      bin += String.fromCharCode(...encrypted.subarray(i, i + chunk));
+    }
+    return btoa(bin);
+  } catch {
+    return '';
+  }
 }
 
 function decrypt(encrypted: string): string {
   try {
-    const xored = atob(encrypted);
-    return xorCipher(xored, SECRET_KEY);
+    const decoded = atob(encrypted);
+    const bytes = new Uint8Array(decoded.length);
+    for (let i = 0; i < decoded.length; i++) {
+      bytes[i] = decoded.charCodeAt(i);
+    }
+    const keyBytes = new TextEncoder().encode(SECRET_KEY);
+    const decrypted = new Uint8Array(bytes.length);
+    for (let i = 0; i < bytes.length; i++) {
+      decrypted[i] = bytes[i] ^ keyBytes[i % keyBytes.length];
+    }
+    return new TextDecoder().decode(decrypted);
   } catch {
     return '{}';
   }

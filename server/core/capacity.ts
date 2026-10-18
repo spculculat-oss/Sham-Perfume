@@ -102,7 +102,43 @@ export function retryHintMs(detail: string | undefined): number | undefined {
  */
 export class ProviderGate {
   private states = new Map<string, ProviderState>();
-  constructor(public maxConcurrent = 200, public maxWaitMs = 20_000, private configuredRpm: Record<string, number> = {}, private pollMs = 250) {}
+  /**
+   * «لكل مستخدم مساره»: visitors waiting for a provider, served fairly — the one who used Shaheen least in
+   * the last minute goes first (then the earliest), and nobody runs more than `perOwner` requests at once.
+   * A newcomer never waits behind one visitor's stream of questions.
+   */
+  private waiters = new Map<number, { owner: string; at: number; candidates: string[] }>();
+  private owners = new Map<string, { inFlight: number; starts: number[] }>();
+  private tickets = 0;
+  private turnCache?: { at: number; best?: number };
+  constructor(public maxConcurrent = 200, public maxWaitMs = 20_000, private configuredRpm: Record<string, number> = {}, private pollMs = 250, public perOwner = 2) {}
+
+  private owner(id: string, now = Date.now()) {
+    if (this.owners.size > 20_000) {
+      for (const [key, o] of this.owners) if (!o.inFlight && (!o.starts.length || now - o.starts[o.starts.length - 1] >= MINUTE)) this.owners.delete(key);
+    }
+    let o = this.owners.get(id);
+    if (!o) this.owners.set(id, o = { inFlight: 0, starts: [] });
+    while (o.starts.length && now - o.starts[0] >= MINUTE) o.starts.shift();
+    return o;
+  }
+
+  /** The waiting visitor who should take the next open slot (recomputed at most every 50 ms). */
+  private nextTurn(now = Date.now()): number | undefined {
+    if (this.turnCache && now - this.turnCache.at < 50) return this.turnCache.best;
+    let best: number | undefined; let bestKey: [number, number] | undefined;
+    for (const [ticket, w] of this.waiters) {
+      const o = this.owner(w.owner, now);
+      if (o.inFlight >= this.perOwner || !w.candidates.some((id) => this.canStart(id, now))) continue;
+      const key: [number, number] = [o.starts.length, w.at];
+      if (!bestKey || key[0] < bestKey[0] || (key[0] === bestKey[0] && key[1] < bestKey[1])) { best = ticket; bestKey = key; }
+    }
+    this.turnCache = { at: now, best };
+    return best;
+  }
+
+  /** Visitors waiting in line right now (admin dashboard). */
+  get waiting() { return this.waiters.size; }
 
   private state(id: string, now = Date.now()): ProviderState {
     let s = this.states.get(id);
@@ -163,18 +199,37 @@ export class ProviderGate {
    * next one is tried). Waits for a provider to open when all are paused, paced or saturated.
    */
   async run<T, Id extends string = string>(candidates: Id[], attempt: (id: Id) => Promise<{ outcome: 'ok'; value: T } | { outcome: 'next' | 'limited'; retryMs?: number }>,
+    signal?: AbortSignal, ownerId?: string): Promise<T | undefined> {
+    const ticket = ++this.tickets;
+    // Without a visitor id (internal callers) every request is its own lane.
+    try { return await this.runInLine(ticket, ownerId || `#${ticket}`, candidates, attempt, signal); }
+    finally { this.waiters.delete(ticket); this.turnCache = undefined; }
+  }
+
+  private async runInLine<T, Id extends string>(ticket: number, ownerId: string, candidates: Id[], attempt: (id: Id) => Promise<{ outcome: 'ok'; value: T } | { outcome: 'next' | 'limited'; retryMs?: number }>,
     signal?: AbortSignal): Promise<T | undefined> {
     const tried = new Set<Id>();
     const deadline = Date.now() + this.maxWaitMs;
+    const arrived = Date.now();
     for (;;) {
       if (signal?.aborted) throw signal.reason;
-      const open = candidates.find((id) => !tried.has(id) && this.canStart(id));
-      if (open) {
+      const me = this.owner(ownerId);
+      const open = me.inFlight < this.perOwner ? candidates.find((id) => !tried.has(id) && this.canStart(id)) : undefined;
+      // Nobody else waiting → go at once. Others waiting → join the line and go only when it is my turn.
+      let go = Boolean(open);
+      if (open && (this.waiters.size > (this.waiters.has(ticket) ? 1 : 0))) {
+        this.waiters.set(ticket, { owner: ownerId, at: arrived, candidates: candidates.filter((id) => !tried.has(id)) });
+        this.turnCache = undefined;
+        go = this.nextTurn() === ticket;
+      }
+      if (open && go) {
+        this.waiters.delete(ticket); this.turnCache = undefined;
         const s = this.state(open);
         const startedAt = Date.now();
         s.inFlight++; s.starts.push(startedAt);
+        me.inFlight++; me.starts.push(startedAt);
         let result: Awaited<ReturnType<typeof attempt>>;
-        try { result = await attempt(open); } finally { s.inFlight--; }
+        try { result = await attempt(open); } finally { s.inFlight--; me.inFlight--; }
         if (result.outcome === 'ok') { this.succeeded(open); return result.value; }
         if (result.outcome === 'limited') {
           // A refused request used no quota: it must not count against the pace.
@@ -188,7 +243,8 @@ export class ProviderGate {
       }
       const remaining = candidates.filter((id) => !tried.has(id));
       if (!remaining.length) return undefined; // every provider answered with a real failure
-      const opening = this.nextOpening(remaining);
+      this.waiters.set(ticket, { owner: ownerId, at: arrived, candidates: remaining });
+      const opening = open ? 0 : this.nextOpening(remaining);
       if (Date.now() + opening > deadline) throw new GateBusyError(Math.max(1_000, opening));
       const wait = Math.max(this.pollMs, Math.min(opening || this.pollMs, 2_000));
       await sleep(wait * (0.8 + Math.random() * 0.4), signal); // jitter: waiters do not wake in lockstep
@@ -196,7 +252,7 @@ export class ProviderGate {
   }
 
   /** Forget every pause and learned pace (maintenance remedy; they are re-learned from the next 429). */
-  reset() { this.states.clear(); }
+  reset() { this.states.clear(); this.owners.clear(); this.turnCache = undefined; }
 
   snapshot() {
     const now = Date.now();
@@ -221,6 +277,8 @@ export function capacityConfig(env: Env) {
     queueWaitMs: num(env.SHAM_QUEUE_WAIT_SECONDS, 20, 0, 50) * 1000,
     perVisitorPerMin: num(env.SHAM_SHAHEEN_RATE_PER_MIN, 10, 1, 1000),
     perIpPerMin: num(env.SHAM_SHAHEEN_RATE_PER_IP_MIN, 300, 1, 100_000),
+    /** Requests one visitor may have with the AI providers at once (their own lane; the rest wait their turn). */
+    perVisitorConcurrent: num(env.SHAM_PER_VISITOR_CONCURRENT, 2, 1, 20),
     /** Known quota per provider and minute, e.g. SHAM_GEMINI_RPM=1000 (otherwise learned from 429s). */
     providerRpm: Object.fromEntries(['gemini', 'deepseek', 'openai', 'claude', 'self_hosted', 'openrouter']
       .map((id) => [id, num(env[`SHAM_${id.toUpperCase()}_RPM`], NaN, 1, 1_000_000)])

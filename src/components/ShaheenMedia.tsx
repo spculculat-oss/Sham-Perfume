@@ -1,4 +1,5 @@
-import React, { Suspense, lazy, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
+import { ErrorBoundary, lazyWithReload } from '../utils/lazyRetry';
 import { tidyCaption, topicOnlyInPlaceName } from '../utils/mediaCaption';
 import { ExternalLink, Image as ImageIcon, MapPin, Play, X } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
@@ -7,7 +8,7 @@ import { makeT, type LText } from '../لغات/localize';
 import { fetchMedia, osmSearchUrl, youtubeSearchUrl, type MediaImage, type MediaPlace, type MediaRequest, type VideoResult } from '../utils/shaheenMedia';
 
 // Leaflet (~150 KB) is only downloaded when an answer actually has places to show.
-const ShaheenMap = lazy(() => import('./ShaheenMap'));
+const ShaheenMap = lazyWithReload(() => import('./ShaheenMap'));
 
 const STRINGS = {
   title: { ar: 'توضيح مرئي', en: 'Visual guide', fr: 'Guide visuel', es: 'Guía visual', de: 'Visuelle Erklärung', tr: 'Görsel rehber', ru: 'Наглядно', zh: '图示说明' },
@@ -192,11 +193,13 @@ export function ShaheenMedia({ request, lang }: Props) {
             <span>{L('places')}</span>
           </div>
           {(loadingPlaces || hasPlaces) && (
+            <ErrorBoundary area="map" compact>
             <Suspense fallback={<div className="h-56 w-full animate-pulse rounded-lg bg-stone-200/80 sm:h-64" aria-busy="true" />}>
               {loadingPlaces
                 ? <div className="h-56 w-full animate-pulse rounded-lg bg-stone-200/80 sm:h-64" aria-busy="true" />
                 : <ShaheenMap places={places!} selected={selectedPlace} onSelect={setSelectedPlace} label={L('places')} />}
             </Suspense>
+            </ErrorBoundary>
           )}
           {hasPlaces && (
             <ol className="mt-2 flex flex-wrap gap-1.5">

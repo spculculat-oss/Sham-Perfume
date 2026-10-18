@@ -5,19 +5,21 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
-    "build": "vite build",
+    "build": "vite build && node --import tsx scripts/product-pages.mts dist && node --import tsx scripts/seo-build.mts dist",
     "start": "tsx server.ts",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.app.json",
-    "build:pages": "vite build --mode pages && node scripts/prepare-pages.mjs && node --import tsx scripts/product-pages.mts docs",
+    "build:pages": "vite build --mode pages && node scripts/prepare-pages.mjs && node --import tsx scripts/product-pages.mts docs && node --import tsx scripts/seo-build.mts docs",
     "test": "node --import tsx --import ./tests/register-assets.mjs --test tests/*.test.ts",
     "check:pages": "node scripts/check-pages.mjs",
-    "build:vercel": "npm run build && node --import tsx scripts/product-pages.mts dist && node scripts/build-vercel.mjs",
+    "build:vercel": "npm run build && node scripts/build-vercel.mjs",
     "test:vercel": "node --test tests/vercel-output.test.mjs",
     "check:edgeone": "node scripts/check-edgeone.mjs",
     "verify:keys": "node --import tsx scripts/verify-ai-keys.mts",
-    "sync:vercel-env": "node scripts/sync-vercel-env.mjs"
+    "sync:vercel-env": "node scripts/sync-vercel-env.mjs",
+    "seo:build": "node --import tsx scripts/seo-build.mts dist",
+    "seo:run": "node --import tsx scripts/seo-agent/run.mts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
@@ -28,11 +30,14 @@
     "leaflet": "^1.9.4",
     "lucide-react": "^0.546.0",
     "motion": "^12.23.24",
+    "postgres": "^3.4.7",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
+    "recharts": "^3.10.1",
     "vite": "^8.3.0"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.10",
     "@types/express": "^4.17.21",
     "@types/leaflet": "^1.9.22",
     "@types/node": "^22.14.0",
