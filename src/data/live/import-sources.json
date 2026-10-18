@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T13:24:54.550Z",
+ "updatedAt": "2026-10-18T14:22:29.042Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -119,7 +119,9 @@
    "foundBy": "brand-site",
    "foundWith": "Lattafa",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T14:22:29.042Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "lattafaparfums-com",
@@ -130,7 +132,9 @@
    "foundBy": "brand-site",
    "foundWith": "Lattafa",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T14:22:29.042Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "abdulsamadalqurashi-com",
@@ -140,37 +144,63 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T14:22:29.042Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "afnan-com",
    "host": "afnan.com",
-   "name": "afnan.com",
+   "name": "Afnan Perfumes Global",
    "base": "https://afnan.com",
-   "status": "candidate",
+   "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T14:22:29.042Z",
+   "sampleOk": 6,
+   "sampleTotal": 7,
+   "currency": "AED",
+   "rateToEgp": 14.5568,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*afnan\\.com/products/[^?#]+$",
+   "sitemaps": [
+    "https://afnan.com/sitemap_agentic_discovery.xml",
+    "https://afnan.com/sitemap_products_1.xml?from=7742169841757&to=8245054046301",
+    "https://afnan.com/sitemap_pages_1.xml?from=102178160733&to=123977498717",
+    "https://afnan.com/sitemap_collections_1.xml?from=292429889629&to=312174248029",
+    "https://afnan.com/sitemap_blogs_1.xml",
+    "https://afnan.com/sitemap_articles_1.xml"
+   ],
+   "via": "generic",
+   "productsEstimate": 102
   },
   {
    "id": "nabeel-com",
    "host": "nabeel.com",
-   "name": "nabeel.com",
-   "base": "https://nabeel.com",
+   "name": "Nabeel",
+   "base": "https://www.nabeel.com",
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T14:22:29.042Z",
+   "sampleOk": 0,
+   "sampleTotal": 6,
+   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
   },
   {
    "id": "alharamainperfumes-com",
    "host": "alharamainperfumes.com",
-   "name": "alharamainperfumes.com",
-   "base": "https://alharamainperfumes.com",
+   "name": "Al Haramain Perfumes",
+   "base": "https://ahp.alharamainperfumes.com",
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T14:22:29.042Z",
+   "sampleOk": 0,
+   "sampleTotal": 6,
+   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
   },
   {
    "id": "ardalzaafaran-com",
@@ -181,7 +211,9 @@
    "foundBy": "brand-site",
    "foundWith": "Ard Al Zaafaran",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T14:22:29.042Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "ardalzaafaranperfumes-com",
@@ -192,7 +224,9 @@
    "foundBy": "brand-site",
    "foundWith": "Ard Al Zaafaran",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T14:22:29.042Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "ardalzaafaranparfums-com",
@@ -342,6 +376,112 @@
    "foundBy": "brand-site",
    "foundWith": "Bujairami",
    "foundAt": "2026-10-18T13:24:54.550Z",
+   "attempts": 0
+  },
+  {
+   "id": "faces-com",
+   "host": "faces.com",
+   "name": "faces.com",
+   "base": "https://faces.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T14:22:29.042Z",
+   "attempts": 0
+  },
+  {
+   "id": "wojooh-com",
+   "host": "wojooh.com",
+   "name": "wojooh.com",
+   "base": "https://wojooh.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T14:22:29.042Z",
+   "attempts": 0
+  },
+  {
+   "id": "fragrancebuy-ca",
+   "host": "fragrancebuy.ca",
+   "name": "fragrancebuy.ca",
+   "base": "https://fragrancebuy.ca",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T14:22:29.042Z",
+   "attempts": 0
+  },
+  {
+   "id": "maxaromas-com",
+   "host": "maxaromas.com",
+   "name": "maxaromas.com",
+   "base": "https://maxaromas.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T14:22:29.042Z",
+   "attempts": 0
+  },
+  {
+   "id": "armaf-com",
+   "host": "armaf.com",
+   "name": "armaf.com",
+   "base": "https://armaf.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Armaf",
+   "foundAt": "2026-10-18T14:22:29.042Z",
+   "attempts": 0
+  },
+  {
+   "id": "armafperfumes-com",
+   "host": "armafperfumes.com",
+   "name": "armafperfumes.com",
+   "base": "https://armafperfumes.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Armaf",
+   "foundAt": "2026-10-18T14:22:29.042Z",
+   "attempts": 0
+  },
+  {
+   "id": "armafparfums-com",
+   "host": "armafparfums.com",
+   "name": "armafparfums.com",
+   "base": "https://armafparfums.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Armaf",
+   "foundAt": "2026-10-18T14:22:29.042Z",
+   "attempts": 0
+  },
+  {
+   "id": "rasasiperfumes-com",
+   "host": "rasasiperfumes.com",
+   "name": "rasasiperfumes.com",
+   "base": "https://rasasiperfumes.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Rasasi",
+   "foundAt": "2026-10-18T14:22:29.042Z",
+   "attempts": 0
+  },
+  {
+   "id": "rasasiparfums-com",
+   "host": "rasasiparfums.com",
+   "name": "rasasiparfums.com",
+   "base": "https://rasasiparfums.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Rasasi",
+   "foundAt": "2026-10-18T14:22:29.042Z",
+   "attempts": 0
+  },
+  {
+   "id": "alwataniah-com",
+   "host": "alwataniah.com",
+   "name": "alwataniah.com",
+   "base": "https://alwataniah.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Al Wataniah",
+   "foundAt": "2026-10-18T14:22:29.042Z",
    "attempts": 0
   }
  ],
@@ -628,6 +768,26 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-18T14:22:29.042Z",
+   "mode": "self",
+   "found": 10,
+   "vetted": 8,
+   "activated": 1,
+   "rejected": 0,
+   "notes": [
+    "Web search: AI quota used up — the scout continues by himself",
+    "10 new stores found this run (own methods, no AI)",
+    "✗ lattafaperfumes.com: الموقع لا يفتح",
+    "✗ lattafaparfums.com: الموقع لا يفتح",
+    "✗ abdulsamadalqurashi.com: الموقع لا يفتح",
+    "✓ afnan.com: 102 perfumes, 6/7 pages read without AI, AED (1 = 14.5568 EGP) — added to the importer",
+    "✗ nabeel.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "✗ alharamainperfumes.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "✗ ardalzaafaran.com: الموقع لا يفتح",
+    "✗ ardalzaafaranperfumes.com: الموقع لا يفتح"
+   ]
+  },
   {
    "at": "2026-10-18T13:24:54.550Z",
    "mode": "self",

@@ -1,26 +1,32 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T13:26:41.570Z",
+ "updatedAt": "2026-10-18T14:23:35.582Z",
  "reliance": {
-  "score": 68,
-  "covered": 56,
-  "total": 82,
-  "fromMemory": 56,
+  "score": 77,
+  "covered": 64,
+  "total": 83,
+  "fromMemory": 64,
   "fromLibrary": 2,
   "byLang": {
    "ar": {
-    "covered": 56,
-    "total": 67
+    "covered": 63,
+    "total": 68
    },
    "en": {
-    "covered": 0,
+    "covered": 1,
     "total": 15
    }
   }
  },
- "studiedTotal": 26,
- "selfTaughtTotal": 25,
+ "studiedTotal": 34,
+ "selfTaughtTotal": 26,
  "history": [
+  {
+   "at": "2026-10-18T14:23:35.582Z",
+   "score": 77,
+   "studied": 9,
+   "mode": "ai"
+  },
   {
    "at": "2026-10-18T13:26:41.570Z",
    "score": 68,
@@ -41,6 +47,54 @@
   }
  ],
  "lastStudied": [
+  {
+   "q": "هل الميثانول ينفع في العطور؟",
+   "lang": "ar",
+   "at": "2026-10-18T14:23:35.582Z",
+   "variants": 4
+  },
+  {
+   "q": "ازاي افلتر العطر بعد التعتيق؟",
+   "lang": "ar",
+   "at": "2026-10-18T14:23:35.582Z",
+   "variants": 4
+  },
+  {
+   "q": "ايه هو عطر الشيبر؟",
+   "lang": "ar",
+   "at": "2026-10-18T14:23:35.582Z",
+   "variants": 4
+  },
+  {
+   "q": "How can I make my perfume last longer?",
+   "lang": "en",
+   "at": "2026-10-18T14:23:35.582Z",
+   "variants": 1
+  },
+  {
+   "q": "ازاي احسب تخفيف الكحول من 96 ل 80؟",
+   "lang": "ar",
+   "at": "2026-10-18T14:23:35.582Z",
+   "variants": 4
+  },
+  {
+   "q": "العطر بيخلص صلاحيته امتى؟",
+   "lang": "ar",
+   "at": "2026-10-18T14:23:35.582Z",
+   "variants": 4
+  },
+  {
+   "q": "ازاي احفظ العطر عشان ميبوظش؟",
+   "lang": "ar",
+   "at": "2026-10-18T14:23:35.582Z",
+   "variants": 4
+  },
+  {
+   "q": "ليه مش بحس بريحة عطري بعد شوية؟",
+   "lang": "ar",
+   "at": "2026-10-18T14:23:35.582Z",
+   "variants": 4
+  },
   {
    "q": "العطر محتاج يتعتق قد ايه؟",
    "lang": "ar",
@@ -112,54 +166,6 @@
    "lang": "ar",
    "at": "2026-10-18T12:50:32.770Z",
    "variants": 4
-  },
-  {
-   "q": "ايه الفرق بين او دو بارفان واو دو تواليت؟",
-   "lang": "ar",
-   "at": "2026-10-18T12:50:32.770Z",
-   "variants": 4
-  },
-  {
-   "q": "ينفع ادمج عطرين مع بعض؟",
-   "lang": "ar",
-   "at": "2026-10-18T12:50:32.770Z",
-   "variants": 4
-  },
-  {
-   "q": "يعني ايه فوحان العطر؟",
-   "lang": "ar",
-   "at": "2026-10-18T12:50:32.770Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه هي الزيوت العطرية الطبيعية؟",
-   "lang": "ar",
-   "at": "2026-10-18T12:50:32.770Z",
-   "variants": 4
-  },
-  {
-   "q": "ليه العطر بيعكر بعد ما اخلطه؟",
-   "lang": "ar",
-   "at": "2026-10-18T12:50:32.770Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه نسبة الزيت للكحول في العطر؟",
-   "lang": "ar",
-   "at": "2026-10-18T12:50:32.770Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه فايدة محاكي التعتيق في الموقع؟",
-   "lang": "ar",
-   "at": "2026-10-18T11:52:11.697Z",
-   "variants": 4
-  },
-  {
-   "q": "ازاي اختار عطر مناسب للشتاء؟",
-   "lang": "ar",
-   "at": "2026-10-18T11:52:11.697Z",
-   "variants": 4
   }
  ],
  "pending": [
@@ -169,42 +175,7 @@
    "topic": "basics"
   },
   {
-   "q": "ايه هو عطر الشيبر؟",
-   "lang": "ar",
-   "topic": "families"
-  },
-  {
-   "q": "ازاي افلتر العطر بعد التعتيق؟",
-   "lang": "ar",
-   "topic": "maceration"
-  },
-  {
-   "q": "ليه مش بحس بريحة عطري بعد شوية؟",
-   "lang": "ar",
-   "topic": "wearing"
-  },
-  {
-   "q": "ازاي احفظ العطر عشان ميبوظش؟",
-   "lang": "ar",
-   "topic": "storage"
-  },
-  {
-   "q": "العطر بيخلص صلاحيته امتى؟",
-   "lang": "ar",
-   "topic": "storage"
-  },
-  {
-   "q": "هل الميثانول ينفع في العطور؟",
-   "lang": "ar",
-   "topic": "safety"
-  },
-  {
    "q": "ازاي احفظ تركيبتي في دفتر التركيبات؟",
-   "lang": "ar",
-   "topic": "site"
-  },
-  {
-   "q": "ازاي احسب تخفيف الكحول من 96 ل 80؟",
    "lang": "ar",
    "topic": "site"
   },
@@ -222,6 +193,41 @@
    "q": "What are the main fragrance families?",
    "lang": "en",
    "topic": "families"
+  },
+  {
+   "q": "What is oud and why is it expensive?",
+   "lang": "en",
+   "topic": "materials"
+  },
+  {
+   "q": "What is ambroxan in perfumes?",
+   "lang": "en",
+   "topic": "materials"
+  },
+  {
+   "q": "How do I make perfume at home step by step?",
+   "lang": "en",
+   "topic": "making"
+  },
+  {
+   "q": "What alcohol is used to make perfume?",
+   "lang": "en",
+   "topic": "making"
+  },
+  {
+   "q": "How long should a perfume macerate?",
+   "lang": "en",
+   "topic": "maceration"
+  },
+  {
+   "q": "Where should I apply perfume?",
+   "lang": "en",
+   "topic": "wearing"
+  },
+  {
+   "q": "How do I choose a perfume for summer?",
+   "lang": "en",
+   "topic": "choosing"
   }
  ],
  "importer": {
