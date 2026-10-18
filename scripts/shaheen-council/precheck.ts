@@ -100,6 +100,7 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       break;
     }
     case 'importer': {
+      if (o(r.import).blocked) f.push({ level: 'warn', problem: 'استيراد المنتجات متوقف بقرار قانوني (L-03) لحد ما يوصل إذن مكتوب من المورد', fix: 'التاجر يجيب إذن المورد ويحطه في docs/legal/scraper-permission.md، وبعدها يتفعل الاستيراد' });
       const sum = o(r.summary);
       const total = n(sum.total) ?? 0;
       if ((n(sum.brokenImages) ?? 0) > 0) f.push({ level: 'warn', problem: `${sum.brokenImages} صورة منتج لا تفتح`, fix: 'المراجع يخفي المنتج لحد ما الصورة تتصلح' });

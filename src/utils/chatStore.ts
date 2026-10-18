@@ -203,8 +203,27 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
         publish({ ...getSnapshot(), messages: [...getSnapshot().messages, message], isLoading: false, busy: false });
         // «ذاكرة شاهين»: this browser keeps its opening questions for the day the server cannot be reached.
         if (!history.length && options.model !== 'council') memory.learn({ question: text, lang: options.language, mode: options.model, answer: message.text });
-      } catch (error) {
+      } catch (firstError) {
+        let error: unknown = firstError;
         if (generation !== token) return false;
+        // The chosen mode could not answer (its engines are down or out of quota) but the server is there:
+        // Shaheen answers the same question in his fast mode before falling back to memory or an error.
+        if (canAnswerFromMemory(error) && error instanceof ApiError && options.model !== 'fast') {
+          try {
+            const fast = await request<ChatResponse>('/api/chat', {
+              method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
+              body: JSON.stringify({ message: text, model: 'fast', language: options.language, conversationHistory: history, visitorId: visitorId() }),
+            }, 30_000);
+            if (generation !== token) return false;
+            const message: ChatMessage = { id: id('bot'), role: 'assistant', text: fast?.reply, timestamp: timestamp(), aiEngine: fast?.engine };
+            if (message.text?.trim() && isChatMessage(message)) {
+              publish({ ...getSnapshot(), messages: [...getSnapshot().messages, message], isLoading: false, busy: false });
+              if (!history.length) memory.learn({ question: text, lang: options.language, mode: 'fast', answer: message.text });
+              return true;
+            }
+          } catch (fastError) { error = fastError instanceof ApiError ? error : fastError; }
+          if (generation !== token) return false;
+        }
         const remembered = canAnswerFromMemory(error) ? await memory.recall(text, options.language).catch(() => undefined) : undefined;
         if (generation !== token) return false;
         if (remembered) {

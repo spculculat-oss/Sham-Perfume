@@ -175,6 +175,29 @@ test('the browser answers from its memory when the server cannot be reached, and
   assert.ok(!canAnswerFromMemory(new ApiError(429, 'RATE_LIMITED')) && !canAnswerFromMemory(new ApiError(503, 'SHAHEEN_DISABLED')) && !canAnswerFromMemory(new ApiError(400)));
 });
 
+test('a mode whose engines are down falls back to the fast mode, then to memory — never straight to an error', async () => {
+  const memory: OfflineMemory = { learn: () => undefined, recall: async () => ({ answer: LONG, exact: false }) };
+  const asked: string[] = [];
+  let fastWorks = true;
+  const request = (async (_e: string, init?: RequestInit) => {
+    const model = JSON.parse(String(init?.body)).model as string;
+    asked.push(model);
+    if (model === 'fast' && fastWorks) return { reply: 'إجابة سريعة من شاهين عن الثبات والترطيب قبل الرش على أماكن النبض.', engine: { id: 'fast', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' } };
+    throw new ApiError(503, 'PROVIDER_UNAVAILABLE');
+  }) as typeof requestApi;
+  const store = createChatStore(request, async () => undefined, memory);
+  await store.send({ text: 'ازاي العطر يثبت؟', model: 'deep', language: 'ar', errorText: () => 'خطأ' });
+  assert.deepEqual(asked, ['deep', 'fast']);
+  assert.match(store.getSnapshot().messages.at(-1)!.text, /إجابة سريعة/);
+  fastWorks = false; asked.length = 0;
+  await store.send({ text: 'سؤال جديد عن العود', model: 'auto', language: 'ar', errorText: () => 'خطأ' });
+  assert.deepEqual(asked, ['auto', 'fast']);
+  assert.ok(/ذاكرة شاهين/.test(store.getSnapshot().messages.at(-1)!.text), 'fast down too → memory');
+  asked.length = 0;
+  await store.send({ text: 'سؤال سريع', model: 'fast', language: 'ar', errorText: () => 'خطأ' });
+  assert.deepEqual(asked, ['fast'], 'the fast mode itself is not asked twice');
+});
+
 test('the bots reuse an identical AI request from memory (even with every quota paused) and forget unusable replies', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'ai-memory-'));
   try {

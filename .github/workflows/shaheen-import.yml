@@ -62,6 +62,9 @@ jobs:
       IMPORT_MAX_TOTAL: ${{ vars.IMPORT_MAX_TOTAL || '5000' }}
       IMPORT_MAX_PER_SOURCE: ${{ vars.IMPORT_MAX_PER_SOURCE || '1500' }}
       IMPORT_SOURCE: ${{ vars.IMPORT_SOURCE }}
+      # L-03 legal guard: set the repository variable SHAM_ALLOW_SCRAPE=1 only once the supplier's written
+      # permission is in docs/legal/scraper-permission.md (see SCRAPER_LEGAL_NOTICE.md).
+      SHAM_ALLOW_SCRAPE: ${{ vars.SHAM_ALLOW_SCRAPE }}
       IMPORT_MARKUP: ${{ vars.IMPORT_MARKUP || '1.5' }}
       IMPORT_SHIPPING_EGP: ${{ vars.IMPORT_SHIPPING_EGP }}
       IMPORT_MAX_PROFIT_EGP: ${{ vars.IMPORT_MAX_PROFIT_EGP }}
