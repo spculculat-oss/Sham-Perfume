@@ -10,6 +10,7 @@
  */
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { AI_TOOLS, type AiToolId } from '../../src/utils/aiTools';
+import { councilGoal, readCouncil } from '../shaheen-council/council';
 import { buildReport, INTERVAL_HOURS, parseJson, readReview, REVIEW_SYSTEM, reviewPrompt, type Ask, type Probe, type Review, type SupervisorFile } from './checks';
 import { PROBES, QUESTIONS } from './probes';
 import { curateMemory, emptyMemory, isMemoryFile, remember, type MemoryFile } from '../../src/utils/shaheenMemory';
@@ -37,10 +38,12 @@ let review: Review | undefined;
 let reviewNote = '';
 let ask: Ask | undefined;
 try { ask = await makeAsk(env); } catch { ask = undefined; }
+// The daily meeting's development goal for each tool («مجلس شاهين»).
+const council = readCouncil();
 const reviewed = AI_TOOLS.filter((t) => probes[t.id]?.some((p) => p.ok && p.answer));
 if (ask && reviewed.length) {
   try {
-    const reply = await ask(REVIEW_SYSTEM, reviewPrompt(reviewed.map((t) => ({ id: t.id, guidance: previous?.tools[t.id]?.guidance?.text, probes: probes[t.id]! }))));
+    const reply = await ask(REVIEW_SYSTEM, reviewPrompt(reviewed.map((t) => ({ id: t.id, guidance: previous?.tools[t.id]?.guidance?.text, goal: councilGoal(council, t.id), probes: probes[t.id]! }))));
     review = readReview(parseJson(reply));
     console.log(`Shaheen reviewed ${Object.keys(review.tools).length} tools`);
   } catch (error) { reviewNote = `Shaheen's review failed (${(error as Error).message.slice(0, 160)}): automatic checks only`; }

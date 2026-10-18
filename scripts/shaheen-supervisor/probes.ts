@@ -230,6 +230,25 @@ function schoolProbes(ctx: ProbeContext): Probe[] {
   return [{ tool: 'shaheen_school', question: 'مدرسة شاهين', answer, ms: 0, ok: true, findings }];
 }
 
+/** «مجلس شاهين»: did today's meeting take place, with real decisions, and are its tasks moving? */
+function councilProbes(ctx: ProbeContext): Probe[] {
+  type Council = { meetings: { date: string; at: string; mode: string; summaryAr: string; seats: { ok: boolean }[]; decisions: { title: string; kind: string; status: string; priority: string }[] }[]; tasks: { status: string; createdAt: string }[] };
+  const file = readLive<Council>(ctx, 'shaheen-council.json');
+  const last = file?.meetings?.[0];
+  if (!last) return [{ tool: 'shaheen_council', question: 'محضر الاجتماع اليومي', answer: '', ms: 0, ok: false, error: 'لم يُعقد أي اجتماع بعد (src/data/live/shaheen-council.json)', findings: [] }];
+  const findings = [] as Probe['findings'];
+  const ageH = (ctx.now - Date.parse(last.at)) / 3600_000;
+  if (ageH > 26) findings.push({ severe: ageH > 50, text: `آخر اجتماع منذ ${Math.round(ageH)} ساعة` });
+  if (last.mode !== 'ai') findings.push({ severe: false, text: 'اجتماع اليوم بدون نقاش (لا يوجد محرك متاح) — المحضر من قواعد التقارير' });
+  if (!last.decisions.length) findings.push({ severe: false, text: 'الاجتماع بلا قرارات' });
+  const stale = (file!.tasks || []).filter((t) => t.status === 'open' && ctx.now - Date.parse(t.createdAt) > 7 * 86_400_000).length;
+  if (stale) findings.push({ severe: false, text: `${stale} مهمة تطوير مفتوحة منذ أكثر من أسبوع (اكتب في الشات «نفذ مهام شاهين»)` });
+  findings.push(...inspectAnswer(last.summaryAr, { language: 'ar', vendorNamesAllowed: true }).filter((f) => f.severe));
+  const answer = [`${last.date} — ${last.seats.filter((s) => s.ok).length}/${last.seats.length} خبراء شاركوا`, last.summaryAr,
+    ...last.decisions.map((d) => `- [${d.priority}/${d.kind}/${d.status}] ${d.title}`)].join('\n');
+  return [{ tool: 'shaheen_council', question: 'محضر الاجتماع اليومي', answer, ms: 0, ok: true, findings }];
+}
+
 /** «منارة شاهين»: does the SEO/media agent actually run, learn, stay honest and keep its files fresh? */
 function seoAgentProbes(ctx: ProbeContext): Probe[] {
   const file = readLive<unknown>(ctx, 'seo-agent.json');
@@ -271,4 +290,5 @@ export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<P
   store_import: storeImportProbes,
   shaheen_school: schoolProbes,
   seo_agent: seoAgentProbes,
+  shaheen_council: councilProbes,
 };

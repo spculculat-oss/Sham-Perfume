@@ -12,7 +12,7 @@
  */
 import { meaningWords, normalizeQuestion, recallSimilar, worthRemembering, type MemoryFile } from '../../src/utils/shaheenMemory';
 
-export interface BankQuestion { q: string; lang: 'ar' | 'en'; topic: string; origin: 'curriculum' | 'library' | 'visitors' }
+export interface BankQuestion { q: string; lang: 'ar' | 'en'; topic: string; origin: 'curriculum' | 'library' | 'visitors' | 'council' }
 export interface TrainingDoc { id: string; title: string; content: string; tags?: string[] }
 /**
  * covered: Shaheen answers it by himself everywhere (his memory: the visitor's browser and the server alike).
@@ -69,9 +69,14 @@ export function libraryQuestions(docs: TrainingDoc[], max = 40): BankQuestion[] 
   return docs.slice(0, max).map((d) => ({ q: `حدثني عن ${d.title.replace(/[؟?.!]+$/, '')}`, lang: 'ar' as const, topic: 'library', origin: 'library' as const }));
 }
 
-export function buildBank(docs: TrainingDoc[]): BankQuestion[] {
+/** Questions the daily meeting («مجلس شاهين») asked him to study. */
+export const councilQuestions = (qs: string[]): BankQuestion[] =>
+  qs.map((q) => q.trim()).filter((q) => q.length >= 8 && q.length <= 200).slice(0, 12)
+    .map((q) => ({ q, lang: /[\u0600-\u06FF]/.test(q) ? 'ar' as const : 'en' as const, topic: 'council', origin: 'council' as const }));
+
+export function buildBank(docs: TrainingDoc[], council: string[] = []): BankQuestion[] {
   const seen = new Set<string>();
-  return [...CURRICULUM, ...libraryQuestions(docs)].filter((b) => {
+  return [...CURRICULUM, ...libraryQuestions(docs), ...councilQuestions(council)].filter((b) => {
     const k = `${b.lang}|${normalizeQuestion(b.q)}`;
     if (seen.has(k)) return false;
     seen.add(k);

@@ -83,11 +83,11 @@ export const REVIEW_SYSTEM = `أنت «الخبير شاهين»، خبير ال
 
 const clip = (text: string, max: number) => (text.length > max ? `${text.slice(0, max)} [اقتطاع من المشرف]` : text);
 
-export function reviewPrompt(tools: { id: AiToolId; guidance?: string; probes: Probe[] }[]) {
-  const blocks = tools.map(({ id, guidance, probes }) => {
+export function reviewPrompt(tools: { id: AiToolId; guidance?: string; goal?: string; probes: Probe[] }[]) {
+  const blocks = tools.map(({ id, guidance, goal, probes }) => {
     const def = AI_TOOLS.find((t) => t.id === id)!;
     const samples = probes.map((p, i) => `  [${i + 1}] السؤال/الطلب: ${p.question}\n  الزمن: ${Math.round(p.ms / 100) / 10} ث${p.ok ? '' : ` · فشل: ${p.error || ''}`}\n  الفحص الآلي: ${p.findings.map((f) => f.text).join('، ') || 'سليم'}\n  الرد: ${clip(visibleText(p.answer), 1800).replace(/\n{3,}/g, '\n\n')}`).join('\n');
-    return `### ${id} — ${def.nameAr}\nطبيعة الأداة: ${def.descriptionAr}\n${def.acceptsGuidance ? `التوجيهات الحالية: ${guidance || 'لا يوجد'}` : 'هذه الأداة لا تقرأ توجيهات (قيّمها فقط واترك guidance فارغاً).'}\nالعينات:\n${samples}`;
+    return `### ${id} — ${def.nameAr}\nطبيعة الأداة: ${def.descriptionAr}\n${def.acceptsGuidance ? `التوجيهات الحالية: ${guidance || 'لا يوجد'}` : 'هذه الأداة لا تقرأ توجيهات (قيّمها فقط واترك guidance فارغاً).'}${goal ? `\nهدف التطوير من اجتماع شاهين اليومي: ${goal.slice(0, 400)}${def.acceptsGuidance ? ' (ادمج ما يناسب منه في guidance وقيّم مدى تحققه)' : ' (قيّم مدى تحققه)'}` : ''}\nالعينات:\n${samples}`;
   });
   return `${blocks.join('\n\n')}\n
 أعد بالشكل:

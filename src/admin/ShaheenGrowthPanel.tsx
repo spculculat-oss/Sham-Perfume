@@ -32,6 +32,7 @@ const FOUND_BY: Record<string, () => string> = {
   'brand-site': () => T('المتجر الرسمي لماركة'),
   'known-store': () => T('متجر عطور معروف'),
   seed: () => T('أضفته أنت'),
+  council: () => T('اقترحه اجتماع شاهين اليومي'),
   'built-in': () => T('المورد الأصلي'),
 };
 
