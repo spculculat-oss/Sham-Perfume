@@ -22,12 +22,12 @@ import {
 import { makeT } from '../لغات/localize';
 import { isRTL } from '../لغات/localizedContent';
 import type { SupportedLanguage } from '../types/i18n';
-import productsData from '../data/products.json';
-import { storeImageSrc } from '../utils/liveStore';
+import { loadStoreCatalog, storeImageSrc } from '../utils/liveStore';
+import type { StoreProduct } from '../utils/storeCatalog';
+import { filterShowcase, isStockPhoto, rankShowcase, thumbWindow, type ShowcaseCategory } from '../utils/promoShowcase';
 import { addToCart } from '../utils/storeCart';
-import { useStoreCountry, setStoreCountry } from '../utils/storeCheckout';
+import { useStoreCountry, setStoreCountry, useStoreMoney } from '../utils/storeCheckout';
 import {
-  formatProductPriceInCountry,
   getCountryMeta,
   TOP_COUNTRIES,
   POPULAR_COUNTRY_CODES,
@@ -137,46 +137,51 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
   const [sceneIndex, setSceneIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [productSlideIndex, setProductSlideIndex] = useState(0);
-  const [failedImages, setFailedImages] = useState<Record<string | number, boolean>>({});
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
+  const [catalog, setCatalog] = useState<StoreProduct[] | null>(null);
+  const [catalogFailed, setCatalogFailed] = useState(false);
+  // Why the product carousel is holding still: the visitor is looking at / touching / typing in it,
+  // or the banner is off screen / the tab is hidden (no work nobody sees).
+  const [productHover, setProductHover] = useState(false);
+  const [productFocus, setProductFocus] = useState(false);
+  const [onScreen, setOnScreen] = useState(true);
+  const [pageVisible, setPageVisible] = useState(true);
+  const [slideDir, setSlideDir] = useState<1 | -1>(1);
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const swipeRef = useRef<{ x: number; y: number; t: number } | null>(null);
+  const swipedRef = useRef(false);
   const [addedSku, setAddedSku] = useState<string | null>(null);
   const [showCountryPicker, setShowCountryPicker] = useState(false);
   const [countrySearch, setCountrySearch] = useState('');
   const [productSearch, setProductSearch] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'men' | 'women' | 'unisex'>('all');
+  const [selectedCategory, setSelectedCategory] = useState<ShowcaseCategory>('all');
 
   // Auto-detected visitor country from device & edge
   const [currentCountry, setCurrentCountry] = useStoreCountry();
   const countryMeta = useMemo(() => getCountryMeta(currentCountry, currentLang), [currentCountry, currentLang]);
 
-  // All store products (1,114+ products from the catalog)
-  const allStoreProducts = useMemo(() => {
-    return (productsData.products || []).filter((p) => (p.ourPrice || 0) > 0);
+  // The same cleaned catalog the store shows (names, photos, gender, stock) — loaded as its own chunk, so the
+  // 3 MB product list is not part of every page's first download.
+  useEffect(() => {
+    let alive = true;
+    loadStoreCatalog()
+      .then((list) => { if (alive) setCatalog(list); })
+      .catch(() => { if (alive) setCatalogFailed(true); });
+    return () => { alive = false; };
   }, []);
 
-  // Filtered showcase products based on search & category
-  const showcaseProducts = useMemo(() => {
-    let list = allStoreProducts;
-    if (selectedCategory === 'men') {
-      list = list.filter((p) => p.category?.includes('رجالي'));
-    } else if (selectedCategory === 'women') {
-      list = list.filter((p) => p.category?.includes('نسائي'));
-    } else if (selectedCategory === 'unisex') {
-      list = list.filter((p) => p.category?.includes('مختلط'));
-    }
-    if (productSearch.trim()) {
-      const q = productSearch.toLowerCase().trim();
-      list = list.filter((p) =>
-        (p.nameAr && p.nameAr.toLowerCase().includes(q)) ||
-        (p.nameEn && p.nameEn.toLowerCase().includes(q)) ||
-        (p.brand && p.brand.toLowerCase().includes(q)) ||
-        (p.descriptionAr && p.descriptionAr.toLowerCase().includes(q)) ||
-        (p.descriptionEn && p.descriptionEn.toLowerCase().includes(q))
-      );
-    }
-    return list;
-  }, [allStoreProducts, selectedCategory, productSearch]);
+  const allStoreProducts = useMemo(() => rankShowcase((catalog || []).filter((p) => p.price > 0)), [catalog]);
+  const showcaseProducts = useMemo(
+    () => filterShowcase(allStoreProducts, selectedCategory, productSearch),
+    [allStoreProducts, selectedCategory, productSearch],
+  );
+  const safeIndex = showcaseProducts.length ? Math.min(productSlideIndex, showcaseProducts.length - 1) : 0;
+  const activeProduct: StoreProduct | undefined = showcaseProducts[safeIndex];
+  const money = useStoreMoney(currentLang, currentLang === 'ar' ? 'ج.م' : 'EGP');
 
-  const activeProduct = showcaseProducts[productSlideIndex] || showcaseProducts[0] || allStoreProducts[0];
+  /** First photo of the product that has not failed to load (falls back to its other photos). */
+  const photoOf = (p: StoreProduct): string | undefined => (p.images.length ? p.images : p.imageUrl ? [p.imageUrl] : []).find((u) => !failedImages[u]);
+  const markFailed = (url: string) => setFailedImages((prev) => (prev[url] ? prev : { ...prev, [url]: true }));
 
   // Active scene
   const activeScene = SCENES[sceneIndex] || SCENES[0];
@@ -195,14 +200,32 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
     return () => window.clearInterval(interval);
   }, [expanded, isPlaying]);
 
-  // Product slide auto-advance (pauses if user is searching)
+  // Off screen or hidden tab: hold the carousel still.
   useEffect(() => {
-    if (!expanded || showcaseProducts.length < 2 || productSearch.trim()) return;
-    const interval = window.setInterval(() => {
+    const el = sectionRef.current;
+    const onVis = () => setPageVisible(!document.hidden);
+    document.addEventListener('visibilitychange', onVis);
+    let io: IntersectionObserver | undefined;
+    if (el && typeof IntersectionObserver !== 'undefined') {
+      io = new IntersectionObserver(([entry]) => setOnScreen(entry.isIntersecting), { threshold: 0.15 });
+      io.observe(el);
+    }
+    return () => { document.removeEventListener('visibilitychange', onVis); io?.disconnect(); };
+  }, [expanded]);
+
+  const productPaused = !isPlaying || productHover || productFocus || Boolean(productSearch.trim()) || !onScreen || !pageVisible;
+  const PRODUCT_DWELL_MS = 6500;
+
+  // Product auto-advance: one timer per slide, so choosing a product (arrows, thumbnails, swipe) always
+  // gives the visitor a full dwell time on it instead of jumping away a second later.
+  useEffect(() => {
+    if (!expanded || productPaused || showcaseProducts.length < 2) return;
+    const timer = window.setTimeout(() => {
+      setSlideDir(1);
       setProductSlideIndex((prev) => (prev + 1) % showcaseProducts.length);
-    }, 8500);
-    return () => window.clearInterval(interval);
-  }, [expanded, showcaseProducts.length, productSearch]);
+    }, PRODUCT_DWELL_MS);
+    return () => window.clearTimeout(timer);
+  }, [expanded, productPaused, showcaseProducts.length, safeIndex]);
 
   const handleNextScene = () => {
     setSceneIndex((prev) => (prev + 1) % SCENES.length);
@@ -212,17 +235,35 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
     setSceneIndex((prev) => (prev - 1 + SCENES.length) % SCENES.length);
   };
 
-  const handleNextProduct = () => {
-    if (showcaseProducts.length === 0) return;
-    setProductSlideIndex((prev) => (prev + 1) % showcaseProducts.length);
+  const goToProduct = (index: number, dir: 1 | -1) => {
+    const total = showcaseProducts.length;
+    if (!total) return;
+    setSlideDir(dir);
+    setProductSlideIndex(((index % total) + total) % total);
+  };
+  const handleNextProduct = () => goToProduct(safeIndex + 1, 1);
+  const handlePrevProduct = () => goToProduct(safeIndex - 1, -1);
+
+  // Finger swipe on the product card (mobile): a clear horizontal flick changes the product; in RTL the
+  // next product comes from the left, so the swipe direction follows the reading direction.
+  const onSwipeStart = (e: React.PointerEvent) => {
+    if (e.pointerType === 'mouse') return;
+    swipeRef.current = { x: e.clientX, y: e.clientY, t: Date.now() };
+    swipedRef.current = false;
+  };
+  const onSwipeEnd = (e: React.PointerEvent) => {
+    const start = swipeRef.current;
+    swipeRef.current = null;
+    if (!start) return;
+    const dx = e.clientX - start.x;
+    const dy = e.clientY - start.y;
+    if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy) * 1.4 || Date.now() - start.t > 800) return;
+    swipedRef.current = true;
+    const forward = rtl ? dx > 0 : dx < 0;
+    if (forward) handleNextProduct(); else handlePrevProduct();
   };
 
-  const handlePrevProduct = () => {
-    if (showcaseProducts.length === 0) return;
-    setProductSlideIndex((prev) => (prev - 1 + showcaseProducts.length) % showcaseProducts.length);
-  };
-
-  const handleAddToCart = (e: React.MouseEvent, p: typeof activeProduct) => {
+  const handleAddToCart = (e: React.MouseEvent, p: StoreProduct | undefined) => {
     e.stopPropagation();
     if (!p) return;
     addToCart(p.sku, 1);
@@ -230,22 +271,20 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
     setTimeout(() => setAddedSku(null), 2200);
   };
 
+  // Opens the product's own page. (Previously it also switched to the store tab, which overwrote the
+  // product link — the visitor landed on the store list instead of the product.)
   const handleProductClick = (productId: number | string) => {
+    if (swipedRef.current) { swipedRef.current = false; return; }
     if (onSelectProduct) {
       onSelectProduct(productId);
-    } else {
-      window.location.hash = `#product=${productId}`;
-      if (onViewStore) onViewStore();
+      return;
     }
+    window.location.hash = `#product=${productId}`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Convert product price in detected country currency
-  const activePriceData = useMemo(() => {
-    if (!activeProduct?.ourPrice) {
-      return { formatted: '—', symbol: '', countryName: '', flag: '' };
-    }
-    return formatProductPriceInCountry(activeProduct.ourPrice, currentCountry, currentLang);
-  }, [activeProduct, currentCountry, currentLang]);
+  // Same price function as the store page (catalog EGP → the visitor's currency), so both always agree.
+  const activePrice = activeProduct ? money.price(activeProduct.price) : '—';
 
   // Filtered countries for selector
   const filteredCountryCodes = useMemo(() => {
@@ -274,6 +313,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
 
   return (
     <section
+      ref={sectionRef}
       dir={rtl ? 'rtl' : 'ltr'}
       className="relative w-full bg-[#070504] border-b border-amber-500/20 text-white selection:bg-amber-500/30 font-sans"
       aria-label={L('screen_badge')}
@@ -495,48 +535,68 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
               {/* INTEGRATED PRODUCT SHOWCASE BOX (خانة عرض كافة منتجات المتجر) */}
               <div className="relative z-20 flex flex-col justify-between border-t lg:border-t-0 lg:border-s border-amber-500/20 bg-gradient-to-b from-[#1b130e]/95 via-[#130d09]/98 to-[#0a0705]/98 p-4 sm:p-5 backdrop-blur-xl">
                 {/* Box Header */}
-                <div>
+                <div
+                  onPointerEnter={(e) => { if (e.pointerType === 'mouse') setProductHover(true); }}
+                  onPointerLeave={(e) => { if (e.pointerType === 'mouse') setProductHover(false); }}
+                  onFocusCapture={(e) => {
+                    // Typing a search or moving with the keyboard holds the carousel; a tap/click on an arrow does not.
+                    const el = e.target as HTMLElement;
+                    let keyboard = false;
+                    try { keyboard = el.matches(':focus-visible'); } catch { keyboard = false; }
+                    setProductFocus(el instanceof HTMLInputElement || keyboard);
+                  }}
+                  onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setProductFocus(false); }}
+                >
                   <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-white/10">
-                    <div className="flex items-center gap-2">
-                      <span className="flex h-7 w-7 items-center justify-center rounded-xl bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-amber-400/20 text-amber-300 border border-amber-400/30">
                         <ShoppingBag className="h-4 w-4" />
                       </span>
-                      <div>
+                      <div className="min-w-0">
                         <div className="flex items-center gap-1.5">
-                          <h3 className="text-xs sm:text-sm font-bold text-white tracking-wide">
+                          <h3 className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">
                             {L('product_box_title')}
                           </h3>
-                          <span className="px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-200 text-[10px] font-mono font-bold border border-amber-500/30">
-                            {allStoreProducts.length}
-                          </span>
+                          {catalog && (
+                            <span className="px-1.5 rounded-full bg-amber-500/20 text-amber-200 text-[10px] font-mono font-bold border border-amber-500/30">
+                              {allStoreProducts.length}
+                            </span>
+                          )}
                         </div>
-                        <p className="text-[10px] text-amber-300/80 font-medium">
-                          {currentLang === 'ar' ? `كل عطور المتجر (${showcaseProducts.length} معروضة)` : `All store perfumes (${showcaseProducts.length} shown)`}
+                        <p className="text-[10px] text-amber-300/80 font-medium truncate">
+                          {!catalog
+                            ? (currentLang === 'ar' ? 'جارٍ تحميل عطور المتجر…' : 'Loading store perfumes…')
+                            : productSearch.trim() || selectedCategory !== 'all'
+                              ? (currentLang === 'ar' ? `${showcaseProducts.length} عطر مطابق` : `${showcaseProducts.length} matching`)
+                              : (currentLang === 'ar' ? 'أحدث العطور المتوفرة أولاً' : 'Newest in-stock perfumes first')}
                         </p>
                       </div>
                     </div>
                     {/* Device Country indicator inside product box */}
-                    <span className="inline-flex items-center gap-1 rounded-full border border-amber-500/30 bg-black/40 px-2 py-0.5 text-[10px] text-stone-300">
+                    <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-amber-500/30 bg-black/40 px-2 py-0.5 text-[10px] text-stone-300">
                       <span>{countryMeta.flag}</span>
-                      <span className="font-mono text-amber-400 font-bold">{countryMeta.currency}</span>
+                      <span className="font-mono text-amber-400 font-bold">{money.currency}</span>
                     </span>
                   </div>
 
-                  {/* Quick Search & Category Filter for all 1,114 products */}
+                  {/* Quick Search & Category Filter for every store product */}
                   <div className="mt-2.5 space-y-1.5">
                     <div className="relative">
                       <Search className="absolute start-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-stone-400 pointer-events-none" />
                       <input
-                        type="text"
-                        placeholder={currentLang === 'ar' ? `ابحث في كل عطور المتجر (${allStoreProducts.length} عطر)…` : `Search all perfumes (${allStoreProducts.length})…`}
+                        type="search"
+                        enterKeyHint="search"
+                        aria-label={currentLang === 'ar' ? 'ابحث في عطور المتجر' : 'Search store perfumes'}
+                        placeholder={currentLang === 'ar' ? `ابحث بالاسم أو الماركة أو الطابع (${allStoreProducts.length || '…'} عطر)` : `Search by name, brand or style (${allStoreProducts.length || '…'})`}
                         value={productSearch}
-                        onChange={(e) => setProductSearch(e.target.value)}
-                        className="w-full rounded-xl border border-white/10 bg-black/50 ps-8 pe-8 py-1 text-xs text-white placeholder-stone-500 focus:border-amber-400 focus:outline-none transition-colors"
+                        onChange={(e) => { setProductSearch(e.target.value); setProductSlideIndex(0); }}
+                        className="w-full rounded-xl border border-white/10 bg-black/50 ps-8 pe-8 py-1.5 text-xs text-white placeholder-stone-500 focus:border-amber-400 focus:outline-none transition-colors [&::-webkit-search-cancel-button]:hidden"
                       />
                       {productSearch && (
                         <button
                           type="button"
-                          onClick={() => setProductSearch('')}
+                          onClick={() => { setProductSearch(''); setProductSlideIndex(0); }}
+                          aria-label={currentLang === 'ar' ? 'مسح البحث' : 'Clear search'}
                           className="absolute end-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-white text-xs cursor-pointer"
                         >
                           ✕
@@ -545,18 +605,19 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                     </div>
 
                     {/* Category Filter Pills */}
-                    <div className="flex items-center gap-1 overflow-x-auto text-[10px] no-scrollbar py-0.5">
-                      {[
+                    <div className="flex items-center gap-1 overflow-x-auto text-[10px] no-scrollbar py-0.5" role="group" aria-label={currentLang === 'ar' ? 'تصنيف العطور' : 'Perfume category'}>
+                      {([
                         { id: 'all', labelAr: 'الكل', labelEn: 'All' },
                         { id: 'men', labelAr: 'رجالي', labelEn: 'Men' },
                         { id: 'women', labelAr: 'نسائي', labelEn: 'Women' },
-                        { id: 'unisex', labelAr: 'مختلط', labelEn: 'Unisex' },
-                      ].map((cat) => (
+                        { id: 'unisex', labelAr: 'للجنسين', labelEn: 'Unisex' },
+                      ] as { id: ShowcaseCategory; labelAr: string; labelEn: string }[]).map((cat) => (
                         <button
                           key={cat.id}
                           type="button"
-                          onClick={() => setSelectedCategory(cat.id as any)}
-                          className={`px-2 py-0.5 rounded-lg whitespace-nowrap transition-colors cursor-pointer font-medium ${
+                          aria-pressed={selectedCategory === cat.id}
+                          onClick={() => { setSelectedCategory(cat.id); setProductSlideIndex(0); }}
+                          className={`px-2.5 py-1 rounded-lg whitespace-nowrap transition-colors cursor-pointer font-medium ${
                             selectedCategory === cat.id
                               ? 'bg-amber-400 text-stone-950 font-bold'
                               : 'bg-white/5 text-stone-300 hover:bg-white/10'
@@ -569,164 +630,217 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                   </div>
 
                   {/* Active Product Showcase Card */}
-                  {activeProduct ? (
+                  {!catalog && !catalogFailed ? (
+                    <div className="mt-2.5 rounded-2xl border border-white/10 bg-stone-900/60 p-3 animate-pulse" aria-hidden="true">
+                      <div className="mx-auto aspect-square w-full max-w-[170px] sm:max-w-[190px] rounded-xl bg-white/5" />
+                      <div className="mt-3 h-4 w-2/3 rounded bg-white/10" />
+                      <div className="mt-2 h-3 w-1/2 rounded bg-white/5" />
+                      <div className="mt-4 h-8 rounded-xl bg-white/5" />
+                    </div>
+                  ) : activeProduct ? (
                     <div
-                      key={activeProduct.id}
+                      role="link"
+                      tabIndex={0}
+                      aria-label={`${activeProduct.name[currentLang === 'ar' ? 'ar' : 'en']} — ${activePrice}`}
                       onClick={() => handleProductClick(activeProduct.id)}
-                      className="group relative mt-2.5 cursor-pointer rounded-2xl border border-white/15 bg-gradient-to-b from-stone-900/80 to-stone-950/90 p-3 transition-all hover:border-amber-400/50 hover:shadow-xl hover:shadow-amber-950/40"
+                      onKeyDown={(e) => {
+                        if (e.target !== e.currentTarget) return;
+                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleProductClick(activeProduct.id); }
+                        else if (e.key === 'ArrowRight') { e.preventDefault(); if (rtl) handlePrevProduct(); else handleNextProduct(); }
+                        else if (e.key === 'ArrowLeft') { e.preventDefault(); if (rtl) handleNextProduct(); else handlePrevProduct(); }
+                      }}
+                      onPointerDown={onSwipeStart}
+                      onPointerUp={onSwipeEnd}
+                      onPointerCancel={() => { swipeRef.current = null; }}
+                      className="group relative mt-2.5 cursor-pointer touch-pan-y select-none overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-b from-stone-900/80 to-stone-950/90 p-3 transition-colors hover:border-amber-400/50 hover:shadow-xl hover:shadow-amber-950/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
                     >
-                      {/* Product Image Stage */}
-                      <div className="relative mx-auto flex aspect-square w-full max-w-[170px] sm:max-w-[190px] items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-[radial-gradient(ellipse_at_center,#2d2116_0%,#150e09_100%)] p-2">
-                        {activeProduct.imageUrl && !failedImages[activeProduct.id] ? (
-                          <img
-                            src={storeImageSrc(activeProduct.imageUrl)}
-                            alt={currentLang === 'ar' ? activeProduct.nameAr : activeProduct.nameEn}
-                            className="h-full w-full object-contain drop-shadow-[0_12px_14px_rgba(0,0,0,0.7)] transition-transform duration-500 group-hover:scale-105"
-                            loading="lazy"
-                            onError={() => setFailedImages((prev) => ({ ...prev, [activeProduct.id]: true }))}
-                          />
-                        ) : (
-                          <Sparkles className="h-10 w-10 text-amber-500/50" />
-                        )}
-                        <span className="absolute top-2 start-2 rounded-full border border-amber-300/30 bg-black/70 px-2 py-0.5 text-[9px] font-bold text-amber-200">
-                          {activeProduct.brand}
-                        </span>
-                        {activeProduct.stockStatus === 'out_of_stock' ? (
-                          <span className="absolute bottom-2 end-2 rounded-md bg-stone-900/90 border border-stone-600/50 px-1.5 py-0.5 text-[8px] font-bold text-stone-400">
-                            {currentLang === 'ar' ? 'غير متوفر' : 'Out of stock'}
-                          </span>
-                        ) : (
-                          <span className="absolute bottom-2 end-2 rounded-md bg-emerald-950/80 border border-emerald-500/40 px-1.5 py-0.5 text-[8px] font-bold text-emerald-300">
-                            {L('in_stock')}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Product Details */}
-                      <div className="mt-2.5 space-y-0.5">
-                        <h4 className="line-clamp-1 font-serif text-sm sm:text-base font-bold text-white group-hover:text-amber-200 transition-colors">
-                          {currentLang === 'ar' ? activeProduct.nameAr : activeProduct.nameEn}
-                        </h4>
-                        <p className="line-clamp-1 text-[11px] leading-relaxed text-stone-400">
-                          {currentLang === 'ar' ? activeProduct.descriptionAr : activeProduct.descriptionEn}
-                        </p>
-                      </div>
-
-                      {/* CONVERTED PRICE DISPLAY */}
-                      <div className="mt-3 flex items-end justify-between border-t border-white/10 pt-2">
-                        <div>
-                          <span className="block text-[9px] text-stone-400 font-medium">
-                            {L('price_label')} ({countryMeta.countryName})
-                          </span>
-                          <div className="flex items-baseline gap-1.5">
-                            <span className="font-mono text-lg sm:text-xl font-black text-amber-300 tracking-tight">
-                              {activePriceData.formatted}
+                      <div key={activeProduct.sku} className={slideDir === 1 ? 'sham-product-in-next' : 'sham-product-in-prev'} data-rtl={rtl ? 'true' : undefined}>
+                        {/* Product Image Stage */}
+                        <div className="relative mx-auto flex aspect-square w-full max-w-[170px] sm:max-w-[190px] items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-[radial-gradient(ellipse_at_center,#2d2116_0%,#150e09_100%)] p-2">
+                          {(() => {
+                            const src = photoOf(activeProduct);
+                            return src ? (
+                              <img
+                                key={src}
+                                src={storeImageSrc(src)}
+                                alt={activeProduct.name[currentLang === 'ar' ? 'ar' : 'en']}
+                                draggable={false}
+                                decoding="async"
+                                className={`h-full w-full drop-shadow-[0_12px_14px_rgba(0,0,0,0.7)] transition-transform duration-500 group-hover:scale-105 ${isStockPhoto(src) ? 'object-cover rounded-lg' : 'object-contain'}`}
+                                onError={() => markFailed(src)}
+                              />
+                            ) : (
+                              <div className="flex flex-col items-center gap-1.5 text-amber-500/60">
+                                <Sparkles className="h-10 w-10" />
+                                <span className="text-[10px] font-bold text-amber-200/70">{activeProduct.brand || (currentLang === 'ar' ? 'دار شام' : 'Sham')}</span>
+                              </div>
+                            );
+                          })()}
+                          {activeProduct.brand && (
+                            <span className="absolute top-2 start-2 max-w-[80%] truncate rounded-full border border-amber-300/30 bg-black/70 px-2 py-0.5 text-[9px] font-bold text-amber-200">
+                              {activeProduct.brand}
                             </span>
-                          </div>
+                          )}
+                          {activeProduct.inStock ? (
+                            <span className="absolute bottom-2 end-2 rounded-md bg-emerald-950/80 border border-emerald-500/40 px-1.5 py-0.5 text-[8px] font-bold text-emerald-300">
+                              {L('in_stock')}
+                            </span>
+                          ) : (
+                            <span className="absolute bottom-2 end-2 rounded-md bg-stone-900/90 border border-stone-600/50 px-1.5 py-0.5 text-[8px] font-bold text-stone-400">
+                              {currentLang === 'ar' ? 'غير متوفر' : 'Out of stock'}
+                            </span>
+                          )}
                         </div>
 
-                        {/* Interactive Add to Cart button */}
-                        {activeProduct.stockStatus === 'out_of_stock' ? (
-                          <button
-                            type="button"
-                            disabled
-                            className="flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold bg-stone-800 text-stone-400 cursor-not-allowed opacity-75"
-                          >
-                            <span>{currentLang === 'ar' ? 'نفد المخزون' : 'Out of stock'}</span>
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={(e) => handleAddToCart(e, activeProduct)}
-                            className={`flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all shadow-md cursor-pointer ${
-                              addedSku === activeProduct.sku
-                                ? 'bg-emerald-500 text-white shadow-emerald-900/50 scale-105'
-                                : 'bg-gradient-to-r from-amber-400 to-orange-500 text-stone-950 hover:brightness-110 active:scale-95'
-                            }`}
-                          >
-                            {addedSku === activeProduct.sku ? (
-                              <>
-                                <Check className="h-3.5 w-3.5" />
-                                <span>{L('added')}</span>
-                              </>
-                            ) : (
-                              <>
-                                <ShoppingBag className="h-3.5 w-3.5" />
-                                <span>{L('add_to_cart')}</span>
-                              </>
-                            )}
-                          </button>
-                        )}
+                        {/* Product Details */}
+                        <div className="mt-2.5 space-y-0.5">
+                          <h4 className="line-clamp-1 font-serif text-sm sm:text-base font-bold text-white group-hover:text-amber-200 transition-colors" dir="auto">
+                            {activeProduct.name[currentLang === 'ar' ? 'ar' : 'en']}
+                          </h4>
+                          <p className="line-clamp-1 text-[11px] leading-relaxed text-stone-400" dir="auto">
+                            {activeProduct.description[currentLang === 'ar' ? 'ar' : 'en']}
+                          </p>
+                        </div>
+
+                        {/* CONVERTED PRICE DISPLAY */}
+                        <div className="mt-3 flex items-end justify-between gap-2 border-t border-white/10 pt-2">
+                          <div className="min-w-0">
+                            <span className="block truncate text-[9px] text-stone-400 font-medium">
+                              {L('price_label')} ({countryMeta.countryName})
+                            </span>
+                            <span className="font-mono text-lg sm:text-xl font-black text-amber-300 tracking-tight whitespace-nowrap">
+                              {activePrice}
+                            </span>
+                          </div>
+
+                          {/* Interactive Add to Cart button */}
+                          {activeProduct.inStock ? (
+                            <button
+                              type="button"
+                              onClick={(e) => handleAddToCart(e, activeProduct)}
+                              onPointerDown={(e) => e.stopPropagation()}
+                              onPointerUp={(e) => e.stopPropagation()}
+                              className={`flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all shadow-md cursor-pointer ${
+                                addedSku === activeProduct.sku
+                                  ? 'bg-emerald-500 text-white shadow-emerald-900/50 scale-105'
+                                  : 'bg-gradient-to-r from-amber-400 to-orange-500 text-stone-950 hover:brightness-110 active:scale-95'
+                              }`}
+                            >
+                              {addedSku === activeProduct.sku ? (
+                                <>
+                                  <Check className="h-3.5 w-3.5" />
+                                  <span>{L('added')}</span>
+                                </>
+                              ) : (
+                                <>
+                                  <ShoppingBag className="h-3.5 w-3.5" />
+                                  <span>{L('add_to_cart')}</span>
+                                </>
+                              )}
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              disabled
+                              className="flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold bg-stone-800 text-stone-400 cursor-not-allowed opacity-75"
+                            >
+                              <span>{currentLang === 'ar' ? 'نفد المخزون' : 'Out of stock'}</span>
+                            </button>
+                          )}
+                        </div>
                       </div>
+
+                      {/* Dwell progress: shows when the next product comes, and freezes while paused */}
+                      {showcaseProducts.length > 1 && (
+                        <div className="absolute inset-x-0 bottom-0 h-0.5 bg-white/5" aria-hidden="true">
+                          <div
+                            key={`${activeProduct.sku}-${showcaseProducts.length}-${productPaused ? 'p' : 'r'}`}
+                            className="sham-product-progress h-full bg-gradient-to-r from-amber-400 to-orange-500"
+                            data-paused={productPaused ? 'true' : undefined}
+                            style={{ animationDuration: `${PRODUCT_DWELL_MS}ms` }}
+                          />
+                        </div>
+                      )}
                     </div>
                   ) : (
-                    <div className="text-center py-8 text-stone-400 text-xs">
-                      {currentLang === 'ar' ? 'لا توجد منتجات مطابقة للبحث' : 'No products match search'}
+                    <div className="mt-2.5 rounded-2xl border border-white/10 bg-stone-900/60 px-3 py-8 text-center text-xs text-stone-400">
+                      {catalogFailed
+                        ? (currentLang === 'ar' ? 'تعذّر تحميل المنتجات الآن — افتح المتجر لرؤيتها.' : 'Products could not load right now — open the store to see them.')
+                        : (currentLang === 'ar' ? 'لا توجد عطور مطابقة — جرّب كلمة أخرى.' : 'No matching perfumes — try another word.')}
+                      {(productSearch || selectedCategory !== 'all') && !catalogFailed && (
+                        <button
+                          type="button"
+                          onClick={() => { setProductSearch(''); setSelectedCategory('all'); setProductSlideIndex(0); }}
+                          className="mt-3 block mx-auto rounded-lg border border-amber-400/40 px-3 py-1 text-amber-200 hover:bg-amber-500/10"
+                        >
+                          {currentLang === 'ar' ? 'عرض كل العطور' : 'Show all perfumes'}
+                        </button>
+                      )}
                     </div>
                   )}
 
-                  {/* Product Carousel Thumbnails & Switcher for all products */}
-                  {showcaseProducts.length > 0 && (
+                  {/* Product Carousel Thumbnails & Switcher */}
+                  {showcaseProducts.length > 1 && (
                     <div className="mt-3 flex items-center justify-between gap-1.5">
                       <button
                         type="button"
                         onClick={handlePrevProduct}
-                        aria-label={L('prev_scene')}
-                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 hover:bg-white/15 text-stone-300 transition-colors cursor-pointer"
+                        aria-label={currentLang === 'ar' ? 'العطر السابق' : 'Previous perfume'}
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 hover:bg-white/15 text-stone-300 transition-colors cursor-pointer"
                       >
-                        <PreviousIcon className="h-3.5 w-3.5" />
+                        <PreviousIcon className="h-4 w-4" />
                       </button>
 
-                      {/* Visible Mini Thumbnails Strip of neighboring products */}
-                      <div className="flex items-center gap-1 overflow-x-auto py-0.5 px-0.5 no-scrollbar">
-                        {(() => {
-                          const total = showcaseProducts.length;
-                          const visibleCount = Math.min(5, total);
-                          const half = Math.floor(visibleCount / 2);
-                          let start = productSlideIndex - half;
-                          if (start < 0) start = 0;
-                          if (start + visibleCount > total) start = Math.max(0, total - visibleCount);
-                          const slice = showcaseProducts.slice(start, start + visibleCount);
-
-                          return slice.map((p, i) => {
-                            const actualIdx = start + i;
-                            const isSelected = actualIdx === productSlideIndex;
-                            return (
-                              <button
-                                key={p.id}
-                                type="button"
-                                onClick={() => setProductSlideIndex(actualIdx)}
-                                title={currentLang === 'ar' ? p.nameAr : p.nameEn}
-                                className={`relative h-7 w-7 rounded-lg overflow-hidden border transition-all shrink-0 cursor-pointer ${
-                                  isSelected
-                                    ? 'border-amber-400 ring-2 ring-amber-400/50 scale-105'
-                                    : 'border-white/10 hover:border-white/30 opacity-60 hover:opacity-100'
-                                }`}
-                              >
+                      {/* Neighbouring products (wraps around the list) */}
+                      <div className="flex min-w-0 items-center gap-1 py-0.5 px-0.5">
+                        {thumbWindow(showcaseProducts.length, safeIndex).map((idx) => {
+                          const p = showcaseProducts[idx];
+                          const src = photoOf(p);
+                          const isSelected = idx === safeIndex;
+                          return (
+                            <button
+                              key={p.sku}
+                              type="button"
+                              onClick={() => goToProduct(idx, idx < safeIndex ? -1 : 1)}
+                              title={p.name[currentLang === 'ar' ? 'ar' : 'en']}
+                              aria-label={p.name[currentLang === 'ar' ? 'ar' : 'en']}
+                              aria-current={isSelected ? 'true' : undefined}
+                              className={`relative flex h-8 w-8 items-center justify-center rounded-lg overflow-hidden border bg-[#1a120c] transition-all shrink-0 cursor-pointer ${
+                                isSelected
+                                  ? 'border-amber-400 ring-2 ring-amber-400/50 scale-105'
+                                  : 'border-white/10 hover:border-white/30 opacity-60 hover:opacity-100'
+                              }`}
+                            >
+                              {src ? (
                                 <img
-                                  src={storeImageSrc(p.imageUrl)}
+                                  src={storeImageSrc(src)}
                                   alt=""
-                                  className="h-full w-full object-cover"
+                                  draggable={false}
                                   loading="lazy"
+                                  decoding="async"
+                                  onError={() => markFailed(src)}
+                                  className={`h-full w-full ${isStockPhoto(src) ? 'object-cover' : 'object-contain bg-white'}`}
                                 />
-                              </button>
-                            );
-                          });
-                        })()}
+                              ) : (
+                                <Sparkles className="h-3.5 w-3.5 text-amber-500/60" />
+                              )}
+                            </button>
+                          );
+                        })}
                       </div>
 
                       {/* Product counter */}
-                      <span className="font-mono text-[10px] sm:text-[11px] text-amber-300 whitespace-nowrap bg-black/50 px-2 py-0.5 rounded-md border border-white/10">
-                        {productSlideIndex + 1} / {showcaseProducts.length}
+                      <span className="font-mono text-[10px] sm:text-[11px] text-amber-300 whitespace-nowrap bg-black/50 px-2 py-0.5 rounded-md border border-white/10" aria-live="polite">
+                        {safeIndex + 1} / {showcaseProducts.length}
                       </span>
 
                       <button
                         type="button"
                         onClick={handleNextProduct}
-                        aria-label={L('next_scene')}
-                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 hover:bg-white/15 text-stone-300 transition-colors cursor-pointer"
+                        aria-label={currentLang === 'ar' ? 'العطر التالي' : 'Next perfume'}
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 hover:bg-white/15 text-stone-300 transition-colors cursor-pointer"
                       >
-                        <NextIcon className="h-3.5 w-3.5" />
+                        <NextIcon className="h-4 w-4" />
                       </button>
                     </div>
                   )}
