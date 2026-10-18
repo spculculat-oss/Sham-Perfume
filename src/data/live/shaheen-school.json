@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T15:15:44.171Z",
+ "updatedAt": "2026-10-18T23:22:01.911Z",
  "reliance": {
   "score": 87,
   "covered": 72,
@@ -19,8 +19,14 @@
   }
  },
  "studiedTotal": 42,
- "selfTaughtTotal": 26,
+ "selfTaughtTotal": 27,
  "history": [
+  {
+   "at": "2026-10-18T23:22:01.911Z",
+   "score": 87,
+   "studied": 1,
+   "mode": "self"
+  },
   {
    "at": "2026-10-18T15:15:44.171Z",
    "score": 87,
@@ -234,6 +240,6 @@
  "importer": {
   "localShare": 100,
   "aiReadings": 0,
-  "localReadings": 67
+  "localReadings": 25
  }
 }

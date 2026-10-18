@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T15:10:56.723Z",
+ "updatedAt": "2026-10-18T23:21:13.356Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -1034,17 +1034,117 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "goldapple-kz",
    "host": "goldapple.kz",
-   "name": "goldapple.kz",
+   "name": "Gold Apple",
    "base": "https://goldapple.kz",
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "trust": {
+    "score": 27,
+    "verdict": "weak",
+    "at": "2026-10-18T23:21:13.356Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": null,
+      "points": 8,
+      "max": 20,
+      "detail": "السجل لا ينشر تاريخ التسجيل"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": false,
+      "points": 2,
+      "max": 10,
+      "detail": "صفحة تواصل"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": false,
+      "points": 0,
+      "max": 15,
+      "detail": "لا توجد"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": null,
+      "points": 2,
+      "max": 5
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     }
+    ],
+    "flags": []
+   },
+   "region": "central-asia",
+   "reason": "ملف الثقة ضعيف (27/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة"
   },
   {
    "id": "perfumeconnection-com-au",
@@ -1054,17 +1154,226 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "trust": {
+    "score": 37,
+    "verdict": "weak",
+    "at": "2026-10-18T23:21:13.356Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": null,
+      "points": 8,
+      "max": 20,
+      "detail": "السجل لا ينشر تاريخ التسجيل"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": false,
+      "points": 2,
+      "max": 10,
+      "detail": "صفحة تواصل"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": false,
+      "points": 0,
+      "max": 15,
+      "detail": "لا توجد"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": null,
+      "points": 2,
+      "max": 5
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     }
+    ],
+    "flags": []
+   },
+   "region": "oceania",
+   "reason": "ملف الثقة ضعيف (37/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة"
   },
   {
    "id": "perfumeprice-co-uk",
    "host": "perfumeprice.co.uk",
-   "name": "perfumeprice.co.uk",
-   "base": "https://perfumeprice.co.uk",
-   "status": "candidate",
+   "name": "Paco Perfumerias",
+   "base": "https://www.pacoperfumerias.co.uk",
+   "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "trust": {
+    "score": 84,
+    "verdict": "trusted",
+    "at": "2026-10-18T23:21:13.356Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "13 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 6,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": false,
+      "points": 5,
+      "max": 15,
+      "detail": "عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 3,
+      "max": 5,
+      "detail": "محلي أو غير مذكور"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "Visa، Mastercard، PayPal، Apple Pay، Afterpay"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Magento"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2013-09-14T19:53:14.000Z"
+   },
+   "region": "europe",
+   "sampleOk": 3,
+   "sampleTotal": 6,
+   "currency": "GBP",
+   "rateToEgp": 71.2388,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*pacoperfumerias\\.co\\.uk/[^?#]+\\.html?$",
+   "sitemaps": [
+    "https://www.pacoperfumerias.co.uk/sitemap.xml"
+   ],
+   "via": "json-ld",
+   "productsEstimate": 6330
   },
   {
    "id": "nose-shop-jp",
@@ -1074,7 +1383,9 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "alwataniahperfumes-com",
@@ -1140,6 +1451,234 @@
    "foundBy": "brand-site",
    "foundWith": "Volare",
    "foundAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 0
+  },
+  {
+   "id": "letu-kz",
+   "host": "letu.kz",
+   "name": "letu.kz",
+   "base": "https://letu.kz",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "reason": "الموقع لا يفتح"
+  },
+  {
+   "id": "jovoy-com",
+   "host": "jovoy.com",
+   "name": "jovoy.com",
+   "base": "https://jovoy.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "reason": "الموقع لا يفتح"
+  },
+  {
+   "id": "fragrancenet-com",
+   "host": "fragrancenet.com",
+   "name": "fragrancenet.com",
+   "base": "https://fragrancenet.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "reason": "الموقع لا يفتح (HTTP 403)"
+  },
+  {
+   "id": "escentials-com",
+   "host": "escentials.com",
+   "name": "escentials.com",
+   "base": "https://escentials.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "trust": {
+    "score": 93,
+    "verdict": "trusted",
+    "at": "2026-10-18T23:21:13.356Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "23 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد + هاتف"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 15,
+      "max": 15,
+      "detail": "بيانات قانونية + عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 3,
+      "max": 5,
+      "detail": "محلي أو غير مذكور"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "Visa، Mastercard، American Express، Apple Pay، Google Pay، UnionPay"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2002-10-20T11:09:35.000Z"
+   },
+   "region": "global",
+   "sampleOk": 9,
+   "sampleTotal": 9,
+   "reason": "أغلب منتجاته ليست عطوراً (56%)"
+  },
+  {
+   "id": "thefragranceshop-co-uk",
+   "host": "thefragranceshop.co.uk",
+   "name": "thefragranceshop.co.uk",
+   "base": "https://thefragranceshop.co.uk",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "reason": "الموقع لا يفتح (HTTP 403)"
+  },
+  {
+   "id": "volareperfumes-com",
+   "host": "volareperfumes.com",
+   "name": "volareperfumes.com",
+   "base": "https://volareperfumes.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Volare",
+   "foundAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 0
+  },
+  {
+   "id": "volareparfums-com",
+   "host": "volareparfums.com",
+   "name": "volareparfums.com",
+   "base": "https://volareparfums.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Volare",
+   "foundAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 0
+  },
+  {
+   "id": "shama-com",
+   "host": "shama.com",
+   "name": "shama.com",
+   "base": "https://shama.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Shama",
+   "foundAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 0
+  },
+  {
+   "id": "shamaperfumes-com",
+   "host": "shamaperfumes.com",
+   "name": "shamaperfumes.com",
+   "base": "https://shamaperfumes.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Shama",
+   "foundAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 0
+  },
+  {
+   "id": "shamaparfums-com",
+   "host": "shamaparfums.com",
+   "name": "shamaparfums.com",
+   "base": "https://shamaparfums.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Shama",
+   "foundAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 0
+  },
+  {
+   "id": "afnanperfumes-com",
+   "host": "afnanperfumes.com",
+   "name": "afnanperfumes.com",
+   "base": "https://afnanperfumes.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Afnan",
+   "foundAt": "2026-10-18T23:21:13.356Z",
    "attempts": 0
   }
  ],
@@ -1681,6 +2220,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-18T23:21:13.356Z",
+   "mode": "self",
+   "found": 11,
+   "vetted": 10,
+   "activated": 1,
+   "rejected": 0,
+   "notes": [
+    "✗ goldapple.kz: ملف الثقة ضعيف (27/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
+    "  ↳ perfumeconnection.com.au: CV 37/100 [https,returns,privacy,terms] (pages: /contact-us→200 /returns→200)",
+    "✗ perfumeconnection.com.au: ملف الثقة ضعيف (37/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
+    "  ↳ perfumeprice.co.uk: CV 84/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Magento",
+    "✓ perfumeprice.co.uk (CV 84/100): 6330 perfumes, 3/6 pages read without AI, GBP (1 = 71.2388 EGP) — added to the importer",
+    "✗ nose-shop.jp: الموقع لا يفتح",
+    "✗ letu.kz: الموقع لا يفتح",
+    "✗ jovoy.com: الموقع لا يفتح",
+    "✗ fragrancenet.com: الموقع لا يفتح (HTTP 403)",
+    "  ↳ escentials.com: CV 93/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
+    "✗ escentials.com: أغلب منتجاته ليست عطوراً (56%)",
+    "✗ thefragranceshop.co.uk: الموقع لا يفتح (HTTP 403)"
+   ]
+  },
   {
    "at": "2026-10-18T15:10:56.723Z",
    "mode": "self",
