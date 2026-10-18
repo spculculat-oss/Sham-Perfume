@@ -38,3 +38,20 @@ body[data-sham-focus='messenger'] .sham-floating { display: none !important; }
   .sham-reel-img, .sham-reel-particle, .sham-reel-sheen, .sham-reel-caption { animation: none !important; }
   .sham-reel-particle { display: none; }
 }
+
+/* ── Product banner (TopPromoHub): slide-in on product change + dwell progress ── */
+@keyframes sham-product-from-end { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: none; } }
+@keyframes sham-product-from-start { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: none; } }
+@keyframes sham-product-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.sham-product-in-next { animation: sham-product-from-end .45s cubic-bezier(.2,.7,.2,1) both; }
+.sham-product-in-prev { animation: sham-product-from-start .45s cubic-bezier(.2,.7,.2,1) both; }
+/* In RTL "next" arrives from the left. */
+[data-rtl='true'].sham-product-in-next { animation-name: sham-product-from-start; }
+[data-rtl='true'].sham-product-in-prev { animation-name: sham-product-from-end; }
+.sham-product-progress { transform-origin: left; animation: sham-product-progress linear both; }
+[dir='rtl'] .sham-product-progress { transform-origin: right; }
+.sham-product-progress[data-paused='true'] { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .sham-product-in-next, .sham-product-in-prev { animation: none !important; }
+  .sham-product-progress { animation: none !important; transform: scaleX(0); }
+}
