@@ -1,7 +1,125 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T13:24:54.809Z",
+ "updatedAt": "2026-10-18T23:21:15.726Z",
  "meetings": [
+  {
+   "date": "2026-10-19",
+   "at": "2026-10-18T23:21:15.726Z",
+   "mode": "self",
+   "summaryAr": "السكرتير (مشرف شاهين) أدار الاجتماع بالنيابة عن شاهين (المحركات مشغولة (أقل من خبيرين اتكلموا)، ضغط: 5 ملاحظة عاجلة، ضغط: 5 روبوت فيهم عطل)، من تقارير الأدوات: 11 ملاحظة، منها 5 عاجلة. القرارات: إصلاح عطل: كشّاف المصادر، إصلاح عطل: مستورد شاهين + مراجع الصفحات، إصلاح عطل: منظف الصور، إصلاح عطل: منارة شاهين (الظهور في البحث)، إصلاح عطل: مدرسة شاهين (الاعتماد على النفس)، تشغيل مستورد شاهين + مراجع الصفحات.",
+   "decisions": [
+    {
+     "title": "إصلاح عطل: كشّاف المصادر",
+     "detail": "الفحص الشامل قبل الاجتماع:\n- آخر تشغيل فشل\nالإصلاح المقترح:\n- افتح سجل التشغيل وأصلح سبب الفشل\nسجل آخر تشغيل: https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39155397243",
+     "area": "store",
+     "priority": "high",
+     "kind": "task",
+     "id": "2026-10-19-1-إصلاح-عطل-كش-اف-المصادر",
+     "status": "queued",
+     "needsApproval": false,
+     "by": "secretary",
+     "note": "مهمة لوكيل البرمجة"
+    },
+    {
+     "title": "إصلاح عطل: مستورد شاهين + مراجع الصفحات",
+     "detail": "الفحص الشامل قبل الاجتماع:\n- آخر تشغيل فشل\n- التقرير متأخر (6 ساعة، المفروض كل 2)\nالإصلاح المقترح:\n- افتح سجل التشغيل وأصلح سبب الفشل\n- إعادة تشغيل الروبوت\nسجل آخر تشغيل: https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39165580814",
+     "area": "store",
+     "priority": "high",
+     "kind": "task",
+     "id": "2026-10-19-2-إصلاح-عطل-مستورد-شاهين-م",
+     "status": "queued",
+     "needsApproval": false,
+     "by": "secretary",
+     "note": "مهمة لوكيل البرمجة"
+    },
+    {
+     "title": "إصلاح عطل: منظف الصور",
+     "detail": "الفحص الشامل قبل الاجتماع:\n- آخر تشغيل فشل\n- التقرير متأخر (6 ساعة، المفروض كل 2)\nالإصلاح المقترح:\n- افتح سجل التشغيل وأصلح سبب الفشل\n- إعادة تشغيل الروبوت\nسجل آخر تشغيل: https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39165580814",
+     "area": "store",
+     "priority": "high",
+     "kind": "task",
+     "id": "2026-10-19-3-إصلاح-عطل-منظف-الصور",
+     "status": "queued",
+     "needsApproval": false,
+     "by": "secretary",
+     "note": "مهمة لوكيل البرمجة"
+    },
+    {
+     "title": "إصلاح عطل: منارة شاهين (الظهور في البحث)",
+     "detail": "الفحص الشامل قبل الاجتماع:\n- آخر تشغيل فشل\nالإصلاح المقترح:\n- افتح سجل التشغيل وأصلح سبب الفشل\nسجل آخر تشغيل: https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39156004214",
+     "area": "content",
+     "priority": "high",
+     "kind": "task",
+     "id": "2026-10-19-4-إصلاح-عطل-منارة-شاهين-ال",
+     "status": "skipped",
+     "needsApproval": false,
+     "by": "secretary",
+     "note": "الحد اليومي للمهام — يُعاد طرحها غداً"
+    },
+    {
+     "title": "إصلاح عطل: مدرسة شاهين (الاعتماد على النفس)",
+     "detail": "الفحص الشامل قبل الاجتماع:\n- آخر تشغيل فشل\nالإصلاح المقترح:\n- افتح سجل التشغيل وأصلح سبب الفشل\nسجل آخر تشغيل: https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39155397243",
+     "area": "reliability",
+     "priority": "high",
+     "kind": "task",
+     "id": "2026-10-19-5-إصلاح-عطل-مدرسة-شاهين-ال",
+     "status": "skipped",
+     "needsApproval": false,
+     "by": "secretary",
+     "note": "الحد اليومي للمهام — يُعاد طرحها غداً"
+    },
+    {
+     "title": "تشغيل مستورد شاهين + مراجع الصفحات",
+     "detail": "مستورد شاهين + مراجع الصفحات متأخر — السكرتير يشغله",
+     "area": "store",
+     "priority": "medium",
+     "kind": "auto",
+     "action": {
+      "type": "rerun",
+      "workflow": "shaheen-import.yml"
+     },
+     "id": "2026-10-19-6-تشغيل-مستورد-شاهين-مراجع",
+     "status": "applied",
+     "needsApproval": false,
+     "by": "secretary",
+     "note": "شُغّلت الأداة"
+    }
+   ],
+   "toolGoals": {},
+   "seats": [
+    {
+     "seat": "manager",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "store",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "content",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "experience",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "reliability",
+     "ok": false,
+     "text": ""
+    }
+   ],
+   "chair": "secretary",
+   "deputyReasons": [
+    "المحركات مشغولة (أقل من خبيرين اتكلموا)",
+    "ضغط: 5 ملاحظة عاجلة",
+    "ضغط: 5 روبوت فيهم عطل"
+   ]
+  },
   {
    "date": "2026-10-18",
    "at": "2026-10-18T13:24:54.809Z",
@@ -144,6 +262,45 @@
    "issue": 134,
    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/134",
    "closedAt": "2026-10-18T14:22:20Z"
+  },
+  {
+   "id": "2026-10-19-1-إصلاح-عطل-كش-اف-المصادر",
+   "title": "إصلاح عطل: كشّاف المصادر",
+   "detail": "الفحص الشامل قبل الاجتماع:\n- آخر تشغيل فشل\nالإصلاح المقترح:\n- افتح سجل التشغيل وأصلح سبب الفشل\nسجل آخر تشغيل: https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39155397243",
+   "area": "store",
+   "priority": "high",
+   "needsApproval": false,
+   "createdAt": "2026-10-18T23:21:15.726Z",
+   "meeting": "2026-10-19",
+   "status": "open",
+   "issue": 146,
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/146"
+  },
+  {
+   "id": "2026-10-19-2-إصلاح-عطل-مستورد-شاهين-م",
+   "title": "إصلاح عطل: مستورد شاهين + مراجع الصفحات",
+   "detail": "الفحص الشامل قبل الاجتماع:\n- آخر تشغيل فشل\n- التقرير متأخر (6 ساعة، المفروض كل 2)\nالإصلاح المقترح:\n- افتح سجل التشغيل وأصلح سبب الفشل\n- إعادة تشغيل الروبوت\nسجل آخر تشغيل: https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39165580814",
+   "area": "store",
+   "priority": "high",
+   "needsApproval": false,
+   "createdAt": "2026-10-18T23:21:15.726Z",
+   "meeting": "2026-10-19",
+   "status": "open",
+   "issue": 147,
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/147"
+  },
+  {
+   "id": "2026-10-19-3-إصلاح-عطل-منظف-الصور",
+   "title": "إصلاح عطل: منظف الصور",
+   "detail": "الفحص الشامل قبل الاجتماع:\n- آخر تشغيل فشل\n- التقرير متأخر (6 ساعة، المفروض كل 2)\nالإصلاح المقترح:\n- افتح سجل التشغيل وأصلح سبب الفشل\n- إعادة تشغيل الروبوت\nسجل آخر تشغيل: https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39165580814",
+   "area": "store",
+   "priority": "high",
+   "needsApproval": false,
+   "createdAt": "2026-10-18T23:21:15.726Z",
+   "meeting": "2026-10-19",
+   "status": "open",
+   "issue": 148,
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/148"
   }
  ],
  "toolGoals": {
@@ -170,5 +327,24 @@
    "at": "2026-10-18T13:24:54.809Z"
   }
  ],
- "seeds": []
+ "seeds": [],
+ "delegations": [
+  {
+   "date": "2026-10-19",
+   "at": "2026-10-18T23:21:15.726Z",
+   "reasons": [
+    "المحركات مشغولة (أقل من خبيرين اتكلموا)",
+    "ضغط: 5 ملاحظة عاجلة",
+    "ضغط: 5 روبوت فيهم عطل"
+   ],
+   "decisions": [
+    "إصلاح عطل: كشّاف المصادر (مهمة لوكيل البرمجة)",
+    "إصلاح عطل: مستورد شاهين + مراجع الصفحات (مهمة لوكيل البرمجة)",
+    "إصلاح عطل: منظف الصور (مهمة لوكيل البرمجة)",
+    "إصلاح عطل: منارة شاهين (الظهور في البحث) (الحد اليومي للمهام — يُعاد طرحها غداً)",
+    "إصلاح عطل: مدرسة شاهين (الاعتماد على النفس) (الحد اليومي للمهام — يُعاد طرحها غداً)",
+    "تشغيل مستورد شاهين + مراجع الصفحات (شُغّلت الأداة)"
+   ]
+  }
+ ]
 }
