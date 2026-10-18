@@ -311,6 +311,7 @@ for (const [sourceIndex, source] of selected.entries()) {
   for (const p of plan.gone) p.stockStatus = 'out_of_stock';
   Object.assign(info, { origin: source.origin || 'built-in', added, refreshed, failed: failed.slice(0, 20), failedCount: failed.length, viaShaheen, deferred: deferred.length, gone: plan.gone.length, via, learnedSkills, notPerfume, duplicates });
   say(`${source.id}: +${added} new, ${refreshed} refreshed, ${failed.length} unreadable${viaShaheen ? `, ${viaShaheen} read by Shaheen` : ''}${via.skill ? `, ${via.skill} read with a learned skill` : ''}${via.generic ? `, ${via.generic} read by Shaheen's own reader` : ''}${learnedSkills ? `, ${learnedSkills} new skill learned` : ''}${duplicates ? `, ${duplicates} already sold (kept as a second offer)` : ''}${notPerfume ? `, ${notPerfume} non-perfume skipped` : ''}${deferred.length ? `, ${deferred.length} wait for the AI renewal` : ''}`);
+  if (failed.length && source.origin === 'discovered') say(`${source.id}: e.g. ${failed.slice(0, 3).map((f) => f.replace(/^https?:\/\/[^/]+/, '')).join(' ; ').slice(0, 400)}`);
 }
 
 if (aiResumeAt) { importInfo.aiResumeAt = new Date(aiResumeAt).toISOString(); say(`AI packages used up until ${importInfo.aiResumeAt}; the import continues then`); }
