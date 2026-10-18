@@ -1,0 +1,130 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import {
+  anchors, assessTrust, copyShare, rdapRegistered, regionOf, registrableDomain, sellsCopies, trustLinks, trustReason, TRUST_MIN,
+} from '../scripts/shaheen-discover/trust';
+import { emptySources, interleave, KNOWN_STORES, KNOWN_STORES_BY_REGION, planQueries, vettingQueue, WORLD_QUERIES, type LiveSource } from '../scripts/shaheen-discover/discover';
+import { extractProduct, parsePrice } from '../scripts/shaheen-import/extract';
+
+const NOW = Date.parse('2026-10-18T00:00:00.000Z');
+const YEARS = (n: number) => new Date(NOW - n * 365.25 * 86_400_000).toISOString();
+
+/** A German perfumery's home page (invented, not a real store): full legal footer. */
+const DE_HOME = `<!doctype html><html><head><title>Parfümerie Beispiel</title>
+<link rel="stylesheet" href="https://cdn.shopify.com/s/files/theme.css"></head><body>
+<header><a href="/collections/nischenduefte">Nischendüfte</a></header>
+<p>100% Originalware – autorisierter Händler. Weltweiter Versand.</p>
+<footer>
+ <a href="/pages/impressum">Impressum</a> <a href="/pages/kontakt">Kontakt</a> <a href="/policies/refund-policy">Widerrufsbelehrung</a>
+ <a href="/pages/versand">Versand &amp; Lieferung</a> <a href="/policies/privacy-policy">Datenschutz</a> <a href="/policies/terms-of-service">AGB</a>
+ <a href="https://www.instagram.com/beispiel.parfum">Instagram</a>
+ <img src="/icons/visa.svg" alt="Visa"><img src="/icons/paypal.svg" alt="PayPal"><img src="/icons/klarna.svg" alt="Klarna">
+</footer></body></html>`;
+const DE_IMPRESSUM = `<html><body><h1>Impressum</h1><p>Beispiel GmbH, Musterstraße 1, 10115 Berlin</p>
+<p>Telefon: +49 30 1234567 · E-Mail: service@parfum-beispiel.de</p><p>Handelsregister: HRB 123456 · USt-IdNr.: DE123456789</p></body></html>`;
+
+test('store CV: an established European perfumery passes with a high score', () => {
+  const links = trustLinks(DE_HOME, 'https://parfum-beispiel.de', 3);
+  assert.equal(links[0], 'https://parfum-beispiel.de/pages/impressum', 'the legal notice is read first');
+  assert.ok(links.includes('https://parfum-beispiel.de/pages/kontakt'));
+  assert.ok(!links.some((u) => u.includes('instagram')), 'only the store\'s own pages');
+  const cv = assessTrust({
+    host: 'parfum-beispiel.de', finalUrl: 'https://parfum-beispiel.de/', homeHtml: DE_HOME,
+    pages: [{ url: 'https://parfum-beispiel.de/pages/impressum', html: DE_IMPRESSUM }], registeredAt: YEARS(9), safeBrowsing: 'clean', now: NOW,
+  });
+  assert.equal(cv.verdict, 'trusted');
+  assert.ok(cv.score >= 90, `score ${cv.score}`);
+  assert.deepEqual(cv.flags, []);
+  const by = Object.fromEntries(cv.checks.map((c) => [c.id, c]));
+  assert.equal(by.age.points, 20);
+  assert.equal(by.identity.ok, true);
+  assert.equal(by.returns.ok, true);
+  assert.equal(by.shipping.detail, 'يشحن دولياً');
+  assert.match(by.payment.detail || '', /Visa.*PayPal.*Klarna/);
+  assert.equal(by.platform.detail, 'Shopify');
+  assert.equal(by.authentic.ok, true);
+  assert.equal(cv.checks.reduce((n, c) => n + c.max, 0), 100, 'the checks add up to 100');
+});
+
+test('store CV: Japanese and Arabic stores are read in their own language', () => {
+  const jp = `<html><body><a href="/law">特定商取引法に基づく表記</a><a href="/contact">お問い合わせ</a><a href="/returns">返品・交換について</a>
+    <a href="/privacy">プライバシーポリシー</a><a href="/terms">利用規約</a><p>正規品のみ取り扱い。海外発送対応。</p>
+    <p>電話: 03-1234-5678 info@nose.example.jp 住所 東京都渋谷区</p><p>VISA / JCB / PayPay</p><a href="https://x.com/nose_example">X</a></body></html>`;
+  const cvJp = assessTrust({ host: 'nose.example.jp', finalUrl: 'https://nose.example.jp/', homeHtml: jp, registeredAt: YEARS(6), now: NOW });
+  assert.equal(cvJp.verdict, 'trusted', JSON.stringify(cvJp.checks.filter((c) => !c.ok)));
+  const ar = `<html><body><a href="/pages/contact">اتصل بنا</a><a href="/pages/return-policy">سياسة الاسترجاع والاستبدال</a><a href="/pages/shipping">الشحن والتوصيل</a>
+    <a href="/pages/privacy">سياسة الخصوصية</a><a href="/pages/terms">الشروط والأحكام</a><p>منتجات أصلية 100% — الوكيل الرسمي. نشحن لجميع الدول.</p>
+    <p>السجل التجاري 1010123456 · الرقم الضريبي 300000000000003 · العنوان: الرياض</p><p>هاتف: +966 11 123 4567</p>
+    <p>مدى · Apple Pay · تابي</p><a href="https://instagram.com/oud.example">انستجرام</a><script src="https://cdn.salla.network/app.js"></script></body></html>`;
+  const cvAr = assessTrust({ host: 'oud.example.sa', finalUrl: 'https://oud.example.sa/', homeHtml: ar, registeredAt: null, now: NOW });
+  assert.equal(cvAr.verdict, 'trusted');
+  assert.equal(cvAr.checks.find((c) => c.id === 'age')?.ok, null, 'registry without a date is neutral, not a failure');
+  assert.equal(cvAr.checks.find((c) => c.id === 'platform')?.detail, 'Salla');
+});
+
+test('store CV: red flags reject whatever the score; thin sites are weak', () => {
+  const dupes = assessTrust({ host: 'dupes.example.com', finalUrl: 'https://dupes.example.com/', homeHtml: `${DE_HOME}<h2>Designer dupes – inspired by luxury perfumes</h2>`, pages: [{ url: 'https://dupes.example.com/impressum', html: DE_IMPRESSUM }], registeredAt: YEARS(8), now: NOW });
+  assert.equal(dupes.verdict, 'rejected');
+  assert.match(trustReason(dupes), /مقلّدة/);
+  const young = assessTrust({ host: 'parfum-sale.example.shop', finalUrl: 'https://parfum-sale.example.shop/', homeHtml: DE_HOME, registeredAt: YEARS(0.2), now: NOW });
+  assert.equal(young.verdict, 'rejected');
+  assert.ok(young.flags.some((f) => /جديد جداً/.test(f)));
+  assert.ok(young.flags.some((f) => /امتداد/.test(f)));
+  const insecure = assessTrust({ host: 'old.example.com', finalUrl: 'http://old.example.com/', homeHtml: DE_HOME, registeredAt: YEARS(10), now: NOW });
+  assert.equal(insecure.verdict, 'rejected');
+  const flagged = assessTrust({ host: 'p.example.com', finalUrl: 'https://p.example.com/', homeHtml: DE_HOME, registeredAt: YEARS(10), safeBrowsing: 'flagged', now: NOW });
+  assert.equal(flagged.verdict, 'rejected');
+  const wire = assessTrust({ host: 'w.example.com', finalUrl: 'https://w.example.com/', homeHtml: '<p>Payment by Western Union or MoneyGram</p>', registeredAt: YEARS(3), now: NOW });
+  assert.ok(wire.flags.some((f) => /الحوالات/.test(f)));
+  const thin = assessTrust({ host: 'thin.example.com', finalUrl: 'https://thin.example.com/', homeHtml: '<html><body><h1>Perfumes</h1><a href="/p/1">Oud</a></body></html>', registeredAt: YEARS(4), now: NOW });
+  assert.equal(thin.verdict, 'weak');
+  assert.ok(thin.score < TRUST_MIN);
+  assert.match(trustReason(thin), /ضعيف \(\d+\/100\): ينقصه/);
+});
+
+test('store CV helpers: copies, registry, regions, links', () => {
+  assert.equal(copyShare(['Oud Royal 100ml', 'Inspired by Aventus', 'Baccarat dupe', 'Musk']), 0.5);
+  assert.equal(copyShare([]), 0);
+  assert.equal(sellsCopies('<p>Inspired by the desert nights of Arabia</p>'), false, 'a poetic «inspired by» is not a copy shop');
+  assert.equal(sellsCopies('<p>Best perfume dupes of 2026</p>'), true);
+  assert.equal(registrableDomain('shop.example.co.uk'), 'example.co.uk');
+  assert.equal(registrableDomain('www.parfum.de'), 'parfum.de');
+  assert.equal(registrableDomain('perfumehub.com.my'), 'perfumehub.com.my');
+  assert.equal(rdapRegistered({ events: [{ eventAction: 'last changed', eventDate: '2025-01-01T00:00:00Z' }, { eventAction: 'registration', eventDate: '2004-03-02T10:00:00Z' }] }), '2004-03-02T10:00:00.000Z');
+  assert.equal(rdapRegistered({}), undefined);
+  assert.equal(regionOf('douglas.de'), 'europe');
+  assert.equal(regionOf('nose-shop.jp'), 'east-asia');
+  assert.equal(regionOf('goldapple.kz'), 'central-asia');
+  assert.equal(regionOf('fragrancenet.com', 'USD'), 'americas');
+  assert.equal(regionOf('notino.co.uk'), 'europe');
+  assert.equal(regionOf('example.com'), 'global');
+  assert.deepEqual(anchors('<a href="/a?x=1&amp;y=2">A <b>b</b></a>', 'https://s.example'), [{ href: 'https://s.example/a?x=1&y=2', text: 'A b' }]);
+});
+
+test('global scout: regions take turns in the address book, the searches and the queue', () => {
+  assert.deepEqual(interleave([[1, 2, 3], [4], [5, 6]]), [1, 4, 5, 2, 6, 3]);
+  assert.equal(new Set(KNOWN_STORES).size, KNOWN_STORES.length, 'no store twice');
+  const firstSix = KNOWN_STORES.slice(0, 6);
+  for (const region of ['arab', 'europe', 'americas', 'east-asia', 'central-asia'] as const) {
+    assert.ok(firstSix.some((h) => KNOWN_STORES_BY_REGION[region].includes(h)), `${region} among the first six`);
+  }
+  const langs = new Set(WORLD_QUERIES.flat().map((q) => q.lang));
+  for (const l of ['ar', 'en', 'fr', 'de', 'es', 'ja', 'ko', 'zh', 'ru']) assert.ok(langs.has(l as never), l);
+  const file = emptySources();
+  const qs = planQueries(file, [], NOW, 5);
+  assert.deepEqual(qs.map((q) => q.region), ['arab', 'europe', 'americas', 'east-asia', 'central-asia'], 'one search per region per run');
+  const active: LiveSource = { id: 'a', host: 'a.example', name: 'A', base: 'https://a.example', status: 'active', foundBy: 'seed', foundAt: '2026-09-01T00:00:00.000Z', vettedAt: '2026-10-17T00:00:00.000Z', attempts: 1, currency: 'AED', rateToEgp: 13 };
+  const cand: LiveSource = { id: 'c', host: 'c.example', name: 'C', base: 'https://c.example', status: 'candidate', foundBy: 'seed', foundAt: '2026-10-01T00:00:00.000Z', attempts: 0 };
+  file.sources.push(cand, active);
+  assert.deepEqual(vettingQueue(file, NOW, 5).map((s) => s.id), ['a', 'c'], 'an active store without a CV is reviewed first, even if checked yesterday');
+});
+
+test('European price formats are read correctly (49,90 € is not 4990)', () => {
+  assert.equal(parsePrice('49,90'), 49.9);
+  assert.equal(parsePrice('1.234,50 €'), 1234.5);
+  assert.equal(parsePrice('¥12,800'), 12800);
+  const page = (price: string, cur: string) => `<html><head><script type="application/ld+json">${JSON.stringify({ '@type': 'Product', name: 'Eau de Parfum 100 ml', sku: 'X1', image: 'https://s.example/a.jpg', offers: { '@type': 'Offer', price, priceCurrency: cur } })}</script></head><body></body></html>`;
+  assert.equal(extractProduct(page('49,90', 'EUR'), 'https://s.example/p/x1')?.price, 49.9);
+  assert.equal(extractProduct(page('120.0000', 'USD'), 'https://s.example/p/x1')?.price, 120, 'the standard format stays as written');
+  assert.equal(extractProduct(page('12800', 'JPY'), 'https://s.example/p/x1')?.price, 12800);
+});

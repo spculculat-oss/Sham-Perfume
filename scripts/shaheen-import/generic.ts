@@ -5,27 +5,10 @@
  * It never guesses: no price signal in the page source → null (the next layer — a learned site skill, then
  * Shaheen's AI reading — takes over).
  */
-import { metaTags, pageImages, pageText, sizeOf, genderOf, parseNotes, squash, type ExtractedProduct } from './extract';
+import { metaTags, pageImages, parsePrice, pageText, sizeOf, genderOf, parseNotes, squash, type ExtractedProduct } from './extract';
 
-/**
- * «1,234.50», «1.234,50», «1 234», «SAR 99», «٩٩٫٥٠» → number. The last separator followed by 1–2 digits is
- * the decimal one; every other separator is a thousands separator.
- */
-export function parsePrice(raw: unknown): number | undefined {
-  if (typeof raw === 'number') return Number.isFinite(raw) && raw > 0 ? raw : undefined;
-  let s = String(raw ?? '')
-    .replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660))
-    .replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 0x06F0))
-    .replace(/٫/g, '.').replace(/٬/g, ',');
-  const m = s.match(/\d[\d.,\s\u00a0\u202f']*/);
-  if (!m) return undefined;
-  // «420.00 ج.م» leaves a stray dot after the number: trailing separators are not part of it.
-  s = m[0].replace(/[\s\u00a0\u202f']/g, '').replace(/[.,]+$/, '');
-  const dec = s.match(/[.,](\d{1,2})$/);
-  const whole = (dec ? s.slice(0, -dec[0].length) : s).replace(/[.,]/g, '');
-  const n = Number(dec ? `${whole}.${dec[1]}` : whole);
-  return Number.isFinite(n) && n > 0 ? n : undefined;
-}
+/** Price text in any local format — moved to extract.ts (shared with the JSON-LD reader). */
+export { parsePrice } from './extract';
 
 const attr = (tag: string, name: string) => (tag.match(new RegExp(`\\b${name}\\s*=\\s*["']([^"']*)["']`, 'i')) || [])[1];
 const stripTags = (html: string) => squash(html.replace(/<[^>]+>/g, ' '));

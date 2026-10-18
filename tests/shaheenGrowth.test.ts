@@ -173,7 +173,7 @@ test('source scout: candidates, vetting order, queries, search parsing, import s
   const now = '2026-10-18T00:00:00.000Z';
   assert.equal(addCandidates(file, [{ host: 'https://www.oudhouse.ae/x', foundBy: 'seed' }, { host: 'oudhouse.ae', foundBy: 'seed' }, { host: 'noon.com', foundBy: 'seed' }], now), 1);
   assert.equal(file.sources[0].id, 'oudhouse-ae');
-  const active: LiveSource = { id: 'a', host: 'a.example', name: 'A', base: 'https://a.example', status: 'active', foundBy: 'seed', foundAt: '2026-09-01T00:00:00.000Z', vettedAt: '2026-10-01T00:00:00.000Z', attempts: 1, sitemaps: ['https://a.example/sitemap.xml'], productPattern: '^https://a\\.example/products/[^?#]+$', currency: 'AED', rateToEgp: 13 };
+  const active: LiveSource = { id: 'a', host: 'a.example', name: 'A', base: 'https://a.example', status: 'active', foundBy: 'seed', foundAt: '2026-09-01T00:00:00.000Z', vettedAt: '2026-10-01T00:00:00.000Z', attempts: 1, sitemaps: ['https://a.example/sitemap.xml'], productPattern: '^https://a\\.example/products/[^?#]+$', currency: 'AED', rateToEgp: 13, trust: { score: 85, verdict: 'trusted', at: '2026-10-01T00:00:00.000Z', checks: [], flags: [] } };
   file.sources.push(active);
   assert.deepEqual(vettingQueue(file, Date.parse(now), 5).map((s) => s.id), ['oudhouse-ae', 'a'], 'new first, then the weekly re-check');
   const src = toImportSource(active);

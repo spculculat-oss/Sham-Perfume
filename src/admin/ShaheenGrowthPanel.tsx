@@ -1,11 +1,12 @@
 import { T, TP, adminLocale } from './adminL10n';
 import { useCallback, useEffect, useState } from 'react';
-import { BookOpenCheck, ExternalLink, Globe2, GraduationCap, RefreshCw, Wrench } from 'lucide-react';
+import { BookOpenCheck, ExternalLink, Globe2, GraduationCap, RefreshCw, ShieldCheck, Wrench } from 'lucide-react';
 import bundledSources from '../data/live/import-sources.json';
 import bundledSchool from '../data/live/shaheen-school.json';
 import bundledSkills from '../data/live/shaheen-skills.json';
 import type { LiveSource, SourcesFile, SourceStatus } from '../../scripts/shaheen-discover/discover';
 import type { SchoolFile } from '../../scripts/shaheen-school/school';
+import { TRUST_MIN, type Region, type TrustId, type TrustProfile } from '../../scripts/shaheen-discover/trust';
 import type { SkillsFile } from '../../scripts/shaheen-import/skills';
 
 /**
@@ -35,6 +36,61 @@ const FOUND_BY: Record<string, () => string> = {
   council: () => T('اقترحه اجتماع شاهين اليومي'),
   'built-in': () => T('المورد الأصلي'),
 };
+
+const REGION: Record<Region, () => string> = {
+  arab: () => T('الخليج والعالم العربي'),
+  europe: () => T('أوروبا'),
+  americas: () => T('الأمريكتان'),
+  'east-asia': () => T('شرق آسيا'),
+  'central-asia': () => T('وسط آسيا'),
+  'south-asia': () => T('جنوب آسيا'),
+  oceania: () => T('أستراليا ونيوزيلندا'),
+  africa: () => T('أفريقيا'),
+  global: () => T('عالمي'),
+};
+const CHECK: Record<TrustId, () => string> = {
+  age: () => T('عمر النطاق'),
+  https: () => T('اتصال آمن (https)'),
+  contact: () => T('بيانات التواصل'),
+  identity: () => T('هوية الشركة (سجل/رقم ضريبي/عنوان)'),
+  returns: () => T('سياسة الإرجاع والاسترداد'),
+  shipping: () => T('سياسة الشحن'),
+  privacy: () => T('سياسة الخصوصية'),
+  terms: () => T('الشروط والأحكام'),
+  payment: () => T('وسائل دفع معروفة'),
+  platform: () => T('منصة متاجر معروفة'),
+  social: () => T('حسابات رسمية على التواصل'),
+  authentic: () => T('يضمن أن المنتجات أصلية'),
+};
+const trustTone = (t: TrustProfile) => (t.verdict === 'rejected' ? 'bg-red-100 text-red-800' : t.score >= 80 ? 'bg-emerald-100 text-emerald-800' : t.score >= TRUST_MIN ? 'bg-lime-100 text-lime-800' : 'bg-amber-100 text-amber-800');
+
+/** The store's «CV»: score, every check (✓ found, ✗ missing, ? could not be checked) and red flags. */
+function TrustCv({ t }: { t: TrustProfile }) {
+  return (
+    <details className="w-full">
+      <summary className="cursor-pointer text-[11px] text-stone-500">
+        <span className={`me-1 rounded-full px-1.5 py-0.5 text-[10px] font-bold ${trustTone(t)}`}>{TP('الثقة {n}/100', { n: t.score })}</span>
+        {T('السيرة الذاتية للمتجر')}
+      </summary>
+      <div className="mt-1 rounded-lg bg-stone-50 p-2">
+        {t.flags.length > 0 && (
+          <ul className="mb-1 space-y-0.5 text-[11px] font-bold text-red-700">{t.flags.map((f) => <li key={f}>⚑ {T(f)}</li>)}</ul>
+        )}
+        <ul className="grid gap-x-3 gap-y-0.5 text-[11px] sm:grid-cols-2">
+          {t.checks.map((c) => (
+            <li key={c.id} className="flex items-baseline gap-1">
+              <span className={c.ok ? 'text-emerald-600' : c.ok === false ? 'text-red-500' : 'text-stone-400'}>{c.ok ? '✓' : c.ok === false ? '✗' : '?'}</span>
+              <span>{(CHECK[c.id] || (() => c.label))()}</span>
+              <span className="text-stone-400">{c.points}/{c.max}</span>
+              {c.detail && <span className="truncate text-stone-500" dir="auto">— {c.detail}</span>}
+            </li>
+          ))}
+        </ul>
+        <p className="mt-1 text-[10px] text-stone-400">{T('آخر قراءة')}: {when(t.at)}{t.registeredAt ? ` · ${T('مسجّل منذ')} ${when(t.registeredAt)}` : ''}</p>
+      </div>
+    </details>
+  );
+}
 
 /** Fetches the newest copy of a live file; keeps the bundled one when the network copy is not newer. */
 function useLive<D extends { updatedAt: string }>(name: string, bundled: D, valid: (d: unknown) => boolean) {
@@ -92,6 +148,10 @@ export default function ShaheenGrowthPanel() {
       <p className="mb-4 text-xs leading-relaxed text-stone-600">
         {T('كل 6 ساعات شاهين بيدوّر على متاجر عطور جديدة على الإنترنت، يفحص كل متجر بأدب (بيحترم قواعد الموقع وسرعته، ومش بيقرب من الأسواق الكبيرة ولا السوشيال)، ولو صفحات منتجاته واضحة وعطور فعلاً بيضيفه لمستورد شاهين اللي بينقل منتجاته بنفس الطريقة: السعر + 50%، تنظيف الصور، وصف عربي، مراجعة كل صفحة. وفي نفس الوقت بيمتحن نفسه ويذاكر عشان يرد لوحده لو أي خدمة ذكاء اصطناعي وقفت.')}
       </p>
+      <p className="-mt-2 mb-4 flex gap-1.5 text-xs leading-relaxed text-stone-600">
+        <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+        <span>{TP('بيدوّر في العالم كله (الخليج، أوروبا، أمريكا، شرق ووسط آسيا) بلغة كل بلد، وقبل ما يدخل أي متجر بيراجع سيرته الذاتية: عمر الموقع، بيانات الشركة والتواصل، سياسة الإرجاع والشحن، وسائل الدفع، وإنه بيبيع أصلي مش تقليد. أقل من {min}/100 أو أي علامة خطر = مرفوض.', { min: TRUST_MIN })}</span>
+      </p>
 
       <div className="grid gap-4 lg:grid-cols-3">
         {/* «كشّاف المصادر» */}
@@ -107,6 +167,13 @@ export default function ShaheenGrowthPanel() {
             </p>
           )}
           {active.length > 0 && (
+            <div className="mb-2 flex flex-wrap gap-1.5 text-[11px]">
+              {[...new Set(active.map((s) => s.region || 'global'))].map((r) => (
+                <span key={r} className="rounded-full bg-stone-100 px-2 py-0.5 text-stone-600">{REGION[r]()}: {active.filter((s) => (s.region || 'global') === r).length}</span>
+              ))}
+            </div>
+          )}
+          {active.length > 0 && (
             <ul className="mb-2 divide-y divide-stone-100 text-xs">
               {active.map((s) => <SourceRow key={s.id} s={s} />)}
             </ul>
@@ -116,7 +183,12 @@ export default function ShaheenGrowthPanel() {
               <summary className="cursor-pointer text-stone-500">{T('متاجر اتفحصت ومتنقلش منها (والسبب)')}</summary>
               <ul className="mt-1 space-y-1">
                 {[...by('paused'), ...by('rejected')].slice(0, 30).map((s) => (
-                  <li key={s.id} className="flex flex-wrap gap-1.5"><span className="font-mono">{s.host}</span><span className="text-stone-500">— {s.reason || '—'}</span></li>
+                  <li key={s.id} className="flex flex-wrap gap-1.5">
+                    <span className="font-mono">{s.host}</span>
+                    {s.region && <span className="text-stone-400">{REGION[s.region]()}</span>}
+                    <span className="text-stone-500">— {s.reason || '—'}</span>
+                    {s.trust && <TrustCv t={s.trust} />}
+                  </li>
                 ))}
               </ul>
             </details>
@@ -185,7 +257,9 @@ function SourceRow({ s }: { s: LiveSource }) {
       {s.currency && <span className="text-stone-500">{s.currency}</span>}
       {s.productsEstimate ? <span className="text-stone-500">{TP('~{n} منتج', { n: s.productsEstimate })}</span> : null}
       <span className="text-stone-400">{(FOUND_BY[s.foundBy] || (() => s.foundBy))()}{s.foundWith ? ` («${s.foundWith}»)` : ''}</span>
+      {s.region && <span className="text-stone-500">{REGION[s.region]()}</span>}
       <span className="text-stone-400">{T('آخر فحص')}: {when(s.vettedAt)}</span>
+      {s.trust ? <TrustCv t={s.trust} /> : <span className="text-[11px] text-amber-700">{T('سيرته الذاتية هتتراجع في الجولة الجاية')}</span>}
     </li>
   );
 }

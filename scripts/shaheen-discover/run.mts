@@ -2,12 +2,17 @@
  * «كشّاف المصادر» — GitHub Actions runs this every 6 hours (.github/workflows/shaheen-discover.yml):
  *   node --import tsx scripts/shaheen-discover/run.mts
  * 1. Finds online perfume stores:
- *    - with AI: «الخبير شاهين» searches the web (Gemini with Google Search) in Arabic and English, per market
- *      and per brand the store sells; searches that found good stores are repeated first;
+ *    - with AI: «الخبير شاهين» searches the web (Gemini with Google Search) all over the world — the Arab world,
+ *      Europe, the Americas, East and Central Asia — each region in its own language and in English, and per
+ *      brand the store sells; the regions take turns and searches that found good stores are repeated first;
+ *    - his address book of well-known shops worldwide (KNOWN_STORES, a few new ones per run, regions in turn);
  *    - by himself (no AI, or the quota is used up): the official shops of the brands the store already
  *      sells, the stores an earlier search found but were not checked yet, and DISCOVER_SEEDS;
  *    - optional: BRAVE_SEARCH_API_KEY (a search service) when the merchant adds one.
- * 2. Checks each store politely (robots.txt respected, one page at a time): its product sitemap, then 6 product
+ * 2. Reads each store's «CV» first (trust.ts): domain age (RDAP), https, contact details and company identity,
+ *    returns / shipping / privacy / terms, known payment methods, platform, social accounts, «original» promise;
+ *    a red flag (copies, a brand-new domain, a dangerous site) or a score under 60/100 rejects it.
+ *    Then checks it politely (robots.txt respected, one page at a time): its product sitemap, then 6 product
  *    pages spread over the catalog must give complete products (name, price, currency, photo) without AI,
  *    in one currency, and be perfume. Good stores become import sources (src/data/live/import-sources.json);
  *    «مستورد شاهين» then imports them with the same method as the original supplier (×1.5, review, photos).
@@ -26,6 +31,7 @@ import {
   addCandidates, brandSiteGuesses, CATEGORYISH, NOT_PRODUCT, oneLanguage, sameSite, domainOf, KNOWN_STORES, pageLinks, withPage, domainsFromSearch, emptySources, isNeverSource, isSourcesFile, judgeSamples,
   inferProductPattern, parseRobots, planQueries, productCandidates, spreadSample, summary, vettingQueue, type LiveSource, type Sample, type SourcesFile,
 } from './discover';
+import { assessTrust, copyShare, rdapRegistered, regionOf, registrableDomain, trustLinks, trustReason, TRUST_MIN, type TrustProfile } from './trust';
 
 const env = process.env;
 const FILE = new URL('../../src/data/live/import-sources.json', import.meta.url);
@@ -33,7 +39,7 @@ const PRODUCTS = new URL('../../src/data/products.json', import.meta.url);
 const UA = 'Mozilla/5.0 (compatible; ShaheenImporter/1.0; +https://spculculat-oss.github.io/Sham-Perfume/)';
 const started = Date.now();
 const BUDGET_MS = Number(env.DISCOVER_TIME_BUDGET_S ?? 900) * 1000;
-const MAX_ACTIVE = Math.max(1, Number(env.DISCOVER_MAX_ACTIVE ?? 12));
+const MAX_ACTIVE = Math.max(1, Number(env.DISCOVER_MAX_ACTIVE ?? 20));
 const VET_PER_RUN = Math.max(1, Number(env.DISCOVER_VET_PER_RUN ?? 8));
 const QUERIES = Math.max(0, Number(env.DISCOVER_QUERIES ?? 4));
 const BLOCK = (env.DISCOVER_BLOCK || '').split(/[\s,]+/).map(domainOf).filter(Boolean);
@@ -76,9 +82,10 @@ const geminiKey = env.GEMINI_API_KEY?.trim();
 const models = [...new Set([env.DISCOVER_MODEL?.trim(), env.GEMINI_MODEL?.trim(), 'gemini-flash-latest', 'gemini-flash-lite-latest'].filter((m): m is string => Boolean(m)))];
 if (geminiKey && QUERIES && !quota.pausedUntil('gemini')) {
   for (const q of planQueries(file, brands, now.getTime(), QUERIES)) {
+    // Searches in French, Japanese, Russian… keep their own words; the instruction is in English.
     const prompt = q.lang === 'ar'
-      ? `${q.q}. اذكر أسماء نطاقات (domains) متاجر العطور الإلكترونية الحقيقية التي تبيع العطور مباشرة للعملاء بأسعار ظاهرة (ليست أسواقاً مثل أمازون ونون، وليست مواقع مراجعات). سطر لكل متجر: النطاق فقط.`
-      : `${q.q}. List the domains of real online perfume shops that sell directly to customers with visible prices (not marketplaces like Amazon or noon, not review sites). One shop per line: the domain only.`;
+      ? `${q.q}. اذكر أسماء نطاقات (domains) متاجر العطور الإلكترونية الحقيقية والموثوقة (شركات معروفة منذ سنوات، تبيع عطوراً أصلية فقط) التي تبيع مباشرة للعملاء بأسعار ظاهرة (ليست أسواقاً مثل أمازون ونون، وليست مواقع مراجعات ولا متاجر عطور مقلدة). سطر لكل متجر: النطاق فقط.`
+      : `${q.q}. List the domains of real, established and trustworthy online perfume shops (known companies, several years old, selling only authentic perfumes) that sell directly to customers with visible prices (not marketplaces like Amazon or noon, not review sites, no replica/dupe shops). One shop per line: the domain only.`;
     try {
       let r: Response | undefined;
       while (models.length) {
@@ -113,7 +120,7 @@ if (braveKey) {
   }
 }
 // By himself: official shops of the store's own brands (a few new ones per run) and the merchant's seeds.
-const known = KNOWN_STORES.filter((h) => !file.sources.some((s) => s.host === h)).slice(0, 4);
+const known = KNOWN_STORES.filter((h) => !file.sources.some((s) => s.host === h)).slice(0, 6);
 found += addCandidates(file, known.map((host) => ({ host, foundBy: 'known-store' as const })), iso, block);
 const guesses = brandSiteGuesses(brands, 60).filter((g) => !file.sources.some((s) => s.host === g.host)).slice(0, 6);
 found += addCandidates(file, guesses.map((g) => ({ host: g.host, foundBy: 'brand-site' as const, foundWith: g.brand })), iso, block);
@@ -205,6 +212,34 @@ async function rateToEgp(currency: string): Promise<number | undefined> {
   } catch { return undefined; }
 }
 
+/**
+ * The store's «CV» (trust.ts): its contact / legal / returns pages (robots.txt respected), the domain's
+ * registration date from the public registry (RDAP), and Google Safe Browsing when the merchant adds a key.
+ */
+async function readCv(host: string, base: string, homeHtml: string, robots: ReturnType<typeof parseRobots>, delay: number): Promise<TrustProfile> {
+  const pages: { url: string; html: string }[] = [];
+  for (const url of trustLinks(homeHtml, base, 3)) {
+    try { if (!robots.allowed(new URL(url).pathname)) continue; } catch { continue; }
+    if (timeLeft() < 60_000) break;
+    await sleep(delay);
+    const page = await get(url);
+    if (page.status === 200 && page.body) pages.push({ url: page.url, html: page.body.slice(0, 3_000_000) });
+  }
+  let registeredAt: string | null | undefined;
+  const rdap = await get(`https://rdap.org/domain/${registrableDomain(host)}`, 15_000);
+  if (rdap.status === 200) { try { registeredAt = rdapRegistered(JSON.parse(rdap.body)) ?? null; } catch { registeredAt = null; } } else registeredAt = null;
+  let safeBrowsing: 'clean' | 'flagged' | undefined;
+  const sbKey = env.SAFE_BROWSING_API_KEY?.trim();
+  if (sbKey) {
+    const r = await fetch(`https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${encodeURIComponent(sbKey)}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: AbortSignal.timeout(15_000),
+      body: JSON.stringify({ client: { clientId: 'sham-perfume-scout', clientVersion: '1.0' }, threatInfo: { threatTypes: ['MALWARE', 'SOCIAL_ENGINEERING', 'UNWANTED_SOFTWARE', 'POTENTIALLY_HARMFUL_APPLICATION'], platformTypes: ['ANY_PLATFORM'], threatEntryTypes: ['URL'], threatEntries: [{ url: base }] } }),
+    }).catch(() => undefined);
+    if (r?.ok) { const d = await r.json().catch(() => ({})) as { matches?: unknown[] }; safeBrowsing = d.matches?.length ? 'flagged' : 'clean'; }
+  }
+  return assessTrust({ host, finalUrl: base, homeHtml, pages, registeredAt, safeBrowsing, now: now.getTime() });
+}
+
 async function vet(s: LiveSource): Promise<void> {
   s.attempts += 1;
   s.vettedAt = iso;
@@ -229,6 +264,16 @@ async function vet(s: LiveSource): Promise<void> {
   const robotsText = await get(new URL('/robots.txt', base).href);
   const robots = parseRobots(robotsText.status === 200 ? robotsText.body : '');
   if (!robots.allowed('/')) return fail('ملف robots.txt يمنع القراءة الآلية', true);
+  // Before anything is imported: the store's CV. A red flag rejects it for good; a weak CV may improve
+  // (checked again after a month, like other rejections, up to three times).
+  const cv = await readCv(s.host, base, home.body, robots, Math.max(600, robots.crawlDelayMs || 0));
+  s.trust = cv;
+  s.region = regionOf(domainOf(base) || s.host, s.currency);
+  const cvLine = `CV ${cv.score}/100${cv.flags.length ? ` ⚑ ${cv.flags[0]}` : ''} [${cv.checks.filter((c) => c.ok).map((c) => c.id).join(',')}]`;
+  // A red flag (copies, a brand-new domain, dangerous site…) is final: not retried next month.
+  if (cv.verdict === 'rejected') { s.attempts = Math.max(s.attempts, 3); return fail(trustReason(cv), true); }
+  if (cv.score < TRUST_MIN) return fail(trustReason(cv));
+  say(`  ↳ ${s.host}: ${cvLine}`);
   const { sitemaps, urls, refused, tried, trace } = await productSitemaps(base, robots.sitemaps.filter((u) => sameSite(domainOf(u), domainOf(base))));
   let allowed = urls.filter((u) => { try { return robots.allowed(new URL(u).pathname); } catch { return false; } });
   let crawlPages: string[] = [];
@@ -272,12 +317,21 @@ async function vet(s: LiveSource): Promise<void> {
   }
   s.sampleOk = verdict.okCount; s.sampleTotal = verdict.total;
   if (!verdict.ok) return fail(verdict.reason || 'غير صالح');
+  // The CV's last check: the products themselves are not copies of other houses' perfumes.
+  const names = samples.map((x) => x.product?.name || '').filter(Boolean);
+  if (copyShare(names) >= 0.3) {
+    cv.flags.push('أسماء منتجاته تدل على عطور مقلّدة («dupe / inspired by»)');
+    cv.verdict = 'rejected';
+    s.attempts = Math.max(s.attempts, 3);
+    return fail(trustReason(cv), true);
+  }
   const rate = await rateToEgp(verdict.currency!);
   if (!rate) return fail(`لا يوجد سعر صرف للعملة ${verdict.currency}`);
   const pattern = new RegExp(verdict.pattern!, 'i');
   Object.assign(s, {
     currency: verdict.currency, rateToEgp: rate, productPattern: verdict.pattern, sitemaps, via: verdict.via, crawlPages: crawlPages.length ? crawlPages : undefined,
     productsEstimate: allowed.filter((u) => pattern.test(u)).length, crawlDelayMs: robots.crawlDelayMs, reason: undefined,
+    region: regionOf(domainOf(base) || s.host, verdict.currency),
   });
   const activeNow = file.sources.filter((x) => x.status === 'active' && x !== s).length;
   if (wasActive || activeNow < MAX_ACTIVE) {
@@ -286,7 +340,7 @@ async function vet(s: LiveSource): Promise<void> {
       const q = file.queries.find((x) => x.q === s.foundWith);
       if (q) q.activated += 1;
     }
-    say(`✓ ${s.host}: ${s.productsEstimate}${crawlPages.length ? '+ (by browsing)' : ''} perfumes, ${verdict.okCount}/${verdict.total} pages read without AI, ${verdict.currency} (1 = ${rate} EGP)${wasActive ? ' — still good' : ' — added to the importer'}`);
+    say(`✓ ${s.host} (CV ${cv.score}/100): ${s.productsEstimate}${crawlPages.length ? '+ (by browsing)' : ''} perfumes, ${verdict.okCount}/${verdict.total} pages read without AI, ${verdict.currency} (1 = ${rate} EGP)${wasActive ? ' — still good' : ' — added to the importer'}`);
   } else {
     s.status = 'candidate';
     s.reason = `صالح — ينتظر مكاناً (الحد ${MAX_ACTIVE} مصادر نشطة)`;
@@ -317,6 +371,6 @@ if (env.GITHUB_ACTIONS) {
   if (env.GITHUB_OUTPUT) appendFileSync(env.GITHUB_OUTPUT, `activated=${Math.max(0, after.active - before.active)}\n`);
 }
 if (env.GITHUB_STEP_SUMMARY) {
-  const rows = file.sources.filter((s) => s.status !== 'blocked').slice(-40).map((s) => `| ${s.host} | ${s.status} | ${s.productsEstimate ?? '—'} | ${s.currency ?? '—'} | ${s.reason ?? ''} |`);
-  appendFileSync(env.GITHUB_STEP_SUMMARY, `## كشّاف المصادر — ${iso}\n\n${notes.map((n) => `- ${n}`).join('\n')}\n\n| المتجر | الحالة | العطور | العملة | ملاحظة |\n|---|---|---|---|---|\n${rows.join('\n')}\n`);
+  const rows = file.sources.filter((s) => s.status !== 'blocked').slice(-40).map((s) => `| ${s.host} | ${s.status} | ${s.trust ? `${s.trust.score}/100` : '—'} | ${s.productsEstimate ?? '—'} | ${s.currency ?? '—'} | ${s.reason ?? ''} |`);
+  appendFileSync(env.GITHUB_STEP_SUMMARY, `## كشّاف المصادر — ${iso}\n\n${notes.map((n) => `- ${n}`).join('\n')}\n\n| المتجر | الحالة | الثقة | العطور | العملة | ملاحظة |\n|---|---|---|---|---|---|\n${rows.join('\n')}\n`);
 }
