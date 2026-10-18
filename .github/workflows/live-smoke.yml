@@ -2,7 +2,8 @@ name: Live Shaheen check
 
 # Asks the deployed site real visitor questions and checks the whole site from a visitor's point of
 # view (the dev sandbox cannot reach it). Runs daily too, so a broken deploy or an overwritten main
-# shows up as a failed run. Results: job summary + annotations.
+# shows up as a failed run. Results: job summary + annotations. It is «فحص شاهين على الموقع الحي»
+# in Shaheen's organisation (src/utils/shaheenOrg.ts).
 on:
   workflow_dispatch:
     inputs:

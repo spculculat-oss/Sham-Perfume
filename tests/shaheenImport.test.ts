@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { extractProduct, parseListing, parseNotes, parseSitemap, parseSitemapIndex, validateShaheenReading } from '../scripts/shaheen-import/extract';
 import { brandPrefix, cleanName, nextIdOf, ourPriceOf, planRun, priceReport, toStoreProduct, type ImportedProduct } from '../scripts/shaheen-import/transform';
@@ -304,4 +305,17 @@ test('importer: the store listing finds the products its sitemap misses (and onl
   assert.equal(pages, 45);
   assert.equal(source.listing?.url.replace('{page}', '2'), 'https://www.shamperfume.com/perfumes/?page=2');
   assert.equal(parseListing('<p>nothing</p>', source.base).pages, undefined);
+});
+
+test('L-03 legal guard: no store is read without the written supplier permission, and nothing else breaks', async () => {
+  const { isScrapeAllowed } = await import('../scripts/shaheen-import/guard');
+  const saved = process.env.SHAM_ALLOW_SCRAPE;
+  delete process.env.SHAM_ALLOW_SCRAPE;
+  try { assert.equal(isScrapeAllowed(), false); } finally { if (saved !== undefined) process.env.SHAM_ALLOW_SCRAPE = saved; }
+  const run = readFileSync(new URL('../scripts/shaheen-import/run.mts', import.meta.url), 'utf8');
+  assert.match(run, /const scrapeAllowed = isScrapeAllowed\(\);/);
+  assert.match(run, /const selected = !scrapeAllowed \? \[\] :/);
+  const { runPrecheck } = await import('../scripts/shaheen-council/precheck');
+  const r = runPrecheck({ 'store-review.json': { updatedAt: new Date().toISOString(), import: { blocked: 'L-03' }, summary: { total: 10 } } }, {}, Date.now());
+  assert.ok(r.bots.find((b) => b.id === 'importer')!.problems.some((p) => /L-03/.test(p)));
 });
