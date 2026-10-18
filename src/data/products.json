@@ -29512,7 +29512,7 @@
       "brand": "Maison Alhambra",
       "supplierPrice": 2093.84,
       "ourPrice": 3145,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -29563,7 +29563,10 @@
       "barcode": "6290360590622",
       "importedAt": "2026-10-16T10:48:24.939Z",
       "refreshedAt": "2026-10-17T16:57:50.569Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 469,
@@ -40866,9 +40869,9 @@
       ],
       "category": "نسائي",
       "brand": "Ard Al Zaafaran",
-      "supplierPrice": 1818.26,
+      "supplierPrice": 1818.3,
       "ourPrice": 2730,
-      "stockStatus": "out_of_stock",
+      "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -40879,7 +40882,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 139,
       "supplierSalePrice": 85,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/ard-al-zaafaran/hareem-al-sultan/",
       "slug": "hareem-al-sultan-by-ard-al-zaafaran-100-ml-for-women-635",
       "sizeMl": 100,
@@ -40913,11 +40916,8 @@
       ],
       "barcode": "6235621586150",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
-      "importedVia": "json-ld",
-      "reviewIssues": [
-        "غير متوفر عند المورد"
-      ]
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
+      "importedVia": "json-ld"
     },
     {
       "id": 636,
@@ -43798,7 +43798,7 @@
       ],
       "category": "مختلط",
       "brand": "Maison Alhambra",
-      "supplierPrice": 2092.96,
+      "supplierPrice": 2093.01,
       "ourPrice": 3140,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -43811,7 +43811,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 160,
       "supplierSalePrice": 94,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/smoky/",
       "slug": "smoky-by-maison-alhambra-100ml-edp-unisex-678",
       "sizeMl": 100,
@@ -43844,7 +43844,7 @@
       ],
       "barcode": "6291108736319",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -43865,7 +43865,7 @@
       ],
       "category": "نسائي",
       "brand": "Maison Alhambra",
-      "supplierPrice": 2210.69,
+      "supplierPrice": 2210.74,
       "ourPrice": 3320,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -43878,7 +43878,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 169,
       "supplierSalePrice": 105,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/narissa-poudree-maison-alhambra-100ml/",
       "slug": "narissa-poudree-100ml-by-maison-alhambra-679",
       "sizeMl": 100,
@@ -43906,7 +43906,7 @@
       ],
       "barcode": "6291108730225",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر"
@@ -43932,7 +43932,7 @@
       ],
       "category": "نسائي",
       "brand": "Rue Broca",
-      "supplierPrice": 2747.01,
+      "supplierPrice": 2747.07,
       "ourPrice": 4125,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -43945,7 +43945,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 210,
       "supplierSalePrice": 140,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/rue-broca/carino-black/",
       "slug": "carino-black-pour-femme-rue-broca-100ml-edp-680",
       "sizeMl": 100,
@@ -43978,7 +43978,7 @@
       ],
       "barcode": "6290171075035",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -44001,7 +44001,7 @@
       ],
       "category": "نسائي",
       "brand": "Grandeur",
-      "supplierPrice": 1635.13,
+      "supplierPrice": 1635.16,
       "ourPrice": 2455,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -44014,7 +44014,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 125,
       "supplierSalePrice": 95,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/grandeur/beach-coral/",
       "slug": "beach-coral-by-grandeur-100-ml-for-women-681",
       "sizeMl": 100,
@@ -44049,7 +44049,7 @@
       ],
       "barcode": "5055810038601",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -44072,7 +44072,7 @@
       ],
       "category": "رجالي",
       "brand": "Zimaya",
-      "supplierPrice": 2995.55,
+      "supplierPrice": 2995.62,
       "ourPrice": 4495,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -44085,7 +44085,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 229,
       "supplierSalePrice": 155,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/zimaya/sharaf-blend/",
       "slug": "sharaf-blend-by-zimaya-100ml-extrait-de-parfum-682",
       "sizeMl": 100,
@@ -44116,7 +44116,7 @@
       ],
       "barcode": "6290171074205",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -44137,9 +44137,9 @@
       ],
       "category": "نسائي",
       "brand": "Maison Alhambra",
-      "supplierPrice": 1504.32,
+      "supplierPrice": 1504.35,
       "ourPrice": 2260,
-      "stockStatus": "out_of_stock",
+      "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -44150,7 +44150,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 115,
       "supplierSalePrice": 70,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/your-touch-women/",
       "slug": "your-touch-women-by-maison-alhambra-100-ml-683",
       "sizeMl": 100,
@@ -44183,11 +44183,8 @@
       "occasionsSource": [],
       "barcode": "6291108736029",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
-      "importedVia": "json-ld",
-      "reviewIssues": [
-        "غير متوفر عند المورد"
-      ]
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
+      "importedVia": "json-ld"
     },
     {
       "id": 684,
@@ -44209,7 +44206,7 @@
       ],
       "category": "نسائي",
       "brand": "Maison Alhambra",
-      "supplierPrice": 1949.07,
+      "supplierPrice": 1949.11,
       "ourPrice": 2925,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -44222,7 +44219,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 149,
       "supplierSalePrice": 78,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/candid/",
       "slug": "candid-by-maison-alhambra-100-ml-for-women-684",
       "sizeMl": 100,
@@ -44258,7 +44255,7 @@
       "occasionsSource": [],
       "barcode": "6291108730072",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -44280,8 +44277,8 @@
       ],
       "category": "نسائي",
       "brand": "Volare",
-      "supplierPrice": 2419.99,
-      "ourPrice": 3630,
+      "supplierPrice": 2420.04,
+      "ourPrice": 3635,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -44293,7 +44290,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 185,
       "supplierSalePrice": 120,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/volare/vanilla-irish/",
       "slug": "vanilla-irish-by-volare-100-ml-for-women-685",
       "sizeMl": 100,
@@ -44316,7 +44313,7 @@
       "occasionsSource": [],
       "barcode": "6294019026142",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -44339,7 +44336,7 @@
       ],
       "category": "نسائي",
       "brand": "Maison Alhambra",
-      "supplierPrice": 1765.94,
+      "supplierPrice": 1765.98,
       "ourPrice": 2650,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -44352,7 +44349,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 135,
       "supplierSalePrice": 95,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/summer-forever/",
       "slug": "summer-forever-by-maison-alhambra-100ml-edp-686",
       "sizeMl": 100,
@@ -44381,7 +44378,7 @@
       "occasionsSource": [],
       "barcode": "6290360590714",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -44404,7 +44401,7 @@
       ],
       "category": "رجالي",
       "brand": "Lattafa",
-      "supplierPrice": 2158.36,
+      "supplierPrice": 2158.41,
       "ourPrice": 3240,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -44417,7 +44414,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 165,
       "supplierSalePrice": 125,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/qaaed-al-shabaab/",
       "slug": "qaaed-al-shabaab-by-lattafa-100ml-for-men-687",
       "sizeMl": 100,
@@ -44453,7 +44450,7 @@
       ],
       "barcode": "6291108733806",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -44474,7 +44471,7 @@
       ],
       "category": "نسائي",
       "brand": "Grandeur",
-      "supplierPrice": 1818.26,
+      "supplierPrice": 1818.3,
       "ourPrice": 2730,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -44487,7 +44484,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 139,
       "supplierSalePrice": 110,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/grandeur/destiny-perfume/",
       "slug": "destiny-by-grandeur-elite-100-ml-edp-women-688",
       "sizeMl": 100,
@@ -44521,7 +44518,7 @@
       "occasionsSource": [],
       "barcode": "5055810038519",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -44544,7 +44541,7 @@
       ],
       "category": "مختلط",
       "brand": "Lattafa",
-      "supplierPrice": 1765.94,
+      "supplierPrice": 1765.98,
       "ourPrice": 2650,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -44557,7 +44554,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 135,
       "supplierSalePrice": 125,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/badee-al-oud-amethyst/",
       "slug": "badee-al-oud-amethyst-by-lattafa-100ml-edp-unisex-689",
       "sizeMl": 100,
@@ -44589,7 +44586,7 @@
       ],
       "barcode": "6291108733875",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -44606,13 +44603,11 @@
         "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/perfume-wanita-bab-al-wardi-original-malaysia-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/beli-perfume-bab-al-wardi-original-malaysia-100ml-edp.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/minyak-wangi-bab-al-wardi-tahan-lama-ard-al-zaafaran-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/bab-al-wardi-perfume-dirhaam-ard-al-zaafaran-100ml-minyak-wangi-edp.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/perfume-wanita-bab-al-wardi-haruman-rose-amber-100ml-edp.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/ard-al-zaafaran/bab-al-wardi-by-ard-al-zaafaran-100ml-edp.jpg"
+        "https://www.shamperfume.com/cdn/OGImage/perfumes/ard-al-zaafaran/ard-al-zaafaran-bab-al-wardi-floral-oriental-perfume-100ml-edp.jpg"
       ],
       "category": "نسائي",
       "brand": "Ard Al Zaafaran",
-      "supplierPrice": 1818.26,
+      "supplierPrice": 1818.3,
       "ourPrice": 2730,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -44625,7 +44620,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 139,
       "supplierSalePrice": 90,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/ard-al-zaafaran/bab-al-wardi/",
       "slug": "bab-al-wardi-by-ard-al-zaafaran-for-her-100ml-edp-690",
       "sizeMl": 100,
@@ -44658,7 +44653,7 @@
       "occasionsSource": [],
       "barcode": "6423080728857",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -44681,7 +44676,7 @@
       ],
       "category": "رجالي",
       "brand": "Maison Alhambra",
-      "supplierPrice": 1818.26,
+      "supplierPrice": 1818.3,
       "ourPrice": 2730,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -44694,7 +44689,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 139,
       "supplierSalePrice": 80,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/dark-door-sport/",
       "slug": "dark-door-sport-men-100ml-edp-maison-alhambra-691",
       "sizeMl": 100,
@@ -44730,7 +44725,7 @@
       ],
       "barcode": "6290360590820",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -44753,7 +44748,7 @@
       ],
       "category": "مختلط",
       "brand": "Maison Alhambra",
-      "supplierPrice": 2341.5,
+      "supplierPrice": 2341.55,
       "ourPrice": 3515,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -44765,7 +44760,7 @@
       "supplierSku": "KISMET-LUNAR-MAGIC-100ML",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 179,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/kismet-lunar-magic-maison-alhambra-100ml/",
       "slug": "kismet-lunar-magic-100ml-by-maison-alhambra-692",
       "sizeMl": 100,
@@ -44793,7 +44788,7 @@
       ],
       "barcode": "6290362340737",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر",
@@ -44820,8 +44815,8 @@
       ],
       "category": "رجالي",
       "brand": "Ard Al Zaafaran",
-      "supplierPrice": 1556.64,
-      "ourPrice": 2335,
+      "supplierPrice": 1556.67,
+      "ourPrice": 2340,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -44833,7 +44828,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 119,
       "supplierSalePrice": 85,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/ard-al-zaafaran/dar-al-shabaab/",
       "slug": "dar-al-shabaab-ard-al-zaafaran-100ml-for-men-693",
       "sizeMl": 100,
@@ -44868,7 +44863,7 @@
       "occasionsSource": [],
       "barcode": "6423080595015",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -44891,7 +44886,7 @@
       ],
       "category": "رجالي",
       "brand": "Maison Alhambra",
-      "supplierPrice": 1765.94,
+      "supplierPrice": 1765.98,
       "ourPrice": 2650,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -44904,7 +44899,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 135,
       "supplierSalePrice": 95,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/expose-intense/",
       "slug": "expose-intense-by-maison-alhambra-100-ml-for-men-694",
       "sizeMl": 100,
@@ -44942,7 +44937,7 @@
       ],
       "barcode": "6291108736326",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -44965,7 +44960,7 @@
       ],
       "category": "مختلط",
       "brand": "Maison Alhambra",
-      "supplierPrice": 1438.91,
+      "supplierPrice": 1438.94,
       "ourPrice": 2160,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -44978,7 +44973,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 110,
       "supplierSalePrice": 90,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/philos-centro/",
       "slug": "philos-centro-maison-alhambra-100ml-edp-695",
       "sizeMl": 100,
@@ -45006,7 +45001,7 @@
       "occasionsSource": [],
       "barcode": "6291107459325",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -45027,7 +45022,7 @@
       ],
       "category": "رجالي",
       "brand": "Al Wataniah",
-      "supplierPrice": 2092.96,
+      "supplierPrice": 2093.01,
       "ourPrice": 3140,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -45040,7 +45035,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 160,
       "supplierSalePrice": 89,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/al-wataniah/saif-al-khaleej/",
       "slug": "saif-al-khaleej-by-al-wataniah-100-ml-edp-men-696",
       "sizeMl": 100,
@@ -45067,7 +45062,7 @@
       ],
       "barcode": "5055810038571",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -45090,7 +45085,7 @@
       ],
       "category": "نسائي",
       "brand": "Maison Alhambra",
-      "supplierPrice": 1687.45,
+      "supplierPrice": 1687.49,
       "ourPrice": 2535,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -45103,7 +45098,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 129,
       "supplierSalePrice": 95,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/euzonea-maison-alhambra/",
       "slug": "euzonea-by-maison-alhambra-100ml-edp-for-women-697",
       "sizeMl": 100,
@@ -45140,7 +45135,7 @@
       ],
       "barcode": "6291108730119",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -45163,8 +45158,8 @@
       ],
       "category": "مختلط",
       "brand": "Al Wataniah",
-      "supplierPrice": 2419.99,
-      "ourPrice": 3630,
+      "supplierPrice": 2420.04,
+      "ourPrice": 3635,
       "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
@@ -45176,7 +45171,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 185,
       "supplierSalePrice": 130,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/al-wataniah/oud-mystery-intense/",
       "slug": "oud-mystery-intense-by-al-wataniah-100ml-perfume-698",
       "sizeMl": 100,
@@ -45207,7 +45202,7 @@
       "occasionsSource": [],
       "barcode": "5055810030131",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -45230,7 +45225,7 @@
       ],
       "category": "رجالي",
       "brand": "Ard Al Zaafaran",
-      "supplierPrice": 1438.91,
+      "supplierPrice": 1438.94,
       "ourPrice": 2160,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -45243,7 +45238,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 110,
       "supplierSalePrice": 79,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/ard-al-zaafaran/sultan-al-qloub/",
       "slug": "sultan-al-quloub-ard-al-zaafaran-100-ml-edp-men-699",
       "sizeMl": 100,
@@ -45273,7 +45268,7 @@
       "occasionsSource": [],
       "barcode": "6423080594940",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر"
@@ -45299,7 +45294,7 @@
       ],
       "category": "مختلط",
       "brand": "Zimaya",
-      "supplierPrice": 3518.79,
+      "supplierPrice": 3518.87,
       "ourPrice": 5280,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -45312,7 +45307,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 269,
       "supplierSalePrice": 169,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/zimaya/sharaf-divine/",
       "slug": "sharaf-divine-by-zimaya-100-ml-extrait-unisex-700",
       "sizeMl": 100,
@@ -45343,7 +45338,7 @@
       "occasionsSource": [],
       "barcode": "6290171077213",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -45366,7 +45361,7 @@
       ],
       "category": "رجالي",
       "brand": "Maison Alhambra",
-      "supplierPrice": 2027.55,
+      "supplierPrice": 2027.6,
       "ourPrice": 3045,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -45379,7 +45374,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 155,
       "supplierSalePrice": 90,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/victorioso-fearless/",
       "slug": "victorioso-fearless-by-maison-alhambra-100ml-edp-701",
       "sizeMl": 100,
@@ -45415,7 +45410,7 @@
       ],
       "barcode": "6290362340591",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T13:06:08.596Z",
       "importedVia": "json-ld"
     },
     {
@@ -48126,7 +48121,7 @@
       "brand": "Zimaya",
       "supplierPrice": 3911.22,
       "ourPrice": 5870,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -48169,7 +48164,10 @@
       "barcode": "6290171074960",
       "importedAt": "2026-10-16T13:16:56.090Z",
       "refreshedAt": "2026-10-16T13:16:56.090Z",
-      "importedVia": "json-ld"
+      "importedVia": "json-ld",
+      "reviewIssues": [
+        "غير متوفر عند المورد"
+      ]
     },
     {
       "id": 742,
@@ -52541,7 +52539,7 @@
       "brand": "Maison Alhambra",
       "supplierPrice": 1896.75,
       "ourPrice": 2850,
-      "stockStatus": "in_stock",
+      "stockStatus": "out_of_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -52585,7 +52583,8 @@
       "refreshedAt": "2026-10-16T13:35:47.267Z",
       "importedVia": "json-ld",
       "reviewIssues": [
-        "المورد لم ينشر نوتات العطر"
+        "المورد لم ينشر نوتات العطر",
+        "غير متوفر عند المورد"
       ]
     },
     {

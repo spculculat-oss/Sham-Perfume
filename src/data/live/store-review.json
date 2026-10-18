@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T11:48:10.356Z",
+ "updatedAt": "2026-10-18T13:06:08.620Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1114,
@@ -12,7 +12,7 @@
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-18T11:47:07.200Z",
+  "at": "2026-10-18T13:05:28.821Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,8 +25,8 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1020,
-    "listingOnly": 60,
+    "listingProducts": 1019,
+    "listingOnly": 61,
     "listingComplete": true,
     "origin": "built-in",
     "added": 0,
@@ -35,7 +35,7 @@
     "failedCount": 0,
     "viaShaheen": 0,
     "deferred": 0,
-    "gone": 4,
+    "gone": 3,
     "via": {
      "json-ld": 25
     },
@@ -88,7 +88,7 @@
     }
    ]
   },
-  "durationMs": 63185
+  "durationMs": 39830
  },
  "items": [
   {
@@ -3005,6 +3005,16 @@
    "page": "p/savour-blast-extreme-by-volare-100ml-edp-men-466.html"
   },
   {
+   "sku": "MAI-468",
+   "id": 468,
+   "name": "Glacier Bold by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/glacier-bold-by-maison-alhambra-100ml-edp-468.html"
+  },
+  {
    "sku": "MAI-470",
    "id": 470,
    "name": "Yeah! Parfum Man by Maison Alhambra 100ml EDP",
@@ -3657,16 +3667,6 @@
    "page": "p/society-974-volare-100-ml-edp-unisex-634.html"
   },
   {
-   "sku": "ARD-635",
-   "id": 635,
-   "name": "Hareem Al Sultan by Ard Al Zaafaran – 100 ml for Women",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/hareem-al-sultan-by-ard-al-zaafaran-100-ml-for-women-635.html"
-  },
-  {
    "sku": "ARM-637",
    "id": 637,
    "name": "Hunter Intense Armaf 100ml EDP Perfume for Men",
@@ -3831,16 +3831,6 @@
    "page": "p/narissa-poudree-100ml-by-maison-alhambra-679.html"
   },
   {
-   "sku": "MAI-683",
-   "id": 683,
-   "name": "Your Touch Women by Maison Alhambra – 100 ml",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/your-touch-women-by-maison-alhambra-100-ml-683.html"
-  },
-  {
    "sku": "MAI-692",
    "id": 692,
    "name": "Kismet Lunar Magic 100ml by Maison Alhambra",
@@ -3983,6 +3973,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/sunset-kiss-gulf-orchid-100ml-edp-woman-740.html"
+  },
+  {
+   "sku": "ZIM-741",
+   "id": 741,
+   "name": "Al Embratur Elixir by Zimaya 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/al-embratur-elixir-by-zimaya-100ml-edp-741.html"
   },
   {
    "sku": "MAI-742",
@@ -4226,7 +4226,8 @@
    "name": "Aquilo Pour Homme Maison Alhambra 100 ml EDP",
    "status": "warn",
    "issues": [
-    "المورد لم ينشر نوتات العطر"
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
    ],
    "page": "p/aquilo-pour-homme-maison-alhambra-100-ml-edp-805.html"
   },
