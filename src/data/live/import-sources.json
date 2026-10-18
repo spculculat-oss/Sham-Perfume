@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T14:22:29.042Z",
+ "updatedAt": "2026-10-18T15:10:56.723Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -153,11 +153,11 @@
    "host": "afnan.com",
    "name": "Afnan Perfumes Global",
    "base": "https://afnan.com",
-   "status": "active",
+   "status": "paused",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T14:22:29.042Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-18T15:10:56.723Z",
    "sampleOk": 6,
    "sampleTotal": 7,
    "currency": "AED",
@@ -172,7 +172,107 @@
     "https://afnan.com/sitemap_articles_1.xml"
    ],
    "via": "generic",
-   "productsEstimate": 102
+   "productsEstimate": 102,
+   "trust": {
+    "score": 57,
+    "verdict": "weak",
+    "at": "2026-10-18T15:10:56.723Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "27 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": false,
+      "points": 2,
+      "max": 10,
+      "detail": "صفحة تواصل"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 15,
+      "max": 15,
+      "detail": "الموقع الرسمي لماركة Afnan + عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "الماركة نفسها تبيع منتجاتها"
+     }
+    ],
+    "flags": [],
+    "registeredAt": "1999-09-17T01:54:15.000Z"
+   },
+   "region": "arab",
+   "reason": "ملف الثقة ضعيف (57/100): ينقصه بيانات التواصل، سياسة الإرجاع والاسترداد، وسائل دفع معروفة"
   },
   {
    "id": "nabeel-com",
@@ -275,12 +375,115 @@
   {
    "id": "myperfumeshop-ae",
    "host": "myperfumeshop.ae",
-   "name": "myperfumeshop.ae",
-   "base": "https://myperfumeshop.ae",
+   "name": "My Perfume Shop",
+   "base": "https://www.myperfumeshop.com",
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T15:10:56.723Z",
+   "trust": {
+    "score": 60,
+    "verdict": "trusted",
+    "at": "2026-10-18T15:10:56.723Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": null,
+      "points": 8,
+      "max": 20,
+      "detail": "السجل لا ينشر تاريخ التسجيل"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 6,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": null,
+      "points": 5,
+      "max": 15,
+      "detail": "الموقع يمنع قراءة الصفحة آلياً"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "يشحن دولياً"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 6,
+      "max": 10,
+      "detail": "Klarna"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     }
+    ],
+    "flags": []
+   },
+   "region": "global",
+   "sampleOk": 0,
+   "sampleTotal": 1,
+   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)"
   },
   {
    "id": "perfumeboxuae-com",
@@ -290,27 +493,142 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T15:10:56.723Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "niceonesa-com",
    "host": "niceonesa.com",
-   "name": "niceonesa.com",
+   "name": "تسوق جميع منتجات الجمال أونلاين",
    "base": "https://niceonesa.com",
-   "status": "candidate",
+   "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T15:10:56.723Z",
+   "trust": {
+    "score": 80,
+    "verdict": "trusted",
+    "at": "2026-10-18T15:10:56.723Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "9 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 8,
+      "max": 10,
+      "detail": "بريد + هاتف"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 10,
+      "max": 15,
+      "detail": "بيانات قانونية"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "Visa، Alipay، mada، Tabby، Tamara"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": null,
+      "points": 2,
+      "max": 5
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2016-12-18T11:24:05.000Z"
+   },
+   "region": "arab",
+   "sampleOk": 4,
+   "sampleTotal": 6,
+   "currency": "SAR",
+   "rateToEgp": 14.2559,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*niceonesa\\.com/ar/[^?#]+$",
+   "sitemaps": [],
+   "via": "json-ld",
+   "crawlPages": [
+    "https://niceonesa.com",
+    "https://niceonesa.com/ar/perfume"
+   ],
+   "productsEstimate": 69
   },
   {
    "id": "goldenscent-com",
    "host": "goldenscent.com",
-   "name": "goldenscent.com",
-   "base": "https://goldenscent.com",
-   "status": "candidate",
+   "name": "Golden Scent",
+   "base": "https://www.goldenscent.com",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T15:10:56.723Z",
+   "reason": "ملف robots.txt يمنع القراءة الآلية"
   },
   {
    "id": "grandeur-com",
@@ -381,22 +699,230 @@
   {
    "id": "faces-com",
    "host": "faces.com",
-   "name": "faces.com",
-   "base": "https://faces.com",
+   "name": "Shop for Perfume, Makeup, Skin Care &amp; Cosmetics",
+   "base": "https://www.faces.ae",
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T15:10:56.723Z",
+   "trust": {
+    "score": 83,
+    "verdict": "trusted",
+    "at": "2026-10-18T15:10:56.723Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "32 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد + هاتف"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": false,
+      "points": 5,
+      "max": 15,
+      "detail": "عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 3,
+      "max": 5,
+      "detail": "محلي أو غير مذكور"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "Apple Pay، Tabby، Tamara"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Salesforce Commerce"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     }
+    ],
+    "flags": [],
+    "registeredAt": "1994-08-11T04:00:00.000Z"
+   },
+   "region": "arab",
+   "sampleOk": 8,
+   "sampleTotal": 8,
+   "reason": "أغلب منتجاته ليست عطوراً (50%)"
   },
   {
    "id": "wojooh-com",
    "host": "wojooh.com",
-   "name": "wojooh.com",
-   "base": "https://wojooh.com",
+   "name": "Shop for Perfume, Makeup, Skin Care &amp; Cosmetics",
+   "base": "https://www.faces.ae",
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T15:10:56.723Z",
+   "trust": {
+    "score": 83,
+    "verdict": "trusted",
+    "at": "2026-10-18T15:10:56.723Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "20 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد + هاتف"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": false,
+      "points": 5,
+      "max": 15,
+      "detail": "عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 3,
+      "max": 5,
+      "detail": "محلي أو غير مذكور"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "Apple Pay، Tabby، Tamara"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Salesforce Commerce"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2006-08-16T13:08:43.000Z"
+   },
+   "region": "arab",
+   "sampleOk": 8,
+   "sampleTotal": 8,
+   "reason": "أغلب منتجاته ليست عطوراً (50%)"
   },
   {
    "id": "fragrancebuy-ca",
@@ -406,7 +932,9 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T15:10:56.723Z",
+   "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
    "id": "maxaromas-com",
@@ -416,7 +944,9 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-18T15:10:56.723Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "armaf-com",
@@ -482,6 +1012,134 @@
    "foundBy": "brand-site",
    "foundWith": "Al Wataniah",
    "foundAt": "2026-10-18T14:22:29.042Z",
+   "attempts": 0
+  },
+  {
+   "id": "theperfumeshop-com",
+   "host": "theperfumeshop.com",
+   "name": "theperfumeshop.com",
+   "base": "https://theperfumeshop.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-18T15:10:56.723Z",
+   "reason": "الموقع لا يفتح (HTTP 403)"
+  },
+  {
+   "id": "perfumehub-com-my",
+   "host": "perfumehub.com.my",
+   "name": "perfumehub.com.my",
+   "base": "https://perfumehub.com.my",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 0
+  },
+  {
+   "id": "goldapple-kz",
+   "host": "goldapple.kz",
+   "name": "goldapple.kz",
+   "base": "https://goldapple.kz",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 0
+  },
+  {
+   "id": "perfumeconnection-com-au",
+   "host": "perfumeconnection.com.au",
+   "name": "perfumeconnection.com.au",
+   "base": "https://perfumeconnection.com.au",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 0
+  },
+  {
+   "id": "perfumeprice-co-uk",
+   "host": "perfumeprice.co.uk",
+   "name": "perfumeprice.co.uk",
+   "base": "https://perfumeprice.co.uk",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 0
+  },
+  {
+   "id": "nose-shop-jp",
+   "host": "nose-shop.jp",
+   "name": "nose-shop.jp",
+   "base": "https://nose-shop.jp",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 0
+  },
+  {
+   "id": "alwataniahperfumes-com",
+   "host": "alwataniahperfumes.com",
+   "name": "alwataniahperfumes.com",
+   "base": "https://alwataniahperfumes.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Al Wataniah",
+   "foundAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 0
+  },
+  {
+   "id": "alwataniahparfums-com",
+   "host": "alwataniahparfums.com",
+   "name": "alwataniahparfums.com",
+   "base": "https://alwataniahparfums.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Al Wataniah",
+   "foundAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 0
+  },
+  {
+   "id": "lattafapride-com",
+   "host": "lattafapride.com",
+   "name": "lattafapride.com",
+   "base": "https://lattafapride.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Lattafa Pride",
+   "foundAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 0
+  },
+  {
+   "id": "lattafaprideperfumes-com",
+   "host": "lattafaprideperfumes.com",
+   "name": "lattafaprideperfumes.com",
+   "base": "https://lattafaprideperfumes.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Lattafa Pride",
+   "foundAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 0
+  },
+  {
+   "id": "lattafaprideparfums-com",
+   "host": "lattafaprideparfums.com",
+   "name": "lattafaprideparfums.com",
+   "base": "https://lattafaprideparfums.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Lattafa Pride",
+   "foundAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 0
+  },
+  {
+   "id": "volare-com",
+   "host": "volare.com",
+   "name": "volare.com",
+   "base": "https://volare.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Volare",
+   "foundAt": "2026-10-18T15:10:56.723Z",
    "attempts": 0
   }
  ],
@@ -765,9 +1423,286 @@
    "runs": 0,
    "found": 0,
    "activated": 0
+  },
+  {
+   "q": "parfumerie en ligne parfums de niche originaux livraison internationale",
+   "lang": "fr",
+   "region": "europe",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "trusted online perfume store USA authentic niche and Arabic fragrances",
+   "lang": "en",
+   "region": "americas",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "香水 通販 正規品 ニッチフレグランス 専門店",
+   "lang": "ja",
+   "region": "east-asia",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "интернет-магазин оригинальной парфюмерии Казахстан нишевая парфюмерия",
+   "lang": "ru",
+   "region": "central-asia",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Parfümerie online Nischenparfum original kaufen weltweiter Versand",
+   "lang": "de",
+   "region": "europe",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "trusted online perfume store Canada authentic niche and Arabic fragrances",
+   "lang": "en",
+   "region": "americas",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "정품 향수 온라인 쇼핑몰 니치 향수 전문",
+   "lang": "ko",
+   "region": "east-asia",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "интернет-магазин оригинальной парфюмерии Узбекистан",
+   "lang": "ru",
+   "region": "central-asia",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "perfumería online perfumes originales de nicho envío internacional",
+   "lang": "es",
+   "region": "europe",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "trusted online perfume store Mexico authentic niche and Arabic fragrances",
+   "lang": "en",
+   "region": "americas",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "正品香水 网上商店 小众沙龙香水 香港",
+   "lang": "zh",
+   "region": "east-asia",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "online perfume store Kazakhstan original perfumes",
+   "lang": "en",
+   "region": "central-asia",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "profumeria online profumi di nicchia originali spedizione internazionale",
+   "lang": "it",
+   "region": "europe",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "trusted online perfume store Brazil authentic niche and Arabic fragrances",
+   "lang": "en",
+   "region": "americas",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "trusted online perfume store Japan authentic niche fragrances",
+   "lang": "en",
+   "region": "east-asia",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "online perfume store Uzbekistan original perfumes",
+   "lang": "en",
+   "region": "central-asia",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "perfumeria internetowa oryginalne perfumy niszowe sklep",
+   "lang": "pl",
+   "region": "europe",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "trusted online perfume store South Korea authentic niche fragrances",
+   "lang": "en",
+   "region": "east-asia",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "online perfume store Azerbaijan original perfumes",
+   "lang": "en",
+   "region": "central-asia",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "trusted online perfume store India authentic fragrances",
+   "lang": "en",
+   "region": "south-asia",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "orijinal niş parfüm online parfüm mağazası",
+   "lang": "tr",
+   "region": "europe",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "trusted online perfume store Singapore authentic niche fragrances",
+   "lang": "en",
+   "region": "east-asia",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "trusted online perfume store Australia authentic fragrances",
+   "lang": "en",
+   "region": "oceania",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "trusted online perfumery UK original niche and Arabic perfumes",
+   "lang": "en",
+   "region": "europe",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "trusted online perfume store Hong Kong authentic niche fragrances",
+   "lang": "en",
+   "region": "east-asia",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "trusted online perfumery Germany original niche and Arabic perfumes",
+   "lang": "en",
+   "region": "europe",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "trusted online perfume store Malaysia authentic niche fragrances",
+   "lang": "en",
+   "region": "east-asia",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "trusted online perfumery France original niche and Arabic perfumes",
+   "lang": "en",
+   "region": "europe",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "trusted online perfumery Italy original niche and Arabic perfumes",
+   "lang": "en",
+   "region": "europe",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "trusted online perfumery Spain original niche and Arabic perfumes",
+   "lang": "en",
+   "region": "europe",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "trusted online perfumery Netherlands original niche and Arabic perfumes",
+   "lang": "en",
+   "region": "europe",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
+  },
+  {
+   "q": "Afnan Perfumes perfume official online store buy",
+   "lang": "en",
+   "runs": 0,
+   "found": 0,
+   "activated": 0
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-18T15:10:56.723Z",
+   "mode": "self",
+   "found": 12,
+   "vetted": 10,
+   "activated": 0,
+   "rejected": 1,
+   "notes": [
+    "✗ myperfumeshop.ae: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
+    "✗ perfumeboxuae.com: الموقع لا يفتح",
+    "  ↳ niceonesa.com: CV 80/100 [age,https,contact,identity,returns,privacy,terms,payment,social]",
+    "✓ niceonesa.com (CV 80/100): 69+ (by browsing) perfumes, 4/6 pages read without AI, SAR (1 = 14.2559 EGP) — added to the importer",
+    "✗ goldenscent.com: ملف robots.txt يمنع القراءة الآلية",
+    "  ↳ faces.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
+    "✗ faces.com: أغلب منتجاته ليست عطوراً (50%)",
+    "  ↳ wojooh.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
+    "✗ wojooh.com: أغلب منتجاته ليست عطوراً (50%)",
+    "✗ fragrancebuy.ca: الموقع لا يفتح (HTTP 403)",
+    "✗ maxaromas.com: الموقع لا يفتح",
+    "✗ theperfumeshop.com: الموقع لا يفتح (HTTP 403)"
+   ]
+  },
   {
    "at": "2026-10-18T14:22:29.042Z",
    "mode": "self",

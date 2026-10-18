@@ -12,6 +12,7 @@ import SupervisorPanel from './SupervisorPanel';
 import SeoPanel from './SeoPanel';
 import CommunityPanel from './CommunityPanel';
 import ShaheenGrowthPanel from './ShaheenGrowthPanel';
+import ShaheenOrgPanel from './ShaheenOrgPanel';
 import ShaheenCouncilPanel from './ShaheenCouncilPanel';
 import { ErrorBoundary } from '../utils/lazyRetry';
 import type {
@@ -151,7 +152,7 @@ export default function AdminApp() {
           {tab === 'shaheen' && <><ShaheenGrowthPanel /><ShaheenPanel /></>}
           {tab === 'emails' && <EmailsPanel />}
           {tab === 'doctor' && <DoctorPanel />}
-          {tab === 'supervisor' && <><ShaheenCouncilPanel /><SupervisorPanel /></>}
+          {tab === 'supervisor' && <><ShaheenOrgPanel /><ShaheenCouncilPanel /><SupervisorPanel /></>}
           {tab === 'seo' && <SeoPanel />}
           {tab === 'sandbox' && <SandboxPanel />}
           {tab === 'updates' && <UpdatesPanel />}

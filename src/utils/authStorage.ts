@@ -1,5 +1,5 @@
 import { UserProfile, CraftLevel } from '../types/auth';
-import { CommunityApiError, cx, getSessionToken, setSessionToken, type AuthResult, type Me } from '../community/api';
+import { CommunityApiError, cx, getSessionToken, setSessionToken, type AuthResult, type Me, type PendingLogin } from '../community/api';
 
 /**
  * Accounts live on the server («مجتمع شام»: hashed passwords, encrypted private data, one account on every
@@ -27,8 +27,11 @@ export function profileFromMember(me: Me): UserProfile {
 }
 
 const SERVER_ERRORS: Record<string, string> = {
-  INVALID_LOGIN: 'err_wrong_password', EMAIL_EXISTS: 'err_email_exists', WEAK_PASSWORD: 'err_password', INVALID_EMAIL: 'err_missing_fields',
+  INVALID_LOGIN: 'err_wrong_password', EMAIL_EXISTS: 'err_email_exists', WEAK_PASSWORD: 'err_password',
+  COMMON_PASSWORD: 'err_password', INVALID_EMAIL: 'err_missing_fields',
   ACCOUNT_SUSPENDED: 'err_login_failed', RATE_LIMITED: 'err_login_failed',
+  ACCOUNT_LOCKED: 'err_account_locked', EMAIL_UNAVAILABLE: 'err_email_unavailable',
+  CODE_LIMITED: 'err_code_limited', CODE_INVALID: 'err_code_invalid',
 };
 
 export const USER_AUTH_STORAGE_KEY = 'sham_perfume_current_user_session';
@@ -87,6 +90,8 @@ export interface AuthResponse {
   success: boolean;
   user?: UserProfile;
   error?: string;
+  /** Two-factor login: the password passed; the authenticator code finishes it. */
+  pendingToken?: string;
 }
 
 export function getCurrentUserSession(): { user: UserProfile | null } {
@@ -108,7 +113,8 @@ export async function loginUser(email: string, password: string): Promise<AuthRe
       return { success: false, error: 'err_missing_fields' };
     }
     try {
-      const result = await cx<AuthResult>('/community/auth/login', { body: { email, password } });
+      const result = await cx<AuthResult | PendingLogin>('/community/auth/login', { body: { email, password } });
+      if ('pending' in result) return { success: false, error: 'totp_required', pendingToken: result.pendingToken };
       setSessionToken(result.token);
       const user = profileFromMember(result.me);
       localStorage.setItem(USER_AUTH_STORAGE_KEY, JSON.stringify(user));
@@ -208,6 +214,44 @@ export async function registerUser(
     return { success: true, user: newUser };
   } catch (e: unknown) {
     return { success: false, error: 'err_register_failed' };
+  }
+}
+
+/** Two-factor finish: the pending token from the password step plus the authenticator code. */
+export async function completeTwoFactorLogin(pendingToken: string, code: string): Promise<AuthResponse> {
+  try {
+    const result = await cx<AuthResult>('/community/auth/login/2fa', { body: { pendingToken, code } });
+    setSessionToken(result.token);
+    const user = profileFromMember(result.me);
+    localStorage.setItem(USER_AUTH_STORAGE_KEY, JSON.stringify(user));
+    return { success: true, user };
+  } catch (error) {
+    if (error instanceof CommunityApiError) return { success: false, error: SERVER_ERRORS[error.code] || 'err_login_failed' };
+    return { success: false, error: 'err_login_failed' };
+  }
+}
+
+/* ---------------------------- forgot-password (e-mail code) ---------------------------- */
+
+/** Step 1: ask for the code. The server answers the same whether the e-mail exists or not. */
+export async function requestPasswordReset(email: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    await cx('/community/auth/password-reset/request', { body: { email } });
+    return { success: true };
+  } catch (error) {
+    if (error instanceof CommunityApiError) return { success: false, error: SERVER_ERRORS[error.code] || 'err_login_failed' };
+    return { success: false, error: 'err_login_failed' };
+  }
+}
+
+/** Step 2: the code plus the new password. Every device is signed out afterwards. */
+export async function confirmPasswordReset(email: string, code: string, next: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    await cx('/community/auth/password-reset/confirm', { body: { email, code, next } });
+    return { success: true };
+  } catch (error) {
+    if (error instanceof CommunityApiError) return { success: false, error: SERVER_ERRORS[error.code] || 'err_login_failed' };
+    return { success: false, error: 'err_login_failed' };
   }
 }
 

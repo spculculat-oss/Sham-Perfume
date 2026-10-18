@@ -434,6 +434,7 @@ export function NotificationsPage({ lang, go }: { lang: Lang; go: Go }) {
   const text = (n: Notification) => {
     const who = n.actor?.name || t('الإدارة', 'The administration');
     const map: Record<string, [string, string, string?]> = {
+      security: [n.ref ? `تسجيل دخول جديد: ${n.ref}` : 'تسجيل دخول جديد', n.ref ? `New sign-in: ${n.ref}` : 'New sign-in', 'me/security'],
       friend_request: [`${who} بعتلك طلب صداقة`, `${who} sent you a friend request`, n.actor ? `u/${n.actor.handle}` : 'friends'],
       friend_accepted: [`${who} قبل طلب صداقتك`, `${who} accepted your request`, n.actor ? `u/${n.actor.handle}` : 'friends'],
       reaction: [`${who} تفاعل مع منشورك`, `${who} reacted to your post`, ''],

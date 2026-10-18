@@ -13,8 +13,11 @@ import { configuredEngines, makeAsk, QuotaExhaustedError, quotaBook } from '../d
 import { parseJson } from '../shaheen-supervisor/checks';
 import {
   applyMeeting, buildBriefing, cairoDate, CHAIR_SYSTEM, chairPrompt, emptyCouncil, isCouncilFile, issueBody, parseMinutes, SEAT_SYSTEM,
-  seatPrompt, SEATS, selfMinutes, syncTasks, type CouncilFile, type LiveData, type Meeting, type SeatOpinion, type Task,
+  recordDelegation, seatPrompt, SEATS, secretaryRoutine, selfMinutes, syncTasks, unreviewed, type CouncilFile, type LiveData, type Meeting,
+  type SeatOpinion, type Task,
 } from './council';
+import { isPrecheckFile, pressureOf, runPrecheck } from './precheck';
+import { fetchRuns, readReports } from './runs';
 
 const env = process.env;
 const live = (name: string) => new URL(`../../src/data/live/${name}`, import.meta.url);
@@ -59,6 +62,13 @@ const data: LiveData = {
   seo: read('seo-agent.json'), news: read('shaheen-news.json'), quota: read('ai-quota.json'), skills: read('shaheen-skills.json'), manus: read('manus-audit.json'), intake: read('aistudio-intake.json'),
   languages: read('shaheen-languages.json'),
 };
+// «الفحص الشامل قبل الاجتماع» ran two hours ago (shaheen-precheck.yml); if it is missing or old, check now.
+const stored = read('shaheen-precheck.json');
+const precheck = isPrecheckFile(stored) && now - Date.parse(stored.updatedAt) < 8 * 3600_000
+  ? stored
+  : runPrecheck(readReports(), await fetchRuns(repo, token), now);
+data.precheck = precheck;
+say(`Pre-meeting check${precheck === stored ? '' : ' (run now)'}: ${precheck.summaryAr}`);
 const openTasks = file.tasks.filter((t) => t.status === 'open');
 const briefing = buildBriefing(data, now, openTasks);
 say(`Briefing: ${briefing.facts.length} facts, ${briefing.signals.length} signals (${briefing.signals.filter((s) => s.priority === 'high').length} urgent)`);
@@ -86,18 +96,26 @@ say(`Opinions: ${spoke.length}/${SEATS.length} seats spoke${spoke.length ? ` (${
 // ── 3. Minutes ────────────────────────────────────────────────────────────────────────────────────────────
 let minutes: ReturnType<typeof parseMinutes> = null;
 let chairEngine: string | undefined;
+let chairFailed = false;
 if (spoke.length >= 2 && !quotaOut) {
   const ask = await makeAsk(env, { quota, prefer: engines[0], maxWaitMs: 60_000, onEngine: (id) => { chairEngine = id; } }).catch(() => undefined);
-  try { minutes = ask ? parseMinutes(parseJson(await ask(CHAIR_SYSTEM, chairPrompt(briefing, opinions, openTasks))), date) : null; }
-  catch (error) { say(`Chair: ${(error as Error).message.slice(0, 120)} — minutes from the reports instead`); }
+  try { minutes = ask ? parseMinutes(parseJson(await ask(CHAIR_SYSTEM, chairPrompt(briefing, opinions, openTasks, unreviewed(file)))), date) : null; }
+  catch (error) { say(`Chair: ${(error as Error).message.slice(0, 120)} — the secretary takes the meeting`); }
+  chairFailed = !minutes;
 }
+// The secretary («مشرف شاهين») deputises: it chairs when Shaheen cannot, and takes the routine under pressure.
+const pressure = pressureOf({ engines: engines.length, quotaOut, chairFailed, spoke: spoke.length, urgent: briefing.signals.filter((s) => s.priority === 'high').length, failing: precheck.counts.fail });
 const mode: Meeting['mode'] = minutes ? 'ai' : 'self';
-if (!minutes) minutes = selfMinutes(briefing, date);
+const chair: Meeting['chair'] = minutes ? 'shaheen' : 'secretary';
+if (!minutes) minutes = selfMinutes(briefing, date, pressure.reasons.length ? pressure.reasons : ['مفيش محرك ذكاء اصطناعي متاح']);
+else if (pressure.active) minutes.decisions.push(...secretaryRoutine(briefing, date, minutes.decisions));
+if (pressure.active) say(`Secretary ${chair === 'secretary' ? 'chaired the meeting' : 'took the routine'}: ${pressure.reasons.join(' / ')}`);
 quota.save();
-const meeting: Meeting = { date, at, mode, ...minutes, seats: opinions, ...(chairEngine ? { chairEngine } : {}) };
+const meeting: Meeting = { date, at, mode, ...minutes, seats: opinions, ...(chairEngine && chair === 'shaheen' ? { chairEngine } : {}), chair, ...(pressure.active ? { deputyReasons: pressure.reasons } : {}) };
 
 // ── 4. Apply ──────────────────────────────────────────────────────────────────────────────────────────────
 const { reruns, newTasks } = applyMeeting(file, meeting, now, Math.max(0, Number(env.COUNCIL_MAX_TASKS ?? 3)));
+recordDelegation(file, meeting);
 say(`Minutes (${mode === 'ai' ? 'discussion' : 'from the reports, no AI'}): ${meeting.decisions.length} decisions — ${meeting.decisions.filter((d) => d.status === 'applied').length} applied, ${newTasks.length} new tasks, ${Object.keys(meeting.toolGoals).length} tool goals`);
 
 // New tasks, plus earlier ones whose issue could not be opened (or were noted during a branch rehearsal).
