@@ -109,6 +109,25 @@ export interface AuthResult { token: string; expiresAt: string; me: Me }
 export interface PendingLogin { pending: true; pendingToken: string; expiresIn: number }
 export interface SessionInfo { id: string; agent: string; ip: string; createdAt: string; lastUsedAt: string; current: boolean }
 
+/* Passkeys (WebAuthn): base64url on the wire, ArrayBuffer in the browser. */
+export interface PasskeyRegisterOptions {
+  id: string; challenge: string; rpId: string; rp: { name: string };
+  user: { id: string; name: string; displayName: string };
+  pubKeyCredParams: { type: string; alg: number }[]; timeout: number; attestation: string;
+  authenticatorSelection: Record<string, string>; excludeCredentials: { type: string; id: string }[]; name?: string;
+}
+export interface PasskeyRegisterResult {
+  id: string; clientDataJSON: string; attestationObject: string;
+}
+export interface PasskeyGetOptions {
+  id: string; challenge: string; rpId: string; timeout: number; userVerification: string;
+  allowedCredentials: { type: string; id: string }[];
+}
+export interface PasskeyAssertResult {
+  credentialId: string; clientDataJSON: string; authenticatorData: string; signature: string;
+}
+export interface PasskeyInfo { id: string; name: string; uv: boolean; createdAt: string; lastUsedAt: string | null }
+
 /* -------------------------------------------- helpers -------------------------------------------- */
 
 /** Resizes a picture in the browser before upload (JPEG, longest side `max`), so posts and chats stay light. */

@@ -10,6 +10,7 @@ import { checkCode, issueCode, type CodePurpose } from './codes';
 import { isCommonPassword } from './passwords';
 import { codeMail, sendAuthEmail } from './notify';
 import { newTotpSecret, otpauthUri, verifyTotp } from './totp';
+import { cborDecode, coseToPublicKey, newChallenge, rpIdOf, verifyAssert, verifyCreate } from './webauthn';
 
 export interface Ctx { sql: Sql; vault: Vault; fx?: () => Promise<FxTable>; now?: () => Date; env?: Record<string, string | undefined> }
 
@@ -429,6 +430,130 @@ export async function totpDisable(ctx: Ctx, userId: string, password: unknown, c
   await ctx.sql.query(`UPDATE users SET totp_enabled = false, totp_secret_enc = NULL, totp_last = '' WHERE id = $1`, [userId]);
   auditEvent(ctx, userId, 'totp_disabled');
   return { ok: true };
+}
+
+/* ------------------------------------- security: passkeys (WebAuthn) -------------------------------------
+ * A passkey IS the second factor: the device signs with a private key that never leaves it (fingerprint,
+ * face, or PIN), so a passkey sign-in does not also require the TOTP code. Google and Meta are moving
+ * their accounts this way; Apple does it natively. */
+
+const CHALLENGE_MS = 60_000;
+
+async function freshChallenge(ctx: Ctx, userId: string, purpose: string): Promise<{ id: string; challenge: string }> {
+  const id = newId('wc');
+  const challenge = newChallenge();
+  await ctx.sql.query(
+    `INSERT INTO webauthn_challenges (id, user_id, purpose, challenge, expires_at) VALUES ($1,$2,$3,$4,$5)`,
+    [id, userId, purpose, challenge, new Date(Date.now() + CHALLENGE_MS).toISOString()]);
+  return { id, challenge };
+}
+
+/** Step 1 of «add a passkey to this device». */
+export async function passkeyRegisterBegin(ctx: Ctx, userId: string, name: unknown) {
+  const [u] = await ctx.sql.query(`SELECT handle, email_enc FROM users WHERE id = $1`, [userId]);
+  if (!u) fail(404, 'NOT_FOUND');
+  const { id, challenge } = await freshChallenge(ctx, userId, 'register');
+  const exclude = await ctx.sql.query(`SELECT cred_id FROM passkeys WHERE user_id = $1 LIMIT 25`, [userId]);
+  return {
+    id,
+    challenge,
+    rpId: rpIdOf(envOf(ctx)),
+    rp: { name: 'شام للعطور (Sham Perfumes)' },
+    user: { id: userId, name: ctx.vault.open(u.email_enc), displayName: u.handle },
+    pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }],
+    timeout: 60_000,
+    attestation: 'none',
+    authenticatorSelection: { residentKey: 'preferred', userVerification: 'preferred' },
+    excludeCredentials: exclude.map((r) => ({ type: 'public-key', id: r.cred_id })),
+    name: clean(name, 60),
+  };
+}
+
+/** Step 2: verify the device's answer and store the public key. */
+export async function passkeyRegisterFinish(ctx: Ctx, userId: string, input: { challengeId?: unknown; clientDataJSON?: unknown; attestationObject?: unknown; name?: unknown }) {
+  const [ch] = await ctx.sql.query(
+    `SELECT challenge FROM webauthn_challenges WHERE id = $1 AND user_id = $2 AND purpose = 'register' AND used_at IS NULL AND expires_at > now()`,
+    [String(input.challengeId || ''), userId]);
+  if (!ch) fail(400, 'CHALLENGE_INVALID');
+  const clientData = Buffer.from(String(input.clientDataJSON || ''), 'base64url');
+  const attestation = Buffer.from(String(input.attestationObject || ''), 'base64url');
+  let out: ReturnType<typeof verifyCreate> | undefined;
+  try { out = verifyCreate(clientData, attestation, ch.challenge, envOf(ctx)); }
+  catch { fail(400, 'PASSKEY_INVALID'); }
+  // fail() always throws — TypeScript just doesn't know it
+  const verified = out!;
+  await ctx.sql.query(`UPDATE webauthn_challenges SET used_at = now() WHERE id = $1`, [String(input.challengeId)]);
+  const name = clean(input.name, 60) || 'جهاز جديد';
+  await ctx.sql.query(
+    `INSERT INTO passkeys (id, user_id, cred_id, name, pub_key, alg, sign_count, uv) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
+    [newId('pk'), userId, verified.credId.toString('base64url'), name, verified.pubKeyRaw.toString('base64'), verified.alg, verified.signCount, verified.uv],
+  ).catch((error) => { if (/unique|duplicate/i.test(String(error?.message))) fail(409, 'PASSKEY_EXISTS'); throw error; });
+  auditEvent(ctx, userId, 'passkey_added', '', name);
+  return myPasskeys(ctx, userId);
+}
+
+export async function myPasskeys(ctx: Ctx, userId: string) {
+  const rows = await ctx.sql.query(`SELECT id, name, uv, created_at, last_used_at FROM passkeys WHERE user_id = $1 ORDER BY created_at DESC LIMIT 20`, [userId]);
+  return rows.map((r) => ({ id: r.id, name: r.name, uv: Boolean(r.uv), createdAt: iso(r.created_at), lastUsedAt: iso(r.last_used_at) }));
+}
+
+export async function deletePasskey(ctx: Ctx, userId: string, passkeyId: string) {
+  const removed = await ctx.sql.query(`DELETE FROM passkeys WHERE id = $1 AND user_id = $2 RETURNING id`, [passkeyId, userId]);
+  if (!removed.length) fail(404, 'NOT_FOUND');
+  auditEvent(ctx, userId, 'passkey_removed');
+  return { ok: true };
+}
+
+/** Step 1 of «sign in with a passkey». Identical 404 for unknown e-mail / no passkey (no enumeration). */
+export async function passkeyLoginBegin(ctx: Ctx, input: { email?: unknown }) {
+  const email = clean(input.email, 254).toLowerCase();
+  const [u] = isEmail(email) ? await ctx.sql.query(`SELECT id, status FROM users WHERE email_idx = $1`, [ctx.vault.index(email)]) : [];
+  await verifyPassword('timing-equalizer-3', DUMMY_HASH);
+  if (!u || u.status === 'deleted') fail(404, 'NOT_FOUND');
+  const creds = await ctx.sql.query(`SELECT cred_id FROM passkeys WHERE user_id = $1 LIMIT 10`, [u.id]);
+  if (!creds.length) fail(404, 'NOT_FOUND');
+  const { id, challenge } = await freshChallenge(ctx, u.id, 'login');
+  return {
+    id,
+    challenge,
+    rpId: rpIdOf(envOf(ctx)),
+    timeout: 60_000,
+    userVerification: 'preferred',
+    allowedCredentials: creds.map((r) => ({ type: 'public-key' as const, id: r.cred_id })),
+  };
+}
+
+/** Step 2: verify the assertion, guard against cloned credentials, open the session. */
+export async function passkeyLoginFinish(ctx: Ctx, input: { challengeId?: unknown; credentialId?: unknown; clientDataJSON?: unknown; authenticatorData?: unknown; signature?: unknown }, agent = '', ip = ''): Promise<LoginSuccess> {
+  const [ch] = await ctx.sql.query(
+    `SELECT challenge, user_id FROM webauthn_challenges WHERE id = $1 AND purpose = 'login' AND used_at IS NULL AND expires_at > now()`,
+    [String(input.challengeId || '')]);
+  if (!ch) fail(400, 'CHALLENGE_INVALID');
+  const [pk] = await ctx.sql.query(
+    `SELECT id, pub_key, sign_count FROM passkeys WHERE user_id = $1 AND cred_id = $2`,
+    [ch.user_id, String(input.credentialId || '')]);
+  if (!pk) fail(401, 'PASSKEY_INVALID');
+  const clientData = Buffer.from(String(input.clientDataJSON || ''), 'base64url');
+  const authData = Buffer.from(String(input.authenticatorData || ''), 'base64url');
+  const signature = Buffer.from(String(input.signature || ''), 'base64url');
+  let res: ReturnType<typeof verifyAssert> | undefined;
+  try {
+    res = verifyAssert(clientData, { authenticatorData: authData, signature }, ch.challenge, coseToPublicKey(cborDecode(Buffer.from(pk.pub_key, 'base64'))).key, envOf(ctx));
+  } catch {
+    fail(401, 'PASSKEY_INVALID');
+  }
+  const verified = res!;
+  // A counter going backwards means the credential was cloned to another authenticator.
+  if (Number(pk.sign_count) > 0 && verified.signCount < Number(pk.sign_count)) {
+    auditEvent(ctx, ch.user_id, 'passkey_clone_suspect', '', String(pk.id));
+    fail(401, 'PASSKEY_INVALID');
+  }
+  await ctx.sql.query(`UPDATE webauthn_challenges SET used_at = now() WHERE id = $1`, [String(input.challengeId)]);
+  await ctx.sql.query(`UPDATE passkeys SET sign_count = $1, last_used_at = now() WHERE id = $2`, [verified.signCount, pk.id]);
+  const [u] = await ctx.sql.query(`SELECT status FROM users WHERE id = $1`, [ch.user_id]);
+  if (u?.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
+  auditEvent(ctx, ch.user_id, 'login_ok', '', 'passkey');
+  return { ...(await startSession(ctx, ch.user_id, agent || 'passkey', ip)), me: await me(ctx, ch.user_id) };
 }
 
 /* ------------------------------------------ merchants ------------------------------------------ */

@@ -3,9 +3,10 @@
  * learning progress, orders, and security & privacy (password, sessions, data export, account deletion).
  */
 import { useRef, useState } from 'react';
-import { BookOpen, Camera, Download, FlaskConical, Globe2, KeyRound, KeySquare, Lock, LogOut, Mail, Package, ShieldCheck, Smartphone, Trash2, Upload, User, Users } from 'lucide-react';
+import { BookOpen, Camera, Download, Fingerprint, FlaskConical, Globe2, KeyRound, KeySquare, Lock, LogOut, Mail, Package, ShieldCheck, Smartphone, Trash2, Upload, User, Users } from 'lucide-react';
 import { countryOptions } from '../utils/storeCheckout';
-import { cx, resizeImage, type Learning, type Me, type Order, type Recipe, type SessionInfo } from './api';
+import { cx, resizeImage, type Learning, type Me, type Order, type PasskeyInfo, type PasskeyRegisterOptions, type Recipe, type SessionInfo } from './api';
+import { createPasskey, webauthnAvailable } from './passkeys';
 import { setMe, signOut, type SessionState } from './session';
 import { RecipeCard } from './SocialPortal';
 import { Avatar, Btn, Card, Empty, Field, Spinner, errorText, inputClass, money, timeAgo, tx, useLoad, type Lang } from './ui';
@@ -386,6 +387,28 @@ function Security({ lang, me, toast, go }: { lang: Lang; me: Me; toast: (s: stri
     catch (e) { toast(errorText(e, lang)); }
   };
 
+  /* Passkeys (WebAuthn): the device's fingerprint/face/PIN. The key never leaves the device. */
+  const { data: passkeys, reload: reloadPasskeys } = useLoad(() => cx<PasskeyInfo[]>('/community/me/passkeys'));
+  const [pkName, setPkName] = useState('');
+  const addPasskey = async () => {
+    setBusy('pk-add');
+    try {
+      const begin = await cx<PasskeyRegisterOptions>('/community/me/passkeys/begin', { body: { name: pkName } });
+      const res = await createPasskey(begin);
+      await cx('/community/me/passkeys/finish', { body: { challengeId: begin.id, ...res, name: pkName } });
+      setPkName('');
+      await reloadPasskeys(true);
+      toast(t('اتضافت البصمة ✅ تقدر تدخل بيها من أي جهاز', 'Passkey added ✅ you can sign in with it'));
+    } catch (e) {
+      if (e instanceof Error && e.message === 'cancelled') toast(t('الطلب اتلغى من الجهاز', 'Cancelled on the device'));
+      else toast(errorText(e, lang));
+    } finally { setBusy(''); }
+  };
+  const removePasskey = async (id: string) => {
+    try { await cx(`/community/me/passkeys/${id}`, { method: 'DELETE' }); await reloadPasskeys(true); toast(t('اتشالت البصمة', 'Passkey removed')); }
+    catch (e) { toast(errorText(e, lang)); }
+  };
+
   /* Two-factor (authenticator app, the standard Google and Meta use). */
   const [tfa, setTfa] = useState<{ secret: string; uri: string } | null>(null);
   const [tfaPw, setTfaPw] = useState('');
@@ -459,6 +482,35 @@ function Security({ lang, me, toast, go }: { lang: Lang; me: Me; toast: (s: stri
               </li>
             ))}
           </ul>
+        )}
+      </Card>
+
+      <Card className="p-5">
+        <h3 className="mb-1 flex items-center gap-2 font-bold"><Fingerprint className="h-4 w-4 text-amber-600" />{t('الدخول بالبصمة (Passkey)', 'Sign in with a fingerprint (passkey)')}</h3>
+        <p className="mb-3 text-xs text-stone-500">{t('بصمتك أو وجهك أو قفل موبايلك — زي ما جوجل وفيسبوك ماشيين دلوقتي. السر بيفضل على جهازك بس.', 'Your fingerprint, face, or device PIN — the way Google and Meta are moving. The secret stays on your device only.')}</p>
+        {!webauthnAvailable() ? (
+          <p className="rounded-xl bg-amber-50 p-3 text-xs text-amber-900">{t('المتصفح ده مايدعمش البصمة — استخدم متصفح حديث على HTTPS.', 'This browser does not support passkeys — use a modern browser over HTTPS.')}</p>
+        ) : (
+          <>
+            {passkeys?.length ? (
+              <ul className="mb-3 space-y-2">
+                {passkeys.map((k) => (
+                  <li key={k.id} className="flex items-center gap-3 rounded-xl border border-stone-100 p-3">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-700"><Fingerprint className="h-4 w-4" /></span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm text-stone-800">{k.name || t('بصمة', 'Passkey')}</span>
+                      <span className="text-[11px] text-stone-500">{k.lastUsedAt ? `${t('آخر استخدام', 'last used')} ${timeAgo(k.lastUsedAt, lang)}` : `${t('أُضيفت', 'added')} ${timeAgo(k.createdAt, lang)}`}</span>
+                    </span>
+                    <Btn small variant="soft" onClick={() => void removePasskey(k.id)}>{t('حذف', 'Remove')}</Btn>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+            <div className="flex flex-wrap items-center gap-2">
+              <input className={`${inputClass} w-48`} value={pkName} onChange={(e) => setPkName(e.target.value)} placeholder={t('اسم الجهاز (مثال: موبايلي)', 'Device name (e.g. my phone)')} />
+              <Btn small busy={busy === 'pk-add'} onClick={() => void addPasskey()}>{t('إضافة بصمة لهذا الجهاز', 'Add a passkey for this device')}</Btn>
+            </div>
+          </>
         )}
       </Card>
 

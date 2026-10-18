@@ -197,6 +197,14 @@ export function createCommunityRouter(community: Community, options: { env?: Env
   /* Devices & two-factor (the Security Checkup building blocks). */
   router.get('/community/me/sessions', member((ctx, u, req) => svc.mySessions(ctx, u.id, bearer(req))));
   router.delete('/community/me/sessions/:id', member(async (ctx, u, req) => { await svc.revokeSession(ctx, u.id, p(req, 'id'), bearer(req)); }));
+
+  /* Passkeys (WebAuthn): the device's fingerprint/face/PIN is the second factor itself. */
+  router.post('/community/me/passkeys/begin', member(async (ctx, u, req) => svc.passkeyRegisterBegin(ctx, u.id, req.body?.name)));
+  router.post('/community/me/passkeys/finish', member(async (ctx, u, req) => svc.passkeyRegisterFinish(ctx, u.id, req.body || {})));
+  router.get('/community/me/passkeys', member((ctx, u) => svc.myPasskeys(ctx, u.id)));
+  router.delete('/community/me/passkeys/:id', member(async (ctx, u, req) => { await svc.deletePasskey(ctx, u.id, p(req, 'id')); }));
+  router.post('/community/auth/passkey/begin', limitedAuth(open((ctx, req) => svc.passkeyLoginBegin(ctx, req.body || {}))));
+  router.post('/community/auth/passkey/finish', limitedAuth(open((ctx, req) => svc.passkeyLoginFinish(ctx, req.body || {}, agent(req), ip(req)))));
   router.post('/community/me/2fa/setup', member(async (ctx, u, req) => svc.totpSetup(ctx, u.id, req.body?.password)));
   router.post('/community/me/2fa/confirm', member(async (ctx, u, req) => svc.totpConfirm(ctx, u.id, req.body?.code)));
   router.post('/community/me/2fa/disable', member(async (ctx, u, req) => svc.totpDisable(ctx, u.id, req.body?.password, req.body?.code)));
