@@ -219,12 +219,15 @@ async function rateToEgp(currency: string): Promise<number | undefined> {
 async function readCv(host: string, base: string, homeHtml: string, robots: ReturnType<typeof parseRobots>, delay: number): Promise<TrustProfile> {
   const pages: { url: string; html: string }[] = [];
   const blocked: TrustId[] = [];
+  const tried: string[] = [];
+  const short = (u: string) => { try { return new URL(u).pathname; } catch { return u; } };
   for (const url of trustLinks(homeHtml, base, 6)) {
     // A page robots.txt forbids is not opened (Shopify forbids /policies/): the check says «could not check».
     try { if (!robots.allowed(new URL(url).pathname)) { const k = pageKind(url); if (k) blocked.push(k); continue; } } catch { continue; }
     if (timeLeft() < 60_000) break;
     await sleep(delay);
     const page = await get(url);
+    tried.push(`${short(url)}→${page.status}`);
     // A missing page that sends back to the home page is not that page.
     const landed = (() => { try { return new URL(page.url).pathname; } catch { return '/'; } })();
     if (page.status === 200 && page.body && landed !== '/' && !/^\/[a-z]{2}(?:-[a-z]{2})?\/?$/i.test(landed)) pages.push({ url: page.url, html: page.body.slice(0, 3_000_000) });
@@ -242,12 +245,12 @@ async function readCv(host: string, base: string, homeHtml: string, robots: Retu
     if (r?.ok) { const d = await r.json().catch(() => ({})) as { matches?: unknown[] }; safeBrowsing = d.matches?.length ? 'flagged' : 'clean'; }
   }
   const cv = assessTrust({ host, finalUrl: base, homeHtml, pages, registeredAt, safeBrowsing, blocked, brands, now: now.getTime() });
-  cvPagesRead.set(cv, pages.map((p) => { try { return new URL(p.url).pathname; } catch { return p.url; } }));
+  cvPagesRead.set(cv, tried);
   if (blocked.length) cvPagesRead.set(cv, [...(cvPagesRead.get(cv) || []), `robots-blocked: ${blocked.join(',')}`]);
   return cv;
 }
 const cvPagesRead = new WeakMap<TrustProfile, string[]>();
-const pagesRead = (cv: TrustProfile) => `pages read: ${(cvPagesRead.get(cv) || []).join(' ') || 'home only'}`;
+const pagesRead = (cv: TrustProfile) => `pages: ${(cvPagesRead.get(cv) || []).join(' ') || 'home only'}`;
 
 async function vet(s: LiveSource): Promise<void> {
   s.attempts += 1;
