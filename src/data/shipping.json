@@ -1,6 +1,20 @@
 {
   "currency": "USD",
   "note": "مصاريف الشحن بالدولار لكل منطقة: firstItem = أول زجاجة، extraItem = كل زجاجة زيادة في نفس الطلب (0 = سعر ثابت للطلب). عدّل الأرقام هنا وارفع على main — الموقعان والسيرفر يقرؤون نفس الملف.",
+  "dangerousGoods": {
+    "unNumber": "UN1266",
+    "class": "Class 3 — Flammable Liquid",
+    "packingGroup": "II/III",
+    "noteAr": "العطور سائل قابل للاشتعال (UN1266, Class 3, PG II/III) وفق IATA DGR/IMDG. الشحن الجوي محدود: 60L للشحن الجوي (Cargo Aircraft)، 5L للركاب (Passenger Aircraft)، كمية مستثناة E1. بعض الدول تحظر استيراد عطور كحولية أو مواد معينة (مثلاً خشب العود CITES Appendix II). العميل مسؤول عن الامتثال الجمركي والاستيرادي في بلده. التأخير بسبب الجمارك ليس مسؤولية المنصة/التاجر.",
+    "noteEn": "Perfumes are flammable liquid (UN1266, Class 3, PG II/III) per IATA DGR/IMDG. Air limited: 60L Cargo Aircraft, 5L Passenger Aircraft, Excepted Quantity E1. Some countries ban alcohol perfumes or specific materials (e.g., agarwood CITES Appendix II). Customer is responsible for customs/import compliance. Customs delays are not platform/merchant liability.",
+    "restrictedCountries": ["SY", "IR", "KP", "RU"],
+    "restrictedNoteAr": "يُحظر الشحن لبلدان خاضعة لعقوبات (سوريا، إيران، كوريا الشمالية، روسيا لبعض السلع ذات الاستخدام المزدوج) وفق OFAC/EU.",
+    "restrictedNoteEn": "Shipping prohibited to sanctioned countries (Syria, Iran, NK, Russia for dual-use) per OFAC/EU."
+  },
+  "taxDisclaimer": {
+    "ar": "الأسعار لا تشمل ضريبة القيمة المضافة (VAT) أو الرسوم الجمركية في بلدك. مثال: مصر 14%، السعودية 15%، الإمارات 5%، أوروبا ~20%. الفاتورة الضريبية تُصدر إلكترونيًا (مصر EDA، السعودية ZATCA). الرسوم الجمركية تقديرية عند الدفع، والعميل يتحمل الفرق.",
+    "en": "Prices exclude VAT/customs in your country. e.g., Egypt 14%, Saudi 15%, UAE 5%, EU ~20%. E-invoice issued (Egypt EDA, Saudi ZATCA). Customs duties are estimates at checkout; customer bears difference."
+  },
   "zones": [
     { "id": "egypt", "name": { "ar": "مصر", "en": "Egypt" }, "countries": ["EG"], "firstItem": 15, "extraItem": 3, "days": "7-14" },
     { "id": "gulf", "name": { "ar": "دول الخليج", "en": "Gulf countries" }, "countries": ["SA", "AE", "KW", "QA", "BH", "OM"], "firstItem": 14, "extraItem": 3, "days": "5-10" },

@@ -40,6 +40,7 @@ isLanguageSupported('de');
 | `commonLabelsExt.ts` | 1 | وسوم الواجهة المشتركة للغات الإضافية |
 | `localize.ts` | 1 | الأداة الأساسية: `LText`، `loc`، `makeT`، `pickArEn`، `fmt`، `localeDate`، `LOCALE_MAP` |
 | `noteL10n.ts` | 1 | مقاييس الهرم العطري (تطاير/انتشار/عائلة/الدرجة) |
+| `numerals.ts` | 1 | **أرقام لغة الصفحة**: `formatLocalizedNumber` / `formatInputNumber` / `parseLocalizedNumber` — تنسيق وقراءة الأرقام بنظام أرقام لغة الموقع (لاتيني لكل اللغات ما عدا العربية وأخواتها بختهم الخاص)، وقراءة أي أرقام يكتبها الزائر |
 | `uiTextL10n.ts` | 1 | العملة والوحدات والعدّادات وأزرار المتجر وعناوين المحاكي |
 | `index.ts` | 1 | **البوابة**: إعادة تصدير كل حزم اللغات + `languageCatalogue()` |
 | `README.md` | 1 | الملف ده |

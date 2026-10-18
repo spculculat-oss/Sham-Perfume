@@ -1,3 +1,4 @@
+import { LocalizedNumberInput } from './LocalizedNumberInput';
 import React, { useState, useEffect } from 'react';
 import {
   Sparkles,
@@ -845,15 +846,12 @@ export const FragrancePyramidGraphic: React.FC<FragrancePyramidGraphicProps> = (
                                 </div>
 
                                 <div className="flex items-center gap-1 bg-stone-50 px-2 py-1 rounded-lg border border-stone-200">
-                                  <input
-                                    type="number"
-                                    min="0"
-                                    max="100"
-                                    step="1"
+                                  <LocalizedNumberInput
+                                    lang={effectiveLang}
+                                    min={0}
+                                    max={100}
                                     value={note.percentageOfOil}
-                                    onChange={(e) =>
-                                      handleUpdateNotePct(note.id, parseFloat(e.target.value) || 0)
-                                    }
+                                    onValue={(n) => handleUpdateNotePct(note.id, n || 0)}
                                     className="w-11 text-center font-mono-numbers text-xs font-bold text-stone-900 bg-transparent focus:outline-none"
                                   />
                                   <span className="text-[10px] font-bold text-stone-600">%</span>
@@ -1003,15 +1001,12 @@ export const FragrancePyramidGraphic: React.FC<FragrancePyramidGraphicProps> = (
                                 </div>
 
                                 <div className="flex items-center gap-1 bg-stone-50 px-2 py-1 rounded-lg border border-stone-200">
-                                  <input
-                                    type="number"
-                                    min="0"
-                                    max="100"
-                                    step="1"
+                                  <LocalizedNumberInput
+                                    lang={effectiveLang}
+                                    min={0}
+                                    max={100}
                                     value={note.percentageOfOil}
-                                    onChange={(e) =>
-                                      handleUpdateNotePct(note.id, parseFloat(e.target.value) || 0)
-                                    }
+                                    onValue={(n) => handleUpdateNotePct(note.id, n || 0)}
                                     className="w-11 text-center font-mono-numbers text-xs font-bold text-stone-900 bg-transparent focus:outline-none"
                                   />
                                   <span className="text-[10px] font-bold text-stone-600">%</span>
@@ -1161,15 +1156,12 @@ export const FragrancePyramidGraphic: React.FC<FragrancePyramidGraphicProps> = (
                                 </div>
 
                                 <div className="flex items-center gap-1 bg-stone-900 px-2 py-1 rounded-lg border border-stone-700">
-                                  <input
-                                    type="number"
-                                    min="0"
-                                    max="100"
-                                    step="1"
+                                  <LocalizedNumberInput
+                                    lang={effectiveLang}
+                                    min={0}
+                                    max={100}
                                     value={note.percentageOfOil}
-                                    onChange={(e) =>
-                                      handleUpdateNotePct(note.id, parseFloat(e.target.value) || 0)
-                                    }
+                                    onValue={(n) => handleUpdateNotePct(note.id, n || 0)}
                                     className="w-11 text-center font-mono-numbers text-xs font-bold text-amber-300 bg-transparent focus:outline-none"
                                   />
                                   <span className="text-[10px] font-bold text-amber-400">%</span>

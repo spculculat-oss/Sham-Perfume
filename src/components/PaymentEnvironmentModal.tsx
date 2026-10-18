@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CreditCard, ShieldCheck, Trash2, X } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
+import { isRTL } from '../لغات/localizedContent';
 import { getSavedPaymentMethods, deletePaymentMethod, type SavedPaymentMethod } from '../utils/customerPaymentVault';
 import { countryOptions, usePayments, useStoreCountry } from '../utils/storeCheckout';
 interface Props {
@@ -14,7 +15,7 @@ export const PaymentEnvironmentModal: React.FC<Props> = ({ currentLang = 'ar', c
   const payments = usePayments(country);
   const [aliases, setAliases] = useState(() => getSavedPaymentMethods(customerId));
   return <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-4" onClick={onClose}>
-    <section role="dialog" aria-modal="true" aria-labelledby="payment-info-title" dir={ar ? 'rtl' : 'ltr'} className="max-w-lg w-full rounded-3xl bg-white p-6 space-y-5 shadow-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+    <section role="dialog" aria-modal="true" aria-labelledby="payment-info-title" dir={isRTL(currentLang) ? 'rtl' : 'ltr'} className="max-w-lg w-full rounded-3xl bg-white p-6 space-y-5 shadow-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
       <header className="flex items-center justify-between gap-3"><h2 id="payment-info-title" className="font-bold text-lg flex items-center gap-2"><CreditCard className="w-5 h-5" />{ar ? 'الدفع في متجر شام' : 'Payments at Sham'}</h2><button onClick={onClose} aria-label={ar ? 'إغلاق' : 'Close'} className="p-2 rounded-full hover:bg-stone-100"><X className="w-5 h-5" /></button></header>
       <p className="text-sm text-stone-600">{ar ? 'المتاح فعلياً يحدده بلدك والعملة وعقد حساب التاجر. ظهور اسم وسيلة دفع لا يعني أنها مفعّلة.' : 'Availability depends on your country, currency and the merchant account agreement. A method name alone does not mean it is enabled.'}</p>
       <label className="block space-y-2 text-sm"><span>{ar ? 'بلد الشحن' : 'Shipping country'}</span><select value={country} onChange={(e) => setCountry(e.target.value)} className="border rounded-xl p-2 w-full">{countryOptions(currentLang).map((c) => <option value={c.code} key={c.code}>{c.name}</option>)}</select></label>

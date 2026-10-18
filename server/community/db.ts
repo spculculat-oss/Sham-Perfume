@@ -85,7 +85,7 @@ export async function connectPglite(dataDir?: string): Promise<Sql> {
   return wrap(db);
 }
 
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 3;
 
 export const SCHEMA: string[] = [
   `CREATE TABLE IF NOT EXISTS community_meta (key text PRIMARY KEY, value text NOT NULL)`,
@@ -116,6 +116,59 @@ export const SCHEMA: string[] = [
     expires_at timestamptz NOT NULL
   )`,
   `CREATE INDEX IF NOT EXISTS sessions_user ON sessions (user_id)`,
+  /* v2 — account security (the Google/Apple/Meta study, see SHAM_AUTH.md): the e-mail-verified flag,
+     per-account lockout counters, the encrypted TOTP secret, session devices (ip + last use), one-time
+     auth codes and the short-lived pending two-factor logins. */
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified_at timestamptz`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS failed_logins int NOT NULL DEFAULT 0`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS locked_until timestamptz`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS totp_secret_enc text`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS totp_enabled boolean NOT NULL DEFAULT false`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS totp_last text NOT NULL DEFAULT ''`,
+  `ALTER TABLE sessions ADD COLUMN IF NOT EXISTS ip text NOT NULL DEFAULT ''`,
+  `ALTER TABLE sessions ADD COLUMN IF NOT EXISTS last_used_at timestamptz NOT NULL DEFAULT now()`,
+  `CREATE TABLE IF NOT EXISTS auth_codes (
+    id text PRIMARY KEY,
+    user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    purpose text NOT NULL,
+    code_salt text NOT NULL,
+    code_hash text NOT NULL,
+    expires_at timestamptz NOT NULL,
+    used_at timestamptz,
+    created_at timestamptz NOT NULL DEFAULT now()
+  )`,
+  `CREATE INDEX IF NOT EXISTS auth_codes_user ON auth_codes (user_id, purpose, created_at)`,
+  `CREATE TABLE IF NOT EXISTS pending_logins (
+    token_hash text PRIMARY KEY,
+    user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    agent text NOT NULL DEFAULT '',
+    ip text NOT NULL DEFAULT '',
+    expires_at timestamptz NOT NULL
+  )`,
+  /* v3 — passkeys (WebAuthn): credentials the device itself signs with (fingerprint / face / device
+     PIN — the way Google and Meta are moving their accounts), and the short-lived challenges they
+     answer. The private key never leaves the device; the server keeps only the public key. */
+  `CREATE TABLE IF NOT EXISTS passkeys (
+    id text PRIMARY KEY,
+    user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    cred_id text NOT NULL,
+    name text NOT NULL DEFAULT '',
+    pub_key text NOT NULL,
+    alg int NOT NULL DEFAULT -7,
+    sign_count bigint NOT NULL DEFAULT 0,
+    uv boolean NOT NULL DEFAULT false,
+    created_at timestamptz NOT NULL DEFAULT now(),
+    last_used_at timestamptz,
+    UNIQUE (user_id, cred_id)
+  )`,
+  `CREATE TABLE IF NOT EXISTS webauthn_challenges (
+    id text PRIMARY KEY,
+    user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    purpose text NOT NULL,
+    challenge text NOT NULL,
+    expires_at timestamptz NOT NULL,
+    used_at timestamptz
+  )`,
   `CREATE TABLE IF NOT EXISTS merchants (
     user_id text PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
     slug text UNIQUE NOT NULL,

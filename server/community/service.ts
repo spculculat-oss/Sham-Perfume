@@ -6,8 +6,32 @@
 import { BUNDLED_FX, convert, isCountry, tidy, type FxTable } from '../../src/utils/pricing';
 import type { Row, Sql } from './db';
 import { hashPassword, newId, newToken, tokenHash, verifyPassword, type Vault } from './crypto';
+import { checkCode, issueCode, type CodePurpose } from './codes';
+import { isCommonPassword } from './passwords';
+import { codeMail, sendAuthEmail } from './notify';
+import { newTotpSecret, otpauthUri, verifyTotp } from './totp';
+import { cborDecode, coseToPublicKey, newChallenge, rpIdOf, verifyAssert, verifyCreate } from './webauthn';
 
-export interface Ctx { sql: Sql; vault: Vault; fx?: () => Promise<FxTable>; now?: () => Date }
+export interface Ctx { sql: Sql; vault: Vault; fx?: () => Promise<FxTable>; now?: () => Date; env?: Record<string, string | undefined> }
+
+/* ---------------------------------- security constants ----------------------------------
+ * The numbers follow the study in SHAM_AUTH.md (Google / Apple / Meta, 2026-10-18).
+ * - MAX_FAILED_LOGINS: per-account lockout after repeated wrong passwords (5 → 15 minutes).
+ *   The router's per-IP limiter stays in front of it for spraying across accounts.
+ * - PENDING_LOGIN_MS: how long a two-factor login may wait for the authenticator code.
+ */
+const MAX_FAILED_LOGINS = 5;
+const LOCK_MS = 15 * 60_000;
+const PENDING_LOGIN_MS = 5 * 60_000;
+/** A real-looking scrypt hash so an unknown e-mail burns the same time as a wrong password. */
+const DUMMY_HASH = 'scrypt$32768$AAAAAAAAAAAAAAAAAAAAAA$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+
+/** Security events in the audit log (the administration's trail, actor = the member's id). */
+const auditEvent = (ctx: Ctx, actor: string, action: string, target = '', detail = '') =>
+  ctx.sql.query(`INSERT INTO audit (actor, action, target, detail) VALUES ($1,$2,$3,$4)`, [actor, action, target, clean(detail, 500)]).catch(() => {});
+
+/** The environment for e-mail providers (tests pass an empty one, so no real e-mail can leak out). */
+const envOf = (ctx: Ctx) => ctx.env ?? process.env;
 
 export class CommunityError extends Error {
   constructor(public status: number, public code: string, message = code) { super(message); }
@@ -81,10 +105,27 @@ async function uniqueHandle(sql: Sql, wanted: string): Promise<string> {
   return `sham${Date.now().toString(36)}`;
 }
 
-async function startSession(ctx: Ctx, userId: string, agent: string) {
+async function startSession(ctx: Ctx, userId: string, agent: string, ip = '') {
+  const [count] = await ctx.sql.query(`SELECT count(*)::int AS n FROM sessions WHERE user_id = $1`, [userId]);
   const { token, hash } = newToken();
   const expires = new Date(Date.now() + SESSION_DAYS * 86_400_000);
-  await ctx.sql.query(`INSERT INTO sessions (hash, user_id, agent, expires_at) VALUES ($1, $2, $3, $4)`, [hash, userId, clean(agent, 200), expires.toISOString()]);
+  await ctx.sql.query(`INSERT INTO sessions (hash, user_id, agent, ip, expires_at) VALUES ($1, $2, $3, $4, $5)`, [hash, userId, clean(agent, 200), clean(ip, 64), expires.toISOString()]);
+  // A sign-in alert on a *new* device (Google/Meta «login alerts»): an in-app notification is the
+  // primary channel; when the server has an e-mail provider, the member also gets an e-mail.
+  if (count.n > 0) {
+    const detail = `${clean(agent, 120) || 'جهاز جديد'}${ip ? ' · ' + clean(ip, 40) : ''}`;
+    await ctx.sql.query(`INSERT INTO notifications (id, user_id, kind, actor_id, ref) VALUES ($1,$2,'security',NULL,$3)`, [newId('n'), userId, detail]).catch(() => {});
+    try {
+      const [u] = await ctx.sql.query(`SELECT email_enc FROM users WHERE id = $1`, [userId]);
+      const alert = {
+        subject: 'تسجيل دخول جديد — شام للعطور',
+        html: `<div dir="rtl" style="font-family:Tahoma,Arial,sans-serif;max-width:520px;margin:auto;padding:24px;border:1px solid #e7e2d9;border-radius:16px"><p>تم تسجيل دخول لحسابك من جهاز جديد:</p><p style="font-family:monospace;direction:ltr;text-align:center;background:#faf6ee;border-radius:8px;padding:8px">${detail}</p><p>لو أنت مش اللي سجّل الدخول، غيّر كلمة السر فوراً من بوابتك ← الأمان.</p></div>`,
+        text: `تم تسجيل دخول لحسابك من جهاز جديد: ${detail}. لو أنت مش اللي سجّل الدخول، غيّر كلمة السر فوراً.`,
+      };
+      const sent = await sendAuthEmail(ctx.vault.open(u.email_enc), alert, envOf(ctx));
+      if (sent.delivered) console.info('[community] sign-in alert e-mail delivered');
+    } catch { /* the in-app notification is the primary alert */ }
+  }
   return { token, expiresAt: expires.toISOString() };
 }
 
@@ -97,10 +138,12 @@ export interface RegisterInput {
 export function passwordPolicy(password: unknown): string {
   const text = typeof password === 'string' ? password : '';
   if (text.length < 8 || text.length > 200 || !/[A-Za-z\u0600-\u06FF]/.test(text) || !/\d/.test(text)) fail(400, 'WEAK_PASSWORD');
+  // Google, Apple and Meta all refuse common passwords (top breached list, bundled in passwords.ts).
+  if (isCommonPassword(text)) fail(400, 'COMMON_PASSWORD');
   return text;
 }
 
-export async function register(ctx: Ctx, input: RegisterInput, agent = '') {
+export async function register(ctx: Ctx, input: RegisterInput, agent = '', ip = '') {
   const name = required(input.name, 'name', 2, 60);
   const email = clean(input.email, 254).toLowerCase();
   if (!isEmail(email)) fail(400, 'INVALID_EMAIL');
@@ -120,29 +163,87 @@ export async function register(ctx: Ctx, input: RegisterInput, agent = '') {
     [id, handle, name, emailIdx, ctx.vault.seal(email), await hashPassword(password), isCountry(country) ? country : '', LANG.test(lang) ? lang : 'ar', craft,
       privateData.phone || privateData.city ? ctx.vault.sealJson(privateData) : null],
   ).catch((error) => { if (/unique|duplicate/i.test(String(error?.message))) fail(409, 'EMAIL_EXISTS'); throw error; });
-  return { ...(await startSession(ctx, id, agent)), me: await me(ctx, id) };
+  auditEvent(ctx, id, 'register', '', `${name} <${email}>`);
+  // E-mail verification (Google/Meta verify the contact at sign-up). Soft: the account works, but
+  // the portal shows «verify your e-mail» until the code is entered — and nothing is faked when the
+  // server has no e-mail provider configured.
+  try {
+    const code = await issueCode(ctx, id, 'verify_email');
+    const sent = await sendAuthEmail(email, codeMail('أكواد شام للعطور — تأكيد البريد', code, 15,
+      'عشان نتأكد إن البريد ده حقيقي في حسابك الجديد، أدخل الكود ده في بوابتك ← الأمان:',
+      'To verify your e-mail on your new Sham account, enter this code: My portal → Security.'), envOf(ctx));
+    if (!sent.delivered) console.warn('[community] verification e-mail not delivered:', sent.error || sent.provider);
+  } catch (error) { console.warn('[community] verification code failed:', error instanceof Error ? error.message : error); }
+  return { ...(await startSession(ctx, id, agent, ip)), me: await me(ctx, id) };
 }
 
-export async function login(ctx: Ctx, input: { email?: unknown; password?: unknown }, agent = '') {
+export interface LoginPending { pending: true; pendingToken: string; expiresIn: number }
+export interface LoginSuccess { token: string; expiresAt: string; me: Awaited<ReturnType<typeof me>> }
+export type LoginOutcome = LoginPending | LoginSuccess;
+
+export async function login(ctx: Ctx, input: { email?: unknown; password?: unknown }, agent = '', ip = ''): Promise<LoginOutcome> {
   const email = clean(input.email, 254).toLowerCase();
   const password = typeof input.password === 'string' ? input.password.slice(0, 200) : '';
-  const [row] = isEmail(email) ? await ctx.sql.query(`SELECT id, pass_hash, status FROM users WHERE email_idx = $1`, [ctx.vault.index(email)]) : [];
+  const [row] = isEmail(email) ? await ctx.sql.query(
+    `SELECT id, pass_hash, status, failed_logins, locked_until, totp_enabled FROM users WHERE email_idx = $1`, [ctx.vault.index(email)]) : [];
+  if (row?.locked_until && new Date(row.locked_until).getTime() > Date.now()) fail(423, 'ACCOUNT_LOCKED');
   // Same answer and similar time for an unknown e-mail and a wrong password.
-  const ok = await verifyPassword(password, row?.pass_hash || 'scrypt$32768$AAAAAAAAAAAAAAAAAAAAAA$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-  if (!row || !ok) fail(401, 'INVALID_LOGIN');
+  const ok = await verifyPassword(password, row?.pass_hash || DUMMY_HASH);
+  if (!row || !ok) {
+    if (row) {
+      const attempts = (Number(row.failed_logins) || 0) + 1;
+      if (attempts >= MAX_FAILED_LOGINS) {
+        await ctx.sql.query(`UPDATE users SET failed_logins = 0, locked_until = $1 WHERE id = $2`, [new Date(Date.now() + LOCK_MS).toISOString(), row.id]);
+        auditEvent(ctx, row.id, 'account_locked');
+      } else await ctx.sql.query(`UPDATE users SET failed_logins = $1 WHERE id = $2`, [attempts, row.id]);
+      auditEvent(ctx, row.id, 'login_fail');
+    }
+    fail(401, 'INVALID_LOGIN');
+  }
   if (row.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
   if (row.status === 'deleted') fail(401, 'INVALID_LOGIN');
-  return { ...(await startSession(ctx, row.id, agent)), me: await me(ctx, row.id) };
+  await ctx.sql.query(`UPDATE users SET failed_logins = 0, locked_until = NULL WHERE id = $1`, [row.id]);
+  // Two-factor accounts (Google/Meta style): the password opens a short pending login; the
+  // authenticator code finishes it.
+  if (row.totp_enabled) {
+    const { token, hash } = newToken();
+    await ctx.sql.query(`INSERT INTO pending_logins (token_hash, user_id, agent, ip, expires_at) VALUES ($1,$2,$3,$4,$5)`,
+      [hash, row.id, clean(agent, 200), clean(ip, 64), new Date(Date.now() + PENDING_LOGIN_MS).toISOString()]);
+    auditEvent(ctx, row.id, 'login_2fa_started');
+    return { pending: true, pendingToken: token, expiresIn: Math.round(PENDING_LOGIN_MS / 1000) };
+  }
+  auditEvent(ctx, row.id, 'login_ok', '', `${clean(agent, 80)} ${ip}`.trim());
+  return { ...(await startSession(ctx, row.id, agent, ip)), me: await me(ctx, row.id) };
+}
+
+/** Finish a two-factor login with the authenticator code (single-use pending token). */
+export async function loginTwoFactor(ctx: Ctx, input: { pendingToken?: unknown; code?: unknown }): Promise<LoginSuccess> {
+  const pendingToken = String(input.pendingToken || '');
+  if (pendingToken.length < 32) fail(400, 'INVALID_FIELD', 'pendingToken');
+  const [row] = await ctx.sql.query(
+    `SELECT pl.user_id, pl.agent, pl.ip, u.totp_secret_enc, u.totp_last, u.status FROM pending_logins pl
+     JOIN users u ON u.id = pl.user_id WHERE pl.token_hash = $1 AND pl.expires_at > now()`, [tokenHash(pendingToken)]);
+  if (!row) fail(401, 'INVALID_LOGIN');
+  if (row.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
+  const check = verifyTotp(ctx.vault.open(row.totp_secret_enc), String(input.code || ''), row.totp_last);
+  if (!check.ok) { auditEvent(ctx, row.user_id, 'login_2fa_fail'); fail(401, 'INVALID_LOGIN'); }
+  await ctx.sql.query(`DELETE FROM pending_logins WHERE token_hash = $1`, [tokenHash(pendingToken)]);
+  await ctx.sql.query(`UPDATE users SET totp_last = $1 WHERE id = $2`, [check.counter.toString(36), row.user_id]);
+  auditEvent(ctx, row.user_id, 'login_ok', '', 'two-factor');
+  return { ...(await startSession(ctx, row.user_id, row.agent, row.ip)), me: await me(ctx, row.user_id) };
 }
 
 /** The signed-in user for a bearer token, or undefined. Refreshes «last seen» at most once a minute. */
 export async function authenticate(ctx: Ctx, token: string): Promise<SessionUser | undefined> {
   if (!token || token.length < 20 || token.length > 100) return undefined;
+  const hash = tokenHash(token);
   const [row] = await ctx.sql.query(
-    `SELECT u.id, u.handle, u.name, u.role, u.status, u.lang, u.last_seen FROM sessions s JOIN users u ON u.id = s.user_id
-     WHERE s.hash = $1 AND s.expires_at > now()`, [tokenHash(token)]);
+    `SELECT u.id, u.handle, u.name, u.role, u.status, u.lang, u.last_seen, s.last_used_at AS s_used
+     FROM sessions s JOIN users u ON u.id = s.user_id
+     WHERE s.hash = $1 AND s.expires_at > now()`, [hash]);
   if (!row || row.status !== 'active') return undefined;
   if (Date.now() - new Date(row.last_seen).getTime() > 60_000) await ctx.sql.query(`UPDATE users SET last_seen = now() WHERE id = $1`, [row.id]);
+  if (Date.now() - new Date(row.s_used).getTime() > 60_000) await ctx.sql.query(`UPDATE sessions SET last_used_at = now() WHERE hash = $1`, [hash]);
   return { id: row.id, handle: row.handle, name: row.name, role: row.role, status: row.status, lang: row.lang };
 }
 
@@ -167,9 +268,70 @@ export async function me(ctx: Ctx, userId: string) {
     id: u.id, handle: u.handle, name: u.name, email: ctx.vault.open(u.email_enc), role: u.role, status: u.status,
     country: u.country, lang: u.lang, craftLevel: u.craft_level, bio: u.bio, avatar: u.avatar || null,
     private: ctx.vault.openJson(u.private_enc, { phone: '', city: '' }), createdAt: iso(u.created_at),
+    emailVerified: iso(u.email_verified_at), totp: Boolean(u.totp_enabled),
     merchant: m ? { slug: m.slug, storeName: m.store_name, status: m.status, note: m.status === 'approved' ? '' : m.admin_note } : null,
     counts: counts || { recipes: 0, friends: 0, orders: 0, posts: 0 },
   };
+}
+
+/* ------------------------------------- security: e-mail & codes ------------------------------------- */
+
+/** Enter the 6-digit code from the verification e-mail (sets `emailVerified`). */
+export async function verifyEmail(ctx: Ctx, userId: string, code: unknown) {
+  if (!(await checkCode(ctx, userId, 'verify_email', String(code || '')))) fail(400, 'CODE_INVALID');
+  await ctx.sql.query(`UPDATE users SET email_verified_at = now() WHERE id = $1 AND email_verified_at IS NULL`, [userId]);
+  auditEvent(ctx, userId, 'email_verified');
+  return me(ctx, userId);
+}
+
+/** Resend the verification code (rate-limited; honest error when no e-mail provider is set). */
+export async function resendVerification(ctx: Ctx, userId: string) {
+  const [u] = await ctx.sql.query(`SELECT email_enc FROM users WHERE id = $1`, [userId]);
+  if (!u) fail(404, 'NOT_FOUND');
+  const code = await issueCode(ctx, userId, 'verify_email'); // CODE_LIMITED when the window is exhausted
+  const sent = await sendAuthEmail(ctx.vault.open(u.email_enc), codeMail('أكواد شام للعطور — تأكيد البريد', code, 15,
+    'طلبك إعادة إرسال كود تأكيد البريد. أدخله في بوابتك ← الأمان:', 'You asked to re-send your e-mail verification code.'), envOf(ctx));
+  if (!sent.delivered) fail(503, 'EMAIL_UNAVAILABLE');
+  return { ok: true };
+}
+
+/**
+ * Forgot-password, step 1 (Google/Meta «send me a code»). Answers identically whether the e-mail
+ * exists or not — an unknown address still burns a full scrypt round, so the two paths take the
+ * same time.
+ */
+export async function requestPasswordReset(ctx: Ctx, input: { email?: unknown }) {
+  const email = clean(input.email, 254).toLowerCase();
+  const [row] = isEmail(email) ? await ctx.sql.query(`SELECT id FROM users WHERE email_idx = $1 AND status = 'active'`, [ctx.vault.index(email)]) : [];
+  await verifyPassword('timing-equalizer-1', DUMMY_HASH); // equalises both answers
+  if (row) {
+    try {
+      const code = await issueCode(ctx, row.id, 'reset_password');
+      const sent = await sendAuthEmail(email, codeMail('أكواد شام للعطور — تغيير كلمة المرور', code, 10,
+        'طلبك تغيير كلمة المرور. أدخل الكود ده والكلمة الجديدة في صفحة تسجيل الدخول:',
+        'You asked to change your password. Enter this code and your new password on the sign-in page.'), envOf(ctx));
+      if (!sent.delivered) fail(503, 'EMAIL_UNAVAILABLE');
+      auditEvent(ctx, row.id, 'reset_requested');
+    } catch (error) {
+      if (error instanceof CommunityError && error.code === 'CODE_LIMITED') throw error;
+      console.warn('[community] reset e-mail failed:', error instanceof Error ? error.message : error);
+      fail(503, 'EMAIL_UNAVAILABLE');
+    }
+  }
+  return { ok: true };
+}
+
+/** Forgot-password, step 2: the code plus the new password. Signs every session out. */
+export async function confirmPasswordReset(ctx: Ctx, input: { email?: unknown; code?: unknown; next?: unknown }) {
+  const email = clean(input.email, 254).toLowerCase();
+  const next = passwordPolicy(input.next);
+  const [row] = isEmail(email) ? await ctx.sql.query(`SELECT id FROM users WHERE email_idx = $1 AND status = 'active'`, [ctx.vault.index(email)]) : [];
+  if (!row || !(await checkCode(ctx, row.id, 'reset_password', String(input.code || '')))) fail(400, 'CODE_INVALID');
+  await ctx.sql.query(`UPDATE users SET pass_hash = $1 WHERE id = $2`, [await hashPassword(next), row.id]);
+  await ctx.sql.query(`DELETE FROM sessions WHERE user_id = $1`, [row.id]);
+  await ctx.sql.query(`DELETE FROM pending_logins WHERE user_id = $1`, [row.id]);
+  auditEvent(ctx, row.id, 'password_reset');
+  return { ok: true };
 }
 
 export async function updateProfile(ctx: Ctx, userId: string, input: Record<string, unknown>) {
@@ -196,17 +358,202 @@ export async function updateProfile(ctx: Ctx, userId: string, input: Record<stri
   return me(ctx, userId);
 }
 
-export async function changePassword(ctx: Ctx, userId: string, input: { current?: unknown; next?: unknown }) {
+export async function changePassword(ctx: Ctx, userId: string, input: { current?: unknown; next?: unknown }, currentToken = '') {
   const [u] = await ctx.sql.query(`SELECT pass_hash FROM users WHERE id = $1`, [userId]);
   if (!u || !(await verifyPassword(String(input.current || ''), u.pass_hash))) fail(401, 'WRONG_PASSWORD');
   await ctx.sql.query(`UPDATE users SET pass_hash = $1 WHERE id = $2`, [await hashPassword(passwordPolicy(input.next)), userId]);
+  // A password change invalidates every other device (the old hash could not have produced the new
+  // sessions' trust). The device the change came from stays signed in.
+  const currentHash = currentToken ? tokenHash(currentToken) : '';
+  await ctx.sql.query(`DELETE FROM sessions WHERE user_id = $1 AND ($2 = '' OR hash <> $2)`, [userId, currentHash]);
+  auditEvent(ctx, userId, 'password_changed');
 }
 
 /** «احذف حسابي»: personal data is erased; posts and messages are removed with the account. */
 export async function deleteAccount(ctx: Ctx, userId: string, password: unknown) {
   const [u] = await ctx.sql.query(`SELECT pass_hash FROM users WHERE id = $1`, [userId]);
   if (!u || !(await verifyPassword(String(password || ''), u.pass_hash))) fail(401, 'WRONG_PASSWORD');
+  auditEvent(ctx, userId, 'account_deleted');
   await ctx.sql.query(`DELETE FROM users WHERE id = $1`, [userId]);
+}
+
+/* ------------------------------------- security: devices & 2FA ------------------------------------- */
+
+/** The signed-in member's active sessions («Your devices» / «Where you're signed in»). */
+export async function mySessions(ctx: Ctx, userId: string, currentToken = '') {
+  const currentHash = tokenHash(currentToken);
+  const rows = await ctx.sql.query(
+    `SELECT hash, agent, ip, created_at, last_used_at FROM sessions WHERE user_id = $1 AND expires_at > now() ORDER BY created_at DESC LIMIT 20`, [userId]);
+  return rows.map((r) => ({
+    id: r.hash, agent: r.agent, ip: r.ip || '', createdAt: iso(r.created_at), lastUsedAt: iso(r.last_used_at), current: r.hash === currentHash,
+  }));
+}
+
+/** Revoke one session by its id (the current one is refused — sign out instead). */
+export async function revokeSession(ctx: Ctx, userId: string, sessionId: string, currentToken = '') {
+  if (!sessionId || tokenHash(currentToken) === sessionId) fail(400, 'INVALID_FIELD', 'session');
+  const removed = await ctx.sql.query(`DELETE FROM sessions WHERE hash = $1 AND user_id = $2 RETURNING hash`, [sessionId, userId]);
+  if (!removed.length) fail(404, 'NOT_FOUND');
+  auditEvent(ctx, userId, 'session_revoked', '', sessionId.slice(0, 10));
+  return { ok: true };
+}
+
+/** Start two-factor: proves the password, returns the secret the authenticator app encodes. */
+export async function totpSetup(ctx: Ctx, userId: string, password: unknown) {
+  const [u] = await ctx.sql.query(`SELECT pass_hash, totp_enabled, handle FROM users WHERE id = $1`, [userId]);
+  if (!u || !(await verifyPassword(String(password || ''), u.pass_hash))) fail(401, 'WRONG_PASSWORD');
+  if (u.totp_enabled) fail(409, 'ALREADY_ENABLED');
+  const secret = newTotpSecret();
+  await ctx.sql.query(`UPDATE users SET totp_secret_enc = $1 WHERE id = $2`, [ctx.vault.seal(secret), userId]);
+  auditEvent(ctx, userId, 'totp_setup_started');
+  return { secret, uri: otpauthUri(u.handle, secret) };
+}
+
+/** Finish two-factor with a code from the app (wrong codes simply do not enable it). */
+export async function totpConfirm(ctx: Ctx, userId: string, code: unknown) {
+  const [u] = await ctx.sql.query(`SELECT totp_secret_enc, totp_last FROM users WHERE id = $1 AND totp_secret_enc IS NOT NULL AND totp_enabled = false`, [userId]);
+  if (!u) fail(400, 'INVALID_FIELD', 'code');
+  const check = verifyTotp(ctx.vault.open(u.totp_secret_enc), String(code || ''), u.totp_last);
+  if (!check.ok) fail(400, 'CODE_INVALID');
+  await ctx.sql.query(`UPDATE users SET totp_enabled = true, totp_last = $1 WHERE id = $2`, [check.counter.toString(36), userId]);
+  auditEvent(ctx, userId, 'totp_enabled');
+  return { ok: true };
+}
+
+/** Turn two-factor off: password plus a fresh code (an attacker with the password alone cannot). */
+export async function totpDisable(ctx: Ctx, userId: string, password: unknown, code: unknown) {
+  const [u] = await ctx.sql.query(`SELECT pass_hash, totp_secret_enc, totp_last, totp_enabled FROM users WHERE id = $1`, [userId]);
+  if (!u?.totp_enabled) fail(404, 'NOT_FOUND');
+  if (!(await verifyPassword(String(password || ''), u.pass_hash))) fail(401, 'WRONG_PASSWORD');
+  const check = verifyTotp(ctx.vault.open(u.totp_secret_enc), String(code || ''), u.totp_last);
+  if (!check.ok) fail(400, 'CODE_INVALID');
+  await ctx.sql.query(`UPDATE users SET totp_enabled = false, totp_secret_enc = NULL, totp_last = '' WHERE id = $1`, [userId]);
+  auditEvent(ctx, userId, 'totp_disabled');
+  return { ok: true };
+}
+
+/* ------------------------------------- security: passkeys (WebAuthn) -------------------------------------
+ * A passkey IS the second factor: the device signs with a private key that never leaves it (fingerprint,
+ * face, or PIN), so a passkey sign-in does not also require the TOTP code. Google and Meta are moving
+ * their accounts this way; Apple does it natively. */
+
+const CHALLENGE_MS = 60_000;
+
+async function freshChallenge(ctx: Ctx, userId: string, purpose: string): Promise<{ id: string; challenge: string }> {
+  const id = newId('wc');
+  const challenge = newChallenge();
+  await ctx.sql.query(
+    `INSERT INTO webauthn_challenges (id, user_id, purpose, challenge, expires_at) VALUES ($1,$2,$3,$4,$5)`,
+    [id, userId, purpose, challenge, new Date(Date.now() + CHALLENGE_MS).toISOString()]);
+  return { id, challenge };
+}
+
+/** Step 1 of «add a passkey to this device». */
+export async function passkeyRegisterBegin(ctx: Ctx, userId: string, name: unknown) {
+  const [u] = await ctx.sql.query(`SELECT handle, email_enc FROM users WHERE id = $1`, [userId]);
+  if (!u) fail(404, 'NOT_FOUND');
+  const { id, challenge } = await freshChallenge(ctx, userId, 'register');
+  const exclude = await ctx.sql.query(`SELECT cred_id FROM passkeys WHERE user_id = $1 LIMIT 25`, [userId]);
+  return {
+    id,
+    challenge,
+    rpId: rpIdOf(envOf(ctx)),
+    rp: { name: 'شام للعطور (Sham Perfumes)' },
+    user: { id: userId, name: ctx.vault.open(u.email_enc), displayName: u.handle },
+    pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }],
+    timeout: 60_000,
+    attestation: 'none',
+    authenticatorSelection: { residentKey: 'preferred', userVerification: 'preferred' },
+    excludeCredentials: exclude.map((r) => ({ type: 'public-key', id: r.cred_id })),
+    name: clean(name, 60),
+  };
+}
+
+/** Step 2: verify the device's answer and store the public key. */
+export async function passkeyRegisterFinish(ctx: Ctx, userId: string, input: { challengeId?: unknown; clientDataJSON?: unknown; attestationObject?: unknown; name?: unknown }) {
+  const [ch] = await ctx.sql.query(
+    `SELECT challenge FROM webauthn_challenges WHERE id = $1 AND user_id = $2 AND purpose = 'register' AND used_at IS NULL AND expires_at > now()`,
+    [String(input.challengeId || ''), userId]);
+  if (!ch) fail(400, 'CHALLENGE_INVALID');
+  const clientData = Buffer.from(String(input.clientDataJSON || ''), 'base64url');
+  const attestation = Buffer.from(String(input.attestationObject || ''), 'base64url');
+  let out: ReturnType<typeof verifyCreate> | undefined;
+  try { out = verifyCreate(clientData, attestation, ch.challenge, envOf(ctx)); }
+  catch { fail(400, 'PASSKEY_INVALID'); }
+  // fail() always throws — TypeScript just doesn't know it
+  const verified = out!;
+  await ctx.sql.query(`UPDATE webauthn_challenges SET used_at = now() WHERE id = $1`, [String(input.challengeId)]);
+  const name = clean(input.name, 60) || 'جهاز جديد';
+  await ctx.sql.query(
+    `INSERT INTO passkeys (id, user_id, cred_id, name, pub_key, alg, sign_count, uv) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
+    [newId('pk'), userId, verified.credId.toString('base64url'), name, verified.pubKeyRaw.toString('base64'), verified.alg, verified.signCount, verified.uv],
+  ).catch((error) => { if (/unique|duplicate/i.test(String(error?.message))) fail(409, 'PASSKEY_EXISTS'); throw error; });
+  auditEvent(ctx, userId, 'passkey_added', '', name);
+  return myPasskeys(ctx, userId);
+}
+
+export async function myPasskeys(ctx: Ctx, userId: string) {
+  const rows = await ctx.sql.query(`SELECT id, name, uv, created_at, last_used_at FROM passkeys WHERE user_id = $1 ORDER BY created_at DESC LIMIT 20`, [userId]);
+  return rows.map((r) => ({ id: r.id, name: r.name, uv: Boolean(r.uv), createdAt: iso(r.created_at), lastUsedAt: iso(r.last_used_at) }));
+}
+
+export async function deletePasskey(ctx: Ctx, userId: string, passkeyId: string) {
+  const removed = await ctx.sql.query(`DELETE FROM passkeys WHERE id = $1 AND user_id = $2 RETURNING id`, [passkeyId, userId]);
+  if (!removed.length) fail(404, 'NOT_FOUND');
+  auditEvent(ctx, userId, 'passkey_removed');
+  return { ok: true };
+}
+
+/** Step 1 of «sign in with a passkey». Identical 404 for unknown e-mail / no passkey (no enumeration). */
+export async function passkeyLoginBegin(ctx: Ctx, input: { email?: unknown }) {
+  const email = clean(input.email, 254).toLowerCase();
+  const [u] = isEmail(email) ? await ctx.sql.query(`SELECT id, status FROM users WHERE email_idx = $1`, [ctx.vault.index(email)]) : [];
+  await verifyPassword('timing-equalizer-3', DUMMY_HASH);
+  if (!u || u.status === 'deleted') fail(404, 'NOT_FOUND');
+  const creds = await ctx.sql.query(`SELECT cred_id FROM passkeys WHERE user_id = $1 LIMIT 10`, [u.id]);
+  if (!creds.length) fail(404, 'NOT_FOUND');
+  const { id, challenge } = await freshChallenge(ctx, u.id, 'login');
+  return {
+    id,
+    challenge,
+    rpId: rpIdOf(envOf(ctx)),
+    timeout: 60_000,
+    userVerification: 'preferred',
+    allowedCredentials: creds.map((r) => ({ type: 'public-key' as const, id: r.cred_id })),
+  };
+}
+
+/** Step 2: verify the assertion, guard against cloned credentials, open the session. */
+export async function passkeyLoginFinish(ctx: Ctx, input: { challengeId?: unknown; credentialId?: unknown; clientDataJSON?: unknown; authenticatorData?: unknown; signature?: unknown }, agent = '', ip = ''): Promise<LoginSuccess> {
+  const [ch] = await ctx.sql.query(
+    `SELECT challenge, user_id FROM webauthn_challenges WHERE id = $1 AND purpose = 'login' AND used_at IS NULL AND expires_at > now()`,
+    [String(input.challengeId || '')]);
+  if (!ch) fail(400, 'CHALLENGE_INVALID');
+  const [pk] = await ctx.sql.query(
+    `SELECT id, pub_key, sign_count FROM passkeys WHERE user_id = $1 AND cred_id = $2`,
+    [ch.user_id, String(input.credentialId || '')]);
+  if (!pk) fail(401, 'PASSKEY_INVALID');
+  const clientData = Buffer.from(String(input.clientDataJSON || ''), 'base64url');
+  const authData = Buffer.from(String(input.authenticatorData || ''), 'base64url');
+  const signature = Buffer.from(String(input.signature || ''), 'base64url');
+  let res: ReturnType<typeof verifyAssert> | undefined;
+  try {
+    res = verifyAssert(clientData, { authenticatorData: authData, signature }, ch.challenge, coseToPublicKey(cborDecode(Buffer.from(pk.pub_key, 'base64'))).key, envOf(ctx));
+  } catch {
+    fail(401, 'PASSKEY_INVALID');
+  }
+  const verified = res!;
+  // A counter going backwards means the credential was cloned to another authenticator.
+  if (Number(pk.sign_count) > 0 && verified.signCount < Number(pk.sign_count)) {
+    auditEvent(ctx, ch.user_id, 'passkey_clone_suspect', '', String(pk.id));
+    fail(401, 'PASSKEY_INVALID');
+  }
+  await ctx.sql.query(`UPDATE webauthn_challenges SET used_at = now() WHERE id = $1`, [String(input.challengeId)]);
+  await ctx.sql.query(`UPDATE passkeys SET sign_count = $1, last_used_at = now() WHERE id = $2`, [verified.signCount, pk.id]);
+  const [u] = await ctx.sql.query(`SELECT status FROM users WHERE id = $1`, [ch.user_id]);
+  if (u?.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
+  auditEvent(ctx, ch.user_id, 'login_ok', '', 'passkey');
+  return { ...(await startSession(ctx, ch.user_id, agent || 'passkey', ip)), me: await me(ctx, ch.user_id) };
 }
 
 /* ------------------------------------------ merchants ------------------------------------------ */

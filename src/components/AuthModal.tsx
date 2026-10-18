@@ -12,9 +12,12 @@ import {
   EyeOff,
   Beaker,
   Award,
+  Fingerprint,
 } from 'lucide-react';
 import { UserProfile } from '../types/auth';
-import { loginUser, registerUser } from '../utils/authStorage';
+import { completeTwoFactorLogin, confirmPasswordReset, loginUser, profileFromMember, registerUser, requestPasswordReset } from '../utils/authStorage';
+import { CommunityApiError, cx, type AuthResult, type PasskeyGetOptions } from '../community/api';
+import { usePasskey, webauthnAvailable } from '../community/passkeys';
 import { WORLD_COUNTRIES } from '../data/worldCountries';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
@@ -197,16 +200,52 @@ const S = {
     fa: 'کشور / منطقه آزمایشگاه:',
   },
   privacy_check: {
-    ar: 'أوافق على سياسة حماية بيانات المستخدم المشفرة، وعدم مشاركة خلطاتي وسجلاتي مع أي طرف ثالث.',
-    en: 'I agree to the encrypted user-data protection policy and to never sharing my formulas or records with third parties.',
-    fr: 'J’accepte la politique de protection chiffrée des données et le non-partage de mes formules avec des tiers.',
-    es: 'Acepto la política de protección cifrada de datos y no compartir mis fórmulas con terceros.',
-    it: 'Accetto la politica di protezione cifrata dei dati e di non condividere le mie formule con terzi.',
-    de: 'Ich stimme der verschlüsselten Datenschutzrichtlinie zu und teile meine Formeln nicht mit Dritten.',
-    ru: 'Я согласен с политикой шифрованной защиты данных и неразглашением моих формул третьим лицам.',
-    zh: '我同意加密用户数据保护政策，且不与任何第三方共享我的配方与记录。',
-    tr: 'Şifreli veri koruma politikasını ve formüllerimin üçüncü taraflarla paylaşılmamasını kabul ediyorum.',
-    fa: 'با سیاست حفاظت رمزنگاری‌شده از داده‌های کاربر و عدم اشتراک‌گذاری فرمول‌ها با اشخاص ثالث موافقم.',
+    ar: 'أوافق على الشروط والأحكام وسياسة الخصوصية (GDPR/PDPL) وأقر بأن بياناتي تُعالج بموافقة صريحة قابلة للسحب، ولن تُشارك خلطاتي مع طرف ثالث.',
+    en: 'I agree to the Terms & Privacy Policy (GDPR/PDPL) and consent to processing my data (withdrawable), and that my formulas will never be shared with third parties.',
+    fr: 'J’accepte les conditions et la politique de confidentialité (RGPD) et consens au traitement de mes données (révocable).',
+    es: 'Acepto los Términos y la Política de Privacidad (GDPR/PDPL) y consiento el tratamiento de mis datos (revocable).',
+    it: 'Accetto i Termini e la Privacy Policy (GDPR/PDPL) e consento al trattamento dei miei dati (revocabile).',
+    de: 'Ich stimme den AGB und der Datenschutzrichtlinie (DSGVO) zu und willige in die Verarbeitung ein (widerruflich).',
+    ru: 'Я принимаю Условия и Политику конфиденциальности (GDPR/PDPL) и даю согласие на обработку данных (отзываемое).',
+    zh: '我同意条款与隐私政策（GDPR/PDPL），并同意处理我的数据（可撤回），且配方永不与第三方共享。',
+    tr: 'Şartlar ve Gizlilik Politikasını (KVKK/GDPR) kabul ediyor ve verilerimin işlenmesine (geri alınabilir) onay veriyorum.',
+    fa: 'با شرایط و سیاست حریم خصوصی (GDPR/PDPL) موافقم و به پردازش داده‌هایم (قابل پس‌گیری) رضایت می‌دهم.',
+  },
+  age_check: {
+    ar: 'أؤكد أن عمري 16 سنة أو أكثر (13 سنة للولايات المتحدة) وأتحمل مسؤولية استخدام المنصة.',
+    en: 'I confirm I am 16+ (13+ in the US) and responsible for using the platform.',
+    fr: 'Je confirme avoir 16 ans ou plus (13+ aux États-Unis) et être responsable de l’utilisation.',
+    es: 'Confirmo que tengo 16 años o más (13+ en EE. UU.) y soy responsable del uso.',
+    it: 'Confermo di avere 16 anni o più (13+ negli USA) e di essere responsabile dell’uso.',
+    de: 'Ich bestätige, 16+ (13+ in den USA) zu sein und verantwortlich zu nutzen.',
+    ru: 'Подтверждаю, что мне 16+ (13+ в США) и я несу ответственность за использование.',
+    zh: '我确认已年满 16 周岁（美国 13 周岁）并对使用本平台负责。',
+    tr: '16+ (ABD’de 13+) olduğumu ve platformu sorumluca kullanacağımı onaylıyorum.',
+    fa: 'تأیید می‌کنم ۱۶+ (در آمریکا ۱۳+) هستم و مسئول استفاده از پلتفرم می‌باشم.',
+  },
+  dob_label: {
+    ar: 'تاريخ الميلاد (للتحقق من العمر):',
+    en: 'Date of Birth (age verification):',
+    fr: 'Date de naissance (vérification d’âge) :',
+    es: 'Fecha de nacimiento (verificación de edad):',
+    it: 'Data di nascita (verifica età):',
+    de: 'Geburtsdatum (Altersprüfung):',
+    ru: 'Дата рождения (проверка возраста):',
+    zh: '出生日期（年龄验证）：',
+    tr: 'Doğum tarihi (yaş doğrulama):',
+    fa: 'تاریخ تولد (تأیید سن):',
+  },
+  err_age: {
+    ar: 'يجب أن يكون عمرك 16 سنة على الأقل (13 في أمريكا) لاستخدام المنصة',
+    en: 'You must be at least 16 (13 in the US) to use the platform',
+    fr: 'Vous devez avoir au moins 16 ans (13 aux États-Unis) pour utiliser la plateforme',
+    es: 'Debes tener al menos 16 años (13 en EE. UU.) para usar la plataforma',
+    it: 'Devi avere almeno 16 anni (13 negli USA) per usare la piattaforma',
+    de: 'Sie müssen mindestens 16 (13 in den USA) sein, um die Plattform zu nutzen',
+    ru: 'Вам должно быть не менее 16 лет (13 в США) для использования платформы',
+    zh: '您必须年满 16 周岁（美国 13 周岁）才能使用本平台',
+    tr: 'Platformu kullanmak için en az 16 (ABD’de 13) yaşında olmalısınız',
+    fa: 'برای استفاده از پلتفرم باید حداقل ۱۶ سال (در آمریکا ۱۳ سال) داشته باشید',
   },
   privacy_link: {
     ar: '(عرض وثيقة الخصوصية)',
@@ -333,6 +372,24 @@ const S = {
   err_login_failed: { ar: 'حدث خطأ أثناء تسجيل الدخول', en: 'An error occurred during login', fr: 'Une erreur est survenue lors de la connexion', es: 'Ocurrió un error al iniciar sesión', it: 'Errore durante l’accesso', de: 'Beim Anmelden ist ein Fehler aufgetreten', ru: 'Произошла ошибка входа', zh: '登录时发生错误', tr: 'Giriş sırasında bir hata oluştu', fa: 'هنگام ورود خطایی رخ داد' },
   err_email_exists: { ar: 'البريد الإلكتروني مسجل بالفعل، يرجى تسجيل الدخول', en: 'Email already registered, please log in', fr: 'E-mail déjà enregistré, connectez-vous', es: 'Correo ya registrado, inicia sesión', it: 'Email già registrata, accedi', de: 'E-Mail bereits registriert, bitte anmelden', ru: 'E-mail уже зарегистрирован, войдите', zh: '该邮箱已注册，请直接登录', tr: 'E-posta zaten kayıtlı, lütfen giriş yapın', fa: 'این ایمیل قبلاً ثبت شده است؛ وارد شوید' },
   err_register_failed: { ar: 'حدث خطأ أثناء إنشاء الحساب', en: 'An error occurred while creating your account', fr: 'Une erreur est survenue lors de la création du compte', es: 'Ocurrió un error al crear la cuenta', it: 'Errore durante la creazione dell’account', de: 'Beim Erstellen des Kontos ist ein Fehler aufgetreten', ru: 'Произошла ошибка при создании аккаунта', zh: '创建账户时发生错误', tr: 'Hesap oluşturulurken bir hata oluştu', fa: 'هنگام ایجاد حساب خطایی رخ داد' },
+  err_account_locked: { ar: 'محاولات كثيرة خاطئة — الحساب مقفول لمدة 15 دقيقة', en: 'Too many wrong attempts — the account is locked for 15 minutes', fr: 'Trop de tentatives — compte verrouillé 15 minutes', es: 'Demasiados intentos: cuenta bloqueada 15 minutos', it: 'Troppi tentativi: account bloccato 15 minuti', de: 'Zu viele Fehlversuche — Konto 15 Minuten gesperrt', ru: 'Слишком много попыток — аккаунт заблокирован на 15 минут', zh: '错误尝试过多，账户已锁定 15 分钟', tr: 'Çok fazla hatalı deneme — hesap 15 dakika kilitli', fa: 'تلاش‌های ناموفق زیاد — حساب ۱۵ دقیقه قفل شد' },
+  err_email_unavailable: { ar: 'خدمة البريد غير مفعّلة على السيرفر — كلم الإدارة', en: 'The e-mail service is not configured on this server — contact administration', fr: 'Le service e-mail n’est pas configuré sur ce serveur', es: 'El servicio de correo no está configurado en este servidor', it: 'Il servizio e-mail non è configurato su questo server', de: 'Der E-Mail-Dienst ist auf diesem Server nicht eingerichtet', ru: 'E-mail-сервер не настроен на этом сервере', zh: '此服务器未配置邮件服务，请联系管理员', tr: 'Bu sunucuda e-posta servisi yapılandırılmadı', fa: 'سرویس ایمیل روی این سرور تنظیم نشده است' },
+  err_code_limited: { ar: 'أكواد كثيرة في فترة قصيرة — استنى شوية وجرّب تاني', en: 'Too many codes in a short time — wait a moment and retry', fr: 'Trop de codes — patientez puis réessayez', es: 'Demasiados códigos — espera y reintenta', it: 'Troppi codici — attendi e riprova', de: 'Zu viele Codes — bitte warten und erneut versuchen', ru: 'Слишком много кодов — подождите и повторите', zh: '短时间内请求的验证码过多，请稍候再试', tr: 'Kısa sürede çok fazla kod — bekleyip tekrar deneyin', fa: 'کدهای زیاد در زمان کوتاه — صبر کنید و دوباره امتحان کنید' },
+  err_code_invalid: { ar: 'الكود مش صحيح أو انتهى — اطلب كود جديد', en: 'The code is not valid or has expired — request a new one', fr: 'Code invalide ou expiré — demandez-en un autre', es: 'Código no válido o caducado — solicita otro', it: 'Codice non valido o scaduto — richiedine uno', de: 'Code ungültig oder abgelaufen — bitte neuen anfordern', ru: 'Код недействителен или просрочен — запросите новый', zh: '验证码无效或已过期，请重新获取', tr: 'Kod geçersiz veya süresi dolmuş — yenisini isteyin', fa: 'کد معتبر نیست یا منقضی شده — کد جدید بگیرید' },
+  forgot_link: { ar: 'نسيت كلمة المرور؟', en: 'Forgot your password?', fr: 'Mot de passe oublié ?', es: '¿Olvidaste tu contraseña?', it: 'Password dimenticata?', de: 'Passwort vergessen?', ru: 'Забыли пароль?', zh: '忘记密码？', tr: 'Parolanızı mı unuttunuz?', fa: 'رمز عبور را فراموش کردید؟' },
+  totp_title: { ar: 'التحقق بخطوتين', en: 'Two-step verification', fr: 'Vérification en deux étapes', es: 'Verificación en dos pasos', it: 'Verifica in due passaggi', de: 'Zwei-Faktor-Prüfung', ru: 'Двухфакторная проверка', zh: '两步验证', tr: 'İki aşamalı doğrulama', fa: 'تأیید دو مرحله‌ای' },
+  totp_hint: { ar: 'اكتب الكود الست أرقام من تطبيق التحقق على موبايلك', en: 'Enter the 6-digit code from your authenticator app', fr: 'Saisissez le code à 6 chiffres de votre application d’authentification', es: 'Introduce el código de 6 dígitos de tu app de autenticación', it: 'Inserisci il codice a 6 cifre della tua app di autenticazione', de: 'Geben Sie den 6-stelligen Code Ihrer Authenticator-App ein', ru: 'Введите 6-значный код из приложения-аутентификатора', zh: '请输入验证应用中的 6 位验证码', tr: 'Doğrulayıcı uygulamanızdaki 6 haneli kodu girin', fa: 'کد ۶ رقمی از برنامه احراز هویت را وارد کنید' },
+  totp_submit: { ar: 'تأكيد', en: 'Verify', fr: 'Vérifier', es: 'Verificar', it: 'Verifica', de: 'Bestätigen', ru: 'Подтвердить', zh: '确认', tr: 'Doğrula', fa: 'تأیید' },
+  totp_back: { ar: 'رجوع لتسجيل الدخول', en: 'Back to sign in', fr: 'Retour à la connexion', es: 'Volver a iniciar sesión', it: 'Torna all’accesso', de: 'Zurück zur Anmeldung', ru: 'Назад ко входу', zh: '返回登录', tr: 'Girişe dön', fa: 'بازگشت به ورود' },
+  forgot_title: { ar: 'تغيير كلمة المرور', en: 'Reset your password', fr: 'Réinitialiser votre mot de passe', es: 'Restablecer tu contraseña', it: 'Reimposta la password', de: 'Passwort zurücksetzen', ru: 'Восстановление пароля', zh: '重置密码', tr: 'Parolanızı sıfırlayın', fa: 'بازنشانی رمز عبور' },
+  forgot_sent: { ar: 'لو البريد ده مسجل عندنا، هيوصلك كود تغيير كلمة المرور. أدخله هنا مع كلمة السر الجديدة:', en: 'If this e-mail is registered, a reset code is on its way. Enter it with your new password:', fr: 'Si cet e-mail est enregistré, un code de réinitialisation arrive. Saisissez-le avec votre nouveau mot de passe :', es: 'Si este correo está registrado, llegará un código de restablecimiento. Introdúcelo con tu nueva contraseña:', it: 'Se questa e-mail è registrata, arriverà un codice di reimpostazione. Inseriscilo con la nuova password:', de: 'Falls diese E-Mail registriert ist, ist ein Code unterwegs. Geben Sie ihn mit dem neuen Passwort ein:', ru: 'Если эта e-mail зарегистрирована, будет отправлен код. Введите его вместе с новым паролем:', zh: '如果该邮箱已注册，重置验证码正在发送。请输入验证码和新密码：', tr: 'Bu e-posta kayıtlıysa sıfırlama kodu yolda. Yeni parolanızla birlikte girin:', fa: 'اگر این ایمیل ثبت شده، کد بازنشانی ارسال می‌شود. آن را با رمز عبور جدید وارد کنید:' },
+  code_label: { ar: 'الكود', en: 'Code', fr: 'Code', es: 'Código', it: 'Codice', de: 'Code', ru: 'Код', zh: '验证码', tr: 'Kod', fa: 'کد' },
+  new_pw_label: { ar: 'كلمة السر الجديدة', en: 'New password', fr: 'Nouveau mot de passe', es: 'Nueva contraseña', it: 'Nuova password', de: 'Neues Passwort', ru: 'Новый пароль', zh: '新密码', tr: 'Yeni parola', fa: 'رمز عبور جدید' },
+  reset_submit: { ar: 'تغيير كلمة المرور', en: 'Reset password', fr: 'Réinitialiser', es: 'Restablecer', it: 'Reimposta', de: 'Zurücksetzen', ru: 'Сбросить', zh: '重置密码', tr: 'Parolayı sıfırla', fa: 'بازنشانی رمز عبور' },
+  send_code: { ar: 'إرسال الكود', en: 'Send the code', fr: 'Envoyer le code', es: 'Enviar el código', it: 'Invia il codice', de: 'Code senden', ru: 'Отправить код', zh: '发送验证码', tr: 'Kodu gönder', fa: 'ارسال کد' },
+  reset_done: { ar: 'اتغيرت كلمة السر. كل الأجهزة اتخارجت — سجّل دخول بالكلمة الجديدة', en: 'Password changed. Every device was signed out — sign in with the new password', fr: 'Mot de passe changé. Tous les appareils sont déconnectés — connectez-vous avec le nouveau mot de passe', es: 'Contraseña cambiada. Todos los dispositivos salieron — inicia sesión con la nueva contraseña', it: 'Password cambiata. Tutti i dispositivi sono usciti — accedi con la nuova password', de: 'Passwort geändert. Alle Geräte wurden abgemeldet — melden Sie sich mit dem neuen Passwort an', ru: 'Пароль изменён. Со всех устройств выполнен выход — войдите с новым паролем', zh: '密码已更改。所有设备已退出，请使用新密码登录', tr: 'Parola değişti. Tüm cihazlardan çıkış yapıldı — yeni parolanızla giriş yapın', fa: 'رمز عبور تغییر کرد. از همه دستگاه‌ها خارج شدید — با رمز جدید وارد شوید' },
+  passkey_btn: { ar: 'دخول بالبصمة أو الوجه', en: 'Sign in with fingerprint or face', fr: 'Se connecter avec l’empreinte ou le visage', es: 'Iniciar con huella o rostro', it: 'Accedi con impronta o volto', de: 'Mit Fingerabdruck oder Gesicht anmelden', ru: 'Вход по отпечатку или лицу', zh: '指纹或人脸登录', tr: 'Parmak izi veya yüzle giriş', fa: 'ورود با اثر انگشت یا صورت' },
+  err_passkey_none: { ar: 'مفيش بصمة مسجلة بالبريد ده — ضيف واحدة من بوابتك', en: 'No passkey is registered for this e-mail — add one from your portal', fr: 'Aucun passkey pour cet e-mail — ajoutez-en un depuis votre portail', es: 'No hay passkey para este correo — añade uno desde tu portal', it: 'Nessun passkey per questa e-mail — aggiungine uno dal tuo portale', de: 'Kein Passkey für diese E-Mail — fügen Sie einen in Ihrem Portal hinzu', ru: 'Для этой e-mail нет passkey — добавьте его в своём портале', zh: '该邮箱没有 passkey，请从您的个人中心添加', tr: 'Bu e-posta için passkey yok — portalınızdan ekleyin', fa: 'برای این ایمیل passkey‌ای نیست — از پورتالتان اضافه کنید' },
 } satisfies Record<string, LText>;
 
 export const AuthModal: React.FC<AuthModalProps> = ({
@@ -349,11 +406,24 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [name, setName] = useState('');
   const [craftLevel, setCraftLevel] = useState<'hobbyist' | 'perfumer' | 'master_lab'>('perfumer');
   const [regionId, setRegionId] = useState('SA');
-  const [privacyAccepted, setPrivacyAccepted] = useState(true);
+  // L-02 Fix: GDPR Art.7 — الموافقة لا تكون افتراضية. يجب أن يختار المستخدم صراحةً.
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [ageConfirmed, setAgeConfirmed] = useState(false);
+  const [dob, setDob] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const [isLoading, setIsLoading] = useState(false);
+
+  /* Account-security steps: the two-factor code, and forgot-password (e-mail code + new password). */
+  const [stage, setStage] = useState<'auth' | 'totp' | 'forgot' | 'forgot_code'>('auth');
+  const [pendingToken, setPendingToken] = useState('');
+  const [code, setCode] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+
+  const toStep = (next: 'auth' | 'totp' | 'forgot' | 'forgot_code') => { setStage(next); setErrorMsg(null); setCode(''); setNewPassword(''); };
+
+  const finish = (user: UserProfile) => { onSuccess(user); onClose(); };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -361,15 +431,34 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setIsLoading(true);
 
     try {
+      if (stage === 'totp') {
+        const res = await completeTwoFactorLogin(pendingToken, code);
+        if (res.success && res.user) { finish(res.user); return; }
+        setErrorMsg(res.error ? (S[res.error as keyof typeof S] ? L(res.error as keyof typeof S) : res.error) : L('err_login'));
+        return;
+      }
+      if (stage === 'forgot') {
+        const res = await requestPasswordReset(email);
+        if (!res.success) { setErrorMsg(res.error ? (S[res.error as keyof typeof S] ? L(res.error as keyof typeof S) : res.error) : L('err_login')); return; }
+        toStep('forgot_code');
+        return;
+      }
+      if (stage === 'forgot_code') {
+        const res = await confirmPasswordReset(email, code, newPassword);
+        if (!res.success) { setErrorMsg(res.error ? (S[res.error as keyof typeof S] ? L(res.error as keyof typeof S) : res.error) : L('err_login')); return; }
+        toStep('auth');
+        setPassword('');
+        setErrorMsg(L('reset_done'));
+        return;
+      }
       if (mode === 'login') {
         const res = await loginUser(email, password);
-        if (res.success && res.user) {
-          onSuccess(res.user);
-          onClose();
-        } else {
-          setErrorMsg(res.error ? (S[res.error as keyof typeof S] ? L(res.error as keyof typeof S) : res.error) : L('err_login'));
-        }
-      } else {
+        if (res.success && res.user) { finish(res.user); return; }
+        if (res.error === 'totp_required') { setPendingToken(res.pendingToken || ''); toStep('totp'); return; }
+        setErrorMsg(res.error ? (S[res.error as keyof typeof S] ? L(res.error as keyof typeof S) : res.error) : L('err_login'));
+        return;
+      }
+      if (mode === 'register') {
         if (!name.trim()) {
           setErrorMsg(L('err_name'));
           setIsLoading(false);
@@ -384,6 +473,21 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           setErrorMsg(L('err_privacy'));
           setIsLoading(false);
           return;
+        }
+        // L-02 + L-17: تحقق العمر — GDPR Art.8 (16+) / COPPA (13+)
+        if (!ageConfirmed) {
+          setErrorMsg(L('err_age'));
+          setIsLoading(false);
+          return;
+        }
+        if (dob) {
+          const birth = new Date(dob);
+          const age = (Date.now() - birth.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
+          if (age < 13) {
+            setErrorMsg(L('err_age'));
+            setIsLoading(false);
+            return;
+          }
         }
 
         const res = await registerUser(name, email, password, craftLevel, regionId);
@@ -409,6 +513,24 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  /* Passkey sign-in: the device proves itself; no password typed at all. */
+  const [passkeyBusy, setPasskeyBusy] = useState(false);
+  const handlePasskeyLogin = async () => {
+    setErrorMsg(null);
+    setPasskeyBusy(true);
+    try {
+      const begin = await cx<PasskeyGetOptions>('/community/auth/passkey/begin', { body: { email } });
+      const res = await usePasskey(begin);
+      const result = await cx<AuthResult>('/community/auth/passkey/finish', { body: { challengeId: begin.id, ...res } });
+      finish(profileFromMember(result.me));
+    } catch (e) {
+      if (e instanceof Error && e.message === 'cancelled') setErrorMsg(null);
+      else setErrorMsg(e instanceof CommunityApiError && e.code === 'NOT_FOUND' ? L('err_passkey_none') : L('err_login'));
+    } finally {
+      setPasskeyBusy(false);
     }
   };
 
@@ -445,7 +567,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </div>
             <div>
               <h3 className="text-lg font-bold font-serif-luxury">
-                {mode === 'login' ? L('login_title') : L('register_title')}
+                {stage === 'totp' ? L('totp_title')
+                  : stage === 'forgot' || stage === 'forgot_code' ? L('forgot_title')
+                  : mode === 'login' ? L('login_title') : L('register_title')}
               </h3>
               <p className="text-[11px] text-stone-300">
                 {L('header_sub')}
@@ -466,7 +590,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <button
             onClick={() => {
               setMode('login');
-              setErrorMsg(null);
+              toStep('auth');
             }}
             className={`flex-1 py-3 text-center transition-colors cursor-pointer ${
               mode === 'login'
@@ -479,7 +603,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <button
             onClick={() => {
               setMode('register');
-              setErrorMsg(null);
+              toStep('auth');
             }}
             className={`flex-1 py-3 text-center transition-colors cursor-pointer ${
               mode === 'register'
@@ -500,6 +624,65 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </div>
           )}
 
+          {stage === 'totp' && (
+            <>
+              <div>
+                <label className="font-semibold text-stone-800 block mb-1">{L('totp_title')}</label>
+                <p className="text-[11px] text-stone-500 mb-2">{L('totp_hint')}</p>
+                <div className="relative">
+                  <ShieldCheck className={`w-4 h-4 absolute ${rtl ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 text-amber-600`} />
+                  <input
+                    type="text" required inputMode="numeric" maxLength={6} autoComplete="one-time-code"
+                    placeholder="••••••" value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
+                    className={`w-full ${rtl ? 'pl-3 pr-9' : 'pl-9 pr-3'} py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 tracking-[0.4em] text-center focus:outline-none focus:border-amber-700`}
+                    dir="ltr"
+                  />
+                </div>
+              </div>
+              <button type="button" onClick={() => toStep('auth')} className="text-[11px] text-amber-800 underline cursor-pointer self-start">{L('totp_back')}</button>
+            </>
+          )}
+
+          {stage === 'forgot' && (
+            <div>
+              <label className="font-semibold text-stone-800 block mb-1">{L('forgot_title')}</label>
+              <div className="relative">
+                <Mail className={`w-4 h-4 absolute ${rtl ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 text-stone-400`} />
+                <input
+                  type="email" required placeholder="perfumer@domain.com" value={email} onChange={(e) => setEmail(e.target.value)}
+                  className={`w-full ${rtl ? 'pl-3 pr-9' : 'pl-9 pr-3'} py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-amber-700 text-left font-mono`}
+                  dir="ltr"
+                />
+              </div>
+            </div>
+          )}
+
+          {stage === 'forgot_code' && (
+            <>
+              <p className="text-[11px] text-stone-600 leading-snug">{L('forgot_sent')}</p>
+              <div>
+                <label className="font-semibold text-stone-800 block mb-1">{L('code_label')}</label>
+                <input
+                  type="text" required inputMode="numeric" maxLength={6} autoComplete="one-time-code"
+                  placeholder="••••••" value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
+                  className="w-full px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 tracking-[0.4em] text-center focus:outline-none focus:border-amber-700"
+                  dir="ltr"
+                />
+              </div>
+              <div>
+                <label className="font-semibold text-stone-800 block mb-1">{L('new_pw_label')}</label>
+                <input
+                  type="password" required placeholder="••••••••" value={newPassword} onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-amber-700 text-left font-mono"
+                  dir="ltr" autoComplete="new-password"
+                />
+              </div>
+              <button type="button" onClick={() => toStep('forgot')} className="text-[11px] text-amber-800 underline cursor-pointer self-start">{L('totp_back')}</button>
+            </>
+          )}
+
+          {stage === 'auth' && (
+          <>
           {mode === 'register' && (
             <div>
               <label className="font-semibold text-stone-800 block mb-1">
@@ -603,6 +786,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   checked={privacyAccepted}
                   onChange={(e) => setPrivacyAccepted(e.target.checked)}
                   className="mt-0.5 rounded text-amber-700 focus:ring-amber-700 cursor-pointer"
+                  required
                 />
                 <label htmlFor="privacy-check" className="text-[11px] text-stone-600 leading-snug">
                   {L('privacy_check')}
@@ -613,9 +797,45 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   >
                     {L('privacy_link')}
                   </button>
+                  <span className="text-red-600"> *</span>
                 </label>
               </div>
+
+              {/* L-02 + L-17: تأكيد العمر + تاريخ ميلاد اختياري للتحقق */}
+              <div className="flex items-start gap-2">
+                <input
+                  type="checkbox"
+                  id="age-check"
+                  checked={ageConfirmed}
+                  onChange={(e) => setAgeConfirmed(e.target.checked)}
+                  className="mt-0.5 rounded text-amber-700 focus:ring-amber-700 cursor-pointer"
+                  required
+                />
+                <label htmlFor="age-check" className="text-[11px] text-stone-600 leading-snug">
+                  {L('age_check')}
+                  <span className="text-red-600"> *</span>
+                </label>
+              </div>
+
+              <div>
+                <label className="font-semibold text-stone-800 block mb-1 text-[11px]">
+                  {L('dob_label')}
+                </label>
+                <input
+                  type="date"
+                  value={dob}
+                  onChange={(e) => setDob(e.target.value)}
+                  max={new Date().toISOString().split('T')[0]}
+                  className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-amber-700 text-xs"
+                />
+              </div>
+
+              <p className="text-[9px] text-stone-400 leading-snug bg-stone-50 p-2 rounded-lg border border-stone-200">
+                {currentLang === 'ar' ? '⚖️ بموافقتك، تُسجل موافقتك مع الطابع الزمني (GDPR Art.7). يمكنك سحبها anytime عبر "مسح بياناتي".' : '⚖️ Consent logged with timestamp (GDPR Art.7). Withdraw anytime via "Erase my data".'}
+              </p>
             </>
+          )}
+          </>
           )}
 
           <div className="pt-2 space-y-2">
@@ -624,10 +844,37 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               className="w-full py-3 rounded-xl bg-amber-800 hover:bg-amber-900 text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
             >
               <ShieldCheck className="w-4 h-4 text-amber-300" />
-              <span>{mode === 'login' ? L('submit_login') : L('submit_register')}</span>
+              <span>
+                {stage === 'totp' ? L('totp_submit')
+                  : stage === 'forgot' ? L('send_code')
+                  : stage === 'forgot_code' ? L('reset_submit')
+                  : mode === 'login' ? L('submit_login') : L('submit_register')}
+              </span>
             </button>
 
-            {mode === 'login' && (
+            {mode === 'login' && stage === 'auth' && webauthnAvailable() && email.includes('@') && (
+              <button
+                type="button"
+                onClick={() => void handlePasskeyLogin()}
+                disabled={passkeyBusy}
+                className="w-full py-2.5 rounded-xl border border-amber-200 bg-amber-50 text-amber-900 font-semibold text-xs transition-colors hover:bg-amber-100 cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
+              >
+                <Fingerprint className="w-3.5 h-3.5 text-amber-700" />
+                <span>{passkeyBusy ? '…' : L('passkey_btn')}</span>
+              </button>
+            )}
+
+            {mode === 'login' && stage === 'auth' && (
+              <button
+                type="button"
+                onClick={() => toStep('forgot')}
+                className="w-full py-2 text-amber-800 hover:text-amber-900 font-semibold text-xs transition-colors cursor-pointer"
+              >
+                {L('forgot_link')}
+              </button>
+            )}
+
+            {mode === 'login' && stage === 'auth' && (
               <button
                 type="button"
                 onClick={handleDemoLogin}

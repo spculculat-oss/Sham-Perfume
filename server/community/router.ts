@@ -65,7 +65,7 @@ export function createCommunity(options: CommunityOptions = {}): Community {
     try {
       const { secret, mode } = await loadDataKey(sql, key, (s) => new Vault(s));
       keyMode = mode;
-      return { sql, vault: new Vault(secret), fx: options.fx };
+      return { sql, vault: new Vault(secret), fx: options.fx, env };
     } catch (error) {
       if (!(error instanceof DataKeyError)) throw error;
       console.error('[community]', error.message);
@@ -166,6 +166,8 @@ export function createCommunityRouter(community: Community, options: { env?: Env
 
   const p = (req: express.Request, name: string) => String(req.params[name] || '');
   const agent = (req: express.Request) => String(req.headers['user-agent'] || '').slice(0, 200);
+  /** Client IP for the device record: the first X-Forwarded-For hop (set by the host) else the socket. */
+  const ip = (req: express.Request) => (String(req.headers['x-forwarded-for'] || '').split(',')[0] || req.socket.remoteAddress || '').trim().replace(/^::ffff:/, '').slice(0, 64);
 
   /* ------------------------------------------ status & accounts ------------------------------------------ */
   router.get('/community/status', async (_req, res) => { res.json(await community.status()); });
@@ -174,15 +176,38 @@ export function createCommunityRouter(community: Community, options: { env?: Env
     if (!authLimiter.allow(clientKey(req))) { res.status(429).json({ error: 'Too many attempts, please wait a minute', code: 'RATE_LIMITED' }); return; }
     return handler(req, res);
   };
-  router.post('/community/auth/register', limitedAuth(open((ctx, req) => svc.register(ctx, req.body || {}, agent(req)))));
-  router.post('/community/auth/login', limitedAuth(open((ctx, req) => svc.login(ctx, req.body || {}, agent(req)))));
+  router.post('/community/auth/register', limitedAuth(open((ctx, req) => svc.register(ctx, req.body || {}, agent(req), ip(req)))));
+  router.post('/community/auth/login', limitedAuth(open((ctx, req) => svc.login(ctx, req.body || {}, agent(req), ip(req)))));
+  /** Two-factor finish: the password opened a pending login, the authenticator code closes it. */
+  router.post('/community/auth/login/2fa', limitedAuth(open((ctx, req) => svc.loginTwoFactor(ctx, req.body || {}))));
   router.post('/community/auth/logout', member(async (ctx, _u, req) => { await svc.logout(ctx, bearer(req), req.body?.everywhere === true); }));
+
+  /* E-mail verification & forgot-password (codes; the request side never reveals existence). */
+  router.post('/community/auth/verify-email', member(async (ctx, u, req) => svc.verifyEmail(ctx, u.id, req.body?.code)));
+  router.post('/community/auth/resend-verification', member(async (ctx, u) => svc.resendVerification(ctx, u.id)));
+  router.post('/community/auth/password-reset/request', limitedAuth(open((ctx, req) => svc.requestPasswordReset(ctx, req.body || {}))));
+  router.post('/community/auth/password-reset/confirm', limitedAuth(open((ctx, req) => svc.confirmPasswordReset(ctx, req.body || {}))));
 
   router.get('/community/me', member((ctx, u) => svc.me(ctx, u.id)));
   router.patch('/community/me', member((ctx, u, req) => svc.updateProfile(ctx, u.id, req.body || {})));
-  router.post('/community/me/password', member(async (ctx, u, req) => { await svc.changePassword(ctx, u.id, req.body || {}); }));
+  router.post('/community/me/password', member(async (ctx, u, req) => { await svc.changePassword(ctx, u.id, req.body || {}, bearer(req)); }));
   router.delete('/community/me', member(async (ctx, u, req) => { await svc.deleteAccount(ctx, u.id, req.body?.password); }));
   router.get('/community/me/export', member((ctx, u) => svc.exportMyData(ctx, u.id)));
+
+  /* Devices & two-factor (the Security Checkup building blocks). */
+  router.get('/community/me/sessions', member((ctx, u, req) => svc.mySessions(ctx, u.id, bearer(req))));
+  router.delete('/community/me/sessions/:id', member(async (ctx, u, req) => { await svc.revokeSession(ctx, u.id, p(req, 'id'), bearer(req)); }));
+
+  /* Passkeys (WebAuthn): the device's fingerprint/face/PIN is the second factor itself. */
+  router.post('/community/me/passkeys/begin', member(async (ctx, u, req) => svc.passkeyRegisterBegin(ctx, u.id, req.body?.name)));
+  router.post('/community/me/passkeys/finish', member(async (ctx, u, req) => svc.passkeyRegisterFinish(ctx, u.id, req.body || {})));
+  router.get('/community/me/passkeys', member((ctx, u) => svc.myPasskeys(ctx, u.id)));
+  router.delete('/community/me/passkeys/:id', member(async (ctx, u, req) => { await svc.deletePasskey(ctx, u.id, p(req, 'id')); }));
+  router.post('/community/auth/passkey/begin', limitedAuth(open((ctx, req) => svc.passkeyLoginBegin(ctx, req.body || {}))));
+  router.post('/community/auth/passkey/finish', limitedAuth(open((ctx, req) => svc.passkeyLoginFinish(ctx, req.body || {}, agent(req), ip(req)))));
+  router.post('/community/me/2fa/setup', member(async (ctx, u, req) => svc.totpSetup(ctx, u.id, req.body?.password)));
+  router.post('/community/me/2fa/confirm', member(async (ctx, u, req) => svc.totpConfirm(ctx, u.id, req.body?.code)));
+  router.post('/community/me/2fa/disable', member(async (ctx, u, req) => svc.totpDisable(ctx, u.id, req.body?.password, req.body?.code)));
 
   /* ---------------------------------------------- user portal ---------------------------------------------- */
   router.get('/community/me/recipes', member((ctx, u) => svc.myRecipes(ctx, u.id)));

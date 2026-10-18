@@ -3,9 +3,11 @@
  * (account type → details → privacy), for members and merchants alike.
  */
 import { useMemo, useState } from 'react';
-import { ArrowLeft, ArrowRight, CheckCircle2, Eye, EyeOff, GraduationCap, Lock, MessageCircle, ShieldCheck, Store, Users } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, Eye, EyeOff, Fingerprint, GraduationCap, Lock, MessageCircle, ShieldCheck, Store, Users } from 'lucide-react';
 import { countryOptions, useStoreMoney } from '../utils/storeCheckout';
-import { signIn, signUp } from './session';
+import { PendingLoginError, completePendingLogin, setMe, signIn, signUp } from './session';
+import { CommunityApiError, cx, setSessionToken, type AuthResult, type PasskeyGetOptions, type PendingLogin } from './api';
+import { usePasskey, webauthnAvailable } from './passkeys';
 import { Btn, Field, errorText, inputClass, tx, type Lang } from './ui';
 
 function strength(pw: string) {
@@ -36,9 +38,41 @@ export default function HubAuth({ lang, onDone, initial = 'login' }: { lang: Lan
   const pwOk = form.password.length >= 8 && /\d/.test(form.password) && /[A-Za-z\u0600-\u06FF]/.test(form.password);
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim());
 
+  const [pending, setPending] = useState<PendingLogin | null>(null);
+  const [tfaCode, setTfaCode] = useState('');
   const login = async () => {
     setBusy(true); setError('');
-    try { const me = await signIn(form.email.trim(), form.password); onDone(Boolean(me.merchant)); } catch (e) { setError(errorText(e, lang)); } finally { setBusy(false); }
+    try {
+      const me = await signIn(form.email.trim(), form.password);
+      onDone(Boolean(me.merchant));
+    } catch (e) {
+      if (e instanceof PendingLoginError) setPending(e.pending);
+      else setError(errorText(e, lang));
+    } finally { setBusy(false); }
+  };
+  const login2fa = async () => {
+    if (!pending) return;
+    setBusy(true); setError('');
+    try {
+      const me = await completePendingLogin(pending.pendingToken, tfaCode);
+      onDone(Boolean(me.merchant));
+    } catch (e) { setError(errorText(e, lang)); } finally { setBusy(false); }
+  };
+  const passkeyLogin = async () => {
+    setBusy(true); setError('');
+    try {
+      const begin = await cx<PasskeyGetOptions>('/community/auth/passkey/begin', { body: { email: form.email.trim() } });
+      const res = await usePasskey(begin);
+      const result = await cx<AuthResult>('/community/auth/passkey/finish', { body: { challengeId: begin.id, ...res } });
+      setSessionToken(result.token);
+      setMe(result.me);
+      onDone(Boolean(result.me.merchant));
+    } catch (e) {
+      if (e instanceof Error && e.message === 'cancelled') setError('');
+      else setError(e instanceof CommunityApiError && e.code === 'NOT_FOUND'
+        ? t('البريد ده مفيش له بصمة — ضيف واحدة من بوابتك', 'No passkey is registered for this e-mail — add one from your portal')
+        : errorText(e, lang));
+    } finally { setBusy(false); }
   };
   const register = async () => {
     setBusy(true); setError('');
@@ -88,7 +122,21 @@ export default function HubAuth({ lang, onDone, initial = 'login' }: { lang: Lan
           ))}
         </div>
 
-        {mode === 'login' ? (
+        {mode === 'login' && pending ? (
+          <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); void login2fa(); }}>
+            <h2 className="text-xl font-black text-stone-900">{t('التحقق بخطوتين', 'Two-step verification')}</h2>
+            <p className="text-sm leading-relaxed text-stone-600">{t('كلمة السر سليمة — اكتب الكود من تطبيق التحقق على موبايلك:', 'Password accepted — enter the code from your authenticator app:')}</p>
+            <Field label={t('الكود', 'Code')}>
+              <input className={`${inputClass} text-center tracking-[0.4em]`} inputMode="numeric" maxLength={6} autoComplete="one-time-code"
+                value={tfaCode} onChange={(e) => setTfaCode(e.target.value.replace(/\D/g, ''))} required dir="ltr" />
+            </Field>
+            {error && <p className="rounded-xl bg-rose-50 p-2.5 text-sm text-rose-700">{error}</p>}
+            <div className="flex gap-2">
+              <Btn type="button" variant="soft" className="flex-1" onClick={() => { setPending(null); setTfaCode(''); }}>{t('رجوع', 'Back')}</Btn>
+              <Btn type="submit" busy={busy} disabled={tfaCode.length !== 6} className="flex-1">{t('دخول', 'Sign in')}</Btn>
+            </div>
+          </form>
+        ) : mode === 'login' ? (
           <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); void login(); }}>
             <h2 className="text-xl font-black text-stone-900">{t('أهلاً بعودتك 👋', 'Welcome back 👋')}</h2>
             <Field label={t('البريد الإلكتروني', 'Email')}><input className={inputClass} type="email" autoComplete="email" value={form.email} onChange={set('email')} required dir="ltr" /></Field>
@@ -100,7 +148,12 @@ export default function HubAuth({ lang, onDone, initial = 'login' }: { lang: Lan
             </Field>
             {error && <p className="rounded-xl bg-rose-50 p-2.5 text-sm text-rose-700">{error}</p>}
             <Btn type="submit" busy={busy} disabled={!emailOk || !form.password} className="w-full">{t('دخول', 'Sign in')}</Btn>
-            <p className="text-center text-xs text-stone-500">{t('نسيت كلمة المرور؟ تواصل مع «مساعد شام» من أيقونة المحادثة وسيساعدك فريق الإدارة.', 'Forgot your password? Message the Sham assistant and the team will help.')}</p>
+            {webauthnAvailable() && emailOk && (
+              <Btn type="button" variant="soft" busy={busy} onClick={() => void passkeyLogin()} className="w-full">
+                <Fingerprint className="h-4 w-4" />{t('دخول بالبصمة أو الوجه', 'Sign in with fingerprint or face')}
+              </Btn>
+            )}
+            <p className="text-center text-xs text-stone-500">{t('نسيت كلمة المرور؟ افتح نافذة تسجيل الدخول في الموقع الرئيسي واستخدم «نسيت كلمة المرور؟» — هيوصلك كود على بريدك.', 'Forgot your password? Use the site’s main sign-in window and pick “Forgot your password?” — a code will reach your e-mail.')}</p>
           </form>
         ) : (
           <div className="space-y-4">

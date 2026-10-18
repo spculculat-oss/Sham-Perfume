@@ -37,4 +37,16 @@ When the merchant writes **«نفذ مهام شاهين»** (or "Run Shaheen's t
   when a quota runs out, wait for it to renew and never fake results.
 - Any new AI call site (`callEngine|executeChat|runCouncil|makeAsk(`) must be registered in
   `src/utils/aiTools.ts`, with a probe in `scripts/shaheen-supervisor/probes.ts`.
+- Numbers follow the SITE language, never the visitor's browser. Visitor-facing code must not use
+  native `<input type="number">` (the browser renders its own digits — e.g. ٦٥٠ on a German page);
+  use `LocalizedNumberInput` (`src/components`) and format display numbers with
+  `formatLocalizedNumber`/`storeNumber` from `src/لغات`. «وكيل اللغات»
+  (`scripts/shaheen-languages/`, daily workflow) audits this plus bare `.toLocaleString()` calls and
+  language-pack coverage into `src/data/live/shaheen-languages.json`, which the council briefing
+  reads; anything wrong can become a `shaheen-task` like the other bots'.
+- Every robot and AI tool lives under Shaheen's umbrella: register a new workflow or AI tool in
+  `src/utils/shaheenOrg.ts` (department, report file, schedule, who it helps in `LINKS`), then run
+  `node --import tsx scripts/shaheen-council/org-doc.mts` to refresh `SHAHEEN_ORG.md`;
+  `tests/shaheenOrg.test.ts` fails otherwise. If the bot writes a report, add its own checks to
+  `scripts/shaheen-council/precheck.ts` (the pre-meeting full check, 04:30 UTC — two hours before the council).
 - Checks: `npm run lint`, `npm test`, `npm run build`. Install with `bun install --frozen-lockfile`.

@@ -3,9 +3,10 @@
  * learning progress, orders, and security & privacy (password, sessions, data export, account deletion).
  */
 import { useRef, useState } from 'react';
-import { BookOpen, Camera, Download, FlaskConical, Globe2, KeyRound, Lock, LogOut, Package, ShieldCheck, Trash2, Upload, User, Users } from 'lucide-react';
+import { BookOpen, Camera, Download, Fingerprint, FlaskConical, Globe2, KeyRound, KeySquare, Lock, LogOut, Mail, Package, ShieldCheck, Smartphone, Trash2, Upload, User, Users } from 'lucide-react';
 import { countryOptions } from '../utils/storeCheckout';
-import { cx, resizeImage, type Learning, type Me, type Order, type Recipe } from './api';
+import { cx, resizeImage, type Learning, type Me, type Order, type PasskeyInfo, type PasskeyRegisterOptions, type Recipe, type SessionInfo } from './api';
+import { createPasskey, webauthnAvailable } from './passkeys';
 import { setMe, signOut, type SessionState } from './session';
 import { RecipeCard } from './SocialPortal';
 import { Avatar, Btn, Card, Empty, Field, Spinner, errorText, inputClass, money, timeAgo, tx, useLoad, type Lang } from './ui';
@@ -353,16 +354,204 @@ function Security({ lang, me, toast, go }: { lang: Lang; me: Me; toast: (s: stri
     try { await cx('/community/me', { method: 'DELETE', body: { password } }); await signOut(); toast(t('تم حذف حسابك', 'Your account was deleted')); go(''); }
     catch (e) { toast(errorText(e, lang)); } finally { setBusy(''); }
   };
+
+  /* The Security Checkup (Google/Meta style): every recommendation below is a real gap in the account. */
+  const { data: sessions, reload: reloadSessions } = useLoad(() => cx<SessionInfo[]>('/community/me/sessions'));
+  const oldAccount = new Date(me.createdAt).getTime() < Date.now() - 365 * 86_400_000;
+  const checks: { ok: boolean; label: [string, string] }[] = [
+    { ok: Boolean(me.emailVerified), label: [me.emailVerified ? 'البريد الإلكتروني مؤكد' : 'أكّد بريدك الإلكتروني', me.emailVerified ? 'E-mail verified' : 'Verify your e-mail'] },
+    { ok: me.totp, label: [me.totp ? 'التحقق بخطوتين مفعّل' : 'فعّل التحقق بخطوتين', me.totp ? 'Two-factor is on' : 'Turn on two-factor'] },
+    { ok: (sessions?.length || 0) <= 3, label: ['راجع أجهزتك المسجلة', 'Review your signed-in devices'] },
+    { ok: !oldAccount, label: ['حسابك قديم — غيّر كلمة السر لو لسه الزمينة على القديمة', 'Account is a year old — change the password if it has lived with you this long'] },
+  ];
+  const score = checks.filter((c) => c.ok).length;
+
+  /* E-mail verification (the code arrives by e-mail; nothing is faked when the server has no provider). */
+  const [vCode, setVCode] = useState('');
+  const [vBusy, setVBusy] = useState('');
+  const refreshMe = async () => { try { setMe(await cx<Me>('/community/me')); } catch { /* next pulse */ } };
+  const sendVerification = async () => {
+    setVBusy('send');
+    try { await cx('/community/auth/resend-verification', { body: {} }); toast(t('الكود اتبعت على بريدك', 'The code was sent to your e-mail')); }
+    catch (e) { toast(errorText(e, lang)); } finally { setVBusy(''); }
+  };
+  const doVerify = async () => {
+    setVBusy('verify');
+    try { setMe(await cx<Me>('/community/auth/verify-email', { body: { code: vCode } })); setVCode(''); toast(t('تم تأكيد بريدك ✅', 'E-mail verified ✅')); }
+    catch (e) { toast(errorText(e, lang)); } finally { setVBusy(''); }
+  };
+
+  /* Devices: sign one out without touching the rest. */
+  const revoke = async (id: string) => {
+    try { await cx(`/community/me/sessions/${id}`, { method: 'DELETE' }); await reloadSessions(true); toast(t('اتسجل خروج الجهاز ده', 'That device was signed out')); }
+    catch (e) { toast(errorText(e, lang)); }
+  };
+
+  /* Passkeys (WebAuthn): the device's fingerprint/face/PIN. The key never leaves the device. */
+  const { data: passkeys, reload: reloadPasskeys } = useLoad(() => cx<PasskeyInfo[]>('/community/me/passkeys'));
+  const [pkName, setPkName] = useState('');
+  const addPasskey = async () => {
+    setBusy('pk-add');
+    try {
+      const begin = await cx<PasskeyRegisterOptions>('/community/me/passkeys/begin', { body: { name: pkName } });
+      const res = await createPasskey(begin);
+      await cx('/community/me/passkeys/finish', { body: { challengeId: begin.id, ...res, name: pkName } });
+      setPkName('');
+      await reloadPasskeys(true);
+      toast(t('اتضافت البصمة ✅ تقدر تدخل بيها من أي جهاز', 'Passkey added ✅ you can sign in with it'));
+    } catch (e) {
+      if (e instanceof Error && e.message === 'cancelled') toast(t('الطلب اتلغى من الجهاز', 'Cancelled on the device'));
+      else toast(errorText(e, lang));
+    } finally { setBusy(''); }
+  };
+  const removePasskey = async (id: string) => {
+    try { await cx(`/community/me/passkeys/${id}`, { method: 'DELETE' }); await reloadPasskeys(true); toast(t('اتشالت البصمة', 'Passkey removed')); }
+    catch (e) { toast(errorText(e, lang)); }
+  };
+
+  /* Two-factor (authenticator app, the standard Google and Meta use). */
+  const [tfa, setTfa] = useState<{ secret: string; uri: string } | null>(null);
+  const [tfaPw, setTfaPw] = useState('');
+  const [tfaCode, setTfaCode] = useState('');
+  const startTfa = async () => {
+    setBusy('tfa-setup');
+    try { setTfa(await cx<{ secret: string; uri: string }>('/community/me/2fa/setup', { body: { password: tfaPw } })); }
+    catch (e) { toast(errorText(e, lang)); } finally { setBusy(''); }
+  };
+  const confirmTfa = async () => {
+    setBusy('tfa-confirm');
+    try {
+      await cx('/community/me/2fa/confirm', { body: { code: tfaCode } });
+      setTfa(null); setTfaPw(''); setTfaCode('');
+      await refreshMe(); toast(t('تم تفعيل التحقق بخطوتين ✅', 'Two-factor is on ✅'));
+    } catch (e) { toast(errorText(e, lang)); } finally { setBusy(''); }
+  };
+  const disableTfa = async () => {
+    const password = prompt(t('لتأكيد إيقاف التحقق بخطوتين اكتب كلمة المرور:', 'Type your password to turn two-factor off:'));
+    if (!password) return;
+    const code = prompt(t('والكود الحالي من التطبيق:', 'And the current code from the app:'));
+    if (!code) return;
+    setBusy('tfa-disable');
+    try { await cx('/community/me/2fa/disable', { body: { password, code } }); await refreshMe(); toast(t('تم إيقاف التحقق بخطوتين', 'Two-factor is off')); }
+    catch (e) { toast(errorText(e, lang)); } finally { setBusy(''); }
+  };
+
   return (
     <div className="space-y-4">
+      {/* Security Checkup — the score the rest of this page improves. */}
+      <Card className="p-5">
+        <h3 className="mb-3 flex items-center gap-2 font-bold"><ShieldCheck className="h-4 w-4 text-amber-600" />{t('فحص أمان الحساب', 'Security checkup')}</h3>
+        <div className="mb-3 flex items-center gap-3">
+          <div className="h-2 flex-1 overflow-hidden rounded-full bg-stone-100"><div className="h-full rounded-full bg-gradient-to-r from-amber-400 to-emerald-500 transition-all" style={{ width: `${(score / checks.length) * 100}%` }} /></div>
+          <span className="text-sm font-bold text-stone-700">{score}/{checks.length}</span>
+        </div>
+        <ul className="space-y-1.5 text-sm">
+          {checks.map((c, i) => (
+            <li key={i} className="flex items-center gap-2">
+              <span className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${c.ok ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>{c.ok ? '✓' : '!'}</span>
+              <span className={c.ok ? 'text-stone-500 line-through decoration-stone-300' : 'text-stone-800'}>{lang === 'ar' ? c.label[0] : c.label[1]}</span>
+            </li>
+          ))}
+        </ul>
+      </Card>
+
+      {!me.emailVerified && (
+        <Card className="p-5">
+          <h3 className="mb-1 flex items-center gap-2 font-bold"><Mail className="h-4 w-4 text-sky-600" />{t('تأكيد البريد الإلكتروني', 'Verify your e-mail')}</h3>
+          <p className="mb-3 text-xs text-stone-500">{t(`هنبعتك كود على ${me.email}. اكتبه هنا وخلص الحاجة:`, `We will e-mail a code to ${me.email}. Enter it here to finish:`)}</p>
+          <div className="flex flex-wrap items-center gap-2">
+            <Btn small variant="soft" busy={vBusy === 'send'} onClick={() => void sendVerification()}>{t('إرسال الكود', 'Send the code')}</Btn>
+            <input className={`${inputClass} w-32 text-center tracking-[0.35em]`} inputMode="numeric" maxLength={6} placeholder="••••••" value={vCode} onChange={(e) => setVCode(e.target.value.replace(/\D/g, ''))} dir="ltr" />
+            <Btn small busy={vBusy === 'verify'} disabled={vCode.length !== 6} onClick={() => void doVerify()}>{t('تأكيد', 'Verify')}</Btn>
+          </div>
+        </Card>
+      )}
+
+      <Card className="p-5">
+        <h3 className="mb-3 flex items-center gap-2 font-bold"><Smartphone className="h-4 w-4 text-amber-600" />{t('أجهزتك المسجلة', 'Your signed-in devices')}</h3>
+        {!sessions ? <Spinner /> : !sessions.length ? <p className="text-xs text-stone-500">{t('مفيش أجهزة مسجلة.', 'No signed-in devices.')}</p> : (
+          <ul className="space-y-2">
+            {sessions.map((s) => (
+              <li key={s.id} className="flex items-center gap-3 rounded-xl border border-stone-100 p-3">
+                <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${s.current ? 'bg-emerald-100 text-emerald-700' : 'bg-stone-100 text-stone-500'}`}><Smartphone className="h-4 w-4" /></span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-sm text-stone-800">{s.agent || t('متصفح', 'Browser')}{s.current ? ` — ${t('هذا الجهاز', 'this device')}` : ''}</span>
+                  <span className="text-[11px] text-stone-500" dir="ltr">{s.ip && `${s.ip} · `}{t('آخر استخدام', 'last used')} {timeAgo(s.lastUsedAt, lang)}</span>
+                </span>
+                {!s.current && <Btn small variant="soft" onClick={() => void revoke(s.id)}>{t('تسجيل خروج', 'Sign out')}</Btn>}
+              </li>
+            ))}
+          </ul>
+        )}
+      </Card>
+
+      <Card className="p-5">
+        <h3 className="mb-1 flex items-center gap-2 font-bold"><Fingerprint className="h-4 w-4 text-amber-600" />{t('الدخول بالبصمة (Passkey)', 'Sign in with a fingerprint (passkey)')}</h3>
+        <p className="mb-3 text-xs text-stone-500">{t('بصمتك أو وجهك أو قفل موبايلك — زي ما جوجل وفيسبوك ماشيين دلوقتي. السر بيفضل على جهازك بس.', 'Your fingerprint, face, or device PIN — the way Google and Meta are moving. The secret stays on your device only.')}</p>
+        {!webauthnAvailable() ? (
+          <p className="rounded-xl bg-amber-50 p-3 text-xs text-amber-900">{t('المتصفح ده مايدعمش البصمة — استخدم متصفح حديث على HTTPS.', 'This browser does not support passkeys — use a modern browser over HTTPS.')}</p>
+        ) : (
+          <>
+            {passkeys?.length ? (
+              <ul className="mb-3 space-y-2">
+                {passkeys.map((k) => (
+                  <li key={k.id} className="flex items-center gap-3 rounded-xl border border-stone-100 p-3">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-700"><Fingerprint className="h-4 w-4" /></span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm text-stone-800">{k.name || t('بصمة', 'Passkey')}</span>
+                      <span className="text-[11px] text-stone-500">{k.lastUsedAt ? `${t('آخر استخدام', 'last used')} ${timeAgo(k.lastUsedAt, lang)}` : `${t('أُضيفت', 'added')} ${timeAgo(k.createdAt, lang)}`}</span>
+                    </span>
+                    <Btn small variant="soft" onClick={() => void removePasskey(k.id)}>{t('حذف', 'Remove')}</Btn>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+            <div className="flex flex-wrap items-center gap-2">
+              <input className={`${inputClass} w-48`} value={pkName} onChange={(e) => setPkName(e.target.value)} placeholder={t('اسم الجهاز (مثال: موبايلي)', 'Device name (e.g. my phone)')} />
+              <Btn small busy={busy === 'pk-add'} onClick={() => void addPasskey()}>{t('إضافة بصمة لهذا الجهاز', 'Add a passkey for this device')}</Btn>
+            </div>
+          </>
+        )}
+      </Card>
+
+      <Card className="p-5">
+        <h3 className="mb-1 flex items-center gap-2 font-bold"><KeySquare className="h-4 w-4 text-amber-600" />{t('التحقق بخطوتين', 'Two-factor authentication')}</h3>
+        <p className="mb-3 text-xs text-stone-500">{t('كلمة السر + كود من تطبيق التحقق على موبايلك — زي جوجل وفيس بوك. لو حد عرف كلمة السر من غيره، يدخلش.', 'Your password plus a code from your phone\'s authenticator app — the way Google and Meta protect accounts. A stolen password alone gets in nowhere.')}</p>
+        {!me.totp ? (
+          tfa ? (
+            <div className="space-y-3">
+              <div className="rounded-xl bg-stone-50 p-3 text-xs" dir="ltr">
+                <p className="mb-1 text-stone-500">{t('ضيف الكود ده في تطبيق التحقق (Google Authenticator أو غيره):', 'Add this secret to your authenticator app (Google Authenticator or any other):')}</p>
+                <p className="break-all font-mono text-sm font-bold tracking-wider">{tfa.secret}</p>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <input className={`${inputClass} w-32 text-center tracking-[0.35em]`} inputMode="numeric" maxLength={6} placeholder="••••••" value={tfaCode} onChange={(e) => setTfaCode(e.target.value.replace(/\D/g, ''))} dir="ltr" />
+                <Btn small busy={busy === 'tfa-confirm'} disabled={tfaCode.length !== 6} onClick={() => void confirmTfa()}>{t('تأكيد التفعيل', 'Confirm')}</Btn>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-wrap items-center gap-2">
+              <input className={`${inputClass} w-56`} type="password" autoComplete="current-password" value={tfaPw} onChange={(e) => setTfaPw(e.target.value)} dir="ltr" />
+              <Btn small busy={busy === 'tfa-setup'} disabled={!tfaPw} onClick={() => void startTfa()}>{t('تفعيل', 'Turn on')}</Btn>
+            </div>
+          )
+        ) : (
+          <div className="flex items-center justify-between gap-3">
+            <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">{t('مفعّل ✅', 'On ✅')}</span>
+            <Btn small variant="soft" busy={busy === 'tfa-disable'} onClick={() => void disableTfa()}>{t('إيقاف', 'Turn off')}</Btn>
+          </div>
+        )}
+      </Card>
+
       <Card className="p-5">
         <h3 className="mb-3 flex items-center gap-2 font-bold"><KeyRound className="h-4 w-4 text-amber-600" />{t('تغيير كلمة المرور', 'Change password')}</h3>
         <div className="grid gap-3 sm:grid-cols-2">
           <Field label={t('الحالية', 'Current')}><input className={inputClass} type="password" value={pw.current} onChange={(e) => setPw({ ...pw, current: e.target.value })} autoComplete="current-password" dir="ltr" /></Field>
-          <Field label={t('الجديدة', 'New')} hint={t('8 أحرف على الأقل وفيها حروف وأرقام', '8+ characters, letters and numbers')}><input className={inputClass} type="password" value={pw.next} onChange={(e) => setPw({ ...pw, next: e.target.value })} autoComplete="new-password" dir="ltr" /></Field>
+          <Field label={t('الجديدة', 'New')} hint={t('8 أحرف على الأقل وفيها حروف وأرقام، ومتكونش من الكلمات الشائعة', '8+ characters with letters and numbers — not a common password')}><input className={inputClass} type="password" value={pw.next} onChange={(e) => setPw({ ...pw, next: e.target.value })} autoComplete="new-password" dir="ltr" /></Field>
         </div>
         <Btn className="mt-3" busy={busy === 'pw'} disabled={!pw.current || pw.next.length < 8} onClick={() => void change()}>{t('تغيير', 'Change')}</Btn>
       </Card>
+
       <Card className="divide-y divide-stone-100">
         <Row icon={<LogOut className="h-5 w-5" />} title={t('الخروج من كل الأجهزة', 'Sign out everywhere')} body={t('لو نسيت حسابك مفتوح على جهاز تاني', 'If you left your account open on another device')}
           action={<Btn small variant="soft" onClick={() => void signOut(true).then(() => go(''))}>{t('خروج', 'Sign out')}</Btn>} />
@@ -371,14 +560,16 @@ function Security({ lang, me, toast, go }: { lang: Lang; me: Me; toast: (s: stri
         <Row icon={<Trash2 className="h-5 w-5 text-rose-600" />} title={t('حذف الحساب نهائياً', 'Delete account')} body={t('بيحذف حسابك ومنشوراتك ورسائلك. الطلبات المدفوعة بتفضل محفوظة للفواتير بدون بياناتك.', 'Removes your account, posts and messages. Paid orders stay for invoicing, anonymised.')}
           action={<Btn small variant="danger" busy={busy === 'delete'} onClick={() => void del()}>{t('حذف', 'Delete')}</Btn>} />
       </Card>
+
       <Card className="flex gap-3 bg-emerald-50 p-4 text-sm leading-relaxed text-emerald-900">
         <ShieldCheck className="h-5 w-5 shrink-0" />
-        {t('كلمة مرورك محفوظة بتشفير لا يمكن عكسه. موبايلك وعنوانك ورسائلك ومستندات متجرك مشفّرة بمفتاح على السيرفر. الإدارة تقدر تراجعها عند الضرورة فقط وكل مراجعة بتتسجّل.',
-          'Your password is stored with one-way hashing. Your phone, address, messages and store documents are encrypted with a server key. The administration may review them only when necessary, and every access is logged.')}
+        {t('كلمة مرورك محفوظة بتشفير لا يمكن عكسه. موبايلك وعنوانك ورسائلك ومستندات متجرك مشفّرة بمفتاح على السيرفر. كل عملية تسجيل دخول جديدة بيوصلك إشعار، وكل مراجعة إدارة بتتسجّل.',
+          'Your password is stored with one-way hashing. Your phone, address, messages and store documents are encrypted with a server key. Every new sign-in raises an alert, and every administration review is logged.')}
       </Card>
     </div>
   );
 }
+
 const Row = ({ icon, title, body, action }: { icon: React.ReactNode; title: string; body: string; action: React.ReactNode }) => (
   <div className="flex items-center gap-3 p-4"><span className="text-stone-500">{icon}</span><div className="min-w-0 flex-1"><p className="font-semibold">{title}</p><p className="text-xs text-stone-500">{body}</p></div>{action}</div>
 );

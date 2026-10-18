@@ -1,0 +1,55 @@
+name: Shaheen language agent (وكيل اللغات)
+
+# «وكيل اللغات» (experience cell, src/utils/shaheenOrg.ts): daily audit of digit systems following the SITE
+# language, bare locale formatting and language-pack coverage → src/data/live/shaheen-languages.json, read by
+# the pre-meeting check and the council. Branch pushes rehearse (report in the job summary, nothing committed).
+
+on:
+  schedule:
+    - cron: '11 9 * * *' # daily, after the doctor and memory runs
+  workflow_dispatch:
+  push:
+    branches: [main, 'arena/**']
+    paths: ['scripts/shaheen-languages/**', '.github/workflows/shaheen-languages.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: shaheen-languages-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  report:
+    name: Language audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Audit the languages (digit systems, locale formatting, pack coverage)
+        run: node --import tsx scripts/shaheen-languages/run.mts
+      - name: Regression tests with the report
+        run: bun run test
+      - name: Save the report on main (merged to the tip of main, never a force push)
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen language agent"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "وكيل اللغات: تقرير اللغات اليومي" src/data/live/shaheen-languages.json \
+            || { echo "::error::Could not push the language report"; exit 1; }

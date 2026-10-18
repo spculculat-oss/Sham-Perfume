@@ -57,6 +57,10 @@ export interface PublicUser {
 export interface Me {
   id: string; handle: string; name: string; email: string; role: 'user' | 'merchant'; status: string; country: string; lang: string;
   craftLevel: string; bio: string; avatar: string | null; private: { phone?: string; city?: string; address?: string }; createdAt: string;
+  /** null until the member entered the code from the verification e-mail (Security Checkup). */
+  emailVerified: string | null;
+  /** two-factor (authenticator app) is on. */
+  totp: boolean;
   merchant: { slug: string; storeName: string; status: 'pending' | 'approved' | 'suspended' | 'rejected'; note: string } | null;
   counts: { recipes: number; friends: number; orders: number; posts: number };
 }
@@ -101,6 +105,28 @@ export interface StoreSummary { slug: string; name: string; about: string; logo:
 export interface StoreProduct { sku: string; id: string; name: string; description: string; category: string; images: string[]; priceEgp: number; inStock: boolean; store?: { slug: string; name: string } }
 export interface StorePage { store: { slug: string; name: string; about: string; logo: string | null; country: string; since: string }; products: StoreProduct[] }
 export interface AuthResult { token: string; expiresAt: string; me: Me }
+/** Two-factor accounts: the password alone opens a short pending login (Google/Meta style). */
+export interface PendingLogin { pending: true; pendingToken: string; expiresIn: number }
+export interface SessionInfo { id: string; agent: string; ip: string; createdAt: string; lastUsedAt: string; current: boolean }
+
+/* Passkeys (WebAuthn): base64url on the wire, ArrayBuffer in the browser. */
+export interface PasskeyRegisterOptions {
+  id: string; challenge: string; rpId: string; rp: { name: string };
+  user: { id: string; name: string; displayName: string };
+  pubKeyCredParams: { type: string; alg: number }[]; timeout: number; attestation: string;
+  authenticatorSelection: Record<string, string>; excludeCredentials: { type: string; id: string }[]; name?: string;
+}
+export interface PasskeyRegisterResult {
+  id: string; clientDataJSON: string; attestationObject: string;
+}
+export interface PasskeyGetOptions {
+  id: string; challenge: string; rpId: string; timeout: number; userVerification: string;
+  allowedCredentials: { type: string; id: string }[];
+}
+export interface PasskeyAssertResult {
+  credentialId: string; clientDataJSON: string; authenticatorData: string; signature: string;
+}
+export interface PasskeyInfo { id: string; name: string; uv: boolean; createdAt: string; lastUsedAt: string | null }
 
 /* -------------------------------------------- helpers -------------------------------------------- */
 

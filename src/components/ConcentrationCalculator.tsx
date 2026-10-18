@@ -1,3 +1,5 @@
+import { LegalDisclaimer } from './LegalDisclaimer';
+import { LocalizedNumberInput } from './LocalizedNumberInput';
 import React, { useState, useMemo } from 'react';
 import {
   Beaker,
@@ -945,15 +947,16 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
                       </button>
                     </div>
                     <div className="flex items-center gap-2">
-                      <input
-                        type="number"
-                        min="1"
-                        max="10000"
+                      <LocalizedNumberInput
+                        lang={effectiveLang}
+                        integer
+                        min={1}
+                        max={10000}
                         value={formulation.batchCount}
-                        onChange={(e) =>
+                        onValue={(n) =>
                           setFormulation((prev) => ({
                             ...prev,
-                            batchCount: Math.max(1, parseInt(e.target.value) || 1),
+                            batchCount: Math.max(1, Math.trunc(n) || 1),
                           }))
                         }
                         className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs text-stone-900 font-bold font-mono-numbers focus:outline-none"
@@ -1004,12 +1007,13 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
                           {L('mac_days_lbl')}
                         </label>
                         <div className="flex items-center gap-2">
-                          <input
-                            type="number"
-                            min="3"
-                            max="365"
+                          <LocalizedNumberInput
+                            lang={effectiveLang}
+                            integer
+                            min={3}
+                            max={365}
                             value={macerationDays}
-                            onChange={(e) => setMacerationDays?.(Math.max(1, parseInt(e.target.value) || 1))}
+                            onValue={(n) => setMacerationDays?.(Math.max(1, Math.trunc(n) || 1))}
                             className="w-24 p-2 bg-white border border-stone-300 rounded-lg text-xs font-bold font-mono-numbers text-stone-900 focus:outline-none focus:ring-1 focus:ring-amber-800"
                           />
                           <span className="text-xs text-stone-500 font-medium">
@@ -1126,16 +1130,13 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
                         <label className="text-xs font-medium text-stone-700 block mb-1">
                           {L('oil_sg_lbl')}
                         </label>
-                        <input
-                          type="number"
-                          min="0.80"
-                          max="1.10"
-                          step="0.01"
+                        <LocalizedNumberInput
+                          lang={effectiveLang}
                           value={formulation.oilDensity}
-                          onChange={(e) =>
+                          onValue={(n) =>
                             setFormulation((prev) => ({
                               ...prev,
-                              oilDensity: parseFloat(e.target.value) || 0.92,
+                              oilDensity: n || 0.92,
                             }))
                           }
                           className="w-full px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg text-xs font-mono-numbers text-stone-900"
@@ -1150,16 +1151,13 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
                         <label className="text-xs font-medium text-stone-700 block mb-1">
                           {L('ethanol_sg_lbl')}
                         </label>
-                        <input
-                          type="number"
-                          min="0.75"
-                          max="0.85"
-                          step="0.01"
+                        <LocalizedNumberInput
+                          lang={effectiveLang}
                           value={formulation.alcoholDensity}
-                          onChange={(e) =>
+                          onValue={(n) =>
                             setFormulation((prev) => ({
                               ...prev,
-                              alcoholDensity: parseFloat(e.target.value) || 0.80,
+                              alcoholDensity: n || 0.80,
                             }))
                           }
                           className="w-full px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg text-xs font-mono-numbers text-stone-900"
@@ -1570,12 +1568,11 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
                           <label className="text-[11px] font-medium text-stone-600 block mb-1">
                             {fmt(L('oil_price_tpl'), { c: activeCurrency })}
                           </label>
-                          <input
-                            type="number"
-                            min="10"
-                            step="5"
+                          <LocalizedNumberInput
+                            lang={effectiveLang}
+                            min={10}
                             value={oilPricePerKg}
-                            onChange={(e) => handleUpdatePrice('oil', parseFloat(e.target.value) || 0)}
+                            onValue={(n) => handleUpdatePrice('oil', n || 0)}
                             className="w-full p-2 bg-stone-50 border border-stone-200 rounded-lg font-mono-numbers font-bold text-stone-900 focus:outline-none"
                           />
                         </div>
@@ -1584,12 +1581,11 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
                           <label className="text-[11px] font-medium text-stone-600 block mb-1">
                             {fmt(L('ethanol_price_tpl'), { c: activeCurrency })}
                           </label>
-                          <input
-                            type="number"
-                            min="5"
-                            step="2"
+                          <LocalizedNumberInput
+                            lang={effectiveLang}
+                            min={5}
                             value={alcoholPricePerLiter}
-                            onChange={(e) => handleUpdatePrice('alcohol', parseFloat(e.target.value) || 0)}
+                            onValue={(n) => handleUpdatePrice('alcohol', n || 0)}
                             className="w-full p-2 bg-stone-50 border border-stone-200 rounded-lg font-mono-numbers font-bold text-stone-900 focus:outline-none"
                           />
                         </div>
@@ -1598,12 +1594,11 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
                           <label className="text-[11px] font-medium text-stone-600 block mb-1">
                             {fmt(L('fixative_price_tpl'), { c: activeCurrency })}
                           </label>
-                          <input
-                            type="number"
-                            min="10"
-                            step="5"
+                          <LocalizedNumberInput
+                            lang={effectiveLang}
+                            min={10}
                             value={fixativePricePerKg}
-                            onChange={(e) => handleUpdatePrice('fixative', parseFloat(e.target.value) || 0)}
+                            onValue={(n) => handleUpdatePrice('fixative', n || 0)}
                             className="w-full p-2 bg-stone-50 border border-stone-200 rounded-lg font-mono-numbers font-bold text-stone-900 focus:outline-none"
                           />
                         </div>
@@ -1612,12 +1607,11 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
                           <label className="text-[11px] font-medium text-stone-600 block mb-1">
                             {fmt(L('water_price_tpl'), { c: activeCurrency })}
                           </label>
-                          <input
-                            type="number"
-                            min="1"
-                            step="1"
+                          <LocalizedNumberInput
+                            lang={effectiveLang}
+                            min={1}
                             value={waterPricePerLiter}
-                            onChange={(e) => handleUpdatePrice('water', parseFloat(e.target.value) || 0)}
+                            onValue={(n) => handleUpdatePrice('water', n || 0)}
                             className="w-full p-2 bg-stone-50 border border-stone-200 rounded-lg font-mono-numbers font-bold text-stone-900 focus:outline-none"
                           />
                         </div>
@@ -1848,6 +1842,9 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
                 </div>
 
               </div>
+
+              {/* IFRA 51 Legal Disclaimer — L-04 Fix */}
+              <LegalDisclaimer type="chemical" lang={propLang || 'ar'} />
 
               {/* Quick Laboratory Note */}
               <div className="bg-stone-50 p-4 rounded-xl border border-stone-200/70 text-xs text-stone-600 space-y-2">

@@ -10,7 +10,7 @@
 
 ## Implemented boundaries
 
-This is a deterministic, supervised accounting agent, **not a newly trained financial model**. Integer minor-unit arithmetic, gateway evidence and ledger entries determine amounts; an LLM cannot invent collections or post money. `finance_agent` is registered in `src/utils/aiTools.ts` and Shaheen's supervisor probes.
+This is a deterministic, supervised accounting agent, **not a newly trained financial model**. Integer minor-unit arithmetic, gateway evidence and ledger entries determine amounts; an LLM cannot invent collections or post money. `finance_agent` is registered in `src/utils/aiTools.ts`, Shaheen's supervisor probes, and the leadership group in `src/utils/shaheenOrg.ts`. The pre-meeting check reads only its redacted supervisor health, never the private ledger.
 
 - Private admin finance dashboard and authenticated API.
 - Immutable order snapshots and an append-only collection/cost/refund ledger.

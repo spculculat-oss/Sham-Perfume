@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "agent": "shaheen-languages",
+  "updatedAt": "2026-10-18T17:16:51.050Z",
+  "languageCount": 100,
+  "fullyCovered": 100,
+  "incompletePacks": [],
+  "publicNumberInputs": [],
+  "operatorNumberInputs": [
+    {
+      "file": "src/admin/AdminApp.tsx",
+      "line": 1202
+    },
+    {
+      "file": "src/admin/AdminApp.tsx",
+      "line": 1204
+    },
+    {
+      "file": "src/admin/AdminApp.tsx",
+      "line": 1251
+    },
+    {
+      "file": "src/community/MerchantPortal.tsx",
+      "line": 294
+    },
+    {
+      "file": "src/community/MerchantPortal.tsx",
+      "line": 296
+    },
+    {
+      "file": "src/components/AdminMerchantManagement.tsx",
+      "line": 582
+    },
+    {
+      "file": "src/components/MerchantWorkspace.tsx",
+      "line": 706
+    },
+    {
+      "file": "src/components/MerchantWorkspace.tsx",
+      "line": 717
+    },
+    {
+      "file": "src/components/MerchantWorkspace.tsx",
+      "line": 724
+    }
+  ],
+  "bareLocaleFormatting": [
+    {
+      "file": "src/components/AdminMerchantManagement.tsx",
+      "line": 223
+    },
+    {
+      "file": "src/components/AdminMerchantManagement.tsx",
+      "line": 296
+    },
+    {
+      "file": "src/components/AdminMerchantManagement.tsx",
+      "line": 393
+    },
+    {
+      "file": "src/components/AdminMerchantManagement.tsx",
+      "line": 553
+    },
+    {
+      "file": "src/components/AdminMerchantManagement.tsx",
+      "line": 554
+    },
+    {
+      "file": "src/components/MerchantWorkspace.tsx",
+      "line": 281
+    },
+    {
+      "file": "src/components/MerchantWorkspace.tsx",
+      "line": 341
+    },
+    {
+      "file": "src/components/MerchantWorkspace.tsx",
+      "line": 348
+    },
+    {
+      "file": "src/components/MerchantWorkspace.tsx",
+      "line": 353
+    },
+    {
+      "file": "src/components/MerchantWorkspace.tsx",
+      "line": 357
+    },
+    {
+      "file": "src/components/MerchantWorkspace.tsx",
+      "line": 361
+    },
+    {
+      "file": "src/components/MerchantWorkspace.tsx",
+      "line": 511
+    },
+    {
+      "file": "src/components/MerchantWorkspace.tsx",
+      "line": 517
+    },
+    {
+      "file": "src/components/MerchantWorkspace.tsx",
+      "line": 522
+    },
+    {
+      "file": "src/components/MerchantWorkspace.tsx",
+      "line": 525
+    },
+    {
+      "file": "src/components/MerchantWorkspace.tsx",
+      "line": 526
+    },
+    {
+      "file": "src/components/StoreSalesCategoryChart.tsx",
+      "line": 295
+    },
+    {
+      "file": "src/components/StoreSalesCategoryChart.tsx",
+      "line": 443
+    },
+    {
+      "file": "src/components/StoreSalesCategoryChart.tsx",
+      "line": 453
+    },
+    {
+      "file": "src/components/StoreSalesCategoryChart.tsx",
+      "line": 514
+    },
+    {
+      "file": "src/components/StoreSalesCategoryChart.tsx",
+      "line": 515
+    },
+    {
+      "file": "src/components/StoreSalesCategoryChart.tsx",
+      "line": 633
+    },
+    {
+      "file": "src/components/StoreSalesCategoryChart.tsx",
+      "line": 644
+    }
+  ],
+  "languageClamps": [
+    {
+      "file": "src/community/CommunityApp.tsx",
+      "line": 18
+    }
+  ],
+  "score": 68,
+  "notes": [
+    "تنسيق أرقام/تواريخ بدون لغة صريحة: 23 موضع — مرّر لغة الموقع (formatLocalizedNumber/storeNumber).",
+    "تقليل صارم للغة إلى عربي/إنجليزي في 1 موضع — راجع إن كان المقصود زوج بيانات {ar,en} أم لغة واجهة."
+  ]
+}

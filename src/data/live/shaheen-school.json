@@ -1,26 +1,32 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T14:23:35.582Z",
+ "updatedAt": "2026-10-18T15:15:44.171Z",
  "reliance": {
-  "score": 77,
-  "covered": 64,
+  "score": 87,
+  "covered": 72,
   "total": 83,
-  "fromMemory": 64,
+  "fromMemory": 72,
   "fromLibrary": 2,
   "byLang": {
    "ar": {
-    "covered": 63,
+    "covered": 64,
     "total": 68
    },
    "en": {
-    "covered": 1,
+    "covered": 8,
     "total": 15
    }
   }
  },
- "studiedTotal": 34,
+ "studiedTotal": 42,
  "selfTaughtTotal": 26,
  "history": [
+  {
+   "at": "2026-10-18T15:15:44.171Z",
+   "score": 87,
+   "studied": 8,
+   "mode": "ai"
+  },
   {
    "at": "2026-10-18T14:23:35.582Z",
    "score": 77,
@@ -47,6 +53,54 @@
   }
  ],
  "lastStudied": [
+  {
+   "q": "How do I use the Sham perfume formula calculator?",
+   "lang": "en",
+   "at": "2026-10-18T15:15:44.171Z",
+   "variants": 1
+  },
+  {
+   "q": "How do I choose a perfume as a gift?",
+   "lang": "en",
+   "at": "2026-10-18T15:15:44.171Z",
+   "variants": 1
+  },
+  {
+   "q": "How do I choose a perfume for summer?",
+   "lang": "en",
+   "at": "2026-10-18T15:15:44.171Z",
+   "variants": 2
+  },
+  {
+   "q": "What alcohol is used to make perfume?",
+   "lang": "en",
+   "at": "2026-10-18T15:15:44.171Z",
+   "variants": 1
+  },
+  {
+   "q": "What is ambroxan in perfumes?",
+   "lang": "en",
+   "at": "2026-10-18T15:15:44.171Z",
+   "variants": 0
+  },
+  {
+   "q": "What is oud and why is it expensive?",
+   "lang": "en",
+   "at": "2026-10-18T15:15:44.171Z",
+   "variants": 1
+  },
+  {
+   "q": "What is the difference between eau de parfum and eau de toilette?",
+   "lang": "en",
+   "at": "2026-10-18T15:15:44.171Z",
+   "variants": 2
+  },
+  {
+   "q": "ايه هي مكونات العطر الاساسية؟",
+   "lang": "ar",
+   "at": "2026-10-18T15:15:44.171Z",
+   "variants": 4
+  },
   {
    "q": "هل الميثانول ينفع في العطور؟",
    "lang": "ar",
@@ -118,71 +172,13 @@
    "lang": "ar",
    "at": "2026-10-18T13:26:41.570Z",
    "variants": 0
-  },
-  {
-   "q": "ازاي استخدم حاسبة تركيب العطور في موقع شام؟",
-   "lang": "ar",
-   "at": "2026-10-18T13:26:41.570Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه هي معايير ايفرا للعطور؟",
-   "lang": "ar",
-   "at": "2026-10-18T13:26:41.570Z",
-   "variants": 4
-  },
-  {
-   "q": "هل العطر ممكن يعمل حساسية للجلد؟",
-   "lang": "ar",
-   "at": "2026-10-18T13:26:41.570Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه هو الفانيليا في العطور وبيدي ايه؟",
-   "lang": "ar",
-   "at": "2026-10-18T13:26:41.570Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه هو الامبروكسان؟",
-   "lang": "ar",
-   "at": "2026-10-18T13:26:41.570Z",
-   "variants": 0
-  },
-  {
-   "q": "ازاي اجرب العطر قبل ما اشتريه؟",
-   "lang": "ar",
-   "at": "2026-10-18T12:50:32.770Z",
-   "variants": 4
-  },
-  {
-   "q": "ازاي اختار عطر هدية لحد معرفش ذوقه؟",
-   "lang": "ar",
-   "at": "2026-10-18T12:50:32.770Z",
-   "variants": 4
-  },
-  {
-   "q": "يعني ايه تركيز العطر وايه انواعه؟",
-   "lang": "ar",
-   "at": "2026-10-18T12:50:32.770Z",
-   "variants": 4
   }
  ],
  "pending": [
   {
-   "q": "ايه هي مكونات العطر الاساسية؟",
-   "lang": "ar",
-   "topic": "basics"
-  },
-  {
    "q": "ازاي احفظ تركيبتي في دفتر التركيبات؟",
    "lang": "ar",
    "topic": "site"
-  },
-  {
-   "q": "What is the difference between eau de parfum and eau de toilette?",
-   "lang": "en",
-   "topic": "basics"
   },
   {
    "q": "What are top, heart and base notes?",
@@ -195,22 +191,7 @@
    "topic": "families"
   },
   {
-   "q": "What is oud and why is it expensive?",
-   "lang": "en",
-   "topic": "materials"
-  },
-  {
-   "q": "What is ambroxan in perfumes?",
-   "lang": "en",
-   "topic": "materials"
-  },
-  {
    "q": "How do I make perfume at home step by step?",
-   "lang": "en",
-   "topic": "making"
-  },
-  {
-   "q": "What alcohol is used to make perfume?",
    "lang": "en",
    "topic": "making"
   },
@@ -225,14 +206,34 @@
    "topic": "wearing"
   },
   {
-   "q": "How do I choose a perfume for summer?",
+   "q": "How should I store perfume?",
    "lang": "en",
-   "topic": "choosing"
+   "topic": "storage"
+  },
+  {
+   "q": "Can perfume cause skin allergies?",
+   "lang": "en",
+   "topic": "safety"
+  },
+  {
+   "q": "حدثني عن حساب تكلفة العطر وتحديد سعر البيع",
+   "lang": "ar",
+   "topic": "library"
+  },
+  {
+   "q": "حدثني عن آخر أخبار عالم العطور",
+   "lang": "ar",
+   "topic": "library"
+  },
+  {
+   "q": "ايه هي مكونات العطر الاساسية و النوتات العليا والقلب والقاعدة وعطر الشيبر وتغير الرائحة",
+   "lang": "ar",
+   "topic": "council"
   }
  ],
  "importer": {
   "localShare": 100,
   "aiReadings": 0,
-  "localReadings": 25
+  "localReadings": 67
  }
 }

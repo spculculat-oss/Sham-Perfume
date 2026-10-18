@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T14:26:10.397Z",
+ "updatedAt": "2026-10-18T17:03:51.602Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1212,
@@ -12,7 +12,7 @@
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-18T14:24:42.178Z",
+  "at": "2026-10-18T16:57:54.565Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -44,34 +44,47 @@
     "duplicates": 0
    },
    {
-    "id": "afnan-com",
-    "currency": "AED",
-    "rate": 14.5568,
+    "id": "niceonesa-com",
+    "currency": "SAR",
+    "rate": 14.2559,
     "rateFrom": "open.er-api.com",
-    "sitemapProducts": 102,
+    "sitemapProducts": 504,
     "origin": "discovered",
-    "added": 98,
+    "added": 0,
     "refreshed": 0,
     "failed": [
-     "https://afnan.com/products/fakhar-al-jamaal (no product data)",
-     "https://afnan.com/products/lilia (no product data)",
-     "https://afnan.com/products/musk-silver (no product data)",
-     "https://afnan.com/products/supremacy-collectors-edition (no product data)"
+     "https://niceonesa.com/ar/makeup (no product data)",
+     "https://niceonesa.com/ar/vitamins-supplements (no product data)",
+     "https://niceonesa.com/ar/bed-bath (no product data)",
+     "https://niceonesa.com/ar/perfume (no product data)",
+     "https://niceonesa.com/ar/accessories-6 (no product data)",
+     "https://niceonesa.com/ar/devices (no product data)",
+     "https://niceonesa.com/ar/care (no product data)",
+     "https://niceonesa.com/ar/premium (no product data)",
+     "https://niceonesa.com/ar/nails (no product data)",
+     "https://niceonesa.com/ar/gifts (no product data)",
+     "https://niceonesa.com/ar/lenses (no product data)",
+     "https://niceonesa.com/ar/home-scents (no product data)",
+     "https://niceonesa.com/ar/makeup/face (no product data)",
+     "https://niceonesa.com/ar/makeup/face/foundation (no product data)",
+     "https://niceonesa.com/ar/makeup/face/concealers-and-correctors (no product data)",
+     "https://niceonesa.com/ar/makeup/face/powder (no product data)",
+     "https://niceonesa.com/ar/makeup/face/face-primer (no product data)",
+     "https://niceonesa.com/ar/makeup/face/makeup-spray (no product data)",
+     "https://niceonesa.com/ar/makeup/face/bb--cc-cream (no product data)",
+     "https://niceonesa.com/ar/makeup/face/face-sets (no product data)"
     ],
-    "failedCount": 4,
+    "failedCount": 150,
     "viaShaheen": 0,
     "deferred": 0,
     "gone": 0,
-    "via": {
-     "generic": 81,
-     "json-ld": 17
-    },
+    "via": {},
     "learnedSkills": 0,
     "notPerfume": 0,
     "duplicates": 0
    }
   ],
-  "rate": 14.5568,
+  "rate": 14.2559,
   "prices": {
    "count": 1161,
    "min": 750,
@@ -115,7 +128,7 @@
     }
    ]
   },
-  "durationMs": 88249
+  "durationMs": 357061
  },
  "items": [
   {
@@ -2827,6 +2840,16 @@
    "page": "p/dark-aoud-by-maison-alhambra-80ml-edp-621.html"
   },
   {
+   "sku": "GRA-622",
+   "id": 622,
+   "name": "Dakota by Grandeur Elite 100ml EDP – Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/dakota-by-grandeur-elite-100ml-edp-women-622.html"
+  },
+  {
    "sku": "MAI-628",
    "id": 628,
    "name": "Fortnight by Maison Alhambra 100ml EDP Men",
@@ -2978,6 +3001,16 @@
    "page": "p/armaf-club-de-nuit-intense-man-parfum-150ml-655.html"
   },
   {
+   "sku": "VOL-656",
+   "id": 656,
+   "name": "Amara by Volare 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/amara-by-volare-100ml-edp-656.html"
+  },
+  {
    "sku": "AFN-657",
    "id": 657,
    "name": "9 PM - Pour Femme Afnan Perfumes 100 ml Women",
@@ -3048,6 +3081,16 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/my-party-maison-alhambra-100ml-edp-woman-673.html"
+  },
+  {
+   "sku": "RUE-675",
+   "id": 675,
+   "name": "Exotic Heritage by Rue Broca 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/exotic-heritage-by-rue-broca-100ml-edp-men-675.html"
   },
   {
    "sku": "MAI-692",
@@ -3140,6 +3183,16 @@
    "page": "p/narissa-ruby-rouge-maison-alhambra-100ml-739.html"
   },
   {
+   "sku": "ZIM-741",
+   "id": 741,
+   "name": "Al Embratur Elixir by Zimaya 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/al-embratur-elixir-by-zimaya-100ml-edp-741.html"
+  },
+  {
    "sku": "MAI-742",
    "id": 742,
    "name": "Pink Shimmer Secret 100ml by Maison Alhambra",
@@ -3206,7 +3259,6 @@
    "status": "warn",
    "issues": [
     "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر",
     "غير متوفر عند المورد"
    ],
    "page": "p/armaf-beach-party-eau-de-parfum-100ml-753.html"
@@ -3217,40 +3269,9 @@
    "name": "Precious Gold 80ml by Maison Alhambra",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "وصف المورد قصير"
    ],
    "page": "p/precious-gold-80ml-by-maison-alhambra-755.html"
-  },
-  {
-   "sku": "MAI-763",
-   "id": 763,
-   "name": "Zeno by Maison Alhambra – 100 ml for Women",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/zeno-by-maison-alhambra-100-ml-for-women-763.html"
-  },
-  {
-   "sku": "MAI-764",
-   "id": 764,
-   "name": "So Candid by Maison Alhambra 100 ml EDP",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/so-candid-by-maison-alhambra-100-ml-edp-764.html"
-  },
-  {
-   "sku": "GRA-767",
-   "id": 767,
-   "name": "Cherry Luxe by Grandeur Tubbees For Her 50ml",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/cherry-luxe-by-grandeur-tubbees-for-her-50ml-767.html"
   },
   {
    "sku": "ALW-769",
@@ -3261,16 +3282,6 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/shagaf-al-ward-by-al-wataniah-100ml-edp-women-769.html"
-  },
-  {
-   "sku": "MOO-774",
-   "id": 774,
-   "name": "Mood Naif For Her – 100 ml for Women",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/mood-naif-for-her-100-ml-for-women-774.html"
   },
   {
    "sku": "KHA-777",

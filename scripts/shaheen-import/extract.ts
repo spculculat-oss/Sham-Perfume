@@ -129,9 +129,35 @@ export const pageText = (html: string) => squash(
     .replace(/<[^>]+>/g, ' '),
 );
 
-const num = (v: unknown): number | undefined => {
-  const n = typeof v === 'number' ? v : Number(String(v ?? '').replace(/[^\d.]/g, ''));
+/**
+ * «1,234.50», «1.234,50», «1 234», «SAR 99», «٩٩٫٥٠» → number. The last separator followed by 1–2 digits is
+ * the decimal one; every other separator is a thousands separator.
+ */
+export function parsePrice(raw: unknown): number | undefined {
+  if (typeof raw === 'number') return Number.isFinite(raw) && raw > 0 ? raw : undefined;
+  let s = String(raw ?? '')
+    .replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660))
+    .replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 0x06F0))
+    .replace(/٫/g, '.').replace(/٬/g, ',');
+  const m = s.match(/\d[\d.,\s\u00a0\u202f']*/);
+  if (!m) return undefined;
+  // «420.00 ج.م» leaves a stray dot after the number: trailing separators are not part of it.
+  s = m[0].replace(/[\s\u00a0\u202f']/g, '').replace(/[.,]+$/, '');
+  const dec = s.match(/[.,](\d{1,2})$/);
+  const whole = (dec ? s.slice(0, -dec[0].length) : s).replace(/[.,]/g, '');
+  const n = Number(dec ? `${whole}.${dec[1]}` : whole);
   return Number.isFinite(n) && n > 0 ? n : undefined;
+}
+
+/**
+ * A JSON-LD price: the standard «49.90» / «120.0000» as written; European «49,90» / «1.234,50» and
+ * «€ 49,90» through parsePrice (stores in Europe often write their local format there).
+ */
+const num = (v: unknown): number | undefined => {
+  if (typeof v === 'number') return Number.isFinite(v) && v > 0 ? v : undefined;
+  const t = String(v ?? '').trim();
+  if (/^\d+(?:\.\d+)?$/.test(t)) { const n = Number(t); return n > 0 ? n : undefined; }
+  return parsePrice(t);
 };
 const str = (v: unknown): string => (typeof v === 'string' ? v : v && typeof v === 'object' && 'name' in v ? String((v as { name: unknown }).name ?? '') : '');
 const list = (s: string) => s.split(/\s*(?:,|•|·|\/|\band\b)\s*/i).map((x) => x.trim()).filter((x) => x && x.length < 40);

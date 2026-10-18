@@ -11,6 +11,7 @@ import { loadStoreCatalog, productPageUrl, storeImageSrc } from '../utils/liveSt
 import { addToCart, useCart } from '../utils/storeCart';
 import { requestDirectPurchase } from '../utils/directPurchase';
 import { useStoreMoney } from '../utils/storeCheckout';
+import { LegalDisclaimer } from './LegalDisclaimer';
 
 /** كل نص في صفحة العطر — من src/لغات/storeL10n.ts بلغة الزائر (والإنجليزية كأرضية، لا عربية لغير العربي). */
 function detailLabels(lang: SupportedLanguage) {
@@ -120,12 +121,12 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
               <div className="flex flex-col gap-2">
                 <div className="flex items-center self-start border rounded-lg" aria-label={L.qty}>
                   <button type="button" onClick={() => setQty(Math.max(1, qty - 1))} className="px-3 py-2 cursor-pointer">−</button>
-                  <span className="w-8 text-center">{qty}</span>
+                  <span className="w-8 text-center">{storeNumber(qty, currentLang)}</span>
                   <button type="button" onClick={() => setQty(Math.min(99, qty + 1))} className="px-3 py-2 cursor-pointer">+</button>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <button type="button" onClick={add} data-testid="product-add-to-cart" className="min-w-0 px-2 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-semibold inline-flex items-center justify-center gap-2 cursor-pointer">
-                    <ShoppingCart className="w-4 h-4" />{cart[product.sku] ? L.inCart.replace('{n}', String(cart[product.sku])) : L.addToCart}
+                    <ShoppingCart className="w-4 h-4" />{cart[product.sku] ? L.inCart.replace('{n}', storeNumber(cart[product.sku], currentLang)) : L.addToCart}
                   </button>
                   <button type="button" onClick={() => requestDirectPurchase(product.sku, qty)} data-testid="product-buy-now" className="min-w-0 px-2 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold inline-flex items-center justify-center gap-2 cursor-pointer"><CreditCard className="w-4 h-4 shrink-0" />{L.buyNow}</button>
                 </div>
@@ -165,6 +166,21 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
               className="col-span-2 mt-1 inline-flex items-center gap-1.5 text-amber-700 hover:underline text-xs"><ExternalLink className="w-3.5 h-3.5" />{L.page}</a>
           </div>
         </div>
+      </div>
+
+      {/* L-05 UN1266 + L-17 VAT Disclaimer */}
+      <div className="max-w-6xl mx-auto px-4 pb-4 space-y-3">
+        <LegalDisclaimer type="shipping" lang={currentLang} />
+        <div className="bg-stone-50 border border-stone-200 rounded-xl p-3 text-[11px] leading-relaxed text-stone-600 flex gap-2">
+          <span>🧾</span>
+          <span>{currentLang === 'ar' ? 'السعر لا يشمل الضريبة/الجمارك في بلدك (مصر 14%، السعودية 15%، الإمارات 5%، أوروبا ~20%). الفاتورة الضريبية تُصدر إلكترونيًا. التاجر البائع مسؤول قانونيًا عن مطابقة المنتج للوصف (مسؤولية البائع، المنصة وسيط).' : 'Price excludes VAT/customs in your country (Egypt 14%, Saudi 15%, UAE 5%, EU ~20%). E-invoice issued. Merchant seller is liable for product conformity (marketplace liability).'}</span>
+        </div>
+        {(product as any).supplierName && (
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[10px] leading-relaxed text-amber-900 flex gap-2">
+            <span>©</span>
+            <span>{currentLang === 'ar' ? `مصدر: ${(product as any).supplierName} — مستورد بترخيص. للاعتراض/DMCA: privacy@sham-perfume.com (رد 48س).` : `Source: ${(product as any).supplierName} — imported under license. DMCA: privacy@sham-perfume.com (48h).`}</span>
+          </div>
+        )}
       </div>
 
       {related.length > 0 && (
