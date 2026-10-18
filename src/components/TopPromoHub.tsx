@@ -19,7 +19,9 @@ import {
   Volume2,
   VolumeX,
 } from 'lucide-react';
-import { makeT } from '../لغات/localize';
+import { makeBannerT } from '../لغات/bannerL10n';
+import type { BannerTextKey } from '../لغات/bannerKeys';
+import { storeGenderLabel, storeLocalized, storeText } from '../لغات/storeL10n';
 import { isRTL } from '../لغات/localizedContent';
 import type { SupportedLanguage } from '../types/i18n';
 import { loadStoreCatalog, storeImageSrc } from '../utils/liveStore';
@@ -46,52 +48,30 @@ interface TopPromoHubProps {
 interface CommercialScene {
   id: string;
   image: string;
-  tagAr: string;
-  tagEn: string;
-  titleAr: string;
-  titleEn: string;
-  subtitleAr: string;
-  subtitleEn: string;
-  moodAr: string;
-  moodEn: string;
+  /** The scene copy lives in the 100-language banner pack (bannerL10nData1–5). */
+  keys: {
+    tag: BannerTextKey;
+    title: BannerTextKey;
+    subtitle: BannerTextKey;
+    mood: BannerTextKey;
+  };
 }
 
 const SCENES: CommercialScene[] = [
   {
     id: 'scene-man',
     image: commercialMan,
-    tagAr: 'إعلان سنيمائي حصري · عطور النيش للرجال',
-    tagEn: 'CINEMATIC AD · HAUTE PARFUMERIE POUR HOMME',
-    titleAr: 'سحر الرذاذ الأول… هيبة وأناقة تأسر الحواس',
-    titleEn: 'The Signature Mist · Aristocratic Allure & Presence',
-    subtitleAr: 'تجربة إعلانية سينمائية تجسد فن توزيع ذرات العطر الملكي في إضاءة استوديو دافئة وخامات نادرة.',
-    subtitleEn: 'A high-fashion film campaign capturing fine golden perfume droplets in dramatic chiaroscuro illumination.',
-    moodAr: 'فوحان ملكي أرستقراطي · عنبر معتق، أخشاب ثمينة، وتبغ فيرجيني فاخر',
-    moodEn: 'Royal projection · aged amber, precious woods & refined Virginian notes',
+    keys: { tag: 'scene_man_tag', title: 'scene_man_title', subtitle: 'scene_man_subtitle', mood: 'scene_man_mood' },
   },
   {
     id: 'scene-woman',
     image: commercialWoman,
-    tagAr: 'هوت كوتور باريس · العطر النسائي الساحر',
-    tagEn: 'HAUTE COUTURE PARIS · ENCHANTING POUR FEMME',
-    titleAr: 'هالة مضيئة من الذرات الذهبية وجاذبية لا تُنسى',
-    titleEn: 'Luminous Golden Scent · An Ethereal Feminine Silhouette',
-    subtitleAr: 'تناغم رذاذ الزهور الحريرية مع إشراقة الكريستال كلوحة فنية تنبض بالرقي والشاعرية.',
-    subtitleEn: 'Silken floral essence swirling with crystal luster, crafted like a timeless high-fashion masterpiece.',
-    moodAr: 'أنوثة حالمة · مسك أبيض نقي، ياسمين غراس، وفانيليا مدغشقر المخملية',
-    moodEn: 'Dreamy femininity · pure white musk, Grasse jasmine & velvet vanilla',
+    keys: { tag: 'scene_woman_tag', title: 'scene_woman_title', subtitle: 'scene_woman_subtitle', mood: 'scene_woman_mood' },
   },
   {
     id: 'scene-mist',
     image: commercialMist,
-    tagAr: 'معمل شام الحرفي · ماكرو تصوير سنيمائي 4K',
-    tagEn: 'SHAM MASTER LAB · 4K MACRO CINEMATIC REEL',
-    titleAr: 'براعة نثر الزيوت العطرية بدقة الميكرون فائقة الثبات',
-    titleEn: 'Precision Mist Atomization · Pure Extract Mastery',
-    subtitleAr: 'تصميم فوهة الرش الحرفية لنشر جزيئات العطر المضيئة بنعومة فائقة تمنحك ثباتاً يدوم لأيام.',
-    subtitleEn: 'Micro-engineered spray atomization releasing crystal fragrant droplets for everlasting sillage.',
-    moodAr: 'ثبات فائق · تركيز نيش إكستري دو بارفان (Extrait de Parfum)',
-    moodEn: 'Ultra-longevity · niche Extrait de Parfum laboratory formulation',
+    keys: { tag: 'scene_mist_tag', title: 'scene_mist_title', subtitle: 'scene_mist_subtitle', mood: 'scene_mist_mood' },
   },
 ];
 
@@ -104,34 +84,13 @@ const REEL_PARTICLES = Array.from({ length: 18 }, (_, i) => ({
   alpha: 0.35 + ((i * 3) % 5) / 10,
 }));
 
-const L10N = {
-  screen_badge: { ar: 'مختارات دار شام الفاخرة', en: 'SHAM CURATED SELECTION' },
-  live_commercial: { ar: 'مختارات دار شام', en: 'SHAM SELECTION' },
-  product_box_title: { ar: 'العطور المعروضة بالأسعار', en: 'SHOWCASE PRODUCTS & PRICES' },
-  product_box_kicker: { ar: 'مختارات دار شام الفاخرة', en: 'SHAM CURATED SELECTION' },
-  add_to_cart: { ar: 'أضف للسلة', en: 'Add to Cart' },
-  added: { ar: 'تمت الإضافة ✓', en: 'Added ✓' },
-  shop_now: { ar: 'تسوّق في المتجر', en: 'Shop in Store' },
-  auto_detected: { ar: 'تم تحديد دولتك وعملتك تلقائياً', en: 'Country & currency auto-detected from device' },
-  change_country: { ar: 'تغيير العملة والدولة', en: 'Change country/currency' },
-  choose_country: { ar: 'اختر دولة التوصيل والعملة المحلية:', en: 'Select shipping country & local currency:' },
-  price_label: { ar: 'السعر بالعملة المحلية', en: 'Local price' },
-  prev_scene: { ar: 'السابق', en: 'Previous' },
-  next_scene: { ar: 'التالي', en: 'Next' },
-  pause_reel: { ar: 'إيقاف مؤقت', en: 'Pause' },
-  play_reel: { ar: 'تشغيل', en: 'Play' },
-  collapse_screen: { ar: 'تصغير العرض', en: 'Minimize' },
-  expand_screen: { ar: 'عرض المختارات والمنتجات', en: 'Show Products' },
-  in_stock: { ar: 'متوفر للشحن الفوري', en: 'In Stock & Ready to Ship' },
-};
-
 export const TopPromoHub: React.FC<TopPromoHubProps> = ({
   currentLang = 'ar',
   onViewStore,
   onSelectProduct,
 }) => {
   const rtl = isRTL(currentLang);
-  const L = makeT(currentLang, L10N);
+  const L = makeBannerT(currentLang);
 
   const [expanded, setExpanded] = useState(true);
   const [sceneIndex, setSceneIndex] = useState(0);
@@ -332,7 +291,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                   <Sparkles className="h-3 w-3" />
                 </span>
                 <span className="text-xs font-bold tracking-wide text-amber-200">
-                  {currentLang === 'ar' ? 'مختارات دار شام الفاخرة' : 'Sham Curated Fragrance Selection'}
+                  {L('screen_title')}
                 </span>
               </div>
 
@@ -389,7 +348,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
 
                     <input
                       type="text"
-                      placeholder={currentLang === 'ar' ? 'ابحث باسم الدولة أو العملة…' : 'Search country or currency…'}
+                      placeholder={L('search_country')}
                       value={countrySearch}
                       onChange={(e) => setCountrySearch(e.target.value)}
                       className="w-full rounded-xl border border-white/15 bg-black/60 px-3 py-1.5 text-xs text-white placeholder-stone-500 focus:border-amber-400 focus:outline-none mb-2"
@@ -440,7 +399,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                   >
                     <img
                       src={scene.image}
-                      alt={currentLang === 'ar' ? scene.titleAr : scene.titleEn}
+                      alt={L(scene.keys.title)}
                       className={`sham-reel-img sham-reel-motion-${idx % 3} h-full w-full object-cover object-center`}
                       data-paused={isPlaying ? undefined : 'true'}
                       loading={idx === 0 ? 'eager' : 'lazy'}
@@ -476,7 +435,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                   <div className="inline-flex items-center gap-2 rounded-full border border-amber-200/30 bg-black/50 px-3.5 py-1.5 backdrop-blur-md shadow-lg">
                     <span className="flex h-2 w-2 rounded-full bg-red-500 animate-ping" />
                     <span className="text-[10px] sm:text-xs font-bold tracking-widest text-amber-200 uppercase">
-                      {currentLang === 'ar' ? activeScene.tagAr : activeScene.tagEn}
+                      {L(activeScene.keys.tag)}
                     </span>
                   </div>
                 </div>
@@ -488,13 +447,13 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                   <div key={activeScene.id} className="sham-reel-caption space-y-2">
                     <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-400 uppercase tracking-widest">
                       <Sparkles className="h-3 w-3 text-amber-400" />
-                      {currentLang === 'ar' ? activeScene.moodAr : activeScene.moodEn}
+                      {L(activeScene.keys.mood)}
                     </span>
                     <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
-                      {currentLang === 'ar' ? activeScene.titleAr : activeScene.titleEn}
+                      {L(activeScene.keys.title)}
                     </h2>
                     <p className="text-xs sm:text-sm text-stone-200/90 leading-relaxed drop-shadow max-w-lg">
-                      {currentLang === 'ar' ? activeScene.subtitleAr : activeScene.subtitleEn}
+                      {L(activeScene.keys.subtitle)}
                     </p>
                   </div>
 
@@ -565,10 +524,10 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                         </div>
                         <p className="text-[10px] text-amber-300/80 font-medium truncate">
                           {!catalog
-                            ? (currentLang === 'ar' ? 'جارٍ تحميل عطور المتجر…' : 'Loading store perfumes…')
+                            ? L('loading_products')
                             : productSearch.trim() || selectedCategory !== 'all'
-                              ? (currentLang === 'ar' ? `${showcaseProducts.length} عطر مطابق` : `${showcaseProducts.length} matching`)
-                              : (currentLang === 'ar' ? 'أحدث العطور المتوفرة أولاً' : 'Newest in-stock perfumes first')}
+                              ? L('matching_count', { count: showcaseProducts.length })
+                              : L('newest_first')}
                         </p>
                       </div>
                     </div>
@@ -586,8 +545,8 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                       <input
                         type="search"
                         enterKeyHint="search"
-                        aria-label={currentLang === 'ar' ? 'ابحث في عطور المتجر' : 'Search store perfumes'}
-                        placeholder={currentLang === 'ar' ? `ابحث بالاسم أو الماركة أو الطابع (${allStoreProducts.length || '…'} عطر)` : `Search by name, brand or style (${allStoreProducts.length || '…'})`}
+                        aria-label={L('search_products_label')}
+                        placeholder={L('search_products_placeholder', { count: allStoreProducts.length || '…' })}
                         value={productSearch}
                         onChange={(e) => { setProductSearch(e.target.value); setProductSlideIndex(0); }}
                         className="w-full rounded-xl border border-white/10 bg-black/50 ps-8 pe-8 py-1.5 text-xs text-white placeholder-stone-500 focus:border-amber-400 focus:outline-none transition-colors [&::-webkit-search-cancel-button]:hidden"
@@ -596,7 +555,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                         <button
                           type="button"
                           onClick={() => { setProductSearch(''); setProductSlideIndex(0); }}
-                          aria-label={currentLang === 'ar' ? 'مسح البحث' : 'Clear search'}
+                          aria-label={L('clear_search')}
                           className="absolute end-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-white text-xs cursor-pointer"
                         >
                           ✕
@@ -605,25 +564,21 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                     </div>
 
                     {/* Category Filter Pills */}
-                    <div className="flex items-center gap-1 overflow-x-auto text-[10px] no-scrollbar py-0.5" role="group" aria-label={currentLang === 'ar' ? 'تصنيف العطور' : 'Perfume category'}>
-                      {([
-                        { id: 'all', labelAr: 'الكل', labelEn: 'All' },
-                        { id: 'men', labelAr: 'رجالي', labelEn: 'Men' },
-                        { id: 'women', labelAr: 'نسائي', labelEn: 'Women' },
-                        { id: 'unisex', labelAr: 'للجنسين', labelEn: 'Unisex' },
-                      ] as { id: ShowcaseCategory; labelAr: string; labelEn: string }[]).map((cat) => (
+                    <div className="flex items-center gap-1 overflow-x-auto text-[10px] no-scrollbar py-0.5" role="group" aria-label={L('category_label')}>
+                      {(['all', 'men', 'women', 'unisex'] as ShowcaseCategory[]).map((catId) => (
+                        // catId aliases the pill's category; labels come from the store pack.
                         <button
-                          key={cat.id}
+                          key={catId}
                           type="button"
-                          aria-pressed={selectedCategory === cat.id}
-                          onClick={() => { setSelectedCategory(cat.id); setProductSlideIndex(0); }}
+                          aria-pressed={selectedCategory === catId}
+                          onClick={() => { setSelectedCategory(catId); setProductSlideIndex(0); }}
                           className={`px-2.5 py-1 rounded-lg whitespace-nowrap transition-colors cursor-pointer font-medium ${
-                            selectedCategory === cat.id
+                            selectedCategory === catId
                               ? 'bg-amber-400 text-stone-950 font-bold'
                               : 'bg-white/5 text-stone-300 hover:bg-white/10'
                           }`}
                         >
-                          {currentLang === 'ar' ? cat.labelAr : cat.labelEn}
+                          {catId === 'all' ? storeText(currentLang, 'sf_all') : storeGenderLabel(catId, currentLang)}
                         </button>
                       ))}
                     </div>
@@ -641,7 +596,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                     <div
                       role="link"
                       tabIndex={0}
-                      aria-label={`${activeProduct.name[currentLang === 'ar' ? 'ar' : 'en']} — ${activePrice}`}
+                      aria-label={`${storeLocalized(activeProduct.name, currentLang)} — ${activePrice}`}
                       onClick={() => handleProductClick(activeProduct.id)}
                       onKeyDown={(e) => {
                         if (e.target !== e.currentTarget) return;
@@ -663,7 +618,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                               <img
                                 key={src}
                                 src={storeImageSrc(src)}
-                                alt={activeProduct.name[currentLang === 'ar' ? 'ar' : 'en']}
+                                alt={storeLocalized(activeProduct.name, currentLang)}
                                 draggable={false}
                                 decoding="async"
                                 className={`h-full w-full drop-shadow-[0_12px_14px_rgba(0,0,0,0.7)] transition-transform duration-500 group-hover:scale-105 ${isStockPhoto(src) ? 'object-cover rounded-lg' : 'object-contain'}`}
@@ -672,7 +627,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                             ) : (
                               <div className="flex flex-col items-center gap-1.5 text-amber-500/60">
                                 <Sparkles className="h-10 w-10" />
-                                <span className="text-[10px] font-bold text-amber-200/70">{activeProduct.brand || (currentLang === 'ar' ? 'دار شام' : 'Sham')}</span>
+                                <span className="text-[10px] font-bold text-amber-200/70">{activeProduct.brand || L('brand_house')}</span>
                               </div>
                             );
                           })()}
@@ -687,7 +642,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                             </span>
                           ) : (
                             <span className="absolute bottom-2 end-2 rounded-md bg-stone-900/90 border border-stone-600/50 px-1.5 py-0.5 text-[8px] font-bold text-stone-400">
-                              {currentLang === 'ar' ? 'غير متوفر' : 'Out of stock'}
+                              {L('out_of_stock')}
                             </span>
                           )}
                         </div>
@@ -695,10 +650,10 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                         {/* Product Details */}
                         <div className="mt-2.5 space-y-0.5">
                           <h4 className="line-clamp-1 font-serif text-sm sm:text-base font-bold text-white group-hover:text-amber-200 transition-colors" dir="auto">
-                            {activeProduct.name[currentLang === 'ar' ? 'ar' : 'en']}
+                            {storeLocalized(activeProduct.name, currentLang)}
                           </h4>
                           <p className="line-clamp-1 text-[11px] leading-relaxed text-stone-400" dir="auto">
-                            {activeProduct.description[currentLang === 'ar' ? 'ar' : 'en']}
+                            {storeLocalized(activeProduct.description, currentLang)}
                           </p>
                         </div>
 
@@ -744,7 +699,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                               disabled
                               className="flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold bg-stone-800 text-stone-400 cursor-not-allowed opacity-75"
                             >
-                              <span>{currentLang === 'ar' ? 'نفد المخزون' : 'Out of stock'}</span>
+                              <span>{L('sold_out')}</span>
                             </button>
                           )}
                         </div>
@@ -765,15 +720,15 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                   ) : (
                     <div className="mt-2.5 rounded-2xl border border-white/10 bg-stone-900/60 px-3 py-8 text-center text-xs text-stone-400">
                       {catalogFailed
-                        ? (currentLang === 'ar' ? 'تعذّر تحميل المنتجات الآن — افتح المتجر لرؤيتها.' : 'Products could not load right now — open the store to see them.')
-                        : (currentLang === 'ar' ? 'لا توجد عطور مطابقة — جرّب كلمة أخرى.' : 'No matching perfumes — try another word.')}
+                        ? L('load_failed')
+                        : L('no_matches')}
                       {(productSearch || selectedCategory !== 'all') && !catalogFailed && (
                         <button
                           type="button"
                           onClick={() => { setProductSearch(''); setSelectedCategory('all'); setProductSlideIndex(0); }}
                           className="mt-3 block mx-auto rounded-lg border border-amber-400/40 px-3 py-1 text-amber-200 hover:bg-amber-500/10"
                         >
-                          {currentLang === 'ar' ? 'عرض كل العطور' : 'Show all perfumes'}
+                          {L('show_all')}
                         </button>
                       )}
                     </div>
@@ -785,7 +740,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                       <button
                         type="button"
                         onClick={handlePrevProduct}
-                        aria-label={currentLang === 'ar' ? 'العطر السابق' : 'Previous perfume'}
+                        aria-label={L('prev_product')}
                         className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 hover:bg-white/15 text-stone-300 transition-colors cursor-pointer"
                       >
                         <PreviousIcon className="h-4 w-4" />
@@ -802,8 +757,8 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                               key={p.sku}
                               type="button"
                               onClick={() => goToProduct(idx, idx < safeIndex ? -1 : 1)}
-                              title={p.name[currentLang === 'ar' ? 'ar' : 'en']}
-                              aria-label={p.name[currentLang === 'ar' ? 'ar' : 'en']}
+                              title={storeLocalized(p.name, currentLang)}
+                              aria-label={storeLocalized(p.name, currentLang)}
                               aria-current={isSelected ? 'true' : undefined}
                               className={`relative flex h-8 w-8 items-center justify-center rounded-lg overflow-hidden border bg-[#1a120c] transition-all shrink-0 cursor-pointer ${
                                 isSelected
@@ -837,7 +792,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                       <button
                         type="button"
                         onClick={handleNextProduct}
-                        aria-label={currentLang === 'ar' ? 'العطر التالي' : 'Next perfume'}
+                        aria-label={L('next_product')}
                         className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 hover:bg-white/15 text-stone-300 transition-colors cursor-pointer"
                       >
                         <NextIcon className="h-4 w-4" />
@@ -877,8 +832,8 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
               <Sparkles className="h-3.5 w-3.5" />
             </span>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-amber-200">{currentLang === 'ar' ? 'مختارات دار شام' : 'Sham Selection'}</span>
-              <span className="hidden sm:inline-block text-[11px] text-stone-400">· {currentLang === 'ar' ? activeScene.titleAr : activeScene.titleEn}</span>
+              <span className="text-xs font-bold text-amber-200">{L('live_commercial')}</span>
+              <span className="hidden sm:inline-block text-[11px] text-stone-400">· {L(activeScene.keys.title)}</span>
             </div>
           </div>
 

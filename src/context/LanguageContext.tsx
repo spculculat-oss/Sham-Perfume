@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { SupportedLanguage, SUPPORTED_LANGUAGES, LanguageConfig, TranslationKey } from '../types/i18n';
 import { getInitialLanguage, saveLanguage, t as translateFn, TRANSLATIONS } from '../لغات/i18n';
+import { USER_LANGUAGE_MANUAL_OVERRIDE_KEY } from '../utils/geoDetector';
 
 interface LanguageContextType {
   currentLang: SupportedLanguage;
@@ -43,6 +44,11 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
   }, [currentLang]);
 
   const setLanguage = (lang: SupportedLanguage) => {
+    // A language requested by the visitor sticks: entry-country
+    // auto-detection must never override it on a later visit.
+    try {
+      localStorage.setItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY, 'true');
+    } catch (e) {}
     setCurrentLangState(lang);
     saveLanguage(lang);
     if (onLanguageChange) {

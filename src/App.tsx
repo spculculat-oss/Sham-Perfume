@@ -49,8 +49,7 @@ import {
 } from './utils/environmentAdapter';
 import { loadDetailedAddress } from './utils/addressStorage';
 import {
-  detectUserCountryAndLanguage,
-  detectUserLocationAsync,
+  detectEntryLanguageAsync,
   forceRedetectLocation,
   USER_LANGUAGE_MANUAL_OVERRIDE_KEY,
   saveUserCountryCode,
@@ -523,32 +522,23 @@ export default function App() {
     };
   }, []);
 
-  // Auto-detect country and language based on the country where the site was opened
+  // The opening language already comes from the entry country
+  // (getInitialLanguage -> detectEntryLanguage). Refine it once with the
+  // IP-based country, unless the visitor picked a language themselves.
   useEffect(() => {
-    // 1. Immediate sync check with synchronous detector
-    try {
-      const hasOverride = localStorage.getItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY);
-      if (!hasOverride) {
-        const syncGeo = detectUserCountryAndLanguage();
-        if (syncGeo.detectedLanguage && syncGeo.detectedLanguage !== currentLang) {
-          setCurrentLang(syncGeo.detectedLanguage);
-          saveLanguage(syncGeo.detectedLanguage);
+    detectEntryLanguageAsync()
+      .then((hit) => {
+        if (!hit) return;
+        if (hit.countryCode) {
+          saveUserCountryCode(hit.countryCode);
         }
-      }
-    } catch (e) {
-      // ignore
-    }
-
-    // 2. High-precision Async IP-based location detection
-    detectUserLocationAsync()
-      .then((geo) => {
-        const hasOverride = localStorage.getItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY);
-        if (!hasOverride && geo.detectedLanguage && geo.detectedLanguage !== currentLang) {
-          setCurrentLang(geo.detectedLanguage);
-          saveLanguage(geo.detectedLanguage);
-          if (geo.detectedCountry) {
-            saveUserCountryCode(geo.detectedCountry.code);
-          }
+        let hasOverride = false;
+        try {
+          hasOverride = !!localStorage.getItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY);
+        } catch (e) {}
+        if (!hasOverride && hit.language !== currentLang) {
+          setCurrentLang(hit.language);
+          saveLanguage(hit.language);
         }
       })
       .catch(() => {});
@@ -889,7 +879,7 @@ export default function App() {
 
         {/* Store Promo Hub: promotional banner with store deals */}
         <TopPromoHub
-          currentLang={currentLang === 'ar' || currentLang === 'en' ? currentLang : 'ar'}
+          currentLang={currentLang}
           onViewStore={() => navigateToTab('store')}
         />
 
