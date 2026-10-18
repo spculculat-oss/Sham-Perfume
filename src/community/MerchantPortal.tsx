@@ -12,6 +12,7 @@ import { refreshSession, type SessionState } from './session';
 import { ORDER_STATUS, merchantStatus } from './UserPortal';
 import { Btn, Card, Empty, Field, Sheet, Spinner, errorText, inputClass, money, timeAgo, tx, useLoad, type Lang } from './ui';
 import { StoreSalesCategoryChart } from '../components/StoreSalesCategoryChart';
+import { MerchantKYCNotice } from '../components/MerchantKYCNotice';
 import type { SupportedLanguage } from '../types/i18n';
 
 const MARGIN = 0.5;
@@ -50,6 +51,8 @@ export default function MerchantPortal({ lang, session, section, go, toast }: Pr
           {m.status === 'approved' && <Btn variant="soft" onClick={() => go(`store/${m.slug}`)}><ExternalLink className="h-4 w-4" />{t('صفحة متجري', 'My store page')}</Btn>}
         </div>
         {m.status !== 'approved' && (
+          <>
+          <div className="px-3 pt-3"><MerchantKYCNotice currentLang={'ar' as any} status={m.status} /></div>
           <div className={`flex gap-2 p-4 text-sm ${m.status === 'pending' ? 'bg-amber-50 text-amber-900' : 'bg-rose-50 text-rose-800'}`}>
             <AlertTriangle className="h-5 w-5 shrink-0" />
             <div>
@@ -59,6 +62,7 @@ export default function MerchantPortal({ lang, session, section, go, toast }: Pr
               {m.note && <p className="mt-1 font-semibold">{t('ملاحظة الإدارة:', 'Note:')} {m.note}</p>}
             </div>
           </div>
+          </>
         )}
         <nav className="flex overflow-x-auto border-t border-stone-100">
           {tabs.map(([id, label, icon]) => <button key={id} type="button" onClick={() => go(`merchant/${id}`)} className={`flex shrink-0 items-center gap-2 px-4 py-3 text-sm font-semibold cursor-pointer ${current === id ? 'border-b-2 border-amber-600 text-amber-800' : 'text-stone-500'}`}>{icon}{label}</button>)}
