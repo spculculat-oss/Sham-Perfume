@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-18T14:26:10.397Z",
+ "updatedAt": "2026-10-18T14:57:20.429Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1212,
   "imported": 1161,
-  "ok": 641,
-  "warn": 520,
+  "ok": 644,
+  "warn": 517,
   "hidden": 51,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-18T14:24:42.178Z",
+  "at": "2026-10-18T14:56:27.481Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -25,7 +25,7 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 999,
     "listingPages": 45,
-    "listingProducts": 1021,
+    "listingProducts": 1020,
     "listingOnly": 61,
     "listingComplete": true,
     "origin": "built-in",
@@ -50,8 +50,8 @@
     "rateFrom": "open.er-api.com",
     "sitemapProducts": 102,
     "origin": "discovered",
-    "added": 98,
-    "refreshed": 0,
+    "added": 0,
+    "refreshed": 42,
     "failed": [
      "https://afnan.com/products/fakhar-al-jamaal (no product data)",
      "https://afnan.com/products/lilia (no product data)",
@@ -61,10 +61,10 @@
     "failedCount": 4,
     "viaShaheen": 0,
     "deferred": 0,
-    "gone": 0,
+    "gone": 17,
     "via": {
-     "generic": 81,
-     "json-ld": 17
+     "json-ld": 17,
+     "generic": 25
     },
     "learnedSkills": 0,
     "notPerfume": 0,
@@ -115,7 +115,7 @@
     }
    ]
   },
-  "durationMs": 88249
+  "durationMs": 52976
  },
  "items": [
   {
@@ -3206,7 +3206,6 @@
    "status": "warn",
    "issues": [
     "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر",
     "غير متوفر عند المورد"
    ],
    "page": "p/armaf-beach-party-eau-de-parfum-100ml-753.html"
@@ -3217,40 +3216,9 @@
    "name": "Precious Gold 80ml by Maison Alhambra",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "وصف المورد قصير"
    ],
    "page": "p/precious-gold-80ml-by-maison-alhambra-755.html"
-  },
-  {
-   "sku": "MAI-763",
-   "id": 763,
-   "name": "Zeno by Maison Alhambra – 100 ml for Women",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/zeno-by-maison-alhambra-100-ml-for-women-763.html"
-  },
-  {
-   "sku": "MAI-764",
-   "id": 764,
-   "name": "So Candid by Maison Alhambra 100 ml EDP",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/so-candid-by-maison-alhambra-100-ml-edp-764.html"
-  },
-  {
-   "sku": "GRA-767",
-   "id": 767,
-   "name": "Cherry Luxe by Grandeur Tubbees For Her 50ml",
-   "status": "warn",
-   "issues": [
-    "غير متوفر عند المورد"
-   ],
-   "page": "p/cherry-luxe-by-grandeur-tubbees-for-her-50ml-767.html"
   },
   {
    "sku": "ALW-769",

@@ -1231,7 +1231,7 @@
       ],
       "category": "مختلط",
       "brand": "Lattafa",
-      "supplierPrice": 981.08,
+      "supplierPrice": 981.1,
       "ourPrice": 1475,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -1243,7 +1243,8 @@
       "supplierSku": "LATTAFA-OUD-MOOD-30ML",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 75,
-      "exchangeRate": 13.081,
+      "supplierSalePrice": 47.5,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/lattafa/oud-mood-30ml/",
       "slug": "oud-mood-30ml-by-lattafa-edp-unisex-52",
       "sizeMl": 30,
@@ -1284,7 +1285,7 @@
       ],
       "barcode": "6291108731246",
       "importedAt": "2026-10-16T07:14:07.456Z",
-      "refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld"
     },
     {
@@ -1307,7 +1308,7 @@
       ],
       "category": "رجالي",
       "brand": "Rasasi",
-      "supplierPrice": 3270.25,
+      "supplierPrice": 3270.33,
       "ourPrice": 4910,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -1320,7 +1321,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 250,
       "supplierSalePrice": 198,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/rasasi/rasasi-hawas-ice-for-him/",
       "slug": "hawas-ice-by-rasasi-100ml-edp-53",
       "sizeMl": 100,
@@ -1359,7 +1360,7 @@
         "Casual"
       ],
       "importedAt": "2026-10-16T07:14:07.456Z",
-      "refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld"
     },
     {
@@ -1382,7 +1383,7 @@
       ],
       "category": "رجالي",
       "brand": "Rasasi",
-      "supplierPrice": 3401.06,
+      "supplierPrice": 3401.14,
       "ourPrice": 5105,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -1394,7 +1395,7 @@
       "supplierSku": "RASASI-HAWAS-MALIBU-100ML",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 260,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-malibu-rasasi-100ml-edp/",
       "slug": "hawas-malibu-by-rasasi-100ml-edp-54",
       "sizeMl": 100,
@@ -1428,7 +1429,7 @@
         "Casual"
       ],
       "importedAt": "2026-10-16T07:14:07.456Z",
-      "refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld"
     },
     {
@@ -1451,7 +1452,7 @@
       ],
       "category": "رجالي",
       "brand": "Rasasi",
-      "supplierPrice": 3335.66,
+      "supplierPrice": 3335.73,
       "ourPrice": 5005,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -1463,7 +1464,7 @@
       "supplierSku": "RASASI-HAWAS-VERDE-100ML",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 255,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-verde-rasasi-100ml-edp/",
       "slug": "hawas-verde-by-rasasi-100ml-edp-55",
       "sizeMl": 100,
@@ -1487,7 +1488,7 @@
         "Casual"
       ],
       "importedAt": "2026-10-16T07:14:07.456Z",
-      "refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "المورد لم ينشر نوتات العطر"
@@ -1513,7 +1514,7 @@
       ],
       "category": "مختلط",
       "brand": "Rasasi",
-      "supplierPrice": 3479.55,
+      "supplierPrice": 3479.63,
       "ourPrice": 5220,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -1525,7 +1526,7 @@
       "supplierSku": "RASASI-HAWAS-MAJESTIC-100ML",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 266,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/rasasi/hawas-majestic-rasasi-100ml-edp/",
       "slug": "hawas-majestic-by-rasasi-100ml-edp-56",
       "sizeMl": 100,
@@ -1563,7 +1564,7 @@
         "Special Event"
       ],
       "importedAt": "2026-10-16T07:14:07.456Z",
-      "refreshedAt": "2026-10-16T13:35:47.267Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld"
     },
     {
@@ -49885,7 +49886,7 @@
       ],
       "category": "رجالي",
       "brand": "Armaf",
-      "supplierPrice": 3204.85,
+      "supplierPrice": 3204.92,
       "ourPrice": 4810,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -49897,7 +49898,7 @@
       "supplierSku": "Armafs-Ch-4628",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 245,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/armaf/armaf-king-checkmate/",
       "slug": "armaf-king-checkmate-100ml-edp-752",
       "sizeMl": 100,
@@ -49928,7 +49929,7 @@
       ],
       "barcode": "6294015188134",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -49954,7 +49955,7 @@
       ],
       "category": "مختلط",
       "brand": "Armaf",
-      "supplierPrice": 2328.42,
+      "supplierPrice": 2328.47,
       "ourPrice": 3495,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -49966,16 +49967,27 @@
       "supplierSku": "ARMAF-BEACH-PARTY-100ML",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 178,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/armaf/armaf-beach-party-edp-100ml/",
       "slug": "armaf-beach-party-eau-de-parfum-100ml-753",
       "sizeMl": 100,
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Mandarin"
+        ],
+        "heart": [
+          "Jasmine",
+          "Coconut"
+        ],
+        "base": [
+          "Musk",
+          "Amber",
+          "Sandalwood",
+          "Vanilla"
+        ]
       },
       "families": [
         "Citrus"
@@ -49990,11 +50002,10 @@
       ],
       "barcode": "6294015197136",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "وصف المورد قصير",
-        "المورد لم ينشر نوتات العطر",
         "غير متوفر عند المورد"
       ]
     },
@@ -50018,7 +50029,7 @@
       ],
       "category": "مختلط",
       "brand": "Maison Asrar",
-      "supplierPrice": 4787.65,
+      "supplierPrice": 4787.76,
       "ourPrice": 7185,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -50031,7 +50042,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 366,
       "supplierSalePrice": 259,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-asrar/monarch-maison-asrar/",
       "slug": "monarch-by-maison-asrar-100ml-edp-unisex-754",
       "sizeMl": 100,
@@ -50070,7 +50081,7 @@
       ],
       "barcode": "6290362161660",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld"
     },
     {
@@ -50093,7 +50104,7 @@
       ],
       "category": "نسائي",
       "brand": "Maison Alhambra",
-      "supplierPrice": 2079.88,
+      "supplierPrice": 2079.93,
       "ourPrice": 3120,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -50106,16 +50117,29 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 159,
       "supplierSalePrice": 108,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/precious-gold-80ml/",
       "slug": "precious-gold-80ml-by-maison-alhambra-755",
       "sizeMl": 80,
       "concentration": "Eau de Parfum",
       "longevity": "Lasting (6-8 hours)",
       "notes": {
-        "top": [],
-        "heart": [],
-        "base": []
+        "top": [
+          "Bergamot",
+          "Pear",
+          "Pink Pepper"
+        ],
+        "heart": [
+          "Jasmine",
+          "Rose",
+          "Orange Blossom"
+        ],
+        "base": [
+          "Vanilla",
+          "Amber",
+          "White Musk",
+          "Sandalwood"
+        ]
       },
       "families": [
         "Floral Aquatic"
@@ -50134,11 +50158,10 @@
       ],
       "barcode": "6290360590844",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld",
       "reviewIssues": [
-        "وصف المورد قصير",
-        "المورد لم ينشر نوتات العطر"
+        "وصف المورد قصير"
       ]
     },
     {
@@ -50161,7 +50184,7 @@
       ],
       "category": "رجالي",
       "brand": "Rue Broca",
-      "supplierPrice": 3270.25,
+      "supplierPrice": 3270.33,
       "ourPrice": 4910,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -50174,7 +50197,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 250,
       "supplierSalePrice": 148.5,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/rue-broca/theoreme-matrix/",
       "slug": "theoreme-matrix-by-rue-broca-90-ml-for-men-756",
       "sizeMl": 90,
@@ -50212,7 +50235,7 @@
       ],
       "barcode": "6290171074854",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld"
     },
     {
@@ -50232,7 +50255,7 @@
       ],
       "category": "رجالي",
       "brand": "Grandeur",
-      "supplierPrice": 1687.45,
+      "supplierPrice": 1687.49,
       "ourPrice": 2535,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -50245,7 +50268,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 129,
       "supplierSalePrice": 110,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/grandeur/gallant-perfume/",
       "slug": "gallant-perfume-man-edp-100ml-for-him-grandeur-aromatic-757",
       "sizeMl": 100,
@@ -50276,7 +50299,7 @@
       "occasionsSource": [],
       "barcode": "5055810029753",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld"
     },
     {
@@ -50299,7 +50322,7 @@
       ],
       "category": "نسائي",
       "brand": "Grandeur",
-      "supplierPrice": 981.08,
+      "supplierPrice": 981.1,
       "ourPrice": 1475,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -50312,7 +50335,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 75,
       "supplierSalePrice": 48,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/grandeur/berry-blast/",
       "slug": "berry-blast-by-grandeur-tubbees-50ml-woman-758",
       "sizeMl": 50,
@@ -50341,7 +50364,7 @@
       ],
       "barcode": "5055810099503",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld"
     },
     {
@@ -50364,7 +50387,7 @@
       ],
       "category": "مختلط",
       "brand": "Maison Asrar",
-      "supplierPrice": 3793.49,
+      "supplierPrice": 3793.58,
       "ourPrice": 5695,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -50377,7 +50400,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 290,
       "supplierSalePrice": 159,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-asrar/vanilla-voyage-maison-asrar/",
       "slug": "vanilla-voyage-by-maison-asrar-100ml-edp-unisex-759",
       "sizeMl": 100,
@@ -50414,7 +50437,7 @@
       ],
       "barcode": "6290362161783",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld"
     },
     {
@@ -50437,7 +50460,7 @@
       ],
       "category": "نسائي",
       "brand": "Al Wataniah",
-      "supplierPrice": 2210.69,
+      "supplierPrice": 2210.74,
       "ourPrice": 3320,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -50450,7 +50473,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 169,
       "supplierSalePrice": 90,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/al-wataniah/castilla/",
       "slug": "castilla-by-al-wataniah-perfume-women-75ml-edp-760",
       "sizeMl": 75,
@@ -50484,7 +50507,7 @@
       "occasionsSource": [],
       "barcode": "5055810099152",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld"
     },
     {
@@ -50507,7 +50530,7 @@
       ],
       "category": "نسائي",
       "brand": "Rue Broca",
-      "supplierPrice": 2341.5,
+      "supplierPrice": 2341.55,
       "ourPrice": 3515,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -50520,7 +50543,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 179,
       "supplierSalePrice": 129,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/rue-broca/exotic-paradise/",
       "slug": "exotic-paradise-by-rue-broca-100ml-edp-women-761",
       "sizeMl": 100,
@@ -50551,7 +50574,7 @@
       ],
       "barcode": "6290171074014",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld"
     },
     {
@@ -50574,7 +50597,7 @@
       ],
       "category": "مختلط",
       "brand": "Maison Asrar",
-      "supplierPrice": 4447.54,
+      "supplierPrice": 4447.64,
       "ourPrice": 6675,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -50587,7 +50610,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 340,
       "supplierSalePrice": 218,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-asrar/vanguard-maison-asrar/",
       "slug": "vanguard-by-maison-asrar-100ml-edp-unisex-762",
       "sizeMl": 100,
@@ -50632,7 +50655,7 @@
       ],
       "barcode": "6290362164906",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld"
     },
     {
@@ -50654,9 +50677,9 @@
       ],
       "category": "نسائي",
       "brand": "Maison Alhambra",
-      "supplierPrice": 1700.53,
+      "supplierPrice": 1700.57,
       "ourPrice": 2555,
-      "stockStatus": "out_of_stock",
+      "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -50667,7 +50690,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 130,
       "supplierSalePrice": 111,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/zeno/",
       "slug": "zeno-by-maison-alhambra-100-ml-for-women-763",
       "sizeMl": 100,
@@ -50713,11 +50736,8 @@
       ],
       "barcode": "6291108730348",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
-      "importedVia": "json-ld",
-      "reviewIssues": [
-        "غير متوفر عند المورد"
-      ]
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
+      "importedVia": "json-ld"
     },
     {
       "id": 764,
@@ -50739,9 +50759,9 @@
       ],
       "category": "نسائي",
       "brand": "Maison Alhambra",
-      "supplierPrice": 1949.07,
+      "supplierPrice": 1949.11,
       "ourPrice": 2925,
-      "stockStatus": "out_of_stock",
+      "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -50752,7 +50772,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 149,
       "supplierSalePrice": 92,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/maison-alhambra/so-candid/",
       "slug": "so-candid-by-maison-alhambra-100-ml-edp-764",
       "sizeMl": 100,
@@ -50782,11 +50802,8 @@
       "occasionsSource": [],
       "barcode": "6291108735244",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
-      "importedVia": "json-ld",
-      "reviewIssues": [
-        "غير متوفر عند المورد"
-      ]
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
+      "importedVia": "json-ld"
     },
     {
       "id": 765,
@@ -50808,7 +50825,7 @@
       ],
       "category": "مختلط",
       "brand": "Ard Al Zaafaran",
-      "supplierPrice": 1504.32,
+      "supplierPrice": 1504.35,
       "ourPrice": 2260,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -50821,7 +50838,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 115,
       "supplierSalePrice": 80,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/ard-al-zaafaran/teef-al-hub/",
       "slug": "teef-al-hub-by-ard-al-zaafaran-100-ml-unisex-765",
       "sizeMl": 100,
@@ -50861,7 +50878,7 @@
       "occasionsSource": [],
       "barcode": "6254814578284",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld"
     },
     {
@@ -50884,7 +50901,7 @@
       ],
       "category": "مختلط",
       "brand": "Afnan",
-      "supplierPrice": 3793.49,
+      "supplierPrice": 3793.58,
       "ourPrice": 5695,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -50897,7 +50914,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 290,
       "supplierSalePrice": 218,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/afnan/turathi-electric/",
       "slug": "turathi-electric-by-afnan-90ml-edp-unisex-766",
       "sizeMl": 90,
@@ -50928,7 +50945,7 @@
       ],
       "barcode": "6290171076001",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld"
     },
     {
@@ -50950,9 +50967,9 @@
       ],
       "category": "نسائي",
       "brand": "Grandeur",
-      "supplierPrice": 981.08,
+      "supplierPrice": 981.1,
       "ourPrice": 1475,
-      "stockStatus": "out_of_stock",
+      "stockStatus": "in_stock",
       "isFeatured": false,
       "isNew": true,
       "reviewCount": 0,
@@ -50963,7 +50980,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 75,
       "supplierSalePrice": 49,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/grandeur/cherry-luxe/",
       "slug": "cherry-luxe-by-grandeur-tubbees-for-her-50ml-767",
       "sizeMl": 50,
@@ -50992,11 +51009,8 @@
       "occasionsSource": [],
       "barcode": "5055810099411",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
-      "importedVia": "json-ld",
-      "reviewIssues": [
-        "غير متوفر عند المورد"
-      ]
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
+      "importedVia": "json-ld"
     },
     {
       "id": 768,
@@ -51017,7 +51031,7 @@
       ],
       "category": "رجالي",
       "brand": "Zimaya",
-      "supplierPrice": 2289.17,
+      "supplierPrice": 2289.23,
       "ourPrice": 3435,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -51030,7 +51044,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 175,
       "supplierSalePrice": 105,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/zimaya/andalusi-blue/",
       "slug": "andalusi-blue-by-zimaya-100ml-edp-men-768",
       "sizeMl": 100,
@@ -51061,7 +51075,7 @@
       ],
       "barcode": "6290171070009",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld"
     },
     {
@@ -51078,13 +51092,11 @@
         "https://www.shamperfume.com/cdn/large/perfumes/al-wataniah/shagaf-al-ward-al-wataniah-100ml-edp-women-perfume-malaysia-1.jpg",
         "https://www.shamperfume.com/cdn/large/products/migrated/54/shagaf-al-ward-al-wataniah-100ml-edp-women-perfume-malaysia-1-pos3.jpg",
         "https://www.shamperfume.com/cdn/large/perfumes/al-wataniah/shagaf-al-ward-al-wataniah-100ml-edp-women-perfume-malaysia-2.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/al-wataniah/shagaf-al-ward-al-wataniah-100ml-edp-women-perfume-malaysia-3.jpg",
-        "https://www.shamperfume.com/cdn/large/perfumes/al-wataniah/shagaf-al-ward-al-wataniah-100ml-edp-women-perfume-malaysia-4.jpg",
         "https://www.shamperfume.com/cdn/OGImage/perfumes/al-wataniah/shagaf-al-ward-al-wataniah-100ml-edp-women-perfume-malaysia-5.jpg"
       ],
       "category": "نسائي",
       "brand": "Al Wataniah",
-      "supplierPrice": 2092.96,
+      "supplierPrice": 2093.01,
       "ourPrice": 3140,
       "stockStatus": "out_of_stock",
       "isFeatured": false,
@@ -51096,7 +51108,7 @@
       "supplierSku": "Shagaf-Al-402",
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 160,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/al-wataniah/shagaf-al-ward/",
       "slug": "shagaf-al-ward-by-al-wataniah-100ml-edp-women-769",
       "sizeMl": 100,
@@ -51128,7 +51140,7 @@
       ],
       "barcode": "5055810007720",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld",
       "reviewIssues": [
         "غير متوفر عند المورد"
@@ -51154,7 +51166,7 @@
       ],
       "category": "نسائي",
       "brand": "Al Wataniah",
-      "supplierPrice": 1896.75,
+      "supplierPrice": 1896.79,
       "ourPrice": 2850,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -51167,7 +51179,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 145,
       "supplierSalePrice": 96,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/al-wataniah/granada/",
       "slug": "granada-by-al-wataniah-100-ml-for-women-770",
       "sizeMl": 100,
@@ -51202,7 +51214,7 @@
       "occasionsSource": [],
       "barcode": "5055810099480",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld"
     },
     {
@@ -51225,7 +51237,7 @@
       ],
       "category": "مختلط",
       "brand": "Zimaya",
-      "supplierPrice": 4578.35,
+      "supplierPrice": 4578.46,
       "ourPrice": 6870,
       "stockStatus": "in_stock",
       "isFeatured": false,
@@ -51238,7 +51250,7 @@
       "supplierCurrency": "MYR",
       "supplierPriceOriginal": 350,
       "supplierSalePrice": 179,
-      "exchangeRate": 13.081,
+      "exchangeRate": 13.0813,
       "url": "https://www.shamperfume.com/perfumes/zimaya/itqan-gold/",
       "slug": "itqan-gold-by-zimaya-100ml-edp-unisex-771",
       "sizeMl": 100,
@@ -51269,7 +51281,7 @@
       ],
       "barcode": "6290171075165",
       "importedAt": "2026-10-16T13:16:56.090Z",
-      "refreshedAt": "2026-10-16T13:16:56.090Z",
+      "refreshedAt": "2026-10-18T14:57:05.763Z",
       "importedVia": "json-ld"
     },
     {
@@ -75152,7 +75164,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -75207,7 +75219,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -75252,7 +75264,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -75312,7 +75324,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -75368,7 +75380,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -75413,7 +75425,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -75469,7 +75481,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -75514,7 +75526,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -75560,7 +75572,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -75606,7 +75618,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -75652,7 +75664,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -75698,7 +75710,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -75744,7 +75756,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -75789,7 +75801,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -75835,7 +75847,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -75888,7 +75900,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -75937,7 +75949,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -75985,7 +75997,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -76033,7 +76045,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -76081,7 +76093,7 @@
       "occasionsSource": [],
       "barcode": "6290171002130",
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "json-ld"
     },
     {
@@ -76126,7 +76138,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "json-ld"
     },
     {
@@ -76180,7 +76192,7 @@
       "occasionsSource": [],
       "barcode": "6290171001935",
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "json-ld"
     },
     {
@@ -76226,7 +76238,7 @@
       "occasionsSource": [],
       "barcode": "6290171001966",
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "json-ld"
     },
     {
@@ -76271,7 +76283,7 @@
       "occasionsSource": [],
       "barcode": "6290171002062",
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "json-ld"
     },
     {
@@ -76311,7 +76323,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -76357,7 +76369,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -76413,7 +76425,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -76458,7 +76470,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -76509,7 +76521,7 @@
       "occasionsSource": [],
       "barcode": "6290171070573",
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "json-ld"
     },
     {
@@ -76561,7 +76573,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -76615,7 +76627,7 @@
       "occasionsSource": [],
       "barcode": "6290171070603",
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "json-ld"
     },
     {
@@ -76661,7 +76673,7 @@
       "occasionsSource": [],
       "barcode": "6290171070580",
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "json-ld"
     },
     {
@@ -76707,7 +76719,7 @@
       "occasionsSource": [],
       "barcode": "6290171070597",
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "json-ld"
     },
     {
@@ -76752,7 +76764,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "generic",
       "reviewIssues": [
         "صورة واحدة فقط",
@@ -78539,7 +78551,7 @@
       "seasonsSource": [],
       "occasionsSource": [],
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "json-ld"
     },
     {
@@ -78584,7 +78596,7 @@
       "occasionsSource": [],
       "barcode": "6290171000235",
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "json-ld"
     },
     {
@@ -78629,7 +78641,7 @@
       "occasionsSource": [],
       "barcode": "6290171001058",
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "json-ld"
     },
     {
@@ -78674,7 +78686,7 @@
       "occasionsSource": [],
       "barcode": "6290171000129",
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "json-ld"
     },
     {
@@ -78720,7 +78732,7 @@
       "occasionsSource": [],
       "barcode": "6290171002307",
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "json-ld"
     },
     {
@@ -78765,7 +78777,7 @@
       "occasionsSource": [],
       "barcode": "6290171001362",
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "json-ld"
     },
     {
@@ -78811,7 +78823,7 @@
       "occasionsSource": [],
       "barcode": "6290171070290",
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "json-ld"
     },
     {
@@ -78856,7 +78868,7 @@
       "occasionsSource": [],
       "barcode": "6290171010104",
       "importedAt": "2026-10-18T14:26:10.362Z",
-      "refreshedAt": "2026-10-18T14:26:10.362Z",
+      "refreshedAt": "2026-10-18T14:57:20.400Z",
       "importedVia": "json-ld"
     },
     {
