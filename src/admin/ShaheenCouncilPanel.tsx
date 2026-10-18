@@ -96,6 +96,8 @@ export default function ShaheenCouncilPanel() {
               <h3 className="text-xs font-bold text-stone-700">{TP('اجتماع {date}', { date: last.date })}</h3>
               <Badge cls={last.mode === 'ai' ? 'bg-violet-100 text-violet-800' : 'bg-stone-100 text-stone-600'}>{last.mode === 'ai' ? T('نقاش بين الخبراء') : T('من التقارير بدون ذكاء اصطناعي')}</Badge>
               <span className="text-[11px] text-stone-500">{when(last.at)}{last.chairEngine ? ` · ${T('رئيس الجلسة')}: ${ENGINE[last.chairEngine] || last.chairEngine}` : ''}</span>
+              {last.chair === 'secretary' && <Badge cls="bg-amber-100 text-amber-800">{T('أدارها السكرتير بالنيابة عن شاهين')}</Badge>}
+              {!!last.deputyReasons?.length && <span className="text-[11px] text-amber-800">{T('السبب')}: {last.deputyReasons.join(' · ')}</span>}
             </div>
             <p className="mb-3 text-xs leading-relaxed text-stone-700">{last.summaryAr}</p>
             <div className="mb-3 grid gap-1.5 sm:grid-cols-2">
@@ -120,6 +122,7 @@ export default function ShaheenCouncilPanel() {
                     <Badge cls={STATUS[d.status].cls}>{STATUS[d.status].label()}</Badge>
                     <Badge cls="bg-stone-100 text-stone-600">{d.kind === 'auto' ? T('تنفيذ تلقائي') : T('مهمة تطوير')}</Badge>
                     {d.needsApproval && <Badge cls="bg-red-50 text-red-700">{T('محتاج موافقتك')}</Badge>}
+                    {d.by === 'secretary' && <Badge cls="bg-amber-50 text-amber-800">{T('قرار السكرتير')}</Badge>}
                     <b>{d.title}</b>
                   </div>
                   <p className="mt-1 whitespace-pre-line text-stone-600">{d.detail}</p>

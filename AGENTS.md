@@ -44,4 +44,9 @@ When the merchant writes **«نفذ مهام شاهين»** (or "Run Shaheen's t
   (`scripts/shaheen-languages/`, daily workflow) audits this plus bare `.toLocaleString()` calls and
   language-pack coverage into `src/data/live/shaheen-languages.json`, which the council briefing
   reads; anything wrong can become a `shaheen-task` like the other bots'.
+- Every robot and AI tool lives under Shaheen's umbrella: register a new workflow or AI tool in
+  `src/utils/shaheenOrg.ts` (department, report file, schedule, who it helps in `LINKS`), then run
+  `node --import tsx scripts/shaheen-council/org-doc.mts` to refresh `SHAHEEN_ORG.md`;
+  `tests/shaheenOrg.test.ts` fails otherwise. If the bot writes a report, add its own checks to
+  `scripts/shaheen-council/precheck.ts` (the pre-meeting full check, 04:30 UTC — two hours before the council).
 - Checks: `npm run lint`, `npm test`, `npm run build`. Install with `bun install --frozen-lockfile`.
