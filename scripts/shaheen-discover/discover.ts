@@ -10,6 +10,8 @@ import type { ImportSource } from '../shaheen-import/transform';
 export type SourceStatus = 'candidate' | 'active' | 'paused' | 'rejected' | 'blocked';
 export type FoundBy = 'shaheen-search' | 'search-api' | 'brand-site' | 'known-store' | 'seed' | 'council' | 'built-in';
 
+import type { Region, TrustProfile } from './trust';
+
 export interface LiveSource {
   id: string;
   host: string;
@@ -36,9 +38,14 @@ export interface LiveSource {
   crawlPages?: string[];
   crawlDelayMs?: number;
   attempts: number;
+  /** The store's «CV»: trust score out of 100, every check and any red flag (trust.ts). */
+  trust?: TrustProfile;
+  /** Where it sells from (country domain, else currency). */
+  region?: Region;
 }
 
-export interface QueryStat { q: string; lang: 'ar' | 'en'; runs: number; found: number; activated: number; lastRun?: string }
+export type QueryLang = 'ar' | 'en' | 'fr' | 'de' | 'es' | 'it' | 'pl' | 'tr' | 'ru' | 'ja' | 'ko' | 'zh';
+export interface QueryStat { q: string; lang: QueryLang; region?: Region; runs: number; found: number; activated: number; lastRun?: string }
 export interface DiscoverRun { at: string; mode: 'ai' | 'self'; found: number; vetted: number; activated: number; rejected: number; notes: string[] }
 export interface SourcesFile { version: 1; updatedAt: string; sources: LiveSource[]; queries: QueryStat[]; runs: DiscoverRun[] }
 
@@ -268,17 +275,63 @@ export function addCandidates(file: SourcesFile, found: { host: string; foundBy:
 export function vettingQueue(file: SourcesFile, now: number, limit: number): LiveSource[] {
   const DAY = 86_400_000;
   const age = (s: LiveSource) => now - Date.parse(s.vettedAt || s.foundAt);
-  const fresh = file.sources.filter((s) => s.status === 'candidate' && s.attempts < 3).sort((a, b) => Date.parse(a.foundAt) - Date.parse(b.foundAt));
-  const recheck = file.sources.filter((s) => s.status === 'active' && age(s) > 7 * DAY).sort((a, b) => age(b) - age(a));
+  // Active stores that were accepted before the CV existed are reviewed first: no store stays without one.
+  const noCv = file.sources.filter((s) => s.status === 'active' && !s.trust);
+  // Real shops first (the merchant's, the council's, the address book, web search), guessed brand domains
+  // (often not even online) last; then fewer attempts, then the oldest.
+  const rank: Record<string, number> = { seed: 0, council: 1, 'known-store': 2, 'shaheen-search': 3, 'search-api': 3, 'brand-site': 5 };
+  const fresh = file.sources.filter((s) => s.status === 'candidate' && s.attempts < 3)
+    .sort((a, b) => (rank[a.foundBy] ?? 4) - (rank[b.foundBy] ?? 4) || a.attempts - b.attempts || Date.parse(a.foundAt) - Date.parse(b.foundAt));
+  const recheck = file.sources.filter((s) => s.status === 'active' && s.trust && age(s) > 7 * DAY).sort((a, b) => age(b) - age(a));
   const retry = file.sources.filter((s) => (s.status === 'paused' || (s.status === 'rejected' && s.attempts < 3)) && age(s) > 30 * DAY);
-  return [...fresh, ...recheck, ...retry].slice(0, limit);
+  return [...noCv, ...fresh, ...recheck, ...retry].slice(0, limit);
 }
 
-/** Search words: markets × languages, plus the store's own brands; the ones that found good stores come back first. */
+/**
+ * Search words for the whole world: every region in its own language (Arabic for the Arab world, French,
+ * German, Spanish, Italian, Polish and Turkish for Europe, Russian for Central Asia, Japanese, Korean and
+ * Chinese for East Asia) and in English per market, plus the store's own brands. The regions take turns,
+ * and the searches that found good stores come back first.
+ */
+export const WORLD_QUERIES: { q: string; lang: QueryLang; region: Region }[][] = [
+  ['مصر', 'السعودية', 'الإمارات', 'الكويت', 'قطر', 'البحرين', 'عمان', 'الأردن'].map((m) => ({ q: `أفضل متاجر العطور الأصلية أونلاين في ${m} مع الأسعار`, lang: 'ar' as const, region: 'arab' as const })),
+  [
+    { q: 'parfumerie en ligne parfums de niche originaux livraison internationale', lang: 'fr', region: 'europe' },
+    { q: 'Parfümerie online Nischenparfum original kaufen weltweiter Versand', lang: 'de', region: 'europe' },
+    { q: 'perfumería online perfumes originales de nicho envío internacional', lang: 'es', region: 'europe' },
+    { q: 'profumeria online profumi di nicchia originali spedizione internazionale', lang: 'it', region: 'europe' },
+    { q: 'perfumeria internetowa oryginalne perfumy niszowe sklep', lang: 'pl', region: 'europe' },
+    { q: 'orijinal niş parfüm online parfüm mağazası', lang: 'tr', region: 'europe' },
+    ...['UK', 'Germany', 'France', 'Italy', 'Spain', 'Netherlands'].map((m) => ({ q: `trusted online perfumery ${m} original niche and Arabic perfumes`, lang: 'en' as const, region: 'europe' as const })),
+  ],
+  ['USA', 'Canada', 'Mexico', 'Brazil'].map((m) => ({ q: `trusted online perfume store ${m} authentic niche and Arabic fragrances`, lang: 'en' as const, region: 'americas' as const })),
+  [
+    { q: '香水 通販 正規品 ニッチフレグランス 専門店', lang: 'ja', region: 'east-asia' },
+    { q: '정품 향수 온라인 쇼핑몰 니치 향수 전문', lang: 'ko', region: 'east-asia' },
+    { q: '正品香水 网上商店 小众沙龙香水 香港', lang: 'zh', region: 'east-asia' },
+    ...['Japan', 'South Korea', 'Singapore', 'Hong Kong', 'Malaysia'].map((m) => ({ q: `trusted online perfume store ${m} authentic niche fragrances`, lang: 'en' as const, region: 'east-asia' as const })),
+  ],
+  [
+    { q: 'интернет-магазин оригинальной парфюмерии Казахстан нишевая парфюмерия', lang: 'ru', region: 'central-asia' },
+    { q: 'интернет-магазин оригинальной парфюмерии Узбекистан', lang: 'ru', region: 'central-asia' },
+    ...['Kazakhstan', 'Uzbekistan', 'Azerbaijan'].map((m) => ({ q: `online perfume store ${m} original perfumes`, lang: 'en' as const, region: 'central-asia' as const })),
+  ],
+  [
+    ...['Egypt', 'Saudi Arabia', 'UAE', 'Kuwait'].map((m) => ({ q: `online perfume store ${m} buy original Arabic and niche perfumes`, lang: 'en' as const, region: 'arab' as const })),
+    ...['India', 'Australia'].map((m) => ({ q: `trusted online perfume store ${m} authentic fragrances`, lang: 'en' as const, region: (m === 'India' ? 'south-asia' : 'oceania') as Region })),
+  ],
+];
+
+/** Round-robin over lists: one of each in turn (regions alternate instead of one region filling a run). */
+export function interleave<T>(lists: T[][]): T[] {
+  const out: T[] = [];
+  for (let i = 0; lists.some((l) => i < l.length); i++) for (const l of lists) if (i < l.length) out.push(l[i]);
+  return out;
+}
+
 export function planQueries(file: SourcesFile, brands: string[], now: number, count: number): QueryStat[] {
   const base: QueryStat[] = [
-    ...['مصر', 'السعودية', 'الإمارات', 'الكويت', 'قطر', 'البحرين', 'عمان', 'الأردن'].map((m) => ({ q: `أفضل متاجر العطور الأصلية أونلاين في ${m} مع الأسعار`, lang: 'ar' as const, runs: 0, found: 0, activated: 0 })),
-    ...['Egypt', 'Saudi Arabia', 'UAE', 'Kuwait', 'Malaysia', 'UK', 'USA'].map((m) => ({ q: `online perfume store ${m} buy original Arabic and niche perfumes`, lang: 'en' as const, runs: 0, found: 0, activated: 0 })),
+    ...interleave(WORLD_QUERIES).map((x) => ({ ...x, runs: 0, found: 0, activated: 0 })),
     ...brands.slice(0, 25).map((b) => ({ q: `${b} perfume official online store buy`, lang: 'en' as const, runs: 0, found: 0, activated: 0 })),
   ];
   const byQ = new Map(file.queries.map((q) => [q.q, q]));
@@ -311,16 +364,24 @@ export function domainsFromSearch(reply: unknown): string[] {
 }
 
 /**
- * Shaheen's own address book: well-known online perfume shops and houses (Arab world, Europe, America, Asia).
- * Only candidates — every one is checked like any other store (robots.txt, sitemap, pages, perfume, currency),
- * so a shop that closed or blocks readers is simply not used. Lets the scout work with no AI search at all.
+ * Shaheen's own address book: well-known online perfume shops and houses around the world (the Arab world,
+ * Europe, the Americas, East and Central Asia, Oceania). Only candidates — every one gets its CV read
+ * (trust.ts) and is checked like any other store (robots.txt, sitemap, pages, perfume, currency), so a shop
+ * that closed, blocks readers or fails the CV is simply not used. Lets the scout work with no AI search at all.
  */
-export const KNOWN_STORES = [
-  'arabianoud.com', 'ajmal.com', 'rasasi.com', 'swissarabian.com', 'abdulsamadalqurashi.com', 'afnan.com', 'nabeel.com', 'alharamainperfumes.com',
-  'myperfumeshop.ae', 'perfumeboxuae.com', 'niceonesa.com', 'goldenscent.com', 'faces.com', 'wojooh.com', 'fragrancebuy.ca', 'maxaromas.com',
-  'fragrancenet.com', 'fragrancex.com', 'perfumania.com', 'luckyscent.com', 'twisted-lily.com', 'theperfumeshop.com', 'perfumeprice.co.uk', 'jovoy.com',
-  'scentsplit.com', 'perfumehub.com.my', 'lattafa-usa.com', 'perfume.com',
-];
+export const KNOWN_STORES_BY_REGION: Record<Exclude<Region, 'global' | 'africa' | 'south-asia'>, string[]> = {
+  arab: ['arabianoud.com', 'ajmal.com', 'rasasi.com', 'swissarabian.com', 'abdulsamadalqurashi.com', 'afnan.com', 'nabeel.com', 'alharamainperfumes.com', 'myperfumeshop.ae', 'perfumeboxuae.com', 'niceonesa.com', 'goldenscent.com', 'faces.com', 'wojooh.com'],
+  europe: [
+    'theperfumeshop.com', 'perfumeprice.co.uk', 'jovoy.com', 'thefragranceshop.co.uk', 'fragrancedirect.co.uk', 'escentual.com', 'notino.co.uk', 'parfumdreams.de', 'flaconi.de', 'douglas.de',
+    'essenza-nobile.de', 'ausliebezumduft.de', 'niche-beauty.com', 'nocibe.fr', 'marionnaud.fr', 'perfumesclub.com', 'primor.eu', 'iciparisxl.be', 'kicks.se', 'bangerhead.se',
+  ],
+  americas: ['fragrancebuy.ca', 'maxaromas.com', 'fragrancenet.com', 'fragrancex.com', 'perfumania.com', 'luckyscent.com', 'twisted-lily.com', 'scentsplit.com', 'lattafa-usa.com', 'perfume.com', 'aedes.com', 'osswaldnyc.com', 'beautyhabit.com', 'fragranceoutlet.com', 'perfumeworldwide.com'],
+  'east-asia': ['perfumehub.com.my', 'nose-shop.jp', 'escentials.com', 'strawberrynet.com'],
+  'central-asia': ['goldapple.kz', 'letu.kz'],
+  oceania: ['perfumeconnection.com.au'],
+};
+/** Every region in turn, so each run brings stores from different parts of the world. */
+export const KNOWN_STORES = interleave(Object.values(KNOWN_STORES_BY_REGION));
 
 /** Official-shop guesses for the brands the store sells (lattafa → lattafa.com, lattafaperfumes.com…). */
 export function brandSiteGuesses(brands: string[], max = 30): { host: string; brand: string }[] {

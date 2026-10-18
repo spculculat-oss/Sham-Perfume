@@ -2,16 +2,20 @@ name: Shaheen source scout and school (every 6 hours)
 
 # «كشّاف المصادر» (scripts/shaheen-discover/): finds online perfume stores — with AI web search while the
 # packages last, by himself otherwise (official shops of the brands the store sells, stores found earlier,
-# DISCOVER_SEEDS) — checks each one politely (robots.txt, product sitemap, 6 product pages read without AI,
+# DISCOVER_SEEDS), all over the world (Arab world, Europe, Americas, East/Central Asia, each in its language) —
+# reads each store's «CV» first (trust.ts: domain age, company identity, policies, payments, no copies; < 60/100
+# or a red flag = rejected) — then checks it politely (robots.txt, product sitemap, 6 product pages read without AI,
 # one currency, perfume) and turns the good ones into import sources (src/data/live/import-sources.json).
 # «مستورد شاهين» (shaheen-import.yml) then imports them with the original method: ×1.5 price rule, review,
 # photo cleaning, Arabic text, one page per product. The same perfume from two stores is kept once.
 # «مدرسة شاهين» (scripts/shaheen-school/): Shaheen examines himself on a question bank, learns what he can from
 # his own library (no AI), studies the rest while an AI engine is up, and keeps everything in his memory —
 # the memory the site answers from when no AI engine is available (GitHub Pages included).
-# Settings (repository variables, all optional): DISCOVER_MAX_ACTIVE (12 stores), DISCOVER_VET_PER_RUN (8),
-# DISCOVER_QUERIES (4 web searches per run), DISCOVER_BLOCK (sites never to use), DISCOVER_SEEDS (sites to
-# check), SCHOOL_MAX_STUDY (10 questions per run). Optional secret BRAVE_SEARCH_API_KEY (a search service).
+# Settings (repository variables, all optional): DISCOVER_MAX_ACTIVE (20 stores), DISCOVER_VET_PER_RUN (10),
+# DISCOVER_QUERIES (4 web searches per run), DISCOVER_BLOCK (sites never to use), DISCOVER_TRUSTED (stores
+# you vouch for: a weak CV does not stop them, red flags still do), DISCOVER_SEEDS (sites to
+# check), SCHOOL_MAX_STUDY (10 questions per run). Optional secrets: BRAVE_SEARCH_API_KEY (a search service),
+# SAFE_BROWSING_API_KEY (Google Safe Browsing, free — adds «is this site dangerous?» to every store's CV).
 
 on:
   schedule:
@@ -37,11 +41,12 @@ jobs:
     timeout-minutes: 45
     env:
       PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
-      DISCOVER_MAX_ACTIVE: ${{ vars.DISCOVER_MAX_ACTIVE || '12' }}
-      DISCOVER_VET_PER_RUN: ${{ vars.DISCOVER_VET_PER_RUN || (github.ref == 'refs/heads/main' && '8' || '5') }}
+      DISCOVER_MAX_ACTIVE: ${{ vars.DISCOVER_MAX_ACTIVE || '20' }}
+      DISCOVER_VET_PER_RUN: ${{ vars.DISCOVER_VET_PER_RUN || (github.ref == 'refs/heads/main' && '10' || '6') }}
       DISCOVER_QUERIES: ${{ vars.DISCOVER_QUERIES || (github.ref == 'refs/heads/main' && '4' || '2') }}
       DISCOVER_TIME_BUDGET_S: ${{ github.ref == 'refs/heads/main' && '900' || '420' }}
       DISCOVER_BLOCK: ${{ vars.DISCOVER_BLOCK }}
+      DISCOVER_TRUSTED: ${{ vars.DISCOVER_TRUSTED }}
       DISCOVER_SEEDS: ${{ vars.DISCOVER_SEEDS }}
       SCHOOL_MAX_STUDY: ${{ vars.SCHOOL_MAX_STUDY || (github.ref == 'refs/heads/main' && '10' || '2') }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -50,6 +55,7 @@ jobs:
       DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
       OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       BRAVE_SEARCH_API_KEY: ${{ secrets.BRAVE_SEARCH_API_KEY }}
+      SAFE_BROWSING_API_KEY: ${{ secrets.SAFE_BROWSING_API_KEY }}
     steps:
       - name: Checkout source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
