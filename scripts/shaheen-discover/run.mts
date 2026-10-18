@@ -218,12 +218,14 @@ async function rateToEgp(currency: string): Promise<number | undefined> {
  */
 async function readCv(host: string, base: string, homeHtml: string, robots: ReturnType<typeof parseRobots>, delay: number): Promise<TrustProfile> {
   const pages: { url: string; html: string }[] = [];
-  for (const url of trustLinks(homeHtml, base, 3)) {
+  for (const url of trustLinks(homeHtml, base, 6)) {
     try { if (!robots.allowed(new URL(url).pathname)) continue; } catch { continue; }
     if (timeLeft() < 60_000) break;
     await sleep(delay);
     const page = await get(url);
-    if (page.status === 200 && page.body) pages.push({ url: page.url, html: page.body.slice(0, 3_000_000) });
+    // A missing page that sends back to the home page is not that page.
+    const landed = (() => { try { return new URL(page.url).pathname; } catch { return '/'; } })();
+    if (page.status === 200 && page.body && landed !== '/' && !/^\/[a-z]{2}(?:-[a-z]{2})?\/?$/i.test(landed)) pages.push({ url: page.url, html: page.body.slice(0, 3_000_000) });
   }
   let registeredAt: string | null | undefined;
   const rdap = await get(`https://rdap.org/domain/${registrableDomain(host)}`, 15_000);
@@ -237,8 +239,12 @@ async function readCv(host: string, base: string, homeHtml: string, robots: Retu
     }).catch(() => undefined);
     if (r?.ok) { const d = await r.json().catch(() => ({})) as { matches?: unknown[] }; safeBrowsing = d.matches?.length ? 'flagged' : 'clean'; }
   }
-  return assessTrust({ host, finalUrl: base, homeHtml, pages, registeredAt, safeBrowsing, now: now.getTime() });
+  const cv = assessTrust({ host, finalUrl: base, homeHtml, pages, registeredAt, safeBrowsing, now: now.getTime() });
+  cvPagesRead.set(cv, pages.map((p) => { try { return new URL(p.url).pathname; } catch { return p.url; } }));
+  return cv;
 }
+const cvPagesRead = new WeakMap<TrustProfile, string[]>();
+const pagesRead = (cv: TrustProfile) => `pages read: ${(cvPagesRead.get(cv) || []).join(' ') || 'home only'}`;
 
 async function vet(s: LiveSource): Promise<void> {
   s.attempts += 1;
@@ -272,7 +278,7 @@ async function vet(s: LiveSource): Promise<void> {
   const cvLine = `CV ${cv.score}/100${cv.flags.length ? ` ⚑ ${cv.flags[0]}` : ''} [${cv.checks.filter((c) => c.ok).map((c) => c.id).join(',')}]`;
   // A red flag (copies, a brand-new domain, dangerous site…) is final: not retried next month.
   if (cv.verdict === 'rejected') { s.attempts = Math.max(s.attempts, 3); return fail(trustReason(cv), true); }
-  if (cv.score < TRUST_MIN) return fail(trustReason(cv));
+  if (cv.score < TRUST_MIN) { say(`  ↳ ${s.host}: ${cvLine} (${pagesRead(cv)})`); return fail(trustReason(cv)); }
   say(`  ↳ ${s.host}: ${cvLine}`);
   const { sitemaps, urls, refused, tried, trace } = await productSitemaps(base, robots.sitemaps.filter((u) => sameSite(domainOf(u), domainOf(base))));
   let allowed = urls.filter((u) => { try { return robots.allowed(new URL(u).pathname); } catch { return false; } });

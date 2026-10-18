@@ -76,7 +76,7 @@ const WORDS: Record<'contact' | 'about' | 'returns' | 'shipping' | 'privacy' | '
 /** A company number / tax number / legal notice written on the page. */
 const LEGAL_ID = new RegExp([
   'impressum', 'mentions l[ée]gales', 'aviso legal', '特定商取引法', '特商法に基づく',
-  'company (?:no|number|reg(?:istration)?)', 'registered (?:in|office|number|company)', 'company registration', 'registration (?:no|number)', 'reg\\.? no',
+  'company (?:no|number|reg(?:istration)?)', 'trade (?:number|licen[cs]e|register)', 'business registration', 'tax (?:number|registration)', 'registered (?:in|office|number|company)', 'company registration', 'registration (?:no|number)', 'reg\\.? no',
   'vat (?:no|number|reg|id)', 'vat:', 'ust-?id(?:nr)?', 'umsatzsteuer', 'handelsregister', 'hrb ?\\d', 'siret', 'siren', 'rcs ', 'tva intracom',
   'p\\.? ?iva', 'partita iva', 'c\\.?f\\.? ?\\d', 'cif:? ?[a-z]?\\d', 'nif:? ?[a-z]?\\d', 'kvk', 'btw', 'nip:? ?\\d', 'krs', 'regon',
   '\\babn\\b', '\\bacn\\b', 'gstin', 'gst (?:no|reg)', '\\bein\\b', 'tax id', 'cr no', 'c\\.r\\.? ?no', 'commercial registration', 'trade licen[cs]e',
@@ -122,10 +122,14 @@ const textOf = (html: string) => html
 /** Every link of a page: its address and its visible text (for «Returns», «Impressum», «اتصل بنا»…). */
 export function anchors(html: string, base: string): { href: string; text: string }[] {
   const out: { href: string; text: string }[] = [];
-  for (const m of html.matchAll(/<a\b[^>]*\bhref\s*=\s*["']([^"'#]+)[^"']*["'][^>]*>([\s\S]{0,400}?)<\/a>/gi)) {
+  // Every <a href>, even when its content is a long icon (svg): the text is whatever comes before </a>.
+  for (const m of html.matchAll(/<a\b[^>]*?\bhref\s*=\s*["']([^"'#][^"']*)["'][^>]*>/gi)) {
     try {
       const href = new URL(m[1].replace(/&amp;/g, '&'), base).href;
-      out.push({ href, text: textOf(m[2]).trim().slice(0, 80) });
+      if (!/^https?:/i.test(href)) continue;
+      const rest = html.slice((m.index ?? 0) + m[0].length, (m.index ?? 0) + m[0].length + 4000);
+      const end = rest.search(/<\/a>/i);
+      out.push({ href, text: textOf(end >= 0 ? rest.slice(0, end) : '').trim().slice(0, 80) });
     } catch { /* not a link */ }
   }
   return out;
@@ -134,18 +138,40 @@ export function anchors(html: string, base: string): { href: string; text: strin
 const decoded = (u: string) => { try { return decodeURIComponent(u); } catch { return u; } };
 
 /**
- * The store's own pages worth reading for its CV, from the home page's links (same site only):
- * contact, returns/refund, legal notice (Impressum…), about. At most `limit`, most telling first.
+ * Where a platform publishes its standard pages even when the home page does not link them (menus built by
+ * script): every Shopify shop has /policies/… (refund, shipping, privacy, terms and «contact information» —
+ * the legal name, address, phone, e-mail and tax number); WooCommerce creates «refund_returns».
  */
-export function trustLinks(homeHtml: string, base: string, limit = 3): string[] {
+const STANDARD_PAGES: Record<string, Partial<Record<keyof typeof WORDS, string[]>>> = {
+  Shopify: {
+    contact: ['/policies/contact-information', '/pages/contact'], legal: ['/policies/legal-notice'], returns: ['/policies/refund-policy'],
+    shipping: ['/policies/shipping-policy'], privacy: ['/policies/privacy-policy'], terms: ['/policies/terms-of-service'],
+  },
+  WooCommerce: { contact: ['/contact-us/', '/contact/'], returns: ['/refund_returns/'], privacy: ['/privacy-policy/'] },
+  any: { contact: ['/contact-us', '/contact'], returns: ['/returns', '/refund-policy'] },
+};
+
+/**
+ * The store's own pages worth reading for its CV (same site only), most telling first: contact (with the
+ * legal details on Shopify), returns/refund, legal notice (Impressum…), shipping, about — from the home page's
+ * links, else the platform's standard addresses. At most `limit`.
+ */
+export function trustLinks(homeHtml: string, base: string, limit = 6): string[] {
   let host = '';
   try { host = new URL(base).hostname.replace(/^www\./, ''); } catch { return []; }
   const own = anchors(homeHtml, base).filter((a) => { try { const h = new URL(a.href).hostname.replace(/^www\./, ''); return h === host || h.endsWith(`.${host}`); } catch { return false; } });
+  const platform = PLATFORMS.find(([, re]) => re.test(homeHtml))?.[0];
+  const standard = STANDARD_PAGES[platform || ''] || STANDARD_PAGES.any;
   const pick: string[] = [];
-  for (const kind of ['legal', 'contact', 'returns', 'about', 'shipping'] as const) {
+  const add = (u?: string) => { if (u && !pick.includes(u)) pick.push(u); };
+  for (const kind of ['contact', 'returns', 'legal', 'shipping', 'about'] as const) {
     const hit = own.find((a) => WORDS[kind].test(`${decoded(a.href)} ${a.text}`) && !pick.includes(a.href) && !/\.(?:pdf|jpe?g|png)$/i.test(a.href));
-    if (hit) pick.push(hit.href);
+    if (hit) add(hit.href);
+    // Shopify's «contact information» policy carries the company's legal details: read it as well.
+    if (!hit || (platform === 'Shopify' && kind === 'contact')) add(standard[kind]?.map((p) => new URL(p, base).href)[0]);
   }
+  // Privacy and terms usually sit in the footer; only when they are not linked, their standard page.
+  for (const kind of ['privacy', 'terms'] as const) if (!own.some((a) => WORDS[kind].test(`${decoded(a.href)} ${a.text}`))) add(standard[kind]?.map((p) => new URL(p, base).href)[0]);
   return pick.slice(0, limit);
 }
 

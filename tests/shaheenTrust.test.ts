@@ -24,9 +24,11 @@ const DE_IMPRESSUM = `<html><body><h1>Impressum</h1><p>Beispiel GmbH, Musterstra
 <p>Telefon: +49 30 1234567 · E-Mail: service@parfum-beispiel.de</p><p>Handelsregister: HRB 123456 · USt-IdNr.: DE123456789</p></body></html>`;
 
 test('store CV: an established European perfumery passes with a high score', () => {
-  const links = trustLinks(DE_HOME, 'https://parfum-beispiel.de', 3);
-  assert.equal(links[0], 'https://parfum-beispiel.de/pages/impressum', 'the legal notice is read first');
-  assert.ok(links.includes('https://parfum-beispiel.de/pages/kontakt'));
+  const links = trustLinks(DE_HOME, 'https://parfum-beispiel.de');
+  assert.equal(links[0], 'https://parfum-beispiel.de/pages/kontakt', 'contact first');
+  assert.ok(links.includes('https://parfum-beispiel.de/policies/contact-information'), 'Shopify\'s legal details page too');
+  assert.ok(links.includes('https://parfum-beispiel.de/pages/impressum'));
+  assert.ok(links.length <= 6);
   assert.ok(!links.some((u) => u.includes('instagram')), 'only the store\'s own pages');
   const cv = assessTrust({
     host: 'parfum-beispiel.de', finalUrl: 'https://parfum-beispiel.de/', homeHtml: DE_HOME,
@@ -99,6 +101,31 @@ test('store CV helpers: copies, registry, regions, links', () => {
   assert.equal(regionOf('notino.co.uk'), 'europe');
   assert.equal(regionOf('example.com'), 'global');
   assert.deepEqual(anchors('<a href="/a?x=1&amp;y=2">A <b>b</b></a>', 'https://s.example'), [{ href: 'https://s.example/a?x=1&y=2', text: 'A b' }]);
+  const icon = `<a class="f" href="/pages/contact"><svg viewBox="0 0 24 24">${'<path d="M0 0h24v24H0z"/>'.repeat(30)}</svg> Contact us</a><a href="mailto:x@y.example">mail</a>`;
+  assert.deepEqual(anchors(icon, 'https://s.example'), [{ href: 'https://s.example/pages/contact', text: 'Contact us' }], 'long icons inside a link; no mailto');
+});
+
+test('store CV: a Shopify brand shop whose menus are built by script is judged on its standard policy pages', () => {
+  // The home page links nothing but products (footer rendered by script).
+  const home = `<html><head><script src="https://cdn.shopify.com/s/x.js"></script></head><body><p>Official online store — 100% authentic perfumes</p>
+    <a href="/products/oud-royal">Oud Royal</a><a href="https://www.instagram.com/brand.example">IG</a>
+    <svg aria-labelledby="pi-visa"><title id="pi-visa">Visa</title></svg><svg aria-labelledby="pi-master"><title id="pi-master">Mastercard</title></svg></body></html>`;
+  const links = trustLinks(home, 'https://brand.example.com');
+  for (const p of ['/policies/contact-information', '/policies/refund-policy', '/policies/legal-notice', '/policies/shipping-policy', '/policies/privacy-policy', '/policies/terms-of-service']) {
+    assert.ok(links.includes(`https://brand.example.com${p}`), p);
+  }
+  const pages = [
+    { url: 'https://brand.example.com/policies/contact-information', html: '<h1>Contact information</h1><p>Trade name: Brand Perfumes LLC</p><p>Phone number: +971 4 123 4567</p><p>Email: care@brand.example.com</p><p>Physical address: Dubai, UAE</p><p>VAT number: 100123456700003</p>' },
+    { url: 'https://brand.example.com/policies/refund-policy', html: '<h1>Refund policy</h1><p>30 days.</p>' },
+    { url: 'https://brand.example.com/policies/shipping-policy', html: '<h1>Shipping policy</h1><p>We ship worldwide.</p>' },
+    { url: 'https://brand.example.com/policies/privacy-policy', html: '<h1>Privacy</h1>' },
+    { url: 'https://brand.example.com/policies/terms-of-service', html: '<h1>Terms</h1>' },
+  ];
+  const cv = assessTrust({ host: 'brand.example.com', finalUrl: 'https://brand.example.com/', homeHtml: home, pages, registeredAt: YEARS(15), now: NOW });
+  assert.equal(cv.verdict, 'trusted', JSON.stringify(cv.checks.filter((c) => !c.ok)));
+  assert.ok(cv.score >= 90, `score ${cv.score}`);
+  const thinHome = assessTrust({ host: 'brand.example.com', finalUrl: 'https://brand.example.com/', homeHtml: home, registeredAt: YEARS(15), now: NOW });
+  assert.ok(thinHome.score < cv.score, 'the policy pages are what make the difference');
 });
 
 test('global scout: regions take turns in the address book, the searches and the queue', () => {
