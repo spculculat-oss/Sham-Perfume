@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-19T03:02:11.838Z",
+ "updatedAt": "2026-10-19T04:31:49.032Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1212,
@@ -12,12 +12,17 @@
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-19T03:02:11.805Z",
+  "at": "2026-10-19T04:31:49.003Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
   },
   "sources": [],
+  "contracts": {
+   "approved": 0,
+   "permitted": [],
+   "error": "no SHAM_API_BASE / SHAM_ADMIN_TOKEN"
+  },
   "blocked": "L-03",
   "prices": {
    "count": 1161,
@@ -62,7 +67,7 @@
     }
    ]
   },
-  "durationMs": 73
+  "durationMs": 58
  },
  "items": [
   {
