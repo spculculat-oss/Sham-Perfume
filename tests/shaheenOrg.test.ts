@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { readdirSync, readFileSync } from 'node:fs';
 import test from 'node:test';
 import { AI_TOOLS } from '../src/utils/aiTools';
-import { BOTS, DEPARTMENTS, LINKS, orgMermaid, SECRETARY, unplacedTools, botOf } from '../src/utils/shaheenOrg';
+import { BOTS, DEPARTMENTS, LINKS, orgMermaid, SECRETARY, unplacedTools, botOf, LEGAL_DECISIONS } from '../src/utils/shaheenOrg';
 import { findHandoffs, isPrecheckFile, nextMeeting, pressureOf, runPrecheck } from '../scripts/shaheen-council/precheck';
 import { buildBriefing, cairoDate, emptyCouncil, recordDelegation, secretaryRoutine, selfMinutes, unreviewed, type Meeting } from '../scripts/shaheen-council/council';
 import { orgDoc } from '../scripts/shaheen-council/org-doc';
@@ -30,6 +30,8 @@ test('the structure: unique ids, five departments each with bots, links between 
   for (const d of DEPARTMENTS) assert.ok(BOTS.some((b) => b.dept === d.id), d.id);
   for (const l of LINKS) { assert.ok(botOf(l.from) && botOf(l.to), `${l.from} → ${l.to}`); assert.notEqual(l.from, l.to); }
   assert.equal(botOf(SECRETARY.bot)?.dept, 'leadership');
+  assert.equal(botOf('legal')?.dept, 'leadership');
+  for (const d of LEGAL_DECISIONS) assert.ok(botOf(d.bot), d.id);
   // Every bot works with at least one other (coordination, not islands) — except on-demand helpers.
   const linked = new Set(LINKS.flatMap((l) => [l.from, l.to]));
   const islands = BOTS.filter((b) => !linked.has(b.id) && !['store_advisor', 'admin_agent', 'images', 'catalog'].includes(b.id)).map((b) => b.id);
@@ -119,6 +121,8 @@ test('the meeting takes the check as its agenda; the secretary chairs or takes t
   assert.ok(b.facts.includes(pre.summaryAr));
   assert.ok(b.facts.some((f) => f.startsWith('تعاون:')));
   assert.ok(b.facts.some((f) => f.startsWith('أفكار تطوير')));
+  assert.ok(b.facts.some((f) => f.startsWith('قرارات المدير القانوني السارية') && f.includes('L-03')), 'the meeting is told the legal decisions are binding');
+  assert.ok(!b.signals.some((s) => /المدير القانوني|L-03/.test(s.text)), 'no signal / task to work around a legal decision');
   const fixes = b.signals.filter((s) => s.decision?.title.startsWith('إصلاح عطل'));
   assert.ok(fixes.some((s) => /فحص شاهين على الموقع الحي/.test(s.decision!.title)));
   assert.ok(!fixes.some((s) => /كشّاف/.test(s.decision!.title)), 'a merely late robot is rerun, not a task');

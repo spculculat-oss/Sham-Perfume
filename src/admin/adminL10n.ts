@@ -421,6 +421,7 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   "المشاكل": { en: "Problems" },
   "الإصلاح المقترح": { en: "Proposed fix" },
   "أفكار التطوير": { en: "Development ideas" },
+  "قرارات المدير القانوني (ملزمة)": { en: "Legal manager's decisions (binding)" },
   "مفيش ملاحظات في آخر فحص": { en: "No notes in the last check" },
   "الهيكل الإداري لمنصة شام": { en: "Sham platform organisation chart" },
   "الخريطة الكاملة": { en: "Full map" },

@@ -75,6 +75,7 @@ export default function ShaheenOrgPanel() {
             {!!c?.problems.length && <List title={T('المشاكل')} items={c.problems} cls="text-red-700" />}
             {!!c?.fixes.length && <List title={T('الإصلاح المقترح')} items={c.fixes} cls="text-emerald-800" />}
             {!!c?.ideas.length && <List title={T('أفكار التطوير')} items={c.ideas} cls="text-sky-800" />}
+            {!!c?.legal?.length && <List title={T('قرارات المدير القانوني (ملزمة)')} items={c.legal} cls="text-violet-800" />}
             {!c?.problems.length && !c?.ideas.length && <p className="text-stone-500">{T('مفيش ملاحظات في آخر فحص')}</p>}
             <Helps id={bot.id} />
           </div>

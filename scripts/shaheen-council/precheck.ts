@@ -8,7 +8,7 @@
  * photos → the photo cleaner, weak search pages → the catalog trainer, a late robot → a rerun…). The meeting
  * reads all of it as its agenda. Pure (no network): precheck.mts reads the files and the GitHub runs.
  */
-import { BOTS, botOf, type BotId } from '../../src/utils/shaheenOrg';
+import { BOTS, LEGAL_DECISIONS, botOf, type BotId } from '../../src/utils/shaheenOrg';
 import { RERUNNABLE, type Action, type Rerunnable } from './council';
 
 export interface RunInfo { conclusion: string | null; status: string; at: string; url?: string }
@@ -22,6 +22,8 @@ export interface BotCheck {
   problems: string[];
   fixes: string[];
   ideas: string[];
+  /** Decisions of «المدير القانوني» this bot works under (binding — not problems to fix). */
+  legal?: string[];
 }
 export interface Handoff { from: BotId; to: BotId; textAr: string; action?: Action }
 export interface Pressure { active: boolean; reasons: string[] }
@@ -100,7 +102,6 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       break;
     }
     case 'importer': {
-      if (o(r.import).blocked) f.push({ level: 'warn', problem: 'استيراد المنتجات متوقف بقرار قانوني (L-03) لحد ما يوصل إذن مكتوب من المورد', fix: 'التاجر يجيب إذن المورد ويحطه في docs/legal/scraper-permission.md، وبعدها يتفعل الاستيراد' });
       const sum = o(r.summary);
       const total = n(sum.total) ?? 0;
       if ((n(sum.brokenImages) ?? 0) > 0) f.push({ level: 'warn', problem: `${sum.brokenImages} صورة منتج لا تفتح`, fix: 'المراجع يخفي المنتج لحد ما الصورة تتصلح' });
@@ -225,7 +226,10 @@ export function runPrecheck(reports: Record<string, unknown>, runs: Record<strin
         }
       }
     }
-    if (bot.id === 'precheck') raise('ok');
+    if (bot.id === 'precheck' || bot.id === 'legal') raise('ok');
+    // «المدير القانوني»: the decisions in force for this bot (for the legal manager himself: all of them).
+    const legal = LEGAL_DECISIONS.filter((x) => x.bot === bot.id || bot.id === 'legal').map((x) => `${x.id}: ${x.textAr}`);
+    if (legal.length) c.legal = legal;
     // A tool with no robot of its own (the chat, the advisor) is measured by the supervisor.
     if (!bot.workflow && bot.aiTools?.length) {
       const tools = o(o(reports['ai-supervisor.json']).tools);

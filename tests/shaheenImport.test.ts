@@ -317,5 +317,7 @@ test('L-03 legal guard: no store is read without the written supplier permission
   assert.match(run, /const selected = !scrapeAllowed \? \[\] :/);
   const { runPrecheck } = await import('../scripts/shaheen-council/precheck');
   const r = runPrecheck({ 'store-review.json': { updatedAt: new Date().toISOString(), import: { blocked: 'L-03' }, summary: { total: 10 } } }, {}, Date.now());
-  assert.ok(r.bots.find((b) => b.id === 'importer')!.problems.some((p) => /L-03/.test(p)));
+  const importer = r.bots.find((b) => b.id === 'importer')!;
+  assert.ok(importer.legal?.some((x) => /^L-03/.test(x)), 'shown as the legal manager\'s decision');
+  assert.ok(!importer.problems.some((p) => /L-03|قانوني/.test(p)), 'a legal decision is not a fault to fix');
 });
