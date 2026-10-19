@@ -290,6 +290,7 @@ export const MODEL_ID = /^[A-Za-z0-9._:/@-]{1,120}$/;
  */
 export type EngineFailure = 'invalid_key' | 'no_credit' | 'rate_limited' | 'model_not_found' | 'region_blocked' | 'bad_request' | 'upstream_error';
 
+/** The failure kind also decides how long Shaheen parks the engine (server/core/engineHealth.ts). */
 export function classifyEngineFailure(status: number, body = ''): EngineFailure {
   const text = body.slice(0, 4000);
   const code = (() => {
