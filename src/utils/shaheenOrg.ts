@@ -77,7 +77,7 @@ export const BOTS: Bot[] = [
   { id: 'chat', nameAr: 'شات الخبير شاهين ومساعد شام', nameEn: 'Shaheen chat & Sham assistant', dept: 'experience', aiTools: ['shaheen_chat', 'sham_assistant', 'media'], dutiesAr: 'يرد على الزوار؛ وقت الضغط أو لو المحركات وقفت بيرد من ذاكرة شاهين (مدرسة شاهين).' },
   { id: 'languages', nameAr: 'وكيل اللغات', nameEn: 'Language agent', dept: 'experience', workflow: 'shaheen-languages.yml', report: 'shaheen-languages.json', everyHours: 24, dutiesAr: 'يقيس اللغات المئة: الحزم الناقصة، والأرقام اللي لازم تتبع لغة الموقع.' },
   { id: 'design_audit', nameAr: 'تدقيق التصميم واللغات (مرتين في الأسبوع)', nameEn: 'Design & languages audit (twice a week)', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-audit.json', everyHours: 84, dutiesAr: 'وكيل خلفي يفتح الموقع بلغات مختلفة الأربع والسبت ويقيّم التصميم والترجمة.' },
-  { id: 'visitor_tour', nameAr: 'جولة الزائر اليومية', nameEn: 'Daily visitor tour', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-missions.json', section: 'tour', everyHours: 24, dutiesAr: 'كل يوم 6 الصبح الوكيل الخلفي يتسوق من الموبايل زي الزبون: المتجر ← منتج ← السلة ← صفحة الدفع (من غير ما يدفع) ← سؤال لشاهين، ويكتب اللي اتكسر قبل الفحص الشامل.' },
+  { id: 'visitor_tour', nameAr: 'جولة الزائر والمستشار الميداني', nameEn: 'Visitor tour & field advisor', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-missions.json', section: 'tour', everyHours: 24, dutiesAr: 'كل يوم بعد الفحص الشامل الوكيل الخلفي يتسوق من الموبايل زي الزبون: المتجر ← منتج ← السلة ← صفحة الدفع (من غير ما يدفع) ← سؤال لشاهين، وبعدين يبص على مشاكل الفحص في الموقع الحي ويقعد في الاجتماع «المستشار الميداني» برأيه واقتراحاته.' },
   { id: 'inspect', nameAr: 'فاحص إجابات شاهين', nameEn: 'Answer inspector', dept: 'experience', workflow: 'shaheen-inspect.yml', dutiesAr: 'يسأل شاهين أسئلة حقيقية ويفحص الرد (عند الطلب).' },
   // ── Reliability & self-reliance ──
   { id: 'school', nameAr: 'مدرسة شاهين (الاعتماد على النفس)', nameEn: "Shaheen's school", dept: 'reliability', workflow: 'shaheen-discover.yml', report: 'shaheen-school.json', everyHours: 6, aiTools: ['shaheen_school'], dutiesAr: 'يمتحن شاهين نفسه ويذاكر ويحفظ في ذاكرته عشان يرد لوحده.' },
@@ -138,7 +138,8 @@ export const LINKS: Link[] = [
   { from: 'school', to: 'chat', whyAr: 'ذاكرة شاهين ← رد بدون ذكاء اصطناعي وقت الضغط' },
   { from: 'school', to: 'importer', whyAr: 'مهارات قراءة صفحات المتاجر بدون ذكاء اصطناعي' },
   { from: 'design_audit', to: 'languages', whyAr: 'ملاحظات الترجمة والتصميم' },
-  { from: 'visitor_tour', to: 'council', whyAr: 'خطوة في رحلة الشراء واقعة ← بند في الاجتماع' },
+  { from: 'precheck', to: 'visitor_tour', whyAr: 'مشاكل الفحص الشامل ← المستشار الميداني يتأكد منها على الموقع الحي' },
+  { from: 'visitor_tour', to: 'council', whyAr: 'رأي واقتراحات المستشار الميداني + خطوات الشراء الواقعة ← بنود في الاجتماع' },
   { from: 'visitor_tour', to: 'product_pages', whyAr: 'صفحات منتجات أو صور مكسورة' },
   { from: 'verifier', to: 'council', whyAr: 'مهمة اتقفلت ولسه مش متصلحة ← تتفتح تاني' },
   { from: 'languages', to: 'chat', whyAr: 'لغة وأرقام صحيحة للزائر' },

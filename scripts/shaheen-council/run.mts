@@ -12,7 +12,7 @@ import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs
 import { configuredEngines, makeAsk, QuotaExhaustedError, quotaBook } from '../doctor/agent';
 import { parseJson } from '../shaheen-supervisor/checks';
 import {
-  applyMeeting, buildBriefing, cairoDate, CHAIR_SYSTEM, chairPrompt, emptyCouncil, isCouncilFile, issueBody, parseMinutes, SEAT_SYSTEM,
+  applyMeeting, buildBriefing, cairoDate, fieldOpinion, seatTitle, CHAIR_SYSTEM, chairPrompt, emptyCouncil, isCouncilFile, issueBody, parseMinutes, SEAT_SYSTEM,
   recordDelegation, seatPrompt, SEATS, secretaryRoutine, selfMinutes, syncTasks, unreviewed, type CouncilFile, type LiveData, type Meeting,
   type SeatOpinion, type Task,
 } from './council';
@@ -90,8 +90,11 @@ for (const [i, seat] of SEATS.entries()) {
     opinions.push({ seat: seat.id, ok: false, text: '' });
   }
 }
+// «المستشار الميداني»: the background agent tried the live site this morning and wrote his opinion before the meeting.
+const field = fieldOpinion(data.missions, now);
+opinions.push(field ?? { seat: 'field', ok: false, text: '' });
 const spoke = opinions.filter((x) => x.ok);
-say(`Opinions: ${spoke.length}/${SEATS.length} seats spoke${spoke.length ? ` (${[...new Set(spoke.map((x) => x.engine))].join(', ')})` : ''}`);
+say(`Opinions: ${spoke.length}/${SEATS.length + 1} seats spoke${spoke.length ? ` (${[...new Set(spoke.map((x) => x.engine))].join(', ')})` : ''}`);
 
 // ── 3. Minutes ────────────────────────────────────────────────────────────────────────────────────────────
 let minutes: ReturnType<typeof parseMinutes> = null;
@@ -142,5 +145,5 @@ if (env.GITHUB_ACTIONS) {
   console.log(`::notice title=قرارات الاجتماع::${clip(meeting.decisions.map((d) => `[${d.priority}/${d.kind}] ${d.title} — ${d.note || d.status}`).join(' | '))}`);
 }
 if (env.GITHUB_STEP_SUMMARY) {
-  appendFileSync(env.GITHUB_STEP_SUMMARY, `## اجتماع شاهين اليومي — ${date}\n\n${meeting.summaryAr}\n\n### التقرير\n${briefing.facts.map((f) => `- ${f}`).join('\n')}\n\n### الآراء\n${opinions.map((x) => `- **${SEATS.find((s) => s.id === x.seat)?.titleAr}** (${x.engine || '—'}): ${x.ok ? x.text.slice(0, 600).replace(/\n+/g, ' ') : 'لم يشارك'}`).join('\n')}\n\n### القرارات\n${meeting.decisions.map((d) => `- [${d.priority}] **${d.title}** (${d.kind}) — ${d.note || d.status}\n  ${d.detail.replace(/\n/g, ' ')}`).join('\n')}\n`);
+  appendFileSync(env.GITHUB_STEP_SUMMARY, `## اجتماع شاهين اليومي — ${date}\n\n${meeting.summaryAr}\n\n### التقرير\n${briefing.facts.map((f) => `- ${f}`).join('\n')}\n\n### الآراء\n${opinions.map((x) => `- **${seatTitle(x.seat)}** (${x.engine || '—'}): ${x.ok ? x.text.slice(0, 600).replace(/\n+/g, ' ') : 'لم يشارك'}`).join('\n')}\n\n### القرارات\n${meeting.decisions.map((d) => `- [${d.priority}] **${d.title}** (${d.kind}) — ${d.note || d.status}\n  ${d.detail.replace(/\n/g, ' ')}`).join('\n')}\n`);
 }

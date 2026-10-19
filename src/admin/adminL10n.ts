@@ -490,6 +490,7 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   "خبير المحتوى والظهور في البحث": { en: "Content & search expert" },
   "خبير تجربة الزائر والتصميم واللغات": { en: "Visitor experience, design & languages expert" },
   "خبير الجودة والاعتماد على النفس": { en: "Reliability & self-reliance expert" },
+  "المستشار الميداني (جرّب الموقع الحي الصبح)": { en: "Field advisor (tried the live site this morning)" },
   "اقترحه اجتماع شاهين اليومي": { en: "Suggested by Shaheen's daily meeting" },
   // ── «نمو شاهين» (ShaheenGrowthPanel) ──
   'بيتنقل منه': { en: 'Importing from it' },

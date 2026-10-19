@@ -17,7 +17,7 @@ import { similarity } from '../../src/utils/shaheenMemory';
 import { botOf } from '../../src/utils/shaheenOrg';
 import type { PrecheckFile } from './precheck';
 
-export type SeatId = 'manager' | 'store' | 'content' | 'experience' | 'reliability';
+export type SeatId = 'manager' | 'store' | 'content' | 'experience' | 'reliability' | 'field';
 export type Priority = 'high' | 'medium' | 'low';
 export type Area = 'ai-tools' | 'store' | 'content' | 'experience' | 'reliability';
 export type Action =
@@ -36,6 +36,30 @@ export const SEATS: Seat[] = [
   { id: 'experience', titleAr: 'خبير تجربة الزائر والتصميم واللغات', titleEn: 'Visitor experience, design & languages expert', area: 'experience', brief: 'what a visitor sees and does on GitHub Pages: design, mobile, languages, the chat with Shaheen, the calculators, community' },
   { id: 'reliability', titleAr: 'خبير الجودة والاعتماد على النفس', titleEn: 'Reliability & self-reliance expert', area: 'reliability', brief: 'failing checks, used-up AI quotas, answering without AI («مدرسة شاهين»), backups, keeping every bot running' },
 ];
+/**
+ * «المستشار الميداني» — the sixth seat: Shaheen's background agent, the only member who really opened the
+ * live site this morning (the daily tour, scripts/shaheen-manus/missions.ts). His opinion is written before the
+ * meeting (an agent task takes minutes), so the meeting reads it instead of asking an engine.
+ */
+export const FIELD_SEAT: Seat = { id: 'field', titleAr: 'المستشار الميداني (جرّب الموقع الحي الصبح)', titleEn: 'Field advisor (tried the live site this morning)', area: 'experience', brief: 'what really happens on the live site today: the shopping journey on a phone and the visible problems' };
+export const seatTitle = (id: SeatId) => (id === 'field' ? FIELD_SEAT : SEATS.find((s) => s.id === id))?.titleAr || id;
+
+/** The field advisor's opinion when this morning's tour wrote one (at most 8 hours old). */
+export function fieldOpinion(missions: unknown, now: number): SeatOpinion | undefined {
+  const tour = o(o(missions).tour);
+  const adv = o(tour.advisor);
+  const age = hoursSince(tour.at, now);
+  if (age === undefined || age > 8 || typeof adv.opinionAr !== 'string' || adv.opinionAr.length < 40) return undefined;
+  const proposals = (Array.isArray(adv.proposals) ? adv.proposals as unknown[] : []).map(o);
+  const journey = (Array.isArray(tour.journey) ? tour.journey as unknown[] : []).map(o);
+  const broken = journey.filter((s) => s.ok === false).map((s) => String(s.step));
+  const text = [
+    adv.opinionAr,
+    `رحلة الشراء من الموبايل: ${n(tour.score) ?? '—'}/100${broken.length ? ` — خطوات واقعة: ${broken.join('، ')}` : ' — كل الخطوات سليمة'}.`,
+    proposals.length ? `اقتراحاتي:\n${proposals.map((p, i) => `${i + 1}. [${String(p.priority)}] ${String(p.title)} — ${String(p.detail)}`).join('\n')}` : '',
+  ].filter(Boolean).join('\n');
+  return { seat: 'field', engine: 'manus', ok: true, text: text.slice(0, 4000) };
+}
 
 export interface Signal { area: Area; priority: Priority; text: string; decision?: Omit<Decision, 'id' | 'status'> }
 export interface Briefing { at: string; facts: string[]; signals: Signal[] }
@@ -222,6 +246,19 @@ export function buildBriefing(d: LiveData, now: number, openTasks: Task[] = []):
         decision: { title: `إصلاح خطوة «${String(s.step)}» في رحلة الشراء`, detail: `الوكيل الخلفي جرّب الموقع الحي من الموبايل الصبح: ${String(s.noteAr || '')} (src/data/live/manus-missions.json → tour).`, area: 'experience', priority: urgent ? 'high' : 'medium', kind: 'task' } });
     }
   }
+  // «المستشار الميداني» — his proposals from this morning are on the agenda (the secretary can take them too).
+  if ((hoursSince(tour.at, now) ?? 99) < 8) {
+    const proposals = (Array.isArray(o(tour.advisor).proposals) ? o(tour.advisor).proposals as unknown[] : []).map(o);
+    for (const p of proposals.slice(0, 5)) {
+      const title = String(p.title || '').slice(0, 120);
+      if (title.length < 4) continue;
+      const area = AREAS.includes(p.area as Area) ? p.area as Area : 'experience';
+      const priority = PRIOS.includes(p.priority as Priority) ? p.priority as Priority : 'medium';
+      const action = checkAction({ type: 'rerun', workflow: p.rerun });
+      push({ area, priority, text: `المستشار الميداني (جرّب الموقع الصبح) يقترح: ${title}`,
+        decision: { title, detail: `${String(p.detail || '').slice(0, 1200)} (اقتراح المستشار الميداني من تجربة الموقع الحي — src/data/live/manus-missions.json → tour.advisor).`, area, priority, kind: action ? 'auto' : 'task', ...(action ? { action } : {}) } });
+    }
+  }
   // «المراجع الخارجي» — council tasks closed as done but still broken on the live site go back on the agenda.
   const verify = o(o(d.missions).verify);
   if ((hoursSince(verify.at, now) ?? 999) < 96) {
@@ -310,7 +347,7 @@ export function chairPrompt(b: Briefing, opinions: SeatOpinion[], openTasks: Tas
   const deputy = delegations.length
     ? `\n\nما فعله سكرتيرك («مشرف شاهين») بالنيابة عنك منذ آخر اجتماع لك — راجعه، وصحح أي قرار في محضرك:\n${delegations.map((x) => `- ${x.date} (${x.reasons.join('، ')}): ${x.decisions.join(' | ') || 'لا قرارات'}`).join('\n')}`
     : '';
-  return `${seatPrompt(b)}${deputy}\n\nآراء الخبراء:\n${opinions.filter((x) => x.ok).map((x) => `### ${SEATS.find((s) => s.id === x.seat)?.titleAr}\n${x.text.slice(0, 2500)}`).join('\n\n')}\n\nمهام مفتوحة (لا تكررها):\n${openTasks.map((t) => `- ${t.title}`).join('\n') || '- لا شيء'}\n\nالأدوات: ${toolIds}\n
+  return `${seatPrompt(b)}${deputy}\n\nآراء الخبراء:\n${opinions.filter((x) => x.ok).map((x) => `### ${seatTitle(x.seat)}\n${x.text.slice(0, 2500)}`).join('\n\n')}\n\nمهام مفتوحة (لا تكررها):\n${openTasks.map((t) => `- ${t.title}`).join('\n') || '- لا شيء'}\n\nالأدوات: ${toolIds}\n
 أعد بالشكل:
 {"summary":"جملتان","decisions":[{"title":"…","detail":"…","area":"ai-tools|store|content|experience|reliability","priority":"high|medium|low","kind":"auto|task","action":{…},"tool":"<id اختياري>","needsApproval":false}],"toolGoals":{"<id>":"هدف تطوير واحد محدد لهذه الأداة في تخصصها"}}`;
 }

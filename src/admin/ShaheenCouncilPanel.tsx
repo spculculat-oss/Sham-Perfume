@@ -27,9 +27,10 @@ const SEAT_LABEL: Record<SeatId, () => string> = {
   content: () => T('خبير المحتوى والظهور في البحث'),
   experience: () => T('خبير تجربة الزائر والتصميم واللغات'),
   reliability: () => T('خبير الجودة والاعتماد على النفس'),
+  field: () => T('المستشار الميداني (جرّب الموقع الحي الصبح)'),
 };
 /** The admin may see which engine spoke; visitors never see any of this. */
-const ENGINE: Record<string, string> = { gemini: 'Gemini', deepseek: 'DeepSeek', openai: 'ChatGPT', claude: 'Claude', openrouter: 'OpenRouter', self_hosted: 'Self-hosted' };
+const ENGINE: Record<string, string> = { gemini: 'Gemini', deepseek: 'DeepSeek', openai: 'ChatGPT', claude: 'Claude', openrouter: 'OpenRouter', self_hosted: 'Self-hosted', manus: 'Manus' };
 const PRIORITY: Record<Decision['priority'], { label: () => string; cls: string }> = {
   high: { label: () => T('عاجل'), cls: 'bg-red-100 text-red-800' },
   medium: { label: () => T('متوسط'), cls: 'bg-amber-100 text-amber-800' },

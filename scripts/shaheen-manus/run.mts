@@ -1,7 +1,8 @@
 /**
  * Shaheen's background agent (Manus): one mission per run, chosen by the schedule (or by hand).
  *   design  — languages & design audit (Wednesdays and Saturdays) → src/data/live/manus-audit.json
- *   tour    — «جولة الزائر», a phone shopping journey (daily, before the pre-meeting check) → manus-missions.json
+ *   tour    — «جولة الزائر وتحضير الاجتماع»: a phone shopping journey, then the field advisor's opinion and
+ *             proposals for the 06:30 UTC meeting (daily, right after the pre-meeting check) → manus-missions.json
  *   verify  — «المراجع الخارجي», the council tasks marked done, checked on the live site → manus-missions.json
  *   node --import tsx scripts/shaheen-manus/run.mts
  * Env: MANUS_API_KEY (secret), MANUS_MISSION (design | tour | verify; empty = rehearsal: every brief is
@@ -13,12 +14,14 @@ import { ManusError, manusConfigured, runManusTask } from '../../server/core/man
 import { AUDIT_SCHEMA, auditPrompt, cleanAudit, languagesForWeek, nextAuditFile, weekNumber, type AuditFile } from './audit';
 import {
   STEP_AR, TOUR_SCHEMA, VERIFY_SCHEMA, budgetAllows, cleanTour, cleanVerify, creditsThisMonth, emptyMissions, isMissionsFile,
-  missionFor, recordRun, tasksToVerify, tourPrompt, verifyPrompt, type MissionsFile, type MissionRun,
+  missionFor, ranToday, recordRun, tasksToVerify, tourPrompt, verifyPrompt, type MeetingContext, type MissionsFile, type MissionRun,
 } from './missions';
+import { BOTS, LEGAL_DECISIONS } from '../../src/utils/shaheenOrg';
 
 const AUDIT = new URL('../../src/data/live/manus-audit.json', import.meta.url);
 const MISSIONS = new URL('../../src/data/live/manus-missions.json', import.meta.url);
 const COUNCIL = new URL('../../src/data/live/shaheen-council.json', import.meta.url);
+const PRECHECK = new URL('../../src/data/live/shaheen-precheck.json', import.meta.url);
 const notes: string[] = [];
 const say = (line: string) => { console.log(line); notes.push(line); };
 const finish = (code = 0) => {
@@ -38,10 +41,19 @@ let missions: MissionsFile = isMissionsFile(raw) ? raw : emptyMissions();
 const council = readJson(COUNCIL) as { tasks?: { id: string; title: string; detail: string; status: string; closedAt?: string; url?: string }[] } | undefined;
 const languages = languagesForWeek(weekNumber(now));
 const toVerify = tasksToVerify(council?.tasks || [], missions.verified, now.getTime());
+// What the meeting knows this morning (the pre-meeting check ran just before): the field advisor starts from it.
+const precheck = readJson(PRECHECK) as { updatedAt?: string; bots?: { id: string; status: string; problems?: string[] }[] } | undefined;
+const fresh = Date.parse(precheck?.updatedAt || '') > now.getTime() - 12 * 3600_000;
+const context: MeetingContext = {
+  problems: fresh ? (precheck?.bots || []).filter((b) => b.status === 'fail' || b.status === 'warn')
+    .map((b) => `${BOTS.find((x) => x.id === b.id)?.nameEn || b.id}: ${(b.problems || []).join('; ').slice(0, 220)}`) : [],
+  openTasks: (council?.tasks || []).filter((t) => t.status === 'open').map((t) => t.title),
+  legal: LEGAL_DECISIONS.map((x) => `${x.id}: ${x.textAr}`),
+};
 
 const briefs = {
   design: () => ({ title: `Sham Perfume — languages & design audit ${at.slice(0, 10)}`, prompt: auditPrompt(languages, previousAudit), schema: AUDIT_SCHEMA }),
-  tour: () => ({ title: `Sham Perfume — shopper tour ${at.slice(0, 10)}`, prompt: tourPrompt(missions.tour), schema: TOUR_SCHEMA }),
+  tour: () => ({ title: `Sham Perfume — shopper tour ${at.slice(0, 10)}`, prompt: tourPrompt(missions.tour, context), schema: TOUR_SCHEMA }),
   verify: () => ({ title: `Sham Perfume — verify done tasks ${at.slice(0, 10)}`, prompt: verifyPrompt(toVerify), schema: VERIFY_SCHEMA }),
 };
 
@@ -55,6 +67,7 @@ if (!mission) {
     if (!b.prompt.includes('Sham Perfume') || !b.schema.required.length) { say(`Rehearsal: the ${name} brief is broken`); finish(1); }
     say(`Rehearsal: ${name} brief ready (${b.prompt.length} chars)`);
   }
+  say(`Problems from this morning's check for the field advisor: ${context.problems.length}`);
   say(`Tasks waiting for the external reviewer: ${toVerify.length} · credits this month: ${used}/${budget || '∞'}`);
   finish();
 }
@@ -66,6 +79,7 @@ const keep = (run: MissionRun, result?: Parameters<typeof recordRun>[2]) => { mi
 if (!manusConfigured()) { say('MANUS_API_KEY not set: the mission waits for the key'); finish(); }
 const allowed = budgetAllows(m, used, budget);
 if (!allowed.ok) { keep({ at, mission: m, status: 'skipped', note: `budget: ${allowed.why}` }); say(`Skipped to save credits: ${allowed.why}`); finish(); }
+if (m !== 'design' && ranToday(missions.runs, m, at)) { say(`The ${m} mission already ran today: no second task, no credit spent`); finish(); }
 if (m === 'verify' && !toVerify.length) { say('No council task was closed this week: nothing to verify, no credit spent'); finish(); }
 if (m === 'design') say(`Languages this week: ${languages.join(', ')}`);
 if (m === 'verify') say(`Verifying ${toVerify.length} task(s): ${toVerify.map((t) => t.title).join(' · ')}`);
@@ -88,6 +102,7 @@ try {
     keep({ ...base, status: tour ? 'done' : unfinished }, tour ? { tour: { ...tour, taskId: run.taskId, credits: run.credits } } : undefined);
     if (tour) {
       say(`Tour ${tour.score}/100 — ${tour.summaryAr}`);
+      if (tour.advisor) say(`Field advisor for the meeting: ${tour.advisor.proposals.length} proposal(s) — ${tour.advisor.proposals.map((p) => p.title).join(' · ')}`);
       for (const s of tour.journey.filter((x) => !x.ok)) say(`✗ ${STEP_AR[s.step]}: ${s.noteAr}`);
     } else say('No usable tour report: the last one is kept');
   } else {
