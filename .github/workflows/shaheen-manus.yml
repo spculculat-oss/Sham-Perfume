@@ -1,19 +1,34 @@
-name: Shaheen languages and design audit (Manus, weekly)
+name: Shaheen background agent (Manus — visitor tour, reviewer, languages and design)
 
 # «الخبير شاهين» sends his background agent (Manus, key MANUS_API_KEY in repository secrets) to open the
 # live GitHub Pages site in a real browser and audit the languages (Arabic + English every week and 3 more
 # of the site's languages in rotation) and the design (desktop + phone). The report is kept in
 # src/data/live/manus-audit.json for the admin team; visitors never see it or the agent's name.
+# Three missions, one per run (scripts/shaheen-manus/missions.ts):
+#   tour   — «جولة الزائر»: daily 03:00 UTC, a phone shopping journey up to the payment page (never paying),
+#            ready before the pre-meeting check (04:30) → src/data/live/manus-missions.json
+#   design — languages & design audit: Wednesdays and Saturdays 06:15 UTC → src/data/live/manus-audit.json
+#   verify — «المراجع الخارجي»: Mondays and Thursdays 08:00 UTC, the council tasks marked done, checked live
+# Pushes only rehearse (briefs built and checked, no task, no credit).
 # Settings (repository variables, optional): MANUS_PROFILE (lite | standard | max, default lite = fewest
-# credits) and MANUS_WAIT_MIN (default 30). Code: scripts/shaheen-manus/ and server/core/manus.ts.
+# credits), MANUS_WAIT_MIN (default 30) and MANUS_MONTHLY_CREDITS (shared monthly budget, default 2000; the
+# daily tour stops at 70% of it). Code: scripts/shaheen-manus/ and server/core/manus.ts.
 
 on:
   schedule:
-    # Saturdays 06:15 UTC (08:15/09:15 Cairo).
-    - cron: '15 6 * * 6'
+    # Keep these three strings identical to SCHEDULES in scripts/shaheen-manus/missions.ts.
+    - cron: '0 3 * * *'
+    - cron: '15 6 * * 3,6'
+    - cron: '0 8 * * 1,4'
   workflow_dispatch:
+    inputs:
+      mission:
+        description: 'Mission (tour | design | verify)'
+        type: choice
+        options: [tour, design, verify]
+        default: tour
   push:
-    # main: a change to the audit runs it at once. Branches: rehearsal (the report is shown, not committed).
+    # A change rehearses the missions (no task is created, no credit spent).
     branches: [main, 'arena/**']
     paths: ['scripts/shaheen-manus/**', 'server/core/manus.ts', '.github/workflows/shaheen-manus.yml']
 
@@ -26,13 +41,16 @@ concurrency:
 
 jobs:
   audit:
-    name: Audit the site's languages and design
+    name: Run the background agent's mission
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     env:
       MANUS_API_KEY: ${{ secrets.MANUS_API_KEY }}
       MANUS_PROFILE: ${{ vars.MANUS_PROFILE || 'lite' }}
       MANUS_WAIT_MIN: ${{ vars.MANUS_WAIT_MIN || '30' }}
+      MANUS_MONTHLY_CREDITS: ${{ vars.MANUS_MONTHLY_CREDITS || '2000' }}
+      MANUS_SCHEDULE: ${{ github.event.schedule }}
+      MANUS_MISSION: ${{ github.event.inputs.mission }}
     steps:
       - name: Checkout source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -50,11 +68,11 @@ jobs:
           bun-version-file: package.json
       - name: Install dependencies
         run: bun install --frozen-lockfile || bun install
-      - name: Shaheen's agent audits the languages and the design
+      - name: Shaheen's agent runs its mission
         run: node --import tsx scripts/shaheen-manus/run.mts
       - name: Keep the report on main
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'push'
         run: |
           git config user.name "Shaheen audit bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          node scripts/ci/publish.mjs "تدقيق شاهين للغات والتصميم $(date -u +%Y-%m-%d)" src/data/live/manus-audit.json
+          node scripts/ci/publish.mjs "وكيل شاهين الخلفي $(date -u +%Y-%m-%d)" src/data/live/manus-audit.json src/data/live/manus-missions.json

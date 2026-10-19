@@ -120,6 +120,8 @@ export interface LiveData {
   languages?: unknown;
   /** «الفحص الشامل قبل الاجتماع» (precheck.ts): every robot's own check, two hours before the meeting. */
   precheck?: unknown;
+  /** The background agent's missions (scripts/shaheen-manus/missions.ts): the visitor tour and the external reviewer. */
+  missions?: unknown;
 }
 
 /** What the bots report, in plain Arabic lines, plus rule-based signals (the agenda; the minutes without AI). */
@@ -207,7 +209,28 @@ export function buildBriefing(d: LiveData, now: number, openTasks: Task[] = []):
   if (failing.length) push({ area: 'reliability', priority: 'high', text: `فحوص فاشلة في آخر تحديث للموقع: ${failing.join('، ')}`,
     decision: { title: 'إصلاح الفحوص الفاشلة في آخر تحديث', detail: `الفحوص الفاشلة: ${failing.join('، ')} (src/data/live/aistudio-intake.json).`, area: 'reliability', priority: 'high', kind: 'task' } });
   const manusScore = n(o(d.manus).score);
-  if (manusScore !== undefined) facts.push(`تدقيق الوكيل الخلفي: ${manusScore}/10.`);
+  if (manusScore !== undefined) facts.push(`تدقيق التصميم واللغات (الوكيل الخلفي): ${manusScore}/100.`);
+  // «جولة الزائر» — this morning's shopping journey on a phone; a broken cart or checkout is urgent.
+  const tour = o(o(d.missions).tour);
+  if ((hoursSince(tour.at, now) ?? 99) < 30) {
+    const journey = (Array.isArray(tour.journey) ? tour.journey as unknown[] : []).map(o);
+    const failed = journey.filter((s) => s.ok === false);
+    facts.push(`جولة الزائر الصبح (موبايل): ${n(tour.score) ?? '—'}/100 — ${journey.length - failed.length}/${journey.length} خطوة سليمة. ${String(tour.summaryAr || '')}`.trim());
+    for (const s of failed) {
+      const urgent = s.step === 'cart' || s.step === 'checkout';
+      push({ area: s.step === 'shaheen' ? 'ai-tools' : 'experience', priority: urgent ? 'high' : 'medium', text: `جولة الزائر: خطوة «${String(s.step)}» واقعة — ${String(s.noteAr || '')}`,
+        decision: { title: `إصلاح خطوة «${String(s.step)}» في رحلة الشراء`, detail: `الوكيل الخلفي جرّب الموقع الحي من الموبايل الصبح: ${String(s.noteAr || '')} (src/data/live/manus-missions.json → tour).`, area: 'experience', priority: urgent ? 'high' : 'medium', kind: 'task' } });
+    }
+  }
+  // «المراجع الخارجي» — council tasks closed as done but still broken on the live site go back on the agenda.
+  const verify = o(o(d.missions).verify);
+  if ((hoursSince(verify.at, now) ?? 999) < 96) {
+    const checks = (Array.isArray(verify.checks) ? verify.checks as unknown[] : []).map(o);
+    const notFixed = checks.filter((c) => c.verdict === 'not_fixed');
+    facts.push(`المراجع الخارجي راجع ${checks.length} مهمة مقفولة: ${checks.filter((c) => c.verdict === 'fixed').length} متصلحة فعلاً، ${notFixed.length} لسه.`);
+    for (const c of notFixed) push({ area: 'reliability', priority: 'high', text: `مهمة اتقفلت ولسه مش متصلحة: ${String(c.title)}`,
+      decision: { title: `إعادة فتح: ${String(c.title)}`, detail: `المراجع الخارجي فحص الموقع الحي ولقاها لسه: ${String(c.evidenceAr || '')}${c.url ? ` (المهمة القديمة: ${String(c.url)})` : ''}.`, area: 'reliability', priority: 'high', kind: 'task' } });
+  }
 
   // «وكيل اللغات» — the language specialist under Shaheen (digits follow the site language, packs measured)
   const langReport = o(d.languages);
