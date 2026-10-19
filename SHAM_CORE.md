@@ -129,3 +129,18 @@ Visitors only ever meet «الخبير شاهين». The public API never return
 - Sham assistant replies are labelled `sham_ai` / `sham_local`; council advisors are shown as letters only.
 - Both system prompts forbid naming any model or company. The admin dashboard still shows real engines, probes and usage.
 - `tests/honestCopy.test.ts` fails the build if a vendor name appears in visitor-facing code (`src/admin/` is exempt).
+
+### «صحة المحركات» — automatic parking of failing engines
+
+`server/core/engineHealth.ts` remembers, per server instance, which engine failed and why. A failing engine is parked and moved to the end of the line (still a last resort); the working engines answer meanwhile; after the pause the next message tries it again and the first success restores it.
+
+| Failure | Parked for |
+|---|---|
+| `invalid_key` | 30 min |
+| `no_credit` | 1 h (daily quota: until 08:05 UTC, re-checked at least every 12 h) |
+| `region_blocked` | 6 h |
+| `model_not_found` | 1 h |
+| `rate_limited` | provider's «retry in Ns» (≥ 30 s), else 1 min |
+| `upstream_error` / `timeout` / `empty` / `bad_request` | after 2 failures in a row: 2 min, growing to 10 min |
+
+A visitor leaving or the whole answer running out of time is never counted against an engine. The admin «اختبار الاتصال بالمحركات» button updates the record at once, the Shaheen tab shows «شغال / متأجل لحد HH:MM (السبب)» per engine, and `reset_provider_gate` clears it. The bots (`makeAsk`) pause a rejected key for an hour and tie every pause to a one-way fingerprint of the key (8 hex chars of SHA-256), so a key replaced in GitHub is used at once.

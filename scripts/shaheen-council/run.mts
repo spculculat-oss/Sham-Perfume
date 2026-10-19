@@ -9,7 +9,7 @@
  * GITHUB_REPOSITORY, the AI keys.
  */
 import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { configuredEngines, makeAsk, QuotaExhaustedError, quotaBook } from '../doctor/agent';
+import { configuredEngines, keyFingerprint, makeAsk, QuotaExhaustedError, quotaBook } from '../doctor/agent';
 import { parseJson } from '../shaheen-supervisor/checks';
 import {
   applyMeeting, buildBriefing, cairoDate, fieldOpinion, seatTitle, CHAIR_SYSTEM, chairPrompt, emptyCouncil, isCouncilFile, issueBody, parseMinutes, SEAT_SYSTEM,
@@ -75,7 +75,7 @@ say(`Briefing: ${briefing.facts.length} facts, ${briefing.signals.length} signal
 
 // ── 2. Opinions (each seat its own engine when several are configured) ────────────────────────────────────
 const quota = quotaBook(live('ai-quota.json'));
-const engines = (await configuredEngines(env)).filter((id) => !quota.pausedUntil(id));
+const engines = (await configuredEngines(env)).filter((id) => !quota.pausedUntil(id, keyFingerprint(env, id)));
 const opinions: SeatOpinion[] = [];
 let quotaOut = false;
 for (const [i, seat] of SEATS.entries()) {

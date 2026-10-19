@@ -25,7 +25,7 @@ import type { RawProduct } from '../../src/utils/storeCatalog';
 import { extractProduct, parseSitemap, parseSitemapIndex } from '../shaheen-import/extract';
 import { extractGeneric } from '../shaheen-import/generic';
 import { SOURCES } from '../shaheen-import/sources';
-import { quotaBook } from '../doctor/agent';
+import { keyFingerprint, quotaBook } from '../doctor/agent';
 import { councilSeeds, readCouncil } from '../shaheen-council/council';
 import {
   addCandidates, brandSiteGuesses, CATEGORYISH, NOT_PRODUCT, oneLanguage, sameSite, domainOf, KNOWN_STORES, pageLinks, withPage, domainsFromSearch, emptySources, isNeverSource, isSourcesFile, judgeSamples,
@@ -82,7 +82,7 @@ const quota = quotaBook(new URL('../../src/data/live/ai-quota.json', import.meta
 const geminiKey = env.GEMINI_API_KEY?.trim();
 // Grounded search has its own daily allowance per model: when one model's allowance is used up, the next one is tried.
 const models = [...new Set([env.DISCOVER_MODEL?.trim(), env.GEMINI_MODEL?.trim(), 'gemini-flash-latest', 'gemini-flash-lite-latest'].filter((m): m is string => Boolean(m)))];
-if (geminiKey && QUERIES && !quota.pausedUntil('gemini')) {
+if (geminiKey && QUERIES && !quota.pausedUntil('gemini', keyFingerprint(env, 'gemini'))) {
   for (const q of planQueries(file, brands, now.getTime(), QUERIES)) {
     // Searches in French, Japanese, Russian… keep their own words; the instruction is in English.
     const prompt = q.lang === 'ar'

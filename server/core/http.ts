@@ -467,6 +467,8 @@ export function createShamCore(options: CoreOptions = {}) {
 
   const settingsView = async () => ({
     item: await repo.settings(), engines: engineStatuses(env),
+    // «صحة المحركات»: parked engines (reason + return time) as Shaheen's chat sees them on this instance.
+    health: runtime.health.snapshot(),
     shaheen: { source: await repo.shaheenSource(), defaults: SHAHEEN_SITE_SETTINGS },
     storage: { kind: store.kind, persistent: store.persistent, error: storeError },
   });
@@ -477,7 +479,7 @@ export function createShamCore(options: CoreOptions = {}) {
   const probeLimiter = new RateLimiter(10, 10 * 60_000);
   admin.post('/shaheen/test', wrap(async (req, res) => {
     if (!probeLimiter.allow(clientKey(req))) throw new AssistantError(429, 'RATE_LIMITED', 'Too many tests, wait a few minutes');
-    res.json({ results: await probeEngines((await repo.settings()).shaheen, { env, fetch: options.fetch }) });
+    res.json({ results: await probeEngines((await repo.settings()).shaheen, { env, fetch: options.fetch, health: runtime.health }), health: runtime.health.snapshot() });
   }));
 
   /** Sandbox: same pipeline as visitors, plus the full trace. */

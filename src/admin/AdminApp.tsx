@@ -1349,7 +1349,19 @@ function EnginesPanel() {
   );
 }
 
-interface SettingsView { item: CoreSettings; engines: EngineStatus[]; shaheen: { source: 'admin' | 'file'; defaults: ShaheenSettings }; storage: { kind: string; persistent: boolean; error?: string } }
+interface EngineHealthView { state: 'ok' | 'parked' | 'failing'; failures: number; reason?: string; parkedUntil?: string; lastOkAt?: string }
+const HEALTH_REASON: Record<string, string> = reactiveMap(() => ({
+  invalid_key: T('المفتاح مرفوض أو منتهي'),
+  no_credit: T('الرصيد أو الحصة خلصت'),
+  region_blocked: T('الخدمة مقفولة في منطقة الخادم'),
+  model_not_found: T('اسم النموذج غير متاح'),
+  rate_limited: T('طلبات كتير — المزوّد طلب مهلة'),
+  bad_request: T('المزوّد رفض صيغة الطلب'),
+  upstream_error: T('عطل عند المزوّد'),
+  timeout: T('انتهت المهلة'),
+  empty: T('رد فارغ'),
+}));
+interface SettingsView { health?: Record<string, EngineHealthView>; item: CoreSettings; engines: EngineStatus[]; shaheen: { source: 'admin' | 'file'; defaults: ShaheenSettings }; storage: { kind: string; persistent: boolean; error?: string } }
 interface ProbeResult { id: ModelEngineId; name: string; model: string; configured: boolean; ok: boolean; ms: number; error?: string; detail?: string; usedModel?: string }
 const PROBE_ERROR: Record<string, string> = reactiveMap(() => ({
   not_configured: T('غير مهيأ — لا يوجد مفتاح/عنوان في متغيرات الخادم'),
@@ -1374,11 +1386,14 @@ function ShaheenPanel() {
   const [probe, setProbe] = useState<ProbeResult[] | null>(null);
   const [probing, setProbing] = useState(false);
   const [showConfig, setShowConfig] = useState(false);
+  const [liveHealth, setLiveHealth] = useState<Record<string, EngineHealthView> | null>(null);
   useEffect(() => { if (data) setForm(data.item.shaheen); }, [data]);
   if (!form || !data) return <><Header title={T('الخبير شاهين')} /><Feedback error={error} loading={loading} /></>;
 
   const set = (patch: Partial<ShaheenSettings>) => setForm({ ...form, ...patch });
   const status = (id: string) => data.engines.find((e) => e.id === id);
+  const healthOf = (id: string) => (liveHealth || data.health || {})[id];
+  const clock = (iso?: string) => (iso ? new Date(iso).toLocaleTimeString(adminLocale(), { hour: '2-digit', minute: '2-digit' }) : '');
   const allowed = form.engines;
   const all: ModelEngineId[] = [...allowed, ...MODEL_ENGINES.filter((id) => !allowed.includes(id))];
   const move = (id: ModelEngineId, delta: number) => {
@@ -1399,7 +1414,10 @@ function ShaheenPanel() {
   };
   const runProbe = async () => {
     setProbing(true); setProbe(null); setMessage('');
-    try { setProbe((await adminRequest<{ results: ProbeResult[] }>('/shaheen/test', send('POST', {}))).results); }
+    try {
+      const out = await adminRequest<{ results: ProbeResult[]; health?: Record<string, EngineHealthView> }>('/shaheen/test', send('POST', {}));
+      setProbe(out.results); if (out.health) setLiveHealth(out.health);
+    }
     catch (e) { setMessage((e as Error).message); } finally { setProbing(false); }
   };
   const dirty = JSON.stringify(form) !== JSON.stringify(data.item.shaheen);
@@ -1429,6 +1447,7 @@ function ShaheenPanel() {
             </p>
             <h2 className="font-bold text-sm">{T('المحركات وترتيب «تلقائي»')}</h2>
             <p className="text-[11px] text-stone-500">{T('«تلقائي» يجرّب المحركات بالترتيب ده ويتخطى غير المهيأ أو اللي فشل. المحرك غير المسموح يختفي من واجهة الزوار. المفاتيح تُضبط في متغيرات الخادم فقط.')}</p>
+            <p className="text-[11px] text-stone-500">{T('المحرك اللي بيفشل بيتأجل تلقائياً (المفتاح المرفوض نص ساعة، الرصيد الخلصان لحد التجديد، الزحمة دقيقة) ويتجرب تاني لوحده بعد المهلة — وأول رد ناجح يرجّعه مكانه. زر «اختبار الاتصال» يحدّث الحالة فوراً.')}</p>
             {all.map((id) => {
               const on = allowed.includes(id); const st = status(id);
               return (
@@ -1437,6 +1456,14 @@ function ShaheenPanel() {
                   <div className="min-w-0 space-y-1">
                     <p className="text-sm font-semibold">{ENGINE_LABEL[id]} {on && <span className="text-[10px] font-bold text-amber-800">#{allowed.indexOf(id) + 1}</span>}</p>
                     <p className={`text-[11px] ${st?.configured ? 'text-emerald-700' : 'text-stone-400'}`}>{st?.configured ? T('مهيأ على الخادم') : id === 'self_hosted' ? T('غير مهيأ — اضبط SHAM_LLM_BASE_URL') : T('غير مهيأ — لا يوجد مفتاح')}</p>
+                    {st?.configured && (() => {
+                      const h = healthOf(id);
+                      const why = h?.reason ? HEALTH_REASON[h.reason] || h.reason : '';
+                      if (!h) return <p className="text-[11px] text-stone-400">{T('لسه ما اتجربش من آخر تشغيل للخادم')}</p>;
+                      if (h.state === 'parked') return <p className="text-[11px] font-semibold text-amber-800">{TP('⏸️ متأجل تلقائياً لحد {time} ({reason}) — شاهين بيرد من المحركات الشغالة', { time: clock(h.parkedUntil), reason: why })}</p>;
+                      if (h.state === 'failing') return <p className="text-[11px] text-amber-700">{TP('⚠️ فشل آخر مرة ({reason}) — هيتأجل لو فشل تاني', { reason: why })}</p>;
+                      return <p className="text-[11px] text-emerald-700">{TP('✅ شغال — آخر رد ناجح {time}', { time: clock(h.lastOkAt) })}</p>;
+                    })()}
                     <input className={`${input} py-1 text-xs`} dir="ltr" aria-label={TP('نموذج {engine}', { engine: ENGINE_LABEL[id] })} placeholder={TP('افتراضي: {model}', { model: st?.model || 'model' })}
                       value={form.models[id] || ''} onChange={(e) => {
                         const models = { ...form.models };
