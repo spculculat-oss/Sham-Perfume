@@ -138,6 +138,18 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       if (score !== undefined && score < 70) f.push({ level: 'warn', problem: `تقييم التصميم واللغات ${score}/100 (${arr(r.issues).length} ملاحظة)`, fix: 'وكيل اللغات وقسم التصميم يشتغلوا على الملاحظات' });
       break;
     }
+    case 'visitor_tour': {
+      const failed = arr(r.journey).map(o).filter((s) => s.ok === false);
+      if (failed.length) f.push({ level: failed.some((s) => s.step === 'cart' || s.step === 'checkout') ? 'fail' : 'warn', problem: `جولة الزائر: خطوات واقعة — ${failed.map((s) => `${String(s.step)}: ${String(s.noteAr || '').slice(0, 80)}`).join('، ')}`, fix: 'إصلاح الخطوة قبل أي تطوير تاني' });
+      const score = n(r.score);
+      if (score !== undefined && score < 85) f.push({ level: 'note', idea: `رحلة الشراء من الموبايل ${score}/100 — ${arr(r.issues).length} ملاحظة` });
+      break;
+    }
+    case 'verifier': {
+      const notFixed = arr(r.checks).map(o).filter((c) => c.verdict === 'not_fixed');
+      if (notFixed.length) f.push({ level: 'warn', problem: `${notFixed.length} مهمة اتقفلت ولسه مش متصلحة على الموقع: ${notFixed.map((c) => String(c.title)).join('، ')}`, fix: 'إعادة فتح المهمة في الاجتماع' });
+      break;
+    }
     case 'school': {
       const rel = n(o(r.reliance).score);
       if (rel !== undefined && rel < 50) f.push({ level: 'fail', problem: `بيرد لوحده على ${rel}% بس من الأسئلة`, fix: 'مذاكرة الأسئلة الناقصة' });
@@ -161,6 +173,8 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
   return f;
 }
 
+const hoursSinceIso = (iso: unknown, now: number) => (typeof iso === 'string' && Date.parse(iso) > 0 ? (now - Date.parse(iso)) / 3_600_000 : undefined);
+
 /** Help requests between the tools, from their reports (the secretary routes them). */
 export function findHandoffs(reports: Record<string, unknown>, checks: BotCheck[], now: number): Handoff[] {
   const out: Handoff[] = [];
@@ -180,6 +194,12 @@ export function findHandoffs(reports: Record<string, unknown>, checks: BotCheck[
   if (unreadable) out.push({ from: 'scout', to: 'importer', textAr: `${unreadable} متجر صفحاته غير مقروءة بدون ذكاء اصطناعي — مهارات القراءة تتعلمها لما المحرك يتاح` });
   const audit = o(reports['manus-audit.json']);
   if (arr(audit.issues).length && (n(audit.score) ?? 100) < 80) out.push({ from: 'design_audit', to: 'languages', textAr: `${arr(audit.issues).length} ملاحظة تصميم وترجمة — وكيل اللغات يقيسها في فحصه` });
+  const missions = o(reports['manus-missions.json']);
+  const tour = o(missions.tour);
+  if ((hoursSinceIso(tour.at, now) ?? 99) < 48) {
+    const pages = arr(tour.issues).map(o).filter((i) => i.area === 'store').length;
+    if (pages) out.push({ from: 'visitor_tour', to: 'product_pages', textAr: `${pages} ملاحظة على صفحات المتجر من جولة الزائر — مراجع الصفحات يبدأ بيها` });
+  }
   const paused = Object.entries(o(o(reports['ai-quota.json']).engines)).filter(([, e]) => Date.parse(String(o(e).pausedUntil || '')) > now).length;
   if (paused) out.push({ from: 'keys', to: 'secretary', textAr: `${paused} محرك متوقف — السكرتير جاهز ينوب عن شاهين` });
   if (checks.some((c) => c.id === 'finance' && ['warn', 'fail'].includes(c.status))) out.push({ from: 'finance', to: 'secretary', textAr: 'الإدارة المالية تحتاج مراجعة في اللوحة الخاصة؛ لا مبالغ أو بيانات طلبات في التقرير العام' });
@@ -208,9 +228,11 @@ export function runPrecheck(reports: Record<string, unknown>, runs: Record<strin
       else if (run.conclusion === 'cancelled' || run.conclusion === 'timed_out') { raise('warn'); c.problems.push(run.conclusion === 'timed_out' ? 'آخر تشغيل خلص وقته' : 'آخر تشغيل اتلغى'); }
       else if (run.conclusion === 'success' || run.status !== 'completed') raise('ok');
     }
-    const report = bot.report && bot.id !== 'precheck' ? reports[bot.report] : undefined;
+    const whole = bot.report && bot.id !== 'precheck' ? reports[bot.report] : undefined;
+    // Bots sharing one report (the background agent's missions) are measured on their own part of it.
+    const report = bot.section ? o(whole)[bot.section] : whole;
     if (bot.report && bot.id !== 'precheck') {
-      const at = String(o(report).updatedAt || '');
+      const at = String(o(report)[bot.section ? 'at' : 'updatedAt'] || '');
       const age = Date.parse(at) > 0 ? (now - Date.parse(at)) / 3_600_000 : undefined;
       if (age === undefined) { c.problems.push('لسه ما كتبش تقرير'); }
       else {

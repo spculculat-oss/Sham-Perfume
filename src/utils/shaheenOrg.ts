@@ -35,8 +35,8 @@ export type BotId =
   | 'council' | 'secretary' | 'precheck' | 'finance' | 'legal'
   | 'scout' | 'importer' | 'images' | 'catalog' | 'product_pages' | 'store_advisor'
   | 'news' | 'seo'
-  | 'chat' | 'languages' | 'design_audit' | 'inspect'
-  | 'school' | 'doctor' | 'live_check' | 'keys' | 'intake' | 'deploy' | 'admin_agent';
+  | 'chat' | 'languages' | 'design_audit' | 'visitor_tour' | 'inspect'
+  | 'school' | 'doctor' | 'verifier' | 'live_check' | 'keys' | 'intake' | 'deploy' | 'admin_agent';
 
 export interface Bot {
   id: BotId;
@@ -49,6 +49,8 @@ export interface Bot {
   report?: string;
   /** How often it should run (hours): a report older than twice this is late. Absent = on demand. */
   everyHours?: number;
+  /** When several bots share one report: the bot's own part of it (report[section], dated by its `at`). */
+  section?: string;
   /** The AI tools this bot is (AI_TOOLS ids). */
   aiTools?: AiToolId[];
   dutiesAr: string;
@@ -74,11 +76,13 @@ export const BOTS: Bot[] = [
   // ── Visitor experience, design & languages ──
   { id: 'chat', nameAr: 'شات الخبير شاهين ومساعد شام', nameEn: 'Shaheen chat & Sham assistant', dept: 'experience', aiTools: ['shaheen_chat', 'sham_assistant', 'media'], dutiesAr: 'يرد على الزوار؛ وقت الضغط أو لو المحركات وقفت بيرد من ذاكرة شاهين (مدرسة شاهين).' },
   { id: 'languages', nameAr: 'وكيل اللغات', nameEn: 'Language agent', dept: 'experience', workflow: 'shaheen-languages.yml', report: 'shaheen-languages.json', everyHours: 24, dutiesAr: 'يقيس اللغات المئة: الحزم الناقصة، والأرقام اللي لازم تتبع لغة الموقع.' },
-  { id: 'design_audit', nameAr: 'تدقيق التصميم واللغات الأسبوعي', nameEn: 'Weekly design & languages audit', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-audit.json', everyHours: 168, dutiesAr: 'وكيل خلفي يفتح الموقع بلغات مختلفة ويقيّم التصميم والترجمة.' },
+  { id: 'design_audit', nameAr: 'تدقيق التصميم واللغات (مرتين في الأسبوع)', nameEn: 'Design & languages audit (twice a week)', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-audit.json', everyHours: 84, dutiesAr: 'وكيل خلفي يفتح الموقع بلغات مختلفة الأربع والسبت ويقيّم التصميم والترجمة.' },
+  { id: 'visitor_tour', nameAr: 'جولة الزائر اليومية', nameEn: 'Daily visitor tour', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-missions.json', section: 'tour', everyHours: 24, dutiesAr: 'كل يوم 6 الصبح الوكيل الخلفي يتسوق من الموبايل زي الزبون: المتجر ← منتج ← السلة ← صفحة الدفع (من غير ما يدفع) ← سؤال لشاهين، ويكتب اللي اتكسر قبل الفحص الشامل.' },
   { id: 'inspect', nameAr: 'فاحص إجابات شاهين', nameEn: 'Answer inspector', dept: 'experience', workflow: 'shaheen-inspect.yml', dutiesAr: 'يسأل شاهين أسئلة حقيقية ويفحص الرد (عند الطلب).' },
   // ── Reliability & self-reliance ──
   { id: 'school', nameAr: 'مدرسة شاهين (الاعتماد على النفس)', nameEn: "Shaheen's school", dept: 'reliability', workflow: 'shaheen-discover.yml', report: 'shaheen-school.json', everyHours: 6, aiTools: ['shaheen_school'], dutiesAr: 'يمتحن شاهين نفسه ويذاكر ويحفظ في ذاكرته عشان يرد لوحده.' },
   { id: 'doctor', nameAr: 'طبيب شاهين (الصيانة)', nameEn: 'Shaheen doctor (maintenance)', dept: 'reliability', workflow: 'shaheen-doctor.yml', dutiesAr: 'كل 10 دقايق يكشف على المنتجات والصور والمتجر والنشر.' },
+  { id: 'verifier', nameAr: 'المراجع الخارجي', nameEn: 'External reviewer', dept: 'reliability', workflow: 'shaheen-manus.yml', report: 'manus-missions.json', section: 'verify', everyHours: 84, dutiesAr: 'الاتنين والخميس الوكيل الخلفي يراجع مهام التطوير اللي اتقفلت على الموقع الحي: اتصلحت فعلاً ولا لأ — اللي لسه بايظ يرجع للاجتماع.' },
   { id: 'live_check', nameAr: 'فحص شاهين على الموقع الحي', nameEn: 'Live Shaheen check', dept: 'reliability', workflow: 'live-smoke.yml', everyHours: 24, dutiesAr: 'يكلم شاهين على الموقع الحقيقي كل يوم ويتأكد إنه بيرد.' },
   { id: 'keys', nameAr: 'حارس مفاتيح الذكاء الاصطناعي', nameEn: 'AI keys keeper', dept: 'reliability', workflow: 'shaheen-keys.yml', report: 'ai-quota.json', dutiesAr: 'يتأكد إن مفاتيح المحركات شغالة ويتابع الباقات اللي خلصت.' },
   { id: 'intake', nameAr: 'مستقبل تحديثات AI Studio', nameEn: 'AI Studio intake', dept: 'reliability', workflow: 'aistudio-intake.yml', report: 'aistudio-intake.json', dutiesAr: 'يراجع كل تحديث جاي من AI Studio قبل ما ينزل.' },
@@ -134,6 +138,9 @@ export const LINKS: Link[] = [
   { from: 'school', to: 'chat', whyAr: 'ذاكرة شاهين ← رد بدون ذكاء اصطناعي وقت الضغط' },
   { from: 'school', to: 'importer', whyAr: 'مهارات قراءة صفحات المتاجر بدون ذكاء اصطناعي' },
   { from: 'design_audit', to: 'languages', whyAr: 'ملاحظات الترجمة والتصميم' },
+  { from: 'visitor_tour', to: 'council', whyAr: 'خطوة في رحلة الشراء واقعة ← بند في الاجتماع' },
+  { from: 'visitor_tour', to: 'product_pages', whyAr: 'صفحات منتجات أو صور مكسورة' },
+  { from: 'verifier', to: 'council', whyAr: 'مهمة اتقفلت ولسه مش متصلحة ← تتفتح تاني' },
   { from: 'languages', to: 'chat', whyAr: 'لغة وأرقام صحيحة للزائر' },
   { from: 'live_check', to: 'doctor', whyAr: 'شاهين مش بيرد على الموقع ← كشف وصيانة' },
   { from: 'doctor', to: 'deploy', whyAr: 'إصلاح ← إعادة نشر' },

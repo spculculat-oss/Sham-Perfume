@@ -111,3 +111,104 @@ test('the agent\'s report is cleaned, and a failed run keeps the last good repor
   assert.equal(failed.summaryAr, 'ملخص');
   assert.equal(failed.issues.length, 2);
 });
+
+// ── The background agent's missions: visitor tour, external reviewer, shared monthly budget ──
+import { readFileSync } from 'node:fs';
+import {
+  SCHEDULES, TOUR_SCHEMA, VERIFY_SCHEMA, budgetAllows, cleanTour, cleanVerify, creditsThisMonth, emptyMissions, missionFor,
+  recordRun, tasksToVerify, tourPrompt, verifyPrompt,
+} from '../scripts/shaheen-manus/missions';
+import { runPrecheck } from '../scripts/shaheen-council/precheck';
+import { buildBriefing } from '../scripts/shaheen-council/council';
+
+test('each schedule runs its own mission, a manual choice wins, and a push only rehearses', () => {
+  const wf = readFileSync(new URL('../.github/workflows/shaheen-manus.yml', import.meta.url), 'utf8');
+  for (const cron of Object.keys(SCHEDULES)) assert.ok(wf.includes(`- cron: '${cron}'`), cron);
+  assert.equal(missionFor('0 3 * * *'), 'tour');
+  assert.equal(missionFor('15 6 * * 3,6'), 'design');
+  assert.equal(missionFor('0 8 * * 1,4'), 'verify');
+  assert.equal(missionFor('0 3 * * *', 'verify'), 'verify');
+  assert.equal(missionFor('', ''), undefined);
+  assert.equal(missionFor(undefined, 'buy-things'), undefined);
+});
+
+test('the monthly credit budget is shared: the tour gives way at 70%, the others at 100%', () => {
+  const runs = [
+    { at: '2026-10-02T03:00:00Z', mission: 'tour' as const, status: 'done' as const, credits: 600 },
+    { at: '2026-10-05T06:15:00Z', mission: 'design' as const, status: 'done' as const, credits: 900 },
+    { at: '2026-09-30T03:00:00Z', mission: 'tour' as const, status: 'done' as const, credits: 5000 },
+  ];
+  const used = creditsThisMonth(runs, '2026-10-19T03:00:00Z');
+  assert.equal(used, 1500);
+  assert.equal(budgetAllows('tour', used, 2000).ok, false);
+  assert.equal(budgetAllows('design', used, 2000).ok, true);
+  assert.equal(budgetAllows('verify', 2000, 2000).ok, false);
+  assert.equal(budgetAllows('tour', 99999, 0).ok, true);
+});
+
+test('the briefs follow the Manus schema rules and forbid paying, accounts and forms', () => {
+  for (const schema of [TOUR_SCHEMA, VERIFY_SCHEMA]) {
+    const walk = (s: Record<string, unknown>) => {
+      if (s.type === 'object') {
+        assert.equal(s.additionalProperties, false);
+        assert.deepEqual([...(s.required as string[])].sort(), Object.keys(s.properties as object).sort());
+        for (const v of Object.values(s.properties as Record<string, Record<string, unknown>>)) walk(v);
+      }
+      if (s.type === 'array') walk(s.items as Record<string, unknown>);
+    };
+    walk(schema as Record<string, unknown>);
+  }
+  const tour = tourPrompt();
+  assert.match(tour, /never pay/);
+  assert.match(tour, /do not create accounts/);
+  const verify = verifyPrompt([{ id: 'T-1', title: 'إصلاح السلة', detail: 'زر السلة لا يعمل' }]);
+  assert.match(verify, /### T-1/);
+});
+
+test('the tour report is cleaned: known steps once, bounded numbers, trimmed text', () => {
+  const t = cleanTour({ summaryAr: 'تمام', score: 140, journey: [
+    { step: 'home', ok: true, seconds: 3, noteAr: 'سريع' }, { step: 'home', ok: false, seconds: 1, noteAr: 'مكرر' },
+    { step: 'checkout', ok: false, seconds: -5, noteAr: 'زر الدفع لا يفتح' }, { step: 'hack', ok: true, seconds: 1, noteAr: 'x' },
+  ], issues: [{ area: 'weird', severity: 'urgent', problem: 'صورة مكسورة', fix: '' }, { problem: '' }] }, '2026-10-19T03:20:00Z')!;
+  assert.equal(t.score, 100);
+  assert.deepEqual(t.journey.map((s) => s.step), ['home', 'checkout']);
+  assert.equal(t.journey[1].seconds, 0);
+  assert.deepEqual(t.issues.map((i) => [i.area, i.severity]), [['store', 'low']]);
+  assert.equal(cleanTour(null, 'x'), undefined);
+});
+
+test('the reviewer checks only this week\'s done tasks, once fixed they are not checked again', () => {
+  const now = Date.parse('2026-10-19T08:00:00Z');
+  const tasks = [
+    { id: 'a', title: 'A', detail: '', status: 'done', closedAt: '2026-10-18T10:00:00Z', url: 'u' },
+    { id: 'b', title: 'B', detail: '', status: 'done', closedAt: '2026-10-01T10:00:00Z' },
+    { id: 'c', title: 'C', detail: '', status: 'open' },
+    { id: 'd', title: 'D', detail: '', status: 'done', closedAt: '2026-10-17T10:00:00Z' },
+  ];
+  const due = tasksToVerify(tasks, [], now);
+  assert.deepEqual(due.map((t) => t.id), ['a', 'd']);
+  const v = cleanVerify({ summaryAr: 'ok', checks: [{ id: 'a', verdict: 'fixed', evidenceAr: 'تمام' }, { id: 'd', verdict: '???', evidenceAr: '' }, { id: 'zzz', verdict: 'fixed', evidenceAr: '' }] }, due, '2026-10-19T08:30:00Z')!;
+  assert.deepEqual(v.checks.map((c) => [c.id, c.verdict]), [['a', 'fixed'], ['d', 'cannot_tell']]);
+  const file = recordRun(emptyMissions(), { at: v.at, mission: 'verify', status: 'done', credits: 30 }, { verify: v });
+  assert.deepEqual(file.verified, ['a']);
+  assert.deepEqual(tasksToVerify(tasks, file.verified, now).map((t) => t.id), ['d']);
+});
+
+test('the pre-meeting check and the meeting read the tour and the reviewer; a broken checkout is urgent', () => {
+  const NOW = Date.parse('2026-10-19T04:30:00Z');
+  const missions = {
+    version: 1, updatedAt: '2026-10-19T03:25:00Z', verified: [], runs: [],
+    tour: { at: '2026-10-19T03:25:00Z', summaryAr: 'الدفع واقع', score: 55, journey: [{ step: 'home', ok: true, seconds: 2, noteAr: '' }, { step: 'checkout', ok: false, seconds: 9, noteAr: 'صفحة الدفع فاضية' }], issues: [{ area: 'store', severity: 'high', language: 'ar', page: '#store', problem: 'صورة', fix: '' }] },
+    verify: { at: '2026-10-18T08:30:00Z', summaryAr: '', checks: [{ id: 'x', title: 'إصلاح السلة', verdict: 'not_fixed', evidenceAr: 'لسه' }] },
+  };
+  const pre = runPrecheck({ 'manus-missions.json': missions }, {}, NOW);
+  const tour = pre.bots.find((b) => b.id === 'visitor_tour')!;
+  assert.equal(tour.status, 'fail');
+  assert.equal(tour.reportAt, missions.tour.at);
+  assert.equal(pre.bots.find((b) => b.id === 'verifier')!.status, 'warn');
+  assert.ok(pre.handoffs.some((h) => h.from === 'visitor_tour' && h.to === 'product_pages'));
+  const b = buildBriefing({ missions, manus: { score: 62 } }, Date.parse('2026-10-19T07:30:00Z'));
+  assert.ok(b.facts.some((f) => f.includes('62/100')));
+  assert.ok(b.signals.some((s) => s.priority === 'high' && s.decision?.title.includes('checkout')));
+  assert.ok(b.signals.some((s) => s.decision?.title === 'إعادة فتح: إصلاح السلة'));
+});
