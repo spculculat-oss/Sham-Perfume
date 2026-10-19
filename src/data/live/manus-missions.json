@@ -1,8 +1,14 @@
 {
  "version": 1,
- "updatedAt": "2026-10-19T05:01:36.209Z",
+ "updatedAt": "2026-10-19T10:02:58.105Z",
  "verified": [],
  "runs": [
+  {
+   "at": "2026-10-19T10:02:58.105Z",
+   "mission": "verify",
+   "credits": 10,
+   "status": "done"
+  },
   {
    "at": "2026-10-19T05:01:36.209Z",
    "mission": "tour",
@@ -140,5 +146,48 @@
   },
   "taskId": "nYvVXnU2nZFseHNmGpmaM2",
   "credits": 30
+ },
+ "verify": {
+  "at": "2026-10-19T10:02:58.105Z",
+  "summaryAr": "التحقق أظهر أن الإصلاحات لم تُثبت بشكل واضح على الموقع الحي حتى الآن، وبعض المهام تبقى غير قابلة للتوثيق من الواجهة العامة. قد يحتاج الأمر فحصًا إضافيًا في سجلات المستودع وآليات التكامل الآلي للتأكد من الانتهاء.",
+  "checks": [
+   {
+    "id": "2026-10-18-1-إصلاح-فجوات-السيو-التقني",
+    "title": "إصلاح فجوات السيو التقني وهيكل صفحات الموقع",
+    "verdict": "not_fixed",
+    "evidenceAr": "على صفحة المنتج Oud Mood 30ml by Lattafa EDP Unisex: H1 واحد، وجود canonical يطابق رابط الصفحة، ووصف meta ظاهر؛ لكن الوصف مكرر مرتين في قسم Description.",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/132"
+   },
+   {
+    "id": "2026-10-18-3-تنقية-بيانات-كتالوج-المت",
+    "title": "تنقية بيانات كتالوج المتجر ومعالجة الملاحظات",
+    "verdict": "cannot_tell",
+    "evidenceAr": "لا أستطيع إثبات مراجعة 601 منتجاً أو مطابقة قاعدة التسعير اعتماداً على الصفحات العامة؛ العينة التي فحصتها للمنتج لا توضح هذا الجانب.",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/133"
+   },
+   {
+    "id": "2026-10-18-4-تشغيل-مستورد-شاهين-لفحص-",
+    "title": "تشغيل مستورد شاهين لفحص واعتماد المتاجر الجديدة",
+    "verdict": "cannot_tell",
+    "evidenceAr": "لا يمكن التحقق من اعتماد المتاجر أو تشغيل المستورد من الواجهة العامة؛ لا يوجد سجل ظاهر يشير إلى حالة التشغيل.",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/134"
+   },
+   {
+    "id": "2026-10-19-1-إصلاح-عطل-كش-اف-المصادر",
+    "title": "إصلاح عطل: كشّاف المصادر",
+    "verdict": "cannot_tell",
+    "evidenceAr": "لا يمكن إثبات وجود إصلاح من صفحة live؛ لا يظهر سجل تشغيل أو نتائج إصلاح واضحة.",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/146"
+   },
+   {
+    "id": "2026-10-19-2-إصلاح-عطل-مستورد-شاهين-م",
+    "title": "إصلاح عطل: مستورد شاهين + مراجع الصفحات",
+    "verdict": "cannot_tell",
+    "evidenceAr": "لا يوجد دليل على إعادة تشغيل المستورد أو مراجعة الصفحات من الصفحات العامة؛ السجل المطلوب غير ظاهر.",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/147"
+   }
+  ],
+  "taskId": "YRUDQSiicw4NN6EkmF9iQB",
+  "credits": 10
  }
 }
