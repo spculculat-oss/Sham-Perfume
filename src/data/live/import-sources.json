@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-19T04:31:58.644Z",
+ "updatedAt": "2026-10-19T12:55:05.997Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -1229,8 +1229,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-19T12:55:05.997Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1241,12 +1241,12 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-19T12:55:05.997Z",
    "trust": {
     "score": 27,
     "verdict": "weak",
-    "at": "2026-10-18T23:21:13.356Z",
+    "at": "2026-10-19T12:55:05.997Z",
     "checks": [
      {
       "id": "age",
@@ -1349,12 +1349,12 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-19T12:55:05.997Z",
    "trust": {
     "score": 37,
     "verdict": "weak",
-    "at": "2026-10-18T23:21:13.356Z",
+    "at": "2026-10-19T12:55:05.997Z",
     "checks": [
      {
       "id": "age",
@@ -1578,8 +1578,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-19T12:55:05.997Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1656,8 +1656,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-19T12:55:05.997Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2883,6 +2883,359 @@
    "foundWith": "Afnan Perfumes",
    "foundAt": "2026-10-19T04:31:58.644Z",
    "attempts": 0
+  },
+  {
+   "id": "lattafa-usa-com",
+   "host": "lattafa-usa.com",
+   "name": "Lattafa",
+   "base": "https://www.lattafa-usa.com",
+   "status": "active",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-19T12:55:05.997Z",
+   "trust": {
+    "score": 76,
+    "verdict": "trusted",
+    "at": "2026-10-19T12:55:05.997Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 10,
+      "max": 20,
+      "detail": "2 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 6,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": false,
+      "points": 5,
+      "max": 15,
+      "detail": "عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "يشحن دولياً"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "Visa، Mastercard، American Express، PayPal، Apple Pay، Google Pay"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2024-01-27T01:58:31.000Z"
+   },
+   "region": "americas",
+   "sampleOk": 9,
+   "sampleTotal": 9,
+   "currency": "USD",
+   "rateToEgp": 53.5247,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*lattafa-usa\\.com/products/[^?#]+$",
+   "sitemaps": [
+    "https://www.lattafa-usa.com/sitemap_agentic_discovery.xml",
+    "https://www.lattafa-usa.com/sitemap_products_1.xml?from=9055147655391&to=15422183669983",
+    "https://www.lattafa-usa.com/sitemap_pages_1.xml?from=119600185567&to=129349484767",
+    "https://www.lattafa-usa.com/sitemap_collections_1.xml?from=470062858463&to=488297201887",
+    "https://www.lattafa-usa.com/sitemap_blogs_1.xml"
+   ],
+   "via": "generic",
+   "productsEstimate": 283
+  },
+  {
+   "id": "douglas-de",
+   "host": "douglas.de",
+   "name": "douglas.de",
+   "base": "https://douglas.de",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-19T12:55:05.997Z",
+   "reason": "الموقع لا يفتح (HTTP 403)"
+  },
+  {
+   "id": "perfume-com",
+   "host": "perfume.com",
+   "name": "perfume.com",
+   "base": "https://perfume.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-19T12:55:05.997Z",
+   "reason": "الموقع لا يفتح (HTTP 403)"
+  },
+  {
+   "id": "essenza-nobile-de",
+   "host": "essenza-nobile.de",
+   "name": "essenza-nobile.de",
+   "base": "https://essenza-nobile.de",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-19T12:55:05.997Z",
+   "reason": "الموقع لا يفتح (HTTP 403)"
+  },
+  {
+   "id": "aedes-com",
+   "host": "aedes.com",
+   "name": "AEDES.COM",
+   "base": "https://www.aedes.com",
+   "status": "active",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-19T12:55:05.997Z",
+   "trust": {
+    "score": 77,
+    "verdict": "trusted",
+    "at": "2026-10-19T12:55:05.997Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "28 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": false,
+      "points": 4,
+      "max": 10,
+      "detail": "بريد"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": null,
+      "points": 5,
+      "max": 15,
+      "detail": "الموقع يمنع قراءة الصفحة آلياً"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 3,
+      "max": 5,
+      "detail": "محلي أو غير مذكور"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "Visa، Mastercard، American Express، Apple Pay، Google Pay، Shop Pay"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     }
+    ],
+    "flags": [],
+    "registeredAt": "1998-04-25T04:00:00.000Z"
+   },
+   "region": "americas",
+   "sampleOk": 4,
+   "sampleTotal": 6,
+   "currency": "USD",
+   "rateToEgp": 53.5247,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*aedes\\.com/products/[^?#]+$",
+   "sitemaps": [
+    "https://www.aedes.com/sitemap_agentic_discovery.xml",
+    "https://www.aedes.com/sitemap_products_1.xml?from=457680521&to=7701880340559",
+    "https://www.aedes.com/sitemap_products_2.xml?from=7701945516111&to=15439668478031",
+    "https://www.aedes.com/sitemap_pages_1.xml?from=21279917&to=117377073231",
+    "https://www.aedes.com/sitemap_collections_1.xml?from=30872249&to=492165955663",
+    "https://www.aedes.com/sitemap_blogs_1.xml"
+   ],
+   "via": "generic",
+   "productsEstimate": 1241
+  },
+  {
+   "id": "ruebroca-com",
+   "host": "ruebroca.com",
+   "name": "ruebroca.com",
+   "base": "https://ruebroca.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Rue Broca",
+   "foundAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 0
+  },
+  {
+   "id": "ruebrocaperfumes-com",
+   "host": "ruebrocaperfumes.com",
+   "name": "ruebrocaperfumes.com",
+   "base": "https://ruebrocaperfumes.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Rue Broca",
+   "foundAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 0
+  },
+  {
+   "id": "ruebrocaparfums-com",
+   "host": "ruebrocaparfums.com",
+   "name": "ruebrocaparfums.com",
+   "base": "https://ruebrocaparfums.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Rue Broca",
+   "foundAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 0
+  },
+  {
+   "id": "khadlaj-com",
+   "host": "khadlaj.com",
+   "name": "khadlaj.com",
+   "base": "https://khadlaj.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Khadlaj",
+   "foundAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 0
+  },
+  {
+   "id": "khadlajperfumes-com",
+   "host": "khadlajperfumes.com",
+   "name": "khadlajperfumes.com",
+   "base": "https://khadlajperfumes.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Khadlaj",
+   "foundAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 0
+  },
+  {
+   "id": "khadlajparfums-com",
+   "host": "khadlajparfums.com",
+   "name": "khadlajparfums.com",
+   "base": "https://khadlajparfums.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Khadlaj",
+   "foundAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 0
   }
  ],
  "queries": [
@@ -3423,6 +3776,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-19T12:55:05.997Z",
+   "mode": "self",
+   "found": 11,
+   "vetted": 10,
+   "activated": 2,
+   "rejected": 0,
+   "notes": [
+    "✗ douglas.de: الموقع لا يفتح (HTTP 403)",
+    "✗ perfume.com: الموقع لا يفتح (HTTP 403)",
+    "✗ essenza-nobile.de: الموقع لا يفتح (HTTP 403)",
+    "  ↳ aedes.com: CV 77/100 [age,https,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
+    "✓ aedes.com (CV 77/100): 1241 perfumes, 4/6 pages read without AI, USD (1 = 53.5247 EGP) — added to the importer",
+    "✗ perfumehub.com.my: الموقع لا يفتح",
+    "  ↳ goldapple.kz: CV 27/100 [https,returns] (pages: /contact-us→200 /returns→200)",
+    "✗ goldapple.kz: ملف الثقة ضعيف (27/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
+    "  ↳ perfumeconnection.com.au: CV 37/100 [https,returns,privacy,terms] (pages: /contact-us→200 /returns→200)",
+    "✗ perfumeconnection.com.au: ملف الثقة ضعيف (37/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
+    "✗ nose-shop.jp: الموقع لا يفتح",
+    "✗ letu.kz: الموقع لا يفتح"
+   ]
+  },
   {
    "at": "2026-10-19T04:31:58.644Z",
    "mode": "self",

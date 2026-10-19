@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-18T17:01:17.976Z",
+ "updatedAt": "2026-10-19T12:55:51.413Z",
  "engines": {
   "deepseek": {
    "pausedUntil": "2026-10-19T08:05:00.000Z",
@@ -8,6 +8,18 @@
   "openai": {
    "pausedUntil": "2026-10-19T08:05:00.000Z",
    "reason": "no_credit"
+  },
+  "gemini": {
+   "pausedUntil": "2026-10-19T13:55:51.413Z",
+   "reason": "invalid_key",
+   "detail": "PERMISSION_DENIED",
+   "key": "79e90b39"
+  }
+ },
+ "used": {
+  "day": "2026-10-19",
+  "counts": {
+   "gemini": 1
   }
  }
 }
