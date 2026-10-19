@@ -19,6 +19,7 @@ import { DataKeyError, connectPglite, connectPostgres, databaseErrorKind, databa
 import * as svc from './service';
 import * as social from './social';
 import * as chat from './messenger';
+import * as mail from './mail';
 import * as admin from './admin';
 
 type Env = Record<string, string | undefined>;
@@ -176,7 +177,13 @@ export function createCommunityRouter(community: Community, options: { env?: Env
     if (!authLimiter.allow(clientKey(req))) { res.status(429).json({ error: 'Too many attempts, please wait a minute', code: 'RATE_LIMITED' }); return; }
     return handler(req, res);
   };
-  router.post('/community/auth/register', limitedAuth(open((ctx, req) => svc.register(ctx, req.body || {}, agent(req), ip(req)))));
+  router.post('/community/auth/register', limitedAuth(open(async (ctx, req) => {
+    const out = await svc.register(ctx, req.body || {}, agent(req), ip(req));
+    // The platform's first official letter: every new member finds a welcome mail in «بريد شام».
+    try { await mail.welcomeMail(ctx, out.me.id, out.me.name, out.me.lang); }
+    catch (error) { console.warn('[community] welcome mail:', error instanceof Error ? error.message : error); }
+    return out;
+  })));
   router.post('/community/auth/login', limitedAuth(open((ctx, req) => svc.login(ctx, req.body || {}, agent(req), ip(req)))));
   /** Two-factor finish: the password opened a pending login, the authenticator code closes it. */
   router.post('/community/auth/login/2fa', limitedAuth(open((ctx, req) => svc.loginTwoFactor(ctx, req.body || {}))));
@@ -271,6 +278,33 @@ export function createCommunityRouter(community: Community, options: { env?: Env
   router.delete('/community/messages/:id', member(async (ctx, u, req) => { await chat.deleteMessage(ctx, u.id, p(req, 'id')); }));
   router.post('/community/messages/:id/react', member(async (ctx, u, req) => { await chat.reactMessage(ctx, u.id, p(req, 'id'), req.body?.emoji ?? null); }));
 
+  /* ------------------------------------- «بريد شام»: outside → in ------------------------------------- */
+  /* The mail provider's inbound hook (Resend Inbound, a Cloudflare Email Worker, any JSON/form forwarder)
+     posts real e-mails here. Protected by SHAM_MAIL_INBOUND_TOKEN (query ?token= or X-Sham-Mail-Token). */
+  router.post('/community/mail/inbound', express.urlencoded({ extended: true, limit: '1mb' }), open(async (ctx, req, res) => {
+    const expected = env.SHAM_MAIL_INBOUND_TOKEN?.trim() || '';
+    if (expected.length < 12) { res.status(503).json({ error: 'Inbound mail is not configured. Set SHAM_MAIL_INBOUND_TOKEN on the server.', code: 'INBOUND_NOT_CONFIGURED' }); return; }
+    const given = Buffer.from(String(req.query.token || req.headers['x-sham-mail-token'] || ''));
+    if (given.length !== expected.length || !timingSafeEqual(given, Buffer.from(expected))) {
+      res.status(401).json({ error: 'Invalid inbound token', code: 'UNAUTHORIZED' });
+      return;
+    }
+    return mail.inbound(ctx, mail.normalizeInbound(req.body || {}));
+  }));
+
+  /* ------------------------------------------------ «بريد شام» ------------------------------------------------ */
+  router.get('/community/mail/counts', member((ctx, u) => mail.counts(ctx, u.id)));
+  router.get('/community/mail', member((ctx, u, req) => mail.list(ctx, u.id, { folder: req.query.folder, before: req.query.before, q: req.query.q })));
+  router.post('/community/mail', member((ctx, u, req) => mail.send(ctx, u.id, req.body || {})));
+  router.post('/community/mail/drafts', member((ctx, u, req) => mail.saveDraft(ctx, u.id, req.body || {})));
+  router.patch('/community/mail/drafts/:id', member((ctx, u, req) => mail.saveDraft(ctx, u.id, req.body || {}, p(req, 'id'))));
+  router.post('/community/mail/drafts/:id/send', member((ctx, u, req) => mail.sendDraft(ctx, u.id, p(req, 'id'), req.body || {})));
+  router.post('/community/mail/trash/empty', member((ctx, u) => mail.emptyTrash(ctx, u.id)));
+  router.post('/community/mail/read-all', member((ctx, u) => mail.markAllRead(ctx, u.id)));
+  router.get('/community/mail/:id', member((ctx, u, req) => mail.view(ctx, u.id, p(req, 'id'))));
+  router.patch('/community/mail/:id', member((ctx, u, req) => mail.update(ctx, u.id, p(req, 'id'), req.body || {})));
+  router.delete('/community/mail/:id', member((ctx, u, req) => mail.remove(ctx, u.id, p(req, 'id'))));
+
   /* ---------------------------------------------- administration ---------------------------------------------- */
   const A = '/admin/community';
   router.get(`${A}/overview`, boss(async (ctx) => ({ ...(await admin.overview(ctx)), store: ctx.sql.kind })));
@@ -291,6 +325,7 @@ export function createCommunityRouter(community: Community, options: { env?: Env
   router.get(`${A}/reports`, boss((ctx, req) => admin.reports(ctx, req.query.status)));
   router.post(`${A}/reports/:id`, boss(async (ctx, req) => { await admin.resolveReport(ctx, p(req, 'id'), req.body || {}); }));
   router.post(`${A}/conversations/:id/read`, boss((ctx, req) => admin.readConversation(ctx, p(req, 'id'), req.body?.reason)));
+  router.post(`${A}/mail/:userId`, boss((ctx, req) => mail.adminMail(ctx, p(req, 'userId'), req.body || {})));
   router.get(`${A}/audit`, boss((ctx) => admin.auditLog(ctx)));
 
   return router;

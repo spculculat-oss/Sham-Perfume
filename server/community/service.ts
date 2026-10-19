@@ -975,6 +975,10 @@ export async function isBlocked(sql: Sql, a: string, b: string): Promise<boolean
 export async function exportMyData(ctx: Ctx, userId: string) {
   const [account, recipes, learning, orders] = await Promise.all([me(ctx, userId), myRecipes(ctx, userId), myLearning(ctx, userId), myOrders(ctx, userId)]);
   const posts = await ctx.sql.query(`SELECT id, body, visibility, created_at FROM posts WHERE author_id = $1 ORDER BY created_at DESC`, [userId]);
+  const mailboxes = await ctx.sql.query(
+    `SELECT c.folder, m.kind, m.created_at, m.sent_at, m.subject_enc, m.body_enc FROM mail_copies c JOIN mail_messages m ON m.id = c.message_id WHERE c.user_id = $1 ORDER BY m.created_at DESC`,
+    [userId]);
+  const mail = mailboxes.map((m) => ({ folder: m.folder, kind: m.kind, createdAt: m.created_at, sentAt: m.sent_at, subject: ctx.vault.open(m.subject_enc), body: ctx.vault.open(m.body_enc) }));
   const merchant = account.merchant ? await myMerchant(ctx, userId).catch(() => null) : null;
-  return { exportedAt: new Date().toISOString(), account, merchant, recipes, learning, orders, posts };
+  return { exportedAt: new Date().toISOString(), account, merchant, recipes, learning, orders, posts, mail };
 }

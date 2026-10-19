@@ -85,7 +85,7 @@ export async function connectPglite(dataDir?: string): Promise<Sql> {
   return wrap(db);
 }
 
-export const SCHEMA_VERSION = 3;
+export const SCHEMA_VERSION = 5;
 
 export const SCHEMA: string[] = [
   `CREATE TABLE IF NOT EXISTS community_meta (key text PRIMARY KEY, value text NOT NULL)`,
@@ -360,6 +360,59 @@ export const SCHEMA: string[] = [
     detail text NOT NULL DEFAULT '',
     created_at timestamptz NOT NULL DEFAULT now()
   )`,
+  /* v4 — «بريد شام»: the platform's own Gmail-like mail. One message row (encrypted subject/body,
+     keyed search tokens only), one recipient row per addressee, and one copy row per mailbox, so each
+     member stars/labels/reads/deletes their own copy without touching anybody else's (like Gmail). */
+  `CREATE TABLE IF NOT EXISTS mail_messages (
+    id text PRIMARY KEY,
+    sender_id text REFERENCES users(id) ON DELETE SET NULL,
+    kind text NOT NULL DEFAULT 'personal',
+    system_from text NOT NULL DEFAULT 'admin',
+    subject_enc text,
+    body_enc text NOT NULL,
+    attachment_enc text,
+    parent_id text,
+    draft_to jsonb NOT NULL DEFAULT '[]',
+    created_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+    sent_at timestamptz
+  )`,
+  `ALTER TABLE mail_messages ADD COLUMN IF NOT EXISTS system_from text NOT NULL DEFAULT 'admin'`,
+  `CREATE INDEX IF NOT EXISTS mail_sender ON mail_messages (sender_id, created_at DESC)`,
+  `CREATE TABLE IF NOT EXISTS mail_recipients (
+    message_id text NOT NULL REFERENCES mail_messages(id) ON DELETE CASCADE,
+    user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    PRIMARY KEY (message_id, user_id)
+  )`,
+  `CREATE INDEX IF NOT EXISTS mail_recipients_user ON mail_recipients (user_id)`,
+  `CREATE TABLE IF NOT EXISTS mail_copies (
+    message_id text NOT NULL REFERENCES mail_messages(id) ON DELETE CASCADE,
+    user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    folder text NOT NULL DEFAULT 'inbox',
+    starred boolean NOT NULL DEFAULT false,
+    read_at timestamptz,
+    created_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+    updated_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+    PRIMARY KEY (message_id, user_id)
+  )`,
+  `CREATE INDEX IF NOT EXISTS mail_copies_box ON mail_copies (user_id, folder, created_at DESC)`,
+  `CREATE INDEX IF NOT EXISTS mail_copies_star ON mail_copies (user_id) WHERE starred`,
+  /* Search tokens: keyed HMAC of each lower-cased word of subject and body (the same blind-index
+     technique as the members' e-mail look-up) — searching never stores or compares clear text. */
+  `CREATE TABLE IF NOT EXISTS mail_tokens (
+    message_id text NOT NULL REFERENCES mail_messages(id) ON DELETE CASCADE,
+    user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    token text NOT NULL,
+    PRIMARY KEY (message_id, user_id, token)
+  )`,
+  `CREATE INDEX IF NOT EXISTS mail_tokens_lookup ON mail_tokens (user_id, token)`,
+  /* v5 — «بريد شام» outside the platform: external addressees of a sent letter, the external sender of a
+     received one, the RFC-822 Message-ID (so replies from Gmail & co. thread back), and the last known
+     external-delivery status (sent / failed / unconfigured — the member always sees the truth). */
+  `ALTER TABLE mail_messages ADD COLUMN IF NOT EXISTS external_to jsonb NOT NULL DEFAULT '[]'`,
+  `ALTER TABLE mail_messages ADD COLUMN IF NOT EXISTS external_from jsonb`,
+  `ALTER TABLE mail_messages ADD COLUMN IF NOT EXISTS ext_msg_id text`,
+  `ALTER TABLE mail_messages ADD COLUMN IF NOT EXISTS ext_status text NOT NULL DEFAULT ''`,
+  `CREATE INDEX IF NOT EXISTS mail_extid ON mail_messages (ext_msg_id)`,
 ];
 
 /** Creates the tables (idempotent) and records the schema version. */

@@ -4,8 +4,9 @@
  * every `#community…` address; `route` is the part after `community/`.
  */
 import { useCallback, useEffect, useState } from 'react';
-import { Bell, Home, LogOut, MessageCircle, Store, User, Users, Wrench } from 'lucide-react';
+import { Bell, Home, LogOut, Mail, MessageCircle, Store, User, Users, Wrench } from 'lucide-react';
 import HubAuth from './HubAuth';
+import Mailbox from './Mailbox';
 import MerchantPortal from './MerchantPortal';
 import Messenger from './Messenger';
 import { FriendsPage, NotificationsPage, ProfilePage, SocialFeed } from './SocialPortal';
@@ -35,6 +36,7 @@ export default function CommunityApp({ lang: siteLang, route, navigate, onSigned
   const tabs: { id: string; label: string; icon: React.ReactNode; badge?: number }[] = [
     { id: 'social', label: t('سوشيال شام', 'Sham Social'), icon: <Home className="h-4 w-4" /> },
     { id: 'messenger', label: t('الماسنجر', 'Messenger'), icon: <MessageCircle className="h-4 w-4" />, badge: pulse?.messages },
+    { id: 'mail', label: t('بريد شام', 'Sham Mail'), icon: <Mail className="h-4 w-4" />, badge: pulse?.mail },
     { id: 'notifications', label: t('الإشعارات', 'Notifications'), icon: <Bell className="h-4 w-4" />, badge: (pulse?.notifications || 0) + (pulse?.requests || 0) },
     { id: 'me', label: t('بوابتي', 'My portal'), icon: <User className="h-4 w-4" /> },
     { id: 'merchant', label: t('بوابة التجار', 'Merchants'), icon: <Wrench className="h-4 w-4" /> },
@@ -50,6 +52,7 @@ export default function CommunityApp({ lang: siteLang, route, navigate, onSigned
   else if (page === 'store' && a) body = <StorePage lang={lang} go={go} slug={a} />;
   else if (!member) body = <HubAuth lang={lang} initial={page === 'join' ? 'register' : 'login'} onDone={(merchant) => go(merchant ? 'merchant' : 'social')} />;
   else if (page === 'messenger') body = <Messenger lang={lang} session={session} chatId={a} go={go} toast={setToast} />;
+  else if (page === 'mail') body = <Mailbox lang={lang} session={session} route={parts.slice(1).join('/')} go={go} toast={setToast} />;
   else if (page === 'me') body = <UserPortal lang={lang} session={session} section={a} go={go} toast={setToast} />;
   else if (page === 'merchant') body = <MerchantPortal lang={lang} session={session} section={a} go={go} toast={setToast} />;
   else if (page === 'notifications') body = <NotificationsPage lang={lang} go={go} />;
