@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-19T00:56:02.060Z",
+ "updatedAt": "2026-10-19T04:31:58.644Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -899,12 +899,12 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-19T04:31:58.644Z",
    "trust": {
     "score": 83,
     "verdict": "trusted",
-    "at": "2026-10-18T15:10:56.723Z",
+    "at": "2026-10-19T04:31:58.644Z",
     "checks": [
      {
       "id": "age",
@@ -1013,12 +1013,12 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-19T04:31:58.644Z",
    "trust": {
     "score": 83,
     "verdict": "trusted",
-    "at": "2026-10-18T15:10:56.723Z",
+    "at": "2026-10-19T04:31:58.644Z",
     "checks": [
      {
       "id": "age",
@@ -1127,8 +1127,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-19T04:31:58.644Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -1139,8 +1139,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-19T04:31:58.644Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1217,8 +1217,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-19T04:31:58.644Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -2538,6 +2538,351 @@
    "foundWith": "Paris Corner",
    "foundAt": "2026-10-19T00:56:02.060Z",
    "attempts": 0
+  },
+  {
+   "id": "notino-co-uk",
+   "host": "notino.co.uk",
+   "name": "notino.co.uk",
+   "base": "https://notino.co.uk",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-19T04:31:58.644Z",
+   "reason": "الموقع لا يفتح (HTTP 403)"
+  },
+  {
+   "id": "twisted-lily-com",
+   "host": "twisted-lily.com",
+   "name": "twisted-lily.com",
+   "base": "https://twisted-lily.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-19T04:31:58.644Z",
+   "reason": "الموقع لا يفتح"
+  },
+  {
+   "id": "parfumdreams-de",
+   "host": "parfumdreams.de",
+   "name": "Parfum und Kosmetik aus deiner Online",
+   "base": "https://www.parfumdreams.de",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-19T04:31:58.644Z",
+   "trust": {
+    "score": 78,
+    "verdict": "trusted",
+    "at": "2026-10-19T04:31:58.644Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": null,
+      "points": 8,
+      "max": 20,
+      "detail": "السجل لا ينشر تاريخ التسجيل"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد + هاتف"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 15,
+      "max": 15,
+      "detail": "بيانات قانونية + عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 3,
+      "max": 5,
+      "detail": "محلي أو غير مذكور"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "Visa، Mastercard، American Express، PayPal، Apple Pay، Google Pay"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": null,
+      "points": 2,
+      "max": 5
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     }
+    ],
+    "flags": []
+   },
+   "region": "europe",
+   "sampleOk": 0,
+   "sampleTotal": 6,
+   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
+  },
+  {
+   "id": "scentsplit-com",
+   "host": "scentsplit.com",
+   "name": "Scent Split",
+   "base": "https://www.scentsplit.com",
+   "status": "active",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-19T04:31:58.644Z",
+   "trust": {
+    "score": 84,
+    "verdict": "trusted",
+    "at": "2026-10-19T04:31:58.644Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "11 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 6,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": null,
+      "points": 5,
+      "max": 15,
+      "detail": "الموقع يمنع قراءة الصفحة آلياً"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 3,
+      "max": 5,
+      "detail": "محلي أو غير مذكور"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "Visa، Mastercard، American Express، Apple Pay، Google Pay، Shop Pay"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2015-09-08T17:40:11.000Z"
+   },
+   "region": "americas",
+   "sampleOk": 5,
+   "sampleTotal": 6,
+   "currency": "USD",
+   "rateToEgp": 53.5247,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*scentsplit\\.com/products/[^?#]+$",
+   "sitemaps": [
+    "https://www.scentsplit.com/sitemap_agentic_discovery.xml",
+    "https://www.scentsplit.com/sitemap_products_1.xml?from=1401116292&to=4621476364376",
+    "https://www.scentsplit.com/sitemap_products_2.xml?from=4621484523608&to=7111843905736",
+    "https://www.scentsplit.com/sitemap_products_3.xml?from=7111844004040&to=7474420220104",
+    "https://www.scentsplit.com/sitemap_products_4.xml?from=7474434572488&to=7573047181512",
+    "https://www.scentsplit.com/sitemap_products_5.xml?from=7573047214280&to=7720821358792",
+    "https://www.scentsplit.com/sitemap_products_6.xml?from=7720821391560&to=8042998530248",
+    "https://www.scentsplit.com/sitemap_products_7.xml?from=8042998595784&to=8166866518216",
+    "https://www.scentsplit.com/sitemap_products_8.xml?from=8166866550984&to=8229621203144",
+    "https://www.scentsplit.com/sitemap_products_9.xml?from=8229621235912&to=8311224434888",
+    "https://www.scentsplit.com/sitemap_products_10.xml?from=8311224467656&to=8334860124360"
+   ],
+   "via": "generic",
+   "productsEstimate": 10000
+  },
+  {
+   "id": "flaconi-de",
+   "host": "flaconi.de",
+   "name": "flaconi.de",
+   "base": "https://flaconi.de",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-19T04:31:58.644Z",
+   "reason": "الموقع لا يفتح (HTTP 403)"
+  },
+  {
+   "id": "pariscornerparfums-com",
+   "host": "pariscornerparfums.com",
+   "name": "pariscornerparfums.com",
+   "base": "https://pariscornerparfums.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Paris Corner",
+   "foundAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 0
+  },
+  {
+   "id": "velixir-com",
+   "host": "velixir.com",
+   "name": "velixir.com",
+   "base": "https://velixir.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Velixir",
+   "foundAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 0
+  },
+  {
+   "id": "velixirperfumes-com",
+   "host": "velixirperfumes.com",
+   "name": "velixirperfumes.com",
+   "base": "https://velixirperfumes.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Velixir",
+   "foundAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 0
+  },
+  {
+   "id": "velixirparfums-com",
+   "host": "velixirparfums.com",
+   "name": "velixirparfums.com",
+   "base": "https://velixirparfums.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Velixir",
+   "foundAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 0
+  },
+  {
+   "id": "afnanperfumesperfumes-com",
+   "host": "afnanperfumesperfumes.com",
+   "name": "afnanperfumesperfumes.com",
+   "base": "https://afnanperfumesperfumes.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Afnan Perfumes",
+   "foundAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 0
+  },
+  {
+   "id": "afnanperfumesparfums-com",
+   "host": "afnanperfumesparfums.com",
+   "name": "afnanperfumesparfums.com",
+   "base": "https://afnanperfumesparfums.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "Afnan Perfumes",
+   "foundAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 0
   }
  ],
  "queries": [
@@ -3078,6 +3423,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-19T04:31:58.644Z",
+   "mode": "self",
+   "found": 11,
+   "vetted": 10,
+   "activated": 1,
+   "rejected": 0,
+   "notes": [
+    "  ↳ parfumdreams.de: CV 78/100 [https,contact,identity,returns,shipping,privacy,terms,payment,social]",
+    "✗ parfumdreams.de: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "  ↳ scentsplit.com: CV 84/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ scentsplit.com (CV 84/100): 10000 perfumes, 5/6 pages read without AI, USD (1 = 53.5247 EGP) — added to the importer",
+    "✗ flaconi.de: الموقع لا يفتح (HTTP 403)",
+    "  ↳ faces.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
+    "✗ faces.com: أغلب منتجاته ليست عطوراً (50%)",
+    "  ↳ wojooh.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
+    "✗ wojooh.com: أغلب منتجاته ليست عطوراً (50%)",
+    "✗ fragrancebuy.ca: الموقع لا يفتح (HTTP 403)",
+    "✗ maxaromas.com: الموقع لا يفتح",
+    "✗ theperfumeshop.com: الموقع لا يفتح (HTTP 403)"
+   ]
+  },
   {
    "at": "2026-10-19T00:56:02.060Z",
    "mode": "self",
