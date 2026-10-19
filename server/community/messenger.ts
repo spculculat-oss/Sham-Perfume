@@ -262,15 +262,16 @@ export async function typing(ctx: Ctx, userId: string, conversationId: string) {
   await ctx.sql.query(`UPDATE members SET typing_until = $1 WHERE conversation_id = $2 AND user_id = $3`, [new Date(Date.now() + TYPING_MS).toISOString(), conversationId, userId]);
 }
 
-/** One cheap call the browser repeats every few seconds: unread messages, unread notifications, requests. */
+/** One cheap call the browser repeats every few seconds: unread messages and mail, notifications, requests. */
 export async function pulse(ctx: Ctx, userId: string) {
   const [row] = await ctx.sql.query(
     `SELECT
        (SELECT count(*) FROM messages x JOIN members mb ON mb.conversation_id = x.conversation_id AND mb.user_id = $1 AND mb.left_at IS NULL AND NOT mb.muted
           WHERE x.created_at > mb.last_read_at AND x.sender_id <> $1 AND x.deleted_at IS NULL)::int AS messages,
+       (SELECT count(*) FROM mail_copies WHERE user_id = $1 AND folder = 'inbox' AND read_at IS NULL)::int AS mail,
        (SELECT count(*) FROM notifications WHERE user_id = $1 AND read_at IS NULL)::int AS notifications,
        (SELECT count(*) FROM friendships WHERE (user_a = $1 OR user_b = $1) AND status = 'pending' AND requester <> $1)::int AS requests,
        (SELECT max(c.last_at) FROM conversations c JOIN members mb ON mb.conversation_id = c.id AND mb.user_id = $1)::text AS last_at,
        clock_timestamp()::text AS now`, [userId]);
-  return { messages: row.messages, notifications: row.notifications, requests: row.requests, lastAt: row.last_at ? iso(row.last_at) : null, serverTime: iso(row.now) };
+  return { messages: row.messages, mail: row.mail, notifications: row.notifications, requests: row.requests, lastAt: row.last_at ? iso(row.last_at) : null, serverTime: iso(row.now) };
 }
