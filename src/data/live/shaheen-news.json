@@ -1,12 +1,12 @@
 {
  "version": 1,
- "updatedAt": "2026-10-19T04:31:50.740Z",
- "nextUpdateAt": "2026-10-19T16:31:50.740Z",
+ "updatedAt": "2026-10-19T08:14:17.677Z",
+ "nextUpdateAt": "2026-10-19T20:14:17.677Z",
  "intervalHours": 12,
- "editor": "feeds",
+ "editor": "shaheen",
  "digest": {
-  "ar": "تحفل نشرة هذا الأسبوع بإطلاقات عطور جديدة من دور عالمية مرموقة مثل جو مالون وماتيير برمير، إلى جانب توسعات كبرى لشركات المواد الخام مثل سيمرايز ودي إس إم-فيرمنيخ في آسيا وأمريكا. كما تشهد المنطقة العربية أحداثاً مميزة باحتفال بيت العود في السعودية وافتتاح مهرجان العود الدولي، مما يعكس حيوية سوق العطور العالمي.",
-  "en": "This week's bulletin highlights exciting new launches from prestigious houses like Jo Malone and Matière Première, alongside major expansions by raw material giants like Symrise and dsm-firmenich in Asia and the US. The Arab region also celebrates key events with Saudi Arabia's 'House of Oud' graduation and the International Oud Festival, reflecting the vibrant global fragrance market."
+  "ar": "تجمع أخبار اليوم بين إطلاقات جديدة من دور عطور مستقلة وعلامات معروفة، واتجاهات السوق نحو التخصيص والتجارب الاجتماعية. كما تبرز أخبار العود في الفلبين وتونس والسعودية، إلى جانب فعاليات ومعارض تعزز حضور ثقافة العطور. وتقدم أخبار المواد العطرية والتاريخ والهوية لمحة عن تنوع مصادر الإلهام في صناعة العطر.",
+  "en": "Today’s news spans new launches from independent and established fragrance houses, alongside market trends in personalization and social experiences. Agarwood stories from the Philippines, Tunisia and Saudi Arabia highlight the breadth of fragrance culture, while events and exhibitions bring enthusiasts together. Coverage of fragrance ingredients, history and identity offers a glimpse into the industry’s varied sources of inspiration."
  },
  "sources": [
   {
@@ -18,16 +18,48 @@
    "count": 4
   },
   {
-   "name": "Vietnam.vn",
-   "count": 3
-  },
-  {
    "name": "Babnet",
    "count": 2
   },
   {
    "name": "CaFleureBon",
    "count": 2
+  },
+  {
+   "name": "University of the Philippines Los Baños",
+   "count": 1
+  },
+  {
+   "name": "BFM",
+   "count": 1
+  },
+  {
+   "name": "WWD",
+   "count": 1
+  },
+  {
+   "name": "الشرق الأوسط",
+   "count": 1
+  },
+  {
+   "name": "Manila Bulletin",
+   "count": 1
+  },
+  {
+   "name": "Premium Beauty News",
+   "count": 1
+  },
+  {
+   "name": "World IP Review",
+   "count": 1
+  },
+  {
+   "name": "L'Éclaireur Fnac",
+   "count": 1
+  },
+  {
+   "name": "Trend Hunter",
+   "count": 1
   },
   {
    "name": "白鲸出海",
@@ -54,39 +86,389 @@
    "count": 1
   },
   {
+   "name": "Vietnam.vn",
+   "count": 1
+  },
+  {
    "name": "Prestige Online - Singapore",
-   "count": 1
-  },
-  {
-   "name": "Motor1.com",
-   "count": 1
-  },
-  {
-   "name": "BFM",
-   "count": 1
-  },
-  {
-   "name": "الشرق الأوسط",
-   "count": 1
-  },
-  {
-   "name": "NationalWorld",
-   "count": 1
-  },
-  {
-   "name": "Indian Chemical News",
-   "count": 1
-  },
-  {
-   "name": "Cosmetics Business",
-   "count": 1
-  },
-  {
-   "name": "ChemAnalyst",
    "count": 1
   }
  ],
  "items": [
+  {
+   "id": "nmcwxae",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQRWxMZVBlQXRzc2s2bGZadkZ4dXQtTklUTzRYeDZJejEyNHRMdVRWaWtpcGI1WE9BWlRRa2FaaXB5X1g3V3RLa2t4Q09nSFlKRUNka2lCYUdKazY1bmF6LVNtVG45ZFF4UjVweVF2aTdqcngxLUVKelpBVmV1S0RvV09qNFF2OV9KNjZLZUlPdHQyVzBKSGZtaVJtOXBhakV2?oc=5",
+   "source": "University of the Philippines Los Baños",
+   "publishedAt": "2026-10-19T04:05:03.000Z",
+   "original": "Forum advances roadmap for Philippine Aquilaria and agarwood industry",
+   "lang": "en",
+   "category": "ingredients",
+   "importance": 5,
+   "title": {
+    "ar": "منتدى يطرح خارطة طريق لصناعة العود والأكويلاريا في الفلبين",
+    "en": "Forum Advances Roadmap for the Philippine Aquilaria and Agarwood Industry"
+   },
+   "summary": {
+    "ar": "أفاد عنوان جامعة الفلبين في لوس بانيوس بأن منتدى دفع بخارطة طريق لصناعة الأكويلاريا والعود في الفلبين. ولا يورد المقتطف تفاصيل إضافية عن الخطوات المقترحة.",
+    "en": "The University of the Philippines Los Baños headline says a forum advanced a roadmap for the country’s Aquilaria and agarwood industry. The supplied listing gives no further details about the proposed steps."
+   },
+   "note": {
+    "ar": "تطورات هذا القطاع مهمة لمن يهتم بالعود، إذ تربط بين المادة العطرية ومستقبل صناعتها ومصادرها.",
+    "en": "Developments in this sector matter to oud enthusiasts, connecting a prized fragrance material with the future of its industry and sourcing."
+   }
+  },
+  {
+   "id": "nnws6tn",
+   "url": "https://news.google.com/rss/articles/CBMipAJBVV95cUxQWk1BT2VYRURQSDlaV1VsVDB2LVZlX1I5dTdsTU0yYWNlVmQ1U0l2ZlNkcFkydGdUS1htVF9TSlRINnE5VjFBQWJ1d0UtX2Q3X0Vvcm9waUY5bGx1WWk1ZHV4VFVXZl85V3pTcmNDbGhobkc2Vk1ZV0doY1l4V3NPRmNYaExfM1F0UXp0SFF4R19tSWF2bW0yQ1NoZ3dHZVh6WGZBNFVIc0tjNFprSWxfWGR4a3JDWGFVcXA1bEl1enBDenllUHVUSTQzcl9lemZTSmV1RzVzOC1QVnBjUmdIVk1raVlVbS1pNEZyMXhFRFBteU9IUEt0bFl0MHJwV1h2eU1YSUpPeEt6dXBVNGJzamtCcnp0ZXFxYXpIN0tCaEFOaUxn?oc=5",
+   "source": "BFM",
+   "publishedAt": "2026-10-18T13:25:42.000Z",
+   "original": "\"Oh, ça sent Rituals!\": face à une avalanche de 6.000 nouveaux parfums par an, Rituals lance le sien à 80 euros pour profiter du boom des fragrances de luxe",
+   "lang": "fr",
+   "category": "market",
+   "importance": 5,
+   "title": {
+    "ar": "Rituals تدخل سوق العطور الفاخرة بعطر بسعر 80 يورو",
+    "en": "Rituals Enters the Luxury Fragrance Market with an €80 Perfume"
+   },
+   "summary": {
+    "ar": "يربط عنوان BFM إطلاق عطر من Rituals بسعر 80 يورو بازدهار العطور الفاخرة، في ظل الإشارة إلى طرح 6,000 عطر جديد سنوياً. لا يوضح العنوان تفاصيل العطر أو موعد إطلاقه.",
+    "en": "BFM’s headline links Rituals’ €80 perfume launch to the luxury fragrance boom, against a backdrop of 6,000 new perfumes a year. It does not specify the scent’s details or launch date."
+   },
+   "note": {
+    "ar": "دخول علامة معروفة إلى هذه الفئة يوضح كيف تتنافس العلامات على جذب محبي العطور الفاخرة، لا على الرائحة وحدها بل على قيمة التجربة أيضاً.",
+    "en": "A familiar brand entering this tier shows how labels compete for luxury fragrance buyers—not only through scent, but through the perceived value of the experience."
+   }
+  },
+  {
+   "id": "n1df19q9",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQYjVFS0tqbmZ0a09GdFZEbDNNTHhWdE9veXMwdkNjR1pMamJ5aFMtcWRUWU8tVEU0YVlFUUdJejFtRE84dnpQUENRYU1FRXZRTExnU241aVlnZ3lsTmVZTEgtdnZoSUtMR0I0UEx2WTNyY3VpY05VVkZIOE11OVd4VVh1bmw5bUpWTE5TTGtvT0FxcklldUpqdWJOTzdnaDdtS3N0dmJ4TWFkaXcxeld3SUdscGZmUQ?oc=5",
+   "source": "WWD",
+   "publishedAt": "2026-10-17T20:09:15.000Z",
+   "original": "Scentbird Is Leading the Charge In Personalized Fragrance",
+   "lang": "en",
+   "category": "market",
+   "importance": 4,
+   "title": {
+    "ar": "Scentbird تقود التوجه نحو العطور المخصصة",
+    "en": "Scentbird Leads the Charge in Personalized Fragrance"
+   },
+   "summary": {
+    "ar": "يسلط عنوان WWD الضوء على دور Scentbird في التوجه نحو العطور المخصصة. ولا يقدم العنوان تفاصيل عن الخدمة أو آلية التخصيص.",
+    "en": "WWD highlights Scentbird’s role in the move toward personalized fragrance. The headline does not provide details about the service or how personalization works."
+   },
+   "note": {
+    "ar": "التخصيص يفتح مجالاً لمحبي العطور لاكتشاف ما يلائم ذوقهم، ويمنح صانعي العطور فرصة للتفكير في تجارب أكثر فردية.",
+    "en": "Personalization can help fragrance lovers explore what suits their taste and encourage makers to consider more individual experiences."
+   }
+  },
+  {
+   "id": "n1vze3yj",
+   "url": "https://nstperfume.com/2026/10/17/the-history-of-perfume-in-italy/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-17T15:08:09.000Z",
+   "original": "The history of perfume in Italy",
+   "lang": "en",
+   "category": "culture",
+   "importance": 4,
+   "title": {
+    "ar": "افتتاح متحف لتاريخ العطور في إيطاليا",
+    "en": "Museum Dedicated to the History of Perfume Opens in Italy"
+   },
+   "summary": {
+    "ar": "يذكر العنوان والمقتطف افتتاح مؤسسة Perfume Passage Foundation في ميلانو، على مساحة 1,000 متر مربع، وتضم مجموعتها أكثر من 3,000 قطعة من القرن التاسع عشر حتى سبعينيات القرن العشرين.",
+    "en": "The headline and excerpt report the opening of the Perfume Passage Foundation in Milan. Its 1,000-square-metre museum holds more than 3,000 items dating from the 19th century to the 1970s."
+   },
+   "note": {
+    "ar": "مثل هذه المجموعات تمنح محبي العطور فرصة لرؤية تطور أدواتها وقصصها عبر الزمن، لا الاكتفاء بتجربة الرائحة.",
+    "en": "Collections like this let fragrance enthusiasts explore the history of its objects and stories, beyond the experience of scent itself."
+   }
+  },
+  {
+   "id": "noe9dqe",
+   "url": "https://nstperfume.com/2026/10/16/matiere-premiere-cherry-amber-new-fragrance/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-16T17:38:03.000Z",
+   "original": "Matiere Premiere Cherry Amber ~ new fragrance",
+   "lang": "en",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "Matière Première تطلق عطر Cherry Amber",
+    "en": "Matière Première Launches Cherry Amber"
+   },
+   "summary": {
+    "ar": "بحسب المقتطف، أطلقت دار Matière Première الفرنسية المتخصصة عطر Cherry Amber للجنسين، وهو متاح حالياً حصرياً في الشرق الأوسط.",
+    "en": "According to the excerpt, French niche house Matière Première has launched Cherry Amber, a unisex fragrance currently exclusive to the Middle East."
+   },
+   "note": {
+    "ar": "الإطلاق الحصري إقليمياً يتيح لمحبي العطور في الشرق الأوسط فرصة مبكرة لاكتشاف إصدار جديد من الدار.",
+    "en": "The regional exclusivity gives fragrance lovers in the Middle East an early opportunity to discover a new release from the house."
+   }
+  },
+  {
+   "id": "n98s9ql",
+   "url": "https://nstperfume.com/2026/10/16/lentropiste-festin-new-fragrance/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-16T15:39:42.000Z",
+   "original": "L’Entropiste Festin ~ new fragrance",
+   "lang": "en",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "L’Entropiste تطلق عطر Festin",
+    "en": "L’Entropiste Launches Festin"
+   },
+   "summary": {
+    "ar": "يذكر المقتطف أن علامة L’Entropiste، التي أسسها العطار Bertrand Duchaufour، أطلقت Festin، وهو عطر خشبي جلدي للجنسين.",
+    "en": "The excerpt says L’Entropiste, the brand of perfumer Bertrand Duchaufour, has launched Festin, a unisex woody leather fragrance."
+   },
+   "note": {
+    "ar": "يجمع الوصف بين طابعين واضحين، الخشب والجلد، ما قد يهم من يبحث عن عطر ذي حضور دافئ ومميز.",
+    "en": "The woody and leather facets may appeal to those seeking a fragrance with a distinctive, warm character."
+   }
+  },
+  {
+   "id": "n124qllk",
+   "url": "https://nstperfume.com/2026/10/16/astier-de-villatte-tanger-new-fragrance/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-16T15:11:29.000Z",
+   "original": "Astier de Villatte Tanger ~ new fragrance",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "Astier de Villatte تطلق عطر Tanger",
+    "en": "Astier de Villatte Launches Tanger"
+   },
+   "summary": {
+    "ar": "يفيد المقتطف بأن علامة الخزف الفرنسية Astier de Villatte أطلقت عطراً جديداً باسم Tanger، من دون تفاصيل إضافية عن تركيبته.",
+    "en": "The excerpt reports that French ceramics brand Astier de Villatte has launched a new fragrance called Tanger, without further details about its composition."
+   },
+   "note": {
+    "ar": "إطلاق عطر من علامة ذات جذور في الخزف يذكّر بأن الإلهام العطري قد يأتي من عوالم إبداعية متعددة.",
+    "en": "A fragrance launch from a ceramics brand is a reminder that perfumery can draw inspiration from many creative fields."
+   }
+  },
+  {
+   "id": "nff8yv9",
+   "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxQcFRmcXBfT042LVMxeENLUFc3Nml5ZExOWEkteUZUa2oxSS0xYktMTU9kUzlmZDRYVjltX3RIdVR1RzE5QVpzVnFTRWpId3VlVEJjWTR5TzctaFNOQ1otTjU4NFh0V091eURvRVVOcFlVOW8yOFdGamRuU25mVl9USUhPejJwS0dqTjlDS0drT3JVX3NSWEFTcDZ2dmN1aE93ODhfUnMyVWRTbzk3eTRlbDNhVEI3OTFIaUZ6RTJrRjZzaVdWODl4OXpXbXRaUWxFMlc1d0xWV21kVm9Md3lUWUJxZ244OVow?oc=5",
+   "source": "Grazia",
+   "publishedAt": "2026-10-18T22:14:55.000Z",
+   "original": "Ginseng Biloba, la nouvelle échappée olfactive d’Hermès aux notes boisées, végétales et délicatement amères",
+   "lang": "fr",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "Grazia تتناول عطر Ginseng Biloba من Hermès",
+    "en": "Grazia Features Hermès’ Ginseng Biloba Fragrance"
+   },
+   "summary": {
+    "ar": "يصف عنوان Grazia عطر Ginseng Biloba من Hermès بأنه إصدار جديد بنفحات خشبية ونباتية ومرارة رقيقة. ولا يورد العنوان تفاصيل أخرى عن الإطلاق.",
+    "en": "Grazia describes Hermès’ Ginseng Biloba as a new fragrance with woody, vegetal and delicately bitter notes. The headline provides no further launch details."
+   },
+   "note": {
+    "ar": "الوصف يلفت إلى اتجاه يجمع بين النغمات النباتية والخشبية مع لمسة مرة، وهو تصور قد يثير فضول محبي الروائح غير التقليدية.",
+    "en": "The description points to a blend of vegetal and woody facets with a bitter touch, a profile that may intrigue those who enjoy less conventional scents."
+   }
+  },
+  {
+   "id": "n14nx9p",
+   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE40RTZfbEZMbk9yeDRQM29vYlZpMmJ1dFBZc1IzZWpILUtfM2F5UWVVMktSUVBROUU2a0ZXOWw5Z0ZNSXgyRGR3OHFFcTVRRWF6a3duTVFGcko?oc=5",
+   "source": "Babnet",
+   "publishedAt": "2026-10-17T16:09:18.000Z",
+   "original": "افتتاح فعاليات الدورة الرابعة للمهرجان الدولي للعود بالمدينة",
+   "lang": "ar",
+   "category": "events",
+   "importance": 3,
+   "title": {
+    "ar": "افتتاح الدورة الرابعة للمهرجان الدولي للعود في المدينة",
+    "en": "Fourth International Oud Festival Opens in the City"
+   },
+   "summary": {
+    "ar": "أفاد عنوان Babnet بافتتاح فعاليات الدورة الرابعة للمهرجان الدولي للعود في المدينة، من دون ذكر تفاصيل البرنامج في العنوان.",
+    "en": "Babnet reports the opening of the fourth edition of the International Oud Festival in the city; the headline does not give details of the programme."
+   },
+   "note": {
+    "ar": "المهرجانات المتخصصة تتيح لمحبي العود مساحة للاحتفاء به والتعرف إلى حضوره الثقافي والعطري.",
+    "en": "Specialist festivals give oud enthusiasts a space to celebrate the material and explore its cultural and olfactory significance."
+   }
+  },
+  {
+   "id": "n1qp4vt5",
+   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE50aGFnTUtTYzFxanVYQURJVkZ4a1lJbmJDWjlVeVFBbFVtYzRNM2c0NEJ5NDJ3bG1aanJTQjZRRDVnOE5qSkRxT2x3U3dpNTV5aWFwSlBhZ00?oc=5",
+   "source": "Babnet",
+   "publishedAt": "2026-10-18T21:11:43.000Z",
+   "original": "العود التونسي يستعيد حضوره بين الشباب من خلال \"دار العود التونسي\"",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "دار العود التونسي تعيد العود إلى اهتمام الشباب",
+    "en": "Dar Al Oud Al-Tounsi Brings Oud Back to Young People"
+   },
+   "summary": {
+    "ar": "يقول عنوان Babnet إن العود التونسي يستعيد حضوره بين الشباب من خلال «دار العود التونسي». ولا يقدم العنوان تفاصيل عن أنشطة الدار.",
+    "en": "Babnet’s headline says Tunisian oud is regaining a presence among young people through Dar Al Oud Al-Tounsi. It gives no details about the organization’s activities."
+   },
+   "note": {
+    "ar": "تجدد اهتمام الشباب بالعود قد يساعد على استمرار تقاليده وتوسيع جمهوره بين أجيال جديدة.",
+    "en": "Renewed interest among young people could help sustain oud traditions and introduce them to new generations."
+   }
+  },
+  {
+   "id": "n1ic6jnp",
+   "url": "https://news.google.com/rss/articles/CBMi3gNBVV95cUxOV1BnQmZ1Sk5SUVhuaERnYnRkanRKMFhvaEFzNkZKMkdlZWFlSHJGVU5hcUxGbVlTc0Rka0s5TUhDT1BJY0RlRi1EYmJ0UzdJcHpUNndFNzRjVDNXcUZZcUducjM4VDg2STJtbkZ3WkFzRXVFWVNwdDBZbGJjT3NwQUdIMVVFTHpHenctRndmWkpOMWhxckRsbThnVHN0TEcyNnA1M2FoaHlZdE04NU5vQXF6dXNzVFZXbDhxT0I3NFlBcDJScnd0Y3RlbU0zTV9LbkQ2RVZtQ2VTTnlVOG9sWnV1THF6b0pvbk0wX3k1LS1FRWRPMVRCdXZ0T2wzR1Q2VGV1MDBxakdBYUZsbjdLY3o4UVl2OWZEdnd6aXhpRHYyd2cxa0phN2F1SG8xZXpjalZnRExtdURBdTF3YVRvcVBHRGstVk9CODFvbXh1MHJTTEJrc2NpZndGaG5yWlVSUWNaTG5jc2lvLU9UZ3ZqaXdmRmxvWDFhRjFDQS1YaXJpek9MWkhrbk1ZOW9BVHFhNnQwYWMzeHRUYjQyUXp6QUpEVy13UF80VmY3M0pSSWVpam11Z1d6ZDZORHM5THNVY2RsMlZaNHUtUnZ0d1hIbTNZeGgyVS1YSjBZLW5R?oc=5",
+   "source": "الشرق الأوسط",
+   "publishedAt": "2026-10-18T10:44:21.000Z",
+   "original": "«بيت العود» يحتفي بأول دفعة من خريجيه في السعودية",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "بيت العود يحتفي بأول دفعة من خريجيه في السعودية",
+    "en": "Beit Al Oud Celebrates Its First Graduating Class in Saudi Arabia"
+   },
+   "summary": {
+    "ar": "ذكر عنوان الشرق الأوسط أن «بيت العود» احتفى بأول دفعة من خريجيه في السعودية، من دون تفاصيل إضافية عن البرنامج أو عدد الخريجين.",
+    "en": "Asharq Al-Awsat reports that Beit Al Oud celebrated its first graduating class in Saudi Arabia. The headline gives no further details about the programme or the number of graduates."
+   },
+   "note": {
+    "ar": "الاحتفاء بالتعليم الموسيقي المرتبط بالعود يعزز حضور الآلة وثقافتها، وإن كان الخبر ثقافياً لا يتعلق بصناعة العطور مباشرة.",
+    "en": "Celebrating oud education supports the instrument’s cultural presence, though this is a cultural story rather than a direct fragrance-industry development."
+   }
+  },
+  {
+   "id": "nunxcxo",
+   "url": "https://news.google.com/rss/articles/CBMi3gJBVV95cUxQNDYxaWtBUEVpbFVpQzFEWFVfZEtMNFY0NTM5M2xWUjRoUGE3Wk9tejgwS1AyQkRfQWNqV3NIdS00TEJ2S2VaM1l6TFN6TS1tVGhxR1NtNEdqNVVwWENRb2pIME1PZHEwT19sX3VsNmQxaGhVOERmUFdFZHd0VjdIck9JTjh1R0lsclhmUFRpVEc2OUl2VzdYTU4wVVhWN0h5ZGcxamlvMWp6YWdnaUo5Zm93ck1jamtJZllRQWV1MmVEcTZzRUFfVGlUVDgwLTBndHVaM3V3Z3FWaTFSMjRFbnVrMzhqUjZOOTNxcWUwNVg5ejRIQXZ1NnRCRG54VjZCYWluS2xreWhDcmdfdjI4YkxiS3ZCLXFOb2M4Z242LU5rbkJrNHVBTDh1aElhVjhvZzFMaGpPbXc1ZXg3WG9qR0JMeUFEbGVZSWN0VzVSN25ieFIwa0pSSmJMOXFaUQ?oc=5",
+   "source": "Manila Bulletin",
+   "publishedAt": "2026-10-17T05:00:37.000Z",
+   "original": "6 Filipino perfume finds to discover at Fragcom Meet’s ‘The Rising’",
+   "lang": "en",
+   "category": "market",
+   "importance": 3,
+   "title": {
+    "ar": "ستة اكتشافات عطرية فلبينية في فعالية Fragcom Meet",
+    "en": "Six Filipino Fragrance Finds at Fragcom Meet"
+   },
+   "summary": {
+    "ar": "يقدم عنوان Manila Bulletin ستة اكتشافات عطرية فلبينية للتعرف إليها في فعالية Fragcom Meet تحت عنوان «The Rising».",
+    "en": "Manila Bulletin highlights six Filipino fragrance finds to discover at Fragcom Meet’s event, “The Rising.”"
+   },
+   "note": {
+    "ar": "تسليط الضوء على العطور المحلية يوسع خيارات محبي العطور ويمنح العلامات الفلبينية مساحة للظهور.",
+    "en": "Spotlighting local fragrances broadens enthusiasts’ choices and gives Filipino brands a platform for visibility."
+   }
+  },
+  {
+   "id": "n1v1d446",
+   "url": "https://www.premiumbeautynews.com/fr/reel-contre-virtuel-les-clubs-de,28358",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-10-16T16:00:53.000Z",
+   "original": "Réel contre virtuel : Les clubs de parfum, nouvelle obsession des marques ?",
+   "lang": "en",
+   "category": "market",
+   "importance": 3,
+   "title": {
+    "ar": "نوادي العطور تتحول إلى تجربة اجتماعية واقعية للعلامات",
+    "en": "Perfume Clubs Become In-Person Social Experiences for Brands"
+   },
+   "summary": {
+    "ar": "يقول المقتطف إن نوادي محبي العطور تتشكل في الولايات المتحدة وأوروبا والصين، مع اعتماد علامات مستحضرات التجميل على هذا التوجه لتقديم اكتشاف العطور كتجربة اجتماعية.",
+    "en": "The excerpt says fragrance enthusiast clubs are forming in the United States, Europe and China, as beauty brands use the trend to make scent discovery a social experience."
+   },
+   "note": {
+    "ar": "اللقاءات المباشرة تمنح محبي العطور فرصة لتجربة الروائح وتبادل الآراء خارج العالم الافتراضي.",
+    "en": "In-person gatherings give fragrance lovers a chance to try scents and exchange views beyond the virtual world."
+   }
+  },
+  {
+   "id": "n1jey6nk",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQZXpsOUl2MTNmWndtSFNOcTFqdzhCNi13anUwWUxNOVJQSEc5UDFiNlNWV2RwRVdXM3pubHJNeVV6SGxHbmM0ZTFDS1VWSUR1ZXZKR3IzZTRPSmxEaDQ4S2tSeUhpM3FSdjIxdFF2U3ROZzVYQnJUbURRbThjNFZNRUs1alMtNXlsNlk4bS13dlNSNkRrZTNsamZid2ZjNlFfR2c?oc=5",
+   "source": "World IP Review",
+   "publishedAt": "2026-10-16T20:27:12.000Z",
+   "original": "Chanel blocks bottle shape mark in dispute over No. 5 perfume",
+   "lang": "en",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "Chanel تعترض على تسجيل شكل زجاجة في نزاع يتعلق بعطر No. 5",
+    "en": "Chanel Blocks a Bottle-Shape Mark in a Dispute Involving No. 5"
+   },
+   "summary": {
+    "ar": "يفيد عنوان World IP Review بأن Chanel منعت تسجيل علامة لشكل زجاجة في نزاع يتعلق بعطر No. 5. ولا يورد العنوان تفاصيل قانونية أخرى.",
+    "en": "World IP Review reports that Chanel blocked a bottle-shape mark in a dispute involving No. 5. The headline provides no further legal details."
+   },
+   "note": {
+    "ar": "توضح القضية أهمية شكل العبوة والهوية البصرية في حماية تميز العطور والعلامات التجارية.",
+    "en": "The dispute highlights the importance of bottle design and visual identity in protecting a fragrance’s and brand’s distinctiveness."
+   }
+  },
+  {
+   "id": "nubgdft",
+   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPUnd4V3djWG8xVDBLMWdudExJLWJJdTA3QXdEdGpVaWZaNTBqTThsUTEteUVOQWNJTXhUOFZwLWJFTFF4d2NiM0JTcGkwWnNpVkdGdmpLbXlrb1dRWldwcGotUHN4OHFTbUZvNUZtWWRBZTBpdzVnTzRvNGgzenVQdWFJWjJlemFLem1xRXRERS1UblR6WE5LdVZ3?oc=5",
+   "source": "L'Éclaireur Fnac",
+   "publishedAt": "2026-10-18T03:26:13.000Z",
+   "original": "Ateliers parfum avec Ilias de Elegance Emiratie",
+   "lang": "fr",
+   "category": "events",
+   "importance": 2,
+   "title": {
+    "ar": "ورش عطور مع Ilias من Elegance Emiratie",
+    "en": "Perfume Workshops with Ilias of Elegance Emiratie"
+   },
+   "summary": {
+    "ar": "يشير عنوان L’Éclaireur Fnac إلى تنظيم ورش عطور مع Ilias من Elegance Emiratie، من دون تفاصيل إضافية عن محتوى الورش.",
+    "en": "L’Éclaireur Fnac’s headline announces perfume workshops with Ilias of Elegance Emiratie, without further details about their content."
+   },
+   "note": {
+    "ar": "الورش العملية قد تمنح المشاركين مدخلاً مباشراً إلى عالم تركيب العطور وتجربتها.",
+    "en": "Hands-on workshops can offer participants a direct introduction to fragrance creation and exploration."
+   }
+  },
+  {
+   "id": "n1lxmnm4",
+   "url": "https://cafleurebon.com/lesser-known-notes-in-perfume-spices/?utm_source=rss&utm_medium=rss&utm_campaign=lesser-known-notes-in-perfume-spices",
+   "source": "CaFleureBon",
+   "publishedAt": "2026-10-17T20:07:31.000Z",
+   "original": "Lesser Known Notes in Perfume: Spices",
+   "lang": "en",
+   "category": "ingredients",
+   "importance": 2,
+   "title": {
+    "ar": "توابل أقل شيوعاً في صناعة العطور",
+    "en": "Lesser-Known Spices in Perfumery"
+   },
+   "summary": {
+    "ar": "يسرد المقتطف مواد مثل الحلتيت والكركم والكراوية والشمر والشبت والغالانغال والصولجان والبهار الحلو بوصفها توابل أقل شهرة في صناعة العطور.",
+    "en": "The excerpt lists asafoetida, turmeric, caraway, fennel, dill, galangal, mace and allspice as lesser-known spices used in perfumery."
+   },
+   "note": {
+    "ar": "استكشاف هذه المواد يوسع مفردات صانع العطر، وقد يلهم تجارب تتجاوز التوابل المألوفة.",
+    "en": "Exploring these materials can expand a perfumer’s palette and inspire experiments beyond familiar spices."
+   }
+  },
+  {
+   "id": "n1gsdc0d",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9pOFhfaVpXQllhUFR3Z2dWTVlKcV9fMmRYT0FWTVhZRnRzamlLTEhaLUpLXzVZckVmOFhVQ2pNZzg5bG5IS0FIeXQwRlhPV1VVbTRUQzdBS240akdqQVJV?oc=5",
+   "source": "Trend Hunter",
+   "publishedAt": "2026-10-19T07:41:29.000Z",
+   "original": "Multifunctional Fall Fragrances: Yves Rocher Introduces Pleines Natures Perfumed Body…",
+   "lang": "en",
+   "category": "launch",
+   "importance": 2,
+   "title": {
+    "ar": "Yves Rocher تقدم منتجات Pleines Natures المعطرة للجسم",
+    "en": "Yves Rocher Introduces Pleines Natures Perfumed Body Products"
+   },
+   "summary": {
+    "ar": "يشير عنوان Trend Hunter إلى تقديم Yves Rocher منتجات للجسم معطرة ضمن Pleines Natures، من دون تفاصيل إضافية عن المنتجات.",
+    "en": "Trend Hunter’s headline says Yves Rocher has introduced perfumed body products under Pleines Natures, without further product details."
+   },
+   "note": {
+    "ar": "المنتجات المعطرة للجسم توسع خيارات محبي الروائح اليومية إلى ما يتجاوز العطر التقليدي.",
+    "en": "Perfumed body products broaden everyday scent options beyond conventional perfume."
+   }
+  },
   {
    "id": "n1rxcjdx",
    "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5lLWpPaGtycC0zc2FyMk1wa3V5NG5CcjExSGZSMlhyWnZvdnA4eFhQTkdPakthMkVKa3JMZnUyX3NRUGhEU0pRa1lLUWhaUnlVbXRsTk1ZLUhBZVFHbUhB?oc=5",
@@ -121,42 +503,6 @@
    "summary": {
     "ar": "Zubby Michael Launches Ayirah Gold Fragrance Brand",
     "en": "Zubby Michael Launches Ayirah Gold Fragrance Brand"
-   }
-  },
-  {
-   "id": "nff8yv9",
-   "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxQcFRmcXBfT042LVMxeENLUFc3Nml5ZExOWEkteUZUa2oxSS0xYktMTU9kUzlmZDRYVjltX3RIdVR1RzE5QVpzVnFTRWpId3VlVEJjWTR5TzctaFNOQ1otTjU4NFh0V091eURvRVVOcFlVOW8yOFdGamRuU25mVl9USUhPejJwS0dqTjlDS0drT3JVX3NSWEFTcDZ2dmN1aE93ODhfUnMyVWRTbzk3eTRlbDNhVEI3OTFIaUZ6RTJrRjZzaVdWODl4OXpXbXRaUWxFMlc1d0xWV21kVm9Md3lUWUJxZ244OVow?oc=5",
-   "source": "Grazia",
-   "publishedAt": "2026-10-18T22:14:55.000Z",
-   "original": "Ginseng Biloba, la nouvelle échappée olfactive d’Hermès aux notes boisées, végétales et délicatement amères",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Ginseng Biloba, la nouvelle échappée olfactive d’Hermès aux notes boisées, végétales et délicatement amères",
-    "en": "Ginseng Biloba, la nouvelle échappée olfactive d’Hermès aux notes boisées, végétales et délicatement amères"
-   },
-   "summary": {
-    "ar": "Ginseng Biloba, la nouvelle échappée olfactive d’Hermès aux notes boisées, végétales et délicatement amères",
-    "en": "Ginseng Biloba, la nouvelle échappée olfactive d’Hermès aux notes boisées, végétales et délicatement amères"
-   }
-  },
-  {
-   "id": "n1qp4vt5",
-   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE50aGFnTUtTYzFxanVYQURJVkZ4a1lJbmJDWjlVeVFBbFVtYzRNM2c0NEJ5NDJ3bG1aanJTQjZRRDVnOE5qSkRxT2x3U3dpNTV5aWFwSlBhZ00?oc=5",
-   "source": "Babnet",
-   "publishedAt": "2026-10-18T21:11:43.000Z",
-   "original": "العود التونسي يستعيد حضوره بين الشباب من خلال \"دار العود التونسي\"",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "العود التونسي يستعيد حضوره بين الشباب من خلال \"دار العود التونسي\"",
-    "en": "العود التونسي يستعيد حضوره بين الشباب من خلال \"دار العود التونسي\""
-   },
-   "summary": {
-    "ar": "العود التونسي يستعيد حضوره بين الشباب من خلال \"دار العود التونسي\"",
-    "en": "العود التونسي يستعيد حضوره بين الشباب من خلال \"دار العود التونسي\""
    }
   },
   {
@@ -355,316 +701,6 @@
    "summary": {
     "ar": "Smells like Taylor Swift: Decoding the pop icon’s favourite perfumes",
     "en": "Smells like Taylor Swift: Decoding the pop icon’s favourite perfumes"
-   }
-  },
-  {
-   "id": "n9565nx",
-   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5wcklYUEY5aHBZRWhmUEo5MDhaZWxqZjNjbHNuVnlaazl3SXNwMmRjMDJPbVVmQVpacVA2TlZuTmx1M1I0NEl3RnJ2NE9XV3ZySFZ4dWxETTdhOUtYZXVib0h0a0ltSTRmcEduUk5hOWEzVGxaYnc?oc=5",
-   "source": "Motor1.com",
-   "publishedAt": "2026-10-18T15:07:13.000Z",
-   "original": "Man Gets Into Lincoln. Then He Notices It Has A Little-Known Perfume Feature: ‘My Car Just Asked If We’re Poor’",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Man Gets Into Lincoln. Then He Notices It Has A Little-Known Perfume Feature: ‘My Car Just Asked If We’re Poor’",
-    "en": "Man Gets Into Lincoln. Then He Notices It Has A Little-Known Perfume Feature: ‘My Car Just Asked If We’re Poor’"
-   },
-   "summary": {
-    "ar": "Man Gets Into Lincoln. Then He Notices It Has A Little-Known Perfume Feature: ‘My Car Just Asked If We’re Poor’",
-    "en": "Man Gets Into Lincoln. Then He Notices It Has A Little-Known Perfume Feature: ‘My Car Just Asked If We’re Poor’"
-   }
-  },
-  {
-   "id": "nnws6tn",
-   "url": "https://news.google.com/rss/articles/CBMipAJBVV95cUxQWk1BT2VYRURQSDlaV1VsVDB2LVZlX1I5dTdsTU0yYWNlVmQ1U0l2ZlNkcFkydGdUS1htVF9TSlRINnE5VjFBQWJ1d0UtX2Q3X0Vvcm9waUY5bGx1WWk1ZHV4VFVXZl85V3pTcmNDbGhobkc2Vk1ZV0doY1l4V3NPRmNYaExfM1F0UXp0SFF4R19tSWF2bW0yQ1NoZ3dHZVh6WGZBNFVIc0tjNFprSWxfWGR4a3JDWGFVcXA1bEl1enBDenllUHVUSTQzcl9lemZTSmV1RzVzOC1QVnBjUmdIVk1raVlVbS1pNEZyMXhFRFBteU9IUEt0bFl0MHJwV1h2eU1YSUpPeEt6dXBVNGJzamtCcnp0ZXFxYXpIN0tCaEFOaUxn?oc=5",
-   "source": "BFM",
-   "publishedAt": "2026-10-18T13:25:42.000Z",
-   "original": "\"Oh, ça sent Rituals!\": face à une avalanche de 6.000 nouveaux parfums par an, Rituals lance le sien à 80 euros pour profiter du boom des fragrances de luxe",
-   "lang": "fr",
-   "category": "launch",
-   "importance": 2,
-   "title": {
-    "ar": "\"Oh, ça sent Rituals!\": face à une avalanche de 6.000 nouveaux parfums par an, Rituals lance le sien à 80 euros pour profiter du boom des fragrances de luxe",
-    "en": "\"Oh, ça sent Rituals!\": face à une avalanche de 6.000 nouveaux parfums par an, Rituals lance le sien à 80 euros pour profiter du boom des fragrances de luxe"
-   },
-   "summary": {
-    "ar": "\"Oh, ça sent Rituals!\": face à une avalanche de 6.000 nouveaux parfums par an, Rituals lance le sien à 80 euros pour profiter du boom des fragrances de luxe",
-    "en": "\"Oh, ça sent Rituals!\": face à une avalanche de 6.000 nouveaux parfums par an, Rituals lance le sien à 80 euros pour profiter du boom des fragrances de luxe"
-   }
-  },
-  {
-   "id": "nbo77gj",
-   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNbzVQcHdqc0lTUVF6b1NyZHFNQnI3OHdma0pqZ2pHSjJNNXE4bUc1TmFHYTQtMnAwY3kyLWI3NzRVZ2xtZFFaeTFhc0hwMVMyMFFBVGJTc05MT25TMDBLLUZvQ3B3RFZ3UURzS3Q5a2hEQUdTRzc2V2pDdnVfczdZVnpmWnJWQ01tR3JtUElrQnFTOVJSZHVtQ094TlE4LUdHbEFORDVwR2JuVnlL?oc=5",
-   "source": "Vietnam.vn",
-   "publishedAt": "2026-10-18T12:48:27.000Z",
-   "original": "يزور الشباب مقبرة شهداء مدينة هو تشي منه لوضع الزهور وإشعال البخور تخليداً لذكرى الشهداء الأبطال.",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "يزور الشباب مقبرة شهداء مدينة هو تشي منه لوضع الزهور وإشعال البخور تخليداً لذكرى الشهداء الأبطال.",
-    "en": "يزور الشباب مقبرة شهداء مدينة هو تشي منه لوضع الزهور وإشعال البخور تخليداً لذكرى الشهداء الأبطال."
-   },
-   "summary": {
-    "ar": "يزور الشباب مقبرة شهداء مدينة هو تشي منه لوضع الزهور وإشعال البخور تخليداً لذكرى الشهداء الأبطال.",
-    "en": "يزور الشباب مقبرة شهداء مدينة هو تشي منه لوضع الزهور وإشعال البخور تخليداً لذكرى الشهداء الأبطال."
-   }
-  },
-  {
-   "id": "n1ic6jnp",
-   "url": "https://news.google.com/rss/articles/CBMi3gNBVV95cUxOV1BnQmZ1Sk5SUVhuaERnYnRkanRKMFhvaEFzNkZKMkdlZWFlSHJGVU5hcUxGbVlTc0Rka0s5TUhDT1BJY0RlRi1EYmJ0UzdJcHpUNndFNzRjVDNXcUZZcUducjM4VDg2STJtbkZ3WkFzRXVFWVNwdDBZbGJjT3NwQUdIMVVFTHpHenctRndmWkpOMWhxckRsbThnVHN0TEcyNnA1M2FoaHlZdE04NU5vQXF6dXNzVFZXbDhxT0I3NFlBcDJScnd0Y3RlbU0zTV9LbkQ2RVZtQ2VTTnlVOG9sWnV1THF6b0pvbk0wX3k1LS1FRWRPMVRCdXZ0T2wzR1Q2VGV1MDBxakdBYUZsbjdLY3o4UVl2OWZEdnd6aXhpRHYyd2cxa0phN2F1SG8xZXpjalZnRExtdURBdTF3YVRvcVBHRGstVk9CODFvbXh1MHJTTEJrc2NpZndGaG5yWlVSUWNaTG5jc2lvLU9UZ3ZqaXdmRmxvWDFhRjFDQS1YaXJpek9MWkhrbk1ZOW9BVHFhNnQwYWMzeHRUYjQyUXp6QUpEVy13UF80VmY3M0pSSWVpam11Z1d6ZDZORHM5THNVY2RsMlZaNHUtUnZ0d1hIbTNZeGgyVS1YSjBZLW5R?oc=5",
-   "source": "الشرق الأوسط",
-   "publishedAt": "2026-10-18T10:44:21.000Z",
-   "original": "«بيت العود» يحتفي بأول دفعة من خريجيه في السعودية",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "«بيت العود» يحتفي بأول دفعة من خريجيه في السعودية",
-    "en": "«بيت العود» يحتفي بأول دفعة من خريجيه في السعودية"
-   },
-   "summary": {
-    "ar": "«بيت العود» يحتفي بأول دفعة من خريجيه في السعودية",
-    "en": "«بيت العود» يحتفي بأول دفعة من خريجيه في السعودية"
-   }
-  },
-  {
-   "id": "n1wwzw9e",
-   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOTzIzMXJhV3V0WVlEbFFLTTVNYS1oX21wWDhTTFBOVGVleE0yMVlvZmtUeC1EdmtGSUJzanh3em1VSGFnZmV0Q3Y5ekhsUmFNSUV6UFRwTVJKemtUVUpyUGhvbjktaXUwcWZXWEJfRG9WMVBnMVdLZkt0M3pDcl9fMG5PMWxNQmFQSDA5bEFn?oc=5",
-   "source": "Vietnam.vn",
-   "publishedAt": "2026-10-18T07:41:06.000Z",
-   "original": "ثماني متسابقات في مسابقة ملكة جمال فيتنام يقدمن البخور في كون سون - كيت باك.",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "ثماني متسابقات في مسابقة ملكة جمال فيتنام يقدمن البخور في كون سون - كيت باك.",
-    "en": "ثماني متسابقات في مسابقة ملكة جمال فيتنام يقدمن البخور في كون سون - كيت باك."
-   },
-   "summary": {
-    "ar": "ثماني متسابقات في مسابقة ملكة جمال فيتنام يقدمن البخور في كون سون - كيت باك.",
-    "en": "ثماني متسابقات في مسابقة ملكة جمال فيتنام يقدمن البخور في كون سون - كيت باك."
-   }
-  },
-  {
-   "id": "n1vqfnjp",
-   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQZkR4TzFMVjdvX2dNdHRxYzAyZlFUdzV4NDZCdTVUQVhjVVR4SnphNFpsdUtkZ1hKcG5oNGI0djlua3U2WGNsZFFXN3UwcUQyTmZacDh5WXdKQmZIc293WHRQWHgzQ0xaU0xTb1lERUVYemJPOFVTemxGUEYxeXlxQzJUY2dnV2s1b3p3bjFLeGFyVmJjaU12OW5Yd1JVYTJ2MW1mRTVCWkJFZTA0NzE1RkJtYVRyVmlRVlhreldZWHo?oc=5",
-   "source": "NationalWorld",
-   "publishedAt": "2026-10-17T21:26:10.000Z",
-   "original": "Jo Malone London has launched a whisky and vanilla perfume and I'm obsessed",
-   "lang": "en",
-   "category": "launch",
-   "importance": 5,
-   "title": {
-    "ar": "إطلاق عطر جديد بنوتات الويسكي والفانيليا من Jo Malone London",
-    "en": "Jo Malone London Launches Whisky and Vanilla Fragrance"
-   },
-   "summary": {
-    "ar": "أطلقت دار Jo Malone London عطراً جديداً يجمع بين نوتات الويسكي والفانيليا.",
-    "en": "Jo Malone London has launched a new fragrance blending whisky and vanilla notes."
-   },
-   "note": {
-    "ar": "هذا الدمج الجريء بين الويسكي والفانيليا يقدم تجربة دافئة ومثالية لعشاق العطور الشرقية والغورماند في الشتاء.",
-    "en": "This bold combination of whisky and vanilla offers a warm, cozy experience ideal for gourmand and oriental fragrance lovers in winter."
-   }
-  },
-  {
-   "id": "noe9dqe",
-   "url": "https://nstperfume.com/2026/10/16/matiere-premiere-cherry-amber-new-fragrance/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-16T17:38:03.000Z",
-   "original": "Matiere Premiere Cherry Amber ~ new fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 5,
-   "title": {
-    "ar": "دار Matière Première تطلق عطر Cherry Amber حصرياً في الشرق الأوسط",
-    "en": "Matière Première Launches Cherry Amber Exclusively in the Middle East"
-   },
-   "summary": {
-    "ar": "أطلقت دار العطور النيش الفرنسية Matière Première عطرها الجديد والجنسين Cherry Amber حصرياً لمنطقة الشرق الأوسط.",
-    "en": "French niche perfume house Matière Première has launched its new unisex fragrance, Cherry Amber, exclusively in the Middle East."
-   },
-   "note": {
-    "ar": "اختيار الشرق الأوسط لإطلاق هذا العطر الحصري يبرز أهمية المنطقة الاستراتيجية لدور النيش العالمية.",
-    "en": "Choosing the Middle East for this exclusive launch highlights the region's strategic importance to global niche houses."
-   }
-  },
-  {
-   "id": "n1vze3yj",
-   "url": "https://nstperfume.com/2026/10/17/the-history-of-perfume-in-italy/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-17T15:08:09.000Z",
-   "original": "The history of perfume in Italy",
-   "lang": "en",
-   "category": "events",
-   "importance": 4,
-   "title": {
-    "ar": "افتتاح مؤسسة Perfume Passage لدعم تاريخ العطور في ميلانو",
-    "en": "Perfume Passage Foundation Opens Museum Dedicated to Perfume History in Milan"
-   },
-   "summary": {
-    "ar": "افتتحت مؤسسة Perfume Passage متحفاً في ميلانو مخصصاً لتاريخ العطور في إيطاليا يضم أكثر من 3000 قطعة.",
-    "en": "The Perfume Passage Foundation has opened a museum in Milan dedicated to the history of perfume in Italy, featuring over 3,000 items."
-   },
-   "note": {
-    "ar": "فرصة رائعة لعشاق العطور التاريخية لاستكشاف تراث صناعة العطور عبر القرون.",
-    "en": "A wonderful opportunity for vintage fragrance lovers to explore the heritage of perfumery across the centuries."
-   }
-  },
-  {
-   "id": "nl1ioaz",
-   "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxPT2ZzRU1Tb3lZT3hvYnRCUHdlWldxeERDYkFJOVVQREpMRWNKVi04TnhsZlg2QzVlTVp6VjE5VDF5Z29ZVVY3STkxR1FVR3lEY2k1TlZNaURzbHUtOHBycndZUURyc1NLeTdXWndGUWd3STVXdEl1amFJR1hQZUFNNW9NclZXZkVscE1nTXBJNHBOa0NZOUdubmhxUVRGNk9JTFM0dUxxRzJuNHllX2RRZmFGVHExSDhWZ0hYcVQyRlVFaWl5OTNlelhxOEFQZEpxckt5S9IB2wFBVV95cUxOUzJneVVMdlA0YjFYMDdSZ3p0SVZZYTdRLThWLUFaVEhiUVFjYkVJZWZXeERKZ2FCdmpFYXN6XzJMUGZKRURUeTZDeGJuTU1RdTZ3b2NvdHo0RklCejVhVno2aWxLa2V1ZFNQUzAtMG9TNXhlUFpuaDQzQTYya0xBMFAxSFpqMkVQWXRVeGZEUjUxVGFWUnp1UTVubUVvY3pGdHQ4WENfU0JFRzdtbXVQanRhZHRvVnExVlhvTFJmcTNaZVk0dUxZclphUnpsTDU0UEtkQmV1NU54XzQ?oc=5",
-   "source": "Indian Chemical News",
-   "publishedAt": "2026-10-16T12:37:59.000Z",
-   "original": "Symrise opens Singapore Scent Creative Center to accelerate fragrance innovation in Asia",
-   "lang": "en",
-   "category": "industry",
-   "importance": 4,
-   "title": {
-    "ar": "شركة Symrise تفتتح مركزاً إبداعياً للروائح في سنغافورة",
-    "en": "Symrise Opens Singapore Scent Creative Center for Asian Innovation"
-   },
-   "summary": {
-    "ar": "افتتحت شركة Symrise مركزاً جديداً للابتكار العطري في سنغافورة لتسريع تطوير العطور في آسيا.",
-    "en": "Symrise has opened a new Scent Creative Center in Singapore to accelerate fragrance innovation in Asia."
-   },
-   "note": {
-    "ar": "يؤكد هذا التوسع حرص الشركات الكبرى على تلبية أذواق الأسواق الآسيوية الصاعدة بابتكارات محلية.",
-    "en": "This expansion highlights major companies' commitment to catering to rising Asian markets with localized innovations."
-   }
-  },
-  {
-   "id": "ncaoeuq",
-   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOWHIxZ21Yb2RRM01zZE9WZHV6M2VsQjNXZk9LVGc2TlVNMVBJSU5wdUpFajFDWmFxUVZSbnZKSGYyMS0ta0owb1ZLOEJSVndSR2syRURnVzlIYW5aU0FlWWtXcXFoT2hNalpZc3BESTlUek1yNGFVRHdPZmRkMC1PQzUyYkJEUQ?oc=5",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-10-16T11:30:04.000Z",
-   "original": "DSM-Firmenich opens New York fine fragrance space",
-   "lang": "en",
-   "category": "industry",
-   "importance": 4,
-   "title": {
-    "ar": "شركة dsm-firmenich تفتتح مساحة جديدة للعطور الفاخرة في نيويورك",
-    "en": "dsm-firmenich Opens New Fine Fragrance Space in New York"
-   },
-   "summary": {
-    "ar": "افتتحت شركة dsm-firmenich مساحة جديدة مخصصة للعطور الفاخرة في مدينة نيويورك.",
-    "en": "dsm-firmenich has opened a new space dedicated to fine fragrances in New York City."
-   },
-   "note": {
-    "ar": "هذه المساحات الجديدة تدعم صانعي العطور في ابتكار تركيبات فريدة ومبتكرة للأسواق الغربية والعالمية.",
-    "en": "These new spaces empower perfumers to craft unique and innovative compositions for Western and global markets."
-   }
-  },
-  {
-   "id": "n14nx9p",
-   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE40RTZfbEZMbk9yeDRQM29vYlZpMmJ1dFBZc1IzZWpILUtfM2F5UWVVMktSUVBROUU2a0ZXOWw5Z0ZNSXgyRGR3OHFFcTVRRWF6a3duTVFGcko?oc=5",
-   "source": "Babnet",
-   "publishedAt": "2026-10-17T16:09:18.000Z",
-   "original": "افتتاح فعاليات الدورة الرابعة للمهرجان الدولي للعود بالمدينة",
-   "lang": "ar",
-   "category": "events",
-   "importance": 3,
-   "title": {
-    "ar": "انطلاق الدورة الرابعة للمهرجان الدولي للعود بالمدينة",
-    "en": "The 4th International Oud Festival Kicks Off"
-   },
-   "summary": {
-    "ar": "افتُتحت فعاليات الدورة الرابعة للمهرجان الدولي للعود وسط حضور ثقافي وموسيقي مميز.",
-    "en": "The 4th edition of the International Oud Festival has opened amidst prominent cultural and musical presence."
-   },
-   "note": {
-    "ar": "احتفاء فني وثقافي بآلة العود ورمزيتها العميقة في التراث العربي.",
-    "en": "An artistic and cultural celebration of the oud instrument and its deep symbolism in Arab heritage."
-   }
-  },
-  {
-   "id": "n1lxmnm4",
-   "url": "https://cafleurebon.com/lesser-known-notes-in-perfume-spices/?utm_source=rss&utm_medium=rss&utm_campaign=lesser-known-notes-in-perfume-spices",
-   "source": "CaFleureBon",
-   "publishedAt": "2026-10-17T20:07:31.000Z",
-   "original": "Lesser Known Notes in Perfume: Spices",
-   "lang": "en",
-   "category": "ingredients",
-   "importance": 3,
-   "title": {
-    "ar": "تسليط الضوء على التوابل النادرة في صناعة العطور",
-    "en": "Highlighting Lesser-Known Spices in Perfumery"
-   },
-   "summary": {
-    "ar": "نشرت مدونة متخصصة مقالاً عن التوابل الأقل شهرة في صناعة العطور مثل الكركم والكمون والخولنجان.",
-    "en": "A specialized blog published an article on lesser-known spices used in perfumery, such as turmeric, caraway, and galangal."
-   },
-   "note": {
-    "ar": "استخدام هذه النوتات غير التقليدية يمنح صانعي العطور أبعاداً حارة وعميقة ومبتكرة.",
-    "en": "Using these unconventional notes gives perfumers spicy, deep, and innovative dimensions."
-   }
-  },
-  {
-   "id": "nef9089",
-   "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQNWwzZEozUWNFNUpjQ2lWQ1pnSkF1bGVpbHprbWJJZTUwWGNiVFlWd05IT3FvR0FmSEF0TVY2MXZRVkV2UkRRRUJzNW5hSXVKTVdhdjU4MTI2by00Smc2MXc5bTVnanhNYWRnVVpkZzdVOHdoUmxRODhiTnFLNTFTYjJPWnVreFpsXzd4cmZ1UG5YYlVSVlY5UVQtcDJYNE4zQjM1a1VXaWxib1lyTmd6c05kUHFPQ0VVa2toQTlmdUtkWVE?oc=5",
-   "source": "ChemAnalyst",
-   "publishedAt": "2026-10-16T06:55:14.000Z",
-   "original": "Symrise Expands Globalide Production in India to Boost Sustainable Fragrance Supply",
-   "lang": "en",
-   "category": "ingredients",
-   "importance": 3,
-   "title": {
-    "ar": "شركة Symrise توسع إنتاج مادة Globalide في الهند لدعم الاستدامة",
-    "en": "Symrise Expands Globalide Production in India for Sustainable Supply"
-   },
-   "summary": {
-    "ar": "قامت شركة Symrise بتوسيع إنتاج مادة Globalide المسكية في الهند لتعزيز إمدادات العطور المستدامة.",
-    "en": "Symrise has expanded the production of Globalide musk in India to boost sustainable fragrance supply."
-   },
-   "note": {
-    "ar": "الاستدامة وتوفير مواد أولية صديقة للبيئة باتت توجهاً رئيسياً لشركات تصنيع الروائح الكبرى.",
-    "en": "Sustainability and providing eco-friendly raw materials have become a major focus for major aroma manufacturers."
-   }
-  },
-  {
-   "id": "n98s9ql",
-   "url": "https://nstperfume.com/2026/10/16/lentropiste-festin-new-fragrance/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-16T15:39:42.000Z",
-   "original": "L’Entropiste Festin ~ new fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "إطلاق عطر Festin الخشبي الجلدي من دار L’Entropiste",
-    "en": "L’Entropiste Launches New Woody Leather Fragrance Festin"
-   },
-   "summary": {
-    "ar": "أطلقت دار L’Entropiste للعطور عطرها الجديد Festin بتوقيع العطار برتراند دوشوفور.",
-    "en": "Perfume brand L’Entropiste has launched its new fragrance Festin, created by perfumer Bertrand Duchaufour."
-   },
-   "note": {
-    "ar": "عطر خشبي جلدي جديد يضيف خياراً قوياً لعشاق الطابع الجريء في عطور النيش.",
-    "en": "A new woody leather fragrance adding a strong option for lovers of bold character in niche perfumery."
-   }
-  },
-  {
-   "id": "n124qllk",
-   "url": "https://nstperfume.com/2026/10/16/astier-de-villatte-tanger-new-fragrance/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-16T15:11:29.000Z",
-   "original": "Astier de Villatte Tanger ~ new fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 2,
-   "title": {
-    "ar": "دار السيراميك الفرنسية Astier de Villatte تطلق عطر Tanger",
-    "en": "French Ceramics Brand Astier de Villatte Launches Tanger Fragrance"
-   },
-   "summary": {
-    "ar": "أطلقت دار الخزف الفرنسية Astier de Villatte عطراً جديداً يحمل اسم Tanger.",
-    "en": "French ceramics brand Astier de Villatte has launched a new fragrance named Tanger."
-   },
-   "note": {
-    "ar": "تعاونات دور الفنون والحرف اليدوية مع صناعة العطور تقدم دائماً إطلاقات ذات طابع فني فريد.",
-    "en": "Collaborations between arts and crafts houses and the perfume industry always yield uniquely artistic releases."
    }
   }
  ]
