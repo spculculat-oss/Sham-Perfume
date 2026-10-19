@@ -55,3 +55,8 @@ body[data-sham-focus='messenger'] .sham-floating { display: none !important; }
   .sham-product-in-next, .sham-product-in-prev { animation: none !important; }
   .sham-product-progress { animation: none !important; transform: scaleX(0); }
 }
+
+/* «مجتمع شام» على طريقة فيسبوك: the stories strip scrolls sideways without a bar; the story viewer's progress line. */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+@keyframes sham-story-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }

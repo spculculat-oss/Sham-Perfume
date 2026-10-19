@@ -40,8 +40,8 @@ export function Btn({ variant = 'primary', busy, small, className = '', children
   );
 }
 
-export const Card = ({ children, className = '' }: { children: ReactNode; className?: string }) => (
-  <div className={`rounded-2xl border border-stone-200 bg-white shadow-sm ${className}`}>{children}</div>
+export const Card = ({ children, className = '', onClick }: { children: ReactNode; className?: string; onClick?: (e: React.MouseEvent<HTMLDivElement>) => void }) => (
+  <div onClick={onClick} className={`rounded-2xl border border-stone-200 bg-white shadow-sm ${className}`}>{children}</div>
 );
 
 export function Field({ label, hint, children }: { label: string; hint?: string; children: ReactNode }) {

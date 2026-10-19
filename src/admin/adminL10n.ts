@@ -689,6 +689,7 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   'الكل': { en: 'All' },
   'مفتوحة': { en: 'open' },
   '· تم الحل ✅': { en: '· Resolved ✅' },
+  'إخفاء المحتوى': { en: 'Hide content' },
   '· متجاهلة': { en: '· Ignored' },
   'بدون سبب مسجل': { en: 'No recorded reason' },
   'يحتاج SHAM_ADMIN_TOKEN': { en: 'Needs SHAM_ADMIN_TOKEN' },

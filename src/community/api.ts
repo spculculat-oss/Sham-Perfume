@@ -71,6 +71,25 @@ export interface Post {
 }
 export interface Comment { id: string; body: string; createdAt: string; author: PublicUser; mine: boolean }
 export interface Notification { id: string; kind: string; ref: string; createdAt: string; read: boolean; actor: PublicUser | null }
+/* «مجتمع شام» على طريقة فيسبوك (server/community/hub.ts) */
+export interface StoryItem { id: string; image: string | null; caption: string; bg: string; visibility: 'friends' | 'public'; createdAt: string; expiresAt: string; seen: boolean; views?: number }
+export interface StoryGroup { user: PublicUser; mine: boolean; seen: boolean; latest: string; items: StoryItem[] }
+export interface Thread {
+  id: string; category: string; title: string; body: string; tags: string[]; author: PublicUser; mine: boolean; votes: number; voted: boolean;
+  replies: number; solvedReply: string | null; pinned: boolean; createdAt: string; lastAt: string;
+}
+export interface ThreadReply { id: string; body: string; createdAt: string; author: PublicUser; mine: boolean; accepted: boolean }
+export interface ThreadView extends Thread { replyList: ThreadReply[] }
+export interface ProductReview {
+  id: string; rating: number; title: string; body: string; longevity: string; sillage: string; verified: boolean; helpful: number; voted: boolean; mine: boolean;
+  createdAt: string; updatedAt: string; author: { id: string; handle: string; name: string; avatar: string | null; country: string };
+}
+export interface ReviewSummary { sku: string; count: number; average: number; spread: number[]; reviews: ProductReview[]; canVerify: boolean }
+export interface ProfileView {
+  user: PublicUser; since: string | null; relation: 'self' | 'friends' | 'requested' | 'incoming' | 'blocked' | 'none';
+  counts: { friends: number; posts: number; recipes: number }; friends: PublicUser[]; posts: Post[];
+  recipes: { id: string; title: string; data: Record<string, unknown>; updatedAt: string }[];
+}
 export interface Recipe { id: string; title: string; data: Record<string, any>; notes: string; visibility: 'private' | 'friends' | 'public'; createdAt: string; updatedAt: string }
 export interface Learning { itemId: string; kind: string; title: string; progress: number; updatedAt: string }
 export interface Order {
