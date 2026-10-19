@@ -16,6 +16,7 @@ const VAT_RATES: Record<string, { rate: number; name: string }> = {
   US: { rate: 0, name: 'Sales tax varies by state' },
 };
 
+/** Customer-facing amounts only; internal costs and margins are not invoice line items. */
 export const StoreInvoiceBreakdown: React.FC<{
   subtotal: number;
   shipping: number;
@@ -70,9 +71,6 @@ export const StoreInvoiceBreakdown: React.FC<{
             ? 'هذا تقدير استرشادي وليس فاتورة ضريبية أو مبلغاً محصّلاً. قد تُستحق ضرائب أو جمارك منفصلة حسب الطلب والبلد. مبلغ الدفع الفعلي يظهر في صفحة البوابة؛ الفاتورة الرسمية عند وجوبها مسؤولية التاجر.'
             : 'This is an indicative estimate, not a tax invoice or a collected amount. Separate taxes or duties may apply to the order and country. The gateway shows the actual charge; the merchant is responsible for any required official invoice.'}
         </span>
-      </div>
-      <div className="text-[10px] text-stone-400">
-        {lang === 'ar' ? 'هامش المنصة 25-50% مضمّن — الشفافية مطلوبة (EU UCPD). الجمارك تقديرية عند الدفع.' : 'Platform margin 25-50% included — transparency (EU UCPD). Customs duties are estimates at checkout.'}
       </div>
     </div>
   );

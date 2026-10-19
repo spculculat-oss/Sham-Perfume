@@ -132,7 +132,11 @@ test('merchants: review before publishing, private source links, +50 % price, no
   assert.equal(order.amount, 50, 'the merchant sees their own price × qty');
   assert.equal(JSON.stringify(order).includes('Pyramids'), false, 'not the buyer address');
   assert.equal((await svc.myProducts(ctx, seller.id))[0].stock, 7);
-  assert.equal((await svc.myOrders(ctx, buyer.id))[0].store, 'Oud House');
+  const [buyerOrder] = await svc.myOrders(ctx, buyer.id);
+  assert.equal(buyerOrder.store, 'Oud House');
+  assert.equal(buyerOrder.total, 4650, 'hiding the margin never changes the customer total');
+  assert.doesNotMatch(JSON.stringify(buyerOrder), /margin|commission|markup|merchantUnit|merchant_total|costPrice|platformRevenue/i,
+    'customer order/receipt data must not expose internal pricing or margin fields');
   const [adminOrder] = await admin.orders(ctx);
   assert.equal(adminOrder.address.line, '12 Pyramids St');
   assert.equal(adminOrder.marginEgp, 1300, 'the site margin (2 × (1900 − 1250 EGP)) is recorded for the administration');
