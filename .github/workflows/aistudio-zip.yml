@@ -49,8 +49,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          rel=$(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=30" -q '[.[] | select(.draft and .tag_name == "aistudio-upload")][0].id // empty')
-          [ -n "$rel" ] || { echo "No draft release «aistudio-upload»"; echo "asset=" >> "$GITHUB_OUTPUT"; exit 0; }
+          rel=$(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=30" -q '[.[] | select(.tag_name == "aistudio-upload")][0].id // empty')
+          [ -n "$rel" ] || { echo "No release «aistudio-upload»"; echo "asset=" >> "$GITHUB_OUTPUT"; exit 0; }
           asset=$(gh api "repos/$GITHUB_REPOSITORY/releases/$rel/assets" -q '[.[] | select(.name | test("\\.zip$"; "i"))] | sort_by(.created_at) | last | .id // empty')
           [ -n "$asset" ] || { echo "No ZIP attached"; echo "asset=" >> "$GITHUB_OUTPUT"; exit 0; }
           gh api -H "Accept: application/octet-stream" "repos/$GITHUB_REPOSITORY/releases/assets/$asset" > "$RUNNER_TEMP/studio.zip"
