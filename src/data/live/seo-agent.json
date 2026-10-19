@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-18T14:22:34.063Z",
-  "nextRunAt": "2026-10-18T20:22:34.063Z",
+  "updatedAt": "2026-10-19T01:04:32.609Z",
+  "nextRunAt": "2026-10-19T07:04:32.609Z",
   "intervalHours": 6,
   "identity": {
     "nameAr": "منارة شاهين",
@@ -13,8 +13,8 @@
   "trust": {
     "level": "trainee",
     "since": "2026-10-18T12:00:00.000Z",
-    "cycles": 4,
-    "cyclesAtLevel": 4,
+    "cycles": 5,
+    "cyclesAtLevel": 5,
     "noteAr": "بدأ التدريب: يدرس المنهج ويفحص الموقع ويقترح، بلا تغيير منشور."
   },
   "curriculum": {
@@ -22,7 +22,8 @@
       "seo-01",
       "seo-02",
       "seo-03",
-      "seo-04"
+      "seo-04",
+      "seo-05"
     ],
     "notes": [
       {
@@ -72,11 +73,23 @@
           "إدراج الكلمة المفتاحية المستهدفة مرة واحدة وبصياغة لغوية طبيعية تشرح ما سيجده الزائر بدقة وتجنب حشو الكلمات.",
           "تضمين دعوة واضحة ومناسبة لاتخاذ إجراء، مثل تجربة حاسبة المعمل أو استعراض مكونات العطر، دون إطلاق وعود غير واقعية."
         ]
+      },
+      {
+        "id": "seo-05",
+        "titleAr": "فهم نية البحث قبل كتابة أي حرف",
+        "at": "2026-10-19T01:04:32.609Z",
+        "takeaway": "صفحات الأدوات معلوماتية/عملية، صفحة المتجر شرائية، والصفحة الرئيسية ملاحية مع مدخل واضح لكل مسار.",
+        "checklist": [
+          "حدد نية كل صفحة والاستعلامات التي تخدمها.",
+          "لا تخلط دليل تعليمي مع صفحة بيع في وعاء واحد.",
+          "اجعل الدعوة إلى الإجراء مناسبة للمرحلة: تعلم أولاً، ثم اشترِ.",
+          "راجع استعلامات Search Console لاحقاً لتأكيد النية."
+        ]
       }
     ]
   },
   "audit": {
-    "at": "2026-10-18T14:22:34.063Z",
+    "at": "2026-10-19T01:04:32.609Z",
     "score": 100,
     "bySeverity": {
       "critical": 0,
@@ -115,6 +128,13 @@
       "applied": 0,
       "shaheen": 7,
       "level": "trainee"
+    },
+    {
+      "at": "2026-10-19T01:04:32.609Z",
+      "score": 100,
+      "applied": 0,
+      "shaheen": 7,
+      "level": "trainee"
     }
   ],
   "applied": [],
@@ -143,11 +163,219 @@
       "urls": 2,
       "ok": true,
       "detail": "أُشعر 2 من 2 محاور بأن الخلاصة تغيّرت."
+    },
+    {
+      "engine": "IndexNow (Bing, Yandex, Naver, Seznam, Yep)",
+      "method": "indexnow",
+      "at": "2026-10-19T01:04:32.609Z",
+      "urls": 200,
+      "ok": true,
+      "detail": "قبلت المحركات الدفع السريع."
     }
   ],
   "submissionBook": {
-    "lastIndexNowAt": "2026-10-18T14:22:34.063Z",
+    "lastIndexNowAt": "2026-10-19T01:04:32.609Z",
     "urls": [
+      "https://spculculat-oss.github.io/Sham-Perfume/p/luxe-emerald-perfume-maison-alhambra-100ml-unisex-186.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ultra-famous-by-grandeur-elite-100-ml-for-men-187.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/reload-intense-by-volare-man-100-ml-for-him-188.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/dar-al-hae-by-ard-al-zaafaran-100-ml-for-men-189.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/never-forget-me-by-maison-asrar-90ml-edp-women-190.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/majesty-by-maison-asrar-100ml-edp-unisex-191.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/la-vita-maison-alhambra-100ml-edp-women-192.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/darlene-pour-femme-by-volare-100-ml-for-women-193.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/b-a-d-femme-by-maison-alhambra-100-ml-194.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/oud-elixir-by-grandeur-elite-100-ml-eau-de-parfum-for-men-195.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/moroccan-dream-by-volare-100-ml-for-her-196.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/oud-24-hours-ard-al-zaafaran-100ml-edp-197.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/mousuf-by-ard-al-zaafaran-edp-100-ml-198.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/arabian-night-100-ml-eau-de-parfum-for-men-199.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ameerati-by-al-wataniah-100ml-edp-for-women-200.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/royal-leather-by-zimaya-edp-100ml-201.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/luxe-gold-by-maison-alhambra-100-ml-unisex-202.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/rise-and-shine-by-volare-100-ml-unisex-203.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/mood-pretty-for-her-100-ml-edp-204.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/man-black-edition-maison-alhambra-100ml-edp-205.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/rihanna-by-ard-al-zaafaran-100-ml-for-women-206.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/tiara-pink-by-al-wataniah-100-ml-for-women-207.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/sophia-by-al-wataniah-100-ml-for-women-208.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/imperial-by-maison-asrar-100ml-edp-unisex-209.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/qahir-man-by-al-wataniah-100ml-edp-men-210.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/reverie-aqua-by-zimaya-100ml-edp-men-211.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/treasure-by-maison-asrar-100ml-edp-unisex-212.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/megara-50ml-by-maison-alhambra-213.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/lynked-freedom-by-afnan-100ml-eau-de-parfum-214.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/encode-by-maison-alhambra-100ml-for-man-215.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/supremacy-collector-s-edition-by-afnan-100ml-men-216.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/cadet-blue-deodorant-body-spray-200ml-grandeur-man-217.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/sceptre-oceana-by-maison-alhambra-100ml-218.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/armaf-club-de-nuit-milestone-105ml-edp-219.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/house-of-oud-al-wataniah-eternal-perfume-100ml-220.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/pacific-wood-deodorant-body-spray-200ml-grandeur-man-lather-221.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/rue-broca-on-time-pour-homme-edp-men-100ml-222.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/nexa-musee-by-rue-broca-100-ml-for-women-223.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/rose-of-dreams-by-zimaya-100ml-edp-women-224.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/karat-by-maison-alhambra-100ml-edp-225.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/island-bliss-by-armaf-100ml-edp-women-226.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/massad-by-al-wataniah-for-him-100ml-extract-227.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/la-voie-by-maison-alhambra-100ml-for-her-228.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/emeer-by-lattafa-woody-scent-100ml-229.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/najdia-in-gold-by-lattafa-100ml-unisex-230.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/artisan-ethnique-by-lattafa-pride-100ml-edp-231.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ana-abiyedh-coral-by-lattafa-60ml-edp-232.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/badee-al-oud-noble-blush-by-lattafa-100ml-233.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/oud-lail-maleki-by-lattafa-100-ml-unisex-234.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/raghba-by-lattafa-100ml-edp-unisex-235.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/sabaya-by-al-rehab-50ml-edp-236.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/velvet-oud-by-lattafa-100ml-unisex-237.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/safeer-by-lattafa-al-noble-100ml-edp-238.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/afkaar-by-lattafa-edp-100ml-unisex-239.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/taweel-by-lattafa-100ml-edp-unisex-240.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/sapphire-blue-by-lattafa-pride-100ml-edp-241.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/najdia-by-lattafa-100-ml-for-men-242.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/opulent-musk-by-lattafa-100ml-edp-unisex-243.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/teriaq-by-lattafa-100ml-edp-unisex-244.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/oudain-by-lattafa-perfumes-100ml-edp-for-men-245.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/qasaed-al-sultan-lattafa-100ml-edp-men-246.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/opulent-oud-black-lattafa-100ml-edp-unisex-247.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/badee-al-oud-sublime-by-lattafa-100ml-edp-unisex-248.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/mayar-natural-intense-by-lattafa-100ml-edp-249.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/musk-al-aroos-by-lattafa-80ml-edp-250.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/aura-by-lattafa-60ml-edp-251.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/lattafa-qimmah-eau-de-parfum-for-men-100ml-252.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/the-kingdom-women-by-lattafa-100ml-edp-253.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/vintage-radio-by-lattafa-pride-100ml-edp-254.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/musamam-black-intense-100ml-by-lattafa-255.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/maharjan-silver-by-lattafa-pride-100ml-edp-256.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/eternal-oud-by-lattafa-pride-100ml-edp-257.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-azal-by-lattafa-edp-100ml-for-him-258.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ajayeb-dubai-by-lattafa-edp-100ml-259.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/la-collection-d-antiquites-1910-bike-by-lattafa-pride-100ml-260.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/mayar-cherry-intense-lattafa-100ml-edp-261.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/badee-al-oud-honor-glory-by-lattafa-100ml-262.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/fire-on-ice-by-lattafa-100ml-edp-unisex-263.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ramz-gold-lattafa-woman-100ml-edp-264.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/victoria-by-lattafa-100ml-edp-265.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ejaazi-by-lattafa-perfume-100-ml-for-men-266.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/mashrabya-by-lattafa-100ml-edp-267.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/qaaed-intense-by-lattafa-100ml-edp-268.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/malik-al-tayoor-concentrated-100ml-by-lattafa-269.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ansaam-silver-by-lattafa-pride-100ml-edp-270.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/musk-mood-by-lattafa-100ml-edp-unisex-271.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ejaazi-intensive-by-lattafa-100-ml-unisex-272.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-dur-al-maknoon-silver-100ml-edp-men-273.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-noble-wazeer-by-lattafa-perfumes-100ml-for-men-274.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/opulent-dubai-by-lattafa-perfume-100ml-unisex-275.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ansaam-gold-by-lattafa-pride-100ml-edp-276.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ajwad-by-lattafa-edp-60ml-unisex-277.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/eclaire-banoffi-by-lattafa-100ml-edp-unisex-278.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/khalta-blend-of-lattafa-eau-de-parfum-100ml-279.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-khas-winners-trophy-gold-100ml-by-lattafa-pride-280.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/oud-al-sahraa-by-lattafa-perfumes-100-ml-unisex-281.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/musamam-intense-by-lattafa-100ml-edp-282.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/art-of-wood-by-lattafa-pride-100ml-edp-283.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/atlas-by-lattafa-edp-55-ml-men-284.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/badee-al-oud-by-lattafa-oud-for-glory-100ml-edp-285.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/mohra-by-lattafa-100ml-edp-286.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/art-of-universe-by-lattafa-pride-100ml-edp-287.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/fakhar-platin-by-lattafa-perfumes-100-ml-men-288.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/sapphire-royal-by-lattafa-pride-100ml-edp-289.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/raed-luxe-by-lattafa-100ml-edp-unisex-290.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/charm-100ml-edp-for-women-by-lamuse-lattafa-291.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ameer-al-oudh-intense-by-lattafa-edp-100ml-292.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-areeq-gold-by-lattafa-pride-100ml-edp-293.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/fakhar-rose-gold-by-lattafa-100ml-women-294.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/nasheet-by-lattafa-perfume-100ml-edp-unisex-295.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/la-collection-1886-car-by-lattafa-pride-100ml-edp-296.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/velvet-rose-by-lattafa-100ml-unisex-100ml-297.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/emaan-by-lattafa-100ml-edp-perfume-unisex-298.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/king-of-arabia-by-lattafa-pride-100ml-edp-299.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/fakhar-extrait-by-lattafa-100ml-for-men-300.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/lattafa-petra-eau-de-parfum-100-ml-unisex-301.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ajayeb-dubai-portrait-by-lattafa-edp-100ml-302.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hayaati-al-maleky-by-lattafa-100-ml-for-men-303.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/liam-grey-by-lattafa-100ml-edp-304.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/eclaire-pistache-by-lattafa-100ml-edp-unisex-305.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ramz-silver-by-lattafa-100ml-edp-for-men-306.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/mayar-by-lattafa-edp-100ml-woman-307.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/haya-by-lattafa-perfumes-100-ml-for-women-308.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/reve-rose-vurv-by-lattafa-100ml-edp-309.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hayaati-florence-by-lattafa-100ml-edp-women-310.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/hayaati-gold-elixir-by-lattafa-100ml-unisex-311.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/layaan-by-lattafa-perfume-75ml-edp-312.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ishq-al-shuyukh-gold-by-lattafa-pride-100ml-edp-313.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ishq-al-shuyukh-silver-by-lattafa-pride-100ml-edp-314.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/pisa-by-lattafa-pride-100ml-edp-315.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/opulent-red-by-lattafa-100ml-unisex-316.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/khalis-pure-oudi-by-lattafa-edp-100ml-317.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/salamah-by-lattafa-100ml-edp-unisex-318.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/yara-elixir-by-lattafa-100ml-edp-319.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/jasoor-by-lattafa-perfumes-100-ml-unisex-320.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/yara-tous-by-lattafa-100ml-edp-women-321.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/azeezah-by-lattafa-100ml-for-women-322.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/decadent-wonder-her-edp-100-ml-alhambra-323.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/heritage-by-maison-asrar-100ml-edp-unisex-324.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/fakhar-al-oud-the-white-oud-by-ard-al-zaafaran-100-ml-325.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ajmal-ehsas-bloom-by-ard-al-zaafaran-100ml-326.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/kayaan-gold-by-al-wataniah-100-ml-unisex-327.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/armaf-club-de-nuit-intense-man-105ml-edt-328.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/alice-by-grandeur-100ml-edp-women-329.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/cotton-candy-by-tubbees-50ml-edp-unisex-330.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/mia-dolcezza-verde-by-maison-alhambra-100ml-edp-unisex-331.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/mia-dolcezza-by-maison-alhambra-100ml-edp-women-332.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/avenue-new-york-by-grandeur-100ml-edp-men-333.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/perseus-by-maison-alhambra-100ml-edp-men-334.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/stardust-by-afnan-100ml-extrait-unisex-335.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ombre-fresh-by-armaf-100ml-edp-unisex-336.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/old-money-by-armaf-100ml-edp-unisex-337.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/club-de-nuit-precieux-ii-by-armaf-55ml-extrait-unisex-338.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/luxe-bold-by-maison-alhambra-100-ml-unisex-339.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/reverie-petals-by-zimaya-100ml-edp-women-340.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/last-night-in-miami-by-maison-alhambra-100ml-unisex-341.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/it-by-maison-alhambra-100ml-edp-men-342.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/last-night-in-paris-by-maison-alhambra-100ml-unisex-343.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/bint-hooran-rose-passion-ard-al-zaafaran-100ml-women-344.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/galatea-by-maison-alhambra-100ml-edp-unisex-345.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/galactic-men-intense-by-maison-alhambra-100ml-edp-346.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/sceptre-malachite-by-maison-alhambra-100ml-347.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/pink-blush-shams-al-emarat-khususi-50ml-348.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-ibdaa-men-silver-by-ard-al-zaafaran-100ml-edp-men-349.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-ibdaa-women-gold-by-ard-al-zaafaran-100ml-edp-women-350.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/9pm-by-afnan-100ml-edp-men-351.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-embratur-absolu-eau-de-parfum-100ml-by-zimaya-352.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/daiman-eclipse-eau-de-parfum-100ml-by-zimaya-353.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/zimaya-amber-is-great-eau-de-parfum-100ml-354.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/alive-now-by-maison-alhambra-100ml-355.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/shumookh-parfum-100ml-by-gulf-orchid-356.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/bashaara-eau-de-parfum-100ml-by-ard-al-zaafaran-357.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/reflection-for-her-100ml-by-gulf-orchid-358.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ahlam-al-khaleej-80ml-by-ard-al-zaafaran-359.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/delilah-viola-100ml-by-maison-alhambra-360.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-qannas-eau-de-parfum-100ml-by-ard-al-zaafaran-361.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ghali-elegant-eau-de-parfum-100ml-by-zimaya-362.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/candid-tonight-by-maison-alhambra-100ml-363.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/leonie-for-women-by-maison-alhambra-100ml-364.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/floral-bloom-by-maison-alhambra-100ml-365.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/moonlight-eau-de-parfum-100ml-by-gulf-orchid-366.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ode-to-rose-royale-eau-de-parfum-100ml-by-zimaya-367.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ode-to-rose-bella-eau-de-parfum-100ml-by-zimaya-368.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/ghali-imperial-eau-de-parfum-100ml-by-zimaya-369.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/yara-eau-de-parfum-50ml-by-ard-al-zaafaran-370.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/afnan-9-pm-night-out-extrait-de-parfum-100ml-371.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/al-wataniah-rawaee-monarch-eau-de-parfum-100ml-372.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/badee-al-oud-eau-de-parfum-50ml-373.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/daiman-eden-eau-de-parfum-100ml-by-zimaya-374.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/leonie-intense-by-maison-alhambra-100ml-375.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/jean-lowe-summer-vibes-100ml-376.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/sama-dubai-100ml-by-ard-al-zaafaran-377.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/glacier-heaven-100ml-378.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/jean-lowe-verde-aura-100ml-379.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/avant-ruby-eau-de-parfum-100ml-by-maison-alhambra-380.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/modhesh-noble-100ml-by-zimaya-381.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/chic-velvet-vert-secret-100ml-by-maison-alhambra-382.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/victorioso-legend-by-maison-alhambra-100-ml-for-men-383.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/9-pm-rebel-by-afnan-edp-100-ml-men-384.html",
+      "https://spculculat-oss.github.io/Sham-Perfume/p/pomegranate-musk-gulf-orchid-60ml-for-her-385.html",
       "https://spculculat-oss.github.io/Sham-Perfume/",
       "https://spculculat-oss.github.io/Sham-Perfume/tools/",
       "https://spculculat-oss.github.io/Sham-Perfume/tools/perfume-formulation-calculator.html",
@@ -408,7 +636,7 @@
   },
   "engines": {
     "aiAvailable": true,
-    "studies": 4,
+    "studies": 5,
     "failures": []
   },
   "searchEngines": [
@@ -416,63 +644,63 @@
       "id": "google",
       "nameAr": "Google",
       "status": "ready",
-      "at": "2026-10-18T14:22:34.063Z",
+      "at": "2026-10-19T01:04:32.609Z",
       "detail": "خريطة + خلاصة معلنتان في robots.txt — الوصول لا يحتاج حساباً."
     },
     {
       "id": "bing",
       "nameAr": "Bing",
       "status": "submitted",
-      "at": "2026-10-18T14:22:34.063Z",
+      "at": "2026-10-19T01:04:32.609Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "yandex",
       "nameAr": "Yandex",
       "status": "submitted",
-      "at": "2026-10-18T14:22:34.063Z",
+      "at": "2026-10-19T01:04:32.609Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "naver",
       "nameAr": "Naver",
       "status": "submitted",
-      "at": "2026-10-18T14:22:34.063Z",
+      "at": "2026-10-19T01:04:32.609Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "seznam",
       "nameAr": "Seznam",
       "status": "submitted",
-      "at": "2026-10-18T14:22:34.063Z",
+      "at": "2026-10-19T01:04:32.609Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "yep",
       "nameAr": "Yep",
       "status": "submitted",
-      "at": "2026-10-18T14:22:34.063Z",
+      "at": "2026-10-19T01:04:32.609Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "duckduckgo",
       "nameAr": "DuckDuckGo",
       "status": "submitted",
-      "at": "2026-10-18T14:22:34.063Z",
+      "at": "2026-10-19T01:04:32.609Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "ecosia",
       "nameAr": "Ecosia",
       "status": "submitted",
-      "at": "2026-10-18T14:22:34.063Z",
+      "at": "2026-10-19T01:04:32.609Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "yahoo",
       "nameAr": "Yahoo",
       "status": "submitted",
-      "at": "2026-10-18T14:22:34.063Z",
+      "at": "2026-10-19T01:04:32.609Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
@@ -489,7 +717,7 @@
       "id": "copilot",
       "nameAr": "Microsoft Copilot",
       "status": "submitted",
-      "at": "2026-10-18T14:22:34.063Z",
+      "at": "2026-10-19T01:04:32.609Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
@@ -506,18 +734,18 @@
       "hubs": [
         {
           "url": "https://pubsubhubbub.appspot.com/",
-          "status": 204,
-          "ok": true
+          "ok": true,
+          "status": 204
         },
         {
           "url": "https://pubsubhubbub.superfeedr.com/",
-          "status": 204,
-          "ok": true
+          "ok": true,
+          "status": 204
         }
       ]
     },
     "crawl": {
-      "at": "2026-10-18T14:22:34.538Z",
+      "at": "2026-10-19T01:04:33.050Z",
       "ua": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
       "checked": 3,
       "ok": 3,
@@ -552,33 +780,7 @@
       "vitals": {}
     }
   },
-  "nextActions": [
-    {
-      "textAr": "تحسين وصف التعريف لصفحات العطور الثابتة لزيادة الجاذبية ورفع معدل النقرات في نتائج البحث.",
-      "area": "titles",
-      "severity": "minor"
-    },
-    {
-      "textAr": "مراجعة العناوين الرئيسية لضمان دقتها وملاءمتها لنية البحث للزوار بشكل مستمر.",
-      "area": "titles",
-      "severity": "minor"
-    },
-    {
-      "textAr": "التحقق من اكتمال البيانات المنظمة الخاصة بالمنتجات لتسهيل قراءتها من محركات البحث.",
-      "area": "content",
-      "severity": "minor"
-    },
-    {
-      "textAr": "تحديث خريطة الموقع بانتظام لضمان أرشفة الصفحات الجديدة والصفحات الثابتة بسلاسة.",
-      "area": "content",
-      "severity": "minor"
-    },
-    {
-      "textAr": "مراقبة سرعة تحميل الصفحات والمحتوى لضمان تجربة مستخدم سريعة ومستقرة.",
-      "area": "performance",
-      "severity": "minor"
-    }
-  ],
+  "nextActions": [],
   "runs": [
     {
       "at": "2026-10-18T11:40:26.662Z",
@@ -629,6 +831,17 @@
       "submitted": 200,
       "notes": [],
       "ms": 18698
+    },
+    {
+      "at": "2026-10-19T01:04:32.609Z",
+      "trigger": "schedule",
+      "auditScore": 100,
+      "findings": 0,
+      "applied": 0,
+      "lessonId": "seo-05",
+      "submitted": 200,
+      "notes": [],
+      "ms": 5063
     }
   ],
   "notes": []
