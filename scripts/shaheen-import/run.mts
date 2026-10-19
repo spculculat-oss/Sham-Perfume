@@ -17,7 +17,7 @@ import { answerBook } from '../doctor/answers';
 import { extractProduct, pageImages, pageText, parseListing, parseSitemap, parseSitemapIndex, validateShaheenReading, type ExtractedProduct, type SitemapEntry } from './extract';
 import { reviewStore, type ReviewFile } from './review';
 import { loadSources } from './sources';
-import { isScrapeAllowed } from './guard';
+import { allowedSources, fetchApprovedDomains, isScrapeAllowed } from './guard';
 import { extractGeneric } from './generic';
 import { adoptSkill, emptySkills, hostOf, isSkillsFile, learnSkill, readWithSkill, recordUse, skillsSummary, type SkillsFile } from './skills';
 import { isPerfume, pageLinks, parseRobots, withPage } from '../shaheen-discover/discover';
@@ -170,9 +170,16 @@ const only = (env.IMPORT_SOURCE || '').split(',').map((x) => x.trim()).filter(Bo
 // L-03 legal guard (guard.ts): reading a store's products needs the merchant's written permission
 // (docs/legal/scraper-permission.md + SHAM_ALLOW_SCRAPE=1). Without it no store is read this run — the run does
 // not fail: the reviewer still checks the existing catalog and the report says the import is paused.
-const scrapeAllowed = isScrapeAllowed();
-if (!scrapeAllowed) { importInfo.blocked = 'L-03'; say('⛔ Import paused by the legal guard (L-03): no written supplier permission yet (docs/legal/scraper-permission.md + SHAM_ALLOW_SCRAPE=1) — the existing catalog is still reviewed'); }
-const selected = !scrapeAllowed ? [] : sources.filter((s) => (!only.length || only.includes(s.id)) && (env.IMPORT_ONLY_DISCOVERED !== '1' || s.origin === 'discovered'));
+// Per store (L-40): a store whose agreement was signed electronically and approved by the legal manager may be
+// read even without the global permission file («مسؤول التعاقدات», server/contracts).
+const globalPermission = isScrapeAllowed();
+const contracts = globalPermission ? { domains: [] as string[] } : await fetchApprovedDomains(env.SHAM_API_BASE || '', env.SHAM_ADMIN_TOKEN || '');
+const permitted = allowedSources(sources, { global: globalPermission, approvedDomains: contracts.domains });
+importInfo.contracts = { approved: contracts.domains.length, permitted: permitted.map((s) => s.id), ...(contracts.error ? { error: contracts.error } : {}) };
+const scrapeAllowed = permitted.length > 0;
+if (!scrapeAllowed) { importInfo.blocked = 'L-03'; say('⛔ Import paused by the legal guard (L-03): no written supplier permission yet (docs/legal/scraper-permission.md + SHAM_ALLOW_SCRAPE=1, or a signed and approved agreement per store) — the existing catalog is still reviewed'); }
+else if (!globalPermission) say(`✅ L-40: stores with a signed and approved agreement: ${permitted.map((s) => s.id).join(', ')}`);
+const selected = !scrapeAllowed ? [] : permitted.filter((s) => (!only.length || only.includes(s.id)) && (env.IMPORT_ONLY_DISCOVERED !== '1' || s.origin === 'discovered'));
 // The new-product budget of the run is shared between the stores (each gets its turn, unused budget moves on).
 let newBudget = Math.max(0, Math.min(MAX_NEW, MAX_TOTAL - products.length));
 if (MAX_NEW > 0 && newBudget === 0) say(`Store size limit reached (${MAX_TOTAL} products, IMPORT_MAX_TOTAL): only refreshes this run`);

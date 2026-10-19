@@ -313,8 +313,10 @@ test('L-03 legal guard: no store is read without the written supplier permission
   delete process.env.SHAM_ALLOW_SCRAPE;
   try { assert.equal(isScrapeAllowed(), false); } finally { if (saved !== undefined) process.env.SHAM_ALLOW_SCRAPE = saved; }
   const run = readFileSync(new URL('../scripts/shaheen-import/run.mts', import.meta.url), 'utf8');
-  assert.match(run, /const scrapeAllowed = isScrapeAllowed\(\);/);
-  assert.match(run, /const selected = !scrapeAllowed \? \[\] :/);
+  assert.match(run, /const globalPermission = isScrapeAllowed\(\);/);
+  assert.match(run, /allowedSources\(sources, \{ global: globalPermission, approvedDomains: contracts\.domains \}\)/);
+  assert.match(run, /const scrapeAllowed = permitted\.length > 0;/);
+  assert.match(run, /const selected = !scrapeAllowed \? \[\] : permitted\.filter/);
   const { runPrecheck } = await import('../scripts/shaheen-council/precheck');
   const r = runPrecheck({ 'store-review.json': { updatedAt: new Date().toISOString(), import: { blocked: 'L-03' }, summary: { total: 10 } } }, {}, Date.now());
   const importer = r.bots.find((b) => b.id === 'importer')!;

@@ -6,9 +6,11 @@ import {
   BellRing, CheckCircle2, CircleAlert, EyeOff, LayoutDashboard, Lightbulb, Loader2, LogOut, MessagesSquare, Plus, RefreshCw, Save, Send,
   Settings2, Stethoscope, ThumbsDown, ThumbsUp, Trash2, TriangleAlert, Users, Wand2,
   ChevronUp, ChevronDown, Mail, Eye, ExternalLink, Check, Sparkles,
+  Handshake,
 } from 'lucide-react';
 import UpdatesPanel from './UpdatesPanel';
 import FinancePanel from './FinancePanel';
+import ContractsPanel from './ContractsPanel';
 import SupervisorPanel from './SupervisorPanel';
 import SeoPanel from './SeoPanel';
 import CommunityPanel from './CommunityPanel';
@@ -24,7 +26,7 @@ import { AdminApiError, adminRequest, getToken, send, setToken } from './adminAp
 import { apiUrl, isStaticHosting } from '../utils/api';
 import { parseDoctorIssue, type DoctorReport } from './doctorReport';
 
-type Tab = 'finance' | 'overview' | 'community' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'emails' | 'doctor' | 'supervisor' | 'seo' | 'sandbox' | 'updates';
+type Tab = 'finance' | 'overview' | 'community' | 'contracts' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'emails' | 'doctor' | 'supervisor' | 'seo' | 'sandbox' | 'updates';
 interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: string }
 interface Overview {
   storage: { kind: string; persistent: boolean; error?: string };
@@ -40,6 +42,7 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'overview', label: T('نظرة عامة'), icon: <LayoutDashboard className="w-4 h-4" /> },
   { id: 'finance', label: T('الإدارة المالية'), icon: <ClipboardList className="w-4 h-4" /> },
   { id: 'community', label: T('المجتمع'), icon: <Users className="w-4 h-4" /> },
+  { id: 'contracts', label: T('التعاقدات'), icon: <Handshake className="w-4 h-4" /> },
   { id: 'agent', label: T('المساعد الإداري'), icon: <Wand2 className="w-4 h-4" /> },
   { id: 'quality', label: T('الجودة والتعلّم'), icon: <Lightbulb className="w-4 h-4" /> },
   { id: 'requests', label: T('الطلبات والعروض'), icon: <ClipboardList className="w-4 h-4" /> },
@@ -144,6 +147,7 @@ export default function AdminApp() {
           {tab === 'overview' && <OverviewPanel go={setTab} />}
           {tab === 'finance' && <FinancePanel />}
           {tab === 'community' && <CommunityPanel />}
+          {tab === 'contracts' && <ContractsPanel />}
           {tab === 'agent' && <AgentPanel go={setTab} />}
           {tab === 'quality' && <QualityPanel />}
           {tab === 'requests' && <RequestsPanel />}
