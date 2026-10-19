@@ -37,7 +37,7 @@ try {
   console.log(`ZIP ${zip} → ${head.slice(0, 7)}: ${plan.files.length} file(s) differ from the site, ${plan.skipped.length} left out`);
   for (const f of plan.files) console.log(`  + ${f.path} [${f.action}, ${f.how}]${f.reason ? ` — ${f.reason}` : ''}`);
   for (const s of plan.skipped) console.log(`  − ${s.path} — ${s.reason}`);
-  writeFileSync(join(tmpdir(), 'aistudio-zip-plan.json'), JSON.stringify({ ...plan, head, files: plan.files.map(({ content: _c, ...rest }) => rest) }, null, 1));
+  writeFileSync(process.env.ZIP_PLAN || join(tmpdir(), 'aistudio-zip-plan.json'), JSON.stringify({ ...plan, head, files: plan.files.map(({ content: _c, ...rest }) => rest) }, null, 1));
 
   if (apply) {
     for (const f of chosen) {
