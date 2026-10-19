@@ -887,6 +887,20 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   'جهز الرد': { en: 'Draft the reply' },
   'صياغة الذكاء الاصطناعي ({engine})': { en: 'AI draft ({engine})' },
   'رد جاهز معتمد من المدير القانوني': { en: 'Approved ready-made reply from the legal manager' },
+  'المفتاح مرفوض أو منتهي': { en: 'Key rejected or expired' },
+  'الرصيد أو الحصة خلصت': { en: 'Credit or quota used up' },
+  'الخدمة مقفولة في منطقة الخادم': { en: 'Service blocked in the server region' },
+  'اسم النموذج غير متاح': { en: 'Model name unavailable' },
+  'طلبات كتير — المزوّد طلب مهلة': { en: 'Too many requests — the provider asked to wait' },
+  'المزوّد رفض صيغة الطلب': { en: 'The provider rejected the request format' },
+  'عطل عند المزوّد': { en: 'Provider outage' },
+  'انتهت المهلة': { en: 'Timed out' },
+  'رد فارغ': { en: 'Empty reply' },
+  'لسه ما اتجربش من آخر تشغيل للخادم': { en: 'Not tried since the server last started' },
+  '⏸️ متأجل تلقائياً لحد {time} ({reason}) — شاهين بيرد من المحركات الشغالة': { en: '⏸️ Parked automatically until {time} ({reason}) — Shaheen answers from the working engines' },
+  '⚠️ فشل آخر مرة ({reason}) — هيتأجل لو فشل تاني': { en: '⚠️ Failed last time ({reason}) — will be parked if it fails again' },
+  '✅ شغال — آخر رد ناجح {time}': { en: '✅ Working — last good reply {time}' },
+  'المحرك اللي بيفشل بيتأجل تلقائياً (المفتاح المرفوض نص ساعة، الرصيد الخلصان لحد التجديد، الزحمة دقيقة) ويتجرب تاني لوحده بعد المهلة — وأول رد ناجح يرجّعه مكانه. زر «اختبار الاتصال» يحدّث الحالة فوراً.': { en: 'A failing engine is parked automatically (rejected key 30 min, used-up credit until renewal, rate limit one minute) and retried by itself afterwards — the first good reply puts it back in place. «Test engines» refreshes the status at once.' },
 };
 
 let currentLang: SupportedLanguage = 'ar';

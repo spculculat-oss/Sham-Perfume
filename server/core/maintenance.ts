@@ -10,6 +10,7 @@
  */
 import type { AnswerCache, ProviderGate } from './capacity';
 import { resetGeminiModelCaches } from './engines';
+import { EngineHealth } from './engineHealth';
 
 export interface ChatOutcome { at: number; ms: number; status: number; code?: string }
 export const MAINTENANCE_ACTIONS = ['clear_answer_cache', 'reset_provider_gate', 'refresh_model_list'] as const;
@@ -26,6 +27,8 @@ export class ShaheenRuntime {
   private gate?: ProviderGate;
   private answers?: AnswerCache<unknown>;
   readonly remedies: { action: MaintenanceAction; at: string }[] = [];
+  /** «صحة المحركات» of this instance: which engine is parked, why and until when. */
+  readonly health = new EngineHealth();
 
   constructor(readonly version = 'dev') {}
 
@@ -67,6 +70,7 @@ export class ShaheenRuntime {
       window: this.stats(10 * 60_000, now),
       hour: this.stats(60 * 60_000, now),
       providers: this.gate?.snapshot() || {},
+      engineHealth: this.health.snapshot(),
       answerCache: answers ? { entries: answers.size, hits: answers.hits, misses: answers.misses, shared: answers.shared } : null,
       remedies: this.remedies.slice(-10),
     };
@@ -74,7 +78,7 @@ export class ShaheenRuntime {
 
   act(action: MaintenanceAction): { action: MaintenanceAction; done: boolean } {
     if (action === 'clear_answer_cache') this.answers?.clear();
-    else if (action === 'reset_provider_gate') this.gate?.reset();
+    else if (action === 'reset_provider_gate') { this.gate?.reset(); this.health.reset(); }
     else if (action === 'refresh_model_list') resetGeminiModelCaches();
     this.remedies.push({ action, at: new Date().toISOString() });
     if (this.remedies.length > 50) this.remedies.shift();

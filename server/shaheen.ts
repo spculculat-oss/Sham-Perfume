@@ -15,6 +15,7 @@ import type { SupportedLanguage } from '../src/types/i18n';
 import { normalizeMediaBlocks } from '../src/utils/mediaBlock';
 import { stripOpeningGreeting } from '../src/utils/shaheenText';
 import { callEngine, engineStatuses, type EngineFailure } from './core/engines';
+import { EngineHealth } from './core/engineHealth';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { AnswerCache, GateBusyError, ProviderGate, VISITOR_ID, cacheKey, capacityConfig, normalizeQuestion, retryHintMs } from './core/capacity';
 import type { ShaheenRuntime } from './core/maintenance';
@@ -154,6 +155,8 @@ export interface ExecuteOptions {
   gate?: ProviderGate;
   /** The visitor's lane in the gate (fair turns, at most two requests at once per visitor). */
   owner?: string;
+  /** «صحة المحركات»: failing engines are parked and tried last until they work again. */
+  health?: EngineHealth;
 }
 
 /** Only the provider that actually answered is credited. Auto is failover, not a fake panel. */
@@ -173,9 +176,12 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   const requested = settings.allowVisitorChoice ? input.model : 'auto';
   if (requested === 'council') return executeCouncil(input, options, env, settings);
   const style = requested === 'fast' || requested === 'deep' ? requested : undefined;
-  const candidates = requested === 'auto' ? available
+  const wanted = requested === 'auto' ? available
     : style ? SHAHEEN_MODE_ORDER[style].filter((id) => available.includes(id))
       : available.filter((id) => id === requested);
+  // The engines that work go first; a parked one waits at the end (still a last resort) until its time is up.
+  const health = options.health;
+  const candidates = health ? health.order(wanted) : wanted;
   if (!candidates.length) throw new ChatError(503, 'PROVIDER_NOT_CONFIGURED', 'No API key configured for the requested provider');
   // Vercel functions stop at 60 s: keep the whole failover chain inside that.
   const total = AbortSignal.any([AbortSignal.timeout(options.totalTimeoutMs ?? 50000), ...(options.signal ? [options.signal] : [])]);
@@ -202,12 +208,18 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
       });
       if (signal.aborted) throw signal.reason;
       if (typeof reply === 'string' && reply.trim()) {
+        health?.ok(provider);
         return { outcome: 'ok', value: { reply: reply.trim(), mode: requested, engine: { id: provider, provider, name: ENGINE_INFO[provider].name,
           badge: ENGINE_INFO[provider].name, model, accentColor: ENGINE_INFO[provider].color } } };
       }
     } catch {
       timedOut ||= signal.aborted;
       // Never leak provider error bodies, credentials, or fabricated fallback answers.
+    }
+    // The visitor left or the whole answer ran out of time: not this engine's fault.
+    if (health && !total.aborted) {
+      if (refusal) health.fail(provider, refusal.failure, refusal.detail);
+      else health.fail(provider, signal.aborted ? 'timeout' : 'empty');
     }
     // 429 = "too many requests right now": the gate cools this provider down instead of hammering it.
     if (refusal && (refusal.status === 429 || refusal.failure === 'rate_limited')) return { outcome: 'limited', retryMs: retryHintMs(refusal.detail) };
@@ -276,7 +288,7 @@ export interface EngineProbe {
  * account cannot use, or an unreachable self-hosted server shows up in the dashboard instead of
  * as a vague error for visitors. Error text is generic (no upstream bodies, no keys).
  */
-export async function probeEngines(settings: ShaheenSettings, options: { env?: Environment; fetch?: typeof fetch; timeoutMs?: number } = {}): Promise<EngineProbe[]> {
+export async function probeEngines(settings: ShaheenSettings, options: { env?: Environment; fetch?: typeof fetch; timeoutMs?: number; health?: EngineHealth } = {}): Promise<EngineProbe[]> {
   const env = options.env || process.env;
   const statuses = engineStatuses(env);
   return Promise.all(settings.engines.map(async (id): Promise<EngineProbe> => {
@@ -293,9 +305,12 @@ export async function probeEngines(settings: ShaheenSettings, options: { env?: E
       const reply = await callEngine(id, 'Health check. Reply with the single word OK.', [{ role: 'user', text: 'ping' }],
         { env, fetch: options.fetch, signal, temperature: 0, model, maxTokens: 32, onFailure: (f, _s, d) => { failure = f; detail = d; }, onModel: (m) => { usedModel = m; } });
       const ok = Boolean(reply?.trim());
+      // The admin's «test the engines» also updates the health record (a fixed key comes back at once).
+      if (ok) options.health?.ok(id); else options.health?.fail(id, failure || 'empty', detail);
       return { ...base, ok, ms: Date.now() - started, ...(ok && usedModel !== model ? { usedModel } : {}),
         ...(ok ? {} : { error: failure || 'rejected_or_empty', ...(detail ? { detail } : {}) }) };
     } catch {
+      options.health?.fail(id, 'timeout');
       return { ...base, ok: false, ms: Date.now() - started, error: signal.aborted ? 'timeout' : 'unreachable' };
     }
   }));
@@ -315,6 +330,8 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
   const gate = new ProviderGate(capacity.maxConcurrent, capacity.queueWaitMs, capacity.providerRpm, 250, capacity.perVisitorConcurrent);
   const answers = new AnswerCache<ChatAnswer>(capacity.cacheEntries, capacity.cacheTtlMs);
   const runtime = options.runtime;
+  // «صحة المحركات»: shared by every visitor on this server instance (and shown in the admin panel).
+  const health = runtime?.health || new EngineHealth();
   // «ذاكرة شاهين»: repeated questions without any AI call, and answers when no engine is reachable.
   const memory = options.memory;
   runtime?.attach({ gate, answers: answers as AnswerCache<unknown> });
@@ -375,7 +392,7 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
         }
       }
       chatInput = { input, mode, useMemory };
-      const run = (signal?: AbortSignal) => executeChat(input, { env, fetch: options.fetch, signal, settings: shaheen, council, gate, owner: visitor });
+      const run = (signal?: AbortSignal) => executeChat(input, { env, fetch: options.fetch, signal, settings: shaheen, council, gate, owner: visitor, health });
       let result: ChatAnswer;
       if (!input.conversationHistory.length && capacity.cacheTtlMs > 0 && capacity.cacheEntries > 0) {
         // Opening question: answered from the shared cache, or by ONE provider call shared by everyone
