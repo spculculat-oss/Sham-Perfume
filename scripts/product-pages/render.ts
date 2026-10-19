@@ -39,7 +39,8 @@ export interface PageOptions { siteUrl: string }
 /**
  * «صفحة المنتج بلغة الزائر»: the standalone pages are static files, so they carry their chrome in
  * every base language and a tiny script swaps it when the page opens. A visitor whose language has no
- * full page pack reads the English labels — never Arabic (the same rule as the store itself).
+ * full page pack reads the English labels — never Arabic (the same rule as the store itself). With no saved
+ * language (a first visit from a search or a shared link) the phone's own language decides, like the store.
  */
 const PAGE_KEYS: StoreTextKey[] = [
   'sf_store_name', 'pd_index', 'sf_add_to_cart', 'pd_shop_cta', 'pd_ask_shaheen', 'pd_in_stock', 'sf_out_of_stock',
@@ -75,6 +76,7 @@ const SWITCHER = (table: string) => `<script id="page-l10n" type="application/js
 var ALL=(${JSON.stringify(ALL_LANGS)}).split(','),RT=(${JSON.stringify(PAGE_DIRS)}).split(',');
 var T=JSON.parse(document.getElementById('page-l10n').textContent),K=T.keys;
 var s=localStorage.getItem('sham_perfume_user_language')||'';
+if(ALL.indexOf(s)<0){var B=navigator.languages||[navigator.language||''];for(var i=0;i<B.length&&ALL.indexOf(s)<0;i++){var g=String(B[i]||'').toLowerCase();s=ALL.indexOf(g)>=0?g:g.split('-')[0]}}
 var l=ALL.indexOf(s)>=0?s:'en',ar=l==='ar';
 var vals=(T.packs[l]||T.packs.en)||[];
 if(ar)return;

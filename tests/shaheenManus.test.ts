@@ -125,13 +125,13 @@ import { cleanAdvisor, ranToday } from '../scripts/shaheen-manus/missions';
 test('each schedule runs its own mission, a manual choice wins, and a push only rehearses', () => {
   const wf = readFileSync(new URL('../.github/workflows/shaheen-manus.yml', import.meta.url), 'utf8');
   for (const cron of Object.keys(SCHEDULES)) assert.ok(wf.includes(`- cron: '${cron}'`), cron);
-  assert.equal(missionFor('20 5 * * *'), 'tour');
+  assert.equal(missionFor('0 7 * * *'), 'tour');
   assert.ok(/workflow_run:\s*\n\s*workflows: \['Shaheen pre-meeting full check'\]/.test(wf), 'the tour follows the pre-meeting check');
   const pre = readFileSync(new URL('../.github/workflows/shaheen-precheck.yml', import.meta.url), 'utf8');
   assert.match(pre, /^name: Shaheen pre-meeting full check$/m);
-  assert.equal(missionFor('15 6 * * 3,6'), 'design');
-  assert.equal(missionFor('0 8 * * 1,4'), 'verify');
-  assert.equal(missionFor('20 5 * * *', 'verify'), 'verify');
+  assert.equal(missionFor('15 5 * * 3,6'), 'design');
+  assert.equal(missionFor('30 9 * * 1,4'), 'verify');
+  assert.equal(missionFor('0 7 * * *', 'verify'), 'verify');
   assert.equal(missionFor('', ''), undefined);
   assert.equal(missionFor(undefined, 'buy-things'), undefined);
 });

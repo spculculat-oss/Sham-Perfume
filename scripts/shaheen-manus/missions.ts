@@ -1,6 +1,6 @@
 /**
  * Shaheen's background agent (Manus) — its missions besides the languages & design audit (audit.ts):
- *   - «جولة الزائر وتحضير الاجتماع» (tour, daily right after the pre-meeting check, before the 06:30 UTC
+ *   - «جولة الزائر وتحضير الاجتماع» (tour, daily right after the pre-meeting check, before the 08:15 UTC
  *     meeting): the live site on a phone as a shopper would use it — home → store → a product → the cart → the
  *     checkout page (never paying) → one question to Shaheen — then the visible problems the check found are
  *     looked at on the live site, and «المستشار الميداني» writes his opinion and proposals for the meeting
@@ -18,9 +18,9 @@ export const MISSIONS: Mission[] = ['design', 'tour', 'verify'];
 
 /**
  * Which mission a schedule (or a manual choice) runs. Push events only rehearse (no task, no credits).
- * The daily tour starts when the scheduled pre-meeting check finishes (workflow_run); 05:20 is its fallback.
+ * The daily tour starts when the scheduled pre-meeting check finishes (workflow_run); 07:00 is its fallback.
  */
-export const SCHEDULES: Record<string, Mission> = { '20 5 * * *': 'tour', '15 6 * * 3,6': 'design', '0 8 * * 1,4': 'verify' };
+export const SCHEDULES: Record<string, Mission> = { '0 7 * * *': 'tour', '15 5 * * 3,6': 'design', '30 9 * * 1,4': 'verify' };
 export function missionFor(schedule?: string, input?: string): Mission | undefined {
   if (input && MISSIONS.includes(input as Mission)) return input as Mission;
   return schedule ? SCHEDULES[schedule.trim()] : undefined;

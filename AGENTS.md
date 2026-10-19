@@ -48,7 +48,7 @@ When the merchant writes **«نفذ مهام شاهين»** (or "Run Shaheen's t
   `src/utils/shaheenOrg.ts` (department, report file, schedule, who it helps in `LINKS`), then run
   `node --import tsx scripts/shaheen-council/org-doc.mts` to refresh `SHAHEEN_ORG.md`;
   `tests/shaheenOrg.test.ts` fails otherwise. If the bot writes a report, add its own checks to
-  `scripts/shaheen-council/precheck.ts` (the pre-meeting full check, 04:30 UTC — two hours before the council).
+  `scripts/shaheen-council/precheck.ts` (the pre-meeting full check, 06:10 UTC — two hours before the council at 08:15 UTC).
 - Customer invoices, receipts and order summaries must not show platform margin/profit amounts or
   percentages, or the supplier-cost breakdown. Keep selling prices, quantities, shipping, applicable
   taxes/fees and totals visible; do not change pricing or internal merchant/admin accounting to hide a margin.

@@ -1,12 +1,15 @@
 name: Shaheen language agent (وكيل اللغات)
 
-# «وكيل اللغات» (experience cell, src/utils/shaheenOrg.ts): daily audit of digit systems following the SITE
-# language, bare locale formatting and language-pack coverage → src/data/live/shaheen-languages.json, read by
-# the pre-meeting check and the council. Branch pushes rehearse (report in the job summary, nothing committed).
+# «وكيل اللغات — المترجم الذكي» (experience cell, src/utils/shaheenOrg.ts): audit of digit systems following the
+# SITE language, bare locale formatting and pack coverage, then the AI translation of every visitor string a
+# language still shows in English → src/لغات/ai/<lang>.json (loaded by the site on demand) and the report
+# src/data/live/shaheen-languages.json (pre-meeting check + council). Twice a day on main; quota-aware (a used-up
+# package waits for its renewal). Branch pushes rehearse with 2 requests (nothing committed).
 
 on:
   schedule:
-    - cron: '11 9 * * *' # daily, after the doctor and memory runs
+    - cron: '11 9 * * *' # after the doctor and memory runs
+    - cron: '11 21 * * *' # second translation round of the day
   workflow_dispatch:
   push:
     branches: [main, 'arena/**']
@@ -14,6 +17,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: shaheen-languages-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
@@ -23,7 +27,18 @@ jobs:
   report:
     name: Language audit
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 30
+    env:
+      PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      # Requests to the AI engines per run (repository variable LANG_AI_MAX_CALLS; 0 = translation off).
+      LANG_AI_MAX_CALLS: ${{ vars.LANG_AI_MAX_CALLS || (github.ref == 'refs/heads/main' && '20' || '2') }}
+      LANG_AI_TIME_BUDGET_S: ${{ github.ref == 'refs/heads/main' && '900' || '240' }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
     steps:
       - name: Checkout source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -40,10 +55,12 @@ jobs:
           bun-version-file: package.json
       - name: Install dependencies
         run: bun install --frozen-lockfile || bun install
-      - name: Audit the languages (digit systems, locale formatting, pack coverage)
+      - name: Audit the languages + «المترجم الذكي» (AI translation of what is still English)
         run: node --import tsx scripts/shaheen-languages/run.mts
-      - name: Regression tests with the report
-        run: bun run test
+      - name: Regression tests with the report and the new translations
+        run: |
+          set -o pipefail
+          bun run test 2>&1 | tee /tmp/test.log || { grep -E 'not ok|error:' /tmp/test.log | head -8 | sed 's/^/::error title=test::/'; exit 1; }
       - name: Save the report on main (merged to the tip of main, never a force push)
         if: github.ref == 'refs/heads/main'
         env:
@@ -51,5 +68,10 @@ jobs:
         run: |
           git config user.name "Shaheen language agent"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          node scripts/ci/publish.mjs "وكيل اللغات: تقرير اللغات اليومي" src/data/live/shaheen-languages.json \
+          before=$(git rev-parse HEAD)
+          node scripts/ci/publish.mjs "وكيل اللغات: التقرير والترجمات الذكية $(date -u +%Y-%m-%dT%H:%MZ)" \
+            src/data/live/shaheen-languages.json src/data/live/ai-quota.json "src/لغات/ai" \
             || { echo "::error::Could not push the language report"; exit 1; }
+          if [ "$(git rev-parse HEAD)" = "$before" ]; then exit 0; fi
+          # New translations reach the main site (GitHub Pages) at once.
+          gh workflow run pages.yml --ref main || echo "::warning::Pages rebuild not started"

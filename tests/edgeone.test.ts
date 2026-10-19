@@ -20,17 +20,11 @@ test('serverless platforms default to the memory store (no durable disk)', () =>
 });
 
 test('EdgeOne function: one app per instance, /api prefix restored, per-visitor limits by EO-Connecting-IP', async () => {
-  const savedKeys = {
-    gemini: process.env.GEMINI_API_KEY,
-    openai: process.env.OPENAI_API_KEY,
-    claude: process.env.ANTHROPIC_API_KEY,
-    deepseek: process.env.DEEPSEEK_API_KEY,
-    rate: process.env.SHAM_SHAHEEN_RATE_PER_MIN,
-  };
-  delete process.env.GEMINI_API_KEY;
-  delete process.env.OPENAI_API_KEY;
-  delete process.env.ANTHROPIC_API_KEY;
-  delete process.env.DEEPSEEK_API_KEY;
+  // Every engine key off (the robots' workflows carry real keys in their environment).
+  const names = ['GEMINI_API_KEY', 'OPENAI_API_KEY', 'ANTHROPIC_API_KEY', 'DEEPSEEK_API_KEY', 'OPENROUTER_API_KEY',
+    'PERPLEXITY_API_KEY', 'SHAM_LLM_BASE_URL', 'SHAM_LLM_API_KEY', 'AI_GATEWAY_API_KEY', 'SHAM_SHAHEEN_RATE_PER_MIN'];
+  const saved = Object.fromEntries(names.map((n) => [n, process.env[n]]));
+  for (const n of names) delete process.env[n];
   process.env.SHAM_SHAHEEN_RATE_PER_MIN = '2';
   const { default: app } = await import('../cloud-functions/api/[[default]]');
   assert.equal(process.env.SHAM_PLATFORM, 'edgeone');
@@ -55,12 +49,7 @@ test('EdgeOne function: one app per instance, /api prefix restored, per-visitor 
     assert.equal((await chat('41.33.1.1')).status, 429);
     assert.equal((await chat('197.1.1.9')).status, 503, 'another visitor has their own limit');
   } finally {
-    if (savedKeys.gemini !== undefined) process.env.GEMINI_API_KEY = savedKeys.gemini;
-    if (savedKeys.openai !== undefined) process.env.OPENAI_API_KEY = savedKeys.openai;
-    if (savedKeys.claude !== undefined) process.env.ANTHROPIC_API_KEY = savedKeys.claude;
-    if (savedKeys.deepseek !== undefined) process.env.DEEPSEEK_API_KEY = savedKeys.deepseek;
-    if (savedKeys.rate !== undefined) process.env.SHAM_SHAHEEN_RATE_PER_MIN = savedKeys.rate;
-    else delete process.env.SHAM_SHAHEEN_RATE_PER_MIN;
+    for (const n of names) { if (saved[n] !== undefined) process.env[n] = saved[n]; else delete process.env[n]; }
     await new Promise((done) => server.close(done));
   }
 });

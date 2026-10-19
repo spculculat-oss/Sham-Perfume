@@ -7,7 +7,7 @@
 export type AiToolId =
   | 'shaheen_chat' | 'sham_assistant' | 'news_articles' | 'news_bulletin' | 'assistant_training' | 'media' | 'admin_agent'
   | 'store_advisor' | 'store_catalog' | 'store_import' | 'shaheen_school' | 'seo_agent' | 'shaheen_council' | 'finance_agent'
-  | 'contracts_agent';
+  | 'contracts_agent' | 'language_agent';
 
 export interface AiToolDef {
   id: AiToolId;
@@ -32,6 +32,11 @@ export const AI_TOOLS: AiToolDef[] = [
     id: 'contracts_agent', nameAr: 'مسؤول التعاقدات', nameEn: 'Contracts officer',
     descriptionAr: 'يجهز رسائل التعاون مع أصحاب المتاجر وردود أسئلتهم بمعايير المدير القانوني (L-40)، ويدير الموافقة الإلكترونية على الاتفاقية. الرسائل يراجعها ويبعتها عضو حقيقي من الفريق باسمه؛ لا يكشف قيمة الهامش ولا يرسل رابط المتجر قبل الموافقة.',
     sources: ['server/contracts/assistant.ts', 'server/contracts/router.ts'], routes: ['/api/admin/contracts/reply'], acceptsGuidance: true,
+  },
+  {
+    id: 'language_agent', nameAr: 'المترجم الذكي (وكيل اللغات)', nameEn: 'Smart translator (language agent)',
+    descriptionAr: 'يترجم بالذكاء الاصطناعي كل نص لسه بيظهر بالإنجليزي في أي لغة من لغات الموقع (الواجهة والمتجر والشاشات)، بفحص صارم (المتغيرات والحروف واللغة) ومراجعة من محرك تاني لو متاح، ويبدأ باللغات اللي بلّغ عنها قسم التصميم.',
+    sources: ['scripts/shaheen-languages/run.mts'], routes: [], acceptsGuidance: true,
   },
   {
     id: 'shaheen_chat', nameAr: 'شات الخبير شاهين', nameEn: 'Master Shahin chat',

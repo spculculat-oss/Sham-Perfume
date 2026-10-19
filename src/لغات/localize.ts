@@ -1,4 +1,5 @@
 import { SupportedLanguage } from '../types/i18n';
+import { aiText } from './aiPacks';
 
 /**
  * A localized text value. `ar` and `en` are mandatory baselines;
@@ -130,6 +131,9 @@ export function loc(lang: SupportedLanguage, text: LText | undefined | null): st
   if (!text) return '';
   const direct = text[lang];
   if (typeof direct === 'string' && direct.length > 0) return direct;
+  // The language agent's translation of the English text (src/لغات/aiPacks.ts), before any fallback.
+  const ai = aiText(lang, text.en);
+  if (ai) return ai;
   if (lang === 'fa') {
     if (typeof text.ar === 'string' && text.ar.length > 0) return text.ar;
   }

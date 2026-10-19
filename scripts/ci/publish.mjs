@@ -37,7 +37,16 @@ function mergeQuota(theirsText, oursText) {
   const engines = { ...(theirs.engines || {}) };
   for (const [id, e] of Object.entries(ours.engines || {})) if (!engines[id] || Date.parse(e.pausedUntil) > Date.parse(engines[id].pausedUntil)) engines[id] = e;
   for (const [id, e] of Object.entries(engines)) if (!(Date.parse(e.pausedUntil) > Date.now())) delete engines[id];
-  return `${JSON.stringify({ updatedAt: new Date().toISOString(), engines }, null, 1)}\n`;
+  // The bots' daily use of the free quota («الشات أولاً»): the newer day wins, the same day keeps the higher count.
+  let used = ours.used || theirs.used;
+  if (ours.used && theirs.used) {
+    if (ours.used.day === theirs.used.day) {
+      const counts = { ...theirs.used.counts };
+      for (const [id, n] of Object.entries(ours.used.counts || {})) counts[id] = Math.max(counts[id] || 0, n);
+      used = { day: ours.used.day, counts };
+    } else used = ours.used.day > theirs.used.day ? ours.used : theirs.used;
+  }
+  return `${JSON.stringify({ updatedAt: new Date().toISOString(), engines, ...(used ? { used } : {}) }, null, 1)}\n`;
 }
 
 /** Two copies of a memory file together: every entry kept, the newer answer wins, uses are not lost. */

@@ -197,3 +197,21 @@ test('the storefront and the product page themselves render without Arabic for a
     assert.ok(!ARABIC.test(html), `<${code} product page> leaked Arabic into the page`);
   }
 });
+
+test('a first visit to a product page follows the phone\'s language when nothing is saved yet', async () => {
+  const { renderProductPage } = await import('../scripts/product-pages/render');
+  const vm = await import('node:vm');
+  const html = renderProductPage(product({ images: ['store/royal-oud.jpg'] }), [], { siteUrl: 'https://example.test/' });
+  const table = html.match(/<script id="page-l10n" type="application\/json">([\s\S]*?)<\/script>/)![1];
+  const code = html.match(/<script>(\(function\(\)\{try\{[\s\S]*?)<\/script>/)![1];
+  const open = (saved: string, languages: string[]) => {
+    const root = { lang: 'ar', dir: 'rtl' };
+    const document = { documentElement: root, title: '', getElementById: () => ({ textContent: table }), querySelectorAll: () => [], querySelector: () => null };
+    vm.runInNewContext(code, { document, navigator: { languages, language: languages[0] }, localStorage: { getItem: () => saved }, Intl });
+    return root.lang;
+  };
+  assert.equal(open('', ['ar-EG', 'ar']), 'ar', 'an Arabic phone keeps the Arabic page');
+  assert.equal(open('', ['fr-FR', 'fr']), 'fr');
+  assert.equal(open('', ['xx-YY']), 'en', 'a language the site does not offer reads English');
+  assert.equal(open('en', ['ar-EG']), 'en', 'the visitor\'s own choice wins over the phone');
+});

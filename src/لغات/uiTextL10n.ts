@@ -1,3 +1,4 @@
+import { aiText } from './aiPacks';
 import type { SupportedLanguage } from '../types/i18n';
 
 /**
@@ -128,5 +129,5 @@ export type UiTextKey = keyof typeof UI_TEXT;
 /** Resolve a UI label for the active language (language -> English -> Arabic -> key). */
 export function uiLabel(key: UiTextKey, lang: SupportedLanguage = 'ar'): string {
   const entry: Partial<Record<SupportedLanguage, string>> = UI_TEXT[key];
-  return entry[lang] || entry.en || entry.ar || key;
+  return entry[lang] || aiText(lang, entry.en) || entry.en || entry.ar || key;
 }

@@ -75,7 +75,8 @@ export const AUDIT_SCHEMA = {
   additionalProperties: false,
 };
 
-export function auditPrompt(languages: string[], previous?: AuditFile): string {
+/** `aiTranslated`: languages Shaheen's smart translator filled since the last audit (their wording is checked). */
+export function auditPrompt(languages: string[], previous?: AuditFile, aiTranslated: string[] = []): string {
   const names = languages.map((c) => {
     const l = SUPPORTED_LANGUAGES.find((x) => x.code === c);
     return l ? `${l.code} (${l.name}, ${l.dir})` : c;
@@ -93,6 +94,7 @@ export function auditPrompt(languages: string[], previous?: AuditFile): string {
     'Rules: do not buy anything, do not fill any order or contact form, do not create accounts. Be concrete: name the page and quote the visible text.',
     'Write summaryAr, problem, fix and strengthsAr in Arabic. Keep brand and product names as they are.',
     open.length ? `Last week these problems were open; say if each one is still there:\n${open.join('\n')}` : '',
+    aiTranslated.length ? `The site's AI translator recently filled missing texts in: ${aiTranslated.join(', ')}. For those languages judge whether the new wording is natural and correct, and report any text still in English.` : '',
   ].filter(Boolean).join('\n');
 }
 
