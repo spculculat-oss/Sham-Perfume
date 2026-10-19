@@ -272,9 +272,10 @@
    "needsApproval": false,
    "createdAt": "2026-10-18T23:21:15.726Z",
    "meeting": "2026-10-19",
-   "status": "open",
+   "status": "done",
    "issue": 146,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/146"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/146",
+   "closedAt": "2026-10-19T08:14:05Z"
   },
   {
    "id": "2026-10-19-2-إصلاح-عطل-مستورد-شاهين-م",
@@ -285,9 +286,10 @@
    "needsApproval": false,
    "createdAt": "2026-10-18T23:21:15.726Z",
    "meeting": "2026-10-19",
-   "status": "open",
+   "status": "done",
    "issue": 147,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/147"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/147",
+   "closedAt": "2026-10-19T08:14:05Z"
   },
   {
    "id": "2026-10-19-3-إصلاح-عطل-منظف-الصور",
@@ -298,9 +300,10 @@
    "needsApproval": false,
    "createdAt": "2026-10-18T23:21:15.726Z",
    "meeting": "2026-10-19",
-   "status": "open",
+   "status": "done",
    "issue": 148,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/148"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/148",
+   "closedAt": "2026-10-19T08:14:06Z"
   }
  ],
  "toolGoals": {
