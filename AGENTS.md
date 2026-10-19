@@ -49,6 +49,9 @@ deletions, the first import, failed checks) on branch `aistudio/<sha7>` with a `
 - To handle such an issue: review `git diff main...origin/aistudio/<sha7>`, bring the good parts into the
   session branch (never push to `aistudio/*` or `main` directly) and open a PR with `Closes #n`.
 - The filter's rules live in `classifyPath` (`BLOCKED` / `REVIEW`); keep them in step with the list above.
+- When AI Studio cannot push at all («Failed to push commit to GitHub»), the merchant downloads the project
+  as a ZIP and attaches it in the chat: `node --import tsx scripts/aistudio/import-zip.mts <zip>` shows the
+  filtered plan, `--apply [--only=a,b]` writes the accepted files; then lint, tests and a PR as usual.
 
 ## Standing rules for this repository
 
