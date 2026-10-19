@@ -44,6 +44,7 @@ import { ExtractedAIPerfume } from './utils/aiFormulaExtractor';
 import type { ShaheenTool, ToolLink } from './utils/shaheenTools';
 import { SupportedLanguage, SUPPORTED_LANGUAGES } from './types/i18n';
 import { getInitialLanguage, saveLanguage } from './لغات/i18n';
+import { loadAiPack } from './لغات/aiPackLoader';
 import { LanguageProvider } from './context/LanguageContext';
 import { LText, makeT, fmt, pickArEn } from './لغات/localize';
 import {
@@ -566,6 +567,14 @@ export default function App() {
   // Sync document direction and language code whenever language changes
   useEffect(() => {
     saveLanguage(currentLang);
+  }, [currentLang]);
+
+  // «المترجم الذكي»: the language agent's translations for this language load on demand, then one re-render.
+  const [, setAiPackTick] = useState(0);
+  useEffect(() => {
+    let live = true;
+    void loadAiPack(currentLang).then((fresh) => { if (fresh && live) setAiPackTick((n) => n + 1); });
+    return () => { live = false; };
   }, [currentLang]);
 
   // Client manually requested a specific language

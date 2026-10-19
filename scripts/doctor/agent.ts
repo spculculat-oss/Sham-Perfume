@@ -312,7 +312,27 @@ async function revert(action: Action, x: ExecContext) {
  * paused until the provider says it renews, the pause is saved (src/data/live/ai-quota.json) so the next run
  * does not waste requests, and the job continues where it stopped once the quota is back.
  */
-export interface QuotaFile { updatedAt: string; engines: Record<string, { pausedUntil: string; reason: string; detail?: string; key?: string }> }
+export interface QuotaFile {
+  updatedAt: string;
+  engines: Record<string, { pausedUntil: string; reason: string; detail?: string; key?: string }>;
+  /** Requests the bots made today on the engines with a free DAILY quota (the day starts at the 08:05 UTC renewal). */
+  used?: { day: string; counts: Record<string, number> };
+}
+
+/**
+ * «الشات أولاً»: the free daily quota (Gemini) is shared with the visitors' chat on the site. The bots take at
+ * most this many requests a day, then leave the rest to the chat until the renewal (SHAHEEN_BOT_DAILY_GEMINI;
+ * 0 = the bots never use it, -1 = no limit).
+ */
+export const BOT_DAILY_DEFAULT: Record<string, number> = { gemini: 10 };
+export function botDailyCap(env: Env, id: string): number {
+  const raw = env[`SHAHEEN_BOT_DAILY_${id.toUpperCase()}`]?.trim();
+  const n = raw === undefined || raw === '' ? BOT_DAILY_DEFAULT[id] : Number(raw);
+  if (n === undefined || !Number.isFinite(n) || n < 0) return Infinity;
+  return Math.floor(n);
+}
+/** The quota day: from one 08:05 UTC renewal to the next. */
+export const quotaDay = (now: number) => new Date(now - (8 * 60 + 5) * 60_000).toISOString().slice(0, 10);
 
 /** The secrets each engine reads: a pause is tied to the key it happened with. */
 const ENGINE_SECRETS: Record<string, string[]> = {
@@ -371,6 +391,15 @@ export function quotaBook(path?: URL, now: () => number = Date.now) {
       file.updatedAt = new Date(now()).toISOString();
     },
     clear(id: string) { if (file.engines[id]) { delete file.engines[id]; file.updatedAt = new Date(now()).toISOString(); } },
+    /** Counts one bot request on a daily-quota engine; returns today's total. */
+    use(id: string): number {
+      const day = quotaDay(now());
+      if (file.used?.day !== day) file.used = { day, counts: {} };
+      file.used.counts[id] = (file.used.counts[id] || 0) + 1;
+      file.updatedAt = new Date(now()).toISOString();
+      return file.used.counts[id];
+    },
+    usedToday: (id: string) => (file.used?.day === quotaDay(now()) ? file.used.counts[id] || 0 : 0),
     save() { if (path) writeFileSync(path, `${JSON.stringify(file, null, 1)}\n`); },
   };
 }
@@ -397,6 +426,13 @@ export async function makeAsk(env: Env, options: { quota?: QuotaBook; memory?: A
     if (known) return known;
     for (const id of ready) {
       if (quota?.pausedUntil(id, keyFingerprint(env, id))) continue;
+      // «الشات أولاً»: past the bots' daily share, the free quota stays for the visitors until the renewal.
+      const cap = botDailyCap(env, id);
+      if (quota && cap !== Infinity && quota.usedToday(id) >= cap) {
+        quota.pause(id, pauseUntil(429, 'no_credit', 'daily', Date.now())!, 'chat_reserve', `bots used ${quota.usedToday(id)}/${cap} today`, keyFingerprint(env, id));
+        continue;
+      }
+      if (quota && cap !== Infinity) quota.use(id);
       let refused: { until: number; reason: string; detail: string } | undefined;
       const reply = await callEngine(id, system, [{ role: 'user', text: prompt }], {
         env, fetch: options.request, signal: AbortSignal.timeout(180_000), temperature: 0.2, maxTokens: 16_000, maxChars: 200_000,

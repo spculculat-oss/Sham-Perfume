@@ -59,7 +59,7 @@ export interface Bot {
 
 export const BOTS: Bot[] = [
   // ── Leadership ──
-  { id: 'council', nameAr: 'مجلس شاهين (الاجتماع اليومي)', nameEn: "Shaheen's council (daily meeting)", dept: 'leadership', workflow: 'shaheen-council.yml', report: 'shaheen-council.json', everyHours: 24, aiTools: ['shaheen_council'], dutiesAr: 'يجمع رؤساء الأقسام كل يوم 9:30 الصبح، يكتب المحضر، ينفذ الآمن ويحوّل الباقي لمهام تطوير.' },
+  { id: 'council', nameAr: 'مجلس شاهين (الاجتماع اليومي)', nameEn: "Shaheen's council (daily meeting)", dept: 'leadership', workflow: 'shaheen-council.yml', report: 'shaheen-council.json', everyHours: 24, aiTools: ['shaheen_council'], dutiesAr: 'يجمع رؤساء الأقسام كل يوم 10:15 الصبح (بعد تجديد باقة الذكاء الاصطناعي)، يكتب المحضر، ينفذ الآمن ويحوّل الباقي لمهام تطوير.' },
   { id: 'secretary', nameAr: 'السكرتير — مشرف شاهين', nameEn: 'Secretary — Shaheen\'s supervisor', dept: 'leadership', workflow: 'shaheen-news.yml', report: 'ai-supervisor.json', everyHours: 12, dutiesAr: 'يقيس كل أداة ذكاء اصطناعي ويكتب لها توجيهات، يجهز جدول الأعمال، وينوب عن شاهين في الاجتماع وقت الضغط أو لو مفيش محرك ذكاء اصطناعي.' },
   { id: 'precheck', nameAr: 'الفحص الشامل قبل الاجتماع', nameEn: 'Pre-meeting full check', dept: 'leadership', workflow: 'shaheen-precheck.yml', report: 'shaheen-precheck.json', everyHours: 24, dutiesAr: 'قبل الاجتماع بساعتين: كل روبوت يفحص نفسه ويكتب مشاكله والإصلاح المقترح وأفكار التطوير، والسكرتير يوزع طلبات المساعدة بين الأدوات.' },
   { id: 'finance', nameAr: 'أمين شاهين — الإدارة المالية', nameEn: 'Shaheen Finance', dept: 'leadership', workflow: 'shaheen-finance.yml', report: 'ai-supervisor.json', everyHours: 24, aiTools: ['finance_agent'], dutiesAr: 'تحصيل موثّق وتقارير يومية وأسبوعية وشهرية ومراجعة الدفع. التفاصيل داخل لوحة مالية خاصة؛ التقرير العام يحتوي حالة الفحص المنقحة من المشرف فقط. لا تحويلات أو استردادات أو اعتماد حسابات تلقائياً.' },
@@ -77,7 +77,7 @@ export const BOTS: Bot[] = [
   { id: 'seo', nameAr: 'منارة شاهين (الظهور في البحث)', nameEn: 'Manaret Shaheen (search)', dept: 'content', workflow: 'shaheen-seo.yml', report: 'seo-agent.json', everyHours: 6, aiTools: ['seo_agent'], dutiesAr: 'يفحص الموقع زي محركات البحث، يكتب العناوين والأوصاف ويرسل الصفحات للفهرسة.' },
   // ── Visitor experience, design & languages ──
   { id: 'chat', nameAr: 'شات الخبير شاهين ومساعد شام', nameEn: 'Shaheen chat & Sham assistant', dept: 'experience', aiTools: ['shaheen_chat', 'sham_assistant', 'media'], dutiesAr: 'يرد على الزوار؛ وقت الضغط أو لو المحركات وقفت بيرد من ذاكرة شاهين (مدرسة شاهين).' },
-  { id: 'languages', nameAr: 'وكيل اللغات', nameEn: 'Language agent', dept: 'experience', workflow: 'shaheen-languages.yml', report: 'shaheen-languages.json', everyHours: 24, dutiesAr: 'يقيس اللغات المئة: الحزم الناقصة، والأرقام اللي لازم تتبع لغة الموقع.' },
+  { id: 'languages', nameAr: 'وكيل اللغات — المترجم الذكي', nameEn: 'Language agent — smart translator', dept: 'experience', workflow: 'shaheen-languages.yml', report: 'shaheen-languages.json', everyHours: 12, aiTools: ['language_agent'], dutiesAr: 'يقيس اللغات المئة، ويترجم بالذكاء الاصطناعي كل نص لسه بالإنجليزي (فحص صارم + مراجعة محرك تاني)، ويبدأ باللغات اللي بلّغ عنها قسم التصميم ويحدد مكان النصوص الإنجليزي الثابتة في الكود.' },
   { id: 'design_audit', nameAr: 'تدقيق التصميم واللغات (مرتين في الأسبوع)', nameEn: 'Design & languages audit (twice a week)', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-audit.json', everyHours: 84, dutiesAr: 'وكيل خلفي يفتح الموقع بلغات مختلفة الأربع والسبت ويقيّم التصميم والترجمة.' },
   { id: 'visitor_tour', nameAr: 'جولة الزائر والمستشار الميداني', nameEn: 'Visitor tour & field advisor', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-missions.json', section: 'tour', everyHours: 24, dutiesAr: 'كل يوم بعد الفحص الشامل الوكيل الخلفي يتسوق من الموبايل زي الزبون: المتجر ← منتج ← السلة ← صفحة الدفع (من غير ما يدفع) ← سؤال لشاهين، وبعدين يبص على مشاكل الفحص في الموقع الحي ويقعد في الاجتماع «المستشار الميداني» برأيه واقتراحاته.' },
   { id: 'inspect', nameAr: 'فاحص إجابات شاهين', nameEn: 'Answer inspector', dept: 'experience', workflow: 'shaheen-inspect.yml', dutiesAr: 'يسأل شاهين أسئلة حقيقية ويفحص الرد (عند الطلب).' },
@@ -143,7 +143,8 @@ export const LINKS: Link[] = [
   { from: 'news', to: 'school', whyAr: 'دروس جديدة ← مادة للمذاكرة' },
   { from: 'school', to: 'chat', whyAr: 'ذاكرة شاهين ← رد بدون ذكاء اصطناعي وقت الضغط' },
   { from: 'school', to: 'importer', whyAr: 'مهارات قراءة صفحات المتاجر بدون ذكاء اصطناعي' },
-  { from: 'design_audit', to: 'languages', whyAr: 'ملاحظات الترجمة والتصميم' },
+  { from: 'design_audit', to: 'languages', whyAr: 'اللغات نص المترجمة تتترجم الأول + أماكن النصوص الإنجليزي الثابتة' },
+  { from: 'languages', to: 'design_audit', whyAr: 'تقرير الترجمة والفئات اللي مش بتنعكس يمين/شمال ← التدقيق الجاي يتأكد' },
   { from: 'precheck', to: 'visitor_tour', whyAr: 'مشاكل الفحص الشامل ← المستشار الميداني يتأكد منها على الموقع الحي' },
   { from: 'visitor_tour', to: 'council', whyAr: 'رأي واقتراحات المستشار الميداني + خطوات الشراء الواقعة ← بنود في الاجتماع' },
   { from: 'visitor_tour', to: 'product_pages', whyAr: 'صفحات منتجات أو صور مكسورة' },

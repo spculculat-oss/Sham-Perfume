@@ -291,6 +291,23 @@ export function buildBriefing(d: LiveData, now: number, openTasks: Task[] = []):
     }
     if (clampCount > 0) push({ area: 'experience', priority: 'medium', text: `تقليل صارم للغة إلى عربي/إنجليزي في ${clampCount} موضع (راجع تقرير وكيل اللغات)` });
     if (bareCount > 0 && publicCount === 0) push({ area: 'experience', priority: 'low', text: `تنسيق أرقام/تواريخ بلا لغة صريحة في ${bareCount} موضع — الأرقام المعروضة قد تتبع لغة متصفح الزائر` });
+
+    // «المترجم الذكي» + the link with the design department
+    const tr = o(langReport.translation);
+    if (n(tr.remaining) !== undefined) {
+      const run = o(tr.run);
+      facts.push(`المترجم الذكي: ${n(tr.remaining)} نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى ${n(tr.covered) ?? 0} — آخر دورة ترجمت ${n(run.translated) ?? 0} ورفضت ${n(run.rejected) ?? 0} (الحالة: ${String(tr.status || '—')}).`);
+      if (tr.status === 'no_engine' || tr.status === 'engines_failed') {
+        push({ area: 'experience', priority: 'medium', text: tr.status === 'no_engine' ? 'المترجم الذكي واقف: مفيش مفتاح ذكاء اصطناعي شغال — اللغات الناقصة بتظهر بالإنجليزي' : 'المترجم الذكي: المحركات مردتش على الترجمة في آخر دورة' });
+      }
+    }
+    const design = o(langReport.design);
+    const located = (Array.isArray(design.located) ? design.located as unknown[] : []).map(o);
+    if (located.length) {
+      const where = located.slice(0, 6).map((l) => `«${String(l.phrase)}» ${String(l.file)}:${n(l.line) ?? '?'}`).join('، ');
+      push({ area: 'experience', priority: 'medium', text: `قسم التصميم شاف نصوص بالإنجليزي، ووكيل اللغات حدد مكانها: ${where}`,
+        decision: { title: 'مراجعة النصوص الإنجليزي اللي لقاها قسم التصميم', detail: `تدقيق التصميم (manus-audit.json) شاف النصوص دي بالإنجليزي على الموقع، ووكيل اللغات لقاها في: ${where}. المترجم الذكي بيغطي اللغات الناقصة تلقائياً؛ لو النص ظاهر بالإنجليزي في العربي أو في لغة أساسية، صحّح القاموس في نفس السطر.`, area: 'experience', priority: 'medium', kind: 'task' } });
+    }
   }
 
   // «الفحص الشامل قبل الاجتماع»: every robot checked itself two hours ago; broken ones are on the agenda,

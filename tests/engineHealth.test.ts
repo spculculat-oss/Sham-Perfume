@@ -123,3 +123,24 @@ test('bots: a rejected key pauses for an hour, and a new key ends any pause at o
   book.pause('deepseek', now + MIN, 'rate_limited');
   assert.ok(book.pausedUntil('deepseek', 'anything') > now, 'old pauses without a fingerprint still apply');
 });
+
+test('«الشات أولاً»: the bots take only their daily share of a free quota, the rest stays for the visitors', async () => {
+  const { botDailyCap, makeAsk, quotaDay } = await import('../scripts/doctor/agent');
+  assert.equal(botDailyCap({}, 'gemini'), 10);
+  assert.equal(botDailyCap({ SHAHEEN_BOT_DAILY_GEMINI: '0' }, 'gemini'), 0);
+  assert.equal(botDailyCap({ SHAHEEN_BOT_DAILY_GEMINI: '-1' }, 'gemini'), Infinity);
+  assert.equal(botDailyCap({}, 'perplexity'), Infinity, 'paid engines have no daily share');
+  assert.equal(quotaDay(Date.parse('2026-10-19T08:00:00Z')), '2026-10-18', 'before the 08:05 renewal it is still yesterday');
+  assert.equal(quotaDay(Date.parse('2026-10-19T08:10:00Z')), '2026-10-19');
+
+  const env = { DEEPSEEK_API_KEY: 'test-deepseek', OPENAI_API_KEY: 'test-openai', SHAHEEN_BOT_DAILY_DEEPSEEK: '2' };
+  const book = quotaBook();
+  const hosts: string[] = [];
+  const request = (async (url) => { hosts.push(new URL(String(url)).host); return ok('جواب'); }) as typeof fetch;
+  const ask = (await makeAsk(env, { quota: book, request }))!;
+  for (let i = 0; i < 4; i++) await ask('system', `سؤال ${i}`);
+  assert.deepEqual(hosts, ['api.deepseek.com', 'api.deepseek.com', 'api.openai.com', 'api.openai.com']);
+  assert.equal(book.usedToday('deepseek'), 2);
+  assert.equal(book.file().engines.deepseek?.reason, 'chat_reserve');
+  assert.equal(book.usedToday('openai'), 0, 'engines without a daily share are not counted');
+});

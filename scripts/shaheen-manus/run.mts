@@ -2,7 +2,7 @@
  * Shaheen's background agent (Manus): one mission per run, chosen by the schedule (or by hand).
  *   design  — languages & design audit (Wednesdays and Saturdays) → src/data/live/manus-audit.json
  *   tour    — «جولة الزائر وتحضير الاجتماع»: a phone shopping journey, then the field advisor's opinion and
- *             proposals for the 06:30 UTC meeting (daily, right after the pre-meeting check) → manus-missions.json
+ *             proposals for the 08:15 UTC meeting (daily, right after the pre-meeting check) → manus-missions.json
  *   verify  — «المراجع الخارجي», the council tasks marked done, checked on the live site → manus-missions.json
  *   node --import tsx scripts/shaheen-manus/run.mts
  * Env: MANUS_API_KEY (secret), MANUS_MISSION (design | tour | verify; empty = rehearsal: every brief is
@@ -39,7 +39,11 @@ const previousAudit = readJson(AUDIT) as AuditFile | undefined;
 const raw = readJson(MISSIONS);
 let missions: MissionsFile = isMissionsFile(raw) ? raw : emptyMissions();
 const council = readJson(COUNCIL) as { tasks?: { id: string; title: string; detail: string; status: string; closedAt?: string; url?: string }[] } | undefined;
-const languages = languagesForWeek(weekNumber(now));
+// The language agent's latest AI translations: one of them joins this week's audit so its wording gets checked.
+const languageReport = readJson(new URL('../../src/data/live/shaheen-languages.json', import.meta.url)) as { translation?: { run?: { languages?: string[] } } } | undefined;
+const aiTranslated = (languageReport?.translation?.run?.languages || []).slice(0, 4);
+const weekly = languagesForWeek(weekNumber(now));
+const languages = aiTranslated.find((l) => !weekly.includes(l)) ? [...weekly, aiTranslated.find((l) => !weekly.includes(l))!] : weekly;
 const toVerify = tasksToVerify(council?.tasks || [], missions.verified, now.getTime());
 // What the meeting knows this morning (the pre-meeting check ran just before): the field advisor starts from it.
 const precheck = readJson(PRECHECK) as { updatedAt?: string; bots?: { id: string; status: string; problems?: string[] }[] } | undefined;
@@ -52,7 +56,7 @@ const context: MeetingContext = {
 };
 
 const briefs = {
-  design: () => ({ title: `Sham Perfume — languages & design audit ${at.slice(0, 10)}`, prompt: auditPrompt(languages, previousAudit), schema: AUDIT_SCHEMA }),
+  design: () => ({ title: `Sham Perfume — languages & design audit ${at.slice(0, 10)}`, prompt: auditPrompt(languages, previousAudit, aiTranslated), schema: AUDIT_SCHEMA }),
   tour: () => ({ title: `Sham Perfume — shopper tour ${at.slice(0, 10)}`, prompt: tourPrompt(missions.tour, context), schema: TOUR_SCHEMA }),
   verify: () => ({ title: `Sham Perfume — verify done tasks ${at.slice(0, 10)}`, prompt: verifyPrompt(toVerify), schema: VERIFY_SCHEMA }),
 };

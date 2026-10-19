@@ -1,6 +1,6 @@
 name: Shaheen pre-meeting full check
 
-# «الفحص الشامل قبل الاجتماع»: two hours before «مجلس شاهين» (06:30 UTC) every robot and AI tool under
+# «الفحص الشامل قبل الاجتماع»: two hours before «مجلس شاهين» (08:15 UTC) every robot and AI tool under
 # Shaheen's umbrella (src/utils/shaheenOrg.ts) is checked on its own report and its last run — problems, the fix
 # it proposes, and development ideas — and the secretary («مشرف شاهين») routes help requests between the tools.
 # The meeting reads the result as its agenda. Code: scripts/shaheen-council/precheck.ts.
@@ -9,7 +9,7 @@ name: Shaheen pre-meeting full check
 
 on:
   schedule:
-    - cron: '30 4 * * *'
+    - cron: '10 6 * * *'
   workflow_dispatch:
   push:
     branches: [main, 'arena/**']

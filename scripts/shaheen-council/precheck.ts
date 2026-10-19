@@ -1,5 +1,5 @@
 /**
- * «الفحص الشامل قبل الاجتماع» — two hours before «مجلس شاهين» (04:30 UTC, the meeting is at 06:30 UTC), every
+ * «الفحص الشامل قبل الاجتماع» — two hours before «مجلس شاهين» (06:10 UTC, the meeting is at 08:15 UTC — right after the daily AI quota renews), every
  * robot under Shaheen's umbrella (src/utils/shaheenOrg.ts) is checked on its own report and its last run:
  *   - problems (late report, failed run, its own numbers below target),
  *   - the fix it proposes,
@@ -30,7 +30,7 @@ export interface Pressure { active: boolean; reasons: string[] }
 export interface PrecheckFile {
   version: 1;
   updatedAt: string;
-  /** The meeting this check prepares (next 06:30 UTC). */
+  /** The meeting this check prepares (next 08:15 UTC). */
   meetingAt: string;
   health: number;
   counts: Record<BotStatus, number>;
@@ -48,10 +48,10 @@ const n = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : und
 const arr = (v: unknown): unknown[] => (Array.isArray(v) ? v : []);
 const RANK: Record<BotStatus, number> = { idle: 0, ok: 1, warn: 2, fail: 3 };
 
-/** The next meeting time (06:30 UTC) after `now`. */
+/** The next meeting time (08:15 UTC) after `now`. */
 export function nextMeeting(now: number): string {
   const d = new Date(now);
-  const m = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), 6, 30);
+  const m = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), 8, 15);
   return new Date(m > now ? m : m + 86_400_000).toISOString();
 }
 
@@ -131,6 +131,10 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       if (packs) f.push({ level: 'warn', problem: `${packs} لغة حزمها ناقصة` });
       const score = n(r.score);
       if (score !== undefined && score < 80) f.push({ level: 'note', idea: `رفع نتيجة اللغات من ${score}/100: ${arr(r.bareLocaleFormatting).length} تنسيق أرقام/تواريخ بلا لغة صريحة` });
+      const tr = o(r.translation);
+      if (tr.status === 'no_engine') f.push({ level: 'warn', problem: 'المترجم الذكي مش لاقي مفتاح ذكاء اصطناعي شغال', fix: 'مفتاح شغال واحد (جيميناي أو بربلكسيتي) يكفي' });
+      else if (tr.status === 'engines_failed') f.push({ level: 'warn', problem: 'المحركات مردتش على المترجم الذكي في آخر دورة' });
+      else if ((n(tr.remaining) ?? 0) > 0) f.push({ level: 'note', idea: `المترجم الذكي لسه قدامه ${n(tr.remaining)} نص × لغة بالإنجليزي — بيكمل كل دورة` });
       break;
     }
     case 'design_audit': {

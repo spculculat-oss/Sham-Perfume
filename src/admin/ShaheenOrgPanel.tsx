@@ -104,7 +104,7 @@ export default function ShaheenOrgPanel() {
               {(['ok', 'warn', 'fail', 'idle'] as BotStatus[]).map((s) => <span key={s} className="inline-flex items-center gap-1"><span className={`h-2 w-2 rounded-full ${STATUS[s].dot}`} />{STATUS[s].label()}: {check.counts[s]}</span>)}
               <span className="text-stone-500">{T('آخر فحص')}: {when(check.updatedAt)} · {T('الاجتماع')}: {when(check.meetingAt)}</span>
             </>
-          ) : <span className="text-stone-500">{T('أول فحص شامل هيتعمل الساعة 7:30 الصبح بتوقيت القاهرة، قبل الاجتماع بساعتين')}</span>}
+          ) : <span className="text-stone-500">{T('أول فحص شامل هيتعمل الساعة 8:10 الصبح بتوقيت القاهرة، قبل الاجتماع بساعتين')}</span>}
         </div>
       </div>
 
