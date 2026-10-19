@@ -19,7 +19,7 @@
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { scanSecrets } from './review';
 
 export const DEFAULT_STUDIO_REPO = 'spculculat-oss/Sham-Perfume-Studio';
@@ -36,6 +36,7 @@ const BLOCKED: [RegExp, string][] = [
   [/^src\/لغات\/ai\//, 'حزم المترجم الذكي — بيكتبها الروبوت'],
   [/^public\/(store-images|p)\//, 'صور ومنتجات الروبوتات'],
   [/^(pages-dist|dist|build|coverage|node_modules|\.data|\.vercel|\.edgeone)\//, 'نسخة مبنية أو ملفات مؤقتة'],
+  [/^\.(community_data|pglite|db|sqlite)[^/]*\/|\.(db|sqlite3?|db-wal|db-shm)$/, 'قاعدة بيانات تجريبية من بيئة جوجل استوديو (ممكن يبقى فيها بيانات أعضاء) — عمرها ما تترفع'],
   [/^(bun\.lock|bun\.lockb|package-lock\.json|yarn\.lock|pnpm-lock\.yaml)$/, 'ملف قفل المكتبات — بيتعمل من package.json'],
   [/^\.env(?!\.example$)/, 'ملف إعدادات سرية'],
   [/^metadata\.json$/, 'ملف إعدادات جوجل استوديو نفسه (مش جزء من الموقع)'],
@@ -123,6 +124,22 @@ function secretsAdded(path: string, before: string, after: string): string | und
   const flags = scanSecrets(after.split('\n').filter((l) => !old.has(l)).map((line) => ({ file: path, line })));
   const bad = flags.find((f) => f.level === 'high');
   return bad ? `فيه ${bad.kind === 'card' ? 'رقم بطاقة حقيقي' : 'مفتاح سري'} — اتشال ومش هيتنشر` : undefined;
+}
+
+/**
+ * A folder (e.g. a ZIP downloaded from AI Studio, unpacked) as a commit object in this repository — no branch,
+ * no working tree change — so planImport can treat it exactly like a studio push. The folder's own .gitignore
+ * applies (node_modules, dist…); .git folders inside it are ignored.
+ */
+export function commitFromDir(cwd: string, dir: string, message = 'AI Studio download'): string {
+  const index = join(mkdtempSync(join(tmpdir(), 'bridge-index-')), 'index');
+  const env = { ...process.env, GIT_INDEX_FILE: index, GIT_AUTHOR_NAME: 'AI Studio', GIT_AUTHOR_EMAIL: 'aistudio@localhost', GIT_COMMITTER_NAME: 'AI Studio', GIT_COMMITTER_EMAIL: 'aistudio@localhost' };
+  const gitDir = execFileSync('git', ['rev-parse', '--absolute-git-dir'], { cwd, encoding: 'utf8' }).trim();
+  const git = (...args: string[]) => execFileSync('git', [`--git-dir=${gitDir}`, `--work-tree=${dir}`, ...args], { cwd: dir, env, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+  try {
+    git('add', '-A', '--', '.', ':(exclude,glob)**/node_modules/**');
+    return git('commit-tree', git('write-tree'), '-m', message);
+  } finally { rmSync(dirname(index), { recursive: true, force: true }); }
 }
 
 /**

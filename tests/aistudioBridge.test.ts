@@ -4,7 +4,7 @@ import { mkdtempSync, mkdirSync, rmSync, unlinkSync, writeFileSync } from 'node:
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { after, test } from 'node:test';
-import { classifyPath, emptyBridge, gitBytes, issueFor, mergeText, planImport, recordRun, runOf } from '../scripts/aistudio/bridge';
+import { classifyPath, commitFromDir, emptyBridge, gitBytes, issueFor, mergeText, planImport, recordRun, runOf } from '../scripts/aistudio/bridge';
 import { luhn } from '../scripts/aistudio/review';
 
 const dirs: string[] = [];
@@ -40,7 +40,7 @@ const skippedPaths = (p: ReturnType<ReturnType<typeof repo>['plan']>) => p.skipp
 
 test('the filter: robots, workflows, legal, lock files and keys never come in; server and settings wait for approval', () => {
   for (const p of ['.github/workflows/pages.yml', 'src/data/live/aistudio-bridge.json', 'docs/legal/terms.md', 'bun.lock', 'package-lock.json',
-    '.env', '.env.local', 'pages-dist/index.html', 'public/p/x.html', 'public/store-images/a.jpg', 'metadata.json', 'src/لغات/ai/fr.json', '../etc/passwd', '/abs']) {
+    '.env', '.env.local', 'pages-dist/index.html', 'public/p/x.html', 'public/store-images/a.jpg', 'metadata.json', 'src/لغات/ai/fr.json', '.community_data/base/1/112', '.community_data/PG_VERSION', 'data/app.sqlite', '../etc/passwd', '/abs']) {
     assert.equal(classifyPath(p).cls, 'blocked', p);
   }
   for (const p of ['server/shaheen.ts', 'scripts/aistudio/bridge.ts', 'tests/x.test.ts', 'package.json', 'vite.config.ts', 'tsconfig.json', 'index.html',
@@ -175,4 +175,26 @@ test('the report keeps 30 runs, never file contents; the issue is a shaheen-task
   assert.match(issue.body, /server\/a\.ts/);
   assert.match(issue.body, /نفذ مهام شاهين/);
   assert.deepEqual(issueFor(plan, { repo: 'o/studio', branch: 'b', checksFailed: ['الاختبارات'], siteRepo: 'o/site' }).labels, ['shaheen-task', 'aistudio']);
+});
+
+test('a downloaded project (ZIP folder) goes through the same filter, ignoring node_modules and never deleting', () => {
+  const r = repo();
+  r.commit('main', { 'src/a.ts': 'v1\n', 'src/keep.ts': 'k\n', 'src/data/live/r.json': '{}\n' });
+  r.commit('main', { 'src/a.ts': 'v2\n' });
+  const dl = mkdtempSync(join(tmpdir(), 'bridge-dl-'));
+  dirs.push(dl);
+  const put = (p: string, c: string) => { mkdirSync(dirname(join(dl, p)), { recursive: true }); writeFileSync(join(dl, p), c); };
+  put('src/a.ts', 'v1\n'); // stale
+  put('src/new.tsx', 'export default 1;\n');
+  put('src/data/live/r.json', '{"x":1}\n');
+  put('node_modules/lib/index.js', 'junk\n');
+  put('.gitignore', 'dist/\n');
+  put('dist/x.js', 'built\n');
+  const before = r.git('rev-parse', 'HEAD');
+  const head = commitFromDir(r.dir, dl);
+  assert.equal(r.git('rev-parse', 'HEAD'), before, 'no branch or working tree change');
+  const p = r.plan(head);
+  assert.deepEqual(p.files.map((f) => f.path).sort(), ['.gitignore', 'src/new.tsx'], 'dist/ (ignored) and node_modules never come');
+  assert.deepEqual(skippedPaths(p), ['src/a.ts', 'src/data/live/r.json']);
+  assert.ok(!p.files.some((f) => f.action === 'delete'), 'src/keep.ts is missing from the download but is not deleted');
 });
