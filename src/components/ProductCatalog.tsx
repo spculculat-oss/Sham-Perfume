@@ -8,7 +8,6 @@ import {
   Package,
   ArrowRight,
   Star,
-  Shield,
   Coins,
   Minus,
   Plus,
@@ -23,7 +22,6 @@ import { SupportedLanguage } from '../types/i18n';
 import { LText, makeT } from '../لغات/localize';
 import { uiLabel } from '../لغات/uiTextL10n';
 import { getApprovedActiveProducts, getMerchantById, getProductById } from '../utils/merchantDataStore';
-import { PLATFORM_MARGIN_PERCENT, calculateRetailPrice, calculatePlatformRevenue, calculateMerchantPayout } from '../config/margin';
 import { getAllOrders, saveOrder, getOrCreateRetailer, incrementRetailerOrder, MerchantProductRecord, MediationOrderRecord } from '../utils/merchantDataStore';
 
 const S: Record<string, LText> = {
@@ -43,9 +41,7 @@ const S: Record<string, LText> = {
   reset: { ar:'إعادة تعيين', en:'Reset', fr:'Réinitialiser', es:'Reiniciar', it:'Reimposta', de:'Zurücksetzen', ru:'Сбросить', zh:'重置', tr:'Sıfırla', fa:'بازنشانی' },
   featured: { ar:'منتجات مميزة', en:'Featured Products', fr:'Produits en Vedette', es:'Productos Destacados', it:'Prodotti in Evidenza', de:'Vorgestellte Produkte', ru:'Избранные продукты', zh:'精选产品', tr:'Öne Çıkan Ürünler', fa:'محصولات ویژه' },
   product_card_merchant: { ar:'بتوفر: {merchantName}', en:'Sold by: {merchantName}', fr:'Vendu par: {merchantName}', es:'Vendido por: {merchantName}', it:'Venduto da: {merchantName}', de:'Verkauft von: {merchantName}', ru:'Продается: {merchantName}', zh:'由 {merchantName} 销售', tr:'Satıcı: {merchantName}', fa:'فروشنده: {merchantName}' },
-  product_card_cost_price: { ar:'سعر الجملة (للتاجر فقط)', en:'Wholesale price (merchant only)', fr:'Prix de gros (marchand seulement)', es:'Precio mayor (solo comerciante)', it:'Prezzo all\'ingrosso (solo mercante)', de:'Großhandelspreis (nur Händler)', ru:'Оптовая цена (только торговец)', zh:'批发价 (仅商家可见)', tr:'Toptan fiyat (yalnızca tüccar)', fa:'قیمت پخشی (فقط برای تجار)' },
   product_card_retail_price: { ar:'سعر الشراء للزبون', en:'Purchase price for customer', fr:'Prix d\'achat pour client', es:'Precio de compra para cliente', it:'Prezzo d\'acquisto per cliente', de:'Kaufpreis für Kunde', ru:'Цена покупки для клиента', zh:'客户购买价格', tr:'Müşteri için satın alma fiyatı', fa:'قیمت خرید برای مشتری' },
-  product_card_platform_revenue: { ar:'ربح المنصة (٢٥٪)', en:'Platform revenue (25%)', fr:'Revenu plateforme (25%)', es:'Ingreso plataforma (25%)', it:'Guadagno piattaforma (25%)', de:'Plattform-Erlös (25%)', ru:'Доход платформы (25%)', zh:'平台利润 (25%)', tr:'Platform geliri (%25)', fa:'درآمد پلتفرم (۲۵٪)' },
   product_card_sku: { ar:'رمز المنتج', en:'SKU', fr:'Réf', es:'SKU', it:'SKU', de:'SKU', ru:'Артикул', zh:'货号', tr:'Stok Kodu', fa:'کد محصول' },
   product_card_stock: { ar:'المتاحة', en:'Available', fr:'Disponible', es:'Disponible', it:'Disponibile', de:'Verfügbar', ru:'Доступно', zh:'库存', tr:'Mevcut', fa:'موجود' },
   add_to_cart: { ar:'أضف للسلة', en:'Add to Cart', fr:'Ajouter au Panier', es:'Añadir al Carrito', it:'Aggiungi al Carrello', de:'In den Warenkorb', ru:'В Корзину', zh:'加入购物车', tr:'Sepete Ekle', fa:'افزودن به سبد' },
@@ -56,8 +52,6 @@ const S: Record<string, LText> = {
   cart_qty: { ar:'الكمية', en:'Quantity', fr:'Quantité', es:'Cantidad', it:'Quantità', de:'Menge', ru:'Количество', zh:'数量', tr:'Miktar', fa:'تعداد' },
   cart_item_price: { ar:'سعر الوحدة', en:'Unit Price', fr:'Prix Unitaire', es:'Precio Unitario', it:'Prezzo Unitario', de:'Einzelpreis', ru:'Цена за Единицу', zh:'单价', tr:'Birim Fiyat', fa:'قیمت واحد' },
   cart_item_total: { ar:'الإجمالي', en:'Total', fr:'Total', es:'Total', it:'Totale', de:'Gesamt', ru:'Итого', zh:'合计', tr:'Toplam', fa:'مجموع' },
-  cart_platform_revenue_total: { ar:'إجمالي ربح المنصة (٢٥٪)', en:'Total Platform Revenue (25%)', fr:'Revenu Total Plateforme (25%)', es:'Ingreso Total Plataforma (25%)', it:'Guadagno Totale Piattaforma (25%)', de:'Gesamt Plattform-Erlös (25%)', ru:'Общий Доход Платформы (25%)', zh:'平台总利润 (25%)', tr:'Platform Toplam Geliri (%25)', fa:'مجموع درآمد پلتفرم (۲۵٪)' },
-  cart_total_cost: { ar:'إجمالي تكلفة التاجر', en:'Total Merchant Cost', fr:'Coût Total Marchand', es:'Coste Total Comerciante', it:'Costo Totale Mercante', de:'Gesamtkosten Händler', ru:'Общие Затраты Торговца', zh:'商家总成本', tr:'Ticaretçi Toplam Maliyeti', fa:'هزینه کلی تجار' },
   cart_total_retail: { ar:'إجمالي ما يدفعه الزبون', en:'Total Customer Pays', fr:'Total que paie le Client', es:'Total que paga el Cliente', it:'Totale che paga il Cliente', de:'Gesamtbetrag des Kunden', ru:'Итого что платит Клиент', zh:'客户支付总额', tr:'Müşteri Ödeyeceği Toplam', fa:'مجموعی که مشتری پرداخت می‌کند' },
   checkout: { ar:'إتمام الشراء', en:'Checkout', fr:'Paiement', es:'Pagar', it:'Finalizza Acquisto', de:'Kaufen', ru:'Оформить Заказ', zh:'结账', tr:'Ödeme Yap', fa:'تسویه حساب' },
   checkout_btn: { ar:'تنفيذ الطلب', en:'Place Order', fr:'Passer Commande', es:'Realizar Pedido', it:'Invia Ordine', de:'Bestellung Aufgeben', ru:'Оформить Заказ', zh:'提交订单', tr:'Sipariş Ver', fa:'ارسال سفارش' },
@@ -116,6 +110,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({ onClose, current
     });
   }, [allProducts, activeCategory, searchQuery, minPrice, maxPrice]);
 
+  // Keep these figures for internal accounting, never in customer price/checkout summaries.
   const cartTotalCost = Array.from(cart.values()).reduce((sum, item) => sum + item.product.costPrice * item.qty, 0);
   const cartTotalRetail = Array.from(cart.values()).reduce((sum, item) => sum + item.product.retailPrice * item.qty, 0);
   const cartPlatformRevenue = Array.from(cart.values()).reduce((sum, item) => sum + item.product.platformMargin * item.qty, 0);
@@ -348,10 +343,6 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({ onClose, current
                             <span className="text-xs text-amber-700">{CUR}</span>
                           </div>
                         </div>
-                        <div className="flex justify-between text-[10px] text-stone-400">
-                          <span>{L('product_card_cost_price')}: {product.costPrice} {CUR}</span>
-                          <span>{L('product_card_platform_revenue')}: {product.platformMargin} {CUR}</span>
-                        </div>
                         <div className="mt-2 text-[10px] text-stone-400">
                           SKU: {product.sku} | {product.approvalStatus}
                         </div>
@@ -445,12 +436,6 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({ onClose, current
                                 </button>
                               </div>
                             </div>
-                            <div className="mt-1 text-[10px] text-stone-400 border-t border-stone-100 pt-1">
-                              <div className="flex justify-between">
-                                <span>{L('product_card_cost_price')}: {item.product.costPrice} {CUR}</span>
-                                <span>{L('product_card_platform_revenue')}: {item.product.platformMargin} {CUR}</span>
-                              </div>
-                            </div>
                           </div>
                         );
                       })}
@@ -467,27 +452,10 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({ onClose, current
                         <span className="text-stone-600">{L('cart_items')}:</span>
                         <span className="font-bold">{cartCount}</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="text-stone-600">{L('cart_platform_revenue_total')}:</span>
-                        <span className="text-amber-700 font-bold">{formatLocalizedNumber(currentLang, cartPlatformRevenue, { maximumFractionDigits: 2 })} {CUR}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-stone-500">{L('cart_total_cost')}:</span>
-                        <span className="text-blue-700 font-bold">{formatLocalizedNumber(currentLang, cartTotalCost, { maximumFractionDigits: 2 })} {CUR}</span>
-                      </div>
                       <div className="border-t border-stone-200 mt-2 pt-2 flex justify-between font-bold">
                         <span className="text-stone-900">{L('cart_total_retail')}:</span>
                         <span className="text-emerald-700 text-lg">{formatLocalizedNumber(currentLang, cartTotalRetail, { maximumFractionDigits: 2 })} {CUR}</span>
                       </div>
-                    </div>
-                    <div className="mt-4 p-3 rounded-lg bg-emerald-50 border border-emerald-200/60">
-                      <div className="flex items-center gap-1 mb-1">
-                        <Shield className="w-4 h-4 text-emerald-600"/>
-                        <span className="text-xs font-bold text-emerald-900">{L('admin_warning')}</span>
-                      </div>
-                      <p className="text-[10px] text-emerald-700 mt-1">
-                        {L('margin_info')}
-                      </p>
                     </div>
                     <button onClick={placeOrder} className="w-full mt-3 px-4 py-3 bg-amber-700 hover:bg-amber-800 text-white rounded-xl text-sm font-bold transition-colors flex items-center justify-center gap-2">
                       <ShoppingBag className="w-4 h-4"/>
