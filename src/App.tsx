@@ -62,7 +62,7 @@ import { UserProfile } from './types/auth';
 import { getCurrentUserSession, logoutUser } from './utils/authStorage';
 import { decodeFormulaPayload } from './utils/formulaShare';
 import { Check, X, BookmarkPlus } from 'lucide-react';
-import { syncRecipeToAccount, trackLearning } from './community/sync';
+import { LOAD_FORMULA_EVENT, syncRecipeToAccount, trackLearning, type SharedFormula } from './community/sync';
 import { getSessionToken } from './community/api';
 import { profileFromMember, saveCurrentUserProfile } from './utils/authStorage';
 import { useSessionPick } from './community/session';
@@ -803,6 +803,23 @@ export default function App() {
     navigateToTab('concentration');
     showToast(fmt(L('toast_loaded_lab_tpl'), { title: formula.title }));
   };
+
+  // «استخدم التركيبة دي» from «مجتمع شام» (a recipe card in a post or a profile): sanitised in community/sync.ts.
+  const loadSharedRef = React.useRef<(f: SharedFormula) => void>(() => {});
+  loadSharedRef.current = (f: SharedFormula) => {
+    setFormulation((prev) => ({ ...prev, ...f.formulation }));
+    setFormulaTitle(f.title);
+    setFormulaNotes(f.notes);
+    if (f.macerationDays !== undefined) setMacerationDays(f.macerationDays);
+    if (f.pyramidNotes.length) setPyramidNotes(f.pyramidNotes);
+    navigateToTab('concentration');
+    showToast(fmt(L('toast_loaded_lab_tpl'), { title: f.title }));
+  };
+  useEffect(() => {
+    const onLoad = (e: Event) => { const f = (e as CustomEvent<SharedFormula>).detail; if (f) loadSharedRef.current(f); };
+    window.addEventListener(LOAD_FORMULA_EVENT, onLoad);
+    return () => window.removeEventListener(LOAD_FORMULA_EVENT, onLoad);
+  }, []);
 
   const handleLoadWorldFormula = (recipe: WorldPerfumeRecipe) => {
     setFormulation((prev) => ({

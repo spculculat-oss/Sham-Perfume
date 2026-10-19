@@ -12,6 +12,7 @@ import { addToCart, useCart } from '../utils/storeCart';
 import { requestDirectPurchase } from '../utils/directPurchase';
 import { useStoreMoney } from '../utils/storeCheckout';
 import { LegalDisclaimer } from './LegalDisclaimer';
+import { ProductReviewsSection } from './ProductReviewsSection';
 
 /** كل نص في صفحة العطر — من src/لغات/storeL10n.ts بلغة الزائر (والإنجليزية كأرضية، لا عربية لغير العربي). */
 function detailLabels(lang: SupportedLanguage) {
@@ -166,6 +167,11 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
               className="col-span-2 mt-1 inline-flex items-center gap-1.5 text-amber-700 hover:underline text-xs"><ExternalLink className="w-3.5 h-3.5" />{L.page}</a>
           </div>
         </div>
+      </div>
+
+      {/* «آراء العملاء» — real reviews by members of «مجتمع شام» (no sample reviews) */}
+      <div className="max-w-6xl mx-auto px-4 pb-6">
+        <ProductReviewsSection sku={product.sku} currentLang={currentLang} />
       </div>
 
       {/* L-05 UN1266 + L-17 VAT Disclaimer */}

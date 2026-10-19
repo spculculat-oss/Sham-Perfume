@@ -85,7 +85,7 @@ export async function connectPglite(dataDir?: string): Promise<Sql> {
   return wrap(db);
 }
 
-export const SCHEMA_VERSION = 5;
+export const SCHEMA_VERSION = 6;
 
 export const SCHEMA: string[] = [
   `CREATE TABLE IF NOT EXISTS community_meta (key text PRIMARY KEY, value text NOT NULL)`,
@@ -413,6 +413,76 @@ export const SCHEMA: string[] = [
   `ALTER TABLE mail_messages ADD COLUMN IF NOT EXISTS ext_msg_id text`,
   `ALTER TABLE mail_messages ADD COLUMN IF NOT EXISTS ext_status text NOT NULL DEFAULT ''`,
   `CREATE INDEX IF NOT EXISTS mail_extid ON mail_messages (ext_msg_id)`,
+  /* v6 — the Facebook-style hub (the merchant's AI Studio design, made real): 24-hour stories, the public
+     discussion salon (threads, replies, votes, a solved answer) and product reviews by members — the
+     «verified purchase» mark only when the member really has a paid order with that product. */
+  `CREATE TABLE IF NOT EXISTS stories (
+    id text PRIMARY KEY,
+    author_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    image text,
+    caption text NOT NULL DEFAULT '',
+    bg text NOT NULL DEFAULT '',
+    visibility text NOT NULL DEFAULT 'friends',
+    status text NOT NULL DEFAULT 'visible',
+    created_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+    expires_at timestamptz NOT NULL
+  )`,
+  `CREATE INDEX IF NOT EXISTS stories_live ON stories (expires_at, author_id)`,
+  `CREATE TABLE IF NOT EXISTS story_views (
+    story_id text NOT NULL REFERENCES stories(id) ON DELETE CASCADE,
+    user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    seen_at timestamptz NOT NULL DEFAULT now(),
+    PRIMARY KEY (story_id, user_id)
+  )`,
+  `CREATE TABLE IF NOT EXISTS threads (
+    id text PRIMARY KEY,
+    author_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    category text NOT NULL DEFAULT 'general',
+    title text NOT NULL,
+    body text NOT NULL DEFAULT '',
+    tags jsonb NOT NULL DEFAULT '[]',
+    solved_reply text,
+    pinned boolean NOT NULL DEFAULT false,
+    status text NOT NULL DEFAULT 'visible',
+    created_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+    last_at timestamptz NOT NULL DEFAULT clock_timestamp()
+  )`,
+  `CREATE INDEX IF NOT EXISTS threads_last ON threads (last_at DESC)`,
+  `CREATE TABLE IF NOT EXISTS thread_replies (
+    id text PRIMARY KEY,
+    thread_id text NOT NULL REFERENCES threads(id) ON DELETE CASCADE,
+    author_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    body text NOT NULL,
+    status text NOT NULL DEFAULT 'visible',
+    created_at timestamptz NOT NULL DEFAULT clock_timestamp()
+  )`,
+  `CREATE INDEX IF NOT EXISTS thread_replies_thread ON thread_replies (thread_id, created_at)`,
+  `CREATE TABLE IF NOT EXISTS thread_votes (
+    thread_id text NOT NULL REFERENCES threads(id) ON DELETE CASCADE,
+    user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    PRIMARY KEY (thread_id, user_id)
+  )`,
+  `CREATE TABLE IF NOT EXISTS product_reviews (
+    id text PRIMARY KEY,
+    sku text NOT NULL,
+    user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    rating integer NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    title text NOT NULL DEFAULT '',
+    body text NOT NULL DEFAULT '',
+    longevity text NOT NULL DEFAULT '',
+    sillage text NOT NULL DEFAULT '',
+    verified boolean NOT NULL DEFAULT false,
+    status text NOT NULL DEFAULT 'visible',
+    created_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+    updated_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+    UNIQUE (sku, user_id)
+  )`,
+  `CREATE INDEX IF NOT EXISTS product_reviews_sku ON product_reviews (sku, created_at DESC)`,
+  `CREATE TABLE IF NOT EXISTS review_helpful (
+    review_id text NOT NULL REFERENCES product_reviews(id) ON DELETE CASCADE,
+    user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    PRIMARY KEY (review_id, user_id)
+  )`,
 ];
 
 /** Creates the tables (idempotent) and records the schema version. */

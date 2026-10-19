@@ -305,6 +305,7 @@ function ModerationView({ open, onChange }: { open: (id: string) => void; onChan
             <div className="flex flex-wrap gap-1.5">
               {(r.targetKind || r.kind) === 'post' && <button type="button" onClick={() => void moderate('posts', r.targetId, 'hidden').then(() => resolve(r, 'resolved'))} className={`${btn} bg-rose-600 py-1.5 text-xs text-white`}>{T('إخفاء المنشور')}</button>}
               {(r.targetKind || r.kind) === 'comment' && <button type="button" onClick={() => void moderate('comments', r.targetId, 'hidden').then(() => resolve(r, 'resolved'))} className={`${btn} bg-rose-600 py-1.5 text-xs text-white`}>{T('إخفاء التعليق')}</button>}
+              {['story', 'thread', 'reply', 'review'].includes(r.targetKind || r.kind) && <button type="button" onClick={() => void act(`/community/content/${r.targetKind || r.kind}/${r.targetId}/moderate`, 'POST', { status: 'hidden' }).then((ok) => { if (ok) void resolve(r, 'resolved'); })} className={`${btn} bg-rose-600 py-1.5 text-xs text-white`}>{T('إخفاء المحتوى')}</button>}
               {(r.targetKind || r.kind) === 'user' && <button type="button" onClick={() => open(r.targetId)} className={`${btn} bg-stone-100 py-1.5 text-xs`}>{T('فتح ملف العضو')}</button>}
               <button type="button" onClick={() => void resolve(r, 'resolved')} className={`${btn} bg-emerald-600 py-1.5 text-xs text-white`}>{T('تم الحل')}</button>
               <button type="button" onClick={() => void resolve(r, 'dismissed')} className={`${btn} bg-stone-100 py-1.5 text-xs`}>{T('تجاهل')}</button>
