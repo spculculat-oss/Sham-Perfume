@@ -70,3 +70,13 @@ jobs:
           git commit -q -m "جوجل استوديو (ملف مضغوط): تعديلات بعد الفلترة" -m "$(head -c 60000 "$RUNNER_TEMP/plan.txt")"
           git push -f origin "HEAD:refs/heads/aistudio/zip-$ASSET"
           echo "Pushed aistudio/zip-$ASSET" >> "$GITHUB_STEP_SUMMARY"
+      - name: Remove the uploaded ZIP (it may hold private data; the filtered branch is all that is kept)
+        if: steps.zip.outputs.asset != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ASSET: ${{ steps.zip.outputs.asset }}
+        run: |
+          gh api -X DELETE "repos/$GITHUB_REPOSITORY/releases/assets/$ASSET" && echo "ZIP removed"
+          rel=$(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=30" -q '[.[] | select(.tag_name == "aistudio-upload" and (.draft | not))][0].id // empty')
+          # Published by mistake: the release itself goes too (a draft stays for the next upload).
+          if [ -n "$rel" ]; then gh api -X DELETE "repos/$GITHUB_REPOSITORY/releases/$rel"; git push origin --delete refs/tags/aistudio-upload || true; fi

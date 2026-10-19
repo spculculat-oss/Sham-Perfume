@@ -40,7 +40,7 @@ const skippedPaths = (p: ReturnType<ReturnType<typeof repo>['plan']>) => p.skipp
 
 test('the filter: robots, workflows, legal, lock files and keys never come in; server and settings wait for approval', () => {
   for (const p of ['.github/workflows/pages.yml', 'src/data/live/aistudio-bridge.json', 'docs/legal/terms.md', 'bun.lock', 'package-lock.json',
-    '.env', '.env.local', 'pages-dist/index.html', 'public/p/x.html', 'public/store-images/a.jpg', 'metadata.json', 'src/لغات/ai/fr.json', '../etc/passwd', '/abs']) {
+    '.env', '.env.local', 'pages-dist/index.html', 'public/p/x.html', 'public/store-images/a.jpg', 'metadata.json', 'src/لغات/ai/fr.json', '.community_data/base/1/112', '.community_data/PG_VERSION', 'data/app.sqlite', '../etc/passwd', '/abs']) {
     assert.equal(classifyPath(p).cls, 'blocked', p);
   }
   for (const p of ['server/shaheen.ts', 'scripts/aistudio/bridge.ts', 'tests/x.test.ts', 'package.json', 'vite.config.ts', 'tsconfig.json', 'index.html',

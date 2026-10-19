@@ -164,10 +164,10 @@ export const Header: React.FC<HeaderProps> = ({
     {
       id: 'community',
       type: 'single',
-      label: currentLang === 'ar' ? 'المجتمع' : 'Community',
-      fullLabel: currentLang === 'ar' ? 'مجتمع شام — السوشيال والماسنجر وبوابات الأعضاء والتجار' : 'Sham Community — social, messenger, member and merchant portals',
+      label: currentLang === 'ar' ? 'مجتمع شام' : 'Sham Community',
+      fullLabel: currentLang === 'ar' ? 'مجتمع شام — المنصة الاجتماعية المدمجة والماسنجر ومجلس النقاش' : 'Sham Community — Integrated Social Platform & Messenger',
       icon: Users,
-      iconColor: 'text-rose-500',
+      iconColor: 'text-rose-600',
     },
     {
       id: 'store',
@@ -227,18 +227,37 @@ export const Header: React.FC<HeaderProps> = ({
                   key={group.id}
                   type="button"
                   onClick={() => {
+                    if (group.id === 'community') {
+                      window.location.hash = '#community';
+                    }
                     setActiveTab(group.id);
                     setOpenDropdownId(null);
                   }}
-                  className={`transition-all py-1.5 px-2.5 rounded-lg flex items-center gap-1.5 cursor-pointer ${
-                    (activeTab === group.id || activeTab.startsWith(`${group.id}/`))
+                  className={`transition-all py-1.5 px-2.5 rounded-xl flex items-center gap-1.5 cursor-pointer ${
+                    group.id === 'community'
+                      ? (activeTab === 'community' || activeTab.startsWith('community/'))
+                        ? 'bg-rose-900 text-white font-bold shadow-xs border border-rose-800'
+                        : 'bg-rose-50/80 hover:bg-rose-100 text-rose-950 font-bold border border-rose-200/80 hover:border-rose-300'
+                      : (activeTab === group.id || activeTab.startsWith(`${group.id}/`))
                       ? 'text-stone-950 font-bold bg-stone-100 shadow-2xs border border-stone-200/80'
                       : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50'
                   }`}
                   title={group.fullLabel}
                   aria-label={group.fullLabel}
                 >
-                  <group.icon className={`w-4.5 h-4.5 ${group.iconColor} shrink-0`} />
+                  <group.icon className={`w-4 h-4 ${group.id === 'community' && (activeTab === 'community' || activeTab.startsWith('community/')) ? 'text-amber-300' : group.iconColor} shrink-0`} />
+                  <span className={`text-xs ${group.id === 'community' ? 'font-black' : 'font-semibold'}`}>
+                    {group.label}
+                  </span>
+                  {group.id === 'community' && (
+                    <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-black ${
+                      (activeTab === 'community' || activeTab.startsWith('community/'))
+                        ? 'bg-rose-800 text-white'
+                        : 'bg-rose-600 text-white animate-pulse'
+                    }`}>
+                      {currentLang === 'ar' ? 'سوشيال' : 'Social'}
+                    </span>
+                  )}
                 </button>
               ) : (
                 <div key={group.id} className="relative" data-nav-group="true">
@@ -267,7 +286,7 @@ export const Header: React.FC<HeaderProps> = ({
                         <div className="flex items-center gap-2">
                           <div className={`w-2 h-2 rounded-full ${group.iconColor?.replace('text-emerald-500', 'bg-emerald-500').replace('text-amber-700', 'bg-amber-500').replace('text-amber-600', 'bg-amber-500')}`}></div>
                           <span className="text-xs font-bold text-amber-900">{group.fullLabel}</span>
-                          <span className="px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-700 text-[10px] font-medium border border-amber-500/30">
+                          <span className="px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-700 text-[10px] font-medium border border-amber-500/30">
                             {group.items?.length} {uiLabel('unit_tools', currentLang)}
                           </span>
                         </div>
@@ -298,7 +317,7 @@ export const Header: React.FC<HeaderProps> = ({
                               <span className="text-sm font-medium truncate">{item.fullLabel}</span>
                             </div>
                             {item.isNew && (
-                              <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30 shrink-0">
+                              <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30 shrink-0">
                                 NEW
                               </span>
                             )}
@@ -483,23 +502,36 @@ export const Header: React.FC<HeaderProps> = ({
           {navGroups.map((group) => {
             if (group.type === 'single') {
               const isActive = activeTab === group.id || activeTab.startsWith(`${group.id}/`);
+              const isCommunity = group.id === 'community';
               return (
                 <button
                   key={group.id}
                   type="button"
                   onClick={() => {
+                    if (isCommunity) {
+                      window.location.hash = '#community';
+                    }
                     setActiveTab(group.id);
                     setOpenDropdownId(null);
                   }}
                   className={`whitespace-nowrap px-3 py-1.5 rounded-lg flex items-center gap-1.5 shrink-0 cursor-pointer transition-colors ${
-                    isActive
+                    isCommunity
+                      ? isActive
+                        ? 'bg-rose-900 text-white font-bold shadow-xs'
+                        : 'bg-rose-50 text-rose-950 font-bold border border-rose-200'
+                      : isActive
                       ? 'bg-amber-900 text-white font-bold shadow-xs'
                       : 'text-stone-700 hover:text-stone-900 bg-stone-100/90 font-medium'
                   }`}
                   title={group.fullLabel}
                 >
-                  <group.icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-amber-300' : group.iconColor}`} />
+                  <group.icon className={`w-3.5 h-3.5 shrink-0 ${isCommunity ? (isActive ? 'text-amber-300' : 'text-rose-600') : (isActive ? 'text-amber-300' : group.iconColor)}`} />
                   <span className="text-[11px]">{group.label}</span>
+                  {isCommunity && (
+                    <span className="px-1.5 py-0.5 rounded-full bg-rose-600 text-white text-[9px] font-bold">
+                      {currentLang === 'ar' ? 'سوشيال' : 'Social'}
+                    </span>
+                  )}
                 </button>
               );
             }
@@ -541,7 +573,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <div className="flex items-center gap-2">
                   <activeGroup.icon className={`w-4 h-4 ${activeGroup.iconColor}`} />
                   <span className="text-xs font-bold text-amber-950">{activeGroup.fullLabel}</span>
-                  <span className="px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30">
+                  <span className="px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30">
                     {activeGroup.items?.length} {uiLabel('unit_tools', currentLang)}
                   </span>
                 </div>
@@ -573,7 +605,7 @@ export const Header: React.FC<HeaderProps> = ({
                       <span className="text-xs truncate">{item.fullLabel}</span>
                     </div>
                     {item.isNew && (
-                      <span className="px-1.5 py-0.2 rounded bg-amber-500 text-white text-[9px] font-bold shrink-0">
+                      <span className="px-1.5 py-0.5 rounded bg-amber-500 text-white text-[9px] font-bold shrink-0">
                         NEW
                       </span>
                     )}

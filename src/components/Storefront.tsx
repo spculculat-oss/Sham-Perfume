@@ -253,8 +253,10 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
     };
   }, []);
 
-  const PAGE = 48;
-  const [limit, setLimit] = useState(PAGE);
+  // The merchant asked (in AI Studio) for the whole catalogue on one page; images load lazily.
+  const PAGE = 500;
+  const ALL = 5000;
+  const [limit, setLimit] = useState(ALL);
 
   // Search & Filter State
   const [search, setSearch] = useState('');
@@ -338,7 +340,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
   }, [products, search, gender, family, category, brand, newOnly, inStockOnly, priceRange, sort]);
 
   useEffect(() => {
-    setLimit(PAGE);
+    setLimit(ALL);
   }, [search, gender, family, category, brand, newOnly, inStockOnly, priceRange, sort]);
 
   const hasActiveFilters =

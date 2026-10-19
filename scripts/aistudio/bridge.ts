@@ -36,6 +36,7 @@ const BLOCKED: [RegExp, string][] = [
   [/^src\/لغات\/ai\//, 'حزم المترجم الذكي — بيكتبها الروبوت'],
   [/^public\/(store-images|p)\//, 'صور ومنتجات الروبوتات'],
   [/^(pages-dist|dist|build|coverage|node_modules|\.data|\.vercel|\.edgeone)\//, 'نسخة مبنية أو ملفات مؤقتة'],
+  [/^\.(community_data|pglite|db|sqlite)[^/]*\/|\.(db|sqlite3?|db-wal|db-shm)$/, 'قاعدة بيانات تجريبية من بيئة جوجل استوديو (ممكن يبقى فيها بيانات أعضاء) — عمرها ما تترفع'],
   [/^(bun\.lock|bun\.lockb|package-lock\.json|yarn\.lock|pnpm-lock\.yaml)$/, 'ملف قفل المكتبات — بيتعمل من package.json'],
   [/^\.env(?!\.example$)/, 'ملف إعدادات سرية'],
   [/^metadata\.json$/, 'ملف إعدادات جوجل استوديو نفسه (مش جزء من الموقع)'],
