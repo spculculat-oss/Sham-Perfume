@@ -119,15 +119,19 @@ import {
   recordRun, tasksToVerify, tourPrompt, verifyPrompt,
 } from '../scripts/shaheen-manus/missions';
 import { runPrecheck } from '../scripts/shaheen-council/precheck';
-import { buildBriefing } from '../scripts/shaheen-council/council';
+import { buildBriefing, chairPrompt, fieldOpinion, selfMinutes } from '../scripts/shaheen-council/council';
+import { cleanAdvisor, ranToday } from '../scripts/shaheen-manus/missions';
 
 test('each schedule runs its own mission, a manual choice wins, and a push only rehearses', () => {
   const wf = readFileSync(new URL('../.github/workflows/shaheen-manus.yml', import.meta.url), 'utf8');
   for (const cron of Object.keys(SCHEDULES)) assert.ok(wf.includes(`- cron: '${cron}'`), cron);
-  assert.equal(missionFor('0 3 * * *'), 'tour');
+  assert.equal(missionFor('20 5 * * *'), 'tour');
+  assert.ok(/workflow_run:\s*\n\s*workflows: \['Shaheen pre-meeting full check'\]/.test(wf), 'the tour follows the pre-meeting check');
+  const pre = readFileSync(new URL('../.github/workflows/shaheen-precheck.yml', import.meta.url), 'utf8');
+  assert.match(pre, /^name: Shaheen pre-meeting full check$/m);
   assert.equal(missionFor('15 6 * * 3,6'), 'design');
   assert.equal(missionFor('0 8 * * 1,4'), 'verify');
-  assert.equal(missionFor('0 3 * * *', 'verify'), 'verify');
+  assert.equal(missionFor('20 5 * * *', 'verify'), 'verify');
   assert.equal(missionFor('', ''), undefined);
   assert.equal(missionFor(undefined, 'buy-things'), undefined);
 });
@@ -211,4 +215,53 @@ test('the pre-meeting check and the meeting read the tour and the reviewer; a br
   assert.ok(b.facts.some((f) => f.includes('62/100')));
   assert.ok(b.signals.some((s) => s.priority === 'high' && s.decision?.title.includes('checkout')));
   assert.ok(b.signals.some((s) => s.decision?.title === 'إعادة فتح: إصلاح السلة'));
+});
+
+test('«المستشار الميداني»: his proposals are cleaned — no AI names, no links, nothing against the legal manager', () => {
+  const a = cleanAdvisor({ opinionAr: 'جربت الموقع من الموبايل الصبح ولقيت صفحة الدفع بطيئة جداً وصور كتير مش ظاهرة في المتجر https://x.y', proposals: [
+    { title: 'تسريع صفحة الدفع', detail: 'بتاخد 9 ثواني', area: 'experience', priority: 'high', rerun: 'none' },
+    { title: 'استئناف نقل المنتجات من المورد', detail: 'شغّل المستورد', area: 'store', priority: 'high', rerun: 'shaheen-import.yml' },
+    { title: 'استخدام Gemini في الشات', detail: '', area: 'ai-tools', priority: 'low', rerun: 'none' },
+    { title: 'تحديث الأخبار', detail: 'النشرة قديمة', area: 'weird', priority: 'now', rerun: 'shaheen-news.yml' },
+    { title: 'x', detail: '', area: 'store', priority: 'low', rerun: 'rm -rf' },
+  ] })!;
+  assert.equal(a.opinionAr.includes('http'), false);
+  assert.deepEqual(a.proposals.map((p) => [p.title, p.area, p.priority, p.rerun]), [
+    ['تسريع صفحة الدفع', 'experience', 'high', undefined], ['تحديث الأخبار', 'experience', 'medium', 'shaheen-news.yml']]);
+  assert.equal(cleanAdvisor({ opinionAr: 'قصير', proposals: [] }), undefined);
+  const prompt = tourPrompt(undefined, { problems: ['Importer: آخر تشغيل فشل'], openTasks: ['إصلاح عطل: منظف الصور'], legal: ['L-03: وقف نقل المنتجات'] });
+  assert.match(prompt, /PART 2/);
+  assert.match(prompt, /Importer: آخر تشغيل فشل/);
+  assert.match(prompt, /do not propose them again/);
+  assert.match(prompt, /L-03/);
+});
+
+test('the field advisor sits at the meeting as a sixth seat, and his proposals reach the agenda and the secretary', () => {
+  const at = '2026-10-19T05:30:00Z';
+  const missions = { version: 1, updatedAt: at, verified: [], runs: [], tour: { at, summaryAr: 'تمام', score: 80, journey: [{ step: 'cart', ok: false, seconds: 4, noteAr: 'زر السلة' }], issues: [],
+    advisor: { opinionAr: 'جربت الموقع من الموبايل الصبح: المتجر سريع لكن زر الإضافة للسلة مش بيستجيب من أول مرة، وده أهم حاجة النهارده.', proposals: [
+      { title: 'إصلاح زر الإضافة للسلة', detail: 'محتاج ضغطتين', area: 'store', priority: 'high' },
+      { title: 'تحديث الأخبار', detail: 'النشرة قديمة', area: 'content', priority: 'low', rerun: 'shaheen-news.yml' }] } } };
+  const meetingAt = Date.parse('2026-10-19T06:30:00Z');
+  const seat = fieldOpinion(missions, meetingAt)!;
+  assert.equal(seat.seat, 'field');
+  assert.equal(seat.ok, true);
+  assert.match(seat.text, /إصلاح زر الإضافة للسلة/);
+  assert.match(seat.text, /خطوات واقعة: cart/);
+  assert.equal(fieldOpinion(missions, meetingAt + 12 * 3600_000), undefined, 'yesterday\'s opinion is not read');
+  const b = buildBriefing({ missions }, meetingAt);
+  const mine = b.signals.filter((s) => s.text.startsWith('المستشار الميداني'));
+  assert.equal(mine.length, 2);
+  assert.equal(mine[1].decision?.kind, 'auto');
+  assert.deepEqual(mine[1].decision?.action, { type: 'rerun', workflow: 'shaheen-news.yml' });
+  assert.match(chairPrompt(b, [seat], []), /### المستشار الميداني/);
+  assert.ok(selfMinutes(b, '2026-10-19', ['مفيش محرك']).decisions.some((d) => d.title === 'إصلاح زر الإضافة للسلة'));
+});
+
+test('a mission runs once a day: a done or still-running task is not started again, a failed one may retry', () => {
+  const now = '2026-10-19T05:20:00Z';
+  assert.equal(ranToday([{ at: '2026-10-19T04:45:00Z', mission: 'tour', status: 'running' }], 'tour', now), true);
+  assert.equal(ranToday([{ at: '2026-10-19T04:45:00Z', mission: 'tour', status: 'failed' }], 'tour', now), false);
+  assert.equal(ranToday([{ at: '2026-10-18T04:45:00Z', mission: 'tour', status: 'done' }], 'tour', now), false);
+  assert.equal(ranToday([{ at: '2026-10-19T04:45:00Z', mission: 'verify', status: 'done' }], 'tour', now), false);
 });
