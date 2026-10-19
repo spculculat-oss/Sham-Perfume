@@ -6,6 +6,8 @@ import { readFileSync } from 'node:fs';
 import type { AiToolId } from '../../src/utils/aiTools';
 import { readSeoState, stateSummary } from '../../src/seo/agentState';
 import { inspectAnswer, type Probe } from './checks';
+import { templateReply } from '../../server/contracts/assistant';
+import { EMPTY_SENDER, checkLetter, type Sender } from '../../server/contracts/policy';
 
 type Fetch = typeof fetch;
 export interface ProbeContext { site: string; fetch: Fetch; run: number; adminToken?: string; now: number; liveDir: URL }
@@ -290,8 +292,31 @@ async function financeProbes(ctx: ProbeContext): Promise<Probe[]> {
     ms: r.ms, ok: Boolean(r.value), error: r.error ? 'تعذّر فحص الإدارة المالية' : undefined, findings }];
 }
 
+/** «مسؤول التعاقدات»: the approved answers must pass the legal manager's checks (offline), and the live status (counts only). */
+const SAMPLE_SENDER: Sender = { ...EMPTY_SENDER, name: 'Sample Sender', title: 'Partnerships', entityName: 'Sample', email: 'team@example.org', platformName: 'Sample Platform' };
+const CONTRACT_QUESTIONS = ['How much margin do you add on our prices?', 'هل أنت روبوت؟ وفين رابط موقعكم؟', 'Can we stop anytime? Is it exclusive?'];
+async function contractsProbes(ctx: ProbeContext): Promise<Probe[]> {
+  const probes: Probe[] = CONTRACT_QUESTIONS.map((q) => {
+    const answer = templateReply(q, SAMPLE_SENDER);
+    const check = checkLetter(answer, 'reply', SAMPLE_SENDER);
+    return { tool: 'contracts_agent', question: q, answer, ms: 0, ok: check.ok, findings: check.problems.map((p) => ({ severe: true, text: `الرد الجاهز يخالف ${p.id}: ${p.textAr}` })) };
+  });
+  if (!ctx.adminToken) return probes;
+  const r = await timed(() => json<{ ready: boolean; emailProvider: string; senderMissing: string[]; counts: Record<string, number> }>(ctx.fetch,
+    `${ctx.site}/api/admin/contracts/status`, { headers: { Authorization: `Bearer ${ctx.adminToken}` } }, 15000));
+  const findings: Probe['findings'] = [];
+  if (r.value && !r.value.ready) findings.push({ severe: false, text: 'التعاقدات محتاجة قاعدة بيانات المجتمع على الخادم' });
+  if (r.value?.senderMissing?.length) findings.push({ severe: false, text: 'بيانات المرسل في تبويب «التعاقدات» ناقصة' });
+  if (r.value?.ready && !r.value.emailProvider) findings.push({ severe: false, text: 'مفيش مزود إيميل: التوقيع بيتأكد برد الإيميل بدل الكود' });
+  if (r.value?.counts?.signed) findings.push({ severe: false, text: `${r.value.counts.signed} اتفاقية موقّعة مستنية اعتماد المدير القانوني` });
+  probes.push({ tool: 'contracts_agent', question: 'حالة نظام التعاقدات', answer: r.value ? `جاهز: ${r.value.ready ? 'نعم' : 'لا'} · الأعداد فقط: ${JSON.stringify(r.value.counts || {})}` : '',
+    ms: r.ms, ok: Boolean(r.value), error: r.error ? 'تعذّر فحص حالة التعاقدات' : undefined, findings });
+  return probes;
+}
+
 export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<Probe[]>> = {
   finance_agent: financeProbes,
+  contracts_agent: contractsProbes,
   shaheen_chat: chatProbes,
   sham_assistant: assistantProbes,
   news_articles: newsArticleProbes,

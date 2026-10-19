@@ -11,6 +11,7 @@ import { supervisorGuidance } from './core/liveData';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { corsMiddleware } from './cors';
 import { createCommunity, createCommunityRouter } from './community/router';
+import { createContractsRouter } from './contracts/router';
 import { productsForCheckout, recordCheckout, markPaid } from './community/service';
 
 dotenv.config();
@@ -57,6 +58,8 @@ app.use('/api', createStoreRouter({ repo: shamCore.repo }));
 // «مجتمع شام»: accounts, merchants' and users' portals, «بوابة السوشيال» and the messenger (server/community).
 const community = createCommunity();
 app.use('/api', createCommunityRouter(community));
+// «مسؤول التعاقدات»: supplier agreements with electronic consent (decision L-40, server/contracts) — same database.
+app.use('/api', createContractsRouter(community));
 app.use('/api', createCheckoutRouter({
   finance: shamCore.finance,
   merchantProducts: async (skus) => { const ctx = await community.ready(); return ctx ? productsForCheckout(ctx, skus) : []; },

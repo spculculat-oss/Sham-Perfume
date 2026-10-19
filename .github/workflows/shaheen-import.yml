@@ -65,6 +65,10 @@ jobs:
       # L-03 legal guard: set the repository variable SHAM_ALLOW_SCRAPE=1 only once the supplier's written
       # permission is in docs/legal/scraper-permission.md (see SCRAPER_LEGAL_NOTICE.md).
       SHAM_ALLOW_SCRAPE: ${{ vars.SHAM_ALLOW_SCRAPE }}
+      # L-40: without that file, only the stores whose agreement was signed and approved in «التعاقدات» are read
+      # (GET /api/admin/contracts/approved on the engine, with the admin token).
+      SHAM_API_BASE: ${{ vars.SHAM_API_BASE || 'https://sham-perfume-49bf.vercel.app' }}
+      SHAM_ADMIN_TOKEN: ${{ secrets.SHAM_ADMIN_TOKEN }}
       IMPORT_MARKUP: ${{ vars.IMPORT_MARKUP || '1.5' }}
       IMPORT_SHIPPING_EGP: ${{ vars.IMPORT_SHIPPING_EGP }}
       IMPORT_MAX_PROFIT_EGP: ${{ vars.IMPORT_MAX_PROFIT_EGP }}

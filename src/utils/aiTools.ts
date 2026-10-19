@@ -6,7 +6,8 @@
  */
 export type AiToolId =
   | 'shaheen_chat' | 'sham_assistant' | 'news_articles' | 'news_bulletin' | 'assistant_training' | 'media' | 'admin_agent'
-  | 'store_advisor' | 'store_catalog' | 'store_import' | 'shaheen_school' | 'seo_agent' | 'shaheen_council' | 'finance_agent';
+  | 'store_advisor' | 'store_catalog' | 'store_import' | 'shaheen_school' | 'seo_agent' | 'shaheen_council' | 'finance_agent'
+  | 'contracts_agent';
 
 export interface AiToolDef {
   id: AiToolId;
@@ -26,6 +27,11 @@ export const AI_TOOLS: AiToolDef[] = [
     id: 'finance_agent', nameAr: 'أمين شاهين — الإدارة المالية', nameEn: 'Shaheen Finance',
     descriptionAr: 'وكيل قواعد محاسبية تحت إدارة شاهين: سجل تحصيل موثق، تقارير يومية وأسبوعية وشهرية، فحص بيانات الدفع والأداء، وبلاغات خاصة. لا نموذج يولّد الأرقام ولا تحويلات أو استردادات تلقائية.',
     sources: ['server/finance/service.ts', 'scripts/shaheen-finance/run.mts'], routes: ['/api/admin/finance', '/api/admin/finance/run'], acceptsGuidance: false,
+  },
+  {
+    id: 'contracts_agent', nameAr: 'مسؤول التعاقدات', nameEn: 'Contracts officer',
+    descriptionAr: 'يجهز رسائل التعاون مع أصحاب المتاجر وردود أسئلتهم بمعايير المدير القانوني (L-40)، ويدير الموافقة الإلكترونية على الاتفاقية. الرسائل يراجعها ويبعتها عضو حقيقي من الفريق باسمه؛ لا يكشف قيمة الهامش ولا يرسل رابط المتجر قبل الموافقة.',
+    sources: ['server/contracts/assistant.ts', 'server/contracts/router.ts'], routes: ['/api/admin/contracts/reply'], acceptsGuidance: true,
   },
   {
     id: 'shaheen_chat', nameAr: 'شات الخبير شاهين', nameEn: 'Master Shahin chat',
