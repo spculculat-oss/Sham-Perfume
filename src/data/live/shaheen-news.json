@@ -1,32 +1,64 @@
 {
  "version": 1,
- "updatedAt": "2026-10-19T08:14:17.677Z",
- "nextUpdateAt": "2026-10-19T20:14:17.677Z",
+ "updatedAt": "2026-10-19T15:33:04.361Z",
+ "nextUpdateAt": "2026-10-20T03:33:04.361Z",
  "intervalHours": 12,
  "editor": "shaheen",
  "digest": {
-  "ar": "تجمع أخبار اليوم بين إطلاقات جديدة من دور عطور مستقلة وعلامات معروفة، واتجاهات السوق نحو التخصيص والتجارب الاجتماعية. كما تبرز أخبار العود في الفلبين وتونس والسعودية، إلى جانب فعاليات ومعارض تعزز حضور ثقافة العطور. وتقدم أخبار المواد العطرية والتاريخ والهوية لمحة عن تنوع مصادر الإلهام في صناعة العطر.",
-  "en": "Today’s news spans new launches from independent and established fragrance houses, alongside market trends in personalization and social experiences. Agarwood stories from the Philippines, Tunisia and Saudi Arabia highlight the breadth of fragrance culture, while events and exhibitions bring enthusiasts together. Coverage of fragrance ingredients, history and identity offers a glimpse into the industry’s varied sources of inspiration."
+  "ar": "تتصدر أخبار الصناعة تعيينات قيادية وشراكات جديدة، إلى جانب تقارير عن احتمال تأثير أدوية إنقاص الوزن في تفضيلات العطور. وتشمل النشرة إطلاقات ومنتجات عطرية، وفعاليات ومعارض، وأخباراً عن العود والبخور. وتبرز أيضاً موضوعات ثقافية ومهنية تساعد محبي العطور وصانعيها على متابعة تطورات السوق والذائقة العطرية.",
+  "en": "Industry news leads with executive appointments and new partnerships, alongside reports on the possible influence of weight-loss drugs on fragrance preferences. The digest also covers fragrance launches and products, events and exhibitions, and stories about oud and incense. Cultural and professional features offer fragrance lovers and makers perspectives on market developments and scent preferences."
  },
  "sources": [
-  {
-   "name": "Grazia",
-   "count": 5
-  },
   {
    "name": "Now Smell This",
    "count": 4
   },
   {
+   "name": "Premium Beauty News",
+   "count": 3
+  },
+  {
    "name": "Babnet",
+   "count": 3
+  },
+  {
+   "name": "Cosmetics Business",
    "count": 2
   },
   {
-   "name": "CaFleureBon",
-   "count": 2
+   "name": "The Independent",
+   "count": 1
+  },
+  {
+   "name": "Personal Care Insights",
+   "count": 1
   },
   {
    "name": "University of the Philippines Los Baños",
+   "count": 1
+  },
+  {
+   "name": "Hypebeast",
+   "count": 1
+  },
+  {
+   "name": "Passionate In Marketing",
+   "count": 1
+  },
+  {
+   "name": "The National",
+   "count": 1
+  },
+  {
+   "name": "Harper's BAZAAR France",
+   "count": 1
+  },
+  {
+   "name": "The Globe and Mail",
+   "count": 1
+  },
+  {
+   "name": "Prestige Online - Singapore",
    "count": 1
   },
   {
@@ -38,15 +70,15 @@
    "count": 1
   },
   {
+   "name": "Grazia",
+   "count": 1
+  },
+  {
    "name": "الشرق الأوسط",
    "count": 1
   },
   {
    "name": "Manila Bulletin",
-   "count": 1
-  },
-  {
-   "name": "Premium Beauty News",
    "count": 1
   },
   {
@@ -58,43 +90,125 @@
    "count": 1
   },
   {
+   "name": "CaFleureBon",
+   "count": 1
+  },
+  {
    "name": "Trend Hunter",
-   "count": 1
-  },
-  {
-   "name": "白鲸出海",
-   "count": 1
-  },
-  {
-   "name": "New National Star",
-   "count": 1
-  },
-  {
-   "name": "جريدة عالم النجوم",
-   "count": 1
-  },
-  {
-   "name": "برس بي",
-   "count": 1
-  },
-  {
-   "name": "Arab Times Kuwait News",
-   "count": 1
-  },
-  {
-   "name": "Orange Actualités",
-   "count": 1
-  },
-  {
-   "name": "Vietnam.vn",
-   "count": 1
-  },
-  {
-   "name": "Prestige Online - Singapore",
    "count": 1
   }
  ],
  "items": [
+  {
+   "id": "n6gzzna",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOU2ZYaThTRzVjVGl4Z2hfWGdjOF92MGp3Q1RwbFI5Z0VySGlIVjF5Sno5SUZrVDZCZHI2S2pOT3lBS083dGdSNWpfSjZjNmlKYlZSY0p0S1oxa1dST2VfV2J4UnFLNW9HbUFBdXlyLThuNmFWUjB2NEN3NlZMREk5TDJvNURRZEh5bkZkZGRvdHpoVTk1?oc=5",
+   "source": "The Independent",
+   "publishedAt": "2026-10-19T15:26:00.000Z",
+   "original": "GLP-1s are reshaping the perfume industry as 'use alters fragrance preference'",
+   "lang": "en",
+   "category": "market",
+   "importance": 5,
+   "title": {
+    "ar": "تقرير: أدوية GLP-1 قد تعيد تشكيل صناعة العطور مع تغيّر تفضيلات بعض المستخدمين",
+    "en": "GLP-1 drugs may reshape the perfume industry as some users’ preferences change"
+   },
+   "summary": {
+    "ar": "تقول صحيفة The Independent إن استخدام أدوية GLP-1 قد يغيّر تفضيلات العطور. ولا يورد العنوان تفاصيل عن حجم التأثير أو نطاقه.",
+    "en": "The Independent reports that using GLP-1 drugs may alter fragrance preferences. The headline does not specify the scale or extent of the effect."
+   },
+   "note": {
+    "ar": "إذا تأكد هذا الاتجاه، فقد يدفع صانعي العطور إلى الإصغاء أكثر لتغيّر الأذواق؛ لكن العنوان وحده لا يثبت مدى انتشاره.",
+    "en": "If this trend is borne out, it may encourage fragrance makers to pay closer attention to changing tastes; the headline alone does not establish how widespread it is."
+   }
+  },
+  {
+   "id": "n1c0fj6a",
+   "url": "https://www.premiumbeautynews.com/en/guillaume-gellusseau-to-lead-brand,28369",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-10-19T14:48:04.000Z",
+   "original": "Guillaume Gellusseau to lead brand strategy for Kilian Paris and Frédéric Malle",
+   "lang": "en",
+   "category": "industry",
+   "importance": 5,
+   "title": {
+    "ar": "تعيين Guillaume Gellusseau لقيادة العلامة العالمية لـKilian Paris وFrédéric Malle",
+    "en": "Guillaume Gellusseau appointed to lead global brands Kilian Paris and Frédéric Malle"
+   },
+   "summary": {
+    "ar": "أعلنت Estée Lauder Companies تعيين Guillaume Gellusseau نائباً أول للرئيس للعلامة العالمية لكل من Kilian Paris وÉditions de Parfums Frédéric Malle، اعتباراً من أغسطس 2026. وسيعمل من باريس ويرفع تقاريره إلى Jo Dancey، وفق Premium Beauty News.",
+    "en": "Estée Lauder Companies appointed Guillaume Gellusseau Senior Vice President, Global Brand, for Kilian Paris and Éditions de Parfums Frédéric Malle, effective August 2026. He will be based in Paris and report to Jo Dancey, according to Premium Beauty News."
+   },
+   "note": {
+    "ar": "تسلّط الخطوة الضوء على أهمية قيادة العلامة في قطاع العطور الفاخرة؛ ولا يوضح المقتطف خططاً تجارية جديدة.",
+    "en": "The appointment highlights the importance of brand leadership in luxury fragrance; the excerpt does not describe any new commercial plans."
+   }
+  },
+  {
+   "id": "n17oilzg",
+   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOUk41aHd0YlZybS12dlZxbFdDTXBUdS0tUDlBaGlibnB2WDZ0M0h3UmpvV3NGWXVyZ3pUMlBZSjVVamh5Z2ZSREVxa2pEejYzam44V3g0bUFHUE5GNk12TzBwX1RiS3Q0a1FpNmJDS3p5dnhwdDA5cmE2eHlyRnBqRm5OQmp2SW9EY09nd2VQSQ?oc=5",
+   "source": "Personal Care Insights",
+   "publishedAt": "2026-10-19T14:08:10.000Z",
+   "original": "Coty and dsm-firmenich deepen fragrance creation with collaborative hubs.",
+   "lang": "en",
+   "category": "industry",
+   "importance": 5,
+   "title": {
+    "ar": "Coty وdsm-firmenich تعمّقان التعاون في ابتكار العطور عبر مراكز مشتركة",
+    "en": "Coty and dsm-firmenich deepen fragrance creation through collaborative hubs"
+   },
+   "summary": {
+    "ar": "يفيد عنوان Personal Care Insights بأن Coty وdsm-firmenich تعززان تعاونهما في ابتكار العطور عبر مراكز مشتركة. ولا يقدم العنوان تفاصيل عن مواقع المراكز أو طبيعة العمل فيها.",
+    "en": "Personal Care Insights says Coty and dsm-firmenich are deepening fragrance-creation collaboration through shared hubs. The headline gives no details about the hubs’ locations or activities."
+   },
+   "note": {
+    "ar": "التعاون بين صانع العطر والجهة المطوّرة له قد يفتح مجالاً لتبادل الخبرات، لكن تفاصيل أثر هذه المراكز غير متاحة هنا.",
+    "en": "Collaboration between a fragrance house and a brand may create room for shared expertise, but the hubs’ specific impact is not detailed here."
+   }
+  },
+  {
+   "id": "nf4e2wn",
+   "url": "https://cosmeticsbusiness.com/boss-parfums-inks-multi-year-partnership-with-hyrox",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-19T12:00:00.000Z",
+   "original": "Boss Parfums inks multi-year partnership with Hyrox across six European regions",
+   "lang": "en",
+   "category": "industry",
+   "importance": 4,
+   "title": {
+    "ar": "Boss Parfums تدخل شراكة متعددة السنوات مع Hyrox في ست مناطق أوروبية",
+    "en": "Boss Parfums signs multi-year partnership with Hyrox across six European regions"
+   },
+   "summary": {
+    "ar": "تقول Cosmetics Business إن Boss Parfums، التابعة لـCoty، أبرمت شراكة متعددة السنوات مع سلسلة سباقات اللياقة Hyrox، لتصبح العلامة جزءاً من منظومة Hyrox في ست مناطق أوروبية.",
+    "en": "Cosmetics Business reports that Coty-owned Boss Parfums has entered a multi-year partnership with fitness racing series Hyrox, making the fragrance brand part of the Hyrox ecosystem across six European regions."
+   },
+   "note": {
+    "ar": "تُظهر الشراكة توجهاً لربط العطور بتجارب وأنشطة خارج منافذ البيع التقليدية؛ ولا يوضح المقتطف شكل التفعيل بالتحديد.",
+    "en": "The partnership points to an effort to connect fragrance with experiences beyond traditional retail; the excerpt does not specify how it will be activated."
+   }
+  },
+  {
+   "id": "n55up1f",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOYW1IRGg5VDFfMnJpVUxTVzN4REFucWhBWjUyanNEX1JPRDAwaUZjRGZqdEZkRklrOHdpb3pWTEliUHUwaHpLSVZsRXJnSk1HdmtiUldKMUg5MHhZaW1zTHA3WHZGdUNPLU5JRW9RalIyejI5R0RoLXpiaVh4NHNsLVBCcWNpWHpKNUFIMElUSjdoaUszbXc?oc=5",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-19T11:03:22.000Z",
+   "original": "Coty launches Fragrance Club to reinforce fragrance knowledge",
+   "lang": "en",
+   "category": "industry",
+   "importance": 4,
+   "title": {
+    "ar": "Coty تطلق Fragrance Club لتعزيز المعرفة بالعطور",
+    "en": "Coty launches Fragrance Club to strengthen fragrance knowledge"
+   },
+   "summary": {
+    "ar": "أفادت Cosmetics Business بأن Coty أطلقت Fragrance Club بهدف تعزيز المعرفة بالعطور. ولا يورد العنوان تفاصيل عن الجمهور المستهدف أو أنشطة النادي.",
+    "en": "Cosmetics Business reports that Coty has launched Fragrance Club to reinforce fragrance knowledge. The headline does not detail its target audience or activities."
+   },
+   "note": {
+    "ar": "مبادرات التثقيف قد تساعد المستهلك على فهم العطور بصورة أفضل؛ لكن تفاصيل البرنامج غير متاحة في العنوان.",
+    "en": "Educational initiatives may help consumers understand fragrance better, though the headline does not provide details of the programme."
+   }
+  },
   {
    "id": "nmcwxae",
    "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQRWxMZVBlQXRzc2s2bGZadkZ4dXQtTklUTzRYeDZJejEyNHRMdVRWaWtpcGI1WE9BWlRRa2FaaXB5X1g3V3RLa2t4Q09nSFlKRUNka2lCYUdKazY1bmF6LVNtVG45ZFF4UjVweVF2aTdqcngxLUVKelpBVmV1S0RvV09qNFF2OV9KNjZLZUlPdHQyVzBKSGZtaVJtOXBhakV2?oc=5",
@@ -103,18 +217,238 @@
    "original": "Forum advances roadmap for Philippine Aquilaria and agarwood industry",
    "lang": "en",
    "category": "ingredients",
-   "importance": 5,
+   "importance": 4,
    "title": {
-    "ar": "منتدى يطرح خارطة طريق لصناعة العود والأكويلاريا في الفلبين",
-    "en": "Forum Advances Roadmap for the Philippine Aquilaria and Agarwood Industry"
+    "ar": "منتدى يطوّر خارطة طريق لصناعة Aquilaria والعود في الفلبين",
+    "en": "Forum advances a roadmap for the Philippine Aquilaria and agarwood industry"
    },
    "summary": {
-    "ar": "أفاد عنوان جامعة الفلبين في لوس بانيوس بأن منتدى دفع بخارطة طريق لصناعة الأكويلاريا والعود في الفلبين. ولا يورد المقتطف تفاصيل إضافية عن الخطوات المقترحة.",
-    "en": "The University of the Philippines Los Baños headline says a forum advanced a roadmap for the country’s Aquilaria and agarwood industry. The supplied listing gives no further details about the proposed steps."
+    "ar": "أفادت جامعة الفلبين لوس بانيوس بأن منتدى يعمل على تطوير خارطة طريق لصناعة Aquilaria والعود في الفلبين. ولا يوضح العنوان الإجراءات أو التوصيات التي تتضمنها الخارطة.",
+    "en": "The University of the Philippines Los Baños reports that a forum is advancing a roadmap for the Aquilaria and agarwood industry in the Philippines. The headline does not specify the roadmap’s measures or recommendations."
    },
    "note": {
-    "ar": "تطورات هذا القطاع مهمة لمن يهتم بالعود، إذ تربط بين المادة العطرية ومستقبل صناعتها ومصادرها.",
-    "en": "Developments in this sector matter to oud enthusiasts, connecting a prized fragrance material with the future of its industry and sourcing."
+    "ar": "تطوير قطاع العود يستحق المتابعة لدى المهتمين بالمواد العطرية؛ لكن لا يمكن استنتاج أثر الخطة قبل معرفة تفاصيلها.",
+    "en": "Developments in the agarwood sector are worth watching for those interested in fragrance materials; the plan’s impact cannot be assessed without further details."
+   }
+  },
+  {
+   "id": "n1jcp7ue",
+   "url": "https://www.premiumbeautynews.com/en/in-cosmetics-asia-2026-puts,28363",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-10-17T11:17:00.000Z",
+   "original": "in-cosmetics Asia 2026 puts fragrance innovation in the spotlight",
+   "lang": "en",
+   "category": "events",
+   "importance": 4,
+   "title": {
+    "ar": "in-cosmetics Asia 2026 تخصص منطقة للابتكار في العطور",
+    "en": "in-cosmetics Asia 2026 adds a dedicated fragrance innovation zone"
+   },
+   "summary": {
+    "ar": "تقول Premium Beauty News إن المعرض سيضيف منطقة مخصصة للعطور في دورته المقبلة، المقررة في BITEC ببangkok من 3 إلى 5 نوفمبر 2026. ويعكس ذلك، بحسب المصدر، تنامي دور الرائحة في التفاعل العاطفي وتمييز المنتجات.",
+    "en": "Premium Beauty News says the next edition of the exhibition will feature a dedicated fragrance zone at BITEC in Bangkok from 3 to 5 November 2026. The source links the addition to fragrance’s growing role in emotional engagement and product differentiation."
+   },
+   "note": {
+    "ar": "منطقة متخصصة قد تجعل ابتكارات العطور أوضح للمهنيين والزوار؛ ويستحسن متابعة تفاصيل المشاركين والبرنامج عند نشرها.",
+    "en": "A dedicated zone may make fragrance innovations more visible to professionals and visitors; details of exhibitors and programming would be useful to watch for."
+   }
+  },
+  {
+   "id": "n1bmh3y5",
+   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBESUxua1BKbEU0QjJUMFBFczRhdVNHTnJpZnNfUWVIX0VfTE9Wb2VKb3kwTE8wQUFqZnlCc19pUTQ0dHk5RksxeFZGOTJBRk9pOUFITkQtcS0?oc=5",
+   "source": "Babnet",
+   "publishedAt": "2026-10-19T13:10:11.000Z",
+   "original": "مؤتمر علمي وطني حول العود التونسي بقصر النجمة الزهراء",
+   "lang": "ar",
+   "category": "events",
+   "importance": 4,
+   "title": {
+    "ar": "مؤتمر علمي وطني حول العود التونسي في قصر النجمة الزهراء",
+    "en": "National scientific conference on Tunisian oud at the Ennejma Ezzahra Palace"
+   },
+   "summary": {
+    "ar": "أورد موقع Babnet خبراً عن مؤتمر علمي وطني حول العود التونسي في قصر النجمة الزهراء. ولا يتضمن العنوان تفاصيل عن محاور المؤتمر أو المشاركين.",
+    "en": "Babnet reports a national scientific conference on Tunisian oud at the Ennejma Ezzahra Palace. The headline does not provide details about the conference topics or participants."
+   },
+   "note": {
+    "ar": "الاهتمام العلمي بالعود قد يثري النقاش حول هويته واستخداماته؛ لكن العنوان لا يكشف مضمون المؤتمر.",
+    "en": "Scientific attention to oud may enrich discussion of its identity and uses, but the headline does not reveal the conference’s content."
+   }
+  },
+  {
+   "id": "n1qp4vt5",
+   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE50aGFnTUtTYzFxanVYQURJVkZ4a1lJbmJDWjlVeVFBbFVtYzRNM2c0NEJ5NDJ3bG1aanJTQjZRRDVnOE5qSkRxT2x3U3dpNTV5aWFwSlBhZ00?oc=5",
+   "source": "Babnet",
+   "publishedAt": "2026-10-18T21:11:43.000Z",
+   "original": "العود التونسي يستعيد حضوره بين الشباب من خلال \"دار العود التونسي\"",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 4,
+   "title": {
+    "ar": "العود التونسي يستعيد حضوره بين الشباب عبر دار العود التونسي",
+    "en": "Tunisian oud regains visibility among young people through Dar El Oud Tounsi"
+   },
+   "summary": {
+    "ar": "يقول Babnet إن العود التونسي يستعيد حضوره بين الشباب من خلال «دار العود التونسي». ولا يورد العنوان تفاصيل عن أنشطة الدار أو حجم هذا الاهتمام.",
+    "en": "Babnet says Tunisian oud is regaining visibility among young people through Dar El Oud Tounsi. The headline gives no details about the institution’s activities or the extent of this interest."
+   },
+   "note": {
+    "ar": "تجدد اهتمام الشباب بالعود قد يدعم حضور المواد المحلية في الثقافة العطرية؛ لكن مدى هذا التجدد غير محدد في العنوان.",
+    "en": "Renewed youth interest in oud could support the place of local materials in fragrance culture, though the headline does not quantify that interest."
+   }
+  },
+  {
+   "id": "nsu3ewe",
+   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxORXZKTGVoU3VBU0d4YWIzd2tLUUFjOEo3YjJhTmFXVTdiS1puMmhZTlBfY2ZqUTlvejlLQlBvNWZKUGZ0LUs5Vjh0eWVHNUtxSjZPaHFWMVpVNVpQM2xQWHllRlJGVFpPNjhQQzdhS0hOS2RYZmotUm1FQ0VKWWRZNEVVR0ttSV9HRmUxbTNxUGxRUTI5d2l3TDZxVk8tTjVfTXR6TU5xcEgwZUlJc0dfQnk2aXhzQnIzVG5tVUl4Uk5OZ3JreHc?oc=5",
+   "source": "Hypebeast",
+   "publishedAt": "2026-10-19T13:01:34.000Z",
+   "original": "Better World Fragrance House and OVO Celebrate Drake’s 40th Birthday With \"DoSayDo\" Eau De Parfum",
+   "lang": "en",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "Better World Fragrance House وOVO تحتفلان بعيد Drake الأربعين بعطر DoSayDo",
+    "en": "Better World Fragrance House and OVO mark Drake’s 40th birthday with DoSayDo"
+   },
+   "summary": {
+    "ar": "أفاد Hypebeast بأن Better World Fragrance House وOVO تحتفلان بعيد Drake الأربعين بإطلاق Eau de Parfum باسم DoSayDo. ولا يقدم العنوان تفاصيل عن تركيب العطر أو موعد توافره.",
+    "en": "Hypebeast reports that Better World Fragrance House and OVO are celebrating Drake’s 40th birthday with an Eau de Parfum called DoSayDo. The headline gives no details about its composition or availability date."
+   },
+   "note": {
+    "ar": "يربط الخبر إطلاق العطر بعلامات وشخصية موسيقية؛ أما الحكم على الرائحة فيحتاج إلى معلومات غير واردة هنا.",
+    "en": "The launch connects fragrance with brands and a music figure; assessing the scent itself would require information not provided here."
+   }
+  },
+  {
+   "id": "njbgpi3",
+   "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxNT3pxSDQzbS1MbXZnT3dLRm1BUl9OMnZGa1FkLVRyTjVoQ1hPSVdrekpfQmtlMzJVRFM4YmMzTUZXVUFmdkFaVVFsdk9iUzc4QnJHNEVzWEp6dnc5cFF0QXRTVFU5bzhCc3h6Mk1GN3QyYUxST3RaQjZjbzhQSEEteUdBb3BpNVBmckQwSGR3R3lOMnBEMHVkZ0VlSjVtMDd5RFB5X215dXo4YW9hVk1DZkJtTGdrTExFekJRRG5ZZzVoeG5RbzhfV1RadUwwQ3h0WVJpaE9n?oc=5",
+   "source": "Passionate In Marketing",
+   "publishedAt": "2026-10-19T11:13:59.000Z",
+   "original": "FIKN Launches Elixir Perfume Gift Set for Men at ₹1,699",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "FIKN تطلق مجموعة هدايا عطرية للرجال بسعر معلن قدره ₹1,699",
+    "en": "FIKN launches a men’s perfume gift set priced at ₹1,699"
+   },
+   "summary": {
+    "ar": "ذكر Passionate In Marketing أن FIKN أطلقت مجموعة هدايا عطرية للرجال بسعر ₹1,699. ولا يوضح العنوان محتويات المجموعة أو أسماء العطور فيها.",
+    "en": "Passionate In Marketing reports that FIKN has launched a men’s perfume gift set priced at ₹1,699. The headline does not specify the set’s contents or the fragrances included."
+   },
+   "note": {
+    "ar": "قد تكون المجموعة خياراً لمن يبحث عن هدية عطرية، لكن معرفة محتوياتها ضرورية لتقييمها.",
+    "en": "The set may interest shoppers looking for a fragrance gift, but its contents are needed to assess it."
+   }
+  },
+  {
+   "id": "n1ppaevj",
+   "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPOUJKU3lvV001Q3FBNmxPU2d4UEk0Sm4yU0U4YXpwSGhCQjVGUGNXclI0V2h5VWlMNTc1ODdxaVQ0cnNsOUNTQTRGYVpXeVVVNzVWd3ZYLWctaXU2N2psdl9DWTREanQ4cmNuQmRiM2NBd2ZlMGhqVl9XQnVNbjhWcllSUTh0OGZkMmJuLV84TW54OTR5TGhlcXNLSmxSb1NsWTlHSXpRQU12V01CWEdUaVBiZW9OWE9nYjRTYlBRejl2WGZVMGpTSG9OTWRxSElQMFlMenI3eXdsd0hGa3hN?oc=5",
+   "source": "The National",
+   "publishedAt": "2026-10-19T11:08:24.000Z",
+   "original": "Bottling the soul: Why Loewe’s perfumer believes you should never have only one signature scent",
+   "lang": "en",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "صانع عطور Loewe: لا تكتفوا بعطر توقيع واحد",
+    "en": "Loewe perfumer: don’t limit yourself to one signature scent"
+   },
+   "summary": {
+    "ar": "ينقل The National رأي صانع عطور Loewe بأن من الأفضل ألا يقتصر المرء على عطر توقيع واحد. ولا يذكر العنوان اسم صانع العطور أو تفاصيل حجته.",
+    "en": "The National reports a Loewe perfumer’s view that people should not have only one signature scent. The headline does not name the perfumer or explain the reasoning."
+   },
+   "note": {
+    "ar": "الفكرة تذكير بأن اختيار العطر يمكن أن يتغير مع المزاج والمناسبة؛ وهي وجهة نظر لا قاعدة ملزمة.",
+    "en": "It is a reminder that fragrance choices can vary with mood and occasion; it is a viewpoint, not a rule."
+   }
+  },
+  {
+   "id": "ninf89r",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQNmNXUmEtLV9JRmxjWVZWc3N4N0syb1k3dmVva0Q0QklzWVhNNVpMSnpDQnJBVE03WFJWNUg3U0pTa0VGQ0w5U0JsdDBFWnNKTWY1QlJEeW9NRnVpU0pIbVFiMHNxeW9xcGFTLW1ZTVpld3NuVk05OEJydVlyVUlGN3Yzd282NFBydmVNaXVCM0NQcXZaN2FOdUN0dw?oc=5",
+   "source": "Harper's BAZAAR France",
+   "publishedAt": "2026-10-19T10:56:15.000Z",
+   "original": "L'interview CEO : David Benedek, fondateur de BDK Parfums",
+   "lang": "fr",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "مؤسس BDK Parfums David Benedek في حوار عن الشركة",
+    "en": "BDK Parfums founder David Benedek in a CEO interview"
+   },
+   "summary": {
+    "ar": "نشرت Harper’s Bazaar France مقابلة مع David Benedek، مؤسس BDK Parfums. ولا يوضح العنوان موضوعات الحوار أو ما ورد فيه من تصريحات.",
+    "en": "Harper’s Bazaar France published an interview with David Benedek, founder of BDK Parfums. The headline does not specify the interview’s topics or statements."
+   },
+   "note": {
+    "ar": "قد يقدم الحوار رؤية من داخل دار عطور مستقلة؛ لكن لا يمكن تلخيص مضمونه من العنوان وحده.",
+    "en": "The interview may offer an inside perspective on a perfume house, but its content cannot be summarized from the headline alone."
+   }
+  },
+  {
+   "id": "n3uvj8o",
+   "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxNOVV6V0Q4dXN0SXV2Rl9SX3J5X1RNM3FEcmhiU3JyUW1NREMyMlU2NFFES2Y2Q0lQc2UyajFxdFVENFFJRUZhN20zU01Db0lTSnkxMU45Snc5MGdaalJ6ZDlzNXR1M2xCQ0Z6Y1ZrUlQwMDhrWDl0MTZ1X2F5R2p4d3BSazhTM0xQQktOQVN5QV9Yc0E3RmxicHlMQnB2VXBidEtxcWJUUWl5eGEwdGZ2anhtQ0J5MGVTaXR2OGNrQ3N2d2x3UTJZRnBGNlR2MkE?oc=5",
+   "source": "The Globe and Mail",
+   "publishedAt": "2026-10-19T10:00:00.000Z",
+   "original": "Making scents: The art of creating fragrance that defies conventions",
+   "lang": "en",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "فن ابتكار عطور تتحدى المألوف",
+    "en": "The art of creating fragrance that defies convention"
+   },
+   "summary": {
+    "ar": "يعرض The Globe and Mail موضوعاً عن ابتكار عطور تتحدى المألوف. ولا يحدد العنوان العطور أو صانعيها أو الأساليب التي يتناولها المقال.",
+    "en": "The Globe and Mail features a story on creating fragrances that defy convention. The headline does not identify the fragrances, creators, or methods discussed."
+   },
+   "note": {
+    "ar": "قد يلهم هذا النوع من التغطية صانعي العطور للتجريب، لكن تفاصيل المقال غير متاحة في العنوان.",
+    "en": "This kind of coverage may inspire perfumers to experiment, though the headline does not provide the article’s details."
+   }
+  },
+  {
+   "id": "n1vze3yj",
+   "url": "https://nstperfume.com/2026/10/17/the-history-of-perfume-in-italy/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-17T15:08:09.000Z",
+   "original": "The history of perfume in Italy",
+   "lang": "en",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "افتتاح متحف مخصص لتاريخ العطور في إيطاليا",
+    "en": "Museum dedicated to the history of perfume in Italy opens"
+   },
+   "summary": {
+    "ar": "ذكر Now Smell This أن مؤسسة Perfume Passage Foundation افتتحت في ميلانو متحفاً لتاريخ العطور في إيطاليا. ويقول المقتطف إن مجموعته تضم أكثر من 3,000 قطعة تمتد من القرن التاسع عشر إلى سبعينيات القرن العشرين.",
+    "en": "Now Smell This reports that the Perfume Passage Foundation has opened a museum in Milan devoted to the history of perfume in Italy. Its excerpt says the collection includes more than 3,000 items dating from the 19th century to the 1970s."
+   },
+   "note": {
+    "ar": "المتحف يتيح لمحبي العطور فرصة لاستكشاف تاريخها عبر مقتنيات مادية؛ وتفاصيل الزيارة غير واردة في المقتطف.",
+    "en": "The museum offers fragrance enthusiasts a way to explore its history through physical objects; visitor details are not included in the excerpt."
+   }
+  },
+  {
+   "id": "n16d2pak",
+   "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNOWJUQ08wUjZEY3c4dUtHVy0wUmZuTFpBZEFTM1NTSTNPTXVGME5iVEdIS054QTBiVmVwWkVhMjVCa2dmZmhEOVN1RDRLSVBqcEYzZ1l3Sm9kQkc2ZFVVeWlYdzBZWjVNZVlncXBIdUVmTm9TNUxUd3ZzTnVOM3JFWmtJRTNqR21UUFhQVjh4SHhGODY5TllRYlZrRXNGRHZNaVZ0WUpMNlczaFpRbmV2eEwyM1R0WXFOWm5STmEwcGNDTW1FazFTMjJn0gHPAUFVX3lxTE5oWFd5YllIT1I1Rk5iZl94SFR5M2JmcTNmQU4xcjIyOFQtT1F0am14TXpIaFVvOU1OU0dYQWtYMVB1WXFKVnc1RnVNN2hLM3psOFhTWXFhdG83c3IzLWU0OV9hRENJd290QURtVVJ0S2p1Tk9mNk9rdGJWNWtDVWVsYjJxSHBqaFRwNFNsRzBwVVRMMzJJN04yZnlRcGJTZGRWZVVRVENXWEdPdjJ5cVFvSWJ0ZmNGNC1aVlJSS3FUYWdKazJTbk1yQ1M4bHJHUQ?oc=5",
+   "source": "Prestige Online - Singapore",
+   "publishedAt": "2026-10-17T20:31:02.000Z",
+   "original": "What is method perfuming, and the fragrances that helped actors build memorable characters",
+   "lang": "en",
+   "category": "culture",
+   "importance": 2,
+   "title": {
+    "ar": "كيف تساعد العطور الممثلين على بناء شخصيات لا تُنسى؟",
+    "en": "How fragrances help actors build memorable characters"
+   },
+   "summary": {
+    "ar": "يتناول Prestige Online Singapore مفهوم «التعطير المنهجي» والعطور التي ساعدت ممثلين على بناء شخصياتهم. ولا يحدد العنوان أمثلة أو أسماء ممثلين.",
+    "en": "Prestige Online Singapore explores method perfuming and fragrances that helped actors build memorable characters. The headline does not name examples or actors."
+   },
+   "note": {
+    "ar": "يربط الموضوع الرائحة بالأداء والذاكرة، وقد يفتح زاوية جديدة للتفكير في دور العطر خارج الاستخدام الشخصي.",
+    "en": "The story connects scent with performance and memory, offering another way to think about fragrance beyond personal wear."
    }
   },
   {
@@ -159,28 +493,6 @@
    "note": {
     "ar": "التخصيص يفتح مجالاً لمحبي العطور لاكتشاف ما يلائم ذوقهم، ويمنح صانعي العطور فرصة للتفكير في تجارب أكثر فردية.",
     "en": "Personalization can help fragrance lovers explore what suits their taste and encourage makers to consider more individual experiences."
-   }
-  },
-  {
-   "id": "n1vze3yj",
-   "url": "https://nstperfume.com/2026/10/17/the-history-of-perfume-in-italy/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-17T15:08:09.000Z",
-   "original": "The history of perfume in Italy",
-   "lang": "en",
-   "category": "culture",
-   "importance": 4,
-   "title": {
-    "ar": "افتتاح متحف لتاريخ العطور في إيطاليا",
-    "en": "Museum Dedicated to the History of Perfume Opens in Italy"
-   },
-   "summary": {
-    "ar": "يذكر العنوان والمقتطف افتتاح مؤسسة Perfume Passage Foundation في ميلانو، على مساحة 1,000 متر مربع، وتضم مجموعتها أكثر من 3,000 قطعة من القرن التاسع عشر حتى سبعينيات القرن العشرين.",
-    "en": "The headline and excerpt report the opening of the Perfume Passage Foundation in Milan. Its 1,000-square-metre museum holds more than 3,000 items dating from the 19th century to the 1970s."
-   },
-   "note": {
-    "ar": "مثل هذه المجموعات تمنح محبي العطور فرصة لرؤية تطور أدواتها وقصصها عبر الزمن، لا الاكتفاء بتجربة الرائحة.",
-    "en": "Collections like this let fragrance enthusiasts explore the history of its objects and stories, beyond the experience of scent itself."
    }
   },
   {
@@ -291,28 +603,6 @@
    "note": {
     "ar": "المهرجانات المتخصصة تتيح لمحبي العود مساحة للاحتفاء به والتعرف إلى حضوره الثقافي والعطري.",
     "en": "Specialist festivals give oud enthusiasts a space to celebrate the material and explore its cultural and olfactory significance."
-   }
-  },
-  {
-   "id": "n1qp4vt5",
-   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE50aGFnTUtTYzFxanVYQURJVkZ4a1lJbmJDWjlVeVFBbFVtYzRNM2c0NEJ5NDJ3bG1aanJTQjZRRDVnOE5qSkRxT2x3U3dpNTV5aWFwSlBhZ00?oc=5",
-   "source": "Babnet",
-   "publishedAt": "2026-10-18T21:11:43.000Z",
-   "original": "العود التونسي يستعيد حضوره بين الشباب من خلال \"دار العود التونسي\"",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 3,
-   "title": {
-    "ar": "دار العود التونسي تعيد العود إلى اهتمام الشباب",
-    "en": "Dar Al Oud Al-Tounsi Brings Oud Back to Young People"
-   },
-   "summary": {
-    "ar": "يقول عنوان Babnet إن العود التونسي يستعيد حضوره بين الشباب من خلال «دار العود التونسي». ولا يقدم العنوان تفاصيل عن أنشطة الدار.",
-    "en": "Babnet’s headline says Tunisian oud is regaining a presence among young people through Dar Al Oud Al-Tounsi. It gives no details about the organization’s activities."
-   },
-   "note": {
-    "ar": "تجدد اهتمام الشباب بالعود قد يساعد على استمرار تقاليده وتوسيع جمهوره بين أجيال جديدة.",
-    "en": "Renewed interest among young people could help sustain oud traditions and introduce them to new generations."
    }
   },
   {
@@ -467,240 +757,6 @@
    "note": {
     "ar": "المنتجات المعطرة للجسم توسع خيارات محبي الروائح اليومية إلى ما يتجاوز العطر التقليدي.",
     "en": "Perfumed body products broaden everyday scent options beyond conventional perfume."
-   }
-  },
-  {
-   "id": "n1rxcjdx",
-   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5lLWpPaGtycC0zc2FyMk1wa3V5NG5CcjExSGZSMlhyWnZvdnA4eFhQTkdPakthMkVKa3JMZnUyX3NRUGhEU0pRa1lLUWhaUnlVbXRsTk1ZLUhBZVFHbUhB?oc=5",
-   "source": "白鲸出海",
-   "publishedAt": "2026-10-18T23:56:53.000Z",
-   "original": "hacker queen is also a perfume genius finale",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "hacker queen is also a perfume genius finale",
-    "en": "hacker queen is also a perfume genius finale"
-   },
-   "summary": {
-    "ar": "hacker queen is also a perfume genius finale",
-    "en": "hacker queen is also a perfume genius finale"
-   }
-  },
-  {
-   "id": "n17xb9hk",
-   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQWWtWbXJRcjJFT0RvQWJUR0draUFuYjhPN0ZnRGM4QkVFRlpYcmU2T1FZT2ZKT1dwTll1SUtrVDNxMlNPcFJlQlBWbXhHaTVubFhmQWdNRWtsLVFtZmtsZS1TQUFaSlZUMUR6Y2x3d2h6RzdSSWZmMWg5NmIzYTlJWW1ScEd1UQ?oc=5",
-   "source": "New National Star",
-   "publishedAt": "2026-10-18T23:23:00.000Z",
-   "original": "Zubby Michael Launches Ayirah Gold Fragrance Brand",
-   "lang": "en",
-   "category": "launch",
-   "importance": 2,
-   "title": {
-    "ar": "Zubby Michael Launches Ayirah Gold Fragrance Brand",
-    "en": "Zubby Michael Launches Ayirah Gold Fragrance Brand"
-   },
-   "summary": {
-    "ar": "Zubby Michael Launches Ayirah Gold Fragrance Brand",
-    "en": "Zubby Michael Launches Ayirah Gold Fragrance Brand"
-   }
-  },
-  {
-   "id": "n10cwnxm",
-   "url": "https://news.google.com/rss/articles/CBMiwAJBVV95cUxQS0FreWhRbVJvXzBaeUZ6ZHpFM001Q1NkeFR6MUVnUV96bnNpZTRmdkVGalVqVy1QVWF4WGVOSTMyNWc1OGFodHJQQVV2aU44ckdhWGxQdHdnZUp2cXRjcnA4MWRxX1JJODdkQzlnMXB0WlBxaVVvd2o5QXlqXzlvRGQzQ2NRSm5HME04MXdoNkkxR2xvZ1FDeDhuRlpXekdYNW92R1oxMl9QenE0RG5DMzZkZEp6TVdvSXowN3BMZTNyN25PY0Y5b1l1cHpSQVkwWUF2NGhRbXVRZU9sVWZramxCVHpYcjFDUEppYnl3dXZaeVdQOHc0NjFYWWlMSXZJbzk4RlA4a0ZGRkxqNTlpNTU0VWV6RTBrVTZZWWltSWQteGFhNzR6RmQ5V3FDT0xWanp0RFd4WTNsaHhZRzBDbQ?oc=5",
-   "source": "جريدة عالم النجوم",
-   "publishedAt": "2026-10-18T21:05:59.000Z",
-   "original": "في ذكرى ميلاده.. فريد الأطرش ملك العود الذي سكن قلوب الملايين",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "في ذكرى ميلاده.. فريد الأطرش ملك العود الذي سكن قلوب الملايين",
-    "en": "في ذكرى ميلاده.. فريد الأطرش ملك العود الذي سكن قلوب الملايين"
-   },
-   "summary": {
-    "ar": "في ذكرى ميلاده.. فريد الأطرش ملك العود الذي سكن قلوب الملايين",
-    "en": "في ذكرى ميلاده.. فريد الأطرش ملك العود الذي سكن قلوب الملايين"
-   }
-  },
-  {
-   "id": "n13fj15p",
-   "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxOZXlzQ0RzU0E2Vk11blA3TmpQS09xNmdIclhNRkgtTXJNSnZJcmtERjIxMlkyNDZOdTZLYjZuVjZtLXpoV3pQb1VYTmE2Um9XaFBnZGVwMFNiR2RwQmtLLWdVczVLcER0aGtRcUZ3V25RRFU5S2dXNDN5dGlHU2ZIdHVGSjEzaXdXczRtREFTbFNtbUtQWHJRYWoyRkdKRXdvLXR2amdtQ0VGZHluSFhmYkZTQU1kUVBQUkFYa3BxaEJaeXJTQkVDUlZtOVV2d2hNbm5tVjdtSFB3MFIyRWFSUmtn?oc=5",
-   "source": "Grazia",
-   "publishedAt": "2026-10-18T21:03:18.000Z",
-   "original": "Margaret Thatcher : voici le parfum Penhaligon's qui ne la quittait jamais, il est toujours aussi culte",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Margaret Thatcher : voici le parfum Penhaligon's qui ne la quittait jamais, il est toujours aussi culte",
-    "en": "Margaret Thatcher : voici le parfum Penhaligon's qui ne la quittait jamais, il est toujours aussi culte"
-   },
-   "summary": {
-    "ar": "Margaret Thatcher : voici le parfum Penhaligon's qui ne la quittait jamais, il est toujours aussi culte",
-    "en": "Margaret Thatcher : voici le parfum Penhaligon's qui ne la quittait jamais, il est toujours aussi culte"
-   }
-  },
-  {
-   "id": "nuiobbl",
-   "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxNRG80VndLTHBheTVBN0FicE4xc0x2dlpLRU9yMlVCYVlpZUJjbnpOYmRfa2w4ZUpHcjdWMlN4TmJIQ0IxR2l6Q3YtNENsLWJXemRDSmotdmpDZTlfTElHY2d0SzZnR0paVUh4cmRRQ0xIS01od0o2WWVrUGl4R3F3X2Z0eERwM2lqdlN5X1BGbUZNSkZtOFJ0OWRZc1ROa1F5VVpOcmw5SFVqVHhhdEVtb3pBdXhwSVB1MGxTQXd4N2JwVkQtcnRGQTB5bkU?oc=5",
-   "source": "Grazia",
-   "publishedAt": "2026-10-18T20:51:14.000Z",
-   "original": "Agathe Auproux porte “le même parfum Diesel depuis 10 ans”, c’est toujours un classique",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Agathe Auproux porte “le même parfum Diesel depuis 10 ans”, c’est toujours un classique",
-    "en": "Agathe Auproux porte “le même parfum Diesel depuis 10 ans”, c’est toujours un classique"
-   },
-   "summary": {
-    "ar": "Agathe Auproux porte “le même parfum Diesel depuis 10 ans”, c’est toujours un classique",
-    "en": "Agathe Auproux porte “le même parfum Diesel depuis 10 ans”, c’est toujours un classique"
-   }
-  },
-  {
-   "id": "nvae001",
-   "url": "https://cafleurebon.com/vampyr-by-statik-olfactive-winner/?utm_source=rss&utm_medium=rss&utm_campaign=vampyr-by-statik-olfactive-winner",
-   "source": "CaFleureBon",
-   "publishedAt": "2026-10-18T20:26:15.000Z",
-   "original": "Vampyr by Statik Olfactive Winner",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Vampyr by Statik Olfactive Winner",
-    "en": "Vampyr by Statik Olfactive Winner"
-   },
-   "summary": {
-    "ar": "As Vampyr by Statik Olfactive settles closer to the skin, the hazy dream-like vision becomes far too alluring to escape. The post Vampyr by Statik Olfactive Winner appeared first on ÇaFleureBon Perfume Blog .",
-    "en": "As Vampyr by Statik Olfactive settles closer to the skin, the hazy dream-like vision becomes far too alluring to escape. The post Vampyr by Statik Olfactive Winner appeared first on ÇaFleureBon Perfume Blog ."
-   }
-  },
-  {
-   "id": "nae83l3",
-   "url": "https://news.google.com/rss/articles/CBMi9gNBVV95cUxPTFlMTHFtSU5jQldKVnNrcll2SWhrZTU5cFNIRzN0cHdxZW5wdmFFd3A1M01JSkNDcGRmNk9BRDFGbTNjTkVfa28zbVVmcXpSYzNSVlc1dm5zd0ttMS1ZVFdOWWxJNG53RWRiSUwwR1lBQnI0MHZKX1Y5cFB2RnZBN0tXZkdRMm1lNmpVMmR6MFh5WHpYdW5jNE5FYUFWeWFSRExtM1NFVzNYek1ZUEdJUVZXYXFaZXAtb1o2N1g0ZDFvcDZEb2RkR1dsSGdGM3J6cUlpMF9fS0Y2dU9sWXZ2RFZtdmZPNVZCQzM3ZGJHdnQwbHV1bnpJWVg3Ulp2NDEzSmR2UnZVak9UT1BaNlp4UmRxZFBEM1JINDhjaHZiTGRkeTZSa1dNM0FEd1Nqa2ZwSWJYcy1PQzR6R0xhckExaTZhdGxTbU5GZjN1VENGLUdaWjJPS2NBajUzYkhTblhteE9USTIyWEVNU2FXbjhWVzB4RlNPQWN2ekFXQ3g0bHkxZTFYYk9CeElCODIzV01abGtISW56dktLUmEwczBCYlBhV2FCN1FlUy03RTd2MHhCYTNPNi1GOTJFQW9nT0MtaWUxcnQyTXRCYlVoekNJR2ctS3NLY045YlVqbENWdVA5dDJMZm56czJWX2U0QUtWTVgzZDZB0gFeQVVfeXFMTmVyZkR1NG9RNlY3ejYxSHRUR2d0ZHRmRGFSa0J0N1JJdVJPd1oxdHZTamF3My1vMVp6SmMtS0EzYnF6OFh2cE5JVUpGMnN5a1g5dXZrZS11WlFxaktIUQ?oc=5",
-   "source": "برس بي",
-   "publishedAt": "2026-10-18T19:28:25.000Z",
-   "original": "عبدالله البلوشي يطلُّ درامياً... في «قانون عبدالقادر» و«ناعم العود»",
-   "lang": "ar",
-   "category": "regulation",
-   "importance": 2,
-   "title": {
-    "ar": "عبدالله البلوشي يطلُّ درامياً... في «قانون عبدالقادر» و«ناعم العود»",
-    "en": "عبدالله البلوشي يطلُّ درامياً... في «قانون عبدالقادر» و«ناعم العود»"
-   },
-   "summary": {
-    "ar": "عبدالله البلوشي يطلُّ درامياً... في «قانون عبدالقادر» و«ناعم العود»",
-    "en": "عبدالله البلوشي يطلُّ درامياً... في «قانون عبدالقادر» و«ناعم العود»"
-   }
-  },
-  {
-   "id": "n107vzbe",
-   "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxNeDdPM1A4Z1ZJOEJOWlhRLUN4VHhQYWNqaVpyWHpDT3NYWmlrMHpjSVVUSWFYVXpLLV9Qenl0U1pNdDlvakZjMHZPMTJrWjJZc0s3eHB0MmlwY3Bhdlh2UTRiR2RjOEJnLVNZTVRXWWJOdlA0aXlTdmNFSTg0QUNLT3Z6SktEQVFtb2VRY3RjWHlDME9fTmcxMEhnZXI2RzRyaVZVdlNST3NGT1VoTFExdW5YRVg1ZFZvY1d1OTdmSDI2UFpBTHpEX2FyTQ?oc=5",
-   "source": "Arab Times Kuwait News",
-   "publishedAt": "2026-10-18T18:50:51.000Z",
-   "original": "Was Your Branded Perfume Not Lasting Long? 2 Bangladeshis Arrested in Kuwait Fake Perfume Scam",
-   "lang": "en",
-   "category": "regulation",
-   "importance": 2,
-   "title": {
-    "ar": "Was Your Branded Perfume Not Lasting Long? 2 Bangladeshis Arrested in Kuwait Fake Perfume Scam",
-    "en": "Was Your Branded Perfume Not Lasting Long? 2 Bangladeshis Arrested in Kuwait Fake Perfume Scam"
-   },
-   "summary": {
-    "ar": "Was Your Branded Perfume Not Lasting Long? 2 Bangladeshis Arrested in Kuwait Fake Perfume Scam",
-    "en": "Was Your Branded Perfume Not Lasting Long? 2 Bangladeshis Arrested in Kuwait Fake Perfume Scam"
-   }
-  },
-  {
-   "id": "n18w3lee",
-   "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxQLXZST191SW4tSlNubm11V0N3ZGtxLXYxbUdBTzJIWlFxb1RBWUlaRkQtU0RJcFpNaFN5RWZERGxMN2o2TUtkWnpIVlNJbGZUMnJnNnFKWVE4ZWlxWXg0YzdKZXpybG5BNjdSTGkybkN4S3ltMldtX0IxOGs5MTAyTmhEZzFiYnBaY3YxMVc2MWltZWJNeWE5dW1mYnh1SjF5QUdBdFNoUTVsN24wbGlfS1JyUlpLMTZQRHFKamtwdElfbHZqZHJyZ0IyZWpmNUxscE9WNU0yRUxQZ3I4NFY0NTJLT0VmVVYtY05RVHZwcw?oc=5",
-   "source": "Grazia",
-   "publishedAt": "2026-10-18T18:05:45.000Z",
-   "original": "\"L'ancienne bouteille vaut une fortune\" : ce parfum Guerlain des années 1970 s'arrache auprès des collectionneurs",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "\"L'ancienne bouteille vaut une fortune\" : ce parfum Guerlain des années 1970 s'arrache auprès des collectionneurs",
-    "en": "\"L'ancienne bouteille vaut une fortune\" : ce parfum Guerlain des années 1970 s'arrache auprès des collectionneurs"
-   },
-   "summary": {
-    "ar": "\"L'ancienne bouteille vaut une fortune\" : ce parfum Guerlain des années 1970 s'arrache auprès des collectionneurs",
-    "en": "\"L'ancienne bouteille vaut une fortune\" : ce parfum Guerlain des années 1970 s'arrache auprès des collectionneurs"
-   }
-  },
-  {
-   "id": "n17vwmnw",
-   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQTVdKZHZqaGswaDNXS0ZEd01QXzdSMG5sNTgwcTlQR3ZQTC1iSG5sR251aDU4bGJFblZXalJudGdfQTBYVUpIN05zSnItenMtYUc4R21TcjFiVEJuVWdmOU1ZTl9uQ25pRFlzYkpETG9PWWdudWZkYTNMTjRXTi1HQmJvanBaa1d4eTdYbGJIeHZYYkFrTEQtam8wS28yRFhZaWljdHFpSWpzUG9h?oc=5",
-   "source": "Orange Actualités",
-   "publishedAt": "2026-10-18T18:02:44.000Z",
-   "original": "Podium Parfumé: Le Top 5 des parfums du mois - 06/03",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Podium Parfumé: Le Top 5 des parfums du mois - 06/03",
-    "en": "Podium Parfumé: Le Top 5 des parfums du mois - 06/03"
-   },
-   "summary": {
-    "ar": "Podium Parfumé: Le Top 5 des parfums du mois - 06/03",
-    "en": "Podium Parfumé: Le Top 5 des parfums du mois - 06/03"
-   }
-  },
-  {
-   "id": "nsenjxj",
-   "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxQcHRZWW1Gcl9Ra2FGWmViMXdSZDVfeUpPYk5PbGpEdGxnMmlGQjJKMXdBRnRUdHNUQi1GWThWT1hDbnN6b3JtR3lhN3VtUWgzWUYtQVhyX0c0QzhCLXQxemp3UVVyVDI2bG9GZEM1Zkt5Y2pEY18yYUhCN1N1SEM0WDJ6eVFieHdtVUg1eENjRlh3YzBJeU5KcG1FbXJ1WHFOSzNtS2hCNUs2aElUY0p4NXI4VEE4YU02ajNia3IzUUotbGtieHhDdFpCV2x1blhpa0Vib2NnQmpzU25DU2FLTnh2N3YybVo1WlE?oc=5",
-   "source": "Grazia",
-   "publishedAt": "2026-10-18T17:49:34.000Z",
-   "original": "\"Je sens la richesse\" : oubliez vos parfums préférés, cette fragrance Guerlain est la plus convoitée du moment",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "\"Je sens la richesse\" : oubliez vos parfums préférés, cette fragrance Guerlain est la plus convoitée du moment",
-    "en": "\"Je sens la richesse\" : oubliez vos parfums préférés, cette fragrance Guerlain est la plus convoitée du moment"
-   },
-   "summary": {
-    "ar": "\"Je sens la richesse\" : oubliez vos parfums préférés, cette fragrance Guerlain est la plus convoitée du moment",
-    "en": "\"Je sens la richesse\" : oubliez vos parfums préférés, cette fragrance Guerlain est la plus convoitée du moment"
-   }
-  },
-  {
-   "id": "n1camu1k",
-   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOdndhWUJnZ3czTG9mZ2xiRUF1U3RGOGNTc0xianN6bWx0YjJQWGZISnFOWU1WVTU4ckNrX0dXMlBhbEVURFgycmVtYUJQaG9kZzZJbTdSb2RzU1QxTndyeVNyNXJWazZmeTlUbldhU0JBVVlkSXlnTkMzd0REYnlaTy1IRERBdUJ4TkJxMTA5ak54V0JnakJLQjZMQkg?oc=5",
-   "source": "Vietnam.vn",
-   "publishedAt": "2026-10-18T16:23:53.000Z",
-   "original": "انتشر فيديو اختبار عطر يانغ يانغ ووانغ هيدي بشكل غير متوقع على نطاق واسع مرة أخرى.",
-   "lang": "ar",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "انتشر فيديو اختبار عطر يانغ يانغ ووانغ هيدي بشكل غير متوقع على نطاق واسع مرة أخرى.",
-    "en": "انتشر فيديو اختبار عطر يانغ يانغ ووانغ هيدي بشكل غير متوقع على نطاق واسع مرة أخرى."
-   },
-   "summary": {
-    "ar": "انتشر فيديو اختبار عطر يانغ يانغ ووانغ هيدي بشكل غير متوقع على نطاق واسع مرة أخرى.",
-    "en": "انتشر فيديو اختبار عطر يانغ يانغ ووانغ هيدي بشكل غير متوقع على نطاق واسع مرة أخرى."
-   }
-  },
-  {
-   "id": "nqy4nrl",
-   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQNTFMZ0wyLXpzUVdzQ3N0X2VHNUdDUWJNTXV1RkJuMm9hU1lBazBKUWFUSFFLUjU2VW11eUdwY3FxWUcyMFVLRHh2dVhfZjk2TG04VV93bWFwZlYxa3dhWEdxSjFIQmE0bGtDWUlPX0FFdUxaQ3JXTmNCUEZjR0MybmtWQTZFRnZWSTlzZFRHaDA4UFl5aGRvOFFONU5pSUxwS2dn0gGoAUFVX3lxTFBQMkI4T1BDYkZBTW01VkxCQkwwZGZwQ3lFV19XV19TWlZHZTI3eUhCODhuRndkU1pISXE3WHlKenhhRVM3N2ZqNjE2V2wxcEZaNGpDNlZzbGZTVklpTGdxRjg0LVhFT1JoekRaemtrT051NENmb1JQYW91S21kamxoaUZCUTB1ckh3dERCV3JOMHY0SUFJN2FPTEJENkFIOTNkWW5hVEtmdg?oc=5",
-   "source": "Prestige Online - Singapore",
-   "publishedAt": "2026-10-18T15:44:27.000Z",
-   "original": "Smells like Taylor Swift: Decoding the pop icon’s favourite perfumes",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Smells like Taylor Swift: Decoding the pop icon’s favourite perfumes",
-    "en": "Smells like Taylor Swift: Decoding the pop icon’s favourite perfumes"
-   },
-   "summary": {
-    "ar": "Smells like Taylor Swift: Decoding the pop icon’s favourite perfumes",
-    "en": "Smells like Taylor Swift: Decoding the pop icon’s favourite perfumes"
    }
   }
  ]
