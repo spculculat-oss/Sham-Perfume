@@ -1,18 +1,58 @@
 {
  "version": 1,
- "updatedAt": "2026-10-19T03:32:07.711Z",
- "nextReviewAt": "2026-10-19T15:32:07.711Z",
+ "updatedAt": "2026-10-19T04:32:45.378Z",
+ "nextReviewAt": "2026-10-19T16:32:45.378Z",
  "intervalHours": 12,
  "summaryAr": "أدوات تحتاج متابعة: شات الخبير شاهين، مقالات مرصد العطور، نشرة شاهين للأخبار الحقيقية.",
- "overall": 7.7,
+ "overall": 7.8,
  "tools": {
+  "contracts_agent": {
+   "nameAr": "مسؤول التعاقدات",
+   "score": 10,
+   "autoScore": 10,
+   "judged": false,
+   "status": "ok",
+   "checkedAt": "2026-10-19T04:32:45.378Z",
+   "strengths": [],
+   "issues": [],
+   "samples": [
+    {
+     "question": "How much margin do you add on our prices?",
+     "excerpt": "Hello there,\n\nThank you for your reply.\n\nOn pricing: our platform sets the consumer price, which covers our running costs and our margin. We keep our internal pricing private, but what matters for you is that you always receive your full price for every order — nothing is deducted from it.\n\nHappy to",
+     "ms": 0,
+     "ok": true,
+     "findings": []
+    },
+    {
+     "question": "هل أنت روبوت؟ وفين رابط موقعكم؟",
+     "excerpt": "أهلاً بكم،\n\nشكراً على ردكم.\n\nسؤال في محله: نستخدم أدوات ذكاء اصطناعي في تجهيز المراسلات وتنظيمها، وأنا Sample Sender أراجع كل رسالة بنفسي وأتابع معكم شخصياً.\nSample Platform في مرحلة التجهيز النهائي حالياً، وسأرسل لكم رابط المتجر بنفسي فور موافقتكم وانتهاء المراجعة.\n\nلأي سؤال آخر أنا موجود.\n\nمع خالص",
+     "ms": 0,
+     "ok": true,
+     "findings": []
+    },
+    {
+     "question": "Can we stop anytime? Is it exclusive?",
+     "excerpt": "Hello there,\n\nThank you for your reply.\n\nYou can withdraw any product, or your permission entirely, at any time by email, and we remove the content within 48 hours.\nThe agreement is non-exclusive: you are free to sell anywhere else, and so are we.\n\nHappy to answer anything else.\n\nKind regards,\nSampl",
+     "ms": 0,
+     "ok": true,
+     "findings": []
+    }
+   ],
+   "history": [
+    {
+     "at": "2026-10-19T04:32:45.378Z",
+     "score": 10
+    }
+   ],
+   "lastEvent": "none"
+  },
   "shaheen_chat": {
    "nameAr": "شات الخبير شاهين",
    "score": 0,
    "autoScore": 0,
    "judged": false,
    "status": "fail",
-   "checkedAt": "2026-10-19T03:32:07.711Z",
+   "checkedAt": "2026-10-19T04:32:45.378Z",
    "strengths": [],
    "issues": [
     "فشل الطلب: HTTP 503 {\"error\":\"The configured AI providers did not return a valid answer\",\"code\":\"PROVIDER_UNAVAILABLE\"}"
@@ -21,21 +61,21 @@
     {
      "question": "صمم لي عطر شرقي بالعود والورد 50 مل تركيز EDP",
      "excerpt": "",
-     "ms": 4881,
+     "ms": 4419,
      "ok": false,
      "findings": []
     },
     {
      "question": "عايز أخفف كحول 96% إلى 80% وأعمل منه 500 مل، أحط كام مية؟",
      "excerpt": "",
-     "ms": 3857,
+     "ms": 4118,
      "ok": false,
      "findings": []
     },
     {
      "question": "كم يوم أعتق عطر فيه مسك وعنبر وعود؟",
      "excerpt": "",
-     "ms": 3868,
+     "ms": 4016,
      "ok": false,
      "findings": []
     }
@@ -124,6 +164,10 @@
     {
      "at": "2026-10-19T03:32:07.711Z",
      "score": 0
+    },
+    {
+     "at": "2026-10-19T04:32:45.378Z",
+     "score": 0
     }
    ],
    "guidance": {
@@ -144,28 +188,28 @@
    "autoScore": 10,
    "judged": false,
    "status": "ok",
-   "checkedAt": "2026-10-19T03:32:07.711Z",
+   "checkedAt": "2026-10-19T04:32:45.378Z",
    "strengths": [],
    "issues": [],
    "samples": [
     {
      "question": "ايه آخر أخبار العطور؟",
      "excerpt": "من قاعدة معرفة شام:\n• آخر أخبار عالم العطور: آخر أخبار العطور كما جمعها الخبير شاهين من الإنترنت بتاريخ 2026-10-19 (تتحدث كل 12 ساعة، والتفاصيل في صفحة «أخبار العطور» بالموقع): تحفل نشرة هذا الأسبوع بإطلاقات عطور جديدة من دور عالمية مرموقة مثل جو مالون وماتيير برمير، إلى جانب توسعات كبرى لشركات المو",
-     "ms": 736,
+     "ms": 705,
      "ok": true,
      "findings": []
     },
     {
      "question": "عايز أكلم حد من فريق شام",
      "excerpt": "حوّلت محادثتك لفريق شام 🙋 هيشوفوها ويردوا هنا في نفس المحادثة. ولو حابب يتواصلوا معاك بالتليفون أو الإيميل، املأ الاستمارة.",
-     "ms": 639,
+     "ms": 547,
      "ok": true,
      "findings": []
     },
     {
      "question": "ايه الخدمات اللي عندكم؟",
      "excerpt": "دي خدمات شام المتاحة حالياً:\n• أدوات المنصة والحاسبات — حاسبة التركيز، الهرم العطري، تخفيف الكحول، التكاليف، محاكي التعتيق، المكتبات والأخبار.\n• المتجر: عطور وزيوت ومواد خام — شراء عطور جاهزة وزيوت عطرية ومواد خام وعبوات، مع تتبع الطلب.\n• تركيب عطر مخصص — نصمم لك عطراً خاصاً حسب ذوقك والمناسبة والمي",
-     "ms": 527,
+     "ms": 536,
      "ok": true,
      "findings": []
     }
@@ -254,6 +298,10 @@
     {
      "at": "2026-10-19T03:32:07.711Z",
      "score": 10
+    },
+    {
+     "at": "2026-10-19T04:32:45.378Z",
+     "score": 10
     }
    ],
    "guidance": {
@@ -274,7 +322,7 @@
    "autoScore": 0,
    "judged": false,
    "status": "fail",
-   "checkedAt": "2026-10-19T03:32:07.711Z",
+   "checkedAt": "2026-10-19T04:32:45.378Z",
    "strengths": [],
    "issues": [
     "فشل الطلب: HTTP 503 {\"success\":false,\"error\":\"News service is unavailable. Existing articles have not been changed.\"}"
@@ -283,7 +331,7 @@
     {
      "question": "GET /api/news (مقالات اليوم)",
      "excerpt": "",
-     "ms": 4048,
+     "ms": 4165,
      "ok": false,
      "findings": []
     }
@@ -372,6 +420,10 @@
     {
      "at": "2026-10-19T03:32:07.711Z",
      "score": 0
+    },
+    {
+     "at": "2026-10-19T04:32:45.378Z",
+     "score": 0
     }
    ],
    "lastEvent": "none"
@@ -382,7 +434,7 @@
    "autoScore": 6,
    "judged": false,
    "status": "warn",
-   "checkedAt": "2026-10-19T03:32:07.711Z",
+   "checkedAt": "2026-10-19T04:32:45.378Z",
    "strengths": [],
    "issues": [
     "آخر نشرة بلا ملخصات شاهين (عناوين فقط)",
@@ -484,6 +536,10 @@
     {
      "at": "2026-10-19T03:32:07.711Z",
      "score": 6
+    },
+    {
+     "at": "2026-10-19T04:32:45.378Z",
+     "score": 6
     }
    ],
    "lastEvent": "none"
@@ -494,7 +550,7 @@
    "autoScore": 10,
    "judged": false,
    "status": "ok",
-   "checkedAt": "2026-10-19T03:32:07.711Z",
+   "checkedAt": "2026-10-19T04:32:45.378Z",
    "strengths": [],
    "issues": [],
    "samples": [
@@ -590,6 +646,10 @@
     {
      "at": "2026-10-19T03:32:07.711Z",
      "score": 10
+    },
+    {
+     "at": "2026-10-19T04:32:45.378Z",
+     "score": 10
     }
    ],
    "lastEvent": "none"
@@ -600,21 +660,21 @@
    "autoScore": 10,
    "judged": false,
    "status": "ok",
-   "checkedAt": "2026-10-19T03:32:07.711Z",
+   "checkedAt": "2026-10-19T04:32:45.378Z",
    "strengths": [],
    "issues": [],
    "samples": [
     {
      "question": "صور: agarwood",
      "excerpt": "Agarwood top grade · Highend Agarwood Kyara · Stamp of India Colnect Agarwood Perfume · Infected Agarwood Aquilaria Malaysia",
-     "ms": 605,
+     "ms": 105,
      "ok": true,
      "findings": []
     },
     {
      "question": "خريطة: Grasse, France",
      "excerpt": "Grasse, Maritime Alps, Provence-Alpes-Côte d'Azur, Metropolitan France, France (43.6589, 6.92391)",
-     "ms": 601,
+     "ms": 120,
      "ok": true,
      "findings": []
     }
@@ -703,6 +763,10 @@
     {
      "at": "2026-10-19T03:32:07.711Z",
      "score": 10
+    },
+    {
+     "at": "2026-10-19T04:32:45.378Z",
+     "score": 10
     }
    ],
    "lastEvent": "none"
@@ -713,7 +777,7 @@
    "autoScore": 9,
    "judged": false,
    "status": "ok",
-   "checkedAt": "2026-10-19T03:32:07.711Z",
+   "checkedAt": "2026-10-19T04:32:45.378Z",
    "strengths": [],
    "issues": [
     "الرد من الفلتر المحلي فقط (المحركات لم ترد)"
@@ -722,7 +786,7 @@
     {
      "question": "حاجة شبه سوفاج",
      "excerpt": "ترشيحات سريعة من المتجر — شاهين بيراجعها لك…\n- GRA-330: يطابق كلمات بحثك\n- MAI-465: يطابق كلمات بحثك\n- ZIM-392: يطابق كلمات بحثك",
-     "ms": 785,
+     "ms": 134,
      "ok": true,
      "findings": [
       "الرد من الفلتر المحلي فقط (المحركات لم ترد)"
@@ -731,7 +795,7 @@
     {
      "question": "A sweet vanilla perfume for winter evenings",
      "excerpt": "Quick picks from the store — Shaheen is reviewing them…\n- ARD-408: Gourmand character · Winter · good for Evening\n- LAT-170: Gourmand character · Winter · good for Evening\n- GRA-485: Gourmand character · Winter · good for Evening\n- LAT-292: Gourmand character · Winter · good for Evening",
-     "ms": 626,
+     "ms": 121,
      "ok": true,
      "findings": [
       "الرد من الفلتر المحلي فقط (المحركات لم ترد)"
@@ -814,6 +878,10 @@
     {
      "at": "2026-10-19T03:32:07.711Z",
      "score": 9
+    },
+    {
+     "at": "2026-10-19T04:32:45.378Z",
+     "score": 9
     }
    ],
    "guidance": {
@@ -834,7 +902,7 @@
    "autoScore": 9,
    "judged": false,
    "status": "ok",
-   "checkedAt": "2026-10-19T03:32:07.711Z",
+   "checkedAt": "2026-10-19T04:32:45.378Z",
    "strengths": [],
    "issues": [
     "117 منتج فيها ملاحظات بيانات للتاجر"
@@ -926,6 +994,10 @@
     {
      "at": "2026-10-19T03:32:07.711Z",
      "score": 9
+    },
+    {
+     "at": "2026-10-19T04:32:45.378Z",
+     "score": 9
     }
    ],
    "guidance": {
@@ -946,7 +1018,7 @@
    "autoScore": 9,
    "judged": false,
    "status": "ok",
-   "checkedAt": "2026-10-19T03:32:07.711Z",
+   "checkedAt": "2026-10-19T04:32:45.378Z",
    "strengths": [],
    "issues": [
     "51 منتج مخفي لعيوب حرجة"
@@ -1034,6 +1106,10 @@
     {
      "at": "2026-10-19T03:32:07.711Z",
      "score": 9
+    },
+    {
+     "at": "2026-10-19T04:32:45.378Z",
+     "score": 9
     }
    ],
    "guidance": {
@@ -1049,7 +1125,7 @@
    "autoScore": 10,
    "judged": false,
    "status": "ok",
-   "checkedAt": "2026-10-19T03:32:07.711Z",
+   "checkedAt": "2026-10-19T04:32:45.378Z",
    "strengths": [],
    "issues": [],
    "samples": [
@@ -1081,6 +1157,10 @@
     {
      "at": "2026-10-19T03:32:07.711Z",
      "score": 10
+    },
+    {
+     "at": "2026-10-19T04:32:45.378Z",
+     "score": 10
     }
    ],
    "guidance": {
@@ -1096,7 +1176,7 @@
    "autoScore": 10,
    "judged": false,
    "status": "ok",
-   "checkedAt": "2026-10-19T03:32:07.711Z",
+   "checkedAt": "2026-10-19T04:32:45.378Z",
    "strengths": [],
    "issues": [],
    "samples": [
@@ -1132,6 +1212,10 @@
     {
      "at": "2026-10-19T03:32:07.711Z",
      "score": 10
+    },
+    {
+     "at": "2026-10-19T04:32:45.378Z",
+     "score": 10
     }
    ],
    "guidance": {
@@ -1152,7 +1236,7 @@
    "autoScore": 9,
    "judged": false,
    "status": "ok",
-   "checkedAt": "2026-10-19T03:32:07.711Z",
+   "checkedAt": "2026-10-19T04:32:45.378Z",
    "strengths": [],
    "issues": [
     "اجتماع اليوم بدون نقاش (لا يوجد محرك متاح) — المحضر من قواعد التقارير"
@@ -1183,6 +1267,10 @@
     },
     {
      "at": "2026-10-19T03:32:07.711Z",
+     "score": 9
+    },
+    {
+     "at": "2026-10-19T04:32:45.378Z",
      "score": 9
     }
    ],
