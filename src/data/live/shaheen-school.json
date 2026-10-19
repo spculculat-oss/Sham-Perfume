@@ -1,15 +1,15 @@
 {
  "version": 1,
- "updatedAt": "2026-10-19T12:55:51.025Z",
+ "updatedAt": "2026-10-19T18:55:40.985Z",
  "reliance": {
-  "score": 96,
-  "covered": 80,
+  "score": 98,
+  "covered": 81,
   "total": 83,
-  "fromMemory": 80,
+  "fromMemory": 81,
   "fromLibrary": 2,
   "byLang": {
    "ar": {
-    "covered": 65,
+    "covered": 66,
     "total": 68
    },
    "en": {
@@ -18,9 +18,15 @@
    }
   }
  },
- "studiedTotal": 50,
+ "studiedTotal": 51,
  "selfTaughtTotal": 29,
  "history": [
+  {
+   "at": "2026-10-19T18:55:40.985Z",
+   "score": 98,
+   "studied": 1,
+   "mode": "ai"
+  },
   {
    "at": "2026-10-19T12:55:51.025Z",
    "score": 96,
@@ -77,6 +83,12 @@
   }
  ],
  "lastStudied": [
+  {
+   "q": "ايه هي مكونات العطر الاساسية و النوتات العليا والقلب والقاعدة وعطر الشيبر وتغير الرائحة",
+   "lang": "ar",
+   "at": "2026-10-19T18:55:40.985Z",
+   "variants": 4
+  },
   {
    "q": "Can perfume cause skin allergies?",
    "lang": "en",
@@ -190,12 +202,6 @@
    "lang": "ar",
    "at": "2026-10-18T14:23:35.582Z",
    "variants": 4
-  },
-  {
-   "q": "How can I make my perfume last longer?",
-   "lang": "en",
-   "at": "2026-10-18T14:23:35.582Z",
-   "variants": 1
   }
  ],
  "pending": [
@@ -208,11 +214,6 @@
    "q": "حدثني عن آخر أخبار عالم العطور",
    "lang": "ar",
    "topic": "library"
-  },
-  {
-   "q": "ايه هي مكونات العطر الاساسية و النوتات العليا والقلب والقاعدة وعطر الشيبر وتغير الرائحة",
-   "lang": "ar",
-   "topic": "council"
   }
  ],
  "importer": {

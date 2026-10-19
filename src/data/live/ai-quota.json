@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-19T12:55:51.413Z",
+ "updatedAt": "2026-10-19T18:55:41.613Z",
  "engines": {
   "deepseek": {
    "pausedUntil": "2026-10-19T08:05:00.000Z",
@@ -10,7 +10,7 @@
    "reason": "no_credit"
   },
   "gemini": {
-   "pausedUntil": "2026-10-19T13:55:51.413Z",
+   "pausedUntil": "2026-10-19T19:55:41.613Z",
    "reason": "invalid_key",
    "detail": "PERMISSION_DENIED",
    "key": "79e90b39"
@@ -19,7 +19,7 @@
  "used": {
   "day": "2026-10-19",
   "counts": {
-   "gemini": 1
+   "gemini": 2
   }
  }
 }

@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-19T12:55:05.997Z",
+ "updatedAt": "2026-10-19T18:53:10.915Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -1668,8 +1668,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-19T18:53:10.915Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1680,8 +1680,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-19T18:53:10.915Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -1692,12 +1692,12 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-19T18:53:10.915Z",
    "trust": {
     "score": 93,
     "verdict": "trusted",
-    "at": "2026-10-18T23:21:13.356Z",
+    "at": "2026-10-19T18:53:10.915Z",
     "checks": [
      {
       "id": "age",
@@ -1806,8 +1806,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-19T18:53:10.915Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -1884,12 +1884,12 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T00:56:02.060Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-19T18:53:10.915Z",
    "trust": {
     "score": 78,
     "verdict": "trusted",
-    "at": "2026-10-19T00:56:02.060Z",
+    "at": "2026-10-19T18:53:10.915Z",
     "checks": [
      {
       "id": "age",
@@ -3236,6 +3236,534 @@
    "foundWith": "Khadlaj",
    "foundAt": "2026-10-19T12:55:05.997Z",
    "attempts": 0
+  },
+  {
+   "id": "ausliebezumduft-de",
+   "host": "ausliebezumduft.de",
+   "name": "Aus Liebe zum Duft",
+   "base": "https://www.ausliebezumduft.de",
+   "status": "active",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-19T18:53:10.915Z",
+   "trust": {
+    "score": 86,
+    "verdict": "trusted",
+    "at": "2026-10-19T18:53:10.915Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": null,
+      "points": 8,
+      "max": 20,
+      "detail": "السجل لا ينشر تاريخ التسجيل"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد + هاتف"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 15,
+      "max": 15,
+      "detail": "بيانات قانونية + عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 3,
+      "max": 5,
+      "detail": "محلي أو غير مذكور"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "Visa، Mastercard، American Express، PayPal، Apple Pay، Google Pay"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     }
+    ],
+    "flags": []
+   },
+   "region": "europe",
+   "sampleOk": 3,
+   "sampleTotal": 6,
+   "currency": "EUR",
+   "rateToEgp": 60.1032,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*ausliebezumduft\\.de/products/[^?#]+$",
+   "sitemaps": [
+    "https://www.ausliebezumduft.de/sitemap_agentic_discovery.xml",
+    "https://www.ausliebezumduft.de/sitemap_products_1.xml?from=10143100928346&to=10143500140890",
+    "https://www.ausliebezumduft.de/sitemap_products_2.xml?from=10143500370266&to=10145456324954",
+    "https://www.ausliebezumduft.de/sitemap_products_3.xml?from=10145456423258&to=10145978155354",
+    "https://www.ausliebezumduft.de/sitemap_products_4.xml?from=10145978253658&to=10153924559194",
+    "https://www.ausliebezumduft.de/sitemap_products_5.xml?from=10153925738842&to=11031995580762",
+    "https://www.ausliebezumduft.de/sitemap_pages_1.xml?from=138209788250&to=161118781786",
+    "https://www.ausliebezumduft.de/sitemap_collections_1.xml?from=639574507866&to=646038651226",
+    "https://www.ausliebezumduft.de/sitemap_collections_2.xml?from=646038683994&to=680812872026",
+    "https://www.ausliebezumduft.de/sitemap_blogs_1.xml",
+    "https://www.ausliebezumduft.de/sitemap_articles_1.xml"
+   ],
+   "via": "generic",
+   "productsEstimate": 4937
+  },
+  {
+   "id": "osswaldnyc-com",
+   "host": "osswaldnyc.com",
+   "name": "Osswald",
+   "base": "https://www.osswaldnyc.com",
+   "status": "active",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-19T18:53:10.915Z",
+   "trust": {
+    "score": 83,
+    "verdict": "trusted",
+    "at": "2026-10-19T18:53:10.915Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "16 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد + هاتف"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": false,
+      "points": 5,
+      "max": 15,
+      "detail": "عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 3,
+      "max": 5,
+      "detail": "محلي أو غير مذكور"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "Visa، Mastercard، American Express، PayPal، Apple Pay، Google Pay"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2010-02-24T02:12:36.000Z"
+   },
+   "region": "americas",
+   "sampleOk": 3,
+   "sampleTotal": 6,
+   "currency": "USD",
+   "rateToEgp": 53.5247,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*osswaldnyc\\.com/products/[^?#]+$",
+   "sitemaps": [
+    "https://www.osswaldnyc.com/sitemap_agentic_discovery.xml",
+    "https://www.osswaldnyc.com/sitemap_products_1.xml?from=131027455&to=10336615727323",
+    "https://www.osswaldnyc.com/sitemap_pages_1.xml?from=125059140&to=126722638043",
+    "https://www.osswaldnyc.com/sitemap_collections_1.xml?from=9704145&to=541556474075",
+    "https://www.osswaldnyc.com/sitemap_blogs_1.xml",
+    "https://www.osswaldnyc.com/sitemap_articles_1.xml"
+   ],
+   "via": "json-ld",
+   "productsEstimate": 992
+  },
+  {
+   "id": "niche-beauty-com",
+   "host": "niche-beauty.com",
+   "name": "Shop the finest beauty products online",
+   "base": "https://www.niche-beauty.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-19T18:53:10.915Z",
+   "trust": {
+    "score": 90,
+    "verdict": "trusted",
+    "at": "2026-10-19T18:53:10.915Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "18 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد + هاتف"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 15,
+      "max": 15,
+      "detail": "بيانات قانونية + عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 3,
+      "max": 5,
+      "detail": "محلي أو غير مذكور"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "PayPal، Apple Pay"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": null,
+      "points": 2,
+      "max": 5
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2008-04-04T14:08:31.000Z"
+   },
+   "region": "global",
+   "sampleOk": 0,
+   "sampleTotal": 6,
+   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
+  },
+  {
+   "id": "beautyhabit-com",
+   "host": "beautyhabit.com",
+   "name": "Beautyhabit",
+   "base": "https://www.beautyhabit.com",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-19T18:53:10.915Z",
+   "trust": {
+    "score": 83,
+    "verdict": "trusted",
+    "at": "2026-10-19T18:53:10.915Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "28 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد + هاتف"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": false,
+      "points": 5,
+      "max": 15,
+      "detail": "عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 3,
+      "max": 5,
+      "detail": "محلي أو غير مذكور"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "Visa، Mastercard، American Express، PayPal، Apple Pay، Google Pay"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     }
+    ],
+    "flags": [],
+    "registeredAt": "1998-04-30T04:00:00.000Z"
+   },
+   "region": "global",
+   "sampleOk": 8,
+   "sampleTotal": 9,
+   "reason": "أغلب منتجاته ليست عطوراً (38%)"
+  },
+  {
+   "id": "nocibe-fr",
+   "host": "nocibe.fr",
+   "name": "nocibe.fr",
+   "base": "https://nocibe.fr",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-19T18:53:10.915Z",
+   "reason": "الموقع لا يفتح (HTTP 403)"
+  },
+  {
+   "id": "frenchavenue-com",
+   "host": "frenchavenue.com",
+   "name": "frenchavenue.com",
+   "base": "https://frenchavenue.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "French Avenue",
+   "foundAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 0
+  },
+  {
+   "id": "frenchavenueperfumes-com",
+   "host": "frenchavenueperfumes.com",
+   "name": "frenchavenueperfumes.com",
+   "base": "https://frenchavenueperfumes.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "French Avenue",
+   "foundAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 0
+  },
+  {
+   "id": "frenchavenueparfums-com",
+   "host": "frenchavenueparfums.com",
+   "name": "frenchavenueparfums.com",
+   "base": "https://frenchavenueparfums.com",
+   "status": "candidate",
+   "foundBy": "brand-site",
+   "foundWith": "French Avenue",
+   "foundAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 0
   }
  ],
  "queries": [
@@ -3776,6 +4304,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-19T18:53:10.915Z",
+   "mode": "self",
+   "found": 8,
+   "vetted": 10,
+   "activated": 2,
+   "rejected": 0,
+   "notes": [
+    "  ↳ niche-beauty.com: CV 90/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,social]",
+    "✗ niche-beauty.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "  ↳ beautyhabit.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
+    "✗ beautyhabit.com: أغلب منتجاته ليست عطوراً (38%)",
+    "✗ nocibe.fr: الموقع لا يفتح (HTTP 403)",
+    "✗ jovoy.com: الموقع لا يفتح",
+    "✗ fragrancenet.com: الموقع لا يفتح (HTTP 403)",
+    "  ↳ escentials.com: CV 93/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
+    "✗ escentials.com: أغلب منتجاته ليست عطوراً (56%)",
+    "✗ thefragranceshop.co.uk: الموقع لا يفتح (HTTP 403)",
+    "  ↳ strawberrynet.com: CV 78/100 [age,https,contact,returns,shipping,privacy,terms,payment,social]",
+    "✗ strawberrynet.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (1/6)"
+   ]
+  },
   {
    "at": "2026-10-19T12:55:05.997Z",
    "mode": "self",
