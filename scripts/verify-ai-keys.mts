@@ -26,7 +26,7 @@ const LABEL: Record<string, string> = {
   unreachable: 'تعذّر الوصول',
 };
 
-const settings = { ...SHAHEEN_SITE_SETTINGS, engines: ['gemini', 'openai', 'claude', 'deepseek', 'openrouter', 'self_hosted'] as typeof SHAHEEN_SITE_SETTINGS.engines };
+const settings = { ...SHAHEEN_SITE_SETTINGS, engines: ['gemini', 'perplexity', 'openai', 'claude', 'deepseek', 'openrouter', 'self_hosted'] as typeof SHAHEEN_SITE_SETTINGS.engines };
 const results = await probeEngines(settings, { timeoutMs: 30000 });
 const rows: Array<{ id: string; name: string; model: string; ok: boolean; configured: boolean; code: string; ms: number; usedModel?: string; detail?: string }> =
   results.map((r) => ({ ...r, code: r.ok ? 'ok' : r.error || 'unreachable' }));

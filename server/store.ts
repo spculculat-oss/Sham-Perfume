@@ -27,7 +27,7 @@ export interface StoreRouterOptions {
   products?: RawProduct[]; catalog?: () => Promise<StoreCatalogFile | undefined>; timeoutMs?: number;
 }
 
-const VENDOR = /\b(?:gemini|google|openai|chat ?gpt|gpt-?\d|claude|anthropic|deepseek|openrouter|llama|mistral)\b|جيميني|شات ?جي ?بي ?تي|كلود|ديب ?سيك/i;
+const VENDOR = /\b(?:gemini|google|openai|chat ?gpt|gpt-?\d|claude|anthropic|deepseek|openrouter|perplexity|llama|mistral)\b|جيميني|شات ?جي ?بي ?تي|كلود|ديب ?سيك/i;
 const clean = (v: unknown, max: number) => (typeof v === 'string' ? v.replace(/```[\s\S]*?```/g, '').replace(/\s+/g, ' ').trim().slice(0, max) : '');
 
 export const ADVISOR_SYSTEM = `أنت «الخبير شاهين»، خبير العطور ومستشار التسوق في «متجر شام».

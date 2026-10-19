@@ -21,7 +21,7 @@ export interface ProbeContext {
   now?: number;
 }
 
-export const VENDORS = /\b(gemini|google|openai|chat ?gpt|gpt-?\d|claude|anthropic|deepseek|openrouter|llama|qwen|mistral)\b|جيمي?ني|جوجل|شات ?جي|كلود|ديب ?سيك/i;
+export const VENDORS = /\b(gemini|google|openai|chat ?gpt|gpt-?\d|claude|anthropic|deepseek|openrouter|perplexity|llama|qwen|mistral)\b|جيمي?ني|جوجل|شات ?جي|كلود|ديب ?سيك/i;
 export const PROBE_QUESTION = { model: 'fast', language: 'ar', message: 'إيه الفرق بين EDP و EDT؟' };
 
 async function timed(ctx: ProbeContext, url: string, init: RequestInit = {}, timeoutMs = 20_000) {

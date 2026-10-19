@@ -1,4 +1,4 @@
-export type ShaheenProvider = 'gemini' | 'deepseek' | 'openai' | 'claude' | 'self_hosted' | 'openrouter';
+export type ShaheenProvider = 'gemini' | 'deepseek' | 'openai' | 'claude' | 'self_hosted' | 'openrouter' | 'perplexity';
 
 export interface ModelPerspective {
   modelId: ShaheenProvider;
@@ -53,7 +53,7 @@ export const DEFAULT_WELCOME_MESSAGE: ChatMessage = {
 };
 
 export const CHAT_STORAGE_KEY = 'miyaar_perfumer_chat_session';
-const PROVIDERS = ['gemini', 'deepseek', 'openai', 'claude', 'self_hosted', 'openrouter', 'ensemble', 'shaheen'];
+const PROVIDERS = ['gemini', 'deepseek', 'openai', 'claude', 'self_hosted', 'openrouter', 'perplexity', 'ensemble', 'shaheen'];
 
 export function isChatMessage(value: unknown): value is ChatMessage {
   if (!value || typeof value !== 'object') return false;

@@ -7,6 +7,7 @@
  *                with open-weight models such as Qwen, Llama, Mistral or DeepSeek open weights.
  *  gemini / openai / claude / deepseek : optional hosted providers (server-side keys only).
  *  openrouter  : one key, many hosted models (useful for the advisory council: different vendors per seat).
+ *  perplexity  : answers grounded in a live web search (Agent API, presets fast/low/medium/high — PERPLEXITY_PRESET).
  *  sham_local  : Sham's own deterministic composer — works with zero keys and zero cost.
  */
 import { createHash } from 'node:crypto';
@@ -38,6 +39,33 @@ export function openCompatibleEngine(env: Env) {
   return null;
 }
 
+/**
+ * Perplexity: since 2026-09-27 its Sonar chat-completions shape is retired; the Agent API (POST /v1/agent) takes
+ * `instructions` + `input` items and returns a typed `output` array. A preset (fast…xhigh) brings its own web
+ * search; an explicit model id ("vendor/model") gets the web_search tool added.
+ */
+export const PERPLEXITY_AGENT_URL = 'https://api.perplexity.ai/v1/agent';
+export const PERPLEXITY_DEFAULT_PRESET = 'fast';
+const PERPLEXITY_PRESETS = new Set(['fast', 'low', 'medium', 'high', 'xhigh']);
+export function perplexityBody(model: string, system: string, turns: EngineTurn[], temperature: number, maxTokens: number): Record<string, unknown> {
+  const preset = PERPLEXITY_PRESETS.has(model);
+  return {
+    ...(preset ? { preset: model } : { model, tools: [{ type: 'web_search' }] }),
+    instructions: system,
+    input: turns.map((t) => ({ type: 'message', role: t.role, content: t.text })),
+    max_output_tokens: maxTokens,
+    temperature,
+  };
+}
+/** The answer text of an Agent API response (raw JSON has no `output_text` helper: read the message items). */
+export function perplexityText(data: unknown): string | undefined {
+  const d = data as { output_text?: unknown; output?: { type?: string; content?: { type?: string; text?: string }[] }[] };
+  const text = typeof d?.output_text === 'string' ? d.output_text
+    : (d?.output || []).filter((o) => o?.type === 'message').flatMap((o) => o.content || []).filter((c) => c?.type === 'output_text' || typeof c?.text === 'string').map((c) => c.text || '').join('');
+  // Citation markers ([1], [2][3]) point at sources the reader does not see: drop them.
+  return text ? text.replace(/\s?\[\d+(?:\s*[,،]\s*\d+)*\]/g, '').replace(/[ \t]+\n/g, '\n').trim() : undefined;
+}
+
 export function engineStatuses(env: Env = process.env): EngineStatus[] {
   const open = openCompatibleEngine(env);
   return [
@@ -47,6 +75,7 @@ export function engineStatuses(env: Env = process.env): EngineStatus[] {
     { id: 'claude', name: 'Anthropic Claude', model: env.ANTHROPIC_MODEL?.trim() || 'claude-sonnet-4-5', configured: configured(env.ANTHROPIC_API_KEY), kind: 'hosted' },
     { id: 'deepseek', name: 'DeepSeek', model: env.DEEPSEEK_MODEL?.trim() || 'deepseek-chat', configured: configured(env.DEEPSEEK_API_KEY), kind: 'hosted' },
     { id: 'openrouter', name: 'OpenRouter', model: env.OPENROUTER_MODEL?.trim() || 'openai/gpt-4o-mini', configured: configured(env.OPENROUTER_API_KEY), kind: 'hosted' },
+    { id: 'perplexity', name: 'Perplexity', model: env.PERPLEXITY_PRESET?.trim() || env.PERPLEXITY_MODEL?.trim() || PERPLEXITY_DEFAULT_PRESET, configured: configured(env.PERPLEXITY_API_KEY), kind: 'hosted' },
     { id: 'sham_local', name: 'Sham Core (built-in)', model: 'rules+bm25', configured: true, kind: 'own' },
   ];
 }
@@ -319,6 +348,11 @@ export async function callEngine(
     url = 'https://api.anthropic.com/v1/messages';
     headers = { ...headers, 'x-api-key': env.ANTHROPIC_API_KEY!.trim(), 'anthropic-version': '2023-06-01' };
     body = { model: status.model, system, max_tokens: maxTokens, temperature: options.temperature, ...(stream ? { stream: true } : {}), messages: turns.map((t) => ({ role: t.role, content: t.text })) };
+  } else if (id === 'perplexity') {
+    url = PERPLEXITY_AGENT_URL;
+    headers.Authorization = `Bearer ${env.PERPLEXITY_API_KEY!.trim()}`;
+    // Not streamed: the answer arrives whole (the caller still gets it through onToken).
+    body = perplexityBody(status.model, system, turns, options.temperature, maxTokens);
   } else if (id === 'openrouter') {
     url = 'https://openrouter.ai/api/v1/chat/completions';
     headers = { ...headers, Authorization: `Bearer ${env.OPENROUTER_API_KEY!.trim()}`, 'X-Title': 'Sham Core' };
@@ -400,7 +434,7 @@ export async function callEngine(
     content?: { type: string; text: string }[];
     choices?: { message?: { content?: unknown } }[];
   };
-  const reply = id === 'gemini'
+  const reply = id === 'perplexity' ? perplexityText(data) : id === 'gemini'
     ? data.candidates?.[0]?.content?.parts?.filter((p) => !p.thought).map((p) => p.text || '').join('')
     : id === 'claude'
       ? data.content?.filter((p) => p.type === 'text').map((p) => p.text).join('\n')

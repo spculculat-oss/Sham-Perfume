@@ -26,7 +26,7 @@ export interface SupervisorFile {
 export type Ask = (system: string, prompt: string) => Promise<string>;
 
 export const INTERVAL_HOURS = 12;
-const VENDOR = /\b(?:gemini|openai|chat ?gpt|gpt-?[345o]|claude|anthropic|deepseek|openrouter|llama|mistral|bard)\b|جيميني|جيمناي|شات ?جي ?بي ?تي|كلود|ديب ?سيك/i;
+const VENDOR = /\b(?:gemini|openai|chat ?gpt|gpt-?[345o]|claude|anthropic|deepseek|openrouter|perplexity|llama|mistral|bard)\b|جيميني|جيمناي|شات ?جي ?بي ?تي|كلود|ديب ?سيك/i;
 const SELF_AS_AI = /(?:كنموذج لغوي|بصفتي نموذج|أنا نموذج ذكاء|لا أستطيع تصفح|ليس لدي (?:إمكانية|قدرة) الوصول إلى الإنترنت|as an ai(?: language)? model|i am an ai model|i cannot browse|i don'?t have access to (?:the )?internet)/i;
 const HIDDEN_FENCE = /```sham-(?:formula|media|tool)[\s\S]*?```/g;
 

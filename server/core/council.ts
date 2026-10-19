@@ -28,7 +28,7 @@ export const COUNCIL_ROLES: Record<CouncilRole, { ar: string; en: string; brief:
   general: { ar: 'مستشار عام', en: 'General advisor', brief: 'a balanced, practical overall view' },
 };
 const ROLES = Object.keys(COUNCIL_ROLES) as CouncilRole[];
-const MODEL_ENGINES: ModelEngineId[] = ['self_hosted', 'gemini', 'openai', 'claude', 'deepseek', 'openrouter'];
+const MODEL_ENGINES: ModelEngineId[] = ['self_hosted', 'gemini', 'openai', 'claude', 'deepseek', 'openrouter', 'perplexity'];
 /** Intents that can convene the council (never for tracking, calculations, greetings or privacy). */
 export const COUNCIL_INTENTS = ['perfume_expert', 'question', 'service_request', 'browse_products', 'list_services'] as const;
 export const MAX_SEATS = 5;
@@ -40,7 +40,7 @@ export function defaultCouncil(): CouncilSettings {
   const seat = (engine: ModelEngineId, role: CouncilRole): CouncilMember => ({ id: `seat-${engine}`, engine, role, enabled: true });
   return {
     enabled: true,
-    members: [seat('self_hosted', 'general'), seat('gemini', 'formulator'), seat('claude', 'safety'), seat('openai', 'commercial'), seat('deepseek', 'customer')],
+    members: [seat('self_hosted', 'general'), seat('gemini', 'formulator'), seat('claude', 'safety'), seat('openai', 'commercial'), seat('deepseek', 'customer'), seat('perplexity', 'commercial')],
     chair: 'auto',
     rounds: 1,
     intents: ['perfume_expert'],

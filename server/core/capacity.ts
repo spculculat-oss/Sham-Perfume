@@ -280,7 +280,7 @@ export function capacityConfig(env: Env) {
     /** Requests one visitor may have with the AI providers at once (their own lane; the rest wait their turn). */
     perVisitorConcurrent: num(env.SHAM_PER_VISITOR_CONCURRENT, 2, 1, 20),
     /** Known quota per provider and minute, e.g. SHAM_GEMINI_RPM=1000 (otherwise learned from 429s). */
-    providerRpm: Object.fromEntries(['gemini', 'deepseek', 'openai', 'claude', 'self_hosted', 'openrouter']
+    providerRpm: Object.fromEntries(['gemini', 'deepseek', 'openai', 'claude', 'self_hosted', 'openrouter', 'perplexity']
       .map((id) => [id, num(env[`SHAM_${id.toUpperCase()}_RPM`], NaN, 1, 1_000_000)])
       .filter(([, rpm]) => Number.isFinite(rpm))) as Record<string, number>,
   };

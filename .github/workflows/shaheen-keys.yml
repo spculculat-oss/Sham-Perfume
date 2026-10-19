@@ -2,7 +2,7 @@ name: Shaheen AI keys (verify + sync to Vercel)
 
 # Keys live ONLY in repository secrets (Settings → Secrets and variables → Actions):
 #   GEMINI_API_KEY, OPENAI_API_KEY, ANTHROPIC_API_KEY, DEEPSEEK_API_KEY, MANUS_API_KEY (background agent),
-#   optional OPENROUTER_API_KEY, AI_GATEWAY_API_KEY, YOUTUBE_API_KEY (videos under Shaheen's answers),
+#   optional OPENROUTER_API_KEY, PERPLEXITY_API_KEY (answers with a live web search), AI_GATEWAY_API_KEY, YOUTUBE_API_KEY (videos under Shaheen's answers),
 #   KASHIER_MERCHANT_ID, KASHIER_API_KEY, KASHIER_SECRET_KEY, KASHIER_MODE (store payments),
 #   and VERCEL_TOKEN for the sync.
 # 1) every present key gets one tiny real request through the site's own engine code;
@@ -37,6 +37,7 @@ jobs:
       # Background task agent only (verified here, never copied to Vercel: visitors never reach it).
       MANUS_API_KEY: ${{ secrets.MANUS_API_KEY }}
       OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
       AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
       YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
       # «الدفع في متجر شام» (Kashier): checked with one unpaid 1 EGP test session, then copied to Vercel.

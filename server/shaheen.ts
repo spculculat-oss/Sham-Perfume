@@ -47,6 +47,7 @@ export const ENGINE_INFO: Record<ModelEngineId, { name: string; color: string }>
   claude: { name: 'Anthropic Claude', color: 'purple' },
   self_hosted: { name: 'Sham Open Model', color: 'stone' },
   openrouter: { name: 'OpenRouter', color: 'sky' },
+  perplexity: { name: 'Perplexity', color: 'teal' },
 };
 
 export function validateChatRequest(body: unknown): ChatRequest {

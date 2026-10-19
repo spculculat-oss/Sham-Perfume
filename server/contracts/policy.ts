@@ -65,7 +65,7 @@ export interface Problem { id: string; textAr: string }
 const URLS = /\bhttps?:\/\/[^\s<>"')»]+/gi;
 /** The only link allowed before approval: the signing page (server/contracts/router.ts). */
 export const SIGN_PATH = '/api/contracts/s/';
-const VENDOR = /\b(gemini|gpt|openai|chatgpt|claude|anthropic|deepseek|openrouter|manus|llama|mistral|qwen|grok)\b|جيميني|شات ?جي ?بي ?تي|كلود|ديب ?سيك|مانوس/i;
+const VENDOR = /\b(gemini|gpt|openai|chatgpt|claude|anthropic|deepseek|openrouter|perplexity|manus|llama|mistral|qwen|grok)\b|جيميني|شات ?جي ?بي ?تي|كلود|ديب ?سيك|مانوس/i;
 const DENIES_AI = /(?:مش|لست|لستُ|مو|ليس|ماني|مانيش)\s+(?:روبوت|بوت|آلة|ذكاء)|\bnot\s+(?:a\s+)?(?:bot|robot|an?\s+ai|ai)\b|\bi(?:'m| am)\s+(?:a\s+)?(?:real\s+)?(?:human|person)\b(?!.*\bteam\b)|بشري ?100|إنسان حقيقي ومش/i;
 const PERCENT = /\d+(?:[.,]\d+)?\s*(?:%|٪|percent|بالمي[ةه]|في المي[ةه])|[×x]\s*1[.,]\d|\b1[.,]\d\s*x\b/i;
 const MARGIN_NUMBER = /(?:هامش|ربح|markup|margin)[^\n.]{0,25}?\d/i;

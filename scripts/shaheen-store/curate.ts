@@ -11,7 +11,7 @@ import {
 
 export const STORE_INTERVAL_HOURS = 12;
 export const BATCH = 14;
-const VENDOR = /\b(?:gemini|openai|chat ?gpt|claude|anthropic|deepseek|openrouter)\b/i;
+const VENDOR = /\b(?:gemini|openai|chat ?gpt|claude|anthropic|deepseek|openrouter|perplexity)\b/i;
 
 /** What is wrong with a product as the merchants imported it (Arabic, for the admin report). */
 export function auditProduct(p: RawProduct): string[] {

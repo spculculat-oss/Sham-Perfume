@@ -146,7 +146,7 @@ export function tourPrompt(previous?: TourResult, ctx: MeetingContext = { proble
 export interface Proposal { title: string; detail: string; area: Area; priority: Priority; rerun?: (typeof RERUNNABLE)[number] }
 export interface Advisor { opinionAr: string; proposals: Proposal[] }
 /** No AI company names, no links, nothing against the legal manager's product-import pause (L-03). */
-const VENDOR = /gemini|gpt|openai|chatgpt|claude|anthropic|deepseek|openrouter|manus|llama|mistral|qwen|grok|جيميني|كلود|ديب ?سيك|مانوس/i;
+const VENDOR = /gemini|gpt|openai|chatgpt|claude|anthropic|deepseek|openrouter|perplexity|manus|llama|mistral|qwen|grok|جيميني|كلود|ديب ?سيك|مانوس/i;
 const AGAINST_LEGAL = /scrap|crawl|SHAM_ALLOW_SCRAPE|(?:سحب|نقل|استيراد|استئناف)\s+(?:ال)?منتجات|إذن المورد/i;
 export function cleanAdvisor(raw: unknown): Advisor | undefined {
   if (!raw || typeof raw !== 'object') return undefined;
