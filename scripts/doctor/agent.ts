@@ -315,7 +315,7 @@ export interface QuotaFile { updatedAt: string; engines: Record<string, { paused
 /** The engines that have a key here, in the order the bots use them. */
 export async function configuredEngines(env: Env): Promise<string[]> {
   const { engineStatuses } = await import('../../server/core/engines');
-  return ['gemini', 'deepseek', 'openai', 'claude', 'openrouter', 'self_hosted'].filter((id) => engineStatuses(env).find((e) => e.id === id)?.configured);
+  return ['gemini', 'perplexity', 'deepseek', 'openai', 'claude', 'openrouter', 'self_hosted'].filter((id) => engineStatuses(env).find((e) => e.id === id)?.configured);
 }
 export class QuotaExhaustedError extends Error {
   constructor(public resumeAt: number) { super(`AI quota exhausted until ${new Date(resumeAt).toISOString()}`); this.name = 'QuotaExhaustedError'; }
@@ -360,7 +360,7 @@ export type QuotaBook = ReturnType<typeof quotaBook>;
  */
 export async function makeAsk(env: Env, options: { quota?: QuotaBook; memory?: AnswerBook; maxWaitMs?: number; sleep?: (ms: number) => Promise<void>; request?: typeof fetch; prefer?: string; onEngine?: (id: string) => void } = {}): Promise<DoctorOptions['ask']> {
   const { callEngine, engineStatuses } = await import('../../server/core/engines');
-  const order = ['gemini', 'deepseek', 'openai', 'claude', 'openrouter', 'self_hosted'] as const;
+  const order = ['gemini', 'perplexity', 'deepseek', 'openai', 'claude', 'openrouter', 'self_hosted'] as const;
   const configured = order.filter((id) => engineStatuses(env).find((e) => e.id === id)?.configured);
   const ready = options.prefer && configured.includes(options.prefer as typeof configured[number]) ? [options.prefer as typeof configured[number], ...configured.filter((id) => id !== options.prefer)] : configured;
   const memory = options.memory;

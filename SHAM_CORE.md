@@ -91,6 +91,7 @@ Sham Core هو مساعد الخدمات ولوحة الإدارة داخل مو
 | `SHAM_LLM_BASE_URL` / `SHAM_LLM_MODEL` / `SHAM_LLM_API_KEY` | نموذج مفتوح مستضاف ذاتياً، مثلاً `http://127.0.0.1:11434/v1` و`qwen2.5:7b-instruct` |
 | `GEMINI_API_KEY` وغيره | اختيارية تماماً. لو موجودة بتدخل في سياسة المحركات |
 | `OPENROUTER_API_KEY` / `OPENROUTER_MODEL` | مفتاح واحد لنماذج كتير من شركات مختلفة، مفيد لمقاعد المجلس |
+| `PERPLEXITY_API_KEY` / `PERPLEXITY_PRESET` | ردود مبنية على بحث حي في النت (واجهة الوكيل `/v1/agent`، الإعداد الافتراضي `fast`؛ ممكن `low` أو `medium` أو `high`)، بيتسعر بالطلب |
 | `SHAM_COUNCIL_RATE_PER_HOUR` | حد ردود المجلس لكل زائر في الساعة (الافتراضي 12) |
 | `SHAM_SEED_DEMO=true` | منتجات تجريبية مُعلَّمة «تجريبي» للمعاينة فقط |
 | `SHAM_CORS_ORIGINS` | المواقع المسموح لها تكلّم الـ API من دومين تاني (الافتراضي GitHub Pages؛ `none` يقفلها) |

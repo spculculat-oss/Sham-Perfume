@@ -352,7 +352,7 @@ export function chairPrompt(b: Briefing, opinions: SeatOpinion[], openTasks: Tas
 {"summary":"جملتان","decisions":[{"title":"…","detail":"…","area":"ai-tools|store|content|experience|reliability","priority":"high|medium|low","kind":"auto|task","action":{…},"tool":"<id اختياري>","needsApproval":false}],"toolGoals":{"<id>":"هدف تطوير واحد محدد لهذه الأداة في تخصصها"}}`;
 }
 
-const VENDOR = /gemini|gpt|openai|chatgpt|claude|anthropic|deepseek|openrouter|manus|llama|mistral|qwen|grok|جيميني|شات ?جي ?بي ?تي|كلود|ديب ?سيك/i;
+const VENDOR = /gemini|gpt|openai|chatgpt|claude|anthropic|deepseek|openrouter|perplexity|manus|llama|mistral|qwen|grok|جيميني|شات ?جي ?بي ?تي|كلود|ديب ?سيك/i;
 const clean = (v: unknown, max: number) => (typeof v === 'string' ? v.replace(/\s+\n/g, '\n').trim().slice(0, max) : '');
 const AREAS: Area[] = ['ai-tools', 'store', 'content', 'experience', 'reliability'];
 const PRIOS: Priority[] = ['high', 'medium', 'low'];

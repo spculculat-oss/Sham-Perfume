@@ -191,7 +191,7 @@ export interface VisitorProfile {
   lastSeen: string;
 }
 
-export type EngineId = 'self_hosted' | 'gemini' | 'openai' | 'claude' | 'deepseek' | 'openrouter' | 'sham_local';
+export type EngineId = 'self_hosted' | 'gemini' | 'openai' | 'claude' | 'deepseek' | 'openrouter' | 'perplexity' | 'sham_local';
 export type ModelEngineId = Exclude<EngineId, 'sham_local'>;
 
 /** Expert lens a council member argues from (the same model can sit twice with different lenses). */
