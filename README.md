@@ -12,7 +12,7 @@
 
 ### الإصلاحات
 
-1. أمر `build:pages` يبني المصدر الحالي إلى `docs` بمسار `/Sham-Perfume/`، وينشئ `404.html` متوافقًا و`.nojekyll`.
+1. أمر `build:pages` يبني المصدر الحالي إلى `pages-dist` (مش متخزّن في Git) بمسار `/Sham-Perfume/`، وينشئ `404.html` متوافقًا و`.nojekyll`.
 2. Workflow يفحص TypeScript والاختبارات ويبني المصدر بدل الاعتماد على ملفات قديمة. فروع `arena/**` وطلبات الدمج تُفحص فقط؛ النشر مسموح لـ `main` فقط.
 3. بيانات الأخبار المضمّنة المحدثة وترجماتها تتقدم على النسخ القديمة المحفوظة في المتصفح. تُزال سجلات التحديث المحلي التي كانت تُنشأ عند فشل الطلبات، وتُرفض البيانات غير الصالحة وتكرار المعرّفات.
 4. صور الأخبار تستخدم أصول البناء الحالي، لا مسارات `/src` أو ملفات hashed من بناء قديم.
@@ -125,17 +125,10 @@ PAGES_BASE_PATH=/ npm run build:pages
 PAGES_BASE_PATH=/ npm run check:pages
 ```
 
-### إبقاء الإعداد القديم: main/docs
+### نسخة الموقع المبنية مش متخزّنة في Git
 
-إذا اخترت عدم الانتقال إلى GitHub Actions، أعد البناء يدويًا مع كل تغيير، ثم ارفع **المصدر وملفات `docs` معًا** عبر فرع العمل وطلب دمج إلى `main`:
-
-```bash
-npm run build:pages
-npm run check:pages
-git status
-```
-
-ملفات `docs` موجودة في Git للحفاظ على التوافق مع النشر القديم. `dist` و`node_modules` لا تُرفع.
+الموقع بيتبني من جديد مع كل نشر (`pages.yml`) في فولدر `pages-dist`، وده مش بيترفع على Git (زي `dist` و`node_modules`).
+فولدر `docs` فيه المستندات المكتوبة باليد بس (`docs/legal` و`docs/design`). البناء كان بيفضّي فولدره قبل ما يكتب، فكان بيمسح المستندات القانونية، وكان بيخلّي أي رفع من أدوات زي Google AI Studio يغيّر ملفات كتير وتقيلة.
 
 > GitHub Pages يستضيف الواجهة الثابتة فقط ولا يشغّل `server.ts`. عشان الشات بوتات تشتغل عليه، الـ workflow بيبني النسخة الثابتة بـ `VITE_API_BASE_URL`، فالواجهة بتكلّم خادم Vercel مباشرة. القيمة جاية من متغير المستودع `PAGES_API_BASE_URL`، والافتراضي `https://sham-perfume-49bf.vercel.app`.
 > الخادم بيسمح بالطلبات دي بس للدومينات المكتوبة في `SHAM_CORS_ORIGINS`، والافتراضي `https://spculculat-oss.github.io`.
@@ -348,7 +341,7 @@ git push origin <your-working-branch>
 
 **تفعيل Search Console (مجاني — والملف جاهز في المستودع):**
 
-Search Console نفسه مجاني بالكامل ومش محتاج بطاقة؛ اللي بيطلب بطاقة هو مشروع Cloud لو حبيت API بحساب خدمة. الملف اللي جوجل أصدرته للموقع اتحفظ في `public/google7ef3d5aa6cf98197.html`، وبيتبني في جذر `docs/` و`dist/`، فالخطوات:
+Search Console نفسه مجاني بالكامل ومش محتاج بطاقة؛ اللي بيطلب بطاقة هو مشروع Cloud لو حبيت API بحساب خدمة. الملف اللي جوجل أصدرته للموقع اتحفظ في `public/google7ef3d5aa6cf98197.html`، وبيتبني في جذر `pages-dist/` و`dist/`، فالخطوات:
 
 1. افتح `https://search.google.com/search-console` وسجّل الدخول بحساب Google عادي.
 2. أضف خاصية من نوع **بادئة عنوان URL** (URL prefix) — مش «Domain»؛ خاصية الـDomain تحتاج سجل DNS مش متاح على `github.io`.
@@ -370,7 +363,7 @@ Search Console نفسه مجاني بالكامل ومش محتاج بطاقة؛
 ```bash
 node --import tsx scripts/seo-agent/run.mts          # دورة واحدة (فحص وتعلّم؛ أضف SEO_SUBMIT=1 للإرسال)
 node --import tsx scripts/seo-build.mts dist        # ملفات SEO وصفحات الأدوات في dist/
-npm run build:pages                                 # نفس الشيء لـ docs/ + فحص Pages
+npm run build:pages                                 # نفس الشيء لـ pages-dist/ + فحص Pages
 ```
 
 **المتغيرات:** `SEO_SITE_URL` (الأصل الأساسي)، `SEO_SUBMIT`، `SEO_ENGINE_ORDER`، `WEBSUB_HUBS` (اختياري؛ محاور إشعار الخلاصة) (ترتيب المحركات، والافتراضي `gemini,deepseek,openai,claude,openrouter,self_hosted` بعد استبعاد غير المهيأ)، `GSC_SERVICE_ACCOUNT_JSON` و`GSC_SITE_URL`، `BING_WEBMASTER_API_KEY`، `GOOGLE_SITE_VERIFICATION`، `BING_SITE_VERIFICATION`. كلها اختيارية، ومنها كل حساب Search Console/Bing؛ من غير أي مفتاح يظل الوكيل يفحص ويدرس ويبني الملفات، ومن غير IndexNow/فهارس يظل كل شيء صادقاً.

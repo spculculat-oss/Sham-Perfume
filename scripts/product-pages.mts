@@ -13,7 +13,7 @@ const [outArg = 'dist', siteArg] = process.argv.slice(2);
 const env = process.env;
 // The public address used in canonical links and share previews: the main site (GitHub Pages) for both
 // builds, so the Vercel engine's copy never competes with it in search results.
-const siteUrl = (siteArg || env.SEO_SITE_URL || (outArg.startsWith('docs') ? env.PAGES_SITE_URL : '') || SITE.url).replace(/\/?$/, '/');
+const siteUrl = (siteArg || env.SEO_SITE_URL || (outArg.startsWith('pages-dist') ? env.PAGES_SITE_URL : '') || SITE.url).replace(/\/?$/, '/');
 const root = new URL('../', import.meta.url);
 const json = <T,>(path: string): T => JSON.parse(readFileSync(new URL(path, root), 'utf8')) as T;
 const products = json<{ products?: RawProduct[] }>('src/data/products.json').products || [];

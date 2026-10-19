@@ -1,6 +1,6 @@
 /**
  * Publishes the technical SEO layer of the built site:
- *   node --import tsx scripts/seo-build.mts <dist|docs> [siteUrl]
+ *   node --import tsx scripts/seo-build.mts <dist|pages-dist> [siteUrl]
  *
  * Writes robots.txt, sitemap.xml, feed.xml, llms.txt, the IndexNow key file, search-engine verification
  * files, one real landing page per tool (tools/*.html) and injects the home page's head. The copy comes
@@ -25,7 +25,7 @@ const readJson = <T,>(path: string): T | undefined => {
   try { return JSON.parse(readFileSync(new URL(path, root), 'utf8')) as T; } catch { return undefined; }
 };
 // One canonical address for both builds: the main site on GitHub Pages (the Vercel engine's copy points to it).
-const defaultSite = (outDir.startsWith('docs') && env.PAGES_SITE_URL) || SITE.url;
+const defaultSite = (outDir.startsWith('pages-dist') && env.PAGES_SITE_URL) || SITE.url;
 const siteUrl = (siteArg || env.SEO_SITE_URL || defaultSite).replace(/\/?$/, '/');
 const write = (path: string, content: string) => {
   const target = new URL(`${outDir}/${path}`, root);
