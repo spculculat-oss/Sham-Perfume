@@ -248,6 +248,8 @@ export function buildBriefing(d: LiveData, now: number, openTasks: Task[] = []):
           decision: { title: `إصلاح عطل: ${bot.nameAr}`, detail: `الفحص الشامل قبل الاجتماع:\n${b.problems.map((p) => `- ${p}`).join('\n')}${b.fixes.length ? `\nالإصلاح المقترح:\n${b.fixes.map((x) => `- ${x}`).join('\n')}` : ''}${b.lastRun?.url ? `\nسجل آخر تشغيل: ${b.lastRun.url}` : ''}`, area: deptArea(bot.dept), priority: 'high', kind: 'task' } });
       }
     }
+    const legal = [...new Set(pre.bots.flatMap((b) => b.legal || []))];
+    if (legal.length) facts.push(`قرارات المدير القانوني السارية (ملزمة — ممنوع تجاوزها): ${legal.join(' | ')}`);
     const ideas = pre.bots.filter((b) => b.ideas.length).map((b) => `${botOf(b.id)?.nameAr}: ${b.ideas[0]}`);
     if (ideas.length) facts.push(`أفكار تطوير من الأدوات: ${ideas.slice(0, 6).join(' | ')}`);
     for (const h of pre.handoffs || []) {
@@ -267,7 +269,7 @@ const deptArea = (dept: string | undefined): Area => (dept === 'store' ? 'store'
 export const SEAT_SYSTEM = (seat: Seat) => `أنت «${seat.titleAr}» في الاجتماع اليومي لتطوير منصة «صمم عطرك مع شام» (موقع عطور عربي على GitHub Pages: متجر عطور، حاسبات تركيب، الخبير شاهين، مجتمع، أخبار).
 تخصصك: ${seat.brief}.
 اقرأ تقرير حالة الموقع الحقيقي، ثم اكتب رأيك بالعربية في 120–220 كلمة: ملاحظتان أو ثلاث من التقرير، ثم 2–4 اقتراحات تطوير عملية في تخصصك مرتبة بالأهمية، لكل اقتراح سطر «لماذا» من الأرقام.
-لا تخترع أرقاماً غير موجودة في التقرير، ولا تقترح ما يخالف: التسعير (سعر المنتج + 50% + الشحن)، عدم ظهور أسماء شركات الذكاء الاصطناعي للزوار، عدم وضع مفاتيح في المستودع.`;
+لا تخترع أرقاماً غير موجودة في التقرير، ولا تقترح ما يخالف: التسعير (سعر المنتج + 50% + الشحن)، عدم ظهور أسماء شركات الذكاء الاصطناعي للزوار، عدم وضع مفاتيح في المستودع، وقرارات «المدير القانوني» (ملزمة: لا تقترح تجاوزها أو الالتفاف عليها).`;
 
 export function seatPrompt(b: Briefing, previous?: Meeting) {
   return `تقرير حالة الموقع (${b.at}):\n${b.facts.map((f) => `- ${f}`).join('\n')}\n\nإشارات مرصودة آلياً:\n${b.signals.map((s) => `- [${s.priority}] ${s.text}`).join('\n') || '- لا شيء'}\n${previous ? `\nقرارات اجتماع ${previous.date}:\n${previous.decisions.map((d) => `- ${d.title} (${d.status})`).join('\n')}` : ''}`;
@@ -278,7 +280,7 @@ export const CHAIR_SYSTEM = `أنت «الخبير شاهين»، مدير كل 
 أنواع القرارات:
 - "auto": تُنفذ فوراً، ومسموح فقط بهذه الإجراءات: {"type":"rerun","workflow":"shaheen-import.yml|shaheen-discover.yml|shaheen-news.yml|shaheen-seo.yml"} أو {"type":"study","question":"سؤال عطور عام يذاكره شاهين"} أو {"type":"scout-seed","domain":"نطاق متجر عطور"}.
 - "task": مهمة تطوير برمجية لوكيل البرمجة (عنوان واضح وتفاصيل قابلة للتنفيذ: ماذا ولماذا وأين). needsApproval=true للتغييرات الكبيرة أو التي تمس الأسعار أو الدفع أو التصميم العام أو حذف شيء.
-لا تكرر مهمة موجودة في «مهام مفتوحة». لا تذكر أسماء شركات أو نماذج ذكاء اصطناعي في أهداف الأدوات. أعد JSON فقط.`;
+قرارات «المدير القانوني» في التقرير ملزمة: لا تتخذ ولا تقترح أي قرار يتجاوزها أو يلتف عليها (مثل تشغيل نقل المنتجات بدون إذن المورد). لا تكرر مهمة موجودة في «مهام مفتوحة». لا تذكر أسماء شركات أو نماذج ذكاء اصطناعي في أهداف الأدوات. أعد JSON فقط.`;
 
 export function chairPrompt(b: Briefing, opinions: SeatOpinion[], openTasks: Task[], delegations: Delegation[] = []) {
   const toolIds = AI_TOOLS.map((t) => `${t.id} (${t.nameAr})`).join('، ');

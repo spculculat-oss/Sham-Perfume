@@ -4,7 +4,7 @@
  *   - orgSvg(): a self-contained picture of the map (RTL), optionally coloured by the pre-meeting check.
  * scripts/shaheen-council/org-doc.mts writes them; tests/shaheenOrg.test.ts keeps the .md up to date.
  */
-import { BOTS, DEPARTMENTS, LINKS, SECRETARY, botOf, botsIn, orgMermaid, type BotId } from '../../src/utils/shaheenOrg';
+import { BOTS, DEPARTMENTS, LEGAL_DECISIONS, LINKS, SECRETARY, botOf, botsIn, orgMermaid, type BotId } from '../../src/utils/shaheenOrg';
 import type { BotStatus } from './precheck';
 
 const every = (h?: number) => (!h ? 'عند الطلب / مع كل تعديل' : h < 24 ? `كل ${h} ساعات` : h === 24 ? 'يومياً' : h === 168 ? 'أسبوعياً' : `كل ${h} ساعة`);
@@ -37,6 +37,7 @@ export function orgDoc(): string {
     for (const b of botsIn(d.id)) out.push(`| ${b.nameAr} | ${b.dutiesAr} | ${every(b.everyHours)} | ${b.workflow ? `\`${b.workflow}\`` : '—'} | ${b.report ? `\`${b.report}\`` : '—'} |`);
     out.push('');
   }
+  out.push('## قرارات المدير القانوني (ملزمة لشاهين وكل الأدوات)', '', ...LEGAL_DECISIONS.map((x) => `- **${x.id}** (${botOf(x.bot)!.nameAr}): ${x.textAr}`), '', 'الاجتماع اليومي مايقترحش تجاوز أي قرار منهم، والمدير القانوني بس هو اللي يرفعه.', '');
   out.push('## التعاون بين الأدوات', '', '| من | إلى | ليه |', '|---|---|---|');
   for (const l of LINKS) out.push(`| ${botOf(l.from)!.nameAr} | ${botOf(l.to)!.nameAr} | ${l.whyAr} |`);
   out.push('', 'طلبات المساعدة الفعلية (من تقارير الأدوات) بتظهر كل يوم في الفحص الشامل وفي لوحة الإدارة ← «إدارة الذكاء الاصطناعي» ← «الهيكل الإداري».', '');

@@ -29,5 +29,5 @@ if (env.GITHUB_ACTIONS) {
 }
 if (env.GITHUB_STEP_SUMMARY) {
   const rows = result.bots.map((b) => `| ${icon[b.status]} | ${botOf(b.id)?.nameAr} | ${b.problems.join('<br>') || '—'} | ${b.fixes.join('<br>') || '—'} | ${b.ideas.join('<br>') || '—'} |`);
-  appendFileSync(env.GITHUB_STEP_SUMMARY, `## الفحص الشامل قبل اجتماع شاهين\n\n${result.summaryAr}\n\n| | الأداة | المشاكل | الإصلاح | التطوير |\n|---|---|---|---|---|\n${rows.join('\n')}\n\n### التعاون بين الأدوات\n${result.handoffs.map((h) => `- ${botOf(h.from)?.nameAr} ← ${botOf(h.to)?.nameAr}: ${h.textAr}`).join('\n') || '- لا يوجد'}\n`);
+  appendFileSync(env.GITHUB_STEP_SUMMARY, `## الفحص الشامل قبل اجتماع شاهين\n\n${result.summaryAr}\n\n| | الأداة | المشاكل | الإصلاح | التطوير |\n|---|---|---|---|---|\n${rows.join('\n')}\n\n### قرارات المدير القانوني (ملزمة)\n${[...new Set(result.bots.flatMap((b) => b.legal || []))].map((x) => `- ${x}`).join('\n') || '- لا يوجد'}\n\n### التعاون بين الأدوات\n${result.handoffs.map((h) => `- ${botOf(h.from)?.nameAr} ← ${botOf(h.to)?.nameAr}: ${h.textAr}`).join('\n') || '- لا يوجد'}\n`);
 }

@@ -32,7 +32,7 @@ export const DEPARTMENTS: Department[] = [
 ];
 
 export type BotId =
-  | 'council' | 'secretary' | 'precheck' | 'finance'
+  | 'council' | 'secretary' | 'precheck' | 'finance' | 'legal'
   | 'scout' | 'importer' | 'images' | 'catalog' | 'product_pages' | 'store_advisor'
   | 'news' | 'seo'
   | 'chat' | 'languages' | 'design_audit' | 'inspect'
@@ -60,6 +60,7 @@ export const BOTS: Bot[] = [
   { id: 'secretary', nameAr: 'السكرتير — مشرف شاهين', nameEn: 'Secretary — Shaheen\'s supervisor', dept: 'leadership', workflow: 'shaheen-news.yml', report: 'ai-supervisor.json', everyHours: 12, dutiesAr: 'يقيس كل أداة ذكاء اصطناعي ويكتب لها توجيهات، يجهز جدول الأعمال، وينوب عن شاهين في الاجتماع وقت الضغط أو لو مفيش محرك ذكاء اصطناعي.' },
   { id: 'precheck', nameAr: 'الفحص الشامل قبل الاجتماع', nameEn: 'Pre-meeting full check', dept: 'leadership', workflow: 'shaheen-precheck.yml', report: 'shaheen-precheck.json', everyHours: 24, dutiesAr: 'قبل الاجتماع بساعتين: كل روبوت يفحص نفسه ويكتب مشاكله والإصلاح المقترح وأفكار التطوير، والسكرتير يوزع طلبات المساعدة بين الأدوات.' },
   { id: 'finance', nameAr: 'أمين شاهين — الإدارة المالية', nameEn: 'Shaheen Finance', dept: 'leadership', workflow: 'shaheen-finance.yml', report: 'ai-supervisor.json', everyHours: 24, aiTools: ['finance_agent'], dutiesAr: 'تحصيل موثّق وتقارير يومية وأسبوعية وشهرية ومراجعة الدفع. التفاصيل داخل لوحة مالية خاصة؛ التقرير العام يحتوي حالة الفحص المنقحة من المشرف فقط. لا تحويلات أو استردادات أو اعتماد حسابات تلقائياً.' },
+  { id: 'legal', nameAr: 'المدير القانوني', nameEn: 'Legal manager', dept: 'leadership', dutiesAr: 'يراجع امتثال المنصة للقوانين؛ قراراته ملزمة لشاهين وكل الأدوات، ومحدش يتجاوزها لحد ما المدير القانوني نفسه يغيرها (مثال: وقف نقل المنتجات لحد إذن المورد المكتوب).' },
   // ── Store & import ──
   { id: 'scout', nameAr: 'كشّاف المصادر', nameEn: 'Source scout', dept: 'store', workflow: 'shaheen-discover.yml', report: 'import-sources.json', everyHours: 6, dutiesAr: 'يدوّر على متاجر عطور موثوقة في العالم كله ويراجع سيرتها الذاتية قبل ما تدخل.' },
   { id: 'importer', nameAr: 'مستورد شاهين + مراجع الصفحات', nameEn: 'Shaheen importer + page reviewer', dept: 'store', workflow: 'shaheen-import.yml', report: 'store-review.json', everyHours: 2, aiTools: ['store_import'], dutiesAr: 'ينقل منتجات المتاجر المقبولة ويسعّرها ويراجع كل صفحة ويخفي المعيب.' },
@@ -97,6 +98,17 @@ export const SECRETARY = {
   ],
 };
 
+/**
+ * Decisions of «المدير القانوني» in force: binding on Shaheen and every tool — the pre-meeting check shows them as
+ * legal decisions (not faults), and the council may never propose working around them. Only the legal manager
+ * lifts one (for L-03: the supplier's written permission in docs/legal/scraper-permission.md).
+ */
+export interface LegalDecision { id: string; bot: BotId; textAr: string }
+export const LEGAL_DECISIONS: LegalDecision[] = [
+  { id: 'L-03', bot: 'importer', textAr: 'نقل منتجات جديدة من المتاجر متوقف بقرار المدير القانوني لحد ما يوصل إذن مكتوب من المورد؛ الكتالوج الحالي شغال ويتراجع عادي.' },
+  { id: 'L-06', bot: 'chat', textAr: 'كل رد ذكاء اصطناعي عليه إفصاح إنه مولد بالذكاء الاصطناعي، من غير ذكر أسماء المزودين للزوار.' },
+];
+
 /** Who helps whom: the cooperation map (from → to, and why). */
 export interface Link { from: BotId; to: BotId; whyAr: string }
 export const LINKS: Link[] = [
@@ -104,6 +116,9 @@ export const LINKS: Link[] = [
   { from: 'finance', to: 'council', whyAr: 'تصعيد أعطال الدفع والتسجيل للمراجعة دون أسرار أو تحويل أموال' },
   { from: 'keys', to: 'finance', whyAr: 'جاهزية إعدادات الخادم؛ اعتماد الحساب قرار صاحب المتجر' },
   { from: 'precheck', to: 'council', whyAr: 'تقارير كل الأدوات = جدول أعمال الاجتماع' },
+  { from: 'legal', to: 'council', whyAr: 'القرارات القانونية ملزمة — الاجتماع مايقترحش تجاوزها' },
+  { from: 'legal', to: 'importer', whyAr: 'نقل المنتجات بإذن مكتوب من المورد بس (L-03)' },
+  { from: 'legal', to: 'chat', whyAr: 'إفصاح الذكاء الاصطناعي من غير أسماء المزودين' },
   { from: 'secretary', to: 'council', whyAr: 'ينوب عن شاهين وقت الضغط' },
   { from: 'council', to: 'scout', whyAr: 'متاجر يفحصها' },
   { from: 'council', to: 'school', whyAr: 'أسئلة يذاكرها' },
