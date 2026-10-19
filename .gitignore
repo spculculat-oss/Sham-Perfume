@@ -1,6 +1,8 @@
 node_modules/
 build/
 dist/
+# The GitHub Pages build (made fresh by pages.yml on every publish, never stored in git)
+pages-dist/
 coverage/
 .DS_Store
 *.log

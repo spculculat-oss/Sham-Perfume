@@ -24,6 +24,19 @@ When the merchant writes **«نفذ مهام شاهين»** (or "Run Shaheen's t
 6. Reply to the merchant **in simple Egyptian Arabic**, without technical details: what was done, what
    is waiting for his approval, and what (if anything) he has to do himself.
 
+## Google AI Studio (Build mode, two-way GitHub sync)
+
+The merchant also edits this site from Google AI Studio, synced with this repository. The robots push to
+`main` every few minutes, so:
+
+- **Never force push.** Pull the latest `main` first (AI Studio: «Pull from GitHub» / sync), then push. A
+  force push from an older copy erases the robots' data and newer work (`aistudio-intake.yml` reports it).
+- **Do not edit `.github/workflows/`.** The AI Studio GitHub App has no `workflows` permission: GitHub
+  rejects the whole push when one of those files differs. Ask the coding agent in the chat instead.
+- **Do not edit or delete** `src/data/live/` (robots' reports), `docs/legal/` (the legal manager's
+  documents) or `src/لغات/ai/` (the smart translator's packs).
+- **Build output is never committed:** `dist/` and `pages-dist/` are made fresh by the workflows.
+
 ## Standing rules for this repository
 
 - The merchant speaks Egyptian Arabic and is not technical. Answer in Arabic, short and step by step.

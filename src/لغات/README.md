@@ -76,7 +76,7 @@ isLanguageSupported('de');
 مفيهاش ترجمة بتشوف إنجليزي — مستحيل تشوف عربي إلا لو اختارت عربي. الجداول والنوتات بتترجم
 بـ `storeFamilyLabel`/`storeGenderLabel`/`storeSeasonLabel`/`storeOccasionLabel`، وأسباب
 «اسأل شاهين» بتتبعت كـ `{ key, vars }` وتتحل في `storeReasonText` (وبتحوّل `{value}`
-لوسم مترجم كمان). صفحات المنتج المستقلة (`docs/p/*.html`) بتشيل جدول الوسوم نفسه بحزمة
+لوسم مترجم كمان). صفحات المنتج المستقلة (`pages-dist/p/*.html`، بتتبني مع نشر الموقع) بتشيل جدول الوسوم نفسه بحزمة
 متراصة + سكربت صغير بيبدّل اللغة من `localStorage` (مفتاح `sham_perfume_user_language`).
 
 ## بنر المنتجات (TopPromoHub)

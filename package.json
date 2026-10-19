@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.app.json",
-    "build:pages": "vite build --mode pages && node scripts/prepare-pages.mjs && node --import tsx scripts/product-pages.mts docs && node --import tsx scripts/seo-build.mts docs",
+    "build:pages": "vite build --mode pages && node scripts/prepare-pages.mjs && node --import tsx scripts/product-pages.mts pages-dist && node --import tsx scripts/seo-build.mts pages-dist",
     "test": "node --import tsx --import ./tests/register-assets.mjs --test tests/*.test.ts",
     "check:pages": "node scripts/check-pages.mjs",
     "build:vercel": "npm run build && node scripts/build-vercel.mjs",
