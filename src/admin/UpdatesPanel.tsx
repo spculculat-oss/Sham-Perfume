@@ -7,6 +7,7 @@ import {
 } from '../updates/updateGateway';
 import type { ItemDecision, UpdateReport } from '../updates/types';
 import AiStudioIntakePanel from './AiStudioIntakePanel';
+import AiStudioBridgePanel from './AiStudioBridgePanel';
 
 /**
  * بيئة استقبال التحديثات — الواجهة الإدارية لبوابة التحديثات.
@@ -113,6 +114,8 @@ export default function UpdatesPanel() {
         title={T('بيئة استقبال التحديثات')}
         subtitle={T('أول ما يستقبل أي تطوير قادم من أي منصة: تحليل، مقارنة بالموجود، تطبيق الزيادة فقط، وإبقاء الملغي ملغياً — دون لمس بيانات المستخدمين.')}
       />
+
+      <AiStudioBridgePanel />
 
       <AiStudioIntakePanel />
 

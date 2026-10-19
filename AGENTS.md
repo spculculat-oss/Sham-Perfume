@@ -37,6 +37,19 @@ The merchant also edits this site from Google AI Studio, synced with this reposi
   documents) or `src/لغات/ai/` (the smart translator's packs).
 - **Build output is never committed:** `dist/` and `pages-dist/` are made fresh by the workflows.
 
+### The AI Studio bridge (recommended setup)
+
+AI Studio should sync with **its own repository** (variable `AISTUDIO_REPO`, default
+`spculculat-oss/Sham-Perfume-Studio`), not with this one: nothing else writes there, so «Sync to GitHub» never
+hangs. `.github/workflows/aistudio-bridge.yml` (every 30 min, logic in `scripts/aistudio/bridge.ts`) filters
+what changed there, merges it three-way with `main`, runs lint/tests/Pages build, then publishes site files
+(`src/`, `public/`) straight to `main` + Pages, or parks the rest (server, scripts, tests, build settings,
+deletions, the first import, failed checks) on branch `aistudio/<sha7>` with a `shaheen-task` issue.
+
+- To handle such an issue: review `git diff main...origin/aistudio/<sha7>`, bring the good parts into the
+  session branch (never push to `aistudio/*` or `main` directly) and open a PR with `Closes #n`.
+- The filter's rules live in `classifyPath` (`BLOCKED` / `REVIEW`); keep them in step with the list above.
+
 ## Standing rules for this repository
 
 - The merchant speaks Egyptian Arabic and is not technical. Answer in Arabic, short and step by step.

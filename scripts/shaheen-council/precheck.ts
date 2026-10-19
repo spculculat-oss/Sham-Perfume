@@ -171,6 +171,12 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       if (failing.length) f.push({ level: 'fail', problem: `فحوص فاشلة في آخر تحديث: ${failing.join('، ')}`, fix: 'إصلاح الفحص قبل أي تحديث جديد' });
       break;
     }
+    case 'studio_bridge': {
+      const last = o(arr(r.runs)[0]);
+      if (r.status === 'failed') f.push({ level: 'warn', problem: `آخر تحديث من جوجل استوديو كسر فحوص الموقع (${String(last.branch || '')})`, fix: 'مهمة «تحديث من جوجل استوديو» — وكيل البرمجة يصلحه وينشره' });
+      else if (r.status === 'review') f.push({ level: 'note', idea: `تحديث من جوجل استوديو مستني موافقة (${String(last.branch || '')})` });
+      break;
+    }
     default:
       break;
   }

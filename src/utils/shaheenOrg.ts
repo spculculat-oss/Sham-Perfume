@@ -37,7 +37,7 @@ export type BotId =
   | 'scout' | 'importer' | 'images' | 'catalog' | 'product_pages' | 'store_advisor'
   | 'news' | 'seo'
   | 'chat' | 'languages' | 'design_audit' | 'visitor_tour' | 'inspect'
-  | 'school' | 'doctor' | 'verifier' | 'live_check' | 'keys' | 'intake' | 'deploy' | 'admin_agent';
+  | 'school' | 'doctor' | 'verifier' | 'live_check' | 'keys' | 'intake' | 'studio_bridge' | 'deploy' | 'admin_agent';
 
 export interface Bot {
   id: BotId;
@@ -88,6 +88,7 @@ export const BOTS: Bot[] = [
   { id: 'live_check', nameAr: 'فحص شاهين على الموقع الحي', nameEn: 'Live Shaheen check', dept: 'reliability', workflow: 'live-smoke.yml', everyHours: 24, dutiesAr: 'يكلم شاهين على الموقع الحقيقي كل يوم ويتأكد إنه بيرد.' },
   { id: 'keys', nameAr: 'حارس مفاتيح الذكاء الاصطناعي', nameEn: 'AI keys keeper', dept: 'reliability', workflow: 'shaheen-keys.yml', report: 'ai-quota.json', dutiesAr: 'يتأكد إن مفاتيح المحركات شغالة ويتابع الباقات اللي خلصت.' },
   { id: 'intake', nameAr: 'مستقبل تحديثات AI Studio', nameEn: 'AI Studio intake', dept: 'reliability', workflow: 'aistudio-intake.yml', report: 'aistudio-intake.json', dutiesAr: 'يراجع كل تحديث جاي من AI Studio قبل ما ينزل.' },
+  { id: 'studio_bridge', nameAr: 'بوابة جوجل استوديو', nameEn: 'AI Studio bridge', dept: 'reliability', workflow: 'aistudio-bridge.yml', report: 'aistudio-bridge.json', dutiesAr: 'كل نص ساعة ياخد تعديلات جوجل استوديو من مستودعه الخاص، يفلترها ويفحصها، وينشر السليم على الموقع — والباقي يستنى موافقة.' },
   { id: 'deploy', nameAr: 'بناء ونشر الموقع', nameEn: 'Build & deploy', dept: 'reliability', workflow: 'pages.yml', dutiesAr: 'يفحص ويبني وينشر الموقع على GitHub Pages مع كل تعديل.' },
   { id: 'admin_agent', nameAr: 'المساعد الإداري', nameEn: 'Admin operations agent', dept: 'reliability', aiTools: ['admin_agent'], dutiesAr: 'تقارير الإدارة الذكية من أدوات قراءة فقط.' },
 ];
@@ -153,6 +154,8 @@ export const LINKS: Link[] = [
   { from: 'live_check', to: 'doctor', whyAr: 'شاهين مش بيرد على الموقع ← كشف وصيانة' },
   { from: 'doctor', to: 'deploy', whyAr: 'إصلاح ← إعادة نشر' },
   { from: 'keys', to: 'secretary', whyAr: 'باقات خلصت ← السكرتير يمسك الاجتماع' },
+  { from: 'studio_bridge', to: 'intake', whyAr: 'كل تحديث بيعدي من البوابة بيتراجع تاني بعد النشر' },
+  { from: 'studio_bridge', to: 'deploy', whyAr: 'تعديلات الاستوديو السليمة ← نشر الموقع' },
   { from: 'intake', to: 'deploy', whyAr: 'تحديث سليم ← ينزل على الموقع' },
   { from: 'inspect', to: 'secretary', whyAr: 'ردود ضعيفة ← توجيهات جودة' },
 ];
