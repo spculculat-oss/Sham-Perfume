@@ -1,29 +1,77 @@
 {
  "version": 1,
- "updatedAt": "2026-10-20T03:30:39.155Z",
- "nextUpdateAt": "2026-10-20T15:30:39.155Z",
+ "updatedAt": "2026-10-20T15:33:16.307Z",
+ "nextUpdateAt": "2026-10-21T03:33:16.307Z",
  "intervalHours": 12,
  "editor": "shaheen",
  "digest": {
-  "ar": "تتصدر النشرة أخبار تأثير أدوية إنقاص الوزن المحتمل في تفضيلات العطور، إلى جانب شراكات وتغييرات إدارية في القطاع. وتشمل الإصدارات والابتكارات عطوراً جديدة وتصاميم عبوات وتجارب تسويقية. كما تسلط الضوء على فعاليات وثقافة العود والعطور في المنطقة وخارجها.",
-  "en": "The digest leads with reports on how weight-loss drugs may affect fragrance preferences, alongside industry partnerships and leadership changes. New scents, packaging designs and marketing initiatives also feature. Events and the culture of oud and perfumery round out the selection."
+  "ar": "تتصدر النشرة علامة Haeze الجديدة، التي ستُطرح حصرياً لدى Target بخمسة عطور قابلة للتنسيق والطبقات. وتُظهر أخبار السوق والمعارض اهتماماً متزايداً بتجارب العطور، من معرضي العطور والعود في الشارقة إلى نقاشات الصناعة حول أثر أدوية إنقاص الوزن في تفضيلات الروائح. كما تشمل النشرة أخباراً عن إطلاقات وعلامات عطرية وقيادات جديدة في القطاع، مع الإشارة إلى أن بعض العناوين لا تقدم تفاصيل كافية للتحقق من مضمونها.",
+  "en": "Leading the digest is Haeze, a new fragrance brand launching exclusively at Target with five scents designed for layering. Market and events coverage points to continued interest in fragrance experiences, from Sharjah’s perfume and oud exhibitions to industry discussion of how weight-loss drugs may affect scent preferences. The digest also includes fragrance launches, brand news and an industry leadership appointment, while some headlines provide too little detail to verify their full substance."
  },
  "sources": [
   {
    "name": "Premium Beauty News",
-   "count": 5
-  },
-  {
-   "name": "The Independent",
-   "count": 2
+   "count": 4
   },
   {
    "name": "Cosmetics Business",
+   "count": 3
+  },
+  {
+   "name": "WWD",
    "count": 2
   },
   {
+   "name": "PR Newswire",
+   "count": 1
+  },
+  {
+   "name": "Sharjah24",
+   "count": 1
+  },
+  {
+   "name": "lifesciencesweden.se",
+   "count": 1
+  },
+  {
+   "name": "DFNI",
+   "count": 1
+  },
+  {
+   "name": "The Art Newspaper",
+   "count": 1
+  },
+  {
+   "name": "Vogue Adria",
+   "count": 1
+  },
+  {
+   "name": "Moodie Davitt Report",
+   "count": 1
+  },
+  {
+   "name": "Layalina Privee",
+   "count": 1
+  },
+  {
+   "name": "GlobeNewswire",
+   "count": 1
+  },
+  {
+   "name": "Emirates Woman",
+   "count": 1
+  },
+  {
    "name": "Babnet",
-   "count": 2
+   "count": 1
+  },
+  {
+   "name": "The National",
+   "count": 1
+  },
+  {
+   "name": "The Independent",
+   "count": 1
   },
   {
    "name": "Personal Care Insights",
@@ -50,59 +98,367 @@
    "count": 1
   },
   {
-   "name": "Global Travel Retail Magazine",
-   "count": 1
-  },
-  {
    "name": "موقع الصحفيين التونسيين بصفاقس",
    "count": 1
   },
   {
    "name": "صحيفة الخليج",
    "count": 1
-  },
-  {
-   "name": "University of the Philippines Los Baños",
-   "count": 1
-  },
-  {
-   "name": "Hypebeast",
-   "count": 1
-  },
-  {
-   "name": "Passionate In Marketing",
-   "count": 1
-  },
-  {
-   "name": "The National",
-   "count": 1
-  },
-  {
-   "name": "Harper's BAZAAR France",
-   "count": 1
-  },
-  {
-   "name": "The Globe and Mail",
-   "count": 1
-  },
-  {
-   "name": "Now Smell This",
-   "count": 1
-  },
-  {
-   "name": "Prestige Online - Singapore",
-   "count": 1
-  },
-  {
-   "name": "BFM",
-   "count": 1
-  },
-  {
-   "name": "WWD",
-   "count": 1
   }
  ],
  "items": [
+  {
+   "id": "n16h45y9",
+   "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxOVlh1OEwycDJ5Y2xPQ0JLUEF4OUxZd3ZoX3FzeHNzM2t2amNId2dmTVV6RE9ZWnRqVGZrdkRIeGN2ZHJnNXJ2QXRYNWQ0RWpWUGxGZDRtaHZ4WTJJZ0kzeDdrWVh6dFV0TlUybDIxTVUwaFdTeFFQZU11ZUdtbmtOQkFUQmZZM0JXeUtkVTQydXZGRzFSLWpLZlhvOFJpeTdmaC1kZ0oxZ1R0cnFCRFhkXzRqX2xnUTFEbE9EdmlDQUljb0d5alFRNzB0S19sVkJtcm1hWVVR?oc=5",
+   "source": "PR Newswire",
+   "publishedAt": "2026-10-20T10:00:00.000Z",
+   "original": "HAEZE LAUNCHES EXCLUSIVELY AT TARGET WITH A COLLECTIBLE WARDROBE OF FINE FRAGRANCES",
+   "lang": "en",
+   "category": "launch",
+   "importance": 5,
+   "title": {
+    "ar": "Haeze تطلق مجموعة عطور حصرية لدى Target",
+    "en": "Haeze Launches an Exclusive Fragrance Collection at Target"
+   },
+   "summary": {
+    "ar": "بحسب PR Newswire، ستُطرح Haeze حصرياً لدى Target ابتداءً من 1 نوفمبر، بمجموعة من خمسة عطور تتوفر بصيغ متعددة ومصممة لتُستخدم منفردة أو بطبقات. ويذكر المصدر أن العلامة طُوّرت بالتعاون مع Target وأن العطور أُعدّت بالشراكة مع Givaudan.",
+    "en": "According to PR Newswire, Haeze will launch exclusively at Target on November 1 with five fragrances in multiple formats, designed to be worn alone or layered. The source says the brand was co-developed with Target and the fragrances were created in partnership with Givaudan."
+   },
+   "note": {
+    "ar": "فكرة المجموعة القابلة للتنسيق تمنح محبي العطور مساحة للتجربة؛ ومن يصنع عطره يمكنه استلهام مبدأ بناء تركيبات شخصية من روائح متعددة.",
+    "en": "A layerable collection invites fragrance lovers to experiment; makers can take inspiration from building personal combinations from multiple scents."
+   }
+  },
+  {
+   "id": "nh47913",
+   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1tTUthaTBUaG1lenl1R2t6SUJOZDFIeFMycU5STXpaUEdxSXR0b1Rka1hsdm0tN0Qxdks4QjhuRzh2SUl5elAyaE1mSkpRWG4yTFFxMzdZeTJhWlBX?oc=5",
+   "source": "Sharjah24",
+   "publishedAt": "2026-10-20T11:08:24.000Z",
+   "original": "إكسبو الشارقة يستقطب 120 ألف زائر لمعرضي العطور والتجميل",
+   "lang": "ar",
+   "category": "events",
+   "importance": 5,
+   "title": {
+    "ar": "معرضا العطور والعود في الشارقة يستقطبان أكثر من 120 ألف زائر",
+    "en": "Sharjah Perfume and Oud Exhibitions Attract More Than 120,000 Visitors"
+   },
+   "summary": {
+    "ar": "يفيد المصدر بأن معرض الإمارات للعطور والعود ومعرض الشرق الأوسط لمستحضرات التجميل استقطبا أكثر من 120 ألف زائر بين 9 و18 أكتوبر في مركز إكسبو الشارقة. وشملت الفعاليات العطور الشرقية والعود والبخور، إلى جانب مستحضرات التجميل والعناية الشخصية.",
+    "en": "The source reports that the Emirates Perfumes and Oud Exhibition and the Middle East Cosmetics Show attracted more than 120,000 visitors from October 9 to 18 at Expo Centre Sharjah. The events featured oriental perfumes, oud and incense, as well as cosmetics and personal-care products."
+   },
+   "note": {
+    "ar": "الإقبال المعلن يبرز قيمة المعارض كمساحة لقاء مباشرة بين الجمهور والعلامات؛ وهي فرصة مفيدة لاكتشاف أنماط وروائح متنوعة.",
+    "en": "The reported turnout underscores exhibitions’ value as a direct meeting point for consumers and brands—and a chance to explore varied scent styles."
+   }
+  },
+  {
+   "id": "n1smis98",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQTFlpcFJNX05QWi12TUZWWk5jZUl4cmVmZlNaUURsNTBJSGlCY1BsTFpBR3I0bW1jTG00Ung1Wm1HSWFtZTRuRUJzUWstZWM0bXZOald1UlNkMHRJTVo5a2JFZE9ZMG5HX0FId1h3aElCLWtjMmdXWFd4ZThrR011bDVIUXdjaGk0MlRrLUJ3TEppb1R2YTNzMGVaVjJ0M3pYdjM3Uk9IQVBBQQ?oc=5",
+   "source": "WWD",
+   "publishedAt": "2026-10-20T04:02:22.000Z",
+   "original": "Are Extraits de Parfum the New Growth Engine for Fragrances?",
+   "lang": "en",
+   "category": "market",
+   "importance": 4,
+   "title": {
+    "ar": "هل تصبح العطور المركزة محركاً جديداً لنمو القطاع؟",
+    "en": "Are Extraits de Parfum a New Growth Engine for Fragrance?"
+   },
+   "summary": {
+    "ar": "يطرح عنوان WWD سؤالاً عن دور عطور Extrait de Parfum في نمو سوق العطور، لكنه لا يتضمن مقتطفاً يوضح الأدلة أو النتائج.",
+    "en": "WWD’s headline raises the question of whether Extrait de Parfum is driving fragrance-sector growth, but no excerpt is provided to explain the evidence or conclusions."
+   },
+   "note": {
+    "ar": "السؤال مهم لمن يختار تركيز العطر، لكن العنوان وحده لا يكفي للحكم على اتجاه السوق أو أسبابه.",
+    "en": "The question matters to shoppers choosing fragrance concentration, but the headline alone is not enough to establish a market trend or its causes."
+   }
+  },
+  {
+   "id": "nwddv6l",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxObGlNRDl0QS0tSW9oUmZ3Tm9yTGNvUXE1bl9Cek5jdUNtRl94UWw0RDV3MS1vbVNyWjlVZklUbTZWN2txV0k5Q3JSWTJEY1NsdVU3a0ZGdmxDampvdzJyaDdBN0ZKb1ZsVWpvUmI0OGFyN0duU0FYcWhuS1pFUzZhbFpTMUZWUHJYaG1IRHhxbE5XYmNKT3FnVTFCMF9FM2VGeWxZVjNwSEdqQXd1VFRnOA?oc=5",
+   "source": "lifesciencesweden.se",
+   "publishedAt": "2026-10-20T11:28:14.000Z",
+   "original": "GLP-1 drugs spark unexpected interest among perfume giants",
+   "lang": "en",
+   "category": "market",
+   "importance": 4,
+   "title": {
+    "ar": "أدوية GLP-1 تثير اهتماماً غير متوقع لدى شركات العطور",
+    "en": "GLP-1 Drugs Spark Unexpected Interest Among Perfume Companies"
+   },
+   "summary": {
+    "ar": "يشير عنوان Life Science Sweden إلى اهتمام شركات العطور بأدوية GLP-1، لكنه لا يقدم مقتطفاً يشرح طبيعة هذا الاهتمام أو ما إذا كان مرتبطاً بتغير تفضيلات الروائح.",
+    "en": "Life Science Sweden’s headline points to perfume companies’ interest in GLP-1 drugs, but provides no excerpt explaining the nature of that interest or whether it relates to changing scent preferences."
+   },
+   "note": {
+    "ar": "موضوع يستحق المتابعة، لكن لا يمكن استنتاج أثر هذه الأدوية على صناعة العطور من العنوان وحده.",
+    "en": "This is worth following, but the headline alone cannot establish how these drugs affect the fragrance industry."
+   }
+  },
+  {
+   "id": "n1bcqgoz",
+   "url": "https://cosmeticsbusiness.com/est%C3%A9e-lauder-companies-strengthens-kilian-paris-fr%C3%A9d%C3%A9ric,malle-leadership-guillaume-gellusseau",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-20T10:38:00.000Z",
+   "original": "Estée Lauder Companies strengthens Kilian Paris and Frédéric Malle leadership with Guillaume Gellusseau",
+   "lang": "en",
+   "category": "industry",
+   "importance": 4,
+   "title": {
+    "ar": "Guillaume Gellusseau يتولى قيادة Kilian Paris وFrédéric Malle",
+    "en": "Guillaume Gellusseau to Lead Kilian Paris and Frédéric Malle"
+   },
+   "summary": {
+    "ar": "بحسب Cosmetics Business، عُيّن Guillaume Gellusseau نائباً أولاً للرئيس ومديراً عاماً لعلامتي Kilian Paris وParfums Frédéric Malle التابعتين إلى Estée Lauder Companies.",
+    "en": "Cosmetics Business reports that Guillaume Gellusseau has been named senior vice president and general manager for Estée Lauder Companies’ Kilian Paris and Parfums Frédéric Malle brands."
+   },
+   "note": {
+    "ar": "تغيير القيادة خبر صناعي مهم لمتابعي العلامتين، لكن العنوان والمقتطف لا يوضحان أي تغييرات مرتقبة في المنتجات أو التوجه الإبداعي.",
+    "en": "A leadership change is relevant to followers of both brands, though the headline and excerpt do not indicate any expected product or creative changes."
+   }
+  },
+  {
+   "id": "n1j3h7bp",
+   "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxQVjVSS3FNUWxHNW94ZUFNX09JdjFWbEVxTTYwb3p0V1MxVzIteGxiUDlKaElTWUxrZW9fZWg5N3BiRmxzYU5aZGloOEo0OVkzQlVTWVM1eEh2bzlfVExzX3pQa0pGZ3hPSl9zZXFGQWNIS25xME9SUTZFRGVwSkU3b1lxQnBETk5Ob3ZEWndiUG9SaVkyZjk2ZFczazhUTjVIdl9MZXVCLWd2OFcwbEpoSHlGNmJFYVRneUNaTi0tcDl3V2h3OVMwNWNRS3djQzBKNGRGMjFhQlFERnk3WW9NMzhR?oc=5",
+   "source": "DFNI",
+   "publishedAt": "2026-10-20T10:11:13.000Z",
+   "original": "Inter-African Marketing and Scentopia expand luxury fragrance activations across Africa",
+   "lang": "en",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "Inter-African Marketing وScentopia توسعان أنشطة العطور الفاخرة في أفريقيا",
+    "en": "Inter-African Marketing and Scentopia Expand Luxury Fragrance Activations in Africa"
+   },
+   "summary": {
+    "ar": "يفيد العنوان بأن Inter-African Marketing وScentopia توسعان أنشطة مرتبطة بالعطور الفاخرة في أفريقيا، من دون مقتطف يشرح طبيعة هذه الأنشطة أو نطاقها.",
+    "en": "The headline says Inter-African Marketing and Scentopia are expanding luxury-fragrance activations in Africa, but no excerpt explains the activities or their scope."
+   },
+   "note": {
+    "ar": "قد يهم هذا التوسع من يتابع حضور العطور الفاخرة في أسواق جديدة، لكن التفاصيل المتاحة لا تسمح بتقييم حجمه.",
+    "en": "The expansion may interest those tracking luxury fragrance in new markets, but the available details do not allow its scale to be assessed."
+   }
+  },
+  {
+   "id": "nkul8t3",
+   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNZVZyZlhpZjk5a3Vka0JsX2V0Ti1NOTNQaGJ5bXBfbU45ODVVemwydGFGVlg3Wm1GVGRQM1FVcEZkbnV6bTBMZUxpLTBYU2EwWGtBYWgxR3NlZi1raGJsQUZsR0pFazZIdWQzdWUtU3pKMUJjLWZRNkpHVmhFY3FiVzZ3aFVQbGtuMFlhdHg4TGdyT1VGVlFRMGxwbUtyaDN5RlFhWnA4WFM2NUNtYXVsX0d3bDV3d3dxc3hmSA?oc=5",
+   "source": "The Art Newspaper",
+   "publishedAt": "2026-10-20T10:09:43.000Z",
+   "original": "What does an Old Master smell like? Meet the perfumer commissioned by Sotheby's",
+   "lang": "en",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "ما الرائحة التي قد تنبعث من لوحة فنية قديمة؟",
+    "en": "What Might an Old Master Painting Smell Like?"
+   },
+   "summary": {
+    "ar": "يتناول عنوان The Art Newspaper عطّاراً كلفته Sotheby’s بمشروع مرتبط برائحة لوحة فنية قديمة، لكن لا يتوفر مقتطف يشرح العمل أو تفاصيله.",
+    "en": "The Art Newspaper’s headline describes a perfumer commissioned by Sotheby’s for a project involving the scent of an Old Master painting, but no excerpt is available to explain the work."
+   },
+   "note": {
+    "ar": "يمثل العنوان تقاطعاً لافتاً بين العطر والفن؛ ولا تكفي المعلومات المتاحة لمعرفة كيف تُرجمت اللوحة إلى رائحة.",
+    "en": "The headline suggests an intriguing intersection of fragrance and art; the available information does not show how the painting was translated into scent."
+   }
+  },
+  {
+   "id": "n1co9hlz",
+   "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5uRTZrRVB1ZWplYnFtdXdJQ2s4bUtoc1J2RDA0bVUxaFJPMDlGZFU5cklTbVhVQVB2ZFZNZ3gxRndSU25BdGhNUTdrYzFwTU55WUxPLTNNMUNVbm5aeWhXMDR2cVlhVEhRSVNDTXR5WWNFNERf?oc=5",
+   "source": "Vogue Adria",
+   "publishedAt": "2026-10-20T10:05:17.000Z",
+   "original": "Creed unveiled its new fragrance in Belgrade, taking us on a journey through its history",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "Creed تكشف عن عطر جديد في بلغراد",
+    "en": "Creed Unveils a New Fragrance in Belgrade"
+   },
+   "summary": {
+    "ar": "يقول عنوان Vogue Adria إن Creed كشفت عن عطر جديد في بلغراد وربطت المناسبة برحلة عبر تاريخ الدار، من دون مقتطف يذكر اسم العطر أو تفاصيله.",
+    "en": "Vogue Adria’s headline says Creed unveiled a new fragrance in Belgrade and connected the event to a journey through the house’s history; no excerpt gives the fragrance’s name or details."
+   },
+   "note": {
+    "ar": "إطلاق جديد من Creed يستحق المتابعة، لكن لا يمكن تقييم طابعه أو مكوناته من العنوان وحده.",
+    "en": "A new Creed launch is worth watching, but its character and notes cannot be assessed from the headline alone."
+   }
+  },
+  {
+   "id": "n1ifi57r",
+   "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxNTzRMR2ltcmF5b0g2aGFaYmVVbDB2T1FtQzNUTnlZQ0FmMHdGYlZNRHhGSy1RLVhFcko4UFR5MjBmVVJtWVdIUE1qUUJ5ZzBUcFRlcDQ3QUVlMjZiNDJwS1hSQzV4V0pxeksxMjRPbnJLTGRPRlhmRnJESjh4RUlRNW82bFpVNGJlRXVOT3JLU010dVY2bXllc2lDZUowZ1B4MThNaFVyRUVnbllwdVVKdWxsakozWGhXemZZZkVsTk5sRm13YlhrSm90R2dCZzZn?oc=5",
+   "source": "Moodie Davitt Report",
+   "publishedAt": "2026-10-20T12:49:04.000Z",
+   "original": "Armani Beauty and Gebr. Heinemann roll out the red carpet for ‘I Will’ fragrance launch at Hamburg Airport",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "Armani Beauty تطلق عطر I Will في مطار هامبورغ",
+    "en": "Armani Beauty Launches I Will Fragrance at Hamburg Airport"
+   },
+   "summary": {
+    "ar": "يفيد عنوان Moodie Davitt Report بأن Armani Beauty وGebr. Heinemann أطلقتا عطر I Will في مطار هامبورغ، ولا يتوفر مقتطف يضيف تفاصيل عن العطر أو الفعالية.",
+    "en": "Moodie Davitt Report’s headline says Armani Beauty and Gebr. Heinemann launched I Will fragrance at Hamburg Airport; no excerpt provides further details about the scent or event."
+   },
+   "note": {
+    "ar": "الإطلاق في موقع سفر يلفت الانتباه إلى حضور العطور في قنوات البيع بالمطارات، لكن تفاصيل التجربة غير متاحة هنا.",
+    "en": "An airport launch highlights fragrance’s presence in travel retail, though details of the activation are not available here."
+   }
+  },
+  {
+   "id": "nz2vjrs",
+   "url": "https://news.google.com/rss/articles/CBMi2wJBVV95cUxQS1VzN3lWMnNEdF91YmZwVWsyaVUxdlN4cjgwbXl6WGY5QV9YcG5JVXpRdHRmbERka1NjVHprQTRIcTNwYlduWlFoU0JKV3lMaXRidHAxb01yUHJrbkVwZHNJU201Sm9lM3FEUFRmUjZ6NUpMQ0dCRUI5MjlMeWRPdkFWeTh2VkxlYlBqcmZ2NU1nN0NSbEFhX3lOYVdOSURPNWFONnlVcHZHR3RLV2oxZGVLaTB1V1VmdUQ1SWVZSk13UWVnMUltS1lEb2MtdjY2Rzh6RWVPRUFtSVdSTVRsbVRDaDQza0hLMFNudGVPRTFLaDVhVmI0NXRiUURIZFU5MkpNMk5oSGF6UU9LOTBpTjVWTm9EWXdObnlsNVVuMlJCZDRQTk85WGZhMTdZbWpOWmtxVlBLcEhBc3hmdTBwc3BKcHRqS2xWNFh3SVROeHJNV19seW80MVAwNA?oc=5",
+   "source": "Layalina Privee",
+   "publishedAt": "2026-10-20T12:25:42.000Z",
+   "original": "Armani Beauty تحتفي بإطلاق عطور أرماني بريفيه في مصر خلال مهرجان الجونة",
+   "lang": "ar",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "Armani Beauty تحتفي بإطلاق عطور Armani Privé في مصر",
+    "en": "Armani Beauty Celebrates an Armani Privé Fragrance Launch in Egypt"
+   },
+   "summary": {
+    "ar": "يذكر عنوان Layalina Privee أن Armani Beauty احتفت بإطلاق عطور Armani Privé في مصر خلال مهرجان الجونة، من دون مقتطف يحدد العطور أو تفاصيل الحدث.",
+    "en": "Layalina Privee’s headline says Armani Beauty celebrated an Armani Privé fragrance launch in Egypt during El Gouna Festival; no excerpt identifies the fragrances or gives event details."
+   },
+   "note": {
+    "ar": "خبر إطلاق إقليمي يهم متابعي Armani Privé، لكن لا تتوفر معلومات كافية لتحديد ما أُطلق تحديداً.",
+    "en": "A regional launch is relevant to Armani Privé followers, but there is not enough information to identify exactly what was launched."
+   }
+  },
+  {
+   "id": "n2xq9lg",
+   "url": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxNSXZBUjI0UFZTWGxrbTZBcl9abVAwalJEQ1ZNQTJzSkJEWWZXTlc2Zi10aV95QTBNajRVY2JJdTBKNEQzb0xlbXFRcnQ1SEJTeWIyRVZzSmNSMEs4eGpkVG1mRXJpaGRtNEo0eXlBc2xIZFAyYlJYcFhMZ2pnYXJlV1E4Skp2UGpMM3Q1eTAxX0NrYi1BM1QwWEJLbkxrdWkwWTRnc3phU002TWlzMUhJWTBuN3k3X3VwRHFGSmJ2QlNLZVZRQ1VNakdHcnB0Mkc0ODZkOThKRUctNXZQWUxtUFcxOGNrcHVQSDBrZ05HS1hUelNiZFU3ZA?oc=5",
+   "source": "GlobeNewswire",
+   "publishedAt": "2026-10-20T12:00:00.000Z",
+   "original": "10ML Publishes 2026 Perfume Price Report: The Same Perfume Costs Up to 27.9% More Across the EU",
+   "lang": "en",
+   "category": "market",
+   "importance": 3,
+   "title": {
+    "ar": "تقرير عن تفاوت أسعار العطر نفسه بين دول الاتحاد الأوروبي",
+    "en": "Report Highlights Price Differences for the Same Perfume Across the EU"
+   },
+   "summary": {
+    "ar": "يقول عنوان GlobeNewswire إن تقرير 10ML لعام 2026 رصد تفاوتاً في أسعار العطر نفسه بين دول الاتحاد الأوروبي، لكنه لا يقدم مقتطفاً يوضح منهجية التقرير أو تفاصيل المقارنة.",
+    "en": "GlobeNewswire’s headline says 10ML’s 2026 report found price differences for the same perfume across EU countries, but no excerpt explains the report’s methodology or comparison details."
+   },
+   "note": {
+    "ar": "مقارنة الأسعار قد تفيد المتسوقين، لكن من الأفضل عدم تعميم النتيجة قبل الاطلاع على تفاصيل التقرير.",
+    "en": "Price comparisons may help shoppers, but the finding should not be generalized without the report’s details."
+   }
+  },
+  {
+   "id": "ntx6vu",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxONlhlR0FKaXY5Wk8weXh5TFJCc3hvLTVpbjZDay1FcFpzdm5GQndpNU8zQmlUamZ5STZqdWlMQklRRXY4T1lHQjc1bW9DZk5WWkZwVDVodFM3UkhIY1hla2hRY1hKZlJBYjVVRzB3MXQ5NEc0S1ZjV2tTZUdmd3ByWUZfbkRRd2Fua2RzY0RtVHlwN2tqajVJWldnaw?oc=5",
+   "source": "Emirates Woman",
+   "publishedAt": "2026-10-20T08:12:10.000Z",
+   "original": "ARMAF unveils a new scent that speaks the language of high jewellery",
+   "lang": "en",
+   "category": "launch",
+   "importance": 2,
+   "title": {
+    "ar": "ARMAF تكشف عن عطر مستوحى من عالم المجوهرات الراقية",
+    "en": "ARMAF Unveils a Fragrance Inspired by High Jewellery"
+   },
+   "summary": {
+    "ar": "يصف عنوان Emirates Woman عطراً جديداً من ARMAF بأنه يتحدث بلغة المجوهرات الراقية، من دون مقتطف يوضح اسمه أو تركيبته.",
+    "en": "Emirates Woman describes a new ARMAF scent as speaking the language of high jewellery, but provides no excerpt naming the fragrance or describing its composition."
+   },
+   "note": {
+    "ar": "الربط بين العطر والمجوهرات يوحي بتوجه بصري أو مفهومي، لكن لا يمكن تحديد تفاصيله من العنوان وحده.",
+    "en": "The jewellery connection suggests a visual or conceptual direction, but its specifics cannot be determined from the headline alone."
+   }
+  },
+  {
+   "id": "n1mt3dyb",
+   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQZDBhdkZVeHZhQU5SZl9RWEhWbE8xMWZnVXluT1dLM3JuekhhblpDNW1VYVhQaHdZelY3Q1BpSU1CTlByZWhZbjM1YzBxYlh3OEpJLVZvUy15M1BqYUo0QWlwT2F4Z2RFWmE0N3oxUEw5dEpZNHhIVVYtNVFPX2s0T2JSTWJ0MUxGVHpwaGU4ZlRyVVdQUzg0UmJOUi1pQUFSYVJyNlZaMFpQUEc1UlROYXpnWQ?oc=5",
+   "source": "WWD",
+   "publishedAt": "2026-10-20T04:02:22.000Z",
+   "original": "EXCLUSIVE: L’Artisan Parfumeur Creates the First Fragrance Talent Show, ‘Le Nez’",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "L’Artisan Parfumeur تطلق مسابقة لاكتشاف المواهب في صناعة العطور",
+    "en": "L’Artisan Parfumeur Creates a Fragrance Talent Show"
+   },
+   "summary": {
+    "ar": "يصف عنوان WWD برنامج Le Nez بأنه أول مسابقة مواهب للعطور، لكن لا يتوفر مقتطف يشرح آلية البرنامج أو المشاركين فيه.",
+    "en": "WWD’s headline describes Le Nez as the first fragrance talent show, but no excerpt explains its format or participants."
+   },
+   "note": {
+    "ar": "إذا أتاح البرنامج مساحة لصانعي العطور الجدد، فقد يكون لافتاً للمهتمين بالمهنة؛ لكن التفاصيل غير متاحة في العنوان.",
+    "en": "If the program offers a platform for emerging perfumers, it could interest those following the profession; the headline does not provide details."
+   }
+  },
+  {
+   "id": "n1gylzw5",
+   "url": "https://cosmeticsbusiness.com/coty-launches-fragrance-club-to-reinforce-fragrance-knowledge",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-19T10:50:00.000Z",
+   "original": "Coty launches Fragrance Club to reinforce fragrance knowledge",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Coty تطلق Fragrance Club لتعزيز المعرفة بالعطور",
+    "en": "Coty Launches Fragrance Club to Build Fragrance Knowledge"
+   },
+   "summary": {
+    "ar": "بحسب Cosmetics Business، سيجمع Fragrance Club مجتمعاً عالمياً للنقاشات وورش العمل والتجارب الغامرة وفرص المشاركة في ابتكار المنتجات، مع تبادل وجهات النظر حول سلوك المستهلك والابتكار والاتجاهات الثقافية.",
+    "en": "Cosmetics Business reports that Fragrance Club will bring together a global community for discussions, workshops, immersive experiences and co-creation opportunities, sharing perspectives on consumer behaviour, innovation and cultural trends."
+   },
+   "note": {
+    "ar": "مساحة تجمع المعرفة والتجربة قد تفيد محبي العطور وصانعيها، خصوصاً في تبادل الأفكار حول ما يريده المستهلكون.",
+    "en": "A space combining learning and experience could benefit fragrance lovers and makers, particularly through exchanging ideas about consumer preferences."
+   }
+  },
+  {
+   "id": "n1bmh3y5",
+   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBESUxua1BKbEU0QjJUMFBFczRhdVNHTnJpZnNfUWVIX0VfTE9Wb2VKb3kwTE8wQUFqZnlCc19pUTQ0dHk5RksxeFZGOTJBRk9pOUFITkQtcS0?oc=5",
+   "source": "Babnet",
+   "publishedAt": "2026-10-19T13:10:11.000Z",
+   "original": "مؤتمر علمي وطني حول العود التونسي بقصر النجمة الزهراء",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 2,
+   "title": {
+    "ar": "مؤتمر علمي وطني حول العود التونسي",
+    "en": "National Scientific Conference on Tunisian Oud"
+   },
+   "summary": {
+    "ar": "يشير عنوان Babnet إلى انعقاد مؤتمر علمي وطني حول العود التونسي في قصر النجمة الزهراء، من دون مقتطف يوضح محاور المؤتمر أو نتائجه.",
+    "en": "Babnet’s headline announces a national scientific conference on Tunisian oud at the Ennejma Ezzahra Palace, but no excerpt describes its topics or outcomes."
+   },
+   "note": {
+    "ar": "الاهتمام العلمي بالعود موضوع مهم لمحبي المواد العطرية، لكن العنوان لا يحدد ما الذي ناقشه المؤتمر.",
+    "en": "Scientific attention to oud matters to fragrance-ingredient enthusiasts, but the headline does not specify what the conference discussed."
+   }
+  },
+  {
+   "id": "n1ppaevj",
+   "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPOUJKU3lvV001Q3FBNmxPU2d4UEk0Sm4yU0U4YXpwSGhCQjVGUGNXclI0V2h5VWlMNTc1ODdxaVQ0cnNsOUNTQTRGYVpXeVVVNzVWd3ZYLWctaXU2N2psdl9DWTREanQ4cmNuQmRiM2NBd2ZlMGhqVl9XQnVNbjhWcllSUTh0OGZkMmJuLV84TW54OTR5TGhlcXNLSmxSb1NsWTlHSXpRQU12V01CWEdUaVBiZW9OWE9nYjRTYlBRejl2WGZVMGpTSG9OTWRxSElQMFlMenI3eXdsd0hGa3hN?oc=5",
+   "source": "The National",
+   "publishedAt": "2026-10-19T11:11:55.000Z",
+   "original": "Bottling the soul: Why Loewe’s perfumer believes you should never have only one signature scent",
+   "lang": "en",
+   "category": "culture",
+   "importance": 2,
+   "title": {
+    "ar": "عطّار Loewe يدعو إلى عدم الاكتفاء بعطر توقيع واحد",
+    "en": "Loewe Perfumer Says You Need Not Have Just One Signature Scent"
+   },
+   "summary": {
+    "ar": "يعرض عنوان The National رأي عطّار Loewe بأن الشخص لا ينبغي أن يكتفي بعطر توقيع واحد، ولا يتوفر مقتطف يشرح حجته أو سياق المقابلة.",
+    "en": "The National’s headline presents a Loewe perfumer’s view that people should not have only one signature scent; no excerpt explains the reasoning or interview context."
+   },
+   "note": {
+    "ar": "الفكرة تشجع على اختيار العطر بحسب المزاج أو المناسبة، وهي دعوة للتجربة لا قاعدة ملزمة.",
+    "en": "The idea encourages choosing fragrance by mood or occasion—a prompt to experiment, not a rule."
+   }
+  },
   {
    "id": "nft2sjx",
    "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNY25MZUUwZ1RxN1Nia29HYUUzQUhfY0xVaC11VF9ZTDlSc285OUxLTVJ5MUw2Uy1VdVBXRHlPZTJNR0FvZXlxZ1I3T3o1dW5YUDBVUlRXSlRORWtnRzZscVZfQ3FKZ2M0bm8tRVYxN0V2cVlTYWRJbGs2V1JEdDJzbDRWa2Z0NUdOcEhYZlFCTUhPV2JkQmpKNkhudXNXZFFz?oc=5",
@@ -368,50 +724,6 @@
    }
   },
   {
-   "id": "n1yiqbrj",
-   "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPY0ZwNGNWOFNwelBRa25lSVJfWGJQN0wwUkZ4TmY1SVJLcVJlVHN3VjJSNWljNWktMnVYcWg1cFd4MEZ6V1NrOUZNeE5GMGhJbjA3SHhpM21GUS1QYV9uZy1CX2lfdUpjTERYR2dTcEowWFhzMWVOS0RJcHNqNkl1dVhGNTBuVndMSG1XUk5nM1p4d1ZRUWVvVDJpYVNCbXN4NnZYU250VE9kSGNaUkZjQ1NEdzVjN0lVWnc?oc=5",
-   "source": "Global Travel Retail Magazine",
-   "publishedAt": "2026-10-19T18:07:08.000Z",
-   "original": "Inter-African Marketing and Scentopia drive new luxury fragrance activations across Africa",
-   "lang": "en",
-   "category": "market",
-   "importance": 3,
-   "title": {
-    "ar": "Inter-African Marketing وScentopia تطلقان تجارب عطرية فاخرة جديدة في أفريقيا",
-    "en": "Inter-African Marketing and Scentopia drive new luxury fragrance activations across Africa"
-   },
-   "summary": {
-    "ar": "يفيد العنوان بأن Inter-African Marketing وScentopia تعملان على تجارب تسويقية جديدة للعطور الفاخرة في أفريقيا. ولا يحدد أشكال هذه التجارب أو مواقعها.",
-    "en": "The headline says Inter-African Marketing and Scentopia are driving new luxury fragrance activations across Africa. It does not specify their formats or locations."
-   },
-   "note": {
-    "ar": "توسيع التجارب التسويقية قد يقرّب العطور من جمهور جديد، لكن تفاصيل المبادرات غير متاحة.",
-    "en": "New activations could bring fragrances to new audiences, but the headline offers no details about the initiatives."
-   }
-  },
-  {
-   "id": "n1bmh3y5",
-   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBESUxua1BKbEU0QjJUMFBFczRhdVNHTnJpZnNfUWVIX0VfTE9Wb2VKb3kwTE8wQUFqZnlCc19pUTQ0dHk5RksxeFZGOTJBRk9pOUFITkQtcS0?oc=5",
-   "source": "Babnet",
-   "publishedAt": "2026-10-19T13:10:11.000Z",
-   "original": "مؤتمر علمي وطني حول العود التونسي بقصر النجمة الزهراء",
-   "lang": "ar",
-   "category": "events",
-   "importance": 3,
-   "title": {
-    "ar": "مؤتمر علمي وطني حول العود التونسي في قصر النجمة الزهراء",
-    "en": "National scientific conference on Tunisian oud at the Palace of Ennejma Ezzahra"
-   },
-   "summary": {
-    "ar": "يعلن العنوان عن مؤتمر علمي وطني مخصص للعود التونسي في قصر النجمة الزهراء. ولا يذكر موضوعات الجلسات أو موعدها.",
-    "en": "The headline announces a national scientific conference devoted to Tunisian oud at the Palace of Ennejma Ezzahra. It does not list the sessions or their date."
-   },
-   "note": {
-    "ar": "الاهتمام العلمي بالعود يفتح مساحة للحوار حوله، لكن تفاصيل المؤتمر غير متاحة في العنوان.",
-    "en": "Scientific attention to oud creates room for discussion, though the headline does not provide conference details."
-   }
-  },
-  {
    "id": "n1xh9ue",
    "url": "https://news.google.com/rss/articles/CBMizgJBVV95cUxORmF1RWNPc0s5YnhRNkZ2QTRzanhjN0hvTVJfQ3MzWXpkMUhvbnoyQTZSUmJmMnNkNTUtTV9nOXozbEFZVmlNeDBtdG5ocUUyYUtncE9VR3p1QW05bG1yblpMSG44QkZIdm85RVZfSXRLTlk0andfTzdtbVBHVkt4YjR6d2FBWUxTaGtmTDdYc3lxOXpHWUpvTG1mUEY5Q2ctaXVlVGRpOGdCYVVHUHc2Sll6NjhjUXRUTzVBQ2NONUpjclAyOVE2Mi1DUnBQWjB4NHhSbTBtcF9mdFpfS21OaTRnSC1wZEhfcklMbE1xb1hFQnJzZllVU1hUbGlLNlpoaXVzM2JOU29sSUFPcm83TlJueElrQUphZktiZU5DazN3Z2FUREU2dmJSelFHNHhYREgyY3I4VjNuVVNiQkdld0VDN3lUWWIzTDlJdnBB?oc=5",
    "source": "موقع الصحفيين التونسيين بصفاقس",
@@ -453,314 +765,6 @@
    "note": {
     "ar": "الاسم وحده لا يجعل الخبر متعلقاً بالعطور، لذا لا ينبغي اعتباره خبراً عن الصناعة.",
     "en": "A name alone does not make this a fragrance story, so it should not be treated as industry news."
-   }
-  },
-  {
-   "id": "n6gzzna",
-   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOU2ZYaThTRzVjVGl4Z2hfWGdjOF92MGp3Q1RwbFI5Z0VySGlIVjF5Sno5SUZrVDZCZHI2S2pOT3lBS083dGdSNWpfSjZjNmlKYlZSY0p0S1oxa1dST2VfV2J4UnFLNW9HbUFBdXlyLThuNmFWUjB2NEN3NlZMREk5TDJvNURRZEh5bkZkZGRvdHpoVTk1?oc=5",
-   "source": "The Independent",
-   "publishedAt": "2026-10-19T15:26:00.000Z",
-   "original": "GLP-1s are reshaping the perfume industry as 'use alters fragrance preference'",
-   "lang": "en",
-   "category": "market",
-   "importance": 5,
-   "title": {
-    "ar": "تقرير: أدوية GLP-1 قد تعيد تشكيل صناعة العطور مع تغيّر تفضيلات بعض المستخدمين",
-    "en": "GLP-1 drugs may reshape the perfume industry as some users’ preferences change"
-   },
-   "summary": {
-    "ar": "تقول صحيفة The Independent إن استخدام أدوية GLP-1 قد يغيّر تفضيلات العطور. ولا يورد العنوان تفاصيل عن حجم التأثير أو نطاقه.",
-    "en": "The Independent reports that using GLP-1 drugs may alter fragrance preferences. The headline does not specify the scale or extent of the effect."
-   },
-   "note": {
-    "ar": "إذا تأكد هذا الاتجاه، فقد يدفع صانعي العطور إلى الإصغاء أكثر لتغيّر الأذواق؛ لكن العنوان وحده لا يثبت مدى انتشاره.",
-    "en": "If this trend is borne out, it may encourage fragrance makers to pay closer attention to changing tastes; the headline alone does not establish how widespread it is."
-   }
-  },
-  {
-   "id": "n55up1f",
-   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOYW1IRGg5VDFfMnJpVUxTVzN4REFucWhBWjUyanNEX1JPRDAwaUZjRGZqdEZkRklrOHdpb3pWTEliUHUwaHpLSVZsRXJnSk1HdmtiUldKMUg5MHhZaW1zTHA3WHZGdUNPLU5JRW9RalIyejI5R0RoLXpiaVh4NHNsLVBCcWNpWHpKNUFIMElUSjdoaUszbXc?oc=5",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-10-19T11:03:22.000Z",
-   "original": "Coty launches Fragrance Club to reinforce fragrance knowledge",
-   "lang": "en",
-   "category": "industry",
-   "importance": 4,
-   "title": {
-    "ar": "Coty تطلق Fragrance Club لتعزيز المعرفة بالعطور",
-    "en": "Coty launches Fragrance Club to strengthen fragrance knowledge"
-   },
-   "summary": {
-    "ar": "أفادت Cosmetics Business بأن Coty أطلقت Fragrance Club بهدف تعزيز المعرفة بالعطور. ولا يورد العنوان تفاصيل عن الجمهور المستهدف أو أنشطة النادي.",
-    "en": "Cosmetics Business reports that Coty has launched Fragrance Club to reinforce fragrance knowledge. The headline does not detail its target audience or activities."
-   },
-   "note": {
-    "ar": "مبادرات التثقيف قد تساعد المستهلك على فهم العطور بصورة أفضل؛ لكن تفاصيل البرنامج غير متاحة في العنوان.",
-    "en": "Educational initiatives may help consumers understand fragrance better, though the headline does not provide details of the programme."
-   }
-  },
-  {
-   "id": "nmcwxae",
-   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQRWxMZVBlQXRzc2s2bGZadkZ4dXQtTklUTzRYeDZJejEyNHRMdVRWaWtpcGI1WE9BWlRRa2FaaXB5X1g3V3RLa2t4Q09nSFlKRUNka2lCYUdKazY1bmF6LVNtVG45ZFF4UjVweVF2aTdqcngxLUVKelpBVmV1S0RvV09qNFF2OV9KNjZLZUlPdHQyVzBKSGZtaVJtOXBhakV2?oc=5",
-   "source": "University of the Philippines Los Baños",
-   "publishedAt": "2026-10-19T04:05:03.000Z",
-   "original": "Forum advances roadmap for Philippine Aquilaria and agarwood industry",
-   "lang": "en",
-   "category": "ingredients",
-   "importance": 4,
-   "title": {
-    "ar": "منتدى يطوّر خارطة طريق لصناعة Aquilaria والعود في الفلبين",
-    "en": "Forum advances a roadmap for the Philippine Aquilaria and agarwood industry"
-   },
-   "summary": {
-    "ar": "أفادت جامعة الفلبين لوس بانيوس بأن منتدى يعمل على تطوير خارطة طريق لصناعة Aquilaria والعود في الفلبين. ولا يوضح العنوان الإجراءات أو التوصيات التي تتضمنها الخارطة.",
-    "en": "The University of the Philippines Los Baños reports that a forum is advancing a roadmap for the Aquilaria and agarwood industry in the Philippines. The headline does not specify the roadmap’s measures or recommendations."
-   },
-   "note": {
-    "ar": "تطوير قطاع العود يستحق المتابعة لدى المهتمين بالمواد العطرية؛ لكن لا يمكن استنتاج أثر الخطة قبل معرفة تفاصيلها.",
-    "en": "Developments in the agarwood sector are worth watching for those interested in fragrance materials; the plan’s impact cannot be assessed without further details."
-   }
-  },
-  {
-   "id": "n1jcp7ue",
-   "url": "https://www.premiumbeautynews.com/en/in-cosmetics-asia-2026-puts,28363",
-   "source": "Premium Beauty News",
-   "publishedAt": "2026-10-17T11:17:00.000Z",
-   "original": "in-cosmetics Asia 2026 puts fragrance innovation in the spotlight",
-   "lang": "en",
-   "category": "events",
-   "importance": 4,
-   "title": {
-    "ar": "in-cosmetics Asia 2026 تخصص منطقة للابتكار في العطور",
-    "en": "in-cosmetics Asia 2026 adds a dedicated fragrance innovation zone"
-   },
-   "summary": {
-    "ar": "تقول Premium Beauty News إن المعرض سيضيف منطقة مخصصة للعطور في دورته المقبلة، المقررة في BITEC ببangkok من 3 إلى 5 نوفمبر 2026. ويعكس ذلك، بحسب المصدر، تنامي دور الرائحة في التفاعل العاطفي وتمييز المنتجات.",
-    "en": "Premium Beauty News says the next edition of the exhibition will feature a dedicated fragrance zone at BITEC in Bangkok from 3 to 5 November 2026. The source links the addition to fragrance’s growing role in emotional engagement and product differentiation."
-   },
-   "note": {
-    "ar": "منطقة متخصصة قد تجعل ابتكارات العطور أوضح للمهنيين والزوار؛ ويستحسن متابعة تفاصيل المشاركين والبرنامج عند نشرها.",
-    "en": "A dedicated zone may make fragrance innovations more visible to professionals and visitors; details of exhibitors and programming would be useful to watch for."
-   }
-  },
-  {
-   "id": "n1qp4vt5",
-   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE50aGFnTUtTYzFxanVYQURJVkZ4a1lJbmJDWjlVeVFBbFVtYzRNM2c0NEJ5NDJ3bG1aanJTQjZRRDVnOE5qSkRxT2x3U3dpNTV5aWFwSlBhZ00?oc=5",
-   "source": "Babnet",
-   "publishedAt": "2026-10-18T21:11:43.000Z",
-   "original": "العود التونسي يستعيد حضوره بين الشباب من خلال \"دار العود التونسي\"",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 4,
-   "title": {
-    "ar": "العود التونسي يستعيد حضوره بين الشباب عبر دار العود التونسي",
-    "en": "Tunisian oud regains visibility among young people through Dar El Oud Tounsi"
-   },
-   "summary": {
-    "ar": "يقول Babnet إن العود التونسي يستعيد حضوره بين الشباب من خلال «دار العود التونسي». ولا يورد العنوان تفاصيل عن أنشطة الدار أو حجم هذا الاهتمام.",
-    "en": "Babnet says Tunisian oud is regaining visibility among young people through Dar El Oud Tounsi. The headline gives no details about the institution’s activities or the extent of this interest."
-   },
-   "note": {
-    "ar": "تجدد اهتمام الشباب بالعود قد يدعم حضور المواد المحلية في الثقافة العطرية؛ لكن مدى هذا التجدد غير محدد في العنوان.",
-    "en": "Renewed youth interest in oud could support the place of local materials in fragrance culture, though the headline does not quantify that interest."
-   }
-  },
-  {
-   "id": "nsu3ewe",
-   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxORXZKTGVoU3VBU0d4YWIzd2tLUUFjOEo3YjJhTmFXVTdiS1puMmhZTlBfY2ZqUTlvejlLQlBvNWZKUGZ0LUs5Vjh0eWVHNUtxSjZPaHFWMVpVNVpQM2xQWHllRlJGVFpPNjhQQzdhS0hOS2RYZmotUm1FQ0VKWWRZNEVVR0ttSV9HRmUxbTNxUGxRUTI5d2l3TDZxVk8tTjVfTXR6TU5xcEgwZUlJc0dfQnk2aXhzQnIzVG5tVUl4Uk5OZ3JreHc?oc=5",
-   "source": "Hypebeast",
-   "publishedAt": "2026-10-19T13:01:34.000Z",
-   "original": "Better World Fragrance House and OVO Celebrate Drake’s 40th Birthday With \"DoSayDo\" Eau De Parfum",
-   "lang": "en",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "Better World Fragrance House وOVO تحتفلان بعيد Drake الأربعين بعطر DoSayDo",
-    "en": "Better World Fragrance House and OVO mark Drake’s 40th birthday with DoSayDo"
-   },
-   "summary": {
-    "ar": "أفاد Hypebeast بأن Better World Fragrance House وOVO تحتفلان بعيد Drake الأربعين بإطلاق Eau de Parfum باسم DoSayDo. ولا يقدم العنوان تفاصيل عن تركيب العطر أو موعد توافره.",
-    "en": "Hypebeast reports that Better World Fragrance House and OVO are celebrating Drake’s 40th birthday with an Eau de Parfum called DoSayDo. The headline gives no details about its composition or availability date."
-   },
-   "note": {
-    "ar": "يربط الخبر إطلاق العطر بعلامات وشخصية موسيقية؛ أما الحكم على الرائحة فيحتاج إلى معلومات غير واردة هنا.",
-    "en": "The launch connects fragrance with brands and a music figure; assessing the scent itself would require information not provided here."
-   }
-  },
-  {
-   "id": "njbgpi3",
-   "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxNT3pxSDQzbS1MbXZnT3dLRm1BUl9OMnZGa1FkLVRyTjVoQ1hPSVdrekpfQmtlMzJVRFM4YmMzTUZXVUFmdkFaVVFsdk9iUzc4QnJHNEVzWEp6dnc5cFF0QXRTVFU5bzhCc3h6Mk1GN3QyYUxST3RaQjZjbzhQSEEteUdBb3BpNVBmckQwSGR3R3lOMnBEMHVkZ0VlSjVtMDd5RFB5X215dXo4YW9hVk1DZkJtTGdrTExFekJRRG5ZZzVoeG5RbzhfV1RadUwwQ3h0WVJpaE9n?oc=5",
-   "source": "Passionate In Marketing",
-   "publishedAt": "2026-10-19T11:13:59.000Z",
-   "original": "FIKN Launches Elixir Perfume Gift Set for Men at ₹1,699",
-   "lang": "en",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "FIKN تطلق مجموعة هدايا عطرية للرجال بسعر معلن قدره ₹1,699",
-    "en": "FIKN launches a men’s perfume gift set priced at ₹1,699"
-   },
-   "summary": {
-    "ar": "ذكر Passionate In Marketing أن FIKN أطلقت مجموعة هدايا عطرية للرجال بسعر ₹1,699. ولا يوضح العنوان محتويات المجموعة أو أسماء العطور فيها.",
-    "en": "Passionate In Marketing reports that FIKN has launched a men’s perfume gift set priced at ₹1,699. The headline does not specify the set’s contents or the fragrances included."
-   },
-   "note": {
-    "ar": "قد تكون المجموعة خياراً لمن يبحث عن هدية عطرية، لكن معرفة محتوياتها ضرورية لتقييمها.",
-    "en": "The set may interest shoppers looking for a fragrance gift, but its contents are needed to assess it."
-   }
-  },
-  {
-   "id": "n1ppaevj",
-   "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPOUJKU3lvV001Q3FBNmxPU2d4UEk0Sm4yU0U4YXpwSGhCQjVGUGNXclI0V2h5VWlMNTc1ODdxaVQ0cnNsOUNTQTRGYVpXeVVVNzVWd3ZYLWctaXU2N2psdl9DWTREanQ4cmNuQmRiM2NBd2ZlMGhqVl9XQnVNbjhWcllSUTh0OGZkMmJuLV84TW54OTR5TGhlcXNLSmxSb1NsWTlHSXpRQU12V01CWEdUaVBiZW9OWE9nYjRTYlBRejl2WGZVMGpTSG9OTWRxSElQMFlMenI3eXdsd0hGa3hN?oc=5",
-   "source": "The National",
-   "publishedAt": "2026-10-19T11:08:24.000Z",
-   "original": "Bottling the soul: Why Loewe’s perfumer believes you should never have only one signature scent",
-   "lang": "en",
-   "category": "culture",
-   "importance": 3,
-   "title": {
-    "ar": "صانع عطور Loewe: لا تكتفوا بعطر توقيع واحد",
-    "en": "Loewe perfumer: don’t limit yourself to one signature scent"
-   },
-   "summary": {
-    "ar": "ينقل The National رأي صانع عطور Loewe بأن من الأفضل ألا يقتصر المرء على عطر توقيع واحد. ولا يذكر العنوان اسم صانع العطور أو تفاصيل حجته.",
-    "en": "The National reports a Loewe perfumer’s view that people should not have only one signature scent. The headline does not name the perfumer or explain the reasoning."
-   },
-   "note": {
-    "ar": "الفكرة تذكير بأن اختيار العطر يمكن أن يتغير مع المزاج والمناسبة؛ وهي وجهة نظر لا قاعدة ملزمة.",
-    "en": "It is a reminder that fragrance choices can vary with mood and occasion; it is a viewpoint, not a rule."
-   }
-  },
-  {
-   "id": "ninf89r",
-   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQNmNXUmEtLV9JRmxjWVZWc3N4N0syb1k3dmVva0Q0QklzWVhNNVpMSnpDQnJBVE03WFJWNUg3U0pTa0VGQ0w5U0JsdDBFWnNKTWY1QlJEeW9NRnVpU0pIbVFiMHNxeW9xcGFTLW1ZTVpld3NuVk05OEJydVlyVUlGN3Yzd282NFBydmVNaXVCM0NQcXZaN2FOdUN0dw?oc=5",
-   "source": "Harper's BAZAAR France",
-   "publishedAt": "2026-10-19T10:56:15.000Z",
-   "original": "L'interview CEO : David Benedek, fondateur de BDK Parfums",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 3,
-   "title": {
-    "ar": "مؤسس BDK Parfums David Benedek في حوار عن الشركة",
-    "en": "BDK Parfums founder David Benedek in a CEO interview"
-   },
-   "summary": {
-    "ar": "نشرت Harper’s Bazaar France مقابلة مع David Benedek، مؤسس BDK Parfums. ولا يوضح العنوان موضوعات الحوار أو ما ورد فيه من تصريحات.",
-    "en": "Harper’s Bazaar France published an interview with David Benedek, founder of BDK Parfums. The headline does not specify the interview’s topics or statements."
-   },
-   "note": {
-    "ar": "قد يقدم الحوار رؤية من داخل دار عطور مستقلة؛ لكن لا يمكن تلخيص مضمونه من العنوان وحده.",
-    "en": "The interview may offer an inside perspective on a perfume house, but its content cannot be summarized from the headline alone."
-   }
-  },
-  {
-   "id": "n3uvj8o",
-   "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxNOVV6V0Q4dXN0SXV2Rl9SX3J5X1RNM3FEcmhiU3JyUW1NREMyMlU2NFFES2Y2Q0lQc2UyajFxdFVENFFJRUZhN20zU01Db0lTSnkxMU45Snc5MGdaalJ6ZDlzNXR1M2xCQ0Z6Y1ZrUlQwMDhrWDl0MTZ1X2F5R2p4d3BSazhTM0xQQktOQVN5QV9Yc0E3RmxicHlMQnB2VXBidEtxcWJUUWl5eGEwdGZ2anhtQ0J5MGVTaXR2OGNrQ3N2d2x3UTJZRnBGNlR2MkE?oc=5",
-   "source": "The Globe and Mail",
-   "publishedAt": "2026-10-19T10:00:00.000Z",
-   "original": "Making scents: The art of creating fragrance that defies conventions",
-   "lang": "en",
-   "category": "culture",
-   "importance": 3,
-   "title": {
-    "ar": "فن ابتكار عطور تتحدى المألوف",
-    "en": "The art of creating fragrance that defies convention"
-   },
-   "summary": {
-    "ar": "يعرض The Globe and Mail موضوعاً عن ابتكار عطور تتحدى المألوف. ولا يحدد العنوان العطور أو صانعيها أو الأساليب التي يتناولها المقال.",
-    "en": "The Globe and Mail features a story on creating fragrances that defy convention. The headline does not identify the fragrances, creators, or methods discussed."
-   },
-   "note": {
-    "ar": "قد يلهم هذا النوع من التغطية صانعي العطور للتجريب، لكن تفاصيل المقال غير متاحة في العنوان.",
-    "en": "This kind of coverage may inspire perfumers to experiment, though the headline does not provide the article’s details."
-   }
-  },
-  {
-   "id": "n1vze3yj",
-   "url": "https://nstperfume.com/2026/10/17/the-history-of-perfume-in-italy/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-17T15:08:09.000Z",
-   "original": "The history of perfume in Italy",
-   "lang": "en",
-   "category": "culture",
-   "importance": 3,
-   "title": {
-    "ar": "افتتاح متحف مخصص لتاريخ العطور في إيطاليا",
-    "en": "Museum dedicated to the history of perfume in Italy opens"
-   },
-   "summary": {
-    "ar": "ذكر Now Smell This أن مؤسسة Perfume Passage Foundation افتتحت في ميلانو متحفاً لتاريخ العطور في إيطاليا. ويقول المقتطف إن مجموعته تضم أكثر من 3,000 قطعة تمتد من القرن التاسع عشر إلى سبعينيات القرن العشرين.",
-    "en": "Now Smell This reports that the Perfume Passage Foundation has opened a museum in Milan devoted to the history of perfume in Italy. Its excerpt says the collection includes more than 3,000 items dating from the 19th century to the 1970s."
-   },
-   "note": {
-    "ar": "المتحف يتيح لمحبي العطور فرصة لاستكشاف تاريخها عبر مقتنيات مادية؛ وتفاصيل الزيارة غير واردة في المقتطف.",
-    "en": "The museum offers fragrance enthusiasts a way to explore its history through physical objects; visitor details are not included in the excerpt."
-   }
-  },
-  {
-   "id": "n16d2pak",
-   "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNOWJUQ08wUjZEY3c4dUtHVy0wUmZuTFpBZEFTM1NTSTNPTXVGME5iVEdIS054QTBiVmVwWkVhMjVCa2dmZmhEOVN1RDRLSVBqcEYzZ1l3Sm9kQkc2ZFVVeWlYdzBZWjVNZVlncXBIdUVmTm9TNUxUd3ZzTnVOM3JFWmtJRTNqR21UUFhQVjh4SHhGODY5TllRYlZrRXNGRHZNaVZ0WUpMNlczaFpRbmV2eEwyM1R0WXFOWm5STmEwcGNDTW1FazFTMjJn0gHPAUFVX3lxTE5oWFd5YllIT1I1Rk5iZl94SFR5M2JmcTNmQU4xcjIyOFQtT1F0am14TXpIaFVvOU1OU0dYQWtYMVB1WXFKVnc1RnVNN2hLM3psOFhTWXFhdG83c3IzLWU0OV9hRENJd290QURtVVJ0S2p1Tk9mNk9rdGJWNWtDVWVsYjJxSHBqaFRwNFNsRzBwVVRMMzJJN04yZnlRcGJTZGRWZVVRVENXWEdPdjJ5cVFvSWJ0ZmNGNC1aVlJSS3FUYWdKazJTbk1yQ1M4bHJHUQ?oc=5",
-   "source": "Prestige Online - Singapore",
-   "publishedAt": "2026-10-17T20:31:02.000Z",
-   "original": "What is method perfuming, and the fragrances that helped actors build memorable characters",
-   "lang": "en",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "كيف تساعد العطور الممثلين على بناء شخصيات لا تُنسى؟",
-    "en": "How fragrances help actors build memorable characters"
-   },
-   "summary": {
-    "ar": "يتناول Prestige Online Singapore مفهوم «التعطير المنهجي» والعطور التي ساعدت ممثلين على بناء شخصياتهم. ولا يحدد العنوان أمثلة أو أسماء ممثلين.",
-    "en": "Prestige Online Singapore explores method perfuming and fragrances that helped actors build memorable characters. The headline does not name examples or actors."
-   },
-   "note": {
-    "ar": "يربط الموضوع الرائحة بالأداء والذاكرة، وقد يفتح زاوية جديدة للتفكير في دور العطر خارج الاستخدام الشخصي.",
-    "en": "The story connects scent with performance and memory, offering another way to think about fragrance beyond personal wear."
-   }
-  },
-  {
-   "id": "nnws6tn",
-   "url": "https://news.google.com/rss/articles/CBMipAJBVV95cUxQWk1BT2VYRURQSDlaV1VsVDB2LVZlX1I5dTdsTU0yYWNlVmQ1U0l2ZlNkcFkydGdUS1htVF9TSlRINnE5VjFBQWJ1d0UtX2Q3X0Vvcm9waUY5bGx1WWk1ZHV4VFVXZl85V3pTcmNDbGhobkc2Vk1ZV0doY1l4V3NPRmNYaExfM1F0UXp0SFF4R19tSWF2bW0yQ1NoZ3dHZVh6WGZBNFVIc0tjNFprSWxfWGR4a3JDWGFVcXA1bEl1enBDenllUHVUSTQzcl9lemZTSmV1RzVzOC1QVnBjUmdIVk1raVlVbS1pNEZyMXhFRFBteU9IUEt0bFl0MHJwV1h2eU1YSUpPeEt6dXBVNGJzamtCcnp0ZXFxYXpIN0tCaEFOaUxn?oc=5",
-   "source": "BFM",
-   "publishedAt": "2026-10-18T13:25:42.000Z",
-   "original": "\"Oh, ça sent Rituals!\": face à une avalanche de 6.000 nouveaux parfums par an, Rituals lance le sien à 80 euros pour profiter du boom des fragrances de luxe",
-   "lang": "fr",
-   "category": "market",
-   "importance": 5,
-   "title": {
-    "ar": "Rituals تدخل سوق العطور الفاخرة بعطر بسعر 80 يورو",
-    "en": "Rituals Enters the Luxury Fragrance Market with an €80 Perfume"
-   },
-   "summary": {
-    "ar": "يربط عنوان BFM إطلاق عطر من Rituals بسعر 80 يورو بازدهار العطور الفاخرة، في ظل الإشارة إلى طرح 6,000 عطر جديد سنوياً. لا يوضح العنوان تفاصيل العطر أو موعد إطلاقه.",
-    "en": "BFM’s headline links Rituals’ €80 perfume launch to the luxury fragrance boom, against a backdrop of 6,000 new perfumes a year. It does not specify the scent’s details or launch date."
-   },
-   "note": {
-    "ar": "دخول علامة معروفة إلى هذه الفئة يوضح كيف تتنافس العلامات على جذب محبي العطور الفاخرة، لا على الرائحة وحدها بل على قيمة التجربة أيضاً.",
-    "en": "A familiar brand entering this tier shows how labels compete for luxury fragrance buyers—not only through scent, but through the perceived value of the experience."
-   }
-  },
-  {
-   "id": "n1df19q9",
-   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQYjVFS0tqbmZ0a09GdFZEbDNNTHhWdE9veXMwdkNjR1pMamJ5aFMtcWRUWU8tVEU0YVlFUUdJejFtRE84dnpQUENRYU1FRXZRTExnU241aVlnZ3lsTmVZTEgtdnZoSUtMR0I0UEx2WTNyY3VpY05VVkZIOE11OVd4VVh1bmw5bUpWTE5TTGtvT0FxcklldUpqdWJOTzdnaDdtS3N0dmJ4TWFkaXcxeld3SUdscGZmUQ?oc=5",
-   "source": "WWD",
-   "publishedAt": "2026-10-17T20:09:15.000Z",
-   "original": "Scentbird Is Leading the Charge In Personalized Fragrance",
-   "lang": "en",
-   "category": "market",
-   "importance": 4,
-   "title": {
-    "ar": "Scentbird تقود التوجه نحو العطور المخصصة",
-    "en": "Scentbird Leads the Charge in Personalized Fragrance"
-   },
-   "summary": {
-    "ar": "يسلط عنوان WWD الضوء على دور Scentbird في التوجه نحو العطور المخصصة. ولا يقدم العنوان تفاصيل عن الخدمة أو آلية التخصيص.",
-    "en": "WWD highlights Scentbird’s role in the move toward personalized fragrance. The headline does not provide details about the service or how personalization works."
-   },
-   "note": {
-    "ar": "التخصيص يفتح مجالاً لمحبي العطور لاكتشاف ما يلائم ذوقهم، ويمنح صانعي العطور فرصة للتفكير في تجارب أكثر فردية.",
-    "en": "Personalization can help fragrance lovers explore what suits their taste and encourage makers to consider more individual experiences."
    }
   }
  ]
