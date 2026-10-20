@@ -59,7 +59,7 @@ app.use('/api', createStoreRouter({ repo: shamCore.repo }));
 const community = createCommunity();
 app.use('/api', createCommunityRouter(community));
 // «مسؤول التعاقدات»: supplier agreements with electronic consent (decision L-40, server/contracts) — same database.
-app.use('/api', createContractsRouter(community));
+app.use('/api', createContractsRouter(community, { env: process.env, finance: shamCore.finance }));
 app.use('/api', createCheckoutRouter({
   finance: shamCore.finance,
   bank: shamCore.bank,

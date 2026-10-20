@@ -18,6 +18,9 @@ import * as c from './service';
 import { draftReply } from './assistant';
 import { signingPage } from './page';
 import { LEGAL_DECISION_ID, POLICY_VERSION, missingSender } from './policy';
+import { onContractApproved, onContractRevoked } from './integration';
+import type { FinanceService } from '../finance/service';
+import { createNotifier } from '../core/notify';
 
 type Env = Record<string, string | undefined>;
 type Handler = (req: express.Request, res: express.Response) => Promise<void>;
@@ -32,11 +35,16 @@ function sendError(res: express.Response, error: unknown) {
   res.status(500).json({ error: 'Something went wrong, please try again', code: 'FAILED' });
 }
 
-export function createContractsRouter(community: Community, options: { env?: Env; fetch?: typeof fetch } = {}) {
+export function createContractsRouter(
+  community: Community,
+  options: { env?: Env; fetch?: typeof fetch; finance?: FinanceService } = {},
+) {
   const env = options.env || process.env;
   const router = express.Router();
   const limiter = new RateLimiter(60, 60_000);
   const migrated = new WeakMap<object, Promise<void>>();
+  const finance = options.finance;
+  const notifier = createNotifier(env as Record<string, string | undefined>, options.fetch || fetch);
 
   const context = async (): Promise<c.ContractsCtx | undefined> => {
     const ctx = await community.ready();
@@ -112,13 +120,22 @@ export function createContractsRouter(community: Community, options: { env?: Env
   router.get('/admin/contracts/settings', boss((ctx) => c.getSender(ctx).then((sender) => ({ sender, missing: missingSender(sender) }))));
   router.put('/admin/contracts/settings', boss((ctx, req) => c.setSender(ctx, body(req).sender || body(req)).then((sender) => ({ sender, missing: missingSender(sender) }))));
   router.get('/admin/contracts/approved', boss(async (ctx) => ({ stores: await c.approvedStores(ctx) })));
+  // Finance linkage overview — before :id routes (otherwise /finance/overview is caught as :id)
+  router.get('/admin/contracts/finance/overview', boss(async (ctx) => {
+    const approved = await c.approvedStores(ctx);
+    let issues: unknown[] = [];
+    if (finance) {
+      try { issues = (await finance.store.list('financeIssues')).filter((i) => i.code === 'CONTRACT_APPROVED' || i.code === 'MISSING_COSTS'); } catch { /* ignore */ }
+    }
+    return { approved, financeIssues: issues, linkedAt: new Date().toISOString() };
+  }));
   router.post('/admin/contracts/reply', boss(async (ctx, req) => {
     const b = body(req);
     const sender = await c.getSender(ctx);
     const missing = missingSender(sender);
     if (missing.length) throw new c.ContractError(400, 'SENDER_MISSING', `Fill the sender settings first: ${missing.join(', ')}`);
     const contract = b.id ? await c.getContract(ctx, String(b.id), base(req)) : undefined;
-    if (!String(b.message || '').trim()) throw new c.ContractError(400, 'MESSAGE_REQUIRED', 'Paste the store\'s message');
+    if (!String(b.message || '').trim()) throw new c.ContractError(400, 'MESSAGE_REQUIRED', `Paste the store's message`);
     return draftReply({ message: String(b.message), sender, contactName: contract?.contactName, lang: contract?.lang }, { env, fetch: options.fetch });
   }));
   router.get('/admin/contracts', boss(async (ctx, req) => ({ contracts: await c.listContracts(ctx, base(req)) })));
@@ -140,6 +157,19 @@ export function createContractsRouter(community: Community, options: { env?: Env
     const run = actions[p(req, 'action')];
     if (!run) throw new c.ContractError(404, 'NOT_FOUND', 'Unknown action');
     await run(ctx, p(req, 'id'), String(body(req).note || ''));
+    const action = p(req, 'action');
+    // ── immediate Shaheen + Finance linking (never blocks the approval itself) ──
+    if (action === 'approve') {
+      try {
+        const linked = await onContractApproved(ctx, p(req, 'id'), { finance, env: env as Record<string, string | undefined>, fetch: options.fetch, notifier });
+        return { contract: await c.getContract(ctx, p(req, 'id'), base(req)), integration: linked };
+      } catch {
+        // integration failures are logged inside onContractApproved — keep approval successful
+      }
+    }
+    if (action === 'revoke') {
+      try { await onContractRevoked(ctx, p(req, 'id'), { finance, env: env as Record<string, string | undefined>, fetch: options.fetch, notifier }); } catch { /* ignore */ }
+    }
     return { contract: await c.getContract(ctx, p(req, 'id'), base(req)) };
   }));
 

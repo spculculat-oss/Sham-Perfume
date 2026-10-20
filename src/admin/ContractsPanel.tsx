@@ -70,6 +70,8 @@ export default function ContractsPanel() {
   const [draft, setDraft] = useState<Draft | null>(null);
   const [error, setError] = useState(''); const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(''); const [showSettings, setShowSettings] = useState(false);
+  const [integration, setIntegration] = useState<null | { domain: string; shaheenNotified: boolean; shaheenDispatched: boolean; financeLinked: boolean }>(null);
+  const [financeOverview, setFinanceOverview] = useState<null | { approved: { domain: string; approvedAt: string }[]; financeIssues: unknown[] }>(null);
 
   const load = useCallback(async () => {
     setError('');
@@ -80,6 +82,11 @@ export default function ContractsPanel() {
       const [settings, list] = await Promise.all([adminRequest<{ sender: Sender }>('/contracts/settings'), adminRequest<{ contracts: ContractView[] }>('/contracts')]);
       setSender(settings.sender); setContracts(list.contracts);
       if (s.senderMissing.length) setShowSettings(true);
+      // finance linkage overview (best-effort)
+      try {
+        const fin = await adminRequest<{ approved: { domain: string; approvedAt: string }[]; financeIssues: unknown[] }>('/contracts/finance/overview');
+        setFinanceOverview({ approved: fin.approved, financeIssues: fin.financeIssues });
+      } catch { /* no finance yet */ }
     } catch (e) { setError(e instanceof Error ? e.message : T('تعذّر التحميل')); }
   }, []);
   useEffect(() => { void load(); }, [load]);
@@ -94,7 +101,15 @@ export default function ContractsPanel() {
   const step = (c: ContractView, action: string, done: string, ask?: string) => {
     const note = ask ? window.prompt(ask) : '';
     if (note === null) return;
-    void act(`${action}:${c.id}`, () => adminRequest(`/contracts/${c.id}/${action}`, send('POST', { note })), done);
+    void act(`${action}:${c.id}`, async () => {
+      const res = await adminRequest<{ contract: ContractView; integration?: { shaheenNotified: boolean; shaheenDispatched: boolean; financeLinked: boolean; details?: unknown } }>(`/contracts/${c.id}/${action}`, send('POST', { note }));
+      if (action === 'approve' && res.integration) {
+        setIntegration({ domain: c.domain, shaheenNotified: res.integration.shaheenNotified, shaheenDispatched: res.integration.shaheenDispatched, financeLinked: res.integration.financeLinked });
+        // refresh finance overview in background
+        adminRequest<{ approved: { domain: string; approvedAt: string }[]; financeIssues: unknown[] }>('/contracts/finance/overview').then((fin) => setFinanceOverview({ approved: fin.approved, financeIssues: fin.financeIssues })).catch(() => {});
+      }
+      return res;
+    }, done);
   };
   const downloadCertificate = (c: ContractView) => act(`cert:${c.id}`, async () => {
     const body = await adminRequest(`/contracts/${c.id}/certificate`);
@@ -112,6 +127,18 @@ export default function ContractsPanel() {
     </header>
     {error && <p role="alert" className="bg-red-50 border border-red-200 text-red-800 rounded-xl p-3 text-sm">{error}</p>}
     {notice && <p role="status" className="bg-emerald-50 text-emerald-800 rounded-xl p-3 text-sm">{notice}</p>}
+    {integration && <div className="rounded-2xl border-2 border-emerald-300 bg-emerald-50 p-4 space-y-2" role="status">
+      <p className="font-bold text-emerald-900 flex items-center gap-2"><Handshake className="w-5 h-5" />{TP('تم اعتماد عقد {domain} — التواصل والربط تم', { domain: integration.domain } as unknown as Record<string,string>)}</p>
+      <ul className="text-sm text-emerald-800 list-disc ps-5 space-y-1">
+        <li>{integration.shaheenNotified ? T('✓ تم إشعار شاهين فوراً (Webhook) — سيبدأ تنزيل المنتجات على المتجر') : T('• إشعار شاهين معلّق — اضبط SHAM_WEBHOOK_URL ليصل فورياً؛ المستورد يقرأ العقد تلقائياً كل 12 ساعة')}</li>
+        <li>{integration.shaheenDispatched ? T('✓ تم دفع مهمة استيراد فورية عبر GitHub Actions') : T('• الاستيراد التلقائي عبر GitHub Actions ينتظر الضبط (GITHUB_TOKEN) — أو يدوياً من المتجر')}</li>
+        <li>{integration.financeLinked ? T('✓ تم فتح مراجعة في الإدارة المالية (CONTRACT_APPROVED) — راجع التكاليف والهامش قبل أول طلب') : T('• ربط المالية غير متاح — تأكد من تهيئة التخزين الدائم')}</li>
+      </ul>
+      <div className="flex gap-2">
+        <button type="button" className={`${button} bg-white border border-emerald-300`} onClick={() => setIntegration(null)}>{T('إغلاق')}</button>
+        <a href="#finance" className={`${button} bg-emerald-600 text-white`}>{T('افتح لوحة المالية')}</a>
+      </div>
+    </div>}
     {!status && !error && <p className="text-sm text-stone-500 flex items-center gap-2"><Loader2 className="w-4 h-4 animate-spin" />{T('جاري التحميل…')}</p>}
     {status && !status.ready && <div className={card}><p className="text-sm">{T('التعاقدات بتستخدم نفس قاعدة بيانات «المجتمع» على الخادم. أول ما المجتمع يشتغل (بعد إعادة النشر على Vercel) التبويب ده هيشتغل لوحده.')}</p></div>}
     {status?.ready && <>
@@ -173,7 +200,20 @@ export default function ContractsPanel() {
             {['signed', 'approved'].includes(c.status) && <button type="button" className={`${button} text-red-700`} onClick={() => step(c, 'revoke', T('اتسحبت الموافقة — المنتجات تتشال خلال 48 ساعة'), T('المتجر سحب موافقته؟ اكتب السبب'))}><Undo2 className="w-4 h-4" />{T('سحب الموافقة')}</button>}
           </div>
         </div>)}
-      </section>
+      {financeOverview && financeOverview.approved.length > 0 && <section className={`${card} space-y-3 border-amber-300`}>
+        <h3 className="font-bold flex items-center gap-2">💰 {T('الربط مع الإدارة المالية — عقود معتمدة بانتظار المراجعة')}</h3>
+        <p className="text-xs text-stone-500">{T('أي عقد يكتمل (approved) يتم فوراً إشعار شاهين للتنزيل على المتجر + فتح مراجعة مالية للتسعير. راجع التكاليف قبل أول طلب، وإلا التقارير ستظهر incomplete.')}</p>
+        <ul className="space-y-2">
+          {financeOverview.approved.map((a) => <li key={a.domain} className="rounded-xl border border-amber-200 bg-amber-50 p-3 flex flex-wrap items-center justify-between gap-2">
+            <div><p className="font-bold" dir="ltr">{a.domain}</p><p className="text-xs text-stone-500">{TP('اعتمد في {at}', { at: when(a.approvedAt) } as unknown as Record<string,string>)}</p></div>
+            <div className="flex gap-2">
+              <span className="rounded-full bg-emerald-600 text-white px-3 py-1 text-xs">✓ {T('شاهين: جاهز للنقل')}</span>
+              <span className="rounded-full bg-amber-500 text-white px-3 py-1 text-xs">{T('المالية: راجع التسعير')}</span>
+            </div>
+          </li>)}
+        </ul>
+        <p className="text-xs text-stone-500">{TP('مراجعات مالية مفتوحة: {n}', { n: String(financeOverview.financeIssues.length) } as unknown as Record<string,string>)} — {T('تظهر في لوحة «أمين شاهين» (FINANCE.md: ledger + تقارير يومية/أسبوعية/شهرية Africa/Cairo)')}</p>
+      </section>}
 
       <section className={`${card} space-y-3`}>
         <h3 className="font-bold flex items-center gap-2"><MessageSquareReply className="w-5 h-5" />{T('رد على سؤال متجر')}</h3>
