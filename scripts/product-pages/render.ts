@@ -8,6 +8,7 @@
 import { type StoreProduct } from '../../src/utils/storeCatalog';
 import { STORE_BASE_LANGS, type StoreTextKey } from '../../src/لغات/storeKeys';
 import { storeText } from '../../src/لغات/storeL10n';
+import { localLongevity } from '../../src/لغات/longevity';
 import { SUPPORTED_LANGUAGES } from '../../src/types/i18n';
 import { SITE } from '../../src/seo/site';
 
@@ -161,7 +162,7 @@ export function renderProductPage(p: StoreProduct, related: StoreProduct[], o: P
   const notes = ([['pd_top', p.notes.top], ['pd_heart', p.notes.heart], ['pd_base', p.notes.base]] as const).filter(([, l]) => l.length);
   const specs = ([
     ['pd_brand', esc(p.brand)], ['pd_size', p.sizeMl ? `${p.sizeMl} <span${dl('pd_ml')}>${arLabel('pd_ml')}</span>` : ''],
-    ['pd_concentration', esc(p.concentration)], ['pd_longevity', esc(p.longevity)], ['pd_sku', esc(p.sku)],
+    ['pd_concentration', esc(p.concentration)], ['pd_longevity', p.longevity ? `<span data-name data-ar="${esc(localLongevity(p.longevity, 'ar'))}" data-en="${esc(localLongevity(p.longevity, 'en'))}">${esc(localLongevity(p.longevity, 'ar'))}</span>` : ''], ['pd_sku', esc(p.sku)],
   ] as const).filter(([, v]) => v);
   const ld = JSON.stringify(productJsonLd(p, o)).replace(/</g, '\\u003c');
   const breadcrumb = JSON.stringify(breadcrumbJsonLd(p, o)).replace(/</g, '\\u003c');
@@ -181,12 +182,12 @@ export function renderProductPage(p: StoreProduct, related: StoreProduct[], o: P
 <div class="thumbs">${p.images.map((u, i) => `<a href="${esc(img(u, o.siteUrl))}" onclick="document.getElementById('main').src=this.href;return false"><img src="${esc(img(u, o.siteUrl))}" alt="${esc(`${p.name.ar} ${i + 1}`)}" loading="lazy" onerror="noImg(this,1)"></a>`).join('')}</div></div>
 <div><h1 data-name data-ar="${esc(p.name.ar)}" data-en="${esc(p.name.en)}">${esc(p.name.ar)}</h1>${p.name.en !== p.name.ar ? `<div class="en">${esc(p.name.en)}</div>` : ''}
 <p class="price" data-price="${p.price}">${esc(egp(p.price))}</p><p>${p.inStock ? `✅ <span${dl('pd_in_stock')}>متوفر</span>` : `⛔ <span${dl('sf_out_of_stock')}>غير متوفر حالياً</span>`}</p>
-<div class="chips">${chips.map((c) => `<span class="chip">${esc(c)}</span>`).join('')}</div>
+<div class="chips">${chips.join('')}</div>
 <a class="btn" href="${store}"${dl('pd_shop_cta')}>أضف للسلة واطلب من المتجر</a><a class="btn alt" href="${store}"${dl('pd_ask_shaheen')}>اسأل شاهين عن العطر</a>
 ${specs.length ? `<section><table class="specs">${specs.map(([k, v]) => `<tr><td${dl(k as StoreTextKey)}>${arLabel(k as StoreTextKey)}</td><td>${v}</td></tr>`).join('')}</table></section>` : ''}
 </div></div>
 ${notes.length ? `<section><h2${dl('pd_notes_pyramid')}>الهرم العطري</h2><div class="notes">${notes.map(([k, l]) => `<div><b${dl(k)}>${arLabel(k)}</b>${esc(l.join('، '))}</div>`).join('')}</div></section>` : ''}
-<section><h2${dl('pd_description')}>الوصف</h2><p data-name data-ar="${esc(p.description.ar)}" data-en="${esc(p.description.en || p.description.ar)}">${esc(p.description.ar)}</p>${p.description.en && p.description.en !== p.description.ar ? `<p class="en" dir="ltr">${esc(p.description.en).replace(/\n/g, '<br>')}</p>` : ''}</section>
+<section><h2${dl('pd_description')}>الوصف</h2><p data-name data-ar="${esc(p.description.ar)}" data-en="${esc(p.description.en || p.description.ar)}">${esc(p.description.ar)}</p></section>
 <p class="small">آخر تحديث لبيانات المنتج: ${esc((p.createdAt || new Date().toISOString()).slice(0, 10))} · <a href="../">كل أدوات المعمل</a> · <a href="../tools/">أدوات شام</a></p>
 ${related.length ? `<section><h2${dl('pd_related')}>قد يعجبك أيضاً</h2><div class="cards">${related.map(card).join('')}</div></section>` : ''}
 </main><footer${dl('pd_footer')}>متجر شام — راجع «الخبير شاهين» بيانات هذا المنتج<nav><a href="../">الرئيسية</a><a href="index.html">كل المنتجات</a><a href="../tools/">الأدوات</a></nav></footer>${SWITCHER(JSON.stringify(pageLabelTable()).replace(/</g, '\\u003c'))}</body></html>

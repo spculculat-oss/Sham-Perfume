@@ -20,7 +20,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     env:
-      SHAM_FINANCE_API_URL: ${{ vars.SHAM_FINANCE_API_URL }}
+      # Same engine as every other bot (Vercel 49bf) unless the variable says otherwise.
+      SHAM_FINANCE_API_URL: ${{ vars.SHAM_FINANCE_API_URL || 'https://sham-perfume-49bf.vercel.app' }}
       SHAM_ADMIN_TOKEN: ${{ secrets.SHAM_ADMIN_TOKEN }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
