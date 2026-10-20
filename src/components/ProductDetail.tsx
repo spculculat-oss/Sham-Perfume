@@ -11,6 +11,7 @@ import type { SupportedLanguage } from '../types/i18n';
 import { loadStoreCatalog, productPageUrl, storeImageSrc } from '../utils/liveStore';
 import { addToCart, useCart } from '../utils/storeCart';
 import { requestDirectPurchase } from '../utils/directPurchase';
+import { requireCustomerLogin } from '../utils/paymentAccess';
 import { SafeImage, photoSources } from './SafeImage';
 import { ProductPayMethods } from '../bank/ProductPayMethods';
 import { useStoreMoney } from '../utils/storeCheckout';
@@ -33,14 +34,14 @@ function detailLabels(lang: SupportedLanguage) {
   };
 }
 
-interface Props { productId: number; currentLang: SupportedLanguage; onClose?: () => void; onAddToCart?: (product: StoreProduct) => void }
+interface Props { productId: number; currentLang: SupportedLanguage; onClose?: () => void; onAddToCart?: (product: StoreProduct) => void; signedIn?: boolean; onRequireAuth?: () => void }
 
 /** How close two products are (same family, gender, brand, price band) for «قد يعجبك أيضاً». */
 const closeness = (a: StoreProduct, b: StoreProduct) =>
   b.families.filter((f) => a.families.includes(f)).length * 3 + (a.gender && a.gender === b.gender ? 2 : 0) +
   (a.brand && a.brand === b.brand ? 1 : 0) + (Math.abs(a.price - b.price) <= a.price * 0.3 ? 1 : 0);
 
-export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose, onAddToCart }) => {
+export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose, onAddToCart, signedIn = false, onRequireAuth }) => {
   const L = useMemo(() => detailLabels(currentLang), [currentLang]);
   const money = useStoreMoney(currentLang, L.currency); // the visitor's currency (src/utils/pricing.ts)
   const dir = isRTL(currentLang) ? 'rtl' : 'ltr';
@@ -134,7 +135,7 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
                   <button type="button" onClick={add} data-testid="product-add-to-cart" className="min-w-0 px-2 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-semibold inline-flex items-center justify-center gap-2 cursor-pointer">
                     <ShoppingCart className="w-4 h-4" />{cart[product.sku] ? L.inCart.replace('{n}', storeNumber(cart[product.sku], currentLang)) : L.addToCart}
                   </button>
-                  <button type="button" onClick={() => requestDirectPurchase(product.sku, qty)} data-testid="product-buy-now" className="min-w-0 px-2 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold inline-flex items-center justify-center gap-2 cursor-pointer"><CreditCard className="w-4 h-4 shrink-0" />{L.buyNow}</button>
+                  <button type="button" onClick={() => { if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; } requestDirectPurchase(product.sku, qty); }} data-testid="product-buy-now" className="min-w-0 px-2 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold inline-flex items-center justify-center gap-2 cursor-pointer"><CreditCard className="w-4 h-4 shrink-0" />{signedIn ? L.buyNow : (currentLang === 'ar' ? 'دخول للدفع' : 'Sign in to pay')}</button>
                 </div>
               </div>
             ) : <p className="py-2.5 rounded-xl bg-stone-100 text-stone-500 text-center">{L.outOfStock}</p>}

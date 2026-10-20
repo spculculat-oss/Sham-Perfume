@@ -30,6 +30,7 @@ import {
   Building,
 } from 'lucide-react';
 import { ProductPayMethods } from '../bank/ProductPayMethods';
+import { requireCustomerLogin } from '../utils/paymentAccess';
 import { PaymentEnvironmentModal } from './PaymentEnvironmentModal';
 import { StoreSalesCategoryChart } from './StoreSalesCategoryChart';
 import { saveMerchant } from '../utils/merchantDataStore';
@@ -197,6 +198,8 @@ interface Props {
   onClose?: () => void;
   currentLang: SupportedLanguage;
   retailerId?: string;
+  signedIn?: boolean;
+  onRequireAuth?: () => void;
   shaheenQuery?: { text: string; at: number } | null;
 }
 
@@ -232,7 +235,7 @@ function HighlightMatch({ text, query }: { text: string; query: string }) {
   }
 }
 
-export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
+export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retailerId, signedIn = false, onRequireAuth }) => {
   const L = useMemo(() => storeLabels(currentLang), [currentLang]);
   const dir = isRTL(currentLang) ? 'rtl' : 'ltr';
   const [products, setProducts] = useState<StoreProduct[]>([]);
@@ -495,18 +498,22 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
 
   const buyNow = (product: StoreProduct, qty = 1) => {
     if (!product.inStock) return;
+    if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; }
     setDirectPurchase({ sku: product.sku, qty, at: Date.now() });
     setCartOpen(true); setStep('form'); setPayMessage(''); setSearchFocused(false);
   };
   useEffect(() => {
     const receive = () => {
       const intent = takeDirectPurchase();
-      if (intent) { setDirectPurchase(intent); setCartOpen(true); setStep('form'); setPayMessage(''); }
+      if (intent) {
+        if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; }
+        setDirectPurchase(intent); setCartOpen(true); setStep('form'); setPayMessage('');
+      }
     };
     receive();
     window.addEventListener(DIRECT_PURCHASE_EVENT, receive);
     return () => window.removeEventListener(DIRECT_PURCHASE_EVENT, receive);
-  }, []);
+  }, [signedIn, onRequireAuth]);
   const changeCheckoutQty = (sku: string, qty: number) => {
     if (directPurchase) setDirectPurchase({ ...directPurchase, qty: Math.min(99, Math.max(1, qty)) });
     else setCartQty(sku, qty);
@@ -515,6 +522,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
   const pay = async (e: React.FormEvent) => {
     e.preventDefault();
     if (paying) return;
+    if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; }
     if (!canPay) {
       // No online method for this country yet: the order goes to the store's inbox as a ready e-mail
       // (works on GitHub Pages with no server). Nothing is recorded as paid.
@@ -1044,13 +1052,13 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
           {/* Customer Saved Payment Methods / Vault Button */}
           <button
             type="button"
-            onClick={() => setShowPaymentModal(true)}
-            className="hidden shrink-0 items-center gap-2 rounded-2xl border border-stone-200/90 bg-white/90 px-3.5 py-2 text-xs font-bold text-stone-800 transition hover:bg-stone-50 hover:text-amber-800 sm:flex cursor-pointer shadow-2xs"
+            onClick={() => { if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; } setShowPaymentModal(true); }}
+            className="flex shrink-0 items-center gap-2 rounded-2xl border border-stone-200/90 bg-white/90 px-3.5 py-2 text-xs font-bold text-stone-800 transition hover:bg-stone-50 hover:text-amber-800 cursor-pointer shadow-2xs"
             data-testid="store-vault-button"
-            title={currentLang === 'ar' ? 'بيئة ومحفظة الدفع الآمنة' : 'Secure Payment Methods & Vault'}
+            title={currentLang === 'ar' ? 'تسجيل البطاقات والمحافظ' : 'Register cards and wallets'}
           >
             <CreditCard className="h-4 w-4 text-emerald-600" />
-            <span>{currentLang === 'ar' ? 'محفظة الدفع' : 'Payment Vault'}</span>
+            <span className="hidden sm:inline">{currentLang === 'ar' ? 'بطاقاتي' : 'My cards'}</span>
           </button>
 
           {/* Become Merchant Button */}
@@ -1621,6 +1629,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                         />
                       ))}
 
+                      <button type="button" onClick={() => setShowPaymentModal(true)} className="w-full rounded-xl border border-stone-300 bg-white py-2 text-xs font-bold text-stone-800" data-testid="open-payment-desk">{currentLang === 'ar' ? 'تسجيل بطاقة أو محفظة' : 'Register a card or wallet'}</button>
                       <fieldset className="rounded-xl border border-stone-200 bg-stone-50 p-3 space-y-3" data-testid="real-payment-methods">
                         <legend className="text-xs font-bold px-1">{currentLang === 'ar' ? 'وسائل الدفع المفعّلة لبلدك' : 'Enabled methods for your country'}</legend>
                         {payments?.methods.map((m) => <label key={m.id} className="flex items-center gap-2 text-xs">
@@ -1683,11 +1692,11 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                     <>
                       <button
                         type="button"
-                        onClick={() => setStep('form')}
+                        onClick={() => { if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; } setStep('form'); }}
                         data-testid="store-pay-start"
                         className="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-bold cursor-pointer transition-all shadow-xs"
                       >
-                        {L.payNow}
+                        {signedIn ? L.payNow : (currentLang === 'ar' ? 'سجّل الدخول للدفع' : 'Sign in to pay')}
                       </button>
                       <button
                         type="button"
@@ -1701,8 +1710,8 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                     <div className="space-y-2">
                       {payments === null ? <p className="text-xs text-stone-600" role="status">{L.loading}</p> : <ProductPayMethods lang={currentLang} country={money.country} heading={currentLang === 'ar' ? 'وسائل الدفع المتاحة لطلبك' : 'Payment methods available for this order'} />}
                       {/* #169: the main button continues to the delivery form (the order then goes to the store's inbox), not to the chat. */}
-                      <button type="button" onClick={() => { setStep('form'); setOrderSent(''); }} disabled={payments === null} data-testid="store-order-start"
-                        className="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 disabled:bg-stone-400 text-white text-sm font-bold cursor-pointer transition-all shadow-xs">{L.orderStart}</button>
+                      <button type="button" onClick={() => { if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; } setStep('form'); setOrderSent(''); }} disabled={payments === null} data-testid="store-order-start"
+                        className="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 disabled:bg-stone-400 text-white text-sm font-bold cursor-pointer transition-all shadow-xs">{signedIn ? L.orderStart : (currentLang === 'ar' ? 'سجّل الدخول للدفع' : 'Sign in to pay')}</button>
                       <button type="button" onClick={checkout} className="w-full py-1.5 text-xs text-amber-800 hover:underline cursor-pointer text-center">{L.orAssistant}</button>
                     </div>
                   )}
@@ -1750,7 +1759,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
       )}
 
       {/* Customer Payment Vault & Professional Environment Modal */}
-      {showPaymentModal && <PaymentEnvironmentModal currentLang={currentLang} onClose={() => setShowPaymentModal(false)} />}
+      {showPaymentModal && <PaymentEnvironmentModal currentLang={currentLang} customerId={signedIn ? retailerId : undefined} onRequireAuth={onRequireAuth} onClose={() => setShowPaymentModal(false)} />}
 
       {/* Merchant Registration Modal */}
       {showReg && (

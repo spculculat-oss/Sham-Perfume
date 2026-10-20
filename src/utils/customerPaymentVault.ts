@@ -26,7 +26,8 @@ export type PaymentProvider =
   | 'tamara'
   | 'valu'
   | 'apple_pay'
-  | 'google_pay';
+  | 'google_pay'
+  | 'local';
 
 export interface SavedPaymentMethod {
   id: string;

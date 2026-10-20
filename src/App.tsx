@@ -254,6 +254,12 @@ export default function App() {
     }
   };
 
+  useEffect(() => {
+    const open = () => setIsAuthModalOpen(true);
+    window.addEventListener('sham-require-auth', open);
+    return () => window.removeEventListener('sham-require-auth', open);
+  }, []);
+
   const handleOpenAuthModal = () => {
     activeModalsRef.current.auth = true;
     setIsAuthModalOpen(true);
@@ -1121,6 +1127,8 @@ export default function App() {
             onClose={() => navigateToTab('home')}
             currentLang={currentLang}
             retailerId={currentUser?.id}
+            signedIn={Boolean(currentUser)}
+            onRequireAuth={handleOpenAuthModal}
             shaheenQuery={storeQuery}
           />
         )}
@@ -1129,6 +1137,8 @@ export default function App() {
           <ProductDetail
             productId={productId}
             currentLang={currentLang}
+            signedIn={Boolean(currentUser)}
+            onRequireAuth={handleOpenAuthModal}
             onClose={() => navigateToTab('store')}
           />
         )}
