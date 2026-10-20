@@ -7,6 +7,8 @@
  * Visitors never receive supplier prices from here.
  */
 
+import { hasClaims, stripClaims, tidySupplierText } from './honestClaims';
+
 export interface RawProduct {
   id: number | string; sku?: string; nameAr?: string; nameEn?: string; descriptionAr?: string; descriptionEn?: string;
   imageUrl?: string | null; category?: string; brand?: string; supplierPrice?: number; ourPrice?: number;
@@ -155,6 +157,12 @@ const genderOf = (p: RawProduct): Gender | undefined => {
   return undefined;
 };
 
+/** A plain, true sentence from what is known for sure: name, brand, gender, scent family. */
+function plainDescription(lang: 'ar' | 'en', name: string, brand: string, gender: Gender | undefined, families: Family[]): string {
+  if (lang === 'ar') return [`${name.startsWith('عطر') ? '' : 'عطر '}${name}`, brand && `من ${brand}`, gender && GENDER_LABEL[gender].ar, families.length ? `بطابع ${families.map((f) => FAMILY_LABEL[f].ar).join(' و')}` : ''].filter(Boolean).join(' ') + '.';
+  return [`${name}`, brand && `by ${brand}`, gender && `for ${GENDER_LABEL[gender].en.toLowerCase()}`, families.length ? `with ${/^[aeiou]/i.test(families[0]) ? 'an' : 'a'} ${families.map((f) => FAMILY_LABEL[f].en.toLowerCase()).join(' and ')} character` : ''].filter(Boolean).join(' ') + '.';
+}
+
 /** Without any AI engine: honest, rule-based clean-up (no invented notes). */
 export function ruleEntry(p: RawProduct, now = new Date().toISOString()): StoreEntry {
   const text = `${p.nameAr || ''} ${p.nameEn || ''} ${p.descriptionAr || ''} ${p.descriptionEn || ''} ${p.category || ''}`;
@@ -167,11 +175,11 @@ export function ruleEntry(p: RawProduct, now = new Date().toISOString()): StoreE
   const brand = p.brand && p.brand !== 'Unknown' ? p.brand : '';
   const gender = genderOf(p);
   const descAr = isGenericDescription(p.descriptionAr) || isGarbled(p.descriptionAr)
-    ? [`${nameAr.startsWith('عطر') ? '' : 'عطر '}${nameAr}`, brand && `من ${brand}`, gender && GENDER_LABEL[gender].ar, families.length ? `بطابع ${families.map((f) => FAMILY_LABEL[f].ar).join(' و')}` : ''].filter(Boolean).join(' ') + '.'
+    ? plainDescription('ar', nameAr, brand, gender, families)
     : cleanText(p.descriptionAr);
   const descEn = isGenericDescription(p.descriptionEn) || isGarbled(p.descriptionEn)
-    ? [`${nameEn}`, brand && `by ${brand}`, gender && `for ${GENDER_LABEL[gender].en.toLowerCase()}`, families.length ? `with ${/^[aeiou]/i.test(families[0]) ? 'an' : 'a'} ${families.map((f) => FAMILY_LABEL[f].en.toLowerCase()).join(' and ')} character` : ''].filter(Boolean).join(' ') + '.'
-    : cleanText(p.descriptionEn, 900);
+    ? plainDescription('en', nameEn, brand, gender, families)
+    : cleanText(tidySupplierText(p.descriptionEn || ''), 900);
   return {
     sourceHash: productHash(p), editor: 'rules', updatedAt: now, nameAr, nameEn, descriptionAr: descAr, descriptionEn: descEn,
     gender, families, notes: sourceNotes(p),
@@ -179,13 +187,26 @@ export function ruleEntry(p: RawProduct, now = new Date().toISOString()): StoreE
   };
 }
 
+const brandOf = (p: RawProduct) => (p.brand && p.brand !== 'Unknown' ? p.brand : '');
+/** A description with its unsupported claims removed, or '' when too little of it is left to read. */
+const honest = (text: string, lang: 'ar' | 'en') => {
+  if (!hasClaims(text, lang)) return text;
+  const out = stripClaims(text, lang);
+  return out.length >= 25 ? out : '';
+};
+
 export function mergeProduct(p: RawProduct, entry?: StoreEntry): StoreProduct {
   // An entry written for older merchant text is not trusted: rules until Shaheen rewrites it (next run).
   const fresh = entry && entry.sourceHash === productHash(p) ? entry : undefined;
   const e = fresh || ruleEntry(p);
   const images = productImages(p);
   return {
-    id: p.id, sku: skuOf(p), name: { ar: e.nameAr, en: e.nameEn }, description: { ar: e.descriptionAr, en: e.descriptionEn },
+    id: p.id, sku: skuOf(p), name: { ar: e.nameAr, en: e.nameEn },
+    // «مراجع الصفحات»: no promise of hours, «the best», «irresistible» or shop slogans — the scent itself stays.
+    description: {
+      ar: honest(e.descriptionAr, 'ar') || plainDescription('ar', e.nameAr, brandOf(p), e.gender, e.families),
+      en: honest(e.descriptionEn, 'en') || plainDescription('en', e.nameEn, brandOf(p), e.gender, e.families),
+    },
     brand: p.brand && p.brand !== 'Unknown' ? p.brand : '', category: cleanText(p.category, 40), gender: e.gender, families: e.families,
     // Notes published by the supplier win over an empty list (Shaheen never invents notes).
     notes: hasNotes(e.notes) ? e.notes : sourceNotes(p), seasons: e.seasons, occasions: e.occasions, tags: e.tags,

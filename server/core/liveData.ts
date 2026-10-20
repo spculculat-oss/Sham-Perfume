@@ -12,7 +12,7 @@ import { guidanceBlock, type AiToolId } from '../../src/utils/aiTools';
 import type { KnowledgeDoc } from './types';
 
 type Env = Record<string, string | undefined>;
-export interface LiveNewsItem { id: string; url: string; source: string; publishedAt?: string; title: { ar: string; en: string }; summary: { ar: string; en: string } }
+export interface LiveNewsItem { id: string; url: string; source: string; publishedAt?: string; category?: string; importance?: number; title: { ar: string; en: string }; summary: { ar: string; en: string } }
 export interface LiveNews { updatedAt: string; items: LiveNewsItem[] }
 interface TrainingFile { updatedAt: string; docs: { id: string; title: string; content: string; tags: string[]; updatedAt: string }[] }
 
