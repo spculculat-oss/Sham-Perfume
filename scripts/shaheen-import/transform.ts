@@ -5,6 +5,7 @@
  * Pure: no network, no clock unless passed in.
  */
 import { slugify, type RawProduct } from '../../src/utils/storeCatalog';
+import { tidySupplierText } from '../../src/utils/honestClaims';
 
 export { slugify };
 import type { ExtractedProduct, ExtractVia } from './extract';
@@ -103,6 +104,33 @@ export const normalizeBrand = (brand?: string) => {
     : b;
 };
 
+/**
+ * A product imported without a brand, from a store whose every other product carries the same one (the brand's
+ * own shop, e.g. afnan.com → «Afnan Perfumes»), gets that brand. A store selling several brands is left alone.
+ * Returns the SKUs that changed.
+ */
+export function fillSourceBrands(products: RawProduct[], minKnown = 5): string[] {
+  const brands = new Map<string, Map<string, number>>();
+  const unknown = (p: RawProduct) => !p.brand || p.brand === 'Unknown';
+  for (const p of products) {
+    const source = typeof p.supplierId === 'string' ? p.supplierId : '';
+    if (!source || unknown(p)) continue;
+    const counts = brands.get(source) || new Map<string, number>();
+    counts.set(String(p.brand), (counts.get(String(p.brand)) || 0) + 1);
+    brands.set(source, counts);
+  }
+  const changed: string[] = [];
+  for (const p of products) {
+    const counts = typeof p.supplierId === 'string' ? brands.get(p.supplierId) : undefined;
+    if (!unknown(p) || !counts || counts.size !== 1) continue;
+    const [[brand, n]] = [...counts.entries()];
+    if (n < minKnown) continue;
+    p.brand = brand;
+    changed.push(String(p.sku || p.id));
+  }
+  return changed;
+}
+
 /** Gender in the store's Arabic category words (the store's filters understand them). */
 export const CATEGORY_AR = { men: 'رجالي', women: 'نسائي', unisex: 'مختلط' } as const;
 
@@ -111,7 +139,7 @@ export const cleanName = (name: string) => name
   .replace(/\s*\|\s*.*$/, '').replace(/\b(?:in\s+)?Malaysia\b/gi, '').replace(/\s{2,}/g, ' ').replace(/[\s,–-]+$/, '').trim();
 
 /** Description: the supplier's text without its local delivery / country marketing lines. */
-export const cleanDescription = (text: string) => text
+export const cleanDescription = (text: string) => tidySupplierText(text)
   .split(/\n+/).map((l) => l.trim()).filter((l) => l && !/malaysia|delivery|shipping|pick ?up|ringgit|\bRM\s?\d/i.test(l))
   .join('\n').replace(/\n{3,}/g, '\n\n').slice(0, 1500).trim();
 

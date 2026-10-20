@@ -7,7 +7,8 @@ import { createCheckoutRouter } from './checkout';
 import { createShamCore } from './core/http';
 import { createSeoRootRouter, createSeoRouter } from './seo/router';
 import { callEngine, engineStatuses } from './core/engines';
-import { supervisorGuidance } from './core/liveData';
+import { liveNews, supervisorGuidance } from './core/liveData';
+import { articlesFromCollected } from './newsFallback';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { corsMiddleware } from './cors';
 import { createCommunity, createCommunityRouter } from './community/router';
@@ -237,6 +238,14 @@ app.get('/api/news', async (_req, res) => {
     res.json(newsPayload());
   } catch (error: any) {
     console.error('Error fetching news:', error?.message || error);
+    // Yesterday's notes are still worth reading; with none, the real headlines Shaheen collected (with sources).
+    if (activeDailyNewsList.length) { res.json(newsPayload({ stale: true })); return; }
+    const collected = await liveNews().then((news) => articlesFromCollected(news.items, EDITORIAL_NEWS_IMAGES, getTodayArabicDateString())).catch(() => []);
+    if (collected.length) {
+      res.json({ success: true, lastRefreshedAt: new Date().toISOString(), dateString: getTodayArabicDateString(), curator: 'نشرة شاهين (أخبار من الويب بمصادرها)',
+        aiGenerated: false, collected: true, count: collected.length, articles: collected });
+      return;
+    }
     res.status(503).json({ success: false, error: 'News service is unavailable. Existing articles have not been changed.' });
   }
 });

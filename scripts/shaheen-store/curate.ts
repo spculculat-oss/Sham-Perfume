@@ -8,6 +8,7 @@ import {
   cleanText, FAMILIES, GENDERS, isGarbled, isGenericDescription, OCCASIONS, productHash, ruleEntry, SEASONS, skuOf,
   type Family, type Gender, type Occasion, type RawProduct, type Season, type StoreCatalogFile, type StoreEntry,
 } from '../../src/utils/storeCatalog';
+import { stripClaims } from '../../src/utils/honestClaims';
 
 export const STORE_INTERVAL_HOURS = 12;
 export const BATCH = 14;
@@ -47,6 +48,7 @@ export const STORE_SYSTEM = `أنت «الخبير شاهين»، خبير ال�
 - إذا وصلتك supplierNotes من صفحة المنتج الأصلية فهي موثقة: انقلها كما هي إلى notes (بالإنجليزية). وإذا كانت فارغة والوصف الإنجليزي يذكر النوتات صراحة في كلامه (افتتاحية/قلب/قاعدة) فاستخرجها منه بنفس كلماته الإنجليزية. وإذا وصل وصف إنجليزي طويل فلخّصه بالعربية بأمانة دون إضافة معلومات.
 - النوتات (top/heart/base) فقط إذا كان العطر تجارياً مشهوراً ونوتاته منشورة ومعروفة (مثل Dior Sauvage أو Baccarat Rouge 540 أو Lattafa Ameer Al Oudh). إن لم تكن متأكداً اترك القوائم فارغة. لا تخترع نوتات أبداً.
 - لا تدّعِ ثباتاً بالساعات ولا أنه أصلي أو مقلد، ولا تذكر أسعاراً أو خصومات أو شحناً.
+- لا عبارات ترويجية غير مسندة: لا «يدوم طويلاً/طوال اليوم» ولا «ثبات عالٍ» ولا «الأفضل» ولا «لا يقاوم» ولا «مثالي». صف الرائحة نفسها بصدق.
 - إذا كان الاسم العربي مشوهاً فاكتب الاسم الصحيح بالعربية اعتماداً على الاسم الإنجليزي والعلامة (مثل «لطافة أمير العود»).
 - استنتج العائلة والجنس من الاسم والفئة والوصف بحذر؛ عطور «عود» و«هندي» و«دهن» عائلتها oud.
 - لا تذكر أسماء شركات أو نماذج ذكاء اصطناعي، ولا روابط.
@@ -117,8 +119,9 @@ export function entriesFromShaheen(reply: unknown, asked: RawProduct[], now: str
     const base = ruleEntry(p, now);
     const nameAr = cleanText(r.nameAr, 120);
     const nameEn = cleanText(r.nameEn, 120);
-    const descriptionAr = cleanText(r.descriptionAr, 400);
-    const descriptionEn = cleanText(r.descriptionEn, 300);
+    // «مراجع الصفحات»: a claim that slipped through (hours, «the best», «irresistible») is removed before it is saved.
+    const descriptionAr = stripClaims(cleanText(r.descriptionAr, 400), 'ar');
+    const descriptionEn = stripClaims(cleanText(r.descriptionEn, 300), 'en');
     const okAr = (s: string) => s.length >= 2 && /[\u0600-\u06FF]/.test(s) && !isGarbled(s) && !VENDOR.test(s);
     const notes = (r.notes && typeof r.notes === 'object' ? r.notes : {}) as Record<string, unknown>;
     const gender = (GENDERS as readonly string[]).includes(String(r.gender)) ? r.gender as Gender : base.gender;
