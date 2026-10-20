@@ -32,7 +32,7 @@ export const DEPARTMENTS: Department[] = [
 ];
 
 export type BotId =
-  | 'council' | 'secretary' | 'precheck' | 'finance' | 'legal'
+  | 'council' | 'secretary' | 'precheck' | 'patrol' | 'finance' | 'legal'
   | 'contracts'
   | 'scout' | 'importer' | 'images' | 'catalog' | 'product_pages' | 'store_advisor'
   | 'news' | 'seo'
@@ -62,6 +62,7 @@ export const BOTS: Bot[] = [
   { id: 'council', nameAr: 'مجلس شاهين (الاجتماع اليومي)', nameEn: "Shaheen's council (daily meeting)", dept: 'leadership', workflow: 'shaheen-council.yml', report: 'shaheen-council.json', everyHours: 24, aiTools: ['shaheen_council'], dutiesAr: 'يجمع رؤساء الأقسام كل يوم 10:15 الصبح (بعد تجديد باقة الذكاء الاصطناعي)، يكتب المحضر، ينفذ الآمن ويحوّل الباقي لمهام تطوير.' },
   { id: 'secretary', nameAr: 'السكرتير — مشرف شاهين', nameEn: 'Secretary — Shaheen\'s supervisor', dept: 'leadership', workflow: 'shaheen-news.yml', report: 'ai-supervisor.json', everyHours: 12, dutiesAr: 'يقيس كل أداة ذكاء اصطناعي ويكتب لها توجيهات، يجهز جدول الأعمال، وينوب عن شاهين في الاجتماع وقت الضغط أو لو مفيش محرك ذكاء اصطناعي.' },
   { id: 'precheck', nameAr: 'الفحص الشامل قبل الاجتماع', nameEn: 'Pre-meeting full check', dept: 'leadership', workflow: 'shaheen-precheck.yml', report: 'shaheen-precheck.json', everyHours: 24, dutiesAr: 'قبل الاجتماع بساعتين: كل روبوت يفحص نفسه ويكتب مشاكله والإصلاح المقترح وأفكار التطوير، والسكرتير يوزع طلبات المساعدة بين الأدوات.' },
+  { id: 'patrol', nameAr: 'الدورية كل ساعة (فحص وإصلاح ومراجعة خبير)', nameEn: 'Hourly patrol (check, fix, expert review)', dept: 'leadership', workflow: 'shaheen-patrol.yml', report: 'shaheen-patrol.json', everyHours: 2, dutiesAr: 'كل ساعة كل أداة تفحص شغلها بالتجربة (أسعار، عملات، صفحات، صور، نشرة، خادم): اللي يتصلح آلياً يتصلح، واللي لأ يروح لشاهين، والمشاكل المشتركة ليها فريق عمل، وكل شغل خلص يراجعه خبير من نفس التخصص.' },
   { id: 'finance', nameAr: 'أمين شاهين — الإدارة المالية', nameEn: 'Shaheen Finance', dept: 'leadership', workflow: 'shaheen-finance.yml', report: 'ai-supervisor.json', everyHours: 24, aiTools: ['finance_agent'], dutiesAr: 'تحصيل موثّق وتقارير يومية وأسبوعية وشهرية ومراجعة الدفع. التفاصيل داخل لوحة مالية خاصة؛ التقرير العام يحتوي حالة الفحص المنقحة من المشرف فقط. لا تحويلات أو استردادات أو اعتماد حسابات تلقائياً.' },
   { id: 'legal', nameAr: 'المدير القانوني', nameEn: 'Legal manager', dept: 'leadership', dutiesAr: 'يراجع امتثال المنصة للقوانين؛ قراراته ملزمة لشاهين وكل الأدوات، ومحدش يتجاوزها لحد ما المدير القانوني نفسه يغيرها (مثال: وقف نقل المنتجات لحد إذن المورد المكتوب).' },
   { id: 'contracts', nameAr: 'مسؤول التعاقدات', nameEn: 'Contracts officer', dept: 'leadership', aiTools: ['contracts_agent'], dutiesAr: 'يجهز رسائل التعاون مع أصحاب المتاجر (يبعتها عضو من الفريق باسمه الحقيقي)، ويدير الموافقة الإلكترونية على الاتفاقية، ومايفتحش متجر للنقل غير بعد توقيعه واعتماد المدير القانوني (L-40). الهامش مايتكشفش، ورابط المتجر بعد الموافقة بس.' },
@@ -125,6 +126,10 @@ export const LINKS: Link[] = [
   { from: 'finance', to: 'secretary', whyAr: 'حالة الفحص المنقحة فقط؛ الأرقام والطلبات تبقى خاصة' },
   { from: 'finance', to: 'council', whyAr: 'تصعيد أعطال الدفع والتسجيل للمراجعة دون أسرار أو تحويل أموال' },
   { from: 'keys', to: 'finance', whyAr: 'جاهزية إعدادات الخادم؛ اعتماد الحساب قرار صاحب المتجر' },
+  { from: 'patrol', to: 'council', whyAr: 'مشكلة ماتصلحتش ولا شاهين حلها ← مهمة تطوير' },
+  { from: 'patrol', to: 'secretary', whyAr: 'تقييم الدورية كل ساعة ← مادة للمشرف' },
+  { from: 'patrol', to: 'doctor', whyAr: 'الخادم أو الموقع واقع ← كشف وصيانة' },
+  { from: 'patrol', to: 'deploy', whyAr: 'صفحات قديمة أو واقعة ← إعادة نشر' },
   { from: 'precheck', to: 'council', whyAr: 'تقارير كل الأدوات = جدول أعمال الاجتماع' },
   { from: 'legal', to: 'council', whyAr: 'القرارات القانونية ملزمة — الاجتماع مايقترحش تجاوزها' },
   { from: 'legal', to: 'importer', whyAr: 'نقل المنتجات بإذن مكتوب من المورد بس (L-03)' },

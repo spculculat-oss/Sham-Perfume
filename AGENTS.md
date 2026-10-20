@@ -7,6 +7,12 @@
 meeting over the site's real reports. Safe decisions are applied by the meeting itself. Development
 work becomes **GitHub issues labelled `shaheen-task`**, which a coding agent in the chat carries out.
 
+Every hour, «الدورية كل ساعة» (`.github/workflows/shaheen-patrol.yml`, code in `scripts/shaheen-patrol/`)
+has each tool test its own work hands-on, reruns the robot that fixes a broken scope (safe robots only, at most
+once per 6 h), asks Shaheen about the rest, and has an expert reviewer of the same scope test every finished
+run. A serious problem that stays broken becomes a `shaheen-task` issue labelled **`shaheen-patrol`** (at most
+two a day) — the same queue below. After the fix is merged, the next patrol re-tests it and logs it as resolved.
+
 When the merchant writes **«نفذ مهام شاهين»** (or "Run Shaheen's tasks", «مهام شاهين», «شوف مهام شاهين»):
 
 1. List the queue, most urgent first:

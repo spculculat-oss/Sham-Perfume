@@ -171,6 +171,14 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       if (failing.length) f.push({ level: 'fail', problem: `فحوص فاشلة في آخر تحديث: ${failing.join('، ')}`, fix: 'إصلاح الفحص قبل أي تحديث جديد' });
       break;
     }
+    case 'patrol': {
+      const open = arr(r.open).map(o);
+      const stuck = open.filter((x) => x.level === 'fail' && x.status !== 'owner' && x.status !== 'fixing');
+      if (stuck.length) f.push({ level: 'warn', problem: `${stuck.length} عطل الدورية ماقدرتش تصلحه آلياً`, fix: 'شاهين يشخصه أو يتحول لمهمة تطوير' });
+      const rejected = arr(r.reviews).map(o).filter((x) => x.verdict === 'rejected' && Date.parse(String(x.runAt || '')) > now - 86_400_000).length;
+      if (rejected) f.push({ level: 'note', idea: `${rejected} شغل اترفض من خبير الفحص آخر 24 ساعة — يتصلح قبل أي تطوير` });
+      break;
+    }
     case 'studio_bridge': {
       const last = o(arr(r.runs)[0]);
       if (r.status === 'failed') f.push({ level: 'warn', problem: `آخر تحديث من جوجل استوديو كسر فحوص الموقع (${String(last.branch || '')})`, fix: 'مهمة «تحديث من جوجل استوديو» — وكيل البرمجة يصلحه وينشره' });
