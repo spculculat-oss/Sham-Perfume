@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-20T00:56:49.671Z",
+ "updatedAt": "2026-10-20T06:54:09.622Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -2814,8 +2814,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-20T06:54:09.622Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -3017,8 +3017,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-20T06:54:09.622Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -3029,8 +3029,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-20T06:54:09.622Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -3041,8 +3041,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-20T06:54:09.622Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -3501,12 +3501,12 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-20T06:54:09.622Z",
    "trust": {
     "score": 90,
     "verdict": "trusted",
-    "at": "2026-10-19T18:53:10.915Z",
+    "at": "2026-10-20T06:54:09.622Z",
     "checks": [
      {
       "id": "age",
@@ -3614,12 +3614,12 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-20T06:54:09.622Z",
    "trust": {
     "score": 83,
     "verdict": "trusted",
-    "at": "2026-10-19T18:53:10.915Z",
+    "at": "2026-10-20T06:54:09.622Z",
     "checks": [
      {
       "id": "age",
@@ -3716,9 +3716,9 @@
     "registeredAt": "1998-04-30T04:00:00.000Z"
    },
    "region": "global",
-   "sampleOk": 8,
+   "sampleOk": 9,
    "sampleTotal": 9,
-   "reason": "أغلب منتجاته ليست عطوراً (38%)"
+   "reason": "أغلب منتجاته ليست عطوراً (33%)"
   },
   {
    "id": "nocibe-fr",
@@ -3728,8 +3728,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-20T06:54:09.622Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -4243,6 +4243,236 @@
    "sampleOk": 0,
    "sampleTotal": 6,
    "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
+  },
+  {
+   "id": "iciparisxl-be",
+   "host": "iciparisxl.be",
+   "name": "iciparisxl.be",
+   "base": "https://iciparisxl.be",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-20T06:54:09.622Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-20T06:54:09.622Z",
+   "reason": "الموقع لا يفتح (HTTP 403)"
+  },
+  {
+   "id": "kicks-se",
+   "host": "kicks.se",
+   "name": "Makeup, parfym och hudvård på nätet",
+   "base": "https://www.kicks.se",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-20T06:54:09.622Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-20T06:54:09.622Z",
+   "trust": {
+    "score": 50,
+    "verdict": "weak",
+    "at": "2026-10-20T06:54:09.622Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": null,
+      "points": 8,
+      "max": 20,
+      "detail": "السجل لا ينشر تاريخ التسجيل"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد + هاتف"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": false,
+      "points": 0,
+      "max": 15,
+      "detail": "لا توجد"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "Visa، Mastercard، Klarna"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": null,
+      "points": 2,
+      "max": 5
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     }
+    ],
+    "flags": []
+   },
+   "region": "europe",
+   "reason": "ملف الثقة ضعيف (50/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الشحن، سياسة الخصوصية"
+  },
+  {
+   "id": "bangerhead-se",
+   "host": "bangerhead.se",
+   "name": "Hårvård, hudvård, makeup, parfym online",
+   "base": "https://www.bangerhead.se",
+   "status": "candidate",
+   "foundBy": "known-store",
+   "foundAt": "2026-10-20T06:54:09.622Z",
+   "attempts": 1,
+   "vettedAt": "2026-10-20T06:54:09.622Z",
+   "trust": {
+    "score": 41,
+    "verdict": "weak",
+    "at": "2026-10-20T06:54:09.622Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": null,
+      "points": 8,
+      "max": 20,
+      "detail": "السجل لا ينشر تاريخ التسجيل"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 6,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": false,
+      "points": 5,
+      "max": 15,
+      "detail": "عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "Visa، Mastercard"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": null,
+      "points": 2,
+      "max": 5
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     }
+    ],
+    "flags": []
+   },
+   "region": "europe",
+   "reason": "ملف الثقة ضعيف (41/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الإرجاع والاسترداد، سياسة الشحن"
   }
  ],
  "queries": [
@@ -4783,6 +5013,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-20T06:54:09.622Z",
+   "mode": "self",
+   "found": 3,
+   "vetted": 10,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "✗ kicks.se: ملف الثقة ضعيف (50/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الشحن، سياسة الخصوصية",
+    "  ↳ bangerhead.se: CV 41/100 [https,contact,payment,social] (pages: /kontakta-oss→200 /returns→404)",
+    "✗ bangerhead.se: ملف الثقة ضعيف (41/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الإرجاع والاسترداد، سياسة الشحن",
+    "✗ flaconi.de: الموقع لا يفتح (HTTP 403)",
+    "✗ douglas.de: الموقع لا يفتح (HTTP 403)",
+    "✗ perfume.com: الموقع لا يفتح (HTTP 403)",
+    "✗ essenza-nobile.de: الموقع لا يفتح (HTTP 403)",
+    "  ↳ niche-beauty.com: CV 90/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,social]",
+    "✗ niche-beauty.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "  ↳ beautyhabit.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
+    "✗ beautyhabit.com: أغلب منتجاته ليست عطوراً (33%)",
+    "✗ nocibe.fr: الموقع لا يفتح (HTTP 403)"
+   ]
+  },
   {
    "at": "2026-10-20T00:56:49.671Z",
    "mode": "self",

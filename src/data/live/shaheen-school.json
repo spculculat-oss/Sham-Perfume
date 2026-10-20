@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-20T00:58:57.142Z",
+ "updatedAt": "2026-10-20T06:55:06.030Z",
  "reliance": {
   "score": 98,
   "covered": 81,
@@ -21,6 +21,12 @@
  "studiedTotal": 51,
  "selfTaughtTotal": 29,
  "history": [
+  {
+   "at": "2026-10-20T06:55:06.030Z",
+   "score": 98,
+   "studied": 0,
+   "mode": "self"
+  },
   {
    "at": "2026-10-20T00:58:57.142Z",
    "score": 98,
@@ -212,7 +218,7 @@
  ],
  "pending": [
   {
-   "q": "حدثني عن حساب تكلفة العطر وتحديد سعر البيع",
+   "q": "حدثني عن حساب تكلفة العطر وسعره",
    "lang": "ar",
    "topic": "library"
   },
