@@ -1,11 +1,12 @@
-import { T, TP, adminLocale, getAdminLang } from './adminL10n';
+import { T, TP, adminLocale, getAdminLang, listSep } from './adminL10n';
 import { useCallback, useEffect, useState } from 'react';
 import { BadgeCheck, ExternalLink, RefreshCw, ShieldAlert, Siren, Users } from 'lucide-react';
 import { botOf } from '../utils/shaheenOrg';
+import { SHIFTS } from '../../scripts/shaheen-patrol/shifts';
 import type { ItemStatus, Level, PatrolFile } from '../../scripts/shaheen-patrol/patrol';
 
 /**
- * «الدورية كل ساعة» — every tool inspects its own work every hour with hands-on tests; what can be fixed
+ * «الدورية بالتناوب» — three shifts take turns hourly; every tool inspects its own work every 3 hours with hands-on tests; what can be fixed
  * safely is fixed, the rest goes to Shaheen (or waits for him honestly), shared problems get a task force,
  * and every finished run is tested by an expert reviewer of the same scope.
  * Data: src/data/live/shaheen-patrol.json on main (written by .github/workflows/shaheen-patrol.yml).
@@ -45,20 +46,29 @@ export default function ShaheenPatrolPanel() {
   return (
     <div className={card} dir={ar() ? 'rtl' : 'ltr'}>
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h3 className="flex items-center gap-2 text-base font-black text-stone-900"><Siren className="h-5 w-5 text-amber-700" />{T('الدورية كل ساعة')}</h3>
+        <h3 className="flex items-center gap-2 text-base font-black text-stone-900"><Siren className="h-5 w-5 text-amber-700" />{T('الدورية بالتناوب')}</h3>
         <div className="flex gap-2">
           <a className="inline-flex items-center gap-1 rounded-lg border border-stone-200 px-2.5 py-1.5 text-xs font-bold text-stone-700" href={`${REPO}/actions/workflows/shaheen-patrol.yml`} target="_blank" rel="noreferrer"><ExternalLink className="h-3.5 w-3.5" />{T('سجل التشغيل')}</a>
           <button type="button" onClick={load} className="inline-flex items-center gap-1 rounded-lg border border-stone-200 px-2.5 py-1.5 text-xs font-bold text-stone-700"><RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />{T('تحديث')}</button>
         </div>
       </div>
-      <p className="mt-1 text-xs text-stone-500">{T('كل ساعة كل أداة بتفحص شغلها بالتجربة: اللي يتصلح آلياً يتصلح، واللي لأ يروح لشاهين، والمشاكل المشتركة ليها فريق عمل، وكل شغل خلص بيراجعه خبير من نفس التخصص.')}</p>
+      <p className="mt-1 text-xs text-stone-500">{T('تلات ورديات بالتناوب، وردية كل ساعة: كل أداة بتفحص شغلها بالتجربة كل 3 ساعات من غير ضغط على الموقع. اللي يتصلح آلياً يتصلح، واللي لأ يروح لشاهين، والمشاكل المشتركة ليها فريق عمل، وكل شغل خلص بيراجعه خبير من نفس التخصص.')}</p>
+      <ul className="mt-2 grid gap-1.5 text-[11px] md:grid-cols-3">
+        {SHIFTS.map((x) => (
+          <li key={x.index} className={`rounded-lg border px-2 py-1.5 ${data?.shift?.index === x.index ? 'border-amber-400 bg-amber-50' : 'border-stone-100'}`}>
+            <b className="block text-stone-800">{ar() ? x.nameAr : x.nameEn}{data?.shift?.index === x.index ? <span className="ms-1 rounded-full bg-amber-200 px-1.5 text-[10px] text-amber-900">{T('آخر وردية')}</span> : null}</b>
+            <span className="block text-stone-500">{x.bots.map(botName).join(listSep())}</span>
+            {data?.shift?.next[x.index] && <span className="block text-stone-600">{T('الدور الجاي')}: {when(data.shift.next[x.index])}</span>}
+          </li>
+        ))}
+      </ul>
 
       {!data ? (
-        <p className="mt-3 rounded-xl bg-stone-50 p-3 text-xs text-stone-500">{T('لسه مفيش دورية اتسجلت — أول دورية بتشتغل في الساعة الجاية (الدقيقة 37).')}</p>
+        <p className="mt-3 rounded-xl bg-stone-50 p-3 text-xs text-stone-500">{T('لسه مفيش دورية اتسجلت — أول وردية بتشتغل في الساعة الجاية (الدقيقة 52).')}</p>
       ) : (
         <div className="mt-3 space-y-3 text-xs">
           <div className="rounded-xl bg-stone-50 p-3">
-            <p className="font-bold text-stone-800">{TP('آخر دورية: {when} · صحة الأدوات {health}%', { when: when(data.updatedAt), health: data.health })}</p>
+            <p className="font-bold text-stone-800">{TP('آخر وردية: {when} · صحة الأدوات {health}%', { when: when(data.updatedAt), health: data.health })}</p>
             {ar() && <p className="mt-1 text-stone-600">{data.summaryAr}</p>}
             <p className={`mt-1 ${data.engine.ready ? 'text-emerald-700' : 'text-orange-800'}`}>{data.engine.ready ? T('محرك ذكاء اصطناعي جاهز لشاهين') : T('مفيش محرك ذكاء اصطناعي شغال — شاهين بيرد من خبرته المسجلة، والمشاكل اللي محتاجة تشخيص مستنياه (مفيش إصلاح وهمي).')}</p>
           </div>
@@ -70,7 +80,7 @@ export default function ShaheenPatrolPanel() {
                 <li key={p.id} className="flex items-start gap-2 rounded-lg border border-stone-100 px-2 py-1.5">
                   <span className={`mt-1 h-2 w-2 shrink-0 rounded-full ${DOT[p.level]}`} />
                   <span><b className="text-stone-800">{ar() ? p.nameAr : p.nameEn || p.id}</b>{p.deep ? <span className="ms-1 rounded-full bg-sky-100 px-1.5 text-[10px] font-bold text-sky-800">{T('فحص خبير')}</span> : null}
-                    <span className="block text-stone-500">{ar() ? p.noteAr : TP('{checked} اختبار، {failed} فيه مشكلة', { checked: p.checked, failed: p.failed })}</span></span>
+                    <span className="block text-stone-500">{ar() ? p.noteAr : TP('{checked} اختبار، {failed} فيه مشكلة', { checked: p.checked, failed: p.failed })}{p.at ? ` · ${when(p.at)}` : ''}</span></span>
                 </li>
               ))}
             </ul>
@@ -109,7 +119,7 @@ export default function ShaheenPatrolPanel() {
                   </li>
                 ))}
               </ul>
-            ) : <p className="mt-1 text-stone-500">{T('مفيش شغل خلص من آخر دورية')}</p>}
+            ) : <p className="mt-1 text-stone-500">{T('مفيش شغل خلص من آخر وردية')}</p>}
           </div>
 
           {data.resolved.length > 0 && (

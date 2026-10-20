@@ -11,6 +11,7 @@ import type { BotCheck, PrecheckFile } from '../scripts/shaheen-council/precheck
 import {
   emptyPatrol, issueMarker, MAX_TRIES, parseShaheen, PATROL_RERUNNABLE, patrolIssue, probeCatalog, probeCurrency, probeFx, probeL10n, probeNewsFile,
   probePricing, REVIEWERS, reviewerOf, runPatrol, shouldPublish, TEAMS, type PatrolFile, type ProbeResult,
+  SHIFTS, shiftAt, shiftOfBot, nextShiftAt, PROBES,
 } from '../scripts/shaheen-patrol/patrol';
 import { abs, liveProbes, probeImages, probeProductPages, sample } from '../scripts/shaheen-patrol/probes';
 
@@ -52,7 +53,7 @@ test('hands-on tests: pricing rule +50%, catalogue integrity, one currency per c
 
 test('a late robot is fixed automatically (rerun), not twice within 6 h, and goes to Shaheen after the tries', () => {
   const late = precheck([{ id: 'seo', status: 'warn', problems: ['التقرير متأخر (15 ساعة، المفروض كل 6)'], lastRun: { conclusion: 'success', status: 'completed', at: iso(NOW - 15 * H) } }]);
-  const first = runPatrol({ now: NOW, precheck: late, probes: [ok('site')], engineReady: false });
+  const first = runPatrol({ now: NOW, precheck: late, probes: [ok('site')], engineReady: false, shift: 'all' });
   assert.deepEqual(first.reruns, ['shaheen-seo.yml']);
   const item = first.file.open.find((i) => i.bot === 'seo')!;
   assert.equal(item.status, 'fixing'); assert.equal(item.tries.length, 1);
@@ -60,14 +61,14 @@ test('a late robot is fixed automatically (rerun), not twice within 6 h, and goe
 
   // An hour later, still late (the number changed — same problem): waits for the rerun, no new start.
   const again = precheck([{ id: 'seo', status: 'warn', problems: ['التقرير متأخر (16 ساعة، المفروض كل 6)'], lastRun: { conclusion: 'success', status: 'completed', at: iso(NOW - 15 * H) } }]);
-  const second = runPatrol({ now: NOW + H, precheck: again, probes: [ok('site')], previous: first.file, engineReady: false });
+  const second = runPatrol({ now: NOW + H, precheck: again, probes: [ok('site')], previous: first.file, engineReady: false, shift: 'all' });
   assert.deepEqual(second.reruns, []);
   assert.equal(second.file.open.find((i) => i.bot === 'seo')!.status, 'waiting_fix');
 
   // After the second try still broken → Shaheen. No AI engine: his playbook, the item waits honestly.
-  const third = runPatrol({ now: NOW + 7 * H, precheck: again, probes: [ok('site')], previous: second.file, engineReady: false });
+  const third = runPatrol({ now: NOW + 7 * H, precheck: again, probes: [ok('site')], previous: second.file, engineReady: false, shift: 'all' });
   assert.deepEqual(third.reruns, ['shaheen-seo.yml']);
-  const fourth = runPatrol({ now: NOW + 14 * H, precheck: again, probes: [ok('site')], previous: third.file, engineReady: false });
+  const fourth = runPatrol({ now: NOW + 14 * H, precheck: again, probes: [ok('site')], previous: third.file, engineReady: false, shift: 'all' });
   const stuck = fourth.file.open.find((i) => i.bot === 'seo')!;
   assert.equal(stuck.tries.length, MAX_TRIES);
   assert.deepEqual(fourth.reruns, []);
@@ -76,34 +77,34 @@ test('a late robot is fixed automatically (rerun), not twice within 6 h, and goe
   assert.match(stuck.nextAr, /مش هنعمل إصلاح وهمي/);
   assert.deepEqual(fourth.ask, [], 'no engine → nobody is asked');
   // With an engine, Shaheen is asked (once a day per problem).
-  const withAi = runPatrol({ now: NOW + 15 * H, precheck: again, probes: [ok('site')], previous: fourth.file, engineReady: true });
+  const withAi = runPatrol({ now: NOW + 15 * H, precheck: again, probes: [ok('site')], previous: fourth.file, engineReady: true, shift: 'all' });
   assert.equal(withAi.ask.length, 1);
   assert.equal(withAi.file.open.find((i) => i.bot === 'seo')!.status, 'waiting_shaheen', '«عند شاهين» only once he really answered');
 
   // Fixed: it disappears and is logged as resolved after the rerun, verified by this patrol's tests.
-  const fixed = runPatrol({ now: NOW + 16 * H, precheck: precheck([]), probes: [ok('site')], previous: fourth.file, engineReady: false });
+  const fixed = runPatrol({ now: NOW + 16 * H, precheck: precheck([]), probes: [ok('site')], previous: fourth.file, engineReady: false, shift: 'all' });
   assert.equal(fixed.file.open.length, 0);
   assert.match(fixed.file.resolved[0].howAr, /اتصلح بعد إعادة تشغيل shaheen-seo.yml/);
 });
 
 test('reruns are limited: at most 3 robots per patrol, only safe robots, and never for the owner\'s decisions', () => {
   const failing = precheck(['scout', 'importer', 'news', 'seo', 'languages'].map((id) => ({ id: id as BotCheck['id'], status: 'fail' as const, problems: ['آخر تشغيل فشل'] })));
-  const plan = runPatrol({ now: NOW, precheck: failing, probes: [], engineReady: false });
+  const plan = runPatrol({ now: NOW, precheck: failing, probes: [], engineReady: false, shift: 'all' });
   assert.equal(plan.reruns.length, 3);
   for (const w of plan.reruns) assert.ok((PATROL_RERUNNABLE as readonly string[]).includes(w));
   assert.equal(plan.file.open.filter((i) => i.status === 'waiting_fix').length, 2);
   // A robot that is not safe to rerun (the finance robot) goes straight to Shaheen.
-  const fin = runPatrol({ now: NOW, precheck: precheck([{ id: 'council', status: 'fail', problems: ['آخر تشغيل فشل'] }]), probes: [], engineReady: false });
+  const fin = runPatrol({ now: NOW, precheck: precheck([{ id: 'council', status: 'fail', problems: ['آخر تشغيل فشل'] }]), probes: [], engineReady: false, shift: 'all' });
   assert.deepEqual(fin.reruns, []);
   assert.equal(fin.file.open[0].status, 'waiting_shaheen');
   // Payment methods / AI credit: the owner's decision — no rerun, no Shaheen, no task.
-  const owner = runPatrol({ now: NOW, precheck: precheck([{ id: 'keys', status: 'warn', problems: ['محركات متوقفة مؤقتاً: openai'] }]), probes: [{ id: 'payments', level: 'warn', checked: 1, failed: 1, owner: true, noteAr: 'مفيش طريقة دفع' }], engineReady: true });
+  const owner = runPatrol({ now: NOW, precheck: precheck([{ id: 'keys', status: 'warn', problems: ['محركات متوقفة مؤقتاً: openai'] }]), probes: [{ id: 'payments', level: 'warn', checked: 1, failed: 1, owner: true, noteAr: 'مفيش طريقة دفع' }], engineReady: true, shift: 'all' });
   assert.deepEqual(owner.reruns, []); assert.deepEqual(owner.ask, []); assert.deepEqual(owner.tasks, []);
   assert.ok(owner.file.open.every((i) => i.status === 'owner'));
 });
 
 test('a problem across several tools gets a task force, each tool with its own part', () => {
-  const plan = runPatrol({ now: NOW, precheck: precheck([]), probes: [{ id: 'images', level: 'fail', checked: 12, failed: 5, noteAr: '5 من 12 صورة مش بتفتح', samples: ['LAT-1: 404'] }], engineReady: false });
+  const plan = runPatrol({ now: NOW, precheck: precheck([]), probes: [{ id: 'images', level: 'fail', checked: 12, failed: 5, noteAr: '5 من 12 صورة مش بتفتح', samples: ['LAT-1: 404'] }], engineReady: false, shift: 'all' });
   const item = plan.file.open[0];
   assert.deepEqual(item.team!.map((p) => p.bot), ['images', 'importer', 'product_pages']);
   assert.ok(item.team!.every((p) => p.roleAr.length > 5));
@@ -111,7 +112,7 @@ test('a problem across several tools gets a task force, each tool with its own p
   assert.equal(plan.file.teams.length, 1);
   for (const parts of Object.values(TEAMS)) for (const p of parts) assert.ok(botOf(p.bot), p.bot);
   // From the pre-check's help requests too.
-  const h = runPatrol({ now: NOW, precheck: precheck([{ id: 'design_audit', status: 'warn', problems: ['تقييم التصميم 60/100'] }], [{ from: 'design_audit', to: 'languages', textAr: 'ملاحظات ترجمة' }]), probes: [], engineReady: false });
+  const h = runPatrol({ now: NOW, precheck: precheck([{ id: 'design_audit', status: 'warn', problems: ['تقييم التصميم 60/100'] }], [{ from: 'design_audit', to: 'languages', textAr: 'ملاحظات ترجمة' }]), probes: [], engineReady: false, shift: 'all' });
   assert.deepEqual(h.file.open[0].team!.map((p) => p.bot), ['design_audit', 'languages']);
 });
 
@@ -119,7 +120,7 @@ test('every finished run is tested by an expert reviewer of the same scope — o
   const run = { conclusion: 'success', status: 'completed', at: iso(NOW - 0.5 * H) };
   const pc = precheck([{ id: 'importer', lastRun: run }, { id: 'news', lastRun: run }]);
   const probes: ProbeResult[] = [ok('pricing'), ok('catalog'), ok('fx'), { id: 'images', level: 'fail', checked: 40, failed: 12, noteAr: '12 من 40 صورة مش بتفتح', deep: true }, ok('product_pages'), ok('news_file'), ok('news_api')];
-  const plan = runPatrol({ now: NOW, precheck: pc, probes, engineReady: false });
+  const plan = runPatrol({ now: NOW, precheck: pc, probes, engineReady: false, shift: 'all' });
   const importer = plan.file.reviews.find((r) => r.bot === 'importer')!;
   assert.equal(importer.reviewerAr, REVIEWERS.importer!.nameAr);
   assert.equal(importer.verdict, 'rejected');
@@ -127,7 +128,7 @@ test('every finished run is tested by an expert reviewer of the same scope — o
   assert.equal(plan.file.reviews.find((r) => r.bot === 'news')!.verdict, 'approved');
   assert.deepEqual(plan.file.open.find((i) => i.probe === 'images')!.rejectedBy, ['importer']);
   // The same run is not reviewed again next hour.
-  const next = runPatrol({ now: NOW + H, precheck: pc, probes, previous: plan.file, engineReady: false });
+  const next = runPatrol({ now: NOW + H, precheck: pc, probes, previous: plan.file, engineReady: false, shift: 'all' });
   assert.equal(next.file.reviews.filter((r) => r.bot === 'importer').length, 1);
   // Every bot with a robot has a reviewer; every reviewer test is a known probe.
   for (const b of BOTS) if (b.workflow) assert.ok(reviewerOf(b.id).nameAr.startsWith('خبير فحص'), b.id);
@@ -136,9 +137,9 @@ test('every finished run is tested by an expert reviewer of the same scope — o
 test('what stays broken becomes a development task (deduplicated by a marker) — and Shaheen\'s answer is checked', () => {
   const pc = precheck([]);
   const broken: ProbeResult = { id: 'pricing', level: 'fail', checked: 100, failed: 2, noteAr: '2 منتج سعره مخالف' };
-  const first = runPatrol({ now: NOW, precheck: pc, probes: [broken], engineReady: false });
+  const first = runPatrol({ now: NOW, precheck: pc, probes: [broken], engineReady: false, shift: 'all' });
   assert.deepEqual(first.tasks, [], 'not a task in the first hours');
-  const later = runPatrol({ now: NOW + 7 * H, precheck: pc, probes: [broken], previous: first.file, engineReady: false });
+  const later = runPatrol({ now: NOW + 7 * H, precheck: pc, probes: [broken], previous: first.file, engineReady: false, shift: 'all' });
   assert.equal(later.tasks.length, 1);
   const issue = patrolIssue(later.tasks[0]);
   assert.ok(issue.body.startsWith(issueMarker('probe:pricing')));
@@ -155,16 +156,16 @@ test('what stays broken becomes a development task (deduplicated by a marker) �
 
 test('the log is published on change or every 3 hours — not a commit every hour', () => {
   const pc = precheck([]);
-  const a = runPatrol({ now: NOW, precheck: pc, probes: [ok('site')], engineReady: false }).file;
+  const a = runPatrol({ now: NOW, precheck: pc, probes: [ok('site')], engineReady: false, shift: 'all' }).file;
   assert.equal(shouldPublish(a, undefined, NOW), true);
   const published: PatrolFile = { ...a, publishedAt: iso(NOW) };
-  const b = runPatrol({ now: NOW + H, precheck: pc, probes: [ok('site')], previous: published, engineReady: false }).file;
+  const b = runPatrol({ now: NOW + H, precheck: pc, probes: [ok('site')], previous: published, engineReady: false, shift: 'all' }).file;
   assert.equal(b.signature, a.signature);
   assert.equal(shouldPublish(b, published, NOW + H), false);
   assert.equal(shouldPublish(b, published, NOW + 3 * H), true);
-  const c = runPatrol({ now: NOW + H, precheck: pc, probes: [{ ...ok('site'), level: 'fail' }], previous: published, engineReady: false }).file;
+  const c = runPatrol({ now: NOW + H, precheck: pc, probes: [{ ...ok('site'), level: 'fail' }], previous: published, engineReady: false, shift: 'all' }).file;
   assert.equal(shouldPublish(c, published, NOW + H), true);
-  assert.equal(runPatrol({ now: NOW, precheck: pc, probes: [], previous: emptyPatrol(), engineReady: false }).file.version, 1);
+  assert.equal(runPatrol({ now: NOW, precheck: pc, probes: [], previous: emptyPatrol(), engineReady: false, shift: 'all' }).file.version, 1);
 });
 
 test('live tests open real pages like a visitor (fake network): price matches the catalogue, photos open', async () => {
@@ -206,12 +207,48 @@ test('live tests open real pages like a visitor (fake network): price matches th
   assert.equal(abs(site, './p/money.json'), 'https://spculculat-oss.github.io/Sham-Perfume/p/money.json');
 });
 
+test('rotating shifts: one group per hour, every tool and every test in exactly one shift, each every 3 hours', () => {
+  const all = SHIFTS.flatMap((x) => x.bots);
+  assert.equal(new Set(all).size, all.length, 'a tool in two shifts');
+  assert.deepEqual([...all].sort(), BOTS.map((b) => b.id).sort(), 'every tool has a shift');
+  const tests = SHIFTS.flatMap((x) => x.probes);
+  assert.deepEqual([...tests].sort(), Object.keys(PROBES).sort());
+  for (const x of SHIFTS) assert.ok(x.bots.length <= 13 && x.probes.length <= 7, x.nameEn);
+  // Consecutive hours → consecutive shifts; the same shift comes back after 3 hours, also across midnight.
+  const h0 = Date.parse('2026-10-20T22:52:00Z');
+  const seq = [0, 1, 2, 3, 4, 5].map((i) => shiftAt(h0 + i * H));
+  assert.deepEqual(seq.slice(3), seq.slice(0, 3));
+  assert.equal(new Set(seq.slice(0, 3)).size, 3);
+  assert.equal(Date.parse(nextShiftAt(shiftAt(h0), h0)) - Math.floor(h0 / H) * H, 3 * H);
+
+  // A shift checks only its own tools: another shift's problem waits untouched (not resolved, not rerun).
+  const seoShift = shiftOfBot('seo'); const storeShift = shiftOfBot('importer');
+  assert.notEqual(seoShift, storeShift);
+  const t0 = h0 + ((seoShift - shiftAt(h0) + 3) % 3) * H;
+  const late = precheck([{ id: 'seo', status: 'warn', problems: ['التقرير متأخر (15 ساعة، المفروض كل 6)'] }, { id: 'importer', status: 'fail', problems: ['آخر تشغيل فشل'] }]);
+  const a = runPatrol({ now: t0, precheck: late, probes: [], engineReady: false });
+  assert.equal(a.file.shift?.index, seoShift);
+  assert.deepEqual(a.file.open.map((i) => i.bot), ['seo'], 'the importer waits for its own shift');
+  assert.deepEqual(a.reruns, ['shaheen-seo.yml']);
+  const next = t0 + ((storeShift - seoShift + 3) % 3) * H;
+  const b = runPatrol({ now: next, precheck: late, probes: [], previous: a.file, engineReady: false });
+  assert.equal(b.file.shift?.index, storeShift);
+  assert.deepEqual(b.file.open.map((i) => i.bot).sort(), ['importer', 'seo']);
+  assert.equal(b.file.open.find((i) => i.bot === 'seo')!.tries.length, 1, 'the seo item is carried, not retried');
+  assert.equal(b.file.resolved.length, 0, 'not checked ≠ fixed');
+  assert.deepEqual(b.reruns, ['shaheen-import.yml']);
+  // The other shifts' last test results stay visible.
+  const c = runPatrol({ now: next + 3 * H, precheck: late, probes: [ok('pricing')], previous: { ...b.file, probes: [{ ...ok('site'), at: iso(t0) }] }, engineReady: false });
+  assert.deepEqual(c.file.probes.map((p) => p.id), ['pricing', 'site']);
+});
+
 test('the patrol robot is in the structure, runs hourly, pinned, and starts only safe robots', () => {
   const bot = botOf('patrol')!;
   assert.equal(bot.workflow, 'shaheen-patrol.yml');
   assert.equal(bot.report, 'shaheen-patrol.json');
   const wf = readFileSync(new URL('../.github/workflows/shaheen-patrol.yml', import.meta.url), 'utf8');
-  assert.match(wf, /cron: '37 \* \* \* \*'/);
+  assert.match(wf, /cron: '52 \* \* \* \*'/);
+  assert.match(wf, /PATROL_SHIFT/);
   assert.match(wf, /actions: write/);
   for (const line of wf.split('\n').filter((l) => /uses:/.test(l))) assert.match(line, /@[0-9a-f]{40} #/);
   assert.doesNotMatch(wf, /toJSON\(secrets\)/);

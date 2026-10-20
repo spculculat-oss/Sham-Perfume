@@ -936,17 +936,20 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   '⚠️ فشل آخر مرة ({reason}) — هيتأجل لو فشل تاني': { en: '⚠️ Failed last time ({reason}) — will be parked if it fails again' },
   '✅ شغال — آخر رد ناجح {time}': { en: '✅ Working — last good reply {time}' },
   'المحرك اللي بيفشل بيتأجل تلقائياً (المفتاح المرفوض نص ساعة، الرصيد الخلصان لحد التجديد، الزحمة دقيقة) ويتجرب تاني لوحده بعد المهلة — وأول رد ناجح يرجّعه مكانه. زر «اختبار الاتصال» يحدّث الحالة فوراً.': { en: 'A failing engine is parked automatically (rejected key 30 min, used-up credit until renewal, rate limit one minute) and retried by itself afterwards — the first good reply puts it back in place. «Test engines» refreshes the status at once.' },
-  // ── Hourly patrol ──
+  // ── Rotating patrol ──
+  "الدورية بالتناوب": { en: "Rotating patrol" },
+  "تلات ورديات بالتناوب، وردية كل ساعة: كل أداة بتفحص شغلها بالتجربة كل 3 ساعات من غير ضغط على الموقع. اللي يتصلح آلياً يتصلح، واللي لأ يروح لشاهين، والمشاكل المشتركة ليها فريق عمل، وكل شغل خلص بيراجعه خبير من نفس التخصص.": { en: "Three shifts take turns, one per hour: every tool tests its own work hands-on every 3 hours without loading the site. What can be fixed automatically is fixed, the rest goes to Shaheen, shared problems get a task force, and every finished job is reviewed by an expert of the same scope." },
+  "آخر وردية": { en: "Last shift" },
+  "الدور الجاي": { en: "Next turn" },
+  "لسه مفيش دورية اتسجلت — أول وردية بتشتغل في الساعة الجاية (الدقيقة 52).": { en: "No patrol recorded yet — the first shift runs within the next hour (at minute 52)." },
+  "آخر وردية: {when} · صحة الأدوات {health}%": { en: "Last shift: {when} · tools health {health}%" },
+  "مفيش شغل خلص من آخر وردية": { en: "No work finished since the last shift" },
   "بيتصلح آلياً": { en: "Being fixed automatically" },
   "مستني نتيجة الإصلاح": { en: "Waiting for the fix result" },
   "عند شاهين": { en: "With Shaheen" },
   "مستني شاهين": { en: "Waiting for Shaheen" },
   "محتاج قرارك": { en: "Needs your decision" },
   "تحت المتابعة": { en: "Being watched" },
-  "الدورية كل ساعة": { en: "Hourly patrol" },
-  "كل ساعة كل أداة بتفحص شغلها بالتجربة: اللي يتصلح آلياً يتصلح، واللي لأ يروح لشاهين، والمشاكل المشتركة ليها فريق عمل، وكل شغل خلص بيراجعه خبير من نفس التخصص.": { en: "Every hour each tool tests its own work hands-on: what can be fixed automatically is fixed, the rest goes to Shaheen, shared problems get a task force, and every finished job is reviewed by an expert of the same scope." },
-  "لسه مفيش دورية اتسجلت — أول دورية بتشتغل في الساعة الجاية (الدقيقة 37).": { en: "No patrol recorded yet — the first one runs within the next hour (at minute 37)." },
-  "آخر دورية: {when} · صحة الأدوات {health}%": { en: "Last patrol: {when} · tools health {health}%" },
   "محرك ذكاء اصطناعي جاهز لشاهين": { en: "An AI engine is ready for Shaheen" },
   "مفيش محرك ذكاء اصطناعي شغال — شاهين بيرد من خبرته المسجلة، والمشاكل اللي محتاجة تشخيص مستنياه (مفيش إصلاح وهمي).": { en: "No AI engine works now — Shaheen answers from his recorded playbook, and problems needing a diagnosis wait for him (no fake fixes)." },
   "الاختبارات العملية": { en: "Hands-on tests" },
@@ -960,7 +963,6 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   "مراجعات خبراء الفحص": { en: "Expert reviews" },
   "اتقبل": { en: "Approved" },
   "اترفض": { en: "Rejected" },
-  "مفيش شغل خلص من آخر دورية": { en: "No work finished since the last patrol" },
   "اتصلحت مؤخراً": { en: "Recently fixed" },
 };
 

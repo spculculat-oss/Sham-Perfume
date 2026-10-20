@@ -1,5 +1,6 @@
 /**
- * «الدورية كل ساعة» — every tool inspects its own work every hour (GitHub Actions: shaheen-patrol.yml).
+ * «الدورية بالتناوب» — every tool inspects its own work every 3 hours, in rotating shifts so only one group of
+ * tools works at a time (GitHub Actions: shaheen-patrol.yml runs hourly; each hour is one shift of three).
  *
  *   1. Self-inspection: each bot's own check (report age, last run, its numbers — the same rules as the
  *      pre-meeting check) plus hands-on tests of its scope (prices, currencies, live pages, photos, news…).
@@ -168,6 +169,10 @@ export const TEAMS: Record<ProbeId, TeamPart[]> = {
   payments: [{ bot: 'finance', roleAr: 'يراجع إعدادات الدفع' }, { bot: 'keys', roleAr: 'يتأكد من إعدادات الخادم' }],
 };
 
+// ── Shifts (scripts/shaheen-patrol/shifts.ts — browser-safe, the admin panel shows them) ─────────────────
+export { SHIFTS, SHIFT_HOURS, shiftAt, shiftOfBot, shiftOfProbe, nextShiftAt, type Shift, type ShiftIndex } from './shifts';
+import { SHIFTS, shiftAt, shiftOfBot, shiftOfProbe, nextShiftAt, type ShiftIndex } from './shifts';
+
 // ── Safe fixes ───────────────────────────────────────────────────────────────────────────────────────────
 /** Robots the patrol may start again: idempotent, no money, no messages to people, no AI credit of note. */
 export const PATROL_RERUNNABLE = [...RERUNNABLE, 'shaheen-languages.yml', 'pages.yml', 'product-pages-check.yml', 'live-smoke.yml', 'shaheen-precheck.yml'] as const;
@@ -181,6 +186,8 @@ export const PROBE_FIX: Partial<Record<ProbeId, PatrolRerunnable>> = {
 export const RERUN_GAP_H = 6;
 export const MAX_TRIES = 2;
 export const MAX_RERUNS_PER_PATROL = 3;
+/** Shaheen's questions per shift — the visitors' AI quota comes first. */
+export const ASKS_PER_SHIFT = 1;
 export const ASK_GAP_H = 24;
 /** A serious problem still open after this long (and past Shaheen) becomes a development task. */
 export const TASK_AFTER_H = 6;
@@ -205,6 +212,8 @@ export interface Item {
   key: string;
   bot: BotId;
   source: 'self' | 'probe';
+  /** The shift that checks it (the item waits untouched in the other hours). */
+  shift?: ShiftIndex;
   probe?: ProbeId;
   level: 'warn' | 'fail';
   textAr: string;
@@ -240,7 +249,7 @@ export interface PatrolFile {
   summaryAr: string;
   health: number;
   bots: BotLine[];
-  probes: (ProbeResult & { nameAr?: string; nameEn?: string })[];
+  probes: (ProbeResult & { nameAr?: string; nameEn?: string; at?: string })[];
   open: Item[];
   resolved: Resolved[];
   reviews: Review[];
@@ -249,6 +258,8 @@ export interface PatrolFile {
   reruns: { at: string; workflow: string; key: string }[];
   teams: { key: string; textAr: string; parts: TeamPart[] }[];
   engine: { ready: boolean; noteAr: string };
+  /** This hour's shift and when each shift comes round again. */
+  shift?: { index: ShiftIndex; nameAr: string; nameEn: string; next: string[] };
 }
 
 export const isPatrolFile = (d: unknown): d is PatrolFile => Boolean(d && typeof d === 'object' && (d as PatrolFile).version === 1 && Array.isArray((d as PatrolFile).open) && Array.isArray((d as PatrolFile).reviews));
@@ -269,6 +280,8 @@ export interface PatrolInput {
   previous?: PatrolFile;
   /** An AI engine can answer for Shaheen this hour. */
   engineReady: boolean;
+  /** The shift to run (default: this hour's); 'all' = every tool at once (manual full patrol). */
+  shift?: ShiftIndex | 'all';
 }
 export interface PatrolPlan {
   file: PatrolFile;
@@ -281,16 +294,17 @@ export interface PatrolPlan {
 }
 
 /** Findings of this hour: each bot's own problems (warn/fail) and every failing probe (one per scope). */
-export function findings(precheck: PrecheckFile, probes: ProbeResult[]): Omit<Item, 'since' | 'lastSeen' | 'status' | 'nextAr' | 'tries'>[] {
+export function findings(precheck: PrecheckFile, probes: ProbeResult[], inShift: (id: BotId) => boolean = () => true): Omit<Item, 'since' | 'lastSeen' | 'status' | 'nextAr' | 'tries'>[] {
   const out: Omit<Item, 'since' | 'lastSeen' | 'status' | 'nextAr' | 'tries'>[] = [];
   for (const c of precheck.bots) {
+    if (!inShift(c.id)) continue;
     if (c.status !== 'warn' && c.status !== 'fail') continue;
-    for (const p of c.problems) out.push({ key: selfKey(c.id, p), bot: c.id, source: 'self', level: c.status === 'fail' && (isLate(p) || c.problems.length === 1) ? 'fail' : 'warn', textAr: `${botOf(c.id)?.nameAr || c.id}: ${p}`, ...(OWNER.test(p) ? { owner: true } : {}) });
+    for (const p of c.problems) out.push({ key: selfKey(c.id, p), bot: c.id, source: 'self', shift: shiftOfBot(c.id), level: c.status === 'fail' && (isLate(p) || c.problems.length === 1) ? 'fail' : 'warn', textAr: `${botOf(c.id)?.nameAr || c.id}: ${p}`, ...(OWNER.test(p) ? { owner: true } : {}) });
   }
   for (const r of probes) {
     if (r.level !== 'warn' && r.level !== 'fail') continue;
     const team = TEAMS[r.id];
-    out.push({ key: `probe:${r.id}`, bot: team[0].bot, source: 'probe', probe: r.id, level: r.level, owner: r.owner, textAr: `${PROBES[r.id].nameAr}: ${r.noteAr}${r.samples?.length ? ` — مثال: ${r.samples.slice(0, 3).join('، ')}` : ''}`, team });
+    out.push({ key: `probe:${r.id}`, bot: team[0].bot, source: 'probe', shift: shiftOfProbe(r.id), probe: r.id, level: r.level, owner: r.owner, textAr: `${PROBES[r.id].nameAr}: ${r.noteAr}${r.samples?.length ? ` — مثال: ${r.samples.slice(0, 3).join('، ')}` : ''}`, team });
   }
   return out;
 }
@@ -321,10 +335,11 @@ export function playbookFor(item: Pick<Item, 'probe' | 'textAr'>): Omit<ShaheenA
 }
 
 /** The expert reviews of every bot whose robot finished a run since its last review. */
-export function reviewsFor(precheck: PrecheckFile, probes: ProbeResult[], reviewed: Partial<Record<BotId, string>>): Review[] {
+export function reviewsFor(precheck: PrecheckFile, probes: ProbeResult[], reviewed: Partial<Record<BotId, string>>, inShift: (id: BotId) => boolean = () => true): Review[] {
   const byId = new Map(probes.map((p) => [p.id, p]));
   const out: Review[] = [];
   for (const c of precheck.bots) {
+    if (!inShift(c.id)) continue;
     const run = c.lastRun;
     if (!run || run.status !== 'completed' || !run.at || reviewed[c.id] === run.at) continue;
     const rv = reviewerOf(c.id);
@@ -351,7 +366,10 @@ export function runPatrol(input: PatrolInput): PatrolPlan {
   const { now, precheck, probes, engineReady } = input;
   const prev = input.previous && isPatrolFile(input.previous) ? input.previous : emptyPatrol();
   const at = new Date(now).toISOString();
-  const found = findings(precheck, probes);
+  const shift = input.shift ?? shiftAt(now);
+  const inShift = (id: BotId) => shift === 'all' || shiftOfBot(id) === shift;
+  const itemShift = (i: Pick<Item, 'shift' | 'probe' | 'bot'>): ShiftIndex => i.shift ?? (i.probe ? shiftOfProbe(i.probe) : shiftOfBot(i.bot));
+  const found = findings(precheck, probes, inShift);
   const before = new Map(prev.open.map((i) => [i.key, i]));
   const reruns = prev.reruns.filter((r) => hours(r.at, now) < 48);
   const startNow: PatrolRerunnable[] = [];
@@ -360,7 +378,7 @@ export function runPatrol(input: PatrolInput): PatrolPlan {
   const runOf = (wf: string | undefined) => precheck.bots.map((b) => b.lastRun && botOf(b.id)?.workflow === wf ? b.lastRun : undefined).find(Boolean);
 
   // Expert reviews first: a rejection marks the matching items.
-  const reviews = reviewsFor(precheck, probes, prev.reviewedRuns);
+  const reviews = reviewsFor(precheck, probes, prev.reviewedRuns, inShift);
   const reviewedRuns = { ...prev.reviewedRuns };
   for (const r of reviews) reviewedRuns[r.bot] = r.runAt;
 
@@ -404,7 +422,7 @@ export function runPatrol(input: PatrolInput): PatrolPlan {
     item.nextAr = answered
       ? `${why} — شاهين شخّصها: ${item.shaheen.diagnosisAr.slice(0, 160)}`
       : engineReady
-        ? `${why} — في دور شاهين يشخصها (سؤالين بالكتير كل ساعة عشان باقة الزوار)`
+        ? `${why} — في دور شاهين يشخصها (سؤال واحد بس في كل وردية عشان باقة الزوار)`
         : `${why} — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)`;
     if (item.issue) { item.status = 'task'; item.nextAr = `مهمة تطوير #${item.issue} لوكيل البرمجة («نفذ مهام شاهين»)`; }
     else if (item.level === 'fail' && hours(item.since, now) >= TASK_AFTER_H && (item.shaheen?.needsCode ?? true)) tasks.push(item);
@@ -412,6 +430,10 @@ export function runPatrol(input: PatrolInput): PatrolPlan {
   }
 
   // Resolved since the last patrol: gone from this hour's tests.
+  // Items of the other shifts were not checked this hour: they wait as they are for their own shift.
+  const checked = new Set(open.map((i) => i.key));
+  const tested = new Set(probes.map((p) => p.id));
+  for (const old of prev.open) if (!checked.has(old.key) && shift !== 'all' && itemShift(old) !== shift && !(old.probe && tested.has(old.probe))) open.push({ ...old, shift: itemShift(old) });
   const stillOpen = new Set(open.map((i) => i.key));
   const resolved: Resolved[] = [
     ...prev.open.filter((i) => !stillOpen.has(i.key)).map((i) => ({
@@ -428,14 +450,21 @@ export function runPatrol(input: PatrolInput): PatrolPlan {
   const probeFails = probes.filter((p) => p.level === 'fail' && !p.owner).length;
   const health = measured ? Math.max(0, Math.round((100 * (counts.ok + counts.warn * 0.5)) / measured) - probeFails * 3) : 0;
   const approved = reviews.filter((r) => r.verdict === 'approved').length;
-  const summaryAr = `دورية ${at.slice(11, 16)} UTC: ${probes.filter((p) => p.level !== 'skip').length} اختبار عملي (${probes.filter((p) => p.level === 'ok').length} سليم)، `
+  const shiftName = shift === 'all' ? 'دورية كاملة (كل الأدوات)' : SHIFTS[shift].nameAr;
+  const summaryAr = `${shiftName} ${at.slice(11, 16)} UTC: ${probes.filter((p) => p.level !== 'skip').length} اختبار عملي (${probes.filter((p) => p.level === 'ok').length} سليم)، `
     + `${open.length} مشكلة مفتوحة — ${open.filter((i) => i.status === 'fixing').length} بتتصلح آلياً، ${open.filter((i) => i.status === 'shaheen' || i.status === 'waiting_shaheen').length} عند شاهين، ${open.filter((i) => i.status === 'task').length} مهمة تطوير، ${open.filter((i) => i.status === 'owner').length} محتاجة قرارك؛ `
     + `${reviews.length ? `${reviews.length} مراجعة خبير (${approved} اتقبلت، ${reviews.length - approved} اترفضت)` : 'مفيش شغل جديد للمراجعة'}؛ ${resolved.filter((r) => r.resolvedAt === at).length} اتصلحت من آخر دورية.`;
 
   const file: PatrolFile = {
     version: 1, updatedAt: at, publishedAt: prev.publishedAt, signature: '', summaryAr, health,
     bots: precheck.bots.map((b) => ({ id: b.id, status: b.status, problems: b.problems.length, reviewed: reviewedRuns[b.id] })),
-    probes: probes.map((p) => ({ ...p, nameAr: PROBES[p.id].nameAr, nameEn: PROBES[p.id].nameEn })), open, resolved, reviews: [...reviews, ...prev.reviews].slice(0, 30), reviewedRuns, reruns, teams,
+    // Every test's latest result: this shift's, and the other shifts' from their last turn.
+    probes: [
+      ...probes.map((p) => ({ ...p, at, nameAr: PROBES[p.id].nameAr, nameEn: PROBES[p.id].nameEn })),
+      ...prev.probes.filter((p) => !probes.some((q) => q.id === p.id) && p.id in PROBES),
+    ].sort((a, b) => Object.keys(PROBES).indexOf(a.id) - Object.keys(PROBES).indexOf(b.id)),
+    open, resolved, reviews: [...reviews, ...prev.reviews].slice(0, 30), reviewedRuns, reruns, teams,
+    shift: shift === 'all' ? undefined : { index: shift, nameAr: SHIFTS[shift].nameAr, nameEn: SHIFTS[shift].nameEn, next: SHIFTS.map((x) => nextShiftAt(x.index, now)) },
     engine: { ready: engineReady, noteAr: engineReady ? 'محرك ذكاء اصطناعي جاهز لشاهين' : 'مفيش محرك ذكاء اصطناعي شغال — شاهين بيرد من خبرته المسجلة والمشاكل اللي محتاجة تشخيص مستنياه' },
   };
   file.signature = signatureOf(file);

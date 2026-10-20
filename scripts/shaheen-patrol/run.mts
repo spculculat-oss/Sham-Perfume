@@ -1,15 +1,17 @@
 /**
- * «الدورية كل ساعة» — GitHub Actions runs this every hour (.github/workflows/shaheen-patrol.yml):
+ * «الدورية بالتناوب» — GitHub Actions runs this every hour, one shift of tools at a time; each tool every 3 hours
+ * (.github/workflows/shaheen-patrol.yml):
  *   node --import tsx scripts/shaheen-patrol/run.mts
  * Every tool's own check + hands-on tests of its scope → safe fixes (robots started again) → Shaheen for the
  * rest (AI when an engine answers; his recorded playbook otherwise, and the item waits for him) → task forces
  * for problems spanning several tools → expert reviews of every run finished since the last patrol.
  * Writes src/data/live/shaheen-patrol.json; GITHUB_OUTPUT reruns=<workflows> publish=true|false.
- * Env: PATROL_ACT=true (main only: issues; the workflow starts the reruns), PATROL_LIVE=false (skip the live
+ * Env: PATROL_SHIFT=0|1|2|all (default: this hour's shift), PATROL_ACT=true (main only: issues; the workflow starts the reruns), PATROL_LIVE=false (skip the live
  * tests), GITHUB_TOKEN, GITHUB_REPOSITORY, the AI keys.
  */
 import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { SITE } from '../../src/seo/site';
+import type { BotId } from '../../src/utils/shaheenOrg';
 import { mergeCatalog, type RawProduct } from '../../src/utils/storeCatalog';
 import { BUNDLED_FX, COUNTRY_CODES, currencyFor } from '../../src/utils/pricing';
 import { getCountryMeta } from '../../src/utils/countryCurrencyMeta';
@@ -22,7 +24,7 @@ import { parseJson } from '../shaheen-supervisor/checks';
 import { runPrecheck } from '../shaheen-council/precheck';
 import { fetchRuns, readReports } from '../shaheen-council/runs';
 import {
-  isPatrolFile, isPatrolRerunnable, MAX_TASKS_PER_DAY, parseShaheen, patrolIssue, issueMarker, probeCatalog, probeCurrency, probeFx, probeL10n, probeNewsFile,
+  ASKS_PER_SHIFT, isPatrolFile, isPatrolRerunnable, shiftAt, shiftOfBot, SHIFTS, type ProbeId, type ShiftIndex, MAX_TASKS_PER_DAY, parseShaheen, patrolIssue, issueMarker, probeCatalog, probeCurrency, probeFx, probeL10n, probeNewsFile,
   probePricing, PROBES, reviewerOf, runPatrol, shaheenPrompt, SHAHEEN_SYSTEM, shouldPublish, signatureOf, type PatrolFile, type ProbeResult, REVIEWERS,
 } from './patrol';
 import { liveProbes } from './probes';
@@ -37,7 +39,13 @@ const notes: string[] = [];
 const say = (line: string) => { console.log(line); notes.push(line); };
 const previous: PatrolFile | undefined = (() => { try { const d: unknown = existsSync(FILE) ? JSON.parse(readFileSync(FILE, 'utf8')) : undefined; return isPatrolFile(d) ? d : undefined; } catch { return undefined; } })();
 
-// ── 1. Each tool's own check (the pre-meeting rules, every hour) ──────────────────────────────────────────
+// ── 0. This hour's shift (each tool every 3 hours, one group at a time) ───────────────────────────────────
+const shiftEnv = (env.PATROL_SHIFT || '').trim();
+const shift: ShiftIndex | 'all' = shiftEnv === 'all' ? 'all' : /^[012]$/.test(shiftEnv) ? (Number(shiftEnv) as ShiftIndex) : shiftAt(now);
+const inShift = (id: BotId) => shift === 'all' || shiftOfBot(id) === shift;
+say(`Shift: ${shift === 'all' ? 'all tools (manual full patrol)' : `${SHIFTS[shift].nameEn} — ${SHIFTS[shift].bots.join(', ')}`}`);
+
+// ── 1. Each tool's own check (the pre-meeting rules) ──────────────────────────────────────────────────────
 const repo = env.GITHUB_REPOSITORY || 'spculculat-oss/Sham-Perfume';
 const token = env.GITHUB_TOKEN?.trim();
 const precheck = runPrecheck(readReports(), await fetchRuns(repo, token), now);
@@ -47,35 +55,39 @@ say(`Self-checks: ${precheck.summaryAr}`);
 const readJson = (url: URL): unknown => { try { return JSON.parse(readFileSync(url, 'utf8')); } catch { return undefined; } };
 const raw = ((readJson(new URL('../../src/data/products.json', import.meta.url)) as { products?: RawProduct[] } | undefined)?.products) || [];
 const visible = mergeCatalog(raw, readJson(live('store-catalog.json')) as never);
-const probes: ProbeResult[] = [
-  probePricing(raw as never, PRICE_MARKUP),
-  probeCatalog(visible),
-  probeCurrency(COUNTRY_CODES, (c) => getCountryMeta(c).currency, (c) => currencyFor(c), BUNDLED_FX.rates),
-  probeFx(BUNDLED_FX, now),
-  probeL10n(Object.fromEntries(SUPPORTED_LANGUAGES.map((l) => [l.code, storeCoreCoverage(l.code)])), STORE_CORE_KEYS.length),
-  probeNewsFile(readJson(live('shaheen-news.json')) as never, now),
-];
-// The expert reviewer of a bot that finished a run since its last review tests with a bigger sample.
-const finished = precheck.bots.filter((b) => b.lastRun?.status === 'completed' && b.lastRun.at && previous?.reviewedRuns?.[b.id] !== b.lastRun.at);
+// The expert reviewer of a bot (of this shift) that finished a run since its last review tests its whole
+// scope with a bigger sample — even the tests that belong to another shift.
+const finished = precheck.bots.filter((b) => inShift(b.id) && b.lastRun?.status === 'completed' && b.lastRun.at && previous?.reviewedRuns?.[b.id] !== b.lastRun.at);
 const deep = Object.fromEntries(finished.flatMap((b) => reviewerOf(b.id).probes).map((p) => [p, true]));
-if (env.PATROL_LIVE !== 'false') {
+const wanted = new Set<ProbeId>([...(shift === 'all' ? SHIFTS.flatMap((x) => x.probes) : SHIFTS[shift].probes), ...(Object.keys(deep) as ProbeId[])]);
+const LOCAL: Partial<Record<ProbeId, () => ProbeResult>> = {
+  pricing: () => probePricing(raw as never, PRICE_MARKUP),
+  catalog: () => probeCatalog(visible),
+  currency: () => probeCurrency(COUNTRY_CODES, (c) => getCountryMeta(c).currency, (c) => currencyFor(c), BUNDLED_FX.rates),
+  fx: () => probeFx(BUNDLED_FX, now),
+  l10n: () => probeL10n(Object.fromEntries(SUPPORTED_LANGUAGES.map((l) => [l.code, storeCoreCoverage(l.code)])), STORE_CORE_KEYS.length),
+  news_file: () => probeNewsFile(readJson(live('shaheen-news.json')) as never, now),
+};
+const probes: ProbeResult[] = (Object.keys(LOCAL) as ProbeId[]).filter((id) => wanted.has(id)).map((id) => LOCAL[id]!());
+const liveWanted = [...wanted].filter((id) => PROBES[id].live);
+if (env.PATROL_LIVE !== 'false' && liveWanted.length) {
   probes.push(...await liveProbes({
-    pages: SITE.url, engine: SITE.engineUrl, hour: Math.floor(now / 3_600_000), deep,
+    pages: SITE.url, engine: SITE.engineUrl, hour: Math.floor(now / (3 * 3_600_000)), deep,
     products: visible.map((p) => ({ sku: p.sku, slug: p.slug, price: p.price, images: p.images })),
-  }));
-} else say('Live tests skipped (PATROL_LIVE=false)');
+  }, liveWanted));
+} else if (env.PATROL_LIVE === 'false') say('Live tests skipped (PATROL_LIVE=false)');
 for (const p of probes) say(`Test «${PROBES[p.id].nameAr}»${p.deep ? ' (expert, big sample)' : ''}: ${p.level} — ${p.noteAr}`);
 
 // ── 3. Decide: fixes, Shaheen, task forces, reviews ──────────────────────────────────────────────────────
 const quota = quotaBook(live('ai-quota.json'));
 const engines = (await configuredEngines(env)).filter((id) => !quota.pausedUntil(id, keyFingerprint(env, id)));
-const plan = runPatrol({ now, precheck, probes, previous, engineReady: engines.length > 0 });
+const plan = runPatrol({ now, precheck, probes, previous, engineReady: engines.length > 0, shift });
 const { file } = plan;
 say(`Reviews: ${file.reviews.filter((r) => r.runAt && plan.file.reviewedRuns[r.bot] === r.runAt && !previous?.reviews.some((x) => x.bot === r.bot && x.runAt === r.runAt)).map((r) => `${r.reviewerAr} ← ${r.verdict}`).join('، ') || 'none'}`);
 
-// Shaheen diagnoses what the tools could not fix (at most 2 questions an hour — the visitors' quota comes first).
+// Shaheen diagnoses what the tools could not fix (one question per shift — the visitors' quota comes first).
 let quotaOut = false;
-for (const item of plan.ask.slice(0, 2)) {
+for (const item of plan.ask.slice(0, ASKS_PER_SHIFT)) {
   if (quotaOut) break;
   let engine = '';
   const ask = await makeAsk(env, { quota, prefer: engines[0], maxWaitMs: 30_000, onEngine: (id) => { engine = id; } }).catch(() => undefined);
@@ -158,7 +170,7 @@ say(`Reruns: ${reruns.join(' ') || 'none'} · publish: ${publish}`);
 if (env.GITHUB_OUTPUT) appendFileSync(env.GITHUB_OUTPUT, `reruns=${act ? reruns.join(' ') : ''}\npublish=${publish}\n`);
 if (env.GITHUB_ACTIONS) {
   const clip = (t: string) => t.replace(/[\r\n%]/g, ' ').slice(0, 3000);
-  console.log(`::notice title=الدورية كل ساعة::${clip(file.summaryAr)}`);
+  console.log(`::notice title=${file.shift?.nameAr || 'الدورية الكاملة'}::${clip(file.summaryAr)}`);
   console.log(`::notice title=الاختبارات العملية::${clip(file.probes.map((p) => `${p.id}=${p.level}${p.deep ? '*' : ''} (${p.noteAr})`).join(' | '))}`);
   console.log(`::notice title=شاهين والمراجعات::${clip(notes.filter((n) => /^(Shaheen|Reviews|Task|Rehearsal|No AI)/.test(n)).join(' | ') || '—')}`);
   for (const i of file.open.filter((x) => x.level === 'fail').slice(0, 8)) console.log(`::warning title=${clip(i.textAr.slice(0, 80))}::${clip(i.nextAr)}`);
@@ -166,7 +178,7 @@ if (env.GITHUB_ACTIONS) {
 if (env.GITHUB_STEP_SUMMARY) {
   const reviewed = file.reviews.filter((r) => !previous?.reviews.some((x) => x.bot === r.bot && x.runAt === r.runAt));
   appendFileSync(env.GITHUB_STEP_SUMMARY, [
-    `## الدورية كل ساعة — ${at.slice(0, 16).replace('T', ' ')} UTC`, '', file.summaryAr, '',
+    `## ${file.shift?.nameAr || 'الدورية الكاملة'} — ${at.slice(0, 16).replace('T', ' ')} UTC`, '', file.summaryAr, '',
     '### الاختبارات العملية', ...file.probes.map((p) => `- ${p.level === 'ok' ? '✅' : p.level === 'skip' ? '⏭️' : p.level === 'warn' ? '⚠️' : '❌'} **${PROBES[p.id].nameAr}**${p.deep ? ' (فحص خبير)' : ''}: ${p.noteAr}`), '',
     '### المشاكل المفتوحة', ...(file.open.length ? file.open.map((i) => `- [${i.level}] ${i.textAr}\n  ← ${i.nextAr}${i.team ? `\n  فريق العمل: ${i.team.map((p) => `${p.bot} (${p.roleAr})`).join('، ')}` : ''}`) : ['- مفيش']), '',
     '### مراجعات الخبراء', ...(reviewed.length ? reviewed.map((r) => `- **${r.reviewerAr}** ← ${r.verdict === 'approved' ? 'اتقبل ✅' : `اترفض ❌: ${r.defects.join('؛ ')}`}`) : ['- مفيش شغل جديد']), '',
