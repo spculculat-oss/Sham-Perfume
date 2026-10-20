@@ -240,7 +240,7 @@ export interface Review {
   tested: { nameAr: string; level: Level; noteAr: string; deep?: boolean }[];
   defects: string[];
 }
-export interface BotLine { id: BotId; status: BotCheck['status']; problems: number; reviewed?: string }
+export interface BotLine { id: BotId; status: BotCheck['status']; problems: number; reviewed?: string; lastRunAt?: string; lastRunOk?: boolean; cause?: string[] }
 export interface PatrolFile {
   version: 1;
   updatedAt: string;
@@ -347,7 +347,7 @@ export function reviewsFor(precheck: PrecheckFile, probes: ProbeResult[], review
     const tested: Review['tested'] = [];
     const defects: string[] = [];
     tested.push({ nameAr: 'نتيجة التشغيل', level: run.conclusion === 'success' ? 'ok' : run.conclusion === 'failure' ? 'fail' : 'warn', noteAr: run.conclusion || run.status });
-    if (run.conclusion === 'failure') defects.push('التشغيل فشل');
+    if (run.conclusion === 'failure') defects.push(c.cause?.[0] ? `التشغيل فشل: ${c.cause[0]}` : 'التشغيل فشل');
     if (c.reportAt) tested.push({ nameAr: 'التقرير', level: c.problems.some(isLate) ? 'warn' : 'ok', noteAr: `من ${c.ageHours ?? '؟'} ساعة` });
     // The bot's own numbers judge the work only when they are broken (a warning is followed up as a problem).
     if (c.status === 'fail') for (const p of c.problems) if (!defects.includes(p)) defects.push(p);
@@ -458,7 +458,7 @@ export function runPatrol(input: PatrolInput): PatrolPlan {
 
   const file: PatrolFile = {
     version: 1, updatedAt: at, publishedAt: prev.publishedAt, signature: '', summaryAr, health,
-    bots: precheck.bots.map((b) => ({ id: b.id, status: b.status, problems: b.problems.length, reviewed: reviewedRuns[b.id] })),
+    bots: precheck.bots.map((b) => ({ id: b.id, status: b.status, problems: b.problems.length, reviewed: reviewedRuns[b.id], ...(b.lastRun?.status === 'completed' ? { lastRunAt: b.lastRun.at, lastRunOk: b.lastRun.conclusion === 'success' } : {}), ...(b.cause ? { cause: b.cause } : {}) })),
     // Every test's latest result: this shift's, and the other shifts' from their last turn.
     probes: [
       ...probes.map((p) => ({ ...p, at, nameAr: PROBES[p.id].nameAr, nameEn: PROBES[p.id].nameEn })),

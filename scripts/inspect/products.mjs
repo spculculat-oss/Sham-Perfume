@@ -1,7 +1,7 @@
 /**
  * «فحص صفحات المنتجات»: opens the live store's product pages (p/<slug>.html) in Chrome on a phone screen,
- * like a visitor, and reports as GitHub annotations what a customer would see: the Arabic name, the EGP
- * price, that the photos really load, the order button opening the product in the store, nothing about the
+ * like an Egyptian visitor (Cairo time zone, store country Egypt), and reports as GitHub annotations what a
+ * customer would see: the Arabic name, the EGP price, that the photos really load, the order button opening the product in the store, nothing about the
  * supplier (its site, ringgit prices) or any AI vendor, and no sideways scrolling. Then the store page itself:
  * the brand filter must not list one brand twice (RASASI / Rasasi). Screenshots go to INSPECT_SHOTS.
  * Usage (CI): PUPPETEER_PATH=/tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js node scripts/inspect/products.mjs
@@ -36,8 +36,14 @@ const phone = async () => {
   await page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1');
   await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
   await page.setExtraHTTPHeaders({ 'Accept-Language': 'ar-EG,ar;q=0.9' });
-  // An Arabic phone: the site picks its language from the browser.
-  await page.evaluateOnNewDocument(() => { Object.defineProperty(navigator, 'language', { get: () => 'ar-EG' }); Object.defineProperty(navigator, 'languages', { get: () => ['ar-EG', 'ar'] }); });
+  // An Arabic phone in Egypt: the site picks its language from the browser and the currency from the visitor's
+  // country (#169 — a runner abroad would otherwise rightly see dollars). The check is about the Egyptian
+  // visitor's «جنيه» price, so it plays one everywhere: Cairo time zone and Egypt as the store country.
+  await page.emulateTimezone('Africa/Cairo');
+  await page.evaluateOnNewDocument(() => {
+    Object.defineProperty(navigator, 'language', { get: () => 'ar-EG' }); Object.defineProperty(navigator, 'languages', { get: () => ['ar-EG', 'ar'] });
+    try { localStorage.setItem('sham-store-country', JSON.stringify({ code: 'EG', manual: true })); } catch { /* opaque origin before the first page */ }
+  });
   return page;
 };
 
