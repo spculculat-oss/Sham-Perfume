@@ -298,9 +298,13 @@ export async function resendVerification(ctx: Ctx, userId: string) {
 /**
  * Forgot-password, step 1 (Google/Meta «send me a code»). Answers identically whether the e-mail
  * exists or not — an unknown address still burns a full scrypt round, so the two paths take the
- * same time.
+ * same time. When no e-mail provider is configured the server answers honestly (503) for every
+ * e-mail, so existence is not revealed through different status codes.
  */
 export async function requestPasswordReset(ctx: Ctx, input: { email?: unknown }) {
+  const env = envOf(ctx);
+  const hasProvider = Boolean(env.RESEND_API_KEY?.trim() || env.SENDGRID_API_KEY?.trim() || env.SHAM_WEBHOOK_URL?.trim());
+  if (!hasProvider) fail(503, 'EMAIL_UNAVAILABLE');
   const email = clean(input.email, 254).toLowerCase();
   const [row] = isEmail(email) ? await ctx.sql.query(`SELECT id FROM users WHERE email_idx = $1 AND status = 'active'`, [ctx.vault.index(email)]) : [];
   await verifyPassword('timing-equalizer-1', DUMMY_HASH); // equalises both answers
@@ -309,7 +313,7 @@ export async function requestPasswordReset(ctx: Ctx, input: { email?: unknown })
       const code = await issueCode(ctx, row.id, 'reset_password');
       const sent = await sendAuthEmail(email, codeMail('أكواد شام للعطور — تغيير كلمة المرور', code, 10,
         'طلبك تغيير كلمة المرور. أدخل الكود ده والكلمة الجديدة في صفحة تسجيل الدخول:',
-        'You asked to change your password. Enter this code and your new password on the sign-in page.'), envOf(ctx));
+        'You asked to change your password. Enter this code and your new password on the sign-in page.'), env);
       if (!sent.delivered) fail(503, 'EMAIL_UNAVAILABLE');
       auditEvent(ctx, row.id, 'reset_requested');
     } catch (error) {
@@ -363,9 +367,11 @@ export async function changePassword(ctx: Ctx, userId: string, input: { current?
   if (!u || !(await verifyPassword(String(input.current || ''), u.pass_hash))) fail(401, 'WRONG_PASSWORD');
   await ctx.sql.query(`UPDATE users SET pass_hash = $1 WHERE id = $2`, [await hashPassword(passwordPolicy(input.next)), userId]);
   // A password change invalidates every other device (the old hash could not have produced the new
-  // sessions' trust). The device the change came from stays signed in.
+  // sessions' trust). The device the change came from stays signed in. Pending 2FA logins are also
+  // revoked — the old password must not remain usable in a half-open login.
   const currentHash = currentToken ? tokenHash(currentToken) : '';
   await ctx.sql.query(`DELETE FROM sessions WHERE user_id = $1 AND ($2 = '' OR hash <> $2)`, [userId, currentHash]);
+  await ctx.sql.query(`DELETE FROM pending_logins WHERE user_id = $1`, [userId]);
   auditEvent(ctx, userId, 'password_changed');
 }
 
@@ -448,10 +454,12 @@ async function freshChallenge(ctx: Ctx, userId: string, purpose: string): Promis
   return { id, challenge };
 }
 
-/** Step 1 of «add a passkey to this device». */
-export async function passkeyRegisterBegin(ctx: Ctx, userId: string, name: unknown) {
-  const [u] = await ctx.sql.query(`SELECT handle, email_enc FROM users WHERE id = $1`, [userId]);
+/** Step 1 of «add a passkey to this device» — re-auth with the password, like adding a trusted device on Apple. */
+export async function passkeyRegisterBegin(ctx: Ctx, userId: string, input: { name?: unknown; password?: unknown }) {
+  const name = clean(input?.name, 60);
+  const [u] = await ctx.sql.query(`SELECT handle, email_enc, pass_hash FROM users WHERE id = $1`, [userId]);
   if (!u) fail(404, 'NOT_FOUND');
+  if (!u.pass_hash || !(await verifyPassword(String(input?.password || ''), u.pass_hash))) fail(401, 'WRONG_PASSWORD');
   const { id, challenge } = await freshChallenge(ctx, userId, 'register');
   const exclude = await ctx.sql.query(`SELECT cred_id FROM passkeys WHERE user_id = $1 LIMIT 25`, [userId]);
   return {
@@ -465,7 +473,7 @@ export async function passkeyRegisterBegin(ctx: Ctx, userId: string, name: unkno
     attestation: 'none',
     authenticatorSelection: { residentKey: 'preferred', userVerification: 'preferred' },
     excludeCredentials: exclude.map((r) => ({ type: 'public-key', id: r.cred_id })),
-    name: clean(name, 60),
+    name,
   };
 }
 
@@ -497,7 +505,11 @@ export async function myPasskeys(ctx: Ctx, userId: string) {
   return rows.map((r) => ({ id: r.id, name: r.name, uv: Boolean(r.uv), createdAt: iso(r.created_at), lastUsedAt: iso(r.last_used_at) }));
 }
 
-export async function deletePasskey(ctx: Ctx, userId: string, passkeyId: string) {
+export async function deletePasskey(ctx: Ctx, userId: string, passkeyId: string, password?: unknown) {
+  if (password !== undefined) {
+    const [u] = await ctx.sql.query(`SELECT pass_hash FROM users WHERE id = $1`, [userId]);
+    if (!u || !(await verifyPassword(String(password || ''), u.pass_hash))) fail(401, 'WRONG_PASSWORD');
+  }
   const removed = await ctx.sql.query(`DELETE FROM passkeys WHERE id = $1 AND user_id = $2 RETURNING id`, [passkeyId, userId]);
   if (!removed.length) fail(404, 'NOT_FOUND');
   auditEvent(ctx, userId, 'passkey_removed');
