@@ -9,22 +9,22 @@ import { loadAiPack } from './لغات/aiPackLoader';
 // The management dashboard is a separate lazily-loaded bundle reachable at #admin.
 const AdminApp = lazyWithReload(() => import('./admin/AdminApp.tsx'));
 const isAdminRoute = () => window.location.hash.replace(/^#\/?/, '').startsWith('admin');
-// The operations map (#ops) reads only public reports, so it works on the static Pages site too.
-const OpsMapPage = lazyWithReload(() => import('./admin/OpsMapPage.tsx'));
-const isOpsRoute = () => /^#\/?ops(?:$|[/?])/.test(window.location.hash);
+// The operations map is for the management only: the old #ops link now opens it inside the admin panel
+// (#admin/ops), behind the admin code like every other tab.
+const opsToAdmin = () => { if (/^#\/?ops(?:$|[/?])/.test(window.location.hash)) window.history.replaceState(null, '', '#admin/ops'); };
+opsToAdmin();
 
 function Root() {
   const [admin, setAdmin] = useState(isAdminRoute);
-  const [ops, setOps] = useState(isOpsRoute);
   useEffect(() => {
-    const sync = () => { setAdmin(isAdminRoute()); setOps(isOpsRoute()); };
+    const sync = () => { opsToAdmin(); setAdmin(isAdminRoute()); };
     window.addEventListener('hashchange', sync);
     return () => window.removeEventListener('hashchange', sync);
   }, []);
-  if (admin || ops) {
+  if (admin) {
     return (
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-stone-500">…</div>}>
-        {admin ? <AdminApp /> : <OpsMapPage />}
+        <AdminApp />
       </Suspense>
     );
   }
