@@ -1,0 +1,85 @@
+name: Shaheen patrol — hourly check, fix and expert review
+
+# «الدورية كل ساعة»: every hour each tool under «الخبير شاهين» inspects its own work — its report and last
+# run, plus hands-on tests of its scope (prices = supplier + 50%, one currency per country, live product pages,
+# product photos, the sitemap, the news, the server, payment methods). Safe fixes happen at once (the robot
+# owning the broken scope is started again, at most once per 6 hours); the rest goes to Shaheen (an AI
+# diagnosis when an engine answers, his recorded playbook otherwise — the item waits, never a fake fix) and, if
+# it stays broken, becomes a «shaheen-task» issue for the coding agent. Problems spanning several tools get a
+# task force; every run finished since the last patrol is tested by an expert reviewer of the same scope.
+# Code: scripts/shaheen-patrol/. Result: src/data/live/shaheen-patrol.json (admin → «الهيكل الإداري»),
+# published only when something changed or every 3 hours (no commit every hour).
+
+on:
+  schedule:
+    - cron: '37 * * * *'
+  workflow_dispatch:
+  push:
+    branches: ['arena/**']
+    paths: ['scripts/shaheen-patrol/**', '.github/workflows/shaheen-patrol.yml']
+
+permissions:
+  contents: write
+  actions: write
+  issues: write
+
+concurrency:
+  group: shaheen-patrol-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  patrol:
+    name: Hourly patrol
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      # Branch pushes rehearse: the patrol runs and shows its findings; nothing started, opened or committed.
+      PATROL_ACT: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      GITHUB_TOKEN: ${{ github.token }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Every tool inspects its work
+        id: patrol
+        run: node --import tsx scripts/shaheen-patrol/run.mts
+      - name: Publish the patrol log on main
+        if: env.PATROL_ACT == 'true' && steps.patrol.outputs.publish == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen patrol bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "الدورية كل ساعة: $(date -u +'%Y-%m-%d %H:%M')" src/data/live/shaheen-patrol.json src/data/live/ai-quota.json \
+            || { echo "::error::Could not push the patrol log"; exit 1; }
+      - name: Start the robots that fix what broke
+        if: env.PATROL_ACT == 'true' && steps.patrol.outputs.reruns != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RERUNS: ${{ steps.patrol.outputs.reruns }}
+        run: |
+          for wf in $RERUNS; do
+            case "$wf" in
+              shaheen-import.yml|shaheen-discover.yml|shaheen-news.yml|shaheen-seo.yml|shaheen-languages.yml|pages.yml|product-pages-check.yml|live-smoke.yml|shaheen-precheck.yml)
+                gh workflow run "$wf" --ref main && echo "::notice::Started $wf" || echo "::warning::Could not start $wf" ;;
+              *) echo "::warning::Ignored unknown workflow $wf" ;;
+            esac
+          done

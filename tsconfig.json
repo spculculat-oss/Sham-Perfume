@@ -33,6 +33,7 @@
     "scripts/aistudio/**/*.mts",
     "scripts/doctor/**/*.ts",
     "scripts/doctor/**/*.mts",
+    "scripts/shaheen-patrol/**/*.mts",
     "scripts/shaheen-news/**/*.ts",
     "scripts/shaheen-news/**/*.mts",
     "scripts/shaheen-supervisor/**/*.ts",
