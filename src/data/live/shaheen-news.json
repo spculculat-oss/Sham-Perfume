@@ -1,36 +1,64 @@
 {
  "version": 1,
- "updatedAt": "2026-10-19T15:33:04.361Z",
- "nextUpdateAt": "2026-10-20T03:33:04.361Z",
+ "updatedAt": "2026-10-20T03:30:39.155Z",
+ "nextUpdateAt": "2026-10-20T15:30:39.155Z",
  "intervalHours": 12,
  "editor": "shaheen",
  "digest": {
-  "ar": "تتصدر أخبار الصناعة تعيينات قيادية وشراكات جديدة، إلى جانب تقارير عن احتمال تأثير أدوية إنقاص الوزن في تفضيلات العطور. وتشمل النشرة إطلاقات ومنتجات عطرية، وفعاليات ومعارض، وأخباراً عن العود والبخور. وتبرز أيضاً موضوعات ثقافية ومهنية تساعد محبي العطور وصانعيها على متابعة تطورات السوق والذائقة العطرية.",
-  "en": "Industry news leads with executive appointments and new partnerships, alongside reports on the possible influence of weight-loss drugs on fragrance preferences. The digest also covers fragrance launches and products, events and exhibitions, and stories about oud and incense. Cultural and professional features offer fragrance lovers and makers perspectives on market developments and scent preferences."
+  "ar": "تتصدر النشرة أخبار تأثير أدوية إنقاص الوزن المحتمل في تفضيلات العطور، إلى جانب شراكات وتغييرات إدارية في القطاع. وتشمل الإصدارات والابتكارات عطوراً جديدة وتصاميم عبوات وتجارب تسويقية. كما تسلط الضوء على فعاليات وثقافة العود والعطور في المنطقة وخارجها.",
+  "en": "The digest leads with reports on how weight-loss drugs may affect fragrance preferences, alongside industry partnerships and leadership changes. New scents, packaging designs and marketing initiatives also feature. Events and the culture of oud and perfumery round out the selection."
  },
  "sources": [
   {
-   "name": "Now Smell This",
-   "count": 4
-  },
-  {
    "name": "Premium Beauty News",
-   "count": 3
+   "count": 5
   },
   {
-   "name": "Babnet",
-   "count": 3
+   "name": "The Independent",
+   "count": 2
   },
   {
    "name": "Cosmetics Business",
    "count": 2
   },
   {
-   "name": "The Independent",
-   "count": 1
+   "name": "Babnet",
+   "count": 2
   },
   {
    "name": "Personal Care Insights",
+   "count": 1
+  },
+  {
+   "name": "TheIndustry.beauty",
+   "count": 1
+  },
+  {
+   "name": "Grazia Singapore",
+   "count": 1
+  },
+  {
+   "name": "Yahoo",
+   "count": 1
+  },
+  {
+   "name": "Grazia",
+   "count": 1
+  },
+  {
+   "name": "Vanity Teen",
+   "count": 1
+  },
+  {
+   "name": "Global Travel Retail Magazine",
+   "count": 1
+  },
+  {
+   "name": "موقع الصحفيين التونسيين بصفاقس",
+   "count": 1
+  },
+  {
+   "name": "صحيفة الخليج",
    "count": 1
   },
   {
@@ -58,6 +86,10 @@
    "count": 1
   },
   {
+   "name": "Now Smell This",
+   "count": 1
+  },
+  {
    "name": "Prestige Online - Singapore",
    "count": 1
   },
@@ -68,37 +100,361 @@
   {
    "name": "WWD",
    "count": 1
-  },
-  {
-   "name": "Grazia",
-   "count": 1
-  },
-  {
-   "name": "الشرق الأوسط",
-   "count": 1
-  },
-  {
-   "name": "Manila Bulletin",
-   "count": 1
-  },
-  {
-   "name": "World IP Review",
-   "count": 1
-  },
-  {
-   "name": "L'Éclaireur Fnac",
-   "count": 1
-  },
-  {
-   "name": "CaFleureBon",
-   "count": 1
-  },
-  {
-   "name": "Trend Hunter",
-   "count": 1
   }
  ],
  "items": [
+  {
+   "id": "nft2sjx",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNY25MZUUwZ1RxN1Nia29HYUUzQUhfY0xVaC11VF9ZTDlSc285OUxLTVJ5MUw2Uy1VdVBXRHlPZTJNR0FvZXlxZ1I3T3o1dW5YUDBVUlRXSlRORWtnRzZscVZfQ3FKZ2M0bm8tRVYxN0V2cVlTYWRJbGs2V1JEdDJzbDRWa2Z0NUdOcEhYZlFCTUhPV2JkQmpKNkhudXNXZFFz?oc=5",
+   "source": "The Independent",
+   "publishedAt": "2026-10-19T19:34:00.000Z",
+   "original": "Perfume bosses predict next fragrance trend as weight loss drugs transform industry",
+   "lang": "en",
+   "category": "market",
+   "importance": 5,
+   "title": {
+    "ar": "قادة في صناعة العطور يتوقعون تحولات في الأذواق مع انتشار أدوية إنقاص الوزن",
+    "en": "Fragrance leaders anticipate changing tastes as weight-loss drugs reshape the industry"
+   },
+   "summary": {
+    "ar": "يتناول التقرير توقعات مسؤولين في قطاع العطور بشأن أثر أدوية إنقاص الوزن في اتجاهات الصناعة وتفضيلات المستهلكين. ولا يورد العنوان تفاصيل عن طبيعة التغيرات المتوقعة.",
+    "en": "The report covers fragrance executives’ expectations about the effects of weight-loss drugs on industry trends and consumer preferences. The headline does not specify what changes they anticipate."
+   },
+   "note": {
+    "ar": "من المفيد متابعة هذه النقاشات، مع التمييز بين التوقعات وما تثبته الأدلة فعلاً.",
+    "en": "It is worth following this discussion while distinguishing forecasts from what evidence actually establishes."
+   }
+  },
+  {
+   "id": "n1nd2332",
+   "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxOaW1BOG1QdXlXcGdfMldnN2VIUVdudWVta0o4bEVsR2lYV0NfZFVETEpRNW8tdUdfSE90eXhkbVR2Mi0wYUtidndHLUprSUFZdTdZaWN0VGhMWHV3dmUyLVhtVGItdHpnMi1YU0tleldFcjdMMEZEQXctQlF5N3B3ZjZGMA?oc=5",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-10-19T21:01:32.000Z",
+   "original": "Beautyworld Middle East stands out as a global fragrance hub amid Gulf tensions",
+   "lang": "en",
+   "category": "events",
+   "importance": 5,
+   "title": {
+    "ar": "Beautyworld Middle East يبرز مركزاً عالمياً للعطور وسط توترات الخليج",
+    "en": "Beautyworld Middle East stands out as a global fragrance hub amid Gulf tensions"
+   },
+   "summary": {
+    "ar": "يربط العنوان بين مكانة Beautyworld Middle East بوصفه مركزاً للعطور والتوترات في منطقة الخليج. ولا يقدم المقتطف تفاصيل إضافية عن المعرض أو أثر تلك التوترات.",
+    "en": "The headline links Beautyworld Middle East’s role as a fragrance hub with tensions in the Gulf. It provides no further details about the event or the impact of those tensions."
+   },
+   "note": {
+    "ar": "تذكير بأهمية المعارض في جمع أطراف القطاع، من دون أن يكفي العنوان وحده لتقييم أثر الظروف المحيطة.",
+    "en": "A reminder of trade fairs’ role in bringing the industry together, though the headline alone is not enough to assess the surrounding conditions."
+   }
+  },
+  {
+   "id": "n17oilzg",
+   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOUk41aHd0YlZybS12dlZxbFdDTXBUdS0tUDlBaGlibnB2WDZ0M0h3UmpvV3NGWXVyZ3pUMlBZSjVVamh5Z2ZSREVxa2pEejYzam44V3g0bUFHUE5GNk12TzBwX1RiS3Q0a1FpNmJDS3p5dnhwdDA5cmE2eHlyRnBqRm5OQmp2SW9EY09nd2VQSQ?oc=5",
+   "source": "Personal Care Insights",
+   "publishedAt": "2026-10-19T14:08:10.000Z",
+   "original": "Coty and dsm-firmenich deepen fragrance creation with collaborative hubs.",
+   "lang": "en",
+   "category": "industry",
+   "importance": 4,
+   "title": {
+    "ar": "Coty وdsm-firmenich تعمّقان التعاون في ابتكار العطور عبر مراكز مشتركة",
+    "en": "Coty and dsm-firmenich deepen fragrance creation through collaborative hubs"
+   },
+   "summary": {
+    "ar": "يفيد العنوان بأن Coty وdsm-firmenich تعززان تعاونهما في ابتكار العطور من خلال مراكز تعاونية. ولا يوضح العنوان طبيعة هذه المراكز أو تفاصيل العمل فيها.",
+    "en": "The headline says Coty and dsm-firmenich are expanding their fragrance-creation collaboration through collaborative hubs. It does not explain how the hubs will operate."
+   },
+   "note": {
+    "ar": "قد يهم هذا التعاون صانعي العطور، لكن تفاصيل أثره على عملية الإبداع غير متاحة في العنوان.",
+    "en": "The collaboration may interest fragrance creators, but the headline does not provide enough detail to assess its effect on the creative process."
+   }
+  },
+  {
+   "id": "nf4e2wn",
+   "url": "https://cosmeticsbusiness.com/boss-parfums-inks-multi-year-partnership-with-hyrox",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-19T12:00:00.000Z",
+   "original": "Boss Parfums inks multi-year partnership with Hyrox across six European regions",
+   "lang": "en",
+   "category": "industry",
+   "importance": 4,
+   "title": {
+    "ar": "Boss Parfums تعقد شراكة متعددة السنوات مع Hyrox في ست مناطق أوروبية",
+    "en": "Boss Parfums signs multi-year Hyrox partnership across six European regions"
+   },
+   "summary": {
+    "ar": "تقول Cosmetics Business إن الشراكة بين Boss Parfums، التابعة لـCoty، وسباقات Hyrox ستستمر عدة سنوات وتشمل ست مناطق أوروبية، مع حضور العلامة ضمن منظومة Hyrox.",
+    "en": "Cosmetics Business reports that the multi-year partnership between Coty-owned Boss Parfums and Hyrox will span six European regions, with the fragrance brand joining the Hyrox ecosystem."
+   },
+   "note": {
+    "ar": "تُظهر الشراكة توجهاً لربط العطور بفعاليات اللياقة؛ وقد تتيح للجمهور لقاء العلامة في سياق مختلف.",
+    "en": "The partnership connects fragrance with fitness events and may introduce the brand to audiences in a different setting."
+   }
+  },
+  {
+   "id": "nhp1j3h",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxObkVDTVdBWXBoVTZNTnhXM3hRSEdiTUFZTTBzalo4bjN5YWVvT3pOX2MzWFNDbmt6bU9uUEdhQm1ZQ0R1QUNVUnd1c1lPTG80WFU1Q2dGMDFmb2pfT3FGLVFDU1VtMDFaWDhfYlhOOHBHdXRMVkJ0emdrdFFpc0VSYTN6YUxmc0Uxd0J0cmtqNVQ1cnU5R3RUUHRwZDlWb0J6S1FvT0ZhQ0psUQ?oc=5",
+   "source": "TheIndustry.beauty",
+   "publishedAt": "2026-10-19T17:31:15.000Z",
+   "original": "Coty launches global Fragrance Club for creators",
+   "lang": "en",
+   "category": "industry",
+   "importance": 4,
+   "title": {
+    "ar": "Coty تطلق Fragrance Club لصنّاع المحتوى",
+    "en": "Coty launches Fragrance Club for creators"
+   },
+   "summary": {
+    "ar": "أعلنت Coty إطلاق Fragrance Club لصنّاع المحتوى. ويشير عنوان آخر إلى أن المبادرة تهدف إلى تعزيز المعرفة بالعطور، من دون تفاصيل إضافية عن البرنامج.",
+    "en": "Coty has launched Fragrance Club for creators. A separate headline says the initiative aims to reinforce fragrance knowledge, but provides no further program details."
+   },
+   "note": {
+    "ar": "تعزيز المعرفة بالعطور بين صنّاع المحتوى قد يساعد على تقديمها للجمهور بوضوح أكبر.",
+    "en": "Building fragrance knowledge among creators could help them present scents more clearly to audiences."
+   }
+  },
+  {
+   "id": "n1c0fj6a",
+   "url": "https://www.premiumbeautynews.com/en/guillaume-gellusseau-to-lead-brand,28369",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-10-19T14:48:04.000Z",
+   "original": "Guillaume Gellusseau to lead brand strategy for Kilian Paris and Frédéric Malle",
+   "lang": "en",
+   "category": "industry",
+   "importance": 4,
+   "title": {
+    "ar": "Guillaume Gellusseau يقود استراتيجية Kilian Paris وÉditions de Parfums Frédéric Malle",
+    "en": "Guillaume Gellusseau to lead brand strategy for Kilian Paris and Éditions de Parfums Frédéric Malle"
+   },
+   "summary": {
+    "ar": "بحسب Premium Beauty News، عيّنت Estée Lauder Companies Guillaume Gellusseau نائباً أول للرئيس العالمي للعلامتين، اعتباراً من أغسطس 2026. وسيكون مقره في باريس ويرفع تقاريره إلى Jo Dancey.",
+    "en": "Premium Beauty News reports that Estée Lauder Companies appointed Guillaume Gellusseau Senior Vice President, Global Brand, for both houses, effective August 2026. He will be based in Paris and report to Jo Dancey."
+   },
+   "note": {
+    "ar": "تغيير قيادي في علامتين عطريتين فاخرَتين؛ أما أثره على المنتجات أو التوجه الإبداعي فلم يرد في المقتطف.",
+    "en": "A leadership change at two luxury fragrance houses; the excerpt does not say how it may affect products or creative direction."
+   }
+  },
+  {
+   "id": "n1hw2fhb",
+   "url": "https://www.premiumbeautynews.com/en/brain-impact-neuroscience-tailor,28379",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-10-19T22:19:00.000Z",
+   "original": "Brain Impact Neuroscience: Tailor-made protocols to measure emotional responses",
+   "lang": "en",
+   "category": "industry",
+   "importance": 4,
+   "title": {
+    "ar": "Brain Impact تطور بروتوكولات مخصصة لقياس الاستجابات العاطفية",
+    "en": "Brain Impact develops tailored protocols to measure emotional responses"
+   },
+   "summary": {
+    "ar": "يقول Premium Beauty News إن قطاع العطور والجمال يبحث عن أدلة علمية تدعم ادعاءات المنتجات المتعلقة بالفوائد العاطفية. ويذكر المقتطف أن Brain Impact تستخدم التصوير بالرنين المغناطيسي الوظيفي، لكن النص المتاح ينقطع قبل اكتمال التفاصيل.",
+    "en": "Premium Beauty News says the fragrance and beauty industry is seeking scientific evidence to support claims about products’ emotional benefits. The excerpt says Brain Impact uses functional magnetic resonance imaging, but cuts off before giving full details."
+   },
+   "note": {
+    "ar": "التحقق العلمي من الادعاءات موضوع مهم، لكن المقتطف لا يكفي للحكم على البروتوكولات أو نتائجها.",
+    "en": "Scientific scrutiny of product claims matters, but the excerpt is insufficient to assess the protocols or their results."
+   }
+  },
+  {
+   "id": "nek3ch9",
+   "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPcXh6OVg3MTlqRzB4UEVWNkJEV0xPUzVZdmlWOE5ma0huVXNMWGNvbnFBS3dNZ0lrNnZpdFF6ZmVhLWVnbjFRek9wdmlQNUFrT0tDUWhaUzlHcEdJOERNZUVoUlF5azdGUlgtRHo2V0FZWnZyQnFJQzNwSGlwVm8xLWY5WQ?oc=5",
+   "source": "Grazia Singapore",
+   "publishedAt": "2026-10-20T03:15:31.000Z",
+   "original": "How Francis Kurkdjian Restored Dior’s Iconic Archival Fragrances",
+   "lang": "en",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "كيف أعاد فرانسيس كوركدجيان عطور Dior الأرشيفية الأيقونية",
+    "en": "How Francis Kurkdjian restored Dior’s iconic archival fragrances"
+   },
+   "summary": {
+    "ar": "يتناول العنوان عمل فرانسيس كوركدجيان على إعادة عطور Dior الأرشيفية الأيقونية. ولا يحدد العنوان أسماء العطور أو تفاصيل عملية الاستعادة.",
+    "en": "The headline covers Francis Kurkdjian’s work restoring Dior’s iconic archival fragrances. It does not name the scents or explain the restoration process."
+   },
+   "note": {
+    "ar": "إحياء العطور الأرشيفية يتيح لمحبي الدار فرصة الاهتمام بتاريخها العطري، لكن التفاصيل هنا محدودة.",
+    "en": "Reviving archival fragrances can draw fans’ attention to a house’s olfactory history, though details here are limited."
+   }
+  },
+  {
+   "id": "n1vzzlzj",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOa3UyVm1RVklqWVlvcDU3SHc4Yk1ySFo1eV9TdUljZlEyVllrX2stblRJZ1I5OEc0VzJfeFpndGhKMzY1YjRsVmlmVDJyN2NnaGJjeTRiUDlWUFdsZHJEX2pQaTBlZXZROVFvNmM2Yy1DamtzMzFiYnF2MzRQMXFmY1U5YmRCekZpMkFCODZGSkJrczYyTEdzNDktQlVzQnJENkE?oc=5",
+   "source": "Yahoo",
+   "publishedAt": "2026-10-19T22:10:00.000Z",
+   "original": "Tate McRae Launches Perfume at Ulta: a Cozy Blend of Musky, Floral and Vanilla Notes",
+   "lang": "en",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "Tate McRae تطلق عطراً لدى Ulta بنفحات مسكية وزهرية وفانيليا",
+    "en": "Tate McRae launches a perfume at Ulta with musky, floral and vanilla notes"
+   },
+   "summary": {
+    "ar": "يفيد العنوان بإطلاق Tate McRae عطراً لدى Ulta، ويصف تركيبته بأنها مزيج دافئ من النفحات المسكية والزهرية والفانيليا. ولا يذكر اسم العطر.",
+    "en": "The headline reports that Tate McRae has launched a perfume at Ulta, describing it as a cozy blend of musky, floral and vanilla notes. It does not give the perfume’s name."
+   },
+   "note": {
+    "ar": "تركيبة تجمع عائلات نفحات مألوفة؛ وقد تهم من يفضلون الطابع الدافئ، لكن لا تتوفر تفاصيل أخرى للتقييم.",
+    "en": "The blend brings together familiar note families and may appeal to those who enjoy a cozy profile, though further details are unavailable."
+   }
+  },
+  {
+   "id": "nff8yv9",
+   "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxQcFRmcXBfT042LVMxeENLUFc3Nml5ZExOWEkteUZUa2oxSS0xYktMTU9kUzlmZDRYVjltX3RIdVR1RzE5QVpzVnFTRWpId3VlVEJjWTR5TzctaFNOQ1otTjU4NFh0V091eURvRVVOcFlVOW8yOFdGamRuU25mVl9USUhPejJwS0dqTjlDS0drT3JVX3NSWEFTcDZ2dmN1aE93ODhfUnMyVWRTbzk3eTRlbDNhVEI3OTFIaUZ6RTJrRjZzaVdWODl4OXpXbXRaUWxFMlc1d0xWV21kVm9Md3lUWUJxZ244OVow?oc=5",
+   "source": "Grazia",
+   "publishedAt": "2026-10-19T09:51:23.000Z",
+   "original": "Ginseng Biloba, la nouvelle échappée olfactive d’Hermès aux notes boisées, végétales et délicatement amères",
+   "lang": "fr",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "Hermès تكشف عن Ginseng Biloba بنفحات خشبية ونباتية ومرارة رقيقة",
+    "en": "Hermès presents Ginseng Biloba with woody, vegetal and delicately bitter notes"
+   },
+   "summary": {
+    "ar": "يصف العنوان Ginseng Biloba بأنه إصدار عطري جديد من Hermès، بنفحات خشبية ونباتية ولمسة مرّة رقيقة. ولا يورد تفاصيل أخرى عن العطر.",
+    "en": "The headline presents Ginseng Biloba as a new Hermès olfactory creation, with woody, vegetal and delicately bitter notes. No further details are provided."
+   },
+   "note": {
+    "ar": "وصف النفحات يوحي باتجاه عطري غير تقليدي نسبياً؛ وقد يثير فضول محبي التركيبات النباتية والخشبية.",
+    "en": "The note description suggests a distinctive direction that may interest fans of vegetal and woody compositions."
+   }
+  },
+  {
+   "id": "n593qn5",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5meHptZFpqdkRGZkx2QTdyZHI2NlNTTTlBNEcxeGZXTUxydVBTb014a0pWSjFOaFJHYlRYeFRUNnAzdGYycTc5b01PWTN3NjZ6NnNnSDkwaDFqaUVzYzFLdTB3ajRISzVfTkVjTFpTMWJFTVhwZHc?oc=5",
+   "source": "Vanity Teen",
+   "publishedAt": "2026-10-19T16:50:11.000Z",
+   "original": "AMOUAGE TAKES FRAGRANCE BEYOND THE SKIN",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "AMOUAGE تأخذ العطر إلى ما وراء البشرة",
+    "en": "AMOUAGE takes fragrance beyond the skin"
+   },
+   "summary": {
+    "ar": "يشير العنوان إلى توجه من AMOUAGE يوسّع تجربة العطر إلى ما يتجاوز وضعه على البشرة. ولا يوضح العنوان طبيعة هذا التوجه أو تفاصيله.",
+    "en": "The headline points to an AMOUAGE approach that takes the fragrance experience beyond wearing it on skin. It does not explain the format or details."
+   },
+   "note": {
+    "ar": "فكرة توسيع تجربة العطر قد تهم محبي استكشاف طرق جديدة للتفاعل معه، لكن العنوان لا يكشف ماهيتها.",
+    "en": "The idea of extending the fragrance experience may interest those seeking new ways to engage with scent, though the headline does not say what they are."
+   }
+  },
+  {
+   "id": "nnzgl49",
+   "url": "https://www.premiumbeautynews.com/en/otzlab-x-metapack-a-perfume-bottle,28381",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-10-19T21:14:00.000Z",
+   "original": "Otzlab x Metapack: A perfume bottle suspended in a metal frame",
+   "lang": "en",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "Otzlab وMetapack تطوران عبوة عطر معلّقة داخل إطار معدني",
+    "en": "Otzlab and Metapack develop a perfume bottle suspended in a metal frame"
+   },
+   "summary": {
+    "ar": "بحسب Premium Beauty News، طورت Metapack مكونات تغليف لعطر Otzlab تجمع الفولاذ المقاوم للصدأ والبولي بروبيلين والراتنج. ويتيح نظام التثبيت إبقاء الزجاجة عمودية داخل إطار معدني مع إمكانية إخراجها.",
+    "en": "Premium Beauty News reports that Metapack developed packaging components for Otzlab combining stainless steel, polypropylene and resin. A fastening system holds the bottle vertically in a metal frame while allowing it to be removed."
+   },
+   "note": {
+    "ar": "تصميم العبوة جزء من تجربة العطر؛ وهنا يبرز الجمع بين عرض الزجاجة وإمكانية إخراجها.",
+    "en": "Packaging is part of the fragrance experience; this design combines display with the ability to remove the bottle."
+   }
+  },
+  {
+   "id": "n1yiqbrj",
+   "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPY0ZwNGNWOFNwelBRa25lSVJfWGJQN0wwUkZ4TmY1SVJLcVJlVHN3VjJSNWljNWktMnVYcWg1cFd4MEZ6V1NrOUZNeE5GMGhJbjA3SHhpM21GUS1QYV9uZy1CX2lfdUpjTERYR2dTcEowWFhzMWVOS0RJcHNqNkl1dVhGNTBuVndMSG1XUk5nM1p4d1ZRUWVvVDJpYVNCbXN4NnZYU250VE9kSGNaUkZjQ1NEdzVjN0lVWnc?oc=5",
+   "source": "Global Travel Retail Magazine",
+   "publishedAt": "2026-10-19T18:07:08.000Z",
+   "original": "Inter-African Marketing and Scentopia drive new luxury fragrance activations across Africa",
+   "lang": "en",
+   "category": "market",
+   "importance": 3,
+   "title": {
+    "ar": "Inter-African Marketing وScentopia تطلقان تجارب عطرية فاخرة جديدة في أفريقيا",
+    "en": "Inter-African Marketing and Scentopia drive new luxury fragrance activations across Africa"
+   },
+   "summary": {
+    "ar": "يفيد العنوان بأن Inter-African Marketing وScentopia تعملان على تجارب تسويقية جديدة للعطور الفاخرة في أفريقيا. ولا يحدد أشكال هذه التجارب أو مواقعها.",
+    "en": "The headline says Inter-African Marketing and Scentopia are driving new luxury fragrance activations across Africa. It does not specify their formats or locations."
+   },
+   "note": {
+    "ar": "توسيع التجارب التسويقية قد يقرّب العطور من جمهور جديد، لكن تفاصيل المبادرات غير متاحة.",
+    "en": "New activations could bring fragrances to new audiences, but the headline offers no details about the initiatives."
+   }
+  },
+  {
+   "id": "n1bmh3y5",
+   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBESUxua1BKbEU0QjJUMFBFczRhdVNHTnJpZnNfUWVIX0VfTE9Wb2VKb3kwTE8wQUFqZnlCc19pUTQ0dHk5RksxeFZGOTJBRk9pOUFITkQtcS0?oc=5",
+   "source": "Babnet",
+   "publishedAt": "2026-10-19T13:10:11.000Z",
+   "original": "مؤتمر علمي وطني حول العود التونسي بقصر النجمة الزهراء",
+   "lang": "ar",
+   "category": "events",
+   "importance": 3,
+   "title": {
+    "ar": "مؤتمر علمي وطني حول العود التونسي في قصر النجمة الزهراء",
+    "en": "National scientific conference on Tunisian oud at the Palace of Ennejma Ezzahra"
+   },
+   "summary": {
+    "ar": "يعلن العنوان عن مؤتمر علمي وطني مخصص للعود التونسي في قصر النجمة الزهراء. ولا يذكر موضوعات الجلسات أو موعدها.",
+    "en": "The headline announces a national scientific conference devoted to Tunisian oud at the Palace of Ennejma Ezzahra. It does not list the sessions or their date."
+   },
+   "note": {
+    "ar": "الاهتمام العلمي بالعود يفتح مساحة للحوار حوله، لكن تفاصيل المؤتمر غير متاحة في العنوان.",
+    "en": "Scientific attention to oud creates room for discussion, though the headline does not provide conference details."
+   }
+  },
+  {
+   "id": "n1xh9ue",
+   "url": "https://news.google.com/rss/articles/CBMizgJBVV95cUxORmF1RWNPc0s5YnhRNkZ2QTRzanhjN0hvTVJfQ3MzWXpkMUhvbnoyQTZSUmJmMnNkNTUtTV9nOXozbEFZVmlNeDBtdG5ocUUyYUtncE9VR3p1QW05bG1yblpMSG44QkZIdm85RVZfSXRLTlk0andfTzdtbVBHVkt4YjR6d2FBWUxTaGtmTDdYc3lxOXpHWUpvTG1mUEY5Q2ctaXVlVGRpOGdCYVVHUHc2Sll6NjhjUXRUTzVBQ2NONUpjclAyOVE2Mi1DUnBQWjB4NHhSbTBtcF9mdFpfS21OaTRnSC1wZEhfcklMbE1xb1hFQnJzZllVU1hUbGlLNlpoaXVzM2JOU29sSUFPcm83TlJueElrQUphZktiZU5DazN3Z2FUREU2dmJSelFHNHhYREgyY3I4VjNuVVNiQkdld0VDN3lUWWIzTDlJdnBB?oc=5",
+   "source": "موقع الصحفيين التونسيين بصفاقس",
+   "publishedAt": "2026-10-19T15:45:32.000Z",
+   "original": "مشاهير العزف على العود في الدورة الرابعة للمهرجان الدولي للعود في تونس",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "عازفو العود يشاركون في الدورة الرابعة للمهرجان الدولي للعود في تونس",
+    "en": "Oud performers feature in the fourth International Oud Festival in Tunisia"
+   },
+   "summary": {
+    "ar": "يشير العنوان إلى مشاركة عازفي عود في الدورة الرابعة للمهرجان الدولي للعود في تونس. والخبر ثقافي موسيقي، وليس عن مادة العود العطرية.",
+    "en": "The headline reports oud performers at the fourth International Oud Festival in Tunisia. This is a music and culture story, not a report about oud as a fragrance material."
+   },
+   "note": {
+    "ar": "يحضر العود هنا بوصفه جزءاً من الثقافة الموسيقية؛ وهو تذكير بتعدد معانيه في المنطقة.",
+    "en": "Here oud appears in its musical and cultural sense, a reminder of the word’s varied meanings across the region."
+   }
+  },
+  {
+   "id": "nq1cn4",
+   "url": "https://news.google.com/rss/articles/CBMijAVBVV95cUxOWXBvM2J0bmhHNC1kdzBBc3NCcXg2MllUSW8tZzJhMDdzZ2NkTENzNEoyM3IwTEh6YzlEOW5ORDBsY1owb005WHAtNDVESkhjVWM1SnBWZXNaZk9GbEM0c1Q5bGVJbTlldDNWZ0dQaUhZdmFYd3NyWG9ZTnBkM2kyVm12eWZWdURFVjhUSm8wcEhRLUZhUE9sUi14bGticXc3aFpXbDRBN0pEb0JsTmNmcHRoLWhGUHY1aW9yQnQwTEFXeFlWeG5EbUZQZWVkWk9fTmVlS2ZPRUQ3MmU1dWhSbndKaUozcWh1SldKYk5xNGNsWE1xNDZ5bXZMcm9aR2x4TXVhYXNRUy05WUNvOHpUSjN4akJTaExFNzJNNElzdGlmTk5qR1FGWEZITmFaZjk2azZZaGxvbFQ1UVpIekVMM3RRRWo4WWk2SW96bHI1TFBLVkFlUTN5YnE3VGN5TE4tRFF6ZXExMVpJU090V3hxVXNOV1dWNmVmNGhrVHhxeVc0NW5FSUN6eWNNcC1nRGU2d3FtTWhkN2tiWUFBOVhUVHF2ZjJQVVhSdktqU0VMalhvYkdXMTlYWWstcXNzUVE4WVhfQXBVQXZZbVZyU25zeUNfSDluZFZJZ2c4b01tcUlMd3RzSEREY1owMWJUajJ4LXZhd1daM2dYZVJnNDdLYVhJd0NNaTkzMGtLbnozdFl2YzhJOWgzdTR6eTFSSENadHVZLWxPbE5YdU1SQWVkOG9BTlNGeEdYYTBFRTNNalRLbFJUTDlfay1DcGNWSXdJcnlMSm1jOG9JamN5eFpHREIyb2l4VHRDNktCd2pjZ3FkY0JoWjJZUGgtNHRCT3JYQ3RKMm16ZE00Z2xk?oc=5",
+   "source": "صحيفة الخليج",
+   "publishedAt": "2026-10-19T16:49:25.000Z",
+   "original": "سعيد العطر: «الخليج» جزء من تشكيل الوعي ومسيرة الإمارات التنموية",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 2,
+   "title": {
+    "ar": "سعيد العطر: «الخليج» جزء من تشكيل الوعي ومسيرة الإمارات التنموية",
+    "en": "Saeed Al Attar: Al Khaleej is part of shaping awareness and the UAE’s development"
+   },
+   "summary": {
+    "ar": "يتناول العنوان تصريحاً لسعيد العطر عن دور «الخليج» في تشكيل الوعي ومسيرة الإمارات التنموية. ولا يوضح العنوان صلة مباشرة بصناعة العطور؛ أُدرج الخبر لورود اسم «العطر» في اسم الشخص فقط.",
+    "en": "The headline quotes Saeed Al Attar on Al Khaleej’s role in shaping awareness and the UAE’s development. It does not indicate a direct connection to perfumery; it is included only because “Al Attar” appears in the person’s name."
+   },
+   "note": {
+    "ar": "الاسم وحده لا يجعل الخبر متعلقاً بالعطور، لذا لا ينبغي اعتباره خبراً عن الصناعة.",
+    "en": "A name alone does not make this a fragrance story, so it should not be treated as industry news."
+   }
+  },
   {
    "id": "n6gzzna",
    "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOU2ZYaThTRzVjVGl4Z2hfWGdjOF92MGp3Q1RwbFI5Z0VySGlIVjF5Sno5SUZrVDZCZHI2S2pOT3lBS083dGdSNWpfSjZjNmlKYlZSY0p0S1oxa1dST2VfV2J4UnFLNW9HbUFBdXlyLThuNmFWUjB2NEN3NlZMREk5TDJvNURRZEh5bkZkZGRvdHpoVTk1?oc=5",
@@ -119,72 +475,6 @@
    "note": {
     "ar": "إذا تأكد هذا الاتجاه، فقد يدفع صانعي العطور إلى الإصغاء أكثر لتغيّر الأذواق؛ لكن العنوان وحده لا يثبت مدى انتشاره.",
     "en": "If this trend is borne out, it may encourage fragrance makers to pay closer attention to changing tastes; the headline alone does not establish how widespread it is."
-   }
-  },
-  {
-   "id": "n1c0fj6a",
-   "url": "https://www.premiumbeautynews.com/en/guillaume-gellusseau-to-lead-brand,28369",
-   "source": "Premium Beauty News",
-   "publishedAt": "2026-10-19T14:48:04.000Z",
-   "original": "Guillaume Gellusseau to lead brand strategy for Kilian Paris and Frédéric Malle",
-   "lang": "en",
-   "category": "industry",
-   "importance": 5,
-   "title": {
-    "ar": "تعيين Guillaume Gellusseau لقيادة العلامة العالمية لـKilian Paris وFrédéric Malle",
-    "en": "Guillaume Gellusseau appointed to lead global brands Kilian Paris and Frédéric Malle"
-   },
-   "summary": {
-    "ar": "أعلنت Estée Lauder Companies تعيين Guillaume Gellusseau نائباً أول للرئيس للعلامة العالمية لكل من Kilian Paris وÉditions de Parfums Frédéric Malle، اعتباراً من أغسطس 2026. وسيعمل من باريس ويرفع تقاريره إلى Jo Dancey، وفق Premium Beauty News.",
-    "en": "Estée Lauder Companies appointed Guillaume Gellusseau Senior Vice President, Global Brand, for Kilian Paris and Éditions de Parfums Frédéric Malle, effective August 2026. He will be based in Paris and report to Jo Dancey, according to Premium Beauty News."
-   },
-   "note": {
-    "ar": "تسلّط الخطوة الضوء على أهمية قيادة العلامة في قطاع العطور الفاخرة؛ ولا يوضح المقتطف خططاً تجارية جديدة.",
-    "en": "The appointment highlights the importance of brand leadership in luxury fragrance; the excerpt does not describe any new commercial plans."
-   }
-  },
-  {
-   "id": "n17oilzg",
-   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOUk41aHd0YlZybS12dlZxbFdDTXBUdS0tUDlBaGlibnB2WDZ0M0h3UmpvV3NGWXVyZ3pUMlBZSjVVamh5Z2ZSREVxa2pEejYzam44V3g0bUFHUE5GNk12TzBwX1RiS3Q0a1FpNmJDS3p5dnhwdDA5cmE2eHlyRnBqRm5OQmp2SW9EY09nd2VQSQ?oc=5",
-   "source": "Personal Care Insights",
-   "publishedAt": "2026-10-19T14:08:10.000Z",
-   "original": "Coty and dsm-firmenich deepen fragrance creation with collaborative hubs.",
-   "lang": "en",
-   "category": "industry",
-   "importance": 5,
-   "title": {
-    "ar": "Coty وdsm-firmenich تعمّقان التعاون في ابتكار العطور عبر مراكز مشتركة",
-    "en": "Coty and dsm-firmenich deepen fragrance creation through collaborative hubs"
-   },
-   "summary": {
-    "ar": "يفيد عنوان Personal Care Insights بأن Coty وdsm-firmenich تعززان تعاونهما في ابتكار العطور عبر مراكز مشتركة. ولا يقدم العنوان تفاصيل عن مواقع المراكز أو طبيعة العمل فيها.",
-    "en": "Personal Care Insights says Coty and dsm-firmenich are deepening fragrance-creation collaboration through shared hubs. The headline gives no details about the hubs’ locations or activities."
-   },
-   "note": {
-    "ar": "التعاون بين صانع العطر والجهة المطوّرة له قد يفتح مجالاً لتبادل الخبرات، لكن تفاصيل أثر هذه المراكز غير متاحة هنا.",
-    "en": "Collaboration between a fragrance house and a brand may create room for shared expertise, but the hubs’ specific impact is not detailed here."
-   }
-  },
-  {
-   "id": "nf4e2wn",
-   "url": "https://cosmeticsbusiness.com/boss-parfums-inks-multi-year-partnership-with-hyrox",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-10-19T12:00:00.000Z",
-   "original": "Boss Parfums inks multi-year partnership with Hyrox across six European regions",
-   "lang": "en",
-   "category": "industry",
-   "importance": 4,
-   "title": {
-    "ar": "Boss Parfums تدخل شراكة متعددة السنوات مع Hyrox في ست مناطق أوروبية",
-    "en": "Boss Parfums signs multi-year partnership with Hyrox across six European regions"
-   },
-   "summary": {
-    "ar": "تقول Cosmetics Business إن Boss Parfums، التابعة لـCoty، أبرمت شراكة متعددة السنوات مع سلسلة سباقات اللياقة Hyrox، لتصبح العلامة جزءاً من منظومة Hyrox في ست مناطق أوروبية.",
-    "en": "Cosmetics Business reports that Coty-owned Boss Parfums has entered a multi-year partnership with fitness racing series Hyrox, making the fragrance brand part of the Hyrox ecosystem across six European regions."
-   },
-   "note": {
-    "ar": "تُظهر الشراكة توجهاً لربط العطور بتجارب وأنشطة خارج منافذ البيع التقليدية؛ ولا يوضح المقتطف شكل التفعيل بالتحديد.",
-    "en": "The partnership points to an effort to connect fragrance with experiences beyond traditional retail; the excerpt does not specify how it will be activated."
    }
   },
   {
@@ -251,28 +541,6 @@
    "note": {
     "ar": "منطقة متخصصة قد تجعل ابتكارات العطور أوضح للمهنيين والزوار؛ ويستحسن متابعة تفاصيل المشاركين والبرنامج عند نشرها.",
     "en": "A dedicated zone may make fragrance innovations more visible to professionals and visitors; details of exhibitors and programming would be useful to watch for."
-   }
-  },
-  {
-   "id": "n1bmh3y5",
-   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBESUxua1BKbEU0QjJUMFBFczRhdVNHTnJpZnNfUWVIX0VfTE9Wb2VKb3kwTE8wQUFqZnlCc19pUTQ0dHk5RksxeFZGOTJBRk9pOUFITkQtcS0?oc=5",
-   "source": "Babnet",
-   "publishedAt": "2026-10-19T13:10:11.000Z",
-   "original": "مؤتمر علمي وطني حول العود التونسي بقصر النجمة الزهراء",
-   "lang": "ar",
-   "category": "events",
-   "importance": 4,
-   "title": {
-    "ar": "مؤتمر علمي وطني حول العود التونسي في قصر النجمة الزهراء",
-    "en": "National scientific conference on Tunisian oud at the Ennejma Ezzahra Palace"
-   },
-   "summary": {
-    "ar": "أورد موقع Babnet خبراً عن مؤتمر علمي وطني حول العود التونسي في قصر النجمة الزهراء. ولا يتضمن العنوان تفاصيل عن محاور المؤتمر أو المشاركين.",
-    "en": "Babnet reports a national scientific conference on Tunisian oud at the Ennejma Ezzahra Palace. The headline does not provide details about the conference topics or participants."
-   },
-   "note": {
-    "ar": "الاهتمام العلمي بالعود قد يثري النقاش حول هويته واستخداماته؛ لكن العنوان لا يكشف مضمون المؤتمر.",
-    "en": "Scientific attention to oud may enrich discussion of its identity and uses, but the headline does not reveal the conference’s content."
    }
   },
   {
@@ -493,270 +761,6 @@
    "note": {
     "ar": "التخصيص يفتح مجالاً لمحبي العطور لاكتشاف ما يلائم ذوقهم، ويمنح صانعي العطور فرصة للتفكير في تجارب أكثر فردية.",
     "en": "Personalization can help fragrance lovers explore what suits their taste and encourage makers to consider more individual experiences."
-   }
-  },
-  {
-   "id": "noe9dqe",
-   "url": "https://nstperfume.com/2026/10/16/matiere-premiere-cherry-amber-new-fragrance/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-16T17:38:03.000Z",
-   "original": "Matiere Premiere Cherry Amber ~ new fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "Matière Première تطلق عطر Cherry Amber",
-    "en": "Matière Première Launches Cherry Amber"
-   },
-   "summary": {
-    "ar": "بحسب المقتطف، أطلقت دار Matière Première الفرنسية المتخصصة عطر Cherry Amber للجنسين، وهو متاح حالياً حصرياً في الشرق الأوسط.",
-    "en": "According to the excerpt, French niche house Matière Première has launched Cherry Amber, a unisex fragrance currently exclusive to the Middle East."
-   },
-   "note": {
-    "ar": "الإطلاق الحصري إقليمياً يتيح لمحبي العطور في الشرق الأوسط فرصة مبكرة لاكتشاف إصدار جديد من الدار.",
-    "en": "The regional exclusivity gives fragrance lovers in the Middle East an early opportunity to discover a new release from the house."
-   }
-  },
-  {
-   "id": "n98s9ql",
-   "url": "https://nstperfume.com/2026/10/16/lentropiste-festin-new-fragrance/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-16T15:39:42.000Z",
-   "original": "L’Entropiste Festin ~ new fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "L’Entropiste تطلق عطر Festin",
-    "en": "L’Entropiste Launches Festin"
-   },
-   "summary": {
-    "ar": "يذكر المقتطف أن علامة L’Entropiste، التي أسسها العطار Bertrand Duchaufour، أطلقت Festin، وهو عطر خشبي جلدي للجنسين.",
-    "en": "The excerpt says L’Entropiste, the brand of perfumer Bertrand Duchaufour, has launched Festin, a unisex woody leather fragrance."
-   },
-   "note": {
-    "ar": "يجمع الوصف بين طابعين واضحين، الخشب والجلد، ما قد يهم من يبحث عن عطر ذي حضور دافئ ومميز.",
-    "en": "The woody and leather facets may appeal to those seeking a fragrance with a distinctive, warm character."
-   }
-  },
-  {
-   "id": "n124qllk",
-   "url": "https://nstperfume.com/2026/10/16/astier-de-villatte-tanger-new-fragrance/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-16T15:11:29.000Z",
-   "original": "Astier de Villatte Tanger ~ new fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "Astier de Villatte تطلق عطر Tanger",
-    "en": "Astier de Villatte Launches Tanger"
-   },
-   "summary": {
-    "ar": "يفيد المقتطف بأن علامة الخزف الفرنسية Astier de Villatte أطلقت عطراً جديداً باسم Tanger، من دون تفاصيل إضافية عن تركيبته.",
-    "en": "The excerpt reports that French ceramics brand Astier de Villatte has launched a new fragrance called Tanger, without further details about its composition."
-   },
-   "note": {
-    "ar": "إطلاق عطر من علامة ذات جذور في الخزف يذكّر بأن الإلهام العطري قد يأتي من عوالم إبداعية متعددة.",
-    "en": "A fragrance launch from a ceramics brand is a reminder that perfumery can draw inspiration from many creative fields."
-   }
-  },
-  {
-   "id": "nff8yv9",
-   "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxQcFRmcXBfT042LVMxeENLUFc3Nml5ZExOWEkteUZUa2oxSS0xYktMTU9kUzlmZDRYVjltX3RIdVR1RzE5QVpzVnFTRWpId3VlVEJjWTR5TzctaFNOQ1otTjU4NFh0V091eURvRVVOcFlVOW8yOFdGamRuU25mVl9USUhPejJwS0dqTjlDS0drT3JVX3NSWEFTcDZ2dmN1aE93ODhfUnMyVWRTbzk3eTRlbDNhVEI3OTFIaUZ6RTJrRjZzaVdWODl4OXpXbXRaUWxFMlc1d0xWV21kVm9Md3lUWUJxZ244OVow?oc=5",
-   "source": "Grazia",
-   "publishedAt": "2026-10-18T22:14:55.000Z",
-   "original": "Ginseng Biloba, la nouvelle échappée olfactive d’Hermès aux notes boisées, végétales et délicatement amères",
-   "lang": "fr",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "Grazia تتناول عطر Ginseng Biloba من Hermès",
-    "en": "Grazia Features Hermès’ Ginseng Biloba Fragrance"
-   },
-   "summary": {
-    "ar": "يصف عنوان Grazia عطر Ginseng Biloba من Hermès بأنه إصدار جديد بنفحات خشبية ونباتية ومرارة رقيقة. ولا يورد العنوان تفاصيل أخرى عن الإطلاق.",
-    "en": "Grazia describes Hermès’ Ginseng Biloba as a new fragrance with woody, vegetal and delicately bitter notes. The headline provides no further launch details."
-   },
-   "note": {
-    "ar": "الوصف يلفت إلى اتجاه يجمع بين النغمات النباتية والخشبية مع لمسة مرة، وهو تصور قد يثير فضول محبي الروائح غير التقليدية.",
-    "en": "The description points to a blend of vegetal and woody facets with a bitter touch, a profile that may intrigue those who enjoy less conventional scents."
-   }
-  },
-  {
-   "id": "n14nx9p",
-   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE40RTZfbEZMbk9yeDRQM29vYlZpMmJ1dFBZc1IzZWpILUtfM2F5UWVVMktSUVBROUU2a0ZXOWw5Z0ZNSXgyRGR3OHFFcTVRRWF6a3duTVFGcko?oc=5",
-   "source": "Babnet",
-   "publishedAt": "2026-10-17T16:09:18.000Z",
-   "original": "افتتاح فعاليات الدورة الرابعة للمهرجان الدولي للعود بالمدينة",
-   "lang": "ar",
-   "category": "events",
-   "importance": 3,
-   "title": {
-    "ar": "افتتاح الدورة الرابعة للمهرجان الدولي للعود في المدينة",
-    "en": "Fourth International Oud Festival Opens in the City"
-   },
-   "summary": {
-    "ar": "أفاد عنوان Babnet بافتتاح فعاليات الدورة الرابعة للمهرجان الدولي للعود في المدينة، من دون ذكر تفاصيل البرنامج في العنوان.",
-    "en": "Babnet reports the opening of the fourth edition of the International Oud Festival in the city; the headline does not give details of the programme."
-   },
-   "note": {
-    "ar": "المهرجانات المتخصصة تتيح لمحبي العود مساحة للاحتفاء به والتعرف إلى حضوره الثقافي والعطري.",
-    "en": "Specialist festivals give oud enthusiasts a space to celebrate the material and explore its cultural and olfactory significance."
-   }
-  },
-  {
-   "id": "n1ic6jnp",
-   "url": "https://news.google.com/rss/articles/CBMi3gNBVV95cUxOV1BnQmZ1Sk5SUVhuaERnYnRkanRKMFhvaEFzNkZKMkdlZWFlSHJGVU5hcUxGbVlTc0Rka0s5TUhDT1BJY0RlRi1EYmJ0UzdJcHpUNndFNzRjVDNXcUZZcUducjM4VDg2STJtbkZ3WkFzRXVFWVNwdDBZbGJjT3NwQUdIMVVFTHpHenctRndmWkpOMWhxckRsbThnVHN0TEcyNnA1M2FoaHlZdE04NU5vQXF6dXNzVFZXbDhxT0I3NFlBcDJScnd0Y3RlbU0zTV9LbkQ2RVZtQ2VTTnlVOG9sWnV1THF6b0pvbk0wX3k1LS1FRWRPMVRCdXZ0T2wzR1Q2VGV1MDBxakdBYUZsbjdLY3o4UVl2OWZEdnd6aXhpRHYyd2cxa0phN2F1SG8xZXpjalZnRExtdURBdTF3YVRvcVBHRGstVk9CODFvbXh1MHJTTEJrc2NpZndGaG5yWlVSUWNaTG5jc2lvLU9UZ3ZqaXdmRmxvWDFhRjFDQS1YaXJpek9MWkhrbk1ZOW9BVHFhNnQwYWMzeHRUYjQyUXp6QUpEVy13UF80VmY3M0pSSWVpam11Z1d6ZDZORHM5THNVY2RsMlZaNHUtUnZ0d1hIbTNZeGgyVS1YSjBZLW5R?oc=5",
-   "source": "الشرق الأوسط",
-   "publishedAt": "2026-10-18T10:44:21.000Z",
-   "original": "«بيت العود» يحتفي بأول دفعة من خريجيه في السعودية",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 3,
-   "title": {
-    "ar": "بيت العود يحتفي بأول دفعة من خريجيه في السعودية",
-    "en": "Beit Al Oud Celebrates Its First Graduating Class in Saudi Arabia"
-   },
-   "summary": {
-    "ar": "ذكر عنوان الشرق الأوسط أن «بيت العود» احتفى بأول دفعة من خريجيه في السعودية، من دون تفاصيل إضافية عن البرنامج أو عدد الخريجين.",
-    "en": "Asharq Al-Awsat reports that Beit Al Oud celebrated its first graduating class in Saudi Arabia. The headline gives no further details about the programme or the number of graduates."
-   },
-   "note": {
-    "ar": "الاحتفاء بالتعليم الموسيقي المرتبط بالعود يعزز حضور الآلة وثقافتها، وإن كان الخبر ثقافياً لا يتعلق بصناعة العطور مباشرة.",
-    "en": "Celebrating oud education supports the instrument’s cultural presence, though this is a cultural story rather than a direct fragrance-industry development."
-   }
-  },
-  {
-   "id": "nunxcxo",
-   "url": "https://news.google.com/rss/articles/CBMi3gJBVV95cUxQNDYxaWtBUEVpbFVpQzFEWFVfZEtMNFY0NTM5M2xWUjRoUGE3Wk9tejgwS1AyQkRfQWNqV3NIdS00TEJ2S2VaM1l6TFN6TS1tVGhxR1NtNEdqNVVwWENRb2pIME1PZHEwT19sX3VsNmQxaGhVOERmUFdFZHd0VjdIck9JTjh1R0lsclhmUFRpVEc2OUl2VzdYTU4wVVhWN0h5ZGcxamlvMWp6YWdnaUo5Zm93ck1jamtJZllRQWV1MmVEcTZzRUFfVGlUVDgwLTBndHVaM3V3Z3FWaTFSMjRFbnVrMzhqUjZOOTNxcWUwNVg5ejRIQXZ1NnRCRG54VjZCYWluS2xreWhDcmdfdjI4YkxiS3ZCLXFOb2M4Z242LU5rbkJrNHVBTDh1aElhVjhvZzFMaGpPbXc1ZXg3WG9qR0JMeUFEbGVZSWN0VzVSN25ieFIwa0pSSmJMOXFaUQ?oc=5",
-   "source": "Manila Bulletin",
-   "publishedAt": "2026-10-17T05:00:37.000Z",
-   "original": "6 Filipino perfume finds to discover at Fragcom Meet’s ‘The Rising’",
-   "lang": "en",
-   "category": "market",
-   "importance": 3,
-   "title": {
-    "ar": "ستة اكتشافات عطرية فلبينية في فعالية Fragcom Meet",
-    "en": "Six Filipino Fragrance Finds at Fragcom Meet"
-   },
-   "summary": {
-    "ar": "يقدم عنوان Manila Bulletin ستة اكتشافات عطرية فلبينية للتعرف إليها في فعالية Fragcom Meet تحت عنوان «The Rising».",
-    "en": "Manila Bulletin highlights six Filipino fragrance finds to discover at Fragcom Meet’s event, “The Rising.”"
-   },
-   "note": {
-    "ar": "تسليط الضوء على العطور المحلية يوسع خيارات محبي العطور ويمنح العلامات الفلبينية مساحة للظهور.",
-    "en": "Spotlighting local fragrances broadens enthusiasts’ choices and gives Filipino brands a platform for visibility."
-   }
-  },
-  {
-   "id": "n1v1d446",
-   "url": "https://www.premiumbeautynews.com/fr/reel-contre-virtuel-les-clubs-de,28358",
-   "source": "Premium Beauty News",
-   "publishedAt": "2026-10-16T16:00:53.000Z",
-   "original": "Réel contre virtuel : Les clubs de parfum, nouvelle obsession des marques ?",
-   "lang": "en",
-   "category": "market",
-   "importance": 3,
-   "title": {
-    "ar": "نوادي العطور تتحول إلى تجربة اجتماعية واقعية للعلامات",
-    "en": "Perfume Clubs Become In-Person Social Experiences for Brands"
-   },
-   "summary": {
-    "ar": "يقول المقتطف إن نوادي محبي العطور تتشكل في الولايات المتحدة وأوروبا والصين، مع اعتماد علامات مستحضرات التجميل على هذا التوجه لتقديم اكتشاف العطور كتجربة اجتماعية.",
-    "en": "The excerpt says fragrance enthusiast clubs are forming in the United States, Europe and China, as beauty brands use the trend to make scent discovery a social experience."
-   },
-   "note": {
-    "ar": "اللقاءات المباشرة تمنح محبي العطور فرصة لتجربة الروائح وتبادل الآراء خارج العالم الافتراضي.",
-    "en": "In-person gatherings give fragrance lovers a chance to try scents and exchange views beyond the virtual world."
-   }
-  },
-  {
-   "id": "n1jey6nk",
-   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQZXpsOUl2MTNmWndtSFNOcTFqdzhCNi13anUwWUxNOVJQSEc5UDFiNlNWV2RwRVdXM3pubHJNeVV6SGxHbmM0ZTFDS1VWSUR1ZXZKR3IzZTRPSmxEaDQ4S2tSeUhpM3FSdjIxdFF2U3ROZzVYQnJUbURRbThjNFZNRUs1alMtNXlsNlk4bS13dlNSNkRrZTNsamZid2ZjNlFfR2c?oc=5",
-   "source": "World IP Review",
-   "publishedAt": "2026-10-16T20:27:12.000Z",
-   "original": "Chanel blocks bottle shape mark in dispute over No. 5 perfume",
-   "lang": "en",
-   "category": "industry",
-   "importance": 3,
-   "title": {
-    "ar": "Chanel تعترض على تسجيل شكل زجاجة في نزاع يتعلق بعطر No. 5",
-    "en": "Chanel Blocks a Bottle-Shape Mark in a Dispute Involving No. 5"
-   },
-   "summary": {
-    "ar": "يفيد عنوان World IP Review بأن Chanel منعت تسجيل علامة لشكل زجاجة في نزاع يتعلق بعطر No. 5. ولا يورد العنوان تفاصيل قانونية أخرى.",
-    "en": "World IP Review reports that Chanel blocked a bottle-shape mark in a dispute involving No. 5. The headline provides no further legal details."
-   },
-   "note": {
-    "ar": "توضح القضية أهمية شكل العبوة والهوية البصرية في حماية تميز العطور والعلامات التجارية.",
-    "en": "The dispute highlights the importance of bottle design and visual identity in protecting a fragrance’s and brand’s distinctiveness."
-   }
-  },
-  {
-   "id": "nubgdft",
-   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPUnd4V3djWG8xVDBLMWdudExJLWJJdTA3QXdEdGpVaWZaNTBqTThsUTEteUVOQWNJTXhUOFZwLWJFTFF4d2NiM0JTcGkwWnNpVkdGdmpLbXlrb1dRWldwcGotUHN4OHFTbUZvNUZtWWRBZTBpdzVnTzRvNGgzenVQdWFJWjJlemFLem1xRXRERS1UblR6WE5LdVZ3?oc=5",
-   "source": "L'Éclaireur Fnac",
-   "publishedAt": "2026-10-18T03:26:13.000Z",
-   "original": "Ateliers parfum avec Ilias de Elegance Emiratie",
-   "lang": "fr",
-   "category": "events",
-   "importance": 2,
-   "title": {
-    "ar": "ورش عطور مع Ilias من Elegance Emiratie",
-    "en": "Perfume Workshops with Ilias of Elegance Emiratie"
-   },
-   "summary": {
-    "ar": "يشير عنوان L’Éclaireur Fnac إلى تنظيم ورش عطور مع Ilias من Elegance Emiratie، من دون تفاصيل إضافية عن محتوى الورش.",
-    "en": "L’Éclaireur Fnac’s headline announces perfume workshops with Ilias of Elegance Emiratie, without further details about their content."
-   },
-   "note": {
-    "ar": "الورش العملية قد تمنح المشاركين مدخلاً مباشراً إلى عالم تركيب العطور وتجربتها.",
-    "en": "Hands-on workshops can offer participants a direct introduction to fragrance creation and exploration."
-   }
-  },
-  {
-   "id": "n1lxmnm4",
-   "url": "https://cafleurebon.com/lesser-known-notes-in-perfume-spices/?utm_source=rss&utm_medium=rss&utm_campaign=lesser-known-notes-in-perfume-spices",
-   "source": "CaFleureBon",
-   "publishedAt": "2026-10-17T20:07:31.000Z",
-   "original": "Lesser Known Notes in Perfume: Spices",
-   "lang": "en",
-   "category": "ingredients",
-   "importance": 2,
-   "title": {
-    "ar": "توابل أقل شيوعاً في صناعة العطور",
-    "en": "Lesser-Known Spices in Perfumery"
-   },
-   "summary": {
-    "ar": "يسرد المقتطف مواد مثل الحلتيت والكركم والكراوية والشمر والشبت والغالانغال والصولجان والبهار الحلو بوصفها توابل أقل شهرة في صناعة العطور.",
-    "en": "The excerpt lists asafoetida, turmeric, caraway, fennel, dill, galangal, mace and allspice as lesser-known spices used in perfumery."
-   },
-   "note": {
-    "ar": "استكشاف هذه المواد يوسع مفردات صانع العطر، وقد يلهم تجارب تتجاوز التوابل المألوفة.",
-    "en": "Exploring these materials can expand a perfumer’s palette and inspire experiments beyond familiar spices."
-   }
-  },
-  {
-   "id": "n1gsdc0d",
-   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9pOFhfaVpXQllhUFR3Z2dWTVlKcV9fMmRYT0FWTVhZRnRzamlLTEhaLUpLXzVZckVmOFhVQ2pNZzg5bG5IS0FIeXQwRlhPV1VVbTRUQzdBS240akdqQVJV?oc=5",
-   "source": "Trend Hunter",
-   "publishedAt": "2026-10-19T07:41:29.000Z",
-   "original": "Multifunctional Fall Fragrances: Yves Rocher Introduces Pleines Natures Perfumed Body…",
-   "lang": "en",
-   "category": "launch",
-   "importance": 2,
-   "title": {
-    "ar": "Yves Rocher تقدم منتجات Pleines Natures المعطرة للجسم",
-    "en": "Yves Rocher Introduces Pleines Natures Perfumed Body Products"
-   },
-   "summary": {
-    "ar": "يشير عنوان Trend Hunter إلى تقديم Yves Rocher منتجات للجسم معطرة ضمن Pleines Natures، من دون تفاصيل إضافية عن المنتجات.",
-    "en": "Trend Hunter’s headline says Yves Rocher has introduced perfumed body products under Pleines Natures, without further product details."
-   },
-   "note": {
-    "ar": "المنتجات المعطرة للجسم توسع خيارات محبي الروائح اليومية إلى ما يتجاوز العطر التقليدي.",
-    "en": "Perfumed body products broaden everyday scent options beyond conventional perfume."
    }
   }
  ]
