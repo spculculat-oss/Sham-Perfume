@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-20T06:54:09.622Z",
+ "updatedAt": "2026-10-20T08:43:49.241Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -141,11 +141,11 @@
    "host": "abdulsamadalqurashi.com",
    "name": "abdulsamadalqurashi.com",
    "base": "https://abdulsamadalqurashi.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T00:56:02.060Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T08:43:49.241Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -279,18 +279,18 @@
    "host": "nabeel.com",
    "name": "Nabeel",
    "base": "https://www.nabeel.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T00:56:02.060Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T08:43:49.241Z",
    "sampleOk": 0,
    "sampleTotal": 6,
    "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
    "trust": {
     "score": 79,
     "verdict": "trusted",
-    "at": "2026-10-19T00:56:02.060Z",
+    "at": "2026-10-20T08:43:49.241Z",
     "checks": [
      {
       "id": "age",
@@ -391,18 +391,18 @@
    "host": "alharamainperfumes.com",
    "name": "Al Haramain Perfumes",
    "base": "https://ahp.alharamainperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T00:56:02.060Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T08:43:49.241Z",
    "sampleOk": 0,
    "sampleTotal": 6,
    "reason": "ملف الثقة ضعيف (45/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الإرجاع والاسترداد، وسائل دفع معروفة",
    "trust": {
     "score": 45,
     "verdict": "weak",
-    "at": "2026-10-19T00:56:02.060Z",
+    "at": "2026-10-20T08:43:49.241Z",
     "checks": [
      {
       "id": "age",
@@ -3904,8 +3904,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T00:56:49.671Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-20T00:56:49.671Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-20T08:43:49.241Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -3916,12 +3916,12 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T00:56:49.671Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-20T00:56:49.671Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-20T08:43:49.241Z",
    "trust": {
     "score": 30,
     "verdict": "weak",
-    "at": "2026-10-20T00:56:49.671Z",
+    "at": "2026-10-20T08:43:49.241Z",
     "checks": [
      {
       "id": "age",
@@ -4023,15 +4023,15 @@
    "host": "perfumesclub.com",
    "name": "Perfumes online",
    "base": "https://www.perfumesclub.com",
-   "status": "candidate",
+   "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T00:56:49.671Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-20T00:56:49.671Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-20T08:43:49.241Z",
    "trust": {
     "score": 87,
     "verdict": "trusted",
-    "at": "2026-10-20T00:56:49.671Z",
+    "at": "2026-10-20T08:43:49.241Z",
     "checks": [
      {
       "id": "age",
@@ -4126,10 +4126,27 @@
     "flags": [],
     "registeredAt": "2008-12-02T11:38:47.000Z"
    },
-   "region": "global",
-   "sampleOk": 3,
+   "region": "europe",
+   "sampleOk": 4,
    "sampleTotal": 7,
-   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (3/7)"
+   "currency": "EUR",
+   "rateToEgp": 60.4222,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*perfumesclub\\.com/es/[^?#]+$",
+   "sitemaps": [
+    "https://www.perfumesclub.com/sitemap-Landings.xml",
+    "https://www.perfumesclub.com/sitemap-G.xml",
+    "https://www.perfumesclub.com/sitemap-M.xml",
+    "https://www.perfumesclub.com/sitemap-F.xml",
+    "https://www.perfumesclub.com/sitemap-FM.xml",
+    "https://www.perfumesclub.com/sitemap-FS.xml",
+    "https://www.perfumesclub.com/sitemap-FT.xml",
+    "https://www.perfumesclub.com/sitemap-FMS.xml",
+    "https://www.perfumesclub.com/sitemap-FMT.xml",
+    "https://www.perfumesclub.com/sitemap-S.xml"
+   ],
+   "via": "json-ld",
+   "productsEstimate": 46183,
+   "crawlDelayMs": 1000
   },
   {
    "id": "primor-eu",
@@ -4139,12 +4156,12 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T00:56:49.671Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-20T00:56:49.671Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-20T08:43:49.241Z",
    "trust": {
     "score": 74,
     "verdict": "trusted",
-    "at": "2026-10-20T00:56:49.671Z",
+    "at": "2026-10-20T08:43:49.241Z",
     "checks": [
      {
       "id": "age",
@@ -4252,8 +4269,8 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T06:54:09.622Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-20T06:54:09.622Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-20T08:43:49.241Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -4264,12 +4281,12 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T06:54:09.622Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-20T06:54:09.622Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-20T08:43:49.241Z",
    "trust": {
     "score": 50,
     "verdict": "weak",
-    "at": "2026-10-20T06:54:09.622Z",
+    "at": "2026-10-20T08:43:49.241Z",
     "checks": [
      {
       "id": "age",
@@ -4373,12 +4390,12 @@
    "status": "candidate",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T06:54:09.622Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-20T06:54:09.622Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-20T08:43:49.241Z",
    "trust": {
     "score": 41,
     "verdict": "weak",
-    "at": "2026-10-20T06:54:09.622Z",
+    "at": "2026-10-20T08:43:49.241Z",
     "checks": [
      {
       "id": "age",
@@ -5013,6 +5030,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-20T08:43:49.241Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 10,
+   "activated": 1,
+   "rejected": 3,
+   "notes": [
+    "  ↳ primor.eu: CV 74/100 [https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Magento",
+    "✗ primor.eu: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "✗ iciparisxl.be: الموقع لا يفتح (HTTP 403)",
+    "  ↳ kicks.se: CV 50/100 [https,contact,returns,payment,social] (pages: /kundservice→200 /kundservice→200)",
+    "✗ kicks.se: ملف الثقة ضعيف (50/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الشحن، سياسة الخصوصية",
+    "  ↳ bangerhead.se: CV 41/100 [https,contact,payment,social] (pages: /kontakta-oss→200 /returns→404)",
+    "✗ bangerhead.se: ملف الثقة ضعيف (41/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الإرجاع والاسترداد، سياسة الشحن",
+    "✗ abdulsamadalqurashi.com: الموقع لا يفتح",
+    "  ↳ nabeel.com: CV 79/100 [age,https,contact,identity,returns,shipping,privacy,terms,social]",
+    "✗ nabeel.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "  ↳ alharamainperfumes.com: CV 45/100 [age,https,contact,social] (pages: /contact-us→404 /returns→404 /about-us/→200)",
+    "✗ alharamainperfumes.com: ملف الثقة ضعيف (45/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الإرجاع والاسترداد، وسائل دفع معروفة"
+   ]
+  },
   {
    "at": "2026-10-20T06:54:09.622Z",
    "mode": "self",
