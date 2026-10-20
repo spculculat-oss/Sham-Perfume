@@ -4,7 +4,7 @@
  * What is saved is a display token: brand, last 4, expiry, name. Never the
  * full number, never the security code, never a wallet phone.
  */
-import { detectCardBrand, savePaymentMethod, type PaymentProvider, type SavedPaymentMethod } from './customerPaymentVault';
+import { detectCardBrand, getSavedPaymentMethods, savePaymentMethod, updatePaymentMethod, type PaymentProvider, type SavedPaymentMethod } from './customerPaymentVault';
 
 export type CardBrand = 'visa' | 'mastercard' | 'amex' | 'mada' | 'meeza';
 
@@ -162,4 +162,66 @@ export function registerWallet(customerId: string, input: {
   };
   assertDisplayOnly(JSON.stringify(saved));
   return savePaymentMethod(saved, customerId);
+}
+
+const PULL_KEY = 'sham_instrument_pull_v1_';
+
+export interface InstrumentPull {
+  id: string;
+  customerId: string;
+  methodId: string;
+  display: string;
+  kind: 'card' | 'wallet';
+  amountLabel: string;
+  orderRef: string;
+  /** A request only. Never a collected charge. */
+  status: 'requested';
+  createdAt: string;
+}
+
+export function renewCardExpiry(customerId: string, id: string, expiry: string, now = new Date()): SavedPaymentMethod {
+  const match = /^(\d{2})\/(\d{2})$/.exec(formatExpiry(expiry));
+  if (!match) throw new Error('INVALID_EXPIRY');
+  const month = Number(match[1]);
+  const year = 2000 + Number(match[2]);
+  if (month < 1 || month > 12) throw new Error('INVALID_EXPIRY');
+  if (year < now.getFullYear() || (year === now.getFullYear() && month < now.getMonth() + 1)) throw new Error('INVALID_EXPIRY');
+  const saved = updatePaymentMethod(id, { expiry: `${match[1]}/${match[2]}` }, customerId);
+  if (!saved || saved.type !== 'card') throw new Error('MISSING');
+  return saved;
+}
+
+function pullKey(customerId: string) {
+  return `${PULL_KEY}${customerId.trim().toLowerCase()}`;
+}
+
+export function listInstrumentPulls(customerId: string): InstrumentPull[] {
+  if (typeof window === 'undefined' || !customerId) return [];
+  try {
+    const list = JSON.parse(localStorage.getItem(pullKey(customerId)) || '[]') as InstrumentPull[];
+    return Array.isArray(list) ? list.filter((row) => row && row.status === 'requested') : [];
+  } catch { return []; }
+}
+
+/** Records a reuse or a wallet pull against a saved instrument. Does not collect money. */
+export function requestInstrumentPull(customerId: string, methodId: string, amountLabel: string): InstrumentPull {
+  if (!customerId || customerId === 'guest_client') throw new Error('LOGIN_REQUIRED');
+  const method = getSavedPaymentMethods(customerId).find((row) => row.id === methodId);
+  if (!method) throw new Error('MISSING');
+  const pull: InstrumentPull = {
+    id: `pull_${Date.now().toString(36)}`,
+    customerId,
+    methodId,
+    display: `${method.titleEn} ${method.identifier}`,
+    kind: method.type === 'card' ? 'card' : 'wallet',
+    amountLabel,
+    orderRef: `SP-${Date.now().toString(36).toUpperCase()}`,
+    status: 'requested',
+    createdAt: new Date().toISOString(),
+  };
+  assertDisplayOnly(`${pull.display} ${pull.amountLabel}`);
+  const next = [pull, ...listInstrumentPulls(customerId)].slice(0, 30);
+  localStorage.setItem(pullKey(customerId), JSON.stringify(next));
+  window.dispatchEvent(new CustomEvent('sham-payment-methods-updated'));
+  return pull;
 }

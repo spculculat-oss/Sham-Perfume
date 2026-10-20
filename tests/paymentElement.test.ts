@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { registerCard, tokenizeCard, tokenizeWalletHandle, tokenizeWalletPhone, assertDisplayOnly } from '../src/utils/paymentElement';
+import { registerCard, renewCardExpiry, requestInstrumentPull, tokenizeCard, tokenizeWalletHandle, tokenizeWalletPhone, assertDisplayOnly } from '../src/utils/paymentElement';
 import { getSavedPaymentMethods } from '../src/utils/customerPaymentVault';
 
 test('card entry keeps only brand, last 4 and expiry — never the number or the security code', () => {
@@ -38,6 +38,12 @@ test('a saved card and wallet are tied to a signed-in customer and do not keep t
   assert.equal(tokenizeWalletPhone('01012345566').last4, '5566');
   assert.equal(tokenizeWalletHandle('amina@instapay').display.includes('instapay'), true);
   assert.equal(tokenizeWalletHandle('amina@instapay').display.includes('amina@'), false);
+  const renewed = renewCardExpiry('usr-1', saved.id, '11/31', new Date('2026-10-21'));
+  assert.equal(renewed.expiry, '11/31');
+  const pull = requestInstrumentPull('usr-1', saved.id, 'EGP 120');
+  assert.equal(pull.status, 'requested');
+  assert.equal(JSON.stringify(pull).includes('4242424242424242'), false);
+  assert.equal(JSON.stringify(pull).includes('succeeded'), false);
   } finally {
     if (previousWindow === undefined) delete (globalThis as { window?: unknown }).window;
     else Object.defineProperty(globalThis, 'window', { value: previousWindow, configurable: true });
