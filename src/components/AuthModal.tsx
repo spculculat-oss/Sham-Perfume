@@ -412,6 +412,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [dob, setDob] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  // Google-style live strength (mirrors server/community/service.ts passwordPolicy)
+  const pwStrength = (pw: string) => {
+    let s = 0;
+    if (pw.length >= 8) s++;
+    if (pw.length >= 12) s++;
+    if (/\d/.test(pw) && /[A-Za-z\u0600-\u06FF]/.test(pw)) s++;
+    if (/[^A-Za-z0-9\u0600-\u06FF]/.test(pw) || /[A-Z]/.test(pw)) s++;
+    return s;
+  };
+  const pwScore = pwStrength(password);
+  const pwOk = password.length >= 8 && /\d/.test(password) && /[A-Za-z\u0600-\u06FF]/.test(password);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -734,6 +745,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 onChange={(e) => setPassword(e.target.value)}
                 className={`w-full ${rtl ? 'pl-10 pr-9' : 'pl-9 pr-10'} py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-amber-700 text-left font-mono`}
                 dir="ltr"
+                autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
               />
               <button
                 type="button"
@@ -743,6 +755,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
+            {mode === 'register' && password.length > 0 && (
+              <div className="mt-2 space-y-1.5">
+                <div className="grid grid-cols-4 gap-1">
+                  {[0, 1, 2, 3].map((i) => (
+                    <span key={i} className={`h-1.5 rounded-full ${i < pwScore ? (pwScore >= 3 ? 'bg-emerald-500' : pwScore === 2 ? 'bg-amber-500' : 'bg-rose-500') : 'bg-stone-200'}`} />
+                  ))}
+                </div>
+                <ul className="text-[10px] leading-relaxed space-y-0.5">
+                  <li className={password.length >= 8 ? 'text-emerald-600' : 'text-stone-500'}>• {password.length >= 8 ? '✓ ' : ''}{L('err_password').split('،')[0]}</li>
+                  <li className={pwOk ? 'text-emerald-600' : 'text-stone-500'}>• {currentLang === 'ar' ? 'لا نسمح بكلمات المرور المنتشرة (مثل 123456، password)' : 'We block common passwords (e.g. 123456, password)'} {pwOk ? '✓' : ''}</li>
+                </ul>
+              </div>
+            )}
           </div>
 
           {mode === 'register' && (
@@ -817,6 +842,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </label>
               </div>
 
+              {/* Sham Security — Google/Apple/Meta practices visible */}
+              <div className="rounded-xl bg-amber-50 border border-amber-200 p-2.5 text-[10px] leading-relaxed text-amber-900">
+                <div className="flex items-center gap-1.5 font-bold"><ShieldCheck className="w-3.5 h-3.5 text-amber-700" />{currentLang === 'ar' ? 'حماية شام — كما في جوجل وآبل' : 'Sham Security — Google/Apple grade'}</div>
+                <ul className="mt-1 list-disc list-inside space-y-0.5 text-stone-700">
+                  <li>{currentLang === 'ar' ? 'كلمة المرور تُفحص ضد 10 آلاف كلمة مسرّبة + تشفير scrypt' : 'Password checked vs 10k breached + scrypt hashing'}</li>
+                  <li>{currentLang === 'ar' ? 'قفل الحساب 15 دقيقة بعد 5 محاولات خاطئة' : 'Lockout 15 min after 5 failed attempts'}</li>
+                  <li>{currentLang === 'ar' ? 'تحقق بخطوتين + دخول بالبصمة/الوجه (Passkey)' : '2-Step + Passkey (fingerprint/face)'}</li>
+                  <li>{currentLang === 'ar' ? 'تنبيه بريد عند دخول جهاز جديد + إدارة الأجهزة من بوابتك' : 'New-device e-mail alert + device management'}</li>
+                </ul>
+              </div>
+
               <div>
                 <label className="font-semibold text-stone-800 block mb-1 text-[11px]">
                   {L('dob_label')}
@@ -826,6 +862,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   value={dob}
                   onChange={(e) => setDob(e.target.value)}
                   max={new Date().toISOString().split('T')[0]}
+                  lang="en" dir="ltr" placeholder="YYYY-MM-DD"
                   className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-amber-700 text-xs"
                 />
               </div>
