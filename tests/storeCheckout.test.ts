@@ -131,7 +131,7 @@ const order = { items: [{ sku: 'LAT-001', qty: 2 }], country: 'SA', lang: 'ar', 
 test('checkout: without Kashier keys the store says so (the assistant flow stays)', async () => {
   const s = await serve({}, () => json({}));
   try {
-    assert.deepEqual(await (await fetch(`${s.base}/store/payments`)).json(), { enabled: false, country: 'EG', methods: [] });
+    assert.deepEqual(await (await fetch(`${s.base}/store/payments`)).json(), { enabled: false, country: 'EG', methods: [], direct: [] });
     const r = await fetch(`${s.base}/store/checkout`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(order) });
     assert.equal(r.status, 503);
     assert.equal(s.calls.length, 0);

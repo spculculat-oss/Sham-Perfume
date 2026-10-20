@@ -33,6 +33,8 @@ import { PaymentEnvironmentModal } from './PaymentEnvironmentModal';
 import { StoreSalesCategoryChart } from './StoreSalesCategoryChart';
 import { saveMerchant } from '../utils/merchantDataStore';
 import { FAMILIES, searchText, type Family, type Gender, type StoreProduct } from '../utils/storeCatalog';
+import DirectPaymentCard from './DirectPaymentCard';
+import { reserveDirectOrder, savedDirectOrders, type DirectOrder } from '../utils/directPayment';
 import { makeStoreT, storeFamilyLabel, storeGenderLabel, storeLocalized, storeNumber } from '../لغات/storeL10n';
 import { isRTL } from '../لغات/localizedContent';
 import type { SupportedLanguage } from '../types/i18n';
@@ -137,6 +139,12 @@ function storeLabels(lang: SupportedLanguage) {
     testMode: t('sf_test_mode'),
     back: t('sf_back'),
     orAssistant: t('sf_or_assistant'),
+    directTitle: t('sf_direct_title'),
+    directNote: t('sf_direct_note'),
+    directReserve: t('sf_direct_reserve'),
+    directCodPlace: t('sf_direct_cod_place'),
+    directMyOrders: t('sf_direct_my_orders'),
+    directKinds: { instapay: t('sf_direct_instapay'), bank_transfer: t('sf_direct_bank'), wallet: t('sf_direct_wallet'), cod: t('sf_direct_cod') } as Record<string, string>,
   };
 }
 
@@ -455,7 +463,20 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
   const countries = useMemo(() => countryOptions(currentLang), [currentLang]);
   const payments = usePayments(money.country);
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'wallet'>('card');
-  const chosenMethod = payments?.methods.some((m) => m.id === paymentMethod) ? paymentMethod : payments?.methods[0]?.id;
+  // «بنك شام»: InstaPay / bank transfer / wallet / cash on delivery straight to the store — no gateway.
+  const directMethods = payments?.direct || [];
+  const [directChoice, setDirectChoice] = useState('');
+  const chosenDirect = directMethods.find((m) => m.id === directChoice) || (!payments?.enabled ? directMethods[0] : undefined);
+  const canPay = Boolean(payments?.enabled || directMethods.length);
+  const [directOrders, setDirectOrders] = useState<DirectOrder[]>(() => (typeof window === 'undefined' ? [] : savedDirectOrders()));
+  const [activeDirect, setActiveDirect] = useState('');
+  useEffect(() => {
+    const sync = () => setDirectOrders(savedDirectOrders());
+    window.addEventListener('sham-direct-orders', sync);
+    return () => window.removeEventListener('sham-direct-orders', sync);
+  }, []);
+  const visibleDirect = directOrders.filter((o) => o.ref === activeDirect || ((o.state === 'awaiting_payment' || o.state === 'claimed') && Date.now() - o.at < 14 * 86400_000)).slice(0, 3);
+  const chosenMethod = chosenDirect ? undefined : payments?.methods.some((m) => m.id === paymentMethod) ? paymentMethod : payments?.methods[0]?.id;
   const chargedBill = payments?.currency ? quote(summary.lines.map((l) => ({ sku: l.product.sku, price: l.product.price, qty: l.qty })), money.country, { currency: payments.currency }) : null;
   const bill = money.quote(summary.lines.map((l) => ({ sku: l.product.sku, price: l.product.price, qty: l.qty })));
   const lineTotal = new Map(bill.lines.map((l) => [l.sku, l.subtotal]));
@@ -495,6 +516,20 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
   const pay = async (e: React.FormEvent) => {
     e.preventDefault();
     if (paying) return;
+    if (chosenDirect) {
+      setPaying(true); setPayMessage('');
+      try {
+        const items = summary.lines.map((l) => ({ sku: l.product.sku, qty: l.qty }));
+        const order = await reserveDirectOrder(items, money.country, payForm, currentLang, chosenDirect.id);
+        setActiveDirect(order.ref); setDirectOrders(savedDirectOrders());
+        // The order is placed: it leaves the basket (a direct purchase never touched it).
+        if (directPurchase) setDirectPurchase(null); else removePurchasedItems(items);
+        setStep('cart');
+      } catch (error) {
+        setPayMessage(error instanceof Error && ['INVALID_EMAIL', 'INVALID_PHONE', 'MISSING_ADDRESS', 'MISSING_NAME'].includes((error as { code?: string }).code || '') ? L.payInvalid : L.payError);
+      } finally { setPaying(false); }
+      return;
+    }
     if (!payments?.enabled || !chosenMethod) { setPayMessage(L.payError); return; }
     setPaying(true); setPayMessage('');
     try {
@@ -1459,6 +1494,12 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
               </button>
             </div>
 
+            {visibleDirect.length > 0 && (
+              <div className="space-y-2 my-3" data-testid="direct-orders">
+                <p className="text-xs font-bold text-stone-700">{L.directMyOrders}</p>
+                {visibleDirect.map((o) => <DirectPaymentCard key={o.ref} order={o} lang={currentLang} onChange={() => setDirectOrders(savedDirectOrders())} />)}
+              </div>
+            )}
             {directPurchase && <p className="text-xs text-amber-900 bg-amber-50 p-2 rounded-lg my-2">{currentLang === 'ar' ? 'شراء هذا المنتج فقط. محتويات سلتك الأخرى محفوظة كما هي.' : 'Buy only this product. Your existing basket stays unchanged.'}</p>}
             {summary.lines.length ? (
               <>
@@ -1563,12 +1604,20 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                       <fieldset className="rounded-xl border border-stone-200 bg-stone-50 p-3 space-y-3" data-testid="real-payment-methods">
                         <legend className="text-xs font-bold px-1">{currentLang === 'ar' ? 'وسائل الدفع المفعّلة لبلدك' : 'Enabled methods for your country'}</legend>
                         {payments?.methods.map((m) => <label key={m.id} className="flex items-center gap-2 text-xs">
-                          <input type="radio" name="paymentMethod" value={m.id} checked={chosenMethod === m.id} onChange={() => setPaymentMethod(m.id)} />
+                          <input type="radio" name="paymentMethod" value={m.id} checked={!chosenDirect && chosenMethod === m.id} onChange={() => { setPaymentMethod(m.id); setDirectChoice(''); }} />
                           {m.id === 'card' ? (currentLang === 'ar' ? 'بطاقة بنكية' : 'Bank card') : (currentLang === 'ar' ? 'محفظة مصرية' : 'Egyptian mobile wallet')}
                         </label>)}
-                        {!payments?.enabled && <p role="status" className="text-xs text-amber-800">{currentLang === 'ar' ? 'لا توجد وسيلة دفع إلكتروني جاهزة لهذا البلد حالياً. تواصل مع المساعد لترتيب الطلب؛ لن نعتبره مدفوعاً.' : 'No online method is ready for this country. Contact the assistant to arrange the order; it will not be marked paid.'}</p>}
-                        <p className="text-[11px] text-stone-600 flex items-start gap-2"><ShieldCheck className="w-4 h-4 shrink-0" />{currentLang === 'ar' ? 'تُدخل بيانات البطاقة أو المحفظة داخل صفحة البوابة فقط. لا تحفظ شام رقم البطاقة أو رمز CVV، والتأكيد من البوابة هو إثبات الدفع.' : 'Enter card or wallet details only on the gateway page. Sham does not save card numbers or CVVs; only a verified gateway response confirms payment.'}</p>
-                        {chargedBill && <p className="text-xs font-semibold" data-testid="charge-currency">{L.payCharge.replace('{amount}', `${chargedBill.total} ${chargedBill.currency}`)}</p>}
+                        {directMethods.length > 0 && <div className="space-y-2 pt-1" data-testid="direct-methods">
+                          <p className="text-[11px] font-bold text-emerald-800">{L.directTitle}</p>
+                          {directMethods.map((m) => <label key={m.id} className="flex items-center gap-2 text-xs">
+                            <input type="radio" name="paymentMethod" value={m.id} checked={chosenDirect?.id === m.id} onChange={() => setDirectChoice(m.id)} />
+                            <span>{L.directKinds[m.kind] || m.label}{m.label && m.label !== L.directKinds[m.kind] ? <span className="text-stone-500"> · {m.label}</span> : null}</span>
+                          </label>)}
+                          <p className="text-[11px] text-stone-600">{L.directNote}</p>
+                        </div>}
+                        {!canPay && <p role="status" className="text-xs text-amber-800">{currentLang === 'ar' ? 'لا توجد وسيلة دفع إلكتروني جاهزة لهذا البلد حالياً. تواصل مع المساعد لترتيب الطلب؛ لن نعتبره مدفوعاً.' : 'No online method is ready for this country. Contact the assistant to arrange the order; it will not be marked paid.'}</p>}
+                        {payments?.enabled && !chosenDirect && <p className="text-[11px] text-stone-600 flex items-start gap-2"><ShieldCheck className="w-4 h-4 shrink-0" />{currentLang === 'ar' ? 'تُدخل بيانات البطاقة أو المحفظة داخل صفحة البوابة فقط. لا تحفظ شام رقم البطاقة أو رمز CVV، والتأكيد من البوابة هو إثبات الدفع.' : 'Enter card or wallet details only on the gateway page. Sham does not save card numbers or CVVs; only a verified gateway response confirms payment.'}</p>}
+                        {chargedBill && !chosenDirect && <p className="text-xs font-semibold" data-testid="charge-currency">{L.payCharge.replace('{amount}', `${chargedBill.total} ${chargedBill.currency}`)}</p>}
                       </fieldset>
 
                       {payMessage && (
@@ -1579,7 +1628,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
 
                       <button
                         type="submit"
-                        disabled={paying || !payments?.enabled || !chosenMethod}
+                        disabled={paying || (!chosenDirect && (!payments?.enabled || !chosenMethod))}
                         data-testid="store-pay"
                         className="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 disabled:bg-stone-400 text-white text-sm font-bold cursor-pointer inline-flex items-center justify-center gap-2 transition-all shadow-xs"
                       >
@@ -1588,11 +1637,13 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                             <Loader2 className="w-4 h-4 animate-spin" />
                             {L.paying}
                           </>
+                        ) : chosenDirect ? (
+                          chosenDirect.kind === 'cod' ? L.directCodPlace : L.directReserve
                         ) : (
                           L.payContinue
                         )}
                       </button>
-                      {!payments?.enabled && <button type="button" onClick={checkout} className="w-full py-2 text-xs text-amber-800 font-bold">{L.orAssistant}</button>}
+                      {!canPay && <button type="button" onClick={checkout} className="w-full py-2 text-xs text-amber-800 font-bold">{L.orAssistant}</button>}
                       <button
                         type="button"
                         onClick={() => setStep('cart')}
@@ -1601,7 +1652,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                         {L.back}
                       </button>
                     </form>
-                  ) : payments?.enabled ? (
+                  ) : canPay ? (
                     <>
                       <button
                         type="button"

@@ -40,7 +40,7 @@ interface FeedbackItem { conversationId: string; messageId?: string; rating: 'up
 
 const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'overview', label: T('نظرة عامة'), icon: <LayoutDashboard className="w-4 h-4" /> },
-  { id: 'finance', label: T('الإدارة المالية'), icon: <ClipboardList className="w-4 h-4" /> },
+  { id: 'finance', label: T('بنك شام والمالية'), icon: <ClipboardList className="w-4 h-4" /> },
   { id: 'community', label: T('المجتمع'), icon: <Users className="w-4 h-4" /> },
   { id: 'contracts', label: T('التعاقدات'), icon: <Handshake className="w-4 h-4" /> },
   { id: 'agent', label: T('المساعد الإداري'), icon: <Wand2 className="w-4 h-4" /> },

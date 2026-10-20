@@ -2,15 +2,18 @@
  * Storage abstraction. The same core runs on:
  *  - a VPS / Node host  -> FileStore   (JSON file, atomic writes)
  *  - Vercel / Firebase  -> FirestoreStore (REST, service account)
+ *  - Vercel + Neon      -> PostgresStore (SHAM_STORE=postgres; the ledger uses it automatically, see createLedgerStore)
  *  - tests / previews   -> MemoryStore (non-persistent, reported in admin)
  */
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import type { CollectionName, Collections } from './types';
 import { FirestoreStore } from './firestoreStore';
+import { PostgresStore } from './pgStore';
+import { connectPostgres, findDatabase } from '../community/db';
 
 export interface Store {
-  readonly kind: 'memory' | 'file' | 'firestore';
+  readonly kind: 'memory' | 'file' | 'firestore' | 'postgres';
   readonly persistent: boolean;
   get<C extends CollectionName>(collection: C, id: string): Promise<Collections[C] | undefined>;
   list<C extends CollectionName>(collection: C): Promise<Collections[C][]>;
@@ -110,6 +113,11 @@ export function createStore(env: Env = process.env): Store {
     }
     return new FirestoreStore({ projectId, clientEmail, privateKey, prefix: env.SHAM_FIRESTORE_PREFIX?.trim() || 'sham_core_' });
   }
+  if (requested === 'postgres') {
+    const { url } = findDatabase(env);
+    if (!url) throw new Error('SHAM_STORE=postgres requires a database URL (DATABASE_URL, POSTGRES_URL or SHAM_DATABASE_URL)');
+    return new PostgresStore(() => connectPostgres(url));
+  }
   if (requested === 'memory') return new MemoryStore();
   // Serverless platforms (Vercel, Tencent EdgeOne) have no durable disk.
   if (requested === 'file' || (!requested && !env.VERCEL && !env.SHAM_SERVERLESS)) {
@@ -117,4 +125,16 @@ export function createStore(env: Env = process.env): Store {
   }
   // Serverless without explicit storage: no durable disk. Admin shows this warning.
   return new MemoryStore();
+}
+
+/**
+ * «بنك شام» needs a durable ledger even when the rest of Sham Core runs on temporary memory (a serverless
+ * host without SHAM_STORE). The community's database (Vercel → Storage → Neon) is then reused for the
+ * money records only, so a database hiccup can never take the chat down with it.
+ */
+export function createLedgerStore(env: Env, core: Store): Store {
+  if (core.persistent && !(core.kind === 'file' && (env.VERCEL || env.SHAM_SERVERLESS))) return core;
+  if ((env.SHAM_LEDGER_STORE || '').trim().toLowerCase() === 'memory') return core;
+  const { url } = findDatabase(env);
+  return url ? new PostgresStore(() => connectPostgres(url)) : core;
 }

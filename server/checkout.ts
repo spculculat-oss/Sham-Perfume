@@ -14,6 +14,7 @@
 import express from 'express';
 import { randomBytes } from 'node:crypto';
 import { FinanceService } from './finance/service';
+import { BankService } from './finance/bank';
 import { MemoryStore } from './core/store';
 import { ValidationError } from './core/repository';
 import { toMinor } from '../src/finance/money';
@@ -29,6 +30,8 @@ import { corsOrigins } from './cors';
 type Env = Record<string, string | undefined>;
 export interface CheckoutRouterOptions {
   finance?: FinanceService;
+  /** «بنك شام»: direct collection (InstaPay, bank transfer, wallets, cash on delivery) — no gateway needed. */
+  bank?: BankService;
   env?: Env; fetch?: typeof fetch; products?: RawProduct[];
   catalog?: () => Promise<StoreCatalogFile | undefined>; fx?: () => Promise<FxTable>; shipping?: ShippingTable;
   /** «متاجر شام»: registered merchants' published products (`mp_…` skus), priced on the server (merchant price + 50 %). */
@@ -107,6 +110,7 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
   // Isolated routers default to a non-persistent sandbox. The application injects Sham Core's store.
   const finance = options.finance || new FinanceService(new MemoryStore(), env, { fetch: request });
   if (options.onPaid) finance.onPaid = options.onPaid;
+  const bank = options.bank || new BankService(finance, env, request);
   const wrap = (work: (req: express.Request, res: express.Response) => Promise<unknown>) => (req: express.Request, res: express.Response) => {
     work(req, res).catch((e) => {
       res.status(e instanceof ValidationError ? e.status : 503).json({ code: e instanceof ValidationError ? e.code : 'FINANCE_UNAVAILABLE', error: 'Payment could not be verified or recorded. Please retry.' });
@@ -129,6 +133,29 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     await notifier.send('order.paid', text, data);
   };
 
+  /** Server-side prices for the cart (the browser's numbers are never trusted). */
+  const priceItems = async (input: CheckoutInput) => {
+    const list: StoreProduct[] = mergeCatalog(products, await catalog().catch(() => undefined));
+    const bySku = new Map<string, { inStock: boolean; price: number }>(list.map((p) => [p.sku, p]));
+    const merchantSkus = input.items.map((i) => i.sku).filter((sku) => sku.startsWith('mp_'));
+    if (merchantSkus.length && options.merchantProducts) {
+      for (const p of await options.merchantProducts(merchantSkus).catch(() => [])) bySku.set(p.sku, p);
+    }
+    const missing = input.items.find((i) => !bySku.get(i.sku)?.inStock || !(bySku.get(i.sku)!.price > 0));
+    const lines = missing ? [] : input.items.map((i) => ({ sku: i.sku, qty: i.qty, price: bySku.get(i.sku)!.price }));
+    return { list, lines, missing, rates: await fx().catch(() => bundledFx) };
+  };
+  const syncOrder = async (ref: string, req: express.Request, input: CheckoutInput, list: StoreProduct[], lines: { sku: string; qty: number; price: number }[], rates: FxTable, total: number, currency: string) => {
+    if (!options.onCheckout) return;
+    const catalogBySku = new Map(list.map((p) => [p.sku, p]));
+    const catalogLines = input.items.filter((i) => catalogBySku.has(i.sku) && !i.sku.startsWith('mp_')).map((i) => {
+      const p = catalogBySku.get(i.sku)!;
+      return { sku: i.sku, qty: i.qty, price: p.price, name: input.lang === 'ar' ? p.name.ar || p.name.en : p.name.en || p.name.ar, image: p.imageUrl };
+    });
+    await options.onCheckout({ ref, req, input, catalogLines, shippingUsd: quote(lines, input.country, { fx: rates, shipping: options.shipping, currency: 'USD' }).shipping, total, currency })
+      .catch(async () => { await finance.issue('ORDER_SYNC_FAILED', 'تعذّر إرسال الطلب للمجتمع', 'السجل المالي محفوظ؛ طابق الطلب مع بوابة التجار قبل التسليم.', 'critical', ref); });
+  };
+
   router.get('/geo', (req, res) => {
     res.setHeader('Cache-Control', 'private, no-store');
     const country = countryFromHeaders(req.headers);
@@ -140,10 +167,11 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     const country = req.query.country === undefined ? 'EG' : String(req.query.country);
     if (!isCountry(country)) { res.status(400).json({ code: 'INVALID_COUNTRY' }); return; }
     const cfg = config();
-    if (!cfg) { res.json({ enabled: false, country, methods: [] }); return; }
+    const direct = await bank.publicMethods(country, currencyFor(country, BUNDLED_FX)).catch(() => []);
+    if (!cfg) { res.json({ enabled: false, country, methods: [], direct }); return; }
     const currency = chargeCurrency(currencyFor(country, BUNDLED_FX), cfg.currencies);
     const methods = await finance.methods(country, currency);
-    res.json({ enabled: methods.length > 0, mode: cfg.mode, currencies: cfg.currencies, currency, country, methods });
+    res.json({ enabled: methods.length > 0, mode: cfg.mode, currencies: cfg.currencies, currency, country, methods, direct });
   }));
 
   router.post('/store/checkout', wrap(async (req, res) => {
@@ -154,17 +182,8 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     const input = readCheckout(req.body);
     if ('error' in input) { res.status(400).json({ error: 'Invalid order', code: input.error }); return; }
 
-    const list: StoreProduct[] = mergeCatalog(products, await catalog().catch(() => undefined));
-    const bySku = new Map<string, { inStock: boolean; price: number }>(list.map((p) => [p.sku, p]));
-    const merchantSkus = input.items.map((i) => i.sku).filter((sku) => sku.startsWith('mp_'));
-    if (merchantSkus.length && options.merchantProducts) {
-      for (const p of await options.merchantProducts(merchantSkus).catch(() => [])) bySku.set(p.sku, p);
-    }
-    const missing = input.items.find((i) => !bySku.get(i.sku)?.inStock || !(bySku.get(i.sku)!.price > 0));
+    const { list, lines, missing, rates } = await priceItems(input);
     if (missing) { res.status(409).json({ error: 'A product is no longer available', code: 'UNAVAILABLE', sku: missing.sku }); return; }
-
-    const rates = await fx().catch(() => bundledFx);
-    const lines = input.items.map((i) => ({ sku: i.sku, qty: i.qty, price: bySku.get(i.sku)!.price }));
     const display = quote(lines, input.country, { fx: rates, shipping: options.shipping });
     const charge = quote(lines, input.country, { fx: rates, shipping: options.shipping, currency: chargeCurrency(currencyFor(input.country, rates), cfg.currencies) });
 
@@ -198,21 +217,47 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
       }, request);
       await finance.recordSession(ref, cfg.mode, session.id);
       await finance.observation(cfg.mode, 'create', true, Date.now() - started);
-      if (options.onCheckout && cfg.mode === 'live') {
-        const catalogBySku = new Map(list.map((p) => [p.sku, p]));
-        const catalogLines = input.items.filter((i) => catalogBySku.has(i.sku) && !i.sku.startsWith('mp_')).map((i) => {
-          const p = catalogBySku.get(i.sku)!;
-          return { sku: i.sku, qty: i.qty, price: p.price, name: input.lang === 'ar' ? p.name.ar || p.name.en : p.name.en || p.name.ar, image: p.imageUrl };
-        });
-        await options.onCheckout({ ref, req, input, catalogLines, shippingUsd: quote(lines, input.country, { fx: rates, shipping: options.shipping, currency: 'USD' }).shipping, total: charge.total, currency: charge.currency })
-          .catch(async () => { await finance.issue('ORDER_SYNC_FAILED', 'تعذّر إرسال الطلب للمجتمع', 'السجل المالي محفوظ؛ طابق الطلب مع بوابة التجار قبل التسليم.', 'critical', ref); });
-      }
+      if (cfg.mode === 'live') await syncOrder(ref, req, input, list, lines, rates, charge.total, charge.currency);
       res.json({ ref, sessionId: session.id, sessionUrl: session.sessionUrl, mode: cfg.mode, charge: { total: charge.total, currency: charge.currency, shipping: charge.shipping }, display: { total: display.total, currency: display.currency } });
     } catch (error) {
       await finance.observation(cfg.mode, 'create', false, Date.now() - started, error instanceof KashierError ? error.code : 'FAILED');
       const code = error instanceof KashierError ? error.code : 'FINANCE_UNAVAILABLE';
       res.status(502).json({ error: 'The payment page could not be opened, please try again', code });
     }
+  }));
+
+  /* ───── «بنك شام»: pay the store directly (InstaPay, bank transfer, wallet, cash on delivery) ───── */
+  const directLimiter = new RateLimiter(Number(env.SHAM_CHECKOUT_RATE_PER_MIN) || 6, 60_000);
+  const orderToken = (req: express.Request) => String(req.headers['x-order-token'] || '');
+  router.post('/store/checkout/direct', wrap(async (req, res) => {
+    res.setHeader('Cache-Control', 'private, no-store');
+    if (!directLimiter.allow(clientKey(req))) { res.status(429).json({ error: 'Too many requests, please wait a minute', code: 'RATE_LIMITED' }); return; }
+    const { method: _ignored, ...body } = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<string, unknown>;
+    const input = readCheckout(body);
+    if ('error' in input) { res.status(400).json({ error: 'Invalid order', code: input.error }); return; }
+    const accountId = typeof req.body?.account === 'string' ? req.body.account : '';
+    const method = (await bank.publicMethods(input.country, currencyFor(input.country, BUNDLED_FX))).find((m) => m.id === accountId);
+    if (!method) { res.status(409).json({ error: 'This payment method is not available', code: 'METHOD_UNAVAILABLE' }); return; }
+    const { list, lines, missing, rates } = await priceItems(input);
+    if (missing) { res.status(409).json({ error: 'A product is no longer available', code: 'UNAVAILABLE', sku: missing.sku }); return; }
+    const charge = quote(lines, input.country, { fx: rates, shipping: options.shipping, currency: method.currency });
+    const ref = newOrderRef();
+    const receipt = await bank.createDirect({ ref, accountId: method.id, country: input.country, currency: charge.currency,
+      totalMinor: toMinor(charge.total, charge.currency), shippingChargedMinor: toMinor(charge.shipping, charge.currency),
+      lines: charge.lines.map((l) => ({ sku: l.sku, qty: l.qty, unitMinor: toMinor(l.unit, charge.currency) })), contact: input.contact });
+    await syncOrder(ref, req, input, list, lines, rates, charge.total, charge.currency);
+    await notifier.send('order.paid', `🧾 طلب جديد بالدفع المباشر ${ref} (${method.kind}): ${receipt.amount} ${receipt.currency} — ينتظر الدفع`, { order: ref, kind: method.kind, state: 'awaiting_payment' }).catch(() => false);
+    res.status(201).json(receipt);
+  }));
+  router.get('/store/checkout/direct/:ref', wrap(async (req, res) => {
+    res.setHeader('Cache-Control', 'private, no-store');
+    if (!verifyLimiter.allow(clientKey(req))) { res.status(429).json({ code: 'RATE_LIMITED' }); return; }
+    res.json(await bank.publicView(String(req.params.ref), orderToken(req)));
+  }));
+  router.post('/store/checkout/direct/:ref/claim', wrap(async (req, res) => {
+    res.setHeader('Cache-Control', 'private, no-store');
+    if (!directLimiter.allow(clientKey(req))) { res.status(429).json({ code: 'RATE_LIMITED' }); return; }
+    res.json(await bank.claim(String(req.params.ref), orderToken(req), req.body));
   }));
 
   const confirm = async (payment: Awaited<ReturnType<typeof sessionPayment>>, cfg: KashierConfig, sessionId: string) => {

@@ -12,7 +12,7 @@ export function makeReport(period: FinancePeriod, entries: FinanceEntry[], revie
   const currencies: CurrencyReport[] = [...new Set(selected.map((e) => e.currency))].sort().map((currency) => {
     const rows = selected.filter((e) => e.currency === currency);
     const total = (kind: EntryKind) => sumMinor(rows.filter((e) => e.kind === kind).map((e) => e.amountMinor));
-    const sales = rows.filter((e) => e.kind === 'sale' && e.source === 'gateway');
+    const sales = rows.filter((e) => e.kind === 'sale' && e.source !== 'admin');
     const missing = sales.flatMap((sale) => {
       const kinds = COST_KINDS.filter((k) => !rows.some((e) => e.orderRef === sale.orderRef && e.kind === k && !reversed.has(e.id)));
       return kinds.length ? [{ ref: sale.orderRef!, kinds }] : [];
