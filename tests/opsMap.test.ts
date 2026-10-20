@@ -120,12 +120,14 @@ test('the map runs on the files that are really published (and the summary count
   for (const s of scores) if (s.score !== null) assert.ok(s.score >= 0 && s.score <= 100, s.id);
 });
 
-test('the map is reachable on the static Pages site (#ops) and in the admin panel, with translated labels', () => {
+test('the map is for the management only: an admin tab behind the admin code, the old #ops link leads there', () => {
   const main = readFileSync(new URL('../src/main.tsx', import.meta.url), 'utf8');
-  assert.match(main, /isOpsRoute/); assert.match(main, /OpsMapPage/);
+  assert.match(main, /replaceState\(null, '', '#admin\/ops'\)/);
+  assert.doesNotMatch(main, /OpsMapPage|ShaheenOpsMapPanel/, 'no public page renders the map');
   const admin = readFileSync(new URL('../src/admin/AdminApp.tsx', import.meta.url), 'utf8');
-  assert.match(admin, /<ShaheenOpsMapPanel \/>/);
-  assert.match(admin, /href="#ops"/, 'the Pages «needs server» message points to the map');
+  assert.match(admin, /\{tab === 'opsmap' && <ShaheenOpsMapPanel \/>\}/);
+  assert.ok(admin.indexOf("if (!authed)") < admin.indexOf("tab === 'opsmap'"), 'the map renders only after the admin login');
+  assert.doesNotMatch(admin, /href="#ops"/);
   const panel = readFileSync(new URL('../src/admin/ShaheenOpsMapPanel.tsx', import.meta.url), 'utf8');
   assert.doesNotMatch(panel, /^import (?!type)[^\n]*shaheen-patrol\/patrol'/m, 'never bundle the Node-only patrol logic');
   assert.doesNotMatch(panel, /^import (?!type)[^\n]*shaheen-council\/precheck'/m, 'never bundle the Node-only check');

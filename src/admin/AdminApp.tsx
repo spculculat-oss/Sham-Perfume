@@ -30,7 +30,7 @@ import { apiUrl, isStaticHosting } from '../utils/api';
 import { parseDoctorIssue, type DoctorReport } from './doctorReport';
 import { LocalizedNumberInput } from '../components/LocalizedNumberInput';
 
-type Tab = 'finance' | 'overview' | 'community' | 'contracts' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'design' | 'emails' | 'doctor' | 'supervisor' | 'seo' | 'sandbox' | 'updates';
+type Tab = 'finance' | 'overview' | 'opsmap' | 'community' | 'contracts' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'design' | 'emails' | 'doctor' | 'supervisor' | 'seo' | 'sandbox' | 'updates';
 interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: string }
 interface Overview {
   storage: { kind: string; persistent: boolean; error?: string };
@@ -44,6 +44,7 @@ interface FeedbackItem { conversationId: string; messageId?: string; rating: 'up
 
 const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'overview', label: T('نظرة عامة'), icon: <LayoutDashboard className="w-4 h-4" /> },
+  { id: 'opsmap', label: T('خريطة التشغيل'), icon: <Activity className="w-4 h-4" /> },
   { id: 'finance', label: T('بنك شام والمالية'), icon: <ClipboardList className="w-4 h-4" /> },
   { id: 'community', label: T('المجتمع'), icon: <Users className="w-4 h-4" /> },
   { id: 'contracts', label: T('التعاقدات'), icon: <Handshake className="w-4 h-4" /> },
@@ -99,7 +100,8 @@ export default function AdminApp() {
   const [authed, setAuthed] = useState(false);
   const [checking, setChecking] = useState(Boolean(token));
   const [loginError, setLoginError] = useState('');
-  const [tab, setTab] = useState<Tab>('overview');
+  // #admin/ops opens the operations map directly (after the admin code, like every tab).
+  const [tab, setTab] = useState<Tab>(() => (/^#\/?admin\/ops\b/.test(window.location.hash) ? 'opsmap' : 'overview'));
 
   const login = useCallback(async (candidate: string) => {
     setChecking(true); setLoginError('');
@@ -116,7 +118,7 @@ export default function AdminApp() {
   useEffect(() => { document.documentElement.dir = 'rtl'; document.documentElement.lang = 'ar'; document.title = T('إدارة شام — Sham Core'); }, []);
 
   if (isStaticHosting) {
-    return <Shell><div className={`${card} max-w-lg mx-auto mt-24 text-center`}>{T('لوحة الإدارة تحتاج خادم شام (Node.js أو Vercel). نسخة GitHub Pages ثابتة ولا تحتوي على API.')}<p className="mt-3 text-sm">{T('خريطة التشغيل وتقييم الأدوات متاحة على الموقع الأساسي من غير خادم:')} <a href="#ops" className="font-bold text-amber-800 underline">#ops</a></p></div></Shell>;
+    return <Shell><div className={`${card} max-w-lg mx-auto mt-24 text-center`}>{T('لوحة الإدارة تحتاج خادم شام (Node.js أو Vercel). نسخة GitHub Pages ثابتة ولا تحتوي على API.')}</div></Shell>;
   }
 
   if (!authed) {
@@ -165,7 +167,8 @@ export default function AdminApp() {
           {tab === 'design' && <DesignStudioPanel />}
           {tab === 'emails' && <EmailsPanel />}
           {tab === 'doctor' && <DoctorPanel />}
-          {tab === 'supervisor' && <><ShaheenOpsMapPanel /><ShaheenOrgPanel /><ShaheenPatrolPanel /><ShaheenCouncilPanel /><SupervisorPanel /></>}
+          {tab === 'opsmap' && <ShaheenOpsMapPanel />}
+          {tab === 'supervisor' && <><ShaheenOrgPanel /><ShaheenPatrolPanel /><ShaheenCouncilPanel /><SupervisorPanel /></>}
           {tab === 'seo' && <SeoPanel />}
           {tab === 'sandbox' && <SandboxPanel />}
           {tab === 'updates' && <UpdatesPanel />}
