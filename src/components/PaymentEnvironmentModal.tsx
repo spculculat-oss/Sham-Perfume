@@ -3,6 +3,7 @@ import { CreditCard, ShieldCheck, Trash2, X } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
 import { getSavedPaymentMethods, deletePaymentMethod, type SavedPaymentMethod } from '../utils/customerPaymentVault';
+import { ProductPayMethods } from '../bank/ProductPayMethods';
 import { countryOptions, usePayments, useStoreCountry } from '../utils/storeCheckout';
 interface Props {
   currentLang?: SupportedLanguage; customerId?: string; customerName?: string; onClose: () => void;
@@ -20,7 +21,8 @@ export const PaymentEnvironmentModal: React.FC<Props> = ({ currentLang = 'ar', c
       <p className="text-sm text-stone-600">{ar ? 'المتاح فعلياً يحدده بلدك والعملة وعقد حساب التاجر. ظهور اسم وسيلة دفع لا يعني أنها مفعّلة.' : 'Availability depends on your country, currency and the merchant account agreement. A method name alone does not mean it is enabled.'}</p>
       <label className="block space-y-2 text-sm"><span>{ar ? 'بلد الشحن' : 'Shipping country'}</span><select value={country} onChange={(e) => setCountry(e.target.value)} className="border rounded-xl p-2 w-full">{countryOptions(currentLang).map((c) => <option value={c.code} key={c.code}>{c.name}</option>)}</select></label>
       <div className="rounded-xl bg-stone-50 border border-stone-200 p-4 space-y-2" role="status">
-        {payments === null ? <p>{ar ? 'جاري فحص التوافر…' : 'Checking availability…'}</p> : !payments.enabled ? <p className="text-amber-800 text-sm">{ar ? 'الدفع الإلكتروني غير جاهز لهذا البلد. يمكن ترتيب الطلب مع المساعد بدون اعتبار الطلب مدفوعاً.' : 'Online payment is not ready for this country. Arrange the order with the assistant; it is not marked paid.'}</p> : <>
+        <ProductPayMethods lang={currentLang} country={country} heading={ar ? 'وسائل الدفع المتاحة في بلدك' : 'Payment methods available in your country'} />
+        {payments === null ? <p className="text-xs text-stone-500">{ar ? 'جاري فحص التحصيل الحي…' : 'Checking whether a live charge is open…'}</p> : !payments.enabled ? <p className="text-[11px] leading-5 text-stone-600">{ar ? 'الاسم ليس خصماً. التحصيل الحي يفتح بعد عقد البوابة فقط، والطلب لا يُحسب مدفوعاً قبل ذلك.' : 'A listed name is not a charge. A live charge opens only after a gateway contract, and the order is not paid before that.'}</p> : <>
           {payments.mode === 'test' && <p className="text-sky-800 font-bold">{ar ? 'وضع تجريبي — ليس تحصيلاً حقيقياً' : 'Test mode — not a real payment'}</p>}
           {payments.methods.map((m) => <p key={m.id} className="text-sm">{m.id === 'card' ? ar ? 'بطاقة بنكية' : 'Bank card' : ar ? 'محفظة مصرية' : 'Egyptian mobile wallet'}</p>)}
         </>}

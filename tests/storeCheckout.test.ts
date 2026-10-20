@@ -131,7 +131,12 @@ const order = { items: [{ sku: 'LAT-001', qty: 2 }], country: 'SA', lang: 'ar', 
 test('checkout: without Kashier keys the store says so (the assistant flow stays)', async () => {
   const s = await serve({}, () => json({}));
   try {
-    assert.deepEqual(await (await fetch(`${s.base}/store/payments`)).json(), { enabled: false, country: 'EG', methods: [], direct: [] });
+    const idle = await (await fetch(`${s.base}/store/payments`)).json();
+    assert.equal(idle.enabled, false);
+    assert.deepEqual(idle.methods, []);
+    assert.deepEqual(idle.direct, []);
+    assert.equal(idle.offer.some((method: { id: string; chargeable: boolean }) => method.id === 'meeza' && method.chargeable === false), true);
+    assert.equal(idle.offer.every((method: { chargeable: boolean }) => method.chargeable === false), true);
     const r = await fetch(`${s.base}/store/checkout`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(order) });
     assert.equal(r.status, 503);
     assert.equal(s.calls.length, 0);

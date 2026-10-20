@@ -12,6 +12,7 @@ import { loadStoreCatalog, productPageUrl, storeImageSrc } from '../utils/liveSt
 import { addToCart, useCart } from '../utils/storeCart';
 import { requestDirectPurchase } from '../utils/directPurchase';
 import { SafeImage, photoSources } from './SafeImage';
+import { ProductPayMethods } from '../bank/ProductPayMethods';
 import { useStoreMoney } from '../utils/storeCheckout';
 import { LegalDisclaimer } from './LegalDisclaimer';
 import { ProductReviewsSection } from './ProductReviewsSection';
@@ -121,6 +122,7 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
             </div>
             <h1 className="text-2xl font-bold text-stone-900">{storeLocalized(product.name, currentLang)}</h1>
             <p className="text-3xl font-bold text-amber-900">{price(product.price)}</p>
+            <ProductPayMethods lang={currentLang} country={money.country} productName={storeLocalized(product.name, currentLang)} productKey={product.sku} />
             {product.inStock ? (
               <div className="flex flex-col gap-2">
                 <div className="flex items-center self-start border rounded-lg" aria-label={L.qty}>
