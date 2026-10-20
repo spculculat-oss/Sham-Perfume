@@ -20,6 +20,7 @@ import { ValidationError } from './core/repository';
 import { toMinor } from '../src/finance/money';
 import productsData from '../src/data/products.json';
 import { mergeCatalog, type RawProduct, type StoreCatalogFile, type StoreProduct } from '../src/utils/storeCatalog';
+import { customerPayOffer } from '../src/bank/worldPay';
 import { BUNDLED_FX, chargeCurrency, currencyFor, isCountry, isFxTable, quote, type FxTable, type ShippingTable } from '../src/utils/pricing';
 import { createSession, kashierConfig, KashierError, sessionPayment, verifyWebhook, type KashierConfig } from './core/kashier';
 import { createNotifier } from './core/notify';
@@ -168,10 +169,11 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     if (!isCountry(country)) { res.status(400).json({ code: 'INVALID_COUNTRY' }); return; }
     const cfg = config();
     const direct = await bank.publicMethods(country, currencyFor(country, BUNDLED_FX)).catch(() => []);
-    if (!cfg) { res.json({ enabled: false, country, methods: [], direct }); return; }
+    const offer = customerPayOffer(country).methods.map(({ id, nameAr, nameEn }) => ({ id, nameAr, nameEn, chargeable: false }));
+    if (!cfg) { res.json({ enabled: false, country, methods: [], direct, offer }); return; }
     const currency = chargeCurrency(currencyFor(country, BUNDLED_FX), cfg.currencies);
     const methods = await finance.methods(country, currency);
-    res.json({ enabled: methods.length > 0, mode: cfg.mode, currencies: cfg.currencies, currency, country, methods, direct });
+    res.json({ enabled: methods.length > 0, mode: cfg.mode, currencies: cfg.currencies, currency, country, methods, direct, offer });
   }));
 
   router.post('/store/checkout', wrap(async (req, res) => {
