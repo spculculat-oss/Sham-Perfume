@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-20T12:55:17.748Z",
+ "updatedAt": "2026-10-20T18:50:32.222Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -1575,11 +1575,11 @@
    "host": "nose-shop.jp",
    "name": "nose-shop.jp",
    "base": "https://nose-shop.jp",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T18:50:32.222Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1653,11 +1653,11 @@
    "host": "letu.kz",
    "name": "letu.kz",
    "base": "https://letu.kz",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T18:50:32.222Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1665,11 +1665,11 @@
    "host": "jovoy.com",
    "name": "jovoy.com",
    "base": "https://jovoy.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T18:50:32.222Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1677,11 +1677,11 @@
    "host": "fragrancenet.com",
    "name": "fragrancenet.com",
    "base": "https://fragrancenet.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T18:50:32.222Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -1689,15 +1689,15 @@
    "host": "escentials.com",
    "name": "escentials.com",
    "base": "https://escentials.com",
-   "status": "candidate",
+   "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T18:50:32.222Z",
    "trust": {
     "score": 93,
     "verdict": "trusted",
-    "at": "2026-10-19T18:53:10.915Z",
+    "at": "2026-10-20T18:50:32.222Z",
     "checks": [
      {
       "id": "age",
@@ -1705,7 +1705,7 @@
       "ok": true,
       "points": 20,
       "max": 20,
-      "detail": "23 سنة"
+      "detail": "24 سنة"
      },
      {
       "id": "https",
@@ -1793,21 +1793,35 @@
     "flags": [],
     "registeredAt": "2002-10-20T11:09:35.000Z"
    },
-   "region": "global",
-   "sampleOk": 9,
-   "sampleTotal": 9,
-   "reason": "أغلب منتجاته ليست عطوراً (56%)"
+   "region": "east-asia",
+   "sampleOk": 3,
+   "sampleTotal": 6,
+   "currency": "SGD",
+   "rateToEgp": 42.1119,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*escentials\\.com/products/[^?#]+$",
+   "sitemaps": [
+    "https://escentials.com/sitemap_agentic_discovery.xml",
+    "https://escentials.com/sitemap_products_1.xml?from=5484115132575&to=9040981065887",
+    "https://escentials.com/sitemap_products_2.xml?from=9040981098655&to=15591020986739",
+    "https://escentials.com/sitemap_products_3.xml?from=15591021707635&to=15604981563763",
+    "https://escentials.com/sitemap_pages_1.xml?from=64136347807&to=705890877811",
+    "https://escentials.com/sitemap_collections_1.xml?from=210376622239&to=705808761203",
+    "https://escentials.com/sitemap_blogs_1.xml",
+    "https://escentials.com/sitemap_articles_1.xml"
+   ],
+   "via": "json-ld",
+   "productsEstimate": 1973
   },
   {
    "id": "thefragranceshop-co-uk",
    "host": "thefragranceshop.co.uk",
    "name": "thefragranceshop.co.uk",
    "base": "https://thefragranceshop.co.uk",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T18:50:32.222Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -1881,15 +1895,15 @@
    "host": "strawberrynet.com",
    "name": "Strawberrynet",
    "base": "https://www.strawberrynet.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T18:50:32.222Z",
    "trust": {
-    "score": 78,
+    "score": 68,
     "verdict": "trusted",
-    "at": "2026-10-19T18:53:10.915Z",
+    "at": "2026-10-20T18:50:32.222Z",
     "checks": [
      {
       "id": "age",
@@ -1954,10 +1968,9 @@
      {
       "id": "payment",
       "label": "وسائل دفع معروفة",
-      "ok": true,
-      "points": 10,
-      "max": 10,
-      "detail": "Visa، Mastercard"
+      "ok": false,
+      "points": 0,
+      "max": 10
      },
      {
       "id": "platform",
@@ -1985,24 +1998,24 @@
     "registeredAt": "1999-08-03T03:52:50.000Z"
    },
    "region": "global",
-   "sampleOk": 1,
+   "sampleOk": 0,
    "sampleTotal": 6,
-   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (1/6)"
+   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
   },
   {
    "id": "fragrancedirect-co-uk",
    "host": "fragrancedirect.co.uk",
    "name": "Fragrance Direct",
    "base": "https://fragrancedirect.co.uk",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T00:56:49.671Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T18:50:32.222Z",
    "trust": {
     "score": 27,
     "verdict": "weak",
-    "at": "2026-10-20T00:56:49.671Z",
+    "at": "2026-10-20T18:50:32.222Z",
     "checks": [
      {
       "id": "age",
@@ -2364,15 +2377,15 @@
    "host": "luckyscent.com",
    "name": "The Finest Collection of Niche Perfume",
    "base": "https://www.luckyscent.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T00:56:49.671Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T18:50:32.222Z",
    "trust": {
     "score": 81,
     "verdict": "trusted",
-    "at": "2026-10-20T00:56:49.671Z",
+    "at": "2026-10-20T18:50:32.222Z",
     "checks": [
      {
       "id": "age",
@@ -2544,11 +2557,11 @@
    "host": "notino.co.uk",
    "name": "notino.co.uk",
    "base": "https://notino.co.uk",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T00:56:49.671Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T18:50:32.222Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -5030,6 +5043,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-20T18:50:32.222Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 10,
+   "activated": 1,
+   "rejected": 9,
+   "notes": [
+    "✗ jovoy.com: الموقع لا يفتح",
+    "✗ fragrancenet.com: الموقع لا يفتح (HTTP 403)",
+    "  ↳ escentials.com: CV 93/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
+    "✓ escentials.com (CV 93/100): 1973 perfumes, 3/6 pages read without AI, SGD (1 = 42.1119 EGP) — added to the importer",
+    "✗ thefragranceshop.co.uk: الموقع لا يفتح (HTTP 403)",
+    "  ↳ strawberrynet.com: CV 68/100 [age,https,contact,returns,shipping,privacy,terms,social]",
+    "✗ strawberrynet.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "  ↳ fragrancedirect.co.uk: CV 27/100 [age,https] (pages: /contact-us→404 /returns→404)",
+    "✗ fragrancedirect.co.uk: ملف الثقة ضعيف (27/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، سياسة الإرجاع والاسترداد",
+    "  ↳ luckyscent.com: CV 81/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
+    "✗ luckyscent.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "✗ notino.co.uk: الموقع لا يفتح (HTTP 403)"
+   ]
+  },
   {
    "at": "2026-10-20T12:55:17.748Z",
    "mode": "self",
