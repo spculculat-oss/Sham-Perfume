@@ -12,6 +12,7 @@ import {
   Flame,
   Award,
   Compass,
+  ShieldAlert,
 } from 'lucide-react';
 import { WORLD_PERFUMES, WorldPerfumeRecipe } from '../data/worldPerfumes';
 import { SupportedLanguage } from '../types/i18n';
@@ -116,9 +117,21 @@ const S = {
     tr: 'Deniz ve su',
     fa: 'دریایی و آبی',
   },
+  study_model_prefix: {
+    ar: 'نموذج أكورد تعليمي مستوحى — ',
+    en: 'Inspired educational accord study — ',
+    fr: 'Étude pédagogique d’accord inspirée — ',
+    es: 'Estudio pedagógico de acorde inspirado — ',
+    it: 'Studio didattico di accordo ispirato — ',
+    de: 'Inspirierendes pädagogisches Akkordmodell — ',
+    ru: 'Учебный аккорд, вдохновлённый ароматом — ',
+    zh: '灵感教学型香调示例 — ',
+    tr: 'Eğitim amaçlı ilham akoru — ',
+    fa: 'نمونه آموزشی آکورد الهام‌گرفته — ',
+  },
   page_title: {
-    ar: 'مكتبة أشهر التركيبات العالمية (World Iconic Perfumes)',
-    en: 'World Iconic Perfumes Library & Formula Accords',
+    ar: 'مكتبة نماذج العطور العالمية المستوحاة',
+    en: 'Inspired World Perfume Accord Studies',
     fr: 'Bibliothèque des parfums emblématiques du monde',
     es: 'Biblioteca de perfumes icónicos del mundo',
     it: 'Libreria dei profumi iconici del mondo',
@@ -129,16 +142,28 @@ const S = {
     fa: 'کتابخانه عطرهای مشهور جهان',
   },
   page_desc: {
-    ar: 'الأكوردات والهياكل العطرية لأعظم العطور العالمية (بكرات روج 540، كريد أفينتوس، توم فورد توباكو فانيلا، ديور سوفاج، بلاك أفغانو...) مع نسب المكونات الدقيقة للتحميل في حاسبة المعمل بضغطة زر.',
-    en: 'Accords and structural olfactory formulas of the world’s greatest iconic fragrances (Baccarat Rouge 540, Creed Aventus, Tom Ford Tobacco Vanille, Sauvage, Black Afgano...) ready to load directly into the lab calculator.',
-    fr: 'Accords et structures des plus grands parfums mondiaux (Baccarat Rouge 540, Creed Aventus, Tom Ford Tobacco Vanille, Sauvage…) prêts à charger dans le calculateur.',
-    es: 'Acuerdos y fórmulas de los perfumes más icónicos del mundo (Baccarat Rouge 540, Creed Aventus, Tom Ford Tobacco Vanille, Sauvage…) listos para cargar en la calculadora.',
-    it: 'Accordi e formule dei profumi più iconici al mondo (Baccarat Rouge 540, Creed Aventus, Tom Ford Tobacco Vanille, Sauvage…) pronti da caricare nel calcolatore.',
-    de: 'Akkorde und Formeln der größten Düfte der Welt (Baccarat Rouge 540, Creed Aventus, Tom Ford Tobacco Vanille, Sauvage…) direkt in den Rechner ladbar.',
-    ru: 'Аккорды и структуры величайших ароматов мира (Baccarat Rouge 540, Creed Aventus, Tom Ford Tobacco Vanille, Sauvage…) — загрузка в калькулятор одним нажатием.',
-    zh: '世界最经典香水的香调结构与配方（Baccarat Rouge 540、Creed Aventus、Tom Ford Tobacco Vanille、Sauvage 等），一键载入实验室计算器。',
-    tr: 'Dünyanın en ikonik parfümlerinin akorları ve formülleri (Baccarat Rouge 540, Creed Aventus, Tom Ford Tobacco Vanille, Sauvage…) hesaplayıcıya tek tıkla yüklenir.',
-    fa: 'آکوردها و ساختار عطری مشهورترین عطرهای جهان (بکرا روژ ۵۴۰، کرد اونتوس، تام فورد توباکو وانیل، سواج…) با یک کلیک در ماشین‌حساب بارگذاری می‌شوند.',
+    ar: 'أمثلة تعليمية لأكوردات مستوحاة من نوتات عطور معروفة. يمكن تحميلها كنقطة انطلاق للتجربة؛ النسب توضيحية وليست تركيبات أصلية مؤكدة أو تحليلاً مخبرياً.',
+    en: 'Educational accord studies inspired by published perfume notes. Load one as a starting point for experimentation; proportions are illustrative, not verified original formulas or laboratory analyses.',
+    fr: 'Études pédagogiques d’accords inspirées des notes publiées. Les proportions sont illustratives, pas des formules originales vérifiées ni des analyses de laboratoire.',
+    es: 'Estudios educativos de acordes inspirados en notas publicadas. Las proporciones son ilustrativas, no fórmulas originales verificadas ni análisis de laboratorio.',
+    it: 'Studi didattici di accordi ispirati a note pubblicate. Le proporzioni sono illustrative, non formule originali verificate né analisi di laboratorio.',
+    de: 'Lehrbeispiele für Akkorde, inspiriert von veröffentlichten Duftnoten. Die Anteile sind veranschaulichend, keine bestätigten Originalformeln oder Laboranalysen.',
+    ru: 'Учебные аккорды, вдохновлённые опубликованными нотами. Пропорции иллюстративны и не являются подтверждёнными оригинальными формулами или лабораторным анализом.',
+    zh: '根据公开香调制作的教学型灵感香调示例。比例仅作说明，不是经验证的原始配方或实验室分析。',
+    tr: 'Yayımlanmış nota açıklamalarından esinlenen eğitsel akor çalışmaları. Oranlar açıklayıcıdır; doğrulanmış özgün formül veya laboratuvar analizi değildir.',
+    fa: 'نمونه‌های آموزشی آکورد با الهام از نت‌های منتشرشده. نسبت‌ها صرفاً illustrative هستند و فرمول اصلی تأییدشده یا تحلیل آزمایشگاهی نیستند.',
+  },
+  source_note: {
+    ar: 'تنبيه: هذه نماذج تعليمية مستوحاة من أوصاف النوتات المنشورة. لا تمثل تركيبات الشركات الأصلية ولا تحليلاً جزيئياً أو اختبار GC‑MS؛ راجع بيانات المورد والسلامة قبل الاستخدام.',
+    en: 'Source note: These are educational studies inspired by published note descriptions—not manufacturers’ original formulas, molecular analyses, or GC‑MS results. Check supplier identity and safety data before use.',
+    fr: 'Avis : études pédagogiques inspirées de notes publiées — ni formules originales des fabricants, ni analyses moléculaires ou GC‑MS. Vérifiez l’identité du fournisseur et les données de sécurité avant usage.',
+    es: 'Aviso: estudios educativos inspirados en notas publicadas; no son fórmulas originales de fabricantes ni análisis moleculares o GC‑MS. Verifique el proveedor y los datos de seguridad antes de usar.',
+    it: 'Nota: studi didattici ispirati a note pubblicate, non formule originali dei produttori né analisi molecolari o GC‑MS. Verifica il fornitore e i dati di sicurezza prima dell’uso.',
+    de: 'Hinweis: Lernbeispiele, inspiriert von veröffentlichten Duftnoten – keine Originalformeln der Hersteller und keine Molekül- oder GC‑MS-Analysen. Prüfen Sie vor der Verwendung Lieferant und Sicherheitsdaten.',
+    ru: 'Примечание: учебные примеры, вдохновлённые опубликованными нотами, а не оригинальные формулы производителей и не молекулярный или GC‑MS анализ. Перед использованием проверьте поставщика и паспорт безопасности.',
+    zh: '说明：这些教学示例灵感来自公开香调描述，并非制造商原始配方、分子分析或 GC‑MS 结果。使用前请核实供应商信息和安全数据。',
+    tr: 'Not: Yayımlanmış nota açıklamalarından esinlenen eğitim örnekleridir; üreticilerin özgün formülleri veya moleküler/GC‑MS analizleri değildir. Kullanımdan önce tedarikçiyi ve güvenlik verilerini doğrulayın.',
+    fa: 'توجه: این نمونه‌های آموزشی از توصیف نت‌های منتشرشده الهام گرفته‌اند؛ فرمول اصلی سازندگان یا تحلیل مولکولی/GC‑MS نیستند. پیش از استفاده، تأمین‌کننده و داده‌های ایمنی را بررسی کنید.',
   },
   search_placeholder: {
     ar: 'ابحث بالاسم (مثال: بكرات روج، أفينتوس، توم فورد، زعفران...)',
@@ -152,41 +177,65 @@ const S = {
     tr: 'İkonik parfüm ara (ör. Baccarat Rouge, Aventus, Tom Ford…)',
     fa: 'جستجوی عطر (مثال: بکرا روژ، اونتوس، تام فورد، زعفران…)',
   },
+  traditional_reference: {
+    ar: 'تراثي',
+    en: 'Traditional reference',
+    fr: 'Référence traditionnelle',
+    es: 'Referencia tradicional',
+    it: 'Riferimento tradizionale',
+    de: 'Traditionelle Referenz',
+    ru: 'Традиционный образец',
+    zh: '传统参考',
+    tr: 'Geleneksel referans',
+    fa: 'مرجع سنتی',
+  },
+  reference_target: {
+    ar: 'تركيز النموذج:',
+    en: 'Model target:',
+    fr: 'Cible du modèle :',
+    es: 'Objetivo del modelo:',
+    it: 'Obiettivo del modello:',
+    de: 'Modellziel:',
+    ru: 'Цель модели:',
+    zh: '示例目标：',
+    tr: 'Model hedefi:',
+    fa: 'غلظت هدف مدل:',
+  },
   longevity_lbl: {
-    ar: 'الثبات على الملابس:',
-    en: 'Fabric Longevity:',
-    fr: 'Tenue sur tissu :',
-    es: 'Duración en tela:',
-    it: 'Persistenza su tessuto:',
-    de: 'Haltbarkeit auf Stoff:',
-    ru: 'Стойкость на ткани:',
-    zh: '织物留香：',
-    tr: 'Kumaşta kalıcılık:',
-    fa: 'ماندگاری روی پارچه:',
+    ar: 'مرجع وصفي للثبات (غير مختبر):',
+    en: 'Descriptive longevity reference (not tested):',
+    fr: 'Référence descriptive de tenue (non testée) :',
+    es: 'Referencia descriptiva de duración (no probada):',
+    it: 'Riferimento descrittivo di persistenza (non testato):',
+    de: 'Beschreibender Haltbarkeitswert (nicht getestet):',
+    ru: 'Описательный ориентир стойкости (не проверено):',
+    zh: '留香描述参考（未经测试）：',
+    tr: 'Açıklayıcı kalıcılık referansı (test edilmedi):',
+    fa: 'مرجع توصیفی ماندگاری (آزمایش‌نشده):',
   },
   sillage_lbl: {
-    ar: 'قوة الفوحان:',
-    en: 'Sillage / Projection:',
-    fr: 'Sillage / Projection :',
-    es: 'Estela / Proyección:',
-    it: 'Scia / Proiezione:',
-    de: 'Sillage / Projektion:',
-    ru: 'Шлейф / Проекция:',
-    zh: '扩散力：',
-    tr: 'İz / yayılma gücü:',
-    fa: 'قدرت انتشار:',
+    ar: 'مرجع وصفي للفوحان:',
+    en: 'Descriptive sillage reference:',
+    fr: 'Référence descriptive du sillage :',
+    es: 'Referencia descriptiva de estela:',
+    it: 'Riferimento descrittivo della scia:',
+    de: 'Beschreibender Sillage-Richtwert:',
+    ru: 'Описательный ориентир шлейфа:',
+    zh: '扩散描述参考：',
+    tr: 'Açıklayıcı yayılım referansı:',
+    fa: 'مرجع توصیفی پخش بو:',
   },
   maceration_lbl: {
-    ar: 'مدة التعتيق المثالية:',
-    en: 'Optimal Maceration:',
-    fr: 'Macération idéale :',
-    es: 'Maceración ideal:',
-    it: 'Macerazione ideale:',
-    de: 'Optimale Reifung:',
-    ru: 'Идеальная мацерация:',
-    zh: '最佳陈化期：',
-    tr: 'İdeal dinlendirme:',
-    fa: 'دورۀ کهنه‌سازی ایده‌آل:',
+    ar: 'مدة التعتيق المقترحة للنموذج:',
+    en: 'Suggested model maceration:',
+    fr: 'Macération suggérée pour le modèle :',
+    es: 'Maceración sugerida para el modelo:',
+    it: 'Macerazione suggerita per il modello:',
+    de: 'Empfohlene Reifezeit des Modells:',
+    ru: 'Предлагаемая выдержка модели:',
+    zh: '示例建议熟成期：',
+    tr: 'Model için önerilen dinlendirme:',
+    fa: 'مدت پیشنهادی برای جاافتادن مدل:',
   },
   days_word: {
     ar: 'يوماً',
@@ -201,16 +250,16 @@ const S = {
     fa: 'روز',
   },
   breakdown_lbl: {
-    ar: 'جدول توزيع النوتات العطرية لمركب الزيت (100%):',
-    en: 'Fragrance Pyramid Oil Breakdown (100%):',
-    fr: 'Répartition de la pyramide olfactive (100 %) :',
-    es: 'Desglose de la pirámide olfativa (100 %):',
-    it: 'Ripartizione della piramide olfattiva (100%):',
-    de: 'Duftpyramiden-Aufschlüsselung (100 %):',
-    ru: 'Структура ольфакторной пирамиды (100%):',
-    zh: '香调金字塔成分表（100%）：',
-    tr: 'Koku piramidi dağılımı (%100):',
-    fa: 'جدول توزیع نت‌های عطری (۱۰۰٪):',
+    ar: 'التوزيع التوضيحي لنموذج الأكورد (100% من المركز):',
+    en: 'Illustrative accord breakdown (100% of concentrate):',
+    fr: 'Répartition illustrative de l’accord (100 % du concentré) :',
+    es: 'Distribución ilustrativa del acorde (100 % del concentrado):',
+    it: 'Ripartizione illustrativa dell’accordo (100% del concentrato):',
+    de: 'Veranschaulichende Akkordverteilung (100 % des Konzentrats):',
+    ru: 'Иллюстративное распределение аккорда (100% концентрата):',
+    zh: '灵感香调示例的比例（占香精浓缩液 100%）：',
+    tr: 'Akor örneğinin açıklayıcı dağılımı (konsantrenin %100’ü):',
+    fa: 'توزیع نمونه‌ای آکورد (۱۰۰٪ از کنسانتره):',
   },
   notes_word: {
     ar: 'مكونات',
@@ -261,130 +310,191 @@ const S = {
     fa: 'پایه',
   },
   shahin_tip: {
-    ar: 'نصيحة الخبير شاهين لضبط المركب:',
-    en: 'Master Shahin Formula Optimization Tip:',
-    fr: 'Conseil du maître Shahin :',
-    es: 'Consejo del maestro Shahin:',
-    it: 'Consiglio del maestro Shahin:',
-    de: 'Meister Shahins Formeltipp:',
-    ru: 'Совет мастера Шахина:',
-    zh: 'Shahin 大师配方调校建议：',
-    tr: 'Usta Shahin formül ipucu:',
-    fa: 'نکته استاد شاهین برای تنظیم ترکیب:',
+    ar: 'نصيحة شاهين لتعديل النموذج المستوحى:',
+    en: 'Shahin’s tip for adapting this inspired study:',
+    fr: 'Conseil de Shahin pour adapter cette étude inspirée :',
+    es: 'Consejo de Shahin para adaptar este estudio inspirado:',
+    it: 'Consiglio di Shahin per adattare questo studio ispirato:',
+    de: 'Shahins Tipp zur Anpassung dieses Inspirationsbeispiels:',
+    ru: 'Совет Шахина по адаптации этого учебного примера:',
+    zh: 'Shahin 大师对调整此灵感示例的建议：',
+    tr: 'Usta Shahin’den bu ilham örneğini uyarlama önerisi:',
+    fa: 'نکته استاد شاهین برای سازگارکردن این نمونه الهام‌گرفته:',
   },
   clip_tpl: {
-    ar: `👑 تركيبة: {name}
-الدار الأصلية: {brand} ({year})
-التصنيف: {cat} | التركيز: {conc}% ({conc_type})
-الثبات: {longevity} | الفوحان: {sillage}
-مدة التعتيق: {mac} يوماً
+    ar: `👑 نموذج أكورد تعليمي مستوحى: {name}
+العطر المرجعي: {brand} ({year})
+التصنيف: {cat} | تركيز النموذج: {conc}% ({conc_type})
+الثبات والفوحان: {longevity} | {sillage}
+مدة التعتيق المقترحة للنموذج: {mac} يوماً
 
-🔺 توزيع الهرم العطري لمركب الزيت (100%):
+🔺 توزيع توضيحي لأكورد المركز (100%):
 {notes}
 
-💡 نصيحة الخبير شاهين:
-{tips}`,
-    en: `👑 Formula: {name}
-House: {brand} ({year})
-Category: {cat} | Concentration: {conc}% ({conc_type})
-Longevity: {longevity} | Sillage: {sillage}
-Maceration: {mac} Days
+💡 نصيحة شاهين لتعديل النموذج:
+{tips}
 
-🔺 Fragrance Pyramid Oil Breakdown (100%):
+تنبيه: هذه نسب إلهامية وليست تركيبة أصلية مؤكدة أو تحليلاً مخبرياً/GC‑MS.`,
+    en: `👑 Inspired educational accord: {name}
+Reference perfume: {brand} ({year})
+Category: {cat} | Model target concentration: {conc}% ({conc_type})
+Longevity and sillage reference: {longevity} | {sillage}
+Suggested model maceration: {mac} days
+
+🔺 Illustrative accord breakdown (100%):
 {notes}
 
-💡 Master Shahin Advice:
-{tips}`,
-    fr: `👑 Formule : {name}
-Maison : {brand} ({year})
-Catégorie : {cat} | Concentration : {conc}% ({conc_type})
-Tenue : {longevity} | Sillage : {sillage}
-Macération : {mac} jours
+💡 Shahin’s tip for adapting this study:
+{tips}
 
-🔺 Répartition de la pyramide olfactive (100 %) :
+Note: illustrative proportions only—not a verified original formula or laboratory/GC‑MS analysis.`,
+    fr: `👑 Accord pédagogique inspiré : {name}
+Parfum de référence : {brand} ({year})
+Catégorie : {cat} | Concentration cible du modèle : {conc}% ({conc_type})
+Tenue et sillage de référence : {longevity} | {sillage}
+Macération suggérée pour le modèle : {mac} jours
+
+🔺 Répartition illustrative de l’accord (100 %) :
 {notes}
 
-💡 Conseil du maître Shahin :
-{tips}`,
-    es: `👑 Fórmula: {name}
-Casa: {brand} ({year})
-Categoría: {cat} | Concentración: {conc}% ({conc_type})
-Duración: {longevity} | Estela: {sillage}
-Maceración: {mac} días
+💡 Conseil de Shahin pour adapter l’étude :
+{tips}
 
-🔺 Desglose de la pirámide olfativa (100 %):
+Note : proportions illustratives, pas une formule originale vérifiée ni une analyse de laboratoire/GC‑MS.`,
+    es: `👑 Acorde educativo inspirado: {name}
+Perfume de referencia: {brand} ({year})
+Categoría: {cat} | Concentración objetivo del modelo: {conc}% ({conc_type})
+Referencia de duración y estela: {longevity} | {sillage}
+Maceración sugerida para el modelo: {mac} días
+
+🔺 Distribución ilustrativa del acorde (100 %):
 {notes}
 
-💡 Consejo del maestro Shahin:
-{tips}`,
-    it: `👑 Formula: {name}
-Casa: {brand} ({year})
-Categoria: {cat} | Concentrazione: {conc}% ({conc_type})
-Persistenza: {longevity} | Scia: {sillage}
-Macerazione: {mac} giorni
+💡 Consejo de Shahin para adaptar el estudio:
+{tips}
 
-🔺 Ripartizione della piramide olfattiva (100%):
+Aviso: proporciones ilustrativas; no son una fórmula original verificada ni un análisis de laboratorio/GC‑MS.`,
+    it: `👑 Accordo didattico ispirato: {name}
+Profumo di riferimento: {brand} ({year})
+Categoria: {cat} | Concentrazione obiettivo del modello: {conc}% ({conc_type})
+Riferimento di persistenza e scia: {longevity} | {sillage}
+Macerazione suggerita per il modello: {mac} giorni
+
+🔺 Ripartizione illustrativa dell’accordo (100%):
 {notes}
 
-💡 Consiglio del maestro Shahin:
-{tips}`,
-    de: `👑 Formel: {name}
-Haus: {brand} ({year})
-Kategorie: {cat} | Konzentration: {conc}% ({conc_type})
-Haltbarkeit: {longevity} | Sillage: {sillage}
-Reifung: {mac} Tage
+💡 Consiglio di Shahin per adattare lo studio:
+{tips}
 
-🔺 Duftpyramiden-Aufschlüsselung (100 %):
+Nota: proporzioni illustrative, non una formula originale verificata né un’analisi di laboratorio/GC‑MS.`,
+    de: `👑 Inspirierendes Lern-Akkordmodell: {name}
+Referenzduft: {brand} ({year})
+Kategorie: {cat} | Zielkonzentration des Modells: {conc}% ({conc_type})
+Richtwert für Haltbarkeit und Sillage: {longevity} | {sillage}
+Empfohlene Reifezeit des Modells: {mac} Tage
+
+🔺 Veranschaulichende Akkordverteilung (100 %):
 {notes}
 
-💡 Meister Shahins Rat:
-{tips}`,
-    ru: `👑 Формула: {name}
-Дом: {brand} ({year})
-Категория: {cat} | Концентрация: {conc}% ({conc_type})
-Стойкость: {longevity} | Шлейф: {sillage}
-Мацерация: {mac} дней
+💡 Shahins Tipp zur Anpassung dieser Studie:
+{tips}
 
-🔺 Структура пирамиды (100%):
+Hinweis: illustrative Anteile, keine bestätigte Originalformel oder Labor-/GC‑MS-Analyse.`,
+    ru: `👑 Учебный аккорд, вдохновлённый ароматом: {name}
+Аромат-ориентир: {brand} ({year})
+Категория: {cat} | Целевая концентрация модели: {conc}% ({conc_type})
+Справочные стойкость и шлейф: {longevity} | {sillage}
+Предлагаемая выдержка модели: {mac} дней
+
+🔺 Иллюстративное распределение аккорда (100%):
 {notes}
 
-💡 Совет мастера Шахина:
-{tips}`,
-    zh: `👑 配方：{name}
-品牌：{brand}（{year}）
-类别：{cat} | 浓度：{conc}%（{conc_type}）
-留香：{longevity} | 扩散：{sillage}
-陈化：{mac} 天
+💡 Совет Шахина по адаптации примера:
+{tips}
 
-🔺 香调金字塔成分表（100%）：
+Примечание: пропорции иллюстративны; это не подтверждённая оригинальная формула и не лабораторный/GC‑MS анализ.`,
+    zh: `👑 灵感教学型香调示例：{name}
+参考香水：{brand}（{year}）
+类别：{cat} | 示例目标浓度：{conc}%（{conc_type}）
+留香与扩散参考：{longevity} | {sillage}
+示例建议熟成：{mac} 天
+
+🔺 香调示例比例（100%）：
 {notes}
 
-💡 Shahin 大师建议：
-{tips}`,
-    tr: `👑 Formül: {name}
-Marka: {brand} ({year})
-Kategori: {cat} | Konsantrasyon: {conc}% ({conc_type})
-Kalıcılık: {longevity} | İz: {sillage}
-Dinlendirme: {mac} gün
+💡 Shahin 大师的调整建议：
+{tips}
 
-🔺 Koku piramidi dağılımı (%100):
+说明：比例仅供教学参考，不是经验证的原始配方或实验室/GC‑MS 分析。`,
+    tr: `👑 Eğitim amaçlı ilham akoru: {name}
+Referans parfüm: {brand} ({year})
+Kategori: {cat} | Model hedef konsantrasyonu: {conc}% ({conc_type})
+Kalıcılık ve iz referansı: {longevity} | {sillage}
+Model için önerilen dinlendirme: {mac} gün
+
+🔺 Açıklayıcı akor dağılımı (%100):
 {notes}
 
-💡 Usta Shahin tavsiyesi:
-{tips}`,
-    fa: `👑 فرمول: {name}
-برند: {brand} ({year})
-دسته: {cat} | غلظت: {conc}% ({conc_type})
-ماندگاری: {longevity} | انتشار: {sillage}
-کهنه‌سازی: {mac} روز
+💡 Usta Shahin’den bu çalışmayı uyarlama önerisi:
+{tips}
 
-🔺 توزیع هرم عطری (۱۰۰٪):
+Not: Oranlar örnek amaçlıdır; doğrulanmış özgün formül veya laboratuvar/GC‑MS analizi değildir.`,
+    fa: `👑 نمونه آموزشی آکورد الهام‌گرفته: {name}
+عطر مرجع: {brand} ({year})
+دسته: {cat} | غلظت هدف مدل: {conc}% ({conc_type})
+مرجع ماندگاری و پخش بو: {longevity} | {sillage}
+تعریف پیشنهادی برای مدل: {mac} روز
+
+🔺 توزیع نمونه‌ای آکورد (۱۰۰٪):
 {notes}
 
-💡 نظر استاد شاهین:
-{tips}`,
+💡 نکته شاهین برای سازگارکردن نمونه:
+{tips}
+
+توجه: نسبت‌ها صرفاً آموزشی‌اند؛ فرمول اصلی تأییدشده یا تحلیل آزمایشگاهی/GC‑MS نیستند.`,
   },
 } satisfies Record<string, LText>;
+
+export const worldPerfumeStudyTitle = (name: string, lang: SupportedLanguage = 'ar') =>
+  `${makeT(lang, S)('study_model_prefix')}${name}`;
+
+export const worldPerfumeStudyDisclaimer = (lang: SupportedLanguage = 'ar') =>
+  makeT(lang, S)('source_note');
+
+const referenceBrand = (recipe: WorldPerfumeRecipe, lang: SupportedLanguage) => {
+  if (lang === 'ar' || !/[\u0600-\u06FF]/.test(recipe.brand)) return recipe.brand;
+  return recipe.nameEn.split(/\s[-–—]\s/)[0]?.trim() || recipe.nameEn || recipe.brand;
+};
+
+const referenceYear = (recipe: WorldPerfumeRecipe, lang: SupportedLanguage) => {
+  const L = makeT(lang, S);
+  return /^\d{4}$/.test(recipe.year) ? recipe.year : L('traditional_reference');
+};
+
+export const formatWorldPerfumeReference = (recipe: WorldPerfumeRecipe, lang: SupportedLanguage = 'ar') => {
+  const L = makeT(lang, S);
+  const localized = getLocalizedPerfume(recipe, lang);
+  const notes = localized.pyramidNotes
+    .map((note) => {
+      const category = note.category === 'top' ? L('top_word') : note.category === 'heart' ? L('heart_word') : L('base_word');
+      return `• [${category}] ${pickArEn(lang, note.nameAr, note.nameEn || note.nameAr)}: ${note.percentageOfOil}%`;
+    })
+    .join('\n');
+
+  return fmt(L('clip_tpl'), {
+    name: localized.nameAr,
+    brand: referenceBrand(localized, lang),
+    year: referenceYear(localized, lang),
+    cat: localized.categoryAr,
+    conc: localized.targetConcentration,
+    conc_type: localized.concentrationTypeAr,
+    longevity: localized.longevity,
+    sillage: localized.sillage,
+    mac: localized.macerationDays,
+    notes,
+    tips: localized.compoundingTips,
+  });
+};
 
 interface WorldPerfumesLibraryProps {
   currentLang?: SupportedLanguage;
@@ -431,29 +541,7 @@ export const WorldPerfumesLibrary: React.FC<WorldPerfumesLibraryProps> = ({
   });
 
   const handleCopyRecipe = (recipe: WorldPerfumeRecipe) => {
-    const localized = getLocalizedPerfume(recipe, currentLang);
-    const notesText = localized.pyramidNotes
-      .map(
-        (n) =>
-          `• [${n.category === 'top' ? L('top_word') : n.category === 'heart' ? L('heart_word') : L('base_word')}] ${pickArEn(currentLang, n.nameAr, n.nameEn || n.nameAr)}: ${n.percentageOfOil}%`
-      )
-      .join('\n');
-
-    const text = fmt(L('clip_tpl'), {
-      name: localized.nameAr,
-      brand: localized.brand,
-      year: localized.year,
-      cat: localized.categoryAr,
-      conc: localized.targetConcentration,
-      conc_type: localized.concentrationTypeAr,
-      longevity: localized.longevity,
-      sillage: localized.sillage,
-      mac: localized.macerationDays,
-      notes: notesText,
-      tips: localized.compoundingTips,
-    });
-
-    navigator.clipboard.writeText(text);
+    navigator.clipboard.writeText(formatWorldPerfumeReference(recipe, currentLang));
     setCopiedId(recipe.id);
     setTimeout(() => setCopiedId(null), 2500);
   };
@@ -471,6 +559,10 @@ export const WorldPerfumesLibrary: React.FC<WorldPerfumesLibraryProps> = ({
         <p className="text-stone-500 text-sm mt-1">
           {L('page_desc')}
         </p>
+        <div role="note" className="mt-4 flex items-start gap-2.5 rounded-2xl border border-amber-200 bg-amber-50 p-3.5 text-xs leading-6 text-amber-950">
+          <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-800" />
+          <span>{L('source_note')}</span>
+        </div>
       </div>
 
       {/* Filter and Search Bar */}
@@ -521,9 +613,9 @@ export const WorldPerfumesLibrary: React.FC<WorldPerfumesLibraryProps> = ({
                 <div className="flex items-start justify-between gap-3 border-b border-stone-100 pb-4">
                   <div>
                     <div className="flex items-center gap-2 text-xs text-amber-800 font-semibold mb-1">
-                      <span>{localized.brand}</span>
+                      <span>{referenceBrand(localized, currentLang)}</span>
                       <span aria-hidden="true">·</span>
-                      <span className="font-mono-numbers">{localized.year}</span>
+                      <span className="font-mono-numbers">{referenceYear(localized, currentLang)}</span>
                       <span aria-hidden="true">·</span>
                       <span>{localized.categoryAr}</span>
                     </div>
@@ -536,6 +628,7 @@ export const WorldPerfumesLibrary: React.FC<WorldPerfumesLibraryProps> = ({
                   </div>
 
                   <div className="text-left shrink-0 font-mono-numbers bg-stone-50 border border-stone-200/80 p-2.5 rounded-xl">
+                    <div className="mb-1 text-[9px] font-sans text-stone-500">{L('reference_target')}</div>
                     <div className="text-sm font-bold text-amber-900">
                       {localized.targetConcentration}%
                     </div>

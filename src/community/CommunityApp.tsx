@@ -12,10 +12,10 @@ import { FriendsPage, NotificationsPage, ProfilePage, SocialFeed } from './Socia
 import { StoreDirectory, StorePage } from './Stores';
 import UserPortal from './UserPortal';
 import { signOut, useSession } from './session';
-import { Avatar, Badge, Btn, Card, Empty, Spinner, Toast, tx, type Lang } from './ui';
+import { Avatar, Badge, Btn, Card, Empty, Spinner, Toast, resolveCommunityLanguage, tx, type Lang } from './ui';
 
 export default function CommunityApp({ lang: siteLang, route, navigate, onSignedIn }: { lang: string; route: string; navigate: (tab: string) => void; onSignedIn?: () => void }) {
-  const lang: Lang = siteLang === 'ar' ? 'ar' : 'en';
+  const lang: Lang = resolveCommunityLanguage(siteLang);
   const t = tx(lang);
   const session = useSession();
   const [toast, setToast] = useState('');

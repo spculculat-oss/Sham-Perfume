@@ -60,7 +60,7 @@ export interface MerchantProduct {
   nameAr: string;
   nameEn: string;
   category: string;                 // 'عطور', 'خامات', 'أدوات', 'تغليف', 'غير ذلك'
-  unit: string;                     // 'لتر', 'جرام', 'زجةقة', 'مجموعة', 'قطعة'
+  unit: string;                     // 'لتر', 'جرام', 'زجاجة', 'مجموعة', 'قطعة'
   costPrice: number;                // سعر التاجر الجملة ←基准
   retailPrice: number;              // retailPrice = costPrice × 1.25  ← للعرض
   platformMargin: number;           // 25% من costPrice ← ربح المنصة

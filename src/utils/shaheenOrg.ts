@@ -36,7 +36,7 @@ export type BotId =
   | 'contracts'
   | 'scout' | 'importer' | 'images' | 'catalog' | 'product_pages' | 'store_advisor'
   | 'news' | 'seo'
-  | 'chat' | 'languages' | 'design_audit' | 'visitor_tour' | 'inspect'
+  | 'chat' | 'languages' | 'design_audit' | 'design_expert' | 'visitor_tour' | 'inspect'
   | 'school' | 'doctor' | 'verifier' | 'live_check' | 'keys' | 'intake' | 'deploy' | 'admin_agent';
 
 export interface Bot {
@@ -78,7 +78,8 @@ export const BOTS: Bot[] = [
   // ── Visitor experience, design & languages ──
   { id: 'chat', nameAr: 'شات الخبير شاهين ومساعد شام', nameEn: 'Shaheen chat & Sham assistant', dept: 'experience', aiTools: ['shaheen_chat', 'sham_assistant', 'media'], dutiesAr: 'يرد على الزوار؛ وقت الضغط أو لو المحركات وقفت بيرد من ذاكرة شاهين (مدرسة شاهين).' },
   { id: 'languages', nameAr: 'وكيل اللغات', nameEn: 'Language agent', dept: 'experience', workflow: 'shaheen-languages.yml', report: 'shaheen-languages.json', everyHours: 24, dutiesAr: 'يقيس اللغات المئة: الحزم الناقصة، والأرقام اللي لازم تتبع لغة الموقع.' },
-  { id: 'design_audit', nameAr: 'تدقيق التصميم واللغات (مرتين في الأسبوع)', nameEn: 'Design & languages audit (twice a week)', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-audit.json', everyHours: 84, dutiesAr: 'وكيل خلفي يفتح الموقع بلغات مختلفة الأربع والسبت ويقيّم التصميم والترجمة.' },
+  { id: 'design_audit', nameAr: 'تدقيق التصميم واللغات (مرتين في الأسبوع)', nameEn: 'Design & languages audit (twice a week)', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-audit.json', everyHours: 84, dutiesAr: 'وكيل خلفي يفتح الموقع بلغات مختلفة الأربعاء والسبت ويقيّم التصميم والترجمة.' },
+  { id: 'design_expert', nameAr: 'خبير التصميم متعدد التخصصات', nameEn: 'Multidisciplinary design expert', dept: 'experience', aiTools: ['design_agent'], dutiesAr: 'يحوّل الموجز إلى خطة عبر تخصصات الهوية والجرافيك والواجهات والتغليف والتصوير والحركة والطباعة والإتاحة والخدمات والمنتجات، ويتعاون مع أدوار وتقارير برامج الذكاء المسجلة تحت شاهين؛ شاهين يراجع الجودة ويوجّه التحسين، ولا تُنفذ تغييرات أو ملفات نهائية تلقائياً.' },
   { id: 'visitor_tour', nameAr: 'جولة الزائر والمستشار الميداني', nameEn: 'Visitor tour & field advisor', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-missions.json', section: 'tour', everyHours: 24, dutiesAr: 'كل يوم بعد الفحص الشامل الوكيل الخلفي يتسوق من الموبايل زي الزبون: المتجر ← منتج ← السلة ← صفحة الدفع (من غير ما يدفع) ← سؤال لشاهين، وبعدين يبص على مشاكل الفحص في الموقع الحي ويقعد في الاجتماع «المستشار الميداني» برأيه واقتراحاته.' },
   { id: 'inspect', nameAr: 'فاحص إجابات شاهين', nameEn: 'Answer inspector', dept: 'experience', workflow: 'shaheen-inspect.yml', dutiesAr: 'يسأل شاهين أسئلة حقيقية ويفحص الرد (عند الطلب).' },
   // ── Reliability & self-reliance ──
@@ -144,6 +145,11 @@ export const LINKS: Link[] = [
   { from: 'school', to: 'chat', whyAr: 'ذاكرة شاهين ← رد بدون ذكاء اصطناعي وقت الضغط' },
   { from: 'school', to: 'importer', whyAr: 'مهارات قراءة صفحات المتاجر بدون ذكاء اصطناعي' },
   { from: 'design_audit', to: 'languages', whyAr: 'ملاحظات الترجمة والتصميم' },
+  { from: 'design_audit', to: 'design_expert', whyAr: 'تدقيق التصميم يمد الخطط بملاحظات التباين والاستجابة والموبايل' },
+  { from: 'languages', to: 'design_expert', whyAr: 'توطين المحتوى واتجاه RTL والحزم اللغوية' },
+  { from: 'visitor_tour', to: 'design_expert', whyAr: 'ملاحظات رحلة المستخدم الفعلية على الهاتف' },
+  { from: 'catalog', to: 'design_expert', whyAr: 'حقائق المنتج المعتمدة للتصاميم التي تستخدم منتجاً محدداً' },
+  { from: 'design_expert', to: 'council', whyAr: 'تقييم شاهين ومقترحات التحسين متعددة التخصصات تدخل الاجتماع اليومي' },
   { from: 'precheck', to: 'visitor_tour', whyAr: 'مشاكل الفحص الشامل ← المستشار الميداني يتأكد منها على الموقع الحي' },
   { from: 'visitor_tour', to: 'council', whyAr: 'رأي واقتراحات المستشار الميداني + خطوات الشراء الواقعة ← بنود في الاجتماع' },
   { from: 'visitor_tour', to: 'product_pages', whyAr: 'صفحات منتجات أو صور مكسورة' },

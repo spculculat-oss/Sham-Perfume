@@ -23,6 +23,9 @@ const S = {
     zh: '所有语言 — 打开列表并搜索',
     tr: 'Tüm diller — listeyi aç ve ara',
     fa: 'همه زبان‌ها — باز کردن فهرست و جستجو',
+    is: 'Öll tungumál — opnaðu listann og leitaðu',
+    sq: 'Të gjitha gjuhët — hap listën dhe kërko',
+    ps: 'ټولې ژبې — لړلیک پرانیزئ او ولټوئ',
   },
   panel_title: {
     ar: 'لغات المنصة',
@@ -35,6 +38,9 @@ const S = {
     zh: '平台语言',
     tr: 'Platform Dilleri',
     fa: 'زبان‌های پلتفرم',
+    is: 'Tungumál vettvangsins',
+    sq: 'Gjuhët e platformës',
+    ps: 'د پلیټفارم ژبې',
   },
   panel_sub: {
     ar: '{n} لغة متاحة — ابحث واختر لغتك',
@@ -47,6 +53,9 @@ const S = {
     zh: '共 {n} 种语言 — 搜索并选择',
     tr: '{n} dil mevcut — ara ve seç',
     fa: '{n} زبان موجود است — جستجو و انتخاب کنید',
+    is: '{n} tungumál í boði — leitaðu og veldu',
+    sq: '{n} gjuhë të disponueshme — kërko dhe zgjidh',
+    ps: '{n} ژبې شته — ولټوئ او خپله ژبه وټاکئ',
   },
   search_ph: {
     ar: 'ابحث عن لغة… اكتب اسمها أو رمزها (مثال: عربي، ar، German)',
@@ -59,6 +68,9 @@ const S = {
     zh: '搜索语言…输入名称或代码（如 ar、German）',
     tr: 'Dil ara… adı veya kodu (örn. ar, German)',
     fa: 'جستجوی زبان… نام یا کد آن (مثلاً ar، German)',
+    is: 'Leita að tungumáli… sláðu inn heiti eða kóða (t.d. íslenska, is, English)',
+    sq: 'Kërko një gjuhë… shkruaj emrin ose kodin (p.sh. shqip, sq, English)',
+    ps: 'ژبه ولټوئ… نوم یا کوډ ولیکئ (لکه پښتو، ps، English)',
   },
   popular: {
     ar: 'الأكثر استخداماً',
@@ -71,6 +83,9 @@ const S = {
     zh: '最常用',
     tr: 'En çok kullanılan',
     fa: 'پرکاربردترین‌ها',
+    is: 'Vinsælustu',
+    sq: 'Më të përdorurat',
+    ps: 'ډېر کارېدونکې',
   },
   all_langs: {
     ar: 'جميع اللغات',
@@ -83,6 +98,9 @@ const S = {
     zh: '所有语言',
     tr: 'Tüm diller',
     fa: 'همه زبان‌ها',
+    is: 'Öll tungumál',
+    sq: 'Të gjitha gjuhët',
+    ps: 'ټولې ژبې',
   },
   results_title: {
     ar: 'نتائج البحث',
@@ -95,6 +113,9 @@ const S = {
     zh: '搜索结果',
     tr: 'Arama sonuçları',
     fa: 'نتایج جستجو',
+    is: 'Leitarniðurstöður',
+    sq: 'Rezultatet e kërkimit',
+    ps: 'د لټون پایلې',
   },
   results_tpl: {
     ar: 'ظاهر {a} من {b} لغة',
@@ -107,6 +128,9 @@ const S = {
     zh: '显示 {a} / {b} 种语言',
     tr: '{b} dilden {a} tanesi gösteriliyor',
     fa: 'نمایش {a} از {b} زبان',
+    is: 'Sýni {a} af {b} tungumálum',
+    sq: 'Duke shfaqur {a} nga {b} gjuhë',
+    ps: 'له {b} ژبو څخه {a} ښکاري',
   },
   no_match: {
     ar: 'لم يتم العثور على لغة مطابقة للبحث',
@@ -119,6 +143,9 @@ const S = {
     zh: '未找到匹配的语言',
     tr: 'Eşleşen dil bulunamadı',
     fa: 'زبانی مطابق جستجو یافت نشد',
+    is: 'Ekkert tungumál fannst',
+    sq: 'Nuk u gjet asnjë gjuhë',
+    ps: 'ژبه ونه موندل شوه',
   },
   no_match_hint: {
     ar: 'جرّب الاسم بالإنجليزية أو رمز اللغة (مثال: de أو Japanese) أو امسح البحث لعرض كل اللغات',
@@ -131,6 +158,9 @@ const S = {
     zh: '请尝试英文名称或语言代码（如 de、Japanese），或清除搜索',
     tr: 'İngilizce adı veya kodu deneyin (örn. de, Japanese) ya da aramayı temizleyin',
     fa: 'نام انگلیسی یا کد زبان را امتحان کنید (مثلاً de یا Japanese) یا جستجو را پاک کنید',
+    is: 'Prófaðu annað heiti, staðarheiti eða tungumálakóða.',
+    sq: 'Provo një emër tjetër, emrin vendor ose kodin e gjuhës.',
+    ps: 'بل نوم، اصلي نوم یا د ژبې کوډ وازمویئ.',
   },
   clear: {
     ar: 'مسح البحث',
@@ -143,6 +173,9 @@ const S = {
     zh: '清除搜索',
     tr: 'Aramayı temizle',
     fa: 'پاک کردن جستجو',
+    is: 'Hreinsa',
+    sq: 'Pastro',
+    ps: 'پاکول',
   },
   active: {
     ar: 'مفعلة',
@@ -155,6 +188,9 @@ const S = {
     zh: '使用中',
     tr: 'Aktif',
     fa: 'فعال',
+    is: 'Virkt',
+    sq: 'Aktive',
+    ps: 'فعاله',
   },
   keyboard_hint: {
     ar: '↑↓ للتنقل · Enter للاختيار · Esc للإغلاق',
@@ -167,6 +203,9 @@ const S = {
     zh: '↑↓ 移动 · Enter 选择 · Esc 关闭',
     tr: '↑↓ gezin · Enter seç · Esc kapat',
     fa: '↑↓ برای حرکت · Enter برای انتخاب · Esc برای بستن',
+    is: '↑↓ til að fara · Enter til að velja · Esc til að loka',
+    sq: '↑↓ për të lëvizur · Enter për të zgjedhur · Esc për ta mbyllur',
+    ps: '↑↓ د تګ لپاره · Enter د ټاکلو لپاره · Esc د بندولو لپاره',
   },
   close: {
     ar: 'إغلاق',
@@ -179,6 +218,9 @@ const S = {
     zh: '关闭',
     tr: 'Kapat',
     fa: 'بستن',
+    is: 'Loka',
+    sq: 'Mbyll',
+    ps: 'بندول',
   },
   saved_auto: {
     ar: 'يتم حفظ اللغة تلقائياً في المتصفح',
@@ -191,6 +233,9 @@ const S = {
     zh: '语言偏好将自动保存',
     tr: 'Dil tercihi otomatik kaydedilir',
     fa: 'زبان انتخابی به‌طور خودکار ذخیره می‌شود',
+    is: 'Tungumálastillingin vistast sjálfkrafa',
+    sq: 'Preferenca e gjuhës ruhet automatikisht',
+    ps: 'د ژبې خوښه په اوتومات ډول ساتل کېږي',
   },
   langs_count: {
     ar: 'لغة',
@@ -203,6 +248,9 @@ const S = {
     zh: '种语言',
     tr: 'dil',
     fa: 'زبان',
+    is: 'tungumál',
+    sq: 'gjuhë',
+    ps: 'ژبې',
   },
 } satisfies Record<string, LText>;
 

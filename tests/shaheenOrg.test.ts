@@ -31,6 +31,9 @@ test('the structure: unique ids, five departments each with bots, links between 
   for (const l of LINKS) { assert.ok(botOf(l.from) && botOf(l.to), `${l.from} → ${l.to}`); assert.notEqual(l.from, l.to); }
   assert.equal(botOf(SECRETARY.bot)?.dept, 'leadership');
   assert.equal(botOf('legal')?.dept, 'leadership');
+  assert.equal(botOf('design_expert')?.dept, 'experience');
+  assert.deepEqual(botOf('design_expert')?.aiTools, ['design_agent']);
+  assert.ok(LINKS.some((link) => link.from === 'catalog' && link.to === 'design_expert'));
   for (const d of LEGAL_DECISIONS) assert.ok(botOf(d.bot), d.id);
   // Every bot works with at least one other (coordination, not islands) — except on-demand helpers.
   const linked = new Set(LINKS.flatMap((l) => [l.from, l.to]));
@@ -102,6 +105,9 @@ test('help requests between the tools, and the secretary reruns a late robot (sa
   const reruns = r.handoffs.filter((h) => h.action);
   assert.deepEqual(reruns.map((h) => h.action), [{ type: 'rerun', workflow: 'shaheen-discover.yml' }], 'the late scout is rerun; school shares its workflow → once');
   assert.deepEqual(findHandoffs({}, [], NOW), []);
+  const design = findHandoffs({ 'manus-audit.json': { score: 60, issues: [{ area: 'design', problem: 'تباين ضعيف' }, { area: 'languages', problem: 'ترجمة ناقصة' }] } }, [], NOW);
+  assert.ok(design.some((h) => h.from === 'design_audit' && h.to === 'design_expert'));
+  assert.ok(design.some((h) => h.from === 'design_audit' && h.to === 'languages'));
 });
 
 test('the secretary deputises: no engine, quotas out, busy engines, the chair failing, or pressure', () => {
@@ -146,6 +152,19 @@ test('the meeting takes the check as its agenda; the secretary chairs or takes t
   recordDelegation(file, { date: '2026-10-19', at: '2026-10-19T06:30:00Z', mode: 'ai', summaryAr: '', decisions: routine, toolGoals: {}, seats: [], chair: 'shaheen' });
   assert.equal(unreviewed(file).length, 0);
   assert.equal(file.delegations!.length, 2);
+});
+
+test('Shaheen council receives a safe design-specific handoff when the supervised design agent needs improvement', () => {
+  const privateFinding = 'PRIVATE-DRAFT-OR-USER-DETAIL';
+  const r = runPrecheck({ 'ai-supervisor.json': { updatedAt: ago(1), tools: { design_agent: {
+    status: 'fail', checkedAt: ago(1), score: 4, issues: [privateFinding, 'missing accessibility review'],
+  } } } }, {}, NOW);
+  assert.equal(r.bots.find((bot) => bot.id === 'design_expert')?.status, 'warn');
+  const handoff = r.handoffs.find((item) => item.from === 'design_expert' && item.to === 'council');
+  assert.ok(handoff);
+  assert.match(handoff!.textAr, /4\/10/);
+  assert.match(handoff!.textAr, /2 ملاحظة جودة/);
+  assert.doesNotMatch(JSON.stringify(r), new RegExp(privateFinding));
 });
 
 test('finance joins Shaheen leadership without publishing ledger content or inventing a healthy check', () => {

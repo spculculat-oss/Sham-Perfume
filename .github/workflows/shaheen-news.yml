@@ -20,7 +20,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main, 'arena/**']
-    paths: ['scripts/shaheen-news/**', 'scripts/shaheen-supervisor/**', 'scripts/shaheen-store/**', 'src/data/products.json', 'src/utils/storeCatalog.ts', 'src/utils/aiTools.ts', '.github/workflows/shaheen-news.yml']
+    paths: ['scripts/shaheen-news/**', 'scripts/shaheen-supervisor/**', 'scripts/shaheen-store/**', 'server/design/**', 'src/admin/DesignStudioPanel.tsx', 'src/types/design.ts', 'src/data/products.json', 'src/utils/storeCatalog.ts', 'src/utils/aiTools.ts', '.github/workflows/shaheen-news.yml']
 
 permissions:
   contents: write

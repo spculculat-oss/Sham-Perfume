@@ -101,6 +101,8 @@ test('Arabic keeps its lab wording, other languages get their own (or English)',
   assert.equal(uiLabel('unit_ml', 'zh'), '毫升');
   assert.equal(uiLabel('cancel', 'fr'), 'Annuler');
   assert.equal(uiLabel('save_edit', 'tr'), 'Değişiklikleri kaydet');
+  assert.equal(uiLabel('user_formulations', 'ar'), 'تركيبات المستخدم');
+  assert.equal(uiLabel('user_formulations', 'en'), 'My Formulations');
   // a language without an entry falls back to English, never to Arabic
   assert.equal(uiLabel('skin_residue', 'ti'), UI_TEXT.skin_residue.en);
 });

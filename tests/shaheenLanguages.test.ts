@@ -110,6 +110,13 @@ test('LocalizedNumberInput is a text field with the site language\'s digits and 
   assert.ok(fa.includes('value="۶۵۰"'), fa);
 });
 
+test('LocalizedNumberInput can pin numeric fields to left-to-right layout', () => {
+  const markup = renderToString(React.createElement(LocalizedNumberInput, {
+    lang: 'ar', value: 12.5, onValue: () => undefined, dir: 'ltr',
+  }));
+  assert.ok(markup.includes('dir="ltr"'), markup);
+});
+
 // ── 3. The audit tools ────────────────────────────────────────────────────────────
 test('the audit separates visitor surfaces from operator consoles and sanctions the fix itself', () => {
   const jsx = '<input type="number" value={x} />\n<input type={"number"} value={y} />';
@@ -171,13 +178,26 @@ const sources = (dir: string, acc: string[] = []): string[] => {
   return acc;
 };
 
-test('no visitor surface in the repository renders a native browser-locale number input', () => {
+test('no visitor or operator surface renders a native browser-locale number input', () => {
   const publicHits: string[] = [];
+  const operatorHits: string[] = [];
   for (const file of sources('src').sort()) {
     const found = findNativeNumberInputs(file, readFileSync(join(ROOT, file), 'utf8'));
     for (const hit of found.public) publicHits.push(`${hit.file}:${hit.line}`);
+    for (const hit of found.operator) operatorHits.push(`${hit.file}:${hit.line}`);
   }
-  assert.deepEqual(publicHits, [], `use LocalizedNumberInput instead:\n${publicHits.join('\n')}`);
+  assert.deepEqual(publicHits, [], `visitor surfaces should use LocalizedNumberInput:\n${publicHits.join('\n')}`);
+  assert.deepEqual(operatorHits, [], `operator surfaces should also use LocalizedNumberInput:\n${operatorHits.join('\n')}`);
+});
+
+test('no visitor or operator surface formats numbers or dates from the browser locale', () => {
+  const hits: string[] = [];
+  for (const file of sources('src').sort()) {
+    for (const hit of findBareLocaleFormatting(file, readFileSync(join(ROOT, file), 'utf8'))) {
+      hits.push(`${hit.file}:${hit.line}`);
+    }
+  }
+  assert.deepEqual(hits, [], `pass the site language to the shared formatting helpers:\n${hits.join('\n')}`);
 });
 
 test('the photographed cost calculator and every converted calculator carry no native number field', () => {

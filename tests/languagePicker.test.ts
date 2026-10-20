@@ -172,6 +172,26 @@ test('the opened panel renders the search box and all 100 languages, RTL aware',
   assert.equal(english.split('data-language-item').length - 1, 100);
 });
 
+test('language picker chrome is localized for the audited Icelandic, Albanian and Pashto locales', async () => {
+  const React = await import('react');
+  const { renderToStaticMarkup } = await import('react-dom/server');
+  const { LanguageSelector } = await import('../src/components/LanguageSelector');
+  const expected = {
+    is: ['Tungumál vettvangsins', 'Leita að tungumáli'],
+    sq: ['Gjuhët e platformës', 'Kërko një gjuhë'],
+    ps: ['د پلیټفارم ژبې', 'ژبه ولټوئ'],
+  } as const;
+
+  for (const [lang, labels] of Object.entries(expected) as Array<[keyof typeof expected, readonly string[]]>) {
+    const html = renderToStaticMarkup(React.createElement(LanguageSelector, {
+      currentLang: lang,
+      onSelectLanguage: () => {},
+      defaultOpen: true,
+    }));
+    for (const label of labels) assert.ok(html.includes(label), `${lang} language picker is missing: ${label}`);
+  }
+});
+
 test('opening the panel never leaks Arabic wording into another language', async () => {
   const React = await import('react');
   const { renderToStaticMarkup } = await import('react-dom/server');

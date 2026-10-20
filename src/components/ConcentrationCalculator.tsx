@@ -9,6 +9,7 @@ import {
   Layers,
   HelpCircle,
   BookmarkPlus,
+  Bookmark,
   DollarSign,
   Info,
   Check,
@@ -41,6 +42,7 @@ import {
 import { formatNum } from '../utils/calculations';
 import { useLanguage } from '../context/LanguageContext';
 import { LText, makeT, fmt, LOCALE_MAP, localeDate } from '../لغات/localize';
+import { uiLabel } from '../لغات/uiTextL10n';
 import { FragrancePyramidGraphic } from './FragrancePyramidGraphic';
 import { CalculatorCriteriaGuide } from './CalculatorCriteriaGuide';
 import { VisualScaleSimulator } from './VisualScaleSimulator';
@@ -357,7 +359,7 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
         </div>
 
         {/* View Mode Tabs Switcher */}
-        <div className="inline-flex p-1 bg-stone-100/90 rounded-2xl border border-stone-200 text-xs font-semibold shrink-0 shadow-2xs">
+        <div className="inline-flex max-w-full flex-wrap items-center gap-1 p-1 bg-stone-100/90 rounded-2xl border border-stone-200 text-xs font-semibold shrink-0 shadow-2xs">
           <button
             type="button"
             onClick={() => setActiveView('formulation')}
@@ -409,6 +411,19 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
             <Scale className="w-3.5 h-3.5 text-amber-400" />
             <span>{L('scale_badge')}</span>
           </button>
+
+          {onNavigateToTab && (
+            <button
+              type="button"
+              onClick={() => onNavigateToTab('library')}
+              aria-label={uiLabel('user_formulations', effectiveLang)}
+              title={uiLabel('user_formulations', effectiveLang)}
+              className="px-3.5 py-2 rounded-xl border border-amber-200 bg-amber-50 text-amber-900 hover:bg-amber-100 transition-all flex items-center gap-1.5 cursor-pointer font-bold"
+            >
+              <Bookmark className="w-3.5 h-3.5 text-amber-700" />
+              <span>{uiLabel('user_formulations', effectiveLang)}</span>
+            </button>
+          )}
         </div>
       </div>
 

@@ -8,6 +8,7 @@ import { readSeoState, stateSummary } from '../../src/seo/agentState';
 import { inspectAnswer, type Probe } from './checks';
 import { templateReply } from '../../server/contracts/assistant';
 import { EMPTY_SENDER, checkLetter, type Sender } from '../../server/contracts/policy';
+import type { DesignBriefResponse } from '../../src/types/design';
 
 type Fetch = typeof fetch;
 export interface ProbeContext { site: string; fetch: Fetch; run: number; adminToken?: string; now: number; liveDir: URL }
@@ -314,6 +315,36 @@ async function contractsProbes(ctx: ProbeContext): Promise<Probe[]> {
   return probes;
 }
 
+/** The design specialist is admin-only; without the configured admin credential it is honestly skipped. */
+async function designAgentProbes(ctx: ProbeContext): Promise<Probe[]> {
+  if (!ctx.adminToken) return [];
+  const question = 'راجع تجربة شراء عطر على الهاتف، واقترح بنية صفحة متجاوبة واضحة وسهلة الوصول باتجاه RTL دون اختراع بيانات أو تعديل الموقع.';
+  const r = await timed(() => json<DesignBriefResponse>(ctx.fetch, `${ctx.site}/api/admin/design/brief`, post({
+    brief: question,
+    specialty: 'ui_ux',
+    platform: 'website_page',
+    objective: 'usability',
+    language: 'ar',
+    audience: 'متسوقو العطور عبر الهاتف',
+  }, { Authorization: `Bearer ${ctx.adminToken}` }), 42_000));
+  const c = r.value?.creative;
+  const answer = c ? [c.title, c.concept, c.format, c.strategy, c.audience, c.visualDirection, c.informationArchitecture, c.layout,
+    ...c.palette.map((x) => `${x.name} ${x.hex}: ${x.use}`), c.typography, c.experienceFlow, c.interactionNotes, c.responsiveNotes,
+    c.accessibilityNotes, c.productionNotes, c.successCriteria, c.headline, c.caption, c.cta, c.assetDirection, c.altText,
+    ...c.qualityChecklist].filter(Boolean).join('\n') : '';
+  const findings = r.error ? [] : !c
+    ? [{ severe: true, text: 'لم يرجع تصور تصميم متكامل' }]
+    : [
+      ...inspectAnswer(answer, { language: 'ar', ms: r.ms, maxChars: 9000 }),
+      ...(c.specialty !== 'ui_ux' ? [{ severe: true, text: 'التخصص المعاد لا يطابق طلب تجربة المستخدم' }] : []),
+      ...(c.palette.length < 3 || c.palette.some((color) => !/^#[\da-f]{6}$/i.test(color.hex)) ? [{ severe: true, text: 'لوحة الألوان ناقصة أو رمز HEX غير صالح' }] : []),
+      ...([c.strategy, c.informationArchitecture, c.experienceFlow, c.responsiveNotes, c.accessibilityNotes, c.productionNotes, c.successCriteria].some((value) => !value.trim()) ? [{ severe: true, text: 'حقول الخطة أو الاستجابة أو الإتاحة ناقصة' }] : []),
+      ...(c.qualityChecklist.length < 2 ? [{ severe: true, text: 'قائمة فحص التصميم قصيرة أو مفقودة' }] : []),
+      ...((c.caption || '').length > 500 ? [{ severe: false, text: 'النص الإعلاني أطول من الحد المقترح' }] : []),
+    ];
+  return [{ tool: 'design_agent', question, answer, ms: r.ms, ok: !r.error && Boolean(c), error: r.error, findings }];
+}
+
 export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<Probe[]>> = {
   finance_agent: financeProbes,
   contracts_agent: contractsProbes,
@@ -329,5 +360,6 @@ export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<P
   store_import: storeImportProbes,
   shaheen_school: schoolProbes,
   seo_agent: seoAgentProbes,
+  design_agent: designAgentProbes,
   shaheen_council: councilProbes,
 };

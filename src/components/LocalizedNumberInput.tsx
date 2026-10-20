@@ -29,6 +29,7 @@ export interface LocalizedNumberInputProps {
   name?: string;
   id?: string;
   ariaLabel?: string;
+  dir?: 'ltr' | 'rtl' | 'auto';
   disabled?: boolean;
 }
 
@@ -44,6 +45,7 @@ export const LocalizedNumberInput: React.FC<LocalizedNumberInputProps> = ({
   name,
   id,
   ariaLabel,
+  dir,
   disabled = false,
 }) => {
   const [draft, setDraft] = useState<string | null>(null);
@@ -53,6 +55,7 @@ export const LocalizedNumberInput: React.FC<LocalizedNumberInputProps> = ({
       type="text"
       inputMode={integer ? 'numeric' : 'decimal'}
       lang={numeralLocaleTag(lang)}
+      dir={dir}
       autoComplete="off"
       spellCheck={false}
       disabled={disabled}

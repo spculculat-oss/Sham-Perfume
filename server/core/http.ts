@@ -16,6 +16,7 @@ import { createStore, type Store } from './store';
 import { RateLimiter, clientKey } from './rateLimit';
 import { createSeoService } from '../seo/service';
 import { probeEngines } from '../shaheen';
+import { createDesignBrief, validateDesignRequest } from '../design/assistant';
 import { SHAHEEN_SITE_SETTINGS } from '../config/shaheen';
 import { engineStatuses } from './engines';
 import { activeSeats, councilAvailable, publicTranscript } from './council';
@@ -65,6 +66,7 @@ export function createShamCore(options: CoreOptions = {}) {
   // «منارة شاهين»: SEO/media agent — its own state, engines follow the admin policy, runs are manual or scheduled.
   const seo = createSeoService({ repo, env, fetch: options.fetch });
   const seoRunLimiter = new RateLimiter(4, 10 * 60_000);
+  const designLimiter = new RateLimiter(8, 10 * 60_000);
   const feedbackLimiter = new RateLimiter(60, 10 * 60_000);
   const privacyLimiter = new RateLimiter(10, 10 * 60_000);
   const VISITOR = /^[A-Za-z0-9_-]{8,80}$/;
@@ -458,6 +460,18 @@ export function createShamCore(options: CoreOptions = {}) {
   admin.post('/agent', wrap(async (req, res) => {
     const message = typeof req.body?.message === 'string' ? req.body.message.trim().slice(0, 1000) : '';
     res.json(await runAdminAgent(repo, message || 'تقرير اليوم', { env, fetch: options.fetch }));
+  }));
+
+  /** «خبير التصميم متعدد التخصصات»: supervised admin-only plans and audits; never creates final assets or applies site changes automatically. */
+  admin.post('/design/brief', wrap(async (req, res) => {
+    if (!designLimiter.allow(clientKey(req))) throw new AssistantError(429, 'RATE_LIMITED', 'طلبات تصميم كثيرة، انتظر دقائق ثم حاول مرة أخرى.');
+    const input = validateDesignRequest(req.body);
+    const product = input.productId
+      ? (await repo.products()).find((item) => item.id === input.productId)
+      : undefined;
+    if (input.productId && !product) throw new AssistantError(404, 'PRODUCT_NOT_FOUND', 'المنتج المختار غير موجود أو غير متاح في الكتالوج.');
+    const settings = await repo.settings();
+    res.json(await createDesignBrief(input, { settings: settings.shaheen, env, fetch: options.fetch, product }));
   }));
 
   admin.post('/notifications/test', wrap(async (_req, res) => {
