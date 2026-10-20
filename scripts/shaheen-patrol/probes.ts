@@ -31,7 +31,8 @@ export function sample<T>(list: T[], size: number, hour: number): T[] {
   const start = (hour * size) % list.length;
   return [...list.slice(start), ...list.slice(0, start)].slice(0, size);
 }
-const abs = (base: string, path: string) => (/^https?:/.test(path) ? path : new URL(path.replace(/^\.?\//, ''), base).toString());
+/** Absolute URL: full links as they are, «/x» from the origin, «x» / «./x» from the site's folder. */
+export const abs = (base: string, path: string) => (/^https?:/.test(path) ? path : new URL(path.startsWith('/') ? path : path.replace(/^\.\//, ''), base).toString());
 
 export async function probeSite(t: LiveTargets): Promise<ProbeResult> {
   return safe('site', async () => {

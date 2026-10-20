@@ -12,7 +12,7 @@ import {
   emptyPatrol, issueMarker, MAX_TRIES, parseShaheen, PATROL_RERUNNABLE, patrolIssue, probeCatalog, probeCurrency, probeFx, probeL10n, probeNewsFile,
   probePricing, REVIEWERS, reviewerOf, runPatrol, shouldPublish, TEAMS, type PatrolFile, type ProbeResult,
 } from '../scripts/shaheen-patrol/patrol';
-import { liveProbes, probeImages, probeProductPages, sample } from '../scripts/shaheen-patrol/probes';
+import { abs, liveProbes, probeImages, probeProductPages, sample } from '../scripts/shaheen-patrol/probes';
 
 const NOW = Date.parse('2026-10-20T12:37:00Z');
 const H = 3_600_000;
@@ -78,6 +78,7 @@ test('a late robot is fixed automatically (rerun), not twice within 6 h, and goe
   // With an engine, Shaheen is asked (once a day per problem).
   const withAi = runPatrol({ now: NOW + 15 * H, precheck: again, probes: [ok('site')], previous: fourth.file, engineReady: true });
   assert.equal(withAi.ask.length, 1);
+  assert.equal(withAi.file.open.find((i) => i.bot === 'seo')!.status, 'waiting_shaheen', '«عند شاهين» only once he really answered');
 
   // Fixed: it disappears and is logged as resolved after the rerun, verified by this patrol's tests.
   const fixed = runPatrol({ now: NOW + 16 * H, precheck: precheck([]), probes: [ok('site')], previous: fourth.file, engineReady: false });
@@ -173,12 +174,12 @@ test('live tests open real pages like a visitor (fake network): price matches th
     const url = String(input);
     const html = (body: string, status = 200) => new Response(body, { status, headers: { 'content-type': 'text/html' } });
     if (url === pages) return html('<div id="root"></div><script type="module" src="/site/assets/index-1.js"></script>');
-    if (url.endsWith('/assets/index-1.js')) return new Response('', { status: 200 });
+    if (url === 'https://example.test/site/assets/index-1.js') return new Response('', { status: 200 });
     if (url.endsWith('p/money.json')) return new Response(JSON.stringify({ rates: { EGP: 1 } }), { status: 200 });
     if (url.endsWith('p/a.html')) return html('<p class="price" data-price="150">150</p>');
     if (url.endsWith('p/b.html')) return html('<p class="price" data-price="80">80</p>');
     if (url === 'https://img.test/a.jpg') return new Response('x', { status: 206, headers: { 'content-type': 'image/jpeg' } });
-    if (url.endsWith('photos/b.jpg')) return new Response('nope', { status: 404, headers: { 'content-type': 'text/html' } });
+    if (url === 'https://example.test/site/photos/b.jpg') return new Response('nope', { status: 404, headers: { 'content-type': 'text/html' } });
     if (url.endsWith('sitemap.xml')) return new Response('<loc>https://example.test/site/p/a.html</loc><loc>https://example.test/site/p/b.html</loc>', { status: 200 });
     if (url.endsWith('api/health')) return new Response(JSON.stringify({ status: 'ok' }), { status: 200 });
     if (url.endsWith('api/news')) return new Response(JSON.stringify({ articles: [1, 2] }), { status: 200 });
@@ -198,6 +199,11 @@ test('live tests open real pages like a visitor (fake network): price matches th
   const dead = await liveProbes({ ...t, request: (async () => { throw new TypeError('fetch failed'); }) as typeof fetch });
   assert.ok(dead.every((r) => r.level === 'fail'));
   assert.deepEqual(sample([1, 2, 3, 4, 5], 2, 1), [3, 4]);
+  // The main site lives in a folder: «/Sham-Perfume/assets/x.js» from the origin, «photos/x.jpg» from the folder.
+  const site = 'https://spculculat-oss.github.io/Sham-Perfume/';
+  assert.equal(abs(site, '/Sham-Perfume/assets/index.js'), 'https://spculculat-oss.github.io/Sham-Perfume/assets/index.js');
+  assert.equal(abs(site, 'photos/a.jpg'), 'https://spculculat-oss.github.io/Sham-Perfume/photos/a.jpg');
+  assert.equal(abs(site, './p/money.json'), 'https://spculculat-oss.github.io/Sham-Perfume/p/money.json');
 });
 
 test('the patrol robot is in the structure, runs hourly, pinned, and starts only safe robots', () => {

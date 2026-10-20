@@ -159,6 +159,8 @@ if (env.GITHUB_OUTPUT) appendFileSync(env.GITHUB_OUTPUT, `reruns=${act ? reruns.
 if (env.GITHUB_ACTIONS) {
   const clip = (t: string) => t.replace(/[\r\n%]/g, ' ').slice(0, 3000);
   console.log(`::notice title=الدورية كل ساعة::${clip(file.summaryAr)}`);
+  console.log(`::notice title=الاختبارات العملية::${clip(file.probes.map((p) => `${p.id}=${p.level}${p.deep ? '*' : ''} (${p.noteAr})`).join(' | '))}`);
+  console.log(`::notice title=شاهين والمراجعات::${clip(notes.filter((n) => /^(Shaheen|Reviews|Task|Rehearsal|No AI)/.test(n)).join(' | ') || '—')}`);
   for (const i of file.open.filter((x) => x.level === 'fail').slice(0, 8)) console.log(`::warning title=${clip(i.textAr.slice(0, 80))}::${clip(i.nextAr)}`);
 }
 if (env.GITHUB_STEP_SUMMARY) {

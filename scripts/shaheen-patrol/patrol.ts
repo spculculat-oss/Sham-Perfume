@@ -333,7 +333,8 @@ export function reviewsFor(precheck: PrecheckFile, probes: ProbeResult[], review
     tested.push({ nameAr: 'نتيجة التشغيل', level: run.conclusion === 'success' ? 'ok' : run.conclusion === 'failure' ? 'fail' : 'warn', noteAr: run.conclusion || run.status });
     if (run.conclusion === 'failure') defects.push('التشغيل فشل');
     if (c.reportAt) tested.push({ nameAr: 'التقرير', level: c.problems.some(isLate) ? 'warn' : 'ok', noteAr: `من ${c.ageHours ?? '؟'} ساعة` });
-    for (const p of c.problems) if (!defects.includes(p) && c.status !== 'ok') defects.push(p);
+    // The bot's own numbers judge the work only when they are broken (a warning is followed up as a problem).
+    if (c.status === 'fail') for (const p of c.problems) if (!defects.includes(p)) defects.push(p);
     for (const id of rv.probes) {
       const r = byId.get(id);
       if (!r || r.level === 'skip') continue;
@@ -395,13 +396,16 @@ export function runPatrol(input: PatrolInput): PatrolPlan {
     }
     // No safe fix left (or the fixes did not work): Shaheen helps.
     const why = wf ? `اتشغل ${item.tries.length} مرات ولسه المشكلة موجودة${lastTry ? ` (آخر مرة ${lastTry.at.slice(11, 16)} UTC)` : ''}` : 'مفيش إصلاح آلي آمن';
-    const askedRecently = item.shaheen && hours(item.shaheen.at, now) < ASK_GAP_H && item.shaheen.by === 'ai';
-    if (engineReady && !askedRecently) ask.push(item);
-    if (!item.shaheen || (item.shaheen.by === 'playbook' && engineReady)) item.shaheen = { at, by: 'playbook', ...playbookFor(item) };
-    item.status = item.shaheen.by === 'ai' ? 'shaheen' : engineReady ? 'shaheen' : 'waiting_shaheen';
-    item.nextAr = item.status === 'waiting_shaheen'
-      ? `${why} — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)`
-      : `${why} — شاهين بيشخص ويحدد الإصلاح`;
+    const answered = item.shaheen?.by === 'ai' && hours(item.shaheen.at, now) < ASK_GAP_H;
+    if (engineReady && !answered) ask.push(item);
+    if (!item.shaheen || (item.shaheen.by === 'ai' && !answered)) item.shaheen = { at, by: 'playbook', ...playbookFor(item) };
+    // «shaheen» only once he really answered; run.mts upgrades the items he answers this hour.
+    item.status = answered ? 'shaheen' : 'waiting_shaheen';
+    item.nextAr = answered
+      ? `${why} — شاهين شخّصها: ${item.shaheen.diagnosisAr.slice(0, 160)}`
+      : engineReady
+        ? `${why} — في دور شاهين يشخصها (سؤالين بالكتير كل ساعة عشان باقة الزوار)`
+        : `${why} — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)`;
     if (item.issue) { item.status = 'task'; item.nextAr = `مهمة تطوير #${item.issue} لوكيل البرمجة («نفذ مهام شاهين»)`; }
     else if (item.level === 'fail' && hours(item.since, now) >= TASK_AFTER_H && (item.shaheen?.needsCode ?? true)) tasks.push(item);
     open.push(item);
