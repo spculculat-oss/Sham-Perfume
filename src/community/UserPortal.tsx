@@ -391,9 +391,11 @@ function Security({ lang, me, toast, go }: { lang: Lang; me: Me; toast: (s: stri
   const { data: passkeys, reload: reloadPasskeys } = useLoad(() => cx<PasskeyInfo[]>('/community/me/passkeys'));
   const [pkName, setPkName] = useState('');
   const addPasskey = async () => {
+    const password = prompt(t('للتأكيد اكتب كلمة المرور:', 'Type your password to confirm:'));
+    if (!password) return;
     setBusy('pk-add');
     try {
-      const begin = await cx<PasskeyRegisterOptions>('/community/me/passkeys/begin', { body: { name: pkName } });
+      const begin = await cx<PasskeyRegisterOptions>('/community/me/passkeys/begin', { body: { name: pkName, password } });
       const res = await createPasskey(begin);
       await cx('/community/me/passkeys/finish', { body: { challengeId: begin.id, ...res, name: pkName } });
       setPkName('');
@@ -405,7 +407,9 @@ function Security({ lang, me, toast, go }: { lang: Lang; me: Me; toast: (s: stri
     } finally { setBusy(''); }
   };
   const removePasskey = async (id: string) => {
-    try { await cx(`/community/me/passkeys/${id}`, { method: 'DELETE' }); await reloadPasskeys(true); toast(t('اتشالت البصمة', 'Passkey removed')); }
+    const password = prompt(t('للتأكيد اكتب كلمة المرور:', 'Type your password to confirm:'));
+    if (!password) return;
+    try { await cx(`/community/me/passkeys/${id}`, { method: 'DELETE', body: { password } }); await reloadPasskeys(true); toast(t('اتشالت البصمة', 'Passkey removed')); }
     catch (e) { toast(errorText(e, lang)); }
   };
 

@@ -452,7 +452,7 @@ test('password reset: identical answers either way, single-use codes, every sess
   const address = email('reset');
   const { token, me } = await svc.register(ctx, { name: 'Reset', email: address, password: PASSWORD });
   await assert.rejects(svc.requestPasswordReset(ctx, { email: address }), { code: 'EMAIL_UNAVAILABLE' }, 'no provider → honest 503');
-  assert.ok((await svc.requestPasswordReset(ctx, { email: 'ghost@example.com' })).ok, 'unknown e-mail: the same quiet answer');
+  await assert.rejects(svc.requestPasswordReset(ctx, { email: 'ghost@example.com' }), { code: 'EMAIL_UNAVAILABLE' }, 'no provider → honest 503 even for unknown (no leak)');
   const code = await issueCode(ctx, me.id, 'reset_password');
   await assert.rejects(svc.confirmPasswordReset(ctx, { email: address, code: code === '000000' ? '111111' : '000000', next: 'NewPass99xx' }), { code: 'CODE_INVALID' });
   await assert.rejects(svc.confirmPasswordReset(ctx, { email: 'ghost@example.com', code, next: 'NewPass99xx' }), { code: 'CODE_INVALID' }, 'the code never crosses e-mails');
@@ -598,7 +598,7 @@ test('passkeys: register a device credential, sign in with it, reject forgeries 
   await assert.rejects(svc.passkeyLoginBegin(ctx, { email: email('nopk') && nobody.me.email }), { code: 'NOT_FOUND' }, 'registered but no passkey: the same 404');
 
   /* register the device credential */
-  const begin = await svc.passkeyRegisterBegin(ctx, reg.me.id, 'موبايلي');
+  const begin = await svc.passkeyRegisterBegin(ctx, reg.me.id, { name: 'موبايلي', password: PASSWORD });
   const created = { clientDataJSON: clientData('webauthn.create', begin.challenge), attestationObject: b64u(attestationOf(begin.challenge, 0)) };
   const list = await svc.passkeyRegisterFinish(ctx, reg.me.id, { challengeId: begin.id, name: 'موبايلي', ...created });
   assert.equal(list.length, 1);
@@ -609,9 +609,9 @@ test('passkeys: register a device credential, sign in with it, reject forgeries 
 
   /* forgeries at registration */
   await assert.rejects(svc.passkeyRegisterFinish(ctx, reg.me.id, { challengeId: begin.id, ...created }), { code: 'CHALLENGE_INVALID' }, 'a used challenge is dead');
-  const begin2 = await svc.passkeyRegisterBegin(ctx, reg.me.id, 'x');
+  const begin2 = await svc.passkeyRegisterBegin(ctx, reg.me.id, { name: 'x', password: PASSWORD });
   await assert.rejects(svc.passkeyRegisterFinish(ctx, reg.me.id, { challengeId: begin2.id, clientDataJSON: clientData('webauthn.create', begin2.challenge, 'https://evil.example'), attestationObject: b64u(attestationOf(begin2.challenge, 0, 'https://evil.example')) }), { code: 'PASSKEY_INVALID' }, 'a foreign origin is refused');
-  const begin3 = await svc.passkeyRegisterBegin(ctx, reg.me.id, 'x');
+  const begin3 = await svc.passkeyRegisterBegin(ctx, reg.me.id, { name: 'x', password: PASSWORD });
   await assert.rejects(svc.passkeyRegisterFinish(ctx, reg.me.id, { challengeId: begin3.id, clientDataJSON: clientData('webauthn.get', begin3.challenge), attestationObject: b64u(attestationOf(begin3.challenge, 0)) }), { code: 'PASSKEY_INVALID' }, 'a get answer cannot create');
 
   /* sign in with the passkey */
