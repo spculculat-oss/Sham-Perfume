@@ -23,7 +23,7 @@ export type Ask = (system: string, prompt: string) => Promise<string>;
 
 export const INTERVAL_HOURS = 12;
 const DAY = 86_400_000;
-const VENDOR = /\b(?:gemini|openai|chatgpt|gpt-?\d|claude|anthropic|deepseek|openrouter|llama|mistral)\b/i;
+const VENDOR = /\b(?:gemini|openai|chatgpt|gpt-?\d|claude|anthropic|deepseek|openrouter|perplexity|llama|mistral)\b/i;
 
 const PERFUME = /(?:عطر|عطور|العطر|عطري|عطرية|عود|العود|بخور|مسك|المسك|عنبر|العنبر|عطار|perfum|fragran|parfum|cologne|eau de|scent|oud|agarwood|attar|musk|ambergris|ifra|essential oil|perfumer|nez |olfact)/i;
 export const isPerfumeNews = (item: Pick<RawItem, 'title' | 'snippet'>) => PERFUME.test(`${item.title} ${item.snippet}`);

@@ -1,0 +1,82 @@
+name: AI Studio download (filter a ZIP uploaded by the merchant)
+
+# When AI Studio cannot push («Failed to push commit to GitHub») the merchant downloads the project as a ZIP and
+# attaches it to the private DRAFT release «aistudio-upload» (never published). This workflow takes the newest ZIP
+# there, runs it through the AI Studio bridge filter (scripts/aistudio/import-zip.mts: robots' data, workflows,
+# legal documents, lock files, .env, keys and card numbers never come in; stale copies are skipped; nothing is
+# deleted) and pushes only the filtered files, on top of main, to branch aistudio/zip-<asset id>. The coding agent
+# reviews that branch and opens a PR. Nothing reaches main from here.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['arena/**']
+    paths: ['.github/workflows/aistudio-zip.yml', 'scripts/aistudio/import-zip.mts']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: aistudio-zip
+  cancel-in-progress: false
+
+jobs:
+  zip:
+    name: Filter the AI Studio download
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout main (full history, to recognise older copies of files)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Take the filter from the triggering commit (kept outside the files under review)
+        run: mkdir -p "$RUNNER_TEMP/tools" && git archive "$GITHUB_SHA" scripts/aistudio | tar -x -C "$RUNNER_TEMP/tools"
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Download the newest ZIP from the draft release
+        id: zip
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          rel=$(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=30" -q '[.[] | select(.tag_name == "aistudio-upload")][0].id // empty')
+          [ -n "$rel" ] || { echo "No release «aistudio-upload»"; echo "asset=" >> "$GITHUB_OUTPUT"; exit 0; }
+          asset=$(gh api "repos/$GITHUB_REPOSITORY/releases/$rel/assets" -q '[.[] | select(.name | test("\\.zip$"; "i"))] | sort_by(.created_at) | last | .id // empty')
+          [ -n "$asset" ] || { echo "No ZIP attached"; echo "asset=" >> "$GITHUB_OUTPUT"; exit 0; }
+          gh api -H "Accept: application/octet-stream" "repos/$GITHUB_REPOSITORY/releases/assets/$asset" > "$RUNNER_TEMP/studio.zip"
+          ls -la "$RUNNER_TEMP/studio.zip"
+          unzip -l "$RUNNER_TEMP/studio.zip" | tail -1
+          echo "asset=$asset" >> "$GITHUB_OUTPUT"
+      - name: Filter it and push the clean result to a review branch
+        if: steps.zip.outputs.asset != ''
+        env:
+          ASSET: ${{ steps.zip.outputs.asset }}
+        run: |
+          ZIP_PLAN=AISTUDIO_ZIP_PLAN.json node --import tsx "$RUNNER_TEMP/tools/scripts/aistudio/import-zip.mts" "$RUNNER_TEMP/studio.zip" --apply | tee "$RUNNER_TEMP/plan.txt"
+          git config user.name "Sham Perfume"
+          git config user.email "s.p.culculat@gmail.com"
+          # AISTUDIO_ZIP_PLAN.json (what came in, what was left out and why) travels with the branch for the reviewer.
+          git add -A
+          git commit -q -m "جوجل استوديو (ملف مضغوط): تعديلات بعد الفلترة" -m "$(head -c 60000 "$RUNNER_TEMP/plan.txt")"
+          git push -f origin "HEAD:refs/heads/aistudio/zip-$ASSET"
+          echo "Pushed aistudio/zip-$ASSET" >> "$GITHUB_STEP_SUMMARY"
+      - name: Remove the uploaded ZIP (it may hold private data; the filtered branch is all that is kept)
+        if: steps.zip.outputs.asset != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ASSET: ${{ steps.zip.outputs.asset }}
+        run: |
+          gh api -X DELETE "repos/$GITHUB_REPOSITORY/releases/assets/$ASSET" && echo "ZIP removed"
+          rel=$(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=30" -q '[.[] | select(.tag_name == "aistudio-upload" and (.draft | not))][0].id // empty')
+          # Published by mistake: the release itself goes too (a draft stays for the next upload).
+          if [ -n "$rel" ]; then gh api -X DELETE "repos/$GITHUB_REPOSITORY/releases/$rel"; git push origin --delete refs/tags/aistudio-upload || true; fi

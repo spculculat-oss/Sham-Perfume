@@ -140,8 +140,9 @@ test('the audit flags browser-locale formatting but accepts explicit locales', (
 test('the audit flags a language clamped to ar|en as a VALUE, not {ar,en} data pairs', () => {
   assert.equal(findLanguageClamps('x.ts', "const lang = siteLang === 'ar' ? 'ar' : 'en';").length, 1);
   assert.equal(findLanguageClamps('x.ts', "const name = lang === 'ar' ? item.nameAr : item.nameEn;").length, 0);
-  // The Kashier payment page really is Arabic/English only — sanctioned on purpose.
+  // The checkout APIs carry Arabic/English catalogue-name language, not the visitor's full UI locale.
   assert.equal(findLanguageClamps('src/utils/storeCheckout.ts', "lang: lang === 'ar' ? 'ar' : 'en'").length, 0);
+  assert.equal(findLanguageClamps('src/utils/directPayment.ts', "lang: lang === 'ar' ? 'ar' : 'en'").length, 0);
 });
 
 test('report scoring: clean = 100, the German-page bug hurts most', () => {

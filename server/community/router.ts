@@ -18,7 +18,9 @@ import { Vault } from './crypto';
 import { DataKeyError, connectPglite, connectPostgres, databaseErrorKind, databaseHints, findDatabase, loadDataKey, migrate, type KeyMode, type Sql } from './db';
 import * as svc from './service';
 import * as social from './social';
+import * as hub from './hub';
 import * as chat from './messenger';
+import * as mail from './mail';
 import * as admin from './admin';
 
 type Env = Record<string, string | undefined>;
@@ -176,7 +178,13 @@ export function createCommunityRouter(community: Community, options: { env?: Env
     if (!authLimiter.allow(clientKey(req))) { res.status(429).json({ error: 'Too many attempts, please wait a minute', code: 'RATE_LIMITED' }); return; }
     return handler(req, res);
   };
-  router.post('/community/auth/register', limitedAuth(open((ctx, req) => svc.register(ctx, req.body || {}, agent(req), ip(req)))));
+  router.post('/community/auth/register', limitedAuth(open(async (ctx, req) => {
+    const out = await svc.register(ctx, req.body || {}, agent(req), ip(req));
+    // The platform's first official letter: every new member finds a welcome mail in «بريد شام».
+    try { await mail.welcomeMail(ctx, out.me.id, out.me.name, out.me.lang); }
+    catch (error) { console.warn('[community] welcome mail:', error instanceof Error ? error.message : error); }
+    return out;
+  })));
   router.post('/community/auth/login', limitedAuth(open((ctx, req) => svc.login(ctx, req.body || {}, agent(req), ip(req)))));
   /** Two-factor finish: the password opened a pending login, the authenticator code closes it. */
   router.post('/community/auth/login/2fa', limitedAuth(open((ctx, req) => svc.loginTwoFactor(ctx, req.body || {}))));
@@ -199,10 +207,11 @@ export function createCommunityRouter(community: Community, options: { env?: Env
   router.delete('/community/me/sessions/:id', member(async (ctx, u, req) => { await svc.revokeSession(ctx, u.id, p(req, 'id'), bearer(req)); }));
 
   /* Passkeys (WebAuthn): the device's fingerprint/face/PIN is the second factor itself. */
-  router.post('/community/me/passkeys/begin', member(async (ctx, u, req) => svc.passkeyRegisterBegin(ctx, u.id, req.body?.name)));
+  router.post('/community/me/passkeys/begin', member(async (ctx, u, req) => svc.passkeyRegisterBegin(ctx, u.id, req.body || {})));
   router.post('/community/me/passkeys/finish', member(async (ctx, u, req) => svc.passkeyRegisterFinish(ctx, u.id, req.body || {})));
   router.get('/community/me/passkeys', member((ctx, u) => svc.myPasskeys(ctx, u.id)));
-  router.delete('/community/me/passkeys/:id', member(async (ctx, u, req) => { await svc.deletePasskey(ctx, u.id, p(req, 'id')); }));
+  router.delete('/community/me/passkeys/:id', member(async (ctx, u, req) => { await svc.deletePasskey(ctx, u.id, p(req, 'id'), req.body?.password); }));
+  router.post('/community/me/passkeys/:id/delete', member(async (ctx, u, req) => { await svc.deletePasskey(ctx, u.id, p(req, 'id'), req.body?.password); }));
   router.post('/community/auth/passkey/begin', limitedAuth(open((ctx, req) => svc.passkeyLoginBegin(ctx, req.body || {}))));
   router.post('/community/auth/passkey/finish', limitedAuth(open((ctx, req) => svc.passkeyLoginFinish(ctx, req.body || {}, agent(req), ip(req)))));
   router.post('/community/me/2fa/setup', member(async (ctx, u, req) => svc.totpSetup(ctx, u.id, req.body?.password)));
@@ -244,6 +253,26 @@ export function createCommunityRouter(community: Community, options: { env?: Env
   router.post('/community/posts/:id/comments', member((ctx, u, req) => social.addComment(ctx, u.id, p(req, 'id'), req.body?.body)));
   router.delete('/community/comments/:id', member(async (ctx, u, req) => { await social.deleteComment(ctx, u.id, p(req, 'id')); }));
 
+  // «مجتمع شام» على طريقة فيسبوك: stories, the discussion salon (see hub.ts)
+  router.get('/community/stories', member((ctx, u) => hub.stories(ctx, u.id)));
+  router.post('/community/stories', member((ctx, u, req) => hub.createStory(ctx, u.id, req.body || {})));
+  router.delete('/community/stories/:id', member(async (ctx, u, req) => { await hub.deleteStory(ctx, u.id, p(req, 'id')); }));
+  router.post('/community/stories/:id/seen', member(async (ctx, u, req) => { await hub.seeStory(ctx, u.id, p(req, 'id')); }));
+  router.get('/community/stories/:id/viewers', member((ctx, u, req) => hub.storyViewers(ctx, u.id, p(req, 'id'))));
+  router.get('/community/discussions', member((ctx, u, req) => hub.threads(ctx, u.id, { category: req.query.category, q: req.query.q, sort: req.query.sort, limit: req.query.limit })));
+  router.post('/community/discussions', member((ctx, u, req) => hub.createThread(ctx, u.id, req.body || {})));
+  router.get('/community/discussions/:id', member((ctx, u, req) => hub.thread(ctx, u.id, p(req, 'id'))));
+  router.delete('/community/discussions/:id', member(async (ctx, u, req) => { await hub.deleteThread(ctx, u.id, p(req, 'id')); }));
+  router.post('/community/discussions/:id/replies', member((ctx, u, req) => hub.replyThread(ctx, u.id, p(req, 'id'), req.body?.body)));
+  router.post('/community/discussions/:id/vote', member((ctx, u, req) => hub.voteThread(ctx, u.id, p(req, 'id'), req.body?.on)));
+  router.post('/community/discussions/:id/solve', member((ctx, u, req) => hub.solveThread(ctx, u.id, p(req, 'id'), req.body?.replyId ?? null)));
+  router.delete('/community/discussion-replies/:id', member(async (ctx, u, req) => { await hub.deleteReply(ctx, u.id, p(req, 'id')); }));
+  // Product reviews: everyone reads (the signed-in visitor also sees «mine» / «helpful»), members write.
+  router.get('/community/reviews/:sku', open(async (ctx, req) => hub.reviews(ctx, (await svc.authenticate(ctx, bearer(req)))?.id || null, p(req, 'sku'))));
+  router.post('/community/reviews/:sku', member((ctx, u, req) => hub.saveReview(ctx, u.id, p(req, 'sku'), req.body || {})));
+  router.delete('/community/review/:id', member(async (ctx, u, req) => { await hub.deleteReview(ctx, u.id, p(req, 'id')); }));
+  router.post('/community/review/:id/helpful', member((ctx, u, req) => hub.helpfulReview(ctx, u.id, p(req, 'id'), req.body?.on)));
+
   router.get('/community/people', member((ctx, u, req) => social.searchPeople(ctx, u.id, req.query.q)));
   router.get('/community/people/suggestions', member((ctx, u) => social.suggestions(ctx, u.id)));
   router.get('/community/profile/:handle', member((ctx, u, req) => social.profile(ctx, u.id, p(req, 'handle'))));
@@ -271,6 +300,33 @@ export function createCommunityRouter(community: Community, options: { env?: Env
   router.delete('/community/messages/:id', member(async (ctx, u, req) => { await chat.deleteMessage(ctx, u.id, p(req, 'id')); }));
   router.post('/community/messages/:id/react', member(async (ctx, u, req) => { await chat.reactMessage(ctx, u.id, p(req, 'id'), req.body?.emoji ?? null); }));
 
+  /* ------------------------------------- «بريد شام»: outside → in ------------------------------------- */
+  /* The mail provider's inbound hook (Resend Inbound, a Cloudflare Email Worker, any JSON/form forwarder)
+     posts real e-mails here. Protected by SHAM_MAIL_INBOUND_TOKEN (query ?token= or X-Sham-Mail-Token). */
+  router.post('/community/mail/inbound', express.urlencoded({ extended: true, limit: '1mb' }), open(async (ctx, req, res) => {
+    const expected = env.SHAM_MAIL_INBOUND_TOKEN?.trim() || '';
+    if (expected.length < 12) { res.status(503).json({ error: 'Inbound mail is not configured. Set SHAM_MAIL_INBOUND_TOKEN on the server.', code: 'INBOUND_NOT_CONFIGURED' }); return; }
+    const given = Buffer.from(String(req.query.token || req.headers['x-sham-mail-token'] || ''));
+    if (given.length !== expected.length || !timingSafeEqual(given, Buffer.from(expected))) {
+      res.status(401).json({ error: 'Invalid inbound token', code: 'UNAUTHORIZED' });
+      return;
+    }
+    return mail.inbound(ctx, mail.normalizeInbound(req.body || {}));
+  }));
+
+  /* ------------------------------------------------ «بريد شام» ------------------------------------------------ */
+  router.get('/community/mail/counts', member((ctx, u) => mail.counts(ctx, u.id)));
+  router.get('/community/mail', member((ctx, u, req) => mail.list(ctx, u.id, { folder: req.query.folder, before: req.query.before, q: req.query.q })));
+  router.post('/community/mail', member((ctx, u, req) => mail.send(ctx, u.id, req.body || {})));
+  router.post('/community/mail/drafts', member((ctx, u, req) => mail.saveDraft(ctx, u.id, req.body || {})));
+  router.patch('/community/mail/drafts/:id', member((ctx, u, req) => mail.saveDraft(ctx, u.id, req.body || {}, p(req, 'id'))));
+  router.post('/community/mail/drafts/:id/send', member((ctx, u, req) => mail.sendDraft(ctx, u.id, p(req, 'id'), req.body || {})));
+  router.post('/community/mail/trash/empty', member((ctx, u) => mail.emptyTrash(ctx, u.id)));
+  router.post('/community/mail/read-all', member((ctx, u) => mail.markAllRead(ctx, u.id)));
+  router.get('/community/mail/:id', member((ctx, u, req) => mail.view(ctx, u.id, p(req, 'id'))));
+  router.patch('/community/mail/:id', member((ctx, u, req) => mail.update(ctx, u.id, p(req, 'id'), req.body || {})));
+  router.delete('/community/mail/:id', member((ctx, u, req) => mail.remove(ctx, u.id, p(req, 'id'))));
+
   /* ---------------------------------------------- administration ---------------------------------------------- */
   const A = '/admin/community';
   router.get(`${A}/overview`, boss(async (ctx) => ({ ...(await admin.overview(ctx)), store: ctx.sql.kind })));
@@ -288,9 +344,15 @@ export function createCommunityRouter(community: Community, options: { env?: Env
   router.get(`${A}/posts`, boss((ctx, req) => admin.posts(ctx, req.query)));
   router.post(`${A}/posts/:id/moderate`, boss(async (ctx, req) => { await admin.moderate(ctx, 'post', p(req, 'id'), req.body?.status, String(req.body?.note || '')); }));
   router.post(`${A}/comments/:id/moderate`, boss(async (ctx, req) => { await admin.moderate(ctx, 'comment', p(req, 'id'), req.body?.status, String(req.body?.note || '')); }));
+  router.post(`${A}/content/:kind/:id/moderate`, boss(async (ctx, req) => {
+    const kind = p(req, 'kind');
+    if (!admin.isModeratedKind(kind)) throw new svc.CommunityError(400, 'INVALID_FIELD', 'kind');
+    await admin.moderate(ctx, kind, p(req, 'id'), req.body?.status, String(req.body?.note || ''));
+  }));
   router.get(`${A}/reports`, boss((ctx, req) => admin.reports(ctx, req.query.status)));
   router.post(`${A}/reports/:id`, boss(async (ctx, req) => { await admin.resolveReport(ctx, p(req, 'id'), req.body || {}); }));
   router.post(`${A}/conversations/:id/read`, boss((ctx, req) => admin.readConversation(ctx, p(req, 'id'), req.body?.reason)));
+  router.post(`${A}/mail/:userId`, boss((ctx, req) => mail.adminMail(ctx, p(req, 'userId'), req.body || {})));
   router.get(`${A}/audit`, boss((ctx) => admin.auditLog(ctx)));
 
   return router;

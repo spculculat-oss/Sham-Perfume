@@ -104,7 +104,7 @@ export function chargeCurrency(display: string, accepted: string[]): string {
 }
 
 /** Common time zones → country, the offline fallback when the server cannot tell the visitor's country. */
-const ZONE_COUNTRY: Record<string, string> = {
+export const ZONE_COUNTRY: Record<string, string> = {
   'Africa/Cairo': 'EG', 'Asia/Riyadh': 'SA', 'Asia/Dubai': 'AE', 'Asia/Kuwait': 'KW', 'Asia/Qatar': 'QA', 'Asia/Bahrain': 'BH',
   'Asia/Muscat': 'OM', 'Asia/Amman': 'JO', 'Asia/Beirut': 'LB', 'Asia/Baghdad': 'IQ', 'Asia/Damascus': 'SY', 'Asia/Gaza': 'PS',
   'Asia/Hebron': 'PS', 'Asia/Aden': 'YE', 'Africa/Tripoli': 'LY', 'Africa/Tunis': 'TN', 'Africa/Algiers': 'DZ', 'Africa/Casablanca': 'MA',

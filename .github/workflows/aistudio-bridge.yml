@@ -1,0 +1,118 @@
+name: AI Studio bridge (filter and publish studio updates)
+
+# «بوابة جوجل استوديو»: Google AI Studio pushes to its own repository (the studio — repository variable
+# AISTUDIO_REPO, default spculculat-oss/Sham-Perfume-Studio), where nothing else writes, so its «Sync to GitHub»
+# never fights the robots or the workflows. Every half hour this bridge takes what changed there, filters it
+# (robots' data, workflows, legal documents, lock files, keys and card numbers never come in), merges it with the
+# site's current files, runs the site's checks, and then:
+#   • site files only + checks pass → committed on main and GitHub Pages is published;
+#   • server / robots / build settings / deletions / first import / a failed check → parked on branch
+#     aistudio/<sha> with a «shaheen-task» issue for the coding agent.
+# Report: src/data/live/aistudio-bridge.json → admin «بيئة التحديثات». Code: scripts/aistudio/bridge*.
+# Optional: secret AISTUDIO_REPO_TOKEN (only if the studio repository is private), variable AISTUDIO_AUTHORS.
+
+on:
+  schedule:
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
+  push:
+    branches: ['arena/**']
+    paths: ['scripts/aistudio/bridge*', '.github/workflows/aistudio-bridge.yml']
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+
+concurrency:
+  group: aistudio-bridge
+  cancel-in-progress: false
+
+jobs:
+  bridge:
+    name: Bring AI Studio updates
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      STUDIO_REPO: ${{ vars.AISTUDIO_REPO || 'spculculat-oss/Sham-Perfume-Studio' }}
+      # Branch pushes rehearse only: nothing is pushed, no issue, no report commit.
+      BRIDGE_PUBLISH: ${{ github.event_name != 'push' && 'true' || 'false' }}
+      BRIDGE_FILE: src/data/live/aistudio-bridge.json
+      AISTUDIO_AUTHORS: ${{ vars.AISTUDIO_AUTHORS }}
+    steps:
+      - name: Checkout source (full history, to recognise older copies of files)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event_name == 'push' && github.ref || 'main' }}
+          fetch-depth: 0
+      - name: Look at the studio repository
+        id: studio
+        env:
+          STUDIO_TOKEN: ${{ secrets.AISTUDIO_REPO_TOKEN }}
+        run: |
+          # The checkout's own credentials belong to this repository: replaced (or cleared) for the studio.
+          if [ -n "$STUDIO_TOKEN" ]; then
+            auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$STUDIO_TOKEN" | base64 -w0)"
+          else
+            auth=""
+          fi
+          url="https://github.com/$STUDIO_REPO.git"
+          if head=$(git -c "http.https://github.com/.extraheader=$auth" ls-remote "$url" HEAD 2>/dev/null | cut -f1) && [ -n "$head" ]; then
+            git -c "http.https://github.com/.extraheader=$auth" fetch -q --no-tags "$url" "+HEAD:refs/remotes/studio/head"
+            echo "found=true" >> "$GITHUB_OUTPUT"
+            last=$(jq -r '.lastStudioSha // ""' "$BRIDGE_FILE" 2>/dev/null || true)
+            if [ "$head" = "$last" ]; then echo "work=false" >> "$GITHUB_OUTPUT"; else echo "work=true" >> "$GITHUB_OUTPUT"; fi
+            echo "Studio $STUDIO_REPO at $head (last imported: ${last:-none})"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            note="مستودع جوجل استوديو ($STUDIO_REPO) لسه مش موجود أو مش عام — اعمله من جوجل استوديو أو اكتب اسمه في AISTUDIO_REPO"
+            echo "note=$note" >> "$GITHUB_OUTPUT"
+            status=$(jq -r '.status // ""' "$BRIDGE_FILE" 2>/dev/null || true)
+            if [ "$status" = "waiting_repo" ] && [ "$BRIDGE_PUBLISH" = "true" ]; then echo "work=false" >> "$GITHUB_OUTPUT"; else echo "work=true" >> "$GITHUB_OUTPUT"; fi
+            echo "Studio $STUDIO_REPO not reachable"
+          fi
+      - name: Set up Node.js
+        if: steps.studio.outputs.work == 'true'
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        if: steps.studio.outputs.work == 'true'
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        if: steps.studio.outputs.work == 'true'
+        run: bun install --frozen-lockfile || bun install
+      - name: Filter the studio changes
+        id: plan
+        if: steps.studio.outputs.work == 'true'
+        env:
+          STUDIO_FOUND: ${{ steps.studio.outputs.found }}
+          STUDIO_NOTE: ${{ steps.studio.outputs.note }}
+        run: node --import tsx scripts/aistudio/bridge.mts plan
+      - name: Check the site with the studio changes (types, tests, Pages build)
+        if: steps.studio.outputs.work == 'true' && steps.plan.outputs.accepted != '0'
+        env:
+          VITE_API_BASE_URL: ${{ vars.PAGES_API_BASE_URL || 'https://sham-perfume-49bf.vercel.app' }}
+          PAGES_BASE_PATH: ${{ vars.PAGES_BASE_PATH || format('/{0}/', github.event.repository.name) }}
+        run: |
+          bun run lint > /tmp/lint.txt 2>&1 && lint=success || lint=failure
+          bun run test > /tmp/test.txt 2>&1 && test=success || test=failure
+          grep -q '^# fail [1-9]' /tmp/test.txt && test=failure
+          bun run build:pages > /tmp/build.txt 2>&1 && build=success || build=failure
+          if [ "$build" = success ]; then bun run check:pages > /tmp/pages.txt 2>&1 && pages=success || pages=failure; else pages=skipped; fi
+          echo "lint=$lint test=$test build=$build pages=$pages"
+          for f in lint test build pages; do
+            if [ "${!f}" = failure ]; then echo "::group::$f (last lines)"; tail -40 "/tmp/$f.txt"; echo "::endgroup::"; fi
+          done
+          { echo "CHECK_LINT=$lint"; echo "CHECK_TEST=$test"; echo "CHECK_BUILD=$build"; echo "CHECK_PAGES=$pages"; } >> "$GITHUB_ENV"
+      - name: Publish, or park for approval
+        if: steps.studio.outputs.work == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          author=$(printf '%s' "${AISTUDIO_AUTHORS:-s.p.culculat@gmail.com}" | cut -d, -f1 | tr -d ' ')
+          export BRIDGE_AUTHOR="Sham Perfume <$author>"
+          node --import tsx scripts/aistudio/bridge.mts finish

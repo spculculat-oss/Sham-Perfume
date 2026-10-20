@@ -8,8 +8,23 @@
 import { type StoreProduct } from '../../src/utils/storeCatalog';
 import { STORE_BASE_LANGS, type StoreTextKey } from '../../src/لغات/storeKeys';
 import { storeText } from '../../src/لغات/storeL10n';
+import { localLongevity } from '../../src/لغات/longevity';
 import { SUPPORTED_LANGUAGES } from '../../src/types/i18n';
 import { SITE } from '../../src/seo/site';
+import { BUNDLED_FX, COUNTRY_CODES, HOME_CURRENCY, ZONE_COUNTRY, currencyFor } from '../../src/utils/pricing';
+import { LOCALE_MAP } from '../../src/لغات/localize';
+
+/**
+ * p/money.json — what a standalone page needs to show the store's price in the visitor's currency (#169):
+ * the same country → currency rule and the same exchange table the store uses, so a shared product page and
+ * the cart show the same number. The page keeps the EGP price (and the EGP schema.org offer) until it loads.
+ */
+export function moneyTable() {
+  const currency = Object.fromEntries(COUNTRY_CODES.map((code) => [code, currencyFor(code, BUNDLED_FX)]));
+  const used = new Set([HOME_CURRENCY, ...Object.values(currency)]);
+  const rates = Object.fromEntries([...used].filter((c) => Number(BUNDLED_FX.rates[c]) > 0).map((c) => [c, BUNDLED_FX.rates[c]]));
+  return { home: HOME_CURRENCY, updatedAt: (BUNDLED_FX as { updatedAt?: string }).updatedAt || '', currency, rates, zones: ZONE_COUNTRY, locales: LOCALE_MAP };
+}
 
 const esc = (s: unknown) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 /** Photos mirrored into the site are relative to the site root; pages live one folder down (p/). */
@@ -39,7 +54,8 @@ export interface PageOptions { siteUrl: string }
 /**
  * «صفحة المنتج بلغة الزائر»: the standalone pages are static files, so they carry their chrome in
  * every base language and a tiny script swaps it when the page opens. A visitor whose language has no
- * full page pack reads the English labels — never Arabic (the same rule as the store itself).
+ * full page pack reads the English labels — never Arabic (the same rule as the store itself). With no saved
+ * language (a first visit from a search or a shared link) the phone's own language decides, like the store.
  */
 const PAGE_KEYS: StoreTextKey[] = [
   'sf_store_name', 'pd_index', 'sf_add_to_cart', 'pd_shop_cta', 'pd_ask_shaheen', 'pd_in_stock', 'sf_out_of_stock',
@@ -75,8 +91,10 @@ const SWITCHER = (table: string) => `<script id="page-l10n" type="application/js
 var ALL=(${JSON.stringify(ALL_LANGS)}).split(','),RT=(${JSON.stringify(PAGE_DIRS)}).split(',');
 var T=JSON.parse(document.getElementById('page-l10n').textContent),K=T.keys;
 var s=localStorage.getItem('sham_perfume_user_language')||'';
+if(ALL.indexOf(s)<0){var B=navigator.languages||[navigator.language||''];for(var i=0;i<B.length&&ALL.indexOf(s)<0;i++){var g=String(B[i]||'').toLowerCase();s=ALL.indexOf(g)>=0?g:g.split('-')[0]}}
 var l=ALL.indexOf(s)>=0?s:'en',ar=l==='ar';
 var vals=(T.packs[l]||T.packs.en)||[];
+money(l,navigator.languages||[navigator.language||'']);
 if(ar)return;
 var d=document;d.documentElement.lang=l;d.documentElement.dir=RT.indexOf(l)>=0?'rtl':'ltr';
 d.querySelectorAll('[data-l]').forEach(function(e){var i=K.indexOf(e.getAttribute('data-l'));if(i>=0&&vals[i])e.textContent=vals[i]});
@@ -84,7 +102,17 @@ d.querySelectorAll('[data-name]').forEach(function(e){e.textContent=e.getAttribu
 var n=new Intl.NumberFormat(l),cur=vals[K.indexOf('sf_currency')]||'EGP';
 d.querySelectorAll('[data-price]').forEach(function(e){e.textContent=n.format(Number(e.getAttribute('data-price')))+' '+cur});
 var h=d.querySelector('h1[data-name]');if(h)d.title=h.textContent+' | '+(vals[K.indexOf('sf_store_name')]||'');
-}catch(e){}})()</script>`;
+}catch(e){}
+function money(l,langs){try{var c='';try{c=(JSON.parse(localStorage.getItem('sham-store-country')||'null')||{}).code||''}catch(x){}
+fetch('money.json').then(function(r){return r.ok?r.json():null}).then(function(m){if(!m||!m.currency)return;
+if(!m.currency[c]){c=m.zones[(Intl.DateTimeFormat().resolvedOptions()||{}).timeZone]||'';for(var i=0;!c&&i<langs.length;i++){var g=String(langs[i]||'').split(/[-_]/).slice(1).filter(function(x){return /^[A-Za-z]{2}$/.test(x)})[0];if(g&&m.currency[g.toUpperCase()])c=g.toUpperCase()}}
+var cur=m.currency[c],a=m.rates[m.home],b=m.rates[cur];if(!cur||cur===m.home||!(a>0)||!(b>0))return;
+var loc=m.locales[l]||'en-GB';
+document.querySelectorAll('[data-price]').forEach(function(e){var v=td(Number(e.getAttribute('data-price'))/a*b),f=Math.round(v*100)%100?2:0;
+try{e.textContent=new Intl.NumberFormat(loc,{style:'currency',currency:cur,minimumFractionDigits:f,maximumFractionDigits:f}).format(v)}catch(x){e.textContent=v+' '+cur}
+e.setAttribute('data-currency',cur)})}).catch(function(){})}catch(e){}}
+function td(v){if(!(v>0))return 0;var d=Math.floor(Math.log10(v))+1,s=Math.max(Math.pow(10,d-2)/2,0.05);return Math.round(Math.ceil(v/s-1e-9)*s*100)/100}
+})()</script>`;
 
 /** A photo that is gone shows a neutral placeholder (main/cards) or disappears (thumbnail). */
 const NO_IMG_FN = `function noImg(i,thumb){i.onerror=null;i.dataset.broken=i.getAttribute('src');if(thumb){i.closest('a').remove();return}i.src=${JSON.stringify(PLACEHOLDER)}}`;
@@ -159,7 +187,7 @@ export function renderProductPage(p: StoreProduct, related: StoreProduct[], o: P
   const notes = ([['pd_top', p.notes.top], ['pd_heart', p.notes.heart], ['pd_base', p.notes.base]] as const).filter(([, l]) => l.length);
   const specs = ([
     ['pd_brand', esc(p.brand)], ['pd_size', p.sizeMl ? `${p.sizeMl} <span${dl('pd_ml')}>${arLabel('pd_ml')}</span>` : ''],
-    ['pd_concentration', esc(p.concentration)], ['pd_longevity', esc(p.longevity)], ['pd_sku', esc(p.sku)],
+    ['pd_concentration', esc(p.concentration)], ['pd_longevity', p.longevity ? `<span data-name data-ar="${esc(localLongevity(p.longevity, 'ar'))}" data-en="${esc(localLongevity(p.longevity, 'en'))}">${esc(localLongevity(p.longevity, 'ar'))}</span>` : ''], ['pd_sku', esc(p.sku)],
   ] as const).filter(([, v]) => v);
   const ld = JSON.stringify(productJsonLd(p, o)).replace(/</g, '\\u003c');
   const breadcrumb = JSON.stringify(breadcrumbJsonLd(p, o)).replace(/</g, '\\u003c');
@@ -179,12 +207,12 @@ export function renderProductPage(p: StoreProduct, related: StoreProduct[], o: P
 <div class="thumbs">${p.images.map((u, i) => `<a href="${esc(img(u, o.siteUrl))}" onclick="document.getElementById('main').src=this.href;return false"><img src="${esc(img(u, o.siteUrl))}" alt="${esc(`${p.name.ar} ${i + 1}`)}" loading="lazy" onerror="noImg(this,1)"></a>`).join('')}</div></div>
 <div><h1 data-name data-ar="${esc(p.name.ar)}" data-en="${esc(p.name.en)}">${esc(p.name.ar)}</h1>${p.name.en !== p.name.ar ? `<div class="en">${esc(p.name.en)}</div>` : ''}
 <p class="price" data-price="${p.price}">${esc(egp(p.price))}</p><p>${p.inStock ? `✅ <span${dl('pd_in_stock')}>متوفر</span>` : `⛔ <span${dl('sf_out_of_stock')}>غير متوفر حالياً</span>`}</p>
-<div class="chips">${chips.map((c) => `<span class="chip">${esc(c)}</span>`).join('')}</div>
+<div class="chips">${chips.join('')}</div>
 <a class="btn" href="${store}"${dl('pd_shop_cta')}>أضف للسلة واطلب من المتجر</a><a class="btn alt" href="${store}"${dl('pd_ask_shaheen')}>اسأل شاهين عن العطر</a>
 ${specs.length ? `<section><table class="specs">${specs.map(([k, v]) => `<tr><td${dl(k as StoreTextKey)}>${arLabel(k as StoreTextKey)}</td><td>${v}</td></tr>`).join('')}</table></section>` : ''}
 </div></div>
 ${notes.length ? `<section><h2${dl('pd_notes_pyramid')}>الهرم العطري</h2><div class="notes">${notes.map(([k, l]) => `<div><b${dl(k)}>${arLabel(k)}</b>${esc(l.join('، '))}</div>`).join('')}</div></section>` : ''}
-<section><h2${dl('pd_description')}>الوصف</h2><p data-name data-ar="${esc(p.description.ar)}" data-en="${esc(p.description.en || p.description.ar)}">${esc(p.description.ar)}</p>${p.description.en && p.description.en !== p.description.ar ? `<p class="en" dir="ltr">${esc(p.description.en).replace(/\n/g, '<br>')}</p>` : ''}</section>
+<section><h2${dl('pd_description')}>الوصف</h2><p data-name data-ar="${esc(p.description.ar)}" data-en="${esc(p.description.en || p.description.ar)}">${esc(p.description.ar)}</p></section>
 <p class="small">آخر تحديث لبيانات المنتج: ${esc((p.createdAt || new Date().toISOString()).slice(0, 10))} · <a href="../">كل أدوات المعمل</a> · <a href="../tools/">أدوات شام</a></p>
 ${related.length ? `<section><h2${dl('pd_related')}>قد يعجبك أيضاً</h2><div class="cards">${related.map(card).join('')}</div></section>` : ''}
 </main><footer${dl('pd_footer')}>متجر شام — راجع «الخبير شاهين» بيانات هذا المنتج<nav><a href="../">الرئيسية</a><a href="index.html">كل المنتجات</a><a href="../tools/">الأدوات</a></nav></footer>${SWITCHER(JSON.stringify(pageLabelTable()).replace(/</g, '\\u003c'))}</body></html>

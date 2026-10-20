@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { contactEmail } from '../config/contact';
 import { ArrowLeft, ArrowRight, ExternalLink, MessageCircle, Package, CreditCard, ShoppingCart, Sparkles, Star } from 'lucide-react';
 import { type StoreProduct } from '../utils/storeCatalog';
 import {
@@ -10,8 +11,13 @@ import type { SupportedLanguage } from '../types/i18n';
 import { loadStoreCatalog, productPageUrl, storeImageSrc } from '../utils/liveStore';
 import { addToCart, useCart } from '../utils/storeCart';
 import { requestDirectPurchase } from '../utils/directPurchase';
+import { requireCustomerLogin } from '../utils/paymentAccess';
+import { SafeImage, photoSources } from './SafeImage';
+import { ProductPayMethods } from '../bank/ProductPayMethods';
 import { useStoreMoney } from '../utils/storeCheckout';
 import { LegalDisclaimer } from './LegalDisclaimer';
+import { ProductReviewsSection } from './ProductReviewsSection';
+import { localLongevity } from '../لغات/longevity';
 
 /** كل نص في صفحة العطر — من src/لغات/storeL10n.ts بلغة الزائر (والإنجليزية كأرضية، لا عربية لغير العربي). */
 function detailLabels(lang: SupportedLanguage) {
@@ -28,14 +34,14 @@ function detailLabels(lang: SupportedLanguage) {
   };
 }
 
-interface Props { productId: number; currentLang: SupportedLanguage; onClose?: () => void; onAddToCart?: (product: StoreProduct) => void }
+interface Props { productId: number; currentLang: SupportedLanguage; onClose?: () => void; onAddToCart?: (product: StoreProduct) => void; signedIn?: boolean; onRequireAuth?: () => void }
 
 /** How close two products are (same family, gender, brand, price band) for «قد يعجبك أيضاً». */
 const closeness = (a: StoreProduct, b: StoreProduct) =>
   b.families.filter((f) => a.families.includes(f)).length * 3 + (a.gender && a.gender === b.gender ? 2 : 0) +
   (a.brand && a.brand === b.brand ? 1 : 0) + (Math.abs(a.price - b.price) <= a.price * 0.3 ? 1 : 0);
 
-export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose, onAddToCart }) => {
+export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose, onAddToCart, signedIn = false, onRequireAuth }) => {
   const L = useMemo(() => detailLabels(currentLang), [currentLang]);
   const money = useStoreMoney(currentLang, L.currency); // the visitor's currency (src/utils/pricing.ts)
   const dir = isRTL(currentLang) ? 'rtl' : 'ltr';
@@ -47,11 +53,11 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
     return () => { live = false; };
   }, []);
   const [qty, setQty] = useState(1);
-  const [broken, setBroken] = useState(false);
+  const [badThumbs, setBadThumbs] = useState<string[]>([]);
   const [photo, setPhoto] = useState(0);
   const cart = useCart();
   const product = products.find((p) => String(p.id) === String(productId));
-  useEffect(() => { setQty(1); setBroken(false); setPhoto(0); window.scrollTo?.({ top: 0 }); }, [productId]);
+  useEffect(() => { setQty(1); setBadThumbs([]); setPhoto(0); window.scrollTo?.({ top: 0 }); }, [productId]);
   const Back = isRTL(currentLang) ? ArrowRight : ArrowLeft;
 
   if (!product && loading) return <div className="min-h-[60vh] flex items-center justify-center text-stone-500" data-testid="product-loading">{L.loading}</div>;
@@ -92,17 +98,17 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
       <div className="max-w-6xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="space-y-2">
           <div className="bg-white rounded-2xl overflow-hidden border">
-            {current && !broken
-              ? <img src={storeImageSrc(current).replace(/w=300&h=300/, 'w=700&h=700')} alt={product.name.ar} onError={() => setBroken(true)} data-testid="product-photo"
-                  className={`w-full aspect-square ${/unsplash\.com/.test(current) ? 'object-cover' : 'object-contain bg-white'}`} />
-              : <div className="w-full aspect-square bg-gradient-to-br from-amber-100 to-stone-100 flex items-center justify-center"><Package className="w-20 h-20 text-amber-400/40" /></div>}
+            {/* #169: the chosen photo, then the product's other photos, then a placeholder — never a blank frame. */}
+            <SafeImage sources={photoSources(current, product.imageUrl, product.images)} alt={product.name.ar} testId="product-photo" loading="eager"
+              resolve={(src) => storeImageSrc(src).replace(/w=300&h=300/, 'w=700&h=700')} className="w-full aspect-square"
+              iconClassName="w-20 h-20 text-amber-400/40" />
           </div>
-          {product.images.length > 1 && (
+          {product.images.filter((src) => !badThumbs.includes(src)).length > 1 && (
             <div className="flex gap-2 overflow-x-auto pb-1" data-testid="product-gallery">
-              {product.images.map((src, i) => (
-                <button type="button" key={src} onClick={() => { setPhoto(i); setBroken(false); }} aria-label={`${L.photo} ${i + 1}`}
+              {product.images.map((src, i) => badThumbs.includes(src) ? null : (
+                <button type="button" key={src} onClick={() => setPhoto(i)} aria-label={`${L.photo} ${i + 1}`}
                   className={`shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 bg-white cursor-pointer ${i === photo ? 'border-amber-600' : 'border-transparent'}`}>
-                  <img src={storeImageSrc(src)} alt="" loading="lazy" className="w-full h-full object-contain" />
+                  <img src={storeImageSrc(src)} alt="" loading="lazy" onError={() => setBadThumbs((b) => (b.includes(src) ? b : [...b, src]))} className="w-full h-full object-contain" />
                 </button>
               ))}
             </div>
@@ -117,6 +123,7 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
             </div>
             <h1 className="text-2xl font-bold text-stone-900">{storeLocalized(product.name, currentLang)}</h1>
             <p className="text-3xl font-bold text-amber-900">{price(product.price)}</p>
+            <ProductPayMethods lang={currentLang} country={money.country} productName={storeLocalized(product.name, currentLang)} productKey={product.sku} />
             {product.inStock ? (
               <div className="flex flex-col gap-2">
                 <div className="flex items-center self-start border rounded-lg" aria-label={L.qty}>
@@ -128,7 +135,7 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
                   <button type="button" onClick={add} data-testid="product-add-to-cart" className="min-w-0 px-2 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-semibold inline-flex items-center justify-center gap-2 cursor-pointer">
                     <ShoppingCart className="w-4 h-4" />{cart[product.sku] ? L.inCart.replace('{n}', storeNumber(cart[product.sku], currentLang)) : L.addToCart}
                   </button>
-                  <button type="button" onClick={() => requestDirectPurchase(product.sku, qty)} data-testid="product-buy-now" className="min-w-0 px-2 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold inline-flex items-center justify-center gap-2 cursor-pointer"><CreditCard className="w-4 h-4 shrink-0" />{L.buyNow}</button>
+                  <button type="button" onClick={() => { if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; } requestDirectPurchase(product.sku, qty); }} data-testid="product-buy-now" className="min-w-0 px-2 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold inline-flex items-center justify-center gap-2 cursor-pointer"><CreditCard className="w-4 h-4 shrink-0" />{signedIn ? L.buyNow : (currentLang === 'ar' ? 'دخول للدفع' : 'Sign in to pay')}</button>
                 </div>
               </div>
             ) : <p className="py-2.5 rounded-xl bg-stone-100 text-stone-500 text-center">{L.outOfStock}</p>}
@@ -160,12 +167,17 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
             {product.category && <><span className="text-stone-500">{L.category}</span><span className="font-medium">{product.category}</span></>}
             {product.sizeMl && <><span className="text-stone-500">{L.size}</span><span className="font-medium">{product.sizeMl} {L.ml}</span></>}
             {product.concentration && <><span className="text-stone-500">{L.concentration}</span><span className="font-medium">{product.concentration}</span></>}
-            {product.longevity && <><span className="text-stone-500">{L.longevity}</span><span className="font-medium">{product.longevity}</span></>}
+            {product.longevity && <><span className="text-stone-500">{L.longevity}</span><span className="font-medium">{localLongevity(product.longevity, currentLang)}</span></>}
             <span className="text-stone-500">{L.sku}</span><span className="font-medium font-mono text-xs">{product.sku}</span>
             <a href={productPageUrl(product.slug)} target="_blank" rel="noopener" data-testid="product-page-link"
               className="col-span-2 mt-1 inline-flex items-center gap-1.5 text-amber-700 hover:underline text-xs"><ExternalLink className="w-3.5 h-3.5" />{L.page}</a>
           </div>
         </div>
+      </div>
+
+      {/* «آراء العملاء» — real reviews by members of «مجتمع شام» (no sample reviews) */}
+      <div className="max-w-6xl mx-auto px-4 pb-6">
+        <ProductReviewsSection sku={product.sku} currentLang={currentLang} />
       </div>
 
       {/* L-05 UN1266 + L-17 VAT Disclaimer */}
@@ -178,7 +190,7 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
         {(product as any).supplierName && (
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[10px] leading-relaxed text-amber-900 flex gap-2">
             <span>©</span>
-            <span>{currentLang === 'ar' ? `مصدر: ${(product as any).supplierName} — مستورد بترخيص. للاعتراض/DMCA: privacy@sham-perfume.com (رد 48س).` : `Source: ${(product as any).supplierName} — imported under license. DMCA: privacy@sham-perfume.com (48h).`}</span>
+            <span>{currentLang === 'ar' ? `مصدر: ${(product as any).supplierName} — مستورد بترخيص. للاعتراض/DMCA: ${contactEmail('legal')} (رد 48س).` : `Source: ${(product as any).supplierName} — imported under license. DMCA: ${contactEmail('legal')} (48h).`}</span>
           </div>
         )}
       </div>
@@ -189,7 +201,7 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {related.map((p) => (
               <button type="button" key={p.sku} onClick={() => { window.location.hash = `#product=${p.id}`; }} className="bg-white rounded-2xl border overflow-hidden text-start hover:shadow-md transition cursor-pointer">
-                {p.imageUrl ? <img src={storeImageSrc(p.imageUrl)} alt={p.name.ar} loading="lazy" className={`w-full aspect-square ${/unsplash\.com/.test(p.imageUrl) ? 'object-cover' : 'object-contain bg-white'}`} /> : <div className="w-full aspect-square bg-amber-50" />}
+                <SafeImage sources={photoSources(p.imageUrl, p.images)} alt={p.name.ar} className="w-full aspect-square" />
                 <div className="p-3">
                   <p className="text-sm font-semibold line-clamp-2">{storeLocalized(p.name, currentLang)}</p>
                   <p className="text-sm font-bold text-amber-900 mt-1">{price(p.price)}</p>

@@ -78,7 +78,7 @@ export const isTimeBound = (question: string) =>
   NEWS_OR_NOW.test(question) || NEWS_EN.test(question) || YEAR.test(question) || ((PRICE.test(question) || PRICE_EN.test(question)) && !hasNumber(question));
 export const isPersonal = (question: string) => PERSONAL.test(normalizeQuestion(question));
 
-const VENDOR = /\b(gemini|openai|chat\s?gpt|gpt-?\d|claude|anthropic|deepseek|openrouter|llama|mistral)\b/i;
+const VENDOR = /\b(gemini|openai|chat\s?gpt|gpt-?\d|claude|anthropic|deepseek|openrouter|perplexity|llama|mistral)\b/i;
 /** An answer worth remembering: real text, no AI vendor names, no raw code values, not an apology. */
 export function worthRemembering(question: string, answer: string): boolean {
   const q = question.trim(); const a = answer.trim();

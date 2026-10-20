@@ -5,12 +5,12 @@ name: Shaheen background agent (Manus — visitor tour, reviewer, languages and 
 # of the site's languages in rotation) and the design (desktop + phone). The report is kept in
 # src/data/live/manus-audit.json for the admin team; visitors never see it or the agent's name.
 # Three missions, one per run (scripts/shaheen-manus/missions.ts):
-#   tour   — «جولة الزائر وتحضير الاجتماع»: daily as soon as the scheduled pre-meeting check (04:30 UTC)
-#            finishes (fallback 05:20): a phone shopping journey up to the payment page (never paying), then
+#   tour   — «جولة الزائر وتحضير الاجتماع»: daily as soon as the scheduled pre-meeting check (06:10 UTC)
+#            finishes (fallback 07:00): a phone shopping journey up to the payment page (never paying), then
 #            «المستشار الميداني» looks at the check's problems on the live site and writes his opinion and
-#            proposals — a sixth seat at the 06:30 meeting → src/data/live/manus-missions.json
-#   design — languages & design audit: Wednesdays and Saturdays 06:15 UTC → src/data/live/manus-audit.json
-#   verify — «المراجع الخارجي»: Mondays and Thursdays 08:00 UTC, the council tasks marked done, checked live
+#            proposals — a sixth seat at the 08:15 meeting → src/data/live/manus-missions.json
+#   design — languages & design audit: Wednesdays and Saturdays 05:15 UTC (before the pre-meeting check reads it) → src/data/live/manus-audit.json
+#   verify — «المراجع الخارجي»: Mondays and Thursdays 09:30 UTC (after the meeting), the council tasks marked done, checked live
 # Pushes only rehearse (briefs built and checked, no task, no credit).
 # Settings (repository variables, optional): MANUS_PROFILE (lite | standard | max, default lite = fewest
 # credits), MANUS_WAIT_MIN (default 30) and MANUS_MONTHLY_CREDITS (shared monthly budget, default 2000; the
@@ -19,9 +19,9 @@ name: Shaheen background agent (Manus — visitor tour, reviewer, languages and 
 on:
   schedule:
     # Keep these three strings identical to SCHEDULES in scripts/shaheen-manus/missions.ts.
-    - cron: '20 5 * * *'
-    - cron: '15 6 * * 3,6'
-    - cron: '0 8 * * 1,4'
+    - cron: '0 7 * * *'
+    - cron: '15 5 * * 3,6'
+    - cron: '30 9 * * 1,4'
   # The daily tour follows the scheduled pre-meeting check, so it reads this morning's results.
   workflow_run:
     workflows: ['Shaheen pre-meeting full check']

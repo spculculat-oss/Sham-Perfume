@@ -1,0 +1,20 @@
+{
+ "ui": {
+  "nav_ai_master_short": "Shahin IA",
+  "nav_alcohol_short": "Alcohol",
+  "nav_calc_short": "Fórmula",
+  "nav_costing_short": "Costos",
+  "nav_explore": "Explorar",
+  "nav_explore_short": "Explorar",
+  "nav_guide_short": "Guía",
+  "nav_home_short": "Inicio",
+  "nav_library_short": "Biblioteca",
+  "nav_maceration_short": "Maceración",
+  "nav_news_short": "Noticias",
+  "nav_pyramid_short": "Pirámide",
+  "nav_raw_materials_short": "Materias primas",
+  "nav_tools": "Herramientas",
+  "nav_tools_short": "Herramientas",
+  "nav_world_perfumes_short": "Icónicos"
+ }
+}

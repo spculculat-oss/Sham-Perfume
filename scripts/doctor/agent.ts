@@ -10,6 +10,7 @@
  */
 import { execFile } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { COOLDOWN_MIN, canFix, cooled, decide, remember, type Action, type Capabilities, type DoctorState, type FixRecord } from './playbook';
 import { runProbes, type Finding, type ProbeContext } from './probes';
 import { ISSUE_LABEL, ISSUE_TITLE, eventComment, readState, renderBody, type ActionLog } from './report';
@@ -311,11 +312,46 @@ async function revert(action: Action, x: ExecContext) {
  * paused until the provider says it renews, the pause is saved (src/data/live/ai-quota.json) so the next run
  * does not waste requests, and the job continues where it stopped once the quota is back.
  */
-export interface QuotaFile { updatedAt: string; engines: Record<string, { pausedUntil: string; reason: string; detail?: string }> }
+export interface QuotaFile {
+  updatedAt: string;
+  engines: Record<string, { pausedUntil: string; reason: string; detail?: string; key?: string }>;
+  /** Requests the bots made today on the engines with a free DAILY quota (the day starts at the 08:05 UTC renewal). */
+  used?: { day: string; counts: Record<string, number> };
+}
+
+/**
+ * «الشات أولاً»: the free daily quota (Gemini) is shared with the visitors' chat on the site. The bots take at
+ * most this many requests a day, then leave the rest to the chat until the renewal (SHAHEEN_BOT_DAILY_GEMINI;
+ * 0 = the bots never use it, -1 = no limit).
+ */
+export const BOT_DAILY_DEFAULT: Record<string, number> = { gemini: 10 };
+export function botDailyCap(env: Env, id: string): number {
+  const raw = env[`SHAHEEN_BOT_DAILY_${id.toUpperCase()}`]?.trim();
+  const n = raw === undefined || raw === '' ? BOT_DAILY_DEFAULT[id] : Number(raw);
+  if (n === undefined || !Number.isFinite(n) || n < 0) return Infinity;
+  return Math.floor(n);
+}
+/** The quota day: from one 08:05 UTC renewal to the next. */
+export const quotaDay = (now: number) => new Date(now - (8 * 60 + 5) * 60_000).toISOString().slice(0, 10);
+
+/** The secrets each engine reads: a pause is tied to the key it happened with. */
+const ENGINE_SECRETS: Record<string, string[]> = {
+  gemini: ['GEMINI_API_KEY'], openai: ['OPENAI_API_KEY'], claude: ['ANTHROPIC_API_KEY'], deepseek: ['DEEPSEEK_API_KEY'],
+  openrouter: ['OPENROUTER_API_KEY'], perplexity: ['PERPLEXITY_API_KEY'], self_hosted: ['SHAM_LLM_BASE_URL', 'SHAM_LLM_API_KEY', 'AI_GATEWAY_API_KEY'],
+};
+/**
+ * A short one-way fingerprint of the engine's key (8 hex characters of a SHA-256 — the key itself can never be
+ * recovered from it). When the owner puts a new key in GitHub, the fingerprint changes and the pause ends at once.
+ */
+export function keyFingerprint(env: Env, id: string): string {
+  const parts = (ENGINE_SECRETS[id] || []).map((name) => (env[name] || '').trim());
+  if (!parts.some(Boolean)) return '';
+  return createHash('sha256').update(parts.join('\u0000')).digest('hex').slice(0, 8);
+}
 /** The engines that have a key here, in the order the bots use them. */
 export async function configuredEngines(env: Env): Promise<string[]> {
   const { engineStatuses } = await import('../../server/core/engines');
-  return ['gemini', 'deepseek', 'openai', 'claude', 'openrouter', 'self_hosted'].filter((id) => engineStatuses(env).find((e) => e.id === id)?.configured);
+  return ['gemini', 'perplexity', 'deepseek', 'openai', 'claude', 'openrouter', 'self_hosted'].filter((id) => engineStatuses(env).find((e) => e.id === id)?.configured);
 }
 export class QuotaExhaustedError extends Error {
   constructor(public resumeAt: number) { super(`AI quota exhausted until ${new Date(resumeAt).toISOString()}`); this.name = 'QuotaExhaustedError'; }
@@ -323,6 +359,8 @@ export class QuotaExhaustedError extends Error {
 
 /** When a refused engine can be tried again: the provider's «retry in Ns», else the next daily/minute window. */
 export function pauseUntil(status: number, failure: string, detail: string, now: number): number | undefined {
+  // A rejected key is set aside for an hour (a new key ends the pause at once — see keyFingerprint).
+  if (failure === 'invalid_key') return now + 60 * 60_000;
   if (status !== 429 && status !== 402 && failure !== 'no_credit' && failure !== 'rate_limited') return undefined;
   const retry = detail.match(/retry in (\d+(?:\.\d+)?)s/i);
   if (retry) return now + Math.max(30, Math.ceil(Number(retry[1]))) * 1000 + 30_000;
@@ -342,12 +380,26 @@ export function quotaBook(path?: URL, now: () => number = Date.now) {
   }
   return {
     file: () => file,
-    pausedUntil: (id: string) => { const t = Date.parse(file.engines[id]?.pausedUntil || ''); return Number.isFinite(t) && t > now() ? t : 0; },
-    pause(id: string, until: number, reason: string, detail?: string) {
-      file.engines[id] = { pausedUntil: new Date(until).toISOString(), reason, ...(detail ? { detail: detail.slice(0, 200) } : {}) };
+    /** `key`: the engine's current key fingerprint — a pause made with another key no longer applies. */
+    pausedUntil: (id: string, key?: string) => {
+      const entry = file.engines[id];
+      if (key && entry?.key && entry.key !== key) return 0;
+      const t = Date.parse(entry?.pausedUntil || ''); return Number.isFinite(t) && t > now() ? t : 0;
+    },
+    pause(id: string, until: number, reason: string, detail?: string, key?: string) {
+      file.engines[id] = { pausedUntil: new Date(until).toISOString(), reason, ...(detail ? { detail: detail.slice(0, 200) } : {}), ...(key ? { key } : {}) };
       file.updatedAt = new Date(now()).toISOString();
     },
     clear(id: string) { if (file.engines[id]) { delete file.engines[id]; file.updatedAt = new Date(now()).toISOString(); } },
+    /** Counts one bot request on a daily-quota engine; returns today's total. */
+    use(id: string): number {
+      const day = quotaDay(now());
+      if (file.used?.day !== day) file.used = { day, counts: {} };
+      file.used.counts[id] = (file.used.counts[id] || 0) + 1;
+      file.updatedAt = new Date(now()).toISOString();
+      return file.used.counts[id];
+    },
+    usedToday: (id: string) => (file.used?.day === quotaDay(now()) ? file.used.counts[id] || 0 : 0),
     save() { if (path) writeFileSync(path, `${JSON.stringify(file, null, 1)}\n`); },
   };
 }
@@ -360,7 +412,7 @@ export type QuotaBook = ReturnType<typeof quotaBook>;
  */
 export async function makeAsk(env: Env, options: { quota?: QuotaBook; memory?: AnswerBook; maxWaitMs?: number; sleep?: (ms: number) => Promise<void>; request?: typeof fetch; prefer?: string; onEngine?: (id: string) => void } = {}): Promise<DoctorOptions['ask']> {
   const { callEngine, engineStatuses } = await import('../../server/core/engines');
-  const order = ['gemini', 'deepseek', 'openai', 'claude', 'openrouter', 'self_hosted'] as const;
+  const order = ['gemini', 'perplexity', 'deepseek', 'openai', 'claude', 'openrouter', 'self_hosted'] as const;
   const configured = order.filter((id) => engineStatuses(env).find((e) => e.id === id)?.configured);
   const ready = options.prefer && configured.includes(options.prefer as typeof configured[number]) ? [options.prefer as typeof configured[number], ...configured.filter((id) => id !== options.prefer)] : configured;
   const memory = options.memory;
@@ -373,7 +425,14 @@ export async function makeAsk(env: Env, options: { quota?: QuotaBook; memory?: A
     const known = memory?.get(system, prompt);
     if (known) return known;
     for (const id of ready) {
-      if (quota?.pausedUntil(id)) continue;
+      if (quota?.pausedUntil(id, keyFingerprint(env, id))) continue;
+      // «الشات أولاً»: past the bots' daily share, the free quota stays for the visitors until the renewal.
+      const cap = botDailyCap(env, id);
+      if (quota && cap !== Infinity && quota.usedToday(id) >= cap) {
+        quota.pause(id, pauseUntil(429, 'no_credit', 'daily', Date.now())!, 'chat_reserve', `bots used ${quota.usedToday(id)}/${cap} today`, keyFingerprint(env, id));
+        continue;
+      }
+      if (quota && cap !== Infinity) quota.use(id);
       let refused: { until: number; reason: string; detail: string } | undefined;
       const reply = await callEngine(id, system, [{ role: 'user', text: prompt }], {
         env, fetch: options.request, signal: AbortSignal.timeout(180_000), temperature: 0.2, maxTokens: 16_000, maxChars: 200_000,
@@ -383,10 +442,10 @@ export async function makeAsk(env: Env, options: { quota?: QuotaBook; memory?: A
         },
       }).catch(() => undefined);
       if (reply?.trim()) { quota?.clear(id); memory?.put(system, prompt, reply); options.onEngine?.(id); return reply; }
-      if (refused && quota) quota.pause(id, refused.until, refused.reason, refused.detail);
+      if (refused && quota) quota.pause(id, refused.until, refused.reason, refused.detail, keyFingerprint(env, id));
     }
     if (quota && ready.length) {
-      const paused = ready.map((id) => quota.pausedUntil(id)).filter(Boolean);
+      const paused = ready.map((id) => quota.pausedUntil(id, keyFingerprint(env, id))).filter(Boolean);
       if (paused.length === ready.length) {
         const resumeAt = Math.min(...paused);
         // A per-minute limit is waited out inside the run; a daily one ends the run (the next run continues).

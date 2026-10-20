@@ -11,7 +11,7 @@ import { findHandoffs, isPrecheckFile, nextMeeting, pressureOf, runPrecheck } fr
 import { buildBriefing, cairoDate, emptyCouncil, recordDelegation, secretaryRoutine, selfMinutes, unreviewed, type Meeting } from '../scripts/shaheen-council/council';
 import { orgDoc } from '../scripts/shaheen-council/org-doc';
 
-const NOW = Date.parse('2026-10-18T04:30:00Z');
+const NOW = Date.parse('2026-10-18T06:10:00Z');
 const ago = (h: number) => new Date(NOW - h * 3600_000).toISOString();
 
 test('every robot (workflow) and every AI tool is placed under Shaheen — a new one must be registered', () => {
@@ -72,7 +72,7 @@ test('the full check: every bot gets a status with its problems, fixes and devel
   const r = runPrecheck(reports, runs, NOW);
   assert.ok(isPrecheckFile(r));
   assert.equal(r.bots.length, BOTS.length);
-  assert.equal(r.meetingAt, '2026-10-18T06:30:00.000Z', 'two hours before the meeting');
+  assert.equal(r.meetingAt, '2026-10-18T08:15:00.000Z', 'two hours before the meeting');
   const by = (id: string) => r.bots.find((b) => b.id === id)!;
   assert.equal(by('live_check').status, 'fail');
   assert.ok(by('live_check').fixes.length);
@@ -95,7 +95,8 @@ test('the full check: every bot gets a status with its problems, fixes and devel
   assert.equal(r.counts.ok + r.counts.warn + r.counts.fail + r.counts.idle, BOTS.length);
   assert.ok(r.health > 0 && r.health < 100);
   assert.match(r.summaryAr, /الفحص الشامل/);
-  assert.equal(nextMeeting(Date.parse('2026-10-18T07:00:00Z')), '2026-10-19T06:30:00.000Z');
+  assert.equal(nextMeeting(Date.parse('2026-10-18T09:00:00Z')), '2026-10-19T08:15:00.000Z');
+  assert.equal(nextMeeting(Date.parse('2026-10-18T07:00:00Z')), '2026-10-18T08:15:00.000Z', 'after the quota renewal, same morning');
 });
 
 test('help requests between the tools, and the secretary reruns a late robot (safe workflows only, once)', () => {

@@ -9,7 +9,7 @@
  * JSON files is the workflow's job (scripts/ci/publish.mjs), never this script's.
  *
  * Env: SEO_SITE_URL (defaults to the main site on GitHub Pages), SEO_SUBMIT=1, SEO_ENGINE_ORDER
- * (comma-separated ids, default gemini,deepseek,openai,claude,openrouter,self_hosted) and the engine
+ * (comma-separated ids, default gemini,perplexity,deepseek,openai,claude,openrouter,self_hosted) and the engine
  * API keys the site already uses. With no key the cycle still audits, studies and plans.
  */
 import { readFileSync, renameSync, writeFileSync, mkdirSync } from 'node:fs';
@@ -42,7 +42,7 @@ const writeJson = (url: URL, value: unknown) => {
   return true;
 };
 
-const DEFAULT_ORDER = 'gemini,deepseek,openai,claude,openrouter,self_hosted';
+const DEFAULT_ORDER = 'gemini,perplexity,deepseek,openai,claude,openrouter,self_hosted';
 const wanted = (env.SEO_ENGINE_ORDER || DEFAULT_ORDER).split(',').map((id) => id.trim()).filter(Boolean);
 const configured = new Set(engineStatuses(env).filter((status) => status.configured && status.id !== 'sham_local').map((status) => status.id));
 const order = wanted.filter((id): id is ModelEngineId => configured.has(id as ModelEngineId)) as ModelEngineId[];

@@ -8,6 +8,7 @@
  * opted_out / revoked (the store withdrew: removal within 48 h, C-07). Only «approved» lets the importer read
  * that store (scripts/shaheen-import/guard.ts).
  */
+import { mailProvider } from '../core/mailer';
 import { createHash, randomBytes, randomInt, timingSafeEqual } from 'node:crypto';
 import type { Sql, Row } from '../community/db';
 import type { Vault } from '../community/crypto';
@@ -58,7 +59,7 @@ export class ContractError extends Error {
 const sha256 = (text: string) => createHash('sha256').update(text, 'utf8').digest('hex');
 const now = () => new Date().toISOString();
 const iso = (v: unknown) => (v ? new Date(v as string).toISOString() : undefined);
-export const emailConfigured = (env: Env) => Boolean(env.RESEND_API_KEY?.trim() || env.SENDGRID_API_KEY?.trim() || env.SHAM_WEBHOOK_URL?.trim());
+export const emailConfigured = (env: Env) => Boolean(mailProvider(env));
 const EMAIL = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
 const clean = (v: unknown, max: number) => String(v ?? '').replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max);
 const mask = (email: string) => email.replace(/^(.).*?(.?)@(.).*?(\.[^.]+)$/, (_m, a, b, c, d) => `${a}•••${b}@${c}•••${d}`);

@@ -1,3 +1,5 @@
+import { BUNDLED_FX } from "../utils/pricing";
+
 export interface WorldCurrency {
   code: string;
   nameAr: string;
@@ -16,15 +18,16 @@ export function findCurrencyByCode(code: string): WorldCurrency {
   const c = (code || "").toUpperCase().trim();
   return (
     WORLD_CURRENCIES.find((item) => item.code === c) ||
-    WORLD_CURRENCIES.find((item) => item.code === "SAR") || {
+    // An unknown code stays itself (never another country's riyal); its rate comes from the live table.
+    (!c && WORLD_CURRENCIES.find((item) => item.code === "USD")) || {
       code: c || "USD",
       nameAr: c,
       nameEn: c,
       symbolAr: c,
       symbolEn: c,
       flag: "🌐",
-      region: "arab",
-      rateToUSD: 1,
+      region: "world",
+      rateToUSD: Number((BUNDLED_FX.rates as Record<string, number>)[c]) || 1,
     }
   );
 }

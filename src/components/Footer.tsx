@@ -1,4 +1,5 @@
 import React from 'react';
+import { contactEmail, contactMailto } from '../config/contact';
 import { Newspaper, Sparkles } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
 import { LText, makeT, fmt } from '../لغات/localize';
@@ -223,15 +224,15 @@ export const Footer: React.FC<FooterProps> = ({
             <div className="mt-2 flex flex-wrap gap-2 text-[10px] items-center">
               <button onClick={() => window.dispatchEvent(new CustomEvent("open-cookie-settings"))} className="text-stone-400 hover:text-white underline cursor-pointer">🍪 Cookie Settings</button>
               <span className="text-stone-600">·</span>
-              <span className="text-stone-500">DPO: dpo@sham-perfume.com</span>
+              <a href={contactMailto('dpo', currentLang)} dir="ltr" className="text-stone-500 hover:text-amber-400 underline">{currentLang === 'ar' ? 'حماية البيانات' : 'Data protection'}: {contactEmail('dpo')}</a>
             </div>
           </div>
           <div className="md:col-span-4 bg-stone-900 rounded-xl border border-stone-800 p-3 space-y-1">
             <div className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">⚖️ {currentLang === 'ar' ? 'معلومات قانونية' : 'Legal Info'}</div>
             <div className="text-[11px] text-stone-400 leading-relaxed">
               {currentLang === 'ar'
-                ? 'السجل التجاري: [يُعبأ] | الرقم الضريبي: [يُعبأ] | privacy@sham-perfume.com'
-                : 'CR: [fill] | VAT: [fill] | privacy@sham-perfume.com'}
+                ? `السجل التجاري: [يُعبأ] | الرقم الضريبي: [يُعبأ] | ${contactEmail('privacy')}`
+                : `CR: [fill] | VAT: [fill] | ${contactEmail('privacy')}`}
             </div>
             <div className="text-[10px] text-stone-500">
               {currentLang === 'ar'

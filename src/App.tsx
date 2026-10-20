@@ -46,12 +46,15 @@ import { ExtractedAIPerfume } from './utils/aiFormulaExtractor';
 import type { ShaheenTool, ToolLink } from './utils/shaheenTools';
 import { SupportedLanguage, SUPPORTED_LANGUAGES } from './types/i18n';
 import { getInitialLanguage, saveLanguage } from './لغات/i18n';
+import { loadAiPack } from './لغات/aiPackLoader';
 import { LanguageProvider } from './context/LanguageContext';
 import { LText, makeT, fmt, pickArEn } from './لغات/localize';
 import {
   UserEnvironmentProfile,
   getInitialUserEnvironment,
+  alignEnvironmentToCountry,
 } from './utils/environmentAdapter';
+import { setStoreCountry, useStoreCountry } from './utils/storeCheckout';
 import { loadDetailedAddress } from './utils/addressStorage';
 import {
   detectEntryLanguageAsync,
@@ -62,8 +65,8 @@ import {
 import { UserProfile } from './types/auth';
 import { getCurrentUserSession, logoutUser } from './utils/authStorage';
 import { decodeFormulaPayload } from './utils/formulaShare';
-import { X, BookmarkPlus } from 'lucide-react';
-import { syncRecipeToAccount, trackLearning } from './community/sync';
+import { Check, X, BookmarkPlus } from 'lucide-react';
+import { LOAD_FORMULA_EVENT, syncRecipeToAccount, trackLearning, type SharedFormula } from './community/sync';
 import { getSessionToken } from './community/api';
 import { profileFromMember, saveCurrentUserProfile } from './utils/authStorage';
 import { useSessionPick } from './community/session';
@@ -259,6 +262,12 @@ export default function App() {
       window.history.back();
     }
   };
+
+  useEffect(() => {
+    const open = () => setIsAuthModalOpen(true);
+    window.addEventListener('sham-require-auth', open);
+    return () => window.removeEventListener('sham-require-auth', open);
+  }, []);
 
   const handleOpenAuthModal = () => {
     activeModalsRef.current.auth = true;
@@ -493,8 +502,11 @@ export default function App() {
   const L = makeT(currentLang, S);
 
   // Regional Environment & Climate Adaptation State
+  // One visitor country for the whole site (#169): the store's country (their choice → edge → time zone)
+  // drives the lab environment too, so the header, calculators, store, product page and cart share a currency.
+  const [storeCountry] = useStoreCountry();
   const [currentEnvironment, setCurrentEnvironment] = useState<UserEnvironmentProfile>(() =>
-    getInitialUserEnvironment()
+    alignEnvironmentToCountry(getInitialUserEnvironment(), storeCountry)
   );
 
   // User Profile & Authentication State
@@ -508,6 +520,10 @@ export default function App() {
   const [detailedAddress, setDetailedAddress] = useState<UserDetailedAddress>(() =>
     loadDetailedAddress()
   );
+
+  useEffect(() => {
+    setCurrentEnvironment((prev) => alignEnvironmentToCountry(prev, storeCountry));
+  }, [storeCountry]);
 
   // Check and load shared formula from URL hash or query params
   useEffect(() => {
@@ -577,6 +593,14 @@ export default function App() {
     saveLanguage(currentLang);
   }, [currentLang]);
 
+  // «المترجم الذكي»: the language agent's translations for this language load on demand, then one re-render.
+  const [, setAiPackTick] = useState(0);
+  useEffect(() => {
+    let live = true;
+    void loadAiPack(currentLang).then((fresh) => { if (fresh && live) setAiPackTick((n) => n + 1); });
+    return () => { live = false; };
+  }, [currentLang]);
+
   // Client manually requested a specific language
   const handleSelectLanguage = (lang: SupportedLanguage) => {
     try {
@@ -598,6 +622,7 @@ export default function App() {
 
   const handleUpdateEnvironment = (profile: UserEnvironmentProfile) => {
     setCurrentEnvironment(profile);
+    if (profile.countryCode !== storeCountry) setStoreCountry(profile.countryCode, true); // the store follows the visitor's pick
     setFormulation((prev) => ({
       ...prev,
       concentrationPercent: profile.recommendedConcentrationPercent,
@@ -616,7 +641,7 @@ export default function App() {
   const handleAuthSuccess = (user: UserProfile) => {
     setCurrentUser(user);
     if (user.regionId && user.regionId !== currentEnvironment.regionId) {
-      handleUpdateEnvironment(getInitialUserEnvironment());
+      handleUpdateEnvironment(alignEnvironmentToCountry(getInitialUserEnvironment(), storeCountry));
     }
     showToast(fmt(L('toast_welcome_tpl'), { name: user.name }));
   };
@@ -804,6 +829,23 @@ export default function App() {
     showToast(fmt(L('toast_loaded_lab_tpl'), { title: formula.title }));
   };
 
+  // «استخدم التركيبة دي» from «مجتمع شام» (a recipe card in a post or a profile): sanitised in community/sync.ts.
+  const loadSharedRef = React.useRef<(f: SharedFormula) => void>(() => {});
+  loadSharedRef.current = (f: SharedFormula) => {
+    setFormulation((prev) => ({ ...prev, ...f.formulation }));
+    setFormulaTitle(f.title);
+    setFormulaNotes(f.notes);
+    if (f.macerationDays !== undefined) setMacerationDays(f.macerationDays);
+    if (f.pyramidNotes.length) setPyramidNotes(f.pyramidNotes);
+    navigateToTab('concentration');
+    showToast(fmt(L('toast_loaded_lab_tpl'), { title: f.title }));
+  };
+  useEffect(() => {
+    const onLoad = (e: Event) => { const f = (e as CustomEvent<SharedFormula>).detail; if (f) loadSharedRef.current(f); };
+    window.addEventListener(LOAD_FORMULA_EVENT, onLoad);
+    return () => window.removeEventListener(LOAD_FORMULA_EVENT, onLoad);
+  }, []);
+
   const handleLoadWorldFormula = (recipe: WorldPerfumeRecipe) => {
     setFormulation((prev) => ({
       ...prev,
@@ -900,11 +942,15 @@ export default function App() {
           onOpenProfilePage={() => currentUser && (getSessionToken() ? navigateToTab('community/me') : handleOpenProfilePage(currentUser))}
         />
 
-        {/* Store Promo Hub: promotional banner with store deals */}
-        <TopPromoHub
-          currentLang={currentLang}
-          onViewStore={() => navigateToTab('store')}
-        />
+        {/* Store Promo Hub: promotional banner with store deals.
+            Not on «مجتمع شام»: a social feed opens straight on the feed (the banner took a whole screen there,
+            two on phones, and fetched the catalogue + dozens of product photos nobody was looking at). */}
+        {!(activeTab === 'community' || activeTab.startsWith('community/')) && (
+          <TopPromoHub
+            currentLang={currentLang}
+            onViewStore={() => navigateToTab('store')}
+          />
+        )}
 
         {/* Hero Showcase (only shown when in concentration tab or home) */}
         {activeTab === 'concentration' && (
@@ -1105,6 +1151,8 @@ export default function App() {
             onClose={() => navigateToTab('home')}
             currentLang={currentLang}
             retailerId={currentUser?.id}
+            signedIn={Boolean(currentUser)}
+            onRequireAuth={handleOpenAuthModal}
             shaheenQuery={storeQuery}
           />
         )}
@@ -1113,6 +1161,8 @@ export default function App() {
           <ProductDetail
             productId={productId}
             currentLang={currentLang}
+            signedIn={Boolean(currentUser)}
+            onRequireAuth={handleOpenAuthModal}
             onClose={() => navigateToTab('store')}
           />
         )}

@@ -7,13 +7,13 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { SITE } from '../src/seo/site';
 import { mergeCatalog, type RawProduct, type StoreCatalogFile } from '../src/utils/storeCatalog';
-import { relatedTo, renderIndexPage, renderProductPage } from './product-pages/render';
+import { moneyTable, relatedTo, renderIndexPage, renderProductPage } from './product-pages/render';
 
 const [outArg = 'dist', siteArg] = process.argv.slice(2);
 const env = process.env;
 // The public address used in canonical links and share previews: the main site (GitHub Pages) for both
 // builds, so the Vercel engine's copy never competes with it in search results.
-const siteUrl = (siteArg || env.SEO_SITE_URL || (outArg.startsWith('docs') ? env.PAGES_SITE_URL : '') || SITE.url).replace(/\/?$/, '/');
+const siteUrl = (siteArg || env.SEO_SITE_URL || (outArg.startsWith('pages-dist') ? env.PAGES_SITE_URL : '') || SITE.url).replace(/\/?$/, '/');
 const root = new URL('../', import.meta.url);
 const json = <T,>(path: string): T => JSON.parse(readFileSync(new URL(path, root), 'utf8')) as T;
 const products = json<{ products?: RawProduct[] }>('src/data/products.json').products || [];
@@ -25,4 +25,5 @@ const out = new URL(`${outArg.replace(/\/?$/, '/')}p/`, root);
 mkdirSync(out, { recursive: true });
 for (const p of list) writeFileSync(new URL(`${p.slug}.html`, out), renderProductPage(p, relatedTo(p, list), { siteUrl }));
 writeFileSync(new URL('index.html', out), renderIndexPage(list, { siteUrl }));
+writeFileSync(new URL('money.json', out), JSON.stringify(moneyTable())); // the visitor's currency on every page (#169)
 console.log(`Product pages: ${list.length} pages + index in ${outArg}/p/ (${siteUrl})`);

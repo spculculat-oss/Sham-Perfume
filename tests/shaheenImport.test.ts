@@ -192,6 +192,11 @@ test('every product gets a standalone page with share preview, schema.org price 
   assert.match(html, /og:image" content="https:\/\/www\.shamperfume\.com\/cdn\/large\//);
   assert.match(html, /href="\.\.\/#product=52"/);
   assert.match(html, /الهرم العطري/);
+  // Labels are real pills, never their own markup printed as text (seen live on every product page).
+  assert.match(html, /<div class="chips"><span class="chip" data-l="[a-z_]+">[^<]+<\/span>/);
+  assert.doesNotMatch(html, /&lt;span/);
+  // One description (the switcher shows the English one), not the Arabic and English stacked twice.
+  assert.equal((html.match(/<h2 data-l="pd_description">[\s\S]*?<\/section>/)?.[0].match(/<p\b/g) || []).length, 1);
   assert.doesNotMatch(html, /shamperfume\.com\/perfumes|Sham perfume|MYR|supplier/i, 'visitors never see the supplier or its price');
   const other = renderProductPage(list[1], [], { siteUrl: 'https://x.example/' });
   assert.match(other, /Amber &lt;Night&gt;/);

@@ -3,6 +3,7 @@
  *   /api/assistant/*  public visitor API (rate limited)
  *   /api/admin/*      management API (Bearer SHAM_ADMIN_TOKEN, constant-time compare)
  */
+import { mailProvider, mailProviderLabel } from './mailer';
 import express from 'express';
 import { FinanceService } from '../finance/service';
 import { createFinanceRouter } from '../finance/router';
@@ -12,7 +13,8 @@ import { ShaheenMemory } from './memory';
 import { AssistantError, Orchestrator, publicEngine, validateChatInput, type ChatOutput, type StreamEvent } from './orchestrator';
 import { createNotifier } from './notify';
 import { runAdminAgent } from './adminAgent';
-import { createStore, type Store } from './store';
+import { createLedgerStore, createStore, type Store } from './store';
+import { BankService } from '../finance/bank';
 import { RateLimiter, clientKey } from './rateLimit';
 import { createSeoService } from '../seo/service';
 import { probeEngines } from '../shaheen';
@@ -56,7 +58,9 @@ export function createShamCore(options: CoreOptions = {}) {
     store = createStore({ SHAM_STORE: 'memory' });
   }
   const repo = new Repository(store, env);
-  const finance = new FinanceService(store, env, { fetch: options.fetch });
+  // «بنك شام»: the ledger reuses the community database when the rest of Core runs on temporary memory.
+  const finance = new FinanceService(options.store ? store : createLedgerStore(env, store), env, { fetch: options.fetch });
+  const bank = new BankService(finance, env, options.fetch || fetch);
   // Shared with the Shaheen chat router: outcomes + capacity parts, read by the maintenance agent.
   const runtime = options.runtime || new ShaheenRuntime(runningVersion(env));
   const orchestrator = new Orchestrator(repo, { env, fetch: options.fetch });
@@ -228,7 +232,7 @@ export function createShamCore(options: CoreOptions = {}) {
     next();
   });
 
-  admin.use('/finance', createFinanceRouter(finance));
+  admin.use('/finance', createFinanceRouter(finance, bank));
 
   // What this server learned (questions + answers, no visitor data): merged into
   // src/data/live/shaheen-memory.json by scripts/shaheen-memory every two hours.
@@ -266,8 +270,8 @@ export function createShamCore(options: CoreOptions = {}) {
       },
       notifications: { configured: notifier.configured },
       emailNotifications: {
-        configured: Boolean(env.RESEND_API_KEY || env.SENDGRID_API_KEY || env.SHAM_WEBHOOK_URL),
-        provider: env.RESEND_API_KEY ? 'Resend' : env.SENDGRID_API_KEY ? 'SendGrid' : env.SHAM_WEBHOOK_URL ? 'Webhook' : 'Simulator',
+        configured: Boolean(mailProvider(env)),
+        provider: mailProviderLabel(env),
         sentCount: getEmailHistory().length,
       },
       byStatus, byType, intents, engineUsage: engines, pipelineValue: revenue,
@@ -481,6 +485,8 @@ export function createShamCore(options: CoreOptions = {}) {
 
   const settingsView = async () => ({
     item: await repo.settings(), engines: engineStatuses(env),
+    // «صحة المحركات»: parked engines (reason + return time) as Shaheen's chat sees them on this instance.
+    health: runtime.health.snapshot(),
     shaheen: { source: await repo.shaheenSource(), defaults: SHAHEEN_SITE_SETTINGS },
     storage: { kind: store.kind, persistent: store.persistent, error: storeError },
   });
@@ -491,7 +497,7 @@ export function createShamCore(options: CoreOptions = {}) {
   const probeLimiter = new RateLimiter(10, 10 * 60_000);
   admin.post('/shaheen/test', wrap(async (req, res) => {
     if (!probeLimiter.allow(clientKey(req))) throw new AssistantError(429, 'RATE_LIMITED', 'Too many tests, wait a few minutes');
-    res.json({ results: await probeEngines((await repo.settings()).shaheen, { env, fetch: options.fetch }) });
+    res.json({ results: await probeEngines((await repo.settings()).shaheen, { env, fetch: options.fetch, health: runtime.health }), health: runtime.health.snapshot() });
   }));
 
   /** Sandbox: same pipeline as visitors, plus the full trace. */
@@ -546,5 +552,5 @@ export function createShamCore(options: CoreOptions = {}) {
     res.json(out);
   }));
 
-  return { assistant, admin, repo, orchestrator, store, runtime, memory, seo, finance };
+  return { assistant, admin, repo, orchestrator, store, runtime, memory, seo, finance, bank };
 }

@@ -1,16 +1,101 @@
 /**
  * «مجتمع شام» — e-mail delivery for account security (verification codes, reset codes, sign-in alerts).
  *
- * Uses the exact provider chain the orders' notifications use (Resend → SendGrid → outbound webhook),
+ * Uses the exact provider chain the orders' notifications use (Resend → SendGrid → Gmail → outbound webhook),
  * so there is one set of keys on the server. When no provider is configured the call answers
  * `delivered: false` and the API tells the truth (EMAIL_UNAVAILABLE) — the code is never faked and
  * never shown to the client.
  */
+import { senderAddress, senderName, sendViaGmail } from '../core/mailer';
+import { isPublicMailDomain } from '../../src/config/contact';
+
 type Env = Record<string, string | undefined>;
 
 export interface AuthEmailResult { delivered: boolean; provider: string; error?: string }
 
 const NOT_DELIVERED: AuthEmailResult = { delivered: false, provider: 'none' };
+
+export interface OutboundMail {
+  to: string[];
+  subject: string;
+  text: string;
+  html?: string;
+  /** The member's «handle@domain», so external answers come back into «بريد شام». */
+  replyTo?: string;
+  headers?: Record<string, string>;
+}
+
+/**
+ * Real e-mail out of the platform («بريد شام» → Gmail / Yahoo / Hotmail / …), over the same provider
+ * chain used for security e-mails: Resend → SendGrid → outbound webhook. When none is configured the
+ * call answers honestly (`delivered: false, provider: 'none'`) and the sender gets a bounce in-app.
+ */
+export async function sendMailOutbound(
+  mail: OutboundMail,
+  env: Env = process.env,
+  fetchFn: typeof fetch = fetch,
+): Promise<AuthEmailResult> {
+  const fromName = senderName(env);
+  const fromAddress = senderAddress(env);
+  const html = mail.html || `<div dir="auto" style="font-family:Tahoma,Arial,sans-serif;white-space:pre-wrap">${mail.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>`;
+  try {
+    const resend = env.RESEND_API_KEY?.trim();
+    if (resend) {
+      const response = await fetchFn('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${resend}` },
+        body: JSON.stringify({ from: `${fromName} <${fromAddress}>`, to: mail.to, subject: mail.subject, html, text: mail.text, ...(mail.replyTo ? { reply_to: mail.replyTo } : {}), ...(mail.headers ? { headers: mail.headers } : {}) }),
+        signal: AbortSignal.timeout(8000),
+      });
+      if (response.ok) return { delivered: true, provider: 'resend' };
+      return { delivered: false, provider: 'resend', error: `resend ${response.status}` };
+    }
+    const sendgrid = env.SENDGRID_API_KEY?.trim();
+    if (sendgrid) {
+      const response = await fetchFn('https://api.sendgrid.com/v3/mail/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${sendgrid}` },
+        body: JSON.stringify({
+          from: { email: fromAddress, name: fromName },
+          personalizations: [{ to: mail.to.map((address) => ({ email: address })) }],
+          subject: mail.subject,
+          content: [{ type: 'text/plain', value: mail.text }, { type: 'text/html', value: html }],
+          ...(mail.replyTo ? { reply_to: { email: mail.replyTo } } : {}),
+          ...(mail.headers ? { headers: mail.headers } : {}),
+        }),
+        signal: AbortSignal.timeout(8000),
+      });
+      if (response.ok) return { delivered: true, provider: 'sendgrid' };
+      return { delivered: false, provider: 'sendgrid', error: `sendgrid ${response.status}` };
+    }
+    const webhook = env.SHAM_WEBHOOK_URL?.trim();
+    if (webhook) {
+      const response = await fetchFn(webhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ kind: 'platform_mail', to: mail.to, subject: mail.subject, html, text: mail.text, replyTo: mail.replyTo || '', headers: mail.headers || {} }),
+        signal: AbortSignal.timeout(8000),
+      });
+      if (response.ok) return { delivered: true, provider: 'webhook' };
+      return { delivered: false, provider: 'webhook', error: `webhook ${response.status}` };
+    }
+  } catch (error) {
+    return { delivered: false, provider: 'error', error: error instanceof Error ? error.message : String(error) };
+  }
+  return NOT_DELIVERED;
+}
+
+/** The domain «بريد شام» answers receive on (used for Reply-To addresses and inbound accept rules). */
+export function mailDomain(env: Env = process.env): string {
+  const own = env.SHAM_MAIL_DOMAIN?.trim().toLowerCase().replace(/^@+/, '');
+  if (own) return isPublicMailDomain(own) ? '' : own;
+  // Only a domain we own can carry members' addresses — never gmail.com & co. (someone else's mailbox).
+  const from = (env.SHAM_EMAIL_FROM_ADDRESS || '').trim().toLowerCase();
+  const domain = from.includes('@') ? from.split('@')[1] : '';
+  return domain && !isPublicMailDomain(domain) ? domain : '';
+}
+
+export default sendAuthEmail;
 
 export async function sendAuthEmail(
   to: string,
@@ -18,7 +103,7 @@ export async function sendAuthEmail(
   env: Env = process.env,
   fetchFn: typeof fetch = fetch,
 ): Promise<AuthEmailResult> {
-  const from = `${env.SHAM_EMAIL_FROM_NAME || 'شام للعطور (Sham Perfumes)'} <${env.SHAM_EMAIL_FROM_ADDRESS || 'no-reply@shamperfumes.com'}>`;
+  const from = `${senderName(env)} <${senderAddress(env)}>`;
   try {
     const resend = env.RESEND_API_KEY?.trim();
     if (resend) {
@@ -42,6 +127,8 @@ export async function sendAuthEmail(
       if (response.ok) return { delivered: true, provider: 'sendgrid' };
       return { delivered: false, provider: 'sendgrid', error: `sendgrid ${response.status}` };
     }
+    const gmail = await sendViaGmail({ to: [to], subject: mail.subject, html: mail.html, text: mail.text }, env);
+    if (gmail) return gmail;
     const webhook = env.SHAM_WEBHOOK_URL?.trim();
     if (webhook) {
       const response = await fetchFn(webhook, {

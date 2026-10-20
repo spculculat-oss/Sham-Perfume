@@ -30,7 +30,7 @@ const SEAT_LABEL: Record<SeatId, () => string> = {
   field: () => T('المستشار الميداني (جرّب الموقع الحي الصبح)'),
 };
 /** The admin may see which engine spoke; visitors never see any of this. */
-const ENGINE: Record<string, string> = { gemini: 'Gemini', deepseek: 'DeepSeek', openai: 'ChatGPT', claude: 'Claude', openrouter: 'OpenRouter', self_hosted: 'Self-hosted', manus: 'Manus' };
+const ENGINE: Record<string, string> = { gemini: 'Gemini', deepseek: 'DeepSeek', openai: 'ChatGPT', claude: 'Claude', openrouter: 'OpenRouter', perplexity: 'Perplexity', self_hosted: 'Self-hosted', manus: 'Manus' };
 const PRIORITY: Record<Decision['priority'], { label: () => string; cls: string }> = {
   high: { label: () => T('عاجل'), cls: 'bg-red-100 text-red-800' },
   medium: { label: () => T('متوسط'), cls: 'bg-amber-100 text-amber-800' },
@@ -84,11 +84,11 @@ export default function ShaheenCouncilPanel() {
         </div>
       </div>
       <p className="mb-4 text-xs leading-relaxed text-stone-600">
-        {T('شاهين هو مدير كل أدوات الذكاء الاصطناعي في الموقع. كل يوم الساعة 9:30 الصبح بيعمل اجتماع مع خمس خبراء، كل واحد في تخصصه، على تقارير الموقع الحقيقية. بينفذ القرارات الآمنة بنفسه فوراً، ويحدد لكل أداة هدف تطوير، والباقي بيحوله لمهام تطوير تنفذها في الشات بكلمة واحدة.')}
+        {T('شاهين هو مدير كل أدوات الذكاء الاصطناعي في الموقع. كل يوم الساعة 10:15 الصبح بيعمل اجتماع مع خمس خبراء، كل واحد في تخصصه، على تقارير الموقع الحقيقية. بينفذ القرارات الآمنة بنفسه فوراً، ويحدد لكل أداة هدف تطوير، والباقي بيحوله لمهام تطوير تنفذها في الشات بكلمة واحدة.')}
       </p>
 
       {!last ? (
-        <p className="rounded-xl bg-stone-50 p-3 text-xs text-stone-500">{T('أول اجتماع هيظهر هنا بعد أول تشغيل (كل يوم الساعة 9:30 الصبح بتوقيت القاهرة).')}</p>
+        <p className="rounded-xl bg-stone-50 p-3 text-xs text-stone-500">{T('أول اجتماع هيظهر هنا بعد أول تشغيل (كل يوم الساعة 10:15 الصبح بتوقيت القاهرة).')}</p>
       ) : (
         <div className="grid gap-4 lg:grid-cols-3">
           {/* Latest meeting */}

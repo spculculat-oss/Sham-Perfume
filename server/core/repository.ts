@@ -79,7 +79,7 @@ export class Repository {
   }
   async updateSettings(patch: Partial<CoreSettings>): Promise<CoreSettings> {
     const current = await this.settings();
-    const allowedEngines = ['self_hosted', 'gemini', 'openai', 'claude', 'deepseek', 'openrouter', 'sham_local'];
+    const allowedEngines = ['self_hosted', 'gemini', 'openai', 'claude', 'deepseek', 'openrouter', 'perplexity', 'sham_local'];
     const next = { ...current, id: 'core' } as CoreSettings & { id: string };
     for (const key of ['assistantNameAr', 'assistantNameEn', 'welcomeAr', 'welcomeEn', 'personaAr', 'currency', 'handoffContact', 'businessHours'] as const) {
       if (patch[key] !== undefined) next[key] = str(patch[key], key.startsWith('welcome') || key === 'personaAr' ? 1200 : 200);

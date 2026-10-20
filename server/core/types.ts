@@ -1,4 +1,4 @@
-import type { FinanceOrder, FinanceSession, FinanceEntry, FinanceAttempt, FinanceIssue, PaymentRegistration, FinanceReport, FinanceReview, FinanceRun } from '../finance/types';
+import type { FinanceOrder, FinanceSession, FinanceEntry, FinanceAttempt, FinanceIssue, PaymentRegistration, FinanceReport, FinanceReview, FinanceRun, CollectionAccount, DirectPayment, Payable, Budget, BankAudit } from '../finance/types';
 /**
  * Sham Core — shared domain types.
  * Every entity is owned by Sham's own storage; no provider ever owns business data.
@@ -191,7 +191,7 @@ export interface VisitorProfile {
   lastSeen: string;
 }
 
-export type EngineId = 'self_hosted' | 'gemini' | 'openai' | 'claude' | 'deepseek' | 'openrouter' | 'sham_local';
+export type EngineId = 'self_hosted' | 'gemini' | 'openai' | 'claude' | 'deepseek' | 'openrouter' | 'perplexity' | 'sham_local';
 export type ModelEngineId = Exclude<EngineId, 'sham_local'>;
 
 /** Expert lens a council member argues from (the same model can sit twice with different lenses). */
@@ -290,6 +290,11 @@ export interface Collections {
   financeReports: FinanceReport;
   financeReviews: FinanceReview;
   financeRuns: FinanceRun;
+  bankAccounts: CollectionAccount;
+  bankDirect: DirectPayment;
+  bankPayables: Payable;
+  bankBudgets: Budget;
+  bankAudit: BankAudit;
   services: ServiceDef;
   products: Product;
   knowledge: KnowledgeDoc;

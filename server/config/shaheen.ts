@@ -12,7 +12,7 @@
  */
 import type { ModelEngineId, ShaheenSettings } from '../core/types';
 
-export const SHAHEEN_ENGINES: ModelEngineId[] = ['gemini', 'deepseek', 'openai', 'claude', 'self_hosted', 'openrouter'];
+export const SHAHEEN_ENGINES: ModelEngineId[] = ['gemini', 'perplexity', 'deepseek', 'openai', 'claude', 'self_hosted', 'openrouter'];
 
 /**
  * What visitors choose between. They never see engine or vendor names — only Shaheen and these modes.
@@ -26,14 +26,14 @@ export type ShaheenMode = typeof SHAHEEN_MODES[number];
 
 /** Engine preference per mode, filtered by the engines the admin enabled and the keys that exist. */
 export const SHAHEEN_MODE_ORDER: Record<'fast' | 'deep', ModelEngineId[]> = {
-  fast: ['gemini', 'deepseek', 'openai', 'self_hosted', 'openrouter', 'claude'],
-  deep: ['claude', 'openai', 'gemini', 'deepseek', 'openrouter', 'self_hosted'],
+  fast: ['gemini', 'deepseek', 'openai', 'perplexity', 'self_hosted', 'openrouter', 'claude'],
+  deep: ['claude', 'openai', 'gemini', 'perplexity', 'deepseek', 'openrouter', 'self_hosted'],
 };
 
 export const SHAHEEN_SITE_SETTINGS: ShaheenSettings = {
   enabled: true,
   // Failover order for "auto". Engines without a key are skipped automatically.
-  engines: ['gemini', 'deepseek', 'openai', 'claude', 'self_hosted', 'openrouter'],
+  engines: ['gemini', 'perplexity', 'deepseek', 'openai', 'claude', 'self_hosted', 'openrouter'],
   // Empty = GEMINI_MODEL / OPENAI_MODEL / … from the server env, else the built-in default.
   models: {},
   temperature: 0.5,

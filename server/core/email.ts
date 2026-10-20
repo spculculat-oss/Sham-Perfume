@@ -6,9 +6,12 @@
  * Supports:
  * - Resend API (via RESEND_API_KEY)
  * - SendGrid API (via SENDGRID_API_KEY)
+ * - Gmail, free (via SHAM_GMAIL_APP_PASSWORD — see server/core/mailer.ts)
  * - Outbound Webhook (via SHAM_WEBHOOK_URL)
  * - Built-in Resilient Simulator / Log buffer for zero-downtime auditing
  */
+import { senderAddress, senderName, sendViaGmail } from './mailer';
+import { contactEmail } from '../../src/config/contact';
 import { randomUUID } from 'node:crypto';
 import type { OrderItem, RequestStatus, RequestType, ServiceRequest } from './types';
 
@@ -391,7 +394,7 @@ export interface SendStatusEmailResult {
 
 /**
  * Dispatches the customer status notification email.
- * Evaluates provider configuration (Resend, SendGrid, Webhook, Simulator).
+ * Evaluates provider configuration (Resend, SendGrid, Gmail, Webhook, Simulator).
  */
 export async function sendCustomerStatusEmail(
   options: RenderEmailOptions,
@@ -413,8 +416,8 @@ export async function sendCustomerStatusEmail(
   }
 
   const rendered = renderOrderStatusEmail(options);
-  const fromName = options.senderName || env.SHAM_EMAIL_FROM_NAME || 'شام للعطور (Sham Perfumes)';
-  const fromAddress = env.SHAM_EMAIL_FROM_ADDRESS || 'orders@shamperfumes.com';
+  const fromName = options.senderName || senderName(env);
+  const fromAddress = senderAddress(env);
   const fromHeader = `${fromName} <${fromAddress}>`;
 
   let delivery: EmailDeliveryStatus = 'simulated';
@@ -492,9 +495,19 @@ export async function sendCustomerStatusEmail(
     }
   }
 
-  // 3. Fallback to Outbound Webhook if configured and direct API wasn't configured
+  // 3. Gmail (free): the store's own inbox sends the update
+  const gmail = delivery !== 'sent' && !resendApiKey && !sendgridApiKey
+    ? await sendViaGmail({ to: [recipient], subject: rendered.subject, html: rendered.html, text: rendered.text, replyTo: contactEmail('orders') }, env)
+    : undefined;
+  if (gmail) {
+    provider = 'gmail';
+    delivery = gmail.delivered ? 'sent' : 'failed';
+    sendError = gmail.error;
+  }
+
+  // 4. Fallback to Outbound Webhook if configured and direct API wasn't configured
   const webhookUrl = env.SHAM_WEBHOOK_URL?.trim();
-  if (delivery !== 'sent' && !resendApiKey && !sendgridApiKey && webhookUrl) {
+  if (delivery !== 'sent' && !resendApiKey && !sendgridApiKey && !gmail && webhookUrl) {
     provider = 'webhook';
     try {
       const response = await fetchFn(webhookUrl, {
@@ -524,7 +537,7 @@ export async function sendCustomerStatusEmail(
   }
 
   // 4. If simulator/fallback, it marks delivery as simulated (success for admin workflow)
-  if (delivery !== 'sent' && !sendError && !resendApiKey && !sendgridApiKey) {
+  if (delivery !== 'sent' && !sendError && !resendApiKey && !sendgridApiKey && !gmail) {
     delivery = 'simulated';
     provider = 'simulator';
   }

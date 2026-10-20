@@ -15,7 +15,9 @@ export default defineConfig(({ mode }) => {
     // Project Pages lives below the repository name, not the domain root.
     base: pages ? pagesBase : '/',
     build: {
-      outDir: pages ? 'docs' : 'dist',
+      // The Pages build has its own folder, never stored in git (docs/ keeps the hand-written legal and design
+      // documents: Vite empties its output folder, and the importer's legal guard reads docs/legal).
+      outDir: pages ? 'pages-dist' : 'dist',
     },
     plugins: [react(), tailwindcss()],
     resolve: {

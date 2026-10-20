@@ -156,8 +156,14 @@ export async function profile(ctx: Ctx, viewerId: string, handle: string) {
   const recipes = await ctx.sql.query(
     `SELECT id, title, data, updated_at FROM recipes WHERE user_id = $1 AND (visibility = 'public' OR ($2 AND visibility = 'friends') OR user_id = $3) ORDER BY updated_at DESC LIMIT 30`,
     [row.id, friends, viewerId]);
+  // A real friends preview (up to nine, newest friendships first), never people the viewer blocked or who blocked them.
+  const friendRows = await ctx.sql.query(
+    `SELECT ${USER_COLUMNS} FROM friendships f JOIN users u ON u.id = CASE WHEN f.user_a = $2 THEN f.user_b ELSE f.user_a END LEFT JOIN merchants m ON m.user_id = u.id
+     WHERE (f.user_a = $2 OR f.user_b = $2) AND f.status = 'accepted' AND u.status = 'active'
+       AND NOT EXISTS (SELECT 1 FROM blocks b WHERE (b.blocker = $1 AND b.blocked = u.id) OR (b.blocker = u.id AND b.blocked = $1))
+     ORDER BY f.accepted_at DESC NULLS LAST LIMIT 9`, [viewerId, row.id]);
   return {
-    user: publicUser(row), relation: await relation(ctx, viewerId, row.id), counts,
+    user: publicUser(row), since: iso(row.created_at), relation: await relation(ctx, viewerId, row.id), counts, friends: friendRows.map(publicUser),
     posts: posts.map((p) => postView(p, viewerId)),
     recipes: recipes.map((r) => ({ id: r.id, title: r.title, data: r.data, updatedAt: iso(r.updated_at) })),
   };
@@ -247,7 +253,7 @@ export async function blockedList(ctx: Ctx, userId: string) {
   return rows.map(publicUser);
 }
 
-const REPORT_KINDS = ['post', 'comment', 'user', 'message', 'product', 'store'];
+const REPORT_KINDS = ['post', 'comment', 'user', 'message', 'product', 'store', 'story', 'thread', 'reply', 'review'];
 export async function report(ctx: Ctx, userId: string, input: { kind?: unknown; id?: unknown; reason?: unknown }) {
   const kind = String(input.kind);
   if (!REPORT_KINDS.includes(kind)) fail(400, 'INVALID_FIELD', 'kind');

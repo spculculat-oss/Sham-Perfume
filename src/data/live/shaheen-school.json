@@ -1,26 +1,74 @@
 {
  "version": 1,
- "updatedAt": "2026-10-19T04:33:35.262Z",
+ "updatedAt": "2026-10-20T19:58:18.583Z",
  "reliance": {
-  "score": 87,
-  "covered": 72,
+  "score": 98,
+  "covered": 81,
   "total": 83,
-  "fromMemory": 72,
+  "fromMemory": 81,
   "fromLibrary": 2,
   "byLang": {
    "ar": {
-    "covered": 64,
+    "covered": 66,
     "total": 68
    },
    "en": {
-    "covered": 8,
+    "covered": 15,
     "total": 15
    }
   }
  },
- "studiedTotal": 42,
- "selfTaughtTotal": 27,
+ "studiedTotal": 51,
+ "selfTaughtTotal": 31,
  "history": [
+  {
+   "at": "2026-10-20T19:58:18.583Z",
+   "score": 98,
+   "studied": 0,
+   "mode": "self"
+  },
+  {
+   "at": "2026-10-20T18:51:35.236Z",
+   "score": 98,
+   "studied": 2,
+   "mode": "self"
+  },
+  {
+   "at": "2026-10-20T12:56:17.162Z",
+   "score": 98,
+   "studied": 0,
+   "mode": "self"
+  },
+  {
+   "at": "2026-10-20T08:45:24.231Z",
+   "score": 98,
+   "studied": 0,
+   "mode": "self"
+  },
+  {
+   "at": "2026-10-20T06:55:06.030Z",
+   "score": 98,
+   "studied": 0,
+   "mode": "self"
+  },
+  {
+   "at": "2026-10-20T00:58:57.142Z",
+   "score": 98,
+   "studied": 0,
+   "mode": "self"
+  },
+  {
+   "at": "2026-10-19T18:55:40.985Z",
+   "score": 98,
+   "studied": 1,
+   "mode": "ai"
+  },
+  {
+   "at": "2026-10-19T12:55:51.025Z",
+   "score": 96,
+   "studied": 10,
+   "mode": "ai"
+  },
   {
    "at": "2026-10-19T04:33:35.262Z",
    "score": 87,
@@ -71,6 +119,60 @@
   }
  ],
  "lastStudied": [
+  {
+   "q": "ايه هي مكونات العطر الاساسية و النوتات العليا والقلب والقاعدة وعطر الشيبر وتغير الرائحة",
+   "lang": "ar",
+   "at": "2026-10-19T18:55:40.985Z",
+   "variants": 4
+  },
+  {
+   "q": "Can perfume cause skin allergies?",
+   "lang": "en",
+   "at": "2026-10-19T12:55:51.025Z",
+   "variants": 0
+  },
+  {
+   "q": "How should I store perfume?",
+   "lang": "en",
+   "at": "2026-10-19T12:55:51.025Z",
+   "variants": 0
+  },
+  {
+   "q": "Where should I apply perfume?",
+   "lang": "en",
+   "at": "2026-10-19T12:55:51.025Z",
+   "variants": 0
+  },
+  {
+   "q": "How long should a perfume macerate?",
+   "lang": "en",
+   "at": "2026-10-19T12:55:51.025Z",
+   "variants": 0
+  },
+  {
+   "q": "How do I make perfume at home step by step?",
+   "lang": "en",
+   "at": "2026-10-19T12:55:51.025Z",
+   "variants": 0
+  },
+  {
+   "q": "What are the main fragrance families?",
+   "lang": "en",
+   "at": "2026-10-19T12:55:51.025Z",
+   "variants": 0
+  },
+  {
+   "q": "What are top, heart and base notes?",
+   "lang": "en",
+   "at": "2026-10-19T12:55:51.025Z",
+   "variants": 0
+  },
+  {
+   "q": "ازاي احفظ تركيبتي في دفتر التركيبات؟",
+   "lang": "ar",
+   "at": "2026-10-19T12:55:51.025Z",
+   "variants": 4
+  },
   {
    "q": "How do I use the Sham perfume formula calculator?",
    "lang": "en",
@@ -136,105 +238,11 @@
    "lang": "ar",
    "at": "2026-10-18T14:23:35.582Z",
    "variants": 4
-  },
-  {
-   "q": "How can I make my perfume last longer?",
-   "lang": "en",
-   "at": "2026-10-18T14:23:35.582Z",
-   "variants": 1
-  },
-  {
-   "q": "ازاي احسب تخفيف الكحول من 96 ل 80؟",
-   "lang": "ar",
-   "at": "2026-10-18T14:23:35.582Z",
-   "variants": 4
-  },
-  {
-   "q": "العطر بيخلص صلاحيته امتى؟",
-   "lang": "ar",
-   "at": "2026-10-18T14:23:35.582Z",
-   "variants": 4
-  },
-  {
-   "q": "ازاي احفظ العطر عشان ميبوظش؟",
-   "lang": "ar",
-   "at": "2026-10-18T14:23:35.582Z",
-   "variants": 4
-  },
-  {
-   "q": "ليه مش بحس بريحة عطري بعد شوية؟",
-   "lang": "ar",
-   "at": "2026-10-18T14:23:35.582Z",
-   "variants": 4
-  },
-  {
-   "q": "العطر محتاج يتعتق قد ايه؟",
-   "lang": "ar",
-   "at": "2026-10-18T13:26:41.570Z",
-   "variants": 4
-  },
-  {
-   "q": "ازاي احسب كمية الزيت لزجاجة 100 مل بتركيز 20%؟",
-   "lang": "ar",
-   "at": "2026-10-18T13:26:41.570Z",
-   "variants": 4
-  },
-  {
-   "q": "ليه ريحة العطر بتتغير بعد ساعة من رشه؟",
-   "lang": "ar",
-   "at": "2026-10-18T13:26:41.570Z",
-   "variants": 4
-  },
-  {
-   "q": "يعني ايه النوتات العليا والقلب والقاعدة؟",
-   "lang": "ar",
-   "at": "2026-10-18T13:26:41.570Z",
-   "variants": 0
   }
  ],
  "pending": [
   {
-   "q": "ازاي احفظ تركيبتي في دفتر التركيبات؟",
-   "lang": "ar",
-   "topic": "site"
-  },
-  {
-   "q": "What are top, heart and base notes?",
-   "lang": "en",
-   "topic": "pyramid"
-  },
-  {
-   "q": "What are the main fragrance families?",
-   "lang": "en",
-   "topic": "families"
-  },
-  {
-   "q": "How do I make perfume at home step by step?",
-   "lang": "en",
-   "topic": "making"
-  },
-  {
-   "q": "How long should a perfume macerate?",
-   "lang": "en",
-   "topic": "maceration"
-  },
-  {
-   "q": "Where should I apply perfume?",
-   "lang": "en",
-   "topic": "wearing"
-  },
-  {
-   "q": "How should I store perfume?",
-   "lang": "en",
-   "topic": "storage"
-  },
-  {
-   "q": "Can perfume cause skin allergies?",
-   "lang": "en",
-   "topic": "safety"
-  },
-  {
-   "q": "حدثني عن حساب تكلفة العطر وتحديد سعر البيع",
+   "q": "حدثني عن حساب تكلفة العطر وسعره",
    "lang": "ar",
    "topic": "library"
   },
@@ -242,11 +250,6 @@
    "q": "حدثني عن آخر أخبار عالم العطور",
    "lang": "ar",
    "topic": "library"
-  },
-  {
-   "q": "ايه هي مكونات العطر الاساسية و النوتات العليا والقلب والقاعدة وعطر الشيبر وتغير الرائحة",
-   "lang": "ar",
-   "topic": "council"
   }
  ],
  "importer": {

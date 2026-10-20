@@ -1,0 +1,19 @@
+{
+ "ui": {
+  "nav_alcohol_short": "Alcool",
+  "nav_calc_short": "Formula",
+  "nav_costing_short": "Costi",
+  "nav_explore": "Esplora",
+  "nav_explore_short": "Esplora",
+  "nav_guide_short": "Guida",
+  "nav_home_short": "Home",
+  "nav_library_short": "Libreria",
+  "nav_maceration_short": "Macerazione",
+  "nav_news_short": "Notizie",
+  "nav_pyramid_short": "Piramide",
+  "nav_raw_materials_short": "Materie prime",
+  "nav_tools": "Strumenti",
+  "nav_tools_short": "Strumenti",
+  "nav_world_perfumes_short": "Iconici"
+ }
+}

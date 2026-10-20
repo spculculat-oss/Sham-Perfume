@@ -1,0 +1,34 @@
+{
+ "version": 1,
+ "updatedAt": "2026-10-19T11:33:33.774Z",
+ "repo": "spculculat-oss/Sham-Perfume-Studio",
+ "status": "idle",
+ "lastStudioSha": "d4e3590eef830eb0ee8da5d225a40c4ca5e94a4e",
+ "runs": [
+  {
+   "at": "2026-10-19T11:33:33.774Z",
+   "studioSha": "d4e3590eef830eb0ee8da5d225a40c4ca5e94a4e",
+   "mode": "first",
+   "result": "nothing",
+   "commits": [
+    {
+     "sha": "d4e3590eef830eb0ee8da5d225a40c4ca5e94a4e",
+     "subject": "Initial commit"
+    }
+   ],
+   "files": [],
+   "skipped": [
+    {
+     "path": "README.md",
+     "reason": "نسخة قديمة من الملف (الموقع عنده أحدث)"
+    }
+   ],
+   "checks": {
+    "lint": "skipped",
+    "test": "skipped",
+    "build": "skipped",
+    "pages": "skipped"
+   }
+  }
+ ]
+}

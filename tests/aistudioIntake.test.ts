@@ -111,3 +111,12 @@ test('a normal AI Studio change is received; each commit is reviewed once; faili
   assert.equal(state.checks.test, 'failure');
   assert.equal(state.reviewed.length, 2);
 });
+
+test('the legal manager\'s documents are guarded: deleting docs/legal is a core deletion, not build output', () => {
+  const r = repo();
+  r.commit('agent', 'base', { 'docs/legal/scraper-permission.md.template': 'legal\n', 'src/a.tsx': 'a\n' });
+  const sha = r.commit('owner', 'chore: clean up', { 'docs/legal/scraper-permission.md.template': null, 'src/a.tsx': 'a\nb\n' });
+  const review = reviewCommit(r.git, listCommits(r.git).find((c) => c.sha === sha)!);
+  assert.ok(review.flags.some((f) => f.kind === 'deleted' && f.level === 'high' && f.file === 'docs/legal/scraper-permission.md.template'));
+  assert.deepEqual(review.deleted, ['docs/legal/scraper-permission.md.template'], 'counted as a real change');
+});

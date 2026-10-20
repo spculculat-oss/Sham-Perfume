@@ -21,7 +21,8 @@ import { allowedSources, fetchApprovedDomains, isScrapeAllowed } from './guard';
 import { extractGeneric } from './generic';
 import { adoptSkill, emptySkills, hostOf, isSkillsFile, learnSkill, readWithSkill, recordUse, skillsSummary, type SkillsFile } from './skills';
 import { isPerfume, pageLinks, parseRobots, withPage } from '../shaheen-discover/discover';
-import { addAltOffer, isImported, nextIdOf, normalizeBrand, ourPriceOf, perfumeKey, planRun, priceInEgp, priceReport, sourceKey, toStoreProduct, useCleanPhotos, type ImageRegistry, type ImportedProduct, type ImportSource, type PriceRule } from './transform';
+import { tidySupplierText } from '../../src/utils/honestClaims';
+import { addAltOffer, fillSourceBrands, isImported, nextIdOf, normalizeBrand, ourPriceOf, perfumeKey, planRun, priceInEgp, priceReport, sourceKey, toStoreProduct, useCleanPhotos, type ImageRegistry, type ImportedProduct, type ImportSource, type PriceRule } from './transform';
 
 const env = process.env;
 const PRODUCTS = new URL('../../src/data/products.json', import.meta.url);
@@ -358,6 +359,17 @@ if (prices.count) say(`Prices of ${prices.count} imported products: ${prices.min
 const cleanRegistry = read<ImageRegistry>(new URL('../../src/data/live/image-clean.json', import.meta.url));
 const cleaned = useCleanPhotos(products, cleanRegistry);
 if (cleaned) say(`${cleaned} products use their cleaned photos`);
+
+// A product read without a brand from the brand's own shop (afnan.com → «Afnan Perfumes») gets that brand.
+const branded = fillSourceBrands(products);
+if (branded.length) say(`${branded.length} products got the brand of the store they came from`);
+// The supplier's sections glued together («LemonHeart Notes:», «…wear?A: Yes») get their own line again.
+let tidied = 0;
+for (const p of products) {
+  const text = typeof p.descriptionEn === 'string' ? tidySupplierText(p.descriptionEn) : p.descriptionEn;
+  if (text !== p.descriptionEn) { p.descriptionEn = text; tidied++; }
+}
+if (tidied) say(`${tidied} supplier descriptions laid out again (glued sections split)`);
 
 // «مراجع الصفحات» reviews the whole store after the import.
 importInfo.durationMs = Date.now() - started;

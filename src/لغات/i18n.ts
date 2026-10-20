@@ -32,6 +32,7 @@ import { I18N_EXT_29 } from "./i18nExt29";
 import { I18N_EXT_30 } from "./i18nExt30";
 import { I18N_EXT_31 } from "./i18nExt31";
 import { I18N_PROFILE } from "./i18nProfile";
+import { aiUi } from "./aiPacks";
 
 export const USER_LANG_STORAGE_KEY = "sham_perfume_user_language";
 
@@ -121,9 +122,12 @@ export function saveLanguage(lang: SupportedLanguage): void {
 
 export function t(key: TranslationKey, lang: SupportedLanguage = "ar", fallback?: string): string {
   const dict = TRANSLATIONS[lang];
-  if (dict && dict[key]) {
-    return dict[key];
-  }
+  const own = dict?.[key];
+  // A hand-made text wins, unless it is only a copy of the English and the language agent translated it.
+  if (own && (lang === "en" || own !== TRANSLATIONS.en[key])) return own;
+  const ai = aiUi(lang, key);
+  if (ai) return ai;
+  if (own) return own;
   // Missing key in the requested language: degrade to English first, then Arabic.
   const enDict = TRANSLATIONS["en"];
   if (enDict && enDict[key]) {

@@ -63,6 +63,40 @@ export interface LanguageLiveReport {
   /** 0–100: 100 = packs full, no findings. */
   score: number;
   notes: string[];
+  /** «المترجم الذكي»: what visitors still read in English and what the AI translated (./translator.ts). */
+  translation?: TranslationSection;
+  /** The link with the design department (the Manus design audit + right-to-left layout signals). */
+  design?: DesignSection;
+}
+
+export interface TranslationSection {
+  at: string;
+  /** done = something translated; idle = nothing left; no_engine / quota / engines_failed / budget = stopped. */
+  status: 'done' | 'idle' | 'no_engine' | 'quota' | 'engines_failed' | 'budget' | 'off';
+  /** Strings × languages still shown in English (after the AI packs). */
+  remaining: number;
+  /** Strings × languages the AI packs already cover. */
+  covered: number;
+  remainingByTier: Record<string, number>;
+  /** Languages with the most English left. */
+  worstLanguages: { lang: string; remaining: number }[];
+  run: { calls: number; translated: number; rejected: number; droppedByReview: number; reviewed: boolean; engines: string[]; languages: string[]; resumeAt?: string };
+  rejectReasons: Record<string, number>;
+  /** Units rejected twice are set aside (key = lang|pack|hash) so a hard string never eats the quota. */
+  rejectCounts: Record<string, number>;
+}
+
+export interface DesignSection {
+  at: string;
+  auditAt?: string;
+  auditScore?: number;
+  /** Languages the design audit found half-translated (translated first). */
+  priorityLanguages: string[];
+  /** English phrases the audit quoted, found in the visitor code. */
+  located: { phrase: string; file: string; line: number }[];
+  unlocated: string[];
+  /** Physical left/right classes in visitor screens (they do not mirror in right-to-left languages). */
+  physicalDirection: { total: number; top: { file: string; count: number }[] };
 }
 
 /**
@@ -81,7 +115,11 @@ export const SANCTIONED_FILES: readonly string[] = [
  * Files where an 'ar'|'en' language clamp is a real-world constraint, not a
  * shortcut: the Kashier payment page itself only exists in Arabic/English.
  */
-export const CLAMP_SANCTIONED_FILES: readonly string[] = ['src/utils/storeCheckout.ts'];
+export const CLAMP_SANCTIONED_FILES: readonly string[] = [
+  // Kashier and the direct-checkout API carry the catalogue's Arabic/English product-name language, not the UI locale.
+  'src/utils/storeCheckout.ts',
+  'src/utils/directPayment.ts',
+];
 export const OPERATOR_FILES: readonly string[] = [
   'src/components/AdminMerchantManagement.tsx',
   'src/components/MerchantWorkspace.tsx',

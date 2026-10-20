@@ -1,0 +1,20 @@
+{
+ "ui": {
+  "nav_ai_master_short": "沙欣AI",
+  "nav_alcohol_short": "酒精",
+  "nav_calc_short": "配方",
+  "nav_costing_short": "成本核算",
+  "nav_explore": "探索",
+  "nav_explore_short": "探索",
+  "nav_guide_short": "指南",
+  "nav_home_short": "首页",
+  "nav_library_short": "配方库",
+  "nav_maceration_short": "陈化",
+  "nav_news_short": "资讯",
+  "nav_pyramid_short": "气味金字塔",
+  "nav_raw_materials_short": "原料",
+  "nav_tools": "工具",
+  "nav_tools_short": "工具",
+  "nav_world_perfumes_short": "经典名香"
+ }
+}

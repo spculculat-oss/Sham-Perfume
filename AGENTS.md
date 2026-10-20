@@ -7,6 +7,12 @@
 meeting over the site's real reports. Safe decisions are applied by the meeting itself. Development
 work becomes **GitHub issues labelled `shaheen-task`**, which a coding agent in the chat carries out.
 
+Every hour, «الدورية كل ساعة» (`.github/workflows/shaheen-patrol.yml`, code in `scripts/shaheen-patrol/`)
+has each tool test its own work hands-on, reruns the robot that fixes a broken scope (safe robots only, at most
+once per 6 h), asks Shaheen about the rest, and has an expert reviewer of the same scope test every finished
+run. A serious problem that stays broken becomes a `shaheen-task` issue labelled **`shaheen-patrol`** (at most
+two a day) — the same queue below. After the fix is merged, the next patrol re-tests it and logs it as resolved.
+
 When the merchant writes **«نفذ مهام شاهين»** (or "Run Shaheen's tasks", «مهام شاهين», «شوف مهام شاهين»):
 
 1. List the queue, most urgent first:
@@ -23,6 +29,41 @@ When the merchant writes **«نفذ مهام شاهين»** (or "Run Shaheen's t
    (`gh issue close <n> --reason "not planned" --comment "…"`). The meeting then drops the task.
 6. Reply to the merchant **in simple Egyptian Arabic**, without technical details: what was done, what
    is waiting for his approval, and what (if anything) he has to do himself.
+
+## Google AI Studio (Build mode, two-way GitHub sync)
+
+The merchant also edits this site from Google AI Studio, synced with this repository. The robots push to
+`main` every few minutes, so:
+
+- **Never force push.** Pull the latest `main` first (AI Studio: «Pull from GitHub» / sync), then push. A
+  force push from an older copy erases the robots' data and newer work (`aistudio-intake.yml` reports it).
+- **Do not edit `.github/workflows/`.** The AI Studio GitHub App has no `workflows` permission: GitHub
+  rejects the whole push when one of those files differs. Ask the coding agent in the chat instead.
+- **Do not edit or delete** `src/data/live/` (robots' reports), `docs/legal/` (the legal manager's
+  documents) or `src/لغات/ai/` (the smart translator's packs).
+- **Build output is never committed:** `dist/` and `pages-dist/` are made fresh by the workflows.
+
+### The AI Studio bridge (recommended setup)
+
+AI Studio should sync with **its own repository** (variable `AISTUDIO_REPO`, default
+`spculculat-oss/Sham-Perfume-Studio`), not with this one: nothing else writes there, so «Sync to GitHub» never
+hangs. `.github/workflows/aistudio-bridge.yml` (every 30 min, logic in `scripts/aistudio/bridge.ts`) filters
+what changed there, merges it three-way with `main`, runs lint/tests/Pages build, then publishes site files
+(`src/`, `public/`) straight to `main` + Pages, or parks the rest (server, scripts, tests, build settings,
+deletions, the first import, failed checks) on branch `aistudio/<sha7>` with a `shaheen-task` issue.
+
+- To handle such an issue: review `git diff main...origin/aistudio/<sha7>`, bring the good parts into the
+  session branch (never push to `aistudio/*` or `main` directly) and open a PR with `Closes #n`.
+- The filter's rules live in `classifyPath` (`BLOCKED` / `REVIEW`); keep them in step with the list above.
+- When AI Studio cannot push at all («Failed to push commit to GitHub»), the merchant downloads the project
+  as a ZIP and attaches it in the chat: `node --import tsx scripts/aistudio/import-zip.mts <zip>` shows the
+  filtered plan, `--apply [--only=a,b]` writes the accepted files; then lint, tests and a PR as usual.
+- A ZIP too big for the chat (AI Studio downloads are ~50 MB): create a DRAFT release `aistudio-upload`
+  (`gh release create aistudio-upload --draft …`), the merchant attaches the ZIP and saves the draft, then push
+  any change to `.github/workflows/aistudio-zip.yml` (or dispatch it): a runner downloads it, filters it, pushes
+  `aistudio/zip-<id>` and deletes the ZIP. Still review by hand: AI Studio downloads carry stale copies (merge
+  three-way against the closest older main version), demo data (fake members, fake reviews/ratings, a seeded admin
+  password — never ship), and direct AI SDK calls that bypass `server/core/engines.ts` (not allowed).
 
 ## Standing rules for this repository
 
@@ -48,7 +89,7 @@ When the merchant writes **«نفذ مهام شاهين»** (or "Run Shaheen's t
   `src/utils/shaheenOrg.ts` (department, report file, schedule, who it helps in `LINKS`), then run
   `node --import tsx scripts/shaheen-council/org-doc.mts` to refresh `SHAHEEN_ORG.md`;
   `tests/shaheenOrg.test.ts` fails otherwise. If the bot writes a report, add its own checks to
-  `scripts/shaheen-council/precheck.ts` (the pre-meeting full check, 04:30 UTC — two hours before the council).
+  `scripts/shaheen-council/precheck.ts` (the pre-meeting full check, 06:10 UTC — two hours before the council at 08:15 UTC).
 - Customer invoices, receipts and order summaries must not show platform margin/profit amounts or
   percentages, or the supplier-cost breakdown. Keep selling prices, quantities, shipping, applicable
   taxes/fees and totals visible; do not change pricing or internal merchant/admin accounting to hide a margin.

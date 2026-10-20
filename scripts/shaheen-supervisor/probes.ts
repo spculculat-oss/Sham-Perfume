@@ -233,6 +233,33 @@ function schoolProbes(ctx: ProbeContext): Probe[] {
   return [{ tool: 'shaheen_school', question: 'مدرسة شاهين', answer, ms: 0, ok: true, findings }];
 }
 
+/** «المترجم الذكي»: is it running, how much is still English, and samples of its translations for Shaheen to judge. */
+function languageAgentProbes(ctx: ProbeContext): Probe[] {
+  type Report = { updatedAt: string; translation?: { status: string; remaining: number; covered: number; run: { calls: number; translated: number; rejected: number; droppedByReview: number; languages: string[] } } };
+  const report = readLive<Report>(ctx, 'shaheen-languages.json');
+  const t = report?.translation;
+  if (!report || !t) return [{ tool: 'language_agent', question: 'تقرير المترجم الذكي', answer: '', ms: 0, ok: false, error: 'المترجم الذكي لم يعمل بعد (src/data/live/shaheen-languages.json)', findings: [] }];
+  const findings = [] as Probe['findings'];
+  const ageH = (ctx.now - Date.parse(report.updatedAt)) / 3600_000;
+  if (ageH > 30) findings.push({ severe: false, text: `وكيل اللغات لم يعمل منذ ${Math.round(ageH)} ساعة` });
+  if (t.status === 'no_engine') findings.push({ severe: false, text: 'مفيش محرك ذكاء اصطناعي شغال للترجمة' });
+  if (t.status === 'engines_failed') findings.push({ severe: false, text: 'المحركات مردتش على طلبات الترجمة' });
+  const tried = t.run.translated + t.run.rejected;
+  if (tried >= 20 && t.run.rejected / tried > 0.4) findings.push({ severe: false, text: `نسبة رفض عالية للترجمات (${t.run.rejected}/${tried})` });
+  // Samples from the newest packs: the reviewer judges real wording.
+  const samples: string[] = [];
+  for (const lang of rotate(t.run.languages.length ? t.run.languages : ['fr', 'de', 'tr'], ctx.run, 2)) {
+    try {
+      const pack = JSON.parse(readFileSync(new URL(`../../لغات/ai/${lang}.json`, ctx.liveDir), 'utf8')) as Record<string, Record<string, string>>;
+      const pairs = Object.entries(pack.text || {}).concat(Object.entries(pack.ui || {}));
+      for (const [en, tr] of rotate(pairs, ctx.run, 3)) samples.push(`[${lang}] ${en.slice(0, 120)} → ${tr.slice(0, 160)}`);
+    } catch { /* no pack yet for this language */ }
+  }
+  const answer = [`الحالة: ${t.status} — لسه بالإنجليزي ${t.remaining}، مغطّى ${t.covered}، آخر دورة: ${t.run.translated} مترجمة و${t.run.rejected} مرفوضة (${t.run.droppedByReview} رفضها المراجع) في ${t.run.calls} طلب.`,
+    ...samples].join('\n');
+  return [{ tool: 'language_agent', question: 'المترجم الذكي (عينات من ترجماته)', answer, ms: 0, ok: true, findings }];
+}
+
 /** «مجلس شاهين»: did today's meeting take place, with real decisions, and are its tasks moving? */
 function councilProbes(ctx: ProbeContext): Probe[] {
   type Council = { meetings: { date: string; at: string; mode: string; summaryAr: string; seats: { ok: boolean }[]; decisions: { title: string; kind: string; status: string; priority: string }[] }[]; tasks: { status: string; createdAt: string }[] };
@@ -362,4 +389,5 @@ export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<P
   seo_agent: seoAgentProbes,
   design_agent: designAgentProbes,
   shaheen_council: councilProbes,
+  language_agent: languageAgentProbes,
 };

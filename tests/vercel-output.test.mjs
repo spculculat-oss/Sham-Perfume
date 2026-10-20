@@ -146,14 +146,16 @@ test('malformed JSON and oversized POSTs remain JSON errors in the deployed arti
   }
 });
 
-test('news GET and refresh POST do not fabricate content without a key', async () => {
-  for (const [url, method] of [['/api/news', 'GET'], ['/api/news/refresh', 'POST']]) {
-    const response = await fetch(`${baseUrl}${url}`, { method });
-    assert.equal(response.status, 503);
-    const data = await response.json();
-    assert.equal(data.success, false);
-    assert.equal(data.articles, undefined);
-  }
+test('news without a key: GET shows the collected headlines (not AI-written), refresh POST fails', async () => {
+  const news = await (await fetch(`${baseUrl}/api/news`)).json();
+  assert.equal(news.success, true);
+  assert.equal(news.aiGenerated, false);
+  assert.ok(news.articles.length > 0 && news.articles.every((a) => a.id.startsWith('collected-')));
+  const response = await fetch(`${baseUrl}/api/news/refresh`, { method: 'POST' });
+  assert.equal(response.status, 503);
+  const data = await response.json();
+  assert.equal(data.success, false);
+  assert.equal(data.articles, undefined);
 });
 
 test('Sham Core assistant answers without any provider key; admin stays closed without a token', async () => {

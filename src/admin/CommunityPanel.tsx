@@ -6,7 +6,7 @@
  */
 import React, { useCallback, useEffect, useState } from 'react';
 import { apiUrl } from '../utils/api';
-import { CheckCircle2, ClipboardList, Eye, Flag, Loader2, Lock, RefreshCw, ScrollText, Search, ShieldAlert, Store, Users, X } from 'lucide-react';
+import { CheckCircle2, ClipboardList, Eye, Flag, Loader2, Lock, Mail, RefreshCw, ScrollText, Search, ShieldAlert, Store, Users, X } from 'lucide-react';
 import { T } from './adminL10n';
 import { AdminApiError, adminRequest, send } from './adminApi';
 import { BUNDLED_FX, convert, tidy } from '../utils/pricing';
@@ -305,6 +305,7 @@ function ModerationView({ open, onChange }: { open: (id: string) => void; onChan
             <div className="flex flex-wrap gap-1.5">
               {(r.targetKind || r.kind) === 'post' && <button type="button" onClick={() => void moderate('posts', r.targetId, 'hidden').then(() => resolve(r, 'resolved'))} className={`${btn} bg-rose-600 py-1.5 text-xs text-white`}>{T('إخفاء المنشور')}</button>}
               {(r.targetKind || r.kind) === 'comment' && <button type="button" onClick={() => void moderate('comments', r.targetId, 'hidden').then(() => resolve(r, 'resolved'))} className={`${btn} bg-rose-600 py-1.5 text-xs text-white`}>{T('إخفاء التعليق')}</button>}
+              {['story', 'thread', 'reply', 'review'].includes(r.targetKind || r.kind) && <button type="button" onClick={() => void act(`/community/content/${r.targetKind || r.kind}/${r.targetId}/moderate`, 'POST', { status: 'hidden' }).then((ok) => { if (ok) void resolve(r, 'resolved'); })} className={`${btn} bg-rose-600 py-1.5 text-xs text-white`}>{T('إخفاء المحتوى')}</button>}
               {(r.targetKind || r.kind) === 'user' && <button type="button" onClick={() => open(r.targetId)} className={`${btn} bg-stone-100 py-1.5 text-xs`}>{T('فتح ملف العضو')}</button>}
               <button type="button" onClick={() => void resolve(r, 'resolved')} className={`${btn} bg-emerald-600 py-1.5 text-xs text-white`}>{T('تم الحل')}</button>
               <button type="button" onClick={() => void resolve(r, 'dismissed')} className={`${btn} bg-stone-100 py-1.5 text-xs`}>{T('تجاهل')}</button>
@@ -376,6 +377,7 @@ function UserFile({ id, onClose, onChange }: { id: string; onClose: () => void; 
               {data.conversations.map((c: Any) => <div key={c.id} className="flex items-center justify-between gap-2 border-b border-stone-100 py-1.5 text-sm"><span>{c.kind === 'group' ? '👥' : '💬'} {c.title} · {c.messages} {T('رسالة')}</span><button type="button" onClick={() => void readChat(c)} className={`${btn} bg-amber-50 py-1 text-xs text-amber-900`}><Eye className="h-3.5 w-3.5" />{T('اطلاع')}</button></div>)}
             </Section>
             <Section title={`${T('الجلسات')} (${data.sessions.length})`}>{data.sessions.map((s: Any, i: number) => <p key={i} className="text-xs text-stone-600">{s.agent || '—'} · {date(s.createdAt)}</p>)}</Section>
+            <OfficialMail userId={id} />
           </div>
         )}
         {chat && (
@@ -395,3 +397,35 @@ function UserFile({ id, onClose, onChange }: { id: string; onClose: () => void; 
 }
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => <div className={card}><p className="mb-2 font-bold">{title}</p>{children}</div>;
+
+/** «بريد شام»: an official letter from the administration to this member's mailbox (recorded in the audit log). */
+function OfficialMail({ userId }: { userId: string }) {
+  const [open, setOpen] = useState(false);
+  const [subject, setSubject] = useState('');
+  const [body, setBody] = useState('');
+  const [busy, setBusy] = useState(false);
+  const submit = async () => {
+    if (!subject.trim() && !body.trim()) return;
+    setBusy(true);
+    const ok = await act(`/community/mail/${userId}`, 'POST', { subject: subject.trim(), body: body.trim() });
+    setBusy(false);
+    if (ok) { setOpen(false); setSubject(''); setBody(''); alert(T('وصلت الرسالة الرسمية لبريد العضو ✓')); }
+  };
+  return (
+    <Section title={T('رسالة رسمية (بريد شام)')}>
+      {!open ? (
+        <button type="button" onClick={() => setOpen(true)} className={`${btn} bg-amber-700 text-white`}><Mail className="h-4 w-4" />{T('إرسال رسالة رسمية للعضو')}</button>
+      ) : (
+        <div className="space-y-2">
+          <p className="text-xs text-amber-800">{T('توصل للعضو في «بريد شام» كمرسل رسمي موثّق «إدارة شام» — يُسجَّل كل إرسال في سجل المراجعة.')}</p>
+          <input className={input} value={subject} onChange={(e) => setSubject(e.target.value)} placeholder={T('الموضوع')} maxLength={190} />
+          <textarea className={`${input} min-h-28`} value={body} onChange={(e) => setBody(e.target.value)} placeholder={T('نص الرسالة…')} maxLength={8000} />
+          <div className="flex gap-2">
+            <button type="button" disabled={busy || (!subject.trim() && !body.trim())} onClick={() => void submit()} className={`${btn} bg-amber-700 text-white`}>{busy && <Loader2 className="h-4 w-4 animate-spin" />}{T('إرسال')}</button>
+            <button type="button" onClick={() => setOpen(false)} className={`${btn} bg-stone-100`}>{T('إلغاء')}</button>
+          </div>
+        </div>
+      )}
+    </Section>
+  );
+}

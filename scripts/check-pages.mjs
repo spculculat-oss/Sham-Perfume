@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { access, readFile } from 'node:fs/promises';
 
-const output = new URL('../docs/', import.meta.url);
+const output = new URL('../pages-dist/', import.meta.url);
 const base = process.env.PAGES_BASE_PATH || '/Sham-Perfume/';
 const html = await readFile(new URL('index.html', output), 'utf8');
 const fallback = await readFile(new URL('404.html', output), 'utf8');

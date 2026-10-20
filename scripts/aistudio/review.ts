@@ -35,7 +35,7 @@ export interface IntakeFile {
 
 export const DEFAULT_AUTHORS = ['s.p.culculat@gmail.com'];
 /** Paths whose deletion breaks the server, the bots or the safety net. */
-const PROTECTED = /^(server\/|\.github\/|scripts\/|tests\/|src\/community\/|src\/admin\/|src\/updates\/|vercel\.json$|package\.json$|bun\.lock$|index\.html$|vite\.config\.)/;
+const PROTECTED = /^(server\/|\.github\/|scripts\/|tests\/|docs\/legal\/|src\/community\/|src\/admin\/|src\/updates\/|vercel\.json$|package\.json$|bun\.lock$|index\.html$|vite\.config\.)/;
 /** Public payment test cards (Stripe, Kashier, Visa/Mastercard docs) — fine to appear in code. */
 const TEST_CARDS = new Set(['4242424242424242', '4000056655665556', '5555555555554444', '4111111111111111', '4012000033330026', '5123450000000008',
   '4508750015741019', '378282246310005', '6011111111111117', '5200828282828210', '4000000000000002', '4012888888881881']);
@@ -171,7 +171,8 @@ function addedLines(git: Git, sha: string): { file: string; line: string }[] {
   return out;
 }
 
-const isGenerated = (p: string) => /^(docs\/|src\/data\/live\/|public\/p\/)/.test(p);
+// docs/ holds only the hand-written legal and design documents now (the Pages build went to pages-dist/).
+const isGenerated = (p: string) => /^(docs\/(?!legal\/|design\/)|pages-dist\/|src\/data\/live\/|public\/p\/)/.test(p);
 
 /** Everything the intake checks in one AI Studio commit (the whole-site checks come separately). */
 export function reviewCommit(git: Git, c: CommitMeta): Omit<CommitReview, 'verdict'> {

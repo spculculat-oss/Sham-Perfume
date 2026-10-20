@@ -1,5 +1,6 @@
 import type { SupportedLanguage } from '../types/i18n';
 import { LOCALE_MAP } from './localize';
+import { aiStore } from './aiPacks';
 import { STORE_TEXT_BASE } from './storeL10nBase';
 import { STORE_TEXT_WAVES } from './storeL10nExt';
 import {
@@ -81,8 +82,12 @@ export function fillStoreVars(text: string, vars?: StoreVars): string {
 /** One string of the store, already substituted and already resolved. */
 export function storeText(lang: SupportedLanguage, key: StoreTextKey, vars?: StoreVars): string {
   const own = STORE_TEXT.get(lang)?.[key];
-  if (own) return fillStoreVars(own, vars);
   const english = STORE_TEXT.get('en')?.[key];
+  // Hand-made text first (unless it is a copy of the English), then the language agent's translation.
+  if (own && (lang === 'en' || own !== english)) return fillStoreVars(own, vars);
+  const ai = aiStore(lang, key);
+  if (ai) return fillStoreVars(ai, vars);
+  if (own) return fillStoreVars(own, vars);
   if (english && lang !== 'en') return fillStoreVars(english, vars);
   const arabic = STORE_TEXT.get('ar')?.[key];
   if (arabic) return fillStoreVars(arabic, vars);

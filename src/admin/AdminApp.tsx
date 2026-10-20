@@ -17,6 +17,7 @@ import SeoPanel from './SeoPanel';
 import CommunityPanel from './CommunityPanel';
 import ShaheenGrowthPanel from './ShaheenGrowthPanel';
 import ShaheenOrgPanel from './ShaheenOrgPanel';
+import ShaheenPatrolPanel from './ShaheenPatrolPanel';
 import ShaheenCouncilPanel from './ShaheenCouncilPanel';
 import { ErrorBoundary } from '../utils/lazyRetry';
 import type {
@@ -42,7 +43,7 @@ interface FeedbackItem { conversationId: string; messageId?: string; rating: 'up
 
 const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'overview', label: T('نظرة عامة'), icon: <LayoutDashboard className="w-4 h-4" /> },
-  { id: 'finance', label: T('الإدارة المالية'), icon: <ClipboardList className="w-4 h-4" /> },
+  { id: 'finance', label: T('بنك شام والمالية'), icon: <ClipboardList className="w-4 h-4" /> },
   { id: 'community', label: T('المجتمع'), icon: <Users className="w-4 h-4" /> },
   { id: 'contracts', label: T('التعاقدات'), icon: <Handshake className="w-4 h-4" /> },
   { id: 'agent', label: T('المساعد الإداري'), icon: <Wand2 className="w-4 h-4" /> },
@@ -66,11 +67,11 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
 const STATUS: Record<RequestStatus, string> = reactiveMap(() => ({ new: T('جديد'), in_progress: T('قيد التنفيذ'), quoted: T('عرض سعر'), confirmed: T('مؤكد'), completed: T('مكتمل'), cancelled: T('ملغي') }));
 const TYPE: Record<string, string> = reactiveMap(() => ({ order: T('طلب متجر'), custom_formula: T('عطر مخصص'), b2b_quote: T('عرض جملة'), consultation: T('استشارة'), support: T('دعم'), service: T('خدمة') }));
 const INTENT: Record<string, string> = reactiveMap(() => ({ greeting: T('تحية'), thanks: T('شكر'), list_services: T('عرض الخدمات'), track_order: T('تتبع'), browse_products: T('تصفح منتجات'), service_request: T('طلب خدمة'), handoff: T('تحويل لموظف'), calculate: T('حساب'), perfume_expert: T('سؤال خبير'), question: T('سؤال عام'), memory_view: T('عرض الذاكرة'), forget: T('حذف البيانات') }));
-const ENGINE_LABEL: Record<string, string> = reactiveMap(() => ({ self_hosted: T('نموذج مفتوح مستضاف ذاتياً'), gemini: 'Gemini', openai: 'OpenAI', claude: 'Claude', deepseek: 'DeepSeek', openrouter: 'OpenRouter', sham_local: T('محرك شام الذاتي'), human: T('موظف'), system: T('النظام') }));
+const ENGINE_LABEL: Record<string, string> = reactiveMap(() => ({ self_hosted: T('نموذج مفتوح مستضاف ذاتياً'), gemini: 'Gemini', openai: 'OpenAI', claude: 'Claude', deepseek: 'DeepSeek', openrouter: 'OpenRouter', perplexity: 'Perplexity', sham_local: T('محرك شام الذاتي'), human: T('موظف'), system: T('النظام') }));
 
 const COUNCIL_ROLE: Record<CouncilRole, string> = reactiveMap(() => ({ formulator: T('خبير التركيب والمواد'), commercial: T('المستشار التجاري'), safety: T('مراجع السلامة والجودة'), customer: T('صوت العميل'), general: T('مستشار عام') }));
 const COUNCIL_INTENTS = ['perfume_expert', 'question', 'service_request', 'browse_products', 'list_services'];
-const MODEL_ENGINES: ModelEngineId[] = ['self_hosted', 'gemini', 'openai', 'claude', 'deepseek', 'openrouter'];
+const MODEL_ENGINES: ModelEngineId[] = ['self_hosted', 'gemini', 'openai', 'claude', 'deepseek', 'openrouter', 'perplexity'];
 
 const card = 'rounded-2xl border border-stone-200 bg-white p-4 shadow-sm';
 const input = 'w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400';
@@ -163,7 +164,7 @@ export default function AdminApp() {
           {tab === 'design' && <DesignStudioPanel />}
           {tab === 'emails' && <EmailsPanel />}
           {tab === 'doctor' && <DoctorPanel />}
-          {tab === 'supervisor' && <><ShaheenOrgPanel /><ShaheenCouncilPanel /><SupervisorPanel /></>}
+          {tab === 'supervisor' && <><ShaheenOrgPanel /><ShaheenPatrolPanel /><ShaheenCouncilPanel /><SupervisorPanel /></>}
           {tab === 'seo' && <SeoPanel />}
           {tab === 'sandbox' && <SandboxPanel />}
           {tab === 'updates' && <UpdatesPanel />}
@@ -784,6 +785,7 @@ function EmailsPanel() {
               ? T('✅ متصل ومفعل لإرسال الرسائل الحقيقية للعملاء')
               : T('⚡ يعمل في وضع المحاكاة الآمنة والتدقيق الداخلي (دون استهلاك رصيد خارجي)')}
           </p>
+          {!overview?.emailNotifications?.configured && <p className="text-[11px] text-amber-800 mt-2">{T('مجاناً: اعمل «كلمة مرور تطبيق» من حساب جوجل بتاع جيميل المتجر، وحطها بنفسك كسر GitHub باسم SHAM_GMAIL_APP_PASSWORD.')}</p>}
         </div>
 
         <div className={card}>
@@ -1355,7 +1357,19 @@ function EnginesPanel() {
   );
 }
 
-interface SettingsView { item: CoreSettings; engines: EngineStatus[]; shaheen: { source: 'admin' | 'file'; defaults: ShaheenSettings }; storage: { kind: string; persistent: boolean; error?: string } }
+interface EngineHealthView { state: 'ok' | 'parked' | 'failing'; failures: number; reason?: string; parkedUntil?: string; lastOkAt?: string }
+const HEALTH_REASON: Record<string, string> = reactiveMap(() => ({
+  invalid_key: T('المفتاح مرفوض أو منتهي'),
+  no_credit: T('الرصيد أو الحصة خلصت'),
+  region_blocked: T('الخدمة مقفولة في منطقة الخادم'),
+  model_not_found: T('اسم النموذج غير متاح'),
+  rate_limited: T('طلبات كتير — المزوّد طلب مهلة'),
+  bad_request: T('المزوّد رفض صيغة الطلب'),
+  upstream_error: T('عطل عند المزوّد'),
+  timeout: T('انتهت المهلة'),
+  empty: T('رد فارغ'),
+}));
+interface SettingsView { health?: Record<string, EngineHealthView>; item: CoreSettings; engines: EngineStatus[]; shaheen: { source: 'admin' | 'file'; defaults: ShaheenSettings }; storage: { kind: string; persistent: boolean; error?: string } }
 interface ProbeResult { id: ModelEngineId; name: string; model: string; configured: boolean; ok: boolean; ms: number; error?: string; detail?: string; usedModel?: string }
 const PROBE_ERROR: Record<string, string> = reactiveMap(() => ({
   not_configured: T('غير مهيأ — لا يوجد مفتاح/عنوان في متغيرات الخادم'),
@@ -1380,11 +1394,14 @@ function ShaheenPanel() {
   const [probe, setProbe] = useState<ProbeResult[] | null>(null);
   const [probing, setProbing] = useState(false);
   const [showConfig, setShowConfig] = useState(false);
+  const [liveHealth, setLiveHealth] = useState<Record<string, EngineHealthView> | null>(null);
   useEffect(() => { if (data) setForm(data.item.shaheen); }, [data]);
   if (!form || !data) return <><Header title={T('الخبير شاهين')} /><Feedback error={error} loading={loading} /></>;
 
   const set = (patch: Partial<ShaheenSettings>) => setForm({ ...form, ...patch });
   const status = (id: string) => data.engines.find((e) => e.id === id);
+  const healthOf = (id: string) => (liveHealth || data.health || {})[id];
+  const clock = (iso?: string) => (iso ? new Date(iso).toLocaleTimeString(adminLocale(), { hour: '2-digit', minute: '2-digit' }) : '');
   const allowed = form.engines;
   const all: ModelEngineId[] = [...allowed, ...MODEL_ENGINES.filter((id) => !allowed.includes(id))];
   const move = (id: ModelEngineId, delta: number) => {
@@ -1405,7 +1422,10 @@ function ShaheenPanel() {
   };
   const runProbe = async () => {
     setProbing(true); setProbe(null); setMessage('');
-    try { setProbe((await adminRequest<{ results: ProbeResult[] }>('/shaheen/test', send('POST', {}))).results); }
+    try {
+      const out = await adminRequest<{ results: ProbeResult[]; health?: Record<string, EngineHealthView> }>('/shaheen/test', send('POST', {}));
+      setProbe(out.results); if (out.health) setLiveHealth(out.health);
+    }
     catch (e) { setMessage((e as Error).message); } finally { setProbing(false); }
   };
   const dirty = JSON.stringify(form) !== JSON.stringify(data.item.shaheen);
@@ -1435,6 +1455,7 @@ function ShaheenPanel() {
             </p>
             <h2 className="font-bold text-sm">{T('المحركات وترتيب «تلقائي»')}</h2>
             <p className="text-[11px] text-stone-500">{T('«تلقائي» يجرّب المحركات بالترتيب ده ويتخطى غير المهيأ أو اللي فشل. المحرك غير المسموح يختفي من واجهة الزوار. المفاتيح تُضبط في متغيرات الخادم فقط.')}</p>
+            <p className="text-[11px] text-stone-500">{T('المحرك اللي بيفشل بيتأجل تلقائياً (المفتاح المرفوض نص ساعة، الرصيد الخلصان لحد التجديد، الزحمة دقيقة) ويتجرب تاني لوحده بعد المهلة — وأول رد ناجح يرجّعه مكانه. زر «اختبار الاتصال» يحدّث الحالة فوراً.')}</p>
             {all.map((id) => {
               const on = allowed.includes(id); const st = status(id);
               return (
@@ -1443,6 +1464,14 @@ function ShaheenPanel() {
                   <div className="min-w-0 space-y-1">
                     <p className="text-sm font-semibold">{ENGINE_LABEL[id]} {on && <span className="text-[10px] font-bold text-amber-800">#{allowed.indexOf(id) + 1}</span>}</p>
                     <p className={`text-[11px] ${st?.configured ? 'text-emerald-700' : 'text-stone-400'}`}>{st?.configured ? T('مهيأ على الخادم') : id === 'self_hosted' ? T('غير مهيأ — اضبط SHAM_LLM_BASE_URL') : T('غير مهيأ — لا يوجد مفتاح')}</p>
+                    {st?.configured && (() => {
+                      const h = healthOf(id);
+                      const why = h?.reason ? HEALTH_REASON[h.reason] || h.reason : '';
+                      if (!h) return <p className="text-[11px] text-stone-400">{T('لسه ما اتجربش من آخر تشغيل للخادم')}</p>;
+                      if (h.state === 'parked') return <p className="text-[11px] font-semibold text-amber-800">{TP('⏸️ متأجل تلقائياً لحد {time} ({reason}) — شاهين بيرد من المحركات الشغالة', { time: clock(h.parkedUntil), reason: why })}</p>;
+                      if (h.state === 'failing') return <p className="text-[11px] text-amber-700">{TP('⚠️ فشل آخر مرة ({reason}) — هيتأجل لو فشل تاني', { reason: why })}</p>;
+                      return <p className="text-[11px] text-emerald-700">{TP('✅ شغال — آخر رد ناجح {time}', { time: clock(h.lastOkAt) })}</p>;
+                    })()}
                     <input className={`${input} py-1 text-xs`} dir="ltr" aria-label={TP('نموذج {engine}', { engine: ENGINE_LABEL[id] })} placeholder={TP('افتراضي: {model}', { model: st?.model || 'model' })}
                       value={form.models[id] || ''} onChange={(e) => {
                         const models = { ...form.models };

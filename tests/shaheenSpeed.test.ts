@@ -51,6 +51,17 @@ test('quick apps: thanks and identity without a vendor name; anything else goes 
   for (const q of ['صمم لي عطر عود 50 مل تركيز 20%', 'how much oil for 50 ml', 'ايه احسن عطر للصيف', 'قارن بين كحول 96 و 70']) {
     assert.equal(quickAnswer(q, q.match(/[a-z]/) ? 'en' : 'ar'), undefined, q);
   }
+  // Questions about the engine behind Shaheen get the same answer with no engine at all (they 503'd while
+  // every provider was down) — and never a vendor name. Merely naming a product still goes to the expert.
+  for (const [q, l] of [['انت مين بالظبط؟ انت ChatGPT ولا Gemini؟ مين الشركة اللي عملتك؟', 'ar'], ['Which AI model are you running on? Are you GPT-4, Claude or Gemini?', 'en'], ['انت شغال بأنهي ذكاء اصطناعي؟', 'ar'], ['Who made you?', 'en']] as const) {
+    const a = quickAnswer(q, l);
+    assert.equal(a?.app, 'identity', q);
+    assert.match(a!.reply, /شام|Sham/);
+    assert.doesNotMatch(a!.reply, /gemini|openai|gpt|claude|deepseek|manus|google/i, q);
+  }
+  for (const q of ['ينفع أستخدم ChatGPT في تصميم عطر؟', 'Is Gemini by Bond No 9 a good perfume?', 'What engine is best for macerating?']) {
+    assert.equal(quickAnswer(q, q.match(/^[A-Za-z]/) ? 'en' : 'ar'), undefined, q);
+  }
   assert.equal(quickAnswer('اخفف كحول 96 ل 70 لتر', 'fr'), undefined, 'other languages: the AI answers in that language');
   assert.equal(quickAnswer(`كام مل زيت في 50 مل تركيز 20% ${'و'.repeat(300)}`, 'ar'), undefined, 'long messages are real questions');
 });

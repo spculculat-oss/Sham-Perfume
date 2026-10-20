@@ -176,7 +176,7 @@ export const Header: React.FC<HeaderProps> = ({
       label: t('nav_community_short', currentLang, currentLang === 'ar' ? 'المجتمع' : 'Community'),
       fullLabel: t('nav_community', currentLang, currentLang === 'ar' ? 'مجتمع شام — السوشيال والماسنجر وبوابات الأعضاء والتجار' : 'Sham Community — social, messenger, member and merchant portals'),
       icon: Users,
-      iconColor: 'text-rose-500',
+      iconColor: 'text-rose-600',
     },
     {
       id: 'store',
@@ -199,21 +199,21 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <>
     <header ref={appHeaderRef} className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 px-3 sm:px-8 py-2.5 no-print shadow-xs">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-1 sm:gap-4">
+      <div className="max-w-7xl min-[1700px]:max-w-[1640px] min-[2000px]:max-w-[1900px] mx-auto flex items-center justify-between gap-2 sm:gap-4">
         
         {/* Zone 1: Brand wordmark: صمم عطرك مع شام */}
-        <div className="flex items-center gap-2 sm:gap-3 min-w-0 sm:shrink-0">
-          <div className="w-9 h-9 shrink-0 rounded-xl bg-gradient-to-br from-stone-900 to-amber-950 text-amber-400 flex items-center justify-center font-serif-luxury font-bold text-lg shadow-md border border-amber-600/30">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div role="button" tabIndex={0} onClick={() => setActiveTab('home')} onKeyDown={(e) => { if (e.key === 'Enter') setActiveTab('home'); }} aria-label={t('brand_name', currentLang)} className="cursor-pointer w-9 h-9 shrink-0 rounded-xl bg-gradient-to-br from-stone-900 to-amber-950 text-amber-400 flex items-center justify-center font-serif-luxury font-bold text-lg shadow-md border border-amber-600/30">
             شام
           </div>
           <button 
             onClick={() => setActiveTab('home')}
-            className="text-start flex flex-col items-start cursor-pointer group min-w-0"
+            className="text-right hidden md:flex flex-col items-start cursor-pointer group min-w-0 max-w-[180px] min-[1700px]:max-w-none"
           >
             <span className="max-w-full truncate text-[15px] sm:text-lg font-extrabold tracking-tight text-stone-950 group-hover:text-amber-800 transition-colors font-serif-luxury">
               {t('brand_name', currentLang)}
             </span>
-            <span className="text-[10px] text-amber-700 font-medium hidden sm:inline whitespace-nowrap">
+            <span className="text-[10px] text-amber-700 font-medium hidden min-[1700px]:inline whitespace-nowrap">
               {t('brand_subtitle', currentLang)}
             </span>
           </button>
@@ -226,7 +226,7 @@ export const Header: React.FC<HeaderProps> = ({
               title={L('home_tooltip')}
             >
               <Home className="w-3.5 h-3.5 text-amber-300" />
-              <span className="hidden sm:inline text-[11px]">{L('home_btn')}</span>
+              <span className="hidden min-[1700px]:inline text-[11px]">{L('home_btn')}</span>
             </button>
           )}
         </div>
@@ -243,11 +243,18 @@ export const Header: React.FC<HeaderProps> = ({
                   key={group.id}
                   type="button"
                   onClick={() => {
+                    if (group.id === 'community') {
+                      window.location.hash = '#community';
+                    }
                     setActiveTab(group.id);
                     setOpenDropdownId(null);
                   }}
-                  className={`transition-all py-1.5 px-2.5 rounded-lg flex items-center gap-1.5 cursor-pointer ${
-                    (activeTab === group.id || activeTab.startsWith(`${group.id}/`))
+                  className={`transition-all py-1.5 px-2.5 rounded-xl flex items-center gap-1.5 cursor-pointer ${
+                    group.id === 'community'
+                      ? (activeTab === 'community' || activeTab.startsWith('community/'))
+                        ? 'bg-rose-900 text-white font-bold shadow-xs border border-rose-800'
+                        : 'bg-rose-50/80 hover:bg-rose-100 text-rose-950 font-bold border border-rose-200/80 hover:border-rose-300'
+                      : (activeTab === group.id || activeTab.startsWith(`${group.id}/`))
                       ? 'text-stone-950 font-bold bg-stone-100 shadow-2xs border border-stone-200/80'
                       : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50'
                   }`}
@@ -255,7 +262,19 @@ export const Header: React.FC<HeaderProps> = ({
                   aria-label={group.fullLabel}
                   aria-current={activeTab === group.id || activeTab.startsWith(`${group.id}/`) ? 'page' : undefined}
                 >
-                  <group.icon className={`w-4.5 h-4.5 ${group.iconColor} shrink-0`} />
+                  <group.icon className={`w-4 h-4 ${group.id === 'community' && (activeTab === 'community' || activeTab.startsWith('community/')) ? 'text-amber-300' : group.iconColor} shrink-0`} />
+                  <span className={`text-xs ${group.id === 'community' ? 'font-black' : 'hidden min-[1700px]:inline font-semibold'}`}>
+                    {group.label}
+                  </span>
+                  {group.id === 'community' && (
+                    <span className={`hidden min-[1700px]:inline px-1.5 py-0.5 rounded-full text-[9px] font-black ${
+                      (activeTab === 'community' || activeTab.startsWith('community/'))
+                        ? 'bg-rose-800 text-white'
+                        : 'bg-rose-600 text-white animate-pulse'
+                    }`}>
+                      {currentLang === 'ar' ? 'سوشيال' : 'Social'}
+                    </span>
+                  )}
                 </button>
               ) : (
                 <div key={group.id} className="relative" data-nav-group="true">
@@ -274,8 +293,8 @@ export const Header: React.FC<HeaderProps> = ({
                     aria-controls={openDropdownId === group.id ? `desktop-nav-menu-${group.id}` : undefined}
                   >
                     <group.icon className={`w-4.5 h-4.5 ${group.iconColor} shrink-0`} />
-                    <span className="text-xs font-semibold text-stone-800">{group.label}</span>
-                    <span className="px-1 py-0 rounded-full bg-amber-700 text-white text-[9px] font-bold leading-none">
+                    <span className="hidden min-[1700px]:inline text-xs font-semibold text-stone-800">{group.label}</span>
+                    <span className="px-1 py-0 rounded-full bg-amber-500 text-white text-[9px] font-bold leading-none">
                       {group.items?.length}
                     </span>
                     <ChevronDown className={`w-3 h-3 text-stone-600 ms-0.5 shrink-0 transition-transform duration-200 ${openDropdownId === group.id ? 'rotate-180' : ''}`} />
@@ -286,7 +305,7 @@ export const Header: React.FC<HeaderProps> = ({
                         <div className="flex items-center gap-2">
                           <div className={`w-2 h-2 rounded-full ${group.iconColor?.replace('text-emerald-500', 'bg-emerald-500').replace('text-amber-700', 'bg-amber-500').replace('text-amber-600', 'bg-amber-500')}`}></div>
                           <span className="text-xs font-bold text-amber-900">{group.fullLabel}</span>
-                          <span className="px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-700 text-[10px] font-medium border border-amber-500/30">
+                          <span className="px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-700 text-[10px] font-medium border border-amber-500/30">
                             {group.items?.length} {uiLabel('unit_tools', currentLang)}
                           </span>
                         </div>
@@ -317,7 +336,7 @@ export const Header: React.FC<HeaderProps> = ({
                               <span className="text-sm font-medium truncate">{item.fullLabel}</span>
                             </div>
                             {item.isNew && (
-                              <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30 shrink-0">
+                              <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30 shrink-0">
                                 NEW
                               </span>
                             )}
@@ -362,7 +381,7 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="text-base leading-none">
               {currentEnvironment.countryFlag || '🌍'}
             </span>
-            <span className="hidden lg:inline truncate max-w-[120px] font-bold">
+            <span className="hidden min-[2000px]:inline truncate max-w-[120px] font-bold">
               {pickArEn(currentLang, currentEnvironment.countryNameAr, currentEnvironment.countryNameEn).split('(')[0].trim()}
             </span>
             <span className="hidden sm:inline-flex px-1.5 py-0.5 rounded bg-amber-200/80 text-[10px] font-mono font-bold text-amber-950">
@@ -373,12 +392,12 @@ export const Header: React.FC<HeaderProps> = ({
           {/* 3. Data Privacy & GDPR Button */}
           <button
             onClick={onOpenPrivacyModal}
-            className="p-1.5 sm:px-2 sm:py-1.5 rounded-lg border border-stone-200 hover:bg-stone-100 text-stone-600 text-xs transition-all shadow-2xs cursor-pointer flex items-center gap-1"
+            className="hidden sm:flex p-1.5 sm:px-2 sm:py-1.5 rounded-lg border border-stone-200 hover:bg-stone-100 text-stone-600 text-xs transition-all shadow-2xs cursor-pointer items-center gap-1"
             title={L('privacy_tooltip')}
             aria-label={L('privacy_btn')}
           >
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span className="hidden lg:inline text-[11px] font-medium">{L('privacy_btn')}</span>
+            <span className="hidden min-[2000px]:inline text-[11px] font-medium">{L('privacy_btn')}</span>
           </button>
 
           {/* 4. User Profile & Login System */}
@@ -395,8 +414,8 @@ export const Header: React.FC<HeaderProps> = ({
                 <div className="w-5 h-5 rounded-full bg-amber-500 text-stone-950 flex items-center justify-center font-bold text-[10px]">
                   {currentUser.name.slice(0, 1)}
                 </div>
-                <span className="hidden sm:inline truncate max-w-[90px]">{currentUser.name}</span>
-                <ChevronDown className="w-3 h-3 text-stone-200" />
+                <span className="hidden min-[1700px]:inline truncate max-w-[90px]">{currentUser.name}</span>
+                <ChevronDown className="w-3 h-3 text-stone-400" />
               </button>
 
               {isUserMenuOpen && (
@@ -411,6 +430,15 @@ export const Header: React.FC<HeaderProps> = ({
                   </div>
 
                   <div className="py-1">
+                    {/* Phones: the green «حسابي» button is hidden in the bar to make room, so it lives here. */}
+                    <button
+                      type="button"
+                      onClick={() => { setIsUserMenuOpen(false); onOpenProfilePage(); }}
+                      className="sm:hidden w-full px-4 py-2 text-right hover:bg-stone-50 flex items-center gap-2 font-semibold text-emerald-800 cursor-pointer"
+                    >
+                      <User className="w-4 h-4" />
+                      <span>{L('profile_btn')}</span>
+                    </button>
                     <button
                       onClick={() => {
                         setIsUserMenuOpen(false);
@@ -485,7 +513,7 @@ export const Header: React.FC<HeaderProps> = ({
               aria-label={uiLabel('admin_panel_title', currentLang)}
             >
               <Shield className="w-3.5 h-3.5 text-purple-200" />
-              <span className="hidden xl:inline">{uiLabel('admin_panel', currentLang)}</span>
+              <span className="hidden min-[2000px]:inline">{uiLabel('admin_panel', currentLang)}</span>
             </button>
           )}
 
@@ -497,7 +525,7 @@ export const Header: React.FC<HeaderProps> = ({
             aria-label={L('print_tooltip')}
           >
             <Printer className="w-3.5 h-3.5 text-amber-700" />
-            <span className="hidden xl:inline">{L('print_btn')}</span>
+            <span className="hidden min-[2000px]:inline">{L('print_btn')}</span>
           </button>
 
           {/* 5. My Profile Button - Personal page shortcut */}
@@ -509,7 +537,7 @@ export const Header: React.FC<HeaderProps> = ({
               aria-label={L('profile_tooltip')}
             >
               <User className="w-3.5 h-3.5 text-white" />
-              <span className="hidden xl:inline">{L('profile_btn')}</span>
+              <span className="hidden min-[2000px]:inline">{L('profile_btn')}</span>
             </button>
           )}
 
@@ -529,24 +557,37 @@ export const Header: React.FC<HeaderProps> = ({
           {navGroups.map((group) => {
             if (group.type === 'single') {
               const isActive = activeTab === group.id || activeTab.startsWith(`${group.id}/`);
+              const isCommunity = group.id === 'community';
               return (
                 <button
                   key={group.id}
                   type="button"
                   onClick={() => {
+                    if (isCommunity) {
+                      window.location.hash = '#community';
+                    }
                     setActiveTab(group.id);
                     setOpenDropdownId(null);
                   }}
                   className={`whitespace-nowrap px-3 py-1.5 rounded-lg flex items-center gap-1.5 shrink-0 cursor-pointer transition-colors ${
-                    isActive
+                    isCommunity
+                      ? isActive
+                        ? 'bg-rose-900 text-white font-bold shadow-xs'
+                        : 'bg-rose-50 text-rose-950 font-bold border border-rose-200'
+                      : isActive
                       ? 'bg-amber-900 text-white font-bold shadow-xs'
                       : 'text-stone-700 hover:text-stone-900 bg-stone-100/90 font-medium'
                   }`}
                   title={group.fullLabel}
                   aria-current={isActive ? 'page' : undefined}
                 >
-                  <group.icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-amber-300' : group.iconColor}`} />
-                  <span className="text-xs">{group.label}</span>
+                  <group.icon className={`w-3.5 h-3.5 shrink-0 ${isCommunity ? (isActive ? 'text-amber-300' : 'text-rose-600') : (isActive ? 'text-amber-300' : group.iconColor)}`} />
+                  <span className="text-[11px]">{group.label}</span>
+                  {isCommunity && (
+                    <span className="px-1.5 py-0.5 rounded-full bg-rose-600 text-white text-[9px] font-bold">
+                      {currentLang === 'ar' ? 'سوشيال' : 'Social'}
+                    </span>
+                  )}
                 </button>
               );
             }
@@ -593,7 +634,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <div className="flex items-center gap-2">
                   <activeGroup.icon className={`w-4 h-4 ${activeGroup.iconColor}`} />
                   <span className="text-xs font-bold text-amber-950">{activeGroup.fullLabel}</span>
-                  <span className="px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30">
+                  <span className="px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-800 text-[10px] font-bold border border-amber-500/30">
                     {activeGroup.items?.length} {uiLabel('unit_tools', currentLang)}
                   </span>
                 </div>
@@ -625,7 +666,7 @@ export const Header: React.FC<HeaderProps> = ({
                       <span className="text-xs truncate">{item.fullLabel}</span>
                     </div>
                     {item.isNew && (
-                      <span className="px-1.5 py-0.2 rounded bg-amber-700 text-white text-[9px] font-bold shrink-0">
+                      <span className="px-1.5 py-0.5 rounded bg-amber-500 text-white text-[9px] font-bold shrink-0">
                         NEW
                       </span>
                     )}

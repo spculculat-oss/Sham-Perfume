@@ -1,7 +1,7 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-10-20T20:54:04.987Z",
+  "updatedAt": "2026-10-20T22:06:27.370Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
@@ -11,6 +11,156 @@
   "languageClamps": [],
   "score": 100,
   "notes": [
-    "اللغات سليمة: الحزم مكتملة، والأرقام تتبع لغة الموقع في كل واجهات الزوار."
-  ]
+    "اللغات سليمة: الحزم مكتملة، والأرقام تتبع لغة الموقع في كل واجهات الزوار.",
+    "المترجم الذكي: 145415 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 1691 — النهارده اتترجم 0 (متوقف بقرار الإعدادات).",
+    "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «Live Sync» src/components/HomeHub.tsx:139، «Enter Portal» src/components/HomeHub.tsx:142، «Master Perfumer AI Chatbot» src/components/PerfumerAIChatbot.tsx:66.",
+    "لغات بلّغ عنها قسم التصميم بتتترجم الأول: is، sq، ps."
+  ],
+  "translation": {
+    "at": "2026-10-20T22:06:27.760Z",
+    "status": "off",
+    "remaining": 145415,
+    "covered": 1691,
+    "remainingByTier": {
+      "1": 17538,
+      "2": 96467,
+      "3": 31410
+    },
+    "worstLanguages": [
+      {
+        "lang": "my",
+        "remaining": 1617
+      },
+      {
+        "lang": "dz",
+        "remaining": 1617
+      },
+      {
+        "lang": "ms",
+        "remaining": 1615
+      },
+      {
+        "lang": "cs",
+        "remaining": 1615
+      },
+      {
+        "lang": "ur",
+        "remaining": 1615
+      },
+      {
+        "lang": "am",
+        "remaining": 1615
+      },
+      {
+        "lang": "ha",
+        "remaining": 1615
+      },
+      {
+        "lang": "yo",
+        "remaining": 1615
+      }
+    ],
+    "run": {
+      "calls": 0,
+      "translated": 0,
+      "rejected": 0,
+      "droppedByReview": 0,
+      "reviewed": false,
+      "engines": [],
+      "languages": []
+    },
+    "rejectReasons": {},
+    "rejectCounts": {
+      "is|ui|e10dbc6c3b": 2,
+      "fr|ui|e10dbc6c3b": 2,
+      "it|ui|e10dbc6c3b": 2,
+      "pt|ui|e10dbc6c3b": 1,
+      "sq|store|0e3e4bc526": 1,
+      "ps|store|0e3e4bc526": 1,
+      "ps|store|49b6a75863": 1,
+      "ja|ui|5aa07bae7c": 1,
+      "ja|store|108d413403": 1,
+      "ja|store|ed2462ffb7": 1,
+      "ja|store|1e30ab8f96": 1,
+      "ja|store|4388f0b476": 1,
+      "ja|store|968764dc92": 1,
+      "ko|ui|3a3552eece": 1,
+      "ko|ui|5aa07bae7c": 1,
+      "ko|store|108d413403": 1,
+      "ko|store|4ae854d3d5": 1,
+      "ko|store|e1a7839f8d": 1,
+      "ko|store|4449faed18": 1,
+      "ko|store|fb6eaae88b": 1,
+      "ko|store|18bc8fbc12": 1
+    }
+  },
+  "design": {
+    "at": "2026-10-20T22:06:27.370Z",
+    "auditAt": "2026-10-17T06:42:21.663Z",
+    "auditScore": 62,
+    "priorityLanguages": [
+      "is",
+      "sq",
+      "ps"
+    ],
+    "located": [
+      {
+        "phrase": "Live Sync",
+        "file": "src/components/HomeHub.tsx",
+        "line": 139
+      },
+      {
+        "phrase": "Enter Portal",
+        "file": "src/components/HomeHub.tsx",
+        "line": 142
+      },
+      {
+        "phrase": "Master Perfumer AI Chatbot",
+        "file": "src/components/PerfumerAIChatbot.tsx",
+        "line": 66
+      }
+    ],
+    "unlocated": [
+      "SCENT STUDIO",
+      "Shop this scent",
+      "Anatolia Absolus Les Extraits"
+    ],
+    "physicalDirection": {
+      "total": 282,
+      "top": [
+        {
+          "file": "src/components/AuthModal.tsx",
+          "count": 36
+        },
+        {
+          "file": "src/components/WorldPerfumeNews.tsx",
+          "count": 22
+        },
+        {
+          "file": "src/components/AdminMerchantManagement.tsx",
+          "count": 20
+        },
+        {
+          "file": "src/components/CountryAndAddressModal.tsx",
+          "count": 20
+        },
+        {
+          "file": "src/components/CostCalculator.tsx",
+          "count": 17
+        },
+        {
+          "file": "src/components/ConcentrationCalculator.tsx",
+          "count": 16
+        },
+        {
+          "file": "src/components/FragrancePyramidGraphic.tsx",
+          "count": 11
+        },
+        {
+          "file": "src/components/LanguageSelector.tsx",
+          "count": 10
+        }
+      ]
+    }
+  }
 }

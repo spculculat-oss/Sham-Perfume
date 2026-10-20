@@ -128,14 +128,37 @@ function unitsApp(text: string, lang: Lang): QuickAnswer | undefined {
 const THANKS = /^(?:شكرا|شكراً|شكرًا|متشكر|متشكرة|متشكرين|تسلم|تسلمي|تسلم ايدك|تسلم إيدك|ميرسي|مرسي|الف شكر|ألف شكر|جزاك الله خير[اً]?|thanks?|thank you|thx|merci)(?:\s+(?:يا\s*)?(?:شاهين|جدا|جداً|كتير|ليك|لك|so much|a lot|shaheen))*[\s!.؟?❤️🙏🌹]*$/i;
 const IDENTITY = /^(?:(?:انت|إنت|أنت|انتا)\s+(?:مين|مين؟|ايه|إيه|بتعمل ايه)|مين\s+(?:انت|إنت|أنت)|من\s+(?:انت|أنت)|عرفني بنفسك|who are you|what are you|what can you do)[\s؟?!.]*$/i;
 
+/** Lower-case, Arabic letter forms unified, punctuation → spaces, padded: the shape AI_IDENTITY expects. */
+const norm = (text: string) => ` ${text.toLowerCase().replace(/[\u064B-\u065F\u0670\u0640]/g, '').replace(/[إأآٱ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه')
+  .replace(/[^\p{L}\p{N}\s-]/gu, ' ').replace(/\s+/g, ' ').trim()} `;
+/**
+ * «انت [اسم منتج ذكاء اصطناعي] ولا ...؟», «مين الشركة اللي عملتك؟», "Which AI model are you running on?" — questions about
+ * what is behind Shaheen. Answered here, the same way every time and with no engine at all, so they never
+ * depend on (or reveal) a provider, and still get an answer while every engine is down. Self-reference is
+ * required: a question that merely names an AI product («ينفع أستخدم ... في التصميم؟») goes to the expert.
+ */
+const AI_IDENTITY = new RegExp([
+  ' (انت|انتي|انتا|حضرتك) (\\S+ ){0,2}(مين|بوت|روبوت|انسان|ذكاء|موديل|نموذج|محرك|chat ?gpt|gpt|gemini|claude|deepseek|copilot|openai|llama|bard)',
+  ' مين (انت|انتي|اللي (عملك|برمجك|صنعك|طورك|دربك)|عملك|برمجك|صنعك|طورك)',
+  ' (الشركه|شركه) (اللي|التي|الي) (عملتك|صنعتك|طورتك|برمجتك|دربتك)',
+  ' (بانهي|باي|انهي) (ذكاء|موديل|نموذج|محرك)',
+  ' (انت|انتي|حضرتك) (شغال|مبني|معمول|مبرمج|متدرب) (على|علي|ب)',
+  ' who (are you|made you|built you|created you|trained you|is behind you)',
+  ' (what|which) (ai|model|llm|engine|company) (are you|is this|do you|powers you|is behind|made you|built you)',
+  ' are you (an? )?(ai|bot|robot|human|gpt|chatgpt|gemini|claude|deepseek|real person)',
+  ' (running|built|based|powered) (on|by) (which|what) ',
+].join('|'));
+const UNDISCLOSED = { ar: '\n\nالنظام اللي شغّال بيه من تطوير شام، وتفاصيله التقنية مش متاحة للعرض.', en: '\n\nThe system behind me is developed by Sham; its technical details are not shared.' };
+
 function chatApp(text: string, lang: Lang): QuickAnswer | undefined {
   if (THANKS.test(text)) {
     return { app: 'thanks', reply: lang === 'ar' ? 'العفو، ده واجبي! 🌹 لو عندك أي سؤال تاني عن العطور أو التركيبات أو الحسابات أنا موجود.' : "You're welcome! 🌹 Ask me anything else about perfumes, formulas or calculations." };
   }
-  if (IDENTITY.test(text)) {
-    return { app: 'identity', reply: lang === 'ar'
+  const aboutEngine = AI_IDENTITY.test(norm(text));
+  if (IDENTITY.test(text) || aboutEngine) {
+    return { app: 'identity', reply: (lang === 'ar'
       ? 'أنا **الخبير شاهين**، خبير العطور الخاص بمنصة «صمم عطرك مع شام». أقدر أساعدك في:\n\n- تصميم تركيبة عطر بنِسب واضحة ونقلها للحاسبة\n- حسابات التركيز وتخفيف الكحول والتعتيق والتكلفة\n- شرح المواد الخام والعائلات العطرية\n- ترشيح عطور جاهزة من «متجر شام»\n\nاكتب سؤالك مباشرة.'
-      : "I'm **Master Shahin**, the perfume expert of «Design your perfume with Sham». I can help you:\n\n- design a perfume formula with clear ratios and send it to the calculator\n- calculate concentration, alcohol dilution, maceration and cost\n- explain raw materials and fragrance families\n- recommend ready perfumes from the Sham store\n\nJust ask." };
+      : "I'm **Master Shahin**, the perfume expert of «Design your perfume with Sham». I can help you:\n\n- design a perfume formula with clear ratios and send it to the calculator\n- calculate concentration, alcohol dilution, maceration and cost\n- explain raw materials and fragrance families\n- recommend ready perfumes from the Sham store\n\nJust ask.") + (aboutEngine ? UNDISCLOSED[lang] : '') };
   }
   return undefined;
 }

@@ -6,7 +6,7 @@
 import { createHmac } from 'node:crypto';
 
 type Env = Record<string, string | undefined>;
-export type NotifyEvent = 'request.created' | 'order.status_changed' | 'conversation.handoff' | 'feedback.negative' | 'order.paid' | 'finance.alert' | 'test';
+export type NotifyEvent = 'request.created' | 'order.status_changed' | 'conversation.handoff' | 'feedback.negative' | 'order.paid' | 'finance.alert' | 'finance.claim' | 'contract.approved' | 'contract.revoked' | 'test';
 
 export interface Notifier {
   readonly configured: boolean;

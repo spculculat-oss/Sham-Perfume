@@ -32,12 +32,12 @@ export const DEPARTMENTS: Department[] = [
 ];
 
 export type BotId =
-  | 'council' | 'secretary' | 'precheck' | 'finance' | 'legal'
+  | 'council' | 'secretary' | 'precheck' | 'patrol' | 'finance' | 'legal'
   | 'contracts'
   | 'scout' | 'importer' | 'images' | 'catalog' | 'product_pages' | 'store_advisor'
   | 'news' | 'seo'
   | 'chat' | 'languages' | 'design_audit' | 'design_expert' | 'visitor_tour' | 'inspect'
-  | 'school' | 'doctor' | 'verifier' | 'live_check' | 'keys' | 'intake' | 'deploy' | 'admin_agent';
+  | 'school' | 'doctor' | 'verifier' | 'live_check' | 'keys' | 'intake' | 'studio_bridge' | 'studio_zip' | 'deploy' | 'admin_agent';
 
 export interface Bot {
   id: BotId;
@@ -59,9 +59,10 @@ export interface Bot {
 
 export const BOTS: Bot[] = [
   // ── Leadership ──
-  { id: 'council', nameAr: 'مجلس شاهين (الاجتماع اليومي)', nameEn: "Shaheen's council (daily meeting)", dept: 'leadership', workflow: 'shaheen-council.yml', report: 'shaheen-council.json', everyHours: 24, aiTools: ['shaheen_council'], dutiesAr: 'يجمع رؤساء الأقسام كل يوم 9:30 الصبح، يكتب المحضر، ينفذ الآمن ويحوّل الباقي لمهام تطوير.' },
+  { id: 'council', nameAr: 'مجلس شاهين (الاجتماع اليومي)', nameEn: "Shaheen's council (daily meeting)", dept: 'leadership', workflow: 'shaheen-council.yml', report: 'shaheen-council.json', everyHours: 24, aiTools: ['shaheen_council'], dutiesAr: 'يجمع رؤساء الأقسام كل يوم 10:15 الصبح (بعد تجديد باقة الذكاء الاصطناعي)، يكتب المحضر، ينفذ الآمن ويحوّل الباقي لمهام تطوير.' },
   { id: 'secretary', nameAr: 'السكرتير — مشرف شاهين', nameEn: 'Secretary — Shaheen\'s supervisor', dept: 'leadership', workflow: 'shaheen-news.yml', report: 'ai-supervisor.json', everyHours: 12, dutiesAr: 'يقيس كل أداة ذكاء اصطناعي ويكتب لها توجيهات، يجهز جدول الأعمال، وينوب عن شاهين في الاجتماع وقت الضغط أو لو مفيش محرك ذكاء اصطناعي.' },
   { id: 'precheck', nameAr: 'الفحص الشامل قبل الاجتماع', nameEn: 'Pre-meeting full check', dept: 'leadership', workflow: 'shaheen-precheck.yml', report: 'shaheen-precheck.json', everyHours: 24, dutiesAr: 'قبل الاجتماع بساعتين: كل روبوت يفحص نفسه ويكتب مشاكله والإصلاح المقترح وأفكار التطوير، والسكرتير يوزع طلبات المساعدة بين الأدوات.' },
+  { id: 'patrol', nameAr: 'الدورية كل ساعة (فحص وإصلاح ومراجعة خبير)', nameEn: 'Hourly patrol (check, fix, expert review)', dept: 'leadership', workflow: 'shaheen-patrol.yml', report: 'shaheen-patrol.json', everyHours: 2, dutiesAr: 'كل ساعة كل أداة تفحص شغلها بالتجربة (أسعار، عملات، صفحات، صور، نشرة، خادم): اللي يتصلح آلياً يتصلح، واللي لأ يروح لشاهين، والمشاكل المشتركة ليها فريق عمل، وكل شغل خلص يراجعه خبير من نفس التخصص.' },
   { id: 'finance', nameAr: 'أمين شاهين — الإدارة المالية', nameEn: 'Shaheen Finance', dept: 'leadership', workflow: 'shaheen-finance.yml', report: 'ai-supervisor.json', everyHours: 24, aiTools: ['finance_agent'], dutiesAr: 'تحصيل موثّق وتقارير يومية وأسبوعية وشهرية ومراجعة الدفع. التفاصيل داخل لوحة مالية خاصة؛ التقرير العام يحتوي حالة الفحص المنقحة من المشرف فقط. لا تحويلات أو استردادات أو اعتماد حسابات تلقائياً.' },
   { id: 'legal', nameAr: 'المدير القانوني', nameEn: 'Legal manager', dept: 'leadership', dutiesAr: 'يراجع امتثال المنصة للقوانين؛ قراراته ملزمة لشاهين وكل الأدوات، ومحدش يتجاوزها لحد ما المدير القانوني نفسه يغيرها (مثال: وقف نقل المنتجات لحد إذن المورد المكتوب).' },
   { id: 'contracts', nameAr: 'مسؤول التعاقدات', nameEn: 'Contracts officer', dept: 'leadership', aiTools: ['contracts_agent'], dutiesAr: 'يجهز رسائل التعاون مع أصحاب المتاجر (يبعتها عضو من الفريق باسمه الحقيقي)، ويدير الموافقة الإلكترونية على الاتفاقية، ومايفتحش متجر للنقل غير بعد توقيعه واعتماد المدير القانوني (L-40). الهامش مايتكشفش، ورابط المتجر بعد الموافقة بس.' },
@@ -77,8 +78,8 @@ export const BOTS: Bot[] = [
   { id: 'seo', nameAr: 'منارة شاهين (الظهور في البحث)', nameEn: 'Manaret Shaheen (search)', dept: 'content', workflow: 'shaheen-seo.yml', report: 'seo-agent.json', everyHours: 6, aiTools: ['seo_agent'], dutiesAr: 'يفحص الموقع زي محركات البحث، يكتب العناوين والأوصاف ويرسل الصفحات للفهرسة.' },
   // ── Visitor experience, design & languages ──
   { id: 'chat', nameAr: 'شات الخبير شاهين ومساعد شام', nameEn: 'Shaheen chat & Sham assistant', dept: 'experience', aiTools: ['shaheen_chat', 'sham_assistant', 'media'], dutiesAr: 'يرد على الزوار؛ وقت الضغط أو لو المحركات وقفت بيرد من ذاكرة شاهين (مدرسة شاهين).' },
-  { id: 'languages', nameAr: 'وكيل اللغات', nameEn: 'Language agent', dept: 'experience', workflow: 'shaheen-languages.yml', report: 'shaheen-languages.json', everyHours: 24, dutiesAr: 'يقيس اللغات المئة: الحزم الناقصة، والأرقام اللي لازم تتبع لغة الموقع.' },
-  { id: 'design_audit', nameAr: 'تدقيق التصميم واللغات (مرتين في الأسبوع)', nameEn: 'Design & languages audit (twice a week)', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-audit.json', everyHours: 84, dutiesAr: 'وكيل خلفي يفتح الموقع بلغات مختلفة الأربعاء والسبت ويقيّم التصميم والترجمة.' },
+  { id: 'languages', nameAr: 'وكيل اللغات — المترجم الذكي', nameEn: 'Language agent — smart translator', dept: 'experience', workflow: 'shaheen-languages.yml', report: 'shaheen-languages.json', everyHours: 12, aiTools: ['language_agent'], dutiesAr: 'يقيس اللغات المئة، ويترجم بالذكاء الاصطناعي كل نص لسه بالإنجليزي (فحص صارم + مراجعة محرك تاني)، ويبدأ باللغات اللي بلّغ عنها قسم التصميم ويحدد مكان النصوص الإنجليزي الثابتة في الكود.' },
+  { id: 'design_audit', nameAr: 'تدقيق التصميم واللغات (مرتين في الأسبوع)', nameEn: 'Design & languages audit (twice a week)', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-audit.json', everyHours: 84, dutiesAr: 'وكيل خلفي يفتح الموقع بلغات مختلفة الأربع والسبت ويقيّم التصميم والترجمة.' },
   { id: 'design_expert', nameAr: 'خبير التصميم متعدد التخصصات', nameEn: 'Multidisciplinary design expert', dept: 'experience', aiTools: ['design_agent'], dutiesAr: 'يحوّل الموجز إلى خطة عبر تخصصات الهوية والجرافيك والواجهات والتغليف والتصوير والحركة والطباعة والإتاحة والخدمات والمنتجات، ويتعاون مع أدوار وتقارير برامج الذكاء المسجلة تحت شاهين؛ شاهين يراجع الجودة ويوجّه التحسين، ولا تُنفذ تغييرات أو ملفات نهائية تلقائياً.' },
   { id: 'visitor_tour', nameAr: 'جولة الزائر والمستشار الميداني', nameEn: 'Visitor tour & field advisor', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-missions.json', section: 'tour', everyHours: 24, dutiesAr: 'كل يوم بعد الفحص الشامل الوكيل الخلفي يتسوق من الموبايل زي الزبون: المتجر ← منتج ← السلة ← صفحة الدفع (من غير ما يدفع) ← سؤال لشاهين، وبعدين يبص على مشاكل الفحص في الموقع الحي ويقعد في الاجتماع «المستشار الميداني» برأيه واقتراحاته.' },
   { id: 'inspect', nameAr: 'فاحص إجابات شاهين', nameEn: 'Answer inspector', dept: 'experience', workflow: 'shaheen-inspect.yml', dutiesAr: 'يسأل شاهين أسئلة حقيقية ويفحص الرد (عند الطلب).' },
@@ -89,6 +90,8 @@ export const BOTS: Bot[] = [
   { id: 'live_check', nameAr: 'فحص شاهين على الموقع الحي', nameEn: 'Live Shaheen check', dept: 'reliability', workflow: 'live-smoke.yml', everyHours: 24, dutiesAr: 'يكلم شاهين على الموقع الحقيقي كل يوم ويتأكد إنه بيرد.' },
   { id: 'keys', nameAr: 'حارس مفاتيح الذكاء الاصطناعي', nameEn: 'AI keys keeper', dept: 'reliability', workflow: 'shaheen-keys.yml', report: 'ai-quota.json', dutiesAr: 'يتأكد إن مفاتيح المحركات شغالة ويتابع الباقات اللي خلصت.' },
   { id: 'intake', nameAr: 'مستقبل تحديثات AI Studio', nameEn: 'AI Studio intake', dept: 'reliability', workflow: 'aistudio-intake.yml', report: 'aistudio-intake.json', dutiesAr: 'يراجع كل تحديث جاي من AI Studio قبل ما ينزل.' },
+  { id: 'studio_bridge', nameAr: 'بوابة جوجل استوديو', nameEn: 'AI Studio bridge', dept: 'reliability', workflow: 'aistudio-bridge.yml', report: 'aistudio-bridge.json', dutiesAr: 'كل نص ساعة ياخد تعديلات جوجل استوديو من مستودعه الخاص، يفلترها ويفحصها، وينشر السليم على الموقع — والباقي يستنى موافقة.' },
+  { id: 'studio_zip', nameAr: 'مستلم ملفات جوجل استوديو المضغوطة', nameEn: 'AI Studio download intake', dept: 'reliability', workflow: 'aistudio-zip.yml', dutiesAr: 'لما جوجل استوديو ما يقدرش يرفع، ياخد الملف المضغوط اللي التاجر رفعه في المسودة الخاصة، يفلتره بنفس قواعد البوابة، ويحط الصافي في فرع للمراجعة.' },
   { id: 'deploy', nameAr: 'بناء ونشر الموقع', nameEn: 'Build & deploy', dept: 'reliability', workflow: 'pages.yml', dutiesAr: 'يفحص ويبني وينشر الموقع على GitHub Pages مع كل تعديل.' },
   { id: 'admin_agent', nameAr: 'المساعد الإداري', nameEn: 'Admin operations agent', dept: 'reliability', aiTools: ['admin_agent'], dutiesAr: 'تقارير الإدارة الذكية من أدوات قراءة فقط.' },
 ];
@@ -124,6 +127,10 @@ export const LINKS: Link[] = [
   { from: 'finance', to: 'secretary', whyAr: 'حالة الفحص المنقحة فقط؛ الأرقام والطلبات تبقى خاصة' },
   { from: 'finance', to: 'council', whyAr: 'تصعيد أعطال الدفع والتسجيل للمراجعة دون أسرار أو تحويل أموال' },
   { from: 'keys', to: 'finance', whyAr: 'جاهزية إعدادات الخادم؛ اعتماد الحساب قرار صاحب المتجر' },
+  { from: 'patrol', to: 'council', whyAr: 'مشكلة ماتصلحتش ولا شاهين حلها ← مهمة تطوير' },
+  { from: 'patrol', to: 'secretary', whyAr: 'تقييم الدورية كل ساعة ← مادة للمشرف' },
+  { from: 'patrol', to: 'doctor', whyAr: 'الخادم أو الموقع واقع ← كشف وصيانة' },
+  { from: 'patrol', to: 'deploy', whyAr: 'صفحات قديمة أو واقعة ← إعادة نشر' },
   { from: 'precheck', to: 'council', whyAr: 'تقارير كل الأدوات = جدول أعمال الاجتماع' },
   { from: 'legal', to: 'council', whyAr: 'القرارات القانونية ملزمة — الاجتماع مايقترحش تجاوزها' },
   { from: 'legal', to: 'importer', whyAr: 'نقل المنتجات بإذن مكتوب من المورد بس (L-03)' },
@@ -144,7 +151,8 @@ export const LINKS: Link[] = [
   { from: 'news', to: 'school', whyAr: 'دروس جديدة ← مادة للمذاكرة' },
   { from: 'school', to: 'chat', whyAr: 'ذاكرة شاهين ← رد بدون ذكاء اصطناعي وقت الضغط' },
   { from: 'school', to: 'importer', whyAr: 'مهارات قراءة صفحات المتاجر بدون ذكاء اصطناعي' },
-  { from: 'design_audit', to: 'languages', whyAr: 'ملاحظات الترجمة والتصميم' },
+  { from: 'design_audit', to: 'languages', whyAr: 'اللغات نص المترجمة تتترجم الأول + أماكن النصوص الإنجليزي الثابتة' },
+  { from: 'languages', to: 'design_audit', whyAr: 'تقرير الترجمة والفئات اللي مش بتنعكس يمين/شمال ← التدقيق الجاي يتأكد' },
   { from: 'design_audit', to: 'design_expert', whyAr: 'تدقيق التصميم يمد الخطط بملاحظات التباين والاستجابة والموبايل' },
   { from: 'languages', to: 'design_expert', whyAr: 'توطين المحتوى واتجاه RTL والحزم اللغوية' },
   { from: 'visitor_tour', to: 'design_expert', whyAr: 'ملاحظات رحلة المستخدم الفعلية على الهاتف' },
@@ -158,6 +166,9 @@ export const LINKS: Link[] = [
   { from: 'live_check', to: 'doctor', whyAr: 'شاهين مش بيرد على الموقع ← كشف وصيانة' },
   { from: 'doctor', to: 'deploy', whyAr: 'إصلاح ← إعادة نشر' },
   { from: 'keys', to: 'secretary', whyAr: 'باقات خلصت ← السكرتير يمسك الاجتماع' },
+  { from: 'studio_zip', to: 'studio_bridge', whyAr: 'نفس فلتر البوابة للملفات المضغوطة' },
+  { from: 'studio_bridge', to: 'intake', whyAr: 'كل تحديث بيعدي من البوابة بيتراجع تاني بعد النشر' },
+  { from: 'studio_bridge', to: 'deploy', whyAr: 'تعديلات الاستوديو السليمة ← نشر الموقع' },
   { from: 'intake', to: 'deploy', whyAr: 'تحديث سليم ← ينزل على الموقع' },
   { from: 'inspect', to: 'secretary', whyAr: 'ردود ضعيفة ← توجيهات جودة' },
 ];

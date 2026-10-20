@@ -14,7 +14,11 @@ import { tmpdir } from 'node:os';
 
 const [message, ...paths] = process.argv.slice(2);
 if (!message || !paths.length) { console.error('usage: publish.mjs "<message>" <path>...'); process.exit(2); }
-const git = (...args) => execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+// core.quotePath=false: git otherwise prints non-ASCII paths quoted and octal-escaped ("src/\331\204…"), and
+// copying that name fails — every publish of the translator's packs in src/لغات/ai died this way.
+const git = (...args) => execFileSync('git', ['-c', 'core.quotePath=false', ...args], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+/** File names from a git listing, NUL-separated so no name is ever quoted or split. */
+const names = (...args) => git(...args, '-z').split('\0').filter(Boolean);
 const tryGit = (...args) => { try { git(...args); return true; } catch (e) { console.log(String(e.stderr || e.message).trim().split('\n').slice(-3).join(' / ')); return false; } };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const QUOTA = 'src/data/live/ai-quota.json';
@@ -22,10 +26,10 @@ const QUOTA = 'src/data/live/ai-quota.json';
 const MEMORIES = new Set(['src/data/live/shaheen-memory.json', 'src/data/live/ai-memory.json']);
 
 git('add', '--', ...paths);
-if (!git('diff', '--cached', '--name-only')) { console.log('Nothing new to publish'); process.exit(0); }
+if (!names('diff', '--cached', '--name-only').length) { console.log('Nothing new to publish'); process.exit(0); }
 git('commit', '-q', '-m', message);
-const mine = git('diff', '--name-only', 'HEAD~1', 'HEAD').split('\n').filter(Boolean);
-const deleted = new Set(git('diff', '--name-only', '--diff-filter=D', 'HEAD~1', 'HEAD').split('\n').filter(Boolean));
+const mine = names('diff', '--name-only', 'HEAD~1', 'HEAD');
+const deleted = new Set(names('diff', '--name-only', '--diff-filter=D', 'HEAD~1', 'HEAD'));
 // This run's versions of the files it wrote.
 const keep = mkdtempSync(join(tmpdir(), 'publish-'));
 for (const f of mine) if (!deleted.has(f)) { mkdirSync(dirname(join(keep, f)), { recursive: true }); copyFileSync(f, join(keep, f)); }
@@ -37,7 +41,16 @@ function mergeQuota(theirsText, oursText) {
   const engines = { ...(theirs.engines || {}) };
   for (const [id, e] of Object.entries(ours.engines || {})) if (!engines[id] || Date.parse(e.pausedUntil) > Date.parse(engines[id].pausedUntil)) engines[id] = e;
   for (const [id, e] of Object.entries(engines)) if (!(Date.parse(e.pausedUntil) > Date.now())) delete engines[id];
-  return `${JSON.stringify({ updatedAt: new Date().toISOString(), engines }, null, 1)}\n`;
+  // The bots' daily use of the free quota («الشات أولاً»): the newer day wins, the same day keeps the higher count.
+  let used = ours.used || theirs.used;
+  if (ours.used && theirs.used) {
+    if (ours.used.day === theirs.used.day) {
+      const counts = { ...theirs.used.counts };
+      for (const [id, n] of Object.entries(ours.used.counts || {})) counts[id] = Math.max(counts[id] || 0, n);
+      used = { day: ours.used.day, counts };
+    } else used = ours.used.day > theirs.used.day ? ours.used : theirs.used;
+  }
+  return `${JSON.stringify({ updatedAt: new Date().toISOString(), engines, ...(used ? { used } : {}) }, null, 1)}\n`;
 }
 
 /** Two copies of a memory file together: every entry kept, the newer answer wins, uses are not lost. */
@@ -77,7 +90,7 @@ for (let attempt = 1; attempt <= 6; attempt++) {
   const broken = mine.filter((f) => f.endsWith('.json') && existsSync(f)).filter((f) => { try { JSON.parse(readFileSync(f, 'utf8')); return false; } catch { return true; } });
   if (broken.length) { console.log(`::error::Invalid JSON after merging: ${broken.join(', ')}`); process.exit(1); }
   git('add', '--', ...mine.filter((f) => !deleted.has(f)));
-  if (!git('diff', '--cached', '--name-only')) { console.log('Main already has this data'); process.exit(0); }
+  if (!names('diff', '--cached', '--name-only').length) { console.log('Main already has this data'); process.exit(0); }
   git('commit', '-q', '-m', message);
   console.log(`Merged with another bot's update on main (${mine.length} files kept from this run)`);
   if (tryGit('push', '-q', 'origin', 'HEAD:main')) { console.log(`Published on main (attempt ${attempt})`); process.exit(0); }

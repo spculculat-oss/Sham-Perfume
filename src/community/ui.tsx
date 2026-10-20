@@ -48,8 +48,8 @@ export function Btn({ variant = 'primary', busy, small, className = '', children
   );
 }
 
-export const Card = ({ children, className = '' }: { children: ReactNode; className?: string }) => (
-  <div className={`rounded-2xl border border-stone-200 bg-white shadow-sm ${className}`}>{children}</div>
+export const Card = ({ children, className = '', onClick }: { children: ReactNode; className?: string; onClick?: (e: React.MouseEvent<HTMLDivElement>) => void }) => (
+  <div onClick={onClick} className={`rounded-2xl border border-stone-200 bg-white shadow-sm ${className}`}>{children}</div>
 );
 
 export function Field({ label, hint, children }: { label: string; hint?: string; children: ReactNode }) {
@@ -123,6 +123,8 @@ const ERRORS: Record<string, [string, string]> = {
   INVALID_IMAGE: ['الصورة دي مش مدعومة — جرّب JPG أو PNG', 'Unsupported image — try JPG or PNG'],
   INVALID_AUDIO: ['الرسالة الصوتية مش مدعومة أو أطول من دقيقتين', 'Unsupported voice note or longer than 2 minutes'],
   EMPTY_MESSAGE: ['الرسالة فاضية', 'The message is empty'],
+  NO_RECIPIENTS: ['ضيف عنوان مستلم واحد على الأقل (اسم المستخدم أو بريده)', 'Add at least one recipient (username or e-mail)'],
+  MAILBOX_FULL: ['عندك مسودات كتير قوي — احذف منها الأول', 'You have too many drafts — delete some first'],
   EMPTY_POST: ['اكتب حاجة أو ضيف صورة الأول', 'Write something or add a photo first'],
   EMPTY_COMMENT: ['التعليق فاضي', 'The comment is empty'],
   EDIT_WINDOW_PASSED: ['عدّى وقت التعديل المسموح للرسالة دي', 'The edit window for this message has passed'],

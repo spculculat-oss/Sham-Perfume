@@ -26,7 +26,7 @@ const LABEL: Record<string, string> = {
   unreachable: 'تعذّر الوصول',
 };
 
-const settings = { ...SHAHEEN_SITE_SETTINGS, engines: ['gemini', 'openai', 'claude', 'deepseek', 'openrouter', 'self_hosted'] as typeof SHAHEEN_SITE_SETTINGS.engines };
+const settings = { ...SHAHEEN_SITE_SETTINGS, engines: ['gemini', 'perplexity', 'openai', 'claude', 'deepseek', 'openrouter', 'self_hosted'] as typeof SHAHEEN_SITE_SETTINGS.engines };
 const results = await probeEngines(settings, { timeoutMs: 30000 });
 const rows: Array<{ id: string; name: string; model: string; ok: boolean; configured: boolean; code: string; ms: number; usedModel?: string; detail?: string }> =
   results.map((r) => ({ ...r, code: r.ok ? 'ok' : r.error || 'unreachable' }));
@@ -45,7 +45,20 @@ const lines = [
   ...rows.map((r) => `| ${r.name} | \`${r.model}\` | ${LABEL[r.code] || r.code} | \`${r.code}\` | ${r.configured ? `${r.ms}ms` : '—'} |`),
   '',
   configured.length ? `مفاتيح موجودة: ${configured.length} · تعمل: ${configured.filter((r) => r.ok).length}` : 'لا توجد أي مفاتيح في أسرار GitHub بعد.',
+  ...hints(),
 ];
+
+/** One plain Arabic line per broken key: what the owner does about it. */
+function hints(): string[] {
+  const out: string[] = [];
+  for (const r of configured.filter((x) => !x.ok)) {
+    if (r.id === 'gemini' && r.code === 'invalid_key' && /PERMISSION_DENIED/.test(r.detail || '')) {
+      out.push('- Gemini: جوجل رافض المفتاح (PERMISSION_DENIED). اعمل مفتاح جديد من صفحة المفاتيح في AI Studio على مشروع شغال، وحطه مكان القديم في GitHub وفي Vercel.');
+    } else if (r.code === 'invalid_key') out.push(`- ${r.name}: المفتاح مرفوض — اعمل مفتاح جديد وحطه مكان القديم في GitHub وفي Vercel.`);
+    else if (r.code === 'no_credit') out.push(`- ${r.name}: الرصيد خلص — اشحن الحساب أو استنى تجديد الحصة.`);
+  }
+  return out.length ? ['', '### المطلوب', ...out] : [];
+}
 console.log(lines.join('\n'));
 if (process.env.SHAM_VERIFY_FILE) writeFileSync(process.env.SHAM_VERIFY_FILE, JSON.stringify(Object.fromEntries(configured.map((r) => [r.id, r.code]))));
 if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${lines.join('\n')}\n`);

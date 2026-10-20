@@ -220,9 +220,14 @@ export async function posts(ctx: Ctx, options: { status?: unknown; q?: unknown }
   return rows.map((r) => ({ id: r.post_id, body: r.body, image: r.image, visibility: r.visibility, status: r.post_status, createdAt: iso(r.post_created), reports: r.reports, author: publicUser(r) }));
 }
 
-export async function moderate(ctx: Ctx, kind: 'post' | 'comment', id: string, status: unknown, note = '') {
+const MODERATED = { post: 'posts', comment: 'comments', story: 'stories', thread: 'threads', reply: 'thread_replies', review: 'product_reviews' } as const;
+export type ModeratedKind = keyof typeof MODERATED;
+export const isModeratedKind = (kind: string): kind is ModeratedKind => Object.hasOwn(MODERATED, kind);
+
+export async function moderate(ctx: Ctx, kind: ModeratedKind, id: string, status: unknown, note = '') {
   if (!['visible', 'hidden', 'deleted'].includes(String(status))) fail(400, 'INVALID_FIELD', 'status');
-  const table = kind === 'post' ? 'posts' : 'comments';
+  if (!isModeratedKind(kind)) fail(400, 'INVALID_FIELD', 'kind');
+  const table = MODERATED[kind];
   const rows = await ctx.sql.query(`UPDATE ${table} SET status = $1 WHERE id = $2 RETURNING id`, [status, id]);
   if (!rows.length) fail(404, 'NOT_FOUND');
   await audit(ctx, `${kind}_${status}`, id, note);

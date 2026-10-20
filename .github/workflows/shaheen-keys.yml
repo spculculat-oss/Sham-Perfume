@@ -2,8 +2,9 @@ name: Shaheen AI keys (verify + sync to Vercel)
 
 # Keys live ONLY in repository secrets (Settings → Secrets and variables → Actions):
 #   GEMINI_API_KEY, OPENAI_API_KEY, ANTHROPIC_API_KEY, DEEPSEEK_API_KEY, MANUS_API_KEY (background agent),
-#   optional OPENROUTER_API_KEY, AI_GATEWAY_API_KEY, YOUTUBE_API_KEY (videos under Shaheen's answers),
+#   optional OPENROUTER_API_KEY, PERPLEXITY_API_KEY (answers with a live web search), AI_GATEWAY_API_KEY, YOUTUBE_API_KEY (videos under Shaheen's answers),
 #   KASHIER_MERCHANT_ID, KASHIER_API_KEY, KASHIER_SECRET_KEY, KASHIER_MODE (store payments),
+#   SHAM_GMAIL_APP_PASSWORD (free e-mail from the store's Gmail: order updates, sign-in and contract codes),
 #   and VERCEL_TOKEN for the sync.
 # 1) every present key gets one tiny real request through the site's own engine code;
 # 2) working keys are copied to the Vercel projects and production is redeployed if anything changed.
@@ -13,6 +14,12 @@ name: Shaheen AI keys (verify + sync to Vercel)
 on:
   push:
     branches: [main]
+  # A change to the engines is tried with the real keys before it merges (verification only: no sync, no payment).
+  pull_request:
+    paths:
+      - server/core/engines.ts
+      - scripts/verify-ai-keys.mts
+      - .github/workflows/shaheen-keys.yml
   workflow_dispatch:
 
 permissions:
@@ -24,8 +31,7 @@ concurrency:
 
 jobs:
   keys:
-    # A PR/rehearsal must not copy payment keys or redeploy production.
-    if: github.ref == 'refs/heads/main'
+    # A PR only verifies the AI keys: copying keys, the payment check and redeploying production are main-only.
     name: Verify and sync Shaheen keys
     runs-on: ubuntu-24.04
     timeout-minutes: 15
@@ -37,15 +43,18 @@ jobs:
       # Background task agent only (verified here, never copied to Vercel: visitors never reach it).
       MANUS_API_KEY: ${{ secrets.MANUS_API_KEY }}
       OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
       AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
       YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
       # «الدفع في متجر شام» (Kashier): checked with one unpaid 1 EGP test session, then copied to Vercel.
-      KASHIER_MERCHANT_ID: ${{ secrets.KASHIER_MERCHANT_ID }}
-      KASHIER_API_KEY: ${{ secrets.KASHIER_API_KEY }}
-      KASHIER_SECRET_KEY: ${{ secrets.KASHIER_SECRET_KEY }}
+      KASHIER_MERCHANT_ID: ${{ github.ref == 'refs/heads/main' && secrets.KASHIER_MERCHANT_ID || '' }}
+      KASHIER_API_KEY: ${{ github.ref == 'refs/heads/main' && secrets.KASHIER_API_KEY || '' }}
+      KASHIER_SECRET_KEY: ${{ github.ref == 'refs/heads/main' && secrets.KASHIER_SECRET_KEY || '' }}
       KASHIER_MODE: ${{ secrets.KASHIER_MODE || vars.KASHIER_MODE || 'test' }}
       KASHIER_CURRENCIES: ${{ vars.KASHIER_CURRENCIES || 'EGP' }}
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      # Free e-mail (server/core/mailer.ts): copied to Vercel on main only, never printed.
+      SHAM_GMAIL_APP_PASSWORD: ${{ github.ref == 'refs/heads/main' && secrets.SHAM_GMAIL_APP_PASSWORD || '' }}
+      VERCEL_TOKEN: ${{ github.ref == 'refs/heads/main' && secrets.VERCEL_TOKEN || '' }}
       VERCEL_SCOPE: ${{ vars.VERCEL_SCOPE || 'sham-de37' }}
       VERCEL_PROJECTS: ${{ vars.VERCEL_PROJECTS || 'sham-perfume-49bf' }}
       SHAM_VERIFY_FILE: ${{ github.workspace }}/../shaheen-verify.json
@@ -68,6 +77,8 @@ jobs:
       - name: Verify each AI key with a real request
         run: node --import tsx scripts/verify-ai-keys.mts
       - name: Verify the payment keys (Kashier) with a real test session
+        if: github.ref == 'refs/heads/main'
         run: node --import tsx scripts/verify-payments.mts
       - name: Sync working keys to Vercel and redeploy
+        if: github.ref == 'refs/heads/main'
         run: node scripts/sync-vercel-env.mjs

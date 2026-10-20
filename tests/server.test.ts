@@ -14,12 +14,17 @@ before(async () => {
       NODE_ENV: 'development',
       PORT: '0',
       DISABLE_HMR: 'true',
+      // Every engine key off (the robots' workflows carry real keys in their environment).
       GEMINI_API_KEY: '',
       DEEPSEEK_API_KEY: '',
       OPENAI_API_KEY: '',
       ANTHROPIC_API_KEY: '',
       OPENROUTER_API_KEY: '',
       SHAM_ADMIN_TOKEN: 'test-admin-token-1234',
+      PERPLEXITY_API_KEY: '',
+      SHAM_LLM_BASE_URL: '',
+      SHAM_LLM_API_KEY: '',
+      AI_GATEWAY_API_KEY: '',
       SHAM_STORE: 'memory',
     },
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -72,15 +77,24 @@ test('model diagnostics report missing API keys truthfully', async () => {
   assert.doesNotMatch(JSON.stringify(data), /gemini|openai|gpt|claude|anthropic|deepseek|openrouter|qwen/i);
 });
 
-test('news fetch and refresh without a key fail without fabricating articles', async () => {
-  for (const [endpoint, method] of [['/api/news', 'GET'], ['/api/news/refresh', 'POST']]) {
-    const response = await fetch(`${baseUrl}${endpoint}`, { method });
-    assert.equal(response.status, 503);
-    const data = await response.json();
-    assert.equal(data.success, false);
-    assert.equal(data.articles, undefined);
-    assert.equal(typeof data.error, 'string');
+test('news without a key: never AI-written articles — the collected headlines with their sources, refresh fails', async () => {
+  const news = await (await fetch(`${baseUrl}/api/news`)).json();
+  // GET falls back to the real headlines Shaheen collected (src/data/live/shaheen-news.json), labelled as such.
+  assert.equal(news.success, true);
+  assert.equal(news.aiGenerated, false);
+  assert.equal(news.collected, true);
+  assert.ok(news.articles.length > 0);
+  for (const article of news.articles) {
+    assert.match(article.id, /^collected-/);
+    assert.match(article.contentAr, /المصدر: .+ — https:\/\//);
+    assert.doesNotMatch(article.badge, /مولّد/);
   }
+  const response = await fetch(`${baseUrl}/api/news/refresh`, { method: 'POST' });
+  assert.equal(response.status, 503);
+  const data = await response.json();
+  assert.equal(data.success, false);
+  assert.equal(data.articles, undefined);
+  assert.equal(typeof data.error, 'string');
 });
 
 test('unknown API routes return JSON 404, not a successful HTML SPA fallback', async () => {
