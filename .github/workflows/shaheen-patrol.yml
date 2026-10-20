@@ -1,19 +1,19 @@
-name: Shaheen patrol — rotating shifts (each tool every 3 hours)
+name: Shaheen patrol — rotating shifts (each role monitored every 3 hours)
 
-# «الدورية بالتناوب»: three shifts take turns, one per hour, so only one group of tools works at a time and the
+# «الدورية بالتناوب»: three shifts take turns, one per hour, so only one group of probes runs at a time and the
 # site feels no load — store & pricing, then content & visitor experience, then reliability & leadership; each
-# tool is checked every 3 hours (8 times a day), at most 3 robots restarted and 1 question to Shaheen per shift.
+# role is monitored every 3 hours (8 times a day), at most 3 approved workflows restarted and 1 question to Shaheen per shift.
 # Minute 52: clear of the importer and the studio bridge (minute 37) and the other robots' schedules.
-# In its shift each tool under «الخبير شاهين» inspects its own work — its report and last
-# run, plus hands-on tests of its scope (prices = supplier + 50%, one currency per country, live product pages,
-# product photos, the sitemap, the news, the server, payment methods). Safe fixes happen at once (the robot
-# owning the broken scope is started again, at most once per 6 hours); the rest goes to Shaheen (an AI
-# diagnosis when an engine answers, his recorded playbook otherwise — the item waits, never a fake fix) and, if
-# it stays broken, becomes a «shaheen-task» issue for the coding agent. Problems spanning several tools get a
-# task force; every run finished since the last patrol is tested by an expert reviewer of the same scope.
+# In its shift the patrol reviews each role's available report, last run or supervisor score, plus the defined
+# hands-on tests for its scope (prices = supplier + 50%, one currency per country, live product pages, photos,
+# sitemap, news, server, payment methods). Roles without a workflow (including the design expert) are observed
+# from existing records; they are not invoked automatically. Safe fixes rerun only an approved workflow (at most
+# once per 6 hours); unresolved issues go to Shaheen (AI diagnosis when available, otherwise his recorded playbook
+# and an honest wait) and, if still broken, become a «shaheen-task» issue for the coding agent. Shared problems
+# get a task force; each completed workflow is tested by an expert reviewer of the same scope.
 # Code: scripts/shaheen-patrol/. Result: src/data/live/shaheen-patrol.json (admin → «الهيكل الإداري»),
 # published only when something changed or every 3 hours (no commit every hour). Manual run: pick a shift or
-# «all» for a full patrol of every tool at once.
+# «all» for one full monitoring pass across roles and probes (it does not invoke every advisory agent).
 
 on:
   schedule:

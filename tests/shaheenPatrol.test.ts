@@ -1,7 +1,7 @@
 /**
- * «الدورية كل ساعة»: every tool inspects its work hourly with hands-on tests, fixes what it safely can,
- * escalates the rest to Shaheen (never a fake fix), gets a task force for shared problems, and every finished
- * run is tested by an expert reviewer of the same scope.
+ * «الدورية بالتناوب»: each role has one monitoring shift; hands-on probes run only for that shift's scope.
+ * Roles without workflows are monitored from existing records rather than automatically invoked. The patrol fixes
+ * only approved work, escalates honestly to Shaheen, creates task forces for shared problems, and reviews completed runs.
  */
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -207,10 +207,12 @@ test('live tests open real pages like a visitor (fake network): price matches th
   assert.equal(abs(site, './p/money.json'), 'https://spculculat-oss.github.io/Sham-Perfume/p/money.json');
 });
 
-test('rotating shifts: one group per hour, every tool and every test in exactly one shift, each every 3 hours', () => {
+test('rotating shifts: one group per hour, every role and probe assigned once; advisory roles are monitored, not invoked', () => {
   const all = SHIFTS.flatMap((x) => x.bots);
-  assert.equal(new Set(all).size, all.length, 'a tool in two shifts');
-  assert.deepEqual([...all].sort(), BOTS.map((b) => b.id).sort(), 'every tool has a shift');
+  assert.equal(new Set(all).size, all.length, 'a role in two shifts');
+  assert.deepEqual([...all].sort(), BOTS.map((b) => b.id).sort(), 'every role has a monitoring shift');
+  assert.equal(botOf('design_expert')?.workflow, undefined, 'the design specialist is not an automatically run workflow');
+  assert.equal(shiftOfBot('design_expert'), 1, 'its supervisor-recorded health belongs to the content/design shift');
   const tests = SHIFTS.flatMap((x) => x.probes);
   assert.deepEqual([...tests].sort(), Object.keys(PROBES).sort());
   for (const x of SHIFTS) assert.ok(x.bots.length <= 13 && x.probes.length <= 7, x.nameEn);
