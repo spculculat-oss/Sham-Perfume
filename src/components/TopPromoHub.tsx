@@ -27,6 +27,7 @@ import type { SupportedLanguage } from '../types/i18n';
 import { loadStoreCatalog, storeImageSrc } from '../utils/liveStore';
 import type { StoreProduct } from '../utils/storeCatalog';
 import { filterShowcase, isStockPhoto, rankShowcase, thumbWindow, type ShowcaseCategory } from '../utils/promoShowcase';
+import { ProductPayMethods } from '../bank/ProductPayMethods';
 import { addToCart } from '../utils/storeCart';
 import { useStoreCountry, setStoreCountry, useStoreMoney } from '../utils/storeCheckout';
 import {
@@ -702,6 +703,19 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                               <span>{L('sold_out')}</span>
                             </button>
                           )}
+                        </div>
+                        <div
+                          className="mt-2"
+                          onClick={(e) => e.stopPropagation()}
+                          onPointerDown={(e) => e.stopPropagation()}
+                          onPointerUp={(e) => e.stopPropagation()}
+                        >
+                          <ProductPayMethods
+                            lang={currentLang}
+                            country={currentCountry}
+                            productName={storeLocalized(activeProduct.name, currentLang)}
+                            productKey={activeProduct.sku}
+                          />
                         </div>
                       </div>
 

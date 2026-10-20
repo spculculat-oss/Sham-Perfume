@@ -29,6 +29,7 @@ import {
   CheckCircle2,
   Building,
 } from 'lucide-react';
+import { ProductPayMethods } from '../bank/ProductPayMethods';
 import { PaymentEnvironmentModal } from './PaymentEnvironmentModal';
 import { StoreSalesCategoryChart } from './StoreSalesCategoryChart';
 import { saveMerchant } from '../utils/merchantDataStore';
@@ -706,6 +707,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
             </p>
           )}
 
+          <ProductPayMethods lang={currentLang} country={money.country} productName={storeLocalized(p.name, currentLang)} productKey={p.sku} compact />
           {/* Price & Action */}
           <div className="mt-auto pt-3 border-t border-stone-100 space-y-2">
             <div>
@@ -1149,6 +1151,12 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
             </div>
           </div>
         </section>
+
+        <ProductPayMethods
+          lang={currentLang}
+          country={money.country}
+          heading={currentLang === 'ar' ? 'وسائل الدفع المتاحة لمنتجات المتجر في بلدك' : 'Payment methods available for store products in your country'}
+        />
 
         {/* Olfactory Scent Families Ribbon (Interactive Segmented Bar) */}
         <section className="bg-white rounded-2xl p-3 border border-stone-200/80 shadow-xs space-y-2">
@@ -1627,7 +1635,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                           </label>)}
                           <p className="text-[11px] text-stone-600">{L.directNote}</p>
                         </div>}
-                        {!canPay && <p role="status" className="text-xs text-amber-800" data-testid="order-by-email-note">{payments === null ? L.loading : L.orderNote}</p>}
+                        {!canPay && (payments === null ? <p role="status" className="text-xs text-stone-600">{L.loading}</p> : <ProductPayMethods lang={currentLang} country={money.country} heading={currentLang === 'ar' ? 'وسائل الدفع المتاحة لطلبك' : 'Payment methods available for this order'} />)}
                         {payments?.enabled && !chosenDirect && <p className="text-[11px] text-stone-600 flex items-start gap-2"><ShieldCheck className="w-4 h-4 shrink-0" />{currentLang === 'ar' ? 'تُدخل بيانات البطاقة أو المحفظة داخل صفحة البوابة فقط. لا تحفظ شام رقم البطاقة أو رمز CVV، والتأكيد من البوابة هو إثبات الدفع.' : 'Enter card or wallet details only on the gateway page. Sham does not save card numbers or CVVs; only a verified gateway response confirms payment.'}</p>}
                         {chargedBill && !chosenDirect && <p className="text-xs font-semibold" data-testid="charge-currency">{L.payCharge.replace('{amount}', `${chargedBill.total} ${chargedBill.currency}`)}</p>}
                       </fieldset>
@@ -1691,7 +1699,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery }) => {
                     </>
                   ) : (
                     <div className="space-y-2">
-                      <p className="text-xs text-stone-600" role="status">{payments === null ? L.loading : L.orderNote}</p>
+                      {payments === null ? <p className="text-xs text-stone-600" role="status">{L.loading}</p> : <ProductPayMethods lang={currentLang} country={money.country} heading={currentLang === 'ar' ? 'وسائل الدفع المتاحة لطلبك' : 'Payment methods available for this order'} />}
                       {/* #169: the main button continues to the delivery form (the order then goes to the store's inbox), not to the chat. */}
                       <button type="button" onClick={() => { setStep('form'); setOrderSent(''); }} disabled={payments === null} data-testid="store-order-start"
                         className="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 disabled:bg-stone-400 text-white text-sm font-bold cursor-pointer transition-all shadow-xs">{L.orderStart}</button>
