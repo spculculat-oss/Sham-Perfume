@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-20T08:43:49.241Z",
+ "updatedAt": "2026-10-20T12:55:17.748Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -572,15 +572,15 @@
    "host": "myperfumeshop.ae",
    "name": "My Perfume Shop",
    "base": "https://www.myperfumeshop.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T00:56:02.060Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T12:55:17.748Z",
    "trust": {
     "score": 60,
     "verdict": "trusted",
-    "at": "2026-10-19T00:56:02.060Z",
+    "at": "2026-10-20T12:55:17.748Z",
     "checks": [
      {
       "id": "age",
@@ -685,11 +685,11 @@
    "host": "perfumeboxuae.com",
    "name": "perfumeboxuae.com",
    "base": "https://perfumeboxuae.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T00:56:02.060Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T12:55:17.748Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -896,15 +896,15 @@
    "host": "faces.com",
    "name": "Shop for Perfume, Makeup, Skin Care &amp; Cosmetics",
    "base": "https://www.faces.ae",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T12:55:17.748Z",
    "trust": {
     "score": 83,
     "verdict": "trusted",
-    "at": "2026-10-19T04:31:58.644Z",
+    "at": "2026-10-20T12:55:17.748Z",
     "checks": [
      {
       "id": "age",
@@ -1010,15 +1010,15 @@
    "host": "wojooh.com",
    "name": "Shop for Perfume, Makeup, Skin Care &amp; Cosmetics",
    "base": "https://www.faces.ae",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T12:55:17.748Z",
    "trust": {
     "score": 83,
     "verdict": "trusted",
-    "at": "2026-10-19T04:31:58.644Z",
+    "at": "2026-10-20T12:55:17.748Z",
     "checks": [
      {
       "id": "age",
@@ -1124,11 +1124,11 @@
    "host": "fragrancebuy.ca",
    "name": "fragrancebuy.ca",
    "base": "https://fragrancebuy.ca",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T12:55:17.748Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -1136,11 +1136,11 @@
    "host": "maxaromas.com",
    "name": "maxaromas.com",
    "base": "https://maxaromas.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T12:55:17.748Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1214,11 +1214,11 @@
    "host": "theperfumeshop.com",
    "name": "theperfumeshop.com",
    "base": "https://theperfumeshop.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T12:55:17.748Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -1226,11 +1226,11 @@
    "host": "perfumehub.com.my",
    "name": "perfumehub.com.my",
    "base": "https://perfumehub.com.my",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T12:55:17.748Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1238,15 +1238,15 @@
    "host": "goldapple.kz",
    "name": "Gold Apple",
    "base": "https://goldapple.kz",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T12:55:17.748Z",
    "trust": {
     "score": 27,
     "verdict": "weak",
-    "at": "2026-10-19T12:55:05.997Z",
+    "at": "2026-10-20T12:55:17.748Z",
     "checks": [
      {
       "id": "age",
@@ -1346,15 +1346,15 @@
    "host": "perfumeconnection.com.au",
    "name": "perfumeconnection.com.au",
    "base": "https://perfumeconnection.com.au",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T12:55:17.748Z",
    "trust": {
     "score": 37,
     "verdict": "weak",
-    "at": "2026-10-19T12:55:05.997Z",
+    "at": "2026-10-20T12:55:17.748Z",
     "checks": [
      {
       "id": "age",
@@ -5030,6 +5030,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-20T12:55:17.748Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 10,
+   "activated": 0,
+   "rejected": 10,
+   "notes": [
+    "  ↳ faces.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
+    "✗ faces.com: أغلب منتجاته ليست عطوراً (50%)",
+    "  ↳ wojooh.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
+    "✗ wojooh.com: أغلب منتجاته ليست عطوراً (50%)",
+    "✗ fragrancebuy.ca: الموقع لا يفتح (HTTP 403)",
+    "✗ maxaromas.com: الموقع لا يفتح",
+    "✗ theperfumeshop.com: الموقع لا يفتح (HTTP 403)",
+    "✗ perfumehub.com.my: الموقع لا يفتح",
+    "  ↳ goldapple.kz: CV 27/100 [https,returns] (pages: /contact-us→200 /returns→200)",
+    "✗ goldapple.kz: ملف الثقة ضعيف (27/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
+    "  ↳ perfumeconnection.com.au: CV 37/100 [https,returns,privacy,terms] (pages: /contact-us→200 /returns→200)",
+    "✗ perfumeconnection.com.au: ملف الثقة ضعيف (37/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة"
+   ]
+  },
   {
    "at": "2026-10-20T08:43:49.241Z",
    "mode": "self",

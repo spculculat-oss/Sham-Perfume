@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-20T08:45:24.231Z",
+ "updatedAt": "2026-10-20T12:56:17.162Z",
  "reliance": {
   "score": 98,
   "covered": 81,
@@ -21,6 +21,12 @@
  "studiedTotal": 51,
  "selfTaughtTotal": 29,
  "history": [
+  {
+   "at": "2026-10-20T12:56:17.162Z",
+   "score": 98,
+   "studied": 0,
+   "mode": "self"
+  },
   {
    "at": "2026-10-20T08:45:24.231Z",
    "score": 98,
