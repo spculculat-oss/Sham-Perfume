@@ -204,6 +204,32 @@ export function setDefaultPaymentMethod(id: string, customerId?: string): boolea
   }
 }
 
+/** Renew a saved card's expiry or holder name. Cannot write a card number or security code. */
+export function updatePaymentMethod(
+  id: string,
+  patch: { expiry?: string; holderName?: string; isDefault?: boolean },
+  customerId?: string,
+): SavedPaymentMethod | undefined {
+  const current = getSavedPaymentMethods(customerId);
+  const found = current.find((method) => method.id === id);
+  if (!found) return undefined;
+  const nextPatch = {
+    ...(patch.expiry ? { expiry: patch.expiry } : {}),
+    ...(patch.holderName ? { holderName: patch.holderName } : {}),
+    ...(patch.isDefault === undefined ? {} : { isDefault: patch.isDefault }),
+  };
+  if (JSON.stringify(nextPatch).match(/\d(?:[ -]?\d){12,18}/)) return undefined;
+  const updated = current.map((method) => {
+    if (method.id !== id) return patch.isDefault ? { ...method, isDefault: false } : method;
+    return { ...method, ...nextPatch, updatedAt: new Date().toISOString() };
+  });
+  try {
+    localStorage.setItem(getStorageKey(customerId), encryptPayload(updated));
+    window.dispatchEvent(new CustomEvent('sham-payment-methods-updated'));
+  } catch { return undefined; }
+  return updated.find((method) => method.id === id);
+}
+
 export function getDefaultPaymentMethod(customerId?: string): SavedPaymentMethod | undefined {
   const list = getSavedPaymentMethods(customerId);
   return list.find((m) => m.isDefault) || list[0];
