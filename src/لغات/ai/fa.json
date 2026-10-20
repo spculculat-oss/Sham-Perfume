@@ -1,0 +1,20 @@
+{
+ "ui": {
+  "nav_ai_master_short": "شاهین AI",
+  "nav_alcohol_short": "الکل",
+  "nav_calc_short": "فرمول",
+  "nav_costing_short": "هزینه‌ها",
+  "nav_explore": "کاوش",
+  "nav_explore_short": "کاوش",
+  "nav_guide_short": "راهنما",
+  "nav_home_short": "خانه",
+  "nav_library_short": "کتابخانه",
+  "nav_maceration_short": "کهنه‌سازی",
+  "nav_news_short": "اخبار",
+  "nav_pyramid_short": "هرم بویایی",
+  "nav_raw_materials_short": "مواد اولیه",
+  "nav_tools": "ابزارها",
+  "nav_tools_short": "ابزارها",
+  "nav_world_perfumes_short": "نمادین"
+ }
+}
