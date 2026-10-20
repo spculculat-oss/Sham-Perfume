@@ -85,7 +85,7 @@ export async function connectPglite(dataDir?: string): Promise<Sql> {
   return wrap(db);
 }
 
-export const SCHEMA_VERSION = 6;
+export const SCHEMA_VERSION = 7;
 
 export const SCHEMA: string[] = [
   `CREATE TABLE IF NOT EXISTS community_meta (key text PRIMARY KEY, value text NOT NULL)`,
@@ -483,6 +483,13 @@ export const SCHEMA: string[] = [
     user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     PRIMARY KEY (review_id, user_id)
   )`,
+  /* v7 — OAuth (Google/Apple/Facebook) + phone 2FA (WhatsApp/SMS): optional second factor */
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS oauth_google_id text`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS oauth_facebook_id text`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_2fa_enabled boolean NOT NULL DEFAULT false`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_2fa_method text NOT NULL DEFAULT ''`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_2fa_phone_enc text`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_2fa_last text NOT NULL DEFAULT ''`,
 ];
 
 /** Creates the tables (idempotent) and records the schema version. */

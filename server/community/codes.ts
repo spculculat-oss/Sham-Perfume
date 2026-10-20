@@ -13,9 +13,9 @@ import { createHash, randomBytes } from 'node:crypto';
 import { newId } from './crypto';
 import { CommunityError, type Ctx } from './service';
 
-export type CodePurpose = 'verify_email' | 'reset_password';
+export type CodePurpose = 'verify_email' | 'reset_password' | 'phone_2fa';
 
-const LIFE_MS: Record<CodePurpose, number> = { verify_email: 15 * 60_000, reset_password: 10 * 60_000 };
+const LIFE_MS: Record<CodePurpose, number> = { verify_email: 15 * 60_000, reset_password: 10 * 60_000, phone_2fa: 10 * 60_000 };
 const MAX_ISSUES = 5; // per rolling window
 const WINDOW_MS = 15 * 60_000;
 

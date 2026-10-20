@@ -90,8 +90,9 @@ export interface AuthResponse {
   success: boolean;
   user?: UserProfile;
   error?: string;
-  /** Two-factor login: the password passed; the authenticator code finishes it. */
+  /** Two-factor login: the password passed; the authenticator or phone code finishes it. */
   pendingToken?: string;
+  method?: 'totp' | 'phone';
 }
 
 export function getCurrentUserSession(): { user: UserProfile | null } {
@@ -114,7 +115,7 @@ export async function loginUser(email: string, password: string): Promise<AuthRe
     }
     try {
       const result = await cx<AuthResult | PendingLogin>('/community/auth/login', { body: { email, password } });
-      if ('pending' in result) return { success: false, error: 'totp_required', pendingToken: result.pendingToken };
+      if ('pending' in result) return { success: false, error: 'totp_required', pendingToken: result.pendingToken, method: (result as any).method || 'totp' };
       setSessionToken(result.token);
       const user = profileFromMember(result.me);
       localStorage.setItem(USER_AUTH_STORAGE_KEY, JSON.stringify(user));
