@@ -1,5 +1,6 @@
 {
  "ui": {
+  "nav_ai_master_short": "IA Shahin",
   "nav_alcohol_short": "Álcool",
   "nav_calc_short": "Fórmula",
   "nav_costing_short": "Custos",
@@ -179,6 +180,12 @@
   "sf_new_badge": "Novo",
   "sf_no_results": "Sem resultados — experimente «Perguntar ao Shaheen» ou limpe os filtros",
   "sf_or_assistant": "Ou conclua o pedido com o assistente Sham",
+  "sf_order_note": "O pagamento online ainda não está disponível no seu país. Envie o seu pedido por e-mail e responderemos com as formas de pagamento disponíveis. O pedido só será considerado pago após a nossa confirmação.",
+  "sf_order_opened": "Abrimos uma mensagem de pedido pronta no seu aplicativo de e-mail. Toque em “Enviar” para que ela chegue até nós. Se nada foi aberto, escreva para {email}.",
+  "sf_order_ref": "Referência do pedido",
+  "sf_order_send": "Enviar o pedido à loja",
+  "sf_order_start": "Concluir pedido",
+  "sf_order_subject": "Novo pedido",
   "sf_paid": "Pagamento recebido ✓ O número do seu pedido é {ref} — entraremos em contacto para confirmar o envio.",
   "sf_password": "Palavra-passe",
   "sf_pay_charge": "Será cobrado o valor de {amount} no seu cartão através de uma página de pagamento segura.",

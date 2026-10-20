@@ -1,7 +1,7 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-10-20T09:39:44.408Z",
+  "updatedAt": "2026-10-20T21:35:29.588Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
@@ -9,15 +9,15 @@
   "operatorNumberInputs": [
     {
       "file": "src/admin/AdminApp.tsx",
-      "line": 1209
-    },
-    {
-      "file": "src/admin/AdminApp.tsx",
       "line": 1211
     },
     {
       "file": "src/admin/AdminApp.tsx",
-      "line": 1258
+      "line": 1213
+    },
+    {
+      "file": "src/admin/AdminApp.tsx",
+      "line": 1260
     },
     {
       "file": "src/admin/BankPanel.tsx",
@@ -66,92 +66,105 @@
   "score": 81,
   "notes": [
     "تقليل صارم للغة إلى عربي/إنجليزي في 3 موضع — راجع إن كان المقصود زوج بيانات {ar,en} أم لغة واجهة.",
-    "المترجم الذكي: 142638 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 1344 — النهارده اتترجم 1344 (اشتغل النهارده).",
+    "المترجم الذكي: 143909 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 1691 — النهارده اتترجم 347 (اشتغل النهارده).",
     "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «Live Sync» src/components/HomeHub.tsx:138، «Enter Portal» src/components/HomeHub.tsx:141، «Master Perfumer AI Chatbot» src/components/PerfumerAIChatbot.tsx:66.",
     "لغات بلّغ عنها قسم التصميم بتتترجم الأول: is، sq، ps."
   ],
   "translation": {
-    "at": "2026-10-20T09:39:44.751Z",
+    "at": "2026-10-20T21:35:29.976Z",
     "status": "done",
-    "remaining": 142638,
-    "covered": 1344,
+    "remaining": 143909,
+    "covered": 1691,
     "remainingByTier": {
-      "1": 17345,
-      "2": 93883,
+      "1": 17538,
+      "2": 94961,
       "3": 31410
     },
     "worstLanguages": [
       {
         "lang": "my",
-        "remaining": 1582
+        "remaining": 1599
       },
       {
         "lang": "dz",
-        "remaining": 1582
+        "remaining": 1599
       },
       {
         "lang": "ms",
-        "remaining": 1580
+        "remaining": 1597
       },
       {
         "lang": "cs",
-        "remaining": 1580
+        "remaining": 1597
       },
       {
         "lang": "ur",
-        "remaining": 1580
+        "remaining": 1597
       },
       {
         "lang": "am",
-        "remaining": 1580
+        "remaining": 1597
       },
       {
         "lang": "ha",
-        "remaining": 1580
+        "remaining": 1597
       },
       {
         "lang": "yo",
-        "remaining": 1580
+        "remaining": 1597
       }
     ],
     "run": {
       "calls": 20,
-      "translated": 1344,
-      "rejected": 4,
-      "droppedByReview": 0,
-      "reviewed": false,
+      "translated": 347,
+      "rejected": 20,
+      "droppedByReview": 17,
+      "reviewed": true,
       "engines": [
-        "perplexity"
+        "perplexity",
+        "perplexity (review)"
       ],
       "languages": [
         "is",
         "sq",
         "ps",
-        "fr",
-        "es",
-        "it",
-        "de",
-        "ru",
-        "zh",
-        "tr",
-        "fa",
         "hi",
         "pt",
-        "id"
+        "id",
+        "ja",
+        "ko"
       ]
     },
     "rejectReasons": {
-      "copy_of_english": 4
+      "copy_of_english": 3,
+      "review": 17
     },
     "rejectCounts": {
-      "is|ui|e10dbc6c3b": 1,
-      "fr|ui|e10dbc6c3b": 1,
-      "it|ui|e10dbc6c3b": 1,
-      "pt|ui|e10dbc6c3b": 1
+      "is|ui|e10dbc6c3b": 2,
+      "fr|ui|e10dbc6c3b": 2,
+      "it|ui|e10dbc6c3b": 2,
+      "pt|ui|e10dbc6c3b": 1,
+      "sq|store|0e3e4bc526": 1,
+      "ps|store|0e3e4bc526": 1,
+      "ps|store|49b6a75863": 1,
+      "ja|ui|5aa07bae7c": 1,
+      "ja|store|108d413403": 1,
+      "ja|store|ed2462ffb7": 1,
+      "ja|store|1e30ab8f96": 1,
+      "ja|store|4388f0b476": 1,
+      "ja|store|968764dc92": 1,
+      "ko|ui|3a3552eece": 1,
+      "ko|ui|5aa07bae7c": 1,
+      "ko|store|108d413403": 1,
+      "ko|store|4ae854d3d5": 1,
+      "ko|store|e1a7839f8d": 1,
+      "ko|store|4449faed18": 1,
+      "ko|store|fb6eaae88b": 1,
+      "ko|store|18bc8fbc12": 1
     }
   },
   "design": {
-    "at": "2026-10-20T09:39:44.408Z",
+    "at": "2026-10-20T21:35:29.588Z",
     "auditAt": "2026-10-17T06:42:21.663Z",
     "auditScore": 62,
     "priorityLanguages": [
