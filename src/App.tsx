@@ -922,11 +922,15 @@ export default function App() {
           onOpenProfilePage={() => currentUser && (getSessionToken() ? navigateToTab('community/me') : handleOpenProfilePage(currentUser))}
         />
 
-        {/* Store Promo Hub: promotional banner with store deals */}
-        <TopPromoHub
-          currentLang={currentLang}
-          onViewStore={() => navigateToTab('store')}
-        />
+        {/* Store Promo Hub: promotional banner with store deals.
+            Not on «مجتمع شام»: a social feed opens straight on the feed (the banner took a whole screen there,
+            two on phones, and fetched the catalogue + dozens of product photos nobody was looking at). */}
+        {!(activeTab === 'community' || activeTab.startsWith('community/')) && (
+          <TopPromoHub
+            currentLang={currentLang}
+            onViewStore={() => navigateToTab('store')}
+          />
+        )}
 
         {/* Hero Showcase (only shown when in concentration tab or home) */}
         {activeTab === 'concentration' && (

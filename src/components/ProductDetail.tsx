@@ -32,6 +32,22 @@ function detailLabels(lang: SupportedLanguage) {
 interface Props { productId: number; currentLang: SupportedLanguage; onClose?: () => void; onAddToCart?: (product: StoreProduct) => void }
 
 /** How close two products are (same family, gender, brand, price band) for «قد يعجبك أيضاً». */
+/** The catalogue stores longevity in English («Lasting (6-8 hours)», «Moderate»): show it in the visitor's language. */
+export function localLongevity(value: string, lang: SupportedLanguage): string {
+  const t = makeStoreT(lang);
+  const range = value.match(/(\d+)\s*[-–]\s*(\d+)\s*h/i);
+  if (/^\s*lasting/i.test(value) && range) {
+    let hours = `${storeNumber(Number(range[1]), lang)}–${storeNumber(Number(range[2]), lang)}`;
+    try {
+      const fmt = new Intl.NumberFormat(lang, { style: 'unit', unit: 'hour', unitDisplay: 'long' }) as Intl.NumberFormat & { formatRange?: (a: number, b: number) => string };
+      if (fmt.formatRange) hours = fmt.formatRange(Number(range[1]), Number(range[2])).replace(/\d+/g, (n) => storeNumber(Number(n), lang)); // the store's own digits
+    } catch { /* unknown locale: plain digits */ }
+    return `${t('rv_lon_long')} · ${hours}`;
+  }
+  if (/^\s*moderate\s*$/i.test(value)) return t('rv_lon_moderate');
+  return value;
+}
+
 const closeness = (a: StoreProduct, b: StoreProduct) =>
   b.families.filter((f) => a.families.includes(f)).length * 3 + (a.gender && a.gender === b.gender ? 2 : 0) +
   (a.brand && a.brand === b.brand ? 1 : 0) + (Math.abs(a.price - b.price) <= a.price * 0.3 ? 1 : 0);
@@ -161,7 +177,7 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
             {product.category && <><span className="text-stone-500">{L.category}</span><span className="font-medium">{product.category}</span></>}
             {product.sizeMl && <><span className="text-stone-500">{L.size}</span><span className="font-medium">{product.sizeMl} {L.ml}</span></>}
             {product.concentration && <><span className="text-stone-500">{L.concentration}</span><span className="font-medium">{product.concentration}</span></>}
-            {product.longevity && <><span className="text-stone-500">{L.longevity}</span><span className="font-medium">{product.longevity}</span></>}
+            {product.longevity && <><span className="text-stone-500">{L.longevity}</span><span className="font-medium">{localLongevity(product.longevity, currentLang)}</span></>}
             <span className="text-stone-500">{L.sku}</span><span className="font-medium font-mono text-xs">{product.sku}</span>
             <a href={productPageUrl(product.slug)} target="_blank" rel="noopener" data-testid="product-page-link"
               className="col-span-2 mt-1 inline-flex items-center gap-1.5 text-amber-700 hover:underline text-xs"><ExternalLink className="w-3.5 h-3.5" />{L.page}</a>
