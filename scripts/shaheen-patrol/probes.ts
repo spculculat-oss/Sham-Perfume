@@ -54,7 +54,7 @@ export async function probeProductPages(t: LiveTargets): Promise<ProbeResult> {
     let moneyOk = false;
     try { moneyOk = money.status === 200 && typeof (JSON.parse(money.text) as { rates?: unknown }).rates === 'object'; } catch { moneyOk = false; }
     if (!moneyOk) bad.push(`p/money.json: ${money.status}`);
-    const picks = sample(t.products, deep ? 15 : 4, t.hour);
+    const picks = sample(t.products, deep ? 10 : 4, t.hour);
     let priceDrift = 0;
     for (const p of picks) {
       const page = await get(t, abs(t.pages, `p/${p.slug}.html`));
@@ -76,7 +76,7 @@ export async function probeProductPages(t: LiveTargets): Promise<ProbeResult> {
 export async function probeImages(t: LiveTargets): Promise<ProbeResult> {
   return safe('images', async () => {
     const deep = Boolean(t.deep?.images);
-    const urls = sample(t.products.filter((p) => p.images[0]).map((p) => ({ sku: p.sku, url: abs(t.pages, p.images[0]) })), deep ? 40 : 12, t.hour);
+    const urls = sample(t.products.filter((p) => p.images[0]).map((p) => ({ sku: p.sku, url: abs(t.pages, p.images[0]) })), deep ? 25 : 10, t.hour);
     const bad: string[] = [];
     await Promise.all(urls.map(async ({ sku, url }) => {
       try {
@@ -132,6 +132,11 @@ export async function probePayments(t: LiveTargets): Promise<ProbeResult> {
   });
 }
 
-export async function liveProbes(t: LiveTargets): Promise<ProbeResult[]> {
-  return Promise.all([probeSite(t), probeProductPages(t), probeImages(t), probeSitemap(t), probeEngine(t), probeNewsApi(t), probePayments(t)]);
+const LIVE: Partial<Record<ProbeId, (t: LiveTargets) => Promise<ProbeResult>>> = {
+  site: probeSite, product_pages: probeProductPages, images: probeImages, sitemap: probeSitemap, engine: probeEngine, news_api: probeNewsApi, payments: probePayments,
+};
+/** The live tests of one shift (all of them when `only` is absent). */
+export async function liveProbes(t: LiveTargets, only?: ProbeId[]): Promise<ProbeResult[]> {
+  const ids = (Object.keys(LIVE) as ProbeId[]).filter((id) => !only || only.includes(id));
+  return Promise.all(ids.map((id) => LIVE[id]!(t)));
 }

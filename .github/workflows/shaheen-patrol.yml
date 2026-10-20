@@ -1,6 +1,10 @@
-name: Shaheen patrol — hourly check, fix and expert review
+name: Shaheen patrol — rotating shifts (each tool every 3 hours)
 
-# «الدورية كل ساعة»: every hour each tool under «الخبير شاهين» inspects its own work — its report and last
+# «الدورية بالتناوب»: three shifts take turns, one per hour, so only one group of tools works at a time and the
+# site feels no load — store & pricing, then content & visitor experience, then reliability & leadership; each
+# tool is checked every 3 hours (8 times a day), at most 3 robots restarted and 1 question to Shaheen per shift.
+# Minute 52: clear of the importer and the studio bridge (minute 37) and the other robots' schedules.
+# In its shift each tool under «الخبير شاهين» inspects its own work — its report and last
 # run, plus hands-on tests of its scope (prices = supplier + 50%, one currency per country, live product pages,
 # product photos, the sitemap, the news, the server, payment methods). Safe fixes happen at once (the robot
 # owning the broken scope is started again, at most once per 6 hours); the rest goes to Shaheen (an AI
@@ -8,12 +12,19 @@ name: Shaheen patrol — hourly check, fix and expert review
 # it stays broken, becomes a «shaheen-task» issue for the coding agent. Problems spanning several tools get a
 # task force; every run finished since the last patrol is tested by an expert reviewer of the same scope.
 # Code: scripts/shaheen-patrol/. Result: src/data/live/shaheen-patrol.json (admin → «الهيكل الإداري»),
-# published only when something changed or every 3 hours (no commit every hour).
+# published only when something changed or every 3 hours (no commit every hour). Manual run: pick a shift or
+# «all» for a full patrol of every tool at once.
 
 on:
   schedule:
-    - cron: '37 * * * *'
+    - cron: '52 * * * *'
   workflow_dispatch:
+    inputs:
+      shift:
+        description: 'Shift: auto (this hour), 0 store & pricing, 1 content & visitors, 2 reliability & leadership, all'
+        type: choice
+        options: [auto, '0', '1', '2', all]
+        default: auto
   push:
     branches: ['arena/**']
     paths: ['scripts/shaheen-patrol/**', '.github/workflows/shaheen-patrol.yml']
@@ -35,6 +46,7 @@ jobs:
     env:
       # Branch pushes rehearse: the patrol runs and shows its findings; nothing started, opened or committed.
       PATROL_ACT: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      PATROL_SHIFT: ${{ inputs.shift != 'auto' && inputs.shift || '' }}
       GITHUB_TOKEN: ${{ github.token }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -68,7 +80,7 @@ jobs:
         run: |
           git config user.name "Shaheen patrol bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          node scripts/ci/publish.mjs "الدورية كل ساعة: $(date -u +'%Y-%m-%d %H:%M')" src/data/live/shaheen-patrol.json src/data/live/ai-quota.json \
+          node scripts/ci/publish.mjs "الدورية بالتناوب: $(date -u +'%Y-%m-%d %H:%M')" src/data/live/shaheen-patrol.json src/data/live/ai-quota.json \
             || { echo "::error::Could not push the patrol log"; exit 1; }
       - name: Start the robots that fix what broke
         if: env.PATROL_ACT == 'true' && steps.patrol.outputs.reruns != ''
