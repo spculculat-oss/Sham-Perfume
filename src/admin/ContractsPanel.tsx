@@ -200,6 +200,8 @@ export default function ContractsPanel() {
             {['signed', 'approved'].includes(c.status) && <button type="button" className={`${button} text-red-700`} onClick={() => step(c, 'revoke', T('اتسحبت الموافقة — المنتجات تتشال خلال 48 ساعة'), T('المتجر سحب موافقته؟ اكتب السبب'))}><Undo2 className="w-4 h-4" />{T('سحب الموافقة')}</button>}
           </div>
         </div>)}
+      </section>
+
       {financeOverview && financeOverview.approved.length > 0 && <section className={`${card} space-y-3 border-amber-300`}>
         <h3 className="font-bold flex items-center gap-2">💰 {T('الربط مع الإدارة المالية — عقود معتمدة بانتظار المراجعة')}</h3>
         <p className="text-xs text-stone-500">{T('أي عقد يكتمل (approved) يتم فوراً إشعار شاهين للتنزيل على المتجر + فتح مراجعة مالية للتسعير. راجع التكاليف قبل أول طلب، وإلا التقارير ستظهر incomplete.')}</p>
