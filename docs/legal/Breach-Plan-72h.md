@@ -3,7 +3,7 @@
 
 ### 1. اكتشاف (0-4 ساعات)
 - إشارات: محاولات دخول غير طبيعية، شكوى مستخدم، تنبيه Vercel/Firebase، فحص سجلات
-- من يكتشف يُبلغ فورًا: security@sham-perfume.com + DPO (dpo@sham-perfume.com)
+- من يكتشف يُبلغ فورًا: s.p.culculat@gmail.com (موضوع الرسالة «[شام | الأمان]») + DPO (s.p.culculat@gmail.com (موضوع الرسالة «[شام | حماية البيانات]»))
 
 ### 2. احتواء (4-12 ساعة)
 - عزل الأنظمة المصابة، إلغاء توكنات، تفعيل WAF rule، تدوير مفاتيح، حفظ أدلة (لا تحذف سجلات)
@@ -32,8 +32,8 @@
 - تمرين Tabletop سنوي: محاكاة خرق + قياس زمن الإخطار
 
 **جهات اتصال الطوارئ:**
-- DPO: dpo@sham-perfume.com
-- Legal: legal@sham-perfume.com
+- DPO: s.p.culculat@gmail.com (موضوع الرسالة «[شام | حماية البيانات]»)
+- Legal: s.p.culculat@gmail.com (موضوع الرسالة «[شام | القانوني]»)
 - Tech: [يُعبأ]
 - Hosting: Vercel/Firebase status pages
 

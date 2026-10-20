@@ -1,11 +1,14 @@
 /**
  * «مجتمع شام» — e-mail delivery for account security (verification codes, reset codes, sign-in alerts).
  *
- * Uses the exact provider chain the orders' notifications use (Resend → SendGrid → outbound webhook),
+ * Uses the exact provider chain the orders' notifications use (Resend → SendGrid → Gmail → outbound webhook),
  * so there is one set of keys on the server. When no provider is configured the call answers
  * `delivered: false` and the API tells the truth (EMAIL_UNAVAILABLE) — the code is never faked and
  * never shown to the client.
  */
+import { senderAddress, senderName, sendViaGmail } from '../core/mailer';
+import { isPublicMailDomain } from '../../src/config/contact';
+
 type Env = Record<string, string | undefined>;
 
 export interface AuthEmailResult { delivered: boolean; provider: string; error?: string }
@@ -32,8 +35,8 @@ export async function sendMailOutbound(
   env: Env = process.env,
   fetchFn: typeof fetch = fetch,
 ): Promise<AuthEmailResult> {
-  const fromName = env.SHAM_EMAIL_FROM_NAME || 'شام للعطور (Sham Perfumes)';
-  const fromAddress = env.SHAM_EMAIL_FROM_ADDRESS || 'no-reply@shamperfumes.com';
+  const fromName = senderName(env);
+  const fromAddress = senderAddress(env);
   const html = mail.html || `<div dir="auto" style="font-family:Tahoma,Arial,sans-serif;white-space:pre-wrap">${mail.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>`;
   try {
     const resend = env.RESEND_API_KEY?.trim();
@@ -84,10 +87,12 @@ export async function sendMailOutbound(
 
 /** The domain «بريد شام» answers receive on (used for Reply-To addresses and inbound accept rules). */
 export function mailDomain(env: Env = process.env): string {
-  const own = env.SHAM_MAIL_DOMAIN?.trim().toLowerCase();
-  if (own) return own.replace(/^@+/, '');
-  const from = (env.SHAM_EMAIL_FROM_ADDRESS || 'no-reply@shamperfumes.com').trim().toLowerCase();
-  return from.includes('@') ? from.split('@')[1] : '';
+  const own = env.SHAM_MAIL_DOMAIN?.trim().toLowerCase().replace(/^@+/, '');
+  if (own) return isPublicMailDomain(own) ? '' : own;
+  // Only a domain we own can carry members' addresses — never gmail.com & co. (someone else's mailbox).
+  const from = (env.SHAM_EMAIL_FROM_ADDRESS || '').trim().toLowerCase();
+  const domain = from.includes('@') ? from.split('@')[1] : '';
+  return domain && !isPublicMailDomain(domain) ? domain : '';
 }
 
 export default sendAuthEmail;
@@ -98,7 +103,7 @@ export async function sendAuthEmail(
   env: Env = process.env,
   fetchFn: typeof fetch = fetch,
 ): Promise<AuthEmailResult> {
-  const from = `${env.SHAM_EMAIL_FROM_NAME || 'شام للعطور (Sham Perfumes)'} <${env.SHAM_EMAIL_FROM_ADDRESS || 'no-reply@shamperfumes.com'}>`;
+  const from = `${senderName(env)} <${senderAddress(env)}>`;
   try {
     const resend = env.RESEND_API_KEY?.trim();
     if (resend) {
@@ -122,6 +127,8 @@ export async function sendAuthEmail(
       if (response.ok) return { delivered: true, provider: 'sendgrid' };
       return { delivered: false, provider: 'sendgrid', error: `sendgrid ${response.status}` };
     }
+    const gmail = await sendViaGmail({ to: [to], subject: mail.subject, html: mail.html, text: mail.text }, env);
+    if (gmail) return gmail;
     const webhook = env.SHAM_WEBHOOK_URL?.trim();
     if (webhook) {
       const response = await fetchFn(webhook, {

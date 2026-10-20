@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CONTACT, CONTACT_ROLES, contactEmail, contactMailto, type ContactRole } from '../config/contact';
 import { Shield, FileText, Truck, RefreshCw, Cookie, AlertTriangle, Scale, Mail, X, ExternalLink, CheckCircle2 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
@@ -171,7 +172,7 @@ const OverviewTab: React.FC<{ stats: ReturnType<typeof complianceStats>; audit: 
 const TermsTab: React.FC<{ currentLang: SupportedLanguage }> = () => (
   <div className="space-y-3">
     <h3 className="font-bold text-stone-900 text-sm">الشروط والأحكام — مسودة للنشر (يجب مراجعة محامٍ)</h3>
-    <Section title="1. من نحن" body="منصة «صمم عطرك مع شام» (Sham Perfume) — منصة وسيطة تربط مصممي العطور بالتجار. السجل التجاري: [يُعبأ]، الرقم الضريبي: [يُعبأ]، العنوان: [يُعبأ]، البريد: legal@sham-perfume.com. المنصة مسجلة في مصر وتخدم عملاء عالميًا." />
+    <Section title="1. من نحن" body={`منصة «صمم عطرك مع شام» (Sham Perfume) — منصة وسيطة تربط مصممي العطور بالتجار. السجل التجاري: [يُعبأ]، الرقم الضريبي: [يُعبأ]، العنوان: [يُعبأ]، البريد: ${contactEmail('legal')}. المنصة مسجلة في مصر وتخدم عملاء عالميًا.`} />
     <Section title="2. قبول الشروط" body="بإنشاء حساب أو استخدام الحاسبات/المتجر/شاهين، تقر بأنك قرأت هذه الشروط وسياسة الخصوصية ووافقت عليهما. إذا كنت أقل من 16 سنة (أوروبا) أو 13 سنة (أمريكا) فلا تستخدم المنصة. عند التعارض بين الترجمات، النص العربي هو الحاكم." />
     <Section title="3. الحسابات" body="يجب تقديم بيانات صحيحة. أنت مسؤول عن سرية كلمة مرورك. نحتفظ بحق تعليق الحساب عند انتحال/إساءة/خرق. كلمات المرور مشفرة ولا تُخزن في المتصفح." />
     <Section title="4. المتجر والوساطة" body="المنصة وسيط فقط، ليست بائعًا. الأسعار تشمل هامش المنصة (25% افتراضي) + شحن + ضريبة VAT حسب بلدك + رسوم جمركية تقديرية (يتحملها المشتري). الفاتورة تُصدر إلكترونيًا وفق قوانين بلدك (مصر EDA، السعودية ZATCA). التجار يخضعون لـ KYC." />
@@ -190,12 +191,12 @@ const TermsTab: React.FC<{ currentLang: SupportedLanguage }> = () => (
 const PrivacyTab: React.FC<{ currentLang: SupportedLanguage }> = () => (
   <div className="space-y-3">
     <h3 className="font-bold text-stone-900 text-sm">سياسة الخصوصية — مسودة GDPR/PDPL</h3>
-    <Section title="من نحن (Controller)" body="شام بيرفيوم، البريد: privacy@sham-perfume.com، DPO: dpo@sham-perfume.com، العنوان: [يُعبأ]. نمثل معالج البيانات لكل خدمات المنصة." />
+    <Section title="من نحن (Controller)" body={`شام بيرفيوم، البريد: ${contactEmail('privacy')}، DPO: ${contactEmail('dpo')}، العنوان: [يُعبأ]. نمثل معالج البيانات لكل خدمات المنصة.`} />
     <Section title="ما نجمعه" body="• حساب: اسم، بريد، هاتف، بلد، تاريخ ميلاد، مستوى حرفي. • طلبات: عنوان شحن، منتجات، دفع (لا نخزن بطاقات، نستخدم بوابة مرخصة). • تقني: IP، نوع متصفح، سجلات استخدام (لأمن/تحسين). • محتوى: وصفات، محادثات شاهين، منشورات مجتمع (اختياري). • موقع: فقط إذا وافقت (للشحن/الضرائب)." />
     <Section title="لماذا (الأساس القانوني GDPR Art.6)" body="• تنفيذ عقد (إنشاء حساب، تنفيذ طلب) • موافقة صريحة (تسويق، كوكيز تحليلية) • مصلحة مشروعة (أمن، منع احتيال) • التزام قانوني (فواتير 7 سنوات، ضرائب) • لا نعالج بيانات حساسة (صحة/دين) بدون موافقة صريحة منفصلة." />
     <Section title="كم نحتفظ" body="• حساب: حتى تحذفه + 5 سنوات للأرشيف القانوني • طلبات/فواتير: 7 سنوات ضريبيًا • محادثات: 1 سنة ثم حذف تلقائي (يمكنك المسح فورًا) • سجلات أمن: 1 سنة • بعد الحذف: إخفاء هوية أو مسح كامل خلال 30 يومًا." />
     <Section title="مع من نشارك" body="• معالجات: Vercel (استضافة أمريكا، SCCs)، Firebase/Firestore (تخزين)، بوابة دفع (Paymob/Stripe)، شحن (DHL...). لدينا DPA مع كل معالج. • تجار: فقط بيانات الطلب اللازمة. • سلطات: إذا أمر قضائي/التزام قانوني. • لا نبيع بياناتك أبدًا." />
-    <Section title="حقوقك (GDPR 15-22، مصر 151، SA PDPL)" body="لك حق: الوصول، التصحيح، المسح (النسيان)، التقييد، النقل (JSON)، الاعتراض، سحب الموافقة، عدم الخضوع لقرار آلي. اطلب عبر privacy@sham-perfume.com أو زر 'تصدير/مسح بياناتي' في DataPrivacyModal. نرد خلال 30 يومًا (GDPR) / 30 يومًا (SA PDPL)." />
+    <Section title="حقوقك (GDPR 15-22، مصر 151، SA PDPL)" body={`لك حق: الوصول، التصحيح، المسح (النسيان)، التقييد، النقل (JSON)، الاعتراض، سحب الموافقة، عدم الخضوع لقرار آلي. اطلب عبر ${contactEmail('privacy')} أو زر 'تصدير/مسح بياناتي' في DataPrivacyModal. نرد خلال 30 يومًا (GDPR) / 30 يومًا (SA PDPL).`} />
     <Section title="النقل الدولي" body="بياناتك قد تُعالج خارج بلدك (Vercel أمريكا). نستخدم ضمانات: SCCs (EU)، تقييم أثر نقل، تشفير. للسعودية: نقل بموافقة + ضمانات كافية." />
     <Section title="الأطفال" body="لا نجمع عمدًا بيانات <13 سنة (COPPA). إذا اكتشفنا حساب طفل بدون موافقة والدين نحذفه. 13-16 سنة (EU) يتطلب موافقة ولي." />
     <Section title="الأمن والخرق" body="تشفير AES-256، TLS 1.3، HSTS، CSP، WAF. كلمات مرور مشفرة Argon2 + HttpOnly cookies. إذا حدث خرق يمسك، نخطر السلطة خلال 72 ساعة ونخطرك إذا خطر عالٍ." />
@@ -236,7 +237,7 @@ const CookiesTab: React.FC<{ currentLang: SupportedLanguage }> = () => (
     <h3 className="font-bold text-stone-900">الكوكيز والتتبع — ePrivacy + GDPR</h3>
     <Section title="ما نستخدمه" body="• ضروري: localStorage لحفظ وصفاتك/جلساتك (ضروري للخدمة، لا يحتاج موافقة) • وظيفي: تفضيل لغة/عملة • تحليلي: قياس أداء (يتطلب موافقة) • تسويقي: لا يوجد حاليًا (يتطلب موافقة صريحة)" />
     <Section title="موافقتك" body="عند زيارتك الأولى نعرض لافتة: قبول الكل / رفض غير الضروري / تخصيص. يمكنك تغيير اختيارك anytime عبر 'إعدادات الكوكيز' في Footer. نحتفظ بسجل موافقتك (timestamp + IP hash) لإثبات الامتثال." />
-    <Section title="كيف تتحكم" body="• عبر لافتة الموافقة • عبر إعدادات متصفحك (حذف cookies) • عبر زر 'مسح بياناتي' في DataPrivacyModal • التواصل: privacy@sham-perfume.com" />
+    <Section title="كيف تتحكم" body={`• عبر لافتة الموافقة • عبر إعدادات متصفحك (حذف cookies) • عبر زر 'مسح بياناتي' في DataPrivacyModal • التواصل: ${contactEmail('privacy')}`} />
     <Section title="لا تتبع" body="نحن Zero Trackers: لا بكسلات فيسبوك/جوجل، لا بيع بيانات. إذا أضفنا تحليلات مستقبلاً، سنطلب موافقتك أولًا." />
   </div>
 );
@@ -258,11 +259,13 @@ const AiTab: React.FC<{ currentLang: SupportedLanguage }> = () => (
 const ContactTab: React.FC<{ currentLang: SupportedLanguage }> = () => (
   <div className="space-y-3">
     <h3 className="font-bold text-stone-900">اتصل بنا قانونيًا</h3>
+    <p className="text-[11px] text-stone-500">كل الرسائل بتوصل لصندوق بريد واحد للمنصة، وموضوع كل رسالة بيتعلّم تلقائيًا بنوعها (مثل «[شام | الخصوصية]») عشان تتوزع وتترد بسرعة.</p>
+    <ContactForm />
     <div className="grid sm:grid-cols-2 gap-3">
-      <ContactCard title="مسؤول حماية البيانات (DPO)" email="dpo@sham-perfume.com" desc="لطلبات: وصول، تصحيح، مسح، نقل، اعتراض — نرد خلال 30 يومًا" />
-      <ContactCard title="الخصوصية العامة" email="privacy@sham-perfume.com" desc="أسئلة عامة، سحب موافقة، شكاوى" />
-      <ContactCard title="القانوني/الشروط" email="legal@sham-perfume.com" desc="شروط، ملكية فكرية، DMCA، عقود" />
-      <ContactCard title="دعم المستهلك" email="support@sham-perfume.com" desc="طلبات، شحن، إرجاع — رد خلال 24 ساعة" />
+      <ContactCard role="dpo" title="مسؤول حماية البيانات (DPO)" desc="لطلبات: وصول، تصحيح، مسح، نقل، اعتراض — نرد خلال 30 يومًا" />
+      <ContactCard role="privacy" title="الخصوصية العامة" desc="أسئلة عامة، سحب موافقة، شكاوى" />
+      <ContactCard role="legal" title="القانوني/الشروط" desc="شروط، ملكية فكرية، DMCA، عقود" />
+      <ContactCard role="support" title="دعم المستهلك" desc="طلبات، شحن، إرجاع — رد خلال 24 ساعة" />
     </div>
     <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200">
       <h4 className="font-bold text-stone-900 mb-2">الشكاوى الحكومية</h4>
@@ -302,12 +305,36 @@ const StatCard: React.FC<{ label: string; value: string; color: string }> = ({ l
   );
 };
 
-const ContactCard: React.FC<{ title: string; email: string; desc: string }> = ({ title, email, desc }) => (
+const ContactCard: React.FC<{ role: ContactRole; title: string; desc: string }> = ({ role, title, desc }) => (
   <div className="p-3 rounded-xl bg-white border border-stone-200">
     <h4 className="font-bold text-stone-900 text-xs">{title}</h4>
-    <a href={`mailto:${email}`} className="text-xs text-amber-700 hover:underline">{email}</a>
+    <a href={contactMailto(role, 'ar')} dir="ltr" className="text-xs text-amber-700 hover:underline break-all">{contactEmail(role)}</a>
     <p className="text-[11px] text-stone-500 mt-1">{desc}</p>
   </div>
 );
+
+/** «راسلنا»: free and serverless — it opens the visitor's own mail app with the topic tag filled in. */
+const ContactForm: React.FC = () => {
+  const [role, setRole] = React.useState<ContactRole>('support');
+  const [subject, setSubject] = React.useState('');
+  const [message, setMessage] = React.useState('');
+  const href = contactMailto(role, 'ar', subject, message);
+  return (
+    <form className="p-3 rounded-xl bg-amber-50/60 border border-amber-200 space-y-2" onSubmit={(e) => { e.preventDefault(); if (message.trim()) window.location.href = href; }}>
+      <h4 className="font-bold text-stone-900 text-xs">راسلنا</h4>
+      <div className="grid sm:grid-cols-2 gap-2">
+        <select aria-label="نوع الرسالة" value={role} onChange={(e) => setRole(e.target.value as ContactRole)} className="text-xs rounded-lg border border-stone-300 p-2 bg-white">
+          {CONTACT_ROLES.filter((r) => r !== 'orders').map((r) => <option key={r} value={r}>{CONTACT[r].ar}</option>)}
+        </select>
+        <input aria-label="الموضوع" value={subject} onChange={(e) => setSubject(e.target.value)} maxLength={120} placeholder="الموضوع (اختياري)" className="text-xs rounded-lg border border-stone-300 p-2 bg-white" />
+      </div>
+      <textarea aria-label="رسالتك" value={message} onChange={(e) => setMessage(e.target.value)} required rows={3} maxLength={1500} placeholder="اكتب رسالتك… (من غير كلمات سر أو أرقام بطاقات)" className="w-full text-xs rounded-lg border border-stone-300 p-2 bg-white" />
+      <div className="flex flex-wrap items-center gap-2">
+        <button type="submit" disabled={!message.trim()} className="text-xs font-bold rounded-lg bg-stone-900 text-white px-3 py-2 disabled:opacity-40">افتح الرسالة في بريدك</button>
+        <span className="text-[11px] text-stone-500">بيفتح تطبيق البريد عندك والرسالة جاهزة — إنت اللي بتدوس «إرسال».</span>
+      </div>
+    </form>
+  );
+};
 
 export default LegalCenter;

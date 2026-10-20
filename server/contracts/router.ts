@@ -10,6 +10,7 @@
  * Team side (Bearer SHAM_ADMIN_TOKEN): /api/admin/contracts/* — settings, stores, letters, approval (C-10),
  * the signature certificate, the approved-stores list the importer reads, and reply drafting.
  */
+import { mailProvider } from '../core/mailer';
 import express from 'express';
 import { randomBytes, timingSafeEqual } from 'node:crypto';
 import type { Community } from '../community/router';
@@ -26,7 +27,7 @@ type Env = Record<string, string | undefined>;
 type Handler = (req: express.Request, res: express.Response) => Promise<void>;
 
 const bearer = (req: express.Request) => (req.headers.authorization || '').replace(/^Bearer\s+/i, '').trim();
-const emailProvider = (env: Env) => (env.RESEND_API_KEY?.trim() ? 'resend' : env.SENDGRID_API_KEY?.trim() ? 'sendgrid' : env.SHAM_WEBHOOK_URL?.trim() ? 'webhook' : '');
+const emailProvider = (env: Env) => mailProvider(env);
 
 function sendError(res: express.Response, error: unknown) {
   if (res.headersSent) return;

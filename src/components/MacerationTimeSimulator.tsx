@@ -1318,7 +1318,7 @@ export const MacerationTimeSimulator: React.FC<MacerationTimeSimulatorProps> = (
       'CALSCALE:GREGORIAN',
       'METHOD:PUBLISH',
       'BEGIN:VEVENT',
-      `UID:maceration-${Date.now()}@shamperfumes.com`,
+      `UID:maceration-${Date.now()}@spculculat-oss.github.io`,
       `DTSTAMP:${icsDate}T090000Z`,
       `DTSTART;VALUE=DATE:${icsDate}`,
       `SUMMARY:${title}`,

@@ -3,6 +3,7 @@
  *   /api/assistant/*  public visitor API (rate limited)
  *   /api/admin/*      management API (Bearer SHAM_ADMIN_TOKEN, constant-time compare)
  */
+import { mailProvider, mailProviderLabel } from './mailer';
 import express from 'express';
 import { FinanceService } from '../finance/service';
 import { createFinanceRouter } from '../finance/router';
@@ -267,8 +268,8 @@ export function createShamCore(options: CoreOptions = {}) {
       },
       notifications: { configured: notifier.configured },
       emailNotifications: {
-        configured: Boolean(env.RESEND_API_KEY || env.SENDGRID_API_KEY || env.SHAM_WEBHOOK_URL),
-        provider: env.RESEND_API_KEY ? 'Resend' : env.SENDGRID_API_KEY ? 'SendGrid' : env.SHAM_WEBHOOK_URL ? 'Webhook' : 'Simulator',
+        configured: Boolean(mailProvider(env)),
+        provider: mailProviderLabel(env),
         sentCount: getEmailHistory().length,
       },
       byStatus, byType, intents, engineUsage: engines, pipelineValue: revenue,

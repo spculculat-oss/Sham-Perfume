@@ -780,6 +780,7 @@ function EmailsPanel() {
               ? T('✅ متصل ومفعل لإرسال الرسائل الحقيقية للعملاء')
               : T('⚡ يعمل في وضع المحاكاة الآمنة والتدقيق الداخلي (دون استهلاك رصيد خارجي)')}
           </p>
+          {!overview?.emailNotifications?.configured && <p className="text-[11px] text-amber-800 mt-2">{T('مجاناً: اعمل «كلمة مرور تطبيق» من حساب جوجل بتاع جيميل المتجر، وحطها بنفسك كسر GitHub باسم SHAM_GMAIL_APP_PASSWORD.')}</p>}
         </div>
 
         <div className={card}>

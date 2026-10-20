@@ -1,3 +1,4 @@
+import { STORE_EMAIL } from '../config/contact';
 import { UserDetailedAddress } from '../types/address';
 
 export const USER_ADDRESS_STORAGE_KEY = 'sham_perfume_user_detailed_address';
@@ -14,7 +15,7 @@ export const DEFAULT_DETAILED_ADDRESS: UserDetailedAddress = {
   postalCode: '12211',
   taxOrCommercialId: 'CR-1010884920',
   phone: '+966 50 123 4567',
-  email: 'lab@shamperfumes.com',
+  email: STORE_EMAIL,
 };
 
 export function loadDetailedAddress(): UserDetailedAddress {
