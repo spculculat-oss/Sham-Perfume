@@ -984,7 +984,8 @@ export function PostCard({
         </div>
       )}
 
-      {/* Reactions Summary & Comments Counter */}
+      {/* Reactions Summary & Comments Counter (only when there is something to count) */}
+      {(total > 0 || post.comments > 0) && (
       <div className="flex items-center justify-between px-4 py-2.5 text-xs text-stone-500 border-b border-stone-100">
         <div className="flex items-center gap-1.5">
           {total > 0 && (
@@ -1004,11 +1005,9 @@ export function PostCard({
               {post.comments} {t('تعليق', 'comments')}
             </button>
           )}
-          <button type="button" onClick={handleShare} className="hover:underline cursor-pointer">
-            {t('مشاركة', 'share')}
-          </button>
         </div>
       </div>
+      )}
 
       {/* Facebook Reactions Toolbar */}
       <div className="relative grid grid-cols-3 text-xs font-bold text-stone-600">
@@ -1337,10 +1336,10 @@ export function PeoplePanel({
         <div className="flex items-center justify-between border-b border-stone-100 pb-2">
           <h3 className="font-black text-xs text-stone-900 uppercase tracking-wider flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            {t('جهات الاتصال المتصلة الآن', 'Contacts Online')}
+            {t('أصدقاؤك', 'Your friends')}
           </h3>
-          <span className="text-[11px] text-stone-400">
-            {(friends.data?.friends || []).filter((f) => f.online).length}
+          <span className="text-[11px] font-bold text-emerald-700">
+            {(friends.data?.friends || []).filter((f) => f.online).length} {t('متصل الآن', 'online')}
           </span>
         </div>
 
@@ -1350,7 +1349,7 @@ export function PeoplePanel({
               {t('أضف أصدقاء لتراهم متصلين وتتواصل معهم فوراً.', 'Add friends to see them online.')}
             </p>
           ) : (
-            friends.data.friends.slice(0, 8).map((u) => (
+            [...friends.data.friends].sort((a, b) => Number(!!b.online) - Number(!!a.online)).slice(0, 8).map((u) => (
               <div
                 key={u.id}
                 className="flex items-center justify-between gap-2 p-1.5 rounded-xl hover:bg-stone-50 transition cursor-pointer"

@@ -182,21 +182,21 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <>
     <header ref={appHeaderRef} className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 px-3 sm:px-8 py-2.5 no-print shadow-xs">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
+      <div className="max-w-7xl min-[1700px]:max-w-[1640px] min-[2000px]:max-w-[1900px] mx-auto flex items-center justify-between gap-2 sm:gap-4">
         
         {/* Zone 1: Brand wordmark: صمم عطرك مع شام */}
-        <div className="flex items-center gap-2 sm:gap-3 min-w-0 sm:shrink-0">
-          <div className="w-9 h-9 shrink-0 rounded-xl bg-gradient-to-br from-stone-900 to-amber-950 text-amber-400 flex items-center justify-center font-serif-luxury font-bold text-lg shadow-md border border-amber-600/30">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div role="button" tabIndex={0} onClick={() => setActiveTab('home')} onKeyDown={(e) => { if (e.key === 'Enter') setActiveTab('home'); }} aria-label={t('brand_name', currentLang)} className="cursor-pointer w-9 h-9 shrink-0 rounded-xl bg-gradient-to-br from-stone-900 to-amber-950 text-amber-400 flex items-center justify-center font-serif-luxury font-bold text-lg shadow-md border border-amber-600/30">
             شام
           </div>
           <button 
             onClick={() => setActiveTab('home')}
-            className="text-right flex flex-col items-start cursor-pointer group min-w-0"
+            className="text-right hidden md:flex flex-col items-start cursor-pointer group min-w-0 max-w-[180px] min-[1700px]:max-w-none"
           >
             <span className="max-w-full truncate text-[15px] sm:text-lg font-extrabold tracking-tight text-stone-950 group-hover:text-amber-800 transition-colors font-serif-luxury">
               {t('brand_name', currentLang)}
             </span>
-            <span className="text-[10px] text-amber-700 font-medium hidden sm:inline whitespace-nowrap">
+            <span className="text-[10px] text-amber-700 font-medium hidden min-[1700px]:inline whitespace-nowrap">
               {t('brand_subtitle', currentLang)}
             </span>
           </button>
@@ -209,7 +209,7 @@ export const Header: React.FC<HeaderProps> = ({
               title={L('home_tooltip')}
             >
               <Home className="w-3.5 h-3.5 text-amber-300" />
-              <span className="hidden sm:inline text-[11px]">{L('home_btn')}</span>
+              <span className="hidden min-[1700px]:inline text-[11px]">{L('home_btn')}</span>
             </button>
           )}
         </div>
@@ -246,11 +246,11 @@ export const Header: React.FC<HeaderProps> = ({
                   aria-label={group.fullLabel}
                 >
                   <group.icon className={`w-4 h-4 ${group.id === 'community' && (activeTab === 'community' || activeTab.startsWith('community/')) ? 'text-amber-300' : group.iconColor} shrink-0`} />
-                  <span className={`text-xs ${group.id === 'community' ? 'font-black' : 'font-semibold'}`}>
+                  <span className={`text-xs ${group.id === 'community' ? 'font-black' : 'hidden min-[1700px]:inline font-semibold'}`}>
                     {group.label}
                   </span>
                   {group.id === 'community' && (
-                    <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-black ${
+                    <span className={`hidden min-[1700px]:inline px-1.5 py-0.5 rounded-full text-[9px] font-black ${
                       (activeTab === 'community' || activeTab.startsWith('community/'))
                         ? 'bg-rose-800 text-white'
                         : 'bg-rose-600 text-white animate-pulse'
@@ -274,7 +274,7 @@ export const Header: React.FC<HeaderProps> = ({
                     aria-expanded={openDropdownId === group.id}
                   >
                     <group.icon className={`w-4.5 h-4.5 ${group.iconColor} shrink-0`} />
-                    <span className="text-xs font-semibold text-stone-800">{group.label}</span>
+                    <span className="hidden min-[1700px]:inline text-xs font-semibold text-stone-800">{group.label}</span>
                     <span className="px-1 py-0 rounded-full bg-amber-500 text-white text-[9px] font-bold leading-none">
                       {group.items?.length}
                     </span>
@@ -361,7 +361,7 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="text-base leading-none">
               {currentEnvironment.countryFlag || '🌍'}
             </span>
-            <span className="hidden lg:inline truncate max-w-[120px] font-bold">
+            <span className="hidden min-[2000px]:inline truncate max-w-[120px] font-bold">
               {pickArEn(currentLang, currentEnvironment.countryNameAr, currentEnvironment.countryNameEn).split('(')[0].trim()}
             </span>
             <span className="px-1.5 py-0.5 rounded bg-amber-200/80 text-[10px] font-mono font-bold text-amber-950">
@@ -372,11 +372,11 @@ export const Header: React.FC<HeaderProps> = ({
           {/* 3. Data Privacy & GDPR Button */}
           <button
             onClick={onOpenPrivacyModal}
-            className="p-1.5 sm:px-2 sm:py-1.5 rounded-lg border border-stone-200 hover:bg-stone-100 text-stone-600 text-xs transition-all shadow-2xs cursor-pointer flex items-center gap-1"
+            className="hidden sm:flex p-1.5 sm:px-2 sm:py-1.5 rounded-lg border border-stone-200 hover:bg-stone-100 text-stone-600 text-xs transition-all shadow-2xs cursor-pointer items-center gap-1"
             title={L('privacy_tooltip')}
           >
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span className="hidden lg:inline text-[11px] font-medium">{L('privacy_btn')}</span>
+            <span className="hidden min-[2000px]:inline text-[11px] font-medium">{L('privacy_btn')}</span>
           </button>
 
           {/* 4. User Profile & Login System */}
@@ -389,7 +389,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <div className="w-5 h-5 rounded-full bg-amber-500 text-stone-950 flex items-center justify-center font-bold text-[10px]">
                   {currentUser.name.slice(0, 1)}
                 </div>
-                <span className="hidden sm:inline truncate max-w-[90px]">{currentUser.name}</span>
+                <span className="hidden min-[1700px]:inline truncate max-w-[90px]">{currentUser.name}</span>
                 <ChevronDown className="w-3 h-3 text-stone-400" />
               </button>
 
@@ -405,6 +405,15 @@ export const Header: React.FC<HeaderProps> = ({
                   </div>
 
                   <div className="py-1">
+                    {/* Phones: the green «حسابي» button is hidden in the bar to make room, so it lives here. */}
+                    <button
+                      type="button"
+                      onClick={() => { setIsUserMenuOpen(false); onOpenProfilePage(); }}
+                      className="sm:hidden w-full px-4 py-2 text-right hover:bg-stone-50 flex items-center gap-2 font-semibold text-emerald-800 cursor-pointer"
+                    >
+                      <User className="w-4 h-4" />
+                      <span>{L('profile_btn')}</span>
+                    </button>
                     <button
                       onClick={() => {
                         setIsUserMenuOpen(false);
@@ -466,7 +475,7 @@ export const Header: React.FC<HeaderProps> = ({
               title={uiLabel('admin_panel_title', currentLang)}
             >
               <Shield className="w-3.5 h-3.5 text-purple-200" />
-              <span className="hidden xl:inline">{uiLabel('admin_panel', currentLang)}</span>
+              <span className="hidden min-[2000px]:inline">{uiLabel('admin_panel', currentLang)}</span>
             </button>
           )}
 
@@ -477,18 +486,18 @@ export const Header: React.FC<HeaderProps> = ({
             title={L('print_tooltip')}
           >
             <Printer className="w-3.5 h-3.5 text-amber-700" />
-            <span className="hidden xl:inline">{L('print_btn')}</span>
+            <span className="hidden min-[2000px]:inline">{L('print_btn')}</span>
           </button>
 
           {/* 5. My Profile Button - Personal page shortcut */}
           {currentUser && (
             <button
               onClick={onOpenProfilePage}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-emerald-700 hover:bg-emerald-800 rounded-xl transition-all shadow-sm cursor-pointer shrink-0"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-emerald-700 hover:bg-emerald-800 rounded-xl transition-all shadow-sm cursor-pointer shrink-0"
               title={L('profile_tooltip')}
             >
               <User className="w-3.5 h-3.5 text-white" />
-              <span className="hidden xl:inline">{L('profile_btn')}</span>
+              <span className="hidden min-[2000px]:inline">{L('profile_btn')}</span>
             </button>
           )}
 
