@@ -131,6 +131,8 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
   const [selectedCategory, setSelectedCategory] = useState<CategorySalesData['id'] | null>(null);
   const [copiedExport, setCopiedExport] = useState(false);
   const rtl = isRTL(currentLang);
+  const formatNumber = (value: number, maximumFractionDigits = 2) =>
+    formatLocalizedNumber(currentLang, value, { maximumFractionDigits });
 
   // Load orders
   const orders = useMemo<MediationOrderRecord[]>(() => {
@@ -293,17 +295,17 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
           <div className="text-stone-300 flex justify-between gap-4 font-mono-numbers">
             <span>{chartL10n('revenue_label', currentLang)}</span>
             <span className="font-extrabold text-white">
-              {formatLocalizedNumber(currentLang, item.value)} {currencyCode}
+              {formatNumber(item.value)} {currencyCode}
             </span>
           </div>
           <div className="text-stone-300 flex justify-between gap-4 font-mono-numbers">
             <span>{chartL10n('units_sold', currentLang)}:</span>
             <span>
-              {item.units} {chartL10n('units_suffix', currentLang)}
+              {formatNumber(item.units, 0)} {chartL10n('units_suffix', currentLang)}
             </span>
           </div>
           <div className="text-amber-400 font-bold pt-1 border-t border-stone-800 text-end font-mono-numbers">
-            {item.percentage}% {chartL10n('share_suffix', currentLang)}
+            {formatNumber(item.percentage, 0)}% {chartL10n('share_suffix', currentLang)}
           </div>
         </div>
       );
@@ -441,7 +443,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
             {chartL10n('total_sales', currentLang)}
           </span>
           <span className="text-lg font-extrabold text-stone-900 font-mono-numbers mt-0.5 block">
-            {formatLocalizedNumber(currentLang, totalRevenue)}{' '}
+            {formatNumber(totalRevenue)}{' '}
             <span className="text-xs text-stone-500 font-medium">{currencyCode}</span>
           </span>
         </div>
@@ -451,7 +453,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
             {chartL10n('units_sold', currentLang)}
           </span>
           <span className="text-lg font-extrabold text-stone-900 font-mono-numbers mt-0.5 block">
-            {formatLocalizedNumber(currentLang, totalUnits)}{' '}
+            {formatNumber(totalUnits, 0)}{' '}
             <span className="text-xs text-stone-500 font-medium">{chartL10n('units_suffix', currentLang)}</span>
           </span>
         </div>
@@ -512,8 +514,8 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
                 </span>
                 <span className="text-base font-extrabold text-stone-900 font-mono-numbers">
                   {metric === 'revenue'
-                    ? formatLocalizedNumber(currentLang, totalRevenue)
-                    : formatLocalizedNumber(currentLang, totalUnits)}
+                    ? formatNumber(totalRevenue)
+                    : formatNumber(totalUnits, 0)}
                 </span>
                 <span className="text-[10px] text-stone-400 font-medium">
                   {metric === 'revenue' ? currencyCode : chartL10n('units_suffix', currentLang)}
@@ -535,6 +537,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
                     tick={{ fontSize: 10, fill: '#78716c' }}
                     axisLine={false}
                     tickLine={false}
+                    tickFormatter={(value: number) => formatNumber(value)}
                   />
                   <Tooltip content={renderCustomTooltip} />
                   <Bar
@@ -607,10 +610,10 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
                   </div>
                   <div className="flex items-center gap-2 font-mono-numbers">
                     <span className="font-bold text-xs text-stone-600">
-                      {item.units} {chartL10n('units_suffix', currentLang)}
+                      {formatNumber(item.units, 0)} {chartL10n('units_suffix', currentLang)}
                     </span>
                     <span className="font-extrabold text-xs text-stone-900">
-                      {item.percentage}%
+                      {formatNumber(item.percentage, 0)}%
                     </span>
                   </div>
                 </div>
@@ -631,7 +634,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
                     {item.tagline}
                   </span>
                   <span className="font-bold text-stone-900">
-                    {formatLocalizedNumber(currentLang, item.value)} {currencyCode}
+                    {formatNumber(item.value)} {currencyCode}
                   </span>
                 </div>
 
@@ -642,7 +645,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
                       {chartL10n('avg_ticket', currentLang)}
                     </span>
                     <span className="font-extrabold text-stone-900 font-mono-numbers">
-                      {formatLocalizedNumber(currentLang, avgUnitPrice)} {currencyCode}
+                      {formatNumber(avgUnitPrice)} {currencyCode}
                     </span>
                   </div>
                 )}

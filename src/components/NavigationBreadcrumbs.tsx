@@ -19,11 +19,13 @@ import {
   Hourglass,
   Bot,
   Users,
+  Atom,
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
 import { t } from '../لغات/i18n';
 import { LText, makeT } from '../لغات/localize';
 import { isRTL } from '../لغات/localizedContent';
+import { uiLabel } from '../لغات/uiTextL10n';
 
 
 const S = {
@@ -76,6 +78,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
   const tabConfigs: Record<string, { label: string; icon: React.ComponentType<{ className?: string }> }> = {
     home: { label: t('nav_home', currentLang), icon: Home },
     concentration: { label: t('nav_calc', currentLang), icon: FlaskConical },
+    molecule_studio: { label: uiLabel('molecule_studio', currentLang), icon: Atom },
     perfume_news: { label: t('nav_news', currentLang), icon: Newspaper },
     world_perfumes: { label: t('nav_world_perfumes', currentLang), icon: Compass },
     raw_materials: { label: t('nav_raw_materials', currentLang), icon: Scale },
@@ -97,6 +100,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
 
   const quickLinks = [
     { id: 'concentration', label: L('ql_concentration'), icon: FlaskConical },
+    { id: 'molecule_studio', label: uiLabel('molecule_studio', currentLang), icon: Atom },
     { id: 'maceration_simulator', label: L('ql_maceration'), icon: Hourglass },
     { id: 'pyramid', label: L('ql_pyramid'), icon: Layers },
     { id: 'alcohol', label: L('ql_alcohol'), icon: Hourglass },

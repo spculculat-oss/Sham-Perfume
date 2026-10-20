@@ -1,9 +1,17 @@
 /** Small building blocks shared by every portal of «مجتمع شام» (stone + amber, like the rest of the site). */
 import { useCallback, useEffect, useRef, useState, type ButtonHTMLAttributes, type ReactNode } from 'react';
 import { Loader2 } from 'lucide-react';
+import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../types/i18n';
+import { LOCALE_MAP } from '../لغات/localize';
+import { formatLocalizedNumber } from '../لغات/numerals';
 import { CommunityApiError, type PublicUser } from './api';
 
-export type Lang = 'ar' | 'en';
+export type Lang = SupportedLanguage;
+
+/** Keep the selected platform locale for formatting while bilingual copy falls back to English. */
+export function resolveCommunityLanguage(value: string): Lang {
+  return SUPPORTED_LANGUAGES.some(({ code }) => code === value) ? value as Lang : 'en';
+}
 /** Portal text: Arabic for Arabic visitors, English for everyone else (more languages will follow). */
 export const tx = (lang: Lang) => (ar: string, en: string) => (lang === 'ar' ? ar : en);
 
@@ -74,15 +82,16 @@ export function timeAgo(iso: string | null | undefined, lang: Lang): string {
   if (!iso) return '';
   const s = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
   const t = tx(lang);
+  const count = (value: number) => formatLocalizedNumber(lang, value, { fractionDigits: 0, grouping: false });
   if (s < 60) return t('الآن', 'now');
-  if (s < 3600) return t(`منذ ${Math.floor(s / 60)} د`, `${Math.floor(s / 60)}m`);
-  if (s < 86400) return t(`منذ ${Math.floor(s / 3600)} س`, `${Math.floor(s / 3600)}h`);
-  if (s < 7 * 86400) return t(`منذ ${Math.floor(s / 86400)} يوم`, `${Math.floor(s / 86400)}d`);
-  return new Date(iso).toLocaleDateString(lang === 'ar' ? 'ar-EG' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  if (s < 3600) return t(`منذ ${count(Math.floor(s / 60))} د`, `${count(Math.floor(s / 60))}m`);
+  if (s < 86400) return t(`منذ ${count(Math.floor(s / 3600))} س`, `${count(Math.floor(s / 3600))}h`);
+  if (s < 7 * 86400) return t(`منذ ${count(Math.floor(s / 86400))} يوم`, `${count(Math.floor(s / 86400))}d`);
+  return new Date(iso).toLocaleDateString(LOCALE_MAP[lang] || 'en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
-export const clock = (iso: string, lang: Lang) => new Date(iso).toLocaleTimeString(lang === 'ar' ? 'ar-EG' : 'en-GB', { hour: '2-digit', minute: '2-digit' });
+export const clock = (iso: string, lang: Lang) => new Date(iso).toLocaleTimeString(LOCALE_MAP[lang] || 'en-GB', { hour: '2-digit', minute: '2-digit' });
 export const money = (amount: number, currency: string, lang: Lang) => {
-  try { return new Intl.NumberFormat(lang === 'ar' ? 'ar-EG' : 'en-GB', { style: 'currency', currency, maximumFractionDigits: 2 }).format(amount); } catch { return `${amount} ${currency}`; }
+  try { return new Intl.NumberFormat(LOCALE_MAP[lang] || 'en-GB', { style: 'currency', currency, maximumFractionDigits: 2 }).format(amount); } catch { return `${formatLocalizedNumber(lang, amount, { maximumFractionDigits: 2 })} ${currency}`; }
 };
 
 const ERRORS: Record<string, [string, string]> = {

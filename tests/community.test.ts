@@ -43,7 +43,7 @@ test('passwords are scrypt-hashed and private data is AES-GCM encrypted with a s
   assert.equal(vault.open(sealed), 'رسالة سرية');
   assert.notEqual(vault.seal('x'), vault.seal('x'), 'random IV per value');
   assert.equal(new Vault(`${KEY}-other`).open(sealed), '', 'another key cannot read it');
-  const parts = sealed.split('.'); parts[3] = `${parts[3].slice(0, -2)}AA`;
+  const parts = sealed.split('.'); parts[3] = `${parts[3].startsWith('A') ? 'B' : 'A'}${parts[3].slice(1)}`;
   assert.equal(vault.open(parts.join('.')), '', 'tampering is detected');
   assert.equal(vault.index('A@B.com '), vault.index('a@b.com'));
   assert.throws(() => new Vault('short'));

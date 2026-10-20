@@ -33,8 +33,8 @@ test('every published page passes the same guardrails the AI copy must pass', ()
   }
 });
 
-test('the twelve tool tabs have one real static page each, with unique ids and paths', () => {
-  assert.equal(SEO_PAGES.length, 12);
+test('the tool tabs have one real static page each, with unique ids and paths', () => {
+  assert.equal(SEO_PAGES.length, 13);
   assert.equal(new Set(allSeoPages().map((page) => page.id)).size, allSeoPages().length);
   assert.equal(new Set(SEO_PAGES.map((page) => page.path)).size, SEO_PAGES.length);
   for (const page of SEO_PAGES) {

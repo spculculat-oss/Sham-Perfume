@@ -421,7 +421,7 @@ export const PERFUME_TRANSLATIONS: Record<string, Record<string, Partial<Localiz
   },
   'creed-aventus': {
     en: {
-      title: 'Inspired by: Creed Aventus Master Formula',
+      title: 'Inspired by: Creed Aventus — Accord Study',
       category: 'Chypre Fruity Smoky Woody',
       concentration: 'Eau de Parfum (20%)',
       description: 'The king of modern masculine perfumery: succulent grilled pineapple, blackcurrant bud, French birch tar, and majestic oceanic ambergris.',
@@ -431,7 +431,7 @@ export const PERFUME_TRANSLATIONS: Record<string, Record<string, Partial<Localiz
       compoundingTips: 'Birch tar must be precisely dosed to prevent overpowering the vibrant fruit accord. High-grade ambroxan secures the regal drydown.',
     },
     fr: {
-      title: 'Inspiré de : Creed Aventus (Formule Maître)',
+      title: 'Inspiré de : Creed Aventus — étude d’accord',
       category: 'Chypré Fruité Boisé Fumé',
       concentration: 'Eau de Parfum (20%)',
       description: 'L\'icône absolue de la parfumerie masculine : ananas grillé juteux, cassis, bouleau fumé et ambre gris marin majestueux.',

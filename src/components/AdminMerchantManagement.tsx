@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
 import { LText, makeT } from '../لغات/localize';
+import { formatLocalizedNumber } from '../لغات/numerals';
+import { LocalizedNumberInput } from './LocalizedNumberInput';
 import { uiLabel } from '../لغات/uiTextL10n';
 import {
   getAllMerchants, getMerchantById,
@@ -28,9 +30,9 @@ import {
   addAdminNote,
   getAdminNotes,
 } from '../utils/merchantDataStore';
-import { PLATFORM_MARGIN_PERCENT } from '../config/margin';
+import { calculateRetailPrice, PLATFORM_MARGIN_PERCENT } from '../config/margin';
+import { buildAdminMerchantProductRecord, validateAdminMerchantProductDraft, type AdminMerchantProductDraft } from '../utils/adminMerchantProduct';
 import { StoreSalesCategoryChart } from './StoreSalesCategoryChart';
-import { formatLocalizedNumber } from '../لغات/numerals';
 
 const S: Record<string, LText> = {
   page_title: { ar:'لوحة تحكم الإدارة — التجار والطلبات', en:'Admin Dashboard — Merchants & Orders', fr:'Tableau de bord Admin — Marchands', es:'Panel de Admin — Mercaderes', it:'Dashboard Amministratore — Mercanti', de:'Admin-Dashboard — Händler', ru:'Панель администратора — Торговцы', zh:'管理员面板 — 商家', tr:'Yönetici Paneli — Ticaretçiler', fa:'پنل مدیریت — تجار' },
@@ -67,6 +69,12 @@ const S: Record<string, LText> = {
   back: { ar:'العودة', en:'Back', fr:'Retour', es:'Volver', it:'Torna', de:'Zurück', ru:'Вернуться', zh:'返回', tr:'Dön', fa:'بازگشت' },
   margin_label: { ar:'هامش المنصة', en:'Platform Margin', fr:'Marge', es:'Margen', it:'Margine', de:'Marge', ru:'Маржа', zh:'平台利润率', tr:'Kârı Oranı', fa:'حاشیه پلتفرم' },
   margin_desc: { ar:'٢٥٪ من سعر الجملة — يضاف تلقائياً على سعر الزبون', en:'25% of wholesale — added automatically to customer price', fr:'25% du gros — ajouté automatiquement au prix client', es:'25% del mayor — añadido automáticamente al precio cliente', it:'25% del produttore — aggiunto automaticamente al prezzo cliente', de:'25% vom Großhandel — automatisch zum Kundenpreis', ru:'25% от оптовой — автоматически к цене клиента', zh:'批发价25% — 自动添加到客户价格', tr:'Toplam fiyatın %25i — otomatik müşteri fiyatına eklenir', fa:'٢٥٪ از قیمت پخشی — به‌طور خودکار به قیمت مشتری' },
+  product_stock: { ar:'المخزون', en:'Stock', fr:'Stock', es:'Existencias', it:'Scorte', de:'Bestand', ru:'Запас', zh:'库存', tr:'Stok', fa:'موجودی' },
+  product_min_order: { ar:'أقل كمية للطلب', en:'Minimum order quantity', fr:'Quantité minimale', es:'Cantidad mínima', it:'Quantità minima', de:'Mindestbestellmenge', ru:'Минимальное количество', zh:'最小订购量', tr:'Minimum sipariş miktarı', fa:'حداقل مقدار سفارش' },
+  product_names_required: { ar:'أدخل اسم المنتج بالعربية والإنجليزية.', en:'Enter the product name in both Arabic and English.', fr:'Saisissez le nom du produit en arabe et en anglais.', es:'Introduce el nombre del producto en árabe e inglés.', it:'Inserisci il nome del prodotto in arabo e inglese.', de:'Gib den Produktnamen auf Arabisch und Englisch ein.', ru:'Укажите название товара на арабском и английском.', zh:'请填写阿拉伯语和英语产品名称。', tr:'Ürün adını Arapça ve İngilizce girin.', fa:'نام محصول را به عربی و انگلیسی وارد کنید.' },
+  product_price_required: { ar:'أدخل سعر جملة أكبر من صفر.', en:'Enter a wholesale price greater than zero.', fr:'Saisissez un prix de gros supérieur à zéro.', es:'Introduce un precio mayorista superior a cero.', it:'Inserisci un prezzo all’ingrosso maggiore di zero.', de:'Gib einen Großhandelspreis über null ein.', ru:'Укажите оптовую цену больше нуля.', zh:'请输入大于零的批发价。', tr:'Sıfırdan büyük bir toptan satış fiyatı girin.', fa:'قیمت عمده‌فروشی بیشتر از صفر وارد کنید.' },
+  product_inventory_invalid: { ar:'تحقق من المخزون والحد الأدنى للطلب.', en:'Check the stock and minimum order quantity.', fr:'Vérifiez le stock et la quantité minimale.', es:'Revisa las existencias y la cantidad mínima.', it:'Controlla le scorte e la quantità minima.', de:'Prüfe Bestand und Mindestbestellmenge.', ru:'Проверьте остаток и минимальное количество.', zh:'请检查库存和最小订购量。', tr:'Stok ve minimum sipariş miktarını kontrol edin.', fa:'موجودی و حداقل مقدار سفارش را بررسی کنید.' },
+
   margin_to_merchant: { ar:'يظهر للتاجر (سعر الجملة)', en:'To merchant (wholesale)', fr:'Au marchand (gros)', es:'Al comerciante (mayor)', it:'Al mercante (ingrosso)', de:'Dem Händler (Großhandel)', ru:'Торговцу (оптовый)', zh:'给商家 (批发价)', tr:'Ticaretçiyeye (toplam)', fa:'تجار (قیمت پخشی)' },
   margin_to_customer: { ar:'يظهر للزبون (سعر البيع)', en:'To customer (retail)', fr:'Au client (détail)', es:'Al cliente (detalle)', it:'Al cliente (dettaglio)', de:'Zum Kunden (Einzelhandel)', ru:'Клиенту (розничный)', zh:'给客户 (零售价)', tr:'Müşteriye (perakende)', fa:'مشتری (قیمت خرده)' },
   customer_pays: { ar:'يدفع الزبون', en:'Customer pays', fr:'Client paie', es:'Cliente paga', it:'Cliente paga', de:'Kunde zahlt', ru:'Клиент платит', zh:'客户支付', tr:'Müşteri öder', fa:'مشتری پرداخت' },
@@ -94,16 +102,24 @@ const S: Record<string, LText> = {
   order_status_cancelled: { ar:'ملغى', en:'Cancelled', fr:'Annulé', es:'Cancelado', it:'Annullato', de:'Storniert', ru:'Отменен', zh:'已取消', tr:'İptal Edildi', fa:'لغو شده' },
 };
 
+const emptyAdminMerchantProductDraft = (): AdminMerchantProductDraft => ({
+  nameAr: '', nameEn: '', category: 'عطور', unit: 'زجاجة', costPrice: 0, stock: 0, minOrderQty: 1,
+});
+
 export const AdminMerchantManagement: React.FC<{
   onClose: () => void;
   currentLang: SupportedLanguage;
 }> = ({ onClose, currentLang }) => {
   const L = makeT(currentLang, S);
   const CUR = uiLabel('currency_egp', currentLang);
+  const formatNumber = (value: number, maximumFractionDigits = 2) =>
+    formatLocalizedNumber(currentLang, value, { maximumFractionDigits });
   const [activeTab, setActiveTab] = useState<'all'|'pending'|'approved'|'suspended'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMerchantId, setSelectedMerchantId] = useState<string|null>(null);
   const [showProductModal, setShowProductModal] = useState(false);
+  const [productDraft, setProductDraft] = useState<AdminMerchantProductDraft>(emptyAdminMerchantProductDraft);
+  const [productFormError, setProductFormError] = useState('');
   const [, setShowOrderModal] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
   const [newNote, setNewNote] = useState('');
@@ -175,20 +191,27 @@ export const AdminMerchantManagement: React.FC<{
     setNewNote('');
   };
 
+  const openProductModal = () => {
+    setProductDraft(emptyAdminMerchantProductDraft());
+    setProductFormError('');
+    setShowProductModal(true);
+  };
+
   const addProduct = () => {
     if (!merchant) return;
-    const product = {
-      id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
-      merchantId: merchant.id,
-      sku: `SKU-${Date.now()}`,
-      nameAr: '', nameEn: '', category: 'عطور', unit: 'زجةقة',
-      costPrice: 0, retailPrice: 0, platformMargin: 0,
-      costCurrency: 'EGP', stock: 0, minOrderQty: 1,
-      descriptionAr: '', descriptionEn: '', imageUrl: undefined,
-      isActive: false, approvalStatus: 'pending' as const, notes: '',
-      createdAt: '', updatedAt: '',
-    };
+    const validationError = validateAdminMerchantProductDraft(productDraft);
+    if (validationError) {
+      setProductFormError(L(validationError));
+      return;
+    }
+    const id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    const product = buildAdminMerchantProductRecord(merchant.id, productDraft, {
+      id,
+      sku: `SKU-${id.replace(/-/g, '').slice(-8).toUpperCase()}`,
+    });
     saveMerchantProduct(product);
+    setProductDraft(emptyAdminMerchantProductDraft());
+    setProductFormError('');
     setShowProductModal(false);
   };
 
@@ -221,7 +244,7 @@ export const AdminMerchantManagement: React.FC<{
       <td className="py-3 px-4 text-xs font-mono text-stone-600">{m.marginPercent}%</td>
       <td className="py-3 px-4 text-center text-sm">{m.totalProducts}</td>
       <td className="py-3 px-4 text-center text-sm">{m.totalOrders}</td>
-      <td className="py-3 px-4 text-right text-sm font-mono">{formatLocalizedNumber(currentLang, m.totalRevenue)}</td>
+      <td className="py-3 px-4 text-right text-sm font-mono">{formatNumber(m.totalRevenue)}</td>
       <td className="py-3 px-4 text-center">
         <div className="flex items-center justify-center gap-1">
           {m.channels.email ? <Mail className="w-3 h-3 text-blue-600"/> : <Mail className="w-3 h-3 text-stone-300"/>}
@@ -294,7 +317,7 @@ export const AdminMerchantManagement: React.FC<{
                 <div key={l} className="flex justify-between items-center py-1 border-b border-stone-100 last:border-0">
                   <span className="text-xs font-bold text-stone-500">{l}</span>
                   <span className="text-sm font-bold text-stone-800">
-                    {typeof v === 'number' && v > 0 ? formatLocalizedNumber(currentLang, v) : v}
+                    {typeof v === 'number' && v > 0 ? formatNumber(v) : v}
                     {String(l).includes('revenue') ? ' '+CUR : ''}
                   </span>
                 </div>
@@ -391,7 +414,7 @@ export const AdminMerchantManagement: React.FC<{
                       <div><span className="text-amber-200/60 text-[10px] block">{L('margin_label')}</span><span className="font-bold text-lg">{merchant!.marginPercent}%</span></div>
                       <div><span className="text-amber-200/60 text-[10px] block">{L('stats_products')}</span><span className="font-bold text-lg">{merchant!.totalProducts}</span></div>
                       <div><span className="text-amber-200/60 text-[10px] block">{uiLabel('requests_col', currentLang)}</span><span className="font-bold text-lg">{merchant!.totalOrders}</span></div>
-                      <div><span className="text-amber-200/60 text-[10px] block">{L('stats_total_revenue')}</span><span className="font-bold text-lg">{formatLocalizedNumber(currentLang, merchant!.totalRevenue)}</span></div>
+                      <div><span className="text-amber-200/60 text-[10px] block">{L('stats_total_revenue')}</span><span className="font-bold text-lg">{formatNumber(merchant!.totalRevenue)}</span></div>
                     </div>
                     <div className="mt-4 p-3 rounded-lg bg-white/10 border border-amber-500/30 grid grid-cols-3 gap-2 text-center">
                       <div className="text-xs text-amber-200/70">{L('margin_to_merchant')}</div>
@@ -494,7 +517,7 @@ export const AdminMerchantManagement: React.FC<{
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="text-sm font-bold text-stone-900">{L('section_products')}</h3>
-                      <button onClick={()=>setShowProductModal(true)} className="text-xs px-2 py-1 rounded-lg bg-amber-100 text-amber-900 hover:bg-amber-200">
+                      <button onClick={openProductModal} className="text-xs px-2 py-1 rounded-lg bg-amber-100 text-amber-900 hover:bg-amber-200">
                         <Plus className="w-3 h-3 inline mr-1"/> {L('add_product')}
                       </button>
                     </div>
@@ -551,8 +574,8 @@ export const AdminMerchantManagement: React.FC<{
                               }`}>{L(`order_status_${o.status}` as keyof typeof S)}</span>
                             </div>
                             <div className="text-right font-mono text-xs">
-                              <div>{uiLabel('payment', currentLang)}: {formatLocalizedNumber(currentLang, o.subtotalRetail)}</div>
-                              <div className="text-stone-500">{uiLabel('platform_profit', currentLang)}: {formatLocalizedNumber(currentLang, o.totalPlatformRevenue)}</div>
+                              <div>{uiLabel('payment', currentLang)}: {formatNumber(o.subtotalRetail)}</div>
+                              <div className="text-stone-500">{uiLabel('platform_profit', currentLang)}: {formatNumber(o.totalPlatformRevenue)}</div>
                             </div>
                             <div className="flex items-center gap-1">
                               {o.status==='pending' && <button onClick={()=>updateOrderStatusHandler(o.id,'confirmed')} className="p-1 rounded hover:bg-emerald-100"><CheckCircle className="w-3 h-3 text-emerald-600"/></button>}
@@ -575,43 +598,85 @@ export const AdminMerchantManagement: React.FC<{
         {/* Product Modal */}
         {showProductModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="w-full max-w-lg bg-white rounded-2xl shadow-2xl animate-in fade-in zoom-in-95 p-6">
-              <h2 className="text-lg font-bold text-stone-900 mb-4 font-serif-luxury">{L('add_product')}</h2>
-              <div className="space-y-3">
+            <div role="dialog" aria-modal="true" aria-labelledby="merchant-product-modal-title" className="w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl animate-in fade-in zoom-in-95 p-6">
+              <h2 id="merchant-product-modal-title" className="text-lg font-bold text-stone-900 mb-4 font-serif-luxury">{L('add_product')}</h2>
+              <form onSubmit={(event) => { event.preventDefault(); addProduct(); }} className="space-y-3">
                 <div>
-                  <label className="text-xs font-medium text-stone-700">{L('margin_to_merchant')}</label>
-                  <input type="number" className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300" placeholder="10"/>
+                  <label className="block text-xs font-medium text-stone-700">{L('margin_label')}</label>
+                  <output className="block w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 bg-stone-50 text-sm font-semibold text-stone-700">
+                    {formatLocalizedNumber(currentLang, PLATFORM_MARGIN_PERCENT, { fractionDigits: 0 })}%
+                  </output>
                   <p className="text-[10px] text-stone-400 mt-1">{L('margin_desc')}</p>
                 </div>
-                <div>
-                  <label className="text-xs font-medium text-stone-700">{uiLabel('product_name_ar', currentLang)}</label>
-                  <input type="text" className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300" placeholder={uiLabel('example_oud', currentLang)}/>
-                </div>
-                <div>
-                  <label className="text-xs font-medium text-stone-700">{uiLabel('product_name_en', currentLang)}</label>
-                  <input type="text" className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300" placeholder="Oud Perfume"/>
-                </div>
-                <div className="flex gap-2">
-                  <div className="flex-1">
-                    <label className="text-xs font-medium text-stone-700">{uiLabel('category_label', currentLang)}</label>
-                    <select className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300">
-                      <option value="عطور">{uiLabel('cat_perfumes', currentLang)}</option><option value="خامات">{uiLabel('cat_materials', currentLang)}</option><option value="أدوات">{uiLabel('cat_tools', currentLang)}</option><option value="تغليف">{uiLabel('cat_packaging', currentLang)}</option><option value="غير ذلك">{uiLabel('cat_other', currentLang)}</option>
+                <label className="block text-xs font-medium text-stone-700">
+                  {uiLabel('product_name_ar', currentLang)}
+                  <input type="text" dir="rtl" lang="ar" autoComplete="off" value={productDraft.nameAr}
+                    onChange={(event) => { setProductDraft({ ...productDraft, nameAr: event.target.value }); setProductFormError(''); }}
+                    className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
+                    placeholder={uiLabel('example_oud', currentLang)} />
+                </label>
+                <label className="block text-xs font-medium text-stone-700">
+                  {uiLabel('product_name_en', currentLang)}
+                  <input type="text" dir="ltr" lang="en" autoComplete="off" value={productDraft.nameEn}
+                    onChange={(event) => { setProductDraft({ ...productDraft, nameEn: event.target.value }); setProductFormError(''); }}
+                    className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
+                    placeholder="Oud Perfume" />
+                </label>
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <label className="block text-xs font-medium text-stone-700">
+                    {uiLabel('category_label', currentLang)}
+                    <select value={productDraft.category} onChange={(event) => { setProductDraft({ ...productDraft, category: event.target.value }); setProductFormError(''); }}
+                      className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300">
+                      <option value="عطور">{uiLabel('cat_perfumes', currentLang)}</option>
+                      <option value="خامات">{uiLabel('cat_materials', currentLang)}</option>
+                      <option value="أدوات">{uiLabel('cat_tools', currentLang)}</option>
+                      <option value="تغليف">{uiLabel('cat_packaging', currentLang)}</option>
+                      <option value="غير ذلك">{uiLabel('cat_other', currentLang)}</option>
                     </select>
-                  </div>
-                  <div className="flex-1">
-                    <label className="text-xs font-medium text-stone-700">{uiLabel('unit_label', currentLang)}</label>
-                    <select className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300">
-                      <option value="زجاجة">{uiLabel('u_bottle', currentLang)}</option><option value="لتر">{uiLabel('u_liter', currentLang)}</option><option value="جرام">{uiLabel('u_gram', currentLang)}</option><option value="مجموعة">{uiLabel('u_set', currentLang)}</option><option value="قطعة">{uiLabel('u_piece', currentLang)}</option>
+                  </label>
+                  <label className="block text-xs font-medium text-stone-700">
+                    {uiLabel('unit_label', currentLang)}
+                    <select value={productDraft.unit} onChange={(event) => { setProductDraft({ ...productDraft, unit: event.target.value }); setProductFormError(''); }}
+                      className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300">
+                      <option value="زجاجة">{uiLabel('u_bottle', currentLang)}</option>
+                      <option value="لتر">{uiLabel('u_liter', currentLang)}</option>
+                      <option value="جرام">{uiLabel('u_gram', currentLang)}</option>
+                      <option value="مجموعة">{uiLabel('u_set', currentLang)}</option>
+                      <option value="قطعة">{uiLabel('u_piece', currentLang)}</option>
                     </select>
-                  </div>
+                  </label>
                 </div>
+                <label className="block text-xs font-medium text-stone-700">
+                  {uiLabel('wholesale_price', currentLang)} ({CUR})
+                  <LocalizedNumberInput lang={currentLang} dir="ltr" min={0} value={productDraft.costPrice}
+                    onValue={(value) => { setProductDraft({ ...productDraft, costPrice: Number.isFinite(value) ? Math.max(0, value) : 0 }); setProductFormError(''); }}
+                    className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300" />
+                  <span className="mt-1 block text-[10px] text-stone-500">
+                    {uiLabel('offer_price', currentLang)}: <strong>{formatNumber(calculateRetailPrice(productDraft.costPrice))} {CUR}</strong>
+                  </span>
+                </label>
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <label className="block text-xs font-medium text-stone-700">
+                    {L('product_stock')}
+                    <LocalizedNumberInput lang={currentLang} dir="ltr" integer min={0} value={productDraft.stock}
+                      onValue={(value) => { setProductDraft({ ...productDraft, stock: Number.isFinite(value) ? Math.max(0, Math.floor(value)) : 0 }); setProductFormError(''); }}
+                      className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300" />
+                  </label>
+                  <label className="block text-xs font-medium text-stone-700">
+                    {L('product_min_order')}
+                    <LocalizedNumberInput lang={currentLang} dir="ltr" integer min={1} value={productDraft.minOrderQty}
+                      onValue={(value) => { setProductDraft({ ...productDraft, minOrderQty: Number.isFinite(value) ? Math.max(1, Math.floor(value)) : 1 }); setProductFormError(''); }}
+                      className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300" />
+                  </label>
+                </div>
+                {productFormError && <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-xs text-red-700">{productFormError}</p>}
                 <div className="flex justify-end gap-2 pt-3">
-                  <button onClick={()=>setShowProductModal(false)} className="px-4 py-2 rounded-lg bg-stone-100 text-stone-700 text-sm font-medium hover:bg-stone-200">{uiLabel('cancel', currentLang)}</button>
-                  <button onClick={addProduct} className="px-4 py-2 rounded-lg bg-amber-700 text-white text-sm font-medium hover:bg-amber-800">
+                  <button type="button" onClick={() => { setShowProductModal(false); setProductFormError(''); }} className="px-4 py-2 rounded-lg bg-stone-100 text-stone-700 text-sm font-medium hover:bg-stone-200">{uiLabel('cancel', currentLang)}</button>
+                  <button type="submit" className="px-4 py-2 rounded-lg bg-amber-700 text-white text-sm font-medium hover:bg-amber-800">
                     <Plus className="w-4 h-4 inline mr-1"/> {L('add_product')}
                   </button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         )}

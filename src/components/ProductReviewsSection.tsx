@@ -52,7 +52,7 @@ export function ProductReviewsSection({ sku, currentLang }: { sku: string; curre
     if (!form) return;
     setBusy(true); setNote('');
     try { setData(await cx<ReviewSummary>(`/community/reviews/${encodeURIComponent(sku)}`, { body: form })); setForm(null); setNote(t('rv_saved')); }
-    catch (e) { setNote(errorText(e, currentLang === 'ar' ? 'ar' : 'en')); } finally { setBusy(false); }
+    catch (e) { setNote(errorText(e, currentLang)); } finally { setBusy(false); }
   };
   const helpful = async (r: ProductReview) => {
     if (!signedIn) { window.location.hash = 'community/login'; return; }

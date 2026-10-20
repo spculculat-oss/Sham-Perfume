@@ -24,8 +24,11 @@ import {
   Save,
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
-import { LText, loc, makeT } from '../لغات/localize';
+import { LText, localeDate, loc, makeT } from '../لغات/localize';
+import { formatLocalizedNumber } from '../لغات/numerals';
+import { LocalizedNumberInput } from './LocalizedNumberInput';
 import { uiLabel } from '../لغات/uiTextL10n';
+import { merchantCategoryLabel, merchantUnitLabel, normalizeMerchantCategory, normalizeMerchantUnit } from '../utils/merchantDisplay';
 import {
   getMerchantById,
   updateMerchant,
@@ -39,7 +42,6 @@ import {
 } from '../utils/merchantDataStore';
 import { PLATFORM_MARGIN_PERCENT, calculateRetailPrice } from '../config/margin';
 import { StoreSalesCategoryChart } from './StoreSalesCategoryChart';
-import { formatLocalizedNumber, numeralLocaleTag } from '../لغات/numerals';
 
 const S: Record<string, LText> = {
   title: { ar:'لوحة التاجر', en:'Merchant Workspace', fr:'Espace Marchand', es:'Espacio Comerciante', it:'Spazio Mercante', de:'Händler Arbeitsbereich', ru:'Рабочее место Торговца', zh:'商家工作空间', tr:'Ticaretçi Çalışma Alanı', fa:'فضای کاری تجار' },
@@ -114,12 +116,15 @@ export const MerchantWorkspace: React.FC<{
 }> = ({ onClose, currentLang, merchantId }) => {
   const L = makeT(currentLang, S);
   const CUR = uiLabel('currency_egp', currentLang);
+  const formatNumber = (value: number, maximumFractionDigits = 2) =>
+    formatLocalizedNumber(currentLang, value, { maximumFractionDigits });
+  const formatDate = (value: string) => localeDate(currentLang, new Date(value), { dateStyle: 'short' });
   const merchant = useMemo(() => getMerchantById(merchantId), [merchantId]);
   const [activeTab, setActiveTab] = useState<'dashboard'|'products'|'orders'|'profile'>('dashboard');
   const [showAddProduct, setShowAddProduct] = useState(false);
-  const [newProduct, setNewProduct] = useState({ nameAr:'', nameEn:'', category:'عطور', unit:'زجةقة', costPrice:0, stock:0, minOrderQty:1, descriptionAr:'', descriptionEn:'' });
+  const [newProduct, setNewProduct] = useState({ nameAr:'', nameEn:'', category:'عطور', unit:'زجاجة', costPrice:0, stock:0, minOrderQty:1, descriptionAr:'', descriptionEn:'' });
   const [editProductId, setEditProductId] = useState<string|null>(null);
-  const [editProduct, setEditProduct] = useState({ nameAr:'', nameEn:'', category:'عطور', unit:'زجةقة', costPrice:0, stock:0, minOrderQty:1, descriptionAr:'', descriptionEn:'' });
+  const [editProduct, setEditProduct] = useState({ nameAr:'', nameEn:'', category:'عطور', unit:'زجاجة', costPrice:0, stock:0, minOrderQty:1, descriptionAr:'', descriptionEn:'' });
   const [confirmCancelOrder, setConfirmCancelOrder] = useState<string|null>(null);
 
   const products = merchantId ? getMerchantProducts(merchantId) : [];
@@ -167,7 +172,7 @@ export const MerchantWorkspace: React.FC<{
         createdAt: '', updatedAt: '',
       };
       saveMerchantProduct(product);
-      setNewProduct({ nameAr:'', nameEn:'', category:'عطور', unit:'زجةقة', costPrice:0, stock:0, minOrderQty:1, descriptionAr:'', descriptionEn:'' });
+      setNewProduct({ nameAr:'', nameEn:'', category:'عطور', unit:'زجاجة', costPrice:0, stock:0, minOrderQty:1, descriptionAr:'', descriptionEn:'' });
       setShowAddProduct(false);
     }
   };
@@ -176,7 +181,7 @@ export const MerchantWorkspace: React.FC<{
     setEditProductId(product.id);
     setEditProduct({
       nameAr: product.nameAr, nameEn: product.nameEn,
-      category: product.category, unit: product.unit,
+      category: normalizeMerchantCategory(product.category), unit: normalizeMerchantUnit(product.unit),
       costPrice: product.costPrice,
       stock: product.stock, minOrderQty: product.minOrderQty,
       descriptionAr: product.descriptionAr, descriptionEn: product.descriptionEn,
@@ -280,7 +285,7 @@ export const MerchantWorkspace: React.FC<{
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {[
                   { label:L('stats_orders'), value:totalOrders, color:'bg-amber-50 border-amber-200/60 text-amber-900', icon:ShoppingBag },
-                  { label:L('stats_revenue'), value:formatLocalizedNumber(currentLang, totalRevenue)+' '+CUR, color:'bg-emerald-50 border-emerald-200/60 text-emerald-900', icon:DollarSign },
+                  { label:L('stats_revenue'), value:formatNumber(totalRevenue)+' '+CUR, color:'bg-emerald-50 border-emerald-200/60 text-emerald-900', icon:DollarSign },
                   { label:L('stats_products'), value:`${approvedCount}/${totalProducts}`, color:'bg-blue-50 border-blue-200/60 text-blue-900', icon:Package },
                   { label:L('stats_margin'), value:`${PLATFORM_MARGIN_PERCENT}%`, color:'bg-purple-50 border-purple-200/60 text-purple-900', icon:TrendingUp },
                 ].map(s => (
@@ -340,27 +345,27 @@ export const MerchantWorkspace: React.FC<{
                             }`}>{L(`order_${order.status}` as keyof typeof S)}</span>
                           </div>
                           <div className="text-right text-xs text-stone-500">
-                            {new Date(order.createdAt).toLocaleDateString(numeralLocaleTag(currentLang))}
+                            {formatDate(order.createdAt)}
                           </div>
                         </div>
                         <div className="space-y-1 text-sm">
                           {order.items.map(item => (
                             <div key={item.productId} className="flex justify-between">
                               <span className="text-stone-700">{item.productNameAr} × {item.qty}</span>
-                              <span className="font-mono text-stone-600">{formatLocalizedNumber(currentLang, item.totalRetail)} {CUR}</span>
+                              <span className="font-mono text-stone-600">{formatNumber(item.totalRetail)} {CUR}</span>
                             </div>
                           ))}
                           <div className="border-t border-stone-200 mt-2 pt-2 flex justify-between font-bold">
                             <span>{L('order_total_retail')}:</span>
-                            <span className="text-emerald-700">{formatLocalizedNumber(currentLang, order.subtotalRetail)} {CUR}</span>
+                            <span className="text-emerald-700">{formatNumber(order.subtotalRetail)} {CUR}</span>
                           </div>
                           <div className="flex justify-between text-xs text-stone-500">
                             <span>{L('order_platform_revenue')}:</span>
-                            <span className="text-amber-700 font-bold">{formatLocalizedNumber(currentLang, order.totalPlatformRevenue)} {CUR}</span>
+                            <span className="text-amber-700 font-bold">{formatNumber(order.totalPlatformRevenue)} {CUR}</span>
                           </div>
                           <div className="flex justify-between text-xs text-stone-500">
                             <span>{L('order_cost_to_merchant')}:</span>
-                            <span className="text-blue-700 font-bold">{formatLocalizedNumber(currentLang, order.subtotalCost)} {CUR}</span>
+                            <span className="text-blue-700 font-bold">{formatNumber(order.subtotalCost)} {CUR}</span>
                           </div>
                         </div>
                         {order.status !== 'completed' && order.status !== 'cancelled' && (
@@ -400,7 +405,7 @@ export const MerchantWorkspace: React.FC<{
                             {L('status_approved')}
                           </span>
                         </div>
-                        <div className="text-xs text-stone-500 mb-2">{product.category} — {product.unit}</div>
+                        <div className="text-xs text-stone-500 mb-2">{merchantCategoryLabel(product.category, currentLang)} — {merchantUnitLabel(product.unit, currentLang)}</div>
                         <div className="grid grid-cols-2 gap-2 text-sm mb-2">
                           <div className="p-2 rounded-lg bg-amber-50 border border-amber-200/40">
                             <div className="text-xs text-stone-500">{L('product_cost_price')}</div>
@@ -457,7 +462,7 @@ export const MerchantWorkspace: React.FC<{
                         </div>
                         <div>
                           <div className="font-bold text-stone-900">{product.nameAr}</div>
-                          <div className="text-xs text-stone-500">{product.category} — {product.unit} | SKU: {product.sku}</div>
+                          <div className="text-xs text-stone-500">{merchantCategoryLabel(product.category, currentLang)} — {merchantUnitLabel(product.unit, currentLang)} | SKU: {product.sku}</div>
                           <div className="flex gap-3 mt-1 text-sm">
                             <span className="text-stone-500">{L('product_cost_price')}: <strong className="text-amber-900">{product.costPrice}</strong> {CUR}</span>
                             <span className="text-emerald-700 font-bold">{L('product_retail_price')}: <strong>{product.retailPrice}</strong> {CUR}</span>
@@ -510,22 +515,22 @@ export const MerchantWorkspace: React.FC<{
                             'bg-amber-100 text-amber-800'
                           }`}>{L(`order_${order.status}` as keyof typeof S)}</span>
                         </div>
-                        <span className="text-xs text-stone-500">{new Date(order.createdAt).toLocaleDateString(numeralLocaleTag(currentLang))}</span>
+                        <span className="text-xs text-stone-500">{formatDate(order.createdAt)}</span>
                       </div>
                       <div className="space-y-1 text-sm">
                         {order.items.map(item => (
                           <div key={item.productId} className="flex justify-between">
                             <span className="text-stone-700">{item.productNameAr} × {item.qty} {item.unit}</span>
-                            <span className="font-mono text-stone-600">{formatLocalizedNumber(currentLang, item.totalRetail)} {CUR}</span>
+                            <span className="font-mono text-stone-600">{formatNumber(item.totalRetail)} {CUR}</span>
                           </div>
                         ))}
                         <div className="border-t border-stone-200 mt-2 pt-2 flex justify-between font-bold text-sm">
                           <span>{L('order_total_retail')}:</span>
-                          <span className="text-emerald-700">{formatLocalizedNumber(currentLang, order.subtotalRetail)} {CUR}</span>
+                          <span className="text-emerald-700">{formatNumber(order.subtotalRetail)} {CUR}</span>
                         </div>
                         <div className="flex justify-between text-xs text-stone-500 mt-1">
-                          <span>{L('order_platform_revenue')}: <span className="text-amber-700 font-bold">{formatLocalizedNumber(currentLang, order.totalPlatformRevenue)} {CUR}</span></span>
-                          <span>{L('order_cost_to_merchant')}: <span className="text-blue-700 font-bold">{formatLocalizedNumber(currentLang, order.subtotalCost)} {CUR}</span></span>
+                          <span>{L('order_platform_revenue')}: <span className="text-amber-700 font-bold">{formatNumber(order.totalPlatformRevenue)} {CUR}</span></span>
+                          <span>{L('order_cost_to_merchant')}: <span className="text-blue-700 font-bold">{formatNumber(order.subtotalCost)} {CUR}</span></span>
                         </div>
                       </div>
                       {order.status !== 'completed' && order.status !== 'cancelled' && (
@@ -686,7 +691,7 @@ export const MerchantWorkspace: React.FC<{
                       if(editProductId) setEditProduct({...editProduct, category:e.target.value});
                       else setNewProduct({...newProduct, category:e.target.value});
                     }} className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300">
-                      {['ع스토랑','خامات','أدوات','تغليف','غير ذلك'].map(c=><option key={c}>{c}</option>)}
+                      {['عطور','خامات','أدوات','تغليف','غير ذلك'].map(c=><option key={c} value={c}>{merchantCategoryLabel(c, currentLang)}</option>)}
                     </select>
                   </div>
                   <div className="flex-1">
@@ -695,34 +700,60 @@ export const MerchantWorkspace: React.FC<{
                       if(editProductId) setEditProduct({...editProduct, unit:e.target.value});
                       else setNewProduct({...newProduct, unit:e.target.value});
                     }} className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300">
-                      {['زجةقة','لتر','جرام','مجموعة','قطعة'].map(u=><option key={u}>{u}</option>)}
+                      {['زجاجة','لتر','جرام','مجموعة','قطعة'].map(u=><option key={u} value={u}>{merchantUnitLabel(u, currentLang)}</option>)}
                     </select>
                   </div>
                 </div>
                 <div>
                   <label className="text-xs font-medium text-stone-700">{L('product_cost_price')}</label>
-                  <input type="number" value={editProductId ? editProduct.costPrice : newProduct.costPrice} onChange={e=>{
-                    if(editProductId) setEditProduct({...editProduct, costPrice:parseFloat(e.target.value)||0});
-                    else setNewProduct({...newProduct, costPrice:parseFloat(e.target.value)||0});
-                  }} className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
+                  <LocalizedNumberInput
+                    lang={currentLang}
+                    dir="ltr"
+                    value={editProductId ? editProduct.costPrice : newProduct.costPrice}
+                    min={0}
+                    className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
+                    onValue={(value) => {
+                      const costPrice = Number.isFinite(value) ? Math.max(0, value) : 0;
+                      if (editProductId) setEditProduct({ ...editProduct, costPrice });
+                      else setNewProduct({ ...newProduct, costPrice });
+                    }}
+                  />
                   <p className="text-[10px] text-stone-400 mt-1">
-                    {L('product_retail_price')}: <strong>{((editProductId?editProduct.costPrice:newProduct.costPrice)*1.25).toFixed(2)}</strong> {CUR} ({uiLabel('with_pct', currentLang)} {String(PLATFORM_MARGIN_PERCENT)+'%'})
+                    {L('product_retail_price')}: <strong>{formatLocalizedNumber(currentLang, (editProductId ? editProduct.costPrice : newProduct.costPrice) * 1.25, { fractionDigits: 2 })}</strong> {CUR} ({uiLabel('with_pct', currentLang)} {String(PLATFORM_MARGIN_PERCENT)+'%'})
                   </p>
                 </div>
                 <div className="flex gap-2">
                   <div className="flex-1">
                     <label className="text-xs font-medium text-stone-700">{L('product_stock')}</label>
-                    <input type="number" value={editProductId ? editProduct.stock : newProduct.stock} onChange={e=>{
-                      if(editProductId) setEditProduct({...editProduct, stock:parseInt(e.target.value)||0});
-                      else setNewProduct({...newProduct, stock:parseInt(e.target.value)||0});
-                    }} className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
+                    <LocalizedNumberInput
+                      lang={currentLang}
+                      dir="ltr"
+                      value={editProductId ? editProduct.stock : newProduct.stock}
+                      integer
+                      min={0}
+                      className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
+                      onValue={(value) => {
+                        const stock = Number.isFinite(value) ? Math.max(0, Math.floor(value)) : 0;
+                        if (editProductId) setEditProduct({ ...editProduct, stock });
+                        else setNewProduct({ ...newProduct, stock });
+                      }}
+                    />
                   </div>
                   <div className="flex-1">
                     <label className="text-xs font-medium text-stone-700">{L('product_min_order')}</label>
-                    <input type="number" value={editProductId ? editProduct.minOrderQty : newProduct.minOrderQty} onChange={e=>{
-                      if(editProductId) setEditProduct({...editProduct, minOrderQty:parseInt(e.target.value)||1});
-                      else setNewProduct({...newProduct, minOrderQty:parseInt(e.target.value)||1});
-                    }} className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"/>
+                    <LocalizedNumberInput
+                      lang={currentLang}
+                      dir="ltr"
+                      value={editProductId ? editProduct.minOrderQty : newProduct.minOrderQty}
+                      integer
+                      min={1}
+                      className="w-full mt-1 px-3 py-2 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
+                      onValue={(value) => {
+                        const minOrderQty = Number.isFinite(value) ? Math.max(1, Math.floor(value)) : 1;
+                        if (editProductId) setEditProduct({ ...editProduct, minOrderQty });
+                        else setNewProduct({ ...newProduct, minOrderQty });
+                      }}
+                    />
                   </div>
                 </div>
                 <div className="flex justify-end gap-2 pt-3">

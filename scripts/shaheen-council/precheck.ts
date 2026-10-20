@@ -211,7 +211,17 @@ export function findHandoffs(reports: Record<string, unknown>, checks: BotCheck[
   const unreadable = sources.filter((s) => /غير مقروءة/.test(String(s.reason || ''))).length;
   if (unreadable) out.push({ from: 'scout', to: 'importer', textAr: `${unreadable} متجر صفحاته غير مقروءة بدون ذكاء اصطناعي — مهارات القراءة تتعلمها لما المحرك يتاح` });
   const audit = o(reports['manus-audit.json']);
-  if (arr(audit.issues).length && (n(audit.score) ?? 100) < 80) out.push({ from: 'design_audit', to: 'languages', textAr: `${arr(audit.issues).length} ملاحظة تصميم وترجمة — وكيل اللغات يقيسها في فحصه` });
+  const auditIssues = arr(audit.issues).map(o);
+  if (auditIssues.length && (n(audit.score) ?? 100) < 80) out.push({ from: 'design_audit', to: 'languages', textAr: `${auditIssues.length} ملاحظة تصميم وترجمة — وكيل اللغات يقيسها في فحصه` });
+  const designIssues = auditIssues.filter((issue) => issue.area === 'design');
+  if (designIssues.length && (n(audit.score) ?? 100) < 80) out.push({ from: 'design_audit', to: 'design_expert', textAr: `${designIssues.length} ملاحظة تصميم مرئية — خبير التصميم يراعيها في التصورات الجديدة` });
+  const designCheck = checks.find((check) => check.id === 'design_expert');
+  if (designCheck && ['warn', 'fail'].includes(designCheck.status)) {
+    const designTool = o(o(reports['ai-supervisor.json']).tools).design_agent;
+    const issueCount = arr(o(designTool).issues).length;
+    const score = n(o(designTool).score) ?? n(o(designTool).autoScore);
+    out.push({ from: 'design_expert', to: 'council', textAr: `تصميم شاهين يحتاج مراجعة${score === undefined ? '' : ` — ${score}/10`}${issueCount ? `، ${issueCount} ملاحظة جودة` : ''}؛ راجع التوجيه والمنهج قبل الدورة التالية` });
+  }
   const missions = o(reports['manus-missions.json']);
   const tour = o(missions.tour);
   if ((hoursSinceIso(tour.at, now) ?? 99) < 48) {

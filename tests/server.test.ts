@@ -20,6 +20,7 @@ before(async () => {
       OPENAI_API_KEY: '',
       ANTHROPIC_API_KEY: '',
       OPENROUTER_API_KEY: '',
+      SHAM_ADMIN_TOKEN: 'test-admin-token-1234',
       PERPLEXITY_API_KEY: '',
       SHAM_LLM_BASE_URL: '',
       SHAM_LLM_API_KEY: '',
@@ -101,6 +102,24 @@ test('unknown API routes return JSON 404, not a successful HTML SPA fallback', a
   assert.equal(response.status, 404);
   assert.match(response.headers.get('content-type') || '', /application\/json/);
   assert.deepEqual(await response.json(), { error: 'API route not found' });
+});
+
+test('the design studio is protected by the admin token, validates requests and never fabricates without a configured engine', async () => {
+  const path = `${baseUrl}/api/admin/design/brief`;
+  const unauthenticated = await fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+  assert.equal(unauthenticated.status, 401);
+
+  const headers = { 'Content-Type': 'application/json', Authorization: 'Bearer test-admin-token-1234' };
+  const invalid = await fetch(path, { method: 'POST', headers, body: '{}' });
+  assert.equal(invalid.status, 400);
+  assert.equal((await invalid.json()).code, 'INVALID_BRIEF');
+
+  const unavailable = await fetch(path, { method: 'POST', headers, body: JSON.stringify({
+    brief: 'تصميم إعلان لعطر فاخر بدون خصم أو ادعاءات غير مؤكدة',
+    platform: 'instagram_story', objective: 'awareness', language: 'ar',
+  }) });
+  assert.equal(unavailable.status, 503);
+  assert.equal((await unavailable.json()).code, 'PROVIDER_NOT_CONFIGURED');
 });
 
 test('chat rejects missing messages with a real validation error', async () => {

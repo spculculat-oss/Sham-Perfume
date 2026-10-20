@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { Header } from './components/Header';
+import { ToastNotification } from './components/ToastNotification';
 import { UserProfilePage } from './components/UserProfilePage';
 import { Hero } from './components/Hero';
 import { HomeHub } from './components/HomeHub';
@@ -10,7 +11,8 @@ import { PyramidCalculator } from './components/PyramidCalculator';
 import { AlcoholDilutionCalculator } from './components/AlcoholDilutionCalculator';
 import { CostCalculator } from './components/CostCalculator';
 import { FormulaLibrary } from './components/FormulaLibrary';
-import { WorldPerfumesLibrary } from './components/WorldPerfumesLibrary';
+import { WorldPerfumesLibrary, worldPerfumeStudyDisclaimer, worldPerfumeStudyTitle } from './components/WorldPerfumesLibrary';
+import { MoleculeStudio } from './components/MoleculeStudio';
 import { RawMaterialsEncyclopedia } from './components/RawMaterialsEncyclopedia';
 import { AgingAndFixativesGuide } from './components/AgingAndFixativesGuide';
 import { MacerationTimeSimulator } from './components/MacerationTimeSimulator';
@@ -90,8 +92,8 @@ const S = {
     fa: '✨ فرمول اشتراک‌گذاری شده «{title}» در ماشین‌حساب و کارت مشخصات بارگذاری شد!',
   },
   toast_home_back: { ar: 'أنت الآن في الصفحة الرئيسية. اضغط زر الرجوع مجدداً لمغادرة المنصة.', en: 'You are on the home page. Press back again to leave the platform.', fr: 'Vous êtes sur l’accueil. Appuyez à nouveau sur retour pour quitter.', es: 'Estás en el inicio. Pulsa atrás de nuevo para salir.', it: 'Sei nella home. Premi di nuovo indietro per uscire.', de: 'Sie sind auf der Startseite. Drücken Sie erneut „Zurück“, um zu verlassen.', ru: 'Вы на главной странице. Нажмите «Назад» ещё раз, чтобы выйти.', zh: '您正在首页。再次点击返回即可离开平台。', tr: 'Ana sayfadasınız. Ayrılmak için geriye tekrar basın.', fa: 'شما در صفحه اصلی هستید. برای خروج دوباره دکمه بازگشت را بزنید.' },
-  toast_lang_tpl: { ar: '🌐 تم تغيير لغة المنصة بنجاح إلى: {flag} «{native}» ({dir})', en: '🌐 Platform language changed to: {flag} «{native}» ({dir})', fr: '🌐 Langue changée : {flag} « {native} » ({dir})', es: '🌐 Idioma cambiado a: {flag} «{native}» ({dir})', it: '🌐 Lingua cambiata: {flag} «{native}» ({dir})', de: '🌐 Sprache geändert: {flag} „{native}“ ({dir})', ru: '🌐 Язык платформы изменён: {flag} «{native}» ({dir})', zh: '🌐 平台语言已切换为：{flag}「{native}」（{dir}）', tr: '🌐 Dil değiştirildi: {flag} «{native}» ({dir})', fa: '🌐 زبان پلتفرم به {flag} «{native}» ({dir}) تغییر کرد' },
-  toast_geo_tpl: { ar: '📍 تم تحديد موقعك: {flag} {country} — لغة المنصة: {lang}', en: '📍 Location detected: {flag} {country} — Platform language: {lang}', fr: '📍 Position détectée : {flag} {country} — Langue : {lang}', es: '📍 Ubicación detectada: {flag} {country} — Idioma: {lang}', it: '📍 Posizione rilevata: {flag} {country} — Lingua: {lang}', de: '📍 Standort erkannt: {flag} {country} — Sprache: {lang}', ru: '📍 Ваше местоположение: {flag} {country} — Язык: {lang}', zh: '📍 已检测到您的位置：{flag} {country} — 平台语言：{lang}', tr: '📍 Konum algılandı: {flag} {country} — Dil: {lang}', fa: '📍 موقعیت شما شناسایی شد: {flag} {country} — زبان پلتفرم: {lang}' },
+  toast_lang_tpl: { ar: '🌐 تم تغيير لغة المنصة بنجاح إلى: {flag} «{native}» ({dir})', en: '🌐 Platform language changed to: {flag} «{native}» ({dir})', fr: '🌐 Langue changée : {flag} « {native} » ({dir})', es: '🌐 Idioma cambiado a: {flag} «{native}» ({dir})', it: '🌐 Lingua cambiata: {flag} «{native}» ({dir})', de: '🌐 Sprache geändert: {flag} „{native}“ ({dir})', ru: '🌐 Язык платформы изменён: {flag} «{native}» ({dir})', zh: '🌐 平台语言已切换为：{flag}「{native}」（{dir}）', tr: '🌐 Dil değiştirildi: {flag} «{native}» ({dir})', fa: '🌐 زبان پلتفرم به {flag} «{native}» ({dir}) تغییر کرد', is: '🌐 Tungumáli vettvangsins var breytt í: {flag} „{native}“ ({dir})', sq: '🌐 Gjuha e platformës u ndryshua në: {flag} «{native}» ({dir})', ps: '🌐 د پلیټفارم ژبه بدله شوه: {flag} «{native}» ({dir})' },
+  toast_geo_tpl: { ar: '📍 تم تحديد موقعك: {flag} {country} — لغة المنصة: {lang}', en: '📍 Location detected: {flag} {country} — Platform language: {lang}', fr: '📍 Position détectée : {flag} {country} — Langue : {lang}', es: '📍 Ubicación detectada: {flag} {country} — Idioma: {lang}', it: '📍 Posizione rilevata: {flag} {country} — Lingua: {lang}', de: '📍 Standort erkannt: {flag} {country} — Sprache: {lang}', ru: '📍 Ваше местоположение: {flag} {country} — Язык: {lang}', zh: '📍 已检测到您的位置：{flag} {country} — 平台语言：{lang}', tr: '📍 Konum algılandı: {flag} {country} — Dil: {lang}', fa: '📍 موقعیت شما شناسایی شد: {flag} {country} — زبان پلتفرم: {lang}', is: '📍 Staðsetning greind: {flag} {country} — tungumál vettvangs: {lang}', sq: '📍 Vendndodhja u zbulua: {flag} {country} — gjuha e platformës: {lang}', ps: '📍 ځای وپېژندل شو: {flag} {country} — د پلیټفارم ژبه: {lang}' },
   toast_env_tpl: { ar: '🌍 تم ضبط بلد المعمل: {flag} «{country}» وعملة {currency}!', en: '🌍 Lab country set: {flag} «{country}» with currency {currency}!', fr: '🌍 Pays du laboratoire : {flag} « {country} », devise {currency} !', es: '🌍 País del laboratorio: {flag} «{country}», moneda {currency}!', it: '🌍 Paese del laboratorio: {flag} «{country}», valuta {currency}!', de: '🌍 Laberland festgelegt: {flag} „{country}“, Währung {currency}!', ru: '🌍 Страна лаборатории: {flag} «{country}», валюта {currency}!', zh: '🌍 实验室国家已设置：{flag}「{country}」，货币 {currency}！', tr: '🌍 Laboratuvar ülkesi: {flag} «{country}», para birimi {currency}!', fa: '🌍 کشور آزمایشگاه تنظیم شد: {flag} «{country}» با ارز {currency}!' },
   toast_welcome_tpl: { ar: '👤 مرحباً بك يا {name} في معملك الخاص!', en: '👤 Welcome {name} to your private lab!', fr: '👤 Bienvenue {name} dans votre laboratoire !', es: '👤 ¡Bienvenido {name} a tu laboratorio!', it: '👤 Benvenuto {name} nel tuo laboratorio!', de: '👤 Willkommen {name} in Ihrem Labor!', ru: '👤 Добро пожаловать, {name}, в вашу лабораторию!', zh: '👤 欢迎 {name} 来到您的私人实验室！', tr: '👤 {name}, özel laboratuvarınıza hoş geldiniz!', fa: '👤 {name} عزیز، به آزمایشگاه شخصی‌تان خوش آمدید!' },
   toast_logout: { ar: '👋 تم تسجيل الخروج بنجاح', en: '👋 Logged out successfully', fr: '👋 Déconnecté avec succès', es: '👋 Sesión cerrada con éxito', it: '👋 Disconnesso con successo', de: '👋 Erfolgreich abgemeldet', ru: '👋 Вы вышли из аккаунта', zh: '👋 已成功退出登录', tr: '👋 Başarıyla çıkış yapıldı', fa: '👋 با موفقیت از حساب خارج شدید' },
@@ -111,7 +113,7 @@ const S = {
   toast_store: { ar: '🛍️ شاهين بيختار لك من متجر شام حسب طلبك', en: '🛍️ Shaheen is picking from Sham store for you' },
   toast_costing_tpl: { ar: '💰 تم الانتقال لحاسبة التكاليف والأرباح لتسعير تركيبة «{title}»!', en: '💰 Moved to the costing calculator to price «{title}»!', fr: '💰 Passage au calculateur de coûts pour tarifer « {title} » !', es: '💰 ¡Ve a la calculadora de costes para tarificar «{title}»!', it: '💰 Passato al calcolatore dei costi per prezzi «{title}»!', de: '💰 Zum Kostenrechner gewechselt, um „{title}“ zu bepreisen!', ru: '💰 Переход к калькулятору себестоимости для «{title}»!', zh: '💰 已转到成本计算器为「{title}」定价！', tr: '💰 «{title}» için maliyet hesaplayıcısına geçildi!', fa: '💰 برای قیمت‌گذاری «{title}» به ماشین‌حساب هزینه منتقل شدید!' },
   toast_loaded_lab_tpl: { ar: 'تم تحميل التركيبة "{title}" بنجاح في المعمل', en: 'Formula "{title}" loaded into the lab', fr: 'Formule « {title} » chargée dans le laboratoire', es: 'Fórmula "{title}" cargada en el laboratorio', it: 'Formula "{title}" caricata nel laboratorio', de: 'Formel „{title}“ ins Labor geladen', ru: 'Формула «{title}» загружена в лабораторию', zh: '配方“{title}”已成功载入实验室', tr: '"{title}" formülü laboratuvara yüklendi', fa: 'فرمول «{title}» با موفقیت در آزمایشگاه بارگذاری شد' },
-  toast_loaded_world_tpl: { ar: 'تم تحميل تركيبة «{title}» في حاسبة المعمل بنجاح!', en: 'Formula «{title}» loaded into the lab calculator!', fr: 'Formule « {title} » chargée dans le calculateur !', es: '¡Fórmula «{title}» cargada en la calculadora!', it: 'Formula «{title}» caricata nel calcolatore!', de: 'Formel „{title}“ in den Lab-rechner geladen!', ru: 'Формула «{title}» загружена в калькулятор!', zh: '配方「{title}」已成功载入实验室计算器！', tr: '«{title}» formülü hesaplayıcıya yüklendi!', fa: 'فرمول «{title}» با موفقیت در ماشین‌حساب بارگذاری شد!' },
+  toast_loaded_world_tpl: { ar: 'تم تحميل النموذج التعليمي المستوحى «{title}» في حاسبة المعمل!', en: 'Inspired study «{title}» loaded into the lab calculator!', fr: 'Étude inspirée « {title} » chargée dans le calculateur !', es: 'Estudio inspirado «{title}» cargado en la calculadora.', it: 'Studio ispirato «{title}» caricato nel calcolatore!', de: 'Inspirationsstudie „{title}“ in den Rechner geladen!', ru: 'Учебный пример «{title}» загружен в калькулятор!', zh: '灵感示例「{title}」已载入实验室计算器！', tr: 'İlham çalışması «{title}» hesaplayıcıya yüklendi!', fa: 'نمونه الهام‌گرفته «{title}» در ماشین‌حساب بارگذاری شد!' },
   toast_note_added_tpl: { ar: 'تمت إضافة «{name}» إلى الهرم العطري بنجاح', en: '«{name}» added to the fragrance pyramid', fr: '« {name} » ajoutée à la pyramide olfactive', es: '«{name}» añadida a la pirámide olfativa', it: '«{name}» aggiunta alla piramide olfattiva', de: '„{name}“ zur Duftpyramide hinzugefügt', ru: '«{name}» добавлена в пирамиду', zh: '「{name}」已成功加入香调金字塔', tr: '«{name}» koku piramidine eklendi', fa: '«{name}» با موفقیت به هرم عطری اضافه شد' },
   toast_formula_saved_tpl: { ar: 'تم حفظ التركيبة "{title}" في مكتبة الوصفات!', en: 'Formula "{title}" saved to the library!', fr: 'Formule « {title} » enregistrée !', es: '¡Fórmula "{title}" guardada en la biblioteca!', it: 'Formula "{title}" salvata nella libreria!', de: 'Formel „{title}“ in der Bibliothek gespeichert!', ru: 'Формула «{title}» сохранена в библиотеке!', zh: '配方“{title}”已保存到配方库！', tr: '"{title}" formülü kütüphaneye kaydedildi!', fa: 'فرمول «{title}» در کتابخانه ذخیره شد!' },
   toast_formula_deleted: { ar: 'تم حذف التركيبة من المكتبة', en: 'Formula deleted from the library', fr: 'Formule supprimée de la bibliothèque', es: 'Fórmula eliminada de la biblioteca', it: 'Formula eliminata dalla libreria', de: 'Formel aus der Bibliothek gelöscht', ru: 'Формула удалена из библиотеки', zh: '配方已从库中删除', tr: 'Formül kütüphaneden silindi', fa: 'فرمول از کتابخانه حذف شد' },
@@ -183,6 +185,11 @@ export default function App() {
   const [isLegalCenterOpen, setIsLegalCenterOpen] = useState(false);
   const [legalInitialTab, setLegalInitialTab] = useState<string>('overview');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const toastTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => {
+    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+  }, []);
 
   // Synchronous modal tracker ref for browser popstate
   const activeModalsRef = React.useRef({
@@ -206,9 +213,11 @@ export default function App() {
   }, []);
 
   const showToast = (msg: string) => {
+    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
     setToastMessage(msg);
-    setTimeout(() => {
+    toastTimeoutRef.current = setTimeout(() => {
       setToastMessage(null);
+      toastTimeoutRef.current = null;
     }, 3500);
   };
 
@@ -600,7 +609,7 @@ export default function App() {
     setCurrentLang(lang);
     saveLanguage(lang);
     const langInfo = SUPPORTED_LANGUAGES.find((l) => l.code === lang);
-    showToast(fmt(L('toast_lang_tpl'), { flag: langInfo?.flag || '', native: langInfo?.nativeName || lang, dir: (langInfo?.dir || 'rtl').toUpperCase() }));
+    showToast(fmt(makeT(lang, S)('toast_lang_tpl'), { flag: langInfo?.flag || '', native: langInfo?.nativeName || lang, dir: (langInfo?.dir || 'rtl').toUpperCase() }));
   };
 
   // Re-run location detection by client request
@@ -608,7 +617,7 @@ export default function App() {
     const geo = await forceRedetectLocation();
     setCurrentLang(geo.detectedLanguage);
     saveLanguage(geo.detectedLanguage);
-    showToast(fmt(L('toast_geo_tpl'), { flag: geo.detectedCountry.flag, country: pickArEn(currentLang, geo.detectedCountry.nameAr, geo.detectedCountry.nameEn).split('(')[0], lang: geo.detectedLanguage.toUpperCase() }));
+    showToast(fmt(makeT(geo.detectedLanguage, S)('toast_geo_tpl'), { flag: geo.detectedCountry.flag, country: pickArEn(geo.detectedLanguage, geo.detectedCountry.nameAr, geo.detectedCountry.nameEn).split('(')[0], lang: geo.detectedLanguage.toUpperCase() }));
   };
 
   const handleUpdateEnvironment = (profile: UserEnvironmentProfile) => {
@@ -843,14 +852,14 @@ export default function App() {
       concentrationPercent: recipe.targetConcentration,
       concentrationType: recipe.concentrationType,
     }));
-    setFormulaTitle(pickArEn(currentLang, recipe.nameAr, recipe.nameEn));
+    setFormulaTitle(worldPerfumeStudyTitle(recipe.nameAr, currentLang));
     setFormulaAuthor(recipe.brand);
     setBatchCode('WRLD-' + recipe.id.slice(0, 5).toUpperCase());
-    setFormulaNotes(`${recipe.descriptionAr}\n${L('expert_tip_lbl')} ${recipe.compoundingTips}`);
+    setFormulaNotes(`${recipe.descriptionAr}\n${L('expert_tip_lbl')} ${recipe.compoundingTips}\n\n${worldPerfumeStudyDisclaimer(currentLang)}`);
     setMacerationDays(recipe.macerationDays);
     setPyramidNotes(recipe.pyramidNotes);
     navigateToTab('concentration');
-    showToast(fmt(L('toast_loaded_world_tpl'), { title: pickArEn(currentLang, recipe.nameAr, recipe.nameEn) }));
+    showToast(fmt(L('toast_loaded_world_tpl'), { title: worldPerfumeStudyTitle(recipe.nameAr, currentLang) }));
   };
 
   const handlePrintWorldFormula = (recipe: WorldPerfumeRecipe) => {
@@ -859,10 +868,10 @@ export default function App() {
       concentrationPercent: recipe.targetConcentration,
       concentrationType: recipe.concentrationType,
     }));
-    setFormulaTitle(recipe.nameAr);
+    setFormulaTitle(worldPerfumeStudyTitle(recipe.nameAr, currentLang));
     setFormulaAuthor(recipe.brand);
     setBatchCode('WRLD-' + recipe.id.slice(0, 5).toUpperCase());
-    setFormulaNotes(recipe.descriptionAr);
+    setFormulaNotes(`${recipe.descriptionAr}\n\n${worldPerfumeStudyDisclaimer(currentLang)}`);
     setMacerationDays(recipe.macerationDays);
     setPyramidNotes(recipe.pyramidNotes);
     handleOpenSpecModal();
@@ -913,13 +922,8 @@ export default function App() {
     <LanguageProvider initialLang={currentLang} onLanguageChange={handleSelectLanguage}>
       <div className="min-h-screen flex flex-col bg-stone-50 text-stone-900 selection:bg-amber-200">
         
-        {/* Toast Notification */}
-        {toastMessage && (
-          <div className="fixed bottom-6 left-6 z-50 bg-stone-900 text-white px-5 py-3.5 rounded-2xl shadow-xl border border-stone-800 text-xs font-semibold flex items-center gap-2.5 animate-in fade-in slide-in-from-bottom-3">
-            <Check className="w-4 h-4 text-emerald-400" />
-            <span>{toastMessage}</span>
-          </div>
-        )}
+        {/* Non-blocking, screen-reader-announced status below the sticky header. */}
+        <ToastNotification message={toastMessage} />
 
         {/* Top Header */}
         <Header
@@ -1020,6 +1024,26 @@ export default function App() {
         {activeTab === 'world_perfumes' && (
           <WorldPerfumesLibrary
             currentLang={currentLang}
+            onLoadWorldFormula={handleLoadWorldFormula}
+            onPrintWorldFormula={handlePrintWorldFormula}
+          />
+        )}
+
+        {activeTab === 'molecule_studio' && (
+          <MoleculeStudio
+            currentLang={currentLang}
+            formulation={formulation}
+            pyramidNotes={pyramidNotes}
+            setPyramidNotes={setPyramidNotes}
+            result={calculationResult}
+            formulaTitle={formulaTitle}
+            batchCode={batchCode}
+            macerationDays={macerationDays}
+            setMacerationDays={setMacerationDays}
+            macerationStartDate={macerationStartDate}
+            setMacerationStartDate={setMacerationStartDate}
+            onOpenSpecModal={handleOpenSpecModal}
+            onNavigateToTab={(tab) => navigateToTab(tab)}
             onLoadWorldFormula={handleLoadWorldFormula}
             onPrintWorldFormula={handlePrintWorldFormula}
           />

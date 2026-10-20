@@ -7,7 +7,7 @@
 export type AiToolId =
   | 'shaheen_chat' | 'sham_assistant' | 'news_articles' | 'news_bulletin' | 'assistant_training' | 'media' | 'admin_agent'
   | 'store_advisor' | 'store_catalog' | 'store_import' | 'shaheen_school' | 'seo_agent' | 'shaheen_council' | 'finance_agent'
-  | 'contracts_agent' | 'language_agent';
+  | 'contracts_agent' | 'design_agent' | 'language_agent';
 
 export interface AiToolDef {
   id: AiToolId;
@@ -97,6 +97,11 @@ export const AI_TOOLS: AiToolDef[] = [
     id: 'shaheen_council', nameAr: 'مجلس شاهين — الاجتماع اليومي للتطوير', nameEn: "Shaheen's council — daily development meeting",
     descriptionAr: 'شاهين مدير كل أدوات الذكاء الاصطناعي: كل يوم يجتمع مع خمسة خبراء (الأدوات، المتجر، المحتوى، تجربة الزائر، الجودة) على تقارير الموقع الحقيقية، يكتب محضراً بقرارات، ينفذ الآمن منها فوراً (تشغيل روبوت، سؤال للمدرسة، متجر للكشّاف، هدف تطوير لكل أداة) ويحوّل الباقي إلى مهام تطوير ينفذها وكيل البرمجة في الشات. وفي «الدورية كل ساعة» يشخص المشاكل اللي الأدوات ماقدرتش تصلحها لوحدها.',
     sources: ['scripts/shaheen-council/run.mts', 'scripts/shaheen-patrol/run.mts'], routes: [], acceptsGuidance: false,
+  },
+  {
+    id: 'design_agent', nameAr: 'خبير التصميم متعدد التخصصات', nameEn: 'Multidisciplinary design expert',
+    descriptionAr: 'يحوّل الموجز إلى خطة تصميم عبر تخصصات الهوية والجرافيك والواجهات والتغليف والتصوير والحركة والطباعة والإتاحة والخدمات والمنتجات؛ يستفيد من الأدوار والتقارير المسجلة تحت شاهين، ويقدّم اقتراحات للمراجعة لا ملفات نهائية أو تغييرات تلقائية.',
+    sources: ['server/design/assistant.ts'], routes: ['/api/admin/design/brief'], acceptsGuidance: true,
   },
   {
     id: 'admin_agent', nameAr: 'المساعد الإداري', nameEn: 'Admin operations agent',

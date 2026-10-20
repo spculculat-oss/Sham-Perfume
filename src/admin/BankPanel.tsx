@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AlertTriangle, BadgeCheck, Banknote, Bot, Building2, CalendarClock, FileSearch, Loader2, PieChart, Plus, ScrollText, Send, Wallet } from 'lucide-react';
 import { adminRequest, send } from './adminApi';
-import { adminLocale } from './adminL10n';
+import { adminLocale, getAdminLang } from './adminL10n';
+import { LocalizedNumberInput } from '../components/LocalizedNumberInput';
 import { major } from '../finance/money';
 import type { BankDashboard } from '../../server/finance/bank';
 import type { CollectionAccount } from '../../server/finance/types';
@@ -72,7 +73,12 @@ export default function BankPanel() {
   const editAccount = (a: CollectionAccount) => setAccount({ id: a.id, kind: a.kind, label: a.label, instructions: a.instructions, currencies: a.currencies.join(','), countries: a.countries.join(','), holdHours: String(a.holdHours), active: a.active });
   const saveAccount = (e: React.FormEvent) => {
     e.preventDefault();
-    const body = { kind: account.kind, label: account.label, instructions: account.instructions, active: account.active, holdHours: Number(account.holdHours),
+    const holdHours = Number(account.holdHours);
+    if (!Number.isInteger(holdHours) || holdHours < 1 || holdHours > 720) {
+      setError(f('مدة الحجز يجب أن تكون بين 1 و720 ساعة.', 'Hold time must be between 1 and 720 hours.'));
+      return;
+    }
+    const body = { kind: account.kind, label: account.label, instructions: account.instructions, active: account.active, holdHours,
       currencies: account.currencies.toUpperCase().split(/[,،\s]+/).filter(Boolean), countries: account.countries.toUpperCase().split(/[,،\s]+/).filter(Boolean) };
     void act(async () => { await adminRequest(account.id ? `/finance/bank/accounts/${account.id}` : '/finance/bank/accounts', send(account.id ? 'PUT' : 'POST', body)); setAccount(emptyAccount); });
   };
@@ -157,7 +163,7 @@ export default function BankPanel() {
             <label className="text-xs space-y-1 sm:col-span-2"><span>{f('تعليمات الدفع للعميل (عنوان إنستاباي، رقم المحفظة، أو بيانات الحساب البنكي/IBAN)', 'Payment instructions (InstaPay address, wallet number or bank account/IBAN)')}</span><textarea className={field} rows={3} maxLength={500} required={account.kind !== 'cod'} value={account.instructions} onChange={(e) => setAccount({ ...account, instructions: e.target.value })} /></label>
             <label className="text-xs space-y-1"><span>{f('العملات (مثل EGP)', 'Currencies (e.g. EGP)')}</span><input className={field} dir="ltr" value={account.currencies} onChange={(e) => setAccount({ ...account, currencies: e.target.value })} /></label>
             <label className="text-xs space-y-1"><span>{f('الدول (مثل EG,SA)', 'Countries (e.g. EG,SA)')}</span><input className={field} dir="ltr" value={account.countries} onChange={(e) => setAccount({ ...account, countries: e.target.value })} /></label>
-            <label className="text-xs space-y-1"><span>{f('مدة حجز الطلب بالساعات', 'Hold time (hours)')}</span><input className={field} type="number" min={1} max={720} value={account.holdHours} onChange={(e) => setAccount({ ...account, holdHours: e.target.value })} /></label>
+            <label className="text-xs space-y-1"><span>{f('مدة حجز الطلب بالساعات', 'Hold time (hours)')}</span><LocalizedNumberInput lang={getAdminLang()} className={field} dir="ltr" value={Number(account.holdHours) || 0} integer min={1} max={720} ariaLabel={f('مدة الحجز بالساعات', 'Hold time in hours')} onValue={(value) => setAccount({ ...account, holdHours: Number.isFinite(value) ? String(Math.trunc(value)) : '' })} /></label>
             <label className="text-xs flex items-center gap-2 pt-5"><input type="checkbox" checked={account.active} onChange={(e) => setAccount({ ...account, active: e.target.checked })} />{f('ظاهر للعملاء', 'Visible to buyers')}</label>
             <p className="text-[11px] text-amber-800 sm:col-span-2">{f('اكتب فقط ما يحتاجه العميل ليدفع لك. ممنوع كلمات السر أو أرقام البطاقات أو رموز التحقق — النظام يرفضها.', 'Only what a buyer needs to pay you. Passwords, card numbers and codes are refused.')}</p>
             <div className="flex gap-2 sm:col-span-2"><button className={`${button} bg-stone-900 text-white`} disabled={busy}><Plus className="w-4 h-4" />{account.id ? f('حفظ التعديل', 'Save changes') : f('إضافة الحساب', 'Add account')}</button>{account.id && <button type="button" className={`${button} border`} onClick={() => setAccount(emptyAccount)}>{f('إلغاء', 'Cancel')}</button>}</div>

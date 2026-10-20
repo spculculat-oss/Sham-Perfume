@@ -1,4 +1,4 @@
-import { T, adminDir, useAdminLanguage, reactiveMap, TP, listSep, adminLocale } from './adminL10n';
+import { T, adminDir, useAdminLanguage, reactiveMap, TP, listSep, adminLocale, getAdminLang, formatAdminNumber } from './adminL10n';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Search,
@@ -6,11 +6,12 @@ import {
   BellRing, CheckCircle2, CircleAlert, EyeOff, LayoutDashboard, Lightbulb, Loader2, LogOut, MessagesSquare, Plus, RefreshCw, Save, Send,
   Settings2, Stethoscope, ThumbsDown, ThumbsUp, Trash2, TriangleAlert, Users, Wand2,
   ChevronUp, ChevronDown, Mail, Eye, ExternalLink, Check, Sparkles,
-  Handshake,
+  Handshake, Palette,
 } from 'lucide-react';
 import UpdatesPanel from './UpdatesPanel';
 import FinancePanel from './FinancePanel';
 import ContractsPanel from './ContractsPanel';
+import DesignStudioPanel from './DesignStudioPanel';
 import SupervisorPanel from './SupervisorPanel';
 import SeoPanel from './SeoPanel';
 import CommunityPanel from './CommunityPanel';
@@ -26,8 +27,9 @@ import type { AgentResult } from '../../server/core/adminAgent';
 import { AdminApiError, adminRequest, getToken, send, setToken } from './adminApi';
 import { apiUrl, isStaticHosting } from '../utils/api';
 import { parseDoctorIssue, type DoctorReport } from './doctorReport';
+import { LocalizedNumberInput } from '../components/LocalizedNumberInput';
 
-type Tab = 'finance' | 'overview' | 'community' | 'contracts' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'emails' | 'doctor' | 'supervisor' | 'seo' | 'sandbox' | 'updates';
+type Tab = 'finance' | 'overview' | 'community' | 'contracts' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'design' | 'emails' | 'doctor' | 'supervisor' | 'seo' | 'sandbox' | 'updates';
 interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: string }
 interface Overview {
   storage: { kind: string; persistent: boolean; error?: string };
@@ -54,6 +56,7 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'services', label: T('الخدمات'), icon: <Settings2 className="w-4 h-4" /> },
   { id: 'engines', label: T('المحركات والإعدادات'), icon: <Cpu className="w-4 h-4" /> },
   { id: 'shaheen', label: T('الخبير شاهين'), icon: <FlaskConical className="w-4 h-4" /> },
+  { id: 'design', label: T('استوديو التصميم'), icon: <Palette className="w-4 h-4" /> },
   { id: 'doctor', label: T('طبيب شاهين'), icon: <Stethoscope className="w-4 h-4" /> },
   { id: 'supervisor', label: T('إدارة الذكاء الاصطناعي'), icon: <Sparkles className="w-4 h-4" /> },
   { id: 'seo', label: T('منارة شاهين'), icon: <Search className="w-4 h-4" /> },
@@ -158,6 +161,7 @@ export default function AdminApp() {
           {tab === 'services' && <ServicesPanel />}
           {tab === 'engines' && <EnginesPanel />}
           {tab === 'shaheen' && <><ShaheenGrowthPanel /><ShaheenPanel /></>}
+          {tab === 'design' && <DesignStudioPanel />}
           {tab === 'emails' && <EmailsPanel />}
           {tab === 'doctor' && <DoctorPanel />}
           {tab === 'supervisor' && <><ShaheenOrgPanel /><ShaheenPatrolPanel /><ShaheenCouncilPanel /><SupervisorPanel /></>}
@@ -1193,12 +1197,13 @@ const csv = (v?: string[]) => (v || []).join(listSep());
 const fromCsv = (s: string) => s.split(/[,،]/).map((x) => x.trim()).filter(Boolean);
 
 function ProductsPanel() {
+  const lang = getAdminLang();
   return (
     <CollectionPanel<Product> path="products" title={T('المنتجات')} subtitle={T('الكتالوج الوحيد الذي يقتبس منه المساعد الأسعار والمخزون')} empty={T('الكتالوج فارغ — المساعد لن يذكر أي أسعار حتى تضيف منتجات.')}
       blank={{ nameAr: '', nameEn: '', price: 0, stock: 0, unit: 'piece', category: 'perfume', active: true, tags: [] }}
       summary={(p) => (<>
         <p className="text-sm font-semibold truncate">{p.nameAr || p.nameEn} {p.demo && <span className="text-[10px] bg-stone-200 rounded px-1">{T('تجريبي')}</span>} {!p.active && <span className="text-[10px] bg-red-100 text-red-800 rounded px-1">{T('مخفي')}</span>}</p>
-        <p className="text-xs text-stone-500"><span dir="ltr">{p.sku}</span> · {p.price} {p.currency} / {p.unit} · {T('مخزون')} <b className={p.stock <= 3 ? 'text-red-700' : ''}>{p.stock}</b></p>
+        <p className="text-xs text-stone-500"><span dir="ltr">{p.sku}</span> · {formatAdminNumber(p.price)} {p.currency} / {p.unit} · {T('مخزون')} <b className={p.stock <= 3 ? 'text-red-700' : ''}>{formatAdminNumber(p.stock, 0)}</b></p>
       </>)}
       Editor={({ value: p, onChange }) => (
         <div className="space-y-2">
@@ -1208,9 +1213,9 @@ function ProductsPanel() {
             <Field label="SKU"><input className={input} dir="ltr" value={p.sku || ''} onChange={(e) => onChange({ ...p, sku: e.target.value })} /></Field>
             <Field label={T('الفئة')}><select className={input} value={p.category} onChange={(e) => onChange({ ...p, category: e.target.value as Product['category'] })}>
               {[['perfume', T('عطر')], ['oil', T('زيت')], ['raw_material', T('مادة خام')], ['packaging', T('عبوات')], ['kit', T('طقم')], ['other', T('أخرى')]].map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></Field>
-            <Field label={T('السعر')}><input className={input} type="number" min={0} step="0.01" value={p.price ?? 0} onChange={(e) => onChange({ ...p, price: Number(e.target.value) })} /></Field>
+            <Field label={T('السعر')}><LocalizedNumberInput lang={lang} dir="ltr" className={input} value={p.price ?? 0} min={0} onValue={(price) => onChange({ ...p, price: Number.isFinite(price) ? Math.max(0, price) : 0 })} /></Field>
             <Field label={T('العملة')}><input className={input} dir="ltr" placeholder="EGP" value={p.currency || ''} onChange={(e) => onChange({ ...p, currency: e.target.value })} /></Field>
-            <Field label={T('المخزون')}><input className={input} type="number" min={0} step={1} value={p.stock ?? 0} onChange={(e) => onChange({ ...p, stock: Math.floor(Number(e.target.value)) })} /></Field>
+            <Field label={T('المخزون')}><LocalizedNumberInput lang={lang} dir="ltr" className={input} value={p.stock ?? 0} integer min={0} onValue={(stock) => onChange({ ...p, stock: Number.isFinite(stock) ? Math.max(0, Math.floor(stock)) : 0 })} /></Field>
             <Field label={T('الوحدة')}><input className={input} value={p.unit || ''} onChange={(e) => onChange({ ...p, unit: e.target.value })} /></Field>
           </div>
           <Field label={T('الوصف بالعربية')}><textarea className={input} rows={2} value={p.descriptionAr || ''} onChange={(e) => onChange({ ...p, descriptionAr: e.target.value })} /></Field>
@@ -1239,6 +1244,7 @@ function KnowledgePanel() {
 }
 
 function ServicesPanel() {
+  const lang = getAdminLang();
   return (
     <CollectionPanel<ServiceDef> path="services" title={T('الخدمات')} subtitle={T('أضف أي خدمة تجارية جديدة: الكلمات المفتاحية توجّه الزوار إليها، والحقول تحدد استمارة الطلب')} empty={T('لا توجد خدمات.')}
       blank={{ nameAr: '', nameEn: '', kind: 'custom', enabled: true, keywords: [], formFields: [], order: 50 }}
@@ -1257,7 +1263,7 @@ function ServicesPanel() {
               <Field label="Name (English)"><input className={input} dir="ltr" value={s.nameEn || ''} onChange={(e) => onChange({ ...s, nameEn: e.target.value })} /></Field>
               <Field label={T('النوع')}><select className={input} value={s.kind} onChange={(e) => onChange({ ...s, kind: e.target.value as ServiceDef['kind'] })}>
                 {[['info', T('معلومات/أدوات')], ['store', T('متجر')], ['custom_order', T('طلب مخصص')], ['b2b', T('جملة B2B')], ['consultation', T('استشارة')], ['support', T('دعم')], ['custom', T('خدمة جديدة')]].map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></Field>
-              <Field label={T('الترتيب')}><input className={input} type="number" value={s.order ?? 50} onChange={(e) => onChange({ ...s, order: Number(e.target.value) })} /></Field>
+              <Field label={T('الترتيب')}><LocalizedNumberInput lang={lang} dir="ltr" className={input} value={s.order ?? 50} integer onValue={(order) => onChange({ ...s, order: Number.isFinite(order) ? Math.floor(order) : 0 })} /></Field>
             </div>
             <Field label={T('الوصف بالعربية')}><textarea className={input} rows={2} value={s.descriptionAr || ''} onChange={(e) => onChange({ ...s, descriptionAr: e.target.value })} /></Field>
             <Field label="Description (English)"><textarea className={input} dir="ltr" rows={2} value={s.descriptionEn || ''} onChange={(e) => onChange({ ...s, descriptionEn: e.target.value })} /></Field>

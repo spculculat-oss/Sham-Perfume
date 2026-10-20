@@ -1,10 +1,10 @@
 import React from 'react';
 import { ShieldCheck, AlertTriangle, FileText, Globe } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
-import { isRTL } from '../لغات/localizedContent';
 
 export const MerchantKYCNotice: React.FC<{ currentLang?: SupportedLanguage; status?: string }> = ({ currentLang = 'ar', status = 'pending' }) => {
-  const rtl = isRTL(currentLang);
+  // This notice currently has Arabic/English copy only; non-Arabic locales use the English fallback.
+  const rtl = currentLang === 'ar';
   const isPending = status === 'pending';
   return (
     <div className={`p-4 rounded-2xl border flex gap-3 ${isPending ? 'bg-amber-50 border-amber-200' : 'bg-emerald-50 border-emerald-200'}`} dir={rtl ? 'rtl' : 'ltr'}>

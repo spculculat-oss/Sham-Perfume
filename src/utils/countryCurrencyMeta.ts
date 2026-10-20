@@ -97,4 +97,3 @@ export function getCountryMeta(countryCode: string, lang: SupportedLanguage = 'a
     symbolEn,
   };
 }
-

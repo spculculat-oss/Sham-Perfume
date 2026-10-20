@@ -1,144 +1,75 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-10-20T21:35:29.588Z",
+  "updatedAt": "2026-10-20T22:06:27.370Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
   "publicNumberInputs": [],
-  "operatorNumberInputs": [
-    {
-      "file": "src/admin/AdminApp.tsx",
-      "line": 1211
-    },
-    {
-      "file": "src/admin/AdminApp.tsx",
-      "line": 1213
-    },
-    {
-      "file": "src/admin/AdminApp.tsx",
-      "line": 1260
-    },
-    {
-      "file": "src/admin/BankPanel.tsx",
-      "line": 160
-    },
-    {
-      "file": "src/community/MerchantPortal.tsx",
-      "line": 298
-    },
-    {
-      "file": "src/community/MerchantPortal.tsx",
-      "line": 300
-    },
-    {
-      "file": "src/components/AdminMerchantManagement.tsx",
-      "line": 583
-    },
-    {
-      "file": "src/components/MerchantWorkspace.tsx",
-      "line": 704
-    },
-    {
-      "file": "src/components/MerchantWorkspace.tsx",
-      "line": 715
-    },
-    {
-      "file": "src/components/MerchantWorkspace.tsx",
-      "line": 722
-    }
-  ],
+  "operatorNumberInputs": [],
   "bareLocaleFormatting": [],
-  "languageClamps": [
-    {
-      "file": "src/community/CommunityApp.tsx",
-      "line": 25
-    },
-    {
-      "file": "src/components/ProductReviewsSection.tsx",
-      "line": 55
-    },
-    {
-      "file": "src/utils/directPayment.ts",
-      "line": 57
-    }
-  ],
-  "score": 81,
+  "languageClamps": [],
+  "score": 100,
   "notes": [
-    "تقليل صارم للغة إلى عربي/إنجليزي في 3 موضع — راجع إن كان المقصود زوج بيانات {ar,en} أم لغة واجهة.",
-    "المترجم الذكي: 143909 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 1691 — النهارده اتترجم 347 (اشتغل النهارده).",
-    "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «Live Sync» src/components/HomeHub.tsx:138، «Enter Portal» src/components/HomeHub.tsx:141، «Master Perfumer AI Chatbot» src/components/PerfumerAIChatbot.tsx:66.",
+    "اللغات سليمة: الحزم مكتملة، والأرقام تتبع لغة الموقع في كل واجهات الزوار.",
+    "المترجم الذكي: 145415 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 1691 — النهارده اتترجم 0 (متوقف بقرار الإعدادات).",
+    "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «Live Sync» src/components/HomeHub.tsx:139، «Enter Portal» src/components/HomeHub.tsx:142، «Master Perfumer AI Chatbot» src/components/PerfumerAIChatbot.tsx:66.",
     "لغات بلّغ عنها قسم التصميم بتتترجم الأول: is، sq، ps."
   ],
   "translation": {
-    "at": "2026-10-20T21:35:29.976Z",
-    "status": "done",
-    "remaining": 143909,
+    "at": "2026-10-20T22:06:27.760Z",
+    "status": "off",
+    "remaining": 145415,
     "covered": 1691,
     "remainingByTier": {
       "1": 17538,
-      "2": 94961,
+      "2": 96467,
       "3": 31410
     },
     "worstLanguages": [
       {
         "lang": "my",
-        "remaining": 1599
+        "remaining": 1617
       },
       {
         "lang": "dz",
-        "remaining": 1599
+        "remaining": 1617
       },
       {
         "lang": "ms",
-        "remaining": 1597
+        "remaining": 1615
       },
       {
         "lang": "cs",
-        "remaining": 1597
+        "remaining": 1615
       },
       {
         "lang": "ur",
-        "remaining": 1597
+        "remaining": 1615
       },
       {
         "lang": "am",
-        "remaining": 1597
+        "remaining": 1615
       },
       {
         "lang": "ha",
-        "remaining": 1597
+        "remaining": 1615
       },
       {
         "lang": "yo",
-        "remaining": 1597
+        "remaining": 1615
       }
     ],
     "run": {
-      "calls": 20,
-      "translated": 347,
-      "rejected": 20,
-      "droppedByReview": 17,
-      "reviewed": true,
-      "engines": [
-        "perplexity",
-        "perplexity (review)"
-      ],
-      "languages": [
-        "is",
-        "sq",
-        "ps",
-        "hi",
-        "pt",
-        "id",
-        "ja",
-        "ko"
-      ]
+      "calls": 0,
+      "translated": 0,
+      "rejected": 0,
+      "droppedByReview": 0,
+      "reviewed": false,
+      "engines": [],
+      "languages": []
     },
-    "rejectReasons": {
-      "copy_of_english": 3,
-      "review": 17
-    },
+    "rejectReasons": {},
     "rejectCounts": {
       "is|ui|e10dbc6c3b": 2,
       "fr|ui|e10dbc6c3b": 2,
@@ -164,7 +95,7 @@
     }
   },
   "design": {
-    "at": "2026-10-20T21:35:29.588Z",
+    "at": "2026-10-20T22:06:27.370Z",
     "auditAt": "2026-10-17T06:42:21.663Z",
     "auditScore": 62,
     "priorityLanguages": [
@@ -176,12 +107,12 @@
       {
         "phrase": "Live Sync",
         "file": "src/components/HomeHub.tsx",
-        "line": 138
+        "line": 139
       },
       {
         "phrase": "Enter Portal",
         "file": "src/components/HomeHub.tsx",
-        "line": 141
+        "line": 142
       },
       {
         "phrase": "Master Perfumer AI Chatbot",
@@ -195,7 +126,7 @@
       "Anatolia Absolus Les Extraits"
     ],
     "physicalDirection": {
-      "total": 288,
+      "total": 282,
       "top": [
         {
           "file": "src/components/AuthModal.tsx",
@@ -222,12 +153,12 @@
           "count": 16
         },
         {
-          "file": "src/components/Header.tsx",
-          "count": 14
-        },
-        {
           "file": "src/components/FragrancePyramidGraphic.tsx",
           "count": 11
+        },
+        {
+          "file": "src/components/LanguageSelector.tsx",
+          "count": 10
         }
       ]
     }

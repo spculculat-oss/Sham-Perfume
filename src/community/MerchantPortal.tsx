@@ -13,7 +13,7 @@ import { ORDER_STATUS, merchantStatus } from './UserPortal';
 import { Btn, Card, Empty, Field, Sheet, Spinner, errorText, inputClass, money, timeAgo, tx, useLoad, type Lang } from './ui';
 import { StoreSalesCategoryChart } from '../components/StoreSalesCategoryChart';
 import { MerchantKYCNotice } from '../components/MerchantKYCNotice';
-import type { SupportedLanguage } from '../types/i18n';
+import { LocalizedNumberInput } from '../components/LocalizedNumberInput';
 
 const MARGIN = 0.5;
 const CURRENCIES = ['EGP', 'USD', 'EUR', 'GBP', 'SAR', 'AED', 'KWD', 'QAR', 'BHD', 'OMR', 'JOD', 'MYR', 'TRY', 'MAD', 'IQD', 'LYD', 'DZD', 'TND'].filter((c) => c === 'USD' || BUNDLED_FX.rates[c]);
@@ -52,7 +52,7 @@ export default function MerchantPortal({ lang, session, section, go, toast }: Pr
         </div>
         {m.status !== 'approved' && (
           <>
-          <div className="px-3 pt-3"><MerchantKYCNotice currentLang={'ar' as any} status={m.status} /></div>
+          <div className="px-3 pt-3"><MerchantKYCNotice currentLang={lang} status={m.status} /></div>
           <div className={`flex gap-2 p-4 text-sm ${m.status === 'pending' ? 'bg-amber-50 text-amber-900' : 'bg-rose-50 text-rose-800'}`}>
             <AlertTriangle className="h-5 w-5 shrink-0" />
             <div>
@@ -89,7 +89,7 @@ function Dashboard({ lang, m, go }: { lang: Lang; m: MerchantFile; go: (r: strin
         <Card key={label} className="p-4"><span className="text-amber-600">{icon}</span><p className="mt-1 text-xl font-black text-stone-900">{value}</p><p className="text-xs text-stone-500">{label}</p></Card>
       ))}</div>
       <StoreSalesCategoryChart
-        currentLang={lang as SupportedLanguage}
+        currentLang={lang}
         merchantId={m.slug}
         currencyCode={m.currency}
       />
@@ -295,9 +295,9 @@ function ProductSheet({ lang, product, onClose, onSaved, toast }: { lang: Lang; 
         <Field label={t('الوصف', 'Description')} hint={t('الروابط وأرقام التليفون والإيميلات بتتشال تلقائياً من الوصف العام', 'Links, phone numbers and e-mails are removed from the public description')}>
           <textarea className={inputClass} rows={4} value={f.description} onChange={(e) => setF({ ...f, description: e.target.value })} maxLength={4000} /></Field>
         <div className="grid gap-3 sm:grid-cols-3">
-          <Field label={t('سعرك', 'Your price')}><input className={inputClass} type="number" min={0} step="0.01" value={f.price} onChange={(e) => setF({ ...f, price: e.target.value })} dir="ltr" /></Field>
+          <Field label={t('سعرك', 'Your price')}><LocalizedNumberInput lang={lang} dir="ltr" className={inputClass} min={0} value={Number(f.price) || 0} onValue={(price) => setF({ ...f, price: Number.isFinite(price) ? String(price) : '' })} /></Field>
           <Field label={t('العملة', 'Currency')}><select className={inputClass} value={f.currency} onChange={(e) => setF({ ...f, currency: e.target.value })}>{CURRENCIES.map((c) => <option key={c}>{c}</option>)}</select></Field>
-          <Field label={t('الكمية المتاحة', 'Stock')}><input className={inputClass} type="number" min={0} step={1} value={f.stock} onChange={(e) => setF({ ...f, stock: e.target.value })} dir="ltr" /></Field>
+          <Field label={t('الكمية المتاحة', 'Stock')}><LocalizedNumberInput lang={lang} dir="ltr" className={inputClass} integer min={0} value={Number(f.stock) || 0} onValue={(stock) => setF({ ...f, stock: Number.isFinite(stock) ? String(Math.max(0, Math.floor(stock))) : '' })} /></Field>
         </div>
         {price > 0 && (
           <div className="rounded-2xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">

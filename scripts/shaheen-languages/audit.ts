@@ -115,7 +115,11 @@ export const SANCTIONED_FILES: readonly string[] = [
  * Files where an 'ar'|'en' language clamp is a real-world constraint, not a
  * shortcut: the Kashier payment page itself only exists in Arabic/English.
  */
-export const CLAMP_SANCTIONED_FILES: readonly string[] = ['src/utils/storeCheckout.ts'];
+export const CLAMP_SANCTIONED_FILES: readonly string[] = [
+  // Kashier and the direct-checkout API carry the catalogue's Arabic/English product-name language, not the UI locale.
+  'src/utils/storeCheckout.ts',
+  'src/utils/directPayment.ts',
+];
 export const OPERATOR_FILES: readonly string[] = [
   'src/components/AdminMerchantManagement.tsx',
   'src/components/MerchantWorkspace.tsx',
