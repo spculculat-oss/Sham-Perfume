@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-20T19:11:30.803Z",
+ "updatedAt": "2026-10-20T19:57:02.974Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1212,
@@ -12,7 +12,7 @@
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-20T19:11:30.776Z",
+  "at": "2026-10-20T19:57:02.946Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -67,7 +67,7 @@
     }
    ]
   },
-  "durationMs": 291
+  "durationMs": 62
  },
  "items": [
   {
@@ -5161,8 +5161,7 @@
    "name": "MIRSAAL OF TRUST",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/mirsaal-of-trust-1115.html"
   },
@@ -5172,8 +5171,7 @@
    "name": "ORNAMENT POUR FEMME",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/ornament-pour-femme-1116.html"
   },
@@ -5184,8 +5182,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/mirsaal-with-love-1117.html"
   },
@@ -5195,8 +5192,7 @@
    "name": "RARE CARBON",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/rare-carbon-1118.html"
   },
@@ -5206,8 +5202,7 @@
    "name": "ORNAMENT POUR HOMME",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/ornament-pour-homme-1119.html"
   },
@@ -5218,8 +5213,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/souvenir-desert-rose-1120.html"
   },
@@ -5229,8 +5223,7 @@
    "name": "SOUVENIR FLORAL BOUQUET",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/souvenir-floral-bouquet-1121.html"
   },
@@ -5241,8 +5234,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/supremacy-gold-1122.html"
   },
@@ -5253,8 +5245,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/supremacy-in-heaven-1123.html"
   },
@@ -5265,8 +5256,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/supremacy-incense-1124.html"
   },
@@ -5277,8 +5267,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/supremacy-noir-1125.html"
   },
@@ -5289,8 +5278,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/supremacy-pink-1126.html"
   },
@@ -5301,8 +5289,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/supremacy-purple-1127.html"
   },
@@ -5313,8 +5300,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/supremacy-silver-1128.html"
   },
@@ -5325,8 +5311,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/tribute-blue-1129.html"
   },
@@ -5336,8 +5321,7 @@
    "name": "VIOLET BOUQUET",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/violet-bouquet-1130.html"
   },
@@ -5347,8 +5331,7 @@
    "name": "GIFT SET SUPREMACY SILVER & PINK",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/gift-set-supremacy-silver-and-pink-1131.html"
   },
@@ -5358,8 +5341,7 @@
    "name": "GIFT SET DEHN AL OUD ABIYAD",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/gift-set-dehn-al-oud-abiyad-1132.html"
   },
@@ -5369,8 +5351,7 @@
    "name": "GIFT SET SUPREMACY NOIR & PURPLE",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/gift-set-supremacy-noir-and-purple-1133.html"
   },
@@ -5381,8 +5362,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/supremacy-not-only-intense-luxury-collection-1139.html"
   },
@@ -5393,8 +5373,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/supremacy-in-oud-luxury-collection-1140.html"
   },
@@ -5404,8 +5383,7 @@
    "name": "LA FLEUR BOUQUET",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/la-fleur-bouquet-1141.html"
   },
@@ -5416,8 +5394,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/ornament-purple-1142.html"
   },
@@ -5427,8 +5404,7 @@
    "name": "TRIBUTE PINK",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/tribute-pink-1144.html"
   },
@@ -5438,8 +5414,7 @@
    "name": "PATCHOULI ON FIRE",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/patchouli-on-fire-1148.html"
   },
@@ -5449,8 +5424,7 @@
    "name": "TOBACCO RUSH",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/tobacco-rush-1149.html"
   },
@@ -5461,8 +5435,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/historic-doria-1150.html"
   },
@@ -5473,8 +5446,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/historic-olmeda-1151.html"
   },
@@ -5485,8 +5457,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/edict-musctique-1152.html"
   },
@@ -5497,8 +5468,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/edict-amberythme-1153.html"
   },
@@ -5508,8 +5478,7 @@
    "name": "EDICT OUDDICTION",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/edict-ouddiction-1154.html"
   },
@@ -5520,8 +5489,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/9-pm-pour-femme-1155.html"
   },
@@ -5532,8 +5500,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/9-am-pour-femme-1156.html"
   },
@@ -5543,8 +5510,7 @@
    "name": "RARE PASSION",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/rare-passion-1157.html"
   },
@@ -5554,8 +5520,7 @@
    "name": "GIFT SET SUPREMACY SILVER",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/gift-set-supremacy-silver-1158.html"
   },
@@ -5565,8 +5530,7 @@
    "name": "GIFT SET SOUVENIR FLORAL BOUQUET",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/gift-set-souvenir-floral-bouquet-1159.html"
   },
@@ -5576,8 +5540,7 @@
    "name": "GIFT SET SUPREMACY FEMME",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/gift-set-supremacy-femme-1160.html"
   },
@@ -5587,8 +5550,7 @@
    "name": "GIFT SET 9PM HOMME",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/gift-set-9pm-homme-1161.html"
   },
@@ -5599,8 +5561,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/gift-set-ornament-femme-1162.html"
   },
@@ -5610,8 +5571,7 @@
    "name": "GIFT SET SOUVENIR DESERT ROSE",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/gift-set-souvenir-desert-rose-1163.html"
   },
@@ -5621,8 +5581,7 @@
    "name": "GIFT SET SUPREMACY NOT ONLY INTENSE",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/gift-set-supremacy-not-only-intense-1164.html"
   },
@@ -5632,8 +5591,7 @@
    "name": "PORTRAIT ABSTRACT",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/portrait-abstract-1165.html"
   },
@@ -5643,8 +5601,7 @@
    "name": "PORTRAIT REVIVAL",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/portrait-revival-1166.html"
   },
@@ -5654,8 +5611,7 @@
    "name": "OUD RISING",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/oud-rising-1167.html"
   },
@@ -5665,8 +5621,7 @@
    "name": "MYSTIQUE BOUQUET",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/mystique-bouquet-1168.html"
   },
@@ -5676,8 +5631,7 @@
    "name": "SUPREMACY TAPIS ROUGE - LUXURY COLLECTION",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/supremacy-tapis-rouge-luxury-collection-1169.html"
   },
@@ -5688,8 +5642,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/supremacy-gala-luxury-collection-1170.html"
   },
@@ -5699,8 +5652,7 @@
    "name": "SUPREMACY SILVER - 150 ML",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/supremacy-silver-150-ml-1171.html"
   },
@@ -5711,8 +5663,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/supremacy-not-only-intense-luxury-collection-150-ml-1172.html"
   },
@@ -5723,8 +5674,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/supremacy-in-oud-luxury-collection-150ml-1173.html"
   },
@@ -5735,8 +5685,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/cherry-bouquet-1174.html"
   },
@@ -5746,8 +5695,7 @@
    "name": "GIFT SET SUPREMACY IN OUD",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/gift-set-supremacy-in-oud-1175.html"
   },
@@ -5758,8 +5706,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/souvenir-blooming-bliss-1176.html"
   },
@@ -5769,8 +5716,7 @@
    "name": "GIFT SET 9 AM DIVE",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/gift-set-9-am-dive-1177.html"
   },
@@ -5780,8 +5726,7 @@
    "name": "GIFT SET TURATHI BLUE",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/gift-set-turathi-blue-1178.html"
   },
@@ -5791,8 +5736,7 @@
    "name": "GIFT SET 9 AM POUR FEMME",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/gift-set-9-am-pour-femme-1179.html"
   },
@@ -5802,8 +5746,7 @@
    "name": "GIFT SET 9 PM POUR FEMME",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/gift-set-9-pm-pour-femme-1180.html"
   },
@@ -5814,8 +5757,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/9-am-1181.html"
   },
@@ -5826,8 +5768,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/9-am-dive-1182.html"
   },
@@ -5838,8 +5779,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/9-pm-1183.html"
   },
@@ -5849,8 +5789,7 @@
    "name": "Kiaana Angel",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/kiaana-angel-1192.html"
   },
@@ -5860,8 +5799,7 @@
    "name": "Kiaana Crush",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/kiaana-crush-1193.html"
   },
@@ -5872,8 +5810,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/9-pm-rebel-1194.html"
   },
@@ -5884,8 +5821,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/delicious-bouquet-1195.html"
   },
@@ -5895,8 +5831,7 @@
    "name": "Turathi Electric",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/turathi-electric-1196.html"
   },
@@ -5906,8 +5841,7 @@
    "name": "Rare Reef",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/rare-reef-1197.html"
   },
@@ -5918,8 +5852,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/9-pm-elixir-1198.html"
   },
@@ -5929,8 +5862,7 @@
    "name": "Historic Sahara",
    "status": "warn",
    "issues": [
-    "صورة واحدة فقط",
-    "العلامة غير معروفة"
+    "صورة واحدة فقط"
    ],
    "page": "p/historic-sahara-1199.html"
   },
@@ -5941,8 +5873,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/gift-set-collector-s-edition-1200.html"
   },
@@ -5953,8 +5884,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/lynked-freedom-1201.html"
   },
@@ -5965,8 +5895,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/lynked-forever-1202.html"
   },
@@ -5977,8 +5906,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/9-pm-night-out-1203.html"
   },
@@ -5989,8 +5917,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/kiaana-vibes-1204.html"
   },
@@ -6001,8 +5928,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/ebdaa-concentrated-perfume-oil-1205.html"
   },
@@ -6013,8 +5939,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/malak-1206.html"
   },
@@ -6025,8 +5950,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/9-series-discovery-kit-1207.html"
   },
@@ -6037,8 +5961,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/supremacy-femme-series-discovery-kit-1208.html"
   },
@@ -6049,8 +5972,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/bouquet-series-discovery-kit-1209.html"
   },
@@ -6061,8 +5983,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/supremacy-homme-series-discovery-kit-1210.html"
   },
@@ -6073,8 +5994,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/mens-series-discovery-kit-1211.html"
   },
@@ -6085,8 +6005,7 @@
    "status": "warn",
    "issues": [
     "صورة واحدة فقط",
-    "المورد لم ينشر نوتات العطر",
-    "العلامة غير معروفة"
+    "المورد لم ينشر نوتات العطر"
    ],
    "page": "p/stardust-1212.html"
   }
