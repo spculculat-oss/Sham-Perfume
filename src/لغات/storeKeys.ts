@@ -212,6 +212,12 @@ export type StoreTextKey =
   // ---- cart hand-off & instant advice ------------------------------------
   | 'cart_order_intro'
   | 'cart_order_line'
+  | 'sf_order_start'
+  | 'sf_order_send'
+  | 'sf_order_note'
+  | 'sf_order_opened'
+  | 'sf_order_subject'
+  | 'sf_order_ref'
   | 'advice_quick'
   | 'advice_none'
   // ---- why this pick (advisor reasons) -----------------------------------

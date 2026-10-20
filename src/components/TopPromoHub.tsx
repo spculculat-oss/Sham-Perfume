@@ -304,7 +304,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                   className="group flex items-center gap-1.5 rounded-full border border-amber-400/30 bg-amber-950/60 hover:bg-amber-900/70 px-2.5 py-1 text-[11px] font-semibold text-amber-100 transition-all shadow-sm hover:border-amber-300"
                 >
                   <span className="text-sm leading-none">{countryMeta.flag}</span>
-                  <span className="font-medium text-amber-200">{countryMeta.countryName}</span>
+                  <span className="font-medium text-amber-200 max-w-[6.5rem] truncate sm:max-w-none">{countryMeta.countryName}</span>
                   <span className="font-mono text-amber-400 font-bold px-1 rounded bg-black/40">
                     {currentLang === 'ar' ? countryMeta.symbolAr : countryMeta.symbolEn}
                   </span>
@@ -356,7 +356,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
 
                     <div className="max-h-56 overflow-y-auto space-y-1 pe-1">
                       {filteredCountryCodes.map((code) => {
-                        const meta = TOP_COUNTRIES[code] || getCountryMeta(code, currentLang);
+                        const meta = getCountryMeta(code, currentLang);
                         const isCurrent = code === currentCountry;
                         return (
                           <button

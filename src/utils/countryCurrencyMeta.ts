@@ -1,6 +1,5 @@
-import { BUNDLED_FX, currencyFor, guessCountry, isCountry, priceIn, COUNTRY_CODES } from './pricing';
+import { BUNDLED_FX, currencyFor } from './pricing';
 import type { SupportedLanguage } from '../types/i18n';
-import { LOCALE_MAP } from '../لغات/localize';
 
 export interface CountryMeta {
   code: string;
@@ -65,7 +64,9 @@ export function getCountryFlag(countryCode: string): string {
 export function getCountryMeta(countryCode: string, lang: SupportedLanguage = 'ar'): CountryMeta {
   const code = (countryCode || 'EG').toUpperCase();
   const known = TOP_COUNTRIES[code];
-  const currency = known?.currency || currencyFor(code, BUNDLED_FX);
+  // The store's currency is the only currency (#169): the banner must never say USD while the cart says LBP.
+  const currency = currencyFor(code, BUNDLED_FX);
+  const sameMoney = known?.currency === currency;
 
   let nameAr = known?.nameAr;
   let nameEn = known?.nameEn;
@@ -82,8 +83,8 @@ export function getCountryMeta(countryCode: string, lang: SupportedLanguage = 'a
     }
   }
 
-  const symbolAr = known?.symbolAr || currency;
-  const symbolEn = known?.symbolEn || currency;
+  const symbolAr = (sameMoney && known?.symbolAr) || currency;
+  const symbolEn = (sameMoney && known?.symbolEn) || currency;
 
   return {
     code,
@@ -97,49 +98,3 @@ export function getCountryMeta(countryCode: string, lang: SupportedLanguage = 'a
   };
 }
 
-/**
- * Converts a base catalog price in EGP to the country's local currency and formats it
- * according to the visitor's language and currency conventions.
- */
-export function formatProductPriceInCountry(
-  egpPrice: number,
-  countryCode: string,
-  lang: SupportedLanguage = 'ar'
-): {
-  amount: number;
-  currency: string;
-  formatted: string;
-  symbol: string;
-  countryName: string;
-  flag: string;
-} {
-  const meta = getCountryMeta(countryCode, lang);
-  const localAmount = priceIn(egpPrice, meta.currency, BUNDLED_FX);
-  const locale = LOCALE_MAP[lang] || (lang === 'ar' ? 'ar-EG' : 'en-US');
-
-  const isWhole = Math.round(localAmount * 100) % 100 === 0;
-  const maxFraction = isWhole ? 0 : 2;
-
-  let numStr = '';
-  try {
-    numStr = new Intl.NumberFormat(locale, {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: maxFraction,
-    }).format(localAmount);
-  } catch {
-    numStr = localAmount.toLocaleString('en-US');
-  }
-
-  const symbol = lang === 'ar' ? meta.symbolAr : meta.symbolEn;
-  const formatted = lang === 'ar' ? `${numStr} ${symbol}` : `${symbol} ${numStr}`;
-  const countryName = lang === 'ar' ? meta.nameAr : meta.nameEn;
-
-  return {
-    amount: localAmount,
-    currency: meta.currency,
-    formatted,
-    symbol,
-    countryName,
-    flag: meta.flag,
-  };
-}
