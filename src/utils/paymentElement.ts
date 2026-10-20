@@ -51,6 +51,81 @@ export function cardBrand(digits: string): CardBrand {
   return 'visa';
 }
 
+/**
+ * Published processor test numbers and test BINs (Stripe and the usual
+ * documentation PANs). Matching one means the number is dummy, not that a
+ * live issuer was asked. Activation is never decided here.
+ */
+const TEST_EXACT = new Set([
+  '4242424242424242', '4000056655665556', '5555555555554444', '4111111111111111',
+  '4012000033330026', '5123450000000008', '4508750015741019', '378282246310005',
+  '371449635398431', '6011111111111117', '5200828282828210', '4000000000000002',
+  '4012888888881881', '2223003122003222', '5105105105105100', '3056930009020004',
+  '3566002020360505', '6200000000000005',
+]);
+
+export type CardLiveVerdict = 'empty' | 'typing' | 'invalid' | 'dummy' | 'expired' | 'format_ok';
+
+export interface CardLiveCheck {
+  verdict: CardLiveVerdict;
+  brand?: CardBrand;
+}
+
+export function isDummyCardNumber(number: string): boolean {
+  const digits = number.replace(/\D/g, '');
+  if (digits.length < 6) return false;
+  if (TEST_EXACT.has(digits)) return true;
+  if (digits.length >= 13 && /^(\d)\1+$/.test(digits)) return true;
+  return digits.startsWith('424242') || digits.startsWith('400000');
+}
+
+function schemeLengths(digits: string): number[] | null {
+  if (/^3[47]/.test(digits)) return [15];
+  if (/^(5[1-5]|2[2-7])/.test(digits)) return [16];
+  if (/^4/.test(digits) || /^5078/.test(digits) || /^(588845|4578|4579|4008|4017|4092|4847|9682)/.test(digits)) return [16];
+  return null;
+}
+
+/** Instant local check while the number is typed. Does not ask a network, and never returns "active". */
+export function inspectCardEntry(number: string, expiry = '', now = new Date()): CardLiveCheck {
+  const digits = number.replace(/\D/g, '');
+  if (!digits) return { verdict: 'empty' };
+  const lengths = schemeLengths(digits);
+  const brand = lengths && digits.length >= 2 ? cardBrand(digits) : undefined;
+  if (isDummyCardNumber(digits)) return { verdict: 'dummy', brand };
+  if (!lengths) return { verdict: digits.length >= 6 ? 'invalid' : 'typing' };
+  const max = Math.max(...lengths);
+  if (digits.length > max || (digits.length > 16 && !lengths.includes(digits.length))) return { verdict: 'invalid', brand };
+  if (!lengths.includes(digits.length)) return { verdict: 'typing', brand };
+  if (!luhnOk(digits)) return { verdict: 'invalid', brand };
+  const match = /^(\d{2})\/(\d{2})$/.exec(formatExpiry(expiry));
+  if (match) {
+    const month = Number(match[1]);
+    const year = 2000 + Number(match[2]);
+    const expired = month < 1 || month > 12 || year < now.getFullYear() || (year === now.getFullYear() && month < now.getMonth() + 1);
+    if (expired) return { verdict: 'expired', brand };
+  }
+  return { verdict: 'format_ok', brand };
+}
+
+export function cardLiveCopy(verdict: CardLiveVerdict, lang: string): string {
+  const ar = lang === 'ar';
+  const text: Record<CardLiveVerdict, [string, string]> = {
+    empty: ['', ''],
+    typing: ['الكشف اللحظي: أكمل الرقم.', 'Instant check: keep typing the number.'],
+    invalid: ['غير مقبولة. الرقم لا يجتاز فحص البطاقة.', 'Not accepted. The number fails the card check.'],
+    dummy: ['وهمية. رقم تجريبي منشور، وليس بطاقة عميل.', 'Dummy. This is a published test number, not a customer card.'],
+    expired: ['غير مفعّلة. تاريخ الانتهاء انتهى.', 'Not active. The expiry date has passed.'],
+    format_ok: ['الشكل مقبول. التفعيل لا يُعرف إلا من شبكة البطاقة، ولم يُؤكد.', 'Format accepted. Activation is known only from the card network, and it is not confirmed.'],
+  };
+  return ar ? text[verdict][0] : text[verdict][1];
+}
+
+export function cardEntryBlocked(number: string, expiry = '', now = new Date()): boolean {
+  const verdict = inspectCardEntry(number, expiry, now).verdict;
+  return verdict === 'invalid' || verdict === 'dummy' || verdict === 'expired';
+}
+
 export interface CardToken {
   brand: CardBrand;
   last4: string;
@@ -66,6 +141,7 @@ export function tokenizeCard(input: { number: string; expiry: string; cvc: strin
   const cvc = input.cvc.replace(/\D/g, '');
   const name = input.name.replace(/\s+/g, ' ').trim();
   const postal = (input.postal || '').trim();
+  if (isDummyCardNumber(digits)) throw new Error('TEST_NUMBER');
   if (!luhnOk(digits)) throw new Error('INVALID_NUMBER');
   const brand = cardBrand(digits);
   const expiry = formatExpiry(input.expiry);

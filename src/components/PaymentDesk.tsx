@@ -5,6 +5,9 @@ import { countryPay } from '../bank/worldPay';
 import { deletePaymentMethod, getSavedPaymentMethods, setDefaultPaymentMethod, type PaymentProvider, type SavedPaymentMethod } from '../utils/customerPaymentVault';
 import {
   cardBrand,
+  cardEntryBlocked,
+  cardLiveCopy,
+  inspectCardEntry,
   formatCardNumber,
   formatExpiry,
   registerCard,
@@ -85,7 +88,9 @@ export function PaymentDesk({
   const [error, setError] = useState('');
   const [savedNote, setSavedNote] = useState('');
   const digits = number.replace(/\D/g, '');
-  const brand = digits.length >= 2 ? cardBrand(digits) : undefined;
+  const live = inspectCardEntry(number, expiry);
+  const brand = live.brand || (digits.length >= 2 ? cardBrand(digits) : undefined);
+  const cardBlocked = cardEntryBlocked(number, expiry);
   const row = useMemo(() => countryPay(country), [country]);
   const wallets = (row?.methods || []).filter((method) => method.kind !== 'card' && method.id !== 'visa' && method.id !== 'mastercard' && method.id !== 'amex');
   const selectedWallet = wallets.find((method) => method.id === walletId) || wallets[0];
@@ -118,6 +123,7 @@ export function PaymentDesk({
       const code = err instanceof Error ? err.message : '';
       const text: Record<string, [string, string]> = {
         INVALID_NUMBER: ['رقم البطاقة غير مقبول. راجع الأرقام.', 'That card number is not accepted. Check the digits.'],
+        TEST_NUMBER: ['وهمية. رقم تجريبي، ولن يُحفظ كبطاقة عميل.', 'Dummy. A test number is not saved as a customer card.'],
         INVALID_EXPIRY: ['تاريخ الانتهاء غير صالح.', 'The expiry date is not valid.'],
         INVALID_CVC: ['رمز الأمان غير مكتمل.', 'The security code is incomplete.'],
         INVALID_NAME: ['اكتب الاسم كما هو على البطاقة.', 'Enter the name as it appears on the card.'],
@@ -222,9 +228,12 @@ export function PaymentDesk({
           <label className="block space-y-1 text-xs font-semibold text-stone-700">
             <span>{t('رقم البطاقة', 'Card number')}</span>
             <span className="flex items-center rounded-xl border border-stone-200 bg-white focus-within:border-stone-900">
-              <input required inputMode="numeric" autoComplete="cc-number" placeholder="1234 1234 1234 1234" value={number} onChange={(e) => setNumber(formatCardNumber(e.target.value))} className="w-full bg-transparent px-3 py-2.5 font-mono text-sm outline-none" data-testid="card-number" />
+              <input required inputMode="numeric" autoComplete="cc-number" placeholder="1234 1234 1234 1234" value={number} onChange={(e) => setNumber(formatCardNumber(e.target.value))} className="w-full bg-transparent px-3 py-2.5 font-mono text-sm outline-none" data-testid="card-number" aria-describedby="desk-card-live" />
               <span className="pe-3 text-[11px] font-bold text-stone-500" data-testid="card-brand">{brand ? BRAND_LABEL[brand] : ''}</span>
             </span>
+            {live.verdict !== 'empty' && (
+              <span id="desk-card-live" role="status" data-testid="card-live-check" data-verdict={live.verdict} className={`block text-[11px] ${cardBlocked ? 'text-red-700' : live.verdict === 'format_ok' ? 'text-sky-800' : 'text-stone-500'}`}>{cardLiveCopy(live.verdict, lang)}</span>
+            )}
           </label>
           <div className="grid grid-cols-2 gap-2">
             <label className="block space-y-1 text-xs font-semibold text-stone-700">
@@ -246,7 +255,7 @@ export function PaymentDesk({
           </label>
           {error && <p className="text-xs text-red-700" role="alert">{error}</p>}
           {savedNote && <p className="text-xs text-emerald-800" role="status">{savedNote}</p>}
-          <button type="submit" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-stone-900 py-2.5 text-sm font-bold text-white" data-testid="save-card"><Lock className="h-4 w-4" />{t('حفظ البطاقة', 'Save card')}</button>
+          <button type="submit" disabled={cardBlocked} className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-stone-900 py-2.5 text-sm font-bold text-white disabled:bg-stone-400" data-testid="save-card"><Lock className="h-4 w-4" />{t('حفظ البطاقة', 'Save card')}</button>
         </form>
       ) : (
         <form onSubmit={saveWallet} className="space-y-3" data-testid="wallet-element">
