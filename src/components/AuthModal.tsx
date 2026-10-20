@@ -390,6 +390,14 @@ const S = {
   reset_done: { ar: 'اتغيرت كلمة السر. كل الأجهزة اتخارجت — سجّل دخول بالكلمة الجديدة', en: 'Password changed. Every device was signed out — sign in with the new password', fr: 'Mot de passe changé. Tous les appareils sont déconnectés — connectez-vous avec le nouveau mot de passe', es: 'Contraseña cambiada. Todos los dispositivos salieron — inicia sesión con la nueva contraseña', it: 'Password cambiata. Tutti i dispositivi sono usciti — accedi con la nuova password', de: 'Passwort geändert. Alle Geräte wurden abgemeldet — melden Sie sich mit dem neuen Passwort an', ru: 'Пароль изменён. Со всех устройств выполнен выход — войдите с новым паролем', zh: '密码已更改。所有设备已退出，请使用新密码登录', tr: 'Parola değişti. Tüm cihazlardan çıkış yapıldı — yeni parolanızla giriş yapın', fa: 'رمز عبور تغییر کرد. از همه دستگاه‌ها خارج شدید — با رمز جدید وارد شوید' },
   passkey_btn: { ar: 'دخول بالبصمة أو الوجه', en: 'Sign in with fingerprint or face', fr: 'Se connecter avec l’empreinte ou le visage', es: 'Iniciar con huella o rostro', it: 'Accedi con impronta o volto', de: 'Mit Fingerabdruck oder Gesicht anmelden', ru: 'Вход по отпечатку или лицу', zh: '指纹或人脸登录', tr: 'Parmak izi veya yüzle giriş', fa: 'ورود با اثر انگشت یا صورت' },
   err_passkey_none: { ar: 'مفيش بصمة مسجلة بالبريد ده — ضيف واحدة من بوابتك', en: 'No passkey is registered for this e-mail — add one from your portal', fr: 'Aucun passkey pour cet e-mail — ajoutez-en un depuis votre portail', es: 'No hay passkey para este correo — añade uno desde tu portal', it: 'Nessun passkey per questa e-mail — aggiungine uno dal tuo portale', de: 'Kein Passkey für diese E-Mail — fügen Sie einen in Ihrem Portal hinzu', ru: 'Для этой e-mail нет passkey — добавьте его в своём портале', zh: '该邮箱没有 passkey，请从您的个人中心添加', tr: 'Bu e-posta için passkey yok — portalınızdan ekleyin', fa: 'برای این ایمیل passkey‌ای نیست — از پورتالتان اضافه کنید' },
+  google_btn: { ar: 'متابعة بجوجل', en: 'Continue with Google', fr: 'Continuer avec Google', es: 'Continuar con Google', it: 'Continua con Google', de: 'Mit Google fortfahren', ru: 'Продолжить с Google', zh: '使用 Google 继续', tr: 'Google ile devam et', fa: 'ادامه با گوگل' },
+  facebook_btn: { ar: 'متابعة بفيسبوك', en: 'Continue with Facebook', fr: 'Continuer avec Facebook', es: 'Continuar con Facebook', it: 'Continua con Facebook', de: 'Mit Facebook fortfahren', ru: 'Продолжить с Facebook', zh: '使用 Facebook 继续', tr: 'Facebook ile devam et', fa: 'ادامه با فیسبوک' },
+  oauth_divider: { ar: 'أو', en: 'or', fr: 'ou', es: 'o', it: 'o', de: 'oder', ru: 'или', zh: '或', tr: 'veya', fa: 'یا' },
+  oauth_coming: { ar: 'تسجيل جوجل/فيسبوك قريب — الإدارة هتفعل مفاتيح OAuth', en: 'Google/Facebook sign-in coming soon — admin will enable OAuth keys', fr: 'Connexion Google/Facebook bientôt — l’admin activera OAuth', es: 'Inicio con Google/Facebook pronto — el admin activará OAuth', it: 'Accesso Google/Facebook presto — l’admin abiliterà OAuth', de: 'Google/Facebook-Anmeldung bald — Admin aktiviert OAuth', ru: 'Вход через Google/Facebook скоро — админ включит OAuth', zh: 'Google/Facebook 登录即将推出 — 管理员将启用 OAuth', tr: 'Google/Facebook girişi yakında — yönetici OAuth’u etkinleştirecek', fa: 'ورود با گوگل/فیسبوک به‌زودی — مدیر OAuth را فعال می‌کند' },
+  phone_2fa_suggest: { ar: 'عايز أمان أكتر؟ فعّل التحقق بخطوتين برسالة واتساب أو SMS — اختياري ونرشحه لك', en: 'Want extra security? Enable 2-step via WhatsApp or SMS — optional, recommended', fr: 'Sécurité renforcée ? Activez la vérification en 2 étapes par WhatsApp ou SMS — optionnel, recommandé', es: '¿Más seguridad? Activa 2 pasos por WhatsApp o SMS — opcional, recomendado', it: 'Più sicurezza? Attiva 2 passaggi via WhatsApp o SMS — opzionale, consigliato', de: 'Mehr Sicherheit? 2-Schritt per WhatsApp/SMS aktivieren — optional, empfohlen', ru: 'Хотите больше безопасности? Включите 2 шага через WhatsApp/SMS — опционально, рекомендуется', zh: '想要更安全？启用 WhatsApp 或 SMS 两步验证 — 可选，推荐', tr: 'Daha fazla güvenlik? WhatsApp/SMS ile 2 adımı etkinleştir — isteğe bağlı, önerilir', fa: 'امنیت بیشتر؟ تأیید دو مرحله‌ای با واتساپ یا پیامک — اختیاری، پیشنهادی' },
+  phone_2fa_whatsapp: { ar: 'رسالة واتساب', en: 'WhatsApp message', fr: 'Message WhatsApp', es: 'Mensaje WhatsApp', it: 'Messaggio WhatsApp', de: 'WhatsApp-Nachricht', ru: 'Сообщение WhatsApp', zh: 'WhatsApp 消息', tr: 'WhatsApp mesajı', fa: 'پیام واتساپ' },
+  phone_2fa_sms: { ar: 'رسالة SMS على الموبايل', en: 'SMS to mobile', fr: 'SMS sur mobile', es: 'SMS al móvil', it: 'SMS al cellulare', de: 'SMS aufs Handy', ru: 'SMS на телефон', zh: '手机短信', tr: 'Cep telefonuna SMS', fa: 'پیامک به موبایل' },
+  err_phone_required: { ar: 'أدخل رقم الموبايل أولاً في بوابتك → الأمان', en: 'Add your mobile number first in Portal → Security', fr: 'Ajoutez d’abord votre mobile dans Portail → Sécurité', es: 'Añade tu móvil primero en Portal → Seguridad', it: 'Aggiungi prima il cellulare in Portale → Sicurezza', de: 'Fügen Sie zuerst Ihre Handynummer in Portal → Sicherheit hinzu', ru: 'Сначала добавьте телефон в Портал → Безопасность', zh: '请先在 门户 → 安全 中添加手机号', tr: 'Önce Portal → Güvenlik’te cep numaranızı ekleyin', fa: 'ابتدا شماره موبایل را در پورتال → امنیت اضافه کنید' },
 } satisfies Record<string, LText>;
 
 export const AuthModal: React.FC<AuthModalProps> = ({
@@ -427,12 +435,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [isLoading, setIsLoading] = useState(false);
 
   /* Account-security steps: the two-factor code, and forgot-password (e-mail code + new password). */
-  const [stage, setStage] = useState<'auth' | 'totp' | 'forgot' | 'forgot_code'>('auth');
+  const [stage, setStage] = useState<'auth' | 'totp' | 'phone' | 'forgot' | 'forgot_code'>('auth');
   const [pendingToken, setPendingToken] = useState('');
   const [code, setCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
-  const toStep = (next: 'auth' | 'totp' | 'forgot' | 'forgot_code') => { setStage(next); setErrorMsg(null); setCode(''); setNewPassword(''); };
+  const toStep = (next: 'auth' | 'totp' | 'phone' | 'forgot' | 'forgot_code') => { setStage(next); setErrorMsg(null); setCode(''); setNewPassword(''); };
 
   const finish = (user: UserProfile) => { onSuccess(user); onClose(); };
 
@@ -442,6 +450,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setIsLoading(true);
 
     try {
+      if (stage === 'phone') {
+        await verifyPhoneCode();
+        return;
+      }
       if (stage === 'totp') {
         const res = await completeTwoFactorLogin(pendingToken, code);
         if (res.success && res.user) { finish(res.user); return; }
@@ -465,6 +477,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       if (mode === 'login') {
         const res = await loginUser(email, password);
         if (res.success && res.user) { finish(res.user); return; }
+        if ((res.error === 'totp_required' || (res as any).method === 'phone') && res.pendingToken) { setPendingToken(res.pendingToken || ''); toStep((res as any).method === 'phone' ? 'phone' : 'totp'); if ((res as any).method === 'phone') { try { await cx('/community/auth/login/phone/request', { body: { pendingToken: res.pendingToken } }); } catch {} } return; }
         if (res.error === 'totp_required') { setPendingToken(res.pendingToken || ''); toStep('totp'); return; }
         setErrorMsg(res.error ? (S[res.error as keyof typeof S] ? L(res.error as keyof typeof S) : res.error) : L('err_login'));
         return;
@@ -525,6 +538,42 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     } finally {
       setIsLoading(false);
     }
+  };
+
+  /* OAuth (Google/Facebook): start with account you already have */
+  const [oauthBusy, setOauthBusy] = useState<'google'|'facebook'|''>('');
+  const handleOAuth = async (provider: 'google'|'facebook') => {
+    setErrorMsg(null); setOauthBusy(provider);
+    try {
+      // Demo: send e-mail as mock token (SHAM_ALLOW_MOCK_OAUTH=1 on server). Real app would use Google Identity Services / FB SDK.
+      const token = email.trim() || `demo-${provider}@example.com`;
+      const result = await cx<AuthResult>(`/community/auth/${provider}`, { body: provider === 'google' ? { idToken: token } : { accessToken: token } });
+      if ('pending' in (result as any)) {
+        setPendingToken((result as any).pendingToken || '');
+        toStep('phone');
+        return;
+      }
+      finish(profileFromMember((result as AuthResult).me));
+    } catch (e) {
+      if (e instanceof CommunityApiError && e.code === 'OAUTH_INVALID') setErrorMsg(L('oauth_coming'));
+      else setErrorMsg(e instanceof CommunityApiError && e.code === 'OAUTH_NOT_CONFIGURED' ? L('oauth_coming') : L('err_login'));
+    } finally { setOauthBusy(''); }
+  };
+  /* Phone 2FA: WhatsApp/SMS code (optional, suggested) */
+  const [phoneBusy, setPhoneBusy] = useState(false);
+  const requestPhoneCode = async () => {
+    if (!pendingToken) return;
+    setPhoneBusy(true);
+    try { await cx('/community/auth/login/phone/request', { body: { pendingToken } }); } catch (e) { setErrorMsg(e instanceof CommunityApiError ? (S[e.code as keyof typeof S] ? L(e.code as keyof typeof S) : L('err_login')) : L('err_login')); } finally { setPhoneBusy(false); }
+  };
+  const verifyPhoneCode = async () => {
+    if (!pendingToken) return;
+    setIsLoading(true); setErrorMsg(null);
+    try {
+      const result = await cx<AuthResult>('/community/auth/login/phone/verify', { body: { pendingToken, code } });
+      finish(profileFromMember(result.me));
+    } catch (e) { setErrorMsg(e instanceof CommunityApiError && e.code === 'CODE_INVALID' ? L('err_code_invalid') : L('err_login')); }
+    finally { setIsLoading(false); }
   };
 
   /* Passkey sign-in: the device proves itself; no password typed at all. */
@@ -633,6 +682,28 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
               <span>{errorMsg}</span>
             </div>
+          )}
+
+          {stage === 'phone' && (
+            <>
+              <div>
+                <label className="font-semibold text-stone-800 block mb-1">{currentLang === 'ar' ? 'كود واتساب / SMS' : 'WhatsApp / SMS code'}</label>
+                <p className="text-[11px] text-stone-500 mb-2">{currentLang === 'ar' ? 'أرسلنا كود 6 أرقام إلى هاتفك (واتساب أو SMS). اكتبه هنا:' : 'We sent a 6-digit code to your phone (WhatsApp or SMS). Enter it:'}</p>
+                <div className="relative">
+                  <ShieldCheck className={`w-4 h-4 absolute ${rtl ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 text-emerald-600`} />
+                  <input
+                    type="text" required inputMode="numeric" maxLength={6} autoComplete="one-time-code"
+                    placeholder="••••••" value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
+                    className={`w-full ${rtl ? 'pl-3 pr-9' : 'pl-9 pr-3'} py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 tracking-[0.4em] text-center focus:outline-none focus:border-emerald-700`}
+                    dir="ltr"
+                  />
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <button type="button" onClick={() => toStep('auth')} className="flex-1 py-2 text-stone-600 hover:text-stone-800 text-xs underline cursor-pointer">{L('totp_back')}</button>
+                <button type="button" onClick={() => void requestPhoneCode()} disabled={phoneBusy} className="flex-1 py-2 text-emerald-700 hover:text-emerald-800 text-xs font-semibold cursor-pointer disabled:opacity-60">{phoneBusy ? '…' : (currentLang === 'ar' ? 'إعادة إرسال الكود' : 'Resend code')}</button>
+              </div>
+            </>
           )}
 
           {stage === 'totp' && (
@@ -882,7 +953,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             >
               <ShieldCheck className="w-4 h-4 text-amber-300" />
               <span>
-                {stage === 'totp' ? L('totp_submit')
+                {stage === 'phone' ? (currentLang === 'ar' ? 'تأكيد كود الهاتف' : 'Verify phone code')
+                  : stage === 'totp' ? L('totp_submit')
                   : stage === 'forgot' ? L('send_code')
                   : stage === 'forgot_code' ? L('reset_submit')
                   : mode === 'login' ? L('submit_login') : L('submit_register')}
@@ -899,6 +971,38 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 <Fingerprint className="w-3.5 h-3.5 text-amber-700" />
                 <span>{passkeyBusy ? '…' : L('passkey_btn')}</span>
               </button>
+            )}
+
+            {/* Google / Facebook — big-3 style, visible fields */}
+            {mode === 'login' && stage === 'auth' && (
+              <>
+                <div className="flex items-center gap-2 my-1">
+                  <span className="h-px flex-1 bg-stone-200" />
+                  <span className="text-[11px] text-stone-500">{L('oauth_divider')}</span>
+                  <span className="h-px flex-1 bg-stone-200" />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => void handleOAuth('google')}
+                    disabled={!!oauthBusy}
+                    className="py-2.5 rounded-xl border border-stone-200 bg-white hover:bg-stone-50 text-stone-800 font-semibold text-xs transition-colors cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
+                  >
+                    <span className="w-5 h-5 rounded-full bg-white border border-stone-200 flex items-center justify-center text-[11px] font-black" style={{background: 'conic-gradient(from 0deg, #4285F4, #EA4335, #FBBC05, #34A853)'}}>G</span>
+                    <span>{oauthBusy==='google' ? '…' : L('google_btn')}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => void handleOAuth('facebook')}
+                    disabled={!!oauthBusy}
+                    className="py-2.5 rounded-xl bg-[#1877F2] hover:bg-[#166fe5] text-white font-semibold text-xs transition-colors cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
+                  >
+                    <span className="w-5 h-5 rounded bg-white text-[#1877F2] flex items-center justify-center text-[12px] font-black">f</span>
+                    <span>{oauthBusy==='facebook' ? '…' : L('facebook_btn')}</span>
+                  </button>
+                </div>
+                <p className="text-[10px] text-stone-500 text-center leading-snug">{L('phone_2fa_suggest')}</p>
+              </>
             )}
 
             {mode === 'login' && stage === 'auth' && (
