@@ -22,6 +22,8 @@ const KEYS = {
   DEEPSEEK_API_KEY: 'deepseek', OPENROUTER_API_KEY: 'openrouter', PERPLEXITY_API_KEY: 'perplexity', AI_GATEWAY_API_KEY: 'self_hosted',
   // Not an AI engine: real videos under Shaheen's answers (YouTube Data API v3). Synced as is.
   YOUTUBE_API_KEY: 'youtube',
+  // Free e-mail: the store's Gmail «App password» (order updates, sign-in and contract codes). Not an AI engine.
+  SHAM_GMAIL_APP_PASSWORD: 'gmail',
   // «الدفع في متجر شام»: the payment server needs them (verified by scripts/verify-payments.mts as `kashier`).
   KASHIER_MERCHANT_ID: 'kashier', KASHIER_API_KEY: 'kashier', KASHIER_SECRET_KEY: 'kashier', KASHIER_MODE: 'kashier', KASHIER_CURRENCIES: 'kashier',
 };

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { contactEmail } from '../config/contact';
 import { ArrowLeft, ArrowRight, ExternalLink, MessageCircle, Package, CreditCard, ShoppingCart, Sparkles, Star } from 'lucide-react';
 import { type StoreProduct } from '../utils/storeCatalog';
 import {
@@ -185,7 +186,7 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
         {(product as any).supplierName && (
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[10px] leading-relaxed text-amber-900 flex gap-2">
             <span>©</span>
-            <span>{currentLang === 'ar' ? `مصدر: ${(product as any).supplierName} — مستورد بترخيص. للاعتراض/DMCA: privacy@sham-perfume.com (رد 48س).` : `Source: ${(product as any).supplierName} — imported under license. DMCA: privacy@sham-perfume.com (48h).`}</span>
+            <span>{currentLang === 'ar' ? `مصدر: ${(product as any).supplierName} — مستورد بترخيص. للاعتراض/DMCA: ${contactEmail('legal')} (رد 48س).` : `Source: ${(product as any).supplierName} — imported under license. DMCA: ${contactEmail('legal')} (48h).`}</span>
           </div>
         )}
       </div>

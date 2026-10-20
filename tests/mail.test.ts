@@ -217,7 +217,7 @@ test('sending to a real e-mail through the webhook provider actually hits the wi
   await new Promise((done) => server.once('listening', done));
   const hook = `http://127.0.0.1:${(server.address() as AddressInfo).port}/hook`;
   const oldEnv = ctx.env;
-  ctx.env = { SHAM_WEBHOOK_URL: hook };
+  ctx.env = { SHAM_WEBHOOK_URL: hook, SHAM_MAIL_DOMAIN: 'mail.example.org' };
   try {
     const gamila = await newMember('Gamila');
     const out = await mail.send(ctx, gamila.id, { to: ['friend@yahoo.com'], subject: 'من بريد شام', body: 'أهلاً يا صاحبي من منصة شام' });
@@ -229,10 +229,17 @@ test('sending to a real e-mail through the webhook provider actually hits the wi
     assert.deepEqual(wire.to, ['friend@yahoo.com']);
     assert.equal(wire.subject, 'من بريد شام');
     assert.ok(String(wire.text).includes('منصة شام للعطور'), 'the platform footer rides along');
-    assert.equal(wire.replyTo, `${gamila.handle}@shamperfumes.com`, 'answers reply back to the member’s platform address');
-    assert.match(String((wire.headers as Record<string, string>)['Message-ID']), /^<mail_[^@]+@shamperfumes\.com>$/, 'a Message-ID for threading');
+    assert.equal(wire.replyTo, `${gamila.handle}@mail.example.org`, 'answers reply back to the member’s platform address');
+    assert.match(String((wire.headers as Record<string, string>)['Message-ID']), /^<mail_[^@]+@mail\.example\.org>$/, 'a Message-ID for threading');
     const sent = await mail.view(ctx, gamila.id, out.id);
     assert.equal(sent.extStatus, 'sent');
+
+    // A free mailbox (gmail.com) is someone else's domain: no invented «handle@gmail.com», and the footer says so.
+    ctx.env = { SHAM_WEBHOOK_URL: hook, SHAM_EMAIL_FROM_ADDRESS: 'store@gmail.com' };
+    await mail.send(ctx, gamila.id, { to: ['friend2@yahoo.com'], subject: 'بدون دومين', body: 'نص' });
+    const free = captured.filter((c) => c.kind === 'platform_mail').at(-1)!;
+    assert.equal(free.replyTo, '', 'no reply address without a domain we own');
+    assert.ok(String(free.text).includes('لا يصل للعضو'), 'the recipient is told replies do not reach the member');
   } finally {
     ctx.env = oldEnv;
     await new Promise((done) => server.close(done));

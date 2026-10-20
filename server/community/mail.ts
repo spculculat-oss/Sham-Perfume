@@ -305,21 +305,24 @@ async function deliver(ctx: Ctx, senderId: string | null, to: Row[], input: {
 async function deliverExternal(ctx: Ctx, senderId: string, sender: { name: string; handle: string }, messageId: string, external: string[], subject: string, body: string) {
   if (!external.length) return { to: [] as string[], status: 'none' };
   const env = envOf(ctx);
-  const domain = mailDomain(env) || 'sham.mail';
+  // Without a domain we own, there is no address a reply could reach: say so instead of inventing one.
+  const domain = mailDomain(env);
+  const idDomain = domain || 'mail.sham.invalid';
+  const noReply = domain ? '' : '\nالرد على هذه الرسالة لا يصل للعضو؛ تواصل معه من خلال منصة شام.\n(Replies to this e-mail do not reach the member; contact them on the Sham platform.)';
   const result = await sendMailOutbound({
     to: external,
     subject: subject || '(بدون عنوان)',
-    text: `${body}\n\n———\nأُرسلت هذه الرسالة من «بريد شام» على منصة شام للعطور بواسطة ${clean(sender.name, 60)}.\n(Sent from Sham Mail on the Sham Perfumes platform.)`,
-    replyTo: `${sender.handle}@${domain}`,
-    headers: { 'Message-ID': `<${messageId}@${domain}>` },
+    text: `${body}\n\n———\nأُرسلت هذه الرسالة من «بريد شام» على منصة شام للعطور بواسطة ${clean(sender.name, 60)}.\n(Sent from Sham Mail on the Sham Perfumes platform.)${noReply}`,
+    ...(domain ? { replyTo: `${sender.handle}@${domain}` } : {}),
+    headers: { 'Message-ID': `<${messageId}@${idDomain}>` },
   }, env);
   const status = result.delivered ? 'sent' : ['none', undefined].includes(result.provider) ? 'unconfigured' : 'failed';
-  await ctx.sql.query(`UPDATE mail_messages SET external_to = $2, ext_status = $3, ext_msg_id = $4 WHERE id = $1`, [messageId, JSON.stringify(external), status, `<${messageId}@${domain}>`]);
+  await ctx.sql.query(`UPDATE mail_messages SET external_to = $2, ext_status = $3, ext_msg_id = $4 WHERE id = $1`, [messageId, JSON.stringify(external), status, `<${messageId}@${idDomain}>`]);
   if (!result.delivered) {
     await bounce(ctx, senderId, {
       subject, missed: external, parentId: messageId, external: true,
       reason: status === 'unconfigured'
-        ? 'الإرسال لإيميلات خارج المنصة محتاج مزود بريد متظبط على السيرفر (RESEND_API_KEY أو SENDGRID_API_KEY). الميل محفوظ عندك في «المرسلة».'
+        ? 'الإرسال لإيميلات خارج المنصة محتاج مزود بريد متظبط على السيرفر (RESEND_API_KEY أو SENDGRID_API_KEY أو SHAM_WEBHOOK_URL). الميل محفوظ عندك في «المرسلة».'
         : 'مزود البريد رفض الإرسال دلوقتي — جرّب تاني بعد شوية. الميل محفوظ عندك في «المرسلة».',
     });
   }

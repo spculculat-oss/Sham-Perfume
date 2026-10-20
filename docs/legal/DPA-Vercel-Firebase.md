@@ -6,7 +6,7 @@
 This document satisfies GDPR Art.28 + SA PDPL Art.20 for processors: Vercel (hosting), Firebase/Firestore (DB), EdgeOne (CDN), Paymob/Stripe (payments).
 
 ### 1. الأطراف
-- **Controller:** Sham Perfume Platform (ممثل: privacy@sham-perfume.com, DPO: dpo@sham-perfume.com)
+- **Controller:** Sham Perfume Platform (ممثل: s.p.culculat@gmail.com (موضوع الرسالة «[شام | الخصوصية]»), DPO: s.p.culculat@gmail.com (موضوع الرسالة «[شام | حماية البيانات]»))
 - **Processors:** Vercel Inc. (USA), Google LLC Firebase (USA/EU), Tencent Cloud EdgeOne (APAC), Paymob (EG), Stripe (US/EU)
 
 ### 2. موضوع المعالجة

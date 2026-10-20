@@ -19,6 +19,7 @@ type AdminDict = Partial<Record<SupportedLanguage, string>>;
 export const ADMIN_STRINGS: Record<string, AdminDict> = {
   // ── Tabs / navigation ──────────────────────────────────────────────────
   'الإدارة المالية': { en: 'Finance department' },
+  'مجاناً: اعمل «كلمة مرور تطبيق» من حساب جوجل بتاع جيميل المتجر، وحطها بنفسك كسر GitHub باسم SHAM_GMAIL_APP_PASSWORD.': { en: 'Free: create an «App password» in the store Gmail’s Google account and add it yourself as the GitHub secret SHAM_GMAIL_APP_PASSWORD.' },
   'بنك شام والمالية': { en: 'Sham Bank & finance' },
   'نظرة عامة': { en: 'Overview' },
   'المساعد الإداري': { en: 'Admin assistant' },
