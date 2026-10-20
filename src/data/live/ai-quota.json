@@ -1,25 +1,27 @@
 {
- "updatedAt": "2026-10-19T18:55:41.613Z",
+ "updatedAt": "2026-10-20T08:42:30.418Z",
  "engines": {
   "deepseek": {
-   "pausedUntil": "2026-10-19T08:05:00.000Z",
-   "reason": "no_credit"
+   "pausedUntil": "2026-10-21T08:05:00.000Z",
+   "reason": "no_credit",
+   "key": "8ef0876c"
   },
   "openai": {
-   "pausedUntil": "2026-10-19T08:05:00.000Z",
-   "reason": "no_credit"
+   "pausedUntil": "2026-10-21T08:05:00.000Z",
+   "reason": "no_credit",
+   "key": "d58d52e1"
   },
   "gemini": {
-   "pausedUntil": "2026-10-19T19:55:41.613Z",
+   "pausedUntil": "2026-10-20T09:42:16.407Z",
    "reason": "invalid_key",
    "detail": "PERMISSION_DENIED",
    "key": "79e90b39"
   }
  },
  "used": {
-  "day": "2026-10-19",
+  "day": "2026-10-20",
   "counts": {
-   "gemini": 2
+   "gemini": 1
   }
  }
 }
