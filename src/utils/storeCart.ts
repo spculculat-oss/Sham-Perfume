@@ -68,15 +68,64 @@ export function cartSummary(cart: Cart, products: StoreProduct[]) {
   return { lines, count: lines.reduce((s, l) => s + l.qty, 0), total: lines.reduce((s, l) => s + l.subtotal, 0) };
 }
 
-/** The message the Sham assistant receives when the visitor completes the order. */
-/** The message the Sham assistant receives when the visitor completes the order — in their language. */
-export function orderMessage(summary: ReturnType<typeof cartSummary>, lang: SupportedLanguage): string {
+/**
+ * The prices exactly as the visitor saw them in the cart — their currency, already formatted (#169). Without it
+ * the message falls back to the catalog's EGP amounts, which is what the hand-off used to send whatever the
+ * visitor's country was.
+ */
+export interface PricedOrder {
+  line: (sku: string) => string | undefined;
+  shipping?: string;
+  total: string;
+}
+
+/** The message the Sham assistant (or the store's inbox) receives for this order — in the visitor's language. */
+export function orderMessage(summary: ReturnType<typeof cartSummary>, lang: SupportedLanguage, priced?: PricedOrder): string {
   const t = makeStoreT(lang);
   const currency = t('sf_currency');
-  const items = summary.lines.map((l) => t('cart_order_line', {
-    name: storeLocalized(l.product.name, lang), sku: l.product.sku, qty: l.qty,
-    subtotal: l.subtotal, currency,
-  }));
-  // Plain digits on purpose: the hand-off message is read by the assistant, not by the currency formatter.
-  return [t('cart_order_intro'), ...items, `${t('sf_total')}: ${summary.total} ${currency}`].join('\n');
+  const items = summary.lines.map((l) => {
+    const shown = priced?.line(l.product.sku);
+    return t('cart_order_line', {
+      name: storeLocalized(l.product.name, lang), sku: l.product.sku, qty: l.qty,
+      subtotal: shown ?? l.subtotal, currency: shown ? '' : currency,
+    }).trimEnd();
+  });
+  // Plain digits for the EGP fallback: the hand-off message is read by a person or the assistant, not a formatter.
+  const totals = priced
+    ? [...(priced.shipping ? [`${t('sf_shipping')}: ${priced.shipping}`] : []), `${t('sf_total')}: ${priced.total}`]
+    : [`${t('sf_total')}: ${summary.total} ${currency}`];
+  return [t('cart_order_intro'), ...items, ...totals].join('\n');
+}
+
+export interface OrderContact { name: string; email: string; phone: string; city: string; line: string }
+
+/** A short reference the visitor and the store both quote, e.g. «SH-MGX4K2-7QF». */
+export function orderRef(now = Date.now(), random = Math.random): string {
+  return `SH-${now.toString(36).toUpperCase()}-${Math.floor(random() * 36 ** 3).toString(36).toUpperCase().padStart(3, '0')}`;
+}
+
+/**
+ * The e-mail a visitor sends when no online payment is active for their country (#169): the order (in the
+ * prices they saw), where to deliver, and a reference. It goes to the store's inbox, never to the chat.
+ */
+export function orderRequestEmail(
+  summary: ReturnType<typeof cartSummary>, lang: SupportedLanguage, priced: PricedOrder,
+  contact: OrderContact, country: string, ref: string,
+): { subject: string; body: string } {
+  const t = makeStoreT(lang);
+  const clean = (v: string) => v.replace(/\s+/g, ' ').trim().slice(0, 200);
+  const body = [
+    `${t('sf_order_ref')}: ${ref}`,
+    '',
+    orderMessage(summary, lang, priced),
+    '',
+    `${t('sf_delivery_details')}:`,
+    `${t('sf_full_name')}: ${clean(contact.name)}`,
+    `${t('sf_phone')}: ${clean(contact.phone)}`,
+    `${t('sf_email')}: ${clean(contact.email)}`,
+    `${t('sf_ship_to')}: ${country}`,
+    `${t('sf_city')}: ${clean(contact.city)}`,
+    `${t('sf_address')}: ${clean(contact.line)}`,
+  ].join('\n');
+  return { subject: `${t('sf_order_subject')} ${ref}`, body };
 }

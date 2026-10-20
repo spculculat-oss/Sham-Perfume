@@ -11,6 +11,7 @@ import type { SupportedLanguage } from '../types/i18n';
 import { loadStoreCatalog, productPageUrl, storeImageSrc } from '../utils/liveStore';
 import { addToCart, useCart } from '../utils/storeCart';
 import { requestDirectPurchase } from '../utils/directPurchase';
+import { SafeImage, photoSources } from './SafeImage';
 import { useStoreMoney } from '../utils/storeCheckout';
 import { LegalDisclaimer } from './LegalDisclaimer';
 import { ProductReviewsSection } from './ProductReviewsSection';
@@ -50,11 +51,11 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
     return () => { live = false; };
   }, []);
   const [qty, setQty] = useState(1);
-  const [broken, setBroken] = useState(false);
+  const [badThumbs, setBadThumbs] = useState<string[]>([]);
   const [photo, setPhoto] = useState(0);
   const cart = useCart();
   const product = products.find((p) => String(p.id) === String(productId));
-  useEffect(() => { setQty(1); setBroken(false); setPhoto(0); window.scrollTo?.({ top: 0 }); }, [productId]);
+  useEffect(() => { setQty(1); setBadThumbs([]); setPhoto(0); window.scrollTo?.({ top: 0 }); }, [productId]);
   const Back = isRTL(currentLang) ? ArrowRight : ArrowLeft;
 
   if (!product && loading) return <div className="min-h-[60vh] flex items-center justify-center text-stone-500" data-testid="product-loading">{L.loading}</div>;
@@ -95,17 +96,17 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
       <div className="max-w-6xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="space-y-2">
           <div className="bg-white rounded-2xl overflow-hidden border">
-            {current && !broken
-              ? <img src={storeImageSrc(current).replace(/w=300&h=300/, 'w=700&h=700')} alt={product.name.ar} onError={() => setBroken(true)} data-testid="product-photo"
-                  className={`w-full aspect-square ${/unsplash\.com/.test(current) ? 'object-cover' : 'object-contain bg-white'}`} />
-              : <div className="w-full aspect-square bg-gradient-to-br from-amber-100 to-stone-100 flex items-center justify-center"><Package className="w-20 h-20 text-amber-400/40" /></div>}
+            {/* #169: the chosen photo, then the product's other photos, then a placeholder — never a blank frame. */}
+            <SafeImage sources={photoSources(current, product.imageUrl, product.images)} alt={product.name.ar} testId="product-photo" loading="eager"
+              resolve={(src) => storeImageSrc(src).replace(/w=300&h=300/, 'w=700&h=700')} className="w-full aspect-square"
+              iconClassName="w-20 h-20 text-amber-400/40" />
           </div>
-          {product.images.length > 1 && (
+          {product.images.filter((src) => !badThumbs.includes(src)).length > 1 && (
             <div className="flex gap-2 overflow-x-auto pb-1" data-testid="product-gallery">
-              {product.images.map((src, i) => (
-                <button type="button" key={src} onClick={() => { setPhoto(i); setBroken(false); }} aria-label={`${L.photo} ${i + 1}`}
+              {product.images.map((src, i) => badThumbs.includes(src) ? null : (
+                <button type="button" key={src} onClick={() => setPhoto(i)} aria-label={`${L.photo} ${i + 1}`}
                   className={`shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 bg-white cursor-pointer ${i === photo ? 'border-amber-600' : 'border-transparent'}`}>
-                  <img src={storeImageSrc(src)} alt="" loading="lazy" className="w-full h-full object-contain" />
+                  <img src={storeImageSrc(src)} alt="" loading="lazy" onError={() => setBadThumbs((b) => (b.includes(src) ? b : [...b, src]))} className="w-full h-full object-contain" />
                 </button>
               ))}
             </div>
@@ -197,7 +198,7 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {related.map((p) => (
               <button type="button" key={p.sku} onClick={() => { window.location.hash = `#product=${p.id}`; }} className="bg-white rounded-2xl border overflow-hidden text-start hover:shadow-md transition cursor-pointer">
-                {p.imageUrl ? <img src={storeImageSrc(p.imageUrl)} alt={p.name.ar} loading="lazy" className={`w-full aspect-square ${/unsplash\.com/.test(p.imageUrl) ? 'object-cover' : 'object-contain bg-white'}`} /> : <div className="w-full aspect-square bg-amber-50" />}
+                <SafeImage sources={photoSources(p.imageUrl, p.images)} alt={p.name.ar} className="w-full aspect-square" />
                 <div className="p-3">
                   <p className="text-sm font-semibold line-clamp-2">{storeLocalized(p.name, currentLang)}</p>
                   <p className="text-sm font-bold text-amber-900 mt-1">{price(p.price)}</p>

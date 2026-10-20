@@ -11,6 +11,20 @@ import { storeText } from '../../src/لغات/storeL10n';
 import { localLongevity } from '../../src/لغات/longevity';
 import { SUPPORTED_LANGUAGES } from '../../src/types/i18n';
 import { SITE } from '../../src/seo/site';
+import { BUNDLED_FX, COUNTRY_CODES, HOME_CURRENCY, ZONE_COUNTRY, currencyFor } from '../../src/utils/pricing';
+import { LOCALE_MAP } from '../../src/لغات/localize';
+
+/**
+ * p/money.json — what a standalone page needs to show the store's price in the visitor's currency (#169):
+ * the same country → currency rule and the same exchange table the store uses, so a shared product page and
+ * the cart show the same number. The page keeps the EGP price (and the EGP schema.org offer) until it loads.
+ */
+export function moneyTable() {
+  const currency = Object.fromEntries(COUNTRY_CODES.map((code) => [code, currencyFor(code, BUNDLED_FX)]));
+  const used = new Set([HOME_CURRENCY, ...Object.values(currency)]);
+  const rates = Object.fromEntries([...used].filter((c) => Number(BUNDLED_FX.rates[c]) > 0).map((c) => [c, BUNDLED_FX.rates[c]]));
+  return { home: HOME_CURRENCY, updatedAt: (BUNDLED_FX as { updatedAt?: string }).updatedAt || '', currency, rates, zones: ZONE_COUNTRY, locales: LOCALE_MAP };
+}
 
 const esc = (s: unknown) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 /** Photos mirrored into the site are relative to the site root; pages live one folder down (p/). */
@@ -80,6 +94,7 @@ var s=localStorage.getItem('sham_perfume_user_language')||'';
 if(ALL.indexOf(s)<0){var B=navigator.languages||[navigator.language||''];for(var i=0;i<B.length&&ALL.indexOf(s)<0;i++){var g=String(B[i]||'').toLowerCase();s=ALL.indexOf(g)>=0?g:g.split('-')[0]}}
 var l=ALL.indexOf(s)>=0?s:'en',ar=l==='ar';
 var vals=(T.packs[l]||T.packs.en)||[];
+money(l,navigator.languages||[navigator.language||'']);
 if(ar)return;
 var d=document;d.documentElement.lang=l;d.documentElement.dir=RT.indexOf(l)>=0?'rtl':'ltr';
 d.querySelectorAll('[data-l]').forEach(function(e){var i=K.indexOf(e.getAttribute('data-l'));if(i>=0&&vals[i])e.textContent=vals[i]});
@@ -87,7 +102,17 @@ d.querySelectorAll('[data-name]').forEach(function(e){e.textContent=e.getAttribu
 var n=new Intl.NumberFormat(l),cur=vals[K.indexOf('sf_currency')]||'EGP';
 d.querySelectorAll('[data-price]').forEach(function(e){e.textContent=n.format(Number(e.getAttribute('data-price')))+' '+cur});
 var h=d.querySelector('h1[data-name]');if(h)d.title=h.textContent+' | '+(vals[K.indexOf('sf_store_name')]||'');
-}catch(e){}})()</script>`;
+}catch(e){}
+function money(l,langs){try{var c='';try{c=(JSON.parse(localStorage.getItem('sham-store-country')||'null')||{}).code||''}catch(x){}
+fetch('money.json').then(function(r){return r.ok?r.json():null}).then(function(m){if(!m||!m.currency)return;
+if(!m.currency[c]){c=m.zones[(Intl.DateTimeFormat().resolvedOptions()||{}).timeZone]||'';for(var i=0;!c&&i<langs.length;i++){var g=String(langs[i]||'').split(/[-_]/).slice(1).filter(function(x){return /^[A-Za-z]{2}$/.test(x)})[0];if(g&&m.currency[g.toUpperCase()])c=g.toUpperCase()}}
+var cur=m.currency[c],a=m.rates[m.home],b=m.rates[cur];if(!cur||cur===m.home||!(a>0)||!(b>0))return;
+var loc=m.locales[l]||'en-GB';
+document.querySelectorAll('[data-price]').forEach(function(e){var v=td(Number(e.getAttribute('data-price'))/a*b),f=Math.round(v*100)%100?2:0;
+try{e.textContent=new Intl.NumberFormat(loc,{style:'currency',currency:cur,minimumFractionDigits:f,maximumFractionDigits:f}).format(v)}catch(x){e.textContent=v+' '+cur}
+e.setAttribute('data-currency',cur)})}).catch(function(){})}catch(e){}}
+function td(v){if(!(v>0))return 0;var d=Math.floor(Math.log10(v))+1,s=Math.max(Math.pow(10,d-2)/2,0.05);return Math.round(Math.ceil(v/s-1e-9)*s*100)/100}
+})()</script>`;
 
 /** A photo that is gone shows a neutral placeholder (main/cards) or disappears (thumbnail). */
 const NO_IMG_FN = `function noImg(i,thumb){i.onerror=null;i.dataset.broken=i.getAttribute('src');if(thumb){i.closest('a').remove();return}i.src=${JSON.stringify(PLACEHOLDER)}}`;

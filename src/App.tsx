@@ -50,7 +50,9 @@ import { LText, makeT, fmt, pickArEn } from './لغات/localize';
 import {
   UserEnvironmentProfile,
   getInitialUserEnvironment,
+  alignEnvironmentToCountry,
 } from './utils/environmentAdapter';
+import { setStoreCountry, useStoreCountry } from './utils/storeCheckout';
 import { loadDetailedAddress } from './utils/addressStorage';
 import {
   detectEntryLanguageAsync,
@@ -485,8 +487,11 @@ export default function App() {
   const L = makeT(currentLang, S);
 
   // Regional Environment & Climate Adaptation State
+  // One visitor country for the whole site (#169): the store's country (their choice → edge → time zone)
+  // drives the lab environment too, so the header, calculators, store, product page and cart share a currency.
+  const [storeCountry] = useStoreCountry();
   const [currentEnvironment, setCurrentEnvironment] = useState<UserEnvironmentProfile>(() =>
-    getInitialUserEnvironment()
+    alignEnvironmentToCountry(getInitialUserEnvironment(), storeCountry)
   );
 
   // User Profile & Authentication State
@@ -500,6 +505,10 @@ export default function App() {
   const [detailedAddress, setDetailedAddress] = useState<UserDetailedAddress>(() =>
     loadDetailedAddress()
   );
+
+  useEffect(() => {
+    setCurrentEnvironment((prev) => alignEnvironmentToCountry(prev, storeCountry));
+  }, [storeCountry]);
 
   // Check and load shared formula from URL hash or query params
   useEffect(() => {
@@ -598,6 +607,7 @@ export default function App() {
 
   const handleUpdateEnvironment = (profile: UserEnvironmentProfile) => {
     setCurrentEnvironment(profile);
+    if (profile.countryCode !== storeCountry) setStoreCountry(profile.countryCode, true); // the store follows the visitor's pick
     setFormulation((prev) => ({
       ...prev,
       concentrationPercent: profile.recommendedConcentrationPercent,
@@ -616,7 +626,7 @@ export default function App() {
   const handleAuthSuccess = (user: UserProfile) => {
     setCurrentUser(user);
     if (user.regionId && user.regionId !== currentEnvironment.regionId) {
-      handleUpdateEnvironment(getInitialUserEnvironment());
+      handleUpdateEnvironment(alignEnvironmentToCountry(getInitialUserEnvironment(), storeCountry));
     }
     showToast(fmt(L('toast_welcome_tpl'), { name: user.name }));
   };
