@@ -1,9 +1,10 @@
 /**
- * «الدورية بالتناوب» — every tool inspects its own work every 3 hours, in rotating shifts so only one group of
- * tools works at a time (GitHub Actions: shaheen-patrol.yml runs hourly; each hour is one shift of three).
+ * «الدورية بالتناوب» — one monitoring shift runs hourly; each role's recorded status is reviewed every 3 hours,
+ * so only one group of probes runs at a time (GitHub Actions: shaheen-patrol.yml).
  *
- *   1. Self-inspection: each bot's own check (report age, last run, its numbers — the same rules as the
- *      pre-meeting check) plus hands-on tests of its scope (prices, currencies, live pages, photos, news…).
+ *   1. Role monitoring: available report age, last run and supervisor scores (the same rules as the pre-meeting
+ *      check), plus hands-on probes of the selected scope (prices, currencies, live pages, photos, news…).
+ *      Roles without a workflow are not invoked; they are monitored only through existing records.
  *   2. What can be fixed safely is fixed: the bot's robot (or the robot owning the broken scope) is started
  *      again, at most once per 6 h per robot and twice per problem.
  *   3. What cannot be fixed that way goes to «الخبير شاهين»: with an AI engine he diagnoses it; without one,
@@ -280,7 +281,7 @@ export interface PatrolInput {
   previous?: PatrolFile;
   /** An AI engine can answer for Shaheen this hour. */
   engineReady: boolean;
-  /** The shift to run (default: this hour's); 'all' = every tool at once (manual full patrol). */
+  /** The shift to monitor (default: this hour's); 'all' = all role records/probes in one manual pass, not all agent invocations. */
   shift?: ShiftIndex | 'all';
 }
 export interface PatrolPlan {

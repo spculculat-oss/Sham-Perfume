@@ -6,9 +6,9 @@ import { SHIFTS } from '../../scripts/shaheen-patrol/shifts';
 import type { ItemStatus, Level, PatrolFile } from '../../scripts/shaheen-patrol/patrol';
 
 /**
- * «الدورية بالتناوب» — three shifts take turns hourly; every tool inspects its own work every 3 hours with hands-on tests; what can be fixed
- * safely is fixed, the rest goes to Shaheen (or waits for him honestly), shared problems get a task force,
- * and every finished run is tested by an expert reviewer of the same scope.
+ * «الدورية بالتناوب» — three shifts rotate hourly; each role's reports/supervisor scores and assigned probes are reviewed every 3 hours.
+ * Advisory roles without a workflow are not invoked automatically. Safe fixes may run, unresolved issues go to Shaheen,
+ * shared problems get a task force, and every completed workflow is reviewed by an expert of the same scope.
  * Data: src/data/live/shaheen-patrol.json on main (written by .github/workflows/shaheen-patrol.yml).
  */
 const REPO = 'https://github.com/spculculat-oss/Sham-Perfume';
@@ -52,7 +52,7 @@ export default function ShaheenPatrolPanel() {
           <button type="button" onClick={load} className="inline-flex items-center gap-1 rounded-lg border border-stone-200 px-2.5 py-1.5 text-xs font-bold text-stone-700"><RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />{T('تحديث')}</button>
         </div>
       </div>
-      <p className="mt-1 text-xs text-stone-500">{T('تلات ورديات بالتناوب، وردية كل ساعة: كل أداة بتفحص شغلها بالتجربة كل 3 ساعات من غير ضغط على الموقع. اللي يتصلح آلياً يتصلح، واللي لأ يروح لشاهين، والمشاكل المشتركة ليها فريق عمل، وكل شغل خلص بيراجعه خبير من نفس التخصص.')}</p>
+      <p className="mt-1 text-xs text-stone-500">{T('تلات ورديات بالتناوب، وردية كل ساعة: الدورية تراجع تقارير وحالة كل دور حسب ورديته، وتجري الاختبارات العملية المحددة لنطاقه كل 3 ساعات من غير ضغط على الموقع. الأدوار الاستشارية اللي مالهاش سير عمل تُراقَب من تقاريرها وتقييم مشرف شاهين ولا تُشغَّل تلقائياً. الإصلاحات الآمنة تتعمل، والباقي يروح لشاهين أو لفريق عمل، وكل تشغيل مكتمل يراجعه خبير من نفس النطاق.')}</p>
       <ul className="mt-2 grid gap-1.5 text-[11px] md:grid-cols-3">
         {SHIFTS.map((x) => (
           <li key={x.index} className={`rounded-lg border px-2 py-1.5 ${data?.shift?.index === x.index ? 'border-amber-400 bg-amber-50' : 'border-stone-100'}`}>

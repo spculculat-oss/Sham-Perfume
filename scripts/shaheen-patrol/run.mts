@@ -1,10 +1,11 @@
 /**
- * «الدورية بالتناوب» — GitHub Actions runs this every hour, one shift of tools at a time; each tool every 3 hours
- * (.github/workflows/shaheen-patrol.yml):
+ * «الدورية بالتناوب» — GitHub Actions runs this every hour, one monitoring shift at a time; each role's records are
+ * checked every 3 hours (.github/workflows/shaheen-patrol.yml):
  *   node --import tsx scripts/shaheen-patrol/run.mts
- * Every tool's own check + hands-on tests of its scope → safe fixes (robots started again) → Shaheen for the
- * rest (AI when an engine answers; his recorded playbook otherwise, and the item waits for him) → task forces
- * for problems spanning several tools → expert reviews of every run finished since the last patrol.
+ * The selected shift's report/run/supervisor status plus its hands-on probes → safe fixes (approved workflows only)
+ * → Shaheen for unresolved issues (AI when an engine answers; his recorded playbook otherwise, and the item waits)
+ * → task forces for shared problems → expert reviews of finished workflows. Roles without a workflow, such as the
+ * design expert, are monitored from existing supervisor records; this patrol does not invoke those agents.
  * Writes src/data/live/shaheen-patrol.json; GITHUB_OUTPUT reruns=<workflows> publish=true|false.
  * Env: PATROL_SHIFT=0|1|2|all (default: this hour's shift), PATROL_ACT=true (main only: issues; the workflow starts the reruns), PATROL_LIVE=false (skip the live
  * tests), GITHUB_TOKEN, GITHUB_REPOSITORY, the AI keys.
@@ -39,11 +40,11 @@ const notes: string[] = [];
 const say = (line: string) => { console.log(line); notes.push(line); };
 const previous: PatrolFile | undefined = (() => { try { const d: unknown = existsSync(FILE) ? JSON.parse(readFileSync(FILE, 'utf8')) : undefined; return isPatrolFile(d) ? d : undefined; } catch { return undefined; } })();
 
-// ── 0. This hour's shift (each tool every 3 hours, one group at a time) ───────────────────────────────────
+// ── 0. This hour's monitoring shift (each role every 3 hours, one probe group at a time) ─────────────────
 const shiftEnv = (env.PATROL_SHIFT || '').trim();
 const shift: ShiftIndex | 'all' = shiftEnv === 'all' ? 'all' : /^[012]$/.test(shiftEnv) ? (Number(shiftEnv) as ShiftIndex) : shiftAt(now);
 const inShift = (id: BotId) => shift === 'all' || shiftOfBot(id) === shift;
-say(`Shift: ${shift === 'all' ? 'all tools (manual full patrol)' : `${SHIFTS[shift].nameEn} — ${SHIFTS[shift].bots.join(', ')}`}`);
+say(`Shift: ${shift === 'all' ? 'all role records and probes (manual monitoring pass)' : `${SHIFTS[shift].nameEn} — ${SHIFTS[shift].bots.join(', ')}`}`);
 
 // ── 1. Each tool's own check (the pre-meeting rules) ──────────────────────────────────────────────────────
 const repo = env.GITHUB_REPOSITORY || 'spculculat-oss/Sham-Perfume';
