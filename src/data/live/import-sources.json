@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-20T18:50:32.222Z",
+ "updatedAt": "2026-10-20T19:57:05.380Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -2569,11 +2569,11 @@
    "host": "twisted-lily.com",
    "name": "twisted-lily.com",
    "base": "https://twisted-lily.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T00:56:49.671Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T19:57:05.380Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2581,15 +2581,15 @@
    "host": "parfumdreams.de",
    "name": "Parfum und Kosmetik aus deiner Online",
    "base": "https://www.parfumdreams.de",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T00:56:49.671Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T19:57:05.380Z",
    "trust": {
     "score": 78,
     "verdict": "trusted",
-    "at": "2026-10-20T00:56:49.671Z",
+    "at": "2026-10-20T19:57:05.380Z",
     "checks": [
      {
       "id": "age",
@@ -2824,11 +2824,11 @@
    "host": "flaconi.de",
    "name": "flaconi.de",
    "base": "https://flaconi.de",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T06:54:09.622Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T19:57:05.380Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -3027,11 +3027,11 @@
    "host": "douglas.de",
    "name": "douglas.de",
    "base": "https://douglas.de",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T06:54:09.622Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T19:57:05.380Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -3039,11 +3039,11 @@
    "host": "perfume.com",
    "name": "perfume.com",
    "base": "https://perfume.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T06:54:09.622Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T19:57:05.380Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -3051,11 +3051,11 @@
    "host": "essenza-nobile.de",
    "name": "essenza-nobile.de",
    "base": "https://essenza-nobile.de",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T06:54:09.622Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T19:57:05.380Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -3511,15 +3511,15 @@
    "host": "niche-beauty.com",
    "name": "Shop the finest beauty products online",
    "base": "https://www.niche-beauty.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T06:54:09.622Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T19:57:05.380Z",
    "trust": {
     "score": 90,
     "verdict": "trusted",
-    "at": "2026-10-20T06:54:09.622Z",
+    "at": "2026-10-20T19:57:05.380Z",
     "checks": [
      {
       "id": "age",
@@ -3624,15 +3624,15 @@
    "host": "beautyhabit.com",
    "name": "Beautyhabit",
    "base": "https://www.beautyhabit.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T06:54:09.622Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T19:57:05.380Z",
    "trust": {
     "score": 83,
     "verdict": "trusted",
-    "at": "2026-10-20T06:54:09.622Z",
+    "at": "2026-10-20T19:57:05.380Z",
     "checks": [
      {
       "id": "age",
@@ -3738,11 +3738,11 @@
    "host": "nocibe.fr",
    "name": "nocibe.fr",
    "base": "https://nocibe.fr",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T06:54:09.622Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T19:57:05.380Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -3914,11 +3914,11 @@
    "host": "marionnaud.fr",
    "name": "marionnaud.fr",
    "base": "https://marionnaud.fr",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T00:56:49.671Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T08:43:49.241Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-20T19:57:05.380Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -5043,6 +5043,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-20T19:57:05.380Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 10,
+   "activated": 0,
+   "rejected": 10,
+   "notes": [
+    "  ↳ parfumdreams.de: CV 78/100 [https,contact,identity,returns,shipping,privacy,terms,payment,social]",
+    "✗ parfumdreams.de: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "✗ flaconi.de: الموقع لا يفتح (HTTP 403)",
+    "✗ douglas.de: الموقع لا يفتح (HTTP 403)",
+    "✗ perfume.com: الموقع لا يفتح (HTTP 403)",
+    "✗ essenza-nobile.de: الموقع لا يفتح (HTTP 403)",
+    "  ↳ niche-beauty.com: CV 90/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,social]",
+    "✗ niche-beauty.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "  ↳ beautyhabit.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
+    "✗ beautyhabit.com: أغلب منتجاته ليست عطوراً (33%)",
+    "✗ nocibe.fr: الموقع لا يفتح (HTTP 403)",
+    "✗ marionnaud.fr: الموقع لا يفتح (HTTP 403)"
+   ]
+  },
   {
    "at": "2026-10-20T18:50:32.222Z",
    "mode": "self",
