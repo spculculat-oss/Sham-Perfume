@@ -4,6 +4,7 @@ import { BUNDLED_FX, COUNTRY_CODES, currencyFor, guessCountry, isCountry, priceI
 import { LOCALE_MAP } from '../لغات/localize';
 import type { SupportedLanguage } from '../types/i18n';
 import { getSessionToken } from '../community/api';
+import type { DirectMethod } from './directPayment';
 
 /**
  * The visitor's side of «الدفع في متجر شام»: their country (and so currency + shipping), prices in that
@@ -84,7 +85,11 @@ export function useStoreMoney(lang: SupportedLanguage, egpLabel: string) {
   };
 }
 
-export interface PaymentsInfo { enabled: boolean; country: string; mode?: 'test' | 'live'; currency?: string; currencies?: string[]; methods: { id: 'card' | 'wallet'; name: string }[] }
+export interface PaymentsInfo {
+  enabled: boolean; country: string; mode?: 'test' | 'live'; currency?: string; currencies?: string[]; methods: { id: 'card' | 'wallet'; name: string }[];
+  /** «بنك شام»: pay the store directly (InstaPay, bank transfer, wallet, cash on delivery). */
+  direct?: DirectMethod[];
+}
 /** Country-scoped, short-lived result. Changing country never reuses another country's eligibility. */
 export function usePayments(country = 'EG'): PaymentsInfo | null {
   const [info, setInfo] = useState<PaymentsInfo | null>(null);
@@ -95,7 +100,7 @@ export function usePayments(country = 'EG'): PaymentsInfo | null {
     setInfo(null);
     fetch(apiUrl(`/api/store/payments?country=${encodeURIComponent(country)}`), { signal: AbortSignal.any([controller.signal, AbortSignal.timeout(6000)]) })
       .then(async (r) => r.ok ? await r.json() as PaymentsInfo : disabled)
-      .then((d) => { if (!controller.signal.aborted) setInfo({ ...d, country, enabled: Boolean(d.enabled && d.methods?.length), methods: d.methods || [] }); })
+      .then((d) => { if (!controller.signal.aborted) setInfo({ ...d, country, enabled: Boolean(d.enabled && d.methods?.length), methods: d.methods || [], direct: Array.isArray(d.direct) ? d.direct.filter((m) => m && typeof m.id === 'string' && ['instapay', 'bank_transfer', 'wallet', 'cod'].includes(m.kind)).slice(0, 8) : [] }); })
       .catch(() => { if (!controller.signal.aborted) setInfo(disabled); });
     return () => controller.abort();
   }, [country]);

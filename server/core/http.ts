@@ -12,7 +12,8 @@ import { ShaheenMemory } from './memory';
 import { AssistantError, Orchestrator, publicEngine, validateChatInput, type ChatOutput, type StreamEvent } from './orchestrator';
 import { createNotifier } from './notify';
 import { runAdminAgent } from './adminAgent';
-import { createStore, type Store } from './store';
+import { createLedgerStore, createStore, type Store } from './store';
+import { BankService } from '../finance/bank';
 import { RateLimiter, clientKey } from './rateLimit';
 import { createSeoService } from '../seo/service';
 import { probeEngines } from '../shaheen';
@@ -55,7 +56,9 @@ export function createShamCore(options: CoreOptions = {}) {
     store = createStore({ SHAM_STORE: 'memory' });
   }
   const repo = new Repository(store, env);
-  const finance = new FinanceService(store, env, { fetch: options.fetch });
+  // «بنك شام»: the ledger reuses the community database when the rest of Core runs on temporary memory.
+  const finance = new FinanceService(options.store ? store : createLedgerStore(env, store), env, { fetch: options.fetch });
+  const bank = new BankService(finance, env, options.fetch || fetch);
   // Shared with the Shaheen chat router: outcomes + capacity parts, read by the maintenance agent.
   const runtime = options.runtime || new ShaheenRuntime(runningVersion(env));
   const orchestrator = new Orchestrator(repo, { env, fetch: options.fetch });
@@ -226,7 +229,7 @@ export function createShamCore(options: CoreOptions = {}) {
     next();
   });
 
-  admin.use('/finance', createFinanceRouter(finance));
+  admin.use('/finance', createFinanceRouter(finance, bank));
 
   // What this server learned (questions + answers, no visitor data): merged into
   // src/data/live/shaheen-memory.json by scripts/shaheen-memory every two hours.
@@ -534,5 +537,5 @@ export function createShamCore(options: CoreOptions = {}) {
     res.json(out);
   }));
 
-  return { assistant, admin, repo, orchestrator, store, runtime, memory, seo, finance };
+  return { assistant, admin, repo, orchestrator, store, runtime, memory, seo, finance, bank };
 }

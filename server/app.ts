@@ -62,6 +62,7 @@ app.use('/api', createCommunityRouter(community));
 app.use('/api', createContractsRouter(community));
 app.use('/api', createCheckoutRouter({
   finance: shamCore.finance,
+  bank: shamCore.bank,
   merchantProducts: async (skus) => { const ctx = await community.ready(); return ctx ? productsForCheckout(ctx, skus) : []; },
   onCheckout: async ({ ref, req, input, shippingUsd, total, currency, catalogLines }) => {
     const hasMerchantItems = input.items.some((i) => i.sku.startsWith('mp_'));

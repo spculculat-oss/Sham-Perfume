@@ -111,8 +111,17 @@ export interface MerchantRecord {
   updatedAt: string;
 }
 
+/**
+ * Account numbers and IBANs never stay in the browser: localStorage is readable by any script or person
+ * using this device, and the obfuscation above is not real encryption. Only the bank name and holder remain.
+ */
+function withoutAccountNumbers(merchant: MerchantRecord): MerchantRecord {
+  if (!merchant.bankingInfo) return merchant;
+  return { ...merchant, bankingInfo: { bankName: merchant.bankingInfo.bankName || '', accountHolder: merchant.bankingInfo.accountHolder || '', accountNumber: '' } };
+}
+
 export function getAllMerchants(): MerchantRecord[] {
-  return read(MERCHANT_STORAGE_KEY, []);
+  return read<MerchantRecord[]>(MERCHANT_STORAGE_KEY, []).map(withoutAccountNumbers);
 }
 
 export function getActiveMerchants(): MerchantRecord[] {
@@ -145,15 +154,15 @@ export function saveMerchant(merchant: MerchantRecord): MerchantRecord {
     });
   }
 
-  write(MERCHANT_STORAGE_KEY, all);
-  return all[existingIndex >= 0 ? existingIndex : all.length - 1];
+  write(MERCHANT_STORAGE_KEY, all.map(withoutAccountNumbers));
+  return withoutAccountNumbers(all[existingIndex >= 0 ? existingIndex : all.length - 1]);
 }
 
 export function updateMerchant(id: string, updates: Partial<MerchantRecord>): MerchantRecord | undefined {
   const all = getAllMerchants();
   const idx = all.findIndex(m => m.id === id);
   if (idx < 0) return undefined;
-  all[idx] = { ...all[idx], ...updates, updatedAt: new Date().toISOString() };
+  all[idx] = withoutAccountNumbers({ ...all[idx], ...updates, updatedAt: new Date().toISOString() });
   write(MERCHANT_STORAGE_KEY, all);
   return all[idx];
 }

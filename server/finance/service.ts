@@ -11,6 +11,7 @@ import type { Store } from '../core/store';
 import { availableMethods, emptyRegistration, paymentReadiness, providerConfiguration, readRegistration } from './payments';
 import { financePeriod, localDate } from './periods';
 import { COST_KINDS, financeId, makeReport, paymentPerformance } from './report';
+import { EXPENSE_CATEGORIES, type ExpenseCategory } from '../../src/finance/bankKinds';
 import type { EntryKind, FinanceAttempt, FinanceEntry, FinanceIssue, FinanceOrder, FinancePeriod, FinanceReport, FinanceRun, Mode, PeriodKind } from './types';
 
 type Env = Record<string, string | undefined>;
@@ -27,6 +28,8 @@ export class FinanceService {
   private clock: () => number;
   private fetch: typeof fetch;
   private running?: Promise<{ run: FinanceRun; reports: FinanceReport[] }>;
+  /** Extra audit checks registered by «بنك شام» (expiry, budgets, waiting transfers, overdue bills). */
+  readonly checks: ((flag: (code: string, condition: boolean, title: string, action: string, severity?: FinanceIssue['severity']) => Promise<void>) => Promise<void>)[] = [];
   constructor(readonly store: Store, readonly env: Env = process.env, options: { now?: () => number; fetch?: typeof fetch } = {}) {
     this.clock = options.now || Date.now; this.fetch = options.fetch || fetch;
     this.timeZone = env.SHAM_FINANCE_TIMEZONE?.trim() || 'Africa/Cairo';
@@ -35,6 +38,7 @@ export class FinanceService {
   /** An explicitly selected file adapter is still ephemeral on serverless platforms. */
   get persistent() { return this.store.persistent && !(this.store.kind === 'file' && (this.env.VERCEL || this.env.SHAM_SERVERLESS)); }
   private at() { return new Date(this.clock()).toISOString(); }
+  now() { return this.clock(); }
   async registration() { return await this.store.get('paymentRegistrations', 'kashier') || emptyRegistration(); }
   async saveRegistration(body: unknown) {
     const value = readRegistration(body, this.clock());
@@ -136,7 +140,8 @@ export class FinanceService {
       if (['refund', 'chargeback'].includes(kind) && amountMinor > sale.amountMinor) return error('AMOUNT_EXCEEDS_PAYMENT', 'المبلغ أكبر من تحصيل الطلب.');
     } else if (orderRef) return error('INVALID_EXPENSE', 'المصروف العام لا يرتبط بطلب؛ استخدم تكلفة أو رسوم للطلب.');
     const id = financeId('manual', b.idempotencyKey);
-    const entry: FinanceEntry = { id, kind, currency, amountMinor, mode, source: 'admin', at, recordedAt: this.at(), reason, ...(orderRef ? { orderRef } : {}) };
+    const category: ExpenseCategory | undefined = kind === 'expense' ? (EXPENSE_CATEGORIES.includes(b.category as ExpenseCategory) ? b.category as ExpenseCategory : 'other') : undefined;
+    const entry: FinanceEntry = { id, kind, currency, amountMinor, mode, source: 'admin', at, recordedAt: this.at(), reason, ...(orderRef ? { orderRef } : {}), ...(category ? { category } : {}) };
     if (!await this.store.create('financeEntries', id, entry)) {
       const old = await this.store.get('financeEntries', id);
       if (JSON.stringify({ ...old, recordedAt: '' }) !== JSON.stringify({ ...entry, recordedAt: '' })) return error('IDEMPOTENCY_CONFLICT', 'معرف القيد مستخدم لبيانات مختلفة.', 409);
@@ -187,7 +192,8 @@ export class FinanceService {
       if (!condition) return;
       const item = await this.issue(code, title, action, severity, undefined, true); active.add(item.id);
     };
-    for (const c of ready.checks) await flag(`CONFIG_${c.code}`, !c.ok, 'بيانات الدفع تحتاج مراجعة شاهين', c.message, ['DURABLE_LEDGER', 'WEBHOOK_URL'].includes(c.code) ? 'critical' : 'warning');
+    // A gateway is optional («بنك شام» collects directly): its settings are audited only once it is configured.
+    if (ready.configured) for (const c of ready.checks) await flag(`CONFIG_${c.code}`, !c.ok, 'بيانات الدفع تحتاج مراجعة شاهين', c.message, ['DURABLE_LEDGER', 'WEBHOOK_URL'].includes(c.code) ? 'critical' : 'warning');
     await flag('TEST_MODE', ready.mode === 'test', 'الدفع في وضع تجريبي وليس تحصيلاً حقيقياً', 'بعد اعتماد الحساب، استخدم مفاتيح الوضع الحي. لا تبدّل مفاتيح أو حساب تسوية تلقائياً.');
     const live = entries.filter((e) => e.mode === 'live');
     const reversed = new Set(live.flatMap((e) => e.reverses ? [e.id, e.reverses] : []));
@@ -201,6 +207,7 @@ export class FinanceService {
     await flag('GATEWAY_SLOW', performance.sufficientSample && (performance.p95Ms || 0) > 8000, 'بطء بوابة الدفع', 'راجع زمن الشبكة وتقارير البوابة؛ القياس لطلبات API وليس ضماناً لوقت إكمال العميل.');
     await flag('STALE_PENDING', sessions.some((s) => s.mode === 'live' && s.state !== 'failed' && this.clock() - Date.parse(s.at) > 86400_000 && !sales.some((e) => e.orderRef === s.ref)), 'جلسات معلقة لأكثر من يوم', 'شغّل المطابقة واقرأ حالة الجلسة من البوابة؛ لا تعتبر الطلب مدفوعاً أو ملغياً بالتخمين.');
     await flag('PAYMENT_RESEARCH_STALE', this.clock() - Date.parse(PAYMENT_RESEARCHED_AT) > 90 * 86400_000, 'مراجعة مصادر وسائل الدفع قديمة', 'راجع المصادر الرسمية وحدّث تاريخ البحث بعد مراجعة المحتوى فعلياً، وليس لمجرد نجاح فتح الرابط.');
+    for (const check of this.checks) await check(flag);
     for (const item of allIssues) if (item.automatic && !item.resolvedAt && !active.has(item.id)) await this.store.put('financeIssues', item.id, { ...item, resolvedAt: this.at() });
     return { readiness: ready, performance };
   }
