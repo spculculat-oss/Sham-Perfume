@@ -4,8 +4,11 @@ import type { SupportedLanguage } from '../types/i18n';
 import { getSavedPaymentMethods, type SavedPaymentMethod } from '../utils/customerPaymentVault';
 import {
   cardBrand,
+  cardEntryBlocked,
+  cardLiveCopy,
   formatCardNumber,
   formatExpiry,
+  inspectCardEntry,
   listInstrumentPulls,
   registerCard,
   registerWallet,
@@ -61,7 +64,9 @@ export function CheckoutPayPanel({
   const [error, setError] = useState('');
   const [receipt, setReceipt] = useState<InstrumentPull | null>(null);
   const digits = number.replace(/\D/g, '');
-  const brand = digits.length >= 2 ? cardBrand(digits) : undefined;
+  const live = inspectCardEntry(number, expiry);
+  const brand = live.brand || (digits.length >= 2 ? cardBrand(digits) : undefined);
+  const cardBlocked = cardEntryBlocked(number, expiry);
   const wallets = (countryPay(country)?.methods || []).filter((method) => method.kind !== 'card' && !['visa', 'mastercard', 'amex'].includes(method.id));
   const wallet = wallets.find((method) => method.id === walletId) || wallets[0];
 
@@ -112,6 +117,7 @@ export function CheckoutPayPanel({
       const code = err instanceof Error ? err.message : '';
       const text: Record<string, [string, string]> = {
         INVALID_NUMBER: ['رقم البطاقة غير مقبول.', 'That card number is not accepted.'],
+        TEST_NUMBER: ['وهمية. رقم تجريبي، ولن يُحفظ كبطاقة عميل.', 'Dummy. A test number is not saved as a customer card.'],
         INVALID_EXPIRY: ['تاريخ الانتهاء غير صالح.', 'The expiry date is not valid.'],
         INVALID_CVC: ['رمز الأمان غير مكتمل.', 'The security code is incomplete.'],
         INVALID_NAME: ['اكتب الاسم كما هو على البطاقة.', 'Enter the name on the card.'],
@@ -197,9 +203,12 @@ export function CheckoutPayPanel({
         <p className="text-[11px] font-bold text-stone-800">{t('بطاقة جديدة — خانات فعّالة', 'New card — live fields')}</p>
         <input required autoComplete="cc-name" placeholder={t('الاسم على البطاقة', 'Name on card')} value={name} onChange={(e) => setName(e.target.value)} className="w-full rounded-lg border bg-white px-2 py-1.5 text-xs" data-testid="checkout-card-name" />
         <span className="flex items-center rounded-lg border bg-white">
-          <input required inputMode="numeric" autoComplete="cc-number" placeholder="1234 1234 1234 1234" value={number} onChange={(e) => setNumber(formatCardNumber(e.target.value))} className="w-full bg-transparent px-2 py-1.5 font-mono text-xs outline-none" data-testid="checkout-card-number" />
+          <input required inputMode="numeric" autoComplete="cc-number" placeholder="1234 1234 1234 1234" value={number} onChange={(e) => setNumber(formatCardNumber(e.target.value))} className="w-full bg-transparent px-2 py-1.5 font-mono text-xs outline-none" data-testid="checkout-card-number" aria-describedby="checkout-card-live" />
           <span className="pe-2 text-[10px] font-bold text-stone-500">{brand ? BRAND_LABEL[brand] : ''}</span>
         </span>
+        {live.verdict !== 'empty' && (
+          <p id="checkout-card-live" role="status" data-testid="card-live-check" data-verdict={live.verdict} className={`text-[11px] ${cardBlocked ? 'text-red-700' : live.verdict === 'format_ok' ? 'text-sky-800' : 'text-stone-500'}`}>{cardLiveCopy(live.verdict, lang)}</p>
+        )}
         <div className="grid grid-cols-2 gap-2">
           <input required inputMode="numeric" autoComplete="cc-exp" placeholder="MM/YY" value={expiry} onChange={(e) => setExpiry(formatExpiry(e.target.value))} className="rounded-lg border bg-white px-2 py-1.5 font-mono text-xs" data-testid="checkout-card-expiry" />
           <input required inputMode="numeric" autoComplete="cc-csc" placeholder={t('رمز الأمان', 'Security code')} value={cvc} onChange={(e) => setCvc(e.target.value.replace(/\D/g, '').slice(0, 4))} className="rounded-lg border bg-white px-2 py-1.5 font-mono text-xs" data-testid="checkout-card-cvc" />
@@ -208,7 +217,7 @@ export function CheckoutPayPanel({
           <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} data-testid="checkout-card-consent" />
           <span>{t('احفظ البطاقة في سجل حسابي للشراء القادم. الرقم ورمز الأمان لا يُحفظان.', 'Save the card on my account for the next purchase. The number and security code are not stored.')}</span>
         </label>
-        <button type="submit" className="w-full rounded-xl bg-stone-900 py-2 text-xs font-bold text-white" data-testid="checkout-save-card">{t('احفظ البطاقة واستخدمها', 'Save the card and use it')}</button>
+        <button type="submit" disabled={cardBlocked} className="w-full rounded-xl bg-stone-900 py-2 text-xs font-bold text-white disabled:bg-stone-400" data-testid="checkout-save-card">{t('احفظ البطاقة واستخدمها', 'Save the card and use it')}</button>
       </form>
 
       <form onSubmit={saveWalletAndPull} className="space-y-2 rounded-xl border border-stone-200 bg-white p-3" data-testid="checkout-wallet-pull">
