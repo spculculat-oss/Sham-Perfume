@@ -484,9 +484,10 @@
    "needsApproval": true,
    "createdAt": "2026-10-20T08:42:15.253Z",
    "meeting": "2026-10-20",
-   "status": "open",
+   "status": "done",
    "issue": 169,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/169"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/169",
+   "closedAt": "2026-10-20T20:22:25Z"
   },
   {
    "id": "2026-10-20-3-معالجة-ملاحظات-الكتالوج-",
@@ -497,9 +498,10 @@
    "needsApproval": false,
    "createdAt": "2026-10-20T08:42:15.253Z",
    "meeting": "2026-10-20",
-   "status": "open",
+   "status": "done",
    "issue": 170,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/170"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/170",
+   "closedAt": "2026-10-20T19:56:51Z"
   }
  ],
  "toolGoals": {
