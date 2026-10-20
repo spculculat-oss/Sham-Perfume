@@ -18,6 +18,7 @@ import CommunityPanel from './CommunityPanel';
 import ShaheenGrowthPanel from './ShaheenGrowthPanel';
 import ShaheenOrgPanel from './ShaheenOrgPanel';
 import ShaheenPatrolPanel from './ShaheenPatrolPanel';
+import ShaheenOpsMapPanel from './ShaheenOpsMapPanel';
 import ShaheenCouncilPanel from './ShaheenCouncilPanel';
 import { ErrorBoundary } from '../utils/lazyRetry';
 import type {
@@ -115,7 +116,7 @@ export default function AdminApp() {
   useEffect(() => { document.documentElement.dir = 'rtl'; document.documentElement.lang = 'ar'; document.title = T('إدارة شام — Sham Core'); }, []);
 
   if (isStaticHosting) {
-    return <Shell><div className={`${card} max-w-lg mx-auto mt-24 text-center`}>{T('لوحة الإدارة تحتاج خادم شام (Node.js أو Vercel). نسخة GitHub Pages ثابتة ولا تحتوي على API.')}</div></Shell>;
+    return <Shell><div className={`${card} max-w-lg mx-auto mt-24 text-center`}>{T('لوحة الإدارة تحتاج خادم شام (Node.js أو Vercel). نسخة GitHub Pages ثابتة ولا تحتوي على API.')}<p className="mt-3 text-sm">{T('خريطة التشغيل وتقييم الأدوات متاحة على الموقع الأساسي من غير خادم:')} <a href="#ops" className="font-bold text-amber-800 underline">#ops</a></p></div></Shell>;
   }
 
   if (!authed) {
@@ -164,7 +165,7 @@ export default function AdminApp() {
           {tab === 'design' && <DesignStudioPanel />}
           {tab === 'emails' && <EmailsPanel />}
           {tab === 'doctor' && <DoctorPanel />}
-          {tab === 'supervisor' && <><ShaheenOrgPanel /><ShaheenPatrolPanel /><ShaheenCouncilPanel /><SupervisorPanel /></>}
+          {tab === 'supervisor' && <><ShaheenOpsMapPanel /><ShaheenOrgPanel /><ShaheenPatrolPanel /><ShaheenCouncilPanel /><SupervisorPanel /></>}
           {tab === 'seo' && <SeoPanel />}
           {tab === 'sandbox' && <SandboxPanel />}
           {tab === 'updates' && <UpdatesPanel />}

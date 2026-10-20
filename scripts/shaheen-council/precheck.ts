@@ -10,8 +10,13 @@
  */
 import { BOTS, LEGAL_DECISIONS, botOf, type BotId } from '../../src/utils/shaheenOrg';
 import { RERUNNABLE, type Action, type Rerunnable } from './council';
+import { failureCauseAr } from '../../src/utils/opsMap';
 
-export interface RunInfo { conclusion: string | null; status: string; at: string; url?: string }
+export interface RunInfo {
+  conclusion: string | null; status: string; at: string; url?: string;
+  /** When it failed: the first failed step and the run's own error annotations (runs.ts → failureDetail). */
+  failedStep?: string; errors?: string[];
+}
 export type BotStatus = 'ok' | 'warn' | 'fail' | 'idle';
 export interface BotCheck {
   id: BotId;
@@ -24,6 +29,8 @@ export interface BotCheck {
   ideas: string[];
   /** Decisions of «المدير القانوني» this bot works under (binding — not problems to fix). */
   legal?: string[];
+  /** Why the last run failed, in plain Arabic (src/utils/opsMap.ts → failureCauseAr). */
+  cause?: string[];
 }
 export interface Handoff { from: BotId; to: BotId; textAr: string; action?: Action }
 export interface Pressure { active: boolean; reasons: string[] }
@@ -252,7 +259,12 @@ export function runPrecheck(reports: Record<string, unknown>, runs: Record<strin
     const run = bot.workflow ? runs[bot.workflow] : undefined;
     if (run) {
       c.lastRun = run;
-      if (run.conclusion === 'failure') { raise('fail'); c.problems.push('آخر تشغيل فشل'); c.fixes.push('افتح سجل التشغيل وأصلح سبب الفشل'); }
+      if (run.conclusion === 'failure') {
+        raise('fail'); c.problems.push('آخر تشغيل فشل');
+        const why = failureCauseAr(run.failedStep, run.errors);
+        if (why.length) c.cause = why;
+        c.fixes.push(why.length ? `أصلح سبب الفشل: ${why[0]}` : 'افتح سجل التشغيل وأصلح سبب الفشل');
+      }
       else if (run.conclusion === 'cancelled' || run.conclusion === 'timed_out') { raise('warn'); c.problems.push(run.conclusion === 'timed_out' ? 'آخر تشغيل خلص وقته' : 'آخر تشغيل اتلغى'); }
       else if (run.conclusion === 'success' || run.status !== 'completed') raise('ok');
     }
