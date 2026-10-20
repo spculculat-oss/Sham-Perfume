@@ -144,7 +144,7 @@ export interface MailCounts { inbox: number; unread: number; drafts: number; tra
 export interface MailSendResult { id: string; delivered: number; missed: string[]; external?: { to: string[]; status: 'none' | 'sent' | 'failed' | 'unconfigured' } }
 export interface AuthResult { token: string; expiresAt: string; me: Me }
 /** Two-factor accounts: the password alone opens a short pending login (Google/Meta style). */
-export interface PendingLogin { pending: true; pendingToken: string; expiresIn: number }
+export interface PendingLogin { pending: true; pendingToken: string; expiresIn: number; method?: 'totp' | 'phone' }
 export interface SessionInfo { id: string; agent: string; ip: string; createdAt: string; lastUsedAt: string; current: boolean }
 
 /* Passkeys (WebAuthn): base64url on the wire, ArrayBuffer in the browser. */

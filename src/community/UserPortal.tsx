@@ -440,6 +440,36 @@ function Security({ lang, me, toast, go }: { lang: Lang; me: Me; toast: (s: stri
     catch (e) { toast(errorText(e, lang)); } finally { setBusy(''); }
   };
 
+  /* Phone 2FA (WhatsApp/SMS) — optional, suggested like Google prompt */
+  const [phoneMethod, setPhoneMethod] = useState<'sms'|'whatsapp'>('whatsapp');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phonePw, setPhonePw] = useState('');
+  const [phoneCode, setPhoneCode] = useState('');
+  const [phoneStage, setPhoneStage] = useState<'idle'|'code'>('idle');
+  const startPhone2fa = async () => {
+    setBusy('phone-setup');
+    try {
+      const res = await cx<{ ok: boolean; method: string; phone: string }>('/community/me/2fa/phone/setup', { body: { phone: phoneNumber, method: phoneMethod, password: phonePw } });
+      setPhoneStage('code');
+      toast(t('اتبع الكود على ' + (phoneMethod==='whatsapp'?'واتساب':'الموبايل') + ' ' + res.phone, `Code sent via ${res.method} to ${res.phone}`));
+    } catch (e) { toast(errorText(e, lang)); } finally { setBusy(''); }
+  };
+  const confirmPhone2fa = async () => {
+    setBusy('phone-confirm');
+    try {
+      await cx('/community/me/2fa/phone/confirm', { body: { code: phoneCode } });
+      setPhoneStage('idle'); setPhoneNumber(''); setPhonePw(''); setPhoneCode('');
+      await refreshMe(); toast(t('تم تفعيل التحقق بخطوتين عبر الهاتف ✅', 'Phone 2-step is on ✅'));
+    } catch (e) { toast(errorText(e, lang)); } finally { setBusy(''); }
+  };
+  const disablePhone2fa = async () => {
+    const password = prompt(t('لتأكيد إيقاف تحقق الهاتف اكتب كلمة المرور:', 'Type your password to turn phone 2-step off:'));
+    if (!password) return;
+    setBusy('phone-disable');
+    try { await cx('/community/me/2fa/phone/disable', { body: { password } }); await refreshMe(); toast(t('تم إيقاف تحقق الهاتف', 'Phone 2-step is off')); }
+    catch (e) { toast(errorText(e, lang)); } finally { setBusy(''); }
+  };
+
   return (
     <div className="space-y-4">
       {/* Security Checkup — the score the rest of this page improves. */}
@@ -543,6 +573,40 @@ function Security({ lang, me, toast, go }: { lang: Lang; me: Me; toast: (s: stri
           <div className="flex items-center justify-between gap-3">
             <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">{t('مفعّل ✅', 'On ✅')}</span>
             <Btn small variant="soft" busy={busy === 'tfa-disable'} onClick={() => void disableTfa()}>{t('إيقاف', 'Turn off')}</Btn>
+          </div>
+        )}
+      </Card>
+
+      <Card className="p-5">
+        <h3 className="mb-1 flex items-center gap-2 font-bold"><Smartphone className="h-4 w-4 text-emerald-600" />{t('التحقق بالهاتف (واتساب / SMS)', 'Phone verification (WhatsApp / SMS)')}</h3>
+        <p className="mb-3 text-xs text-stone-500">{t('مستوى حماية إضافي مقترح — زي جوجل: كود 6 أرقام يوصلك على واتساب أو SMS. مش إلزامي بس مقترح بشدة.', 'Extra protection — like Google: a 6-digit code to your WhatsApp or SMS. Optional but strongly suggested.')}</p>
+        {(me as any).phone2fa?.enabled ? (
+          <div className="flex items-center justify-between gap-3">
+            <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">{t('مفعّل ✅ عبر', 'On ✅ via')} {(me as any).phone2fa?.method === 'whatsapp' ? 'WhatsApp' : 'SMS'}</span>
+            <Btn small variant="soft" busy={busy === 'phone-disable'} onClick={() => void disablePhone2fa()}>{t('إيقاف', 'Turn off')}</Btn>
+          </div>
+        ) : phoneStage === 'code' ? (
+          <div className="flex flex-wrap items-center gap-2">
+            <input className={`${inputClass} w-32 text-center tracking-[0.35em]`} inputMode="numeric" maxLength={6} placeholder="••••••" value={phoneCode} onChange={(e) => setPhoneCode(e.target.value.replace(/\D/g, ''))} dir="ltr" />
+            <Btn small busy={busy === 'phone-confirm'} disabled={phoneCode.length !== 6} onClick={() => void confirmPhone2fa()}>{t('تأكيد التفعيل', 'Confirm')}</Btn>
+            <Btn small variant="soft" onClick={() => setPhoneStage('idle')}>{t('رجوع', 'Back')}</Btn>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {!me.totp && (me as any).phone2fa?.enabled === false && (
+              <p className="rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-900">{t('💡 مقترح: فعّل التحقق بخطوتين عبر واتساب/SMS لحماية أقوى — زي ما جوجل وآبل بيعملوا.', '💡 Suggested: turn on phone 2-step via WhatsApp/SMS for stronger protection — like Google and Apple do.')}</p>
+            )}
+            <div className="flex flex-wrap items-center gap-2">
+              <select className={`${inputClass} w-36`} value={phoneMethod} onChange={(e) => setPhoneMethod(e.target.value as any)}>
+                <option value="whatsapp">WhatsApp</option>
+                <option value="sms">SMS</option>
+              </select>
+              <input className={`${inputClass} w-48`} placeholder={t('رقم الهاتف مع كود البلد', 'Phone with country code')} value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} dir="ltr" />
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <input className={`${inputClass} w-56`} type="password" placeholder={t('كلمة المرور للتأكيد', 'Password to confirm')} value={phonePw} onChange={(e) => setPhonePw(e.target.value)} dir="ltr" />
+              <Btn small busy={busy === 'phone-setup'} disabled={!phoneNumber || !phonePw} onClick={() => void startPhone2fa()}>{t('إرسال الكود', 'Send code')}</Btn>
+            </div>
           </div>
         )}
       </Card>

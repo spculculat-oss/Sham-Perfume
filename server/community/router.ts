@@ -217,6 +217,15 @@ export function createCommunityRouter(community: Community, options: { env?: Env
   router.post('/community/me/2fa/setup', member(async (ctx, u, req) => svc.totpSetup(ctx, u.id, req.body?.password)));
   router.post('/community/me/2fa/confirm', member(async (ctx, u, req) => svc.totpConfirm(ctx, u.id, req.body?.code)));
   router.post('/community/me/2fa/disable', member(async (ctx, u, req) => svc.totpDisable(ctx, u.id, req.body?.password, req.body?.code)));
+  /* Phone 2FA (WhatsApp/SMS) — optional, suggested (Google prompt style) */
+  router.post('/community/me/2fa/phone/setup', member(async (ctx, u, req) => svc.setupPhone2fa(ctx, u.id, req.body || {})));
+  router.post('/community/me/2fa/phone/confirm', member(async (ctx, u, req) => svc.confirmPhone2fa(ctx, u.id, req.body?.code)));
+  router.post('/community/me/2fa/phone/disable', member(async (ctx, u, req) => svc.disablePhone2fa(ctx, u.id, req.body?.password, req.body?.code)));
+  router.post('/community/auth/login/phone/request', limitedAuth(open((ctx, req) => svc.requestPhoneLoginCode(ctx, String(req.body?.pendingToken || '')))));
+  router.post('/community/auth/login/phone/verify', limitedAuth(open((ctx, req) => svc.verifyPhoneLoginCode(ctx, req.body || {}))));
+  /* OAuth (Google/Facebook) — start with the account you already have */
+  router.post('/community/auth/google', limitedAuth(open((ctx, req) => svc.loginWithGoogle(ctx, req.body || {}, agent(req), ip(req)))));
+  router.post('/community/auth/facebook', limitedAuth(open((ctx, req) => svc.loginWithFacebook(ctx, req.body || {}, agent(req), ip(req)))));
 
   /* ---------------------------------------------- user portal ---------------------------------------------- */
   router.get('/community/me/recipes', member((ctx, u) => svc.myRecipes(ctx, u.id)));
