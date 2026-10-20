@@ -28,6 +28,7 @@ import {
 import type { SupportedLanguage } from '../types/i18n';
 import { getAllOrders, getOrdersByMerchant, type MediationOrderRecord } from '../utils/merchantDataStore';
 import { isRTL } from '../لغات/localizedContent';
+import { formatLocalizedNumber } from '../لغات/numerals';
 
 export interface CategorySalesData {
   id: 'perfumes' | 'oils' | 'raw_materials';
@@ -292,7 +293,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
           <div className="text-stone-300 flex justify-between gap-4 font-mono-numbers">
             <span>{chartL10n('revenue_label', currentLang)}</span>
             <span className="font-extrabold text-white">
-              {item.value.toLocaleString()} {currencyCode}
+              {formatLocalizedNumber(currentLang, item.value)} {currencyCode}
             </span>
           </div>
           <div className="text-stone-300 flex justify-between gap-4 font-mono-numbers">
@@ -440,7 +441,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
             {chartL10n('total_sales', currentLang)}
           </span>
           <span className="text-lg font-extrabold text-stone-900 font-mono-numbers mt-0.5 block">
-            {totalRevenue.toLocaleString()}{' '}
+            {formatLocalizedNumber(currentLang, totalRevenue)}{' '}
             <span className="text-xs text-stone-500 font-medium">{currencyCode}</span>
           </span>
         </div>
@@ -450,7 +451,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
             {chartL10n('units_sold', currentLang)}
           </span>
           <span className="text-lg font-extrabold text-stone-900 font-mono-numbers mt-0.5 block">
-            {totalUnits.toLocaleString()}{' '}
+            {formatLocalizedNumber(currentLang, totalUnits)}{' '}
             <span className="text-xs text-stone-500 font-medium">{chartL10n('units_suffix', currentLang)}</span>
           </span>
         </div>
@@ -511,8 +512,8 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
                 </span>
                 <span className="text-base font-extrabold text-stone-900 font-mono-numbers">
                   {metric === 'revenue'
-                    ? totalRevenue.toLocaleString()
-                    : totalUnits.toLocaleString()}
+                    ? formatLocalizedNumber(currentLang, totalRevenue)
+                    : formatLocalizedNumber(currentLang, totalUnits)}
                 </span>
                 <span className="text-[10px] text-stone-400 font-medium">
                   {metric === 'revenue' ? currencyCode : chartL10n('units_suffix', currentLang)}
@@ -630,7 +631,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
                     {item.tagline}
                   </span>
                   <span className="font-bold text-stone-900">
-                    {item.value.toLocaleString()} {currencyCode}
+                    {formatLocalizedNumber(currentLang, item.value)} {currencyCode}
                   </span>
                 </div>
 
@@ -641,7 +642,7 @@ export const StoreSalesCategoryChart: React.FC<Props> = ({
                       {chartL10n('avg_ticket', currentLang)}
                     </span>
                     <span className="font-extrabold text-stone-900 font-mono-numbers">
-                      {avgUnitPrice.toLocaleString()} {currencyCode}
+                      {formatLocalizedNumber(currentLang, avgUnitPrice)} {currencyCode}
                     </span>
                   </div>
                 )}

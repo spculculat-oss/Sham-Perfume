@@ -39,6 +39,7 @@ import {
 } from '../utils/merchantDataStore';
 import { PLATFORM_MARGIN_PERCENT, calculateRetailPrice } from '../config/margin';
 import { StoreSalesCategoryChart } from './StoreSalesCategoryChart';
+import { formatLocalizedNumber, numeralLocaleTag } from '../لغات/numerals';
 
 const S: Record<string, LText> = {
   title: { ar:'لوحة التاجر', en:'Merchant Workspace', fr:'Espace Marchand', es:'Espacio Comerciante', it:'Spazio Mercante', de:'Händler Arbeitsbereich', ru:'Рабочее место Торговца', zh:'商家工作空间', tr:'Ticaretçi Çalışma Alanı', fa:'فضای کاری تجار' },
@@ -278,7 +279,7 @@ export const MerchantWorkspace: React.FC<{
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {[
                   { label:L('stats_orders'), value:totalOrders, color:'bg-amber-50 border-amber-200/60 text-amber-900', icon:ShoppingBag },
-                  { label:L('stats_revenue'), value:totalRevenue.toLocaleString()+' '+CUR, color:'bg-emerald-50 border-emerald-200/60 text-emerald-900', icon:DollarSign },
+                  { label:L('stats_revenue'), value:formatLocalizedNumber(currentLang, totalRevenue)+' '+CUR, color:'bg-emerald-50 border-emerald-200/60 text-emerald-900', icon:DollarSign },
                   { label:L('stats_products'), value:`${approvedCount}/${totalProducts}`, color:'bg-blue-50 border-blue-200/60 text-blue-900', icon:Package },
                   { label:L('stats_margin'), value:`${PLATFORM_MARGIN_PERCENT}%`, color:'bg-purple-50 border-purple-200/60 text-purple-900', icon:TrendingUp },
                 ].map(s => (
@@ -338,27 +339,27 @@ export const MerchantWorkspace: React.FC<{
                             }`}>{L(`order_${order.status}` as keyof typeof S)}</span>
                           </div>
                           <div className="text-right text-xs text-stone-500">
-                            {new Date(order.createdAt).toLocaleDateString()}
+                            {new Date(order.createdAt).toLocaleDateString(numeralLocaleTag(currentLang))}
                           </div>
                         </div>
                         <div className="space-y-1 text-sm">
                           {order.items.map(item => (
                             <div key={item.productId} className="flex justify-between">
                               <span className="text-stone-700">{item.productNameAr} × {item.qty}</span>
-                              <span className="font-mono text-stone-600">{item.totalRetail.toLocaleString()} {CUR}</span>
+                              <span className="font-mono text-stone-600">{formatLocalizedNumber(currentLang, item.totalRetail)} {CUR}</span>
                             </div>
                           ))}
                           <div className="border-t border-stone-200 mt-2 pt-2 flex justify-between font-bold">
                             <span>{L('order_total_retail')}:</span>
-                            <span className="text-emerald-700">{order.subtotalRetail.toLocaleString()} {CUR}</span>
+                            <span className="text-emerald-700">{formatLocalizedNumber(currentLang, order.subtotalRetail)} {CUR}</span>
                           </div>
                           <div className="flex justify-between text-xs text-stone-500">
                             <span>{L('order_platform_revenue')}:</span>
-                            <span className="text-amber-700 font-bold">{order.totalPlatformRevenue.toLocaleString()} {CUR}</span>
+                            <span className="text-amber-700 font-bold">{formatLocalizedNumber(currentLang, order.totalPlatformRevenue)} {CUR}</span>
                           </div>
                           <div className="flex justify-between text-xs text-stone-500">
                             <span>{L('order_cost_to_merchant')}:</span>
-                            <span className="text-blue-700 font-bold">{order.subtotalCost.toLocaleString()} {CUR}</span>
+                            <span className="text-blue-700 font-bold">{formatLocalizedNumber(currentLang, order.subtotalCost)} {CUR}</span>
                           </div>
                         </div>
                         {order.status !== 'completed' && order.status !== 'cancelled' && (
@@ -508,22 +509,22 @@ export const MerchantWorkspace: React.FC<{
                             'bg-amber-100 text-amber-800'
                           }`}>{L(`order_${order.status}` as keyof typeof S)}</span>
                         </div>
-                        <span className="text-xs text-stone-500">{new Date(order.createdAt).toLocaleDateString()}</span>
+                        <span className="text-xs text-stone-500">{new Date(order.createdAt).toLocaleDateString(numeralLocaleTag(currentLang))}</span>
                       </div>
                       <div className="space-y-1 text-sm">
                         {order.items.map(item => (
                           <div key={item.productId} className="flex justify-between">
                             <span className="text-stone-700">{item.productNameAr} × {item.qty} {item.unit}</span>
-                            <span className="font-mono text-stone-600">{item.totalRetail.toLocaleString()} {CUR}</span>
+                            <span className="font-mono text-stone-600">{formatLocalizedNumber(currentLang, item.totalRetail)} {CUR}</span>
                           </div>
                         ))}
                         <div className="border-t border-stone-200 mt-2 pt-2 flex justify-between font-bold text-sm">
                           <span>{L('order_total_retail')}:</span>
-                          <span className="text-emerald-700">{order.subtotalRetail.toLocaleString()} {CUR}</span>
+                          <span className="text-emerald-700">{formatLocalizedNumber(currentLang, order.subtotalRetail)} {CUR}</span>
                         </div>
                         <div className="flex justify-between text-xs text-stone-500 mt-1">
-                          <span>{L('order_platform_revenue')}: <span className="text-amber-700 font-bold">{order.totalPlatformRevenue.toLocaleString()} {CUR}</span></span>
-                          <span>{L('order_cost_to_merchant')}: <span className="text-blue-700 font-bold">{order.subtotalCost.toLocaleString()} {CUR}</span></span>
+                          <span>{L('order_platform_revenue')}: <span className="text-amber-700 font-bold">{formatLocalizedNumber(currentLang, order.totalPlatformRevenue)} {CUR}</span></span>
+                          <span>{L('order_cost_to_merchant')}: <span className="text-blue-700 font-bold">{formatLocalizedNumber(currentLang, order.subtotalCost)} {CUR}</span></span>
                         </div>
                       </div>
                       {order.status !== 'completed' && order.status !== 'cancelled' && (

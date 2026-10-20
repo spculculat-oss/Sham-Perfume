@@ -30,6 +30,7 @@ import {
 } from '../utils/merchantDataStore';
 import { PLATFORM_MARGIN_PERCENT } from '../config/margin';
 import { StoreSalesCategoryChart } from './StoreSalesCategoryChart';
+import { formatLocalizedNumber } from '../لغات/numerals';
 
 const S: Record<string, LText> = {
   page_title: { ar:'لوحة تحكم الإدارة — التجار والطلبات', en:'Admin Dashboard — Merchants & Orders', fr:'Tableau de bord Admin — Marchands', es:'Panel de Admin — Mercaderes', it:'Dashboard Amministratore — Mercanti', de:'Admin-Dashboard — Händler', ru:'Панель администратора — Торговцы', zh:'管理员面板 — 商家', tr:'Yönetici Paneli — Ticaretçiler', fa:'پنل مدیریت — تجار' },
@@ -220,7 +221,7 @@ export const AdminMerchantManagement: React.FC<{
       <td className="py-3 px-4 text-xs font-mono text-stone-600">{m.marginPercent}%</td>
       <td className="py-3 px-4 text-center text-sm">{m.totalProducts}</td>
       <td className="py-3 px-4 text-center text-sm">{m.totalOrders}</td>
-      <td className="py-3 px-4 text-right text-sm font-mono">{m.totalRevenue.toLocaleString()}</td>
+      <td className="py-3 px-4 text-right text-sm font-mono">{formatLocalizedNumber(currentLang, m.totalRevenue)}</td>
       <td className="py-3 px-4 text-center">
         <div className="flex items-center justify-center gap-1">
           {m.channels.email ? <Mail className="w-3 h-3 text-blue-600"/> : <Mail className="w-3 h-3 text-stone-300"/>}
@@ -293,7 +294,7 @@ export const AdminMerchantManagement: React.FC<{
                 <div key={l} className="flex justify-between items-center py-1 border-b border-stone-100 last:border-0">
                   <span className="text-xs font-bold text-stone-500">{l}</span>
                   <span className="text-sm font-bold text-stone-800">
-                    {typeof v === 'number' && v > 0 ? v.toLocaleString() : v}
+                    {typeof v === 'number' && v > 0 ? formatLocalizedNumber(currentLang, v) : v}
                     {String(l).includes('revenue') ? ' '+CUR : ''}
                   </span>
                 </div>
@@ -390,7 +391,7 @@ export const AdminMerchantManagement: React.FC<{
                       <div><span className="text-amber-200/60 text-[10px] block">{L('margin_label')}</span><span className="font-bold text-lg">{merchant!.marginPercent}%</span></div>
                       <div><span className="text-amber-200/60 text-[10px] block">{L('stats_products')}</span><span className="font-bold text-lg">{merchant!.totalProducts}</span></div>
                       <div><span className="text-amber-200/60 text-[10px] block">{uiLabel('requests_col', currentLang)}</span><span className="font-bold text-lg">{merchant!.totalOrders}</span></div>
-                      <div><span className="text-amber-200/60 text-[10px] block">{L('stats_total_revenue')}</span><span className="font-bold text-lg">{merchant!.totalRevenue.toLocaleString()}</span></div>
+                      <div><span className="text-amber-200/60 text-[10px] block">{L('stats_total_revenue')}</span><span className="font-bold text-lg">{formatLocalizedNumber(currentLang, merchant!.totalRevenue)}</span></div>
                     </div>
                     <div className="mt-4 p-3 rounded-lg bg-white/10 border border-amber-500/30 grid grid-cols-3 gap-2 text-center">
                       <div className="text-xs text-amber-200/70">{L('margin_to_merchant')}</div>
@@ -550,8 +551,8 @@ export const AdminMerchantManagement: React.FC<{
                               }`}>{L(`order_status_${o.status}` as keyof typeof S)}</span>
                             </div>
                             <div className="text-right font-mono text-xs">
-                              <div>{uiLabel('payment', currentLang)}: {o.subtotalRetail.toLocaleString()}</div>
-                              <div className="text-stone-500">{uiLabel('platform_profit', currentLang)}: {o.totalPlatformRevenue.toLocaleString()}</div>
+                              <div>{uiLabel('payment', currentLang)}: {formatLocalizedNumber(currentLang, o.subtotalRetail)}</div>
+                              <div className="text-stone-500">{uiLabel('platform_profit', currentLang)}: {formatLocalizedNumber(currentLang, o.totalPlatformRevenue)}</div>
                             </div>
                             <div className="flex items-center gap-1">
                               {o.status==='pending' && <button onClick={()=>updateOrderStatusHandler(o.id,'confirmed')} className="p-1 rounded hover:bg-emerald-100"><CheckCircle className="w-3 h-3 text-emerald-600"/></button>}

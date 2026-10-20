@@ -13,6 +13,7 @@ import { requestDirectPurchase } from '../utils/directPurchase';
 import { useStoreMoney } from '../utils/storeCheckout';
 import { LegalDisclaimer } from './LegalDisclaimer';
 import { ProductReviewsSection } from './ProductReviewsSection';
+import { localLongevity } from '../لغات/longevity';
 
 /** كل نص في صفحة العطر — من src/لغات/storeL10n.ts بلغة الزائر (والإنجليزية كأرضية، لا عربية لغير العربي). */
 function detailLabels(lang: SupportedLanguage) {
@@ -32,22 +33,6 @@ function detailLabels(lang: SupportedLanguage) {
 interface Props { productId: number; currentLang: SupportedLanguage; onClose?: () => void; onAddToCart?: (product: StoreProduct) => void }
 
 /** How close two products are (same family, gender, brand, price band) for «قد يعجبك أيضاً». */
-/** The catalogue stores longevity in English («Lasting (6-8 hours)», «Moderate»): show it in the visitor's language. */
-export function localLongevity(value: string, lang: SupportedLanguage): string {
-  const t = makeStoreT(lang);
-  const range = value.match(/(\d+)\s*[-–]\s*(\d+)\s*h/i);
-  if (/^\s*lasting/i.test(value) && range) {
-    let hours = `${storeNumber(Number(range[1]), lang)}–${storeNumber(Number(range[2]), lang)}`;
-    try {
-      const fmt = new Intl.NumberFormat(lang, { style: 'unit', unit: 'hour', unitDisplay: 'long' }) as Intl.NumberFormat & { formatRange?: (a: number, b: number) => string };
-      if (fmt.formatRange) hours = fmt.formatRange(Number(range[1]), Number(range[2])).replace(/\d+/g, (n) => storeNumber(Number(n), lang)); // the store's own digits
-    } catch { /* unknown locale: plain digits */ }
-    return `${t('rv_lon_long')} · ${hours}`;
-  }
-  if (/^\s*moderate\s*$/i.test(value)) return t('rv_lon_moderate');
-  return value;
-}
-
 const closeness = (a: StoreProduct, b: StoreProduct) =>
   b.families.filter((f) => a.families.includes(f)).length * 3 + (a.gender && a.gender === b.gender ? 2 : 0) +
   (a.brand && a.brand === b.brand ? 1 : 0) + (Math.abs(a.price - b.price) <= a.price * 0.3 ? 1 : 0);
