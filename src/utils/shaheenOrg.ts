@@ -35,7 +35,7 @@ export type BotId =
   | 'council' | 'secretary' | 'precheck' | 'patrol' | 'finance' | 'legal'
   | 'contracts'
   | 'scout' | 'importer' | 'images' | 'catalog' | 'product_pages' | 'store_advisor'
-  | 'news' | 'seo'
+  | 'news' | 'seo' | 'librarian'
   | 'chat' | 'languages' | 'design_audit' | 'design_expert' | 'visitor_tour' | 'inspect'
   | 'school' | 'doctor' | 'verifier' | 'live_check' | 'keys' | 'intake' | 'studio_bridge' | 'studio_zip' | 'deploy' | 'admin_agent';
 
@@ -58,6 +58,7 @@ export interface Bot {
 }
 
 export const BOTS: Bot[] = [
+  { id: 'librarian', nameAr: 'أمين مكتبة العطور', nameEn: 'Perfume librarian', dept: 'content', dutiesAr: 'ينظم خطط التأليف المستقل وسجلات الأدلة؛ الاعتماد العلمي والقانوني واعتماد شاهين مطلوبون لكل نسخة قبل النشر. مساعد محلي عند الطلب لفهرسة مراجع العطور وتصنيفها والبحث فيها وتصدير بياناتها. موضعه مبدئي تحت إشراف شاهين؛ لا يرفع كتباً محمية ولا يدّعي وجود نسخ أو ترجمات دون ترخيص.' },
   // ── Leadership ──
   { id: 'council', nameAr: 'مجلس شاهين (الاجتماع اليومي)', nameEn: "Shaheen's council (daily meeting)", dept: 'leadership', workflow: 'shaheen-council.yml', report: 'shaheen-council.json', everyHours: 24, aiTools: ['shaheen_council'], dutiesAr: 'يجمع رؤساء الأقسام كل يوم 10:15 الصبح (بعد تجديد باقة الذكاء الاصطناعي)، يكتب المحضر، ينفذ الآمن ويحوّل الباقي لمهام تطوير.' },
   { id: 'secretary', nameAr: 'السكرتير — مشرف شاهين', nameEn: 'Secretary — Shaheen\'s supervisor', dept: 'leadership', workflow: 'shaheen-news.yml', report: 'ai-supervisor.json', everyHours: 12, dutiesAr: 'يقيس كل أداة ذكاء اصطناعي ويكتب لها توجيهات، يجهز جدول الأعمال، وينوب عن شاهين في الاجتماع وقت الضغط أو لو مفيش محرك ذكاء اصطناعي.' },
@@ -124,6 +125,9 @@ export const LEGAL_DECISIONS: LegalDecision[] = [
 /** Who helps whom: the cooperation map (from → to, and why). */
 export interface Link { from: BotId; to: BotId; whyAr: string }
 export const LINKS: Link[] = [
+  { from: 'librarian', to: 'council', whyAr: 'شاهين يراجع موضع المكتبة وتطويرها؛ الفهرسة محلية عند الطلب' },
+  { from: 'legal', to: 'librarian', whyAr: 'يراجع حقوق المصادر والاقتباس والترجمة لكل نسخة قبل النشر؛ لا تعتبر الخطة أو الفحص الآلي موافقة قانونية' },
+  { from: 'languages', to: 'librarian', whyAr: 'تعريب بيانات الفهرس دون ادعاء ترجمة الكتب' },
   { from: 'finance', to: 'secretary', whyAr: 'حالة الفحص المنقحة فقط؛ الأرقام والطلبات تبقى خاصة' },
   { from: 'finance', to: 'council', whyAr: 'تصعيد أعطال الدفع والتسجيل للمراجعة دون أسرار أو تحويل أموال' },
   { from: 'keys', to: 'finance', whyAr: 'جاهزية إعدادات الخادم؛ اعتماد الحساب قرار صاحب المتجر' },
