@@ -275,7 +275,11 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
         const picks = canAnswerFromMemory(error) && shopping ? await catalog(text, options.language).catch(() => undefined) : undefined;
         if (generation !== token) return false;
         // «مكتبة شاهين»: no server and nothing close in memory — what he knows from his lessons and encyclopaedia.
-        const known = !picks && !shopping && canAnswerFromMemory(error) && memory.library ? await memory.library(text, options.language).catch(() => undefined) : undefined;
+        const offline = !picks && !shopping && canAnswerFromMemory(error);
+        let known = offline && memory.library ? await memory.library(text, options.language).catch(() => undefined) : undefined;
+        if (generation !== token) return false;
+        // «باحث شاهين»: not in his library either — he looks it up in open sources and answers from what he read.
+        if (!known && offline && memory.research) known = await memory.research(text, options.language).catch(() => undefined);
         if (generation !== token) return false;
         if (known) {
           publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {

@@ -22,6 +22,7 @@ import type { ShaheenRuntime } from './core/maintenance';
 import type { ShaheenMemory } from './core/memory';
 import { isPersonal, isTimeBound, offlineNote } from '../src/utils/shaheenMemory';
 import { libraryAnswer, type LibrarySources } from '../src/utils/shaheenLibrary';
+import { research as lookUp, RESEARCH_USER_AGENT, researchAnswer, type Research } from '../src/utils/webResearch';
 import { questionIntents } from '../src/utils/shaheenTools';
 import { RAW_MATERIALS_DATABASE } from '../src/data/rawMaterials';
 import { quickAnswer } from '../src/utils/shaheenQuickApps';
@@ -322,7 +323,9 @@ export async function probeEngines(settings: ShaheenSettings, options: { env?: E
 /** Public routes: GET /api/models and POST /api/chat (rate limited, settings from the shared store). */
 export function createShaheenRouter(options: { repo: Repository; env?: Environment; fetch?: typeof fetch; runtime?: ShaheenRuntime; memory?: ShaheenMemory;
   /** «مكتبة شاهين»: what he knows without any AI (tests inject it; default: lessons, materials encyclopaedia, memory). */
-  library?: () => Promise<LibrarySources> }) {
+  library?: () => Promise<LibrarySources>;
+  /** «باحث شاهين»: looks a new question up in open sources (tests inject it; default: Wikipedia's public API). */
+  research?: (question: string, lang: string) => Promise<Research | undefined> }) {
   const env = options.env || process.env;
   const router = express.Router();
   const capacity = capacityConfig(env);
@@ -345,6 +348,9 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
     materials: RAW_MATERIALS_DATABASE,
     memory: memory ? await memory.all().catch(() => undefined) : undefined,
   }));
+  const research = options.research || (env.SHAM_WEB_RESEARCH === '0'
+    ? async () => undefined
+    : (question: string, lang: string) => lookUp((options.fetch || fetch) as never, question, lang, { userAgent: RESEARCH_USER_AGENT, timeoutMs: 8000 }));
   /** A question no engine answered goes on the study list of «مدرسة شاهين» (admin-only knowledge gaps). */
   const noteForStudy = async (question: string) => {
     if (isPersonal(question) || isTimeBound(question)) return false;
@@ -443,6 +449,13 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
           if (found && !res.destroyed) {
             res.json({ ...publicChatResult({ reply: found.answer, mode }, input.message), memory: 'library' });
             runtime?.record({ ms: Date.now() - started, status: error.status, code: `${error.code}+LIBRARY` });
+            return;
+          }
+          // Not in his library either: «باحث شاهين» looks it up in open sources and answers from what he read.
+          const found2 = await research(input.message, input.language).catch(() => undefined);
+          if (found2 && !res.destroyed) {
+            res.json({ ...publicChatResult({ reply: researchAnswer(found2, { recorded }), mode }, input.message), memory: 'research' });
+            runtime?.record({ ms: Date.now() - started, status: error.status, code: `${error.code}+RESEARCH` });
             return;
           }
         }
