@@ -253,4 +253,7 @@ test('the language agent does not chase phantom English: dictionaries and keys a
   assert.equal(isVisibleEnglishLine('  <h2>Live Sync</h2>', 'Live Sync'), true);
   assert.equal(isVisibleEnglishLine("<input placeholder={L('placeholder')} />", 'placeholder'), false);
   assert.equal(isVisibleEnglishLine('  <span title="Enter Portal">x</span>', 'Enter Portal'), true);
+  assert.equal(isVisibleEnglishLine("  'placeholder': { ar: 'اكتب', en: 'Type' },", 'placeholder'), false, 'an object key');
+  assert.equal(isVisibleEnglishLine('export function LocalizedNumberInput({ value, placeholder, onChange }: Props) {', 'placeholder'), false, 'a variable name');
+  assert.equal(isVisibleEnglishLine("placeholder={'اكتب سؤالك'}", 'placeholder'), false, 'an attribute name');
 });
