@@ -1,3 +1,4 @@
+import { BookLibrary } from './library/BookLibrary';
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { Header } from './components/Header';
 import { ToastNotification } from './components/ToastNotification';
@@ -1022,11 +1023,14 @@ export default function App() {
         )}
 
         {activeTab === 'world_perfumes' && (
+          <>
+          <BookLibrary currentLang={currentLang} />
           <WorldPerfumesLibrary
             currentLang={currentLang}
             onLoadWorldFormula={handleLoadWorldFormula}
             onPrintWorldFormula={handlePrintWorldFormula}
           />
+          </>
         )}
 
         {activeTab === 'molecule_studio' && (

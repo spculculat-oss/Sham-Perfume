@@ -12,6 +12,7 @@
  * Pure helpers here; scripts/shaheen-council/run.mts does the I/O.
  */
 import { existsSync, readFileSync } from 'node:fs';
+import { libraryReviewBriefing } from '../../src/library/reviewHandoff';
 import { AI_TOOLS, type AiToolId } from '../../src/utils/aiTools';
 import { similarity } from '../../src/utils/shaheenMemory';
 import { botOf } from '../../src/utils/shaheenOrg';
@@ -150,7 +151,7 @@ export interface LiveData {
 
 /** What the bots report, in plain Arabic lines, plus rule-based signals (the agenda; the minutes without AI). */
 export function buildBriefing(d: LiveData, now: number, openTasks: Task[] = []): Briefing {
-  const facts: string[] = [];
+  const facts: string[] = libraryReviewBriefing();
   const signals: Signal[] = [];
   const push = (s: Signal) => signals.push(s);
 

@@ -15,3 +15,5 @@ export async function runLegalAuditForShaheen(): Promise<void> {
   console.log(`\nنقاط الامتثال: ${result.complianceScore}/100`);
   console.log(`المشاكل الحرجة: ${result.bySeverity.critical} — يجب إصلاحها خلال 7 أيام`);
 }
+
+export * from './publicationReview';
