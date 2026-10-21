@@ -1,7 +1,7 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-10-21T07:31:09.768Z",
+  "updatedAt": "2026-10-21T09:40:44.213Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
@@ -12,17 +12,17 @@
   "score": 100,
   "notes": [
     "اللغات سليمة: الحزم مكتملة، والأرقام تتبع لغة الموقع في كل واجهات الزوار.",
-    "المترجم الذكي: 148156 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3002 — النهارده اتترجم 604 (اشتغل النهارده).",
+    "المترجم الذكي: 147926 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3232 — النهارده اتترجم 230 (الباقة خلصت — هيكمل بعد التجديد).",
     "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «Live Sync» src/components/HomeHub.tsx:139، «Enter Portal» src/components/HomeHub.tsx:142، «placeholder» src/assistant/ShamAssistant.tsx:20، «placeholder» src/assistant/ShamAssistant.tsx:446، «placeholder» src/assistant/ShamAssistant.tsx:447.",
     "لغات بلّغ عنها قسم التصميم بتتترجم الأول: is، sq، ps، ja."
   ],
   "translation": {
-    "at": "2026-10-21T07:31:10.093Z",
-    "status": "done",
-    "remaining": 148156,
-    "covered": 3002,
+    "at": "2026-10-21T09:40:44.442Z",
+    "status": "quota",
+    "remaining": 147926,
+    "covered": 3232,
     "remainingByTier": {
-      "1": 16227,
+      "1": 15997,
       "2": 100519,
       "3": 31410
     },
@@ -34,10 +34,6 @@
       {
         "lang": "dz",
         "remaining": 1659
-      },
-      {
-        "lang": "ms",
-        "remaining": 1657
       },
       {
         "lang": "cs",
@@ -58,31 +54,33 @@
       {
         "lang": "yo",
         "remaining": 1657
+      },
+      {
+        "lang": "zu",
+        "remaining": 1657
       }
     ],
     "run": {
-      "calls": 20,
-      "translated": 604,
-      "rejected": 34,
-      "droppedByReview": 31,
+      "calls": 11,
+      "translated": 230,
+      "rejected": 19,
+      "droppedByReview": 16,
       "reviewed": true,
       "engines": [
-        "perplexity",
-        "perplexity (review)"
+        "gemini",
+        "gemini (review)"
       ],
       "languages": [
-        "ko",
-        "vi",
-        "th",
-        "pl",
         "nl",
         "uk",
-        "el"
-      ]
+        "el",
+        "ms"
+      ],
+      "resumeAt": "2026-10-22T08:05:00.000Z"
     },
     "rejectReasons": {
-      "review": 31,
       "copy_of_english": 2,
+      "review": 16,
       "wrong_script": 1
     },
     "rejectCounts": {
@@ -121,42 +119,52 @@
       "pl|store|bfb78a4017": 1,
       "pl|store|098afc863f": 1,
       "pl|store|22c0c650c0": 1,
-      "nl|ui|e10dbc6c3b": 1,
+      "nl|ui|e10dbc6c3b": 2,
       "nl|ui|f16fcf2c66": 1,
-      "nl|store|16c9119a46": 1,
+      "nl|store|16c9119a46": 2,
       "nl|store|e420207318": 1,
       "nl|store|9637c9b1e4": 1,
-      "nl|store|16e2d1ce6a": 1,
+      "nl|store|16e2d1ce6a": 2,
       "nl|store|1e30ab8f96": 1,
       "nl|store|4388f0b476": 1,
       "nl|store|968764dc92": 1,
       "uk|ui|46f2a9604a": 1,
       "uk|ui|ba8b6f31ba": 1,
-      "uk|ui|3a3552eece": 1,
-      "uk|ui|f13446c7e8": 1,
+      "uk|ui|3a3552eece": 2,
+      "uk|ui|f13446c7e8": 2,
       "uk|ui|b763033e79": 1,
       "uk|ui|5aa07bae7c": 1,
-      "uk|store|da248ad8ca": 1,
+      "uk|store|da248ad8ca": 2,
       "uk|store|cbadc14478": 1,
-      "uk|store|39b43c1d5f": 1,
+      "uk|store|39b43c1d5f": 2,
       "uk|store|d9a7e1219d": 1,
       "uk|store|c03c5ff70e": 1,
       "uk|store|89914f7f6a": 1,
       "uk|store|4388f0b476": 1,
-      "el|ui|e10dbc6c3b": 1,
+      "el|ui|e10dbc6c3b": 2,
       "el|ui|41fa33b350": 1,
       "el|ui|ba8b6f31ba": 1,
-      "el|ui|3a3552eece": 1,
+      "el|ui|3a3552eece": 2,
       "el|ui|86d6386cbb": 1,
       "el|ui|5aa07bae7c": 1,
       "el|store|9d33af552e": 1,
       "el|store|b5499c88cf": 1,
       "el|store|098afc863f": 1,
-      "el|store|9015f75f11": 1
+      "el|store|9015f75f11": 1,
+      "ms|ui|e10dbc6c3b": 1,
+      "ms|ui|a6322bfd0e": 1,
+      "ms|ui|156d56cc28": 1,
+      "ms|ui|685afcc813": 1,
+      "ms|store|fcd0d651ee": 1,
+      "ms|store|c00ec8af28": 1,
+      "ms|store|bfb78a4017": 1,
+      "ms|store|098afc863f": 1,
+      "ms|store|9719cfbcbc": 1,
+      "ms|store|da6e74b4db": 1
     }
   },
   "design": {
-    "at": "2026-10-21T07:31:09.768Z",
+    "at": "2026-10-21T09:40:44.213Z",
     "auditAt": "2026-10-21T05:41:54.171Z",
     "auditScore": 42,
     "priorityLanguages": [
