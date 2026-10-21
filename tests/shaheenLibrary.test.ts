@@ -166,3 +166,14 @@ test('the school reads a small model’s JSON even with line breaks inside the a
   assert.match(lesson.answer, /\n1\. رطّب/);
   assert.equal(lesson.paraphrases.length, 2);
 });
+
+test('a broken JSON reply still gives its answer; a slip into another script is reported as such', async () => {
+  const { studyCheck } = await import('../scripts/shaheen-school/school');
+  const b = { q: 'العطر بتاعي ريحته كحول قوية اعمل ايه؟', lang: 'ar' as const, topic: 'problems', origin: 'curriculum' as const };
+  const answer = 'ريحة الكحول القوية معناها إن العطر محتاج تعتيق أطول: سيبه في مكان مظلم وبارد من أسبوعين لشهر، وبعد كده جربه تاني.';
+  const broken = `{"answer":"${answer}" "paraphrases":["ريحة الكحول في العطر عالية" "ازاي اقلل ريحة الكحول في العطر"]}`;
+  const ok = studyCheck(broken, b);
+  assert.ok('lesson' in ok && ok.lesson.answer === answer);
+  const slip = studyCheck(JSON.stringify({ answer: `${answer} 酒精` }), b);
+  assert.ok('reason' in slip && /another script/.test(slip.reason));
+});

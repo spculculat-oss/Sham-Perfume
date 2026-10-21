@@ -249,25 +249,30 @@ export function escapeControlsInStrings(text: string): string {
   return out;
 }
 
-/** Why a study answer was not kept (for the report): unreadable (often cut short) or failed the checks. */
-export function studyRejection(reply: string): string {
-  const body = (reply || '').replace(/```(?:json)?/gi, '');
-  const raw = body.slice(body.indexOf('{'), body.lastIndexOf('}') + 1);
-  try { JSON.parse(escapeControlsInStrings(raw)); return 'the answer did not pass the checks'; } catch { return `unreadable answer (${reply.length} characters, probably cut short)`; }
+/** Last resort for a small model's broken JSON: the answer text and the quoted wordings after «paraphrases». */
+function looseStudy(raw: string): { answer?: unknown; paraphrases?: unknown } | undefined {
+  const a = raw.match(/"answer"\s*:\s*"([\s\S]*?)"\s*(?:,?\s*"paraphrases"|}\s*$)/);
+  if (!a) return undefined;
+  const tail = raw.slice(raw.indexOf('"paraphrases"') >= 0 ? raw.indexOf('"paraphrases"') + 13 : raw.length);
+  const paraphrases = [...tail.matchAll(/"((?:[^"\\]|\\.)*)"/g)].map((m) => m[1]);
+  return { answer: a[1].replace(/\\n/g, '\n').replace(/\\"/g, '"'), paraphrases };
 }
 
-export function parseStudy(reply: string, b: BankQuestion): { answer: string; paraphrases: string[] } | null {
+/** A study answer checked: the lesson to keep, or why it was not kept (for the report). */
+export function studyCheck(reply: string, b: BankQuestion): { lesson: { answer: string; paraphrases: string[] } } | { reason: string } {
   const body = (reply || '').replace(/```(?:json)?/gi, '');
-  let data: { answer?: unknown; paraphrases?: unknown };
+  let data: { answer?: unknown; paraphrases?: unknown } | undefined;
   const raw = body.slice(body.indexOf('{'), body.lastIndexOf('}') + 1);
   try { data = JSON.parse(raw); } catch {
-    try { data = JSON.parse(escapeControlsInStrings(raw)); } catch { return null; }
+    try { data = JSON.parse(escapeControlsInStrings(raw)); } catch { data = looseStudy(raw); }
   }
+  if (!data) return { reason: `unreadable answer (${(reply || '').length} characters)` };
   const answer = typeof data.answer === 'string' ? data.answer.trim() : '';
-  if (!worthRemembering(b.q, answer) || FOREIGN_SCRIPT.test(answer)) return null;
-  if (b.lang === 'ar' && !/[\u0600-\u06FF]/.test(answer)) return null;
+  if (FOREIGN_SCRIPT.test(answer)) return { reason: 'slipped into another script (Chinese/Cyrillic…)' };
+  if (!worthRemembering(b.q, answer)) return { reason: `not worth keeping (${answer.length} characters, or names a vendor)` };
+  if (b.lang === 'ar' && !/[\u0600-\u06FF]/.test(answer)) return { reason: 'not in Arabic' };
   // An Arabic answer is mostly Arabic (a few Latin names like «EDP» or «Ambroxan» are fine).
-  if (b.lang === 'ar' && (answer.match(/[A-Za-z]/g) || []).length > (answer.match(/[\u0600-\u06FF]/g) || []).length / 3) return null;
+  if (b.lang === 'ar' && (answer.match(/[A-Za-z]/g) || []).length > (answer.match(/[\u0600-\u06FF]/g) || []).length / 3) return { reason: 'too much Latin script for an Arabic answer' };
   const arabic = (t: string) => /[\u0600-\u06FF]/.test(t);
   const paraphrases = (Array.isArray(data.paraphrases) ? data.paraphrases : [])
     .filter((p): p is string => typeof p === 'string')
@@ -275,7 +280,12 @@ export function parseStudy(reply: string, b: BankQuestion): { answer: string; pa
     // A one-word «question» («العنبر») is too broad to answer from memory.
     .filter((p) => p.length >= 6 && p.length <= 200 && !FOREIGN_SCRIPT.test(p) && meaningWords(p).length >= 2 && (b.lang === 'ar' ? arabic(p) : !arabic(p)) && normalizeQuestion(p) !== normalizeQuestion(b.q))
     .slice(0, 4);
-  return { answer, paraphrases };
+  return { lesson: { answer, paraphrases } };
+}
+
+export function parseStudy(reply: string, b: BankQuestion): { answer: string; paraphrases: string[] } | null {
+  const checked = studyCheck(reply, b);
+  return 'lesson' in checked ? checked.lesson : null;
 }
 
 /** How much of the importer's reading was done by Shaheen himself (JSON-LD, own reader, learned skills) vs AI. */

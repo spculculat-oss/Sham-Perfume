@@ -18,7 +18,7 @@ import { councilStudy, readCouncil } from '../shaheen-council/council';
 import { RAW_MATERIALS_DATABASE } from '../../src/data/rawMaterials';
 import { referenceBlock, searchLibrary } from '../../src/utils/shaheenLibrary';
 import {
-  buildBank, emptySchool, exam, importerShare, isSchoolFile, LOCAL_TEACHER_STYLE, materialDocs, parseStudy, pickStudy, selfLesson, STUDY_SYSTEM, studyPrompt, studyRejection,
+  buildBank, emptySchool, exam, importerShare, isSchoolFile, LOCAL_TEACHER_STYLE, materialDocs, pickStudy, selfLesson, STUDY_SYSTEM, studyCheck, studyPrompt,
   visitorQuestions, type BankQuestion, type SchoolFile, type TrainingDoc,
 } from './school';
 
@@ -93,11 +93,12 @@ else {
     try {
       engineUsed = '';
       const reply = await ask(SYSTEM, prompt);
-      const lesson = parseStudy(reply, b);
+      const checked = studyCheck(reply, b);
+      const lesson = 'lesson' in checked ? checked.lesson : null;
       const teacher = engineUsed === 'self_hosted' ? 'local teacher' : engineUsed || 'saved answer';
       const rehearsal = env.PUBLISH !== 'true';
       const preview = (text: string) => text.replace(/\s+/g, ' ').slice(0, 160);
-      if (!lesson) { answers.forget(SYSTEM, prompt); say(`Study «${b.q.slice(0, 60)}» (${teacher}): ${studyRejection(reply)} — retried next time${rehearsal ? ` [${preview(reply)}]` : ''}`); continue; }
+      if (!lesson) { answers.forget(SYSTEM, prompt); say(`Study «${b.q.slice(0, 60)}» (${teacher}): ${'reason' in checked ? checked.reason : ''} — retried next time${rehearsal ? ` [${preview(reply)} … ${reply.replace(/\s+/g, ' ').slice(-120)}]` : ''}`); continue; }
       if (rehearsal) say(`Lesson «${b.q.slice(0, 60)}» (${teacher}): ${preview(lesson.answer)}`);
       if (engineUsed === 'self_hosted') { if (mode !== 'ai') mode = 'local'; } else mode = 'ai';
       let kept = 0;
