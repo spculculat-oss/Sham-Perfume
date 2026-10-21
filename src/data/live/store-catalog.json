@@ -1,7 +1,7 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T15:35:24.448Z",
- "nextUpdateAt": "2026-10-22T03:35:24.448Z",
+ "updatedAt": "2026-10-21T16:14:03.954Z",
+ "nextUpdateAt": "2026-10-22T04:14:03.954Z",
  "editor": "shaheen",
  "entries": {
   "LAT-052": {
@@ -2429,9 +2429,20 @@
     "spicy"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Cinnamon",
+     "Rose",
+     "Saffron",
+     "Vanilla"
+    ],
+    "heart": [
+     "Caramel",
+     "Patchouli"
+    ],
+    "base": [
+     "Ambroxan",
+     "Amber"
+    ]
    },
    "seasons": [
     "winter",
@@ -2464,9 +2475,22 @@
     "spicy"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Lavender",
+     "Pepper"
+    ],
+    "heart": [
+     "Jasmine",
+     "Tuberose",
+     "White-Floral"
+    ],
+    "base": [
+     "Incense",
+     "Cedarwood",
+     "Caramel",
+     "Cashmeran",
+     "Amber"
+    ]
    },
    "seasons": [
     "winter",
@@ -2500,9 +2524,20 @@
     "amber"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Leather",
+     "Raspberry",
+     "Saffron",
+     "Thyme"
+    ],
+    "heart": [
+     "Olibanum",
+     "Jasmine"
+    ],
+    "base": [
+     "Suede",
+     "Amber"
+    ]
    },
    "seasons": [
     "winter",
@@ -2535,9 +2570,22 @@
     "oud"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Cassis",
+     "Pink Pepper",
+     "Lychee"
+    ],
+    "heart": [
+     "Rose",
+     "Cardamom",
+     "Praline"
+    ],
+    "base": [
+     "Vanilla",
+     "Moss",
+     "Oud",
+     "Amber"
+    ]
    },
    "seasons": [
     "spring",
@@ -2570,9 +2618,22 @@
     "woody"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Bergamot",
+     "Juniper",
+     "Yuzu",
+     "Ginger"
+    ],
+    "heart": [
+     "Iris",
+     "Sage",
+     "Sea Salt"
+    ],
+    "base": [
+     "Tonka",
+     "Vanilla",
+     "Musk"
+    ]
    },
    "seasons": [
     "summer",
@@ -2605,9 +2666,18 @@
     "oriental"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Vanilla",
+     "Chocolate"
+    ],
+    "heart": [
+     "Musk",
+     "Cinnamon"
+    ],
+    "base": [
+     "Sandalwood",
+     "Rose"
+    ]
    },
    "seasons": [
     "winter",
@@ -2680,9 +2750,20 @@
     "musk"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Orange Blossom",
+     "Rose",
+     "Jasmine"
+    ],
+    "heart": [
+     "Musk"
+    ],
+    "base": [
+     "Vanilla",
+     "Tonka Bean",
+     "Cedarwood",
+     "Amber"
+    ]
    },
    "seasons": [
     "spring",
@@ -2716,9 +2797,18 @@
     "spicy"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Mandarin",
+     "Lavender",
+     "Saffron"
+    ],
+    "heart": [
+     "Cedar",
+     "Geranium"
+    ],
+    "base": [
+     "Incense"
+    ]
    },
    "seasons": [
     "winter",
@@ -6120,9 +6210,19 @@
     "oriental"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Amber"
+    ],
+    "heart": [
+     "Jasmine",
+     "Rose",
+     "Orange Blossom"
+    ],
+    "base": [
+     "Vanilla",
+     "Musk",
+     "Sandalwood"
+    ]
    },
    "seasons": [
     "winter",
@@ -7459,9 +7559,19 @@
     "woody"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Bergamot",
+     "Grapefruit",
+     "Sage"
+    ],
+    "heart": [
+     "Lavender",
+     "Juniper"
+    ],
+    "base": [
+     "Vetiver",
+     "Caramel"
+    ]
    },
    "seasons": [
     "spring",
@@ -8407,9 +8517,17 @@
     "fruity"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Green Leaves"
+    ],
+    "heart": [
+     "Rose",
+     "Jasmine"
+    ],
+    "base": [
+     "White Musk",
+     "Sandalwood"
+    ]
    },
    "seasons": [
     "spring",
@@ -9057,9 +9175,18 @@
     "floral"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "White Musk",
+     "Ambroxan"
+    ],
+    "heart": [
+     "Sandalwood"
+    ],
+    "base": [
+     "Cedar",
+     "Vanilla",
+     "Amber"
+    ]
    },
    "seasons": [
     "all",
@@ -9094,9 +9221,21 @@
     "spicy"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Saffron"
+    ],
+    "heart": [
+     "Balsam",
+     "Fir",
+     "Jasmine"
+    ],
+    "base": [
+     "Ambergris",
+     "Musk",
+     "Cashmeran",
+     "Moss",
+     "Cedarwood"
+    ]
    },
    "seasons": [
     "winter",
@@ -9131,9 +9270,18 @@
     "oud"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Lavender",
+     "Cedarwood",
+     "Saffron"
+    ],
+    "heart": [
+     "Myrrh"
+    ],
+    "base": [
+     "Oud",
+     "Amber"
+    ]
    },
    "seasons": [
     "winter",
@@ -9882,9 +10030,19 @@
     "citrus"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Apple",
+     "Pineapple",
+     "Bergamot"
+    ],
+    "heart": [
+     "Violet Leaf",
+     "Clary Sage"
+    ],
+    "base": [
+     "Cashmeran",
+     "Labdanum"
+    ]
    },
    "seasons": [
     "spring",
@@ -13695,8 +13853,15 @@
    ],
    "notes": {
     "top": [],
-    "heart": [],
-    "base": []
+    "heart": [
+     "Lavender"
+    ],
+    "base": [
+     "Amber",
+     "Patchouli",
+     "Cedarwood",
+     "Musk"
+    ]
    },
    "seasons": [
     "autumn",
@@ -13728,9 +13893,21 @@
     "woody"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Bergamot",
+     "Nutmeg",
+     "Mandarin"
+    ],
+    "heart": [
+     "Violet Leaf",
+     "Musk",
+     "Amber"
+    ],
+    "base": [
+     "Patchouli",
+     "Vetiver",
+     "Labdanum"
+    ]
    },
    "seasons": [
     "spring",
@@ -13762,9 +13939,18 @@
     "woody"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Amber",
+     "Saffron",
+     "Jasmine"
+    ],
+    "heart": [
+     "Ambergris"
+    ],
+    "base": [
+     "Fir",
+     "Cedar"
+    ]
    },
    "seasons": [
     "autumn",
@@ -13796,9 +13982,19 @@
     "woody"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Vanilla",
+     "Cinnamon"
+    ],
+    "heart": [
+     "Jasmine",
+     "Sambac",
+     "Thyme"
+    ],
+    "base": [
+     "Sandalwood",
+     "Cedar"
+    ]
    },
    "seasons": [
     "autumn",
@@ -15856,8 +16052,13 @@
    ],
    "notes": {
     "top": [],
-    "heart": [],
-    "base": []
+    "heart": [
+     "White Flowers"
+    ],
+    "base": [
+     "Musk",
+     "Vanilla"
+    ]
    },
    "seasons": [
     "spring",
@@ -15927,9 +16128,19 @@
     "woody"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Bitter Almond",
+     "Saffron"
+    ],
+    "heart": [
+     "Jasmine",
+     "Cedarwood"
+    ],
+    "base": [
+     "Ambergris",
+     "Musk",
+     "Amber"
+    ]
    },
    "seasons": [
     "winter",
@@ -30877,9 +31088,21 @@
     "woody"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Oud",
+     "Saffron",
+     "Bergamot"
+    ],
+    "heart": [
+     "Rose",
+     "Cedarwood",
+     "Patchouli"
+    ],
+    "base": [
+     "Amber",
+     "Sandalwood",
+     "Musk"
+    ]
    },
    "seasons": [
     "winter",
@@ -31846,9 +32069,20 @@
     "fresh"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Bergamot",
+     "Mandarin"
+    ],
+    "heart": [
+     "Jasmine",
+     "Coconut"
+    ],
+    "base": [
+     "Musk",
+     "Amber",
+     "Sandalwood",
+     "Vanilla"
+    ]
    },
    "seasons": [
     "summer",
@@ -31927,9 +32161,22 @@
     "aquatic"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Bergamot",
+     "Pear",
+     "Pink Pepper"
+    ],
+    "heart": [
+     "Jasmine",
+     "Rose",
+     "Orange Blossom"
+    ],
+    "base": [
+     "Vanilla",
+     "Amber",
+     "White Musk",
+     "Sandalwood"
+    ]
    },
    "seasons": [
     "spring",
@@ -35823,9 +36070,19 @@
     "spicy"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Amber",
+     "Leather",
+     "Cardamom"
+    ],
+    "heart": [
+     "Jasmine",
+     "Sambac"
+    ],
+    "base": [
+     "Moss",
+     "Patchouli"
+    ]
    },
    "seasons": [
     "winter",
@@ -37585,9 +37842,19 @@
     "musk"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Mandarin"
+    ],
+    "heart": [
+     "Gardenia",
+     "Tuberose",
+     "White Floral"
+    ],
+    "base": [
+     "Coconut",
+     "Sandalwood",
+     "Musk"
+    ]
    },
    "seasons": [
     "spring",
@@ -46208,9 +46475,17 @@
     "aquatic"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Pear",
+     "Ambrette"
+    ],
+    "heart": [
+     "Jasmine",
+     "Ylang-Ylang"
+    ],
+    "base": [
+     "Patchouli"
+    ]
    },
    "seasons": [
     "summer",
@@ -46242,9 +46517,19 @@
     "spicy"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Orange",
+     "Bergamot"
+    ],
+    "heart": [
+     "Neroli",
+     "Pink Pepper",
+     "Cardamom",
+     "Nutmeg"
+    ],
+    "base": [
+     "Vetiver"
+    ]
    },
    "seasons": [
     "summer",
@@ -46278,9 +46563,20 @@
     "floral"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Bergamot",
+     "Mandarin Orange",
+     "Pear"
+    ],
+    "heart": [
+     "Ginger",
+     "Orange Blossom"
+    ],
+    "base": [
+     "Cedarwood",
+     "Musk",
+     "Amber"
+    ]
    },
    "seasons": [
     "spring",
@@ -46439,9 +46735,16 @@
     "fresh"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Bergamot",
+     "Mandarin Orange"
+    ],
+    "heart": [
+     "Ginger"
+    ],
+    "base": [
+     "Ambergris"
+    ]
    },
    "seasons": [
     "summer",
@@ -46616,9 +46919,20 @@
     "amber"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Lavender",
+     "Mint"
+    ],
+    "heart": [
+     "Vanilla",
+     "Benzoin"
+    ],
+    "base": [
+     "Amber",
+     "Tonka Bean",
+     "Honey",
+     "Tobacco"
+    ]
    },
    "seasons": [
     "winter",
@@ -46976,9 +47290,17 @@
     "woody"
    ],
    "notes": {
-    "top": [],
+    "top": [
+     "Blood Orange",
+     "Mandarin",
+     "Bergamot",
+     "Lemon"
+    ],
     "heart": [],
-    "base": []
+    "base": [
+     "Sandalwood",
+     "Musk"
+    ]
    },
    "seasons": [
     "summer",
@@ -47049,9 +47371,17 @@
     "fresh"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Green Notes",
+     "Bergamot"
+    ],
+    "heart": [
+     "Ginger"
+    ],
+    "base": [
+     "Sandalwood",
+     "Cedarwood"
+    ]
    },
    "seasons": [
     "spring",
@@ -47084,9 +47414,21 @@
     "amber"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Caramel"
+    ],
+    "heart": [
+     "Milk",
+     "Honey",
+     "Sugar",
+     "Tonka Bean"
+    ],
+    "base": [
+     "Vanilla",
+     "Praline",
+     "Amber",
+     "White Musk"
+    ]
    },
    "seasons": [
     "winter",
@@ -47118,9 +47460,20 @@
     "fresh"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Green Apple",
+     "Ginger",
+     "Bergamot"
+    ],
+    "heart": [
+     "Clary Sage",
+     "Juniper Berries"
+    ],
+    "base": [
+     "Cedar",
+     "Tonka Bean",
+     "Vetiver"
+    ]
    },
    "seasons": [
     "summer",
@@ -47186,9 +47539,15 @@
     "amber"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Vanilla"
+    ],
+    "heart": [
+     "Lavender"
+    ],
+    "base": [
+     "Vetiver"
+    ]
    },
    "seasons": [
     "all"
@@ -47220,9 +47579,21 @@
     "woody"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Bergamot",
+     "Lemon"
+    ],
+    "heart": [
+     "Lavender",
+     "Rosemary",
+     "Geranium"
+    ],
+    "base": [
+     "Cedarwood",
+     "Amber",
+     "Musk",
+     "Patchouli"
+    ]
    },
    "seasons": [
     "summer",
@@ -47255,9 +47626,14 @@
     "powdery"
    ],
    "notes": {
-    "top": [],
+    "top": [
+     "Sandalwood",
+     "Incense"
+    ],
     "heart": [],
-    "base": []
+    "base": [
+     "Amber"
+    ]
    },
    "seasons": [
     "winter",
@@ -47289,9 +47665,19 @@
     "citrus"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Grapefruit",
+     "Mandarin Orange"
+    ],
+    "heart": [
+     "Sandalwood",
+     "Cedarwood"
+    ],
+    "base": [
+     "Amber",
+     "Musk",
+     "Patchouli"
+    ]
    },
    "seasons": [
     "summer",
@@ -47324,9 +47710,19 @@
     "fruity"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Bergamot",
+     "Litchi",
+     "Ginger"
+    ],
+    "heart": [
+     "Rose",
+     "Peony",
+     "Cacao"
+    ],
+    "base": [
+     "Patchouli"
+    ]
    },
    "seasons": [
     "spring",
@@ -47360,9 +47756,21 @@
     "oud"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Incense",
+     "Apple"
+    ],
+    "heart": [
+     "Myrrh",
+     "Saffron",
+     "Amber"
+    ],
+    "base": [
+     "Vanilla",
+     "Cedarwood",
+     "Oud",
+     "White Musk"
+    ]
    },
    "seasons": [
     "winter",
@@ -47394,8 +47802,18 @@
     "fruity"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
+    "top": [
+     "Raspberry"
+    ],
+    "heart": [
+     "Peony",
+     "Magnolia",
+     "Jasmine",
+     "Sambac",
+     "Rose",
+     "Geranium",
+     "White-Floral"
+    ],
     "base": []
    },
    "seasons": [
@@ -47430,9 +47848,16 @@
     "woody"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Bergamot"
+    ],
+    "heart": [
+     "Orange Blossom",
+     "White Floral"
+    ],
+    "base": [
+     "Patchouli"
+    ]
    },
    "seasons": [
     "summer",
@@ -47546,9 +47971,14 @@
     "woody"
    ],
    "notes": {
-    "top": [],
+    "top": [
+     "Tea"
+    ],
     "heart": [],
-    "base": []
+    "base": [
+     "Rose",
+     "Magnolia"
+    ]
    },
    "seasons": [
     "spring",
@@ -47582,9 +48012,22 @@
     "woody"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Mint",
+     "Lemon",
+     "Basil",
+     "Thyme"
+    ],
+    "heart": [
+     "Blackcurrant",
+     "Lavender",
+     "Jasmine",
+     "Rosemary"
+    ],
+    "base": [
+     "Musk",
+     "Cedarwood"
+    ]
    },
    "seasons": [
     "summer",
@@ -51705,12 +52148,6 @@
   "checked": 1161,
   "issues": [
    {
-    "sku": "LAT-145",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
     "sku": "LAT-149",
     "issues": [
      "الوصف عام ولا يصف الرائحة"
@@ -51723,49 +52160,7 @@
     ]
    },
    {
-    "sku": "MAI-218",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "LAT-254",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "LAT-265",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "LAT-267",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "LAT-282",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
     "sku": "LAT-283",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "LAT-289",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "LAT-293",
     "issues": [
      "الوصف عام ولا يصف الرائحة"
     ]
@@ -51778,66 +52173,6 @@
    },
    {
     "sku": "LAT-315",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "GUL-356",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "MAI-379",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "MAI-402",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "MAI-444",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "MAI-453",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "MAI-504",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "MAI-506",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "MAI-543",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "AFN-576",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "MAI-672",
     "issues": [
      "الوصف عام ولا يصف الرائحة"
     ]
@@ -51856,48 +52191,6 @@
    },
    {
     "sku": "MAI-755",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "MAI-822",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "MAI-839",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "MAI-852",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "MAI-865",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "MAI-880",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "RAV-1082",
-    "issues": [
-     "الوصف عام ولا يصف الرائحة"
-    ]
-   },
-   {
-    "sku": "RAV-1106",
     "issues": [
      "الوصف عام ولا يصف الرائحة"
     ]
