@@ -2,11 +2,11 @@ import React, { useMemo, useState } from 'react';
 import { Lock, ShieldCheck, Trash2 } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { countryPay } from '../bank/worldPay';
+import { CardLiveMeter } from './CardLiveMeter';
 import { deletePaymentMethod, getSavedPaymentMethods, setDefaultPaymentMethod, type PaymentProvider, type SavedPaymentMethod } from '../utils/customerPaymentVault';
 import {
   cardBrand,
   cardEntryBlocked,
-  cardLiveCopy,
   inspectCardEntry,
   formatCardNumber,
   formatExpiry,
@@ -231,9 +231,7 @@ export function PaymentDesk({
               <input required inputMode="numeric" autoComplete="cc-number" placeholder="1234 1234 1234 1234" value={number} onChange={(e) => setNumber(formatCardNumber(e.target.value))} className="w-full bg-transparent px-3 py-2.5 font-mono text-sm outline-none" data-testid="card-number" aria-describedby="desk-card-live" />
               <span className="pe-3 text-[11px] font-bold text-stone-500" data-testid="card-brand">{brand ? BRAND_LABEL[brand] : ''}</span>
             </span>
-            {live.verdict !== 'empty' && (
-              <span id="desk-card-live" role="status" data-testid="card-live-check" data-verdict={live.verdict} className={`block text-[11px] ${cardBlocked ? 'text-red-700' : live.verdict === 'format_ok' ? 'text-sky-800' : 'text-stone-500'}`}>{cardLiveCopy(live.verdict, lang)}</span>
-            )}
+            <CardLiveMeter id="desk-card-live" number={number} expiry={expiry} lang={lang} />
           </label>
           <div className="grid grid-cols-2 gap-2">
             <label className="block space-y-1 text-xs font-semibold text-stone-700">

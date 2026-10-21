@@ -128,6 +128,20 @@ async function serve(env: Record<string, string>, kashier: (url: string, init?: 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
 const order = { items: [{ sku: 'LAT-001', qty: 2 }], country: 'SA', lang: 'ar', contact: { name: 'Ali', email: 'ali@example.com', phone: '+966500000000' }, address: { city: 'Riyadh', line: 'King Fahd Rd 10' }, returnUrl: 'https://spculculat-oss.github.io/Sham-Perfume/' };
 
+test('card network stays unconfirmed without keys and never accepts a card number', async () => {
+  const s = await serve({}, () => json({}));
+  try {
+    const status = await (await fetch(`${s.base}/store/card-network`)).json();
+    assert.equal(status.connected, false);
+    assert.equal(status.verdict, 'unconfirmed');
+    assert.equal(status.reason, 'NETWORK_NOT_CONNECTED');
+    const refused = await fetch(`${s.base}/store/card-network`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ number: '4242424242424242', cvc: '123' }) });
+    assert.equal(refused.status, 400);
+    assert.equal((await refused.json()).code, 'CARD_NOT_ACCEPTED');
+    assert.equal(s.calls.length, 0);
+  } finally { s.close(); }
+});
+
 test('checkout: without Kashier keys the store says so (the assistant flow stays)', async () => {
   const s = await serve({}, () => json({}));
   try {
