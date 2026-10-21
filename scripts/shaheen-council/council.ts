@@ -1,3 +1,4 @@
+import { bookStudyBriefing } from '../../server/library/bookStudyArchive';
 /**
  * «مجلس شاهين» — the daily development meeting. «الخبير شاهين», manager of every AI tool on the site,
  * chairs five specialist seats (tools quality, store & import, content & SEO, visitor experience, reliability).
@@ -151,7 +152,7 @@ export interface LiveData {
 
 /** What the bots report, in plain Arabic lines, plus rule-based signals (the agenda; the minutes without AI). */
 export function buildBriefing(d: LiveData, now: number, openTasks: Task[] = []): Briefing {
-  const facts: string[] = libraryReviewBriefing();
+  const facts: string[] = [...libraryReviewBriefing(), ...bookStudyBriefing()];
   const signals: Signal[] = [];
   const push = (s: Signal) => signals.push(s);
 

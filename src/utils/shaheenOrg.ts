@@ -129,6 +129,7 @@ export const LEGAL_DECISIONS: LegalDecision[] = [
 export interface Link { from: BotId; to: BotId; whyAr: string }
 export const LINKS: Link[] = [
   { from: 'librarian', to: 'council', whyAr: 'شاهين يراجع موضع المكتبة وتطويرها؛ الفهرسة محلية عند الطلب' },
+  { from: 'librarian', to: 'school', whyAr: 'قائمة دراسة داخلية فقط؛ لا تتحول المراجع إلى معرفة متعلمة دون اطلاع قانوني ومراجعة موثقة، ولا تعرض ملاحظاتها للزوار' },
   { from: 'legal', to: 'librarian', whyAr: 'يراجع حقوق المصادر والاقتباس والترجمة لكل نسخة قبل النشر؛ لا تعتبر الخطة أو الفحص الآلي موافقة قانونية' },
   { from: 'languages', to: 'librarian', whyAr: 'تعريب بيانات الفهرس دون ادعاء ترجمة الكتب' },
   { from: 'finance', to: 'secretary', whyAr: 'حالة الفحص المنقحة فقط؛ الأرقام والطلبات تبقى خاصة' },

@@ -1,3 +1,4 @@
+import { OriginalBooklets } from './OriginalBooklets';
 import readingGuideText from '../../content/library/reading-guide.json';
 import { READING_GUIDE, epubAssetUrl } from './epubAssets';
 import { EditorialPlans } from './EditorialPlans';
@@ -15,7 +16,7 @@ const TEXT = {
   loadingReader: { ar: 'جارٍ تحميل القارئ…', en: 'Loading reader…' },
   title: { ar: 'مكتبة كتب العطور الإلكترونية', en: 'Perfume book library' },
   supervision: { ar: 'أمين المكتبة — مساعد محلي للأرشفة والتصنيف تحت إشراف شاهين، ضمن قسم المحتوى. موضع مبدئي لحين توجيه شاهين.', en: 'Librarian — local archive and classification assistant under Shaheen, in Content. Provisional placement pending Shaheen’s direction.' },
-  rights: { ar: 'هذا فهرس للكتب وليس نسخاً إلكترونية كاملة. لم تُرفق ملفات مرخصة. بيانات الطبعات والناشرين تحتاج مراجعة؛ لا ندّعي توفر ترجمات. الواجهة تستخدم لغة الموقع مع الرجوع للإنجليزية عند غياب الترجمة.', en: 'This is a book catalogue, not full ebooks. No licensed files have been supplied. Editions and publishers require verification; translated editions are not claimed. The interface follows the site language with English fallback where translations are missing.' },
+  rights: { ar: 'الكتيّبات الأصلية في قسم القراءة متاحة بنصوصها الكاملة. أما المراجع الستة عشر فهي فهرسة فقط دون ملفات كتب مرفقة. بيانات الطبعات والناشرين تحتاج مراجعة؛ لا ندّعي توفر ترجمات. الواجهة تستخدم لغة الموقع مع الرجوع للإنجليزية عند غياب الترجمة.', en: 'The original reading booklets are available in full. The sixteen reference books remain catalogue entries without attached full texts. Editions and publishers require verification; translated editions are not claimed. The interface follows the site language with English fallback where translations are missing.' },
   safety: { ar: 'مراجع العلاج العطري للتثقيف وليست وصفات طبية أو بديلاً للعلاج. الطبيعي ليس آمناً دائماً: الزيوت قد تسبب حساسية أو سمية وتداخلات دوائية. لا تتناولها أو تستخدمها مركزة؛ استشر مختصاً خصوصاً للأطفال والحمل والأمراض المزمنة.', en: 'Aromatherapy references are educational, not prescriptions or substitutes for medical treatment. Natural does not always mean safe: essential oils may cause allergy, toxicity or drug interactions. Do not ingest or use them undiluted; consult a qualified professional, especially for children, pregnancy or chronic illness.' },
   search: { ar: 'ابحث بالعنوان أو المؤلف أو الموضوع أو رقم الأرشيف', en: 'Search title, author, subject or archive ID' },
   category: { ar: 'التصنيف', en: 'Category' },
@@ -45,6 +46,7 @@ export function BookLibrary({ currentLang }: { currentLang: SupportedLanguage })
       <button onClick={() => setShowGuide(true)} className="rounded-lg bg-emerald-800 px-4 py-3 font-bold">{L('guide')}</button>
       <p className="text-sm text-stone-300">{L('guideNote')}</p>
     </div>
+    <OriginalBooklets currentLang={currentLang} />
     <EditorialPlans currentLang={currentLang} />
     <div className="flex flex-wrap gap-3">
       <input type="search" aria-label={L('search')} placeholder={L('search')} value={query} onChange={e => setQuery(e.target.value)} className="min-w-0 flex-1 rounded-lg border border-stone-600 bg-stone-900 p-3" />
