@@ -1,26 +1,32 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T12:55:41.108Z",
+ "updatedAt": "2026-10-21T13:23:03.645Z",
  "reliance": {
-  "score": 90,
-  "covered": 156,
+  "score": 93,
+  "covered": 161,
   "total": 173,
-  "fromMemory": 156,
+  "fromMemory": 161,
   "fromLibrary": 2,
   "byLang": {
    "ar": {
-    "covered": 139,
+    "covered": 143,
     "total": 152
    },
    "en": {
-    "covered": 17,
+    "covered": 18,
     "total": 21
    }
   }
  },
- "studiedTotal": 63,
+ "studiedTotal": 68,
  "selfTaughtTotal": 60,
  "history": [
+  {
+   "at": "2026-10-21T13:23:03.645Z",
+   "score": 93,
+   "studied": 5,
+   "mode": "local"
+  },
   {
    "at": "2026-10-21T12:55:41.108Z",
    "score": 90,
@@ -156,6 +162,36 @@
  ],
  "lastStudied": [
   {
+   "q": "What is an accord in perfumery?",
+   "lang": "en",
+   "at": "2026-10-21T13:23:03.645Z",
+   "variants": 0
+  },
+  {
+   "q": "ايه هو البخور وازاي بيتعمل؟",
+   "lang": "ar",
+   "at": "2026-10-21T13:23:03.645Z",
+   "variants": 0
+  },
+  {
+   "q": "ازاي ادرب انفي على تمييز الروايح؟",
+   "lang": "ar",
+   "at": "2026-10-21T13:23:03.645Z",
+   "variants": 4
+  },
+  {
+   "q": "العطر طلع تقيل وخانق ازاي اخففه؟",
+   "lang": "ar",
+   "at": "2026-10-21T13:23:03.645Z",
+   "variants": 0
+  },
+  {
+   "q": "ازاي اقلل حدة نوتة طاغية في التركيبة؟",
+   "lang": "ar",
+   "at": "2026-10-21T13:23:03.645Z",
+   "variants": 0
+  },
+  {
    "q": "What tools do I need to start making perfume at home?",
    "lang": "en",
    "at": "2026-10-21T12:55:41.108Z",
@@ -244,36 +280,6 @@
    "lang": "en",
    "at": "2026-10-19T12:55:51.025Z",
    "variants": 0
-  },
-  {
-   "q": "Where should I apply perfume?",
-   "lang": "en",
-   "at": "2026-10-19T12:55:51.025Z",
-   "variants": 0
-  },
-  {
-   "q": "How long should a perfume macerate?",
-   "lang": "en",
-   "at": "2026-10-19T12:55:51.025Z",
-   "variants": 0
-  },
-  {
-   "q": "How do I make perfume at home step by step?",
-   "lang": "en",
-   "at": "2026-10-19T12:55:51.025Z",
-   "variants": 0
-  },
-  {
-   "q": "What are the main fragrance families?",
-   "lang": "en",
-   "at": "2026-10-19T12:55:51.025Z",
-   "variants": 0
-  },
-  {
-   "q": "What are top, heart and base notes?",
-   "lang": "en",
-   "at": "2026-10-19T12:55:51.025Z",
-   "variants": 0
   }
  ],
  "pending": [
@@ -286,16 +292,6 @@
    "q": "حدثني عن آخر أخبار عالم العطور",
    "lang": "ar",
    "topic": "library"
-  },
-  {
-   "q": "ازاي اقلل حدة نوتة طاغية في التركيبة؟",
-   "lang": "ar",
-   "topic": "problems"
-  },
-  {
-   "q": "العطر طلع تقيل وخانق ازاي اخففه؟",
-   "lang": "ar",
-   "topic": "problems"
   },
   {
    "q": "ليه العطر بيعمل حساسية لبعض الناس؟",
@@ -311,11 +307,6 @@
    "q": "ازاي اعرف ان الزيت العطري مغشوش؟",
    "lang": "ar",
    "topic": "problems"
-  },
-  {
-   "q": "ازاي ادرب انفي على تمييز الروايح؟",
-   "lang": "ar",
-   "topic": "skills"
   },
   {
    "q": "ازاي اختبر عطر جديد قبل ما اعمل منه كمية كبيرة؟",
@@ -336,6 +327,21 @@
    "q": "ازاي احافظ على ثبات جودة العطر من دفعة للتانية؟",
    "lang": "ar",
    "topic": "business"
+  },
+  {
+   "q": "Why does my homemade perfume smell too much of alcohol?",
+   "lang": "en",
+   "topic": "problems-en"
+  },
+  {
+   "q": "Suggest a fresh citrus perfume formula for summer with percentages",
+   "lang": "en",
+   "topic": "design-en"
+  },
+  {
+   "q": "Suggest a warm oriental perfume formula for winter with percentages",
+   "lang": "en",
+   "topic": "design-en"
   }
  ],
  "importer": {
@@ -343,5 +349,5 @@
   "aiReadings": 0,
   "localReadings": 25
  },
- "localTaughtTotal": 12
+ "localTaughtTotal": 17
 }
