@@ -9,6 +9,10 @@
  *                    NOT pushed, so a bad GitHub secret can never replace a working production key.
  *
  * Keys absent from GitHub are left untouched on Vercel. Values are never printed.
+ *
+ * Production pinned by an old Redeploy/rollback: Vercel then stops moving the live site to new builds, so new keys and
+ * code never reach visitors. After every sync the newest READY production build is promoted (POST /v10/…/promote)
+ * when it is not the live one — that also turns Vercel's automatic go-live back on.
  */
 import { existsSync, readFileSync } from 'node:fs';
 
@@ -39,6 +43,43 @@ const verify = (() => {
   try { return JSON.parse(readFileSync(file, 'utf8')); } catch { return {}; }
 })();
 
+const POLL_MS = Number(process.env.SHAM_SYNC_POLL_MS) || 5000;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const liveId = async (project) => (await vercel(`/v9/projects/${encodeURIComponent(project)}`))?.targets?.production?.id;
+
+/**
+ * The newest production build of the current code: the build of this exact commit if Vercel made one, else the newest
+ * build that came from a git push (a «Redeploy» of an old deployment keeps the OLD code), else simply the newest.
+ */
+function pickNewest(deployments, sha = process.env.GITHUB_SHA) {
+  return deployments.find((d) => sha && d.meta?.githubCommitSha === sha)
+    || deployments.find((d) => d.source === 'git')
+    || deployments[0];
+}
+
+/**
+ * Makes `target` the live production build unless it already is — or the live build is the same commit (a fresh
+ * env rebuild of it, e.g. an earlier sync). Promoting also unpins a rolled-back project.
+ */
+async function ensureLive(project, target) {
+  const live = await liveId(project);
+  if (!live || live === target.uid) return true;
+  if (target.sha) {
+    const liveSha = (await vercel(`/v13/deployments/${encodeURIComponent(live)}`).catch(() => null))?.meta?.githubCommitSha;
+    if (liveSha === target.sha) return true;
+  }
+  await vercel(`/v10/projects/${encodeURIComponent(project)}/promote/${encodeURIComponent(target.uid)}`, { method: 'POST' });
+  for (let i = 0; i < 24; i++) {
+    if ((await liveId(project)) === target.uid) {
+      note('notice', `Vercel ${project}`, `production was pinned to an older build (${live}) — promoted the newest build ${target.uid}; automatic go-live is back on`);
+      return true;
+    }
+    await sleep(POLL_MS);
+  }
+  note('warning', `Vercel ${project}`, `promote of ${target.uid} requested but production still serves ${live} — check Deployments in Vercel`);
+  return false;
+}
+
 async function vercel(path, init = {}) {
   const url = `${API}${path}${path.includes('?') ? '&' : '?'}slug=${encodeURIComponent(scope)}`;
   const response = await fetch(url, { ...init, headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', ...(init.headers || {}) } });
@@ -60,7 +101,7 @@ const wanted = Object.entries(KEYS).flatMap(([key, engine]) => {
   }
   return [{ key, value }];
 });
-if (!wanted.length) { note('notice', 'Vercel sync', 'no usable AI keys in GitHub secrets — nothing to sync'); process.exit(0); }
+if (!wanted.length) note('notice', 'Vercel sync', 'no usable AI keys in GitHub secrets — nothing to copy, only checking that production is current');
 
 let failures = 0;
 for (const project of projects) {
@@ -81,24 +122,33 @@ for (const project of projects) {
       });
       changed.push(key);
     }
-    if (!changed.length) { note('notice', `Vercel ${project}`, `keys already up to date (${wanted.map((w) => w.key).join(', ')})`); continue; }
-    note('notice', `Vercel ${project}`, `updated ${changed.join(', ')}`);
+    if (changed.length) note('notice', `Vercel ${project}`, `updated ${changed.join(', ')}`);
+    else if (wanted.length) note('notice', `Vercel ${project}`, `keys already up to date (${wanted.map((w) => w.key).join(', ')})`);
 
-    const { deployments = [] } = await vercel(`/v6/deployments?projectId=${encodeURIComponent(project)}&target=production&state=READY&limit=1`);
-    if (!deployments[0]) { note('warning', `Vercel ${project}`, 'no production deployment to redeploy — next push to main will use the new keys'); continue; }
-    const created = await vercel('/v13/deployments?forceNew=1', {
-      method: 'POST', body: JSON.stringify({ name: project, deploymentId: deployments[0].uid, target: 'production' }),
-    });
-    let state = created.readyState;
-    for (let i = 0; i < 60 && !['READY', 'ERROR', 'CANCELED'].includes(state); i++) {
-      await new Promise((r) => setTimeout(r, Number(process.env.SHAM_SYNC_POLL_MS) || 5000));
-      state = (await vercel(`/v13/deployments/${created.id}`)).readyState;
+    const { deployments = [] } = await vercel(`/v6/deployments?projectId=${encodeURIComponent(project)}&target=production&state=READY&limit=20`);
+    const newest = pickNewest(deployments);
+    if (!newest) { note('warning', `Vercel ${project}`, 'no production deployment yet — next push to main will use the new keys'); continue; }
+    let liveCandidate = { uid: newest.uid, sha: newest.meta?.githubCommitSha };
+    if (changed.length) {
+      const created = await vercel('/v13/deployments?forceNew=1', {
+        method: 'POST', body: JSON.stringify({ name: project, deploymentId: newest.uid, target: 'production' }),
+      });
+      let state = created.readyState;
+      for (let i = 0; i < 60 && !['READY', 'ERROR', 'CANCELED'].includes(state); i++) {
+        await sleep(POLL_MS);
+        state = (await vercel(`/v13/deployments/${created.id}`)).readyState;
+      }
+      note(state === 'READY' ? 'notice' : 'warning', `Vercel ${project}`, `production redeploy ${state} (${created.url ? `https://${created.url}` : created.id})`);
+      if (state !== 'READY') { failures++; continue; }
+      liveCandidate = { uid: created.id };
     }
-    note(state === 'READY' ? 'notice' : 'warning', `Vercel ${project}`, `production redeploy ${state} (${created.url ? `https://${created.url}` : created.id})`);
-    if (state !== 'READY') failures++;
+    if (!(await ensureLive(project, liveCandidate))) failures++;
   } catch (error) {
     failures++;
-    note('warning', `Vercel ${project}`, `sync failed: ${error.message}`);
+    const hint = / 403 /.test(error.message)
+      ? ` — VERCEL_TOKEN was refused: create a new token at https://vercel.com/account/settings/tokens with Scope "${scope}" and store it as the GitHub secret VERCEL_TOKEN`
+      : / 401 /.test(error.message) ? ' — VERCEL_TOKEN is invalid or expired: replace the GitHub secret VERCEL_TOKEN' : '';
+    note('warning', `Vercel ${project}`, `sync failed: ${error.message}${hint}`);
   }
 }
 process.exit(failures && process.env.SHAM_SYNC_STRICT === '1' ? 1 : 0);
