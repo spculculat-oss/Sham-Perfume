@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { CheckSquare, Crown, Download, Loader2, Lock, NotebookPen, Send, Square, Trash2, Upload } from 'lucide-react';
+import { CheckSquare, Crown, Download, FolderOpen, Loader2, Lock, NotebookPen, Paperclip, Send, Square, Trash2, Upload, X } from 'lucide-react';
 import { T, TP, adminLocale } from './adminL10n';
 import { AdminApiError, adminRequest, send } from './adminApi';
 import { ShaheenMarkdown } from '../components/ShaheenMarkdown';
 import { hasSensitiveNumber, maskSensitive } from '../utils/ownerAuthority';
+import ChangeCard from './ChangeCard';
+import { repoFiles, repoTree } from './repoFiles';
+import { FILE_LIMITS, changeSummary, displayReply, fileIndex, isReadablePath, mentionedFiles, parseChanges, readRequests } from '../utils/ownerFiles';
 import {
   emptyRoom, isSealedRoom, openRoom, roomHistory, ROOM_LIMITS, ROOM_STORAGE_KEY, sealRoom, secretaryNotes,
-  type RoomData, type RoomMessage, type RoomSpeaker, type SealedRoom,
+  type ChangeDecision, type RoomData, type RoomMessage, type RoomSpeaker, type SealedRoom,
 } from '../utils/ownerRoom';
 
 /**
@@ -24,6 +27,18 @@ const WHO: Record<RoomSpeaker, { name: () => string; icon: string; bubble: strin
   secretary: { name: () => T('السكرتير'), icon: '📒', bubble: 'bg-emerald-950 text-emerald-50 border border-emerald-800' },
 };
 
+/** A reply from Shaheen or the secretary: the text, and a change card when Shaheen proposed a change. */
+function ReplyBody({ m, decision, onDecide }: { m: RoomMessage; decision?: ChangeDecision; onDecide: (d: ChangeDecision) => void }) {
+  const edits = useMemo(() => (m.by === 'shaheen' ? parseChanges(m.text) : []), [m.by, m.text]);
+  const summary = useMemo(() => changeSummary(m.text), [m.text]);
+  return (
+    <>
+      <ShaheenMarkdown text={m.by === 'shaheen' ? displayReply(m.text) : m.text} />
+      {edits.length > 0 && <ChangeCard edits={edits} summary={summary} decision={decision} onDecide={onDecide} />}
+    </>
+  );
+}
+
 function readSealed(): SealedRoom | undefined {
   try { const raw = localStorage.getItem(ROOM_STORAGE_KEY); const x = raw ? JSON.parse(raw) : undefined; return isSealedRoom(x) ? x : undefined; } catch { return undefined; }
 }
@@ -35,6 +50,11 @@ export default function OwnerRoom({ code }: { code: string }) {
   const [text, setText] = useState('');
   const [note, setNote] = useState('');
   const [busy, setBusy] = useState<'' | 'shaheen' | 'secretary'>('');
+  const [reading, setReading] = useState<string[]>([]);
+  const [tree, setTree] = useState<string[]>([]);
+  const [attached, setAttached] = useState<string[]>([]);
+  const [picking, setPicking] = useState(false);
+  const [pick, setPick] = useState('');
   const [error, setError] = useState('');
   const end = useRef<HTMLDivElement>(null);
   const file = useRef<HTMLInputElement>(null);
@@ -56,18 +76,38 @@ export default function OwnerRoom({ code }: { code: string }) {
   }, [code]);
 
   useEffect(() => { end.current?.scrollIntoView({ block: 'end' }); }, [room?.messages.length, busy]);
+  // The list of the site's files, so Shaheen knows what exists and can ask for any of them.
+  useEffect(() => { let alive = true; void repoTree().then((t) => { if (alive) setTree(t); }); return () => { alive = false; }; }, []);
 
-  const ask = async (to: 'shaheen' | 'secretary', base: RoomData) => {
+  const ask = async (to: 'shaheen' | 'secretary', base: RoomData, files: string[] = []) => {
     setBusy(to); setError('');
     try {
-      const answer = await adminRequest<{ reply: string; by: 'shaheen' | 'secretary'; offline?: boolean }>('/owner-room', send('POST', { to, history: roomHistory(base.messages) }));
+      type Answer = { reply: string; by: 'shaheen' | 'secretary'; offline?: boolean };
+      const index = to === 'shaheen' && tree.length ? fileIndex(tree) : undefined;
+      const history = roomHistory(base.messages);
+      let shown = to === 'shaheen' ? await repoFiles(files) : [];
+      let answer = await adminRequest<Answer>('/owner-room', send('POST', { to, history, ...(index ? { index } : {}), ...(shown.length ? { files: shown } : {}) }));
+      // «شاهين يشوف كل الملفات»: when he asks for files, the room fetches them and asks him again (twice at most).
+      for (let round = 0; to === 'shaheen' && !answer.offline && round < FILE_LIMITS.reads; round++) {
+        const wanted = readRequests(answer.reply).filter((p) => isReadablePath(p) && (!tree.length || tree.includes(p)));
+        if (!wanted.length) break;
+        setReading(wanted);
+        shown = [...shown.filter((f) => !wanted.includes(f.path)), ...(await repoFiles(wanted))].slice(-FILE_LIMITS.files);
+        const missing = wanted.filter((p) => !shown.some((f) => f.path === p));
+        const followUp = [`📂 دي الملفات اللي طلبتها: ${shown.map((f) => f.path).join('، ') || 'مفيش'}.`,
+          missing.length ? `مقدرتش أجيب: ${missing.join('، ')} (مش موجودة أو مش ملف نص).` : '', 'كمل ردك عليّا من غير ما تطلب نفس الملفات تاني.'].filter(Boolean).join(' ');
+        answer = await adminRequest<Answer>('/owner-room', send('POST', {
+          to, ...(index ? { index } : {}), ...(shown.length ? { files: shown } : {}),
+          history: [...history, { by: 'shaheen', text: answer.reply.slice(0, ROOM_LIMITS.chars) }, { by: 'owner', text: followUp }].slice(-ROOM_LIMITS.history),
+        }));
+      }
       const msg: RoomMessage = { id: uid(), by: answer.by, text: answer.reply, at: now(), ...(answer.offline ? { offline: true } : {}) };
       await save({ ...base, messages: [...base.messages, msg].slice(-ROOM_LIMITS.messages) });
     } catch (e) {
       setError(e instanceof AdminApiError && e.status === 401 ? T('الكود السري اتغير أو الجلسة خلصت — اقفل الجناح وادخل تاني.')
         : e instanceof AdminApiError && e.status === 429 ? T('رسايل كتير ورا بعض — استنى دقيقة.')
           : T('مش قادر أوصل لشاهين دلوقتي. رسالتك محفوظة في الغرفة، جرب تاني بعد شوية.'));
-    } finally { setBusy(''); }
+    } finally { setBusy(''); setReading([]); }
   };
 
   const submit = async () => {
@@ -80,10 +120,17 @@ export default function OwnerRoom({ code }: { code: string }) {
     setText('');
     await save(next);
     if (sensitive) setError(T('🔒 خبّيت رقم شكله رقم بطاقة أو حساب من رسالتك. ماتكتبش أرقام زي دي حتى هنا.'));
-    await ask('shaheen', next);
+    const files = [...new Set([...attached, ...mentionedFiles(raw, tree)])].slice(0, FILE_LIMITS.files);
+    setAttached([]);
+    await ask('shaheen', next, files);
   };
 
   const notes = useMemo(() => secretaryNotes(room?.messages || []), [room?.messages]);
+  const decide = (id: string) => (d: ChangeDecision) => { if (room) void save({ ...room, decisions: { ...room.decisions, [id]: d } }); };
+  const matches = useMemo(() => {
+    const q = pick.trim().toLowerCase();
+    return q.length < 2 ? [] : tree.filter((p) => isReadablePath(p) && p.toLowerCase().includes(q) && !attached.includes(p)).slice(0, 8);
+  }, [pick, tree, attached]);
 
   const exportRoom = () => {
     const sealed = readSealed();
@@ -128,20 +175,42 @@ export default function OwnerRoom({ code }: { code: string }) {
           <h2 className="font-black text-amber-100">{T('غرفة شاهين الخاصة')}</h2>
           <span className="ms-auto inline-flex items-center gap-1 rounded-full border border-emerald-800 bg-emerald-950 px-2 py-0.5 text-[11px] text-emerald-200"><Lock className="h-3 w-3" />{T('متشفرة على جهازك')}</span>
           <p className="w-full text-[11px] text-stone-400">{T('اللي هنا: إنت 👑 وشاهين 🦅 والسكرتير 📒 بس. الكلام بيتحفظ متشفر على الجهاز ده بكودك السري، والخادم بيرد ومابيحفظش حاجة.')}</p>
+          <p className="w-full text-[11px] text-amber-200/80">{T('📂 شاهين يقدر يشوف كل ملفات الموقع. أي تعديل يقترحه مابيتنفذش غير لما توافق عليه.')}</p>
         </header>
         <div className="flex-1 space-y-3 overflow-y-auto py-3" aria-live="polite">
-          {!room.messages.length && <p className="mt-10 text-center text-sm text-stone-400">{T('اكتب لشاهين أي حاجة: سؤال عن الموقع، قرار، أو مهمة عايزها تتعمل.')}</p>}
+          {!room.messages.length && <p className="mt-10 text-center text-sm text-stone-400">{T('اكتب لشاهين أي حاجة: سؤال عن الموقع، قرار، أو مهمة عايزها تتعمل.')}<br />{T('مثلاً: «شوف الفوتر وقولي فيه إيه» أو «غيّر جملة الترحيب في الصفحة الرئيسية».')}</p>}
           {room.messages.map((m) => (
             <div key={m.id} className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm ${WHO[m.by].bubble}`}>
               <div className="mb-1 flex items-center gap-1 text-[11px] opacity-70"><span>{WHO[m.by].icon}</span><b>{WHO[m.by].name()}</b><span>· {time(m.at)}</span>{m.offline && <span>· {T('من غير محركات')}</span>}</div>
-              {m.by === 'owner' ? <p className="whitespace-pre-wrap">{m.text}</p> : <ShaheenMarkdown text={m.text} />}
+              {m.by === 'owner' ? <p className="whitespace-pre-wrap">{m.text}</p> : <ReplyBody m={m} decision={room.decisions?.[m.id]} onDecide={decide(m.id)} />}
             </div>
           ))}
-          {busy && <div className="flex items-center gap-2 text-xs text-stone-400"><Loader2 className="h-3.5 w-3.5 animate-spin" />{busy === 'shaheen' ? T('شاهين بيكتب…') : T('السكرتير بيلخص…')}</div>}
+          {busy && <div className="flex items-center gap-2 text-xs text-stone-400"><Loader2 className="h-3.5 w-3.5 animate-spin" />{reading.length ? <span>{T('📂 شاهين بيقرا:')} <code dir="ltr">{reading.join('، ')}</code></span> : busy === 'shaheen' ? T('شاهين بيكتب…') : T('السكرتير بيلخص…')}</div>}
           <div ref={end} />
         </div>
         {error && <p role="alert" className="mb-2 rounded-xl bg-red-950 p-2 text-xs text-red-200">{error}</p>}
+        {(attached.length > 0 || picking) && (
+          <div className="mb-2 space-y-2 rounded-xl border border-stone-800 bg-stone-950/60 p-2 text-xs">
+            {attached.length > 0 && <div className="flex flex-wrap gap-1">{attached.map((p) => (
+              <span key={p} className="inline-flex items-center gap-1 rounded-full border border-amber-800 bg-amber-950/60 px-2 py-0.5 text-amber-100"><Paperclip className="h-3 w-3" /><code dir="ltr">{p}</code>
+                <button type="button" aria-label={T('شيل')} onClick={() => setAttached(attached.filter((x) => x !== p))}><X className="h-3 w-3" /></button></span>
+            ))}</div>}
+            {picking && (
+              <div>
+                <input autoFocus dir="ltr" className="w-full rounded-lg border border-stone-700 bg-stone-950 px-2 py-1 text-stone-100" value={pick} onChange={(e) => setPick(e.target.value)}
+                  placeholder={T('اكتب جزء من اسم الملف… مثلاً Footer')} aria-label={T('دور على ملف')} />
+                {!tree.length && <p className="mt-1 text-stone-500">{T('قايمة الملفات مش متاحة دلوقتي — شاهين يقدر يطلب الملف بالاسم.')}</p>}
+                <ul className="mt-1 space-y-0.5">{matches.map((p) => (
+                  <li key={p}><button type="button" dir="ltr" className="w-full rounded px-1 text-start text-stone-300 hover:bg-white/5" disabled={attached.length >= FILE_LIMITS.files}
+                    onClick={() => { setAttached([...attached, p]); setPick(''); if (attached.length + 1 >= FILE_LIMITS.files) setPicking(false); }}>{p}</button></li>
+                ))}</ul>
+              </div>
+            )}
+          </div>
+        )}
         <form className="flex items-end gap-2 border-t border-stone-800 pt-3" onSubmit={(e) => { e.preventDefault(); void submit(); }}>
+          <button type="button" onClick={() => setPicking(!picking)} title={T('وري شاهين ملف')} aria-label={T('وري شاهين ملف')}
+            className={`rounded-xl border p-3 ${picking ? 'border-amber-600 text-amber-300' : 'border-stone-700 text-stone-400'}`}><FolderOpen className="h-4 w-4" /></button>
           <textarea className="min-h-[48px] flex-1 resize-y rounded-xl border border-stone-700 bg-stone-950 px-3 py-2 text-sm text-stone-100" rows={2} value={text} maxLength={ROOM_LIMITS.chars}
             onChange={(e) => setText(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void submit(); } }}
             placeholder={T('اكتب لشاهين…')} aria-label={T('اكتب لشاهين…')} />
