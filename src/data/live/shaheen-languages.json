@@ -1,7 +1,7 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-10-21T10:34:54.617Z",
+  "updatedAt": "2026-10-21T14:55:19.642Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
@@ -11,57 +11,57 @@
   "languageClamps": [],
   "score": 67,
   "notes": [
-    "الترجمة مش مكتملة: 17.3% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 148106 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط الأساسية بس هي اللي مكتملة.",
-    "المترجم الذكي: 148106 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3232 — النهارده اتترجم 0 (الباقة خلصت — هيكمل بعد التجديد).",
+    "الترجمة مش مكتملة: 16.8% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 153101 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط الأساسية بس هي اللي مكتملة.",
+    "المترجم الذكي: 153101 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3232 — النهارده اتترجم 0 (الباقة خلصت — هيكمل بعد التجديد).",
     "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «Live Sync» src/components/HomeHub.tsx:139، «Enter Portal» src/components/HomeHub.tsx:142، «placeholder» src/assistant/ShamAssistant.tsx:20، «placeholder» src/assistant/ShamAssistant.tsx:446، «placeholder» src/assistant/ShamAssistant.tsx:447.",
     "لغات بلّغ عنها قسم التصميم بتتترجم الأول: is، sq، ps، ja."
   ],
-  "translationCoverage": 17.3,
+  "translationCoverage": 16.8,
   "fullyTranslated": 0,
   "translation": {
-    "at": "2026-10-21T10:34:55.001Z",
+    "at": "2026-10-21T14:55:20.037Z",
     "status": "quota",
-    "remaining": 148106,
+    "remaining": 153101,
     "covered": 3232,
-    "total": 179144,
+    "total": 184142,
     "fullyTranslated": 0,
     "remainingByTier": {
       "1": 16177,
-      "2": 100519,
-      "3": 31410
+      "2": 105416,
+      "3": 31508
     },
     "worstLanguages": [
       {
         "lang": "my",
-        "remaining": 1661
+        "remaining": 1712
       },
       {
         "lang": "dz",
-        "remaining": 1661
+        "remaining": 1712
       },
       {
         "lang": "cs",
-        "remaining": 1659
+        "remaining": 1710
       },
       {
         "lang": "ur",
-        "remaining": 1659
+        "remaining": 1710
       },
       {
         "lang": "am",
-        "remaining": 1659
+        "remaining": 1710
       },
       {
         "lang": "ha",
-        "remaining": 1659
+        "remaining": 1710
       },
       {
         "lang": "yo",
-        "remaining": 1659
+        "remaining": 1710
       },
       {
         "lang": "zu",
-        "remaining": 1659
+        "remaining": 1710
       }
     ],
     "run": {
@@ -156,7 +156,7 @@
     }
   },
   "design": {
-    "at": "2026-10-21T10:34:54.617Z",
+    "at": "2026-10-21T14:55:19.642Z",
     "auditAt": "2026-10-21T05:41:54.171Z",
     "auditScore": 42,
     "priorityLanguages": [
