@@ -5,6 +5,10 @@
 name: Owner control
 
 on:
+  # «شاهين يعدّل بموافقة صاحب الموقع»: the «وافق» button in the owner's suite opens an issue from his own account;
+  # the change job below applies it only when GitHub says the repository owner himself opened it.
+  issues:
+    types: [opened]
   workflow_dispatch:
     inputs:
       action:
@@ -55,13 +59,14 @@ permissions:
   contents: read
 
 concurrency:
-  group: owner-control
+  # Orders wait in one line; each change request has its own line (so nobody else's issue can push it out).
+  group: ${{ github.event_name == 'issues' && format('owner-change-{0}', github.event.issue.number) || 'owner-control' }}
   cancel-in-progress: false
 
 jobs:
   order:
     name: Apply the owner's order
-    if: github.actor == github.repository_owner && github.ref == 'refs/heads/main'
+    if: github.actor == github.repository_owner && github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
@@ -96,3 +101,38 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           node scripts/ci/publish.mjs "أمر صاحب الموقع: ${{ inputs.action }} ${{ inputs.bot }}" src/data/owner/controls.json \
             || { echo "::error::Could not save the owner's order"; exit 1; }
+
+  change:
+    name: Apply a change the owner approved in Shaheen's room
+    if: >-
+      github.event_name == 'issues' && github.actor == github.repository_owner
+      && github.event.issue.user.login == github.repository_owner && github.event.issue.author_association == 'OWNER'
+      && startsWith(github.event.issue.title, '[شاهين] ')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      actions: write
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Apply, check everything, then publish
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node --import tsx scripts/owner/apply-change.mts

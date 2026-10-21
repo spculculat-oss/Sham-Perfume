@@ -12,12 +12,14 @@ import { SHAHEEN_SITE_SETTINGS } from './config/shaheen';
 import { handbookBrief } from '../src/utils/botHandbook';
 import { OWNER, maskSensitive } from '../src/utils/ownerAuthority';
 import { ROOM_LIMITS, secretaryLocalSummary, type RoomMessage, type RoomSpeaker } from '../src/utils/ownerRoom';
+import { CHANGE_LIMITS, FILE_LIMITS, fileForShaheen, isReadablePath } from '../src/utils/ownerFiles';
 import type { ModelEngineId } from './core/types';
 
 type Env = Record<string, string | undefined>;
 export class RoomError extends Error { constructor(public status: number, public code: string, message: string) { super(message); } }
 
-export interface RoomRequest { to: 'shaheen' | 'secretary'; history: { by: RoomSpeaker; text: string }[] }
+export interface RoomFile { path: string; content: string }
+export interface RoomRequest { to: 'shaheen' | 'secretary'; history: { by: RoomSpeaker; text: string }[]; files?: RoomFile[]; index?: string }
 
 const SPEAKERS = new Set<RoomSpeaker>(['owner', 'shaheen', 'secretary']);
 export function validateRoomRequest(body: unknown): RoomRequest {
@@ -36,7 +38,21 @@ export function validateRoomRequest(body: unknown): RoomRequest {
   });
   if (size > 40_000) throw new RoomError(400, 'INVALID_HISTORY', 'Room history too long');
   if (to === 'shaheen' && history.at(-1)!.by !== 'owner') throw new RoomError(400, 'INVALID_HISTORY', 'Shaheen answers the owner\'s last message');
-  return { to, history };
+  // «شاهين يشوف كل الملفات»: the site's files the room fetched for him (public repository), and the list of them.
+  const files: RoomFile[] = [];
+  if (b.files !== undefined) {
+    if (!Array.isArray(b.files) || b.files.length > FILE_LIMITS.files) throw new RoomError(400, 'INVALID_FILES', 'Too many files');
+    let total = 0;
+    for (const f of b.files as { path?: unknown; content?: unknown }[]) {
+      if (!f || typeof f.path !== 'string' || !isReadablePath(f.path) || typeof f.content !== 'string') throw new RoomError(400, 'INVALID_FILES', 'Invalid file');
+      const file = fileForShaheen(f.path, f.content);
+      total += file.content.length;
+      if (total > FILE_LIMITS.total + 1000) throw new RoomError(400, 'INVALID_FILES', 'Files too long');
+      files.push(file);
+    }
+  }
+  const index = typeof b.index === 'string' ? b.index.slice(0, FILE_LIMITS.index) : undefined;
+  return { to, history, ...(files.length && to === 'shaheen' ? { files } : {}), ...(index && to === 'shaheen' ? { index } : {}) };
 }
 
 const SHAHEEN_ROOM = () => [
@@ -48,7 +64,21 @@ const SHAHEEN_ROOM = () => [
   'ماتطلبش منه ولا تكرر أي بيانات شخصية أو كلمات سر أو مفاتيح أو أرقام بطاقات، ولو كتب حاجة زي كده نبهه بلطف.',
   'ممنوع ذكر أسماء شركات أو تطبيقات الذكاء الاصطناعي اللي وراك.',
   '',
+  '## ملفات الموقع (صلاحية من صاحب الموقع)',
+  `صاحب الموقع اداك صلاحية تشوف كل ملفات الموقع. لو محتاج تشوف ملف علشان ترد صح، اكتب في ردك سطر زي ده: [[اقرأ: src/components/Footer.tsx]] (لحد ${FILE_LIMITS.files} ملفات في الرد) والغرفة هتجيبهولك وتسألك تاني. ماتخمنش محتوى ملف ماشفتهوش، وماتقولش إنك قريته غير لو هو قدامك.`,
+  'لو اقترحت تعديل، اشرحه لصاحب الموقع في سطرين بكلام بسيط (إيه اللي هيتغير وليه)، وبعدين اكتب التعديل بالصيغة دي بالظبط (الجزء القديم منسوخ حرف بحرف من الملف ومميز يتكرر مرة واحدة بس):',
+  '[[تعديل: المسار/الملف]]', '<<<<<<< SEARCH', 'السطور القديمة بالظبط', '=======', 'السطور الجديدة', '>>>>>>> REPLACE', '[[/تعديل]]',
+  `ملف جديد: سيب الجزء القديم فاضي. حط التعديل بس لو صاحب الموقع طلب تغيير أو وافق على فكرته، وعلى ملف شفته فعلاً. خليه صغير ومركز (الحد ${CHANGE_LIMITS.files} ملفات و${CHANGE_LIMITS.lines} سطر).`,
+  'التعديل مابيتنفذش غير لما صاحب الموقع يضغط «وافق» في الكارت اللي تحت ردك؛ بعدها مكتبه بيشغل كل الفحوص وينشر. ماتقولش أبداً إنك عدلت حاجة بنفسك.',
+  'ممنوع تقترح تعديل على: ملفات تشغيل الروبوتات (.github)، مفاتيح صاحب الموقع وقواعد صلاحياتك، المستندات والقرارات القانونية، بيانات الروبوتات (src/data/live)، المكتبات وملفات القفل، أو أي مفتاح أو كلمة سر. لو حاجة منهم محتاجة تتغير قوله إنها بتتعمل من شات وكيل البرمجة.',
+  '',
   handbookBrief(undefined, 1800),
+].join('\n');
+
+/** The list of files and the files fetched for this answer, after the rules. */
+const filesContext = (req: RoomRequest) => [
+  ...(req.index ? ['', '## قايمة ملفات الموقع (كل فولدر وملفاته)', req.index] : []),
+  ...(req.files?.length ? ['', '## ملفات قدامك دلوقتي (من آخر نسخة على الموقع)', ...req.files.map((f) => `### ${f.path}\n\`\`\`\n${f.content}\n\`\`\``)] : []),
 ].join('\n');
 
 const SECRETARY_ROOM = () => [
@@ -67,7 +97,7 @@ export async function roomAnswer(req: RoomRequest, options: { env?: Env; fetch?:
   const configured = new Set(engineStatuses(env).filter((s) => s.configured).map((s) => s.id));
   const wanted = SHAHEEN_SITE_SETTINGS.engines.filter((id) => configured.has(id)) as ModelEngineId[];
   const order = options.health ? options.health.order(wanted) : wanted;
-  const system = req.to === 'secretary' ? SECRETARY_ROOM() : SHAHEEN_ROOM();
+  const system = req.to === 'secretary' ? SECRETARY_ROOM() : `${SHAHEEN_ROOM()}${filesContext(req)}`;
   // The secretary reads the whole room as one transcript; Shaheen talks with the owner turn by turn.
   const turns = req.to === 'secretary'
     ? [{ role: 'user' as const, text: `محضر الغرفة:\n${req.history.map((t) => `${LABEL[t.by]}: ${t.text}`).join('\n')}\n\nاكتب الملخص.` }]
@@ -78,7 +108,7 @@ export async function roomAnswer(req: RoomRequest, options: { env?: Env; fetch?:
     try {
       const reply = await callEngine(id, system, turns, {
         env, fetch: options.fetch, signal: AbortSignal.any([total, AbortSignal.timeout(28_000)]),
-        temperature: req.to === 'secretary' ? 0.2 : 0.5, maxTokens: 1536, maxChars: 12_000,
+        temperature: req.to === 'secretary' ? 0.2 : 0.4, maxTokens: req.to === 'secretary' ? 1536 : 4096, maxChars: req.to === 'secretary' ? 12_000 : 24_000,
       });
       if (typeof reply === 'string' && reply.trim()) { options.health?.ok(id); return { reply: reply.trim(), by: req.to, engine: id }; }
     } catch { /* next engine; provider errors are never shown */ }

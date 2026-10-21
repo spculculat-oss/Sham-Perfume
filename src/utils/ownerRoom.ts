@@ -15,7 +15,9 @@ import { maskSensitive } from './ownerAuthority';
 export type RoomSpeaker = 'owner' | 'shaheen' | 'secretary';
 export interface RoomMessage { id: string; by: RoomSpeaker; text: string; at: string; offline?: boolean }
 export interface RoomNote { id: string; text: string; at: string; done?: boolean }
-export interface RoomData { version: 1; messages: RoomMessage[]; notes: RoomNote[] }
+/** The owner's answer to each change Shaheen proposed (by message id): sent to his desk, or turned down. */
+export type ChangeDecision = 'sent' | 'rejected';
+export interface RoomData { version: 1; messages: RoomMessage[]; notes: RoomNote[]; decisions?: Record<string, ChangeDecision> }
 
 export const ROOM_LIMITS = { messages: 300, history: 24, chars: 4000 } as const;
 export const emptyRoom = (): RoomData => ({ version: 1, messages: [], notes: [] });
@@ -106,5 +108,8 @@ export function readRoom(x: unknown): RoomData {
   const notes = (Array.isArray(d.notes) ? d.notes : [])
     .filter((n): n is RoomNote => Boolean(n && typeof n.text === 'string' && typeof n.id === 'string' && typeof n.at === 'string'))
     .slice(-100);
-  return { version: 1, messages, notes };
+  const ids = new Set(messages.map((m) => m.id));
+  const decisions = Object.fromEntries(Object.entries(d.decisions && typeof d.decisions === 'object' ? d.decisions : {})
+    .filter(([id, v]) => ids.has(id) && (v === 'sent' || v === 'rejected')));
+  return { version: 1, messages, notes, ...(Object.keys(decisions).length ? { decisions } : {}) };
 }
