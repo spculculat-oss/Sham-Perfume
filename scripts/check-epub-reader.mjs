@@ -38,6 +38,18 @@ try {
     await page.keyboard.press('Escape');
     assert.equal(await page.locator('dialog').count(), 0);
   }
+  // Every published original booklet must load its own full EPUB, not only a card.
+  await page.goto(`${base}#world_perfumes`);
+  const bookletButtons = page.getByRole('button', { name: /Read booklet|اقرأ الكتيّب/ });
+  assert.equal(await bookletButtons.count(), 2);
+  for (let index = 0; index < 2; index++) {
+    await bookletButtons.nth(index).click();
+    await page.waitForFunction(() => document.querySelector('dialog select')?.options.length === 7 && !document.querySelector('dialog select')?.disabled);
+    await page.waitForFunction(() => (document.querySelector('dialog iframe')?.contentDocument?.body?.textContent?.length || 0) > 500);
+    await page.locator('dialog select').selectOption({ index: 6 });
+    await page.waitForFunction(() => document.querySelector('dialog iframe')?.contentDocument?.body?.textContent?.includes('تمرين ختامي'));
+    await page.keyboard.press('Escape');
+  }
   // Fetch failure must leave the complete original guide readable, not a blank box.
   await page.route('**/books/sham-reading-guide.epub', route => route.fulfill({ status: 404, body: 'Not found' }));
   await openGuide();
@@ -50,5 +62,5 @@ try {
   assert.equal(await page.locator('dialog iframe').count(), 0);
   await page.keyboard.press('Escape');
   await context.close();
-  console.log('EPUB reader browser checks passed: desktop, mobile, chapters, text fallback, failed fetch, unavailable reference, close/reopen.');
+  console.log('EPUB reader browser checks passed: desktop, mobile, chapters, two original booklets, text fallback, failed fetch, unavailable reference, close/reopen.');
 } finally { await browser.close(); }

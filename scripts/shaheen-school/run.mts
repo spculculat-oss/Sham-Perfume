@@ -1,3 +1,4 @@
+import { bookStudyBriefing } from '../../server/library/bookStudyArchive';
 /**
  * «مدرسة شاهين» — GitHub Actions runs this every 6 hours (.github/workflows/shaheen-discover.yml):
  *   node --import tsx scripts/shaheen-school/run.mts
@@ -31,6 +32,9 @@ const MAX_STUDY = Math.max(0, Number(env.SCHOOL_MAX_STUDY ?? 10));
 const notes: string[] = [];
 const say = (line: string) => { console.log(line); notes.push(line); };
 const nowIso = new Date().toISOString();
+
+// Study queue is context only, never trusted training lessons or visitor memory.
+for (const line of bookStudyBriefing()) say(line);
 
 const memoryRaw = read<unknown>(live('shaheen-memory.json'));
 const memory: MemoryFile = isMemoryFile(memoryRaw) ? memoryRaw : emptyMemory();
