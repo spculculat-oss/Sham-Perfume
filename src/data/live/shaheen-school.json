@@ -1,26 +1,32 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T12:19:44.918Z",
+ "updatedAt": "2026-10-21T12:55:41.108Z",
  "reliance": {
-  "score": 87,
-  "covered": 150,
+  "score": 90,
+  "covered": 156,
   "total": 173,
-  "fromMemory": 150,
+  "fromMemory": 156,
   "fromLibrary": 2,
   "byLang": {
    "ar": {
-    "covered": 134,
+    "covered": 139,
     "total": 152
    },
    "en": {
-    "covered": 16,
+    "covered": 17,
     "total": 21
    }
   }
  },
- "studiedTotal": 57,
+ "studiedTotal": 63,
  "selfTaughtTotal": 60,
  "history": [
+  {
+   "at": "2026-10-21T12:55:41.108Z",
+   "score": 90,
+   "studied": 6,
+   "mode": "local"
+  },
   {
    "at": "2026-10-21T12:19:44.918Z",
    "score": 87,
@@ -150,6 +156,42 @@
  ],
  "lastStudied": [
   {
+   "q": "What tools do I need to start making perfume at home?",
+   "lang": "en",
+   "at": "2026-10-21T12:55:41.108Z",
+   "variants": 0
+  },
+  {
+   "q": "ايه تاريخ العطور عند العرب؟",
+   "lang": "ar",
+   "at": "2026-10-21T12:55:41.108Z",
+   "variants": 2
+  },
+  {
+   "q": "ايه اللي لازم يتكتب على ملصق زجاجة العطر؟",
+   "lang": "ar",
+   "at": "2026-10-21T12:55:41.108Z",
+   "variants": 4
+  },
+  {
+   "q": "ازاي احسب تكلفة العطر اللي بعمله قبل ما ابيعه؟",
+   "lang": "ar",
+   "at": "2026-10-21T12:55:41.108Z",
+   "variants": 0
+  },
+  {
+   "q": "العطر لونه اتغير بعد شهر هل باظ؟",
+   "lang": "ar",
+   "at": "2026-10-21T12:55:41.108Z",
+   "variants": 4
+  },
+  {
+   "q": "العطر بتاعي ريحته كحول قوية اعمل ايه؟",
+   "lang": "ar",
+   "at": "2026-10-21T12:55:41.108Z",
+   "variants": 0
+  },
+  {
    "q": "اقترح تركيبة عطر خشبي للشتاء بالنسب",
    "lang": "ar",
    "at": "2026-10-21T12:19:44.918Z",
@@ -232,42 +274,6 @@
    "lang": "en",
    "at": "2026-10-19T12:55:51.025Z",
    "variants": 0
-  },
-  {
-   "q": "ازاي احفظ تركيبتي في دفتر التركيبات؟",
-   "lang": "ar",
-   "at": "2026-10-19T12:55:51.025Z",
-   "variants": 4
-  },
-  {
-   "q": "How do I use the Sham perfume formula calculator?",
-   "lang": "en",
-   "at": "2026-10-18T15:15:44.171Z",
-   "variants": 1
-  },
-  {
-   "q": "How do I choose a perfume as a gift?",
-   "lang": "en",
-   "at": "2026-10-18T15:15:44.171Z",
-   "variants": 1
-  },
-  {
-   "q": "How do I choose a perfume for summer?",
-   "lang": "en",
-   "at": "2026-10-18T15:15:44.171Z",
-   "variants": 2
-  },
-  {
-   "q": "What alcohol is used to make perfume?",
-   "lang": "en",
-   "at": "2026-10-18T15:15:44.171Z",
-   "variants": 1
-  },
-  {
-   "q": "What is ambroxan in perfumes?",
-   "lang": "en",
-   "at": "2026-10-18T15:15:44.171Z",
-   "variants": 0
   }
  ],
  "pending": [
@@ -280,16 +286,6 @@
    "q": "حدثني عن آخر أخبار عالم العطور",
    "lang": "ar",
    "topic": "library"
-  },
-  {
-   "q": "العطر بتاعي ريحته كحول قوية اعمل ايه؟",
-   "lang": "ar",
-   "topic": "problems"
-  },
-  {
-   "q": "العطر لونه اتغير بعد شهر هل باظ؟",
-   "lang": "ar",
-   "topic": "problems"
   },
   {
    "q": "ازاي اقلل حدة نوتة طاغية في التركيبة؟",
@@ -330,6 +326,16 @@
    "q": "ايه الادوات اللي محتاجها عشان ابدأ اركب عطور؟",
    "lang": "ar",
    "topic": "skills"
+  },
+  {
+   "q": "يعني ايه اكورد في العطور وازاي اعمله؟",
+   "lang": "ar",
+   "topic": "skills"
+  },
+  {
+   "q": "ازاي احافظ على ثبات جودة العطر من دفعة للتانية؟",
+   "lang": "ar",
+   "topic": "business"
   }
  ],
  "importer": {
@@ -337,5 +343,5 @@
   "aiReadings": 0,
   "localReadings": 25
  },
- "localTaughtTotal": 6
+ "localTaughtTotal": 12
 }

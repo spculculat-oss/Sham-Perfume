@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T12:18:06.563Z",
+ "updatedAt": "2026-10-21T12:54:45.361Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -119,8 +119,8 @@
    "foundBy": "brand-site",
    "foundWith": "Lattafa",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T14:22:29.042Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T12:54:45.361Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -132,8 +132,8 @@
    "foundBy": "brand-site",
    "foundWith": "Lattafa",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T14:22:29.042Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T12:54:45.361Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -506,8 +506,8 @@
    "foundBy": "brand-site",
    "foundWith": "Ard Al Zaafaran",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T14:22:29.042Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T12:54:45.361Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -519,8 +519,8 @@
    "foundBy": "brand-site",
    "foundWith": "Ard Al Zaafaran",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T14:22:29.042Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T12:54:45.361Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -532,8 +532,8 @@
    "foundBy": "brand-site",
    "foundWith": "Ard Al Zaafaran",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T00:55:57.475Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T12:54:45.361Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -545,12 +545,12 @@
    "foundBy": "brand-site",
    "foundWith": "Zimaya",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T00:55:57.475Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T12:54:45.361Z",
    "trust": {
     "score": 42,
     "verdict": "weak",
-    "at": "2026-10-21T00:55:57.475Z",
+    "at": "2026-10-21T12:54:45.361Z",
     "checks": [
      {
       "id": "age",
@@ -5448,7 +5448,9 @@
    "foundBy": "brand-site",
    "foundWith": "Khadlaj",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T12:54:45.361Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "ausliebezumduft-de",
@@ -5948,13 +5950,129 @@
   {
    "id": "frenchavenue-com",
    "host": "frenchavenue.com",
-   "name": "frenchavenue.com",
+   "name": "French Avenue",
    "base": "https://frenchavenue.com",
    "status": "candidate",
    "foundBy": "brand-site",
    "foundWith": "French Avenue",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T12:54:45.361Z",
+   "trust": {
+    "score": 88,
+    "verdict": "trusted",
+    "at": "2026-10-21T12:54:45.361Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "10 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد + هاتف"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 15,
+      "max": 15,
+      "detail": "الموقع الرسمي لماركة French Avenue + عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 3,
+      "max": 5,
+      "detail": "محلي أو غير مذكور"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "الماركة نفسها تبيع منتجاتها"
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2016-09-11T18:40:59.000Z"
+   },
+   "region": "arab",
+   "sampleOk": 3,
+   "sampleTotal": 6,
+   "currency": "AED",
+   "rateToEgp": 14.8364,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*frenchavenue\\.com/products/[^?#]+$",
+   "sitemaps": [
+    "https://frenchavenue.com/sitemap_agentic_discovery.xml",
+    "https://frenchavenue.com/sitemap_products_1.xml?from=8081440047204&to=8682941284452",
+    "https://frenchavenue.com/sitemap_pages_1.xml?from=110289158244&to=122006536292",
+    "https://frenchavenue.com/sitemap_collections_1.xml?from=303114256484&to=319261474916",
+    "https://frenchavenue.com/sitemap_blogs_1.xml"
+   ],
+   "via": "json-ld",
+   "productsEstimate": 153,
+   "reason": "صالح — ينتظر مكاناً (الحد 20 مصادر نشطة)"
   },
   {
    "id": "frenchavenueperfumes-com",
@@ -5965,7 +6083,9 @@
    "foundBy": "brand-site",
    "foundWith": "French Avenue",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T12:54:45.361Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "frenchavenueparfums-com",
@@ -5976,7 +6096,9 @@
    "foundBy": "brand-site",
    "foundWith": "French Avenue",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T12:54:45.361Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "fragranceoutlet-com",
@@ -7243,6 +7365,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-21T12:54:45.361Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 10,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "✗ khadlajparfums.com: الموقع لا يفتح",
+    "  ↳ frenchavenue.com: CV 88/100 [age,https,contact,identity,returns,shipping,privacy,terms,platform,social,authentic] on Shopify",
+    "… frenchavenue.com: good, waiting (already 20 active stores)",
+    "✗ frenchavenueperfumes.com: الموقع لا يفتح",
+    "✗ frenchavenueparfums.com: الموقع لا يفتح",
+    "✗ lattafaperfumes.com: الموقع لا يفتح",
+    "✗ lattafaparfums.com: الموقع لا يفتح",
+    "✗ ardalzaafaran.com: الموقع لا يفتح",
+    "✗ ardalzaafaranperfumes.com: الموقع لا يفتح",
+    "✗ ardalzaafaranparfums.com: الموقع لا يفتح",
+    "  ↳ zimaya.com: CV 42/100 [age,https,identity,authentic] (pages: /contact-us→404 /returns→404)",
+    "✗ zimaya.com: ملف الثقة ضعيف (42/100): ينقصه بيانات التواصل، سياسة الإرجاع والاسترداد، وسائل دفع معروفة"
+   ]
+  },
   {
    "at": "2026-10-21T12:18:06.563Z",
    "mode": "self",
