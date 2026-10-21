@@ -8,6 +8,11 @@ import {
   cardBrand,
   cardEntryBlocked,
   inspectCardEntry,
+  inspectCvc,
+  inspectExpiry,
+  inspectWalletEntry,
+  walletEntryBlocked,
+  walletLiveCopy,
   formatCardNumber,
   formatExpiry,
   registerCard,
@@ -91,9 +96,16 @@ export function PaymentDesk({
   const live = inspectCardEntry(number, expiry);
   const brand = live.brand || (digits.length >= 2 ? cardBrand(digits) : undefined);
   const cardBlocked = cardEntryBlocked(number, expiry);
+  const expiryState = inspectExpiry(expiry);
+  const cvcState = inspectCvc(cvc, brand);
+  const ring = (state: string) => state === 'invalid' || state === 'expired' || state === 'dummy' ? 'border-red-400' : state === 'ok' || state === 'format_ok' ? 'border-sky-600' : 'border-stone-200';
   const row = useMemo(() => countryPay(country), [country]);
   const wallets = (row?.methods || []).filter((method) => method.kind !== 'card' && method.id !== 'visa' && method.id !== 'mastercard' && method.id !== 'amex');
   const selectedWallet = wallets.find((method) => method.id === walletId) || wallets[0];
+  const walletKind = selectedWallet ? kindOf(selectedWallet.id) : 'phone';
+  const walletMode = walletKind === 'handle' ? 'handle' : walletKind === 'express' ? 'express' : 'phone';
+  const walletLive = inspectWalletEntry(walletValue, walletMode);
+  const walletBlocked = selectedWallet ? walletEntryBlocked(walletValue, walletMode) : false;
 
   const refresh = (next: SavedPaymentMethod[]) => {
     setMethods(next);
@@ -130,6 +142,7 @@ export function PaymentDesk({
         INVALID_POSTAL: ['الرمز البريدي غير صالح.', 'The postal code is not valid.'],
         CONSENT_REQUIRED: ['وافق على حفظ البطاقة لعملياتك القادمة.', 'Agree to save the card for your next payments.'],
         LOGIN_REQUIRED: ['سجّل الدخول أولاً.', 'Sign in first.'],
+        TEST_WALLET: ['وهمية. لن تُحفظ كمحفظة عميل.', 'Dummy. This is not saved as a customer wallet.'],
       };
       const pair = text[code] || ['تعذّر حفظ البطاقة. الرقم ورمز الأمان لم يُحفظا.', 'The card could not be saved. The number and security code were not stored.'];
       setError(t(pair[0], pair[1]));
@@ -177,7 +190,9 @@ export function PaymentDesk({
       const code = err instanceof Error ? err.message : '';
       setError(code === 'CONSENT_REQUIRED'
         ? t('وافق على حفظ المحفظة لعملياتك القادمة.', 'Agree to save the wallet for your next payments.')
-        : t('بيانات المحفظة غير مكتملة.', 'The wallet details are incomplete.'));
+        : code === 'TEST_WALLET'
+          ? t('وهمية. لن تُحفظ كمحفظة عميل.', 'Dummy. This is not saved as a customer wallet.')
+          : t('بيانات المحفظة غير مكتملة.', 'The wallet details are incomplete.'));
     }
   };
 
@@ -227,7 +242,7 @@ export function PaymentDesk({
           </label>
           <label className="block space-y-1 text-xs font-semibold text-stone-700">
             <span>{t('رقم البطاقة', 'Card number')}</span>
-            <span className="flex items-center rounded-xl border border-stone-200 bg-white focus-within:border-stone-900">
+            <span className={`flex items-center rounded-xl border bg-white focus-within:border-stone-900 ${ring(live.verdict)}`}>
               <input required inputMode="numeric" autoComplete="cc-number" placeholder="1234 1234 1234 1234" value={number} onChange={(e) => setNumber(formatCardNumber(e.target.value))} className="w-full bg-transparent px-3 py-2.5 font-mono text-sm outline-none" data-testid="card-number" aria-describedby="desk-card-live" />
               <span className="pe-3 text-[11px] font-bold text-stone-500" data-testid="card-brand">{brand ? BRAND_LABEL[brand] : ''}</span>
             </span>
@@ -236,11 +251,11 @@ export function PaymentDesk({
           <div className="grid grid-cols-2 gap-2">
             <label className="block space-y-1 text-xs font-semibold text-stone-700">
               <span>{t('الانتهاء', 'Expiry')}</span>
-              <input required inputMode="numeric" autoComplete="cc-exp" placeholder="MM/YY" value={expiry} onChange={(e) => setExpiry(formatExpiry(e.target.value))} className="w-full rounded-xl border border-stone-200 px-3 py-2.5 font-mono text-sm" data-testid="card-expiry" />
+              <input required inputMode="numeric" autoComplete="cc-exp" placeholder="MM/YY" value={expiry} onChange={(e) => setExpiry(formatExpiry(e.target.value))} className={`w-full rounded-xl border px-3 py-2.5 font-mono text-sm ${ring(expiryState)}`} data-testid="card-expiry" />
             </label>
             <label className="block space-y-1 text-xs font-semibold text-stone-700">
               <span>{t('رمز الأمان', 'Security code')}</span>
-              <input required inputMode="numeric" autoComplete="cc-csc" placeholder={brand === 'amex' ? '1234' : '123'} value={cvc} onChange={(e) => setCvc(e.target.value.replace(/\D/g, '').slice(0, 4))} className="w-full rounded-xl border border-stone-200 px-3 py-2.5 font-mono text-sm" data-testid="card-cvc" />
+              <input required inputMode="numeric" autoComplete="cc-csc" placeholder={brand === 'amex' ? '1234' : '123'} value={cvc} onChange={(e) => setCvc(e.target.value.replace(/\D/g, '').slice(0, 4))} className={`w-full rounded-xl border px-3 py-2.5 font-mono text-sm ${ring(cvcState)}`} data-testid="card-cvc" />
             </label>
           </div>
           <label className="block space-y-1 text-xs font-semibold text-stone-700">
@@ -277,13 +292,15 @@ export function PaymentDesk({
           {selectedWallet && kindOf(selectedWallet.id) === 'phone' && (
             <label className="block space-y-1 text-xs font-semibold text-stone-700">
               <span>{t('رقم المحفظة', 'Wallet number')}</span>
-              <input required inputMode="tel" autoComplete="tel" value={walletValue} onChange={(e) => setWalletValue(e.target.value)} className="w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm" data-testid="wallet-phone" />
+              <input required inputMode="tel" autoComplete="tel" value={walletValue} onChange={(e) => setWalletValue(e.target.value)} className={`w-full rounded-xl border px-3 py-2.5 text-sm ${ring(walletLive.verdict)}`} data-testid="wallet-phone" />
+              <span className={`text-[11px] ${walletBlocked ? 'text-red-700' : 'text-sky-800'}`} role="status" data-testid="wallet-live-check" data-verdict={walletLive.verdict}>{walletLiveCopy(walletLive.verdict, lang)}</span>
             </label>
           )}
           {selectedWallet && kindOf(selectedWallet.id) === 'handle' && (
             <label className="block space-y-1 text-xs font-semibold text-stone-700">
               <span>{t('عنوان إنستا باي', 'InstaPay address')}</span>
-              <input required autoComplete="username" placeholder="name@instapay" value={walletValue} onChange={(e) => setWalletValue(e.target.value)} className="w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm" data-testid="wallet-handle" />
+              <input required autoComplete="username" placeholder="name@instapay" value={walletValue} onChange={(e) => setWalletValue(e.target.value)} className={`w-full rounded-xl border px-3 py-2.5 text-sm ${ring(walletLive.verdict)}`} data-testid="wallet-handle" />
+              <span className={`text-[11px] ${walletBlocked ? 'text-red-700' : 'text-sky-800'}`} role="status" data-testid="wallet-live-check" data-verdict={walletLive.verdict}>{walletLiveCopy(walletLive.verdict, lang)}</span>
             </label>
           )}
           <label className="flex items-start gap-2 text-[11px] leading-5 text-stone-600">
@@ -293,7 +310,7 @@ export function PaymentDesk({
           {error && <p className="text-xs text-red-700" role="alert">{error}</p>}
           {savedNote && <p className="text-xs text-emerald-800" role="status">{savedNote}</p>}
           {selectedWallet && kindOf(selectedWallet.id) !== 'express' && (
-            <button type="submit" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-stone-900 py-2.5 text-sm font-bold text-white" data-testid="save-wallet"><Lock className="h-4 w-4" />{t('حفظ المحفظة', 'Save wallet')}</button>
+            <button type="submit" disabled={walletBlocked} className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-stone-900 py-2.5 text-sm font-bold text-white disabled:bg-stone-400" data-testid="save-wallet"><Lock className="h-4 w-4" />{t('حفظ المحفظة', 'Save wallet')}</button>
           )}
         </form>
       )}

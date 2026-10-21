@@ -126,6 +126,69 @@ export function cardEntryBlocked(number: string, expiry = '', now = new Date()):
   return verdict === 'invalid' || verdict === 'dummy' || verdict === 'expired';
 }
 
+export type FieldLive = 'empty' | 'typing' | 'invalid' | 'expired' | 'ok';
+
+/** Expiry field alone. A past date is not active. This does not ask the issuer. */
+export function inspectExpiry(value: string, now = new Date()): FieldLive {
+  const digits = value.replace(/\D/g, '');
+  if (!digits) return 'empty';
+  if (digits.length < 4) return 'typing';
+  const month = Number(digits.slice(0, 2));
+  const year = 2000 + Number(digits.slice(2, 4));
+  if (month < 1 || month > 12) return 'invalid';
+  if (year < now.getFullYear() || (year === now.getFullYear() && month < now.getMonth() + 1)) return 'expired';
+  return 'ok';
+}
+
+export function inspectCvc(value: string, brand?: CardBrand): 'empty' | 'typing' | 'ok' {
+  const digits = value.replace(/\D/g, '');
+  if (!digits) return 'empty';
+  return digits.length >= (brand === 'amex' ? 4 : 3) ? 'ok' : 'typing';
+}
+
+export function savedCardExpired(expiry: string | undefined, now = new Date()): boolean {
+  return Boolean(expiry) && inspectExpiry(expiry || '', now) === 'expired';
+}
+
+export type WalletLiveVerdict = 'empty' | 'typing' | 'invalid' | 'dummy' | 'format_ok';
+
+/** Instant wallet check. A accepted shape is not a collected pull. */
+export function inspectWalletEntry(value: string, kind: 'phone' | 'handle' | 'express'): { verdict: WalletLiveVerdict } {
+  if (kind === 'express') return { verdict: 'format_ok' };
+  const raw = value.trim();
+  if (!raw) return { verdict: 'empty' };
+  if (kind === 'phone') {
+    if (raw.replace(/[\d\s+()-]/g, '').length) return { verdict: 'invalid' };
+    const digits = raw.replace(/\D/g, '');
+    if (digits.length < 8) return { verdict: 'typing' };
+    if (digits.length > 15) return { verdict: 'invalid' };
+    if (/^(\d)\1+$/.test(digits) || digits.startsWith('12345678') || digits.startsWith('00000000')) return { verdict: 'dummy' };
+    return { verdict: 'format_ok' };
+  }
+  const clean = raw.toLowerCase();
+  if (/^(test|fake|dummy|example|admin)@/.test(clean)) return { verdict: 'dummy' };
+  if (!/^[a-z0-9._-]{0,24}(@[a-z0-9.-]*)?$/.test(clean)) return { verdict: clean.length < 3 ? 'typing' : 'invalid' };
+  if (!/^[a-z0-9._-]{2,24}(@[a-z0-9.-]+)?$/.test(clean)) return { verdict: 'typing' };
+  return { verdict: 'format_ok' };
+}
+
+export function walletLiveCopy(verdict: WalletLiveVerdict, lang: string): string {
+  const ar = lang === 'ar';
+  const text: Record<WalletLiveVerdict, [string, string]> = {
+    empty: ['اكتب رقم المحفظة أو عنوانها.', 'Enter the wallet number or address.'],
+    typing: ['الكشف اللحظي: أكمل بيانات المحفظة.', 'Instant check: finish the wallet details.'],
+    invalid: ['غير مقبولة. بيانات المحفظة لا تطابق الشكل.', 'Not accepted. The wallet details do not match the expected shape.'],
+    dummy: ['وهمية. لن تُحفظ كمحفظة عميل.', 'Dummy. This is not saved as a customer wallet.'],
+    format_ok: ['الشكل مقبول. طلب السحب لا يعني أن المبلغ سُحب.', 'Format accepted. A pull request is not a collected transfer.'],
+  };
+  return ar ? text[verdict][0] : text[verdict][1];
+}
+
+export function walletEntryBlocked(value: string, kind: 'phone' | 'handle' | 'express'): boolean {
+  const verdict = inspectWalletEntry(value, kind).verdict;
+  return verdict === 'invalid' || verdict === 'dummy';
+}
+
 export interface CardToken {
   brand: CardBrand;
   last4: string;
@@ -222,6 +285,7 @@ export function registerWallet(customerId: string, input: {
 }): SavedPaymentMethod {
   if (!customerId || customerId === 'guest_client') throw new Error('LOGIN_REQUIRED');
   if (!input.consent) throw new Error('CONSENT_REQUIRED');
+  if ((input.phone && inspectWalletEntry(input.phone, 'phone').verdict === 'dummy') || (input.handle && inspectWalletEntry(input.handle, 'handle').verdict === 'dummy')) throw new Error('TEST_WALLET');
   let identifier = input.titleEn;
   if (input.phone) identifier = `•••• ${tokenizeWalletPhone(input.phone).last4}`;
   else if (input.handle) identifier = tokenizeWalletHandle(input.handle).display;
