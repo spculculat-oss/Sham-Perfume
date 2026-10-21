@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { cardLiveCopy, inspectCardEntry, registerCard, renewCardExpiry, requestInstrumentPull, tokenizeCard, tokenizeWalletHandle, tokenizeWalletPhone, assertDisplayOnly } from '../src/utils/paymentElement';
+import { cardLiveCopy, inspectCardEntry, inspectExpiry, inspectWalletEntry, registerCard, registerWallet, renewCardExpiry, requestInstrumentPull, savedCardExpired, tokenizeCard, tokenizeWalletHandle, tokenizeWalletPhone, assertDisplayOnly, walletEntryBlocked } from '../src/utils/paymentElement';
 
 const FIXTURE_VISA = '4916338506082832';
 const FIXTURE_AMEX = '3742454554001269';
@@ -71,4 +71,20 @@ test('instant card check tells dummy, rejected, and expired apart, and never cal
   assert.equal(cardLiveCopy('format_ok', 'ar').includes('لم يُؤكد'), true);
   assert.equal(cardLiveCopy('format_ok', 'ar').includes('مفعّلة'), false);
   assert.equal(JSON.stringify(accepted).includes(FIXTURE_VISA), false);
+});
+
+test('expiry, a saved card, and a wallet are checked instantly and a dummy wallet is not stored', () => {
+  const now = new Date('2026-10-21');
+  assert.equal(inspectExpiry('01/26', now), 'expired');
+  assert.equal(inspectExpiry('12/30', now), 'ok');
+  assert.equal(savedCardExpired('01/26', now), true);
+  assert.equal(savedCardExpired('12/30', now), false);
+  assert.equal(inspectWalletEntry('00000000', 'phone').verdict, 'dummy');
+  assert.equal(inspectWalletEntry('01012345566', 'phone').verdict, 'format_ok');
+  assert.equal(inspectWalletEntry('test@instapay', 'handle').verdict, 'dummy');
+  assert.equal(inspectWalletEntry('amina@instapay', 'handle').verdict, 'format_ok');
+  assert.equal(walletEntryBlocked('00000000', 'phone'), true);
+  assert.throws(() => registerWallet('usr-1', {
+    provider: 'vodafone_cash', title: 'فودافون كاش', titleEn: 'Vodafone Cash', type: 'wallet', holderName: 'Amina', phone: '00000000', consent: true,
+  }), /TEST_WALLET/);
 });
