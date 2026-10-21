@@ -179,6 +179,7 @@
   "sf_more": "Xem thêm ({n} sản phẩm)",
   "sf_new_badge": "Mới",
   "sf_no_results": "Không tìm thấy kết quả — thử «Hỏi Shaheen» hoặc xóa bộ lọc",
+  "sf_or_assistant": "Hoặc hoàn tất đơn hàng với trợ lý Sham",
   "sf_order_note": "Thanh toán trực tuyến chưa khả dụng tại quốc gia của bạn. Hãy gửi đơn hàng qua email, chúng tôi sẽ phản hồi với phương thức thanh toán hiện có. Đơn hàng chưa được thanh toán cho đến khi chúng tôi xác nhận.",
   "sf_order_opened": "Chúng tôi đã mở sẵn nội dung đơn hàng trong ứng dụng email của bạn. Nhấn “Gửi” tại đó để gửi cho chúng tôi. Nếu không có gì mở ra, hãy viết thư đến {email}.",
   "sf_order_ref": "Mã đơn hàng",
