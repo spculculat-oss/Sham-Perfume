@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T10:34:54.765Z",
+ "updatedAt": "2026-10-21T12:18:06.563Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -4483,7 +4483,107 @@
    "foundBy": "brand-site",
    "foundWith": "Velixir",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T12:18:06.563Z",
+   "trust": {
+    "score": 54,
+    "verdict": "weak",
+    "at": "2026-10-21T12:18:06.563Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "21 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": false,
+      "points": 2,
+      "max": 10,
+      "detail": "صفحة تواصل"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 10,
+      "max": 15,
+      "detail": "الموقع الرسمي لماركة Velixir"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": null,
+      "points": 2,
+      "max": 5
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "الماركة نفسها تبيع منتجاتها"
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2005-01-04T18:55:46.000Z"
+   },
+   "region": "global",
+   "reason": "ملف الثقة ضعيف (54/100): ينقصه بيانات التواصل، وسائل دفع معروفة، سياسة الشحن"
   },
   {
    "id": "velixirperfumes-com",
@@ -4494,18 +4594,121 @@
    "foundBy": "brand-site",
    "foundWith": "Velixir",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T12:18:06.563Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "velixirparfums-com",
    "host": "velixirparfums.com",
-   "name": "velixirparfums.com",
+   "name": "Velixirparfums",
    "base": "https://velixirparfums.com",
    "status": "candidate",
    "foundBy": "brand-site",
    "foundWith": "Velixir",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T12:18:06.563Z",
+   "trust": {
+    "score": 56,
+    "verdict": "weak",
+    "at": "2026-10-21T12:18:06.563Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 10,
+      "max": 20,
+      "detail": "2 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد + هاتف"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": false,
+      "points": 0,
+      "max": 15,
+      "detail": "لا توجد"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 6,
+      "max": 10,
+      "detail": "PayPal"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2024-09-05T11:49:13.000Z"
+   },
+   "region": "global",
+   "reason": "ملف الثقة ضعيف (56/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الشحن، سياسة الخصوصية"
   },
   {
    "id": "afnanperfumesperfumes-com",
@@ -4516,7 +4719,9 @@
    "foundBy": "brand-site",
    "foundWith": "Afnan Perfumes",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T12:18:06.563Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "afnanperfumesparfums-com",
@@ -4527,7 +4732,9 @@
    "foundBy": "brand-site",
    "foundWith": "Afnan Perfumes",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T12:18:06.563Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "lattafa-usa-com",
@@ -4825,7 +5032,9 @@
    "foundBy": "brand-site",
    "foundWith": "Rue Broca",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T12:18:06.563Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "ruebrocaperfumes-com",
@@ -4836,40 +5045,399 @@
    "foundBy": "brand-site",
    "foundWith": "Rue Broca",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T12:18:06.563Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "ruebrocaparfums-com",
    "host": "ruebrocaparfums.com",
-   "name": "ruebrocaparfums.com",
+   "name": "RB GLOBAL",
    "base": "https://ruebrocaparfums.com",
-   "status": "candidate",
+   "status": "active",
    "foundBy": "brand-site",
    "foundWith": "Rue Broca",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T12:18:06.563Z",
+   "trust": {
+    "score": 74,
+    "verdict": "trusted",
+    "at": "2026-10-21T12:18:06.563Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "11 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": false,
+      "points": 4,
+      "max": 10,
+      "detail": "بريد"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 15,
+      "max": 15,
+      "detail": "الموقع الرسمي لماركة Rue Broca + عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "الماركة نفسها تبيع منتجاتها"
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2015-03-16T10:04:45.000Z"
+   },
+   "region": "arab",
+   "sampleOk": 7,
+   "sampleTotal": 7,
+   "currency": "AED",
+   "rateToEgp": 14.8364,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*ruebrocaparfums\\.com/products/[^?#]+$",
+   "sitemaps": [
+    "https://ruebrocaparfums.com/sitemap_agentic_discovery.xml",
+    "https://ruebrocaparfums.com/sitemap_products_1.xml?from=9043205456112&to=9868843483376",
+    "https://ruebrocaparfums.com/sitemap_pages_1.xml?from=138719527152&to=146412699888",
+    "https://ruebrocaparfums.com/sitemap_collections_1.xml?from=444714647792&to=481870315760",
+    "https://ruebrocaparfums.com/sitemap_blogs_1.xml",
+    "https://ruebrocaparfums.com/sitemap_articles_1.xml"
+   ],
+   "via": "json-ld",
+   "productsEstimate": 44
   },
   {
    "id": "khadlaj-com",
    "host": "khadlaj.com",
-   "name": "khadlaj.com",
-   "base": "https://khadlaj.com",
-   "status": "candidate",
+   "name": "Khadlaj Perfumes",
+   "base": "https://khadlaj-perfumes.com",
+   "status": "active",
    "foundBy": "brand-site",
    "foundWith": "Khadlaj",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T12:18:06.563Z",
+   "trust": {
+    "score": 96,
+    "verdict": "trusted",
+    "at": "2026-10-21T12:18:06.563Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "9 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد + هاتف"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 15,
+      "max": 15,
+      "detail": "بيانات قانونية + الموقع الرسمي لماركة Khadlaj + عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "يشحن دولياً"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 6,
+      "max": 10,
+      "detail": "iDEAL"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2017-09-23T17:40:37.000Z"
+   },
+   "region": "arab",
+   "sampleOk": 4,
+   "sampleTotal": 7,
+   "currency": "AED",
+   "rateToEgp": 14.8364,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*khadlaj-perfumes\\.com/[^?#]+$",
+   "sitemaps": [
+    "https://khadlaj-perfumes.com/sitemap_agentic_discovery.xml",
+    "https://khadlaj-perfumes.com/sitemap_products_1.xml?from=7554095022279&to=8893884170439",
+    "https://khadlaj-perfumes.com/sitemap_pages_1.xml?from=91005419719&to=165762957511",
+    "https://khadlaj-perfumes.com/sitemap_collections_1.xml?from=290774778055&to=490811654343",
+    "https://khadlaj-perfumes.com/sitemap_blogs_1.xml",
+    "https://khadlaj-perfumes.com/sitemap_articles_1.xml",
+    "https://khadlaj-perfumes.com/ar/sitemap_products_1.xml?from=7554095022279&to=8893884170439",
+    "https://khadlaj-perfumes.com/ar/sitemap_pages_1.xml?from=91005419719&to=165762957511",
+    "https://khadlaj-perfumes.com/ar/sitemap_collections_1.xml?from=290774778055&to=490811654343",
+    "https://khadlaj-perfumes.com/ar/sitemap_blogs_1.xml",
+    "https://khadlaj-perfumes.com/ar/sitemap_articles_1.xml"
+   ],
+   "via": "json-ld",
+   "productsEstimate": 1112
   },
   {
    "id": "khadlajperfumes-com",
    "host": "khadlajperfumes.com",
-   "name": "khadlajperfumes.com",
-   "base": "https://khadlajperfumes.com",
-   "status": "candidate",
+   "name": "Khadlaj Perfumes",
+   "base": "https://khadlaj-perfumes.com",
+   "status": "active",
    "foundBy": "brand-site",
    "foundWith": "Khadlaj",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T12:18:06.563Z",
+   "trust": {
+    "score": 96,
+    "verdict": "trusted",
+    "at": "2026-10-21T12:18:06.563Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "9 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد + هاتف"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 15,
+      "max": 15,
+      "detail": "بيانات قانونية + الموقع الرسمي لماركة Khadlaj + عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "يشحن دولياً"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 6,
+      "max": 10,
+      "detail": "iDEAL"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2017-09-24T13:15:44.000Z"
+   },
+   "region": "arab",
+   "sampleOk": 4,
+   "sampleTotal": 7,
+   "currency": "AED",
+   "rateToEgp": 14.8364,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*khadlaj-perfumes\\.com/[^?#]+$",
+   "sitemaps": [
+    "https://khadlaj-perfumes.com/sitemap_agentic_discovery.xml",
+    "https://khadlaj-perfumes.com/sitemap_products_1.xml?from=7554095022279&to=8893884170439",
+    "https://khadlaj-perfumes.com/sitemap_pages_1.xml?from=91005419719&to=165762957511",
+    "https://khadlaj-perfumes.com/sitemap_collections_1.xml?from=290774778055&to=490811654343",
+    "https://khadlaj-perfumes.com/sitemap_blogs_1.xml",
+    "https://khadlaj-perfumes.com/sitemap_articles_1.xml",
+    "https://khadlaj-perfumes.com/ar/sitemap_products_1.xml?from=7554095022279&to=8893884170439",
+    "https://khadlaj-perfumes.com/ar/sitemap_pages_1.xml?from=91005419719&to=165762957511",
+    "https://khadlaj-perfumes.com/ar/sitemap_collections_1.xml?from=290774778055&to=490811654343",
+    "https://khadlaj-perfumes.com/ar/sitemap_blogs_1.xml",
+    "https://khadlaj-perfumes.com/ar/sitemap_articles_1.xml"
+   ],
+   "via": "json-ld",
+   "productsEstimate": 1112
   },
   {
    "id": "khadlajparfums-com",
@@ -6675,6 +7243,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-21T12:18:06.563Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 10,
+   "activated": 3,
+   "rejected": 0,
+   "notes": [
+    "  ↳ velixirparfums.com: CV 56/100 [age,https,contact,returns,terms,payment,platform,social] on Shopify (pages: /pages/contact→200 /policies/contact-information→200 /policies/refund-policy→200 /policies/legal-notice→404 /policies/shipping-policy→404 /pages/about-us→200)",
+    "✗ velixirparfums.com: ملف الثقة ضعيف (56/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الشحن، سياسة الخصوصية",
+    "✗ afnanperfumesperfumes.com: الموقع لا يفتح",
+    "✗ afnanperfumesparfums.com: الموقع لا يفتح",
+    "✗ ruebroca.com: الموقع لا يفتح",
+    "✗ ruebrocaperfumes.com: الموقع لا يفتح",
+    "  ↳ ruebrocaparfums.com: CV 74/100 [age,https,identity,returns,privacy,platform,social,authentic] on Shopify",
+    "✓ ruebrocaparfums.com (CV 74/100): 44 perfumes, 7/7 pages read without AI, AED (1 = 14.8364 EGP) — added to the importer",
+    "  ↳ khadlaj.com: CV 96/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ khadlaj.com (CV 96/100): 1112 perfumes, 4/7 pages read without AI, AED (1 = 14.8364 EGP) — added to the importer",
+    "  ↳ khadlajperfumes.com: CV 96/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ khadlajperfumes.com (CV 96/100): 1112 perfumes, 4/7 pages read without AI, AED (1 = 14.8364 EGP) — added to the importer"
+   ]
+  },
   {
    "at": "2026-10-21T10:34:54.765Z",
    "mode": "self",
