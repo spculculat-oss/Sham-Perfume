@@ -13,6 +13,7 @@
 import { isPersonal, isTimeBound, meaningWords, normalizeQuestion, recallSimilar, worthRemembering, type MemoryFile } from '../../src/utils/shaheenMemory';
 import { materialCard, topicWords as libraryTopicWords, type LibraryMaterial } from '../../src/utils/shaheenLibrary';
 import { spellingDrill, typoVariants, understandQuestion, wordKey, type Lexicon } from '../../src/utils/shaheenSpelling';
+import { academyQuestions, TOOL_FIELDS, TRACKS, trackOf, type TrackId } from './curriculum';
 
 export interface BankQuestion { q: string; lang: 'ar' | 'en'; topic: string; origin: 'curriculum' | 'library' | 'visitors' | 'council' }
 export interface TrainingDoc { id: string; title: string; content: string; tags?: string[] }
@@ -41,6 +42,13 @@ export interface SchoolFile {
    * answers by himself when their main word is mistyped (exam).
    */
   spelling?: { at: string; tried: number; understood: number; score: number; misses: string[]; questions: { tried: number; answered: number } };
+  /** The new academy missions: self-reliance per track (languages, blocks & scheduling, software engineering,
+   * graphics & design, web maintenance, AI tools). */
+  tracks?: Record<string, { covered: number; total: number; score: number }>;
+  /** Every AI tool, its field, and what the school will teach it next («طور كل أداة في مجالها»). */
+  tools?: { at: string; items: { id: string; field: string; covered: number; total: number; score: number; focus: string }[] };
+  /** The block programs the school built and scheduled (src/data/live/shaheen-blocks.json). */
+  blocks?: { at: string; programs: number; scheduled: number; errors: number; nextRuns: { id: string; next: string | null }[] };
 }
 
 export const emptySchool = (): SchoolFile => ({
@@ -131,12 +139,41 @@ export const ADVANCED: BankQuestion[] = [
 
 export function buildBank(docs: TrainingDoc[], council: string[] = [], visitors: BankQuestion[] = [], materials: LibraryMaterial[] = []): BankQuestion[] {
   const seen = new Set<string>();
-  return [...visitors, ...CURRICULUM, ...libraryQuestions(docs), ...materialQuestions(materials), ...councilQuestions(council), ...ADVANCED].filter((b) => {
+  return [...visitors, ...CURRICULUM, ...libraryQuestions(docs), ...materialQuestions(materials), ...councilQuestions(council), ...ADVANCED, ...academyQuestions()].filter((b) => {
     const k = `${b.lang}|${normalizeQuestion(b.q)}`;
     if (seen.has(k)) return false;
     seen.add(k);
     return true;
   });
+}
+
+/** Per-track self-reliance (the academy missions + the original perfume curriculum). */
+export function trackStats(results: ExamResult[]): Record<string, { covered: number; total: number; score: number }> {
+  const out: Record<string, { covered: number; total: number; score: number }> = {};
+  for (const t of TRACKS) out[t.id] = { covered: 0, total: 0, score: 0 };
+  for (const r of results) {
+    const s = (out[trackOf(r.question.topic)] ||= { covered: 0, total: 0, score: 0 });
+    s.total++;
+    if (r.covered) s.covered++;
+  }
+  for (const s of Object.values(out)) s.score = s.total ? Math.round((s.covered / s.total) * 100) : 0;
+  return out;
+}
+
+/** Every AI tool with the progress of its field — and the next question its field will study (the focus). */
+export function toolStats(results: ExamResult[], at: string): NonNullable<SchoolFile['tools']> {
+  const items = Object.entries(TOOL_FIELDS).map(([id, t]) => {
+    const mine = results.filter((r) => r.question.topic === `tool-${id}`);
+    const covered = mine.filter((r) => r.covered);
+    const focus = mine.find((r) => !r.covered)?.question.q || 'مجاله مكتمل — يُراجع بالتقرير القادم';
+    return {
+      id, field: t.field,
+      covered: covered.length, total: mine.length,
+      score: mine.length ? Math.round((covered.length / mine.length) * 100) : 0,
+      focus,
+    };
+  });
+  return { at, items };
 }
 
 /** Words every perfume question shares: they never decide which lesson answers a question («العنبر في العطور» ≠ «تعتيق العطور»). */

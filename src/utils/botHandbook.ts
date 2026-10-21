@@ -14,7 +14,7 @@ import { HOME_CURRENCY, SHIPPING } from './pricing';
 import { BOTS, DEPARTMENTS, LEGAL_DECISIONS, LINKS, botOf, botsIn, type BotId } from './shaheenOrg';
 
 /** Bumped when the policies change (the robots' reports and the admin panel show the edition they read). */
-export const HANDBOOK_EDITION = '2026-10-21b';
+export const HANDBOOK_EDITION = '2026-10-21c';
 export const PAGES_URL = 'https://spculculat-oss.github.io/Sham-Perfume/';
 /** The scenario's price rule (scripts/shaheen-import/transform.ts PRICE_MARKUP — a test keeps them equal). */
 export const HANDBOOK_MARKUP = 1.5;
@@ -83,6 +83,9 @@ export function handbookSections(): HandbookSection[] {
         'الشات: ردود سريعة من غير ذكاء اصطناعي (التحية، الشكر، حسابات الكحول والتركيز والوحدات)، وبعدين محركات الذكاء الاصطناعي، وبعدين الذاكرة والمكتبة والباحث.',
         'فهم الغلطات: شاهين بيفهم السؤال حتى لو فيه غلطة كتابة (حرف ناقص أو زيادة، «الوتس» بدل «اللوتس»، كلمتين لازقين، أو عربي متكتب بالكيبورد الإنجليزي). بيقارن الكلمة بالكلمات اللي يعرفها، ويكتب فوق الرد «فهمت سؤالك كده: …». ولو مش متأكد مابيخمنش. المدرسة بتختبره في ده كل جولة.',
         `أدوات الذكاء الاصطناعي المسجلة (${AI_TOOLS.length}): ${AI_TOOLS.map((t) => t.nameAr).join('، ')}.`,
+        'مدرسة شاهين موسّعة بمهام جديدة: جميع لغات البرمجة، وبناء بلوكات البرمجة وجدولتها، وهندسة البرمجة كاملة، وعلوم الجرافيك والديزاين، وكورس صيانة المواقع — تعليم مكثف يعتمد فيه شاهين على نفسه من مكتبته من غير ذكاء اصطناعي.',
+        'المدرسة بتطوّر كل أداة ذكاء اصطناعي في مجالها: كل أداة ليها مجال تُمتحن فيه وتذاكره ويتحدد لها هدف تطوير من المدرسة نفسها.',
+        'بلوكات شاهين: المدرسة تبني برامج من بلوكات (إجراء، شرط، تكرار، انتظار، جدولة، ملاحظة) وتجدولها بالمواعيد (كل نصف ساعة إلى أسبوعياً أو صيغة كرون) في سجل بلوكات شاهين: برنامج مذاكرة، وبرنامج صيانة موقع، وبرنامج تطوير الأدوات.',
         'لوحة الإدارة: الهيكل الإداري، خريطة التشغيل (للإدارة بس)، النمو والمدرسة، البنك، والتعاقدات.',
       ],
     },

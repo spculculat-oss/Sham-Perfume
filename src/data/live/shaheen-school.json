@@ -1,16 +1,16 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T16:13:06.752Z",
+ "updatedAt": "2026-10-21T18:05:22.665Z",
  "reliance": {
-  "score": 97,
-  "covered": 167,
-  "total": 173,
-  "fromMemory": 167,
+  "score": 99,
+  "covered": 397,
+  "total": 403,
+  "fromMemory": 397,
   "fromLibrary": 2,
   "byLang": {
    "ar": {
-    "covered": 148,
-    "total": 152
+    "covered": 378,
+    "total": 382
    },
    "en": {
     "covered": 19,
@@ -19,8 +19,14 @@
   }
  },
  "studiedTotal": 74,
- "selfTaughtTotal": 63,
+ "selfTaughtTotal": 294,
  "history": [
+  {
+   "at": "2026-10-21T18:05:22.665Z",
+   "score": 99,
+   "studied": 231,
+   "mode": "self"
+  },
   {
    "at": "2026-10-21T16:13:06.752Z",
    "score": 97,
@@ -339,21 +345,217 @@
  },
  "localTaughtTotal": 23,
  "spelling": {
-  "at": "2026-10-21T16:13:06.752Z",
-  "tried": 711,
-  "understood": 688,
-  "score": 97,
+  "at": "2026-10-21T18:05:22.665Z",
+  "tried": 746,
+  "understood": 716,
+  "score": 96,
   "misses": [
    "طبييه → طبيه (طبيعيه)",
    "اخطه → احطه (اخلطه)",
-   "الخطه → الخطه (اخلطه)",
    "مثبات → مثبات (مثبتات)",
-   "ايه هي المثبات في العطور؟ → ايه هي المثبات في العطور؟",
-   "حدثني عن المثبات ودورها في العطر → حدثني عن المثبات ودورها في العطر"
+   "الزجاجه → الزجاجه (لزجاجه)"
   ],
   "questions": {
    "tried": 60,
-   "answered": 58
+   "answered": 60
   }
+ },
+ "tracks": {
+  "perfume": {
+   "covered": 167,
+   "total": 173,
+   "score": 97
+  },
+  "prog_langs": {
+   "covered": 106,
+   "total": 106,
+   "score": 100
+  },
+  "blocks": {
+   "covered": 12,
+   "total": 12,
+   "score": 100
+  },
+  "software": {
+   "covered": 27,
+   "total": 27,
+   "score": 100
+  },
+  "graphics": {
+   "covered": 27,
+   "total": 27,
+   "score": 100
+  },
+  "web_care": {
+   "covered": 24,
+   "total": 24,
+   "score": 100
+  },
+  "ai_tools": {
+   "covered": 34,
+   "total": 34,
+   "score": 100
+  }
+ },
+ "tools": {
+  "at": "2026-10-21T18:05:22.665Z",
+  "items": [
+   {
+    "id": "finance_agent",
+    "field": "المحاسبة",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   },
+   {
+    "id": "contracts_agent",
+    "field": "التعاقدات",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   },
+   {
+    "id": "language_agent",
+    "field": "الترجمة",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   },
+   {
+    "id": "shaheen_chat",
+    "field": "المحادثة",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   },
+   {
+    "id": "sham_assistant",
+    "field": "خدمة العملاء",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   },
+   {
+    "id": "news_articles",
+    "field": "الكتابة التثقيفية",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   },
+   {
+    "id": "news_bulletin",
+    "field": "الصحافة",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   },
+   {
+    "id": "assistant_training",
+    "field": "التدريب",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   },
+   {
+    "id": "media",
+    "field": "الوسائط",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   },
+   {
+    "id": "store_advisor",
+    "field": "الاستشارة",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   },
+   {
+    "id": "store_catalog",
+    "field": "الكتالوج",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   },
+   {
+    "id": "store_import",
+    "field": "الاستيراد",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   },
+   {
+    "id": "shaheen_school",
+    "field": "التعليم",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   },
+   {
+    "id": "seo_agent",
+    "field": "السيو",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   },
+   {
+    "id": "shaheen_council",
+    "field": "الاجتماعات",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   },
+   {
+    "id": "design_agent",
+    "field": "التصميم",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   },
+   {
+    "id": "admin_agent",
+    "field": "الإدارة",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   }
+  ]
+ },
+ "blocks": {
+  "at": "2026-10-21T18:05:22.665Z",
+  "programs": 3,
+  "scheduled": 3,
+  "errors": 0,
+  "nextRuns": [
+   {
+    "id": "school-day",
+    "next": "2026-10-22T00:05:22.665Z"
+   },
+   {
+    "id": "site-care",
+    "next": "2026-10-22T08:00:00.000Z"
+   },
+   {
+    "id": "tool-dev",
+    "next": "2026-10-26T09:00:00.000Z"
+   }
+  ]
  }
 }

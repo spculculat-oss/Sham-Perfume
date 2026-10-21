@@ -1,0 +1,188 @@
+{
+ "version": 1,
+ "updatedAt": "2026-10-21T18:05:22.665Z",
+ "programs": [
+  {
+   "id": "school-day",
+   "title": "برنامج مذاكرة شاهين اليومي",
+   "goal": "امتحان وتسميع وحفظ في الذاكرة كل 6 ساعات",
+   "schedule": "every 6 hours",
+   "createdAt": "2026-10-21T18:05:56.362Z",
+   "blocks": [
+    {
+     "kind": "action",
+     "label": "امتحان الذات على كل المسارات",
+     "action": "exam",
+     "args": {
+      "tracks": "all"
+     },
+     "id": "b1"
+    },
+    {
+     "kind": "condition",
+     "label": "لو في أسئلة لسه ناقصة",
+     "when": {
+      "fact": "gaps",
+      "atLeast": 1
+     },
+     "id": "b2",
+     "children": [
+      {
+       "kind": "action",
+       "label": "التسميع من مكتبة شاهين بدون ذكاء اصطناعي",
+       "action": "self_study",
+       "id": "b2.1"
+      },
+      {
+       "kind": "action",
+       "label": "مذاكرة الباقي مع محرك متاح",
+       "action": "study_ai",
+       "id": "b2.2"
+      }
+     ]
+    },
+    {
+     "kind": "action",
+     "label": "حفظ الدروس في ذاكرة شاهين",
+     "action": "remember",
+     "id": "b3"
+    },
+    {
+     "kind": "action",
+     "label": "كتابة تقرير المدرسة",
+     "action": "report",
+     "id": "b4"
+    }
+   ]
+  },
+  {
+   "id": "site-care",
+   "title": "برنامج صيانة الموقع بالبلوكات",
+   "goal": "فحص وصيانة الموقع يومياً قبل الذروة",
+   "schedule": "daily 08:00",
+   "createdAt": "2026-10-21T18:05:56.362Z",
+   "blocks": [
+    {
+     "kind": "note",
+     "label": "صيانة وقائية يومية",
+     "note": "تبدأ قبل ذروة الزوار وتُسجَّل نتائجها في التقرير.",
+     "id": "b1"
+    },
+    {
+     "kind": "action",
+     "label": "فحص صحة الصفحات الأساسية",
+     "action": "check_site",
+     "id": "b2"
+    },
+    {
+     "kind": "condition",
+     "label": "لو الموقع شغال",
+     "when": {
+      "fact": "siteUp",
+      "equals": true
+     },
+     "id": "b3",
+     "children": [
+      {
+       "kind": "action",
+       "label": "فحص الروابط المكسورة",
+       "action": "check_links",
+       "id": "b3.1"
+      },
+      {
+       "kind": "action",
+       "label": "فحص الصور",
+       "action": "check_images",
+       "id": "b3.2"
+      },
+      {
+       "kind": "action",
+       "label": "فحص شهادة الأمان",
+       "action": "check_ssl",
+       "id": "b3.3"
+      },
+      {
+       "kind": "loop",
+       "label": "فحص ثلاث عينات من صفحات المنتجات",
+       "repeat": 3,
+       "id": "b3.4",
+       "children": [
+        {
+         "kind": "action",
+         "label": "فحص عينة صفحة",
+         "action": "check_page_sample",
+         "id": "b3.4.1"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "kind": "condition",
+     "label": "لو الموقع وقع",
+     "when": {
+      "fact": "siteUp",
+      "equals": false
+     },
+     "id": "b4",
+     "children": [
+      {
+       "kind": "action",
+       "label": "بلاغ صيانة عاجل",
+       "action": "alert",
+       "id": "b4.1"
+      }
+     ]
+    },
+    {
+     "kind": "action",
+     "label": "نسخة احتياطية",
+     "action": "backup",
+     "id": "b5"
+    },
+    {
+     "kind": "action",
+     "label": "تقرير الصيانة",
+     "action": "report",
+     "id": "b6"
+    }
+   ]
+  },
+  {
+   "id": "tool-dev",
+   "title": "برنامج تطوير أدوات الذكاء الاصطناعي",
+   "goal": "كل أداة تتطور في مجالها بالتناوب",
+   "schedule": "weekly mon 09:00",
+   "createdAt": "2026-10-21T18:05:56.362Z",
+   "blocks": [
+    {
+     "kind": "loop",
+     "label": "تدوير على الأدوات للمذاكرة والتطوير",
+     "repeat": 3,
+     "id": "b1",
+     "children": [
+      {
+       "kind": "action",
+       "label": "مذاكرة مجال أداة من مدرسة شاهين",
+       "action": "tool_field_study",
+       "id": "b1.1"
+      },
+      {
+       "kind": "action",
+       "label": "تحديد هدف تطوير للأداة",
+       "action": "tool_focus",
+       "id": "b1.2"
+      }
+     ]
+    },
+    {
+     "kind": "action",
+     "label": "تقرير تطوير الأدوات",
+     "action": "tool_report",
+     "id": "b2"
+    }
+   ]
+  }
+ ],
+ "runs": []
+}
