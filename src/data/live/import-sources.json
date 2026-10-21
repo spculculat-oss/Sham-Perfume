@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T17:23:18.494Z",
+ "updatedAt": "2026-10-21T18:51:52.675Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -1953,16 +1953,16 @@
    "host": "alwataniah.com",
    "name": "Alwataniah",
    "base": "https://www.alwataniah.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Al Wataniah",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "trust": {
     "score": 88,
     "verdict": "trusted",
-    "at": "2026-10-21T13:21:48.779Z",
+    "at": "2026-10-21T18:51:52.675Z",
     "checks": [
      {
       "id": "age",
@@ -2441,12 +2441,12 @@
    "host": "alwataniahperfumes.com",
    "name": "alwataniahperfumes.com",
    "base": "https://alwataniahperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Al Wataniah",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2454,12 +2454,12 @@
    "host": "alwataniahparfums.com",
    "name": "alwataniahparfums.com",
    "base": "https://alwataniahparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Al Wataniah",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2467,12 +2467,12 @@
    "host": "lattafapride.com",
    "name": "lattafapride.com",
    "base": "https://lattafapride.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Lattafa Pride",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2480,12 +2480,12 @@
    "host": "lattafaprideperfumes.com",
    "name": "lattafaprideperfumes.com",
    "base": "https://lattafaprideperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Lattafa Pride",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2493,12 +2493,12 @@
    "host": "lattafaprideparfums.com",
    "name": "lattafaprideparfums.com",
    "base": "https://lattafaprideparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Lattafa Pride",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2925,12 +2925,12 @@
    "host": "volareparfums.com",
    "name": "volareparfums.com",
    "base": "https://volareparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Volare",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2938,16 +2938,16 @@
    "host": "shama.com",
    "name": "Shama",
    "base": "https://www.shama.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Shama",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "trust": {
     "score": 62,
     "verdict": "trusted",
-    "at": "2026-10-21T14:55:17.636Z",
+    "at": "2026-10-21T18:51:52.675Z",
     "checks": [
      {
       "id": "age",
@@ -3178,12 +3178,12 @@
    "host": "shamaparfums.com",
    "name": "shamaparfums.com",
    "base": "https://shamaparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Shama",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -3191,12 +3191,12 @@
    "host": "afnanperfumes.com",
    "name": "afnanperfumes.com",
    "base": "https://afnanperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Afnan",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -7365,6 +7365,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-21T18:51:52.675Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 10,
+   "activated": 0,
+   "rejected": 10,
+   "notes": [
+    "  ↳ alwataniah.com: CV 88/100 [age,https,contact,identity,returns,shipping,privacy,terms,platform,social,authentic] on Shopify",
+    "✗ alwataniah.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
+    "✗ alwataniahperfumes.com: الموقع لا يفتح",
+    "✗ alwataniahparfums.com: الموقع لا يفتح",
+    "✗ lattafapride.com: الموقع لا يفتح",
+    "✗ lattafaprideperfumes.com: الموقع لا يفتح",
+    "✗ lattafaprideparfums.com: الموقع لا يفتح",
+    "✗ volareparfums.com: الموقع لا يفتح",
+    "  ↳ shama.com: CV 62/100 [age,https,identity,returns,privacy,social,authentic]",
+    "✗ shama.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "✗ shamaparfums.com: الموقع لا يفتح",
+    "✗ afnanperfumes.com: الموقع لا يفتح"
+   ]
+  },
   {
    "at": "2026-10-21T17:23:18.494Z",
    "mode": "self",
