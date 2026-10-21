@@ -196,7 +196,7 @@ const nextRuns = built.map((p) => ({ id: p.id, next: p.schedule ? (nextRun(p.sch
 writeFileSync(live('shaheen-blocks.json'), `${JSON.stringify(blocks, null, 1)}\n`);
 school.blocks = { at: nowIso, programs: built.length, scheduled: nextRuns.filter((n) => n.next).length, errors: blockErrors.length, nextRuns };
 if (blockErrors.length) say(`Block programs need fixes: ${blockErrors.slice(0, 3).join(' | ')}`);
-else say(`Built ${built.length} block programs and scheduled ${school.blocks.scheduled} of them (study, site care, tool development)`);
+else say(`Built ${built.length} block programs and scheduled ${school.blocks.scheduled} of them (${built.map((p) => p.id).join('، ')})`);
 writeFileSync(live('shaheen-school.json'), `${JSON.stringify(school, null, 1)}\n`);
 say(`Self-reliance now ${final.reliance.score}% (${final.reliance.covered}/${final.reliance.total})${school.importer ? `; product pages read without AI: ${school.importer.localShare}%` : ''}`);
 

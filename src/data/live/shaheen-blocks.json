@@ -1,13 +1,13 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T18:05:22.665Z",
+ "updatedAt": "2026-10-21T19:31:12.846Z",
  "programs": [
   {
    "id": "school-day",
    "title": "برنامج مذاكرة شاهين اليومي",
    "goal": "امتحان وتسميع وحفظ في الذاكرة كل 6 ساعات",
    "schedule": "every 6 hours",
-   "createdAt": "2026-10-21T18:05:56.362Z",
+   "createdAt": "2026-10-21T19:32:01.621Z",
    "blocks": [
     {
      "kind": "action",
@@ -60,7 +60,7 @@
    "title": "برنامج صيانة الموقع بالبلوكات",
    "goal": "فحص وصيانة الموقع يومياً قبل الذروة",
    "schedule": "daily 08:00",
-   "createdAt": "2026-10-21T18:05:56.362Z",
+   "createdAt": "2026-10-21T19:32:01.621Z",
    "blocks": [
     {
      "kind": "note",
@@ -153,7 +153,7 @@
    "title": "برنامج تطوير أدوات الذكاء الاصطناعي",
    "goal": "كل أداة تتطور في مجالها بالتناوب",
    "schedule": "weekly mon 09:00",
-   "createdAt": "2026-10-21T18:05:56.362Z",
+   "createdAt": "2026-10-21T19:32:01.621Z",
    "blocks": [
     {
      "kind": "loop",
@@ -180,6 +180,68 @@
      "label": "تقرير تطوير الأدوات",
      "action": "tool_report",
      "id": "b2"
+    }
+   ]
+  },
+  {
+   "id": "ai-self",
+   "title": "برنامج إدارة الذكاء الذاتي",
+   "goal": "شاهين يدير نفسه بنفسه بدون أي تطبيق ذكاء آخر",
+   "schedule": "every 12 hours",
+   "createdAt": "2026-10-21T19:32:01.621Z",
+   "blocks": [
+    {
+     "kind": "note",
+     "label": "قاعدة الاعتماد على النفس",
+     "note": "الترتيب الملزم: الذاكرة ← المكتبة ← نموذج محلي مستضاف ذاتياً ← رد صريح بالصدق.",
+     "id": "b1"
+    },
+    {
+     "kind": "action",
+     "label": "قياس الاعتماد على النفس لكل مسار",
+     "action": "measure_reliance",
+     "id": "b2"
+    },
+    {
+     "kind": "condition",
+     "label": "لو محرك خارجي واقف أو غير مطلوب",
+     "when": {
+      "fact": "externalEngineUp",
+      "equals": false
+     },
+     "id": "b3",
+     "children": [
+      {
+       "kind": "action",
+       "label": "الرد من ذاكرة شاهين",
+       "action": "answer_from_memory",
+       "id": "b3.1"
+      },
+      {
+       "kind": "action",
+       "label": "الرد من مكتبة شاهين",
+       "action": "answer_from_library",
+       "id": "b3.2"
+      },
+      {
+       "kind": "action",
+       "label": "الرد من النموذج المحلي",
+       "action": "answer_from_local_model",
+       "id": "b3.3"
+      }
+     ]
+    },
+    {
+     "kind": "action",
+     "label": "مراجعة صراحة الردود عند العجز",
+     "action": "honesty_check",
+     "id": "b4"
+    },
+    {
+     "kind": "action",
+     "label": "تقرير الإدارة الذاتية",
+     "action": "self_report",
+     "id": "b5"
     }
    ]
   }

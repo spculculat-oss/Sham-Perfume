@@ -82,10 +82,12 @@ test('tracks cover every mission; tools cover every AI tool with its field and a
   assert.ok(tracks.software.total >= 20);
   assert.ok(tracks.graphics.total >= 20);
   assert.ok(tracks.web_care.total >= 20);
+  assert.ok(tracks.ai_science.total >= 50, 'the AI mission teaches the whole field');
   assert.equal(tracks.ai_tools.total, AI_TOOLS.length * 2, 'every tool: its field + how to develop it');
   assert.equal(trackOf('lang'), 'prog_langs');
   assert.equal(trackOf('blocks'), 'blocks');
   assert.equal(trackOf('web-care'), 'web_care');
+  assert.equal(trackOf('ai'), 'ai_science');
   assert.equal(trackOf('tool-shaheen_school'), 'ai_tools');
   assert.equal(trackOf('materials'), 'perfume');
 
@@ -110,9 +112,11 @@ test('the school builds its own block programs and can schedule them', () => {
     assert.ok(program.blocks.length >= 2, spec.id);
   }
   const ids = SCHOOL_PROGRAMS.map((p) => p.id);
-  assert.deepEqual([...new Set(ids)].sort(), ['school-day', 'site-care', 'tool-dev']);
+  assert.deepEqual([...new Set(ids)].sort(), ['ai-self', 'school-day', 'site-care', 'tool-dev']);
   const siteCare = buildProgram(SCHOOL_PROGRAMS.find((p) => p.id === 'site-care')!);
   assert.ok(JSON.stringify(siteCare).includes('check_links'), 'the maintenance program really checks the site');
+  const aiSelf = buildProgram(SCHOOL_PROGRAMS.find((p) => p.id === 'ai-self')!);
+  assert.ok(JSON.stringify(aiSelf).includes('answer_from_memory'), 'the self-management program answers from memory first');
 });
 
 test('the bank is the old curriculum plus the academy, with no duplicates and no time-bound questions', () => {
@@ -125,5 +129,7 @@ test('the bank is the old curriculum plus the academy, with no duplicates and no
   assert.ok(bank.some((b) => b.q === 'ايه هي بلوكات البرمجة؟'));
   assert.ok(bank.some((b) => b.q === 'ايه هي هندسة البرمجة؟'));
   assert.ok(bank.some((b) => b.q === 'ايه هي صيانة المواقع؟'));
+  assert.ok(bank.some((b) => b.q === 'ايه هو الاعتماد على النفس في الذكاء الاصطناعي؟'), 'the self-reliance mission is taught');
+  assert.ok(bank.some((b) => b.q === 'ايه هي العلوم الحديثة في الذكاء الاصطناعي؟'), 'the modern sciences are taught');
   assert.ok(bank.some((b) => b.topic === 'tool-design_agent'));
 });
