@@ -4,6 +4,7 @@
  * (placing orders, opening tickets) are NOT callable by any model: they become a form card the
  * visitor confirms, which is the commerce-safe equivalent of "human approval" in agent systems.
  */
+import { asksForPlatformOverview } from './platformGuide';
 import type { Repository } from './repository';
 import { publicView } from './repository';
 import type { ActionCard, Citation, Product, ServiceDef } from './types';
@@ -26,7 +27,11 @@ export const tools = {
     async run(args: { query: string }, { repo }) {
       const index = await repo.searchIndex();
       // Relative + absolute thresholds: weak lexical overlaps are dropped instead of shown as answers.
-      const raw = index.search(args.query, 6, 1.2).filter((h) => h.doc.kind !== 'product');
+      const raw = index.search(args.query, 6, 1.2)
+        .filter((h) => h.doc.kind !== 'product')
+        // «دليل المنصة» lists every feature name, so it would edge into answers about one feature.
+        // It is fetched only when the visitor actually asks for the whole map.
+        .filter((h) => h.doc.id !== 'kb-platform-guide' || asksForPlatformOverview(args.query));
       // Curated admin knowledge outranks the lessons «الخبير شاهين» writes by itself: a learned lesson
       // must match clearly (never on a stray word) and never win a near tie against a hand-written doc.
       const isTrained = (h: (typeof raw)[number]) => h.doc.id.startsWith('shaheen-');

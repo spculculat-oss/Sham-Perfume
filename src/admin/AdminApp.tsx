@@ -70,11 +70,11 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
 
 const STATUS: Record<RequestStatus, string> = reactiveMap(() => ({ new: T('جديد'), in_progress: T('قيد التنفيذ'), quoted: T('عرض سعر'), confirmed: T('مؤكد'), completed: T('مكتمل'), cancelled: T('ملغي') }));
 const TYPE: Record<string, string> = reactiveMap(() => ({ order: T('طلب متجر'), custom_formula: T('عطر مخصص'), b2b_quote: T('عرض جملة'), consultation: T('استشارة'), support: T('دعم'), service: T('خدمة') }));
-const INTENT: Record<string, string> = reactiveMap(() => ({ greeting: T('تحية'), thanks: T('شكر'), list_services: T('عرض الخدمات'), track_order: T('تتبع'), browse_products: T('تصفح منتجات'), service_request: T('طلب خدمة'), handoff: T('تحويل لموظف'), calculate: T('حساب'), perfume_expert: T('سؤال خبير'), question: T('سؤال عام'), memory_view: T('عرض الذاكرة'), forget: T('حذف البيانات') }));
+const INTENT: Record<string, string> = reactiveMap(() => ({ greeting: T('تحية'), thanks: T('شكر'), list_services: T('عرض الخدمات'), track_order: T('تتبع'), browse_products: T('تصفح منتجات'), service_request: T('طلب خدمة'), handoff: T('تحويل لموظف'), calculate: T('حساب'), perfume_expert: T('سؤال خبير'), platform_help: T('سؤال عن المنصة'), question: T('سؤال عام'), memory_view: T('عرض الذاكرة'), forget: T('حذف البيانات') }));
 const ENGINE_LABEL: Record<string, string> = reactiveMap(() => ({ self_hosted: T('نموذج مفتوح مستضاف ذاتياً'), gemini: 'Gemini', openai: 'OpenAI', claude: 'Claude', deepseek: 'DeepSeek', openrouter: 'OpenRouter', perplexity: 'Perplexity', sham_local: T('محرك شام الذاتي'), human: T('موظف'), system: T('النظام') }));
 
 const COUNCIL_ROLE: Record<CouncilRole, string> = reactiveMap(() => ({ formulator: T('خبير التركيب والمواد'), commercial: T('المستشار التجاري'), safety: T('مراجع السلامة والجودة'), customer: T('صوت العميل'), general: T('مستشار عام') }));
-const COUNCIL_INTENTS = ['perfume_expert', 'question', 'service_request', 'browse_products', 'list_services'];
+const COUNCIL_INTENTS = ['perfume_expert', 'question', 'service_request', 'browse_products', 'list_services', 'platform_help'];
 const MODEL_ENGINES: ModelEngineId[] = ['self_hosted', 'gemini', 'openai', 'claude', 'deepseek', 'openrouter', 'perplexity'];
 
 const card = 'rounded-2xl border border-stone-200 bg-white p-4 shadow-sm';

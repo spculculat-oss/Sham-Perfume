@@ -96,6 +96,12 @@ deletions, the first import, failed checks) on branch `aistudio/<sha7>` with a `
   `node --import tsx scripts/shaheen-council/org-doc.mts` to refresh `SHAHEEN_ORG.md`;
   `tests/shaheenOrg.test.ts` fails otherwise. If the bot writes a report, add its own checks to
   `scripts/shaheen-council/precheck.ts` (the pre-meeting full check, 06:10 UTC — two hours before the council at 08:15 UTC).
+- **The Sham assistant must know the platform as it is today.** Every visitor-facing tab or feature
+  (`src/App.tsx`) belongs in `PLATFORM_FEATURES` in `server/core/platformGuide.ts` — name, direct answer,
+  how-to, tab id, Arabic + English keywords — with a knowledge document. Bump `KNOWLEDGE_SEED_VERSION`
+  in `server/core/seed.ts` when the document is new to stores already running (existing documents are
+  never overwritten, deleted ones are never resurrected). `tests/shamCorePlatform.test.ts` fails when a
+  linked tab does not exist, so add the feature in the same change that ships it.
 - Customer invoices, receipts and order summaries must not show platform margin/profit amounts or
   percentages, or the supplier-cost breakdown. Keep selling prices, quantities, shipping, applicable
   taxes/fees and totals visible; do not change pricing or internal merchant/admin accounting to hide a margin.

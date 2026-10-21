@@ -50,7 +50,8 @@ const S = {
   contact: { ar: 'الهاتف أو البريد المستخدم في الطلب', en: 'Phone or email used in the request' },
   track: { ar: 'تتبع', en: 'Track' },
   status: { ar: 'الحالة', en: 'Status' },
-  open_tab: { ar: 'افتح الأداة', en: 'Open tool' },
+  open_tab: { ar: 'افتح الصفحة', en: 'Open page' },
+  platform_guide: { ar: 'دليل المنصة والأدوات', en: 'Platform guide & tools' },
   static: { ar: 'هذه نسخة ثابتة بلا خادم؛ مساعد الخدمات والطلبات يحتاج تشغيل خادم شام.', en: 'Static edition without a server; the services assistant needs the Sham server.' },
   error: { ar: 'تعذّر الاتصال بخادم شام. حاول مرة أخرى.', en: 'Could not reach the Sham server. Please try again.' },
   rate: { ar: 'رسائل كثيرة في وقت قصير، انتظر دقيقة من فضلك.', en: 'Too many messages — please wait a minute.' },
@@ -381,6 +382,11 @@ export function ShamAssistant({ currentLang }: Props) {
                       className="inline-flex items-center gap-1 text-[11px] font-semibold rounded-full border border-emerald-300 bg-white px-2.5 py-1.5 text-emerald-900 hover:bg-emerald-50">
                       <PackageSearch className="w-3.5 h-3.5" />{L('track_title')}
                     </button>
+                    {/* «دليل المنصة»: خريطة كل الأدوات والمكتبات والمجتمع — عشان الزائر يعرف الجديد فوراً. */}
+                    <button type="button" onClick={() => send(currentLang === 'ar' || currentLang === 'fa' ? 'دليل المنصة' : 'Platform guide')}
+                      className="inline-flex items-center gap-1 text-[11px] font-semibold rounded-full border border-stone-300 bg-white px-2.5 py-1.5 text-stone-800 hover:bg-stone-100">
+                      <Sparkles className="w-3.5 h-3.5" />{L('platform_guide')}
+                    </button>
                   </div>
                 </div>
               )}
@@ -660,8 +666,10 @@ function Action({ action, lang, services, conversationId, productsInMessage, onS
   if (action.type === 'open_tab' && action.tab) {
     return (
       <button type="button" onClick={() => { window.location.hash = `#${action.tab}`; }}
-        className="inline-flex items-center gap-1.5 text-xs font-semibold rounded-full bg-amber-100 text-amber-950 px-3 py-1.5 hover:bg-amber-200">
-        <ExternalLink className="w-3.5 h-3.5" />{L('open_tab')}
+        title={action.title ? `${L('open_tab')}: ${action.title}` : L('open_tab')}
+        aria-label={action.title ? `${L('open_tab')}: ${action.title}` : L('open_tab')}
+        className="inline-flex max-w-full items-center gap-1.5 text-xs font-semibold rounded-full bg-amber-100 text-amber-950 px-3 py-1.5 hover:bg-amber-200">
+        <ExternalLink className="w-3.5 h-3.5 shrink-0" /><span className="truncate">{L('open_tab')}{action.title ? ` — ${action.title}` : ''}</span>
       </button>
     );
   }

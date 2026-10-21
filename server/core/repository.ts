@@ -9,7 +9,7 @@ import type {
   Conversation, CoreSettings, KnowledgeDoc, KnowledgeGap, OrderItem, Product, PublicRequestView, RequestStatus,
   RequestType, ServiceDef, ServiceRequest, VisitorProfile,
 } from './types';
-import { defaultKnowledge, defaultServices, defaultSettings, demoProducts } from './seed';
+import { KNOWLEDGE_SEED_VERSION, defaultKnowledge, defaultServices, defaultSettings, demoProducts, knowledgeSeedAdditions } from './seed';
 import { CouncilConfigError, defaultCouncil, normalizeCouncil } from './council';
 import { ShaheenConfigError, normalizeShaheen, withShaheenDefaults } from '../config/shaheen';
 import { Bm25Index, tokenize, type IndexedDoc } from './text';
@@ -45,7 +45,8 @@ export class Repository {
   /** Seeds defaults once per store (idempotent: existing admin edits are never overwritten). */
   ready(): Promise<void> {
     this.seeded ||= (async () => {
-      if (!(await this.store.get('settings', 'core'))) {
+      const stored = await this.store.get('settings', 'core');
+      if (!stored) {
         // Shaheen settings are not copied into the store: until an admin overrides them they follow
         // server/config/shaheen.ts, so a change there reaches every deployment on the next deploy.
         const { shaheen: _fileDefaults, ...seed } = defaultSettings();
@@ -55,6 +56,16 @@ export class Repository {
         if (this.env.SHAM_SEED_DEMO === 'true' && !(await this.store.list('products')).length) {
           for (const p of demoProducts()) await this.store.put('products', p.id, p);
         }
+        return;
+      }
+      // An existing store (possibly running for months): only the documents introduced by the newer
+      // seed versions are added — never a re-write of an existing document and never a re-add of one
+      // the merchant deleted. The version is then stamped so this runs exactly once.
+      const applied = stored.knowledgeSeedVersion ?? 1;
+      if (applied < KNOWLEDGE_SEED_VERSION) {
+        const existing = new Set((await this.store.list('knowledge')).map((k) => k.id));
+        for (const doc of knowledgeSeedAdditions(applied)) if (!existing.has(doc.id)) await this.store.put('knowledge', doc.id, doc);
+        await this.store.put('settings', 'core', { ...stored, knowledgeSeedVersion: KNOWLEDGE_SEED_VERSION, id: 'core' });
       }
     })().catch((error) => { this.seeded = undefined; throw error; });
     return this.seeded;

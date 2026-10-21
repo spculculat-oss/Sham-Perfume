@@ -3,13 +3,17 @@
  * system intents and against each enabled service's keywords, and the best expert handles it.
  * Deterministic, explainable (scores go to the admin trace) and free to run.
  */
-import { normalize, tokenize } from './text';
+import { matchesKeyword, normalize, tokenize } from './text';
+import { asksForPlatformOverview, matchPlatformFeature } from './platformGuide';
 import type { ServiceDef } from './types';
+
+/** Re-exported so existing callers (and tests) keep importing the matcher from the router. */
+export { matchesKeyword } from './text';
 
 export type Intent =
   | 'greeting' | 'thanks' | 'list_services' | 'track_order' | 'browse_products'
   | 'service_request' | 'handoff' | 'calculate' | 'perfume_expert' | 'question'
-  | 'memory_view' | 'forget' | 'identity';
+  | 'platform_help' | 'memory_view' | 'forget' | 'identity';
 
 export interface RouteResult {
   intent: Intent;
@@ -17,32 +21,10 @@ export interface RouteResult {
   confidence: number;
   scores: Record<string, number>;
   entities: { ref?: string; phone?: string; email?: string; volumeMl?: number; percent?: number; name?: string };
+  /** Which platform feature the visitor asked about (see server/core/platformGuide.ts); absent = the whole map. */
+  platformId?: string;
 }
 
-/**
- * Whole-word keyword match that tolerates real inflections only (text is normalised + space-padded):
- * - prefixes: ال، و، وال، بال، لل  ("الموظف" ⇒ موظف)
- * - suffixes: plural/verb endings + pronouns, incl. Egyptian dative ("موظفين"، "طلباتي"، "اطلبلي"، "طلبت")
- * but NOT arbitrary continuations: "بشري" no longer matches "بشريط", "طلب" does not match "مطلوب".
- * A keyword written with a trailing space ("hi ") must match exactly.
- */
-const PREFIXES = ['', 'ال', 'و', 'وال', 'بال', 'لل'];
-const AR_SUFFIX = /^(?:ين|ون|ات|ان|وا|و|ت|تي|تم|تو|يه)?(?:ي|ك|ه|ها|هم|هن|كم|كن|نا|لي|لك|لنا|لكم|له|لها)?$/;
-const EN_SUFFIX = /^(?:s|es|ed|ing|d)?$/;
-export function matchesKeyword(text: string, word: string): boolean {
-  const exact = word.endsWith(' ');
-  const key = normalize(word);
-  if (!key) return false;
-  const latin = /^[a-z0-9 ]+$/.test(key);
-  for (const prefix of latin ? [''] : PREFIXES) {
-    const needle = ` ${prefix}${key}`;
-    for (let i = text.indexOf(needle); i >= 0; i = text.indexOf(needle, i + 1)) {
-      const rest = (text.slice(i + needle.length).match(/^\S*/) || [''])[0];
-      if (exact ? rest === '' : (latin ? EN_SUFFIX : AR_SUFFIX).test(rest)) return true;
-    }
-  }
-  return false;
-}
 const has = (text: string, words: string[]) => words.some((w) => matchesKeyword(text, w));
 
 const GREETING = ['السلام عليكم', 'سلام عليكم', 'مرحبا', 'اهلا', 'هاي', 'صباح الخير', 'مساء الخير', 'hello', 'hi ', 'hey', 'good morning', 'good evening'];
@@ -72,7 +54,8 @@ const EXPERT = ['نوته', 'نوتات', 'تركيبه عطر', 'مكونات',
 export function extractEntities(message: string): RouteResult['entities'] {
   const latin = message.replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660));
   const entities: RouteResult['entities'] = {};
-  const ref = latin.toUpperCase().match(/\bSH-?([A-Z0-9]{6})\b/);
+  // A reference always carries its separator: `SH-?` used to read “shipping” as “SH-IPPING”.
+  const ref = latin.toUpperCase().match(/\bSH[-\s]([A-Z0-9]{6})\b/);
   if (ref) entities.ref = `SH-${ref[1]}`;
   const email = latin.match(/[^\s@]+@[^\s@]+\.[^\s@]{2,}/);
   if (email) entities.email = email[0].toLowerCase();
@@ -106,7 +89,8 @@ export function route(message: string, services: ServiceDef[]): RouteResult {
   const wantsAction = has(text, ORDER_VERBS);
   const best = Object.entries(scores).sort((a, b) => b[1] - a[1])[0];
   const bestService = best ? services.find((s) => `service:${s.id}` === best[0]) : undefined;
-  const result = (intent: Intent, confidence: number, serviceId?: string): RouteResult => ({ intent, confidence, serviceId, scores, entities });
+  const result = (intent: Intent, confidence: number, serviceId?: string, platformId?: string): RouteResult =>
+    ({ intent, confidence, serviceId, scores, entities, ...(platformId ? { platformId } : {}) });
 
   if (has(text, FORGET)) return result('forget', 0.9);
   if (has(text, MEMORY)) return result('memory_view', 0.85);
@@ -114,6 +98,15 @@ export function route(message: string, services: ServiceDef[]): RouteResult {
   if (IDENTITY.test(text)) return result('identity', 0.9);
   if (has(text, HANDOFF)) return result('handoff', 0.9, services.find((s) => s.kind === 'support')?.id);
   if (entities.volumeMl && entities.percent) return result('calculate', 0.85, services.find((s) => s.kind === 'info')?.id);
+
+  // A question about a part of the platform (a calculator, a library, the community, shipping…) gets a
+  // direct answer plus an "open page" card. It runs before the store/browse hand-offs so that
+  // «الشحن بكام؟» explains shipping instead of showing a product list, while a real purchase request
+  // (which names no page) still becomes an order form below.
+  const platform = matchPlatformFeature(message);
+  const infoService = services.find((s) => s.kind === 'info')?.id;
+  if (platform) return result('platform_help', Math.min(0.9, 0.6 + platform.score * 0.05), infoService, platform.feature.id);
+  if (asksForPlatformOverview(message)) return result('platform_help', 0.85, infoService);
 
   if (bestService) {
     const browse = bestService.kind === 'store' && has(text, BROWSE) && !wantsAction;
