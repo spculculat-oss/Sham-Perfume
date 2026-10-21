@@ -7,7 +7,7 @@ import test from 'node:test';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
-  auditLanguages, auditPhrases, findPhysicalDirection, harvestInlineTexts, locatePhrases, mergePack, missingFor, planWork,
+  auditLanguages, auditPhrases, findPhysicalDirection, harvestInlineTexts, isVisibleEnglishLine, locatePhrases, mergePack, missingFor, planWork,
   readReview, readTranslations, translatePrompt, validateTranslation, type AiPackFile, type TextUnit,
 } from '../scripts/shaheen-languages/translator';
 import { smartTranslate } from '../scripts/shaheen-languages/smart';
@@ -82,7 +82,14 @@ test('the design department steers the work: its half-translated languages first
     { file: 'src/components/HomeHub.tsx', source: "x\n  live_sync: { ar: 'متصل', en: 'Live Sync' },\n  // Live Sync in a comment" },
     { file: 'src/components/Other.tsx', source: 'nothing here' },
   ];
-  assert.deepEqual(locatePhrases(['Live Sync'], files), [{ phrase: 'Live Sync', file: 'src/components/HomeHub.tsx', line: 2 }]);
+  // The dictionary line is the translation source, not a hard-coded label: it is not a place to fix.
+  assert.deepEqual(locatePhrases(['Live Sync'], files), []);
+  const screen = [
+    { file: 'src/components/Panel.tsx', source: "<div>\n  <h2>Live Sync</h2>\n  <input placeholder={L('placeholder')} />\n</div>" },
+    { file: 'src/components/Dictionary.tsx', source: "  live_sync: { ar: 'متصل', en: 'Live Sync' }," },
+  ];
+  assert.deepEqual(locatePhrases(['Live Sync'], screen), [{ phrase: 'Live Sync', file: 'src/components/Panel.tsx', line: 2 }]);
+  assert.deepEqual(locatePhrases(['placeholder'], screen), [], 'a translation key is not English text on the screen');
   assert.equal(findPhysicalDirection('<div className="ml-2 pr-4 text-left ms-2" /><p className="mx-2" />'), 3);
 });
 
@@ -239,4 +246,11 @@ test('the design audit checks the languages the AI just translated, and the coun
   assert.ok(briefing.signals.some((s) => s.text.includes('المترجم الذكي واقف')));
   const task = briefing.signals.find((s) => s.decision?.title === 'مراجعة النصوص الإنجليزي اللي لقاها قسم التصميم');
   assert.ok(task?.decision?.detail.includes('src/components/HomeHub.tsx:138'));
+});
+
+test('the language agent does not chase phantom English: dictionaries and keys are not screen text', () => {
+  assert.equal(isVisibleEnglishLine("  live_sync: { ar: 'متصل', en: 'Live Sync' },", 'Live Sync'), false);
+  assert.equal(isVisibleEnglishLine('  <h2>Live Sync</h2>', 'Live Sync'), true);
+  assert.equal(isVisibleEnglishLine("<input placeholder={L('placeholder')} />", 'placeholder'), false);
+  assert.equal(isVisibleEnglishLine('  <span title="Enter Portal">x</span>', 'Enter Portal'), true);
 });

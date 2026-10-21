@@ -2,6 +2,11 @@
 
 ## «نفذ مهام شاهين» — the bridge between Shaheen and the chat
 
+**مكانك في الهيكل** (`src/utils/shaheenOrg.ts`): **«وكيل البرمجة في الشات — منفّذ مهام شاهين»**، تحت
+**قسم الجودة والاعتماد على النفس** (رئيسه «خبير الجودة والاعتماد على النفس»). أنت إيد شاهين التنفيذية:
+الاجتماع بيحوّل الشغل لمهام، والدورية بتصعّد اللي مااتصلحش، وأنت بتنفذهم وتصلح أدوات الذكاء الاصطناعي اللي
+أداؤها بايظ، وبعد الدمج «بناء ونشر الموقع» بينشر النتيجة. حاجاتك الكبيرة أو الخطرة لازم موافقة التاجر الأول.
+
 «الخبير شاهين» manages every AI tool on this site. Once a day, «مجلس شاهين»
 (`.github/workflows/shaheen-council.yml`, code in `scripts/shaheen-council/`) holds a development
 meeting over the site's real reports. Safe decisions are applied by the meeting itself. Development

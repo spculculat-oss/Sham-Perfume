@@ -136,6 +136,7 @@ export const REVIEWERS: Partial<Record<BotId, Reviewer>> = {
   languages: { nameAr: 'خبير فحص اللغات', nameEn: 'Languages reviewer', probes: ['l10n', 'currency'] },
   deploy: { nameAr: 'خبير فحص النشر', nameEn: 'Deploy reviewer', probes: ['site', 'product_pages', 'sitemap'] },
   live_check: { nameAr: 'خبير فحص المحرك', nameEn: 'Engine reviewer', probes: ['engine', 'news_api'] },
+  chat_agent: { nameAr: 'خبير فحص مهام التطوير', nameEn: 'Development tasks reviewer', probes: ['site'] },
   doctor: { nameAr: 'خبير فحص الصيانة', nameEn: 'Maintenance reviewer', probes: ['engine', 'site'] },
   keys: { nameAr: 'خبير فحص المفاتيح', nameEn: 'Keys reviewer', probes: ['engine'] },
   finance: { nameAr: 'خبير فحص الدفع والأسعار', nameEn: 'Payment & pricing reviewer', probes: ['payments', 'pricing', 'currency'] },

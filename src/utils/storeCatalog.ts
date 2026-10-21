@@ -203,6 +203,17 @@ export function honestEntry(p: RawProduct, e: StoreEntry, now = e.updatedAt): St
   };
 }
 
+/**
+ * The supplier published notes for a product Shaheen trained before they existed: the documented notes are
+ * added to his entry (wording kept, nothing invented). Notes are not part of productHash, so a kept entry
+ * would otherwise keep its old empty lists while the store page shows the notes only through mergeProduct.
+ */
+export function withDocumentedNotes(p: RawProduct, e: StoreEntry): StoreEntry {
+  if (hasNotes(e.notes)) return e;
+  const notes = sourceNotes(p);
+  return hasNotes(notes) ? { ...e, notes } : e;
+}
+
 /** Without any AI engine: honest, rule-based clean-up (no invented notes). */
 export function ruleEntry(p: RawProduct, now = new Date().toISOString()): StoreEntry {
   const text = `${p.nameAr || ''} ${p.nameEn || ''} ${p.descriptionAr || ''} ${p.descriptionEn || ''} ${p.category || ''}`;
