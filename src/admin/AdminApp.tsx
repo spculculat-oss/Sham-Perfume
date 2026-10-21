@@ -6,7 +6,7 @@ import {
   BellRing, CheckCircle2, CircleAlert, EyeOff, LayoutDashboard, Lightbulb, Loader2, LogOut, MessagesSquare, Plus, RefreshCw, Save, Send,
   Settings2, Stethoscope, ThumbsDown, ThumbsUp, Trash2, TriangleAlert, Users, Wand2,
   ChevronUp, ChevronDown, Mail, Eye, ExternalLink, Check, Sparkles,
-  Handshake, Palette,
+  Handshake, Palette, Crown,
 } from 'lucide-react';
 import UpdatesPanel from './UpdatesPanel';
 import FinancePanel from './FinancePanel';
@@ -19,6 +19,7 @@ import ShaheenGrowthPanel from './ShaheenGrowthPanel';
 import ShaheenOrgPanel from './ShaheenOrgPanel';
 import ShaheenPatrolPanel from './ShaheenPatrolPanel';
 import ShaheenOpsMapPanel from './ShaheenOpsMapPanel';
+import OwnerControlPanel from './OwnerControlPanel';
 import ShaheenCouncilPanel from './ShaheenCouncilPanel';
 import { ErrorBoundary } from '../utils/lazyRetry';
 import type {
@@ -30,7 +31,7 @@ import { apiUrl, isStaticHosting } from '../utils/api';
 import { parseDoctorIssue, type DoctorReport } from './doctorReport';
 import { LocalizedNumberInput } from '../components/LocalizedNumberInput';
 
-type Tab = 'finance' | 'overview' | 'opsmap' | 'community' | 'contracts' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'design' | 'emails' | 'doctor' | 'supervisor' | 'seo' | 'sandbox' | 'updates';
+type Tab = 'owner' | 'finance' | 'overview' | 'opsmap' | 'community' | 'contracts' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'design' | 'emails' | 'doctor' | 'supervisor' | 'seo' | 'sandbox' | 'updates';
 interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: string }
 interface Overview {
   storage: { kind: string; persistent: boolean; error?: string };
@@ -44,6 +45,7 @@ interface FeedbackItem { conversationId: string; messageId?: string; rating: 'up
 
 const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'overview', label: T('نظرة عامة'), icon: <LayoutDashboard className="w-4 h-4" /> },
+  { id: 'owner', label: T('مركز تحكم صاحب الموقع'), icon: <Crown className="w-4 h-4" /> },
   { id: 'opsmap', label: T('خريطة التشغيل'), icon: <Activity className="w-4 h-4" /> },
   { id: 'finance', label: T('بنك شام والمالية'), icon: <ClipboardList className="w-4 h-4" /> },
   { id: 'community', label: T('المجتمع'), icon: <Users className="w-4 h-4" /> },
@@ -166,6 +168,7 @@ export default function AdminApp() {
           {tab === 'design' && <DesignStudioPanel />}
           {tab === 'emails' && <EmailsPanel />}
           {tab === 'doctor' && <DoctorPanel />}
+          {tab === 'owner' && <OwnerControlPanel />}
           {tab === 'opsmap' && <ShaheenOpsMapPanel />}
           {tab === 'supervisor' && <><ShaheenOrgPanel /><ShaheenPatrolPanel /><ShaheenCouncilPanel /><SupervisorPanel /></>}
           {tab === 'seo' && <SeoPanel />}
@@ -1898,7 +1901,7 @@ interface MaintenanceSnapshot {
 }
 const DOCTOR_REPO = (import.meta.env.VITE_GITHUB_REPO as string | undefined) || 'spculculat-oss/Sham-Perfume';
 const REMEDY_LABEL: Record<string, string> = reactiveMap(() => ({ reset_provider_gate: T('تصفير حالة المزوّدين'), refresh_model_list: T('تحديث قائمة الموديلات'), clear_answer_cache: T('مسح ذاكرة الإجابات') }));
-const FIX_RESULT: Record<string, string> = reactiveMap(() => ({ merged: T('⏳ تحت المراقبة'), failed: T('❌ ما اتطبقش'), verified: T('✅ شغال'), reverted: T('↩️ اترجع'), unverified: T('⚪ من غير تأكيد') }));
+const FIX_RESULT: Record<string, string> = reactiveMap(() => ({ merged: T('⏳ تحت المراقبة'), failed: T('❌ ما اتطبقش'), verified: T('✅ شغال'), reverted: T('↩️ اترجع'), unverified: T('⚪ من غير تأكيد'), awaiting_owner: T('🔑 مستني موافقتك') }));
 
 function DoctorPanel() {
   const { data, error, loading, reload } = useLoad<MaintenanceSnapshot>('/maintenance');

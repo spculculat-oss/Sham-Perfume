@@ -4,6 +4,7 @@
  *   - orgSvg(): a self-contained picture of the map (RTL), optionally coloured by the pre-meeting check.
  * scripts/shaheen-council/org-doc.mts writes them; tests/shaheenOrg.test.ts keeps the .md up to date.
  */
+import { OWNER } from '../../src/utils/ownerAuthority';
 import { BOTS, DEPARTMENTS, LEGAL_DECISIONS, LINKS, SECRETARY, botOf, botsIn, orgMermaid, type BotId } from '../../src/utils/shaheenOrg';
 import type { BotStatus } from './precheck';
 
@@ -14,6 +15,8 @@ export function orgDoc(): string {
     '# الهيكل الإداري لمنصة شام — تحت مظلة الخبير شاهين',
     '',
     '> ملف مولَّد تلقائياً من `src/utils/shaheenOrg.ts` — لا تعدله يدوياً. للتحديث: `node --import tsx scripts/shaheen-council/org-doc.mts`.',
+    '',
+    `**فوق الهيكل كله: صاحب الموقع** — الوحيد اللي معاه الصلاحيات المطلقة (بيتعرف بحساب GitHub \`${OWNER.github}\` والكود السري بس). أوامره من «مكتب صاحب الموقع» (\`owner-control.yml\`) ملزمة لشاهين وكل الروبوتات: وقف روبوت، فرامل الطوارئ، وحدود التطوير الذاتي.`,
     '',
     'كل روبوت وكل أداة ذكاء اصطناعي في المنصة لها مكان في الهيكل: **الخبير شاهين** المدير العام، **السكرتير** (مشرف شاهين) نائبه وقت الضغط، وخمس خلايا (أقسام) كل واحدة يرأسها كرسي في الاجتماع اليومي.',
     '',
@@ -75,7 +78,7 @@ export function orgSvg(status: Partial<Record<BotId, BotStatus>> = {}, opts: { f
 
   // Title (every line is a right-to-left embedding; right-aligned lines use text-anchor="end").
   text(W / 2, 62, 'الهيكل الإداري لمنصة شام — تحت قيادة الخبير شاهين', 40, '#5a3d0c', 700);
-  text(W / 2, 100, `عدد الأدوات والروبوتات ${BOTS.length} في 5 خلايا · فحص شامل قبل الاجتماع بساعتين · سكرتير ينوب وقت الضغط${opts.date ? ` · ${opts.date}` : ''}`, 20, '#7a6a4f');
+  text(W / 2, 100, `صاحب الموقع فوق الكل · عدد الأدوات والروبوتات ${BOTS.length} في 5 خلايا · فحص شامل قبل الاجتماع بساعتين · سكرتير ينوب وقت الضغط${opts.date ? ` · ${opts.date}` : ''}`, 20, '#7a6a4f');
 
   // Leadership: Shaheen in the middle, the secretary, the pre-check and the council around him.
   const cx = W / 2;

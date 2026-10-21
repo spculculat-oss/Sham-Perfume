@@ -1,3 +1,4 @@
+import { hasSensitiveNumber, isOwnerClaim, ownerClaimReply, sensitiveNumberReply } from './ownerAuthority';
 import type { SupportedLanguage } from '../types/i18n';
 
 /**
@@ -14,7 +15,7 @@ import type { SupportedLanguage } from '../types/i18n';
  * (designing a perfume, comparing, a missing number) goes to Shaheen's AI engines as before. The answers
  * are calculations, not imitations of the AI, and say so («⚡ حاسبة شاهين الفورية»).
  */
-export type QuickAppId = 'alcohol' | 'concentration' | 'units' | 'thanks' | 'identity';
+export type QuickAppId = 'alcohol' | 'concentration' | 'units' | 'thanks' | 'identity' | 'owner' | 'privacy';
 export interface QuickAnswer { app: QuickAppId; reply: string }
 
 type Lang = 'ar' | 'en';
@@ -168,6 +169,10 @@ function chatApp(text: string, lang: Lang): QuickAnswer | undefined {
  * visitor writing in another language always gets an answer in that language from the AI.
  */
 export function quickAnswer(text: string, language: SupportedLanguage): QuickAnswer | undefined {
+  // «صاحب الموقع» (src/utils/ownerAuthority.ts): a card/ID number is never sent to any engine or kept, in any
+  // language; a claim to be the owner is never believed from a chat (he is proven by GitHub and the admin code).
+  if (hasSensitiveNumber(text)) return { app: 'privacy', reply: sensitiveNumberReply(language) };
+  if (isOwnerClaim(text)) return { app: 'owner', reply: ownerClaimReply(language) };
   const lang: Lang | undefined = language === 'ar' ? 'ar' : language === 'en' ? 'en' : undefined;
   if (!lang) return undefined;
   const clean = asciiDigits(text.trim());
@@ -185,4 +190,6 @@ export const QUICK_APPS: Record<QuickAppId, { ar: string; en: string }> = {
   units: { ar: 'تحويل الأونصة والمل', en: 'Ounce ↔ ml' },
   thanks: { ar: 'الرد على الشكر', en: 'Thanks' },
   identity: { ar: 'التعريف بشاهين', en: 'Who is Shaheen' },
+  owner: { ar: 'حد بيقول إنه صاحب الموقع', en: 'Someone claiming to be the owner' },
+  privacy: { ar: 'حماية رقم بطاقة أو حساب', en: 'Card/ID number protection' },
 };
