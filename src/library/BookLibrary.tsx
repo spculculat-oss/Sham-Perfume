@@ -1,3 +1,4 @@
+import { AuthorBook } from './AuthorBook';
 import { OriginalBooklets } from './OriginalBooklets';
 import readingGuideText from '../../content/library/reading-guide.json';
 import { READING_GUIDE, epubAssetUrl } from './epubAssets';
@@ -46,6 +47,7 @@ export function BookLibrary({ currentLang }: { currentLang: SupportedLanguage })
       <button onClick={() => setShowGuide(true)} className="rounded-lg bg-emerald-800 px-4 py-3 font-bold">{L('guide')}</button>
       <p className="text-sm text-stone-300">{L('guideNote')}</p>
     </div>
+    <AuthorBook currentLang={currentLang} />
     <OriginalBooklets currentLang={currentLang} />
     <EditorialPlans currentLang={currentLang} />
     <div className="flex flex-wrap gap-3">

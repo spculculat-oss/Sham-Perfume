@@ -14,17 +14,19 @@ const TEXT = {
   missing: { ar: 'لا يوجد ملف EPUB مرفق لهذا المرجع. اختر نسختك المسموح لك بقراءتها؛ فتح الملف لا يرفعه للموقع ولا يحوله لنسخة منشورة.', en: 'No EPUB is attached to this reference. Choose a copy you are entitled to read; opening a file does not upload or publish it.' },
   choose: { ar: 'فتح ملف EPUB من جهازك', en: 'Open an EPUB from your device' },
   loading: { ar: 'جارٍ فتح الكتاب…', en: 'Opening book…' },
+  publishedError: { ar: 'تعذر تحميل نسخة الكتاب. جرّب إعادة فتحه أو تنزيل EPUB وفتحه بقارئ خارجي. قد يستغرق التحميل وقتاً حسب اتصالك.', en: 'Unable to load the published book. Reopen it or download the EPUB for an external reader. Loading time depends on your connection.' },
   error: { ar: 'تعذر فتح الملف. اختر EPUB صالحاً غير محمي بتشفير DRM، بحجم لا يزيد عن ٢٠ ميجابايت.', en: 'Unable to open this file. Choose a valid, DRM-free EPUB no larger than 20 MB.' },
   prev: { ar: 'الصفحة السابقة', en: 'Previous page' },
   next: { ar: 'الصفحة التالية', en: 'Next page' },
   toc: { ar: 'فهرس المحتويات', en: 'Table of contents' },
 };
+export const MAX_PUBLISHED_EPUB_BYTES = 64 * 1024 * 1024;
 export const MAX_EPUB_BYTES = 20 * 1024 * 1024;
 export function validEpubFile(file: Pick<File, 'name' | 'size'>): boolean {
   return /\.epub$/i.test(file.name) && file.size > 0 && file.size <= MAX_EPUB_BYTES;
 }
 export interface ReaderText { description: string; chapters: Array<{ title: string; paragraphs: string[] }> }
-export function EpubReader({ book, sourceUrl, fallbackText, currentLang, onClose }: { book: { title: string }; sourceUrl?: string; fallbackText?: ReaderText; currentLang: SupportedLanguage; onClose: () => void }) {
+export function EpubReader({ book, sourceUrl, fallbackText, sourceDescription, currentLang, onClose }: { book: { title: string }; sourceUrl?: string; fallbackText?: ReaderText; sourceDescription?: string; currentLang: SupportedLanguage; onClose: () => void }) {
   const L = makeT(currentLang, TEXT);
   const dialog = useRef<HTMLDialogElement>(null);
   const viewport = useRef<HTMLDivElement>(null);
@@ -50,7 +52,7 @@ export function EpubReader({ book, sourceUrl, fallbackText, currentLang, onClose
     let timer: ReturnType<typeof setTimeout>;
     setStatus('loading'); setToc([]);
     const fail = () => { if (!cancelled) setStatus('error'); };
-    timer = setTimeout(fail, 30000);
+    timer = setTimeout(fail, sourceUrl ? 120000 : 30000);
     void (async () => {
       try {
         const load = async () => {
@@ -58,7 +60,7 @@ export function EpubReader({ book, sourceUrl, fallbackText, currentLang, onClose
           const response = await fetch(sourceUrl!, { signal: controller.signal, credentials: 'same-origin' });
           if (!response.ok) throw new Error('EPUB unavailable');
           const data = await response.arrayBuffer();
-          if (data.byteLength > MAX_EPUB_BYTES || data.byteLength === 0) throw new Error('EPUB size invalid');
+          if (data.byteLength > MAX_PUBLISHED_EPUB_BYTES || data.byteLength === 0) throw new Error('EPUB size invalid');
           return data;
         };
         const [{ default: ePub }, data] = await Promise.all([import('epubjs'), load()]);
@@ -107,7 +109,7 @@ export function EpubReader({ book, sourceUrl, fallbackText, currentLang, onClose
     <div className="flex h-full min-h-0 flex-col gap-3 p-4">
       <header className="flex items-start justify-between gap-3"><h2 id="epub-title" dir="auto" className="font-bold">{book.title}</h2>
         <button autoFocus onClick={onClose} className="shrink-0 rounded border border-stone-500 p-2">{L('close')}</button></header>
-      <p className="text-sm text-stone-300">{L(sourceUrl && !file ? 'attached' : 'missing')}</p>
+      <p className="text-sm text-stone-300">{sourceUrl && !file && sourceDescription ? sourceDescription : L(sourceUrl && !file ? 'attached' : 'missing')}</p>
       {!hasSource && <div role="status" className="rounded-lg border border-amber-500 bg-amber-950/60 p-4"><h3 className="font-bold">{L('unavailable')}</h3><p className="mt-2 text-sm">{L('missing')}</p></div>}
       {fallbackText && !file && <button className="self-start rounded border border-amber-500 px-3 py-2" onClick={() => setSimple(v => !v)}>{L(simple ? 'epub' : 'simple')}</button>}
       <label className="text-sm">{L('choose')}<input type="file" accept=".epub,application/epub+zip" className="block max-w-full mt-2" onChange={e => {
@@ -118,7 +120,7 @@ export function EpubReader({ book, sourceUrl, fallbackText, currentLang, onClose
         setFile(selected);
       }} /></label>
       {status === 'loading' && <p role="status">{L('loading')}</p>}
-      {status === 'error' && <p role="alert" className="text-amber-300">{L('error')}</p>}
+      {status === 'error' && <p role="alert" className="text-amber-300">{L(sourceUrl && !file ? 'publishedError' : 'error')}</p>}
       <nav style={{ display: !hasSource || showText ? 'none' : undefined }} aria-label={L('toc')} className="flex flex-wrap gap-2">
         <button disabled={status !== 'ready'} onClick={() => navigate('prev')} className="rounded border p-2 disabled:opacity-40">{L('prev')}</button>
         <button disabled={status !== 'ready'} onClick={() => navigate('next')} className="rounded border p-2 disabled:opacity-40">{L('next')}</button>

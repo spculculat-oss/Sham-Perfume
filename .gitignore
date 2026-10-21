@@ -19,3 +19,6 @@ coverage/
 # Tencent EdgeOne Makers local build output
 .edgeone/
 sham_perfume.db
+
+# Local PDF conversion environment (never publish dependencies)
+.venv/
