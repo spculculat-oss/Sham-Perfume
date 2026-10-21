@@ -156,3 +156,13 @@ test('the school: visitors’ unanswered questions first, the encyclopaedia lear
   assert.equal(school.parseStudy(JSON.stringify({ answer: `${good} 这是很好的香水` }), b), null, 'a slip into another script: thrown away');
   assert.equal(school.parseStudy(JSON.stringify({ answer: `${good} This amber accord uses Ambroxan, vanilla absolute, sandalwood, cinnamon bark and rose otto in a classic structure that lasts all night long.` }), b), null, 'an Arabic answer must be Arabic');
 });
+
+test('the school reads a small model’s JSON even with line breaks inside the answer', async () => {
+  const { parseStudy } = await import('../scripts/shaheen-school/school');
+  const b = { q: 'ليه العطر اللي عملته ريحته اختفت بسرعة؟', lang: 'ar' as const, topic: 'problems', origin: 'curriculum' as const };
+  const reply = '```json\n{"answer":"العطر بيختفي بسرعة لما البشرة تكون جافة أو التركيز يكون خفيف، والنوتات العليا بطبيعتها بتطير بسرعة.\n1. رطّب جلدك بكريم من غير ريحة.\n2. رش على نقاط النبض.","paraphrases":["ليه عطري مش بيثبت؟","سبب اختفاء ريحة العطر بسرعة"]}\n```';
+  const lesson = parseStudy(reply, b)!;
+  assert.ok(lesson);
+  assert.match(lesson.answer, /\n1\. رطّب/);
+  assert.equal(lesson.paraphrases.length, 2);
+});

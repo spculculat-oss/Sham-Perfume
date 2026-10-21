@@ -232,10 +232,30 @@ export function studyPrompt(b: BankQuestion, references = ''): string {
 const FOREIGN_SCRIPT = /[\u0400-\u04FF\u3040-\u30FF\u3400-\u9FFF\uAC00-\uD7AF]/;
 
 /** The engine's study answer, checked: a real answer worth remembering, and paraphrases in the same language. */
+/** Small open models often break lines inside JSON strings: escape the control characters found inside strings. */
+export function escapeControlsInStrings(text: string): string {
+  let out = ''; let inString = false; let escaped = false;
+  for (const ch of text) {
+    if (inString) {
+      if (escaped) { escaped = false; out += ch; continue; }
+      if (ch === '\\') { escaped = true; out += ch; continue; }
+      if (ch === '"') inString = false;
+      else if (ch === '\n') { out += '\\n'; continue; }
+      else if (ch === '\r') continue;
+      else if (ch === '\t') { out += '\\t'; continue; }
+    } else if (ch === '"') inString = true;
+    out += ch;
+  }
+  return out;
+}
+
 export function parseStudy(reply: string, b: BankQuestion): { answer: string; paraphrases: string[] } | null {
   const body = (reply || '').replace(/```(?:json)?/gi, '');
   let data: { answer?: unknown; paraphrases?: unknown };
-  try { data = JSON.parse(body.slice(body.indexOf('{'), body.lastIndexOf('}') + 1)); } catch { return null; }
+  const raw = body.slice(body.indexOf('{'), body.lastIndexOf('}') + 1);
+  try { data = JSON.parse(raw); } catch {
+    try { data = JSON.parse(escapeControlsInStrings(raw)); } catch { return null; }
+  }
   const answer = typeof data.answer === 'string' ? data.answer.trim() : '';
   if (!worthRemembering(b.q, answer) || FOREIGN_SCRIPT.test(answer)) return null;
   if (b.lang === 'ar' && !/[\u0600-\u06FF]/.test(answer)) return null;
