@@ -11,6 +11,9 @@ name: Shaheen source scout and school (every 6 hours)
 # «مدرسة شاهين» (scripts/shaheen-school/): Shaheen examines himself on a question bank, learns what he can from
 # his own library (no AI), studies the rest while an AI engine is up, and keeps everything in his memory —
 # the memory the site answers from when no AI engine is available (GitHub Pages included).
+# «المعلم المحلي» (scripts/shaheen-school/teacher.sh): an open model (Qwen2.5-7B-Instruct, Apache-2.0) run by llama.cpp on
+# this runner — no key, no account — teaches the school when the AI keys fail. Variables (optional): TEACHER_MODEL_URL +
+# TEACHER_MODEL_SHA256 (another GGUF model), TEACHER_MODEL_NAME, SCHOOL_PREFER (an engine id to try first).
 # Settings (repository variables, all optional): DISCOVER_MAX_ACTIVE (20 stores), DISCOVER_VET_PER_RUN (10),
 # DISCOVER_QUERIES (4 web searches per run), DISCOVER_BLOCK (sites never to use), DISCOVER_TRUSTED (stores
 # you vouch for: a weak CV does not stop them, red flags still do), DISCOVER_SEEDS (sites to
@@ -38,7 +41,7 @@ jobs:
   scout:
     name: Find and check perfume stores, then Shaheen's school
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 70
     env:
       PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
       DISCOVER_MAX_ACTIVE: ${{ vars.DISCOVER_MAX_ACTIVE || '20' }}
@@ -86,9 +89,32 @@ jobs:
           IMPORT_MAX_NEW: '6'
           IMPORT_MAX_REFRESH: '0'
         run: node --import tsx scripts/shaheen-import/run.mts
-      - name: «مدرسة شاهين» — exam, self-study, study with AI while available
+      - name: «المعلم المحلي» — an open model on this runner (no key, no account)
+        id: teacher
         continue-on-error: true
+        timeout-minutes: 15
+        env:
+          # llama.cpp server (pinned release + SHA-256) and an open-weights model (Apache-2.0).
+          LLAMA_BUILD: b11790
+          LLAMA_SHA256: 0e2b856ca192699fdb5c8dfe591b7896d658760bcdd48f133322236cd311c455
+          TEACHER_MODEL_URL: ${{ vars.TEACHER_MODEL_URL || 'https://huggingface.co/bartowski/Qwen2.5-7B-Instruct-GGUF/resolve/main/Qwen2.5-7B-Instruct-Q4_K_M.gguf' }}
+          TEACHER_MODEL_SHA256: ${{ vars.TEACHER_MODEL_URL && vars.TEACHER_MODEL_SHA256 || '' }}
+          TEACHER_MODEL_NAME: ${{ vars.TEACHER_MODEL_NAME || 'qwen2.5-7b-instruct' }}
+        run: bash scripts/shaheen-school/teacher.sh
+      - name: «مدرسة شاهين» — exam, self-study, study with the local teacher or AI
+        continue-on-error: true
+        timeout-minutes: 25
+        env:
+          SHAM_LLM_BASE_URL: ${{ steps.teacher.outputs.base_url }}
+          SHAM_LLM_MODEL: ${{ steps.teacher.outputs.model }}
+          SCHOOL_PREFER: ${{ vars.SCHOOL_PREFER || 'self_hosted' }}
+          SCHOOL_BUDGET_MIN: ${{ github.ref == 'refs/heads/main' && '18' || '8' }}
+          # Questions visitors asked while no engine answered (optional: same value as the Vercel admin code).
+          SHAM_ADMIN_TOKEN: ${{ secrets.SHAM_ADMIN_TOKEN }}
         run: node --import tsx scripts/shaheen-school/run.mts
+      - name: Stop the local teacher
+        if: always() && steps.teacher.outputs.base_url != ''
+        run: kill "$(cat "${RUNNER_TEMP}/teacher/server.pid")" 2>/dev/null || true
       - name: Regression tests
         run: |
           set -o pipefail

@@ -1,8 +1,11 @@
 /**
  * «مدرسة شاهين» — GitHub Actions runs this every 6 hours (.github/workflows/shaheen-discover.yml):
  *   node --import tsx scripts/shaheen-school/run.mts
- * Exam (no AI) → study the failed questions while an AI engine is up (SCHOOL_MAX_STUDY per run, default 10;
- * the AI packages are respected: a used-up quota just means «study next time») → exam again → report.
+ * Exam (no AI) → study the failed questions with «المعلم المحلي» (an open model on the runner, no key —
+ * scripts/shaheen-school/teacher.sh) or an AI engine (SCHOOL_MAX_STUDY per run, default 10, within SCHOOL_BUDGET_MIN
+ * minutes; the AI packages are respected: a used-up quota just means «study next time») → exam again → report.
+ * Every study answer is grounded on what his own library says (src/utils/shaheenLibrary.ts). Visitors' questions that
+ * no engine answered (the server's knowledge gaps, with SHAM_ADMIN_TOKEN) are studied first.
  * What he studies goes into src/data/live/shaheen-memory.json: the memory the site answers from when no
  * AI engine is available — in the visitor's browser on GitHub Pages too.
  */
@@ -12,7 +15,12 @@ import { guidanceBlock } from '../../src/utils/aiTools';
 import { makeAsk, QuotaExhaustedError, quotaBook } from '../doctor/agent';
 import { answerBook } from '../doctor/answers';
 import { councilStudy, readCouncil } from '../shaheen-council/council';
-import { buildBank, emptySchool, exam, importerShare, isSchoolFile, parseStudy, pickStudy, selfLesson, STUDY_SYSTEM, type SchoolFile, type TrainingDoc } from './school';
+import { RAW_MATERIALS_DATABASE } from '../../src/data/rawMaterials';
+import { referenceBlock, searchLibrary } from '../../src/utils/shaheenLibrary';
+import {
+  buildBank, emptySchool, exam, importerShare, isSchoolFile, materialDocs, parseStudy, pickStudy, selfLesson, STUDY_SYSTEM, studyPrompt,
+  visitorQuestions, type BankQuestion, type SchoolFile, type TrainingDoc,
+} from './school';
 
 const env = process.env;
 const live = (name: string) => new URL(`../../src/data/live/${name}`, import.meta.url);
@@ -28,14 +36,28 @@ const docs: TrainingDoc[] = read<{ docs?: TrainingDoc[] }>(live('sham-training.j
 const schoolRaw = read<unknown>(live('shaheen-school.json'));
 const school: SchoolFile = isSchoolFile(schoolRaw) ? schoolRaw : emptySchool();
 
-const bank = buildBank(docs, councilStudy(readCouncil(), Date.now()));
-const first = exam(bank, memory, docs);
+// Questions visitors asked while no engine answered (admin-only knowledge gaps on the live server).
+let visitors: BankQuestion[] = [];
+const site = (env.SHAM_SITE_URL || 'https://sham-perfume-49bf.vercel.app').replace(/\/$/, '');
+if (env.SHAM_ADMIN_TOKEN?.trim()) {
+  try {
+    const response = await fetch(`${site}/api/admin/gaps`, { headers: { Authorization: `Bearer ${env.SHAM_ADMIN_TOKEN.trim()}` }, signal: AbortSignal.timeout(20_000) });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    visitors = visitorQuestions(((await response.json()) as { items?: [] }).items || []);
+    say(`Visitors' questions waiting for study: ${visitors.length}`);
+  } catch (error) { say(`Visitors' questions not collected (${(error as Error).message.slice(0, 80)})`); }
+}
+// His library: the training lessons and the raw-materials encyclopaedia (learned without AI), and the references
+// every study answer is grounded on.
+const library = [...docs, ...materialDocs(RAW_MATERIALS_DATABASE)];
+const bank = buildBank(docs, councilStudy(readCouncil(), Date.now()), visitors, RAW_MATERIALS_DATABASE);
+const first = exam(bank, memory, library);
 say(`Exam: Shaheen answers ${first.reliance.covered} of ${first.reliance.total} questions by himself (${first.reliance.score}%); ${first.reliance.fromLibrary} more can be learned from his own library`);
 
 // ── Self-study (no AI): his own library lessons become ready answers ──────────────────────────────────────
 let selfTaught = 0;
 for (const r of first.results) {
-  if (r.covered || selfTaught >= 60) continue;
+  if (r.covered || selfTaught >= 80) continue;
   const lesson = selfLesson(r);
   if (!lesson) continue;
   let kept = 0;
@@ -46,11 +68,16 @@ if (selfTaught) say(`Learned ${selfTaught} answers by himself from his library (
 
 // ── Study ─────────────────────────────────────────────────────────────────────────────────────────────────
 let studied = 0;
-let mode: 'ai' | 'self' = 'self';
+let localTaught = 0;
+let mode: 'ai' | 'self' | 'local' = 'self';
+let engineUsed = '';
+const deadline = Date.now() + Math.max(1, Number(env.SCHOOL_BUDGET_MIN) || 20) * 60_000;
 const quota = quotaBook(live('ai-quota.json'));
 const answers = answerBook(live('ai-memory.json'));
 let ask: Awaited<ReturnType<typeof makeAsk>>;
-try { ask = await makeAsk(env, { quota, memory: answers, maxWaitMs: 60_000 }); } catch { ask = undefined; }
+// SCHOOL_PREFER=self_hosted: the local teacher first (free, always there), the AI services as the fallback.
+try { ask = await makeAsk(env, { quota, memory: answers, maxWaitMs: 60_000, prefer: env.SCHOOL_PREFER?.trim() || undefined, onEngine: (id) => { engineUsed = id; } }); } catch { ask = undefined; }
+if (env.SHAM_LLM_BASE_URL?.trim()) say(`Local teacher ready (${env.SHAM_LLM_MODEL || 'open model'} on this runner, no key)`);
 // Shaheen's supervisor (scripts/shaheen-supervisor) can add quality guidance for the study answers.
 const supervisor = read<{ tools?: Record<string, { guidance?: { text?: string } }> }>(live('ai-supervisor.json'));
 const SYSTEM = STUDY_SYSTEM + guidanceBlock(supervisor?.tools?.shaheen_school?.guidance?.text);
@@ -59,15 +86,22 @@ if (!todo.length) say('Nothing left to study in the bank — Shaheen answers eve
 else if (!ask) say(`No AI engine available: ${todo.length} questions wait for the next study session (Shaheen keeps answering from what he learned)`);
 else {
   for (const b of todo) {
+    if (Date.now() > deadline) { say(`Study time is up: ${todo.length - todo.indexOf(b)} questions wait for the next session`); break; }
+    const prompt = studyPrompt(b, referenceBlock(searchLibrary({ lessons: library, materials: [], memory }, b.q, b.lang)));
+    const started = Date.now();
     try {
-      const reply = await ask(SYSTEM, `السؤال (${b.lang === 'ar' ? 'عربي' : 'English'}): ${b.q}`);
+      engineUsed = '';
+      const reply = await ask(SYSTEM, prompt);
       const lesson = parseStudy(reply, b);
-      if (!lesson) { answers.forget(SYSTEM, `السؤال (${b.lang === 'ar' ? 'عربي' : 'English'}): ${b.q}`); say(`Study «${b.q.slice(0, 60)}»: answer did not pass the checks — retried next time`); continue; }
-      mode = 'ai';
+      const teacher = engineUsed === 'self_hosted' ? 'local teacher' : engineUsed || 'saved answer';
+      if (!lesson) { answers.forget(SYSTEM, prompt); say(`Study «${b.q.slice(0, 60)}» (${teacher}): answer did not pass the checks — retried next time`); continue; }
+      if (engineUsed === 'self_hosted') { if (mode !== 'ai') mode = 'local'; } else mode = 'ai';
       let kept = 0;
       for (const q of [b.q, ...lesson.paraphrases]) if (remember(memory, { question: q, lang: b.lang, mode: 'auto', answer: lesson.answer, source: 'study' })) kept++;
       if (kept) {
         studied++;
+        if (engineUsed === 'self_hosted') localTaught++;
+        console.log(`Studied «${b.q.slice(0, 80)}» with the ${teacher} in ${Math.round((Date.now() - started) / 1000)}s (${kept - 1} other wordings)`);
         school.lastStudied = [{ q: b.q, lang: b.lang, at: nowIso, variants: kept - 1 }, ...school.lastStudied].slice(0, 20);
       }
     } catch (error) {
@@ -87,10 +121,12 @@ const { file: curated } = curateMemory(memory);
 // Study answers are kept even unused; curate only drops what fails the checks or exceeds the limit.
 const learnedNow = studied + selfTaught;
 if (learnedNow) writeFileSync(live('shaheen-memory.json'), `${JSON.stringify(curated, null, 1)}\n`);
-const final = exam(bank, learnedNow ? curated : memory, docs);
+const final = exam(bank, learnedNow ? curated : memory, library);
 school.reliance = final.reliance;
 school.importer = importerShare(read(live('store-review.json'))) || school.importer;
 school.studiedTotal += studied;
+school.localTaughtTotal = (school.localTaughtTotal || 0) + localTaught;
+if (localTaught) say(`The local teacher (open model, no key) taught ${localTaught} of them`);
 school.selfTaughtTotal = (school.selfTaughtTotal || 0) + selfTaught;
 school.history = [{ at: nowIso, score: final.reliance.score, studied: learnedNow, mode }, ...school.history].slice(0, 60);
 school.pending = final.results.filter((r) => !r.covered).slice(0, 12).map((r) => ({ q: r.question.q, lang: r.question.lang, topic: r.question.topic }));

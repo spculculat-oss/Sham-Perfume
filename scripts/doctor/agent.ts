@@ -435,7 +435,9 @@ export async function makeAsk(env: Env, options: { quota?: QuotaBook; memory?: A
       if (quota && cap !== Infinity) quota.use(id);
       let refused: { until: number; reason: string; detail: string } | undefined;
       const reply = await callEngine(id, system, [{ role: 'user', text: prompt }], {
-        env, fetch: options.request, signal: AbortSignal.timeout(180_000), temperature: 0.2, maxTokens: 16_000, maxChars: 200_000,
+        // The local teacher (an open model on the runner's CPU) writes slowly and has a small context window.
+        env, fetch: options.request, signal: AbortSignal.timeout(id === 'self_hosted' ? Number(env.SHAM_LLM_TIMEOUT_MS) || 600_000 : 180_000),
+        temperature: 0.2, maxTokens: id === 'self_hosted' ? Number(env.SHAM_LLM_MAX_TOKENS) || 1400 : 16_000, maxChars: 200_000,
         onFailure: (failure, status, detail) => {
           const until = quota ? pauseUntil(status, failure, detail, Date.now()) : undefined;
           if (until) refused = { until, reason: failure, detail };

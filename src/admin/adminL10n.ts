@@ -701,6 +701,7 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   'عربي': { en: 'Arabic' },
   'إنجليزي': { en: 'English' },
   'ذاكر {ai} سؤال مع الذكاء الاصطناعي، واتعلم {self} لوحده من مكتبته': { en: 'studied {ai} questions with AI and learned {self} alone from his library' },
+  'منهم {n} مع المعلم المحلي (نموذج مفتوح Qwen على GitHub من غير مفتاح)': { en: '{n} of them with the local teacher (open Qwen model on GitHub, no key)' },
   'آخر امتحان': { en: 'Last exam' },
   'تطور النتيجة': { en: 'Score over time' },
   'هيذاكرها الجولة الجاية': { en: 'To study next round' },
