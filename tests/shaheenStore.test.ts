@@ -271,3 +271,18 @@ test('the store advisor shares engine health: a refused key is parked and not as
     assert.equal(calls, before, 'a parked engine is skipped — the visitor gets the store picks at once');
   });
 });
+
+test('notes the supplier published later reach the trained entry, and a thin page is not nagged about scent prose', () => {
+  const now = new Date('2026-10-21T00:00:00Z');
+  const page = { ...RAW[2] as RawProduct, url: 'https://example.com/jasmine-rose/', notes: { top: [], heart: [], base: [] }, descriptionEn: 'Jasmine Rose 100ml by Shama' };
+  const trained = { ...ruleEntry(page), editor: 'shaheen' as const, style: STORE_STYLE, descriptionAr: 'عطر زهري ناعم بالورد والياسمين.' };
+  const before = buildCatalogFile([page], undefined, { 'SHM-003': trained }, now);
+  assert.deepEqual(before.entries['SHM-003'].notes, { top: [], heart: [], base: [] });
+  // The importer later found the supplier's published pyramid — the merchant's text did not change.
+  const published = { ...page, notes: { top: ['Rose', 'Jasmine'], heart: ['Musk'], base: ['Sandalwood'] } };
+  const after = buildCatalogFile([published], before, {}, now);
+  assert.deepEqual(after.entries['SHM-003'].notes, published.notes, 'documented notes are added to the kept entry');
+  assert.equal(after.entries['SHM-003'].descriptionAr, trained.descriptionAr, "Shaheen's wording is kept");
+  // A supplier page with neither notes nor a description cannot be described: that is not a fault to nag about.
+  assert.deepEqual(auditProduct(page).filter((i) => i.includes('الوصف عام')), []);
+});

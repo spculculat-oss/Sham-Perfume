@@ -128,6 +128,28 @@ export function auditPhrases(audit: unknown): string[] {
   }
   return [...found].slice(0, 20);
 }
+/**
+ * Is this line really showing English to a visitor? A line that carries an inline dictionary's English copy
+ * (`en: 'Live Sync'`) is the translation source, not a hard-coded label, and a phrase used only as a key or a
+ * JSX attribute name (`placeholder={L('placeholder')}`) never reaches the screen either. Both used to be
+ * reported as «English text on the screen» (seen live: «Live Sync» in HomeHub.tsx, «placeholder» in
+ * ShamAssistant.tsx) and sent translators after phantom work.
+ */
+export function isVisibleEnglishLine(line: string, phrase: string): boolean {
+  if (/\ben\s*:\s*['"`]/.test(line)) return false; // the English copy of an inline {ar, en, …} dictionary
+  const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const hits = [...line.matchAll(new RegExp(escaped, 'gi'))];
+  if (!hits.length) return false;
+  return hits.some((m) => {
+    const at = m.index ?? 0;
+    const before = line.slice(Math.max(0, at - 32), at);
+    const after = line.slice(at + m[0].length);
+    if (/^\s*=/.test(after)) return false; // a JSX attribute name, not a label
+    if (/(?:\bL|\bT|\bloc|\btx)\(\s*['"`]$/.test(before)) return false; // a translation key
+    return true;
+  });
+}
+
 /** Where those phrases live in the visitor code (file:line), so the fix is one click away. */
 export function locatePhrases(phrases: readonly string[], files: readonly { file: string; source: string }[]): { phrase: string; file: string; line: number }[] {
   const out: { phrase: string; file: string; line: number }[] = [];
@@ -138,7 +160,9 @@ export function locatePhrases(phrases: readonly string[], files: readonly { file
       const lines = source.split('\n');
       for (let i = 0; i < lines.length && hits < 3; i++) {
         if (/^\s*(?:\/\/|\*|\/\*|\{\/\*)/.test(lines[i])) continue; // comments are not on the screen
-        if (lines[i].toLowerCase().replace(/\s*·\s*/g, ' ').includes(needle)) { out.push({ phrase, file, line: i + 1 }); hits++; }
+        if (!lines[i].toLowerCase().replace(/\s*·\s*/g, ' ').includes(needle)) continue;
+        if (!isVisibleEnglishLine(lines[i], phrase)) continue;
+        out.push({ phrase, file, line: i + 1 }); hits++;
       }
     }
   }

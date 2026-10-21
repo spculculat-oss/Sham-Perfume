@@ -37,7 +37,8 @@ export type BotId =
   | 'scout' | 'importer' | 'images' | 'catalog' | 'product_pages' | 'store_advisor'
   | 'news' | 'seo' | 'librarian' | 'teacher' | 'researcher'
   | 'chat' | 'library' | 'languages' | 'design_audit' | 'design_expert' | 'visitor_tour' | 'inspect'
-  | 'school' | 'doctor' | 'verifier' | 'live_check' | 'keys' | 'intake' | 'studio_bridge' | 'studio_zip' | 'deploy' | 'admin_agent';
+  | 'school' | 'doctor' | 'verifier' | 'live_check' | 'keys' | 'intake' | 'studio_bridge' | 'studio_zip' | 'deploy' | 'admin_agent'
+  | 'chat_agent';
 
 export interface Bot {
   id: BotId;
@@ -97,6 +98,7 @@ export const BOTS: Bot[] = [
   { id: 'studio_bridge', nameAr: 'بوابة جوجل استوديو', nameEn: 'AI Studio bridge', dept: 'reliability', workflow: 'aistudio-bridge.yml', report: 'aistudio-bridge.json', dutiesAr: 'كل نص ساعة ياخد تعديلات جوجل استوديو من مستودعه الخاص، يفلترها ويفحصها، وينشر السليم على الموقع — والباقي يستنى موافقة.' },
   { id: 'studio_zip', nameAr: 'مستلم ملفات جوجل استوديو المضغوطة', nameEn: 'AI Studio download intake', dept: 'reliability', workflow: 'aistudio-zip.yml', dutiesAr: 'لما جوجل استوديو ما يقدرش يرفع، ياخد الملف المضغوط اللي التاجر رفعه في المسودة الخاصة، يفلتره بنفس قواعد البوابة، ويحط الصافي في فرع للمراجعة.' },
   { id: 'deploy', nameAr: 'بناء ونشر الموقع', nameEn: 'Build & deploy', dept: 'reliability', workflow: 'pages.yml', dutiesAr: 'يفحص ويبني وينشر الموقع على GitHub Pages مع كل تعديل.' },
+  { id: 'chat_agent', nameAr: 'وكيل البرمجة في الشات (منفّذ مهام شاهين)', nameEn: 'Coding agent in the chat (Shaheen task runner)', dept: 'reliability', dutiesAr: 'يدخل من شات وكيل البرمجة لما التاجر يكتب «نفذ مهام شاهين»: يراجع مهام الاجتماع والدورية المفتوحة، ينفذها على فرع الجلسة، ويشغّل lint والاختبارات والبناء قبل أي دمج؛ وقبل أي مهمة كبيرة أو خطرة يستأذن التاجر. كمان بيعمل الصيانة الدورية للموقع ومراجعة أدوات الذكاء الاصطناعي اللي أداؤها بايظ (فشل تشغيل، تقرير مغلوط، بيانات ناقصة) ويصلحها من غير ما يخترع بيانات، ويرد على التاجر بالمصري من غير تفاصيل تقنية.' },
   { id: 'admin_agent', nameAr: 'المساعد الإداري', nameEn: 'Admin operations agent', dept: 'reliability', aiTools: ['admin_agent'], dutiesAr: 'تقارير الإدارة الذكية من أدوات قراءة فقط.' },
 ];
 
@@ -185,6 +187,12 @@ export const LINKS: Link[] = [
   { from: 'school', to: 'library', whyAr: 'الدروس والذاكرة ← مادة المكتبة' },
   { from: 'researcher', to: 'teacher', whyAr: 'خلاصة المصادر ← مراجع للدرس' },
   { from: 'teacher', to: 'school', whyAr: 'دروس مراجَعة من غير مفتاح ← ذاكرة شاهين' },
+  { from: 'council', to: 'chat_agent', whyAr: 'مهمة تطوير مفتوحة ← الوكيل ينفذها ويقفلها بـ PR' },
+  { from: 'patrol', to: 'chat_agent', whyAr: 'عطل ماتصلحش لوحده ← مهمة تطوير للوكيل' },
+  { from: 'verifier', to: 'chat_agent', whyAr: 'مهمة اتقفلت ولسه بايظة ← تتنفذ تاني بمراجعة الوكيل' },
+  { from: 'chat_agent', to: 'deploy', whyAr: 'إصلاح اتدمج ← نشر الموقع بالنسخة الجديدة' },
+  { from: 'chat_agent', to: 'secretary', whyAr: 'اللي اتعمل واللي مستني موافقة التاجر ← مادة للمشرف' },
+  { from: 'chat_agent', to: 'doctor', whyAr: 'عطل بيظهر على الموقع الحي ← كشف وصيانة' },
   { from: 'legal', to: 'researcher', whyAr: 'مصادر رسمية مفتوحة بس وذكر المصدر (CC BY-SA) — مافيش قراءة لصفحات نتائج جوجل' },
 ];
 

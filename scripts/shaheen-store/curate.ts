@@ -6,6 +6,7 @@
  */
 import {
   cleanText, FAMILIES, GENDERS, honestEntry, isGarbled, isGenericDescription, OCCASIONS, productHash, ruleEntry, SEASONS, skuOf,
+  thinSource, withDocumentedNotes,
   type Family, type Gender, type Occasion, type RawProduct, type Season, type StoreCatalogFile, type StoreEntry,
 } from '../../src/utils/storeCatalog';
 import { stripClaims } from '../../src/utils/honestClaims';
@@ -21,8 +22,10 @@ export function auditProduct(p: RawProduct): string[] {
   const issues: string[] = [];
   if (isGarbled(p.nameAr)) issues.push('الاسم العربي فيه حروف غريبة من لغات أخرى');
   if (isGarbled(p.descriptionAr) || isGarbled(p.descriptionEn)) issues.push('الوصف فيه حروف غريبة من لغات أخرى');
-  // Imported products arrive with the supplier's English description; Shaheen writes the Arabic one.
-  if (isGenericDescription(p.descriptionAr) && !(p.url && (p.descriptionEn || '').length > 60)) issues.push('الوصف عام ولا يصف الرائحة');
+  // Imported products arrive with the supplier's English description; Shaheen writes the Arabic one. A product whose
+  // supplier published neither notes nor a description (thin source) can only be described by its published facts —
+  // asking for scent prose there is asking for invented notes (the council's style-2 rule), so it is not a fault.
+  if (!thinSource(p) && isGenericDescription(p.descriptionAr) && !(p.url && (p.descriptionEn || '').length > 60)) issues.push('الوصف عام ولا يصف الرائحة');
   if (/(^|\s)(\S+)\s+\2(\s|$)/u.test(p.descriptionAr || '')) issues.push('كلمة مكررة في الوصف');
   if (!p.brand || p.brand === 'Unknown') issues.push('العلامة التجارية غير معروفة');
   if (!(Number(p.ourPrice) > 0)) issues.push('بدون سعر بيع');
@@ -161,7 +164,9 @@ export function buildCatalogFile(products: RawProduct[], previous: StoreCatalogF
     const old = previous?.entries?.[sku];
     // Shaheen's work is kept while the merchant's text is unchanged; the rules are recomputed every run.
     // A kept entry written before the thin-source rule loses the scent prose it could not support.
-    entries[sku] = fresh[sku] || (old && old.editor === 'shaheen' && old.sourceHash === productHash(p) ? honestEntry(p, old) : ruleEntry(p, at));
+    entries[sku] = fresh[sku] || (old && old.editor === 'shaheen' && old.sourceHash === productHash(p)
+      ? withDocumentedNotes(p, honestEntry(p, old))
+      : ruleEntry(p, at));
   }
   const issues = products.map((p) => ({ sku: skuOf(p), issues: auditProduct(p) })).filter((i) => i.issues.length);
   const shaheen = Object.values(entries).filter((e) => e.editor === 'shaheen').length;

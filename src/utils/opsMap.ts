@@ -60,7 +60,9 @@ export interface OpsInput { precheck?: PrecheckFile | null; patrol?: PatrolFile 
 /** Weights of the parts (only parts with data are counted, then rescaled to 100). */
 export const WEIGHTS: Record<ScorePart['key'], number> = { run: 35, report: 15, quality: 30, own: 10, review: 10 };
 export const GRADE_AT = { high: 85, good: 70, warn: 50 } as const;
-const OWNER = /محركات متوقفة|مفتاح|مفاتيح|شحن الرصيد|الفحص المالي|الإدارة المالية|رصيد/;
+// «محركات الذكاء مش متاحة» is the live check's wording for exhausted packages/credit — the owner tops it up,
+// no code change fixes it (it used to read like a site outage and become a development task).
+const OWNER = /محركات متوقفة|محركات الذكاء مش متاحة|مفتاح|مفاتيح|شحن الرصيد|الفحص المالي|الإدارة المالية|رصيد/;
 const isRunProblem = (p: string) => /آخر تشغيل|متأخر|ما كتبش/.test(p);
 const clip = (s: string, n = 220) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
 
