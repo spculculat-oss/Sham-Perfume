@@ -1,7 +1,7 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T09:10:25.209Z",
- "nextUpdateAt": "2026-10-21T21:10:25.209Z",
+ "updatedAt": "2026-10-21T10:35:46.161Z",
+ "nextUpdateAt": "2026-10-21T22:35:46.161Z",
  "editor": "shaheen",
  "entries": {
   "LAT-052": {
@@ -4255,29 +4255,17 @@
    "updatedAt": "2026-10-17T01:12:39.339Z",
    "nameAr": "النشامة كابريس من لطافة",
    "nameEn": "Al Nashama Caprice by Lattafa",
-   "descriptionAr": "عطر راقٍ يجمع بين الانتعاش الحمضي وحرارة التوابل في بداية آسرة وجذابة. يرتكز على قلب عطري من اللافندر وقاعدة خشبية عنبرية تفيض بالأناقة والثقة.",
-   "descriptionEn": "A sophisticated aromatic fragrance blending vibrant spices, lavender, and rich woody amber.",
+   "descriptionAr": "النشامة كابريس من لطافة — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Al Nashama Caprice by Lattafa — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "unisex",
-   "families": [
-    "spicy",
-    "fresh",
-    "woody"
-   ],
+   "families": [],
    "notes": {
     "top": [],
     "heart": [],
     "base": []
    },
-   "seasons": [
-    "autumn",
-    "spring",
-    "winter"
-   ],
-   "occasions": [
-    "evening",
-    "special",
-    "daily"
-   ],
+   "seasons": [],
+   "occasions": [],
    "tags": [
     "النشامة كابريس",
     "لطافة",
@@ -7617,11 +7605,10 @@
    "updatedAt": "2026-10-17T01:12:39.339Z",
    "nameAr": "سيبتر أوسيانا من ميسون ألهامبرا",
    "nameEn": "Sceptre Oceana by Maison Alhambra 100ml",
-   "descriptionAr": "عطر رجالي أروماتي منعش مستوحى من أعماق البحار والمغامرات. يضفي لمسة من الحيوية والجاذبية على إطلالتك.",
-   "descriptionEn": "Sceptre Oceana by Maison Alhambra is an aromatic fragrance for men offering a refreshing and captivating scent experience.",
+   "descriptionAr": "سيبتر أوسيانا من ميسون ألهامبرا — ماء عطر (EDP)، 100 مل، رجالي. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Sceptre Oceana by Maison Alhambra 100ml — Eau de Parfum, 100 ml, men. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "men",
    "families": [
-    "fresh",
     "aquatic"
    ],
    "notes": {
@@ -7634,7 +7621,8 @@
     "spring"
    ],
    "occasions": [
-    "daily"
+    "daily",
+    "work"
    ],
    "tags": [
     "ميسون ألهامبرا",
@@ -9218,28 +9206,24 @@
    "updatedAt": "2026-10-17T03:02:01.636Z",
    "nameAr": "لطافة برايد فينتاج راديو",
    "nameEn": "Lattafa Pride Vintage Radio",
-   "descriptionAr": "عطر متفرد ينبض بالأناقة الكلاسيكية بمزيج فاخر من الخزامى والبرقوق وأخشاب البالو سانتو. يعكس طابعاً هادئاً ودافئاً بقاعدة عنبرية وخشبية تمنحك تميزاً استثنائياً.",
-   "descriptionEn": "A sophisticated, comforting fragrance blending aromatic lavender, juicy plum, and rich palo santo with creamy woods.",
+   "descriptionAr": "لطافة برايد فينتاج راديو — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Lattafa Pride Vintage Radio — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "unisex",
-   "families": [
-    "woody",
-    "fruity",
-    "amber"
-   ],
+   "families": [],
    "notes": {
     "top": [],
     "heart": [],
     "base": []
    },
    "seasons": [
-    "autumn",
-    "winter",
-    "spring"
+    "summer",
+    "spring",
+    "autumn"
    ],
    "occasions": [
     "daily",
-    "evening",
-    "special"
+    "work",
+    "evening"
    ],
    "tags": [
     "فينتاج راديو",
@@ -9726,27 +9710,22 @@
    "updatedAt": "2026-10-17T03:02:01.636Z",
    "nameAr": "فيكتوريا من لطافة",
    "nameEn": "Victoria by Lattafa 100ml EDP",
-   "descriptionAr": "عطر أنيق يبرز الأنوثة والجاذبية بتركيبة مميزة تلائم مختلف الأوقات. يمنحك حضوراً منعشاً ومميزاً.",
-   "descriptionEn": "Victoria by Lattafa 100ml EDP is a captivating fragrance designed to offer a unique and refreshing scent profile for women.",
+   "descriptionAr": "فيكتوريا من لطافة — ماء عطر (EDP)، 100 مل، نسائي. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Victoria by Lattafa 100ml EDP — Eau de Parfum, 100 ml, women. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "women",
-   "families": [
-    "floral",
-    "oriental"
-   ],
+   "families": [],
    "notes": {
     "top": [],
     "heart": [],
     "base": []
    },
    "seasons": [
-    "spring",
     "summer",
-    "all"
+    "spring"
    ],
    "occasions": [
     "daily",
-    "work",
-    "gift"
+    "work"
    ],
    "tags": [
     "فيكتوريا",
@@ -9811,12 +9790,12 @@
    "updatedAt": "2026-10-17T03:02:01.636Z",
    "nameAr": "مشربية من لطافة",
    "nameEn": "Mashrabya by Lattafa 100ml EDP",
-   "descriptionAr": "عطر شرقي زهري مستوحى من التراث الأصيل ليمنحك عبقاً ساحراً. يضفي على إطلالتك لمسة من الفخامة والغموض الراقي.",
-   "descriptionEn": "Mashrabya by Lattafa 100ml EDP is an oriental floral fragrance that offers a rich, traditional, and luxurious scent profile.",
+   "descriptionAr": "مشربية من لطافة — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Mashrabya by Lattafa 100ml EDP — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "unisex",
    "families": [
-    "oriental",
-    "floral"
+    "floral",
+    "oriental"
    ],
    "notes": {
     "top": [],
@@ -9824,14 +9803,14 @@
     "base": []
    },
    "seasons": [
-    "winter",
-    "autumn",
-    "all"
+    "summer",
+    "spring",
+    "autumn"
    ],
    "occasions": [
-    "evening",
-    "special",
-    "gift"
+    "daily",
+    "work",
+    "evening"
    ],
    "tags": [
     "مشربية",
@@ -10501,24 +10480,21 @@
    "updatedAt": "2026-10-17T03:02:01.636Z",
    "nameAr": "موسمام انتنس من لطافة",
    "nameEn": "Musamam Intense by Lattafa 100ml EDP",
-   "descriptionAr": "عطر فاخر للجنسين بتولفة عطرية غنية ومميزة تلبي تطلعات محبي العطور الشرقية العميقة. يضفي لمسة من الجاذبية الفريدة.",
-   "descriptionEn": "Musamam Intense by Lattafa is a captivating unisex Eau de Parfum offering a rich and oriental experience.",
+   "descriptionAr": "موسمام انتنس من لطافة — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Musamam Intense by Lattafa 100ml EDP — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "unisex",
-   "families": [
-    "oriental",
-    "woody",
-    "amber"
-   ],
+   "families": [],
    "notes": {
     "top": [],
     "heart": [],
     "base": []
    },
    "seasons": [
-    "all",
-    "winter"
+    "winter",
+    "autumn"
    ],
    "occasions": [
+    "work",
     "evening",
     "special"
    ],
@@ -10810,24 +10786,24 @@
    "updatedAt": "2026-10-17T03:02:01.636Z",
    "nameAr": "سافير رويال من لطافة برايد",
    "nameEn": "Sapphire Royal by Lattafa Pride 100ml EDP",
-   "descriptionAr": "عطر فاخر من مجموعة لطافة برايد يضفي لمسة من الأناقة والجاذبية بتصميم فريد ونفحات عطرية مميزة. يناسب مختلف المناسبات لإطلالة لا تنسى.",
-   "descriptionEn": "Sapphire Royal by Lattafa Pride is a refined fragrance offering elegance and unique character for special occasions.",
+   "descriptionAr": "سافير رويال من لطافة برايد — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Sapphire Royal by Lattafa Pride 100ml EDP — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "unisex",
-   "families": [
-    "oriental",
-    "woody"
-   ],
+   "families": [],
    "notes": {
     "top": [],
     "heart": [],
     "base": []
    },
    "seasons": [
-    "all"
+    "summer",
+    "spring",
+    "autumn"
    ],
    "occasions": [
-    "evening",
-    "special"
+    "daily",
+    "work",
+    "evening"
    ],
    "tags": [
     "لطافة برايد",
@@ -10986,12 +10962,12 @@
    "updatedAt": "2026-10-17T03:02:01.636Z",
    "nameAr": "العتيق جولد من لطافة برايد",
    "nameEn": "Al Areeq Gold by Lattafa Pride 100ml EDP",
-   "descriptionAr": "عطر شرقي فانيلا فاخر من لطافة برايد يجمع بين الدفء والجاذبية في تركيبة عطرية استثنائية. يناسب الأوقات الخاصة والمناسبات الهامة.",
-   "descriptionEn": "Al Areeq Gold by Lattafa Pride is an oriental vanilla fragrance blending warmth and sophistication.",
+   "descriptionAr": "العتيق جولد من لطافة برايد — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Al Areeq Gold by Lattafa Pride 100ml EDP — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "unisex",
    "families": [
-    "oriental",
-    "gourmand"
+    "gourmand",
+    "oriental"
    ],
    "notes": {
     "top": [],
@@ -11003,6 +10979,8 @@
     "autumn"
    ],
    "occasions": [
+    "daily",
+    "work",
     "evening",
     "special"
    ],
@@ -13843,12 +13821,12 @@
    "updatedAt": "2026-10-17T03:02:01.636Z",
    "nameAr": "شموخ بارفان من غلف أوركيد",
    "nameEn": "Shumookh Parfum 100ml by Gulf Orchid",
-   "descriptionAr": "عطر شرقي زهري راقٍ يجسد الفخامة والأصالة في كل رشة. يضفي لمسة ساحرة ومميزة على إطلالتك في المناسبات الخاصة.",
-   "descriptionEn": "Shumookh Parfum by Gulf Orchid is a luxurious oriental floral fragrance designed to offer an exquisite and captivating scent profile for any special occasion.",
+   "descriptionAr": "شموخ بارفان من غلف أوركيد — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Shumookh Parfum 100ml by Gulf Orchid — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "unisex",
    "families": [
-    "oriental",
-    "floral"
+    "floral",
+    "oriental"
    ],
    "notes": {
     "top": [],
@@ -13856,10 +13834,13 @@
     "base": []
    },
    "seasons": [
-    "autumn",
-    "winter"
+    "winter",
+    "spring",
+    "autumn"
    ],
    "occasions": [
+    "daily",
+    "work",
     "evening",
     "special"
    ],
@@ -14902,8 +14883,8 @@
    "updatedAt": "2026-10-17T03:28:13.666Z",
    "nameAr": "جين لو فيرد أورا 100 مل",
    "nameEn": "Jean Lowe Verde Aura 100ml",
-   "descriptionAr": "عطر أنيق ومنعش بطابع حمضي أخاذ، يضفي إحساساً بالحيوية والانتعاش.",
-   "descriptionEn": "Jean Lowe Verde Aura by Maison Alhambra is a fresh citrus fragrance that delivers a vibrant and invigorating scent experience.",
+   "descriptionAr": "جين لو فيرد أورا 100 مل من Maison Alhambra — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Jean Lowe Verde Aura 100ml by Maison Alhambra — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "unisex",
    "families": [
     "fresh",
@@ -14916,8 +14897,7 @@
    },
    "seasons": [
     "summer",
-    "spring",
-    "all"
+    "spring"
    ],
    "occasions": [
     "daily",
@@ -15902,8 +15882,8 @@
    "updatedAt": "2026-10-17T03:28:13.666Z",
    "nameAr": "كيسيمت للنساء من ميزون الحمراء",
    "nameEn": "Kismet for Women by Maison Alhambra",
-   "descriptionAr": "عطر شرقي أنيق مصمم للمرأة التي تبحث عن الفخامة والتميز في إطلالتها. يجسد هذا العطر مزيجاً ساحراً يضفي لمسة من الغموض والجاذبية.",
-   "descriptionEn": "An elegant oriental fragrance designed for the woman who seeks luxury and distinction. This scent embodies a charming blend that adds a touch of mystery and allure.",
+   "descriptionAr": "كيسيمت للنساء من ميزون الحمراء — ماء عطر (EDP)، 100 مل، نسائي. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Kismet for Women by Maison Alhambra — Eau de Parfum, 100 ml, women. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "women",
    "families": [
     "oriental"
@@ -15914,10 +15894,14 @@
     "base": []
    },
    "seasons": [
+    "summer",
     "winter",
+    "spring",
     "autumn"
    ],
    "occasions": [
+    "daily",
+    "work",
     "evening",
     "special"
    ],
@@ -17716,12 +17700,12 @@
    "updatedAt": "2026-10-17T05:00:32.509Z",
    "nameAr": "فيكتوريوسو ليغاسي من ميزون الحمراء",
    "nameEn": "Victorioso Legacy by Maison Alhambra 100ml EDP",
-   "descriptionAr": "عطر رجالي يجسد روح الانتصار والتميز بتركيبة عطرية جذابة. ينتمي هذا العطر للعائلة الشرقية العنبرية التي تمنحك شعوراً بالثقة والفخامة.",
-   "descriptionEn": "A masculine fragrance that embodies the spirit of victory and distinction, belonging to the oriental amber family.",
+   "descriptionAr": "فيكتوريوسو ليغاسي من ميزون الحمراء — ماء عطر (EDP)، 100 مل، رجالي. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Victorioso Legacy by Maison Alhambra 100ml EDP — Eau de Parfum, 100 ml, men. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "men",
    "families": [
-    "oriental",
-    "amber"
+    "amber",
+    "oriental"
    ],
    "notes": {
     "top": [],
@@ -17729,12 +17713,14 @@
     "base": []
    },
    "seasons": [
+    "summer",
     "spring",
     "autumn"
    ],
    "occasions": [
     "daily",
-    "work"
+    "work",
+    "evening"
    ],
    "tags": [
     "ميزون الحمراء",
@@ -18078,8 +18064,8 @@
    "updatedAt": "2026-10-17T05:00:32.509Z",
    "nameAr": "فلورنزا من ميزون الحمراء",
    "nameEn": "Florenza (Florence) 100ml by Maison Alhambra",
-   "descriptionAr": "عطر نسائي زهري رقيق يجسد الأنوثة والجمال في كل رشة. تركيبة عطرية ناعمة ومنعشة تناسب الاستخدام اليومي والمناسبات الخاصة.",
-   "descriptionEn": "A delicate floral fragrance for women that embodies femininity and beauty, suited for daily wear and special occasions.",
+   "descriptionAr": "فلورنزا من ميزون الحمراء — ماء عطر (EDP)، 100 مل، نسائي. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Florenza (Florence) 100ml by Maison Alhambra — Eau de Parfum, 100 ml, women. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "women",
    "families": [
     "floral"
@@ -18090,11 +18076,15 @@
     "base": []
    },
    "seasons": [
+    "summer",
+    "winter",
     "spring",
-    "summer"
+    "autumn"
    ],
    "occasions": [
     "daily",
+    "work",
+    "evening",
     "special"
    ],
    "tags": [
@@ -20362,12 +20352,12 @@
    "updatedAt": "2026-10-17T05:00:32.509Z",
    "nameAr": "مينيرال جولد من ميزون الحمراء",
    "nameEn": "Minerale Gold by Maison Alhambra 100ml EDP",
-   "descriptionAr": "عطر شرقي فاخر يضفي لمسة من الغموض والجاذبية على إطلالتك. تصميم عطري يجمع بين القوة والنعومة في آن واحد.",
-   "descriptionEn": "A luxurious oriental fragrance that adds a touch of mystery and charm to your look. An aromatic design combining strength and softness at once.",
+   "descriptionAr": "مينيرال جولد من ميزون الحمراء — ماء عطر (EDP)، 100 مل، رجالي. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Minerale Gold by Maison Alhambra 100ml EDP — Eau de Parfum, 100 ml, men. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "men",
    "families": [
-    "oriental",
-    "amber"
+    "amber",
+    "oriental"
    ],
    "notes": {
     "top": [],
@@ -20375,12 +20365,12 @@
     "base": []
    },
    "seasons": [
-    "winter",
-    "autumn"
+    "summer",
+    "spring"
    ],
    "occasions": [
-    "evening",
-    "special"
+    "daily",
+    "work"
    ],
    "tags": [
     "مينيرال جولد",
@@ -20439,27 +20429,25 @@
    "updatedAt": "2026-10-17T05:00:32.509Z",
    "nameAr": "يور تاتش أمبر من ميزون الحمراء",
    "nameEn": "Your Touch Amber by Maison Alhambra 100ml",
-   "descriptionAr": "عطر شرقي دافئ يغلفك بلمسات العنبر الفاخرة. خيار مناسب للأوقات الباردة والمناسبات التي تتطلب حضوراً مميزاً.",
-   "descriptionEn": "A warm oriental fragrance that wraps you in luxurious amber touches. An ideal choice for cold weather and occasions that require a distinctive presence.",
+   "descriptionAr": "يور تاتش أمبر من ميزون الحمراء — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Your Touch Amber by Maison Alhambra 100ml — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "unisex",
    "families": [
-    "oriental",
-    "amber"
+    "amber",
+    "oriental"
    ],
    "notes": {
     "top": [],
-    "heart": [
-     "Amber"
-    ],
+    "heart": [],
     "base": []
    },
    "seasons": [
-    "winter",
-    "autumn"
+    "summer",
+    "spring"
    ],
    "occasions": [
-    "evening",
-    "special"
+    "daily",
+    "evening"
    ],
    "tags": [
     "يور تاتش أمبر",
@@ -22116,26 +22104,24 @@
    "updatedAt": "2026-10-17T08:59:23.410Z",
    "nameAr": "جالاكتيك مان إليكسير بواسطة ميشون ألامبرا",
    "nameEn": "Galactic Man Elixir by Maison Alhambra 100ml",
-   "descriptionAr": "عطر رجالي راقٍ يقدم توليفة عطرية مركزة ومميزة تناسب مختلف الأوقات والمناسبات. يمنحك طابعاً ذكورياً فريداً.",
-   "descriptionEn": "Galactic Man Elixir by Maison Alhambra 100ml EDP for men.",
+   "descriptionAr": "جالاكتيك مان إليكسير بواسطة ميشون ألامبرا — ماء عطر (EDP)، 100 مل، رجالي. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Galactic Man Elixir by Maison Alhambra 100ml — Eau de Parfum, 100 ml, men. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "men",
-   "families": [
-    "woody",
-    "amber",
-    "fresh"
-   ],
+   "families": [],
    "notes": {
     "top": [],
     "heart": [],
     "base": []
    },
    "seasons": [
-    "winter",
+    "summer",
+    "spring",
     "autumn"
    ],
    "occasions": [
-    "evening",
-    "special"
+    "daily",
+    "work",
+    "evening"
    ],
    "tags": [
     "ميشون ألامبرا",
@@ -23607,26 +23593,21 @@
    "updatedAt": "2026-10-17T10:57:17.405Z",
    "nameAr": "أفنان 9 إيه إم",
    "nameEn": "9 AM by Afnan Eau de Parfum",
-   "descriptionAr": "عطر منعش ومشرق يفتتح يومك بنفحات حيوية من الحمضيات الممزوجة بالهيل والزهور الخفيفة. يستقر بتناغم على قاعدة خشبية مسكية تمنحك إحساساً بالنظافة والأناقة.",
-   "descriptionEn": "A vibrant and refreshing fragrance opening with zesty citrus and cardamom over a clean woody base.",
+   "descriptionAr": "أفنان 9 إيه إم — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "9 AM by Afnan Eau de Parfum — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "unisex",
-   "families": [
-    "fresh",
-    "citrus",
-    "spicy"
-   ],
+   "families": [],
    "notes": {
     "top": [],
     "heart": [],
     "base": []
    },
    "seasons": [
-    "spring",
-    "summer"
+    "summer",
+    "spring"
    ],
    "occasions": [
-    "daily",
-    "work"
+    "daily"
    ],
    "tags": [
     "أفنان",
@@ -28059,28 +28040,22 @@
    "updatedAt": "2026-10-17T10:57:17.405Z",
    "nameAr": "ميسون الحمراء لا شارمانت",
    "nameEn": "Maison Alhambra La Charmante",
-   "descriptionAr": "عطر أنثوي رقيق ينبض بنفحات الأزهار البيضاء والورد مع لمسات فاكهية خفيفة وأنيقة. تكتمل روعته بقاعدة ناعمة من المسك وخشب الأرز تمنحك إحساساً بالأناقة المطلقة.",
-   "descriptionEn": "A charming floral fragrance for women combining blooming roses, jasmine, and soft white musk.",
+   "descriptionAr": "ميسون الحمراء لا شارمانت — ماء عطر (EDP)، 100 مل، نسائي. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Maison Alhambra La Charmante — Eau de Parfum, 100 ml, women. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "women",
-   "families": [
-    "floral",
-    "musk",
-    "fruity"
-   ],
+   "families": [],
    "notes": {
     "top": [],
     "heart": [],
     "base": []
    },
    "seasons": [
-    "spring",
     "summer",
-    "all"
+    "spring"
    ],
    "occasions": [
     "daily",
-    "work",
-    "special"
+    "work"
    ],
    "tags": [
     "لا شارمانت",
@@ -35062,12 +35037,11 @@
    "updatedAt": "2026-10-17T13:06:31.049Z",
    "nameAr": "عطر ديب وودز من ميسون الحمراء",
    "nameEn": "Deep Woods by Maison Alhambra Eau de Parfum",
-   "descriptionAr": "عطر رجالي غامض يفيض بنفحات الأخشاب العميقة التي تمنحك حضوراً قوياً وجاذبية فريدة. يعبر عن الطابع الكلاسيكي المتزن بأسلوب عطري عصري.",
-   "descriptionEn": "A captivating woody aromatic fragrance for men designed with deep accords and sophisticated masculine elegance.",
+   "descriptionAr": "عطر ديب وودز من ميسون الحمراء — ماء عطر (EDP)، 100 مل، رجالي. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Deep Woods by Maison Alhambra Eau de Parfum — Eau de Parfum, 100 ml, men. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "men",
    "families": [
-    "woody",
-    "oriental"
+    "woody"
    ],
    "notes": {
     "top": [],
@@ -35075,10 +35049,12 @@
     "base": []
    },
    "seasons": [
-    "autumn",
-    "winter"
+    "winter",
+    "autumn"
    ],
    "occasions": [
+    "daily",
+    "work",
     "evening",
     "special"
    ],
@@ -35805,12 +35781,12 @@
    "updatedAt": "2026-10-17T13:06:31.049Z",
    "nameAr": "جلاسيير جولد من ميصون الحمراء",
    "nameEn": "Glacier Gold by Maison Alhambra",
-   "descriptionAr": "عطر رجالي راقي ينتمي للعائلة الشرقية الخشبية ليمنحك حضوراً جذاباً. يعكس أناقة عصرية تليق بكل مناسباتك.",
-   "descriptionEn": "Glacier Gold by Maison Alhambra is an oriental woody fragrance designed for men.",
+   "descriptionAr": "جلاسيير جولد من ميصون الحمراء — ماء عطر (EDP)، 100 مل، رجالي. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Glacier Gold by Maison Alhambra — Eau de Parfum, 100 ml, men. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "men",
    "families": [
-    "oriental",
-    "woody"
+    "woody",
+    "oriental"
    ],
    "notes": {
     "top": [],
@@ -35818,10 +35794,11 @@
     "base": []
    },
    "seasons": [
-    "all"
+    "summer",
+    "spring"
    ],
    "occasions": [
-    "evening",
+    "daily",
     "work"
    ],
    "tags": [
@@ -36380,28 +36357,22 @@
    "updatedAt": "2026-10-17T13:06:31.049Z",
    "nameAr": "كاميل من ميسون الحمراء",
    "nameEn": "Camille by Maison Alhambra 100ml EDP",
-   "descriptionAr": "عطر نسائي ساحر من ميسون الحمراء يضفي لمسة من الأناقة والجاذبية. صُمّم ليناسب المرأة العصريّة في جميع أوقاتها.",
-   "descriptionEn": "Camille by Maison Alhambra 100ml EDP is a charming women's fragrance designed to add a touch of elegance and allure for any modern woman.",
+   "descriptionAr": "كاميل من ميسون الحمراء — ماء عطر (EDP)، 100 مل، نسائي. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Camille by Maison Alhambra 100ml EDP — Eau de Parfum, 100 ml, women. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "women",
-   "families": [
-    "floral",
-    "oriental",
-    "fruity"
-   ],
+   "families": [],
    "notes": {
     "top": [],
     "heart": [],
     "base": []
    },
    "seasons": [
-    "all",
-    "spring",
-    "autumn"
+    "summer",
+    "spring"
    ],
    "occasions": [
     "daily",
-    "work",
-    "evening"
+    "work"
    ],
    "tags": [
     "كاميل ميسون الحمراء",
@@ -36983,8 +36954,8 @@
    "updatedAt": "2026-10-17T14:57:07.595Z",
    "nameAr": "وينسوم من ميسون الحمراء",
    "nameEn": "Winsome by Maison Alhambra",
-   "descriptionAr": "عطر خشبي أنيق للرجال يعكس الرقي والجاذبية من خلال توليفة متزنة وهادئة. مناسب للاستخدام اليومي ويمنح إحساساً كلاسيكياً مفعماً بالثقة.",
-   "descriptionEn": "A sophisticated and classic woody fragrance designed for men seeking a distinguished and versatile signature scent.",
+   "descriptionAr": "وينسوم من ميسون الحمراء — ماء عطر (EDP)، 90 مل، رجالي. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Winsome by Maison Alhambra — Eau de Parfum, 90 ml, men. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "men",
    "families": [
     "woody"
@@ -36995,8 +36966,7 @@
     "base": []
    },
    "seasons": [
-    "autumn",
-    "winter",
+    "summer",
     "spring"
    ],
    "occasions": [
@@ -37643,12 +37613,11 @@
    "updatedAt": "2026-10-17T14:57:07.595Z",
    "nameAr": "لا شارمانت إيكلاتان من مايسون ألامبرا",
    "nameEn": "La Charmante Eclatant by Maison Alhambra 100ml EDP",
-   "descriptionAr": "عطر شرقي فاخر يعكس الفخامة والجاذبية بتصميم أنيق يناسب الأذواق الرفيعة. يضفي لمسة من السحر والأناقة على إطلالتك في كل المناسبات.",
-   "descriptionEn": "La Charmante Eclatant by Maison Alhambra 100ml EDP featuring an oriental character designed for sophisticated charm.",
+   "descriptionAr": "لا شارمانت إيكلاتان من مايسون ألامبرا — ماء عطر (EDP)، 100 مل، نسائي. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "La Charmante Eclatant by Maison Alhambra 100ml EDP — Eau de Parfum, 100 ml, women. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "women",
    "families": [
-    "oriental",
-    "floral"
+    "oriental"
    ],
    "notes": {
     "top": [],
@@ -37656,14 +37625,12 @@
     "base": []
    },
    "seasons": [
-    "all",
-    "winter",
-    "autumn"
+    "summer",
+    "spring"
    ],
    "occasions": [
-    "evening",
-    "special",
-    "gift"
+    "daily",
+    "work"
    ],
    "tags": [
     "مايسون ألامبرا",
@@ -46755,8 +46722,8 @@
    "updatedAt": "2026-10-17T16:58:43.168Z",
    "nameAr": "نوي بارفيت من ريف 100 مل أودو بارفان",
    "nameEn": "Nuit Parfaite by Rave 100ml EDP",
-   "descriptionAr": "عطر مائي زهري فواح يضفي لمسة من الانتعاش والأناقة على إطلالتك اليومية. تصميم عطري متوازن يناسب مختلف الأوقات والمناسبات بأسلوب عصري جذاب.",
-   "descriptionEn": "Nuit Parfaite by Rave 100ml EDP",
+   "descriptionAr": "نوي بارفيت من ريف 100 مل أودو بارفان — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Nuit Parfaite by Rave 100ml EDP — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "unisex",
    "families": [
     "floral",
@@ -46768,11 +46735,12 @@
     "base": []
    },
    "seasons": [
-    "all",
-    "summer"
+    "winter",
+    "autumn"
    ],
    "occasions": [
-    "daily"
+    "evening",
+    "special"
    ],
    "tags": [
     "ريف نوي بارفيت",
@@ -47640,8 +47608,8 @@
    "updatedAt": "2026-10-17T16:58:43.168Z",
    "nameAr": "أو سوليل من راف",
    "nameEn": "Au Soleil by Rave 100ml EDP",
-   "descriptionAr": "عطر راقي بلمسات زهرية وفواكه منعشة تعكس أجواء البهجة والإشراق. يضفي على حضورك لمسة ساحرة وجذابة.",
-   "descriptionEn": "Au Soleil by Rave – 100ml Eau de Parfum.",
+   "descriptionAr": "أو سوليل من راف — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Au Soleil by Rave 100ml EDP — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "unisex",
    "families": [
     "floral",
@@ -47658,7 +47626,7 @@
    ],
    "occasions": [
     "daily",
-    "special"
+    "work"
    ],
    "tags": [
     "عطر أو سوليل",
