@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T00:55:57.475Z",
+ "updatedAt": "2026-10-21T06:55:49.085Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -1168,7 +1168,9 @@
    "foundBy": "brand-site",
    "foundWith": "Grandeur",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T06:55:49.085Z",
+   "reason": "الموقع لا يفتح (HTTP 404)"
   },
   {
    "id": "grandeurparfums-com",
@@ -1179,7 +1181,9 @@
    "foundBy": "brand-site",
    "foundWith": "Grandeur",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T06:55:49.085Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "bujairami-com",
@@ -1190,7 +1194,107 @@
    "foundBy": "brand-site",
    "foundWith": "Bujairami",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T06:55:49.085Z",
+   "trust": {
+    "score": 54,
+    "verdict": "weak",
+    "at": "2026-10-21T06:55:49.085Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "5 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": false,
+      "points": 2,
+      "max": 10,
+      "detail": "صفحة تواصل"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 10,
+      "max": 15,
+      "detail": "الموقع الرسمي لماركة Bujairami"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": null,
+      "points": 2,
+      "max": 5
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "الماركة نفسها تبيع منتجاتها"
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2021-08-31T11:29:22.000Z"
+   },
+   "region": "global",
+   "reason": "ملف الثقة ضعيف (54/100): ينقصه بيانات التواصل، وسائل دفع معروفة، سياسة الشحن"
   },
   {
    "id": "bujairamiperfumes-com",
@@ -1201,7 +1305,106 @@
    "foundBy": "brand-site",
    "foundWith": "Bujairami",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T06:55:49.085Z",
+   "trust": {
+    "score": 29,
+    "verdict": "weak",
+    "at": "2026-10-21T06:55:49.085Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 10,
+      "max": 20,
+      "detail": "1 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": false,
+      "points": 2,
+      "max": 10,
+      "detail": "صفحة تواصل"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": false,
+      "points": 0,
+      "max": 15,
+      "detail": "لا توجد"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": null,
+      "points": 2,
+      "max": 5
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2025-03-14T08:48:59.000Z"
+   },
+   "region": "global",
+   "reason": "ملف الثقة ضعيف (29/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة"
   },
   {
    "id": "bujairamiparfums-com",
@@ -1212,7 +1415,9 @@
    "foundBy": "brand-site",
    "foundWith": "Bujairami",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T06:55:49.085Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "faces-com",
@@ -1469,13 +1674,130 @@
   {
    "id": "armaf-com",
    "host": "armaf.com",
-   "name": "armaf.com",
+   "name": "ARMAF",
    "base": "https://armaf.com",
-   "status": "candidate",
+   "status": "active",
    "foundBy": "brand-site",
    "foundWith": "Armaf",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T06:55:49.085Z",
+   "trust": {
+    "score": 90,
+    "verdict": "trusted",
+    "at": "2026-10-21T06:55:49.085Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "15 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 6,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 15,
+      "max": 15,
+      "detail": "الموقع الرسمي لماركة Armaf + عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 3,
+      "max": 5,
+      "detail": "محلي أو غير مذكور"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 6,
+      "max": 10,
+      "detail": "PayPal"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "الماركة نفسها تبيع منتجاتها"
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2010-11-03T06:40:06.000Z"
+   },
+   "region": "americas",
+   "sampleOk": 4,
+   "sampleTotal": 6,
+   "currency": "USD",
+   "rateToEgp": 54.4889,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*armaf\\.com/products/[^?#]+$",
+   "sitemaps": [
+    "https://armaf.com/sitemap_agentic_discovery.xml",
+    "https://armaf.com/sitemap_products_1.xml?from=9284842357035&to=15424824443179",
+    "https://armaf.com/sitemap_pages_1.xml?from=135551123755&to=167363936555",
+    "https://armaf.com/sitemap_collections_1.xml?from=473743032619&to=535168385323",
+    "https://armaf.com/sitemap_blogs_1.xml",
+    "https://armaf.com/sitemap_articles_1.xml"
+   ],
+   "via": "generic",
+   "productsEstimate": 494
   },
   {
    "id": "armafperfumes-com",
@@ -1486,7 +1808,9 @@
    "foundBy": "brand-site",
    "foundWith": "Armaf",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T06:55:49.085Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "armafparfums-com",
@@ -1497,18 +1821,22 @@
    "foundBy": "brand-site",
    "foundWith": "Armaf",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T06:55:49.085Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "rasasiperfumes-com",
    "host": "rasasiperfumes.com",
    "name": "rasasiperfumes.com",
    "base": "https://rasasiperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Rasasi",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T06:55:49.085Z",
+   "reason": "ملف robots.txt يمنع القراءة الآلية"
   },
   {
    "id": "rasasiparfums-com",
@@ -1519,7 +1847,106 @@
    "foundBy": "brand-site",
    "foundWith": "Rasasi",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T06:55:49.085Z",
+   "trust": {
+    "score": 29,
+    "verdict": "weak",
+    "at": "2026-10-21T06:55:49.085Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 10,
+      "max": 20,
+      "detail": "2 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": false,
+      "points": 2,
+      "max": 10,
+      "detail": "صفحة تواصل"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": false,
+      "points": 0,
+      "max": 15,
+      "detail": "لا توجد"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": null,
+      "points": 2,
+      "max": 5
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2024-09-06T07:30:55.000Z"
+   },
+   "region": "global",
+   "reason": "ملف الثقة ضعيف (29/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة"
   },
   {
    "id": "alwataniah-com",
@@ -5366,6 +5793,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-21T06:55:49.085Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 10,
+   "activated": 1,
+   "rejected": 1,
+   "notes": [
+    "  ↳ bujairami.com: CV 54/100 [age,https,identity,returns,authentic] (pages: /contact-us→200 /returns→200)",
+    "✗ bujairami.com: ملف الثقة ضعيف (54/100): ينقصه بيانات التواصل، وسائل دفع معروفة، سياسة الشحن",
+    "  ↳ bujairamiperfumes.com: CV 29/100 [age,https,returns] (pages: /contact-us→200 /returns→200)",
+    "✗ bujairamiperfumes.com: ملف الثقة ضعيف (29/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
+    "✗ bujairamiparfums.com: الموقع لا يفتح",
+    "  ↳ armaf.com: CV 90/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ armaf.com (CV 90/100): 494 perfumes, 4/6 pages read without AI, USD (1 = 54.4889 EGP) — added to the importer",
+    "✗ armafperfumes.com: الموقع لا يفتح",
+    "✗ armafparfums.com: الموقع لا يفتح",
+    "✗ rasasiperfumes.com: ملف robots.txt يمنع القراءة الآلية",
+    "  ↳ rasasiparfums.com: CV 29/100 [age,https,returns] (pages: /contact-us→200 /returns→200)",
+    "✗ rasasiparfums.com: ملف الثقة ضعيف (29/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة"
+   ]
+  },
   {
    "at": "2026-10-21T00:55:57.475Z",
    "mode": "self",
