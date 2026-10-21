@@ -1,16 +1,23 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T06:46:35.031Z",
- "meetingAt": "2026-10-21T08:15:00.000Z",
- "health": 76,
+ "updatedAt": "2026-10-21T11:47:45.469Z",
+ "meetingAt": "2026-10-22T08:15:00.000Z",
+ "health": 81,
  "counts": {
-  "ok": 17,
-  "warn": 10,
+  "ok": 20,
+  "warn": 7,
   "fail": 2,
-  "idle": 2
+  "idle": 3
  },
- "summaryAr": "الفحص الشامل قبل الاجتماع: 17 سليمة، 10 محتاجة انتباه، 2 فيها عطل، 2 بدون بيانات — صحة الأدوات 76% — 9 طلب مساعدة بين الأدوات.",
+ "summaryAr": "الفحص الشامل قبل الاجتماع: 20 سليمة، 7 محتاجة انتباه، 2 فيها عطل، 3 بدون بيانات — صحة الأدوات 81% — 9 طلب مساعدة بين الأدوات.",
  "bots": [
+  {
+   "id": "librarian",
+   "status": "idle",
+   "problems": [],
+   "fixes": [],
+   "ideas": []
+  },
   {
    "id": "council",
    "status": "ok",
@@ -20,33 +27,32 @@
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-20T23:06:40Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39512604217"
+    "at": "2026-10-21T10:35:27Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39585608967"
    },
    "reportAt": "2026-10-20T23:05:13.356Z",
-   "ageHours": 7.7
+   "ageHours": 12.7
   },
   {
    "id": "secretary",
    "status": "warn",
    "problems": [
-    "أدوات ذكاء اصطناعي ضعيفة: أمين شاهين — الإدارة المالية (0)، مسؤول التعاقدات (5)، المترجم الذكي (وكيل اللغات) (5.8)، شات الخبير شاهين (0)، مستشار التسوق «اسأل شاهين» في المتجر (5.4)، تدريب كتالوج المتجر (5.4)، منارة شاهين — المندوب الإعلامي (5.4)، خبير التصميم متعدد التخصصات (0)، المساعد الإداري (0)",
-    "متوسط تقييم الأدوات 5.1/10"
+    "أدوات ذكاء اصطناعي ضعيفة: أمين شاهين — الإدارة المالية (0)، خبير التصميم متعدد التخصصات (0)، المساعد الإداري (0)"
    ],
    "fixes": [
     "المجلس يحوّلها لمهمة تطوير، والمشرف يشد توجيهاتها"
    ],
    "ideas": [
-    "رفع مساعد شام للخدمات، مقالات مرصد العطور، الصور والفيديو والخرائط في الردود لـ 8/10 أو أكتر"
+    "رفع منارة شاهين — المندوب الإعلامي لـ 8/10 أو أكتر"
    ],
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T03:34:08Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39538982738"
+    "at": "2026-10-21T10:37:52Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39585609056"
    },
-   "reportAt": "2026-10-21T03:32:32.379Z",
-   "ageHours": 3.2
+   "reportAt": "2026-10-21T10:36:47.104Z",
+   "ageHours": 1.2
   },
   {
    "id": "precheck",
@@ -57,29 +63,29 @@
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-20T23:05:15Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39512604135"
+    "at": "2026-10-21T06:46:41Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39557514349"
    }
   },
   {
    "id": "patrol",
    "status": "warn",
    "problems": [
-    "1 عطل الدورية ماقدرتش تصلحه آلياً"
+    "2 عطل الدورية ماقدرتش تصلحه آلياً"
    ],
    "fixes": [
     "شاهين يشخصه أو يتحول لمهمة تطوير"
    ],
    "ideas": [
-    "3 شغل اترفض من خبير الفحص آخر 24 ساعة — يتصلح قبل أي تطوير"
+    "2 شغل اترفض من خبير الفحص آخر 24 ساعة — يتصلح قبل أي تطوير"
    ],
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T06:15:44Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39554286125"
+    "at": "2026-10-21T11:17:15Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39590783793"
    },
-   "reportAt": "2026-10-21T06:15:28.402Z",
+   "reportAt": "2026-10-21T11:17:06.927Z",
    "ageHours": 0.5
   },
   {
@@ -87,11 +93,11 @@
    "status": "fail",
    "problems": [
     "آخر تشغيل فشل",
-    "فحص الإدارة المالية غير سليم"
+    "الفحص المالي الخاص لم يُتحقق منه"
    ],
    "fixes": [
     "أصلح سبب الفشل: الفحص المالي الخاص ماكملش (إعدادات الخادم أو رمز الإدارة)",
-    "راجع بلاغات لوحة المالية الخاصة؛ اعتماد الحساب والتسوية قرار صاحب المتجر"
+    "راجع إعدادات المصادقة والجدولة في لوحة المالية؛ لا تنشر السجل المالي"
    ],
    "ideas": [],
    "lastRun": {
@@ -108,8 +114,8 @@
     "الفحص المالي الخاص ماكملش (إعدادات الخادم أو رمز الإدارة)",
     "Finance audit — ADMIN_NOT_CONFIGURED: SHAM_ADMIN_TOKEN is not set on Vercel (sham-perfume-49bf → Settings → Environment Variables, then Redeploy) — the admin panel and this audi…"
    ],
-   "reportAt": "2026-10-21T03:32:32.379Z",
-   "ageHours": 3.2
+   "reportAt": "2026-10-21T10:36:47.104Z",
+   "ageHours": 1.2
   },
   {
    "id": "legal",
@@ -125,10 +131,8 @@
   },
   {
    "id": "contracts",
-   "status": "warn",
-   "problems": [
-    "تقييم مسؤول التعاقدات: 5/10"
-   ],
+   "status": "ok",
+   "problems": [],
    "fixes": [],
    "ideas": [],
    "legal": [
@@ -144,11 +148,11 @@
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T00:57:29Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39524259540"
+    "at": "2026-10-21T10:36:32Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39585608918"
    },
-   "reportAt": "2026-10-21T00:55:57.475Z",
-   "ageHours": 5.8
+   "reportAt": "2026-10-21T10:34:54.765Z",
+   "ageHours": 1.2
   },
   {
    "id": "importer",
@@ -156,16 +160,16 @@
    "problems": [],
    "fixes": [],
    "ideas": [
-    "520 منتج عليه ملاحظات — تحسين بياناته مع مدرّب الكتالوج"
+    "516 منتج عليه ملاحظات — تحسين بياناته مع مدرّب الكتالوج"
    ],
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T05:06:28Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39547512230"
+    "at": "2026-10-21T11:06:29Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39589270896"
    },
-   "reportAt": "2026-10-21T05:04:44.692Z",
-   "ageHours": 1.7,
+   "reportAt": "2026-10-21T11:04:57.028Z",
+   "ageHours": 0.7,
    "legal": [
     "L-03: نقل منتجات جديدة من المتاجر متوقف بقرار المدير القانوني لحد ما يوصل إذن مكتوب من المورد؛ الكتالوج الحالي شغال ويتراجع عادي. الإذن بيوصل عن طريق «مسؤول التعاقدات»: المتجر اللي وقّع الاتفاقية إلكترونياً واعتمده المدير القانوني بس هو اللي يتنقل (L-40)."
    ]
@@ -179,11 +183,11 @@
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T05:06:28Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39547512230"
+    "at": "2026-10-21T11:06:29Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39589270896"
    },
-   "reportAt": "2026-10-21T05:05:42+00:00",
-   "ageHours": 1.7
+   "reportAt": "2026-10-21T11:05:48+00:00",
+   "ageHours": 0.7
   },
   {
    "id": "catalog",
@@ -196,11 +200,11 @@
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T03:34:08Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39538982738"
+    "at": "2026-10-21T10:37:52Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39585609056"
    },
-   "reportAt": "2026-10-21T05:05:43.187Z",
-   "ageHours": 1.7
+   "reportAt": "2026-10-21T11:05:48.909Z",
+   "ageHours": 0.7
   },
   {
    "id": "product_pages",
@@ -211,16 +215,14 @@
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T06:38:17Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39556384465"
+    "at": "2026-10-21T10:38:47Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39585861845"
    }
   },
   {
    "id": "store_advisor",
-   "status": "warn",
-   "problems": [
-    "تقييم مستشار التسوق «اسأل شاهين» في المتجر: 5.4/10"
-   ],
+   "status": "ok",
+   "problems": [],
    "fixes": [],
    "ideas": []
   },
@@ -233,11 +235,11 @@
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T03:34:08Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39538982738"
+    "at": "2026-10-21T10:37:52Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39585609056"
    },
-   "reportAt": "2026-10-21T03:30:58.958Z",
-   "ageHours": 3.3
+   "reportAt": "2026-10-21T10:34:51.987Z",
+   "ageHours": 1.2
   },
   {
    "id": "seo",
@@ -250,23 +252,18 @@
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T01:06:40Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39525254217"
+    "at": "2026-10-21T07:10:41Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39560044541"
    },
-   "reportAt": "2026-10-21T01:05:37.901Z",
-   "ageHours": 5.7
+   "reportAt": "2026-10-21T07:09:43.195Z",
+   "ageHours": 4.6
   },
   {
    "id": "chat",
-   "status": "warn",
-   "problems": [
-    "تقييم شات الخبير شاهين: 0/10"
-   ],
+   "status": "ok",
+   "problems": [],
    "fixes": [],
-   "ideas": [
-    "رفع مساعد شام للخدمات من 7/10",
-    "رفع الصور والفيديو والخرائط في الردود من 6.4/10"
-   ],
+   "ideas": [],
    "legal": [
     "L-06: كل رد ذكاء اصطناعي عليه إفصاح إنه مولد بالذكاء الاصطناعي، من غير ذكر أسماء المزودين للزوار."
    ]
@@ -277,16 +274,17 @@
    "problems": [],
    "fixes": [],
    "ideas": [
-    "المترجم الذكي لسه قدامه 148760 نص × لغة بالإنجليزي — بيكمل كل دورة"
+    "رفع نتيجة اللغات من 67/100: 0 تنسيق أرقام/تواريخ بلا لغة صريحة",
+    "المترجم الذكي لسه قدامه 148106 نص × لغة بالإنجليزي — بيكمل كل دورة"
    ],
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T01:26:25Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39527109520"
+    "at": "2026-10-21T10:35:48Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39585608963"
    },
-   "reportAt": "2026-10-21T01:24:27.297Z",
-   "ageHours": 5.4
+   "reportAt": "2026-10-21T10:34:54.617Z",
+   "ageHours": 1.2
   },
   {
    "id": "design_audit",
@@ -301,11 +299,11 @@
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T05:54:34Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39551001962"
+    "at": "2026-10-21T07:34:11Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39562869651"
    },
    "reportAt": "2026-10-21T05:41:54.171Z",
-   "ageHours": 1.1
+   "ageHours": 6.1
   },
   {
    "id": "design_expert",
@@ -322,16 +320,16 @@
    "problems": [],
    "fixes": [],
    "ideas": [
-    "رحلة الشراء من الموبايل 62/100 — 11 ملاحظة"
+    "رحلة الشراء من الموبايل 72/100 — 6 ملاحظة"
    ],
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T05:54:34Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39551001962"
+    "at": "2026-10-21T07:34:11Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39562869651"
    },
-   "reportAt": "2026-10-20T06:45:33.146Z",
-   "ageHours": 24
+   "reportAt": "2026-10-21T06:46:54.101Z",
+   "ageHours": 5
   },
   {
    "id": "inspect",
@@ -349,11 +347,11 @@
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T00:57:29Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39524259540"
+    "at": "2026-10-21T10:36:32Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39585608918"
    },
-   "reportAt": "2026-10-21T00:56:43.005Z",
-   "ageHours": 5.8
+   "reportAt": "2026-10-21T10:35:37.579Z",
+   "ageHours": 1.2
   },
   {
    "id": "doctor",
@@ -364,8 +362,8 @@
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T06:03:07Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39553031022"
+    "at": "2026-10-21T11:27:53Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39592105193"
    }
   },
   {
@@ -381,11 +379,11 @@
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T05:54:34Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39551001962"
+    "at": "2026-10-21T07:34:11Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39562869651"
    },
    "reportAt": "2026-10-19T10:02:58.105Z",
-   "ageHours": 44.7
+   "ageHours": 49.7
   },
   {
    "id": "live_check",
@@ -420,7 +418,7 @@
    "id": "keys",
    "status": "warn",
    "problems": [
-    "محركات متوقفة مؤقتاً: deepseek، openai"
+    "محركات متوقفة مؤقتاً: openai، gemini"
    ],
    "fixes": [
     "شحن الرصيد أو انتظار تجدد الباقة — السكرتير يمسك الشغل"
@@ -429,11 +427,11 @@
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T06:34:18Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39556202019"
+    "at": "2026-10-21T10:35:02Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39585609189"
    },
-   "reportAt": "2026-10-21T01:24:28.273Z",
-   "ageHours": 5.4
+   "reportAt": "2026-10-21T09:41:00.358Z",
+   "ageHours": 2.1
   },
   {
    "id": "intake",
@@ -444,11 +442,11 @@
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T06:35:58Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39556384498"
+    "at": "2026-10-21T10:37:07Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39585861780"
    },
    "reportAt": "2026-10-18T09:51:46.407Z",
-   "ageHours": 68.9
+   "ageHours": 73.9
   },
   {
    "id": "studio_bridge",
@@ -459,11 +457,11 @@
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T06:07:27Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39553485217"
+    "at": "2026-10-21T11:37:03Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39593253567"
    },
    "reportAt": "2026-10-19T11:33:33.774Z",
-   "ageHours": 43.2
+   "ageHours": 48.2
   },
   {
    "id": "studio_zip",
@@ -481,8 +479,8 @@
    "lastRun": {
     "conclusion": "success",
     "status": "completed",
-    "at": "2026-10-21T06:35:42Z",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39556202059"
+    "at": "2026-10-21T11:07:56Z",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/actions/runs/39589481627"
    }
   },
   {
@@ -499,7 +497,7 @@
   {
    "from": "importer",
    "to": "catalog",
-   "textAr": "520 منتج عليه ملاحظات — مدرّب الكتالوج يبدأ بيها"
+   "textAr": "516 منتج عليه ملاحظات — مدرّب الكتالوج يبدأ بيها"
   },
   {
    "from": "school",
@@ -509,7 +507,7 @@
   {
    "from": "scout",
    "to": "importer",
-   "textAr": "10 متجر صفحاته غير مقروءة بدون ذكاء اصطناعي — مهارات القراءة تتعلمها لما المحرك يتاح"
+   "textAr": "13 متجر صفحاته غير مقروءة بدون ذكاء اصطناعي — مهارات القراءة تتعلمها لما المحرك يتاح"
   },
   {
    "from": "design_audit",
@@ -529,7 +527,7 @@
   {
    "from": "visitor_tour",
    "to": "product_pages",
-   "textAr": "3 ملاحظة على صفحات المتجر من جولة الزائر — مراجع الصفحات يبدأ بيها"
+   "textAr": "1 ملاحظة على صفحات المتجر من جولة الزائر — مراجع الصفحات يبدأ بيها"
   },
   {
    "from": "keys",
