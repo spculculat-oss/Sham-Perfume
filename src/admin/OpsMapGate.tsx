@@ -55,7 +55,7 @@ export default function OpsMapGate() {
       // A growing pause after each wrong code slows down guessing.
       await wait(Math.min(10_000, 1000 * (fails + 1)));
       setFails((n) => n + 1);
-      setError(OPS_CODE ? T('الرمز غير صحيح.') : T('الرمز غير صحيح. ولو لسه ماسجلتش «رمز الخريطة»: سجّله في جيت هب كسر باسم SHAM_OPS_CODE (12 حرف أو أكتر) وبعد التحديث الجاي للموقع هيشتغل.'));
+      setError(OPS_CODE ? T('الرمز غير صحيح.') : T('النسخة دي من الموقع لسه ما استلمتش «رمز الخريطة»، فمفيش رمز هيفتح دلوقتي. استنى التحديث الجاي للموقع وجرب تاني.'));
     } finally { setChecking(false); }
   };
 
@@ -68,6 +68,9 @@ export default function OpsMapGate() {
           <div className="flex items-center gap-2"><KeyRound className="h-5 w-5 text-amber-700" /><h1 className="text-lg font-bold">{T('خريطة التشغيل')}</h1></div>
           <p className="text-xs text-stone-500">{T('للإدارة فقط. اكتب «رمز الخريطة» اللي سجلته في جيت هب، أو رمز الإدارة بتاع الخادم. الدخول بيتحفظ في الصفحة دي بس لحد ما تقفلها.')}</p>
           <input className="w-full rounded-xl border border-stone-300 px-3 py-2 text-sm" type="password" dir="ltr" autoComplete="current-password" value={code} onChange={(e) => setCode(e.target.value)} placeholder={T('الرمز')} aria-label={T('الرمز')} />
+          {!OPS_CODE && isStaticHosting && !error && (
+            <p className="rounded-xl bg-amber-50 p-3 text-xs leading-relaxed text-amber-900">{T('النسخة دي من الموقع لسه ما استلمتش «رمز الخريطة». تأكد إنك سجلته في جيت هب كـ «سر» (Secret) باسم SHAM_OPS_CODE بالظبط و12 حرف أو أكتر، وبعدها الموقع بيتحدّث لوحده خلال ساعة أو اتنين والرسالة دي هتختفي.')}</p>
+          )}
           {error && <p role="alert" className="text-xs text-red-700">{error}</p>}
           <button disabled={checking || !code.trim()} className="flex w-full items-center justify-center rounded-xl bg-stone-900 px-3 py-2 text-sm font-bold text-amber-100 disabled:opacity-50">{checking ? <Loader2 className="h-4 w-4 animate-spin" /> : T('دخول')}</button>
           <a href="#home" className="block text-center text-xs text-stone-500 hover:underline">{T('العودة إلى الموقع')}</a>

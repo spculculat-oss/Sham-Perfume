@@ -1135,7 +1135,8 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   "اتصلحت مؤخراً": { en: "Recently fixed" },
   // ── Operations map ──
   "الرمز غير صحيح.": { en: "Wrong code." },
-  "الرمز غير صحيح. ولو لسه ماسجلتش «رمز الخريطة»: سجّله في جيت هب كسر باسم SHAM_OPS_CODE (12 حرف أو أكتر) وبعد التحديث الجاي للموقع هيشتغل.": { en: "Wrong code. If you have not stored the map code yet: add it in GitHub as the secret SHAM_OPS_CODE (12+ characters); it works after the next site update." },
+  "النسخة دي من الموقع لسه ما استلمتش «رمز الخريطة»، فمفيش رمز هيفتح دلوقتي. استنى التحديث الجاي للموقع وجرب تاني.": { en: "This version of the site has not received the map code yet, so no code can open it right now. Wait for the next site update and try again." },
+  "النسخة دي من الموقع لسه ما استلمتش «رمز الخريطة». تأكد إنك سجلته في جيت هب كـ «سر» (Secret) باسم SHAM_OPS_CODE بالظبط و12 حرف أو أكتر، وبعدها الموقع بيتحدّث لوحده خلال ساعة أو اتنين والرسالة دي هتختفي.": { en: "This version of the site has not received the map code yet. Make sure you stored it in GitHub as a Secret named exactly SHAM_OPS_CODE, 12+ characters; the site updates itself within an hour or two and this message disappears." },
   "للإدارة فقط. اكتب «رمز الخريطة» اللي سجلته في جيت هب، أو رمز الإدارة بتاع الخادم. الدخول بيتحفظ في الصفحة دي بس لحد ما تقفلها.": { en: "Management only. Enter the map code you stored in GitHub, or the server's admin code. Access is kept for this tab only until you close it." },
   "الرمز": { en: "Code" },
   "شغالة دلوقتي": { en: "Running now" },
