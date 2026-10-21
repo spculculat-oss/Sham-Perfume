@@ -1,15 +1,15 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T14:57:11.679Z",
+ "updatedAt": "2026-10-21T15:49:25.018Z",
  "reliance": {
-  "score": 95,
-  "covered": 165,
+  "score": 96,
+  "covered": 166,
   "total": 173,
-  "fromMemory": 165,
+  "fromMemory": 166,
   "fromLibrary": 2,
   "byLang": {
    "ar": {
-    "covered": 146,
+    "covered": 147,
     "total": 152
    },
    "en": {
@@ -18,9 +18,15 @@
    }
   }
  },
- "studiedTotal": 72,
- "selfTaughtTotal": 60,
+ "studiedTotal": 73,
+ "selfTaughtTotal": 63,
  "history": [
+  {
+   "at": "2026-10-21T15:49:25.018Z",
+   "score": 96,
+   "studied": 4,
+   "mode": "local"
+  },
   {
    "at": "2026-10-21T14:57:11.679Z",
    "score": 95,
@@ -168,6 +174,12 @@
  ],
  "lastStudied": [
   {
+   "q": "يعني ايه اكورد في العطور وازاي اعمله؟",
+   "lang": "ar",
+   "at": "2026-10-21T15:49:25.018Z",
+   "variants": 0
+  },
+  {
    "q": "Why does my homemade perfume smell too much of alcohol?",
    "lang": "en",
    "at": "2026-10-21T14:57:11.679Z",
@@ -280,12 +292,6 @@
    "lang": "ar",
    "at": "2026-10-21T12:19:44.918Z",
    "variants": 0
-  },
-  {
-   "q": "ازاي اوثق تجاربي في تركيب العطور؟",
-   "lang": "ar",
-   "at": "2026-10-21T12:19:44.918Z",
-   "variants": 0
   }
  ],
  "pending": [
@@ -310,11 +316,6 @@
    "topic": "skills"
   },
   {
-   "q": "يعني ايه اكورد في العطور وازاي اعمله؟",
-   "lang": "ar",
-   "topic": "skills"
-  },
-  {
    "q": "ازاي احافظ على ثبات جودة العطر من دفعة للتانية؟",
    "lang": "ar",
    "topic": "business"
@@ -335,5 +336,23 @@
   "aiReadings": 0,
   "localReadings": 25
  },
- "localTaughtTotal": 21
+ "localTaughtTotal": 22,
+ "spelling": {
+  "at": "2026-10-21T15:49:25.018Z",
+  "tried": 702,
+  "understood": 680,
+  "score": 97,
+  "misses": [
+   "طبييه → طبيه (طبيعيه)",
+   "اخطه → احطه (اخلطه)",
+   "الخطه → الخطه (اخلطه)",
+   "مثبات → مثبات (مثبتات)",
+   "ايه هي المثبات في العطور؟ → ايه هي المثبات في العطور؟",
+   "حدثني عن المثبات ودورها في العطر → حدثني عن المثبات ودورها في العطر"
+  ],
+  "questions": {
+   "tried": 60,
+   "answered": 58
+  }
+ }
 }
