@@ -114,7 +114,9 @@ export function auditLanguages(audit: unknown, supported: readonly string[]): st
   }
   return out;
 }
-const IGNORED_PHRASES = /^(?:RTL|LTR|WCAG|SAR|SGD|EGP|USD|ml|g|AI|API|Sham|SHAM|Shaheen|Pashto|Albanian|Icelandic|Arabic|English)$/i;
+// Code terms, not copy: the design audit quotes them («an input placeholder», «RTL») and translators are not
+// sent after them. Every language pack already localises the site's own placeholder keys.
+const IGNORED_PHRASES = /^(?:RTL|LTR|WCAG|SAR|SGD|EGP|USD|ml|g|AI|API|Sham|SHAM|Shaheen|Pashto|Albanian|Icelandic|Arabic|English|placeholder|placeholder text|input placeholder)$/i;
 /** English phrases the audit quoted as «shown in English» (2+ words or a long word). */
 export function auditPhrases(audit: unknown): string[] {
   const issues = ((audit as { issues?: AuditIssue[] })?.issues || []).filter((i) => i?.area === 'languages' || i?.area === 'store' || i?.area === 'shaheen');
@@ -138,16 +140,17 @@ export function auditPhrases(audit: unknown): string[] {
 export function isVisibleEnglishLine(line: string, phrase: string): boolean {
   if (/\ben\s*:\s*['"`]/.test(line)) return false; // the English copy of an inline {ar, en, …} dictionary
   const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const hits = [...line.matchAll(new RegExp(escaped, 'gi'))];
-  if (!hits.length) return false;
-  return hits.some((m) => {
-    const at = m.index ?? 0;
-    const before = line.slice(Math.max(0, at - 32), at);
-    const after = line.slice(at + m[0].length);
-    if (/^\s*=/.test(after)) return false; // a JSX attribute name, not a label
-    if (/(?:\bL|\bT|\bloc|\btx)\(\s*['"`]$/.test(before)) return false; // a translation key
+  const lower = phrase.toLowerCase();
+  // 1) The phrase as a string literal: UI copy — unless the literal is a translation key (L('placeholder'), T('…')).
+  for (const m of line.matchAll(/(['"`])((?:\\.|(?!\1).)*)\1/g)) {
+    if (!m[2].toLowerCase().includes(lower)) continue;
+    const before = line.slice(0, m.index ?? 0);
+    if (/(?:\bL|\bT|\bloc|\btx)\(\s*$/.test(before)) continue; // a key, not the label
+    if (/^\s*:/.test(line.slice((m.index ?? 0) + m[0].length))) continue; // an object key (`'placeholder': {`), not copy
     return true;
-  });
+  }
+  // 2) The phrase as JSX text on the screen: <h2>Live Sync</h2>.
+  return new RegExp(`>[^<>{}]*${escaped}[^<>{}]*<`, 'i').test(line);
 }
 
 /** Where those phrases live in the visitor code (file:line), so the fix is one click away. */
