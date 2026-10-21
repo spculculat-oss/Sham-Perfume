@@ -141,9 +141,11 @@ export function productJsonLd(p: StoreProduct, o: PageOptions) {
 /** 50–60 characters where possible: the product leads, the store name fits if it can. */
 export function productSeoTitle(p: StoreProduct) {
   const brand = p.brand && !p.name.ar.includes(p.brand) ? ` — ${p.brand}` : '';
-  const full = `${p.name.ar}${brand} | متجر شام`;
+  // The size tells apart variants with one name (105 ml and a 10 ml pen of the same perfume had the same title).
+  const size = p.sizeMl && !/\d\s*(?:ml|مل|مللي)/i.test(p.name.ar) ? ` ${p.sizeMl} مل` : '';
+  const full = `${p.name.ar}${size}${brand} | متجر شام`;
   if (full.length <= 60) return full;
-  const short = `${p.name.ar} | متجر شام`;
+  const short = `${p.name.ar}${size} | متجر شام`;
   if (short.length <= 60) return short;
   return `${p.name.ar.slice(0, 46).trim()}… | شام`;
 }
@@ -232,12 +234,32 @@ const isFamilyCode = (f: string) => FAMILY_CODES.has(f);
 
 export function renderIndexPage(products: StoreProduct[], o: PageOptions): string {
   const url = new URL('p/', o.siteUrl).href;
+  const title = `كل منتجات متجر شام (${products.length})`;
+  const brands = [...new Set(products.map((p) => p.brand).filter((b) => b && b !== 'Unknown'))];
+  // A real summary (the full-site SEO check found a 54-character description and no structured data here).
+  const desc = `كل عطور متجر شام في صفحة واحدة: ${products.length} منتج بالصور والأسعار والنوتات المنشورة${brands.length ? ` من ${brands.length} علامة منها ${brands.slice(0, 3).join(' و')}` : ''}.`;
+  const ogImage = new URL(SITE.ogImage, o.siteUrl).href;
+  const ld = JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, description: desc, url, inLanguage: 'ar',
+    isPartOf: { '@type': 'WebSite', name: SITE.nameAr, url: o.siteUrl },
+    breadcrumb: { '@type': 'BreadcrumbList', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: SITE.nameAr, item: o.siteUrl }, { '@type': 'ListItem', position: 2, name: 'متجر شام', item: url },
+    ] },
+    mainEntity: { '@type': 'ItemList', numberOfItems: products.length, itemListElement: products.slice(0, 100).map((p, i) => ({
+      '@type': 'ListItem', position: i + 1, url: new URL(`p/${p.slug}.html`, o.siteUrl).href, name: p.name.ar,
+    })) },
+  }).replace(/</g, '\\u003c');
   return `<!doctype html>
 <html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>كل منتجات متجر شام (${products.length})</title><meta name="description" content="كل عطور متجر شام بالصور والأسعار والنوتات — ${products.length} منتج.">
-<link rel="canonical" href="${esc(url)}"><style>${STYLE}</style><script>${NO_IMG_FN}</script></head>
+<title>${esc(title)}</title><meta name="description" content="${esc(desc)}"><meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="${esc(url)}"><link rel="alternate" hreflang="ar" href="${esc(url)}"><link rel="alternate" hreflang="x-default" href="${esc(url)}">
+<meta property="og:type" content="website"><meta property="og:site_name" content="${esc(SITE.nameAr)}"><meta property="og:locale" content="${SITE.locale}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}">
+<meta property="og:url" content="${esc(url)}"><meta property="og:image" content="${esc(ogImage)}">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(title)}"><meta name="twitter:description" content="${esc(desc)}"><meta name="twitter:image" content="${esc(ogImage)}">
+<script type="application/ld+json">${ld}</script>
+<style>${STYLE}</style><script>${NO_IMG_FN}</script></head>
 <body><header><a href="../">صمم عطرك مع شام</a><a href="../#store">افتح المتجر</a></header>
-<main><h1><span${dl('pd_index')}>كل منتجات المتجر</span> (${products.length})</h1><div class="cards">${products.map(card).join('')}</div></main>
+<main><h1><span${dl('pd_index')}>كل منتجات المتجر</span> (${products.length})</h1><h2${dl('sf_all')}>الكل</h2><div class="cards">${products.map(card).join('')}</div></main>
 <footer${dl('sf_store_name')}>متجر شام</footer>${SWITCHER(JSON.stringify(pageLabelTable()).replace(/</g, '\\u003c'))}</body></html>
 `;
 }

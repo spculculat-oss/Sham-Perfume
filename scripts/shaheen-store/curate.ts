@@ -5,13 +5,15 @@
  * src/data/live/store-catalog.json. Without an AI key the rule-based clean-up still fixes garbled text.
  */
 import {
-  cleanText, FAMILIES, GENDERS, isGarbled, isGenericDescription, OCCASIONS, productHash, ruleEntry, SEASONS, skuOf,
+  cleanText, FAMILIES, GENDERS, honestEntry, isGarbled, isGenericDescription, OCCASIONS, productHash, ruleEntry, SEASONS, skuOf,
   type Family, type Gender, type Occasion, type RawProduct, type Season, type StoreCatalogFile, type StoreEntry,
 } from '../../src/utils/storeCatalog';
 import { stripClaims } from '../../src/utils/honestClaims';
 
 export const STORE_INTERVAL_HOURS = 12;
 export const BATCH = 14;
+/** 2 = neutral wording, no scent prose without documented notes (the 2026-10-21 council task). */
+export const STORE_STYLE = 2;
 const VENDOR = /\b(?:gemini|openai|chat ?gpt|claude|anthropic|deepseek|openrouter|perplexity)\b/i;
 
 /** What is wrong with a product as the merchants imported it (Arabic, for the admin report). */
@@ -37,17 +39,21 @@ export function staleProducts(products: RawProduct[], previous: StoreCatalogFile
   const rank = (p: RawProduct) => {
     const e = old[skuOf(p)];
     if (!e || e.sourceHash !== productHash(p)) return 0;
-    return e.editor === 'rules' ? 1 : 2;
+    if (e.editor === 'rules') return 1;
+    // Written under older, more promotional rules: rewritten in turn after the rule-based ones.
+    return (e.style || 1) < STORE_STYLE ? 1.5 : 2;
   };
   return products.filter((p) => rank(p) < 2).sort((a, b) => rank(a) - rank(b)).slice(0, limit);
 }
 
 export const STORE_SYSTEM = `أنت «الخبير شاهين»، خبير العطور في منصة «صمم عطرك مع شام»، وتدرّب «متجر شام» ليعرض منتجاته بشكل احترافي ويساعد الزوار في الاختيار.
-لكل منتج ستكتب: اسماً عربياً صحيحاً ونظيفاً (بدون حروف من لغات أخرى)، واسماً إنجليزياً، ووصفاً عربياً جذاباً وصادقاً من جملتين، ووصفاً إنجليزياً قصيراً، والجنس، والعائلة العطرية، والمواسم، والمناسبات، وكلمات بحث.
+لكل منتج ستكتب: اسماً عربياً صحيحاً ونظيفاً (بدون حروف من لغات أخرى)، واسماً إنجليزياً، ووصفاً عربياً محايداً ودقيقاً من جملتين يصف الرائحة كما هي، ووصفاً إنجليزياً قصيراً بنفس الحياد، والجنس، والعائلة العطرية، والمواسم، والمناسبات، وكلمات بحث.
 قواعد صارمة:
 - إذا وصلتك supplierNotes من صفحة المنتج الأصلية فهي موثقة: انقلها كما هي إلى notes (بالإنجليزية). وإذا كانت فارغة والوصف الإنجليزي يذكر النوتات صراحة في كلامه (افتتاحية/قلب/قاعدة) فاستخرجها منه بنفس كلماته الإنجليزية. وإذا وصل وصف إنجليزي طويل فلخّصه بالعربية بأمانة دون إضافة معلومات.
 - النوتات (top/heart/base) فقط إذا كان العطر تجارياً مشهوراً ونوتاته منشورة ومعروفة (مثل Dior Sauvage أو Baccarat Rouge 540 أو Lattafa Ameer Al Oudh). إن لم تكن متأكداً اترك القوائم فارغة. لا تخترع نوتات أبداً.
 - لا تدّعِ ثباتاً بالساعات ولا أنه أصلي أو مقلد، ولا تذكر أسعاراً أو خصومات أو شحناً.
+- لغة محايدة: لا صفات مبالغة أو تسويقية مثل «فاخر» و«ساحر» و«آسر» و«راقٍ» و«لا يُنسى» و«يمنحك إحساساً بـ» ولا luxurious أو alluring أو captivating أو seductive.
+- إذا لم تصلك supplierNotes ولا وصف إنجليزي يذكر الرائحة فلا تصف الرائحة أبداً: اكتب ما هو معروف فقط (العلامة والحجم والتركيز والجنس).
 - لا عبارات ترويجية غير مسندة: لا «يدوم طويلاً/طوال اليوم» ولا «ثبات عالٍ» ولا «الأفضل» ولا «لا يقاوم» ولا «مثالي». صف الرائحة نفسها بصدق.
 - إذا كان الاسم العربي مشوهاً فاكتب الاسم الصحيح بالعربية اعتماداً على الاسم الإنجليزي والعلامة (مثل «لطافة أمير العود»).
 - استنتج العائلة والجنس من الاسم والفئة والوصف بحذر؛ عطور «عود» و«هندي» و«دهن» عائلتها oud.
@@ -125,9 +131,9 @@ export function entriesFromShaheen(reply: unknown, asked: RawProduct[], now: str
     const okAr = (s: string) => s.length >= 2 && /[\u0600-\u06FF]/.test(s) && !isGarbled(s) && !VENDOR.test(s);
     const notes = (r.notes && typeof r.notes === 'object' ? r.notes : {}) as Record<string, unknown>;
     const gender = (GENDERS as readonly string[]).includes(String(r.gender)) ? r.gender as Gender : base.gender;
-    out[skuOf(p)] = {
+    out[skuOf(p)] = honestEntry(p, {
       ...base,
-      editor: 'shaheen',
+      editor: 'shaheen', style: STORE_STYLE,
       nameAr: okAr(nameAr) ? nameAr : base.nameAr,
       nameEn: nameEn && !isGarbled(nameEn) && !VENDOR.test(nameEn) ? nameEn : base.nameEn,
       descriptionAr: okAr(descriptionAr) && descriptionAr.length >= 25 ? descriptionAr : base.descriptionAr,
@@ -138,7 +144,7 @@ export function entriesFromShaheen(reply: unknown, asked: RawProduct[], now: str
       seasons: pickEnum<Season>(SEASONS, r.seasons, 3).length ? pickEnum<Season>(SEASONS, r.seasons, 3) : base.seasons,
       occasions: pickEnum<Occasion>(OCCASIONS, r.occasions, 3).length ? pickEnum<Occasion>(OCCASIONS, r.occasions, 3) : base.occasions,
       tags: words(r.tags, 8, 30),
-    };
+    });
   }
   return out;
 }
@@ -154,7 +160,8 @@ export function buildCatalogFile(products: RawProduct[], previous: StoreCatalogF
     const sku = skuOf(p);
     const old = previous?.entries?.[sku];
     // Shaheen's work is kept while the merchant's text is unchanged; the rules are recomputed every run.
-    entries[sku] = fresh[sku] || (old && old.editor === 'shaheen' && old.sourceHash === productHash(p) ? old : ruleEntry(p, at));
+    // A kept entry written before the thin-source rule loses the scent prose it could not support.
+    entries[sku] = fresh[sku] || (old && old.editor === 'shaheen' && old.sourceHash === productHash(p) ? honestEntry(p, old) : ruleEntry(p, at));
   }
   const issues = products.map((p) => ({ sku: skuOf(p), issues: auditProduct(p) })).filter((i) => i.issues.length);
   const shaheen = Object.values(entries).filter((e) => e.editor === 'shaheen').length;

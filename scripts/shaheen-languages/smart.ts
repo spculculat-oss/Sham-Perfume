@@ -37,7 +37,7 @@ const rejectKey = (lang: string, u: TextUnit) => `${lang}|${u.pack}|${hash(u.key
 
 function measure(deps: SmartDeps, rejectCounts: Record<string, number>) {
   const gaps: Record<string, TextUnit[]> = {};
-  let remaining = 0; let covered = 0;
+  let remaining = 0; let covered = 0; let total = 0; let fullyTranslated = 0;
   const byTier: Record<string, number> = { 1: 0, 2: 0, 3: 0 };
   for (const { code } of deps.languages) {
     if (code === 'ar' || code === 'en') continue;
@@ -45,10 +45,12 @@ function measure(deps: SmartDeps, rejectCounts: Record<string, number>) {
     for (const p of ['ui', 'store', 'text'] as const) covered += Object.keys(pack[p] || {}).length;
     const missing = missingFor(code, deps.units, (u) => deps.own(code, u), pack);
     remaining += missing.length;
+    total += deps.units.length;
+    if (!missing.length) fullyTranslated += 1;
     for (const u of missing) byTier[u.tier] += 1;
     gaps[code] = missing.filter((u) => (rejectCounts[rejectKey(code, u)] || 0) < 2);
   }
-  return { gaps, remaining, covered, byTier };
+  return { gaps, remaining, covered, byTier, total, fullyTranslated };
 }
 
 export async function smartTranslate(deps: SmartDeps): Promise<TranslationSection> {
@@ -119,7 +121,7 @@ export async function smartTranslate(deps: SmartDeps): Promise<TranslationSectio
   // Keep the set-aside list small: only units still missing.
   const pruned = Object.fromEntries(Object.entries(rejectCounts).slice(-3000));
   return {
-    at, status, remaining: after.remaining, covered: after.covered, remainingByTier: after.byTier,
+    at, status, remaining: after.remaining, covered: after.covered, total: after.total, fullyTranslated: after.fullyTranslated, remainingByTier: after.byTier,
     worstLanguages: Object.entries(after.gaps).map(([lang, g]) => ({ lang, remaining: g.length })).filter((x) => x.remaining)
       .sort((a, b) => b.remaining - a.remaining).slice(0, 8),
     run, rejectReasons, rejectCounts: pruned,

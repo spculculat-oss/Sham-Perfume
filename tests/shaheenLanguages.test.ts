@@ -29,6 +29,7 @@ import {
 } from '../src/لغات/numerals';
 import { LocalizedNumberInput } from '../src/components/LocalizedNumberInput';
 import {
+  applyTranslationCoverage,
   buildLanguageReport,
   findBareLocaleFormatting,
   findLanguageClamps,
@@ -254,4 +255,26 @@ test('Shaheen\'s council hears the language agent: facts always, tasks when some
   // …and without any AI engine the self-written minutes still turn them into decisions.
   const minutes = selfMinutes(bad, '2026-10-18');
   assert.ok(minutes.decisions.some((d) => d.title === 'توحيد أرقام حقول الزوار على لغة الموقع' && d.kind === 'task'));
+});
+
+test('«لا تعلن الاكتمال»: full packs with most texts still in English is NOT «سليمة», and the score says so', () => {
+  const languages = ['ar', 'en', 'de', 'fr'];
+  const full = Object.fromEntries(languages.map((l) => [l, { storeCore: 42, storeTotal: 129, banner: 46 }]));
+  const packsOnly = buildLanguageReport({
+    at: new Date(0).toISOString(), languages, storeCoreSize: 42, bannerSize: 46, coverage: full,
+    publicNumberInputs: [], operatorNumberInputs: [], bareLocaleFormatting: [], languageClamps: [],
+  });
+  const half = applyTranslationCoverage(packsOnly, { remaining: 1000, total: 2000, fullyTranslated: 0 });
+  assert.equal(half.translationCoverage, 50);
+  assert.equal(half.score, 80, 'half translated costs half of the translation weight');
+  assert.ok(!half.notes.some((n) => n.includes('اللغات سليمة')), 'never «complete» while texts are in English');
+  assert.match(half.notes[0]!, /الترجمة مش مكتملة: 50% .*1000 نص × لغة/);
+  assert.ok(isLanguageLiveReport(half));
+
+  const done = applyTranslationCoverage(packsOnly, { remaining: 0, total: 2000, fullyTranslated: 2 });
+  assert.equal(done.score, 100);
+  assert.equal(done.translationCoverage, 100);
+  assert.ok(done.notes[0]!.includes('اللغات سليمة'));
+
+  assert.equal(applyTranslationCoverage(packsOnly, { remaining: 5, total: 0 }), packsOnly, 'no measurement → unchanged');
 });

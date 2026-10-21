@@ -57,6 +57,8 @@ export interface StoreEntry {
   seasons: Season[]; occasions: Occasion[];
   /** Extra search words (Arabic and English), e.g. «خشبي، ثابت، هدية». */
   tags: string[];
+  /** Writing rules the entry follows (STORE_STYLE in scripts/shaheen-store/curate.ts); older ones are rewritten in turn. */
+  style?: number;
 }
 
 export interface StoreCatalogFile {
@@ -163,6 +165,44 @@ function plainDescription(lang: 'ar' | 'en', name: string, brand: string, gender
   return [`${name}`, brand && `by ${brand}`, gender && `for ${GENDER_LABEL[gender].en.toLowerCase()}`, families.length ? `with ${/^[aeiou]/i.test(families[0]) ? 'an' : 'a'} ${families.map((f) => FAMILY_LABEL[f].en.toLowerCase()).join(' and ')} character` : ''].filter(Boolean).join(' ') + '.';
 }
 
+/**
+ * An imported product whose supplier published neither its notes nor a real description (under 60 characters, usually
+ * just the name): nothing documented describes its scent. The AI used to write prose about spices, lavender and amber for
+ * such products — invented. Their page shows only the published facts (brand, size, concentration, gender).
+ */
+export const thinSource = (p: RawProduct) => Boolean(p.url) && (p.descriptionEn || '').trim().length < 60 && !hasNotes(sourceNotes(p));
+
+const CONCENTRATION_AR: [RegExp, string][] = [
+  [/eau de parfum|\bedp\b/i, 'ماء عطر (EDP)'], [/eau de toilette|\bedt\b/i, 'ماء تواليت (EDT)'], [/cologne|\bedc\b/i, 'ماء كولونيا'],
+  [/extrait|^\s*parfum\s*$|pure perfume/i, 'مستخلص عطر'], [/body (?:spray|mist)/i, 'معطّر جسم'],
+];
+const concentrationAr = (c: string) => CONCENTRATION_AR.find(([re]) => re.test(c))?.[1] || '';
+
+/** Facts only, neutral wording: «النشامة كابريس من لطافة — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر.» */
+export function factualDescription(lang: 'ar' | 'en', p: RawProduct, name: string, gender?: Gender): string {
+  const named = `${name} ${p.nameEn || ''}`.toLowerCase();
+  const brand = p.brand && p.brand !== 'Unknown' && !named.includes(p.brand.toLowerCase()) ? p.brand : '';
+  const size = Number(p.sizeMl) > 0 ? Number(p.sizeMl) : 0;
+  const conc = cleanText(p.concentration, 40);
+  if (lang === 'ar') {
+    const facts = [concentrationAr(conc), size ? `${size} مل` : '', gender ? GENDER_LABEL[gender].ar : ''].filter(Boolean);
+    return `${name}${brand ? ` من ${brand}` : ''}${facts.length ? ` — ${facts.join('، ')}` : ''}. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.`;
+  }
+  const facts = [conc, size ? `${size} ml` : '', gender ? GENDER_LABEL[gender].en.toLowerCase() : ''].filter(Boolean);
+  return `${name}${brand ? ` by ${brand}` : ''}${facts.length ? ` — ${facts.join(', ')}` : ''}. The supplier has not published this perfume's notes, so only the published details are shown.`;
+}
+
+/** A thin-source product keeps Shaheen's clean names and search words, but nothing about the scent he could not know. */
+export function honestEntry(p: RawProduct, e: StoreEntry, now = e.updatedAt): StoreEntry {
+  if (!thinSource(p)) return e;
+  const rules = ruleEntry(p, now);
+  const gender = genderOf(p) || e.gender;
+  return {
+    ...e, gender, descriptionAr: factualDescription('ar', p, e.nameAr, gender), descriptionEn: factualDescription('en', p, e.nameEn, gender),
+    families: rules.families, notes: rules.notes, seasons: rules.seasons, occasions: rules.occasions,
+  };
+}
+
 /** Without any AI engine: honest, rule-based clean-up (no invented notes). */
 export function ruleEntry(p: RawProduct, now = new Date().toISOString()): StoreEntry {
   const text = `${p.nameAr || ''} ${p.nameEn || ''} ${p.descriptionAr || ''} ${p.descriptionEn || ''} ${p.category || ''}`;
@@ -198,7 +238,7 @@ const honest = (text: string, lang: 'ar' | 'en') => {
 export function mergeProduct(p: RawProduct, entry?: StoreEntry): StoreProduct {
   // An entry written for older merchant text is not trusted: rules until Shaheen rewrites it (next run).
   const fresh = entry && entry.sourceHash === productHash(p) ? entry : undefined;
-  const e = fresh || ruleEntry(p);
+  const e = honestEntry(p, fresh || ruleEntry(p));
   const images = productImages(p);
   return {
     id: p.id, sku: skuOf(p), name: { ar: e.nameAr, en: e.nameEn },

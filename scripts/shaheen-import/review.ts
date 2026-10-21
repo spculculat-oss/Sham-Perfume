@@ -9,7 +9,7 @@
  * Critical failures hide the product (published: false) until the next run fixes it; warnings stay visible
  * in the report (src/data/live/store-review.json), which the Shaheen doctor and supervisor also read.
  */
-import { isGarbled, isGenericDescription, productSlug, skuOf, type RawProduct } from '../../src/utils/storeCatalog';
+import { isGarbled, isGenericDescription, productSlug, skuOf, thinSource, type RawProduct } from '../../src/utils/storeCatalog';
 import { isImported, ourPriceOf, type ImportedProduct, type PriceRule } from './transform';
 import { assertScrapeAllowed } from './guard';
 
@@ -56,8 +56,10 @@ export function reviewProduct(p: RawProduct, opts: { markup?: number | PriceRule
     if (Number(i.supplierPrice) > 0 && price !== expected) critical.push(`السعر لا يطابق المعادلة (المتوقع ${expected})`);
     if (!i.images?.length) critical.push('لا توجد صور من صفحة المنتج الأصلية');
     else if (i.images.length < 2) warnings.push('صورة واحدة فقط');
-    if ((i.descriptionEn || '').length < 60) warnings.push('وصف المورد قصير');
-    if (!i.notes || ![...(i.notes.top || []), ...(i.notes.heart || []), ...(i.notes.base || [])].length) warnings.push('المورد لم ينشر نوتات العطر');
+    // A short supplier text is fine when the notes are published (the page describes those); without either, the page
+    // shows only the published facts (thinSource in src/utils/storeCatalog.ts) — one warning, not two.
+    if (thinSource(p)) warnings.push('بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس');
+    else if (!i.notes || ![...(i.notes.top || []), ...(i.notes.heart || []), ...(i.notes.base || [])].length) warnings.push('المورد لم ينشر نوتات العطر');
     if (!i.brand || i.brand === 'Unknown') warnings.push('العلامة غير معروفة');
     if (!i.slug) warnings.push('بدون رابط صفحة مستقلة');
   } else {

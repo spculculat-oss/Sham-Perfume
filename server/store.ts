@@ -19,10 +19,14 @@ import { normalizeQuestion } from './core/capacity';
 import type { Repository } from './core/repository';
 import type { ModelEngineId, ShaheenSettings } from './core/types';
 import { SHAHEEN_SITE_SETTINGS } from './config/shaheen';
+import type { EngineHealth } from './core/engineHealth';
 
 type Env = Record<string, string | undefined>;
 export interface StoreAdvice { source: 'shaheen' | 'local'; reply: string; picks: { id: string; why: string }[] }
 export interface StoreRouterOptions {
+  /** «صحة المحركات» shared with Shaheen's chat: parked engines (bad key, no credit) are skipped, so the visitor gets the
+   * store's own picks at once instead of waiting for engines known to fail. */
+  health?: EngineHealth;
   env?: Env; fetch?: typeof fetch; repo?: Repository;
   products?: RawProduct[]; catalog?: () => Promise<StoreCatalogFile | undefined>; timeoutMs?: number;
 }
@@ -100,7 +104,9 @@ export function createStoreRouter(options: StoreRouterOptions = {}) {
     let advice: StoreAdvice | undefined;
     const settings: ShaheenSettings = options.repo ? (await options.repo.settings().catch(() => undefined))?.shaheen || SHAHEEN_SITE_SETTINGS : SHAHEEN_SITE_SETTINGS;
     const configured = new Set(engineStatuses(env).filter((s) => s.configured).map((s) => s.id));
-    const engines: ModelEngineId[] = settings.enabled ? settings.engines.filter((id) => configured.has(id)) : [];
+    const health = options.health;
+    const allowed: ModelEngineId[] = settings.enabled ? settings.engines.filter((id) => configured.has(id)) : [];
+    const engines = health ? allowed.filter((id) => !health.parkedUntil(id)) : allowed;
     if (engines.length) {
       const shortlist = recommend(list, message, 8).picks.map((p) => p.product.sku);
       // Big catalogs (imported by «مستورد شاهين»): Shaheen sees the best-matching products first.
@@ -117,9 +123,13 @@ ${catalogLines(ordered)}
       const signal = AbortSignal.timeout(options.timeoutMs ?? 22_000);
       for (const id of engines) {
         if (signal.aborted) break;
+        let refusal: { failure: Parameters<EngineHealth['fail']>[1]; detail: string } | undefined;
         const raw = await callEngine(id, system, [{ role: 'user', text: prompt }], {
           env, fetch: options.fetch, signal, temperature: 0.4, model: settings.models[id], maxTokens: 1200, maxChars: 8000,
+          onFailure: (failure, _status, detail) => { refusal = { failure, detail }; },
         }).catch(() => undefined);
+        if (raw) health?.ok(id);
+        else if (refusal) health?.fail(id, refusal.failure, refusal.detail);
         const got = raw ? readAdvice(raw, list) : undefined;
         if (got) { advice = { source: 'shaheen', reply: got.reply || localAdvice(list, message, lang).reply, picks: got.picks }; break; }
       }

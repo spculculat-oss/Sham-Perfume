@@ -70,8 +70,46 @@ export function chatHistory(messages: ChatMessage[]) {
   return history;
 }
 
+/**
+ * «ترشيح المتجر»: a shopping question («عايز عطر هدية بـ 500») that no engine could answer still gets the store's own
+ * picks — real product pages — clearly labelled as an automatic pick, never as the expert's opinion. Formula and ratio
+ * questions are left to the expert (a product list is not an answer to «اعمل لي تركيبة»).
+ */
+export type CatalogFallback = (text: string, lang: SupportedLanguage) => Promise<string | undefined>;
+const SHOPPING = /(?:عايز|عاوز|محتاج|بدور|أدور|ادور|ابحث|أبحث|رشح|رشّح|اقترح|انصحني|نصيحة)[^\n]{0,24}(?:عطر|ريحة|رائحة|برفان|بارفان|برفيوم)|هدية|هديه|بكام|سعر|اشتري|أشتري|شراء|المتجر|\b(?:buy|recommend|suggest|gift|price|shop|looking for)\b/i;
+const NOT_SHOPPING = /نسب|تركيب|اعمل|أعمل|اصنع|خلطة|خلطه|معادلة|تخفيف|formula|ratio|blend|make my own|dilut/i;
+export const isShoppingQuestion = (text: string) => SHOPPING.test(text) && !NOT_SHOPPING.test(text);
+
+interface CatalogPick { product: { name: { ar: string; en: string }; slug: string; inStock: boolean }; why: string }
+/** The fallback message: up to three in-stock picks with links, and an honest line saying what it is. */
+export function catalogReply(picks: CatalogPick[], lang: SupportedLanguage, link: (slug: string) => string | undefined): string | undefined {
+  const shown = picks.filter((p) => p.product.inStock).slice(0, 3);
+  if (!shown.length) return undefined;
+  const ar = lang === 'ar';
+  const lines = shown.map(({ product, why }) => {
+    const name = (ar ? product.name.ar : product.name.en) || product.name.en || product.name.ar;
+    const url = link(product.slug);
+    return `- ${url ? `[${name.replace(/[[\]]/g, '')}](${url})` : `**${name}**`}${why ? ` — ${why}` : ''}`;
+  });
+  return ar
+    ? `الخبير مش متاح دلوقتي، فدي ترشيحات تلقائية من منتجات المتجر على حسب كلامك:\n\n${lines.join('\n')}\n\n_ده ترشيح تلقائي من فلتر المتجر، مش رأي الخبير — راجع تفاصيل المنتج، واسأل تاني بعد شوية لنصيحة أدق._`
+    : `The expert is unavailable right now, so here are automatic picks from the store's products based on your words:\n\n${lines.join('\n')}\n\n_This is an automatic pick from the store filter, not the expert's opinion — check the product details, and ask again a little later for finer advice._`;
+}
+
+/** Default: the static catalogue the store page uses (loaded only when needed). */
+export const storeCatalogFallback: CatalogFallback = async (text, lang) => {
+  const { loadStoreCatalog, localSuggestion, productPageUrl } = await import('./liveStore');
+  const products = await loadStoreCatalog();
+  const base = typeof location !== 'undefined' ? location.href : '';
+  const link = (slug: string) => {
+    try { const url = new URL(productPageUrl(slug), base || undefined).href; return url.startsWith('https://') ? url : undefined; } catch { return undefined; }
+  };
+  return catalogReply(localSuggestion(products, text, lang).picks, lang, link);
+};
+
 /** One synchronous owner for both chat surfaces: no effect-driven rebroadcast loops. */
-export function createChatStore(request: typeof requestApi = requestApi, pause: typeof wait = wait, memory: OfflineMemory = browserMemory) {
+export function createChatStore(request: typeof requestApi = requestApi, pause: typeof wait = wait, memory: OfflineMemory = browserMemory,
+  catalog: CatalogFallback = storeCatalogFallback) {
   let snapshot: Snapshot | undefined;
   let controller: AbortController | undefined;
   let generation = 0;
@@ -229,6 +267,15 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
         if (remembered) {
           publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
             id: id('bot'), role: 'assistant', text: remembered.answer + offlineNote(options.language, remembered.exact), timestamp: timestamp(),
+            aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' },
+          }] });
+          return true;
+        }
+        const picks = canAnswerFromMemory(error) && isShoppingQuestion(text) ? await catalog(text, options.language).catch(() => undefined) : undefined;
+        if (generation !== token) return false;
+        if (picks) {
+          publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
+            id: id('bot'), role: 'assistant', text: picks, timestamp: timestamp(),
             aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' },
           }] });
           return true;

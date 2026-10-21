@@ -27,6 +27,7 @@ import { smartTranslate } from './smart';
 import { auditLanguages, auditPhrases, findPhysicalDirection, glossaryFor, harvestInlineTexts, locatePhrases, type AiPackFile, type TextUnit } from './translator';
 import type { DesignSection, LanguageLiveReport, TranslationSection } from './audit';
 import {
+  applyTranslationCoverage,
   buildLanguageReport,
   findBareLocaleFormatting,
   findLanguageClamps,
@@ -87,7 +88,7 @@ async function main(): Promise<void> {
   const coverage: Record<string, LanguagePackCoverage> = {};
   for (const lang of languages) coverage[lang] = coverageOf(lang);
 
-  const report = buildLanguageReport({
+  let report = buildLanguageReport({
     at: new Date().toISOString(),
     languages,
     storeCoreSize: STORE_CORE_KEYS.length,
@@ -174,6 +175,7 @@ async function main(): Promise<void> {
   });
   quota.save();
 
+  report = applyTranslationCoverage(report, translation);
   report.translation = translation;
   report.design = design;
   const STOP: Record<TranslationSection['status'], string> = {
@@ -187,7 +189,7 @@ async function main(): Promise<void> {
   mkdirSync(dirname(LIVE_FILE), { recursive: true });
   writeFileSync(LIVE_FILE, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
 
-  console.log(`::notice title=وكيل اللغات::لغات مدعومة: ${report.languageCount} (مكتملة الحزم: ${report.fullyCovered}) · النتيجة ${report.score}/100`);
+  console.log(`::notice title=وكيل اللغات::لغات مدعومة: ${report.languageCount} (مكتملة الحزم: ${report.fullyCovered} · مترجم فعلاً: ${report.translationCoverage ?? '—'}%) · النتيجة ${report.score}/100`);
   for (const note of report.notes) console.log(`::notice title=ملاحظة لغوية::${note}`);
   for (const hit of report.publicNumberInputs.slice(0, 15)) {
     console.log(`::warning file=${hit.file},line=${hit.line}::حقل أرقام أصلي يتبع لغة متصفح الزائر — استبدله بـ LocalizedNumberInput`);
@@ -197,7 +199,7 @@ async function main(): Promise<void> {
     `### ${title} (${hits.length})\n${hits.slice(0, 12).map((h) => `- \`${h.file}:${h.line}\``).join('\n')}${hits.length > 12 ? `\n- …و${hits.length - 12} أخرى` : ''}`;
   const summary = [
     '## وكيل اللغات — تحت إدارة شاهين',
-    `- لغات الموقع: **${report.languageCount}** · مكتملة الحزم: **${report.fullyCovered}** · النتيجة: **${report.score}/100**`,
+    `- لغات الموقع: **${report.languageCount}** · مكتملة الحزم: **${report.fullyCovered}** · مترجم فعلاً: **${report.translationCoverage ?? '—'}%** (لغات مكتملة الترجمة: ${report.fullyTranslated ?? '—'}) · النتيجة: **${report.score}/100**`,
     ...report.notes.map((note) => `- ${note}`),
     list('حقول أرقام في واجهات الزوار (لغة المتصفح)', report.publicNumberInputs),
     list('حقول أرقام في واجهات المشغّلين', report.operatorNumberInputs),
