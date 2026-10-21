@@ -23,6 +23,7 @@ import { mergeCatalog, type RawProduct, type StoreCatalogFile, type StoreProduct
 import { customerPayOffer } from '../src/bank/worldPay';
 import { BUNDLED_FX, chargeCurrency, currencyFor, isCountry, isFxTable, quote, type FxTable, type ShippingTable } from '../src/utils/pricing';
 import { createSession, kashierConfig, KashierError, sessionPayment, verifyWebhook, type KashierConfig } from './core/kashier';
+import { containsCardSecret, stripeCardNetwork, verdictFromProvider } from '../src/utils/cardNetwork';
 import { createNotifier } from './core/notify';
 import { liveStoreCatalog, loadLive } from './core/liveData';
 import { RateLimiter, clientKey } from './core/rateLimit';
@@ -161,6 +162,20 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     res.setHeader('Cache-Control', 'private, no-store');
     const country = countryFromHeaders(req.headers);
     res.json({ country: country || null, source: country ? 'edge' : 'unknown' });
+  });
+
+  router.get('/store/card-network', (req, res) => {
+    res.setHeader('Cache-Control', 'private, no-store');
+    const stripe = stripeCardNetwork(env);
+    const check = verdictFromProvider({ connected: Boolean(stripe), mode: stripe?.mode });
+    res.json({ connected: check.connected, verdict: check.verdict, reason: check.reason, ...(stripe ? { mode: stripe.mode } : {}) });
+  });
+
+  router.post('/store/card-network', (req, res) => {
+    res.setHeader('Cache-Control', 'private, no-store');
+    const raw = JSON.stringify(req.body ?? {});
+    if (containsCardSecret(raw)) { res.status(400).json({ code: 'CARD_NOT_ACCEPTED', verdict: 'unconfirmed' }); return; }
+    res.status(400).json({ code: 'HOSTED_FIELD_REQUIRED', verdict: 'unconfirmed' });
   });
 
   router.get('/store/payments', wrap(async (req, res) => {

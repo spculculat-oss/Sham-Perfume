@@ -5,7 +5,6 @@ import { getSavedPaymentMethods, type SavedPaymentMethod } from '../utils/custom
 import {
   cardBrand,
   cardEntryBlocked,
-  cardLiveCopy,
   formatCardNumber,
   formatExpiry,
   inspectCardEntry,
@@ -19,6 +18,7 @@ import {
   type InstrumentPull,
 } from '../utils/paymentElement';
 import { countryPay } from '../bank/worldPay';
+import { CardLiveMeter } from './CardLiveMeter';
 import type { PaymentProvider } from '../utils/customerPaymentVault';
 
 const BRAND_LABEL: Record<CardBrand, string> = { visa: 'Visa', mastercard: 'Mastercard', amex: 'Amex', mada: 'mada', meeza: 'Meeza' };
@@ -206,9 +206,7 @@ export function CheckoutPayPanel({
           <input required inputMode="numeric" autoComplete="cc-number" placeholder="1234 1234 1234 1234" value={number} onChange={(e) => setNumber(formatCardNumber(e.target.value))} className="w-full bg-transparent px-2 py-1.5 font-mono text-xs outline-none" data-testid="checkout-card-number" aria-describedby="checkout-card-live" />
           <span className="pe-2 text-[10px] font-bold text-stone-500">{brand ? BRAND_LABEL[brand] : ''}</span>
         </span>
-        {live.verdict !== 'empty' && (
-          <p id="checkout-card-live" role="status" data-testid="card-live-check" data-verdict={live.verdict} className={`text-[11px] ${cardBlocked ? 'text-red-700' : live.verdict === 'format_ok' ? 'text-sky-800' : 'text-stone-500'}`}>{cardLiveCopy(live.verdict, lang)}</p>
-        )}
+        <CardLiveMeter id="checkout-card-live" number={number} expiry={expiry} lang={lang} />
         <div className="grid grid-cols-2 gap-2">
           <input required inputMode="numeric" autoComplete="cc-exp" placeholder="MM/YY" value={expiry} onChange={(e) => setExpiry(formatExpiry(e.target.value))} className="rounded-lg border bg-white px-2 py-1.5 font-mono text-xs" data-testid="checkout-card-expiry" />
           <input required inputMode="numeric" autoComplete="cc-csc" placeholder={t('رمز الأمان', 'Security code')} value={cvc} onChange={(e) => setCvc(e.target.value.replace(/\D/g, '').slice(0, 4))} className="rounded-lg border bg-white px-2 py-1.5 font-mono text-xs" data-testid="checkout-card-cvc" />
