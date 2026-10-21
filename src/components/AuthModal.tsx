@@ -419,6 +419,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [dob, setDob] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   // Google-style live strength (mirrors server/community/service.ts passwordPolicy)
   const pwStrength = (pw: string) => {
@@ -439,8 +440,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [pendingToken, setPendingToken] = useState('');
   const [code, setCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [forgotCooldown, setForgotCooldown] = useState(0);
 
   const toStep = (next: 'auth' | 'totp' | 'phone' | 'forgot' | 'forgot_code') => { setStage(next); setErrorMsg(null); setCode(''); setNewPassword(''); };
+  React.useEffect(() => {
+    if (forgotCooldown <= 0) return;
+    const t = setTimeout(() => setForgotCooldown((c) => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [forgotCooldown]);
 
   const finish = (user: UserProfile) => { onSuccess(user); onClose(); };
 
@@ -461,16 +468,21 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         return;
       }
       if (stage === 'forgot') {
+        if (!email || !email.includes('@')) { setErrorMsg(L('err_missing_fields')); return; }
         const res = await requestPasswordReset(email);
         if (!res.success) { setErrorMsg(res.error ? (S[res.error as keyof typeof S] ? L(res.error as keyof typeof S) : res.error) : L('err_login')); return; }
         toStep('forgot_code');
+        setForgotCooldown(60);
         return;
       }
       if (stage === 'forgot_code') {
+        if (code.length !== 6) { setErrorMsg(L('err_code_invalid')); return; }
+        if (newPassword.length < 8 || !/\d/.test(newPassword) || !/[A-Za-z\u0600-\u06FF]/.test(newPassword)) { setErrorMsg(L('err_password')); return; }
         const res = await confirmPasswordReset(email, code, newPassword);
         if (!res.success) { setErrorMsg(res.error ? (S[res.error as keyof typeof S] ? L(res.error as keyof typeof S) : res.error) : L('err_login')); return; }
         toStep('auth');
         setPassword('');
+        setForgotCooldown(0);
         setErrorMsg(L('reset_done'));
         return;
       }
@@ -726,40 +738,70 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           )}
 
           {stage === 'forgot' && (
-            <div>
-              <label className="font-semibold text-stone-800 block mb-1">{L('forgot_title')}</label>
-              <div className="relative">
-                <Mail className={`w-4 h-4 absolute ${rtl ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 text-stone-400`} />
-                <input
-                  type="email" required placeholder="perfumer@domain.com" value={email} onChange={(e) => setEmail(e.target.value)}
-                  className={`w-full ${rtl ? 'pl-3 pr-9' : 'pl-9 pr-3'} py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-amber-700 text-left font-mono`}
-                  dir="ltr"
-                />
+            <div className="space-y-3">
+              <div>
+                <label className="font-semibold text-stone-800 block mb-1">{L('forgot_title')}</label>
+                <p className="text-[11px] text-stone-500 leading-snug mb-2">{currentLang==='ar' ? 'اكتب بريدك المسجل — لو موجود هنبعتلك كود 6 أرقام صالح 10 دقايق (نفس أسلوب جوجل وميتا).' : 'Enter your registered e-mail — if it exists we will send a 6-digit code valid 10 min (like Google/Meta).'}</p>
+                <div className="relative">
+                  <Mail className={`w-4 h-4 absolute ${rtl ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 text-stone-400`} />
+                  <input
+                    type="email" required autoFocus placeholder="perfumer@domain.com" value={email} onChange={(e) => setEmail(e.target.value)}
+                    className={`w-full ${rtl ? 'pl-3 pr-9' : 'pl-9 pr-3'} py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-amber-700 text-left font-mono`}
+                    dir="ltr"
+                  />
+                </div>
+              </div>
+              <div className="flex justify-between items-center">
+                <button type="button" onClick={() => toStep('auth')} className="text-[11px] text-stone-600 underline cursor-pointer">{L('totp_back')}</button>
+                <span className="text-[10px] text-stone-400">{currentLang==='ar' ? 'هنرد بنفس الرسالة سواء البريد موجود أو لا (حماية الخصوصية)' : 'Same response whether e-mail exists (privacy protection)'}</span>
               </div>
             </div>
           )}
 
           {stage === 'forgot_code' && (
             <>
-              <p className="text-[11px] text-stone-600 leading-snug">{L('forgot_sent')}</p>
+              <div className="rounded-xl bg-sky-50 border border-sky-200 p-3">
+                <p className="text-[11px] text-sky-900 leading-snug">{L('forgot_sent')}</p>
+                <p className="text-xs font-mono text-stone-700 mt-1" dir="ltr">{email}</p>
+              </div>
               <div>
-                <label className="font-semibold text-stone-800 block mb-1">{L('code_label')}</label>
+                <label className="font-semibold text-stone-800 block mb-1 text-xs">{L('code_label')} <span className="text-stone-400 font-normal text-[10px]">— 6 أرقام</span></label>
                 <input
                   type="text" required inputMode="numeric" maxLength={6} autoComplete="one-time-code"
                   placeholder="••••••" value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
-                  className="w-full px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 tracking-[0.4em] text-center focus:outline-none focus:border-amber-700"
+                  className="w-full px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 tracking-[0.4em] text-center focus:outline-none focus:border-amber-700 text-lg font-mono"
                   dir="ltr"
+                  autoFocus
                 />
+                <div className="flex justify-between items-center mt-2">
+                  <button type="button" onClick={() => { if (forgotCooldown>0) return; void (async()=>{ const r=await requestPasswordReset(email); if(r.success) setForgotCooldown(60); })(); }} disabled={forgotCooldown>0} className="text-[11px] text-amber-800 underline cursor-pointer disabled:text-stone-400 disabled:no-underline">
+                    {forgotCooldown>0 ? `${currentLang==='ar' ? 'إعادة الإرسال بعد' : 'Resend in'} ${forgotCooldown}s` : (currentLang==='ar' ? 'إعادة إرسال الكود' : 'Resend code')}
+                  </button>
+                  <button type="button" onClick={() => toStep('forgot')} className="text-[11px] text-stone-600 underline cursor-pointer">{L('totp_back')}</button>
+                </div>
               </div>
               <div>
-                <label className="font-semibold text-stone-800 block mb-1">{L('new_pw_label')}</label>
-                <input
-                  type="password" required placeholder="••••••••" value={newPassword} onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-amber-700 text-left font-mono"
-                  dir="ltr" autoComplete="new-password"
-                />
+                <label className="font-semibold text-stone-800 block mb-1 text-xs">{L('new_pw_label')}</label>
+                <div className="relative">
+                  <Lock className={`w-4 h-4 absolute ${rtl ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 text-stone-400`} />
+                  <input
+                    type={showNewPassword ? 'text' : 'password'} required placeholder="••••••••" value={newPassword} onChange={(e) => setNewPassword(e.target.value)}
+                    className={`w-full ${rtl ? 'pl-10 pr-9' : 'pl-9 pr-10'} py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-amber-700 text-left font-mono`}
+                    dir="ltr" autoComplete="new-password"
+                  />
+                  <button type="button" onClick={() => setShowNewPassword(!showNewPassword)} className={`absolute ${rtl ? 'left-3' : 'right-3'} top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700 cursor-pointer`}>
+                    {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                {newPassword.length>0 && (
+                  <div className="mt-2 space-y-1.5">
+                    <div className="grid grid-cols-4 gap-1">
+                      {([0,1,2,3] as const).map((i)=>{ const s=newPassword.length>=8 ? (newPassword.length>=12?4:3) : (newPassword.length>=6?1:0); const ok = (/\d/.test(newPassword) && /[A-Za-z\u0600-\u06FF]/.test(newPassword)); const score = ok ? s : Math.max(0,s-1); return <span key={i} className={`h-1.5 rounded-full ${i < score ? (score>=3 ? 'bg-emerald-500' : score===2 ? 'bg-amber-500' : 'bg-rose-500') : 'bg-stone-200'}`} />; })}
+                    </div>
+                    <p className="text-[10px] text-stone-500">• {newPassword.length>=8 && /\d/.test(newPassword) && /[A-Za-z\u0600-\u06FF]/.test(newPassword) ? '✓ ' : ''}{L('err_password').split('،')[0]} — {newPassword.length>=8? '✓' : ''} 8+ أحرف + أرقام</p>
+                  </div>
+                )}
               </div>
-              <button type="button" onClick={() => toStep('forgot')} className="text-[11px] text-amber-800 underline cursor-pointer self-start">{L('totp_back')}</button>
             </>
           )}
 
@@ -973,36 +1015,34 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </button>
             )}
 
-            {/* Google / Facebook — big-3 style, visible fields */}
+            {/* Google / Facebook — global standard (Google Identity / Meta Login) */}
             {mode === 'login' && stage === 'auth' && (
-              <>
-                <div className="flex items-center gap-2 my-1">
+              <div className="space-y-2">
+                <div className="flex items-center gap-3 py-1">
                   <span className="h-px flex-1 bg-stone-200" />
-                  <span className="text-[11px] text-stone-500">{L('oauth_divider')}</span>
+                  <span className="text-[11px] text-stone-500 bg-white px-2">{L('oauth_divider')}</span>
                   <span className="h-px flex-1 bg-stone-200" />
                 </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => void handleOAuth('google')}
-                    disabled={!!oauthBusy}
-                    className="py-2.5 rounded-xl border border-stone-200 bg-white hover:bg-stone-50 text-stone-800 font-semibold text-xs transition-colors cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
-                  >
-                    <span className="w-5 h-5 rounded-full bg-white border border-stone-200 flex items-center justify-center text-[11px] font-black" style={{background: 'conic-gradient(from 0deg, #4285F4, #EA4335, #FBBC05, #34A853)'}}>G</span>
-                    <span>{oauthBusy==='google' ? '…' : L('google_btn')}</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => void handleOAuth('facebook')}
-                    disabled={!!oauthBusy}
-                    className="py-2.5 rounded-xl bg-[#1877F2] hover:bg-[#166fe5] text-white font-semibold text-xs transition-colors cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
-                  >
-                    <span className="w-5 h-5 rounded bg-white text-[#1877F2] flex items-center justify-center text-[12px] font-black">f</span>
-                    <span>{oauthBusy==='facebook' ? '…' : L('facebook_btn')}</span>
-                  </button>
-                </div>
-                <p className="text-[10px] text-stone-500 text-center leading-snug">{L('phone_2fa_suggest')}</p>
-              </>
+                <button
+                  type="button"
+                  onClick={() => void handleOAuth('google')}
+                  disabled={!!oauthBusy}
+                  className="w-full py-2.5 rounded-xl border border-[#dadce0] bg-white hover:bg-[#f8f9fa] hover:shadow-sm text-[#3c4043] font-medium text-sm transition-all cursor-pointer flex items-center justify-center gap-3 disabled:opacity-60"
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                  <span>{oauthBusy==='google' ? '…' : L('google_btn')}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => void handleOAuth('facebook')}
+                  disabled={!!oauthBusy}
+                  className="w-full py-2.5 rounded-xl bg-[#1877F2] hover:bg-[#166fe5] hover:shadow-sm text-white font-semibold text-sm transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
+                >
+                  <svg className="w-5 h-5 bg-white rounded-full p-1" viewBox="0 0 24 24" fill="#1877F2" aria-hidden="true"><path d="M14 8h3V4h-3c-2.76 0-5 2.24-5 5v3H6v4h3v5h4v-5h3l1-4h-4V9c0-.55.45-1 1-1z"/></svg>
+                  <span>{oauthBusy==='facebook' ? '…' : L('facebook_btn')}</span>
+                </button>
+                <p className="text-[10px] text-stone-500 text-center leading-snug px-2">{L('phone_2fa_suggest')}</p>
+              </div>
             )}
 
             {mode === 'login' && stage === 'auth' && (

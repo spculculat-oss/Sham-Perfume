@@ -306,21 +306,27 @@ export async function resendVerification(ctx: Ctx, userId: string) {
  */
 export async function requestPasswordReset(ctx: Ctx, input: { email?: unknown }) {
   const env = envOf(ctx);
-  const hasProvider = Boolean(env.RESEND_API_KEY?.trim() || env.SENDGRID_API_KEY?.trim() || env.SHAM_WEBHOOK_URL?.trim());
-  if (!hasProvider) fail(503, 'EMAIL_UNAVAILABLE');
+  const hasProvider = Boolean(env.RESEND_API_KEY?.trim() || env.SENDGRID_API_KEY?.trim() || (env as any).SHAM_WEBHOOK_URL?.trim() || env.GMAIL_APP_PASSWORD?.trim());
+  const allowMock = env.SHAM_ALLOW_MOCK_EMAIL === '1';
+  if (!hasProvider && !allowMock) fail(503, 'EMAIL_UNAVAILABLE');
   const email = clean(input.email, 254).toLowerCase();
   const [row] = isEmail(email) ? await ctx.sql.query(`SELECT id FROM users WHERE email_idx = $1 AND status = 'active'`, [ctx.vault.index(email)]) : [];
   await verifyPassword('timing-equalizer-1', DUMMY_HASH); // equalises both answers
   if (row) {
     try {
       const code = await issueCode(ctx, row.id, 'reset_password');
+      if (!hasProvider && allowMock) {
+        console.info(`[mock-email] reset code for ${email}: ${code}`);
+        auditEvent(ctx, row.id, 'reset_requested_mock');
+        return { ok: true, mockCode: code };
+      }
       const sent = await sendAuthEmail(email, codeMail('أكواد شام للعطور — تغيير كلمة المرور', code, 10,
         'طلبك تغيير كلمة المرور. أدخل الكود ده والكلمة الجديدة في صفحة تسجيل الدخول:',
         'You asked to change your password. Enter this code and your new password on the sign-in page.'), env);
       if (!sent.delivered) fail(503, 'EMAIL_UNAVAILABLE');
       auditEvent(ctx, row.id, 'reset_requested');
     } catch (error) {
-      if (error instanceof CommunityError && error.code === 'CODE_LIMITED') throw error;
+      if (error instanceof CommunityError && (error.code === 'CODE_LIMITED' || error.code === 'EMAIL_UNAVAILABLE')) throw error;
       console.warn('[community] reset e-mail failed:', error instanceof Error ? error.message : error);
       fail(503, 'EMAIL_UNAVAILABLE');
     }
