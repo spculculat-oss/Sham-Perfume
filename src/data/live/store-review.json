@@ -1,18 +1,18 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T09:09:31.439Z",
+ "updatedAt": "2026-10-21T10:34:56.296Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1212,
   "imported": 1161,
-  "ok": 641,
-  "warn": 520,
+  "ok": 645,
+  "warn": 516,
   "hidden": 51,
   "imagesChecked": 80,
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-21T09:09:31.411Z",
+  "at": "2026-10-21T10:34:56.263Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -67,7 +67,7 @@
     }
    ]
   },
-  "durationMs": 58
+  "durationMs": 68
  },
  "items": [
   {
@@ -930,8 +930,7 @@
    "name": "Al Nashama Caprice by Lattafa 100ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
    ],
    "page": "p/al-nashama-caprice-by-lattafa-100ml-edp-145.html"
   },
@@ -951,20 +950,9 @@
    "name": "Al Qiam Gold by Lattafa Pride 100ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
     "غير متوفر عند المورد"
    ],
    "page": "p/al-qiam-gold-by-lattafa-pride-100ml-edp-149.html"
-  },
-  {
-   "sku": "LAT-155",
-   "id": 155,
-   "name": "Afaq Gold by Lattafa EDP 100 ml Unisex",
-   "status": "warn",
-   "issues": [
-    "وصف المورد قصير"
-   ],
-   "page": "p/afaq-gold-by-lattafa-edp-100-ml-unisex-155.html"
   },
   {
    "sku": "LAT-161",
@@ -1174,8 +1162,7 @@
    "name": "Sceptre Oceana by Maison Alhambra 100ml",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر",
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس",
     "غير متوفر عند المورد"
    ],
    "page": "p/sceptre-oceana-by-maison-alhambra-100ml-218.html"
@@ -1327,8 +1314,7 @@
    "name": "Vintage Radio by Lattafa Pride 100ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر",
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس",
     "غير متوفر عند المورد"
    ],
    "page": "p/vintage-radio-by-lattafa-pride-100ml-edp-254.html"
@@ -1379,8 +1365,7 @@
    "name": "Victoria by Lattafa 100ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
    ],
    "page": "p/victoria-by-lattafa-100ml-edp-265.html"
   },
@@ -1400,8 +1385,7 @@
    "name": "Mashrabya by Lattafa 100ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
    ],
    "page": "p/mashrabya-by-lattafa-100ml-edp-267.html"
   },
@@ -1451,20 +1435,9 @@
    "name": "Musamam Intense by Lattafa 100ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
    ],
    "page": "p/musamam-intense-by-lattafa-100ml-edp-282.html"
-  },
-  {
-   "sku": "LAT-283",
-   "id": 283,
-   "name": "Art of Wood by Lattafa Pride 100ml EDP",
-   "status": "warn",
-   "issues": [
-    "وصف المورد قصير"
-   ],
-   "page": "p/art-of-wood-by-lattafa-pride-100ml-edp-283.html"
   },
   {
    "sku": "LAT-285",
@@ -1502,8 +1475,7 @@
    "name": "Sapphire Royal by Lattafa Pride 100ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
    ],
    "page": "p/sapphire-royal-by-lattafa-pride-100ml-edp-289.html"
   },
@@ -1533,8 +1505,7 @@
    "name": "Al Areeq Gold by Lattafa Pride 100ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر",
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس",
     "غير متوفر عند المورد"
    ],
    "page": "p/al-areeq-gold-by-lattafa-pride-100ml-edp-293.html"
@@ -1565,7 +1536,6 @@
    "name": "King of Arabia by Lattafa Pride 100ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
     "غير متوفر عند المورد"
    ],
    "page": "p/king-of-arabia-by-lattafa-pride-100ml-edp-299.html"
@@ -1656,7 +1626,6 @@
    "name": "Pisa by Lattafa Pride 100ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
     "غير متوفر عند المورد"
    ],
    "page": "p/pisa-by-lattafa-pride-100ml-edp-315.html"
@@ -1737,8 +1706,7 @@
    "name": "Shumookh Parfum 100ml by Gulf Orchid",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
    ],
    "page": "p/shumookh-parfum-100ml-by-gulf-orchid-356.html"
   },
@@ -1831,8 +1799,7 @@
    "name": "Jean Lowe Verde Aura 100ml",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر",
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس",
     "غير متوفر عند المورد"
    ],
    "page": "p/jean-lowe-verde-aura-100ml-379.html"
@@ -1905,8 +1872,7 @@
    "name": "Kismet for Women 100ml by Maison Alhambra",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر",
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس",
     "غير متوفر عند المورد"
    ],
    "page": "p/kismet-for-women-100ml-by-maison-alhambra-402.html"
@@ -2069,8 +2035,7 @@
    "name": "Victorioso Legacy by Maison Alhambra 100ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر",
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس",
     "غير متوفر عند المورد"
    ],
    "page": "p/victorioso-legacy-by-maison-alhambra-100ml-edp-444.html"
@@ -2102,8 +2067,7 @@
    "name": "Florenza (Florence) 100ml by Maison Alhambra",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
    ],
    "page": "p/florenza-florence-100ml-by-maison-alhambra-453.html"
   },
@@ -2317,8 +2281,7 @@
    "name": "Minerale Gold by Maison Alhambra 100ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
    ],
    "page": "p/minerale-gold-by-maison-alhambra-100ml-edp-504.html"
   },
@@ -2328,8 +2291,7 @@
    "name": "Your Touch Amber by Maison Alhambra 100ml",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر",
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس",
     "غير متوفر عند المورد"
    ],
    "page": "p/your-touch-amber-by-maison-alhambra-100ml-506.html"
@@ -2440,8 +2402,7 @@
    "name": "Galactic Man Elixir by Maison Alhambra 100ml",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر",
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس",
     "غير متوفر عند المورد"
    ],
    "page": "p/galactic-man-elixir-by-maison-alhambra-100ml-543.html"
@@ -2525,8 +2486,7 @@
    "name": "9 AM by Afnan 100 ml EDP Unisex",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر",
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس",
     "غير متوفر عند المورد"
    ],
    "page": "p/9-am-by-afnan-100-ml-edp-unisex-576.html"
@@ -3006,8 +2966,7 @@
    "name": "La Charmante by Maison Alhambra 100ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
    ],
    "page": "p/la-charmante-by-maison-alhambra-100ml-edp-672.html"
   },
@@ -3090,16 +3049,6 @@
     "غير متوفر عند المورد"
    ],
    "page": "p/jorge-di-profumo-aqua-maison-alhambra-100ml-729.html"
-  },
-  {
-   "sku": "ARD-732",
-   "id": 732,
-   "name": "Oud Al Turas 100ml by Ard Al Zaafaran",
-   "status": "warn",
-   "issues": [
-    "وصف المورد قصير"
-   ],
-   "page": "p/oud-al-turas-100ml-by-ard-al-zaafaran-732.html"
   },
   {
    "sku": "GRA-734",
@@ -3197,20 +3146,9 @@
    "name": "Armaf Beach Party Eau De Parfum 100ml",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
     "غير متوفر عند المورد"
    ],
    "page": "p/armaf-beach-party-eau-de-parfum-100ml-753.html"
-  },
-  {
-   "sku": "MAI-755",
-   "id": 755,
-   "name": "Precious Gold 80ml by Maison Alhambra",
-   "status": "warn",
-   "issues": [
-    "وصف المورد قصير"
-   ],
-   "page": "p/precious-gold-80ml-by-maison-alhambra-755.html"
   },
   {
    "sku": "ALW-769",
@@ -3393,8 +3331,7 @@
    "name": "Unknown No Deep Woods by Maison Alhambra 100ml",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
    ],
    "page": "p/unknown-no-deep-woods-by-maison-alhambra-100ml-822.html"
   },
@@ -3485,8 +3422,7 @@
    "name": "Glacier Gold by Maison Alhambra 100ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
    ],
    "page": "p/glacier-gold-by-maison-alhambra-100ml-edp-839.html"
   },
@@ -3556,8 +3492,7 @@
    "name": "Camille by Maison Alhambra 100ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
    ],
    "page": "p/camille-by-maison-alhambra-100ml-edp-852.html"
   },
@@ -3637,8 +3572,7 @@
    "name": "Winsome by Maison Alhambra 90ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
    ],
    "page": "p/winsome-by-maison-alhambra-90ml-edp-865.html"
   },
@@ -3749,8 +3683,7 @@
    "name": "La Charmante Eclatant by Maison Alhambra 100ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
    ],
    "page": "p/la-charmante-eclatant-by-maison-alhambra-100ml-edp-880.html"
   },
@@ -4948,8 +4881,7 @@
    "name": "Nuit Parfaite by Rave 100ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
    ],
    "page": "p/nuit-parfaite-by-rave-100ml-edp-1082.html"
   },
@@ -5140,8 +5072,7 @@
    "name": "Au Soleil by Rave 100ml EDP",
    "status": "warn",
    "issues": [
-    "وصف المورد قصير",
-    "المورد لم ينشر نوتات العطر"
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
    ],
    "page": "p/au-soleil-by-rave-100ml-edp-1106.html"
   },
