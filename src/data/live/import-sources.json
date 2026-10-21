@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T15:48:34.519Z",
+ "updatedAt": "2026-10-21T16:11:30.170Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -115,12 +115,12 @@
    "host": "lattafaperfumes.com",
    "name": "lattafaperfumes.com",
    "base": "https://lattafaperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Lattafa",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T12:54:45.361Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T16:11:30.170Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -128,12 +128,12 @@
    "host": "lattafaparfums.com",
    "name": "lattafaparfums.com",
    "base": "https://lattafaparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Lattafa",
    "foundAt": "2026-10-18T11:47:06.809Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T12:54:45.361Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T16:11:30.170Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -502,12 +502,12 @@
    "host": "ardalzaafaran.com",
    "name": "ardalzaafaran.com",
    "base": "https://ardalzaafaran.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Ard Al Zaafaran",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T12:54:45.361Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T16:11:30.170Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -515,12 +515,12 @@
    "host": "ardalzaafaranperfumes.com",
    "name": "ardalzaafaranperfumes.com",
    "base": "https://ardalzaafaranperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Ard Al Zaafaran",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T12:54:45.361Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T16:11:30.170Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -528,12 +528,12 @@
    "host": "ardalzaafaranparfums.com",
    "name": "ardalzaafaranparfums.com",
    "base": "https://ardalzaafaranparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Ard Al Zaafaran",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T12:54:45.361Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T16:11:30.170Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -5045,8 +5045,8 @@
    "foundBy": "brand-site",
    "foundWith": "Rue Broca",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T12:18:06.563Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T16:11:30.170Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -5448,8 +5448,8 @@
    "foundBy": "brand-site",
    "foundWith": "Khadlaj",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T12:54:45.361Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T16:11:30.170Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -5956,12 +5956,12 @@
    "foundBy": "brand-site",
    "foundWith": "French Avenue",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T12:54:45.361Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T16:11:30.170Z",
    "trust": {
     "score": 88,
     "verdict": "trusted",
-    "at": "2026-10-21T12:54:45.361Z",
+    "at": "2026-10-21T16:11:30.170Z",
     "checks": [
      {
       "id": "age",
@@ -6083,8 +6083,8 @@
    "foundBy": "brand-site",
    "foundWith": "French Avenue",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T12:54:45.361Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T16:11:30.170Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -6096,8 +6096,8 @@
    "foundBy": "brand-site",
    "foundWith": "French Avenue",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T12:54:45.361Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T16:11:30.170Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -7365,6 +7365,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-21T16:11:30.170Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 10,
+   "activated": 0,
+   "rejected": 5,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "✗ ruebrocaperfumes.com: الموقع لا يفتح",
+    "✗ khadlajparfums.com: الموقع لا يفتح",
+    "  ↳ frenchavenue.com: CV 88/100 [age,https,contact,identity,returns,shipping,privacy,terms,platform,social,authentic] on Shopify",
+    "… frenchavenue.com: good, waiting (already 20 active stores)",
+    "✗ frenchavenueperfumes.com: الموقع لا يفتح",
+    "✗ frenchavenueparfums.com: الموقع لا يفتح",
+    "✗ lattafaperfumes.com: الموقع لا يفتح",
+    "✗ lattafaparfums.com: الموقع لا يفتح",
+    "✗ ardalzaafaran.com: الموقع لا يفتح",
+    "✗ ardalzaafaranperfumes.com: الموقع لا يفتح",
+    "✗ ardalzaafaranparfums.com: الموقع لا يفتح"
+   ]
+  },
   {
    "at": "2026-10-21T15:48:34.519Z",
    "mode": "self",

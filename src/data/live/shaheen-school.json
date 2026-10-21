@@ -1,15 +1,15 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T15:49:25.018Z",
+ "updatedAt": "2026-10-21T16:13:06.752Z",
  "reliance": {
-  "score": 96,
-  "covered": 166,
+  "score": 97,
+  "covered": 167,
   "total": 173,
-  "fromMemory": 166,
+  "fromMemory": 167,
   "fromLibrary": 2,
   "byLang": {
    "ar": {
-    "covered": 147,
+    "covered": 148,
     "total": 152
    },
    "en": {
@@ -18,9 +18,15 @@
    }
   }
  },
- "studiedTotal": 73,
+ "studiedTotal": 74,
  "selfTaughtTotal": 63,
  "history": [
+  {
+   "at": "2026-10-21T16:13:06.752Z",
+   "score": 97,
+   "studied": 1,
+   "mode": "local"
+  },
   {
    "at": "2026-10-21T15:49:25.018Z",
    "score": 96,
@@ -174,6 +180,12 @@
  ],
  "lastStudied": [
   {
+   "q": "ازاي احافظ على ثبات جودة العطر من دفعة للتانية؟",
+   "lang": "ar",
+   "at": "2026-10-21T16:13:06.752Z",
+   "variants": 0
+  },
+  {
    "q": "يعني ايه اكورد في العطور وازاي اعمله؟",
    "lang": "ar",
    "at": "2026-10-21T15:49:25.018Z",
@@ -286,12 +298,6 @@
    "lang": "ar",
    "at": "2026-10-21T12:19:44.918Z",
    "variants": 0
-  },
-  {
-   "q": "اقترح تركيبة عطر شرقي للصيف بالنسب",
-   "lang": "ar",
-   "at": "2026-10-21T12:19:44.918Z",
-   "variants": 0
   }
  ],
  "pending": [
@@ -316,11 +322,6 @@
    "topic": "skills"
   },
   {
-   "q": "ازاي احافظ على ثبات جودة العطر من دفعة للتانية؟",
-   "lang": "ar",
-   "topic": "business"
-  },
-  {
    "q": "Suggest a fresh citrus perfume formula for summer with percentages",
    "lang": "en",
    "topic": "design-en"
@@ -336,11 +337,11 @@
   "aiReadings": 0,
   "localReadings": 25
  },
- "localTaughtTotal": 22,
+ "localTaughtTotal": 23,
  "spelling": {
-  "at": "2026-10-21T15:49:25.018Z",
-  "tried": 702,
-  "understood": 680,
+  "at": "2026-10-21T16:13:06.752Z",
+  "tried": 711,
+  "understood": 688,
   "score": 97,
   "misses": [
    "طبييه → طبيه (طبيعيه)",
