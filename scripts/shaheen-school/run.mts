@@ -20,8 +20,9 @@ import { referenceBlock, searchLibrary } from '../../src/utils/shaheenLibrary';
 import { research, RESEARCH_USER_AGENT, researchBlock, type Research } from '../../src/utils/webResearch';
 import {
   buildBank, emptySchool, exam, importerShare, isSchoolFile, LOCAL_TEACHER_STYLE, materialDocs, pickStudy, parseReview, REVIEW_SYSTEM, reviewPrompt, selfLesson, STUDY_SYSTEM, studyCheck, studyPrompt,
-  visitorQuestions, type BankQuestion, type SchoolFile, type TrainingDoc,
+  spellingReport, visitorQuestions, type BankQuestion, type SchoolFile, type TrainingDoc,
 } from './school';
+import { buildLexicon } from '../../src/utils/shaheenSpelling';
 
 const env = process.env;
 const live = (name: string) => new URL(`../../src/data/live/${name}`, import.meta.url);
@@ -161,6 +162,9 @@ school.localTaughtTotal = (school.localTaughtTotal || 0) + localTaught;
 if (localTaught) say(`The local teacher (open model, no key) taught ${localTaught} of them`);
 school.selfTaughtTotal = (school.selfTaughtTotal || 0) + selfTaught;
 school.history = [{ at: nowIso, score: final.reliance.score, studied: learnedNow, mode }, ...school.history].slice(0, 60);
+// «فهم شاهين للغلطات»: the spelling drill and exam (mistyped words and questions must still be understood).
+school.spelling = spellingReport(bank, final.results, learnedNow ? curated : memory, library, buildLexicon({ lessons: docs, materials: RAW_MATERIALS_DATABASE, memory: learnedNow ? curated : memory }), nowIso);
+say(`Spelling: understood ${school.spelling.understood}/${school.spelling.tried} mistyped words (${school.spelling.score}%); answers ${school.spelling.questions.answered}/${school.spelling.questions.tried} questions by himself with their main word mistyped`);
 school.pending = final.results.filter((r) => !r.covered).slice(0, 12).map((r) => ({ q: r.question.q, lang: r.question.lang, topic: r.question.topic }));
 school.updatedAt = nowIso;
 writeFileSync(live('shaheen-school.json'), `${JSON.stringify(school, null, 1)}\n`);

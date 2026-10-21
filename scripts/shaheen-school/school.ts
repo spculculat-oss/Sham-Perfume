@@ -11,7 +11,8 @@
  * Pure helpers here; scripts/shaheen-school/run.mts does the I/O.
  */
 import { isPersonal, isTimeBound, meaningWords, normalizeQuestion, recallSimilar, worthRemembering, type MemoryFile } from '../../src/utils/shaheenMemory';
-import { materialCard, type LibraryMaterial } from '../../src/utils/shaheenLibrary';
+import { materialCard, topicWords as libraryTopicWords, type LibraryMaterial } from '../../src/utils/shaheenLibrary';
+import { spellingDrill, typoVariants, understandQuestion, wordKey, type Lexicon } from '../../src/utils/shaheenSpelling';
 
 export interface BankQuestion { q: string; lang: 'ar' | 'en'; topic: string; origin: 'curriculum' | 'library' | 'visitors' | 'council' }
 export interface TrainingDoc { id: string; title: string; content: string; tags?: string[] }
@@ -35,6 +36,11 @@ export interface SchoolFile {
   history: { at: string; score: number; studied: number; mode: 'ai' | 'self' | 'local' }[];
   lastStudied: { q: string; lang: string; at: string; variants: number }[];
   pending: { q: string; lang: string; topic: string }[];
+  /**
+   * «فهم شاهين للغلطات»: typos of the words of his questions he understood back (drill), and the questions he still
+   * answers by himself when their main word is mistyped (exam).
+   */
+  spelling?: { at: string; tried: number; understood: number; score: number; misses: string[]; questions: { tried: number; answered: number } };
 }
 
 export const emptySchool = (): SchoolFile => ({
@@ -316,4 +322,36 @@ export function importerShare(review: unknown): SchoolFile['importer'] | undefin
   const skills = (review as { import?: { skills?: { sites: number; trusted: number; readings: number } } })?.import?.skills;
   const total = local + ai;
   return { localShare: total ? Math.round((local / total) * 100) : 100, aiReadings: ai, localReadings: local, ...(skills ? { skills } : {}) };
+}
+
+/**
+ * «فهم شاهين للغلطات» — the spelling exam: every question he answers by himself, asked again with its main word
+ * mistyped (a letter dropped, or the article's «ل» swallowed) must still be answered by himself, through what he
+ * understands it to mean.
+ */
+export function spellingExam(results: ExamResult[], memory: MemoryFile, docs: TrainingDoc[], lex: Lexicon, max = 60): { tried: number; answered: number; misses: string[] } {
+  let tried = 0; let answered = 0; const misses: string[] = [];
+  for (const r of results) {
+    if (tried >= max) break;
+    if (!r.covered || r.question.lang !== 'ar') continue;
+    const words = r.question.q.split(/\s+/);
+    const main = words.map((w, i) => ({ w, i, k: wordKey(w) })).filter((x) => x.k.length >= 5 && libraryTopicWords(x.w).length && lex.words.has(x.k))
+      .sort((a, b) => b.k.length - a.k.length)[0];
+    const typo = main && typoVariants(main.k).find((v) => v.kind === 'drop' && !lex.words.has(wordKey(v.text)));
+    if (!main || !typo) continue;
+    const prefix = main.w.match(/^(وال|بال|فال|كال|لل|ال)/)?.[1] || '';
+    const q = words.map((w, i) => (i === main.i ? prefix + typo.text : w)).join(' ');
+    tried++;
+    const understood = understandQuestion(q, lex);
+    if (examOne({ ...r.question, q: understood.text }, memory, docs).covered) answered++;
+    else if (misses.length < 6) misses.push(`${q} → ${understood.text}`);
+  }
+  return { tried, answered, misses };
+}
+
+/** The drill and the exam together, as the school reports them. */
+export function spellingReport(bank: BankQuestion[], results: ExamResult[], memory: MemoryFile, docs: TrainingDoc[], lex: Lexicon, at: string): NonNullable<SchoolFile['spelling']> {
+  const drill = spellingDrill(lex, bank.filter((b) => b.lang === 'ar').flatMap((b) => libraryTopicWords(b.q)), 150);
+  const questions = spellingExam(results, memory, docs, lex);
+  return { at, ...drill, misses: [...drill.misses.slice(0, 4), ...questions.misses.slice(0, 4)], questions: { tried: questions.tried, answered: questions.answered } };
 }

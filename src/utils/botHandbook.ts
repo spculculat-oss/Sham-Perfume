@@ -14,7 +14,7 @@ import { HOME_CURRENCY, SHIPPING } from './pricing';
 import { BOTS, DEPARTMENTS, LEGAL_DECISIONS, LINKS, botOf, botsIn, type BotId } from './shaheenOrg';
 
 /** Bumped when the policies change (the robots' reports and the admin panel show the edition they read). */
-export const HANDBOOK_EDITION = '2026-10-21';
+export const HANDBOOK_EDITION = '2026-10-21b';
 export const PAGES_URL = 'https://spculculat-oss.github.io/Sham-Perfume/';
 /** The scenario's price rule (scripts/shaheen-import/transform.ts PRICE_MARKUP — a test keeps them equal). */
 export const HANDBOOK_MARKUP = 1.5;
@@ -81,6 +81,7 @@ export function handbookSections(): HandbookSection[] {
         'المتجر: منتجات حقيقية بأسعار محسوبة، و«اسأل شاهين» بيرشح من المنتجات الموجودة فعلاً.',
         'مرصد العطور: أخبار حقيقية بمصادرها كل 12 ساعة.',
         'الشات: ردود سريعة من غير ذكاء اصطناعي (التحية، الشكر، حسابات الكحول والتركيز والوحدات)، وبعدين محركات الذكاء الاصطناعي، وبعدين الذاكرة والمكتبة والباحث.',
+        'فهم الغلطات: شاهين بيفهم السؤال حتى لو فيه غلطة كتابة (حرف ناقص أو زيادة، «الوتس» بدل «اللوتس»، كلمتين لازقين، أو عربي متكتب بالكيبورد الإنجليزي). بيقارن الكلمة بالكلمات اللي يعرفها، ويكتب فوق الرد «فهمت سؤالك كده: …». ولو مش متأكد مابيخمنش. المدرسة بتختبره في ده كل جولة.',
         `أدوات الذكاء الاصطناعي المسجلة (${AI_TOOLS.length}): ${AI_TOOLS.map((t) => t.nameAr).join('، ')}.`,
         'لوحة الإدارة: الهيكل الإداري، خريطة التشغيل (للإدارة بس)، النمو والمدرسة، البنك، والتعاقدات.',
       ],
@@ -161,6 +162,7 @@ export function handbookBrief(bot?: BotId, max = 2200): string {
     '- ممنوع كتابة أو طباعة أي مفتاح أو سر أو كلمة سر أو رقم بطاقة. بيانات الزوار الشخصية ماتتحفظش.',
     `- التسعير: (سعر المورد بالجنيه + شحن ثابت للزجاجة لو اتحدد) × ${HANDBOOK_MARKUP}، ويتقرب لأعلى لأقرب 5 جنيه. الزائر يشوف السعر بعملة بلده ومعاه الشحن حسب منطقته. الهامش ماتقولوش للموردين.`,
     '- المصادر: الواجهات الرسمية بس، واذكر المصدر. ممنوع قراءة صفحات نتائج جوجل أو تشغيل مواقع الذكاء الاصطناعي آلياً.',
+    '- افهم المقصود حتى لو الكلام فيه غلطات كتابة، واكتب فهمت إيه. ولو مش متأكد، ماتخمنش.',
     '- افحص شغلك بنفسك. اللي ماتقدرش تصلحه يروح لشاهين، والشغل المشترك يتعمل بفريق كل واحد في نطاقه.',
   ];
   const card = bot ? botCard(bot) : '';

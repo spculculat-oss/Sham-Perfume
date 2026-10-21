@@ -5,6 +5,7 @@ import { greetingKind, greetingReply } from './shaheenGreeting';
 import { quickAnswer } from './shaheenQuickApps';
 import { browserMemory, type OfflineMemory } from './browserMemory';
 import { offlineNote } from './shaheenMemory';
+import { keyboardFix, understoodNote } from './shaheenSpelling';
 import { ApiError, isStaticHosting, requestApi, visitorId, type ChatResponse } from './api';
 import { CHAT_STORAGE_KEY, clearChatSession, DEFAULT_WELCOME_MESSAGE, isChatMessage,
   loadStoredChatSession, saveChatSession, type ChatMessage, type ShaheenProvider } from './chatStorage';
@@ -184,8 +185,11 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
     async send(options: SendOptions) {
       expire();
       const current = getSnapshot();
-      const text = options.text.trim();
-      if (!text || text.length > 4000 || current.isLoading) return false;
+      const typedText = options.text.trim();
+      if (!typedText || typedText.length > 4000 || current.isLoading) return false;
+      // «فهم شاهين للغلطات»: Arabic typed with the English keyboard on («.ivm hgg,js») becomes the Arabic meant
+      // («زهرة اللوتس») — shown as the visitor's message, so he sees what Shaheen read.
+      const text = keyboardFix(typedText) ?? typedText;
       const timestamp = () => new Date().toLocaleTimeString(options.language, { hour: '2-digit', minute: '2-digit' });
       const id = (role: string) => `${role}-${Date.now()}-${++sequence}`;
       // A bare greeting is answered here: instant, identical on every site, and no AI quota spent on «هاي».
@@ -262,11 +266,23 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
           } catch (fastError) { error = fastError instanceof ApiError ? error : fastError; }
           if (generation !== token) return false;
         }
-        const remembered = canAnswerFromMemory(error) ? await memory.recall(text, options.language).catch(() => undefined) : undefined;
+        let remembered = canAnswerFromMemory(error) ? await memory.recall(text, options.language).catch(() => undefined) : undefined;
         if (generation !== token) return false;
+        // «فهم شاهين للغلطات»: nothing close as typed — the question as he understands it (a mistyped word read as the
+        // word meant), with what he understood shown above the answer.
+        let asked = text; let note = '';
+        if (!remembered && canAnswerFromMemory(error) && memory.understand) {
+          const understood = await memory.understand(text, options.language).catch(() => undefined);
+          if (generation !== token) return false;
+          if (understood?.changed) {
+            asked = understood.text; note = understoodNote(options.language, understood);
+            remembered = await memory.recall(asked, options.language).catch(() => undefined);
+            if (generation !== token) return false;
+          }
+        }
         if (remembered) {
           publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
-            id: id('bot'), role: 'assistant', text: remembered.answer + offlineNote(options.language, remembered.exact), timestamp: timestamp(),
+            id: id('bot'), role: 'assistant', text: note + remembered.answer + offlineNote(options.language, remembered.exact), timestamp: timestamp(),
             aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' },
           }] });
           return true;
@@ -276,14 +292,14 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
         if (generation !== token) return false;
         // «مكتبة شاهين»: no server and nothing close in memory — what he knows from his lessons and encyclopaedia.
         const offline = !picks && !shopping && canAnswerFromMemory(error);
-        let known = offline && memory.library ? await memory.library(text, options.language).catch(() => undefined) : undefined;
+        let known = offline && memory.library ? await memory.library(asked, options.language).catch(() => undefined) : undefined;
         if (generation !== token) return false;
         // «باحث شاهين»: not in his library either — he looks it up in open sources and answers from what he read.
-        if (!known && offline && memory.research) known = await memory.research(text, options.language).catch(() => undefined);
+        if (!known && offline && memory.research) known = await memory.research(asked, options.language).catch(() => undefined);
         if (generation !== token) return false;
         if (known) {
           publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
-            id: id('bot'), role: 'assistant', text: known, timestamp: timestamp(),
+            id: id('bot'), role: 'assistant', text: note + known, timestamp: timestamp(),
             aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' },
           }] });
           return true;
