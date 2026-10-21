@@ -13,6 +13,8 @@ export interface OfflineMemory {
   learn(input: { question: string; lang: string; mode: string; answer: string }): void;
   /** The closest remembered answer (this browser first, then the site's shared memory). */
   recall(question: string, lang: string): Promise<{ answer: string; exact: boolean } | undefined>;
+  /** «مكتبة شاهين»: an answer built from his lessons, materials encyclopaedia and memory (no AI, no server). */
+  library?(question: string, lang: string): Promise<string | undefined>;
 }
 
 function readLocal(): MemoryFile {
@@ -46,5 +48,15 @@ export const browserMemory: OfflineMemory = {
     if (typeof import.meta.env?.MODE !== 'string') return undefined;
     const site = recallSimilar(await sharedMemory(), question, lang);
     return site ? { answer: site.entry.answer, exact: site.score >= 1 } : undefined;
+  },
+  async library(question, lang) {
+    if (typeof import.meta.env?.MODE !== 'string') return undefined;
+    // Loaded only on the day it is needed (no server reachable and nothing close in memory).
+    const [{ libraryAnswer }, lessons, { RAW_MATERIALS_DATABASE }, site] = await Promise.all([
+      import('./shaheenLibrary'), import('../data/live/sham-training.json'), import('../data/rawMaterials'), sharedMemory(),
+    ]);
+    const docs = ((lessons as { default?: { docs?: unknown } }).default ?? lessons) as { docs?: { id: string; title: string; content: string }[] };
+    const memory = { ...site, entries: [...readLocal().entries, ...site.entries] };
+    return libraryAnswer({ lessons: Array.isArray(docs.docs) ? docs.docs : [], materials: RAW_MATERIALS_DATABASE, memory }, question, lang)?.answer;
   },
 };

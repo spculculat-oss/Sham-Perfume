@@ -130,8 +130,8 @@ test('the server answers a repeated question from memory with no AI call, and fr
     assert.ok(body.reply.startsWith(LONG.slice(0, 20)));
     assert.match(body.reply, /ذاكرة شاهين/);
     assert.equal(body.memory, 'similar');
-    // Nothing close: the usual error.
-    assert.equal((await chat(base, { message: 'ما هو افضل كحول للعطور' })).status, 503);
+    // Nothing close in memory nor in the library: the usual error.
+    assert.equal((await chat(base, { message: 'مين اخترع اول زجاجة رش في التاريخ' })).status, 503);
   });
 });
 

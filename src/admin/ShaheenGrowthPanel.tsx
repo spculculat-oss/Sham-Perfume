@@ -221,11 +221,12 @@ export default function ShaheenGrowthPanel() {
                 {Object.entries(r.byLang).map(([lang, v]) => ` · ${lang === 'ar' ? T('عربي') : T('إنجليزي')} ${v.covered}/${v.total}`).join('')}
               </p>
               <p className="mt-1 text-[11px] text-stone-500">
-                {TP('ذاكر {ai} سؤال مع الذكاء الاصطناعي، واتعلم {self} لوحده من مكتبته', { ai: school.studiedTotal, self: school.selfTaughtTotal || 0 })} · {T('آخر امتحان')}: {when(school.updatedAt)}
+                {TP('ذاكر {ai} سؤال مع الذكاء الاصطناعي، واتعلم {self} لوحده من مكتبته', { ai: school.studiedTotal, self: school.selfTaughtTotal || 0 })}
+                {school.localTaughtTotal ? ` · ${TP('منهم {n} مع المعلم المحلي (نموذج مفتوح Qwen على GitHub من غير مفتاح)', { n: school.localTaughtTotal })}` : ''} · {T('آخر امتحان')}: {when(school.updatedAt)}
               </p>
               {recent.length > 1 && (
                 <div className="mt-2 flex h-10 items-end gap-0.5" aria-label={T('تطور النتيجة')}>
-                  {recent.map((h) => <div key={h.at} title={`${when(h.at)} — ${h.score}%`} className={`flex-1 rounded-t ${h.mode === 'ai' ? 'bg-amber-400' : 'bg-amber-200'}`} style={{ height: `${Math.max(4, h.score)}%` }} />)}
+                  {recent.map((h) => <div key={h.at} title={`${when(h.at)} — ${h.score}%`} className={`flex-1 rounded-t ${h.mode === 'ai' ? 'bg-amber-400' : h.mode === 'local' ? 'bg-emerald-400' : 'bg-amber-200'}`} style={{ height: `${Math.max(4, h.score)}%` }} />)}
                 </div>
               )}
             </div>

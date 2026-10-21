@@ -31,7 +31,7 @@ export interface MemoryFile { version: 1; updatedAt: string; entries: MemoryEntr
 
 export const MEMORY_LIMITS = {
   /** Entries kept in the shared file (most useful first). */
-  maxEntries: 2000,
+  maxEntries: 3000,
   /** An entry unused for this long is forgotten (it is asked again fresh next time). */
   ttlDays: 60,
   /** A remembered answer older than this is not served while the engines are up (it is refreshed instead). */

@@ -10,7 +10,8 @@
  *      (src/data/live/shaheen-school.json, shown in the admin panel).
  * Pure helpers here; scripts/shaheen-school/run.mts does the I/O.
  */
-import { meaningWords, normalizeQuestion, recallSimilar, worthRemembering, type MemoryFile } from '../../src/utils/shaheenMemory';
+import { isPersonal, isTimeBound, meaningWords, normalizeQuestion, recallSimilar, worthRemembering, type MemoryFile } from '../../src/utils/shaheenMemory';
+import { materialCard, type LibraryMaterial } from '../../src/utils/shaheenLibrary';
 
 export interface BankQuestion { q: string; lang: 'ar' | 'en'; topic: string; origin: 'curriculum' | 'library' | 'visitors' | 'council' }
 export interface TrainingDoc { id: string; title: string; content: string; tags?: string[] }
@@ -28,7 +29,10 @@ export interface SchoolFile {
   selfTaughtTotal?: number;
   importer?: { localShare: number; aiReadings: number; localReadings: number; skills?: { sites: number; trusted: number; readings: number } };
   studiedTotal: number;
-  history: { at: string; score: number; studied: number; mode: 'ai' | 'self' }[];
+  /** Of studiedTotal: lessons written by «المعلم المحلي» (the open model on the runner, no key). */
+  localTaughtTotal?: number;
+  /** ai = an AI service taught; local = the open model on the runner; self = only his own library. */
+  history: { at: string; score: number; studied: number; mode: 'ai' | 'self' | 'local' }[];
   lastStudied: { q: string; lang: string; at: string; variants: number }[];
   pending: { q: string; lang: string; topic: string }[];
 }
@@ -74,9 +78,54 @@ export const councilQuestions = (qs: string[]): BankQuestion[] =>
   qs.map((q) => q.trim()).filter((q) => q.length >= 8 && q.length <= 200).slice(0, 12)
     .map((q) => ({ q, lang: /[\u0600-\u06FF]/.test(q) ? 'ar' as const : 'en' as const, topic: 'council', origin: 'council' as const }));
 
-export function buildBank(docs: TrainingDoc[], council: string[] = []): BankQuestion[] {
+/**
+ * Questions visitors asked while no engine answered (the server's knowledge gaps, reason «shaheen_offline»):
+ * what people really want to know comes first. Personal, time-bound and shopping questions are not studied.
+ */
+export function visitorQuestions(gaps: { question?: unknown; status?: unknown; reason?: unknown; count?: unknown }[], max = 12): BankQuestion[] {
+  return gaps
+    .filter((g) => g && g.status === 'open' && g.reason === 'shaheen_offline' && typeof g.question === 'string')
+    .sort((a, b) => (Number(b.count) || 0) - (Number(a.count) || 0))
+    .map((g) => String(g.question).trim())
+    .filter((q) => q.length >= 8 && q.length <= 300 && !isPersonal(q) && !isTimeBound(q) && meaningWords(q).length >= 2)
+    .slice(0, max)
+    .map((q) => ({ q, lang: /[\u0600-\u06FF]/.test(q) ? 'ar' as const : 'en' as const, topic: 'visitors', origin: 'visitors' as const }));
+}
+
+/** The raw-materials encyclopaedia as lessons: «ايه هو الأمبروكسان؟» is learned from its card, with no AI. */
+const shortName = (name: string) => name.replace(/\s*\(.*$/, '').replace(/\s*\/.*$/, '').trim();
+export const materialDocs = (materials: LibraryMaterial[]): TrainingDoc[] =>
+  materials.map((m) => ({ id: m.id, title: shortName(m.nameAr), content: materialCard(m, 'ar'), tags: ['material'] }));
+export const materialQuestions = (materials: LibraryMaterial[]): BankQuestion[] =>
+  materials.map((m) => ({ q: `ايه هو ${shortName(m.nameAr)}؟`, lang: 'ar' as const, topic: 'materials', origin: 'library' as const }));
+
+/**
+ * The advanced curriculum the local teacher works through, a few lessons per session: perfume design for every
+ * family and occasion, and the problems people really meet while making perfume. Grounded on his library.
+ */
+const FAMILIES = ['شرقي', 'خشبي', 'زهري', 'حمضي منعش', 'فوجير', 'جورماند حلو', 'عنبري', 'مسكي نظيف', 'عودي'];
+const OCCASIONS = ['للصيف', 'للشتاء', 'للسهرات', 'للشغل اليومي'];
+export const ADVANCED: BankQuestion[] = [
+  ...FAMILIES.flatMap((family) => OCCASIONS.map((occasion) => ({ q: `اقترح تركيبة عطر ${family} ${occasion} بالنسب`, lang: 'ar' as const, topic: `design-${family}`, origin: 'curriculum' as const }))),
+  ...([
+    ['problems', 'العطر بتاعي ريحته كحول قوية اعمل ايه؟'], ['problems', 'ليه العطر اللي عملته ريحته اختفت بسرعة؟'], ['problems', 'العطر لونه اتغير بعد شهر هل باظ؟'],
+    ['problems', 'ازاي اقلل حدة نوتة طاغية في التركيبة؟'], ['problems', 'العطر طلع تقيل وخانق ازاي اخففه؟'], ['problems', 'ليه العطر بيعمل حساسية لبعض الناس؟'],
+    ['problems', 'العطر ريحته على الجلد غير في الزجاجة ليه؟'], ['problems', 'ازاي اعرف ان الزيت العطري مغشوش؟'],
+    ['skills', 'ازاي ادرب انفي على تمييز الروايح؟'], ['skills', 'ازاي اوثق تجاربي في تركيب العطور؟'], ['skills', 'ازاي اختبر عطر جديد قبل ما اعمل منه كمية كبيرة؟'],
+    ['skills', 'ايه الادوات اللي محتاجها عشان ابدأ اركب عطور؟'], ['skills', 'ازاي اوزن مكونات العطر بدقة؟'], ['skills', 'يعني ايه اكورد في العطور وازاي اعمله؟'],
+    ['business', 'ازاي احسب تكلفة العطر اللي بعمله قبل ما ابيعه؟'], ['business', 'ايه اللي لازم يتكتب على ملصق زجاجة العطر؟'], ['business', 'ازاي احافظ على ثبات جودة العطر من دفعة للتانية؟'],
+    ['culture', 'ايه تاريخ العطور عند العرب؟'], ['culture', 'ايه الفرق بين العطور الفرنسية والعطور العربية؟'], ['culture', 'ايه هو البخور وازاي بيتعمل؟'],
+  ] as const).map(([topic, q]) => ({ q, lang: 'ar' as const, topic, origin: 'curriculum' as const })),
+  ...([
+    ['problems', 'Why does my homemade perfume smell too much of alcohol?'], ['problems', 'How can I make my perfume last longer on the skin?'],
+    ['skills', 'What tools do I need to start making perfume at home?'], ['skills', 'What is an accord in perfumery?'],
+    ['design', 'Suggest a fresh citrus perfume formula for summer with percentages'], ['design', 'Suggest a warm oriental perfume formula for winter with percentages'],
+  ] as const).map(([topic, q]) => ({ q, lang: 'en' as const, topic: `${topic}-en`, origin: 'curriculum' as const })),
+];
+
+export function buildBank(docs: TrainingDoc[], council: string[] = [], visitors: BankQuestion[] = [], materials: LibraryMaterial[] = []): BankQuestion[] {
   const seen = new Set<string>();
-  return [...CURRICULUM, ...libraryQuestions(docs), ...councilQuestions(council)].filter((b) => {
+  return [...visitors, ...CURRICULUM, ...libraryQuestions(docs), ...materialQuestions(materials), ...councilQuestions(council), ...ADVANCED].filter((b) => {
     const k = `${b.lang}|${normalizeQuestion(b.q)}`;
     if (seen.has(k)) return false;
     seen.add(k);
@@ -155,9 +204,10 @@ export function pickStudy(results: ExamResult[], max: number): BankQuestion[] {
   const perTopic = new Map<string, number>();
   for (const g of gaps) perTopic.set(g.topic, (perTopic.get(g.topic) || 0) + 1);
   const taken = new Map<string, number>();
+  // Visitors' real questions first; then the topics with the most gaps.
   return [...gaps]
-    .sort((a, b) => (perTopic.get(b.topic)! - perTopic.get(a.topic)!) || Number(a.origin === 'library') - Number(b.origin === 'library'))
-    .filter((g) => { const n = taken.get(g.topic) || 0; if (n >= 2) return false; taken.set(g.topic, n + 1); return true; })
+    .sort((a, b) => Number(b.origin === 'visitors') - Number(a.origin === 'visitors') || (perTopic.get(b.topic)! - perTopic.get(a.topic)!) || Number(a.origin === 'library') - Number(b.origin === 'library'))
+    .filter((g) => { const n = taken.get(g.topic) || 0; if (n >= (g.origin === 'visitors' ? max : 2)) return false; taken.set(g.topic, n + 1); return true; })
     .slice(0, max);
 }
 
@@ -167,22 +217,75 @@ export const STUDY_SYSTEM = `أنت «الخبير شاهين»، خبير ال�
 ثم اكتب 4 صيغ أخرى يسأل بها الناس نفس السؤال (بنفس اللغة: عامية وفصحى وصيغة قصيرة).
 أعد JSON فقط: {"answer":"…","paraphrases":["…","…","…","…"]}`;
 
+/** For «المعلم المحلي»: a small open model writes clearer, safer Arabic in simple standard Arabic, close to the references. */
+export const LOCAL_TEACHER_STYLE = `
+تعليمات إضافية: اكتب الإجابة العربية بالعربية الفصحى المبسطة الواضحة (لا تكتب بالعامية)، بجمل قصيرة ونقاط عند الحاجة.
+اعتمد على المراجع المرفقة، ولا تذكر معلومة أو نسبة لست متأكداً منها، ولا تكتب أي حروف غير عربية إلا أسماء المواد.`;
+
+/** The study question, with what his own library already says (the teacher must agree with it, not invent). */
+export function studyPrompt(b: BankQuestion, references = ''): string {
+  const q = `السؤال (${b.lang === 'ar' ? 'عربي' : 'English'}): ${b.q}`;
+  return references ? `${q}\n\nمراجع من مكتبة شاهين (اعتمد عليها ولا تخالفها، ولا تنسخها حرفياً):\n${references}` : q;
+}
+
+/** Scripts a small open model sometimes slips into (Chinese, Japanese, Korean, Cyrillic): never kept. */
+const FOREIGN_SCRIPT = /[\u0400-\u04FF\u3040-\u30FF\u3400-\u9FFF\uAC00-\uD7AF]/;
+
 /** The engine's study answer, checked: a real answer worth remembering, and paraphrases in the same language. */
-export function parseStudy(reply: string, b: BankQuestion): { answer: string; paraphrases: string[] } | null {
+/** Small open models often break lines inside JSON strings: escape the control characters found inside strings. */
+export function escapeControlsInStrings(text: string): string {
+  let out = ''; let inString = false; let escaped = false;
+  for (const ch of text) {
+    if (inString) {
+      if (escaped) { escaped = false; out += ch; continue; }
+      if (ch === '\\') { escaped = true; out += ch; continue; }
+      if (ch === '"') inString = false;
+      else if (ch === '\n') { out += '\\n'; continue; }
+      else if (ch === '\r') continue;
+      else if (ch === '\t') { out += '\\t'; continue; }
+    } else if (ch === '"') inString = true;
+    out += ch;
+  }
+  return out;
+}
+
+/** Last resort for a small model's broken JSON: the answer text and the quoted wordings after «paraphrases». */
+function looseStudy(raw: string): { answer?: unknown; paraphrases?: unknown } | undefined {
+  const a = raw.match(/"answer"\s*:\s*"([\s\S]*?)"\s*(?:,?\s*"paraphrases"|}\s*$)/);
+  if (!a) return undefined;
+  const tail = raw.slice(raw.indexOf('"paraphrases"') >= 0 ? raw.indexOf('"paraphrases"') + 13 : raw.length);
+  const paraphrases = [...tail.matchAll(/"((?:[^"\\]|\\.)*)"/g)].map((m) => m[1]);
+  return { answer: a[1].replace(/\\n/g, '\n').replace(/\\"/g, '"'), paraphrases };
+}
+
+/** A study answer checked: the lesson to keep, or why it was not kept (for the report). */
+export function studyCheck(reply: string, b: BankQuestion): { lesson: { answer: string; paraphrases: string[] } } | { reason: string } {
   const body = (reply || '').replace(/```(?:json)?/gi, '');
-  let data: { answer?: unknown; paraphrases?: unknown };
-  try { data = JSON.parse(body.slice(body.indexOf('{'), body.lastIndexOf('}') + 1)); } catch { return null; }
+  let data: { answer?: unknown; paraphrases?: unknown } | undefined;
+  const raw = body.slice(body.indexOf('{'), body.lastIndexOf('}') + 1);
+  try { data = JSON.parse(raw); } catch {
+    try { data = JSON.parse(escapeControlsInStrings(raw)); } catch { data = looseStudy(raw); }
+  }
+  if (!data) return { reason: `unreadable answer (${(reply || '').length} characters)` };
   const answer = typeof data.answer === 'string' ? data.answer.trim() : '';
-  if (!worthRemembering(b.q, answer)) return null;
-  if (b.lang === 'ar' && !/[\u0600-\u06FF]/.test(answer)) return null;
+  if (FOREIGN_SCRIPT.test(answer)) return { reason: 'slipped into another script (Chinese/Cyrillic…)' };
+  if (!worthRemembering(b.q, answer)) return { reason: `not worth keeping (${answer.length} characters, or names a vendor)` };
+  if (b.lang === 'ar' && !/[\u0600-\u06FF]/.test(answer)) return { reason: 'not in Arabic' };
+  // An Arabic answer is mostly Arabic (a few Latin names like «EDP» or «Ambroxan» are fine).
+  if (b.lang === 'ar' && (answer.match(/[A-Za-z]/g) || []).length > (answer.match(/[\u0600-\u06FF]/g) || []).length / 3) return { reason: 'too much Latin script for an Arabic answer' };
   const arabic = (t: string) => /[\u0600-\u06FF]/.test(t);
   const paraphrases = (Array.isArray(data.paraphrases) ? data.paraphrases : [])
     .filter((p): p is string => typeof p === 'string')
     .map((p) => p.trim())
     // A one-word «question» («العنبر») is too broad to answer from memory.
-    .filter((p) => p.length >= 6 && p.length <= 200 && meaningWords(p).length >= 2 && (b.lang === 'ar' ? arabic(p) : !arabic(p)) && normalizeQuestion(p) !== normalizeQuestion(b.q))
+    .filter((p) => p.length >= 6 && p.length <= 200 && !FOREIGN_SCRIPT.test(p) && meaningWords(p).length >= 2 && (b.lang === 'ar' ? arabic(p) : !arabic(p)) && normalizeQuestion(p) !== normalizeQuestion(b.q))
     .slice(0, 4);
-  return { answer, paraphrases };
+  return { lesson: { answer, paraphrases } };
+}
+
+export function parseStudy(reply: string, b: BankQuestion): { answer: string; paraphrases: string[] } | null {
+  const checked = studyCheck(reply, b);
+  return 'lesson' in checked ? checked.lesson : null;
 }
 
 /** How much of the importer's reading was done by Shaheen himself (JSON-LD, own reader, learned skills) vs AI. */

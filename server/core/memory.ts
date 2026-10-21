@@ -52,6 +52,9 @@ export class ShaheenMemory {
     return undefined;
   }
 
+  /** Everything he remembers (this server's answers and the shared file): «مكتبة شاهين» searches it too. */
+  async all(): Promise<MemoryFile> { return mergeMemory(await this.learned(), await this.shared()); }
+
   /** When no engine answers: the closest remembered question (learned or shared, any style). */
   async recallSimilar(question: string, lang: string): Promise<MemoryHit | undefined> {
     const all = mergeMemory(await this.learned(), await this.shared());

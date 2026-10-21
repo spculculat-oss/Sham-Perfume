@@ -9,7 +9,7 @@
  * there are no canned answers pretending to be AI.
  */
 import express from 'express';
-import { newsContext, supervisorGuidance } from './core/liveData';
+import { newsContext, supervisorGuidance, trainedKnowledge } from './core/liveData';
 import { SUPPORTED_LANGUAGES } from '../src/types/i18n';
 import type { SupportedLanguage } from '../src/types/i18n';
 import { normalizeMediaBlocks } from '../src/utils/mediaBlock';
@@ -20,7 +20,10 @@ import { RateLimiter, clientKey } from './core/rateLimit';
 import { AnswerCache, GateBusyError, ProviderGate, VISITOR_ID, cacheKey, capacityConfig, normalizeQuestion, retryHintMs } from './core/capacity';
 import type { ShaheenRuntime } from './core/maintenance';
 import type { ShaheenMemory } from './core/memory';
-import { offlineNote } from '../src/utils/shaheenMemory';
+import { isPersonal, isTimeBound, offlineNote } from '../src/utils/shaheenMemory';
+import { libraryAnswer, type LibrarySources } from '../src/utils/shaheenLibrary';
+import { questionIntents } from '../src/utils/shaheenTools';
+import { RAW_MATERIALS_DATABASE } from '../src/data/rawMaterials';
 import { quickAnswer } from '../src/utils/shaheenQuickApps';
 import { councilAvailable, runCouncil } from './core/council';
 import type { Repository } from './core/repository';
@@ -317,7 +320,9 @@ export async function probeEngines(settings: ShaheenSettings, options: { env?: E
 }
 
 /** Public routes: GET /api/models and POST /api/chat (rate limited, settings from the shared store). */
-export function createShaheenRouter(options: { repo: Repository; env?: Environment; fetch?: typeof fetch; runtime?: ShaheenRuntime; memory?: ShaheenMemory }) {
+export function createShaheenRouter(options: { repo: Repository; env?: Environment; fetch?: typeof fetch; runtime?: ShaheenRuntime; memory?: ShaheenMemory;
+  /** «مكتبة شاهين»: what he knows without any AI (tests inject it; default: lessons, materials encyclopaedia, memory). */
+  library?: () => Promise<LibrarySources> }) {
   const env = options.env || process.env;
   const router = express.Router();
   const capacity = capacityConfig(env);
@@ -335,6 +340,16 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
   // «ذاكرة شاهين»: repeated questions without any AI call, and answers when no engine is reachable.
   const memory = options.memory;
   runtime?.attach({ gate, answers: answers as AnswerCache<unknown> });
+  const library = options.library || (async (): Promise<LibrarySources> => ({
+    lessons: await trainedKnowledge(env, options.fetch).catch(() => []),
+    materials: RAW_MATERIALS_DATABASE,
+    memory: memory ? await memory.all().catch(() => undefined) : undefined,
+  }));
+  /** A question no engine answered goes on the study list of «مدرسة شاهين» (admin-only knowledge gaps). */
+  const noteForStudy = async (question: string) => {
+    if (isPersonal(question) || isTimeBound(question)) return false;
+    return Boolean(await options.repo.recordGap({ question, source: 'no_answer', reason: SHAHEEN_OFFLINE_GAP }).catch(() => undefined));
+  };
   // Settings change rarely; reading them once per message would cost a store read per visitor.
   // Saved in this instance → refreshed at once (revision); saved elsewhere (shared store) → within 3 s.
   let settingsCache: { at: number; revision: number; value: Awaited<ReturnType<Repository['settings']>> } | undefined;
@@ -414,10 +429,22 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
         const { input, mode } = chatInput;
         const hit = await memory!.recallSimilar(input.message, input.language).catch(() => undefined);
         if (hit && !res.destroyed) {
+          if (!hit.exact) await noteForStudy(input.message);
           res.json({ ...publicChatResult({ reply: hit.entry.answer + offlineNote(input.language, hit.exact), mode }, input.message), memory: hit.exact ? 'exact' : 'similar' });
           // Still an engine outage for the maintenance agent, even though the visitor got an answer.
           runtime?.record({ ms: Date.now() - started, status: error.status, code: `${error.code}+MEMORY` });
           return;
+        }
+        // Nothing close in memory: «مكتبة شاهين» builds an answer from what he knows (not for shopping questions —
+        // the browser answers those with the store's own picks).
+        if (!questionIntents(input.message).includes('store')) {
+          const recorded = await noteForStudy(input.message);
+          const found = libraryAnswer(await library().catch(() => ({ lessons: [], materials: [] })), input.message, input.language, { recorded });
+          if (found && !res.destroyed) {
+            res.json({ ...publicChatResult({ reply: found.answer, mode }, input.message), memory: 'library' });
+            runtime?.record({ ms: Date.now() - started, status: error.status, code: `${error.code}+LIBRARY` });
+            return;
+          }
         }
       }
       if (error instanceof ChatError) runtime?.record({ ms: Date.now() - started, status: error.status, code: error.code });
@@ -434,6 +461,9 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
   });
   return router;
 }
+
+/** The reason on the knowledge gaps «مدرسة شاهين» studies (questions asked while no engine answered). */
+export const SHAHEEN_OFFLINE_GAP = 'shaheen_offline';
 
 /** Failures where the visitor gets a remembered answer instead of an error (when one is close enough). */
 const OFFLINE_CODES = new Set(['PROVIDER_UNAVAILABLE', 'PROVIDER_TIMEOUT', 'PROVIDER_NOT_CONFIGURED', 'SHAHEEN_BUSY', 'COUNCIL_UNAVAILABLE']);

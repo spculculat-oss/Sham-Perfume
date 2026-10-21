@@ -271,8 +271,19 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
           }] });
           return true;
         }
-        const picks = canAnswerFromMemory(error) && isShoppingQuestion(text) ? await catalog(text, options.language).catch(() => undefined) : undefined;
+        const shopping = isShoppingQuestion(text);
+        const picks = canAnswerFromMemory(error) && shopping ? await catalog(text, options.language).catch(() => undefined) : undefined;
         if (generation !== token) return false;
+        // «مكتبة شاهين»: no server and nothing close in memory — what he knows from his lessons and encyclopaedia.
+        const known = !picks && !shopping && canAnswerFromMemory(error) && memory.library ? await memory.library(text, options.language).catch(() => undefined) : undefined;
+        if (generation !== token) return false;
+        if (known) {
+          publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
+            id: id('bot'), role: 'assistant', text: known, timestamp: timestamp(),
+            aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' },
+          }] });
+          return true;
+        }
         if (picks) {
           publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
             id: id('bot'), role: 'assistant', text: picks, timestamp: timestamp(),
