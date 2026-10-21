@@ -11,6 +11,7 @@
 import { BOTS, LEGAL_DECISIONS, botOf, type BotId } from '../../src/utils/shaheenOrg';
 import { RERUNNABLE, type Action, type Rerunnable } from './council';
 import { failureCauseAr } from '../../src/utils/opsMap';
+import { OWNER_STOPPED_AR, stoppedByOwner, type OwnerControls } from '../../src/utils/ownerAuthority';
 
 export interface RunInfo {
   conclusion: string | null; status: string; at: string; url?: string;
@@ -261,10 +262,16 @@ export function findHandoffs(reports: Record<string, unknown>, checks: BotCheck[
 }
 
 /** The full check: every bot in the structure, its status, problems, fixes, ideas; then the handoffs. */
-export function runPrecheck(reports: Record<string, unknown>, runs: Record<string, RunInfo | undefined>, now: number): PrecheckFile {
+export function runPrecheck(reports: Record<string, unknown>, runs: Record<string, RunInfo | undefined>, now: number, controls?: OwnerControls): PrecheckFile {
   const bots: BotCheck[] = [];
   for (const bot of BOTS) {
     const c: BotCheck = { id: bot.id, status: 'idle', problems: [], fixes: [], ideas: [] };
+    // «صاحب الموقع» paused it (or froze every robot): not late, not broken, nobody restarts it — it waits for him.
+    if (controls && bot.workflow && stoppedByOwner(controls, bot.id)) {
+      c.ideas.push(OWNER_STOPPED_AR);
+      bots.push(c);
+      continue;
+    }
     let level: BotStatus = 'idle';
     const raise = (s: BotStatus) => { if (RANK[s] > RANK[level]) level = s; };
     const run = bot.workflow ? runs[bot.workflow] : undefined;

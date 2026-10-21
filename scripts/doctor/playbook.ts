@@ -12,7 +12,7 @@ import type { CheckId, Finding } from './probes';
 export type ActionKind = 'reset_runtime' | 'rerun_pages' | 'rerun_keys' | 'redeploy_vercel' | 'nudge_deploy' | 'ai_fix' | 'revert' | 'verify_build';
 export interface Action { kind: ActionKind; reason: string; problem?: string; evidence?: string; sha?: string; check?: CheckId }
 
-export interface FixRecord { at: string; problem: string; result: 'merged' | 'failed' | 'verified' | 'reverted' | 'unverified'; sha?: string; url?: string; summary?: string }
+export interface FixRecord { at: string; problem: string; result: 'merged' | 'failed' | 'verified' | 'reverted' | 'unverified' | 'awaiting_owner'; sha?: string; url?: string; summary?: string }
 export interface DoctorState {
   version: 1;
   runs: number;
@@ -59,7 +59,9 @@ const fixesToday = (state: DoctorState, now: number) => state.fixes.filter((f) =
 
 /** Room for one more code fix (review mode is handled separately: planned actions are only reported). */
 export const canFix = (state: DoctorState, caps: Capabilities, now: number) =>
-  caps.ai && !state.pending && fixesToday(state, now) < MAX_FIXES_PER_DAY;
+  caps.ai && !state.pending && fixesToday(state, now) < MAX_FIXES_PER_DAY
+  // A bigger change waiting for the owner's click: no second one is proposed the same day.
+  && !state.fixes.some((f) => f.result === 'awaiting_owner' && now - Date.parse(f.at) < 24 * 60 * MIN);
 
 export function decide(findings: Finding[], state: DoctorState, caps: Capabilities, now = Date.now()): { actions: Action[]; notes: string[] } {
   const by = Object.fromEntries(findings.map((f) => [f.id, f])) as Record<CheckId, Finding>;

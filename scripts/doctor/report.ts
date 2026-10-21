@@ -36,7 +36,7 @@ export function renderBody(findings: Finding[], state: DoctorState, extra: { not
   const recent = state.history.slice(-36);
   const timeline = recent.map((h) => (h.fails.length ? '🔴' : h.warns.length ? '🟡' : '🟢')).join('');
   const fixes = state.fixes.slice(-10).reverse();
-  const RESULT = { merged: '⏳ اتدمج، بيتراقب', failed: '❌ ما عدّاش الفحوص — ما اتطبقش', verified: '✅ اتأكد إنه شغال', reverted: '↩️ اترجع تلقائيًا', unverified: '⚪ ما اتنشرش للتأكيد' };
+  const RESULT = { merged: '⏳ اتدمج، بيتراقب', failed: '❌ ما عدّاش الفحوص — ما اتطبقش', verified: '✅ اتأكد إنه شغال', reverted: '↩️ اترجع تلقائيًا', unverified: '⚪ ما اتنشرش للتأكيد', awaiting_owner: '🔑 مستني موافقة صاحب الموقع' };
   return [
     `## ${HEADLINE[status]}`,
     '',

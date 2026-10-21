@@ -17,6 +17,7 @@ import {
   type SeatOpinion, type Task,
 } from './council';
 import { isPrecheckFile, pressureOf, runPrecheck } from './precheck';
+import { loadOwnerControls } from '../owner/load';
 import { fetchRuns, readReports } from './runs';
 
 const env = process.env;
@@ -66,7 +67,7 @@ const data: LiveData = {
 const stored = read('shaheen-precheck.json');
 const precheck = isPrecheckFile(stored) && now - Date.parse(stored.updatedAt) < 8 * 3600_000
   ? stored
-  : runPrecheck(readReports(), await fetchRuns(repo, token), now);
+  : runPrecheck(readReports(), await fetchRuns(repo, token), now, loadOwnerControls());
 data.precheck = precheck;
 say(`Pre-meeting check${precheck === stored ? '' : ' (run now)'}: ${precheck.summaryAr}`);
 const openTasks = file.tasks.filter((t) => t.status === 'open');

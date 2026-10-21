@@ -36,6 +36,7 @@ export const TRIGGERS_AR: Record<string, string> = {
   'shaheen-inspect.yml': 'بيشتغل لما حد يطلبه',
   'shaheen-keys.yml': 'بيشتغل مع كل تحديث للموقع',
   'shaheen-manus.yml': 'وكمان بعد الفحص الشامل',
+  'owner-control.yml': 'بيشتغل لما صاحب الموقع يدّي أمر من حسابه',
 };
 
 const field = (spec: string, min: number, max: number): Set<number> => {

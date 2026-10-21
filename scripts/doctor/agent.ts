@@ -13,6 +13,9 @@ import type { BotId } from '../../src/utils/shaheenOrg';
 import { execFile } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+import { join } from 'node:path';
+import { OWNER_APPROVAL_LABEL, selfDevVerdict } from '../../src/utils/ownerAuthority';
+import { loadOwnerControls } from '../owner/load';
 import { COOLDOWN_MIN, canFix, cooled, decide, remember, type Action, type Capabilities, type DoctorState, type FixRecord } from './playbook';
 import { runProbes, type Finding, type ProbeContext } from './probes';
 import { ISSUE_LABEL, ISSUE_TITLE, eventComment, readState, renderBody, type ActionLog } from './report';
@@ -195,6 +198,21 @@ async function nudgeDeploy(x: ExecContext, reason: string) {
 }
 
 /** Commit the working-tree change as a PR and merge it (falls back to a direct push), then rebuild Pages. */
+/** «التطوير الذاتي» beyond a small safe fix: the pull request is opened for the owner and left unmerged. */
+async function proposeToOwner(x: ExecContext, files: string[], title: string, body: string): Promise<{ url: string }> {
+  const gh = x.o.github!;
+  const branch = `doctor/${x.o.runId || Date.now()}`;
+  await git(x, `git checkout --quiet -B ${branch}`);
+  await git(x, `git add -A -- ${files.map(q).join(' ')}`);
+  await git(x, `git commit --quiet -m ${q(title)} -m ${q(body.slice(0, 3000))}`);
+  await git(x, `git push --quiet origin HEAD:refs/heads/${branch}`);
+  const pr = await gh.createPull(branch, title, body);
+  await gh.ensureLabel(OWNER_APPROVAL_LABEL, 'D93F0B', 'تغيير من الروبوتات مستني موافقة صاحب الموقع (زرار الدمج)').catch(() => undefined);
+  await gh.addLabels(pr.number, [OWNER_APPROVAL_LABEL]).catch(() => undefined);
+  await git(x, 'git checkout --quiet main');
+  return { url: pr.html_url };
+}
+
 async function ship(x: ExecContext, files: string[] | 'committed', title: string, body: string): Promise<{ sha: string; url?: string }> {
   const gh = x.o.github!;
   const branch = `doctor/${x.o.runId || Date.now()}`;
@@ -263,7 +281,30 @@ async function aiFix(action: Action, x: ExecContext) {
   const body = [`🩺 إصلاح تلقائي من طبيب شاهين`, '', `**المشكلة:** ${action.reason}`, `**الإصلاح:** ${result.summary}`, '',
     `**الفحوص اللي عدّت قبل الدمج:** ${VERIFY_COMMANDS.map((c) => `\`${c}\``).join('، ')}`, '', '**السجل:**', ...result.log.map((l) => `- ${l}`), '',
     'الطبيب هيراقب الموقع بعد النشر، ولو ظهرت مشاكل جديدة هيرجّع التغيير ده تلقائيًا.'].join('\n');
-  const shipped = await ship(x, result.changed, `fix(doctor): ${result.summary.slice(0, 90) || action.reason}`, body);
+  const title = `fix(doctor): ${result.summary.slice(0, 90) || action.reason}`;
+  // «صاحب الموقع»: only a small, safe change goes in by itself (and is watched and reverted if it hurts);
+  // anything bigger — or everything, when he chose so — waits for his click on the pull request.
+  await o.sh(`git add -N -- ${result.changed.map(q).join(' ')}`);
+  const numstat = (await o.sh(`git diff --numstat -- ${result.changed.map(q).join(' ')}`)).output;
+  const lines = numstat.split('\n').reduce((sum, row) => sum + row.split('\t').slice(0, 2).reduce((a, v) => a + (Number(v) || 0), 0), 0);
+  const verdict = selfDevVerdict(loadOwnerControls(join(o.root, 'src/data/owner/controls.json')), { paths: result.changed, lines });
+  if (!verdict.auto) {
+    let proposed: { url: string };
+    try {
+      proposed = await proposeToOwner(x, result.changed, title, `${body}\n\n🔑 **${OWNER_APPROVAL_LABEL}:** ${verdict.reasonAr}. لو موافق اضغط «دمج» (Merge)، ولو مش موافق اقفله.`);
+    } catch (error) {
+      // Never around the owner: if the pull request cannot be opened, nothing goes to main.
+      await o.sh('git reset --quiet --hard && git checkout --quiet main');
+      await o.github!.deleteBranch(`doctor/${o.runId || ''}`);
+      record.summary = `${result.summary} — مستني موافقة صاحب الموقع بس طلب الدمج ماتفتحش`;
+      state.fixes.push(record); state.fixes.splice(0, Math.max(0, state.fixes.length - 20));
+      return { ok: false, detail: `${record.summary}: ${(error as Error).message.slice(0, 200)}` };
+    }
+    Object.assign(record, { result: 'awaiting_owner', url: proposed.url });
+    state.fixes.push(record); state.fixes.splice(0, Math.max(0, state.fixes.length - 20));
+    return { ok: true, detail: `${result.summary} — مستني موافقة صاحب الموقع (${verdict.reasonAr}): ${proposed.url}` };
+  }
+  const shipped = await ship(x, result.changed, title, body);
   Object.assign(record, { result: 'merged', sha: shipped.sha, url: shipped.url });
   state.fixes.push(record); state.fixes.splice(0, Math.max(0, state.fixes.length - 20));
   state.pending = { sha: shipped.sha, at: record.at, baseline, problem: record.problem };

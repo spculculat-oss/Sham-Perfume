@@ -105,6 +105,10 @@ export class GitHub {
     return this.api<{ number: number; html_url: string }>(this.r('/pulls'), { method: 'POST', body: JSON.stringify({ head, base, title, body }) });
   }
 
+  addLabels(number: number, labels: string[]) {
+    return this.api(this.r(`/issues/${number}/labels`), { method: 'POST', body: JSON.stringify({ labels }) });
+  }
+
   mergePull(number: number, title: string) {
     return this.api<{ sha: string; merged: boolean }>(this.r(`/pulls/${number}/merge`), { method: 'PUT', body: JSON.stringify({ merge_method: 'squash', commit_title: title }) });
   }

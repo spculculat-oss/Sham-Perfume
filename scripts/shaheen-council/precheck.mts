@@ -8,12 +8,13 @@
 import { appendFileSync, writeFileSync } from 'node:fs';
 import { botOf } from '../../src/utils/shaheenOrg';
 import { runPrecheck } from './precheck';
+import { loadOwnerControls } from '../owner/load';
 import { fetchRuns, readReports } from './runs';
 
 const env = process.env;
 const repo = env.GITHUB_REPOSITORY || 'spculculat-oss/Sham-Perfume';
 const runs = await fetchRuns(repo, env.GITHUB_TOKEN?.trim());
-const result = runPrecheck(readReports(), runs, Date.now());
+const result = runPrecheck(readReports(), runs, Date.now(), loadOwnerControls());
 writeFileSync(new URL('../../src/data/live/shaheen-precheck.json', import.meta.url), `${JSON.stringify(result, null, 1)}\n`);
 
 const icon = { ok: '🟢', warn: '🟡', fail: '🔴', idle: '⚪' } as const;

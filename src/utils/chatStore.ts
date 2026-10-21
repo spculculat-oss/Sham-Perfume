@@ -3,6 +3,7 @@ import { removeMediaBlocks } from './mediaBlock';
 import { findFormulaBlocks } from './aiFormulaExtractor';
 import { greetingKind, greetingReply } from './shaheenGreeting';
 import { quickAnswer } from './shaheenQuickApps';
+import { maskSensitive } from './ownerAuthority';
 import { browserMemory, type OfflineMemory } from './browserMemory';
 import { offlineNote } from './shaheenMemory';
 import { keyboardFix, understoodNote } from './shaheenSpelling';
@@ -206,7 +207,8 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       const quick = quickAnswer(text, options.language);
       if (quick) {
         publish({ ...current, messages: [...current.messages,
-          { id: id('user'), role: 'user', text, timestamp: timestamp() },
+          // A card/ID number is not even kept in this browser's chat history (it would travel with the next turn).
+          { id: id('user'), role: 'user', text: quick.app === 'privacy' ? maskSensitive(text) : text, timestamp: timestamp() },
           { id: id('bot'), role: 'assistant', text: quick.reply, timestamp: timestamp(),
             aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' } }] });
         return true;
