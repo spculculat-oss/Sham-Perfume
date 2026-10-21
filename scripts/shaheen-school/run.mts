@@ -18,7 +18,7 @@ import { councilStudy, readCouncil } from '../shaheen-council/council';
 import { RAW_MATERIALS_DATABASE } from '../../src/data/rawMaterials';
 import { referenceBlock, searchLibrary } from '../../src/utils/shaheenLibrary';
 import {
-  buildBank, emptySchool, exam, importerShare, isSchoolFile, materialDocs, parseStudy, pickStudy, selfLesson, STUDY_SYSTEM, studyPrompt,
+  buildBank, emptySchool, exam, importerShare, isSchoolFile, LOCAL_TEACHER_STYLE, materialDocs, parseStudy, pickStudy, selfLesson, STUDY_SYSTEM, studyPrompt,
   visitorQuestions, type BankQuestion, type SchoolFile, type TrainingDoc,
 } from './school';
 
@@ -80,7 +80,8 @@ try { ask = await makeAsk(env, { quota, memory: answers, maxWaitMs: 60_000, pref
 if (env.SHAM_LLM_BASE_URL?.trim()) say(`Local teacher ready (${env.SHAM_LLM_MODEL || 'open model'} on this runner, no key)`);
 // Shaheen's supervisor (scripts/shaheen-supervisor) can add quality guidance for the study answers.
 const supervisor = read<{ tools?: Record<string, { guidance?: { text?: string } }> }>(live('ai-supervisor.json'));
-const SYSTEM = STUDY_SYSTEM + guidanceBlock(supervisor?.tools?.shaheen_school?.guidance?.text);
+const localFirst = Boolean(env.SHAM_LLM_BASE_URL?.trim()) && env.SCHOOL_PREFER?.trim() === 'self_hosted';
+const SYSTEM = STUDY_SYSTEM + (localFirst ? LOCAL_TEACHER_STYLE : '') + guidanceBlock(supervisor?.tools?.shaheen_school?.guidance?.text);
 const todo = pickStudy(first.results, MAX_STUDY);
 if (!todo.length) say('Nothing left to study in the bank — Shaheen answers every question by himself');
 else if (!ask) say(`No AI engine available: ${todo.length} questions wait for the next study session (Shaheen keeps answering from what he learned)`);

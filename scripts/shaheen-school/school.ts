@@ -217,6 +217,11 @@ export const STUDY_SYSTEM = `أنت «الخبير شاهين»، خبير ال�
 ثم اكتب 4 صيغ أخرى يسأل بها الناس نفس السؤال (بنفس اللغة: عامية وفصحى وصيغة قصيرة).
 أعد JSON فقط: {"answer":"…","paraphrases":["…","…","…","…"]}`;
 
+/** For «المعلم المحلي»: a small open model writes clearer, safer Arabic in simple standard Arabic, close to the references. */
+export const LOCAL_TEACHER_STYLE = `
+تعليمات إضافية: اكتب الإجابة العربية بالعربية الفصحى المبسطة الواضحة (لا تكتب بالعامية)، بجمل قصيرة ونقاط عند الحاجة.
+اعتمد على المراجع المرفقة، ولا تذكر معلومة أو نسبة لست متأكداً منها، ولا تكتب أي حروف غير عربية إلا أسماء المواد.`;
+
 /** The study question, with what his own library already says (the teacher must agree with it, not invent). */
 export function studyPrompt(b: BankQuestion, references = ''): string {
   const q = `السؤال (${b.lang === 'ar' ? 'عربي' : 'English'}): ${b.q}`;
