@@ -100,8 +100,7 @@ export default function AdminApp() {
   const [authed, setAuthed] = useState(false);
   const [checking, setChecking] = useState(Boolean(token));
   const [loginError, setLoginError] = useState('');
-  // #admin/ops opens the operations map directly (after the admin code, like every tab).
-  const [tab, setTab] = useState<Tab>(() => (/^#\/?admin\/ops\b/.test(window.location.hash) ? 'opsmap' : 'overview'));
+  const [tab, setTab] = useState<Tab>('overview');
 
   const login = useCallback(async (candidate: string) => {
     setChecking(true); setLoginError('');
