@@ -249,6 +249,13 @@ export function escapeControlsInStrings(text: string): string {
   return out;
 }
 
+/** Why a study answer was not kept (for the report): unreadable (often cut short) or failed the checks. */
+export function studyRejection(reply: string): string {
+  const body = (reply || '').replace(/```(?:json)?/gi, '');
+  const raw = body.slice(body.indexOf('{'), body.lastIndexOf('}') + 1);
+  try { JSON.parse(escapeControlsInStrings(raw)); return 'the answer did not pass the checks'; } catch { return `unreadable answer (${reply.length} characters, probably cut short)`; }
+}
+
 export function parseStudy(reply: string, b: BankQuestion): { answer: string; paraphrases: string[] } | null {
   const body = (reply || '').replace(/```(?:json)?/gi, '');
   let data: { answer?: unknown; paraphrases?: unknown };
