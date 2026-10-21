@@ -1,7 +1,7 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-10-21T09:40:44.213Z",
+  "updatedAt": "2026-10-21T10:34:54.617Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
@@ -9,80 +9,72 @@
   "operatorNumberInputs": [],
   "bareLocaleFormatting": [],
   "languageClamps": [],
-  "score": 100,
+  "score": 67,
   "notes": [
-    "اللغات سليمة: الحزم مكتملة، والأرقام تتبع لغة الموقع في كل واجهات الزوار.",
-    "المترجم الذكي: 147926 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3232 — النهارده اتترجم 230 (الباقة خلصت — هيكمل بعد التجديد).",
+    "الترجمة مش مكتملة: 17.3% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 148106 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط الأساسية بس هي اللي مكتملة.",
+    "المترجم الذكي: 148106 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3232 — النهارده اتترجم 0 (الباقة خلصت — هيكمل بعد التجديد).",
     "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «Live Sync» src/components/HomeHub.tsx:139، «Enter Portal» src/components/HomeHub.tsx:142، «placeholder» src/assistant/ShamAssistant.tsx:20، «placeholder» src/assistant/ShamAssistant.tsx:446، «placeholder» src/assistant/ShamAssistant.tsx:447.",
     "لغات بلّغ عنها قسم التصميم بتتترجم الأول: is، sq، ps، ja."
   ],
+  "translationCoverage": 17.3,
+  "fullyTranslated": 0,
   "translation": {
-    "at": "2026-10-21T09:40:44.442Z",
+    "at": "2026-10-21T10:34:55.001Z",
     "status": "quota",
-    "remaining": 147926,
+    "remaining": 148106,
     "covered": 3232,
+    "total": 179144,
+    "fullyTranslated": 0,
     "remainingByTier": {
-      "1": 15997,
+      "1": 16177,
       "2": 100519,
       "3": 31410
     },
     "worstLanguages": [
       {
         "lang": "my",
-        "remaining": 1659
+        "remaining": 1661
       },
       {
         "lang": "dz",
-        "remaining": 1659
+        "remaining": 1661
       },
       {
         "lang": "cs",
-        "remaining": 1657
+        "remaining": 1659
       },
       {
         "lang": "ur",
-        "remaining": 1657
+        "remaining": 1659
       },
       {
         "lang": "am",
-        "remaining": 1657
+        "remaining": 1659
       },
       {
         "lang": "ha",
-        "remaining": 1657
+        "remaining": 1659
       },
       {
         "lang": "yo",
-        "remaining": 1657
+        "remaining": 1659
       },
       {
         "lang": "zu",
-        "remaining": 1657
+        "remaining": 1659
       }
     ],
     "run": {
-      "calls": 11,
-      "translated": 230,
-      "rejected": 19,
-      "droppedByReview": 16,
-      "reviewed": true,
-      "engines": [
-        "gemini",
-        "gemini (review)"
-      ],
-      "languages": [
-        "nl",
-        "uk",
-        "el",
-        "ms"
-      ],
+      "calls": 1,
+      "translated": 0,
+      "rejected": 0,
+      "droppedByReview": 0,
+      "reviewed": false,
+      "engines": [],
+      "languages": [],
       "resumeAt": "2026-10-22T08:05:00.000Z"
     },
-    "rejectReasons": {
-      "copy_of_english": 2,
-      "review": 16,
-      "wrong_script": 1
-    },
+    "rejectReasons": {},
     "rejectCounts": {
       "is|ui|e10dbc6c3b": 2,
       "fr|ui|e10dbc6c3b": 2,
@@ -164,7 +156,7 @@
     }
   },
   "design": {
-    "at": "2026-10-21T09:40:44.213Z",
+    "at": "2026-10-21T10:34:54.617Z",
     "auditAt": "2026-10-21T05:41:54.171Z",
     "auditScore": 42,
     "priorityLanguages": [
