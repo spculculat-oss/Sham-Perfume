@@ -1,3 +1,4 @@
+import readingGuideText from '../../content/library/reading-guide.json';
 import { READING_GUIDE, epubAssetUrl } from './epubAssets';
 import { EditorialPlans } from './EditorialPlans';
 import React, { lazy, Suspense, useMemo, useState } from 'react';
@@ -10,7 +11,7 @@ const EpubReader = lazy(() => import('./EpubReader').then(m => ({ default: m.Epu
 const TEXT = {
   guide: { ar: 'اقرأ الآن: دليل القراءة والتوثيق · EPUB', en: 'Read now: original Arabic library guide · EPUB' },
   guideNote: { ar: 'دليل أصلي تمهيدي قصير بالعربية، مولّد بمساعدة الذكاء الاصطناعي. ليس من الكتب المرجعية الستة عشر ولا بديلاً عنها.', en: 'A short original Arabic introduction, created with AI assistance. Not one of the sixteen reference books or a substitute for them.' },
-  open: { ar: 'فتح الكتاب · EPUB', en: 'Open book · EPUB' },
+  open: { ar: 'تفاصيل المرجع · ملف الكتاب غير مرفق', en: 'Reference details · no ebook attached' },
   loadingReader: { ar: 'جارٍ تحميل القارئ…', en: 'Loading reader…' },
   title: { ar: 'مكتبة كتب العطور الإلكترونية', en: 'Perfume book library' },
   supervision: { ar: 'أمين المكتبة — مساعد محلي للأرشفة والتصنيف تحت إشراف شاهين، ضمن قسم المحتوى. موضع مبدئي لحين توجيه شاهين.', en: 'Librarian — local archive and classification assistant under Shaheen, in Content. Provisional placement pending Shaheen’s direction.' },
@@ -62,7 +63,7 @@ export function BookLibrary({ currentLang }: { currentLang: SupportedLanguage })
       <code dir="ltr" className="block text-xs">{book.id}</code>
       <a href={`https://search.worldcat.org/search?q=${encodeURIComponent(book.title + ' ' + book.authors)}`} target="_blank" rel="noopener noreferrer" className="inline-block text-amber-300 underline">{L('source')}</a>
     </article>)}</div>
-    {showGuide && <Suspense fallback={<p role="status">{L('loadingReader')}</p>}><EpubReader book={READING_GUIDE} sourceUrl={epubAssetUrl(READING_GUIDE.file, import.meta.env.BASE_URL)} currentLang={currentLang} onClose={() => setShowGuide(false)} /></Suspense>}
+    {showGuide && <Suspense fallback={<p role="status">{L('loadingReader')}</p>}><EpubReader book={READING_GUIDE} fallbackText={readingGuideText} sourceUrl={epubAssetUrl(READING_GUIDE.file, import.meta.env.BASE_URL)} currentLang={currentLang} onClose={() => setShowGuide(false)} /></Suspense>}
     {selectedBook && <Suspense fallback={<p role="status">{L('loadingReader')}</p>}><EpubReader key={selectedBook.id} book={selectedBook} currentLang={currentLang} onClose={() => setSelectedBook(null)} /></Suspense>}
   </section>;
 }

@@ -20,7 +20,8 @@
     "verify:keys": "node --import tsx scripts/verify-ai-keys.mts",
     "sync:vercel-env": "node scripts/sync-vercel-env.mjs",
     "seo:build": "node --import tsx scripts/seo-build.mts dist",
-    "seo:run": "node --import tsx scripts/seo-agent/run.mts"
+    "seo:run": "node --import tsx scripts/seo-agent/run.mts",
+    "test:reader-browser": "node scripts/check-epub-reader.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
@@ -50,6 +51,7 @@
     "@types/react-dom": "^19.3.0",
     "autoprefixer": "^10.4.21",
     "esbuild": "^0.25.0",
+    "playwright-core": "1.61.1",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.21.0",
     "typescript": "^7.0.2"

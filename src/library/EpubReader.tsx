@@ -5,6 +5,10 @@ import type { SupportedLanguage } from '../types/i18n';
 import { makeT } from '../لغات/localize';
 
 const TEXT = {
+  unavailable: { ar: 'نص هذا المرجع غير متاح في المكتبة حالياً', en: 'This reference text is not currently available in the library' },
+  simple: { ar: 'قراءة نصية مباشرة', en: 'Read plain text' },
+  epub: { ar: 'العودة إلى قارئ EPUB', en: 'Return to EPUB reader' },
+  fallback: { ar: 'يمكنك قراءة الدليل أدناه مباشرة، حتى لو تعذر تحميل EPUB.', en: 'You can read the guide directly below, even if EPUB loading fails.' },
   close: { ar: 'إغلاق القارئ', en: 'Close reader' },
   attached: { ar: 'نسخة متاحة للقراءة المباشرة. هذا دليل تمهيدي أصلي قصير، وليس نسخة من المراجع العلمية أو اعتماداً لمحتواها.', en: 'Available for immediate reading. This is a short original introductory guide, not a copy or scientific endorsement of the reference books.' },
   missing: { ar: 'لا يوجد ملف EPUB مرفق لهذا المرجع. اختر نسختك المسموح لك بقراءتها؛ فتح الملف لا يرفعه للموقع ولا يحوله لنسخة منشورة.', en: 'No EPUB is attached to this reference. Choose a copy you are entitled to read; opening a file does not upload or publish it.' },
@@ -19,11 +23,13 @@ export const MAX_EPUB_BYTES = 20 * 1024 * 1024;
 export function validEpubFile(file: Pick<File, 'name' | 'size'>): boolean {
   return /\.epub$/i.test(file.name) && file.size > 0 && file.size <= MAX_EPUB_BYTES;
 }
-export function EpubReader({ book, sourceUrl, currentLang, onClose }: { book: { title: string }; sourceUrl?: string; currentLang: SupportedLanguage; onClose: () => void }) {
+export interface ReaderText { description: string; chapters: Array<{ title: string; paragraphs: string[] }> }
+export function EpubReader({ book, sourceUrl, fallbackText, currentLang, onClose }: { book: { title: string }; sourceUrl?: string; fallbackText?: ReaderText; currentLang: SupportedLanguage; onClose: () => void }) {
   const L = makeT(currentLang, TEXT);
   const dialog = useRef<HTMLDialogElement>(null);
   const viewport = useRef<HTMLDivElement>(null);
   const rendition = useRef<Rendition | null>(null);
+  const [simple, setSimple] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<'empty' | 'loading' | 'ready' | 'error'>('empty');
   const [toc, setToc] = useState<Array<{ id: string; label: string; href: string }>>([]);
@@ -88,6 +94,8 @@ export function EpubReader({ book, sourceUrl, currentLang, onClose }: { book: { 
       viewport.current?.replaceChildren();
     };
   }, [file, sourceUrl]);
+  const hasSource = Boolean(file || sourceUrl);
+  const showText = Boolean(fallbackText && !file && (simple || status !== 'ready'));
   function navigate(action: 'prev' | 'next' | string) {
     const view = rendition.current;
     if (!view) return;
@@ -96,27 +104,36 @@ export function EpubReader({ book, sourceUrl, currentLang, onClose }: { book: { 
   }
   return <dialog ref={dialog} onCancel={e => { e.preventDefault(); onClose(); }} onClick={e => { if (e.target === e.currentTarget) onClose(); }} aria-labelledby="epub-title"
     className="m-auto w-[96vw] max-w-6xl h-[92dvh] max-h-[92dvh] rounded-2xl border border-stone-600 bg-stone-950 text-stone-100 p-0 backdrop:bg-black/80">
-    <div className="flex h-full flex-col gap-3 p-4">
+    <div className="flex h-full min-h-0 flex-col gap-3 p-4">
       <header className="flex items-start justify-between gap-3"><h2 id="epub-title" dir="auto" className="font-bold">{book.title}</h2>
         <button autoFocus onClick={onClose} className="shrink-0 rounded border border-stone-500 p-2">{L('close')}</button></header>
       <p className="text-sm text-stone-300">{L(sourceUrl && !file ? 'attached' : 'missing')}</p>
+      {!hasSource && <div role="status" className="rounded-lg border border-amber-500 bg-amber-950/60 p-4"><h3 className="font-bold">{L('unavailable')}</h3><p className="mt-2 text-sm">{L('missing')}</p></div>}
+      {fallbackText && !file && <button className="self-start rounded border border-amber-500 px-3 py-2" onClick={() => setSimple(v => !v)}>{L(simple ? 'epub' : 'simple')}</button>}
       <label className="text-sm">{L('choose')}<input type="file" accept=".epub,application/epub+zip" className="block max-w-full mt-2" onChange={e => {
         const selected = e.target.files?.[0]; e.target.value = '';
         if (!selected) return;
-        setFile(null); setToc([]);
+        setFile(null); setToc([]); setSimple(false);
         if (!validEpubFile(selected)) { setStatus('error'); return; }
         setFile(selected);
       }} /></label>
       {status === 'loading' && <p role="status">{L('loading')}</p>}
       {status === 'error' && <p role="alert" className="text-amber-300">{L('error')}</p>}
-      <nav aria-label={L('toc')} className="flex flex-wrap gap-2">
+      <nav style={{ display: !hasSource || showText ? 'none' : undefined }} aria-label={L('toc')} className="flex flex-wrap gap-2">
         <button disabled={status !== 'ready'} onClick={() => navigate('prev')} className="rounded border p-2 disabled:opacity-40">{L('prev')}</button>
         <button disabled={status !== 'ready'} onClick={() => navigate('next')} className="rounded border p-2 disabled:opacity-40">{L('next')}</button>
         <select aria-label={L('toc')} disabled={status !== 'ready'} value="" onChange={e => navigate(e.target.value)} className="min-w-0 max-w-full flex-1 rounded border bg-stone-900 p-2">
           <option value="" disabled>{L('toc')}</option>{toc.map((item, i) => <option key={`${item.id}-${i}`} value={item.href}>{item.label}</option>)}
         </select>
       </nav>
-      <div ref={viewport} dir="ltr" className="min-h-0 flex-1 rounded bg-white overflow-hidden" style={{ visibility: status === 'ready' || status === 'loading' ? 'visible' : 'hidden' }} />
+      <div className="relative min-h-0 flex-1">
+      {showText && fallbackText && <article aria-label={L('simple')} lang="ar" dir="rtl" className="absolute inset-0 z-10 overflow-y-auto rounded bg-white p-5 text-stone-900 leading-loose" tabIndex={0}>
+        <p className="mb-4 text-sm text-stone-600">{L('fallback')}</p>
+        <p className="mb-5">{fallbackText.description}</p>
+        {fallbackText.chapters.map(chapter => <section key={chapter.title} className="mb-8"><h3 className="mb-4 text-xl font-bold">{chapter.title}</h3>{chapter.paragraphs.map((paragraph, i) => <p key={i} className="mb-4">{paragraph}</p>)}</section>)}
+      </article>}
+      <div ref={viewport} dir="ltr" aria-hidden={showText || !hasSource} className="absolute inset-0 rounded bg-white overflow-hidden" style={{ visibility: !showText && hasSource && (status === 'ready' || status === 'loading') ? 'visible' : 'hidden' }} />
+      </div>
     </div>
   </dialog>;
 }
