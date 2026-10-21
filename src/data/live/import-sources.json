@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T13:21:48.779Z",
+ "updatedAt": "2026-10-21T14:55:17.636Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -2445,8 +2445,8 @@
    "foundBy": "brand-site",
    "foundWith": "Al Wataniah",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T14:55:17.636Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2458,8 +2458,8 @@
    "foundBy": "brand-site",
    "foundWith": "Al Wataniah",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T14:55:17.636Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2471,8 +2471,8 @@
    "foundBy": "brand-site",
    "foundWith": "Lattafa Pride",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T14:55:17.636Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2484,8 +2484,8 @@
    "foundBy": "brand-site",
    "foundWith": "Lattafa Pride",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T14:55:17.636Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2497,8 +2497,8 @@
    "foundBy": "brand-site",
    "foundWith": "Lattafa Pride",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T14:55:17.636Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2929,8 +2929,8 @@
    "foundBy": "brand-site",
    "foundWith": "Volare",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T14:55:17.636Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2942,12 +2942,12 @@
    "foundBy": "brand-site",
    "foundWith": "Shama",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T14:55:17.636Z",
    "trust": {
     "score": 62,
     "verdict": "trusted",
-    "at": "2026-10-21T07:16:55.374Z",
+    "at": "2026-10-21T14:55:17.636Z",
     "checks": [
      {
       "id": "age",
@@ -3182,8 +3182,8 @@
    "foundBy": "brand-site",
    "foundWith": "Shama",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T10:34:54.765Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T14:55:17.636Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -3195,8 +3195,8 @@
    "foundBy": "brand-site",
    "foundWith": "Afnan",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T10:34:54.765Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T14:55:17.636Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -3804,8 +3804,8 @@
    "foundBy": "brand-site",
    "foundWith": "Afnan",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T10:34:54.765Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-21T14:55:17.636Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -7365,6 +7365,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-21T14:55:17.636Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 10,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "✗ alwataniahperfumes.com: الموقع لا يفتح",
+    "✗ alwataniahparfums.com: الموقع لا يفتح",
+    "✗ lattafapride.com: الموقع لا يفتح",
+    "✗ lattafaprideperfumes.com: الموقع لا يفتح",
+    "✗ lattafaprideparfums.com: الموقع لا يفتح",
+    "✗ volareparfums.com: الموقع لا يفتح",
+    "  ↳ shama.com: CV 62/100 [age,https,identity,returns,privacy,social,authentic]",
+    "✗ shama.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "✗ shamaparfums.com: الموقع لا يفتح",
+    "✗ afnanperfumes.com: الموقع لا يفتح",
+    "✗ afnanparfums.com: الموقع لا يفتح"
+   ]
+  },
   {
    "at": "2026-10-21T13:21:48.779Z",
    "mode": "self",

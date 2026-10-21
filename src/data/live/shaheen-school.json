@@ -1,26 +1,32 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T13:23:03.645Z",
+ "updatedAt": "2026-10-21T14:57:11.679Z",
  "reliance": {
-  "score": 93,
-  "covered": 161,
+  "score": 95,
+  "covered": 165,
   "total": 173,
-  "fromMemory": 161,
+  "fromMemory": 165,
   "fromLibrary": 2,
   "byLang": {
    "ar": {
-    "covered": 143,
+    "covered": 146,
     "total": 152
    },
    "en": {
-    "covered": 18,
+    "covered": 19,
     "total": 21
    }
   }
  },
- "studiedTotal": 68,
+ "studiedTotal": 72,
  "selfTaughtTotal": 60,
  "history": [
+  {
+   "at": "2026-10-21T14:57:11.679Z",
+   "score": 95,
+   "studied": 4,
+   "mode": "local"
+  },
   {
    "at": "2026-10-21T13:23:03.645Z",
    "score": 93,
@@ -162,6 +168,30 @@
  ],
  "lastStudied": [
   {
+   "q": "Why does my homemade perfume smell too much of alcohol?",
+   "lang": "en",
+   "at": "2026-10-21T14:57:11.679Z",
+   "variants": 0
+  },
+  {
+   "q": "ايه الادوات اللي محتاجها عشان ابدأ اركب عطور؟",
+   "lang": "ar",
+   "at": "2026-10-21T14:57:11.679Z",
+   "variants": 0
+  },
+  {
+   "q": "العطر ريحته على الجلد غير في الزجاجة ليه؟",
+   "lang": "ar",
+   "at": "2026-10-21T14:57:11.679Z",
+   "variants": 4
+  },
+  {
+   "q": "ليه العطر بيعمل حساسية لبعض الناس؟",
+   "lang": "ar",
+   "at": "2026-10-21T14:57:11.679Z",
+   "variants": 0
+  },
+  {
    "q": "What is an accord in perfumery?",
    "lang": "en",
    "at": "2026-10-21T13:23:03.645Z",
@@ -256,30 +286,6 @@
    "lang": "ar",
    "at": "2026-10-21T12:19:44.918Z",
    "variants": 0
-  },
-  {
-   "q": "ليه العطر اللي عملته ريحته اختفت بسرعة؟",
-   "lang": "ar",
-   "at": "2026-10-21T12:19:44.918Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه هي مكونات العطر الاساسية و النوتات العليا والقلب والقاعدة وعطر الشيبر وتغير الرائحة",
-   "lang": "ar",
-   "at": "2026-10-19T18:55:40.985Z",
-   "variants": 4
-  },
-  {
-   "q": "Can perfume cause skin allergies?",
-   "lang": "en",
-   "at": "2026-10-19T12:55:51.025Z",
-   "variants": 0
-  },
-  {
-   "q": "How should I store perfume?",
-   "lang": "en",
-   "at": "2026-10-19T12:55:51.025Z",
-   "variants": 0
   }
  ],
  "pending": [
@@ -294,27 +300,12 @@
    "topic": "library"
   },
   {
-   "q": "ليه العطر بيعمل حساسية لبعض الناس؟",
-   "lang": "ar",
-   "topic": "problems"
-  },
-  {
-   "q": "العطر ريحته على الجلد غير في الزجاجة ليه؟",
-   "lang": "ar",
-   "topic": "problems"
-  },
-  {
    "q": "ازاي اعرف ان الزيت العطري مغشوش؟",
    "lang": "ar",
    "topic": "problems"
   },
   {
    "q": "ازاي اختبر عطر جديد قبل ما اعمل منه كمية كبيرة؟",
-   "lang": "ar",
-   "topic": "skills"
-  },
-  {
-   "q": "ايه الادوات اللي محتاجها عشان ابدأ اركب عطور؟",
    "lang": "ar",
    "topic": "skills"
   },
@@ -327,11 +318,6 @@
    "q": "ازاي احافظ على ثبات جودة العطر من دفعة للتانية؟",
    "lang": "ar",
    "topic": "business"
-  },
-  {
-   "q": "Why does my homemade perfume smell too much of alcohol?",
-   "lang": "en",
-   "topic": "problems-en"
   },
   {
    "q": "Suggest a fresh citrus perfume formula for summer with percentages",
@@ -349,5 +335,5 @@
   "aiReadings": 0,
   "localReadings": 25
  },
- "localTaughtTotal": 17
+ "localTaughtTotal": 21
 }
