@@ -47,6 +47,12 @@ jobs:
         run: bun run test:vercel
       - name: Verify Tencent EdgeOne build (Cloud Function + persistent state)
         run: bun run check:edgeone
+      - name: Operations map code (salted hash only)
+        # «خريطة التشغيل» on Pages checks its own code in the browser: only a slow salted hash of the owner's
+        # SHAM_OPS_CODE secret reaches the build (VITE_OPS_CODE); the code itself is never printed or bundled.
+        env:
+          SHAM_OPS_CODE: ${{ secrets.SHAM_OPS_CODE }}
+        run: node scripts/ci/ops-code-hash.mjs
       - name: Build current source for Pages
         # GitHub Pages is static: the chatbots call the deployed Vercel API cross-origin.
         # Override with the PAGES_API_BASE_URL repository variable ("none" = no server features).
