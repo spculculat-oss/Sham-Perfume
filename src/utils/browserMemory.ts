@@ -5,6 +5,7 @@
  * or a static copy of the site with no API — so Shaheen still answers what he already knows.
  */
 import { curateMemory, emptyMemory, isMemoryFile, recallSimilar, remember, touch, type MemoryFile } from './shaheenMemory';
+import { baseLexicon, buildLexicon, understandQuestion, type Lexicon, type Understanding } from './shaheenSpelling';
 
 const KEY = 'shaheen_memory_v1';
 const LOCAL_LIMITS = { maxEntries: 100, ttlDays: 60, freshDays: 30, maxAnswerChars: 12_000, offlineSimilarity: 0.55 };
@@ -17,6 +18,8 @@ export interface OfflineMemory {
   library?(question: string, lang: string): Promise<string | undefined>;
   /** «باحث شاهين»: a new question looked up in open sources (Wikipedia's public API, straight from the browser). */
   research?(question: string, lang: string): Promise<string | undefined>;
+  /** «فهم شاهين للغلطات»: the question as he understands it (mistyped words read as the words he knows). */
+  understand?(question: string, lang: string): Promise<Understanding>;
 }
 
 function readLocal(): MemoryFile {
@@ -36,6 +39,15 @@ let shared: Promise<MemoryFile> | undefined;
 const sharedMemory = () => shared ??= import('../data/live/shaheen-memory.json')
   .then((m) => { const data: unknown = (m as { default?: unknown }).default ?? m; return isMemoryFile(data) ? data : emptyMemory(); })
   .catch(() => { shared = undefined; return emptyMemory(); });
+
+let lexicon: Promise<Lexicon> | undefined;
+/** Every word he knows: his lessons, the encyclopaedia, the site's memory and this browser's (loaded once, when needed). */
+const siteLexicon = () => lexicon ??= Promise.all([import('../data/live/sham-training.json'), import('../data/rawMaterials'), sharedMemory()])
+  .then(([lessons, { RAW_MATERIALS_DATABASE }, site]) => {
+    const docs = ((lessons as { default?: { docs?: unknown } }).default ?? lessons) as { docs?: { id: string; title: string; content: string }[] };
+    return buildLexicon({ lessons: Array.isArray(docs.docs) ? docs.docs : [], materials: RAW_MATERIALS_DATABASE, memory: { ...site, entries: [...readLocal().entries, ...site.entries] } });
+  })
+  .catch(() => { lexicon = undefined; return baseLexicon(); });
 
 export const browserMemory: OfflineMemory = {
   learn(input) {
@@ -60,6 +72,10 @@ export const browserMemory: OfflineMemory = {
     const docs = ((lessons as { default?: { docs?: unknown } }).default ?? lessons) as { docs?: { id: string; title: string; content: string }[] };
     const memory = { ...site, entries: [...readLocal().entries, ...site.entries] };
     return libraryAnswer({ lessons: Array.isArray(docs.docs) ? docs.docs : [], materials: RAW_MATERIALS_DATABASE, memory }, question, lang)?.answer;
+  },
+  async understand(question) {
+    // Only in the built site (Vite) are his lessons loaded; elsewhere the built-in perfume words.
+    return understandQuestion(question, typeof import.meta.env?.MODE === 'string' ? await siteLexicon() : baseLexicon());
   },
   async research(question, lang) {
     if (typeof import.meta.env?.MODE !== 'string' || typeof fetch !== 'function') return undefined;

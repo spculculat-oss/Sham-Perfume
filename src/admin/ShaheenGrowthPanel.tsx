@@ -229,6 +229,16 @@ export default function ShaheenGrowthPanel() {
                   {recent.map((h) => <div key={h.at} title={`${when(h.at)} — ${h.score}%`} className={`flex-1 rounded-t ${h.mode === 'ai' ? 'bg-amber-400' : h.mode === 'local' ? 'bg-emerald-400' : 'bg-amber-200'}`} style={{ height: `${Math.max(4, h.score)}%` }} />)}
                 </div>
               )}
+              {school.spelling && (
+                <div className="mt-3">
+                  <div className="mb-1 flex justify-between text-xs"><span>{T('فهم الكلمات المكتوبة غلط')}</span><b>{school.spelling.score}%</b></div>
+                  <Meter value={school.spelling.score} tone="bg-violet-500" />
+                  <p className="mt-1 text-[11px] text-stone-500">
+                    {TP('فهم {ok} من {all} كلمة متكتبة غلط، ورد لوحده على {answered} من {asked} سؤال كلمته الأساسية غلط', { ok: school.spelling.understood, all: school.spelling.tried, answered: school.spelling.questions.answered, asked: school.spelling.questions.tried })}
+                  </p>
+                  {school.spelling.misses.length > 0 && <p className="mt-0.5 text-[11px] text-stone-400" dir="rtl">{T('لسه بيتلخبط في')}: {school.spelling.misses.slice(0, 3).join(' · ')}</p>}
+                </div>
+              )}
             </div>
             <div className="text-xs">
               {school.pending.length > 0 && (

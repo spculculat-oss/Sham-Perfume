@@ -22,6 +22,7 @@ import type { ShaheenRuntime } from './core/maintenance';
 import type { ShaheenMemory } from './core/memory';
 import { isPersonal, isTimeBound, offlineNote } from '../src/utils/shaheenMemory';
 import { libraryAnswer, type LibrarySources } from '../src/utils/shaheenLibrary';
+import { buildLexicon, keyboardFix, understandQuestion, understoodNote, type Understanding } from '../src/utils/shaheenSpelling';
 import { research as lookUp, RESEARCH_USER_AGENT, researchAnswer, type Research } from '../src/utils/webResearch';
 import { questionIntents } from '../src/utils/shaheenTools';
 import { RAW_MATERIALS_DATABASE } from '../src/data/rawMaterials';
@@ -388,7 +389,10 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
     let chatInput: { input: ChatRequest; mode: string; useMemory: boolean } | undefined;
     res.on('close', cancel);
     try {
-      const input = validateChatRequest(req.body);
+      const checked = validateChatRequest(req.body);
+      // «فهم شاهين للغلطات»: Arabic typed with the English keyboard on («.ivm hgg,js») is read as the Arabic meant.
+      const typed = keyboardFix(checked.message);
+      const input = typed ? { ...checked, message: typed } : checked;
       const ip = clientKey(req);
       const browser = req.get('x-sham-visitor') || (typeof req.body?.visitorId === 'string' ? req.body.visitorId : undefined);
       const visitor = browser && VISITOR_ID.test(browser) ? `${ip}|${browser}` : ip;
@@ -437,10 +441,21 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       // No engine answered: the closest question Shaheen answered before, marked as coming from memory.
       if (error instanceof ChatError && OFFLINE_CODES.has(error.code) && chatInput?.useMemory) {
         const { input, mode } = chatInput;
-        const hit = await memory!.recallSimilar(input.message, input.language).catch(() => undefined);
+        let hit = await memory!.recallSimilar(input.message, input.language).catch(() => undefined);
+        // «فهم شاهين للغلطات»: nothing close as typed — the question as he understands it (a mistyped word read as
+        // the word meant, from everything he knows), shown with the answer so a wrong guess is visible.
+        let sources: LibrarySources | undefined;
+        let understood: Understanding | undefined;
+        if (!hit) {
+          sources = await library().catch(() => ({ lessons: [], materials: [] }));
+          understood = understandQuestion(input.message, buildLexicon(sources));
+          if (understood.changed) hit = await memory!.recallSimilar(understood.text, input.language).catch(() => undefined);
+        }
+        const asked = understood?.changed ? understood.text : input.message;
+        const note = understood ? understoodNote(input.language, understood) : '';
         if (hit && !res.destroyed) {
           if (!hit.exact) await noteForStudy(input.message);
-          res.json({ ...publicChatResult({ reply: hit.entry.answer + offlineNote(input.language, hit.exact), mode }, input.message), memory: hit.exact ? 'exact' : 'similar' });
+          res.json({ ...publicChatResult({ reply: note + hit.entry.answer + offlineNote(input.language, hit.exact), mode }, input.message), memory: hit.exact ? 'exact' : 'similar' });
           // Still an engine outage for the maintenance agent, even though the visitor got an answer.
           runtime?.record({ ms: Date.now() - started, status: error.status, code: `${error.code}+MEMORY` });
           return;
@@ -449,16 +464,16 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
         // the browser answers those with the store's own picks).
         if (!questionIntents(input.message).includes('store')) {
           const recorded = await noteForStudy(input.message);
-          const found = libraryAnswer(await library().catch(() => ({ lessons: [], materials: [] })), input.message, input.language, { recorded });
+          const found = libraryAnswer(sources || await library().catch(() => ({ lessons: [], materials: [] })), asked, input.language, { recorded });
           if (found && !res.destroyed) {
-            res.json({ ...publicChatResult({ reply: found.answer, mode }, input.message), memory: 'library' });
+            res.json({ ...publicChatResult({ reply: note + found.answer, mode }, input.message), memory: 'library' });
             runtime?.record({ ms: Date.now() - started, status: error.status, code: `${error.code}+LIBRARY` });
             return;
           }
           // Not in his library either: «باحث شاهين» looks it up in open sources and answers from what he read.
-          const found2 = await research(input.message, input.language).catch(() => undefined);
+          const found2 = await research(asked, input.language).catch(() => undefined);
           if (found2 && !res.destroyed) {
-            res.json({ ...publicChatResult({ reply: researchAnswer(found2, { recorded }), mode }, input.message), memory: 'research' });
+            res.json({ ...publicChatResult({ reply: note + researchAnswer(found2, { recorded }), mode }, input.message), memory: 'research' });
             runtime?.record({ ms: Date.now() - started, status: error.status, code: `${error.code}+RESEARCH` });
             return;
           }

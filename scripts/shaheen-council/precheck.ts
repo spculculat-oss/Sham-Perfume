@@ -166,6 +166,9 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       if (rel !== undefined && rel < 50) f.push({ level: 'fail', problem: `بيرد لوحده على ${rel}% بس من الأسئلة`, fix: 'مذاكرة الأسئلة الناقصة' });
       else if (rel !== undefined && rel < 70) f.push({ level: 'warn', problem: `الاعتماد على النفس ${rel}%` });
       else if (rel !== undefined && rel < 95) f.push({ level: 'note', idea: `يوصل الاعتماد على النفس من ${rel}% لـ 95%` });
+      // «فهم شاهين للغلطات»: mistyped words he must still understand.
+      const spell = n(o(r.spelling).score);
+      if (spell !== undefined && spell < 80) f.push({ level: 'warn', problem: `بيفهم ${spell}% بس من الكلمات المكتوبة غلط`, fix: 'مراجعة قاموس شاهين (src/utils/shaheenSpelling.ts) والأمثلة اللي فشلت في تقرير المدرسة' });
       break;
     }
     case 'teacher': {

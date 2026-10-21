@@ -58,9 +58,17 @@ async function getJson(fetchFn: Fetch, url: string, signal?: AbortSignal, userAg
 
 /** Titles of the articles Wikipedia's own search finds (official API, CORS-open: works from a browser too). */
 export async function wikiSearch(fetchFn: Fetch, query: string, lang: string, limit = 3, signal?: AbortSignal, userAgent?: string): Promise<string[]> {
-  const url = `https://${wikiLang(lang)}.wikipedia.org/w/api.php?action=query&list=search&format=json&formatversion=2&origin=*&utf8=1&srprop=&srlimit=${limit}&srsearch=${encodeURIComponent(query)}`;
-  const data = await getJson(fetchFn, url, signal, userAgent) as { query?: { search?: { title?: unknown }[] } };
-  return (data.query?.search || []).map((r) => r.title).filter((t): t is string => typeof t === 'string');
+  return (await wikiSearchInfo(fetchFn, query, lang, limit, signal, userAgent)).titles;
+}
+/** The titles, and Wikipedia's own spelling suggestion («هل تقصد») when the words look mistyped. */
+export async function wikiSearchInfo(fetchFn: Fetch, query: string, lang: string, limit = 3, signal?: AbortSignal, userAgent?: string): Promise<{ titles: string[]; suggestion?: string }> {
+  const url = `https://${wikiLang(lang)}.wikipedia.org/w/api.php?action=query&list=search&format=json&formatversion=2&origin=*&utf8=1&srprop=&srinfo=suggestion&srlimit=${limit}&srsearch=${encodeURIComponent(query)}`;
+  const data = await getJson(fetchFn, url, signal, userAgent) as { query?: { search?: { title?: unknown }[]; searchinfo?: { suggestion?: unknown } } };
+  const suggestion = data.query?.searchinfo?.suggestion;
+  return {
+    titles: (data.query?.search || []).map((r) => r.title).filter((t): t is string => typeof t === 'string'),
+    suggestion: typeof suggestion === 'string' && suggestion.trim() && normalizeQuestion(suggestion) !== normalizeQuestion(query) ? suggestion.trim() : undefined,
+  };
 }
 
 /** An article's plain text, without its references and link sections. */
@@ -98,8 +106,8 @@ const overlap = (a: string, b: string) => {
  * The analysis: the best passages across all the sources, one idea each (near-duplicates merged), a passage that
  * other sources confirm (same topic words in their text) ranked higher. Only passages about the question are kept.
  */
-export function analyse(texts: { source: WebSource; text: string }[], question: string, max = 4): WebPassage[] {
-  const words = researchWords(question);
+export function analyse(texts: { source: WebSource; text: string }[], question: string, max = 4, topic?: string[]): WebPassage[] {
+  const words = topic?.length ? topic : researchWords(question);
   if (!words.length) return [];
   const needed = Math.max(1, Math.ceil(Math.min(words.length, 4) / 2));
   const all = texts.flatMap((t) => findPassages(t.text, words, t.source)).filter((p) => p.matched >= needed);
@@ -125,15 +133,28 @@ export async function research(fetchFn: Fetch, question: string, lang: string, o
   const signal = AbortSignal.timeout(options.timeoutMs ?? 9000);
   // The plain search and the one in the perfume context, merged: an article named after the topic first.
   const max = options.articles ?? 3;
-  const words = researchWords(question);
-  const found: string[] = []; let query = '';
+  let words = researchWords(question);
+  const found: string[] = []; let query = ''; let suggestion: string | undefined;
   for (const q of queries) {
-    const hits = await wikiSearch(fetchFn, q, lang, max, signal, options.userAgent).catch(() => []);
-    if (hits.length && !query) query = q;
-    for (const t of hits) if (!found.includes(t)) found.push(t);
+    const hits = await wikiSearchInfo(fetchFn, q, lang, max, signal, options.userAgent).catch(() => ({ titles: [] as string[], suggestion: undefined }));
+    suggestion ??= hits.suggestion;
+    if (hits.titles.length && !query) query = q;
+    for (const t of hits.titles) if (!found.includes(t)) found.push(t);
     if (found.length >= max * 2) break;
   }
-  const named = (t: string) => meaningWords(t).some((w) => words.includes(w));
+  let named = (t: string) => meaningWords(t).some((w) => words.includes(w));
+  // A mistyped word («زهره وتس»): no article is named after it, and Wikipedia suggests the spelling it knows —
+  // he searches that, and reads the articles with the suggested words.
+  if (suggestion && !found.some(named)) {
+    const fixed = researchWords(suggestion);
+    const hits = fixed.length ? await wikiSearch(fetchFn, suggestion, lang, max, signal, options.userAgent).catch(() => []) : [];
+    if (hits.length) {
+      words = [...new Set([...fixed, ...words])];
+      named = (t: string) => meaningWords(t).some((w) => fixed.includes(w));
+      found.unshift(...hits.filter((t) => !found.includes(t)));
+      query = suggestion;
+    }
+  }
   const titles = [...found.filter(named), ...found.filter((t) => !named(t))].slice(0, max);
   if (!titles.length) return undefined;
   const texts = (await Promise.all(titles.map(async (title) => {
@@ -142,7 +163,7 @@ export async function research(fetchFn: Fetch, question: string, lang: string, o
   }))).filter((t): t is { source: WebSource; text: string } => Boolean(t));
   // Shaheen's field is perfume: an article that never mentions scent («عود» the instrument) is left out — unless none does.
   const scented = texts.filter((t) => SCENT.test(t.text));
-  const passages = analyse(scented.length ? scented : texts, question);
+  const passages = analyse(scented.length ? scented : texts, question, 4, query === suggestion ? researchWords(suggestion!) : undefined);
   if (!passages.length) return undefined;
   const used = new Set(passages.map((p) => p.source.url));
   return { question, lang, query, sources: texts.map((t) => t.source).filter((s) => used.has(s.url)), passages };
