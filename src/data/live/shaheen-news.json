@@ -1,40 +1,32 @@
 {
  "version": 1,
- "updatedAt": "2026-10-20T20:57:47.337Z",
- "nextUpdateAt": "2026-10-21T08:57:47.337Z",
+ "updatedAt": "2026-10-21T00:08:56.956Z",
+ "nextUpdateAt": "2026-10-21T12:08:56.956Z",
  "intervalHours": 12,
  "editor": "shaheen",
  "digest": {
-  "ar": "تتصدّر النشرة إطلاقات العطور الجديدة، ومنها Haeze التي تدخل السوق عبر Target، إلى جانب إطلاقات وعروض عطرية في المنطقة. وتبرز أخبار السوق والمعارض حضور العطور والعود في الشارقة ودبي، فيما تشير عناوين أخرى إلى اهتمام متزايد بالتخصيص وبالعلاقة بين الأدوية وتفضيلات الروائح. بعض العناوين لا تتضمن مقتطفات كافية للتحقق من التفاصيل، لذا تقتصر الملخصات على المعلومات المتاحة.",
-  "en": "New fragrance launches lead the digest, including Haeze’s entry through Target, alongside other launches and fragrance activations in the region. Market and trade-show coverage highlights perfumes and oud in Sharjah and Dubai, while other headlines point to growing interest in personalization and the relationship between medication and scent preferences. Some headlines lack enough excerpt detail to verify specifics, so summaries are limited to the information provided."
+  "ar": "تُظهر العناوين نشاطاً متنوعاً في سوق العطور، من إطلاقات جديدة وشراكات وتغييرات قيادية إلى تقارير عن الأسعار والمعارض. وتبرز أخبار عربية عن معرضي العطور والتجميل في الشارقة، وإطلاق Armani Privé في مصر، ومؤتمر علمي حول العود التونسي. بعض العناوين لا تتضمن مقتطفاً يتيح التحقق من التفاصيل، لذا تقتصر الملخصات على المعلومات الواردة فيها.",
+  "en": "The headlines point to varied activity in the fragrance market, from new launches and partnerships to leadership changes, pricing reports and trade events. Arabic-language coverage includes the Sharjah fragrance and beauty exhibitions, an Armani Privé launch in Egypt, and a scientific conference on Tunisian oud. Some headlines lack excerpts with further details, so summaries are limited to what the supplied text states."
  },
  "sources": [
   {
    "name": "Premium Beauty News",
+   "count": 4
+  },
+  {
+   "name": "WWD",
    "count": 3
   },
   {
    "name": "Cosmetics Business",
-   "count": 3
-  },
-  {
-   "name": "WWD",
    "count": 2
-  },
-  {
-   "name": "PR Newswire",
-   "count": 1
-  },
-  {
-   "name": "Sharjah24",
-   "count": 1
   },
   {
    "name": "GlobeNewswire",
    "count": 1
   },
   {
-   "name": "lifesciencesweden.se",
+   "name": "Sharjah24",
    "count": 1
   },
   {
@@ -50,6 +42,18 @@
    "count": 1
   },
   {
+   "name": "Babnet",
+   "count": 1
+  },
+  {
+   "name": "Fashionista",
+   "count": 1
+  },
+  {
+   "name": "Beauty Packaging",
+   "count": 1
+  },
+  {
    "name": "The Art Newspaper",
    "count": 1
   },
@@ -58,15 +62,19 @@
    "count": 1
   },
   {
-   "name": "Now Smell This",
-   "count": 1
-  },
-  {
-   "name": "Babnet",
-   "count": 1
-  },
-  {
    "name": "The National",
+   "count": 1
+  },
+  {
+   "name": "PR Newswire",
+   "count": 1
+  },
+  {
+   "name": "lifesciencesweden.se",
+   "count": 1
+  },
+  {
+   "name": "Now Smell This",
    "count": 1
   },
   {
@@ -96,21 +104,361 @@
   {
    "name": "Grazia Singapore",
    "count": 1
-  },
-  {
-   "name": "Yahoo",
-   "count": 1
-  },
-  {
-   "name": "Grazia",
-   "count": 1
-  },
-  {
-   "name": "Vanity Teen",
-   "count": 1
   }
  ],
  "items": [
+  {
+   "id": "n1ls2fxh",
+   "url": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxQcm5xZmRPLThfQ085QTFzSmhTcTZhcDRQeW5kRmRmbVJfLTl2RTRaRUUxb2NZUF9Va1plaEdGbFFUYkkteUhlS002aU5pQ1pmaGNJSlhoSHZoQTl1VFZVNjIwdDB3WVZLdXh6Z1d2S2JXcjVCb0RVYW1VM051cWNhd1lGRXZtQjdVZ19FRlNCeE04aEdCVHgtbGxQRW1ZamwwWG9fWHpVV09kdGNnV1FOQ2RxOTlKakNOVjNvWFNpRzdNbUNQUU1HaWVhbVMtenp2SHJGSHlqQ2RySi05b0NiMXItVFVGQi05M0F4SDN0VFU1OUZHdWRaNVA2U2g?oc=5",
+   "source": "GlobeNewswire",
+   "publishedAt": "2026-10-20T12:00:00.000Z",
+   "original": "10ML Publishes 2026 Perfume Price Report: The Same Perfume Costs Up to 27.9% More Across the EU",
+   "lang": "en",
+   "category": "market",
+   "importance": 5,
+   "title": {
+    "ar": "تقرير: تفاوت أسعار العطر نفسه في دول الاتحاد الأوروبي",
+    "en": "Report: The Same Perfume Has Different Prices Across the EU"
+   },
+   "summary": {
+    "ar": "يقول عنوان GlobeNewswire إن تقرير 10ML لعام 2026 وجد أن سعر العطر نفسه قد يزيد بما يصل إلى 27.9% بين دول الاتحاد الأوروبي. لا يتضمن النص المقدم تفاصيل عن منهجية التقرير أو العطور التي شملها.",
+    "en": "GlobeNewswire’s headline says 10ML’s 2026 report found that the same perfume can cost up to 27.9% more across EU countries. The supplied text gives no details about the report’s methodology or the perfumes covered."
+   },
+   "note": {
+    "ar": "مقارنة الأسعار قد تكون مفيدة قبل الشراء، لكن العنوان وحده لا يكفي للحكم على نطاق الفروق أو أسبابها.",
+    "en": "Price comparisons may help shoppers, but the headline alone does not establish the scope or reasons for the differences."
+   }
+  },
+  {
+   "id": "nh47913",
+   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1tTUthaTBUaG1lenl1R2t6SUJOZDFIeFMycU5STXpaUEdxSXR0b1Rka1hsdm0tN0Qxdks4QjhuRzh2SUl5elAyaE1mSkpRWG4yTFFxMzdZeTJhWlBX?oc=5",
+   "source": "Sharjah24",
+   "publishedAt": "2026-10-20T11:08:24.000Z",
+   "original": "إكسبو الشارقة يستقطب 120 ألف زائر لمعرضي العطور والتجميل",
+   "lang": "ar",
+   "category": "events",
+   "importance": 5,
+   "title": {
+    "ar": "إكسبو الشارقة يستقطب 120 ألف زائر لمعرضي العطور والتجميل",
+    "en": "Sharjah Expo Attracts 120,000 Visitors to Fragrance and Beauty Exhibitions"
+   },
+   "summary": {
+    "ar": "يفيد عنوان Sharjah24 بأن معرضي العطور والتجميل في إكسبو الشارقة استقطبا 120 ألف زائر. لا يورد العنوان تفاصيل إضافية عن المشاركين أو نتائج المعرضين.",
+    "en": "Sharjah24’s headline reports that the fragrance and beauty exhibitions at Expo Centre Sharjah attracted 120,000 visitors. It provides no further details about exhibitors or outcomes."
+   },
+   "note": {
+    "ar": "الإقبال المعلن يلفت الانتباه إلى حضور العطور في الفعاليات الإقليمية، مع بقاء تفاصيل المعرض غير متاحة هنا.",
+    "en": "The reported turnout highlights fragrance’s place in regional events, though further exhibition details are not available here."
+   }
+  },
+  {
+   "id": "n1mt3dyb",
+   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQZDBhdkZVeHZhQU5SZl9RWEhWbE8xMWZnVXluT1dLM3JuekhhblpDNW1VYVhQaHdZelY3Q1BpSU1CTlByZWhZbjM1YzBxYlh3OEpJLVZvUy15M1BqYUo0QWlwT2F4Z2RFWmE0N3oxUEw5dEpZNHhIVVYtNVFPX2s0T2JSTWJ0MUxGVHpwaGU4ZlRyVVdQUzg0UmJOUi1pQUFSYVJyNlZaMFpQUEc1UlROYXpnWQ?oc=5",
+   "source": "WWD",
+   "publishedAt": "2026-10-20T17:26:17.000Z",
+   "original": "EXCLUSIVE: L’Artisan Parfumeur Creates the First Fragrance Talent Show, ‘Le Nez’",
+   "lang": "en",
+   "category": "industry",
+   "importance": 5,
+   "title": {
+    "ar": "L’Artisan Parfumeur تطلق مسابقة لاكتشاف المواهب في صناعة العطور",
+    "en": "L’Artisan Parfumeur Creates a Fragrance Talent Show"
+   },
+   "summary": {
+    "ar": "يصف عنوان WWD «Le Nez» بأنه أول برنامج لاكتشاف المواهب في العطور من إنشاء L’Artisan Parfumeur. لا يتضمن النص المقدم تفاصيل عن آلية البرنامج أو المشاركين.",
+    "en": "WWD describes “Le Nez” as the first fragrance talent show, created by L’Artisan Parfumeur. The supplied text gives no details about its format or participants."
+   },
+   "note": {
+    "ar": "فكرة تسلط الضوء على صانعي العطور ومواهبهم؛ ويبقى الحكم على أثرها مرهوناً بتفاصيل البرنامج.",
+    "en": "The concept puts perfumery talent in the spotlight; its impact will depend on details not provided here."
+   }
+  },
+  {
+   "id": "n1k7subq",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOUndab2xvendCVERRLWhxaHZ0VW9LRV8tOFFWOEtDcHdCUGtQYXlQRWV0b3JMQjduZnpBYURHNWxKY3hWZTN0WGY5TThJamRMa25MaUU1TGhSZEt0SVdHOUJmZHZNZ3NWNDIxMV9TRUl2SkJhU2VHeTJ0ckJxWTNjendQVDY5RjdzRVlSdnZleFdqUTFYN2NQeWRXM1plTjVKQ3dwblpUMzI?oc=5",
+   "source": "WWD",
+   "publishedAt": "2026-10-20T16:59:58.000Z",
+   "original": "Very Great Enters Beauty With Haeze, a New Fragrance Brand",
+   "lang": "en",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "Very Great تدخل مجال الجمال بعلامة عطور جديدة Haeze",
+    "en": "Very Great Enters Beauty with New Fragrance Brand Haeze"
+   },
+   "summary": {
+    "ar": "يذكر عنوان WWD أن Very Great تدخل قطاع الجمال عبر علامة عطور جديدة باسم Haeze. لا يورد العنوان معلومات عن العطور أو موعد طرحها.",
+    "en": "WWD’s headline says Very Great is entering beauty with a new fragrance brand called Haeze. It gives no information about the scents or launch timing."
+   },
+   "note": {
+    "ar": "اسم جديد يستحق المتابعة، لكن لا تتوافر هنا تفاصيل تسمح بتقييم توجه العلامة أو عطورها.",
+    "en": "A new name to watch, though there are no details here to assess the brand’s direction or fragrances."
+   }
+  },
+  {
+   "id": "n1ifi57r",
+   "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxNTzRMR2ltcmF5b0g2aGFaYmVVbDB2T1FtQzNUTnlZQ0FmMHdGYlZNRHhGSy1RLVhFcko4UFR5MjBmVVJtWVdIUE1qUUJ5ZzBUcFRlcDQ3QUVlMjZiNDJwS1hSQzV4V0pxeksxMjRPbnJLTGRPRlhmRnJESjh4RUlRNW82bFpVNGJlRXVOT3JLU010dVY2bXllc2lDZUowZ1B4MThNaFVyRUVnbllwdVVKdWxsakozWGhXemZZZkVsTk5sRm13YlhrSm90R2dCZzZn?oc=5",
+   "source": "Moodie Davitt Report",
+   "publishedAt": "2026-10-20T12:49:04.000Z",
+   "original": "Armani Beauty and Gebr. Heinemann roll out the red carpet for ‘I Will’ fragrance launch at Hamburg Airport",
+   "lang": "en",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "Armani Beauty وGebr. Heinemann تحتفيان بإطلاق عطر I Will في مطار هامبورغ",
+    "en": "Armani Beauty and Gebr. Heinemann Mark I Will Fragrance Launch at Hamburg Airport"
+   },
+   "summary": {
+    "ar": "يفيد عنوان Moodie Davitt Report بأن Armani Beauty وGebr. Heinemann أقامتا فعالية لإطلاق عطر «I Will» في مطار هامبورغ. لا يذكر العنوان تفاصيل عن تركيبة العطر.",
+    "en": "Moodie Davitt Report’s headline says Armani Beauty and Gebr. Heinemann marked the launch of “I Will” fragrance at Hamburg Airport. It does not describe the fragrance’s composition."
+   },
+   "note": {
+    "ar": "إطلاق العطر في المطار يضعه أمام جمهور المسافرين، لكن العنوان لا يوضح مدى توافره خارج هذا السياق.",
+    "en": "An airport launch puts the fragrance before travelers, but the headline does not say how widely it is available."
+   }
+  },
+  {
+   "id": "nz2vjrs",
+   "url": "https://news.google.com/rss/articles/CBMi2wJBVV95cUxQS1VzN3lWMnNEdF91YmZwVWsyaVUxdlN4cjgwbXl6WGY5QV9YcG5JVXpRdHRmbERka1NjVHprQTRIcTNwYlduWlFoU0JKV3lMaXRidHAxb01yUHJrbkVwZHNJU201Sm9lM3FEUFRmUjZ6NUpMQ0dCRUI5MjlMeWRPdkFWeTh2VkxlYlBqcmZ2NU1nN0NSbEFhX3lOYVdOSURPNWFONnlVcHZHR3RLV2oxZGVLaTB1V1VmdUQ1SWVZSk13UWVnMUltS1lEb2MtdjY2Rzh6RWVPRUFtSVdSTVRsbVRDaDQza0hLMFNudGVPRTFLaDVhVmI0NXRiUURIZFU5MkpNMk5oSGF6UU9LOTBpTjVWTm9EWXdObnlsNVVuMlJCZDRQTk85WGZhMTdZbWpOWmtxVlBLcEhBc3hmdTBwc3BKcHRqS2xWNFh3SVROeHJNV19seW80MVAwNA?oc=5",
+   "source": "Layalina Privee",
+   "publishedAt": "2026-10-20T12:25:42.000Z",
+   "original": "Armani Beauty تحتفي بإطلاق عطور أرماني بريفيه في مصر خلال مهرجان الجونة",
+   "lang": "ar",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "Armani Beauty تحتفي بإطلاق عطور Armani Privé في مصر خلال مهرجان الجونة",
+    "en": "Armani Beauty Celebrates Armani Privé Fragrance Launch in Egypt at El Gouna Festival"
+   },
+   "summary": {
+    "ar": "يذكر عنوان Layalina Privee أن Armani Beauty احتفت بإطلاق عطور Armani Privé في مصر خلال مهرجان الجونة. لا يقدم العنوان تفاصيل عن المنتجات أو الفعالية.",
+    "en": "Layalina Privee’s headline says Armani Beauty celebrated the launch of Armani Privé fragrances in Egypt during the El Gouna Festival. It provides no product or event details."
+   },
+   "note": {
+    "ar": "خبر إطلاق إقليمي مهم لمحبي الخط، لكن المعلومات المتاحة لا تحدد العطور المعنية.",
+    "en": "A regional launch update for fans of the line, though the available information does not identify the fragrances involved."
+   }
+  },
+  {
+   "id": "n1bcqgoz",
+   "url": "https://cosmeticsbusiness.com/est%C3%A9e-lauder-companies-strengthens-kilian-paris-fr%C3%A9d%C3%A9ric,malle-leadership-guillaume-gellusseau",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-20T10:38:00.000Z",
+   "original": "Estée Lauder Companies strengthens Kilian Paris and Frédéric Malle leadership with Guillaume Gellusseau",
+   "lang": "en",
+   "category": "industry",
+   "importance": 4,
+   "title": {
+    "ar": "Guillaume Gellusseau يتولى قيادة Kilian Paris وFrédéric Malle",
+    "en": "Guillaume Gellusseau to Lead Kilian Paris and Frédéric Malle"
+   },
+   "summary": {
+    "ar": "بحسب مقتطف Cosmetics Business، عُيّن Guillaume Gellusseau نائباً أول للرئيس ومديراً عاماً لعلامتي Kilian Paris وParfums Frédéric Malle التابعتين لـEstée Lauder Companies.",
+    "en": "According to the Cosmetics Business excerpt, Guillaume Gellusseau has been named SVP and GM for Estée Lauder Companies’ fragrance brands Kilian Paris and Parfums Frédéric Malle."
+   },
+   "note": {
+    "ar": "تغيير قيادي في علامتين متخصصتين؛ وقد يهم المتابعين معرفة توجهاتهما المقبلة، من دون أن يثبت الخبر أي تغيير في المنتجات.",
+    "en": "A leadership change at two fragrance brands may interest followers watching their future direction, but the report does not establish any product changes."
+   }
+  },
+  {
+   "id": "n1j3h7bp",
+   "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxQVjVSS3FNUWxHNW94ZUFNX09JdjFWbEVxTTYwb3p0V1MxVzIteGxiUDlKaElTWUxrZW9fZWg5N3BiRmxzYU5aZGloOEo0OVkzQlVTWVM1eEh2bzlfVExzX3pQa0pGZ3hPSl9zZXFGQWNIS25xME9SUTZFRGVwSkU3b1lxQnBETk5Ob3ZEWndiUG9SaVkyZjk2ZFczazhUTjVIdl9MZXVCLWd2OFcwbEpoSHlGNmJFYVRneUNaTi0tcDl3V2h3OVMwNWNRS3djQzBKNGRGMjFhQlFERnk3WW9NMzhR?oc=5",
+   "source": "DFNI",
+   "publishedAt": "2026-10-20T10:14:23.000Z",
+   "original": "Inter-African Marketing and Scentopia expand luxury fragrance activations across Africa",
+   "lang": "en",
+   "category": "industry",
+   "importance": 4,
+   "title": {
+    "ar": "Inter-African Marketing وScentopia توسعان أنشطة العطور الفاخرة في أفريقيا",
+    "en": "Inter-African Marketing and Scentopia Expand Luxury Fragrance Activations Across Africa"
+   },
+   "summary": {
+    "ar": "يقول عنوان DFNI إن Inter-African Marketing وScentopia توسعان أنشطة ترويج العطور الفاخرة في أنحاء أفريقيا. لا يوضح العنوان الأسواق أو طبيعة هذه الأنشطة.",
+    "en": "DFNI’s headline says Inter-African Marketing and Scentopia are expanding luxury fragrance activations across Africa. It does not specify the markets or the nature of those activities."
+   },
+   "note": {
+    "ar": "يشير العنوان إلى توسع في التفاعل مع جمهور العطور الفاخرة، لكن تفاصيل التنفيذ غير متاحة في النص المقدم.",
+    "en": "The headline points to expanded engagement around luxury fragrance, but implementation details are not available in the supplied text."
+   }
+  },
+  {
+   "id": "nznnks",
+   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNb0hqWXFqSmg0V3IyUUNwbzFGaUhLM2lDU0tEUDA4b3FGc2lLWVpIb2h1d2pudzhKZUx1TDI3cHVZLW5SVFdHbS1OeFYzcEhUT0lPenI2dmdST2xhdmVfMk0wNmQyTkhIWE5mVm0wZzRSY3hsSU1nSkNFazhiaGMtQQ?oc=5",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-10-20T02:03:45.000Z",
+   "original": "Beautyworld Middle East confirme son rôle clé sur le marché mondial du parfum",
+   "lang": "fr",
+   "category": "events",
+   "importance": 4,
+   "title": {
+    "ar": "Beautyworld Middle East تؤكد دورها في سوق العطور العالمي",
+    "en": "Beautyworld Middle East Reaffirms Its Role in the Global Fragrance Market"
+   },
+   "summary": {
+    "ar": "يقول عنوان Premium Beauty News إن Beautyworld Middle East تؤكد دورها في سوق العطور العالمي. لا يتضمن العنوان تفاصيل عن المعرض أو مؤشرات السوق.",
+    "en": "Premium Beauty News’s headline says Beautyworld Middle East reaffirms its role in the global fragrance market. It provides no exhibition details or market indicators."
+   },
+   "note": {
+    "ar": "خبر يبرز أهمية المعارض المتخصصة، لكن العنوان وحده لا يتيح تقييم حجم أثرها على السوق.",
+    "en": "The item underscores the importance of specialist trade fairs, but the headline alone cannot establish their market impact."
+   }
+  },
+  {
+   "id": "n1bmh3y5",
+   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBESUxua1BKbEU0QjJUMFBFczRhdVNHTnJpZnNfUWVIX0VfTE9Wb2VKb3kwTE8wQUFqZnlCc19pUTQ0dHk5RksxeFZGOTJBRk9pOUFITkQtcS0?oc=5",
+   "source": "Babnet",
+   "publishedAt": "2026-10-19T13:10:11.000Z",
+   "original": "مؤتمر علمي وطني حول العود التونسي بقصر النجمة الزهراء",
+   "lang": "ar",
+   "category": "ingredients",
+   "importance": 4,
+   "title": {
+    "ar": "مؤتمر علمي وطني حول العود التونسي في قصر النجمة الزهراء",
+    "en": "National Scientific Conference on Tunisian Oud at the Ennejma Ezzahra Palace"
+   },
+   "summary": {
+    "ar": "يفيد عنوان Babnet بانعقاد مؤتمر علمي وطني حول العود التونسي في قصر النجمة الزهراء. لا يورد العنوان موضوعات المؤتمر أو نتائجه.",
+    "en": "Babnet’s headline reports a national scientific conference on Tunisian oud at the Ennejma Ezzahra Palace. It does not state the conference topics or findings."
+   },
+   "note": {
+    "ar": "الاهتمام العلمي بالعود يهم محبي المواد العطرية المحلية، لكن لا يمكن استنتاج مضمون الأبحاث من العنوان.",
+    "en": "Scientific attention to oud may interest those who value local aromatic materials, but the headline does not reveal the research content."
+   }
+  },
+  {
+   "id": "n1w0ps8w",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBjNFYwSjA5clZ6Zm5jX3hUZ0tpT3hqVnN1clFXc0hOeHROU1N6REhDRVVKV1gzQ2FvTjM2Z3g4U3BEQjBmTmEyZ2t5NTNYWVFQM1JlTF9sOEg1VE00ZHJkeWoyNXg5Q0RqUW9TLXMzU052U1V5VWc?oc=5",
+   "source": "Fashionista",
+   "publishedAt": "2026-10-20T14:00:00.000Z",
+   "original": "Target’s Newest Fragrance Brand Wants to Make Luxury-Grade Scents More Accessible",
+   "lang": "en",
+   "category": "market",
+   "importance": 3,
+   "title": {
+    "ar": "علامة عطور جديدة لدى Target تستهدف إتاحة روائح بمستوى فاخر",
+    "en": "Target’s New Fragrance Brand Aims to Make Luxury-Grade Scents More Accessible"
+   },
+   "summary": {
+    "ar": "يقول عنوان Fashionista إن أحدث علامة عطور لدى Target تسعى إلى جعل الروائح ذات المستوى الفاخر أكثر إتاحة. لا يذكر العنوان اسم العلامة أو أسعار منتجاتها.",
+    "en": "Fashionista’s headline says Target’s newest fragrance brand aims to make luxury-grade scents more accessible. It does not name the brand or give product prices."
+   },
+   "note": {
+    "ar": "الفكرة تلامس اهتمام الباحثين عن خيارات أقل كلفة، لكن لا تتوافر معلومات كافية لمقارنة المنتجات فعلياً.",
+    "en": "The positioning may appeal to shoppers seeking more accessible options, but there is not enough information here to compare products."
+   }
+  },
+  {
+   "id": "n13daymu",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOd01FenFxM3FnZVhzM2tjQWo2ajlCWE9IWFRwRFcxUDJleVBicWF0M1JPSU9yWGhydzlvTHdQTXdxN0lJU0xBWmRCdlVsTkxwQi05S1Z5UUhfcklXU0drbUhXUE1HejF1a3VQUlFzbkdIU0R2RUl6VlVITFRIdGRCNUdsVkluQU90dHR2Q0FiN1VSV0l1ZEtYRVVRMmpQWG9GTktSZ1FR?oc=5",
+   "source": "Beauty Packaging",
+   "publishedAt": "2026-10-20T12:58:00.000Z",
+   "original": "Boss Parfums Enters International Partnership with Hyrox",
+   "lang": "en",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "Boss Parfums تدخل شراكة دولية مع Hyrox",
+    "en": "Boss Parfums Enters International Partnership with Hyrox"
+   },
+   "summary": {
+    "ar": "يذكر عنوان Beauty Packaging دخول Boss Parfums في شراكة دولية مع Hyrox. لا يوضح العنوان طبيعة الشراكة أو ما ستتضمنه.",
+    "en": "Beauty Packaging’s headline reports an international partnership between Boss Parfums and Hyrox. It does not explain the partnership’s nature or scope."
+   },
+   "note": {
+    "ar": "تعاون بين اسم في العطور وجهة أخرى، لكن التفاصيل غير كافية لتحديد ما سيعنيه لمحبي العلامة.",
+    "en": "A collaboration involving a fragrance name, but the available details are insufficient to say what it means for the brand’s fans."
+   }
+  },
+  {
+   "id": "nkul8t3",
+   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNZVZyZlhpZjk5a3Vka0JsX2V0Ti1NOTNQaGJ5bXBfbU45ODVVemwydGFGVlg3Wm1GVGRQM1FVcEZkbnV6bTBMZUxpLTBYU2EwWGtBYWgxR3NlZi1raGJsQUZsR0pFazZIdWQzdWUtU3pKMUJjLWZRNkpHVmhFY3FiVzZ3aFVQbGtuMFlhdHg4TGdyT1VGVlFRMGxwbUtyaDN5RlFhWnA4WFM2NUNtYXVsX0d3bDV3d3dxc3hmSA?oc=5",
+   "source": "The Art Newspaper",
+   "publishedAt": "2026-10-20T10:09:43.000Z",
+   "original": "What does an Old Master smell like? Meet the perfumer commissioned by Sotheby's",
+   "lang": "en",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "ما الرائحة التي قد تعبّر عن لوحة من أعمال الأساتذة القدامى؟",
+    "en": "What Does an Old Master Smell Like?"
+   },
+   "summary": {
+    "ar": "يتناول عنوان The Art Newspaper صانع عطور كلفته Sotheby’s بمهمة مرتبطة برائحة لوحة من أعمال الأساتذة القدامى. لا يحدد العنوان اللوحة أو العطر الناتج.",
+    "en": "The Art Newspaper’s headline features a perfumer commissioned by Sotheby’s in connection with the scent of an Old Master artwork. It does not identify the artwork or resulting fragrance."
+   },
+   "note": {
+    "ar": "تقاطع لافت بين العطر والفن؛ وقد يفتح باباً لتجارب حسية، لكن التفاصيل غير متاحة هنا.",
+    "en": "An intriguing intersection of fragrance and art that may invite sensory exploration, though details are not available here."
+   }
+  },
+  {
+   "id": "n1co9hlz",
+   "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5uRTZrRVB1ZWplYnFtdXdJQ2s4bUtoc1J2RDA0bVUxaFJPMDlGZFU5cklTbVhVQVB2ZFZNZ3gxRndSU25BdGhNUTdrYzFwTU55WUxPLTNNMUNVbm5aeWhXMDR2cVlhVEhRSVNDTXR5WWNFNERf?oc=5",
+   "source": "Vogue Adria",
+   "publishedAt": "2026-10-20T10:05:17.000Z",
+   "original": "Creed unveiled its new fragrance in Belgrade, taking us on a journey through its history",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "Creed تكشف عن عطر جديد في بلغراد",
+    "en": "Creed Unveils a New Fragrance in Belgrade"
+   },
+   "summary": {
+    "ar": "يقول عنوان Vogue Adria إن Creed كشفت عن عطر جديد في بلغراد وقدمت المناسبة بوصفها رحلة عبر تاريخها. لا يذكر العنوان اسم العطر أو مكوناته.",
+    "en": "Vogue Adria’s headline says Creed unveiled a new fragrance in Belgrade and framed the event as a journey through the brand’s history. It does not name the fragrance or its notes."
+   },
+   "note": {
+    "ar": "إطلاق جديد من Creed، لكن محبي العلامة يحتاجون إلى تفاصيل إضافية لمعرفة طابع العطر.",
+    "en": "A new Creed launch, though fans will need further details to learn about the fragrance’s character."
+   }
+  },
+  {
+   "id": "n1c0fj6a",
+   "url": "https://www.premiumbeautynews.com/en/guillaume-gellusseau-to-lead-brand,28369",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-10-19T14:48:04.000Z",
+   "original": "Guillaume Gellusseau to lead brand strategy for Kilian Paris and Frédéric Malle",
+   "lang": "en",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "تعيين Guillaume Gellusseau لقيادة استراتيجية Kilian Paris وFrédéric Malle",
+    "en": "Guillaume Gellusseau Appointed to Lead Strategy for Kilian Paris and Frédéric Malle"
+   },
+   "summary": {
+    "ar": "بحسب مقتطف Premium Beauty News، عيّنت Estée Lauder Companies Guillaume Gellusseau نائباً أول للرئيس للعلامة العالمية لدى Kilian Paris وÉditions de Parfums Frédéric Malle، اعتباراً من أغسطس 2026.",
+    "en": "According to the Premium Beauty News excerpt, Estée Lauder Companies appointed Guillaume Gellusseau SVP, Global Brand, for Kilian Paris and Éditions de Parfums Frédéric Malle, effective August 2026."
+   },
+   "note": {
+    "ar": "هذا الخبر يضيف تفاصيل عن المنصب وتاريخ سريانه؛ وهو تعيين إداري لا إعلان عن إطلاق عطر جديد.",
+    "en": "This report adds the role and effective date; it is a management appointment, not a new fragrance announcement."
+   }
+  },
+  {
+   "id": "n1ppaevj",
+   "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPOUJKU3lvV001Q3FBNmxPU2d4UEk0Sm4yU0U4YXpwSGhCQjVGUGNXclI0V2h5VWlMNTc1ODdxaVQ0cnNsOUNTQTRGYVpXeVVVNzVWd3ZYLWctaXU2N2psdl9DWTREanQ4cmNuQmRiM2NBd2ZlMGhqVl9XQnVNbjhWcllSUTh0OGZkMmJuLV84TW54OTR5TGhlcXNLSmxSb1NsWTlHSXpRQU12V01CWEdUaVBiZW9OWE9nYjRTYlBRejl2WGZVMGpTSG9OTWRxSElQMFlMenI3eXdsd0hGa3hN?oc=5",
+   "source": "The National",
+   "publishedAt": "2026-10-19T11:11:55.000Z",
+   "original": "Bottling the soul: Why Loewe’s perfumer believes you should never have only one signature scent",
+   "lang": "en",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "صانع عطور Loewe: لا تكتفِ بعطر واحد مميز",
+    "en": "Loewe Perfumer: Don’t Have Just One Signature Scent"
+   },
+   "summary": {
+    "ar": "يعرض عنوان The National رأي صانع عطور Loewe بأن الشخص لا ينبغي أن يقتصر على عطر مميز واحد. لا يتضمن العنوان تفاصيل إضافية عن المقابلة أو حجته.",
+    "en": "The National’s headline presents a Loewe perfumer’s view that people should not have only one signature scent. It gives no further interview details or reasoning."
+   },
+   "note": {
+    "ar": "تذكير لطيف بأن اختيار العطر يمكن أن يتغير مع المزاج والمناسبة؛ وهذا رأي لا قاعدة ملزمة.",
+    "en": "A gentle reminder that fragrance choices can vary with mood and occasion; it is an opinion, not a rule."
+   }
+  },
   {
    "id": "n16h45y9",
    "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxOVlh1OEwycDJ5Y2xPQ0JLUEF4OUxZd3ZoX3FzeHNzM2t2amNId2dmTVV6RE9ZWnRqVGZrdkRIeGN2ZHJnNXJ2QXRYNWQ0RWpWUGxGZDRtaHZ4WTJJZ0kzeDdrWVh6dFV0TlUybDIxTVUwaFdTeFFQZU11ZUdtbmtOQkFUQmZZM0JXeUtkVTQydXZGRzFSLWpLZlhvOFJpeTdmaC1kZ0oxZ1R0cnFCRFhkXzRqX2xnUTFEbE9EdmlDQUljb0d5alFRNzB0S19sVkJtcm1hWVVR?oc=5",
@@ -131,28 +479,6 @@
    "note": {
     "ar": "فكرة تنسيق العطور معاً قد تلهم محبي التجربة، لكن الحكم على المجموعة يحتاج إلى اختبار الروائح.",
     "en": "The idea of combining fragrances may appeal to adventurous wearers, but the scents themselves need to be tried."
-   }
-  },
-  {
-   "id": "nh47913",
-   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1tTUthaTBUaG1lenl1R2t6SUJOZDFIeFMycU5STXpaUEdxSXR0b1Rka1hsdm0tN0Qxdks4QjhuRzh2SUl5elAyaE1mSkpRWG4yTFFxMzdZeTJhWlBX?oc=5",
-   "source": "Sharjah24",
-   "publishedAt": "2026-10-20T11:08:24.000Z",
-   "original": "إكسبو الشارقة يستقطب 120 ألف زائر لمعرضي العطور والتجميل",
-   "lang": "ar",
-   "category": "events",
-   "importance": 5,
-   "title": {
-    "ar": "معرضا العطور والتجميل في الشارقة يستقطبان 120 ألف زائر",
-    "en": "Sharjah Perfume and Beauty Shows Attract 120,000 Visitors"
-   },
-   "summary": {
-    "ar": "يفيد العنوان بأن معرضي العطور والتجميل في إكسبو الشارقة استقطبا 120 ألف زائر. ويذكر المقتطف المتاح أن الفعاليات شملت العطور والعود والبخور، إلى جانب مستحضرات التجميل والعناية الشخصية.",
-    "en": "The headline reports that the perfume and beauty exhibitions at Expo Centre Sharjah attracted 120,000 visitors. The available excerpt says the events covered perfumes, oud and incense, as well as cosmetics and personal care."
-   },
-   "note": {
-    "ar": "هذا الحضور يسلط الضوء على أهمية المعارض المحلية كمساحة لاكتشاف العطور والعود والتواصل مع العلامات.",
-    "en": "The turnout underscores the value of local exhibitions as places to discover perfumes and oud and engage with brands."
    }
   },
   {
@@ -178,50 +504,6 @@
    }
   },
   {
-   "id": "n1bcqgoz",
-   "url": "https://cosmeticsbusiness.com/est%C3%A9e-lauder-companies-strengthens-kilian-paris-fr%C3%A9d%C3%A9ric,malle-leadership-guillaume-gellusseau",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-10-20T10:38:00.000Z",
-   "original": "Estée Lauder Companies strengthens Kilian Paris and Frédéric Malle leadership with Guillaume Gellusseau",
-   "lang": "en",
-   "category": "industry",
-   "importance": 4,
-   "title": {
-    "ar": "تعيين Guillaume Gellusseau لقيادة Kilian Paris وFrédéric Malle",
-    "en": "Guillaume Gellusseau to Lead Kilian Paris and Frédéric Malle"
-   },
-   "summary": {
-    "ar": "يذكر المقتطف أن Estée Lauder Companies عيّنت Guillaume Gellusseau نائباً أول للرئيس ومديراً عاماً لعلامتي Kilian Paris وParfums Frédéric Malle. ولا يقدم العنوان تفاصيل أخرى عن خططه للعلامتين.",
-    "en": "The excerpt says Estée Lauder Companies appointed Guillaume Gellusseau senior vice president and general manager for Kilian Paris and Parfums Frédéric Malle. The headline provides no further details about his plans for the brands."
-   },
-   "note": {
-    "ar": "تغييرات القيادة قد تؤثر في توجه العلامات مستقبلاً، لكن الخبر وحده لا يكشف ما إذا كان ذلك سيغيّر العطور أو استراتيجية الإطلاق.",
-    "en": "Leadership changes can shape a brand’s future direction, though this item alone does not indicate changes to its fragrances or launch strategy."
-   }
-  },
-  {
-   "id": "n1ls2fxh",
-   "url": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxQcm5xZmRPLThfQ085QTFzSmhTcTZhcDRQeW5kRmRmbVJfLTl2RTRaRUUxb2NZUF9Va1plaEdGbFFUYkkteUhlS002aU5pQ1pmaGNJSlhoSHZoQTl1VFZVNjIwdDB3WVZLdXh6Z1d2S2JXcjVCb0RVYW1VM051cWNhd1lGRXZtQjdVZ19FRlNCeE04aEdCVHgtbGxQRW1ZamwwWG9fWHpVV09kdGNnV1FOQ2RxOTlKakNOVjNvWFNpRzdNbUNQUU1HaWVhbVMtenp2SHJGSHlqQ2RySi05b0NiMXItVFVGQi05M0F4SDN0VFU1OUZHdWRaNVA2U2g?oc=5",
-   "source": "GlobeNewswire",
-   "publishedAt": "2026-10-20T12:00:00.000Z",
-   "original": "10ML Publishes 2026 Perfume Price Report: The Same Perfume Costs Up to 27.9% More Across the EU",
-   "lang": "en",
-   "category": "market",
-   "importance": 4,
-   "title": {
-    "ar": "تقرير عن تفاوت أسعار العطر نفسه بين دول الاتحاد الأوروبي",
-    "en": "Report Finds Price Differences for the Same Perfume Across the EU"
-   },
-   "summary": {
-    "ar": "يفيد العنوان بأن تقريراً من 10ML لعام 2026 رصد تفاوتاً في سعر العطر نفسه بين دول الاتحاد الأوروبي، يصل إلى 27.9%. لا يتضمن العنوان تفاصيل عن العطور أو الأسواق التي شملها التقرير.",
-    "en": "The headline says a 2026 report by 10ML found that the same perfume can cost up to 27.9% more across EU countries. It does not specify which perfumes or markets were included."
-   },
-   "note": {
-    "ar": "مقارنة السعر بين المتاجر والأسواق قد تكون مفيدة قبل الشراء، لكن يلزم الاطلاع على التقرير لمعرفة نطاق المقارنة.",
-    "en": "Comparing prices across retailers and markets may help before buying, but the report is needed to understand the comparison’s scope."
-   }
-  },
-  {
    "id": "nwddv6l",
    "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxObGlNRDl0QS0tSW9oUmZ3Tm9yTGNvUXE1bl9Cek5jdUNtRl94UWw0RDV3MS1vbVNyWjlVZklUbTZWN2txV0k5Q3JSWTJEY1NsdVU3a0ZGdmxDampvdzJyaDdBN0ZKb1ZsVWpvUmI0OGFyN0duU0FYcWhuS1pFUzZhbFpTMUZWUHJYaG1IRHhxbE5XYmNKT3FnVTFCMF9FM2VGeWxZVjNwSEdqQXd1VFRnOA?oc=5",
    "source": "lifesciencesweden.se",
@@ -241,138 +523,6 @@
    "note": {
     "ar": "موضوع يستحق المتابعة، لكن العنوان وحده لا يكفي لاستنتاج أثر هذه الأدوية على صناعة العطور أو تفضيلات المستهلكين.",
     "en": "This is worth following, but the headline alone is not enough to infer effects on the fragrance industry or consumer preferences."
-   }
-  },
-  {
-   "id": "n1ifi57r",
-   "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxNTzRMR2ltcmF5b0g2aGFaYmVVbDB2T1FtQzNUTnlZQ0FmMHdGYlZNRHhGSy1RLVhFcko4UFR5MjBmVVJtWVdIUE1qUUJ5ZzBUcFRlcDQ3QUVlMjZiNDJwS1hSQzV4V0pxeksxMjRPbnJLTGRPRlhmRnJESjh4RUlRNW82bFpVNGJlRXVOT3JLU010dVY2bXllc2lDZUowZ1B4MThNaFVyRUVnbllwdVVKdWxsakozWGhXemZZZkVsTk5sRm13YlhrSm90R2dCZzZn?oc=5",
-   "source": "Moodie Davitt Report",
-   "publishedAt": "2026-10-20T12:49:04.000Z",
-   "original": "Armani Beauty and Gebr. Heinemann roll out the red carpet for ‘I Will’ fragrance launch at Hamburg Airport",
-   "lang": "en",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "Armani Beauty وGebr. Heinemann يحتفيان بإطلاق عطر I Will في مطار هامبورغ",
-    "en": "Armani Beauty and Gebr. Heinemann Celebrate I Will Fragrance Launch at Hamburg Airport"
-   },
-   "summary": {
-    "ar": "يعلن العنوان عن إطلاق عطر I Will من Armani Beauty في مطار هامبورغ، بالتعاون مع Gebr. Heinemann. لا يورد المقتطف المتاح تفاصيل عن تركيبة العطر أو موعد توفره.",
-    "en": "The headline announces an I Will fragrance launch by Armani Beauty at Hamburg Airport in partnership with Gebr. Heinemann. The available information gives no details about the scent’s composition or availability date."
-   },
-   "note": {
-    "ar": "إطلاق العطر في المطار يضعه أمام جمهور المسافرين، لكن تفاصيل التجربة والمنتج غير متاحة هنا.",
-    "en": "An airport launch puts the fragrance before a travelling audience, though product and activation details are not available here."
-   }
-  },
-  {
-   "id": "nz2vjrs",
-   "url": "https://news.google.com/rss/articles/CBMi2wJBVV95cUxQS1VzN3lWMnNEdF91YmZwVWsyaVUxdlN4cjgwbXl6WGY5QV9YcG5JVXpRdHRmbERka1NjVHprQTRIcTNwYlduWlFoU0JKV3lMaXRidHAxb01yUHJrbkVwZHNJU201Sm9lM3FEUFRmUjZ6NUpMQ0dCRUI5MjlMeWRPdkFWeTh2VkxlYlBqcmZ2NU1nN0NSbEFhX3lOYVdOSURPNWFONnlVcHZHR3RLV2oxZGVLaTB1V1VmdUQ1SWVZSk13UWVnMUltS1lEb2MtdjY2Rzh6RWVPRUFtSVdSTVRsbVRDaDQza0hLMFNudGVPRTFLaDVhVmI0NXRiUURIZFU5MkpNMk5oSGF6UU9LOTBpTjVWTm9EWXdObnlsNVVuMlJCZDRQTk85WGZhMTdZbWpOWmtxVlBLcEhBc3hmdTBwc3BKcHRqS2xWNFh3SVROeHJNV19seW80MVAwNA?oc=5",
-   "source": "Layalina Privee",
-   "publishedAt": "2026-10-20T12:25:42.000Z",
-   "original": "Armani Beauty تحتفي بإطلاق عطور أرماني بريفيه في مصر خلال مهرجان الجونة",
-   "lang": "ar",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "Armani Beauty تحتفي بإطلاق عطور Armani Privé في مصر",
-    "en": "Armani Beauty Celebrates an Armani Privé Fragrance Launch in Egypt"
-   },
-   "summary": {
-    "ar": "يفيد العنوان بأن Armani Beauty احتفت بإطلاق عطور Armani Privé في مصر خلال مهرجان الجونة. ولا يقدم العنوان تفاصيل عن العطور المحددة أو طبيعة الإطلاق.",
-    "en": "The headline says Armani Beauty celebrated an Armani Privé fragrance launch in Egypt during the El Gouna Festival. It does not identify the specific fragrances or describe the launch."
-   },
-   "note": {
-    "ar": "الخبر يبرز حضور العطور الفاخرة في فعالية ثقافية، لكن لا تتوفر تفاصيل كافية لتقييم ما أُطلق.",
-    "en": "The item highlights luxury fragrance at a cultural event, but there is not enough detail to assess what was launched."
-   }
-  },
-  {
-   "id": "n1j3h7bp",
-   "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxQVjVSS3FNUWxHNW94ZUFNX09JdjFWbEVxTTYwb3p0V1MxVzIteGxiUDlKaElTWUxrZW9fZWg5N3BiRmxzYU5aZGloOEo0OVkzQlVTWVM1eEh2bzlfVExzX3pQa0pGZ3hPSl9zZXFGQWNIS25xME9SUTZFRGVwSkU3b1lxQnBETk5Ob3ZEWndiUG9SaVkyZjk2ZFczazhUTjVIdl9MZXVCLWd2OFcwbEpoSHlGNmJFYVRneUNaTi0tcDl3V2h3OVMwNWNRS3djQzBKNGRGMjFhQlFERnk3WW9NMzhR?oc=5",
-   "source": "DFNI",
-   "publishedAt": "2026-10-20T10:14:23.000Z",
-   "original": "Inter-African Marketing and Scentopia expand luxury fragrance activations across Africa",
-   "lang": "en",
-   "category": "industry",
-   "importance": 3,
-   "title": {
-    "ar": "Inter-African Marketing وScentopia توسعان أنشطة العطور الفاخرة في أفريقيا",
-    "en": "Inter-African Marketing and Scentopia Expand Luxury Fragrance Activations Across Africa"
-   },
-   "summary": {
-    "ar": "يذكر العنوان أن Inter-African Marketing وScentopia توسعان أنشطة العطور الفاخرة في أنحاء أفريقيا. ولا يوضح المقتطف المتاح الأسواق أو طبيعة هذه الأنشطة.",
-    "en": "The headline says Inter-African Marketing and Scentopia are expanding luxury fragrance activations across Africa. The available information does not specify the markets or the nature of the activations."
-   },
-   "note": {
-    "ar": "التوسع قد يفتح فرصاً للتعريف بعلامات وتجارب عطرية جديدة، لكن تفاصيل التنفيذ غير متاحة.",
-    "en": "Expansion could create opportunities to introduce new fragrance brands and experiences, though implementation details are unavailable."
-   }
-  },
-  {
-   "id": "nkul8t3",
-   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNZVZyZlhpZjk5a3Vka0JsX2V0Ti1NOTNQaGJ5bXBfbU45ODVVemwydGFGVlg3Wm1GVGRQM1FVcEZkbnV6bTBMZUxpLTBYU2EwWGtBYWgxR3NlZi1raGJsQUZsR0pFazZIdWQzdWUtU3pKMUJjLWZRNkpHVmhFY3FiVzZ3aFVQbGtuMFlhdHg4TGdyT1VGVlFRMGxwbUtyaDN5RlFhWnA4WFM2NUNtYXVsX0d3bDV3d3dxc3hmSA?oc=5",
-   "source": "The Art Newspaper",
-   "publishedAt": "2026-10-20T10:09:43.000Z",
-   "original": "What does an Old Master smell like? Meet the perfumer commissioned by Sotheby's",
-   "lang": "en",
-   "category": "culture",
-   "importance": 3,
-   "title": {
-    "ar": "ما الرائحة التي قد تنبعث من لوحة لفنان قديم؟",
-    "en": "What Might an Old Master Painting Smell Like?"
-   },
-   "summary": {
-    "ar": "يتناول عنوان The Art Newspaper عطّاراً كُلّف بمشروع مرتبط بمزاد Sotheby's، ويسأل عن الرائحة التي قد ترتبط بلوحة لفنان قديم. لا يوضح العنوان تفاصيل المشروع أو العمل الفني.",
-    "en": "The Art Newspaper headline describes a perfumer commissioned by Sotheby’s for a project and asks what an Old Master painting might smell like. It does not specify the project details or artwork."
-   },
-   "note": {
-    "ar": "تقاطع العطر والفن يفتح باباً لتجارب حسية جديدة، لكن لا يمكن معرفة شكل هذا المشروع من العنوان وحده.",
-    "en": "The intersection of fragrance and art invites new sensory experiences, but the headline alone does not reveal what this project involves."
-   }
-  },
-  {
-   "id": "n1co9hlz",
-   "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5uRTZrRVB1ZWplYnFtdXdJQ2s4bUtoc1J2RDA0bVUxaFJPMDlGZFU5cklTbVhVQVB2ZFZNZ3gxRndSU25BdGhNUTdrYzFwTU55WUxPLTNNMUNVbm5aeWhXMDR2cVlhVEhRSVNDTXR5WWNFNERf?oc=5",
-   "source": "Vogue Adria",
-   "publishedAt": "2026-10-20T10:05:17.000Z",
-   "original": "Creed unveiled its new fragrance in Belgrade, taking us on a journey through its history",
-   "lang": "en",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "Creed تكشف عن عطر جديد في بلغراد",
-    "en": "Creed Unveils a New Fragrance in Belgrade"
-   },
-   "summary": {
-    "ar": "يفيد العنوان بأن Creed كشفت عن عطر جديد في بلغراد، في فعالية ربطت الإطلاق بتاريخ الدار. ولا يذكر العنوان اسم العطر أو مكوناته.",
-    "en": "The headline says Creed unveiled a new fragrance in Belgrade at an event connecting the launch with the house’s history. It does not name the fragrance or list its notes."
-   },
-   "note": {
-    "ar": "الربط بتاريخ الدار قد يضيف سياقاً للإطلاق، لكن تجربة العطر نفسها تظل غير موضحة في المعلومات المتاحة.",
-    "en": "Connecting a launch to the house’s history can add context, but the fragrance itself is not described in the available information."
-   }
-  },
-  {
-   "id": "n1mt3dyb",
-   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQZDBhdkZVeHZhQU5SZl9RWEhWbE8xMWZnVXluT1dLM3JuekhhblpDNW1VYVhQaHdZelY3Q1BpSU1CTlByZWhZbjM1YzBxYlh3OEpJLVZvUy15M1BqYUo0QWlwT2F4Z2RFWmE0N3oxUEw5dEpZNHhIVVYtNVFPX2s0T2JSTWJ0MUxGVHpwaGU4ZlRyVVdQUzg0UmJOUi1pQUFSYVJyNlZaMFpQUEc1UlROYXpnWQ?oc=5",
-   "source": "WWD",
-   "publishedAt": "2026-10-20T04:02:22.000Z",
-   "original": "EXCLUSIVE: L’Artisan Parfumeur Creates the First Fragrance Talent Show, ‘Le Nez’",
-   "lang": "en",
-   "category": "industry",
-   "importance": 3,
-   "title": {
-    "ar": "L’Artisan Parfumeur تطلق برنامج مواهب للعطور بعنوان Le Nez",
-    "en": "L’Artisan Parfumeur Creates a Fragrance Talent Show, Le Nez"
-   },
-   "summary": {
-    "ar": "يصف عنوان WWD برنامج Le Nez بأنه أول برنامج مواهب للعطور من إنشاء L’Artisan Parfumeur. ولا تتوفر تفاصيل عن المشاركين أو آلية البرنامج.",
-    "en": "WWD’s headline describes Le Nez as the first fragrance talent show created by L’Artisan Parfumeur. Details about participants or the format are not available."
-   },
-   "note": {
-    "ar": "قد يلفت البرنامج الانتباه إلى مهارات صناعة العطر، لكن الحكم على أثره يتطلب معرفة تفاصيله.",
-    "en": "The show could draw attention to perfumery skills, but its significance depends on details not provided here."
    }
   },
   {
@@ -417,50 +567,6 @@
    "note": {
     "ar": "تذكير بأن تاريخ العطر يتقاطع مع ممارسات وثقافات متعددة؛ لكن المقتطف المبتور يحدّ مما يمكن تأكيده.",
     "en": "A reminder that fragrance history intersects with many practices and cultures, though the truncated excerpt limits what can be confirmed."
-   }
-  },
-  {
-   "id": "n1bmh3y5",
-   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBESUxua1BKbEU0QjJUMFBFczRhdVNHTnJpZnNfUWVIX0VfTE9Wb2VKb3kwTE8wQUFqZnlCc19pUTQ0dHk5RksxeFZGOTJBRk9pOUFITkQtcS0?oc=5",
-   "source": "Babnet",
-   "publishedAt": "2026-10-19T13:10:11.000Z",
-   "original": "مؤتمر علمي وطني حول العود التونسي بقصر النجمة الزهراء",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 3,
-   "title": {
-    "ar": "مؤتمر علمي وطني حول العود التونسي",
-    "en": "National Scientific Conference on Tunisian Oud"
-   },
-   "summary": {
-    "ar": "يعلن العنوان عن مؤتمر علمي وطني حول العود التونسي في قصر النجمة الزهراء. ولا يورد العنوان موضوعات المؤتمر أو نتائجه.",
-    "en": "The headline announces a national scientific conference on Tunisian oud at the Palace of the Star of Zahra. It does not provide the conference topics or findings."
-   },
-   "note": {
-    "ar": "الاهتمام العلمي بالعود قد يثري المعرفة بمادته وثقافته، لكن تفاصيل المؤتمر غير متاحة في العنوان.",
-    "en": "Scientific attention to oud may deepen knowledge of the material and its culture, but the headline gives no conference details."
-   }
-  },
-  {
-   "id": "n1ppaevj",
-   "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPOUJKU3lvV001Q3FBNmxPU2d4UEk0Sm4yU0U4YXpwSGhCQjVGUGNXclI0V2h5VWlMNTc1ODdxaVQ0cnNsOUNTQTRGYVpXeVVVNzVWd3ZYLWctaXU2N2psdl9DWTREanQ4cmNuQmRiM2NBd2ZlMGhqVl9XQnVNbjhWcllSUTh0OGZkMmJuLV84TW54OTR5TGhlcXNLSmxSb1NsWTlHSXpRQU12V01CWEdUaVBiZW9OWE9nYjRTYlBRejl2WGZVMGpTSG9OTWRxSElQMFlMenI3eXdsd0hGa3hN?oc=5",
-   "source": "The National",
-   "publishedAt": "2026-10-19T11:11:55.000Z",
-   "original": "Bottling the soul: Why Loewe’s perfumer believes you should never have only one signature scent",
-   "lang": "en",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "عطّار Loewe: لا تكتفوا بعطر توقيع واحد",
-    "en": "Loewe Perfumer: Don’t Limit Yourself to One Signature Scent"
-   },
-   "summary": {
-    "ar": "يعرض العنوان رأي عطّار Loewe بأن من الأفضل ألا يقتصر المرء على عطر توقيع واحد. ولا يتضمن العنوان تفاصيل إضافية عن حجته أو سياق المقابلة.",
-    "en": "The headline presents a Loewe perfumer’s view that people should not have only one signature scent. It provides no further detail about the reasoning or interview context."
-   },
-   "note": {
-    "ar": "رأي يشجع على اختيار العطر بحسب المزاج والمناسبة، لا على الالتزام برائحة واحدة.",
-    "en": "A perspective that encourages choosing fragrance to suit mood and occasion rather than sticking to one scent."
    }
   },
   {
@@ -596,28 +702,6 @@
    }
   },
   {
-   "id": "nf4e2wn",
-   "url": "https://cosmeticsbusiness.com/boss-parfums-inks-multi-year-partnership-with-hyrox",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-10-19T12:00:00.000Z",
-   "original": "Boss Parfums inks multi-year partnership with Hyrox across six European regions",
-   "lang": "en",
-   "category": "industry",
-   "importance": 4,
-   "title": {
-    "ar": "Boss Parfums تعقد شراكة متعددة السنوات مع Hyrox في ست مناطق أوروبية",
-    "en": "Boss Parfums signs multi-year Hyrox partnership across six European regions"
-   },
-   "summary": {
-    "ar": "تقول Cosmetics Business إن الشراكة بين Boss Parfums، التابعة لـCoty، وسباقات Hyrox ستستمر عدة سنوات وتشمل ست مناطق أوروبية، مع حضور العلامة ضمن منظومة Hyrox.",
-    "en": "Cosmetics Business reports that the multi-year partnership between Coty-owned Boss Parfums and Hyrox will span six European regions, with the fragrance brand joining the Hyrox ecosystem."
-   },
-   "note": {
-    "ar": "تُظهر الشراكة توجهاً لربط العطور بفعاليات اللياقة؛ وقد تتيح للجمهور لقاء العلامة في سياق مختلف.",
-    "en": "The partnership connects fragrance with fitness events and may introduce the brand to audiences in a different setting."
-   }
-  },
-  {
    "id": "nhp1j3h",
    "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxObkVDTVdBWXBoVTZNTnhXM3hRSEdiTUFZTTBzalo4bjN5YWVvT3pOX2MzWFNDbmt6bU9uUEdhQm1ZQ0R1QUNVUnd1c1lPTG80WFU1Q2dGMDFmb2pfT3FGLVFDU1VtMDFaWDhfYlhOOHBHdXRMVkJ0emdrdFFpc0VSYTN6YUxmc0Uxd0J0cmtqNVQ1cnU5R3RUUHRwZDlWb0J6S1FvT0ZhQ0psUQ?oc=5",
    "source": "TheIndustry.beauty",
@@ -637,28 +721,6 @@
    "note": {
     "ar": "تعزيز المعرفة بالعطور بين صنّاع المحتوى قد يساعد على تقديمها للجمهور بوضوح أكبر.",
     "en": "Building fragrance knowledge among creators could help them present scents more clearly to audiences."
-   }
-  },
-  {
-   "id": "n1c0fj6a",
-   "url": "https://www.premiumbeautynews.com/en/guillaume-gellusseau-to-lead-brand,28369",
-   "source": "Premium Beauty News",
-   "publishedAt": "2026-10-19T14:48:04.000Z",
-   "original": "Guillaume Gellusseau to lead brand strategy for Kilian Paris and Frédéric Malle",
-   "lang": "en",
-   "category": "industry",
-   "importance": 4,
-   "title": {
-    "ar": "Guillaume Gellusseau يقود استراتيجية Kilian Paris وÉditions de Parfums Frédéric Malle",
-    "en": "Guillaume Gellusseau to lead brand strategy for Kilian Paris and Éditions de Parfums Frédéric Malle"
-   },
-   "summary": {
-    "ar": "بحسب Premium Beauty News، عيّنت Estée Lauder Companies Guillaume Gellusseau نائباً أول للرئيس العالمي للعلامتين، اعتباراً من أغسطس 2026. وسيكون مقره في باريس ويرفع تقاريره إلى Jo Dancey.",
-    "en": "Premium Beauty News reports that Estée Lauder Companies appointed Guillaume Gellusseau Senior Vice President, Global Brand, for both houses, effective August 2026. He will be based in Paris and report to Jo Dancey."
-   },
-   "note": {
-    "ar": "تغيير قيادي في علامتين عطريتين فاخرَتين؛ أما أثره على المنتجات أو التوجه الإبداعي فلم يرد في المقتطف.",
-    "en": "A leadership change at two luxury fragrance houses; the excerpt does not say how it may affect products or creative direction."
    }
   },
   {
@@ -703,72 +765,6 @@
    "note": {
     "ar": "إحياء العطور الأرشيفية يتيح لمحبي الدار فرصة الاهتمام بتاريخها العطري، لكن التفاصيل هنا محدودة.",
     "en": "Reviving archival fragrances can draw fans’ attention to a house’s olfactory history, though details here are limited."
-   }
-  },
-  {
-   "id": "n1vzzlzj",
-   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOa3UyVm1RVklqWVlvcDU3SHc4Yk1ySFo1eV9TdUljZlEyVllrX2stblRJZ1I5OEc0VzJfeFpndGhKMzY1YjRsVmlmVDJyN2NnaGJjeTRiUDlWUFdsZHJEX2pQaTBlZXZROVFvNmM2Yy1DamtzMzFiYnF2MzRQMXFmY1U5YmRCekZpMkFCODZGSkJrczYyTEdzNDktQlVzQnJENkE?oc=5",
-   "source": "Yahoo",
-   "publishedAt": "2026-10-19T22:10:00.000Z",
-   "original": "Tate McRae Launches Perfume at Ulta: a Cozy Blend of Musky, Floral and Vanilla Notes",
-   "lang": "en",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "Tate McRae تطلق عطراً لدى Ulta بنفحات مسكية وزهرية وفانيليا",
-    "en": "Tate McRae launches a perfume at Ulta with musky, floral and vanilla notes"
-   },
-   "summary": {
-    "ar": "يفيد العنوان بإطلاق Tate McRae عطراً لدى Ulta، ويصف تركيبته بأنها مزيج دافئ من النفحات المسكية والزهرية والفانيليا. ولا يذكر اسم العطر.",
-    "en": "The headline reports that Tate McRae has launched a perfume at Ulta, describing it as a cozy blend of musky, floral and vanilla notes. It does not give the perfume’s name."
-   },
-   "note": {
-    "ar": "تركيبة تجمع عائلات نفحات مألوفة؛ وقد تهم من يفضلون الطابع الدافئ، لكن لا تتوفر تفاصيل أخرى للتقييم.",
-    "en": "The blend brings together familiar note families and may appeal to those who enjoy a cozy profile, though further details are unavailable."
-   }
-  },
-  {
-   "id": "nff8yv9",
-   "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxQcFRmcXBfT042LVMxeENLUFc3Nml5ZExOWEkteUZUa2oxSS0xYktMTU9kUzlmZDRYVjltX3RIdVR1RzE5QVpzVnFTRWpId3VlVEJjWTR5TzctaFNOQ1otTjU4NFh0V091eURvRVVOcFlVOW8yOFdGamRuU25mVl9USUhPejJwS0dqTjlDS0drT3JVX3NSWEFTcDZ2dmN1aE93ODhfUnMyVWRTbzk3eTRlbDNhVEI3OTFIaUZ6RTJrRjZzaVdWODl4OXpXbXRaUWxFMlc1d0xWV21kVm9Md3lUWUJxZ244OVow?oc=5",
-   "source": "Grazia",
-   "publishedAt": "2026-10-19T09:51:23.000Z",
-   "original": "Ginseng Biloba, la nouvelle échappée olfactive d’Hermès aux notes boisées, végétales et délicatement amères",
-   "lang": "fr",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "Hermès تكشف عن Ginseng Biloba بنفحات خشبية ونباتية ومرارة رقيقة",
-    "en": "Hermès presents Ginseng Biloba with woody, vegetal and delicately bitter notes"
-   },
-   "summary": {
-    "ar": "يصف العنوان Ginseng Biloba بأنه إصدار عطري جديد من Hermès، بنفحات خشبية ونباتية ولمسة مرّة رقيقة. ولا يورد تفاصيل أخرى عن العطر.",
-    "en": "The headline presents Ginseng Biloba as a new Hermès olfactory creation, with woody, vegetal and delicately bitter notes. No further details are provided."
-   },
-   "note": {
-    "ar": "وصف النفحات يوحي باتجاه عطري غير تقليدي نسبياً؛ وقد يثير فضول محبي التركيبات النباتية والخشبية.",
-    "en": "The note description suggests a distinctive direction that may interest fans of vegetal and woody compositions."
-   }
-  },
-  {
-   "id": "n593qn5",
-   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5meHptZFpqdkRGZkx2QTdyZHI2NlNTTTlBNEcxeGZXTUxydVBTb014a0pWSjFOaFJHYlRYeFRUNnAzdGYycTc5b01PWTN3NjZ6NnNnSDkwaDFqaUVzYzFLdTB3ajRISzVfTkVjTFpTMWJFTVhwZHc?oc=5",
-   "source": "Vanity Teen",
-   "publishedAt": "2026-10-19T16:50:11.000Z",
-   "original": "AMOUAGE TAKES FRAGRANCE BEYOND THE SKIN",
-   "lang": "en",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "AMOUAGE تأخذ العطر إلى ما وراء البشرة",
-    "en": "AMOUAGE takes fragrance beyond the skin"
-   },
-   "summary": {
-    "ar": "يشير العنوان إلى توجه من AMOUAGE يوسّع تجربة العطر إلى ما يتجاوز وضعه على البشرة. ولا يوضح العنوان طبيعة هذا التوجه أو تفاصيله.",
-    "en": "The headline points to an AMOUAGE approach that takes the fragrance experience beyond wearing it on skin. It does not explain the format or details."
-   },
-   "note": {
-    "ar": "فكرة توسيع تجربة العطر قد تهم محبي استكشاف طرق جديدة للتفاعل معه، لكن العنوان لا يكشف ماهيتها.",
-    "en": "The idea of extending the fragrance experience may interest those seeking new ways to engage with scent, though the headline does not say what they are."
    }
   }
  ]
