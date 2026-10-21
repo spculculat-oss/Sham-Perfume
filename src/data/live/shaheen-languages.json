@@ -1,7 +1,7 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-10-21T16:13:45.206Z",
+  "updatedAt": "2026-10-21T16:25:49.350Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
@@ -13,13 +13,12 @@
   "notes": [
     "الترجمة مش مكتملة: 16.7% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 153885 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط الأساسية بس هي اللي مكتملة.",
     "المترجم الذكي: 153885 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3232 — النهارده اتترجم 0 (الباقة خلصت — هيكمل بعد التجديد).",
-    "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «placeholder» src/components/CountryAndAddressModal.tsx:1272، «placeholder» src/components/LanguageSelector.tsx:459، «placeholder» src/components/LocalizedNumberInput.tsx:28.",
     "لغات بلّغ عنها قسم التصميم بتتترجم الأول: is، sq، ps، ja."
   ],
   "translationCoverage": 16.7,
   "fullyTranslated": 0,
   "translation": {
-    "at": "2026-10-21T16:13:45.644Z",
+    "at": "2026-10-21T16:25:49.655Z",
     "status": "quota",
     "remaining": 153885,
     "covered": 3232,
@@ -156,7 +155,7 @@
     }
   },
   "design": {
-    "at": "2026-10-21T16:13:45.206Z",
+    "at": "2026-10-21T16:25:49.350Z",
     "auditAt": "2026-10-21T05:41:54.171Z",
     "auditScore": 42,
     "priorityLanguages": [
@@ -165,23 +164,7 @@
       "ps",
       "ja"
     ],
-    "located": [
-      {
-        "phrase": "placeholder",
-        "file": "src/components/CountryAndAddressModal.tsx",
-        "line": 1272
-      },
-      {
-        "phrase": "placeholder",
-        "file": "src/components/LanguageSelector.tsx",
-        "line": 459
-      },
-      {
-        "phrase": "placeholder",
-        "file": "src/components/LocalizedNumberInput.tsx",
-        "line": 28
-      }
-    ],
+    "located": [],
     "unlocated": [
       "SCENT STUDIO",
       "Live Sync",
