@@ -1,12 +1,12 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T17:23:15.165Z",
- "nextUpdateAt": "2026-10-22T05:23:15.165Z",
+ "updatedAt": "2026-10-21T18:13:58.211Z",
+ "nextUpdateAt": "2026-10-22T06:13:58.211Z",
  "intervalHours": 12,
  "editor": "shaheen",
  "digest": {
-  "ar": "تضمنت نشرة اليوم إطلاقات عطور جديدة بارزة مثل عطور الفانيليا والعود، وافتتاح مراكز إبداعية جديدة في المنطقة العربية، إضافة إلى تطورات استثمارية بارزة في قطاع شركات العطور ومستحضرات التجميل العالمية.",
-  "en": "Today's digest features prominent new fragrance launches including vanilla and oud scents, the opening of new creative hubs in the region, alongside major investment developments in the global fragrance and cosmetics sector."
+  "ar": "تشهد سوق العطور العالمية إطلاقات جديدة تركز على عائلة العطور السكرية والعود، إلى جانب توسعات استراتيجية لشركات ومراكز إبداعية إقليمية وعالمية. كما تسلط النشرة الضوء على تطورات حركة الأسواق والتغيرات في تفضيلات المستهلكين وصناعة المواد الخام.",
+  "en": "The global fragrance market witnesses notable launches focused on gourmand and oud families, alongside strategic expansions by major houses and regional creative hubs. The digest also highlights market trends, consumer shifts, and raw material developments."
  },
  "sources": [
   {
@@ -18,11 +18,11 @@
    "count": 3
   },
   {
-   "name": "Cosmetics Business",
+   "name": "Now Smell This",
    "count": 2
   },
   {
-   "name": "Now Smell This",
+   "name": "Cosmetics Business",
    "count": 2
   },
   {
@@ -30,7 +30,7 @@
    "count": 1
   },
   {
-   "name": "مجلة هي",
+   "name": "Cosmopolitan",
    "count": 1
   },
   {
@@ -38,7 +38,19 @@
    "count": 1
   },
   {
+   "name": "موقع 24",
+   "count": 1
+  },
+  {
+   "name": "The Economic Times",
+   "count": 1
+  },
+  {
    "name": "Layalina Privee",
+   "count": 1
+  },
+  {
+   "name": "مجلة هي",
    "count": 1
   },
   {
@@ -70,10 +82,6 @@
    "count": 1
   },
   {
-   "name": "The Economic Times",
-   "count": 1
-  },
-  {
    "name": "Vogue",
    "count": 1
   },
@@ -90,19 +98,11 @@
    "count": 1
   },
   {
-   "name": "موقع 24",
-   "count": 1
-  },
-  {
    "name": "Modaes",
    "count": 1
   },
   {
    "name": "Grazia Singapore",
-   "count": 1
-  },
-  {
-   "name": "BeautyMatter",
    "count": 1
   }
  ],
@@ -117,16 +117,258 @@
    "category": "industry",
    "importance": 5,
    "title": {
-    "ar": "شركة تاكاساغو اليابانية تدشن مركزاً إبداعياً للعطور في دبي",
-    "en": "Takasago inaugurates a new creative fragrance center in Dubai"
+    "ar": "«تاكاساغو» اليابانية تدشن مركزاً إبداعياً للعطور في مجمع دبي للعلوم",
+    "en": "Takasago Opens New Creative Fragrance Center in Dubai Science Park"
    },
    "summary": {
-    "ar": "دشنت شركة 'تاكاساغو' اليابانية مركزاً إبداعياً جديداً للعطور في مجمع دبي للعلوم لدعم توسعها.",
-    "en": "Japan's Takasago has inaugurated a new creative fragrance center at Dubai Science Park."
+    "ar": "افتتحت شركة «تاكاساغو» اليابانية مركزاً إبداعياً جديداً للعطور في مجمع دبي للعلوم لتعزيز حضورها في المنطقة.",
+    "en": "Japanese company Takasago has inaugurated a new creative fragrance center at Dubai Science Park to expand its regional presence."
    },
    "note": {
-    "ar": "يعكس هذا الاستثمار نمو سوق العطور الإقليمي ودور دبي كمرتكز رئيسي لابتكار وتطوير العطور في الشرق الأوسط.",
-    "en": "This investment highlights the regional market growth and Dubai's role as a major hub for fragrance innovation in the Middle East."
+    "ar": "يُظهر هذا التوسع متانة السوق الإقليمية وجذبها لكبرى دور الابتكار العطري العالمية.",
+    "en": "This expansion highlights the strength of the regional market in attracting major global fragrance innovation houses."
+   }
+  },
+  {
+   "id": "n4ecrsq",
+   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPUFRrd01tZVJoS3B1TVctaXVNbjMwY1FJeURFdWxkZFBEaU54eXg3RlhqSEc5QXdoelAxekdpYkowSno5SEsyQmhMZ0t4TXRpWjRaMmh2TGZXc0VNUWJTcGNzLVJSaXozU0RiRDZzS3BoYXNPTjQ2cy1ZVGh3UURxb2dndGlzMFB6QllfSEI4X2tXcThwYlExRkdxZXZCZw?oc=5",
+   "source": "WWD",
+   "publishedAt": "2026-10-21T16:05:18.000Z",
+   "original": "Dossier Debuts New Original Oud Collection",
+   "lang": "en",
+   "category": "launch",
+   "importance": 5,
+   "title": {
+    "ar": "علامة Dossier تطلق تشكيلة عطور العود الأصلية الجديدة",
+    "en": "Dossier Debuts New Original Oud Collection"
+   },
+   "summary": {
+    "ar": "أعلنت علامة Dossier عن إطلاق مجموعة جديدة تعتمد بشكل أساسي على نوتات العود ضمن استراتيجيتها للتوسع.",
+    "en": "Dossier has announced the launch of a new collection centered around oud notes as part of its growth strategy."
+   },
+   "note": {
+    "ar": "يعكس هذا الإطلاق تزايد الطلب على توليفات العود ودمجها في خطوط الإنتاج التجارية المعاصرة.",
+    "en": "This launch reflects the growing demand for oud compositions integrated into contemporary commercial lines."
+   }
+  },
+  {
+   "id": "n1c0negm",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxONkpFdkZwOW0xekI0Qk1vWVRXd2ptZ3hZcWt3b1BSWGhVaXJTQVV0dEJyR2Q3SGJrNHJWT3VqUTBid01KSlJ0Y1ZiRDNsaWpCNHdxVUpGUXg2YzlKaUdWZk9wZlFxbmFybHBUNy0ya0dhVG9tb1lTa0tUV3g2VXhueXBqTjlMZFgzaVg1VmhCSmFGazd5bEVHdi1vRS0wSUE?oc=5",
+   "source": "Cosmopolitan",
+   "publishedAt": "2026-10-21T16:21:20.000Z",
+   "original": "Kayali's new vanilla scent is gourmand for grown-ups – here's exactly how long it lasts and what to layer",
+   "lang": "en",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "كيلي (Kayali) تطلق عطراً جديداً بتركيبة الفانيليا",
+    "en": "Kayali Launches New Vanilla Fragrance"
+   },
+   "summary": {
+    "ar": "كشفت علامة Kayali عن عطر جديد مستوحى من الفانيليا موجه لعشاق النوتات السكرية الناضجة.",
+    "en": "Kayali has unveiled a new vanilla-focused fragrance tailored for lovers of sophisticated gourmand notes."
+   },
+   "note": {
+    "ar": "خيار ملهم لمن يرغب في دراسة مزج نوتات الفانيليا العميقة في صناعة العطور الشخصية.",
+    "en": "An inspiring choice for those interested in studying the blending of deep vanilla notes in personal perfumery."
+   }
+  },
+  {
+   "id": "nx4xdfk",
+   "url": "https://www.premiumbeautynews.com/fr/l-entropiste-mise-sur-l-opulence,28382",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-10-21T07:45:31.000Z",
+   "original": "L'Entropiste mise sur l'opulence sombre avec Festin",
+   "lang": "en",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "دار L'Entropiste تكشف عن عطر Festin بتوقيع برتراند دوشوفور",
+    "en": "L'Entropiste Unveils Festin Created by Bertrand Duchaufour"
+   },
+   "summary": {
+    "ar": "أطلقت دار العطور المستقلة L'Entropiste عطر Festin المصنوع بنوتات معقدة تشمل التوت والكافيار والترفل والجلد والعود.",
+    "en": "Independent perfume house L'Entropiste has unveiled Festin, composed with complex notes including blackberry, caviar, truffle, leather, and oud."
+   },
+   "note": {
+    "ar": "تركيبة جريئة تمنح صانعي العطور المستقلين أفكاراً خارج المألوف حول دمج النوتات الغذائية والخشبية.",
+    "en": "A bold composition offering independent perfumers unconventional ideas on blending edible and woody notes."
+   }
+  },
+  {
+   "id": "nnzlgjq",
+   "url": "https://nstperfume.com/2026/10/21/beaufort-london-sunken-tobacco-new-fragrance/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-21T15:09:33.000Z",
+   "original": "BeauFort London Sunken Tobacco ~ new fragrance",
+   "lang": "en",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "BeauFort London تطلق عطر Sunken Tobacco",
+    "en": "BeauFort London Launches Sunken Tobacco"
+   },
+   "summary": {
+    "ar": "أضافت دار النيش BeauFort London عطر Sunken Tobacco الجديد إلى مجموعة Force Majeure.",
+    "en": "Niche house BeauFort London has added the new Sunken Tobacco fragrance to its Force Majeure collection."
+   },
+   "note": {
+    "ar": "يعتبر مثالاً واضحاً على توجه دور النيش نحو العطور الداكنة ذات الطابع الدخاني.",
+    "en": "A clear example of niche houses leaning toward dark, smoky character fragrances."
+   }
+  },
+  {
+   "id": "n1bcqgoz",
+   "url": "https://cosmeticsbusiness.com/est%C3%A9e-lauder-companies-strengthens-kilian-paris-fr%C3%A9d%C3%A9ric,malle-leadership-guillaume-gellusseau",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-20T10:38:00.000Z",
+   "original": "Estée Lauder Companies strengthens Kilian Paris and Frédéric Malle leadership with Guillaume Gellusseau",
+   "lang": "en",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "تعيينات قيادية جديدة في Kilian Paris و Parfums Frédéric Malle",
+    "en": "New Leadership Appointments at Kilian Paris and Parfums Frédéric Malle"
+   },
+   "summary": {
+    "ar": "أعلنت مجموعة إستي لودر عن تعيين غيوم جيلوسو في منصب الإدارة العامة لعلامتي Kilian Paris وParfums Frédéric Malle.",
+    "en": "The Estée Lauder Companies has announced the appointment of Guillaume Gellusseau as general manager for Kilian Paris and Parfums Frédéric Malle."
+   },
+   "note": {
+    "ar": "تغييرات الإدارة العليا تسلط الضوء على استراتيجيات تطوير العلامات الفاخرة الكبرى.",
+    "en": "Top management shifts shed light on the strategies driving major luxury brand development."
+   }
+  },
+  {
+   "id": "npeex13",
+   "url": "https://www.premiumbeautynews.com/fr/motion-equity-partners-acquiert,28384",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-10-21T07:07:36.000Z",
+   "original": "Motion Equity Partners acquiert Capsum, spécialiste de la microfluidique",
+   "lang": "en",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "صندوق Motion Equity Partners يستحوذ على شركة Capsum",
+    "en": "Motion Equity Partners Acquires Capsum"
+   },
+   "summary": {
+    "ar": "استحوذ صندوق الاستثمار Motion Equity Partners على حصة الأغلبية في شركة Capsum المتخصصة في تكنولوجيا صياغة المستحضرات ومواد العناية، بعد تخارج شركة شانيل.",
+    "en": "Investment fund Motion Equity Partners has acquired a majority stake in formulation specialist Capsum, following Chanel's divestment."
+   },
+   "note": {
+    "ar": "تغيرات ملكية شركات الابتكار والتصنيع تؤثر بشكل مباشر على سلاسل الإمداد في قطاع التجميل والعطور.",
+    "en": "Ownership changes in innovation and manufacturing firms directly impact supply chains in the beauty and fragrance sector."
+   }
+  },
+  {
+   "id": "nh47913",
+   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1tTUthaTBUaG1lenl1R2t6SUJOZDFIeFMycU5STXpaUEdxSXR0b1Rka1hsdm0tN0Qxdks4QjhuRzh2SUl5elAyaE1mSkpRWG4yTFFxMzdZeTJhWlBX?oc=5",
+   "source": "Sharjah24",
+   "publishedAt": "2026-10-20T11:08:24.000Z",
+   "original": "إكسبو الشارقة يستقطب 120 ألف زائر لمعرضي العطور والتجميل",
+   "lang": "ar",
+   "category": "events",
+   "importance": 3,
+   "title": {
+    "ar": "إكسبو الشارقة يستقطب 120 ألف زائر لمعرضي العطور والتجميل",
+    "en": "Sharjah Expo Attracts 120,000 Visitors to Perfume and Beauty Exhibitions"
+   },
+   "summary": {
+    "ar": "شهد مركز Expo Sharjah إقبالاً واسعاً بلغ 120 ألف زائر ضمن فعاليات معرضي العطور والتجميل.",
+    "en": "Expo Sharjah witnessed a high turnout of 120,000 visitors during its fragrance and beauty exhibitions."
+   },
+   "note": {
+    "ar": "يعكس الإقبال الكبير أهمية المعارض الإقليمية في تسليط الضوء على قطاع العطور والترويج لها.",
+    "en": "Reflects the high significance of regional exhibitions in showcasing and promoting the fragrance sector."
+   }
+  },
+  {
+   "id": "nd635dn",
+   "url": "https://news.google.com/rss/articles/CBMiuANBVV95cUxPM2lGS0pmb3hLR0pFb0gzR0F5a0FQclc0RlozSFBHVUYtTHB6SzJYMDVJZWNnaVppMXl4d29JTXVqb213cTkxTVFRaGxrcHQzMHE4YTFVSGV1SU05bFFKT0NFQlZTSXlvXzdZcGs4cEJ2cUVyaXU3ZnJCZWtXeXA2dEtkVlAxRFhaWENQdV96YzRnUUZYRzhybFRMWUt1NWZnZFpMczJjYjVfdExxSFlhSjFmYVc5bFNnSlNpZUtuclVOdF9raURIY3dMSm1SMWVSNGhLamlrWEtsS1ZKanNwRGlHc2FNM2FWc1NYU1l5Z3B3VlRHaXdvSHhkSi1CMWMtMXc2QW5IU2hBV1pkUVNOTmt1UVpfN2NLVXF1MUd5NWZIdXFxWWhyU0ZxcnJJaDFPaGhfRUFXUDZPR2t0SDB2NXFvbDlzWXFJNmlzeWU4d0FLcHNRd2J4YkhSRldBb2Y3TmtoQkVZYkE4RGEyV0d6RXhfSVg4ZV9yZXU1R01KaUhZZFV1MDNLdjF5Y3dWVFRRaU9nNWVUNnhPdTUwbkxuTmdkR1dzUVdPSTEzNG5RaW9NMV9pS29GSA?oc=5",
+   "source": "موقع 24",
+   "publishedAt": "2026-10-21T10:10:00.000Z",
+   "original": "من الشهية إلى حاسة الشم.. حقن التنحيف تعيد رسم سوق العطور",
+   "lang": "ar",
+   "category": "market",
+   "importance": 3,
+   "title": {
+    "ar": "تقارير ترصد تأثير أدوية التنحيف على توجهات سوق العطور",
+    "en": "Reports Highlight the Impact of Weight-Loss Drugs on Perfume Market Trends"
+   },
+   "summary": {
+    "ar": "ناقشت تقارير اقتصادية كيف أثرت أدوية التنحيف الجديدة وتغير الشهية على الإقبال على العطور ذات النوتات الغذائية.",
+    "en": "Economic reports discussed how new weight-loss drugs and changing appetites have influenced the demand for gourmand fragrances."
+   },
+   "note": {
+    "ar": "تغيرات سلوك المستهلك تؤكد تشابك قطاع العطور مع الأنماط الصحية والاقتصادية العامة.",
+    "en": "Consumer behavior shifts prove the interconnectedness of the perfume sector with broader health and economic patterns."
+   }
+  },
+  {
+   "id": "n1mt3dyb",
+   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQZDBhdkZVeHZhQU5SZl9RWEhWbE8xMWZnVXluT1dLM3JuekhhblpDNW1VYVhQaHdZelY3Q1BpSU1CTlByZWhZbjM1YzBxYlh3OEpJLVZvUy15M1BqYUo0QWlwT2F4Z2RFWmE0N3oxUEw5dEpZNHhIVVYtNVFPX2s0T2JSTWJ0MUxGVHpwaGU4ZlRyVVdQUzg0UmJOUi1pQUFSYVJyNlZaMFpQUEc1UlROYXpnWQ?oc=5",
+   "source": "WWD",
+   "publishedAt": "2026-10-20T17:26:17.000Z",
+   "original": "EXCLUSIVE: L’Artisan Parfumeur Creates the First Fragrance Talent Show, ‘Le Nez’",
+   "lang": "en",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "دار L'Artisan Parfumeur تطلق أول برنامج لاكتشاف مواهب العطور 'Le Nez'",
+    "en": "L'Artisan Parfumeur Launches the First Fragrance Talent Show 'Le Nez'"
+   },
+   "summary": {
+    "ar": "أعلنت دار L'Artisan Parfumeur عن ابتكار أول برنامج مسابقات وتنافس لاكتشاف المواهب في صناعة العطور تحت اسم Le Nez.",
+    "en": "L'Artisan Parfumeur has announced the creation of the first fragrance talent discovery competition show named Le Nez."
+   },
+   "note": {
+    "ar": "خطوة مبتكرة لربط الجمهور بفنون صناعة العطور وإبراز دور الأنف العطري.",
+    "en": "An innovative step to connect the public with the art of perfumery and highlight the role of the nose."
+   }
+  },
+  {
+   "id": "nze1wci",
+   "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxNbzRPRjgxZzE3SzEySEI3VXVUVTJUNnJSWm9ELVZOaE5VVlRHX082WGQ4Y3VNX1FVbU4yMG9KZ3VQeko0V1gwVnlHZHNzSGtpbVZGTldWU1NTbmV0SmtVcnVjMjdmcVNqeTNsc3NfejFRMl9GenhWN29CRzZxQUg0MFlyZmdwZHA0TmltLWZITGhKZG8xbmxEQnFJUklDUUNSeVlGU1NkeW9CN2RrUUJkc1RyUkRGNGlUVFlQU3V5b0hPNWNNaDNRSTJZOUU4eTdVSnFhLTNWTm5STnNxWlNwZVNFTTlic3VwSm8w?oc=5",
+   "source": "The Economic Times",
+   "publishedAt": "2026-10-21T13:35:04.000Z",
+   "original": "7 perfume notes that truly lasts longer in winter",
+   "lang": "en",
+   "category": "culture",
+   "importance": 2,
+   "title": {
+    "ar": "دراسات تحليلية لنوتات العطور التي تدوم طويلاً خلال فصل الشتاء",
+    "en": "Analytical Studies on Long-Lasting Perfume Notes for Winter"
+   },
+   "summary": {
+    "ar": "استعرضت تقارير صحفية أبرز المكونات والنوتات العطرية التي تحقق ثباتاً أعلى في أجواء الشتاء الباردة.",
+    "en": "Press reports reviewed the top fragrance ingredients and notes that achieve higher longevity in cold winter weather."
+   },
+   "note": {
+    "ar": "دليل مفيد للمهتمين باختيار المواد الخام المناسبة لتراكيب الفصول الباردة.",
+    "en": "A helpful guide for those interested in choosing the right raw materials for cold-season formulations."
+   }
+  },
+  {
+   "id": "nz2vjrs",
+   "url": "https://news.google.com/rss/articles/CBMi2wJBVV95cUxQS1VzN3lWMnNEdF91YmZwVWsyaVUxdlN4cjgwbXl6WGY5QV9YcG5JVXpRdHRmbERka1NjVHprQTRIcTNwYlduWlFoU0JKV3lMaXRidHAxb01yUHJrbkVwZHNJU201Sm9lM3FEUFRmUjZ6NUpMQ0dCRUI5MjlMeWRPdkFWeTh2VkxlYlBqcmZ2NU1nN0NSbEFhX3lOYVdOSURPNWFONnlVcHZHR3RLV2oxZGVLaTB1V1VmdUQ1SWVZSk13UWVnMUltS1lEb2MtdjY2Rzh6RWVPRUFtSVdSTVRsbVRDaDQza0hLMFNudGVPRTFLaDVhVmI0NXRiUURIZFU5MkpNMk5oSGF6UU9LOTBpTjVWTm9EWXdObnlsNVVuMlJCZDRQTk85WGZhMTdZbWpOWmtxVlBLcEhBc3hmdTBwc3BKcHRqS2xWNFh3SVROeHJNV19seW80MVAwNA?oc=5",
+   "source": "Layalina Privee",
+   "publishedAt": "2026-10-20T12:25:42.000Z",
+   "original": "Armani Beauty تحتفي بإطلاق عطور أرماني بريفيه في مصر خلال مهرجان الجونة",
+   "lang": "ar",
+   "category": "events",
+   "importance": 2,
+   "title": {
+    "ar": "Armani Beauty تحتفي بعطور أرماني بريفيه في مهرجان الجونة بمصر",
+    "en": "Armani Beauty Celebrates Armani Privé Fragrances at El Gouna Festival in Egypt"
+   },
+   "summary": {
+    "ar": "نظمت Armani Beauty فعاليات خاصة للاحتفاء بمجموعة عطور أرماني بريفيه خلال فعاليات مهرجان الجونة السينمائي.",
+    "en": "Armani Beauty organized special events to celebrate the Armani Privé fragrance collection during the El Gouna Film Festival."
+   },
+   "note": {
+    "ar": "الربط بين الفعاليات الثقافية والفنية وعروض العطور الفاخرة يُعد استراتيجية تسويقية ناجحة.",
+    "en": "Connecting cultural and artistic events with luxury perfume presentations is a successful marketing strategy."
    }
   },
   {
@@ -149,182 +391,6 @@
    "note": {
     "ar": "عطور الحلويات (Gourmand) تحظى بإقبال واسع، وهذا الإصدار يمنح عشاق تركيب العطور خيارات جديدة للدمج (Layering).",
     "en": "Gourmand scents remain very popular, offering fragrance designers new possibilities for layering."
-   }
-  },
-  {
-   "id": "n4ecrsq",
-   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPUFRrd01tZVJoS3B1TVctaXVNbjMwY1FJeURFdWxkZFBEaU54eXg3RlhqSEc5QXdoelAxekdpYkowSno5SEsyQmhMZ0t4TXRpWjRaMmh2TGZXc0VNUWJTcGNzLVJSaXozU0RiRDZzS3BoYXNPTjQ2cy1ZVGh3UURxb2dndGlzMFB6QllfSEI4X2tXcThwYlExRkdxZXZCZw?oc=5",
-   "source": "WWD",
-   "publishedAt": "2026-10-21T16:05:18.000Z",
-   "original": "Dossier Debuts New Original Oud Collection",
-   "lang": "en",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "Dossier تطلق مجموعة عطور أصلية جديدة تركز على العود",
-    "en": "Dossier Debuts New Original Oud Collection"
-   },
-   "summary": {
-    "ar": "كشفت علامة Dossier عن مجموعة أصلية جديدة تركز بشكل أساسي على مكون العود لدعم نموها القادم.",
-    "en": "Dossier has unveiled a new original collection focused heavily on oud to drive its next growth phase."
-   },
-   "note": {
-    "ar": "التحول نحو مجموعات أصلية يظهر تطور العلامات التجارية لتجاوز العطور المستوحاة نحو ابتكارات خاصة بالعود.",
-    "en": "Moving towards original collections shows brands evolving beyond inspired-by scents into proprietary oud creations."
-   }
-  },
-  {
-   "id": "nx4xdfk",
-   "url": "https://www.premiumbeautynews.com/fr/l-entropiste-mise-sur-l-opulence,28382",
-   "source": "Premium Beauty News",
-   "publishedAt": "2026-10-21T07:45:31.000Z",
-   "original": "L'Entropiste mise sur l'opulence sombre avec Festin",
-   "lang": "en",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "دار L'Entropiste تكشف عن عطر Festin بتوقيع Bertrand Duchaufour",
-    "en": "L'Entropiste unveils Festin created by Bertrand Duchaufour"
-   },
-   "summary": {
-    "ar": "أطلقت دار العطور المستقلة L'Entropiste عطر Festin بتركيبة غنية تضم التوت، الكافيار، الترافًل، الجلد والعود.",
-    "en": "Independent perfume house L'Entropiste has unveiled Festin, composed with notes of blackberry, caviar, truffle, leather, and oud."
-   },
-   "note": {
-    "ar": "تراكيب النيش الجريئة والمعقدة تقدم إلهاماً كبيراً لمن يبحثون عن روائح غير تقليدية وعميقة.",
-    "en": "Bold and complex niche formulations provide great inspiration for those seeking unconventional, deep scents."
-   }
-  },
-  {
-   "id": "npeex13",
-   "url": "https://www.premiumbeautynews.com/fr/motion-equity-partners-acquiert,28384",
-   "source": "Premium Beauty News",
-   "publishedAt": "2026-10-21T07:07:36.000Z",
-   "original": "Motion Equity Partners acquiert Capsum, spécialiste de la microfluidique",
-   "lang": "en",
-   "category": "industry",
-   "importance": 4,
-   "title": {
-    "ar": "Motion Equity Partners تستحوذ على شركة Capsum المتخصصة في تكنولوجيا العطور والتجميل",
-    "en": "Motion Equity Partners acquires microfluidics specialist Capsum"
-   },
-   "summary": {
-    "ar": "استحوذ صندوق Motion Equity Partners على حصة الأغلبية في شركة Capsum المتخصصة في صياغة التركيبات بعد تخارج Chanel.",
-    "en": "Motion Equity Partners has acquired a majority stake in formulation specialist Capsum following Chanel's divestment."
-   },
-   "note": {
-    "ar": "حركات الاستحواذ تؤثر بشكل مباشر على شراكات توريد وتطوير التركيبات والمكونات المبتكرة في الصناعة.",
-    "en": "Acquisition movements directly impact supply partnerships and innovative formulation developments in the industry."
-   }
-  },
-  {
-   "id": "n1bcqgoz",
-   "url": "https://cosmeticsbusiness.com/est%C3%A9e-lauder-companies-strengthens-kilian-paris-fr%C3%A9d%C3%A9ric,malle-leadership-guillaume-gellusseau",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-10-20T10:38:00.000Z",
-   "original": "Estée Lauder Companies strengthens Kilian Paris and Frédéric Malle leadership with Guillaume Gellusseau",
-   "lang": "en",
-   "category": "industry",
-   "importance": 3,
-   "title": {
-    "ar": "تعيينات قيادية جديدة لبراندي Kilian Paris و Frédéric Malle ضمن مجموعة Estée Lauder",
-    "en": "Estée Lauder Companies strengthens Kilian Paris and Frédéric Malle leadership"
-   },
-   "summary": {
-    "ar": "تم تعيين Guillaume Gellusseau في منصب نائب الرئيس والمدير العام لعلامتي Kilian Paris و Parfums Frédéric Malle.",
-    "en": "Guillaume Gellusseau has been named SVP and GM for Kilian Paris and Parfums Frédéric Malle."
-   },
-   "note": {
-    "ar": "التغييرات الإدارية في دور العطور الفاخرة غالباً ما تنعكس على استراتيجيات إطلاق المنتجات وتطوير الهوية.",
-    "en": "Management changes in luxury perfume houses often reflect on product launch strategies and brand identity."
-   }
-  },
-  {
-   "id": "nh47913",
-   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1tTUthaTBUaG1lenl1R2t6SUJOZDFIeFMycU5STXpaUEdxSXR0b1Rka1hsdm0tN0Qxdks4QjhuRzh2SUl5elAyaE1mSkpRWG4yTFFxMzdZeTJhWlBX?oc=5",
-   "source": "Sharjah24",
-   "publishedAt": "2026-10-20T11:08:24.000Z",
-   "original": "إكسبو الشارقة يستقطب 120 ألف زائر لمعرضي العطور والتجميل",
-   "lang": "ar",
-   "category": "events",
-   "importance": 3,
-   "title": {
-    "ar": "معرض العطور والتجميل في الشارقة استقطب 120 ألف زائر",
-    "en": "Sharjah Expo attracts 120,000 visitors to the Perfumes and Cosmetics Exhibition"
-   },
-   "summary": {
-    "ar": "حقق معرض العطور والتجميل في مركز expo الشارقة إقبالاً واسعاً بلغ 120 ألف زائر.",
-    "en": "The Perfumes and Cosmetics Exhibition at Expo Centre Sharjah attracted 120,000 visitors."
-   },
-   "note": {
-    "ar": "الفعاليات الكبرى تعكس قوة الطلب الاستهلاكي المحلي والإقليمي على قطاع العطور والعود.",
-    "en": "Major events reflect the strong local and regional consumer demand for the perfume and oud sector."
-   }
-  },
-  {
-   "id": "nz2vjrs",
-   "url": "https://news.google.com/rss/articles/CBMi2wJBVV95cUxQS1VzN3lWMnNEdF91YmZwVWsyaVUxdlN4cjgwbXl6WGY5QV9YcG5JVXpRdHRmbERka1NjVHprQTRIcTNwYlduWlFoU0JKV3lMaXRidHAxb01yUHJrbkVwZHNJU201Sm9lM3FEUFRmUjZ6NUpMQ0dCRUI5MjlMeWRPdkFWeTh2VkxlYlBqcmZ2NU1nN0NSbEFhX3lOYVdOSURPNWFONnlVcHZHR3RLV2oxZGVLaTB1V1VmdUQ1SWVZSk13UWVnMUltS1lEb2MtdjY2Rzh6RWVPRUFtSVdSTVRsbVRDaDQza0hLMFNudGVPRTFLaDVhVmI0NXRiUURIZFU5MkpNMk5oSGF6UU9LOTBpTjVWTm9EWXdObnlsNVVuMlJCZDRQTk85WGZhMTdZbWpOWmtxVlBLcEhBc3hmdTBwc3BKcHRqS2xWNFh3SVROeHJNV19seW80MVAwNA?oc=5",
-   "source": "Layalina Privee",
-   "publishedAt": "2026-10-20T12:25:42.000Z",
-   "original": "Armani Beauty تحتفي بإطلاق عطور أرماني بريفيه في مصر خلال مهرجان الجونة",
-   "lang": "ar",
-   "category": "events",
-   "importance": 3,
-   "title": {
-    "ar": "Armani Beauty تحتفي بعطور أرماني بريفيه خلال مهرجان الجونة بمصر",
-    "en": "Armani Beauty celebrates Armani Privé fragrances at the Gouna Festival in Egypt"
-   },
-   "summary": {
-    "ar": "احتفت علامة Armani Beauty بعطور مجموعة أرماني بريفيه الفاخرة خلال فعاليات مهرجان الجونة السينمائي.",
-    "en": "Armani Beauty celebrated its luxury Armani Privé fragrance collection during the El Gouna Film Festival."
-   },
-   "note": {
-    "ar": "ربط العطور الفاخرة بالمهرجانات الفنية يعزز من حضورها كرمز للأناقة والتميز.",
-    "en": "Linking luxury fragrances to artistic festivals enhances their presence as a symbol of elegance."
-   }
-  },
-  {
-   "id": "nnzlgjq",
-   "url": "https://nstperfume.com/2026/10/21/beaufort-london-sunken-tobacco-new-fragrance/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-21T15:09:33.000Z",
-   "original": "BeauFort London Sunken Tobacco ~ new fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "BeauFort London تطلق عطر Sunken Tobacco ضمن مجموعة Force Majeure",
-    "en": "BeauFort London launches Sunken Tobacco in the Force Majeure collection"
-   },
-   "summary": {
-    "ar": "أطلقت دار العطور المستقلة BeauFort London عطر Sunken Tobacco كإضافة جديدة لمجموعة Force Majeure.",
-    "en": "Niche line BeauFort London has launched Sunken Tobacco as a new addition to the Force Majeure collection."
-   },
-   "note": {
-    "ar": "عطور التبغ الداكنة تشكل خياراً شتوياً قوياً لمحبي الروائح المعقدة والذات الطابع الدخاني.",
-    "en": "Dark tobacco fragrances make a strong winter choice for lovers of complex, smoky scents."
-   }
-  },
-  {
-   "id": "n1mt3dyb",
-   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQZDBhdkZVeHZhQU5SZl9RWEhWbE8xMWZnVXluT1dLM3JuekhhblpDNW1VYVhQaHdZelY3Q1BpSU1CTlByZWhZbjM1YzBxYlh3OEpJLVZvUy15M1BqYUo0QWlwT2F4Z2RFWmE0N3oxUEw5dEpZNHhIVVYtNVFPX2s0T2JSTWJ0MUxGVHpwaGU4ZlRyVVdQUzg0UmJOUi1pQUFSYVJyNlZaMFpQUEc1UlROYXpnWQ?oc=5",
-   "source": "WWD",
-   "publishedAt": "2026-10-20T17:26:17.000Z",
-   "original": "EXCLUSIVE: L’Artisan Parfumeur Creates the First Fragrance Talent Show, ‘Le Nez’",
-   "lang": "en",
-   "category": "industry",
-   "importance": 3,
-   "title": {
-    "ar": "L’Artisan Parfumeur تطلق أول برنامج للمواهب العطرية تحت اسم 'Le Nez'",
-    "en": "L’Artisan Parfumeur creates the first fragrance talent show, 'Le Nez'"
-   },
-   "summary": {
-    "ar": "أعلنت دار L’Artisan Parfumeur عن ابتكار برنامج اكتشاف مواهب جديد في مجال صناعة العطور يسمى Le Nez.",
-    "en": "L’Artisan Parfumeur has created a new fragrance talent show format called Le Nez."
-   },
-   "note": {
-    "ar": "هذه المبادرات تفتح أفقاً جديداً لتسليط الضوء على فن صياغة العطور وصنّاعها المبدعين.",
-    "en": "Such initiatives open new horizons to highlight the art of perfumery and its creative creators."
    }
   },
   {
@@ -526,28 +592,6 @@
    }
   },
   {
-   "id": "nz3lctc",
-   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxONTBQbjY1WTZlUWVURmFOWm5zbnM2YlByRjd6OGJ3czY2YzE5MVY4aldISDdMRFFMNVpONzVYMUtlcE1RdzFHV0JGZWhWQURGZFlwMVhVT1dsdHpySjJZWml1bzVPNFM4bXF6ZS1KcVVUeXlraEg0UDRSbmg5bmRISzlCaFBhNnJ1dkEwWjgxdHNua0J4UkFZR2s5Qkh0LXQ5N2pQNHR4TjVIekZ3VWRxLTZB?oc=5",
-   "source": "The Economic Times",
-   "publishedAt": "2026-10-21T12:01:04.000Z",
-   "original": "7 perfume notes that truly lasts longer in winter",
-   "lang": "en",
-   "category": "market",
-   "importance": 3,
-   "title": {
-    "ar": "علامة Contraband by Ananya Birla تضاعف حضورها بقطاع التجزئة",
-    "en": "Contraband by Ananya Birla Expands Retail Presence to 200 Outlets"
-   },
-   "summary": {
-    "ar": "أعلنت علامة العطور Contraband عن خطط لمضاعفة منافذ بيعها بالتجزئة لتصل إلى 200 متجر بعد إطلاق عطرها الجديد.",
-    "en": "Fragrance brand Contraband announced plans to double its retail presence to 200 outlets following a new product launch."
-   },
-   "note": {
-    "ar": "يعكس التوسع المتسارع للعلامات الناشئة نمو المنافسة في سوق العطور العالمي.",
-    "en": "The rapid expansion of emerging brands reflects growing competition in the global fragrance market."
-   }
-  },
-  {
    "id": "n1goqe7o",
    "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE56TDN5cUFxQUdzcGtqUFBQaVYweTdSTjN4RWttdjh4NWhaeXBDWTllQ2FtWjhQYU9RY2Q1TGlLSVhqSjFPMmRiajZLMUJ5dzR2MEpHRXJPUmNZWHhpb1djcWROeTh3MTBUM1NjUDRkYlBVb2l3ZTF4RXhR?oc=5",
    "source": "Vogue",
@@ -658,28 +702,6 @@
    }
   },
   {
-   "id": "nd635dn",
-   "url": "https://news.google.com/rss/articles/CBMiuANBVV95cUxPM2lGS0pmb3hLR0pFb0gzR0F5a0FQclc0RlozSFBHVUYtTHB6SzJYMDVJZWNnaVppMXl4d29JTXVqb213cTkxTVFRaGxrcHQzMHE4YTFVSGV1SU05bFFKT0NFQlZTSXlvXzdZcGs4cEJ2cUVyaXU3ZnJCZWtXeXA2dEtkVlAxRFhaWENQdV96YzRnUUZYRzhybFRMWUt1NWZnZFpMczJjYjVfdExxSFlhSjFmYVc5bFNnSlNpZUtuclVOdF9raURIY3dMSm1SMWVSNGhLamlrWEtsS1ZKanNwRGlHc2FNM2FWc1NYU1l5Z3B3VlRHaXdvSHhkSi1CMWMtMXc2QW5IU2hBV1pkUVNOTmt1UVpfN2NLVXF1MUd5NWZIdXFxWWhyU0ZxcnJJaDFPaGhfRUFXUDZPR2t0SDB2NXFvbDlzWXFJNmlzeWU4d0FLcHNRd2J4YkhSRldBb2Y3TmtoQkVZYkE4RGEyV0d6RXhfSVg4ZV9yZXU1R01KaUhZZFV1MDNLdjF5Y3dWVFRRaU9nNWVUNnhPdTUwbkxuTmdkR1dzUVdPSTEzNG5RaW9NMV9pS29GSA?oc=5",
-   "source": "موقع 24",
-   "publishedAt": "2026-10-21T10:10:00.000Z",
-   "original": "من الشهية إلى حاسة الشم.. حقن التنحيف تعيد رسم سوق العطور",
-   "lang": "ar",
-   "category": "market",
-   "importance": 3,
-   "title": {
-    "ar": "حقن التنحيف تعيد رسم ملامح سوق العطور بسبب تأثيرها على حاسة الشم",
-    "en": "Weight-loss drugs are reshaping the perfume industry due to their impact on the sense of smell"
-   },
-   "summary": {
-    "ar": "تناولت تقارير تأثير أدوية وحقن التنحيف على حاسة الشم والشهية وكيفية انعكاس ذلك على تفضيلات العطور بالسوق.",
-    "en": "Reports discussed how weight-loss drugs impact the sense of smell and appetite, and how this reflects on market fragrance preferences."
-   },
-   "note": {
-    "ar": "تغير التفضيلات الشمية للمستهلكين يفرض على صناع العطور دراسة تأثير المكونات والنوتات على المزاج العام.",
-    "en": "Shifts in consumer olfactory preferences require perfumers to study how ingredients and notes impact general mood."
-   }
-  },
-  {
    "id": "nj7ww2g",
    "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNT3dpVFV4b05sMnI4VTdGdWdNdE9faEZMd3A1dU1nVVpkVUgwdURzSkltR2g4M3JsUFUwUlJSbkpVQkcyb2hTSWU5VWlHWkQxMkRjdGxWT1lXZ0NNY09rYVk1SExRRkVHelEzMmxWMEZVNnJwS1Q5LWU3d2Q2OVNVTDhQM2hLV1FiZ1piR1p5NGdVMHQ1ZUs1aVd2SWcxdldTM2RDUUEwYVJmZw?oc=5",
    "source": "Modaes",
@@ -743,28 +765,6 @@
    "note": {
     "ar": "تعليق شاهين: إعادة إحياء الأرشيف مع الحفاظ على هوية العطر الأصلية مع مطابقة معايير إفرا الحالية يمثل قمة المهارة والبراعة التقنية.",
     "en": "تعليق شاهين: إعادة إحياء الأرشيف مع الحفاظ على هوية العطر الأصلية مع مطابقة معايير إفرا الحالية يمثل قمة المهارة والبراعة التقنية."
-   }
-  },
-  {
-   "id": "n1jpq14e",
-   "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE0zLTZmalRzZk9JRnUzbE1CemFQM2JVWXhNTTU1RV9QVUFRUVlmNG5sdzA0bmRIaExlR2o3NFRvLWUtb1B1al92YkpIMV9zQkFkMkdLV2p5a1V4WXBycFhUdWt3?oc=5",
-   "source": "BeautyMatter",
-   "publishedAt": "2026-10-21T03:37:52.000Z",
-   "original": "How Asian Perfume Brands Are Reinventing Gourmand Fragrance",
-   "lang": "en",
-   "category": "market",
-   "importance": 3,
-   "title": {
-    "ar": "العلامات الآسيوية تعيد صياغة مفهوم العطور السكرية (الغورماند)",
-    "en": "How Asian Perfume Brands Are Reinventing Gourmand Fragrance"
-   },
-   "summary": {
-    "ar": "أشار تقرير متخصص إلى توجه دور العطور الآسيوية نحو إعادة ابتكار العطور الغورماند عبر توظيف نكهات وروائح محلية مبتكرة وأقل حلاوة مفرطة.",
-    "en": "BeautyMatter examined how emerging Asian fragrance houses are reinterpreting gourmand scents using regional dessert notes and subtler, nuanced sweetness."
-   },
-   "note": {
-    "ar": "تعليق شاهين: إدخال نوتات مثل الشاي المحمص، والأرز، والحلويات الآسيوية الخفيفة يقدم بديلاً منعشاً لعشاق الروائح الحلوة بعيداً عن الفانيليا التقليدية.",
-    "en": "تعليق شاهين: إدخال نوتات مثل الشاي المحمص، والأرز، والحلويات الآسيوية الخفيفة يقدم بديلاً منعشاً لعشاق الروائح الحلوة بعيداً عن الفانيليا التقليدية."
    }
   }
  ]
