@@ -29,7 +29,7 @@ before(async () => {
     env: {
       ...process.env, NODE_ENV: 'production', NODE_PATH: '',
       GEMINI_API_KEY: '', DEEPSEEK_API_KEY: '', OPENAI_API_KEY: '', ANTHROPIC_API_KEY: '',
-      SHAM_LLM_BASE_URL: '', SHAM_STORE: '', SHAM_ADMIN_TOKEN: '', VERCEL: '1',
+      SHAM_LLM_BASE_URL: '', SHAM_STORE: '', SHAM_ADMIN_TOKEN: '', VERCEL: '1', SHAM_WEB_RESEARCH: 'off',
     },
     stdio: ['ignore', 'pipe', 'pipe'],
   });

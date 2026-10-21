@@ -40,6 +40,8 @@ test('what is looked up: the question’s topic, never news, prices or personal 
   assert.equal(researchQueries('سعر البخور كام', 'ar'), undefined);
   assert.equal(researchQueries('رقمي 01012345678 عايز بخور', 'ar'), undefined);
   assert.equal(researchQueries('عطر', 'ar'), undefined, 'nothing to look up');
+  assert.equal(researchQueries('مرحبا', 'ar'), undefined, 'a greeting is not a question');
+  assert.equal(researchQueries('السلام عليكم', 'ar'), undefined);
   assert.equal(articleUrl('ar', 'عود (بخور)').includes('('), false, 'brackets escaped so the chat link stays whole');
 });
 

@@ -10,6 +10,7 @@
  * Pure (fetch is injected): used by the server (server/shaheen.ts), the visitor's browser on GitHub Pages
  * (src/utils/browserMemory.ts) and «مدرسة شاهين», whose local teacher turns the findings into a lesson.
  */
+import { greetingKind } from './shaheenGreeting';
 import { topicWords } from './shaheenLibrary';
 import { isPersonal, isTimeBound, meaningWords, normalizeQuestion } from './shaheenMemory';
 
@@ -37,7 +38,7 @@ export const researchWords = (question: string) => topicWords(question).filter((
 
 /** The searches to try, most precise first; undefined when the question cannot or must not be looked up. */
 export function researchQueries(question: string, lang: string): string[] | undefined {
-  if (isTimeBound(question) || isPersonal(question) || normalizeQuestion(question).length < 4) return undefined;
+  if (greetingKind(question) || isTimeBound(question) || isPersonal(question) || normalizeQuestion(question).length < 4) return undefined;
   const words = researchWords(question).filter((w) => w.length >= 3).slice(0, 4);
   if (!words.length) return undefined;
   const context = CONTEXT[lang];
