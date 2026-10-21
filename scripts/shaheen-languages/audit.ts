@@ -41,6 +41,8 @@ export interface LanguagePackCoverage {
   banner: number;
 }
 
+export const HEALTHY_NOTE = 'اللغات سليمة: الحزم مكتملة، والأرقام تتبع لغة الموقع في كل واجهات الزوار.';
+
 /** The committed report (src/data/live/shaheen-languages.json). */
 export interface LanguageLiveReport {
   version: 1;
@@ -60,8 +62,12 @@ export interface LanguageLiveReport {
   bareLocaleFormatting: LanguageFinding[];
   /** Check 3: hard 'ar'|'en' language clamps. */
   languageClamps: LanguageFinding[];
-  /** 0–100: 100 = packs full, no findings. */
+  /** 0–100: 100 = packs full, no findings and every text translated (translation weighs up to TRANSLATION_WEIGHT). */
   score: number;
+  /** Share (%) of the site's texts × languages a visitor reads in his own language — the real coverage. */
+  translationCoverage?: number;
+  /** Languages with nothing left in English. */
+  fullyTranslated?: number;
   notes: string[];
   /** «المترجم الذكي»: what visitors still read in English and what the AI translated (./translator.ts). */
   translation?: TranslationSection;
@@ -77,6 +83,10 @@ export interface TranslationSection {
   remaining: number;
   /** Strings × languages the AI packs already cover. */
   covered: number;
+  /** Strings × languages that need a translation at all (every text × every language but Arabic and English). */
+  total?: number;
+  /** Languages with nothing left in English. */
+  fullyTranslated?: number;
   remainingByTier: Record<string, number>;
   /** Languages with the most English left. */
   worstLanguages: { lang: string; remaining: number }[];
@@ -234,7 +244,7 @@ export function buildLanguageReport(input: {
   if (input.languageClamps.length > 0) {
     notes.push(`تقليل صارم للغة إلى عربي/إنجليزي في ${input.languageClamps.length} موضع — راجع إن كان المقصود زوج بيانات {ar,en} أم لغة واجهة.`);
   }
-  if (!notes.length) notes.push('اللغات سليمة: الحزم مكتملة، والأرقام تتبع لغة الموقع في كل واجهات الزوار.');
+  if (!notes.length) notes.push(HEALTHY_NOTE);
 
   return {
     version: 1,
@@ -249,6 +259,30 @@ export function buildLanguageReport(input: {
     languageClamps: input.languageClamps,
     score,
     notes,
+  };
+}
+
+/** How much of the score the real translation coverage decides. */
+export const TRANSLATION_WEIGHT = 40;
+
+/**
+ * «لا تعلن الاكتمال»: the packs check alone said «اللغات سليمة» with 90% of the texts still in English. After the smart
+ * translator measured the real gap, the score loses up to TRANSLATION_WEIGHT points and the first note says how much is
+ * translated — «complete» only when nothing is left in English.
+ */
+export function applyTranslationCoverage(report: LanguageLiveReport, t: Pick<TranslationSection, 'remaining' | 'total' | 'fullyTranslated'>): LanguageLiveReport {
+  const total = Number(t.total) || 0;
+  if (total <= 0) return report;
+  const remaining = Math.min(total, Math.max(0, t.remaining));
+  const coverage = (total - remaining) / total;
+  const pct = Math.floor(coverage * 1000) / 10;
+  const notes = report.notes.filter((n) => n !== HEALTHY_NOTE);
+  if (remaining > 0) {
+    notes.unshift(`الترجمة مش مكتملة: ${pct}% بس من نصوص الموقع مترجمة لكل اللغات (${report.languageCount - 2} لغة غير العربي والإنجليزي، المكتمل منها ${t.fullyTranslated ?? 0}) — ${remaining} نص × لغة لسه بيظهر للزائر بالإنجليزي.${report.incompletePacks.length ? '' : ' حزم المتجر والشريط الأساسية بس هي اللي مكتملة.'}`);
+  } else if (!notes.length) notes.push(HEALTHY_NOTE);
+  return {
+    ...report, notes, translationCoverage: pct, fullyTranslated: t.fullyTranslated,
+    score: Math.max(0, Math.round(report.score - (1 - coverage) * TRANSLATION_WEIGHT)),
   };
 }
 

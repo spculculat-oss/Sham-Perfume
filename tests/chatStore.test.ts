@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { beforeEach, afterEach, test } from 'node:test';
-import { createChatStore, chatHistory } from '../src/utils/chatStore';
+import { catalogReply, createChatStore, chatHistory, isShoppingQuestion } from '../src/utils/chatStore';
+import { ApiError } from '../src/utils/api';
 import { CHAT_STORAGE_KEY, DEFAULT_WELCOME_MESSAGE, THIRTY_DAYS_MS, loadStoredChatSession, saveChatSession, type ChatMessage } from '../src/utils/chatStorage';
 import type { requestApi } from '../src/utils/api';
 
@@ -243,4 +244,38 @@ test('another tab saving its chat no longer swallows the answer in flight', asyn
     if (descriptor) Object.defineProperty(globalThis, 'window', descriptor);
     else delete (globalThis as any).window;
   }
+});
+
+test('«ترشيح المتجر»: a shopping question no engine could answer gets labelled store picks; formulas still get the error', async () => {
+  assert.ok(isShoppingQuestion('عايز عطر رجالي هدية بـ 500'));
+  assert.ok(isShoppingQuestion('Can you recommend a fresh perfume?'));
+  assert.ok(!isShoppingQuestion('اعمل لي تركيبة عطر عود بنسب'), 'formula requests are for the expert');
+  assert.ok(!isShoppingQuestion('ما هو تاريخ العطور؟'));
+
+  const pick = (name: string, inStock = true) => ({ product: { name: { ar: name, en: name }, slug: name.toLowerCase(), inStock }, why: 'خشبي' });
+  const reply = catalogReply([pick('Oud'), pick('Gone', false), pick('Rose'), pick('Musk'), pick('Amber')], 'ar', (slug) => `https://shop.example/p/${slug}.html`)!;
+  assert.match(reply, /\[Oud\]\(https:\/\/shop\.example\/p\/oud\.html\) — خشبي/);
+  assert.doesNotMatch(reply, /Gone|Amber/, 'in stock only, three at most');
+  assert.match(reply, /ترشيح تلقائي من فلتر المتجر، مش رأي الخبير/);
+  assert.equal(catalogReply([pick('Gone', false)], 'ar', () => undefined), undefined);
+
+  const down = (async () => { throw new ApiError(503, 'ENGINES_DOWN'); }) as typeof requestApi;
+  const noMemory = { learn: () => {}, recall: async () => undefined } as any;
+  const asked: string[] = [];
+  const catalog = async (text: string) => { asked.push(text); return 'store picks'; };
+  const shop = createChatStore(down, async () => {}, noMemory, catalog);
+  await shop.send({ ...options, model: 'fast', text: 'recommend a gift perfume' });
+  const last = shop.getSnapshot().messages.at(-1)!;
+  assert.equal(last.text, 'store picks');
+  assert.equal(last.kind, undefined, 'an answer, not an error bubble');
+  assert.equal(last.aiEngine?.provider, 'shaheen');
+
+  const formula = createChatStore(down, async () => {}, noMemory, catalog);
+  await formula.send({ ...options, model: 'fast', text: 'write me a formula with ratios' });
+  assert.equal(formula.getSnapshot().messages.at(-1)!.kind, 'error');
+  assert.deepEqual(asked, ['recommend a gift perfume']);
+
+  const refused = createChatStore((async () => { throw new ApiError(429, 'RATE_LIMITED'); }) as typeof requestApi, async () => {}, noMemory, catalog);
+  await refused.send({ ...options, model: 'fast', text: 'recommend a gift perfume' });
+  assert.equal(refused.getSnapshot().messages.at(-1)!.kind, 'error', 'limits are not hidden behind store picks');
 });

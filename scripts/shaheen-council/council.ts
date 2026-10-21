@@ -279,7 +279,8 @@ export function buildBriefing(d: LiveData, now: number, openTasks: Task[] = []):
     const bareCount = (Array.isArray(langReport.bareLocaleFormatting) ? langReport.bareLocaleFormatting as unknown[] : []).length;
     const clampCount = (Array.isArray(langReport.languageClamps) ? langReport.languageClamps as unknown[] : []).length;
     const incomplete = (Array.isArray(langReport.incompletePacks) ? langReport.incompletePacks as unknown[] : []).map(o);
-    facts.push(`اللغات: ${n(langReport.languageCount) ?? '—'} لغة (${n(langReport.fullyCovered) ?? '—'} مكتملة الحزم)، نتيجة وكيل اللغات ${langScore}/100 — حقول أرقام الزوار بلغة المتصفح: ${publicCount}، تنسيق بلا لغة: ${bareCount}، تقليل عربي/إنجليزي: ${clampCount}.`);
+    const coverage = n(langReport.translationCoverage);
+    facts.push(`اللغات: ${n(langReport.languageCount) ?? '—'} لغة (${n(langReport.fullyCovered) ?? '—'} مكتملة الحزم${coverage !== undefined ? `، والمترجم فعلاً ${coverage}% من النصوص — مش مكتملة طول ما هي أقل من 100%` : ''})، نتيجة وكيل اللغات ${langScore}/100 — حقول أرقام الزوار بلغة المتصفح: ${publicCount}، تنسيق بلا لغة: ${bareCount}، تقليل عربي/إنجليزي: ${clampCount}.`);
     if (publicCount > 0) {
       push({ area: 'experience', priority: 'high', text: `حقول أرقام في واجهات الزوار تُظهر أرقام لغة متصفح الزائر لا لغة الموقع (${publicCount}): ${publicInputs.join('، ')}`,
         decision: { title: 'توحيد أرقام حقول الزوار على لغة الموقع', detail: `وكيل اللغات وجد حقول <input type="number"> تتبع أرقام نظام الزائر (مثل ظهور ٦٥٠ على صفحة ألمانية). حوّلها إلى LocalizedNumberInput مع src/لغات/numerals.ts في: ${publicInputs.join('، ')} (src/data/live/shaheen-languages.json).`, area: 'experience', priority: 'high', kind: 'task' } });

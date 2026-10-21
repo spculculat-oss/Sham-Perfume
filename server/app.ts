@@ -54,7 +54,7 @@ app.use('/api', createMediaRouter());
 app.use('/api', createSeoRouter(shamCore.seo));
 app.use(createSeoRootRouter(shamCore.seo));
 // «اسأل شاهين» in «متجر شام»: POST /api/store/advise (server/store.ts).
-app.use('/api', createStoreRouter({ repo: shamCore.repo }));
+app.use('/api', createStoreRouter({ repo: shamCore.repo, health: shamCore.runtime.health }));
 // «الدفع في متجر شام»: country, Kashier payment sessions and their verified results (server/checkout.ts).
 // «مجتمع شام»: accounts, merchants' and users' portals, «بوابة السوشيال» and the messenger (server/community).
 const community = createCommunity();

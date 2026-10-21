@@ -67,6 +67,9 @@ jobs:
           # Same value as the build step, so the check confirms the bundle really calls this backend.
           VITE_API_BASE_URL: ${{ vars.PAGES_API_BASE_URL || 'https://sham-perfume-49bf.vercel.app' }}
         run: bun run check:pages
+      - name: SEO check of every built page
+        # The live SEO agent samples ~10 pages; this reads all of them (critical findings stop the deploy).
+        run: bun run check:seo
       - name: Upload Pages artifact
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0

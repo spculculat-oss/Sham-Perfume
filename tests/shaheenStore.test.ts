@@ -2,9 +2,9 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import express from 'express';
 import type { AddressInfo } from 'node:net';
-import { cleanText, isGarbled, mergeCatalog, mergeProduct, productHash, ruleEntry, searchText, type RawProduct, type StoreCatalogFile } from '../src/utils/storeCatalog';
+import { cleanText, isGarbled, mergeCatalog, mergeProduct, productHash, ruleEntry, searchText, thinSource, type RawProduct, type StoreCatalogFile } from '../src/utils/storeCatalog';
 import { parseWish, recommend } from '../src/utils/storeAdvisor';
-import { auditProduct, buildCatalogFile, entriesFromShaheen, parseJson, staleProducts, storePrompt } from '../scripts/shaheen-store/curate';
+import { auditProduct, buildCatalogFile, entriesFromShaheen, parseJson, staleProducts, STORE_STYLE, storePrompt } from '../scripts/shaheen-store/curate';
 import { createStoreRouter, localAdvice, readAdvice } from '../server/store';
 import { linkTools, questionIntents } from '../src/utils/shaheenTools';
 import { cartSummary, orderMessage } from '../src/utils/storeCart';
@@ -77,7 +77,7 @@ test("Shaheen's rewrite is validated: only asked products, known enums, no garbl
 
 test('the catalog keeps trained entries, retrains changed products first and drops removed ones', () => {
   const now = new Date('2026-10-16T00:00:00Z');
-  const trained = { ...ruleEntry(RAW[2]), editor: 'shaheen' as const };
+  const trained = { ...ruleEntry(RAW[2]), editor: 'shaheen' as const, style: STORE_STYLE };
   const previous = buildCatalogFile(RAW, undefined, { 'SHM-003': trained }, now);
   assert.equal(previous.entries['SHM-003'].editor, 'shaheen');
   assert.equal(previous.nextUpdateAt, '2026-10-16T12:00:00.000Z');
@@ -218,4 +218,56 @@ test('store: a reply with a trailing comma (seen in a real run) is repaired; rea
   const reply = parseJson('```json\n{ "products": [ { "sku": "A-1", "nameAr": "عطر", }, ], }\n```') as { products: { sku: string }[] };
   assert.equal(reply.products[0].sku, 'A-1');
   assert.throws(() => parseJson('{ products: nope }'));
+});
+
+test('older, more promotional entries are rewritten in turn, after the rule-based ones', () => {
+  const now = new Date('2026-10-16T00:00:00Z');
+  const oldStyle = { ...ruleEntry(RAW[2]), editor: 'shaheen' as const };
+  const previous = buildCatalogFile(RAW, undefined, { 'SHM-003': oldStyle }, now);
+  const stale = staleProducts(RAW, previous);
+  assert.equal(stale.at(-1)?.sku, 'SHM-003', 'old style: rewritten, but last');
+});
+
+test('a thin supplier page (no notes, a name-only description) gets facts only — no invented scent prose', () => {
+  const thin = {
+    id: 145, sku: 'LAT-145', nameAr: 'Al Nashama Caprice by Lattafa 100ml EDP', nameEn: 'Al Nashama Caprice by Lattafa 100ml EDP',
+    descriptionEn: 'Al Nashama Caprice by Lattafa 100ml EDP', brand: 'Lattafa', category: 'مختلط', ourPrice: 3730, supplierPrice: 2485,
+    imageUrl: 'https://example.com/a.jpg', url: 'https://example.com/al-nashama-caprice/', sizeMl: 100, concentration: 'Eau de Parfum',
+    notes: { top: [], heart: [], base: [] },
+  };
+  assert.ok(thinSource(thin));
+  assert.ok(!thinSource({ ...thin, notes: { top: ['Citrus'], heart: [], base: [] } }), 'published notes are enough to describe');
+  const out = entriesFromShaheen({ products: [{
+    sku: 'LAT-145', nameAr: 'النشامة كابريس من لطافة', nameEn: 'Al Nashama Caprice by Lattafa',
+    descriptionAr: 'عطر راقٍ يجمع بين الانتعاش الحمضي وحرارة التوابل وقلب من اللافندر.', descriptionEn: 'A sophisticated blend of spices and lavender.',
+    gender: 'unisex', families: ['spicy', 'fresh'], seasons: ['winter'], occasions: ['evening'], tags: ['لطافة', 'Lattafa'],
+  }] }, [thin], '2026-10-21T00:00:00Z');
+  const e = out['LAT-145'];
+  assert.equal(e.nameAr, 'النشامة كابريس من لطافة', 'the clean name is kept');
+  assert.doesNotMatch(`${e.descriptionAr} ${e.descriptionEn}`, /لافندر|التوابل|lavender|spice/i);
+  assert.match(e.descriptionAr, /ماء عطر \(EDP\)، 100 مل/);
+  assert.match(e.descriptionAr, /المورد لم ينشر نوتات/);
+  assert.doesNotMatch(e.descriptionAr, /من Lattafa/, 'the brand is not repeated when the name has it');
+  assert.deepEqual(e.families, [], 'no scent family guessed without a source');
+  assert.equal(e.style, STORE_STYLE);
+  // An entry saved before the rule is cleaned the same way when the page is built.
+  const shown = mergeCatalog([thin], { entries: { 'LAT-145': { ...e, descriptionAr: 'عطر راقٍ بقلب من اللافندر.', families: ['spicy'] } } })[0];
+  assert.doesNotMatch(shown.description.ar, /لافندر/);
+  assert.deepEqual(shown.families, []);
+});
+
+test('the store advisor shares engine health: a refused key is parked and not asked again for every visitor', async () => {
+  const { EngineHealth } = await import('../server/core/engineHealth');
+  const health = new EngineHealth();
+  let calls = 0;
+  const refused = (async () => { calls++; return json({ error: { message: 'API key not valid' } }, 401); }) as typeof fetch;
+  await withServer(createStoreRouter({ env: { GEMINI_API_KEY: 'store-test-key-3' }, fetch: refused, products: RAW, catalog: noCatalog, health }), async (url) => {
+    const first = await (await post(url, { message: 'عايز عطر نسائي ورد', language: 'ar' })).json() as { source: string };
+    assert.equal(first.source, 'local');
+    assert.ok(health.parkedUntil('gemini') > 0, 'the refusal is recorded');
+    const before = calls;
+    const second = await (await post(url, { message: 'عطر رجالي للصيف', language: 'ar' })).json() as { source: string };
+    assert.equal(second.source, 'local');
+    assert.equal(calls, before, 'a parked engine is skipped — the visitor gets the store picks at once');
+  });
 });

@@ -86,6 +86,8 @@ function storeLabels(lang: SupportedLanguage) {
     ask: t('sf_ask_btn'),
     chips: [t('sf_chip_summer'), t('sf_chip_gift'), t('sf_chip_oud'), t('sf_chip_sweet'), t('sf_chip_budget')],
     byShaheen: t('sf_by_shaheen'),
+    aiNoteShaheen: t('sf_ai_note_shaheen'),
+    aiNoteQuick: t('sf_ai_note_quick'),
     quick: t('sf_quick_pick'),
     thinking: t('sf_thinking'),
     all: t('sf_all'),
@@ -1456,6 +1458,11 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {advice.picks.map((p) => card(p.product, p.why, true))}
               </div>
+              {!thinking && (
+                <p className="text-[11px] text-stone-500" data-testid="store-ai-note">
+                  {advice.source === 'shaheen' ? L.aiNoteShaheen : L.aiNoteQuick}
+                </p>
+              )}
             </div>
           )}
         </section>

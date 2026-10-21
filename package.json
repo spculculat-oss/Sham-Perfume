@@ -13,6 +13,7 @@
     "build:pages": "vite build --mode pages && node scripts/prepare-pages.mjs && node --import tsx scripts/product-pages.mts pages-dist && node --import tsx scripts/seo-build.mts pages-dist",
     "test": "node --import tsx --import ./tests/register-assets.mjs --test tests/*.test.ts",
     "check:pages": "node scripts/check-pages.mjs",
+    "check:seo": "node --import tsx scripts/seo-check-all.mts pages-dist",
     "build:vercel": "npm run build && node scripts/build-vercel.mjs",
     "test:vercel": "node --test tests/vercel-output.test.mjs",
     "check:edgeone": "node scripts/check-edgeone.mjs",

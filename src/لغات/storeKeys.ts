@@ -34,6 +34,8 @@ export type StoreTextKey =
   | 'sf_chip_sweet'
   | 'sf_chip_budget'
   | 'sf_by_shaheen'
+  | 'sf_ai_note_shaheen'
+  | 'sf_ai_note_quick'
   | 'sf_quick_pick'
   | 'sf_thinking'
   | 'sf_all'
