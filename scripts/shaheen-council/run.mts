@@ -81,7 +81,7 @@ let quotaOut = false;
 for (const [i, seat] of SEATS.entries()) {
   if (!engines.length || quotaOut) { opinions.push({ seat: seat.id, ok: false, text: '' }); continue; }
   let engine: string | undefined;
-  const ask = await makeAsk(env, { quota, prefer: engines[i % engines.length], maxWaitMs: 60_000, onEngine: (id) => { engine = id; } }).catch(() => undefined);
+  const ask = await makeAsk(env, { bot: 'council', quota, prefer: engines[i % engines.length], maxWaitMs: 60_000, onEngine: (id) => { engine = id; } }).catch(() => undefined);
   try {
     const text = ask ? (await ask(SEAT_SYSTEM(seat), seatPrompt(briefing, file.meetings[0]))).trim() : '';
     opinions.push({ seat: seat.id, engine, ok: text.length > 40, text: text.slice(0, 4000) });
@@ -101,7 +101,7 @@ let minutes: ReturnType<typeof parseMinutes> = null;
 let chairEngine: string | undefined;
 let chairFailed = false;
 if (spoke.length >= 2 && !quotaOut) {
-  const ask = await makeAsk(env, { quota, prefer: engines[0], maxWaitMs: 60_000, onEngine: (id) => { chairEngine = id; } }).catch(() => undefined);
+  const ask = await makeAsk(env, { bot: 'council', quota, prefer: engines[0], maxWaitMs: 60_000, onEngine: (id) => { chairEngine = id; } }).catch(() => undefined);
   try { minutes = ask ? parseMinutes(parseJson(await ask(CHAIR_SYSTEM, chairPrompt(briefing, opinions, openTasks, unreviewed(file)))), date) : null; }
   catch (error) { say(`Chair: ${(error as Error).message.slice(0, 120)} — the secretary takes the meeting`); }
   chairFailed = !minutes;

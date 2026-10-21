@@ -160,7 +160,7 @@ const quota = quotaBook(new URL('../../src/data/live/ai-quota.json', import.meta
 let ask: Awaited<ReturnType<typeof makeAsk>>;
 // The same page text read before is answered from the bots' memory (no AI call, even with the quota paused).
 const memory = answerBook(new URL('../../src/data/live/ai-memory.json', import.meta.url));
-try { ask = await makeAsk(env, { quota, memory }); } catch { ask = undefined; }
+try { ask = await makeAsk(env, { bot: 'importer', quota, memory }); } catch { ask = undefined; }
 let aiResumeAt = 0;
 // «مهارات شاهين»: how to read each store without AI, learned from AI readings that passed the checks.
 const SKILLS = new URL('../../src/data/live/shaheen-skills.json', import.meta.url);

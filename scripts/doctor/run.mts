@@ -13,7 +13,7 @@ const github = new GitHub(repo, mode === 'live' ? env.GITHUB_TOKEN : env.GITHUB_
 const runUrl = env.GITHUB_RUN_ID ? `${env.GITHUB_SERVER_URL || 'https://github.com'}/${repo}/actions/runs/${env.GITHUB_RUN_ID}` : undefined;
 
 const result = await runDoctor({
-  env, github, fetch, sh: shell(process.cwd()), ask: await makeAsk(env), root: process.cwd(), mode,
+  env, github, fetch, sh: shell(process.cwd()), ask: await makeAsk(env, { bot: 'doctor' }), root: process.cwd(), mode,
   runId: env.GITHUB_RUN_ID, runUrl,
 });
 

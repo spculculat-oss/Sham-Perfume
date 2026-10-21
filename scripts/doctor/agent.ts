@@ -8,6 +8,8 @@
  *   4. update the status board, comment only on events.
  * Runs on GitHub's machines, never on the website's servers.
  */
+import { handbookBrief } from '../../src/utils/botHandbook';
+import type { BotId } from '../../src/utils/shaheenOrg';
 import { execFile } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -410,7 +412,11 @@ export type QuotaBook = ReturnType<typeof quotaBook>;
  * `prefer`: this engine is asked first (the daily council gives each seat its own engine when several are set).
  * `onEngine`: told which engine answered (the admin panel shows it; visitors never see engine names).
  */
-export async function makeAsk(env: Env, options: { quota?: QuotaBook; memory?: AnswerBook; maxWaitMs?: number; sleep?: (ms: number) => Promise<void>; request?: typeof fetch; prefer?: string; onEngine?: (id: string) => void } = {}): Promise<DoctorOptions['ask']> {
+export async function makeAsk(env: Env, options: { quota?: QuotaBook; memory?: AnswerBook; maxWaitMs?: number; sleep?: (ms: number) => Promise<void>; request?: typeof fetch; prefer?: string; onEngine?: (id: string) => void;
+  /** «كتيب الروبوتات»: the robot asking — its model gets the book's compact edition and the robot's card with every request. */
+  bot?: BotId; handbook?: boolean } = {}): Promise<DoctorOptions['ask']> {
+  // Every robot's model reads the handbook first (the answer cache stays keyed by the task alone).
+  const book = options.handbook === false ? '' : handbookBrief(options.bot);
   const { callEngine, engineStatuses } = await import('../../server/core/engines');
   const order = ['gemini', 'perplexity', 'deepseek', 'openai', 'claude', 'openrouter', 'self_hosted'] as const;
   const configured = order.filter((id) => engineStatuses(env).find((e) => e.id === id)?.configured);
@@ -434,7 +440,7 @@ export async function makeAsk(env: Env, options: { quota?: QuotaBook; memory?: A
       }
       if (quota && cap !== Infinity) quota.use(id);
       let refused: { until: number; reason: string; detail: string } | undefined;
-      const reply = await callEngine(id, system, [{ role: 'user', text: prompt }], {
+      const reply = await callEngine(id, book ? `${book}\n\n———\n\n${system}` : system, [{ role: 'user', text: prompt }], {
         // The local teacher (an open model on the runner's CPU) writes slowly and has a small context window.
         env, fetch: options.request, signal: AbortSignal.timeout(id === 'self_hosted' ? Number(env.SHAM_LLM_TIMEOUT_MS) || 600_000 : 180_000),
         temperature: 0.2, maxTokens: id === 'self_hosted' ? Number(env.SHAM_LLM_MAX_TOKENS) || 2000 : 16_000, maxChars: 200_000,

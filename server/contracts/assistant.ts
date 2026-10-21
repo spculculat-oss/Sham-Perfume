@@ -11,6 +11,7 @@ import type { ModelEngineId } from '../core/types';
 import { guidanceBlock } from '../../src/utils/aiTools';
 import { CONTRACT_CRITERIA, checkLetter, type Sender } from './policy';
 import type { Lang } from './documents';
+import { withHandbook } from '../../src/utils/botHandbook';
 
 type Env = Record<string, string | undefined>;
 export type Topic = 'margin' | 'link' | 'identity' | 'ai' | 'payment' | 'withdraw' | 'exclusive' | 'images' | 'general';
@@ -100,7 +101,7 @@ export async function draftReply(input: { message: string; sender: Sender; conta
     const guidance = await supervisorGuidance('contracts_agent', env, options.fetch || fetch).catch(() => '');
     for (const id of engines) {
       try {
-        const text = (await callEngine(id, REPLY_SYSTEM(input.sender, lang) + guidanceBlock(guidance), [{ role: 'user', text: `The store's message:\n${message}` }], {
+        const text = (await callEngine(id, withHandbook('contracts', REPLY_SYSTEM(input.sender, lang) + guidanceBlock(guidance)), [{ role: 'user', text: `The store's message:\n${message}` }], {
           env, fetch: options.fetch, temperature: 0.4, maxTokens: 700,
           signal: AbortSignal.any([AbortSignal.timeout(15000), ...(options.signal ? [options.signal] : [])]),
         }))?.trim();

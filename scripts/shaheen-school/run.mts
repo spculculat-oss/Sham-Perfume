@@ -79,7 +79,7 @@ const quota = quotaBook(live('ai-quota.json'));
 const answers = answerBook(live('ai-memory.json'));
 let ask: Awaited<ReturnType<typeof makeAsk>>;
 // SCHOOL_PREFER=self_hosted: the local teacher first (free, always there), the AI services as the fallback.
-try { ask = await makeAsk(env, { quota, memory: answers, maxWaitMs: 60_000, prefer: env.SCHOOL_PREFER?.trim() || undefined, onEngine: (id) => { engineUsed = id; } }); } catch { ask = undefined; }
+try { ask = await makeAsk(env, { bot: 'teacher', quota, memory: answers, maxWaitMs: 60_000, prefer: env.SCHOOL_PREFER?.trim() || undefined, onEngine: (id) => { engineUsed = id; } }); } catch { ask = undefined; }
 if (env.SHAM_LLM_BASE_URL?.trim()) say(`Local teacher ready (${env.SHAM_LLM_MODEL || 'open model'} on this runner, no key)`);
 // Shaheen's supervisor (scripts/shaheen-supervisor) can add quality guidance for the study answers.
 const supervisor = read<{ tools?: Record<string, { guidance?: { text?: string } }> }>(live('ai-supervisor.json'));

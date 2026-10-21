@@ -185,6 +185,13 @@ export const JOURNEYS: Journey[] = [
     { bot: 'school', ar: 'شاهين يذاكر الدروس الجديدة', en: 'Shaheen studies the new lessons' },
     { bot: 'chat', ar: 'يستخدمها في ردوده على الزوار', en: 'Uses them in answers to visitors' },
   ] },
+  { id: 'offline', nameAr: 'سؤال جديد والمحركات واقعة', nameEn: 'A new question while the AI engines are down', steps: [
+    { bot: 'chat', ar: 'مفيش محرك ذكاء اصطناعي رد', en: 'No AI engine answers' },
+    { bot: 'library', ar: 'المكتبة ترد من الموسوعة والدروس والذاكرة', en: 'The library answers from his knowledge' },
+    { bot: 'researcher', ar: 'مش في المكتبة؟ الباحث يدور في المصادر المفتوحة', en: 'Not there? The researcher looks it up' },
+    { bot: 'teacher', ar: 'المعلم المحلي يكتب الدرس والمراجع يفحصه', en: 'The local teacher writes the lesson; the reviewer checks it' },
+    { bot: 'school', ar: 'الدرس يتحفظ في ذاكرة شاهين للمرة الجاية', en: 'The lesson joins his memory for next time' },
+  ] },
   { id: 'incident', nameAr: 'عطل في الموقع', nameEn: 'A site problem', steps: [
     { bot: 'patrol', ar: 'الدورية تكتشفه بالتجربة', en: 'The patrol finds it by testing' },
     { bot: 'live_check', ar: 'يتأكد إن شاهين بيرد على الموقع الحي', en: 'Checks Shaheen answers on the live site' },

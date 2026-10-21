@@ -1,8 +1,9 @@
 import { T, TP, adminLocale, getAdminLang } from './adminL10n';
 import { useCallback, useEffect, useState } from 'react';
-import { ArrowLeftRight, ExternalLink, Network, RefreshCw, ShieldCheck, UserCog } from 'lucide-react';
+import { ArrowLeftRight, BookOpen, ExternalLink, Network, RefreshCw, ShieldCheck, UserCog } from 'lucide-react';
 import bundledPrecheck from '../data/live/shaheen-precheck.json';
 import { BOTS, DEPARTMENTS, LINKS, botOf, botsIn, type Bot, type DeptId } from '../utils/shaheenOrg';
+import { HANDBOOK_EDITION, handbookSections } from '../utils/botHandbook';
 import type { BotCheck, BotStatus, PrecheckFile } from '../../scripts/shaheen-council/precheck';
 
 /**
@@ -161,6 +162,21 @@ export default function ShaheenOrgPanel() {
           {LINKS.map((l, i) => <li key={i}><b className="text-stone-800">{name(botOf(l.from))}</b> ← <b className="text-stone-800">{name(botOf(l.to))}</b>{ar() ? `: ${l.whyAr}` : ''}</li>)}
         </ul>
       </div>
+
+      {/* «كتيب الروبوتات»: the book every robot reads (and its compact edition reaches each robot's model) */}
+      <details className={card}>
+        <summary className="flex cursor-pointer items-center gap-2 text-sm font-black text-stone-900"><BookOpen className="h-4 w-4 text-amber-700" />{T('كتيب الروبوتات')}<span className="text-[11px] font-bold text-stone-400">{HANDBOOK_EDITION}</span></summary>
+        <p className="mt-2 text-xs text-stone-500">{T('سياسات الموقع وتوجهات المنصة وطرق التسعير والأدوات الإضافية. كل روبوت بيقراه، ونسخة مختصرة منه بتوصل تلقائياً لنموذج أي روبوت مع كل طلب — حتى الروبوتات الجديدة.')}</p>
+        <a className="mt-2 inline-flex items-center gap-1 rounded-lg border border-stone-200 px-2.5 py-1.5 text-xs font-bold text-stone-700" href={`${REPO}/blob/main/SHAHEEN_HANDBOOK.md`} target="_blank" rel="noreferrer"><ExternalLink className="h-3.5 w-3.5" />{T('الكتيب كامل')}</a>
+        <div className="mt-3 space-y-3" dir="rtl">
+          {handbookSections().map((s) => (
+            <div key={s.id}>
+              <b className="text-xs text-stone-800">{ar() ? s.titleAr : s.titleEn}</b>
+              <ul className="mt-1 list-disc space-y-0.5 ps-4 text-[11px] leading-relaxed text-stone-600">{s.points.map((p, i) => <li key={i}>{p}</li>)}</ul>
+            </div>
+          ))}
+        </div>
+      </details>
     </section>
   );
 }

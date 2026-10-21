@@ -168,6 +168,14 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       else if (rel !== undefined && rel < 95) f.push({ level: 'note', idea: `يوصل الاعتماد على النفس من ${rel}% لـ 95%` });
       break;
     }
+    case 'teacher': {
+      // The teacher shares the school's report: its own part is the latest sessions' mode and the lessons it wrote.
+      const recent = arr(r.history).map(o).slice(0, 4);
+      const pending = arr(r.pending).length;
+      if (pending && recent.length && !recent.some((h) => h.mode === 'local' || h.mode === 'ai')) f.push({ level: 'warn', problem: `${pending} سؤال مستني المذاكرة والمعلم المحلي ماكتبش دروس آخر ${recent.length} جولات`, fix: 'مراجعة خطوة «المعلم المحلي» في shaheen-discover.yml (تحميل النموذج أو تشغيله)' });
+      else if (!n(r.localTaughtTotal)) f.push({ level: 'note', idea: 'المعلم المحلي لسه مسجلش دروس في التقرير — أول جولة على main هتبدأ' });
+      break;
+    }
     case 'keys': {
       const paused = Object.entries(o(r.engines)).filter(([, e]) => Date.parse(String(o(e).pausedUntil || '')) > now).map(([e]) => e);
       if (paused.length) f.push({ level: 'warn', problem: `محركات متوقفة مؤقتاً: ${paused.join('، ')}`, fix: 'شحن الرصيد أو انتظار تجدد الباقة — السكرتير يمسك الشغل' });
