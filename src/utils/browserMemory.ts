@@ -15,6 +15,8 @@ export interface OfflineMemory {
   recall(question: string, lang: string): Promise<{ answer: string; exact: boolean } | undefined>;
   /** «مكتبة شاهين»: an answer built from his lessons, materials encyclopaedia and memory (no AI, no server). */
   library?(question: string, lang: string): Promise<string | undefined>;
+  /** «باحث شاهين»: a new question looked up in open sources (Wikipedia's public API, straight from the browser). */
+  research?(question: string, lang: string): Promise<string | undefined>;
 }
 
 function readLocal(): MemoryFile {
@@ -58,5 +60,11 @@ export const browserMemory: OfflineMemory = {
     const docs = ((lessons as { default?: { docs?: unknown } }).default ?? lessons) as { docs?: { id: string; title: string; content: string }[] };
     const memory = { ...site, entries: [...readLocal().entries, ...site.entries] };
     return libraryAnswer({ lessons: Array.isArray(docs.docs) ? docs.docs : [], materials: RAW_MATERIALS_DATABASE, memory }, question, lang)?.answer;
+  },
+  async research(question, lang) {
+    if (typeof import.meta.env?.MODE !== 'string' || typeof fetch !== 'function') return undefined;
+    const { research, researchAnswer } = await import('./webResearch');
+    const found = await research(fetch.bind(globalThis) as never, question, lang, { timeoutMs: 9000 });
+    return found ? researchAnswer(found) : undefined;
   },
 };

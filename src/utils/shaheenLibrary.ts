@@ -44,7 +44,7 @@ const ALIASES: Record<string, string[]> = {
   'mat-ambroxan': ['امبروكسان', 'امبروكس', 'ambroxan'], 'mat-iso-e-super': ['ايزو', 'iso'], 'mat-galaxolide': ['جالاكسوليد', 'galaxolide'],
 };
 
-const topicWords = (text: string) => meaningWords(text).filter((w) => !GENERIC.has(w) && !/^\d+$/.test(w));
+export const topicWords = (text: string) => meaningWords(text).filter((w) => !GENERIC.has(w) && !/^\d+$/.test(w));
 const hasArabic = (text: string) => /[\u0600-\u06FF]/.test(text);
 const clip = (text: string, max: number) => (text.length <= max ? text : `${text.slice(0, max - 1).replace(/\s+\S*$/, '')}…`);
 

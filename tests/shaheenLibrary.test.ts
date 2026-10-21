@@ -177,3 +177,21 @@ test('a broken JSON reply still gives its answer; a slip into another script is 
   const slip = studyCheck(JSON.stringify({ answer: `${answer} 酒精` }), b);
   assert.ok('reason' in slip && /another script/.test(slip.reason));
 });
+
+test('the review keeps a local lesson only on a clear OK', async () => {
+  const { parseReview } = await import('../scripts/shaheen-school/school');
+  assert.deepEqual(parseReview('OK'), { ok: true, reason: '' });
+  assert.deepEqual(parseReview('**OK** الإجابة سليمة'), { ok: true, reason: '' });
+  assert.equal(parseReview('REJECT: مسح العطر بقماشة نصيحة غير منطقية').ok, false);
+  assert.match(parseReview('REJECT: مسح العطر بقماشة نصيحة غير منطقية').reason, /قماشة/);
+  assert.equal(parseReview('الإجابة جيدة نوعا ما لكن').ok, false, 'no clear OK: not kept');
+  assert.equal(parseReview('').ok, false);
+});
+
+test('a reply whose JSON closes the answer with a stray bracket is still read', async () => {
+  const { studyCheck } = await import('../scripts/shaheen-school/school');
+  const b = { q: 'ليه العطر اللي عملته ريحته اختفت بسرعة؟', lang: 'ar' as const, topic: 'problems', origin: 'curriculum' as const };
+  const answer = 'الأنف بيتعود على الريحة بعد شوية، فبتحس إن العطر اختفى وهو لسه موجود؛ رش على نقاط النبض ورطب جلدك الأول.';
+  const r = studyCheck(`{"answer":"${answer}"]}`, b);
+  assert.ok('lesson' in r && r.lesson.answer === answer);
+});
