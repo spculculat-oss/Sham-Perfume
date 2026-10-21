@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T07:16:55.374Z",
+ "updatedAt": "2026-10-21T10:34:54.765Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -3049,13 +3049,129 @@
   {
    "id": "shamaperfumes-com",
    "host": "shamaperfumes.com",
-   "name": "shamaperfumes.com",
+   "name": "Shama Perfume",
    "base": "https://shamaperfumes.com",
-   "status": "candidate",
+   "status": "active",
    "foundBy": "brand-site",
    "foundWith": "Shama",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T10:34:54.765Z",
+   "trust": {
+    "score": 83,
+    "verdict": "trusted",
+    "at": "2026-10-21T10:34:54.765Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "13 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد + هاتف"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 15,
+      "max": 15,
+      "detail": "الموقع الرسمي لماركة Shama + عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 3,
+      "max": 5,
+      "detail": "محلي أو غير مذكور"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "الماركة نفسها تبيع منتجاتها"
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2013-02-06T10:37:24.000Z"
+   },
+   "region": "south-asia",
+   "sampleOk": 4,
+   "sampleTotal": 6,
+   "currency": "INR",
+   "rateToEgp": 0.5743,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*shamaperfumes\\.com/products/[^?#]+$",
+   "sitemaps": [
+    "https://shamaperfumes.com/sitemap_agentic_discovery.xml",
+    "https://shamaperfumes.com/sitemap_products_1.xml?from=7592610988171&to=10362128007307",
+    "https://shamaperfumes.com/sitemap_pages_1.xml?from=108600000651&to=111503736971",
+    "https://shamaperfumes.com/sitemap_collections_1.xml?from=294751240331&to=317437411467",
+    "https://shamaperfumes.com/sitemap_blogs_1.xml",
+    "https://shamaperfumes.com/sitemap_articles_1.xml"
+   ],
+   "via": "json-ld",
+   "productsEstimate": 488
   },
   {
    "id": "shamaparfums-com",
@@ -3066,7 +3182,9 @@
    "foundBy": "brand-site",
    "foundWith": "Shama",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T10:34:54.765Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "afnanperfumes-com",
@@ -3077,7 +3195,9 @@
    "foundBy": "brand-site",
    "foundWith": "Afnan",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T10:34:54.765Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "strawberrynet-com",
@@ -3684,7 +3804,9 @@
    "foundBy": "brand-site",
    "foundWith": "Afnan",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T10:34:54.765Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "osma-com",
@@ -3695,18 +3817,232 @@
    "foundBy": "brand-site",
    "foundWith": "Osma",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T10:34:54.765Z",
+   "trust": {
+    "score": 61,
+    "verdict": "trusted",
+    "at": "2026-10-21T10:34:54.765Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "29 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": false,
+      "points": 4,
+      "max": 10,
+      "detail": "بريد"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 10,
+      "max": 15,
+      "detail": "الموقع الرسمي لماركة Osma"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": null,
+      "points": 2,
+      "max": 5
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "الماركة نفسها تبيع منتجاتها"
+     }
+    ],
+    "flags": [],
+    "registeredAt": "1997-04-09T04:00:00.000Z"
+   },
+   "region": "global",
+   "sampleOk": 0,
+   "sampleTotal": 6,
+   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
   },
   {
    "id": "osmaperfumes-com",
    "host": "osmaperfumes.com",
-   "name": "osmaperfumes.com",
-   "base": "https://osmaperfumes.com",
-   "status": "candidate",
+   "name": "عطور اوسما Osma Perfumes",
+   "base": "https://sa.osmaperfumes.com",
+   "status": "active",
    "foundBy": "brand-site",
    "foundWith": "Osma",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T10:34:54.765Z",
+   "trust": {
+    "score": 68,
+    "verdict": "trusted",
+    "at": "2026-10-21T10:34:54.765Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 16,
+      "max": 20,
+      "detail": "3 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": false,
+      "points": 4,
+      "max": 10,
+      "detail": "بريد"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 10,
+      "max": 15,
+      "detail": "بيانات قانونية + الموقع الرسمي لماركة Osma"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 3,
+      "max": 5,
+      "detail": "محلي أو غير مذكور"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Salla"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "الماركة نفسها تبيع منتجاتها"
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2022-11-21T11:19:29.000Z"
+   },
+   "region": "arab",
+   "sampleOk": 3,
+   "sampleTotal": 6,
+   "currency": "SAR",
+   "rateToEgp": 14.5298,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*osmaperfumes\\.com/en/(?:[^?#]*/)?p\\d+/?$",
+   "sitemaps": [
+    "https://osmaperfumes.com/ar/sitemap-1.xml",
+    "https://osmaperfumes.com/ar/sitemap-2.xml"
+   ],
+   "via": "json-ld",
+   "productsEstimate": 18
   },
   {
    "id": "osmaparfums-com",
@@ -3717,29 +4053,134 @@
    "foundBy": "brand-site",
    "foundWith": "Osma",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T10:34:54.765Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "pariscorner-com",
    "host": "pariscorner.com",
    "name": "pariscorner.com",
    "base": "https://pariscorner.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Paris Corner",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T10:34:54.765Z",
+   "reason": "نفس متجر pariscornerperfumes.com"
   },
   {
    "id": "pariscornerperfumes-com",
    "host": "pariscornerperfumes.com",
-   "name": "pariscornerperfumes.com",
-   "base": "https://pariscornerperfumes.com",
+   "name": "PARIS CORNER",
+   "base": "https://www.pariscornerperfumes.com",
    "status": "candidate",
    "foundBy": "brand-site",
    "foundWith": "Paris Corner",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T10:34:54.765Z",
+   "trust": {
+    "score": 56,
+    "verdict": "weak",
+    "at": "2026-10-21T10:34:54.765Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "10 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 6,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 10,
+      "max": 15,
+      "detail": "الموقع الرسمي لماركة Paris Corner"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "الماركة نفسها تبيع منتجاتها"
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2015-11-16T08:26:30.000Z"
+   },
+   "region": "global",
+   "reason": "ملف الثقة ضعيف (56/100): ينقصه سياسة الإرجاع والاسترداد، وسائل دفع معروفة، سياسة الشحن"
   },
   {
    "id": "notino-co-uk",
@@ -4029,7 +4470,9 @@
    "foundBy": "brand-site",
    "foundWith": "Paris Corner",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T10:34:54.765Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "velixir-com",
@@ -6232,6 +6675,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-21T10:34:54.765Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 10,
+   "activated": 2,
+   "rejected": 1,
+   "notes": [
+    "✓ shamaperfumes.com (CV 83/100): 488 perfumes, 4/6 pages read without AI, INR (1 = 0.5743 EGP) — added to the importer",
+    "✗ shamaparfums.com: الموقع لا يفتح",
+    "✗ afnanperfumes.com: الموقع لا يفتح",
+    "✗ afnanparfums.com: الموقع لا يفتح",
+    "  ↳ osma.com: CV 61/100 [age,https,identity,returns,privacy,authentic]",
+    "✗ osma.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "  ↳ osmaperfumes.com: CV 68/100 [age,https,identity,returns,shipping,privacy,terms,platform,authentic] on Salla",
+    "✓ osmaperfumes.com (CV 68/100): 18 perfumes, 3/6 pages read without AI, SAR (1 = 14.5298 EGP) — added to the importer",
+    "✗ osmaparfums.com: الموقع لا يفتح",
+    "  ↳ pariscornerperfumes.com: CV 56/100 [age,https,contact,identity,platform,social,authentic] on Shopify (pages: /pages/contact→200 /policies/contact-information→404 /policies/refund-policy→404 /policies/legal-notice→404 /policies/shipping-policy→404 /pages/about-us→200)",
+    "✗ pariscornerperfumes.com: ملف الثقة ضعيف (56/100): ينقصه سياسة الإرجاع والاسترداد، وسائل دفع معروفة، سياسة الشحن",
+    "✗ pariscornerparfums.com: الموقع لا يفتح"
+   ]
+  },
   {
    "at": "2026-10-21T07:16:55.374Z",
    "mode": "self",
