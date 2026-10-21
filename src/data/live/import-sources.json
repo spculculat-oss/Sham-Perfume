@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T06:55:49.085Z",
+ "updatedAt": "2026-10-21T07:16:55.374Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -1951,13 +1951,117 @@
   {
    "id": "alwataniah-com",
    "host": "alwataniah.com",
-   "name": "alwataniah.com",
-   "base": "https://alwataniah.com",
+   "name": "Alwataniah",
+   "base": "https://www.alwataniah.com",
    "status": "candidate",
    "foundBy": "brand-site",
    "foundWith": "Al Wataniah",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "trust": {
+    "score": 88,
+    "verdict": "trusted",
+    "at": "2026-10-21T07:16:55.374Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "10 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد + هاتف"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 15,
+      "max": 15,
+      "detail": "الموقع الرسمي لماركة Al Wataniah + عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 3,
+      "max": 5,
+      "detail": "محلي أو غير مذكور"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "الماركة نفسها تبيع منتجاتها"
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2015-11-08T11:07:50.000Z"
+   },
+   "region": "global",
+   "sampleOk": 0,
+   "sampleTotal": 1,
+   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)"
   },
   {
    "id": "theperfumeshop-com",
@@ -2341,7 +2445,9 @@
    "foundBy": "brand-site",
    "foundWith": "Al Wataniah",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "alwataniahparfums-com",
@@ -2352,7 +2458,9 @@
    "foundBy": "brand-site",
    "foundWith": "Al Wataniah",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "lattafapride-com",
@@ -2363,7 +2471,9 @@
    "foundBy": "brand-site",
    "foundWith": "Lattafa Pride",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "lattafaprideperfumes-com",
@@ -2374,7 +2484,9 @@
    "foundBy": "brand-site",
    "foundWith": "Lattafa Pride",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "lattafaprideparfums-com",
@@ -2385,18 +2497,122 @@
    "foundBy": "brand-site",
    "foundWith": "Lattafa Pride",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "volare-com",
    "host": "volare.com",
    "name": "volare.com",
-   "base": "https://volare.com",
-   "status": "candidate",
+   "base": "http://www.volare.com",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Volare",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 0
+   "attempts": 3,
+   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "trust": {
+    "score": 47,
+    "verdict": "rejected",
+    "at": "2026-10-21T07:16:55.374Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "28 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 10,
+      "detail": "لا توجد"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 10,
+      "max": 15,
+      "detail": "الموقع الرسمي لماركة Volare"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": null,
+      "points": 2,
+      "max": 5
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "الماركة نفسها تبيع منتجاتها"
+     }
+    ],
+    "flags": [
+     "لا يستخدم اتصالاً آمناً (https)"
+    ],
+    "registeredAt": "1998-07-22T04:00:00.000Z"
+   },
+   "region": "global",
+   "reason": "ملف الثقة: لا يستخدم اتصالاً آمناً (https)"
   },
   {
    "id": "letu-kz",
@@ -2577,13 +2793,132 @@
   {
    "id": "volareperfumes-com",
    "host": "volareperfumes.com",
-   "name": "volareperfumes.com",
+   "name": "Volare",
    "base": "https://volareperfumes.com",
-   "status": "candidate",
+   "status": "active",
    "foundBy": "brand-site",
    "foundWith": "Volare",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "trust": {
+    "score": 80,
+    "verdict": "trusted",
+    "at": "2026-10-21T07:16:55.374Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 10,
+      "max": 20,
+      "detail": "2 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "صفحة تواصل + بريد + هاتف"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": false,
+      "points": 5,
+      "max": 15,
+      "detail": "عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "يشحن دولياً"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "Visa، Mastercard، American Express، Apple Pay، Google Pay، JCB"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2024-08-07T13:45:38.000Z"
+   },
+   "region": "arab",
+   "sampleOk": 4,
+   "sampleTotal": 6,
+   "currency": "AED",
+   "rateToEgp": 14.8364,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*volareperfumes\\.com/[^?#]+$",
+   "sitemaps": [
+    "https://volareperfumes.com/sitemap_agentic_discovery.xml",
+    "https://volareperfumes.com/sitemap_products_1.xml?from=9893736186148&to=10424242667812",
+    "https://volareperfumes.com/sitemap_pages_1.xml?from=140971344164&to=161011859748",
+    "https://volareperfumes.com/sitemap_collections_1.xml?from=628052754724&to=650876092708",
+    "https://volareperfumes.com/sitemap_blogs_1.xml",
+    "https://volareperfumes.com/ar/sitemap_products_1.xml?from=9893736186148&to=10424242667812",
+    "https://volareperfumes.com/ar/sitemap_pages_1.xml?from=140971344164&to=161011859748",
+    "https://volareperfumes.com/ar/sitemap_collections_1.xml?from=628052754724&to=650876092708",
+    "https://volareperfumes.com/ar/sitemap_blogs_1.xml"
+   ],
+   "via": "generic",
+   "productsEstimate": 654
   },
   {
    "id": "volareparfums-com",
@@ -2594,18 +2929,122 @@
    "foundBy": "brand-site",
    "foundWith": "Volare",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "shama-com",
    "host": "shama.com",
-   "name": "shama.com",
-   "base": "https://shama.com",
+   "name": "Shama",
+   "base": "https://www.shama.com",
    "status": "candidate",
    "foundBy": "brand-site",
    "foundWith": "Shama",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "trust": {
+    "score": 62,
+    "verdict": "trusted",
+    "at": "2026-10-21T07:16:55.374Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "25 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 10,
+      "detail": "لا توجد"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 10,
+      "max": 15,
+      "detail": "الموقع الرسمي لماركة Shama"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": null,
+      "points": 2,
+      "max": 5
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "الماركة نفسها تبيع منتجاتها"
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2001-10-02T18:04:03.000Z"
+   },
+   "region": "global",
+   "sampleOk": 0,
+   "sampleTotal": 6,
+   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
   },
   {
    "id": "shamaperfumes-com",
@@ -5793,6 +6232,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-21T07:16:55.374Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 10,
+   "activated": 1,
+   "rejected": 1,
+   "notes": [
+    "✗ alwataniah.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
+    "✗ alwataniahperfumes.com: الموقع لا يفتح",
+    "✗ alwataniahparfums.com: الموقع لا يفتح",
+    "✗ lattafapride.com: الموقع لا يفتح",
+    "✗ lattafaprideperfumes.com: الموقع لا يفتح",
+    "✗ lattafaprideparfums.com: الموقع لا يفتح",
+    "✗ volare.com: ملف الثقة: لا يستخدم اتصالاً آمناً (https)",
+    "  ↳ volareperfumes.com: CV 80/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ volareperfumes.com (CV 80/100): 654 perfumes, 4/6 pages read without AI, AED (1 = 14.8364 EGP) — added to the importer",
+    "✗ volareparfums.com: الموقع لا يفتح",
+    "  ↳ shama.com: CV 62/100 [age,https,identity,returns,privacy,social,authentic]",
+    "✗ shama.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
+   ]
+  },
   {
    "at": "2026-10-21T06:55:49.085Z",
    "mode": "self",
