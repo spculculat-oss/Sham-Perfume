@@ -98,7 +98,8 @@ jobs:
           LLAMA_BUILD: b11790
           LLAMA_SHA256: 0e2b856ca192699fdb5c8dfe591b7896d658760bcdd48f133322236cd311c455
           TEACHER_MODEL_URL: ${{ vars.TEACHER_MODEL_URL || 'https://huggingface.co/bartowski/Qwen2.5-7B-Instruct-GGUF/resolve/main/Qwen2.5-7B-Instruct-Q4_K_M.gguf' }}
-          TEACHER_MODEL_SHA256: ${{ vars.TEACHER_MODEL_URL && vars.TEACHER_MODEL_SHA256 || '' }}
+          # Another model (TEACHER_MODEL_URL) needs its own TEACHER_MODEL_SHA256, else the check stops it safely.
+          TEACHER_MODEL_SHA256: ${{ vars.TEACHER_MODEL_URL && vars.TEACHER_MODEL_SHA256 || '65b8fcd92af6b4fefa935c625d1ac27ea29dcb6ee14589c55a8f115ceaaa1423' }}
           TEACHER_MODEL_NAME: ${{ vars.TEACHER_MODEL_NAME || 'qwen2.5-7b-instruct' }}
         run: bash scripts/shaheen-school/teacher.sh
       - name: «مدرسة شاهين» — exam, self-study, study with the local teacher or AI

@@ -94,7 +94,10 @@ else {
       const reply = await ask(SYSTEM, prompt);
       const lesson = parseStudy(reply, b);
       const teacher = engineUsed === 'self_hosted' ? 'local teacher' : engineUsed || 'saved answer';
-      if (!lesson) { answers.forget(SYSTEM, prompt); say(`Study «${b.q.slice(0, 60)}» (${teacher}): answer did not pass the checks — retried next time`); continue; }
+      const rehearsal = env.PUBLISH !== 'true';
+      const preview = (text: string) => text.replace(/\s+/g, ' ').slice(0, 160);
+      if (!lesson) { answers.forget(SYSTEM, prompt); say(`Study «${b.q.slice(0, 60)}» (${teacher}): answer did not pass the checks — retried next time${rehearsal ? ` [${preview(reply)}]` : ''}`); continue; }
+      if (rehearsal) say(`Lesson «${b.q.slice(0, 60)}» (${teacher}): ${preview(lesson.answer)}`);
       if (engineUsed === 'self_hosted') { if (mode !== 'ai') mode = 'local'; } else mode = 'ai';
       let kept = 0;
       for (const q of [b.q, ...lesson.paraphrases]) if (remember(memory, { question: q, lang: b.lang, mode: 'auto', answer: lesson.answer, source: 'study' })) kept++;
