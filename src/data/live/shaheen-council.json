@@ -650,9 +650,10 @@
    "needsApproval": false,
    "createdAt": "2026-10-20T23:05:13.356Z",
    "meeting": "2026-10-21",
-   "status": "open",
+   "status": "done",
    "issue": 188,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/188"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/188",
+   "closedAt": "2026-10-21T10:34:44Z"
   },
   {
    "id": "2026-10-21-3-تحسين-بيانات-الكتالوج-ال",
@@ -663,9 +664,10 @@
    "needsApproval": false,
    "createdAt": "2026-10-20T23:05:13.356Z",
    "meeting": "2026-10-21",
-   "status": "open",
+   "status": "done",
    "issue": 189,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/189"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/189",
+   "closedAt": "2026-10-21T10:34:43Z"
   },
   {
    "id": "2026-10-21-4-تصحيح-قياس-الترجمة-ومعال",
@@ -676,9 +678,10 @@
    "needsApproval": false,
    "createdAt": "2026-10-20T23:05:13.356Z",
    "meeting": "2026-10-21",
-   "status": "open",
+   "status": "done",
    "issue": 190,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/190"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/190",
+   "closedAt": "2026-10-21T10:34:42Z"
   }
  ],
  "toolGoals": {
