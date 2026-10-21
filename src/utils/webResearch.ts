@@ -24,6 +24,7 @@ const WIKI_LANGS = new Set(['ar', 'en', 'fr', 'de', 'es', 'it', 'tr', 'ru', 'zh'
 /** The sections at the end of an article that never answer anything. */
 const TAIL = /^(مراجع|المراجع|المصادر|مصادر|انظر أيضا|انظر أيضًا|وصلات خارجية|روابط خارجية|ملاحظات|قراءات إضافية|References|See also|External links|Notes|Further reading|Bibliography|Sources)\s*$/m;
 const CONTEXT: Record<string, string> = { ar: 'عطور', en: 'perfume' };
+const SCENT = /عطر|عطور|رائح|بخور|perfum|fragran|scent|odou?r|aroma|parfum/i;
 
 const clip = (text: string, max: number) => (text.length <= max ? text : `${text.slice(0, max - 1).replace(/\s+\S*$/, '')}…`);
 const wikiLang = (lang: string) => (WIKI_LANGS.has(lang) ? lang : 'en');
@@ -41,8 +42,8 @@ export function researchQueries(question: string, lang: string): string[] | unde
   if (!words.length) return undefined;
   const context = CONTEXT[lang];
   const tries = [
-    context && !words.some((w) => w.startsWith(context.slice(0, 3))) ? [...words, context].join(' ') : '',
     words.join(' '),
+    context && !words.some((w) => w.startsWith(context.slice(0, 3))) ? [...words, context].join(' ') : '',
     words.length > 2 ? words.slice(0, 2).join(' ') : '',
   ];
   return [...new Set(tries.filter(Boolean))];
@@ -75,7 +76,8 @@ export function findPassages(text: string, words: string[], source: WebSource): 
   const asked = new Set(words);
   const out: WebPassage[] = [];
   for (const raw of text.split(/\n+|(?<=[.!؟?])\s+/)) {
-    const sentence = raw.replace(/\s+/g, ' ').trim();
+    // Pronunciation brackets emptied by the plain-text export («Ambergris ( or ; Latin: …») are tidied.
+    const sentence = raw.replace(/\s+/g, ' ').replace(/\(\s*(?:or\s*)?[;,]\s*/g, '(').replace(/\(\s*\)/g, '').trim();
     // Headings, list stubs and run-on blocks are not answers.
     if (sentence.length < 40 || sentence.length > 600 || !/[.!؟?:،,]/.test(sentence)) continue;
     const has = new Set(meaningWords(sentence));
@@ -120,17 +122,26 @@ export async function research(fetchFn: Fetch, question: string, lang: string, o
   const queries = researchQueries(question, lang);
   if (!queries) return undefined;
   const signal = AbortSignal.timeout(options.timeoutMs ?? 9000);
-  let titles: string[] = []; let query = '';
+  // The plain search and the one in the perfume context, merged: an article named after the topic first.
+  const max = options.articles ?? 3;
+  const words = researchWords(question);
+  const found: string[] = []; let query = '';
   for (const q of queries) {
-    titles = await wikiSearch(fetchFn, q, lang, options.articles ?? 3, signal, options.userAgent).catch(() => []);
-    if (titles.length) { query = q; break; }
+    const hits = await wikiSearch(fetchFn, q, lang, max, signal, options.userAgent).catch(() => []);
+    if (hits.length && !query) query = q;
+    for (const t of hits) if (!found.includes(t)) found.push(t);
+    if (found.length >= max * 2) break;
   }
+  const named = (t: string) => meaningWords(t).some((w) => words.includes(w));
+  const titles = [...found.filter(named), ...found.filter((t) => !named(t))].slice(0, max);
   if (!titles.length) return undefined;
   const texts = (await Promise.all(titles.map(async (title) => {
     const text = await wikiText(fetchFn, title, lang, signal, options.userAgent).catch(() => '');
     return text ? { source: { title, url: articleUrl(lang, title), site: 'wikipedia' as const, lang: wikiLang(lang) }, text } : undefined;
   }))).filter((t): t is { source: WebSource; text: string } => Boolean(t));
-  const passages = analyse(texts, question);
+  // Shaheen's field is perfume: an article that never mentions scent («عود» the instrument) is left out — unless none does.
+  const scented = texts.filter((t) => SCENT.test(t.text));
+  const passages = analyse(scented.length ? scented : texts, question);
   if (!passages.length) return undefined;
   const used = new Set(passages.map((p) => p.source.url));
   return { question, lang, query, sources: texts.map((t) => t.source).filter((s) => used.has(s.url)), passages };

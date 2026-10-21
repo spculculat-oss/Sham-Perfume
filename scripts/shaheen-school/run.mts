@@ -84,15 +84,6 @@ if (env.SHAM_LLM_BASE_URL?.trim()) say(`Local teacher ready (${env.SHAM_LLM_MODE
 const supervisor = read<{ tools?: Record<string, { guidance?: { text?: string } }> }>(live('ai-supervisor.json'));
 const localFirst = Boolean(env.SHAM_LLM_BASE_URL?.trim()) && env.SCHOOL_PREFER?.trim() === 'self_hosted';
 const SYSTEM = STUDY_SYSTEM + (localFirst ? LOCAL_TEACHER_STYLE : '') + guidanceBlock(supervisor?.tools?.shaheen_school?.guidance?.text);
-// Rehearsal (branches): «باحث شاهين» tried live on a few everyday questions, so a change is checked on the real web.
-if (env.PUBLISH !== 'true' && env.SHAM_WEB_RESEARCH !== '0') {
-  for (const [q, lang] of [['ايه هو البخور وبيتعمل ازاي؟', 'ar'], ['ايه هو المسك؟', 'ar'], ['ايه تاريخ ماء الورد؟', 'ar'], ['What is ambergris?', 'en']] as const) {
-    const r = await research(fetch as never, q, lang, { userAgent: RESEARCH_USER_AGENT, timeoutMs: 20_000 }).catch((error: Error) => error);
-    say(r instanceof Error ? `Research «${q}»: failed (${r.message.slice(0, 60)})`
-      : r ? `Research «${q}» → ${r.sources.map((x) => x.title).join(' + ')} (${r.passages.length} passages, ${r.passages.filter((p) => p.agreed > 1).length} confirmed): ${r.passages[0]!.text.slice(0, 110)}`
-      : `Research «${q}»: nothing solid found`);
-  }
-}
 const todo = pickStudy(first.results, MAX_STUDY);
 if (!todo.length) say('Nothing left to study in the bank — Shaheen answers every question by himself');
 else if (!ask) say(`No AI engine available: ${todo.length} questions wait for the next study session (Shaheen keeps answering from what he learned)`);
@@ -134,6 +125,15 @@ else {
     }
   }
   say(`Studied ${studied} new questions${studied ? ' (each kept with its other wordings)' : ''}; open sources found for ${researched}`);
+}
+// Rehearsal (branches): «باحث شاهين» tried live on a few everyday questions, so a change is checked on the real web.
+if (env.PUBLISH !== 'true' && env.SHAM_WEB_RESEARCH !== '0') {
+  for (const [q, lang] of [['ايه هو البخور وبيتعمل ازاي؟', 'ar'], ['ايه هو المسك؟', 'ar'], ['ايه تاريخ ماء الورد؟', 'ar'], ['What is ambergris?', 'en']] as const) {
+    const r = await research(fetch as never, q, lang, { userAgent: RESEARCH_USER_AGENT, timeoutMs: 20_000 }).catch((error: Error) => error);
+    say(r instanceof Error ? `Research «${q}»: failed (${r.message.slice(0, 60)})`
+      : r ? `Research «${q}» → ${r.sources.map((x) => x.title).join(' + ')} (${r.passages.length} passages, ${r.passages.filter((p) => p.agreed > 1).length} confirmed): ${r.passages[0]!.text.slice(0, 70)}`
+      : `Research «${q}»: nothing solid found`);
+  }
 }
 quota.save();
 answers.save();

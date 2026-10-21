@@ -16,6 +16,7 @@ import { createShaheenRouter } from '../server/shaheen';
 const ARTICLES: Record<string, string> = {
   'بخور': 'البخور هو مادة عطرية تحرق لتطلق دخانا ذا رائحة طيبة.\nتاريخ\nاستخدم المصريون القدماء البخور في المعابد منذ آلاف السنين، وكان اللبان والمر من أشهر مكوناته.\nيصنع البخور العربي عادة من خشب العود المنقوع في الزيوت العطرية ثم يجفف.\nمراجع\nالبخور في الموسوعة الكبرى، صفحة 12، طبعة قديمة جدا للمراجع.',
   'عود (بخور)': 'العود خشب عطري يتكون في أشجار الأكويلاريا عند إصابتها، ويستخدم في صناعة البخور والعطور الشرقية.\nيصنع البخور العربي عادة من خشب العود المنقوع في الزيوت العطرية، ويحرق في المناسبات.',
+  'عود (آلة)': 'العود آلة موسيقية وترية شرقية قديمة، ويعزف عليها في الموسيقى العربية منذ قرون طويلة جدا.',
   'مصر القديمة': 'مصر القديمة حضارة نشأت على ضفاف النيل منذ أكثر من خمسة آلاف سنة، واشتهرت بالأهرامات.',
 };
 const calls: string[] = [];
@@ -26,7 +27,7 @@ const wiki = (async (url: string, init?: { headers?: Record<string, string> }) =
   if (init?.headers) assert.match(init.headers['User-Agent'] || '', /ShamPerfumeShaheen/, 'the server says who it is');
   if (u.searchParams.get('list') === 'search') {
     const q = u.searchParams.get('srsearch') || '';
-    const hits = /بخور/.test(q) ? ['بخور', 'عود (بخور)', 'مصر القديمة'] : [];
+    const hits = /بخور/.test(q) ? ['مصر القديمة', 'بخور', 'عود (بخور)'] : /عود/.test(q) ? ['عود (آلة)', 'عود (بخور)'] : [];
     return new Response(JSON.stringify({ query: { search: hits.map((title) => ({ title })) } }));
   }
   const title = u.searchParams.get('titles') || '';
@@ -34,7 +35,7 @@ const wiki = (async (url: string, init?: { headers?: Record<string, string> }) =
 }) as never;
 
 test('what is looked up: the question’s topic, never news, prices or personal details', () => {
-  assert.deepEqual(researchQueries('ايه هو البخور وبيتعمل ازاي؟', 'ar')?.[0], 'بخور عطور');
+  assert.deepEqual(researchQueries('ايه هو البخور وبيتعمل ازاي؟', 'ar'), ['بخور', 'بخور عطور'], 'the topic alone, then in the perfume context');
   assert.equal(researchQueries('ايه اخبار العطور النهارده', 'ar'), undefined);
   assert.equal(researchQueries('سعر البخور كام', 'ar'), undefined);
   assert.equal(researchQueries('رقمي 01012345678 عايز بخور', 'ar'), undefined);
@@ -60,6 +61,8 @@ test('read, compared, answered with sources: what several sources agree on comes
   assert.match(answer, /سؤالك اتسجل/);
   assert.match(researchBlock(found), /\(ويكيبيديا\)/);
   assert.equal(await research(wiki, 'ايه هي الطاقة الشمسية في الفضاء', 'ar'), undefined, 'nothing found: nothing invented');
+  const oud = (await research(wiki, 'ايه هو العود؟', 'ar'))!;
+  assert.deepEqual(oud.sources.map((s) => s.title), ['عود (بخور)'], 'Shaheen’s field is perfume: the musical instrument is left out');
 });
 
 test('analysis keeps only passages about the question', () => {
