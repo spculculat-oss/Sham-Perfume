@@ -1,7 +1,7 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-10-21T14:55:19.642Z",
+  "updatedAt": "2026-10-21T16:13:45.206Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
@@ -11,57 +11,57 @@
   "languageClamps": [],
   "score": 67,
   "notes": [
-    "الترجمة مش مكتملة: 16.8% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 153101 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط الأساسية بس هي اللي مكتملة.",
-    "المترجم الذكي: 153101 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3232 — النهارده اتترجم 0 (الباقة خلصت — هيكمل بعد التجديد).",
-    "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «Live Sync» src/components/HomeHub.tsx:139، «Enter Portal» src/components/HomeHub.tsx:142، «placeholder» src/assistant/ShamAssistant.tsx:20، «placeholder» src/assistant/ShamAssistant.tsx:446، «placeholder» src/assistant/ShamAssistant.tsx:447.",
+    "الترجمة مش مكتملة: 16.7% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 153885 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط الأساسية بس هي اللي مكتملة.",
+    "المترجم الذكي: 153885 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3232 — النهارده اتترجم 0 (الباقة خلصت — هيكمل بعد التجديد).",
+    "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «placeholder» src/components/CountryAndAddressModal.tsx:1272، «placeholder» src/components/LanguageSelector.tsx:459، «placeholder» src/components/LocalizedNumberInput.tsx:28.",
     "لغات بلّغ عنها قسم التصميم بتتترجم الأول: is، sq، ps، ja."
   ],
-  "translationCoverage": 16.8,
+  "translationCoverage": 16.7,
   "fullyTranslated": 0,
   "translation": {
-    "at": "2026-10-21T14:55:20.037Z",
+    "at": "2026-10-21T16:13:45.644Z",
     "status": "quota",
-    "remaining": 153101,
+    "remaining": 153885,
     "covered": 3232,
-    "total": 184142,
+    "total": 184926,
     "fullyTranslated": 0,
     "remainingByTier": {
       "1": 16177,
-      "2": 105416,
-      "3": 31508
+      "2": 106102,
+      "3": 31606
     },
     "worstLanguages": [
       {
         "lang": "my",
-        "remaining": 1712
+        "remaining": 1720
       },
       {
         "lang": "dz",
-        "remaining": 1712
+        "remaining": 1720
       },
       {
         "lang": "cs",
-        "remaining": 1710
+        "remaining": 1718
       },
       {
         "lang": "ur",
-        "remaining": 1710
+        "remaining": 1718
       },
       {
         "lang": "am",
-        "remaining": 1710
+        "remaining": 1718
       },
       {
         "lang": "ha",
-        "remaining": 1710
+        "remaining": 1718
       },
       {
         "lang": "yo",
-        "remaining": 1710
+        "remaining": 1718
       },
       {
         "lang": "zu",
-        "remaining": 1710
+        "remaining": 1718
       }
     ],
     "run": {
@@ -156,7 +156,7 @@
     }
   },
   "design": {
-    "at": "2026-10-21T14:55:19.642Z",
+    "at": "2026-10-21T16:13:45.206Z",
     "auditAt": "2026-10-21T05:41:54.171Z",
     "auditScore": 42,
     "priorityLanguages": [
@@ -167,33 +167,25 @@
     ],
     "located": [
       {
-        "phrase": "Live Sync",
-        "file": "src/components/HomeHub.tsx",
-        "line": 139
-      },
-      {
-        "phrase": "Enter Portal",
-        "file": "src/components/HomeHub.tsx",
-        "line": 142
+        "phrase": "placeholder",
+        "file": "src/components/CountryAndAddressModal.tsx",
+        "line": 1272
       },
       {
         "phrase": "placeholder",
-        "file": "src/assistant/ShamAssistant.tsx",
-        "line": 20
+        "file": "src/components/LanguageSelector.tsx",
+        "line": 459
       },
       {
         "phrase": "placeholder",
-        "file": "src/assistant/ShamAssistant.tsx",
-        "line": 446
-      },
-      {
-        "phrase": "placeholder",
-        "file": "src/assistant/ShamAssistant.tsx",
-        "line": 447
+        "file": "src/components/LocalizedNumberInput.tsx",
+        "line": 28
       }
     ],
     "unlocated": [
       "SCENT STUDIO",
+      "Live Sync",
+      "Enter Portal",
       "Shop this scent",
       "placeholders",
       "Search store perfumes"
