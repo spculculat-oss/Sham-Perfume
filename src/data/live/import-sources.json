@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-20T19:57:05.380Z",
+ "updatedAt": "2026-10-21T00:55:57.475Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -532,29 +532,248 @@
    "foundBy": "brand-site",
    "foundWith": "Ard Al Zaafaran",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T00:55:57.475Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "zimaya-com",
    "host": "zimaya.com",
-   "name": "zimaya.com",
+   "name": "Zimaya",
    "base": "https://zimaya.com",
    "status": "candidate",
    "foundBy": "brand-site",
    "foundWith": "Zimaya",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T00:55:57.475Z",
+   "trust": {
+    "score": 42,
+    "verdict": "weak",
+    "at": "2026-10-21T00:55:57.475Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "16 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 10,
+      "detail": "لا توجد"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 10,
+      "max": 15,
+      "detail": "الموقع الرسمي لماركة Zimaya"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": null,
+      "points": 2,
+      "max": 5
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "الماركة نفسها تبيع منتجاتها"
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2010-09-15T20:21:52.000Z"
+   },
+   "region": "global",
+   "reason": "ملف الثقة ضعيف (42/100): ينقصه بيانات التواصل، سياسة الإرجاع والاسترداد، وسائل دفع معروفة"
   },
   {
    "id": "zimayaperfumes-com",
    "host": "zimayaperfumes.com",
-   "name": "zimayaperfumes.com",
+   "name": "ZIMAYA PERFUMES GLOBAL",
    "base": "https://zimayaperfumes.com",
-   "status": "candidate",
+   "status": "active",
    "foundBy": "brand-site",
    "foundWith": "Zimaya",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T00:55:57.475Z",
+   "trust": {
+    "score": 82,
+    "verdict": "trusted",
+    "at": "2026-10-21T00:55:57.475Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 16,
+      "max": 20,
+      "detail": "3 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": false,
+      "points": 2,
+      "max": 10,
+      "detail": "صفحة تواصل"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 15,
+      "max": 15,
+      "detail": "الموقع الرسمي لماركة Zimaya + عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": true,
+      "points": 10,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": true,
+      "points": 3,
+      "max": 5,
+      "detail": "محلي أو غير مذكور"
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 6,
+      "max": 10,
+      "detail": "Stripe"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "Shopify"
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "الماركة نفسها تبيع منتجاتها"
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2022-12-06T09:26:25.000Z"
+   },
+   "region": "arab",
+   "sampleOk": 3,
+   "sampleTotal": 6,
+   "currency": "AED",
+   "rateToEgp": 14.8364,
+   "productPattern": "^https?://(?:[a-z0-9-]+\\.)*zimayaperfumes\\.com/products/[^?#]+$",
+   "sitemaps": [
+    "https://zimayaperfumes.com/sitemap_agentic_discovery.xml",
+    "https://zimayaperfumes.com/sitemap_products_1.xml?from=7703824531526&to=8509335994438",
+    "https://zimayaperfumes.com/sitemap_pages_1.xml?from=95037456454&to=95037915206",
+    "https://zimayaperfumes.com/sitemap_collections_1.xml?from=284715122758&to=314055458886",
+    "https://zimayaperfumes.com/sitemap_blogs_1.xml",
+    "https://zimayaperfumes.com/sitemap_articles_1.xml"
+   ],
+   "via": "json-ld",
+   "productsEstimate": 106
   },
   {
    "id": "zimayaparfums-com",
@@ -565,7 +784,9 @@
    "foundBy": "brand-site",
    "foundWith": "Zimaya",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 0
+   "attempts": 1,
+   "vettedAt": "2026-10-21T00:55:57.475Z",
+   "reason": "الموقع لا يفتح"
   },
   {
    "id": "myperfumeshop-ae",
@@ -829,12 +1050,114 @@
    "id": "grandeur-com",
    "host": "grandeur.com",
    "name": "grandeur.com",
-   "base": "https://grandeur.com",
-   "status": "candidate",
+   "base": "http://www.grandeur.com",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Grandeur",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 0
+   "attempts": 3,
+   "vettedAt": "2026-10-21T00:55:57.475Z",
+   "trust": {
+    "score": 47,
+    "verdict": "rejected",
+    "at": "2026-10-21T00:55:57.475Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 20,
+      "max": 20,
+      "detail": "28 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 10,
+      "detail": "لا توجد"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": true,
+      "points": 10,
+      "max": 15,
+      "detail": "الموقع الرسمي لماركة Grandeur"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": null,
+      "points": 2,
+      "max": 5
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": true,
+      "points": 5,
+      "max": 5,
+      "detail": "الماركة نفسها تبيع منتجاتها"
+     }
+    ],
+    "flags": [
+     "لا يستخدم اتصالاً آمناً (https)"
+    ],
+    "registeredAt": "1998-09-18T04:00:00.000Z"
+   },
+   "region": "global",
+   "reason": "ملف الثقة: لا يستخدم اتصالاً آمناً (https)"
   },
   {
    "id": "grandeurperfumes-com",
@@ -3926,15 +4249,15 @@
    "host": "perfumeworldwide.com",
    "name": "Perfumeworldwide",
    "base": "https://perfumeworldwide.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T00:56:49.671Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T08:43:49.241Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T00:55:57.475Z",
    "trust": {
     "score": 30,
     "verdict": "weak",
-    "at": "2026-10-20T08:43:49.241Z",
+    "at": "2026-10-21T00:55:57.475Z",
     "checks": [
      {
       "id": "age",
@@ -4166,15 +4489,15 @@
    "host": "primor.eu",
    "name": "Perfumerías Primor",
    "base": "https://www.primor.eu",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T00:56:49.671Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T08:43:49.241Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T00:55:57.475Z",
    "trust": {
     "score": 74,
     "verdict": "trusted",
-    "at": "2026-10-20T08:43:49.241Z",
+    "at": "2026-10-21T00:55:57.475Z",
     "checks": [
      {
       "id": "age",
@@ -4279,11 +4602,11 @@
    "host": "iciparisxl.be",
    "name": "iciparisxl.be",
    "base": "https://iciparisxl.be",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T06:54:09.622Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T08:43:49.241Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T00:55:57.475Z",
    "reason": "الموقع لا يفتح (HTTP 403)"
   },
   {
@@ -4291,15 +4614,15 @@
    "host": "kicks.se",
    "name": "Makeup, parfym och hudvård på nätet",
    "base": "https://www.kicks.se",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T06:54:09.622Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T08:43:49.241Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T00:55:57.475Z",
    "trust": {
     "score": 50,
     "verdict": "weak",
-    "at": "2026-10-20T08:43:49.241Z",
+    "at": "2026-10-21T00:55:57.475Z",
     "checks": [
      {
       "id": "age",
@@ -4400,15 +4723,15 @@
    "host": "bangerhead.se",
    "name": "Hårvård, hudvård, makeup, parfym online",
    "base": "https://www.bangerhead.se",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T06:54:09.622Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T08:43:49.241Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T00:55:57.475Z",
    "trust": {
     "score": 41,
     "verdict": "weak",
-    "at": "2026-10-20T08:43:49.241Z",
+    "at": "2026-10-21T00:55:57.475Z",
     "checks": [
      {
       "id": "age",
@@ -5043,6 +5366,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-21T00:55:57.475Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 10,
+   "activated": 1,
+   "rejected": 6,
+   "notes": [
+    "✗ iciparisxl.be: الموقع لا يفتح (HTTP 403)",
+    "  ↳ kicks.se: CV 50/100 [https,contact,returns,payment,social] (pages: /kundservice→200 /kundservice→200)",
+    "✗ kicks.se: ملف الثقة ضعيف (50/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الشحن، سياسة الخصوصية",
+    "  ↳ bangerhead.se: CV 41/100 [https,contact,payment,social] (pages: /kontakta-oss→200 /returns→404)",
+    "✗ bangerhead.se: ملف الثقة ضعيف (41/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الإرجاع والاسترداد، سياسة الشحن",
+    "✗ ardalzaafaranparfums.com: الموقع لا يفتح",
+    "  ↳ zimaya.com: CV 42/100 [age,https,identity,authentic] (pages: /contact-us→404 /returns→404)",
+    "✗ zimaya.com: ملف الثقة ضعيف (42/100): ينقصه بيانات التواصل، سياسة الإرجاع والاسترداد، وسائل دفع معروفة",
+    "  ↳ zimayaperfumes.com: CV 82/100 [age,https,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ zimayaperfumes.com (CV 82/100): 106 perfumes, 3/6 pages read without AI, AED (1 = 14.8364 EGP) — added to the importer",
+    "✗ zimayaparfums.com: الموقع لا يفتح",
+    "✗ grandeur.com: ملف الثقة: لا يستخدم اتصالاً آمناً (https)"
+   ]
+  },
   {
    "at": "2026-10-20T19:57:05.380Z",
    "mode": "self",
