@@ -91,7 +91,7 @@ let quotaOut = false;
 for (const item of plan.ask.slice(0, ASKS_PER_SHIFT)) {
   if (quotaOut) break;
   let engine = '';
-  const ask = await makeAsk(env, { quota, prefer: engines[0], maxWaitMs: 30_000, onEngine: (id) => { engine = id; } }).catch(() => undefined);
+  const ask = await makeAsk(env, { bot: 'patrol', quota, prefer: engines[0], maxWaitMs: 30_000, onEngine: (id) => { engine = id; } }).catch(() => undefined);
   if (!ask) break;
   try {
     const answer = parseShaheen(parseJson(await ask(SHAHEEN_SYSTEM, shaheenPrompt(item))), at);

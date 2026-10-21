@@ -14,6 +14,7 @@ import { supervisorGuidance } from '../core/liveData';
 import { runSeoCycle, type SeoAsk, type CycleResult } from './agent';
 import type { LiveAudit } from './auditLive';
 import { productRefs } from './products';
+import { withHandbook } from '../../src/utils/botHandbook';
 
 type Env = Record<string, string | undefined>;
 interface ServiceOptions { repo: Repository; env?: Env; fetch?: typeof fetch }
@@ -37,7 +38,7 @@ export function createSeoService({ repo, env = process.env, fetch: customFetch }
     const ask: SeoAsk = async (system, prompt) => {
       for (const id of ready) {
         try {
-          const text = await callEngine(id, system, [{ role: 'user', text: prompt }], {
+          const text = await callEngine(id, withHandbook('seo', system), [{ role: 'user', text: prompt }], {
             env, fetch: customFetch, temperature: 0.25, maxTokens: 7000, maxChars: 80_000,
             signal: AbortSignal.timeout(120_000),
           });

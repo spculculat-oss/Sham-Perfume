@@ -14,6 +14,7 @@ import { INTENT_LABEL } from './orchestrator';
 
 const REQUEST_TYPE: Record<string, string> = { order: 'طلبات متجر', custom_formula: 'عطور مخصصة', b2b_quote: 'عروض جملة', consultation: 'استشارات', support: 'دعم', service: 'خدمات أخرى' };
 import type { EngineId } from './types';
+import { withHandbook } from '../../src/utils/botHandbook';
 
 export type AdminTask = 'pending_requests' | 'handoffs' | 'low_stock' | 'knowledge_gaps' | 'satisfaction' | 'sales' | 'intents';
 export interface AgentSection { task: AdminTask; title: string; severity: 'ok' | 'warn' | 'alert'; lines: string[]; tab: string; metrics: Record<string, number> }
@@ -184,7 +185,7 @@ export async function runAdminAgent(repo: Repository, message: string, options: 
     if (id === 'sham_local') break;
     if (!statuses.find((s) => s.id === id)?.configured) continue;
     try {
-      const text = await callEngine(id, 'أنت مساعد عمليات لفريق إدارة متجر عطور. اكتب ملخصاً تنفيذياً بالعربية في 3 جمل كحد أقصى، مرتباً حسب الأولوية. استخدم الأرقام الموجودة في البيانات فقط ولا تضف أي رقم أو حقيقة غير موجودة.', [
+      const text = await callEngine(id, withHandbook('admin_agent', 'أنت مساعد عمليات لفريق إدارة متجر عطور. اكتب ملخصاً تنفيذياً بالعربية في 3 جمل كحد أقصى، مرتباً حسب الأولوية. استخدم الأرقام الموجودة في البيانات فقط ولا تضف أي رقم أو حقيقة غير موجودة.'), [
         { role: 'user', text: `طلب المدير: ${message}\nالبيانات:\n${JSON.stringify(sections.map(({ title, severity, lines }) => ({ title, severity, lines })))}` },
       ], { env, fetch: options.fetch, temperature: 0.2, signal: AbortSignal.any([AbortSignal.timeout(12000), ...(options.signal ? [options.signal] : [])]) });
       if (text) { summary = text; engine = id; break; }

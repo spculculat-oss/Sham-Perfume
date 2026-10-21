@@ -5,6 +5,7 @@ import { supervisorGuidance } from '../core/liveData';
 import { AssistantError } from '../core/orchestrator';
 import { callEngine, engineStatuses } from '../core/engines';
 import type { Product, ShaheenSettings } from '../core/types';
+import { withHandbook } from '../../src/utils/botHandbook';
 
 type Env = Record<string, string | undefined>;
 type Fetch = typeof fetch;
@@ -245,7 +246,7 @@ export async function createDesignBrief(input: DesignBriefRequest, options: {
     const engine = engineStatuses(env).find((item) => item.id === id);
     const signal = AbortSignal.any([total, AbortSignal.timeout(16_000)]);
     try {
-      const raw = await callEngine(id, system, [{ role: 'user', text: prompt }], {
+      const raw = await callEngine(id, withHandbook('design_expert', system), [{ role: 'user', text: prompt }], {
         env,
         fetch: request,
         signal,

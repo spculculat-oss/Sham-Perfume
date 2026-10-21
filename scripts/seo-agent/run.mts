@@ -21,6 +21,7 @@ import { runSeoCycle, type SeoAsk } from '../../server/seo/agent';
 import { readPagesFile, readSeoState } from '../../src/seo/agentState';
 import { canonicalSiteUrl } from '../../src/seo/site';
 import type { ModelEngineId } from '../../server/core/types';
+import { withHandbook } from '../../src/utils/botHandbook';
 
 const env = process.env;
 const root = new URL('../..', import.meta.url);
@@ -52,7 +53,7 @@ const ask: SeoAsk | undefined = order.length
   ? async (system, prompt) => {
       for (const id of order) {
         try {
-          const text = await callEngine(id, system, [{ role: 'user', text: prompt }], {
+          const text = await callEngine(id, withHandbook('seo', system), [{ role: 'user', text: prompt }], {
             env, temperature: 0.25, maxTokens: 7000, maxChars: 80_000,
             signal: AbortSignal.timeout(120_000),
           });

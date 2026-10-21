@@ -35,8 +35,8 @@ export type BotId =
   | 'council' | 'secretary' | 'precheck' | 'patrol' | 'finance' | 'legal'
   | 'contracts'
   | 'scout' | 'importer' | 'images' | 'catalog' | 'product_pages' | 'store_advisor'
-  | 'news' | 'seo' | 'librarian'
-  | 'chat' | 'languages' | 'design_audit' | 'design_expert' | 'visitor_tour' | 'inspect'
+  | 'news' | 'seo' | 'librarian' | 'teacher' | 'researcher'
+  | 'chat' | 'library' | 'languages' | 'design_audit' | 'design_expert' | 'visitor_tour' | 'inspect'
   | 'school' | 'doctor' | 'verifier' | 'live_check' | 'keys' | 'intake' | 'studio_bridge' | 'studio_zip' | 'deploy' | 'admin_agent';
 
 export interface Bot {
@@ -77,8 +77,11 @@ export const BOTS: Bot[] = [
   // ── Content & search ──
   { id: 'news', nameAr: 'نشرة الأخبار ودروس المساعد', nameEn: 'News bulletin & assistant lessons', dept: 'content', workflow: 'shaheen-news.yml', report: 'shaheen-news.json', everyHours: 12, aiTools: ['news_bulletin', 'assistant_training', 'news_articles'], dutiesAr: 'أخبار العطور الحقيقية كل 12 ساعة، ودروس لمساعد شام عن الأسئلة اللي مالقاش لها إجابة.' },
   { id: 'seo', nameAr: 'منارة شاهين (الظهور في البحث)', nameEn: 'Manaret Shaheen (search)', dept: 'content', workflow: 'shaheen-seo.yml', report: 'seo-agent.json', everyHours: 6, aiTools: ['seo_agent'], dutiesAr: 'يفحص الموقع زي محركات البحث، يكتب العناوين والأوصاف ويرسل الصفحات للفهرسة.' },
+  { id: 'teacher', nameAr: 'المعلم المحلي ومراجع الدروس', nameEn: 'Local teacher & lesson reviewer', dept: 'content', workflow: 'shaheen-discover.yml', report: 'shaheen-school.json', everyHours: 6, dutiesAr: 'نموذج ذكاء اصطناعي مفتوح (Qwen2.5-7B، رخصة Apache-2.0) شغال على GitHub نفسه من غير مفتاح ولا حساب: يكتب لمدرسة شاهين دروس الأسئلة الناقصة من مراجع المكتبة والمصادر المفتوحة، ومراجع صارم يرفض أي درس فيه معلومة غلط أو نصيحة مش آمنة قبل ما يتحفظ.' },
+  { id: 'researcher', nameAr: 'باحث شاهين (المصادر المفتوحة)', nameEn: 'Shaheen researcher (open sources)', dept: 'content', dutiesAr: 'سؤال جديد مش في الذاكرة ولا المكتبة: يدور في ويكيبيديا من الواجهة الرسمية المجانية، يقرا المقالات ويقارنها ويرد بالخلاصة والمصادر (CC BY-SA)، ويدي المدرسة نفس الخلاصة كمراجع. مايبحثش عن الأخبار والأسعار والأسئلة الشخصية، ومايقراش صفحات نتائج جوجل.' },
   // ── Visitor experience, design & languages ──
   { id: 'chat', nameAr: 'شات الخبير شاهين ومساعد شام', nameEn: 'Shaheen chat & Sham assistant', dept: 'experience', aiTools: ['shaheen_chat', 'sham_assistant', 'media'], dutiesAr: 'يرد على الزوار؛ وقت الضغط أو لو المحركات وقفت بيرد من ذاكرة شاهين (مدرسة شاهين).' },
+  { id: 'library', nameAr: 'مكتبة شاهين (رد بدون ذكاء اصطناعي)', nameEn: "Shaheen's library (answers without AI)", dept: 'experience', dutiesAr: 'لما محركات الذكاء الاصطناعي تقع: يبني رد من موسوعة المواد الخام ودروس شاهين وأقرب سؤال في ذاكرته، مكتوب عليه مصدره، على السيرفر وفي متصفح الزائر. مايخمنش: الأخبار والأسعار والأسئلة الشخصية ليها الرد الصريح، وأسئلة الشراء لترشيحات المتجر.' },
   { id: 'languages', nameAr: 'وكيل اللغات — المترجم الذكي', nameEn: 'Language agent — smart translator', dept: 'experience', workflow: 'shaheen-languages.yml', report: 'shaheen-languages.json', everyHours: 12, aiTools: ['language_agent'], dutiesAr: 'يقيس اللغات المئة، ويترجم بالذكاء الاصطناعي كل نص لسه بالإنجليزي (فحص صارم + مراجعة محرك تاني)، ويبدأ باللغات اللي بلّغ عنها قسم التصميم ويحدد مكان النصوص الإنجليزي الثابتة في الكود.' },
   { id: 'design_audit', nameAr: 'تدقيق التصميم واللغات (مرتين في الأسبوع)', nameEn: 'Design & languages audit (twice a week)', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-audit.json', everyHours: 84, dutiesAr: 'وكيل خلفي يفتح الموقع بلغات مختلفة الأربع والسبت ويقيّم التصميم والترجمة.' },
   { id: 'design_expert', nameAr: 'خبير التصميم متعدد التخصصات', nameEn: 'Multidisciplinary design expert', dept: 'experience', aiTools: ['design_agent'], dutiesAr: 'يحوّل الموجز إلى خطة عبر تخصصات الهوية والجرافيك والواجهات والتغليف والتصوير والحركة والطباعة والإتاحة والخدمات والمنتجات، ويتعاون مع أدوار وتقارير برامج الذكاء المسجلة تحت شاهين؛ شاهين يراجع الجودة ويوجّه التحسين، ولا تُنفذ تغييرات أو ملفات نهائية تلقائياً.' },
@@ -175,6 +178,13 @@ export const LINKS: Link[] = [
   { from: 'studio_bridge', to: 'deploy', whyAr: 'تعديلات الاستوديو السليمة ← نشر الموقع' },
   { from: 'intake', to: 'deploy', whyAr: 'تحديث سليم ← ينزل على الموقع' },
   { from: 'inspect', to: 'secretary', whyAr: 'ردود ضعيفة ← توجيهات جودة' },
+  { from: 'library', to: 'chat', whyAr: 'المحركات واقعة ← رد من الموسوعة والدروس والذاكرة بمصدره' },
+  { from: 'researcher', to: 'chat', whyAr: 'سؤال جديد مش في المكتبة ← خلاصة المصادر المفتوحة بروابطها' },
+  { from: 'chat', to: 'school', whyAr: 'سؤال ماتجاوبش من محرك ← على قائمة المذاكرة' },
+  { from: 'school', to: 'library', whyAr: 'الدروس والذاكرة ← مادة المكتبة' },
+  { from: 'researcher', to: 'teacher', whyAr: 'خلاصة المصادر ← مراجع للدرس' },
+  { from: 'teacher', to: 'school', whyAr: 'دروس مراجَعة من غير مفتاح ← ذاكرة شاهين' },
+  { from: 'legal', to: 'researcher', whyAr: 'مصادر رسمية مفتوحة بس وذكر المصدر (CC BY-SA) — مافيش قراءة لصفحات نتائج جوجل' },
 ];
 
 export const botOf = (id: string) => BOTS.find((b) => b.id === id);

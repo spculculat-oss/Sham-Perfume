@@ -35,7 +35,7 @@ const quota = quotaBook(new URL('ai-quota.json', DIR));
 let ask: Awaited<ReturnType<typeof makeAsk>>;
 // The same batch asked before (a run that stopped, a lost publish) is answered from the bots' memory.
 const memory = answerBook(new URL('ai-memory.json', DIR));
-try { ask = await makeAsk(env, { quota, memory }); } catch { ask = undefined; }
+try { ask = await makeAsk(env, { bot: 'catalog', quota, memory }); } catch { ask = undefined; }
 let resumeAt = 0;
 if (ask && stale.length) {
   for (let i = 0; i < stale.length; i += BATCH) {

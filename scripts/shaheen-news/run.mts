@@ -46,7 +46,7 @@ say(`Candidates after filtering and de-duplication: ${candidates.length}`);
 
 // 2) Shaheen edits
 let ask: Ask | undefined;
-try { ask = await makeAsk(env); } catch { ask = undefined; }
+try { ask = await makeAsk(env, { bot: 'news' }); } catch { ask = undefined; }
 const askJson = async (system: string, prompt: string) => parseJson(await ask!(system, prompt));
 let editor: NewsFile['editor'] = 'feeds';
 let fresh = itemsFromFeeds(candidates);

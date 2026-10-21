@@ -37,7 +37,7 @@ for (const tool of AI_TOOLS) {
 let review: Review | undefined;
 let reviewNote = '';
 let ask: Ask | undefined;
-try { ask = await makeAsk(env); } catch { ask = undefined; }
+try { ask = await makeAsk(env, { bot: 'secretary' }); } catch { ask = undefined; }
 // The daily meeting's development goal for each tool («مجلس شاهين»).
 const council = readCouncil();
 const reviewed = AI_TOOLS.filter((t) => probes[t.id]?.some((p) => p.ok && p.answer));

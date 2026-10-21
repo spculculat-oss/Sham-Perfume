@@ -161,10 +161,10 @@ async function main(): Promise<void> {
   let ask: ((s: string, p: string) => Promise<string>) | undefined;
   let review: ((s: string, p: string) => Promise<string>) | undefined;
   if (maxCalls > 0 && engines.length) {
-    ask = await makeAsk(env, { quota, maxWaitMs: 60_000, onEngine: (id) => used.add(id) });
+    ask = await makeAsk(env, { bot: 'languages', quota, maxWaitMs: 60_000, onEngine: (id) => used.add(id) });
     // The reviewer is another engine when two work; with one engine the strict checks are the review.
     const second = ready.find((id) => id !== ready[0]);
-    if (second) review = await makeAsk(env, { quota, maxWaitMs: 60_000, prefer: second, onEngine: (id) => used.add(`${id} (review)`) });
+    if (second) review = await makeAsk(env, { bot: 'languages', quota, maxWaitMs: 60_000, prefer: second, onEngine: (id) => used.add(`${id} (review)`) });
   }
   const glossaryKeys = ['nav_calc', 'nav_news', 'nav_raw_materials', 'nav_pyramid', 'nav_alcohol', 'nav_costing', 'nav_library', 'nav_maceration', 'nav_ai_master', 'brand_name', 'nav_world_perfumes', 'nav_guide'];
   const translation: TranslationSection = await smartTranslate({
