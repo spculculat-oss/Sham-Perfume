@@ -3,6 +3,7 @@
  *   /api/assistant/*  public visitor API (rate limited)
  *   /api/admin/*      management API (Bearer SHAM_ADMIN_TOKEN, constant-time compare)
  */
+import { createOwnerRoomRouter } from '../ownerRoom';
 import { mailProvider, mailProviderLabel } from './mailer';
 import express from 'express';
 import { FinanceService } from '../finance/service';
@@ -233,6 +234,8 @@ export function createShamCore(options: CoreOptions = {}) {
   });
 
   admin.use('/finance', createFinanceRouter(finance, bank));
+  // «غرفة شاهين الخاصة»: the owner, Shaheen and the secretary only — nothing is stored on the server.
+  admin.use('/owner-room', createOwnerRoomRouter({ env, fetch: options.fetch, health: runtime.health }));
 
   // What this server learned (questions + answers, no visitor data): merged into
   // src/data/live/shaheen-memory.json by scripts/shaheen-memory every two hours.
