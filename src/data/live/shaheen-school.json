@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T16:13:06.752Z",
+ "updatedAt": "2026-10-21T17:24:28.260Z",
  "reliance": {
   "score": 97,
   "covered": 167,
@@ -19,8 +19,14 @@
   }
  },
  "studiedTotal": 74,
- "selfTaughtTotal": 63,
+ "selfTaughtTotal": 64,
  "history": [
+  {
+   "at": "2026-10-21T17:24:28.260Z",
+   "score": 97,
+   "studied": 1,
+   "mode": "self"
+  },
   {
    "at": "2026-10-21T16:13:06.752Z",
    "score": 97,
@@ -339,9 +345,9 @@
  },
  "localTaughtTotal": 23,
  "spelling": {
-  "at": "2026-10-21T16:13:06.752Z",
-  "tried": 711,
-  "understood": 688,
+  "at": "2026-10-21T17:24:28.260Z",
+  "tried": 747,
+  "understood": 725,
   "score": 97,
   "misses": [
    "طبييه → طبيه (طبيعيه)",

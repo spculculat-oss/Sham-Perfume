@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T16:11:30.170Z",
+ "updatedAt": "2026-10-21T17:23:18.494Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -541,16 +541,16 @@
    "host": "zimaya.com",
    "name": "Zimaya",
    "base": "https://zimaya.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Zimaya",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T12:54:45.361Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "trust": {
     "score": 42,
     "verdict": "weak",
-    "at": "2026-10-21T12:54:45.361Z",
+    "at": "2026-10-21T17:23:18.494Z",
     "checks": [
      {
       "id": "age",
@@ -780,12 +780,12 @@
    "host": "zimayaparfums.com",
    "name": "zimayaparfums.com",
    "base": "https://zimayaparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Zimaya",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1164,12 +1164,12 @@
    "host": "grandeurperfumes.com",
    "name": "grandeurperfumes.com",
    "base": "https://grandeurperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Grandeur",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "reason": "الموقع لا يفتح (HTTP 404)"
   },
   {
@@ -1177,12 +1177,12 @@
    "host": "grandeurparfums.com",
    "name": "grandeurparfums.com",
    "base": "https://grandeurparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Grandeur",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1190,16 +1190,16 @@
    "host": "bujairami.com",
    "name": "bujairami.com",
    "base": "https://bujairami.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Bujairami",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "trust": {
     "score": 54,
     "verdict": "weak",
-    "at": "2026-10-21T13:21:48.779Z",
+    "at": "2026-10-21T17:23:18.494Z",
     "checks": [
      {
       "id": "age",
@@ -1301,16 +1301,16 @@
    "host": "bujairamiperfumes.com",
    "name": "bujairamiperfumes.com",
    "base": "https://bujairamiperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Bujairami",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "trust": {
     "score": 29,
     "verdict": "weak",
-    "at": "2026-10-21T13:21:48.779Z",
+    "at": "2026-10-21T17:23:18.494Z",
     "checks": [
      {
       "id": "age",
@@ -1411,12 +1411,12 @@
    "host": "bujairamiparfums.com",
    "name": "bujairamiparfums.com",
    "base": "https://bujairamiparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Bujairami",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1804,12 +1804,12 @@
    "host": "armafperfumes.com",
    "name": "armafperfumes.com",
    "base": "https://armafperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Armaf",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1817,12 +1817,12 @@
    "host": "armafparfums.com",
    "name": "armafparfums.com",
    "base": "https://armafparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Armaf",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1843,16 +1843,16 @@
    "host": "rasasiparfums.com",
    "name": "rasasiparfums.com",
    "base": "https://rasasiparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Rasasi",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "trust": {
     "score": 29,
     "verdict": "weak",
-    "at": "2026-10-21T13:21:48.779Z",
+    "at": "2026-10-21T17:23:18.494Z",
     "checks": [
      {
       "id": "age",
@@ -7365,6 +7365,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-21T17:23:18.494Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 10,
+   "activated": 0,
+   "rejected": 10,
+   "notes": [
+    "✗ zimayaparfums.com: الموقع لا يفتح",
+    "✗ grandeurperfumes.com: الموقع لا يفتح (HTTP 404)",
+    "✗ grandeurparfums.com: الموقع لا يفتح",
+    "  ↳ bujairami.com: CV 54/100 [age,https,identity,returns,authentic] (pages: /contact-us→200 /returns→200)",
+    "✗ bujairami.com: ملف الثقة ضعيف (54/100): ينقصه بيانات التواصل، وسائل دفع معروفة، سياسة الشحن",
+    "  ↳ bujairamiperfumes.com: CV 29/100 [age,https,returns] (pages: /contact-us→200 /returns→200)",
+    "✗ bujairamiperfumes.com: ملف الثقة ضعيف (29/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
+    "✗ bujairamiparfums.com: الموقع لا يفتح",
+    "✗ armafperfumes.com: الموقع لا يفتح",
+    "✗ armafparfums.com: الموقع لا يفتح",
+    "  ↳ rasasiparfums.com: CV 29/100 [age,https,returns] (pages: /contact-us→200 /returns→200)",
+    "✗ rasasiparfums.com: ملف الثقة ضعيف (29/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة"
+   ]
+  },
   {
    "at": "2026-10-21T16:11:30.170Z",
    "mode": "self",
