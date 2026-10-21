@@ -348,7 +348,11 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
     materials: RAW_MATERIALS_DATABASE,
     memory: memory ? await memory.all().catch(() => undefined) : undefined,
   }));
-  const research = options.research || (env.SHAM_WEB_RESEARCH === '0'
+  // On where the site is really served (and with an injected fetch in tests); never a real web call from a test.
+  const researchFlag = env.SHAM_WEB_RESEARCH?.trim().toLowerCase();
+  const researchOn = researchFlag !== '0' && researchFlag !== 'off'
+    && (researchFlag === 'on' || researchFlag === '1' || Boolean(env.VERCEL) || env.NODE_ENV === 'production' || Boolean(options.fetch));
+  const research = options.research || (!researchOn
     ? async () => undefined
     : (question: string, lang: string) => lookUp((options.fetch || fetch) as never, question, lang, { userAgent: RESEARCH_USER_AGENT, timeoutMs: 8000 }));
   /** A question no engine answered goes on the study list of «مدرسة شاهين» (admin-only knowledge gaps). */

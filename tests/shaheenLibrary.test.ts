@@ -187,3 +187,11 @@ test('the review keeps a local lesson only on a clear OK', async () => {
   assert.equal(parseReview('الإجابة جيدة نوعا ما لكن').ok, false, 'no clear OK: not kept');
   assert.equal(parseReview('').ok, false);
 });
+
+test('a reply whose JSON closes the answer with a stray bracket is still read', async () => {
+  const { studyCheck } = await import('../scripts/shaheen-school/school');
+  const b = { q: 'ليه العطر اللي عملته ريحته اختفت بسرعة؟', lang: 'ar' as const, topic: 'problems', origin: 'curriculum' as const };
+  const answer = 'الأنف بيتعود على الريحة بعد شوية، فبتحس إن العطر اختفى وهو لسه موجود؛ رش على نقاط النبض ورطب جلدك الأول.';
+  const r = studyCheck(`{"answer":"${answer}"]}`, b);
+  assert.ok('lesson' in r && r.lesson.answer === answer);
+});

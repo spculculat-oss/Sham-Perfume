@@ -267,7 +267,7 @@ export function escapeControlsInStrings(text: string): string {
 
 /** Last resort for a small model's broken JSON: the answer text and the quoted wordings after «paraphrases». */
 function looseStudy(raw: string): { answer?: unknown; paraphrases?: unknown } | undefined {
-  const a = raw.match(/"answer"\s*:\s*"([\s\S]*?)"\s*(?:,?\s*"paraphrases"|}\s*$)/);
+  const a = raw.match(/"answer"\s*:\s*"([\s\S]*?)"\s*(?:,?\s*"paraphrases"|\]?\s*}\s*$)/);
   if (!a) return undefined;
   const tail = raw.slice(raw.indexOf('"paraphrases"') >= 0 ? raw.indexOf('"paraphrases"') + 13 : raw.length);
   const paraphrases = [...tail.matchAll(/"((?:[^"\\]|\\.)*)"/g)].map((m) => m[1]);
