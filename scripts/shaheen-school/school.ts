@@ -222,6 +222,22 @@ export const LOCAL_TEACHER_STYLE = `
 تعليمات إضافية: اكتب الإجابة العربية بالعربية الفصحى المبسطة الواضحة (لا تكتب بالعامية)، بجمل قصيرة ونقاط عند الحاجة.
 اعتمد على المراجع المرفقة، ولا تذكر معلومة أو نسبة لست متأكداً منها، ولا تكتب أي حروف غير عربية إلا أسماء المواد.`;
 
+/**
+ * «المراجع»: every lesson the local teacher writes is checked by a second, strict pass before it is kept —
+ * wrong, unsafe or off-topic advice is thrown away (the question is studied again next time).
+ */
+export const REVIEW_SYSTEM = `أنت مراجع خبير في العطور وصناعتها وسلامتها، صارم جداً.
+ستُعطى سؤالاً وإجابة مقترحة. ارفض الإجابة إذا كان فيها: معلومة خاطئة، نصيحة غير منطقية أو ضارة أو غير آمنة، كلام لا يجيب عن السؤال، أو تخمين بأرقام ونسب غير معقولة.
+أجب بسطر واحد فقط: «OK» إن كانت صحيحة ومفيدة وآمنة، أو «REJECT: السبب باختصار».`;
+export const reviewPrompt = (b: BankQuestion, answer: string) => `السؤال: ${b.q}\n\nالإجابة المقترحة:\n${answer}`;
+/** The reviewer's verdict: kept only on a clear OK. */
+export function parseReview(reply: string): { ok: boolean; reason: string } {
+  const text = (reply || '').replace(/[*_`#>]/g, '').trim();
+  if (/\bREJECT\b|مرفوض|ارفض/i.test(text)) return { ok: false, reason: text.replace(/^.*?REJECT\s*:?\s*/i, '').slice(0, 120) || 'rejected' };
+  if (/^\s*(OK|موافق|مقبول|صحيح)\b/i.test(text)) return { ok: true, reason: '' };
+  return { ok: false, reason: `unclear verdict (${text.slice(0, 40)})` };
+}
+
 /** The study question, with what his own library already says (the teacher must agree with it, not invent). */
 export function studyPrompt(b: BankQuestion, references = ''): string {
   const q = `السؤال (${b.lang === 'ar' ? 'عربي' : 'English'}): ${b.q}`;

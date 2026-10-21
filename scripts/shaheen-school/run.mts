@@ -19,7 +19,7 @@ import { RAW_MATERIALS_DATABASE } from '../../src/data/rawMaterials';
 import { referenceBlock, searchLibrary } from '../../src/utils/shaheenLibrary';
 import { research, RESEARCH_USER_AGENT, researchBlock, type Research } from '../../src/utils/webResearch';
 import {
-  buildBank, emptySchool, exam, importerShare, isSchoolFile, LOCAL_TEACHER_STYLE, materialDocs, pickStudy, selfLesson, STUDY_SYSTEM, studyCheck, studyPrompt,
+  buildBank, emptySchool, exam, importerShare, isSchoolFile, LOCAL_TEACHER_STYLE, materialDocs, pickStudy, parseReview, REVIEW_SYSTEM, reviewPrompt, selfLesson, STUDY_SYSTEM, studyCheck, studyPrompt,
   visitorQuestions, type BankQuestion, type SchoolFile, type TrainingDoc,
 } from './school';
 
@@ -71,6 +71,7 @@ if (selfTaught) say(`Learned ${selfTaught} answers by himself from his library (
 let studied = 0;
 let localTaught = 0;
 let researched = 0;
+let reviewRejected = 0;
 let mode: 'ai' | 'self' | 'local' = 'self';
 let engineUsed = '';
 const deadline = Date.now() + Math.max(1, Number(env.SCHOOL_BUDGET_MIN) || 20) * 60_000;
@@ -105,6 +106,15 @@ else {
       const rehearsal = env.PUBLISH !== 'true';
       const preview = (text: string) => text.replace(/\s+/g, ' ').slice(0, 160);
       if (!lesson) { answers.forget(SYSTEM, prompt); say(`Study «${b.q.slice(0, 60)}» (${teacher}): ${'reason' in checked ? checked.reason : ''} — retried next time${rehearsal ? ` [${preview(reply)} … ${reply.replace(/\s+/g, ' ').slice(-120)}]` : ''}`); continue; }
+      // The local teacher's lesson is reviewed by a strict second pass before it is kept.
+      if (engineUsed === 'self_hosted') {
+        const verdict = parseReview(await ask(REVIEW_SYSTEM, reviewPrompt(b, lesson.answer)).catch(() => ''));
+        if (!verdict.ok) {
+          answers.forget(SYSTEM, prompt); answers.forget(REVIEW_SYSTEM, reviewPrompt(b, lesson.answer)); reviewRejected++;
+          say(`Review rejected «${b.q.slice(0, 60)}»: ${verdict.reason}${rehearsal ? ` [${preview(lesson.answer)}]` : ''} — studied again next time`);
+          continue;
+        }
+      }
       if (rehearsal) say(`Lesson «${b.q.slice(0, 60)}» (${teacher}${found ? `, read ${found.sources.map((x) => x.title).join(' + ')}` : ''}): ${preview(lesson.answer)}`);
       // Wikipedia's text is CC BY-SA: a lesson written from it names its articles.
       if (found) lesson.answer += `\n\n_${b.lang === 'ar' ? 'مراجع' : 'Sources'}: ${found.sources.map((x) => `${b.lang === 'ar' ? 'ويكيبيديا' : 'Wikipedia'} «${x.title}»`).join('، ')}_`;
@@ -124,7 +134,7 @@ else {
       break;
     }
   }
-  say(`Studied ${studied} new questions${studied ? ' (each kept with its other wordings)' : ''}; open sources found for ${researched}`);
+  say(`Studied ${studied} new questions${studied ? ' (each kept with its other wordings)' : ''}; open sources found for ${researched}; ${reviewRejected} lessons rejected by the review`);
 }
 // Rehearsal (branches): «باحث شاهين» tried live on a few everyday questions, so a change is checked on the real web.
 if (env.PUBLISH !== 'true' && env.SHAM_WEB_RESEARCH !== '0') {
