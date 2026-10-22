@@ -1,15 +1,15 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T22:14:11.812Z",
+ "updatedAt": "2026-10-22T23:12:36.080Z",
  "reliance": {
-  "score": 97,
-  "covered": 1176,
+  "score": 98,
+  "covered": 1189,
   "total": 1216,
-  "fromMemory": 1176,
+  "fromMemory": 1189,
   "fromLibrary": 0,
   "byLang": {
    "ar": {
-    "covered": 1155,
+    "covered": 1168,
     "total": 1195
    },
    "en": {
@@ -18,9 +18,15 @@
    }
   }
  },
- "studiedTotal": 169,
+ "studiedTotal": 177,
  "selfTaughtTotal": 891,
  "history": [
+  {
+   "at": "2026-10-22T23:12:36.080Z",
+   "score": 98,
+   "studied": 8,
+   "mode": "local"
+  },
   {
    "at": "2026-10-22T22:14:11.812Z",
    "score": 97,
@@ -336,6 +342,54 @@
  ],
  "lastStudied": [
   {
+   "q": "ايه هو نظام التشغيل ووظيفته؟",
+   "lang": "ar",
+   "at": "2026-10-22T23:12:36.080Z",
+   "variants": 4
+  },
+  {
+   "q": "ايه الفرق بين الهارد ديسك والـSSD؟",
+   "lang": "ar",
+   "at": "2026-10-22T23:12:36.080Z",
+   "variants": 4
+  },
+  {
+   "q": "ايه هي المتتابعات الحسابية والهندسية؟",
+   "lang": "ar",
+   "at": "2026-10-22T23:12:36.080Z",
+   "variants": 3
+  },
+  {
+   "q": "ازاي نرسم دالة خطية ونفهم ميلها؟",
+   "lang": "ar",
+   "at": "2026-10-22T23:12:36.080Z",
+   "variants": 4
+  },
+  {
+   "q": "ازاي الميكروويف بيسخن الأكل؟",
+   "lang": "ar",
+   "at": "2026-10-22T23:12:36.080Z",
+   "variants": 3
+  },
+  {
+   "q": "ليه الأجسام بتطفو أو بتغرق في المية؟",
+   "lang": "ar",
+   "at": "2026-10-22T23:12:36.080Z",
+   "variants": 0
+  },
+  {
+   "q": "ايه هي اتفاقية حظر الأسلحة البيولوجية؟",
+   "lang": "ar",
+   "at": "2026-10-22T23:12:36.080Z",
+   "variants": 4
+  },
+  {
+   "q": "ايه دور غسيل الإيدين في منع العدوى؟",
+   "lang": "ar",
+   "at": "2026-10-22T23:12:36.080Z",
+   "variants": 0
+  },
+  {
    "q": "ايه هو الاندماج النووي في الشمس؟",
    "lang": "ar",
    "at": "2026-10-22T22:14:11.812Z",
@@ -406,86 +460,13 @@
    "lang": "ar",
    "at": "2026-10-22T21:09:39.248Z",
    "variants": 0
-  },
-  {
-   "q": "ايه هو اللوغاريتم ببساطة؟",
-   "lang": "ar",
-   "at": "2026-10-22T21:09:39.248Z",
-   "variants": 0
-  },
-  {
-   "q": "ازاي التقطير بيفصل المواد؟",
-   "lang": "ar",
-   "at": "2026-10-22T21:09:39.248Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه هي الأكسدة والاختزال؟",
-   "lang": "ar",
-   "at": "2026-10-22T21:09:39.248Z",
-   "variants": 0
-  },
-  {
-   "q": "ازاي البترول والغاز بيتكونوا في باطن الأرض؟",
-   "lang": "ar",
-   "at": "2026-10-22T20:24:26.331Z",
-   "variants": 0
-  },
-  {
-   "q": "ايه هو ثقب الأوزون؟",
-   "lang": "ar",
-   "at": "2026-10-22T20:24:26.331Z",
-   "variants": 3
-  },
-  {
-   "q": "ازاي اللوحات الإلكترونية بتتجمع في المصانع؟",
-   "lang": "ar",
-   "at": "2026-10-22T20:24:26.331Z",
-   "variants": 0
-  },
-  {
-   "q": "ايه هي الدائرة المتكاملة؟",
-   "lang": "ar",
-   "at": "2026-10-22T20:24:26.331Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه الفرق بين الإشعاع المؤين وغير المؤين؟",
-   "lang": "ar",
-   "at": "2026-10-22T20:24:26.331Z",
-   "variants": 4
   }
  ],
  "pending": [
   {
-   "q": "ايه الفرق بين الشريان والوريد؟",
-   "lang": "ar",
-   "topic": "expert:human-medicine"
-  },
-  {
-   "q": "ازاي نعرف إن الحيوان الأليف محتاج طبيب بيطري؟",
-   "lang": "ar",
-   "topic": "expert:veterinary"
-  },
-  {
-   "q": "ايه هي محطة الفضاء الدولية وبتعمل ايه؟",
-   "lang": "ar",
-   "topic": "expert:space"
-  },
-  {
    "q": "ايه هو الكسوف والخسوف؟",
    "lang": "ar",
    "topic": "expert:space"
-  },
-  {
-   "q": "ازاي النجوم بتتولد وبتموت؟",
-   "lang": "ar",
-   "topic": "expert:space"
-  },
-  {
-   "q": "ايه هي اتفاقيات جنيف؟",
-   "lang": "ar",
-   "topic": "expert:war-studies"
   },
   {
    "q": "ازاي الدول بتبني السلام بعد النزاعات؟",
@@ -503,19 +484,44 @@
    "topic": "expert:nuclear"
   },
   {
-   "q": "ايه دور غسيل الإيدين في منع العدوى؟",
-   "lang": "ar",
-   "topic": "expert:biosafety"
-  },
-  {
-   "q": "ايه هي اتفاقية حظر الأسلحة البيولوجية؟",
-   "lang": "ar",
-   "topic": "expert:biosafety"
-  },
-  {
    "q": "ازاي المستشفيات بتمنع العدوى بين المرضى؟",
    "lang": "ar",
    "topic": "expert:biosafety"
+  },
+  {
+   "q": "ايه هو الليد وازاي بيطلع ضوء؟",
+   "lang": "ar",
+   "topic": "expert:semiconductors"
+  },
+  {
+   "q": "ليه صناعة الرقائق محتاجة غرف نظيفة؟",
+   "lang": "ar",
+   "topic": "expert:semiconductors"
+  },
+  {
+   "q": "ايه هي الرياح الموسمية وتأثيرها على الزراعة؟",
+   "lang": "ar",
+   "topic": "expert:earth"
+  },
+  {
+   "q": "ازاي نهر النيل اتكون؟",
+   "lang": "ar",
+   "topic": "expert:earth"
+  },
+  {
+   "q": "ايه هي الإسترات وليه ريحتها حلوة؟",
+   "lang": "ar",
+   "topic": "expert:chemistry"
+  },
+  {
+   "q": "ازاي البطارية بتولد كهرباء كيميائياً؟",
+   "lang": "ar",
+   "topic": "expert:chemistry"
+  },
+  {
+   "q": "ايه هو الضغط الجوي؟",
+   "lang": "ar",
+   "topic": "expert:physics"
   }
  ],
  "importer": {
@@ -523,9 +529,9 @@
   "aiReadings": 0,
   "localReadings": 25
  },
- "localTaughtTotal": 112,
+ "localTaughtTotal": 120,
  "spelling": {
-  "at": "2026-10-22T22:14:11.812Z",
+  "at": "2026-10-22T23:12:36.080Z",
   "tried": 745,
   "understood": 698,
   "score": 94,
@@ -542,7 +548,7 @@
   }
  },
  "practice": {
-  "at": "2026-10-22T22:14:11.812Z",
+  "at": "2026-10-22T23:12:36.080Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -706,9 +712,9 @@
    "score": 100
   },
   "it_sciences": {
-   "covered": 27,
+   "covered": 29,
    "total": 30,
-   "score": 90
+   "score": 97
   },
   "frontier": {
    "covered": 20,
@@ -721,14 +727,14 @@
    "score": 86
   },
   "physics": {
-   "covered": 32,
+   "covered": 34,
    "total": 36,
-   "score": 89
+   "score": 94
   },
   "math": {
-   "covered": 25,
+   "covered": 27,
    "total": 28,
-   "score": 89
+   "score": 96
   },
   "commerce": {
    "covered": 22,
@@ -751,9 +757,9 @@
    "score": 100
   },
   "history": {
-   "covered": 26,
+   "covered": 27,
    "total": 28,
-   "score": 93
+   "score": 96
   },
   "geography": {
    "covered": 20,
@@ -791,9 +797,9 @@
    "score": 89
   },
   "medicine": {
-   "covered": 44,
+   "covered": 48,
    "total": 52,
-   "score": 85
+   "score": 92
   },
   "engineering": {
    "covered": 35,
@@ -801,9 +807,9 @@
    "score": 92
   },
   "earth_space": {
-   "covered": 29,
+   "covered": 31,
    "total": 34,
-   "score": 85
+   "score": 91
   },
   "education": {
    "covered": 16,
@@ -837,7 +843,7 @@
   }
  },
  "tools": {
-  "at": "2026-10-22T22:14:11.812Z",
+  "at": "2026-10-22T23:12:36.080Z",
   "items": [
    {
     "id": "finance_agent",
@@ -1002,14 +1008,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-22T22:14:11.812Z",
+  "at": "2026-10-22T23:12:36.080Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-23T04:14:11.812Z"
+    "next": "2026-10-23T05:12:36.080Z"
    },
    {
     "id": "site-care",
@@ -1021,7 +1027,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-23T10:14:11.812Z"
+    "next": "2026-10-23T11:12:36.080Z"
    }
   ]
  }
