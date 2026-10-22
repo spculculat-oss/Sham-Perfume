@@ -1,13 +1,14 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T19:31:12.846Z",
+ "updatedAt": "2026-10-22T03:16:32.499Z",
  "programs": [
   {
    "id": "school-day",
    "title": "برنامج مذاكرة شاهين اليومي",
    "goal": "امتحان وتسميع وحفظ في الذاكرة كل 6 ساعات",
    "schedule": "every 6 hours",
-   "createdAt": "2026-10-21T19:32:01.621Z",
+   "runner": "school",
+   "createdAt": "2026-10-22T03:17:20.571Z",
    "blocks": [
     {
      "kind": "action",
@@ -60,7 +61,8 @@
    "title": "برنامج صيانة الموقع بالبلوكات",
    "goal": "فحص وصيانة الموقع يومياً قبل الذروة",
    "schedule": "daily 08:00",
-   "createdAt": "2026-10-21T19:32:01.621Z",
+   "runner": "patrol",
+   "createdAt": "2026-10-22T03:17:20.571Z",
    "blocks": [
     {
      "kind": "note",
@@ -153,7 +155,8 @@
    "title": "برنامج تطوير أدوات الذكاء الاصطناعي",
    "goal": "كل أداة تتطور في مجالها بالتناوب",
    "schedule": "weekly mon 09:00",
-   "createdAt": "2026-10-21T19:32:01.621Z",
+   "runner": "school",
+   "createdAt": "2026-10-22T03:17:20.571Z",
    "blocks": [
     {
      "kind": "loop",
@@ -188,7 +191,8 @@
    "title": "برنامج إدارة الذكاء الذاتي",
    "goal": "شاهين يدير نفسه بنفسه بدون أي تطبيق ذكاء آخر",
    "schedule": "every 12 hours",
-   "createdAt": "2026-10-21T19:32:01.621Z",
+   "runner": "patrol",
+   "createdAt": "2026-10-22T03:17:20.571Z",
    "blocks": [
     {
      "kind": "note",
@@ -203,31 +207,37 @@
      "id": "b2"
     },
     {
+     "kind": "action",
+     "label": "الرد من ذاكرة شاهين",
+     "action": "answer_from_memory",
+     "id": "b3"
+    },
+    {
+     "kind": "action",
+     "label": "الرد من مكتبة شاهين",
+     "action": "answer_from_library",
+     "id": "b4"
+    },
+    {
+     "kind": "action",
+     "label": "الرد من النموذج المحلي",
+     "action": "answer_from_local_model",
+     "id": "b5"
+    },
+    {
      "kind": "condition",
-     "label": "لو محرك خارجي واقف أو غير مطلوب",
+     "label": "لو مفيش محرك خارجي شغال",
      "when": {
       "fact": "externalEngineUp",
       "equals": false
      },
-     "id": "b3",
+     "id": "b6",
      "children": [
       {
-       "kind": "action",
-       "label": "الرد من ذاكرة شاهين",
-       "action": "answer_from_memory",
-       "id": "b3.1"
-      },
-      {
-       "kind": "action",
-       "label": "الرد من مكتبة شاهين",
-       "action": "answer_from_library",
-       "id": "b3.2"
-      },
-      {
-       "kind": "action",
-       "label": "الرد من النموذج المحلي",
-       "action": "answer_from_local_model",
-       "id": "b3.3"
+       "kind": "note",
+       "label": "الإدارة الذاتية تشتغل بالكامل",
+       "note": "الذاكرة والمكتبة والنموذج المحلي كافيين للرد — لا تطبيق ذكاء آخر.",
+       "id": "b6.1"
       }
      ]
     },
@@ -235,16 +245,45 @@
      "kind": "action",
      "label": "مراجعة صراحة الردود عند العجز",
      "action": "honesty_check",
-     "id": "b4"
+     "id": "b7"
     },
     {
      "kind": "action",
      "label": "تقرير الإدارة الذاتية",
      "action": "self_report",
-     "id": "b5"
+     "id": "b8"
     }
    ]
   }
  ],
- "runs": []
+ "runs": [
+  {
+   "program": "ai-self",
+   "at": "2026-10-22T03:09:47.030Z",
+   "ok": true,
+   "steps": 8,
+   "failed": 0
+  },
+  {
+   "program": "site-care",
+   "at": "2026-10-22T03:09:47.030Z",
+   "ok": true,
+   "steps": 12,
+   "failed": 0
+  },
+  {
+   "program": "tool-dev",
+   "at": "2026-10-22T03:08:45.426Z",
+   "ok": true,
+   "steps": 8,
+   "failed": 0
+  },
+  {
+   "program": "school-day",
+   "at": "2026-10-22T03:08:45.426Z",
+   "ok": true,
+   "steps": 5,
+   "failed": 0
+  }
+ ]
 }

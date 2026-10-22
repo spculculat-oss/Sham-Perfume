@@ -47,6 +47,8 @@ export interface BlockProgram {
   title: string;
   goal: string;
   schedule?: string;
+  /** Who executes this program for real: 'school' (each school run) or 'patrol' (each patrol run when due). */
+  runner?: 'school' | 'patrol';
   blocks: Block[];
   createdAt: string;
 }
@@ -200,7 +202,7 @@ export function buildProgram(input: ProgramInput, now = new Date()): BlockProgra
       return { ...rest, id, ...(children?.length ? { children: take(children, `${id}.`) } : {}) };
     });
   return {
-    id: input.id, title: input.title, goal: input.goal, schedule: input.schedule,
+    id: input.id, title: input.title, goal: input.goal, schedule: input.schedule, runner: input.runner,
     createdAt: input.createdAt || now.toISOString(),
     blocks: take(input.blocks, 'b'),
   };

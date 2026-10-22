@@ -719,6 +719,8 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   'صيانة المواقع': { en: 'Website maintenance' },
   'تطوير أدوات الذكاء الاصطناعي': { en: 'AI tools development' },
   'الذكاء الاصطناعي ومهاراته': { en: 'AI & its skills' },
+  'الحوسبة الكمية': { en: 'Quantum computing' },
+  'أمن المعلومات والحماية': { en: 'Cybersecurity' },
   'تطوير كل أداة ذكاء اصطناعي في مجالها': { en: 'Every AI tool developed in its field' },
   'التركيز القادم': { en: 'Next focus' },
   'بلوكات شاهين: {n} برامج مبنية، {s} مجدولة، {e} أخطاء': { en: 'Shaheen blocks: {n} programs built, {s} scheduled, {e} errors' },

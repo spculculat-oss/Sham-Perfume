@@ -1,16 +1,16 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T19:31:12.846Z",
+ "updatedAt": "2026-10-22T03:16:32.499Z",
  "reliance": {
   "score": 99,
-  "covered": 460,
-  "total": 466,
-  "fromMemory": 460,
+  "covered": 507,
+  "total": 514,
+  "fromMemory": 507,
   "fromLibrary": 2,
   "byLang": {
    "ar": {
-    "covered": 441,
-    "total": 445
+    "covered": 488,
+    "total": 493
    },
    "en": {
     "covered": 19,
@@ -19,8 +19,20 @@
   }
  },
  "studiedTotal": 74,
- "selfTaughtTotal": 355,
+ "selfTaughtTotal": 399,
  "history": [
+  {
+   "at": "2026-10-22T03:16:32.499Z",
+   "score": 99,
+   "studied": 0,
+   "mode": "self"
+  },
+  {
+   "at": "2026-10-22T03:08:45.426Z",
+   "score": 99,
+   "studied": 44,
+   "mode": "self"
+  },
   {
    "at": "2026-10-21T19:31:12.846Z",
    "score": 99,
@@ -342,6 +354,11 @@
    "q": "Suggest a warm oriental perfume formula for winter with percentages",
    "lang": "en",
    "topic": "design-en"
+  },
+  {
+   "q": "ايه هو التحليل الجنائي على الأجهزة؟",
+   "lang": "ar",
+   "topic": "security"
   }
  ],
  "importer": {
@@ -351,10 +368,10 @@
  },
  "localTaughtTotal": 23,
  "spelling": {
-  "at": "2026-10-21T19:31:12.846Z",
+  "at": "2026-10-22T03:16:32.499Z",
   "tried": 746,
-  "understood": 714,
-  "score": 96,
+  "understood": 712,
+  "score": 95,
   "misses": [
    "طبييه → طبيه (طبيعيه)",
    "اخطه → احطه (اخلطه)",
@@ -402,6 +419,16 @@
    "total": 63,
    "score": 100
   },
+  "security": {
+   "covered": 30,
+   "total": 31,
+   "score": 97
+  },
+  "quantum": {
+   "covered": 17,
+   "total": 17,
+   "score": 100
+  },
   "ai_tools": {
    "covered": 34,
    "total": 34,
@@ -409,7 +436,7 @@
   }
  },
  "tools": {
-  "at": "2026-10-21T19:31:12.846Z",
+  "at": "2026-10-22T03:16:32.499Z",
   "items": [
    {
     "id": "finance_agent",
@@ -550,14 +577,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-21T19:31:12.846Z",
+  "at": "2026-10-22T03:16:32.499Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-22T01:31:12.846Z"
+    "next": "2026-10-22T09:16:32.499Z"
    },
    {
     "id": "site-care",
@@ -569,7 +596,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-22T07:31:12.846Z"
+    "next": "2026-10-22T15:16:32.499Z"
    }
   ]
  }

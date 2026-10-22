@@ -83,6 +83,8 @@ test('tracks cover every mission; tools cover every AI tool with its field and a
   assert.ok(tracks.graphics.total >= 20);
   assert.ok(tracks.web_care.total >= 20);
   assert.ok(tracks.ai_science.total >= 50, 'the AI mission teaches the whole field');
+  assert.ok(tracks.quantum.total >= 15, 'the quantum track');
+  assert.ok(tracks.security.total >= 25, 'the cybersecurity track');
   assert.equal(tracks.ai_tools.total, AI_TOOLS.length * 2, 'every tool: its field + how to develop it');
   assert.equal(trackOf('lang'), 'prog_langs');
   assert.equal(trackOf('blocks'), 'blocks');
@@ -113,6 +115,12 @@ test('the school builds its own block programs and can schedule them', () => {
   }
   const ids = SCHOOL_PROGRAMS.map((p) => p.id);
   assert.deepEqual([...new Set(ids)].sort(), ['ai-self', 'school-day', 'site-care', 'tool-dev']);
+  // Which runner really executes each programme: the school's day/tooling, the patrol's ai-self/site-care.
+  const runnerOf = Object.fromEntries(SCHOOL_PROGRAMS.map((p) => [p.id, p.runner]));
+  assert.equal(runnerOf['school-day'], 'school');
+  assert.equal(runnerOf['tool-dev'], 'school');
+  assert.equal(runnerOf['ai-self'], 'patrol');
+  assert.equal(runnerOf['site-care'], 'patrol');
   const siteCare = buildProgram(SCHOOL_PROGRAMS.find((p) => p.id === 'site-care')!);
   assert.ok(JSON.stringify(siteCare).includes('check_links'), 'the maintenance program really checks the site');
   const aiSelf = buildProgram(SCHOOL_PROGRAMS.find((p) => p.id === 'ai-self')!);

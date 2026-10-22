@@ -24,6 +24,7 @@ import {
   spellingReport, toolStats, trackStats, visitorQuestions, type BankQuestion, type SchoolFile, type TrainingDoc,
 } from './school';
 import { academyLessons, SCHOOL_PROGRAMS, TRACKS } from './curriculum';
+import { duePrograms, runAndRecord, schoolActions } from './programs';
 import { buildProgram, emptyBlocks, isBlocksFile, nextRun, validateProgram, type BlocksFile } from '../../src/utils/shaheenBlocks';
 import { buildLexicon } from '../../src/utils/shaheenSpelling';
 
@@ -185,13 +186,26 @@ school.spelling = spellingReport(bank, final.results, learnedNow ? curated : mem
 say(`Spelling: understood ${school.spelling.understood}/${school.spelling.tried} mistyped words (${school.spelling.score}%); answers ${school.spelling.questions.answered}/${school.spelling.questions.tried} questions by himself with their main word mistyped`);
 school.pending = final.results.filter((r) => !r.covered).slice(0, 12).map((r) => ({ q: r.question.q, lang: r.question.lang, topic: r.question.topic }));
 school.updatedAt = nowIso;
-// «بلوكات شاهين»: he builds his study, site-care and tool-development programs from blocks and schedules them.
+// «بلوكات شاهين»: he builds his programs from blocks, schedules them, and RUNS the due ones for real.
 const blocksRaw = read<unknown>(live('shaheen-blocks.json'));
 const blocks: BlocksFile = isBlocksFile(blocksRaw) ? blocksRaw : emptyBlocks();
 const built = SCHOOL_PROGRAMS.map((p) => buildProgram(p));
 const blockErrors = built.flatMap((p) => validateProgram(p).map((e) => `${p.id}: ${e}`));
 blocks.programs = built;
 blocks.updatedAt = nowIso;
+// Execute the school's due programs (study day, tool development) with this run's real measurements.
+const toolItems = school.tools?.items || [];
+const weakestTool = [...toolItems].sort((a, b) => a.score - b.score)[0] || { field: '—', focus: '—', score: 0, covered: 0, total: 0, id: '' };
+const schoolBlockActions = schoolActions({
+  covered: final.reliance.covered, total: final.reliance.total, score: final.reliance.score,
+  selfTaught, studied,
+  toolField: weakestTool.field, toolFocus: weakestTool.focus,
+});
+for (const program of duePrograms(blocks, 'school', Date.parse(nowIso))) {
+  const report = await runAndRecord(program, schoolBlockActions, blocks, { gaps: final.reliance.total - final.reliance.covered }, new Date(nowIso));
+  const failed = report.steps.filter((s) => s.status === 'failed');
+  say(`البرنامج «${program.title}»: ${report.ok ? 'اشتغل بالكامل' : `مع ${failed.length} خطوة فاشلة`} (${report.steps.length} خطوة)`);
+}
 const nextRuns = built.map((p) => ({ id: p.id, next: p.schedule ? (nextRun(p.schedule, Date.parse(nowIso))?.toISOString() || null) : null }));
 writeFileSync(live('shaheen-blocks.json'), `${JSON.stringify(blocks, null, 1)}\n`);
 school.blocks = { at: nowIso, programs: built.length, scheduled: nextRuns.filter((n) => n.next).length, errors: blockErrors.length, nextRuns };

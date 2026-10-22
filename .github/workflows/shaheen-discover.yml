@@ -14,9 +14,11 @@ name: Shaheen source scout and school (every 6 hours)
 # The school's new missions (scripts/shaheen-school/curriculum.ts): ALL known programming languages, building
 # programming blocks and scheduling them (src/utils/shaheenBlocks.ts), software engineering, graphics & design,
 # a website-maintenance course, AI with ALL its skills and the modern sciences (self-managed without any
-# external AI app), and every AI tool developed in its field — intensive self-study by default
-# (SCHOOL_INTENSIVE=0 restores the old pace). It also builds its own block programs and schedules them in
-# src/data/live/shaheen-blocks.json (study, site care, tool development, self-management).
+# external AI app), cybersecurity (30 lessons) and quantum computing (17 lessons), and every AI tool developed
+# in its field — intensive self-study by default (SCHOOL_INTENSIVE=0 restores the old pace). It also builds its
+# own block programs and schedules them in src/data/live/shaheen-blocks.json (study, site care, tool
+# development, self-management) — and really RUNS the due ones: the school executes study/tooling, and the
+# patrol executes «ai-self» (every 12h) and «site-care» (daily 08:00) with that hour's measured facts.
 # «المعلم المحلي» (scripts/shaheen-school/teacher.sh): an open model (Qwen2.5-7B-Instruct, Apache-2.0) run by llama.cpp on
 # this runner — no key, no account — teaches the school when the AI keys fail. Variables (optional): TEACHER_MODEL_URL +
 # TEACHER_MODEL_SHA256 (another GGUF model), TEACHER_MODEL_NAME, SCHOOL_PREFER (an engine id to try first).
