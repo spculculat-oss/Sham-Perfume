@@ -194,3 +194,47 @@ test('CORS: the GitHub Pages origin may call the API cross-origin, other sites m
   const evilPreflight = await fetch(`${baseUrl}/api/chat`, { method: 'OPTIONS', headers: { Origin: 'https://evil.example', 'Access-Control-Request-Method': 'POST' } });
   assert.equal(evilPreflight.headers.get('access-control-allow-origin'), null);
 });
+
+test('«استشير متخصصاً»: the board, its toolbox, and an answer that says its source and the tools that ran', async () => {
+  const board = await (await fetch(`${baseUrl}/api/specialists/board`)).json() as {
+    ai: boolean; specialists: { id: string }[]; sections: { id: string }[]; tools: { id: string }[]; toolCount: number;
+  };
+  assert.equal(board.ai, false, 'no engine keys here — the board says so instead of pretending');
+  assert.equal(board.specialists.length, 10);
+  assert.ok(board.toolCount >= 20 && board.tools.length === board.toolCount);
+  assert.ok(board.sections.length >= 10);
+
+  const asked = await fetch(`${baseUrl}/api/specialists/consult`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-sham-visitor': 'visitor-specialists-test' },
+    body: JSON.stringify({ question: 'احسب مقادير زجاجة 50 مل بتركيز 20%', language: 'ar', visitorId: 'visitor-specialists-test' }),
+  });
+  assert.equal(asked.status, 200);
+  assert.equal(asked.headers.get('cache-control'), 'no-store');
+  const reply = await asked.json() as {
+    answer: string; source: string; ok: boolean; ai: boolean; specialist: { id: string };
+    tools: { tool: string; ok: boolean }[]; actions: { type: string }[];
+  };
+  assert.equal(reply.ai, false, 'an answer from the tools is not called AI');
+  assert.equal(reply.ok, true);
+  assert.equal(reply.source, 'calculator');
+  assert.equal(reply.specialist.id, 'specialist_scents');
+  assert.match(reply.answer, /10\s*مل/, 'the number the site’s own formula computed');
+  assert.match(reply.answer, /حاسبات معمل شام/, 'the source is written on the answer');
+  assert.ok(reply.tools.some((t) => t.tool === 'calc_concentration' && t.ok), 'the trace shows the tool that answered');
+  assert.ok(reply.actions.some((a) => a.type === 'open_tab'), 'the visitor gets the way to the calculator');
+  assert.ok(!/gemini|openai|claude|perplexity|deepseek/i.test(reply.answer), 'no vendor name reaches the visitor');
+
+  const empty = await fetch(`${baseUrl}/api/specialists/consult`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question: '' }),
+  });
+  assert.equal(empty.status, 400);
+  assert.equal(((await empty.json()) as { code?: string }).code, 'INVALID_QUESTION');
+
+  const tools = await (await fetch(`${baseUrl}/api/specialists/tools?specialist=specialist_scents`)).json() as { tools: { id: string }[]; count: number };
+  assert.equal(tools.count, tools.tools.length);
+  assert.ok(tools.tools.some((t) => t.id === 'calc_concentration'));
+
+  assert.equal((await fetch(`${baseUrl}/api/specialists/section/store`)).status, 200);
+  assert.equal((await fetch(`${baseUrl}/api/specialists/section/not-a-section`)).status, 404);
+});

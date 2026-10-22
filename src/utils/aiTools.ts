@@ -5,7 +5,7 @@
  * until it is registered here — so no new AI tool runs without Shaheen's supervision.
  */
 export type AiToolId =
-  | 'shaheen_chat' | 'sham_assistant' | 'news_articles' | 'news_bulletin' | 'assistant_training' | 'media' | 'admin_agent'
+  | 'shaheen_chat' | 'sham_assistant' | 'specialists_agent' | 'news_articles' | 'news_bulletin' | 'assistant_training' | 'media' | 'admin_agent'
   | 'store_advisor' | 'store_catalog' | 'store_import' | 'shaheen_school' | 'seo_agent' | 'shaheen_council' | 'finance_agent'
   | 'contracts_agent' | 'design_agent' | 'language_agent' | 'owner_room' | 'platform_owner_agent';
 
@@ -47,6 +47,12 @@ export const AI_TOOLS: AiToolDef[] = [
     id: 'sham_assistant', nameAr: 'مساعد شام للخدمات', nameEn: 'Sham services assistant',
     descriptionAr: 'يرد على أسئلة الخدمات والطلبات والمتجر والدعم من بيانات شام فقط، ويحوّل أسئلة التركيب للخبير شاهين.',
     sources: ['server/core/orchestrator.ts'], routes: ['/api/assistant/chat', '/api/assistant/chat/stream'], acceptsGuidance: true,
+  },
+  {
+    id: 'specialists_agent', nameAr: 'وكيل مجلس المتخصصين («استشير متخصصاً»)', nameEn: "Specialists' board agent",
+    descriptionAr: 'أيقونة «استشير متخصصاً» وكيل ذكي: يوجّه سؤال الزائر لمتخصصه من المجلس (عشرة متخصصين على علوم مدرسة شاهين)، ويشتغل بأدواته — منهج المدرسة وعلومها المراجَعة، ذاكرة شاهين، مكتبته، موسوعة المواد الخام، حاسبات المعمل (التركيز والتخفيف والهرم والتكلفة والتعتيق والسلامة)، المتجر بأسعاره الحقيقية، نشرة الأخبار، ملجأ شاهين، المصادر المفتوحة والوسايط، وأدوات التوجيه والتسليم والتوضيح — ويرد من ملاحظات أدواته بس، وكل رد مكتوب عليه مصدره والأدوات اللي اشتغلت فيه. ولو المحركات كلها وقفت يرد من نفس الأدوات من غير ذكاء اصطناعي، ولو مفيش معلومة صلبة يقول بصراحة إنه هيذاكر السؤال ويسجّله لمدرسة شاهين.',
+    sources: ['server/specialists/agent.ts', 'server/specialists/tools.ts', 'server/specialists/router.ts'],
+    routes: ['/api/specialists/consult', '/api/specialists/board', '/api/specialists/tools'], acceptsGuidance: true,
   },
   {
     id: 'news_articles', nameAr: 'مقالات مرصد العطور', nameEn: 'Perfume observatory articles',
