@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T06:56:15.804Z",
+ "updatedAt": "2026-10-22T08:47:18.157Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,17 @@
  ],
  "runs": [
   {
+   "at": "2026-10-22T08:47:18.157Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-22T06:56:15.804Z",
    "mode": "self",
    "found": 0,
@@ -7984,28 +7995,6 @@
     "✗ maisonalhambraperfumes.com: الموقع لا يفتح",
     "✗ maisonalhambraparfums.com: الموقع لا يفتح",
     "✗ lattafa.com: الموقع يرفض القراءة الآلية (حماية)"
-   ]
-  },
-  {
-   "at": "2026-10-18T12:47:21.705Z",
-   "mode": "self",
-   "found": 10,
-   "vetted": 8,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "Web search: AI quota used up — the scout continues by himself",
-    "10 new stores found this run (own methods, no AI)",
-    "✗ arabianoud.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (2/7)",
-    "  ↳ ajmal.com: sitemap.xml→404, sitemap_index.xml→404, wp-sitemap.xml→404, …, sitemap.xml→404, browsed 0 category pages → 0 product-like links",
-    "✗ ajmal.com: لا توجد خريطة منتجات (sitemap)",
-    "✗ rasasi.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ swissarabian.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
-    "  ↳ maisonalhambra.com: sitemap.xml→404, sitemap_index.xml→200(not xml), wp-sitemap.xml→200(not xml), …, sitemap.xml→200(not xml), browsed 0 category pages → 0 product-like links",
-    "✗ maisonalhambra.com: لا توجد خريطة منتجات (sitemap)",
-    "✗ maisonalhambraperfumes.com: الموقع لا يفتح",
-    "✗ maisonalhambraparfums.com: الموقع لا يفتح",
-    "✗ lattafa.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
    ]
   }
  ]
