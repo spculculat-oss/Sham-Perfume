@@ -1,24 +1,33 @@
 /**
- * Sham Core orchestrator — the agent loop.
+ * Sham Core orchestrator — the cognitive agent loop.
  *
- *   guard → load memory → route (experts) → retrieve (RAG) → plan → act (tools)
- *        → render (engine policy with failover) → compose (cards + citations) → remember
- *
- * Inspired by public patterns of current assistants, re-implemented independently:
- *  - tool/function calling and conversation memory (ChatGPT), constitution-style guardrails (Claude),
- *  - grounding with citations (Gemini), expert routing and open-weight self-hosting (DeepSeek),
- *  - plan → act → observe loop with an inspectable task trace (Manus).
+ *   guard → structured visitor memory → context-aware route → solution selector (clarify if ambiguous)
+ *        → multi-pass cognitive tool chain (plan → act → re-plan) → render (council / health-ordered engines)
+ *        → comprehension & grounding gate → dynamic follow-ups → remember
  */
 import { randomUUID } from 'node:crypto';
 import { supervisorGuidance } from './liveData';
 import type { Repository } from './repository';
-import { route, stripIntro, type RouteResult } from './router';
-import { tools, type ToolResult } from './tools';
-import { callEngine, engineStatuses, type EngineTurn } from './engines';
+import { routeEnhanced, stripIntro, type RouteResult, type Intent } from './router';
+import type { ToolResult } from './tools';
+import { callEngine, engineStatuses, type EngineFailure, type EngineTurn } from './engines';
+import { EngineHealth } from './engineHealth';
 import { publicTranscript, runCouncil, shouldConvene, type PublicCouncil } from './council';
 import { detectScriptLanguage } from './text';
 import type { ActionCard, Citation, Conversation, ConversationMessage, CoreSettings, CouncilTranscript, EngineId, Lang, PublicStep, ServiceDef, TraceStep } from './types';
 import { SUPPORTED_LANGUAGES } from '../../src/types/i18n';
+import { CONFIDENCE_LIMITS } from './confidence';
+import { selectSolution } from './solution-selector';
+import { assessComprehension, comprehensionBelowThreshold } from './comprehension';
+import {
+  addConversationRecord,
+  extractPreferencesFromEntities,
+  extractPreferencesFromToolResult,
+  fromFlatMemory,
+  toFlatMemory,
+  updatePreferences,
+} from './visitor-memory';
+import { executeCognitiveChain } from './tool-chains';
 
 export class AssistantError extends Error {
   constructor(public status: number, public code: string, message: string) { super(message); }
@@ -93,21 +102,34 @@ function toolStepLabel(tool: string, result: ToolResult, serviceName: string): [
   }
 }
 
-/** Follow-up chips (as in Gemini/Copilot/Perplexity), chosen so each one routes to a useful path. */
-export function suggestFollowUps(lang: 'ar' | 'en', routed: RouteResult, service: ServiceDef | undefined, services: ServiceDef[]): string[] {
+/** Dynamic context-aware follow-up chips, adapted from results, entities and visitor memory. */
+export function suggestFollowUps(
+  lang: 'ar' | 'en',
+  routed: RouteResult,
+  service: ServiceDef | undefined,
+  services: ServiceDef[],
+  results: { tool: string; result: ToolResult }[] = [],
+  memory: Record<string, string> = {},
+): string[] {
   const ar = lang === 'ar';
   const has = (kind: ServiceDef['kind']) => services.some((s) => s.kind === kind);
+  const noteHint = routed.entities.notes?.split(',')[0]?.trim() || memory.preferredNotes?.split('،')[0]?.trim();
   const S = {
     services: ar ? 'بتقدموا خدمات ايه؟' : 'What services do you offer?',
-    custom: ar ? 'عايز أطلب عطر مخصص' : 'I want a bespoke perfume',
-    track: ar ? 'تتبع طلبي' : 'Track my order',
+    custom: noteHint
+      ? (ar ? `عايز أطلب عطر مخصص بنوتة ${noteHint}` : `I want a bespoke perfume with ${noteHint}`)
+      : (ar ? 'عايز أطلب عطر مخصص' : 'I want a bespoke perfume'),
+    track: memory.lastRequestRef
+      ? (ar ? `تتبع طلبي ${memory.lastRequestRef}` : `Track my order ${memory.lastRequestRef}`)
+      : (ar ? 'تتبع طلبي' : 'Track my order'),
     store: ar ? 'عايز أشتري من المتجر' : 'I want to buy from the store',
     b2b: ar ? 'محتاج عرض سعر جملة' : 'I need a wholesale quote',
     human: ar ? 'عايز أكلم موظف' : 'I want to talk to a human',
     how: ar ? 'إزاي أطلب من شام؟' : 'How do I order from Sham?',
     maceration: ar ? 'يعني ايه تعتيق العطر؟' : 'What is perfume maceration?',
   };
-  const pick = (...items: (string | false | undefined)[]) => items.filter((x): x is string => Boolean(x)).slice(0, 3);
+  const unanswered = results.some((r) => r.tool === 'retrieve_knowledge' && r.result.observation === 'NO_RESULTS');
+  const pick = (...items: (string | false | undefined)[]) => [...new Set(items.filter((x): x is string => Boolean(x)))].slice(0, 3);
   switch (routed.intent) {
     case 'greeting': case 'thanks': return pick(S.services, has('custom_order') && S.custom, S.track);
     case 'identity': return pick(S.services, S.how, has('custom_order') && S.custom);
@@ -117,7 +139,10 @@ export function suggestFollowUps(lang: 'ar' | 'en', routed: RouteResult, service
     case 'calculate': return pick(S.maceration, has('custom_order') && S.custom);
     case 'handoff': return pick(S.track, S.services);
     case 'memory_view': case 'forget': return [];
-    default: return pick(service && service.kind !== 'info' && (ar ? `عايز أطلب ${service.nameAr}` : `I want ${service.nameEn}`), S.services, has('support') && S.human);
+    case 'perfume_expert': return pick(has('custom_order') && S.custom, S.maceration, has('support') && S.human);
+    default:
+      if (unanswered) return pick(has('support') && S.human, S.services, has('custom_order') && S.custom);
+      return pick(service && service.kind !== 'info' && (ar ? `عايز أطلب ${service.nameAr}` : `I want ${service.nameEn}`), S.services, has('support') && S.human);
   }
 }
 
@@ -146,10 +171,11 @@ const STATUS_LABEL = {
 } as const;
 
 export class Orchestrator {
-  constructor(private repo: Repository, private options: { env?: Record<string, string | undefined>; fetch?: typeof fetch; engineTimeoutMs?: number; totalTimeoutMs?: number; councilTimeoutMs?: number; seatTimeoutMs?: number } = {}) {}
-
-  /** Per-conversation queue: concurrent requests on one conversation (double submit, stop + regenerate) never overwrite each other. */
   private locks = new Map<string, Promise<unknown>>();
+  /** Session-level engine health tracker: repeatedly failing providers step back in priority automatically. */
+  public readonly health = new EngineHealth();
+
+  constructor(private repo: Repository, private options: { env?: Record<string, string | undefined>; fetch?: typeof fetch; engineTimeoutMs?: number; totalTimeoutMs?: number; councilTimeoutMs?: number; seatTimeoutMs?: number } = {}) {}
 
   async chat(input: ChatInput, opts: ChatOpts = {}): Promise<ChatOutput> {
     return input.conversationId ? this.exclusive(input.conversationId, () => this.run(input, opts)) : this.run(input, opts);
@@ -190,7 +216,7 @@ export class Orchestrator {
     const redacted = input.message.replace(CARD, '[redacted-card]');
     trace.push({ stage: 'guard', detail: redacted !== input.message ? 'card-like number redacted' : 'ok', ms: tick() });
 
-    // 2) Memory: conversation + visitor-level memory that follows the visitor across chats.
+    // 2) Structured visitor memory: conversation + cross-chat preferences and history.
     const settings = await this.repo.settings();
     const services = await this.repo.services();
     let conversation = input.conversationId ? await this.repo.conversation(input.conversationId) : undefined;
@@ -207,7 +233,6 @@ export class Orchestrator {
       if (conversation.status !== 'open' || tail.some((m) => m.engine === 'human')) {
         throw new AssistantError(409, 'CANNOT_REWIND', 'Only the latest assistant answer can be regenerated');
       }
-      // Only drop it if it is the exchange the visitor sees (a stopped request may never have been stored).
       if (lastUser >= 0 && conversation.messages[lastUser].text === input.rewind.replace(CARD, '[redacted-card]')) {
         conversation.messages = conversation.messages.slice(0, lastUser);
         trace.push({ stage: 'guard', detail: 'rewound the last exchange (regenerate/edit)', ms: 0 });
@@ -217,32 +242,117 @@ export class Orchestrator {
     const lang: 'ar' | 'en' = detectScriptLanguage(redacted) === 'ar' || (input.language === 'ar' || input.language === 'fa') && !/[A-Za-z]{3}/.test(redacted) ? 'ar' : 'en';
     const step = (stage: PublicStep['stage'], ar: string, en: string) => { const s = { stage, label: lang === 'ar' ? ar : en }; steps.push(s); emit({ type: 'step', step: s }); };
 
-    // 3) Route
+    let visitorMemory = fromFlatMemory(input.visitorId, conversation.memory);
+
+    // 3) Context-aware Routing + Solution Selector
     tick = clock();
-    const routed = route(redacted, services);
+    const previousUser = conversation.messages.filter((m) => m.role === 'user').at(-1);
+    const previousServiceId = conversation.serviceId || visitorMemory.preferences.preferredService;
+    const decision = routeEnhanced(redacted, services, previousUser?.intent, previousServiceId);
+    const routed: RouteResult = {
+      intent: decision.intent as Intent,
+      serviceId: decision.serviceId,
+      confidence: decision.confidence,
+      scores: decision.scores,
+      entities: decision.entities as RouteResult['entities'],
+    };
     const service = services.find((s) => s.id === routed.serviceId);
-    if (routed.entities.name) conversation.memory.name = routed.entities.name;
-    if (service && service.kind !== 'info') conversation.memory.lastService = service.id;
+
+    // Update structured visitor preferences from extracted entities (only when not asking to erase memory)
+    if (routed.intent !== 'forget') {
+      visitorMemory = extractPreferencesFromEntities(visitorMemory, decision.entities);
+      if (service && service.kind !== 'info') {
+        visitorMemory = updatePreferences(visitorMemory, { preferredService: service.id });
+      }
+      conversation.memory = toFlatMemory(visitorMemory, conversation.memory);
+    }
+
     trace.push({ stage: 'intent', detail: `${routed.intent} (${routed.confidence.toFixed(2)})${service ? ` → ${service.id}` : ''} ${JSON.stringify(routed.scores)}`, ms: tick() });
     const serviceName = service ? (lang === 'ar' ? service.nameAr : service.nameEn) : '';
     step('intent', `فهم الطلب: ${INTENT_LABEL.ar[routed.intent]}${serviceName ? ` ← ${serviceName}` : ''}`, `Understanding: ${INTENT_LABEL.en[routed.intent]}${serviceName ? ` → ${serviceName}` : ''}`);
 
-    // 4) Plan + 5) Act
-    const query = stripIntro(redacted) || redacted;
-    const plan = this.plan(routed, service, conversation, query);
-    trace.push({ stage: 'plan', detail: plan.map((p) => p.tool).join(' → ') || 'respond', ms: 0 });
-    const results: { tool: string; result: ToolResult }[] = [];
-    for (const planned of plan) {
-      tick = clock();
-      const result = await (tools[planned.tool].run as (a: unknown, c: unknown) => Promise<ToolResult>)(planned.args, { repo: this.repo, message: redacted, lang });
-      results.push({ tool: planned.tool, result });
-      trace.push({ stage: planned.tool === 'retrieve_knowledge' ? 'retrieve' : 'tool', detail: `${planned.tool}: ${result.observation.split('\n')[0].slice(0, 160)}`, ms: tick() });
-      const [ar, en] = toolStepLabel(planned.tool, result, serviceName);
-      step(planned.tool === 'retrieve_knowledge' ? 'retrieve' : 'tool', ar, en);
+    // 3b) Solution Selector: handle genuine service ambiguity cleanly with clickable service chips
+    const solution = selectSolution(
+      routed.intent,
+      routed.confidence,
+      services,
+      decision.entities,
+      visitorMemory.preferences as Record<string, unknown>,
+      { ambiguous: decision.ambiguous, disambiguation: decision.disambiguation, consultRequested: Boolean(input.consult) },
+    );
+    trace.push({ stage: 'plan', detail: `solution=${solution.chosen.id} (${solution.chosen.confidence.toFixed(2)})`, ms: 0 });
+
+    if (solution.needsVisitorClarification && solution.clarificationQuestion) {
+      const q = solution.clarificationQuestion;
+      const replyText = lang === 'ar'
+        ? `${q.ar}\n${q.options.map((o) => `• ${o.labelAr}`).join('\n')}`
+        : `${q.en}\n${q.options.map((o) => `• ${o.labelEn}`).join('\n')}`;
+      step('engine', 'توضيح الخدمة المطلوبة', 'Clarifying target service');
+      if (opts.onEvent) for (const chunk of replyText.match(/[^\s]+\s*/g) || [replyText]) emit({ type: 'delta', text: chunk });
+      const chipSuggestions = q.options
+        .slice(0, 4)
+        .map((o) => (lang === 'ar' ? `عايز أطلب ${o.labelAr}` : `I want ${o.labelEn}`));
+      const at = new Date().toISOString();
+      const messageId = randomUUID().slice(0, 12);
+      conversation.messages.push(
+        { id: randomUUID().slice(0, 12), role: 'user', text: redacted, at, intent: routed.intent },
+        { id: messageId, role: 'assistant', text: replyText, at, engine: 'sham_local', intent: routed.intent, citations: [], actions: [], trace, steps, suggestions: chipSuggestions },
+      );
+      conversation.updatedAt = at;
+      await this.repo.saveConversation(conversation);
+      await this.repo.touchVisitor(conversation.visitorId, conversation.id, conversation.memory);
+      const output: ChatOutput = {
+        conversationId: conversation.id,
+        messageId,
+        reply: replyText,
+        engine: publicEngine('sham_local'),
+        intent: routed.intent,
+        actions: [],
+        citations: [],
+        steps,
+        suggestions: chipSuggestions,
+        status: conversation.status,
+        trace: opts.debug ? trace : undefined,
+      };
+      emit({ type: 'done', output });
+      return output;
     }
+
+    // 4) Plan + 5) Act (Multi-pass Cognitive Tool Chain)
+    const query = stripIntro(redacted) || redacted;
+    const chainResult = await executeCognitiveChain(
+      routed.intent,
+      {
+        query,
+        rawMessage: redacted,
+        entities: decision.entities,
+        service,
+        lastRequestRef: conversation.memory.lastRequestRef,
+      },
+      this.repo,
+      lang,
+    );
+    trace.push({
+      stage: 'plan',
+      detail: `${chainResult.plannedTools.join(' → ') || 'respond'}${chainResult.replannedTools.length ? ` [replan: ${chainResult.replannedTools.join(' → ')}]` : ''}`,
+      ms: 0,
+    });
+
+    const results: { tool: string; result: ToolResult }[] = chainResult.steps.map((s) => {
+      const stage = s.tool === 'retrieve_knowledge' ? 'retrieve' : 'tool';
+      trace.push({ stage, detail: `${s.tool}: ${s.result.observation.split('\n')[0].slice(0, 160)}`, ms: s.ms });
+      const [ar, en] = toolStepLabel(s.tool, s.result, serviceName);
+      step(stage, ar, en);
+      return { tool: s.tool, result: s.result };
+    });
+
     if (routed.intent === 'handoff') conversation.status = 'handoff';
-    const tracked = results.find((r) => r.tool === 'track_order')?.result.data as { ref?: string } | undefined;
-    if (tracked?.ref) conversation.memory.lastRequestRef = tracked.ref;
+    for (const r of results) {
+      visitorMemory = extractPreferencesFromToolResult(visitorMemory, r.tool, r.result);
+    }
+    if (routed.intent !== 'forget') {
+      conversation.memory = toFlatMemory(visitorMemory, conversation.memory);
+    }
 
     let actions = results.flatMap((r) => r.result.actions || []);
     // A store order form is useless without published products; never show an empty cart.
@@ -260,25 +370,27 @@ export class Orchestrator {
     const citations = results.flatMap((r) => r.result.citations || []).filter((c, i, all) => all.findIndex((x) => x.id === c.id) === i).slice(0, 5);
 
     // Learning loop: questions Sham's data cannot answer become "knowledge gaps" for the admin.
-    const unanswered = (routed.intent === 'question' || routed.intent === 'perfume_expert') && results.some((r) => r.tool === 'retrieve_knowledge' && r.result.observation === 'NO_RESULTS');
+    const unanswered = (routed.intent === 'question' || routed.intent === 'perfume_expert') && results.some((r) => r.tool === 'retrieve_knowledge' && r.result.observation === 'NO_RESULTS') && !results.some((r) => r.tool === 'search_catalog' && r.result.observation.startsWith('MATCHES'));
     if (unanswered) await this.repo.recordGap({ question: query, source: 'no_answer', conversationId: conversation.id });
 
-    // 6) Render with engine policy (streams tokens when the caller listens)
+    // 6) Render with engine policy + session health ordering (streams tokens when the caller listens)
     const local = this.composeLocal(lang, routed, service, results, settings, services, conversation);
     let reply = local;
     let engine: EngineId = 'sham_local';
     const statuses = engineStatuses(this.options.env || process.env);
-    const policy = [...settings.enginePolicy.filter((e) => e !== 'sham_local'), 'sham_local' as const];
+    const modelCandidates = this.health.order(settings.enginePolicy.filter((e) => e !== 'sham_local'));
+    const policy = [...modelCandidates, 'sham_local' as const];
     const useModel = !['greeting', 'thanks', 'identity', 'track_order', 'calculate', 'memory_view', 'forget'].includes(routed.intent);
     const env = this.options.env || process.env;
     const history: EngineTurn[] = conversation.messages.slice(-10).map((m) => ({ role: m.role, text: m.text }));
+    const contextFacts = [local, ...results.map((r) => r.result.observation)];
 
     // 6a) Advisory council: several models give independent opinions, review each other, a chair synthesises.
     let council: CouncilTranscript | undefined;
     if (useModel && !opts.signal?.aborted && shouldConvene(settings.council, routed.intent, Boolean(input.consult), env) && (opts.councilGate?.() ?? true)) {
       tick = clock();
       const result = await runCouncil({
-        question: redacted, history, lang, languageName: SUPPORTED_LANGUAGES.find((l) => l.code === input.language)!.name,
+        question: redacted, history, lang, intent: routed.intent, languageName: SUPPORTED_LANGUAGES.find((l) => l.code === input.language)!.name,
         briefing: this.councilBriefing(settings, services, lang, routed, results, actions, local),
         council: settings.council, enginePolicy: settings.enginePolicy, temperature: settings.temperature,
         env: this.options.env, fetch: this.options.fetch, seatTimeoutMs: this.options.seatTimeoutMs,
@@ -303,15 +415,26 @@ export class Orchestrator {
         if (!statuses.find((s) => s.id === id)?.configured || total.aborted) continue;
         tick = clock();
         let streamed = false;
+        let failedKind: EngineFailure | undefined;
+        let failedDetail = '';
         try {
           const text = await callEngine(id, system, turns, {
             env: this.options.env, fetch: this.options.fetch, temperature: settings.temperature,
+            contextFacts,
             signal: AbortSignal.any([total, AbortSignal.timeout(this.options.engineTimeoutMs ?? 12000)]),
             onToken: opts.onEvent ? (token) => { streamed = true; emit({ type: 'delta', text: token }); } : undefined,
+            onFailure: (kind, _status, detail) => { failedKind = kind; failedDetail = detail; },
           });
           trace.push({ stage: 'engine', detail: `${id}: ${text ? 'ok' : 'empty/invalid'}`, ms: tick() });
-          if (text) { reply = text; engine = id; break; }
+          if (text) {
+            this.health.ok(id);
+            reply = text;
+            engine = id;
+            break;
+          }
+          this.health.fail(id, failedKind || 'empty', failedDetail);
         } catch {
+          this.health.fail(id, 'timeout');
           trace.push({ stage: 'engine', detail: `${id}: failed/timeout`, ms: tick() });
         }
         if (opts.signal?.aborted) break; // the visitor pressed "stop": keep what they saw, no failover
@@ -319,7 +442,17 @@ export class Orchestrator {
         if (streamed) emit({ type: 'reset' });
       }
     }
+
+    // 6b) Comprehension & Grounding Quality Gate: guard against hallucinated prices/refs/orders cleanly across SSE.
     const stopped = Boolean(opts.signal?.aborted);
+    const comprehension = assessComprehension(redacted, reply, lang, contextFacts);
+    if (!stopped && engine !== 'sham_local' && (!comprehension.answersQuestion || comprehensionBelowThreshold(comprehension.confidence))) {
+      trace.push({ stage: 'guard', detail: `grounding gate fallback (${comprehension.confidence.toFixed(2)}): ${comprehension.reasonEn}`, ms: 0 });
+      if (shown) emit({ type: 'reset' });
+      reply = local;
+      engine = 'sham_local';
+    }
+
     if (stopped) {
       // The visitor pressed "stop": keep exactly what they saw, like the big chat apps do.
       reply = shown.trim() || (lang === 'ar' ? '(تم إيقاف الرد)' : '(response stopped)');
@@ -335,10 +468,17 @@ export class Orchestrator {
     else step('engine', `صياغة الرد: ${publicName.ar}`, `Writing the answer: ${publicName.en}`);
 
     // 7) Compose + remember
-    const suggestions = suggestFollowUps(lang, routed, service, services);
-    trace.push({ stage: 'compose', detail: `${actions.length} action(s), ${citations.length} citation(s), ${suggestions.length} suggestion(s)` });
+    const suggestions = suggestFollowUps(lang, routed, service, services, results, conversation.memory);
+    trace.push({ stage: 'compose', detail: `${actions.length} action(s), ${citations.length} citation(s), ${suggestions.length} suggestion(s), confidence=${Math.min(1, comprehension.confidence).toFixed(2)}` });
     const at = new Date().toISOString();
     const messageId = randomUUID().slice(0, 12);
+    visitorMemory = addConversationRecord(visitorMemory, {
+      at,
+      intent: routed.intent,
+      serviceId: service?.id,
+      confidence: routed.confidence,
+      answeredWell: comprehension.confidence >= CONFIDENCE_LIMITS.engine && !unanswered,
+    });
     const userMessage: ConversationMessage = { id: randomUUID().slice(0, 12), role: 'user', text: redacted, at, intent: routed.intent };
     const assistantMessage: ConversationMessage = {
       id: messageId, role: 'assistant', text: reply, at, engine, intent: routed.intent, citations, actions, trace, steps, suggestions, ...(stopped ? { stopped } : {}), ...(council ? { council } : {}),
@@ -356,36 +496,6 @@ export class Orchestrator {
     };
     emit({ type: 'done', output });
     return output;
-  }
-
-  private plan(routed: RouteResult, service: ServiceDef | undefined, conversation: Conversation, query: string) {
-    type Step = { tool: keyof typeof tools; args: unknown };
-    const steps: Step[] = [];
-    switch (routed.intent) {
-      case 'greeting': case 'thanks': case 'identity': break;
-      case 'list_services': steps.push({ tool: 'list_services', args: {} }); break;
-      case 'track_order':
-        steps.push({ tool: 'track_order', args: { ref: routed.entities.ref || conversation.memory.lastRequestRef, contact: routed.entities.email || routed.entities.phone } });
-        break;
-      case 'calculate':
-        steps.push({ tool: 'calc_concentration', args: { volumeMl: routed.entities.volumeMl, percent: routed.entities.percent } });
-        break;
-      case 'browse_products':
-        steps.push({ tool: 'search_catalog', args: { query } });
-        if (service) steps.push({ tool: 'prepare_request_form', args: { service } });
-        break;
-      case 'service_request':
-        if (service?.kind === 'store') steps.push({ tool: 'search_catalog', args: { query } });
-        if (service) steps.push({ tool: 'prepare_request_form', args: { service } });
-        steps.push({ tool: 'retrieve_knowledge', args: { query } });
-        break;
-      case 'handoff':
-        if (service) steps.push({ tool: 'prepare_request_form', args: { service } });
-        break;
-      default:
-        steps.push({ tool: 'retrieve_knowledge', args: { query } });
-    }
-    return steps;
   }
 
   private composeLocal(lang: 'ar' | 'en', routed: RouteResult, service: ServiceDef | undefined, results: { tool: string; result: ToolResult }[], settings: CoreSettings, services: ServiceDef[], conversation: Conversation): string {
@@ -453,6 +563,9 @@ export class Orchestrator {
           m.name && (ar ? `• الاسم: ${m.name}` : `• Name: ${m.name}`),
           m.lastService && (ar ? `• آخر خدمة اهتممت بها: ${name(services.find((s) => s.id === m.lastService) || { nameAr: m.lastService, nameEn: m.lastService } as ServiceDef)}` : `• Last service: ${m.lastService}`),
           m.lastRequestRef && (ar ? `• آخر رقم طلب: ${m.lastRequestRef}` : `• Last request: ${m.lastRequestRef}`),
+          m.preferredNotes && (ar ? `• النوتات المفضلة: ${m.preferredNotes}` : `• Preferred notes: ${m.preferredNotes}`),
+          m.concentration && (ar ? `• التركيز المفضل: ${m.concentration}` : `• Preferred concentration: ${m.concentration}`),
+          m.budget && (ar ? `• الميزانية التقريبية: ${m.budget}` : `• Approximate budget: ${m.budget}`),
         ].filter(Boolean);
         return lines.length
           ? (ar ? `ده كل اللي بفتكره عنك:\n${lines.join('\n')}\nمش بحفظ كلمات مرور ولا بيانات بطاقات. تقدر تمسح محادثاتك وذاكرتك من الزر تحت.` : `This is everything I remember about you:\n${lines.join('\n')}\nI never store passwords or card data. You can erase your conversations and memory below.`)
@@ -463,7 +576,12 @@ export class Orchestrator {
           : 'To permanently erase your conversations and everything I remember, press the confirmation button below. Submitted requests (SH references) are kept for follow-up and accounting; ask support to remove them.';
       case 'perfume_expert': case 'question': default: {
         const passages = (r('retrieve_knowledge')?.data || []) as { title: string; text: string }[];
+        const replannedCatalog = r('search_catalog')?.data as { matched: boolean; products: { nameAr: string; nameEn: string; price: number; currency: string; stock: number; unit: string }[] } | undefined;
         const expert = routed.intent === 'perfume_expert';
+        if (!passages.length && replannedCatalog?.matched && replannedCatalog.products.length) {
+          const items = replannedCatalog.products.slice(0, 3).map((p) => `• ${(ar ? p.nameAr : p.nameEn) || p.nameAr} — ${p.price} ${p.currency} / ${p.unit} (${p.stock > 0 ? (ar ? `متاح: ${p.stock}` : `in stock: ${p.stock}`) : (ar ? 'غير متاح' : 'out of stock')})`).join('\n');
+          return ar ? `من كتالوج شام الحالي:\n${items}` : `From Sham's current catalog:\n${items}`;
+        }
         if (!passages.length) {
           return (ar ? `مش لاقي إجابة مؤكدة في قاعدة معرفة شام عن السؤال ده، ومش هخمّن.${expert ? ' لأسئلة تركيب العطور التفصيلية جرّب الخبير «شاهين» من تبويب المعمل.' : ''} تقدر تسأل عن خدماتنا أو تطلب تحويلك لموظف.`
             : `I could not find a confirmed answer in Sham's knowledge base, and I won't guess.${expert ? ' For detailed formulation questions try the Shaheen expert in the lab tab.' : ''} Ask about our services or request a human.`) + handoff;

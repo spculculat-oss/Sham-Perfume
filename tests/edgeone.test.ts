@@ -43,11 +43,12 @@ test('EdgeOne function: one app per instance, /api prefix restored, per-visitor 
     }
     const chat = (ip: string) => fetch(`${base}/api/chat`, { method: 'POST',
       headers: { 'content-type': 'application/json', 'eo-connecting-ip': ip }, body: JSON.stringify({ message: 'hi' }) });
-    // No engines configured → 503, but each call still counts towards that visitor's limit.
-    assert.equal((await chat('41.33.1.1')).status, 503);
-    assert.equal((await chat('41.33.1.1')).status, 503);
+    // «شاهين معتمد على نفسه» (O-10): no platform, Shaheen answers himself — and each call still counts towards
+    // that visitor's limit.
+    assert.equal((await chat('41.33.1.1')).status, 200);
+    assert.equal((await chat('41.33.1.1')).status, 200);
     assert.equal((await chat('41.33.1.1')).status, 429);
-    assert.equal((await chat('197.1.1.9')).status, 503, 'another visitor has their own limit');
+    assert.equal((await chat('197.1.1.9')).status, 200, 'another visitor has their own limit');
   } finally {
     for (const n of names) { if (saved[n] !== undefined) process.env[n] = saved[n]; else delete process.env[n]; }
     await new Promise((done) => server.close(done));

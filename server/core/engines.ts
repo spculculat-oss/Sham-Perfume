@@ -11,13 +11,16 @@
  *  sham_local  : Sham's own deterministic composer — works with zero keys and zero cost.
  */
 import { createHash } from 'node:crypto';
+import { nextDailyRenewal } from './engineHealth';
 import type { EngineId, ModelEngineId } from './types';
+import { isOwnMachine, platformsOff } from './selfReliance';
 
 type Env = Record<string, string | undefined>;
 export interface EngineTurn { role: 'user' | 'assistant'; text: string }
 export interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: 'own' | 'self_hosted' | 'hosted' }
 
-const configured = (v?: string) => Boolean(v?.trim() && !/^(MY_|YOUR_|<)/i.test(v.trim()));
+const hasKey = (v?: string) => Boolean(v?.trim() && !/^(MY_|YOUR_|<)/i.test(v.trim()));
+const configured = hasKey;
 
 /** Tencent EdgeOne Makers model gateway (OpenAI-compatible, free monthly tokens for built-in models). */
 export const EDGEONE_GATEWAY_URL = 'https://ai-gateway.edgeone.link/v1';
@@ -67,7 +70,11 @@ export function perplexityText(data: unknown): string | undefined {
 }
 
 export function engineStatuses(env: Env = process.env): EngineStatus[] {
-  const open = openCompatibleEngine(env);
+  // «شاهين معتمد على نفسه»: with the owner's switch off, only a model on our own machine may answer.
+  const off = platformsOff(env);
+  const found = openCompatibleEngine(env);
+  const open = found && (!off || (!found.gateway && isOwnMachine(found.baseUrl))) ? found : null;
+  const configured = (key: string | undefined) => !off && hasKey(key);
   return [
     { id: 'self_hosted', name: open?.gateway ? 'Tencent EdgeOne Models' : 'Self-hosted open model', model: open?.model || env.SHAM_LLM_MODEL?.trim() || 'qwen2.5:7b-instruct', configured: Boolean(open), kind: 'self_hosted' },
     { id: 'gemini', name: 'Google Gemini', model: env.GEMINI_MODEL?.trim() || GEMINI_DEFAULT_MODEL, configured: configured(env.GEMINI_API_KEY), kind: 'hosted' },
@@ -81,33 +88,123 @@ export function engineStatuses(env: Env = process.env): EngineStatus[] {
 }
 
 /**
- * Removes <think>…</think> reasoning blocks from a token stream without waiting for the
- * full answer (open reasoning models such as DeepSeek-R1 / Qwen-QwQ emit them).
+ * Removes hidden reasoning blocks (<think>…</think>, <thinking>…</thinking>, <thought>…</thought>,
+ * <reasoning>…</reasoning>, <考え>…</考え>) from a token stream without waiting for the full answer
+ * (open reasoning models such as DeepSeek-R1 / Qwen-QwQ emit them, sometimes split across chunks).
  */
+const THINK_TAG_PAIRS = [
+  ['<thinking>', '</thinking>'],
+  ['<reasoning>', '</reasoning>'],
+  ['<thought>', '</thought>'],
+  ['<think>', '</think>'],
+  ['<考え>', '</考え>'],
+] as const;
+const STRIP_REASONING_RE = /<(?:think|thinking|thought|reasoning|考え)>[\s\S]*?<\/(?:think|thinking|thought|reasoning|考え)>/gi;
+
+export interface EngineOutputScore {
+  confidence: number;
+  grounded: boolean;
+  issues: string[];
+}
+
+/**
+ * Evaluates an engine's text output for grounding fidelity against CONTEXT and output hygiene
+ * (unverified prices, invented SH- references, sensitive card solicitation, or token loops).
+ */
+export function scoreEngineOutput(text: string, contextFacts: string[] = []): EngineOutputScore {
+  const trimmed = (text || '').trim();
+  if (!trimmed) return { confidence: 0, grounded: false, issues: ['empty_output'] };
+  const issues: string[] = [];
+  let confidence = 0.9;
+  const ctxJoined = contextFacts.join('\n');
+  const ctxUpper = ctxJoined.toUpperCase();
+
+  if (contextFacts.length > 0) {
+    for (const m of trimmed.matchAll(/\bSH-[A-Z0-9]{6}\b/gi)) {
+      const ref = m[0].toUpperCase();
+      if (ref !== 'SH-XXXXXX' && !ctxUpper.includes(ref)) {
+        issues.push(`ungrounded_ref:${ref}`);
+        confidence = Math.min(confidence, 0.2);
+      }
+    }
+    const allowedNums = new Set(
+      [...ctxJoined.replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660)).matchAll(/\d+(?:\.\d+)?/g)].map((m) => String(Number(m[0]))),
+    );
+    for (const m of trimmed.matchAll(/(?:^|\s|\()(\d{2,6}(?:[.,]\d{1,2})?)\s*(?:EGP|USD|SAR|AED|جنيه|ج\.م|ريال|درهم|دولار)(?=$|\s|[،,.!؟?;:)\]])/giu)) {
+      const n = String(Number(m[1].replace(',', '.')));
+      if (!allowedNums.has(n)) {
+        issues.push(`ungrounded_price:${m[0]}`);
+        confidence = Math.min(confidence, 0.25);
+      }
+    }
+  }
+
+  if (/(?:ابعت رقم البطاقة|أرسل رقم البطاقة|رقم الكارت كاملا|send your credit card number|share your cvv|enter your password)/i.test(trimmed)) {
+    issues.push('sensitive_solicitation');
+    confidence = 0.05;
+  }
+
+  const words = trimmed.split(/\s+/);
+  if (words.length >= 16) {
+    const seen = new Map<string, number>();
+    for (let i = 0; i <= words.length - 4; i++) {
+      const g = words.slice(i, i + 4).join(' ').toLowerCase();
+      const c = (seen.get(g) || 0) + 1;
+      if (c >= 4) { issues.push('degenerate_repetition'); confidence = Math.min(confidence, 0.15); break; }
+      seen.set(g, c);
+    }
+  }
+
+  return { confidence: Number(confidence.toFixed(3)), grounded: issues.length === 0, issues };
+}
+
 export class ThinkFilter {
   private buffer = '';
-  private thinking = false;
+  private closeTag: string | null = null;
   push(chunk: string): string {
     this.buffer += chunk;
     let out = '';
     for (;;) {
-      if (this.thinking) {
-        const end = this.buffer.indexOf('</think>');
-        if (end < 0) { this.buffer = this.buffer.slice(-8); return out; }
-        this.buffer = this.buffer.slice(end + 8);
-        this.thinking = false;
+      if (this.closeTag) {
+        const lower = this.buffer.toLowerCase();
+        const end = lower.indexOf(this.closeTag);
+        if (end < 0) {
+          this.buffer = this.buffer.slice(-Math.max(this.closeTag.length, 8));
+          return out;
+        }
+        this.buffer = this.buffer.slice(end + this.closeTag.length);
+        this.closeTag = null;
       } else {
-        const start = this.buffer.indexOf('<think>');
-        if (start >= 0) { out += this.buffer.slice(0, start); this.buffer = this.buffer.slice(start + 7); this.thinking = true; continue; }
-        // Keep a possible partial "<think" tag at the end for the next chunk.
-        const keep = Math.max(0, ...[1, 2, 3, 4, 5, 6].filter((n) => '<think>'.startsWith(this.buffer.slice(-n))));
+        const lower = this.buffer.toLowerCase();
+        let earliestIdx = -1;
+        let matchedPair: (typeof THINK_TAG_PAIRS)[number] | undefined;
+        for (const pair of THINK_TAG_PAIRS) {
+          const idx = lower.indexOf(pair[0]);
+          if (idx >= 0 && (earliestIdx < 0 || idx < earliestIdx)) {
+            earliestIdx = idx;
+            matchedPair = pair;
+          }
+        }
+        if (earliestIdx >= 0 && matchedPair) {
+          out += this.buffer.slice(0, earliestIdx);
+          this.buffer = this.buffer.slice(earliestIdx + matchedPair[0].length);
+          this.closeTag = matchedPair[1];
+          continue;
+        }
+        // Keep only a genuine partial opening tag suffix at the end for the next chunk.
+        let keep = 0;
+        const maxLen = Math.min(this.buffer.length, 11);
+        for (let n = 1; n <= maxLen; n++) {
+          const tail = lower.slice(-n);
+          if (THINK_TAG_PAIRS.some(([open]) => n < open.length && open.startsWith(tail))) keep = n;
+        }
         out += this.buffer.slice(0, this.buffer.length - keep);
         this.buffer = this.buffer.slice(this.buffer.length - keep);
         return out;
       }
     }
   }
-  flush(): string { const rest = this.thinking ? '' : this.buffer; this.buffer = ''; return rest; }
+  flush(): string { const rest = this.closeTag ? '' : this.buffer; this.buffer = ''; return rest; }
 }
 
 /** Reads a Server-Sent-Events body and yields each `data:` payload. */
@@ -145,7 +242,11 @@ export function geminiThinking(model: string, maxTokens: number): Record<string,
   if (/gemini-2\.5-pro/.test(m)) return { maxOutputTokens: maxTokens + 1024, thinkingConfig: { thinkingBudget: 128 } };
   if (/gemini-2\.5-flash/.test(m)) return { maxOutputTokens: maxTokens, thinkingConfig: { thinkingBudget: 0 } };
   if (/gemini-[3-9]/.test(m)) return { maxOutputTokens: maxTokens + 2048, thinkingConfig: { thinkingLevel: 'low' } };
-  if (/gemini-(flash|pro)(-lite)?-latest/.test(m)) return { maxOutputTokens: maxTokens + 2048 };
+  // The rolling aliases follow Google's newest models (Gemini 3.x thinks at «medium» by default, which made a
+  // chat answer take 20-30 s and the visitor's wait ran out first): Lite at «minimal», Flash/Pro at «low» — the
+  // lowest level every model behind them accepts («minimal» is refused by 3.7/3.8 Flash).
+  if (/gemini-flash-lite-latest/.test(m)) return { maxOutputTokens: maxTokens + 1024, thinkingConfig: { thinkingLevel: 'minimal' } };
+  if (/gemini-(flash|pro)-latest/.test(m)) return { maxOutputTokens: maxTokens + 2048, thinkingConfig: { thinkingLevel: 'low' } };
   return { maxOutputTokens: maxTokens };
 }
 
@@ -157,7 +258,7 @@ export function geminiThinking(model: string, maxTokens: number): Record<string,
  */
 export const GEMINI_DEFAULT_MODEL = 'gemini-flash-latest';
 
-interface GeminiModelInfo { name?: string; supportedGenerationMethods?: string[] }
+export interface GeminiModelInfo { name?: string; supportedGenerationMethods?: string[] }
 
 /** Text models for chat the key can use, best first: rolling alias → newest stable Flash → Lite → previews. */
 export function rankGeminiModels(models: GeminiModelInfo[]): string[] {
@@ -314,11 +415,14 @@ export async function callEngine(
   id: ModelEngineId,
   system: string,
   turns: EngineTurn[],
-  options: { env?: Env; fetch?: typeof fetch; signal: AbortSignal; temperature: number; onToken?: (text: string) => void; model?: string; maxTokens?: number; maxChars?: number; onFailure?: (failure: EngineFailure, status: number, detail: string) => void; onModel?: (model: string) => void },
+  options: { env?: Env; fetch?: typeof fetch; signal: AbortSignal; temperature: number; onToken?: (text: string) => void; model?: string; maxTokens?: number; maxChars?: number; contextFacts?: string[]; onConfidence?: (score: EngineOutputScore) => void; onFailure?: (failure: EngineFailure, status: number, detail: string) => void; onModel?: (model: string) => void },
 ): Promise<string | undefined> {
   const env = options.env || process.env;
   const request = options.fetch || fetch;
   const base = engineStatuses(env).find((e) => e.id === id)!;
+  // «شاهين معتمد على نفسه»: a closed platform is never called, whoever asks for it (belt and braces — every
+  // caller already picks among the configured engines only).
+  if (platformsOff(env) && !base.configured) return undefined;
   const status = { ...base, model: options.model && MODEL_ID.test(options.model) ? options.model : base.model };
   const requestedModel = status.model;
   if (id === 'gemini') {
@@ -394,7 +498,10 @@ export async function callEngine(
       const nextBody = geminiBody(next, system, turns, options.temperature, maxTokens);
       const attempt = await request(nextUrl, { method: 'POST', headers, body: JSON.stringify(nextBody), signal: options.signal });
       if (attempt.ok) {
-        geminiSubstitutes.set(geminiCacheKey(apiKey, requestedModel), { model: next, at: Date.now(), ttl: exhausted ? 3600_000 : 10 * 60_000 });
+        // A model out of its DAILY quota stays out until Google renews it — no visitor pays for the failed try again.
+        const daily = exhausted && /PerDay|per day|daily/i.test(failureDetail(errorBody));
+        const ttl = daily ? Math.min(12 * 3600_000, Math.max(3600_000, nextDailyRenewal(Date.now()) - Date.now())) : exhausted ? 3600_000 : 10 * 60_000;
+        geminiSubstitutes.set(geminiCacheKey(apiKey, requestedModel), { model: next, at: Date.now(), ttl });
         response = attempt; errorBody = undefined; usedModel = next;
         break;
       }
@@ -427,7 +534,9 @@ export async function callEngine(
       if (full.length > maxChars) return undefined;
     }
     emit(filter.flush());
-    return full.trim() || undefined;
+    const trimmedStream = full.trim();
+    if (trimmedStream && options.onConfidence) options.onConfidence(scoreEngineOutput(trimmedStream, options.contextFacts));
+    return trimmedStream || undefined;
   }
 
   const data = await response.json() as {
@@ -441,8 +550,9 @@ export async function callEngine(
       ? data.content?.filter((p) => p.type === 'text').map((p) => p.text).join('\n')
       : data.choices?.[0]?.message?.content;
   if (typeof reply !== 'string') return undefined;
-  // Strip visible chain-of-thought some open reasoning models emit (<think>…</think>).
-  const clean = reply.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+  // Strip visible chain-of-thought some open reasoning models emit (<think>…</think>, <thinking>…</thinking>, <考え>…</考え>, etc.).
+  const clean = reply.replace(STRIP_REASONING_RE, '').trim();
+  if (clean && options.onConfidence) options.onConfidence(scoreEngineOutput(clean, options.contextFacts));
   if (clean && options.onToken) options.onToken(clean);
   return clean && clean.length <= maxChars ? clean : undefined;
 }

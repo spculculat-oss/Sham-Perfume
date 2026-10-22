@@ -7,6 +7,8 @@
 import { curateMemory, emptyMemory, isMemoryFile, recallSimilar, remember, touch, type MemoryFile } from './shaheenMemory';
 import { baseLexicon, buildLexicon, understandQuestion, type Lexicon, type Understanding } from './shaheenSpelling';
 
+let researchSpider: ReturnType<typeof import('./researchSpider').createResearchSpider> | undefined;
+
 const KEY = 'shaheen_memory_v1';
 const LOCAL_LIMITS = { maxEntries: 100, ttlDays: 60, freshDays: 30, maxAnswerChars: 12_000, offlineSimilarity: 0.55 };
 
@@ -16,10 +18,20 @@ export interface OfflineMemory {
   recall(question: string, lang: string): Promise<{ answer: string; exact: boolean } | undefined>;
   /** «مكتبة شاهين»: an answer built from his lessons, materials encyclopaedia and memory (no AI, no server). */
   library?(question: string, lang: string): Promise<string | undefined>;
+  /**
+   * «المكتب السريع»: a science question answered straight from his index (src/utils/scienceIndex.ts) — the curriculum
+   * ships with the site, so no other file is downloaded and the answer comes in a fraction of a millisecond.
+   */
+  science?(question: string, lang: string): Promise<string | undefined>;
   /** «باحث شاهين»: a new question looked up in open sources (Wikipedia's public API, straight from the browser). */
   research?(question: string, lang: string): Promise<string | undefined>;
   /** «فهم شاهين للغلطات»: the question as he understands it (mistyped words read as the words he knows). */
   understand?(question: string, lang: string): Promise<Understanding>;
+  /**
+   * «وكيل شاهين»: understands the question, consults the school's experts, his library, his memory and open sources,
+   * and answers only when it is solid (else an honest answer, or a question back when it is too vague).
+   */
+  agent?(question: string, lang: string): Promise<string | undefined>;
 }
 
 function readLocal(): MemoryFile {
@@ -73,14 +85,37 @@ export const browserMemory: OfflineMemory = {
     const memory = { ...site, entries: [...readLocal().entries, ...site.entries] };
     return libraryAnswer({ lessons: Array.isArray(docs.docs) ? docs.docs : [], materials: RAW_MATERIALS_DATABASE, memory }, question, lang)?.answer;
   },
+  async science(question, lang) {
+    // Only in the built site (Vite): the curriculum is compiled from the lessons shipped with it.
+    if (typeof import.meta.env?.MODE !== 'string') return undefined;
+    const { scienceDesk } = await import('./shaheenAgent');
+    return scienceDesk(question, lang)?.answer;
+  },
   async understand(question) {
     // Only in the built site (Vite) are his lessons loaded; elsewhere the built-in perfume words.
     return understandQuestion(question, typeof import.meta.env?.MODE === 'string' ? await siteLexicon() : baseLexicon());
   },
+  async agent(question, lang) {
+    // Only in the built site (Vite): loaded on the day the server cannot be reached.
+    if (typeof import.meta.env?.MODE !== 'string') return undefined;
+    const [{ runAgent, agentLexicon, referralAnswer }, lessons, { RAW_MATERIALS_DATABASE }, site] = await Promise.all([
+      import('./shaheenAgent'), import('../data/live/sham-training.json'), import('../data/rawMaterials'), sharedMemory(),
+    ]);
+    const docs = ((lessons as { default?: { docs?: unknown } }).default ?? lessons) as { docs?: { id: string; title: string; content: string }[] };
+    const sources = { lessons: Array.isArray(docs.docs) ? docs.docs : [], materials: RAW_MATERIALS_DATABASE, memory: { ...site, entries: [...readLocal().entries, ...site.entries] } };
+    const lookUp = typeof fetch === 'function' ? async (q: string, l: string) => {
+      const { research } = await import('./webResearch');
+      return research(fetch.bind(globalThis) as never, q, l, { timeoutMs: 9000 });
+    } : undefined;
+    const result = await runAgent(question, lang, { sources, lexicon: agentLexicon(sources), research: lookUp });
+    if (result.understanding.outOfScope) return undefined;
+    return result.answer || result.understanding.note + referralAnswer(lang, result.expert, false);
+  },
   async research(question, lang) {
     if (typeof import.meta.env?.MODE !== 'string' || typeof fetch !== 'function') return undefined;
-    const { research, researchAnswer } = await import('./webResearch');
-    const found = await research(fetch.bind(globalThis) as never, question, lang, { timeoutMs: 9000 });
+    const [{ researchAnswer }, { createResearchSpider }] = await Promise.all([import('./webResearch'), import('./researchSpider')]);
+    researchSpider ??= createResearchSpider(fetch.bind(globalThis) as never, { timeoutMs: 9000 });
+    const found = await researchSpider.search(question, lang);
     return found ? researchAnswer(found) : undefined;
   },
 };

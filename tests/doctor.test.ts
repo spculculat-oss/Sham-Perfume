@@ -346,6 +346,57 @@ test('an AI fix is committed to main after the checks (direct push when PRs are 
   assert.equal(reverted.state.fixes.at(-1)?.result, 'reverted');
 });
 
+// «صاحب الموقع»: when he asked that every change waits for him, the doctor opens the pull request and stops there.
+test('a fix the owner must approve is proposed as a labelled pull request and never reaches main by itself', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const { shell } = await import('../scripts/doctor/agent');
+  const dir = mkdtempSync(join(tmpdir(), 'doctor-owner-'));
+  const g = (cwd: string, ...args: string[]) => execFileSync('git', args, { cwd, encoding: 'utf8' }).trim();
+  g(dir, 'init', '--quiet', '--bare', '-b', 'main', 'remote.git');
+  const work = join(dir, 'work');
+  g(dir, 'clone', '--quiet', join(dir, 'remote.git'), 'work');
+  mkdirSync(join(work, 'server'));
+  mkdirSync(join(work, 'src/data/owner'), { recursive: true });
+  writeFileSync(join(work, 'server/cors.ts'), 'export const headers = "Content-Type";\n');
+  writeFileSync(join(work, 'src/data/owner/controls.json'), JSON.stringify({ version: 1, frozen: false, paused: [], selfDevelopment: 'approve_all', log: [] }));
+  g(work, 'add', '.'); g(work, '-c', 'user.name=t', '-c', 'user.email=t@t', 'commit', '--quiet', '-m', 'base'); g(work, 'push', '--quiet', 'origin', 'HEAD:main');
+  const base = g(work, 'rev-parse', 'HEAD');
+  const real = shell(work);
+  const sh = async (command: string) => (command.startsWith('npm ') ? { ok: true, output: '' } : real(command));
+  const { gh, calls } = fakeGitHub();
+  const fakes = gh as unknown as Record<string, unknown>;
+  fakes.head = async () => ({ sha: g(join(dir, 'remote.git'), 'rev-parse', 'main'), date: new Date(NOW - 60 * MIN).toISOString(), message: '' });
+  fakes.runs = async () => [{ id: 9, head_sha: base, status: 'completed', conclusion: 'failure', html_url: '', created_at: '', updated_at: '', event: 'push' }];
+  fakes.failedJobs = async () => [{ id: 5, name: 'Check and build React', steps: ['Run tests'] }];
+  fakes.annotations = async () => [{ path: 'server/cors.ts', start_line: 1, annotation_level: 'failure', message: 'X-Sham-Visitor not allowed' }];
+  fakes.jobLog = async () => 'not ok 3 - CORS allows X-Sham-Visitor';
+  fakes.createPull = async (head: string) => { calls.push(`pull:${head}`); return { number: 7, html_url: 'https://github.com/o/r/pull/7' }; };
+  fakes.addLabels = async (n: number, labels: string[]) => { calls.push(`labels:${n}:${labels.join(',')}`); };
+  fakes.mergePull = async () => { throw new Error('must not merge'); };
+  fakes.deleteBranch = async () => undefined;
+  const site = (async (input: string | URL | Request, init?: RequestInit) => {
+    const url = String(input);
+    const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), { status, headers: { 'access-control-allow-origin': 'https://pages.example', 'access-control-allow-headers': 'Content-Type, X-Sham-Visitor' } });
+    if (url.endsWith('/api/health')) return json({ status: 'ok', version: base });
+    if (url.endsWith('/api/models')) return json({ models: [{ id: 'auto', hasApiKey: true }] });
+    if (url.endsWith('/api/chat')) return init?.method === 'POST' ? json({ reply: 'أنا شاهين' }) : json({}, 204);
+    if (url.includes('/api/media')) return json({ images: [] });
+    if (url === 'https://pages.example/x/') return new Response('<script type="module" src="/x/a.js"></script>');
+    if (url.endsWith('/x/a.js')) return new Response('');
+    return json({}, 404);
+  }) as typeof fetch;
+  const ask = async () => '{"summary":"السماح بهيدر معرّف الزائر","edits":[{"path":"server/cors.ts","find":"Content-Type","replace":"Content-Type, X-Sham-Visitor"}]}';
+  const run = await runDoctor({ env: { DOCTOR_SITE_URL: 'https://site', DOCTOR_PAGES_URL: 'https://pages.example/x/' }, github: gh, fetch: site, sh, ask, root: work, mode: 'live', runId: '43', log: () => {}, now: () => NOW });
+  assert.equal(run.actions[0]?.kind, 'ai_fix', JSON.stringify(run.actions));
+  assert.ok(run.actions[0].ok && /مستني موافقة صاحب الموقع/.test(run.actions[0].detail), run.actions[0].detail);
+  assert.equal(g(join(dir, 'remote.git'), 'rev-parse', 'main'), base, 'main untouched');
+  assert.match(g(join(dir, 'remote.git'), 'show', 'doctor/43:server/cors.ts'), /X-Sham-Visitor/);
+  assert.ok(calls.includes('pull:doctor/43') && calls.some((c) => c.startsWith('labels:7:')), calls.join(' '));
+  assert.ok(!calls.includes('dispatch:pages.yml'));
+  assert.equal(run.state.pending, undefined);
+  assert.equal(run.state.fixes.at(-1)?.result, 'awaiting_owner');
+});
+
 test('the admin panel reads the status board the doctor writes', async () => {
   const { parseDoctorIssue } = await import('../src/admin/doctorReport');
   const state = runs([withFinding(healthy(), f('pages', 'warn', {}, 'بطيء'))]).state;

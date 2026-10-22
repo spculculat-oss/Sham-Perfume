@@ -36,7 +36,7 @@ on:
   push:
     # Branches: rehearsal only (nothing is committed); main: a change to the scout or the school runs at once.
     branches: [main, 'arena/**']
-    paths: ['scripts/shaheen-discover/**', 'scripts/shaheen-school/**', 'scripts/shaheen-import/**', '.github/workflows/shaheen-discover.yml']
+    paths: ['scripts/shaheen-discover/**', 'scripts/shaheen-school/**', 'scripts/shaheen-import/**', 'src/data/sciences/**', '.github/workflows/shaheen-discover.yml']
 
 permissions:
   contents: write
@@ -47,8 +47,33 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # «مفتاح صاحب الموقع»: the owner can pause this robot or freeze every robot (src/data/owner/controls.json,
+  # changed only from his GitHub account through «مكتب صاحب الموقع»). Branch and pull-request runs are not affected.
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs scout teacher school
+
   scout:
     name: Find and check perfume stores, then Shaheen's school
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 70
     env:
@@ -139,8 +164,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           before=$(git rev-parse HEAD)
           node scripts/ci/publish.mjs "كشّاف المصادر ومدرسة شاهين $(date -u +%Y-%m-%dT%H:%MZ)" \
-            src/data/live/import-sources.json src/data/live/shaheen-school.json src/data/live/shaheen-memory.json \
-            src/data/live/shaheen-blocks.json \
+            src/data/live/import-sources.json src/data/live/shaheen-school.json src/data/live/shaheen-sciences.json \
+            src/data/live/shaheen-memory.json src/data/live/shaheen-blocks.json \
             src/data/live/ai-memory.json src/data/live/ai-quota.json \
             || { echo "::error::Could not push the scout's results"; exit 1; }
           if [ "$(git rev-parse HEAD)" = "$before" ]; then exit 0; fi

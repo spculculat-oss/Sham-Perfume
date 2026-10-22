@@ -12,7 +12,8 @@
  */
 import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { SITE } from '../../src/seo/site';
-import type { BotId } from '../../src/utils/shaheenOrg';
+import { BOTS, type BotId } from '../../src/utils/shaheenOrg';
+import { stoppedByOwner } from '../../src/utils/ownerAuthority';
 import { mergeCatalog, type RawProduct } from '../../src/utils/storeCatalog';
 import { BUNDLED_FX, COUNTRY_CODES, currencyFor } from '../../src/utils/pricing';
 import { getCountryMeta } from '../../src/utils/countryCurrencyMeta';
@@ -23,6 +24,7 @@ import { PRICE_MARKUP } from '../shaheen-import/transform';
 import { configuredEngines, keyFingerprint, makeAsk, QuotaExhaustedError, quotaBook } from '../doctor/agent';
 import { parseJson } from '../shaheen-supervisor/checks';
 import { runPrecheck } from '../shaheen-council/precheck';
+import { loadOwnerControls } from '../owner/load';
 import { fetchRuns, readReports } from '../shaheen-council/runs';
 import {
   ASKS_PER_SHIFT, isPatrolFile, isPatrolRerunnable, shiftAt, shiftOfBot, SHIFTS, type ProbeId, type ShiftIndex, MAX_TASKS_PER_DAY, parseShaheen, patrolIssue, issueMarker, probeCatalog, probeCurrency, probeFx, probeL10n, probeNewsFile,
@@ -51,7 +53,7 @@ say(`Shift: ${shift === 'all' ? 'all role records and probes (manual monitoring 
 // ── 1. Each tool's own check (the pre-meeting rules) ──────────────────────────────────────────────────────
 const repo = env.GITHUB_REPOSITORY || 'spculculat-oss/Sham-Perfume';
 const token = env.GITHUB_TOKEN?.trim();
-const precheck = runPrecheck(readReports(), await fetchRuns(repo, token), now);
+const precheck = runPrecheck(readReports(), await fetchRuns(repo, token), now, loadOwnerControls());
 say(`Self-checks: ${precheck.summaryAr}`);
 
 // ── 2. Hands-on tests of every scope ─────────────────────────────────────────────────────────────────────
@@ -191,7 +193,9 @@ if (token && act) {
 } else if (plan.tasks.length) say(`Rehearsal: ${plan.tasks.length} task(s) not opened — ${plan.tasks.map((t) => t.textAr.slice(0, 60)).join(' | ')}`);
 
 // ── 5. Write, and tell the workflow what to run and whether to publish ───────────────────────────────────
-const reruns = plan.reruns.filter(isPatrolRerunnable);
+// «صاحب الموقع»: a robot he paused (or every robot, when he froze them) is never restarted by the patrol.
+const owner = loadOwnerControls();
+const reruns = plan.reruns.filter(isPatrolRerunnable).filter((wf) => !BOTS.some((b) => b.workflow === wf && stoppedByOwner(owner, b.id)));
 if (!act) {
   // Rehearsal: nothing was started, so nothing is recorded as tried.
   file.reruns = previous?.reruns || [];

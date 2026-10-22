@@ -21,7 +21,7 @@ import { RERUNNABLE } from '../shaheen-council/council';
 import type { BotCheck, Handoff, PrecheckFile } from '../shaheen-council/precheck';
 
 // ── Hands-on tests (probes) ──────────────────────────────────────────────────────────────────────────────
-export type ProbeId = 'pricing' | 'catalog' | 'currency' | 'fx' | 'l10n' | 'news_file' | 'site' | 'product_pages' | 'images' | 'sitemap' | 'engine' | 'news_api' | 'payments';
+export type ProbeId = 'pricing' | 'catalog' | 'currency' | 'fx' | 'l10n' | 'news_file' | 'site' | 'product_pages' | 'images' | 'sitemap' | 'engine' | 'news_api' | 'payments' | 'platform_owner';
 export type Level = 'ok' | 'warn' | 'fail' | 'skip';
 export interface ProbeResult {
   id: ProbeId;
@@ -52,6 +52,7 @@ export const PROBES: Record<ProbeId, { nameAr: string; nameEn: string; live: boo
   engine: { nameAr: 'محرك الموقع (الخادم)', nameEn: 'Site engine (server)', live: true },
   news_api: { nameAr: 'النشرة على الموقع الحي', nameEn: 'News on the live site', live: true },
   payments: { nameAr: 'طرق الدفع', nameEn: 'Payment methods', live: true },
+  platform_owner: { nameAr: 'وكيل ملك المنصة مسجل وخاضع للدولة', nameEn: 'Platform Owner Agent registered and under the State', live: false },
 };
 
 const pct = (a: number, b: number) => (b ? Math.round((100 * a) / b) : 0);
@@ -182,6 +183,7 @@ export const TEAMS: Record<ProbeId, TeamPart[]> = {
   engine: [{ bot: 'doctor', roleAr: 'يكشف ويصلح الخادم' }, { bot: 'live_check', roleAr: 'يتأكد إن شاهين بيرد' }, { bot: 'keys', roleAr: 'يراجع مفاتيح المحركات' }],
   news_api: [{ bot: 'news', roleAr: 'يجهز نشرة احتياطية' }, { bot: 'doctor', roleAr: 'يكشف على الخادم' }],
   payments: [{ bot: 'finance', roleAr: 'يراجع إعدادات الدفع' }, { bot: 'keys', roleAr: 'يتأكد من إعدادات الخادم' }],
+  platform_owner: [{ bot: 'platform_owner', roleAr: 'يُحدّث التعديلات بعد موافقة دولة المنصة' }],
 };
 
 // ── Shifts (scripts/shaheen-patrol/shifts.ts — browser-safe, the admin panel shows them) ─────────────────

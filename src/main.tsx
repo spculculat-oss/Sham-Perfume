@@ -14,19 +14,23 @@ const isAdminRoute = () => window.location.hash.replace(/^#\/?/, '').startsWith(
 // static Pages site without a server (src/admin/OpsMapGate.tsx).
 const OpsMapGate = lazyWithReload(() => import('./admin/OpsMapGate.tsx'));
 const isOpsRoute = () => /^#\/?(?:admin\/)?ops(?:$|[/?])/.test(window.location.hash);
+// «جناح صاحب الموقع» (#owner): the owner's own management structure and his private room with Shaheen.
+const OwnerSuite = lazyWithReload(() => import('./admin/OwnerSuite.tsx'));
+const isOwnerRoute = () => /^#\/?owner(?:$|[/?])/.test(window.location.hash);
 
 function Root() {
   const [admin, setAdmin] = useState(isAdminRoute);
   const [ops, setOps] = useState(isOpsRoute);
+  const [owner, setOwner] = useState(isOwnerRoute);
   useEffect(() => {
-    const sync = () => { setAdmin(isAdminRoute()); setOps(isOpsRoute()); };
+    const sync = () => { setAdmin(isAdminRoute()); setOps(isOpsRoute()); setOwner(isOwnerRoute()); };
     window.addEventListener('hashchange', sync);
     return () => window.removeEventListener('hashchange', sync);
   }, []);
-  if (admin || ops) {
+  if (admin || ops || owner) {
     return (
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-stone-500">…</div>}>
-        {ops ? <OpsMapGate /> : <AdminApp />}
+        {owner ? <OwnerSuite /> : ops ? <OpsMapGate /> : <AdminApp />}
         {/* «مجلس المتخصصين»: استشاريّو أقسام الموقع — يشتغل من متصفح الإدارة بدون سيرفر */}
         <SpecialistsHub section="admin_panel" lang={getInitialLanguage()} />
       </Suspense>

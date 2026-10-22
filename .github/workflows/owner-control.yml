@@ -1,0 +1,145 @@
+# «مكتب صاحب الموقع» — the owner's control centre. Only the repository owner's own GitHub account can run it
+# (GitHub proves who pressed the button; nobody is believed because they say so in a chat). From the Actions tab:
+# «Run workflow» → choose the order and, for pause/resume, the robot. Every robot's first job reads the result
+# (scripts/owner/gate.mjs); the site itself keeps serving visitors whatever is paused.
+name: Owner control
+
+on:
+  # «شاهين يعدّل بموافقة صاحب الموقع»: the «وافق» button in the owner's suite opens an issue from his own account;
+  # the change job below applies it only when GitHub says the repository owner himself opened it.
+  issues:
+    types: [opened]
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "الأمر: pause = وقف روبوت، resume = رجّعه، freeze = وقف كل الروبوتات، unfreeze = رجّعهم، safe_auto = التصليح الصغير تلقائي، approve_all = كل تغيير بموافقتي، state_rule = دولة المنصة توافق (وإنت فوقها)، self_reliant = شاهين يعتمد على نفسه من غير منصات ذكاء اصطناعي، platforms_on = اسمح بالمنصات، platforms_auto = تلقائي: المنصات وهي شغالة ويتعلم منها، ولو وقفت يعتمد على نفسه"
+        required: true
+        type: choice
+        options:
+          - pause
+          - resume
+          - freeze
+          - unfreeze
+          - safe_auto
+          - approve_all
+          - state_rule
+          - self_reliant
+          - platforms_on
+          - platforms_auto
+      bot:
+        description: "الروبوت (للوقف والتشغيل بس)"
+        required: false
+        default: none
+        type: choice
+        options:
+          - none
+          - council
+          - secretary
+          - catalog
+          - news
+          - precheck
+          - patrol
+          - finance
+          - scout
+          - teacher
+          - school
+          - academy
+          - importer
+          - images
+          - product_pages
+          - seo
+          - languages
+          - design_audit
+          - visitor_tour
+          - verifier
+          - inspect
+          - doctor
+          - live_check
+          - keys
+          - intake
+          - studio_bridge
+          - studio_zip
+          - state
+
+permissions:
+  contents: read
+
+concurrency:
+  # Orders wait in one line; each change request has its own line (so nobody else's issue can push it out).
+  group: ${{ github.event_name == 'issues' && format('owner-change-{0}', github.event.issue.number) || 'owner-control' }}
+  cancel-in-progress: false
+
+jobs:
+  order:
+    name: Apply the owner's order
+    if: github.actor == github.repository_owner && github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Apply the order
+        id: order
+        env:
+          OWNER_ACTION: ${{ inputs.action }}
+          OWNER_BOT: ${{ inputs.bot }}
+          OWNER_BY: ${{ github.actor }}
+        run: node --import tsx scripts/owner/control.mts
+      - name: Save the order on main
+        if: steps.order.outputs.changed == 'true'
+        run: |
+          git config user.name "Owner desk"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "أمر صاحب الموقع: ${{ inputs.action }} ${{ inputs.bot }}" src/data/owner/controls.json src/data/owner/state-orders.json \
+            || { echo "::error::Could not save the owner's order"; exit 1; }
+
+  change:
+    name: Carry out what the owner approved (Shaheen's changes, orders, decisions)
+    if: >-
+      github.event_name == 'issues' && github.actor == github.repository_owner
+      && github.event.issue.user.login == github.repository_owner && github.event.issue.author_association == 'OWNER'
+      && startsWith(github.event.issue.title, '[شاهين] ')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      actions: write
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          # «رجّع» finds what an earlier request changed in the recent history.
+          fetch-depth: 300
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Carry it out, check everything, then publish
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node --import tsx scripts/owner/apply-change.mts

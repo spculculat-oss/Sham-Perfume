@@ -96,7 +96,9 @@ test('every engine down: the server answers from the library and puts the questi
     assert.equal(gaps[0]!.reason, SHAHEEN_OFFLINE_GAP);
     assert.equal((await chat('ايه هي الطاقة الشمسية')).status, 503, 'nothing in the library: the honest error');
     assert.equal((await repo.gaps()).length, 2, 'and the question still waits for study');
-    assert.equal((await chat('عايز اشتري عطر هدية')).status, 503, 'shopping: left to the store picks in the browser');
+    const shop = await chat('عايز اشتري عطر هدية');
+    assert.equal(shop.status, 200, 'shopping: answered from «متجر شام» itself by the linked brain (S-10)');
+    assert.equal(((await shop.json()) as { memory: string }).memory, 'store');
     assert.equal((await chat('ايه هو الامبروكسان', { memory: false })).status, 503, 'the supervisor’s probes test the engines only');
     assert.equal((await chat('اسمي احمد ورقمي 01012345678 عايز اعرف عن الامبروكسان')).status, 503, 'personal details: not searched');
     assert.equal((await repo.gaps()).length, 2, 'shopping and personal questions are never put on the study list');

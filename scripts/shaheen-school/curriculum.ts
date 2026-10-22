@@ -111,6 +111,15 @@ export function trackOf(topic: string): TrackId {
   if (topic === 'art') return 'arts';
   if (topic === 'rel') return 'religion';
   if (topic === 'tour') return 'tourism_ir';
+  if (topic.startsWith('expert:')) {
+    const expertTracks: Record<string, TrackId> = {
+      'human-medicine': 'medicine', veterinary: 'medicine', biosafety: 'medicine', nutrition: 'medicine',
+      space: 'earth_space', earth: 'earth_space', chemistry: 'chemistry', physics: 'physics', nuclear: 'physics',
+      math: 'math', biology: 'biology', agriculture: 'biology', semiconductors: 'engineering',
+      'electronic-warfare': 'engineering', computing: 'it_sciences', 'war-studies': 'history', logic: 'religion',
+    };
+    return expertTracks[topic.slice('expert:'.length)] ?? 'perfume';
+  }
   return 'perfume';
 }
 
@@ -613,6 +622,18 @@ export const TOOL_FIELDS: Record<AiToolId, ToolField> = {
     goalAr: 'صورة تشغيلية دقيقة للإدارة.',
     aboutAr: 'مجال الإدارة: تقارير ذكية من أدوات القراءة فقط عن حالة الموقع والتشغيل، تُظهر الصورة الكبيرة والمؤشرات والانحرافات، خلف صلاحية إدارية.',
     developAr: 'طرق تطوير الإدارة: ملخصات تنفيذية قصيرة، وأرقام مصدرها التقارير فقط، وكشف الفجوات والاتجاهات، وحماية البيانات الحساسة، وتوصيات قابلة للتنفيذ لا وصفاً عاماً.',
+  },
+  owner_room: {
+    field: 'غرفة صاحب الموقع',
+    goalAr: 'قناة خاصة متشفرة بين شاهين وصاحب الموقع.',
+    aboutAr: 'مجال غرفة صاحب الموقع: محادثة سرية بين شاهين والسكرتير وصاحب الموقع وحده بالكود السري، متشفرة على جهازه، والخادم لا يحفظ منها شيئاً، والمشرف يفحص الأداة من غير أن يقرأ أي كلام من الغرفة.',
+    developAr: 'طرق تطوير الغرفة: تشفير كامل من الطرفين، وعدم حفظ أي نص على الخادم، وصلاحيات تمنع غير صاحب الموقع، وسجل تشغيل بلا محتوى، ومراجعة أمنية دورية دون المساس بالسرية.',
+  },
+  platform_owner_agent: {
+    field: 'التنفيذ والصيانة',
+    goalAr: 'تنفيذ مهام التطوير والصيانة نيابة عن صاحب الموقع.',
+    aboutAr: 'مجال التنفيذ والصيانة في المنصة: ينفّذ وكيل المنصة مهام شاهين والصيانة والتطوير تحت رقابة دولة المنصة، وكل تعديل يقرّه تصويت الدولة قبل النزول، وهو خاضع لأوامر صاحب الموقع في أي وقت.',
+    developAr: 'طرق تطوير التنفيذ والصيانة: مهام محددة النطاق، وكل تعديل يمر بالاختبارات والتصويت، وسجل لكل تنفيذ، وإيقاف فوري بأمر صاحب الموقع، ومراجعة بشرية قبل أي تغيير حساس.',
   },
 };
 

@@ -5,8 +5,9 @@
  * `#community…` address; `route` is the part after `community/`.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Bell, Coffee, Home, LogOut, Mail, MessageCircle, Radio, Search, Store, User, Users, Wrench } from 'lucide-react';
+import { Bell, Coffee, Home, LayoutGrid, LogOut, Mail, MessageCircle, Radio, Search, Store, User, Users, Wrench } from 'lucide-react';
 import HubAuth from './HubAuth';
+import CommunityDirectory from './CommunityDirectory';
 import Mailbox from './Mailbox';
 import MerchantPortal from './MerchantPortal';
 import Messenger from './Messenger';
@@ -53,6 +54,7 @@ export default function CommunityApp({ lang: siteLang, route, navigate, onSigned
 
   const pulse = session.pulse;
   const tabs: { id: string; label: string; icon: React.ReactNode; badge?: number }[] = [
+    { id: 'menu', label: t('كل الأقسام', 'All sections'), icon: <LayoutGrid className="h-5 w-5" /> },
     { id: 'social', label: t('الرئيسية', 'Home'), icon: <Home className="h-5 w-5" /> },
     { id: 'discussions', label: t('مجلس النقاش', 'Discussions'), icon: <Coffee className="h-5 w-5" /> },
     { id: 'news', label: t('أخبار العطور', 'Perfume news'), icon: <Radio className="h-5 w-5" /> },
@@ -73,6 +75,7 @@ export default function CommunityApp({ lang: siteLang, route, navigate, onSigned
   else if (page === 'store' && a) body = <StorePage lang={lang} go={go} slug={a} />;
   else if (page === 'news') body = <GeneralNewsPeriodic lang={lang} go={go} toast={setToast} />;
   else if (!member) body = <HubAuth lang={lang} initial={page === 'join' ? 'register' : 'login'} onDone={(merchant) => go(merchant ? 'merchant' : 'social')} />;
+  else if (page === 'menu') body = <CommunityDirectory lang={lang} go={go} search={<PeopleSearch lang={lang} go={go} expanded />} />;
   else if (page === 'messenger') body = <Messenger lang={lang} session={session} chatId={a} go={go} toast={setToast} />;
   else if (page === 'mail') body = <Mailbox lang={lang} session={session} route={parts.slice(1).join('/')} go={go} toast={setToast} />;
   else if (page === 'me') body = <UserPortal lang={lang} session={session} section={a} go={go} toast={setToast} />;
@@ -82,7 +85,7 @@ export default function CommunityApp({ lang: siteLang, route, navigate, onSigned
   else if (page === 'discussions') body = <DiscussionsPage lang={lang} go={go} toast={setToast} onOpenMessenger={openChat} threadId={a} />;
   else if (page === 'post' && a) body = <PostPage id={a} lang={lang} go={go} toast={setToast} onOpenMessenger={openChat} />;
   else if (page === 'u' && a) body = <ProfilePage handle={a} lang={lang} go={go} toast={setToast} onOpenMessenger={openChat} />;
-  else body = <SocialFeed lang={lang} session={session} go={go} toast={setToast} onOpenMessenger={openChat} />;
+  else body = <SocialFeed key={page === 'saved' ? 'saved' : 'feed'} initialScope={page === 'saved' ? 'saved' : 'all'} lang={lang} session={session} go={go} toast={setToast} onOpenMessenger={openChat} />;
 
   const showChrome = Boolean(member) || isPublic;
   return (
@@ -100,7 +103,7 @@ export default function CommunityApp({ lang: siteLang, route, navigate, onSigned
             {member && <PeopleSearch lang={lang} go={go} />}
             <nav className="flex min-w-0 flex-1 items-center justify-start gap-0.5 overflow-x-auto no-scrollbar lg:justify-center">
               {tabs.filter(() => member).map((tab) => (
-                <button key={tab.id} type="button" title={tab.label} aria-label={tab.label} onClick={() => go(tab.id === 'social' ? '' : tab.id)}
+                <button key={tab.id} type="button" title={tab.label} aria-label={tab.label} aria-current={active === tab.id ? 'page' : undefined} onClick={() => go(tab.id === 'social' ? '' : tab.id)}
                   className={`relative flex h-11 shrink-0 items-center justify-center gap-1.5 rounded-xl px-3 transition cursor-pointer sm:px-4 ${active === tab.id ? 'bg-amber-50/70 text-amber-900 shadow-[inset_0_-3px_0_0_#d97706]' : 'text-stone-500 hover:bg-stone-100 hover:text-stone-900'}`}>
                   {tab.icon}<Badge n={tab.badge} />
                 </button>
@@ -132,15 +135,17 @@ export default function CommunityApp({ lang: siteLang, route, navigate, onSigned
 }
 
 /** The top bar's member search (name or @handle), with a dropdown of real members. */
-function PeopleSearch({ lang, go }: { lang: Lang; go: (r: string) => void }) {
+function PeopleSearch({ lang, go, expanded = false }: { lang: Lang; go: (r: string) => void; expanded?: boolean }) {
   const t = tx(lang);
   const [q, setQ] = useState('');
   const [found, setFound] = useState<PublicUser[] | null>(null);
   const box = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (q.trim().length < 2) { setFound(null); return; }
-    const id = setTimeout(() => { void cx<PublicUser[]>(`/community/people?q=${encodeURIComponent(q.trim())}`).then(setFound).catch(() => setFound([])); }, 250);
-    return () => clearTimeout(id);
+    let cancelled = false;
+    setFound(null);
+    const id = setTimeout(() => { void cx<PublicUser[]>(`/community/people?q=${encodeURIComponent(q.trim())}`).then(users => { if (!cancelled) setFound(users); }).catch(() => { if (!cancelled) setFound([]); }); }, 250);
+    return () => { cancelled = true; clearTimeout(id); };
   }, [q]);
   useEffect(() => {
     const close = (e: MouseEvent) => { if (box.current && !box.current.contains(e.target as Node)) setFound(null); };
@@ -148,12 +153,12 @@ function PeopleSearch({ lang, go }: { lang: Lang; go: (r: string) => void }) {
     return () => document.removeEventListener('mousedown', close);
   }, []);
   return (
-    <div ref={box} className="relative hidden w-48 shrink-0 md:block lg:w-60">
+    <div ref={box} className={expanded ? "relative w-full max-w-lg" : "relative hidden w-48 shrink-0 md:block lg:w-60"}>
       <Search className="absolute inset-y-0 start-3 my-auto h-4 w-4 text-stone-400" />
-      <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder={t('ابحث عن عضو…', 'Search members…')}
+      <input type="search" aria-label={t('ابحث عن عضو', 'Search members')} onKeyDown={e => { if (e.key === 'Escape') setFound(null); }} value={q} onChange={(e) => setQ(e.target.value)} placeholder={t('ابحث عن عضو…', 'Search members…')}
         className="w-full rounded-full border border-stone-200 bg-stone-100/80 py-2 pe-3 ps-9 text-xs text-stone-900 outline-none transition focus:border-amber-500 focus:bg-white focus:ring-2 focus:ring-amber-200" />
       {found && (
-        <div className="absolute start-0 top-full z-50 mt-1.5 w-80 overflow-hidden rounded-2xl border border-stone-200 bg-white p-2 shadow-2xl">
+        <div className="absolute start-0 top-full z-50 mt-1.5 w-80 max-w-[calc(100vw-3rem)] overflow-hidden rounded-2xl border border-stone-200 bg-white p-2 shadow-2xl">
           {!found.length ? <p className="p-3 text-center text-xs text-stone-500">{t('مفيش أعضاء بالاسم ده', 'No members found')}</p> : found.map((u) => (
             <button key={u.id} type="button" onClick={() => { go(`u/${u.handle}`); setQ(''); setFound(null); }} className="flex w-full items-center gap-2.5 rounded-xl p-2 text-start hover:bg-stone-50 cursor-pointer">
               <Avatar user={u} size={34} />

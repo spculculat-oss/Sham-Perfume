@@ -246,7 +246,7 @@ test('another tab saving its chat no longer swallows the answer in flight', asyn
   }
 });
 
-test('«ترشيح المتجر»: a shopping question no engine could answer gets labelled store picks; formulas still get the error', async () => {
+test('«ترشيح المتجر»: a shopping question no engine could answer gets labelled store picks; formulas go to his designer', async () => {
   assert.ok(isShoppingQuestion('عايز عطر رجالي هدية بـ 500'));
   assert.ok(isShoppingQuestion('Can you recommend a fresh perfume?'));
   assert.ok(!isShoppingQuestion('اعمل لي تركيبة عطر عود بنسب'), 'formula requests are for the expert');
@@ -256,7 +256,7 @@ test('«ترشيح المتجر»: a shopping question no engine could answer ge
   const reply = catalogReply([pick('Oud'), pick('Gone', false), pick('Rose'), pick('Musk'), pick('Amber')], 'ar', (slug) => `https://shop.example/p/${slug}.html`)!;
   assert.match(reply, /\[Oud\]\(https:\/\/shop\.example\/p\/oud\.html\) — خشبي/);
   assert.doesNotMatch(reply, /Gone|Amber/, 'in stock only, three at most');
-  assert.match(reply, /ترشيح تلقائي من فلتر المتجر، مش رأي الخبير/);
+  assert.match(reply, /ترشيح من فلتر المتجر/);
   assert.equal(catalogReply([pick('Gone', false)], 'ar', () => undefined), undefined);
 
   const down = (async () => { throw new ApiError(503, 'ENGINES_DOWN'); }) as typeof requestApi;
@@ -272,10 +272,30 @@ test('«ترشيح المتجر»: a shopping question no engine could answer ge
 
   const formula = createChatStore(down, async () => {}, noMemory, catalog);
   await formula.send({ ...options, model: 'fast', text: 'write me a formula with ratios' });
-  assert.equal(formula.getSnapshot().messages.at(-1)!.kind, 'error');
+  // «مصمم شاهين الذاتي»: a formula request with no direction gets his question back, not store picks or a guess.
+  assert.equal(formula.getSnapshot().messages.at(-1)!.kind, undefined);
+  assert.match(formula.getSnapshot().messages.at(-1)!.text || '', /direction/);
+  const vague = createChatStore(down, async () => {}, noMemory, catalog);
+  await vague.send({ ...options, model: 'fast', text: 'tell me about the history of perfume' });
+  assert.equal(vague.getSnapshot().messages.at(-1)!.kind, 'error');
   assert.deepEqual(asked, ['recommend a gift perfume']);
 
   const refused = createChatStore((async () => { throw new ApiError(429, 'RATE_LIMITED'); }) as typeof requestApi, async () => {}, noMemory, catalog);
   await refused.send({ ...options, model: 'fast', text: 'recommend a gift perfume' });
   assert.equal(refused.getSnapshot().messages.at(-1)!.kind, 'error', 'limits are not hidden behind store picks');
+});
+
+test('«مصمم شاهين الذاتي»: with no server answer, a design request is designed right in the browser', async () => {
+  const down = (async () => { throw new ApiError(503, 'PROVIDER_NOT_CONFIGURED'); }) as typeof requestApi;
+  const noMemory = { learn: () => {}, recall: async () => undefined } as any;
+  const store = createChatStore(down, async () => {}, noMemory, async () => undefined);
+  await store.send({ ...options, model: 'fast', text: 'صمم لي خلطة شتوية فيها عود' });
+  const last = store.getSnapshot().messages.at(-1)!;
+  assert.equal(last.kind, undefined);
+  assert.equal(last.aiEngine?.provider, 'shaheen');
+  assert.match(last.text || '', /sham-formula/);
+  assert.match(last.text || '', /عود/);
+  // A follow-up to his formula changes it.
+  await store.send({ ...options, model: 'fast', text: 'خليه أحلى' });
+  assert.match(store.getSnapshot().messages.at(-1)!.text || '', /حلو/);
 });

@@ -10,10 +10,13 @@
  *      (src/data/live/shaheen-school.json, shown in the admin panel).
  * Pure helpers here; scripts/shaheen-school/run.mts does the I/O.
  */
+import { platformsAuto } from '../../server/core/selfReliance';
 import { isPersonal, isTimeBound, meaningWords, normalizeQuestion, recallSimilar, worthRemembering, type MemoryFile } from '../../src/utils/shaheenMemory';
 import { materialCard, topicWords as libraryTopicWords, type LibraryMaterial } from '../../src/utils/shaheenLibrary';
 import { spellingDrill, typoVariants, understandQuestion, wordKey, type Lexicon } from '../../src/utils/shaheenSpelling';
 import { academyQuestions, TOOL_FIELDS, TRACKS, trackOf, type TrackId } from './curriculum';
+import { EXPERT_GAP_PREFIX, expertOf } from '../../src/utils/shaheenAgent';
+import { SCIENCE_SYLLABUS } from '../../src/data/sciences/syllabus';
 
 export interface BankQuestion { q: string; lang: 'ar' | 'en'; topic: string; origin: 'curriculum' | 'library' | 'visitors' | 'council' }
 export interface TrainingDoc { id: string; title: string; content: string; tags?: string[] }
@@ -101,12 +104,13 @@ export const councilQuestions = (qs: string[]): BankQuestion[] =>
  */
 export function visitorQuestions(gaps: { question?: unknown; status?: unknown; reason?: unknown; count?: unknown }[], max = 12): BankQuestion[] {
   return gaps
-    .filter((g) => g && g.status === 'open' && g.reason === 'shaheen_offline' && typeof g.question === 'string')
+    // «وكيل شاهين» sends a question to a field's expert («expert:chemistry»): studied first, in that expert's field.
+    .filter((g) => g && g.status === 'open' && (g.reason === 'shaheen_offline' || (typeof g.reason === 'string' && g.reason.startsWith(EXPERT_GAP_PREFIX))) && typeof g.question === 'string')
     .sort((a, b) => (Number(b.count) || 0) - (Number(a.count) || 0))
-    .map((g) => String(g.question).trim())
-    .filter((q) => q.length >= 8 && q.length <= 300 && !isPersonal(q) && !isTimeBound(q) && meaningWords(q).length >= 2)
+    .map((g) => ({ q: String(g.question).trim(), field: typeof g.reason === 'string' && g.reason.startsWith(EXPERT_GAP_PREFIX) ? g.reason.slice(EXPERT_GAP_PREFIX.length) : '' }))
+    .filter(({ q }) => q.length >= 8 && q.length <= 300 && !isPersonal(q) && !isTimeBound(q) && meaningWords(q).length >= 2)
     .slice(0, max)
-    .map((q) => ({ q, lang: /[\u0600-\u06FF]/.test(q) ? 'ar' as const : 'en' as const, topic: 'visitors', origin: 'visitors' as const }));
+    .map(({ q, field }) => ({ q, lang: /[\u0600-\u06FF]/.test(q) ? 'ar' as const : 'en' as const, topic: field ? `${EXPERT_GAP_PREFIX}${field}` : 'visitors', origin: 'visitors' as const }));
 }
 
 /** The raw-materials encyclopaedia as lessons: «ايه هو الأمبروكسان؟» is learned from its card, with no AI. */
@@ -140,9 +144,16 @@ export const ADVANCED: BankQuestion[] = [
   ] as const).map(([topic, q]) => ({ q, lang: 'en' as const, topic: `${topic}-en`, origin: 'curriculum' as const })),
 ];
 
+/**
+ * «منهج المدرسة على مدار الساعة»: each school expert's next questions (src/data/sciences/syllabus.ts), studied by
+ * «المعلم المحلي» as that expert (topic «expert:<field>» → expertBrief/reviewField) and kept only after the review.
+ */
+export const syllabusQuestions = (): BankQuestion[] =>
+  Object.entries(SCIENCE_SYLLABUS).flatMap(([field, qs]) => qs.map((q) => ({ q, lang: 'ar' as const, topic: `${EXPERT_GAP_PREFIX}${field}`, origin: 'curriculum' as const })));
+
 export function buildBank(docs: TrainingDoc[], council: string[] = [], visitors: BankQuestion[] = [], materials: LibraryMaterial[] = []): BankQuestion[] {
   const seen = new Set<string>();
-  return [...visitors, ...CURRICULUM, ...libraryQuestions(docs), ...materialQuestions(materials), ...councilQuestions(council), ...ADVANCED, ...academyQuestions()].filter((b) => {
+  return [...visitors, ...CURRICULUM, ...libraryQuestions(docs), ...materialQuestions(materials), ...councilQuestions(council), ...ADVANCED, ...syllabusQuestions(), ...academyQuestions()].filter((b) => {
     const k = `${b.lang}|${normalizeQuestion(b.q)}`;
     if (seen.has(k)) return false;
     seen.add(k);
@@ -244,21 +255,38 @@ export function exam(bank: BankQuestion[], memory: MemoryFile, docs: TrainingDoc
   };
 }
 
+/** The 6-hourly run studies perfume first; the hourly «school clock» (SCHOOL_FOCUS=experts) studies the experts' syllabus first. */
+const syllabusRank = (b: BankQuestion, focus: 'perfume' | 'experts') => {
+  const expert = b.origin === 'curriculum' && b.topic.startsWith(EXPERT_GAP_PREFIX);
+  return focus === 'experts' ? Number(!expert) : Number(expert);
+};
+
 /** Next questions to study with an AI engine (no lesson of his own): topics with the most gaps first, so his knowledge grows evenly. */
-export function pickStudy(results: ExamResult[], max: number): BankQuestion[] {
+export function pickStudy(results: ExamResult[], max: number, focus: 'perfume' | 'experts' = 'perfume'): BankQuestion[] {
   const gaps = results.filter((r) => !r.covered && !r.lesson).map((r) => r.question);
   const perTopic = new Map<string, number>();
   for (const g of gaps) perTopic.set(g.topic, (perTopic.get(g.topic) || 0) + 1);
   const taken = new Map<string, number>();
   // Visitors' real questions first; then the topics with the most gaps.
   return [...gaps]
-    .sort((a, b) => Number(b.origin === 'visitors') - Number(a.origin === 'visitors') || (perTopic.get(b.topic)! - perTopic.get(a.topic)!) || Number(a.origin === 'library') - Number(b.origin === 'library'))
+    .sort((a, b) => Number(b.origin === 'visitors') - Number(a.origin === 'visitors') || (syllabusRank(a, focus) - syllabusRank(b, focus)) || (perTopic.get(b.topic)! - perTopic.get(a.topic)!) || Number(a.origin === 'library') - Number(b.origin === 'library'))
     .filter((g) => { const n = taken.get(g.topic) || 0; if (n >= (g.origin === 'visitors' ? max : 2)) return false; taken.set(g.topic, n + 1); return true; })
     .slice(0, max);
 }
 
+/**
+ * Which teacher is asked first. On «تلقائي» (the owner's switch, 2026-10-22: «طول ما هما شغالين خليه يتعلم منهم») the
+ * AI platforms teach first while they work, and the local teacher on the runner takes over when they stop; otherwise
+ * the workflow's SCHOOL_PREFER (usually the local teacher) leads.
+ */
+export function teacherPreference(env: Record<string, string | undefined>): string | undefined {
+  const prefer = env.SCHOOL_PREFER?.trim() || undefined;
+  return platformsAuto(env) && prefer === 'self_hosted' ? undefined : prefer;
+}
+
 export const STUDY_SYSTEM = `أنت «الخبير شاهين»، خبير العطور وصناعتها في موقع «شام». تدرس سؤالاً لتحفظ إجابته وتجيب به الزوار لاحقاً بدون مساعدة.
 اكتب إجابة خبير دقيقة وعملية وواضحة لغير المتخصص، 80–220 كلمة، بلغة السؤال (المصرية المبسطة إن كان بالعربية العامية).
+حلّل السؤال منطقياً أولاً: المطلوب شخص (مين) أم رقم (كام) أم سبب (ليه) أم خطوات (ازاي) أم نعم/لا (هل) أم مقارنة؟ ثم ابدأ بالإجابة المباشرة عن المطلوب نفسه في أول جملة، ثم الأسباب أو الدليل، ثم مثال، بلا تناقض ولا مغالطات ولا تعميم بلا دليل؛ وإن لم تكن متأكداً فقل ذلك بدل التخمين.
 لا تذكر أي شركة أو تطبيق ذكاء اصطناعي، ولا أسعاراً أو أخباراً أو عروضاً أو مواعيد (تتغير)، ولا تعتذر.
 ثم اكتب 4 صيغ أخرى يسأل بها الناس نفس السؤال (بنفس اللغة: عامية وفصحى وصيغة قصيرة).
 أعد JSON فقط: {"answer":"…","paraphrases":["…","…","…","…"]}`;
@@ -274,8 +302,15 @@ export const LOCAL_TEACHER_STYLE = `
  */
 export const REVIEW_SYSTEM = `أنت مراجع خبير في العطور وصناعتها وسلامتها، صارم جداً.
 ستُعطى سؤالاً وإجابة مقترحة. ارفض الإجابة إذا كان فيها: معلومة خاطئة، نصيحة غير منطقية أو ضارة أو غير آمنة، كلام لا يجيب عن السؤال، أو تخمين بأرقام ونسب غير معقولة.
+وارفضها أيضاً إن لم تُجب عن المطلوب بالضبط (سؤال «مين» بلا شخص، «كام» بلا رقم، «ليه» بلا سبب، «ازاي» بلا خطوات)، أو فيها تناقض أو مغالطة منطقية أو نتيجة لا تتبع من أسبابها.
 أجب بسطر واحد فقط: «OK» إن كانت صحيحة ومفيدة وآمنة، أو «REJECT: السبب باختصار».`;
-export const reviewPrompt = (b: BankQuestion, answer: string) => `السؤال: ${b.q}\n\nالإجابة المقترحة:\n${answer}`;
+/** A question sent to a field's expert is reviewed by that field's standards (and its limits), not as perfumery. */
+const reviewField = (topic: string) => {
+  if (!topic.startsWith(EXPERT_GAP_PREFIX)) return '';
+  const expert = expertOf(topic.slice(EXPERT_GAP_PREFIX.length));
+  return expert.field === 'perfume' ? '' : `المجال: ${expert.nameAr} — راجع بمعايير هذا المجال العلمية${expert.boundaryAr ? `، وارفض أي تجاوز لحدوده: ${expert.boundaryAr}` : ''}.\n\n`;
+};
+export const reviewPrompt = (b: BankQuestion, answer: string) => `${reviewField(b.topic)}السؤال: ${b.q}\n\nالإجابة المقترحة:\n${answer}`;
 /** The reviewer's verdict: kept only on a clear OK. */
 export function parseReview(reply: string): { ok: boolean; reason: string } {
   const text = (reply || '').replace(/[*_`#>]/g, '').trim();
@@ -286,8 +321,16 @@ export function parseReview(reply: string): { ok: boolean; reason: string } {
 
 /** The study question, with what his own library already says (the teacher must agree with it, not invent). */
 export function studyPrompt(b: BankQuestion, references = ''): string {
-  const q = `السؤال (${b.lang === 'ar' ? 'عربي' : 'English'}): ${b.q}`;
+  const q = `${expertBrief(b.topic)}السؤال (${b.lang === 'ar' ? 'عربي' : 'English'}): ${b.q}`;
   return references ? `${q}\n\nمراجع من مكتبة شاهين (اعتمد عليها ولا تخالفها، ولا تنسخها حرفياً):\n${references}` : q;
+}
+
+/** A question «وكيل شاهين» sent to a field's expert: the teacher answers as that expert, inside the field's limits. */
+export function expertBrief(topic: string): string {
+  if (!topic.startsWith(EXPERT_GAP_PREFIX)) return '';
+  const expert = expertOf(topic.slice(EXPERT_GAP_PREFIX.length));
+  if (expert.field === 'perfume') return '';
+  return `هذا السؤال محوَّل إلى «${expert.nameAr}» في مدرسة شاهين: أجب كخبير في هذا المجال بدقة علمية ولغة مبسطة، ولو لست متأكداً من معلومة فلا تذكرها.${expert.boundaryAr ? `\nحدود المجال: ${expert.boundaryAr}` : ''}\n\n`;
 }
 
 /** Scripts a small open model sometimes slips into (Chinese, Japanese, Korean, Cyrillic): never kept. */

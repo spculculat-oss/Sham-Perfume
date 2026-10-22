@@ -176,7 +176,7 @@ const CONCENTRATION_AR: [RegExp, string][] = [
   [/eau de parfum|\bedp\b/i, 'ماء عطر (EDP)'], [/eau de toilette|\bedt\b/i, 'ماء تواليت (EDT)'], [/cologne|\bedc\b/i, 'ماء كولونيا'],
   [/extrait|^\s*parfum\s*$|pure perfume/i, 'مستخلص عطر'], [/body (?:spray|mist)/i, 'معطّر جسم'],
 ];
-const concentrationAr = (c: string) => CONCENTRATION_AR.find(([re]) => re.test(c))?.[1] || '';
+export const concentrationAr = (c: string) => CONCENTRATION_AR.find(([re]) => re.test(c))?.[1] || '';
 
 /** Facts only, neutral wording: «النشامة كابريس من لطافة — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر.» */
 export function factualDescription(lang: 'ar' | 'en', p: RawProduct, name: string, gender?: Gender): string {

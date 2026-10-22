@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T16:11:30.170Z",
+ "updatedAt": "2026-10-22T14:35:48.176Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -541,16 +541,16 @@
    "host": "zimaya.com",
    "name": "Zimaya",
    "base": "https://zimaya.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Zimaya",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T12:54:45.361Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "trust": {
     "score": 42,
     "verdict": "weak",
-    "at": "2026-10-21T12:54:45.361Z",
+    "at": "2026-10-21T17:23:18.494Z",
     "checks": [
      {
       "id": "age",
@@ -780,12 +780,12 @@
    "host": "zimayaparfums.com",
    "name": "zimayaparfums.com",
    "base": "https://zimayaparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Zimaya",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1164,12 +1164,12 @@
    "host": "grandeurperfumes.com",
    "name": "grandeurperfumes.com",
    "base": "https://grandeurperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Grandeur",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "reason": "الموقع لا يفتح (HTTP 404)"
   },
   {
@@ -1177,12 +1177,12 @@
    "host": "grandeurparfums.com",
    "name": "grandeurparfums.com",
    "base": "https://grandeurparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Grandeur",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1190,16 +1190,16 @@
    "host": "bujairami.com",
    "name": "bujairami.com",
    "base": "https://bujairami.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Bujairami",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "trust": {
     "score": 54,
     "verdict": "weak",
-    "at": "2026-10-21T13:21:48.779Z",
+    "at": "2026-10-21T17:23:18.494Z",
     "checks": [
      {
       "id": "age",
@@ -1301,16 +1301,16 @@
    "host": "bujairamiperfumes.com",
    "name": "bujairamiperfumes.com",
    "base": "https://bujairamiperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Bujairami",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "trust": {
     "score": 29,
     "verdict": "weak",
-    "at": "2026-10-21T13:21:48.779Z",
+    "at": "2026-10-21T17:23:18.494Z",
     "checks": [
      {
       "id": "age",
@@ -1411,12 +1411,12 @@
    "host": "bujairamiparfums.com",
    "name": "bujairamiparfums.com",
    "base": "https://bujairamiparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Bujairami",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1804,12 +1804,12 @@
    "host": "armafperfumes.com",
    "name": "armafperfumes.com",
    "base": "https://armafperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Armaf",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1817,12 +1817,12 @@
    "host": "armafparfums.com",
    "name": "armafparfums.com",
    "base": "https://armafparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Armaf",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -1843,16 +1843,16 @@
    "host": "rasasiparfums.com",
    "name": "rasasiparfums.com",
    "base": "https://rasasiparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Rasasi",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T17:23:18.494Z",
    "trust": {
     "score": 29,
     "verdict": "weak",
-    "at": "2026-10-21T13:21:48.779Z",
+    "at": "2026-10-21T17:23:18.494Z",
     "checks": [
      {
       "id": "age",
@@ -1953,16 +1953,16 @@
    "host": "alwataniah.com",
    "name": "Alwataniah",
    "base": "https://www.alwataniah.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Al Wataniah",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T13:21:48.779Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "trust": {
     "score": 88,
     "verdict": "trusted",
-    "at": "2026-10-21T13:21:48.779Z",
+    "at": "2026-10-21T18:51:52.675Z",
     "checks": [
      {
       "id": "age",
@@ -2441,12 +2441,12 @@
    "host": "alwataniahperfumes.com",
    "name": "alwataniahperfumes.com",
    "base": "https://alwataniahperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Al Wataniah",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2454,12 +2454,12 @@
    "host": "alwataniahparfums.com",
    "name": "alwataniahparfums.com",
    "base": "https://alwataniahparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Al Wataniah",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2467,12 +2467,12 @@
    "host": "lattafapride.com",
    "name": "lattafapride.com",
    "base": "https://lattafapride.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Lattafa Pride",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2480,12 +2480,12 @@
    "host": "lattafaprideperfumes.com",
    "name": "lattafaprideperfumes.com",
    "base": "https://lattafaprideperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Lattafa Pride",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2493,12 +2493,12 @@
    "host": "lattafaprideparfums.com",
    "name": "lattafaprideparfums.com",
    "base": "https://lattafaprideparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Lattafa Pride",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2925,12 +2925,12 @@
    "host": "volareparfums.com",
    "name": "volareparfums.com",
    "base": "https://volareparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Volare",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -2938,16 +2938,16 @@
    "host": "shama.com",
    "name": "Shama",
    "base": "https://www.shama.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Shama",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "trust": {
     "score": 62,
     "verdict": "trusted",
-    "at": "2026-10-21T14:55:17.636Z",
+    "at": "2026-10-21T18:51:52.675Z",
     "checks": [
      {
       "id": "age",
@@ -3178,12 +3178,12 @@
    "host": "shamaparfums.com",
    "name": "shamaparfums.com",
    "base": "https://shamaparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Shama",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -3191,12 +3191,12 @@
    "host": "afnanperfumes.com",
    "name": "afnanperfumes.com",
    "base": "https://afnanperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Afnan",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-21T18:51:52.675Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -3800,12 +3800,12 @@
    "host": "afnanparfums.com",
    "name": "afnanparfums.com",
    "base": "https://afnanparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Afnan",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -3813,16 +3813,16 @@
    "host": "osma.com",
    "name": "osma.com",
    "base": "https://osma.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Osma",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "trust": {
     "score": 61,
     "verdict": "trusted",
-    "at": "2026-10-21T15:48:34.519Z",
+    "at": "2026-10-22T00:55:40.362Z",
     "checks": [
      {
       "id": "age",
@@ -4049,12 +4049,12 @@
    "host": "osmaparfums.com",
    "name": "osmaparfums.com",
    "base": "https://osmaparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Osma",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -4075,16 +4075,16 @@
    "host": "pariscornerperfumes.com",
    "name": "PARIS CORNER",
    "base": "https://www.pariscornerperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Paris Corner",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "trust": {
     "score": 56,
     "verdict": "weak",
-    "at": "2026-10-21T15:48:34.519Z",
+    "at": "2026-10-22T00:55:40.362Z",
     "checks": [
      {
       "id": "age",
@@ -4466,12 +4466,12 @@
    "host": "pariscornerparfums.com",
    "name": "pariscornerparfums.com",
    "base": "https://pariscornerparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Paris Corner",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -4479,16 +4479,16 @@
    "host": "velixir.com",
    "name": "velixir.com",
    "base": "https://velixir.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Velixir",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "trust": {
     "score": 54,
     "verdict": "weak",
-    "at": "2026-10-21T15:48:34.519Z",
+    "at": "2026-10-22T00:55:40.362Z",
     "checks": [
      {
       "id": "age",
@@ -4590,12 +4590,12 @@
    "host": "velixirperfumes.com",
    "name": "velixirperfumes.com",
    "base": "https://velixirperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Velixir",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -4603,16 +4603,16 @@
    "host": "velixirparfums.com",
    "name": "Velixirparfums",
    "base": "https://velixirparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Velixir",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "trust": {
     "score": 56,
     "verdict": "weak",
-    "at": "2026-10-21T15:48:34.519Z",
+    "at": "2026-10-22T00:55:40.362Z",
     "checks": [
      {
       "id": "age",
@@ -4715,12 +4715,12 @@
    "host": "afnanperfumesperfumes.com",
    "name": "afnanperfumesperfumes.com",
    "base": "https://afnanperfumesperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Afnan Perfumes",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -4728,12 +4728,12 @@
    "host": "afnanperfumesparfums.com",
    "name": "afnanperfumesparfums.com",
    "base": "https://afnanperfumesparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Afnan Perfumes",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -5028,12 +5028,12 @@
    "host": "ruebroca.com",
    "name": "ruebroca.com",
    "base": "https://ruebroca.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Rue Broca",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T05:53:55.961Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -5041,12 +5041,12 @@
    "host": "ruebrocaperfumes.com",
    "name": "ruebrocaperfumes.com",
    "base": "https://ruebrocaperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Rue Broca",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T16:11:30.170Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T05:53:55.961Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -5444,12 +5444,12 @@
    "host": "khadlajparfums.com",
    "name": "khadlajparfums.com",
    "base": "https://khadlajparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Khadlaj",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T16:11:30.170Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T05:53:55.961Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -5956,12 +5956,12 @@
    "foundBy": "brand-site",
    "foundWith": "French Avenue",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T16:11:30.170Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T05:53:55.961Z",
    "trust": {
     "score": 88,
     "verdict": "trusted",
-    "at": "2026-10-21T16:11:30.170Z",
+    "at": "2026-10-22T05:53:55.961Z",
     "checks": [
      {
       "id": "age",
@@ -6061,7 +6061,7 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "AED",
-   "rateToEgp": 14.8364,
+   "rateToEgp": 14.8082,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*frenchavenue\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://frenchavenue.com/sitemap_agentic_discovery.xml",
@@ -6079,12 +6079,12 @@
    "host": "frenchavenueperfumes.com",
    "name": "frenchavenueperfumes.com",
    "base": "https://frenchavenueperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "French Avenue",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T16:11:30.170Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T05:53:55.961Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -6092,12 +6092,12 @@
    "host": "frenchavenueparfums.com",
    "name": "frenchavenueparfums.com",
    "base": "https://frenchavenueparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "French Avenue",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T16:11:30.170Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T05:53:55.961Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -7366,6 +7366,190 @@
  ],
  "runs": [
   {
+   "at": "2026-10-22T14:35:48.176Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "Web search: AI quota used up — the scout continues by himself",
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-22T13:46:42.390Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-22T13:23:38.497Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-22T13:07:28.280Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-22T12:46:41.468Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-22T12:10:11.548Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-22T09:53:36.685Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-22T08:47:18.157Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-22T06:56:15.804Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-22T05:53:55.961Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 6,
+   "activated": 0,
+   "rejected": 5,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "✗ ruebroca.com: الموقع لا يفتح",
+    "✗ ruebrocaperfumes.com: الموقع لا يفتح",
+    "✗ khadlajparfums.com: الموقع لا يفتح",
+    "  ↳ frenchavenue.com: CV 88/100 [age,https,contact,identity,returns,shipping,privacy,terms,platform,social,authentic] on Shopify",
+    "… frenchavenue.com: good, waiting (already 20 active stores)",
+    "✗ frenchavenueperfumes.com: الموقع لا يفتح",
+    "✗ frenchavenueparfums.com: الموقع لا يفتح"
+   ]
+  },
+  {
+   "at": "2026-10-22T00:55:40.362Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 10,
+   "activated": 0,
+   "rejected": 10,
+   "notes": [
+    "✗ osma.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "✗ osmaparfums.com: الموقع لا يفتح",
+    "  ↳ pariscornerperfumes.com: CV 56/100 [age,https,contact,identity,platform,social,authentic] on Shopify (pages: /pages/contact→200 /policies/contact-information→404 /policies/refund-policy→404 /policies/legal-notice→404 /policies/shipping-policy→404 /pages/about-us→200)",
+    "✗ pariscornerperfumes.com: ملف الثقة ضعيف (56/100): ينقصه سياسة الإرجاع والاسترداد، وسائل دفع معروفة، سياسة الشحن",
+    "✗ pariscornerparfums.com: الموقع لا يفتح",
+    "  ↳ velixir.com: CV 54/100 [age,https,identity,returns,authentic] (pages: /contact-us→200 /returns→200)",
+    "✗ velixir.com: ملف الثقة ضعيف (54/100): ينقصه بيانات التواصل، وسائل دفع معروفة، سياسة الشحن",
+    "✗ velixirperfumes.com: الموقع لا يفتح",
+    "  ↳ velixirparfums.com: CV 56/100 [age,https,contact,returns,terms,payment,platform,social] on Shopify (pages: /pages/contact→200 /policies/contact-information→200 /policies/refund-policy→200 /policies/legal-notice→404 /policies/shipping-policy→404 /pages/about-us→200)",
+    "✗ velixirparfums.com: ملف الثقة ضعيف (56/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الشحن، سياسة الخصوصية",
+    "✗ afnanperfumesperfumes.com: الموقع لا يفتح",
+    "✗ afnanperfumesparfums.com: الموقع لا يفتح"
+   ]
+  },
+  {
+   "at": "2026-10-21T18:51:52.675Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 10,
+   "activated": 0,
+   "rejected": 10,
+   "notes": [
+    "  ↳ alwataniah.com: CV 88/100 [age,https,contact,identity,returns,shipping,privacy,terms,platform,social,authentic] on Shopify",
+    "✗ alwataniah.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
+    "✗ alwataniahperfumes.com: الموقع لا يفتح",
+    "✗ alwataniahparfums.com: الموقع لا يفتح",
+    "✗ lattafapride.com: الموقع لا يفتح",
+    "✗ lattafaprideperfumes.com: الموقع لا يفتح",
+    "✗ lattafaprideparfums.com: الموقع لا يفتح",
+    "✗ volareparfums.com: الموقع لا يفتح",
+    "  ↳ shama.com: CV 62/100 [age,https,identity,returns,privacy,social,authentic]",
+    "✗ shama.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "✗ shamaparfums.com: الموقع لا يفتح",
+    "✗ afnanperfumes.com: الموقع لا يفتح"
+   ]
+  },
+  {
+   "at": "2026-10-21T17:23:18.494Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 10,
+   "activated": 0,
+   "rejected": 10,
+   "notes": [
+    "✗ zimayaparfums.com: الموقع لا يفتح",
+    "✗ grandeurperfumes.com: الموقع لا يفتح (HTTP 404)",
+    "✗ grandeurparfums.com: الموقع لا يفتح",
+    "  ↳ bujairami.com: CV 54/100 [age,https,identity,returns,authentic] (pages: /contact-us→200 /returns→200)",
+    "✗ bujairami.com: ملف الثقة ضعيف (54/100): ينقصه بيانات التواصل، وسائل دفع معروفة، سياسة الشحن",
+    "  ↳ bujairamiperfumes.com: CV 29/100 [age,https,returns] (pages: /contact-us→200 /returns→200)",
+    "✗ bujairamiperfumes.com: ملف الثقة ضعيف (29/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
+    "✗ bujairamiparfums.com: الموقع لا يفتح",
+    "✗ armafperfumes.com: الموقع لا يفتح",
+    "✗ armafparfums.com: الموقع لا يفتح",
+    "  ↳ rasasiparfums.com: CV 29/100 [age,https,returns] (pages: /contact-us→200 /returns→200)",
+    "✗ rasasiparfums.com: ملف الثقة ضعيف (29/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة"
+   ]
+  },
+  {
    "at": "2026-10-21T16:11:30.170Z",
    "mode": "self",
    "found": 0,
@@ -7737,202 +7921,6 @@
     "✗ thefragranceshop.co.uk: الموقع لا يفتح (HTTP 403)",
     "  ↳ strawberrynet.com: CV 78/100 [age,https,contact,returns,shipping,privacy,terms,payment,social]",
     "✗ strawberrynet.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (1/6)"
-   ]
-  },
-  {
-   "at": "2026-10-19T12:55:05.997Z",
-   "mode": "self",
-   "found": 11,
-   "vetted": 10,
-   "activated": 2,
-   "rejected": 0,
-   "notes": [
-    "✗ douglas.de: الموقع لا يفتح (HTTP 403)",
-    "✗ perfume.com: الموقع لا يفتح (HTTP 403)",
-    "✗ essenza-nobile.de: الموقع لا يفتح (HTTP 403)",
-    "  ↳ aedes.com: CV 77/100 [age,https,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✓ aedes.com (CV 77/100): 1241 perfumes, 4/6 pages read without AI, USD (1 = 53.5247 EGP) — added to the importer",
-    "✗ perfumehub.com.my: الموقع لا يفتح",
-    "  ↳ goldapple.kz: CV 27/100 [https,returns] (pages: /contact-us→200 /returns→200)",
-    "✗ goldapple.kz: ملف الثقة ضعيف (27/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
-    "  ↳ perfumeconnection.com.au: CV 37/100 [https,returns,privacy,terms] (pages: /contact-us→200 /returns→200)",
-    "✗ perfumeconnection.com.au: ملف الثقة ضعيف (37/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
-    "✗ nose-shop.jp: الموقع لا يفتح",
-    "✗ letu.kz: الموقع لا يفتح"
-   ]
-  },
-  {
-   "at": "2026-10-19T04:31:58.644Z",
-   "mode": "self",
-   "found": 11,
-   "vetted": 10,
-   "activated": 1,
-   "rejected": 0,
-   "notes": [
-    "  ↳ parfumdreams.de: CV 78/100 [https,contact,identity,returns,shipping,privacy,terms,payment,social]",
-    "✗ parfumdreams.de: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "  ↳ scentsplit.com: CV 84/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
-    "✓ scentsplit.com (CV 84/100): 10000 perfumes, 5/6 pages read without AI, USD (1 = 53.5247 EGP) — added to the importer",
-    "✗ flaconi.de: الموقع لا يفتح (HTTP 403)",
-    "  ↳ faces.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
-    "✗ faces.com: أغلب منتجاته ليست عطوراً (50%)",
-    "  ↳ wojooh.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
-    "✗ wojooh.com: أغلب منتجاته ليست عطوراً (50%)",
-    "✗ fragrancebuy.ca: الموقع لا يفتح (HTTP 403)",
-    "✗ maxaromas.com: الموقع لا يفتح",
-    "✗ theperfumeshop.com: الموقع لا يفتح (HTTP 403)"
-   ]
-  },
-  {
-   "at": "2026-10-19T00:56:02.060Z",
-   "mode": "self",
-   "found": 11,
-   "vetted": 10,
-   "activated": 2,
-   "rejected": 0,
-   "notes": [
-    "  ↳ escentual.com: CV 93/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✓ escentual.com (CV 93/100): 4662 perfumes, 3/6 pages read without AI, USD (1 = 53.5247 EGP) — added to the importer",
-    "  ↳ luckyscent.com: CV 81/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✗ luckyscent.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ abdulsamadalqurashi.com: الموقع لا يفتح",
-    "  ↳ nabeel.com: CV 79/100 [age,https,contact,identity,returns,shipping,privacy,terms,social]",
-    "✗ nabeel.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "  ↳ alharamainperfumes.com: CV 45/100 [age,https,contact,social] (pages: /contact-us→404 /returns→404 /about-us/→200)",
-    "✗ alharamainperfumes.com: ملف الثقة ضعيف (45/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الإرجاع والاسترداد، وسائل دفع معروفة",
-    "  ↳ myperfumeshop.ae: CV 60/100 [https,contact,returns,shipping,privacy,terms,payment,platform] on Shopify",
-    "✗ myperfumeshop.ae: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
-    "✗ perfumeboxuae.com: الموقع لا يفتح"
-   ]
-  },
-  {
-   "at": "2026-10-18T23:21:13.356Z",
-   "mode": "self",
-   "found": 11,
-   "vetted": 10,
-   "activated": 1,
-   "rejected": 0,
-   "notes": [
-    "✗ goldapple.kz: ملف الثقة ضعيف (27/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
-    "  ↳ perfumeconnection.com.au: CV 37/100 [https,returns,privacy,terms] (pages: /contact-us→200 /returns→200)",
-    "✗ perfumeconnection.com.au: ملف الثقة ضعيف (37/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
-    "  ↳ perfumeprice.co.uk: CV 84/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Magento",
-    "✓ perfumeprice.co.uk (CV 84/100): 6330 perfumes, 3/6 pages read without AI, GBP (1 = 71.2388 EGP) — added to the importer",
-    "✗ nose-shop.jp: الموقع لا يفتح",
-    "✗ letu.kz: الموقع لا يفتح",
-    "✗ jovoy.com: الموقع لا يفتح",
-    "✗ fragrancenet.com: الموقع لا يفتح (HTTP 403)",
-    "  ↳ escentials.com: CV 93/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✗ escentials.com: أغلب منتجاته ليست عطوراً (56%)",
-    "✗ thefragranceshop.co.uk: الموقع لا يفتح (HTTP 403)"
-   ]
-  },
-  {
-   "at": "2026-10-18T15:10:56.723Z",
-   "mode": "self",
-   "found": 12,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 1,
-   "notes": [
-    "✗ myperfumeshop.ae: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
-    "✗ perfumeboxuae.com: الموقع لا يفتح",
-    "  ↳ niceonesa.com: CV 80/100 [age,https,contact,identity,returns,privacy,terms,payment,social]",
-    "✓ niceonesa.com (CV 80/100): 69+ (by browsing) perfumes, 4/6 pages read without AI, SAR (1 = 14.2559 EGP) — added to the importer",
-    "✗ goldenscent.com: ملف robots.txt يمنع القراءة الآلية",
-    "  ↳ faces.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
-    "✗ faces.com: أغلب منتجاته ليست عطوراً (50%)",
-    "  ↳ wojooh.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
-    "✗ wojooh.com: أغلب منتجاته ليست عطوراً (50%)",
-    "✗ fragrancebuy.ca: الموقع لا يفتح (HTTP 403)",
-    "✗ maxaromas.com: الموقع لا يفتح",
-    "✗ theperfumeshop.com: الموقع لا يفتح (HTTP 403)"
-   ]
-  },
-  {
-   "at": "2026-10-18T14:22:29.042Z",
-   "mode": "self",
-   "found": 10,
-   "vetted": 8,
-   "activated": 1,
-   "rejected": 0,
-   "notes": [
-    "Web search: AI quota used up — the scout continues by himself",
-    "10 new stores found this run (own methods, no AI)",
-    "✗ lattafaperfumes.com: الموقع لا يفتح",
-    "✗ lattafaparfums.com: الموقع لا يفتح",
-    "✗ abdulsamadalqurashi.com: الموقع لا يفتح",
-    "✓ afnan.com: 102 perfumes, 6/7 pages read without AI, AED (1 = 14.5568 EGP) — added to the importer",
-    "✗ nabeel.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ alharamainperfumes.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ ardalzaafaran.com: الموقع لا يفتح",
-    "✗ ardalzaafaranperfumes.com: الموقع لا يفتح"
-   ]
-  },
-  {
-   "at": "2026-10-18T13:24:54.550Z",
-   "mode": "self",
-   "found": 10,
-   "vetted": 8,
-   "activated": 0,
-   "rejected": 8,
-   "notes": [
-    "Web search: AI quota used up — the scout continues by himself",
-    "10 new stores found this run (own methods, no AI)",
-    "✗ arabianoud.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (2/7)",
-    "  ↳ ajmal.com: sitemap.xml→404, sitemap_index.xml→404, wp-sitemap.xml→404, …, sitemap.xml→404, browsed 0 category pages → 0 product-like links",
-    "✗ ajmal.com: لا توجد خريطة منتجات (sitemap)",
-    "✗ rasasi.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ swissarabian.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
-    "  ↳ maisonalhambra.com: sitemap.xml→404, sitemap_index.xml→200(not xml), wp-sitemap.xml→200(not xml), …, sitemap.xml→200(not xml), browsed 0 category pages → 0 product-like links",
-    "✗ maisonalhambra.com: لا توجد خريطة منتجات (sitemap)",
-    "✗ maisonalhambraperfumes.com: الموقع لا يفتح",
-    "✗ maisonalhambraparfums.com: الموقع لا يفتح",
-    "✗ lattafa.com: الموقع يرفض القراءة الآلية (حماية)"
-   ]
-  },
-  {
-   "at": "2026-10-18T12:47:21.705Z",
-   "mode": "self",
-   "found": 10,
-   "vetted": 8,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "Web search: AI quota used up — the scout continues by himself",
-    "10 new stores found this run (own methods, no AI)",
-    "✗ arabianoud.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (2/7)",
-    "  ↳ ajmal.com: sitemap.xml→404, sitemap_index.xml→404, wp-sitemap.xml→404, …, sitemap.xml→404, browsed 0 category pages → 0 product-like links",
-    "✗ ajmal.com: لا توجد خريطة منتجات (sitemap)",
-    "✗ rasasi.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ swissarabian.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
-    "  ↳ maisonalhambra.com: sitemap.xml→404, sitemap_index.xml→200(not xml), wp-sitemap.xml→200(not xml), …, sitemap.xml→200(not xml), browsed 0 category pages → 0 product-like links",
-    "✗ maisonalhambra.com: لا توجد خريطة منتجات (sitemap)",
-    "✗ maisonalhambraperfumes.com: الموقع لا يفتح",
-    "✗ maisonalhambraparfums.com: الموقع لا يفتح",
-    "✗ lattafa.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
-   ]
-  },
-  {
-   "at": "2026-10-18T11:47:06.809Z",
-   "mode": "self",
-   "found": 10,
-   "vetted": 8,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "Web search: AI quota used up — the scout continues by himself",
-    "10 new stores found this run (own methods, no AI)",
-    "✗ arabianoud.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (2/7)",
-    "  ↳ ajmal.com: sitemap.xml→404, sitemap_index.xml→404, wp-sitemap.xml→404, …, sitemap.xml→404, browsed 0 category pages → 0 product-like links",
-    "✗ ajmal.com: لا توجد خريطة منتجات (sitemap)",
-    "✗ rasasi.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ swissarabian.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
-    "  ↳ maisonalhambra.com: sitemap.xml→404, sitemap_index.xml→200(not xml), wp-sitemap.xml→200(not xml), …, sitemap.xml→200(not xml), browsed 0 category pages → 0 product-like links",
-    "✗ maisonalhambra.com: لا توجد خريطة منتجات (sitemap)",
-    "✗ maisonalhambraperfumes.com: الموقع لا يفتح",
-    "✗ maisonalhambraparfums.com: الموقع لا يفتح",
-    "✗ lattafa.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
    ]
   }
  ]

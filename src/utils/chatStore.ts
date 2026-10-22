@@ -3,6 +3,7 @@ import { removeMediaBlocks } from './mediaBlock';
 import { findFormulaBlocks } from './aiFormulaExtractor';
 import { greetingKind, greetingReply } from './shaheenGreeting';
 import { quickAnswer } from './shaheenQuickApps';
+import { maskSensitive } from './ownerAuthority';
 import { browserMemory, type OfflineMemory } from './browserMemory';
 import { offlineNote } from './shaheenMemory';
 import { keyboardFix, understoodNote } from './shaheenSpelling';
@@ -76,7 +77,7 @@ export function chatHistory(messages: ChatMessage[]) {
  * picks — real product pages — clearly labelled as an automatic pick, never as the expert's opinion. Formula and ratio
  * questions are left to the expert (a product list is not an answer to «اعمل لي تركيبة»).
  */
-export type CatalogFallback = (text: string, lang: SupportedLanguage) => Promise<string | undefined>;
+export type CatalogFallback = (text: string, lang: SupportedLanguage, history?: { role: 'user' | 'assistant'; text: string }[]) => Promise<string | undefined>;
 const SHOPPING = /(?:عايز|عاوز|محتاج|بدور|أدور|ادور|ابحث|أبحث|رشح|رشّح|اقترح|انصحني|نصيحة)[^\n]{0,24}(?:عطر|ريحة|رائحة|برفان|بارفان|برفيوم)|هدية|هديه|بكام|سعر|اشتري|أشتري|شراء|المتجر|\b(?:buy|recommend|suggest|gift|price|shop|looking for)\b/i;
 const NOT_SHOPPING = /نسب|تركيب|اعمل|أعمل|اصنع|خلطة|خلطه|معادلة|تخفيف|formula|ratio|blend|make my own|dilut/i;
 export const isShoppingQuestion = (text: string) => SHOPPING.test(text) && !NOT_SHOPPING.test(text);
@@ -93,19 +94,38 @@ export function catalogReply(picks: CatalogPick[], lang: SupportedLanguage, link
     return `- ${url ? `[${name.replace(/[[\]]/g, '')}](${url})` : `**${name}**`}${why ? ` — ${why}` : ''}`;
   });
   return ar
-    ? `الخبير مش متاح دلوقتي، فدي ترشيحات تلقائية من منتجات المتجر على حسب كلامك:\n\n${lines.join('\n')}\n\n_ده ترشيح تلقائي من فلتر المتجر، مش رأي الخبير — راجع تفاصيل المنتج، واسأل تاني بعد شوية لنصيحة أدق._`
-    : `The expert is unavailable right now, so here are automatic picks from the store's products based on your words:\n\n${lines.join('\n')}\n\n_This is an automatic pick from the store filter, not the expert's opinion — check the product details, and ask again a little later for finer advice._`;
+    ? `دي ترشيحات من منتجات المتجر على حسب كلامك:\n\n${lines.join('\n')}\n\n_ترشيح من فلتر المتجر على حسب كلامك — راجع تفاصيل كل منتج قبل ما تختار._`
+    : `Here are picks from the store's products based on your words:\n\n${lines.join('\n')}\n\n_Picked by the store filter from your words — check each product's details before choosing._`;
 }
 
-/** Default: the static catalogue the store page uses (loaded only when needed). */
-export const storeCatalogFallback: CatalogFallback = async (text, lang) => {
+/** A product page as a full https link from wherever the chat runs (none on a plain-http dev page). */
+const pageLink = (productPageUrl: (slug: string) => string) => (slug: string) => {
+  const base = typeof location !== 'undefined' ? location.href : '';
+  try { const url = new URL(productPageUrl(slug), base || undefined).href; return url.startsWith('https://') ? url : undefined; } catch { return undefined; }
+};
+
+/**
+ * Default: «عقل شاهين الموصول» on the static catalogue the store page uses (loaded only when needed) — real products
+ * with their price, notes and why they fit, read with the conversation before; the plain filter list if that fails.
+ */
+export const storeCatalogFallback: CatalogFallback = async (text, lang, history = []) => {
   const { loadStoreCatalog, localSuggestion, productPageUrl } = await import('./liveStore');
   const products = await loadStoreCatalog();
-  const base = typeof location !== 'undefined' ? location.href : '';
-  const link = (slug: string) => {
-    try { const url = new URL(productPageUrl(slug), base || undefined).href; return url.startsWith('https://') ? url : undefined; } catch { return undefined; }
-  };
-  return catalogReply(localSuggestion(products, text, lang).picks, lang, link);
+  const link = pageLink(productPageUrl);
+  const brain = await import('./shaheenBrain').catch(() => undefined);
+  const ctx = brain?.withContext(text, history);
+  const linked = ctx && (brain?.productAnswer(products, ctx, lang, link) || brain?.storeAnswer(products, ctx, lang, link))?.reply;
+  return linked ?? catalogReply(localSuggestion(products, text, lang).picks, lang, link);
+};
+
+/** Under a formula he designed in the browser: the store's ready perfumes that share its notes. */
+const designWithStore = async (text: string, lang: SupportedLanguage, previous?: string): Promise<string | undefined> => {
+  const d = await import('./shaheenDesigner').then((m) => m.designFor(text, lang, previous)).catch(() => undefined);
+  if (!d?.design) return d?.reply;
+  try {
+    const [{ loadStoreCatalog, productPageUrl }, brain] = await Promise.all([import('./liveStore'), import('./shaheenBrain')]);
+    return d.reply + brain.designStoreNote(await loadStoreCatalog(), d.design, d.lang, pageLink(productPageUrl));
+  } catch { return d.reply; }
 };
 
 /** One synchronous owner for both chat surfaces: no effect-driven rebroadcast loops. */
@@ -206,7 +226,8 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       const quick = quickAnswer(text, options.language);
       if (quick) {
         publish({ ...current, messages: [...current.messages,
-          { id: id('user'), role: 'user', text, timestamp: timestamp() },
+          // A card/ID number is not even kept in this browser's chat history (it would travel with the next turn).
+          { id: id('user'), role: 'user', text: quick.app === 'privacy' ? maskSensitive(text) : text, timestamp: timestamp() },
           { id: id('bot'), role: 'assistant', text: quick.reply, timestamp: timestamp(),
             aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' } }] });
         return true;
@@ -250,7 +271,8 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
         if (generation !== token) return false;
         // The chosen mode could not answer (its engines are down or out of quota) but the server is there:
         // Shaheen answers the same question in his fast mode before falling back to memory or an error.
-        if (canAnswerFromMemory(error) && error instanceof ApiError && options.model !== 'fast') {
+        // (Not after a gateway timeout: the server already used its time, a second wait helps no one.)
+        if (canAnswerFromMemory(error) && error instanceof ApiError && error.status !== 504 && options.model !== 'fast') {
           try {
             const fast = await request<ChatResponse>('/api/chat', {
               method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
@@ -265,6 +287,65 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
             }
           } catch (fastError) { error = fastError instanceof ApiError ? error : fastError; }
           if (generation !== token) return false;
+        }
+        // «مصمم شاهين الذاتي»: a design request is answered by his own formula designer, right here in the browser.
+        if (canAnswerFromMemory(error)) {
+          const last = current.messages[current.messages.length - 1];
+          const previous = last?.role === 'assistant' && last.text?.includes('sham-formula')
+            ? [...current.messages].reverse().find((m) => m.role === 'user')?.text : undefined;
+          const design = await designWithStore(text, options.language, previous);
+          if (generation !== token) return false;
+          if (design) {
+            publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
+              id: id('bot'), role: 'assistant', text: design, timestamp: timestamp(),
+              aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' },
+            }] });
+            return true;
+          }
+        }
+        // «الربط المباشر»: the question read with the conversation before it («طب وللشتا؟»), and a wish for a perfume
+        // answered from the store itself before anything else (an old answer from memory knows no product or price).
+        const brain = canAnswerFromMemory(error) ? await import('./shaheenBrain').catch(() => undefined) : undefined;
+        if (generation !== token) return false;
+        const ctx = brain?.withContext(text, history);
+        const shopping = isShoppingQuestion(text) || Boolean(ctx && brain?.wantsStore(ctx.text));
+        if (canAnswerFromMemory(error) && shopping) {
+          const picks = await catalog(text, options.language, history).catch(() => undefined);
+          if (generation !== token) return false;
+          if (picks) {
+            publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
+              id: id('bot'), role: 'assistant', text: picks, timestamp: timestamp(),
+              aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' },
+            }] });
+            return true;
+          }
+        }
+        const followed = ctx?.followUp ? ctx.text : text;
+        // «المكتب السريع»: a science question is answered from his index — the curriculum travels with the page, so no
+        // lesson file or memory file is downloaded and the answer is on screen in a fraction of a millisecond.
+        if (canAnswerFromMemory(error) && memory.science && !shopping) {
+          const researched = await memory.science(followed, options.language).catch(() => undefined);
+          if (generation !== token) return false;
+          if (researched) {
+            publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
+              id: id('bot'), role: 'assistant', text: researched, timestamp: timestamp(),
+              aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' },
+            }] });
+            return true;
+          }
+        }
+        // «وكيل شاهين»: no server — he still works the question out (the school's experts, his library, his memory, open
+        // sources) instead of repeating the closest old answer. Shopping questions get the store's picks below.
+        if (canAnswerFromMemory(error) && memory.agent && !shopping) {
+          const worked = await memory.agent(followed, options.language).catch(() => undefined);
+          if (generation !== token) return false;
+          if (worked) {
+            publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
+              id: id('bot'), role: 'assistant', text: worked, timestamp: timestamp(),
+              aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' },
+            }] });
+            return true;
+          }
         }
         let remembered = canAnswerFromMemory(error) ? await memory.recall(text, options.language).catch(() => undefined) : undefined;
         if (generation !== token) return false;
@@ -287,11 +368,8 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
           }] });
           return true;
         }
-        const shopping = isShoppingQuestion(text);
-        const picks = canAnswerFromMemory(error) && shopping ? await catalog(text, options.language).catch(() => undefined) : undefined;
-        if (generation !== token) return false;
         // «مكتبة شاهين»: no server and nothing close in memory — what he knows from his lessons and encyclopaedia.
-        const offline = !picks && !shopping && canAnswerFromMemory(error);
+        const offline = !shopping && canAnswerFromMemory(error);
         let known = offline && memory.library ? await memory.library(asked, options.language).catch(() => undefined) : undefined;
         if (generation !== token) return false;
         // «باحث شاهين»: not in his library either — he looks it up in open sources and answers from what he read.
@@ -300,13 +378,6 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
         if (known) {
           publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
             id: id('bot'), role: 'assistant', text: note + known, timestamp: timestamp(),
-            aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' },
-          }] });
-          return true;
-        }
-        if (picks) {
-          publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
-            id: id('bot'), role: 'assistant', text: picks, timestamp: timestamp(),
             aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' },
           }] });
           return true;

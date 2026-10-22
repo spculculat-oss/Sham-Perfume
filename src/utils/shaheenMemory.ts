@@ -24,14 +24,15 @@ export interface MemoryEntry {
   /**
    * chat = a visitor's question; probe = the supervisor's test question; seed = written by the team;
    * study = «مدرسة شاهين»: a question Shaheen could not answer by himself, studied while an AI engine was up.
+   * harvest = «حصّاد شاهين»: answered ahead of time (visitors' questions and everyday ones) while a package had room.
    */
-  source: 'chat' | 'probe' | 'seed' | 'study';
+  source: 'chat' | 'probe' | 'seed' | 'study' | 'harvest';
 }
 export interface MemoryFile { version: 1; updatedAt: string; entries: MemoryEntry[] }
 
 export const MEMORY_LIMITS = {
   /** Entries kept in the shared file (most useful first). */
-  maxEntries: 5000,
+  maxEntries: 8000,
   /** An entry unused for this long is forgotten (it is asked again fresh next time). */
   ttlDays: 60,
   /** A remembered answer older than this is not served while the engines are up (it is refreshed instead). */
@@ -46,15 +47,32 @@ export const emptyMemory = (): MemoryFile => ({ version: 1, updatedAt: new Date(
 export const isMemoryFile = (d: unknown): d is MemoryFile =>
   Boolean(d && typeof d === 'object' && typeof (d as MemoryFile).updatedAt === 'string' && Array.isArray((d as MemoryFile).entries));
 
+/**
+ * Normalising a question is a chain of regex passes, and the same questions come back all day: every memory entry is
+ * normalised on each recall (thousands of them), and «فهرس علوم شاهين» normalises each wording once. The last few
+ * thousand results are kept — the same text normalises to the same words, so this is a cache, not a change of rule.
+ */
+const CACHE_LIMIT = 4096;
+const normalized = new Map<string, string>();
+const worded = new Map<string, string[]>();
+function cached<T>(cache: Map<string, T>, text: string, compute: () => T): T {
+  const hit = cache.get(text);
+  if (hit !== undefined) return hit;
+  const value = compute();
+  if (cache.size >= CACHE_LIMIT) cache.delete(cache.keys().next().value as string);
+  cache.set(text, value);
+  return value;
+}
+
 /** Same question, different spelling: case, Arabic letter variants, diacritics, tatweel, punctuation, spaces. */
 export function normalizeQuestion(text: string): string {
-  return text.normalize('NFKC').toLowerCase()
+  return cached(normalized, text, () => text.normalize('NFKC').toLowerCase()
     .replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660)).replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 0x06F0))
     .replace(/[\u064B-\u065F\u0670\u0640]/g, '')
     .replace(/[إأآٱ]/g, 'ا').replace(/ى/g, 'ي')
     .replace(/[\s\u200c\u200f\u200e]+/g, ' ')
     .replace(/^[\s?!.,؟،؛:…]+|[\s?!.,؟،؛:…]+$/g, '')
-    .trim();
+    .trim());
 }
 
 /** Visitor-facing answer styles that share one memory (the council is never served from memory). */
@@ -98,9 +116,10 @@ export function worthRemembering(question: string, answer: string): boolean {
 /** Words that carry the meaning of a question (Arabic «ال» and common filler words dropped). */
 const STOP = new Set(['في', 'من', 'على', 'عن', 'الى', 'الي', 'او', 'و', 'يا', 'هو', 'هي', 'ده', 'دي', 'دا', 'ايه', 'اي', 'ما', 'ماذا', 'هل', 'كيف', 'ازاي', 'عايز', 'عاوز', 'اريد', 'ممكن', 'لو', 'مع', 'الله', 'the', 'a', 'an', 'of', 'to', 'for', 'and', 'or', 'is', 'are', 'what', 'how', 'can', 'i', 'me', 'my', 'in', 'on', 'with', 'please']);
 export function meaningWords(text: string): string[] {
-  return [...new Set(normalizeQuestion(text).replace(/[^\p{L}\p{N}%\s]/gu, ' ').split(/\s+/)
+  // Read-only for callers (they filter and map it, never push): the cache is shared, so no one may change it.
+  return cached(worded, text, () => [...new Set(normalizeQuestion(text).replace(/[^\p{L}\p{N}%\s]/gu, ' ').split(/\s+/)
     .map((w) => w.replace(/^(وال|بال|فال|كال|لل|ال)(?=\p{L}{3,})/u, '').replace(/ة$/u, 'ه'))
-    .filter((w) => w.length >= 2 && !STOP.has(w)))];
+    .filter((w) => w.length >= 2 && !STOP.has(w)))]);
 }
 /** 0…1: how much two questions say the same thing (shared meaning words, Dice coefficient). Numbers must agree. */
 export function similarity(a: string, b: string): number {
@@ -171,8 +190,8 @@ export function mergeMemory(base: MemoryFile, other: MemoryFile | undefined): Me
 export function curateMemory(file: MemoryFile, now = Date.now(), limits = MEMORY_LIMITS): { file: MemoryFile; removed: number } {
   const alive = file.entries.filter((e) => {
     const last = Date.parse(e.lastUsed || e.at);
-    // What «مدرسة شاهين» studied is kept 3× longer: it is his fallback for days when no engine answers.
-    const ttl = e.source === 'study' ? limits.ttlDays * 3 : limits.ttlDays;
+    // What «مدرسة شاهين» studied and «حصّاد شاهين» answered ahead is kept 3× longer: his fallback for days when no engine answers.
+    const ttl = e.source === 'study' || e.source === 'harvest' ? limits.ttlDays * 3 : limits.ttlDays;
     return now - last <= ttl * DAY && worthRemembering(e.question, e.answer);
   });
   const ranked = alive.sort((a, b) => b.hits - a.hits || Date.parse(b.lastUsed || b.at) - Date.parse(a.lastUsed || a.at)).slice(0, limits.maxEntries);
@@ -183,6 +202,6 @@ export function curateMemory(file: MemoryFile, now = Date.now(), limits = MEMORY
 export function offlineNote(lang: string, exact: boolean): string {
   const ar = lang === 'ar' || lang === 'fa';
   if (exact) return ar ? '\n\n_📚 من ذاكرة شاهين — إجابة محفوظة لنفس السؤال._' : '\n\n_📚 From Shaheen’s memory — a saved answer to this same question._';
-  return ar ? '\n\n_📚 من ذاكرة شاهين — إجابة محفوظة لسؤال قريب من سؤالك؛ اسأل تاني بعد شوية لإجابة جديدة._'
-    : '\n\n_📚 From Shaheen’s memory — a saved answer to a question close to yours; ask again shortly for a fresh one._';
+  return ar ? '\n\n_📚 من ذاكرة شاهين — أقرب إجابة عندي لسؤال قريب من سؤالك؛ لو مش ده اللي تقصده اكتبه بكلمات تانية._'
+    : '\n\n_📚 From Shaheen’s memory — the closest saved answer to a question like yours; if it is not what you meant, rephrase it._';
 }

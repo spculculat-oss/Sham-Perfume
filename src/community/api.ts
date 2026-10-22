@@ -66,6 +66,7 @@ export interface Me {
 }
 export interface Post {
   id: string; body: string; image: string | null; visibility: 'public' | 'friends'; createdAt: string; editedAt: string | null;
+  saved?: boolean;
   author: PublicUser; mine: boolean; comments: number; reactions: Record<string, number>; myReaction: string | null;
   recipe: { id: string; title: string; data: Record<string, unknown> } | null;
 }
