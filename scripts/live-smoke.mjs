@@ -61,8 +61,9 @@ for (const [i, c] of CASES.entries()) {
   const engine = data.engine ? (typeof data.engine === 'string' ? data.engine : data.engine.id) : '';
   const problems = [];
   if (c.council && !ready.council) {
-    // A saved answer from «ذاكرة شاهين» needs no engine, so it may still answer while the council is off.
-    const fromMemory = status === 200 && /ذاكرة شاهين|Shaheen's memory/i.test(reply);
+    // A saved answer from «ذاكرة شاهين» needs no engine, so it may still answer while the council is off — and with
+    // the AI platforms closed (O-10) Shaheen answers every question himself.
+    const fromMemory = status === 200 && reply.trim() && (/ذاكرة شاهين|Shaheen's memory/i.test(reply) || ready.auto);
     if (!fromMemory && !(status === 503 && data.code === 'COUNCIL_UNAVAILABLE')) problems.push(`expected 503 COUNCIL_UNAVAILABLE while the council is off, got ${status} ${data.code || ''}`);
   } else {
     if (status !== 200) problems.push(`HTTP ${status} ${data.code || data.error || ''}`);

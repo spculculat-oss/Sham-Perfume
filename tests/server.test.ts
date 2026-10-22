@@ -73,7 +73,8 @@ test('model diagnostics report missing API keys truthfully', async () => {
   const data = await response.json();
   // Visitors get Shaheen's modes only — no engine ids, vendor or model names.
   assert.deepEqual(data.models.map((model: { id: string }) => model.id), ['auto', 'fast', 'deep', 'council']);
-  assert.ok(data.models.every((model: { hasApiKey: boolean }) => model.hasApiKey === false));
+  // «شاهين معتمد على نفسه» (O-10): his own brain answers every mode; the council needs several models, so it is off.
+  assert.deepEqual(data.models.map((model: { hasApiKey: boolean }) => model.hasApiKey), [true, true, true, false]);
   assert.doesNotMatch(JSON.stringify(data), /gemini|openai|gpt|claude|anthropic|deepseek|openrouter|qwen/i);
 });
 
@@ -146,15 +147,21 @@ test('chat refuses malformed bodies, history and unknown providers without creat
   }
 });
 
-test('chat without credentials gives an actionable 503 instead of impersonating four AI engines', async () => {
+test('chat with the AI platforms closed: Shaheen answers himself, never an outside engine (O-10)', async () => {
   const response = await fetch(`${baseUrl}/api/chat`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'مرحبا' }),
   });
-  assert.equal(response.status, 503);
+  assert.equal(response.status, 200);
   const data = await response.json();
-  assert.equal(data.code, 'PROVIDER_NOT_CONFIGURED');
-  assert.equal(data.reply, undefined);
+  assert.equal(typeof data.reply, 'string');
+  assert.equal(data.engine.provider, 'shaheen');
   assert.equal(data.perspectives, undefined);
+  assert.doesNotMatch(JSON.stringify(data), /gemini|openai|gpt|claude|anthropic|deepseek|openrouter|qwen|manus/i);
+  const design = await (await fetch(`${baseUrl}/api/chat`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'صمم لي خلطة شتوية' }),
+  })).json();
+  assert.equal(design.designer, true);
+  assert.match(design.reply, /sham-formula/);
 });
 
 test('invalid JSON and oversized payloads return JSON errors', async () => {

@@ -35,6 +35,7 @@ export const OWNER_RULES: { id: string; textAr: string }[] = [
   { id: 'O-07', textAr: 'غرفة شاهين الخاصة بين صاحب الموقع وشاهين والسكرتير بس: محدش من الروبوتات التانية ولا الزوار يقرا كلامها أو ينقله، والكلام مابيتحفظش في المستودع ولا في قاعدة البيانات ولا في ذاكرة شاهين العامة — بيتحفظ متشفر على جهاز صاحب الموقع بكوده السري.' },
   { id: 'O-08', textAr: 'شاهين يقدر يشوف كل ملفات الموقع في غرفة صاحب الموقع، ويقترح تعديلات. مفيش تعديل بيتنفذ غير لما صاحب الموقع يضغط «وافق» من حسابه؛ بعدها مكتبه بيشغل كل الفحوص وينشر، ولو فحص واحد وقع مفيش حاجة بتتغير. ملفات تشغيل الروبوتات ومفاتيح صاحب الموقع وقواعد صلاحيات شاهين والقرارات القانونية وبيانات الروبوتات والمكتبات برّه إيده خالص.' },
   { id: 'O-09', textAr: 'شاهين هو الوكيل المسؤول عن الموقع كله تحت إشراف صاحب الموقع: بيجهّز التعديلات وأوامر الروبوتات ومهام المجلس، ومفيش أي حاجة منها بتتنفذ غير بعد ما صاحب الموقع يراجعها ويوافق عليها من «صندوق الموافقات» أو غرفته الخاصة (وافق / ارفض / رجّعه بملاحظة). كل طلب بيتسجل، وأي حاجة اتنفذت ينفع ترجع بزرار «رجّع». شغل الروبوتات اليومي العادي (تحديث البيانات والتقارير) مستمر من غير ما يستنى.' },
+  { id: 'O-10', textAr: 'شاهين والروبوتات معتمدين على نفسهم بالكامل بقرار صاحب الموقع: مفيش أي اتصال بأي منصة ذكاء اصطناعي خارجية. شاهين بيرد من مخه وذاكرته ومكتبته ومصمم التركيبات بتاعه، والمدرّس الوحيد المسموح هو النموذج المحلي اللي بيشتغل على جهازنا. السؤال اللي ملوش إجابة أكيدة بيترد عليه بصراحة «مش متأكد» ويتسجل عشان يتذاكر، من غير تخمين. القرار ده بإيد صاحب الموقع بس، وشاهين نفسه مايقدرش يغيّره.' },
 ];
 
 export type SelfDevMode = 'safe_auto' | 'approve_all';
@@ -46,10 +47,16 @@ export interface OwnerControls {
   frozen: boolean;
   paused: BotId[];
   selfDevelopment: SelfDevMode;
+  /**
+   * «شاهين معتمد على نفسه»: 'off' = no robot and no part of the site may use an outside AI platform; Shaheen answers
+   * from his own brain (memory, library, designer, research in open sources) and a model running on our own machine.
+   */
+  aiPlatforms: AiPlatforms;
   log: OwnerLogEntry[];
 }
+export type AiPlatforms = 'on' | 'off';
 
-export const defaultControls = (): OwnerControls => ({ version: 1, updatedAt: new Date(0).toISOString(), frozen: false, paused: [], selfDevelopment: 'safe_auto', log: [] });
+export const defaultControls = (): OwnerControls => ({ version: 1, updatedAt: new Date(0).toISOString(), frozen: false, paused: [], selfDevelopment: 'safe_auto', aiPlatforms: 'on', log: [] });
 export function readControls(data: unknown): OwnerControls {
   const d = (data && typeof data === 'object' ? data : {}) as Partial<OwnerControls>;
   const base = defaultControls();
@@ -59,6 +66,7 @@ export function readControls(data: unknown): OwnerControls {
     frozen: d.frozen === true,
     paused: Array.isArray(d.paused) ? d.paused.filter((x): x is BotId => typeof x === 'string') : [],
     selfDevelopment: d.selfDevelopment === 'approve_all' ? 'approve_all' : 'safe_auto',
+    aiPlatforms: d.aiPlatforms === 'off' ? 'off' : 'on',
     log: Array.isArray(d.log) ? d.log.filter((x) => x && typeof x.at === 'string' && typeof x.action === 'string').slice(0, 30) : [],
   };
 }
@@ -68,10 +76,11 @@ export const OWNER_STOPPED_AR = 'موقوف بأمر صاحب الموقع';
 /** Stopped by the owner (paused, or every robot frozen). */
 export const stoppedByOwner = (c: OwnerControls, bot: BotId) => c.frozen || c.paused.includes(bot);
 
-export type OwnerAction = 'pause' | 'resume' | 'freeze' | 'unfreeze' | 'safe_auto' | 'approve_all';
+export type OwnerAction = 'pause' | 'resume' | 'freeze' | 'unfreeze' | 'safe_auto' | 'approve_all' | 'self_reliant' | 'platforms_on';
 export const OWNER_ACTIONS: Record<OwnerAction, string> = {
   pause: 'وقف روبوت', resume: 'رجّع روبوت للشغل', freeze: 'وقف كل الروبوتات (فرامل الطوارئ)', unfreeze: 'رجّع كل الروبوتات',
   safe_auto: 'التصليحات الصغيرة لوحدها والباقي بموافقتي', approve_all: 'مفيش أي تعديل غير بموافقتي',
+  self_reliant: 'شاهين يعتمد على نفسه (من غير أي منصة ذكاء اصطناعي)', platforms_on: 'اسمح لشاهين يستعين بمنصات الذكاء الاصطناعي',
 };
 
 /** The owner's command applied to his switches (by «مكتب صاحب الموقع», after GitHub checked it is him). */
@@ -86,6 +95,9 @@ export function applyOwnerCommand(c: OwnerControls, action: OwnerAction, bot: Bo
   } else if (action === 'freeze' || action === 'unfreeze') {
     next.frozen = action === 'freeze';
     noteAr = next.frozen ? 'كل الروبوتات اتوقفت (الموقع نفسه شغال)' : 'كل الروبوتات رجعت للشغل';
+  } else if (action === 'self_reliant' || action === 'platforms_on') {
+    next.aiPlatforms = action === 'self_reliant' ? 'off' : 'on';
+    noteAr = next.aiPlatforms === 'off' ? 'شاهين بقى معتمد على نفسه: مفيش أي منصة ذكاء اصطناعي برّه الموقع' : 'شاهين يقدر يستعين بمنصات الذكاء الاصطناعي اللي مفاتيحها موجودة';
   } else {
     next.selfDevelopment = action;
     noteAr = action === 'safe_auto' ? 'التصليحات الصغيرة بتدخل لوحدها، والباقي بموافقتك' : 'مفيش أي تعديل بيدخل غير بموافقتك';

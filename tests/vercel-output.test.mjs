@@ -116,24 +116,24 @@ test('isolated production function serves health and model diagnostics as JSON',
   const data = await response.json();
   // auto + the six Shaheen engines (gemini, deepseek, openai, claude, self_hosted, openrouter).
   assert.deepEqual(data.models.map((model) => model.id), ['auto', 'fast', 'deep', 'council'], 'visitors see modes, not engines');
-  assert.ok(data.models.every((model) => !model.hasApiKey));
+  // «شاهين معتمد على نفسه» (O-10): his own brain answers every mode; the council needs several models.
+  assert.deepEqual(data.models.map((model) => model.hasApiKey), [true, true, true, false]);
   assert.equal(data.enabled, true);
   assert.equal(data.allowVisitorChoice, true);
 });
 
-test('isolated chat handler processes POST bodies and returns honest no-key errors', async () => {
-  for (const [body, status, code] of [
-    [{}, 400, 'INVALID_MESSAGE'],
-    [{ message: 'مرحبا', model: 'auto', language: 'ar' }, 503, 'PROVIDER_NOT_CONFIGURED'],
-  ]) {
-    const response = await fetch(`${baseUrl}/api/chat`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
-    });
-    assert.equal(response.status, status);
-    const data = await response.json();
-    assert.equal(data.code, code);
-    assert.equal(data.reply, undefined);
-  }
+test('isolated chat handler processes POST bodies; with the AI platforms closed Shaheen answers himself', async () => {
+  const bad = await fetch(`${baseUrl}/api/chat`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+  assert.equal(bad.status, 400);
+  assert.equal((await bad.json()).code, 'INVALID_MESSAGE');
+  const design = await fetch(`${baseUrl}/api/chat`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'صمم لي خلطة شتوية', model: 'auto', language: 'ar' }),
+  });
+  assert.equal(design.status, 200);
+  const data = await design.json();
+  assert.equal(data.designer, true);
+  assert.match(data.reply, /sham-formula/);
+  assert.equal(data.engine.provider, 'shaheen');
 });
 
 test('malformed JSON and oversized POSTs remain JSON errors in the deployed artifact', async () => {

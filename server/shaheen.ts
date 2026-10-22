@@ -21,7 +21,9 @@ import { AnswerCache, GateBusyError, ProviderGate, VISITOR_ID, cacheKey, capacit
 import type { ShaheenRuntime } from './core/maintenance';
 import type { ShaheenMemory } from './core/memory';
 import { isPersonal, isTimeBound, offlineNote } from '../src/utils/shaheenMemory';
-import { libraryAnswer, type LibrarySources } from '../src/utils/shaheenLibrary';
+import { libraryAnswer, unknownAnswer, type LibrarySources } from '../src/utils/shaheenLibrary';
+import { designAnswer } from '../src/utils/shaheenDesigner';
+import { platformsOff } from './core/selfReliance';
 import { buildLexicon, keyboardFix, understandQuestion, understoodNote, type Understanding } from '../src/utils/shaheenSpelling';
 import { research as lookUp, RESEARCH_USER_AGENT, researchAnswer, type Research } from '../src/utils/webResearch';
 import { questionIntents } from '../src/utils/shaheenTools';
@@ -105,9 +107,11 @@ export function getChatModels(env: Environment, settings: ShaheenSettings = SHAH
  */
 export function getPublicModes(env: Environment, settings: ShaheenSettings = SHAHEEN_SITE_SETTINGS, council?: CouncilSettings) {
   const statuses = engineStatuses(env);
-  const ready = settings.enabled && settings.engines.some((id) => statuses.find((s) => s.id === id)?.configured);
+  // «شاهين معتمد على نفسه»: his own brain answers in every mode but the council (which needs several models).
+  const own = platformsOff(env);
+  const ready = settings.enabled && (own || settings.engines.some((id) => statuses.find((s) => s.id === id)?.configured));
   return SHAHEEN_MODES.map((id) => ({
-    id, hasApiKey: id === 'council' ? Boolean(ready && council && councilAvailable(council, env)) : ready,
+    id, hasApiKey: id === 'council' ? Boolean(!own && ready && council && councilAvailable(council, env)) : ready,
   }));
 }
 
@@ -405,7 +409,9 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       }
       // The supervisor's probes send memory:false so they keep testing the live engines.
       const opening = !input.conversationHistory.length;
-      const useMemory = Boolean(memory && shaheen.enabled && req.body?.memory !== false);
+      // With the platforms closed, his memory and library ARE the answer, so the probes test them too.
+      const own = platformsOff(env);
+      const useMemory = Boolean(shaheen.enabled && (own || (memory && req.body?.memory !== false)));
       const mode = shaheen.allowVisitorChoice ? input.model : 'auto';
       // «تطبيقات شاهين السريعة»: the same instant apps as the browser (for clients that did not run them).
       // A card/ID/IBAN number is answered here and never forwarded or kept, whatever the settings.
@@ -415,10 +421,22 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
         runtime?.record({ ms: Date.now() - started, status: 200 });
         return;
       }
-      if (useMemory && opening) {
-        const hit = await memory!.recall(input.message, input.language, mode).catch(() => undefined);
+      if (useMemory && memory && opening) {
+        const hit = await memory.recall(input.message, input.language, mode).catch(() => undefined);
         if (hit) {
           if (!res.destroyed) res.json({ ...publicChatResult({ reply: hit.entry.answer, mode }, input.message), memory: 'exact' });
+          runtime?.record({ ms: Date.now() - started, status: 200 });
+          return;
+        }
+      }
+      // «مصمم شاهين الذاتي»: with the platforms closed, a design request gets his own formula — instant, no AI platform.
+      if (own && shaheen.enabled) {
+        const history = input.conversationHistory;
+        const last = history[history.length - 1];
+        const previous = last?.role === 'assistant' && last.text.includes('sham-formula') ? [...history].reverse().find((t) => t.role === 'user')?.text : undefined;
+        const design = designAnswer(input.message, input.language, previous);
+        if (design) {
+          if (!res.destroyed) res.json({ ...publicChatResult({ reply: design, mode }, input.message), designer: true });
           runtime?.record({ ms: Date.now() - started, status: 200 });
           return;
         }
@@ -444,7 +462,7 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       // No engine answered: the closest question Shaheen answered before, marked as coming from memory.
       if (error instanceof ChatError && OFFLINE_CODES.has(error.code) && chatInput?.useMemory) {
         const { input, mode } = chatInput;
-        let hit = await memory!.recallSimilar(input.message, input.language).catch(() => undefined);
+        let hit = await memory?.recallSimilar(input.message, input.language).catch(() => undefined);
         // «فهم شاهين للغلطات»: nothing close as typed — the question as he understands it (a mistyped word read as
         // the word meant, from everything he knows), shown with the answer so a wrong guess is visible.
         let sources: LibrarySources | undefined;
@@ -452,15 +470,16 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
         if (!hit) {
           sources = await library().catch(() => ({ lessons: [], materials: [] }));
           understood = understandQuestion(input.message, buildLexicon(sources));
-          if (understood.changed) hit = await memory!.recallSimilar(understood.text, input.language).catch(() => undefined);
+          if (understood.changed) hit = await memory?.recallSimilar(understood.text, input.language).catch(() => undefined);
         }
         const asked = understood?.changed ? understood.text : input.message;
         const note = understood ? understoodNote(input.language, understood) : '';
         if (hit && !res.destroyed) {
           if (!hit.exact) await noteForStudy(input.message);
           res.json({ ...publicChatResult({ reply: note + hit.entry.answer + offlineNote(input.language, hit.exact), mode }, input.message), memory: hit.exact ? 'exact' : 'similar' });
-          // Still an engine outage for the maintenance agent, even though the visitor got an answer.
-          runtime?.record({ ms: Date.now() - started, status: error.status, code: `${error.code}+MEMORY` });
+          // Still an engine outage for the maintenance agent, even though the visitor got an answer (not when the
+          // owner closed the platforms on purpose: then this is how Shaheen works).
+          runtime?.record(platformsOff(env) ? { ms: Date.now() - started, status: 200 } : { ms: Date.now() - started, status: error.status, code: `${error.code}+MEMORY` });
           return;
         }
         // Nothing close in memory: «مكتبة شاهين» builds an answer from what he knows (not for shopping questions —
@@ -470,14 +489,20 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
           const found = libraryAnswer(sources || await library().catch(() => ({ lessons: [], materials: [] })), asked, input.language, { recorded });
           if (found && !res.destroyed) {
             res.json({ ...publicChatResult({ reply: note + found.answer, mode }, input.message), memory: 'library' });
-            runtime?.record({ ms: Date.now() - started, status: error.status, code: `${error.code}+LIBRARY` });
+            runtime?.record(platformsOff(env) ? { ms: Date.now() - started, status: 200 } : { ms: Date.now() - started, status: error.status, code: `${error.code}+LIBRARY` });
             return;
           }
           // Not in his library either: «باحث شاهين» looks it up in open sources and answers from what he read.
           const found2 = await research(asked, input.language).catch(() => undefined);
           if (found2 && !res.destroyed) {
             res.json({ ...publicChatResult({ reply: note + researchAnswer(found2, { recorded }), mode }, input.message), memory: 'research' });
-            runtime?.record({ ms: Date.now() - started, status: error.status, code: `${error.code}+RESEARCH` });
+            runtime?.record(platformsOff(env) ? { ms: Date.now() - started, status: 200 } : { ms: Date.now() - started, status: error.status, code: `${error.code}+RESEARCH` });
+            return;
+          }
+          // «شاهين معتمد على نفسه»: nothing anywhere — an honest «I don't know yet» instead of «unavailable».
+          if (platformsOff(env) && !res.destroyed) {
+            res.json({ ...publicChatResult({ reply: note + unknownAnswer(input.language, recorded), mode }, input.message), memory: 'unknown' });
+            runtime?.record({ ms: Date.now() - started, status: 200 });
             return;
           }
         }

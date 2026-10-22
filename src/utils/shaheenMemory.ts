@@ -180,6 +180,6 @@ export function curateMemory(file: MemoryFile, now = Date.now(), limits = MEMORY
 export function offlineNote(lang: string, exact: boolean): string {
   const ar = lang === 'ar' || lang === 'fa';
   if (exact) return ar ? '\n\n_📚 من ذاكرة شاهين — إجابة محفوظة لنفس السؤال._' : '\n\n_📚 From Shaheen’s memory — a saved answer to this same question._';
-  return ar ? '\n\n_📚 من ذاكرة شاهين — إجابة محفوظة لسؤال قريب من سؤالك؛ اسأل تاني بعد شوية لإجابة جديدة._'
-    : '\n\n_📚 From Shaheen’s memory — a saved answer to a question close to yours; ask again shortly for a fresh one._';
+  return ar ? '\n\n_📚 من ذاكرة شاهين — أقرب إجابة عندي لسؤال قريب من سؤالك؛ لو مش ده اللي تقصده اكتبه بكلمات تانية._'
+    : '\n\n_📚 From Shaheen’s memory — the closest saved answer to a question like yours; if it is not what you meant, rephrase it._';
 }
