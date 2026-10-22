@@ -32,8 +32,10 @@ When the merchant writes **«نفذ مهام شاهين»** (or "Run Shaheen's t
    **«دولة المنصة»** (rule O-11, `src/utils/platformState.ts`): while his switch is `state`, the State's robot
    (`.github/workflows/platform-state.yml`, `scripts/state/run.mts`) reviews every `needs-approval` task and robot
    pull request each hour by its members' votes. A task it approves gets **`approved-by-state`** (carry it out like
-   `approved-by-owner`); one it refuses keeps `needs-approval` plus «رفضته دولة المنصة» and waits for the owner.
-   The owner is above the State: his answer always wins.
+   `approved-by-owner`); one it refuses it closes itself with «رفضته دولة المنصة» — it never goes back to the owner
+   (his decision, 2026-10-22). Every worker of the platform, Shaheen first, follows the State's laws (the constitution
+   S-01.. and the platform laws P-.. in `src/data/owner/state-orders.json`, also in the handbook). The owner is above
+   the State: his answer always wins.
 3. Work through the other tasks, urgent first, on the session's working branch. Each task's body has
    the details and the files to look at. Verify each fix the usual way: `npm run lint`, `npm test`,
    `npm run build`, and the related workflow run if there is one.

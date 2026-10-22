@@ -43,9 +43,12 @@ test('the bundled switches hand the approvals to the State, and its robot is on 
   assert.match(wf, /scripts\/owner\/gate\.mjs state/, 'the State obeys the owner\'s switches');
 });
 
-test('small safe changes still go in; bigger ones wait for the State instead of the owner', () => {
+test('every change — even a small safe fix — takes its approval from the State', () => {
   const c = { ...defaultControls(), selfDevelopment: 'state' as const };
-  assert.equal(selfDevVerdict(c, { paths: ['src/components/A.tsx'], lines: 10 }).auto, true);
+  const small = selfDevVerdict(c, { paths: ['src/components/A.tsx'], lines: 10 });
+  assert.equal(small.auto, false);
+  assert.match(small.reasonAr, /دولة المنصة/);
+  assert.match(readFileSync(new URL('../scripts/aistudio/bridge.mts', import.meta.url), 'utf8'), /selfDevelopment === 'state'[\s\S]*plan\.verdict = 'review'/);
   const big = selfDevVerdict(c, { paths: ['a.ts', 'b.ts', 'c.ts', 'd.ts', 'e.ts', 'f.ts'], lines: 500 });
   assert.equal(big.auto, false);
   assert.match(big.reasonAr, /دولة المنصة/);
@@ -118,4 +121,17 @@ test('the State\'s report is read defensively', () => {
   assert.equal(r.decisions.length, 1);
   assert.deepEqual(r.supervision, { health: 90, problems: ['x'] });
   assert.deepEqual(readStateReport(null).decisions, []);
+});
+
+test('it never goes back to the owner: refusals are closed by the State itself', () => {
+  const refused = stateVote({ kind: 'pull', title: 'تحديث تشغيل الروبوت', paths: ['.github/workflows/news.yml'], lines: 3 });
+  assert.doesNotMatch(refused.summaryAr, /القرار النهائي لصاحب الموقع/);
+  assert.match(refused.summaryAr, /قفلت/);
+  const text = STATE_CONSTITUTION.map((r) => r.textAr).join('\n');
+  assert.match(text, /مابترجعلوش في أي إجراء/);
+  assert.match(text, /وأولهم شاهين/);
+  assert.ok(STATE_CONSTITUTION.some((r) => r.id === 'S-08' && /تفعيل الأوامر/.test(r.textAr)));
+  const run = readFileSync(new URL('../scripts/state/run.mts', import.meta.url), 'utf8');
+  assert.match(run, /close\(p\.number, 'not_planned'\)/, 'refused pull requests are closed');
+  assert.match(run, /close\(t\.number, 'not_planned'\)/, 'refused tasks are closed');
 });

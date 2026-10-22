@@ -105,7 +105,7 @@ const plan = saved.plan as Plan;
 // «شاهين يجهّز وصاحب الموقع يوافق»: when the owner wants every change approved (or stopped the robots), nothing
 // from the studio goes live by itself — it waits for him like any other change.
 const ownerControls = loadOwnerControls();
-if (plan.verdict === 'auto' && (ownerControls.selfDevelopment === 'approve_all' || ownerControls.frozen)) plan.verdict = 'review';
+if (plan.verdict === 'auto' && (ownerControls.selfDevelopment === 'approve_all' || ownerControls.selfDevelopment === 'state' || ownerControls.frozen)) plan.verdict = 'review';
 const checks = { lint: env.CHECK_LINT || 'skipped', test: env.CHECK_TEST || 'skipped', build: env.CHECK_BUILD || 'skipped', pages: env.CHECK_PAGES || 'skipped' };
 const NAMES: Record<string, string> = { lint: 'فحص الأنواع', test: 'الاختبارات', build: 'بناء الموقع', pages: 'فحص صفحات الموقع' };
 const failed = Object.entries(checks).filter(([, v]) => v === 'failure').map(([k]) => NAMES[k]);

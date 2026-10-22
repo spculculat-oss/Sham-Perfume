@@ -5,14 +5,17 @@
  * task. It is decentralised: there is no single chief. Every member reviews the matter in its own scope and votes on
  * its own, and the decision follows the vote:
  *   - a veto from the legal manager or from security & privacy stops the matter at once (the constitution);
- *   - otherwise it passes when at least three members approve and approvals beat refusals;
+ *   - otherwise it passes by consensus: at least three approvals and no objection;
  *   - a change also has to pass every check (lint, tests, both builds) before it goes live.
- * Whatever it refuses goes back to the owner with the reasons: his word is the final one.
+ * It never goes back to the owner (his decision, 2026-10-22): what it refuses it closes itself, with the reasons. Every
+ * worker of the platform — Shaheen first — takes its approvals from the State and follows its laws. It also gives the
+ * robots orders and carries them out itself (pause / resume / run now) and keeps the platform's laws (add / repeal),
+ * and the owner talks with it in its private room in his suite.
  *
  * Above it, always: the owner. He can take the approvals back at any time (desk: approve_all / safe_auto), answer
- * anything himself first (his answer wins), freeze every robot (the State stops too) and undo any decision of the
- * State with «رجّع». It never sees the owner's personal data, his keys, or his private room, and it can't change his
- * switches, his rules or its own powers.
+ * anything himself first (his answer wins), resume what it paused, freeze every robot (the State stops too) and undo
+ * any decision of the State with «رجّع». It never sees the owner's personal data, his keys, or his private room, and
+ * it can't change his switches, his rules or its own powers.
  *
  * It is the robots' own deliberation, with no outside AI platform (rule O-10): every vote is a rule its member
  * applies to the facts of the matter. Pure (browser-safe): the State's robot (scripts/state/run.mts), the owner's
@@ -29,13 +32,15 @@ export const STATE = {
 
 /** Its constitution: what it may do and where its power ends. Shown in the owner's suite and the robots' handbook. */
 export const STATE_CONSTITUTION: { id: string; textAr: string }[] = [
-  { id: 'S-01', textAr: 'دولة المنصة أعلى سلطة على الروبوتات بعد صاحب الموقع: شاهين والمجلس والأقسام وكل الروبوتات تحت رقابتها، وكلهم بيرجعولها في كل الموافقات (تعديلات الروبوتات ومهام المجلس).' },
-  { id: 'S-02', textAr: 'لا مركزية: مفيش رئيس واحد. كل عضو بيراجع الموضوع في نطاقه وبيصوّت لوحده، والقرار بالتوافق: لازم 3 موافقات على الأقل ومن غير أي اعتراض — لو عضو واحد رفض، الموضوع بيروح لصاحب الموقع بالأسباب.' },
-  { id: 'S-03', textAr: 'المدير القانوني والأمن والخصوصية ليهم حق «الفيتو»: لو واحد منهم رفض، الموضوع بيقف ويروح لصاحب الموقع. قرارات المدير القانوني (زي وقف نقل المنتجات) محدش يتجاوزها.' },
+  { id: 'S-01', textAr: 'دولة المنصة أعلى سلطة على الروبوتات بعد صاحب الموقع: شاهين والمجلس والأقسام وكل الروبوتات تحت رقابتها، وكل العاملين في المنصة — وأولهم شاهين — خاضعين لقوانينها وبياخدوا منها كل الاعتمادات والموافقات (تعديلات الروبوتات ومهام المجلس).' },
+  { id: 'S-02', textAr: 'لا مركزية: مفيش رئيس واحد. كل عضو بيراجع الموضوع في نطاقه وبيصوّت لوحده، والقرار بالتوافق: لازم 3 موافقات على الأقل ومن غير أي اعتراض — لو عضو واحد رفض، الدولة بترفض وبتقفل الموضوع بنفسها وبتكتب الأسباب.' },
+  { id: 'S-03', textAr: 'المدير القانوني والأمن والخصوصية ليهم حق «الفيتو»: لو واحد منهم رفض، الموضوع بيقف ويتقفل. قرارات المدير القانوني (زي وقف نقل المنتجات) محدش يتجاوزها.' },
   { id: 'S-04', textAr: 'أي تعديل وافقت عليه الدولة لازم يعدّي كل الفحوص (الكود والاختبارات وبناء الموقع) قبل ما ينزل الموقع؛ لو فحص واحد وقع مفيش حاجة بتتغير.' },
   { id: 'S-05', textAr: 'الدولة مابتشوفش بيانات صاحب الموقع الشخصية ولا مفاتيحه ولا غرفته الخاصة، ومابتلمسش مفاتيح التحكم بتاعته ولا قواعده ولا صلاحياتها هي نفسها.' },
-  { id: 'S-06', textAr: 'الدولة خاضعة لأوامر صاحب الموقع في أي وقت: يقدر يرجّع الموافقات لنفسه، أو يرد على أي حاجة قبلها (رده هو اللي يمشي)، أو يوقف كل الروبوتات (الدولة بتقف معاهم)، أو يرجّع أي قرار ليها بزرار «رجّع». واللي ترفضه بيروحله هو بالأسباب.' },
+  { id: 'S-06', textAr: 'الدولة خاضعة لأوامر صاحب الموقع في أي وقت: يقدر يرجّع الموافقات لنفسه، أو يرد على أي حاجة قبلها (رده هو اللي يمشي)، أو يوقف كل الروبوتات (الدولة بتقف معاهم)، أو يرجّع أي قرار ليها بزرار «رجّع»، أو يرجّع روبوت هي وقفته. والدولة مابترجعلوش في أي إجراء: بتقرر وبتنفذ بنفسها.' },
   { id: 'S-07', textAr: 'كل قرار بيتسجل بأصوات الأعضاء وأسبابهم في سجل الدولة اللي صاحب الموقع بيشوفه في جناحه.' },
+  { id: 'S-08', textAr: 'الدولة ليها صلاحية تفعيل الأوامر: توقف أي روبوت أو ترجّعه أو تشغّله دلوقتي، وتضيف قوانين للمنصة أو تلغيها — بعد ما تتأكد إن الأمر صح من وجهة نظرها. أوامر صاحب الموقع فوق أوامرها.' },
+  { id: 'S-09', textAr: 'صاحب الموقع بيناقش الدولة في غرفتها الخاصة في جناحه (الأوامر والمستجدات والقوانين). الكلام بيتحفظ متشفر على جهازه بس.' },
 ];
 
 export type StateMemberId = 'shaheen' | 'legal' | 'privacy' | 'quality' | 'finance' | 'department';
@@ -55,7 +60,7 @@ export const STATE_LABELS = {
   /** A council task the State approved: the coding agent may carry it out, like one the owner approved. */
   approvedTask: 'approved-by-state',
   reviewed: 'راجعته دولة المنصة',
-  /** Refused (or a check failed): it waits for the owner, with the State's reasons. */
+  /** Refused (or a check failed): the State closed it itself, with its reasons. */
   refused: 'رفضته دولة المنصة',
 } as const;
 
@@ -63,7 +68,7 @@ export const STATE_LABELS = {
 export const stateTrailer = (n: number) => `State-Decision: #${n}`;
 
 /** How big a robot's change the State may approve (bigger ones go to the owner). */
-export const STATE_LIMITS = { files: 20, lines: 1000, deletedFiles: 5, perRun: { pulls: 2, tasks: 10 } } as const;
+export const STATE_LIMITS = { files: 20, lines: 1000, deletedFiles: 5, perRun: { pulls: 4, tasks: 10, orders: 10, reruns: 2 } } as const;
 
 /** The State decides only while the owner handed it the approvals and the robots are not frozen. */
 export const stateActive = (c: OwnerControls) => c.selfDevelopment === 'state' && !c.frozen;
@@ -120,8 +125,8 @@ export function stateVote(m: StateMatter): StateDecision {
 
   // The legal manager (veto): the law and his binding decisions.
   const legal = hits(paths, LEGAL);
-  if (legal.length) vote('legal', 'veto', `بيلمس الوثائق أو القواعد القانونية (${list(legal)}) — ده قراري أنا وصاحب الموقع بس.`);
-  else if (LEGAL_TEXT.test(text)) vote('legal', 'veto', 'الموضوع بيتكلم عن قرار قانوني ملزم — محدش يغيّره غير المدير القانوني بموافقة صاحب الموقع.');
+  if (legal.length) vote('legal', 'veto', `بيلمس الوثائق أو القواعد القانونية (${list(legal)}) — دي برّه سلطة الدولة.`);
+  else if (LEGAL_TEXT.test(text)) vote('legal', 'veto', 'الموضوع بيتكلم عن قرار قانوني ملزم — محدش يتجاوزه.');
   else vote('legal', 'approve', 'مفيش فيه حاجة قانونية.');
 
   // Security & privacy (veto): the owner's data, keys, switches and rules — and the State's own powers.
@@ -136,16 +141,16 @@ export function stateVote(m: StateMatter): StateDecision {
   // Quality & self-reliance: size, the robots' workflow files, outside libraries, outside AI platforms.
   const workflows = hits(paths, WORKFLOWS);
   const deps = hits(paths, DEPENDENCIES);
-  if (workflows.length) vote('quality', 'refuse', 'بيعدّل ملفات تشغيل الروبوتات، وGitHub مش سامح للروبوتات تعدّلها — دي لصاحب الموقع.');
-  else if (deps.length) vote('quality', 'refuse', 'بيغيّر المكتبات الخارجية اللي الموقع معتمد عليها — ده محتاج مراجعة صاحب الموقع.');
+  if (workflows.length) vote('quality', 'refuse', 'بيعدّل ملفات تشغيل الروبوتات، وGitHub مش سامح للروبوتات تعدّلها — بتتعمل من شات وكيل البرمجة.');
+  else if (deps.length) vote('quality', 'refuse', 'بيغيّر المكتبات الخارجية اللي الموقع معتمد عليها — والدولة مابتغيرهاش من غير وكيل البرمجة.');
   else if (AI_PLATFORM.test(m.added || '')) vote('quality', 'refuse', 'بيكلم منصة ذكاء اصطناعي خارجية مباشرة، وده ضد قرار صاحب الموقع (O-10).');
   else if (pull && (paths.length > STATE_LIMITS.files || (m.lines ?? 0) > STATE_LIMITS.lines)) vote('quality', 'refuse', `تعديل كبير (${paths.length} ملف، ${m.lines ?? 0} سطر) — حد الدولة ${STATE_LIMITS.files} ملف و${STATE_LIMITS.lines} سطر.`);
-  else if (pull && (m.deletedFiles ?? 0) > STATE_LIMITS.deletedFiles) vote('quality', 'refuse', `بيمسح ${m.deletedFiles} ملف مرة واحدة — كتير على قرار من غير صاحب الموقع.`);
+  else if (pull && (m.deletedFiles ?? 0) > STATE_LIMITS.deletedFiles) vote('quality', 'refuse', `بيمسح ${m.deletedFiles} ملف مرة واحدة — كتير على تعديل واحد.`);
   else vote('quality', 'approve', pull ? 'الحجم معقول، وهيعدّي كل الفحوص الأول.' : 'هيتنفذ بالفحوص المعتادة.');
 
   // Finance: prices, payment and the bank (abstains when the matter isn't money).
   const money = hits(paths, MONEY);
-  if (money.length && (m.lines ?? 0) > 150) vote('finance', 'refuse', `تعديل كبير في الأسعار أو الدفع (${list(money)}) — يروح لصاحب الموقع.`);
+  if (money.length && (m.lines ?? 0) > 150) vote('finance', 'refuse', `تعديل كبير في الأسعار أو الدفع (${list(money)}) — يتقسم لتعديلات أصغر.`);
   else if (money.length) vote('finance', 'approve', `تعديل صغير في ملفات الفلوس (${list(money)})، ومفيش أي تحويل فلوس بيحصل تلقائي.`);
   else if (!pull && /سعر|أسعار|الدفع|البنك|فلوس|تحويل|استرداد|price|payment|bank|refund/i.test(text)) vote('finance', 'approve', 'مهمة فيها فلوس: مفيش تحويلات أو استردادات تلقائي، وأي تعديل منها هيتفحص.');
   else vote('finance', 'abstain', 'مش في نطاقي.');
@@ -161,7 +166,7 @@ export function stateVote(m: StateMatter): StateDecision {
   const first = votes.find((v) => v.vote === 'veto') || votes.find((v) => v.vote === 'refuse');
   const summaryAr = approved
     ? `✅ الدولة وافقت (${tally.approve} موافقة${tally.refuse ? ` و${tally.refuse} رفض` : ''}).`
-    : `❌ الدولة رفضت${tally.veto ? ' بالفيتو' : ''}: ${first ? `${stateMemberName(first.member)} — ${first.reasonAr}` : 'الموافقات مش كفاية.'} القرار النهائي لصاحب الموقع.`;
+    : `❌ الدولة رفضت${tally.veto ? ' بالفيتو' : ''}: ${first ? `${stateMemberName(first.member)} — ${first.reasonAr}` : 'الموافقات مش كفاية.'} الدولة قفلت الموضوع.`;
   return { approved, votes, tally, summaryAr };
 }
 
@@ -171,7 +176,7 @@ export function stateComment(d: StateDecision, extra: string[] = []): string {
   return [`🏛️ **${STATE.nameAr}:** ${d.summaryAr}`, '', '| العضو | الصوت | السبب |', '|---|---|---|',
     ...d.votes.map((v) => `| ${stateMemberName(v.member)} | ${VOTE_MARK[v.vote]} | ${v.reasonAr.replace(/\|/g, '/')} |`),
     ...(extra.length ? ['', ...extra] : []), '',
-    '_صاحب الموقع فوق الدولة: يقدر يغيّر أي قرار من «صندوق الموافقات» أو يرجّعه بزرار «رجّع»._'].join('\n');
+    '_قرار دولة المنصة نهائي. صاحب الموقع وحده فوقها ويقدر يرجّع أي قرار بزرار «رجّع»._'].join('\n');
 }
 
 // ── Its log (src/data/live/platform-state.json), read by the owner's suite ──────────────────────────────────
@@ -193,4 +198,35 @@ export function readStateReport(data: unknown): StateReport {
     supervision: { ...(typeof s.health === 'number' ? { health: s.health } : {}), problems: Array.isArray(s.problems) ? s.problems.filter((p): p is string => typeof p === 'string').slice(0, 10) : [] },
   };
 }
-export const STATE_OUTCOMES: Record<StateOutcome, string> = { approved: 'وافقت (مهمة)', merged: 'وافقت ونزل الموقع', refused: 'رفضت — لصاحب الموقع', failed: 'وافقت بس الفحص وقع — لصاحب الموقع' };
+export const STATE_OUTCOMES: Record<StateOutcome, string> = { approved: 'وافقت (مهمة)', merged: 'وافقت ونزل الموقع', refused: 'رفضت وقفلته', failed: 'وافقت بس الفحص وقع — اتقفل' };
+
+// ── Its orders and the platform's laws (src/data/owner/state-orders.json) ───────────────────────────────────────
+/**
+ * The State's own orders file. It lives next to the owner's switches so every robot's first job (gate.mjs, which
+ * reads only src/data/owner) obeys it too, and no robot's change can touch it (the privacy veto guards the owner's
+ * zone). Only the State's robot writes it; the owner's «رجّع روبوت» from his desk clears the State's pause as well.
+ */
+export const STATE_ORDERS_FILE = 'src/data/owner/state-orders.json';
+export type StateOrderAction = 'pause' | 'resume' | 'run' | 'law' | 'repeal';
+export interface StateLaw { id: string; textAr: string; at: string }
+export interface StateOrderEntry { at: string; action: StateOrderAction; target?: string; noteAr: string; by: 'state' | 'owner' }
+export interface StateOrders { paused: string[]; laws: StateLaw[]; log: StateOrderEntry[] }
+export const STATE_ORDERS_LIMITS = { laws: 40, lawChars: 400, log: 60 } as const;
+export const emptyStateOrders = (): StateOrders => ({ paused: [], laws: [], log: [] });
+
+export function readStateOrders(data: unknown): StateOrders {
+  const d = (data && typeof data === 'object' ? data : {}) as Partial<StateOrders>;
+  const str = (x: unknown): x is string => typeof x === 'string' && x.length > 0;
+  return {
+    paused: Array.isArray(d.paused) ? [...new Set(d.paused.filter(str))] : [],
+    laws: Array.isArray(d.laws) ? d.laws.filter((l): l is StateLaw => Boolean(l) && str(l.id) && str(l.textAr)).map((l) => ({ id: l.id, textAr: l.textAr.slice(0, STATE_ORDERS_LIMITS.lawChars), at: str(l.at) ? l.at : '' })).slice(0, STATE_ORDERS_LIMITS.laws) : [],
+    log: Array.isArray(d.log) ? d.log.filter((e): e is StateOrderEntry => Boolean(e) && str(e.at) && str(e.action) && typeof e.noteAr === 'string').slice(0, STATE_ORDERS_LIMITS.log) : [],
+  };
+}
+
+/** The next free law number: P-01, P-02, … (never reused, so a repealed law's number stays its own). */
+export function nextLawId(orders: StateOrders): string {
+  const used = [...orders.laws.map((l) => l.id), ...orders.log.filter((e) => e.action === 'law' && e.target).map((e) => e.target!)];
+  const n = used.reduce((m, id) => Math.max(m, Number(/^P-(\d+)$/.exec(id)?.[1] || 0)), 0) + 1;
+  return `P-${String(n).padStart(2, '0')}`;
+}
