@@ -3,6 +3,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Activity, ExternalLink, Map as MapIcon, RefreshCw, Route, Trophy, TriangleAlert } from 'lucide-react';
 import bundledPrecheck from '../data/live/shaheen-precheck.json';
 import bundledSupervisor from '../data/live/ai-supervisor.json';
+import bundledControls from '../data/owner/controls.json';
+import bundledStateOrders from '../data/owner/state-orders.json';
+import { readControls, type OwnerControls } from '../utils/ownerAuthority';
+import { readStateOrders, type StateOrders } from '../utils/platformState';
+import LiveWorkMap from './LiveWorkMap';
 import { BOTS, DEPARTMENTS, botOf, deptOf, type BotId, type DeptId } from '../utils/shaheenOrg';
 import { SHIFTS, shiftOfBot, type ShiftIndex } from '../../scripts/shaheen-patrol/shifts';
 import type { PrecheckFile } from '../../scripts/shaheen-council/precheck';
@@ -12,7 +17,7 @@ import {
   type Grade, type ScorePart, type SupervisorFile, type ToolScore,
 } from '../utils/opsMap';
 import { allLive, currentStep, liveScenarios, EVENT_AR, type BotLive, type FallbackRun, type LiveState } from '../utils/opsLive';
-import { useOpsLive, RUNS_EVERY_MS } from './useOpsLive';
+import { useOpsLive } from './useOpsLive';
 
 /**
  * «خريطة تشغيل شام» — Shaheen at the top, the five departments and their bots below, coloured by each bot's
@@ -23,6 +28,7 @@ import { useOpsLive, RUNS_EVERY_MS } from './useOpsLive';
  * who waits for its turn and when, and the scenarios moving through the tools. Admin panel only (#admin/ops).
  */
 const RAW = 'https://raw.githubusercontent.com/spculculat-oss/Sham-Perfume/main/src/data/live/';
+const RAW_OWNER = 'https://raw.githubusercontent.com/spculculat-oss/Sham-Perfume/main/src/data/owner/';
 const REPO = 'https://github.com/spculculat-oss/Sham-Perfume';
 const card = 'rounded-2xl border border-stone-200 bg-white p-4 shadow-sm';
 const ar = () => getAdminLang() === 'ar';
@@ -38,7 +44,7 @@ const DEPT_CHARS = () => (ar() ? 30 : 28);
 const isPrecheck = (d: unknown): d is PrecheckFile => Boolean(d && typeof d === 'object' && (d as PrecheckFile).version === 1 && Array.isArray((d as PrecheckFile).bots));
 const isPatrol = (d: unknown): d is PatrolFile => Boolean(d && typeof d === 'object' && (d as PatrolFile).version === 1 && Array.isArray((d as PatrolFile).open));
 const isSupervisor = (d: unknown): d is SupervisorFile => Boolean(d && typeof d === 'object' && (d as SupervisorFile).tools && typeof (d as SupervisorFile).tools === 'object');
-const getJson = (file: string) => fetch(`${RAW}${file}?t=${Date.now()}`, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+const getJson = (file: string, base = RAW) => fetch(`${base}${file}?t=${Date.now()}`, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
 
 const GRADE: Record<Grade, { label: () => string; fill: string; stroke: string; text: string; chip: string; dot: string }> = {
   high: { label: () => T('كفاءة عالية'), fill: '#d1fae5', stroke: '#059669', text: '#064e3b', chip: 'bg-emerald-100 text-emerald-800', dot: 'bg-emerald-500' },
@@ -58,6 +64,7 @@ const LIVE: Record<LiveState, { label: () => string; color: string; chip: string
   running: { label: () => T('شغالة دلوقتي'), color: '#16a34a', chip: 'bg-emerald-600 text-white' },
   queued: { label: () => T('في الطابور'), color: '#0ea5e9', chip: 'bg-sky-500 text-white' },
   stopped: { label: () => T('واقفة'), color: '#dc2626', chip: 'bg-red-600 text-white' },
+  paused: { label: () => T('موقوفة بأمر'), color: '#d97706', chip: 'bg-amber-500 text-white' },
   waiting: { label: () => T('مستنية دورها'), color: '#78716c', chip: 'bg-stone-200 text-stone-800' },
   ondemand: { label: () => T('عند الطلب'), color: '#a8a29e', chip: 'bg-stone-100 text-stone-600' },
   unknown: { label: () => T('مش معروف'), color: '#d6d3d1', chip: 'bg-stone-100 text-stone-500' },
@@ -94,14 +101,20 @@ export default function ShaheenOpsMapPanel() {
   const [defectsOnly, setDefectsOnly] = useState(false);
   const [liveFilter, setLiveFilter] = useState<LiveFilter>('all');
   const gh = useOpsLive();
+  const [controls, setControls] = useState<OwnerControls>(() => readControls(bundledControls));
+  const [stateOrders, setStateOrders] = useState<StateOrders>(() => readStateOrders(bundledStateOrders));
   const [now, setNow] = useState(() => Date.now());
-  useEffect(() => { const t = setInterval(() => setNow(Date.now()), 30_000); return () => clearInterval(t); }, []);
+  useEffect(() => { const t = setInterval(() => setNow(Date.now()), 15_000); return () => clearInterval(t); }, []);
   const detailRef = useRef<HTMLDivElement>(null);
 
   const load = useCallback(() => {
     setLoading(true);
-    Promise.all([getJson('shaheen-precheck.json'), getJson('shaheen-patrol.json'), getJson('ai-supervisor.json')])
-      .then(([p, q, s]) => { if (isPrecheck(p)) setPrecheck(p); if (isPatrol(q)) setPatrol(q); if (isSupervisor(s)) setSupervisor(s); })
+    Promise.all([getJson('shaheen-precheck.json'), getJson('shaheen-patrol.json'), getJson('ai-supervisor.json'), getJson('controls.json', RAW_OWNER), getJson('state-orders.json', RAW_OWNER)])
+      .then(([p, q, s, c, o]) => {
+        if (isPrecheck(p)) setPrecheck(p); if (isPatrol(q)) setPatrol(q); if (isSupervisor(s)) setSupervisor(s);
+        // Who is paused on purpose (the owner's switches, «دولة المنصة»'s orders): the latest from GitHub.
+        if (c) setControls(readControls(c)); if (o) setStateOrders(readStateOrders(o));
+      })
       .finally(() => setLoading(false));
   }, []);
   useEffect(() => { load(); }, [load]);
@@ -110,7 +123,7 @@ export default function ShaheenOpsMapPanel() {
   const sum = useMemo(() => summarize(scores), [scores]);
   const scoreOf = (id: BotId) => scores.find((s) => s.id === id)!;
   const fallback = useMemo(() => Object.fromEntries((precheck?.bots || []).filter((b) => b.lastRun).map((b) => [b.id, b.lastRun as FallbackRun])) as Partial<Record<BotId, FallbackRun>>, [precheck]);
-  const live = useMemo(() => allLive({ runs: gh.runs, workflows: gh.workflows, fallback, now: gh.at || now }), [gh.runs, gh.workflows, gh.at, fallback, now]);
+  const live = useMemo(() => allLive({ runs: gh.runs, workflows: gh.workflows, fallback, now: gh.at || now, controls, stateOrders }), [gh.runs, gh.workflows, gh.at, fallback, now, controls, stateOrders]);
   const liveOf = (id: BotId) => live.find((l) => l.id === id)!;
   const scenarios = useMemo(() => liveScenarios(live), [live]);
   const stepOf = (l: BotLive) => (l.run ? currentStep(gh.jobs[l.run.id] || []) : undefined);
@@ -156,6 +169,8 @@ export default function ShaheenOpsMapPanel() {
             <div key={g} className={`rounded-xl p-2 ${GRADE[g].chip}`}><b className="block text-lg">{sum[g].length}</b><span className="text-[10px]">{GRADE[g].label()}</span></div>
           ))}
         </div>
+
+        <LiveWorkMap live={live} gh={gh} stepOf={stepOf} now={now} onPick={pick} />
 
         <LiveNow live={live} scenarios={scenarios} stepOf={stepOf} gh={gh} now={now} onPick={pick} onJourney={(id) => { setJourney(id); setSelected(null); }}
           counts={{ running: count(['running', 'queued']), stopped: count(['stopped']), waiting: count(['waiting']) }} />
@@ -405,7 +420,7 @@ function LiveNow({ live, scenarios, stepOf, gh, now, counts, onPick, onJourney }
         <span className="text-[11px] text-stone-500">
           {gh.limitedUntil ? TP('التحديث المباشر واقف مؤقتاً لحد {time} (حد القراءة من جيت هب) — الخريطة شغالة من آخر تقارير', { time: time(new Date(gh.limitedUntil).toISOString()) })
             : gh.error ? T('تعذّر الوصول لسجل التشغيل — الخريطة شغالة من آخر تقارير')
-            : gh.at ? TP('بيتحدّث لوحده كل {n} دقيقة — آخر تحديث {ago}', { n: RUNS_EVERY_MS / 60_000, ago: ago(new Date(gh.at).toISOString(), now) }) : T('بيحمّل الحالة المباشرة…')}
+            : gh.at ? TP('بيتحدّث لوحده كل {n} ثانية — آخر تحديث {ago}', { n: Math.round(gh.everyMs / 1000), ago: ago(new Date(gh.at).toISOString(), now) }) : T('بيحمّل الحالة المباشرة…')}
         </span>
       </div>
       <div className="mt-2 grid grid-cols-3 gap-2 text-center">

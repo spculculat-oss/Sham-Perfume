@@ -5,11 +5,14 @@
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync } from 'node:fs';
 import test from 'node:test';
+import { paceMs } from '../src/admin/useOpsLive';
 import { BOTS, botOf } from '../src/utils/shaheenOrg';
 import {
-  allLive, botLive, currentStep, latestByWorkflow, lastFinishedByWorkflow, liveScenarios, nextCron, nextRunOf, SCHEDULES, TRIGGERS_AR,
-  type GhRun,
+  activityFeed, allLive, botLive, currentStep, dutyShort, latestByWorkflow, lastFinishedByWorkflow, LIVE_ORDER, liveScenarios, nextCron, nextRunOf,
+  SCHEDULES, stepAr, TRIGGERS_AR, type GhRun,
 } from '../src/utils/opsLive';
+import { readControls } from '../src/utils/ownerAuthority';
+import { readStateOrders } from '../src/utils/platformState';
 
 const NOW = Date.parse('2026-10-21T10:05:00Z'); // a Wednesday
 const iso = (t: number) => new Date(t).toISOString();
@@ -102,9 +105,69 @@ test('the scenario moving now: the journeys with a running step, most advanced f
 test('the browser reads GitHub without a key and stays under the keyless allowance', () => {
   const hook = readFileSync(new URL('../src/admin/useOpsLive.ts', import.meta.url), 'utf8');
   assert.doesNotMatch(hook, /Authorization|token/i, 'no key in the browser');
-  assert.match(hook, /RUNS_EVERY_MS = 120_000/);
   assert.match(hook, /visibilityState === 'visible'/, 'nothing while the tab is hidden');
   assert.match(hook, /x-ratelimit-reset/);
-  // 30 run lists + 4 workflow lists + ≤ 2 step reads every third refresh (+ new runs) stay under 60 an hour.
-  assert.ok(60 / 2 + 60 / 15 + (2 * 60) / 6 < 60);
+  assert.match(hook, /x-ratelimit-remaining/, 'it follows what GitHub says is left');
+  // Every 30 seconds while the allowance is comfortable, slower as it shrinks — never a fixed fast loop.
+  assert.equal(paceMs(undefined), 30_000);
+  assert.equal(paceMs(45), 30_000);
+  assert.equal(paceMs(20), 120_000);
+  assert.equal(paceMs(5), 300_000);
+  // Under 10 left: 12 run lists + 4 workflow lists + ≤ 2 step reads every other refresh stay under 60 an hour.
+  assert.ok(60 / 5 + 60 / 15 + (2 * 60) / 10 < 60);
+});
+
+test('«خريطة عمل لحظية»: paused on purpose — by the owner, by «دولة المنصة», or the emergency brake', () => {
+  const controls = readControls({ version: 1, frozen: false, paused: ['images'], selfDevelopment: 'state', aiPlatforms: 'off', log: [] });
+  const news = BOTS.find((b) => b.workflow === 'shaheen-news.yml')!;
+  const stateOrders = readStateOrders({ paused: [news.id], laws: [], log: [] });
+  const runs = [run('shaheen-seo.yml', 'in_progress', null, 2)];
+  const live = allLive({ runs, now: NOW, controls, stateOrders });
+  const of = (b: string) => live.find((l) => l.id === b)!;
+  assert.equal(of('images').state, 'paused'); assert.equal(of('images').pausedBy, 'owner');
+  assert.equal(of('importer').state, 'paused', 'its partner on the same workflow stops with it (the gate stops the workflow)');
+  assert.equal(of(news.id).state, 'paused'); assert.equal(of(news.id).pausedBy, 'state');
+  assert.match(of(news.id).noteAr, /دولة المنصة/);
+  const frozen = allLive({ runs, now: NOW, controls: { ...controls, frozen: true } });
+  const seo = BOTS.find((b) => b.workflow === 'shaheen-seo.yml')!;
+  assert.equal(frozen.find((l) => l.id === seo.id)!.state, 'running', 'a run already going is shown as it is');
+  assert.ok(frozen.filter((l) => l.state === 'paused').every((l) => l.pausedBy === 'frozen'));
+  assert.equal(frozen.find((l) => l.id === news.id)!.pausedBy, 'frozen');
+  assert.equal(allLive({ runs, now: NOW }).filter((l) => l.state === 'paused').length, 0, 'nothing paused without orders');
+  assert.ok(LIVE_ORDER.includes('paused'));
+});
+
+test('what each robot is doing, in plain Arabic; its job in one line', () => {
+  assert.equal(stepAr('Set up job'), 'بيبدأ ويجهّز نفسه');
+  assert.equal(stepAr('Check out the code'), 'بيجيب آخر نسخة من الموقع');
+  assert.equal(stepAr('Install dependencies'), 'بيجهّز المكتبات');
+  assert.equal(stepAr('Build the Pages site'), 'بيبني الموقع');
+  assert.equal(stepAr('Post Check out the code'), 'بيخلّص ويقفل');
+  assert.equal(stepAr('Zzzz'), undefined, 'unknown steps keep their own name — no guessing');
+  for (const b of BOTS) { const d = dutyShort(b); assert.ok(d.length > 0 && d.length <= 110, b.id); }
+});
+
+test('the recent activity log: who started, who finished, who failed — newest first, skipped runs left out', () => {
+  const runs = [
+    run('shaheen-news.yml', 'completed', 'failure', 30),
+    run('shaheen-import.yml', 'in_progress', null, 3),
+    run('shaheen-seo.yml', 'queued', null, 0),
+    run('shaheen-doctor.yml', 'completed', 'success', 10),
+    run('product-pages-check.yml', 'completed', 'skipped', 5),
+    run('shaheen-patrol.yml', 'completed', 'success', 1, { head_branch: 'arena/x' }),
+    run('shaheen-precheck.yml', 'completed', 'cancelled', 50),
+  ];
+  const feed = activityFeed(runs);
+  assert.deepEqual(feed.map((f) => f.kind), ['queued', 'running', 'success', 'failed', 'cancelled']);
+  assert.deepEqual(feed[1].bots.sort(), ['images', 'importer']);
+  assert.equal(activityFeed(runs, 2).length, 2);
+});
+
+test('the live work map: admin only, inside the ops map, one shared poll', () => {
+  const panel = readFileSync(new URL('../src/admin/ShaheenOpsMapPanel.tsx', import.meta.url), 'utf8');
+  assert.match(panel, /<LiveWorkMap live=\{live\} gh=\{gh\}/);
+  assert.equal((panel.match(/useOpsLive\(\)/g) || []).length, 1);
+  const map = readFileSync(new URL('../src/admin/LiveWorkMap.tsx', import.meta.url), 'utf8');
+  assert.doesNotMatch(map, /useOpsLive\(\)/, 'no second poll');
+  for (const e of ['🟢', '🔵', '⚪', '🔴', '⏸️']) assert.ok(map.includes(e), e);
 });

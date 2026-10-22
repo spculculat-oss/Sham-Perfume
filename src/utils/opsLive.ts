@@ -9,6 +9,8 @@
  */
 import { BOTS, botOf, type Bot, type BotId } from './shaheenOrg';
 import { JOURNEYS, type Journey } from './opsMap';
+import type { OwnerControls } from './ownerAuthority';
+import type { StateOrders } from './platformState';
 
 // ── Schedules (UTC cron, exactly as in the workflow files) and the other triggers ───────────────────────────
 export const SCHEDULES: Record<string, string[]> = {
@@ -114,7 +116,9 @@ export function currentStep(jobs: GhJob[]): { job: string; step?: string; done: 
 }
 
 // ── Each bot's live state ─────────────────────────────────────────────────────────────────────────────────────
-export type LiveState = 'running' | 'queued' | 'stopped' | 'waiting' | 'ondemand' | 'unknown';
+/** `paused`: stopped on purpose — by the owner, by «دولة المنصة», or by the emergency brake (not a fault). */
+export type LiveState = 'running' | 'queued' | 'paused' | 'stopped' | 'waiting' | 'ondemand' | 'unknown';
+export type PausedBy = 'owner' | 'state' | 'frozen';
 export interface BotLive {
   id: BotId;
   state: LiveState;
@@ -123,6 +127,7 @@ export interface BotLive {
   since?: string;
   next?: string;
   run?: { id: number; url: string; event: string; startedAt: string };
+  pausedBy?: PausedBy;
 }
 /** What the pre-meeting check last saw (fallback for bots whose last run is older than the live list). */
 export interface FallbackRun { conclusion: string | null; status: string; at: string; url?: string }
@@ -133,7 +138,7 @@ const ON_DEMAND_AR: Partial<Record<BotId, string>> = {
 };
 const hours = (iso: string, now: number) => (now - Date.parse(iso)) / 3_600_000;
 
-export function botLive(bot: Bot, input: { latest: Record<string, GhRun>; finished: Record<string, GhRun>; workflows?: GhWorkflow[]; fallback?: FallbackRun; now: number }): BotLive {
+export function botLive(bot: Bot, input: { latest: Record<string, GhRun>; finished: Record<string, GhRun>; workflows?: GhWorkflow[]; fallback?: FallbackRun; now: number; pausedBy?: PausedBy }): BotLive {
   const { now } = input;
   const wf = bot.workflow;
   if (!wf) return { id: bot.id, state: 'ondemand', noteAr: ON_DEMAND_AR[bot.id] || 'بيشتغل عند الطلب' };
@@ -151,6 +156,10 @@ export function botLive(bot: Bot, input: { latest: Record<string, GhRun>; finish
       run: { id: live.id, url: live.html_url, event: live.event, startedAt },
     };
   }
+  // Paused on purpose: its gate stops it before any work (a run already going finishes first, shown above).
+  if (input.pausedBy) {
+    return { id: bot.id, state: 'paused', pausedBy: input.pausedBy, noteAr: PAUSED_AR[input.pausedBy] };
+  }
   const done = input.finished[wf];
   const last: FallbackRun | undefined = done ? { conclusion: done.conclusion, status: done.status, at: done.updated_at, url: done.html_url }
     : input.fallback?.status === 'completed' && input.fallback.conclusion !== 'skipped' ? input.fallback : undefined;
@@ -166,9 +175,72 @@ export function botLive(bot: Bot, input: { latest: Record<string, GhRun>; finish
   return { id: bot.id, state: 'waiting', since: last.at, next, noteAr: next ? 'خلصت شغلها بنجاح ومستنية دورها' : `خلصت شغلها بنجاح — ${trigger || 'بتشتغل عند الطلب'}` };
 }
 
-export function allLive(input: { runs: GhRun[]; workflows?: GhWorkflow[]; fallback?: Partial<Record<BotId, FallbackRun>>; now: number }): BotLive[] {
+export const PAUSED_AR: Record<PausedBy, string> = {
+  owner: 'موقوف بأمر صاحب الموقع', state: 'موقوف بأمر دولة المنصة', frozen: 'موقوف: فرامل الطوارئ شغالة (كل الروبوتات واقفة)',
+};
+/** Who stopped a bot on purpose: its workflow's gate stops it when any robot sharing that workflow is paused. */
+export function pausedByOf(bot: Bot, controls?: OwnerControls, stateOrders?: StateOrders): PausedBy | undefined {
+  if (!bot.workflow) return undefined;
+  if (controls?.frozen) return 'frozen';
+  const together = BOTS.filter((b) => b.workflow === bot.workflow).map((b) => b.id as string);
+  if (controls && together.some((id) => controls.paused.includes(id as BotId))) return 'owner';
+  if (stateOrders && together.some((id) => stateOrders.paused.includes(id))) return 'state';
+  return undefined;
+}
+
+export function allLive(input: { runs: GhRun[]; workflows?: GhWorkflow[]; fallback?: Partial<Record<BotId, FallbackRun>>; now: number; controls?: OwnerControls; stateOrders?: StateOrders }): BotLive[] {
   const latest = latestByWorkflow(input.runs); const finished = lastFinishedByWorkflow(input.runs);
-  return BOTS.map((b) => botLive(b, { latest, finished, workflows: input.workflows, fallback: input.fallback?.[b.id], now: input.now }));
+  return BOTS.map((b) => botLive(b, { latest, finished, workflows: input.workflows, fallback: input.fallback?.[b.id], now: input.now, pausedBy: pausedByOf(b, input.controls, input.stateOrders) }));
+}
+
+// ── «بيعمل إيه دلوقتي» in plain Arabic ───────────────────────────────────────────────────────────────────────
+/** A workflow step's name (English, from the workflow file) as a short Arabic phrase; undefined when unknown. */
+const STEP_AR: [RegExp, string][] = [
+  [/^set up job$/i, 'بيبدأ ويجهّز نفسه'],
+  [/^(post |complete job)/i, 'بيخلّص ويقفل'],
+  [/owner'?s switch|may this robot run|gate/i, 'بيسأل مفتاح صاحب الموقع ودولة المنصة'],
+  [/checkout|check out|read the owner/i, 'بيجيب آخر نسخة من الموقع'],
+  [/set ?up (node|pinned bun|bun)|node\.js|setup-node|setup-bun/i, 'بيجهّز أدوات التشغيل'],
+  [/install|dependencies/i, 'بيجهّز المكتبات'],
+  [/cache/i, 'بيجهّز الملفات المحفوظة'],
+  [/lint|type ?check/i, 'بيراجع الكود'],
+  [/\btests?\b|smoke|check/i, 'بيفحص ويختبر'],
+  [/build/i, 'بيبني الموقع'],
+  [/deploy|pages/i, 'بينشر الموقع'],
+  [/publish|save|commit|push/i, 'بيحفظ نتيجة شغله على الموقع'],
+  [/upload|artifact/i, 'بيرفع الملفات'],
+  [/vote|decide/i, 'الأعضاء بيصوّتوا وبيقرروا'],
+  [/import|scout|discover|fetch|collect|bring/i, 'بيجمع البيانات'],
+  [/translat|languag/i, 'بيترجم'],
+  [/news|lesson/i, 'بيجهّز الأخبار والدروس'],
+  [/review|inspect|patrol|audit/i, 'بيراجع ويفحص'],
+  [/report|summary|meeting|minutes/i, 'بيكتب التقرير'],
+];
+export function stepAr(step?: string): string | undefined {
+  if (!step) return undefined;
+  return STEP_AR.find(([re]) => re.test(step))?.[1];
+}
+/** The bot's job in one short line (the first clause of its duties). */
+export function dutyShort(bot: Bot, max = 110): string {
+  const first = bot.dutiesAr.split(/[؛.]\s/)[0].trim();
+  return first.length > max ? `${first.slice(0, max - 1).trimEnd()}…` : first;
+}
+
+// ── What happened lately ─────────────────────────────────────────────────────────────────────────────────────
+export type FeedKind = 'running' | 'queued' | 'success' | 'failed' | 'cancelled';
+export interface FeedItem { id: number; at: string; workflow: string; bots: BotId[]; kind: FeedKind; event: string; url: string }
+/** The latest runs on main as a log, newest first: who started, who finished well, who failed (skipped runs did nothing). */
+export function activityFeed(runs: GhRun[], limit = 15): FeedItem[] {
+  const out: FeedItem[] = [];
+  for (const r of [...runs].sort((a, b) => b.updated_at.localeCompare(a.updated_at))) {
+    if ((r.head_branch && r.head_branch !== 'main') || r.conclusion === 'skipped') continue;
+    const workflow = fileOf(r.path);
+    const kind: FeedKind = r.status === 'in_progress' ? 'running' : ACTIVE.has(r.status) ? 'queued'
+      : r.conclusion === 'success' || r.conclusion === 'neutral' ? 'success' : r.conclusion === 'cancelled' ? 'cancelled' : 'failed';
+    out.push({ id: r.id, at: kind === 'running' || kind === 'queued' ? r.run_started_at || r.created_at : r.updated_at, workflow, bots: BOTS.filter((b) => b.workflow === workflow).map((b) => b.id), kind, event: r.event, url: r.html_url });
+    if (out.length >= limit) break;
+  }
+  return out;
 }
 
 // ── The scenario moving right now ───────────────────────────────────────────────────────────────────────────
@@ -184,5 +256,5 @@ export function liveScenarios(live: BotLive[]): LiveScenario[] {
   return out.sort((a, b) => b.step - a.step);
 }
 
-export const LIVE_ORDER: LiveState[] = ['running', 'queued', 'stopped', 'waiting', 'unknown', 'ondemand'];
+export const LIVE_ORDER: LiveState[] = ['running', 'queued', 'stopped', 'paused', 'waiting', 'unknown', 'ondemand'];
 export const liveName = (id: BotId) => botOf(id)?.nameAr || id;
