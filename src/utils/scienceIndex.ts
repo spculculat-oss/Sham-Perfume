@@ -31,6 +31,7 @@
 import { SCIENCE_LESSONS, type ScienceLesson, type ScienceTrackId } from '../data/sciences';
 import { topicWords } from './shaheenLibrary';
 import { meaningWords, normalizeQuestion } from './shaheenMemory';
+import { near, stem } from './shaheenReasoning';
 
 /** The words that name a field («نووي»، «زلزال»…): a lesson of that field gets half a point for them. */
 export type ScienceFieldWords = Partial<Record<ScienceTrackId, string[]>>;
@@ -45,6 +46,10 @@ export interface ScienceIndexDoc {
   title: Set<string>;
   /** Words of the title only: the topic it is named after. */
   name: Set<string>;
+  /** The same three sets with the dialect's verb prefixes off («بيحصل» → «حصل»), kept ready for the school's rule. */
+  ownStems: Set<string>;
+  titleStems: Set<string>;
+  nameStems: Set<string>;
   /** Words of its own question, the way the school's similarity reads them, for the similarity score. */
   question: Set<string>;
   /** Its numbers, sorted: «50 مل» never matches «100 مل» (kept ready, so no candidate re-sorts on every question). */
@@ -56,6 +61,10 @@ export interface ScienceIndex {
   byId: Map<string, ScienceIndexDoc>;
   /** word → positions of the lessons that carry it */
   postings: Map<string, number[]>;
+  /** stem of a word → positions of the lessons that carry a word with it («بيحصل»/«بتحصل» → «حصل») */
+  stemPostings: Map<string, number[]>;
+  /** first three letters of a stem → the stems that start with them */
+  stemBuckets: Map<string, string[]>;
   /** first three letters of a word → every indexed word that starts with them (prefix rule, no full scan) */
   buckets: Map<string, string[]>;
   /** normalised question / taught wording → lesson position (the «بطاقة السؤال» fast path) */
@@ -65,7 +74,18 @@ export interface ScienceIndex {
 }
 
 /** Words the school ignores when a question names its subject (same rule as the school's `hits`). */
-const hitsStem = (word: string, stem: string) => (stem.length <= 3 ? word === stem : word === stem || word.startsWith(stem));
+const hitsStem = (word: string, stemWord: string) => (stemWord.length <= 3 ? word === stemWord : word === stemWord || word.startsWith(stemWord));
+/** The dialect's verb prefix («بيحصل»، «بتطلع»): the school reads it off and compares the stems. */
+const DIALECT = /^[به][يتن]/u;
+const stemmed = (words: Set<string>, cache: Map<string, string>) => {
+  const out = new Set<string>();
+  for (const word of words) {
+    let value = cache.get(word);
+    if (value === undefined) { value = stem(word); cache.set(word, value); }
+    if (value) out.add(value);
+  }
+  return out;
+};
 const PREFIX = 3;
 
 /** The wordings the school teaches for a lesson, so a visitor's usual phrasing answers with no scoring. */
@@ -80,8 +100,11 @@ export function buildScienceIndex(lessons: ScienceLesson[] = SCIENCE_LESSONS, fi
   const docs: ScienceIndexDoc[] = [];
   const byId = new Map<string, ScienceIndexDoc>();
   const postings = new Map<string, number[]>();
+  const stemPostings = new Map<string, number[]>();
   const bucketWords = new Map<string, Set<string>>();
+  const stemBucketWords = new Map<string, Set<string>>();
   const exact = new Map<string, number>();
+  const stemCache = new Map<string, string>();
 
   lessons.forEach((lesson, pos) => {
     const ownList = topicWords(`${lesson.titleAr} ${lesson.questionAr} ${lesson.keywords.join(' ')}`);
@@ -91,6 +114,9 @@ export function buildScienceIndex(lessons: ScienceLesson[] = SCIENCE_LESSONS, fi
       own: new Set(ownList),
       title: new Set(titleList),
       name: new Set(topicWords(lesson.titleAr)),
+      ownStems: stemmed(new Set(ownList), stemCache),
+      titleStems: stemmed(new Set(titleList), stemCache),
+      nameStems: stemmed(new Set(topicWords(lesson.titleAr)), stemCache),
       question: new Set(meaningWords(lesson.questionAr)),
       questionDigits: meaningWords(lesson.questionAr).filter((w) => /\d/.test(w)).sort().join(' '),
     };
@@ -105,6 +131,13 @@ export function buildScienceIndex(lessons: ScienceLesson[] = SCIENCE_LESSONS, fi
         if (words) words.add(word); else bucketWords.set(key, new Set([word]));
       }
     }
+    for (const value of doc.ownStems) {
+      const list = stemPostings.get(value);
+      if (list) { if (list[list.length - 1] !== pos) list.push(pos); } else stemPostings.set(value, [pos]);
+      const key = value.slice(0, PREFIX);
+      const words = stemBucketWords.get(key);
+      if (words) words.add(value); else stemBucketWords.set(key, new Set([value]));
+    }
     for (const wording of scienceWordings(lesson)) {
       const key = normalizeQuestion(wording);
       if (key.length >= 4 && !exact.has(key)) exact.set(key, pos);
@@ -113,8 +146,10 @@ export function buildScienceIndex(lessons: ScienceLesson[] = SCIENCE_LESSONS, fi
 
   const buckets = new Map<string, string[]>();
   for (const [key, words] of bucketWords) buckets.set(key, [...words]);
+  const stemBuckets = new Map<string, string[]>();
+  for (const [key, words] of stemBucketWords) stemBuckets.set(key, [...words]);
 
-  return { docs, byId, postings, buckets, exact, fieldWords, buildMs: performance.now() - started };
+  return { docs, byId, postings, stemPostings, buckets, stemBuckets, exact, fieldWords, buildMs: performance.now() - started };
 }
 
 /* ------------------------------------------ the query engine ------------------------------------------ */
@@ -138,6 +173,18 @@ const cacheOf = (index: ScienceIndex) => {
   if (!cache) { cache = { map: new Map() }; CACHES.set(index, cache); }
   return cache;
 };
+
+/**
+ * The stems that stand for a question word with the dialect's prefix («بتحصل» → «حصل», «بيحصل»), from one bucket —
+ * the same rule the school reads off every word, without walking any lesson's vocabulary.
+ */
+function matchingStems(index: ScienceIndex, word: string): string[] {
+  if (!DIALECT.test(word)) return [];
+  const own = stem(word);
+  if (!own) return [];
+  const out = own.length >= PREFIX ? (index.stemBuckets.get(own.slice(0, PREFIX)) || []).filter((x) => x !== own && near(x, own)) : [];
+  return [own, ...out];
+}
 
 /** 0…1: how much two questions say the same thing, computed on the lesson's already-indexed words. */
 function diceWith(asked: Set<string>, askedDigits: string, doc: ScienceIndexDoc): number {
@@ -187,6 +234,7 @@ export function scienceHits(index: ScienceIndex, question: string, options: { fi
     const askedMeaning = new Set(meaningWords(question));
     const askedDigits = [...askedMeaning].filter((w) => /\d/.test(w)).sort().join(' ');
     const forms = new Map<string, string[]>();
+    const dialect = new Map<string, string[]>();
     // Every lesson that shares a word (or a stem of it) with the question — nothing else can score above zero.
     const candidates = new Set<number>();
     for (const word of asked) {
@@ -194,20 +242,24 @@ export function scienceHits(index: ScienceIndex, question: string, options: { fi
       const variants = formsOf(index, word);
       forms.set(word, variants);
       for (const variant of variants) for (const pos of index.postings.get(variant) || []) candidates.add(pos);
+      const stems = matchingStems(index, word);
+      dialect.set(word, stems);
+      for (const value of stems) for (const pos of index.stemPostings.get(value) || []) candidates.add(pos);
     }
     const field = options.field as ScienceTrackId | undefined;
     for (const pos of candidates) {
       const doc = index.docs[pos]!;
-      const foundIn = (word: string, set: Set<string>) => set.has(word) || (forms.get(word) || []).some((f) => set.has(f));
-      const direct = asked.filter((word) => foundIn(word, doc.own));
+      const foundIn = (word: string, set: Set<string>, stems: Set<string>) => set.has(word) || (forms.get(word) || []).some((f) => set.has(f))
+        || (dialect.get(word) || []).some((s) => stems.has(s));
+      const direct = asked.filter((word) => foundIn(word, doc.own, doc.ownStems));
       if (!direct.length) continue;
       const fieldWords = index.fieldWords[doc.lesson.track] || [];
       // A word of the lesson's field («نووي» for a nuclear lesson) counts half: it says the field, not the topic.
       const directSet = new Set(direct);
       const half = 0.5 * asked.filter((word) => !directSet.has(word) && fieldWords.some((stem) => hitsStem(word, stem))).length;
       const shared = direct.length + half;
-      const inTitle = asked.filter((word) => foundIn(word, doc.title)).length;
-      const named = asked.some((word) => foundIn(word, doc.name));
+      const inTitle = asked.filter((word) => foundIn(word, doc.title, doc.titleStems)).length;
+      const named = asked.some((word) => foundIn(word, doc.name, doc.nameStems));
       let relevance = 0.55 * (shared / asked.length) + 0.25 * diceWith(askedMeaning, askedDigits, doc)
         + 0.15 * Math.min(1, inTitle / 2) + (named ? 0.1 : 0);
       if (field && doc.lesson.track === field) relevance += 0.1;

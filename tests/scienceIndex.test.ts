@@ -47,7 +47,8 @@ test('the index compiles the whole curriculum once: every lesson, its words and 
 
 test('the index gives exactly the reviewed score: the fast answer is not a different answer', () => {
   for (const lesson of SCIENCE_LESSONS) {
-    for (const question of [lesson.questionAr, `اشرحلي ${lesson.titleAr}`, 'ايه هي طبقات الأرض؟', 'ليه بتحصل الزلازل؟']) {
+    for (const question of [lesson.questionAr, `اشرحلي ${lesson.titleAr}`, 'ايه هي طبقات الأرض؟', 'ليه بتحصل الزلازل؟',
+      'بيتكون البركان ازاي', 'بتتكون الأعاصير امتى', 'هيحصل ايه في النفايات المشعة']) {
       const fast = scienceHits(index, question).find((hit) => hit.lesson.id === lesson.id)?.relevance ?? 0;
       const reviewed = scoreLessonNaive(lesson, question);
       assert.ok(Math.abs(fast - reviewed) < 1e-9, `${lesson.id} / «${question}»: index ${fast} ≠ reviewed ${reviewed}`);

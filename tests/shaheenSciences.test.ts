@@ -7,7 +7,7 @@ import { learnSciences, scienceCovered, scienceDocs, scienceParaphrases, science
 const SENSITIVE = new Set(['war-studies', 'electronic-warfare', 'nuclear', 'biosafety', 'space', 'chemistry', 'computing', 'agriculture']);
 
 test('sciences: nine tracks, a real curriculum in every one', () => {
-  assert.equal(SCIENCE_TRACKS.length, 16);
+  assert.equal(SCIENCE_TRACKS.length, 17);
   assert.ok(SCIENCE_LESSONS.length >= 60, 'the curriculum is not a handful of lessons');
   const ids = new Set<string>();
   for (const track of SCIENCE_TRACKS) {
@@ -46,7 +46,7 @@ test('sciences: the track is studied from the library alone, and the report foll
   const report = scienceReport(memory, '2026-10-22T00:00:00.000Z');
   assert.equal(report.score, 100);
   assert.equal(report.learned, report.total);
-  assert.equal(report.tracks.length, 16);
+  assert.equal(report.tracks.length, 17);
   assert.ok(report.tracks.every((t) => t.covered === t.total && t.score === 100));
 
   const again = learnSciences(memory);

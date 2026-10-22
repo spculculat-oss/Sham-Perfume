@@ -15,13 +15,15 @@ import { MATH_LESSONS } from './math';
 import { COMPUTING_LESSONS } from './computing';
 import { NUTRITION_LESSONS } from './nutrition';
 import { AGRICULTURE_LESSONS } from './agriculture';
+import { LOGIC_LESSONS } from './logic';
 
 export * from './types';
 
 /**
- * «علوم الأرض عند شاهين»: the sixteen tracks, in the order he studies them. The first four are the ones visitors
+ * «علوم الأرض عند شاهين»: the seventeen tracks, in the order he studies them. The first four are the ones visitors
  * ask about most (body, animals, space, earth); the rest are studied in the same run. The last seven (chemistry,
- * physics, biology, mathematics, computing, nutrition, agriculture) were added for «وكيل شاهين»'s experts (2026-10-22).
+ * physics, biology, mathematics, computing, nutrition, agriculture) were added for «وكيل شاهين»'s experts (2026-10-22). The seventeenth, logic, teaches every expert how to read a question and
+ * answer it soundly (the owner's request: «ضيفله علم التحليل المنطقي والرد المنطقي»).
  */
 export const SCIENCE_TRACKS: ScienceTrack[] = [
   {
@@ -119,6 +121,12 @@ export const SCIENCE_TRACKS: ScienceTrack[] = [
     summaryAr: 'التربة والتسميد، الري وترشيد المياه، المحاصيل والمواسم، المكافحة المتكاملة للآفات، الزراعة المنزلية، والنباتات العطرية والطبية.',
     boundaryAr: 'زراعة آمنة: مفيش خلط مبيدات بنفسك ولا جرعات خارج الملصق، والمبيدات المسجلة بس وبإرشاد مهندس زراعي.',
     lessons: AGRICULTURE_LESSONS,
+  },
+  {
+    id: 'logic', titleAr: 'التحليل المنطقي والرد المنطقي', titleEn: 'Logical analysis and reasoning',
+    summaryAr: 'التفكير المنطقي والنقدي، الاستنتاج والاستقراء، الحجة السليمة، المغالطات، الارتباط والسببية، الشرط اللازم والكافي، تحليل السؤال، وبناء الرد المقنع.',
+    boundaryAr: 'منطق للفهم والحوار بأمانة: مفيش تلاعب ولا خداع ولا أساليب ضغط نفسي لإقناع الناس بالباطل.',
+    lessons: LOGIC_LESSONS,
   },
 ];
 
