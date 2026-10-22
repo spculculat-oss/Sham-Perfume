@@ -12,6 +12,7 @@ import { createResearchSpider } from '../src/utils/researchSpider';
 import express from 'express';
 import { liveStoreCatalog, newsContext, supervisorGuidance, trainedKnowledge } from './core/liveData';
 import { SUPPORTED_LANGUAGES } from '../src/types/i18n';
+import { localizeReply, needsTranslation, translationInstruction, TranslationCache, type TranslateFn } from './core/replyLanguage';
 import type { SupportedLanguage } from '../src/types/i18n';
 import { normalizeMediaBlocks } from '../src/utils/mediaBlock';
 import { stripOpeningGreeting } from '../src/utils/shaheenText';
@@ -180,6 +181,11 @@ export function isSimpleQuestion(input: Pick<ChatRequest, 'message' | 'conversat
 export const AUTO_ENGINE_MS = 32_000;
 export const AUTO_TOTAL_MS = 44_000;
 
+/** «مترجم ردود شاهين»: the most a translation may take, and the whole answer's limit (Vercel stops at 60 s). */
+const TRANSLATE_MS = 15_000;
+/** How close a saved question must be to answer a new wording of it while the platforms work (1 = the same words). */
+export const NEAR_SAME = 0.9;
+const CHAT_BUDGET_MS = 55_000;
 export const liteModel = (env: Environment) => env.GEMINI_LITE_MODEL?.trim() || 'gemini-flash-lite-latest';
 
 export interface ExecuteOptions {
@@ -388,6 +394,22 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
   const linkFlag = env.SHAM_AGENT_LINK?.trim().toLowerCase();
   const linkOn = options.agentLink ?? (linkFlag === 'off' || linkFlag === '0' ? false
     : agentLinkOn(readStateOrders(bundledStateOrders), readControls(bundledControls)));
+  // «مترجم ردود شاهين»: his own replies (Arabic/English) translated by whichever platform can, checked and cached.
+  const translations = new TranslationCache();
+  const translateReply: TranslateFn = async (text, lang, signal) => {
+    if (platformsOff(env)) return undefined;
+    const { shaheen } = await settings();
+    const configured = new Set(engineStatuses(env).filter((e) => e.configured && e.kind !== 'own').map((e) => e.id));
+    for (const provider of health.order(shaheen.engines.filter((id) => configured.has(id)))) {
+      if (signal.aborted || health.parkedUntil(provider)) continue;
+      const model = provider === 'gemini' ? liteModel(env) : shaheen.models[provider] || undefined;
+      const out = await callEngine(provider, translationInstruction(lang), [{ role: 'user', text }], {
+        env, fetch: options.fetch, signal, temperature: 0.1, model, maxTokens: Math.min(4096, Math.ceil(text.length / 1.5) + 256), maxChars: 24000,
+      }).catch(() => undefined);
+      if (out?.trim()) return out;
+    }
+    return undefined;
+  };
   // The store as his brain reads it: loaded once per instance, refreshed every 10 minutes.
   let storeCache: { at: number; list: Promise<StoreProduct[]> } | undefined;
   const products = options.catalog || (() => {
@@ -444,6 +466,20 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
 
   router.post('/chat', async (req, res) => {
     const started = Date.now();
+    // «مترجم ردود شاهين»: every reply in the visitor's language (his country's or the one he picked on the site).
+    const target = typeof req.body?.language === 'string' && SUPPORTED_LANGUAGES.some((l) => l.code === req.body.language) ? req.body.language as SupportedLanguage : undefined;
+    if (target && target !== 'ar') {
+      const send = res.json.bind(res);
+      const asked = typeof req.body?.message === 'string' ? req.body.message : '';
+      res.json = ((body: unknown) => {
+        const reply = (body as { reply?: unknown } | null)?.reply;
+        if (typeof reply !== 'string' || !needsTranslation(reply, target, asked)) return send(body);
+        void localizeReply(reply, target, asked, translateReply, translations, Math.min(TRANSLATE_MS, CHAT_BUDGET_MS - (Date.now() - started)))
+          .catch(() => ({ reply, translated: false, changed: false }))
+          .then((out) => { if (!res.destroyed && !res.headersSent) send(out.changed ? { ...(body as object), reply: out.reply, ...(out.translated ? { translated: target } : {}) } : body); });
+        return res;
+      }) as typeof res.json;
+    }
     const controller = new AbortController();
     const cancel = () => { if (!res.writableEnded) controller.abort(); };
     let chatInput: { input: ChatRequest; mode: string; useMemory: boolean; agent?: AgentResult; recorded?: boolean; opening: boolean; ownTried: boolean } | undefined;
@@ -548,9 +584,12 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       // With the platforms closed, «وكيل شاهين» (src/utils/shaheenAgent.ts) answers instead of the old-answer shortcut:
       // his memory is one source among the school's experts, not the answer by default.
       if (useMemory && memory && opening && !own) {
-        const hit = await memory.recall(input.message, input.language, mode).catch(() => undefined);
+        // The usual answers first: the same question, or one worded almost the same («العطر بيثبت ازاي؟» after «ازاي
+        // العطر يثبت؟») — the platforms are kept for questions that are really new.
+        const hit = await memory.recall(input.message, input.language, mode).catch(() => undefined)
+          || (mode === 'auto' && !isTimeBound(input.message) ? await memory.recallSimilar(input.message, input.language, NEAR_SAME).catch(() => undefined) : undefined);
         if (hit) {
-          if (!res.destroyed) res.json({ ...publicChatResult({ reply: hit.entry.answer, mode }, input.message), memory: 'exact' });
+          if (!res.destroyed) res.json({ ...publicChatResult({ reply: hit.entry.answer, mode }, input.message), memory: hit.exact ? 'exact' : 'similar' });
           runtime?.record({ ms: Date.now() - started, status: 200 });
           return;
         }

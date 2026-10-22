@@ -62,9 +62,9 @@ export class ShaheenMemory {
   async all(): Promise<MemoryFile> { return mergeMemory(await this.learned(), await this.shared()); }
 
   /** When no engine answers: the closest remembered question (learned or shared, any style). */
-  async recallSimilar(question: string, lang: string): Promise<MemoryHit | undefined> {
+  async recallSimilar(question: string, lang: string, threshold?: number): Promise<MemoryHit | undefined> {
     const all = mergeMemory(await this.learned(), await this.shared());
-    const best = recallSimilar(all, question, lang);
+    const best = recallSimilar(all, question, lang, threshold);
     if (!best) return undefined;
     await this.used({ ...best.entry });
     return { entry: best.entry, from: 'learned', exact: best.score >= 1, score: best.score };
