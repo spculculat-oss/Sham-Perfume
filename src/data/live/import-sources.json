@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T13:07:28.280Z",
+ "updatedAt": "2026-10-22T13:23:38.497Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,17 @@
  ],
  "runs": [
   {
+   "at": "2026-10-22T13:23:38.497Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-22T13:07:28.280Z",
    "mode": "self",
    "found": 0,
@@ -7931,28 +7942,6 @@
     "✗ fragrancebuy.ca: الموقع لا يفتح (HTTP 403)",
     "✗ maxaromas.com: الموقع لا يفتح",
     "✗ theperfumeshop.com: الموقع لا يفتح (HTTP 403)"
-   ]
-  },
-  {
-   "at": "2026-10-19T00:56:02.060Z",
-   "mode": "self",
-   "found": 11,
-   "vetted": 10,
-   "activated": 2,
-   "rejected": 0,
-   "notes": [
-    "  ↳ escentual.com: CV 93/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✓ escentual.com (CV 93/100): 4662 perfumes, 3/6 pages read without AI, USD (1 = 53.5247 EGP) — added to the importer",
-    "  ↳ luckyscent.com: CV 81/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✗ luckyscent.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ abdulsamadalqurashi.com: الموقع لا يفتح",
-    "  ↳ nabeel.com: CV 79/100 [age,https,contact,identity,returns,shipping,privacy,terms,social]",
-    "✗ nabeel.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "  ↳ alharamainperfumes.com: CV 45/100 [age,https,contact,social] (pages: /contact-us→404 /returns→404 /about-us/→200)",
-    "✗ alharamainperfumes.com: ملف الثقة ضعيف (45/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الإرجاع والاسترداد، وسائل دفع معروفة",
-    "  ↳ myperfumeshop.ae: CV 60/100 [https,contact,returns,shipping,privacy,terms,payment,platform] on Shopify",
-    "✗ myperfumeshop.ae: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
-    "✗ perfumeboxuae.com: الموقع لا يفتح"
    ]
   }
  ]
