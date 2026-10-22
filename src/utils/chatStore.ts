@@ -120,6 +120,9 @@ export const storeCatalogFallback: CatalogFallback = async (text, lang, history 
 
 /** Under a formula he designed in the browser: the store's ready perfumes that share its notes. */
 const designWithStore = async (text: string, lang: SupportedLanguage, previous?: string): Promise<string | undefined> => {
+  // A cosmetic formula (cream, serum, balm …) first: the perfume designer steps aside for it.
+  const cosmetic = await import('./cosmeticFormulator').then((m) => m.cosmeticFor(text, lang)).catch(() => undefined);
+  if (cosmetic) return cosmetic.reply;
   const d = await import('./shaheenDesigner').then((m) => m.designFor(text, lang, previous)).catch(() => undefined);
   if (!d?.design) return d?.reply;
   try {

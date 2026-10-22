@@ -24,7 +24,8 @@ export type ScienceTrackId =
   | 'computing'
   | 'nutrition'
   | 'agriculture'
-  | 'logic';
+  | 'logic'
+  | 'cosmetics';
 
 export interface ScienceLesson {
   /** Stable id, also the filename-safe key used in the report. */

@@ -22,6 +22,8 @@ const KEYS = Object.keys(UI_TEXT) as (keyof typeof UI_TEXT)[];
 
 // The screens that were de-Arabised in this batch.
 const CLEANED = [
+  'CosmeticsHub.tsx',
+  'SectionsGateway.tsx',
   'FragrancePyramidGraphic.tsx',
   'PerfumeSpraySimulator.tsx',
   'ProductCatalog.tsx',

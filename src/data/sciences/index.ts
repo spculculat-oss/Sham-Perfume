@@ -16,14 +16,16 @@ import { COMPUTING_LESSONS } from './computing';
 import { NUTRITION_LESSONS } from './nutrition';
 import { AGRICULTURE_LESSONS } from './agriculture';
 import { LOGIC_LESSONS } from './logic';
+import { COSMETICS_LESSONS } from './cosmetics';
 
 export * from './types';
 
 /**
- * «علوم الأرض عند شاهين»: the seventeen tracks, in the order he studies them. The first four are the ones visitors
+ * «علوم الأرض عند شاهين»: the eighteen tracks, in the order he studies them. The first four are the ones visitors
  * ask about most (body, animals, space, earth); the rest are studied in the same run. The last seven (chemistry,
  * physics, biology, mathematics, computing, nutrition, agriculture) were added for «وكيل شاهين»'s experts (2026-10-22). The seventeenth, logic, teaches every expert how to read a question and
- * answer it soundly (the owner's request: «ضيفله علم التحليل المنطقي والرد المنطقي»).
+ * answer it soundly (the owner's request: «ضيفله علم التحليل المنطقي والرد المنطقي»). The eighteenth, cosmetics,
+ * came with the cosmetics section (2026-10-22: «قسم مستحضرات التجميل … بنفس معايير العطور»).
  */
 export const SCIENCE_TRACKS: ScienceTrack[] = [
   {
@@ -127,6 +129,12 @@ export const SCIENCE_TRACKS: ScienceTrack[] = [
     summaryAr: 'التفكير المنطقي والنقدي، الاستنتاج والاستقراء، الحجة السليمة، المغالطات، الارتباط والسببية، الشرط اللازم والكافي، تحليل السؤال، وبناء الرد المقنع.',
     boundaryAr: 'منطق للفهم والحوار بأمانة: مفيش تلاعب ولا خداع ولا أساليب ضغط نفسي لإقناع الناس بالباطل.',
     lessons: LOGIC_LESSONS,
+  },
+  {
+    id: 'cosmetics', titleAr: 'علم مستحضرات التجميل', titleEn: 'Cosmetic science',
+    summaryAr: 'تركيب الجلد وحاجزه، المرطبات والمستحلبات، المواد الحافظة والحموضة، قراءة المكونات، المواد الفعالة، الحماية من الشمس، علم الشعر، الزيوت العطرية، والسلامة والقانون.',
+    boundaryAr: 'تجميل للعناية والفهم: مفيش تشخيص ولا علاج أمراض جلدية، ولا واقي شمس منزلي، ولا كريمات تفتيح فيها زئبق أو كورتيزون أو هيدروكينون، ولا تركيبة مائية من غير مادة حافظة.',
+    lessons: COSMETICS_LESSONS,
   },
 ];
 
