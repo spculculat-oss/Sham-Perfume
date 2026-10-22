@@ -1,9 +1,9 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T08:30:54.531Z",
- "publishedAt": "2026-10-22T08:30:54.531Z",
- "signature": "puduq2",
- "summaryAr": "وردية الجودة والإدارة 08:30 UTC: 5 اختبار عملي (5 سليم)، 6 مشكلة مفتوحة — 0 بتتصلح آلياً، 4 عند شاهين، 0 مهمة تطوير، 2 محتاجة قرارك؛ 3 مراجعة خبير (3 اتقبلت، 0 اترفضت)؛ 0 اتصلحت من آخر دورية.",
+ "updatedAt": "2026-10-22T08:32:52.239Z",
+ "publishedAt": "2026-10-22T08:32:52.239Z",
+ "signature": "1di8zgq",
+ "summaryAr": "وردية الجودة والإدارة 08:32 UTC: 2 اختبار عملي (2 سليم)، 6 مشكلة مفتوحة — 0 بتتصلح آلياً، 4 عند شاهين، 0 مهمة تطوير، 2 محتاجة قرارك؛ 3 مراجعة خبير (3 اتقبلت، 0 اترفضت)؛ 0 اتصلحت من آخر دورية.",
  "health": 92,
  "bots": [
   {
@@ -16,15 +16,15 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-22T05:53:39Z",
-   "lastRunAt": "2026-10-22T08:30:42Z",
+   "lastRunAt": "2026-10-22T08:32:34Z",
    "lastRunOk": true
   },
   {
    "id": "council",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-10-22T05:51:16Z",
-   "lastRunAt": "2026-10-22T05:51:16Z",
+   "reviewed": "2026-10-22T08:32:18Z",
+   "lastRunAt": "2026-10-22T08:32:18Z",
    "lastRunOk": true
   },
   {
@@ -47,8 +47,8 @@
    "id": "patrol",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-10-22T08:24:19Z",
-   "lastRunAt": "2026-10-22T08:24:19Z",
+   "reviewed": "2026-10-22T08:31:01Z",
+   "lastRunAt": "2026-10-22T08:31:01Z",
    "lastRunOk": true
   },
   {
@@ -199,8 +199,8 @@
    "id": "doctor",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-10-22T08:12:51Z",
-   "lastRunAt": "2026-10-22T08:12:51Z",
+   "reviewed": "2026-10-22T08:31:57Z",
+   "lastRunAt": "2026-10-22T08:31:57Z",
    "lastRunOk": true
   },
   {
@@ -334,7 +334,7 @@
    "checked": 2,
    "failed": 0,
    "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا",
-   "at": "2026-10-22T08:30:54.531Z",
+   "at": "2026-10-22T08:32:52.239Z",
    "nameAr": "الموقع الأساسي يفتح",
    "nameEn": "Main site opens"
   },
@@ -376,7 +376,7 @@
    "checked": 1,
    "failed": 0,
    "noteAr": "الخادم بيرد",
-   "at": "2026-10-22T08:30:54.531Z",
+   "at": "2026-10-22T08:32:52.239Z",
    "nameAr": "محرك الموقع (الخادم)",
    "nameEn": "Site engine (server)"
   },
@@ -411,7 +411,7 @@
    "level": "warn",
    "textAr": "السكرتير — مشرف شاهين: أدوات ذكاء اصطناعي ضعيفة: شات الخبير شاهين (5)",
    "since": "2026-10-22T05:18:29.694Z",
-   "lastSeen": "2026-10-22T08:30:54.531Z",
+   "lastSeen": "2026-10-22T08:32:52.239Z",
    "status": "shaheen",
    "nextAr": "مفيش إصلاح آلي آمن — شاهين شخّصها: رصد السكرتير تراجعاً في كفاءة أو تقييمات شات الخبير شاهين بعدد 5 حالات ضعف، ويرجح أن السبب يعود لتعثر في استجابات واجهة الذكاء الاصطناعي، أو تجاوز حدود الاستهلا",
    "tries": [
@@ -452,7 +452,7 @@
    "level": "warn",
    "textAr": "المراجع الخارجي: 1 مهمة اتقفلت ولسه مش متصلحة على الموقع: إصلاح فجوات السيو التقني وهيكل صفحات الموقع",
    "since": "2026-10-20T23:12:25.189Z",
-   "lastSeen": "2026-10-22T08:30:54.531Z",
+   "lastSeen": "2026-10-22T08:32:52.239Z",
    "status": "shaheen",
    "nextAr": "مفيش إصلاح آلي آمن — شاهين شخّصها: المهمة أُغلقت نظرياً لكن التغييرات لم تنعكس على الموقع الحي، إما لعدم إعادة بناء ونشر صفحات الموقع (GitHub Pages) بعد تعديل السيو، أو لوجود نواقص بنيوية في كود ",
    "tries": [
@@ -779,6 +779,71 @@
   }
  ],
  "reviews": [
+  {
+   "bot": "council",
+   "reviewerAr": "خبير فحص قرارات الاجتماع",
+   "reviewerEn": "Meeting decisions reviewer",
+   "runAt": "2026-10-22T08:32:18Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 4.9 ساعة"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "patrol",
+   "reviewerAr": "خبير فحص الدورية بالتناوب (فحص وإصلاح ومراجعة خبير)",
+   "reviewerEn": "Rotating patrol (check, fix, expert review) reviewer",
+   "runAt": "2026-10-22T08:31:01Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 0 ساعة"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "doctor",
+   "reviewerAr": "خبير فحص الصيانة",
+   "reviewerEn": "Maintenance reviewer",
+   "runAt": "2026-10-22T08:31:57Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "محرك الموقع (الخادم)",
+     "level": "ok",
+     "noteAr": "الخادم بيرد (1 اختبار)"
+    },
+    {
+     "nameAr": "الموقع الأساسي يفتح",
+     "level": "ok",
+     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
+    }
+   ],
+   "defects": []
+  },
   {
    "bot": "patrol",
    "reviewerAr": "خبير فحص الدورية بالتناوب (فحص وإصلاح ومراجعة خبير)",
@@ -1446,72 +1511,12 @@
     }
    ],
    "defects": []
-  },
-  {
-   "bot": "precheck",
-   "reviewerAr": "خبير فحص الفحص الشامل",
-   "reviewerEn": "Full-check reviewer",
-   "runAt": "2026-10-22T03:39:13Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "patrol",
-   "reviewerAr": "خبير فحص الدورية بالتناوب (فحص وإصلاح ومراجعة خبير)",
-   "reviewerEn": "Rotating patrol (check, fix, expert review) reviewer",
-   "runAt": "2026-10-22T04:19:35Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 1 ساعة"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "doctor",
-   "reviewerAr": "خبير فحص الصيانة",
-   "reviewerEn": "Maintenance reviewer",
-   "runAt": "2026-10-22T05:13:19Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "محرك الموقع (الخادم)",
-     "level": "ok",
-     "noteAr": "الخادم بيرد (1 اختبار)"
-    },
-    {
-     "nameAr": "الموقع الأساسي يفتح",
-     "level": "ok",
-     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
-    }
-   ],
-   "defects": []
   }
  ],
  "reviewedRuns": {
-  "council": "2026-10-22T05:51:16Z",
+  "council": "2026-10-22T08:32:18Z",
   "precheck": "2026-10-22T06:47:19Z",
-  "doctor": "2026-10-22T08:12:51Z",
+  "doctor": "2026-10-22T08:31:57Z",
   "verifier": "2026-10-22T07:35:07Z",
   "live_check": "2026-10-22T08:24:39Z",
   "keys": "2026-10-22T03:39:21Z",
@@ -1531,7 +1536,7 @@
   "design_audit": "2026-10-22T06:47:40Z",
   "visitor_tour": "2026-10-22T06:47:40Z",
   "school": "2026-10-22T07:01:04Z",
-  "patrol": "2026-10-22T08:24:19Z",
+  "patrol": "2026-10-22T08:31:01Z",
   "teacher": "2026-10-22T07:01:04Z",
   "owner_desk": "2026-10-22T05:53:39Z"
  },
