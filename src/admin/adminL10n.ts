@@ -1465,6 +1465,24 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   "{a} موافقة، {r} رفض، {v} فيتو": { en: "{a} for, {r} against, {v} vetoes" },
   "آخر تحديث: {at}": { en: "Last update: {at}" },
   "صحة الأدوات {h}%": { en: "Tools health {h}%" },
+  // ── «غرفة التحكم الحية» (OpsControlRoom) ──
+  'درس جديد دخل المدرسة بعد المراجعة: {q}': { en: "New reviewed lesson entered the school: {q}" },
+  'دروس في ذاكرة شاهين': { en: "Lessons in Shaheen's memory" },
+  'أسئلة مستنية المذاكرة': { en: "Questions waiting to be studied" },
+  'غرفة التحكم الحية': { en: "Live control room" },
+  'GitHub طلب استراحة — هيكمل {time}': { en: "GitHub asked for a break — resumes at {time}" },
+  'آخر تحديث {time}': { en: "Last update {time}" },
+  'بيجيب الحالة…': { en: "Loading the status…" },
+  'خروج من ملء الشاشة': { en: "Exit full screen" },
+  'ملء الشاشة': { en: "Full screen" },
+  'صاحب الموقع فوق الكل ← دولة المنصة ← شاهين المدير العام ووكيله ← الأقسام ومدرسة شاهين ← الروبوتات والخبراء السبعتاشر. النقط المتحركة = شغل ماشي دلوقتي: تقارير طالعة لفوق، وموافقات نازلة، وأسئلة رايحة للخبراء ودروس راجعة للمدرسة.': { en: "The owner above all → the Platform State → Shaheen the manager and his agent → the departments and Shaheen's school → the robots and the seventeen experts. Moving dots = work happening now: reports going up, approvals coming down, questions going to the experts and lessons coming back to the school." },
+  'فرع المعرفة: المدرسة وخبراؤها': { en: "Knowledge branch: the school and its experts" },
+  'فرع التشغيل: الأقسام وروبوتاتها': { en: "Operations branch: the departments and their robots" },
+  'بيحصل دلوقتي': { en: "Happening now" },
+  'مفيش روبوت شغال في اللحظة دي — كله مستني دوره.': { en: "No robot is working this minute — all are waiting for their turn." },
+  'المدرسة شغالة: الأسئلة رايحة للخبراء والدروس المراجَعة راجعة لذاكرة شاهين.': { en: "The school is running: questions go to the experts and reviewed lessons come back to Shaheen's memory." },
+  'سجل النشاط': { en: "Activity log" },
+  'لسه مفيش نشاط متسجل.': { en: "No activity recorded yet." },
 };
 
 let currentLang: SupportedLanguage = 'ar';

@@ -39,7 +39,7 @@ export type BotId =
   | 'news' | 'seo' | 'librarian' | 'teacher' | 'researcher'
   | 'chat' | 'library' | 'languages' | 'design_audit' | 'design_expert' | 'visitor_tour' | 'inspect'
   | 'school' | 'doctor' | 'verifier' | 'live_check' | 'keys' | 'intake' | 'studio_bridge' | 'studio_zip' | 'deploy' | 'admin_agent'
-  | 'chat_agent' | 'owner_desk' | 'state';
+  | 'chat_agent' | 'owner_desk' | 'state' | 'academy';
 
 export interface Bot {
   id: BotId;
@@ -93,6 +93,7 @@ export const BOTS: Bot[] = [
   { id: 'inspect', nameAr: 'فاحص إجابات شاهين', nameEn: 'Answer inspector', dept: 'experience', workflow: 'shaheen-inspect.yml', dutiesAr: 'يسأل شاهين أسئلة حقيقية ويفحص الرد (عند الطلب).' },
   // ── Reliability & self-reliance ──
   { id: 'school', nameAr: 'مدرسة شاهين (الاعتماد على النفس)', nameEn: "Shaheen's school", dept: 'reliability', workflow: 'shaheen-discover.yml', report: 'shaheen-school.json', everyHours: 6, aiTools: ['shaheen_school'], dutiesAr: 'يمتحن شاهين نفسه ويذاكر ويحفظ في ذاكرته عشان يرد لوحده.' },
+  { id: 'academy', nameAr: 'أكاديمية شاهين (المدرسة على مدار الساعة)', nameEn: "Shaheen's academy (school around the clock)", dept: 'reliability', workflow: 'shaheen-school-clock.yml', report: 'shaheen-school.json', everyHours: 1, dutiesAr: 'كل ساعة يشوف إيه الباقي على خبراء المدرسة السبعتاشر من منهجهم (من غير ذكاء اصطناعي)، ولو فيه شغل يشغّل المعلم المحلي على جهاز الروبوتات: كل خبير يذاكر أسئلة مجاله من مكتبة شاهين والمصادر المفتوحة، والمراجع الصارم يراجع كل درس بمعايير المجال وحدوده قبل ما يتحفظ في ذاكرة شاهين. لو مفيش حاجة باقية الساعة بتعدي من غير تشغيل، وماشي في نفس حارة الكشّاف عشان محدش يكتب في الذاكرة مع التاني.' },
   { id: 'doctor', nameAr: 'طبيب شاهين (الصيانة)', nameEn: 'Shaheen doctor (maintenance)', dept: 'reliability', workflow: 'shaheen-doctor.yml', dutiesAr: 'كل 10 دقايق يكشف على المنتجات والصور والمتجر والنشر.' },
   { id: 'verifier', nameAr: 'المراجع الخارجي', nameEn: 'External reviewer', dept: 'reliability', workflow: 'shaheen-manus.yml', report: 'manus-missions.json', section: 'verify', everyHours: 84, dutiesAr: 'الاتنين والخميس الوكيل الخلفي يراجع مهام التطوير اللي اتقفلت على الموقع الحي: اتصلحت فعلاً ولا لأ — اللي لسه بايظ يرجع للاجتماع.' },
   { id: 'live_check', nameAr: 'فحص شاهين على الموقع الحي', nameEn: 'Live Shaheen check', dept: 'reliability', workflow: 'live-smoke.yml', everyHours: 24, dutiesAr: 'يكلم شاهين على الموقع الحقيقي كل يوم ويتأكد إنه بيرد.' },
@@ -133,6 +134,8 @@ export const LEGAL_DECISIONS: LegalDecision[] = [
 /** Who helps whom: the cooperation map (from → to, and why). */
 export interface Link { from: BotId; to: BotId; whyAr: string }
 export const LINKS: Link[] = [
+  { from: 'academy', to: 'teacher', whyAr: 'كل ساعة فيها أسئلة باقية: الأكاديمية تشغّل المعلم المحلي يذاكر منهج خبراء المدرسة، والمراجع يراجع كل درس' },
+  { from: 'academy', to: 'chat', whyAr: 'الدروس اللي عدّت المراجعة بتوصل لذاكرة شاهين، فوكيل شاهين يرد بيها على الزوار من غير أي منصة' },
   { from: 'owner_desk', to: 'state', whyAr: 'صاحب الموقع بيسلّم الدولة الموافقات أو يرجّعها لنفسه، وأي قرار ليها يقدر يرجّعه' },
   { from: 'state', to: 'council', whyAr: 'الدولة بتوافق أو ترفض مهام المجلس (بتصويت أعضائها)' },
   { from: 'state', to: 'doctor', whyAr: 'تعديلات الروبوتات المستنية موافقة ← الدولة تصوّت وتفحص وتدمج' },

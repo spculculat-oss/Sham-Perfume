@@ -25,7 +25,7 @@ import { greetingKind, greetingReply } from './shaheenGreeting';
 import type { SupportedLanguage } from '../types/i18n';
 
 // ── The school's experts ─────────────────────────────────────────────────────────────────────────────────────
-export type FieldId = 'perfume' | ScienceTrackId | 'chemistry' | 'physics' | 'biology' | 'math' | 'computing' | 'nutrition' | 'agriculture' | 'general';
+export type FieldId = 'perfume' | ScienceTrackId | 'general';
 export interface SchoolExpert {
   field: FieldId;
   nameAr: string;

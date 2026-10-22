@@ -91,7 +91,7 @@ if (env.SHAM_LLM_BASE_URL?.trim()) say(`Local teacher ready (${env.SHAM_LLM_MODE
 const supervisor = read<{ tools?: Record<string, { guidance?: { text?: string } }> }>(live('ai-supervisor.json'));
 const localFirst = Boolean(env.SHAM_LLM_BASE_URL?.trim()) && env.SCHOOL_PREFER?.trim() === 'self_hosted';
 const SYSTEM = STUDY_SYSTEM + (localFirst ? LOCAL_TEACHER_STYLE : '') + guidanceBlock(supervisor?.tools?.shaheen_school?.guidance?.text);
-const todo = pickStudy(first.results, MAX_STUDY);
+const todo = pickStudy(first.results, MAX_STUDY, env.SCHOOL_FOCUS === 'experts' ? 'experts' : 'perfume');
 if (!todo.length) say('Nothing left to study in the bank — Shaheen answers every question by himself');
 else if (!ask) say(`No AI engine available: ${todo.length} questions wait for the next study session (Shaheen keeps answering from what he learned)`);
 else {
