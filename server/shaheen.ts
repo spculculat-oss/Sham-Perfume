@@ -28,7 +28,7 @@ import { platformsOff } from './core/selfReliance';
 import { buildLexicon, keyboardFix, understandQuestion, understoodNote, type Understanding } from '../src/utils/shaheenSpelling';
 import { RESEARCH_USER_AGENT, researchAnswer, type Research } from '../src/utils/webResearch';
 import { questionIntents } from '../src/utils/shaheenTools';
-import { agentLexicon, expertGapReason, referralAnswer, runAgent, understand, type AgentResult } from '../src/utils/shaheenAgent';
+import { agentLexicon, expertGapReason, referralAnswer, runAgent, scienceDesk, understand, type AgentResult } from '../src/utils/shaheenAgent';
 import { RAW_MATERIALS_DATABASE } from '../src/data/rawMaterials';
 import { quickAnswer } from '../src/utils/shaheenQuickApps';
 import { hasSensitiveNumber, maskSensitive } from '../src/utils/ownerAuthority';
@@ -492,6 +492,17 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       }
       if (error instanceof ChatError && OFFLINE_CODES.has(error.code) && chatInput?.useMemory) {
         const { input, mode } = chatInput;
+        // «المكتب السريع»: a science question is answered from his index (a lesson the team reviewed) in a fraction
+        // of a millisecond, before his memory is walked and his library is searched. When the owner closed the
+        // platforms on purpose, the agent above has already consulted the same curriculum with its full weighing.
+        if (!platformsOff(env)) {
+          const desk = scienceDesk(input.message, input.language);
+          if (desk) {
+            if (!res.destroyed) res.json({ ...publicChatResult({ reply: desk.answer, mode }, input.message), memory: 'science' });
+            runtime?.record({ ms: Date.now() - started, status: error.status, code: `${error.code}+SCIENCE` });
+            return;
+          }
+        }
         let hit = await memory?.recallSimilar(input.message, input.language).catch(() => undefined);
         // «فهم شاهين للغلطات»: nothing close as typed — the question as he understands it (a mistyped word read as
         // the word meant, from everything he knows), shown with the answer so a wrong guess is visible.

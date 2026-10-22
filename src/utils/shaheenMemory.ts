@@ -46,15 +46,32 @@ export const emptyMemory = (): MemoryFile => ({ version: 1, updatedAt: new Date(
 export const isMemoryFile = (d: unknown): d is MemoryFile =>
   Boolean(d && typeof d === 'object' && typeof (d as MemoryFile).updatedAt === 'string' && Array.isArray((d as MemoryFile).entries));
 
+/**
+ * Normalising a question is a chain of regex passes, and the same questions come back all day: every memory entry is
+ * normalised on each recall (thousands of them), and «فهرس علوم شاهين» normalises each wording once. The last few
+ * thousand results are kept — the same text normalises to the same words, so this is a cache, not a change of rule.
+ */
+const CACHE_LIMIT = 4096;
+const normalized = new Map<string, string>();
+const worded = new Map<string, string[]>();
+function cached<T>(cache: Map<string, T>, text: string, compute: () => T): T {
+  const hit = cache.get(text);
+  if (hit !== undefined) return hit;
+  const value = compute();
+  if (cache.size >= CACHE_LIMIT) cache.delete(cache.keys().next().value as string);
+  cache.set(text, value);
+  return value;
+}
+
 /** Same question, different spelling: case, Arabic letter variants, diacritics, tatweel, punctuation, spaces. */
 export function normalizeQuestion(text: string): string {
-  return text.normalize('NFKC').toLowerCase()
+  return cached(normalized, text, () => text.normalize('NFKC').toLowerCase()
     .replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660)).replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 0x06F0))
     .replace(/[\u064B-\u065F\u0670\u0640]/g, '')
     .replace(/[إأآٱ]/g, 'ا').replace(/ى/g, 'ي')
     .replace(/[\s\u200c\u200f\u200e]+/g, ' ')
     .replace(/^[\s?!.,؟،؛:…]+|[\s?!.,؟،؛:…]+$/g, '')
-    .trim();
+    .trim());
 }
 
 /** Visitor-facing answer styles that share one memory (the council is never served from memory). */
@@ -95,9 +112,10 @@ export function worthRemembering(question: string, answer: string): boolean {
 /** Words that carry the meaning of a question (Arabic «ال» and common filler words dropped). */
 const STOP = new Set(['في', 'من', 'على', 'عن', 'الى', 'الي', 'او', 'و', 'يا', 'هو', 'هي', 'ده', 'دي', 'دا', 'ايه', 'اي', 'ما', 'ماذا', 'هل', 'كيف', 'ازاي', 'عايز', 'عاوز', 'اريد', 'ممكن', 'لو', 'مع', 'الله', 'the', 'a', 'an', 'of', 'to', 'for', 'and', 'or', 'is', 'are', 'what', 'how', 'can', 'i', 'me', 'my', 'in', 'on', 'with', 'please']);
 export function meaningWords(text: string): string[] {
-  return [...new Set(normalizeQuestion(text).replace(/[^\p{L}\p{N}%\s]/gu, ' ').split(/\s+/)
+  // Read-only for callers (they filter and map it, never push): the cache is shared, so no one may change it.
+  return cached(worded, text, () => [...new Set(normalizeQuestion(text).replace(/[^\p{L}\p{N}%\s]/gu, ' ').split(/\s+/)
     .map((w) => w.replace(/^(وال|بال|فال|كال|لل|ال)(?=\p{L}{3,})/u, '').replace(/ة$/u, 'ه'))
-    .filter((w) => w.length >= 2 && !STOP.has(w)))];
+    .filter((w) => w.length >= 2 && !STOP.has(w)))]);
 }
 /** 0…1: how much two questions say the same thing (shared meaning words, Dice coefficient). Numbers must agree. */
 export function similarity(a: string, b: string): number {

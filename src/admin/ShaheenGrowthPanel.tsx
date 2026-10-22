@@ -1,5 +1,5 @@
 import { T, TP, adminLocale } from './adminL10n';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Atom, BookOpenCheck, ExternalLink, Globe2, GraduationCap, RefreshCw, ShieldCheck, Wrench } from 'lucide-react';
 import bundledSources from '../data/live/import-sources.json';
 import bundledSchool from '../data/live/shaheen-school.json';
@@ -10,7 +10,8 @@ import type { SchoolFile } from '../../scripts/shaheen-school/school';
 import { TRUST_MIN, type Region, type TrustId, type TrustProfile } from '../../scripts/shaheen-discover/trust';
 import type { SkillsFile } from '../../scripts/shaheen-import/skills';
 import { isSciencesFile, type SciencesFile } from '../../scripts/shaheen-school/sciences';
-import { SCIENCE_POLICY_AR } from '../data/sciences';
+import { SCIENCE_LESSONS, SCIENCE_POLICY_AR } from '../data/sciences';
+import { buildScienceIndex, scienceHits, scienceIndexSummary } from '../utils/scienceIndex';
 
 /**
  * «نمو شاهين» in the Shaheen tab: the stores «كشّاف المصادر» found and approved for the importer, the store
@@ -128,6 +129,19 @@ export default function ShaheenGrowthPanel() {
   const [school, l2, load2] = useLive<SchoolFile>('shaheen-school.json', bundledSchool as unknown as SchoolFile, isSchool);
   const [skills, l3, load3] = useLive<SkillsFile>('shaheen-skills.json', bundledSkills as SkillsFile, isSkills);
   const [sciences, l4, load4] = useLive<SciencesFile>('shaheen-sciences.json', bundledSciences as unknown as SciencesFile, isSciencesFile);
+  // «فهرس علوم شاهين»: built once when the panel opens, so the merchant sees what makes the sciences appear at once.
+  const fastIndex = useMemo(() => {
+    const index = buildScienceIndex(SCIENCE_LESSONS);
+    const summary = scienceIndexSummary(index);
+    const questions = SCIENCE_LESSONS.map((lesson) => lesson.questionAr);
+    for (const question of questions) scienceHits(index, question); // first time: scored and kept
+    const started = performance.now();
+    for (let round = 0; round < 20; round++) for (const question of questions) scienceHits(index, question);
+    const cached = Math.round((performance.now() - started) / (20 * questions.length) * 1000) / 1000;
+    return TP('فهرس سريع: {lessons} درساً و{words} كلمة، بُني في {ms} مللي ثانية مرة واحدة، والسؤال المتكرر بيرجع في {cached} مللي ثانية', {
+      lessons: summary.lessons, words: summary.words, ms: summary.buildMs, cached: String(cached),
+    });
+  }, []);
   const loading = l1 || l2 || l3 || l4;
   const reload = () => { load1(); load2(); load3(); load4(); };
 
@@ -279,6 +293,7 @@ export default function ShaheenGrowthPanel() {
               </div>
             ))}
           </div>
+          <p className="mt-2 text-[11px] text-stone-500">{fastIndex}</p>
           {sciences.lastLearned.length > 0 && (
             <details className="mt-2 text-xs">
               <summary className="cursor-pointer text-stone-500">{T('آخر دروس ذاكرها')}</summary>

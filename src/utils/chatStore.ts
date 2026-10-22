@@ -283,6 +283,19 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
             return true;
           }
         }
+        // «المكتب السريع»: a science question is answered from his index — the curriculum travels with the page, so no
+        // lesson file or memory file is downloaded and the answer is on screen in a fraction of a millisecond.
+        if (canAnswerFromMemory(error) && memory.science && !isShoppingQuestion(text)) {
+          const researched = await memory.science(text, options.language).catch(() => undefined);
+          if (generation !== token) return false;
+          if (researched) {
+            publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
+              id: id('bot'), role: 'assistant', text: researched, timestamp: timestamp(),
+              aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' },
+            }] });
+            return true;
+          }
+        }
         // «وكيل شاهين»: no server — he still works the question out (the school's experts, his library, his memory, open
         // sources) instead of repeating the closest old answer. Shopping questions get the store's picks below.
         if (canAnswerFromMemory(error) && memory.agent && !isShoppingQuestion(text)) {
