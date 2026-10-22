@@ -39,6 +39,10 @@ export function parkFor(failure: HealthFailure, detail: string, streak: number, 
     case 'region_blocked': return 6 * 60 * MIN;
     case 'model_not_found': return 60 * MIN;
     case 'rate_limited': return retry ? Math.max(30_000, Math.ceil(Number(retry[1]) * 1000) + 5_000) : MIN;
+    // A slow answer is not a dead engine: Shaheen's own time limit cut it. Parked only after three in a row, and
+    // briefly — parking it longer made every visitor skip a platform that works (the owner's «Gemini works but is
+    // not linked to Shaheen»).
+    case 'timeout': return streak >= 3 ? Math.min(3 * MIN, MIN * (streak - 2)) : 0;
     default: return streak >= 2 ? Math.min(10 * MIN, 2 * MIN * (streak - 1)) : 0;
   }
 }

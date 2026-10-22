@@ -176,6 +176,10 @@ const NEEDS_FULL_MODEL = /صمم|تصميم|تركيب|وصف[ةه]|خلط[ةه]
 export function isSimpleQuestion(input: Pick<ChatRequest, 'message' | 'conversationHistory'>): boolean {
   return input.message.length <= 140 && input.conversationHistory.length <= 2 && !NEEDS_FULL_MODEL.test(input.message);
 }
+/** «تلقائي»: how long one platform, and the whole chain, may take before his own brain answers. */
+export const AUTO_ENGINE_MS = 32_000;
+export const AUTO_TOTAL_MS = 44_000;
+
 export const liteModel = (env: Environment) => env.GEMINI_LITE_MODEL?.trim() || 'gemini-flash-lite-latest';
 
 export interface ExecuteOptions {
@@ -560,10 +564,11 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       chatInput = { input, mode, useMemory, agent: agent?.understanding.outOfScope ? undefined : agent, recorded, opening, ownTried: own };
       // «تلقائي» with every platform down: no visitor waits on engines known to be down — straight to his memory and library.
       if (own && switchMode === 'auto') throw new ChatError(503, 'PROVIDER_UNAVAILABLE', 'No AI platform can answer right now');
-      // «تلقائي»: his own brain is right behind the platforms, so no visitor waits long on one (Vercel stops at 60 s).
+      // «تلقائي»: the platforms get the time they need to answer (a working one used to be cut at 15 s, so Shaheen
+      // answered alone while it was still thinking), and his own brain still has its seconds before Vercel's 60 s.
       const auto = switchMode === 'auto';
       const run = (signal?: AbortSignal) => executeChat(input, { env, fetch: options.fetch, signal, settings: shaheen, council, gate, owner: visitor, health, selfBacked: auto,
-        ...(auto ? { timeoutMs: 15_000, totalTimeoutMs: 24_000 } : {}) });
+        ...(auto ? { timeoutMs: AUTO_ENGINE_MS, totalTimeoutMs: AUTO_TOTAL_MS } : {}) });
       let result: ChatAnswer;
       if (!input.conversationHistory.length && capacity.cacheTtlMs > 0 && capacity.cacheEntries > 0) {
         // Opening question: answered from the shared cache, or by ONE provider call shared by everyone

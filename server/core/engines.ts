@@ -11,6 +11,7 @@
  *  sham_local  : Sham's own deterministic composer — works with zero keys and zero cost.
  */
 import { createHash } from 'node:crypto';
+import { nextDailyRenewal } from './engineHealth';
 import type { EngineId, ModelEngineId } from './types';
 import { isOwnMachine, platformsOff } from './selfReliance';
 
@@ -151,7 +152,11 @@ export function geminiThinking(model: string, maxTokens: number): Record<string,
   if (/gemini-2\.5-pro/.test(m)) return { maxOutputTokens: maxTokens + 1024, thinkingConfig: { thinkingBudget: 128 } };
   if (/gemini-2\.5-flash/.test(m)) return { maxOutputTokens: maxTokens, thinkingConfig: { thinkingBudget: 0 } };
   if (/gemini-[3-9]/.test(m)) return { maxOutputTokens: maxTokens + 2048, thinkingConfig: { thinkingLevel: 'low' } };
-  if (/gemini-(flash|pro)(-lite)?-latest/.test(m)) return { maxOutputTokens: maxTokens + 2048 };
+  // The rolling aliases follow Google's newest models (Gemini 3.x thinks at «medium» by default, which made a
+  // chat answer take 20-30 s and the visitor's wait ran out first): Lite at «minimal», Flash/Pro at «low» — the
+  // lowest level every model behind them accepts («minimal» is refused by 3.7/3.8 Flash).
+  if (/gemini-flash-lite-latest/.test(m)) return { maxOutputTokens: maxTokens + 1024, thinkingConfig: { thinkingLevel: 'minimal' } };
+  if (/gemini-(flash|pro)-latest/.test(m)) return { maxOutputTokens: maxTokens + 2048, thinkingConfig: { thinkingLevel: 'low' } };
   return { maxOutputTokens: maxTokens };
 }
 
@@ -403,7 +408,10 @@ export async function callEngine(
       const nextBody = geminiBody(next, system, turns, options.temperature, maxTokens);
       const attempt = await request(nextUrl, { method: 'POST', headers, body: JSON.stringify(nextBody), signal: options.signal });
       if (attempt.ok) {
-        geminiSubstitutes.set(geminiCacheKey(apiKey, requestedModel), { model: next, at: Date.now(), ttl: exhausted ? 3600_000 : 10 * 60_000 });
+        // A model out of its DAILY quota stays out until Google renews it — no visitor pays for the failed try again.
+        const daily = exhausted && /PerDay|per day|daily/i.test(failureDetail(errorBody));
+        const ttl = daily ? Math.min(12 * 3600_000, Math.max(3600_000, nextDailyRenewal(Date.now()) - Date.now())) : exhausted ? 3600_000 : 10 * 60_000;
+        geminiSubstitutes.set(geminiCacheKey(apiKey, requestedModel), { model: next, at: Date.now(), ttl });
         response = attempt; errorBody = undefined; usedModel = next;
         break;
       }
