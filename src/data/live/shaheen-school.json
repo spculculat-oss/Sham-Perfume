@@ -1,15 +1,15 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T21:09:39.248Z",
+ "updatedAt": "2026-10-22T21:34:25.553Z",
  "reliance": {
   "score": 96,
-  "covered": 1165,
+  "covered": 1170,
   "total": 1216,
-  "fromMemory": 1165,
+  "fromMemory": 1170,
   "fromLibrary": 0,
   "byLang": {
    "ar": {
-    "covered": 1144,
+    "covered": 1149,
     "total": 1195
    },
    "en": {
@@ -18,9 +18,15 @@
    }
   }
  },
- "studiedTotal": 158,
- "selfTaughtTotal": 890,
+ "studiedTotal": 163,
+ "selfTaughtTotal": 891,
  "history": [
+  {
+   "at": "2026-10-22T21:34:25.553Z",
+   "score": 96,
+   "studied": 6,
+   "mode": "local"
+  },
   {
    "at": "2026-10-22T21:09:39.248Z",
    "score": 96,
@@ -324,6 +330,36 @@
  ],
  "lastStudied": [
   {
+   "q": "ايه هي السيراميدات وفايدتها للبشرة؟",
+   "lang": "ar",
+   "at": "2026-10-22T21:34:25.553Z",
+   "variants": 4
+  },
+  {
+   "q": "ايه هو مبدأ نصل أوكام في التفسير؟",
+   "lang": "ar",
+   "at": "2026-10-22T21:34:25.553Z",
+   "variants": 0
+  },
+  {
+   "q": "ايه هي الزراعة العضوية؟",
+   "lang": "ar",
+   "at": "2026-10-22T21:34:25.553Z",
+   "variants": 4
+  },
+  {
+   "q": "ازاي نعالج ملوحة التربة؟",
+   "lang": "ar",
+   "at": "2026-10-22T21:34:25.553Z",
+   "variants": 0
+  },
+  {
+   "q": "ازاي نغذي الأطفال تغذية متوازنة؟",
+   "lang": "ar",
+   "at": "2026-10-22T21:34:25.553Z",
+   "variants": 0
+  },
+  {
    "q": "ازاي محركات البحث بترتب النتايج؟",
    "lang": "ar",
    "at": "2026-10-22T21:09:39.248Z",
@@ -412,36 +448,6 @@
    "lang": "ar",
    "at": "2026-10-22T20:05:03.174Z",
    "variants": 4
-  },
-  {
-   "q": "ايه الفرق بين الكريم واللوشن والجل؟",
-   "lang": "ar",
-   "at": "2026-10-22T20:05:03.174Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه هو الاحتكاك وفوايده؟",
-   "lang": "ar",
-   "at": "2026-10-22T19:06:30.385Z",
-   "variants": 4
-  },
-  {
-   "q": "ازاي الليزر بيشتغل؟",
-   "lang": "ar",
-   "at": "2026-10-22T19:06:30.385Z",
-   "variants": 4
-  },
-  {
-   "q": "ازاي بيتتبع انتشار الأوبئة؟",
-   "lang": "ar",
-   "at": "2026-10-22T19:06:30.385Z",
-   "variants": 0
-  },
-  {
-   "q": "ازاي العزل الصحي بيقلل انتشار العدوى؟",
-   "lang": "ar",
-   "at": "2026-10-22T19:06:30.385Z",
-   "variants": 4
   }
  ],
  "pending": [
@@ -511,12 +517,12 @@
   "aiReadings": 0,
   "localReadings": 25
  },
- "localTaughtTotal": 101,
+ "localTaughtTotal": 106,
  "spelling": {
-  "at": "2026-10-22T21:09:39.248Z",
-  "tried": 744,
-  "understood": 695,
-  "score": 93,
+  "at": "2026-10-22T21:34:25.553Z",
+  "tried": 745,
+  "understood": 698,
+  "score": 94,
   "misses": [
    "طبييه → طبيه (طبيعيه)",
    "اخطه → احطه (اخلطه)",
@@ -530,7 +536,7 @@
   }
  },
  "practice": {
-  "at": "2026-10-22T21:09:39.248Z",
+  "at": "2026-10-22T21:34:25.553Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -704,9 +710,9 @@
    "score": 100
   },
   "chemistry": {
-   "covered": 30,
+   "covered": 31,
    "total": 36,
-   "score": 83
+   "score": 86
   },
   "physics": {
    "covered": 30,
@@ -774,14 +780,14 @@
    "score": 100
   },
   "biology": {
-   "covered": 30,
+   "covered": 32,
    "total": 36,
-   "score": 83
+   "score": 89
   },
   "medicine": {
-   "covered": 41,
+   "covered": 42,
    "total": 52,
-   "score": 79
+   "score": 81
   },
   "engineering": {
    "covered": 33,
@@ -814,9 +820,9 @@
    "score": 100
   },
   "religion": {
-   "covered": 20,
+   "covered": 21,
    "total": 24,
-   "score": 83
+   "score": 88
   },
   "tourism_ir": {
    "covered": 14,
@@ -825,7 +831,7 @@
   }
  },
  "tools": {
-  "at": "2026-10-22T21:09:39.248Z",
+  "at": "2026-10-22T21:34:25.553Z",
   "items": [
    {
     "id": "finance_agent",
@@ -990,14 +996,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-22T21:09:39.248Z",
+  "at": "2026-10-22T21:34:25.553Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-23T03:09:39.248Z"
+    "next": "2026-10-23T03:34:25.553Z"
    },
    {
     "id": "site-care",
@@ -1009,7 +1015,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-23T09:09:39.248Z"
+    "next": "2026-10-23T09:34:25.553Z"
    }
   ]
  }
