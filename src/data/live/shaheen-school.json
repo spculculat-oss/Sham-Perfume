@@ -1,16 +1,16 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T19:29:42.186Z",
+ "updatedAt": "2026-10-22T20:05:03.174Z",
  "reliance": {
-  "score": 89,
-  "covered": 1072,
-  "total": 1206,
-  "fromMemory": 1072,
-  "fromLibrary": 71,
+  "score": 95,
+  "covered": 1151,
+  "total": 1214,
+  "fromMemory": 1151,
+  "fromLibrary": 0,
   "byLang": {
    "ar": {
-    "covered": 1051,
-    "total": 1185
+    "covered": 1130,
+    "total": 1193
    },
    "en": {
     "covered": 21,
@@ -18,9 +18,15 @@
    }
   }
  },
- "studiedTotal": 142,
- "selfTaughtTotal": 819,
+ "studiedTotal": 148,
+ "selfTaughtTotal": 890,
  "history": [
+  {
+   "at": "2026-10-22T20:05:03.174Z",
+   "score": 95,
+   "studied": 77,
+   "mode": "local"
+  },
   {
    "at": "2026-10-22T19:29:42.186Z",
    "score": 89,
@@ -306,6 +312,42 @@
  ],
  "lastStudied": [
   {
+   "q": "ليه اللوجستيات مهمة في التاريخ العسكري؟",
+   "lang": "ar",
+   "at": "2026-10-22T20:05:03.174Z",
+   "variants": 4
+  },
+  {
+   "q": "ايه هي عمليات حفظ السلام؟",
+   "lang": "ar",
+   "at": "2026-10-22T20:05:03.174Z",
+   "variants": 4
+  },
+  {
+   "q": "ازاي رواد الفضاء بيعيشوا من غير جاذبية؟",
+   "lang": "ar",
+   "at": "2026-10-22T20:05:03.174Z",
+   "variants": 4
+  },
+  {
+   "q": "ازاي اكتشف التناقض في الكلام؟",
+   "lang": "ar",
+   "at": "2026-10-22T20:05:03.174Z",
+   "variants": 0
+  },
+  {
+   "q": "ازاي اختار غسول مناسب لبشرتي؟",
+   "lang": "ar",
+   "at": "2026-10-22T20:05:03.174Z",
+   "variants": 4
+  },
+  {
+   "q": "ايه الفرق بين الكريم واللوشن والجل؟",
+   "lang": "ar",
+   "at": "2026-10-22T20:05:03.174Z",
+   "variants": 4
+  },
+  {
    "q": "ايه هو الاحتكاك وفوايده؟",
    "lang": "ar",
    "at": "2026-10-22T19:06:30.385Z",
@@ -388,50 +430,9 @@
    "lang": "ar",
    "at": "2026-10-22T18:45:26.377Z",
    "variants": 4
-  },
-  {
-   "q": "ايه هي الإنزيمات وبتشتغل ازاي؟",
-   "lang": "ar",
-   "at": "2026-10-22T18:11:55.359Z",
-   "variants": 2
-  },
-  {
-   "q": "ازاي النحل بيلقح الزهور؟",
-   "lang": "ar",
-   "at": "2026-10-22T18:11:55.359Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه هي الجاذبية وازاي بتشتغل؟",
-   "lang": "ar",
-   "at": "2026-10-22T18:11:55.359Z",
-   "variants": 0
-  },
-  {
-   "q": "ليه الحديد بيصدى وازاي نمنعه؟",
-   "lang": "ar",
-   "at": "2026-10-22T18:11:55.359Z",
-   "variants": 4
-  },
-  {
-   "q": "ازاي بتتكون السحب والمطر؟",
-   "lang": "ar",
-   "at": "2026-10-22T18:11:55.359Z",
-   "variants": 4
-  },
-  {
-   "q": "ليه البحر مالح؟",
-   "lang": "ar",
-   "at": "2026-10-22T18:11:55.359Z",
-   "variants": 4
   }
  ],
  "pending": [
-  {
-   "q": "ازاي العين بتشوف الألوان؟",
-   "lang": "ar",
-   "topic": "expert:human-medicine"
-  },
   {
    "q": "ايه هي الهرمونات ودورها في الجسم؟",
    "lang": "ar",
@@ -468,11 +469,6 @@
    "topic": "expert:space"
   },
   {
-   "q": "ازاي رواد الفضاء بيعيشوا من غير جاذبية؟",
-   "lang": "ar",
-   "topic": "expert:space"
-  },
-  {
    "q": "ايه هو الكسوف والخسوف؟",
    "lang": "ar",
    "topic": "expert:space"
@@ -483,9 +479,19 @@
    "topic": "expert:space"
   },
   {
-   "q": "ايه هي عمليات حفظ السلام؟",
+   "q": "ايه هي اتفاقيات جنيف؟",
    "lang": "ar",
    "topic": "expert:war-studies"
+  },
+  {
+   "q": "ازاي الدول بتبني السلام بعد النزاعات؟",
+   "lang": "ar",
+   "topic": "expert:war-studies"
+  },
+  {
+   "q": "ازاي نحمي أنظمة التحكم الصناعية من الهجمات؟",
+   "lang": "ar",
+   "topic": "expert:electronic-warfare"
   }
  ],
  "importer": {
@@ -493,12 +499,12 @@
   "aiReadings": 0,
   "localReadings": 25
  },
- "localTaughtTotal": 85,
+ "localTaughtTotal": 91,
  "spelling": {
-  "at": "2026-10-22T19:29:42.186Z",
+  "at": "2026-10-22T20:05:03.174Z",
   "tried": 744,
-  "understood": 697,
-  "score": 94,
+  "understood": 695,
+  "score": 93,
   "misses": [
    "طبييه → طبيه (طبيعيه)",
    "اخطه → احطه (اخلطه)",
@@ -512,7 +518,7 @@
   }
  },
  "practice": {
-  "at": "2026-10-22T19:29:42.186Z",
+  "at": "2026-10-22T20:05:03.174Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -686,9 +692,9 @@
    "score": 100
   },
   "chemistry": {
-   "covered": 24,
-   "total": 28,
-   "score": 86
+   "covered": 27,
+   "total": 36,
+   "score": 75
   },
   "physics": {
    "covered": 29,
@@ -721,9 +727,9 @@
    "score": 100
   },
   "history": {
-   "covered": 24,
+   "covered": 26,
    "total": 28,
-   "score": 86
+   "score": 93
   },
   "geography": {
    "covered": 20,
@@ -761,9 +767,9 @@
    "score": 83
   },
   "medicine": {
-   "covered": 38,
+   "covered": 39,
    "total": 52,
-   "score": 73
+   "score": 75
   },
   "engineering": {
    "covered": 31,
@@ -771,43 +777,43 @@
    "score": 82
   },
   "earth_space": {
-   "covered": 26,
+   "covered": 27,
    "total": 34,
-   "score": 76
+   "score": 79
   },
   "education": {
-   "covered": 5,
+   "covered": 16,
    "total": 16,
-   "score": 31
+   "score": 100
   },
   "media_info": {
-   "covered": 2,
+   "covered": 16,
    "total": 16,
-   "score": 13
+   "score": 100
   },
   "sports": {
-   "covered": 2,
+   "covered": 14,
    "total": 14,
-   "score": 14
+   "score": 100
   },
   "arts": {
-   "covered": 2,
+   "covered": 16,
    "total": 16,
-   "score": 13
+   "score": 100
   },
   "religion": {
-   "covered": 10,
+   "covered": 20,
    "total": 24,
-   "score": 42
+   "score": 83
   },
   "tourism_ir": {
-   "covered": 3,
+   "covered": 14,
    "total": 14,
-   "score": 21
+   "score": 100
   }
  },
  "tools": {
-  "at": "2026-10-22T19:29:42.186Z",
+  "at": "2026-10-22T20:05:03.174Z",
   "items": [
    {
     "id": "finance_agent",
@@ -964,14 +970,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-22T19:29:42.186Z",
+  "at": "2026-10-22T20:05:03.174Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-23T01:29:42.186Z"
+    "next": "2026-10-23T02:05:03.174Z"
    },
    {
     "id": "site-care",
@@ -983,7 +989,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-23T07:29:42.186Z"
+    "next": "2026-10-23T08:05:03.174Z"
    }
   ]
  }
