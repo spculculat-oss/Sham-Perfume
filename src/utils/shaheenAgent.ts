@@ -156,7 +156,8 @@ export function plan(u: AgentUnderstanding): AgentPlan {
 /**
  * How sure the desk must be before it answers by itself. Higher than the agent's bar on purpose: the desk answers
  * before his memory is read, so a loose match must not take the place of a better answer — a question that only
- * brushes a lesson (one shared word, «ايه هي الكهرباء» and a reactor lesson) is left to the agent's full weighing.
+ * brushes a lesson (one shared word, «ايه هي الطاقة الشمسية في الفضاء» and the space-security lesson) is left to
+ * the agent's full weighing.
  */
 export const SCIENCE_DESK_BAR = 0.7;
 interface ScienceHitLike { lesson: ScienceLesson; relevance: number }

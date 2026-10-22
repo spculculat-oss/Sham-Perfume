@@ -77,7 +77,7 @@ for (const lesson of SCIENCE_LESSONS) {
 const lines = [
   `علوم شاهين — ${summary.lessons} درساً، ${summary.words} كلمة في الفهرس، ${summary.wordings} صيغة سؤال`,
   `بناء الفهرس: ${summary.buildMs} مللي ثانية أول مرة، ${warmBuildMs} مللي ثانية بعد كده — مرة واحدة لكل تشغيل`,
-  `السؤال على المسح القديم (٧٣ درساً): ${perQuestion(scanMs, questions.length)} مللي ثانية`,
+  `السؤال على المسح القديم (${SCIENCE_LESSONS.length} درساً): ${perQuestion(scanMs, questions.length)} مللي ثانية`,
   `السؤال على الفهرس (سؤال جديد): ${perQuestion(indexMs, questions.length)} مللي ثانية — أسرع ${Math.round(scanMs / indexMs)}×`,
   `سؤال متكرر (ذاكرة سريعة): ${perQuestion(cachedMs, questions.length)} مللي ثانية — أسرع ${Math.round(scanMs / cachedMs)}×`,
   `الوكيل كامل (فهرس + ذاكرة ٢٩٢٧ إجابة + مكتبة): ${perQuestion(agentPerQuestion, questions.length)} مللي ثانية`,
