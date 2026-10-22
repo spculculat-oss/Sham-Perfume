@@ -14,6 +14,7 @@ import { platformsAuto } from '../../server/core/selfReliance';
 import { isPersonal, isTimeBound, meaningWords, normalizeQuestion, recallSimilar, worthRemembering, type MemoryFile } from '../../src/utils/shaheenMemory';
 import { materialCard, topicWords as libraryTopicWords, type LibraryMaterial } from '../../src/utils/shaheenLibrary';
 import { spellingDrill, typoVariants, understandQuestion, wordKey, type Lexicon } from '../../src/utils/shaheenSpelling';
+import { academyQuestions, TOOL_FIELDS, TRACKS, trackOf, type TrackId } from './curriculum';
 import { EXPERT_GAP_PREFIX, expertOf } from '../../src/utils/shaheenAgent';
 import { SCIENCE_SYLLABUS } from '../../src/data/sciences/syllabus';
 
@@ -44,6 +45,15 @@ export interface SchoolFile {
    * answers by himself when their main word is mistyped (exam).
    */
   spelling?: { at: string; tried: number; understood: number; score: number; misses: string[]; questions: { tried: number; answered: number } };
+  /** The new academy missions: self-reliance per track (languages, blocks & scheduling, software engineering,
+   * graphics & design, web maintenance, AI tools). */
+  tracks?: Record<string, { covered: number; total: number; score: number }>;
+  /** Every AI tool, its field, and what the school will teach it next («طور كل أداة في مجالها»). */
+  tools?: { at: string; items: { id: string; field: string; covered: number; total: number; score: number; focus: string }[] };
+  /** The block programs the school built and scheduled (src/data/live/shaheen-blocks.json). */
+  blocks?: { at: string; programs: number; scheduled: number; errors: number; nextRuns: { id: string; next: string | null }[] };
+  /** «تدريب وش عمل» — hands-on exercises that really ran and were verified (code, calculations, designs, checks). */
+  practice?: { at: string; total: number; passed: number; taught: number; items: { id: string; titleAr: string; ok: boolean; detail: string }[] };
 }
 
 export const emptySchool = (): SchoolFile => ({
@@ -77,9 +87,10 @@ export const CURRICULUM: BankQuestion[] = [
   ] as const).map(([topic, q]) => ({ q, lang: 'en' as const, topic, origin: 'curriculum' as const })),
 ];
 
-/** The training library's lessons become questions too («حدثني عن …»). */
+/** The training library's lessons become questions too («حدثني عن …»). Titles that change with time (news)
+ * are never exam material — they are live-research material, answered fresh when research is on. */
 export function libraryQuestions(docs: TrainingDoc[], max = 40): BankQuestion[] {
-  return docs.slice(0, max).map((d) => ({ q: `حدثني عن ${d.title.replace(/[؟?.!]+$/, '')}`, lang: 'ar' as const, topic: 'library', origin: 'library' as const }));
+  return docs.slice(0, max).filter((d) => !isTimeBound(d.title)).map((d) => ({ q: `حدثني عن ${d.title.replace(/[؟?.!]+$/, '')}`, lang: 'ar' as const, topic: 'library', origin: 'library' as const }));
 }
 
 /** Questions the daily meeting («مجلس شاهين») asked him to study. */
@@ -120,8 +131,8 @@ export const ADVANCED: BankQuestion[] = [
   ...([
     ['problems', 'العطر بتاعي ريحته كحول قوية اعمل ايه؟'], ['problems', 'ليه العطر اللي عملته ريحته اختفت بسرعة؟'], ['problems', 'العطر لونه اتغير بعد شهر هل باظ؟'],
     ['problems', 'ازاي اقلل حدة نوتة طاغية في التركيبة؟'], ['problems', 'العطر طلع تقيل وخانق ازاي اخففه؟'], ['problems', 'ليه العطر بيعمل حساسية لبعض الناس؟'],
-    ['problems', 'العطر ريحته على الجلد غير في الزجاجة ليه؟'], ['problems', 'ازاي اعرف ان الزيت العطري مغشوش؟'],
-    ['skills', 'ازاي ادرب انفي على تمييز الروايح؟'], ['skills', 'ازاي اوثق تجاربي في تركيب العطور؟'], ['skills', 'ازاي اختبر عطر جديد قبل ما اعمل منه كمية كبيرة؟'],
+    ['problems', 'العطر ريحته على الجلد غير في الزجاجة ليه؟'], ['problems', 'ازاي اكتشف الزيت العطري المغشوش؟'],
+    ['skills', 'ازاي ادرب انفي على تمييز الروايح؟'], ['skills', 'ازاي اوثق تجاربي في تركيب العطور؟'], ['skills', 'ازاي اعمل اختبار تركيبة العطر قبل الإنتاج؟'],
     ['skills', 'ايه الادوات اللي محتاجها عشان ابدأ اركب عطور؟'], ['skills', 'ازاي اوزن مكونات العطر بدقة؟'], ['skills', 'يعني ايه اكورد في العطور وازاي اعمله؟'],
     ['business', 'ازاي احسب تكلفة العطر اللي بعمله قبل ما ابيعه؟'], ['business', 'ايه اللي لازم يتكتب على ملصق زجاجة العطر؟'], ['business', 'ازاي احافظ على ثبات جودة العطر من دفعة للتانية؟'],
     ['culture', 'ايه تاريخ العطور عند العرب؟'], ['culture', 'ايه الفرق بين العطور الفرنسية والعطور العربية؟'], ['culture', 'ايه هو البخور وازاي بيتعمل؟'],
@@ -142,12 +153,41 @@ export const syllabusQuestions = (): BankQuestion[] =>
 
 export function buildBank(docs: TrainingDoc[], council: string[] = [], visitors: BankQuestion[] = [], materials: LibraryMaterial[] = []): BankQuestion[] {
   const seen = new Set<string>();
-  return [...visitors, ...CURRICULUM, ...libraryQuestions(docs), ...materialQuestions(materials), ...councilQuestions(council), ...ADVANCED, ...syllabusQuestions()].filter((b) => {
+  return [...visitors, ...CURRICULUM, ...libraryQuestions(docs), ...materialQuestions(materials), ...councilQuestions(council), ...ADVANCED, ...syllabusQuestions(), ...academyQuestions()].filter((b) => {
     const k = `${b.lang}|${normalizeQuestion(b.q)}`;
     if (seen.has(k)) return false;
     seen.add(k);
     return true;
   });
+}
+
+/** Per-track self-reliance (the academy missions + the original perfume curriculum). */
+export function trackStats(results: ExamResult[]): Record<string, { covered: number; total: number; score: number }> {
+  const out: Record<string, { covered: number; total: number; score: number }> = {};
+  for (const t of TRACKS) out[t.id] = { covered: 0, total: 0, score: 0 };
+  for (const r of results) {
+    const s = (out[trackOf(r.question.topic)] ||= { covered: 0, total: 0, score: 0 });
+    s.total++;
+    if (r.covered) s.covered++;
+  }
+  for (const s of Object.values(out)) s.score = s.total ? Math.round((s.covered / s.total) * 100) : 0;
+  return out;
+}
+
+/** Every AI tool with the progress of its field — and the next question its field will study (the focus). */
+export function toolStats(results: ExamResult[], at: string): NonNullable<SchoolFile['tools']> {
+  const items = Object.entries(TOOL_FIELDS).map(([id, t]) => {
+    const mine = results.filter((r) => r.question.topic === `tool-${id}`);
+    const covered = mine.filter((r) => r.covered);
+    const focus = mine.find((r) => !r.covered)?.question.q || 'مجاله مكتمل — يُراجع بالتقرير القادم';
+    return {
+      id, field: t.field,
+      covered: covered.length, total: mine.length,
+      score: mine.length ? Math.round((covered.length / mine.length) * 100) : 0,
+      focus,
+    };
+  });
+  return { at, items };
 }
 
 /** Words every perfume question shares: they never decide which lesson answers a question («العنبر في العطور» ≠ «تعتيق العطور»). */

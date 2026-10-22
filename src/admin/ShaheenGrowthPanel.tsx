@@ -8,6 +8,7 @@ import bundledSciences from '../data/live/shaheen-sciences.json';
 import bundledHarvest from '../data/live/shaheen-harvest.json';
 import type { LiveSource, SourcesFile, SourceStatus } from '../../scripts/shaheen-discover/discover';
 import type { SchoolFile } from '../../scripts/shaheen-school/school';
+import { TRACKS } from '../../scripts/shaheen-school/curriculum';
 import { TRUST_MIN, type Region, type TrustId, type TrustProfile } from '../../scripts/shaheen-discover/trust';
 import type { SkillsFile } from '../../scripts/shaheen-import/skills';
 import { isSciencesFile, type SciencesFile } from '../../scripts/shaheen-school/sciences';
@@ -249,6 +250,40 @@ export default function ShaheenGrowthPanel() {
                 <div className="mt-2 flex h-10 items-end gap-0.5" aria-label={T('تطور النتيجة')}>
                   {recent.map((h) => <div key={h.at} title={`${when(h.at)} — ${h.score}%`} className={`flex-1 rounded-t ${h.mode === 'ai' ? 'bg-amber-400' : h.mode === 'local' ? 'bg-emerald-400' : 'bg-amber-200'}`} style={{ height: `${Math.max(4, h.score)}%` }} />)}
                 </div>
+              )}
+              {school.tracks && (
+                <div className="mt-3">
+                  <p className="mb-1 font-semibold text-stone-600">{T('مسارات المدرسة — الاعتماد على النفس')}</p>
+                  <div className="grid gap-1.5 sm:grid-cols-2">
+                    {TRACKS.map((t) => {
+                      const s = school.tracks![t.id];
+                      if (!s) return null;
+                      return (
+                        <div key={t.id}>
+                          <div className="mb-0.5 flex justify-between text-[11px]"><span>{T(t.titleAr)}</span><b>{s.score}%</b></div>
+                          <Meter value={s.score} tone={s.score >= 80 ? 'bg-emerald-500' : 'bg-amber-500'} />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+              {school.tools && (
+                <details className="mt-3">
+                  <summary className="cursor-pointer text-stone-500">{T('تطوير كل أداة ذكاء اصطناعي في مجالها')}</summary>
+                  <ul className="mt-1 space-y-0.5">
+                    {school.tools.items.map((t) => (
+                      <li key={t.id} className="text-[11px] text-stone-600">
+                        <b>{T(t.field)}</b> — {t.covered}/{t.total} ({t.score}%) · {T('التركيز القادم')}: <span dir="auto">{t.focus}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              )}
+              {school.blocks && (
+                <p className="mt-2 text-[11px] text-stone-500">
+                  {TP('بلوكات شاهين: {n} برامج مبنية، {s} مجدولة، {e} أخطاء', { n: school.blocks.programs, s: school.blocks.scheduled, e: school.blocks.errors })}
+                </p>
               )}
               {school.spelling && (
                 <div className="mt-3">

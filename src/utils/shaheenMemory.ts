@@ -32,7 +32,7 @@ export interface MemoryFile { version: 1; updatedAt: string; entries: MemoryEntr
 
 export const MEMORY_LIMITS = {
   /** Entries kept in the shared file (most useful first). */
-  maxEntries: 3000,
+  maxEntries: 8000,
   /** An entry unused for this long is forgotten (it is asked again fresh next time). */
   ttlDays: 60,
   /** A remembered answer older than this is not served while the engines are up (it is refreshed instead). */
@@ -90,12 +90,15 @@ const NEWS_EN = /\b(news|latest|newest|today|tonight|yesterday|this (week|month|
 const PRICE_EN = /\b(price|prices|how much|cost now)\b/i;
 const YEAR = /(?<!\d)20[2-9]\d(?!\d)/;
 // A price question with its own numbers («لو الزيت سعره 1200…») is a calculation: its answer does not change.
+// So is a question ABOUT calculating or pricing («ازاي احسب سعر البيع؟»): the method is evergreen, the number is not.
 const hasNumber = (q: string) => /\d/.test(normalizeQuestion(q));
+const CALC = word('احسب|إحسب|حساب|تسعير|التسعير|تسعيره');
 // Whole words only: «الياسمين» contains «اسمي» but is a flower, not the visitor's name.
 const PERSONAL_AR = word('اسمي|رقمي|تليفوني|موبايلي|ايميلي|إيميلي|عنواني');
 const PERSONAL = /(my name|my phone|my email|my address|@|\d{7,})/i;
 export const isTimeBound = (question: string) =>
-  NEWS_OR_NOW.test(question) || NEWS_EN.test(question) || YEAR.test(question) || ((PRICE.test(question) || PRICE_EN.test(question)) && !hasNumber(question));
+  NEWS_OR_NOW.test(question) || NEWS_EN.test(question) || YEAR.test(question)
+  || ((PRICE.test(question) || PRICE_EN.test(question)) && !hasNumber(question) && !CALC.test(question));
 export const isPersonal = (question: string) => { const q = normalizeQuestion(question); return PERSONAL.test(q) || PERSONAL_AR.test(q); };
 
 const VENDOR = /\b(gemini|openai|chat\s?gpt|gpt-?\d|claude|anthropic|deepseek|openrouter|perplexity|llama|mistral)\b/i;

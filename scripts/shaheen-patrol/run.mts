@@ -31,6 +31,8 @@ import {
   probePricing, PROBES, reviewerOf, runPatrol, shaheenPrompt, SHAHEEN_SYSTEM, shouldPublish, signatureOf, type PatrolFile, type ProbeResult, REVIEWERS,
 } from './patrol';
 import { liveProbes } from './probes';
+import { duePrograms, patrolActions, runAndRecord } from '../shaheen-school/programs';
+import { emptyBlocks, isBlocksFile, type BlocksFile } from '../../src/utils/shaheenBlocks';
 
 const env = process.env;
 const live = (name: string) => new URL(`../../src/data/live/${name}`, import.meta.url);
@@ -87,6 +89,40 @@ const engines = (await configuredEngines(env)).filter((id) => !quota.pausedUntil
 const plan = runPatrol({ now, precheck, probes, previous, engineReady: engines.length > 0, shift });
 const { file } = plan;
 say(`Reviews: ${file.reviews.filter((r) => r.runAt && plan.file.reviewedRuns[r.bot] === r.runAt && !previous?.reviews.some((x) => x.bot === r.bot && x.runAt === r.runAt)).map((r) => `${r.reviewerAr} ← ${r.verdict}`).join('، ') || 'none'}`);
+
+// ── 3b. «بلوكات شاهين»: the due block programs run here for real — above all «إدارة الذكاء الذاتي»:
+// Shaheen measures his self-reliance and answers memory → library → local model → an honest note, with no
+// external AI app. The site-care programme reports from this hour's probes only (never guessed).
+const blocksRaw = readJson(live('shaheen-blocks.json'));
+const blocks: BlocksFile = isBlocksFile(blocksRaw) ? blocksRaw : emptyBlocks();
+const schoolReport = readJson(live('shaheen-school.json')) as {
+  reliance?: { score: number; covered: number; total: number; fromMemory: number; fromLibrary: number };
+  localTaughtTotal?: number; pending?: unknown[]; spelling?: { score: number };
+} | undefined;
+const probeNotes = Object.fromEntries(probes.map((p) => [p.id, `${PROBES[p.id].nameAr}: ${p.level === 'ok' ? 'سليم ✅' : p.level === 'warn' ? 'بملاحظات ⚠️' : p.level === 'skip' ? 'متخطى ⏭️' : 'فشل ❌'} — ${p.noteAr}`]));
+const due = duePrograms(blocks, 'patrol', now);
+if (due.length) {
+  const actions = patrolActions({
+    reliance: schoolReport?.reliance || { score: 0, covered: 0, total: 0, fromMemory: 0, fromLibrary: 0 },
+    localTaught: schoolReport?.localTaughtTotal || 0,
+    pending: (schoolReport?.pending || []).length,
+    spellingScore: schoolReport?.spelling?.score,
+    probes: probeNotes,
+    openIssues: file.open.length,
+  });
+  for (const program of due) {
+    const report = await runAndRecord(program, actions, blocks, {
+      externalEngineUp: engines.length > 0,
+      siteUp: (probes.find((p) => p.id === 'site')?.level ?? 'ok') !== 'fail',
+      gaps: (schoolReport?.pending || []).length,
+    }, new Date(now));
+    const failed = report.steps.filter((s) => s.status === 'failed');
+    say(`البرنامج «${program.title}»: ${report.ok ? 'اشتغل بالكامل' : `مع ${failed.length} خطوة فاشلة`} (${report.steps.length} خطوة)`);
+    for (const step of report.steps) if (step.detail) say(`  ${step.label}: ${step.detail}`);
+  }
+  blocks.updatedAt = at;
+  writeFileSync(live('shaheen-blocks.json'), `${JSON.stringify(blocks, null, 1)}\n`);
+} else say('بلوكات شاهين: لا برامج مستحقة هذه الجولة — مواعيدها لسه ما جاش');
 
 // Shaheen diagnoses what the tools could not fix (one question per shift — the visitors' quota comes first).
 let quotaOut = false;
