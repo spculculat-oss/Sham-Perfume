@@ -16,7 +16,7 @@ export type RoomSpeaker = 'owner' | 'shaheen' | 'secretary';
 export interface RoomMessage { id: string; by: RoomSpeaker; text: string; at: string; offline?: boolean }
 export interface RoomNote { id: string; text: string; at: string; done?: boolean }
 /** The owner's answer to each change Shaheen proposed (by message id): sent to his desk, or turned down. */
-export type ChangeDecision = 'sent' | 'rejected';
+export type ChangeDecision = 'sent' | 'rejected' | 'returned';
 export interface RoomData { version: 1; messages: RoomMessage[]; notes: RoomNote[]; decisions?: Record<string, ChangeDecision> }
 
 export const ROOM_LIMITS = { messages: 300, history: 24, chars: 4000 } as const;
@@ -110,6 +110,6 @@ export function readRoom(x: unknown): RoomData {
     .slice(-100);
   const ids = new Set(messages.map((m) => m.id));
   const decisions = Object.fromEntries(Object.entries(d.decisions && typeof d.decisions === 'object' ? d.decisions : {})
-    .filter(([id, v]) => ids.has(id) && (v === 'sent' || v === 'rejected')));
+    .filter(([id, v]) => ids.has(id.split(':')[0]!) && (v === 'sent' || v === 'rejected' || v === 'returned')));
   return { version: 1, messages, notes, ...(Object.keys(decisions).length ? { decisions } : {}) };
 }

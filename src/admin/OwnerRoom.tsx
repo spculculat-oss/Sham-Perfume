@@ -5,6 +5,8 @@ import { AdminApiError, adminRequest, send } from './adminApi';
 import { ShaheenMarkdown } from '../components/ShaheenMarkdown';
 import { hasSensitiveNumber, maskSensitive } from '../utils/ownerAuthority';
 import ChangeCard from './ChangeCard';
+import OrderCard from './OrderCard';
+import { displayOrders, parseOrders } from '../utils/ownerDesk';
 import { repoFiles, repoTree } from './repoFiles';
 import { FILE_LIMITS, changeSummary, displayReply, fileIndex, isReadablePath, mentionedFiles, parseChanges, readRequests } from '../utils/ownerFiles';
 import {
@@ -27,14 +29,21 @@ const WHO: Record<RoomSpeaker, { name: () => string; icon: string; bubble: strin
   secretary: { name: () => T('السكرتير'), icon: '📒', bubble: 'bg-emerald-950 text-emerald-50 border border-emerald-800' },
 };
 
-/** A reply from Shaheen or the secretary: the text, and a change card when Shaheen proposed a change. */
-function ReplyBody({ m, decision, onDecide }: { m: RoomMessage; decision?: ChangeDecision; onDecide: (d: ChangeDecision) => void }) {
+/** A reply from Shaheen or the secretary: the text, and a card for every change or order Shaheen prepared. */
+function ReplyBody({ m, decisions, onDecide, onReturn }: {
+  m: RoomMessage; decisions?: Record<string, ChangeDecision>; onDecide: (key: string, d: ChangeDecision) => void; onReturn: (key: string) => void;
+}) {
   const edits = useMemo(() => (m.by === 'shaheen' ? parseChanges(m.text) : []), [m.by, m.text]);
+  const orders = useMemo(() => (m.by === 'shaheen' ? parseOrders(m.text) : []), [m.by, m.text]);
   const summary = useMemo(() => changeSummary(m.text), [m.text]);
   return (
     <>
-      <ShaheenMarkdown text={m.by === 'shaheen' ? displayReply(m.text) : m.text} />
-      {edits.length > 0 && <ChangeCard edits={edits} summary={summary} decision={decision} onDecide={onDecide} />}
+      <ShaheenMarkdown text={m.by === 'shaheen' ? displayOrders(displayReply(m.text)) : m.text} />
+      {edits.length > 0 && <ChangeCard edits={edits} summary={summary} decision={decisions?.[m.id]} onDecide={(d) => onDecide(m.id, d)} onReturn={() => onReturn(m.id)} />}
+      {orders.map((o, i) => {
+        const key = `${m.id}:order:${i}`;
+        return <OrderCard key={key} order={o} summary={summary} decision={decisions?.[key]} onDecide={(d) => onDecide(key, d)} onReturn={() => onReturn(key)} />;
+      })}
     </>
   );
 }
@@ -57,6 +66,7 @@ export default function OwnerRoom({ code }: { code: string }) {
   const [pick, setPick] = useState('');
   const [error, setError] = useState('');
   const end = useRef<HTMLDivElement>(null);
+  const input = useRef<HTMLTextAreaElement>(null);
   const file = useRef<HTMLInputElement>(null);
 
   // Open the room sealed in this browser with the owner's code.
@@ -126,7 +136,13 @@ export default function OwnerRoom({ code }: { code: string }) {
   };
 
   const notes = useMemo(() => secretaryNotes(room?.messages || []), [room?.messages]);
-  const decide = (id: string) => (d: ChangeDecision) => { if (room) void save({ ...room, decisions: { ...room.decisions, [id]: d } }); };
+  const decide = (key: string, d: ChangeDecision) => { if (room) void save({ ...room, decisions: { ...room.decisions, [key]: d } }); };
+  // «رجّعه بملاحظة»: the proposal is set aside and the owner writes his note to Shaheen right away.
+  const returnWithNote = (key: string) => {
+    decide(key, 'returned');
+    setText((t) => t || T('ملاحظتي على اقتراحك: '));
+    setTimeout(() => input.current?.focus(), 0);
+  };
   const matches = useMemo(() => {
     const q = pick.trim().toLowerCase();
     return q.length < 2 ? [] : tree.filter((p) => isReadablePath(p) && p.toLowerCase().includes(q) && !attached.includes(p)).slice(0, 8);
@@ -175,14 +191,14 @@ export default function OwnerRoom({ code }: { code: string }) {
           <h2 className="font-black text-amber-100">{T('غرفة شاهين الخاصة')}</h2>
           <span className="ms-auto inline-flex items-center gap-1 rounded-full border border-emerald-800 bg-emerald-950 px-2 py-0.5 text-[11px] text-emerald-200"><Lock className="h-3 w-3" />{T('متشفرة على جهازك')}</span>
           <p className="w-full text-[11px] text-stone-400">{T('اللي هنا: إنت 👑 وشاهين 🦅 والسكرتير 📒 بس. الكلام بيتحفظ متشفر على الجهاز ده بكودك السري، والخادم بيرد ومابيحفظش حاجة.')}</p>
-          <p className="w-full text-[11px] text-amber-200/80">{T('📂 شاهين يقدر يشوف كل ملفات الموقع. أي تعديل يقترحه مابيتنفذش غير لما توافق عليه.')}</p>
+          <p className="w-full text-[11px] text-amber-200/80">{T('🦅 شاهين الوكيل المسؤول عن الموقع: بيشوف كل الملفات ويجهّز التعديلات والأوامر، ومفيش حاجة بتتنفذ غير لما توافق عليها.')}</p>
         </header>
         <div className="flex-1 space-y-3 overflow-y-auto py-3" aria-live="polite">
           {!room.messages.length && <p className="mt-10 text-center text-sm text-stone-400">{T('اكتب لشاهين أي حاجة: سؤال عن الموقع، قرار، أو مهمة عايزها تتعمل.')}<br />{T('مثلاً: «شوف الفوتر وقولي فيه إيه» أو «غيّر جملة الترحيب في الصفحة الرئيسية».')}</p>}
           {room.messages.map((m) => (
             <div key={m.id} className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm ${WHO[m.by].bubble}`}>
               <div className="mb-1 flex items-center gap-1 text-[11px] opacity-70"><span>{WHO[m.by].icon}</span><b>{WHO[m.by].name()}</b><span>· {time(m.at)}</span>{m.offline && <span>· {T('من غير محركات')}</span>}</div>
-              {m.by === 'owner' ? <p className="whitespace-pre-wrap">{m.text}</p> : <ReplyBody m={m} decision={room.decisions?.[m.id]} onDecide={decide(m.id)} />}
+              {m.by === 'owner' ? <p className="whitespace-pre-wrap">{m.text}</p> : <ReplyBody m={m} decisions={room.decisions} onDecide={decide} onReturn={returnWithNote} />}
             </div>
           ))}
           {busy && <div className="flex items-center gap-2 text-xs text-stone-400"><Loader2 className="h-3.5 w-3.5 animate-spin" />{reading.length ? <span>{T('📂 شاهين بيقرا:')} <code dir="ltr">{reading.join('، ')}</code></span> : busy === 'shaheen' ? T('شاهين بيكتب…') : T('السكرتير بيلخص…')}</div>}
@@ -211,7 +227,7 @@ export default function OwnerRoom({ code }: { code: string }) {
         <form className="flex items-end gap-2 border-t border-stone-800 pt-3" onSubmit={(e) => { e.preventDefault(); void submit(); }}>
           <button type="button" onClick={() => setPicking(!picking)} title={T('وري شاهين ملف')} aria-label={T('وري شاهين ملف')}
             className={`rounded-xl border p-3 ${picking ? 'border-amber-600 text-amber-300' : 'border-stone-700 text-stone-400'}`}><FolderOpen className="h-4 w-4" /></button>
-          <textarea className="min-h-[48px] flex-1 resize-y rounded-xl border border-stone-700 bg-stone-950 px-3 py-2 text-sm text-stone-100" rows={2} value={text} maxLength={ROOM_LIMITS.chars}
+          <textarea ref={input} className="min-h-[48px] flex-1 resize-y rounded-xl border border-stone-700 bg-stone-950 px-3 py-2 text-sm text-stone-100" rows={2} value={text} maxLength={ROOM_LIMITS.chars}
             onChange={(e) => setText(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void submit(); } }}
             placeholder={T('اكتب لشاهين…')} aria-label={T('اكتب لشاهين…')} />
           <button disabled={!text.trim() || Boolean(busy)} className="rounded-xl bg-amber-500 p-3 text-stone-950 disabled:opacity-40" aria-label={T('ابعت')}><Send className="h-4 w-4" /></button>

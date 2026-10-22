@@ -109,8 +109,8 @@ export class GitHub {
     return this.api(this.r(`/issues/${number}/labels`), { method: 'POST', body: JSON.stringify({ labels }) });
   }
 
-  mergePull(number: number, title: string) {
-    return this.api<{ sha: string; merged: boolean }>(this.r(`/pulls/${number}/merge`), { method: 'PUT', body: JSON.stringify({ merge_method: 'squash', commit_title: title }) });
+  mergePull(number: number, title: string, message?: string) {
+    return this.api<{ sha: string; merged: boolean }>(this.r(`/pulls/${number}/merge`), { method: 'PUT', body: JSON.stringify({ merge_method: 'squash', commit_title: title, ...(message ? { commit_message: message } : {}) }) });
   }
 
   deleteBranch(branch: string) {

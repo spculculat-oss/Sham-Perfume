@@ -28,7 +28,7 @@ export const isReadablePath = (path: string) => validPath(path) && TEXT_FILE.tes
 const BLOCKED: [RegExp, string][] = [
   [/^\.git\//, 'ملفات git نفسها'],
   [/^\.github\//, 'ملفات تشغيل الروبوتات (workflows) — بتتعدل من شات وكيل البرمجة بس'],
-  [/^src\/data\/owner\/|^scripts\/owner\/|(^|\/)ownerAuthority\.ts$|(^|\/)ownerFiles\.ts$/, 'مفاتيح صاحب الموقع وقواعد صلاحيات شاهين نفسها — مايقدرش يغيّرها لنفسه'],
+  [/^src\/data\/owner\/|^scripts\/owner\/|(^|\/)owner(Authority|Files|Desk)\.ts$/, 'مفاتيح صاحب الموقع وقواعد صلاحيات شاهين نفسها — مايقدرش يغيّرها لنفسه'],
   [/^docs\/|^src\/legal\/|^server\/legal\/|^scripts\/shaheen-import\/guard\.ts$/, 'قرارات المدير القانوني والمستندات — بتتغير بعد مراجعة قانونية بس'],
   [/^src\/data\/live\/|^src\/لغات\/ai\/|^public\/(store-images|p)\//, 'بيانات وتقارير الروبوتات — الروبوتات بس اللي بتكتبها'],
   [/^scripts\/doctor\//, 'طبيب شاهين نفسه'],
@@ -163,17 +163,22 @@ async function pipe(data: Uint8Array, mode: 'gzip' | 'gunzip') {
   const stream = (mode === 'gzip' ? new CompressionStream('gzip') : new DecompressionStream('gzip')) as unknown as ReadableWritablePair<Uint8Array, Uint8Array>;
   return new Uint8Array(await new Response(new Blob([data as unknown as ArrayBuffer]).stream().pipeThrough(stream)).arrayBuffer());
 }
-export async function encodeChange(req: ChangeRequest): Promise<string> {
-  return toB64Url(await pipe(new TextEncoder().encode(JSON.stringify(req)), 'gzip'));
+/** Any desk request as a short, link-safe text (JSON → gzip → base64url). */
+export async function encodePayload(value: unknown): Promise<string> {
+  return toB64Url(await pipe(new TextEncoder().encode(JSON.stringify(value)), 'gzip'));
 }
-export async function decodeChange(encoded: string): Promise<ChangeRequest | undefined> {
-  try {
-    const x = JSON.parse(new TextDecoder().decode(await pipe(fromB64Url(encoded.trim()), 'gunzip'))) as ChangeRequest;
-    if (x?.v !== 1 || typeof x.summary !== 'string' || !Array.isArray(x.edits)) return undefined;
-    const edits = x.edits.filter((e) => e && typeof e.path === 'string' && typeof e.search === 'string' && typeof e.replace === 'string');
-    return edits.length === x.edits.length && edits.length ? { v: 1, summary: x.summary.slice(0, 300), edits } : undefined;
-  } catch { return undefined; }
+export async function decodePayload(encoded: string): Promise<unknown> {
+  try { return JSON.parse(new TextDecoder().decode(await pipe(fromB64Url(encoded.trim()), 'gunzip'))); } catch { return undefined; }
 }
+export const encodeChange = (req: ChangeRequest) => encodePayload(req);
+/** A change request (version 1, or a desk request of kind «change»). */
+export function readChange(x: unknown): ChangeRequest | undefined {
+  const r = x as { v?: number; kind?: string; summary?: unknown; edits?: unknown };
+  if (!r || !(r.v === 1 || (r.v === 2 && r.kind === 'change')) || typeof r.summary !== 'string' || !Array.isArray(r.edits)) return undefined;
+  const edits = (r.edits as FileEdit[]).filter((e) => e && typeof e.path === 'string' && typeof e.search === 'string' && typeof e.replace === 'string');
+  return edits.length === r.edits.length && edits.length ? { v: 1, summary: r.summary.slice(0, 300), edits } : undefined;
+}
+export async function decodeChange(encoded: string): Promise<ChangeRequest | undefined> { return readChange(await decodePayload(encoded)); }
 
 const FENCE = 'shaheen-change';
 /** The request's title and body. Only the change itself goes in — never the room's conversation. */
