@@ -148,7 +148,7 @@ const SCIENCE_TO_TRACKS: Record<ScienceTrackId, TrackId[]> = {
   nuclear: ['physics', 'engineering'], physics: ['physics'], chemistry: ['chemistry', 'perfume'],
   math: ['math'], computing: ['prog_langs', 'software', 'it_sciences', 'ai_science'],
   'war-studies': ['law', 'history'], 'electronic-warfare': ['security', 'threat_analysis'],
-  logic: ['ai_science', 'math', 'software'],
+  logic: ['ai_science', 'math', 'software'], cosmetics: ['chemistry', 'biology', 'medicine'],
 };
 const scienceInScope = (lesson: ScienceLesson, specialist: Specialist) =>
   (SCIENCE_TO_TRACKS[lesson.track] || []).some((t) => specialist.tracks.includes(t));
