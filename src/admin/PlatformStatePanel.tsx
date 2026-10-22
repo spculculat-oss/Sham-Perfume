@@ -3,8 +3,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { ExternalLink, Landmark, RefreshCw, Undo2 } from 'lucide-react';
 import bundledControls from '../data/owner/controls.json';
 import bundledReport from '../data/live/platform-state.json';
+import bundledOrders from '../data/owner/state-orders.json';
+import { BOTS } from '../utils/shaheenOrg';
 import { OWNER, readControls, type OwnerControls } from '../utils/ownerAuthority';
-import { STATE, STATE_CONSTITUTION, STATE_MEMBERS, STATE_OUTCOMES, readStateReport, stateActive, type StateRecord, type StateReport } from '../utils/platformState';
+import { STATE, STATE_CONSTITUTION, STATE_MEMBERS, STATE_OUTCOMES, readStateOrders, readStateReport, stateActive, type StateOrders, type StateRecord, type StateReport } from '../utils/platformState';
 import { revertDraft } from '../utils/ownerDesk';
 import { sendDeskRequest } from './deskRequest';
 
@@ -23,12 +25,14 @@ const MARK: Record<StateRecord['outcome'], string> = { merged: '✅', approved: 
 export default function PlatformStatePanel() {
   const [controls, setControls] = useState<OwnerControls>(() => readControls(bundledControls));
   const [report, setReport] = useState<StateReport>(() => readStateReport(bundledReport));
+  const [orders, setOrders] = useState<StateOrders>(() => readStateOrders(bundledOrders));
   const [loading, setLoading] = useState(false);
   const [note, setNote] = useState('');
   const refresh = useCallback(async () => {
     setLoading(true);
     try { const r = await fetch(`${RAW}/owner/controls.json?t=${Date.now()}`, { cache: 'no-store' }); if (r.ok) setControls(readControls(await r.json())); } catch { /* bundled copy */ }
     try { const r = await fetch(`${RAW}/live/platform-state.json?t=${Date.now()}`, { cache: 'no-store' }); if (r.ok) setReport(readStateReport(await r.json())); } catch { /* bundled copy */ }
+    try { const r = await fetch(`${RAW}/owner/state-orders.json?t=${Date.now()}`, { cache: 'no-store' }); if (r.ok) setOrders(readStateOrders(await r.json())); } catch { /* bundled copy */ }
     setLoading(false);
   }, []);
   useEffect(() => { void refresh(); }, [refresh]);
@@ -51,10 +55,10 @@ export default function PlatformStatePanel() {
           </button>
         </div>
         <p className="mt-2 text-sm text-stone-700">
-          {active ? T('أعلى سلطة على الروبوتات بعدك: كل الروبوتات وشاهين والمجلس تحت رقابتها، وكل ساعة أعضاؤها بيصوّتوا على تعديلات الروبوتات ومهام المجلس. اللي يتوافق عليه بيعدّي كل الفحوص وينزل، واللي يترفض بيجيلك إنت.')
+          {active ? T('أعلى سلطة بعدك: كل العاملين في المنصة وأولهم شاهين خاضعين لقوانينها وبياخدوا منها كل الموافقات. أعضاؤها بيصوّتوا كل ساعة، واللي يتوافق عليه بيعدّي كل الفحوص وينزل، واللي يترفض بتقفله بنفسها — مابترجعلكش في أي إجراء.')
             : controls.frozen ? T('واقفة مع كل الروبوتات (فرامل الطوارئ شغالة).') : T('إنت ماسك الموافقات بنفسك دلوقتي، فالدولة مش بتقرر حاجة.')}
         </p>
-        <p className="mt-2 text-xs text-stone-600">{T('إنت فوقها في أي وقت: ترد على أي حاجة قبلها من «صندوق الموافقات»، أو ترجّع أي قرار ليها، أو تسحب منها الموافقات من مكتبك (approve_all = كل حاجة بموافقتي، state_rule = الدولة توافق).')}</p>
+        <p className="mt-2 text-xs text-stone-600">{T('إنت فوقها في أي وقت: ترجّع أي قرار ليها، أو ترجّع روبوت هي وقفته من مكتبك، أو تسحب منها الموافقات (approve_all = كل حاجة بموافقتي، state_rule = الدولة توافق).')}</p>
         <p className="mt-1 text-xs text-stone-600">{T('مابتشوفش بياناتك الشخصية ولا مفاتيحك ولا غرفتك الخاصة، ومابتلمسش مفاتيح التحكم بتاعتك.')}</p>
         <a href={DESK} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-2 rounded-xl bg-stone-900 px-4 py-2 text-sm font-bold text-white">
           <ExternalLink className="h-4 w-4" />{T('افتح مكتب صاحب الموقع (لإعطاء أمر)')}
@@ -99,13 +103,24 @@ export default function PlatformStatePanel() {
             </li>
           ))}
         </ul>
-        <p className="mt-2 text-[11px] text-stone-500">{T('القرار بالتوافق: لازم 3 موافقات على الأقل ومن غير أي اعتراض، ولو عضو واحد رفض الموضوع بيروحلك إنت.')}</p>
+        <p className="mt-2 text-[11px] text-stone-500">{T('القرار بالتوافق: لازم 3 موافقات على الأقل ومن غير أي اعتراض، ولو عضو واحد رفض الدولة بتقفل الموضوع.')}</p>
       </div>
 
       <div className={card}>
         <h3 className="font-bold">{T('رقابة الدولة على الروبوتات')}</h3>
         <p className="mt-1 text-sm">{typeof report.supervision.health === 'number' ? TP('صحة الأدوات {h}%', { h: report.supervision.health }) : T('لسه مفيش قياس.')}</p>
         {report.supervision.problems.length > 0 && <ul className="mt-1 list-disc ps-5 text-xs text-stone-600">{report.supervision.problems.map((p) => <li key={p}>{p}</li>)}</ul>}
+      </div>
+
+      <div className={card}>
+        <h3 className="font-bold">{T('أوامر الدولة')}</h3>
+        <p className="mt-1 text-sm">{orders.paused.length ? TP('واقف بأمرها: {list}', { list: orders.paused.map((id) => BOTS.find((b) => b.id === id)?.nameAr ?? id).join('، ') }) : T('مفيش روبوت واقف بأمرها.')}</p>
+        {orders.log.length > 0 && <ul className="mt-2 space-y-1 text-xs text-stone-700">{orders.log.slice(0, 12).map((e) => <li key={`${e.at}-${e.action}-${e.target}`}><span className="text-stone-500">{when(e.at)}</span> — {e.noteAr}</li>)}</ul>}
+      </div>
+
+      <div className={card}>
+        <h3 className="font-bold">{T('قوانين المنصة')}</h3>
+        {orders.laws.length ? <ul className="mt-2 space-y-1 text-sm">{orders.laws.map((l) => <li key={l.id}><b>{l.id}</b> — {l.textAr}</li>)}</ul> : <p className="mt-1 text-sm text-stone-500">{T('لسه مفيش قوانين مضافة — ضيفها من غرفة الدولة.')}</p>}
       </div>
 
       <details className={card}>

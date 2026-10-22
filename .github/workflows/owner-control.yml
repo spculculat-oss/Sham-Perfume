@@ -103,7 +103,7 @@ jobs:
         run: |
           git config user.name "Owner desk"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          node scripts/ci/publish.mjs "أمر صاحب الموقع: ${{ inputs.action }} ${{ inputs.bot }}" src/data/owner/controls.json \
+          node scripts/ci/publish.mjs "أمر صاحب الموقع: ${{ inputs.action }} ${{ inputs.bot }}" src/data/owner/controls.json src/data/owner/state-orders.json \
             || { echo "::error::Could not save the owner's order"; exit 1; }
 
   change:

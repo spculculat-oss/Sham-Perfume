@@ -4,8 +4,11 @@ name: Platform State — approvals by its members' vote
 # owner. While the owner hands it the approvals (his switch `state` in src/data/owner/controls.json), every hour its
 # members (Shaheen, the legal manager, security & privacy, quality, finance and the department head) vote on each
 # council task and robot pull request waiting for approval. The legal manager and security & privacy can veto;
-# otherwise it passes by consensus: three approvals and no objection. An approved change must pass every check before it is
-# merged; whatever is refused waits for the owner, who is above the State and can undo any of its decisions.
+# otherwise it passes by consensus: three approvals and no objection. An approved change must pass every check before
+# it is merged; whatever it refuses it closes itself — it never goes back to the owner (his decision, 2026-10-22).
+# It also carries out orders: the owner's from its private room (an issue «[الدولة] …» from his own account starts
+# this workflow at once) and its own (pause / resume / run a robot, add or repeal a law). The owner is above it and
+# can undo any of its decisions.
 # It never sees the owner's personal data, keys or private room. Code: scripts/state/run.mts. Log:
 # src/data/live/platform-state.json (owner's suite → «الهيكل والاجتماع»).
 # Minute 27: clear of the patrol (52), the importer and the studio bridge (37).
@@ -14,6 +17,9 @@ on:
   schedule:
     - cron: '27 * * * *'
   workflow_dispatch:
+  # An order from the State's room: an issue the owner opens from his own account (checked again in the code).
+  issues:
+    types: [opened]
   push:
     branches: ['arena/**']
     paths: ['scripts/state/**', 'src/utils/platformState.ts', '.github/workflows/platform-state.yml']
@@ -26,12 +32,17 @@ permissions:
 
 concurrency:
   group: platform-state-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  # An hourly run and an order may meet: the later one waits, and nothing is dropped (each re-reads GitHub).
   cancel-in-progress: false
 
 jobs:
   # «مفتاح صاحب الموقع»: the owner can pause the State or freeze every robot (the State stops with them).
   owner:
     name: Owner's switch
+    # Issues: only the owner's own requests to the State (anyone can open an issue on a public repository).
+    if: >-
+      github.event_name != 'issues' || (github.event.issue.user.login == github.repository_owner
+      && github.event.issue.author_association == 'OWNER' && startsWith(github.event.issue.title, '[الدولة] '))
     runs-on: ubuntu-24.04
     timeout-minutes: 3
     permissions:

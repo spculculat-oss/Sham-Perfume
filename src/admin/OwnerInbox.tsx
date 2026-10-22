@@ -2,7 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { CheckCircle2, ExternalLink, GitPullRequest, History, ListTodo, Loader2, MessagesSquare, RefreshCw, RotateCcw, Undo2, XCircle } from 'lucide-react';
 import { T, TP, adminLocale } from './adminL10n';
 import { sendDeskRequest } from './deskRequest';
-import { OWNER } from '../utils/ownerAuthority';
+import bundledControls from '../data/owner/controls.json';
+import { OWNER, readControls } from '../utils/ownerAuthority';
+import { stateActive } from '../utils/platformState';
 import { parseChanges } from '../utils/ownerFiles';
 import { decideDraft, deskLog, inboxFrom, inboxUrls, logUrl, parseOrders, revertDraft, type Decision, type GhIssue, type InboxItem, type LogItem } from '../utils/ownerDesk';
 import { isSealedRoom, openRoom, ROOM_STORAGE_KEY } from '../utils/ownerRoom';
@@ -72,6 +74,9 @@ export default function OwnerInbox({ code, onRoom }: { code: string; onRoom?: ()
           <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />{T('حدّث')}
         </button>
       </div>
+      {stateActive(readControls(bundledControls)) && (
+        <p className="rounded-xl border border-sky-800 bg-sky-950/50 p-2 text-xs text-sky-100">{T('🏛️ دولة المنصة ماسكة كل الموافقات وبتقرر فيها بنفسها كل ساعة، ومابترجعلكش. اللي هنا للاطلاع — ولو حبيت ترد على حاجة قبلها، ردك هو اللي يمشي.')}</p>
+      )}
       {error && <p role="alert" className="rounded-xl bg-red-950 p-2 text-xs text-red-200">{error}</p>}
 
       {waiting > 0 && (

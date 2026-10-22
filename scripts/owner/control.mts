@@ -7,6 +7,8 @@
 import { appendFileSync, readFileSync, writeFileSync } from 'node:fs';
 import { BOTS, type BotId } from '../../src/utils/shaheenOrg';
 import { applyOwnerCommand, OWNER_ACTIONS, readControls, type OwnerAction } from '../../src/utils/ownerAuthority';
+import { STATE_ORDERS_FILE, readStateOrders } from '../../src/utils/platformState';
+import { ownerResumes } from '../../src/utils/stateRoom';
 
 const FILE = 'src/data/owner/controls.json';
 const action = (process.env.OWNER_ACTION || '') as OwnerAction;
@@ -31,9 +33,17 @@ if ((action === 'pause' || action === 'resume') && !bot) {
   process.exit(0);
 }
 if (changed) writeFileSync(FILE, `${JSON.stringify(controls, null, 1)}\n`);
+// «رجّع روبوت» from the owner also lifts a pause of «دولة المنصة» on it: his order is above the State's.
+let stateChanged = false;
+if (action === 'resume' && bot) {
+  let before = readStateOrders({});
+  try { before = readStateOrders(JSON.parse(readFileSync(STATE_ORDERS_FILE, 'utf8'))); } catch { /* none yet */ }
+  const lifted = ownerResumes(before, bot);
+  if (lifted.changed) { writeFileSync(STATE_ORDERS_FILE, `${JSON.stringify(lifted.orders, null, 1)}\n`); stateChanged = true; }
+}
 console.log(`::notice title=أمر صاحب الموقع::${line}`);
 if (process.env.GITHUB_STEP_SUMMARY) {
   const paused = controls.paused.map((id) => `- ${BOTS.find((b) => b.id === id)?.nameAr ?? id}`).join('\n') || '- مفيش';
   appendFileSync(process.env.GITHUB_STEP_SUMMARY, `## أمر صاحب الموقع\n\n${line}\n\n**فرامل الطوارئ:** ${controls.frozen ? 'شغالة (كل الروبوتات واقفة)' : 'مش شغالة'}\n\n**التطوير الذاتي:** ${controls.selfDevelopment === 'safe_auto' ? 'الصغير الآمن تلقائي، والباقي بموافقتك' : controls.selfDevelopment === 'state' ? 'دولة المنصة بتوافق، وإنت فوقها في أي وقت' : 'كل تغيير بموافقتك'}\n\n**منصات الذكاء الاصطناعي:** ${controls.aiPlatforms === 'off' ? 'مقفولة — شاهين معتمد على نفسه' : 'مسموحة'}\n\n**الروبوتات الموقوفة:**\n${paused}\n`);
 }
-out('changed', changed ? 'true' : 'false');
+out('changed', changed || stateChanged ? 'true' : 'false');
