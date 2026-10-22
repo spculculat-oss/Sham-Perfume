@@ -18,7 +18,7 @@ import { REVIEWERS } from '../scripts/shaheen-patrol/patrol';
 
 test('the sciences are distributed among the specialists: every school track has exactly one owner', () => {
   const schoolTracks = TRACKS.map((t) => t.id as string).sort();
-  assert.equal(schoolTracks.length, 27, 'the academy teaches 27 tracks');
+  assert.equal(schoolTracks.length, 37, 'the academy teaches 37 tracks');
   const owned = SPECIALISTS.flatMap((s) => s.tracks as string[]);
   assert.deepEqual([...owned].sort(), schoolTracks, 'each track is owned by exactly one specialist');
   for (const s of SPECIALISTS) assert.ok(s.tracks.length >= 1 && s.sciencesAr.length > 10, s.id);
@@ -96,7 +96,7 @@ test('the specialists are registered robots under Shaheen: links, shifts, review
   const all = SHIFTS.flatMap((x) => x.bots);
   assert.equal(new Set(all).size, all.length, 'a role in two shifts');
   assert.deepEqual([...all].sort(), BOTS.map((b) => b.id).sort(), 'every role has a monitoring shift');
-  for (const x of SHIFTS) assert.ok(x.bots.length <= 14, x.nameEn);
+  for (const x of SHIFTS) assert.ok(x.bots.length <= 16, x.nameEn);
   for (const s of SPECIALISTS) {
     const brief = handbookBrief(s.id);
     assert.ok(brief.length <= 2200 && brief.includes(`«${s.nameAr}»`), `${s.id} meets itself in the brief`);

@@ -159,6 +159,10 @@ export const REVIEWERS: Partial<Record<BotId, Reviewer>> = {
   specialist_science: { nameAr: 'خبير فحص استشارات العلوم والرياضيات', nameEn: 'Science & math consultations reviewer', probes: [] },
   specialist_business: { nameAr: 'خبير فحص استشارات التجارة والقانون', nameEn: 'Commerce & law consultations reviewer', probes: [] },
   specialist_society: { nameAr: 'خبير فحص استشارات المجتمع والنفس', nameEn: 'Society & psychology consultations reviewer', probes: [] },
+  specialist_health: { nameAr: 'خبير فحص استشارات البيولوجيا والطب', nameEn: 'Life & medical consultations reviewer', probes: [] },
+  specialist_engineering: { nameAr: 'خبير فحص استشارات الهندسة والأرض', nameEn: 'Engineering & earth consultations reviewer', probes: [] },
+  specialist_learning: { nameAr: 'خبير فحص استشارات التربية والمعلومات', nameEn: 'Education & information consultations reviewer', probes: [] },
+  specialist_culture: { nameAr: 'خبير فحص استشارات الفنون والعلاقات', nameEn: 'Arts & diplomacy consultations reviewer', probes: [] },
 };
 export const reviewerOf = (id: BotId): Reviewer => REVIEWERS[id] || { nameAr: `خبير فحص ${botOf(id)?.nameAr || id}`, nameEn: `${botOf(id)?.nameEn || id} reviewer`, probes: [] };
 

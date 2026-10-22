@@ -13,8 +13,8 @@ export interface Shift { index: ShiftIndex; nameAr: string; nameEn: string; bots
  * roles without a workflow (including the design expert) are not invoked automatically.
  */
 export const SHIFTS: Shift[] = [
-  { index: 0, nameAr: 'وردية المتجر والأسعار', nameEn: 'Store & pricing shift', bots: ['scout', 'importer', 'images', 'catalog', 'product_pages', 'store_advisor', 'finance', 'contracts', 'admin_agent', 'librarian', 'visitor_tour', 'specialist_scents', 'specialist_business', 'specialist_science'], probes: ['pricing', 'catalog', 'currency', 'fx', 'images', 'product_pages', 'payments'] },
-  { index: 1, nameAr: 'وردية المحتوى وتجربة الزائر', nameEn: 'Content & visitor shift', bots: ['news', 'seo', 'chat', 'languages', 'design_audit', 'design_expert', 'inspect', 'school', 'teacher', 'researcher', 'library', 'chat_agent', 'specialist_tech', 'specialist_society'], probes: ['l10n', 'news_file', 'news_api', 'sitemap'] },
+  { index: 0, nameAr: 'وردية المتجر والأسعار', nameEn: 'Store & pricing shift', bots: ['scout', 'importer', 'images', 'catalog', 'product_pages', 'store_advisor', 'finance', 'contracts', 'admin_agent', 'librarian', 'visitor_tour', 'inspect', 'specialist_scents', 'specialist_business', 'specialist_science', 'specialist_engineering'], probes: ['pricing', 'catalog', 'currency', 'fx', 'images', 'product_pages', 'payments'] },
+  { index: 1, nameAr: 'وردية المحتوى وتجربة الزائر', nameEn: 'Content & visitor shift', bots: ['news', 'seo', 'chat', 'languages', 'design_audit', 'design_expert', 'school', 'teacher', 'researcher', 'library', 'chat_agent', 'specialist_tech', 'specialist_society', 'specialist_health', 'specialist_learning', 'specialist_culture'], probes: ['l10n', 'news_file', 'news_api', 'sitemap'] },
   { index: 2, nameAr: 'وردية الجودة والإدارة', nameEn: 'Reliability & leadership shift', bots: ['council', 'precheck', 'patrol', 'legal', 'doctor', 'verifier', 'live_check', 'keys', 'intake', 'studio_bridge', 'studio_zip', 'deploy', 'secretary', 'specialist_security'], probes: ['site', 'engine'] },
 ];
 export const SHIFT_HOURS = SHIFTS.length;

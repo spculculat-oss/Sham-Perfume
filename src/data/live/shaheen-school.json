@@ -1,16 +1,16 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T09:04:06.726Z",
+ "updatedAt": "2026-10-22T12:25:56.419Z",
  "reliance": {
   "score": 100,
-  "covered": 856,
-  "total": 856,
-  "fromMemory": 856,
+  "covered": 1028,
+  "total": 1028,
+  "fromMemory": 1028,
   "fromLibrary": 0,
   "byLang": {
    "ar": {
-    "covered": 835,
-    "total": 835
+    "covered": 1007,
+    "total": 1007
    },
    "en": {
     "covered": 21,
@@ -19,8 +19,14 @@
   }
  },
  "studiedTotal": 74,
- "selfTaughtTotal": 724,
+ "selfTaughtTotal": 876,
  "history": [
+  {
+   "at": "2026-10-22T12:25:56.419Z",
+   "score": 100,
+   "studied": 152,
+   "mode": "self"
+  },
   {
    "at": "2026-10-22T09:04:06.726Z",
    "score": 100,
@@ -362,9 +368,9 @@
  },
  "localTaughtTotal": 23,
  "spelling": {
-  "at": "2026-10-22T09:04:06.726Z",
-  "tried": 747,
-  "understood": 708,
+  "at": "2026-10-22T12:25:56.419Z",
+  "tried": 746,
+  "understood": 705,
   "score": 95,
   "misses": [
    "طبييه → طبيه (طبيعيه)",
@@ -514,10 +520,60 @@
    "covered": 18,
    "total": 18,
    "score": 100
+  },
+  "biology": {
+   "covered": 20,
+   "total": 20,
+   "score": 100
+  },
+  "medicine": {
+   "covered": 20,
+   "total": 20,
+   "score": 100
+  },
+  "engineering": {
+   "covered": 22,
+   "total": 22,
+   "score": 100
+  },
+  "earth_space": {
+   "covered": 18,
+   "total": 18,
+   "score": 100
+  },
+  "education": {
+   "covered": 16,
+   "total": 16,
+   "score": 100
+  },
+  "media_info": {
+   "covered": 16,
+   "total": 16,
+   "score": 100
+  },
+  "sports": {
+   "covered": 14,
+   "total": 14,
+   "score": 100
+  },
+  "arts": {
+   "covered": 16,
+   "total": 16,
+   "score": 100
+  },
+  "religion": {
+   "covered": 16,
+   "total": 16,
+   "score": 100
+  },
+  "tourism_ir": {
+   "covered": 14,
+   "total": 14,
+   "score": 100
   }
  },
  "tools": {
-  "at": "2026-10-22T09:04:06.726Z",
+  "at": "2026-10-22T12:25:56.419Z",
   "items": [
    {
     "id": "finance_agent",
@@ -658,14 +714,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-22T09:04:06.726Z",
+  "at": "2026-10-22T12:25:56.419Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-22T15:04:06.726Z"
+    "next": "2026-10-22T18:25:56.419Z"
    },
    {
     "id": "site-care",
@@ -677,12 +733,12 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-22T21:04:06.726Z"
+    "next": "2026-10-23T00:25:56.419Z"
    }
   ]
  },
  "practice": {
-  "at": "2026-10-22T09:04:06.726Z",
+  "at": "2026-10-22T12:25:56.419Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -775,7 +831,7 @@
     "id": "check-curriculum",
     "titleAr": "فحص: المنهج مكتمل بلا تكرار",
     "ok": true,
-    "detail": "فُحص فعلاً: 684 زوج سؤال وجواب، وكل المعرفات فريدة"
+    "detail": "فُحص فعلاً: 856 زوج سؤال وجواب، وكل المعرفات فريدة"
    }
   ]
  }

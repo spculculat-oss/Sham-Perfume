@@ -102,6 +102,16 @@ test('tracks cover every mission; tools cover every AI tool with its field and a
   assert.ok(tracks.psychology.total >= 18, 'psychology');
   assert.ok(tracks.cyber_psych.total >= 15, 'cyber psychology');
   assert.ok(tracks.ux_psych.total >= 15, 'psychological engineering of user interactions');
+  assert.ok(tracks.biology.total >= 18, 'biological sciences');
+  assert.ok(tracks.medicine.total >= 18, 'medicine & health');
+  assert.ok(tracks.engineering.total >= 20, 'engineering');
+  assert.ok(tracks.earth_space.total >= 16, 'earth, environment & space sciences');
+  assert.ok(tracks.education.total >= 14, 'education');
+  assert.ok(tracks.media_info.total >= 14, 'media & information sciences');
+  assert.ok(tracks.sports.total >= 12, 'sports science');
+  assert.ok(tracks.arts.total >= 14, 'arts');
+  assert.ok(tracks.religion.total >= 14, 'philosophy & religion');
+  assert.ok(tracks.tourism_ir.total >= 12, 'tourism & international relations');
   assert.ok(tracks.perfume.total >= 5, 'the practical perfume skills close the original gaps');
   assert.equal(tracks.ai_tools.total, AI_TOOLS.length * 2, 'every tool: its field + how to develop it');
   assert.equal(trackOf('lang'), 'prog_langs');
@@ -116,6 +126,16 @@ test('tracks cover every mission; tools cover every AI tool with its field and a
   assert.equal(trackOf('law'), 'law');
   assert.equal(trackOf('ux'), 'ux_psych');
   assert.equal(trackOf('cps'), 'cyber_psych');
+  assert.equal(trackOf('bio'), 'biology');
+  assert.equal(trackOf('med'), 'medicine');
+  assert.equal(trackOf('eng'), 'engineering');
+  assert.equal(trackOf('earth'), 'earth_space');
+  assert.equal(trackOf('edu'), 'education');
+  assert.equal(trackOf('media'), 'media_info');
+  assert.equal(trackOf('sport'), 'sports');
+  assert.equal(trackOf('art'), 'arts');
+  assert.equal(trackOf('rel'), 'religion');
+  assert.equal(trackOf('tour'), 'tourism_ir');
 
   const tools = toolStats(results, '2026-10-21T00:00:00.000Z');
   assert.equal(tools.items.length, AI_TOOLS.length);

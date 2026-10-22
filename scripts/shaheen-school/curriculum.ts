@@ -16,12 +16,17 @@ import type { BankQuestion, TrainingDoc } from './school';
 import { AI_PROJECT_LESSONS, CHEM_LESSONS, FRONTIER_LESSONS, IT_LESSONS, MATH_LESSONS, PHYS_LESSONS } from './curriculumWorld';
 import { COMMERCE_LESSONS, GEO_LESSONS, HIST_LESSONS, LAW_LESSONS, LIT_LESSONS, MGMT_LESSONS, PR_LESSONS, SOC_LESSONS } from './curriculumSociety';
 import { CYBERPSY_LESSONS, PSY_LESSONS, UXPSY_LESSONS } from './curriculumMind';
+import { BIOLOGY_LESSONS, MEDICINE_LESSONS } from './curriculumLife';
+import { EARTH_LESSONS, ENGINEERING_LESSONS } from './curriculumEngineering';
+import { ARTS_LESSONS, EDUCATION_LESSONS, MEDIA_LESSONS, SPORTS_LESSONS } from './curriculumSkills';
+import { RELIGION_LESSONS, TOURISM_LESSONS } from './curriculumCulture';
 
 export type TrackId =
   | 'perfume' | 'prog_langs' | 'blocks' | 'software' | 'graphics' | 'web_care' | 'ai_science' | 'security' | 'quantum' | 'ai_tools'
   | 'ai_projects' | 'it_sciences' | 'frontier' | 'chemistry' | 'physics' | 'math'
   | 'commerce' | 'law' | 'pr' | 'management' | 'history' | 'geography' | 'literature' | 'social'
-  | 'psychology' | 'cyber_psych' | 'ux_psych';
+  | 'psychology' | 'cyber_psych' | 'ux_psych'
+  | 'biology' | 'medicine' | 'engineering' | 'earth_space' | 'education' | 'media_info' | 'sports' | 'arts' | 'religion' | 'tourism_ir';
 
 export const TRACKS: { id: TrackId; titleAr: string; goalAr: string }[] = [
   { id: 'perfume', titleAr: 'العطور (المنهج الأصلي)', goalAr: 'العطور وصناعتها وأدوات الموقع — كما كانت المدرسة تفعل.' },
@@ -51,6 +56,16 @@ export const TRACKS: { id: TrackId; titleAr: string; goalAr: string }[] = [
   { id: 'psychology', titleAr: 'علم النفس', goalAr: 'علم النفس: المعرفي والاجتماعي والسريري والتربوي والذاكرة والدافعية والشخصية والانفعالات.' },
   { id: 'cyber_psych', titleAr: 'علم النفس الإلكتروني', goalAr: 'علم النفس الإلكتروني: سلوك المستخدمين على الشبكة، والخصوصية، والهوية، والإدمان الإلكتروني، والأمن النفسي.' },
   { id: 'ux_psych', titleAr: 'الهندسة النفسية لتعاملات المستخدم', goalAr: 'بناء هندسة نفسية على تعاملات المستخدم: نمذجة السلوك، ورحلة المستخدم، وعوامل القرار، والإقناع الأخلاقي، والحمل المعرفي.' },
+  { id: 'biology', titleAr: 'العلوم البيولوجية', goalAr: 'علم الأحياء وفروعه: الخلية والنبات والحيوان والتشريح والوظائف والوراثة والتكنولوجيا الحيوية والمناعة والأمراض.' },
+  { id: 'medicine', titleAr: 'الطب والصحة', goalAr: 'الطب والصحة: التشخيص والصيدلة والتمريض والإسعافات والتغذية والصحة العامة والأوبئة والأسنان والبيطري والعلاج الطبيعي.' },
+  { id: 'engineering', titleAr: 'الهندسة', goalAr: 'الهندسة وفروعها: المدنية والميكانيكية والكهربائية والإلكترونيات والصناعية والعمارة والبترول والطيران والبحرية والميكاترونكس والطاقة.' },
+  { id: 'earth_space', titleAr: 'علوم الأرض والبيئة والفضاء', goalAr: 'البيئة والتنوّع الحيوي والاستدامة وتغير المناخ والتلوث والآثار والجيوفيزياء والأحافير وعلوم الفضاء والأقمار الصناعية.' },
+  { id: 'education', titleAr: 'التربية والتعليم', goalAr: 'علوم التربية: المناهج وطرق التدريس والتربية الخاصة والقياس والتقويم والتعليم الإلكتروني وتكنولوجيا التعليم ودمج ذوي الإعاقة.' },
+  { id: 'media_info', titleAr: 'الإعلام وعلوم المعلومات', goalAr: 'الإعلام والصحافة والتحقق من المعلومات ومحو الأمية الإعلامية وعلوم المكتبات والأرشيف وعلم البيانات والبيانات الضخمة.' },
+  { id: 'sports', titleAr: 'علوم الرياضة', goalAr: 'علوم الرياضة: التدريب والتغذية الرياضية والطب الرياضي والإصابات وعلم الحركة واللياقة وعلم النفس الرياضي وإدارة الفرق.' },
+  { id: 'arts', titleAr: 'الفنون', goalAr: 'الفنون: الرسم والنحت والخط العربي والموسيقى والسينما والإخراج والتمثيل والمونتاج والتصوير والديكور وفنون الطهي.' },
+  { id: 'religion', titleAr: 'الفلسفة والعقائد', goalAr: 'الفلسفة والمنطق والأخلاق التطبيقية، والدراسات الإسلامية (القرآن والسنة والفقه والسيرة) والدراسات الدينية المقارنة وتاريخ الأديان.' },
+  { id: 'tourism_ir', titleAr: 'السياحة والعلاقات الدولية', goalAr: 'علم السياحة وإدارة الفنادق والضيافة والسياحة التراثية والبيئية، والعلاقات الدولية والدبلوماسية والمفاوضات وحل النزاعات.' },
 ];
 
 export function trackOf(topic: string): TrackId {
@@ -80,6 +95,16 @@ export function trackOf(topic: string): TrackId {
   if (topic === 'ps') return 'psychology';
   if (topic === 'cps') return 'cyber_psych';
   if (topic === 'ux') return 'ux_psych';
+  if (topic === 'bio') return 'biology';
+  if (topic === 'med') return 'medicine';
+  if (topic === 'eng') return 'engineering';
+  if (topic === 'earth') return 'earth_space';
+  if (topic === 'edu') return 'education';
+  if (topic === 'media') return 'media_info';
+  if (topic === 'sport') return 'sports';
+  if (topic === 'art') return 'arts';
+  if (topic === 'rel') return 'religion';
+  if (topic === 'tour') return 'tourism_ir';
   return 'perfume';
 }
 
@@ -612,6 +637,10 @@ const PAIRS: AcademyPair[] = [
   ...AI_PROJECT_LESSONS, ...IT_LESSONS, ...FRONTIER_LESSONS, ...CHEM_LESSONS, ...PHYS_LESSONS, ...MATH_LESSONS,
   ...COMMERCE_LESSONS, ...LAW_LESSONS, ...PR_LESSONS, ...MGMT_LESSONS, ...HIST_LESSONS, ...GEO_LESSONS, ...LIT_LESSONS, ...SOC_LESSONS,
   ...PSY_LESSONS, ...CYBERPSY_LESSONS, ...UXPSY_LESSONS, ...PERFUME_SKILLS,
+  ...BIOLOGY_LESSONS, ...MEDICINE_LESSONS,
+  ...ENGINEERING_LESSONS, ...EARTH_LESSONS,
+  ...EDUCATION_LESSONS, ...MEDIA_LESSONS, ...SPORTS_LESSONS, ...ARTS_LESSONS,
+  ...RELIGION_LESSONS, ...TOURISM_LESSONS,
 ];
 
 export function academyPairs(): AcademyPair[] {

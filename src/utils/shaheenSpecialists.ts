@@ -11,12 +11,13 @@
  */
 import type { BotId } from './shaheenOrg';
 
-/** مسارات مدرسة شاهين الـ27 (نفس معرفات scripts/shaheen-school/curriculum.ts — اختبار يتأكد من التطابق). */
+/** مسارات مدرسة شاهين الـ37 (نفس معرفات scripts/shaheen-school/curriculum.ts — اختبار يتأكد من التطابق). */
 export type ScienceTrack =
   | 'perfume' | 'prog_langs' | 'blocks' | 'software' | 'graphics' | 'web_care' | 'ai_science' | 'security' | 'quantum' | 'ai_tools'
   | 'ai_projects' | 'it_sciences' | 'frontier' | 'chemistry' | 'physics' | 'math'
   | 'commerce' | 'law' | 'pr' | 'management' | 'history' | 'geography' | 'literature' | 'social'
-  | 'psychology' | 'cyber_psych' | 'ux_psych';
+  | 'psychology' | 'cyber_psych' | 'ux_psych'
+  | 'biology' | 'medicine' | 'engineering' | 'earth_space' | 'education' | 'media_info' | 'sports' | 'arts' | 'religion' | 'tourism_ir';
 
 export type SpecialistId = BotId;
 
@@ -114,27 +115,71 @@ export const SPECIALISTS: Specialist[] = [
     sciencesEn: 'History and civilisations, geography and climate, literature, poetry, novels, philosophy and translation, social sciences, politics, education and ethics, psychology, user behaviour and user experience',
     keywords: ['تاريخ', 'تاريخي', 'حضارة', 'حضارات', 'إسلام', 'إسلامي', 'ثورة', 'ثورات', 'جغرافيا', 'جغرافي', 'مناخ', 'تضاريس', 'بلد', 'بلدان', 'مدينة', 'مدن', 'أدب', 'شعر', 'قصة', 'رواية', 'مسرح', 'فلسفة', 'ترجمة', 'لغة', 'لغات', 'نحو', 'بلاغة', 'مجتمع', 'اجتماع', 'إنسان', 'سياس', 'اقتصاد', 'تربية', 'تعليم', 'أخلاق', 'عولمة', 'نفس', 'نفسي', 'سلوك', 'ذاكرة', 'دافعية', 'شخصية', 'انفعال', 'قلق', 'إدمان', 'تجربة المستخدم', 'history', 'civilization', 'geography', 'climate', 'literature', 'poetry', 'novel', 'philosophy', 'translation', 'language', 'society', 'social', 'politics', 'economy', 'education', 'ethics', 'psychology', 'behavior', 'memory', 'emotion', 'anxiety', 'addiction', 'ux', 'user experience'],
   },
+  {
+    id: 'specialist_health',
+    nameAr: 'د. سلمى الحياة',
+    nameEn: 'Dr. Salma Al-Hayat — life & medical sciences specialist',
+    fieldAr: 'العلوم البيولوجية والطب والصحة',
+    fieldEn: 'Life sciences, medicine & health',
+    tracks: ['biology', 'medicine'],
+    sciencesAr: 'علم الأحياء والخلية والنبات والحيوان والتشريح والوظائف والوراثة والتكنولوجيا الحيوية والمناعة، والطب والصيدلة والتمريض والإسعافات والتغذية والصحة العامة والأوبئة والأسنان والبيطري والعلاج الطبيعي',
+    sciencesEn: 'Biology, cells, plants, animals, anatomy, physiology, genetics, biotechnology and immunity; medicine, pharmacy, nursing, first aid, nutrition, public health, epidemiology, dentistry, veterinary and physiotherapy',
+    keywords: ['أحياء', 'بيولوجيا', 'خلية', 'خلايا', 'نبات', 'حيوان', 'تشريح', 'أعضاء', 'وراثة', 'جينات', 'جين', 'مناعة', 'مناعي', 'عدوى', 'أمراض', 'مرض', 'أنسجة', 'تطور', 'أحفور', 'ميكروبات', 'بكتيريا', 'فيروس', 'طب', 'طبي', 'طبيب', 'دواء', 'أدوية', 'صيدلة', 'صيدلي', 'تمريض', 'ممرض', 'إسعافات', 'تغذية', 'غذاء', 'صحة', 'أوبئة', 'وباء', 'أسنان', 'طبيبة', 'بيطري', 'علاج طبيعي', 'إصابات', 'جراحة', 'جهاز المناعة', 'biology', 'cell', 'medicine', 'medical', 'health', 'pharmacy', 'drug', 'nursing', 'nutrition', 'epidemic', 'anatomy', 'genetics', 'immune', 'virus', 'dentist', 'veterinary'],
+  },
+  {
+    id: 'specialist_engineering',
+    nameAr: 'م. ياسين الهندسة',
+    nameEn: 'Eng. Yassin Al-Handasa — engineering & earth sciences specialist',
+    fieldAr: 'الهندسة وعلوم الأرض والفضاء',
+    fieldEn: 'Engineering, earth & space sciences',
+    tracks: ['engineering', 'earth_space'],
+    sciencesAr: 'الهندسة المدنية والميكانيكية والكهربائية والإلكترونيات والصناعية والعمارة والبترول والمناجم والطيران والبحرية والميكاترونكس والطاقة والسيارات، وعلوم الأرض والبيئة والتنوّع والاستدامة وتغير المناخ والآثار والجيوفيزياء والأحافير والفضاء والأقمار',
+    sciencesEn: 'Civil, mechanical, electrical, electronics, industrial, architecture, petroleum, mining, aerospace, marine, mechatronics, energy and automotive engineering; earth and environment sciences, sustainability, climate change, archaeology, geophysics, fossils, space and satellites',
+    keywords: ['هندسة', 'مهندس', 'مدنية', 'إسكانية', 'جسور', 'طرق', 'ميكانيكا', 'كهرباء', 'كهربائية', 'إلكترونيات', 'صناعية', 'تصنيع', 'عمارة', 'معماري', 'بترول', 'مناجم', 'طيران', 'فضاء', 'بحرية', 'سفن', 'ميكاترونكس', 'روبوتات', 'طاقة', 'نووي', 'سيارات', 'محرك', 'زراعة', 'سلامة مهنية', 'بيئة', 'بيئي', 'تنوّع حيوي', 'استدامة', 'مناخ', 'تلوث', 'تدوير', 'آثار', 'أثري', 'جيوفيزياء', 'أحافير', 'كواكب', 'أقمار', 'رياح', 'مياه موارد', 'engineering', 'civil', 'mechanical', 'electrical', 'electronics', 'architecture', 'petroleum', 'mining', 'aerospace', 'marine', 'robotics', 'energy', 'nuclear', 'automotive', 'ecology', 'environment', 'sustainability', 'climate', 'pollution', 'archaeology', 'satellite', 'planet', 'fossil'],
+  },
+  {
+    id: 'specialist_learning',
+    nameAr: 'أ. نورة التربية',
+    nameEn: 'Noura Al-Tarbiya — education & information sciences specialist',
+    fieldAr: 'التربية والتعليم والاعلام وعلوم المعلومات',
+    fieldEn: 'Education & information sciences',
+    tracks: ['education', 'media_info'],
+    sciencesAr: 'المناهج وطرق التدريس والتربية الخاصة والقياس والتقويم والتعليم الإلكتروني وتكنولوجيا التعليم ودمج ذوي الإعاقة، والاعلام والصحافة والتحقق من المعلومات ومحو الأمية الإعلامية وعلوم المكتبات والأرشيف وعلم البيانات',
+    sciencesEn: 'Curricula, teaching methods, special education, assessment, e-learning and inclusion; media, journalism, fact-checking, media literacy, library sciences, archives and data science',
+    keywords: ['تربية', 'تعليم', 'تعليمي', 'مناهج', 'منهج', 'تدريس', 'معلم', 'معلمة', 'طالب', 'طلاب', 'مدرسة', 'صف', 'تربية خاصة', 'إعاقة', 'قياس', 'تقويم', 'امتحان', 'تعليم إلكتروني', 'تكنولوجيا التعليم', 'مهووبين', 'امية', 'إعلام', 'إعلامي', 'صحافة', 'صحفي', 'إذاعة', 'تلفزيون', 'تحقق', 'تضليل', 'مكتبات', 'مكتبة', 'أرشيف', 'وثائق', 'فهرسة', 'بيانات', 'ضخمة', 'نشر علمي', 'education', 'teaching', 'curriculum', 'school', 'student', 'special education', 'assessment', 'elearning', 'media', 'journalism', 'factcheck', 'library', 'archive', 'data science', 'big data'],
+  },
+  {
+    id: 'specialist_culture',
+    nameAr: 'أ. رضا الثقافة',
+    nameEn: 'Reda Al-Thaqafa — arts, sports, faith & diplomacy specialist',
+    fieldAr: 'الرياضة والفنون والفلسفة والعقائد والسياحة والعلاقات الدولية',
+    fieldEn: 'Sports, arts, philosophy, faith, tourism & international relations',
+    tracks: ['sports', 'arts', 'religion', 'tourism_ir'],
+    sciencesAr: 'علوم الرياضة والتدريب والتغذية الرياضية والطب الرياضي، والفنون (الرسم والنحت والخط والموسيقى والسينما والتصوير والطهي)، والفلسفة والمنطق والأخلاق والدراسات الإسلامية والدينية المقارنة، وعلم السياحة والضيافة والعلاقات الدولية والدبلوماسية',
+    sciencesEn: 'Sports science and training; arts (drawing, sculpture, calligraphy, music, cinema, photography, culinary); philosophy, logic, ethics, Islamic and comparative religion studies; tourism, hospitality, international relations and diplomacy',
+    keywords: ['رياضة', 'رياضي', 'تدريب', 'لياقة', 'سباحة', 'قتالية', 'فنون', 'فن', 'رسم', 'نحت', 'خط عربي', 'موسيقى', 'نغمة', 'آلات', 'غناء', 'سينما', 'إخراج', 'تمثيل', 'مونتاج', 'تصوير', 'ديكور', 'طهي', 'طبخ', 'فلسفة', 'منطق', 'أخلاق', 'إسلام', 'إسلامي', 'قرآن', 'سنة نبوية', 'فقه', 'سيرة', 'أديان', 'ديانات', 'عقائد', 'سياحة', 'سياحي', 'فنادق', 'ضيافة', 'سفر', 'علاقات دولية', 'دبلوماسية', 'مفاوضات', 'منظمات دولية', 'نزاعات', 'رياضة ذوي الإعاقة', 'sports', 'sport', 'training', 'fitness', 'swimming', 'art', 'drawing', 'sculpture', 'calligraphy', 'music', 'cinema', 'acting', 'photography', 'cooking', 'philosophy', 'logic', 'islam', 'quran', 'religion', 'tourism', 'hotel', 'hospitality', 'diplomacy', 'negotiation', 'international relations'],
+  },
 ];
 
 /** أقسام الموقع كما تُفتح فعلياً في التطبيق — كل قسم له استشاريوه من المتخصصين. */
 export const SITE_SECTIONS: SiteSection[] = [
-  { id: 'home', titleAr: 'الرئيسية', titleEn: 'Home', consultants: ['specialist_scents', 'specialist_society', 'specialist_tech'] },
+  { id: 'home', titleAr: 'الرئيسية', titleEn: 'Home', consultants: ['specialist_scents', 'specialist_society', 'specialist_tech', 'specialist_health', 'specialist_culture'] },
   { id: 'store', titleAr: 'المتجر', titleEn: 'Store', consultants: ['specialist_scents', 'specialist_business'] },
   { id: 'productDetail', titleAr: 'صفحة المنتج', titleEn: 'Product page', consultants: ['specialist_scents', 'specialist_business'] },
   { id: 'concentration', titleAr: 'حاسبة التركيز', titleEn: 'Concentration calculator', consultants: ['specialist_scents', 'specialist_science'] },
   { id: 'pyramid', titleAr: 'حاسبة الهرم العطري', titleEn: 'Scent pyramid calculator', consultants: ['specialist_scents'] },
   { id: 'costing', titleAr: 'حاسبة التكلفة', titleEn: 'Costing calculator', consultants: ['specialist_business', 'specialist_scents'] },
-  { id: 'guide', titleAr: 'دليل صناعة العطور', titleEn: 'Perfume guide', consultants: ['specialist_scents', 'specialist_society'] },
-  { id: 'alcohol', titleAr: 'الكحول في العطور', titleEn: 'Alcohol in perfumes', consultants: ['specialist_science', 'specialist_scents'] },
+  { id: 'guide', titleAr: 'دليل صناعة العطور', titleEn: 'Perfume guide', consultants: ['specialist_scents', 'specialist_society', 'specialist_health'] },
+  { id: 'alcohol', titleAr: 'الكحول في العطور', titleEn: 'Alcohol in perfumes', consultants: ['specialist_science', 'specialist_scents', 'specialist_health'] },
   { id: 'maceration_simulator', titleAr: 'محاكي التخمير والنضج', titleEn: 'Maceration simulator', consultants: ['specialist_science', 'specialist_scents'] },
-  { id: 'master_ai', titleAr: 'الخبير شاهين', titleEn: 'Shaheen the expert', consultants: ['specialist_tech', 'specialist_security'] },
-  { id: 'perfume_news', titleAr: 'أخبار العطور', titleEn: 'Perfume news', consultants: ['specialist_society', 'specialist_business'] },
-  { id: 'raw_materials', titleAr: 'المواد الخام', titleEn: 'Raw materials', consultants: ['specialist_scents'] },
-  { id: 'world_perfumes', titleAr: 'عطور العالم', titleEn: 'World perfumes', consultants: ['specialist_society', 'specialist_scents'] },
-  { id: 'molecule_studio', titleAr: 'استوديو الجزيئات', titleEn: 'Molecule studio', consultants: ['specialist_science', 'specialist_tech'] },
-  { id: 'library', titleAr: 'مكتبة شاهين', titleEn: "Shaheen's library", consultants: ['specialist_society', 'specialist_scents'] },
-  { id: 'community', titleAr: 'المجتمع', titleEn: 'Community', consultants: ['specialist_society', 'specialist_business'] },
-  { id: 'admin_panel', titleAr: 'لوحة الإدارة', titleEn: 'Admin panel', consultants: ['specialist_business', 'specialist_tech', 'specialist_security'] },
+  { id: 'master_ai', titleAr: 'الخبير شاهين', titleEn: 'Shaheen the expert', consultants: ['specialist_tech', 'specialist_security', 'specialist_engineering'] },
+  { id: 'perfume_news', titleAr: 'أخبار العطور', titleEn: 'Perfume news', consultants: ['specialist_society', 'specialist_business', 'specialist_culture'] },
+  { id: 'raw_materials', titleAr: 'المواد الخام', titleEn: 'Raw materials', consultants: ['specialist_scents', 'specialist_health'] },
+  { id: 'world_perfumes', titleAr: 'عطور العالم', titleEn: 'World perfumes', consultants: ['specialist_society', 'specialist_scents', 'specialist_culture'] },
+  { id: 'molecule_studio', titleAr: 'استوديو الجزيئات', titleEn: 'Molecule studio', consultants: ['specialist_science', 'specialist_tech', 'specialist_engineering'] },
+  { id: 'library', titleAr: 'مكتبة شاهين', titleEn: "Shaheen's library", consultants: ['specialist_society', 'specialist_scents', 'specialist_learning', 'specialist_culture'] },
+  { id: 'community', titleAr: 'المجتمع', titleEn: 'Community', consultants: ['specialist_society', 'specialist_business', 'specialist_health', 'specialist_learning', 'specialist_culture'] },
+  { id: 'admin_panel', titleAr: 'لوحة الإدارة', titleEn: 'Admin panel', consultants: ['specialist_business', 'specialist_tech', 'specialist_security', 'specialist_engineering'] },
 ];
 
 export const specialistOf = (id: string): Specialist | undefined => SPECIALISTS.find((s) => s.id === id);
