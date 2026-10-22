@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T13:23:38.497Z",
+ "updatedAt": "2026-10-22T13:46:42.390Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,17 @@
  ],
  "runs": [
   {
+   "at": "2026-10-22T13:46:42.390Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-22T13:23:38.497Z",
    "mode": "self",
    "found": 0,
@@ -7920,28 +7931,6 @@
     "✗ perfumeconnection.com.au: ملف الثقة ضعيف (37/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
     "✗ nose-shop.jp: الموقع لا يفتح",
     "✗ letu.kz: الموقع لا يفتح"
-   ]
-  },
-  {
-   "at": "2026-10-19T04:31:58.644Z",
-   "mode": "self",
-   "found": 11,
-   "vetted": 10,
-   "activated": 1,
-   "rejected": 0,
-   "notes": [
-    "  ↳ parfumdreams.de: CV 78/100 [https,contact,identity,returns,shipping,privacy,terms,payment,social]",
-    "✗ parfumdreams.de: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "  ↳ scentsplit.com: CV 84/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
-    "✓ scentsplit.com (CV 84/100): 10000 perfumes, 5/6 pages read without AI, USD (1 = 53.5247 EGP) — added to the importer",
-    "✗ flaconi.de: الموقع لا يفتح (HTTP 403)",
-    "  ↳ faces.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
-    "✗ faces.com: أغلب منتجاته ليست عطوراً (50%)",
-    "  ↳ wojooh.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
-    "✗ wojooh.com: أغلب منتجاته ليست عطوراً (50%)",
-    "✗ fragrancebuy.ca: الموقع لا يفتح (HTTP 403)",
-    "✗ maxaromas.com: الموقع لا يفتح",
-    "✗ theperfumeshop.com: الموقع لا يفتح (HTTP 403)"
    ]
   }
  ]
