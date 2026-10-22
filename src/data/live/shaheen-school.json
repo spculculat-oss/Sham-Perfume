@@ -1,15 +1,15 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T19:06:30.385Z",
+ "updatedAt": "2026-10-22T20:12:31.118Z",
  "reliance": {
-  "score": 67,
-  "covered": 812,
+  "score": 100,
+  "covered": 1206,
   "total": 1206,
-  "fromMemory": 812,
-  "fromLibrary": 331,
+  "fromMemory": 1206,
+  "fromLibrary": 0,
   "byLang": {
    "ar": {
-    "covered": 791,
+    "covered": 1185,
     "total": 1185
    },
    "en": {
@@ -19,8 +19,20 @@
   }
  },
  "studiedTotal": 142,
- "selfTaughtTotal": 569,
+ "selfTaughtTotal": 952,
  "history": [
+  {
+   "at": "2026-10-22T20:12:31.118Z",
+   "score": 100,
+   "studied": 133,
+   "mode": "self"
+  },
+  {
+   "at": "2026-10-22T20:11:08.544Z",
+   "score": 89,
+   "studied": 250,
+   "mode": "self"
+  },
   {
    "at": "2026-10-22T19:06:30.385Z",
    "score": 67,
@@ -420,68 +432,7 @@
    "variants": 4
   }
  ],
- "pending": [
-  {
-   "q": "ازاي العين بتشوف الألوان؟",
-   "lang": "ar",
-   "topic": "expert:human-medicine"
-  },
-  {
-   "q": "ايه هي الهرمونات ودورها في الجسم؟",
-   "lang": "ar",
-   "topic": "expert:human-medicine"
-  },
-  {
-   "q": "ليه النوم مهم لصحة المخ؟",
-   "lang": "ar",
-   "topic": "expert:human-medicine"
-  },
-  {
-   "q": "ايه الفرق بين الشريان والوريد؟",
-   "lang": "ar",
-   "topic": "expert:human-medicine"
-  },
-  {
-   "q": "ليه الأمن الحيوي مهم في مزارع الدواجن؟",
-   "lang": "ar",
-   "topic": "expert:veterinary"
-  },
-  {
-   "q": "ايه هي احتياجات تغذية الإبل؟",
-   "lang": "ar",
-   "topic": "expert:veterinary"
-  },
-  {
-   "q": "ازاي نعرف إن الحيوان الأليف محتاج طبيب بيطري؟",
-   "lang": "ar",
-   "topic": "expert:veterinary"
-  },
-  {
-   "q": "ايه هي محطة الفضاء الدولية وبتعمل ايه؟",
-   "lang": "ar",
-   "topic": "expert:space"
-  },
-  {
-   "q": "ازاي رواد الفضاء بيعيشوا من غير جاذبية؟",
-   "lang": "ar",
-   "topic": "expert:space"
-  },
-  {
-   "q": "ايه هو الكسوف والخسوف؟",
-   "lang": "ar",
-   "topic": "expert:space"
-  },
-  {
-   "q": "ازاي النجوم بتتولد وبتموت؟",
-   "lang": "ar",
-   "topic": "expert:space"
-  },
-  {
-   "q": "ايه هي عمليات حفظ السلام؟",
-   "lang": "ar",
-   "topic": "expert:war-studies"
-  }
- ],
+ "pending": [],
  "importer": {
   "localShare": 100,
   "aiReadings": 0,
@@ -489,9 +440,9 @@
  },
  "localTaughtTotal": 85,
  "spelling": {
-  "at": "2026-10-22T19:06:30.385Z",
+  "at": "2026-10-22T20:12:31.118Z",
   "tried": 744,
-  "understood": 699,
+  "understood": 697,
   "score": 94,
   "misses": [
    "طبييه → طبيه (طبيعيه)",
@@ -506,7 +457,7 @@
   }
  },
  "practice": {
-  "at": "2026-10-22T19:06:30.385Z",
+  "at": "2026-10-22T20:12:31.118Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -605,9 +556,9 @@
  },
  "tracks": {
   "perfume": {
-   "covered": 176,
+   "covered": 177,
    "total": 177,
-   "score": 99
+   "score": 100
   },
   "prog_langs": {
    "covered": 106,
@@ -670,9 +621,9 @@
    "score": 100
   },
   "it_sciences": {
-   "covered": 26,
+   "covered": 30,
    "total": 30,
-   "score": 87
+   "score": 100
   },
   "frontier": {
    "covered": 20,
@@ -680,128 +631,128 @@
    "score": 100
   },
   "chemistry": {
-   "covered": 24,
+   "covered": 28,
    "total": 28,
-   "score": 86
+   "score": 100
   },
   "physics": {
-   "covered": 29,
+   "covered": 36,
    "total": 36,
-   "score": 81
+   "score": 100
   },
   "math": {
-   "covered": 24,
+   "covered": 28,
    "total": 28,
-   "score": 86
+   "score": 100
   },
   "commerce": {
-   "covered": 15,
+   "covered": 22,
    "total": 22,
-   "score": 68
+   "score": 100
   },
   "law": {
-   "covered": 3,
+   "covered": 22,
    "total": 22,
-   "score": 14
+   "score": 100
   },
   "pr": {
-   "covered": 0,
+   "covered": 18,
    "total": 18,
-   "score": 0
+   "score": 100
   },
   "management": {
-   "covered": 1,
+   "covered": 20,
    "total": 20,
-   "score": 5
+   "score": 100
   },
   "history": {
-   "covered": 6,
+   "covered": 28,
    "total": 28,
-   "score": 21
+   "score": 100
   },
   "geography": {
-   "covered": 3,
+   "covered": 20,
    "total": 20,
-   "score": 15
+   "score": 100
   },
   "literature": {
-   "covered": 1,
+   "covered": 18,
    "total": 18,
-   "score": 6
+   "score": 100
   },
   "social": {
-   "covered": 0,
+   "covered": 18,
    "total": 18,
-   "score": 0
+   "score": 100
   },
   "psychology": {
-   "covered": 11,
+   "covered": 20,
    "total": 20,
-   "score": 55
+   "score": 100
   },
   "cyber_psych": {
-   "covered": 2,
+   "covered": 18,
    "total": 18,
-   "score": 11
+   "score": 100
   },
   "ux_psych": {
-   "covered": 1,
+   "covered": 18,
    "total": 18,
-   "score": 6
+   "score": 100
   },
   "biology": {
-   "covered": 12,
+   "covered": 36,
    "total": 36,
-   "score": 33
+   "score": 100
   },
   "medicine": {
-   "covered": 19,
+   "covered": 52,
    "total": 52,
-   "score": 37
+   "score": 100
   },
   "engineering": {
-   "covered": 11,
+   "covered": 38,
    "total": 38,
-   "score": 29
+   "score": 100
   },
   "earth_space": {
-   "covered": 14,
+   "covered": 34,
    "total": 34,
-   "score": 41
+   "score": 100
   },
   "education": {
-   "covered": 0,
+   "covered": 16,
    "total": 16,
-   "score": 0
+   "score": 100
   },
   "media_info": {
-   "covered": 2,
+   "covered": 16,
    "total": 16,
-   "score": 13
+   "score": 100
   },
   "sports": {
-   "covered": 1,
+   "covered": 14,
    "total": 14,
-   "score": 7
+   "score": 100
   },
   "arts": {
-   "covered": 1,
+   "covered": 16,
    "total": 16,
-   "score": 6
+   "score": 100
   },
   "religion": {
-   "covered": 3,
+   "covered": 24,
    "total": 24,
-   "score": 13
+   "score": 100
   },
   "tourism_ir": {
-   "covered": 2,
+   "covered": 14,
    "total": 14,
-   "score": 14
+   "score": 100
   }
  },
  "tools": {
-  "at": "2026-10-22T19:06:30.385Z",
+  "at": "2026-10-22T20:12:31.118Z",
   "items": [
    {
     "id": "finance_agent",
@@ -958,14 +909,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-22T19:06:30.385Z",
+  "at": "2026-10-22T20:12:31.118Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-23T01:06:30.385Z"
+    "next": "2026-10-23T02:12:31.118Z"
    },
    {
     "id": "site-care",
@@ -977,7 +928,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-23T07:06:30.385Z"
+    "next": "2026-10-23T08:12:31.118Z"
    }
   ]
  }

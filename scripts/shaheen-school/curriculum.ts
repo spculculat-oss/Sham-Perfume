@@ -260,11 +260,11 @@ const lang = (ar: string, en: string, family: keyof typeof LANGUAGE_FAMILIES, us
   track: 'prog_langs', topic: 'lang',
 });
 
-const lesson = (id: string, track: TrackId, topic: string, title: string, content: string): AcademyLesson => ({
+export const lesson = (id: string, track: TrackId, topic: string, title: string, content: string): AcademyLesson => ({
   id, title, content, tags: [TRACKS.find((t) => t.id === track)!.titleAr], track, topic,
 });
 
-const ask = (l: AcademyLesson, q: string, topic = l.topic, track = l.track): AcademyPair => ({
+export const ask = (l: AcademyLesson, q: string, topic = l.topic, track = l.track): AcademyPair => ({
   lesson: l,
   question: { q, lang: 'ar', topic, origin: 'curriculum' },
 });
