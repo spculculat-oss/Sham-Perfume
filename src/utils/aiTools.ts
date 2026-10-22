@@ -7,7 +7,7 @@
 export type AiToolId =
   | 'shaheen_chat' | 'sham_assistant' | 'news_articles' | 'news_bulletin' | 'assistant_training' | 'media' | 'admin_agent'
   | 'store_advisor' | 'store_catalog' | 'store_import' | 'shaheen_school' | 'seo_agent' | 'shaheen_council' | 'finance_agent'
-  | 'contracts_agent' | 'design_agent' | 'language_agent' | 'owner_room';
+  | 'contracts_agent' | 'design_agent' | 'language_agent' | 'owner_room' | 'platform_owner_agent';
 
 export interface AiToolDef {
   id: AiToolId;
@@ -112,6 +112,11 @@ export const AI_TOOLS: AiToolDef[] = [
     id: 'owner_room', nameAr: 'غرفة شاهين الخاصة مع صاحب الموقع', nameEn: "Shaheen's private room with the owner",
     descriptionAr: 'شاهين والسكرتير بيكلموا صاحب الموقع بس، بالكود السري. الكلام متشفر على جهازه والخادم مابيحفظش حاجة؛ المشرف بيفحص الأداة من غير ما يقرا أي كلام من الغرفة (O-07).',
     sources: ['server/ownerRoom.ts'], routes: ['/api/admin/owner-room'], acceptsGuidance: false,
+  },
+  {
+    id: 'platform_owner_agent', nameAr: 'وكيل ملك المنصة', nameEn: 'Platform Owner Agent',
+    descriptionAr: 'وكيل مثل وكيل البرمجة في الشات: ينفّذ مهام شاهين والصيانة والتطوير، ويدير المنصة نيابة عن صاحب الموقع تحت رقابة دولة المنصة، وكل تعديل له يقرّه تصويت الدولة قبل النزول، وهو خاضع لأوامر صاحب الموقع في أي وقت.',
+    sources: [], routes: [], acceptsGuidance: true,
   },
 ];
 

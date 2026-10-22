@@ -39,7 +39,7 @@ export type BotId =
   | 'news' | 'seo' | 'librarian' | 'teacher' | 'researcher'
   | 'chat' | 'library' | 'languages' | 'design_audit' | 'design_expert' | 'visitor_tour' | 'inspect'
   | 'school' | 'doctor' | 'verifier' | 'live_check' | 'keys' | 'intake' | 'studio_bridge' | 'studio_zip' | 'deploy' | 'admin_agent'
-  | 'chat_agent' | 'owner_desk' | 'state';
+  | 'chat_agent' | 'owner_desk' | 'state' | 'platform_owner';
 
 export interface Bot {
   id: BotId;
@@ -64,6 +64,7 @@ export const BOTS: Bot[] = [
   // ── Leadership ──
   { id: 'state', nameAr: 'دولة المنصة (أعلى سلطة بعد صاحب الموقع)', nameEn: 'The Platform State (highest authority under the owner)', dept: 'leadership', workflow: 'platform-state.yml', report: 'platform-state.json', everyHours: 24, dutiesAr: 'كل الروبوتات وشاهين والمجلس تحت رقابتها، وبيرجعولها في كل الموافقات: كل ساعة أعضاؤها (شاهين، المدير القانوني، الأمن والخصوصية، الجودة، المالية، ورئيس القسم المختص) بيصوّتوا على مهام المجلس وتعديلات الروبوتات المستنية موافقة. القرار لا مركزي بالتصويت، وللقانوني والأمن «فيتو»؛ اللي يتوافق عليه بيعدّي كل الفحوص وبعدين ينزل، واللي يترفض بيروح لصاحب الموقع بالأسباب. عندها كل الصلاحيات ما عدا بيانات صاحب الموقع ومفاتيحه وغرفته ومفاتيح تحكمه، وخاضعة لأوامره في أي وقت (يرجّع الموافقات لنفسه، يوقفها، أو يرجّع أي قرار ليها).' },
   { id: 'owner_desk', nameAr: 'مكتب صاحب الموقع (أوامره فوق الكل)', nameEn: "Owner's desk (his orders come first)", dept: 'leadership', workflow: 'owner-control.yml', aiTools: ['owner_room'], dutiesAr: 'ينفذ أوامر صاحب الموقع وحده (حسابه على GitHub بس): يوقف أي روبوت أو يرجعه، يوقف كل الروبوتات بفرامل الطوارئ، ويختار نظام التطوير الذاتي (التصليحات الصغيرة الآمنة تلقائي، أو كل تغيير يستنى موافقته). كل روبوت بيسأل المكتب قبل ما يشتغل، وكل أمر بيتسجل في سجل مايتمسحش. ومعاه «جناح صاحب الموقع» و«غرفة شاهين الخاصة» (صاحب الموقع وشاهين والسكرتير بس، متشفرة على جهازه). وبينفذ كل اللي صاحب الموقع يوافق عليه من «صندوق الموافقات» (تعديلات شاهين، أوامره للروبوتات، تعديلات الروبوتات ومهام المجلس) بعد ما يعدّي كل الفحوص، ويرجّع أي حاجة بزرار «رجّع».' },
+  { id: 'platform_owner', nameAr: 'وكيل ملك المنصة', nameEn: 'Platform Owner Agent', dept: 'leadership', aiTools: ['platform_owner_agent'], dutiesAr: 'وكيل مثل وكيل البرمجة في الشات: ينفّذ مهام شاهين والصيانة والتطوير، ويدير المنصة نيابة عن صاحب الموقع تحت رقابة دولة المنصة، وكل تعديل له يقرّه تصويت الدولة قبل النزول، وهو خاضع لأوامر صاحب الموقع في أي وقت.' },
   { id: 'council', nameAr: 'مجلس شاهين (الاجتماع اليومي)', nameEn: "Shaheen's council (daily meeting)", dept: 'leadership', workflow: 'shaheen-council.yml', report: 'shaheen-council.json', everyHours: 24, aiTools: ['shaheen_council'], dutiesAr: 'يجمع رؤساء الأقسام كل يوم 10:15 الصبح (بعد تجديد باقة الذكاء الاصطناعي)، يكتب المحضر، ينفذ الآمن ويحوّل الباقي لمهام تطوير.' },
   { id: 'secretary', nameAr: 'السكرتير — مشرف شاهين', nameEn: 'Secretary — Shaheen\'s supervisor', dept: 'leadership', workflow: 'shaheen-news.yml', report: 'ai-supervisor.json', everyHours: 12, dutiesAr: 'يقيس كل أداة ذكاء اصطناعي ويكتب لها توجيهات، يجهز جدول الأعمال، وينوب عن شاهين في الاجتماع وقت الضغط أو لو مفيش محرك ذكاء اصطناعي.' },
   { id: 'precheck', nameAr: 'الفحص الشامل قبل الاجتماع', nameEn: 'Pre-meeting full check', dept: 'leadership', workflow: 'shaheen-precheck.yml', report: 'shaheen-precheck.json', everyHours: 24, dutiesAr: 'قبل الاجتماع بساعتين: كل روبوت يفحص نفسه ويكتب مشاكله والإصلاح المقترح وأفكار التطوير، والسكرتير يوزع طلبات المساعدة بين الأدوات.' },
@@ -139,6 +140,9 @@ export const LINKS: Link[] = [
   { from: 'owner_desk', to: 'council', whyAr: 'أوامر صاحب الموقع (إيقاف/تشغيل/فرامل) ← الاجتماع والمهام بتمشي عليها' },
   { from: 'owner_desk', to: 'doctor', whyAr: 'حدود التطوير الذاتي ← التغيير الكبير يستنى موافقة صاحب الموقع' },
   { from: 'owner_desk', to: 'patrol', whyAr: 'الروبوت الموقوف بأمره ← الدورية ماتشغلوش ولا تعتبره عطلان' },
+  { from: 'platform_owner', to: 'state', whyAr: 'كل تعديل له يقرّه تصويت دولة المنصة قبل النزول، وهو خاضع لرقابتها' },
+  { from: 'platform_owner', to: 'owner_desk', whyAr: 'أوامر صاحب الموقع فوق أوامره، ويقدر يرجّع أي قرار له في أي وقت' },
+  { from: 'platform_owner', to: 'council', whyAr: 'يتلقى مهام التطوير من مجلس شاهين وينفّذها مثل وكيل البرمجة في الشات' },
   { from: 'librarian', to: 'council', whyAr: 'شاهين يراجع موضع المكتبة وتطويرها؛ الفهرسة محلية عند الطلب' },
   { from: 'librarian', to: 'school', whyAr: 'قائمة دراسة داخلية فقط؛ لا تتحول المراجع إلى معرفة متعلمة دون اطلاع قانوني ومراجعة موثقة، ولا تعرض ملاحظاتها للزوار' },
   { from: 'legal', to: 'librarian', whyAr: 'يراجع حقوق المصادر والاقتباس والترجمة لكل نسخة قبل النشر؛ لا تعتبر الخطة أو الفحص الآلي موافقة قانونية' },
