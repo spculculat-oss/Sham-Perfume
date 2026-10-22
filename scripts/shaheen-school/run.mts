@@ -24,6 +24,7 @@ import {
   spellingReport, visitorQuestions, type BankQuestion, type SchoolFile, type TrainingDoc,
 } from './school';
 import { buildLexicon } from '../../src/utils/shaheenSpelling';
+import { learnSciences, scienceReport, isSciencesFile, type SciencesFile } from './sciences';
 
 const env = process.env;
 const live = (name: string) => new URL(`../../src/data/live/${name}`, import.meta.url);
@@ -150,6 +151,13 @@ if (env.PUBLISH !== 'true' && env.SHAM_WEB_RESEARCH !== '0') {
       : `Research «${q}»: nothing solid found`);
   }
 }
+// ── «علوم الأرض عند شاهين»: the science track, studied from his own library — no AI, no network ────────────
+// The lessons in src/data/sciences/ are authored and reviewed; every one he does not know yet becomes a ready
+// answer in his memory under its question and two usual wordings. SCIENCE_MAX_LEARN bounds a single run.
+const sciMax = Number(env.SCIENCE_MAX_LEARN);
+const science = learnSciences(memory, new Date(), Number.isFinite(sciMax) ? Math.max(0, sciMax) : undefined);
+if (science.learned) say(`Science track: studied ${science.learned} lessons of «علوم الأرض» by himself (no AI)`);
+
 quota.save();
 answers.save();
 
@@ -157,8 +165,11 @@ answers.save();
 const { file: curated } = curateMemory(memory);
 // Study answers are kept even unused; curate only drops what fails the checks or exceeds the limit.
 const learnedNow = studied + selfTaught;
-if (learnedNow) writeFileSync(live('shaheen-memory.json'), `${JSON.stringify(curated, null, 1)}\n`);
-const final = exam(bank, learnedNow ? curated : memory, library);
+// The science track also writes to his memory, but its lessons are counted in their own report, not in the
+// perfume school's history (the two measure different jobs).
+const memoryChanged = learnedNow + science.learned;
+if (memoryChanged) writeFileSync(live('shaheen-memory.json'), `${JSON.stringify(curated, null, 1)}\n`);
+const final = exam(bank, memoryChanged ? curated : memory, library);
 school.reliance = final.reliance;
 school.importer = importerShare(read(live('store-review.json'))) || school.importer;
 school.studiedTotal += studied;
@@ -167,11 +178,19 @@ if (localTaught) say(`The local teacher (open model, no key) taught ${localTaugh
 school.selfTaughtTotal = (school.selfTaughtTotal || 0) + selfTaught;
 school.history = [{ at: nowIso, score: final.reliance.score, studied: learnedNow, mode }, ...school.history].slice(0, 60);
 // «فهم شاهين للغلطات»: the spelling drill and exam (mistyped words and questions must still be understood).
-school.spelling = spellingReport(bank, final.results, learnedNow ? curated : memory, library, buildLexicon({ lessons: docs, materials: RAW_MATERIALS_DATABASE, memory: learnedNow ? curated : memory }), nowIso);
+school.spelling = spellingReport(bank, final.results, memoryChanged ? curated : memory, library, buildLexicon({ lessons: docs, materials: RAW_MATERIALS_DATABASE, memory: memoryChanged ? curated : memory }), nowIso);
 say(`Spelling: understood ${school.spelling.understood}/${school.spelling.tried} mistyped words (${school.spelling.score}%); answers ${school.spelling.questions.answered}/${school.spelling.questions.tried} questions by himself with their main word mistyped`);
 school.pending = final.results.filter((r) => !r.covered).slice(0, 12).map((r) => ({ q: r.question.q, lang: r.question.lang, topic: r.question.topic }));
 school.updatedAt = nowIso;
 writeFileSync(live('shaheen-school.json'), `${JSON.stringify(school, null, 1)}\n`);
+
+// ── «علوم الأرض»: his own report (the perfume score above is a different job and stays untouched) ──────────
+const previousSciences = read<unknown>(live('shaheen-sciences.json'));
+const previousLearned = isSciencesFile(previousSciences) ? previousSciences.lastLearned : [];
+const scienceLearnedNow = science.questions.map((q) => ({ q, at: nowIso }));
+const sciences: SciencesFile = scienceReport(memoryChanged ? curated : memory, nowIso, [...scienceLearnedNow, ...previousLearned].slice(0, 20));
+writeFileSync(live('shaheen-sciences.json'), `${JSON.stringify(sciences, null, 1)}\n`);
+say(`Science track now ${sciences.score}% (${sciences.learned}/${sciences.total}) across ${sciences.tracks.length} tracks`);
 say(`Self-reliance now ${final.reliance.score}% (${final.reliance.covered}/${final.reliance.total})${school.importer ? `; product pages read without AI: ${school.importer.localShare}%` : ''}`);
 
 if (env.GITHUB_ACTIONS) console.log(`::notice title=مدرسة شاهين::${notes.join(' | ').replace(/[\r\n%]/g, ' ').slice(0, 900)}`);

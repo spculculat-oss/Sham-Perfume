@@ -1377,6 +1377,12 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   'مين شغال دلوقتي ومين واقف وليه': { en: "Who is running, who is stopped and why" },
   'العطلات المفتوحة واللي اتصلح': { en: "Open faults and what was fixed" },
   'حسابات بنك شام والمدفوعات': { en: "Sham Bank accounts and payments" },
+  "علوم شاهين — علوم الأرض": { en: "Shaheen sciences — Earth sciences" },
+  "العلوم هنا للفهم والوقاية والبناء: تشريح ووظائف، وطب بشري وبيطري، وفضاء مدني، ودراسات حرب والقانون الدولي الإنساني، وحرب إلكترونية دفاعية، وفيزياء نووية سلمية، وسلامة حيوية وأمن بيولوجي، وتصنيع إلكترونيات، وعلوم الأرض. مفيش هنا تصميم أسلحة أو خطوات تصنيع مواد خطرة أو وصفات هجوم أو استهداف، وأي سؤال طبي ده تعليم عام مش تشخيص ولا بديل عن الطبيب.": { en: "Science here is for understanding, prevention and building: anatomy and physiology, human and veterinary medicine, civil space, war studies and international humanitarian law, defensive electronic warfare, peaceful nuclear physics, biosafety and biosecurity, electronics manufacturing, and Earth sciences. There is no weapon design, no instructions for making hazardous materials, no attack recipes and no targeting; any medical answer is general education, not a diagnosis or a substitute for a doctor." },
+  "دروس بيرد عليها لوحده بدون أي خدمة ذكاء اصطناعي": { en: "Lessons he answers by himself with no AI service" },
+  "{learned} من {total} درس في {tracks} مسار · آخر تعلّم {when}": { en: "{learned} of {total} lessons across {tracks} tracks · last studied {when}" },
+  "{covered}/{total} درس": { en: "{covered}/{total} lessons" },
+  "آخر دروس ذاكرها": { en: "Latest lessons he studied" },
   // ── Platform State ──
   "أعلى سلطة على الروبوتات بعدك — ماسكة الموافقات وتحت أمرك": { en: "The top authority over the robots after you — holds the approvals, under your orders" },
   "أعلى سلطة على الروبوتات بعدك: كل الروبوتات وشاهين والمجلس تحت رقابتها، وكل ساعة أعضاؤها بيصوّتوا على تعديلات الروبوتات ومهام المجلس. اللي يتوافق عليه بيعدّي كل الفحوص وينزل، واللي يترفض بيجيلك إنت.": { en: "The top authority over the robots after you: every robot, Shaheen and the council are under its oversight, and every hour its members vote on the robots' changes and the council's tasks. What passes goes through every check and goes live; what is refused comes to you." },
