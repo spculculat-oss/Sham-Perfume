@@ -802,9 +802,10 @@
    "needsApproval": true,
    "createdAt": "2026-10-22T03:39:12.003Z",
    "meeting": "2026-10-22",
-   "status": "open",
+   "status": "done",
    "issue": 219,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/219"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/219",
+   "closedAt": "2026-10-22T08:47:00Z"
   },
   {
    "id": "2026-10-22-3-إصلاح-عطل-مكتب-صاحب-المو",
@@ -815,9 +816,10 @@
    "needsApproval": true,
    "createdAt": "2026-10-22T03:39:12.003Z",
    "meeting": "2026-10-22",
-   "status": "open",
+   "status": "done",
    "issue": 220,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/220"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/220",
+   "closedAt": "2026-10-22T08:46:59Z"
   },
   {
    "id": "2026-10-22-4-إصلاح-عطل-أمين-شاهين-الإ",
