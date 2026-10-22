@@ -85,6 +85,23 @@ test('tracks cover every mission; tools cover every AI tool with its field and a
   assert.ok(tracks.ai_science.total >= 50, 'the AI mission teaches the whole field');
   assert.ok(tracks.quantum.total >= 15, 'the quantum track');
   assert.ok(tracks.security.total >= 25, 'the cybersecurity track');
+  assert.ok(tracks.ai_projects.total >= 20, 'complex AI-dependent projects');
+  assert.ok(tracks.it_sciences.total >= 20, 'all IT sciences');
+  assert.ok(tracks.frontier.total >= 15, 'specialist sciences unknown to the public');
+  assert.ok(tracks.commerce.total >= 20, 'commerce & international trade');
+  assert.ok(tracks.law.total >= 20, 'local & international law');
+  assert.ok(tracks.pr.total >= 15, 'public relations');
+  assert.ok(tracks.management.total >= 18, 'technical & general management');
+  assert.ok(tracks.chemistry.total >= 18, 'chemistry');
+  assert.ok(tracks.physics.total >= 18, 'physics');
+  assert.ok(tracks.math.total >= 18, 'mathematics');
+  assert.ok(tracks.history.total >= 18, 'history');
+  assert.ok(tracks.geography.total >= 18, 'geography');
+  assert.ok(tracks.literature.total >= 15, 'literary sciences');
+  assert.ok(tracks.social.total >= 15, 'social sciences');
+  assert.ok(tracks.psychology.total >= 18, 'psychology');
+  assert.ok(tracks.cyber_psych.total >= 15, 'cyber psychology');
+  assert.ok(tracks.ux_psych.total >= 15, 'psychological engineering of user interactions');
   assert.equal(tracks.ai_tools.total, AI_TOOLS.length * 2, 'every tool: its field + how to develop it');
   assert.equal(trackOf('lang'), 'prog_langs');
   assert.equal(trackOf('blocks'), 'blocks');
@@ -92,6 +109,12 @@ test('tracks cover every mission; tools cover every AI tool with its field and a
   assert.equal(trackOf('ai'), 'ai_science');
   assert.equal(trackOf('tool-shaheen_school'), 'ai_tools');
   assert.equal(trackOf('materials'), 'perfume');
+  assert.equal(trackOf('proj'), 'ai_projects');
+  assert.equal(trackOf('it'), 'it_sciences');
+  assert.equal(trackOf('com'), 'commerce');
+  assert.equal(trackOf('law'), 'law');
+  assert.equal(trackOf('ux'), 'ux_psych');
+  assert.equal(trackOf('cps'), 'cyber_psych');
 
   const tools = toolStats(results, '2026-10-21T00:00:00.000Z');
   assert.equal(tools.items.length, AI_TOOLS.length);

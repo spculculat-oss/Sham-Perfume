@@ -13,8 +13,15 @@
 import { AI_TOOLS, type AiToolId } from '../../src/utils/aiTools';
 import type { ProgramInput } from '../../src/utils/shaheenBlocks';
 import type { BankQuestion, TrainingDoc } from './school';
+import { AI_PROJECT_LESSONS, CHEM_LESSONS, FRONTIER_LESSONS, IT_LESSONS, MATH_LESSONS, PHYS_LESSONS } from './curriculumWorld';
+import { COMMERCE_LESSONS, GEO_LESSONS, HIST_LESSONS, LAW_LESSONS, LIT_LESSONS, MGMT_LESSONS, PR_LESSONS, SOC_LESSONS } from './curriculumSociety';
+import { CYBERPSY_LESSONS, PSY_LESSONS, UXPSY_LESSONS } from './curriculumMind';
 
-export type TrackId = 'perfume' | 'prog_langs' | 'blocks' | 'software' | 'graphics' | 'web_care' | 'ai_science' | 'security' | 'quantum' | 'ai_tools';
+export type TrackId =
+  | 'perfume' | 'prog_langs' | 'blocks' | 'software' | 'graphics' | 'web_care' | 'ai_science' | 'security' | 'quantum' | 'ai_tools'
+  | 'ai_projects' | 'it_sciences' | 'frontier' | 'chemistry' | 'physics' | 'math'
+  | 'commerce' | 'law' | 'pr' | 'management' | 'history' | 'geography' | 'literature' | 'social'
+  | 'psychology' | 'cyber_psych' | 'ux_psych';
 
 export const TRACKS: { id: TrackId; titleAr: string; goalAr: string }[] = [
   { id: 'perfume', titleAr: 'العطور (المنهج الأصلي)', goalAr: 'العطور وصناعتها وأدوات الموقع — كما كانت المدرسة تفعل.' },
@@ -27,6 +34,23 @@ export const TRACKS: { id: TrackId; titleAr: string; goalAr: string }[] = [
   { id: 'security', titleAr: 'أمن المعلومات والحماية', goalAr: 'علوم الأمن: الهجمات والدفاع عنها، والتشفير، والمصادقة، والاستجابة للحوادث — حماية المنصة والزوار.' },
   { id: 'quantum', titleAr: 'الحوسبة الكمية', goalAr: 'العلوم الكمية: البتات والبوابات والخوارزميات والتشفير ما بعد الكم — أحدث العلوم المتوفرة.' },
   { id: 'ai_tools', titleAr: 'تطوير أدوات الذكاء الاصطناعي', goalAr: 'كل أداة من أدوات المنصة تُدرَّب على مجالها وتتطور فيه.' },
+  { id: 'ai_projects', titleAr: 'المشاريع المعقّدة بالذكاء الاصطناعي', goalAr: 'الأنشطة المعقّدة جداً التي تعتمد على الذكاء الاصطناعي: مدن وتشخيص طبي وسيارات ومال وزراعة وأمن — كيف تُبنى وتُدار بمسؤولية.' },
+  { id: 'it_sciences', titleAr: 'علوم تكنولوجيا المعلومات', goalAr: 'كل علوم IT: الحاسوب والشبكات والقواعد والسحابة والتخزين والاختبار والتعافي والحوكمة.' },
+  { id: 'frontier', titleAr: 'العلوم النادرة والمتخصصة', goalAr: 'العلوم غير المعروفة للعامة: البصريات والصوتيات والبلورات والطبقات والنانو والمواد والمياه والتربة.' },
+  { id: 'chemistry', titleAr: 'الكيمياء', goalAr: 'الكيمياء وفروعها: العضوية والحيوية والتحليلية والصناعية والخضراء — المادة وتغيراتها.' },
+  { id: 'physics', titleAr: 'الفيزياء', goalAr: 'الفيزياء وقوانينها: الميكانيكا والكهربية والضوء والنسبية والكم والنووي والفلك.' },
+  { id: 'math', titleAr: 'الرياضيات', goalAr: 'الرياضيات: الجبر والتفاضل والاحتمالات والإحصاء والمنطق والمصفوفات والتطبيقات المالية.' },
+  { id: 'commerce', titleAr: 'التجارة والتجارة الدولية', goalAr: 'علوم التجارة والتجارة الدولية: التسويق والتمويل والمحاسبة واللوجستيات والتصدير والجودة وحماية المستهلك.' },
+  { id: 'law', titleAr: 'القوانين المحلية والدولية', goalAr: 'القوانين المحلية والدولية: المدني والجنائي والتجاري والدستوري والدولي وحقوق الإنسان والملكية الفكرية والجريمة الإلكترونية.' },
+  { id: 'pr', titleAr: 'العلاقات العامة', goalAr: 'علم العلاقات العامة: الاتصال المؤسسي وإدارة السمعة والأزمات والرأي العام والدبلوماسية العامة والشفافية.' },
+  { id: 'management', titleAr: 'الإدارة التقنية والعامة', goalAr: 'علوم الإدارة التقنية والعامة: المشاريع والموارد والاستراتيجية والقيادة والمخاطر والحوكمة والتحسين المستمر.' },
+  { id: 'history', titleAr: 'التاريخ', goalAr: 'التاريخ: الحضارات القديمة والإسلامية والنهضة والثورات والحربان العالميتان وتاريخ العلوم والتجارة.' },
+  { id: 'geography', titleAr: 'الجغرافيا', goalAr: 'الجغرافيا: الطبيعية والبشرية والاقتصادية والسياسية والمناخ والتضاريس والموارد والكوارث والتخطيط العمراني.' },
+  { id: 'literature', titleAr: 'الأدب والعلوم الأدبية', goalAr: 'الأدب والعلوم الأدبية: الشعر والنثر والبلاغة والنقد والرواية والمسرح والفلسفة والترجمة الأدبية.' },
+  { id: 'social', titleAr: 'العلوم الاجتماعية', goalAr: 'العلوم الاجتماعية: علم الاجتماع والإنسان والسياسة والاقتصاد والتربية والخدمات الاجتماعية والأخلاق والعولمة.' },
+  { id: 'psychology', titleAr: 'علم النفس', goalAr: 'علم النفس: المعرفي والاجتماعي والسريري والتربوي والذاكرة والدافعية والشخصية والانفعالات.' },
+  { id: 'cyber_psych', titleAr: 'علم النفس الإلكتروني', goalAr: 'علم النفس الإلكتروني: سلوك المستخدمين على الشبكة، والخصوصية، والهوية، والإدمان الإلكتروني، والأمن النفسي.' },
+  { id: 'ux_psych', titleAr: 'الهندسة النفسية لتعاملات المستخدم', goalAr: 'بناء هندسة نفسية على تعاملات المستخدم: نمذجة السلوك، ورحلة المستخدم، وعوامل القرار، والإقناع الأخلاقي، والحمل المعرفي.' },
 ];
 
 export function trackOf(topic: string): TrackId {
@@ -39,6 +63,23 @@ export function trackOf(topic: string): TrackId {
   if (topic === 'security') return 'security';
   if (topic === 'quantum') return 'quantum';
   if (topic.startsWith('tool-')) return 'ai_tools';
+  if (topic === 'proj') return 'ai_projects';
+  if (topic === 'it') return 'it_sciences';
+  if (topic === 'fr') return 'frontier';
+  if (topic === 'ch') return 'chemistry';
+  if (topic === 'ph') return 'physics';
+  if (topic === 'ma') return 'math';
+  if (topic === 'com') return 'commerce';
+  if (topic === 'law') return 'law';
+  if (topic === 'pr') return 'pr';
+  if (topic === 'mg') return 'management';
+  if (topic === 'hi') return 'history';
+  if (topic === 'ge') return 'geography';
+  if (topic === 'lit') return 'literature';
+  if (topic === 'soc') return 'social';
+  if (topic === 'ps') return 'psychology';
+  if (topic === 'cps') return 'cyber_psych';
+  if (topic === 'ux') return 'ux_psych';
   return 'perfume';
 }
 
@@ -561,6 +602,9 @@ const PAIRS: AcademyPair[] = [
   ...PROGRAMMING_LANGUAGES.map((l) => ask(lang(...l), `ايه هي لغة ${l[0]}؟`, 'lang', 'prog_langs')),
   ...LANG_CONCEPTS, ...BLOCK_LESSONS, ...SOFTWARE_LESSONS, ...GRAPHICS_LESSONS, ...WEBCARE_LESSONS, ...AI_LESSONS,
   ...SECURITY_LESSONS, ...QUANTUM_LESSONS, ...toolPairs(),
+  ...AI_PROJECT_LESSONS, ...IT_LESSONS, ...FRONTIER_LESSONS, ...CHEM_LESSONS, ...PHYS_LESSONS, ...MATH_LESSONS,
+  ...COMMERCE_LESSONS, ...LAW_LESSONS, ...PR_LESSONS, ...MGMT_LESSONS, ...HIST_LESSONS, ...GEO_LESSONS, ...LIT_LESSONS, ...SOC_LESSONS,
+  ...PSY_LESSONS, ...CYBERPSY_LESSONS, ...UXPSY_LESSONS,
 ];
 
 export function academyPairs(): AcademyPair[] {
