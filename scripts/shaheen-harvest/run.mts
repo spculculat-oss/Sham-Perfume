@@ -103,13 +103,15 @@ async function ask(model: string, q: HarvestQuestion): Promise<{ text?: string; 
   const data = await response.json() as { candidates?: { finishReason?: string; content?: { parts?: { text?: string; thought?: boolean }[] } }[] };
   const c = data.candidates?.[0];
   // A cut answer (token limit, safety) is never kept.
-  if (c?.finishReason && c.finishReason !== 'STOP') return { status: 206 };
+  if (c?.finishReason && c.finishReason !== 'STOP') { console.log(`${model}: stopped by ${c.finishReason}`); return { status: 206 }; }
   const text = (c?.content?.parts || []).filter((p) => !p.thought).map((p) => p.text || '').join('').replace(/<think>[\s\S]*?<\/think>/g, '').trim();
   return { text, status: 200 };
 }
 
 const kept: { q: string; from: HarvestQuestion['from'] }[] = [];
 let asked = 0; let stopped: string | undefined; let rejected = 0;
+const why = new Map<string, number>();
+const reject = (reason: string) => { rejected++; why.set(reason, (why.get(reason) || 0) + 1); };
 const alive = [...models];
 const started = Date.now();
 const budgetMs = Math.max(1, Number(env.HARVEST_BUDGET_MIN?.trim() || 12)) * 60_000;
@@ -120,12 +122,14 @@ for (const q of todo) {
     const model = alive[0]!;
     asked++;
     const r = await ask(model, q).catch(() => ({ status: 0 } as { text?: string; status: number }));
-    if (r.status === 429 || r.status === 404 || r.status === 403) { alive.shift(); continue; } // this model is out for today
+    if (r.status === 429 || r.status === 404 || r.status === 403 || r.status === 400) { console.log(`${model}: HTTP ${r.status} — next model`); alive.shift(); continue; } // out for today, or not for this use
     if (r.status === 200 && r.text) {
       const check = harvestCheck(q.q, r.text);
-      if (check.ok && remember(memory, { question: q.q, lang: q.lang, mode: 'auto', answer: r.text, source: 'harvest' }, new Date())) kept.push({ q: q.q, from: q.from });
-      else rejected++;
-    } else rejected++;
+      if (!check.ok) reject(check.why || 'check');
+      else if (remember(memory, { question: q.q, lang: q.lang, mode: 'auto', answer: r.text, source: 'harvest' }, new Date())) kept.push({ q: q.q, from: q.from });
+      else reject('not-kept');
+      console.log(`«${q.q}» → ${model}: ${check.ok ? 'kept' : `rejected (${check.why})`} — ${r.text.length} chars, ends «${r.text.slice(-40).replace(/\s+/g, ' ')}»`);
+    } else { reject(r.status === 206 ? 'cut' : `http-${r.status}`); console.log(`«${q.q}» → ${model}: HTTP ${r.status}`); }
     answered = true;
   }
   if (!alive.length) { stopped = 'quota'; break; }
@@ -133,7 +137,7 @@ for (const q of todo) {
   if (mode === 'open') await sleep(Number(env.HARVEST_GAP_MS?.trim() || 20_000));
 }
 
-say(`Mode: ${mode === 'leftover' ? 'leftover of the daily package (last two hours)' : 'open models (own quota)'}; asked ${asked}, kept ${kept.length}, rejected ${rejected}${stopped ? `, stopped (${stopped})` : ''}`);
+say(`Mode: ${mode === 'leftover' ? 'leftover of the daily package (last two hours)' : 'open models (own quota)'}; asked ${asked}, kept ${kept.length}, rejected ${rejected}${rejected ? ` (${[...why].map(([k, n]) => `${k} ×${n}`).join(', ')})` : ''}${stopped ? `, stopped (${stopped})` : ''}`);
 if (kept.length) {
   const { file } = curateMemory(memory);
   memory.entries = file.entries; memory.updatedAt = file.updatedAt;
