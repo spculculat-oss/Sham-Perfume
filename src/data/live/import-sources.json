@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T18:44:43.066Z",
+ "updatedAt": "2026-10-22T19:06:03.105Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,17 @@
  ],
  "runs": [
   {
+   "at": "2026-10-22T19:06:03.105Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-22T18:44:43.066Z",
    "mode": "self",
    "found": 0,
@@ -7888,28 +7899,6 @@
     "  ↳ beautyhabit.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
     "✗ beautyhabit.com: أغلب منتجاته ليست عطوراً (33%)",
     "✗ nocibe.fr: الموقع لا يفتح (HTTP 403)"
-   ]
-  },
-  {
-   "at": "2026-10-20T00:56:49.671Z",
-   "mode": "self",
-   "found": 5,
-   "vetted": 10,
-   "activated": 1,
-   "rejected": 0,
-   "notes": [
-    "  ↳ perfumesclub.com: CV 87/100 [age,https,identity,returns,shipping,privacy,terms,payment,social,authentic]",
-    "✗ perfumesclub.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (3/7)",
-    "  ↳ primor.eu: CV 74/100 [https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Magento",
-    "✗ primor.eu: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "  ↳ fragrancedirect.co.uk: CV 27/100 [age,https] (pages: /contact-us→404 /returns→404)",
-    "✗ fragrancedirect.co.uk: ملف الثقة ضعيف (27/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، سياسة الإرجاع والاسترداد",
-    "  ↳ luckyscent.com: CV 81/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✗ luckyscent.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ notino.co.uk: الموقع لا يفتح (HTTP 403)",
-    "✗ twisted-lily.com: الموقع لا يفتح",
-    "  ↳ parfumdreams.de: CV 78/100 [https,contact,identity,returns,shipping,privacy,terms,payment,social]",
-    "✗ parfumdreams.de: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
    ]
   }
  ]
