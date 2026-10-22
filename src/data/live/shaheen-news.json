@@ -1,7 +1,7 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T15:33:08.183Z",
- "nextUpdateAt": "2026-10-23T03:33:08.183Z",
+ "updatedAt": "2026-10-22T15:35:35.673Z",
+ "nextUpdateAt": "2026-10-23T03:35:35.673Z",
  "intervalHours": 12,
  "editor": "feeds",
  "digest": {
@@ -19,7 +19,7 @@
   },
   {
    "name": "WWD",
-   "count": 3
+   "count": 2
   },
   {
    "name": "Femme Actuelle",
@@ -31,10 +31,6 @@
   },
   {
    "name": "The Impression",
-   "count": 1
-  },
-  {
-   "name": "Ville de Versailles",
    "count": 1
   },
   {
@@ -62,10 +58,6 @@
    "count": 1
   },
   {
-   "name": "Elle Canada",
-   "count": 1
-  },
-  {
    "name": "Gulf News",
    "count": 1
   },
@@ -82,6 +74,22 @@
    "count": 1
   },
   {
+   "name": "Réalités Magazine",
+   "count": 1
+  },
+  {
+   "name": "https://www.sabanew.net/",
+   "count": 1
+  },
+  {
+   "name": "Ville de Versailles",
+   "count": 1
+  },
+  {
+   "name": "Elle Canada",
+   "count": 1
+  },
+  {
    "name": "https://emirates24.net/",
    "count": 1
   },
@@ -91,10 +99,6 @@
   },
   {
    "name": "www.hiamag.com",
-   "count": 1
-  },
-  {
-   "name": "ارقام : اخبار ومعلومات سوق الأسهم السعودي - تاسي",
    "count": 1
   }
  ],
@@ -205,24 +209,6 @@
    "summary": {
     "ar": "Building Legacy from Memory: How Zegna Is Rewriting the Luxury Fragrance Rulebook",
     "en": "Building Legacy from Memory: How Zegna Is Rewriting the Luxury Fragrance Rulebook"
-   }
-  },
-  {
-   "id": "n1rnch0r",
-   "url": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxQU2NOaGNNblhfT1pWVW52VjZLVF9mS2x0WUhfN1VHbmJkQXN6NUJHYWUwWk81VTFWS3B3b1FlVGJ2QVRKOWdMamNCWC1nY05ZVWlBTWFrTjF3aTVhTS1nUWFweVpjV1JJVzhvcmExdnlUcGh4WndidlpmRXdLZFd0VjNVaHFQMnBFLUo5a05MUUR4U2dpM3JKTUhzNUk4WTVXeHVSNlVyZXZsUXU3Y0lHNlRQb2NnTXl0dUdxaXE5NjVnWVJVSjFVQWE0Ny0welhXVy1nNUdCcU9nQ2tBX2pDVmdiWHhFVHl3dUdkeUVnX1BHZ2RLTHc?oc=5",
-   "source": "Ville de Versailles",
-   "publishedAt": "2026-10-22T14:15:09.000Z",
-   "original": "L'âme de la parfumerie française : voyage au coeur de l'élégance et du savoir-faire",
-   "lang": "fr",
-   "category": "events",
-   "importance": 2,
-   "title": {
-    "ar": "L'âme de la parfumerie française : voyage au coeur de l'élégance et du savoir-faire",
-    "en": "L'âme de la parfumerie française : voyage au coeur de l'élégance et du savoir-faire"
-   },
-   "summary": {
-    "ar": "L'âme de la parfumerie française : voyage au coeur de l'élégance et du savoir-faire",
-    "en": "L'âme de la parfumerie française : voyage au coeur de l'élégance et du savoir-faire"
    }
   },
   {
@@ -352,10 +338,10 @@
    }
   },
   {
-   "id": "n1p6z8zi",
-   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxOZGZaazhaeVY2Z1ZfZk9QQm10V0daOW8yNmcxTlZNMDhOYVg0M284V0g2RHhaQVk0bE8wV2MtSXhDV0pOdmdjVWtxNDFKYk9qcnppNDhENU1wdUJldkNfdkRsZFd3Mzh2SmdXOFhaUExjS05Vb2k5S1dieFN2a29MZGU5RTN0cU45cTBhZTk4bDhxbkowazQ1bmg0eUlfMmtZYWZjZk81UWRGRU1YWGRXelZseEs1UdIBvgFBVV95cUxQc1d4QmhQa0YzMjRWN0REd3BVZXppU29DVlc0NTl0eVRTbFFQRWphOVdETVVpNUw1QTJmdVljVGlyUnZuOGtRMjNMczRrak1rZ1Zwdm92YzF2TnhVbWhDR2d2eXRIT08wS3R3ZFNhM2xUWlR3MEJYcldKYmFwajE5cnpzS1lreUdzZUJ6WHBoWk9Xb1lxT011MmEtRm5wR1ozYlN2WldUR25yX2hyR0NXd0RJSFdfT1VoLVNsTl9R?oc=5",
+   "id": "nix1e3d",
+   "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQc1d4QmhQa0YzMjRWN0REd3BVZXppU29DVlc0NTl0eVRTbFFQRWphOVdETVVpNUw1QTJmdVljVGlyUnZuOGtRMjNMczRrak1rZ1Zwdm92YzF2TnhVbWhDR2d2eXRIT08wS3R3ZFNhM2xUWlR3MEJYcldKYmFwajE5cnpzS1lreUdzZUJ6WHBoWk9Xb1lxT011MmEtRm5wR1ozYlN2WldUR25yX2hyR0NXd0RJSFdfT1VoLVNsTl9R0gG-AUFVX3lxTFBzV3hCaFBrRjMyNFY3RER3cFVlemlTb0NWVzQ1OXR5VFNsUVBFamE5V0RNVWk1TDVBMmZ1WWNUaXJSdm44a1EyM0xzNGtqTWtnVnB2b3ZjMXZOeFVtaENHZ3Z5dEhPTzBLdHdkU2EzbFRaVHcwQlhyV0piYXBqMTlyenNLWWt5R3NlQnpYcGhaT1dvWXFPTXUyYS1GbnBHWjNiU3ZaV1RHbnJfaHJHQ1d3RElIV19PVWgtU2xOX1E?oc=5",
    "source": "Consonews",
-   "publishedAt": "2026-10-22T13:04:06.000Z",
+   "publishedAt": "2026-10-22T13:03:28.000Z",
    "original": "Les jeunes marques asiatiques redessinent les codes de la parfumerie mondiale",
    "lang": "fr",
    "category": "industry",
@@ -367,24 +353,6 @@
    "summary": {
     "ar": "Les jeunes marques asiatiques redessinent les codes de la parfumerie mondiale",
     "en": "Les jeunes marques asiatiques redessinent les codes de la parfumerie mondiale"
-   }
-  },
-  {
-   "id": "n1tohba1",
-   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOUnQwdVl3OFRUdHJfY0RLb1JQZFBNRzR1TUJSNTNneHhBZHJPNVVVQ0twUk9OSVBpUFpxVGxzM29LR1pUUzl1eVkyNEZhc0xONkk2ZnVKTk5femdFT01EX3FvVXJidGtmZ3RCdWlDMHhudkpTem1jSDJ3MHVNZFdJNA?oc=5",
-   "source": "Elle Canada",
-   "publishedAt": "2026-10-22T13:00:40.000Z",
-   "original": "Perfumer Dominique Ropion is Riding a New Wave with Merit",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Perfumer Dominique Ropion is Riding a New Wave with Merit",
-    "en": "Perfumer Dominique Ropion is Riding a New Wave with Merit"
-   },
-   "summary": {
-    "ar": "Perfumer Dominique Ropion is Riding a New Wave with Merit",
-    "en": "Perfumer Dominique Ropion is Riding a New Wave with Merit"
    }
   },
   {
@@ -457,6 +425,78 @@
    "summary": {
     "ar": "Evolving Amber Fragrances: MERIT's New Wave Reimagined Classic Amber Perfumery",
     "en": "Evolving Amber Fragrances: MERIT's New Wave Reimagined Classic Amber Perfumery"
+   }
+  },
+  {
+   "id": "nid0qru",
+   "url": "https://news.google.com/rss/articles/CBMisARBVV95cUxPRWVEc2Y5TjB4dHFuZ2lHODdVSzlaNHhFU1ZHUHI1dXdBeTJ0bVNCb0RUUUFJZi1EVENsUjNuQXRLX1oyNkdKUHJFbDctZ3BKZ0hESWNMdmJpVW1yWjZDalZub296ZUdnZ3phZF9MeW1lSHBFdlhwNHNDaU9JT3ZtaS1JQm4tY1VXRHc0S3g0eDlYMU94eGVJeXU5b1FLVXk5b1c1VHVUemVEMUhhclYyOXlJa0YyNHl2d0s1Y3hFck9kZE5PM1hRN1RVczZxQVNHNUlfRFMzZnVaNXJycUNpemlqYlZ3T3htTG5hbjJpNzlGVDNHQTg2UDBOdzlfampSZGpHOHpVZEt6VG04TGdsTGNiVTI2SHByRkVJdFNsVHl2V0hiSlMwTTFEVEd5SVQwVXZNTWZMdm1tRS1PNVRsaUQ5U3AwaWJUcXo3M0h6YldvdWxJVWlhZzhxUllBY3J0WVNaUVFDS1YyUm0tbGNuMXBueVVTM085NTA0TmVIeENPTVBOakc2SjFicnRSRlRhT1lmb1RVT1BJUU0wU3dZb3ZEY0RabVd4WmZoYUFZTW5rUkVFU1NhbldyNHlTLTN2OWNiYmhvYUJsdnJHNkNPNVF4SGoxVkM3YUdyM19jT255TGdZcWttcm9kUVpMU21qR2plVFBrbTVRTG1qeVZzRkdwaVVXNk9UWTJ2Qms0T1gyMlVOcjY1bGxkdzZ3Y0ZteXFPeEU5MFdlRkRPR043Rw?oc=5",
+   "source": "Réalités Magazine",
+   "publishedAt": "2026-10-22T11:37:51.000Z",
+   "original": "“سماء تونس”… زياد المهدي وكايل شافر يختبران حدود الحوار بين العود والبيانو",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 2,
+   "title": {
+    "ar": "“سماء تونس”… زياد المهدي وكايل شافر يختبران حدود الحوار بين العود والبيانو",
+    "en": "“سماء تونس”… زياد المهدي وكايل شافر يختبران حدود الحوار بين العود والبيانو"
+   },
+   "summary": {
+    "ar": "“سماء تونس”… زياد المهدي وكايل شافر يختبران حدود الحوار بين العود والبيانو",
+    "en": "“سماء تونس”… زياد المهدي وكايل شافر يختبران حدود الحوار بين العود والبيانو"
+   }
+  },
+  {
+   "id": "n1e3m70q",
+   "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE5GQkRHN2lqeE1ycGNoend2NE5fWkNMeF9JcDVfdVNZMTMyU2M1R0ptOVNNVG9PcVAwS2xoS2xyamhiLXNIUG9vQ2Y1N0VaRGlJ?oc=5",
+   "source": "https://www.sabanew.net/",
+   "publishedAt": "2026-10-22T11:35:38.000Z",
+   "original": "السفير العود يبحث مع مسؤولة إسبانية التصعيد الحوثي ويدعو إلى تصنيف المليشيات جماعة إرهابية",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 2,
+   "title": {
+    "ar": "السفير العود يبحث مع مسؤولة إسبانية التصعيد الحوثي ويدعو إلى تصنيف المليشيات جماعة إرهابية",
+    "en": "السفير العود يبحث مع مسؤولة إسبانية التصعيد الحوثي ويدعو إلى تصنيف المليشيات جماعة إرهابية"
+   },
+   "summary": {
+    "ar": "السفير العود يبحث مع مسؤولة إسبانية التصعيد الحوثي ويدعو إلى تصنيف المليشيات جماعة إرهابية",
+    "en": "السفير العود يبحث مع مسؤولة إسبانية التصعيد الحوثي ويدعو إلى تصنيف المليشيات جماعة إرهابية"
+   }
+  },
+  {
+   "id": "n1rnch0r",
+   "url": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxQU2NOaGNNblhfT1pWVW52VjZLVF9mS2x0WUhfN1VHbmJkQXN6NUJHYWUwWk81VTFWS3B3b1FlVGJ2QVRKOWdMamNCWC1nY05ZVWlBTWFrTjF3aTVhTS1nUWFweVpjV1JJVzhvcmExdnlUcGh4WndidlpmRXdLZFd0VjNVaHFQMnBFLUo5a05MUUR4U2dpM3JKTUhzNUk4WTVXeHVSNlVyZXZsUXU3Y0lHNlRQb2NnTXl0dUdxaXE5NjVnWVJVSjFVQWE0Ny0welhXVy1nNUdCcU9nQ2tBX2pDVmdiWHhFVHl3dUdkeUVnX1BHZ2RLTHc?oc=5",
+   "source": "Ville de Versailles",
+   "publishedAt": "2026-10-22T14:15:09.000Z",
+   "original": "L'âme de la parfumerie française : voyage au coeur de l'élégance et du savoir-faire",
+   "lang": "fr",
+   "category": "events",
+   "importance": 2,
+   "title": {
+    "ar": "L'âme de la parfumerie française : voyage au coeur de l'élégance et du savoir-faire",
+    "en": "L'âme de la parfumerie française : voyage au coeur de l'élégance et du savoir-faire"
+   },
+   "summary": {
+    "ar": "L'âme de la parfumerie française : voyage au coeur de l'élégance et du savoir-faire",
+    "en": "L'âme de la parfumerie française : voyage au coeur de l'élégance et du savoir-faire"
+   }
+  },
+  {
+   "id": "n1tohba1",
+   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOUnQwdVl3OFRUdHJfY0RLb1JQZFBNRzR1TUJSNTNneHhBZHJPNVVVQ0twUk9OSVBpUFpxVGxzM29LR1pUUzl1eVkyNEZhc0xONkk2ZnVKTk5femdFT01EX3FvVXJidGtmZ3RCdWlDMHhudkpTem1jSDJ3MHVNZFdJNA?oc=5",
+   "source": "Elle Canada",
+   "publishedAt": "2026-10-22T13:00:40.000Z",
+   "original": "Perfumer Dominique Ropion is Riding a New Wave with Merit",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Perfumer Dominique Ropion is Riding a New Wave with Merit",
+    "en": "Perfumer Dominique Ropion is Riding a New Wave with Merit"
+   },
+   "summary": {
+    "ar": "Perfumer Dominique Ropion is Riding a New Wave with Merit",
+    "en": "Perfumer Dominique Ropion is Riding a New Wave with Merit"
    }
   },
   {
@@ -633,50 +673,6 @@
    "note": {
     "ar": "خبر يعكس استقرار ونمو سوق العطور التجاري العالمي.",
     "en": "An update reflecting the stability and growth of the global commercial fragrance market."
-   }
-  },
-  {
-   "id": "nfg5b73",
-   "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5QUVMwVGkwWWpENXAwMlNWSVA2MW8tVDlXUXQxMlZteFI2Q05weW9CcUN3MTNGTDJlVlluZlE0SWtSb3BObXZaRVM4TmlvdXVkSGNaTW9ramNlSzVfNVRWZkJFLWxtbXRkOVE?oc=5",
-   "source": "ارقام : اخبار ومعلومات سوق الأسهم السعودي - تاسي",
-   "publishedAt": "2026-10-21T20:25:03.000Z",
-   "original": "البخور الذكي تنتهي من طرح صكوك بقيمة 50 مليون ريال بتغطية بلغت 179.4%",
-   "lang": "ar",
-   "category": "market",
-   "importance": 3,
-   "title": {
-    "ar": "شركة البخور الذكي تنهي طرح صكوك بقيمة 50 مليون ريال",
-    "en": "Al-Bokhoor Al-Zaki Completes Sukuk Issuance Worth 50 Million Riyals"
-   },
-   "summary": {
-    "ar": "أعلنت شركة البخور الذكي عن نجاح طرح صكوك بقيمة 50 مليون ريال بتغطية بلغت 179.4%.",
-    "en": "Al-Bokhoor Al-Zaki successfully completed a 50 million riyal sukuk issuance with a 179.4% coverage rate."
-   },
-   "note": {
-    "ar": "دليل على قوة الاستثمار في قطاع العود والبخور الإقليمي.",
-    "en": "Evidence of strong investment in the regional oud and incense sector."
-   }
-  },
-  {
-   "id": "n1mt3dyb",
-   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQZDBhdkZVeHZhQU5SZl9RWEhWbE8xMWZnVXluT1dLM3JuekhhblpDNW1VYVhQaHdZelY3Q1BpSU1CTlByZWhZbjM1YzBxYlh3OEpJLVZvUy15M1BqYUo0QWlwT2F4Z2RFWmE0N3oxUEw5dEpZNHhIVVYtNVFPX2s0T2JSTWJ0MUxGVHpwaGU4ZlRyVVdQUzg0UmJOUi1pQUFSYVJyNlZaMFpQUEc1UlROYXpnWQ?oc=5",
-   "source": "WWD",
-   "publishedAt": "2026-10-20T17:26:17.000Z",
-   "original": "EXCLUSIVE: L’Artisan Parfumeur Creates the First Fragrance Talent Show, ‘Le Nez’",
-   "lang": "en",
-   "category": "events",
-   "importance": 3,
-   "title": {
-    "ar": "L'Artisan Parfumeur تطلق أول برنامج للمواهب العطرية تحت اسم Le Nez",
-    "en": "L'Artisan Parfumeur Creates the First Fragrance Talent Show, Le Nez"
-   },
-   "summary": {
-    "ar": "أعلنت دار L'Artisan Parfumeur عن إطلاق أول برنامج مسابقات لاكتشاف المواهب في صناعة العطور.",
-    "en": "L'Artisan Parfumeur has announced the creation of the first talent show dedicated to perfumery."
-   },
-   "note": {
-    "ar": "مبادرة مبتكرة لتسليط الضوء على فن صياغة العطور ومصمميها.",
-    "en": "An innovative initiative to highlight the art of perfumery and its creators."
    }
   }
  ]
