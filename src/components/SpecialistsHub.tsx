@@ -10,11 +10,12 @@ import {
   type Consultation, type Specialist, type SpecialistId,
 } from '../utils/shaheenSpecialists';
 import { browserMemory } from '../utils/browserMemory';
+import { refugeWay } from '../utils/shaheenRefuge';
 
 const AR = {
   open: 'استشير متخصصاً',
   title: 'مجلس المتخصصين',
-  subtitle: 'علوم شاهين موزعة على متخصصين — استشارة في أي وقت، في كل أقسام الموقع، حتى من غير إنترنت.',
+  subtitle: 'علوم شاهين موزعة على متخصصين — استشارة في أي وقت، في كل أقسام الموقع، حتى من غير إنترنت. واسأل «وين ألاقي…» فيوصلك الملجأ لأي حاجة.',
   currentSection: 'قسم الموقع الحالي',
   suggested: 'المقترح لقسمك',
   ask: 'اسأل متخصصك',
@@ -23,6 +24,7 @@ const AR = {
   asking: 'بيفكر…',
   sources: 'الرد من ذاكرة شاهين ومكتبته — مكتوب عليه مصدره.',
   another: 'سؤال تاني',
+  sourceRefuge: 'المصدر: ملجأ شاهين (الوصول لأي حاجة)',
   sourceMemory: 'المصدر: ذاكرة شاهين',
   sourceLibrary: 'المصدر: مكتبة شاهين',
   sourceGap: 'محتاج مذاكرة — الصراحة أحسن من التخمين',
@@ -43,6 +45,7 @@ const EN = {
   asking: 'Thinking…',
   sources: "Answers come from Shaheen's memory and library — each with its source.",
   another: 'Another question',
+  sourceRefuge: 'Source: the refuge (reach anything)',
   sourceMemory: "Source: Shaheen's memory",
   sourceLibrary: "Source: Shaheen's library",
   sourceGap: 'Needs studying — honesty beats guessing',
@@ -53,6 +56,7 @@ const EN = {
 };
 
 const SOURCES = {
+  refuge: (question: string, lang: string) => refugeWay(question, lang),
   recall: (question: string, lang: string) => browserMemory.recall(question, lang),
   library: (question: string, lang: string) => browserMemory.library?.(question, lang),
 };
@@ -88,7 +92,7 @@ export default function SpecialistsHub({ section, lang }: SpecialistsHubProps) {
     } finally { setBusy(false); }
   };
 
-  const sourceLabel = (c: Consultation) => (c.source === 'memory' ? t.sourceMemory : c.source === 'library' ? t.sourceLibrary : t.sourceGap);
+  const sourceLabel = (c: Consultation) => (c.source === 'refuge' ? t.sourceRefuge : c.source === 'memory' ? t.sourceMemory : c.source === 'library' ? t.sourceLibrary : t.sourceGap);
 
   return (
     <>

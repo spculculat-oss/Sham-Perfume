@@ -193,9 +193,11 @@ export function pickSpecialist(question: string, sectionId?: string): Specialist
   return best ?? primaryOf(sectionId ?? '') ?? SPECIALISTS[0];
 }
 
-export type ConsultSourceKind = 'memory' | 'library' | 'gap';
+export type ConsultSourceKind = 'refuge' | 'memory' | 'library' | 'gap';
 
 export interface ConsultSources {
+  /** «ملجأ شاهين»: الوصول لأي حاجة في المنظومة (تقارير وأدوات وأقسام وعلوم وقرارات) — ييجي الأول لو السؤال سؤال وصول. */
+  refuge?(question: string, lang: string): string | undefined | Promise<string | undefined>;
   /** أقرب سؤال في ذاكرة شاهين (نفس اللغة أولى). */
   recall(question: string, lang: string): { answer: string } | undefined | Promise<{ answer: string } | undefined>;
   /** رد من موسوعة المواد ودروس المكتبة والذاكرة — بدون ذكاء اصطناعي. */
@@ -213,8 +215,8 @@ export interface Consultation {
 }
 
 /**
- * استشارة متخصص في أي وقت: الرد من ذاكرة شاهين ثم مكتبته، وإلا فجوة صريحة باسم المتخصص
- * («هيذاكر السؤال») — بدون إنترنت وبدون ذكاء اصطناعي وبدون تخمين.
+ * استشارة متخصص في أي وقت: «ملجأ شاهين» الأول لو السؤال سؤال وصول لأي حاجة، ثم ذاكرة شاهين
+ * ثم مكتبته، وإلا فجوة صريحة باسم المتخصص («هيذاكر السؤال») — بدون إنترنت وبدون ذكاء اصطناعي وبدون تخمين.
  */
 export async function consult(
   question: string,
@@ -225,6 +227,8 @@ export async function consult(
 ): Promise<Consultation> {
   const specialist = (specialistId && specialistOf(specialistId)) || pickSpecialist(question, sectionId);
   const q = question.trim();
+  const viaRefuge = await sources.refuge?.(q, lang);
+  if (viaRefuge) return { specialist, question: q, answer: viaRefuge, source: 'refuge', ok: true, section: sectionId };
   const remembered = await sources.recall(q, lang);
   if (remembered?.answer) return { specialist, question: q, answer: remembered.answer, source: 'memory', ok: true, section: sectionId };
   const fromLibrary = await sources.library?.(q, lang);
