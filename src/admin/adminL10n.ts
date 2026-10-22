@@ -1377,6 +1377,12 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   'مين شغال دلوقتي ومين واقف وليه': { en: "Who is running, who is stopped and why" },
   'العطلات المفتوحة واللي اتصلح': { en: "Open faults and what was fixed" },
   'حسابات بنك شام والمدفوعات': { en: "Sham Bank accounts and payments" },
+  "علوم شاهين — علوم الأرض": { en: "Shaheen sciences — Earth sciences" },
+  "العلوم هنا للفهم والوقاية والبناء: تشريح ووظائف، وطب بشري وبيطري، وفضاء مدني، ودراسات حرب والقانون الدولي الإنساني، وحرب إلكترونية دفاعية، وفيزياء نووية سلمية، وسلامة حيوية وأمن بيولوجي، وتصنيع إلكترونيات، وعلوم الأرض. مفيش هنا تصميم أسلحة أو خطوات تصنيع مواد خطرة أو وصفات هجوم أو استهداف، وأي سؤال طبي ده تعليم عام مش تشخيص ولا بديل عن الطبيب.": { en: "Science here is for understanding, prevention and building: anatomy and physiology, human and veterinary medicine, civil space, war studies and international humanitarian law, defensive electronic warfare, peaceful nuclear physics, biosafety and biosecurity, electronics manufacturing, and Earth sciences. There is no weapon design, no instructions for making hazardous materials, no attack recipes and no targeting; any medical answer is general education, not a diagnosis or a substitute for a doctor." },
+  "دروس بيرد عليها لوحده بدون أي خدمة ذكاء اصطناعي": { en: "Lessons he answers by himself with no AI service" },
+  "{learned} من {total} درس في {tracks} مسار · آخر تعلّم {when}": { en: "{learned} of {total} lessons across {tracks} tracks · last studied {when}" },
+  "{covered}/{total} درس": { en: "{covered}/{total} lessons" },
+  "آخر دروس ذاكرها": { en: "Latest lessons he studied" },
   // ── Platform State ──
   "«نفّذ» بيفتح صفحة على GitHub من حسابك علشان GitHub يتأكد إن الأمر منك — اضغط فيها «Submit new issue» (إنشاء الطلب)، والدولة بتكمل لوحدها.": { en: "«Run» opens a page on GitHub from your account so GitHub can confirm the order is yours — press «Submit new issue» there, and the State takes it from there." },
   "أعلى سلطة بعدك: كل العاملين في المنصة وأولهم شاهين خاضعين لقوانينها وبياخدوا منها كل الموافقات. أعضاؤها بيصوّتوا كل ساعة، واللي يتوافق عليه بيعدّي كل الفحوص وينزل، واللي يترفض بتقفله بنفسها — مابترجعلكش في أي إجراء.": { en: "The top authority after you: every worker of the platform, Shaheen first, follows its laws and takes every approval from it. Its members vote every hour; what passes goes through every check and goes live, and what is refused it closes itself — it never comes back to you." },

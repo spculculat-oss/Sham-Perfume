@@ -1,13 +1,16 @@
 import { T, TP, adminLocale } from './adminL10n';
 import { useCallback, useEffect, useState } from 'react';
-import { BookOpenCheck, ExternalLink, Globe2, GraduationCap, RefreshCw, ShieldCheck, Wrench } from 'lucide-react';
+import { Atom, BookOpenCheck, ExternalLink, Globe2, GraduationCap, RefreshCw, ShieldCheck, Wrench } from 'lucide-react';
 import bundledSources from '../data/live/import-sources.json';
 import bundledSchool from '../data/live/shaheen-school.json';
 import bundledSkills from '../data/live/shaheen-skills.json';
+import bundledSciences from '../data/live/shaheen-sciences.json';
 import type { LiveSource, SourcesFile, SourceStatus } from '../../scripts/shaheen-discover/discover';
 import type { SchoolFile } from '../../scripts/shaheen-school/school';
 import { TRUST_MIN, type Region, type TrustId, type TrustProfile } from '../../scripts/shaheen-discover/trust';
 import type { SkillsFile } from '../../scripts/shaheen-import/skills';
+import { isSciencesFile, type SciencesFile } from '../../scripts/shaheen-school/sciences';
+import { SCIENCE_POLICY_AR } from '../data/sciences';
 
 /**
  * «نمو شاهين» in the Shaheen tab: the stores «كشّاف المصادر» found and approved for the importer, the store
@@ -124,8 +127,9 @@ export default function ShaheenGrowthPanel() {
   const [sources, l1, load1] = useLive<SourcesFile>('import-sources.json', bundledSources as SourcesFile, isSources);
   const [school, l2, load2] = useLive<SchoolFile>('shaheen-school.json', bundledSchool as unknown as SchoolFile, isSchool);
   const [skills, l3, load3] = useLive<SkillsFile>('shaheen-skills.json', bundledSkills as SkillsFile, isSkills);
-  const loading = l1 || l2 || l3;
-  const reload = () => { load1(); load2(); load3(); };
+  const [sciences, l4, load4] = useLive<SciencesFile>('shaheen-sciences.json', bundledSciences as unknown as SciencesFile, isSciencesFile);
+  const loading = l1 || l2 || l3 || l4;
+  const reload = () => { load1(); load2(); load3(); load4(); };
 
   const by = (s: SourceStatus) => sources.sources.filter((x) => x.status === s);
   const active = by('active');
@@ -255,6 +259,32 @@ export default function ShaheenGrowthPanel() {
               )}
             </div>
           </div>
+        </section>
+
+        {/* «علوم الأرض عند شاهين» */}
+        <section className="rounded-xl border border-stone-100 p-3 lg:col-span-3">
+          <h3 className="mb-2 flex items-center gap-1.5 text-xs font-bold text-stone-700"><Atom className="h-4 w-4 text-emerald-600" />{T('علوم شاهين — علوم الأرض')}</h3>
+          <p className="mb-2 text-[11px] leading-relaxed text-stone-500">{T(SCIENCE_POLICY_AR)}</p>
+          <div className="mb-1 flex justify-between text-xs"><span>{T('دروس بيرد عليها لوحده بدون أي خدمة ذكاء اصطناعي')}</span><b>{sciences.score}%</b></div>
+          <Meter value={sciences.score} tone="bg-emerald-500" />
+          <p className="mt-1 text-[11px] text-stone-500">
+            {TP('{learned} من {total} درس في {tracks} مسار · آخر تعلّم {when}', { learned: sciences.learned, total: sciences.total, tracks: sciences.tracks.length, when: when(sciences.updatedAt) })}
+          </p>
+          <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {sciences.tracks.map((t) => (
+              <div key={t.id} className="rounded-lg border border-stone-100 p-2">
+                <div className="mb-1 flex justify-between gap-1 text-[11px]"><span>{adminLocale().startsWith('ar') ? t.titleAr : t.titleEn}</span><b>{t.score}%</b></div>
+                <Meter value={t.score} tone="bg-emerald-500" />
+                <p className="mt-0.5 text-[10px] text-stone-400">{TP('{covered}/{total} درس', { covered: t.covered, total: t.total })}</p>
+              </div>
+            ))}
+          </div>
+          {sciences.lastLearned.length > 0 && (
+            <details className="mt-2 text-xs">
+              <summary className="cursor-pointer text-stone-500">{T('آخر دروس ذاكرها')}</summary>
+              <ul className="mt-1 list-inside list-disc space-y-0.5 text-stone-600">{sciences.lastLearned.slice(0, 8).map((p) => <li key={p.q + p.at} dir="auto">{p.q}</li>)}</ul>
+            </details>
+          )}
         </section>
       </div>
     </div>
