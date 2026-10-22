@@ -712,6 +712,12 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   'تطور النتيجة': { en: 'Score over time' },
   'هيذاكرها الجولة الجاية': { en: 'To study next round' },
   'آخر حاجات ذاكرها': { en: 'Recently studied' },
+  'حصّاد شاهين — إجابات جاهزة قبل ما الباقات تخلص': { en: 'Shaheen\'s harvest — answers ready before the packages run out' },
+  'كل ساعة بيجهّز إجابات لأسئلة الزوار اللي ماتجاوبتش والأسئلة اليومية ويحفظها في ذاكرته، عشان لو الباقة خلصت يرد منها. آخر ساعتين قبل تجديد الباقة بيستخدم الباقي منها، وباقي اليوم نماذج مفتوحة ليها حصة منفصلة فالشات مايتأثرش.': { en: 'Every hour he prepares answers to visitors\' unanswered questions and to everyday questions and keeps them in his memory, so he can answer from them when the package runs out. In the last two hours before the package renews he uses what is left of it; the rest of the day, open models with their own quota, so the chat is not affected.' },
+  '{n} إجابة جاهزة': { en: '{n} answers ready' },
+  '{n} سؤال يومي مستني': { en: '{n} everyday questions waiting' },
+  'حفظ {kept} من {asked}': { en: 'kept {kept} of {asked}' },
+  'آخر إجابات اتجهزت': { en: 'Latest answers prepared' },
   '~{n} منتج': { en: '~{n} products' },
   'آخر فحص': { en: 'Last check' },
   // ── Store CV (trust.ts) ──

@@ -222,7 +222,7 @@ export interface Evidence {
 }
 /** How much each source is trusted (a reviewed lesson beats an old answer; a visitor's old answer is the weakest). */
 export const TRUST: Record<SourceKind, number> = { expert: 1, material: 0.95, lesson: 0.9, memory: 0.6, research: 0.7, reasoning: 1 };
-const MEMORY_TRUST: Record<MemoryEntry['source'], number> = { seed: 0.9, study: 0.85, chat: 0.6, probe: 0.5 };
+const MEMORY_TRUST: Record<MemoryEntry['source'], number> = { seed: 0.9, study: 0.85, harvest: 0.75, chat: 0.6, probe: 0.5 };
 /** The least relevance a source needs before it may answer. */
 export const BAR: Record<SourceKind, number> = { expert: 0.42, material: 0.6, lesson: 0.45, memory: 0.55, research: 0, reasoning: 0 };
 

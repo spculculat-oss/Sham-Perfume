@@ -372,3 +372,86 @@ export function designStoreNote(products: StoreProduct[], design: Design, lang: 
 /** Product page links: relative on the site itself, absolute (the main site) when written by the server. */
 export const SITE_PAGES = 'https://spculculat-oss.github.io/Sham-Perfume/';
 export const productLink = (base = SITE_PAGES) => (slug: string) => (/^[a-z0-9-]+$/.test(slug) ? `${base.replace(/\/?$/, '/')}p/${slug}.html` : undefined);
+
+/** Arabic/English text folded for name matching (alef forms, taa marbuta, yaa, case, punctuation). */
+const foldName = (s: string) => ` ${s.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f\u064B-\u065F\u0670]/g, '')
+  .replace(/[أإآ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').replace(/[\u060C\u061B\u061F\u0640\u066A-\u066D\u06D4]/g, ' ')
+  .replace(/[^a-z0-9\u0600-\u06FF]+/g, ' ').trim()} `;
+
+/**
+ * The store products a message names («لطافة بلاك عود ثابت؟», «Rasasi Hawas»): the full name, or the name without the
+ * brand when that part is distinctive on its own (two words or more, or a long single word). The longest names win.
+ */
+export function namedProducts(products: StoreProduct[], text: string, limit = 2): StoreProduct[] {
+  const t = foldName(text);
+  if (t.trim().length < 4) return [];
+  const hits: { p: StoreProduct; len: number }[] = [];
+  for (const p of products) {
+    const brand = foldName(p.brand && p.brand !== 'Unknown' ? p.brand : '').trim();
+    const brandSaid = Boolean(brand) && t.includes(` ${brand} `);
+    let best = 0;
+    for (const raw of new Set([p.name.en, p.name.ar])) {
+      if (!raw) continue;
+      const core = coreName(raw, brand);
+      if (!core) continue;
+      const distinctive = core.includes(' ') ? core.length >= 6 : core.length >= (brandSaid ? 4 : 7);
+      if (distinctive && t.includes(` ${core} `)) best = Math.max(best, core.length + (brandSaid ? 50 : 0));
+    }
+    if (best) hits.push({ p, len: best });
+  }
+  hits.sort((a, b) => b.len - a.len || Number(b.p.inStock) - Number(a.p.inStock) || (b.p.rating || 0) - (a.p.rating || 0));
+  const top = hits[0]?.len || 0;
+  // Only the most specific name («Hawas Ice» over «Hawas»); its sizes and editions stay together.
+  return hits.filter((h) => h.len === top).slice(0, limit).map((h) => h.p);
+}
+
+/** «Hawas Ice by Rasasi 100ml EDP» → «hawas ice»: the name without the brand, size, concentration and who it's for. */
+function coreName(raw: string, brand: string): string {
+  let n = foldName(raw);
+  if (brand) n = n.split(` by ${brand} `).join(' ').split(` ${brand} `).join(' ');
+  n = n.replace(/ \d+(?:\.\d+)? ?(?:ml|مل)(?= )/g, ' ').replace(/ by [a-z0-9 ]+$/g, ' ').replace(/ من [\u0600-\u06FF ]+$/g, ' ')
+    .replace(/ (?:eau de parfum|eau de toilette|extrait de parfum|extrait|parfum|perfume|edp|edt|edc|cologne|spray|tester|unisex|men|women|man|woman|for him|for her|homme|femme|pour homme|pour femme|intense|oil|attar)(?= )/g, ' ');
+  return n.replace(/\s+/g, ' ').trim();
+}
+
+/** Store perfumes close to one product: the same style and shared base notes (what makes them smell alike). */
+function closeTo(products: StoreProduct[], p: StoreProduct, limit = 2): StoreProduct[] {
+  const base = new Set(p.notes.base.map((n) => n.trim().toLowerCase()));
+  const all = new Set([...p.notes.top, ...p.notes.heart, ...p.notes.base].map((n) => n.trim().toLowerCase()));
+  return products.filter((q) => q.inStock && q.sku !== p.sku && foldName(q.name.en) !== foldName(p.name.en)).map((q) => {
+    const fam = q.families.filter((f) => p.families.includes(f)).length;
+    const sharedBase = q.notes.base.filter((n) => base.has(n.trim().toLowerCase())).length;
+    const shared = [...q.notes.top, ...q.notes.heart].filter((n) => all.has(n.trim().toLowerCase())).length;
+    const sameGender = !p.gender || !q.gender || p.gender === q.gender || q.gender === 'unisex' ? 0.5 : -2;
+    return { q, score: fam * 1.2 + sharedBase * 1.5 + shared * 0.5 + sameGender };
+  }).filter((x) => x.score >= 3).sort((a, b) => b.score - a.score || a.q.price - b.q.price).slice(0, limit).map((x) => x.q);
+}
+
+/**
+ * «متجر شام» answering about a product the visitor named — from the catalogue with live prices, so it never needs an
+ * AI platform: its page, price, notes, what it suits, how long it lasts, and two close perfumes in the store.
+ */
+export function productAnswer(products: StoreProduct[], ctx: Context, language: string, link: (slug: string) => string | undefined): StoreAnswer | undefined {
+  const asked = ctx.followUp && ctx.previous ? ctx.text.slice(ctx.previous.length) : ctx.text;
+  // «اعملي تركيبة زي …» belongs to the designer and the lab, not to the product card.
+  if (DESIGN_OR_LAB.test(asked)) return undefined;
+  // «ازاي استخدم ورد طائفي؟» is a question about the material, not about the product of that name — unless the
+  // price or the name in Latin letters says it is the product.
+  if (KNOWLEDGE.test(asked.trim()) && !PRICE.test(asked) && !/[a-z]{3}/i.test(asked)) return undefined;
+  const named = namedProducts(products, asked);
+  if (!named.length) return undefined;
+  const lang = langOf(language, ctx.text);
+  const out: string[] = [lang === 'ar' ? '**من متجر شام:**' : '**From the Sham store:**'];
+  named.forEach((p, i) => out.push(productBlock(p, i + 1, lang, link)));
+  const main = named[0];
+  const s = staying(main);
+  out.push('', `${lang === 'ar' ? '**الثبات:**' : '**Staying power:**'} ${s >= 6 ? (lang === 'ar' ? 'قوي — تركيزه وقاعدته فيها مثبتات.' : 'strong — its concentration and base carry fixatives.')
+    : s >= 4 ? (lang === 'ar' ? 'كويس ومتوسط لطويل.' : 'good, medium to long.') : (lang === 'ar' ? 'خفيف لمتوسط، جدّده في اليوم.' : 'light to medium; reapply during the day.')}`);
+  const close = closeTo(products, main);
+  if (close.length) {
+    out.push('', lang === 'ar' ? '**ولو حابب حاجة قريبة منه في المتجر:**' : '**Close to it in the store:**');
+    close.forEach((p, i) => out.push(productBlock(p, i + 1, lang, link)));
+  }
+  out.push('', CLOSE[lang]);
+  return { reply: out.join('\n'), picks: [...named, ...close], matched: true };
+}
