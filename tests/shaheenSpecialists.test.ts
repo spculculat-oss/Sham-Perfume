@@ -18,7 +18,7 @@ import { REVIEWERS } from '../scripts/shaheen-patrol/patrol';
 
 test('the sciences are distributed among the specialists: every school track has exactly one owner', () => {
   const schoolTracks = TRACKS.map((t) => t.id as string).sort();
-  assert.equal(schoolTracks.length, 37, 'the academy teaches 37 tracks');
+  assert.equal(schoolTracks.length, 39, 'the academy teaches 39 tracks');
   const owned = SPECIALISTS.flatMap((s) => s.tracks as string[]);
   assert.deepEqual([...owned].sort(), schoolTracks, 'each track is owned by exactly one specialist');
   for (const s of SPECIALISTS) assert.ok(s.tracks.length >= 1 && s.sciencesAr.length > 10, s.id);

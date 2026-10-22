@@ -1,16 +1,16 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T12:25:56.419Z",
+ "updatedAt": "2026-10-22T16:45:50.636Z",
  "reliance": {
   "score": 100,
-  "covered": 1028,
-  "total": 1028,
-  "fromMemory": 1028,
+  "covered": 1068,
+  "total": 1068,
+  "fromMemory": 1068,
   "fromLibrary": 0,
   "byLang": {
    "ar": {
-    "covered": 1007,
-    "total": 1007
+    "covered": 1047,
+    "total": 1047
    },
    "en": {
     "covered": 21,
@@ -19,8 +19,26 @@
   }
  },
  "studiedTotal": 74,
- "selfTaughtTotal": 876,
+ "selfTaughtTotal": 915,
  "history": [
+  {
+   "at": "2026-10-22T16:45:50.636Z",
+   "score": 100,
+   "studied": 1,
+   "mode": "self"
+  },
+  {
+   "at": "2026-10-22T16:39:31.336Z",
+   "score": 100,
+   "studied": 8,
+   "mode": "self"
+  },
+  {
+   "at": "2026-10-22T16:33:21.623Z",
+   "score": 99,
+   "studied": 30,
+   "mode": "self"
+  },
   {
    "at": "2026-10-22T12:25:56.419Z",
    "score": 100,
@@ -368,15 +386,15 @@
  },
  "localTaughtTotal": 23,
  "spelling": {
-  "at": "2026-10-22T12:25:56.419Z",
+  "at": "2026-10-22T16:45:50.636Z",
   "tried": 746,
-  "understood": 705,
-  "score": 95,
+  "understood": 703,
+  "score": 94,
   "misses": [
    "طبييه → طبيه (طبيعيه)",
    "اخطه → احطه (اخلطه)",
    "مثبات → مثبات (مثبتات)",
-   "لزججه → لزوجه (لزجاجه)",
+   "مثتبات → مثتبات (مثبتات)",
    "ايه العطر المنسب للشغل؟ → ايه العطر المنصب للشغل؟",
    "حدثني عن علاات فساد العطر → حدثني عن علاقات فساد العطر"
   ],
@@ -424,6 +442,16 @@
   "security": {
    "covered": 31,
    "total": 31,
+   "score": 100
+  },
+  "ethical_hacking": {
+   "covered": 22,
+   "total": 22,
+   "score": 100
+  },
+  "threat_analysis": {
+   "covered": 18,
+   "total": 18,
    "score": 100
   },
   "quantum": {
@@ -573,7 +601,7 @@
   }
  },
  "tools": {
-  "at": "2026-10-22T12:25:56.419Z",
+  "at": "2026-10-22T16:45:50.636Z",
   "items": [
    {
     "id": "finance_agent",
@@ -714,14 +742,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-22T12:25:56.419Z",
+  "at": "2026-10-22T16:45:50.636Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-22T18:25:56.419Z"
+    "next": "2026-10-22T22:45:50.636Z"
    },
    {
     "id": "site-care",
@@ -733,12 +761,12 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-23T00:25:56.419Z"
+    "next": "2026-10-23T04:45:50.636Z"
    }
   ]
  },
  "practice": {
-  "at": "2026-10-22T12:25:56.419Z",
+  "at": "2026-10-22T16:45:50.636Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -831,7 +859,7 @@
     "id": "check-curriculum",
     "titleAr": "فحص: المنهج مكتمل بلا تكرار",
     "ok": true,
-    "detail": "فُحص فعلاً: 856 زوج سؤال وجواب، وكل المعرفات فريدة"
+    "detail": "فُحص فعلاً: 897 زوج سؤال وجواب، وكل المعرفات فريدة"
    }
   ]
  }

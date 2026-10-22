@@ -20,13 +20,15 @@ import { BIOLOGY_LESSONS, MEDICINE_LESSONS } from './curriculumLife';
 import { EARTH_LESSONS, ENGINEERING_LESSONS } from './curriculumEngineering';
 import { ARTS_LESSONS, EDUCATION_LESSONS, MEDIA_LESSONS, SPORTS_LESSONS } from './curriculumSkills';
 import { RELIGION_LESSONS, TOURISM_LESSONS } from './curriculumCulture';
+import { HACKING_LESSONS, THREAT_LESSONS } from './curriculumHacking';
 
 export type TrackId =
   | 'perfume' | 'prog_langs' | 'blocks' | 'software' | 'graphics' | 'web_care' | 'ai_science' | 'security' | 'quantum' | 'ai_tools'
   | 'ai_projects' | 'it_sciences' | 'frontier' | 'chemistry' | 'physics' | 'math'
   | 'commerce' | 'law' | 'pr' | 'management' | 'history' | 'geography' | 'literature' | 'social'
   | 'psychology' | 'cyber_psych' | 'ux_psych'
-  | 'biology' | 'medicine' | 'engineering' | 'earth_space' | 'education' | 'media_info' | 'sports' | 'arts' | 'religion' | 'tourism_ir';
+  | 'biology' | 'medicine' | 'engineering' | 'earth_space' | 'education' | 'media_info' | 'sports' | 'arts' | 'religion' | 'tourism_ir'
+  | 'ethical_hacking' | 'threat_analysis';
 
 export const TRACKS: { id: TrackId; titleAr: string; goalAr: string }[] = [
   { id: 'perfume', titleAr: 'العطور (المنهج الأصلي)', goalAr: 'العطور وصناعتها وأدوات الموقع — كما كانت المدرسة تفعل.' },
@@ -37,6 +39,8 @@ export const TRACKS: { id: TrackId; titleAr: string; goalAr: string }[] = [
   { id: 'web_care', titleAr: 'صيانة المواقع', goalAr: 'كورس صيانة المواقع: النطاق والاستضافة والأمان والنسخ والسرعة والمراقبة.' },
   { id: 'ai_science', titleAr: 'الذكاء الاصطناعي ومهاراته', goalAr: 'تعليم الذكاء الاصطناعي بجميع مهاراته وأحدث العلوم المتوفرة، ليدير شاهين نفسه بنفسه بدون اللجوء لأي تطبيق ذكاء آخر.' },
   { id: 'security', titleAr: 'أمن المعلومات والحماية', goalAr: 'علوم الأمن: الهجمات والدفاع عنها، والتشفير، والمصادقة، والاستجابة للحوادث — حماية المنصة والزوار.' },
+  { id: 'ethical_hacking', titleAr: 'الاختراق الأخلاقي وعلوم الهاكينج', goalAr: 'علوم الهاكينج بال المصرح به: المنهجية والاستطلاع والمسح واستغلال الثغرات، واختبار الويب والشبكات واللاسلكي والجوال والسحابة والأجهزة الذكية، والفريق الأحمر ومكافآت الثغرات والمختبرات القانونية والتقارير — كلها تُمارَس بموافقة موثقة لحماية الأنظمة.' },
+  { id: 'threat_analysis', titleAr: 'استخبارات التهديدات وتحليل الهجمات', goalAr: 'فهم المهاجم: البرمجيات الخبيثة والهندسة العكسية والتصيد بالرمح والهجمات المتقدمة المستمرة وسلسلة التوريد والانتشار داخل الشبكة وتسريب البيانات والحرب السيبرانية — وكشفها بالمصائد ومراكز العمليات والفريق البنفسجي.' },
   { id: 'quantum', titleAr: 'الحوسبة الكمية', goalAr: 'العلوم الكمية: البتات والبوابات والخوارزميات والتشفير ما بعد الكم — أحدث العلوم المتوفرة.' },
   { id: 'ai_tools', titleAr: 'تطوير أدوات الذكاء الاصطناعي', goalAr: 'كل أداة من أدوات المنصة تُدرَّب على مجالها وتتطور فيه.' },
   { id: 'ai_projects', titleAr: 'المشاريع المعقّدة بالذكاء الاصطناعي', goalAr: 'الأنشطة المعقّدة جداً التي تعتمد على الذكاء الاصطناعي: مدن وتشخيص طبي وسيارات ومال وزراعة وأمن — كيف تُبنى وتُدار بمسؤولية.' },
@@ -76,6 +80,8 @@ export function trackOf(topic: string): TrackId {
   if (topic === 'web-care') return 'web_care';
   if (topic === 'ai') return 'ai_science';
   if (topic === 'security') return 'security';
+  if (topic === 'hack') return 'ethical_hacking';
+  if (topic === 'threat') return 'threat_analysis';
   if (topic === 'quantum') return 'quantum';
   if (topic.startsWith('tool-')) return 'ai_tools';
   if (topic === 'proj') return 'ai_projects';
@@ -624,6 +630,7 @@ function toolPairs(): AcademyPair[] {
 
 // ── 8. Practical perfume skills (close the original curriculum's hands-on gaps) ──────────────────────────
 const PERFUME_SKILLS: AcademyPair[] = [
+  ask(lesson('pfm-families', 'perfume', 'perfume', 'العائلات العطرية', 'العائلات العطرية تصنيف للروائح حسب طابعها: الزهرية، والخشبية، والشرقية، والحمضية، والفوجير، والجلدية، والجورماند، والمسكية. كل عائلة تتبع مكونات وقواعد تركيب مميزة، ومعرفتها تساعد على وصف أي عطر، وتصنيف تفضيلاتك، وابتكار تركيبات متوازنة.'), 'ايه هي العائلات العطرية؟'),
   ask(lesson('pfm-adulter', 'perfume', 'perfume', 'الزيت العطري المغشوش', 'الزيت العطري المغشوش مخلوط بمواد أرخص يقلّل نقاءه ويخفي جودته: يضعف الثبات، وقد يسبب الحساسية. كشفه بعلامات عملية: سعر أرخص من المعقول، ورائحة تذوب سريعاً على الورق، وترسيب أو لزوجة غريبة، واختبار التخفيف بالكحول — والطريقة الموثوقة شراءه من مورد موثوق مع شهادة تحليل.'), 'ايه هو الزيت العطري المغشوش؟'),
   ask(lesson('pfm-test-batch', 'perfume', 'perfume', 'اختبار تركيبة العطر قبل الإنتاج', 'اختبار التركيبة قبل الإنتاج يبدأ بعينة صغيرة جداً: اتركب 5 مل، وتتركها تتعتق، ثم تُجرَّب على الورق والجلد أيام متعددة، وتُقيَّم الرائحة والثبات والفوحان، وتُسجَّل الملاحظات قبل أي تعديل. بعدها دفعة تجريبية أكبر — والكمية الكبيرة آخر خطوة لا أولها.'), 'ايه هو اختبار تركيبة العطر قبل الإنتاج؟'),
   ask(lesson('pfm-pricing', 'perfume', 'perfume', 'تسعير الزجاجة وتكلفة الإنتاج', 'حساب تكلفة الزجاجة يجمع: الزيت العطري، والكحول، والزجاجة والغطاء، والملصق، والتعبئة، والهدر. ثم يُضاف هامش الربح والمصاريف العامة ليخرج سعر البيع. القاعدة: التكلفة الحقيقية لكل مكون محسوبة بوحدة واحدة (لكل مل)، والسعر يُراجع مع تغير أسعار المكونات.'), 'ايه هو تسعير الزجاجة وتكلفة الإنتاج؟'),
@@ -633,7 +640,7 @@ const PERFUME_SKILLS: AcademyPair[] = [
 const PAIRS: AcademyPair[] = [
   ...PROGRAMMING_LANGUAGES.map((l) => ask(lang(...l), `ايه هي لغة ${l[0]}؟`, 'lang', 'prog_langs')),
   ...LANG_CONCEPTS, ...BLOCK_LESSONS, ...SOFTWARE_LESSONS, ...GRAPHICS_LESSONS, ...WEBCARE_LESSONS, ...AI_LESSONS,
-  ...SECURITY_LESSONS, ...QUANTUM_LESSONS, ...toolPairs(),
+  ...SECURITY_LESSONS, ...HACKING_LESSONS, ...THREAT_LESSONS, ...QUANTUM_LESSONS, ...toolPairs(),
   ...AI_PROJECT_LESSONS, ...IT_LESSONS, ...FRONTIER_LESSONS, ...CHEM_LESSONS, ...PHYS_LESSONS, ...MATH_LESSONS,
   ...COMMERCE_LESSONS, ...LAW_LESSONS, ...PR_LESSONS, ...MGMT_LESSONS, ...HIST_LESSONS, ...GEO_LESSONS, ...LIT_LESSONS, ...SOC_LESSONS,
   ...PSY_LESSONS, ...CYBERPSY_LESSONS, ...UXPSY_LESSONS, ...PERFUME_SKILLS,

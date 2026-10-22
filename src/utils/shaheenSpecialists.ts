@@ -17,7 +17,8 @@ export type ScienceTrack =
   | 'ai_projects' | 'it_sciences' | 'frontier' | 'chemistry' | 'physics' | 'math'
   | 'commerce' | 'law' | 'pr' | 'management' | 'history' | 'geography' | 'literature' | 'social'
   | 'psychology' | 'cyber_psych' | 'ux_psych'
-  | 'biology' | 'medicine' | 'engineering' | 'earth_space' | 'education' | 'media_info' | 'sports' | 'arts' | 'religion' | 'tourism_ir';
+  | 'biology' | 'medicine' | 'engineering' | 'earth_space' | 'education' | 'media_info' | 'sports' | 'arts' | 'religion' | 'tourism_ir'
+  | 'ethical_hacking' | 'threat_analysis';
 
 export type SpecialistId = BotId;
 
@@ -75,12 +76,12 @@ export const SPECIALISTS: Specialist[] = [
     id: 'specialist_security',
     nameAr: 'م. سيف الأمن',
     nameEn: 'Eng. Seif Al-Amn — cybersecurity specialist',
-    fieldAr: 'الأمن السيبراني',
-    fieldEn: 'Cybersecurity',
-    tracks: ['security'],
-    sciencesAr: 'أمن المعلومات: الهجمات والدفاع عنها، والتشفير والمصادقة، وحماية كلمات السر والخصوصية، والاستجابة للحوادث والتشفير ما بعد الكم',
+    fieldAr: 'الأمن السيبراني وعلوم الهاكينج',
+    fieldEn: 'Cybersecurity & hacking sciences',
+    tracks: ['security', 'ethical_hacking', 'threat_analysis'],
+    sciencesAr: 'أمن المعلومات: الهجمات والدفاع عنها، والتشفير والمصادقة، وحماية كلمات السر والخصوصية، والاستجابة للحوادث والتشفير ما بعد الكم؛ وعلوم الهاكينج بال المصرح به (الاستطلاع والمسح واستغلال الثغرات واختبار الويب والشبكات والفريق الأحمر ومكافآت الثغرات)؛ واستخبارات التهديدات وتحليل الهجمات',
     sciencesEn: 'Information security: attacks and defence, encryption and authentication, passwords and privacy, incident response and post-quantum cryptography',
-    keywords: ['أمن', 'أمان', 'حماية', 'اختراق', 'قرصنة', 'هجوم', 'هجمات', 'تصيّد', 'تصيد', 'تشفير', 'كلمة سر', 'كلمات سر', 'كلمة مرور', 'مصادقة', 'ثغرة', 'ثغرات', 'برمجية خبيثة', 'فيروس', 'جدار حماية', 'خصوصية', 'سيبراني', 'استجابة للحوادث', 'security', 'hacking', 'encryption', 'cryptograph', 'phishing', 'malware', 'password', 'breach', 'vulnerability', 'authentication', 'privacy', 'cyber', 'firewall'],
+    keywords: ['أمن', 'أمان', 'حماية', 'اختراق', 'اختراق أخلاقي', 'هاكينج', 'قرصنة', 'هجوم', 'هجمات', 'تصيّد', 'تصيد', 'تشفير', 'كلمة سر', 'كلمات سر', 'كلمة مرور', 'مصادقة', 'ثغرة', 'ثغرات', 'برمجية خبيثة', 'فيروس', 'جدار حماية', 'خصوصية', 'سيبراني', 'استجابة للحوادث', 'استطلاع', 'اختبار اختراق', 'فريق أحمر', 'تجسس', 'استخبارات', 'malware', 'security', 'hacking', 'encryption', 'cryptograph', 'phishing', 'password', 'breach', 'vulnerability', 'authentication', 'privacy', 'cyber', 'firewall'],
   },
   {
     id: 'specialist_science',

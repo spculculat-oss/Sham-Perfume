@@ -112,6 +112,8 @@ test('tracks cover every mission; tools cover every AI tool with its field and a
   assert.ok(tracks.arts.total >= 14, 'arts');
   assert.ok(tracks.religion.total >= 14, 'philosophy & religion');
   assert.ok(tracks.tourism_ir.total >= 12, 'tourism & international relations');
+  assert.ok(tracks.ethical_hacking.total >= 20, 'ethical hacking & hacking sciences');
+  assert.ok(tracks.threat_analysis.total >= 16, 'threat intelligence & attack analysis');
   assert.ok(tracks.perfume.total >= 5, 'the practical perfume skills close the original gaps');
   assert.equal(tracks.ai_tools.total, AI_TOOLS.length * 2, 'every tool: its field + how to develop it');
   assert.equal(trackOf('lang'), 'prog_langs');
@@ -136,6 +138,8 @@ test('tracks cover every mission; tools cover every AI tool with its field and a
   assert.equal(trackOf('art'), 'arts');
   assert.equal(trackOf('rel'), 'religion');
   assert.equal(trackOf('tour'), 'tourism_ir');
+  assert.equal(trackOf('hack'), 'ethical_hacking');
+  assert.equal(trackOf('threat'), 'threat_analysis');
 
   const tools = toolStats(results, '2026-10-21T00:00:00.000Z');
   assert.equal(tools.items.length, AI_TOOLS.length);
