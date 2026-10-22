@@ -10,6 +10,7 @@
  *      (src/data/live/shaheen-school.json, shown in the admin panel).
  * Pure helpers here; scripts/shaheen-school/run.mts does the I/O.
  */
+import { platformsAuto } from '../../server/core/selfReliance';
 import { isPersonal, isTimeBound, meaningWords, normalizeQuestion, recallSimilar, worthRemembering, type MemoryFile } from '../../src/utils/shaheenMemory';
 import { materialCard, topicWords as libraryTopicWords, type LibraryMaterial } from '../../src/utils/shaheenLibrary';
 import { spellingDrill, typoVariants, understandQuestion, wordKey, type Lexicon } from '../../src/utils/shaheenSpelling';
@@ -231,6 +232,16 @@ export function pickStudy(results: ExamResult[], max: number, focus: 'perfume' |
     .sort((a, b) => Number(b.origin === 'visitors') - Number(a.origin === 'visitors') || (syllabusRank(a, focus) - syllabusRank(b, focus)) || (perTopic.get(b.topic)! - perTopic.get(a.topic)!) || Number(a.origin === 'library') - Number(b.origin === 'library'))
     .filter((g) => { const n = taken.get(g.topic) || 0; if (n >= (g.origin === 'visitors' ? max : 2)) return false; taken.set(g.topic, n + 1); return true; })
     .slice(0, max);
+}
+
+/**
+ * Which teacher is asked first. On «تلقائي» (the owner's switch, 2026-10-22: «طول ما هما شغالين خليه يتعلم منهم») the
+ * AI platforms teach first while they work, and the local teacher on the runner takes over when they stop; otherwise
+ * the workflow's SCHOOL_PREFER (usually the local teacher) leads.
+ */
+export function teacherPreference(env: Record<string, string | undefined>): string | undefined {
+  const prefer = env.SCHOOL_PREFER?.trim() || undefined;
+  return platformsAuto(env) && prefer === 'self_hosted' ? undefined : prefer;
 }
 
 export const STUDY_SYSTEM = `أنت «الخبير شاهين»، خبير العطور وصناعتها في موقع «شام». تدرس سؤالاً لتحفظ إجابته وتجيب به الزوار لاحقاً بدون مساعدة.
