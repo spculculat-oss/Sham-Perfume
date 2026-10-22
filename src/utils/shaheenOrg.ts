@@ -37,7 +37,7 @@ export type BotId =
   | 'contracts'
   | 'scout' | 'importer' | 'images' | 'catalog' | 'product_pages' | 'store_advisor'
   | 'news' | 'seo' | 'librarian' | 'teacher' | 'researcher'
-  | 'chat' | 'library' | 'languages' | 'design_audit' | 'design_expert' | 'visitor_tour' | 'inspect'
+  | 'chat' | 'library' | 'specialists_board' | 'languages' | 'design_audit' | 'design_expert' | 'visitor_tour' | 'inspect'
   | 'school' | 'doctor' | 'verifier' | 'live_check' | 'keys' | 'intake' | 'studio_bridge' | 'studio_zip' | 'deploy' | 'admin_agent'
   | 'chat_agent' | 'owner_desk' | 'state' | 'academy' | 'platform_owner'
   | 'specialist_scents' | 'specialist_tech' | 'specialist_security' | 'specialist_science' | 'specialist_business' | 'specialist_society'
@@ -89,6 +89,7 @@ export const BOTS: Bot[] = [
   // ── Visitor experience, design & languages ──
   { id: 'chat', nameAr: 'شات الخبير شاهين ومساعد شام', nameEn: 'Shaheen chat & Sham assistant', dept: 'experience', aiTools: ['shaheen_chat', 'sham_assistant', 'media'], dutiesAr: 'يرد على الزوار بـ«وكيل شاهين» المربوط بيه مباشرة تحت نظر دولة المنصة (S-10): يقرا السؤال مع الكلام اللي قبله، وسؤال الشراء بيرد عليه من منتجات المتجر نفسها (السعر والحجم والمكونات وليه كل واحد مناسب والربط بينهم)، والتركيبة اللي يصممها بيقترح جنبها عطور المتجر القريبة منها؛ وبيفهم السؤال ومجاله ونوعه الأول، ويختار خبير المدرسة المناسب، ويقارن بين دروس الخبراء المراجَعة والمكتبة والإجابات المحفوظة والمصادر المفتوحة ويختار الأصح (الإجابة القديمة مصدر من المصادر مش الإجابة تلقائياً)، ولو مفيش معلومة أكيدة مايخمّنش ويبعت السؤال لخبير المجال في المدرسة يذاكره.' },
   { id: 'library', nameAr: 'مكتبة شاهين (رد بدون ذكاء اصطناعي)', nameEn: "Shaheen's library (answers without AI)", dept: 'experience', dutiesAr: 'لما محركات الذكاء الاصطناعي تقع: يبني رد من موسوعة المواد الخام ودروس شاهين وأقرب سؤال في ذاكرته، مكتوب عليه مصدره، على السيرفر وفي متصفح الزائر. مايخمنش: الأخبار والأسعار والأسئلة الشخصية ليها الرد الصريح، وأسئلة الشراء لترشيحات المتجر.' },
+  { id: 'specialists_board', nameAr: 'مجلس المتخصصين (وكيل الاستشارة الذكي)', nameEn: "The specialists' board (consultation agent)", dept: 'experience', aiTools: ['specialists_agent'], dutiesAr: 'أيقونة «استشير متخصصاً» في كل أقسام الموقع وكيل ذكاء اصطناعي: يفهم سؤال الزائر ويوجّهه لمتخصصه من العشرة (نطاق كل واحد مساراته من مدرسة شاهين بس — L-32)، ويشتغل بأدواته — منهج المدرسة وعلومها المراجَعة، ذاكرة شاهين ومكتبته، موسوعة المواد الخام، حاسبات المعمل، المتجر بأسعاره الحقيقية، نشرة الأخبار، ملجأ شاهين، والمصادر المفتوحة — ويرد من ملاحظات أدواته بس، وكل رد مكتوب عليه مصدره والأدوات اللي اشتغلت فيه. ولو المحركات كلها وقفت يرد من نفس الأدوات من غير ذكاء اصطناعي، ولو مفيش معلومة صلبة يقول بصراحة إنه هيذاكر السؤال ويسجّله للمدرسة — مافيش تخمين ولا اسم مزوّد للزائر.' },
   { id: 'languages', nameAr: 'وكيل اللغات — المترجم الذكي', nameEn: 'Language agent — smart translator', dept: 'experience', workflow: 'shaheen-languages.yml', report: 'shaheen-languages.json', everyHours: 12, aiTools: ['language_agent'], dutiesAr: 'يقيس اللغات المئة، ويترجم بالذكاء الاصطناعي كل نص لسه بالإنجليزي (فحص صارم + مراجعة محرك تاني)، ويبدأ باللغات اللي بلّغ عنها قسم التصميم ويحدد مكان النصوص الإنجليزي الثابتة في الكود.' },
   { id: 'design_audit', nameAr: 'تدقيق التصميم واللغات (مرتين في الأسبوع)', nameEn: 'Design & languages audit (twice a week)', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-audit.json', everyHours: 84, dutiesAr: 'وكيل خلفي يفتح الموقع بلغات مختلفة الأربع والسبت ويقيّم التصميم والترجمة.' },
   { id: 'design_expert', nameAr: 'خبير التصميم متعدد التخصصات', nameEn: 'Multidisciplinary design expert', dept: 'experience', aiTools: ['design_agent'], dutiesAr: 'يحوّل الموجز إلى خطة عبر تخصصات الهوية والجرافيك والواجهات والتغليف والتصوير والحركة والطباعة والإتاحة والخدمات والمنتجات، ويتعاون مع أدوار وتقارير برامج الذكاء المسجلة تحت شاهين؛ شاهين يراجع الجودة ويوجّه التحسين، ولا تُنفذ تغييرات أو ملفات نهائية تلقائياً.' },
@@ -211,6 +212,11 @@ export const LINKS: Link[] = [
   { from: 'intake', to: 'deploy', whyAr: 'تحديث سليم ← ينزل على الموقع' },
   { from: 'inspect', to: 'secretary', whyAr: 'ردود ضعيفة ← توجيهات جودة' },
   { from: 'library', to: 'chat', whyAr: 'المحركات واقعة ← رد من الموسوعة والدروس والذاكرة بمصدره' },
+  { from: 'library', to: 'specialists_board', whyAr: 'المحركات واقعة ← المجلس يرد من المكتبة والذاكرة وموسوعة المواد بمصدرها' },
+  { from: 'researcher', to: 'specialists_board', whyAr: 'سؤال جديد مش في الذاكرة ولا المكتبة ← خلاصة المصادر المفتوحة بروابطها' },
+  { from: 'specialists_board', to: 'school', whyAr: 'سؤال مالقاش إجابة صلبة ← يتسجل في فجوات المعرفة والمدرسة تذاكره' },
+  { from: 'specialists_board', to: 'chat', whyAr: 'سؤال تركيبات أو طلب أو خدمة ← يتسلّم بصراحة للخبير شاهين أو مساعد شام باسمه' },
+  { from: 'secretary', to: 'specialists_board', whyAr: 'تقييم وتوجيهات جودة لوكيل المجلس زي كل أدوات الذكاء الاصطناعي' },
   { from: 'researcher', to: 'chat', whyAr: 'سؤال جديد مش في المكتبة ← خلاصة المصادر المفتوحة بروابطها' },
   { from: 'chat', to: 'school', whyAr: 'سؤال ماتجاوبش من محرك ← على قائمة المذاكرة' },
   { from: 'school', to: 'library', whyAr: 'الدروس والذاكرة ← مادة المكتبة' },
