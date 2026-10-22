@@ -7,6 +7,8 @@
 import { curateMemory, emptyMemory, isMemoryFile, recallSimilar, remember, touch, type MemoryFile } from './shaheenMemory';
 import { baseLexicon, buildLexicon, understandQuestion, type Lexicon, type Understanding } from './shaheenSpelling';
 
+let researchSpider: ReturnType<typeof import('./researchSpider').createResearchSpider> | undefined;
+
 const KEY = 'shaheen_memory_v1';
 const LOCAL_LIMITS = { maxEntries: 100, ttlDays: 60, freshDays: 30, maxAnswerChars: 12_000, offlineSimilarity: 0.55 };
 
@@ -100,8 +102,9 @@ export const browserMemory: OfflineMemory = {
   },
   async research(question, lang) {
     if (typeof import.meta.env?.MODE !== 'string' || typeof fetch !== 'function') return undefined;
-    const { research, researchAnswer } = await import('./webResearch');
-    const found = await research(fetch.bind(globalThis) as never, question, lang, { timeoutMs: 9000 });
+    const [{ researchAnswer }, { createResearchSpider }] = await Promise.all([import('./webResearch'), import('./researchSpider')]);
+    researchSpider ??= createResearchSpider(fetch.bind(globalThis) as never, { timeoutMs: 9000 });
+    const found = await researchSpider.search(question, lang);
     return found ? researchAnswer(found) : undefined;
   },
 };
