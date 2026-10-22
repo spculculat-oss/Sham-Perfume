@@ -14,7 +14,7 @@ export interface Shift { index: ShiftIndex; nameAr: string; nameEn: string; bots
  */
 export const SHIFTS: Shift[] = [
   { index: 0, nameAr: 'وردية المتجر والأسعار', nameEn: 'Store & pricing shift', bots: ['scout', 'importer', 'images', 'catalog', 'product_pages', 'store_advisor', 'finance', 'contracts', 'admin_agent', 'owner_desk', 'state', 'platform_owner'], probes: ['pricing', 'catalog', 'currency', 'fx', 'images', 'product_pages', 'payments'] },
-  { index: 1, nameAr: 'وردية المحتوى وتجربة الزائر', nameEn: 'Content & visitor shift', bots: ['librarian', 'news', 'seo', 'chat', 'languages', 'design_audit', 'design_expert', 'visitor_tour', 'inspect', 'school', 'teacher', 'researcher', 'library'], probes: ['l10n', 'news_file', 'news_api', 'sitemap', 'platform_owner'] },
+  { index: 1, nameAr: 'وردية المحتوى وتجربة الزائر', nameEn: 'Content & visitor shift', bots: ['librarian', 'news', 'seo', 'chat', 'languages', 'design_audit', 'design_expert', 'visitor_tour', 'inspect', 'school', 'teacher', 'academy', 'researcher', 'library'], probes: ['l10n', 'news_file', 'news_api', 'sitemap', 'platform_owner'] },
   { index: 2, nameAr: 'وردية الجودة والإدارة', nameEn: 'Reliability & leadership shift', bots: ['council', 'precheck', 'patrol', 'legal', 'doctor', 'verifier', 'live_check', 'keys', 'intake', 'studio_bridge', 'studio_zip', 'deploy', 'secretary', 'chat_agent'], probes: ['site', 'engine'] },
 ];
 export const SHIFT_HOURS = SHIFTS.length;
@@ -29,4 +29,3 @@ export function nextShiftAt(index: ShiftIndex, now: number): string {
   while (h % SHIFT_HOURS !== index) h++;
   return new Date(h * 3_600_000).toISOString();
 }
-

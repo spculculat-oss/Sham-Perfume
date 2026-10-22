@@ -1,11 +1,16 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T10:00:00.000Z",
+ "updatedAt": "2026-10-22T14:30:00.000Z",
  "frozen": false,
  "paused": [],
  "selfDevelopment": "state",
- "aiPlatforms": "off",
+ "aiPlatforms": "auto",
  "log": [
+  {
+   "at": "2026-10-22T14:30:00.000Z",
+   "action": "platforms_auto",
+   "by": "spculculat-oss (قراره في شات وكيل البرمجة: طول ما المنصات شغالة شاهين يتعلم منها ويعتمد عليها، ولو مش شغالة يعتمد على نفسه)"
+  },
   {
    "at": "2026-10-22T10:00:00.000Z",
    "action": "state_rule",

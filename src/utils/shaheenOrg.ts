@@ -39,7 +39,7 @@ export type BotId =
   | 'news' | 'seo' | 'librarian' | 'teacher' | 'researcher'
   | 'chat' | 'library' | 'languages' | 'design_audit' | 'design_expert' | 'visitor_tour' | 'inspect'
   | 'school' | 'doctor' | 'verifier' | 'live_check' | 'keys' | 'intake' | 'studio_bridge' | 'studio_zip' | 'deploy' | 'admin_agent'
-  | 'chat_agent' | 'owner_desk' | 'state' | 'platform_owner';
+  | 'chat_agent' | 'owner_desk' | 'state' | 'academy' | 'platform_owner';
 
 export interface Bot {
   id: BotId;
@@ -85,7 +85,7 @@ export const BOTS: Bot[] = [
   { id: 'teacher', nameAr: 'المعلم المحلي ومراجع الدروس', nameEn: 'Local teacher & lesson reviewer', dept: 'content', workflow: 'shaheen-discover.yml', report: 'shaheen-school.json', everyHours: 6, dutiesAr: 'نموذج ذكاء اصطناعي مفتوح (Qwen2.5-7B، رخصة Apache-2.0) شغال على GitHub نفسه من غير مفتاح ولا حساب: يكتب لمدرسة شاهين دروس الأسئلة الناقصة من مراجع المكتبة والمصادر المفتوحة، ومراجع صارم يرفض أي درس فيه معلومة غلط أو نصيحة مش آمنة قبل ما يتحفظ.' },
   { id: 'researcher', nameAr: 'باحث شاهين (المصادر المفتوحة)', nameEn: 'Shaheen researcher (open sources)', dept: 'content', dutiesAr: 'منظومة بحث عنكبوتية موجهة عند الطلب: بحث متوازي، ذاكرة مؤقتة للمستندات العامة لمدة ربع ساعة، دمج الطلبات المتكررة وحدود للتزامن والحجم؛ لا زحف شامل ولا حفظ لأسئلة الزوار. سؤال جديد مش في الذاكرة ولا المكتبة: يدور في ويكيبيديا من الواجهة الرسمية المجانية، يقرا المقالات ويقارنها ويرد بالخلاصة والمصادر (CC BY-SA)، ويدي المدرسة نفس الخلاصة كمراجع. مايبحثش عن الأخبار والأسعار والأسئلة الشخصية، ومايقراش صفحات نتائج جوجل.' },
   // ── Visitor experience, design & languages ──
-  { id: 'chat', nameAr: 'شات الخبير شاهين ومساعد شام', nameEn: 'Shaheen chat & Sham assistant', dept: 'experience', aiTools: ['shaheen_chat', 'sham_assistant', 'media'], dutiesAr: 'يرد على الزوار بـ«وكيل شاهين»: يفهم السؤال ومجاله ونوعه الأول، ويختار خبير المدرسة المناسب، ويقارن بين دروس الخبراء المراجَعة والمكتبة والإجابات المحفوظة والمصادر المفتوحة ويختار الأصح (الإجابة القديمة مصدر من المصادر مش الإجابة تلقائياً)، ولو مفيش معلومة أكيدة مايخمّنش ويبعت السؤال لخبير المجال في المدرسة يذاكره.' },
+  { id: 'chat', nameAr: 'شات الخبير شاهين ومساعد شام', nameEn: 'Shaheen chat & Sham assistant', dept: 'experience', aiTools: ['shaheen_chat', 'sham_assistant', 'media'], dutiesAr: 'يرد على الزوار بـ«وكيل شاهين» المربوط بيه مباشرة تحت نظر دولة المنصة (S-10): يقرا السؤال مع الكلام اللي قبله، وسؤال الشراء بيرد عليه من منتجات المتجر نفسها (السعر والحجم والمكونات وليه كل واحد مناسب والربط بينهم)، والتركيبة اللي يصممها بيقترح جنبها عطور المتجر القريبة منها؛ وبيفهم السؤال ومجاله ونوعه الأول، ويختار خبير المدرسة المناسب، ويقارن بين دروس الخبراء المراجَعة والمكتبة والإجابات المحفوظة والمصادر المفتوحة ويختار الأصح (الإجابة القديمة مصدر من المصادر مش الإجابة تلقائياً)، ولو مفيش معلومة أكيدة مايخمّنش ويبعت السؤال لخبير المجال في المدرسة يذاكره.' },
   { id: 'library', nameAr: 'مكتبة شاهين (رد بدون ذكاء اصطناعي)', nameEn: "Shaheen's library (answers without AI)", dept: 'experience', dutiesAr: 'لما محركات الذكاء الاصطناعي تقع: يبني رد من موسوعة المواد الخام ودروس شاهين وأقرب سؤال في ذاكرته، مكتوب عليه مصدره، على السيرفر وفي متصفح الزائر. مايخمنش: الأخبار والأسعار والأسئلة الشخصية ليها الرد الصريح، وأسئلة الشراء لترشيحات المتجر.' },
   { id: 'languages', nameAr: 'وكيل اللغات — المترجم الذكي', nameEn: 'Language agent — smart translator', dept: 'experience', workflow: 'shaheen-languages.yml', report: 'shaheen-languages.json', everyHours: 12, aiTools: ['language_agent'], dutiesAr: 'يقيس اللغات المئة، ويترجم بالذكاء الاصطناعي كل نص لسه بالإنجليزي (فحص صارم + مراجعة محرك تاني)، ويبدأ باللغات اللي بلّغ عنها قسم التصميم ويحدد مكان النصوص الإنجليزي الثابتة في الكود.' },
   { id: 'design_audit', nameAr: 'تدقيق التصميم واللغات (مرتين في الأسبوع)', nameEn: 'Design & languages audit (twice a week)', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-audit.json', everyHours: 84, dutiesAr: 'وكيل خلفي يفتح الموقع بلغات مختلفة الأربع والسبت ويقيّم التصميم والترجمة.' },
@@ -94,6 +94,7 @@ export const BOTS: Bot[] = [
   { id: 'inspect', nameAr: 'فاحص إجابات شاهين', nameEn: 'Answer inspector', dept: 'experience', workflow: 'shaheen-inspect.yml', dutiesAr: 'يسأل شاهين أسئلة حقيقية ويفحص الرد (عند الطلب).' },
   // ── Reliability & self-reliance ──
   { id: 'school', nameAr: 'مدرسة شاهين (الاعتماد على النفس)', nameEn: "Shaheen's school", dept: 'reliability', workflow: 'shaheen-discover.yml', report: 'shaheen-school.json', everyHours: 6, aiTools: ['shaheen_school'], dutiesAr: 'يمتحن شاهين نفسه ويذاكر ويحفظ في ذاكرته عشان يرد لوحده.' },
+  { id: 'academy', nameAr: 'أكاديمية شاهين (المدرسة على مدار الساعة)', nameEn: "Shaheen's academy (school around the clock)", dept: 'reliability', workflow: 'shaheen-school-clock.yml', report: 'shaheen-school.json', everyHours: 1, dutiesAr: 'كل ساعة يشوف إيه الباقي على خبراء المدرسة السبعتاشر من منهجهم (من غير ذكاء اصطناعي)، ولو فيه شغل يشغّل المعلم المحلي على جهاز الروبوتات: كل خبير يذاكر أسئلة مجاله من مكتبة شاهين والمصادر المفتوحة، والمراجع الصارم يراجع كل درس بمعايير المجال وحدوده قبل ما يتحفظ في ذاكرة شاهين. لو مفيش حاجة باقية الساعة بتعدي من غير تشغيل، وماشي في نفس حارة الكشّاف عشان محدش يكتب في الذاكرة مع التاني.' },
   { id: 'doctor', nameAr: 'طبيب شاهين (الصيانة)', nameEn: 'Shaheen doctor (maintenance)', dept: 'reliability', workflow: 'shaheen-doctor.yml', dutiesAr: 'كل 10 دقايق يكشف على المنتجات والصور والمتجر والنشر.' },
   { id: 'verifier', nameAr: 'المراجع الخارجي', nameEn: 'External reviewer', dept: 'reliability', workflow: 'shaheen-manus.yml', report: 'manus-missions.json', section: 'verify', everyHours: 84, dutiesAr: 'الاتنين والخميس الوكيل الخلفي يراجع مهام التطوير اللي اتقفلت على الموقع الحي: اتصلحت فعلاً ولا لأ — اللي لسه بايظ يرجع للاجتماع.' },
   { id: 'live_check', nameAr: 'فحص شاهين على الموقع الحي', nameEn: 'Live Shaheen check', dept: 'reliability', workflow: 'live-smoke.yml', everyHours: 24, dutiesAr: 'يكلم شاهين على الموقع الحقيقي كل يوم ويتأكد إنه بيرد.' },
@@ -134,9 +135,12 @@ export const LEGAL_DECISIONS: LegalDecision[] = [
 /** Who helps whom: the cooperation map (from → to, and why). */
 export interface Link { from: BotId; to: BotId; whyAr: string }
 export const LINKS: Link[] = [
+  { from: 'academy', to: 'teacher', whyAr: 'كل ساعة فيها أسئلة باقية: الأكاديمية تشغّل المعلم المحلي يذاكر منهج خبراء المدرسة، والمراجع يراجع كل درس' },
+  { from: 'academy', to: 'chat', whyAr: 'الدروس اللي عدّت المراجعة بتوصل لذاكرة شاهين، فوكيل شاهين يرد بيها على الزوار من غير أي منصة' },
   { from: 'owner_desk', to: 'state', whyAr: 'صاحب الموقع بيسلّم الدولة الموافقات أو يرجّعها لنفسه، وأي قرار ليها يقدر يرجّعه' },
   { from: 'state', to: 'council', whyAr: 'الدولة بتوافق أو ترفض مهام المجلس (بتصويت أعضائها)' },
   { from: 'state', to: 'doctor', whyAr: 'تعديلات الروبوتات المستنية موافقة ← الدولة تصوّت وتفحص وتدمج' },
+  { from: 'state', to: 'chat', whyAr: 'الربط المباشر بين وكيل شاهين وشاهين تحت نظرها (S-10): كل رد مكتوب مصدره، وتقدر توقف الربط أو ترجّعه بأمر' },
   { from: 'owner_desk', to: 'council', whyAr: 'أوامر صاحب الموقع (إيقاف/تشغيل/فرامل) ← الاجتماع والمهام بتمشي عليها' },
   { from: 'owner_desk', to: 'doctor', whyAr: 'حدود التطوير الذاتي ← التغيير الكبير يستنى موافقة صاحب الموقع' },
   { from: 'owner_desk', to: 'patrol', whyAr: 'الروبوت الموقوف بأمره ← الدورية ماتشغلوش ولا تعتبره عطلان' },

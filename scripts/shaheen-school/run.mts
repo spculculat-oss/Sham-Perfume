@@ -20,7 +20,7 @@ import { RAW_MATERIALS_DATABASE } from '../../src/data/rawMaterials';
 import { referenceBlock, searchLibrary } from '../../src/utils/shaheenLibrary';
 import { research, RESEARCH_USER_AGENT, researchBlock, type Research } from '../../src/utils/webResearch';
 import {
-  buildBank, emptySchool, exam, importerShare, isSchoolFile, LOCAL_TEACHER_STYLE, materialDocs, pickStudy, parseReview, REVIEW_SYSTEM, reviewPrompt, selfLesson, STUDY_SYSTEM, studyCheck, studyPrompt,
+  buildBank, teacherPreference, emptySchool, exam, importerShare, isSchoolFile, LOCAL_TEACHER_STYLE, materialDocs, pickStudy, parseReview, REVIEW_SYSTEM, reviewPrompt, selfLesson, STUDY_SYSTEM, studyCheck, studyPrompt,
   spellingReport, visitorQuestions, type BankQuestion, type SchoolFile, type TrainingDoc,
 } from './school';
 import { buildLexicon } from '../../src/utils/shaheenSpelling';
@@ -85,13 +85,13 @@ const quota = quotaBook(live('ai-quota.json'));
 const answers = answerBook(live('ai-memory.json'));
 let ask: Awaited<ReturnType<typeof makeAsk>>;
 // SCHOOL_PREFER=self_hosted: the local teacher first (free, always there), the AI services as the fallback.
-try { ask = await makeAsk(env, { bot: 'teacher', quota, memory: answers, maxWaitMs: 60_000, prefer: env.SCHOOL_PREFER?.trim() || undefined, onEngine: (id) => { engineUsed = id; } }); } catch { ask = undefined; }
+try { ask = await makeAsk(env, { bot: 'teacher', quota, memory: answers, maxWaitMs: 60_000, prefer: teacherPreference(env), onEngine: (id) => { engineUsed = id; } }); } catch { ask = undefined; }
 if (env.SHAM_LLM_BASE_URL?.trim()) say(`Local teacher ready (${env.SHAM_LLM_MODEL || 'open model'} on this runner, no key)`);
 // Shaheen's supervisor (scripts/shaheen-supervisor) can add quality guidance for the study answers.
 const supervisor = read<{ tools?: Record<string, { guidance?: { text?: string } }> }>(live('ai-supervisor.json'));
-const localFirst = Boolean(env.SHAM_LLM_BASE_URL?.trim()) && env.SCHOOL_PREFER?.trim() === 'self_hosted';
+const localFirst = Boolean(env.SHAM_LLM_BASE_URL?.trim()) && teacherPreference(env) === 'self_hosted';
 const SYSTEM = STUDY_SYSTEM + (localFirst ? LOCAL_TEACHER_STYLE : '') + guidanceBlock(supervisor?.tools?.shaheen_school?.guidance?.text);
-const todo = pickStudy(first.results, MAX_STUDY);
+const todo = pickStudy(first.results, MAX_STUDY, env.SCHOOL_FOCUS === 'experts' ? 'experts' : 'perfume');
 if (!todo.length) say('Nothing left to study in the bank — Shaheen answers every question by himself');
 else if (!ask) say(`No AI engine available: ${todo.length} questions wait for the next study session (Shaheen keeps answering from what he learned)`);
 else {

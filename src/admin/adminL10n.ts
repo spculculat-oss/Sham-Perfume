@@ -1216,6 +1216,10 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   "خريطة تشغيل شام": { en: "Sham operations map" },
   "شاهين فوق، وتحته الأقسام الخمسة وأدواتها. لون كل أداة = تقييمها من 100 من بيانات حقيقية (آخر تشغيل، التقرير، جودة الشغل، مراجعة الخبير). دوس على أي أداة تشوف تفاصيلها، أو اختار رحلة تشوف الشغل ماشي إزاي.": { en: "Shaheen on top, the five departments and their tools below. Each tool's colour is its score out of 100 from real data (last run, report, work quality, expert review). Click a tool for its details, or pick a journey to see how work flows." },
   "آخر بيانات: {when}": { en: "Latest data: {when}" },
+  "الربط المباشر: وكيل شاهين ⇄ شاهين — تحت نظر دولة المنصة": { en: "Direct link: Shaheen’s agent ⇄ Shaheen — overseen by the platform State" },
+  "موقوف بأمر الدولة": { en: "Paused by the State" },
+  "موقوف بأمر صاحب الموقع": { en: "Paused by the owner" },
+  "سؤال الشراء بيترد عليه من منتجات المتجر نفسها، والكلام بيتقري مع اللي قبله، ولما المنصات تقف الوكيل بيرد فوراً. الدولة تقدر توقفه أو ترجّعه من غرفتها.": { en: "Shopping questions are answered from the store’s own products, each message is read with the conversation before it, and when the platforms stop the agent answers at once. The State can pause or resume it from its room." },
   "متوسط التقييم": { en: "Average score" },
   "القسم": { en: "Department" },
   "الوردية": { en: "Shift" },
@@ -1417,6 +1421,7 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   "{learned} من {total} درس في {tracks} مسار · آخر تعلّم {when}": { en: "{learned} of {total} lessons across {tracks} tracks · last studied {when}" },
   "{covered}/{total} درس": { en: "{covered}/{total} lessons" },
   "آخر دروس ذاكرها": { en: "Latest lessons he studied" },
+  "فهرس سريع: {lessons} درساً و{words} كلمة، بُني في {ms} مللي ثانية مرة واحدة، والسؤال المتكرر بيرجع في {cached} مللي ثانية": { en: "A fast index: {lessons} lessons and {words} words, built once in {ms} ms; a repeated question comes back in {cached} ms" },
   // ── Platform State ──
   "«نفّذ» بيفتح صفحة على GitHub من حسابك علشان GitHub يتأكد إن الأمر منك — اضغط فيها «Submit new issue» (إنشاء الطلب)، والدولة بتكمل لوحدها.": { en: "«Run» opens a page on GitHub from your account so GitHub can confirm the order is yours — press «Submit new issue» there, and the State takes it from there." },
   "أعلى سلطة بعدك: كل العاملين في المنصة وأولهم شاهين خاضعين لقوانينها وبياخدوا منها كل الموافقات. أعضاؤها بيصوّتوا كل ساعة، واللي يتوافق عليه بيعدّي كل الفحوص وينزل، واللي يترفض بتقفله بنفسها — مابترجعلكش في أي إجراء.": { en: "The top authority after you: every worker of the platform, Shaheen first, follows its laws and takes every approval from it. Its members vote every hour; what passes goes through every check and goes live, and what is refused it closes itself — it never comes back to you." },
@@ -1465,6 +1470,24 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   "{a} موافقة، {r} رفض، {v} فيتو": { en: "{a} for, {r} against, {v} vetoes" },
   "آخر تحديث: {at}": { en: "Last update: {at}" },
   "صحة الأدوات {h}%": { en: "Tools health {h}%" },
+  // ── «غرفة التحكم الحية» (OpsControlRoom) ──
+  'درس جديد دخل المدرسة بعد المراجعة: {q}': { en: "New reviewed lesson entered the school: {q}" },
+  'دروس في ذاكرة شاهين': { en: "Lessons in Shaheen's memory" },
+  'أسئلة مستنية المذاكرة': { en: "Questions waiting to be studied" },
+  'غرفة التحكم الحية': { en: "Live control room" },
+  'GitHub طلب استراحة — هيكمل {time}': { en: "GitHub asked for a break — resumes at {time}" },
+  'آخر تحديث {time}': { en: "Last update {time}" },
+  'بيجيب الحالة…': { en: "Loading the status…" },
+  'خروج من ملء الشاشة': { en: "Exit full screen" },
+  'ملء الشاشة': { en: "Full screen" },
+  'صاحب الموقع فوق الكل ← دولة المنصة ← شاهين المدير العام ووكيله ← الأقسام ومدرسة شاهين ← الروبوتات والخبراء السبعتاشر. النقط المتحركة = شغل ماشي دلوقتي: تقارير طالعة لفوق، وموافقات نازلة، وأسئلة رايحة للخبراء ودروس راجعة للمدرسة.': { en: "The owner above all → the Platform State → Shaheen the manager and his agent → the departments and Shaheen's school → the robots and the seventeen experts. Moving dots = work happening now: reports going up, approvals coming down, questions going to the experts and lessons coming back to the school." },
+  'فرع المعرفة: المدرسة وخبراؤها': { en: "Knowledge branch: the school and its experts" },
+  'فرع التشغيل: الأقسام وروبوتاتها': { en: "Operations branch: the departments and their robots" },
+  'بيحصل دلوقتي': { en: "Happening now" },
+  'مفيش روبوت شغال في اللحظة دي — كله مستني دوره.': { en: "No robot is working this minute — all are waiting for their turn." },
+  'المدرسة شغالة: الأسئلة رايحة للخبراء والدروس المراجَعة راجعة لذاكرة شاهين.': { en: "The school is running: questions go to the experts and reviewed lessons come back to Shaheen's memory." },
+  'سجل النشاط': { en: "Activity log" },
+  'لسه مفيش نشاط متسجل.': { en: "No activity recorded yet." },
 };
 
 let currentLang: SupportedLanguage = 'ar';

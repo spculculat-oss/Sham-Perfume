@@ -33,7 +33,7 @@ test('every science track has its expert in the school, with the track’s limit
     assert.equal(e.field, t.id);
     assert.equal(e.boundaryAr, t.boundaryAr);
   }
-  for (const f of ['perfume', 'chemistry', 'physics', 'biology', 'math', 'computing', 'nutrition', 'agriculture']) assert.ok(SCHOOL_EXPERTS.some((e) => e.field === f), f);
+  for (const f of ['perfume', 'chemistry', 'physics', 'biology', 'math', 'computing', 'nutrition', 'agriculture', 'logic']) assert.ok(SCHOOL_EXPERTS.some((e) => e.field === f), f);
   assert.equal(expertOf('nothing').field, 'general');
   assert.equal(expertGapReason('chemistry'), `${EXPERT_GAP_PREFIX}chemistry`);
 });
@@ -72,7 +72,7 @@ test('the right lesson for the subject; a comparison answered side by side; one 
 });
 
 test('nothing solid: an honest answer, no guess — the question goes to the field’s expert', async () => {
-  const r = await runAgent('ما هو قانون نيوتن التاني للحركة', 'ar', { sources: src() });
+  const r = await runAgent('ايه هو مبدأ برنولي في الفيزياء وتطبيقاته', 'ar', { sources: src() });
   assert.equal(r.answer, undefined);
   assert.ok(r.refer);
   assert.equal(r.expert.field, 'physics');
@@ -86,7 +86,7 @@ test('nothing solid: an honest answer, no guess — the question goes to the fie
 test('the school has nothing: the researcher reads open sources, and the expert still studies it', async () => {
   const found: Research = { question: 'q', lang: 'ar', query: 'q', sources: [{ title: 'قانون نيوتن', url: 'https://ar.wikipedia.org/wiki/x', site: 'wikipedia', lang: 'ar' }],
     passages: [{ text: 'القوة تساوي الكتلة في التسارع.', source: { title: 'قانون نيوتن', url: 'https://ar.wikipedia.org/wiki/x', site: 'wikipedia', lang: 'ar' }, score: 1, matched: 2, agreed: 1 }] };
-  const r = await runAgent('ما هو قانون نيوتن التاني للحركة', 'ar', { sources: src(), research: async () => found, willRecord: true });
+  const r = await runAgent('ايه هو مبدأ برنولي في الفيزياء وتطبيقاته', 'ar', { sources: src(), research: async () => found, willRecord: true });
   assert.deepEqual(r.used, ['research']);
   assert.ok(r.refer);
   assert.match(r.answer!, /الكتلة في التسارع/);
@@ -139,7 +139,11 @@ test('the server (platforms closed): the agent answers from the school; nothing 
     assert.equal(quake.data.agent?.field, 'earth');
     assert.equal(quake.data.engine.provider, 'shaheen');
     assert.match(quake.data.reply, /الصفائح التكتونية/);
-    const physics = await chat('ما هو قانون نيوتن التاني للحركة');
+    const newton = await chat('ما هو قانون نيوتن التاني للحركة');
+    assert.equal(newton.data.memory, 'agent', 'the physics expert has reviewed lessons now');
+    assert.equal(newton.data.agent?.field, 'physics');
+    assert.match(newton.data.reply, /خبير الفيزياء/);
+    const physics = await chat('ايه هو مبدأ برنولي في الفيزياء وتطبيقاته');
     assert.equal(physics.status, 200);
     assert.equal(physics.data.memory, 'unknown');
     assert.match(physics.data.reply, /مش هخمّن/);

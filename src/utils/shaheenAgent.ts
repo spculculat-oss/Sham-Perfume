@@ -19,13 +19,15 @@
 import { SCIENCE_TRACKS, type ScienceLesson, type ScienceTrackId } from '../data/sciences';
 import { isPersonal, isTimeBound, meaningWords, normalizeQuestion, similarity, type MemoryEntry, type MemoryFile } from './shaheenMemory';
 import { lessonExcerpt, searchLibrary, topicWords, type LibraryLesson, type LibraryMaterial } from './shaheenLibrary';
+import { buildScienceIndex, scienceExact, scienceHits, type ScienceFieldWords, type ScienceIndex } from './scienceIndex';
 import { buildLexicon, understandQuestion, understoodNote, type Lexicon } from './shaheenSpelling';
 import { researchAnswer, type Research } from './webResearch';
 import { greetingKind, greetingReply } from './shaheenGreeting';
+import { coreSubjects, coverage, fitsIntent, intentOf, keySentence, near, reason, stem, STRICT_INTENT, type Intent } from './shaheenReasoning';
 import type { SupportedLanguage } from '../types/i18n';
 
 // ── The school's experts ─────────────────────────────────────────────────────────────────────────────────────
-export type FieldId = 'perfume' | ScienceTrackId | 'chemistry' | 'physics' | 'biology' | 'math' | 'computing' | 'nutrition' | 'agriculture' | 'general';
+export type FieldId = 'perfume' | ScienceTrackId | 'general';
 export interface SchoolExpert {
   field: FieldId;
   nameAr: string;
@@ -53,6 +55,7 @@ export const SCHOOL_EXPERTS: SchoolExpert[] = [
   { field: 'math', nameAr: 'خبير الرياضيات', nameEn: 'Mathematics expert', words: W('رياضيات معادله معادلات جبر هندسه تفاضل تكامل احتمال احتمالات احصاء مثلث مساحه محيط زاويه نظريه اعداد كسور لوغاريتم math mathematics equation algebra geometry calculus probability statistics triangle theorem logarithm') },
   { field: 'computing', nameAr: 'خبير الحاسبات والبرمجة', nameEn: 'Computing expert', words: W('برمجه برنامج كمبيوتر حاسوب حاسب خوارزميه خوارزميات ذكاء اصطناعي شبكه شبكات انترنت بيانات قاعده تشفير سوفتوير هاردوير programming computer algorithm software internet network data database encryption code') },
   { field: 'nutrition', nameAr: 'خبير التغذية', nameEn: 'Nutrition expert', words: W('تغذيه غذاء غذائي اكل طعام فيتامين فيتامينات سعرات دهون كربوهيدرات الياف معادن رجيم دايت nutrition food vitamin calorie diet fiber carbohydrate fat') },
+  { field: 'logic', nameAr: 'خبير التحليل المنطقي', nameEn: 'Logic expert', words: W('منطق منطقي منطقيه استدلال استنتاج استنباط استقراء مغالطه مغالطات حجه حجج برهان مقدمه مقدمات قياس تناقض سببيه ترابط ارتباط انحياز تحيز اقناع اقنع نقدي شرط لازم كافي logic logical fallacy argument deduction induction premise syllogism reasoning causation correlation bias') },
   { field: 'agriculture', nameAr: 'خبير الزراعة', nameEn: 'Agriculture expert', words: W('زراعه زراعي محصول محاصيل سماد اسمده ري بذور بذره حصاد تربه agriculture crop fertilizer irrigation seed harvest farming') },
 ];
 /** Every expert, by field (the science tracks bring their own boundary). */
@@ -139,7 +142,7 @@ export function understand(question: string, lang: string, lex: Lexicon = agentL
 }
 
 // ── 2. Plan ──────────────────────────────────────────────────────────────────────────────────────────────────
-export type SourceKind = 'expert' | 'lesson' | 'material' | 'memory' | 'research';
+export type SourceKind = 'expert' | 'lesson' | 'material' | 'memory' | 'research' | 'reasoning';
 export interface AgentPlan { expert: SchoolExpert; steps: SourceKind[]; split: boolean }
 /** Which expert owns it, and the order he consults his sources (the expert's reviewed lessons always first). */
 export function plan(u: AgentUnderstanding): AgentPlan {
@@ -151,6 +154,59 @@ export function plan(u: AgentUnderstanding): AgentPlan {
   return { expert, steps, split: Boolean(u.parts) };
 }
 
+// ── The fast desk: the sciences answered from the index, with no AI and no walk over the curriculum ────────────
+/**
+ * How sure the desk must be before it answers by itself. Higher than the agent's bar on purpose: the desk answers
+ * before his memory is read, so a loose match must not take the place of a better answer — a question that only
+ * brushes a lesson (one shared word, «ايه هي الطاقة الشمسية في الفضاء» and the space-security lesson) is left to
+ * the agent's full weighing.
+ */
+export const SCIENCE_DESK_BAR = 0.7;
+interface ScienceHitLike { lesson: ScienceLesson; relevance: number }
+export interface ScienceDeskAnswer {
+  /** The ready answer (the reviewed lesson, its boundary when it has one, and where it comes from). */
+  answer: string;
+  lesson: ScienceLesson;
+  relevance: number;
+  /** The other lessons the index found close, offered as follow-ups. */
+  related: ScienceLesson[];
+}
+/**
+ * «مكتب الاستعلام السريع»: a visitor's science question answered in one index lookup — no engine, no network and
+ * no scan of his memory. The question's own wording answers in one map hit; anything else is scored against the
+ * few lessons that share a word with it. Below the bar he says nothing (the agent, the library and the researcher
+ * are still there, and he never guesses).
+ */
+export function scienceDesk(question: string, lang: string, options: { bar?: number; lessons?: ScienceLesson[]; field?: FieldId } = {}): ScienceDeskAnswer | undefined {
+  // The curriculum is written, reviewed and bounded in Arabic: another language gets the expert's own answer.
+  if (lang !== 'ar') return undefined;
+  const asked = question.trim();
+  if (normalizeQuestion(asked).length < 6 || isTimeBound(asked) || isPersonal(asked)) return undefined;
+  const index = scienceIndexFor(options.lessons);
+  const bar = options.bar ?? SCIENCE_DESK_BAR;
+  const field = options.field ?? fieldsOf(asked)[0]?.field;
+  const exact = scienceExact(index, asked);
+  // One lookup: the taught wordings are a map hit, everything else is scored once and kept for the next time.
+  const hits = scienceHits(index, asked, { field, limit: 4 });
+  const best: ScienceHitLike | undefined = exact ? { lesson: exact, relevance: 1 } : hits[0];
+  if (!best || best.relevance < bar) return undefined;
+  // «الرد المنطقي»: the desk only answers the kind of question that was asked, about what was asked — otherwise it
+  // stays silent and the agent weighs every source with the same check (a «مين» needs a person, a «كام» a number).
+  const candidate = { kind: 'expert', title: best.lesson.titleAr, text: best.lesson.answerAr,
+    about: `${best.lesson.questionAr} ${best.lesson.keywords.join(' ')}` };
+  const core = coreSubjects(asked);
+  if (!fitsIntent(intentOf(asked), candidate) || coverage(core, `${candidate.title} ${candidate.about} ${candidate.text}`) < 0.5) return undefined;
+  const related = hits.filter((h) => h.lesson.id !== best.lesson.id && h.relevance >= 0.35).slice(0, 2).map((h) => h.lesson);
+  const trackTitle = TRACKS[best.lesson.track]?.titleAr || expertOf(best.lesson.track).nameAr;
+  // A medical or veterinary lesson always carries its limit: general education, never a diagnosis or a dose.
+  const boundary = best.lesson.track === 'human-medicine' || best.lesson.track === 'veterinary'
+    ? `\n\n> ${TRACKS[best.lesson.track]?.boundaryAr || ''}`.trimEnd() : '';
+  const more = related.length ? ` وعندي كمان عن: ${related.map((l) => l.titleAr).join('، ')}.` : '';
+  const answer = `**${best.lesson.titleAr}**\n\n${best.lesson.answerAr}${boundary}`
+    + `\n\n_🎓 من علوم شاهين — مسار «${trackTitle}»، درس مكتوب ومراجَع عندي.${more}_`;
+  return { answer, lesson: best.lesson, relevance: best.relevance, related };
+}
+
 // ── 3. Gather and weigh ──────────────────────────────────────────────────────────────────────────────────────
 export interface AgentSources {
   lessons: LibraryLesson[];
@@ -159,22 +215,58 @@ export interface AgentSources {
   /** The school's reviewed science lessons (default: the curriculum shipped with the site). */
   science?: ScienceLesson[];
 }
-export interface Evidence { kind: SourceKind; id: string; title: string; text: string; relevance: number; trust: number; field?: FieldId }
+export interface Evidence {
+  kind: SourceKind; id: string; title: string; text: string; relevance: number; trust: number; field?: FieldId;
+  /** What the source is about beyond its title (a lesson's own question and keywords), for the logic check. */
+  about?: string;
+}
 /** How much each source is trusted (a reviewed lesson beats an old answer; a visitor's old answer is the weakest). */
-export const TRUST: Record<SourceKind, number> = { expert: 1, material: 0.95, lesson: 0.9, memory: 0.6, research: 0.7 };
+export const TRUST: Record<SourceKind, number> = { expert: 1, material: 0.95, lesson: 0.9, memory: 0.6, research: 0.7, reasoning: 1 };
 const MEMORY_TRUST: Record<MemoryEntry['source'], number> = { seed: 0.9, study: 0.85, chat: 0.6, probe: 0.5 };
 /** The least relevance a source needs before it may answer. */
-export const BAR: Record<SourceKind, number> = { expert: 0.42, material: 0.6, lesson: 0.45, memory: 0.55, research: 0 };
+export const BAR: Record<SourceKind, number> = { expert: 0.42, material: 0.6, lesson: 0.45, memory: 0.55, research: 0, reasoning: 0 };
 
 const SCIENCE_ALL = () => SCIENCE_TRACKS.flatMap((t) => t.lessons);
 const words = (s: string) => topicWords(s);
+
+/* ── «فهرس علوم شاهين»: the curriculum compiled once, so a question never walks all 73 lessons ──────────────── */
+const FIELD_WORDS = Object.fromEntries(SCIENCE_TRACKS.map((t) => [t.id, expertOf(t.id).words])) as ScienceFieldWords;
+let curriculumIndex: ScienceIndex | undefined;
+/** The school's curriculum as a read-only index (built on first use, a few milliseconds, then reused everywhere). */
+export const scienceCurriculum = (): ScienceIndex => (curriculumIndex ??= buildScienceIndex(SCIENCE_ALL(), FIELD_WORDS));
+const looseIndexes = new WeakMap<ScienceLesson[], ScienceIndex>();
+/** The index of another lesson set (the school's own studies, a test's curriculum, an admin preview). */
+export function scienceIndexFor(lessons?: ScienceLesson[]): ScienceIndex {
+  if (!lessons) return scienceCurriculum();
+  const known = looseIndexes.get(lessons);
+  if (known) return known;
+  const built = buildScienceIndex(lessons, FIELD_WORDS);
+  looseIndexes.set(lessons, built);
+  return built;
+}
+
 /** A science lesson against the question: the question's subjects found in the lesson's title, wording and keywords. */
 export function scoreLesson(lesson: ScienceLesson, question: string, field?: FieldId): number {
+  const index = scienceCurriculum();
+  const doc = index.byId.get(lesson.id);
+  if (doc && doc.lesson === lesson) {
+    return scienceHits(index, question, { field }).find((hit) => hit.lesson.id === lesson.id)?.relevance ?? 0;
+  }
+  return scoreLessonNaive(lesson, question, field);
+}
+
+/**
+ * The reviewed reference formula, kept as written (a lesson outside the index, and the tests' yardstick for the
+ * index). It re-normalises the lesson's text on every call — exactly what the index exists to avoid.
+ */
+export function scoreLessonNaive(lesson: ScienceLesson, question: string, field?: FieldId): number {
   const asked = words(question);
   if (!asked.length) return 0;
   const own = new Set(words(`${lesson.titleAr} ${lesson.questionAr} ${lesson.keywords.join(' ')}`));
   const title = new Set(words(`${lesson.titleAr} ${lesson.keywords.join(' ')}`));
-  const found = (w: string, set: Set<string>) => set.has(w) || (w.length >= 4 && [...set].some((x) => x.length >= 4 && (x.startsWith(w) || w.startsWith(x))));
+  // «بتتغذى» is «تغذية» once the dialect's verb prefix is off.
+  const found = (w: string, set: Set<string>) => set.has(w) || (w.length >= 4 && [...set].some((x) => x.length >= 4 && (x.startsWith(w) || w.startsWith(x))))
+    || (/^[به][يتن]/u.test(w) && [...set].some((x) => near(stem(x), stem(w))));
   // A word of the lesson's field («نووي» for a nuclear lesson) counts half: it says the field, not the topic.
   const fieldWords = expertOf(lesson.track).words;
   const direct = asked.filter((w) => found(w, own));
@@ -193,17 +285,21 @@ export function scoreLesson(lesson: ScienceLesson, question: string, field?: Fie
 export function gather(u: AgentUnderstanding, src: AgentSources, lang: string, question = u.asked): Evidence[] {
   const out: Evidence[] = [];
   const field = u.fields[0]?.field;
-  // The experts' reviewed lessons (Arabic curriculum).
+  // The experts' reviewed lessons (Arabic curriculum): from the index, only the lessons that share a word with it.
   if (lang === 'ar') {
-    for (const l of src.science || SCIENCE_ALL()) {
-      const relevance = scoreLesson(l, question, field);
-      if (relevance > 0.2) out.push({ kind: 'expert', id: l.id, title: l.titleAr, text: l.answerAr, relevance, trust: TRUST.expert, field: l.track });
+    for (const hit of scienceHits(scienceIndexFor(src.science), question, { field })) {
+      if (hit.relevance <= 0.2) continue;
+      const l = hit.lesson;
+      out.push({ kind: 'expert', id: l.id, title: l.titleAr, text: l.answerAr, relevance: hit.relevance, trust: TRUST.expert, field: l.track, about: `${l.questionAr} ${l.keywords.join(' ')}` });
     }
   }
   // His library: lessons, materials, and the closest old answers (searchLibrary weighs them on its own scale).
+  const core = coreSubjects(question);
   for (const r of searchLibrary({ lessons: src.lessons, materials: src.materials, memory: src.memory }, question, lang)) {
     if (r.kind === 'memory') continue;
-    const relevance = r.kind === 'lesson' ? Math.min(1, r.score / 6) : r.score;
+    // A lesson whose title names everything asked («المسك والعنبر…» for «ايه هو المسك؟») is about it, however short the question.
+    const named = r.kind === 'lesson' && core.length > 0 && core.length <= 2 && coverage(core, r.title) === 1;
+    const relevance = r.kind === 'lesson' ? Math.max(Math.min(1, r.score / 6), named ? 0.7 : 0) : r.score;
     out.push({ kind: r.kind, id: r.id, title: r.title, text: r.kind === 'lesson' ? lessonExcerpt(r.text, words(question)) : r.text, relevance, trust: TRUST[r.kind] });
   }
   // Old answers: one source among the others, trusted by where they came from, a little less as they age.
@@ -240,8 +336,8 @@ export interface AgentResult {
 const score = (e: Evidence) => e.relevance * e.trust;
 export const confidenceOf = (best?: Evidence): Confidence => (!best ? 'low' : score(best) >= 0.6 ? 'high' : score(best) >= 0.4 ? 'medium' : 'low');
 const clip = (text: string, max: number) => (text.length <= max ? text : `${text.slice(0, max - 1).replace(/\s+\S*$/, '')}…`);
-const SOURCE_AR: Record<SourceKind, string> = { expert: 'دروس الخبير المراجَعة', lesson: 'مكتبة شاهين', material: 'موسوعة المواد', memory: 'إجابات محفوظة', research: 'مصادر مفتوحة' };
-const SOURCE_EN: Record<SourceKind, string> = { expert: 'the expert’s reviewed lessons', lesson: 'Shaheen’s library', material: 'the materials encyclopaedia', memory: 'saved answers', research: 'open sources' };
+const SOURCE_AR: Record<SourceKind, string> = { expert: 'دروس الخبير المراجَعة', lesson: 'مكتبة شاهين', material: 'موسوعة المواد', memory: 'إجابات محفوظة', research: 'مصادر مفتوحة', reasoning: 'التحليل المنطقي خطوة بخطوة' };
+const SOURCE_EN: Record<SourceKind, string> = { expert: 'the expert’s reviewed lessons', lesson: 'Shaheen’s library', material: 'the materials encyclopaedia', memory: 'saved answers', research: 'open sources', reasoning: 'step-by-step logical analysis' };
 
 function body(e: Evidence): string {
   if (e.kind === 'memory') return e.text;
@@ -277,22 +373,58 @@ export function clarifyAnswer(lang: string): string {
     : 'I want to understand your question correctly first 🙂 Could you add a little detail — what exactly, and in which field (perfume, chemistry, medicine, space…)?';
 }
 
+const LOWER: Record<Confidence, Confidence> = { high: 'medium', medium: 'low', low: 'low' };
+/** The text a candidate is checked against: an old answer by the question it answered, the rest by what they say. */
+const checkedText = (e: Evidence) => (e.kind === 'memory' ? e.title : `${e.title} ${e.about || ''} ${e.text}`);
+/**
+ * «الرد المنطقي» (shaheenReasoning.ts): before an answer goes out it must be about what was asked (the question's
+ * core subjects) and the kind of answer asked for (a «مين» needs a person, a «كام» a number, a «ليه» a reason, a
+ * how-to steps rather than a card). A candidate that fails is set aside; when none passes, he says he is not sure.
+ */
+export function checkEvidence(u: AgentUnderstanding, ev: Evidence[], trace: string[] = []): { best?: Evidence; confidence: Confidence; pool: Evidence[]; intent: Intent } {
+  const intent = intentOf(u.asked);
+  const core = coreSubjects(u.asked);
+  const pool = ev.filter((e) => coverage(core, checkedText(e)) >= 0.5);
+  if (pool.length < ev.length) trace.push(`checked: ${ev.length - pool.length} off-topic source(s) set aside (core: ${core.slice(0, 5).join(' ') || '-'})`);
+  // A family asked about by name («ايه هو المسك؟»): the lesson about the family, not one material's card.
+  if (intent === 'define' && pool[0]?.kind === 'material') {
+    const family = pool.find((e) => (e.kind === 'lesson' || e.kind === 'expert') && core.length > 0 && coverage(core, e.title) === 1 && confidenceOf(e) !== 'low');
+    if (family) { pool.splice(pool.indexOf(family), 1); pool.unshift(family); trace.push(`checked: the lesson on the whole family comes before a single material`); }
+  }
+  const fitting = pool.find((e) => fitsIntent(intent, e) && confidenceOf(e) !== 'low');
+  if (fitting) {
+    if (fitting !== pool[0]) trace.push(`checked: ${pool[0].kind}:${pool[0].id} does not answer a «${intent}» question — ${fitting.kind}:${fitting.id} does`);
+    return { best: fitting, confidence: confidenceOf(fitting), pool, intent };
+  }
+  const best = pool[0];
+  if (!best) return { confidence: 'low', pool, intent };
+  // Nothing of the kind asked for: a who/when/how-many answered beside the point is no answer; the rest go down a level.
+  const confidence = STRICT_INTENT.has(intent) ? 'low' : LOWER[confidenceOf(best)];
+  trace.push(`checked: no source answers the «${intent}» asked — confidence lowered to ${confidence}`);
+  return { best, confidence, pool, intent };
+}
+
 function decide(u: AgentUnderstanding, p: AgentPlan, ev: Evidence[], lang: string, trace: string[]): Omit<AgentResult, 'understanding' | 'trace'> {
   const ar = lang === 'ar' || lang === 'fa';
-  const best = ev[0];
-  const confidence = confidenceOf(best);
+  const { best, confidence, pool, intent } = checkEvidence(u, ev, trace);
   if (!best || confidence === 'low') return { confidence: 'low', expert: p.expert, used: [], refer: true };
   // The expert who answered is the one whose lesson won (a chemistry question answered by a medicine lesson says so).
   const expert = best.field ? expertOf(best.field) : p.expert;
-  // A second source adds what the first lacks (a different kind, relevant enough, not the same text).
-  const second = ev.find((e) => e !== best && e.kind !== best.kind && score(e) >= 0.45 && similarity(e.text.slice(0, 400), best.text.slice(0, 400)) < 0.6);
-  let text = body(best);
+  // A second source adds what the first lacks: a different kind, about the same question and field, not the same text.
+  const core = coreSubjects(u.asked);
+  const field = best.field || u.fields[0]?.field;
+  const second = pool.find((e) => e !== best && e.kind !== best.kind && score(e) >= 0.45 && coverage(core, checkedText(e)) >= 0.67
+    && fitsIntent(intent, e) && (!e.field || !field || e.field === field) && similarity(e.text.slice(0, 400), best.text.slice(0, 400)) < 0.6);
+  // The answer opens with the sentence that answers the question, when the source does not already start with it.
+  // (Prose sources only: a sentence picked out of an old answer's bullet list would pass one cause off as the summary.)
+  const lead = (best.kind === 'expert' || best.kind === 'lesson') && ['why', 'who', 'when', 'count', 'yesno', 'compare'].includes(intent) ? keySentence(best.text, u.asked) : undefined;
+  let text = (lead ? `${ar ? '**باختصار:**' : '**In short:**'} ${lead}.\n\n` : '') + body(best);
   if (second) text += `\n\n${ar ? `ومن ${SOURCE_AR[second.kind]}` : `And from ${SOURCE_EN[second.kind]}`}${second.kind === 'memory' ? '' : ` (${clip(second.title, 70)})`}:\n${clip(second.text, 500)}`;
   if (expert.boundaryAr && ar && (expert.field === 'human-medicine' || expert.field === 'veterinary')) text += `\n\n> ${expert.boundaryAr}`;
   const used = [best.kind, ...(second ? [second.kind] : [])];
   // Only an old answer, or a medium match: answered, and the expert still studies it for a better one.
   const refer = (best.kind === 'memory' && best.trust < 0.8) || confidence === 'medium';
-  trace.push(`decided: ${best.kind}:${best.id} (${score(best).toFixed(2)}, ${confidence})${second ? ` + ${second.kind}:${second.id}` : ''}`);
+  trace.push(`decided: ${best.kind}:${best.id} (${score(best).toFixed(2)}, ${confidence})${second ? ` + ${second.kind}:${second.id}` : ''}${lead ? ' with a lead line' : ''}`);
   return { answer: text, confidence, expert, used, refer };
 }
 
@@ -320,6 +452,14 @@ export async function runAgent(question: string, lang: string, ctx: {
   }
   if (medicalAdvice(u)) {
     return { answer: u.note + medicalAnswer(lang, p.expert), confidence: 'high', expert: p.expert, understanding: u, used: [], refer: false, trace: [...trace, 'personal treatment/dose question — general guidance and the doctor, never a prescription'] };
+  }
+  // What logic alone answers (a syllogism, an «if … then», «فاضل كام؟»): solved step by step by the logic expert.
+  // The question as typed comes first — the spelling reader may take a plain word for a field term («فاضل» → «تفاضل»).
+  const solved = reason(question, lang) || (u.asked !== question ? reason(u.asked, lang) : undefined);
+  if (solved) {
+    const logic = expertOf('logic');
+    trace.push(`reasoned: ${solved.kind} in ${solved.steps.length} steps`);
+    return { answer: solved.answer + agentFooter(lang, logic, ['reasoning'], false), confidence: 'high', expert: logic, understanding: u, used: ['reasoning'], refer: false, trace };
   }
   if (u.vague) return { answer: clarifyAnswer(lang), clarify: true, confidence: 'low', expert: p.expert, understanding: u, used: [], refer: false, trace: [...trace, 'too vague — asked back'] };
 
