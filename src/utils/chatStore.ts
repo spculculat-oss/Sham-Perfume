@@ -94,8 +94,8 @@ export function catalogReply(picks: CatalogPick[], lang: SupportedLanguage, link
     return `- ${url ? `[${name.replace(/[[\]]/g, '')}](${url})` : `**${name}**`}${why ? ` — ${why}` : ''}`;
   });
   return ar
-    ? `الخبير مش متاح دلوقتي، فدي ترشيحات تلقائية من منتجات المتجر على حسب كلامك:\n\n${lines.join('\n')}\n\n_ده ترشيح تلقائي من فلتر المتجر، مش رأي الخبير — راجع تفاصيل المنتج، واسأل تاني بعد شوية لنصيحة أدق._`
-    : `The expert is unavailable right now, so here are automatic picks from the store's products based on your words:\n\n${lines.join('\n')}\n\n_This is an automatic pick from the store filter, not the expert's opinion — check the product details, and ask again a little later for finer advice._`;
+    ? `دي ترشيحات من منتجات المتجر على حسب كلامك:\n\n${lines.join('\n')}\n\n_ترشيح من فلتر المتجر على حسب كلامك — راجع تفاصيل كل منتج قبل ما تختار._`
+    : `Here are picks from the store's products based on your words:\n\n${lines.join('\n')}\n\n_Picked by the store filter from your words — check each product's details before choosing._`;
 }
 
 /** Default: the static catalogue the store page uses (loaded only when needed). */
@@ -267,6 +267,21 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
             }
           } catch (fastError) { error = fastError instanceof ApiError ? error : fastError; }
           if (generation !== token) return false;
+        }
+        // «مصمم شاهين الذاتي»: a design request is answered by his own formula designer, right here in the browser.
+        if (canAnswerFromMemory(error)) {
+          const last = current.messages[current.messages.length - 1];
+          const previous = last?.role === 'assistant' && last.text?.includes('sham-formula')
+            ? [...current.messages].reverse().find((m) => m.role === 'user')?.text : undefined;
+          const design = await import('./shaheenDesigner').then((d) => d.designAnswer(text, options.language, previous)).catch(() => undefined);
+          if (generation !== token) return false;
+          if (design) {
+            publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
+              id: id('bot'), role: 'assistant', text: design, timestamp: timestamp(),
+              aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' },
+            }] });
+            return true;
+          }
         }
         let remembered = canAnswerFromMemory(error) ? await memory.recall(text, options.language).catch(() => undefined) : undefined;
         if (generation !== token) return false;

@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       action:
-        description: "الأمر: pause = وقف روبوت، resume = رجّعه، freeze = وقف كل الروبوتات، unfreeze = رجّعهم، safe_auto = التصليح الصغير تلقائي، approve_all = كل تغيير بموافقتي"
+        description: "الأمر: pause = وقف روبوت، resume = رجّعه، freeze = وقف كل الروبوتات، unfreeze = رجّعهم، safe_auto = التصليح الصغير تلقائي، approve_all = كل تغيير بموافقتي، self_reliant = شاهين يعتمد على نفسه من غير منصات ذكاء اصطناعي، platforms_on = اسمح بالمنصات"
         required: true
         type: choice
         options:
@@ -22,6 +22,8 @@ on:
           - unfreeze
           - safe_auto
           - approve_all
+          - self_reliant
+          - platforms_on
       bot:
         description: "الروبوت (للوقف والتشغيل بس)"
         required: false
