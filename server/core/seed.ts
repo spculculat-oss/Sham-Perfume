@@ -5,7 +5,35 @@
  */
 import { withShaheenDefaults } from '../config/shaheen';
 import { defaultCouncil } from './council';
+import { platformKnowledge } from './platformGuide';
+import { storeKnowledge } from './storeGuide';
 import type { CoreSettings, KnowledgeDoc, Product, ServiceDef } from './types';
+
+/**
+ * Version of the built-in knowledge seed. Bump it when `defaultKnowledge()` gains documents the
+ * platform already runs: `Repository.ready()` then adds the missing ones to existing stores without
+ * touching a single document the merchant edited or deleted.
+ */
+export const KNOWLEDGE_SEED_VERSION = 3;
+
+/** Which seed version introduced a document: 1 = the original seed, 2 = «دليل المنصة», 3 = «دليل المتجر» و«تخصصات شاهين». */
+export function knowledgeDocVersion(id: string): number {
+  if (id.startsWith('kb-platform-')) return 2;
+  if (id.startsWith('kb-store-') || id.startsWith('kb-shaheen-')) return 3;
+  return 1;
+}
+
+/**
+ * Only the documents introduced AFTER `from` — used to upgrade an existing store without touching
+ * (or resurrecting) anything the merchant already has. `from = 1` means a store seeded before the
+ * platform guide existed.
+ */
+export function knowledgeSeedAdditions(from: number): KnowledgeDoc[] {
+  return defaultKnowledge().filter((doc) => {
+    const version = knowledgeDocVersion(doc.id);
+    return version > from && version <= KNOWLEDGE_SEED_VERSION;
+  });
+}
 
 const now = () => new Date().toISOString();
 
@@ -123,6 +151,11 @@ export function defaultKnowledge(): KnowledgeDoc[] {
     doc('kb-privacy', 'الخصوصية وبيانات المحادثات',
       'يحفظ مساعد شام محادثات الخدمة وطلبات العملاء على خادم شام لمتابعتها من الإدارة. لا تكتب كلمات مرور أو بيانات بطاقات بنكية في المحادثة. يمكنك طلب حذف بياناتك عبر خدمة الدعم.',
       ['خصوصيه', 'بيانات', 'privacy'], 'support'),
+    // «دليل المنصة»: كل أداة وميزة جديدة في المنصة، من نفس ملف server/core/platformGuide.ts
+    // اللي بيستخدمه الراوتر وبرومبت النموذج — فالمساعد يعرفها بالاسم من غير أي مفتاح ذكاء اصطناعي.
+    ...platformKnowledge(),
+    // «دليل المتجر»: الشراء والدفع والشحن والتتبع والإرجاع وسوق التجار من server/core/storeGuide.ts.
+    ...storeKnowledge(),
   ];
 }
 
@@ -141,6 +174,7 @@ export function defaultSettings(): CoreSettings & { id: string } {
     currency: 'EGP',
     handoffContact: '',
     businessHours: '',
+    knowledgeSeedVersion: KNOWLEDGE_SEED_VERSION,
     updatedAt: now(),
   };
 }

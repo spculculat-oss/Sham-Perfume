@@ -9,6 +9,9 @@ import express from 'express';
 import { FinanceService } from '../finance/service';
 import { createFinanceRouter } from '../finance/router';
 import { createHash, timingSafeEqual } from 'node:crypto';
+import { reviewSpecialtiesCached } from './specialtyReview';
+import { reviewPagesCached } from './pageReview';
+import { catalogView } from './catalog';
 import { Repository, ValidationError, publicView } from './repository';
 import { ShaheenMemory } from './memory';
 import { AssistantError, Orchestrator, publicEngine, validateChatInput, type ChatOutput, type StreamEvent } from './orchestrator';
@@ -184,9 +187,14 @@ export function createShamCore(options: CoreOptions = {}) {
     });
   }));
 
+  // One catalog for every client: the merchant's own rows when they exist, the real storefront otherwise
+  // (server/core/catalog.ts) — a store that sells 1161 products never reports an empty catalog here.
   assistant.get('/products', wrap(async (_req, res) => {
-    const products = await repo.products();
-    res.json({ products: products.map(({ id, sku, nameAr, nameEn, category, price, currency, stock, unit, descriptionAr, descriptionEn, demo }) => ({ id, sku, nameAr, nameEn, category, price, currency, stock, unit, descriptionAr, descriptionEn, demo })) });
+    const view = await catalogView(repo, { env });
+    res.json({
+      source: view.source,
+      products: view.products.map(({ id, sku, nameAr, nameEn, category, price, currency, stock, unit, descriptionAr, descriptionEn, demo }) => ({ id, sku, nameAr, nameEn, category, price, currency, stock, unit, descriptionAr, descriptionEn, demo })),
+    });
   }));
 
   assistant.post('/requests', wrap(async (req, res) => {
@@ -242,6 +250,16 @@ export function createShamCore(options: CoreOptions = {}) {
   // What this server learned (questions + answers, no visitor data): merged into
   // src/data/live/shaheen-memory.json by scripts/shaheen-memory every two hours.
   admin.get('/shaheen-memory', wrap(async (_req, res) => { res.json(await memory.exported()); }));
+
+  /** «مراجعة التخصصات»: هل المساعد عارف المتجر، وعارف حدوده من شاهين؟ (كاش دقيقة، ?fresh=1 لإعادة التشغيل) */
+  admin.get('/assistant/specialties', wrap(async (req, res) => {
+    res.json(await reviewSpecialtiesCached(repo, { env }, req.query.fresh === '1'));
+  }));
+
+  /** «مراجعة الصفحات»: هل رد المساعد منطقي وهو واقف في كل صفحة؟ (كاش دقيقة، ?fresh=1 لإعادة التشغيل) */
+  admin.get('/assistant/pages', wrap(async (req, res) => {
+    res.json(await reviewPagesCached(repo, { env }, req.query.fresh === '1'));
+  }));
 
   admin.get('/overview', wrap(async (_req, res) => {
     const [requests, conversations, products, knowledge, services, settings, gaps] = await Promise.all([

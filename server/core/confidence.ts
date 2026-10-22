@@ -35,6 +35,8 @@ export interface DisambiguationPrompt {
 export interface RoutingDecision {
   intent: string;
   serviceId?: string;
+  /** Which platform feature the visitor asked about (see platformGuide.ts); absent = the whole map. */
+  platformId?: string;
   confidence: number;
   entities: Record<string, string | number | undefined>;
   scores: Record<string, number>;

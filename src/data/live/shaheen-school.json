@@ -1,15 +1,15 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T18:45:26.377Z",
+ "updatedAt": "2026-10-22T19:29:42.186Z",
  "reliance": {
-  "score": 45,
-  "covered": 542,
+  "score": 89,
+  "covered": 1072,
   "total": 1206,
-  "fromMemory": 542,
-  "fromLibrary": 596,
+  "fromMemory": 1072,
+  "fromLibrary": 71,
   "byLang": {
    "ar": {
-    "covered": 521,
+    "covered": 1051,
     "total": 1185
    },
    "en": {
@@ -18,9 +18,21 @@
    }
   }
  },
- "studiedTotal": 137,
- "selfTaughtTotal": 319,
+ "studiedTotal": 142,
+ "selfTaughtTotal": 819,
  "history": [
+  {
+   "at": "2026-10-22T19:29:42.186Z",
+   "score": 89,
+   "studied": 250,
+   "mode": "self"
+  },
+  {
+   "at": "2026-10-22T19:06:30.385Z",
+   "score": 67,
+   "studied": 255,
+   "mode": "local"
+  },
   {
    "at": "2026-10-22T18:45:26.377Z",
    "score": 45,
@@ -294,6 +306,36 @@
  ],
  "lastStudied": [
   {
+   "q": "ايه هو الاحتكاك وفوايده؟",
+   "lang": "ar",
+   "at": "2026-10-22T19:06:30.385Z",
+   "variants": 4
+  },
+  {
+   "q": "ازاي الليزر بيشتغل؟",
+   "lang": "ar",
+   "at": "2026-10-22T19:06:30.385Z",
+   "variants": 4
+  },
+  {
+   "q": "ازاي بيتتبع انتشار الأوبئة؟",
+   "lang": "ar",
+   "at": "2026-10-22T19:06:30.385Z",
+   "variants": 0
+  },
+  {
+   "q": "ازاي العزل الصحي بيقلل انتشار العدوى؟",
+   "lang": "ar",
+   "at": "2026-10-22T19:06:30.385Z",
+   "variants": 4
+  },
+  {
+   "q": "ازاي بيتحفظ الوقود النووي المستهلك بأمان؟",
+   "lang": "ar",
+   "at": "2026-10-22T19:06:30.385Z",
+   "variants": 4
+  },
+  {
    "q": "ليه تنظيم الترددات مهم للموبايل والراديو؟",
    "lang": "ar",
    "at": "2026-10-22T18:45:26.377Z",
@@ -382,36 +424,6 @@
    "lang": "ar",
    "at": "2026-10-22T18:11:55.359Z",
    "variants": 4
-  },
-  {
-   "q": "ازاي الخلايا الشمسية بتحول الضوء لكهرباء؟",
-   "lang": "ar",
-   "at": "2026-10-22T17:15:20.685Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه الفرق بين المعالج وكارت الشاشة؟",
-   "lang": "ar",
-   "at": "2026-10-22T17:15:20.685Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه هو مفهوم الصحة الواحدة؟",
-   "lang": "ar",
-   "at": "2026-10-22T17:15:20.685Z",
-   "variants": 0
-  },
-  {
-   "q": "ازاي الأشعة السينية بتستخدم في الطب؟",
-   "lang": "ar",
-   "at": "2026-10-22T17:15:20.685Z",
-   "variants": 4
-  },
-  {
-   "q": "ازاي شبكات الموبايل بتنقل المكالمات بين الأبراج؟",
-   "lang": "ar",
-   "at": "2026-10-22T17:15:20.685Z",
-   "variants": 4
   }
  ],
  "pending": [
@@ -481,17 +493,17 @@
   "aiReadings": 0,
   "localReadings": 25
  },
- "localTaughtTotal": 80,
+ "localTaughtTotal": 85,
  "spelling": {
-  "at": "2026-10-22T18:45:26.377Z",
-  "tried": 745,
-  "understood": 701,
+  "at": "2026-10-22T19:29:42.186Z",
+  "tried": 744,
+  "understood": 697,
   "score": 94,
   "misses": [
    "طبييه → طبيه (طبيعيه)",
    "اخطه → احطه (اخلطه)",
    "مثبات → ثبات (مثبتات)",
-   "لزججه → لزججه (لزجاجه)",
+   "لزججه → لزوجه (لزجاجه)",
    "ايه العطر المنسب للشغل؟ → ايه العطر المنصب للشغل؟"
   ],
   "questions": {
@@ -500,7 +512,7 @@
   }
  },
  "practice": {
-  "at": "2026-10-22T18:45:26.377Z",
+  "at": "2026-10-22T19:29:42.186Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -599,9 +611,9 @@
  },
  "tracks": {
   "perfume": {
-   "covered": 176,
+   "covered": 177,
    "total": 177,
-   "score": 99
+   "score": 100
   },
   "prog_langs": {
    "covered": 106,
@@ -629,337 +641,337 @@
    "score": 100
   },
   "ai_science": {
-   "covered": 56,
+   "covered": 63,
    "total": 63,
-   "score": 89
+   "score": 100
   },
   "security": {
-   "covered": 3,
+   "covered": 31,
    "total": 31,
-   "score": 10
+   "score": 100
   },
   "ethical_hacking": {
-   "covered": 1,
+   "covered": 22,
    "total": 22,
-   "score": 5
+   "score": 100
   },
   "threat_analysis": {
-   "covered": 2,
+   "covered": 18,
    "total": 18,
-   "score": 11
+   "score": 100
   },
   "quantum": {
-   "covered": 1,
+   "covered": 17,
    "total": 17,
-   "score": 6
+   "score": 100
   },
   "ai_tools": {
-   "covered": 0,
+   "covered": 38,
    "total": 38,
-   "score": 0
+   "score": 100
   },
   "ai_projects": {
-   "covered": 0,
+   "covered": 22,
    "total": 22,
-   "score": 0
+   "score": 100
   },
   "it_sciences": {
-   "covered": 7,
+   "covered": 26,
    "total": 30,
-   "score": 23
+   "score": 87
   },
   "frontier": {
-   "covered": 1,
+   "covered": 20,
    "total": 20,
-   "score": 5
+   "score": 100
   },
   "chemistry": {
-   "covered": 10,
+   "covered": 24,
    "total": 28,
-   "score": 36
+   "score": 86
   },
   "physics": {
-   "covered": 7,
+   "covered": 29,
    "total": 36,
-   "score": 19
+   "score": 81
   },
   "math": {
-   "covered": 8,
+   "covered": 24,
    "total": 28,
-   "score": 29
+   "score": 86
   },
   "commerce": {
-   "covered": 0,
+   "covered": 22,
    "total": 22,
-   "score": 0
+   "score": 100
   },
   "law": {
-   "covered": 3,
+   "covered": 22,
    "total": 22,
-   "score": 14
+   "score": 100
   },
   "pr": {
-   "covered": 0,
+   "covered": 18,
    "total": 18,
-   "score": 0
+   "score": 100
   },
   "management": {
-   "covered": 0,
+   "covered": 20,
    "total": 20,
-   "score": 0
+   "score": 100
   },
   "history": {
-   "covered": 4,
+   "covered": 24,
    "total": 28,
-   "score": 14
+   "score": 86
   },
   "geography": {
-   "covered": 1,
+   "covered": 20,
    "total": 20,
-   "score": 5
+   "score": 100
   },
   "literature": {
-   "covered": 0,
+   "covered": 18,
    "total": 18,
-   "score": 0
+   "score": 100
   },
   "social": {
-   "covered": 0,
+   "covered": 18,
    "total": 18,
-   "score": 0
+   "score": 100
   },
   "psychology": {
-   "covered": 11,
+   "covered": 20,
    "total": 20,
-   "score": 55
+   "score": 100
   },
   "cyber_psych": {
-   "covered": 1,
+   "covered": 18,
    "total": 18,
-   "score": 6
+   "score": 100
   },
   "ux_psych": {
-   "covered": 1,
+   "covered": 18,
    "total": 18,
-   "score": 6
+   "score": 100
   },
   "biology": {
-   "covered": 12,
+   "covered": 30,
    "total": 36,
-   "score": 33
+   "score": 83
   },
   "medicine": {
-   "covered": 17,
+   "covered": 38,
    "total": 52,
-   "score": 33
+   "score": 73
   },
   "engineering": {
-   "covered": 9,
+   "covered": 31,
    "total": 38,
-   "score": 24
+   "score": 82
   },
   "earth_space": {
-   "covered": 11,
+   "covered": 26,
    "total": 34,
-   "score": 32
+   "score": 76
   },
   "education": {
-   "covered": 0,
+   "covered": 5,
    "total": 16,
-   "score": 0
+   "score": 31
   },
   "media_info": {
-   "covered": 0,
+   "covered": 2,
    "total": 16,
-   "score": 0
-  },
-  "sports": {
-   "covered": 1,
-   "total": 14,
-   "score": 7
-  },
-  "arts": {
-   "covered": 0,
-   "total": 16,
-   "score": 0
-  },
-  "religion": {
-   "covered": 3,
-   "total": 24,
    "score": 13
   },
-  "tourism_ir": {
+  "sports": {
    "covered": 2,
    "total": 14,
    "score": 14
+  },
+  "arts": {
+   "covered": 2,
+   "total": 16,
+   "score": 13
+  },
+  "religion": {
+   "covered": 10,
+   "total": 24,
+   "score": 42
+  },
+  "tourism_ir": {
+   "covered": 3,
+   "total": 14,
+   "score": 21
   }
  },
  "tools": {
-  "at": "2026-10-22T18:45:26.377Z",
+  "at": "2026-10-22T19:29:42.186Z",
   "items": [
    {
     "id": "finance_agent",
     "field": "المحاسبة",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال المحاسبة في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    },
    {
     "id": "contracts_agent",
     "field": "التعاقدات",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال التعاقدات في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    },
    {
     "id": "language_agent",
     "field": "الترجمة",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال الترجمة في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    },
    {
     "id": "shaheen_chat",
     "field": "المحادثة",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال المحادثة في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    },
    {
     "id": "sham_assistant",
     "field": "خدمة العملاء",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال خدمة العملاء في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    },
    {
     "id": "news_articles",
     "field": "الكتابة التثقيفية",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال الكتابة التثقيفية في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    },
    {
     "id": "news_bulletin",
     "field": "الصحافة",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال الصحافة في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    },
    {
     "id": "assistant_training",
     "field": "التدريب",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال التدريب في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    },
    {
     "id": "media",
     "field": "الوسائط",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال الوسائط في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    },
    {
     "id": "store_advisor",
     "field": "الاستشارة",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال الاستشارة في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    },
    {
     "id": "store_catalog",
     "field": "الكتالوج",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال الكتالوج في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    },
    {
     "id": "store_import",
     "field": "الاستيراد",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال الاستيراد في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    },
    {
     "id": "shaheen_school",
     "field": "التعليم",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال التعليم في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    },
    {
     "id": "seo_agent",
     "field": "السيو",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال السيو في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    },
    {
     "id": "shaheen_council",
     "field": "الاجتماعات",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال الاجتماعات في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    },
    {
     "id": "design_agent",
     "field": "التصميم",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال التصميم في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    },
    {
     "id": "admin_agent",
     "field": "الإدارة",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال الإدارة في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    },
    {
     "id": "owner_room",
     "field": "غرفة صاحب الموقع",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال غرفة صاحب الموقع في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    },
    {
     "id": "platform_owner_agent",
     "field": "التنفيذ والصيانة",
-    "covered": 0,
+    "covered": 2,
     "total": 2,
-    "score": 0,
-    "focus": "ايه مجال التنفيذ والصيانة في المنصة؟"
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
    }
   ]
  },
  "blocks": {
-  "at": "2026-10-22T18:45:26.377Z",
+  "at": "2026-10-22T19:29:42.186Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-23T00:45:26.377Z"
+    "next": "2026-10-23T01:29:42.186Z"
    },
    {
     "id": "site-care",
@@ -971,7 +983,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-23T06:45:26.377Z"
+    "next": "2026-10-23T07:29:42.186Z"
    }
   ]
  }

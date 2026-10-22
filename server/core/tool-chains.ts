@@ -14,6 +14,8 @@ export interface ChainExecutionContext {
   entities: Record<string, string | number | undefined>;
   service?: ServiceDef;
   lastRequestRef?: string;
+  /** Same environment the orchestrator runs with, so the storefront tools read one catalog. */
+  env?: Record<string, string | undefined>;
 }
 
 export interface ChainStepRecord {
@@ -66,18 +68,28 @@ export function buildPrimaryPlan(intent: string, ctx: ChainExecutionContext): Pl
       });
       break;
     case 'browse_products':
-      plan.push({ tool: 'search_catalog', args: { query: ctx.query, maxPrice: typeof ctx.entities.budget === 'number' ? ctx.entities.budget : undefined }, weight: 0.75 });
-      if (ctx.service) plan.push({ tool: 'prepare_request_form', args: { service: ctx.service }, weight: 0.25 });
+      plan.push({ tool: 'search_catalog', args: { query: ctx.query, maxPrice: typeof ctx.entities.budget === 'number' ? ctx.entities.budget : undefined }, weight: 0.6 });
+      // The storefront (products.json + Shaheen's enrichment) is what a visitor can actually buy; the catalog
+      // above is the merchant's own rows and may be empty.
+      plan.push({ tool: 'search_store', args: { query: ctx.query }, weight: 0.3 });
+      plan.push({ tool: 'store_overview', args: {}, weight: 0.1 });
+      if (ctx.service) plan.push({ tool: 'prepare_request_form', args: { service: ctx.service }, weight: 0.2 });
       break;
     case 'service_request':
       if (ctx.service?.kind === 'store') {
-        plan.push({ tool: 'search_catalog', args: { query: ctx.query, maxPrice: typeof ctx.entities.budget === 'number' ? ctx.entities.budget : undefined }, weight: 0.45 });
+        plan.push({ tool: 'search_catalog', args: { query: ctx.query, maxPrice: typeof ctx.entities.budget === 'number' ? ctx.entities.budget : undefined }, weight: 0.35 });
+        // The store form must list what the shop really sells: the live storefront next to the internal rows.
+        plan.push({ tool: 'search_store', args: { query: ctx.query }, weight: 0.3 });
       }
       if (ctx.service) plan.push({ tool: 'prepare_request_form', args: { service: ctx.service }, weight: 0.35 });
       plan.push({ tool: 'retrieve_knowledge', args: { query: ctx.query }, weight: 0.2 });
       break;
     case 'handoff':
       if (ctx.service) plan.push({ tool: 'prepare_request_form', args: { service: ctx.service }, weight: 1.0 });
+      break;
+    case 'platform_help':
+      // Search the guide with the feature's own name so the citation is the right page, not a stray match.
+      plan.push({ tool: 'retrieve_knowledge', args: { query: ctx.query }, weight: 1.0 });
       break;
     default:
       plan.push({ tool: 'retrieve_knowledge', args: { query: ctx.query }, weight: 1.0 });
@@ -116,8 +128,8 @@ export async function executeCognitiveChain(
   const runStep = async (call: PlannedToolCall, replanned = false) => {
     const t0 = Date.now();
     try {
-      const def = tools[call.tool] as unknown as { name: string; description: string; run: (a: unknown, c: { repo: Repository; message: string; lang: 'ar' | 'en' }) => Promise<ToolResult> };
-      const result = await runToolWithRetry(def, call.args, { repo, message: ctx.rawMessage, lang }, 1);
+      const def = tools[call.tool] as unknown as { name: string; description: string; run: (a: unknown, c: { repo: Repository; message: string; lang: 'ar' | 'en'; env?: Record<string, string | undefined> }) => Promise<ToolResult> };
+      const result = await runToolWithRetry(def, call.args, { repo, message: ctx.rawMessage, lang, env: ctx.env }, 1);
       const confidence = scoreToolResult(call.tool, result);
       steps.push({ tool: call.tool, result, confidence, ms: Date.now() - t0, ...(replanned ? { replanned: true } : {}) });
       weightSum += call.weight;
