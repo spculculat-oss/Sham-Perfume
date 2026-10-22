@@ -27,6 +27,8 @@ type Env = Record<string, string | undefined>;
 export const STORE_TAB = 'store';
 
 export interface StoreItem {
+  /** The merchant's product id (the product page route is `#product=<id>`). */
+  id: string;
   sku: string;
   nameAr: string;
   nameEn: string;
@@ -70,6 +72,7 @@ const clean = (v: unknown, max: number) => (typeof v === 'string' ? v.replace(/\
 /** Storefront product → the light record the assistant works with (no supplier prices, ever). */
 export function toItem(p: StoreProduct): StoreItem {
   return {
+    id: String(p.id),
     sku: p.sku,
     nameAr: p.name.ar || p.name.en, nameEn: p.name.en || p.name.ar,
     brand: clean(p.brand, 60), price: Number(p.price) || 0, currency: 'EGP',
@@ -117,16 +120,25 @@ function buildSnapshot(items: StoreItem[], updatedAt: string): StoreSnapshot {
   };
 }
 
-const GENERIC = new Set(['عطر', 'عطور', 'برفان', 'منتج', 'منتجات', 'متجر', 'عايز', 'عاوز', 'محتاج', 'ممكن', 'عندكم', 'فيه', 'في', 'من', 'علي', 'عن', 'ايه', 'إيه', 'ايه؟', 'كل', 'أي', 'اي', 'perfume', 'perfumes', 'product', 'products', 'want', 'need', 'looking', 'for', 'any', 'the', 'and', 'with', 'شام']);
+const GENERIC = new Set([
+  'عطر', 'عطور', 'برفان', 'منتج', 'منتجات', 'متجر', 'عايز', 'عاوز', 'محتاج', 'ممكن', 'عندكم', 'فيه', 'في', 'من', 'علي', 'عن', 'ايه', 'إيه', 'ايه؟', 'كل', 'أي', 'اي', 'شام',
+  // A question about prices in general is not a product name: it gets the real spread instead of four picks.
+  'سعر', 'سعره', 'اسعار', 'أسعار', 'بكام', 'كام', 'الاسعار', 'رخيص', 'ارخص', 'غالي', 'ميزانيه',
+  'perfume', 'perfumes', 'product', 'products', 'prices', 'price', 'cost', 'costs', 'cheap', 'cheapest', 'expensive', 'budget',
+  'want', 'need', 'looking', 'for', 'any', 'the', 'and', 'with', 'how', 'much', 'what', 'are', 'is', 'do', 'you', 'have',
+]);
 
 /**
  * Finds real products for a message. Uses the same wish parser as the store page (gender, family,
  * season, occasion, budget) plus whole-word matching on the enriched text — no invented item, and an
  * empty result stays empty.
  */
+/** Generic words compared as stems: «prices» → «pric», «المنتجات» → «منتج», so a price question stays generic. */
+const GENERIC_STEMS = new Set([...GENERIC].flatMap((w) => tokenize(w)));
+
 export function findStorefront(items: StoreItem[], message: string, limit = 4): { picks: StoreItem[]; matched: boolean } {
   const wish = parseWish(message);
-  const words = [...new Set(tokenize(message))].filter((w) => !GENERIC.has(w));
+  const words = [...new Set(tokenize(message))].filter((w) => !GENERIC_STEMS.has(w) && !GENERIC.has(w));
   const scored: { item: StoreItem; score: number }[] = [];
   for (const item of items) {
     let score = 0;
@@ -144,6 +156,37 @@ export function findStorefront(items: StoreItem[], message: string, limit = 4): 
   }
   const picks = scored.sort((a, b) => b.score - a.score || a.item.price - b.item.price).slice(0, limit).map((s) => s.item);
   return { picks, matched: picks.length > 0 && (words.length > 0 || wish.families.length > 0 || Boolean(wish.gender) || Boolean(wish.brands.length)) };
+}
+
+/** The product a visitor has open (a product page hash carries the merchant id). */
+export function findProductById(items: StoreItem[], id?: string): StoreItem | undefined {
+  if (!id) return undefined;
+  const clean = String(id).trim();
+  return items.find((i) => String(i.id) === clean) || items.find((i) => String(i.sku) === clean);
+}
+
+/**
+ * The real price picture of the store, spread across the range: the cheapest available, something in the
+ * middle and one near the top — so a vague «إيه أسعار المنتجات؟» gets an honest, useful answer instead of
+ * four arbitrary items (which used to be the most expensive ones, because that is the catalog order).
+ */
+export function priceDigest(items: StoreItem[], limit = 4): { min: number; max: number; picks: StoreItem[] } {
+  const available = items.filter((i) => i.price > 0 && i.inStock).sort((a, b) => a.price - b.price);
+  const pool = available.length ? available : items.filter((i) => i.price > 0).sort((a, b) => a.price - b.price);
+  if (!pool.length) return { min: 0, max: 0, picks: [] };
+  const min = pool[0].price;
+  const max = pool[pool.length - 1].price;
+  const targets = limit <= 1 ? [0] : Array.from({ length: limit }, (_, i) => min + ((max - min) * i) / (limit - 1));
+  const picks: StoreItem[] = [];
+  for (const target of targets) {
+    let best: StoreItem | undefined;
+    for (const item of pool) {
+      if (picks.some((p) => p.sku === item.sku)) continue;
+      if (!best || Math.abs(item.price - target) < Math.abs(best.price - target)) best = item;
+    }
+    if (best) picks.push(best);
+  }
+  return { min, max, picks: picks.sort((a, b) => a.price - b.price) };
 }
 
 /** One product line, in the visitor's language, with the catalog price and size only. */

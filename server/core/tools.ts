@@ -5,7 +5,7 @@
  * visitor confirms, which is the commerce-safe equivalent of "human approval" in agent systems.
  */
 import { asksForPlatformOverview } from './platformGuide';
-import { findStorefront, storefrontCatalog, storeLine, type StoreItem } from './storeGuide';
+import { findStorefront, priceDigest, storefrontCatalog, storeLine, type StoreItem } from './storeGuide';
 import type { Repository } from './repository';
 import { publicView } from './repository';
 import type { ActionCard, Citation, Product, ServiceDef } from './types';
@@ -101,10 +101,18 @@ export const tools = {
       const { items, snapshot } = await storefrontCatalog();
       if (snapshot.empty) return { observation: 'STOREFRONT_EMPTY', data: { matched: false, items: [] as StoreItem[], snapshot } };
       const { picks, matched } = findStorefront(items, args.query, args.limit || 4);
+      // No name match is not the same as no products: show the real price range across the catalog so a vague
+      // «إيه أسعار المنتجات؟» gets an honest spread (cheapest → median → premium), not four arbitrary items.
+      if (!matched) {
+        const digest = priceDigest(items, args.limit || 4);
+        return {
+          observation: `${digest.picks.length ? 'STORE_PRICE_DIGEST' : 'STORE_NO_MATCH'}\n${digest.picks.map((p) => storeLine(p, lang)).join('\n')}`,
+          citations: digest.picks.map((p) => ({ id: p.sku, title: lang === 'ar' ? p.nameAr : p.nameEn, kind: 'product' as const })),
+          data: { matched: false, items: digest.picks, digest: { min: digest.min, max: digest.max }, snapshot },
+        };
+      }
       return {
-        observation: picks.length
-          ? `${matched ? 'STORE_MATCHES' : 'STORE_LATEST'}\n${picks.map((p) => storeLine(p, lang)).join('\n')}`
-          : 'STORE_NO_MATCH',
+        observation: `STORE_MATCHES\n${picks.map((p) => storeLine(p, lang)).join('\n')}`,
         citations: picks.map((p) => ({ id: p.sku, title: lang === 'ar' ? p.nameAr : p.nameEn, kind: 'product' as const })),
         data: { matched, items: picks, snapshot },
       };

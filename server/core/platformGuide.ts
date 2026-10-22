@@ -320,6 +320,20 @@ export const PLATFORM_FEATURES: PlatformFeature[] = [
     tags: ['شروط', 'قانوني', 'legal', 'terms', 'refund'],
   },
   {
+    id: 'guide', group: 'help', tab: 'guide', docId: 'kb-platform-guide',
+    name: { ar: 'دليل المنصة', en: 'Platform guide' },
+    summary: {
+      ar: 'دليل المنصة بيجمع كل أدوات وميزات شام في مكان واحد، بمكان كل واحدة وطريقة استخدامها.',
+      en: 'The platform guide collects every Sham tool and feature in one place, where each one lives and how to use it.',
+    },
+    details: {
+      ar: 'افتح تبويب «الدليل» تشوف الأقسام: أدوات المعمل والحاسبات، المكتبات والمراجع، دفتر الوصفات والخبير شاهين، المجتمع والحساب، والمتجر والشحن — وكل قسم بيوديك على تبويبه. أي أداة جديدة بتظهر هنا مع أول إصدار لها، فالدليل هو المرجع اللي تقدر تعتمد عليه.',
+      en: 'Open the Guide tab to see the sections: lab tools and calculators, libraries and references, formulas and Shaheen, community and account, store and shipping — each links to its tab. Every new tool appears here in the release that ships it, so this is the reference you can rely on.',
+    },
+    keywords: ['دليل الموقع', 'شرح الموقع', 'قائمة الادوات', 'site guide', 'tools list'],
+    tags: ['دليل', 'خريطة المنصة', 'guide', 'site map'],
+  },
+  {
     id: 'languages', group: 'help', docId: 'kb-platform-languages',
     name: { ar: 'اللغات', en: 'Languages' },
     summary: {
@@ -368,13 +382,17 @@ export function matchPlatformFeature(message: string): { feature: PlatformFeatur
 
 /** Phrases that ask for the whole map («دليل المنصة», «إيه الجديد في المنصة؟»). */
 const OVERVIEW = [
-  'دليل المنصة', 'مميزات المنصة', 'أدوات المنصة', 'اقسام المنصة', 'خريطة المنصة', 'ايه الجديد في المنصة',
+  'دليل المنصة', 'مميزات المنصة', 'أدوات المنصة', 'ادوات الموقع', 'ادوات الموقع ايه', 'كل الادوات', 'اقسام المنصة', 'خريطة المنصة', 'ايه الجديد في المنصة',
   'الجديد في المنصة', 'كل حاجة عن المنصة', 'platform guide', 'site features', 'platform features', 'what is on the site',
 ];
 
 export function asksForPlatformOverview(message: string): boolean {
   const text = ` ${normalize(message)} `;
-  return OVERVIEW.some((phrase) => matchesKeyword(text, phrase));
+  if (OVERVIEW.some((phrase) => matchesKeyword(text, phrase))) return true;
+  // «إيه الأدوات اللي في الموقع؟» / «which tools are on the site?» — tools + the whole platform.
+  const asksTools = /(^|\s)ال?(ادوات|أدوات|tools?)(\s|$)/.test(text);
+  const wholeSite = /(^|\s)ال?(موقع|منصه|منصة|site|platform)(\s|$)/.test(text);
+  return asksTools && wholeSite;
 }
 
 /** «إزاي أستخدم …؟» — used as a follow-up chip, so tapping it routes straight back here. */
@@ -426,21 +444,14 @@ export function platformOverviewText(lang: 'ar' | 'en'): string {
  */
 export function platformKnowledge(): KnowledgeDoc[] {
   const updatedAt = new Date().toISOString();
-  const docs = PLATFORM_FEATURES
+  return PLATFORM_FEATURES
     .filter((f) => f.docId.startsWith(PLATFORM_DOC_PREFIX))
     .map((f): KnowledgeDoc => ({
       id: f.docId,
       title: f.name.ar,
-      content: `${f.summary.ar} ${f.details.ar}`,
+      // The guide documents the live map — a copy of it would go stale the day a new tool ships.
+      content: f.id === 'guide' ? `كل أقسام المنصة الحالية:\n${platformOverviewText('ar')}` : `${f.summary.ar} ${f.details.ar}`,
       tags: [...f.tags, f.name.en, ...f.keywords],
       updatedAt,
     }));
-  docs.push({
-    id: 'kb-platform-guide',
-    title: 'دليل أدوات وميزات منصة شام',
-    content: `كل أقسام المنصة الحالية:\n${platformOverviewText('ar')}`,
-    tags: ['دليل المنصة', 'مميزات المنصة', 'ادوات المنصة', 'platform guide', 'site features'],
-    updatedAt,
-  });
-  return docs;
 }

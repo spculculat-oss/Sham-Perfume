@@ -33,6 +33,13 @@ import { LocalizedNumberInput } from '../components/LocalizedNumberInput';
 
 type Tab = 'owner' | 'finance' | 'overview' | 'opsmap' | 'community' | 'contracts' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'design' | 'emails' | 'doctor' | 'supervisor' | 'seo' | 'sandbox' | 'updates';
 interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: string }
+/** GET /assistant/pages — «مراجعة الصفحات» (server/core/pageReview.ts). */
+interface PageCheckView { page: string; pageLabel: string; question: string; expected: string; actual: string; ok: boolean; fix: string }
+interface PageReview {
+  at: string; score: number; passed: number; total: number; pages: number;
+  checks: PageCheckView[]; notes: string[];
+}
+
 /** GET /assistant/specialties — «مراجعة التخصصات» (server/core/specialtyReview.ts). */
 interface SpecialtyCheck { specialty: string; owner: 'assistant' | 'shaheen'; question: string; ok: boolean; expected: string; actual: string; fix: string }
 interface SpecialtyReview {
@@ -1803,6 +1810,63 @@ function AgentPanel({ go }: { go: (t: Tab) => void }) {
 }
 
 /** The learning loop: unanswered questions + rated answers → new knowledge-base documents. */
+/** «مراجعة الصفحات» — the assistant is asked, on every page, what a visitor there would ask. */
+function PagesReviewCard() {
+  const { data, error, loading, reload } = useLoad<PageReview>('/assistant/pages');
+  const failed = data?.checks.filter((c) => !c.ok) || [];
+  const byPage = data ? [...new Map(data.checks.map((c) => [c.page, { label: c.pageLabel, ok: 0, total: 0 }])).keys()]
+    .map((id) => {
+      const rows = data.checks.filter((c) => c.page === id);
+      return { id, label: rows[0].pageLabel, ok: rows.filter((c) => c.ok).length, total: rows.length };
+    }) : [];
+  return (
+    <section className={`${card} mb-4`}>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 className="font-bold text-sm flex items-center gap-1.5"><Wand2 className="w-4 h-4 text-sky-600" />{T('مراجعة الصفحات: رد المساعد وهو واقف في كل صفحة')}</h2>
+          <p className="text-[11px] text-stone-500 mt-0.5">{T('المساعد بيسأل نفسه سؤال واقعي في كل صفحة من صفحات الموقع (المتجر، صفحة منتج، الحاسبات، المجتمع…) ويتحقق إن الرد منطقي للصفحة، وإن أي سعر قاله موجود فعلاً في المتجر.')}</p>
+        </div>
+        <div className="flex items-center gap-2">
+          {data && (
+            <span className={`rounded-full px-3 py-1 text-xs font-bold ${data.score === 100 ? 'bg-emerald-100 text-emerald-800' : data.score >= 80 ? 'bg-amber-100 text-amber-900' : 'bg-red-100 text-red-800'}`}>
+              {T('النتيجة')} <span dir="ltr">{formatAdminNumber(data.score)}% · {formatAdminNumber(data.passed)}/{formatAdminNumber(data.total)}</span>
+            </span>
+          )}
+          <button onClick={reload} className={`${btn} bg-white border border-stone-300`} disabled={loading}>{loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}{T('إعادة المراجعة')}</button>
+        </div>
+      </div>
+      <Feedback error={error} loading={loading && !data} />
+      {data && (
+        <div className="mt-3 space-y-3">
+          <p className="text-xs text-stone-600">{TP('اتفحصت {pages} صفحة، وفي كل صفحة السؤال اللي الزائر بيسأله فعلًا وهو واقف فيها.', { pages: formatAdminNumber(data.pages) })}</p>
+          {data.notes.map((note) => <p key={note} className="text-[11px] rounded-lg bg-stone-50 border border-stone-200 p-2 text-stone-600">{note}</p>)}
+          {!failed.length
+            ? <p className="text-xs rounded-xl border border-emerald-200 bg-emerald-50 p-2.5 text-emerald-900">{T('كل الصفحات ردودها منطقية: أسعار حقيقية، والمنتج اللي قدام الزائر بيتكلم عنه، ومفيش «مش لاقي إجابة» وهو واقف في صفحة ليها رد.')}</p>
+            : <ul className="space-y-1.5">{failed.map((c) => (
+                <li key={c.page + c.question} className="rounded-xl border border-red-200 bg-red-50 p-2.5 text-xs text-red-900">
+                  <p className="font-bold">{c.pageLabel} — {c.question}</p>
+                  <p>{T('المتوقع:')} {c.expected}</p>
+                  <p className="text-red-800/80">{T('اللي حصل:')} {c.actual}</p>
+                  <p className="mt-1 font-semibold">{T('الإصلاح:')} {c.fix}</p>
+                </li>
+              ))}</ul>}
+          <details className="text-xs">
+            <summary className="cursor-pointer font-semibold text-stone-700">{TP('كل الصفحات ({n})', { n: formatAdminNumber(data.pages) })}</summary>
+            <ul className="mt-2 grid gap-1.5 sm:grid-cols-2 lg:grid-cols-3">
+              {byPage.map((p) => (
+                <li key={p.id} className="flex items-center justify-between gap-2 rounded-lg border border-stone-200 p-2">
+                  <span className="truncate">{p.label}</span>
+                  <span className={p.ok === p.total ? 'text-emerald-700 font-bold' : 'text-red-700 font-bold'} dir="ltr">{formatAdminNumber(p.ok)}/{formatAdminNumber(p.total)}</span>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </div>
+      )}
+    </section>
+  );
+}
+
 /** «تخصصات المساعد مقابل تخصصات شاهين» — the live review from server/core/specialtyReview.ts. */
 function SpecialtiesReviewCard() {
   const { data, error, loading, reload } = useLoad<SpecialtyReview>('/assistant/specialties');
@@ -1891,6 +1955,7 @@ function QualityPanel() {
         <div className={card}><p className="text-xs text-stone-500">{T('التقييمات')}</p><p className="text-lg font-bold mt-2"><span className="text-emerald-700">👍 {ups}</span> · <span className="text-red-700">👎 {downs}</span></p></div>
       </div>
       {error && <p role="alert" className="mb-3 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p>}
+      <PagesReviewCard />
       <SpecialtiesReviewCard />
       <div className="grid xl:grid-cols-2 gap-4">
         <section className={card}>

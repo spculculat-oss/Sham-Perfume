@@ -49,7 +49,11 @@ const ORDER_VERBS = ['اطلب', 'طلب', 'احجز', 'حجز', 'اشتري', '
 const FORGET = ['امسح بياناتي', 'احذف بياناتي', 'امسح ذاكرتك', 'انسي كل', 'انساني', 'امسح محادثاتي', 'احذف محادثاتي', 'delete my data', 'forget me', 'erase my data', 'delete my conversations'];
 const MEMORY = ['ماذا تتذكر', 'بتفتكر ايه', 'فاكر ايه', 'تعرف ايه عني', 'تعرف عني', 'بتعرف عني', 'بتعرفه عني', 'تعرفه عني', 'بتعرفي عني',
   'ماذا تعرف عني', 'ايه اللي تعرفه عني', 'ايه اللي بتعرفه عني', 'بتعرف عني ايه', 'بياناتي', 'what do you remember', 'what do you know about me', 'my data'];
-const BROWSE = ['منتجات', 'المنتجات', 'كتالوج', 'متوفر', 'متاح', 'سعر', 'اسعار', 'بكام', 'عندكم', 'products', 'catalog', 'price', 'available', 'in stock'];
+const BROWSE = ['منتجات', 'المنتجات', 'كتالوج', 'متوفر', 'متاح', 'سعر', 'اسعار', 'بكام', 'عندكم', 'products', 'catalog', 'price', 'available', 'in stock',
+  // A budget or a shopping wish is a store search even without the word «سعر» («عايز عطر تحت 1000 جنيه»).
+  'تحت', 'اقل من', 'بحدود', 'حدود', 'ميزانيه', 'رخيص', 'ارخص', 'هديه', 'under', 'budget', 'cheap', 'gift'];
+/** A perfume word: the shopping cues above only mean «the store» when the visitor is asking about perfume. */
+const PERFUME_WORD = ['عطر', 'عطور', 'برفان', 'بر perfume', 'perfume', 'fragrance', 'cologne', 'دهن عود'];
 /** Prices of things that are not perfume (gold, currency, stocks…) must never be answered from the store. */
 const NOT_PERFUME = ['الذهب', 'ذهب', 'فضه', 'فضة', 'دولار', 'يورو', 'بورصه', 'بورصة', 'عمله', 'عملات', 'اسهم', 'سهم', 'بيتكوين', 'كريبتو',
   'gold', 'silver', 'bitcoin', 'stock market', 'currency', 'exchange rate'];
@@ -109,6 +113,11 @@ export function route(message: string, services: ServiceDef[]): RouteResult {
   // (which names no page) still becomes an order form below.
   const platform = matchPlatformFeature(message);
   const infoService = services.find((s) => s.kind === 'info')?.id;
+  // «المتجر فيه إيه؟» / «أسعار المتجر» asks what is on sale, not how the page works — answer with real products.
+  if (platform?.feature.id === 'store' && (has(text, BROWSE) || /(فيه ايه|ايه فيه|ايه اللي فيه|what is in|what do you (sell|have))/.test(text)) && !/ (ازاي|كيف|how (do|can|to)|where is) /.test(text)) {
+    const storeService = services.find((s) => s.kind === 'store');
+    if (storeService) return result('browse_products', 0.7, storeService.id);
+  }
   if (platform) return result('platform_help', Math.min(0.9, 0.6 + platform.score * 0.05), infoService, platform.feature.id);
   if (asksForPlatformOverview(message)) return result('platform_help', 0.85, infoService);
 
@@ -125,7 +134,11 @@ export function route(message: string, services: ServiceDef[]): RouteResult {
   }
   // "ايه الخدمات اللي عندكم" asks for the menu, not for stock — check it before the generic availability cue.
   if (has(text, SERVICES_LIST)) return result('list_services', 0.8);
-  if (has(text, BROWSE) && !has(text, NOT_PERFUME) && services.some((s) => s.kind === 'store')) return result('browse_products', 0.6, services.find((s) => s.kind === 'store')!.id);
+  if (has(text, BROWSE) && !has(text, NOT_PERFUME) && services.some((s) => s.kind === 'store') && (!bestService || best[1] <= 1)) return result('browse_products', 0.6, services.find((s) => s.kind === 'store')!.id);
+  // «عايز عطر تحت 1000 جنيه»: a shopping wish about perfume with a budget/quality cue, and no service matched.
+  if (!bestService && has(text, PERFUME_WORD) && has(text, BROWSE) && !has(text, NOT_PERFUME) && services.some((s) => s.kind === 'store')) {
+    return result('browse_products', 0.65, services.find((s) => s.kind === 'store')!.id);
+  }
   if (has(text, EXPERT) && !bestService) return result('perfume_expert', 0.6);
 
   const short = tokens.size <= 3;
@@ -134,6 +147,16 @@ export function route(message: string, services: ServiceDef[]): RouteResult {
   if (short && has(text, THANKS)) return result('thanks', 0.9);
   if (bestService) return result('question', 0.5, bestService.id);
   return result('question', 0.3);
+}
+
+/** Gold, currency, stocks: not perfume, so the store must never answer it (and the assistant says so). */
+export function asksAboutNonPerfume(message: string): boolean {
+  return has(` ${normalize(message)} `, NOT_PERFUME);
+}
+
+/** Does the visitor ask to *do* something (order/book/buy), not just *how* it works? */
+export function wantsToOrder(message: string): boolean {
+  return has(` ${normalize(message)} `, ORDER_VERBS);
 }
 
 /**

@@ -115,6 +115,13 @@ deletions, the first import, failed checks) on branch `aistudio/<sha7>` with a `
   work (formulation, the «اسأل شاهين» advisor, perfume news, design, finance/contracts) is named and handed
   over, never claimed; internal figures are never quoted. `tests/shamCoreStoreSpecialties.test.ts` guards
   the registry, the no-leak rule, the empty-catalog honesty and the score.
+- **Every page answers for itself.** The widget sends the page the visitor is on (`page`/`productId` in the chat
+  body, validated by `validateChatInput`). Every visitor tab belongs in `PAGES` in `server/core/pageGuide.ts`
+  (what the visitor sees, what to offer there, realistic questions) and in the page review score:
+  `GET /api/admin/assistant/pages`, the «مراجعة الصفحات» card, `npm run review:assistant -- --pages`, and
+  `tests/shamCorePages.test.ts`. A general price question must return the real range (`priceDigest`), never
+  «nothing is published» while products exist, never an invented price and never a discount promise; an open
+  product page answers about that product; a «how do I…» question explains, it does not open an order form.
 - Customer invoices, receipts and order summaries must not show platform margin/profit amounts or
   percentages, or the supplier-cost breakdown. Keep selling prices, quantities, shipping, applicable
   taxes/fees and totals visible; do not change pricing or internal merchant/admin accounting to hide a margin.

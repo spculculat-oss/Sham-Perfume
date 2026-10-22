@@ -9,6 +9,7 @@ import { FinanceService } from '../finance/service';
 import { createFinanceRouter } from '../finance/router';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { reviewSpecialtiesCached } from './specialtyReview';
+import { reviewPagesCached } from './pageReview';
 import { Repository, ValidationError, publicView } from './repository';
 import { ShaheenMemory } from './memory';
 import { AssistantError, Orchestrator, publicEngine, validateChatInput, type ChatOutput, type StreamEvent } from './orchestrator';
@@ -242,6 +243,11 @@ export function createShamCore(options: CoreOptions = {}) {
   /** «مراجعة التخصصات»: هل المساعد عارف المتجر، وعارف حدوده من شاهين؟ (كاش دقيقة، ?fresh=1 لإعادة التشغيل) */
   admin.get('/assistant/specialties', wrap(async (req, res) => {
     res.json(await reviewSpecialtiesCached(repo, { env }, req.query.fresh === '1'));
+  }));
+
+  /** «مراجعة الصفحات»: هل رد المساعد منطقي وهو واقف في كل صفحة؟ (كاش دقيقة، ?fresh=1 لإعادة التشغيل) */
+  admin.get('/assistant/pages', wrap(async (req, res) => {
+    res.json(await reviewPagesCached(repo, { env }, req.query.fresh === '1'));
   }));
 
   admin.get('/overview', wrap(async (_req, res) => {

@@ -62,15 +62,16 @@ export function quotedPrices(text: string): number[] {
 }
 
 const CACHE_MS = 60_000;
-const cache = ((globalThis as { __shamSpecialtyReview?: Map<string, { at: number; review: SpecialtyReview }> }).__shamSpecialtyReview ??= new Map());
+// Keyed by the repository instance: two stores in one process (tests, an admin sandbox) must never share a
+// review, while the panel and the API — same repo — reuse one run per minute.
+const cache = ((globalThis as { __shamSpecialtyReview?: WeakMap<object, { at: number; review: SpecialtyReview }> }).__shamSpecialtyReview ??= new WeakMap());
 
 /** The panel and the API reuse one run per minute: the review is real work, not a page decoration. */
 export async function reviewSpecialtiesCached(repo: Repository, opts: { env?: Record<string, string | undefined> } = {}, force = false): Promise<SpecialtyReview> {
-  const key = repo.store.kind;
-  const hit = cache.get(key);
+  const hit = cache.get(repo);
   if (!force && hit && Date.now() - hit.at < CACHE_MS) return hit.review;
   const review = await reviewSpecialties(repo, opts);
-  cache.set(key, { at: Date.now(), review });
+  cache.set(repo, { at: Date.now(), review });
   return review;
 }
 
