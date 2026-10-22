@@ -27,7 +27,7 @@ on:
   push:
     # Branches: rehearsal only (nothing is committed); main: a change to the scout or the school runs at once.
     branches: [main, 'arena/**']
-    paths: ['scripts/shaheen-discover/**', 'scripts/shaheen-school/**', 'scripts/shaheen-import/**', '.github/workflows/shaheen-discover.yml']
+    paths: ['scripts/shaheen-discover/**', 'scripts/shaheen-school/**', 'scripts/shaheen-import/**', 'src/data/sciences/**', '.github/workflows/shaheen-discover.yml']
 
 permissions:
   contents: write
@@ -154,7 +154,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           before=$(git rev-parse HEAD)
           node scripts/ci/publish.mjs "كشّاف المصادر ومدرسة شاهين $(date -u +%Y-%m-%dT%H:%MZ)" \
-            src/data/live/import-sources.json src/data/live/shaheen-school.json src/data/live/shaheen-memory.json \
+            src/data/live/import-sources.json src/data/live/shaheen-school.json src/data/live/shaheen-sciences.json \
+            src/data/live/shaheen-memory.json \
             src/data/live/ai-memory.json src/data/live/ai-quota.json \
             || { echo "::error::Could not push the scout's results"; exit 1; }
           if [ "$(git rev-parse HEAD)" = "$before" ]; then exit 0; fi
