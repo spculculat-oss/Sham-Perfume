@@ -75,8 +75,8 @@ export default function LiveWorkMap({ live, gh, stepOf, now, onPick }: {
   return (
     <div className="mt-3 rounded-2xl border border-stone-300 bg-stone-950 p-3 text-stone-100" data-testid="live-work-map">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <b className="flex items-center gap-2 text-sm"><Radio className="h-4 w-4 animate-pulse text-emerald-400" />{T('خريطة العمل اللحظية')}</b>
-        <span className="text-[11px] text-stone-400">
+        <b className="flex items-center gap-2 text-base"><Radio className="h-5 w-5 animate-pulse text-emerald-400" />{T('خريطة العمل اللحظية')}</b>
+        <span className="text-sm text-stone-400">
           {gh.limitedUntil ? TP('التحديث واقف مؤقتاً لحد {time} (حد القراءة من جيت هب)', { time: clock(new Date(gh.limitedUntil).toISOString()) })
             : gh.error ? T('تعذّر الوصول لسجل التشغيل — بيحاول تاني لوحده')
             : gh.at ? TP('بتتحدّث لوحدها كل {n} ثانية — آخر تحديث {time}', { n: every, time: clock(new Date(gh.at).toISOString()) })
@@ -84,29 +84,29 @@ export default function LiveWorkMap({ live, gh, stepOf, now, onPick }: {
         </span>
       </div>
 
-      <div className="mt-2 flex flex-wrap gap-1.5 text-[11px]">
+      <div className="mt-2 flex flex-wrap gap-1.5 text-sm">
         {LEGEND.map((s) => <span key={s} className="rounded-full bg-stone-800 px-2 py-0.5">{TILE[s].emoji} {TILE[s].label()} <b className="text-amber-200">{count(s)}</b></span>)}
       </div>
 
       {/* Who is working this minute, and on what. */}
       <div className="mt-3">
-        <b className="text-xs text-emerald-300">{T('بتشتغل دلوقتي وبتعمل إيه')}</b>
-        {!runs.length ? <p className="mt-1 text-[11px] text-stone-400">{T('مفيش روبوت شغال اللحظة دي — الكل نايم لحد دوره')}</p> : (
+        <b className="text-sm text-emerald-300">{T('بتشتغل دلوقتي وبتعمل إيه')}</b>
+        {!runs.length ? <p className="mt-1 text-sm text-stone-400">{T('مفيش روبوت شغال اللحظة دي — الكل نايم لحد دوره')}</p> : (
           <ul className="mt-1 grid gap-2 md:grid-cols-2">
             {runs.map((l) => {
               const st = stepOf(l);
               const together = working.filter((x) => (x.run ? x.run.id === l.run?.id : x.id === l.id));
               const pct = st && st.total ? Math.round(((st.done + (l.state === 'running' ? 0.5 : 0)) / st.total) * 100) : 0;
               return (
-                <li key={l.run?.id ?? l.id} className="rounded-xl border border-emerald-700 bg-stone-900 p-2 text-[11px]">
+                <li key={l.run?.id ?? l.id} className="rounded-xl border border-emerald-700 bg-stone-900 p-2 text-sm">
                   <div className="flex items-start justify-between gap-2">
                     <span>
                       {TILE[l.state].emoji}{' '}
                       {together.map((x, i) => <span key={x.id}>{i > 0 && ' + '}<button type="button" className="font-bold text-white hover:underline" onClick={() => onPick(x.id)}>{name(x.id)}</button></span>)}
                     </span>
-                    {l.run && <a href={l.run.url} target="_blank" rel="noreferrer" className="shrink-0 text-stone-400 hover:text-white" title={T('افتح التشغيل على جيت هب')}><ExternalLink className="h-3.5 w-3.5" /></a>}
+                    {l.run && <a href={l.run.url} target="_blank" rel="noreferrer" className="shrink-0 text-stone-400 hover:text-white" title={T('افتح التشغيل على جيت هب')}><ExternalLink className="h-5 w-5" /></a>}
                   </div>
-                  <p className="mt-1 text-sm font-bold text-emerald-300">{l.state === 'queued' ? T('في الطابور — هتبدأ حالاً') : stepText(st?.step) || T('بتجهّز الخطوة الجاية')}</p>
+                  <p className="mt-1 text-base font-bold text-emerald-300">{l.state === 'queued' ? T('في الطابور — هتبدأ حالاً') : stepText(st?.step) || T('بتجهّز الخطوة الجاية')}</p>
                   {st && st.total > 0 && (
                     <div className="mt-1">
                       <div className="h-1.5 overflow-hidden rounded-full bg-stone-700"><div className="h-full rounded-full bg-emerald-400 transition-all" style={{ width: `${pct}%` }} /></div>
@@ -129,7 +129,7 @@ export default function LiveWorkMap({ live, gh, stepOf, now, onPick }: {
           if (!bots.length) return null;
           return (
             <div key={d.id} className="rounded-xl bg-stone-900 p-2">
-              <b className="text-[11px] text-amber-200">{ar() ? d.nameAr : d.nameEn}</b>
+              <b className="text-sm text-amber-200">{ar() ? d.nameAr : d.nameEn}</b>
               <ul className="mt-1 grid grid-cols-2 gap-1.5 sm:grid-cols-3">
                 {bots.map((b) => {
                   const l = of(b.id);
@@ -139,9 +139,9 @@ export default function LiveWorkMap({ live, gh, stepOf, now, onPick }: {
                     <li key={b.id}>
                       <button type="button" onClick={() => onPick(b.id)} title={`${name(b.id)} — ${TILE[l.state].label()}${ar() ? ` — ${dutyShort(b)}` : ''}`}
                         className={`w-full rounded-lg border px-2 py-1.5 text-start text-stone-900 hover:shadow ${TILE[l.state].tile}`}>
-                        <span className="flex items-center gap-1 text-[11px] font-bold"><span className={`inline-block h-2 w-2 shrink-0 rounded-full ${TILE[l.state].dot}`} /><span className="truncate">{short(b.id)}</span></span>
-                        <span className="mt-0.5 block truncate text-[10px] text-stone-600">{TILE[l.state].emoji} {statusLine(l, st, now)}</span>
-                        {l.state === 'running' && <span className="block text-[10px] text-emerald-700">{since(l.since, now)}</span>}
+                        <span className="flex items-center gap-1 text-sm font-bold"><span className={`inline-block h-2 w-2 shrink-0 rounded-full ${TILE[l.state].dot}`} /><span className="truncate">{short(b.id)}</span></span>
+                        <span className="mt-0.5 block truncate text-[13px] text-stone-600">{TILE[l.state].emoji} {statusLine(l, st, now)}</span>
+                        {l.state === 'running' && <span className="block text-[13px] text-emerald-700">{since(l.since, now)}</span>}
                       </button>
                     </li>
                   );
@@ -154,9 +154,9 @@ export default function LiveWorkMap({ live, gh, stepOf, now, onPick }: {
 
       {/* Who finished, who started. */}
       <div className="mt-3 rounded-xl bg-stone-900 p-2">
-        <b className="text-xs text-amber-200">{T('سجل النشاط الأخير')}</b>
-        {!feed.length ? <p className="mt-1 text-[11px] text-stone-400">{gh.at ? T('مفيش نشاط مسجّل لسه') : T('بيحمّل السجل…')}</p> : (
-          <ul className="mt-1 divide-y divide-stone-800 text-[11px]">
+        <b className="text-sm text-amber-200">{T('سجل النشاط الأخير')}</b>
+        {!feed.length ? <p className="mt-1 text-sm text-stone-400">{gh.at ? T('مفيش نشاط مسجّل لسه') : T('بيحمّل السجل…')}</p> : (
+          <ul className="mt-1 divide-y divide-stone-800 text-sm">
             {feed.map((f) => (
               <li key={`${f.id}-${f.kind}`} className="flex items-center justify-between gap-2 py-1">
                 <span className="min-w-0 truncate text-stone-200">

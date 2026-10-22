@@ -14,6 +14,7 @@
 import { BOTS, type Bot } from './shaheenOrg';
 import { OWNER, hasSensitiveNumber, stoppedByOwner, type OwnerControls } from './ownerAuthority';
 import { orderableBots } from './ownerDesk';
+import { AGENT_LINK, agentLinkStatusAr } from './agentLink';
 import {
   STATE, STATE_CONSTITUTION, STATE_MEMBERS, STATE_ORDERS_LIMITS, STATE_OUTCOMES, nextLawId, stateActive,
   type StateOrderAction, type StateOrderEntry, type StateOrders, type StateReport,
@@ -28,7 +29,7 @@ const MARK = 'sham-state-order';
 
 /** The robots the State may give orders to: every robot with a workflow, except the State itself and the owner's desk. */
 export const stateOrderableBots = (): Bot[] => orderableBots().filter((b) => b.id !== 'state');
-const botLabel = (id?: string) => BOTS.find((b) => b.id === id)?.nameAr ?? id ?? '';
+const botLabel = (id?: string) => (id === AGENT_LINK.id ? AGENT_LINK.nameAr : BOTS.find((b) => b.id === id)?.nameAr ?? id ?? '');
 const sharing = (id: string) => { const wf = BOTS.find((b) => b.id === id)?.workflow; return BOTS.filter((b) => wf && b.workflow === wf).map((b) => b.id as string); };
 
 // What a law may not do: reach the owner's data, overrule the owner, or undo the legal manager's binding decisions.
@@ -40,6 +41,17 @@ const LAW_LEGAL = /(?:شيل|الغي|الغاء|إلغاء|ألغي|ارجع|ر
 export function judgeStateOrder(o: StateOrder, ctx: { controls: OwnerControls; orders: StateOrders }): { ok: boolean; reasonAr: string } {
   if (!stateActive(ctx.controls)) {
     return { ok: false, reasonAr: ctx.controls.frozen ? 'فرامل الطوارئ شغالة، والدولة واقفة مع كل الروبوتات.' : 'الموافقات معاك دلوقتي، فالدولة مابتنفذش أوامر — سلّمها الموافقات من مكتبك (state_rule) وهي تكمل.' };
+  }
+  // S-10: the direct link between Shaheen's agent and Shaheen is under the State's eye — it may pause it or bring it back.
+  if (o.target === AGENT_LINK.id && (o.action === 'pause' || o.action === 'resume' || o.action === 'run')) {
+    const paused = ctx.orders.paused.includes(AGENT_LINK.id);
+    if (o.action === 'run') return { ok: false, reasonAr: `«${AGENT_LINK.nameAr}» مش روبوت بيتشغّل — هو شغال مع كل سؤال، والدولة بتوقفه أو ترجّعه بس.` };
+    if (o.action === 'pause') {
+      if (paused) return { ok: false, reasonAr: `«${AGENT_LINK.nameAr}» واقف بأمر الدولة أصلاً.` };
+      return { ok: true, reasonAr: `هوقف «${AGENT_LINK.nameAr}»: شاهين هيرجع لوكيله بس لما المنصات تقف، والزوار هيفضلوا يتجاوبوا. (S-10)` };
+    }
+    if (!paused) return { ok: false, reasonAr: `«${AGENT_LINK.nameAr}» شغال أصلاً.` };
+    return { ok: true, reasonAr: `هرجّع «${AGENT_LINK.nameAr}»: الوكيل يفكر مع شاهين في كل سؤال تاني. (S-10)` };
   }
   if (o.action === 'pause' || o.action === 'resume' || o.action === 'run') {
     const bot = stateOrderableBots().find((b) => b.id === o.target);
@@ -207,6 +219,7 @@ const HELP = [
   '- «قراراتك» أو «قوانين المنصة» أو «مين الأعضاء؟».',
   '- «وقف روبوت الأخبار» أو «رجّع روبوت الأخبار» أو «شغّل الدورية دلوقتي»: أوامر بتنفذها الدولة.',
   '- «قانون جديد: …» أو «الغي القانون P-01»: قوانين المنصة.',
+  '- «الربط المباشر» أو «وقف الربط المباشر»: الربط بين وكيل شاهين وشاهين (S-10).',
   'أي أمر بشوفه الأول: لو صح من وجهة نظري بجهزه، ولو لأ بقولك ليه.',
 ].join('\n');
 
@@ -234,6 +247,12 @@ export function stateReply(message: string, ctx: StateRoomContext): StateReplyRe
   const pauseVerb = /(?:^|\s)(?:وقف|وقفي|اوقف|اوقفي|ايقاف|استوب|pause|عطل|عطلي|اقفل|اقفلي)(?:\s|$)/.test(n);
   const resumeVerb = /(?:^|\s)(?:رجع|رجعي|ارجع|ارجعي|رجوع|resume|فعل|فعلي|تفعيل)(?:\s|$)/.test(n);
   const runVerb = /(?:^|\s)(?:شغل|شغلي|تشغيل|run|شغله|شغليه)(?:\s|$)/.test(n);
+  // S-10: the direct link between Shaheen's agent and Shaheen.
+  if (/(?:الربط|ربط|agent_link)/.test(n) && /(?:وكيل|شاهين|المباشر|agent_link)/.test(n)) {
+    if (pauseVerb) return decide({ action: 'pause', target: AGENT_LINK.id, whyAr: '' });
+    if (resumeVerb || runVerb) return decide({ action: 'resume', target: AGENT_LINK.id, whyAr: '' });
+    return { text: [`🔗 **${AGENT_LINK.nameAr}:** ${agentLinkStatusAr(ctx.orders, ctx.controls)}.`, '', `- ${STATE_CONSTITUTION.find((r) => r.id === 'S-10')?.textAr ?? ''}`, '- تقدر تقولّي «وقف الربط المباشر» أو «رجّع الربط المباشر».'].join('\n') };
+  }
   if (pauseVerb || resumeVerb || runVerb) {
     const { bot, candidates } = findBot(raw);
     if (!bot) {

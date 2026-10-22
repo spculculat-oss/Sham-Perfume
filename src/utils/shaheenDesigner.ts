@@ -292,6 +292,11 @@ function askDirection(lang: 'ar' | 'en'): string {
  * last request when he is refining a formula Shaheen just gave («خليه صيفي»).
  */
 export function designAnswer(message: string, language: string, previous?: string): string | undefined {
+  return designFor(message, language, previous)?.reply;
+}
+
+/** The same answer with the formula behind it (the store link shows ready perfumes close to it). */
+export function designFor(message: string, language: string, previous?: string): { reply: string; design?: Design; lang: 'ar' | 'en' } | undefined {
   // He answers in the language the visitor wrote in (Arabic letters → Arabic, whatever the site language).
   const lang: 'ar' | 'en' = /[\u0600-\u06FF]/.test(message) || ((language === 'ar' || language === 'fa') && !/[a-z]{3}/i.test(message)) ? 'ar' : 'en';
   let brief = readBrief(message, lang);
@@ -312,7 +317,8 @@ export function designAnswer(message: string, language: string, previous?: strin
     }
   }
   if (!brief) return undefined;
-  if (!brief.tags.length && !brief.named.length) return askDirection(lang);
-  return designReply(composeDesign(brief, lang), lang);
+  if (!brief.tags.length && !brief.named.length) return { reply: askDirection(lang), lang };
+  const design = composeDesign(brief, lang);
+  return { reply: designReply(design, lang), design, lang };
 }
 const conflicts = (t: Tag, now: DesignBrief) => (now.fresh && ['warm', 'amber', 'gourmand', 'oud', 'smoky'].includes(t)) || (now.warm && ['aquatic', 'fresh', 'citrus'].includes(t));

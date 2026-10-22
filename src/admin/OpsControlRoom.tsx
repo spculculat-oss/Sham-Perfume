@@ -30,12 +30,12 @@ const COLOR: Record<LiveState, string> = {
   running: '#22c55e', queued: '#38bdf8', stopped: '#ef4444', paused: '#f59e0b', waiting: '#64748b', ondemand: '#475569', unknown: '#334155',
 };
 const BOX: Record<string, { w: number; h: number; fill: string; stroke: string; text: string; size: number }> = {
-  owner: { w: 190, h: 36, fill: '#422006', stroke: '#facc15', text: '#fef9c3', size: 13 },
-  state: { w: 200, h: 34, fill: '#3b0764', stroke: '#c084fc', text: '#f3e8ff', size: 12.5 },
-  shaheen: { w: 230, h: 34, fill: '#052e16', stroke: '#4ade80', text: '#dcfce7', size: 12 },
-  agent: { w: 190, h: 34, fill: '#082f49', stroke: '#38bdf8', text: '#e0f2fe', size: 12 },
-  school: { w: 220, h: 34, fill: '#1e1b4b', stroke: '#818cf8', text: '#e0e7ff', size: 12 },
-  dept: { w: 120, h: 32, fill: '#0f172a', stroke: '#475569', text: '#e2e8f0', size: 10 },
+  owner: { w: 190, h: 36, fill: '#422006', stroke: '#facc15', text: '#fef9c3', size: 15 },
+  state: { w: 200, h: 34, fill: '#3b0764', stroke: '#c084fc', text: '#f3e8ff', size: 14 },
+  shaheen: { w: 230, h: 34, fill: '#052e16', stroke: '#4ade80', text: '#dcfce7', size: 13.5 },
+  agent: { w: 190, h: 34, fill: '#082f49', stroke: '#38bdf8', text: '#e0f2fe', size: 13.5 },
+  school: { w: 220, h: 34, fill: '#1e1b4b', stroke: '#818cf8', text: '#e0e7ff', size: 13.5 },
+  dept: { w: 120, h: 32, fill: '#0f172a', stroke: '#475569', text: '#e2e8f0', size: 11.5 },
 };
 
 /** Which expert a studied question belongs to (the syllabus, then the written lessons); perfume otherwise. */
@@ -202,31 +202,31 @@ export default function OpsControlRoom({ live, gh, stepOf, school, sciences, now
         @media (prefers-reduced-motion: reduce) { .ocr .ocr-in, .ocr .ocr-glow { animation: none; } }
       `}</style>
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h4 className="flex items-center gap-2 text-sm font-black text-amber-100">
+        <h4 className="flex items-center gap-2 text-base font-black text-amber-100">
           <span className="relative flex h-2.5 w-2.5"><span className={`absolute inline-flex h-full w-full rounded-full bg-emerald-400 ${still ? '' : 'animate-ping'} opacity-75`} /><span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" /></span>
           {T('غرفة التحكم الحية')}
         </h4>
-        <div className="flex items-center gap-2 text-[11px] text-slate-400">
-          <Radio className="h-3.5 w-3.5" />
+        <div className="flex items-center gap-2 text-sm text-slate-400">
+          <Radio className="h-5 w-5" />
           {gh.limitedUntil ? TP('GitHub طلب استراحة — هيكمل {time}', { time: clock(new Date(gh.limitedUntil).toISOString()) }) : gh.at ? TP('آخر تحديث {time}', { time: clock(new Date(gh.at).toISOString()) }) : T('بيجيب الحالة…')}
           <button type="button" onClick={toggleFull} className="inline-flex items-center gap-1 rounded-lg border border-slate-700 px-2 py-1 font-bold text-slate-200 hover:bg-slate-800">
-            {full ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}{full ? T('خروج من ملء الشاشة') : T('ملء الشاشة')}
+            {full ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}{full ? T('خروج من ملء الشاشة') : T('ملء الشاشة')}
           </button>
         </div>
       </div>
-      <p className="mt-1 text-[11px] text-slate-400">{T('صاحب الموقع فوق الكل ← دولة المنصة ← شاهين المدير العام ووكيله ← الأقسام ومدرسة شاهين ← الروبوتات والخبراء السبعتاشر. النقط المتحركة = شغل ماشي دلوقتي: تقارير طالعة لفوق، وموافقات نازلة، وأسئلة رايحة للخبراء ودروس راجعة للمدرسة.')}</p>
+      <p className="mt-1 text-sm text-slate-400">{T('صاحب الموقع فوق الكل ← دولة المنصة ← شاهين المدير العام ووكيله ← الأقسام ومدرسة شاهين ← الروبوتات والخبراء السبعتاشر. النقط المتحركة = شغل ماشي دلوقتي: تقارير طالعة لفوق، وموافقات نازلة، وأسئلة رايحة للخبراء ودروس راجعة للمدرسة.')}</p>
 
       <div className="mt-2 grid grid-cols-2 gap-2 text-center sm:grid-cols-5">
         {counters.map((c) => (
           <div key={c.label} className="rounded-xl border border-slate-800 bg-slate-900/70 p-2">
             <b className={`block text-xl tabular-nums ${c.tone}`}><CountUp value={c.value} still={still} /></b>
-            <span className="text-[10px] text-slate-400">{c.label}</span>
+            <span className="text-[13px] text-slate-400">{c.label}</span>
           </div>
         ))}
       </div>
 
       <div className={`mt-2 overflow-x-auto ${full ? 'min-h-0 flex-1' : ''}`}>
-        <svg viewBox={`0 0 ${ROOM.width} ${ROOM.height}`} className={`block w-full min-w-[820px] ${full ? 'h-full' : 'h-auto'}`} role="img" aria-label={T('غرفة التحكم الحية')} style={{ fontFamily: 'inherit', direction: 'ltr' }}>
+        <svg viewBox={`0 0 ${ROOM.width} ${ROOM.height}`} className={`block w-full min-w-[1150px] ${full ? 'h-full' : 'h-auto'}`} role="img" aria-label={T('غرفة التحكم الحية')} style={{ fontFamily: 'inherit', direction: 'ltr' }}>
           <defs>
             <radialGradient id="ocr-bg" cx="50%" cy="20%" r="85%"><stop offset="0%" stopColor="#13203a" /><stop offset="100%" stopColor="#070b14" /></radialGradient>
             <pattern id="ocr-grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M 32 0 L 0 0 0 32" fill="none" stroke="#1e293b" strokeWidth="0.6" /></pattern>
@@ -235,8 +235,8 @@ export default function OpsControlRoom({ live, gh, stepOf, school, sciences, now
           <rect width={ROOM.width} height={ROOM.height} fill="url(#ocr-bg)" />
           <rect width={ROOM.width} height={ROOM.height} fill="url(#ocr-grid)" opacity={0.55} />
           {/* The two branches */}
-          <text x={300} y={258} textAnchor="middle" fontSize={10} fill="#64748b" stroke="#070b14" strokeWidth={3} paintOrder="stroke">{T('فرع المعرفة: المدرسة وخبراؤها')}</text>
-          <text x={930} y={258} textAnchor="middle" fontSize={10} fill="#64748b" stroke="#070b14" strokeWidth={3} paintOrder="stroke">{T('فرع التشغيل: الأقسام وروبوتاتها')}</text>
+          <text x={300} y={258} textAnchor="middle" fontSize={12.5} fill="#64748b" stroke="#070b14" strokeWidth={3} paintOrder="stroke">{T('فرع المعرفة: المدرسة وخبراؤها')}</text>
+          <text x={930} y={258} textAnchor="middle" fontSize={12.5} fill="#64748b" stroke="#070b14" strokeWidth={3} paintOrder="stroke">{T('فرع التشغيل: الأقسام وروبوتاتها')}</text>
 
           {/* Reporting lines */}
           {EDGES.map((e) => {
@@ -257,7 +257,7 @@ export default function OpsControlRoom({ live, gh, stepOf, school, sciences, now
                 <title>{label(n)}</title>
                 {on && <rect x={-b.w / 2 - 4} y={-b.h / 2 - 4} width={b.w + 8} height={b.h + 8} rx={12} fill="none" stroke={b.stroke} strokeWidth={2} filter="url(#ocr-shine)" className={still ? '' : 'ocr-glow'} />}
                 <rect x={-b.w / 2} y={-b.h / 2} width={b.w} height={b.h} rx={10} fill={b.fill} stroke={b.stroke} strokeWidth={on ? 2 : 1.2} />
-                <text y={4} textAnchor="middle" fontSize={b.size} fontWeight={800} fill={b.text}>{label(n).length > (n.kind === 'dept' ? 20 : 30) ? `${label(n).slice(0, n.kind === 'dept' ? 19 : 29)}…` : label(n)}</text>
+                <text y={4} textAnchor="middle" fontSize={b.size} fontWeight={800} fill={b.text}>{label(n).length > (n.kind === 'dept' ? 18 : 28) ? `${label(n).slice(0, n.kind === 'dept' ? 17 : 27)}…` : label(n)}</text>
               </g>
             );
           })}
@@ -290,9 +290,9 @@ export default function OpsControlRoom({ live, gh, stepOf, school, sciences, now
                 {(schoolOn || fresh) && <circle r={R + 6} fill={fresh ? '#f59e0b' : '#6366f1'} opacity={0.25} className={still ? '' : 'ocr-glow'} style={{ animationDelay: `${(k % 6) * 0.25}s` }} />}
                 <circle r={R} fill="#111827" stroke="#334155" strokeWidth={3} />
                 <circle r={R} fill="none" stroke={fresh ? '#fbbf24' : '#818cf8'} strokeWidth={3} strokeDasharray={`${C * p} ${C}`} transform="rotate(-90)" strokeLinecap="round" />
-                <text y={4} textAnchor="middle" fontSize={10} fontWeight={800} fill="#e0e7ff">{Math.round(p * 100)}</text>
-                <text y={R + 13} textAnchor="middle" fontSize={9.5} fill="#cbd5e1" stroke="#070b14" strokeWidth={3} paintOrder="stroke">{l1}</text>
-                {l2 && <text y={R + 25} textAnchor="middle" fontSize={9.5} fill="#cbd5e1" stroke="#070b14" strokeWidth={3} paintOrder="stroke">{l2}</text>}
+                <text y={4.5} textAnchor="middle" fontSize={11.5} fontWeight={800} fill="#e0e7ff">{Math.round(p * 100)}</text>
+                <text y={R + 14} textAnchor="middle" fontSize={11.5} fill="#cbd5e1" stroke="#070b14" strokeWidth={3} paintOrder="stroke">{l1}</text>
+                {l2 && <text y={R + 28} textAnchor="middle" fontSize={11.5} fill="#cbd5e1" stroke="#070b14" strokeWidth={3} paintOrder="stroke">{l2}</text>}
               </g>
             );
           })}
@@ -301,19 +301,19 @@ export default function OpsControlRoom({ live, gh, stepOf, school, sciences, now
 
       <div className="mt-2 grid gap-2 lg:grid-cols-2">
         <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-2">
-          <div className="mb-1 text-[11px] font-black text-emerald-300">{T('بيحصل دلوقتي')}</div>
+          <div className="mb-1 text-sm font-black text-emerald-300">{T('بيحصل دلوقتي')}</div>
           {nowPlaying.length ? (
-            <ul className="space-y-1 text-[11px]">
+            <ul className="space-y-1 text-sm">
               {nowPlaying.map((x) => (
                 <li key={x.id} className="ocr-in flex items-center gap-2"><span className={`h-2 w-2 shrink-0 rounded-full bg-emerald-400 ${still ? '' : 'animate-pulse'}`} /><button type="button" className="font-bold text-slate-100 hover:underline" onClick={() => onPick(x.id)}>{botName(x.id)}</button><span className="truncate text-slate-400">{x.text}</span></li>
               ))}
             </ul>
-          ) : <p className="text-[11px] text-slate-500">{T('مفيش روبوت شغال في اللحظة دي — كله مستني دوره.')}</p>}
-          {schoolOn && <p className="ocr-in mt-1 text-[11px] text-indigo-200">🎓 {T('المدرسة شغالة: الأسئلة رايحة للخبراء والدروس المراجَعة راجعة لذاكرة شاهين.')}</p>}
+          ) : <p className="text-sm text-slate-500">{T('مفيش روبوت شغال في اللحظة دي — كله مستني دوره.')}</p>}
+          {schoolOn && <p className="ocr-in mt-1 text-sm text-indigo-200">🎓 {T('المدرسة شغالة: الأسئلة رايحة للخبراء والدروس المراجَعة راجعة لذاكرة شاهين.')}</p>}
         </div>
         <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-2">
-          <div className="mb-1 text-[11px] font-black text-amber-200">{T('سجل النشاط')}</div>
-          <ul className="space-y-1 text-[11px]">
+          <div className="mb-1 text-sm font-black text-amber-200">{T('سجل النشاط')}</div>
+          <ul className="space-y-1 text-sm">
             {feed.map((f) => (
               <li key={f.key} className="ocr-in flex items-start gap-2">
                 <span className="shrink-0 tabular-nums text-slate-500">{clock(f.at)}</span>
