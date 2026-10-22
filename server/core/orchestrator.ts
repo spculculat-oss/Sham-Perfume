@@ -193,6 +193,12 @@ export function asksForRecommendation(message: string): boolean {
   return /(رشحلي|رشح لي|اقترحلي|اقترح لي|انصحني|انصح لي|اختارلي|ساعدني اختار|recommend|suggest|which (perfume|one) should)/i.test(message);
 }
 
+/** A chat request is not a checkout: the cart, payment and stock live on the store page, and the team confirms. */
+const CHECKOUT_LINE = {
+  ar: 'الشراء وإتمام الدفع بيتم من صفحة المتجر (السعر النهائي والشحن بيظهروا قبل التأكيد). ولو حابب الفريق يجهّز لك الطلب، اختار المنتجات في الاستمارة تحت وهنرجع لك برقم طلب SH-…',
+  en: 'Buying and payment happen on the store page (the final price and shipping show before you confirm). If you prefer the team to prepare it, pick the products in the form below and you get an SH- reference.',
+};
+
 const PRODUCT_WORDS = ['سعر', 'سعره', 'بكام', 'كام', 'مقاس', 'حجم', 'نوت', 'نوتات', 'مكونات', 'تفاصيل', 'متوفر', 'مخزون', 'شحن', 'price', 'cost', 'size', 'notes', 'details', 'stock', 'shipping'];
 
 /** Is the visitor asking about the product they have open («ده سعره كام»), not about the store in general? */
@@ -333,6 +339,21 @@ export class Orchestrator {
     // The visitor can only buy on the store page: open it whenever the answer quotes storefront items.
     const storefrontHit = results.find((r) => r.tool === 'search_store')?.result.data as { items?: StoreItem[] } | undefined;
     if (storefrontHit?.items?.length && routed.intent === 'browse_products') actions.push({ type: 'open_tab', tab: 'store', title: lang === 'ar' ? 'المتجر' : 'Store' });
+    // A chat purchase request is a request, not a checkout: the card lists the real storefront items the visitor may
+    // pick, and the store button is always next to it.
+    if (routed.intent === 'service_request' && service?.kind === 'store' && storefrontHit?.items?.length) {
+      const cards = storefrontHit.items.map((item) => ({
+        id: item.id, sku: item.sku, nameAr: item.nameAr, nameEn: item.nameEn, price: item.price,
+        currency: item.currency, stock: item.inStock ? 1 : 0, unit: item.sizeMl ? `${item.sizeMl}ml` : 'piece',
+      }));
+      actions = actions.filter((a) => a.type !== 'products');
+      actions.unshift({ type: 'products', products: cards });
+      actions.push({ type: 'open_tab', tab: 'store', title: lang === 'ar' ? 'المتجر' : 'Store' });
+    }
+    // Browsing is not ordering: a price-list question should not drop an order form under the answer.
+    if (routed.intent === 'browse_products' && !wantsToOrder(redacted)) {
+      actions = actions.filter((a) => !(a.type === 'request_form' && a.serviceId === service?.id && service?.kind === 'store'));
+    }
     // A platform answer is useless if the visitor still has to hunt for the tab: open it for them.
     const platform = platformFeature(routed.platformId);
     if (routed.intent === 'platform_help' && platform?.tab) {
@@ -487,7 +508,11 @@ export class Orchestrator {
         if (service) steps.push({ tool: 'prepare_request_form', args: { service } });
         break;
       case 'service_request':
-        if (service?.kind === 'store') steps.push({ tool: 'search_catalog', args: { query } });
+        if (service?.kind === 'store') {
+          // The store form must list what the shop really sells: the internal rows, and the live storefront.
+          steps.push({ tool: 'search_catalog', args: { query } });
+          steps.push({ tool: 'search_store', args: { query } });
+        }
         if (service) steps.push({ tool: 'prepare_request_form', args: { service } });
         steps.push({ tool: 'retrieve_knowledge', args: { query } });
         break;
@@ -551,14 +576,26 @@ export class Orchestrator {
         const store = r('search_store')?.data as { matched: boolean; items: StoreItem[]; snapshot?: StoreSnapshot; digest?: { min: number; max: number } } | undefined;
         const parts: string[] = [];
         if (service?.kind === 'store' || routed.intent === 'browse_products') {
-          if (store?.items.length && !store.matched && !store.snapshot?.empty) {
+          // Relevance order across the two catalogs: a real storefront match, then a match in the merchant's own
+          // catalog, then the storefront's honest price spread, then the merchant's latest products.
+          const ownMatch = Boolean(catalog?.matched && catalog.products.length);
+          if (store?.items.length && !store.matched && !store.snapshot?.empty && ownMatch) {
+            parts.push(ar ? 'دي المنتجات المطابقة من كتالوج شام:' : 'Here are the matching products from Sham’s catalog:');
+            parts.push(catalog!.products.slice(0, 4).map((p) => `• ${(ar ? p.nameAr : p.nameEn) || p.nameAr || p.nameEn} — ${p.price} ${p.currency} / ${p.unit} — ${p.stock > 0 ? (ar ? `متاح (${p.stock})` : `in stock (${p.stock})`) : (ar ? 'غير متاح حالياً' : 'out of stock')}`).join('\n'));
+            if (store.snapshot) parts.push(ar ? `وفي المتجر ${store.snapshot.total} منتج منشور بأسعار من ${store.snapshot.minPrice} لـ ${store.snapshot.maxPrice} جنيه — قولّي الماركة أو العائلة أو الميزانية وأنا أدوّر فيها.` : `The store also has ${store.snapshot.total} published products from ${store.snapshot.minPrice} to ${store.snapshot.maxPrice} EGP — tell me a brand, family or budget and I will search there.`);
+            if (routed.intent === 'service_request') parts.push(ar ? CHECKOUT_LINE.ar : CHECKOUT_LINE.en);
+          } else if (store?.items.length && !store.matched && !store.snapshot?.empty) {
             // A vague question («إيه أسعار المنتجات؟») is not a failed name search: the tool already returned the
             // real price spread, so show the range and a few honest examples across it.
             const range = store.digest || { min: store.snapshot?.minPrice || 0, max: store.snapshot?.maxPrice || 0 };
+            const buying = routed.intent === 'service_request';
             if (ctx.product) parts.push(ar ? `اللي قدامك دلوقتي: ${ctx.product.nameAr} — ${ctx.product.price} جنيه مصري${ctx.product.inStock ? '' : ' (غير متوفر حالياً)'}.` : `The one you have open: ${ctx.product.nameEn} — ${ctx.product.price} EGP${ctx.product.inStock ? '' : ' (out of stock)'}.`);
-            parts.push(ar ? `أسعار المتجر الحقيقية للمنتجات المتوفرة من ${range.min} لـ ${range.max} جنيه مصري، ودي أمثلة على طول النطاق:` : `Real prices of the products in stock run from ${range.min} to ${range.max} EGP — here are examples across the range:`);
+            parts.push(buying
+              ? (ar ? `المنتجات المتاحة في المتجر فعلاً بأسعار من ${range.min} لـ ${range.max} جنيه مصري، ودي أمثلة:` : `What the store really sells right now, from ${range.min} to ${range.max} EGP — for example:`)
+              : (ar ? `أسعار المتجر الحقيقية للمنتجات المتوفرة من ${range.min} لـ ${range.max} جنيه مصري، ودي أمثلة على طول النطاق:` : `Real prices of the products in stock run from ${range.min} to ${range.max} EGP — here are examples across the range:`));
             parts.push(store.items.map((p) => storeLine(p, ar ? 'ar' : 'en')).join('\n'));
             if (store.snapshot) parts.push(ar ? `المتجر فيه ${store.snapshot.total} منتج منشور (${store.snapshot.inStock} متوفر) — قولّي عائلة عطرية أو ماركة أو ميزانية وأنا أضيّق البحث، أو دوس «افتح الصفحة» تتفرج على الكل.` : `The store has ${store.snapshot.total} published products (${store.snapshot.inStock} in stock) — tell me a scent family, brand or budget and I will narrow it down, or press “Open page” to browse.`);
+            if (buying) parts.push(ar ? CHECKOUT_LINE.ar : CHECKOUT_LINE.en);
           } else if (store?.items.length) {
             parts.push(store.matched
               ? (ar ? 'من كتالوج المتجر (السعر بالجنيه المصري، والتحويل لعملتك في صفحة الدفع):' : 'From the store catalogue (prices in EGP, converted to your currency at checkout):')
@@ -566,9 +603,13 @@ export class Orchestrator {
             parts.push(store.items.map((p) => storeLine(p, ar ? 'ar' : 'en')).join('\n'));
             if (store.snapshot && !store.matched) parts.push(ar ? `المتجر فيه ${store.snapshot.total} منتج منشور (${store.snapshot.inStock} متوفر) — قولّي الماركة أو العائلة العطرية أو الميزانية وأنا أضيّق البحث.` : `The store has ${store.snapshot.total} published products (${store.snapshot.inStock} in stock) — tell me the brand, family or budget and I will narrow it down.`);
             parts.push(ar ? 'دوس «افتح الصفحة» تحت تشوف التفاصيل والصور وتضيف للسلة.' : 'Press “Open page” below for details and photos, and to add to the cart.');
+            if (routed.intent === 'service_request') parts.push(ar ? CHECKOUT_LINE.ar : CHECKOUT_LINE.en);
             if (asksForRecommendation(ctx.query || '')) parts.push(shaheenHandoff(ar ? 'ar' : 'en', 'advice'));
           } else if (!catalog || !catalog.products.length) {
-            parts.push(ar ? 'كتالوج المتجر لسه بيتجهز ومفيش منتجات منشورة بأسعار حالياً، فمش هقدر أأكد سعر أو توفر. تقدر تطلب تركيب مخصص أو تسيب طلب للدعم وفريق شام يرد عليك.' : 'The store catalog is not published yet, so I cannot confirm prices or stock. You can request a bespoke perfume or leave a support request.');
+            // Reached only when the storefront itself is empty (search_store would have quoted it otherwise).
+            parts.push(ar
+              ? 'المتجر مالوش منتجات منشورة بأسعار حالياً، فمش هقدر أأكد سعر أو توفر. تقدر تطلب تركيب مخصص أو تسيب طلب للدعم وفريق شام يرد عليك.'
+              : 'The store has no published products right now, so I cannot confirm prices or stock. You can request a bespoke perfume or leave a support request.');
           } else {
             parts.push(catalog.matched
               ? (ar ? 'دي المنتجات المطابقة بالأسعار والمخزون الحالي من نظام شام:' : 'Matching products with current price and stock from Sham’s system:')

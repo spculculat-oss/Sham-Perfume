@@ -64,6 +64,7 @@ export const PAGES: PageGuide[] = [
       { ar: 'إيه أسعار المنتجات؟', en: 'What are the prices?', expect: 'prices' },
       { ar: 'عندكم عطر عود رجالي للشتا؟', en: 'Do you have a men’s oud perfume for winter?', expect: 'store' },
       { ar: 'عايز عطر تحت 1000 جنيه', en: 'I want a perfume under 1000 EGP', expect: 'store' },
+      { ar: 'عايز أشتري عطر', en: 'I want to buy a perfume', expect: 'store' },
     ],
   },
   {

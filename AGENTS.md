@@ -115,6 +115,13 @@ deletions, the first import, failed checks) on branch `aistudio/<sha7>` with a `
   work (formulation, the «اسأل شاهين» advisor, perfume news, design, finance/contracts) is named and handed
   over, never claimed; internal figures are never quoted. `tests/shamCoreStoreSpecialties.test.ts` guards
   the registry, the no-leak rule, the empty-catalog honesty and the score.
+- **One catalog for the whole system.** `server/core/catalog.ts` is the only catalog the assistant, the forms
+  and the order path may read: the merchant's `repo.products` rows when they exist, the real storefront
+  otherwise (`search_catalog` marks it `STOREFRONT_CATALOG`). Never hard-code «مفيش منتجات» against the merchant
+  catalog — a deployment can have zero admin rows while the shop sells 1161 products. A chat order may name a
+  storefront product: it is priced from the real catalog and never written into `repo.products` (the store owns
+  its stock); unknown or sold-out ids are rejected. `tests/shamCoreCatalog.test.ts` and the page review's
+  no-merchant-catalog run guard this.
 - **Every page answers for itself.** The widget sends the page the visitor is on (`page`/`productId` in the chat
   body, validated by `validateChatInput`). Every visitor tab belongs in `PAGES` in `server/core/pageGuide.ts`
   (what the visitor sees, what to offer there, realistic questions) and in the page review score:

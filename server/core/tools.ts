@@ -6,6 +6,7 @@
  */
 import { asksForPlatformOverview } from './platformGuide';
 import { findStorefront, priceDigest, storefrontCatalog, storeLine, type StoreItem } from './storeGuide';
+import { catalogView } from './catalog';
 import type { Repository } from './repository';
 import { publicView } from './repository';
 import type { ActionCard, Citation, Product, ServiceDef } from './types';
@@ -78,18 +79,21 @@ export const tools = {
 
   search_catalog: {
     name: 'search_catalog',
-    description: 'Find active products with live price and stock.',
-    async run(args: { query: string; limit?: number }, { repo }) {
-      const products = await repo.products();
-      if (!products.length) return { observation: 'CATALOG_EMPTY', data: { matched: false, products: [] } };
+    description: 'Find active products with live price and stock (the merchant catalog, or the real storefront when that is empty).',
+    async run(args: { query: string; limit?: number }, { repo, env }) {
+      // One catalog for the whole system: the merchant's own rows when they exist, otherwise the real storefront —
+      // so no tool can ever report an empty catalog while the shop has products (server/core/catalog.ts).
+      const view = await catalogView(repo, { env });
+      const products = view.products;
+      if (!products.length) return { observation: 'CATALOG_EMPTY', data: { matched: false, products: [], source: view.source } };
       const index = await repo.searchIndex();
       const ids = index.search(args.query, args.limit || 6, 0.3).filter((h) => h.doc.kind === 'product').map((h) => h.doc.id);
       const found = (ids.length ? ids.map((id) => products.find((p) => p.id === id)!).filter(Boolean) : products.slice(0, args.limit || 6));
       return {
-        observation: `${ids.length ? 'MATCHES' : 'NO_MATCH_SHOWING_LATEST'}\n${found.map((p) => `${p.sku} | ${p.nameAr || p.nameEn} | ${p.price} ${p.currency} | stock ${p.stock}${p.demo ? ' | DEMO' : ''}`).join('\n')}`,
+        observation: `${view.source === 'storefront' ? 'STOREFRONT_CATALOG ' : ''}${ids.length ? 'MATCHES' : 'NO_MATCH_SHOWING_LATEST'}\n${found.map((p) => `${p.sku} | ${p.nameAr || p.nameEn} | ${p.price} ${p.currency} | ${p.stock > 0 ? 'available' : 'out of stock'}${p.demo ? ' | DEMO' : ''}`).join('\n')}`,
         actions: [{ type: 'products', products: found.map(productCard) }],
         citations: found.map((p) => ({ id: p.id, title: p.nameAr || p.nameEn, kind: 'product' as const })),
-        data: { matched: ids.length > 0, products: found },
+        data: { matched: ids.length > 0, products: found, source: view.source },
       };
     },
   } as Tool<{ query: string; limit?: number }>,

@@ -114,7 +114,8 @@ test('the page review is 100%, cached, and its failures are actionable', async (
   assert.equal(review.score, 100, review.checks.filter((c) => !c.ok).map((c) => `${c.page}/${c.question} → ${c.actual}`).join('\n'));
   assert.equal(review.passed, review.total);
   assert.equal(review.pages, PAGES.length);
-  assert.equal(review.total, PAGES.reduce((n, p) => n + p.questions.length, 0));
+  // Every page's questions, plus the two production checks (the same shop with no merchant catalog).
+  assert.equal(review.total, PAGES.reduce((n, p) => n + p.questions.length, 0) + 2);
   for (const check of review.checks) {
     assert.ok(check.expected.length > 5 && check.fix.length > 20, 'every check says what it wanted and how to fix a failure');
     assert.doesNotMatch(JSON.stringify(check), /openai|chatgpt|gemini|anthropic|claude/i);

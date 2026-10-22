@@ -79,6 +79,15 @@ const FIX: Record<PageExpect, string> = {
 
 const L = (lang: 'ar' | 'en', ar: string, en: string) => (lang === 'ar' ? ar : en);
 
+/**
+ * A deployment whose merchant catalog was never filled (the production case that produced «مفيش منتجات»
+ * while the shop had 1161): the same store, the same services, but `repo.products()` returns nothing.
+ */
+export function withoutAdminCatalog(repo: Repository): Repository {
+  const shadow: Repository = Object.assign(Object.create(repo) as Repository, { products: async () => [] });
+  return shadow;
+}
+
 export async function reviewPages(repo: Repository, opts: { env?: Record<string, string | undefined>; pages?: string[] } = {}): Promise<PageReview> {
   // A model-free orchestrator on purpose: this proves the built-in answers, the ones every visitor gets
   // even when no engine is configured or every engine is down.
@@ -90,9 +99,26 @@ export async function reviewPages(repo: Repository, opts: { env?: Record<string,
   const checks: PageCheck[] = [];
   const pages = opts.pages?.length ? PAGES.filter((p) => opts.pages!.includes(p.id)) : PAGES;
 
-  for (const page of pages) {
+  // The same shop as a deployment without a merchant catalog: the assistant must still answer from the
+  // storefront. This is the regression that made it claim 「مفيش منتجات」 on a store with 1161 products.
+  const shadowBot = new Orchestrator(withoutAdminCatalog(repo), { env: {} });
+  const shadowPage: PageGuide = {
+    ...PAGES.find((p) => p.id === 'store')!,
+    id: 'store',
+    label: { ar: 'المتجر (من غير كتالوج إدارة)', en: 'Store (no merchant catalog)' },
+    questions: [
+      { ar: 'عايز أشتري عطر', en: 'I want to buy a perfume', expect: 'store' },
+      { ar: 'إيه أسعار المنتجات؟', en: 'What are the prices?', expect: 'prices' },
+    ],
+  };
+  const runs: { bot: Orchestrator; page: PageGuide }[] = [
+    ...pages.map((page) => ({ bot, page })),
+    ...(opts.pages?.length ? [] : [{ bot: shadowBot, page: shadowPage }]),
+  ];
+
+  for (const { bot: activeBot, page } of runs) {
     for (const question of page.questions) {
-      const out = await bot.chat({
+      const out = await activeBot.chat({
         message: question.ar,
         visitorId: `${REVIEWER}-${Math.random().toString(36).slice(2, 10)}`,
         language: 'ar',

@@ -4,6 +4,7 @@
  */
 import { randomBytes, randomUUID } from 'node:crypto';
 import { trainedKnowledge } from './liveData';
+import { findStoreProduct } from './catalog';
 import type { Store } from './store';
 import type {
   Conversation, CoreSettings, KnowledgeDoc, KnowledgeGap, OrderItem, Product, PublicRequestView, RequestStatus,
@@ -397,6 +398,10 @@ export class Repository {
       const rawItems = Array.isArray(input.items) ? input.items.slice(0, 30) : [];
       if (!rawItems.length) throw new ValidationError('EMPTY_ORDER', 'Select at least one product');
       const catalog = new Map((await this.products()).map((p) => [p.id, p]));
+      // The merchant catalog can be empty on a shop that sells from the storefront: resolve those ids from the
+      // real storefront (server/core/catalog.ts) and record them at their real price, without reserving stock —
+      // the store page owns the checkout and the inventory, and the team confirms the request.
+      const fromStorefront = new Set<string>();
       const merged = new Map<string, number>();
       for (const raw of rawItems as { productId?: unknown; quantity?: unknown }[]) {
         const quantity = Number(raw?.quantity);
@@ -405,18 +410,29 @@ export class Repository {
         }
         merged.set(raw.productId, (merged.get(raw.productId) || 0) + quantity);
       }
+      for (const productId of merged.keys()) {
+        if (catalog.has(productId)) continue;
+        const shop = await findStoreProduct(productId, this.env);
+        if (!shop) continue; // resolved (and rejected) below, in the order the visitor typed them
+        if (!shop.item.inStock) throw new ValidationError('OUT_OF_STOCK', `Insufficient stock for ${shop.product.sku}`, 409);
+        catalog.set(shop.product.id, shop.product);
+        fromStorefront.add(shop.product.id);
+      }
       items = [...merged].map(([productId, quantity]) => {
         const product = catalog.get(productId);
         if (!product) throw new ValidationError('INVALID_ITEM', 'Product is not available');
-        if (product.stock < quantity) throw new ValidationError('OUT_OF_STOCK', `Insufficient stock for ${product.sku}`, 409);
+        // Storefront availability is a yes/no, not a count: the request is a quote the team confirms.
+        if (!fromStorefront.has(productId) && product.stock < quantity) throw new ValidationError('OUT_OF_STOCK', `Insufficient stock for ${product.sku}`, 409);
         return { productId, sku: product.sku, name: product.nameAr || product.nameEn, quantity, unitPrice: product.price, currency: product.currency };
       });
       const currencies = new Set(items.map((i) => i.currency));
       if (currencies.size > 1) throw new ValidationError('MIXED_CURRENCY', 'Products in one order must share a currency');
       currency = items[0].currency;
       total = Math.round(items.reduce((sum, i) => sum + i.unitPrice * i.quantity, 0) * 100) / 100;
-      // Reserve stock at request time; admin cancellation releases it.
+      // Reserve stock at request time; admin cancellation releases it. Storefront items are never written into
+      // the merchant catalog: the store owns their stock, so only their price is recorded on the request.
       for (const item of items) {
+        if (fromStorefront.has(item.productId)) continue;
         const product = catalog.get(item.productId)!;
         await this.store.put('products', product.id, { ...product, stock: product.stock - item.quantity, updatedAt: new Date().toISOString() });
       }

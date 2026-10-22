@@ -14,6 +14,7 @@ import { Orchestrator, AssistantError, validateChatInput } from '../server/core/
 import { route, extractEntities } from '../server/core/router';
 import { Bm25Index, normalize, tokenize } from '../server/core/text';
 import { defaultServices } from '../server/core/seed';
+import { storefrontCatalog } from '../server/core/storeGuide';
 
 const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json' } });
 const visitor = 'visitor-test-0001';
@@ -108,7 +109,9 @@ test('built-in engine answers with zero keys, grounded with citations and cards'
   const buy = await bot.chat({ message: 'عايز اشتري زيت عود', visitorId: visitor, conversationId: kb.conversationId, language: 'ar' });
   assert.equal(buy.conversationId, kb.conversationId);
   assert.ok(buy.actions.some((a) => a.type === 'request_form' && a.serviceId === 'store'));
-  assert.match(buy.reply, /450 EGP/);
+  // The shop's real catalog answers first (server/core/catalog.ts): a product that exists, at its own price.
+  const { items } = await storefrontCatalog({});
+  assert.ok(items.some((i) => buy.reply.includes(i.nameAr) && buy.reply.includes(String(i.price))), 'quotes a real storefront product');
 
   const unknown = await bot.chat({ message: 'كم سعر الذهب في البورصة', visitorId: visitor, language: 'ar' });
   assert.doesNotMatch(unknown.reply, /ذهب.*\d+ جنيه/);
@@ -117,11 +120,21 @@ test('built-in engine answers with zero keys, grounded with citations and cards'
   assert.match(calc.reply, /15 ml/);
 });
 
-test('empty catalog: no prices are invented and no empty cart is offered', async () => {
+test('a store with no merchant catalog still answers from the real storefront — and invents nothing', async () => {
+  // The production case: the admin catalog was never filled. The shop is not empty, so the assistant must not
+  // pretend it is: it quotes the real storefront and offers a form whose products all exist.
   const bot = new Orchestrator(new Repository(new MemoryStore(), {}), { env: {} });
   const out = await bot.chat({ message: 'عايز اشتري زيت عود بكام', visitorId: visitor, language: 'ar' });
-  assert.match(out.reply, /الكتالوج|كتالوج/);
-  assert.ok(!out.actions.some((a) => a.type === 'request_form' && a.serviceId === 'store'));
+  assert.doesNotMatch(out.reply, /مفيش منتجات|لسه بيتجهز/);
+  const { items } = await storefrontCatalog({});
+  const prices = new Set(items.map((i) => Math.round(i.price)));
+  for (const match of out.reply.matchAll(/(\d+)\s*جنيه/g)) assert.ok(prices.has(Number(match[1])), `invented price ${match[1]}`);
+  const form = out.actions.find((a) => a.type === 'request_form' && a.serviceId === 'store');
+  assert.ok(form, 'the store request form is offered');
+  const card = out.actions.find((a) => a.type === 'products') as { products?: { sku: string }[] } | undefined;
+  const skus = new Set(items.map((i) => i.sku));
+  assert.ok(card?.products?.length, 'the form has products to pick');
+  for (const product of card!.products!) assert.ok(skus.has(product.sku), `${product.sku} is not a real storefront product`);
 });
 
 test('card numbers are redacted before storage and conversations are isolated per visitor', async () => {
