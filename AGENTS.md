@@ -106,6 +106,39 @@ deletions, the first import, failed checks) on branch `aistudio/<sha7>` with a `
   `node --import tsx scripts/shaheen-council/org-doc.mts` to refresh `SHAHEEN_ORG.md`;
   `tests/shaheenOrg.test.ts` fails otherwise. If the bot writes a report, add its own checks to
   `scripts/shaheen-council/precheck.ts` (the pre-meeting full check, 06:10 UTC — two hours before the council at 08:15 UTC).
+- **The Sham assistant must know the platform as it is today.** Every visitor-facing tab or feature
+  (`src/App.tsx`) belongs in `PLATFORM_FEATURES` in `server/core/platformGuide.ts` — name, direct answer,
+  how-to, tab id, Arabic + English keywords — with a knowledge document. Bump `KNOWLEDGE_SEED_VERSION`
+  in `server/core/seed.ts` when the document is new to stores already running (existing documents are
+  never overwritten, deleted ones are never resurrected). `tests/shamCorePlatform.test.ts` fails when a
+  linked tab does not exist, so add the feature in the same change that ships it.
+- **The Sham assistant knows the real store, and only the store.** `server/core/storeGuide.ts` builds the
+  catalog with the same `mergeCatalog` the storefront uses (bundled catalog + Shaheen's enrichment), so the
+  assistant may only quote products and prices that exist there; supplier prices and platform margin never
+  leave `toItem`. Buying/shipping/returns/tracking facts are seeded as `kb-store-*` documents, and the live
+  snapshot (counts, brands, families, price range) is injected into every prompt. New store knowledge =
+  a `STORE_PLAYBOOK` topic + a `KNOWLEDGE_SEED_VERSION` bump (v3).
+- **Its specialties come from Shaheen's registry, not from prose.** `server/core/shaheenSpecialties.ts`
+  maps each specialty to an AI tool (`src/utils/aiTools.ts`), a bot (`src/utils/shaheenOrg.ts`) or a tab
+  (`src/App.tsx`); `GET /api/admin/assistant/specialties` and `npm run review:assistant` run
+  `server/core/specialtyReview.ts` against the local engine (no key) and must report 100. Shaheen's own
+  work (formulation, the «اسأل شاهين» advisor, perfume news, design, finance/contracts) is named and handed
+  over, never claimed; internal figures are never quoted. `tests/shamCoreStoreSpecialties.test.ts` guards
+  the registry, the no-leak rule, the empty-catalog honesty and the score.
+- **One catalog for the whole system.** `server/core/catalog.ts` is the only catalog the assistant, the forms
+  and the order path may read: the merchant's `repo.products` rows when they exist, the real storefront
+  otherwise (`search_catalog` marks it `STOREFRONT_CATALOG`). Never hard-code «مفيش منتجات» against the merchant
+  catalog — a deployment can have zero admin rows while the shop sells 1161 products. A chat order may name a
+  storefront product: it is priced from the real catalog and never written into `repo.products` (the store owns
+  its stock); unknown or sold-out ids are rejected. `tests/shamCoreCatalog.test.ts` and the page review's
+  no-merchant-catalog run guard this.
+- **Every page answers for itself.** The widget sends the page the visitor is on (`page`/`productId` in the chat
+  body, validated by `validateChatInput`). Every visitor tab belongs in `PAGES` in `server/core/pageGuide.ts`
+  (what the visitor sees, what to offer there, realistic questions) and in the page review score:
+  `GET /api/admin/assistant/pages`, the «مراجعة الصفحات» card, `npm run review:assistant -- --pages`, and
+  `tests/shamCorePages.test.ts`. A general price question must return the real range (`priceDigest`), never
+  «nothing is published» while products exist, never an invented price and never a discount promise; an open
+  product page answers about that product; a «how do I…» question explains, it does not open an order form.
 - Customer invoices, receipts and order summaries must not show platform margin/profit amounts or
   percentages, or the supplier-cost breakdown. Keep selling prices, quantities, shipping, applicable
   taxes/fees and totals visible; do not change pricing or internal merchant/admin accounting to hide a margin.

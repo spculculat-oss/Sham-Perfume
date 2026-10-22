@@ -23,8 +23,9 @@ export const COUNCIL_ROLES: Record<CouncilRole, { ar: string; en: string; brief:
 };
 const ROLES = Object.keys(COUNCIL_ROLES) as CouncilRole[];
 const MODEL_ENGINES: ModelEngineId[] = ['self_hosted', 'gemini', 'openai', 'claude', 'deepseek', 'openrouter', 'perplexity'];
-/** Intents that can convene the council (never for tracking, calculations, greetings or privacy). */
-export const COUNCIL_INTENTS = ['perfume_expert', 'question', 'service_request', 'browse_products', 'list_services'] as const;
+/** Intents that can convene the council (never for tracking, calculations, greetings or privacy).
+ *  `platform_help` is included: a question about a new tool is worth several expert opinions too. */
+export const COUNCIL_INTENTS = ['perfume_expert', 'question', 'service_request', 'browse_products', 'list_services', 'platform_help'] as const;
 export const MAX_SEATS = 5;
 
 /** Invalid council settings; the repository maps it to a 400 ValidationError. */
