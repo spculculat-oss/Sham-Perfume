@@ -121,7 +121,10 @@ for (const q of todo) {
   while (alive.length && !answered) {
     const model = alive[0]!;
     asked++;
-    const r = await ask(model, q).catch(() => ({ status: 0 } as { text?: string; status: number }));
+    let r = await ask(model, q).catch(() => ({ status: 0 } as { text?: string; status: number }));
+    // Busy for a moment (5xx, network): once more after a short pause, then the next model.
+    if (r.status >= 500 || r.status === 0) { await sleep(8000); r = await ask(model, q).catch(() => ({ status: 0 } as { text?: string; status: number })); }
+    if (r.status >= 500 || r.status === 0) { console.log(`${model}: HTTP ${r.status} twice — next model`); reject(`${model}:http-${r.status}`); alive.shift(); continue; }
     if (r.status === 429 || r.status === 404 || r.status === 403 || r.status === 400) { console.log(`${model}: HTTP ${r.status} — next model`); alive.shift(); continue; } // out for today, or not for this use
     if (r.status === 200 && r.text) {
       const check = harvestCheck(q.q, r.text);
@@ -137,7 +140,7 @@ for (const q of todo) {
   if (mode === 'open') await sleep(Number(env.HARVEST_GAP_MS?.trim() || 20_000));
 }
 
-say(`Mode: ${mode === 'leftover' ? 'leftover of the daily package (last two hours)' : 'open models (own quota)'}; asked ${asked}, kept ${kept.length}, rejected ${rejected}${rejected ? ` (${[...why].map(([k, n]) => `${k} ×${n}`).join(', ')})` : ''}${stopped ? `, stopped (${stopped})` : ''}`);
+say(`Mode: ${mode === 'leftover' ? 'leftover of the daily package (last two hours)' : 'open models (own quota)'} [${models.join(', ')}]; asked ${asked}, kept ${kept.length}, rejected ${rejected}${rejected ? ` (${[...why].map(([k, n]) => `${k} ×${n}`).join(', ')})` : ''}${stopped ? `, stopped (${stopped})` : ''}`);
 if (kept.length) {
   const { file } = curateMemory(memory);
   memory.entries = file.entries; memory.updatedAt = file.updatedAt;
