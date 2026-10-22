@@ -1,7 +1,7 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-10-22T09:42:44.987Z",
+  "updatedAt": "2026-10-22T21:34:14.276Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
@@ -11,66 +11,67 @@
   "languageClamps": [],
   "score": 66,
   "notes": [
-    "الترجمة مش مكتملة: 16% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 162069 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط الأساسية بس هي اللي مكتملة.",
-    "المترجم الذكي: 162069 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3232 — النهارده اتترجم 0 (مستني مفتاح ذكاء اصطناعي شغال).",
+    "الترجمة مش مكتملة: 14.1% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 187761 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط الأساسية بس هي اللي مكتملة.",
+    "المترجم الذكي: 187761 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3232 — النهارده اتترجم 0 (الباقة خلصت — هيكمل بعد التجديد).",
     "لغات بلّغ عنها قسم التصميم بتتترجم الأول: is، sq، ps، ja."
   ],
-  "translationCoverage": 16,
+  "translationCoverage": 14.1,
   "fullyTranslated": 0,
   "translation": {
-    "at": "2026-10-22T09:42:45.406Z",
-    "status": "no_engine",
-    "remaining": 162069,
+    "at": "2026-10-22T21:34:14.656Z",
+    "status": "quota",
+    "remaining": 187761,
     "covered": 3232,
-    "total": 193158,
+    "total": 218834,
     "fullyTranslated": 0,
     "remainingByTier": {
       "1": 16177,
-      "2": 114286,
-      "3": 31606
+      "2": 117144,
+      "3": 54440
     },
     "worstLanguages": [
       {
         "lang": "my",
-        "remaining": 1804
+        "remaining": 2066
       },
       {
         "lang": "dz",
-        "remaining": 1804
+        "remaining": 2066
       },
       {
         "lang": "cs",
-        "remaining": 1802
+        "remaining": 2064
       },
       {
         "lang": "ur",
-        "remaining": 1802
+        "remaining": 2064
       },
       {
         "lang": "am",
-        "remaining": 1802
+        "remaining": 2064
       },
       {
         "lang": "ha",
-        "remaining": 1802
+        "remaining": 2064
       },
       {
         "lang": "yo",
-        "remaining": 1802
+        "remaining": 2064
       },
       {
         "lang": "zu",
-        "remaining": 1802
+        "remaining": 2064
       }
     ],
     "run": {
-      "calls": 0,
+      "calls": 1,
       "translated": 0,
       "rejected": 0,
       "droppedByReview": 0,
       "reviewed": false,
       "engines": [],
-      "languages": []
+      "languages": [],
+      "resumeAt": "2026-10-23T08:05:00.000Z"
     },
     "rejectReasons": {},
     "rejectCounts": {
@@ -154,7 +155,7 @@
     }
   },
   "design": {
-    "at": "2026-10-22T09:42:44.987Z",
+    "at": "2026-10-22T21:34:14.276Z",
     "auditAt": "2026-10-21T05:41:54.171Z",
     "auditScore": 42,
     "priorityLanguages": [
@@ -173,7 +174,7 @@
       "Search store perfumes"
     ],
     "physicalDirection": {
-      "total": 296,
+      "total": 298,
       "top": [
         {
           "file": "src/components/AuthModal.tsx",
