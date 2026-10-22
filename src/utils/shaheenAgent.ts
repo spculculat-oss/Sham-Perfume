@@ -19,6 +19,7 @@
 import { SCIENCE_TRACKS, type ScienceLesson, type ScienceTrackId } from '../data/sciences';
 import { isPersonal, isTimeBound, meaningWords, normalizeQuestion, similarity, type MemoryEntry, type MemoryFile } from './shaheenMemory';
 import { lessonExcerpt, searchLibrary, topicWords, type LibraryLesson, type LibraryMaterial } from './shaheenLibrary';
+import { buildScienceIndex, scienceExact, scienceHits, type ScienceFieldWords, type ScienceIndex } from './scienceIndex';
 import { buildLexicon, understandQuestion, understoodNote, type Lexicon } from './shaheenSpelling';
 import { researchAnswer, type Research } from './webResearch';
 import { greetingKind, greetingReply } from './shaheenGreeting';
@@ -153,6 +154,59 @@ export function plan(u: AgentUnderstanding): AgentPlan {
   return { expert, steps, split: Boolean(u.parts) };
 }
 
+// ── The fast desk: the sciences answered from the index, with no AI and no walk over the curriculum ────────────
+/**
+ * How sure the desk must be before it answers by itself. Higher than the agent's bar on purpose: the desk answers
+ * before his memory is read, so a loose match must not take the place of a better answer — a question that only
+ * brushes a lesson (one shared word, «ايه هي الطاقة الشمسية في الفضاء» and the space-security lesson) is left to
+ * the agent's full weighing.
+ */
+export const SCIENCE_DESK_BAR = 0.7;
+interface ScienceHitLike { lesson: ScienceLesson; relevance: number }
+export interface ScienceDeskAnswer {
+  /** The ready answer (the reviewed lesson, its boundary when it has one, and where it comes from). */
+  answer: string;
+  lesson: ScienceLesson;
+  relevance: number;
+  /** The other lessons the index found close, offered as follow-ups. */
+  related: ScienceLesson[];
+}
+/**
+ * «مكتب الاستعلام السريع»: a visitor's science question answered in one index lookup — no engine, no network and
+ * no scan of his memory. The question's own wording answers in one map hit; anything else is scored against the
+ * few lessons that share a word with it. Below the bar he says nothing (the agent, the library and the researcher
+ * are still there, and he never guesses).
+ */
+export function scienceDesk(question: string, lang: string, options: { bar?: number; lessons?: ScienceLesson[]; field?: FieldId } = {}): ScienceDeskAnswer | undefined {
+  // The curriculum is written, reviewed and bounded in Arabic: another language gets the expert's own answer.
+  if (lang !== 'ar') return undefined;
+  const asked = question.trim();
+  if (normalizeQuestion(asked).length < 6 || isTimeBound(asked) || isPersonal(asked)) return undefined;
+  const index = scienceIndexFor(options.lessons);
+  const bar = options.bar ?? SCIENCE_DESK_BAR;
+  const field = options.field ?? fieldsOf(asked)[0]?.field;
+  const exact = scienceExact(index, asked);
+  // One lookup: the taught wordings are a map hit, everything else is scored once and kept for the next time.
+  const hits = scienceHits(index, asked, { field, limit: 4 });
+  const best: ScienceHitLike | undefined = exact ? { lesson: exact, relevance: 1 } : hits[0];
+  if (!best || best.relevance < bar) return undefined;
+  // «الرد المنطقي»: the desk only answers the kind of question that was asked, about what was asked — otherwise it
+  // stays silent and the agent weighs every source with the same check (a «مين» needs a person, a «كام» a number).
+  const candidate = { kind: 'expert', title: best.lesson.titleAr, text: best.lesson.answerAr,
+    about: `${best.lesson.questionAr} ${best.lesson.keywords.join(' ')}` };
+  const core = coreSubjects(asked);
+  if (!fitsIntent(intentOf(asked), candidate) || coverage(core, `${candidate.title} ${candidate.about} ${candidate.text}`) < 0.5) return undefined;
+  const related = hits.filter((h) => h.lesson.id !== best.lesson.id && h.relevance >= 0.35).slice(0, 2).map((h) => h.lesson);
+  const trackTitle = TRACKS[best.lesson.track]?.titleAr || expertOf(best.lesson.track).nameAr;
+  // A medical or veterinary lesson always carries its limit: general education, never a diagnosis or a dose.
+  const boundary = best.lesson.track === 'human-medicine' || best.lesson.track === 'veterinary'
+    ? `\n\n> ${TRACKS[best.lesson.track]?.boundaryAr || ''}`.trimEnd() : '';
+  const more = related.length ? ` وعندي كمان عن: ${related.map((l) => l.titleAr).join('، ')}.` : '';
+  const answer = `**${best.lesson.titleAr}**\n\n${best.lesson.answerAr}${boundary}`
+    + `\n\n_🎓 من علوم شاهين — مسار «${trackTitle}»، درس مكتوب ومراجَع عندي.${more}_`;
+  return { answer, lesson: best.lesson, relevance: best.relevance, related };
+}
+
 // ── 3. Gather and weigh ──────────────────────────────────────────────────────────────────────────────────────
 export interface AgentSources {
   lessons: LibraryLesson[];
@@ -174,8 +228,38 @@ export const BAR: Record<SourceKind, number> = { expert: 0.42, material: 0.6, le
 
 const SCIENCE_ALL = () => SCIENCE_TRACKS.flatMap((t) => t.lessons);
 const words = (s: string) => topicWords(s);
+
+/* ── «فهرس علوم شاهين»: the curriculum compiled once, so a question never walks all 73 lessons ──────────────── */
+const FIELD_WORDS = Object.fromEntries(SCIENCE_TRACKS.map((t) => [t.id, expertOf(t.id).words])) as ScienceFieldWords;
+let curriculumIndex: ScienceIndex | undefined;
+/** The school's curriculum as a read-only index (built on first use, a few milliseconds, then reused everywhere). */
+export const scienceCurriculum = (): ScienceIndex => (curriculumIndex ??= buildScienceIndex(SCIENCE_ALL(), FIELD_WORDS));
+const looseIndexes = new WeakMap<ScienceLesson[], ScienceIndex>();
+/** The index of another lesson set (the school's own studies, a test's curriculum, an admin preview). */
+export function scienceIndexFor(lessons?: ScienceLesson[]): ScienceIndex {
+  if (!lessons) return scienceCurriculum();
+  const known = looseIndexes.get(lessons);
+  if (known) return known;
+  const built = buildScienceIndex(lessons, FIELD_WORDS);
+  looseIndexes.set(lessons, built);
+  return built;
+}
+
 /** A science lesson against the question: the question's subjects found in the lesson's title, wording and keywords. */
 export function scoreLesson(lesson: ScienceLesson, question: string, field?: FieldId): number {
+  const index = scienceCurriculum();
+  const doc = index.byId.get(lesson.id);
+  if (doc && doc.lesson === lesson) {
+    return scienceHits(index, question, { field }).find((hit) => hit.lesson.id === lesson.id)?.relevance ?? 0;
+  }
+  return scoreLessonNaive(lesson, question, field);
+}
+
+/**
+ * The reviewed reference formula, kept as written (a lesson outside the index, and the tests' yardstick for the
+ * index). It re-normalises the lesson's text on every call — exactly what the index exists to avoid.
+ */
+export function scoreLessonNaive(lesson: ScienceLesson, question: string, field?: FieldId): number {
   const asked = words(question);
   if (!asked.length) return 0;
   const own = new Set(words(`${lesson.titleAr} ${lesson.questionAr} ${lesson.keywords.join(' ')}`));
@@ -201,11 +285,12 @@ export function scoreLesson(lesson: ScienceLesson, question: string, field?: Fie
 export function gather(u: AgentUnderstanding, src: AgentSources, lang: string, question = u.asked): Evidence[] {
   const out: Evidence[] = [];
   const field = u.fields[0]?.field;
-  // The experts' reviewed lessons (Arabic curriculum).
+  // The experts' reviewed lessons (Arabic curriculum): from the index, only the lessons that share a word with it.
   if (lang === 'ar') {
-    for (const l of src.science || SCIENCE_ALL()) {
-      const relevance = scoreLesson(l, question, field);
-      if (relevance > 0.2) out.push({ kind: 'expert', id: l.id, title: l.titleAr, text: l.answerAr, relevance, trust: TRUST.expert, field: l.track, about: `${l.questionAr} ${l.keywords.join(' ')}` });
+    for (const hit of scienceHits(scienceIndexFor(src.science), question, { field })) {
+      if (hit.relevance <= 0.2) continue;
+      const l = hit.lesson;
+      out.push({ kind: 'expert', id: l.id, title: l.titleAr, text: l.answerAr, relevance: hit.relevance, trust: TRUST.expert, field: l.track, about: `${l.questionAr} ${l.keywords.join(' ')}` });
     }
   }
   // His library: lessons, materials, and the closest old answers (searchLibrary weighs them on its own scale).

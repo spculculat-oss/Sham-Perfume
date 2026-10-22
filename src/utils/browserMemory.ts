@@ -18,6 +18,11 @@ export interface OfflineMemory {
   recall(question: string, lang: string): Promise<{ answer: string; exact: boolean } | undefined>;
   /** «مكتبة شاهين»: an answer built from his lessons, materials encyclopaedia and memory (no AI, no server). */
   library?(question: string, lang: string): Promise<string | undefined>;
+  /**
+   * «المكتب السريع»: a science question answered straight from his index (src/utils/scienceIndex.ts) — the curriculum
+   * ships with the site, so no other file is downloaded and the answer comes in a fraction of a millisecond.
+   */
+  science?(question: string, lang: string): Promise<string | undefined>;
   /** «باحث شاهين»: a new question looked up in open sources (Wikipedia's public API, straight from the browser). */
   research?(question: string, lang: string): Promise<string | undefined>;
   /** «فهم شاهين للغلطات»: the question as he understands it (mistyped words read as the words he knows). */
@@ -79,6 +84,12 @@ export const browserMemory: OfflineMemory = {
     const docs = ((lessons as { default?: { docs?: unknown } }).default ?? lessons) as { docs?: { id: string; title: string; content: string }[] };
     const memory = { ...site, entries: [...readLocal().entries, ...site.entries] };
     return libraryAnswer({ lessons: Array.isArray(docs.docs) ? docs.docs : [], materials: RAW_MATERIALS_DATABASE, memory }, question, lang)?.answer;
+  },
+  async science(question, lang) {
+    // Only in the built site (Vite): the curriculum is compiled from the lessons shipped with it.
+    if (typeof import.meta.env?.MODE !== 'string') return undefined;
+    const { scienceDesk } = await import('./shaheenAgent');
+    return scienceDesk(question, lang)?.answer;
   },
   async understand(question) {
     // Only in the built site (Vite) are his lessons loaded; elsewhere the built-in perfume words.

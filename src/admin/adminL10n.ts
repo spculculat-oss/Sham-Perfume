@@ -1417,6 +1417,7 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   "{learned} من {total} درس في {tracks} مسار · آخر تعلّم {when}": { en: "{learned} of {total} lessons across {tracks} tracks · last studied {when}" },
   "{covered}/{total} درس": { en: "{covered}/{total} lessons" },
   "آخر دروس ذاكرها": { en: "Latest lessons he studied" },
+  "فهرس سريع: {lessons} درساً و{words} كلمة، بُني في {ms} مللي ثانية مرة واحدة، والسؤال المتكرر بيرجع في {cached} مللي ثانية": { en: "A fast index: {lessons} lessons and {words} words, built once in {ms} ms; a repeated question comes back in {cached} ms" },
   // ── Platform State ──
   "«نفّذ» بيفتح صفحة على GitHub من حسابك علشان GitHub يتأكد إن الأمر منك — اضغط فيها «Submit new issue» (إنشاء الطلب)، والدولة بتكمل لوحدها.": { en: "«Run» opens a page on GitHub from your account so GitHub can confirm the order is yours — press «Submit new issue» there, and the State takes it from there." },
   "أعلى سلطة بعدك: كل العاملين في المنصة وأولهم شاهين خاضعين لقوانينها وبياخدوا منها كل الموافقات. أعضاؤها بيصوّتوا كل ساعة، واللي يتوافق عليه بيعدّي كل الفحوص وينزل، واللي يترفض بتقفله بنفسها — مابترجعلكش في أي إجراء.": { en: "The top authority after you: every worker of the platform, Shaheen first, follows its laws and takes every approval from it. Its members vote every hour; what passes goes through every check and goes live, and what is refused it closes itself — it never comes back to you." },
