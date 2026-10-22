@@ -1,6 +1,7 @@
 /**
  * «الهيكل الإداري لمنصة شام» — every robot (GitHub Actions workflow) and every AI tool on the site, under
- * the umbrella of «الخبير شاهين». Shaheen is the general manager; his secretary («مشرف شاهين») deputises for
+ * the umbrella of «الخبير شاهين», all under «دولة المنصة» (src/utils/platformState.ts — the highest authority over the
+ * robots, right under the site owner, deciding every approval by its members' vote). Shaheen is the general manager; his secretary («مشرف شاهين») deputises for
  * him when there is no AI engine or the load is high; five departments (cells), each headed by a seat of
  * the daily meeting, hold the bots. LINKS says who helps whom (the cooperation map).
  *
@@ -38,7 +39,7 @@ export type BotId =
   | 'news' | 'seo' | 'librarian' | 'teacher' | 'researcher'
   | 'chat' | 'library' | 'languages' | 'design_audit' | 'design_expert' | 'visitor_tour' | 'inspect'
   | 'school' | 'doctor' | 'verifier' | 'live_check' | 'keys' | 'intake' | 'studio_bridge' | 'studio_zip' | 'deploy' | 'admin_agent'
-  | 'chat_agent' | 'owner_desk';
+  | 'chat_agent' | 'owner_desk' | 'state';
 
 export interface Bot {
   id: BotId;
@@ -61,6 +62,7 @@ export interface Bot {
 export const BOTS: Bot[] = [
   { id: 'librarian', nameAr: 'أمين مكتبة العطور', nameEn: 'Perfume librarian', dept: 'content', dutiesAr: 'ينظم خطط التأليف المستقل وسجلات الأدلة؛ الاعتماد العلمي والقانوني واعتماد شاهين مطلوبون لكل نسخة قبل النشر. مساعد محلي عند الطلب لفهرسة مراجع العطور وتصنيفها والبحث فيها وتصدير بياناتها. موضعه مبدئي تحت إشراف شاهين؛ لا يرفع كتباً محمية ولا يدّعي وجود نسخ أو ترجمات دون ترخيص.' },
   // ── Leadership ──
+  { id: 'state', nameAr: 'دولة المنصة (أعلى سلطة بعد صاحب الموقع)', nameEn: 'The Platform State (highest authority under the owner)', dept: 'leadership', workflow: 'platform-state.yml', report: 'platform-state.json', everyHours: 24, dutiesAr: 'كل الروبوتات وشاهين والمجلس تحت رقابتها، وبيرجعولها في كل الموافقات: كل ساعة أعضاؤها (شاهين، المدير القانوني، الأمن والخصوصية، الجودة، المالية، ورئيس القسم المختص) بيصوّتوا على مهام المجلس وتعديلات الروبوتات المستنية موافقة. القرار لا مركزي بالتصويت، وللقانوني والأمن «فيتو»؛ اللي يتوافق عليه بيعدّي كل الفحوص وبعدين ينزل، واللي يترفض بيروح لصاحب الموقع بالأسباب. عندها كل الصلاحيات ما عدا بيانات صاحب الموقع ومفاتيحه وغرفته ومفاتيح تحكمه، وخاضعة لأوامره في أي وقت (يرجّع الموافقات لنفسه، يوقفها، أو يرجّع أي قرار ليها).' },
   { id: 'owner_desk', nameAr: 'مكتب صاحب الموقع (أوامره فوق الكل)', nameEn: "Owner's desk (his orders come first)", dept: 'leadership', workflow: 'owner-control.yml', aiTools: ['owner_room'], dutiesAr: 'ينفذ أوامر صاحب الموقع وحده (حسابه على GitHub بس): يوقف أي روبوت أو يرجعه، يوقف كل الروبوتات بفرامل الطوارئ، ويختار نظام التطوير الذاتي (التصليحات الصغيرة الآمنة تلقائي، أو كل تغيير يستنى موافقته). كل روبوت بيسأل المكتب قبل ما يشتغل، وكل أمر بيتسجل في سجل مايتمسحش. ومعاه «جناح صاحب الموقع» و«غرفة شاهين الخاصة» (صاحب الموقع وشاهين والسكرتير بس، متشفرة على جهازه). وبينفذ كل اللي صاحب الموقع يوافق عليه من «صندوق الموافقات» (تعديلات شاهين، أوامره للروبوتات، تعديلات الروبوتات ومهام المجلس) بعد ما يعدّي كل الفحوص، ويرجّع أي حاجة بزرار «رجّع».' },
   { id: 'council', nameAr: 'مجلس شاهين (الاجتماع اليومي)', nameEn: "Shaheen's council (daily meeting)", dept: 'leadership', workflow: 'shaheen-council.yml', report: 'shaheen-council.json', everyHours: 24, aiTools: ['shaheen_council'], dutiesAr: 'يجمع رؤساء الأقسام كل يوم 10:15 الصبح (بعد تجديد باقة الذكاء الاصطناعي)، يكتب المحضر، ينفذ الآمن ويحوّل الباقي لمهام تطوير.' },
   { id: 'secretary', nameAr: 'السكرتير — مشرف شاهين', nameEn: 'Secretary — Shaheen\'s supervisor', dept: 'leadership', workflow: 'shaheen-news.yml', report: 'ai-supervisor.json', everyHours: 12, dutiesAr: 'يقيس كل أداة ذكاء اصطناعي ويكتب لها توجيهات، يجهز جدول الأعمال، وينوب عن شاهين في الاجتماع وقت الضغط أو لو مفيش محرك ذكاء اصطناعي.' },
@@ -131,6 +133,9 @@ export const LEGAL_DECISIONS: LegalDecision[] = [
 /** Who helps whom: the cooperation map (from → to, and why). */
 export interface Link { from: BotId; to: BotId; whyAr: string }
 export const LINKS: Link[] = [
+  { from: 'owner_desk', to: 'state', whyAr: 'صاحب الموقع بيسلّم الدولة الموافقات أو يرجّعها لنفسه، وأي قرار ليها يقدر يرجّعه' },
+  { from: 'state', to: 'council', whyAr: 'الدولة بتوافق أو ترفض مهام المجلس (بتصويت أعضائها)' },
+  { from: 'state', to: 'doctor', whyAr: 'تعديلات الروبوتات المستنية موافقة ← الدولة تصوّت وتفحص وتدمج' },
   { from: 'owner_desk', to: 'council', whyAr: 'أوامر صاحب الموقع (إيقاف/تشغيل/فرامل) ← الاجتماع والمهام بتمشي عليها' },
   { from: 'owner_desk', to: 'doctor', whyAr: 'حدود التطوير الذاتي ← التغيير الكبير يستنى موافقة صاحب الموقع' },
   { from: 'owner_desk', to: 'patrol', whyAr: 'الروبوت الموقوف بأمره ← الدورية ماتشغلوش ولا تعتبره عطلان' },

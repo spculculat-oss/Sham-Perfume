@@ -1,6 +1,6 @@
 import { Suspense, lazy, useCallback, useEffect, useState, type ReactNode } from 'react';
 import {
-  Activity, Banknote, Crown, ExternalLink, Inbox, KeyRound, LayoutDashboard, Loader2, Lock, LogOut, MessagesSquare, Network, ShieldCheck, Siren,
+  Activity, Banknote, Crown, ExternalLink, Inbox, KeyRound, Landmark, LayoutDashboard, Loader2, Lock, LogOut, MessagesSquare, Network, ShieldCheck, Siren,
 } from 'lucide-react';
 import { T, TP, adminDir, useAdminLanguage } from './adminL10n';
 import { AdminApiError, adminRequest, getToken, setToken } from './adminApi';
@@ -10,6 +10,7 @@ import bundledControls from '../data/owner/controls.json';
 import bundledPrecheck from '../data/live/shaheen-precheck.json';
 import { BOTS } from '../utils/shaheenOrg';
 import { readControls, stoppedByOwner } from '../utils/ownerAuthority';
+import { stateActive } from '../utils/platformState';
 
 /**
  * #owner — «جناح صاحب الموقع»: a separate management structure for the owner only, entered from the home page's
@@ -22,6 +23,7 @@ const OwnerRoom = lazy(() => import('./OwnerRoom'));
 const OwnerInbox = lazy(() => import('./OwnerInbox'));
 const OwnerControlPanel = lazy(() => import('./OwnerControlPanel'));
 const ShaheenOrgPanel = lazy(() => import('./ShaheenOrgPanel'));
+const PlatformStatePanel = lazy(() => import('./PlatformStatePanel'));
 const ShaheenCouncilPanel = lazy(() => import('./ShaheenCouncilPanel'));
 const ShaheenPatrolPanel = lazy(() => import('./ShaheenPatrolPanel'));
 const ShaheenOpsMapPanel = lazy(() => import('./ShaheenOpsMapPanel'));
@@ -39,7 +41,7 @@ const SECTIONS: { id: Section; label: () => string; hint: () => string; icon: Re
   { id: 'inbox', label: () => T('صندوق الموافقات'), hint: () => T('اللي شاهين جهّزه ومستني رأيك'), icon: <Inbox className="h-4 w-4" /> },
   { id: 'room', label: () => T('غرفة شاهين الخاصة'), hint: () => T('إنت وشاهين والسكرتير بس'), icon: <MessagesSquare className="h-4 w-4" />, needs: 'full' },
   { id: 'control', label: () => T('مركز التحكم'), hint: () => T('وقف وتشغيل وموافقات'), icon: <Siren className="h-4 w-4" /> },
-  { id: 'org', label: () => T('الهيكل والاجتماع'), hint: () => T('الروبوتات وأقسامها وقرارات المجلس'), icon: <Network className="h-4 w-4" /> },
+  { id: 'org', label: () => T('الهيكل والاجتماع'), hint: () => T('دولة المنصة والروبوتات وأقسامها وقرارات المجلس'), icon: <Network className="h-4 w-4" /> },
   { id: 'ops', label: () => T('خريطة التشغيل'), hint: () => T('مين شغال دلوقتي'), icon: <Activity className="h-4 w-4" /> },
   { id: 'patrol', label: () => T('الدورية والفحص'), hint: () => T('العطلات وإصلاحها'), icon: <ShieldCheck className="h-4 w-4" /> },
   { id: 'money', label: () => T('البنك والمالية'), hint: () => T('حسابات بنك شام والفلوس'), icon: <Banknote className="h-4 w-4" />, needs: 'full' },
@@ -161,7 +163,7 @@ export default function OwnerSuite() {
           {section === 'room' && access === 'full' && <OwnerRoom code={getToken()} />}
           {/* The staff panels keep their own light design inside the suite's frame. */}
           {section === 'control' && <Light><OwnerControlPanel /></Light>}
-          {section === 'org' && <Light><ShaheenOrgPanel /><ShaheenCouncilPanel /></Light>}
+          {section === 'org' && <Light><PlatformStatePanel /><ShaheenOrgPanel /><ShaheenCouncilPanel /></Light>}
           {section === 'ops' && <Light><ShaheenOpsMapPanel /></Light>}
           {section === 'patrol' && <Light><ShaheenPatrolPanel /></Light>}
           {section === 'money' && access === 'full' && <Light><BankPanel /><FinancePanel /></Light>}
@@ -187,7 +189,7 @@ function OwnerHome({ go, access }: { go: (s: Section) => void; access: Access })
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <button type="button" onClick={() => go('inbox')} className={`${tile} border-amber-800`}>
           <Inbox className="mb-2 h-5 w-5 text-amber-300" /><div className="font-bold">{T('صندوق الموافقات')}</div>
-          <div className="text-xs text-stone-400">{controls.selfDevelopment === 'approve_all' ? T('شاهين بيجهّز كل حاجة، ومفيش حاجة بتتنفذ غير بموافقتك') : T('التصليحات الصغيرة بتدخل لوحدها، والباقي مستني موافقتك')}</div>
+          <div className="text-xs text-stone-400">{controls.selfDevelopment === 'approve_all' ? T('شاهين بيجهّز كل حاجة، ومفيش حاجة بتتنفذ غير بموافقتك') : controls.selfDevelopment === 'state' ? T('دولة المنصة بتوافق على شغل الروبوتات، واللي ترفضه بيجيلك هنا') : T('التصليحات الصغيرة بتدخل لوحدها، والباقي مستني موافقتك')}</div>
         </button>
         <button type="button" disabled={access !== 'full'} onClick={() => go('room')} className={`${tile} disabled:opacity-40`}>
           <MessagesSquare className="mb-2 h-5 w-5 text-amber-400" /><div className="font-bold">{T('غرفة شاهين الخاصة')}</div>
@@ -196,6 +198,10 @@ function OwnerHome({ go, access }: { go: (s: Section) => void; access: Access })
         <button type="button" onClick={() => go('control')} className={tile}>
           <Siren className="mb-2 h-5 w-5 text-red-400" /><div className="font-bold">{T('مركز التحكم')}</div>
           <div className="text-xs text-stone-400">{controls.frozen ? T('فرامل الطوارئ شغالة: كل الروبوتات واقفة') : TP('{n} روبوت موقوف بأمرك', { n: paused })}</div>
+        </button>
+        <button type="button" onClick={() => go('org')} className={`${tile} border-sky-900`}>
+          <Landmark className="mb-2 h-5 w-5 text-sky-300" /><div className="font-bold">{T('دولة المنصة')}</div>
+          <div className="text-xs text-stone-400">{stateActive(controls) ? T('أعلى سلطة على الروبوتات بعدك — ماسكة الموافقات وتحت أمرك') : T('واقفة: إنت ماسك الموافقات بنفسك')}</div>
         </button>
         <button type="button" onClick={() => go('org')} className={tile}>
           <Network className="mb-2 h-5 w-5 text-sky-400" /><div className="font-bold">{T('الهيكل والاجتماع')}</div>

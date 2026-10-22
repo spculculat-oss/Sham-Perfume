@@ -11,11 +11,12 @@
  */
 import { OWNER, OWNER_APPROVAL_LABEL, OWNER_RULES, SMALL_CHANGE } from './ownerAuthority';
 import { AI_TOOLS } from './aiTools';
+import { STATE, STATE_CONSTITUTION, STATE_LABELS } from './platformState';
 import { HOME_CURRENCY, SHIPPING } from './pricing';
 import { BOTS, DEPARTMENTS, LEGAL_DECISIONS, LINKS, botOf, botsIn, type BotId } from './shaheenOrg';
 
 /** Bumped when the policies change (the robots' reports and the admin panel show the edition they read). */
-export const HANDBOOK_EDITION = '2026-10-22b';
+export const HANDBOOK_EDITION = '2026-10-22c';
 export const PAGES_URL = 'https://spculculat-oss.github.io/Sham-Perfume/';
 /** The scenario's price rule (scripts/shaheen-import/transform.ts PRICE_MARKUP — a test keeps them equal). */
 export const HANDBOOK_MARKUP = 1.5;
@@ -32,7 +33,9 @@ export function handbookSections(): HandbookSection[] {
       points: [
         ...OWNER_RULES.map((r) => `${r.id}: ${r.textAr}`),
         `مفاتيح التحكم في «مكتب صاحب الموقع» (سير العمل owner-control.yml، وبيشتغل من حساب ${OWNER.github} بس): وقف روبوت أو رجوعه، فرامل الطوارئ اللي بتوقف كل الروبوتات (الموقع نفسه بيفضل شغال للزوار)، ونظام التطوير الذاتي. أول خطوة في كل روبوت بتسأل المكتب قبل ما تشتغل (scripts/owner/gate.mjs).`,
-        `التطوير الذاتي: التصليح الصغير والآمن (لحد ${SMALL_CHANGE.files} ملفات و${SMALL_CHANGE.lines} سطر، ومن غير ملفات حساسة) بيعدي كل الفحوص ويدخل لوحده، والطبيب بيراقبه ويرجّعه لو ضر. أي حاجة أكبر بتتفتح كطلب دمج عليه علامة «${OWNER_APPROVAL_LABEL}» ومحدش يدمجه غير صاحب الموقع.`,
+        `التطوير الذاتي: التصليح الصغير والآمن (لحد ${SMALL_CHANGE.files} ملفات و${SMALL_CHANGE.lines} سطر، ومن غير ملفات حساسة) بيعدي كل الفحوص ويدخل لوحده، والطبيب بيراقبه ويرجّعه لو ضر. أي حاجة أكبر بتتفتح كطلب دمج عليه علامة «${OWNER_APPROVAL_LABEL}» ومحدش يدمجه غير صاحب الموقع — أو «${STATE.nameAr}» لو صاحب الموقع سلّمها الموافقات.`,
+        `«${STATE.nameAr}»: ${STATE.placeAr} كل الروبوتات بترجعلها في الموافقات وقت ما صاحب الموقع يسلّمها الموافقات (سير العمل platform-state.yml كل ساعة): بتصوّت على طلبات الدمج ومهام المجلس، واللي توافق عليه بيعدّي كل الفحوص وينزل، واللي ترفضه بياخد علامة «${STATE_LABELS.refused}» ويروح لصاحب الموقع. مهمة المجلس اللي توافق عليها بتاخد علامة «${STATE_LABELS.approvedTask}».`,
+        ...STATE_CONSTITUTION.map((r) => `${r.id}: ${r.textAr}`),
         'اللامركزية: كل روبوت بيقرر ويصلح في نطاقه ويتعاون مع اللي جنبه من غير ما يستنى حد، لكن كله تحت مفاتيح صاحب الموقع. الروبوت الموقوف بأمره مايتحسبش متأخر ولا عطلان، ومحدش يشغله غير صاحب الموقع.',
       ],
     },

@@ -1,11 +1,16 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T08:00:00.000Z",
+ "updatedAt": "2026-10-22T10:00:00.000Z",
  "frozen": false,
  "paused": [],
- "selfDevelopment": "approve_all",
+ "selfDevelopment": "state",
  "aiPlatforms": "off",
  "log": [
+  {
+   "at": "2026-10-22T10:00:00.000Z",
+   "action": "state_rule",
+   "by": "spculculat-oss (قراره في شات وكيل البرمجة: دولة المنصة أعلى سلطة وتوافق على كل حاجة)"
+  },
   {
    "at": "2026-10-22T08:00:00.000Z",
    "action": "self_reliant",
