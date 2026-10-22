@@ -338,6 +338,13 @@ test('HTTP: not configured without a database or key; members, public stores and
     const post = await call(base, '/community/posts', { token, body: { body: 'مرحبا مجتمع شام', image: `data:image/jpeg;base64,${'A'.repeat(200_000)}` } });
     assert.equal(post.status, 200, 'pictures fit (larger body limit on community routes)');
     assert.equal((await call(base, '/community/feed', { token })).data[0].body, 'مرحبا مجتمع شام');
+    const savedPath = `/community/posts/${post.data.id}/saved`;
+    assert.equal((await call(base, savedPath, { method: 'PUT' })).status, 401);
+    assert.equal((await call(base, savedPath, { method: 'DELETE' })).status, 401);
+    assert.equal((await call(base, savedPath, { method: 'PUT', token })).data.saved, true);
+    assert.deepEqual((await call(base, '/community/feed?scope=saved', { token })).data.map((p: any) => p.id), [post.data.id]);
+    assert.equal((await call(base, savedPath, { method: 'DELETE', token })).status, 200);
+    assert.deepEqual((await call(base, '/community/feed?scope=saved', { token })).data, []);
     assert.equal((await call(base, '/community/pulse', { token })).data.messages, 0);
     assert.ok(Array.isArray((await call(base, '/community/stores')).data), 'stores are public');
 
@@ -648,4 +655,48 @@ test('passkeys: register a device credential, sign in with it, reject forgeries 
   assert.equal((await svc.myPasskeys(ctx, reg.me.id)).length, 0);
   await assert.rejects(svc.passkeyLoginBegin(ctx, { email: address }), { code: 'NOT_FOUND' }, 'no passkeys left: the same quiet 404');
   void storedKey;
+});
+
+test('saved posts are idempotent, private to each account, and can be removed repeatedly', async () => {
+  const author = await newMember('BookmarkAuthor');
+  const reader = await newMember('BookmarkReader');
+  const other = await newMember('BookmarkOther');
+  const post = await social.createPost(ctx, author.id, { body: 'A useful perfume experiment' });
+  assert.equal((await social.getPost(ctx, reader.id, post.id)).saved, false);
+  assert.equal((await social.savePost(ctx, reader.id, post.id)).saved, true);
+  await social.savePost(ctx, reader.id, post.id);
+  assert.equal((await sql.query(`SELECT * FROM saved_posts WHERE user_id = $1 AND post_id = $2`, [reader.id, post.id])).length, 1);
+  assert.deepEqual((await social.feed(ctx, reader.id, { scope: 'saved' })).map(p => p.id), [post.id]);
+  assert.equal((await social.getPost(ctx, other.id, post.id)).saved, false);
+  assert.deepEqual(await social.feed(ctx, other.id, { scope: 'saved' }), []);
+  await social.unsavePost(ctx, other.id, post.id);
+  assert.equal((await social.getPost(ctx, reader.id, post.id)).saved, true, 'another account cannot remove my bookmark');
+  await social.unsavePost(ctx, reader.id, post.id);
+  await social.unsavePost(ctx, reader.id, post.id);
+  assert.deepEqual(await social.feed(ctx, reader.id, { scope: 'saved' }), []);
+  await assert.rejects(social.savePost(ctx, reader.id, 'missing-post'), { code: 'NOT_FOUND' });
+});
+
+test('bookmarks never bypass visibility changes, moderation, deletion or blocking', async () => {
+  const author = await newMember('BookmarkPrivacyAuthor');
+  const reader = await newMember('BookmarkPrivacyReader');
+  const post = await social.createPost(ctx, author.id, { body: 'Public for now' });
+  await social.savePost(ctx, reader.id, post.id);
+  await social.editPost(ctx, author.id, post.id, { visibility: 'friends' });
+  assert.deepEqual(await social.feed(ctx, reader.id, { scope: 'saved' }), []);
+  await assert.rejects(social.savePost(ctx, reader.id, post.id), { code: 'NOT_FOUND' });
+  await social.editPost(ctx, author.id, post.id, { visibility: 'public' });
+  assert.equal((await social.feed(ctx, reader.id, { scope: 'saved' })).length, 1);
+  await sql.query(`UPDATE posts SET status = 'hidden' WHERE id = $1`, [post.id]);
+  assert.deepEqual(await social.feed(ctx, reader.id, { scope: 'saved' }), []);
+  await sql.query(`UPDATE posts SET status = 'visible' WHERE id = $1`, [post.id]);
+  await social.deletePost(ctx, author.id, post.id);
+  assert.deepEqual(await social.feed(ctx, reader.id, { scope: 'saved' }), []);
+  await social.unsavePost(ctx, reader.id, post.id); // cleanup still allowed when inaccessible
+  const blocked = await social.createPost(ctx, author.id, { body: 'Block test' });
+  await social.savePost(ctx, reader.id, blocked.id);
+  await social.block(ctx, author.id, reader.id);
+  assert.deepEqual(await social.feed(ctx, reader.id, { scope: 'saved' }), []);
+  await assert.rejects(social.savePost(ctx, reader.id, blocked.id), { code: 'NOT_FOUND' });
+  await social.unsavePost(ctx, reader.id, blocked.id);
 });
