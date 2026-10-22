@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T05:54:55.181Z",
+ "updatedAt": "2026-10-22T06:56:53.305Z",
  "reliance": {
   "score": 98,
   "covered": 170,
@@ -21,6 +21,12 @@
  "studiedTotal": 76,
  "selfTaughtTotal": 68,
  "history": [
+  {
+   "at": "2026-10-22T06:56:53.305Z",
+   "score": 98,
+   "studied": 0,
+   "mode": "self"
+  },
   {
    "at": "2026-10-22T05:54:55.181Z",
    "score": 98,
@@ -348,7 +354,7 @@
  },
  "localTaughtTotal": 25,
  "spelling": {
-  "at": "2026-10-22T05:54:55.181Z",
+  "at": "2026-10-22T06:56:53.305Z",
   "tried": 750,
   "understood": 727,
   "score": 97,
