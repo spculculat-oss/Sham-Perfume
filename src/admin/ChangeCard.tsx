@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react';
-import { CheckCircle2, ExternalLink, FileCode2, Loader2, ShieldAlert, Wrench, XCircle } from 'lucide-react';
+import { CheckCircle2, ExternalLink, FileCode2, Loader2, ShieldAlert, Undo2, Wrench, XCircle } from 'lucide-react';
 import { T, TP } from './adminL10n';
 import { repoFile } from './repoFiles';
 import bundledControls from '../data/owner/controls.json';
 import { readControls } from '../utils/ownerAuthority';
-import {
-  CHANGE_LIMITS, changeIssue, changesListUrl, changeVerdict, encodeChange, newIssueUrl, planChange,
-  type ChangePlan, type FileEdit,
-} from '../utils/ownerFiles';
+import { sendDeskRequest } from './deskRequest';
+import { changeDraft } from '../utils/ownerDesk';
+import { changesListUrl, changeVerdict, planChange, type ChangePlan, type FileEdit } from '../utils/ownerFiles';
 import type { ChangeDecision } from '../utils/ownerRoom';
 
 /**
  * The card under a reply in which Shaheen proposed a change: what changes, whether it is small and safe, and the
  * owner's two buttons. «وافق» opens the request on GitHub from his own account; his desk does the rest.
  */
-export default function ChangeCard({ edits, summary, decision, onDecide }: {
-  edits: FileEdit[]; summary: string; decision?: ChangeDecision; onDecide: (d: ChangeDecision) => void;
+export default function ChangeCard({ edits, summary, decision, onDecide, onReturn }: {
+  edits: FileEdit[]; summary: string; decision?: ChangeDecision; onDecide: (d: ChangeDecision) => void; onReturn: () => void;
 }) {
   const [plan, setPlan] = useState<ChangePlan | null>(null);
   const [open, setOpen] = useState(false);
@@ -41,16 +40,7 @@ export default function ChangeCard({ edits, summary, decision, onDecide }: {
   const approve = async () => {
     setBusy(true); setNote('');
     try {
-      const encoded = await encodeChange({ v: 1, summary, edits });
-      const issue = changeIssue(summary, plan, verdict, encoded);
-      let url = newIssueUrl(issue.title, issue.body);
-      if (url.length > CHANGE_LIMITS.urlChars) {
-        // Too long for a link: the request goes through the clipboard, and the page says where to paste it.
-        await navigator.clipboard.writeText(issue.body);
-        url = newIssueUrl(issue.title, T('امسح السطر ده والصق التعديل هنا (Ctrl+V)، وبعدين اضغط (Submit new issue = إنشاء الطلب).'));
-        setNote(T('التعديل كبير على اللينك، فنسخته لك. في صفحة GitHub امسح السطر اللي مكتوب والصق مكانه (Ctrl+V).'));
-      }
-      window.open(url, '_blank', 'noopener');
+      setNote(await sendDeskRequest(changeDraft(summary, plan, verdict, edits)));
       onDecide('sent');
     } catch { setNote(T('مقدرتش أجهز الطلب على الجهاز ده — جرب من متصفح تاني.')); }
     finally { setBusy(false); }
@@ -77,6 +67,7 @@ export default function ChangeCard({ edits, summary, decision, onDecide }: {
           <div className="mb-1 flex items-center gap-1 font-bold"><ShieldAlert className="h-3.5 w-3.5" />{T('التعديل ده مايتنفذش:')}</div>
           <ul className="list-disc ps-4">{plan.problems.map((p, i) => <li key={i}>{p}</li>)}</ul>
           <p className="mt-1 text-red-300/80">{T('قول لشاهين المشكلة وهو يظبط الاقتراح.')}</p>
+          {!decision && <button type="button" onClick={onReturn} className="mt-1 inline-flex items-center gap-1 rounded-lg border border-red-800 px-2 py-1 text-red-100"><Undo2 className="h-3.5 w-3.5" />{T('رجّعه بملاحظة')}</button>}
         </div>
       )}
       <button type="button" className="mb-2 text-[11px] text-amber-300 underline" onClick={() => setOpen(!open)}>{open ? T('اخفي التفاصيل') : T('وريني التعديل بالظبط')}</button>
@@ -100,6 +91,8 @@ export default function ChangeCard({ edits, summary, decision, onDecide }: {
         </div>
       ) : decision === 'rejected' ? (
         <div className="flex items-center gap-1 text-stone-400"><XCircle className="h-4 w-4" />{T('رفضت التعديل ده — مفيش حاجة اتغيرت.')}</div>
+      ) : decision === 'returned' ? (
+        <div className="flex items-center gap-1 text-stone-400"><Undo2 className="h-4 w-4" />{T('رجّعته لشاهين بملاحظتك — مستني نسخة جديدة منه.')}</div>
       ) : !blocked && (
         <div className="space-y-2">
           {!verdict.auto && (
@@ -114,6 +107,7 @@ export default function ChangeCard({ edits, summary, decision, onDecide }: {
               {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <CheckCircle2 className="h-3.5 w-3.5" />}{T('وافق وابعت للتنفيذ')}
             </button>
             <button type="button" onClick={() => onDecide('rejected')} className="inline-flex items-center gap-1 rounded-lg border border-stone-700 px-3 py-1.5 text-stone-300"><XCircle className="h-3.5 w-3.5" />{T('ارفض')}</button>
+            <button type="button" onClick={onReturn} className="inline-flex items-center gap-1 rounded-lg border border-stone-700 px-3 py-1.5 text-stone-300"><Undo2 className="h-3.5 w-3.5" />{T('رجّعه بملاحظة')}</button>
           </div>
           <p className="text-[11px] text-stone-500">{T('الموافقة بتفتح صفحة على GitHub من حسابك. الطلب ده بيبان على GitHub، وفيه التعديل بس من غير أي كلام من الغرفة.')}</p>
         </div>

@@ -1,6 +1,6 @@
 import { Suspense, lazy, useCallback, useEffect, useState, type ReactNode } from 'react';
 import {
-  Activity, Banknote, Crown, ExternalLink, KeyRound, LayoutDashboard, Loader2, Lock, LogOut, MessagesSquare, Network, ShieldCheck, Siren,
+  Activity, Banknote, Crown, ExternalLink, Inbox, KeyRound, LayoutDashboard, Loader2, Lock, LogOut, MessagesSquare, Network, ShieldCheck, Siren,
 } from 'lucide-react';
 import { T, TP, adminDir, useAdminLanguage } from './adminL10n';
 import { AdminApiError, adminRequest, getToken, setToken } from './adminApi';
@@ -19,6 +19,7 @@ import { readControls, stoppedByOwner } from '../utils/ownerAuthority';
  * server). Kept for this tab only, locks itself after 30 idle minutes, and stays out of search engines.
  */
 const OwnerRoom = lazy(() => import('./OwnerRoom'));
+const OwnerInbox = lazy(() => import('./OwnerInbox'));
 const OwnerControlPanel = lazy(() => import('./OwnerControlPanel'));
 const ShaheenOrgPanel = lazy(() => import('./ShaheenOrgPanel'));
 const ShaheenCouncilPanel = lazy(() => import('./ShaheenCouncilPanel'));
@@ -27,7 +28,7 @@ const ShaheenOpsMapPanel = lazy(() => import('./ShaheenOpsMapPanel'));
 const BankPanel = lazy(() => import('./BankPanel'));
 const FinancePanel = lazy(() => import('./FinancePanel'));
 
-type Section = 'home' | 'room' | 'control' | 'org' | 'ops' | 'patrol' | 'money';
+type Section = 'home' | 'inbox' | 'room' | 'control' | 'org' | 'ops' | 'patrol' | 'money';
 type Access = 'full' | 'map';
 const MAP_KEY = 'sham_owner_map_ok';
 const IDLE_MS = 30 * 60_000;
@@ -35,6 +36,7 @@ const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const SECTIONS: { id: Section; label: () => string; hint: () => string; icon: ReactNode; needs?: Access }[] = [
   { id: 'home', label: () => T('مكتبك'), hint: () => T('نظرة سريعة على كل حاجة'), icon: <LayoutDashboard className="h-4 w-4" /> },
+  { id: 'inbox', label: () => T('صندوق الموافقات'), hint: () => T('اللي شاهين جهّزه ومستني رأيك'), icon: <Inbox className="h-4 w-4" /> },
   { id: 'room', label: () => T('غرفة شاهين الخاصة'), hint: () => T('إنت وشاهين والسكرتير بس'), icon: <MessagesSquare className="h-4 w-4" />, needs: 'full' },
   { id: 'control', label: () => T('مركز التحكم'), hint: () => T('وقف وتشغيل وموافقات'), icon: <Siren className="h-4 w-4" /> },
   { id: 'org', label: () => T('الهيكل والاجتماع'), hint: () => T('الروبوتات وأقسامها وقرارات المجلس'), icon: <Network className="h-4 w-4" /> },
@@ -155,6 +157,7 @@ export default function OwnerSuite() {
         </div>
         <Suspense fallback={<div className="flex items-center gap-2 text-stone-400"><Loader2 className="h-4 w-4 animate-spin" />…</div>}>
           {section === 'home' && <OwnerHome go={setSection} access={access} />}
+          {section === 'inbox' && <OwnerInbox code={access === 'full' ? getToken() : ''} onRoom={access === 'full' ? () => setSection('room') : undefined} />}
           {section === 'room' && access === 'full' && <OwnerRoom code={getToken()} />}
           {/* The staff panels keep their own light design inside the suite's frame. */}
           {section === 'control' && <Light><OwnerControlPanel /></Light>}
@@ -179,9 +182,13 @@ function OwnerHome({ go, access }: { go: (s: Section) => void; access: Access })
     <div className="space-y-4">
       <div className="rounded-3xl border border-amber-900/60 bg-gradient-to-br from-amber-950/60 to-stone-900 p-5">
         <div className="text-sm text-amber-200">{T('أهلاً بيك في جناحك 👑')}</div>
-        <p className="mt-1 text-xs text-stone-300">{T('من هنا بتدير الموقع كله: تكلم شاهين في غرفتك الخاصة، توقف أو تشغل أي روبوت، توافق على التغييرات الكبيرة، وتتابع الشغل والفلوس. محدش غيرك يقدر يدخل هنا.')}</p>
+        <p className="mt-1 text-xs text-stone-300">{T('شاهين هو الوكيل المسؤول عن الموقع: بيجهّز كل حاجة، وإنت بتراجع وتوافق من «صندوق الموافقات» أو من غرفتك الخاصة. ومن هنا كمان بتوقف أو تشغل أي روبوت وتتابع الشغل والفلوس. محدش غيرك يقدر يدخل هنا.')}</p>
       </div>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <button type="button" onClick={() => go('inbox')} className={`${tile} border-amber-800`}>
+          <Inbox className="mb-2 h-5 w-5 text-amber-300" /><div className="font-bold">{T('صندوق الموافقات')}</div>
+          <div className="text-xs text-stone-400">{controls.selfDevelopment === 'approve_all' ? T('شاهين بيجهّز كل حاجة، ومفيش حاجة بتتنفذ غير بموافقتك') : T('التصليحات الصغيرة بتدخل لوحدها، والباقي مستني موافقتك')}</div>
+        </button>
         <button type="button" disabled={access !== 'full'} onClick={() => go('room')} className={`${tile} disabled:opacity-40`}>
           <MessagesSquare className="mb-2 h-5 w-5 text-amber-400" /><div className="font-bold">{T('غرفة شاهين الخاصة')}</div>
           <div className="text-xs text-stone-400">{access === 'full' ? T('إنت وشاهين والسكرتير بس — متشفرة على جهازك') : T('محتاجة الكود السري بتاع الإدارة')}</div>

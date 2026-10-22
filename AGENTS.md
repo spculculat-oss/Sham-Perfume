@@ -24,8 +24,11 @@ When the merchant writes **«نفذ مهام شاهين»** (or "Run Shaheen's t
 1. List the queue, most urgent first:
    `node --import tsx scripts/shaheen-council/tasks.mts`
    (or `gh issue list --label shaheen-task --state open`).
-2. Issues labelled **`needs-approval`** are big or risky. Before touching them, explain each one to the
-   merchant in one simple Arabic sentence and ask him to approve it. Never start them on your own.
+2. Issues labelled **`needs-approval`** wait for the owner. He answers them from his suite («صندوق الموافقات» at
+   `#owner`): approving swaps the label for **`approved-by-owner`** (and «رجّعه بملاحظة» adds his note as a comment —
+   follow it). Never start a `needs-approval` task on your own; if he asks you in the chat, explain it in one simple
+   Arabic sentence and wait for his yes. While his switch is «كل تغيير بموافقتي» (`approve_all` in
+   `src/data/owner/controls.json`) every new council task waits for him this way (rule O-09).
 3. Work through the other tasks, urgent first, on the session's working branch. Each task's body has
    the details and the files to look at. Verify each fix the usual way: `npm run lint`, `npm test`,
    `npm run build`, and the related workflow run if there is one.

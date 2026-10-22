@@ -103,7 +103,7 @@ jobs:
             || { echo "::error::Could not save the owner's order"; exit 1; }
 
   change:
-    name: Apply a change the owner approved in Shaheen's room
+    name: Carry out what the owner approved (Shaheen's changes, orders, decisions)
     if: >-
       github.event_name == 'issues' && github.actor == github.repository_owner
       && github.event.issue.user.login == github.repository_owner && github.event.issue.author_association == 'OWNER'
@@ -120,7 +120,8 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: main
-          fetch-depth: 1
+          # «رجّع» finds what an earlier request changed in the recent history.
+          fetch-depth: 300
       - name: Set up Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
@@ -132,7 +133,7 @@ jobs:
           bun-version-file: package.json
       - name: Install dependencies
         run: bun install --frozen-lockfile
-      - name: Apply, check everything, then publish
+      - name: Carry it out, check everything, then publish
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: node --import tsx scripts/owner/apply-change.mts
