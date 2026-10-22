@@ -12,12 +12,14 @@
  */
 import { createHash } from 'node:crypto';
 import type { EngineId, ModelEngineId } from './types';
+import { isOwnMachine, platformsOff } from './selfReliance';
 
 type Env = Record<string, string | undefined>;
 export interface EngineTurn { role: 'user' | 'assistant'; text: string }
 export interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: 'own' | 'self_hosted' | 'hosted' }
 
-const configured = (v?: string) => Boolean(v?.trim() && !/^(MY_|YOUR_|<)/i.test(v.trim()));
+const hasKey = (v?: string) => Boolean(v?.trim() && !/^(MY_|YOUR_|<)/i.test(v.trim()));
+const configured = hasKey;
 
 /** Tencent EdgeOne Makers model gateway (OpenAI-compatible, free monthly tokens for built-in models). */
 export const EDGEONE_GATEWAY_URL = 'https://ai-gateway.edgeone.link/v1';
@@ -67,7 +69,11 @@ export function perplexityText(data: unknown): string | undefined {
 }
 
 export function engineStatuses(env: Env = process.env): EngineStatus[] {
-  const open = openCompatibleEngine(env);
+  // «شاهين معتمد على نفسه»: with the owner's switch off, only a model on our own machine may answer.
+  const off = platformsOff(env);
+  const found = openCompatibleEngine(env);
+  const open = found && (!off || (!found.gateway && isOwnMachine(found.baseUrl))) ? found : null;
+  const configured = (key: string | undefined) => !off && hasKey(key);
   return [
     { id: 'self_hosted', name: open?.gateway ? 'Tencent EdgeOne Models' : 'Self-hosted open model', model: open?.model || env.SHAM_LLM_MODEL?.trim() || 'qwen2.5:7b-instruct', configured: Boolean(open), kind: 'self_hosted' },
     { id: 'gemini', name: 'Google Gemini', model: env.GEMINI_MODEL?.trim() || GEMINI_DEFAULT_MODEL, configured: configured(env.GEMINI_API_KEY), kind: 'hosted' },
@@ -319,6 +325,9 @@ export async function callEngine(
   const env = options.env || process.env;
   const request = options.fetch || fetch;
   const base = engineStatuses(env).find((e) => e.id === id)!;
+  // «شاهين معتمد على نفسه»: a closed platform is never called, whoever asks for it (belt and braces — every
+  // caller already picks among the configured engines only).
+  if (platformsOff(env) && !base.configured) return undefined;
   const status = { ...base, model: options.model && MODEL_ID.test(options.model) ? options.model : base.model };
   const requestedModel = status.model;
   if (id === 'gemini') {
