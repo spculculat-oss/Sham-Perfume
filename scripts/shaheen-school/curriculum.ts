@@ -116,7 +116,7 @@ export function trackOf(topic: string): TrackId {
       'human-medicine': 'medicine', veterinary: 'medicine', biosafety: 'medicine', nutrition: 'medicine',
       space: 'earth_space', earth: 'earth_space', chemistry: 'chemistry', physics: 'physics', nuclear: 'physics',
       math: 'math', biology: 'biology', agriculture: 'biology', semiconductors: 'engineering',
-      'electronic-warfare': 'engineering', computing: 'it_sciences', 'war-studies': 'history', logic: 'religion',
+      'electronic-warfare': 'engineering', computing: 'it_sciences', 'war-studies': 'history', logic: 'religion', cosmetics: 'chemistry',
     };
     return expertTracks[topic.slice('expert:'.length)] ?? 'perfume';
   }

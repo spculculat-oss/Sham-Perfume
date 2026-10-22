@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T19:06:03.105Z",
+ "updatedAt": "2026-10-22T20:04:18.207Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,17 @@
  ],
  "runs": [
   {
+   "at": "2026-10-22T20:04:18.207Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-22T19:06:03.105Z",
    "mode": "self",
    "found": 0,
@@ -7877,28 +7888,6 @@
     "✗ nabeel.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
     "  ↳ alharamainperfumes.com: CV 45/100 [age,https,contact,social] (pages: /contact-us→404 /returns→404 /about-us/→200)",
     "✗ alharamainperfumes.com: ملف الثقة ضعيف (45/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الإرجاع والاسترداد، وسائل دفع معروفة"
-   ]
-  },
-  {
-   "at": "2026-10-20T06:54:09.622Z",
-   "mode": "self",
-   "found": 3,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "✗ kicks.se: ملف الثقة ضعيف (50/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الشحن، سياسة الخصوصية",
-    "  ↳ bangerhead.se: CV 41/100 [https,contact,payment,social] (pages: /kontakta-oss→200 /returns→404)",
-    "✗ bangerhead.se: ملف الثقة ضعيف (41/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الإرجاع والاسترداد، سياسة الشحن",
-    "✗ flaconi.de: الموقع لا يفتح (HTTP 403)",
-    "✗ douglas.de: الموقع لا يفتح (HTTP 403)",
-    "✗ perfume.com: الموقع لا يفتح (HTTP 403)",
-    "✗ essenza-nobile.de: الموقع لا يفتح (HTTP 403)",
-    "  ↳ niche-beauty.com: CV 90/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,social]",
-    "✗ niche-beauty.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "  ↳ beautyhabit.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✗ beautyhabit.com: أغلب منتجاته ليست عطوراً (33%)",
-    "✗ nocibe.fr: الموقع لا يفتح (HTTP 403)"
    ]
   }
  ]

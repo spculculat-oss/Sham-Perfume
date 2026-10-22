@@ -18,7 +18,7 @@ test('every robot sits once under its department, every expert once under the sc
     assert.equal(nodes[0]!.parent, `dept:${b.dept}`);
   }
   for (const e of SCHOOL_EXPERTS) assert.equal(HIERARCHY.filter((n) => n.id === `expert:${e.field}` && n.parent === 'school').length, 1, e.field);
-  assert.equal(HIERARCHY.filter((n) => n.kind === 'expert').length, 18);
+  assert.equal(HIERARCHY.filter((n) => n.kind === 'expert').length, 19);
   for (const d of DEPARTMENTS) assert.equal(nodeOf(`dept:${d.id}`)?.parent, 'shaheen');
   assert.equal(new Set(HIERARCHY.map((n) => n.id)).size, HIERARCHY.length, 'unique ids');
 });
