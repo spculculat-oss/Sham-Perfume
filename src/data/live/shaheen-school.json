@@ -1,16 +1,16 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T14:36:25.822Z",
+ "updatedAt": "2026-10-22T15:19:42.783Z",
  "reliance": {
-  "score": 65,
-  "covered": 202,
-  "total": 310,
-  "fromMemory": 202,
+  "score": 66,
+  "covered": 204,
+  "total": 309,
+  "fromMemory": 204,
   "fromLibrary": 2,
   "byLang": {
    "ar": {
-    "covered": 181,
-    "total": 289
+    "covered": 183,
+    "total": 288
    },
    "en": {
     "covered": 21,
@@ -18,9 +18,15 @@
    }
   }
  },
- "studiedTotal": 109,
+ "studiedTotal": 111,
  "selfTaughtTotal": 68,
  "history": [
+  {
+   "at": "2026-10-22T15:19:42.783Z",
+   "score": 66,
+   "studied": 2,
+   "mode": "local"
+  },
   {
    "at": "2026-10-22T14:36:25.822Z",
    "score": 65,
@@ -264,6 +270,18 @@
  ],
  "lastStudied": [
   {
+   "q": "ازاي الدبلوماسية بتمنع الحروب؟",
+   "lang": "ar",
+   "at": "2026-10-22T15:19:42.783Z",
+   "variants": 0
+  },
+  {
+   "q": "ايه الفرق بين الاستراتيجية والتكتيك في الدراسات العسكرية؟",
+   "lang": "ar",
+   "at": "2026-10-22T15:19:42.783Z",
+   "variants": 0
+  },
+  {
    "q": "ازاي العظام بتلتئم بعد الكسر؟",
    "lang": "ar",
    "at": "2026-10-22T14:36:25.822Z",
@@ -370,26 +388,9 @@
    "lang": "ar",
    "at": "2026-10-22T13:24:22.367Z",
    "variants": 4
-  },
-  {
-   "q": "ايه هو قانون مور؟",
-   "lang": "ar",
-   "at": "2026-10-22T13:24:22.367Z",
-   "variants": 0
-  },
-  {
-   "q": "ازاي الشريحة الإلكترونية بتتصنع من الرمل؟",
-   "lang": "ar",
-   "at": "2026-10-22T13:24:22.367Z",
-   "variants": 0
   }
  ],
  "pending": [
-  {
-   "q": "عايز اعرف مكوناتة",
-   "lang": "ar",
-   "topic": "expert:electronic-warfare"
-  },
   {
    "q": "حدثني عن حساب تكلفة زجاجة العطر وتحديد سعر البيع",
    "lang": "ar",
@@ -444,6 +445,11 @@
    "q": "ايه علامات العطش والجفاف عند الخيول؟",
    "lang": "ar",
    "topic": "expert:veterinary"
+  },
+  {
+   "q": "ليه الأمن الحيوي مهم في مزارع الدواجن؟",
+   "lang": "ar",
+   "topic": "expert:veterinary"
   }
  ],
  "importer": {
@@ -451,9 +457,9 @@
   "aiReadings": 0,
   "localReadings": 25
  },
- "localTaughtTotal": 52,
+ "localTaughtTotal": 54,
  "spelling": {
-  "at": "2026-10-22T14:36:25.822Z",
+  "at": "2026-10-22T15:19:42.783Z",
   "tried": 750,
   "understood": 721,
   "score": 96,
