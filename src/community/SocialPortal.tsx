@@ -43,6 +43,7 @@ import { cx, resizeImage, type Comment, type Notification, type Post, type Publi
 import { pulseNow, type SessionState } from './session';
 import { Avatar, Btn, Card, Empty, Sheet, Spinner, errorText, inputClass, timeAgo, tx, useLoad, type Lang } from './ui';
 import { StoriesBar } from './StoriesBar';
+import { feedCursor, mergeFeed, type FeedScope } from './feed';
 import { categoryLabel } from './DiscussionsPage';
 import { openFormulaInLab } from './sync';
 import { GeneralNewsPeriodic } from './GeneralNewsPeriodic';
@@ -70,6 +71,7 @@ type Go = (route: string) => void;
 interface Props {
   lang: Lang;
   session: SessionState;
+  initialScope?: FeedScope;
   go: Go;
   toast: (text: string) => void;
   onOpenMessenger?: (userId: string) => void;
@@ -77,9 +79,9 @@ interface Props {
 
 /* ------------------------------------------------- Feed ------------------------------------------------- */
 
-export function SocialFeed({ lang, session, go, toast, onOpenMessenger }: Props) {
+export function SocialFeed({ lang, session, go, toast, onOpenMessenger, initialScope = 'all' }: Props) {
   const t = tx(lang);
-  const [scope, setScope] = useState<'all' | 'friends' | 'recipes' | 'trending' | 'general-news'>('all');
+  const [scope, setScope] = useState<FeedScope>(initialScope);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [more, setMore] = useState(true);
@@ -87,39 +89,48 @@ export function SocialFeed({ lang, session, go, toast, onOpenMessenger }: Props)
 
   const me = session.me;
 
+  const cursor = useRef<string | undefined>(undefined);
+  const generation = useRef(0);
+  const busy = useRef(false);
+
   const load = async (before?: string) => {
+    if (busy.current || scope === 'general-news') return;
+    busy.current = true;
+    const request = generation.current;
     setLoading(true);
+    setError('');
     try {
-      const queryScope = scope === 'friends' ? 'friends' : 'all';
+      const queryScope = scope === 'friends' || scope === 'saved' ? scope : 'all';
       const list = await cx<Post[]>(
         `/community/feed?scope=${queryScope}${before ? `&before=${encodeURIComponent(before)}` : ''}`
       );
-      let filtered = list;
-      if (scope === 'recipes') {
-        filtered = list.filter((p) => Boolean(p.recipe));
-      } else if (scope === 'trending') {
-        filtered = [...list].sort(
-          (a, b) =>
-            Object.values(b.reactions).reduce((s, n) => s + n, 0) +
-            b.comments -
-            (Object.values(a.reactions).reduce((s, n) => s + n, 0) + a.comments)
-        );
-      }
-      setPosts((prev) => (before ? [...prev, ...filtered] : filtered));
+      if (request !== generation.current) return;
+      cursor.current = feedCursor(list);
+      setPosts(prev => mergeFeed(before ? prev : [], list, scope));
       setMore(list.length >= 20);
-      setError('');
     } catch (e) {
-      setError(errorText(e, lang));
+      if (request === generation.current) setError(errorText(e, lang));
     } finally {
-      setLoading(false);
+      if (request === generation.current) {
+        busy.current = false;
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
+    generation.current += 1;
+    busy.current = false;
+    cursor.current = undefined;
+    setPosts([]);
+    setMore(false);
+    setError('');
+    setLoading(false);
     void load();
+    return () => { generation.current += 1; };
   }, [scope]);
 
-  const replace = (p: Post) => setPosts((list) => list.map((x) => (x.id === p.id ? p : x)));
+  const replace = (p: Post) => setPosts((list) => scope === 'saved' && !p.saved ? list.filter(x => x.id !== p.id) : list.map((x) => (x.id === p.id ? p : x)));
   const remove = (id: string) => setPosts((list) => list.filter((x) => x.id !== id));
 
   return (
@@ -299,7 +310,7 @@ export function SocialFeed({ lang, session, go, toast, onOpenMessenger }: Props)
         <Composer
           lang={lang}
           session={session}
-          onPosted={(p) => setPosts((list) => [p, ...list])}
+          onPosted={(p) => { if (scope !== 'saved') setPosts((list) => [p, ...list]); }}
           toast={toast}
           go={go}
         />
@@ -310,13 +321,15 @@ export function SocialFeed({ lang, session, go, toast, onOpenMessenger }: Props)
             { id: 'all', label: t('🌐 كل المجتمع', '🌐 Everyone') },
             { id: 'general-news', label: t('📡 أخبار العامة (دورية)', '📡 General News (Periodic)') },
             { id: 'friends', label: t('👥 الأصدقاء فقط', '👥 Friends') },
+            { id: 'saved', label: t('🔖 المحفوظات', '🔖 Saved posts') },
             { id: 'recipes', label: t('🧪 تركيبات المعمل', '🧪 Recipes') },
-            { id: 'trending', label: t('🔥 الأكثر تفاعلاً', '🔥 Trending') },
+            { id: 'trending', label: t('🔥 الأكثر تفاعلاً في المحمّل', '🔥 Trending in loaded posts') },
           ].map((tab) => (
             <button
               key={tab.id}
               type="button"
-              onClick={() => setScope(tab.id as any)}
+              onClick={() => setScope(tab.id as FeedScope)}
+              aria-pressed={scope === tab.id}
               className={`rounded-full px-4 py-2 text-xs font-bold transition cursor-pointer shrink-0 ${
                 scope === tab.id
                   ? 'bg-amber-900 text-white shadow-sm'
@@ -328,7 +341,9 @@ export function SocialFeed({ lang, session, go, toast, onOpenMessenger }: Props)
           ))}
         </div>
 
-        {error && <p className="rounded-xl bg-rose-50 p-3 text-sm text-rose-700">{error}</p>}
+        {error && <div role="alert" className="rounded-xl bg-rose-50 p-3 text-sm text-rose-700">
+          <p>{error}</p><Btn small variant="ghost" onClick={() => void load(cursor.current)}>{t('حاول تاني', 'Try again')}</Btn>
+        </div>}
 
         {/* Posts Stream or General News View */}
         {scope === 'general-news' ? (
@@ -356,8 +371,8 @@ export function SocialFeed({ lang, session, go, toast, onOpenMessenger }: Props)
           <Card>
             <Empty
               icon={<Users className="h-10 w-10 text-stone-300" />}
-              title={t('لا توجد منشورات في هذا القسم حالياً', 'No posts in this section')}
-              body={t(
+              title={scope === 'saved' ? t('لسه مفيش منشورات محفوظة', 'No saved posts yet') : t('لا توجد منشورات في هذا القسم حالياً', 'No posts in this section')}
+              body={scope === 'saved' ? t('احفظ أي منشور من قائمة الخيارات علشان ترجع له هنا. المحفوظات خاصة بيك وبتظهر طالما مسموح لك تشوف المنشور.', 'Save a post from its options menu to find it here. Saved posts are private and remain subject to the author’s visibility settings.') : t(
                 'شارك أول تجربة عطرية أو اطرح سؤالاً لزملائك في المعمل.',
                 'Share your first scent formulation or ask your peers.'
               )}
@@ -365,11 +380,11 @@ export function SocialFeed({ lang, session, go, toast, onOpenMessenger }: Props)
           </Card>
         )}
 
-        {!loading && more && posts.length > 0 && (
+        {!loading && !error && more && scope !== 'general-news' && (
           <Btn
             variant="soft"
             className="w-full py-3 font-bold"
-            onClick={() => void load(posts[posts.length - 1].createdAt)}
+            onClick={() => void load(cursor.current)}
           >
             {t('عرض المزيد من المنشورات', 'Load more posts')}
           </Btn>
@@ -725,6 +740,8 @@ export function PostCard({
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(post.body);
   const [picker, setPicker] = useState(false);
+  const [savingPost, setSavingPost] = useState(false);
+  const savingRef = useRef(false);
 
   const total = Object.values(post.reactions).reduce((s, n) => s + n, 0);
   const top = Object.entries(post.reactions)
@@ -752,6 +769,23 @@ export function PostCard({
     } catch (e) {
       toast(errorText(e, lang));
     }
+  };
+
+  const toggleSaved = async () => {
+    if (savingRef.current) return;
+    savingRef.current = true;
+    setSavingPost(true);
+    try {
+      if (post.saved) {
+        await cx(`/community/posts/${post.id}/saved`, { method: 'DELETE' });
+        onChange({ ...post, saved: false });
+      } else {
+        onChange(await cx<Post>(`/community/posts/${post.id}/saved`, { method: 'PUT' }));
+      }
+      setMenu(false);
+      toast(post.saved ? t('اتشال من المحفوظات', 'Removed from saved posts') : t('اتحفظ في حسابك', 'Saved to your account'));
+    } catch (e) { toast(errorText(e, lang)); }
+    finally { savingRef.current = false; setSavingPost(false); }
   };
 
   const del = async () => {
@@ -820,6 +854,7 @@ export function PostCard({
         <div className="relative">
           <button
             type="button"
+            aria-label={t('خيارات المنشور', 'Post options')} aria-expanded={menu}
             onClick={() => setMenu((m) => !m)}
             className="rounded-full p-2 text-stone-400 hover:bg-stone-100 hover:text-stone-700 cursor-pointer"
           >
@@ -827,6 +862,10 @@ export function PostCard({
           </button>
           {menu && (
             <div className="absolute end-0 z-20 mt-1 w-48 overflow-hidden rounded-2xl border border-stone-200 bg-white text-xs shadow-xl">
+              <button type="button" disabled={savingPost} onClick={() => void toggleSaved()} className="flex w-full items-center gap-2 px-4 py-2.5 text-start font-semibold text-amber-900 hover:bg-amber-50 disabled:opacity-50">
+                <Bookmark className={`h-4 w-4 ${post.saved ? 'fill-amber-800' : ''}`} />
+                {savingPost ? t('جاري الحفظ…', 'Saving…') : post.saved ? t('إلغاء حفظ المنشور', 'Unsave post') : t('حفظ المنشور', 'Save post')}
+              </button>
               {post.mine ? (
                 <>
                   <button

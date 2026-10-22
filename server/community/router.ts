@@ -257,6 +257,8 @@ export function createCommunityRouter(community: Community, options: { env?: Env
   router.get('/community/posts/:id', member((ctx, u, req) => social.getPost(ctx, u.id, p(req, 'id'))));
   router.patch('/community/posts/:id', member((ctx, u, req) => social.editPost(ctx, u.id, p(req, 'id'), req.body || {})));
   router.delete('/community/posts/:id', member(async (ctx, u, req) => { await social.deletePost(ctx, u.id, p(req, 'id')); }));
+  router.put('/community/posts/:id/saved', member((ctx, u, req) => social.savePost(ctx, u.id, p(req, 'id'))));
+  router.delete('/community/posts/:id/saved', member(async (ctx, u, req) => { await social.unsavePost(ctx, u.id, p(req, 'id')); }));
   router.post('/community/posts/:id/react', member((ctx, u, req) => social.react(ctx, u.id, p(req, 'id'), req.body?.kind ?? null)));
   router.get('/community/posts/:id/comments', member((ctx, u, req) => social.comments(ctx, u.id, p(req, 'id'))));
   router.post('/community/posts/:id/comments', member((ctx, u, req) => social.addComment(ctx, u.id, p(req, 'id'), req.body?.body)));

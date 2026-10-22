@@ -86,6 +86,23 @@ const placeOk = place.status === 200 && placeData && Math.abs(placeData.lat - 43
 report('Shaheen map places', Boolean(placeOk), `HTTP ${place.status}${placeData ? ` · Grasse → ${placeData.lat}, ${placeData.lon} (${placeData.label})` : ' · not located'}`,
   placeOk ? undefined : place.status === 400 || place.status === 404 ? 'warning' : undefined);
 
+// Community deployment smoke: read-only, no fake members or production posts.
+const communityStatus = await get(`${SITE}/api/community/status`);
+const communityReady = communityStatus.status === 200 && json(communityStatus.text)?.enabled === true;
+report('Community database readiness', communityReady, `HTTP ${communityStatus.status} · enabled=${json(communityStatus.text)?.enabled === true}`);
+for (const [label, path, method] of [
+  ['Saved feed requires login', '/api/community/feed?scope=saved', 'GET'],
+  ['Save post requires login', '/api/community/posts/deployment-probe/saved', 'PUT'],
+  ['Unsave post requires login', '/api/community/posts/deployment-probe/saved', 'DELETE'],
+]) {
+  const result = await get(`${SITE}${path}`, { method });
+  report(label, result.status === 401, `HTTP ${result.status} · expected 401 (no credentials sent)`);
+}
+const savePreflight = await get(`${SITE}/api/community/posts/deployment-probe/saved`, {
+  method: 'OPTIONS', headers: { origin: PAGES_ORIGIN, 'access-control-request-method': 'PUT', 'access-control-request-headers': 'authorization,content-type' },
+});
+report('Saved posts CORS', savePreflight.status < 400 && savePreflight.headers.get('access-control-allow-origin') === PAGES_ORIGIN && /PUT/.test(savePreflight.headers.get('access-control-allow-methods') || ''), `HTTP ${savePreflight.status} · authenticated cross-origin PUT preflight`);
+
 // 4) Second Vercel project: unused, it only redirects visitors to the main site.
 const second = await get(`${SECOND}/`, { redirect: 'manual' });
 const secondTarget = second.headers.get('location') || '';
