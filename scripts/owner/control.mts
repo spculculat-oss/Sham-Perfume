@@ -44,6 +44,6 @@ if (action === 'resume' && bot) {
 console.log(`::notice title=أمر صاحب الموقع::${line}`);
 if (process.env.GITHUB_STEP_SUMMARY) {
   const paused = controls.paused.map((id) => `- ${BOTS.find((b) => b.id === id)?.nameAr ?? id}`).join('\n') || '- مفيش';
-  appendFileSync(process.env.GITHUB_STEP_SUMMARY, `## أمر صاحب الموقع\n\n${line}\n\n**فرامل الطوارئ:** ${controls.frozen ? 'شغالة (كل الروبوتات واقفة)' : 'مش شغالة'}\n\n**التطوير الذاتي:** ${controls.selfDevelopment === 'safe_auto' ? 'الصغير الآمن تلقائي، والباقي بموافقتك' : controls.selfDevelopment === 'state' ? 'دولة المنصة بتوافق، وإنت فوقها في أي وقت' : 'كل تغيير بموافقتك'}\n\n**منصات الذكاء الاصطناعي:** ${controls.aiPlatforms === 'off' ? 'مقفولة — شاهين معتمد على نفسه' : 'مسموحة'}\n\n**الروبوتات الموقوفة:**\n${paused}\n`);
+  appendFileSync(process.env.GITHUB_STEP_SUMMARY, `## أمر صاحب الموقع\n\n${line}\n\n**فرامل الطوارئ:** ${controls.frozen ? 'شغالة (كل الروبوتات واقفة)' : 'مش شغالة'}\n\n**التطوير الذاتي:** ${controls.selfDevelopment === 'safe_auto' ? 'الصغير الآمن تلقائي، والباقي بموافقتك' : controls.selfDevelopment === 'state' ? 'دولة المنصة بتوافق، وإنت فوقها في أي وقت' : 'كل تغيير بموافقتك'}\n\n**منصات الذكاء الاصطناعي:** ${controls.aiPlatforms === 'off' ? 'مقفولة — شاهين معتمد على نفسه' : controls.aiPlatforms === 'auto' ? 'تلقائي — بيستعين بيها ويتعلم منها وهي شغالة، ولو وقفت بيعتمد على نفسه' : 'مسموحة'}\n\n**الروبوتات الموقوفة:**\n${paused}\n`);
 }
 out('changed', changed || stateChanged ? 'true' : 'false');

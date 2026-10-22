@@ -24,7 +24,7 @@ import type { ShaheenMemory } from './core/memory';
 import { isPersonal, isTimeBound, offlineNote } from '../src/utils/shaheenMemory';
 import { libraryAnswer, unknownAnswer, type LibrarySources } from '../src/utils/shaheenLibrary';
 import { designAnswer } from '../src/utils/shaheenDesigner';
-import { platformsOff } from './core/selfReliance';
+import { platformsMode, platformsOff } from './core/selfReliance';
 import { buildLexicon, keyboardFix, understandQuestion, understoodNote, type Understanding } from '../src/utils/shaheenSpelling';
 import { RESEARCH_USER_AGENT, researchAnswer, type Research } from '../src/utils/webResearch';
 import { questionIntents } from '../src/utils/shaheenTools';
@@ -104,16 +104,26 @@ export function getChatModels(env: Environment, settings: ShaheenSettings = SHAH
 }
 
 /**
+ * «تلقائي»: can an outside platform answer right now? One configured for Shaheen and not parked after failing
+ * («صحة المحركات»). When none can, he answers on his own at once instead of waiting on engines known to be down.
+ */
+export function platformsReady(settings: ShaheenSettings, env: Environment, health?: EngineHealth): boolean {
+  const configured = new Set(engineStatuses(env).filter((s) => s.configured && s.kind !== 'own').map((s) => s.id));
+  return settings.engines.some((id) => configured.has(id) && !(health?.parkedUntil(id)));
+}
+
+/**
  * The only model list visitors get: Shaheen's modes and whether each can answer right now.
  * No engine ids, vendor names or model names.
  */
 export function getPublicModes(env: Environment, settings: ShaheenSettings = SHAHEEN_SITE_SETTINGS, council?: CouncilSettings) {
   const statuses = engineStatuses(env);
-  // «شاهين معتمد على نفسه»: his own brain answers in every mode but the council (which needs several models).
-  const own = platformsOff(env);
-  const ready = settings.enabled && (own || settings.engines.some((id) => statuses.find((s) => s.id === id)?.configured));
+  // «شاهين معتمد على نفسه» and «تلقائي»: his own brain answers in every mode (alone, or when the platforms stop),
+  // but the council, which needs several models.
+  const off = platformsOff(env);
+  const ready = settings.enabled && (platformsMode(env) !== 'on' || settings.engines.some((id) => statuses.find((s) => s.id === id)?.configured));
   return SHAHEEN_MODES.map((id) => ({
-    id, hasApiKey: id === 'council' ? Boolean(!own && ready && council && councilAvailable(council, env)) : ready,
+    id, hasApiKey: id === 'council' ? Boolean(!off && ready && council && councilAvailable(council, env)) : ready,
   }));
 }
 
@@ -170,6 +180,8 @@ export interface ExecuteOptions {
   owner?: string;
   /** «صحة المحركات»: failing engines are parked and tried last until they work again. */
   health?: EngineHealth;
+  /** «تلقائي»: Shaheen answers himself when the platforms refuse, so a «too many requests» is not waited out. */
+  selfBacked?: boolean;
 }
 
 /** Only the provider that actually answered is credited. Auto is failover, not a fake panel. */
@@ -235,7 +247,11 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
       else health.fail(provider, signal.aborted ? 'timeout' : 'empty');
     }
     // 429 = "too many requests right now": the gate cools this provider down instead of hammering it.
-    if (refusal && (refusal.status === 429 || refusal.failure === 'rate_limited')) return { outcome: 'limited', retryMs: retryHintMs(refusal.detail) };
+    if (refusal && (refusal.status === 429 || refusal.failure === 'rate_limited')) {
+      // «تلقائي»: the provider still cools down, but the visitor does not wait for it — Shaheen answers himself.
+      if (options.selfBacked) { options.gate?.limited(provider, retryHintMs(refusal.detail)); return { outcome: 'next' }; }
+      return { outcome: 'limited', retryMs: retryHintMs(refusal.detail) };
+    }
     return { outcome: 'next' };
   };
   if (options.gate) {
@@ -395,7 +411,47 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
     const started = Date.now();
     const controller = new AbortController();
     const cancel = () => { if (!res.writableEnded) controller.abort(); };
-    let chatInput: { input: ChatRequest; mode: string; useMemory: boolean; agent?: AgentResult; recorded?: boolean } | undefined;
+    let chatInput: { input: ChatRequest; mode: string; useMemory: boolean; agent?: AgentResult; recorded?: boolean; opening: boolean; ownTried: boolean } | undefined;
+    // «تلقائي»: the platforms while they work, his own brain the moment they don't (selfBacked: no error page for a visitor).
+    const switchMode = platformsMode(env);
+    const selfBacked = switchMode !== 'on';
+    /**
+     * His own answer: «مصمم شاهين الذاتي» for a design request, then «وكيل شاهين» (understand → plan → the school's
+     * experts, the library, the memory, open sources → check). `after` = the platforms just failed on «تلقائي».
+     */
+    const ownAnswer = async (input: ChatRequest, mode: string, useMemory: boolean, opening: boolean, after?: string): Promise<{ done: boolean; agent?: AgentResult; recorded: boolean }> => {
+      const { shaheen } = await settings();
+      if (!shaheen.enabled) return { done: false, recorded: false };
+      // Answered: a normal 200 (on «تلقائي» the platform outage that led here stays visible to the maintenance agent).
+      const mark = () => runtime?.record(after ? { ms: Date.now() - started, status: 200, code: `${after}+SELF` } : { ms: Date.now() - started, status: 200 });
+      const history = input.conversationHistory;
+      const last = history[history.length - 1];
+      const previous = last?.role === 'assistant' && last.text.includes('sham-formula') ? [...history].reverse().find((t) => t.role === 'user')?.text : undefined;
+      const design = designAnswer(input.message, input.language, previous);
+      if (design) {
+        if (!res.destroyed) res.json({ ...publicChatResult({ reply: design, mode }, input.message), designer: true });
+        mark();
+        return { done: true, recorded: false };
+      }
+      let agent: AgentResult | undefined;
+      let recorded = false;
+      const shopping = questionIntents(input.message).includes('store');
+      if (useMemory && !shopping && (opening || understand(input.message, input.language).subjects.length >= 2)) {
+        const sources = await library().catch((): LibrarySources => ({ lessons: [], materials: [] }));
+        agent = await runAgent(input.message, input.language, {
+          sources, lexicon: agentLexicon(sources), research: (q, lang) => research(q, lang), willRecord: true,
+        });
+        if (agent.refer && !isPersonal(input.message) && !isTimeBound(input.message)) {
+          recorded = Boolean(await options.repo.recordGap({ question: agent.understanding.asked, source: 'no_answer', reason: expertGapReason(agent.expert.field) }).catch(() => undefined));
+        }
+        if (agent.answer && !res.destroyed) {
+          res.json({ ...publicChatResult({ reply: agent.answer, mode }, input.message), memory: 'agent', agent: { field: agent.expert.field, confidence: agent.confidence, sources: agent.used } });
+          mark();
+          return { done: true, agent, recorded };
+        }
+      }
+      return { done: false, agent, recorded };
+    };
     res.on('close', cancel);
     try {
       const checked = validateChatRequest(req.body);
@@ -412,8 +468,9 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       }
       // The supervisor's probes send memory:false so they keep testing the live engines.
       const opening = !input.conversationHistory.length;
-      // With the platforms closed, his memory and library ARE the answer, so the probes test them too.
-      const own = platformsOff(env);
+      // With the platforms closed — or, on «تلقائي», none of them able to answer right now — his memory and library
+      // ARE the answer, so the probes test them too.
+      const own = switchMode === 'off' || (switchMode === 'auto' && !platformsReady(shaheen, env, health));
       const useMemory = Boolean(shaheen.enabled && (own || (memory && req.body?.memory !== false)));
       const mode = shaheen.allowVisitorChoice ? input.model : 'auto';
       // «تطبيقات شاهين السريعة»: the same instant apps as the browser (for clients that did not run them).
@@ -434,38 +491,18 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
           return;
         }
       }
-      // «مصمم شاهين الذاتي»: with the platforms closed, a design request gets his own formula — instant, no AI platform.
-      if (own && shaheen.enabled) {
-        const history = input.conversationHistory;
-        const last = history[history.length - 1];
-        const previous = last?.role === 'assistant' && last.text.includes('sham-formula') ? [...history].reverse().find((t) => t.role === 'user')?.text : undefined;
-        const design = designAnswer(input.message, input.language, previous);
-        if (design) {
-          if (!res.destroyed) res.json({ ...publicChatResult({ reply: design, mode }, input.message), designer: true });
-          runtime?.record({ ms: Date.now() - started, status: 200 });
-          return;
-        }
-      }
-      // «وكيل شاهين»: understand → plan → consult the school's experts, the library, the memory, open sources → check.
+      // «مصمم شاهين الذاتي» and «وكيل شاهين»: his own answer — when the platforms are closed, or on «تلقائي» when none works.
       let agent: AgentResult | undefined;
       let recorded = false;
-      const shopping = questionIntents(input.message).includes('store');
-      if (own && shaheen.enabled && useMemory && !shopping && (opening || understand(input.message, input.language).subjects.length >= 2)) {
-        const sources = await library().catch((): LibrarySources => ({ lessons: [], materials: [] }));
-        agent = await runAgent(input.message, input.language, {
-          sources, lexicon: agentLexicon(sources), research: (q, lang) => research(q, lang), willRecord: true,
-        });
-        if (agent.refer && !isPersonal(input.message) && !isTimeBound(input.message)) {
-          recorded = Boolean(await options.repo.recordGap({ question: agent.understanding.asked, source: 'no_answer', reason: expertGapReason(agent.expert.field) }).catch(() => undefined));
-        }
-        if (agent.answer && !res.destroyed) {
-          res.json({ ...publicChatResult({ reply: agent.answer, mode }, input.message), memory: 'agent', agent: { field: agent.expert.field, confidence: agent.confidence, sources: agent.used } });
-          runtime?.record({ ms: Date.now() - started, status: 200 });
-          return;
-        }
+      if (own) {
+        const mine = await ownAnswer(input, mode, useMemory, opening);
+        if (mine.done) return;
+        ({ agent, recorded } = mine);
       }
-      chatInput = { input, mode, useMemory, agent: agent?.understanding.outOfScope ? undefined : agent, recorded };
-      const run = (signal?: AbortSignal) => executeChat(input, { env, fetch: options.fetch, signal, settings: shaheen, council, gate, owner: visitor, health });
+      chatInput = { input, mode, useMemory, agent: agent?.understanding.outOfScope ? undefined : agent, recorded, opening, ownTried: own };
+      // «تلقائي» with every platform down: no visitor waits on engines known to be down — straight to his memory and library.
+      if (own && switchMode === 'auto') throw new ChatError(503, 'PROVIDER_UNAVAILABLE', 'No AI platform can answer right now');
+      const run = (signal?: AbortSignal) => executeChat(input, { env, fetch: options.fetch, signal, settings: shaheen, council, gate, owner: visitor, health, selfBacked: switchMode === 'auto' });
       let result: ChatAnswer;
       if (!input.conversationHistory.length && capacity.cacheTtlMs > 0 && capacity.cacheEntries > 0) {
         // Opening question: answered from the shared cache, or by ONE provider call shared by everyone
@@ -482,9 +519,19 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       }
     } catch (error) {
       if (res.destroyed) return;
+      // «تلقائي»: the platforms were expected to answer and did not (a key, a balance, a limit, an outage) — Shaheen
+      // answers on his own right away, exactly as when they are closed; the engine health parks the failing ones.
+      if (error instanceof ChatError && OFFLINE_CODES.has(error.code) && chatInput && switchMode === 'auto' && !chatInput.ownTried) {
+        chatInput.ownTried = true;
+        chatInput.useMemory = true;
+        const mine = await ownAnswer(chatInput.input, chatInput.mode, true, chatInput.opening, error.code);
+        if (mine.done || res.destroyed) return;
+        chatInput.agent = mine.agent?.understanding.outOfScope ? undefined : mine.agent;
+        chatInput.recorded = mine.recorded;
+      }
       // No engine answered: the closest question Shaheen answered before, marked as coming from memory.
       // «وكيل شاهين» already consulted everything and found nothing solid: an honest answer, and the field's expert studies it.
-      if (error instanceof ChatError && OFFLINE_CODES.has(error.code) && chatInput?.agent && platformsOff(env)) {
+      if (error instanceof ChatError && OFFLINE_CODES.has(error.code) && chatInput?.agent && selfBacked) {
         const { input, mode, agent, recorded } = chatInput;
         res.json({ ...publicChatResult({ reply: agent.understanding.note + referralAnswer(input.language, agent.expert, Boolean(recorded)), mode }, input.message), memory: 'unknown', agent: { field: agent.expert.field, confidence: 'low', sources: [] } });
         runtime?.record({ ms: Date.now() - started, status: 200 });
@@ -495,7 +542,7 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
         // «المكتب السريع»: a science question is answered from his index (a lesson the team reviewed) in a fraction
         // of a millisecond, before his memory is walked and his library is searched. When the owner closed the
         // platforms on purpose, the agent above has already consulted the same curriculum with its full weighing.
-        if (!platformsOff(env)) {
+        if (!selfBacked || !chatInput.ownTried) {
           const desk = scienceDesk(input.message, input.language);
           if (desk) {
             if (!res.destroyed) res.json({ ...publicChatResult({ reply: desk.answer, mode }, input.message), memory: 'science' });
@@ -520,7 +567,7 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
           res.json({ ...publicChatResult({ reply: note + hit.entry.answer + offlineNote(input.language, hit.exact), mode }, input.message), memory: hit.exact ? 'exact' : 'similar' });
           // Still an engine outage for the maintenance agent, even though the visitor got an answer (not when the
           // owner closed the platforms on purpose: then this is how Shaheen works).
-          runtime?.record(platformsOff(env) ? { ms: Date.now() - started, status: 200 } : { ms: Date.now() - started, status: error.status, code: `${error.code}+MEMORY` });
+          runtime?.record(switchMode === 'off' ? { ms: Date.now() - started, status: 200 } : { ms: Date.now() - started, status: error.status, code: `${error.code}+MEMORY` });
           return;
         }
         // Nothing close in memory: «مكتبة شاهين» builds an answer from what he knows (not for shopping questions —
@@ -530,18 +577,18 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
           const found = libraryAnswer(sources || await library().catch(() => ({ lessons: [], materials: [] })), asked, input.language, { recorded });
           if (found && !res.destroyed) {
             res.json({ ...publicChatResult({ reply: note + found.answer, mode }, input.message), memory: 'library' });
-            runtime?.record(platformsOff(env) ? { ms: Date.now() - started, status: 200 } : { ms: Date.now() - started, status: error.status, code: `${error.code}+LIBRARY` });
+            runtime?.record(switchMode === 'off' ? { ms: Date.now() - started, status: 200 } : { ms: Date.now() - started, status: error.status, code: `${error.code}+LIBRARY` });
             return;
           }
           // Not in his library either: «باحث شاهين» looks it up in open sources and answers from what he read.
           const found2 = await research(asked, input.language).catch(() => undefined);
           if (found2 && !res.destroyed) {
             res.json({ ...publicChatResult({ reply: note + researchAnswer(found2, { recorded }), mode }, input.message), memory: 'research' });
-            runtime?.record(platformsOff(env) ? { ms: Date.now() - started, status: 200 } : { ms: Date.now() - started, status: error.status, code: `${error.code}+RESEARCH` });
+            runtime?.record(switchMode === 'off' ? { ms: Date.now() - started, status: 200 } : { ms: Date.now() - started, status: error.status, code: `${error.code}+RESEARCH` });
             return;
           }
           // «شاهين معتمد على نفسه»: nothing anywhere — an honest «I don't know yet» instead of «unavailable».
-          if (platformsOff(env) && !res.destroyed) {
+          if (selfBacked && !res.destroyed) {
             res.json({ ...publicChatResult({ reply: note + unknownAnswer(input.language, recorded), mode }, input.message), memory: 'unknown' });
             runtime?.record({ ms: Date.now() - started, status: 200 });
             return;
