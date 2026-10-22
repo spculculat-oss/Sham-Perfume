@@ -7,7 +7,8 @@
  *   change — applies Shaheen's change to the newest main, runs every check, merges, rebuilds the site;
  *   order  — pauses / resumes a robot, stops / restarts all of them, or runs one now;
  *   decide — merges (after every check) or closes a robot's pull request; approves, refuses or annotates a council task;
- *   revert — undoes what an earlier request changed (found by its «Owner-Request: #n» trailer), after every check.
+ *   revert — undoes what an earlier request changed (found by its «Owner-Request: #n» trailer), after every check —
+ *            or what «دولة المنصة» put live for robot change #n («State-Decision: #n»): the owner is above it.
  * If anything fails nothing changes, and the request says why. The request never carries the room's conversation.
  */
 import { execFileSync } from 'node:child_process';
@@ -16,6 +17,7 @@ import { dirname } from 'node:path';
 import { GitHub, GitHubError } from '../doctor/github';
 import { OWNER, OWNER_APPROVAL_LABEL, applyOwnerCommand, maskSensitive, readControls } from '../../src/utils/ownerAuthority';
 import { CHANGE_TITLE_PREFIX, changeFromIssue, changeVerdict, planChange } from '../../src/utils/ownerFiles';
+import { stateTrailer } from '../../src/utils/platformState';
 import {
   DECISIONS, TASK_APPROVAL_LABEL, TASK_APPROVED_LABEL, botName, decodeDesk, orderText, requestTrailer, workflowOf, type DeskRequest,
 } from '../../src/utils/ownerDesk';
@@ -47,7 +49,7 @@ interface Desk {
 }
 
 /** Every check in turn; the first failure stops (and says which one, with its last lines). */
-function runChecks(): { ok: true } | { ok: false; check: string; output: string } {
+export function runChecks(): { ok: true } | { ok: false; check: string; output: string } {
   for (const check of DESK_CHECKS) {
     console.log(`::group::${check}`);
     let output = ''; let ok = true;
@@ -210,9 +212,9 @@ async function doDecide(d: Desk, req: Extract<DeskRequest, { kind: 'decide' }>) 
 
 // ── revert ─────────────────────────────────────────────────────────────────────────────────────────────────
 async function doRevert(d: Desk, req: Extract<DeskRequest, { kind: 'revert' }>) {
-  const trailer = requestTrailer(req.request);
-  const shas = git('log', '--format=%H', '-F', `--grep=${trailer}`, 'HEAD').split('\n').filter(Boolean)
-    .filter((sha) => git('log', '-1', '--format=%B', sha).split('\n').some((l) => l.trim() === trailer));
+  const trailers = [requestTrailer(req.request), stateTrailer(req.request)];
+  const shas = [...new Set(trailers.flatMap((trailer) => git('log', '--format=%H', '-F', `--grep=${trailer}`, 'HEAD').split('\n').filter(Boolean)))]
+    .filter((sha) => git('log', '-1', '--format=%B', sha).split('\n').some((l) => trailers.includes(l.trim())));
   if (!shas.length) throw new Refused(`الطلب #${req.request} ماغيّرش أي ملف في الموقع (أو قديم أوي)، فمفيش حاجة ترجع.`);
   configureGit();
   git('checkout', '-q', '-B', `owner-revert/${d.issue.number}`);

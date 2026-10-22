@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       action:
-        description: "الأمر: pause = وقف روبوت، resume = رجّعه، freeze = وقف كل الروبوتات، unfreeze = رجّعهم، safe_auto = التصليح الصغير تلقائي، approve_all = كل تغيير بموافقتي، self_reliant = شاهين يعتمد على نفسه من غير منصات ذكاء اصطناعي، platforms_on = اسمح بالمنصات"
+        description: "الأمر: pause = وقف روبوت، resume = رجّعه، freeze = وقف كل الروبوتات، unfreeze = رجّعهم، safe_auto = التصليح الصغير تلقائي، approve_all = كل تغيير بموافقتي، state_rule = دولة المنصة توافق (وإنت فوقها)، self_reliant = شاهين يعتمد على نفسه من غير منصات ذكاء اصطناعي، platforms_on = اسمح بالمنصات"
         required: true
         type: choice
         options:
@@ -22,6 +22,7 @@ on:
           - unfreeze
           - safe_auto
           - approve_all
+          - state_rule
           - self_reliant
           - platforms_on
       bot:
@@ -56,6 +57,7 @@ on:
           - intake
           - studio_bridge
           - studio_zip
+          - state
 
 permissions:
   contents: read

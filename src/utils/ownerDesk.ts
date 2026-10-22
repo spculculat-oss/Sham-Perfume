@@ -15,6 +15,7 @@
  */
 import { BOTS, type BotId } from './shaheenOrg';
 import { maskSensitive, OWNER, OWNER_APPROVAL_LABEL, type SelfDevVerdict } from './ownerAuthority';
+import { STATE_LABELS } from './platformState';
 import { CHANGE_TITLE_PREFIX, SITE_REPO, decodePayload, readChange, type ChangePlan, type ChangeRequest } from './ownerFiles';
 
 export const TASK_APPROVAL_LABEL = 'needs-approval';
@@ -147,7 +148,8 @@ export interface GhIssue {
   labels?: ({ name?: string } | string)[]; pull_request?: unknown; created_at: string; closed_at?: string | null; user?: { login?: string };
 }
 export type InboxKind = 'pull' | 'task';
-export interface InboxItem { number: number; kind: InboxKind; title: string; summary: string; url: string; at: string }
+/** `stateRefused`: the Platform State voted it down (or its checks failed), so it came up to the owner with its reasons. */
+export interface InboxItem { number: number; kind: InboxKind; title: string; summary: string; url: string; at: string; stateRefused?: boolean }
 
 const labelNames = (i: GhIssue) => (i.labels || []).map((l) => (typeof l === 'string' ? l : l.name || ''));
 /** Plain words from an issue body: no markdown, no hidden notes, no long lists — the first few lines only. */
@@ -167,7 +169,7 @@ export function inboxFrom(issues: GhIssue[]): InboxItem[] {
     const kind: InboxKind | undefined = i.pull_request && labels.includes(OWNER_APPROVAL_LABEL) ? 'pull'
       : !i.pull_request && labels.includes(TASK_APPROVAL_LABEL) && labels.includes('shaheen-task') ? 'task' : undefined;
     if (!kind || items.some((x) => x.number === i.number)) continue;
-    items.push({ number: i.number, kind, title: i.title.replace(/^مهمة شاهين:\s*/, ''), summary: plainSummary(i.body), url: i.html_url, at: i.created_at });
+    items.push({ number: i.number, kind, title: i.title.replace(/^مهمة شاهين:\s*/, ''), summary: plainSummary(i.body), url: i.html_url, at: i.created_at, ...(labels.includes(STATE_LABELS.refused) ? { stateRefused: true } : {}) });
   }
   return items.sort((a, b) => b.at.localeCompare(a.at));
 }
