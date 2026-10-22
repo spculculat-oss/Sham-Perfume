@@ -33,18 +33,33 @@ echo "::endgroup::"
 
 echo "::group::Model ${MODEL_NAME}"
 started=$(date +%s)
-curl -fSL --retry 3 --retry-delay 5 -o "$DIR/model.gguf" "$MODEL_URL" 2>&1 | tail -n 2 || fail "تحميل النموذج فشل"
-actual="$(sha256sum "$DIR/model.gguf" | cut -d' ' -f1)"
-if [ -n "$MODEL_SHA256" ]; then
-  [ "$actual" = "$MODEL_SHA256" ] || fail "بصمة النموذج مش مطابقة (${actual})"
-else
-  echo "::notice title=المعلم المحلي::بصمة النموذج ${actual} — ثبّتها في TEACHER_MODEL_SHA256"
+# TEACHER_MODEL_CACHE (optional): a folder kept between runs (actions/cache) — the hourly school reuses the model
+# when its SHA-256 still matches instead of downloading it every hour.
+MODEL_FILE="$DIR/model.gguf"
+if [ -n "${TEACHER_MODEL_CACHE:-}" ]; then
+  mkdir -p "$TEACHER_MODEL_CACHE"
+  MODEL_FILE="$TEACHER_MODEL_CACHE/model.gguf"
 fi
-echo "Downloaded $(du -h "$DIR/model.gguf" | cut -f1) in $(( $(date +%s) - started ))s"
+reuse=""
+if [ -s "$MODEL_FILE" ] && [ -n "$MODEL_SHA256" ] && [ "$(sha256sum "$MODEL_FILE" | cut -d' ' -f1)" = "$MODEL_SHA256" ]; then
+  reuse="yes"
+  echo "Model reused from the cache ($(du -h "$MODEL_FILE" | cut -f1))"
+fi
+if [ -z "$reuse" ]; then
+  rm -f "$MODEL_FILE"
+  curl -fSL --retry 3 --retry-delay 5 -o "$MODEL_FILE" "$MODEL_URL" 2>&1 | tail -n 2 || fail "تحميل النموذج فشل"
+  actual="$(sha256sum "$MODEL_FILE" | cut -d' ' -f1)"
+  if [ -n "$MODEL_SHA256" ]; then
+    [ "$actual" = "$MODEL_SHA256" ] || { rm -f "$MODEL_FILE"; fail "بصمة النموذج مش مطابقة (${actual})"; }
+  else
+    echo "::notice title=المعلم المحلي::بصمة النموذج ${actual} — ثبّتها في TEACHER_MODEL_SHA256"
+  fi
+  echo "Downloaded $(du -h "$MODEL_FILE" | cut -f1) in $(( $(date +%s) - started ))s"
+fi
 echo "::endgroup::"
 
 THREADS="$(nproc)"
-nohup "$SERVER" -m "$DIR/model.gguf" --host 127.0.0.1 --port 8080 -c "${TEACHER_CONTEXT:-6144}" -t "$THREADS" -np 1 \
+nohup "$SERVER" -m "$MODEL_FILE" --host 127.0.0.1 --port 8080 -c "${TEACHER_CONTEXT:-6144}" -t "$THREADS" -np 1 \
   > "$DIR/server.log" 2>&1 &
 echo $! > "$DIR/server.pid"
 for _ in $(seq 1 120); do
