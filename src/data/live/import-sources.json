@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T12:46:41.468Z",
+ "updatedAt": "2026-10-22T13:07:28.280Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,17 @@
  ],
  "runs": [
   {
+   "at": "2026-10-22T13:07:28.280Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-22T12:46:41.468Z",
    "mode": "self",
    "found": 0,
@@ -7942,28 +7953,6 @@
     "  ↳ myperfumeshop.ae: CV 60/100 [https,contact,returns,shipping,privacy,terms,payment,platform] on Shopify",
     "✗ myperfumeshop.ae: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
     "✗ perfumeboxuae.com: الموقع لا يفتح"
-   ]
-  },
-  {
-   "at": "2026-10-18T23:21:13.356Z",
-   "mode": "self",
-   "found": 11,
-   "vetted": 10,
-   "activated": 1,
-   "rejected": 0,
-   "notes": [
-    "✗ goldapple.kz: ملف الثقة ضعيف (27/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
-    "  ↳ perfumeconnection.com.au: CV 37/100 [https,returns,privacy,terms] (pages: /contact-us→200 /returns→200)",
-    "✗ perfumeconnection.com.au: ملف الثقة ضعيف (37/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
-    "  ↳ perfumeprice.co.uk: CV 84/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Magento",
-    "✓ perfumeprice.co.uk (CV 84/100): 6330 perfumes, 3/6 pages read without AI, GBP (1 = 71.2388 EGP) — added to the importer",
-    "✗ nose-shop.jp: الموقع لا يفتح",
-    "✗ letu.kz: الموقع لا يفتح",
-    "✗ jovoy.com: الموقع لا يفتح",
-    "✗ fragrancenet.com: الموقع لا يفتح (HTTP 403)",
-    "  ↳ escentials.com: CV 93/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✗ escentials.com: أغلب منتجاته ليست عطوراً (56%)",
-    "✗ thefragranceshop.co.uk: الموقع لا يفتح (HTTP 403)"
    ]
   }
  ]
