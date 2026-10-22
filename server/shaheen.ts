@@ -25,6 +25,7 @@ import type { ShaheenMemory } from './core/memory';
 import { isPersonal, isTimeBound, offlineNote } from '../src/utils/shaheenMemory';
 import { libraryAnswer, unknownAnswer, type LibrarySources } from '../src/utils/shaheenLibrary';
 import { designFor } from '../src/utils/shaheenDesigner';
+import { cosmeticFor } from '../src/utils/cosmeticFormulator';
 import { designStoreNote, productAnswer, productLink, storeAnswer, wantsStore, withContext, type Context } from '../src/utils/shaheenBrain';
 import { agentLinkOn, type LinkSource } from '../src/utils/agentLink';
 import { readStateOrders } from '../src/utils/platformState';
@@ -507,6 +508,12 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       const history = input.conversationHistory;
       const last = history[history.length - 1];
       const previous = last?.role === 'assistant' && last.text.includes('sham-formula') ? [...history].reverse().find((t) => t.role === 'user')?.text : undefined;
+      // «مصمم تركيبات التجميل»: a cream, serum, balm … formula with its phases, method and safety warnings (no platform).
+      const cosmetic = storeOnly ? undefined : cosmeticFor(input.message, input.language);
+      if (cosmetic) {
+        send(cosmetic.reply, 'designer', { designer: true, cosmetic: true });
+        return { done: true, recorded: false };
+      }
       const design = storeOnly ? undefined : designFor(input.message, input.language, previous);
       if (design) {
         // The linked brain: the ready perfumes of the store that share the formula's notes.

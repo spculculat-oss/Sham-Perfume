@@ -26,6 +26,7 @@ import { t } from '../لغات/i18n';
 import { LText, makeT } from '../لغات/localize';
 import { isRTL } from '../لغات/localizedContent';
 import { uiLabel } from '../لغات/uiTextL10n';
+import { cosmeticsText } from '../لغات/cosmeticsL10n';
 
 
 const S = {
@@ -89,6 +90,8 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
     maceration_simulator: { label: L('aging_sim_full'), icon: Hourglass },
     library: { label: t('nav_library', currentLang), icon: BookMarked },
     guide: { label: t('nav_guide', currentLang), icon: BookOpen },
+    perfumes: { label: cosmeticsText(currentLang, 'navPerfumes'), icon: Sparkles },
+    cosmetics: { label: cosmeticsText(currentLang, 'sectionCosmetics'), icon: Sparkles },
   };
 
   // Deep routes («community/messenger/<id>», «store/<slug>»…) show their section's name, never the raw route.

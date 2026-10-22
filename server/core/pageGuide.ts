@@ -17,7 +17,7 @@ import { normalize } from './text';
 export type PageId =
   | 'home' | 'store' | 'productDetail' | 'concentration' | 'pyramid' | 'alcohol' | 'costing'
   | 'molecule_studio' | 'maceration_simulator' | 'raw_materials' | 'world_perfumes' | 'perfume_news'
-  | 'master_ai' | 'library' | 'community' | 'community/merchant' | 'community/me' | 'guide';
+  | 'master_ai' | 'library' | 'community' | 'community/merchant' | 'community/me' | 'guide' | 'perfumes' | 'cosmetics';
 
 /** What an answer must contain to count as a sensible answer *on that page*. */
 export type PageExpect =
@@ -132,6 +132,24 @@ export const PAGES: PageGuide[] = [
     ],
   },
   {
+    id: 'perfumes', label: { ar: 'قسم العطور', en: 'Perfume section' },
+    what: { ar: 'الزائر في قسم العطور: أدوات التصميم والحاسبات والموسوعة والمتجر.', en: 'The visitor is in the perfume section: design tools, calculators, the encyclopedia and the store.' },
+    offer: { ar: 'وجّهه للأداة المناسبة لسؤاله أو لعطور المتجر الحقيقية.', en: 'Point them to the right tool for their question or to the real store perfumes.' },
+    questions: [
+      { ar: 'أبدأ منين لو عايز أصمم عطر؟', en: 'Where do I start if I want to design a perfume?', expect: 'any' },
+      { ar: 'المتجر فيه إيه؟', en: 'What is in the store?', expect: 'prices' },
+    ],
+  },
+  {
+    id: 'cosmetics', label: { ar: 'قسم مستحضرات التجميل', en: 'Cosmetics section' },
+    what: { ar: 'الزائر في قسم مستحضرات التجميل: مصمم تركيبات الكريمات والسيرومات والزبدات، مكتبة الخامات، ودروس البشرة والشعر. منتجات التجميل في المتجر لسه قريباً.', en: 'The visitor is in the cosmetics section: the formulator for creams, serums and butters, the ingredient library, and skin and hair lessons. Cosmetic products in the store are coming soon.' },
+    offer: { ar: 'اشرحله الخامة أو التركيبة بأمان: حافظة مع أي ماء، اختبار رقعة، ومن غير وعود علاج. ماتخترعش منتجات تجميل مش موجودة في المتجر.', en: 'Explain the ingredient or formula safely: a preservative with any water, a patch test, no treatment claims. Never invent cosmetic products the store does not have.' },
+    questions: [
+      { ar: 'ليه الكريم اللي فيه ماء لازم مادة حافظة؟', en: 'Why does a cream with water need a preservative?', expect: 'any' },
+      { ar: 'المتجر فيه إيه؟', en: 'What is in the store?', expect: 'prices' },
+    ],
+  },
+  {
     id: 'raw_materials', label: { ar: 'المواد الخام', en: 'Raw materials' },
     what: { ar: 'الزائر في موسوعة المواد الخام: بيدور على مادة عطرية وخصائصها وسعرها الداخلي.', en: 'The visitor is in the raw-materials encyclopedia: looking up a material, its properties and its internal price.' },
     offer: { ar: 'اشرحله المادة وخواصها وثباتها، وما تنشرش أسعار الموردين ولا الهامش.', en: 'Explain the material and its strength; never publish supplier prices or margin.' },
@@ -235,6 +253,7 @@ const PAGE_FEATURE: Partial<Record<PageId, string>> = {
   alcohol: 'alcohol', costing: 'costing', molecule_studio: 'molecule_studio', maceration_simulator: 'maceration',
   raw_materials: 'raw_materials', world_perfumes: 'world_perfumes', perfume_news: 'news', master_ai: 'shaheen',
   library: 'library', community: 'community', 'community/merchant': 'merchant', 'community/me': 'account', guide: 'guide',
+  perfumes: 'guide', cosmetics: 'guide',
 };
 
 /** The feature id of the page the visitor is on (undefined for an unknown page). */
