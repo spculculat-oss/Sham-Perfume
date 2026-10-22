@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T13:46:42.390Z",
+ "updatedAt": "2026-10-22T14:35:48.176Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,18 @@
  ],
  "runs": [
   {
+   "at": "2026-10-22T14:35:48.176Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "Web search: AI quota used up — the scout continues by himself",
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-22T13:46:42.390Z",
    "mode": "self",
    "found": 0,
@@ -7909,28 +7921,6 @@
     "✗ thefragranceshop.co.uk: الموقع لا يفتح (HTTP 403)",
     "  ↳ strawberrynet.com: CV 78/100 [age,https,contact,returns,shipping,privacy,terms,payment,social]",
     "✗ strawberrynet.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (1/6)"
-   ]
-  },
-  {
-   "at": "2026-10-19T12:55:05.997Z",
-   "mode": "self",
-   "found": 11,
-   "vetted": 10,
-   "activated": 2,
-   "rejected": 0,
-   "notes": [
-    "✗ douglas.de: الموقع لا يفتح (HTTP 403)",
-    "✗ perfume.com: الموقع لا يفتح (HTTP 403)",
-    "✗ essenza-nobile.de: الموقع لا يفتح (HTTP 403)",
-    "  ↳ aedes.com: CV 77/100 [age,https,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✓ aedes.com (CV 77/100): 1241 perfumes, 4/6 pages read without AI, USD (1 = 53.5247 EGP) — added to the importer",
-    "✗ perfumehub.com.my: الموقع لا يفتح",
-    "  ↳ goldapple.kz: CV 27/100 [https,returns] (pages: /contact-us→200 /returns→200)",
-    "✗ goldapple.kz: ملف الثقة ضعيف (27/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
-    "  ↳ perfumeconnection.com.au: CV 37/100 [https,returns,privacy,terms] (pages: /contact-us→200 /returns→200)",
-    "✗ perfumeconnection.com.au: ملف الثقة ضعيف (37/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
-    "✗ nose-shop.jp: الموقع لا يفتح",
-    "✗ letu.kz: الموقع لا يفتح"
    ]
   }
  ]
