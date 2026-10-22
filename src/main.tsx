@@ -1,6 +1,7 @@
 import { Suspense, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
+import SpecialistsHub from './components/SpecialistsHub';
 import './index.css';
 import { ErrorBoundary, lazyWithReload } from './utils/lazyRetry';
 import { getInitialLanguage } from './لغات/i18n';
@@ -26,6 +27,8 @@ function Root() {
     return (
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-stone-500">…</div>}>
         {ops ? <OpsMapGate /> : <AdminApp />}
+        {/* «مجلس المتخصصين»: استشاريّو أقسام الموقع — يشتغل من متصفح الإدارة بدون سيرفر */}
+        <SpecialistsHub section="admin_panel" lang={getInitialLanguage()} />
       </Suspense>
     );
   }

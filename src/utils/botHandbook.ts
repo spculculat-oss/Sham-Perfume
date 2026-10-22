@@ -14,7 +14,7 @@ import { HOME_CURRENCY, SHIPPING } from './pricing';
 import { BOTS, DEPARTMENTS, LEGAL_DECISIONS, LINKS, botOf, botsIn, type BotId } from './shaheenOrg';
 
 /** Bumped when the policies change (the robots' reports and the admin panel show the edition they read). */
-export const HANDBOOK_EDITION = '2026-10-22b';
+export const HANDBOOK_EDITION = '2026-10-22c';
 export const PAGES_URL = 'https://spculculat-oss.github.io/Sham-Perfume/';
 /** The scenario's price rule (scripts/shaheen-import/transform.ts PRICE_MARKUP — a test keeps them equal). */
 export const HANDBOOK_MARKUP = 1.5;
@@ -96,6 +96,7 @@ export function handbookSections(): HandbookSection[] {
       points: [
         'ترتيب الفحص: كل روبوت يفحص شغله بنفسه ويصلح اللي يقدر عليه. اللي مايقدرش عليه يروح لشاهين، والشغل اللي محتاج أكتر من أداة يتعمل بفريق، كل واحد في نطاقه. بعد ما الشغل يخلص، خبير فحص من نفس النطاق يراجعه بتجربة عملية.',
         'الدورية بالتناوب: 3 ورديات، وردية كل ساعة، وكل وردية بتشغل حوالي 3 أدوات بس علشان الموقع مايتقلش. كل دور بيتراجع كل 3 ساعات.',
+        '«مجلس المتخصصين»: علوم المدرسة الـ27 موزعة على 6 متخصصين مسجّلين في السجل، ويستشارهم الزائر وأقسام الموقع كلها في أي وقت حتى من غير إنترنت — ردّهم من ذاكرة شاهين ومكتبته وعلوم مدرسته ومكتوب عليه مصدره، ولو مش لاقيين يقروا بصراحة إنهم هيذاكروا السؤال.',
         'الاجتماع اليومي 10:15 الصبح بتوقيت القاهرة، والفحص الشامل قبله بساعتين. السكرتير بينوب عن شاهين وقت الضغط أو لو مفيش محرك.',
         'كل روبوت بيكتب تقريره في src/data/live/<اسم>.json. الفحص الشامل والخريطة بيقروا منه، والتقرير المتأخر عن ضعف موعده يعتبر تأخير.',
         'ملاحظة للروبوتات اللي بتعدل كود: سير العمل بيستخدم bun، وكل إضافة بتتثبت ببصمة SHA، ومفيش toJSON(secrets) أبداً.',
