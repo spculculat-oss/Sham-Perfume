@@ -556,7 +556,7 @@ export class Orchestrator {
             // real price spread, so show the range and a few honest examples across it.
             const range = store.digest || { min: store.snapshot?.minPrice || 0, max: store.snapshot?.maxPrice || 0 };
             if (ctx.product) parts.push(ar ? `اللي قدامك دلوقتي: ${ctx.product.nameAr} — ${ctx.product.price} جنيه مصري${ctx.product.inStock ? '' : ' (غير متوفر حالياً)'}.` : `The one you have open: ${ctx.product.nameEn} — ${ctx.product.price} EGP${ctx.product.inStock ? '' : ' (out of stock)'}.`);
-            parts.push(ar ? `أسعار المتجر الحقيقية من ${range.min} لـ ${range.max} جنيه مصري، ودي أمثلة على طول النطاق:` : `Real store prices run from ${range.min} to ${range.max} EGP — here are examples across the range:`);
+            parts.push(ar ? `أسعار المتجر الحقيقية للمنتجات المتوفرة من ${range.min} لـ ${range.max} جنيه مصري، ودي أمثلة على طول النطاق:` : `Real prices of the products in stock run from ${range.min} to ${range.max} EGP — here are examples across the range:`);
             parts.push(store.items.map((p) => storeLine(p, ar ? 'ar' : 'en')).join('\n'));
             if (store.snapshot) parts.push(ar ? `المتجر فيه ${store.snapshot.total} منتج منشور (${store.snapshot.inStock} متوفر) — قولّي عائلة عطرية أو ماركة أو ميزانية وأنا أضيّق البحث، أو دوس «افتح الصفحة» تتفرج على الكل.` : `The store has ${store.snapshot.total} published products (${store.snapshot.inStock} in stock) — tell me a scent family, brand or budget and I will narrow it down, or press “Open page” to browse.`);
           } else if (store?.items.length) {
