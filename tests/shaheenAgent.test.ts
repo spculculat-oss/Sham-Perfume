@@ -33,7 +33,7 @@ test('every science track has its expert in the school, with the track’s limit
     assert.equal(e.field, t.id);
     assert.equal(e.boundaryAr, t.boundaryAr);
   }
-  for (const f of ['perfume', 'chemistry', 'physics', 'biology', 'math', 'computing', 'nutrition', 'agriculture']) assert.ok(SCHOOL_EXPERTS.some((e) => e.field === f), f);
+  for (const f of ['perfume', 'chemistry', 'physics', 'biology', 'math', 'computing', 'nutrition', 'agriculture', 'logic']) assert.ok(SCHOOL_EXPERTS.some((e) => e.field === f), f);
   assert.equal(expertOf('nothing').field, 'general');
   assert.equal(expertGapReason('chemistry'), `${EXPERT_GAP_PREFIX}chemistry`);
 });
