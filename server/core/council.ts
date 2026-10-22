@@ -4,15 +4,9 @@
  *   1. Opinions : every seat answers independently and in parallel (no seat sees another yet).
  *   2. Review   : each seat reads the others' positions under anonymous letters (A, B, C…), points out
  *                 mistakes, unsafe or ungrounded claims and missing points, then states a revised
- *                 position. Anonymity keeps models from deferring to a brand name. 0–2 rounds.
- *   3. Synthesis: a chair seat writes one consultative reply (bottom line, steps, caveats, where the
- *                 advisors disagreed, next step with Sham) and that reply is streamed to the visitor.
- *
- * The pattern follows public research and tools (multi-agent debate, mixture-of-agents, LLM
- * councils with peer review and a chairman). It is implemented here from scratch on top of Sham's own
- * engine adapters. Seats only ever see Sham's grounded CONTEXT and never get tools or write access.
- * Any seat may fail or time out; the council keeps going with the rest, and the orchestrator falls
- * back to the normal engine policy if nobody answers.
+ *                 position with explicit convergence. Anonymity keeps models from deferring to a brand name.
+ *   3. Synthesis: a chair seat (weighted by domain expertise + admin policy) receives automatic
+ *                 CONTEXT fact-check audits and disagreement analysis, then writes one consultative reply.
  */
 import { randomUUID } from 'node:crypto';
 import { callEngine, engineStatuses, MODEL_ID, type EngineTurn } from './engines';
@@ -35,6 +29,107 @@ export const MAX_SEATS = 5;
 
 /** Invalid council settings; the repository maps it to a 400 ValidationError. */
 export class CouncilConfigError extends Error {}
+
+/**
+ * Calculates domain expertise weight (0.8–1.5) for a council seat given the intent and visitor question.
+ * Formulation questions elevate `formulator` & `safety`; skin/allergy/IFRA questions elevate `safety`;
+ * pricing/wholesale/B2B questions elevate `commercial` & `customer`.
+ */
+export function roleExpertiseWeight(role: CouncilRole, intent = 'perfume_expert', question = ''): number {
+  const safetyTopic = /(?:حساسية|جلد|حامل|أطفال|امان|سلامة|ifra|allerg|skin|safe|pregnant|irritat)/i.test(question);
+  const commercialTopic = /(?:سعر|جملة|كمية|تكلفة|مصنع|تجاري|b2b|wholesale|price|cost|bulk|margin)/i.test(question)
+    || intent === 'service_request' || intent === 'browse_products';
+
+  if (safetyTopic) {
+    const map: Record<CouncilRole, number> = { safety: 1.45, formulator: 1.25, customer: 1.05, general: 1.0, commercial: 0.9 };
+    return map[role];
+  }
+  if (commercialTopic) {
+    const map: Record<CouncilRole, number> = { commercial: 1.4, customer: 1.2, safety: 1.05, general: 1.0, formulator: 0.95 };
+    return map[role];
+  }
+  const map: Record<CouncilRole, number> = { formulator: 1.35, safety: 1.25, customer: 1.05, general: 1.0, commercial: 0.95 };
+  return map[role];
+}
+
+export interface CouncilFactCheck {
+  grounded: boolean;
+  unverifiedClaims: string[];
+}
+
+/**
+ * Automatically checks a seat's text against the grounded `briefing` (`CONTEXT`):
+ * flags unverified currency amounts, fabricated `SH-` order references, or unauthorized order claims.
+ */
+export function auditCouncilFactCheck(text: string, briefing: string): CouncilFactCheck {
+  const unverifiedClaims: string[] = [];
+  const upperBriefing = briefing.toUpperCase();
+  const allowedNums = new Set(
+    [...briefing.replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660)).matchAll(/\d+(?:\.\d+)?/g)].map((m) => String(Number(m[0]))),
+  );
+
+  for (const m of text.matchAll(/\bSH-[A-Z0-9]{6}\b/gi)) {
+    const ref = m[0].toUpperCase();
+    if (ref !== 'SH-XXXXXX' && !upperBriefing.includes(ref)) unverifiedClaims.push(`unverified order ref ${ref}`);
+  }
+  for (const m of text.matchAll(/(?:^|\s|\()(\d{2,6}(?:[.,]\d{1,2})?)\s*(?:EGP|USD|SAR|AED|جنيه|ج\.م|ريال|درهم|دولار)(?=$|\s|[،,.!؟?;:)\]])/giu)) {
+    const num = String(Number(m[1].replace(',', '.')));
+    if (!allowedNums.has(num)) unverifiedClaims.push(`unverified price ${m[0]}`);
+  }
+  if (/(?:تم تأكيد طلبك رسميا|تم الدفع بنجاح|order has been placed and paid)/i.test(text)) {
+    unverifiedClaims.push('unauthorized order confirmation claim');
+  }
+  return { grounded: unverifiedClaims.length === 0, unverifiedClaims };
+}
+
+export interface DisagreementAnalysis {
+  hasDisagreement: boolean;
+  agreementScore: number;
+  points: string[];
+}
+
+/**
+ * Detects substantive disagreement across seat opinions/reviews: checks explicit refutation markers,
+ * conflicting concentration/dosage percentages, and caution vs. unconditional approval divergence.
+ */
+export function detectCouncilDisagreement(
+  positions: Array<{ label: string; role: CouncilRole; text: string }>,
+): DisagreementAnalysis {
+  if (positions.length < 2) return { hasDisagreement: false, agreementScore: 1, points: [] };
+  const points: string[] = [];
+  let penalty = 0;
+
+  const disputeCue = /(?:أختلف|غير صحيح|لا أنصح|خطأ في|تحذير|خطر|مخالف|disagree|incorrect|unsafe|contradicts|do not recommend)/i;
+  for (const p of positions) {
+    if (disputeCue.test(p.text)) {
+      penalty += 0.22;
+      points.push(`Advisor ${p.label} (${p.role}) raised a critique or safety objection`);
+    }
+  }
+
+  // Detect conflicting numeric percentage recommendations across seats (spread >= 10 percentage points).
+  const seatPercents = positions
+    .map((p) => {
+      const m = p.text.match(/(\d{1,2}(?:\.\d+)?)\s*(?:%|٪)/);
+      return m ? { label: p.label, pct: Number(m[1]) } : undefined;
+    })
+    .filter((x): x is { label: string; pct: number } => Boolean(x));
+  if (seatPercents.length >= 2) {
+    const pcts = seatPercents.map((x) => x.pct);
+    const spread = Math.max(...pcts) - Math.min(...pcts);
+    if (spread >= 10) {
+      penalty += 0.25;
+      points.push(`Concentration spread across advisors (${Math.min(...pcts)}% vs ${Math.max(...pcts)}%)`);
+    }
+  }
+
+  const agreementScore = Math.max(0.15, Math.min(1, Number((1 - penalty).toFixed(2))));
+  return {
+    hasDisagreement: points.length > 0,
+    agreementScore,
+    points,
+  };
+}
 
 export function defaultCouncil(): CouncilSettings {
   const seat = (engine: ModelEngineId, role: CouncilRole): CouncilMember => ({ id: `seat-${engine}`, engine, role, enabled: true });
@@ -108,6 +203,7 @@ export interface CouncilRun {
   history: EngineTurn[];
   /** Grounded briefing from the orchestrator: rules, enabled services, tool observations, safe facts. */
   briefing: string;
+  intent?: string;
   lang: 'ar' | 'en';
   languageName: string;
   council: CouncilSettings;
@@ -143,14 +239,19 @@ function reviewSystem(member: CouncilMember, label: string, run: CouncilRun): st
 You will see your previous position and the other seats' positions under anonymous letters. Judge the content only.
 In ${run.languageName}, at most ~110 words:
 1) Critique: concrete errors, unsafe or ungrounded claims (anything about Sham prices, stock, policies or timelines that is not in CONTEXT), and important missing points. Name the letter you criticise.
-2) "Revised position:" your updated recommendation in 1–3 sentences. Change your mind when another seat is right.
+2) Convergence: state AGREE / PARTIALLY AGREE / DISAGREE on disputed points so the council converges toward safe, verified consensus.
+3) "Revised position:" your updated recommendation in 1–3 sentences. Change your mind when another seat is right.
 ${run.briefing}`;
 }
 
-function chairSystem(run: CouncilRun): string {
+function chairSystem(run: CouncilRun, disagreement: DisagreementAnalysis): string {
   const ar = run.lang === 'ar';
+  const convergenceNote = disagreement.hasDisagreement
+    ? `DISAGREEMENT DETECTED (agreement=${disagreement.agreementScore}): ${disagreement.points.join('; ')}. Weigh higher-expertise seats more heavily, drop any [FACT-CHECK WARNING] claims, and explain the practical resolution clearly.`
+    : `CONSENSUS HIGH (agreement=${disagreement.agreementScore}): seats broadly converge; omit "Where advisors differed" unless a substantive nuance remains.`;
   return `You chair Sham's advisory council and write the ONE final consultative reply the visitor reads, in ${run.languageName}${ar ? ' (mirror the visitor\'s dialect, e.g. Egyptian)' : ''}.
 Use the council record below: keep what the seats agree on, resolve disagreements with reasoning, drop claims a reviewer showed to be wrong or that contradict CONTEXT.
+${convergenceNote}
 Never mention seat letters, model names, vendors or that you are an AI council; speak as Sham's advisor. At most ~230 words.
 Use these short sections with headings in the reply language:
 ${ar ? '«الخلاصة» (جملة أو اثنتان)، «التوصية» (خطوات مرقمة)، «تنبيهات» (المخاطر وحدود المعلومة)، «نقطة خلاف» (فقط لو المستشارين اختلفوا فعلاً)، «الخطوة الجاية مع شام» (خدمة أو استمارة أو موظف من الخدمات المتاحة فقط).' : '"Bottom line" (1–2 sentences), "Recommendation" (numbered steps), "Caveats", "Where advisors differed" (only if they did), "Next step with Sham" (a service, form or human from ENABLED SERVICES only).'}
@@ -197,26 +298,50 @@ export async function runCouncil(run: CouncilRun): Promise<CouncilResult> {
   });
   if (!voices.length || run.signal.aborted) return { transcript: finish('failed') };
 
-  // 2) Anonymous peer review rounds.
+  // Automatic CONTEXT fact-checking on initial opinions before peer review & synthesis.
+  const audits = new Map(voices.map((e) => [e.memberId, auditCouncilFactCheck(e.opinion || '', run.briefing)]));
+
+  // 2) Anonymous peer review rounds with fact-check flags & convergence requirement.
   for (let round = 1; round <= run.council.rounds && voices.length >= 2 && !run.signal.aborted; round++) {
     run.onStep(`جولة النقاش ${round}: كل مستشار يراجع آراء الباقين`, `Debate round ${round}: advisors review each other`);
     const positions = new Map(voices.map((e) => [e.memberId, e.reviews.at(-1) || e.opinion!]));
     await Promise.all(voices.map(async (entry) => {
       const member = seats.find((m) => m.id === entry.memberId)!;
-      const others = voices.filter((o) => o !== entry).map((o) => `### Position ${o.label} (lens: ${COUNCIL_ROLES[o.role].en})\n${positions.get(o.memberId)}`).join('\n\n');
+      const others = voices.filter((o) => o !== entry).map((o) => {
+        const audit = audits.get(o.memberId);
+        const flag = audit && !audit.grounded ? `\n[FACT-CHECK WARNING: ${audit.unverifiedClaims.join('; ')}]` : '';
+        return `### Position ${o.label} (lens: ${COUNCIL_ROLES[o.role].en})\n${positions.get(o.memberId)}${flag}`;
+      }).join('\n\n');
       const text = `VISITOR QUESTION:\n${run.question}\n\nYOUR PREVIOUS POSITION (${entry.label}):\n${positions.get(entry.memberId)}\n\nOTHER POSITIONS:\n${others}`;
       const review = await ask(member, reviewSystem(member, entry.label, run), [{ role: 'user', text }], 350, Math.min(seatTimeout, 12000));
-      if (review) entry.reviews.push(clip(review, 2000));
+      if (review) {
+        entry.reviews.push(clip(review, 2000));
+        audits.set(entry.memberId, auditCouncilFactCheck(`${entry.opinion || ''}\n${review}`, run.briefing));
+      }
     }));
   }
   if (run.signal.aborted) return { transcript: finish('failed') };
 
-  // 3) Synthesis by the chair (fixed seat, else policy order), streamed to the visitor.
+  // 3) Expertise weighting + substantive disagreement detection + chair synthesis.
+  const weights = new Map(voices.map((e) => [e.memberId, roleExpertiseWeight(e.role, run.intent, run.question)]));
+  const disagreement = detectCouncilDisagreement(voices.map((e) => ({
+    label: e.label,
+    role: e.role,
+    text: e.reviews.at(-1) || e.opinion || '',
+  })));
+
   const order = run.council.chair !== 'auto' ? voices.filter((e) => e.memberId === run.council.chair) : [];
-  const byPolicy = [...voices].sort((a, b) => rank(a.engine) - rank(b.engine));
   function rank(id: EngineId) { const i = run.enginePolicy.indexOf(id); return i < 0 ? 99 : i; }
-  const chairs = [...order, ...byPolicy.filter((e) => !order.includes(e))];
-  const record = voices.map((e) => `### Advisor ${e.label} (lens: ${COUNCIL_ROLES[e.role].en})\nOpinion: ${e.opinion}${e.reviews.map((r, i) => `\nReview round ${i + 1}: ${r}`).join('')}`).join('\n\n');
+  const byPolicyAndExpertise = [...voices].sort((a, b) =>
+    rank(a.engine) - rank(b.engine) || (weights.get(b.memberId) || 1) - (weights.get(a.memberId) || 1),
+  );
+  const chairs = [...order, ...byPolicyAndExpertise.filter((e) => !order.includes(e))];
+  const record = voices.map((e) => {
+    const w = (weights.get(e.memberId) || 1).toFixed(2);
+    const audit = audits.get(e.memberId);
+    const auditLine = audit && !audit.grounded ? `\n[FACT-CHECK WARNING: ${audit.unverifiedClaims.join('; ')}]` : '';
+    return `### Advisor ${e.label} (lens: ${COUNCIL_ROLES[e.role].en}, expertise-weight: ${w})\nOpinion: ${e.opinion}${e.reviews.map((r, i) => `\nReview round ${i + 1}: ${r}`).join('')}${auditLine}`;
+  }).join('\n\n');
   const turns: EngineTurn[] = [...history.slice(-4), { role: 'user', text: `VISITOR QUESTION:\n${run.question}\n\nCOUNCIL RECORD:\n${record}` }];
   run.onStep('رئيس المجلس يكتب الرد الاستشاري', 'The chair is writing the consultative answer');
   for (const entry of chairs) {
@@ -225,7 +350,7 @@ export async function runCouncil(run: CouncilRun): Promise<CouncilResult> {
     let streamed = false;
     let reply: string | undefined;
     try {
-      reply = await callEngine(member.engine, chairSystem(run), turns, {
+      reply = await callEngine(member.engine, chairSystem(run, disagreement), turns, {
         env: run.env, fetch: run.fetch, temperature: run.temperature, signal: signalFor(Math.max(seatTimeout, 18000)), model: member.model, maxTokens: 900,
         onToken: run.onToken ? (t) => { streamed = true; run.onToken!(t); } : undefined,
       });

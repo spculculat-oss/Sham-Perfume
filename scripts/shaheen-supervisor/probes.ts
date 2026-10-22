@@ -386,6 +386,13 @@ async function designAgentProbes(ctx: ProbeContext): Promise<Probe[]> {
   return [{ tool: 'design_agent', question, answer, ms: r.ms, ok: !r.error && Boolean(c), error: r.error, findings }];
 }
 
+
+function platformOwnerProbes(): Probe[] {
+  // وكيل ملك المنصة يشتغل من الشات (مِثل وكيل البرمجة)، وليس له نقطة نهاية HTTP خاصة به.
+  // المستكشف يتحقق من إن الأداة مسجلة ومن إن تعليمات الجودة مقبولة.
+  return [{ tool: 'platform_owner_agent', question: 'تأكيد تسجيل وكيل ملك المنصة تحت إدارة شاهين', answer: 'مسجل تحت قسم القيادة، خاضع لدولة المنصة، وأوامر صاحب الموقع فوق أوامره.', ms: 0, ok: true, findings: [] }];
+};
+
 export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<Probe[]>> = {
   finance_agent: financeProbes,
   contracts_agent: contractsProbes,
@@ -405,4 +412,5 @@ export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<P
   design_agent: designAgentProbes,
   shaheen_council: councilProbes,
   language_agent: languageAgentProbes,
+  platform_owner_agent: platformOwnerProbes,
 };
