@@ -24,7 +24,9 @@ if (issues) {
   console.log(issues.length ? `${issues.length} Shaheen task(s):\n` : 'No open Shaheen tasks.');
   for (const i of issues) {
     const approval = i.labels.some((l) => l.name === 'needs-approval');
-    console.log(`#${i.number} [${i.state.toLowerCase()}] ${approval ? '[NEEDS MERCHANT APPROVAL] ' : ''}${i.title}\n  ${i.url}\n${i.body.replace(/<!--[\s\S]*?-->/g, '').trim().split('\n').map((l) => `  ${l}`).join('\n')}\n`);
+    const byState = i.labels.some((l) => l.name === 'approved-by-state');
+    const refused = i.labels.some((l) => l.name === 'رفضته دولة المنصة');
+    console.log(`#${i.number} [${i.state.toLowerCase()}] ${approval ? (refused ? '[REFUSED BY THE PLATFORM STATE — OWNER DECIDES] ' : '[NEEDS APPROVAL] ') : byState ? '[APPROVED BY THE PLATFORM STATE] ' : ''}${i.title}\n  ${i.url}\n${i.body.replace(/<!--[\s\S]*?-->/g, '').trim().split('\n').map((l) => `  ${l}`).join('\n')}\n`);
   }
 } else {
   let text = '';

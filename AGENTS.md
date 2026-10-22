@@ -29,6 +29,11 @@ When the merchant writes **«نفذ مهام شاهين»** (or "Run Shaheen's t
    follow it). Never start a `needs-approval` task on your own; if he asks you in the chat, explain it in one simple
    Arabic sentence and wait for his yes. While his switch is «كل تغيير بموافقتي» (`approve_all` in
    `src/data/owner/controls.json`) every new council task waits for him this way (rule O-09).
+   **«دولة المنصة»** (rule O-11, `src/utils/platformState.ts`): while his switch is `state`, the State's robot
+   (`.github/workflows/platform-state.yml`, `scripts/state/run.mts`) reviews every `needs-approval` task and robot
+   pull request each hour by its members' votes. A task it approves gets **`approved-by-state`** (carry it out like
+   `approved-by-owner`); one it refuses keeps `needs-approval` plus «رفضته دولة المنصة» and waits for the owner.
+   The owner is above the State: his answer always wins.
 3. Work through the other tasks, urgent first, on the session's working branch. Each task's body has
    the details and the files to look at. Verify each fix the usual way: `npm run lint`, `npm test`,
    `npm run build`, and the related workflow run if there is one.

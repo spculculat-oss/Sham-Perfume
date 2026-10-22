@@ -11,7 +11,8 @@
  * His switches (src/data/owner/controls.json — no secrets, just switches) are changed only through his GitHub
  * account («مكتب صاحب الموقع», .github/workflows/owner-control.yml) and obeyed by every robot:
  *   - pause / resume a robot, freeze every robot at once (the emergency brake);
- *   - how far the robots may change the site by themselves (selfDevVerdict).
+ *   - how far the robots may change the site by themselves (selfDevVerdict), or whether «دولة المنصة» approves for him
+ *     (src/utils/platformState.ts).
  * Pure (browser-safe): read by the admin panel, the robots' gate (scripts/owner/gate.mjs), the precheck and the doctor.
  */
 import type { BotId } from './shaheenOrg';
@@ -31,14 +32,17 @@ export const OWNER_RULES: { id: string; textAr: string }[] = [
   { id: 'O-03', textAr: 'ممنوع أي روبوت يطلب أو يحفظ أو يكرر بيانات شخصية لصاحب الموقع أو لأي حد: الاسم الكامل، العنوان، رقم البطاقة، الحسابات، كلمات السر. المستودع عام، فمفيش بيانات شخصية بتتكتب فيه ولو مشفرة.' },
   { id: 'O-04', textAr: 'مفاتيح صاحب الموقع (الكود السري ومفاتيح الخدمات) متشفرة في أسرار GitHub. الروبوتات بتستخدمها من غير ما تشوفها أو تطبعها.' },
   { id: 'O-05', textAr: 'مفاتيح التحكم بتاعة صاحب الموقع (وقف روبوت، وقف الكل، حدود التطوير الذاتي) ملزمة: الروبوت الموقوف مايشتغلش لحد ما صاحب الموقع يرجعه.' },
-  { id: 'O-06', textAr: 'التطوير الذاتي: كل روبوت يطور نفسه ويتعاون مع اللي معاه، ويختبر شغله قبل ما يسلمه. التصليحات الصغيرة والآمنة بتدخل لوحدها، وأي تعديل أكبر أو حساس (الأسعار، الدفع، القانوني، الأمان، سير العمل) بيستنى موافقة صاحب الموقع.' },
+  { id: 'O-06', textAr: 'التطوير الذاتي: كل روبوت يطور نفسه ويتعاون مع اللي معاه، ويختبر شغله قبل ما يسلمه. التصليحات الصغيرة والآمنة بتدخل لوحدها، وأي تعديل أكبر أو حساس (الأسعار، الدفع، القانوني، الأمان، سير العمل) بيستنى موافقة صاحب الموقع — أو «دولة المنصة» لو صاحب الموقع سلّمها الموافقات (O-11).' },
   { id: 'O-07', textAr: 'غرفة شاهين الخاصة بين صاحب الموقع وشاهين والسكرتير بس: محدش من الروبوتات التانية ولا الزوار يقرا كلامها أو ينقله، والكلام مابيتحفظش في المستودع ولا في قاعدة البيانات ولا في ذاكرة شاهين العامة — بيتحفظ متشفر على جهاز صاحب الموقع بكوده السري.' },
   { id: 'O-08', textAr: 'شاهين يقدر يشوف كل ملفات الموقع في غرفة صاحب الموقع، ويقترح تعديلات. مفيش تعديل بيتنفذ غير لما صاحب الموقع يضغط «وافق» من حسابه؛ بعدها مكتبه بيشغل كل الفحوص وينشر، ولو فحص واحد وقع مفيش حاجة بتتغير. ملفات تشغيل الروبوتات ومفاتيح صاحب الموقع وقواعد صلاحيات شاهين والقرارات القانونية وبيانات الروبوتات والمكتبات برّه إيده خالص.' },
-  { id: 'O-09', textAr: 'شاهين هو الوكيل المسؤول عن الموقع كله تحت إشراف صاحب الموقع: بيجهّز التعديلات وأوامر الروبوتات ومهام المجلس، ومفيش أي حاجة منها بتتنفذ غير بعد ما صاحب الموقع يراجعها ويوافق عليها من «صندوق الموافقات» أو غرفته الخاصة (وافق / ارفض / رجّعه بملاحظة). كل طلب بيتسجل، وأي حاجة اتنفذت ينفع ترجع بزرار «رجّع». شغل الروبوتات اليومي العادي (تحديث البيانات والتقارير) مستمر من غير ما يستنى.' },
+  { id: 'O-09', textAr: 'شاهين هو الوكيل المسؤول عن الموقع كله تحت إشراف صاحب الموقع: بيجهّز التعديلات وأوامر الروبوتات ومهام المجلس، ومفيش أي حاجة منها بتتنفذ غير بعد موافقة صاحب الموقع من «صندوق الموافقات» أو غرفته الخاصة (وافق / ارفض / رجّعه بملاحظة) — أو موافقة «دولة المنصة» على تعديلات الروبوتات ومهام المجلس لو صاحب الموقع سلّمها الموافقات (O-11). كل طلب بيتسجل، وأي حاجة اتنفذت ينفع ترجع بزرار «رجّع». شغل الروبوتات اليومي العادي (تحديث البيانات والتقارير) مستمر من غير ما يستنى.' },
   { id: 'O-10', textAr: 'شاهين والروبوتات معتمدين على نفسهم بالكامل بقرار صاحب الموقع: مفيش أي اتصال بأي منصة ذكاء اصطناعي خارجية. شاهين بيرد من مخه وذاكرته ومكتبته ومصمم التركيبات بتاعه، والمدرّس الوحيد المسموح هو النموذج المحلي اللي بيشتغل على جهازنا. السؤال اللي ملوش إجابة أكيدة بيترد عليه بصراحة «مش متأكد» ويتسجل عشان يتذاكر، من غير تخمين. القرار ده بإيد صاحب الموقع بس، وشاهين نفسه مايقدرش يغيّره.' },
+  { id: 'O-11', textAr: '«دولة المنصة» أعلى سلطة على الروبوتات بعد صاحب الموقع: كل الروبوتات وشاهين والمجلس تحت رقابتها وبيرجعولها في كل الموافقات، وقراراتها لا مركزية بتصويت أعضائها (شاهين، المدير القانوني، الأمن والخصوصية، الجودة، المالية، ورئيس القسم المختص). عندها كل الصلاحيات في الموقع ما عدا الاطلاع على بيانات صاحب الموقع ومفاتيحه وغرفته الخاصة وتغيير مفاتيحه وقواعده. وهي خاضعة لأوامر صاحب الموقع في أي وقت: يرجّع الموافقات لنفسه، أو يرد قبلها، أو يوقف كل حاجة، أو يرجّع أي قرار ليها، واللي ترفضه بيروحله هو.' },
 ];
 
-export type SelfDevMode = 'safe_auto' | 'approve_all';
+/** safe_auto: small safe changes alone, the rest wait for the owner · approve_all: everything waits for the owner ·
+ *  state: «دولة المنصة» approves for him (he can still answer first, and undo anything). */
+export type SelfDevMode = 'safe_auto' | 'approve_all' | 'state';
 export interface OwnerLogEntry { at: string; action: string; target?: string; by: string }
 export interface OwnerControls {
   version: 1;
@@ -65,7 +69,7 @@ export function readControls(data: unknown): OwnerControls {
     updatedAt: typeof d.updatedAt === 'string' ? d.updatedAt : base.updatedAt,
     frozen: d.frozen === true,
     paused: Array.isArray(d.paused) ? d.paused.filter((x): x is BotId => typeof x === 'string') : [],
-    selfDevelopment: d.selfDevelopment === 'approve_all' ? 'approve_all' : 'safe_auto',
+    selfDevelopment: d.selfDevelopment === 'approve_all' || d.selfDevelopment === 'state' ? d.selfDevelopment : 'safe_auto',
     aiPlatforms: d.aiPlatforms === 'off' ? 'off' : 'on',
     log: Array.isArray(d.log) ? d.log.filter((x) => x && typeof x.at === 'string' && typeof x.action === 'string').slice(0, 30) : [],
   };
@@ -76,10 +80,11 @@ export const OWNER_STOPPED_AR = 'موقوف بأمر صاحب الموقع';
 /** Stopped by the owner (paused, or every robot frozen). */
 export const stoppedByOwner = (c: OwnerControls, bot: BotId) => c.frozen || c.paused.includes(bot);
 
-export type OwnerAction = 'pause' | 'resume' | 'freeze' | 'unfreeze' | 'safe_auto' | 'approve_all' | 'self_reliant' | 'platforms_on';
+export type OwnerAction = 'pause' | 'resume' | 'freeze' | 'unfreeze' | 'safe_auto' | 'approve_all' | 'state_rule' | 'self_reliant' | 'platforms_on';
 export const OWNER_ACTIONS: Record<OwnerAction, string> = {
   pause: 'وقف روبوت', resume: 'رجّع روبوت للشغل', freeze: 'وقف كل الروبوتات (فرامل الطوارئ)', unfreeze: 'رجّع كل الروبوتات',
   safe_auto: 'التصليحات الصغيرة لوحدها والباقي بموافقتي', approve_all: 'مفيش أي تعديل غير بموافقتي',
+  state_rule: 'دولة المنصة توافق على كل حاجة (وأنا فوقها في أي وقت)',
   self_reliant: 'شاهين يعتمد على نفسه (من غير أي منصة ذكاء اصطناعي)', platforms_on: 'اسمح لشاهين يستعين بمنصات الذكاء الاصطناعي',
 };
 
@@ -99,8 +104,10 @@ export function applyOwnerCommand(c: OwnerControls, action: OwnerAction, bot: Bo
     next.aiPlatforms = action === 'self_reliant' ? 'off' : 'on';
     noteAr = next.aiPlatforms === 'off' ? 'شاهين بقى معتمد على نفسه: مفيش أي منصة ذكاء اصطناعي برّه الموقع' : 'شاهين يقدر يستعين بمنصات الذكاء الاصطناعي اللي مفاتيحها موجودة';
   } else {
-    next.selfDevelopment = action;
-    noteAr = action === 'safe_auto' ? 'التصليحات الصغيرة بتدخل لوحدها، والباقي بموافقتك' : 'مفيش أي تعديل بيدخل غير بموافقتك';
+    next.selfDevelopment = action === 'state_rule' ? 'state' : action;
+    noteAr = action === 'safe_auto' ? 'التصليحات الصغيرة بتدخل لوحدها، والباقي بموافقتك'
+      : action === 'state_rule' ? 'دولة المنصة بقت هي اللي بتوافق على تعديلات الروبوتات ومهام المجلس، وإنت فوقها في أي وقت'
+      : 'مفيش أي تعديل بيدخل غير بموافقتك';
   }
   const changed = JSON.stringify({ ...next, log: [] }) !== JSON.stringify({ ...c, log: [] });
   if (!changed) return { controls: c, changed: false, noteAr: `${noteAr} (كان كده أصلاً)` };
@@ -123,15 +130,17 @@ export interface SelfDevVerdict { auto: boolean; reasonAr: string }
 /**
  * May this robot's change go live by itself, or does it wait for the owner's approval?
  * safe_auto: small, tested, non-sensitive changes go live by themselves; the rest wait. approve_all: everything waits.
+ * state: the same small safe changes go live (the State's standing approval); the rest wait for «دولة المنصة».
  * Data a robot refreshes as its normal job (src/data/live/…) is not a change to the site and is not judged here.
  */
 export function selfDevVerdict(c: OwnerControls, change: { paths: string[]; lines: number }): SelfDevVerdict {
   if (c.frozen) return { auto: false, reasonAr: 'كل الروبوتات موقوفة بأمر صاحب الموقع' };
   if (c.selfDevelopment === 'approve_all') return { auto: false, reasonAr: 'صاحب الموقع طالب يوافق على كل تعديل' };
+  const who = c.selfDevelopment === 'state' ? 'هيستنى قرار دولة المنصة' : 'هيستنى موافقة صاحب الموقع';
   const sensitive = change.paths.filter((p) => SENSITIVE.some((r) => r.test(p)));
-  if (sensitive.length) return { auto: false, reasonAr: `بيلمس ملفات حساسة (${sensitive.slice(0, 3).join('، ')})` };
+  if (sensitive.length) return { auto: false, reasonAr: `بيلمس ملفات حساسة (${sensitive.slice(0, 3).join('، ')}) — ${who}` };
   if (change.paths.length > SMALL_CHANGE.files || change.lines > SMALL_CHANGE.lines) {
-    return { auto: false, reasonAr: `تعديل كبير (${change.paths.length} ملفات، ${change.lines} سطر) — الحد للتعديل التلقائي ${SMALL_CHANGE.files} ملفات و${SMALL_CHANGE.lines} سطر` };
+    return { auto: false, reasonAr: `تعديل كبير (${change.paths.length} ملفات، ${change.lines} سطر) — الحد للتعديل التلقائي ${SMALL_CHANGE.files} ملفات و${SMALL_CHANGE.lines} سطر، ف${who}` };
   }
   return { auto: true, reasonAr: 'تعديل صغير وآمن وعدّى كل الفحوص' };
 }

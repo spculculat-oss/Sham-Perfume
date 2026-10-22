@@ -149,7 +149,8 @@ export function planChange(edits: FileEdit[], read: (path: string) => string | u
 
 /** Small and safe → it goes live after the checks; big or sensitive → the card says so before the owner presses. */
 export function changeVerdict(controls: OwnerControls, plan: ChangePlan): SelfDevVerdict {
-  const v = selfDevVerdict(controls, { paths: plan.files.map((f) => f.path), lines: plan.lines });
+  // The owner answers his own room's cards himself, even while «دولة المنصة» approves the robots' work.
+  const v = selfDevVerdict(controls.selfDevelopment === 'state' ? { ...controls, selfDevelopment: 'safe_auto' } : controls, { paths: plan.files.map((f) => f.path), lines: plan.lines });
   // Before the desk runs anything, «عدّى كل الفحوص» is not true yet.
   return { ...v, reasonAr: v.reasonAr.replace(/\s*وعدّى كل الفحوص/, '') };
 }

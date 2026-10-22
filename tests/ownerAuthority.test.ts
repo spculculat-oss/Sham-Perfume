@@ -22,11 +22,11 @@ const NOW = new Date('2026-10-21T12:00:00Z');
 const WF = new URL('../.github/workflows/', import.meta.url);
 const read = (f: string) => readFileSync(new URL(f, WF), 'utf8');
 
-test("the bundled switches: nothing frozen, nothing paused, and every change waits for the owner (his choice, 2026-10-22)", () => {
+test("the bundled switches: nothing frozen, nothing paused, and the approvals are with «دولة المنصة» under the owner (his choice, 2026-10-22)", () => {
   const c = readControls(JSON.parse(readFileSync(new URL('../src/data/owner/controls.json', import.meta.url), 'utf8')));
   assert.equal(c.frozen, false);
   assert.deepEqual(c.paused, []);
-  assert.equal(c.selfDevelopment, 'approve_all');
+  assert.equal(c.selfDevelopment, 'state');
   assert.ok(c.log.every((e) => e.by.startsWith(OWNER.github)), 'every switch was set by the owner');
   // Nothing personal is ever stored with the switches.
   assert.doesNotMatch(JSON.stringify(c), /\d{10,}/);

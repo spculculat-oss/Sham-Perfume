@@ -1,0 +1,81 @@
+name: Platform State — approvals by its members' vote
+
+# «دولة المنصة» (src/utils/platformState.ts, rule O-11): the highest authority over the robots, right under the site
+# owner. While the owner hands it the approvals (his switch `state` in src/data/owner/controls.json), every hour its
+# members (Shaheen, the legal manager, security & privacy, quality, finance and the department head) vote on each
+# council task and robot pull request waiting for approval. The legal manager and security & privacy can veto;
+# otherwise it passes by consensus: three approvals and no objection. An approved change must pass every check before it is
+# merged; whatever is refused waits for the owner, who is above the State and can undo any of its decisions.
+# It never sees the owner's personal data, keys or private room. Code: scripts/state/run.mts. Log:
+# src/data/live/platform-state.json (owner's suite → «الهيكل والاجتماع»).
+# Minute 27: clear of the patrol (52), the importer and the studio bridge (37).
+
+on:
+  schedule:
+    - cron: '27 * * * *'
+  workflow_dispatch:
+  push:
+    branches: ['arena/**']
+    paths: ['scripts/state/**', 'src/utils/platformState.ts', '.github/workflows/platform-state.yml']
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  actions: write
+
+concurrency:
+  group: platform-state-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # «مفتاح صاحب الموقع»: the owner can pause the State or freeze every robot (the State stops with them).
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs state
+
+  state:
+    name: The State decides
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      # Branch pushes rehearse: the members vote in the log; nothing is labelled, merged or published.
+      STATE_ACT: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Vote, check, decide, and keep the log
+        run: node --import tsx scripts/state/run.mts

@@ -137,6 +137,7 @@ function InboxCard({ item, sent, onSent }: { item: InboxItem; sent?: string; onS
       <div className="mb-1 flex flex-wrap items-center gap-2">
         {item.kind === 'pull' ? <GitPullRequest className="h-4 w-4 text-violet-300" /> : <ListTodo className="h-4 w-4 text-sky-300" />}
         <span className="rounded-full border border-stone-700 px-2 py-0.5 text-[10px] text-stone-300">{item.kind === 'pull' ? T('تعديل جاهز من روبوت') : T('مهمة من المجلس')}</span>
+        {item.stateRefused && <span className="rounded-full border border-red-700 bg-red-950/50 px-2 py-0.5 text-[10px] text-red-200">{T('رفضته دولة المنصة — القرار ليك')}</span>}
         <b className="text-sm text-stone-100">{item.title}</b>
       </div>
       {item.summary && <p className="mb-2 text-stone-400">{item.summary}</p>}
