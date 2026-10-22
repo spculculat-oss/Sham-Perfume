@@ -10,10 +10,14 @@ import { appendFileSync, writeFileSync } from 'node:fs';
 import { probeEngines } from '../server/shaheen';
 import { SHAHEEN_SITE_SETTINGS } from '../server/config/shaheen';
 import { manusConfigured, manusWhoAmI } from '../server/core/manus';
+import { platformsAuto, platformsOff } from '../server/core/selfReliance';
+
+// «شاهين معتمد على نفسه»: the owner closed the AI platforms — nothing is called, and the report says why.
+const own = platformsOff(process.env);
 
 const LABEL: Record<string, string> = {
   ok: 'يعمل ✅',
-  not_configured: 'لا يوجد مفتاح',
+  not_configured: own ? 'مش مستخدم — شاهين معتمد على نفسه بقرار المالك' : 'لا يوجد مفتاح',
   invalid_key: 'المفتاح غير صالح أو ملغي',
   no_credit: 'لا يوجد رصيد / انتهت الحصة',
   rate_limited: 'تجاوز حد الطلبات مؤقتاً',
@@ -44,7 +48,8 @@ const lines = [
   '|---|---|---|---|---|',
   ...rows.map((r) => `| ${r.name} | \`${r.model}\` | ${LABEL[r.code] || r.code} | \`${r.code}\` | ${r.configured ? `${r.ms}ms` : '—'} |`),
   '',
-  configured.length ? `مفاتيح موجودة: ${configured.length} · تعمل: ${configured.filter((r) => r.ok).length}` : 'لا توجد أي مفاتيح في أسرار GitHub بعد.',
+  own ? '**منصات الذكاء الاصطناعي مقفولة بقرار المالك** — شاهين بيرد من مخه ومكتبته ومصممه، ومفيش أي اتصال بمنصة خارجية. لو عايز ترجّعها: لوحة المالك ← platforms_on (تشغيل المنصات).'
+    : configured.length ? `مفاتيح موجودة: ${configured.length} · تعمل: ${configured.filter((r) => r.ok).length}${platformsAuto(process.env) ? ' — الوضع «تلقائي»: شاهين بيستعين باللي شغال ويتعلم منه، واللي واقف بيرد مكانه بنفسه' : ''}` : `لا توجد أي مفاتيح في أسرار GitHub بعد.${platformsAuto(process.env) ? ' الوضع «تلقائي»: شاهين بيرد بنفسه لحد ما تضيف مفتاح.' : ''}`,
   ...hints(),
 ];
 

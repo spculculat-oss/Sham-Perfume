@@ -21,9 +21,14 @@ import { referenceBlock, searchLibrary } from '../../src/utils/shaheenLibrary';
 import { research, RESEARCH_USER_AGENT, researchBlock, type Research } from '../../src/utils/webResearch';
 import {
   buildBank, emptySchool, exam, importerShare, isSchoolFile, LOCAL_TEACHER_STYLE, materialDocs, pickStudy, parseReview, REVIEW_SYSTEM, reviewPrompt, selfLesson, STUDY_SYSTEM, studyCheck, studyPrompt,
-  spellingReport, visitorQuestions, type BankQuestion, type SchoolFile, type TrainingDoc,
+  teacherPreference, spellingReport, toolStats, trackStats, visitorQuestions, type BankQuestion, type SchoolFile, type TrainingDoc,
 } from './school';
+import { academyLessons, SCHOOL_PROGRAMS, TRACKS } from './curriculum';
+import { duePrograms, runAndRecord, schoolActions } from './programs';
+import { runPractice } from './practice';
+import { buildProgram, emptyBlocks, isBlocksFile, nextRun, validateProgram, type BlocksFile } from '../../src/utils/shaheenBlocks';
 import { buildLexicon } from '../../src/utils/shaheenSpelling';
+import { learnSciences, scienceReport, isSciencesFile, type SciencesFile } from './sciences';
 
 const env = process.env;
 const live = (name: string) => new URL(`../../src/data/live/${name}`, import.meta.url);
@@ -53,24 +58,29 @@ if (env.SHAM_ADMIN_TOKEN?.trim()) {
     say(`Visitors' questions waiting for study: ${visitors.length}`);
   } catch (error) { say(`Visitors' questions not collected (${(error as Error).message.slice(0, 80)})`); }
 }
-// His library: the training lessons and the raw-materials encyclopaedia (learned without AI), and the references
-// every study answer is grounded on.
-const library = [...docs, ...materialDocs(RAW_MATERIALS_DATABASE)];
+// His library: the training lessons and the raw-materials encyclopaedia (learned without AI), the academy
+// lessons (all programming languages, blocks & scheduling, software engineering, graphics & design, website
+// maintenance, and every AI tool's field), and the references every study answer is grounded on.
+const academy = academyLessons();
+const library = [...docs, ...materialDocs(RAW_MATERIALS_DATABASE), ...academy];
 const bank = buildBank(docs, councilStudy(readCouncil(), Date.now()), visitors, RAW_MATERIALS_DATABASE);
 const first = exam(bank, memory, library);
 say(`Exam: Shaheen answers ${first.reliance.covered} of ${first.reliance.total} questions by himself (${first.reliance.score}%); ${first.reliance.fromLibrary} more can be learned from his own library`);
 
 // ── Self-study (no AI): his own library lessons become ready answers ──────────────────────────────────────
+// Intensive by default (the academy teaches all its missions in a run or two); SCHOOL_INTENSIVE=0 keeps the old pace.
+const SELF_CAP = env.SCHOOL_INTENSIVE === '0' ? 80 : 250;
 let selfTaught = 0;
 for (const r of first.results) {
-  if (r.covered || selfTaught >= 80) continue;
+  if (r.covered || selfTaught >= SELF_CAP) continue;
   const lesson = selfLesson(r);
   if (!lesson) continue;
   let kept = 0;
-  for (const q of [r.question.q, ...lesson.paraphrases]) if (remember(memory, { question: q, lang: r.question.lang, mode: 'auto', answer: lesson.answer, source: 'study' })) kept++;
+  // Question + two close wordings are enough: recallSimilar answers the rest from the closest wording.
+  for (const q of [r.question.q, ...lesson.paraphrases.slice(0, 2)]) if (remember(memory, { question: q, lang: r.question.lang, mode: 'auto', answer: lesson.answer, source: 'study' })) kept++;
   if (kept) selfTaught++;
 }
-if (selfTaught) say(`Learned ${selfTaught} answers by himself from his library (no AI)`);
+if (selfTaught) say(`Learned ${selfTaught} answers by himself from his library (no AI)${selfTaught >= SELF_CAP ? ' (the rest next run)' : ''}`);
 
 // ── Study ─────────────────────────────────────────────────────────────────────────────────────────────────
 let studied = 0;
@@ -84,13 +94,13 @@ const quota = quotaBook(live('ai-quota.json'));
 const answers = answerBook(live('ai-memory.json'));
 let ask: Awaited<ReturnType<typeof makeAsk>>;
 // SCHOOL_PREFER=self_hosted: the local teacher first (free, always there), the AI services as the fallback.
-try { ask = await makeAsk(env, { bot: 'teacher', quota, memory: answers, maxWaitMs: 60_000, prefer: env.SCHOOL_PREFER?.trim() || undefined, onEngine: (id) => { engineUsed = id; } }); } catch { ask = undefined; }
+try { ask = await makeAsk(env, { bot: 'teacher', quota, memory: answers, maxWaitMs: 60_000, prefer: teacherPreference(env), onEngine: (id) => { engineUsed = id; } }); } catch { ask = undefined; }
 if (env.SHAM_LLM_BASE_URL?.trim()) say(`Local teacher ready (${env.SHAM_LLM_MODEL || 'open model'} on this runner, no key)`);
 // Shaheen's supervisor (scripts/shaheen-supervisor) can add quality guidance for the study answers.
 const supervisor = read<{ tools?: Record<string, { guidance?: { text?: string } }> }>(live('ai-supervisor.json'));
-const localFirst = Boolean(env.SHAM_LLM_BASE_URL?.trim()) && env.SCHOOL_PREFER?.trim() === 'self_hosted';
+const localFirst = Boolean(env.SHAM_LLM_BASE_URL?.trim()) && teacherPreference(env) === 'self_hosted';
 const SYSTEM = STUDY_SYSTEM + (localFirst ? LOCAL_TEACHER_STYLE : '') + guidanceBlock(supervisor?.tools?.shaheen_school?.guidance?.text);
-const todo = pickStudy(first.results, MAX_STUDY);
+const todo = pickStudy(first.results, MAX_STUDY, env.SCHOOL_FOCUS === 'experts' ? 'experts' : 'perfume');
 if (!todo.length) say('Nothing left to study in the bank — Shaheen answers every question by himself');
 else if (!ask) say(`No AI engine available: ${todo.length} questions wait for the next study session (Shaheen keeps answering from what he learned)`);
 else {
@@ -150,16 +160,40 @@ if (env.PUBLISH !== 'true' && env.SHAM_WEB_RESEARCH !== '0') {
       : `Research «${q}»: nothing solid found`);
   }
 }
+// ── «علوم الأرض عند شاهين»: the science track, studied from his own library — no AI, no network ────────────
+// The lessons in src/data/sciences/ are authored and reviewed; every one he does not know yet becomes a ready
+// answer in his memory under its question and two usual wordings. SCIENCE_MAX_LEARN bounds a single run.
+const sciMax = Number(env.SCIENCE_MAX_LEARN);
+const science = learnSciences(memory, new Date(), Number.isFinite(sciMax) ? Math.max(0, sciMax) : undefined);
+if (science.learned) say(`Science track: studied ${science.learned} lessons of «علوم الأرض» by himself (no AI)`);
+
 quota.save();
 answers.save();
 
 // ── Report ────────────────────────────────────────────────────────────────────────────────────────────────
+// «تدريب وش عمل»: hands-on exercises that really run and are verified — BEFORE the curation and the final
+// exam, so the answers his real designs teach are curated and tested with everything else.
+const practice = runPractice(memory, nowIso);
+school.practice = practice;
+say(`Practice: ${practice.passed}/${practice.total} hands-on exercises ran and passed (${practice.taught} designed answers taught)`);
+for (const item of practice.items) say(`  ${item.ok ? '✅' : '❌'} ${item.titleAr}: ${item.detail}`);
 const { file: curated } = curateMemory(memory);
 // Study answers are kept even unused; curate only drops what fails the checks or exceeds the limit.
 const learnedNow = studied + selfTaught;
-if (learnedNow) writeFileSync(live('shaheen-memory.json'), `${JSON.stringify(curated, null, 1)}\n`);
-const final = exam(bank, learnedNow ? curated : memory, library);
+// The science track also writes to his memory, but its lessons are counted in their own report, not in the
+// perfume school's history (the two measure different jobs).
+const memoryChanged = learnedNow + science.learned + practice.taught;
+const taughtAnything = Boolean(memoryChanged);
+if (taughtAnything) writeFileSync(live('shaheen-memory.json'), `${JSON.stringify(curated, null, 1)}\n`);
+const final = exam(bank, taughtAnything ? curated : memory, library);
 school.reliance = final.reliance;
+// The academy missions: per-track self-reliance, and every AI tool's field with what it studies next.
+school.tracks = trackStats(final.results);
+const tracksLine = TRACKS.map((t) => `${t.titleAr} ${(school.tracks![t.id] || { score: 0 }).score}%`).join('، ');
+say(`المسارات: ${tracksLine}`);
+school.tools = toolStats(final.results, nowIso);
+const weakest = [...school.tools.items].sort((a, b) => a.score - b.score).slice(0, 3).map((t) => `${t.field} ${t.score}%`).join('، ');
+say(`تطوير الأدوات: ${school.tools.items.length} أداة في مجالها — أضعفها ${weakest || 'مكتملة'}`);
 school.importer = importerShare(read(live('store-review.json'))) || school.importer;
 school.studiedTotal += studied;
 school.localTaughtTotal = (school.localTaughtTotal || 0) + localTaught;
@@ -167,11 +201,46 @@ if (localTaught) say(`The local teacher (open model, no key) taught ${localTaugh
 school.selfTaughtTotal = (school.selfTaughtTotal || 0) + selfTaught;
 school.history = [{ at: nowIso, score: final.reliance.score, studied: learnedNow, mode }, ...school.history].slice(0, 60);
 // «فهم شاهين للغلطات»: the spelling drill and exam (mistyped words and questions must still be understood).
-school.spelling = spellingReport(bank, final.results, learnedNow ? curated : memory, library, buildLexicon({ lessons: docs, materials: RAW_MATERIALS_DATABASE, memory: learnedNow ? curated : memory }), nowIso);
+// The lexicon also learns the words of every bank question (extra weight) so the word meant wins the guess.
+school.spelling = spellingReport(bank, final.results, taughtAnything ? curated : memory, library, buildLexicon({ lessons: [...docs, ...academy], materials: RAW_MATERIALS_DATABASE, memory: taughtAnything ? curated : memory, extra: bank.map((b) => b.q) }), nowIso);
 say(`Spelling: understood ${school.spelling.understood}/${school.spelling.tried} mistyped words (${school.spelling.score}%); answers ${school.spelling.questions.answered}/${school.spelling.questions.tried} questions by himself with their main word mistyped`);
 school.pending = final.results.filter((r) => !r.covered).slice(0, 12).map((r) => ({ q: r.question.q, lang: r.question.lang, topic: r.question.topic }));
 school.updatedAt = nowIso;
+// «بلوكات شاهين»: he builds his programs from blocks, schedules them, and RUNS the due ones for real.
+const blocksRaw = read<unknown>(live('shaheen-blocks.json'));
+const blocks: BlocksFile = isBlocksFile(blocksRaw) ? blocksRaw : emptyBlocks();
+const built = SCHOOL_PROGRAMS.map((p) => buildProgram(p));
+const blockErrors = built.flatMap((p) => validateProgram(p).map((e) => `${p.id}: ${e}`));
+blocks.programs = built;
+blocks.updatedAt = nowIso;
+// Execute the school's due programs (study day, tool development) with this run's real measurements.
+const toolItems = school.tools?.items || [];
+const weakestTool = [...toolItems].sort((a, b) => a.score - b.score)[0] || { field: '—', focus: '—', score: 0, covered: 0, total: 0, id: '' };
+const schoolBlockActions = schoolActions({
+  covered: final.reliance.covered, total: final.reliance.total, score: final.reliance.score,
+  selfTaught, studied,
+  toolField: weakestTool.field, toolFocus: weakestTool.focus,
+  practicePassed: practice.passed, practiceTotal: practice.total,
+});
+for (const program of duePrograms(blocks, 'school', Date.parse(nowIso))) {
+  const report = await runAndRecord(program, schoolBlockActions, blocks, { gaps: final.reliance.total - final.reliance.covered }, new Date(nowIso));
+  const failed = report.steps.filter((s) => s.status === 'failed');
+  say(`البرنامج «${program.title}»: ${report.ok ? 'اشتغل بالكامل' : `مع ${failed.length} خطوة فاشلة`} (${report.steps.length} خطوة)`);
+}
+const nextRuns = built.map((p) => ({ id: p.id, next: p.schedule ? (nextRun(p.schedule, Date.parse(nowIso))?.toISOString() || null) : null }));
+writeFileSync(live('shaheen-blocks.json'), `${JSON.stringify(blocks, null, 1)}\n`);
+school.blocks = { at: nowIso, programs: built.length, scheduled: nextRuns.filter((n) => n.next).length, errors: blockErrors.length, nextRuns };
+if (blockErrors.length) say(`Block programs need fixes: ${blockErrors.slice(0, 3).join(' | ')}`);
+else say(`Built ${built.length} block programs and scheduled ${school.blocks.scheduled} of them (${built.map((p) => p.id).join('، ')})`);
 writeFileSync(live('shaheen-school.json'), `${JSON.stringify(school, null, 1)}\n`);
+
+// ── «علوم الأرض»: his own report (the perfume score above is a different job and stays untouched) ──────────
+const previousSciences = read<unknown>(live('shaheen-sciences.json'));
+const previousLearned = isSciencesFile(previousSciences) ? previousSciences.lastLearned : [];
+const scienceLearnedNow = science.questions.map((q) => ({ q, at: nowIso }));
+const sciences: SciencesFile = scienceReport(memoryChanged ? curated : memory, nowIso, [...scienceLearnedNow, ...previousLearned].slice(0, 20));
+writeFileSync(live('shaheen-sciences.json'), `${JSON.stringify(sciences, null, 1)}\n`);
+say(`Science track now ${sciences.score}% (${sciences.learned}/${sciences.total}) across ${sciences.tracks.length} tracks`);
 say(`Self-reliance now ${final.reliance.score}% (${final.reliance.covered}/${final.reliance.total})${school.importer ? `; product pages read without AI: ${school.importer.localShare}%` : ''}`);
 
 if (env.GITHUB_ACTIONS) console.log(`::notice title=مدرسة شاهين::${notes.join(' | ').replace(/[\r\n%]/g, ' ').slice(0, 900)}`);

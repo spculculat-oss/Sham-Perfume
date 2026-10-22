@@ -2,6 +2,7 @@
  * How Shaheen tests each AI tool: real requests to the live site (the same API GitHub Pages uses), or a
  * look at the files a tool publishes. Questions rotate every run, so answer caches do not hide problems.
  */
+import { secretaryLocalSummary } from '../../src/utils/ownerRoom';
 import { readFileSync } from 'node:fs';
 import type { AiToolId } from '../../src/utils/aiTools';
 import { readSeoState, stateSummary } from '../../src/seo/agentState';
@@ -155,6 +156,19 @@ async function adminProbes(ctx: ProbeContext): Promise<Probe[]> {
   const r = await timed(() => json<{ summary?: string; sections?: { title: string }[] }>(ctx.fetch, `${ctx.site}/api/admin/agent`, post({ message: 'تقرير اليوم' }, { Authorization: `Bearer ${ctx.adminToken}` })));
   const answer = `${r.value?.summary || ''}\n${(r.value?.sections || []).map((s) => `- ${s.title}`).join('\n')}`.trim();
   return [{ tool: 'admin_agent', question: 'تقرير اليوم', answer, ms: r.ms, ok: !r.error, error: r.error, findings: r.error ? [] : inspectAnswer(answer, { language: 'ar', ms: r.ms, vendorNamesAllowed: true }) }];
+}
+
+/** «غرفة شاهين الخاصة»: checked on a made-up room only — no robot ever reads the owner's room (O-07). */
+function ownerRoomProbes(): Probe[] {
+  const sample = [
+    { id: '1', by: 'owner' as const, text: 'عايز تقرير أسبوعي عن الطلبات', at: '' },
+    { id: '2', by: 'owner' as const, text: 'قررت نأجل حملة العيد، والكارت 4111 1111 1111 1111', at: '' },
+  ];
+  const answer = secretaryLocalSummary(sample);
+  const findings: Probe['findings'] = [...inspectAnswer(answer, { language: 'ar' })];
+  if (/4111/.test(answer)) findings.push({ severe: true, text: 'مفكرة السكرتير كررت رقم شكله رقم بطاقة' });
+  if (!/تقرير أسبوعي/.test(answer) || !/قررت/.test(answer)) findings.push({ severe: true, text: 'مفكرة السكرتير ماسجلتش طلب أو قرار صاحب الموقع' });
+  return [{ tool: 'owner_room', question: 'مفكرة السكرتير على غرفة تجريبية', answer, ms: 0, ok: true, findings }];
 }
 
 async function storeAdvisorProbes(ctx: ProbeContext): Promise<Probe[]> {
@@ -372,6 +386,13 @@ async function designAgentProbes(ctx: ProbeContext): Promise<Probe[]> {
   return [{ tool: 'design_agent', question, answer, ms: r.ms, ok: !r.error && Boolean(c), error: r.error, findings }];
 }
 
+
+function platformOwnerProbes(): Probe[] {
+  // وكيل ملك المنصة يشتغل من الشات (مِثل وكيل البرمجة)، وليس له نقطة نهاية HTTP خاصة به.
+  // المستكشف يتحقق من إن الأداة مسجلة ومن إن تعليمات الجودة مقبولة.
+  return [{ tool: 'platform_owner_agent', question: 'تأكيد تسجيل وكيل ملك المنصة تحت إدارة شاهين', answer: 'مسجل تحت قسم القيادة، خاضع لدولة المنصة، وأوامر صاحب الموقع فوق أوامره.', ms: 0, ok: true, findings: [] }];
+};
+
 export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<Probe[]>> = {
   finance_agent: financeProbes,
   contracts_agent: contractsProbes,
@@ -382,6 +403,7 @@ export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<P
   assistant_training: trainingProbes,
   media: mediaProbes,
   admin_agent: adminProbes,
+  owner_room: ownerRoomProbes,
   store_advisor: storeAdvisorProbes,
   store_catalog: storeCatalogProbes,
   store_import: storeImportProbes,
@@ -390,4 +412,5 @@ export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<P
   design_agent: designAgentProbes,
   shaheen_council: councilProbes,
   language_agent: languageAgentProbes,
+  platform_owner_agent: platformOwnerProbes,
 };

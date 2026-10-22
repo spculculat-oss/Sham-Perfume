@@ -4,6 +4,7 @@
  * of the site, scripts/shaheen-manus/run.mts); visitors never talk to it and never see its name.
  * Key: MANUS_API_KEY (repository secret). API v2: https://open.manus.ai/docs/v2/introduction
  */
+import { platformsOff } from './selfReliance';
 export const MANUS_BASE = 'https://api.manus.ai';
 
 export type ManusCode = 'ok' | 'not_configured' | 'invalid_key' | 'no_credit' | 'rate_limited' | 'bad_request' | 'upstream_error' | 'timeout' | 'unreachable';
@@ -15,7 +16,8 @@ export class ManusError extends Error {
 type Fetch = typeof fetch;
 interface CallOptions { key?: string; request?: Fetch; timeoutMs?: number }
 
-export const manusConfigured = (env: Record<string, string | undefined> = process.env) => Boolean(env.MANUS_API_KEY?.trim());
+// «شاهين معتمد على نفسه»: Manus is an outside AI platform — never called while the owner's switch is off.
+export const manusConfigured = (env: Record<string, string | undefined> = process.env) => !platformsOff(env) && Boolean(env.MANUS_API_KEY?.trim());
 
 /** Maps a Manus error envelope / HTTP status to the site's fixed key codes (no upstream text is trusted as-is). */
 export function manusCodeOf(status: number, error?: { code?: string; message?: string }): ManusCode {

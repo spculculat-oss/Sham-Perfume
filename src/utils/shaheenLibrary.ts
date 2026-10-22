@@ -149,12 +149,12 @@ export function searchLibrary(src: LibrarySources, question: string, lang: strin
 
 /** The line under every library answer: where it comes from, and whether the question was kept for study. */
 export function libraryNote(lang: string, recorded: boolean): string {
-  if (lang === 'ar') return `\n\n_📚 من مكتبة شاهين — الخبير مش متصل دلوقتي، فجمعت لك دي من معلوماتي ودروسي المحفوظة.${recorded ? ' سؤالك اتسجل عشان أذاكره وأرد عليه أحسن المرة الجاية.' : ''}_`;
-  return `\n\n_📚 From Shaheen’s library — the expert is offline right now, so this comes from his saved knowledge and lessons.${recorded ? ' Your question was noted so he studies it for next time.' : ''}_`;
+  if (lang === 'ar') return `\n\n_📚 من مكتبة شاهين — جمعت لك دي من معلوماتي ودروسي المحفوظة.${recorded ? ' سؤالك اتسجل عشان أذاكره وأرد عليه أحسن المرة الجاية.' : ''}_`;
+  return `\n\n_📚 From Shaheen’s library — gathered from his saved knowledge and lessons.${recorded ? ' Your question was noted so he studies it for next time.' : ''}_`;
 }
 
 /**
- * The library's answer, or undefined when it has nothing solid (the visitor then gets the honest «unavailable»).
+ * The library's answer, or undefined when it has nothing solid (the visitor then gets an honest «I don't know yet»).
  * One main answer (a material card, a lesson excerpt or the closest remembered answer), plus the other topics the
  * library knows about the same subject, so the visitor can ask about them.
  */
@@ -188,4 +188,13 @@ export function referenceBlock(refs: LibraryReference[], max = 1800): string {
     out += piece;
   }
   return out.trim();
+}
+
+/**
+ * «شاهين معتمد على نفسه»: nothing in his memory, library or open sources — he says so plainly instead of guessing,
+ * notes the question to study it, and shows what he can do right now.
+ */
+export function unknownAnswer(lang: string, recorded: boolean): string {
+  if (lang === 'ar' || lang === 'fa') return `السؤال ده لسه معنديش عنه معلومة أكيدة، ومش هخمّن عليك 🙏${recorded ? ' سجلته عندي عشان أذاكره وأرد عليك أحسن المرة الجاية.' : ''}\n\nأقدر أساعدك دلوقتي في:\n- **تصميم تركيبة**: اكتب مثلاً «صمم عطر شتوي رجالي فيه عود 50 مل»\n- **حسابات** التركيز وتخفيف الكحول والتعتيق\n- **المواد الخام**: اسألني عن مادة باسمها (عود، صندل، أمبروكسان…)\n- **ترشيح عطر جاهز** من «متجر شام»\n\nأو اكتب سؤالك بكلمات تانية.`;
+  return `I don't have solid information on this yet, and I won't guess 🙏${recorded ? ' I noted it to study it and answer better next time.' : ''}\n\nRight now I can help with:\n- **designing a formula**: e.g. “design a warm men's winter perfume with oud, 50 ml”\n- **calculations**: concentration, alcohol dilution, maceration\n- **raw materials**: ask me about one by name (oud, sandalwood, ambroxan…)\n- **a ready perfume** from the Sham store\n\nOr rephrase your question.`;
 }

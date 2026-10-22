@@ -32,6 +32,7 @@ import {
   inferProductPattern, parseRobots, planQueries, productCandidates, spreadSample, summary, vettingQueue, type LiveSource, type Sample, type SourcesFile,
 } from './discover';
 import { assessTrust, copyShare, pageKind, rdapRegistered, regionOf, registrableDomain, trustLinks, trustReason, TRUST_MIN, type TrustId, type TrustProfile } from './trust';
+import { platformsOff } from '../../server/core/selfReliance';
 
 const env = process.env;
 const FILE = new URL('../../src/data/live/import-sources.json', import.meta.url);
@@ -79,7 +80,8 @@ const brands = [...brandCount.entries()].sort((a, b) => b[1] - a[1]).map(([b]) =
 let mode: 'ai' | 'self' = 'self';
 let found = 0;
 const quota = quotaBook(new URL('../../src/data/live/ai-quota.json', import.meta.url));
-const geminiKey = env.GEMINI_API_KEY?.trim();
+// «شاهين معتمد على نفسه»: with the owner's switch off the scout searches by himself (no outside AI platform).
+const geminiKey = platformsOff(env) ? undefined : env.GEMINI_API_KEY?.trim();
 // Grounded search has its own daily allowance per model: when one model's allowance is used up, the next one is tried.
 const models = [...new Set([env.DISCOVER_MODEL?.trim(), env.GEMINI_MODEL?.trim(), 'gemini-flash-latest', 'gemini-flash-lite-latest'].filter((m): m is string => Boolean(m)))];
 if (geminiKey && QUERIES && !quota.pausedUntil('gemini', keyFingerprint(env, 'gemini'))) {

@@ -132,11 +132,13 @@ export async function research(fetchFn: Fetch, question: string, lang: string, o
   if (!queries) return undefined;
   const signal = AbortSignal.timeout(options.timeoutMs ?? 9000);
   // The plain search and the one in the perfume context, merged: an article named after the topic first.
-  const max = options.articles ?? 3;
+  const max = Math.max(1, Math.min(6, Math.floor(options.articles || 3)));
   let words = researchWords(question);
   const found: string[] = []; let query = ''; let suggestion: string | undefined;
-  for (const q of queries) {
-    const hits = await wikiSearchInfo(fetchFn, q, lang, max, signal, options.userAgent).catch(() => ({ titles: [] as string[], suggestion: undefined }));
+  const searches = await Promise.all(queries.map((q) =>
+    wikiSearchInfo(fetchFn, q, lang, max, signal, options.userAgent).catch(() => ({ titles: [] as string[], suggestion: undefined }))));
+  for (const [i, q] of queries.entries()) {
+    const hits = searches[i];
     suggestion ??= hits.suggestion;
     if (hits.titles.length && !query) query = q;
     for (const t of hits.titles) if (!found.includes(t)) found.push(t);

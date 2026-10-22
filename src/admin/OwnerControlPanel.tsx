@@ -79,7 +79,7 @@ export default function OwnerControlPanel() {
         </div>
         <div className={card}>
           <div className="text-xs text-stone-500">{T('التطوير الذاتي')}</div>
-          <div className="mt-1 font-black text-stone-900">{controls.selfDevelopment === 'safe_auto' ? T('الصغير الآمن تلقائي، والباقي بموافقتك') : T('كل تغيير بيستنى موافقتك')}</div>
+          <div className="mt-1 font-black text-stone-900">{controls.selfDevelopment === 'safe_auto' ? T('الصغير الآمن تلقائي، والباقي بموافقتك') : controls.selfDevelopment === 'state' ? T('دولة المنصة بتوافق، وإنت فوقها في أي وقت') : T('كل تغيير بيستنى موافقتك')}</div>
           <div className="mt-1 text-[11px] text-stone-500">{TP('صغير = لحد {files} ملفات و{lines} سطر ومن غير ملفات حساسة (الأسعار، الدفع، القانوني، الأمان).', { files: SMALL_CHANGE.files, lines: SMALL_CHANGE.lines })}</div>
         </div>
         <div className={card}>

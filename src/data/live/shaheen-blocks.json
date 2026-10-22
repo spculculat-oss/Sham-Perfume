@@ -1,0 +1,309 @@
+{
+ "version": 1,
+ "updatedAt": "2026-10-22T18:45:26.377Z",
+ "programs": [
+  {
+   "id": "school-day",
+   "title": "برنامج مذاكرة شاهين اليومي",
+   "goal": "امتحان وتسميع وحفظ في الذاكرة كل 6 ساعات",
+   "schedule": "every 6 hours",
+   "runner": "school",
+   "createdAt": "2026-10-22T19:04:49.666Z",
+   "blocks": [
+    {
+     "kind": "action",
+     "label": "امتحان الذات على كل المسارات",
+     "action": "exam",
+     "args": {
+      "tracks": "all"
+     },
+     "id": "b1"
+    },
+    {
+     "kind": "condition",
+     "label": "لو في أسئلة لسه ناقصة",
+     "when": {
+      "fact": "gaps",
+      "atLeast": 1
+     },
+     "id": "b2",
+     "children": [
+      {
+       "kind": "action",
+       "label": "التسميع من مكتبة شاهين بدون ذكاء اصطناعي",
+       "action": "self_study",
+       "id": "b2.1"
+      },
+      {
+       "kind": "action",
+       "label": "مذاكرة الباقي مع محرك متاح",
+       "action": "study_ai",
+       "id": "b2.2"
+      }
+     ]
+    },
+    {
+     "kind": "action",
+     "label": "التدريب العملي على مسائل حقيقية ونتائج موثقة",
+     "action": "practice",
+     "id": "b3"
+    },
+    {
+     "kind": "action",
+     "label": "حفظ الدروس في ذاكرة شاهين",
+     "action": "remember",
+     "id": "b4"
+    },
+    {
+     "kind": "action",
+     "label": "كتابة تقرير المدرسة",
+     "action": "report",
+     "id": "b5"
+    }
+   ]
+  },
+  {
+   "id": "site-care",
+   "title": "برنامج صيانة الموقع بالبلوكات",
+   "goal": "فحص وصيانة الموقع يومياً قبل الذروة",
+   "schedule": "daily 08:00",
+   "runner": "patrol",
+   "createdAt": "2026-10-22T19:04:49.666Z",
+   "blocks": [
+    {
+     "kind": "note",
+     "label": "صيانة وقائية يومية",
+     "note": "تبدأ قبل ذروة الزوار وتُسجَّل نتائجها في التقرير.",
+     "id": "b1"
+    },
+    {
+     "kind": "action",
+     "label": "فحص صحة الصفحات الأساسية",
+     "action": "check_site",
+     "id": "b2"
+    },
+    {
+     "kind": "condition",
+     "label": "لو الموقع شغال",
+     "when": {
+      "fact": "siteUp",
+      "equals": true
+     },
+     "id": "b3",
+     "children": [
+      {
+       "kind": "action",
+       "label": "فحص الروابط المكسورة",
+       "action": "check_links",
+       "id": "b3.1"
+      },
+      {
+       "kind": "action",
+       "label": "فحص الصور",
+       "action": "check_images",
+       "id": "b3.2"
+      },
+      {
+       "kind": "action",
+       "label": "فحص شهادة الأمان",
+       "action": "check_ssl",
+       "id": "b3.3"
+      },
+      {
+       "kind": "loop",
+       "label": "فحص ثلاث عينات من صفحات المنتجات",
+       "repeat": 3,
+       "id": "b3.4",
+       "children": [
+        {
+         "kind": "action",
+         "label": "فحص عينة صفحة",
+         "action": "check_page_sample",
+         "id": "b3.4.1"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "kind": "condition",
+     "label": "لو الموقع وقع",
+     "when": {
+      "fact": "siteUp",
+      "equals": false
+     },
+     "id": "b4",
+     "children": [
+      {
+       "kind": "action",
+       "label": "بلاغ صيانة عاجل",
+       "action": "alert",
+       "id": "b4.1"
+      }
+     ]
+    },
+    {
+     "kind": "action",
+     "label": "نسخة احتياطية",
+     "action": "backup",
+     "id": "b5"
+    },
+    {
+     "kind": "action",
+     "label": "تقرير الصيانة",
+     "action": "report",
+     "id": "b6"
+    }
+   ]
+  },
+  {
+   "id": "tool-dev",
+   "title": "برنامج تطوير أدوات الذكاء الاصطناعي",
+   "goal": "كل أداة تتطور في مجالها بالتناوب",
+   "schedule": "weekly mon 09:00",
+   "runner": "school",
+   "createdAt": "2026-10-22T19:04:49.666Z",
+   "blocks": [
+    {
+     "kind": "loop",
+     "label": "تدوير على الأدوات للمذاكرة والتطوير",
+     "repeat": 3,
+     "id": "b1",
+     "children": [
+      {
+       "kind": "action",
+       "label": "مذاكرة مجال أداة من مدرسة شاهين",
+       "action": "tool_field_study",
+       "id": "b1.1"
+      },
+      {
+       "kind": "action",
+       "label": "تحديد هدف تطوير للأداة",
+       "action": "tool_focus",
+       "id": "b1.2"
+      }
+     ]
+    },
+    {
+     "kind": "action",
+     "label": "تقرير تطوير الأدوات",
+     "action": "tool_report",
+     "id": "b2"
+    }
+   ]
+  },
+  {
+   "id": "ai-self",
+   "title": "برنامج إدارة الذكاء الذاتي",
+   "goal": "شاهين يدير نفسه بنفسه بدون أي تطبيق ذكاء آخر",
+   "schedule": "every 12 hours",
+   "runner": "patrol",
+   "createdAt": "2026-10-22T19:04:49.666Z",
+   "blocks": [
+    {
+     "kind": "note",
+     "label": "قاعدة الاعتماد على النفس",
+     "note": "الترتيب الملزم: الذاكرة ← المكتبة ← نموذج محلي مستضاف ذاتياً ← رد صريح بالصدق.",
+     "id": "b1"
+    },
+    {
+     "kind": "action",
+     "label": "قياس الاعتماد على النفس لكل مسار",
+     "action": "measure_reliance",
+     "id": "b2"
+    },
+    {
+     "kind": "action",
+     "label": "الرد من ذاكرة شاهين",
+     "action": "answer_from_memory",
+     "id": "b3"
+    },
+    {
+     "kind": "action",
+     "label": "الرد من مكتبة شاهين",
+     "action": "answer_from_library",
+     "id": "b4"
+    },
+    {
+     "kind": "action",
+     "label": "الرد من النموذج المحلي",
+     "action": "answer_from_local_model",
+     "id": "b5"
+    },
+    {
+     "kind": "condition",
+     "label": "لو مفيش محرك خارجي شغال",
+     "when": {
+      "fact": "externalEngineUp",
+      "equals": false
+     },
+     "id": "b6",
+     "children": [
+      {
+       "kind": "note",
+       "label": "الإدارة الذاتية تشتغل بالكامل",
+       "note": "الذاكرة والمكتبة والنموذج المحلي كافيين للرد — لا تطبيق ذكاء آخر.",
+       "id": "b6.1"
+      }
+     ]
+    },
+    {
+     "kind": "action",
+     "label": "مراجعة صراحة الردود عند العجز",
+     "action": "honesty_check",
+     "id": "b7"
+    },
+    {
+     "kind": "action",
+     "label": "تقرير الإدارة الذاتية",
+     "action": "self_report",
+     "id": "b8"
+    }
+   ]
+  }
+ ],
+ "runs": [
+  {
+   "program": "school-day",
+   "at": "2026-10-22T18:26:44.940Z",
+   "ok": true,
+   "steps": 6,
+   "failed": 0
+  },
+  {
+   "program": "school-day",
+   "at": "2026-10-22T12:25:56.419Z",
+   "ok": true,
+   "steps": 5,
+   "failed": 0
+  },
+  {
+   "program": "ai-self",
+   "at": "2026-10-22T03:09:47.030Z",
+   "ok": true,
+   "steps": 8,
+   "failed": 0
+  },
+  {
+   "program": "site-care",
+   "at": "2026-10-22T03:09:47.030Z",
+   "ok": true,
+   "steps": 12,
+   "failed": 0
+  },
+  {
+   "program": "tool-dev",
+   "at": "2026-10-22T03:08:45.426Z",
+   "ok": true,
+   "steps": 8,
+   "failed": 0
+  },
+  {
+   "program": "school-day",
+   "at": "2026-10-22T03:08:45.426Z",
+   "ok": true,
+   "steps": 5,
+   "failed": 0
+  }
+ ]
+}

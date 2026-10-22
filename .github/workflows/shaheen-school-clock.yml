@@ -1,0 +1,157 @@
+name: Shaheen's school around the clock (every hour)
+
+# «أكاديمية شاهين»: «مدرسة شاهين» every hour, not only with the source scout every 6 hours. Each hour:
+#   1. it asks what is left to study (scripts/shaheen-school/backlog.mts, no AI): the experts' syllabus
+#      (src/data/sciences/syllabus.ts) and the perfume bank against his memory — nothing left → the hour is skipped;
+#   2. «المعلم المحلي» (scripts/shaheen-school/teacher.sh): an open model (Qwen2.5-7B-Instruct, Apache-2.0) run by
+#      llama.cpp on this runner — no key, no account, no AI platform. The model is kept between runs (actions/cache)
+#      and reused while its SHA-256 matches;
+#   3. the school (SCHOOL_FOCUS=experts) studies the experts' questions first: each answer is written as that field's
+#      expert from Shaheen's library and open sources (Wikipedia), then a strict reviewer checks it by the field's
+#      standards and limits; only what passes is kept in his memory (src/data/live/shaheen-memory.json);
+#   4. «حصّاد شاهين» (scripts/shaheen-harvest/run.mts) answers ahead of time, while a package has room, the questions
+#      visitors are likely to ask (their unanswered ones first, then src/data/shaheen-harvest-bank.json) and keeps the
+#      good answers in his memory — so he still answers them the day the packages run out. In the two hours before the
+#      daily renewal (22:00–24:00 Pacific) it may use the leftover of the regular package (lost at midnight anyway);
+#      the rest of the day only the open models with their own quota (never the visitors' chat quota);
+#   5. the regression tests, then the memory and the reports are published on main and Pages is rebuilt.
+# It shares the scout's lane (same concurrency group): the two never write his memory at the same time.
+# Settings (repository variables, optional): SCHOOL_CLOCK_MAX_STUDY (questions per hour, default 8), HARVEST_MAX
+# (harvest questions per hour; default 6, or 40 in the last two hours),
+# TEACHER_MODEL_URL + TEACHER_MODEL_SHA256 + TEACHER_MODEL_NAME (another open GGUF model).
+
+on:
+  schedule:
+    - cron: '47 * * * *'
+  workflow_dispatch:
+  push:
+    # Branches: rehearsal only (nothing is committed).
+    branches: ['arena/**']
+    paths: ['src/data/sciences/syllabus.ts', 'scripts/shaheen-school/backlog.mts', 'scripts/shaheen-school/teacher.sh', 'scripts/shaheen-harvest/**', 'src/data/shaheen-harvest-bank.json', '.github/workflows/shaheen-school-clock.yml']
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: shaheen-discover-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # «مفتاح صاحب الموقع»: the owner (or «دولة المنصة») can pause this robot («academy») — or freeze
+  # every robot. Branch runs are rehearsals and are not affected.
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs academy
+
+  school:
+    name: Shaheen's school — the experts study with the local teacher
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      SCHOOL_FOCUS: experts
+      SCHOOL_MAX_STUDY: ${{ vars.SCHOOL_CLOCK_MAX_STUDY || (github.ref == 'refs/heads/main' && '8' || '2') }}
+      # Questions visitors asked while nothing answered (optional: same value as the Vercel admin code).
+      SHAM_ADMIN_TOKEN: ${{ secrets.SHAM_ADMIN_TOKEN }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.ref == 'refs/heads/main' && 'main' || github.sha }}
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: What is left to study? (no AI)
+        id: backlog
+        run: node --import tsx scripts/shaheen-school/backlog.mts
+      - name: Keep the teacher's model between runs
+        if: steps.backlog.outputs.todo != '0'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/teacher-model
+          key: teacher-model-${{ vars.TEACHER_MODEL_URL && vars.TEACHER_MODEL_SHA256 || '65b8fcd92af6b4fefa935c625d1ac27ea29dcb6ee14589c55a8f115ceaaa1423' }}
+      - name: «المعلم المحلي» — an open model on this runner (no key, no account)
+        id: teacher
+        if: steps.backlog.outputs.todo != '0'
+        continue-on-error: true
+        timeout-minutes: 15
+        env:
+          LLAMA_BUILD: b11790
+          LLAMA_SHA256: 0e2b856ca192699fdb5c8dfe591b7896d658760bcdd48f133322236cd311c455
+          TEACHER_MODEL_URL: ${{ vars.TEACHER_MODEL_URL || 'https://huggingface.co/bartowski/Qwen2.5-7B-Instruct-GGUF/resolve/main/Qwen2.5-7B-Instruct-Q4_K_M.gguf' }}
+          TEACHER_MODEL_SHA256: ${{ vars.TEACHER_MODEL_URL && vars.TEACHER_MODEL_SHA256 || '65b8fcd92af6b4fefa935c625d1ac27ea29dcb6ee14589c55a8f115ceaaa1423' }}
+          TEACHER_MODEL_NAME: ${{ vars.TEACHER_MODEL_NAME || 'qwen2.5-7b-instruct' }}
+          TEACHER_MODEL_CACHE: ${{ runner.temp }}/teacher-model
+        run: bash scripts/shaheen-school/teacher.sh
+      - name: «مدرسة شاهين» — the experts' syllabus first, every lesson reviewed
+        if: steps.backlog.outputs.todo != '0'
+        continue-on-error: true
+        timeout-minutes: 30
+        env:
+          SHAM_LLM_BASE_URL: ${{ steps.teacher.outputs.base_url }}
+          SHAM_LLM_MODEL: ${{ steps.teacher.outputs.model }}
+          # No AI platform here: only the local teacher on this runner.
+          SCHOOL_PREFER: self_hosted
+          SCHOOL_BUDGET_MIN: ${{ github.ref == 'refs/heads/main' && '25' || '8' }}
+        run: node --import tsx scripts/shaheen-school/run.mts
+      - name: Stop the local teacher
+        if: always() && steps.teacher.outputs.base_url != ''
+        run: kill "$(cat "${RUNNER_TEMP}/teacher/server.pid")" 2>/dev/null || true
+      - name: «حصّاد شاهين» — answers ready before the packages run out
+        id: harvest
+        continue-on-error: true
+        timeout-minutes: 16
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Branches: a rehearsal with one question.
+          HARVEST_MAX: ${{ github.ref != 'refs/heads/main' && '1' || vars.HARVEST_MAX }}
+          HARVEST_BUDGET_MIN: '12'
+        run: node --import tsx scripts/shaheen-harvest/run.mts
+      - name: Regression tests
+        if: steps.backlog.outputs.todo != '0' || (steps.harvest.outputs.kept != '' && steps.harvest.outputs.kept != '0')
+        run: |
+          set -o pipefail
+          bun run test 2>&1 | tee /tmp/test.log || { grep -E 'not ok|error:' /tmp/test.log | head -8 | sed 's/^/::error title=test::/'; exit 1; }
+      - name: Publish on main
+        if: env.PUBLISH == 'true' && (steps.backlog.outputs.todo != '0' || (steps.harvest.outputs.kept != '' && steps.harvest.outputs.kept != '0'))
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen academy bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          before=$(git rev-parse HEAD)
+          node scripts/ci/publish.mjs "أكاديمية شاهين $(date -u +%Y-%m-%dT%H:%MZ)" \
+            src/data/live/shaheen-school.json src/data/live/shaheen-sciences.json src/data/live/shaheen-memory.json \
+            src/data/live/ai-memory.json src/data/live/ai-quota.json src/data/live/shaheen-harvest.json \
+            || { echo "::error::Could not push the school's results"; exit 1; }
+          if [ "$(git rev-parse HEAD)" = "$before" ]; then exit 0; fi
+          gh workflow run pages.yml --ref main || echo "::warning::Pages rebuild not started"

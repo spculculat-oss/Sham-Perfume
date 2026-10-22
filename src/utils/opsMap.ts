@@ -194,6 +194,13 @@ export const JOURNEYS: Journey[] = [
     { bot: 'teacher', ar: 'المعلم المحلي يكتب الدرس والمراجع يفحصه', en: 'The local teacher writes the lesson; the reviewer checks it' },
     { bot: 'school', ar: 'الدرس يتحفظ في ذاكرة شاهين للمرة الجاية', en: 'The lesson joins his memory for next time' },
   ] },
+  { id: 'academy', nameAr: 'المدرسة على مدار الساعة', nameEn: 'The school around the clock', steps: [
+    { bot: 'academy', ar: 'كل ساعة يشوف إيه الباقي على الخبراء', en: 'Every hour, checks what the experts still have to study' },
+    { bot: 'researcher', ar: 'يقرا المصادر المفتوحة عن السؤال', en: 'Reads open sources about the question' },
+    { bot: 'teacher', ar: 'الخبير يكتب الدرس والمراجع الصارم يفحصه', en: 'The expert writes the lesson; the strict reviewer checks it' },
+    { bot: 'school', ar: 'الدرس يدخل ذاكرة شاهين', en: 'The lesson enters Shaheen\'s memory' },
+    { bot: 'chat', ar: 'وكيل شاهين يرد بيه على الزوار', en: 'Shaheen\'s agent answers visitors with it' },
+  ] },
   { id: 'incident', nameAr: 'عطل في الموقع', nameEn: 'A site problem', steps: [
     { bot: 'patrol', ar: 'الدورية تكتشفه بالتجربة', en: 'The patrol finds it by testing' },
     { bot: 'live_check', ar: 'يتأكد إن شاهين بيرد على الموقع الحي', en: 'Checks Shaheen answers on the live site' },
@@ -234,7 +241,7 @@ export function journeyHealth(j: Journey, scores: ToolScore[]): { grade: Grade; 
 }
 
 // ── Layout of the map (SVG user units) ────────────────────────────────────────────────────────────────────
-export const MAP = { width: 1240, height: 790, nodeW: 220, nodeH: 42, top: 210, gap: 54 } as const;
+export const MAP = { width: 1240, height: 920, nodeW: 220, nodeH: 42, top: 210, gap: 54 } as const;
 /** Columns right-to-left (Arabic reading order): leadership first. */
 export const DEPT_ORDER: DeptId[] = ['leadership', 'store', 'content', 'experience', 'reliability'];
 export const deptX = (dept: DeptId) => MAP.width - 130 - DEPT_ORDER.indexOf(dept) * 245;

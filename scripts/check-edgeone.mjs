@@ -41,7 +41,8 @@ try {
   assert.equal((await (await fetch(`${base}/api/models`, { headers })).json()).allowVisitorChoice, false, 'admin settings were lost between requests');
   const chat = () => fetch(`${base}/api/chat`, { method: 'POST', headers: { ...headers, 'eo-connecting-ip': '41.33.1.1' }, body: '{"message":"hi"}' });
   const codes = [(await chat()).status, (await chat()).status, (await chat()).status];
-  assert.deepEqual(codes, [503, 503, 429], 'rate limit state was lost between requests');
+  // «شاهين معتمد على نفسه» (O-10): no platform — Shaheen answers himself (200) until the visitor's limit (429).
+  assert.deepEqual(codes, [200, 200, 429], 'rate limit state was lost between requests');
   console.log('EdgeOne build verified: Cloud Function detected, isolated bundle serves /api, state persists between requests.');
 } finally {
   child.kill();

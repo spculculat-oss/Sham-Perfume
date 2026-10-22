@@ -21,6 +21,7 @@ import { ManufacturingSpecSheet } from './components/ManufacturingSpecSheet';
 import { PerfumerAIChatbot } from './components/PerfumerAIChatbot';
 import { PerfumerMasterLabView } from './components/PerfumerMasterLabView';
 import { ShamAssistant } from './assistant/ShamAssistant';
+import SpecialistsHub from './components/SpecialistsHub';
 import { WorldPerfumeNews } from './components/WorldPerfumeNews';
 import { Footer } from './components/Footer';
 import { LocalizedNumberInput } from './components/LocalizedNumberInput';
@@ -1186,6 +1187,9 @@ export default function App() {
 
       {/* Sham Core services assistant: orders, store, bespoke, B2B, support (opposite corner to Shaheen) */}
       <ShamAssistant currentLang={currentLang} />
+
+      {/* «مجلس المتخصصين»: استشارة علوم شاهين في أي قسم وفي أي وقت (وسط الشاشة السفلي) */}
+      <SpecialistsHub section={activeTab} lang={currentLang} />
 
       {/* Footer */}
       <Footer

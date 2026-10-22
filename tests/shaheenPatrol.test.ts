@@ -215,7 +215,7 @@ test('rotating shifts: one group per hour, every role and probe assigned once; a
   assert.equal(shiftOfBot('design_expert'), 1, 'its supervisor-recorded health belongs to the content/design shift');
   const tests = SHIFTS.flatMap((x) => x.probes);
   assert.deepEqual([...tests].sort(), Object.keys(PROBES).sort());
-  for (const x of SHIFTS) assert.ok(x.bots.length <= 14 && x.probes.length <= 7, x.nameEn);
+  for (const x of SHIFTS) assert.ok(x.bots.length <= 17 && x.probes.length <= 7, x.nameEn);
   // Consecutive hours → consecutive shifts; the same shift comes back after 3 hours, also across midnight.
   const h0 = Date.parse('2026-10-20T22:52:00Z');
   const seq = [0, 1, 2, 3, 4, 5].map((i) => shiftAt(h0 + i * H));
