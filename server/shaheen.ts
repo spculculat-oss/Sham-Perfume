@@ -1,3 +1,4 @@
+import { createResearchSpider } from '../src/utils/researchSpider';
 /**
  * «الخبير شاهين» — the perfume-design chat (floating window + the lab page).
  *
@@ -25,7 +26,7 @@ import { libraryAnswer, unknownAnswer, type LibrarySources } from '../src/utils/
 import { designAnswer } from '../src/utils/shaheenDesigner';
 import { platformsOff } from './core/selfReliance';
 import { buildLexicon, keyboardFix, understandQuestion, understoodNote, type Understanding } from '../src/utils/shaheenSpelling';
-import { research as lookUp, RESEARCH_USER_AGENT, researchAnswer, type Research } from '../src/utils/webResearch';
+import { RESEARCH_USER_AGENT, researchAnswer, type Research } from '../src/utils/webResearch';
 import { questionIntents } from '../src/utils/shaheenTools';
 import { RAW_MATERIALS_DATABASE } from '../src/data/rawMaterials';
 import { quickAnswer } from '../src/utils/shaheenQuickApps';
@@ -359,9 +360,10 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
   const researchFlag = env.SHAM_WEB_RESEARCH?.trim().toLowerCase();
   const researchOn = researchFlag !== '0' && researchFlag !== 'off'
     && (researchFlag === 'on' || researchFlag === '1' || Boolean(env.VERCEL) || env.NODE_ENV === 'production' || Boolean(options.fetch));
+  const spider = createResearchSpider((options.fetch || fetch) as never, { userAgent: RESEARCH_USER_AGENT, timeoutMs: 8000 });
   const research = options.research || (!researchOn
     ? async () => undefined
-    : (question: string, lang: string) => lookUp((options.fetch || fetch) as never, question, lang, { userAgent: RESEARCH_USER_AGENT, timeoutMs: 8000 }));
+    : spider.search);
   /** A question no engine answered goes on the study list of «مدرسة شاهين» (admin-only knowledge gaps). */
   const noteForStudy = async (question: string) => {
     if (isPersonal(question) || isTimeBound(question)) return false;
