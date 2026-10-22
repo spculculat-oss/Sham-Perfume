@@ -1,26 +1,32 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T18:54:11.381Z",
+ "updatedAt": "2026-10-22T00:56:27.297Z",
  "reliance": {
-  "score": 97,
-  "covered": 167,
+  "score": 98,
+  "covered": 170,
   "total": 173,
-  "fromMemory": 167,
+  "fromMemory": 170,
   "fromLibrary": 2,
   "byLang": {
    "ar": {
-    "covered": 148,
+    "covered": 149,
     "total": 152
    },
    "en": {
-    "covered": 19,
+    "covered": 21,
     "total": 21
    }
   }
  },
- "studiedTotal": 74,
+ "studiedTotal": 76,
  "selfTaughtTotal": 66,
  "history": [
+  {
+   "at": "2026-10-22T00:56:27.297Z",
+   "score": 98,
+   "studied": 2,
+   "mode": "local"
+  },
   {
    "at": "2026-10-21T18:54:11.381Z",
    "score": 97,
@@ -192,6 +198,18 @@
  ],
  "lastStudied": [
   {
+   "q": "ازاي اعرف ان الزيت العطري مغشوش؟",
+   "lang": "ar",
+   "at": "2026-10-22T00:56:27.297Z",
+   "variants": 0
+  },
+  {
+   "q": "Suggest a warm oriental perfume formula for winter with percentages",
+   "lang": "en",
+   "at": "2026-10-22T00:56:27.297Z",
+   "variants": 0
+  },
+  {
    "q": "ازاي احافظ على ثبات جودة العطر من دفعة للتانية؟",
    "lang": "ar",
    "at": "2026-10-21T16:13:06.752Z",
@@ -298,18 +316,6 @@
    "lang": "ar",
    "at": "2026-10-21T12:19:44.918Z",
    "variants": 0
-  },
-  {
-   "q": "اقترح تركيبة عطر خشبي للصيف بالنسب",
-   "lang": "ar",
-   "at": "2026-10-21T12:19:44.918Z",
-   "variants": 0
-  },
-  {
-   "q": "اقترح تركيبة عطر شرقي للشتاء بالنسب",
-   "lang": "ar",
-   "at": "2026-10-21T12:19:44.918Z",
-   "variants": 0
   }
  ],
  "pending": [
@@ -324,24 +330,9 @@
    "topic": "library"
   },
   {
-   "q": "ازاي اعرف ان الزيت العطري مغشوش؟",
-   "lang": "ar",
-   "topic": "problems"
-  },
-  {
    "q": "ازاي اختبر عطر جديد قبل ما اعمل منه كمية كبيرة؟",
    "lang": "ar",
    "topic": "skills"
-  },
-  {
-   "q": "Suggest a fresh citrus perfume formula for summer with percentages",
-   "lang": "en",
-   "topic": "design-en"
-  },
-  {
-   "q": "Suggest a warm oriental perfume formula for winter with percentages",
-   "lang": "en",
-   "topic": "design-en"
   }
  ],
  "importer": {
@@ -349,17 +340,17 @@
   "aiReadings": 0,
   "localReadings": 25
  },
- "localTaughtTotal": 23,
+ "localTaughtTotal": 25,
  "spelling": {
-  "at": "2026-10-21T18:54:11.381Z",
-  "tried": 749,
-  "understood": 730,
+  "at": "2026-10-22T00:56:27.297Z",
+  "tried": 748,
+  "understood": 729,
   "score": 97,
   "misses": [
-   "طبييه → طبيه (طبيعيه)",
    "اخطه → احطه (اخلطه)",
    "الخطه → الخطه (اخلطه)",
-   "مثبات → ثبات (مثبتات)"
+   "مثبات → ثبات (مثبتات)",
+   "الزجاجه → الزجاجه (لزجاجه)"
   ],
   "questions": {
    "tried": 60,

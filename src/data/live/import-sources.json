@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-21T18:51:52.675Z",
+ "updatedAt": "2026-10-22T00:55:40.362Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -3800,12 +3800,12 @@
    "host": "afnanparfums.com",
    "name": "afnanparfums.com",
    "base": "https://afnanparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Afnan",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T14:55:17.636Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -3813,16 +3813,16 @@
    "host": "osma.com",
    "name": "osma.com",
    "base": "https://osma.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Osma",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "trust": {
     "score": 61,
     "verdict": "trusted",
-    "at": "2026-10-21T15:48:34.519Z",
+    "at": "2026-10-22T00:55:40.362Z",
     "checks": [
      {
       "id": "age",
@@ -4049,12 +4049,12 @@
    "host": "osmaparfums.com",
    "name": "osmaparfums.com",
    "base": "https://osmaparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Osma",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -4075,16 +4075,16 @@
    "host": "pariscornerperfumes.com",
    "name": "PARIS CORNER",
    "base": "https://www.pariscornerperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Paris Corner",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "trust": {
     "score": 56,
     "verdict": "weak",
-    "at": "2026-10-21T15:48:34.519Z",
+    "at": "2026-10-22T00:55:40.362Z",
     "checks": [
      {
       "id": "age",
@@ -4466,12 +4466,12 @@
    "host": "pariscornerparfums.com",
    "name": "pariscornerparfums.com",
    "base": "https://pariscornerparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Paris Corner",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -4479,16 +4479,16 @@
    "host": "velixir.com",
    "name": "velixir.com",
    "base": "https://velixir.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Velixir",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "trust": {
     "score": 54,
     "verdict": "weak",
-    "at": "2026-10-21T15:48:34.519Z",
+    "at": "2026-10-22T00:55:40.362Z",
     "checks": [
      {
       "id": "age",
@@ -4590,12 +4590,12 @@
    "host": "velixirperfumes.com",
    "name": "velixirperfumes.com",
    "base": "https://velixirperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Velixir",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -4603,16 +4603,16 @@
    "host": "velixirparfums.com",
    "name": "Velixirparfums",
    "base": "https://velixirparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Velixir",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "trust": {
     "score": 56,
     "verdict": "weak",
-    "at": "2026-10-21T15:48:34.519Z",
+    "at": "2026-10-22T00:55:40.362Z",
     "checks": [
      {
       "id": "age",
@@ -4715,12 +4715,12 @@
    "host": "afnanperfumesperfumes.com",
    "name": "afnanperfumesperfumes.com",
    "base": "https://afnanperfumesperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Afnan Perfumes",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -4728,12 +4728,12 @@
    "host": "afnanperfumesparfums.com",
    "name": "afnanperfumesparfums.com",
    "base": "https://afnanperfumesparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Afnan Perfumes",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T00:55:40.362Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -7365,6 +7365,28 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-22T00:55:40.362Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 10,
+   "activated": 0,
+   "rejected": 10,
+   "notes": [
+    "✗ osma.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
+    "✗ osmaparfums.com: الموقع لا يفتح",
+    "  ↳ pariscornerperfumes.com: CV 56/100 [age,https,contact,identity,platform,social,authentic] on Shopify (pages: /pages/contact→200 /policies/contact-information→404 /policies/refund-policy→404 /policies/legal-notice→404 /policies/shipping-policy→404 /pages/about-us→200)",
+    "✗ pariscornerperfumes.com: ملف الثقة ضعيف (56/100): ينقصه سياسة الإرجاع والاسترداد، وسائل دفع معروفة، سياسة الشحن",
+    "✗ pariscornerparfums.com: الموقع لا يفتح",
+    "  ↳ velixir.com: CV 54/100 [age,https,identity,returns,authentic] (pages: /contact-us→200 /returns→200)",
+    "✗ velixir.com: ملف الثقة ضعيف (54/100): ينقصه بيانات التواصل، وسائل دفع معروفة، سياسة الشحن",
+    "✗ velixirperfumes.com: الموقع لا يفتح",
+    "  ↳ velixirparfums.com: CV 56/100 [age,https,contact,returns,terms,payment,platform,social] on Shopify (pages: /pages/contact→200 /policies/contact-information→200 /policies/refund-policy→200 /policies/legal-notice→404 /policies/shipping-policy→404 /pages/about-us→200)",
+    "✗ velixirparfums.com: ملف الثقة ضعيف (56/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الشحن، سياسة الخصوصية",
+    "✗ afnanperfumesperfumes.com: الموقع لا يفتح",
+    "✗ afnanperfumesparfums.com: الموقع لا يفتح"
+   ]
+  },
   {
    "at": "2026-10-21T18:51:52.675Z",
    "mode": "self",
