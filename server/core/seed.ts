@@ -6,6 +6,7 @@
 import { withShaheenDefaults } from '../config/shaheen';
 import { defaultCouncil } from './council';
 import { platformKnowledge } from './platformGuide';
+import { storeKnowledge } from './storeGuide';
 import type { CoreSettings, KnowledgeDoc, Product, ServiceDef } from './types';
 
 /**
@@ -13,11 +14,13 @@ import type { CoreSettings, KnowledgeDoc, Product, ServiceDef } from './types';
  * platform already runs: `Repository.ready()` then adds the missing ones to existing stores without
  * touching a single document the merchant edited or deleted.
  */
-export const KNOWLEDGE_SEED_VERSION = 2;
+export const KNOWLEDGE_SEED_VERSION = 3;
 
-/** Which seed version introduced a document: 1 = the original seed, 2 = «دليل المنصة» (platformGuide). */
+/** Which seed version introduced a document: 1 = the original seed, 2 = «دليل المنصة», 3 = «دليل المتجر» و«تخصصات شاهين». */
 export function knowledgeDocVersion(id: string): number {
-  return id.startsWith('kb-platform-') ? 2 : 1;
+  if (id.startsWith('kb-platform-')) return 2;
+  if (id.startsWith('kb-store-') || id.startsWith('kb-shaheen-')) return 3;
+  return 1;
 }
 
 /**
@@ -151,6 +154,8 @@ export function defaultKnowledge(): KnowledgeDoc[] {
     // «دليل المنصة»: كل أداة وميزة جديدة في المنصة، من نفس ملف server/core/platformGuide.ts
     // اللي بيستخدمه الراوتر وبرومبت النموذج — فالمساعد يعرفها بالاسم من غير أي مفتاح ذكاء اصطناعي.
     ...platformKnowledge(),
+    // «دليل المتجر»: الشراء والدفع والشحن والتتبع والإرجاع وسوق التجار من server/core/storeGuide.ts.
+    ...storeKnowledge(),
   ];
 }
 

@@ -10,7 +10,7 @@
  *  - plan → act → observe loop with an inspectable task trace (Manus).
  */
 import { randomUUID } from 'node:crypto';
-import { supervisorGuidance } from './liveData';
+import { asksForNews, supervisorGuidance } from './liveData';
 import type { Repository } from './repository';
 import { route, stripIntro, type RouteResult } from './router';
 import { tools, type ToolResult } from './tools';
@@ -21,6 +21,8 @@ import {
   PLATFORM_FEATURES, platformCatalog, platformFeature, platformOverviewText, platformQuestion,
   relatedPlatformFeatures, shippingBrief,
 } from './platformGuide';
+import { storeBrief, storefrontCatalog, storeLine, type StoreItem, type StoreSnapshot } from './storeGuide';
+import { shaheenHandoff, specialtyBrief } from './shaheenSpecialties';
 import type { ActionCard, Citation, Conversation, ConversationMessage, CoreSettings, CouncilTranscript, EngineId, Lang, PublicStep, ServiceDef, TraceStep } from './types';
 import { SUPPORTED_LANGUAGES } from '../../src/types/i18n';
 
@@ -92,6 +94,8 @@ function toolStepLabel(tool: string, result: ToolResult, serviceName: string): [
     case 'prepare_request_form': return [`تجهيز استمارة: ${serviceName}`, `Preparing form: ${serviceName}`];
     case 'track_order': return ['التحقق من الطلب بأمان', 'Verifying the request securely'];
     case 'calc_concentration': return ['حساب التركيز', 'Calculating concentration'];
+    case 'search_store': return count ? [`البحث في كتالوج المتجر: ${count} منتج`, `Searching the storefront: ${count} product(s)`] : ['البحث في كتالوج المتجر: لا نتائج', 'Searching the storefront: no match'];
+    case 'store_overview': return ['مراجعة بيانات المتجر الحية', 'Checking live store facts'];
     case 'list_services': return [`جمع الخدمات المتاحة: ${count}`, `Collecting services: ${count}`];
     default: return [tool, tool];
   }
@@ -249,7 +253,7 @@ export class Orchestrator {
     const results: { tool: string; result: ToolResult }[] = [];
     for (const planned of plan) {
       tick = clock();
-      const result = await (tools[planned.tool].run as (a: unknown, c: unknown) => Promise<ToolResult>)(planned.args, { repo: this.repo, message: redacted, lang });
+      const result = await (tools[planned.tool].run as (a: unknown, c: unknown) => Promise<ToolResult>)(planned.args, { repo: this.repo, message: redacted, lang, env: this.options.env });
       results.push({ tool: planned.tool, result });
       trace.push({ stage: planned.tool === 'retrieve_knowledge' ? 'retrieve' : 'tool', detail: `${planned.tool}: ${result.observation.split('\n')[0].slice(0, 160)}`, ms: tick() });
       const [ar, en] = toolStepLabel(planned.tool, result, serviceName);
@@ -264,12 +268,19 @@ export class Orchestrator {
     const catalogEmpty = results.some((r) => r.tool === 'search_catalog' && r.result.observation === 'CATALOG_EMPTY');
     if (catalogEmpty) actions = actions.filter((a) => !(a.type === 'request_form' && a.serviceId === service?.id && service?.kind === 'store'));
     if (routed.intent === 'perfume_expert') actions.push({ type: 'open_tab', tab: 'master_ai' });
+    // The visitor can only buy on the store page: open it whenever the answer quotes storefront items.
+    const storefrontHit = results.find((r) => r.tool === 'search_store')?.result.data as { items?: StoreItem[] } | undefined;
+    if (storefrontHit?.items?.length && routed.intent === 'browse_products') actions.push({ type: 'open_tab', tab: 'store', title: lang === 'ar' ? 'المتجر' : 'Store' });
     // A platform answer is useless if the visitor still has to hunt for the tab: open it for them.
     const platform = platformFeature(routed.platformId);
     if (routed.intent === 'platform_help' && platform?.tab) {
       actions.push({ type: 'open_tab', tab: platform.tab, title: lang === 'ar' ? platform.name.ar : platform.name.en });
     }
     if (routed.intent === 'handoff') actions.push({ type: 'handoff' });
+    // News answers quote the bulletin; the visitor should be able to open the full page with sources.
+    if (asksForNews(query) && !actions.some((a) => a.type === 'open_tab' && a.tab === 'perfume_news')) {
+      actions.push({ type: 'open_tab', tab: 'perfume_news', title: lang === 'ar' ? 'أخبار العطور' : 'Perfume news' });
+    }
     if (routed.intent === 'memory_view' || routed.intent === 'forget') {
       // Show people-readable values (service names, not internal ids).
       const memory = { ...conversation.memory };
@@ -292,6 +303,9 @@ export class Orchestrator {
     const useModel = !['greeting', 'thanks', 'identity', 'track_order', 'calculate', 'memory_view', 'forget'].includes(routed.intent);
     const env = this.options.env || process.env;
     const history: EngineTurn[] = conversation.messages.slice(-10).map((m) => ({ role: m.role, text: m.text }));
+    // Store facts are fetched once per turn (cached upstream) and shared by the council seats and the single engine,
+    // so nobody on the panel quotes a catalog the other one cannot see.
+    const snapshot = await storefrontCatalog(env).then((s) => s.snapshot).catch(() => undefined);
 
     // 6a) Advisory council: several models give independent opinions, review each other, a chair synthesises.
     let council: CouncilTranscript | undefined;
@@ -299,7 +313,7 @@ export class Orchestrator {
       tick = clock();
       const result = await runCouncil({
         question: redacted, history, lang, languageName: SUPPORTED_LANGUAGES.find((l) => l.code === input.language)!.name,
-        briefing: this.councilBriefing(settings, services, lang, routed, results, actions, local),
+        briefing: this.councilBriefing(settings, services, lang, routed, results, actions, local, snapshot),
         council: settings.council, enginePolicy: settings.enginePolicy, temperature: settings.temperature,
         env: this.options.env, fetch: this.options.fetch, seatTimeoutMs: this.options.seatTimeoutMs,
         signal: AbortSignal.any([AbortSignal.timeout(this.options.councilTimeoutMs ?? 50000), ...(opts.signal ? [opts.signal] : [])]),
@@ -315,7 +329,7 @@ export class Orchestrator {
 
     const total = AbortSignal.any([AbortSignal.timeout(this.options.totalTimeoutMs ?? 25000), ...(opts.signal ? [opts.signal] : [])]);
     if (useModel && !council?.chair && !opts.signal?.aborted) {
-      const system = this.systemPrompt(settings, services, input.language, lang, routed, results, actions, local)
+      const system = this.systemPrompt(settings, services, input.language, lang, routed, results, actions, local, snapshot)
         + await supervisorGuidance('sham_assistant', env).catch(() => '');
       const turns: EngineTurn[] = [...history, { role: 'user', text: redacted }];
       for (const id of policy) {
@@ -392,6 +406,10 @@ export class Orchestrator {
         break;
       case 'browse_products':
         steps.push({ tool: 'search_catalog', args: { query } });
+        // The storefront (products.json + Shaheen's enrichment) is what a visitor can actually buy;
+        // the internal catalog above is the merchant's own order lines.
+        steps.push({ tool: 'search_store', args: { query } });
+        steps.push({ tool: 'store_overview', args: {} });
         if (service) steps.push({ tool: 'prepare_request_form', args: { service } });
         break;
       case 'service_request':
@@ -403,6 +421,7 @@ export class Orchestrator {
         if (service) steps.push({ tool: 'prepare_request_form', args: { service } });
         break;
       case 'platform_help': {
+        if (routed.platformId === 'store') steps.push({ tool: 'store_overview', args: {} });
         // Search the guide with the feature's own name so the citation is the right page, not a stray match.
         const feature = platformFeature(routed.platformId);
         steps.push({ tool: 'retrieve_knowledge', args: { query: feature ? `${feature.name.ar} ${feature.name.en} ${query}` : `منصة شام أدوات ${query}` } });
@@ -453,9 +472,17 @@ export class Orchestrator {
       }
       case 'browse_products': case 'service_request': {
         const catalog = r('search_catalog')?.data as { matched: boolean; products: { demo?: boolean; nameAr: string; nameEn: string; price: number; currency: string; stock: number; unit: string }[] } | undefined;
+        const store = r('search_store')?.data as { matched: boolean; items: StoreItem[]; snapshot?: StoreSnapshot } | undefined;
         const parts: string[] = [];
         if (service?.kind === 'store' || routed.intent === 'browse_products') {
-          if (!catalog || !catalog.products.length) {
+          if (store?.items.length) {
+            parts.push(store.matched
+              ? (ar ? 'من كتالوج المتجر (السعر بالجنيه المصري، والتحويل لعملتك في صفحة الدفع):' : 'From the store catalogue (prices in EGP, converted to your currency at checkout):')
+              : (ar ? 'مش لاقي منتج مطابق بالاسم، ودي منتجات من المتجر:' : 'No exact name match, but these are in the store:'));
+            parts.push(store.items.map((p) => storeLine(p, ar ? 'ar' : 'en')).join('\n'));
+            if (store.snapshot && !store.matched) parts.push(ar ? `المتجر فيه ${store.snapshot.total} منتج منشور (${store.snapshot.inStock} متوفر) — قولّي الماركة أو العائلة العطرية أو الميزانية وأنا أضيّق البحث.` : `The store has ${store.snapshot.total} published products (${store.snapshot.inStock} in stock) — tell me the brand, family or budget and I will narrow it down.`);
+            parts.push(ar ? 'دوس «افتح الصفحة» تحت تشوف التفاصيل والصور وتضيف للسلة.' : 'Press “Open page” below for details and photos, and to add to the cart.');
+          } else if (!catalog || !catalog.products.length) {
             parts.push(ar ? 'كتالوج المتجر لسه بيتجهز ومفيش منتجات منشورة بأسعار حالياً، فمش هقدر أأكد سعر أو توفر. تقدر تطلب تركيب مخصص أو تسيب طلب للدعم وفريق شام يرد عليك.' : 'The store catalog is not published yet, so I cannot confirm prices or stock. You can request a bespoke perfume or leave a support request.');
           } else {
             parts.push(catalog.matched
@@ -505,8 +532,8 @@ export class Orchestrator {
         const passages = (r('retrieve_knowledge')?.data || []) as { title: string; text: string }[];
         const expert = routed.intent === 'perfume_expert';
         if (!passages.length) {
-          return (ar ? `مش لاقي إجابة مؤكدة في قاعدة معرفة شام عن السؤال ده، ومش هخمّن.${expert ? ' لأسئلة تركيب العطور التفصيلية جرّب الخبير «شاهين» من تبويب المعمل.' : ''} تقدر تسأل عن خدماتنا أو تطلب تحويلك لموظف.`
-            : `I could not find a confirmed answer in Sham's knowledge base, and I won't guess.${expert ? ' For detailed formulation questions try the Shaheen expert in the lab tab.' : ''} Ask about our services or request a human.`) + handoff;
+          return (ar ? `مش لاقي إجابة مؤكدة في قاعدة معرفة شام عن السؤال ده، ومش هخمّن.${expert ? '' : ` ${shaheenHandoff('ar', 'advice')}`} تقدر تسأل عن خدماتنا أو تطلب تحويلك لموظف.`
+            : `I could not find a confirmed answer in Sham's knowledge base, and I won't guess.${expert ? '' : ` ${shaheenHandoff('en', 'advice')}`} Ask about our services or request a human.`) + (expert ? ` ${shaheenHandoff(ar ? 'ar' : 'en', 'formulation')}` : '') + handoff;
         }
         const top = passages.slice(0, 2).map((p) => `• ${p.title}: ${p.text}`).join('\n');
         return (ar ? `من قاعدة معرفة شام:\n${top}` : `From Sham's knowledge base:\n${top}`) +
@@ -517,7 +544,7 @@ export class Orchestrator {
   }
 
   /** Shared grounding for every council seat: same hard rules as the single-engine prompt, room for expertise. */
-  private councilBriefing(settings: CoreSettings, services: ServiceDef[], msgLang: 'ar' | 'en', routed: RouteResult, results: { tool: string; result: ToolResult }[], actions: ActionCard[], draft: string) {
+  private councilBriefing(settings: CoreSettings, services: ServiceDef[], msgLang: 'ar' | 'en', routed: RouteResult, results: { tool: string; result: ToolResult }[], actions: ActionCard[], draft: string, snapshot?: StoreSnapshot) {
     return `PLATFORM: Sham — perfume formulation tools, store, bespoke perfumes, wholesale/B2B, consultations and support. Persona: ${settings.personaAr}
 HARD RULES (all seats and the chair):
 1. General perfumery expertise is welcome, but Sham-specific facts — prices, stock, discounts, policies, delivery times, order status, certifications — come ONLY from CONTEXT. Never invent them; say they need confirmation by the Sham team.
@@ -531,6 +558,9 @@ ${services.map((s) => `- ${s.id} (${s.kind}): ${s.nameAr} / ${s.nameEn}`).join('
 PLATFORM PAGES & TOOLS (current; never invent a feature):
 ${platformCatalog(msgLang)}
 SHIPPING FACTS: ${shippingBrief(msgLang)}
+${snapshot ? `STORE FACTS (live): ${storeBrief(msgLang, snapshot)}` : ''}
+YOUR SPECIALTIES AND SHAHEEN'S (from Shaheen's own registry — never claim his work as your own):
+${specialtyBrief(msgLang)}
 ROUTER: intent=${routed.intent}${routed.serviceId ? ` service=${routed.serviceId}` : ''}
 UI CARDS SHOWN UNDER THE FINAL REPLY: ${actions.map((a) => a.type + (a.serviceId ? `:${a.serviceId}` : '')).join(', ') || 'none'}
 CONTEXT (tool observations):
@@ -539,7 +569,7 @@ SHAM'S GROUNDED DRAFT (facts you can rely on):
 ${draft}`;
   }
 
-  private systemPrompt(settings: CoreSettings, services: ServiceDef[], uiLang: Lang, msgLang: 'ar' | 'en', routed: RouteResult, results: { tool: string; result: ToolResult }[], actions: ActionCard[], draft: string) {
+  private systemPrompt(settings: CoreSettings, services: ServiceDef[], uiLang: Lang, msgLang: 'ar' | 'en', routed: RouteResult, results: { tool: string; result: ToolResult }[], actions: ActionCard[], draft: string, snapshot?: StoreSnapshot) {
     const language = SUPPORTED_LANGUAGES.find((l) => l.code === uiLang)!.name;
     return `You are "${settings.assistantNameAr} / ${settings.assistantNameEn}", the services assistant of the Sham perfume platform. Persona: ${settings.personaAr}
 Reply in the visitor's language (their message looks ${msgLang === 'ar' ? 'Arabic — mirror their dialect, e.g. Egyptian' : 'non-Arabic'}; site language: ${language}). Be concise (max ~120 words).
@@ -555,6 +585,9 @@ ${services.map((s) => `- ${s.id} (${s.kind}): ${s.nameAr} / ${s.nameEn}`).join('
 PLATFORM PAGES & TOOLS (the current platform; use these exact names — never invent a page, tab or feature):
 ${platformCatalog(msgLang)}
 SHIPPING FACTS: ${shippingBrief(msgLang)}
+${snapshot ? `STORE FACTS (live): ${storeBrief(msgLang, snapshot)}` : ''}
+YOUR SPECIALTIES AND SHAHEEN'S (from Shaheen's own registry — never claim his work as your own):
+${specialtyBrief(msgLang)}
 ROUTER: intent=${routed.intent}${routed.serviceId ? ` service=${routed.serviceId}` : ''}
 UI CARDS SHOWN UNDER YOUR REPLY: ${actions.map((a) => a.type + (a.serviceId ? `:${a.serviceId}` : '')).join(', ') || 'none'}
 CONTEXT (tool observations):

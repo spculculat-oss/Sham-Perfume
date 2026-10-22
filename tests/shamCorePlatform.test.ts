@@ -81,8 +81,11 @@ test('an existing store is upgraded once: new guides arrive, edits survive, dele
 test('knowledgeSeedAdditions only lists what a given version introduced', () => {
   const fresh = knowledgeSeedAdditions(1);
   assert.ok(fresh.length >= 12);
-  assert.ok(fresh.every((d) => d.id.startsWith('kb-platform-')));
+  assert.ok(fresh.every((d) => d.id.startsWith('kb-platform-') || d.id.startsWith('kb-store-')), 'only the guides added after v1');
+  assert.ok(fresh.some((d) => d.id.startsWith('kb-platform-')), 'the platform guide is in the upgrade');
   assert.deepEqual(knowledgeSeedAdditions(KNOWLEDGE_SEED_VERSION), []);
+  // A store that only has the platform guide still receives the store guide.
+  assert.ok(knowledgeSeedAdditions(2).every((d) => d.id.startsWith('kb-store-')), 'v3 adds the store guide only');
 });
 
 test('the router recognises platform questions and never reads an English word as an order reference', () => {

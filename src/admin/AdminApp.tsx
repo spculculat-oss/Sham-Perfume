@@ -33,6 +33,13 @@ import { LocalizedNumberInput } from '../components/LocalizedNumberInput';
 
 type Tab = 'owner' | 'finance' | 'overview' | 'opsmap' | 'community' | 'contracts' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'design' | 'emails' | 'doctor' | 'supervisor' | 'seo' | 'sandbox' | 'updates';
 interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: string }
+/** GET /assistant/specialties — «مراجعة التخصصات» (server/core/specialtyReview.ts). */
+interface SpecialtyCheck { specialty: string; owner: 'assistant' | 'shaheen'; question: string; ok: boolean; expected: string; actual: string; fix: string }
+interface SpecialtyReview {
+  at: string; score: number; passed: number; total: number;
+  store: { total: number; inStock: number; minPrice: number; maxPrice: number; brands: { name: string; count: number }[]; families: { id: string; count: number }[]; updatedAt: string; lessons: number };
+  checks: SpecialtyCheck[]; registryProblems: string[]; notes: string[];
+}
 interface Overview {
   storage: { kind: string; persistent: boolean; error?: string };
   engines: EngineStatus[]; policy: EngineId[];
@@ -1796,6 +1803,64 @@ function AgentPanel({ go }: { go: (t: Tab) => void }) {
 }
 
 /** The learning loop: unanswered questions + rated answers → new knowledge-base documents. */
+/** «تخصصات المساعد مقابل تخصصات شاهين» — the live review from server/core/specialtyReview.ts. */
+function SpecialtiesReviewCard() {
+  const { data, error, loading, reload } = useLoad<SpecialtyReview>('/assistant/specialties');
+  const [openId, setOpenId] = useState<string | null>(null);
+  const failed = data?.checks.filter((c) => !c.ok) || [];
+  return (
+    <section className={`${card} mb-4`}>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 className="font-bold text-sm flex items-center gap-1.5"><Wand2 className="w-4 h-4 text-amber-600" />{T('مراجعة التخصصات: المساعد مقابل شاهين')}</h2>
+          <p className="text-[11px] text-stone-500 mt-0.5">{T('المساعد يسأل نفسه أسئلة حقيقية من تخصصاته ويراجع إن كان عارف المتجر، ومسمّي تخصصات شاهين بالاسم، ولا بينسب شغله لنفسه ولا ينشر أرقاماً داخلية.')}</p>
+        </div>
+        <div className="flex items-center gap-2">
+          {data && (
+            <span className={`rounded-full px-3 py-1 text-xs font-bold ${data.score === 100 ? 'bg-emerald-100 text-emerald-800' : data.score >= 80 ? 'bg-amber-100 text-amber-900' : 'bg-red-100 text-red-800'}`}>
+              {T('النتيجة')} <span dir="ltr">{formatAdminNumber(data.score)}% · {formatAdminNumber(data.passed)}/{formatAdminNumber(data.total)}</span>
+            </span>
+          )}
+          <button onClick={reload} className={`${btn} bg-white border border-stone-300`} disabled={loading}>{loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}{T('إعادة المراجعة')}</button>
+        </div>
+      </div>
+      <Feedback error={error} loading={loading && !data} />
+      {data && (
+        <div className="mt-3 space-y-3">
+          <p className="text-xs text-stone-600">
+            {TP('المتجر: {total} منتج منشور ({stock} متوفر) · سعر {min}–{max} جنيه · {lessons} درساً من شاهين.', {
+              total: formatAdminNumber(data.store.total), stock: formatAdminNumber(data.store.inStock),
+              min: formatAdminNumber(data.store.minPrice), max: formatAdminNumber(data.store.maxPrice), lessons: formatAdminNumber(data.store.lessons),
+            })}
+          </p>
+          {data.notes.map((note) => <p key={note} className="text-[11px] rounded-lg bg-stone-50 border border-stone-200 p-2 text-stone-600">{note}</p>)}
+          {!failed.length
+            ? <p className="text-xs rounded-xl border border-emerald-200 bg-emerald-50 p-2.5 text-emerald-900">{T('كل التخصصات سليمة: المساعد عارف المتجر، ومسمّي تخصصات شاهين، وبيسلّم الشغل اللي مش بتاعه.')}</p>
+            : <ul className="space-y-1.5">{failed.map((c) => (
+                <li key={c.specialty + c.question} className="rounded-xl border border-red-200 bg-red-50 p-2.5 text-xs text-red-900">
+                  <p className="font-bold">{c.specialty} — {c.question}</p>
+                  <p>{T('المتوقع:')} {c.expected}</p>
+                  <p className="text-red-800/80">{T('اللي حصل:')} {c.actual}</p>
+                  <p className="mt-1 font-semibold">{T('الإصلاح:')} {c.fix}</p>
+                </li>
+              ))}</ul>}
+          <details className="text-xs" open={Boolean(openId)} onToggle={(e) => setOpenId((e.currentTarget as HTMLDetailsElement).open ? 'open' : null)}>
+            <summary className="cursor-pointer font-semibold text-stone-700">{TP('كل الفحوص ({n})', { n: formatAdminNumber(data.total) })}</summary>
+            <ul className="mt-2 grid gap-1.5 sm:grid-cols-2">
+              {data.checks.map((c) => (
+                <li key={c.specialty + c.question} className="flex items-start gap-1.5 rounded-lg border border-stone-200 p-2">
+                  {c.ok ? <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-600" /> : <CircleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0 text-red-600" />}
+                  <span><b>{c.specialty}</b><span className="text-stone-500"> · {c.owner === 'assistant' ? T('المساعد') : T('شاهين')}</span><span className="block text-[11px] text-stone-500">{c.question}</span></span>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </div>
+      )}
+    </section>
+  );
+}
+
 function QualityPanel() {
   const gaps = useLoad<{ items: KnowledgeGap[] }>('/gaps');
   const feedback = useLoad<{ items: FeedbackItem[] }>('/feedback');
@@ -1826,6 +1891,7 @@ function QualityPanel() {
         <div className={card}><p className="text-xs text-stone-500">{T('التقييمات')}</p><p className="text-lg font-bold mt-2"><span className="text-emerald-700">👍 {ups}</span> · <span className="text-red-700">👎 {downs}</span></p></div>
       </div>
       {error && <p role="alert" className="mb-3 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p>}
+      <SpecialtiesReviewCard />
       <div className="grid xl:grid-cols-2 gap-4">
         <section className={card}>
           <div className="flex items-center justify-between mb-3">

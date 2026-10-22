@@ -47,8 +47,12 @@ const HANDOFF = ['موظف', 'شخص حقيقي', 'انسان', 'بشري', 'خ�
 const ORDER_VERBS = ['اطلب', 'طلب', 'احجز', 'حجز', 'اشتري', 'سجل', 'قدم', 'ابعت عرض', 'عرض سعر', 'عايز', 'عاوز', 'محتاج', 'اريد', 'ابغي', 'اسوي',
   'order', 'request', 'book', 'quote', 'apply', 'purchase', 'i want', 'i need', 'i would like', 'looking for'];
 const FORGET = ['امسح بياناتي', 'احذف بياناتي', 'امسح ذاكرتك', 'انسي كل', 'انساني', 'امسح محادثاتي', 'احذف محادثاتي', 'delete my data', 'forget me', 'erase my data', 'delete my conversations'];
-const MEMORY = ['ماذا تتذكر', 'بتفتكر ايه', 'فاكر ايه', 'تعرف ايه عني', 'تعرف عني', 'ماذا تعرف عني', 'ايه اللي تعرفه عني', 'بياناتي', 'what do you remember', 'what do you know about me', 'my data'];
+const MEMORY = ['ماذا تتذكر', 'بتفتكر ايه', 'فاكر ايه', 'تعرف ايه عني', 'تعرف عني', 'بتعرف عني', 'بتعرفه عني', 'تعرفه عني', 'بتعرفي عني',
+  'ماذا تعرف عني', 'ايه اللي تعرفه عني', 'ايه اللي بتعرفه عني', 'بتعرف عني ايه', 'بياناتي', 'what do you remember', 'what do you know about me', 'my data'];
 const BROWSE = ['منتجات', 'المنتجات', 'كتالوج', 'متوفر', 'متاح', 'سعر', 'اسعار', 'بكام', 'عندكم', 'products', 'catalog', 'price', 'available', 'in stock'];
+/** Prices of things that are not perfume (gold, currency, stocks…) must never be answered from the store. */
+const NOT_PERFUME = ['الذهب', 'ذهب', 'فضه', 'فضة', 'دولار', 'يورو', 'بورصه', 'بورصة', 'عمله', 'عملات', 'اسهم', 'سهم', 'بيتكوين', 'كريبتو',
+  'gold', 'silver', 'bitcoin', 'stock market', 'currency', 'exchange rate'];
 const EXPERT = ['نوته', 'نوتات', 'تركيبه عطر', 'مكونات', 'فواحه', 'ثبات', 'فوحان', 'مسك', 'عنبر', 'عود', 'فانيليا', 'accord', 'notes', 'longevity', 'sillage', 'formula'];
 
 export function extractEntities(message: string): RouteResult['entities'] {
@@ -109,13 +113,19 @@ export function route(message: string, services: ServiceDef[]): RouteResult {
   if (asksForPlatformOverview(message)) return result('platform_help', 0.85, infoService);
 
   if (bestService) {
-    const browse = bestService.kind === 'store' && has(text, BROWSE) && !wantsAction;
+    // «كم سعر الذهب في البورصة» mentions a price but is not a perfume search: never quote the store.
+    const browse = bestService.kind === 'store' && has(text, BROWSE) && !wantsAction && !has(text, NOT_PERFUME);
     if (browse) return result('browse_products', 0.75, bestService.id);
-    if (bestService.kind !== 'info' && (wantsAction || best[1] >= 2)) return result('service_request', Math.min(0.95, 0.55 + best[1] * 0.1), bestService.id);
+    if (bestService.kind !== 'info' && (wantsAction || best[1] >= 2)) {
+      // A perfumery question can mention a service's own word («تركيبة شرقية») without asking to order:
+      // the depth cue belongs to the formulation expert, not to a request form.
+      if (!wantsAction && best[1] <= 2 && has(text, EXPERT)) return result('perfume_expert', 0.7, bestService.id);
+      return result('service_request', Math.min(0.95, 0.55 + best[1] * 0.1), bestService.id);
+    }
   }
   // "ايه الخدمات اللي عندكم" asks for the menu, not for stock — check it before the generic availability cue.
   if (has(text, SERVICES_LIST)) return result('list_services', 0.8);
-  if (has(text, BROWSE) && services.some((s) => s.kind === 'store')) return result('browse_products', 0.6, services.find((s) => s.kind === 'store')!.id);
+  if (has(text, BROWSE) && !has(text, NOT_PERFUME) && services.some((s) => s.kind === 'store')) return result('browse_products', 0.6, services.find((s) => s.kind === 'store')!.id);
   if (has(text, EXPERT) && !bestService) return result('perfume_expert', 0.6);
 
   const short = tokens.size <= 3;

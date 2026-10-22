@@ -271,10 +271,10 @@ export const PLATFORM_FEATURES: PlatformFeature[] = [
       en: 'Ready perfumes, oils, raw materials and bottles with real prices and stock, plus a cart, direct purchase and order tracking.',
     },
     details: {
-      ar: 'افتح تبويب المتجر وابحث بالفئة أو الاسم. فيه سلة، وزر «شراء مباشر» لمنتج واحد من غير ما تغيّر السلة، وصفحة منتج بتفاصيله وتقييماته. السعر النهائي بيظهر في صفحة إتمام الطلب، والتتبع برقم الطلب مع الهاتف أو البريد المستخدم في الطلب.',
-      en: 'Open the store tab and search by category or name. There is a cart, a “buy now” button for one product without touching the cart, and a product page with details and reviews. The final price appears at checkout, and tracking needs the request reference plus the phone or e-mail used in the order.',
+      ar: 'افتح تبويب المتجر وابحث بالفئة أو الاسم. فيه سلة، وزر «شراء مباشر» لمنتج واحد من غير ما تغيّر السلة، وصفحة منتج بتفاصيله وتقييماته. وجوّه المتجر «اسأل شاهين»: تحكي له اللي بتدور عليه وهو يرشّح لك من المنتجات الحقيقية بسبب لكل اختيار. السعر النهائي بيظهر في صفحة إتمام الطلب، والتتبع برقم الطلب مع الهاتف أو البريد المستخدم في الطلب.',
+      en: 'Open the store tab and search by category or name. There is a cart, a “buy now” button for one product without touching the cart, and a product page with details and reviews. Inside the store, “Ask Shaheen” lets you describe what you are after and ranks real products with a reason for each pick. The final price appears at checkout, and tracking needs the reference plus the phone or e-mail used in the order.',
     },
-    keywords: ['المتجر', 'المتجر الإلكتروني', 'شراء عطر', 'سلة المشتريات', 'store', 'shopping cart', 'buy perfume'],
+    keywords: ['المتجر', 'المتجر الإلكتروني', 'شراء عطر', 'سلة المشتريات', 'رشحلي', 'رشح لي', 'اقترحلي', 'اقترح لي', 'ترشيح عطر', 'store', 'shopping cart', 'buy perfume', 'recommend a perfume'],
     tags: ['متجر', 'شراء', 'store', 'cart'],
   },
   {

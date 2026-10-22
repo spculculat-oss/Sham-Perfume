@@ -5,12 +5,13 @@
  * visitor confirms, which is the commerce-safe equivalent of "human approval" in agent systems.
  */
 import { asksForPlatformOverview } from './platformGuide';
+import { findStorefront, storefrontCatalog, storeLine, type StoreItem } from './storeGuide';
 import type { Repository } from './repository';
 import { publicView } from './repository';
 import type { ActionCard, Citation, Product, ServiceDef } from './types';
-import { excerpt } from './text';
+import { excerpt, tokenize } from './text';
 
-export interface ToolContext { repo: Repository; message: string; lang: 'ar' | 'en' }
+export interface ToolContext { repo: Repository; message: string; lang: 'ar' | 'en'; env?: Record<string, string | undefined> }
 export interface ToolResult { observation: string; actions?: ActionCard[]; citations?: Citation[]; data?: unknown }
 export interface Tool<A = Record<string, unknown>> {
   name: string;
@@ -19,6 +20,17 @@ export interface Tool<A = Record<string, unknown>> {
 }
 
 const productCard = (p: Product) => ({ id: p.id, sku: p.sku, nameAr: p.nameAr, nameEn: p.nameEn, price: p.price, currency: p.currency, stock: p.stock, unit: p.unit });
+
+/**
+ * A passage may only answer a question when it is about the same subject: at least one word of the
+ * document's title matched, or three distinct terms did. Without this, a question about «مواعيد الفرع»
+ * was answered by the returns policy because it happens to contain «مفتوح» and «يوم».
+ */
+function aboutSameSubject(hit: { doc: { title: string }; matched: Record<string, number> }): boolean {
+  const title = new Set(tokenize(hit.doc.title));
+  const terms = Object.keys(hit.matched);
+  return terms.some((term) => title.has(term)) || terms.length >= 3;
+}
 
 export const tools = {
   retrieve_knowledge: {
@@ -43,7 +55,7 @@ export const tools = {
       // Coverage-based selection: the best passage always; each extra passage must answer a *significant*
       // part of the question (query terms the stronger passages did not cover, weighted by BM25).
       const covered = new Set<string>();
-      const hits = ordered.filter((h, i) => {
+      const hits = ordered.filter(aboutSameSubject).filter((h, i) => {
         const fresh = Object.entries(h.matched).filter(([t]) => !covered.has(t)).reduce((sum, [, w]) => sum + w, 0);
         if (i > 0 && (h.score < ordered[0].score * 0.45 || fresh < ordered[0].score * 0.4)) return false;
         Object.keys(h.matched).forEach((t) => covered.add(t));
@@ -81,6 +93,37 @@ export const tools = {
       };
     },
   } as Tool<{ query: string; limit?: number }>,
+
+  search_store: {
+    name: 'search_store',
+    description: 'Search the real Sham storefront catalog (live prices, stock, families) — not the internal orders catalog.',
+    async run(args: { query: string; limit?: number }, { lang }) {
+      const { items, snapshot } = await storefrontCatalog();
+      if (snapshot.empty) return { observation: 'STOREFRONT_EMPTY', data: { matched: false, items: [] as StoreItem[], snapshot } };
+      const { picks, matched } = findStorefront(items, args.query, args.limit || 4);
+      return {
+        observation: picks.length
+          ? `${matched ? 'STORE_MATCHES' : 'STORE_LATEST'}\n${picks.map((p) => storeLine(p, lang)).join('\n')}`
+          : 'STORE_NO_MATCH',
+        citations: picks.map((p) => ({ id: p.sku, title: lang === 'ar' ? p.nameAr : p.nameEn, kind: 'product' as const })),
+        data: { matched, items: picks, snapshot },
+      };
+    },
+  } as Tool<{ query: string; limit?: number }>,
+
+  store_overview: {
+    name: 'store_overview',
+    description: 'Live store facts: published products, stock, brands, scent families and the price range.',
+    async run(_args, { lang }) {
+      const { snapshot } = await storefrontCatalog();
+      const ar = lang === 'ar';
+      if (snapshot.empty) return { observation: 'STOREFRONT_EMPTY', data: snapshot };
+      const observation = ar
+        ? `المنتجات المنشورة ${snapshot.total} (متوفر ${snapshot.inStock}) · نطاق السعر ${snapshot.minPrice}–${snapshot.maxPrice} جنيه · ماركات: ${snapshot.brands.map((b) => b.name).join('، ')} · عائلات: ${snapshot.families.map((f) => f.id).join(', ')}`
+        : `${snapshot.total} published products (${snapshot.inStock} in stock) · price ${snapshot.minPrice}–${snapshot.maxPrice} EGP · brands: ${snapshot.brands.map((b) => b.name).join(', ')} · families: ${snapshot.families.map((f) => f.id).join(', ')}`;
+      return { observation, data: snapshot };
+    },
+  } as Tool,
 
   list_services: {
     name: 'list_services',

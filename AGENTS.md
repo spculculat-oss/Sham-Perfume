@@ -102,6 +102,19 @@ deletions, the first import, failed checks) on branch `aistudio/<sha7>` with a `
   in `server/core/seed.ts` when the document is new to stores already running (existing documents are
   never overwritten, deleted ones are never resurrected). `tests/shamCorePlatform.test.ts` fails when a
   linked tab does not exist, so add the feature in the same change that ships it.
+- **The Sham assistant knows the real store, and only the store.** `server/core/storeGuide.ts` builds the
+  catalog with the same `mergeCatalog` the storefront uses (bundled catalog + Shaheen's enrichment), so the
+  assistant may only quote products and prices that exist there; supplier prices and platform margin never
+  leave `toItem`. Buying/shipping/returns/tracking facts are seeded as `kb-store-*` documents, and the live
+  snapshot (counts, brands, families, price range) is injected into every prompt. New store knowledge =
+  a `STORE_PLAYBOOK` topic + a `KNOWLEDGE_SEED_VERSION` bump (v3).
+- **Its specialties come from Shaheen's registry, not from prose.** `server/core/shaheenSpecialties.ts`
+  maps each specialty to an AI tool (`src/utils/aiTools.ts`), a bot (`src/utils/shaheenOrg.ts`) or a tab
+  (`src/App.tsx`); `GET /api/admin/assistant/specialties` and `npm run review:assistant` run
+  `server/core/specialtyReview.ts` against the local engine (no key) and must report 100. Shaheen's own
+  work (formulation, the «اسأل شاهين» advisor, perfume news, design, finance/contracts) is named and handed
+  over, never claimed; internal figures are never quoted. `tests/shamCoreStoreSpecialties.test.ts` guards
+  the registry, the no-leak rule, the empty-catalog honesty and the score.
 - Customer invoices, receipts and order summaries must not show platform margin/profit amounts or
   percentages, or the supplier-cost breakdown. Keep selling prices, quantities, shipping, applicable
   taxes/fees and totals visible; do not change pricing or internal merchant/admin accounting to hide a margin.
