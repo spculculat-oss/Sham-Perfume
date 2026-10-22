@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T14:35:48.176Z",
+ "updatedAt": "2026-10-22T18:44:43.066Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,17 @@
  ],
  "runs": [
   {
+   "at": "2026-10-22T18:44:43.066Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-22T14:35:48.176Z",
    "mode": "self",
    "found": 0,
@@ -7899,28 +7910,6 @@
     "✗ twisted-lily.com: الموقع لا يفتح",
     "  ↳ parfumdreams.de: CV 78/100 [https,contact,identity,returns,shipping,privacy,terms,payment,social]",
     "✗ parfumdreams.de: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
-   ]
-  },
-  {
-   "at": "2026-10-19T18:53:10.915Z",
-   "mode": "self",
-   "found": 8,
-   "vetted": 10,
-   "activated": 2,
-   "rejected": 0,
-   "notes": [
-    "  ↳ niche-beauty.com: CV 90/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,social]",
-    "✗ niche-beauty.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "  ↳ beautyhabit.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✗ beautyhabit.com: أغلب منتجاته ليست عطوراً (38%)",
-    "✗ nocibe.fr: الموقع لا يفتح (HTTP 403)",
-    "✗ jovoy.com: الموقع لا يفتح",
-    "✗ fragrancenet.com: الموقع لا يفتح (HTTP 403)",
-    "  ↳ escentials.com: CV 93/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✗ escentials.com: أغلب منتجاته ليست عطوراً (56%)",
-    "✗ thefragranceshop.co.uk: الموقع لا يفتح (HTTP 403)",
-    "  ↳ strawberrynet.com: CV 78/100 [age,https,contact,returns,shipping,privacy,terms,payment,social]",
-    "✗ strawberrynet.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (1/6)"
    ]
   }
  ]
