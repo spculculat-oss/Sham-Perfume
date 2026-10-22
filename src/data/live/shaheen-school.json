@@ -1,16 +1,16 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T20:24:26.331Z",
+ "updatedAt": "2026-10-22T21:09:39.248Z",
  "reliance": {
-  "score": 95,
-  "covered": 1157,
-  "total": 1214,
-  "fromMemory": 1157,
+  "score": 96,
+  "covered": 1165,
+  "total": 1216,
+  "fromMemory": 1165,
   "fromLibrary": 0,
   "byLang": {
    "ar": {
-    "covered": 1136,
-    "total": 1193
+    "covered": 1144,
+    "total": 1195
    },
    "en": {
     "covered": 21,
@@ -18,9 +18,15 @@
    }
   }
  },
- "studiedTotal": 154,
+ "studiedTotal": 158,
  "selfTaughtTotal": 890,
  "history": [
+  {
+   "at": "2026-10-22T21:09:39.248Z",
+   "score": 96,
+   "studied": 4,
+   "mode": "local"
+  },
   {
    "at": "2026-10-22T20:24:26.331Z",
    "score": 95,
@@ -318,6 +324,30 @@
  ],
  "lastStudied": [
   {
+   "q": "ازاي محركات البحث بترتب النتايج؟",
+   "lang": "ar",
+   "at": "2026-10-22T21:09:39.248Z",
+   "variants": 0
+  },
+  {
+   "q": "ايه هو اللوغاريتم ببساطة؟",
+   "lang": "ar",
+   "at": "2026-10-22T21:09:39.248Z",
+   "variants": 0
+  },
+  {
+   "q": "ازاي التقطير بيفصل المواد؟",
+   "lang": "ar",
+   "at": "2026-10-22T21:09:39.248Z",
+   "variants": 4
+  },
+  {
+   "q": "ايه هي الأكسدة والاختزال؟",
+   "lang": "ar",
+   "at": "2026-10-22T21:09:39.248Z",
+   "variants": 0
+  },
+  {
    "q": "ازاي البترول والغاز بيتكونوا في باطن الأرض؟",
    "lang": "ar",
    "at": "2026-10-22T20:24:26.331Z",
@@ -412,43 +442,9 @@
    "lang": "ar",
    "at": "2026-10-22T19:06:30.385Z",
    "variants": 4
-  },
-  {
-   "q": "ازاي بيتحفظ الوقود النووي المستهلك بأمان؟",
-   "lang": "ar",
-   "at": "2026-10-22T19:06:30.385Z",
-   "variants": 4
-  },
-  {
-   "q": "ليه تنظيم الترددات مهم للموبايل والراديو؟",
-   "lang": "ar",
-   "at": "2026-10-22T18:45:26.377Z",
-   "variants": 0
-  },
-  {
-   "q": "ازاي أنظمة الملاحة بالأقمار الصناعية بتحدد المكان؟",
-   "lang": "ar",
-   "at": "2026-10-22T18:45:26.377Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه علامات العطش والجفاف عند الخيول؟",
-   "lang": "ar",
-   "at": "2026-10-22T18:45:26.377Z",
-   "variants": 0
   }
  ],
  "pending": [
-  {
-   "q": "ايه هي الهرمونات ودورها في الجسم؟",
-   "lang": "ar",
-   "topic": "expert:human-medicine"
-  },
-  {
-   "q": "ليه النوم مهم لصحة المخ؟",
-   "lang": "ar",
-   "topic": "expert:human-medicine"
-  },
   {
    "q": "ايه الفرق بين الشريان والوريد؟",
    "lang": "ar",
@@ -498,6 +494,16 @@
    "q": "ازاي نحمي أنظمة التحكم الصناعية من الهجمات؟",
    "lang": "ar",
    "topic": "expert:electronic-warfare"
+  },
+  {
+   "q": "ايه دور الهيئات الدولية في تنظيم الطيف؟",
+   "lang": "ar",
+   "topic": "expert:electronic-warfare"
+  },
+  {
+   "q": "ازاي الهوائيات بتشتغل؟",
+   "lang": "ar",
+   "topic": "expert:electronic-warfare"
   }
  ],
  "importer": {
@@ -505,9 +511,9 @@
   "aiReadings": 0,
   "localReadings": 25
  },
- "localTaughtTotal": 97,
+ "localTaughtTotal": 101,
  "spelling": {
-  "at": "2026-10-22T20:24:26.331Z",
+  "at": "2026-10-22T21:09:39.248Z",
   "tried": 744,
   "understood": 695,
   "score": 93,
@@ -524,7 +530,7 @@
   }
  },
  "practice": {
-  "at": "2026-10-22T20:24:26.331Z",
+  "at": "2026-10-22T21:09:39.248Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -617,7 +623,7 @@
     "id": "check-curriculum",
     "titleAr": "فحص: المنهج مكتمل بلا تكرار",
     "ok": true,
-    "detail": "فُحص فعلاً: 901 زوج سؤال وجواب، وكل المعرفات فريدة"
+    "detail": "فُحص فعلاً: 903 زوج سؤال وجواب، وكل المعرفات فريدة"
    }
   ]
  },
@@ -678,8 +684,8 @@
    "score": 100
   },
   "ai_tools": {
-   "covered": 38,
-   "total": 38,
+   "covered": 40,
+   "total": 40,
    "score": 100
   },
   "ai_projects": {
@@ -688,9 +694,9 @@
    "score": 100
   },
   "it_sciences": {
-   "covered": 26,
+   "covered": 27,
    "total": 30,
-   "score": 87
+   "score": 90
   },
   "frontier": {
    "covered": 20,
@@ -698,9 +704,9 @@
    "score": 100
   },
   "chemistry": {
-   "covered": 28,
+   "covered": 30,
    "total": 36,
-   "score": 78
+   "score": 83
   },
   "physics": {
    "covered": 30,
@@ -708,9 +714,9 @@
    "score": 83
   },
   "math": {
-   "covered": 24,
+   "covered": 25,
    "total": 28,
-   "score": 86
+   "score": 89
   },
   "commerce": {
    "covered": 22,
@@ -773,9 +779,9 @@
    "score": 83
   },
   "medicine": {
-   "covered": 39,
+   "covered": 41,
    "total": 52,
-   "score": 75
+   "score": 79
   },
   "engineering": {
    "covered": 33,
@@ -819,7 +825,7 @@
   }
  },
  "tools": {
-  "at": "2026-10-22T20:24:26.331Z",
+  "at": "2026-10-22T21:09:39.248Z",
   "items": [
    {
     "id": "finance_agent",
@@ -856,6 +862,14 @@
    {
     "id": "sham_assistant",
     "field": "خدمة العملاء",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   },
+   {
+    "id": "specialists_agent",
+    "field": "الاستشارة المتخصصة",
     "covered": 2,
     "total": 2,
     "score": 100,
@@ -976,14 +990,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-22T20:24:26.331Z",
+  "at": "2026-10-22T21:09:39.248Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-23T02:24:26.331Z"
+    "next": "2026-10-23T03:09:39.248Z"
    },
    {
     "id": "site-care",
@@ -995,7 +1009,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-23T08:24:26.331Z"
+    "next": "2026-10-23T09:09:39.248Z"
    }
   ]
  }

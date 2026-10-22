@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T20:04:18.207Z",
+ "updatedAt": "2026-10-22T21:08:54.861Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,17 @@
  ],
  "runs": [
   {
+   "at": "2026-10-22T21:08:54.861Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-22T20:04:18.207Z",
    "mode": "self",
    "found": 0,
@@ -7866,28 +7877,6 @@
     "✗ goldapple.kz: ملف الثقة ضعيف (27/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
     "  ↳ perfumeconnection.com.au: CV 37/100 [https,returns,privacy,terms] (pages: /contact-us→200 /returns→200)",
     "✗ perfumeconnection.com.au: ملف الثقة ضعيف (37/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة"
-   ]
-  },
-  {
-   "at": "2026-10-20T08:43:49.241Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 1,
-   "rejected": 3,
-   "notes": [
-    "  ↳ primor.eu: CV 74/100 [https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Magento",
-    "✗ primor.eu: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ iciparisxl.be: الموقع لا يفتح (HTTP 403)",
-    "  ↳ kicks.se: CV 50/100 [https,contact,returns,payment,social] (pages: /kundservice→200 /kundservice→200)",
-    "✗ kicks.se: ملف الثقة ضعيف (50/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الشحن، سياسة الخصوصية",
-    "  ↳ bangerhead.se: CV 41/100 [https,contact,payment,social] (pages: /kontakta-oss→200 /returns→404)",
-    "✗ bangerhead.se: ملف الثقة ضعيف (41/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الإرجاع والاسترداد، سياسة الشحن",
-    "✗ abdulsamadalqurashi.com: الموقع لا يفتح",
-    "  ↳ nabeel.com: CV 79/100 [age,https,contact,identity,returns,shipping,privacy,terms,social]",
-    "✗ nabeel.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "  ↳ alharamainperfumes.com: CV 45/100 [age,https,contact,social] (pages: /contact-us→404 /returns→404 /about-us/→200)",
-    "✗ alharamainperfumes.com: ملف الثقة ضعيف (45/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الإرجاع والاسترداد، وسائل دفع معروفة"
    ]
   }
  ]
