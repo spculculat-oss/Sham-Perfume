@@ -597,14 +597,21 @@ function toolPairs(): AcademyPair[] {
   });
 }
 
-// ── The complete academy (built once, so lessons keep their identity for exam and tests) ──────────────────
+// ── 8. Practical perfume skills (close the original curriculum's hands-on gaps) ──────────────────────────
+const PERFUME_SKILLS: AcademyPair[] = [
+  ask(lesson('pfm-adulter', 'perfume', 'perfume', 'الزيت العطري المغشوش', 'الزيت العطري المغشوش مخلوط بمواد أرخص يقلّل نقاءه ويخفي جودته: يضعف الثبات، وقد يسبب الحساسية. كشفه بعلامات عملية: سعر أرخص من المعقول، ورائحة تذوب سريعاً على الورق، وترسيب أو لزوجة غريبة، واختبار التخفيف بالكحول — والطريقة الموثوقة شراءه من مورد موثوق مع شهادة تحليل.'), 'ايه هو الزيت العطري المغشوش؟'),
+  ask(lesson('pfm-test-batch', 'perfume', 'perfume', 'اختبار تركيبة العطر قبل الإنتاج', 'اختبار التركيبة قبل الإنتاج يبدأ بعينة صغيرة جداً: اتركب 5 مل، وتتركها تتعتق، ثم تُجرَّب على الورق والجلد أيام متعددة، وتُقيَّم الرائحة والثبات والفوحان، وتُسجَّل الملاحظات قبل أي تعديل. بعدها دفعة تجريبية أكبر — والكمية الكبيرة آخر خطوة لا أولها.'), 'ايه هو اختبار تركيبة العطر قبل الإنتاج؟'),
+  ask(lesson('pfm-pricing', 'perfume', 'perfume', 'تسعير الزجاجة وتكلفة الإنتاج', 'حساب تكلفة الزجاجة يجمع: الزيت العطري، والكحول، والزجاجة والغطاء، والملصق، والتعبئة، والهدر. ثم يُضاف هامش الربح والمصاريف العامة ليخرج سعر البيع. القاعدة: التكلفة الحقيقية لكل مكون محسوبة بوحدة واحدة (لكل مل)، والسعر يُراجع مع تغير أسعار المكونات.'), 'ايه هو تسعير الزجاجة وتكلفة الإنتاج؟'),
+  ask(lesson('pfm-summer', 'perfume', 'perfume', 'تصميم تركيبة صيفية حمضية', 'التركيبة الصيفية الحمضية منعشة وخفيفة: مقدمة حمضيات (برغموت ولبنون) 40%، قلب زهري خفيف (لافندر ونيرولي) 35%، قاعدة نظيفة (مسك وخشب أرز) 25% — المجموع 100%. تُخفَّف بتركيز مناسب للحرارة، وتُجرَّب ثباتها على الجلد قبل اعتمادها.'), 'ايه هي تصميم تركيبة صيفية حمضية؟'),
+  ask(lesson('pfm-winter', 'perfume', 'perfume', 'تصميم تركيبة شتوية شرقية', 'التركيبة الشتوية الشرقية دافئة وعميقة: مقدمة توابل (فلفل وزعفران) 25%، قلب عنبري وردي 30%، قاعدة عود وفانيليا وباتشولي 45% — المجموع 100%. تُركَّز تركيزاً أعلى للبرد، وتُعتَّق مدة أطول لتنضج نوتاتها.'), 'ايه هي تصميم تركيبة شتوية شرقية؟'),
+];
 const PAIRS: AcademyPair[] = [
   ...PROGRAMMING_LANGUAGES.map((l) => ask(lang(...l), `ايه هي لغة ${l[0]}؟`, 'lang', 'prog_langs')),
   ...LANG_CONCEPTS, ...BLOCK_LESSONS, ...SOFTWARE_LESSONS, ...GRAPHICS_LESSONS, ...WEBCARE_LESSONS, ...AI_LESSONS,
   ...SECURITY_LESSONS, ...QUANTUM_LESSONS, ...toolPairs(),
   ...AI_PROJECT_LESSONS, ...IT_LESSONS, ...FRONTIER_LESSONS, ...CHEM_LESSONS, ...PHYS_LESSONS, ...MATH_LESSONS,
   ...COMMERCE_LESSONS, ...LAW_LESSONS, ...PR_LESSONS, ...MGMT_LESSONS, ...HIST_LESSONS, ...GEO_LESSONS, ...LIT_LESSONS, ...SOC_LESSONS,
-  ...PSY_LESSONS, ...CYBERPSY_LESSONS, ...UXPSY_LESSONS,
+  ...PSY_LESSONS, ...CYBERPSY_LESSONS, ...UXPSY_LESSONS, ...PERFUME_SKILLS,
 ];
 
 export function academyPairs(): AcademyPair[] {
@@ -633,6 +640,7 @@ export const SCHOOL_PROGRAMS: ProgramInput[] = [
           { kind: 'action', label: 'مذاكرة الباقي مع محرك متاح', action: 'study_ai' },
         ],
       },
+      { kind: 'action', label: 'التدريب العملي على مسائل حقيقية ونتائج موثقة', action: 'practice' },
       { kind: 'action', label: 'حفظ الدروس في ذاكرة شاهين', action: 'remember' },
       { kind: 'action', label: 'كتابة تقرير المدرسة', action: 'report' },
     ],

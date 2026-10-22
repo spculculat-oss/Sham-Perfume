@@ -102,6 +102,7 @@ test('tracks cover every mission; tools cover every AI tool with its field and a
   assert.ok(tracks.psychology.total >= 18, 'psychology');
   assert.ok(tracks.cyber_psych.total >= 15, 'cyber psychology');
   assert.ok(tracks.ux_psych.total >= 15, 'psychological engineering of user interactions');
+  assert.ok(tracks.perfume.total >= 5, 'the practical perfume skills close the original gaps');
   assert.equal(tracks.ai_tools.total, AI_TOOLS.length * 2, 'every tool: its field + how to develop it');
   assert.equal(trackOf('lang'), 'prog_langs');
   assert.equal(trackOf('blocks'), 'blocks');

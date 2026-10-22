@@ -25,6 +25,7 @@ import {
 } from './school';
 import { academyLessons, SCHOOL_PROGRAMS, TRACKS } from './curriculum';
 import { duePrograms, runAndRecord, schoolActions } from './programs';
+import { runPractice } from './practice';
 import { buildProgram, emptyBlocks, isBlocksFile, nextRun, validateProgram, type BlocksFile } from '../../src/utils/shaheenBlocks';
 import { buildLexicon } from '../../src/utils/shaheenSpelling';
 
@@ -162,11 +163,18 @@ quota.save();
 answers.save();
 
 // ── Report ────────────────────────────────────────────────────────────────────────────────────────────────
+// «تدريب وش عمل»: hands-on exercises that really run and are verified — BEFORE the curation and the final
+// exam, so the answers his real designs teach are curated and tested with everything else.
+const practice = runPractice(memory, nowIso);
+school.practice = practice;
+say(`Practice: ${practice.passed}/${practice.total} hands-on exercises ran and passed (${practice.taught} designed answers taught)`);
+for (const item of practice.items) say(`  ${item.ok ? '✅' : '❌'} ${item.titleAr}: ${item.detail}`);
 const { file: curated } = curateMemory(memory);
 // Study answers are kept even unused; curate only drops what fails the checks or exceeds the limit.
 const learnedNow = studied + selfTaught;
-if (learnedNow) writeFileSync(live('shaheen-memory.json'), `${JSON.stringify(curated, null, 1)}\n`);
-const final = exam(bank, learnedNow ? curated : memory, library);
+const taughtAnything = Boolean(learnedNow || practice.taught);
+if (taughtAnything) writeFileSync(live('shaheen-memory.json'), `${JSON.stringify(curated, null, 1)}\n`);
+const final = exam(bank, taughtAnything ? curated : memory, library);
 school.reliance = final.reliance;
 // The academy missions: per-track self-reliance, and every AI tool's field with what it studies next.
 school.tracks = trackStats(final.results);
@@ -182,7 +190,8 @@ if (localTaught) say(`The local teacher (open model, no key) taught ${localTaugh
 school.selfTaughtTotal = (school.selfTaughtTotal || 0) + selfTaught;
 school.history = [{ at: nowIso, score: final.reliance.score, studied: learnedNow, mode }, ...school.history].slice(0, 60);
 // «فهم شاهين للغلطات»: the spelling drill and exam (mistyped words and questions must still be understood).
-school.spelling = spellingReport(bank, final.results, learnedNow ? curated : memory, library, buildLexicon({ lessons: [...docs, ...academy], materials: RAW_MATERIALS_DATABASE, memory: learnedNow ? curated : memory }), nowIso);
+// The lexicon also learns the words of every bank question (extra weight) so the word meant wins the guess.
+school.spelling = spellingReport(bank, final.results, taughtAnything ? curated : memory, library, buildLexicon({ lessons: [...docs, ...academy], materials: RAW_MATERIALS_DATABASE, memory: taughtAnything ? curated : memory, extra: bank.map((b) => b.q) }), nowIso);
 say(`Spelling: understood ${school.spelling.understood}/${school.spelling.tried} mistyped words (${school.spelling.score}%); answers ${school.spelling.questions.answered}/${school.spelling.questions.tried} questions by himself with their main word mistyped`);
 school.pending = final.results.filter((r) => !r.covered).slice(0, 12).map((r) => ({ q: r.question.q, lang: r.question.lang, topic: r.question.topic }));
 school.updatedAt = nowIso;
@@ -200,6 +209,7 @@ const schoolBlockActions = schoolActions({
   covered: final.reliance.covered, total: final.reliance.total, score: final.reliance.score,
   selfTaught, studied,
   toolField: weakestTool.field, toolFocus: weakestTool.focus,
+  practicePassed: practice.passed, practiceTotal: practice.total,
 });
 for (const program of duePrograms(blocks, 'school', Date.parse(nowIso))) {
   const report = await runAndRecord(program, schoolBlockActions, blocks, { gaps: final.reliance.total - final.reliance.covered }, new Date(nowIso));

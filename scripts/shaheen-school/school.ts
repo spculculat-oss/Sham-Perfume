@@ -49,6 +49,8 @@ export interface SchoolFile {
   tools?: { at: string; items: { id: string; field: string; covered: number; total: number; score: number; focus: string }[] };
   /** The block programs the school built and scheduled (src/data/live/shaheen-blocks.json). */
   blocks?: { at: string; programs: number; scheduled: number; errors: number; nextRuns: { id: string; next: string | null }[] };
+  /** «تدريب وش عمل» — hands-on exercises that really ran and were verified (code, calculations, designs, checks). */
+  practice?: { at: string; total: number; passed: number; taught: number; items: { id: string; titleAr: string; ok: boolean; detail: string }[] };
 }
 
 export const emptySchool = (): SchoolFile => ({
@@ -82,9 +84,10 @@ export const CURRICULUM: BankQuestion[] = [
   ] as const).map(([topic, q]) => ({ q, lang: 'en' as const, topic, origin: 'curriculum' as const })),
 ];
 
-/** The training library's lessons become questions too («حدثني عن …»). */
+/** The training library's lessons become questions too («حدثني عن …»). Titles that change with time (news)
+ * are never exam material — they are live-research material, answered fresh when research is on. */
 export function libraryQuestions(docs: TrainingDoc[], max = 40): BankQuestion[] {
-  return docs.slice(0, max).map((d) => ({ q: `حدثني عن ${d.title.replace(/[؟?.!]+$/, '')}`, lang: 'ar' as const, topic: 'library', origin: 'library' as const }));
+  return docs.slice(0, max).filter((d) => !isTimeBound(d.title)).map((d) => ({ q: `حدثني عن ${d.title.replace(/[؟?.!]+$/, '')}`, lang: 'ar' as const, topic: 'library', origin: 'library' as const }));
 }
 
 /** Questions the daily meeting («مجلس شاهين») asked him to study. */
@@ -124,8 +127,8 @@ export const ADVANCED: BankQuestion[] = [
   ...([
     ['problems', 'العطر بتاعي ريحته كحول قوية اعمل ايه؟'], ['problems', 'ليه العطر اللي عملته ريحته اختفت بسرعة؟'], ['problems', 'العطر لونه اتغير بعد شهر هل باظ؟'],
     ['problems', 'ازاي اقلل حدة نوتة طاغية في التركيبة؟'], ['problems', 'العطر طلع تقيل وخانق ازاي اخففه؟'], ['problems', 'ليه العطر بيعمل حساسية لبعض الناس؟'],
-    ['problems', 'العطر ريحته على الجلد غير في الزجاجة ليه؟'], ['problems', 'ازاي اعرف ان الزيت العطري مغشوش؟'],
-    ['skills', 'ازاي ادرب انفي على تمييز الروايح؟'], ['skills', 'ازاي اوثق تجاربي في تركيب العطور؟'], ['skills', 'ازاي اختبر عطر جديد قبل ما اعمل منه كمية كبيرة؟'],
+    ['problems', 'العطر ريحته على الجلد غير في الزجاجة ليه؟'], ['problems', 'ازاي اكتشف الزيت العطري المغشوش؟'],
+    ['skills', 'ازاي ادرب انفي على تمييز الروايح؟'], ['skills', 'ازاي اوثق تجاربي في تركيب العطور؟'], ['skills', 'ازاي اعمل اختبار تركيبة العطر قبل الإنتاج؟'],
     ['skills', 'ايه الادوات اللي محتاجها عشان ابدأ اركب عطور؟'], ['skills', 'ازاي اوزن مكونات العطر بدقة؟'], ['skills', 'يعني ايه اكورد في العطور وازاي اعمله؟'],
     ['business', 'ازاي احسب تكلفة العطر اللي بعمله قبل ما ابيعه؟'], ['business', 'ايه اللي لازم يتكتب على ملصق زجاجة العطر؟'], ['business', 'ازاي احافظ على ثبات جودة العطر من دفعة للتانية؟'],
     ['culture', 'ايه تاريخ العطور عند العرب؟'], ['culture', 'ايه الفرق بين العطور الفرنسية والعطور العربية؟'], ['culture', 'ايه هو البخور وازاي بيتعمل؟'],

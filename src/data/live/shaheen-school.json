@@ -1,26 +1,44 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T06:11:45.818Z",
+ "updatedAt": "2026-10-22T09:04:06.726Z",
  "reliance": {
-  "score": 99,
-  "covered": 846,
-  "total": 852,
-  "fromMemory": 846,
-  "fromLibrary": 2,
+  "score": 100,
+  "covered": 856,
+  "total": 856,
+  "fromMemory": 856,
+  "fromLibrary": 0,
   "byLang": {
    "ar": {
-    "covered": 827,
-    "total": 831
+    "covered": 835,
+    "total": 835
    },
    "en": {
-    "covered": 19,
+    "covered": 21,
     "total": 21
    }
   }
  },
  "studiedTotal": 74,
- "selfTaughtTotal": 716,
+ "selfTaughtTotal": 724,
  "history": [
+  {
+   "at": "2026-10-22T09:04:06.726Z",
+   "score": 100,
+   "studied": 0,
+   "mode": "self"
+  },
+  {
+   "at": "2026-10-22T08:51:48.733Z",
+   "score": 100,
+   "studied": 0,
+   "mode": "self"
+  },
+  {
+   "at": "2026-10-22T08:47:47.920Z",
+   "score": 100,
+   "studied": 8,
+   "mode": "self"
+  },
   {
    "at": "2026-10-22T06:11:45.818Z",
    "score": 99,
@@ -336,38 +354,7 @@
    "variants": 0
   }
  ],
- "pending": [
-  {
-   "q": "حدثني عن حساب تكلفة زجاجة العطر وتحديد سعر البيع",
-   "lang": "ar",
-   "topic": "library"
-  },
-  {
-   "q": "حدثني عن آخر أخبار عالم العطور",
-   "lang": "ar",
-   "topic": "library"
-  },
-  {
-   "q": "ازاي اعرف ان الزيت العطري مغشوش؟",
-   "lang": "ar",
-   "topic": "problems"
-  },
-  {
-   "q": "ازاي اختبر عطر جديد قبل ما اعمل منه كمية كبيرة؟",
-   "lang": "ar",
-   "topic": "skills"
-  },
-  {
-   "q": "Suggest a fresh citrus perfume formula for summer with percentages",
-   "lang": "en",
-   "topic": "design-en"
-  },
-  {
-   "q": "Suggest a warm oriental perfume formula for winter with percentages",
-   "lang": "en",
-   "topic": "design-en"
-  }
- ],
+ "pending": [],
  "importer": {
   "localShare": 100,
   "aiReadings": 0,
@@ -375,10 +362,10 @@
  },
  "localTaughtTotal": 23,
  "spelling": {
-  "at": "2026-10-22T06:11:45.818Z",
-  "tried": 746,
-  "understood": 704,
-  "score": 94,
+  "at": "2026-10-22T09:04:06.726Z",
+  "tried": 747,
+  "understood": 708,
+  "score": 95,
   "misses": [
    "طبييه → طبيه (طبيعيه)",
    "اخطه → احطه (اخلطه)",
@@ -394,9 +381,9 @@
  },
  "tracks": {
   "perfume": {
-   "covered": 167,
-   "total": 173,
-   "score": 97
+   "covered": 177,
+   "total": 177,
+   "score": 100
   },
   "prog_langs": {
    "covered": 106,
@@ -530,7 +517,7 @@
   }
  },
  "tools": {
-  "at": "2026-10-22T06:11:45.818Z",
+  "at": "2026-10-22T09:04:06.726Z",
   "items": [
    {
     "id": "finance_agent",
@@ -671,18 +658,18 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-22T06:11:45.818Z",
+  "at": "2026-10-22T09:04:06.726Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-22T12:11:45.818Z"
+    "next": "2026-10-22T15:04:06.726Z"
    },
    {
     "id": "site-care",
-    "next": "2026-10-22T08:00:00.000Z"
+    "next": "2026-10-23T08:00:00.000Z"
    },
    {
     "id": "tool-dev",
@@ -690,7 +677,105 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-22T18:11:45.818Z"
+    "next": "2026-10-22T21:04:06.726Z"
+   }
+  ]
+ },
+ "practice": {
+  "at": "2026-10-22T09:04:06.726Z",
+  "total": 15,
+  "passed": 15,
+  "taught": 4,
+  "items": [
+   {
+    "id": "code-sort",
+    "titleAr": "كود: ترتيب أرقام واختباره",
+    "ok": true,
+    "detail": "دالة الترتيب نُفّذت فعلاً: [5,2,9,1,2] → [1, 2, 2, 5, 9]"
+   },
+   {
+    "id": "code-prime",
+    "titleAr": "كود: اختبار الأعداد الأولية",
+    "ok": true,
+    "detail": "نُفّذت فعلاً: 97 أولي؟ true — 91 أولي؟ false (7×13)"
+   },
+   {
+    "id": "code-fib",
+    "titleAr": "كود: متتابعة فيبوناتشي",
+    "ok": true,
+    "detail": "fib(10) = 55 (المتوقع 55)"
+   },
+   {
+    "id": "code-strings",
+    "titleAr": "كود: معالجة نصوص",
+    "ok": true,
+    "detail": "عكس الكلمات نُفّذ فعلاً: «المدرسة تعلم شاهين» → «شاهين تعلم المدرسة»"
+   },
+   {
+    "id": "code-matrix",
+    "titleAr": "كود: مجموع مصفوفة",
+    "ok": true,
+    "detail": "مجموع المصفوفة 3×2 = 21"
+   },
+   {
+    "id": "math-interest",
+    "titleAr": "رياضيات: فائدة مركبة",
+    "ok": true,
+    "detail": "1000 بفائدة 8% لمدة 3 سنوات = 1259.712 (محسوبة فعلاً)"
+   },
+   {
+    "id": "math-circle",
+    "titleAr": "رياضيات: مساحة دائرة",
+    "ok": true,
+    "detail": "مساحة دائرة نق 7 = 153.94 (π×7²)"
+   },
+   {
+    "id": "math-dilution",
+    "titleAr": "رياضيات: تخفيف الكحول",
+    "ok": true,
+    "detail": "لتخفيف 100 مل كحول 96% إلى 80%: نضيف 20 مل ماء (المعادلة نُفّذت)"
+   },
+   {
+    "id": "math-triangle",
+    "titleAr": "رياضيات: مساحة مثلث",
+    "ok": true,
+    "detail": "مثلث قاعدته 12 وارتفاعه 7: مساحته 42"
+   },
+   {
+    "id": "design-citrus-summer-en",
+    "titleAr": "تصميم: تركيبة صيفية حمضية (إنجليزي)",
+    "ok": true,
+    "detail": "صُممت فعلاً ومجموع نسبها 100% — fresh citrus summer formula: top bergamot 22%, lemon 18%, neroli 10%; heart lavender 16%, …"
+   },
+   {
+    "id": "design-oriental-winter-en",
+    "titleAr": "تصميم: تركيبة شتوية شرقية (إنجليزي)",
+    "ok": true,
+    "detail": "صُممت فعلاً ومجموع نسبها 100% — warm oriental winter formula: top saffron 10%, pink pepper 8%, bergamot 7%; heart amber 18…"
+   },
+   {
+    "id": "design-citrus-summer-ar",
+    "titleAr": "تصميم: تركيبة صيفية حمضية (عربي)",
+    "ok": true,
+    "detail": "صُممت فعلاً ومجموع نسبها 100% — تركيبة صيفية حمضية — المقدمة: برغموت 22%، ليمون 18%، نيرولي 10%؛ القلب: لافندر 16%، شاي أب…"
+   },
+   {
+    "id": "design-oriental-winter-ar",
+    "titleAr": "تصميم: تركيبة شتوية شرقية (عربي)",
+    "ok": true,
+    "detail": "صُممت فعلاً ومجموع نسبها 100% — تركيبة شتوية شرقية — المقدمة: زعفران 10%، فلفل وردي 8%، برغموت 7%؛ القلب: عنبر 18%، ورد 12…"
+   },
+   {
+    "id": "check-live-data",
+    "titleAr": "فحص: ملفات البيانات الحيّة سليمة",
+    "ok": true,
+    "detail": "فُحصت فعلاً: 2 ملفات سليمة، و4 برامج بلوكات مسجلة"
+   },
+   {
+    "id": "check-curriculum",
+    "titleAr": "فحص: المنهج مكتمل بلا تكرار",
+    "ok": true,
+    "detail": "فُحص فعلاً: 684 زوج سؤال وجواب، وكل المعرفات فريدة"
    }
   ]
  }

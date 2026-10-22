@@ -52,6 +52,8 @@ export interface SchoolMeasurements {
   covered: number; total: number; score: number;
   selfTaught: number; studied: number;
   toolField: string; toolFocus: string;
+  /** «تدريب وش عمل» — how many hands-on exercises really ran and passed this run. */
+  practicePassed?: number; practiceTotal?: number;
 }
 
 /** The school's block actions (study day + tool development) — every detail is a real measurement. */
@@ -60,6 +62,7 @@ export function schoolActions(m: SchoolMeasurements): BlockActions {
     exam: () => `الامتحان: ${m.covered}/${m.total} (${m.score}%)`,
     self_study: () => `التسميع من المكتبة بدون ذكاء اصطناعي: ${m.selfTaught} درس`,
     study_ai: () => `المذاكرة مع محرك متاح: ${m.studied} سؤال`,
+    practice: () => `التدريب العملي: ${m.practicePassed ?? 0}/${m.practiceTotal ?? 0} تمرين نُفّذ وتحقّق منه فعلاً`,
     remember: () => 'الدروس محفوظة في ذاكرة شاهين',
     report: () => 'تقرير المدرسة مكتوب في سجل المدرسة',
     tool_field_study: () => `مجال الأداة تحت الدراسة: ${m.toolField}`,

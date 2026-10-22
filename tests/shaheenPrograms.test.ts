@@ -37,7 +37,7 @@ test('the school runs its programmes with real measurements only', async () => {
   const day = file.programs.find((p) => p.id === 'school-day')!;
   const report = await runAndRecord(day, schoolActions(m), file, { gaps: 6 }, new Date(NOW));
   assert.equal(report.ok, true);
-  assert.equal(report.steps.length, 5, 'exam → self-study → AI study → remember → report');
+  assert.equal(report.steps.length, 6, 'exam → self-study → AI study → hands-on practice → remember → report');
   assert.match(report.steps[0].detail!, /460\/466 \(99%\)/);
   assert.match(report.steps[1].detail!, /61/);
   assert.match(report.steps[2].detail!, /3/);

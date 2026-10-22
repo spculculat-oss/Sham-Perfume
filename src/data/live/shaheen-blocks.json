@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T06:11:45.818Z",
+ "updatedAt": "2026-10-22T09:04:06.726Z",
  "programs": [
   {
    "id": "school-day",
@@ -8,7 +8,7 @@
    "goal": "امتحان وتسميع وحفظ في الذاكرة كل 6 ساعات",
    "schedule": "every 6 hours",
    "runner": "school",
-   "createdAt": "2026-10-22T06:13:06.389Z",
+   "createdAt": "2026-10-22T09:06:03.838Z",
    "blocks": [
     {
      "kind": "action",
@@ -44,15 +44,21 @@
     },
     {
      "kind": "action",
+     "label": "التدريب العملي على مسائل حقيقية ونتائج موثقة",
+     "action": "practice",
+     "id": "b3"
+    },
+    {
+     "kind": "action",
      "label": "حفظ الدروس في ذاكرة شاهين",
      "action": "remember",
-     "id": "b3"
+     "id": "b4"
     },
     {
      "kind": "action",
      "label": "كتابة تقرير المدرسة",
      "action": "report",
-     "id": "b4"
+     "id": "b5"
     }
    ]
   },
@@ -62,7 +68,7 @@
    "goal": "فحص وصيانة الموقع يومياً قبل الذروة",
    "schedule": "daily 08:00",
    "runner": "patrol",
-   "createdAt": "2026-10-22T06:13:06.389Z",
+   "createdAt": "2026-10-22T09:06:03.838Z",
    "blocks": [
     {
      "kind": "note",
@@ -156,7 +162,7 @@
    "goal": "كل أداة تتطور في مجالها بالتناوب",
    "schedule": "weekly mon 09:00",
    "runner": "school",
-   "createdAt": "2026-10-22T06:13:06.389Z",
+   "createdAt": "2026-10-22T09:06:03.838Z",
    "blocks": [
     {
      "kind": "loop",
@@ -192,7 +198,7 @@
    "goal": "شاهين يدير نفسه بنفسه بدون أي تطبيق ذكاء آخر",
    "schedule": "every 12 hours",
    "runner": "patrol",
-   "createdAt": "2026-10-22T06:13:06.389Z",
+   "createdAt": "2026-10-22T09:06:03.838Z",
    "blocks": [
     {
      "kind": "note",
