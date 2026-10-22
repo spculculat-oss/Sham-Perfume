@@ -14,6 +14,7 @@ import { isPersonal, isTimeBound, meaningWords, normalizeQuestion, recallSimilar
 import { materialCard, topicWords as libraryTopicWords, type LibraryMaterial } from '../../src/utils/shaheenLibrary';
 import { spellingDrill, typoVariants, understandQuestion, wordKey, type Lexicon } from '../../src/utils/shaheenSpelling';
 import { EXPERT_GAP_PREFIX, expertOf } from '../../src/utils/shaheenAgent';
+import { SCIENCE_SYLLABUS } from '../../src/data/sciences/syllabus';
 
 export interface BankQuestion { q: string; lang: 'ar' | 'en'; topic: string; origin: 'curriculum' | 'library' | 'visitors' | 'council' }
 export interface TrainingDoc { id: string; title: string; content: string; tags?: string[] }
@@ -131,9 +132,16 @@ export const ADVANCED: BankQuestion[] = [
   ] as const).map(([topic, q]) => ({ q, lang: 'en' as const, topic: `${topic}-en`, origin: 'curriculum' as const })),
 ];
 
+/**
+ * «منهج المدرسة على مدار الساعة»: each school expert's next questions (src/data/sciences/syllabus.ts), studied by
+ * «المعلم المحلي» as that expert (topic «expert:<field>» → expertBrief/reviewField) and kept only after the review.
+ */
+export const syllabusQuestions = (): BankQuestion[] =>
+  Object.entries(SCIENCE_SYLLABUS).flatMap(([field, qs]) => qs.map((q) => ({ q, lang: 'ar' as const, topic: `${EXPERT_GAP_PREFIX}${field}`, origin: 'curriculum' as const })));
+
 export function buildBank(docs: TrainingDoc[], council: string[] = [], visitors: BankQuestion[] = [], materials: LibraryMaterial[] = []): BankQuestion[] {
   const seen = new Set<string>();
-  return [...visitors, ...CURRICULUM, ...libraryQuestions(docs), ...materialQuestions(materials), ...councilQuestions(council), ...ADVANCED].filter((b) => {
+  return [...visitors, ...CURRICULUM, ...libraryQuestions(docs), ...materialQuestions(materials), ...councilQuestions(council), ...ADVANCED, ...syllabusQuestions()].filter((b) => {
     const k = `${b.lang}|${normalizeQuestion(b.q)}`;
     if (seen.has(k)) return false;
     seen.add(k);
@@ -206,15 +214,21 @@ export function exam(bank: BankQuestion[], memory: MemoryFile, docs: TrainingDoc
   };
 }
 
+/** The 6-hourly run studies perfume first; the hourly «school clock» (SCHOOL_FOCUS=experts) studies the experts' syllabus first. */
+const syllabusRank = (b: BankQuestion, focus: 'perfume' | 'experts') => {
+  const expert = b.origin === 'curriculum' && b.topic.startsWith(EXPERT_GAP_PREFIX);
+  return focus === 'experts' ? Number(!expert) : Number(expert);
+};
+
 /** Next questions to study with an AI engine (no lesson of his own): topics with the most gaps first, so his knowledge grows evenly. */
-export function pickStudy(results: ExamResult[], max: number): BankQuestion[] {
+export function pickStudy(results: ExamResult[], max: number, focus: 'perfume' | 'experts' = 'perfume'): BankQuestion[] {
   const gaps = results.filter((r) => !r.covered && !r.lesson).map((r) => r.question);
   const perTopic = new Map<string, number>();
   for (const g of gaps) perTopic.set(g.topic, (perTopic.get(g.topic) || 0) + 1);
   const taken = new Map<string, number>();
   // Visitors' real questions first; then the topics with the most gaps.
   return [...gaps]
-    .sort((a, b) => Number(b.origin === 'visitors') - Number(a.origin === 'visitors') || (perTopic.get(b.topic)! - perTopic.get(a.topic)!) || Number(a.origin === 'library') - Number(b.origin === 'library'))
+    .sort((a, b) => Number(b.origin === 'visitors') - Number(a.origin === 'visitors') || (syllabusRank(a, focus) - syllabusRank(b, focus)) || (perTopic.get(b.topic)! - perTopic.get(a.topic)!) || Number(a.origin === 'library') - Number(b.origin === 'library'))
     .filter((g) => { const n = taken.get(g.topic) || 0; if (n >= (g.origin === 'visitors' ? max : 2)) return false; taken.set(g.topic, n + 1); return true; })
     .slice(0, max);
 }

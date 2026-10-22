@@ -8,6 +8,11 @@ import bundledStateOrders from '../data/owner/state-orders.json';
 import { readControls, type OwnerControls } from '../utils/ownerAuthority';
 import { readStateOrders, type StateOrders } from '../utils/platformState';
 import LiveWorkMap from './LiveWorkMap';
+import OpsControlRoom from './OpsControlRoom';
+import bundledSchool from '../data/live/shaheen-school.json';
+import bundledSciences from '../data/live/shaheen-sciences.json';
+import type { SchoolFile } from '../../scripts/shaheen-school/school';
+import { isSciencesFile, type SciencesFile } from '../../scripts/shaheen-school/sciences';
 import { BOTS, DEPARTMENTS, botOf, deptOf, type BotId, type DeptId } from '../utils/shaheenOrg';
 import { SHIFTS, shiftOfBot, type ShiftIndex } from '../../scripts/shaheen-patrol/shifts';
 import type { PrecheckFile } from '../../scripts/shaheen-council/precheck';
@@ -41,6 +46,7 @@ const fit = (s: string, max: number) => (s.length > max ? `${s.slice(0, max - 1)
 const NODE_CHARS = () => 23;
 const DEPT_CHARS = () => (ar() ? 30 : 28);
 
+const isSchoolFile = (d: unknown): d is SchoolFile => Boolean(d && typeof d === 'object' && (d as SchoolFile).version === 1 && Array.isArray((d as SchoolFile).history) && Boolean((d as SchoolFile).reliance));
 const isPrecheck = (d: unknown): d is PrecheckFile => Boolean(d && typeof d === 'object' && (d as PrecheckFile).version === 1 && Array.isArray((d as PrecheckFile).bots));
 const isPatrol = (d: unknown): d is PatrolFile => Boolean(d && typeof d === 'object' && (d as PatrolFile).version === 1 && Array.isArray((d as PatrolFile).open));
 const isSupervisor = (d: unknown): d is SupervisorFile => Boolean(d && typeof d === 'object' && (d as SupervisorFile).tools && typeof (d as SupervisorFile).tools === 'object');
@@ -101,6 +107,8 @@ export default function ShaheenOpsMapPanel() {
   const [defectsOnly, setDefectsOnly] = useState(false);
   const [liveFilter, setLiveFilter] = useState<LiveFilter>('all');
   const gh = useOpsLive();
+  const [school, setSchool] = useState<SchoolFile | null>(isSchoolFile(bundledSchool) ? bundledSchool : null);
+  const [sciences, setSciences] = useState<SciencesFile | null>(isSciencesFile(bundledSciences) ? bundledSciences : null);
   const [controls, setControls] = useState<OwnerControls>(() => readControls(bundledControls));
   const [stateOrders, setStateOrders] = useState<StateOrders>(() => readStateOrders(bundledStateOrders));
   const [now, setNow] = useState(() => Date.now());
@@ -109,8 +117,10 @@ export default function ShaheenOpsMapPanel() {
 
   const load = useCallback(() => {
     setLoading(true);
-    Promise.all([getJson('shaheen-precheck.json'), getJson('shaheen-patrol.json'), getJson('ai-supervisor.json'), getJson('controls.json', RAW_OWNER), getJson('state-orders.json', RAW_OWNER)])
-      .then(([p, q, s, c, o]) => {
+    Promise.all([getJson('shaheen-precheck.json'), getJson('shaheen-patrol.json'), getJson('ai-supervisor.json'), getJson('controls.json', RAW_OWNER), getJson('state-orders.json', RAW_OWNER), getJson('shaheen-school.json'), getJson('shaheen-sciences.json')])
+      .then(([p, q, s, c, o, sc, sci]) => {
+        // The school's latest reports, for «غرفة التحكم الحية».
+        if (isSchoolFile(sc)) setSchool(sc); if (isSciencesFile(sci)) setSciences(sci);
         if (isPrecheck(p)) setPrecheck(p); if (isPatrol(q)) setPatrol(q); if (isSupervisor(s)) setSupervisor(s);
         // Who is paused on purpose (the owner's switches, «دولة المنصة»'s orders): the latest from GitHub.
         if (c) setControls(readControls(c)); if (o) setStateOrders(readStateOrders(o));
@@ -169,6 +179,8 @@ export default function ShaheenOpsMapPanel() {
             <div key={g} className={`rounded-xl p-2 ${GRADE[g].chip}`}><b className="block text-lg">{sum[g].length}</b><span className="text-[10px]">{GRADE[g].label()}</span></div>
           ))}
         </div>
+
+        <OpsControlRoom live={live} gh={gh} stepOf={stepOf} school={school} sciences={sciences} now={gh.at || now} onPick={pick} />
 
         <LiveWorkMap live={live} gh={gh} stepOf={stepOf} now={now} onPick={pick} />
 

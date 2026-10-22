@@ -16,7 +16,14 @@ export type ScienceTrackId =
   | 'nuclear'
   | 'biosafety'
   | 'semiconductors'
-  | 'earth';
+  | 'earth'
+  | 'chemistry'
+  | 'physics'
+  | 'biology'
+  | 'math'
+  | 'computing'
+  | 'nutrition'
+  | 'agriculture';
 
 export interface ScienceLesson {
   /** Stable id, also the filename-safe key used in the report. */
@@ -45,4 +52,4 @@ export interface ScienceTrack {
 
 /** The policy every science answer follows; shown in the admin panel and checked by the tests. */
 export const SCIENCE_POLICY_AR =
-  'العلوم هنا للفهم والوقاية والبناء: تشريح ووظائف، وطب بشري وبيطري، وفضاء مدني، ودراسات حرب والقانون الدولي الإنساني، وحرب إلكترونية دفاعية، وفيزياء نووية سلمية، وسلامة حيوية وأمن بيولوجي، وتصنيع إلكترونيات، وعلوم الأرض. مفيش هنا تصميم أسلحة أو خطوات تصنيع مواد خطرة أو وصفات هجوم أو استهداف، وأي سؤال طبي ده تعليم عام مش تشخيص ولا بديل عن الطبيب.';
+  'العلوم هنا للفهم والوقاية والبناء: تشريح ووظائف، وطب بشري وبيطري، وفضاء مدني، ودراسات حرب والقانون الدولي الإنساني، وحرب إلكترونية دفاعية، وفيزياء نووية سلمية، وسلامة حيوية وأمن بيولوجي، وتصنيع إلكترونيات، وعلوم الأرض، وكيمياء وفيزياء وأحياء ورياضيات وحاسبات وتغذية وزراعة. مفيش هنا تصميم أسلحة أو خطوات تصنيع مواد خطرة أو وصفات هجوم أو استهداف، وأي سؤال طبي ده تعليم عام مش تشخيص ولا بديل عن الطبيب.';

@@ -42,6 +42,7 @@ on:
           - scout
           - teacher
           - school
+          - academy
           - importer
           - images
           - product_pages
