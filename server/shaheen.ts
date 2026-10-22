@@ -28,6 +28,7 @@ import { platformsOff } from './core/selfReliance';
 import { buildLexicon, keyboardFix, understandQuestion, understoodNote, type Understanding } from '../src/utils/shaheenSpelling';
 import { RESEARCH_USER_AGENT, researchAnswer, type Research } from '../src/utils/webResearch';
 import { questionIntents } from '../src/utils/shaheenTools';
+import { agentLexicon, expertGapReason, referralAnswer, runAgent, understand, type AgentResult } from '../src/utils/shaheenAgent';
 import { RAW_MATERIALS_DATABASE } from '../src/data/rawMaterials';
 import { quickAnswer } from '../src/utils/shaheenQuickApps';
 import { hasSensitiveNumber, maskSensitive } from '../src/utils/ownerAuthority';
@@ -394,7 +395,7 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
     const started = Date.now();
     const controller = new AbortController();
     const cancel = () => { if (!res.writableEnded) controller.abort(); };
-    let chatInput: { input: ChatRequest; mode: string; useMemory: boolean } | undefined;
+    let chatInput: { input: ChatRequest; mode: string; useMemory: boolean; agent?: AgentResult; recorded?: boolean } | undefined;
     res.on('close', cancel);
     try {
       const checked = validateChatRequest(req.body);
@@ -423,7 +424,9 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
         runtime?.record({ ms: Date.now() - started, status: 200 });
         return;
       }
-      if (useMemory && memory && opening) {
+      // With the platforms closed, «وكيل شاهين» (src/utils/shaheenAgent.ts) answers instead of the old-answer shortcut:
+      // his memory is one source among the school's experts, not the answer by default.
+      if (useMemory && memory && opening && !own) {
         const hit = await memory.recall(input.message, input.language, mode).catch(() => undefined);
         if (hit) {
           if (!res.destroyed) res.json({ ...publicChatResult({ reply: hit.entry.answer, mode }, input.message), memory: 'exact' });
@@ -443,7 +446,25 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
           return;
         }
       }
-      chatInput = { input, mode, useMemory };
+      // «وكيل شاهين»: understand → plan → consult the school's experts, the library, the memory, open sources → check.
+      let agent: AgentResult | undefined;
+      let recorded = false;
+      const shopping = questionIntents(input.message).includes('store');
+      if (own && shaheen.enabled && useMemory && !shopping && (opening || understand(input.message, input.language).subjects.length >= 2)) {
+        const sources = await library().catch((): LibrarySources => ({ lessons: [], materials: [] }));
+        agent = await runAgent(input.message, input.language, {
+          sources, lexicon: agentLexicon(sources), research: (q, lang) => research(q, lang), willRecord: true,
+        });
+        if (agent.refer && !isPersonal(input.message) && !isTimeBound(input.message)) {
+          recorded = Boolean(await options.repo.recordGap({ question: agent.understanding.asked, source: 'no_answer', reason: expertGapReason(agent.expert.field) }).catch(() => undefined));
+        }
+        if (agent.answer && !res.destroyed) {
+          res.json({ ...publicChatResult({ reply: agent.answer, mode }, input.message), memory: 'agent', agent: { field: agent.expert.field, confidence: agent.confidence, sources: agent.used } });
+          runtime?.record({ ms: Date.now() - started, status: 200 });
+          return;
+        }
+      }
+      chatInput = { input, mode, useMemory, agent: agent?.understanding.outOfScope ? undefined : agent, recorded };
       const run = (signal?: AbortSignal) => executeChat(input, { env, fetch: options.fetch, signal, settings: shaheen, council, gate, owner: visitor, health });
       let result: ChatAnswer;
       if (!input.conversationHistory.length && capacity.cacheTtlMs > 0 && capacity.cacheEntries > 0) {
@@ -462,6 +483,13 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
     } catch (error) {
       if (res.destroyed) return;
       // No engine answered: the closest question Shaheen answered before, marked as coming from memory.
+      // «وكيل شاهين» already consulted everything and found nothing solid: an honest answer, and the field's expert studies it.
+      if (error instanceof ChatError && OFFLINE_CODES.has(error.code) && chatInput?.agent && platformsOff(env)) {
+        const { input, mode, agent, recorded } = chatInput;
+        res.json({ ...publicChatResult({ reply: agent.understanding.note + referralAnswer(input.language, agent.expert, Boolean(recorded)), mode }, input.message), memory: 'unknown', agent: { field: agent.expert.field, confidence: 'low', sources: [] } });
+        runtime?.record({ ms: Date.now() - started, status: 200 });
+        return;
+      }
       if (error instanceof ChatError && OFFLINE_CODES.has(error.code) && chatInput?.useMemory) {
         const { input, mode } = chatInput;
         let hit = await memory?.recallSimilar(input.message, input.language).catch(() => undefined);

@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T09:53:36.685Z",
+ "updatedAt": "2026-10-22T12:10:11.548Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,17 @@
  ],
  "runs": [
   {
+   "at": "2026-10-22T12:10:11.548Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-22T09:53:36.685Z",
    "mode": "self",
    "found": 0,
@@ -7964,26 +7975,6 @@
     "✗ fragrancebuy.ca: الموقع لا يفتح (HTTP 403)",
     "✗ maxaromas.com: الموقع لا يفتح",
     "✗ theperfumeshop.com: الموقع لا يفتح (HTTP 403)"
-   ]
-  },
-  {
-   "at": "2026-10-18T14:22:29.042Z",
-   "mode": "self",
-   "found": 10,
-   "vetted": 8,
-   "activated": 1,
-   "rejected": 0,
-   "notes": [
-    "Web search: AI quota used up — the scout continues by himself",
-    "10 new stores found this run (own methods, no AI)",
-    "✗ lattafaperfumes.com: الموقع لا يفتح",
-    "✗ lattafaparfums.com: الموقع لا يفتح",
-    "✗ abdulsamadalqurashi.com: الموقع لا يفتح",
-    "✓ afnan.com: 102 perfumes, 6/7 pages read without AI, AED (1 = 14.5568 EGP) — added to the importer",
-    "✗ nabeel.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ alharamainperfumes.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ ardalzaafaran.com: الموقع لا يفتح",
-    "✗ ardalzaafaranperfumes.com: الموقع لا يفتح"
    ]
   }
  ]

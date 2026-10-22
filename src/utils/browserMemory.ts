@@ -22,6 +22,11 @@ export interface OfflineMemory {
   research?(question: string, lang: string): Promise<string | undefined>;
   /** «فهم شاهين للغلطات»: the question as he understands it (mistyped words read as the words he knows). */
   understand?(question: string, lang: string): Promise<Understanding>;
+  /**
+   * «وكيل شاهين»: understands the question, consults the school's experts, his library, his memory and open sources,
+   * and answers only when it is solid (else an honest answer, or a question back when it is too vague).
+   */
+  agent?(question: string, lang: string): Promise<string | undefined>;
 }
 
 function readLocal(): MemoryFile {
@@ -78,6 +83,22 @@ export const browserMemory: OfflineMemory = {
   async understand(question) {
     // Only in the built site (Vite) are his lessons loaded; elsewhere the built-in perfume words.
     return understandQuestion(question, typeof import.meta.env?.MODE === 'string' ? await siteLexicon() : baseLexicon());
+  },
+  async agent(question, lang) {
+    // Only in the built site (Vite): loaded on the day the server cannot be reached.
+    if (typeof import.meta.env?.MODE !== 'string') return undefined;
+    const [{ runAgent, agentLexicon, referralAnswer }, lessons, { RAW_MATERIALS_DATABASE }, site] = await Promise.all([
+      import('./shaheenAgent'), import('../data/live/sham-training.json'), import('../data/rawMaterials'), sharedMemory(),
+    ]);
+    const docs = ((lessons as { default?: { docs?: unknown } }).default ?? lessons) as { docs?: { id: string; title: string; content: string }[] };
+    const sources = { lessons: Array.isArray(docs.docs) ? docs.docs : [], materials: RAW_MATERIALS_DATABASE, memory: { ...site, entries: [...readLocal().entries, ...site.entries] } };
+    const lookUp = typeof fetch === 'function' ? async (q: string, l: string) => {
+      const { research } = await import('./webResearch');
+      return research(fetch.bind(globalThis) as never, q, l, { timeoutMs: 9000 });
+    } : undefined;
+    const result = await runAgent(question, lang, { sources, lexicon: agentLexicon(sources), research: lookUp });
+    if (result.understanding.outOfScope) return undefined;
+    return result.answer || result.understanding.note + referralAnswer(lang, result.expert, false);
   },
   async research(question, lang) {
     if (typeof import.meta.env?.MODE !== 'string' || typeof fetch !== 'function') return undefined;

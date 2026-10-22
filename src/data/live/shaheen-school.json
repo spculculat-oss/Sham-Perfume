@@ -1,16 +1,16 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T09:54:19.139Z",
+ "updatedAt": "2026-10-22T12:11:51.089Z",
  "reliance": {
   "score": 98,
-  "covered": 171,
-  "total": 174,
-  "fromMemory": 171,
+  "covered": 170,
+  "total": 173,
+  "fromMemory": 170,
   "fromLibrary": 2,
   "byLang": {
    "ar": {
-    "covered": 150,
-    "total": 153
+    "covered": 149,
+    "total": 152
    },
    "en": {
     "covered": 21,
@@ -21,6 +21,12 @@
  "studiedTotal": 76,
  "selfTaughtTotal": 68,
  "history": [
+  {
+   "at": "2026-10-22T12:11:51.089Z",
+   "score": 98,
+   "studied": 0,
+   "mode": "self"
+  },
   {
    "at": "2026-10-22T09:54:19.139Z",
    "score": 98,
@@ -366,7 +372,7 @@
  },
  "localTaughtTotal": 25,
  "spelling": {
-  "at": "2026-10-22T09:54:19.139Z",
+  "at": "2026-10-22T12:11:51.089Z",
   "tried": 750,
   "understood": 726,
   "score": 97,
