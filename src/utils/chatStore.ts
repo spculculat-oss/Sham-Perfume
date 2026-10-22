@@ -113,7 +113,8 @@ export const storeCatalogFallback: CatalogFallback = async (text, lang, history 
   const products = await loadStoreCatalog();
   const link = pageLink(productPageUrl);
   const brain = await import('./shaheenBrain').catch(() => undefined);
-  const linked = brain?.storeAnswer(products, brain.withContext(text, history), lang, link)?.reply;
+  const ctx = brain?.withContext(text, history);
+  const linked = ctx && (brain?.productAnswer(products, ctx, lang, link) || brain?.storeAnswer(products, ctx, lang, link))?.reply;
   return linked ?? catalogReply(localSuggestion(products, text, lang).picks, lang, link);
 };
 

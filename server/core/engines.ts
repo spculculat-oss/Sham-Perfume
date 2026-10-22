@@ -258,7 +258,7 @@ export function geminiThinking(model: string, maxTokens: number): Record<string,
  */
 export const GEMINI_DEFAULT_MODEL = 'gemini-flash-latest';
 
-interface GeminiModelInfo { name?: string; supportedGenerationMethods?: string[] }
+export interface GeminiModelInfo { name?: string; supportedGenerationMethods?: string[] }
 
 /** Text models for chat the key can use, best first: rolling alias → newest stable Flash → Lite → previews. */
 export function rankGeminiModels(models: GeminiModelInfo[]): string[] {

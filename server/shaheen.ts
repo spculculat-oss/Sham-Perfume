@@ -24,7 +24,7 @@ import type { ShaheenMemory } from './core/memory';
 import { isPersonal, isTimeBound, offlineNote } from '../src/utils/shaheenMemory';
 import { libraryAnswer, unknownAnswer, type LibrarySources } from '../src/utils/shaheenLibrary';
 import { designFor } from '../src/utils/shaheenDesigner';
-import { designStoreNote, productLink, storeAnswer, wantsStore, withContext, type Context } from '../src/utils/shaheenBrain';
+import { designStoreNote, productAnswer, productLink, storeAnswer, wantsStore, withContext, type Context } from '../src/utils/shaheenBrain';
 import { agentLinkOn, type LinkSource } from '../src/utils/agentLink';
 import { readStateOrders } from '../src/utils/platformState';
 import { readControls } from '../src/utils/ownerAuthority';
@@ -480,8 +480,10 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       }
       // «الربط المباشر»: the question read with the conversation before it, and a shopping wish answered from the store.
       const ctx: Context = linkOn ? withContext(input.message, history) : { text: input.message, followUp: false };
-      if (linkOn && wantsStore(ctx.text)) {
-        const answer = storeAnswer(await products().catch(() => []), ctx, input.language, link);
+      // A perfume named from the store, or a wish for one: answered from the catalogue (live prices, no platform needed).
+      const named = linkOn ? productAnswer(await products().catch(() => []), ctx, input.language, link) : undefined;
+      if (linkOn && (named || wantsStore(ctx.text))) {
+        const answer = named || storeAnswer(await products().catch(() => []), ctx, input.language, link);
         if (answer) {
           send(answer.reply, 'store', { memory: 'store', store: { picks: answer.picks.map((p) => p.sku), matched: answer.matched, followUp: ctx.followUp } });
           return { done: true, recorded: false };
@@ -580,8 +582,11 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       }
       if (!res.destroyed) res.json(publicChatResult(result, input.message));
       runtime?.record({ ms: Date.now() - started, status: 200 });
-      if (memory && opening && mode !== 'council' && result.reply) {
-        await memory.learn({ question: input.message, lang: input.language, mode, answer: publicChatResult(result, input.message).reply }).catch(() => undefined);
+      // Every platform answer is kept for the day the packages run out — inside a conversation too: a follow-up is
+      // kept under the question as he understood it with what came before («طب وللصيف؟» → the whole question).
+      if (memory && mode !== 'council' && result.reply) {
+        const asked = opening ? input.message : learnedQuestion(input.message, input.conversationHistory);
+        if (asked) await memory.learn({ question: asked, lang: input.language, mode, answer: publicChatResult(result, input.message).reply }).catch(() => undefined);
       }
     } catch (error) {
       if (res.destroyed) return;
@@ -595,14 +600,9 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
         chatInput.agent = mine.agent?.understanding.outOfScope ? undefined : mine.agent;
         chatInput.recorded = mine.recorded;
       }
-      // No engine answered: the closest question Shaheen answered before, marked as coming from memory.
-      // «وكيل شاهين» already consulted everything and found nothing solid: an honest answer, and the field's expert studies it.
-      if (error instanceof ChatError && OFFLINE_CODES.has(error.code) && chatInput?.agent && selfBacked) {
-        const { input, mode, agent, recorded } = chatInput;
-        res.json({ ...publicChatResult({ reply: agent.understanding.note + referralAnswer(input.language, agent.expert, Boolean(recorded)), mode }, input.message), memory: 'unknown', agent: { field: agent.expert.field, confidence: 'low', sources: [] } });
-        runtime?.record({ ms: Date.now() - started, status: 200 });
-        return;
-      }
+      // No engine answered: what he saved before (the platforms' answers, the harvest, the school) and his library come
+      // FIRST — the agent's «I don't know yet» used to cut in front of them, so the day the packages ran out he
+      // could answer nothing.
       if (error instanceof ChatError && OFFLINE_CODES.has(error.code) && chatInput?.useMemory) {
         const { input, mode } = chatInput;
         // «المكتب السريع»: a science question is answered from his index (a lesson the team reviewed) in a fraction
@@ -629,7 +629,7 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
         const asked = understood?.changed ? understood.text : input.message;
         const note = understood ? understoodNote(input.language, understood) : '';
         if (hit && !res.destroyed) {
-          if (!hit.exact) await noteForStudy(input.message);
+          if (!hit.exact && !chatInput.recorded) await noteForStudy(input.message);
           res.json({ ...publicChatResult({ reply: note + hit.entry.answer + offlineNote(input.language, hit.exact), mode }, input.message), memory: hit.exact ? 'exact' : 'similar' });
           // Still an engine outage for the maintenance agent, even though the visitor got an answer (not when the
           // owner closed the platforms on purpose: then this is how Shaheen works).
@@ -639,18 +639,27 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
         // Nothing close in memory: «مكتبة شاهين» builds an answer from what he knows (not for shopping questions —
         // the browser answers those with the store's own picks).
         if (!questionIntents(input.message).includes('store')) {
-          const recorded = await noteForStudy(input.message);
+          // Already on the field expert's study list (the agent put it there): not moved to the general one.
+          const recorded = chatInput.recorded || await noteForStudy(input.message);
           const found = libraryAnswer(sources || await library().catch(() => ({ lessons: [], materials: [] })), asked, input.language, { recorded });
           if (found && !res.destroyed) {
             res.json({ ...publicChatResult({ reply: note + found.answer, mode }, input.message), memory: 'library' });
             runtime?.record(switchMode === 'off' ? { ms: Date.now() - started, status: 200 } : { ms: Date.now() - started, status: error.status, code: `${error.code}+LIBRARY` });
             return;
           }
-          // Not in his library either: «باحث شاهين» looks it up in open sources and answers from what he read.
-          const found2 = await research(asked, input.language).catch(() => undefined);
+          // Not in his library either: «باحث شاهين» looks it up in open sources and answers from what he read (the
+          // agent already did, when it ran).
+          const found2 = chatInput.agent ? undefined : await research(asked, input.language).catch(() => undefined);
           if (found2 && !res.destroyed) {
             res.json({ ...publicChatResult({ reply: note + researchAnswer(found2, { recorded }), mode }, input.message), memory: 'research' });
             runtime?.record(switchMode === 'off' ? { ms: Date.now() - started, status: 200 } : { ms: Date.now() - started, status: error.status, code: `${error.code}+RESEARCH` });
+            return;
+          }
+          // «وكيل شاهين» consulted everything and found nothing solid: an honest answer, and the field's expert studies it.
+          if (chatInput.agent && selfBacked && !res.destroyed) {
+            const { agent, recorded: sent } = chatInput;
+            res.json({ ...publicChatResult({ reply: note + agent.understanding.note + referralAnswer(input.language, agent.expert, Boolean(sent || recorded)), mode }, input.message), memory: 'unknown', agent: { field: agent.expert.field, confidence: 'low', sources: [] } });
+            runtime?.record({ ms: Date.now() - started, status: 200 });
             return;
           }
           // «شاهين معتمد على نفسه»: nothing anywhere — an honest «I don't know yet» instead of «unavailable».
@@ -678,6 +687,16 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
 
 /** The reason on the knowledge gaps «مدرسة شاهين» studies (questions asked while no engine answered). */
 export const SHAHEEN_OFFLINE_GAP = 'shaheen_offline';
+
+/**
+ * The question a platform answer inside a conversation is kept under: a follow-up as he understood it with what came
+ * before; a new question as asked. Undefined when it can't stand alone («and the second one?» with nothing to carry).
+ */
+export function learnedQuestion(message: string, history: { role: 'user' | 'assistant'; text: string }[]): string | undefined {
+  const ctx = withContext(message, history);
+  if (!ctx.followUp) return message;
+  return ctx.text && ctx.text !== message ? ctx.text : undefined;
+}
 
 /** Failures where the visitor gets a remembered answer instead of an error (when one is close enough). */
 const OFFLINE_CODES = new Set(['PROVIDER_UNAVAILABLE', 'PROVIDER_TIMEOUT', 'PROVIDER_NOT_CONFIGURED', 'SHAHEEN_BUSY', 'COUNCIL_UNAVAILABLE']);

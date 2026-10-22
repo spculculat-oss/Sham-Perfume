@@ -9,9 +9,15 @@ name: Shaheen's school around the clock (every hour)
 #   3. the school (SCHOOL_FOCUS=experts) studies the experts' questions first: each answer is written as that field's
 #      expert from Shaheen's library and open sources (Wikipedia), then a strict reviewer checks it by the field's
 #      standards and limits; only what passes is kept in his memory (src/data/live/shaheen-memory.json);
-#   4. the regression tests, then the memory and the reports are published on main and Pages is rebuilt.
+#   4. «حصّاد شاهين» (scripts/shaheen-harvest/run.mts) answers ahead of time, while a package has room, the questions
+#      visitors are likely to ask (their unanswered ones first, then src/data/shaheen-harvest-bank.json) and keeps the
+#      good answers in his memory — so he still answers them the day the packages run out. In the two hours before the
+#      daily renewal (22:00–24:00 Pacific) it may use the leftover of the regular package (lost at midnight anyway);
+#      the rest of the day only the open models with their own quota (never the visitors' chat quota);
+#   5. the regression tests, then the memory and the reports are published on main and Pages is rebuilt.
 # It shares the scout's lane (same concurrency group): the two never write his memory at the same time.
-# Settings (repository variables, optional): SCHOOL_CLOCK_MAX_STUDY (questions per hour, default 8),
+# Settings (repository variables, optional): SCHOOL_CLOCK_MAX_STUDY (questions per hour, default 8), HARVEST_MAX
+# (harvest questions per hour; default 6, or 40 in the last two hours),
 # TEACHER_MODEL_URL + TEACHER_MODEL_SHA256 + TEACHER_MODEL_NAME (another open GGUF model).
 
 on:
@@ -21,7 +27,7 @@ on:
   push:
     # Branches: rehearsal only (nothing is committed).
     branches: ['arena/**']
-    paths: ['src/data/sciences/syllabus.ts', 'scripts/shaheen-school/backlog.mts', 'scripts/shaheen-school/teacher.sh', '.github/workflows/shaheen-school-clock.yml']
+    paths: ['src/data/sciences/syllabus.ts', 'scripts/shaheen-school/backlog.mts', 'scripts/shaheen-school/teacher.sh', 'scripts/shaheen-harvest/**', 'src/data/shaheen-harvest-bank.json', '.github/workflows/shaheen-school-clock.yml']
 
 permissions:
   contents: write
@@ -60,7 +66,7 @@ jobs:
     needs: owner
     if: needs.owner.outputs.allowed == 'true'
     runs-on: ubuntu-24.04
-    timeout-minutes: 55
+    timeout-minutes: 75
     env:
       PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
       SCHOOL_FOCUS: experts
@@ -120,13 +126,23 @@ jobs:
       - name: Stop the local teacher
         if: always() && steps.teacher.outputs.base_url != ''
         run: kill "$(cat "${RUNNER_TEMP}/teacher/server.pid")" 2>/dev/null || true
+      - name: «حصّاد شاهين» — answers ready before the packages run out
+        id: harvest
+        continue-on-error: true
+        timeout-minutes: 16
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Branches: a rehearsal with one question.
+          HARVEST_MAX: ${{ github.ref != 'refs/heads/main' && '1' || vars.HARVEST_MAX }}
+          HARVEST_BUDGET_MIN: '12'
+        run: node --import tsx scripts/shaheen-harvest/run.mts
       - name: Regression tests
-        if: steps.backlog.outputs.todo != '0'
+        if: steps.backlog.outputs.todo != '0' || (steps.harvest.outputs.kept != '' && steps.harvest.outputs.kept != '0')
         run: |
           set -o pipefail
           bun run test 2>&1 | tee /tmp/test.log || { grep -E 'not ok|error:' /tmp/test.log | head -8 | sed 's/^/::error title=test::/'; exit 1; }
       - name: Publish on main
-        if: env.PUBLISH == 'true' && steps.backlog.outputs.todo != '0'
+        if: env.PUBLISH == 'true' && (steps.backlog.outputs.todo != '0' || (steps.harvest.outputs.kept != '' && steps.harvest.outputs.kept != '0'))
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -135,7 +151,7 @@ jobs:
           before=$(git rev-parse HEAD)
           node scripts/ci/publish.mjs "أكاديمية شاهين $(date -u +%Y-%m-%dT%H:%MZ)" \
             src/data/live/shaheen-school.json src/data/live/shaheen-sciences.json src/data/live/shaheen-memory.json \
-            src/data/live/ai-memory.json src/data/live/ai-quota.json \
+            src/data/live/ai-memory.json src/data/live/ai-quota.json src/data/live/shaheen-harvest.json \
             || { echo "::error::Could not push the school's results"; exit 1; }
           if [ "$(git rev-parse HEAD)" = "$before" ]; then exit 0; fi
           gh workflow run pages.yml --ref main || echo "::warning::Pages rebuild not started"
