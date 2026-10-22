@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T00:55:40.362Z",
+ "updatedAt": "2026-10-22T05:53:55.961Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -5028,12 +5028,12 @@
    "host": "ruebroca.com",
    "name": "ruebroca.com",
    "base": "https://ruebroca.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Rue Broca",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T15:48:34.519Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T05:53:55.961Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -5041,12 +5041,12 @@
    "host": "ruebrocaperfumes.com",
    "name": "ruebrocaperfumes.com",
    "base": "https://ruebrocaperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Rue Broca",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T16:11:30.170Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T05:53:55.961Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -5444,12 +5444,12 @@
    "host": "khadlajparfums.com",
    "name": "khadlajparfums.com",
    "base": "https://khadlajparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "Khadlaj",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T16:11:30.170Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T05:53:55.961Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -5956,12 +5956,12 @@
    "foundBy": "brand-site",
    "foundWith": "French Avenue",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T16:11:30.170Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T05:53:55.961Z",
    "trust": {
     "score": 88,
     "verdict": "trusted",
-    "at": "2026-10-21T16:11:30.170Z",
+    "at": "2026-10-22T05:53:55.961Z",
     "checks": [
      {
       "id": "age",
@@ -6061,7 +6061,7 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "AED",
-   "rateToEgp": 14.8364,
+   "rateToEgp": 14.8082,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*frenchavenue\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://frenchavenue.com/sitemap_agentic_discovery.xml",
@@ -6079,12 +6079,12 @@
    "host": "frenchavenueperfumes.com",
    "name": "frenchavenueperfumes.com",
    "base": "https://frenchavenueperfumes.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "French Avenue",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T16:11:30.170Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T05:53:55.961Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -6092,12 +6092,12 @@
    "host": "frenchavenueparfums.com",
    "name": "frenchavenueparfums.com",
    "base": "https://frenchavenueparfums.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "brand-site",
    "foundWith": "French Avenue",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-21T16:11:30.170Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-22T05:53:55.961Z",
    "reason": "الموقع لا يفتح"
   },
   {
@@ -7365,6 +7365,24 @@
   }
  ],
  "runs": [
+  {
+   "at": "2026-10-22T05:53:55.961Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 6,
+   "activated": 0,
+   "rejected": 5,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "✗ ruebroca.com: الموقع لا يفتح",
+    "✗ ruebrocaperfumes.com: الموقع لا يفتح",
+    "✗ khadlajparfums.com: الموقع لا يفتح",
+    "  ↳ frenchavenue.com: CV 88/100 [age,https,contact,identity,returns,shipping,privacy,terms,platform,social,authentic] on Shopify",
+    "… frenchavenue.com: good, waiting (already 20 active stores)",
+    "✗ frenchavenueperfumes.com: الموقع لا يفتح",
+    "✗ frenchavenueparfums.com: الموقع لا يفتح"
+   ]
+  },
   {
    "at": "2026-10-22T00:55:40.362Z",
    "mode": "self",

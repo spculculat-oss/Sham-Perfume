@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T00:56:27.297Z",
+ "updatedAt": "2026-10-22T05:54:55.181Z",
  "reliance": {
   "score": 98,
   "covered": 170,
@@ -19,8 +19,14 @@
   }
  },
  "studiedTotal": 76,
- "selfTaughtTotal": 66,
+ "selfTaughtTotal": 68,
  "history": [
+  {
+   "at": "2026-10-22T05:54:55.181Z",
+   "score": 98,
+   "studied": 2,
+   "mode": "self"
+  },
   {
    "at": "2026-10-22T00:56:27.297Z",
    "score": 98,
@@ -342,15 +348,15 @@
  },
  "localTaughtTotal": 25,
  "spelling": {
-  "at": "2026-10-22T00:56:27.297Z",
-  "tried": 748,
-  "understood": 729,
+  "at": "2026-10-22T05:54:55.181Z",
+  "tried": 750,
+  "understood": 727,
   "score": 97,
   "misses": [
+   "طبييه → طبيعه (طبيعيه)",
    "اخطه → احطه (اخلطه)",
    "الخطه → الخطه (اخلطه)",
-   "مثبات → ثبات (مثبتات)",
-   "الزجاجه → الزجاجه (لزجاجه)"
+   "مثبات → ثبات (مثبتات)"
   ],
   "questions": {
    "tried": 60,
