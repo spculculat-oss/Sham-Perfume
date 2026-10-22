@@ -29,7 +29,9 @@ test('each failure has its own pause; transient errors only after two in a row',
   assert.equal(parkFor('rate_limited', 'quota · retry in 40s', 1, now), 45_000);
   assert.equal(parkFor('rate_limited', 'retry in 2s', 1, now), 30_000, 'at least 30 seconds');
   assert.equal(parkFor('upstream_error', '', 1, now), 0, 'one hiccup is not enough');
-  assert.equal(parkFor('timeout', '', 2, now), 2 * MIN);
+  assert.equal(parkFor('timeout', '', 2, now), 0, 'a slow answer is not a dead engine');
+  assert.equal(parkFor('timeout', '', 3, now), MIN);
+  assert.equal(parkFor('timeout', '', 9, now), 3 * MIN, 'briefly');
   assert.equal(parkFor('empty', '', 9, now), 10 * MIN, 'capped');
 });
 
