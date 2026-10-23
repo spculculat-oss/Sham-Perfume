@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T15:26:09.214Z",
+ "updatedAt": "2026-10-23T15:37:45.070Z",
  "entries": [
   {
    "id": "ar|auto|ايه هي قوانين نيوتن التلاتة للحركة",
@@ -23,6 +23,46 @@
    "hits": 1,
    "source": "study",
    "lastUsed": "2026-10-22T11:05:06.645Z"
+  },
+  {
+   "id": "ar|auto|احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
+   "question": "احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "للحساب بدقة، سنحسب أولاً كميات السوائل للزجاجة الواحدة ثم نضرب في العدد الكلي (100 زجاجة).\n\n### الحسابات للزجاجة الواحدة (50 مل - تركيز 20%)\n* كمية الزيت العطري = 50 × 20 ÷ 100 = 10 مل\n* كمية الكحول (المتبقي) = 50 - 10 = 40 مل\n\n### حساب التكلفة للزجاجة الواحدة\n* تكلفة الزيت = 10 مل × 3 جنيه = 30 جنيه\n* تكلفة الكحول = 40 مل × 0.2 جنيه = 8 جنيه\n* إجمالي تكلفة السوائل للزجاجة الواحدة = 30 + 8 = 38 جنيه\n\n### إجمالي تكلفة الـ 100 زجاجة\n* إجمالي التكلفة الكلية = 38 جنيه × 100 زجاجة = 3800 جنيه\n\nهل ترغب في إضافة تكلفة العبوات الزجاجية أو المضخات لحساب التكلفة الإجمالية للمنتج النهائي؟",
+   "at": "2026-10-23T15:37:45.070Z",
+   "hits": 0,
+   "source": "probe"
+  },
+  {
+   "id": "en|auto|what fixative works best for a citrus cologne, and at what percentage",
+   "question": "What fixative works best for a citrus cologne, and at what percentage?",
+   "lang": "en",
+   "style": "auto",
+   "answer": "For a bright and uplifting citrus cologne, fixatives need to anchor the volatile top notes without muddying their sparkling freshness. The best choices are clean, transparent fixatives like **Ambroxan** for a modern, mineral warmth, or **Iso E Super** for a velvety, radiant aura that extends the citrus life seamlessly. \n\nFor a classic, natural approach, a touch of **Benzoin resinoid** or **Vetiver** in the base can ground the citrus, though they should be used sparingly so they do not overpower the opening.\n\n### Recommended Fixative Proportions\n\nIn a standard citrus cologne (such as an Eau de Parfum concentration around 20%), the fixative is typically allocated within the base and heart notes of the total oil concentrate.\n\n| Fixative Material | Recommended % of Total Oil | Role & Effect |\n| :--- | :--- | :--- |\n| **Ambroxan** | 5% to 10% | Adds modern radiance, ambergris nuance, and long-lasting tenacity. |\n| **Iso E Super** | 10% to 20% | Creates a smooth, woody-velvety diffusion that helps project citrus notes. |\n| **Benzoin** | 2% to 5% | Provides a warm, balsamic sweetness to balance sharp bergamot or lemon. |\n\nWould you like to build a complete experimental formula for a citrus cologne incorporating one of these fixatives?",
+   "at": "2026-10-23T15:37:45.070Z",
+   "hits": 0,
+   "source": "probe"
+  },
+  {
+   "id": "ar|auto|ايه افضل خلطة شتوية دافية",
+   "question": "ايه أفضل خلطة شتوية دافية؟",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "### مقترح خلطة شتوية دافية (50 مل، EDP 25%)\n\nهذا المقترح يجمع بين دفء الأخشاب الشرقية ولمسات التوابل والراتنجات العميقة التي تمنح العطر حضوراً طاغياً في الأجواء الباردة.\n\n| المكون | الفئة | النسبة من الزيت (%) | الكمية في 50 مل (جرام/مل) |\n| :--- | :--- | :--- | :--- |\n| زيت العود الهندي | القاعدة (Base) | 35% | 4.38 مل |\n| خشب الصندل | القاعدة (Base) | 25% | 3.12 مل |\n| العنبر | القاعدة (Base) | 20% | 2.50 مل |\n| الفانيليا | القلب (Heart) | 12% | 1.50 مل |\n| القرفة | المقدمة (Top) | 8% | 1.00 مل |\n| **المجموع** | | **100%** | **12.5 مل زيت** |\n\n**طريقة التحضير باختصار:**\n- كمية الزيت العطري الإجمالية = 12.5 مل.\n- كمية كحول العطور (96%) = 37.5 مل لتكتمل الزجاجة إلى 50 مل تماماً.\n- مدة التعتيق المقترحة: 30 يوماً في مكان مظلم وبارد لتجانس المكونات.\n\n*(ملاحظة: هذه التركيبة تجريبية وتعتمد على نسب حجمية تقديرية، ويُفضل دائماً مراجعة معايير السلامة واختبار عينة صغيرة قبل الاستخدام الواسع).*\n\nهل ترغب في تعديل نسبة الفانيليا لتكون أثقل، أو تفضل إضافة لمسة زهرية خفيفة في المقدمة؟\n\n_🎓 جاوبك باحث المدرسة (المصادر المفتوحة) من مدرسة شاهين — المصدر: إجابات محفوظة. وبعت سؤالك للخبير عشان يذاكره ويرد عليه أوفى المرة الجاية._",
+   "at": "2026-10-23T15:37:45.070Z",
+   "hits": 0,
+   "source": "probe"
+  },
+  {
+   "id": "ar|auto|ازاي احفظ العطر علشان ميبوظش",
+   "question": "ازاي احفظ العطر علشان ميبوظش؟",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "لحماية العطر من التلف والحفاظ على جودة مكوناته وأدائه لأطول فترة ممكنة، يجب تجنب أربعة أعداء أساسيين: **الضوء، الحرارة، الرطوبة، والأكسجين**.\n\n### تحليل عوامل تلف العطور\nتتكون العطور من جزيئات عطرية ومذيبات (كحول) تكون حساسة جداً للتفاعلات الكيميائية. عندما يتعرض العطر لعوامل خارجية، تحدث عملية \"الأكسدة\"، وهي التي تؤدي لتغير الرائحة (تصبح حامضة أو معدنية) أو تغير لون السائل.\n\n**إليك القواعد الذهبية للحفظ:**\n\n*   **الابتعاد عن الضوء:** الأشعة فوق البنفسجية تكسر الروابط الكيميائية للجزيئات العطرية، خاصة النوتات العليا (مثل الحمضيات). لذا، يُفضل ترك العطر داخل علبته الكرتونية الأصلية.\n*   **استقرار درجة الحرارة:** التذبذب السريع في الحرارة (سخونة ثم برودة) يفسد التركيبة. تجنب وضعه بجانب النافذة أو في السيارة.\n*   **تجنب الرطوبة:** الحمام هو أسوأ مكان لحفظ العطور بسبب بخار الماء وتغير درجات الحرارة المستمر، مما يسرع من تحلل الزيوت.\n*   **تقليل التعرض للهواء:** تأكد من إغلاق الغطاء بإحكام بعد كل استخدام لمنع تبخر الكحول وأكسدة الزيوت.\n\n### مقارنة أماكن الحفظ\n\n| مكان الحفظ | التأثير | النتيجة |\n| :--- | :--- | :--- |\n| **الحمام** | رطوبة عالية وحرارة متغيرة | تلف سريع وتغير في الرائحة |\n| **بجانب النافذة** | أشعة شمس مباشرة | أكسدة سريعة وتغير في اللون |\n| **درج أو خزانة مظلمة** | استقرار حراري وظلام تام | عمر أطول وثبات للمكونات |\n\n**نصيحة إضافية:** تجنب رج الزجاجة بقوة، لأن ذلك يدخل فقاعات هواء داخل السائل مما قد يسرع من عملية الأكسدة. أفضل مكان هو خزانة الملابس أو درج بارد ومظلم.",
+   "at": "2026-10-23T15:24:23.208Z",
+   "hits": 0,
+   "source": "harvest"
   },
   {
    "id": "ar|auto|ايه هي تصميم تركيبة شتوية شرقية",
@@ -103,36 +143,6 @@
    "at": "2026-10-23T12:15:17.664Z",
    "hits": 0,
    "source": "study"
-  },
-  {
-   "id": "ar|auto|احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
-   "question": "احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "إليك حساب تكلفة الدفعة بالكامل بالتفصيل:\n\n### حساب الكميات المطلوبة للزجاجة الواحدة (سعة 50 مل، تركيز 20%)\n- **كمية الزيت العطري:** 50 × 20 ÷ 100 = 10 مل\n- **كمية الكحول:** 50 × 80 ÷ 100 = 40 مل\n\n### حساب تكلفة الزجاجة الواحدة\n- **تكلفة الزيت للزجاجة:** 10 مل × 3 جنيه = 30 جنيه\n- **تكلفة الكحول للزجاجة:** 40 مل × 0.2 جنيه = 8 جنيه\n- **إجمالي تكلفة المكونات للزجاجة الواحدة:** 30 + 8 = 38 جنيه\n\n### حساب إجمالي التكلفة لعدد 100 زجاجة\n- **إجمالي تكلفة المكونات (زيت + كحول):** 38 جنيه × 100 زجاجة = 3800 جنيه\n\n*(ملاحظة: هذا الحساب يغطي تكلفة الزيت والكحول فقط للكمية المطلوبة، ولا يشمل أسعار الزجاجات الفارغة أو العبوات أو المضخات).*",
-   "at": "2026-10-23T12:07:14.153Z",
-   "hits": 0,
-   "source": "probe"
-  },
-  {
-   "id": "en|auto|what fixative works best for a citrus cologne, and at what percentage",
-   "question": "What fixative works best for a citrus cologne, and at what percentage?",
-   "lang": "en",
-   "style": "auto",
-   "answer": "For a citrus cologne, fixatives that anchor the volatile top notes without muddying the bright, clean character work best. The goal is to extend the freshness of bergamot, lemon, and orange without dominating them.\n\n### Best Fixatives for Citrus Colognes\n\n| Fixative | Character | Recommended Percentage (of total oil) |\n| :--- | :--- | :--- |\n| **Iso E Super** | Woody, velvety, transparent | 5% to 15% |\n| **Ambroxan** | Clean, mineral, slightly ambery | 2% to 6% |\n| **Benzyl Acetate / Hedione** | Floral, transparent, boosts lift | 3% to 8% |\n| **Benzoin Resinoid (Light)** | Soft, balsamic, vanilla-nuanced | 1% to 3% |\n\n### Suggested Experimental Formula (50 ml, EDP 20%)\n\nTo test a well-balanced citrus blend featuring Ambroxan and Iso E Super as fixatives, here is a complete formulation:\n\n* Total Volume: 50 ml\n* Concentration: 20% Eau de Parfum (10 ml fragrance oil, 40 ml alcohol 96%)\n* Maceration: 30 days\n\n**Oil Pyramid Breakdown:**\n* Top Notes (75% of oil = 7.5 ml): Bergamot (4 ml), Lemon (2.5 ml), Petitgrain (1 ml)\n* Heart Notes (15% of oil = 1.5 ml): Neroli (1 ml), Lavender (0.5 ml)\n* Base / Fixative Notes (10% of oil = 1.0 ml): Ambroxan (0.4 ml), Iso E Super (0.6 ml)\n\n```sham-formula\n{\"title\":\"Citrus Cologne Experimental\",\"author\":\"شاهين — مقترح تجريبي\",\"concentrationPercent\":20,\"concentrationType\":\"edp\",\"bottleVolumeMl\":50,\"alcoholPercentage\":96,\"waterPercent\":0,\"fixativePercent\":0,\"macerationDays\":30,\"summary\":\"مقترح يحتاج مراجعة السلامة\",\"pyramidNotes\":[{\"id\":\"note-1\",\"nameAr\":\"برغموت\",\"nameEn\":\"Bergamot\",\"category\":\"top\",\"percentageOfOil\":40},{\"id\":\"note-2\",\"nameAr\":\"ليمون\",\"nameEn\":\"Lemon\",\"category\":\"top\",\"percentageOfOil\":25},{\"id\":\"note-3\",\"nameAr\":\"پيتي گرين\",\"nameEn\":\"Petitgrain\",\"category\":\"top\",\"percentageOfOil\":10},{\"id\":\"note-4\",\"nameAr\":\"زهر البرتقال\",\"nameEn\":\"Neroli\",\"category\":\"heart\",\"percentageOfOil\":10},{\"id\":\"note-5\",\"nameAr\":\"لافندر\",\"nameEn\":\"Lavender\",\"category\":\"heart\",\"percentageOfOil\":5},{\"id\":\"note-6\",\"nameAr\":\"امبروكسان\",\"nameEn\":\"Ambroxan\",\"category\":\"base\",\"percentageOfOil\":4},{\"id\":\"note-7\",\"nameAr\":\"ايزو إي سوبر\",\"nameEn\":\"Iso E Super\",\"category\":\"base\",\"percentageOfOil\":6}]}\n```\n\n```sham-tool\n{\"tools\":[{\"tool\":\"concentration\",\"bottleVolumeMl\":50,\"concentrationPercent\":20,\"concentrationType\":\"edp\",\"alcoholPercentage\":96,\"waterPercent\":0,\"fixativePercent\":0},{\"tool\":\"maceration\",\"macerationDays\":30}]}\n```\n\nWould you like to adjust the ratio of the fixatives or explore a warmer woody base like cedarwood instead?",
-   "at": "2026-10-23T12:07:14.153Z",
-   "hits": 0,
-   "source": "probe"
-  },
-  {
-   "id": "ar|auto|ايه افضل خلطة شتوية دافية",
-   "question": "ايه أفضل خلطة شتوية دافية؟",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "### مقترح خلطة شتوية دافية (50 مل، EDP 25%)\n\nهذا المقترح يجمع بين دفء الأخشاب الشرقية ولمسات التوابل والراتنجات العميقة التي تمنح العطر حضوراً طاغياً في الأجواء الباردة.\n\n| المكون | الفئة | النسبة من الزيت (%) | الكمية في 50 مل (جرام/مل) |\n| :--- | :--- | :--- | :--- |\n| زيت العود الهندي | القاعدة (Base) | 35% | 4.38 مل |\n| خشب الصندل | القاعدة (Base) | 25% | 3.12 مل |\n| العنبر | القاعدة (Base) | 20% | 2.50 مل |\n| الفانيليا | القلب (Heart) | 12% | 1.50 مل |\n| القرفة | المقدمة (Top) | 8% | 1.00 مل |\n| **المجموع** | | **100%** | **12.5 مل زيت** |\n\n**طريقة التحضير باختصار:**\n- كمية الزيت العطري الإجمالية = 12.5 مل.\n- كمية كحول العطور (96%) = 37.5 مل لتكتمل الزجاجة إلى 50 مل تماماً.\n- مدة التعتيق المقترحة: 30 يوماً في مكان مظلم وبارد لتجانس المكونات.\n\n*(ملاحظة: هذه التركيبة تجريبية وتعتمد على نسب حجمية تقديرية، ويُفضل دائماً مراجعة معايير السلامة واختبار عينة صغيرة قبل الاستخدام الواسع).*\n\nهل ترغب في تعديل نسبة الفانيليا لتكون أثقل، أو تفضل إضافة لمسة زهرية خفيفة في المقدمة؟",
-   "at": "2026-10-23T12:07:14.153Z",
-   "hits": 0,
-   "source": "probe"
   },
   {
    "id": "ar|auto|ليه العطر بيختفي بسرعة علي جلدي؟ وازود الثبات ازاي",
@@ -43633,16 +43643,6 @@
    "at": "2026-10-18T11:52:11.754Z",
    "hits": 0,
    "source": "study"
-  },
-  {
-   "id": "ar|auto|ازاي احفظ العطر علشان ميبوظش",
-   "question": "ازاي احفظ العطر علشان ميبوظش؟",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "لحماية العطر من التلف والحفاظ على جودة مكوناته وأدائه لأطول فترة ممكنة، يجب تجنب أربعة أعداء أساسيين: **الضوء، الحرارة، الرطوبة، والأكسجين**.\n\n### تحليل عوامل تلف العطور\nتتكون العطور من جزيئات عطرية ومذيبات (كحول) تكون حساسة جداً للتفاعلات الكيميائية. عندما يتعرض العطر لعوامل خارجية، تحدث عملية \"الأكسدة\"، وهي التي تؤدي لتغير الرائحة (تصبح حامضة أو معدنية) أو تغير لون السائل.\n\n**إليك القواعد الذهبية للحفظ:**\n\n*   **الابتعاد عن الضوء:** الأشعة فوق البنفسجية تكسر الروابط الكيميائية للجزيئات العطرية، خاصة النوتات العليا (مثل الحمضيات). لذا، يُفضل ترك العطر داخل علبته الكرتونية الأصلية.\n*   **استقرار درجة الحرارة:** التذبذب السريع في الحرارة (سخونة ثم برودة) يفسد التركيبة. تجنب وضعه بجانب النافذة أو في السيارة.\n*   **تجنب الرطوبة:** الحمام هو أسوأ مكان لحفظ العطور بسبب بخار الماء وتغير درجات الحرارة المستمر، مما يسرع من تحلل الزيوت.\n*   **تقليل التعرض للهواء:** تأكد من إغلاق الغطاء بإحكام بعد كل استخدام لمنع تبخر الكحول وأكسدة الزيوت.\n\n### مقارنة أماكن الحفظ\n\n| مكان الحفظ | التأثير | النتيجة |\n| :--- | :--- | :--- |\n| **الحمام** | رطوبة عالية وحرارة متغيرة | تلف سريع وتغير في الرائحة |\n| **بجانب النافذة** | أشعة شمس مباشرة | أكسدة سريعة وتغير في اللون |\n| **درج أو خزانة مظلمة** | استقرار حراري وظلام تام | عمر أطول وثبات للمكونات |\n\n**نصيحة إضافية:** تجنب رج الزجاجة بقوة، لأن ذلك يدخل فقاعات هواء داخل السائل مما قد يسرع من عملية الأكسدة. أفضل مكان هو خزانة الملابس أو درج بارد ومظلم.",
-   "at": "2026-10-23T15:24:23.208Z",
-   "hits": 0,
-   "source": "harvest"
   }
  ]
 }
