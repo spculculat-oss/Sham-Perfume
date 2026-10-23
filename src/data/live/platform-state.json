@@ -1,7 +1,49 @@
 {
- "updatedAt": "2026-10-23T14:59:54.892Z",
+ "updatedAt": "2026-10-23T16:00:12.461Z",
  "active": true,
  "decisions": [
+  {
+   "at": "2026-10-23T16:00:11.426Z",
+   "number": 291,
+   "kind": "task",
+   "title": "[قسم المتجر والاستيراد] بعد رد الخصم «غالي شوية» مابقتش تتفهم من شاهين (البيع اتقطع وراح للمنصات)",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/291"
+  },
+  {
+   "at": "2026-10-23T16:00:11.915Z",
+   "number": 292,
+   "kind": "task",
+   "title": "[قسم تجربة الزائر والتصميم واللغات] سؤال الهدية بالضمير «أهاديه» مابيتفهمش من شاهين",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/292"
+  },
+  {
+   "at": "2026-10-23T16:00:12.460Z",
+   "number": 293,
+   "kind": "task",
+   "title": "[قسم المتجر والاستيراد] هدية المدير: سمّاه «زميلك» أو رشّح اسم رومانسي مش لايق",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/293"
+  },
   {
    "at": "2026-10-23T14:59:53.970Z",
    "number": 288,
@@ -115,7 +157,7 @@
  },
  "field": {
   "maneuverAt": "2026-10-23T14:16:34.941Z",
-  "at": "2026-10-23T14:59:51.206Z",
+  "at": "2026-10-23T16:00:08.118Z",
   "items": [
    {
     "id": "productDetail:http",
@@ -130,8 +172,8 @@
     "botAr": "طبيب شاهين (الصيانة)",
     "reasonAr": "عطل برمجي أو سيرفر — شغل طبيب الموقع",
     "action": "task",
-    "seen": 1,
-    "issue": 288
+    "issue": 288,
+    "seen": 1
    },
    {
     "id": "shaheen_chat:card-number:0:expect",
@@ -177,8 +219,8 @@
     "botAr": "شات الخبير شاهين ومساعد شام",
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، فهم الأسئلة والإجابة — شغل شات شاهين",
     "action": "task",
-    "seen": 3,
-    "issue": 289
+    "issue": 289,
+    "seen": 3
    },
    {
     "id": "shaheen_chat:discount-on-shown:1:expect",
@@ -193,8 +235,8 @@
     "botAr": "مستشار التسوق «اسأل شاهين»",
     "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
     "action": "task",
-    "seen": 3,
-    "issue": 290
+    "issue": 290,
+    "seen": 3
    },
    {
     "id": "shaheen_chat:discount-on-shown:2:expect",
@@ -209,7 +251,8 @@
     "botAr": "مستشار التسوق «اسأل شاهين»",
     "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
     "action": "task",
-    "seen": 3
+    "seen": 3,
+    "issue": 291
    },
    {
     "id": "shaheen_chat:gift-pronoun:1:expect",
@@ -224,7 +267,8 @@
     "botAr": "شات الخبير شاهين ومساعد شام",
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
     "action": "task",
-    "seen": 3
+    "seen": 3,
+    "issue": 292
    },
    {
     "id": "shaheen_chat:gift-boss:0:expect",
@@ -239,7 +283,8 @@
     "botAr": "مستشار التسوق «اسأل شاهين»",
     "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
     "action": "task",
-    "seen": 3
+    "seen": 3,
+    "issue": 293
    },
    {
     "id": "shaheen_chat:gift-son-graduation:0:expect",
