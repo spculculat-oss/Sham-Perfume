@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T08:44:34.461Z",
+ "updatedAt": "2026-10-23T12:53:30.719Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,17 @@
  ],
  "runs": [
   {
+   "at": "2026-10-23T12:53:30.719Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-23T08:44:34.461Z",
    "mode": "self",
    "found": 0,
@@ -7791,28 +7802,6 @@
     "✓ khadlaj.com (CV 96/100): 1112 perfumes, 4/7 pages read without AI, AED (1 = 14.8364 EGP) — added to the importer",
     "  ↳ khadlajperfumes.com: CV 96/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
     "✓ khadlajperfumes.com (CV 96/100): 1112 perfumes, 4/7 pages read without AI, AED (1 = 14.8364 EGP) — added to the importer"
-   ]
-  },
-  {
-   "at": "2026-10-21T10:34:54.765Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 2,
-   "rejected": 1,
-   "notes": [
-    "✓ shamaperfumes.com (CV 83/100): 488 perfumes, 4/6 pages read without AI, INR (1 = 0.5743 EGP) — added to the importer",
-    "✗ shamaparfums.com: الموقع لا يفتح",
-    "✗ afnanperfumes.com: الموقع لا يفتح",
-    "✗ afnanparfums.com: الموقع لا يفتح",
-    "  ↳ osma.com: CV 61/100 [age,https,identity,returns,privacy,authentic]",
-    "✗ osma.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "  ↳ osmaperfumes.com: CV 68/100 [age,https,identity,returns,shipping,privacy,terms,platform,authentic] on Salla",
-    "✓ osmaperfumes.com (CV 68/100): 18 perfumes, 3/6 pages read without AI, SAR (1 = 14.5298 EGP) — added to the importer",
-    "✗ osmaparfums.com: الموقع لا يفتح",
-    "  ↳ pariscornerperfumes.com: CV 56/100 [age,https,contact,identity,platform,social,authentic] on Shopify (pages: /pages/contact→200 /policies/contact-information→404 /policies/refund-policy→404 /policies/legal-notice→404 /policies/shipping-policy→404 /pages/about-us→200)",
-    "✗ pariscornerperfumes.com: ملف الثقة ضعيف (56/100): ينقصه سياسة الإرجاع والاسترداد، وسائل دفع معروفة، سياسة الشحن",
-    "✗ pariscornerparfums.com: الموقع لا يفتح"
    ]
   }
  ]
