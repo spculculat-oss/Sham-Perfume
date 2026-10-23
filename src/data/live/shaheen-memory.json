@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T11:29:57.983Z",
+ "updatedAt": "2026-10-23T12:07:14.153Z",
  "entries": [
   {
    "id": "ar|auto|ايه هي قوانين نيوتن التلاتة للحركة",
@@ -23,6 +23,36 @@
    "hits": 1,
    "source": "study",
    "lastUsed": "2026-10-22T11:05:06.645Z"
+  },
+  {
+   "id": "ar|auto|احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
+   "question": "احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "إليك حساب تكلفة الدفعة بالكامل بالتفصيل:\n\n### حساب الكميات المطلوبة للزجاجة الواحدة (سعة 50 مل، تركيز 20%)\n- **كمية الزيت العطري:** 50 × 20 ÷ 100 = 10 مل\n- **كمية الكحول:** 50 × 80 ÷ 100 = 40 مل\n\n### حساب تكلفة الزجاجة الواحدة\n- **تكلفة الزيت للزجاجة:** 10 مل × 3 جنيه = 30 جنيه\n- **تكلفة الكحول للزجاجة:** 40 مل × 0.2 جنيه = 8 جنيه\n- **إجمالي تكلفة المكونات للزجاجة الواحدة:** 30 + 8 = 38 جنيه\n\n### حساب إجمالي التكلفة لعدد 100 زجاجة\n- **إجمالي تكلفة المكونات (زيت + كحول):** 38 جنيه × 100 زجاجة = 3800 جنيه\n\n*(ملاحظة: هذا الحساب يغطي تكلفة الزيت والكحول فقط للكمية المطلوبة، ولا يشمل أسعار الزجاجات الفارغة أو العبوات أو المضخات).*",
+   "at": "2026-10-23T12:07:14.153Z",
+   "hits": 0,
+   "source": "probe"
+  },
+  {
+   "id": "en|auto|what fixative works best for a citrus cologne, and at what percentage",
+   "question": "What fixative works best for a citrus cologne, and at what percentage?",
+   "lang": "en",
+   "style": "auto",
+   "answer": "For a citrus cologne, fixatives that anchor the volatile top notes without muddying the bright, clean character work best. The goal is to extend the freshness of bergamot, lemon, and orange without dominating them.\n\n### Best Fixatives for Citrus Colognes\n\n| Fixative | Character | Recommended Percentage (of total oil) |\n| :--- | :--- | :--- |\n| **Iso E Super** | Woody, velvety, transparent | 5% to 15% |\n| **Ambroxan** | Clean, mineral, slightly ambery | 2% to 6% |\n| **Benzyl Acetate / Hedione** | Floral, transparent, boosts lift | 3% to 8% |\n| **Benzoin Resinoid (Light)** | Soft, balsamic, vanilla-nuanced | 1% to 3% |\n\n### Suggested Experimental Formula (50 ml, EDP 20%)\n\nTo test a well-balanced citrus blend featuring Ambroxan and Iso E Super as fixatives, here is a complete formulation:\n\n* Total Volume: 50 ml\n* Concentration: 20% Eau de Parfum (10 ml fragrance oil, 40 ml alcohol 96%)\n* Maceration: 30 days\n\n**Oil Pyramid Breakdown:**\n* Top Notes (75% of oil = 7.5 ml): Bergamot (4 ml), Lemon (2.5 ml), Petitgrain (1 ml)\n* Heart Notes (15% of oil = 1.5 ml): Neroli (1 ml), Lavender (0.5 ml)\n* Base / Fixative Notes (10% of oil = 1.0 ml): Ambroxan (0.4 ml), Iso E Super (0.6 ml)\n\n```sham-formula\n{\"title\":\"Citrus Cologne Experimental\",\"author\":\"شاهين — مقترح تجريبي\",\"concentrationPercent\":20,\"concentrationType\":\"edp\",\"bottleVolumeMl\":50,\"alcoholPercentage\":96,\"waterPercent\":0,\"fixativePercent\":0,\"macerationDays\":30,\"summary\":\"مقترح يحتاج مراجعة السلامة\",\"pyramidNotes\":[{\"id\":\"note-1\",\"nameAr\":\"برغموت\",\"nameEn\":\"Bergamot\",\"category\":\"top\",\"percentageOfOil\":40},{\"id\":\"note-2\",\"nameAr\":\"ليمون\",\"nameEn\":\"Lemon\",\"category\":\"top\",\"percentageOfOil\":25},{\"id\":\"note-3\",\"nameAr\":\"پيتي گرين\",\"nameEn\":\"Petitgrain\",\"category\":\"top\",\"percentageOfOil\":10},{\"id\":\"note-4\",\"nameAr\":\"زهر البرتقال\",\"nameEn\":\"Neroli\",\"category\":\"heart\",\"percentageOfOil\":10},{\"id\":\"note-5\",\"nameAr\":\"لافندر\",\"nameEn\":\"Lavender\",\"category\":\"heart\",\"percentageOfOil\":5},{\"id\":\"note-6\",\"nameAr\":\"امبروكسان\",\"nameEn\":\"Ambroxan\",\"category\":\"base\",\"percentageOfOil\":4},{\"id\":\"note-7\",\"nameAr\":\"ايزو إي سوبر\",\"nameEn\":\"Iso E Super\",\"category\":\"base\",\"percentageOfOil\":6}]}\n```\n\n```sham-tool\n{\"tools\":[{\"tool\":\"concentration\",\"bottleVolumeMl\":50,\"concentrationPercent\":20,\"concentrationType\":\"edp\",\"alcoholPercentage\":96,\"waterPercent\":0,\"fixativePercent\":0},{\"tool\":\"maceration\",\"macerationDays\":30}]}\n```\n\nWould you like to adjust the ratio of the fixatives or explore a warmer woody base like cedarwood instead?",
+   "at": "2026-10-23T12:07:14.153Z",
+   "hits": 0,
+   "source": "probe"
+  },
+  {
+   "id": "ar|auto|ايه افضل خلطة شتوية دافية",
+   "question": "ايه أفضل خلطة شتوية دافية؟",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "### مقترح خلطة شتوية دافية (50 مل، EDP 25%)\n\nهذا المقترح يجمع بين دفء الأخشاب الشرقية ولمسات التوابل والراتنجات العميقة التي تمنح العطر حضوراً طاغياً في الأجواء الباردة.\n\n| المكون | الفئة | النسبة من الزيت (%) | الكمية في 50 مل (جرام/مل) |\n| :--- | :--- | :--- | :--- |\n| زيت العود الهندي | القاعدة (Base) | 35% | 4.38 مل |\n| خشب الصندل | القاعدة (Base) | 25% | 3.12 مل |\n| العنبر | القاعدة (Base) | 20% | 2.50 مل |\n| الفانيليا | القلب (Heart) | 12% | 1.50 مل |\n| القرفة | المقدمة (Top) | 8% | 1.00 مل |\n| **المجموع** | | **100%** | **12.5 مل زيت** |\n\n**طريقة التحضير باختصار:**\n- كمية الزيت العطري الإجمالية = 12.5 مل.\n- كمية كحول العطور (96%) = 37.5 مل لتكتمل الزجاجة إلى 50 مل تماماً.\n- مدة التعتيق المقترحة: 30 يوماً في مكان مظلم وبارد لتجانس المكونات.\n\n*(ملاحظة: هذه التركيبة تجريبية وتعتمد على نسب حجمية تقديرية، ويُفضل دائماً مراجعة معايير السلامة واختبار عينة صغيرة قبل الاستخدام الواسع).*\n\nهل ترغب في تعديل نسبة الفانيليا لتكون أثقل، أو تفضل إضافة لمسة زهرية خفيفة في المقدمة؟",
+   "at": "2026-10-23T12:07:14.153Z",
+   "hits": 0,
+   "source": "probe"
   },
   {
    "id": "ar|auto|ليه العطر بيختفي بسرعة علي جلدي؟ وازود الثبات ازاي",
@@ -37955,16 +37985,6 @@
    "source": "study"
   },
   {
-   "id": "ar|auto|احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
-   "question": "احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "إليك حساب تكلفة إنتاج 100 زجاجة عطر بناءً على المعطيات التي ذكرتها:\n\n### تفاصيل التركيبة للزجاجة الواحدة (سعة 50 مل، تركيز 20%)\n* **حجم الزجاجة:** 50 مل\n* **تركيز الزيت العطري:** 20%\n* **كمية الزيت العطري:** 50 × 20 ÷ 100 = 10 مل\n* **كمية الكحول (بنسبة 80% المتبقية):** 50 × 80 ÷ 100 = 40 مل\n\n### حساب التكلفة للزجاجة الواحدة\n* **تكلفة الزيت العطري:** 10 مل × 3 جنيه = 30 جنيه\n* **تكلفة الكحول:** 40 مل × 0.2 جنيه = 8 جنيه\n* **إجمالي تكلفة المكونات للزجاجة الواحدة:** 30 + 8 = 38 جنيه\n\n### حساب التكلفة الإجمالية لـ 100 زجاجة\n* **إجمالي تكلفة المكونات:** 38 جنيه × 100 زجاجة = 3800 جنيه\n\nهذه التركيبة والحسابات تجريبية، وتحتاج إلى مراجعة التوافق والسلامة واختبار عينة صغيرة قبل الإنتاج التجاري الواسع. هل ترغب في إضافة تكلفة الزجاجات الفارغة والتغليف لحساب التكلفة الإجمالية الشاملة؟",
-   "at": "2026-10-22T03:32:48.405Z",
-   "hits": 0,
-   "source": "probe"
-  },
-  {
    "id": "ar|auto|صمم لي عطر شرقي بالعود والورد 50 مل تركيز edp",
    "question": "صمم لي عطر شرقي بالعود والورد 50 مل تركيز EDP",
    "lang": "ar",
@@ -37983,16 +38003,6 @@
    "at": "2026-10-22T01:06:05.595Z",
    "hits": 0,
    "source": "study"
-  },
-  {
-   "id": "en|auto|what fixative works best for a citrus cologne, and at what percentage",
-   "question": "What fixative works best for a citrus cologne, and at what percentage?",
-   "lang": "en",
-   "style": "auto",
-   "answer": "For a citrus cologne, fixatives that complement bright, volatile top notes without weighing them down or muddying the crisp profile work best. Citrus oils evaporate very quickly, so lighter, clean fixatives are ideal.\n\n### Recommended Fixatives for Citrus Colognes\n\n| Fixative Material | Olfactory Profile | Recommended Percentage (of Total Oil) | Why It Works |\n| :--- | :--- | :--- | :--- |\n| **Ambroxan** | Clean, dry, modern amber, slightly woody-minerals | 3% to 8% | Adds incredible radiance, longevity, and a smooth, sophisticated trail to citrus without masking it. |\n| **Iso E Super** | Woody, cedar-like, velvety, transparent | 5% to 15% | Acts as a blender and enhancer, giving body and diffusion to fleeting citrus notes. |\n| **Benzyl Acetate / Hedione** | Fresh, floral, transparent jasmine-like lift | 2% to 6% | Enhances floral-citrus facets and extends the life of the opening without heavy sweetness. |\n| **Oakmoss (IFRA-compliant / Resinoide)** | Earthy, mossy, forest-like (classic chypre base) | 1% to 3% | Provides traditional depth and anchoring for classical Eaux de Cologne, though use must respect safety limits. |\n\n### Suggested Experimental Formulation (50 ml, EDC 5% Concentration)\nTo test a bright citrus profile with modern fixatives, here is a balanced experimental formulation. \n*Note: This is an experimental formula and requires safety checks and small-scale testing.*\n\n* **Total Volume:** 50 ml\n* **Concentration:** 5% Eau de Cologne (2.5 ml pure oil total)\n* **Alcohol (Ethanol 96%):** 47.5 ml\n* **Water:** 0 ml\n* **Fixative Percentage:** 5% of total oil blend\n\n| Note Category | Material Name (En) | Percentage of Oil | Volume in 50ml Batch |\n| :--- | :--- | :--- | :--- |\n| Top | Bergamot Essential Oil | 45.0% | 1.125 ml |\n| Top | Lemon Essential Oil | 25.0% | 0.625 ml |\n| Heart | Neroli Essential Oil | 15.0% | 0.375 ml |\n| Base | Iso E Super (Fixative) | 10.0% | 0.250 ml |\n| Base | Ambroxan (Fixative) | 5.0% | 0.125 ml |\n| **Total** | | **100%** | **2.5 ml** |\n\n***\n\nWould you like to adjust the ratio of the fixatives or explore a different citrus profile, such as adding herbal or woody notes?",
-   "at": "2026-10-21T22:17:35.878Z",
-   "hits": 0,
-   "source": "probe"
   },
   {
    "id": "ar|auto|ايه هو لماذا يختفي العطر بسرعة علي الجلد، والفرق بين الثبات والفوحان وكيف نحسنهما",
@@ -40433,16 +40443,6 @@
    "at": "2026-10-18T23:22:02.297Z",
    "hits": 0,
    "source": "study"
-  },
-  {
-   "id": "ar|auto|ايه افضل خلطة شتوية دافية",
-   "question": "ايه أفضل خلطة شتوية دافية؟",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "### مقترح تجريبي لعطر شتوي دافئ (إصدار خاص)\n\nإليك تركيبة شتوية دافئة وغنية بنفحات العود والعنبر والبهارات، بحجم 50 مل وبتركيز ماء عطور (EDP) بنسبة 20%.\n\n| المكون | الفئة | النسبة من الزيت | الكمية لزجاجة 50 مل |\n| :--- | :--- | :--- | :--- |\n| **القرفة والهيل** | مقدمة العطر (Top) | 15% | 1.5 مل |\n| **الورد الطائفي والباتشولي** | قلب العطر (Heart) | 35% | 3.5 مل |\n| **العود المعتق والعنبر وخشب الصندل** | قاعدة العطر (Base) | 50% | 5.0 مل |\n| **إجمالي الزيت العطري** | - | 100% | 10 مل |\n| **الكحول العطري (96%)** | - | - | 40 مل |\n\n**ملاحظات التركيبة:**\n- **كمية الزيت العطري الإجمالية:** 10 مل.\n- **كمية الكحول:** 40 مل.\n- **مدة التعتيق المقترحة:** 30 يوماً في مكان مظلم وبارد لضمان اندماج المكونات وثباتها.\n- هذه التركيبة تجريبية وتحتاج إلى مراجعة السلامة والتوافق واختبار حساسية صغير على الجلد قبل الاستخدام النهائي.\n\n```sham-formula\n{\n  \"title\": \"دفء الشتاء الملكي\",\n  \"author\": \"شاهين — مقترح تجريبي\",\n  \"concentrationPercent\": 20,\n  \"concentrationType\": \"edp\",\n  \"bottleVolumeMl\": 50,\n  \"alcoholPercentage\": 96,\n  \"waterPercent\": 0,\n  \"fixativePercent\": 0,\n  \"macerationDays\": 30,\n  \"summary\": \"مقترح شتوي دافئ بالعود والعنبر والتوابل يحتاج مراجعة السلامة\",\n  \"pyramidNotes\": [\n    {\n      \"id\": \"note-1\",\n      \"nameAr\": \"القرفة والهيل\",\n      \"nameEn\": \"Cinnamon and Cardamom\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 15\n    },\n    {\n      \"id\": \"note-2\",\n      \"nameAr\": \"الورد الطائفي والباتشولي\",\n      \"nameEn\": \"Taif Rose and Patchouli\",\n      \"category\": \"heart\",\n      \"percentageOfOil\": 35\n    },\n    {\n      \"id\": \"note-3\",\n      \"nameAr\": \"العود المعتق والعنبر وخشب الصندل\",\n      \"nameEn\": \"Aged Oud, Amber and Sandalwood\",\n      \"category\": \"base\",\n      \"percentageOfOil\": 50\n    }\n  ]\n}\n```\n\n```sham-tool\n{\n  \"tools\": [\n    {\n      \"tool\": \"concentration\",\n      \"bottleVolumeMl\": 50,\n      \"concentrationPercent\": 20,\n      \"concentrationType\": \"edp\",\n      \"alcoholPercentage\": 96,\n      \"waterPercent\": 0,\n      \"fixativePercent\": 0\n    },\n    {\n      \"tool\": \"maceration\",\n      \"macerationDays\": 30\n    }\n  ]\n}\n```\n\nهل تفضل زيادة لمسة الفانيليا لتكون الحلاوة أكثر وضوحاً، أم ترغب في تعزيز طابع التوابل الحارة؟",
-   "at": "2026-10-18T15:26:29.526Z",
-   "hits": 0,
-   "source": "probe"
   },
   {
    "id": "en|auto|how do i use the sham perfume formula calculator",
