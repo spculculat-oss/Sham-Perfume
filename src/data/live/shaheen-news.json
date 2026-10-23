@@ -1,25 +1,57 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T03:32:15.246Z",
- "nextUpdateAt": "2026-10-23T15:32:15.246Z",
+ "updatedAt": "2026-10-23T10:18:58.288Z",
+ "nextUpdateAt": "2026-10-23T22:18:58.288Z",
  "intervalHours": 12,
  "editor": "shaheen",
  "digest": {
-  "ar": "تشهد سوق العطور العالمية نشاطاً ملحوظاً مع إطلاقات جديدة لدار Merit وعطور تابعة لمجموعة Puig، إلى جانب توسعات ملحوظة في قطاع العطور الشرقية والعالمية، وحركات سوقية قوية لشركات الكبرى مثل Interparfums.",
-  "en": "The global fragrance market witnesses notable activity with new launches from Merit and Puig, along with expansions in oriental and global perfumery, and strong market movements for major players like Interparfums."
+  "ar": "تشهد سوق العطور العالمية نشاطاً ملحوظاً مع إطلاقات جديدة لشركات كبرى مثل Puig وInterparfums وMerit وKayali. كما تتسارع وتيرة الابتكار في العطور الشرقية والنيش، وتتألق الفعاليات الإقليمية والمعارض المعنية بصناعة العطور والعود.",
+  "en": "The global fragrance market is witnessing notable activity with major launches from companies like Puig, Interparfums, Merit, and Kayali. Innovation in oriental and niche perfumery continues to accelerate alongside prominent regional exhibitions."
  },
  "sources": [
   {
+   "name": "Premium Beauty News",
+   "count": 2
+  },
+  {
+   "name": "Cosmetics Business",
+   "count": 2
+  },
+  {
    "name": "Now Smell This",
-   "count": 3
+   "count": 2
   },
   {
    "name": "CaFleureBon",
    "count": 2
   },
   {
-   "name": "Premium Beauty News",
-   "count": 2
+   "name": "PureWow",
+   "count": 1
+  },
+  {
+   "name": "Big News Network.com",
+   "count": 1
+  },
+  {
+   "name": "The Impression",
+   "count": 1
+  },
+  {
+   "name": "الراي",
+   "count": 1
+  },
+  {
+   "name": "BeautyNewsDaily",
+   "count": 1
+  },
+  {
+   "name": "ميوزيك نايشن",
+   "count": 1
+  },
+  {
+   "name": "Gulf News",
+   "count": 1
   },
   {
    "name": "Boursorama",
@@ -31,10 +63,6 @@
   },
   {
    "name": "Page Six",
-   "count": 1
-  },
-  {
-   "name": "PureWow",
    "count": 1
   },
   {
@@ -74,19 +102,7 @@
    "count": 1
   },
   {
-   "name": "BeautyNewsDaily",
-   "count": 1
-  },
-  {
-   "name": "الراي",
-   "count": 1
-  },
-  {
    "name": "جريدة الجريدة الكويتية",
-   "count": 1
-  },
-  {
-   "name": "The Impression",
    "count": 1
   },
   {
@@ -96,25 +112,273 @@
   {
    "name": "The Zoe Report",
    "count": 1
-  },
-  {
-   "name": "Beauty Packaging",
-   "count": 1
-  },
-  {
-   "name": "Cosmopolitan",
-   "count": 1
-  },
-  {
-   "name": "Unidivers",
-   "count": 1
-  },
-  {
-   "name": "Cosmetics Business",
-   "count": 1
   }
  ],
  "items": [
+  {
+   "id": "nmxdjxe",
+   "url": "https://www.premiumbeautynews.com/fr/maquillage-et-parfum-tirent-puig,28393",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-10-22T15:12:25.000Z",
+   "original": "Maquillage et parfum tirent Puig vers un record de ventes au 3e trimestre",
+   "lang": "en",
+   "category": "market",
+   "importance": 5,
+   "title": {
+    "ar": "مجموعة Puig تسجل مبيعات قياسية في الربع الثالث بفضل العطور والمكياج",
+    "en": "Puig Hits Record Q3 Sales on Makeup and Fragrance Growth"
+   },
+   "summary": {
+    "ar": "أعلنت مجموعة التجميل الإسبانية Puig عن تحقيق إيرادات صافية قياسية في الربع الثالث من عام 2026 لتصل إلى 1.39 مليار يورو بزيادة تدعمها قطاعات العطور والمكياج.",
+    "en": "Spanish beauty group Puig delivered record third-quarter sales in 2026, with net revenue reaching EUR 1.39 billion, driven by fragrance and makeup growth."
+   },
+   "note": {
+    "ar": "هذا النمو القوي يعكس استمرار الطلب العالمي المرتفع على العطور الفاخرة ونيش بيرفومري.",
+    "en": "This strong growth reflects sustained high global demand for luxury and niche fragrances."
+   }
+  },
+  {
+   "id": "ne2copc",
+   "url": "https://cosmeticsbusiness.com/kayali-expands-yum-fragrance-line-with-vanilla-cupcake",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-22T10:42:00.000Z",
+   "original": "Mona Kattan’s Kayali expands gourmand fragrance line Yum with Vanilla Cupcake I 108",
+   "lang": "en",
+   "category": "launch",
+   "importance": 5,
+   "title": {
+    "ar": "علامة Kayali توسع مجموعة Yum بإطلاق عطر Vanilla Cupcake | 108",
+    "en": "Mona Kattan’s Kayali Expands Gourmand Fragrance Line Yum with Vanilla Cupcake | 108"
+   },
+   "summary": {
+    "ar": "أطلقت علامة Kayali المملوكة لمونا قطان عطر Vanilla Cupcake | 108 الجديد ضمن مجموعة Yum المستوحاة من الحلويات والفاكهة.",
+    "en": "Mona Kattan’s Kayali brand is bolstering its hero House of Yum gourmand fragrance collection with birthday cake-inspired Vanilla Cupcake | 108."
+   },
+   "note": {
+    "ar": "إضافة ممتازة لعشاق العطور السكرية (Gourmand) التي تبحث عن النوتات الدافئة والمرحة.",
+    "en": "A great addition for gourmand fragrance lovers looking for warm and playful notes."
+   }
+  },
+  {
+   "id": "n5chgzr",
+   "url": "https://cosmeticsbusiness.com/interparfums-q3-sales-surge-triggers-stock-price-jump",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-22T11:15:00.000Z",
+   "original": "Interparfums Q3 sales surge of 4.8% triggers stock price jump",
+   "lang": "en",
+   "category": "market",
+   "importance": 4,
+   "title": {
+    "ar": "قفزة في أسهم Interparfums بعد نمو مبيعات الربع الثالث بنسبة 4.8%",
+    "en": "Interparfums Q3 Sales Surge Triggers Stock Price Jump"
+   },
+   "summary": {
+    "ar": "حققت شركة Interparfums، المسؤولة عن عطور علامات مثل Jimmy Choo وCoach، أداءً مالياً قوياً في تقريرها للربع الثالث من 2026.",
+    "en": "The fragrance company, which makes scents for Jimmy Choo and Coach, saw stock prices rise following its strong Q3 2026 financial report."
+   },
+   "note": {
+    "ar": "مؤشر إيجابي على استقرار السوق المالي لشركات ترخيص وتصنيع العطور الكبرى.",
+    "en": "A positive market indicator for major fragrance licensing and manufacturing companies."
+   }
+  },
+  {
+   "id": "ns3tl2w",
+   "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE4ycnBoOWx5UnlnZnVtZ1ozTzlTb0FJM1FOblRkY191aEJvcGtBUHdBV3VndWMxVmRycGZLQkVKS051Xzc3ZFJnVGFqOWNuR1JIQXppNEVYMm5DNDcxRUlCQ0tSaV9aUnBlQ3lLSQ?oc=5",
+   "source": "PureWow",
+   "publishedAt": "2026-10-22T20:25:15.000Z",
+   "original": "Merit Just Launched a New Perfume, and It's an Artistic Feast for the Eyes (and Nose)",
+   "lang": "en",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "علامة Merit تطلق عطراً جديداً بتصميم فني مبتكر",
+    "en": "Merit Just Launched a New Perfume, and It's an Artistic Feast for the Eyes"
+   },
+   "summary": {
+    "ar": "كشفت علامة Merit عن عطرها الجديد الذي يجمع بين التكوين العطري الفني والتصميم الجذاب للعبوة.",
+    "en": "Merit has launched a new perfume that serves as an artistic feast for both the eyes and the nose."
+   },
+   "note": {
+    "ar": "يُظهر هذا الإصدار توجه العلامات نحو دمج الفن البصري مع الابتكار الشمي.",
+    "en": "This release highlights the trend of combining visual art with olfactive innovation."
+   }
+  },
+  {
+   "id": "n1mttp5f",
+   "url": "https://news.google.com/rss/articles/CBMiiAJBVV95cUxOQ0g4S25PalhSam9mOTFRV0hhM29sR055dmk5bWtZdU95SXBCZWVUV2hnaDRZdmRpd2lmUmd6czZNdVN6c2JOcW11RkhJaG1wRWtlZzN4cG1hcTdDOEZNOGRQYU5LcFR5RERwRlYwYTE3Q0lTUjJNekdwbHdUWkF6dHFXQ2MzeHZnbEdtaGFsaUdOU0xKVUhaOWZpSUpmWHByaGZRTTlXWW1YX2FRbzQzOU4yeFA3dlFRdVFzQlhYT2s2QlVNVlVOYUxSMDBIRWhaTjdjdHlPS1pSU3RQY21VUlo0OG1VTGpOVVFmY0phWHYzMEVqc1gtZV9YTTJvdnpHMlhleTNEOXA?oc=5",
+   "source": "Big News Network.com",
+   "publishedAt": "2026-10-22T18:49:00.000Z",
+   "original": "Oudh Al Anfar Unveils New Anfar London Midnight Frost Arctic and Midnight Frost Eclipse at Exclusive Dubai Launch, Ahead of U.S. Debut",
+   "lang": "en",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "دار Oudh Al Anfar تطلق عطور Midnight Frost في دبي",
+    "en": "Oudh Al Anfar Unveils New Anfar London Midnight Frost at Dubai Launch"
+   },
+   "summary": {
+    "ar": "أزاحت دار عطور Oudh Al Anfar الستار عن عطري 'Midnight Frost Arctic' و'Midnight Frost Eclipse' في فعالية حصرية بدبي تمهيداً لإطلاقهما في أمريكا.",
+    "en": "Oudh Al Anfar unveiled new Anfar London Midnight Frost Arctic and Midnight Frost Eclipse at an exclusive Dubai launch ahead of U.S. debut."
+   },
+   "note": {
+    "ar": "إطلاق بارز يجمع بين روح العطور الشرقية والأسواق العالمية.",
+    "en": "A notable launch bridging oriental perfumery traditions with global markets."
+   }
+  },
+  {
+   "id": "n18jy2at",
+   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQSndrYkZVUURWdmZXaVJWQ2dtWHpLSHRzUUNPUFJ2QVhZcVhLcERXZDdRVUVScDNFZVBrMTFVRUVTcXdWdzBrVDNPaGoteHRTczI1aElzSmdxVDFRcUpPMmNHYVJ5Y1NrRF9NWmllaVV4dl9QTTg2Y19JU21HZkpBS05JaENiQQ?oc=5",
+   "source": "The Impression",
+   "publishedAt": "2026-10-22T14:37:38.000Z",
+   "original": "Building Legacy from Memory: How Zegna Is Rewriting the Luxury Fragrance Rulebook",
+   "lang": "en",
+   "category": "industry",
+   "importance": 4,
+   "title": {
+    "ar": "كيف تعيد Zegna صياغة قواعد العطور الفاخرة استناداً إلى الذاكرة؟",
+    "en": "Building Legacy from Memory: How Zegna Is Rewriting Luxury Fragrance"
+   },
+   "summary": {
+    "ar": "تستكشف دار Zegna طرقاً مبتكرة في تطوير مجموعات العطور الفاخرة عبر الاعتماد على استحضار الذاكرة والتراث العطري.",
+    "en": "Zegna is exploring innovative approaches to luxury fragrance development by rewriting rules based on heritage and memory."
+   },
+   "note": {
+    "ar": "فلسفة عميقة تفيد مصممي العطور في بناء هوية عطرية ذات بُعد إنساني وتاريخي.",
+    "en": "A deep philosophy that benefits perfumers in building scents with human and historical depth."
+   }
+  },
+  {
+   "id": "n1e7r7pu",
+   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE5INlFpY0U2UllqRmZBaDRSd2NkWDlDcEY4NHg4aFlBMTNLSTJPSUtlU01LOXkxWFYwcFFfQWhOWm5Sbm5MV3JRU3VIOG9QVDU2dkpwWV9NMHrSAVhBVV95cUxOSDZRaWNFNlJZakZmQWg0UndjZFg5Q3BGODR4OGhZQTEzS0kyT0lLZVNNSzl5MVhWMHBRX0FoTlpuUm5uTFdyUVN1SDhvUFQ1NnZKcFlfTTB6?oc=5",
+   "source": "الراي",
+   "publishedAt": "2026-10-22T15:25:00.000Z",
+   "original": "حياكم في معرض العطور",
+   "lang": "ar",
+   "category": "events",
+   "importance": 4,
+   "title": {
+    "ar": "انطلاق فعاليات معرض العطور الإقليمي",
+    "en": "Regional Perfume Exhibition Kicks Off"
+   },
+   "summary": {
+    "ar": "تشهد المنطقة فعاليات معرض العطور بمشاركة واسعة من دور العطور والمهتمين بابتكار الروائح والخلطات الشخصية.",
+    "en": "The regional perfume exhibition has opened its doors with wide participation from fragrance houses and enthusiasts."
+   },
+   "note": {
+    "ar": "فرصة رائعة لعشاق تصميم العطور لاستكشاف المواد الخام والتعرف على أحدث الاتجاهات.",
+    "en": "A wonderful opportunity for perfume designers to explore raw materials and latest trends."
+   }
+  },
+  {
+   "id": "n1b95vbz",
+   "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE1WRkFvUXVkdm5tb29wUFo4eldNbTJuNXc0ZVFGMGY5ZHd2bG5oZ0VreHlaMzRVcTdfVVViVVJmYjg2dHh4bElnazhSQWpNdnhUU2pBc3FPdTRVUU9nelRWOXVSZ29nV050SlFjODVSWDhTeFpyR1NqbUZqRzQ?oc=5",
+   "source": "BeautyNewsDaily",
+   "publishedAt": "2026-10-22T15:41:23.000Z",
+   "original": "Beauty Updates: Dove Launches First Fine Fragrance & More",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "Dove تطلق أول مجموعة عطور راقية مستوحاة من صابونها الكلاسيكي",
+    "en": "Dove Launches First Fine Fragrance Inspired by Original Beauty Bar"
+   },
+   "summary": {
+    "ar": "أعلنت علامة Dove عن خطوتها الأولى في عالم العطور الراقية من خلال عطر يجسد النوتات الحنينية لصابونها الشهير.",
+    "en": "Dove has launched its first fine fragrance line capturing the nostalgic essence of its original beauty bar."
+   },
+   "note": {
+    "ar": "دخول علامات العناية الشخصية الكبرى في سوق العطور المستقلة يوسع خيارات المستهلكين.",
+    "en": "The entry of major personal care brands into standalone fine fragrances broadens consumer choices."
+   }
+  },
+  {
+   "id": "nfzktd5",
+   "url": "https://nstperfume.com/2026/10/22/lise-watier-neiges-dambre-new-fragrances/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-22T14:48:30.000Z",
+   "original": "Lise Watier Neiges d’Ambre ~ new fragrance",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "Lise Watier تطلق عطر Neiges d’Ambre بنسخة محدودة",
+    "en": "Lise Watier Launches Neiges d’Ambre Limited Edition Fragrance"
+   },
+   "summary": {
+    "ar": "أقدمت علامة التجميل الكندية Lise Watier على إطلاق عطر 'Neiges d’Ambre' كإصدار محدود جديد امتداداً لعطرها الكلاسيكي 'Neiges' لعام 1996.",
+    "en": "Canadian beauty brand Lise Watier has launched Neiges d'Ambre, a new limited edition flanker to its 1996 Neiges fragrance."
+   },
+   "note": {
+    "ar": "إصدار شتوي دافئ يركز على نفحات العنبر الغنية.",
+    "en": "A warm winter release focusing on rich amber notes."
+   }
+  },
+  {
+   "id": "nudmpux",
+   "url": "https://news.google.com/rss/articles/CBMimANBVV95cUxNTVpLeGxRaXUzREhVb2J0T2djd3FGM0ZYSGRxUHFwaVZJWGRicnk3NmVuSlpWc3h3LTZWMmtOSFpGM25CNlcxeXYwS3o5VWFqbzhyQmpkZE43eW9pV1hjaEIxWUlZaURsajFjd09BSGxwVEhVay1Mb1JMc1Nkai1aR2ljVjZ0b2drQ0JCby1EUVFMTDB1WmZXa0dDV1hlU25qQ1ZhYXI4dVpEWS1EbnI5cVljak5FajJCT1FRTGZka1daczdnV29FWFZ2eENwM0VxZjZFNFdjYVBod3RiUXRRUkkxSzhKbVFkNEVKbXRjTDZDaWVHVWpuWkdOV3JlSFZ4SlBsQm5Gc21vT19pNURZUzJQX3htc1JTN3lXU29vQ3lZMUM3SUIzalpwblBJUVp3N0tFT0EzZVFEZWdrT2IwRHkwbEdXWlMzMWxRYmNwUXRIQjlQcnFkMEVscUpZWDF1VlNBQTdaa2U2bFJ4aFBjaGRKRV9nQ1NIZzh3NWZhOUI3akhIM0ltQ3UyYmp3MDZRNXd4WG9GYXY?oc=5",
+   "source": "ميوزيك نايشن",
+   "publishedAt": "2026-10-22T12:57:46.000Z",
+   "original": "الشامي الوجه الإعلاني لعطر Prada العالمي بإعلان جديد",
+   "lang": "ar",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "الفنان الشامي وجهاً إعلانياً لعطر Prada العالمي",
+    "en": "Al Shami Named Face of Global Prada Fragrance Campaign"
+   },
+   "summary": {
+    "ar": "تم اختيار الفنان الشامي ليكون الوجه الإعلاني لإطلاق عطر Prada العالمي الجديد من خلال حملة مصورة.",
+    "en": "Artist Al Shami has been announced as the face of the new global Prada fragrance advertising campaign."
+   },
+   "note": {
+    "ar": "تعاون يربط بين الفن والموسيقى وبين عالم العطور الفاخرة عالمياً ومحلياً.",
+    "en": "A collaboration connecting art and music with the global luxury fragrance world."
+   }
+  },
+  {
+   "id": "niuv459",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQQU9qM3NsOHU5aU03LVJscllQSGltNGZvNnFSLWF3M1ozSG1mVlhmajlWRHdlcDhJTG1wb2lTcF9aWXpZUVhIbUpWN0RjMUtrenYxUHlrdGoyVnFhN2JSLTZuWFhJVWhPcHhTcDFlUDVDRFREMHB0Mml1Y2dubm5NSVBhT3JUVDg0SEs4elBPUzFGQVdpWnNfeDhJZ2hTMkpI0gGzAUFVX3lxTE1kWHREYUs3bTlUTmtfdlRvVVZXdG1tRXR4VGY3bHpLeUFxVmpHNmstWEt1c0JoMm54bDVSUC1SU2JySGhEek9CbFduVS1nUFlrZ2RlT2RkRFNxRV9kQWtlZS1UeUN1MzFBVk5RZXFFc1B6bjY0Q2MtNGh4R185N1dDNFpSRWRpdmdjZzJZaGsxbmp1Q0swd2p1UEtzbEtVMWlqQWZHa3F2RG9YZFU3UmFCQ3lV?oc=5",
+   "source": "Gulf News",
+   "publishedAt": "2026-10-22T13:00:00.000Z",
+   "original": "4 Arabian-inspired fragrances to know",
+   "lang": "en",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "تسليط الضوء على أبرز 4 عطور مستوحاة من التراث العربي",
+    "en": "Highlighting 4 Arabian-Inspired Fragrances to Know"
+   },
+   "summary": {
+    "ar": "استعرض تقرير صحفي مجموعة من العطور المستوحاة من الثقافة والعطور العربية الأصيلة التي تلاقي إقبالاً عالمياً متزايداً.",
+    "en": "A press report showcased a selection of Arabian-inspired fragrances gaining increasing global popularity."
+   },
+   "note": {
+    "ar": "يعكس هذا الاهتمام العالمي المتصاعد بجماليات العطور الشرقية والعود والبخور.",
+    "en": "This reflects the growing global appreciation for oriental perfumery, oud, and incense aesthetics."
+   }
+  },
+  {
+   "id": "nctxwkp",
+   "url": "https://cafleurebon.com/dsh-perfumes-pashmina-1810-dawn-spencer-hurwitz-patchouli-plus-postcard-no-1-giveaway/?utm_source=rss&utm_medium=rss&utm_campaign=dsh-perfumes-pashmina-1810-dawn-spencer-hurwitz-patchouli-plus-postcard-no-1-giveaway",
+   "source": "CaFleureBon",
+   "publishedAt": "2026-10-22T20:20:58.000Z",
+   "original": "DSH Perfumes Pashmina 1810 (Dawn Spencer Hurwitz) + Patchouli Postcard No. 1 Giveaway",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "DSH Perfumes تطلق عطر Pashmina 1810 ضمن مجموعة Patchouli Postcard",
+    "en": "DSH Perfumes Launches Pashmina 1810 in Patchouli Postcard Collection"
+   },
+   "summary": {
+    "ar": "قدمت صانعة العطور داون سبنسر هورويتز (DSH Perfumes) عطرها الجديد Pashmina 1810 المستوحى من نوتات الباتشولي المعقدة.",
+    "en": "Dawn Spencer Hurwitz of DSH Perfumes has released Pashmina 1810 as part of the intricate Patchouli Postcard Collection."
+   },
+   "note": {
+    "ar": "خيار مثالي لمحبي عطور الباتشولي الطبيعية ذات الطابع الفني المستقل (نيش).",
+    "en": "An ideal choice for lovers of natural, artistic niche patchouli fragrances."
+   }
+  },
   {
    "id": "nws26ik",
    "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5oNkdSeWtXSTQtQzBFWFdlUzB5VTVlZWVQczlNUGhIWXVyQTN5V2g5d1FkRC1QMEZfRGpaS0xsZXNDbzdmblFGRjVCczlEbjd3dmc?oc=5",
@@ -179,50 +443,6 @@
    "note": {
     "ar": "تعاون بارز يجمع بين النمط الفني والبساطة في تصميم العطور المعاصرة.",
     "en": "A notable collaboration blending artistry and simplicity in modern perfumery."
-   }
-  },
-  {
-   "id": "ns3tl2w",
-   "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE4ycnBoOWx5UnlnZnVtZ1ozTzlTb0FJM1FOblRkY191aEJvcGtBUHdBV3VndWMxVmRycGZLQkVKS051Xzc3ZFJnVGFqOWNuR1JIQXppNEVYMm5DNDcxRUlCQ0tSaV9aUnBlQ3lLSQ?oc=5",
-   "source": "PureWow",
-   "publishedAt": "2026-10-22T20:25:15.000Z",
-   "original": "Merit Just Launched a New Perfume, and It's an Artistic Feast for the Eyes (and Nose)",
-   "lang": "en",
-   "category": "industry",
-   "importance": 4,
-   "title": {
-    "ar": "Interparfums تسجل أداءً قوياً ومبيعات مستقرة في الربع الثالث",
-    "en": "Interparfums Q3 Sales Surge and Stable Operations"
-   },
-   "summary": {
-    "ar": "سجلت شركة Interparfums أداءً مالياً مستقراً وقوياً في الربع الثالث بفضل عملياتها الأوروبية ونمو علامات تجارية مثل Montblanc وCoach.",
-    "en": "Interparfums reported strong third-quarter sales, driven by its European operations and brands like Montblanc and Coach."
-   },
-   "note": {
-    "ar": "استقرار السوق يعزز من ثقة المستثمرين في قطاع تراخيص العطور الكبرى.",
-    "en": "Market stability boosts investor confidence in major fragrance licensing."
-   }
-  },
-  {
-   "id": "nctxwkp",
-   "url": "https://cafleurebon.com/dsh-perfumes-pashmina-1810-dawn-spencer-hurwitz-patchouli-plus-postcard-no-1-giveaway/?utm_source=rss&utm_medium=rss&utm_campaign=dsh-perfumes-pashmina-1810-dawn-spencer-hurwitz-patchouli-plus-postcard-no-1-giveaway",
-   "source": "CaFleureBon",
-   "publishedAt": "2026-10-22T20:20:58.000Z",
-   "original": "DSH Perfumes Pashmina 1810 (Dawn Spencer Hurwitz) + Patchouli Postcard No. 1 Giveaway",
-   "lang": "en",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "علامة Dove تدخل عالم العطور الفاخرة بإطلاقها الأول المستوحى من الصابون الأيقوني",
-    "en": "Dove Debuts Its First-Ever Fine Fragrance Inspired by Its Iconic Beauty Bar"
-   },
-   "summary": {
-    "ar": "أطلقت علامة Dove أول مجموعة عطور فاخرة لها مستوحاة من رائحة صابونها الكلاسيكي الشهير بذكريات الحنين إلى الماضي.",
-    "en": "Dove has debuted its first-ever fine fragrance line capturing the nostalgic essence of its original iconic beauty bar."
-   },
-   "note": {
-    "ar": "خطوة مثيرة لافتتاح خطوط عطور جديدة مستوحاة من الروائح اليومية المألوفة.",
-    "en": "An exciting move expanding everyday familiar scents into fine perfumery."
    }
   },
   {
@@ -442,60 +662,6 @@
    }
   },
   {
-   "id": "n1b95vbz",
-   "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE1WRkFvUXVkdm5tb29wUFo4eldNbTJuNXc0ZVFGMGY5ZHd2bG5oZ0VreHlaMzRVcTdfVVViVVJmYjg2dHh4bElnazhSQWpNdnhUU2pBc3FPdTRVUU9nelRWOXVSZ29nV050SlFjODVSWDhTeFpyR1NqbUZqRzQ?oc=5",
-   "source": "BeautyNewsDaily",
-   "publishedAt": "2026-10-22T15:41:23.000Z",
-   "original": "Beauty Updates: Dove Launches First Fine Fragrance & More",
-   "lang": "en",
-   "category": "launch",
-   "importance": 2,
-   "title": {
-    "ar": "Beauty Updates: Dove Launches First Fine Fragrance & More",
-    "en": "Beauty Updates: Dove Launches First Fine Fragrance & More"
-   },
-   "summary": {
-    "ar": "Beauty Updates: Dove Launches First Fine Fragrance & More",
-    "en": "Beauty Updates: Dove Launches First Fine Fragrance & More"
-   }
-  },
-  {
-   "id": "n1e7r7pu",
-   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE5INlFpY0U2UllqRmZBaDRSd2NkWDlDcEY4NHg4aFlBMTNLSTJPSUtlU01LOXkxWFYwcFFfQWhOWm5Sbm5MV3JRU3VIOG9QVDU2dkpwWV9NMHrSAVhBVV95cUxOSDZRaWNFNlJZakZmQWg0UndjZFg5Q3BGODR4OGhZQTEzS0kyT0lLZVNNSzl5MVhWMHBRX0FoTlpuUm5uTFdyUVN1SDhvUFQ1NnZKcFlfTTB6?oc=5",
-   "source": "الراي",
-   "publishedAt": "2026-10-22T15:25:00.000Z",
-   "original": "حياكم في معرض العطور",
-   "lang": "ar",
-   "category": "events",
-   "importance": 2,
-   "title": {
-    "ar": "حياكم في معرض العطور",
-    "en": "حياكم في معرض العطور"
-   },
-   "summary": {
-    "ar": "حياكم في معرض العطور",
-    "en": "حياكم في معرض العطور"
-   }
-  },
-  {
-   "id": "nmxdjxe",
-   "url": "https://www.premiumbeautynews.com/fr/maquillage-et-parfum-tirent-puig,28393",
-   "source": "Premium Beauty News",
-   "publishedAt": "2026-10-22T15:12:25.000Z",
-   "original": "Maquillage et parfum tirent Puig vers un record de ventes au 3e trimestre",
-   "lang": "en",
-   "category": "events",
-   "importance": 2,
-   "title": {
-    "ar": "Maquillage et parfum tirent Puig vers un record de ventes au 3e trimestre",
-    "en": "Maquillage et parfum tirent Puig vers un record de ventes au 3e trimestre"
-   },
-   "summary": {
-    "ar": "Le groupe espagnol de cosmétiques a réalisé un chiffre d'affaires record au troisième trimestre 2026, atteignant 1,39 milliard d'euros, en hausse de 5,6% à périmètre comparable et de 7,2% à taux de change courants. Cette progression a été portée par les parfums et le maquillage, et une progression dans toutes les zones géographiques. Sur les neuf premiers mois de 2026, le groupe a généré un chiffre d'affaires de 3,74 milliards d'euros, en croissance de 4,8% à périmètre comparable et de 4,1%... -",
-    "en": "Le groupe espagnol de cosmétiques a réalisé un chiffre d'affaires record au troisième trimestre 2026, atteignant 1,39 milliard d'euros, en hausse de 5,6% à périmètre comparable et de 7,2% à taux de change courants. Cette progression a été portée par les parfums et le maquillage, et une progression dans toutes les zones géographiques. Sur les neuf premiers mois de 2026, le groupe a généré un chiffre d'affaires de 3,74 milliards d'euros, en croissance de 4,8% à périmètre comparable et de 4,1%... -"
-   }
-  },
-  {
    "id": "n1v8ybyq",
    "url": "https://www.premiumbeautynews.com/en/puig-hits-record-q3-sales-on,28392",
    "source": "Premium Beauty News",
@@ -514,24 +680,6 @@
    }
   },
   {
-   "id": "nfzktd5",
-   "url": "https://nstperfume.com/2026/10/22/lise-watier-neiges-dambre-new-fragrances/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-22T14:48:30.000Z",
-   "original": "Lise Watier Neiges d’Ambre ~ new fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 2,
-   "title": {
-    "ar": "Lise Watier Neiges d’Ambre ~ new fragrance",
-    "en": "Lise Watier Neiges d’Ambre ~ new fragrance"
-   },
-   "summary": {
-    "ar": "Canadian beauty brand Lise Watier has launched Neiges d'Ambre, a new limited edition flanker to 1996′s Neiges fragrance for women...",
-    "en": "Canadian beauty brand Lise Watier has launched Neiges d'Ambre, a new limited edition flanker to 1996′s Neiges fragrance for women..."
-   }
-  },
-  {
    "id": "n1c17qj5",
    "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE5rYTJxOU9jM1FuXzRFQTBJUFl6QjJGN2dheFp3V3hVYzgzTF9VaUpMUHZGM3drakYyaW1CYnJyUkZUaUlRalZucml6cmFWNUJD0gFWQVVfeXFMUFVob1N6T2xKWWttZzR1RWhVcGhjWE54VFgyTWgtX1M5SmJzMmQzRWZWUXgzN01lYVdVZmNiaDJSTTJTZmp6Y3NTVlROYnBnLU9TNFhWZ0E?oc=5",
    "source": "جريدة الجريدة الكويتية",
@@ -547,24 +695,6 @@
    "summary": {
     "ar": "«أغنيتين بأغنية»... توليفة موسيقية تجمع أربعة فنانين بقيادة العود",
     "en": "«أغنيتين بأغنية»... توليفة موسيقية تجمع أربعة فنانين بقيادة العود"
-   }
-  },
-  {
-   "id": "n18jy2at",
-   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQSndrYkZVUURWdmZXaVJWQ2dtWHpLSHRzUUNPUFJ2QVhZcVhLcERXZDdRVUVScDNFZVBrMTFVRUVTcXdWdzBrVDNPaGoteHRTczI1aElzSmdxVDFRcUpPMmNHYVJ5Y1NrRF9NWmllaVV4dl9QTTg2Y19JU21HZkpBS05JaENiQQ?oc=5",
-   "source": "The Impression",
-   "publishedAt": "2026-10-22T14:37:38.000Z",
-   "original": "Building Legacy from Memory: How Zegna Is Rewriting the Luxury Fragrance Rulebook",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Building Legacy from Memory: How Zegna Is Rewriting the Luxury Fragrance Rulebook",
-    "en": "Building Legacy from Memory: How Zegna Is Rewriting the Luxury Fragrance Rulebook"
-   },
-   "summary": {
-    "ar": "Building Legacy from Memory: How Zegna Is Rewriting the Luxury Fragrance Rulebook",
-    "en": "Building Legacy from Memory: How Zegna Is Rewriting the Luxury Fragrance Rulebook"
    }
   },
   {
@@ -619,100 +749,6 @@
    "summary": {
     "ar": "I Get Non-Stop Compliments When I Wear This New Perfume",
     "en": "I Get Non-Stop Compliments When I Wear This New Perfume"
-   }
-  },
-  {
-   "id": "n1ldetfg",
-   "url": "https://nstperfume.com/2026/10/22/thursday-scent-of-the-day-10-22-2/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-22T13:54:25.000Z",
-   "original": "Thursday scent of the day 10/22",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Thursday scent of the day 10/22",
-    "en": "Thursday scent of the day 10/22"
-   },
-   "summary": {
-    "ar": "Happy Almost-Friday! It's also International Stuttering Awareness Day and National Nut Day. Birthdays: Franz Liszt , Doris Lessing , Robert Capa , Catherine Deneuve and Jeff Goldblum . What fragrance are you wearing? I'm in Chanel Bois des Iles in the Extrait, which Deva called soothing and meditative . Reminder: 10/23 will be Unbottling Emotions Friday...",
-    "en": "Happy Almost-Friday! It's also International Stuttering Awareness Day and National Nut Day. Birthdays: Franz Liszt , Doris Lessing , Robert Capa , Catherine Deneuve and Jeff Goldblum . What fragrance are you wearing? I'm in Chanel Bois des Iles in the Extrait, which Deva called soothing and meditative . Reminder: 10/23 will be Unbottling Emotions Friday..."
-   }
-  },
-  {
-   "id": "nnximv6",
-   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPdWR4TWZYc01UTWFOamFBRUVuODk1bGtpSFR5a0h1VTNWZmVIYWxWaDF0UFhxRlk5RXZEMTBrUkpVRlp2RkhuRGtoWUZtRWxFZktWQUhET2VGenpWRjkzTTFmSXE5ZU5seWc1dTB1UGJfTE5DX01HTElybTk5SGRaM0xwaV9lRXdvY2ViaVFjZFRhQQ?oc=5",
-   "source": "Beauty Packaging",
-   "publishedAt": "2026-10-22T13:20:09.000Z",
-   "original": "Dove Debuts Its First-Ever Fine Fragrance",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Dove Debuts Its First-Ever Fine Fragrance",
-    "en": "Dove Debuts Its First-Ever Fine Fragrance"
-   },
-   "summary": {
-    "ar": "Dove Debuts Its First-Ever Fine Fragrance",
-    "en": "Dove Debuts Its First-Ever Fine Fragrance"
-   }
-  },
-  {
-   "id": "n1d6w0lw",
-   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNQ0FEUVZIdWdQZXdUVThMOVd3ZlpYVnItNXFoSnFubjlMeWRVQjFZd2JQNEZzM0lfbjdXVnZZZm5hcXpGLUg4UTQ1eXNNd1dWazZza1RTX19oYjdzQUdQNncxNXhUdjRCRlJaWUNneTlpNk9sY2RaU01YU2JOdjRFLWNpajhldVJ1aHVEenFFaWkyUQ?oc=5",
-   "source": "Cosmopolitan",
-   "publishedAt": "2026-10-22T13:11:33.000Z",
-   "original": "Not Dove Making One of My Favorite Perfume Launches of the Year",
-   "lang": "en",
-   "category": "launch",
-   "importance": 2,
-   "title": {
-    "ar": "Not Dove Making One of My Favorite Perfume Launches of the Year",
-    "en": "Not Dove Making One of My Favorite Perfume Launches of the Year"
-   },
-   "summary": {
-    "ar": "Not Dove Making One of My Favorite Perfume Launches of the Year",
-    "en": "Not Dove Making One of My Favorite Perfume Launches of the Year"
-   }
-  },
-  {
-   "id": "n7pz2mg",
-   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQN25fMTRCZlNkTkJTbG1CYzY1UUROcWRWOFJYUEppOF9IUUJYVFIwaWRacXE1Z3NRRDZyTG5sdVBaTEtMV1Nad3JPWm1aMndxLS1wS3M3bTNncHpFVHVGeEh0Q0swYWxxUlFyZk9HWWhiM1BZbzJUb3RTMUZxM0xYNUJYQWtSdw?oc=5",
-   "source": "Unidivers",
-   "publishedAt": "2026-10-22T13:08:02.000Z",
-   "original": "Paris. Fragonard, le parfum d’un siècle, les trésors d’un autre",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Paris. Fragonard, le parfum d’un siècle, les trésors d’un autre",
-    "en": "Paris. Fragonard, le parfum d’un siècle, les trésors d’un autre"
-   },
-   "summary": {
-    "ar": "Paris. Fragonard, le parfum d’un siècle, les trésors d’un autre",
-    "en": "Paris. Fragonard, le parfum d’un siècle, les trésors d’un autre"
-   }
-  },
-  {
-   "id": "ne2copc",
-   "url": "https://cosmeticsbusiness.com/kayali-expands-yum-fragrance-line-with-vanilla-cupcake",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-10-22T10:42:00.000Z",
-   "original": "Mona Kattan’s Kayali expands gourmand fragrance line Yum with Vanilla Cupcake I 108",
-   "lang": "en",
-   "category": "launch",
-   "importance": 5,
-   "title": {
-    "ar": "علامة Kayali توسع مجموعة العطور السكرية بإطلاق Yum Vanilla Cupcake",
-    "en": "Mona Kattan’s Kayali Expands Gourmand Fragrance Line with Yum Vanilla Cupcake"
-   },
-   "summary": {
-    "ar": "أعلنت علامة Kayali بقيادة منى قطان عن إضافة عطر Yum Vanilla Cupcake المستوحى من كعكة عيد الميلاد إلى مجموعتها الشهيرة House of Yum.",
-    "en": "The scent-layering brand Kayali is bolstering its House of Yum gourmand fragrance collection with the birthday cake-inspired Vanilla Cupcake."
-   },
-   "note": {
-    "ar": "إضافة ممتازة لمحبي العطور السكرية (Gourmand)، وتوفر إلهاماً رائعاً لمن يريد تصميم عطر بنوتات الفانيليا والحلويات.",
-    "en": "An excellent addition for gourmand lovers and great inspiration for anyone designing a fragrance with vanilla and dessert notes."
    }
   }
  ]
