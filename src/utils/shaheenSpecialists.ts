@@ -18,7 +18,8 @@ export type ScienceTrack =
   | 'commerce' | 'law' | 'pr' | 'management' | 'history' | 'geography' | 'literature' | 'social'
   | 'psychology' | 'cyber_psych' | 'ux_psych'
   | 'biology' | 'medicine' | 'engineering' | 'earth_space' | 'education' | 'media_info' | 'sports' | 'arts' | 'religion' | 'tourism_ir'
-  | 'ethical_hacking' | 'threat_analysis';
+  | 'ethical_hacking' | 'threat_analysis'
+  | 'academic' | 'vocational' | 'technical' | 'experimental' | 'smart_agents';
 
 export type SpecialistId = BotId;
 
@@ -67,7 +68,7 @@ export const SPECIALISTS: Specialist[] = [
     nameEn: 'Eng. Omar Al-Hasib — computing & AI specialist',
     fieldAr: 'الحوسبة والذكاء الاصطناعي',
     fieldEn: 'Computing & AI',
-    tracks: ['prog_langs', 'blocks', 'software', 'graphics', 'web_care', 'ai_science', 'quantum', 'ai_tools', 'ai_projects', 'it_sciences'],
+    tracks: ['prog_langs', 'blocks', 'software', 'graphics', 'web_care', 'ai_science', 'quantum', 'ai_tools', 'ai_projects', 'it_sciences', 'smart_agents'],
     sciencesAr: 'لغات البرمجة وبلوكاتها، وهندسة البرمجة، والجرافيك والديزاين، وصيانة المواقع، والذكاء الاصطناعي ومهاراته وأدواته ومشاريعه، وعلوم تقنية المعلومات، والحوسبة الكمية',
     sciencesEn: 'Programming languages and blocks, software engineering, graphics and design, web care, artificial intelligence (skills, tools, projects), IT sciences and quantum computing',
     keywords: ['برمج', 'برمجة', 'برمجيات', 'كود', 'خوارزمية', 'خوارزميات', 'الذكاء الاصطناعي', 'ذكاء اصطناعي', 'تعلم الآلي', 'شبكة عصبونية', 'قاعدة بيانات', 'قواعد البيانات', 'خادم', 'خوادم', 'استضافة', 'نطاق', 'موقع', 'مواقع', 'ويب', 'واجهة', 'واجهات', 'تطبيق', 'تطبيقات', 'بلوكات', 'جدولة', 'بايثون', 'جافا', 'جافاسكريبت', 'رست', 'لعبة', 'ألعاب', 'جرافيك', 'تصميم', 'ديزاين', 'ألوان', 'خطوط', 'حاسوب', 'كمبيوتر', 'سحابة', 'تخزين', 'كمية', 'بنية', 'اختبار برمجي', 'ai', 'programming', 'code', 'algorithm', 'software', 'database', 'server', 'website', 'web', 'design', 'graphic', 'block', 'coding', 'python', 'javascript', 'quantum', 'model', 'api'],
@@ -89,7 +90,7 @@ export const SPECIALISTS: Specialist[] = [
     nameEn: 'Dr. Hind Al-Ulum — science & math specialist',
     fieldAr: 'الفيزياء والرياضيات والعلوم النادرة',
     fieldEn: 'Physics, math & frontier sciences',
-    tracks: ['physics', 'math', 'frontier'],
+    tracks: ['physics', 'math', 'frontier', 'experimental'],
     sciencesAr: 'الفيزياء وقوانينها (الميكانيكا والكهرباء والضوء والصوت والنسبية والكم والنووي والفلك)، والرياضيات (الجبر والتفاضل والاحتمالات والإحصاء والمصفوفات)، والعلوم النادرة (البصريات والصوتيات والبلورات والنانو والمياه والتربة)',
     sciencesEn: 'Physics and its laws (mechanics, electricity, light, sound, relativity, quantum, nuclear, astronomy), mathematics (algebra, calculus, probability, statistics, matrices) and frontier sciences (optics, acoustics, crystals, nano, water, soil)',
     keywords: ['فيزياء', 'فيزيائي', 'رياضيات', 'رياضية', 'معادلة', 'معادلات', 'جبر', 'تفاضل', 'تكامل', 'احتمالات', 'إحصاء', 'إحصائي', 'مصفوفة', 'مصفوفات', 'تسارع', 'طاقة', 'حرارة', 'ضوء', 'صوت', 'كهرباء', 'مغناطيس', 'نسبية', 'نووي', 'فلك', 'نجم', 'نجوم', 'مجرة', 'بصريات', 'صوتيات', 'بلورات', 'نانو', 'ميكانيكا', 'جاذبية', 'نيوتن', 'أينشتاين', 'physics', 'math', 'mathematics', 'equation', 'algebra', 'calculus', 'probability', 'statistics', 'matrix', 'energy', 'force', 'velocity', 'acceleration', 'optics', 'acoustic', 'crystal', 'nano', 'mechanics', 'astronomy', 'frontier'],
@@ -100,7 +101,7 @@ export const SPECIALISTS: Specialist[] = [
     nameEn: 'Tarek Al-Tigara — commerce, law & management specialist',
     fieldAr: 'التجارة والقانون والإدارة والعلاقات العامة',
     fieldEn: 'Commerce, law, management & PR',
-    tracks: ['commerce', 'law', 'pr', 'management'],
+    tracks: ['commerce', 'law', 'pr', 'management', 'vocational'],
     sciencesAr: 'التجارة والتجارة الدولية (التسويق والتمويل والمحاسبة واللوجستيات والتصدير وجودة المنتج وحماية المستهلك)، والقوانين المحلية والدولية والعقلية والجريمة الإلكترونية، والإدارة التقنية والعامة والمشاريع والقيادة والمخاطر، والعلاقات العامة وإدارة السمعة والأزمات',
     sciencesEn: 'Commerce and international trade (marketing, finance, accounting, logistics, export, quality, consumer protection), local and international law, technical and general management, projects, leadership, risks, public relations, reputation and crisis management',
     keywords: ['تجارة', 'تجاري', 'تسويق', 'مبيعات', 'شراء', 'بيع', 'سعر', 'أسعار', 'تكلفة', 'تكاليف', 'ربح', 'خسارة', 'محاسبة', 'مالية', 'تمويل', 'استثمار', 'شحن', 'توصيل', 'لوجستيات', 'تصدير', 'استيراد', 'جمارك', 'قانون', 'قوانين', 'قانوني', 'عقد', 'عقود', 'اتفاقية', 'محكمة', 'دعوى', 'ملكية فكرية', 'علامة تجارية', 'إدارة', 'إداري', 'مشروع', 'مشاريع', 'قيادة', 'مخاطر', 'حوكمة', 'علاقات عامة', 'سمعة', 'أزمة', 'إعلام', 'صحافة', 'commerce', 'trade', 'marketing', 'sales', 'price', 'pricing', 'cost', 'profit', 'accounting', 'finance', 'investment', 'shipping', 'export', 'import', 'law', 'legal', 'contract', 'court', 'trademark', 'management', 'project', 'leadership', 'pr', 'reputation', 'crisis'],
@@ -133,7 +134,7 @@ export const SPECIALISTS: Specialist[] = [
     nameEn: 'Eng. Yassin Al-Handasa — engineering & earth sciences specialist',
     fieldAr: 'الهندسة وعلوم الأرض والفضاء',
     fieldEn: 'Engineering, earth & space sciences',
-    tracks: ['engineering', 'earth_space'],
+    tracks: ['engineering', 'earth_space', 'technical'],
     sciencesAr: 'الهندسة المدنية والميكانيكية والكهربائية والإلكترونيات والصناعية والعمارة والبترول والمناجم والطيران والبحرية والميكاترونكس والطاقة والسيارات، وعلوم الأرض والبيئة والتنوّع والاستدامة وتغير المناخ والآثار والجيوفيزياء والأحافير والفضاء والأقمار',
     sciencesEn: 'Civil, mechanical, electrical, electronics, industrial, architecture, petroleum, mining, aerospace, marine, mechatronics, energy and automotive engineering; earth and environment sciences, sustainability, climate change, archaeology, geophysics, fossils, space and satellites',
     keywords: ['هندسة', 'مهندس', 'مدنية', 'إسكانية', 'جسور', 'طرق', 'ميكانيكا', 'كهرباء', 'كهربائية', 'إلكترونيات', 'صناعية', 'تصنيع', 'عمارة', 'معماري', 'بترول', 'مناجم', 'طيران', 'فضاء', 'بحرية', 'سفن', 'ميكاترونكس', 'روبوتات', 'طاقة', 'نووي', 'سيارات', 'محرك', 'زراعة', 'سلامة مهنية', 'بيئة', 'بيئي', 'تنوّع حيوي', 'استدامة', 'مناخ', 'تلوث', 'تدوير', 'آثار', 'أثري', 'جيوفيزياء', 'أحافير', 'كواكب', 'أقمار', 'رياح', 'مياه موارد', 'engineering', 'civil', 'mechanical', 'electrical', 'electronics', 'architecture', 'petroleum', 'mining', 'aerospace', 'marine', 'robotics', 'energy', 'nuclear', 'automotive', 'ecology', 'environment', 'sustainability', 'climate', 'pollution', 'archaeology', 'satellite', 'planet', 'fossil'],
@@ -144,7 +145,7 @@ export const SPECIALISTS: Specialist[] = [
     nameEn: 'Noura Al-Tarbiya — education & information sciences specialist',
     fieldAr: 'التربية والتعليم والاعلام وعلوم المعلومات',
     fieldEn: 'Education & information sciences',
-    tracks: ['education', 'media_info'],
+    tracks: ['education', 'media_info', 'academic'],
     sciencesAr: 'المناهج وطرق التدريس والتربية الخاصة والقياس والتقويم والتعليم الإلكتروني وتكنولوجيا التعليم ودمج ذوي الإعاقة، والاعلام والصحافة والتحقق من المعلومات ومحو الأمية الإعلامية وعلوم المكتبات والأرشيف وعلم البيانات',
     sciencesEn: 'Curricula, teaching methods, special education, assessment, e-learning and inclusion; media, journalism, fact-checking, media literacy, library sciences, archives and data science',
     keywords: ['تربية', 'تعليم', 'تعليمي', 'مناهج', 'منهج', 'تدريس', 'معلم', 'معلمة', 'طالب', 'طلاب', 'مدرسة', 'صف', 'تربية خاصة', 'إعاقة', 'قياس', 'تقويم', 'امتحان', 'تعليم إلكتروني', 'تكنولوجيا التعليم', 'مهووبين', 'امية', 'إعلام', 'إعلامي', 'صحافة', 'صحفي', 'إذاعة', 'تلفزيون', 'تحقق', 'تضليل', 'مكتبات', 'مكتبة', 'أرشيف', 'وثائق', 'فهرسة', 'بيانات', 'ضخمة', 'نشر علمي', 'education', 'teaching', 'curriculum', 'school', 'student', 'special education', 'assessment', 'elearning', 'media', 'journalism', 'factcheck', 'library', 'archive', 'data science', 'big data'],
