@@ -1,0 +1,96 @@
+name: Shaheen inventory — stock and sales forecast
+
+# «إدارة المخزون والتنبؤ بالمبيعات»: every 6 hours it audits the real storefront catalog (products + Shaheen's
+# enrichment), reads the numeric stock and the recorded confirmed requests through the admin API (read-only), and
+# builds an honest plan: what ran out, what is low, days of cover from real sales, and a reorder quantity by lead
+# time + safety stock. With no sales data it says so and plans from stock/catalog only — no invented numbers and
+# no customer data or revenue amounts in the report. Code: scripts/shaheen-inventory/. Result:
+# src/data/live/shaheen-inventory.json (admin → «إدارة الذكاء الاصطناعي» → «الهيكل الإداري»).
+#
+# Minute 5: clear of the State (27), importer (37), school clock (47), patrol (52), pre-check (10) and the
+# customer-care desk (3).
+
+on:
+  schedule:
+    - cron: '5 */6 * * *'
+  workflow_dispatch:
+  push:
+    branches: ['arena/**']
+    paths:
+      - 'scripts/shaheen-inventory/**'
+      - 'src/data/products.json'
+      - 'src/data/live/store-catalog.json'
+      - 'src/utils/storeCatalog.ts'
+      - '.github/workflows/shaheen-inventory.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: shaheen-inventory-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # «مفتاح صاحب الموقع»: the owner (or «دولة المنصة») can pause this robot («inventory»).
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs inventory
+
+  inventory:
+    name: «إدارة المخزون» — stock and forecast report
+    needs: owner
+    # Branch rehearsals read the repository catalog only; the live admin data is read on main alone.
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      SHAM_INVENTORY_API_URL: ${{ vars.SHAM_INVENTORY_API_URL || 'https://sham-perfume-49bf.vercel.app' }}
+      SHAM_ADMIN_TOKEN: ${{ github.ref == 'refs/heads/main' && secrets.SHAM_ADMIN_TOKEN || '' }}
+      PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Write the inventory report (real data only)
+        run: node --import tsx scripts/shaheen-inventory/run.mts
+      - name: Behaviour tests
+        run: node --import tsx --test tests/shaheenInventory.test.ts
+      - name: Publish on main
+        if: env.PUBLISH == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen inventory bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "شاهين: إدارة المخزون والتنبؤ بالمبيعات $(date -u +%Y-%m-%dT%H:%MZ)" \
+            src/data/live/shaheen-inventory.json \
+            || { echo "::error::Could not push the inventory report"; exit 1; }

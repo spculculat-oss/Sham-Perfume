@@ -1,0 +1,94 @@
+name: Shaheen customer care — automatic service desk
+
+# «مكتب خدمة العملاء الآلي»: every 6 hours it audits the support knowledge the site publishes, reads the live
+# desk through the admin API (waiting conversations, open requests, knowledge gaps and recent ratings — aggregated
+# only, never names or contact details), and prepares ready replies from the published answers. It never sends a
+# message and never changes an order: it hands the queue to a human. With no token it still audits the knowledge
+# and says plainly that the live numbers are unknown. Code: scripts/shaheen-service/. Result:
+# src/data/live/shaheen-service.json (admin → «إدارة الذكاء الاصطناعي» → «الهيكل الإداري»).
+#
+# Minute 3: clear of the State (27), importer (37), school clock (47), patrol (52) and the pre-check (10).
+
+on:
+  schedule:
+    - cron: '3 */6 * * *'
+  workflow_dispatch:
+  push:
+    branches: ['arena/**']
+    paths:
+      - 'scripts/shaheen-service/**'
+      - 'server/core/storeGuide.ts'
+      - 'src/utils/pricing.ts'
+      - '.github/workflows/shaheen-service.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: shaheen-service-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # «مفتاح صاحب الموقع»: the owner (or «دولة المنصة») can pause this robot («service»).
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs service
+
+  desk:
+    name: «مكتب خدمة العملاء» — the service desk report
+    needs: owner
+    # Never read the live desk from a feature branch: branch rehearsals audit the published knowledge only.
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      SHAM_SERVICE_API_URL: ${{ vars.SHAM_SERVICE_API_URL || 'https://sham-perfume-49bf.vercel.app' }}
+      SHAM_ADMIN_TOKEN: ${{ github.ref == 'refs/heads/main' && secrets.SHAM_ADMIN_TOKEN || '' }}
+      PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Write the service desk report (real data only)
+        run: node --import tsx scripts/shaheen-service/run.mts
+      - name: Behaviour tests
+        run: node --import tsx --test tests/shaheenService.test.ts
+      - name: Publish on main
+        if: env.PUBLISH == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen service bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "شاهين: مكتب خدمة العملاء $(date -u +%Y-%m-%dT%H:%MZ)" \
+            src/data/live/shaheen-service.json \
+            || { echo "::error::Could not push the service desk report"; exit 1; }

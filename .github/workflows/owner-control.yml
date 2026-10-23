@@ -37,6 +37,7 @@ on:
           - council
           - secretary
           - catalog
+          - inventory
           - news
           - precheck
           - patrol
@@ -56,6 +57,7 @@ on:
           - visitor_tour
           - verifier
           - inspect
+          - service
           - doctor
           - live_check
           - keys
