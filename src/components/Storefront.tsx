@@ -47,6 +47,8 @@ import type { SupportedLanguage } from '../types/i18n';
 import { askShaheenStore, loadStoreCatalog, localSuggestion, storeImageSrc, type StoreSuggestion } from '../utils/liveStore';
 import { LegalDisclaimer } from './LegalDisclaimer';
 import { StoreInvoiceBreakdown } from './StoreInvoiceBreakdown';
+import CompleteYourOrder from './CompleteYourOrder';
+import { pastPurchases, rememberPurchase } from '../utils/purchaseMemory';
 import { addToCart, cartSummary, clearCart, orderMessage, orderRef, orderRequestEmail, removePurchasedItems, setCartQty, useCart, type PricedOrder } from '../utils/storeCart';
 import { contactEmail, contactMailto } from '../config/contact';
 import {
@@ -502,12 +504,18 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
   const [paying, setPaying] = useState(false);
   const [payMessage, setPayMessage] = useState('');
   const [payResult, setPayResult] = useState<PaymentResult | null>(null);
+  // «شاهين التاجر»: what was just ordered (this visit) and what was ordered before on this device.
+  const [justOrdered, setJustOrdered] = useState<string[]>([]);
+  const [boughtBefore, setBoughtBefore] = useState<string[]>(() => (typeof window === 'undefined' ? [] : pastPurchases()));
+  const [hideForYou, setHideForYou] = useState(false);
+  const ordered = (skus: string[]) => { if (!skus.length) return; setJustOrdered(skus); setBoughtBefore(rememberPurchase(skus)); };
 
   useEffect(() => {
     void returnedPayment().then((result) => {
       if (!result) return;
       setPayResult(result);
       if (result.state === 'paid' && result.mode === 'live' && result.cartItems) removePurchasedItems(result.cartItems);
+      if (result.state === 'paid' && result.cartItems) ordered(result.cartItems.map((i) => i.sku));
     });
   }, []);
 
@@ -545,6 +553,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
         const items = summary.lines.map((l) => ({ sku: l.product.sku, qty: l.qty }));
         const order = await reserveDirectOrder(items, money.country, payForm, currentLang, chosenDirect.id);
         setActiveDirect(order.ref); setDirectOrders(savedDirectOrders());
+        ordered(items.map((i) => i.sku));
         // The order is placed: it leaves the basket (a direct purchase never touched it).
         if (directPurchase) setDirectPurchase(null); else removePurchasedItems(items);
         setStep('cart');
@@ -569,6 +578,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
     const ref = orderRef();
     const mail = orderRequestEmail(summary, currentLang, priced, payForm, countries.find((c) => c.code === money.country)?.name || money.country, ref);
     setOrderSent(ref);
+    ordered(summary.lines.map((l) => l.product.sku));
     window.location.href = contactMailto('orders', currentLang, mail.subject, mail.body);
   };
 
@@ -1115,6 +1125,14 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
           </div>
         )}
 
+        {justOrdered.length > 0 ? (
+          <CompleteYourOrder products={products} basis={products.filter((p) => justOrdered.includes(p.sku))} lang={currentLang} variant="after" price={money.price}
+            onAdd={add} onOpen={openDetails} added={justAdded} inCart={[...Object.keys(cart), ...justOrdered]} onDismiss={() => setJustOrdered([])} />
+        ) : !hideForYou && boughtBefore.length > 0 ? (
+          <CompleteYourOrder products={products} basis={products.filter((p) => boughtBefore.slice(0, 3).includes(p.sku))} lang={currentLang} variant="forYou" price={money.price}
+            onAdd={add} onOpen={openDetails} added={justAdded} inCart={[...Object.keys(cart), ...boughtBefore]} onDismiss={() => setHideForYou(true)} />
+        ) : null}
+
         {/* Haute Parfumerie Hero Presentation */}
         <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-stone-950 via-stone-900 to-amber-950 text-white border border-amber-500/20 shadow-2xl p-6 sm:p-8">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-500/15 via-transparent to-transparent pointer-events-none" />
@@ -1616,6 +1634,11 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                     </div>
                   ))}
                 </div>
+
+                {step === 'cart' && !directPurchase && (
+                  <CompleteYourOrder products={products} basis={summary.lines.map((l) => l.product)} lang={currentLang} variant="cart" price={money.price}
+                    onAdd={add} onOpen={(p) => { setCartOpen(false); openDetails(p); }} added={justAdded} inCart={summary.lines.map((l) => l.product.sku)} />
+                )}
 
                 <div className="border-t border-stone-100 pt-4 space-y-2.5">
                   {countryPicker('store-cart-country')}
