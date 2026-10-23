@@ -1,15 +1,15 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T05:16:28.759Z",
+ "updatedAt": "2026-10-23T06:14:49.838Z",
  "reliance": {
   "score": 100,
-  "covered": 1214,
+  "covered": 1215,
   "total": 1216,
-  "fromMemory": 1214,
+  "fromMemory": 1215,
   "fromLibrary": 0,
   "byLang": {
    "ar": {
-    "covered": 1193,
+    "covered": 1194,
     "total": 1195
    },
    "en": {
@@ -21,6 +21,12 @@
  "studiedTotal": 198,
  "selfTaughtTotal": 892,
  "history": [
+  {
+   "at": "2026-10-23T06:14:49.838Z",
+   "score": 100,
+   "studied": 0,
+   "mode": "self"
+  },
   {
    "at": "2026-10-23T05:16:28.759Z",
    "score": 100,
@@ -374,12 +380,6 @@
    "score": 57,
    "studied": 10,
    "mode": "ai"
-  },
-  {
-   "at": "2026-10-18T11:52:11.697Z",
-   "score": 44,
-   "studied": 32,
-   "mode": "ai"
   }
  ],
  "lastStudied": [
@@ -509,11 +509,6 @@
    "q": "ازاي اعرف إن الخبر مضلل منطقياً؟",
    "lang": "ar",
    "topic": "expert:logic"
-  },
-  {
-   "q": "ازاي نعرف إن الكريم باظ ولازم يترمي؟",
-   "lang": "ar",
-   "topic": "expert:cosmetics"
   }
  ],
  "importer": {
@@ -523,9 +518,9 @@
  },
  "localTaughtTotal": 141,
  "spelling": {
-  "at": "2026-10-23T05:16:28.759Z",
+  "at": "2026-10-23T06:14:49.838Z",
   "tried": 746,
-  "understood": 701,
+  "understood": 702,
   "score": 94,
   "misses": [
    "طبييه → طبيه (طبيعيه)",
@@ -540,7 +535,7 @@
   }
  },
  "practice": {
-  "at": "2026-10-23T05:16:28.759Z",
+  "at": "2026-10-23T06:14:49.838Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -714,9 +709,9 @@
    "score": 100
   },
   "chemistry": {
-   "covered": 35,
+   "covered": 36,
    "total": 36,
-   "score": 97
+   "score": 100
   },
   "physics": {
    "covered": 36,
@@ -835,7 +830,7 @@
   }
  },
  "tools": {
-  "at": "2026-10-23T05:16:28.759Z",
+  "at": "2026-10-23T06:14:49.838Z",
   "items": [
    {
     "id": "finance_agent",
@@ -1000,14 +995,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-23T05:16:28.759Z",
+  "at": "2026-10-23T06:14:49.838Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-23T11:16:28.759Z"
+    "next": "2026-10-23T12:14:49.838Z"
    },
    {
     "id": "site-care",
@@ -1019,7 +1014,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-23T17:16:28.759Z"
+    "next": "2026-10-23T18:14:49.838Z"
    }
   ]
  }
