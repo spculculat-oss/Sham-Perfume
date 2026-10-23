@@ -277,6 +277,11 @@ export interface CoreSettings {
   currency: string;
   handoffContact: string;
   businessHours: string;
+  /**
+   * Version of the built-in knowledge seed already applied to this store (see server/core/seed.ts).
+   * Older stores miss it, so they are upgraded once: new platform guides are added, edited docs kept.
+   */
+  knowledgeSeedVersion?: number;
   updatedAt: string;
 }
 

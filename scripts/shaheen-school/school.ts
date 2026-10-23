@@ -10,10 +10,13 @@
  *      (src/data/live/shaheen-school.json, shown in the admin panel).
  * Pure helpers here; scripts/shaheen-school/run.mts does the I/O.
  */
+import { platformsAuto } from '../../server/core/selfReliance';
 import { isPersonal, isTimeBound, meaningWords, normalizeQuestion, recallSimilar, worthRemembering, type MemoryFile } from '../../src/utils/shaheenMemory';
 import { materialCard, topicWords as libraryTopicWords, type LibraryMaterial } from '../../src/utils/shaheenLibrary';
 import { spellingDrill, typoVariants, understandQuestion, wordKey, type Lexicon } from '../../src/utils/shaheenSpelling';
+import { academyQuestions, TOOL_FIELDS, TRACKS, trackOf, type TrackId } from './curriculum';
 import { EXPERT_GAP_PREFIX, expertOf } from '../../src/utils/shaheenAgent';
+import { SCIENCE_SYLLABUS } from '../../src/data/sciences/syllabus';
 
 export interface BankQuestion { q: string; lang: 'ar' | 'en'; topic: string; origin: 'curriculum' | 'library' | 'visitors' | 'council' }
 export interface TrainingDoc { id: string; title: string; content: string; tags?: string[] }
@@ -42,6 +45,15 @@ export interface SchoolFile {
    * answers by himself when their main word is mistyped (exam).
    */
   spelling?: { at: string; tried: number; understood: number; score: number; misses: string[]; questions: { tried: number; answered: number } };
+  /** The new academy missions: self-reliance per track (languages, blocks & scheduling, software engineering,
+   * graphics & design, web maintenance, AI tools). */
+  tracks?: Record<string, { covered: number; total: number; score: number }>;
+  /** Every AI tool, its field, and what the school will teach it next («طور كل أداة في مجالها»). */
+  tools?: { at: string; items: { id: string; field: string; covered: number; total: number; score: number; focus: string }[] };
+  /** The block programs the school built and scheduled (src/data/live/shaheen-blocks.json). */
+  blocks?: { at: string; programs: number; scheduled: number; errors: number; nextRuns: { id: string; next: string | null }[] };
+  /** «تدريب وش عمل» — hands-on exercises that really ran and were verified (code, calculations, designs, checks). */
+  practice?: { at: string; total: number; passed: number; taught: number; items: { id: string; titleAr: string; ok: boolean; detail: string }[] };
 }
 
 export const emptySchool = (): SchoolFile => ({
@@ -75,9 +87,10 @@ export const CURRICULUM: BankQuestion[] = [
   ] as const).map(([topic, q]) => ({ q, lang: 'en' as const, topic, origin: 'curriculum' as const })),
 ];
 
-/** The training library's lessons become questions too («حدثني عن …»). */
+/** The training library's lessons become questions too («حدثني عن …»). Titles that change with time (news)
+ * are never exam material — they are live-research material, answered fresh when research is on. */
 export function libraryQuestions(docs: TrainingDoc[], max = 40): BankQuestion[] {
-  return docs.slice(0, max).map((d) => ({ q: `حدثني عن ${d.title.replace(/[؟?.!]+$/, '')}`, lang: 'ar' as const, topic: 'library', origin: 'library' as const }));
+  return docs.slice(0, max).filter((d) => !isTimeBound(d.title)).map((d) => ({ q: `حدثني عن ${d.title.replace(/[؟?.!]+$/, '')}`, lang: 'ar' as const, topic: 'library', origin: 'library' as const }));
 }
 
 /** Questions the daily meeting («مجلس شاهين») asked him to study. */
@@ -118,8 +131,8 @@ export const ADVANCED: BankQuestion[] = [
   ...([
     ['problems', 'العطر بتاعي ريحته كحول قوية اعمل ايه؟'], ['problems', 'ليه العطر اللي عملته ريحته اختفت بسرعة؟'], ['problems', 'العطر لونه اتغير بعد شهر هل باظ؟'],
     ['problems', 'ازاي اقلل حدة نوتة طاغية في التركيبة؟'], ['problems', 'العطر طلع تقيل وخانق ازاي اخففه؟'], ['problems', 'ليه العطر بيعمل حساسية لبعض الناس؟'],
-    ['problems', 'العطر ريحته على الجلد غير في الزجاجة ليه؟'], ['problems', 'ازاي اعرف ان الزيت العطري مغشوش؟'],
-    ['skills', 'ازاي ادرب انفي على تمييز الروايح؟'], ['skills', 'ازاي اوثق تجاربي في تركيب العطور؟'], ['skills', 'ازاي اختبر عطر جديد قبل ما اعمل منه كمية كبيرة؟'],
+    ['problems', 'العطر ريحته على الجلد غير في الزجاجة ليه؟'], ['problems', 'ازاي اكتشف الزيت العطري المغشوش؟'],
+    ['skills', 'ازاي ادرب انفي على تمييز الروايح؟'], ['skills', 'ازاي اوثق تجاربي في تركيب العطور؟'], ['skills', 'ازاي اعمل اختبار تركيبة العطر قبل الإنتاج؟'],
     ['skills', 'ايه الادوات اللي محتاجها عشان ابدأ اركب عطور؟'], ['skills', 'ازاي اوزن مكونات العطر بدقة؟'], ['skills', 'يعني ايه اكورد في العطور وازاي اعمله؟'],
     ['business', 'ازاي احسب تكلفة العطر اللي بعمله قبل ما ابيعه؟'], ['business', 'ايه اللي لازم يتكتب على ملصق زجاجة العطر؟'], ['business', 'ازاي احافظ على ثبات جودة العطر من دفعة للتانية؟'],
     ['culture', 'ايه تاريخ العطور عند العرب؟'], ['culture', 'ايه الفرق بين العطور الفرنسية والعطور العربية؟'], ['culture', 'ايه هو البخور وازاي بيتعمل؟'],
@@ -131,14 +144,50 @@ export const ADVANCED: BankQuestion[] = [
   ] as const).map(([topic, q]) => ({ q, lang: 'en' as const, topic: `${topic}-en`, origin: 'curriculum' as const })),
 ];
 
+/**
+ * «منهج المدرسة على مدار الساعة»: each school expert's next questions (src/data/sciences/syllabus.ts), studied by
+ * «المعلم المحلي» as that expert (topic «expert:<field>» → expertBrief/reviewField) and kept only after the review.
+ */
+export const syllabusQuestions = (): BankQuestion[] =>
+  Object.entries(SCIENCE_SYLLABUS).flatMap(([field, qs]) => qs.map((q) => ({ q, lang: 'ar' as const, topic: `${EXPERT_GAP_PREFIX}${field}`, origin: 'curriculum' as const })));
+
 export function buildBank(docs: TrainingDoc[], council: string[] = [], visitors: BankQuestion[] = [], materials: LibraryMaterial[] = []): BankQuestion[] {
   const seen = new Set<string>();
-  return [...visitors, ...CURRICULUM, ...libraryQuestions(docs), ...materialQuestions(materials), ...councilQuestions(council), ...ADVANCED].filter((b) => {
+  return [...visitors, ...CURRICULUM, ...libraryQuestions(docs), ...materialQuestions(materials), ...councilQuestions(council), ...ADVANCED, ...syllabusQuestions(), ...academyQuestions()].filter((b) => {
     const k = `${b.lang}|${normalizeQuestion(b.q)}`;
     if (seen.has(k)) return false;
     seen.add(k);
     return true;
   });
+}
+
+/** Per-track self-reliance (the academy missions + the original perfume curriculum). */
+export function trackStats(results: ExamResult[]): Record<string, { covered: number; total: number; score: number }> {
+  const out: Record<string, { covered: number; total: number; score: number }> = {};
+  for (const t of TRACKS) out[t.id] = { covered: 0, total: 0, score: 0 };
+  for (const r of results) {
+    const s = (out[trackOf(r.question.topic)] ||= { covered: 0, total: 0, score: 0 });
+    s.total++;
+    if (r.covered) s.covered++;
+  }
+  for (const s of Object.values(out)) s.score = s.total ? Math.round((s.covered / s.total) * 100) : 0;
+  return out;
+}
+
+/** Every AI tool with the progress of its field — and the next question its field will study (the focus). */
+export function toolStats(results: ExamResult[], at: string): NonNullable<SchoolFile['tools']> {
+  const items = Object.entries(TOOL_FIELDS).map(([id, t]) => {
+    const mine = results.filter((r) => r.question.topic === `tool-${id}`);
+    const covered = mine.filter((r) => r.covered);
+    const focus = mine.find((r) => !r.covered)?.question.q || 'مجاله مكتمل — يُراجع بالتقرير القادم';
+    return {
+      id, field: t.field,
+      covered: covered.length, total: mine.length,
+      score: mine.length ? Math.round((covered.length / mine.length) * 100) : 0,
+      focus,
+    };
+  });
+  return { at, items };
 }
 
 /** Words every perfume question shares: they never decide which lesson answers a question («العنبر في العطور» ≠ «تعتيق العطور»). */
@@ -206,21 +255,38 @@ export function exam(bank: BankQuestion[], memory: MemoryFile, docs: TrainingDoc
   };
 }
 
+/** The 6-hourly run studies perfume first; the hourly «school clock» (SCHOOL_FOCUS=experts) studies the experts' syllabus first. */
+const syllabusRank = (b: BankQuestion, focus: 'perfume' | 'experts') => {
+  const expert = b.origin === 'curriculum' && b.topic.startsWith(EXPERT_GAP_PREFIX);
+  return focus === 'experts' ? Number(!expert) : Number(expert);
+};
+
 /** Next questions to study with an AI engine (no lesson of his own): topics with the most gaps first, so his knowledge grows evenly. */
-export function pickStudy(results: ExamResult[], max: number): BankQuestion[] {
+export function pickStudy(results: ExamResult[], max: number, focus: 'perfume' | 'experts' = 'perfume'): BankQuestion[] {
   const gaps = results.filter((r) => !r.covered && !r.lesson).map((r) => r.question);
   const perTopic = new Map<string, number>();
   for (const g of gaps) perTopic.set(g.topic, (perTopic.get(g.topic) || 0) + 1);
   const taken = new Map<string, number>();
   // Visitors' real questions first; then the topics with the most gaps.
   return [...gaps]
-    .sort((a, b) => Number(b.origin === 'visitors') - Number(a.origin === 'visitors') || (perTopic.get(b.topic)! - perTopic.get(a.topic)!) || Number(a.origin === 'library') - Number(b.origin === 'library'))
+    .sort((a, b) => Number(b.origin === 'visitors') - Number(a.origin === 'visitors') || (syllabusRank(a, focus) - syllabusRank(b, focus)) || (perTopic.get(b.topic)! - perTopic.get(a.topic)!) || Number(a.origin === 'library') - Number(b.origin === 'library'))
     .filter((g) => { const n = taken.get(g.topic) || 0; if (n >= (g.origin === 'visitors' ? max : 2)) return false; taken.set(g.topic, n + 1); return true; })
     .slice(0, max);
 }
 
+/**
+ * Which teacher is asked first. On «تلقائي» (the owner's switch, 2026-10-22: «طول ما هما شغالين خليه يتعلم منهم») the
+ * AI platforms teach first while they work, and the local teacher on the runner takes over when they stop; otherwise
+ * the workflow's SCHOOL_PREFER (usually the local teacher) leads.
+ */
+export function teacherPreference(env: Record<string, string | undefined>): string | undefined {
+  const prefer = env.SCHOOL_PREFER?.trim() || undefined;
+  return platformsAuto(env) && prefer === 'self_hosted' ? undefined : prefer;
+}
+
 export const STUDY_SYSTEM = `أنت «الخبير شاهين»، خبير العطور وصناعتها في موقع «شام». تدرس سؤالاً لتحفظ إجابته وتجيب به الزوار لاحقاً بدون مساعدة.
 اكتب إجابة خبير دقيقة وعملية وواضحة لغير المتخصص، 80–220 كلمة، بلغة السؤال (المصرية المبسطة إن كان بالعربية العامية).
+حلّل السؤال منطقياً أولاً: المطلوب شخص (مين) أم رقم (كام) أم سبب (ليه) أم خطوات (ازاي) أم نعم/لا (هل) أم مقارنة؟ ثم ابدأ بالإجابة المباشرة عن المطلوب نفسه في أول جملة، ثم الأسباب أو الدليل، ثم مثال، بلا تناقض ولا مغالطات ولا تعميم بلا دليل؛ وإن لم تكن متأكداً فقل ذلك بدل التخمين.
 لا تذكر أي شركة أو تطبيق ذكاء اصطناعي، ولا أسعاراً أو أخباراً أو عروضاً أو مواعيد (تتغير)، ولا تعتذر.
 ثم اكتب 4 صيغ أخرى يسأل بها الناس نفس السؤال (بنفس اللغة: عامية وفصحى وصيغة قصيرة).
 أعد JSON فقط: {"answer":"…","paraphrases":["…","…","…","…"]}`;
@@ -236,6 +302,7 @@ export const LOCAL_TEACHER_STYLE = `
  */
 export const REVIEW_SYSTEM = `أنت مراجع خبير في العطور وصناعتها وسلامتها، صارم جداً.
 ستُعطى سؤالاً وإجابة مقترحة. ارفض الإجابة إذا كان فيها: معلومة خاطئة، نصيحة غير منطقية أو ضارة أو غير آمنة، كلام لا يجيب عن السؤال، أو تخمين بأرقام ونسب غير معقولة.
+وارفضها أيضاً إن لم تُجب عن المطلوب بالضبط (سؤال «مين» بلا شخص، «كام» بلا رقم، «ليه» بلا سبب، «ازاي» بلا خطوات)، أو فيها تناقض أو مغالطة منطقية أو نتيجة لا تتبع من أسبابها.
 أجب بسطر واحد فقط: «OK» إن كانت صحيحة ومفيدة وآمنة، أو «REJECT: السبب باختصار».`;
 /** A question sent to a field's expert is reviewed by that field's standards (and its limits), not as perfumery. */
 const reviewField = (topic: string) => {

@@ -5,6 +5,7 @@ import { ToastNotification } from './components/ToastNotification';
 import { UserProfilePage } from './components/UserProfilePage';
 import { Hero } from './components/Hero';
 import { HomeHub } from './components/HomeHub';
+import { SectionsGateway } from './components/SectionsGateway';
 import { Storefront } from './components/Storefront';
 import { ProductDetail } from './components/ProductDetail';
 import { ConcentrationCalculator } from './components/ConcentrationCalculator';
@@ -21,6 +22,7 @@ import { ManufacturingSpecSheet } from './components/ManufacturingSpecSheet';
 import { PerfumerAIChatbot } from './components/PerfumerAIChatbot';
 import { PerfumerMasterLabView } from './components/PerfumerMasterLabView';
 import { ShamAssistant } from './assistant/ShamAssistant';
+import SpecialistsHub from './components/SpecialistsHub';
 import { WorldPerfumeNews } from './components/WorldPerfumeNews';
 import { Footer } from './components/Footer';
 import { LocalizedNumberInput } from './components/LocalizedNumberInput';
@@ -66,7 +68,7 @@ import {
 import { UserProfile } from './types/auth';
 import { getCurrentUserSession, logoutUser } from './utils/authStorage';
 import { decodeFormulaPayload } from './utils/formulaShare';
-import { Check, X, BookmarkPlus } from 'lucide-react';
+import { Check, X, BookmarkPlus, Loader2 } from 'lucide-react';
 import { LOAD_FORMULA_EVENT, syncRecipeToAccount, trackLearning, type SharedFormula } from './community/sync';
 import { getSessionToken } from './community/api';
 import { profileFromMember, saveCurrentUserProfile } from './utils/authStorage';
@@ -75,6 +77,7 @@ import { ErrorBoundary, lazyWithReload } from './utils/lazyRetry';
 
 // «مجتمع شام» (social, messenger, member and merchant portals): its own bundle, loaded on the first #community visit.
 const CommunityApp = lazyWithReload(() => import('./community/CommunityApp'));
+const CosmeticsHub = lazyWithReload(() => import('./components/CosmeticsHub'));
 
 const LOCAL_STORAGE_KEY = 'miyaar_perfume_saved_formulas';
 
@@ -318,8 +321,10 @@ export default function App() {
     }
   };
 
-  const navigateToTab = (tab: string, pushHistory = true) => {
-    if (tab === activeTab) {
+  const navigateToTab = (target: string, pushHistory = true) => {
+    // «store?section=cosmetics»: the tab is the part before «?», the rest stays in the address for the page to read.
+    const tab = target.split('?')[0] || 'home';
+    if (tab === activeTab && tab === target) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -329,9 +334,9 @@ export default function App() {
     if (pushHistory) {
       setHistoryStack((prev) => [...prev, tab]);
       try {
-        window.history.pushState({ tab, isAppNav: true }, '', `#${tab}`);
+        window.history.pushState({ tab, isAppNav: true }, '', `#${target}`);
       } catch (e) {
-        window.location.hash = `#${tab}`;
+        window.location.hash = `#${target}`;
       }
     }
     setActiveTab(tab);
@@ -980,7 +985,16 @@ export default function App() {
             onOpenPrintModal={handleOpenSpecModal}
           />
 
-          {activeTab === 'home' && (
+          {/* The home page mixes the two sections; «العطور» opens the perfume hub on its own. */}
+          {activeTab === 'home' && <SectionsGateway currentLang={currentLang} onNavigate={(tabId) => navigateToTab(tabId)} />}
+
+          {activeTab === 'cosmetics' && (
+            <Suspense fallback={<div className="py-16 text-center"><Loader2 className="w-8 h-8 animate-spin mx-auto text-rose-700" /></div>}>
+              <CosmeticsHub currentLang={currentLang} onNavigate={(tabId) => navigateToTab(tabId)} />
+            </Suspense>
+          )}
+
+          {(activeTab === 'home' || activeTab === 'perfumes') && (
             <HomeHub
               onNavigate={(tabId) => navigateToTab(tabId)}
               currentLang={currentLang}
@@ -1186,6 +1200,9 @@ export default function App() {
 
       {/* Sham Core services assistant: orders, store, bespoke, B2B, support (opposite corner to Shaheen) */}
       <ShamAssistant currentLang={currentLang} />
+
+      {/* «مجلس المتخصصين»: استشارة علوم شاهين في أي قسم وفي أي وقت (وسط الشاشة السفلي) */}
+      <SpecialistsHub section={activeTab} lang={currentLang} />
 
       {/* Footer */}
       <Footer

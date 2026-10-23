@@ -106,6 +106,7 @@ jobs:
           git config user.name "Shaheen patrol bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           node scripts/ci/publish.mjs "الدورية بالتناوب: $(date -u +'%Y-%m-%d %H:%M')" src/data/live/shaheen-patrol.json src/data/live/ai-quota.json \
+            src/data/live/shaheen-blocks.json \
             || { echo "::error::Could not push the patrol log"; exit 1; }
       - name: Start the robots that fix what broke
         if: env.PATROL_ACT == 'true' && steps.patrol.outputs.reruns != ''

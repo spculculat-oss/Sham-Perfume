@@ -1,16 +1,20 @@
 import { T, TP, adminLocale } from './adminL10n';
-import { useCallback, useEffect, useState } from 'react';
-import { Atom, BookOpenCheck, ExternalLink, Globe2, GraduationCap, RefreshCw, ShieldCheck, Wrench } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Atom, BookOpenCheck, Wheat, ExternalLink, Globe2, GraduationCap, RefreshCw, ShieldCheck, Wrench } from 'lucide-react';
 import bundledSources from '../data/live/import-sources.json';
 import bundledSchool from '../data/live/shaheen-school.json';
 import bundledSkills from '../data/live/shaheen-skills.json';
 import bundledSciences from '../data/live/shaheen-sciences.json';
+import bundledHarvest from '../data/live/shaheen-harvest.json';
 import type { LiveSource, SourcesFile, SourceStatus } from '../../scripts/shaheen-discover/discover';
 import type { SchoolFile } from '../../scripts/shaheen-school/school';
+import { TRACKS } from '../../scripts/shaheen-school/curriculum';
 import { TRUST_MIN, type Region, type TrustId, type TrustProfile } from '../../scripts/shaheen-discover/trust';
 import type { SkillsFile } from '../../scripts/shaheen-import/skills';
 import { isSciencesFile, type SciencesFile } from '../../scripts/shaheen-school/sciences';
-import { SCIENCE_POLICY_AR } from '../data/sciences';
+import { isHarvestReport, type HarvestReport } from '../../scripts/shaheen-harvest/harvest';
+import { SCIENCE_LESSONS, SCIENCE_POLICY_AR } from '../data/sciences';
+import { buildScienceIndex, scienceHits, scienceIndexSummary } from '../utils/scienceIndex';
 
 /**
  * «نمو شاهين» in the Shaheen tab: the stores «كشّاف المصادر» found and approved for the importer, the store
@@ -128,8 +132,22 @@ export default function ShaheenGrowthPanel() {
   const [school, l2, load2] = useLive<SchoolFile>('shaheen-school.json', bundledSchool as unknown as SchoolFile, isSchool);
   const [skills, l3, load3] = useLive<SkillsFile>('shaheen-skills.json', bundledSkills as SkillsFile, isSkills);
   const [sciences, l4, load4] = useLive<SciencesFile>('shaheen-sciences.json', bundledSciences as unknown as SciencesFile, isSciencesFile);
-  const loading = l1 || l2 || l3 || l4;
-  const reload = () => { load1(); load2(); load3(); load4(); };
+  const [harvest, l5, load5] = useLive<HarvestReport>('shaheen-harvest.json', bundledHarvest as unknown as HarvestReport, isHarvestReport);
+  // «فهرس علوم شاهين»: built once when the panel opens, so the merchant sees what makes the sciences appear at once.
+  const fastIndex = useMemo(() => {
+    const index = buildScienceIndex(SCIENCE_LESSONS);
+    const summary = scienceIndexSummary(index);
+    const questions = SCIENCE_LESSONS.map((lesson) => lesson.questionAr);
+    for (const question of questions) scienceHits(index, question); // first time: scored and kept
+    const started = performance.now();
+    for (let round = 0; round < 20; round++) for (const question of questions) scienceHits(index, question);
+    const cached = Math.round((performance.now() - started) / (20 * questions.length) * 1000) / 1000;
+    return TP('فهرس سريع: {lessons} درساً و{words} كلمة، بُني في {ms} مللي ثانية مرة واحدة، والسؤال المتكرر بيرجع في {cached} مللي ثانية', {
+      lessons: summary.lessons, words: summary.words, ms: summary.buildMs, cached: String(cached),
+    });
+  }, []);
+  const loading = l1 || l2 || l3 || l4 || l5;
+  const reload = () => { load1(); load2(); load3(); load4(); load5(); };
 
   const by = (s: SourceStatus) => sources.sources.filter((x) => x.status === s);
   const active = by('active');
@@ -233,6 +251,40 @@ export default function ShaheenGrowthPanel() {
                   {recent.map((h) => <div key={h.at} title={`${when(h.at)} — ${h.score}%`} className={`flex-1 rounded-t ${h.mode === 'ai' ? 'bg-amber-400' : h.mode === 'local' ? 'bg-emerald-400' : 'bg-amber-200'}`} style={{ height: `${Math.max(4, h.score)}%` }} />)}
                 </div>
               )}
+              {school.tracks && (
+                <div className="mt-3">
+                  <p className="mb-1 font-semibold text-stone-600">{T('مسارات المدرسة — الاعتماد على النفس')}</p>
+                  <div className="grid gap-1.5 sm:grid-cols-2">
+                    {TRACKS.map((t) => {
+                      const s = school.tracks![t.id];
+                      if (!s) return null;
+                      return (
+                        <div key={t.id}>
+                          <div className="mb-0.5 flex justify-between text-[11px]"><span>{T(t.titleAr)}</span><b>{s.score}%</b></div>
+                          <Meter value={s.score} tone={s.score >= 80 ? 'bg-emerald-500' : 'bg-amber-500'} />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+              {school.tools && (
+                <details className="mt-3">
+                  <summary className="cursor-pointer text-stone-500">{T('تطوير كل أداة ذكاء اصطناعي في مجالها')}</summary>
+                  <ul className="mt-1 space-y-0.5">
+                    {school.tools.items.map((t) => (
+                      <li key={t.id} className="text-[11px] text-stone-600">
+                        <b>{T(t.field)}</b> — {t.covered}/{t.total} ({t.score}%) · {T('التركيز القادم')}: <span dir="auto">{t.focus}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              )}
+              {school.blocks && (
+                <p className="mt-2 text-[11px] text-stone-500">
+                  {TP('بلوكات شاهين: {n} برامج مبنية، {s} مجدولة، {e} أخطاء', { n: school.blocks.programs, s: school.blocks.scheduled, e: school.blocks.errors })}
+                </p>
+              )}
               {school.spelling && (
                 <div className="mt-3">
                   <div className="mb-1 flex justify-between text-xs"><span>{T('فهم الكلمات المكتوبة غلط')}</span><b>{school.spelling.score}%</b></div>
@@ -261,6 +313,23 @@ export default function ShaheenGrowthPanel() {
           </div>
         </section>
 
+        {/* «حصّاد شاهين»: answers made ready before the packages run out */}
+        <section className="rounded-xl border border-stone-100 p-3 lg:col-span-3">
+          <h3 className="mb-2 flex items-center gap-1.5 text-xs font-bold text-stone-700"><Wheat className="h-4 w-4 text-amber-600" />{T('حصّاد شاهين — إجابات جاهزة قبل ما الباقات تخلص')}</h3>
+          <p className="mb-2 text-xs leading-relaxed text-stone-600">{T('كل ساعة بيجهّز إجابات لأسئلة الزوار اللي ماتجاوبتش والأسئلة اليومية ويحفظها في ذاكرته، عشان لو الباقة خلصت يرد منها. آخر ساعتين قبل تجديد الباقة بيستخدم الباقي منها، وباقي اليوم نماذج مفتوحة ليها حصة منفصلة فالشات مايتأثرش.')}</p>
+          <div className="flex flex-wrap gap-1.5 text-xs">
+            <span className="rounded-full bg-amber-100 px-2 py-0.5 font-bold text-amber-800">{TP('{n} إجابة جاهزة', { n: harvest.total })}</span>
+            <span className="rounded-full bg-stone-100 px-2 py-0.5 text-stone-600">{TP('{n} سؤال يومي مستني', { n: harvest.waiting })}</span>
+            {harvest.runs[0] && <span className="rounded-full bg-stone-100 px-2 py-0.5 text-stone-600">{T('آخر جولة')}: {when(harvest.runs[0].at)} · {TP('حفظ {kept} من {asked}', { kept: harvest.runs[0].kept, asked: harvest.runs[0].asked })}</span>}
+          </div>
+          {harvest.lastKept.length > 0 && (
+            <details className="mt-2 text-xs">
+              <summary className="cursor-pointer text-stone-500">{T('آخر إجابات اتجهزت')}</summary>
+              <ul className="mt-1 list-inside list-disc space-y-0.5 text-stone-600">{harvest.lastKept.slice(0, 10).map((k) => <li key={k.q + k.at} dir="auto">{k.q}</li>)}</ul>
+            </details>
+          )}
+        </section>
+
         {/* «علوم الأرض عند شاهين» */}
         <section className="rounded-xl border border-stone-100 p-3 lg:col-span-3">
           <h3 className="mb-2 flex items-center gap-1.5 text-xs font-bold text-stone-700"><Atom className="h-4 w-4 text-emerald-600" />{T('علوم شاهين — علوم الأرض')}</h3>
@@ -279,6 +348,7 @@ export default function ShaheenGrowthPanel() {
               </div>
             ))}
           </div>
+          <p className="mt-2 text-[11px] text-stone-500">{fastIndex}</p>
           {sciences.lastLearned.length > 0 && (
             <details className="mt-2 text-xs">
               <summary className="cursor-pointer text-stone-500">{T('آخر دروس ذاكرها')}</summary>

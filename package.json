@@ -21,7 +21,9 @@
     "sync:vercel-env": "node scripts/sync-vercel-env.mjs",
     "seo:build": "node --import tsx scripts/seo-build.mts dist",
     "seo:run": "node --import tsx scripts/seo-agent/run.mts",
-    "test:reader-browser": "node scripts/check-epub-reader.mjs"
+    "science:bench": "node --import tsx scripts/shaheen-school/science-bench.mts",
+    "test:reader-browser": "node scripts/check-epub-reader.mjs",
+    "review:assistant": "node --import tsx scripts/assistant-specialties.mts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

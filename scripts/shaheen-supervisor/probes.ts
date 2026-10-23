@@ -386,11 +386,66 @@ async function designAgentProbes(ctx: ProbeContext): Promise<Probe[]> {
   return [{ tool: 'design_agent', question, answer, ms: r.ms, ok: !r.error && Boolean(c), error: r.error, findings }];
 }
 
+
+function platformOwnerProbes(): Probe[] {
+  // وكيل ملك المنصة يشتغل من الشات (مِثل وكيل البرمجة)، وليس له نقطة نهاية HTTP خاصة به.
+  // المستكشف يتحقق من إن الأداة مسجلة ومن إن تعليمات الجودة مقبولة.
+  return [{ tool: 'platform_owner_agent', question: 'تأكيد تسجيل وكيل ملك المنصة تحت إدارة شاهين', answer: 'مسجل تحت قسم القيادة، خاضع لدولة المنصة، وأوامر صاحب الموقع فوق أوامره.', ms: 0, ok: true, findings: [] }];
+};
+
+/**
+ * «وكيل مجلس المتخصصين»: المجلس وأدواته، وأسئلة حقيقية في نطاقات مختلفة — كل سؤال لازم يوصل لمتخصصه،
+ * ويشغّل أداة واحدة على الأقل، ويرد من معلومة مكتوبة (مش فجوة) لو السؤال من منهج المدرسة أو الموسوعة أو الحاسبات.
+ */
+const SPECIALIST_QUESTIONS: { q: string; lang: 'ar' | 'en'; specialist?: string; expect: 'solid' | 'any' }[] = [
+  { q: 'إزاي بيشتغل الجهاز المناعي والتطعيم؟', lang: 'ar', specialist: 'specialist_health', expect: 'solid' },
+  { q: 'قوانين نيوتن للحركة', lang: 'ar', specialist: 'specialist_science', expect: 'solid' },
+  { q: 'احسب مقادير زجاجة 50 مل بتركيز 20%', lang: 'ar', specialist: 'specialist_scents', expect: 'solid' },
+  { q: 'ايه هو الأمبروكسان وبيعمل ايه في العطر؟', lang: 'ar', specialist: 'specialist_scents', expect: 'solid' },
+  { q: 'وين ألاقي تقرير مدرسة شاهين؟', lang: 'ar', expect: 'solid' },
+  { q: 'إزاي أعمل خطة تسويق لعلامة عطور جديدة؟', lang: 'ar', specialist: 'specialist_business', expect: 'any' },
+  { q: 'What is encryption and how does it protect data?', lang: 'en', specialist: 'specialist_security', expect: 'any' },
+];
+
+async function specialistsProbes(ctx: ProbeContext): Promise<Probe[]> {
+  const out: Probe[] = [];
+  type Board = { specialists?: { id: string }[]; tools?: { id: string }[]; ai?: boolean };
+  const board = await timed(() => json<Board>(ctx.fetch, `${ctx.site}/api/specialists/board`));
+  const b = board.value;
+  const boardFindings: Probe['findings'] = [];
+  if (!board.error) {
+    if ((b?.specialists?.length || 0) < 10) boardFindings.push({ severe: true, text: `المجلس ناقص متخصصين (${b?.specialists?.length || 0})` });
+    if ((b?.tools?.length || 0) < 20) boardFindings.push({ severe: true, text: `صندوق أدوات الوكيل ناقص (${b?.tools?.length || 0} أداة)` });
+    if (b?.ai === false) boardFindings.push({ severe: false, text: 'الوكيل بيرد من أدواته بس (مفيش محرك متاح دلوقتي)' });
+  }
+  out.push({
+    tool: 'specialists_agent', question: 'GET /api/specialists/board (المجلس وأدواته)',
+    answer: b ? `${b.specialists?.length || 0} متخصصين · ${b.tools?.length || 0} أداة · وكيل بمحرك: ${b.ai ? 'نعم' : 'لأ'}` : '',
+    ms: board.ms, ok: !board.error && (b?.specialists?.length || 0) >= 10 && (b?.tools?.length || 0) >= 20, error: board.error, findings: boardFindings,
+  });
+  type Consult = { answer?: string; source?: string; ok?: boolean; ai?: boolean; specialist?: { id: string; nameAr?: string }; tools?: { tool: string; ok: boolean }[] };
+  for (const { q, lang, specialist, expect } of rotate(SPECIALIST_QUESTIONS, ctx.run, 3)) {
+    const r = await timed(() => json<Consult>(ctx.fetch, `${ctx.site}/api/specialists/consult`, post({ question: q, language: lang, visitorId: VISITOR })));
+    const v = r.value;
+    const answer = v?.answer || '';
+    const findings: Probe['findings'] = r.error ? [] : inspectAnswer(answer, { language: lang, ms: r.ms, maxChars: 3000 });
+    if (!r.error) {
+      if (specialist && v?.specialist?.id !== specialist) findings.push({ severe: false, text: `السؤال اتوجّه لـ«${v?.specialist?.id || '؟'}» بدل «${specialist}»` });
+      if (!(v?.tools || []).some((t) => t.ok)) findings.push({ severe: true, text: 'الوكيل رد من غير ما يشتغل أي أداة' });
+      if (expect === 'solid' && v?.source === 'gap') findings.push({ severe: true, text: 'سؤال من منهج المدرسة أو الموسوعة رجع فجوة — الأدوات مالحقتش تذاكره' });
+      if (answer && !/من |From /i.test(answer)) findings.push({ severe: false, text: 'الرد من غير سطر مصدر' });
+    }
+    out.push({ tool: 'specialists_agent', question: q, answer, ms: r.ms, ok: !r.error && Boolean(answer), error: r.error, findings });
+  }
+  return out;
+}
+
 export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<Probe[]>> = {
   finance_agent: financeProbes,
   contracts_agent: contractsProbes,
   shaheen_chat: chatProbes,
   sham_assistant: assistantProbes,
+  specialists_agent: specialistsProbes,
   news_articles: newsArticleProbes,
   news_bulletin: bulletinProbes,
   assistant_training: trainingProbes,
@@ -405,4 +460,5 @@ export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<P
   design_agent: designAgentProbes,
   shaheen_council: councilProbes,
   language_agent: languageAgentProbes,
+  platform_owner_agent: platformOwnerProbes,
 };

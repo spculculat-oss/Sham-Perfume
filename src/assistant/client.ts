@@ -23,6 +23,22 @@ export type StreamEvent =
 
 const json = (body: unknown): RequestInit => ({ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
 
+/**
+ * Where the visitor is standing right now (`#store`, `#product=52`, `#community/merchant`). The assistant answers
+ * for the page they are on — real prices on the store, the open product on a product page, the tool they see.
+ */
+export function currentPage(): { page?: string; productId?: string } {
+  try {
+    const hash = window.location.hash.replace(/^#/, '').split('?')[0].trim();
+    if (!hash) return { page: 'home' };
+    const product = hash.match(/^product=(\d+)$/);
+    if (product) return { page: 'productDetail', productId: product[1] };
+    return /^[a-zA-Z][a-zA-Z0-9_/-]{0,38}$/.test(hash) ? { page: hash } : { page: 'home' };
+  } catch {
+    return {};
+  }
+}
+
 export const VISITOR_KEY = 'sham_core_visitor_id';
 export const CONVERSATION_KEY = 'sham_core_conversation';
 
@@ -41,7 +57,7 @@ export function visitorId(): string {
 export const assistantApi = {
   config: () => requestApi<AssistantConfig>('/api/assistant/config', undefined, 15000),
   chat: (message: string, language: SupportedLanguage, conversationId?: string, signal?: AbortSignal, rewind?: string, consult?: boolean) =>
-    requestApi<ChatReply>('/api/assistant/chat', { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined, consult: consult || undefined }), signal }, consult ? 70000 : 40000),
+    requestApi<ChatReply>('/api/assistant/chat', { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined, consult: consult || undefined, ...currentPage() }), signal }, consult ? 70000 : 40000),
   conversation: (id: string) =>
     requestApi<{ id: string; status: ChatReply['status']; messages: UiMessage[] }>(`/api/assistant/conversations/${encodeURIComponent(id)}?visitorId=${encodeURIComponent(visitorId())}`, undefined, 15000),
   submitRequest: (body: { serviceId: string; contact: { name: string; phone?: string; email?: string }; fields: Record<string, string>; items?: { productId: string; quantity: number }[]; conversationId?: string }) =>
@@ -60,7 +76,7 @@ export const assistantApi = {
  */
 export async function streamChat(message: string, language: SupportedLanguage, conversationId: string | undefined, onEvent: (event: StreamEvent) => void, signal?: AbortSignal, rewind?: string, consult?: boolean): Promise<ChatReply> {
   if (isStaticHosting) throw new ApiUnavailableError();
-  const response = await fetch(apiUrl('/api/assistant/chat/stream'), { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined, consult: consult || undefined }), signal });
+  const response = await fetch(apiUrl('/api/assistant/chat/stream'), { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined, consult: consult || undefined, ...currentPage() }), signal });
   if (!response.ok) {
     let code: string | undefined;
     try { code = (await response.json())?.code; } catch { /* not JSON */ }

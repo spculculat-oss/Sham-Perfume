@@ -9,6 +9,9 @@ import express from 'express';
 import { FinanceService } from '../finance/service';
 import { createFinanceRouter } from '../finance/router';
 import { createHash, timingSafeEqual } from 'node:crypto';
+import { reviewSpecialtiesCached } from './specialtyReview';
+import { reviewPagesCached } from './pageReview';
+import { catalogView } from './catalog';
 import { Repository, ValidationError, publicView } from './repository';
 import { ShaheenMemory } from './memory';
 import { AssistantError, Orchestrator, publicEngine, validateChatInput, type ChatOutput, type StreamEvent } from './orchestrator';
@@ -60,13 +63,15 @@ export function createShamCore(options: CoreOptions = {}) {
   }
   const repo = new Repository(store, env);
   // «بنك شام»: the ledger reuses the community database when the rest of Core runs on temporary memory.
-  const finance = new FinanceService(options.store ? store : createLedgerStore(env, store), env, { fetch: options.fetch });
+  const durable = options.store ? store : createLedgerStore(env, store);
+  const finance = new FinanceService(durable, env, { fetch: options.fetch });
   const bank = new BankService(finance, env, options.fetch || fetch);
   // Shared with the Shaheen chat router: outcomes + capacity parts, read by the maintenance agent.
   const runtime = options.runtime || new ShaheenRuntime(runningVersion(env));
   const orchestrator = new Orchestrator(repo, { env, fetch: options.fetch });
   // «ذاكرة شاهين»: shared with the Shaheen chat router (server/app.ts); exported to the bots below.
-  const memory = new ShaheenMemory(store, env, options.fetch);
+  // What he learns is also kept in the durable store (the database, when there is one) for the bots to collect.
+  const memory = new ShaheenMemory(store, env, options.fetch, undefined, durable);
   const notifier = createNotifier(env, options.fetch);
   // «منارة شاهين»: SEO/media agent — its own state, engines follow the admin policy, runs are manual or scheduled.
   const seo = createSeoService({ repo, env, fetch: options.fetch });
@@ -182,9 +187,14 @@ export function createShamCore(options: CoreOptions = {}) {
     });
   }));
 
+  // One catalog for every client: the merchant's own rows when they exist, the real storefront otherwise
+  // (server/core/catalog.ts) — a store that sells 1161 products never reports an empty catalog here.
   assistant.get('/products', wrap(async (_req, res) => {
-    const products = await repo.products();
-    res.json({ products: products.map(({ id, sku, nameAr, nameEn, category, price, currency, stock, unit, descriptionAr, descriptionEn, demo }) => ({ id, sku, nameAr, nameEn, category, price, currency, stock, unit, descriptionAr, descriptionEn, demo })) });
+    const view = await catalogView(repo, { env });
+    res.json({
+      source: view.source,
+      products: view.products.map(({ id, sku, nameAr, nameEn, category, price, currency, stock, unit, descriptionAr, descriptionEn, demo }) => ({ id, sku, nameAr, nameEn, category, price, currency, stock, unit, descriptionAr, descriptionEn, demo })),
+    });
   }));
 
   assistant.post('/requests', wrap(async (req, res) => {
@@ -239,7 +249,17 @@ export function createShamCore(options: CoreOptions = {}) {
 
   // What this server learned (questions + answers, no visitor data): merged into
   // src/data/live/shaheen-memory.json by scripts/shaheen-memory every two hours.
-  admin.get('/shaheen-memory', wrap(async (_req, res) => { res.json(await memory.learned()); }));
+  admin.get('/shaheen-memory', wrap(async (_req, res) => { res.json(await memory.exported()); }));
+
+  /** «مراجعة التخصصات»: هل المساعد عارف المتجر، وعارف حدوده من شاهين؟ (كاش دقيقة، ?fresh=1 لإعادة التشغيل) */
+  admin.get('/assistant/specialties', wrap(async (req, res) => {
+    res.json(await reviewSpecialtiesCached(repo, { env }, req.query.fresh === '1'));
+  }));
+
+  /** «مراجعة الصفحات»: هل رد المساعد منطقي وهو واقف في كل صفحة؟ (كاش دقيقة، ?fresh=1 لإعادة التشغيل) */
+  admin.get('/assistant/pages', wrap(async (req, res) => {
+    res.json(await reviewPagesCached(repo, { env }, req.query.fresh === '1'));
+  }));
 
   admin.get('/overview', wrap(async (_req, res) => {
     const [requests, conversations, products, knowledge, services, settings, gaps] = await Promise.all([

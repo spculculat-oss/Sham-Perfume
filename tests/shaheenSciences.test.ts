@@ -4,10 +4,10 @@ import { SCIENCE_LESSONS, SCIENCE_POLICY_AR, SCIENCE_TRACKS } from '../src/data/
 import { emptyMemory, remember, worthRemembering, type MemoryFile } from '../src/utils/shaheenMemory';
 import { learnSciences, scienceCovered, scienceDocs, scienceParaphrases, scienceQuestions, scienceReport } from '../scripts/shaheen-school/sciences';
 
-const SENSITIVE = new Set(['war-studies', 'electronic-warfare', 'nuclear', 'biosafety', 'space']);
+const SENSITIVE = new Set(['war-studies', 'electronic-warfare', 'nuclear', 'biosafety', 'space', 'chemistry', 'computing', 'agriculture']);
 
 test('sciences: nine tracks, a real curriculum in every one', () => {
-  assert.equal(SCIENCE_TRACKS.length, 9);
+  assert.equal(SCIENCE_TRACKS.length, 18);
   assert.ok(SCIENCE_LESSONS.length >= 60, 'the curriculum is not a handful of lessons');
   const ids = new Set<string>();
   for (const track of SCIENCE_TRACKS) {
@@ -46,7 +46,7 @@ test('sciences: the track is studied from the library alone, and the report foll
   const report = scienceReport(memory, '2026-10-22T00:00:00.000Z');
   assert.equal(report.score, 100);
   assert.equal(report.learned, report.total);
-  assert.equal(report.tracks.length, 9);
+  assert.equal(report.tracks.length, 18);
   assert.ok(report.tracks.every((t) => t.covered === t.total && t.score === 100));
 
   const again = learnSciences(memory);
@@ -92,4 +92,22 @@ test('sciences: a lesson a visitor asks about is covered once it is in his memor
   assert.equal(scienceCovered(memory, lesson), false);
   assert.equal(remember(memory, { question: lesson.questionAr, lang: 'ar', mode: 'auto', answer: lesson.answerAr, source: 'study' }), true);
   assert.equal(scienceCovered(memory, lesson), true);
+});
+
+test('sciences: the hourly syllabus covers every track with safe, real questions studied by that expert', async () => {
+  const { SCIENCE_SYLLABUS, SYLLABUS_SIZE } = await import('../src/data/sciences/syllabus');
+  const { syllabusQuestions, pickStudy } = await import('../scripts/shaheen-school/school');
+  for (const track of SCIENCE_TRACKS) {
+    const qs = SCIENCE_SYLLABUS[track.id];
+    assert.ok(qs && qs.length >= 6, `${track.id} needs a syllabus`);
+    for (const q of qs) assert.ok(q.length >= 8 && q.length <= 120 && !/\d{4}|سعر|جنيه|قنبلة|متفجر|سم قاتل|اختراق حساب/.test(q), `${track.id}: ${q}`);
+  }
+  const bank = syllabusQuestions();
+  assert.equal(bank.length, SYLLABUS_SIZE);
+  assert.ok(bank.every((b) => b.topic.startsWith('expert:') && b.origin === 'curriculum' && b.lang === 'ar'));
+  const results = [...bank, { q: 'ازاي اعمل عطر فواحة؟', lang: 'ar' as const, topic: 'design-x', origin: 'curriculum' as const }].map((question) => ({ question, covered: false, score: 0 }));
+  assert.equal(pickStudy(results, 3)[0]!.topic, 'design-x', 'the 6-hourly run keeps perfume first');
+  const hourly = pickStudy(results, 10, 'experts');
+  assert.ok(hourly.every((b) => b.topic.startsWith('expert:')), 'the hourly clock studies the experts first');
+  assert.ok(new Set(hourly.map((b) => b.topic)).size >= 5, 'and spreads across the fields');
 });

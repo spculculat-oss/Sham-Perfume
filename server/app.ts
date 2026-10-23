@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { createShaheenRouter } from './shaheen';
+import { createSpecialistsRouter } from './specialists/router';
 import { createMediaRouter } from './media';
 import { createStoreRouter } from './store';
 import { createCheckoutRouter } from './checkout';
@@ -48,6 +49,9 @@ app.get('/api/health', (_req, res) => {
 // «الخبير شاهين»: GET /api/models + POST /api/chat. Settings come from server/config/shaheen.ts and the
 // admin dashboard, so both sites (Vercel and GitHub Pages, which calls this API) behave the same.
 app.use('/api', createShaheenRouter({ repo: shamCore.repo, runtime: shamCore.runtime, memory: shamCore.memory }));
+// «مجلس المتخصصين»: وكيل الاستشارة الذكي بأدواته (مدرسة شاهين وعلومها، الذاكرة، المكتبة، المواد،
+// حاسبات المعمل، المتجر، النشرة، الملجأ، المصادر المفتوحة) — POST /api/specialists/consult.
+app.use('/api/specialists', createSpecialistsRouter({ repo: shamCore.repo, runtime: shamCore.runtime, memory: shamCore.memory }));
 app.use('/api', createMediaRouter());
 // «منارة شاهين»: the live SEO files and the public status snapshot. The static build also ships copies of
 // robots/sitemap/llms/feed, so crawlers are served even on GitHub Pages.

@@ -21,7 +21,7 @@ import { RERUNNABLE } from '../shaheen-council/council';
 import type { BotCheck, Handoff, PrecheckFile } from '../shaheen-council/precheck';
 
 // ── Hands-on tests (probes) ──────────────────────────────────────────────────────────────────────────────
-export type ProbeId = 'pricing' | 'catalog' | 'currency' | 'fx' | 'l10n' | 'news_file' | 'site' | 'product_pages' | 'images' | 'sitemap' | 'engine' | 'news_api' | 'payments';
+export type ProbeId = 'pricing' | 'catalog' | 'currency' | 'fx' | 'l10n' | 'news_file' | 'site' | 'product_pages' | 'images' | 'sitemap' | 'engine' | 'news_api' | 'payments' | 'platform_owner';
 export type Level = 'ok' | 'warn' | 'fail' | 'skip';
 export interface ProbeResult {
   id: ProbeId;
@@ -52,6 +52,7 @@ export const PROBES: Record<ProbeId, { nameAr: string; nameEn: string; live: boo
   engine: { nameAr: 'محرك الموقع (الخادم)', nameEn: 'Site engine (server)', live: true },
   news_api: { nameAr: 'النشرة على الموقع الحي', nameEn: 'News on the live site', live: true },
   payments: { nameAr: 'طرق الدفع', nameEn: 'Payment methods', live: true },
+  platform_owner: { nameAr: 'وكيل ملك المنصة مسجل وخاضع للدولة', nameEn: 'Platform Owner Agent registered and under the State', live: false },
 };
 
 const pct = (a: number, b: number) => (b ? Math.round((100 * a) / b) : 0);
@@ -153,6 +154,17 @@ export const REVIEWERS: Partial<Record<BotId, Reviewer>> = {
   intake: { nameAr: 'خبير فحص التحديثات', nameEn: 'Updates reviewer', probes: ['site'] },
   studio_bridge: { nameAr: 'خبير فحص بوابة الاستوديو', nameEn: 'Studio bridge reviewer', probes: ['site'] },
   studio_zip: { nameAr: 'خبير فحص الملفات المضغوطة', nameEn: 'Studio download reviewer', probes: ['site'] },
+  specialist_scents: { nameAr: 'خبير فحص استشارات العطور والكيمياء', nameEn: 'Perfume & chemistry consultations reviewer', probes: [] },
+  specialist_tech: { nameAr: 'خبير فحص استشارات الحوسبة والذكاء', nameEn: 'Computing & AI consultations reviewer', probes: [] },
+  specialist_security: { nameAr: 'خبير فحص استشارات الأمن السيبراني', nameEn: 'Cybersecurity consultations reviewer', probes: [] },
+  specialist_science: { nameAr: 'خبير فحص استشارات العلوم والرياضيات', nameEn: 'Science & math consultations reviewer', probes: [] },
+  specialist_business: { nameAr: 'خبير فحص استشارات التجارة والقانون', nameEn: 'Commerce & law consultations reviewer', probes: [] },
+  specialist_society: { nameAr: 'خبير فحص استشارات المجتمع والنفس', nameEn: 'Society & psychology consultations reviewer', probes: [] },
+  specialist_health: { nameAr: 'خبير فحص استشارات البيولوجيا والطب', nameEn: 'Life & medical consultations reviewer', probes: [] },
+  specialist_engineering: { nameAr: 'خبير فحص استشارات الهندسة والأرض', nameEn: 'Engineering & earth consultations reviewer', probes: [] },
+  specialist_learning: { nameAr: 'خبير فحص استشارات التربية والمعلومات', nameEn: 'Education & information consultations reviewer', probes: [] },
+  specialist_culture: { nameAr: 'خبير فحص استشارات الفنون والعلاقات', nameEn: 'Arts & diplomacy consultations reviewer', probes: [] },
+  specialists_board: { nameAr: 'خبير فحص وكيل مجلس المتخصصين', nameEn: "Specialists' board agent reviewer", probes: ['engine'] },
 };
 export const reviewerOf = (id: BotId): Reviewer => REVIEWERS[id] || { nameAr: `خبير فحص ${botOf(id)?.nameAr || id}`, nameEn: `${botOf(id)?.nameEn || id} reviewer`, probes: [] };
 
@@ -172,6 +184,7 @@ export const TEAMS: Record<ProbeId, TeamPart[]> = {
   engine: [{ bot: 'doctor', roleAr: 'يكشف ويصلح الخادم' }, { bot: 'live_check', roleAr: 'يتأكد إن شاهين بيرد' }, { bot: 'keys', roleAr: 'يراجع مفاتيح المحركات' }],
   news_api: [{ bot: 'news', roleAr: 'يجهز نشرة احتياطية' }, { bot: 'doctor', roleAr: 'يكشف على الخادم' }],
   payments: [{ bot: 'finance', roleAr: 'يراجع إعدادات الدفع' }, { bot: 'keys', roleAr: 'يتأكد من إعدادات الخادم' }],
+  platform_owner: [{ bot: 'platform_owner', roleAr: 'يُحدّث التعديلات بعد موافقة دولة المنصة' }],
 };
 
 // ── Shifts (scripts/shaheen-patrol/shifts.ts — browser-safe, the admin panel shows them) ─────────────────

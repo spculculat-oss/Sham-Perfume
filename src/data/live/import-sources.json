@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T12:10:11.548Z",
+ "updatedAt": "2026-10-23T06:55:09.742Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,128 @@
  ],
  "runs": [
   {
+   "at": "2026-10-23T06:55:09.742Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-23T00:58:57.297Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-22T21:08:54.861Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-22T20:04:18.207Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-22T19:06:03.105Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-22T18:44:43.066Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-22T14:35:48.176Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "Web search: AI quota used up — the scout continues by himself",
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-22T13:46:42.390Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-22T13:23:38.497Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-22T13:07:28.280Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-22T12:46:41.468Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-22T12:10:11.548Z",
    "mode": "self",
    "found": 0,
@@ -7733,248 +7855,6 @@
     "✗ beautyhabit.com: أغلب منتجاته ليست عطوراً (33%)",
     "✗ nocibe.fr: الموقع لا يفتح (HTTP 403)",
     "✗ marionnaud.fr: الموقع لا يفتح (HTTP 403)"
-   ]
-  },
-  {
-   "at": "2026-10-20T18:50:32.222Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 1,
-   "rejected": 9,
-   "notes": [
-    "✗ jovoy.com: الموقع لا يفتح",
-    "✗ fragrancenet.com: الموقع لا يفتح (HTTP 403)",
-    "  ↳ escentials.com: CV 93/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✓ escentials.com (CV 93/100): 1973 perfumes, 3/6 pages read without AI, SGD (1 = 42.1119 EGP) — added to the importer",
-    "✗ thefragranceshop.co.uk: الموقع لا يفتح (HTTP 403)",
-    "  ↳ strawberrynet.com: CV 68/100 [age,https,contact,returns,shipping,privacy,terms,social]",
-    "✗ strawberrynet.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "  ↳ fragrancedirect.co.uk: CV 27/100 [age,https] (pages: /contact-us→404 /returns→404)",
-    "✗ fragrancedirect.co.uk: ملف الثقة ضعيف (27/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، سياسة الإرجاع والاسترداد",
-    "  ↳ luckyscent.com: CV 81/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✗ luckyscent.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ notino.co.uk: الموقع لا يفتح (HTTP 403)"
-   ]
-  },
-  {
-   "at": "2026-10-20T12:55:17.748Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 10,
-   "notes": [
-    "  ↳ faces.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
-    "✗ faces.com: أغلب منتجاته ليست عطوراً (50%)",
-    "  ↳ wojooh.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
-    "✗ wojooh.com: أغلب منتجاته ليست عطوراً (50%)",
-    "✗ fragrancebuy.ca: الموقع لا يفتح (HTTP 403)",
-    "✗ maxaromas.com: الموقع لا يفتح",
-    "✗ theperfumeshop.com: الموقع لا يفتح (HTTP 403)",
-    "✗ perfumehub.com.my: الموقع لا يفتح",
-    "  ↳ goldapple.kz: CV 27/100 [https,returns] (pages: /contact-us→200 /returns→200)",
-    "✗ goldapple.kz: ملف الثقة ضعيف (27/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
-    "  ↳ perfumeconnection.com.au: CV 37/100 [https,returns,privacy,terms] (pages: /contact-us→200 /returns→200)",
-    "✗ perfumeconnection.com.au: ملف الثقة ضعيف (37/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة"
-   ]
-  },
-  {
-   "at": "2026-10-20T08:43:49.241Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 1,
-   "rejected": 3,
-   "notes": [
-    "  ↳ primor.eu: CV 74/100 [https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Magento",
-    "✗ primor.eu: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ iciparisxl.be: الموقع لا يفتح (HTTP 403)",
-    "  ↳ kicks.se: CV 50/100 [https,contact,returns,payment,social] (pages: /kundservice→200 /kundservice→200)",
-    "✗ kicks.se: ملف الثقة ضعيف (50/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الشحن، سياسة الخصوصية",
-    "  ↳ bangerhead.se: CV 41/100 [https,contact,payment,social] (pages: /kontakta-oss→200 /returns→404)",
-    "✗ bangerhead.se: ملف الثقة ضعيف (41/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الإرجاع والاسترداد، سياسة الشحن",
-    "✗ abdulsamadalqurashi.com: الموقع لا يفتح",
-    "  ↳ nabeel.com: CV 79/100 [age,https,contact,identity,returns,shipping,privacy,terms,social]",
-    "✗ nabeel.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "  ↳ alharamainperfumes.com: CV 45/100 [age,https,contact,social] (pages: /contact-us→404 /returns→404 /about-us/→200)",
-    "✗ alharamainperfumes.com: ملف الثقة ضعيف (45/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الإرجاع والاسترداد، وسائل دفع معروفة"
-   ]
-  },
-  {
-   "at": "2026-10-20T06:54:09.622Z",
-   "mode": "self",
-   "found": 3,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "✗ kicks.se: ملف الثقة ضعيف (50/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الشحن، سياسة الخصوصية",
-    "  ↳ bangerhead.se: CV 41/100 [https,contact,payment,social] (pages: /kontakta-oss→200 /returns→404)",
-    "✗ bangerhead.se: ملف الثقة ضعيف (41/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الإرجاع والاسترداد، سياسة الشحن",
-    "✗ flaconi.de: الموقع لا يفتح (HTTP 403)",
-    "✗ douglas.de: الموقع لا يفتح (HTTP 403)",
-    "✗ perfume.com: الموقع لا يفتح (HTTP 403)",
-    "✗ essenza-nobile.de: الموقع لا يفتح (HTTP 403)",
-    "  ↳ niche-beauty.com: CV 90/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,social]",
-    "✗ niche-beauty.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "  ↳ beautyhabit.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✗ beautyhabit.com: أغلب منتجاته ليست عطوراً (33%)",
-    "✗ nocibe.fr: الموقع لا يفتح (HTTP 403)"
-   ]
-  },
-  {
-   "at": "2026-10-20T00:56:49.671Z",
-   "mode": "self",
-   "found": 5,
-   "vetted": 10,
-   "activated": 1,
-   "rejected": 0,
-   "notes": [
-    "  ↳ perfumesclub.com: CV 87/100 [age,https,identity,returns,shipping,privacy,terms,payment,social,authentic]",
-    "✗ perfumesclub.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (3/7)",
-    "  ↳ primor.eu: CV 74/100 [https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Magento",
-    "✗ primor.eu: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "  ↳ fragrancedirect.co.uk: CV 27/100 [age,https] (pages: /contact-us→404 /returns→404)",
-    "✗ fragrancedirect.co.uk: ملف الثقة ضعيف (27/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، سياسة الإرجاع والاسترداد",
-    "  ↳ luckyscent.com: CV 81/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✗ luckyscent.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ notino.co.uk: الموقع لا يفتح (HTTP 403)",
-    "✗ twisted-lily.com: الموقع لا يفتح",
-    "  ↳ parfumdreams.de: CV 78/100 [https,contact,identity,returns,shipping,privacy,terms,payment,social]",
-    "✗ parfumdreams.de: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
-   ]
-  },
-  {
-   "at": "2026-10-19T18:53:10.915Z",
-   "mode": "self",
-   "found": 8,
-   "vetted": 10,
-   "activated": 2,
-   "rejected": 0,
-   "notes": [
-    "  ↳ niche-beauty.com: CV 90/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,social]",
-    "✗ niche-beauty.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "  ↳ beautyhabit.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✗ beautyhabit.com: أغلب منتجاته ليست عطوراً (38%)",
-    "✗ nocibe.fr: الموقع لا يفتح (HTTP 403)",
-    "✗ jovoy.com: الموقع لا يفتح",
-    "✗ fragrancenet.com: الموقع لا يفتح (HTTP 403)",
-    "  ↳ escentials.com: CV 93/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✗ escentials.com: أغلب منتجاته ليست عطوراً (56%)",
-    "✗ thefragranceshop.co.uk: الموقع لا يفتح (HTTP 403)",
-    "  ↳ strawberrynet.com: CV 78/100 [age,https,contact,returns,shipping,privacy,terms,payment,social]",
-    "✗ strawberrynet.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (1/6)"
-   ]
-  },
-  {
-   "at": "2026-10-19T12:55:05.997Z",
-   "mode": "self",
-   "found": 11,
-   "vetted": 10,
-   "activated": 2,
-   "rejected": 0,
-   "notes": [
-    "✗ douglas.de: الموقع لا يفتح (HTTP 403)",
-    "✗ perfume.com: الموقع لا يفتح (HTTP 403)",
-    "✗ essenza-nobile.de: الموقع لا يفتح (HTTP 403)",
-    "  ↳ aedes.com: CV 77/100 [age,https,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✓ aedes.com (CV 77/100): 1241 perfumes, 4/6 pages read without AI, USD (1 = 53.5247 EGP) — added to the importer",
-    "✗ perfumehub.com.my: الموقع لا يفتح",
-    "  ↳ goldapple.kz: CV 27/100 [https,returns] (pages: /contact-us→200 /returns→200)",
-    "✗ goldapple.kz: ملف الثقة ضعيف (27/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
-    "  ↳ perfumeconnection.com.au: CV 37/100 [https,returns,privacy,terms] (pages: /contact-us→200 /returns→200)",
-    "✗ perfumeconnection.com.au: ملف الثقة ضعيف (37/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
-    "✗ nose-shop.jp: الموقع لا يفتح",
-    "✗ letu.kz: الموقع لا يفتح"
-   ]
-  },
-  {
-   "at": "2026-10-19T04:31:58.644Z",
-   "mode": "self",
-   "found": 11,
-   "vetted": 10,
-   "activated": 1,
-   "rejected": 0,
-   "notes": [
-    "  ↳ parfumdreams.de: CV 78/100 [https,contact,identity,returns,shipping,privacy,terms,payment,social]",
-    "✗ parfumdreams.de: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "  ↳ scentsplit.com: CV 84/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
-    "✓ scentsplit.com (CV 84/100): 10000 perfumes, 5/6 pages read without AI, USD (1 = 53.5247 EGP) — added to the importer",
-    "✗ flaconi.de: الموقع لا يفتح (HTTP 403)",
-    "  ↳ faces.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
-    "✗ faces.com: أغلب منتجاته ليست عطوراً (50%)",
-    "  ↳ wojooh.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
-    "✗ wojooh.com: أغلب منتجاته ليست عطوراً (50%)",
-    "✗ fragrancebuy.ca: الموقع لا يفتح (HTTP 403)",
-    "✗ maxaromas.com: الموقع لا يفتح",
-    "✗ theperfumeshop.com: الموقع لا يفتح (HTTP 403)"
-   ]
-  },
-  {
-   "at": "2026-10-19T00:56:02.060Z",
-   "mode": "self",
-   "found": 11,
-   "vetted": 10,
-   "activated": 2,
-   "rejected": 0,
-   "notes": [
-    "  ↳ escentual.com: CV 93/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✓ escentual.com (CV 93/100): 4662 perfumes, 3/6 pages read without AI, USD (1 = 53.5247 EGP) — added to the importer",
-    "  ↳ luckyscent.com: CV 81/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✗ luckyscent.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ abdulsamadalqurashi.com: الموقع لا يفتح",
-    "  ↳ nabeel.com: CV 79/100 [age,https,contact,identity,returns,shipping,privacy,terms,social]",
-    "✗ nabeel.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "  ↳ alharamainperfumes.com: CV 45/100 [age,https,contact,social] (pages: /contact-us→404 /returns→404 /about-us/→200)",
-    "✗ alharamainperfumes.com: ملف الثقة ضعيف (45/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الإرجاع والاسترداد، وسائل دفع معروفة",
-    "  ↳ myperfumeshop.ae: CV 60/100 [https,contact,returns,shipping,privacy,terms,payment,platform] on Shopify",
-    "✗ myperfumeshop.ae: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
-    "✗ perfumeboxuae.com: الموقع لا يفتح"
-   ]
-  },
-  {
-   "at": "2026-10-18T23:21:13.356Z",
-   "mode": "self",
-   "found": 11,
-   "vetted": 10,
-   "activated": 1,
-   "rejected": 0,
-   "notes": [
-    "✗ goldapple.kz: ملف الثقة ضعيف (27/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
-    "  ↳ perfumeconnection.com.au: CV 37/100 [https,returns,privacy,terms] (pages: /contact-us→200 /returns→200)",
-    "✗ perfumeconnection.com.au: ملف الثقة ضعيف (37/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
-    "  ↳ perfumeprice.co.uk: CV 84/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Magento",
-    "✓ perfumeprice.co.uk (CV 84/100): 6330 perfumes, 3/6 pages read without AI, GBP (1 = 71.2388 EGP) — added to the importer",
-    "✗ nose-shop.jp: الموقع لا يفتح",
-    "✗ letu.kz: الموقع لا يفتح",
-    "✗ jovoy.com: الموقع لا يفتح",
-    "✗ fragrancenet.com: الموقع لا يفتح (HTTP 403)",
-    "  ↳ escentials.com: CV 93/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✗ escentials.com: أغلب منتجاته ليست عطوراً (56%)",
-    "✗ thefragranceshop.co.uk: الموقع لا يفتح (HTTP 403)"
-   ]
-  },
-  {
-   "at": "2026-10-18T15:10:56.723Z",
-   "mode": "self",
-   "found": 12,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 1,
-   "notes": [
-    "✗ myperfumeshop.ae: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
-    "✗ perfumeboxuae.com: الموقع لا يفتح",
-    "  ↳ niceonesa.com: CV 80/100 [age,https,contact,identity,returns,privacy,terms,payment,social]",
-    "✓ niceonesa.com (CV 80/100): 69+ (by browsing) perfumes, 4/6 pages read without AI, SAR (1 = 14.2559 EGP) — added to the importer",
-    "✗ goldenscent.com: ملف robots.txt يمنع القراءة الآلية",
-    "  ↳ faces.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
-    "✗ faces.com: أغلب منتجاته ليست عطوراً (50%)",
-    "  ↳ wojooh.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
-    "✗ wojooh.com: أغلب منتجاته ليست عطوراً (50%)",
-    "✗ fragrancebuy.ca: الموقع لا يفتح (HTTP 403)",
-    "✗ maxaromas.com: الموقع لا يفتح",
-    "✗ theperfumeshop.com: الموقع لا يفتح (HTTP 403)"
    ]
   }
  ]

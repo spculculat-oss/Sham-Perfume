@@ -83,10 +83,10 @@ export function inferOccasions(p: StoreProduct): Occasion[] {
   return warm && !cool ? ['evening', 'special'] : cool && !warm ? ['daily', 'work'] : [];
 }
 
-const hasCriteria = (w: Wish) => Boolean(w.gender || w.families.length || w.seasons.length || w.occasions.length || w.budgetMax || w.budgetMin || w.cheap || w.luxury || w.brands.length);
+export const hasCriteria = (w: Wish) => Boolean(w.gender || w.families.length || w.seasons.length || w.occasions.length || w.budgetMax || w.budgetMin || w.cheap || w.luxury || w.brands.length);
 
-export function recommend(products: StoreProduct[], text: string, limit = 6): Advice {
-  const wish = parseWish(text);
+/** `wish`: an already-understood request (a follow-up merged with the question before it), else read from `text`. */
+export function recommend(products: StoreProduct[], text: string, limit = 6, wish: Wish = parseWish(text)): Advice {
   const prices = products.map((p) => p.price).filter((n) => n > 0);
   const top = Math.max(1, ...prices);
   const picks: Pick[] = [];

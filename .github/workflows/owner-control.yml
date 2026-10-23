@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       action:
-        description: "الأمر: pause = وقف روبوت، resume = رجّعه، freeze = وقف كل الروبوتات، unfreeze = رجّعهم، safe_auto = التصليح الصغير تلقائي، approve_all = كل تغيير بموافقتي، state_rule = دولة المنصة توافق (وإنت فوقها)، self_reliant = شاهين يعتمد على نفسه من غير منصات ذكاء اصطناعي، platforms_on = اسمح بالمنصات"
+        description: "الأمر: pause = وقف روبوت، resume = رجّعه، freeze = وقف كل الروبوتات، unfreeze = رجّعهم، safe_auto = التصليح الصغير تلقائي، approve_all = كل تغيير بموافقتي، state_rule = دولة المنصة توافق (وإنت فوقها)، self_reliant = شاهين يعتمد على نفسه من غير منصات ذكاء اصطناعي، platforms_on = اسمح بالمنصات، platforms_auto = تلقائي: المنصات وهي شغالة ويتعلم منها، ولو وقفت يعتمد على نفسه"
         required: true
         type: choice
         options:
@@ -25,6 +25,7 @@ on:
           - state_rule
           - self_reliant
           - platforms_on
+          - platforms_auto
       bot:
         description: "الروبوت (للوقف والتشغيل بس)"
         required: false
@@ -42,6 +43,7 @@ on:
           - scout
           - teacher
           - school
+          - academy
           - importer
           - images
           - product_pages
