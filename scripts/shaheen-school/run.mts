@@ -24,6 +24,7 @@ import {
   teacherPreference, spellingReport, toolStats, trackStats, visitorQuestions, type BankQuestion, type SchoolFile, type TrainingDoc,
 } from './school';
 import { academyLessons, SCHOOL_PROGRAMS, TRACKS } from './curriculum';
+import { gapLessons } from './curriculumGaps';
 import { duePrograms, runAndRecord, schoolActions } from './programs';
 import { runPractice } from './practice';
 import { buildProgram, emptyBlocks, isBlocksFile, nextRun, validateProgram, type BlocksFile } from '../../src/utils/shaheenBlocks';
@@ -62,7 +63,7 @@ if (env.SHAM_ADMIN_TOKEN?.trim()) {
 // lessons (all programming languages, blocks & scheduling, software engineering, graphics & design, website
 // maintenance, and every AI tool's field), and the references every study answer is grounded on.
 const academy = academyLessons();
-const library = [...docs, ...materialDocs(RAW_MATERIALS_DATABASE), ...academy];
+const library = [...docs, ...materialDocs(RAW_MATERIALS_DATABASE), ...academy, ...gapLessons()];
 const bank = buildBank(docs, councilStudy(readCouncil(), Date.now()), visitors, RAW_MATERIALS_DATABASE);
 const first = exam(bank, memory, library);
 say(`Exam: Shaheen answers ${first.reliance.covered} of ${first.reliance.total} questions by himself (${first.reliance.score}%); ${first.reliance.fromLibrary} more can be learned from his own library`);

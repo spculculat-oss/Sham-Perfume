@@ -21,6 +21,7 @@ import { EARTH_LESSONS, ENGINEERING_LESSONS } from './curriculumEngineering';
 import { ARTS_LESSONS, EDUCATION_LESSONS, MEDIA_LESSONS, SPORTS_LESSONS } from './curriculumSkills';
 import { RELIGION_LESSONS, TOURISM_LESSONS } from './curriculumCulture';
 import { HACKING_LESSONS, THREAT_LESSONS } from './curriculumHacking';
+import { UNIVERSITY_PAIRS } from './curriculumUniversity';
 
 export type TrackId =
   | 'perfume' | 'prog_langs' | 'blocks' | 'software' | 'graphics' | 'web_care' | 'ai_science' | 'security' | 'quantum' | 'ai_tools'
@@ -28,7 +29,8 @@ export type TrackId =
   | 'commerce' | 'law' | 'pr' | 'management' | 'history' | 'geography' | 'literature' | 'social'
   | 'psychology' | 'cyber_psych' | 'ux_psych'
   | 'biology' | 'medicine' | 'engineering' | 'earth_space' | 'education' | 'media_info' | 'sports' | 'arts' | 'religion' | 'tourism_ir'
-  | 'ethical_hacking' | 'threat_analysis';
+  | 'ethical_hacking' | 'threat_analysis'
+  | 'academic' | 'vocational' | 'technical' | 'experimental' | 'smart_agents';
 
 export const TRACKS: { id: TrackId; titleAr: string; goalAr: string }[] = [
   { id: 'perfume', titleAr: 'العطور (المنهج الأصلي)', goalAr: 'العطور وصناعتها وأدوات الموقع — كما كانت المدرسة تفعل.' },
@@ -70,6 +72,11 @@ export const TRACKS: { id: TrackId; titleAr: string; goalAr: string }[] = [
   { id: 'arts', titleAr: 'الفنون', goalAr: 'الفنون: الرسم والنحت والخط العربي والموسيقى والسينما والإخراج والتمثيل والمونتاج والتصوير والديكور وفنون الطهي.' },
   { id: 'religion', titleAr: 'الفلسفة والعقائد', goalAr: 'الفلسفة والمنطق والأخلاق التطبيقية، والدراسات الإسلامية (القرآن والسنة والفقه والسيرة) والدراسات الدينية المقارنة وتاريخ الأديان.' },
   { id: 'tourism_ir', titleAr: 'السياحة والعلاقات الدولية', goalAr: 'علم السياحة وإدارة الفنادق والضيافة والسياحة التراثية والبيئية، والعلاقات الدولية والدبلوماسية والمفاوضات وحل النزاعات.' },
+  { id: 'academic', titleAr: 'الكلية الأكاديمية: البحث والدراسة', goalAr: 'مهارات البحث العلمي والكتابة الأكاديمية والتفكير الناقد والمذاكرة الفعّالة — أساس الجامعة العالمية: كيف نسأل، ونبحث، ونكتب، ونتعلم.' },
+  { id: 'vocational', titleAr: 'الكلية المهنية: الحرف والمهن', goalAr: 'الحرف والمهن التطبيقية: الكهرباء والسباكة والنجارة والطبخ والخياطة والحلاقة والصيانة والتمريض والخدمة والتسويق للحرف — إتقان يُعاش به.' },
+  { id: 'technical', titleAr: 'الكلية التقنية: التقنيات التطبيقية', goalAr: 'التقنيات الحديثة: الميكاترونكس والطباعة ثلاثية والروبوتات والأتمتة والشبكات والطاقة والصيانة والتصنيع — من الفكرة التقنية إلى المنتج.' },
+  { id: 'experimental', titleAr: 'الكلية التجريبية: المختبرات والتجارب', goalAr: 'المختبر والتجربة: تصميم التجارب والقياس والتحليل والتوثيق والابتكار — العلوم تُثبت بالتجربة، والفشل المنظَّم جزء من التعلم.' },
+  { id: 'smart_agents', titleAr: 'كلية أذكى أدوات الـAgents', goalAr: 'مهارات الوكلاء الذكية: التخطيط واستخدام الأدوات والذاكرة والاسترجاع والتحقق والتقييم والوكلاء المتعددة والسلامة — ليكون شاهين وأدواته الأذكى في العالم.' },
 ];
 
 export function trackOf(topic: string): TrackId {
@@ -111,9 +118,14 @@ export function trackOf(topic: string): TrackId {
   if (topic === 'art') return 'arts';
   if (topic === 'rel') return 'religion';
   if (topic === 'tour') return 'tourism_ir';
+  if (topic === 'academic') return 'academic';
+  if (topic === 'vocational') return 'vocational';
+  if (topic === 'technical') return 'technical';
+  if (topic === 'experimental') return 'experimental';
+  if (topic === 'smart_agents') return 'smart_agents';
   if (topic.startsWith('expert:')) {
     const expertTracks: Record<string, TrackId> = {
-      'human-medicine': 'medicine', veterinary: 'medicine', biosafety: 'medicine', nutrition: 'medicine',
+      'human-medicine': 'medicine', veterinary: 'medicine', biosafety: 'medicine', nutrition: 'medicine', cosmetics: 'medicine',
       space: 'earth_space', earth: 'earth_space', chemistry: 'chemistry', physics: 'physics', nuclear: 'physics',
       math: 'math', biology: 'biology', agriculture: 'biology', semiconductors: 'engineering',
       'electronic-warfare': 'engineering', computing: 'it_sciences', 'war-studies': 'history', logic: 'religion', cosmetics: 'chemistry',
@@ -260,11 +272,11 @@ const lang = (ar: string, en: string, family: keyof typeof LANGUAGE_FAMILIES, us
   track: 'prog_langs', topic: 'lang',
 });
 
-const lesson = (id: string, track: TrackId, topic: string, title: string, content: string): AcademyLesson => ({
+export const lesson = (id: string, track: TrackId, topic: string, title: string, content: string): AcademyLesson => ({
   id, title, content, tags: [TRACKS.find((t) => t.id === track)!.titleAr], track, topic,
 });
 
-const ask = (l: AcademyLesson, q: string, topic = l.topic, track = l.track): AcademyPair => ({
+export const ask = (l: AcademyLesson, q: string, topic = l.topic, track = l.track): AcademyPair => ({
   lesson: l,
   question: { q, lang: 'ar', topic, origin: 'curriculum' },
 });
@@ -671,6 +683,7 @@ const PAIRS: AcademyPair[] = [
   ...AI_PROJECT_LESSONS, ...IT_LESSONS, ...FRONTIER_LESSONS, ...CHEM_LESSONS, ...PHYS_LESSONS, ...MATH_LESSONS,
   ...COMMERCE_LESSONS, ...LAW_LESSONS, ...PR_LESSONS, ...MGMT_LESSONS, ...HIST_LESSONS, ...GEO_LESSONS, ...LIT_LESSONS, ...SOC_LESSONS,
   ...PSY_LESSONS, ...CYBERPSY_LESSONS, ...UXPSY_LESSONS, ...PERFUME_SKILLS,
+  ...UNIVERSITY_PAIRS,
   ...BIOLOGY_LESSONS, ...MEDICINE_LESSONS,
   ...ENGINEERING_LESSONS, ...EARTH_LESSONS,
   ...EDUCATION_LESSONS, ...MEDIA_LESSONS, ...SPORTS_LESSONS, ...ARTS_LESSONS,
