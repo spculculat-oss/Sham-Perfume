@@ -27,6 +27,14 @@ function Stars({ value, size = 16 }: { value: number; size?: number }) {
   );
 }
 
+/**
+ * Is «مجتمع شام» switched on on this server? Asked once per page (the status route always answers 200), so a product
+ * page never fires a review request the server can only refuse with 503 — no failed request in the visitor's console.
+ */
+let communityOn: Promise<boolean> | undefined;
+const communityEnabled = () => (communityOn ||= cx<{ enabled: boolean }>('/community/status', { timeoutMs: 8000 })
+  .then((s) => s.enabled === true, () => { communityOn = undefined; return false; }));
+
 export function ProductReviewsSection({ sku, currentLang }: { sku: string; currentLang: SupportedLanguage }) {
   const t = makeStoreT(currentLang);
   const dir = isRTL(currentLang) ? 'rtl' : 'ltr';
@@ -38,6 +46,7 @@ export function ProductReviewsSection({ sku, currentLang }: { sku: string; curre
   const signedIn = Boolean(getSessionToken());
 
   const load = useCallback(async () => {
+    if (!(await communityEnabled())) { setState('unavailable'); return; }
     try { setData(await cx<ReviewSummary>(`/community/reviews/${encodeURIComponent(sku)}`, { timeoutMs: 12000 })); setState('ready'); }
     catch { setState('unavailable'); }
   }, [sku]);

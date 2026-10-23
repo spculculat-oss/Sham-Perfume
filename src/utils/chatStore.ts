@@ -333,7 +333,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
         if (generation !== token) return false;
         const ctx = brain?.withContext(brainText, history);
         // «هاخده / غالي / مش متأكد» right after a reply with store products is the seller's turn.
-        const sellerTurn = Boolean(brain && ctx?.lastReply && /\/p\/[a-z0-9-]+\.html/.test(ctx.lastReply) && (await import('./shaheenSeller').catch(() => undefined))?.saleMove(text));
+        const sellerTurn = Boolean(brain && (ctx?.lastReply || ctx?.shownReply) && /\/p\/[a-z0-9-]+\.html/.test(`${ctx?.lastReply || ''}\n${ctx?.shownReply || ''}`) && (await import('./shaheenSeller').catch(() => undefined))?.saleMove(text));
         if (generation !== token) return false;
         const shopping = isShoppingQuestion(text) || sellerTurn || Boolean(ctx && brain?.wantsStore(ctx.text));
         if (canAnswerFromMemory(error) && shopping) {

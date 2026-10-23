@@ -36,7 +36,7 @@ const W = (words: string) => new RegExp(`(?<![${AR_LETTER}])(?:${words})(?![${AR
 const BUY_AR = W('هاخده|هاخدها|هخده|هخدها|حاخده|حاخدها|خلاص هاخد|هشتريه|هشتريها|اشتريه|اشتريها|اطلبه|اطلبها|اطلبهولي|اطلبهالي|احجزه|احجزها|ضيفه|ضيفها|ضيفهولي|(?:عايز|عايزة|عاوز|عاوزة|حابب|حابة) (?:اطلبه|اطلبها|اشتريه|اشتريها|اخده|اخدها|اجيبه|اجيبها)|(?:ازاي|إزاي|كيف) (?:اطلب|اشتري|ادفع|اطلبه|اشتريه|اطلبها|اشتريها)');
 const BUY_EN = /\b(?:i'?ll take (?:it|this|that|them)|i'?ll buy (?:it|this|that)|buy it|order it|how (?:do i|can i|to) (?:order|buy|pay)|add (?:it|this|that) to (?:the |my )?cart|i want (?:to (?:buy|order) )?(?:it|this one|that one))\b/i;
 /** «غالي / مكلف / فوق ميزانيتي» — the price objection («أرخص فيهم» among the picks is a comparison, not this). */
-const PRICE_AR = W('غالي|غالى|غاليه|غالية|غاليين|مكلف|مكلفه|مكلفة|سعره عالي|سعرها عالي|سعره كبير|كتير عليا|كتير عليّ|فوق ميزانيتي|اكبر من ميزانيتي|أكبر من ميزانيتي|مش في ميزانيتي|مش معايا فلوسه');
+const PRICE_AR = W('ارخص منه|ارخص منها|حاجة ارخص|حاجه ارخص|بديل ارخص|بديل اوفر|حاجة اوفر|حاجه اوفر|غالي|غالى|غاليه|غالية|غاليين|مكلف|مكلفه|مكلفة|سعره عالي|سعرها عالي|سعره كبير|كتير عليا|كتير عليّ|فوق ميزانيتي|اكبر من ميزانيتي|أكبر من ميزانيتي|مش في ميزانيتي|مش معايا فلوسه');
 const PRICE_EN = /\b(?:too expensive|expensive|pricey|over my budget|out of my budget|too much money|costs too much)\b/i;
 /** «مش متأكد / محتار / هفكر» — hesitation. */
 const DOUBT_AR = W('مش متأكد|مش متأكده|مش متأكدة|مش متاكد|محتار|محتارة|محتاره|متردد|مترددة|متردده|هفكر|هفكّر|خليني افكر|مش مقتنع|مقتنعتش|يستاهل|يستاهل سعره|مش عارف اختار|مش عارفة اختار|مش عارفه اختار');
@@ -44,7 +44,8 @@ const DOUBT_EN = /\b(?:not sure|unsure|hesitant|let me think|think about it|is i
 
 /** The move a message makes (buy, a price objection, doubt), or nothing. */
 export function saleMove(text: string): SaleMove | undefined {
-  const t = text.trim();
+  // «إزاي أطلبه؟» and «ازاي اطلبه» are the same words: the hamza forms of alef are read as plain alef.
+  const t = text.trim().replace(/[أإآ]/g, 'ا');
   if (!t || t.length > 140) return undefined;
   if (BUY_AR.test(t) || BUY_EN.test(t)) return 'buy';
   if (PRICE_AR.test(t) || PRICE_EN.test(t)) return 'price';
@@ -259,7 +260,9 @@ export function salesAnswer(products: StoreProduct[], ctx: Context, language: st
   const asked = ctx.followUp && ctx.previous && ctx.text.startsWith(ctx.previous) ? ctx.text.slice(ctx.previous.length).trim() : ctx.text;
   const move = saleMove(asked);
   if (!move) return undefined;
-  const p = focusOf(products, asked, ctx.lastReply);
+  // The perfume on the screen: named now, else the main pick of the reply before — or of a recent one that showed
+  // products («فيه خصم عليه؟» → «غالي شوية» is still about it).
+  const p = focusOf(products, asked, ctx.lastReply) || (ctx.shownReply ? shownInOrder(ctx.shownReply, products)[0] : undefined);
   if (!p) return undefined;
   const lang = langOf(language, asked);
   const buyer = readBuyer(ctx.said || [asked]);

@@ -20,7 +20,7 @@ import { topicWords } from './shaheenLibrary';
 import { greetingKind } from './shaheenGreeting';
 import type { Design } from './shaheenDesigner';
 import { cleanNote, noteAr, readableNotes } from './noteNames';
-import { closeLine, readBuyer, type BuyerProfile } from './salesCraft';
+import { FORMAL_RECIPIENTS, closeLine, readBuyer, type BuyerProfile, type Recipient } from './salesCraft';
 
 export interface Turn { role: 'user' | 'assistant'; text: string }
 type Lang = 'ar' | 'en';
@@ -36,9 +36,14 @@ export interface Context {
   lastReply?: string;
   /** Everything the visitor said in this conversation, oldest first, this message last — how the seller reads him. */
   said?: string[];
+  /**
+   * The latest of Shaheen's recent replies that showed store products (the last three) — so «غالي شوية» after a
+   * discount answer is still about the perfume on the screen.
+   */
+  shownReply?: string;
 }
 
-const LEAD_IN = /^(?:طب|طيب|طبعا|طيب و|طب و|ولو|وبالنسبة|بالنسبة|وماذا عن|وايه عن|وإيه عن|و|بس|يعني|what about|how about|and|also|so|ok(?:ay)?)(?=[\s،,]|$)[\s،,]*/i;
+const LEAD_IN = /^(?:تمام|ماشي|اوكي|أوكي|طب|طيب|طبعا|طيب و|طب و|ولو|وبالنسبة|بالنسبة|وماذا عن|وايه عن|وإيه عن|و|بس|يعني|what about|how about|and|also|so|ok(?:ay)?)(?=[\s،,]|$)[\s،,]*/i;
 const ANAPHOR = /(?<![\u0600-\u06FF])(?:ده|دي|دا|دى|ديه|دول|هو|هي|هى|منه|منها|منهم|فيه|فيها|فيهم|بيه|بيها|عليه|عليها|انهي|أنهي|انهو|أنهو|ايهم|أيهم|ايهما|أيهما|التلاتة|الاتنين)(?![\u0600-\u06FF])|\b(?:it|that|this one|them|those|which one|these)\b/i;
 const COPULA = /^(?:ايه|إيه|ايش|ما|مين|فين|إيش)\s+(?:هو|هي|هى|هما|هم)\s+(?=[\u0600-\u06FFa-z])/i;
 const THANKS = /^(?:شكرا|شكراً|متشكر|تسلم|ميرسي|thanks?|thank you)[\s!.؟?]*$/i;
@@ -51,7 +56,8 @@ export function withContext(message: string, history: Turn[] = []): Context {
   const previous = lastOf(history, 'user');
   const lastReply = history[history.length - 1]?.role === 'assistant' ? history[history.length - 1].text : undefined;
   const said = [...history.filter((t) => t.role === 'user' && t.text.trim()).map((t) => t.text.trim()).slice(-5), text].filter(Boolean);
-  const base: Context = { text, followUp: false, ...(previous ? { previous } : {}), ...(lastReply ? { lastReply } : {}), ...(said.length ? { said } : {}) };
+  const shownReply = history.filter((t) => t.role === 'assistant').slice(-3).reverse().find((t) => /\/p\/[a-z0-9-]+\.html/.test(t.text))?.text;
+  const base: Context = { text, followUp: false, ...(previous ? { previous } : {}), ...(lastReply ? { lastReply } : {}), ...(said.length ? { said } : {}), ...(shownReply ? { shownReply } : {}) };
   if (!previous || greetingKind(text) || THANKS.test(text) || greetingKind(previous)) return base;
   const own = topicWords(text.replace(LEAD_IN, ''));
   const lead = LEAD_IN.test(text);
@@ -63,6 +69,9 @@ export function withContext(message: string, history: Turn[] = []): Context {
   if (!follows) return base;
   const rest = text.replace(LEAD_IN, '').trim();
   // A shopping wish accumulates (the new criteria win: storeWish merges them); a knowledge question keeps its subject.
+  // But a question about perfumery itself in the middle of shopping («إيه هو التعتيق؟») is a new topic: it gets an
+  // answer, not the list of perfumes again.
+  if (wantsStore(previous) && KNOWLEDGE.test(rest) && !anaphoric && own.length >= 1 && !wantsStore(rest) && !PERFUME_ASKED.test(rest)) return base;
   if (wantsStore(previous)) return { ...base, followUp: true, text: `${previous} ${rest}` };
   const subject = topicWords(previous).filter((w) => !own.includes(w)).slice(0, 4).join(' ');
   return { ...base, followUp: true, text: subject ? `${rest} ${subject}`.trim() : rest };
@@ -75,6 +84,8 @@ const PRICE = /بكام|سعر|اسعار|أسعار|\bprice\b|how much/i;
 const DESIGN_OR_LAB = /صمم|صمّم|تصميم|تركيب[ةه]|ركب|خلط[ةه]|وصف[ةه]|نسب[ةه]?|نسبة|تخفيف|اعمل(?:لي| لي)? عطر|اصنع|formula|recipe|ratio|dilut|blend|make my own/i;
 const NOTES_ASKED = /نوتات|نوته|نوتة|مكونات|اكورد|أكورد|\bnotes?\b|\baccords?\b/i;
 const WANT = /(?:عايز|عايزة|عاوز|عاوزة|محتاج|محتاجة|ابغى|أبغى|اريد|أريد|بدور|ادور|أدور|دورلي|رشح|رشّح|انصحني|تنصحني|نفسي في)|\b(?:looking for|i want|i need|recommend|suggest)\b/i;
+/** A knowledge question still about the perfumes being chosen («ازاي أطلبه»، «إيه أثبت عطر») — not a new topic. */
+const PERFUME_ASKED = /(?:اطلب|أطلب|اشتري|أشتري|ادفع|أدفع|سعر|بكام|اثبت|أثبت|ارخص|أرخص|احسن|أحسن|انسب|أنسب|الشحن|التوصيل|order|buy|pay|price|ship)/i;
 const KNOWLEDGE = /^(?:ما|ماهو|ما هو|ما هي|ايه هو|إيه هو|ايه هي|إيه هي|يعني ايه|ليه|لماذا|ازاي|إزاي|كيف|what is|what are|why|how (?:do|does|is))(?=[\s؟?]|$)/i;
 
 /** Does the visitor want a ready perfume from the store (not a formula, not a lesson)? */
@@ -252,6 +263,40 @@ const ASK_MORE: Record<Lang, string> = {
   en: 'To recommend without guessing, tell me: **for whom** (men/women/unisex)? **when** (summer/winter/evening/work)? **style** (oud, fresh, sweet, floral…)? and **budget**?',
 };
 
+// ── The gift: who receives it and for what ───────────────────────────────────────────────────────────────────
+/** A perfume named for lovers is not a gift for a boss, a mother-in-law or a son. */
+const ROMANTIC = /عشاق|عشق|العاشق|غرام|حبيب|(?<![\u0621-\u064A])(?:ال)?حب(?![\u0621-\u064A])|\b(?:love|lovers?|amour|romanc\w*|kiss|seduc\w*|sexy|desire|passion|valentin\w*|temptation|flirt\w*)\b/i;
+const MEN_FOR: ReadonlySet<Recipient> = new Set(['husband', 'fiance', 'father', 'brother', 'friend_m', 'son', 'father_in_law']);
+const WOMEN_FOR: ReadonlySet<Recipient> = new Set(['wife', 'fiancee', 'mother', 'sister', 'friend_f', 'daughter', 'mother_in_law']);
+const GRADUATION = /(?<![\u0621-\u064A])(?:نجح|نجحت|نجاحه|نجاحها|النجاح|تخرج|اتخرج|اتخرجت|التخرج|الثانوية)(?![\u0621-\u064A])|\b(?:graduat\w*|passed (?:his|her) exams)\b/i;
+const GIFT_WHY: Partial<Record<Recipient, Record<Lang, string>>> = {
+  boss: { ar: 'لمديرك الأنسب هدية محترمة ومش شخصية أوي: طابع خشبي أو عود هادي أو طقم هدايا في علبته.', en: 'For your boss, a respectful, not-too-personal gift: a woody or calm oud character, or a boxed gift set.' },
+  colleague: { ar: 'لزميلك الأضمن ريحة محبوبة عند الأغلب (مسك نظيف أو خشبي خفيف) بسعر متوسط.', en: 'For a colleague, a crowd-pleaser (clean musk or light woods) at a moderate price.' },
+  teacher: { ar: 'لأستاذك هدية تقدير بسيطة وراقية: مسك أو عود خفيف، ومعاها كلمة شكر.', en: 'For a teacher, a simple, refined thank-you: musk or light oud, with a note of thanks.' },
+  mother_in_law: { ar: 'لحماتك الأضمن الكلاسيكي المحترم: عود أو مسك أو ورد، والطقم في علبته بيبان أشيك.', en: 'For your mother-in-law, a respectful classic: oud, musk or rose — a boxed set looks most gracious.' },
+  father_in_law: { ar: 'لحماك الكلاسيكي الدافي: عود أو عنبر أو خشبي.', en: 'For your father-in-law, a warm classic: oud, amber or woods.' },
+  son: { ar: 'لابنك الأحلى ريحة شبابية يلبسها كل يوم: منعش أو خشبي خفيف وثباته كويس.', en: 'For your son, a youthful everyday scent: fresh or light woods with good staying power.' },
+  daughter: { ar: 'لبنتك ريحة ناعمة ومبهجة: زهري خفيف أو فواكه أو مسك نظيف.', en: 'For your daughter, something soft and cheerful: light florals, fruits or clean musk.' },
+};
+
+/** The characters that suit each recipient (used to order the picks — never claimed as what he asked for). */
+const GIFT_FAMILIES: Partial<Record<Recipient, Family[]>> = {
+  boss: ['woody', 'oud', 'amber'], colleague: ['musk', 'woody', 'fresh'], teacher: ['musk', 'oud', 'woody'],
+  mother_in_law: ['oud', 'musk', 'floral', 'amber'], father_in_law: ['oud', 'amber', 'woody'], mother: ['floral', 'musk', 'oud'],
+  father: ['oud', 'amber', 'woody'], son: ['fresh', 'woody', 'citrus', 'aquatic'], daughter: ['floral', 'fruity', 'musk'],
+};
+
+/** The gift read from his words: the recipient's gender when his words say it, and the lines that explain the choice. */
+function giftReading(wish: Wish, said: string, buyer: BuyerProfile, lang: Lang): { wish: Wish; lines: string[]; formal: boolean; families: Family[] } {
+  const r = buyer.recipient;
+  let gender = wish.gender;
+  if (!gender && r) gender = MEN_FOR.has(r) ? 'men' : WOMEN_FOR.has(r) ? 'women' : r === 'boss' ? (/مديرتي|لمديرتي/.test(said) ? 'women' : /مديري|لمديري/.test(said) ? 'men' : undefined) : undefined;
+  const lines: string[] = [];
+  if (GRADUATION.test(said)) lines.push(lang === 'ar' ? 'ألف مبروك النجاح 🎓 — هدية النجاح أحلى لما تبقى عطر يفرح بيه ويلبسه في المرحلة الجاية.' : 'Congratulations on the success 🎓 — a perfume he can wear in the next chapter makes the best graduation gift.');
+  if (r && GIFT_WHY[r]) lines.push(GIFT_WHY[r]![lang]);
+  return { wish: gender === wish.gender ? wish : { ...wish, gender }, lines, formal: Boolean(r && FORMAL_RECIPIENTS.has(r)), families: (!wish.families.length && r && GIFT_FAMILIES[r]) || [] };
+}
+
 /** «فيهم / منهم / انهي / which one» — about the perfumes just shown. */
 const AMONG = /(?<![\u0600-\u06FF])(?:فيهم|منهم|انهي|أنهي|انهو|أنهو|ايهم|أيهم|ايهما|أيهما|التلاتة|الاتنين|دول)(?![\u0600-\u06FF])|\b(?:which one|of them|of these|among them)\b/i;
 const COMPARATIVE = /(?<![\u0600-\u06FF])(?:اثبت|أثبت|ارخص|أرخص|اوفر|أوفر|اغلى|أغلى|افخم|أفخم)(?![\u0600-\u06FF])|\b(?:longest|cheapest|most expensive)\b/i;
@@ -262,7 +307,10 @@ export interface StoreAnswer { reply: string; picks: StoreProduct[]; matched: bo
 export function storeAnswer(products: StoreProduct[], ctx: Context, language: string, link: (slug: string) => string | undefined): StoreAnswer | undefined {
   if (!products.length) return undefined;
   const lang = langOf(language, ctx.text);
-  const wish = storeWish(ctx);
+  const said = (ctx.said || [ctx.text]).join('\n');
+  const gift = giftReading(storeWish(ctx), said, readBuyer(ctx.said || [ctx.text]), lang);
+  const wish = gift.wish;
+  const buyerGift = gift.formal || wish.occasions.includes('gift');
   // A follow-up about the perfumes just shown («انهي فيهم أثبت؟») is answered about them.
   // («وللصيف؟» is a new wish — the season changes — not a question about the perfumes shown.)
   const asked = ctx.followUp && ctx.previous ? ctx.text.slice(ctx.previous.length) : ctx.text;
@@ -272,7 +320,17 @@ export function storeAnswer(products: StoreProduct[], ctx: Context, language: st
     if (followed) return followed;
   }
   const criteria = hasCriteria(wish);
-  const { picks, matched } = recommend(products, ctx.text, 3, wish);
+  const advice = recommend(products, ctx.text, 9, wish);
+  const { matched } = advice;
+  // A gift for a boss, a parent or a child: no perfume named for lovers.
+  const fitting = gift.formal ? advice.picks.filter((p) => !ROMANTIC.test(`${p.product.name.ar} ${p.product.name.en}`)) : advice.picks;
+  // A gift is a full bottle first: a discovery kit of 2 ml vials goes after them.
+  const kit = (p: Pick) => Boolean(p.product.sizeMl && p.product.sizeMl < 15);
+  // …and the character that suits the recipient first (a classic oud or musk for a mother-in-law, not candy).
+  const suits = (p: Pick) => p.product.families.filter((f) => gift.families.includes(f)).length;
+  const bySuit = (list: Pick[]) => (gift.families.length ? list.map((p, i) => ({ p, i })).sort((a, b) => suits(b.p) - suits(a.p) || a.i - b.i).map((x) => x.p) : list);
+  const giftFirst = (list: Pick[]) => (buyerGift ? [...bySuit(list).filter((p) => !kit(p)), ...bySuit(list).filter(kit)] : list);
+  const picks = giftFirst(fitting.length ? fitting : advice.picks);
   const inStock = picks.filter((p) => p.product.inStock);
   const shown: Pick[] = (inStock.length ? inStock : picks).slice(0, 3);
   if (!shown.length) return undefined;
@@ -281,7 +339,7 @@ export function storeAnswer(products: StoreProduct[], ctx: Context, language: st
     out.push(ASK_MORE[lang], '', lang === 'ar' ? '**ولحد ما تقولّي، دول من الأعلى تقييماً في المتجر:**' : '**Meanwhile, top-rated in the store:**');
   } else {
     out.push(`${lang === 'ar' ? '**فهمت طلبك:**' : '**Your request:**'} ${wishLine(wish, lang)}`);
-    const why = whyLines(wish, lang);
+    const why = [...gift.lines, ...whyLines(wish, lang)].slice(0, 3);
     if (why.length) out.push('', `${lang === 'ar' ? '**ليه الاتجاه ده؟**' : '**Why this direction?**'}`, ...why.map((l) => `- ${l}`));
     out.push('', matched ? (lang === 'ar' ? '**اختياري الأول ليك من متجر شام:**' : '**My first pick for you from the Sham store:**')
       : (lang === 'ar' ? '**مالقيتش حاجة مطابقة بالظبط، ودي الأقرب لطلبك:**' : '**Nothing matches exactly; this is the closest:**'));
@@ -340,7 +398,7 @@ function comparePicks(products: StoreProduct[], question: string, lang: Lang, li
   }
   if (!ranked?.length) return undefined;
   const lines = ranked.map((p, i) => `${i + 1}. ${link(p.slug) ? `[${nameOf(p, lang)}](${link(p.slug)})` : `**${nameOf(p, lang)}**`} — ${reason(p)}`);
-  const pickLine = lang === 'ar' ? `**اختياري:** «${nameOf(ranked[0], lang)}».` : `**My pick:** “${nameOf(ranked[0], lang)}”.`;
+  const pickLine = lang === 'ar' ? `**اختياري:** «${nameOf(ranked[0], lang)}» — لو عجبك اكتب «هاخده» وأقولك تطلبه إزاي في دقيقة.` : `**My pick:** “${nameOf(ranked[0], lang)}” — if you like it, write “I'll take it” and I will show you how to order in a minute.`;
   return { reply: [lang === 'ar' ? 'من اللي رشحتهملك:' : 'Of the ones I suggested:', head, ...lines, '', pickLine].join('\n'), picks: ranked, matched: true };
 }
 

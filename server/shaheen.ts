@@ -46,7 +46,7 @@ import { questionIntents } from '../src/utils/shaheenTools';
 import { agentLexicon, expertGapReason, referralAnswer, runAgent, scienceDesk, understand, type AgentResult } from '../src/utils/shaheenAgent';
 import { RAW_MATERIALS_DATABASE } from '../src/data/rawMaterials';
 import { quickAnswer } from '../src/utils/shaheenQuickApps';
-import { hasSensitiveNumber, maskSensitive } from '../src/utils/ownerAuthority';
+import { hasSensitiveNumber, maskSensitive, offersCardDetails } from '../src/utils/ownerAuthority';
 import { councilAvailable, runCouncil } from './core/council';
 import type { Repository } from './core/repository';
 import type { CouncilSettings, ModelEngineId, ShaheenSettings } from './core/types';
@@ -628,7 +628,7 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       const mode = shaheen.allowVisitorChoice ? input.model : 'auto';
       // «تطبيقات شاهين السريعة»: the same instant apps as the browser (for clients that did not run them).
       // A card/ID/IBAN number is answered here and never forwarded or kept, whatever the settings.
-      const quick = hasSensitiveNumber(input.message) || (shaheen.enabled && req.body?.memory !== false) ? quickAnswer(input.message, input.language) : undefined;
+      const quick = hasSensitiveNumber(input.message) || offersCardDetails(input.message) || (shaheen.enabled && req.body?.memory !== false) ? quickAnswer(input.message, input.language) : undefined;
       if (quick) {
         if (!res.destroyed) res.json({ ...publicChatResult({ reply: quick.reply, mode }, input.message), quick: quick.app });
         runtime?.record({ ms: Date.now() - started, status: 200 });

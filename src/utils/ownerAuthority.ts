@@ -163,6 +163,20 @@ export const hasSensitiveNumber = (text: string) => SENSITIVE_NUMBER.test(wester
 /** The same text with every card/ID/IBAN number hidden (so an earlier message never reaches an engine or a log). */
 export const maskSensitive = (text: string) => (hasSensitiveNumber(text) ? westernDigits(text).replace(new RegExp(SENSITIVE_NUMBER.source, 'g'), '••••') : text);
 
+/**
+ * «ابعتلك رقم الكارت؟» — an offer to share card or bank details in the chat (no number typed yet). Answered at once
+ * by Shaheen himself, before any engine: never send them here, the card is paid on the payment page.
+ */
+const CARD_WORD = '(?:ال)?(?:كارت|كارد|بطاق[ةه]|فيزا|ماستر ?كارد|ماستر|كريدت|كردت|حساب(?:ي)? (?:البنكي|بالبنك)|cvv|سي ?في ?في|الرقم السري|رقم سري|الباسورد|كلمة السر|otp|كود التحقق)';
+const CARD_OFFER_AR = new RegExp(`(?:ابعت|ابعتلك|ابعتلكم|ابعتهولك|اكتب|اكتبلك|اكتبلكم|اقولك|اقولكم|اديك|اديكم|ادخل|ابلغك|احطلك|ارسل|ارسلك|ارسللك|نبعت|نبعتلك)\\s*(?:لك|ليك|لكم|ليكم)?\\s*(?:رقم|بيانات|داتا|تفاصيل|نمر[ةه])\\s*${CARD_WORD}|(?:رقم|بيانات|داتا|تفاصيل)\\s*${CARD_WORD}\\s*(?:ابعته|ابعتها|اكتبه|اكتبها|اقولهولك|ابعتهولك)`, 'i');
+const CARD_OFFER_EN = /\b(?:send|give|tell|share|type|dm|text)\b[^.?!]{0,20}\b(?:my |the )?(?:card|credit card|debit card|visa|mastercard|bank)\s*(?:number|details|info|data|no\.?)|\b(?:send|give|tell|share|type)\b[^.?!]{0,20}\b(?:cvv|cvc|pin|otp)\b/i;
+const plainAlef = (text: string) => text.replace(/[أإآ]/g, 'ا').replace(/ى(?=\s|$)/g, 'ي');
+export const offersCardDetails = (text: string) => text.length <= 300 && (CARD_OFFER_AR.test(plainAlef(text)) || CARD_OFFER_EN.test(text));
+export function cardOfferReply(lang: string): string {
+  return lang === 'ar'
+    ? '🔒 لا — **ماتبعتش رقم الكارت ولا أي بيانات دفع في الشات خالص**، لا ليّا ولا لأي حد بيكلمك باسم المتجر. أنا مش هطلب منك الرقم ولا الرقم السري ولا كود التحقق أبداً.\n\nالدفع بيتم في **صفحة الدفع** نفسها بعد ما تضغط «شراء مباشر» أو تفتح السلة: بتختار طريقة الدفع (البطاقة أو غيرها من الطرق المتاحة لبلدك — عند الاستلام، إنستاباي، تحويل بنكي، محفظة) وتكتب بياناتك هناك بس.\n\nتحب أرشحلك عطر أو أقولك خطوات الطلب؟'
+    : '🔒 No — **please never send your card number or any payment details in the chat**, not to me and not to anyone writing in the store’s name. I will never ask for the number, the PIN or a verification code.\n\nPayment happens on the **payment page** itself after “Buy now” or in the cart: you choose how to pay (card or the other methods available in your country — cash on delivery, InstaPay, bank transfer, wallet) and enter your details there only.\n\nShall I recommend a perfume or show you how to order?';
+}
 export function ownerClaimReply(lang: string): string {
   return lang === 'ar'
     ? 'أهلاً بيك! 🌹 أنا مقدرش أتأكد من هوية أي حد من الشات، فبتعامل مع الكل بنفس الطريقة، ومابطلبش ولا بحفظ أي بيانات شخصية.\n\nإدارة الموقع بتتم من **لوحة الإدارة** بالكود السري، ومن حساب GitHub بتاع صاحب الموقع بس. لو عندك سؤال عن العطور أو التركيبات أو المتجر، أنا موجود.'
