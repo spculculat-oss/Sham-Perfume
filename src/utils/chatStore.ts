@@ -114,12 +114,16 @@ export const storeCatalogFallback: CatalogFallback = async (text, lang, history 
   const link = pageLink(productPageUrl);
   const brain = await import('./shaheenBrain').catch(() => undefined);
   const ctx = brain?.withContext(text, history);
-  const linked = ctx && (brain?.productAnswer(products, ctx, lang, link) || brain?.storeAnswer(products, ctx, lang, link))?.reply;
+  const seller = ctx ? await import('./shaheenSeller').catch(() => undefined) : undefined;
+  const linked = ctx && (seller?.salesAnswer(products, ctx, lang, link) || brain?.productAnswer(products, ctx, lang, link) || brain?.storeAnswer(products, ctx, lang, link))?.reply;
   return linked ?? catalogReply(localSuggestion(products, text, lang).picks, lang, link);
 };
 
 /** Under a formula he designed in the browser: the store's ready perfumes that share its notes. */
 const designWithStore = async (text: string, lang: SupportedLanguage, previous?: string): Promise<string | undefined> => {
+  // A cosmetic formula (cream, serum, balm …) first: the perfume designer steps aside for it.
+  const cosmetic = await import('./cosmeticFormulator').then((m) => m.cosmeticFor(text, lang)).catch(() => undefined);
+  if (cosmetic) return cosmetic.reply;
   const d = await import('./shaheenDesigner').then((m) => m.designFor(text, lang, previous)).catch(() => undefined);
   if (!d?.design) return d?.reply;
   try {
@@ -308,7 +312,10 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
         const brain = canAnswerFromMemory(error) ? await import('./shaheenBrain').catch(() => undefined) : undefined;
         if (generation !== token) return false;
         const ctx = brain?.withContext(text, history);
-        const shopping = isShoppingQuestion(text) || Boolean(ctx && brain?.wantsStore(ctx.text));
+        // «هاخده / غالي / مش متأكد» right after a reply with store products is the seller's turn.
+        const sellerTurn = Boolean(brain && ctx?.lastReply && /\/p\/[a-z0-9-]+\.html/.test(ctx.lastReply) && (await import('./shaheenSeller').catch(() => undefined))?.saleMove(text));
+        if (generation !== token) return false;
+        const shopping = isShoppingQuestion(text) || sellerTurn || Boolean(ctx && brain?.wantsStore(ctx.text));
         if (canAnswerFromMemory(error) && shopping) {
           const picks = await catalog(text, options.language, history).catch(() => undefined);
           if (generation !== token) return false;

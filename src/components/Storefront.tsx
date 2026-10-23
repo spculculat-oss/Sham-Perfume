@@ -36,6 +36,8 @@ import { PaymentEnvironmentModal } from './PaymentEnvironmentModal';
 import { StoreSalesCategoryChart } from './StoreSalesCategoryChart';
 import { saveMerchant } from '../utils/merchantDataStore';
 import { FAMILIES, searchText, type Family, type Gender, type StoreProduct } from '../utils/storeCatalog';
+import { productSection, sectionFromHash, STORE_SECTIONS, type StoreSection } from '../utils/storeSections';
+import { cosmeticsText } from '../لغات/cosmeticsL10n';
 import DirectPaymentCard from './DirectPaymentCard';
 import { SafeImage, photoSources } from './SafeImage';
 import { reserveDirectOrder, savedDirectOrders, type DirectOrder } from '../utils/directPayment';
@@ -45,6 +47,8 @@ import type { SupportedLanguage } from '../types/i18n';
 import { askShaheenStore, loadStoreCatalog, localSuggestion, storeImageSrc, type StoreSuggestion } from '../utils/liveStore';
 import { LegalDisclaimer } from './LegalDisclaimer';
 import { StoreInvoiceBreakdown } from './StoreInvoiceBreakdown';
+import CompleteYourOrder from './CompleteYourOrder';
+import { pastPurchases, rememberPurchase } from '../utils/purchaseMemory';
 import { addToCart, cartSummary, clearCart, orderMessage, orderRef, orderRequestEmail, removePurchasedItems, setCartQty, useCart, type PricedOrder } from '../utils/storeCart';
 import { contactEmail, contactMailto } from '../config/contact';
 import {
@@ -303,6 +307,14 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
   const [gender, setGender] = useState<Gender | 'all'>('all');
   const [family, setFamily] = useState<Family | 'all'>('all');
   const [category, setCategory] = useState('all');
+  // «العطور» / «مستحضرات التجميل»: a link can open one section (#store?section=cosmetics).
+  const [section, setSection] = useState<StoreSection | 'all'>(() => {
+    try { return sectionFromHash(window.location.hash); } catch { return 'all'; }
+  });
+  const sectionCount = useMemo(() => ({
+    perfumes: products.filter((p) => productSection(p) === 'perfumes').length,
+    cosmetics: products.filter((p) => productSection(p) === 'cosmetics').length,
+  }), [products]);
   const [brand, setBrand] = useState('all');
   const [newOnly, setNewOnly] = useState(false);
   const [inStockOnly, setInStockOnly] = useState(false);
@@ -317,6 +329,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
   const shown = useMemo(() => {
     const words = search.toLowerCase().split(/\s+/).filter(Boolean);
     const list = products.filter((p) => {
+      if (section !== 'all' && productSection(p) !== section) return false;
       if (gender !== 'all' && p.gender !== gender && !(p.gender === 'unisex')) return false;
       if (family !== 'all' && !p.families.includes(family)) return false;
       if (category !== 'all' && p.category !== category) return false;
@@ -343,11 +356,11 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
         ? (b.rating || 0) - (a.rating || 0)
         : time(b) - time(a)
     );
-  }, [products, search, gender, family, category, brand, newOnly, inStockOnly, priceRange, sort]);
+  }, [products, search, section, gender, family, category, brand, newOnly, inStockOnly, priceRange, sort]);
 
   useEffect(() => {
     setLimit(ALL);
-  }, [search, gender, family, category, brand, newOnly, inStockOnly, priceRange, sort]);
+  }, [search, section, gender, family, category, brand, newOnly, inStockOnly, priceRange, sort]);
 
   const hasActiveFilters =
     search.trim() !== '' ||
@@ -361,6 +374,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
 
   const resetFilters = () => {
     setSearch('');
+    setSection('all');
     setGender('all');
     setFamily('all');
     setCategory('all');
@@ -490,12 +504,18 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
   const [paying, setPaying] = useState(false);
   const [payMessage, setPayMessage] = useState('');
   const [payResult, setPayResult] = useState<PaymentResult | null>(null);
+  // «شاهين التاجر»: what was just ordered (this visit) and what was ordered before on this device.
+  const [justOrdered, setJustOrdered] = useState<string[]>([]);
+  const [boughtBefore, setBoughtBefore] = useState<string[]>(() => (typeof window === 'undefined' ? [] : pastPurchases()));
+  const [hideForYou, setHideForYou] = useState(false);
+  const ordered = (skus: string[]) => { if (!skus.length) return; setJustOrdered(skus); setBoughtBefore(rememberPurchase(skus)); };
 
   useEffect(() => {
     void returnedPayment().then((result) => {
       if (!result) return;
       setPayResult(result);
       if (result.state === 'paid' && result.mode === 'live' && result.cartItems) removePurchasedItems(result.cartItems);
+      if (result.state === 'paid' && result.cartItems) ordered(result.cartItems.map((i) => i.sku));
     });
   }, []);
 
@@ -533,6 +553,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
         const items = summary.lines.map((l) => ({ sku: l.product.sku, qty: l.qty }));
         const order = await reserveDirectOrder(items, money.country, payForm, currentLang, chosenDirect.id);
         setActiveDirect(order.ref); setDirectOrders(savedDirectOrders());
+        ordered(items.map((i) => i.sku));
         // The order is placed: it leaves the basket (a direct purchase never touched it).
         if (directPurchase) setDirectPurchase(null); else removePurchasedItems(items);
         setStep('cart');
@@ -557,6 +578,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
     const ref = orderRef();
     const mail = orderRequestEmail(summary, currentLang, priced, payForm, countries.find((c) => c.code === money.country)?.name || money.country, ref);
     setOrderSent(ref);
+    ordered(summary.lines.map((l) => l.product.sku));
     window.location.href = contactMailto('orders', currentLang, mail.subject, mail.body);
   };
 
@@ -1103,6 +1125,14 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
           </div>
         )}
 
+        {justOrdered.length > 0 ? (
+          <CompleteYourOrder products={products} basis={products.filter((p) => justOrdered.includes(p.sku))} lang={currentLang} variant="after" price={money.price}
+            onAdd={add} onOpen={openDetails} added={justAdded} inCart={[...Object.keys(cart), ...justOrdered]} onDismiss={() => setJustOrdered([])} />
+        ) : !hideForYou && boughtBefore.length > 0 ? (
+          <CompleteYourOrder products={products} basis={products.filter((p) => boughtBefore.slice(0, 3).includes(p.sku))} lang={currentLang} variant="forYou" price={money.price}
+            onAdd={add} onOpen={openDetails} added={justAdded} inCart={[...Object.keys(cart), ...boughtBefore]} onDismiss={() => setHideForYou(true)} />
+        ) : null}
+
         {/* Haute Parfumerie Hero Presentation */}
         <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-stone-950 via-stone-900 to-amber-950 text-white border border-amber-500/20 shadow-2xl p-6 sm:p-8">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-500/15 via-transparent to-transparent pointer-events-none" />
@@ -1168,6 +1198,26 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
           country={money.country}
           heading={currentLang === 'ar' ? 'وسائل الدفع المتاحة لمنتجات المتجر في بلدك' : 'Payment methods available for store products in your country'}
         />
+
+        {/* The store's two sections: perfumes and cosmetics (same pricing). */}
+        <nav className="flex items-center gap-2 overflow-x-auto pb-1" data-testid="store-sections" aria-label={cosmeticsText(currentLang, 'sectionAll')}>
+          {(['all', ...STORE_SECTIONS] as const).map((s) => (
+            <button
+              key={s}
+              type="button"
+              onClick={() => setSection(s)}
+              aria-pressed={section === s}
+              className={`px-4 py-2 rounded-2xl text-sm font-bold whitespace-nowrap transition-all cursor-pointer border ${
+                section === s ? 'bg-amber-800 text-white border-amber-800 shadow-xs' : 'bg-white text-stone-700 border-stone-200 hover:border-amber-400'
+              }`}
+            >
+              {cosmeticsText(currentLang, s === 'all' ? 'sectionAll' : s === 'perfumes' ? 'sectionPerfumes' : 'sectionCosmetics')}
+              {s === 'cosmetics' && !sectionCount.cosmetics && (
+                <span className="ms-2 px-1.5 py-0.5 rounded-md bg-rose-100 text-rose-800 text-[10px]">{cosmeticsText(currentLang, 'comingSoon')}</span>
+              )}
+            </button>
+          ))}
+        </nav>
 
         {/* Olfactory Scent Families Ribbon (Interactive Segmented Bar) */}
         <section className="bg-white rounded-2xl p-3 border border-stone-200/80 shadow-xs space-y-2">
@@ -1468,7 +1518,16 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
         </section>
 
         {/* Product Catalog Grid */}
-        {loading && !products.length ? (
+        {section === 'cosmetics' && !loading && !sectionCount.cosmetics ? (
+          <div className="text-center py-14 bg-gradient-to-b from-rose-50 to-white rounded-3xl border border-rose-200/70 p-8 space-y-3" data-testid="store-cosmetics-soon">
+            <Sparkles className="w-10 h-10 mx-auto text-rose-400" />
+            <p className="text-lg font-black text-stone-900">{cosmeticsText(currentLang, 'storeTitle')} — {cosmeticsText(currentLang, 'comingSoon')}</p>
+            <p className="text-sm text-stone-600 max-w-xl mx-auto leading-relaxed">{cosmeticsText(currentLang, 'comingSoonText')}</p>
+            <a href="#cosmetics" className="inline-block px-5 py-2.5 rounded-xl bg-rose-700 hover:bg-rose-800 text-white text-sm font-bold">
+              {cosmeticsText(currentLang, 'tabFormulator')}
+            </a>
+          </div>
+        ) : loading && !products.length ? (
           <div className="text-center py-16 space-y-3" data-testid="store-loading">
             <Loader2 className="w-8 h-8 animate-spin mx-auto text-amber-700" />
             <p className="text-sm font-medium text-stone-500">{L.loading}</p>
@@ -1575,6 +1634,11 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                     </div>
                   ))}
                 </div>
+
+                {step === 'cart' && !directPurchase && (
+                  <CompleteYourOrder products={products} basis={summary.lines.map((l) => l.product)} lang={currentLang} variant="cart" price={money.price}
+                    onAdd={add} onOpen={(p) => { setCartOpen(false); openDetails(p); }} added={justAdded} inCart={summary.lines.map((l) => l.product.sku)} />
+                )}
 
                 <div className="border-t border-stone-100 pt-4 space-y-2.5">
                   {countryPicker('store-cart-country')}

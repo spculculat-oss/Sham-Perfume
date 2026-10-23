@@ -128,7 +128,7 @@ export function trackOf(topic: string): TrackId {
       'human-medicine': 'medicine', veterinary: 'medicine', biosafety: 'medicine', nutrition: 'medicine',
       space: 'earth_space', earth: 'earth_space', chemistry: 'chemistry', physics: 'physics', nuclear: 'physics',
       math: 'math', biology: 'biology', agriculture: 'biology', semiconductors: 'engineering',
-      'electronic-warfare': 'engineering', computing: 'it_sciences', 'war-studies': 'history', logic: 'religion',
+      'electronic-warfare': 'engineering', computing: 'it_sciences', 'war-studies': 'history', logic: 'religion', cosmetics: 'chemistry',
     };
     return expertTracks[topic.slice('expert:'.length)] ?? 'perfume';
   }
@@ -562,6 +562,12 @@ export const TOOL_FIELDS: Record<AiToolId, ToolField> = {
     goalAr: 'الزائر يُنجز طلبه من غير حيرة.',
     aboutAr: 'مجال خدمة العملاء: الإجابة عن أسئلة الخدمات والطلبات والمتجر والدعم، وبناء السلة بأسعار محسوبة من الخادم، وتتبع الطلب برقم المتابعة، والتحويل الذكي لموظف بشري عند الحاجة.',
     developAr: 'طرق تطوير خدمة العملاء: معرفة المنتجات الحقيقية المتاحة، وتحويلات دقيقة للخبير والموظف، وردود بلغة الزائر، وحفظ تفضيلات الزائر بموافقته، وإغلاق كل طلب بخطوة تالية واضحة.',
+  },
+  specialists_agent: {
+    field: 'الاستشارة المتخصصة',
+    goalAr: 'كل سؤال يوصل لمتخصصه ويرد من معلومة مكتوبة.',
+    aboutAr: 'مجال الاستشارة المتخصصة: توجيه سؤال الزائر لمتخصصه من مجلس المتخصصين، وتشغيل أدواته — منهج مدرسة شاهين وعلومها المراجَعة، وذاكرته ومكتبته، وموسوعة المواد الخام، وحاسبات المعمل، والمتجر بأسعاره الحقيقية، ونشرة الأخبار، وملجأ شاهين، والمصادر المفتوحة — والرد من ملاحظات الأدوات وحدها مع ذكر المصدر والأدوات التي اشتغلت.',
+    developAr: 'طرق تطوير الاستشارة المتخصصة: نطاق واحد لكل متخصص بلا تخمين، وأدوات تُسأل بأقل عدد من الخطوات، وفجوة صريحة تُسجَّل للمدرسة عند غياب المعلومة، وتسليم واضح لأسئلة التركيبات والطلبات، وقياس زمن الرد ونسبة الفجوات في كل نطاق.',
   },
   news_articles: {
     field: 'الكتابة التثقيفية',

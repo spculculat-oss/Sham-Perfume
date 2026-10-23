@@ -1517,7 +1517,7 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   'بيجيب الحالة…': { en: "Loading the status…" },
   'خروج من ملء الشاشة': { en: "Exit full screen" },
   'ملء الشاشة': { en: "Full screen" },
-  'صاحب الموقع فوق الكل ← دولة المنصة ← شاهين المدير العام ووكيله ← الأقسام ومدرسة شاهين ← الروبوتات والخبراء السبعتاشر. النقط المتحركة = شغل ماشي دلوقتي: تقارير طالعة لفوق، وموافقات نازلة، وأسئلة رايحة للخبراء ودروس راجعة للمدرسة.': { en: "The owner above all → the Platform State → Shaheen the manager and his agent → the departments and Shaheen's school → the robots and the seventeen experts. Moving dots = work happening now: reports going up, approvals coming down, questions going to the experts and lessons coming back to the school." },
+  'صاحب الموقع فوق الكل ← دولة المنصة ← شاهين المدير العام ووكيله ← الأقسام ومدرسة شاهين ← الروبوتات وخبراء المدرسة. النقط المتحركة = شغل ماشي دلوقتي: تقارير طالعة لفوق، وموافقات نازلة، وأسئلة رايحة للخبراء ودروس راجعة للمدرسة.': { en: "The owner above all → the Platform State → Shaheen the manager and his agent → the departments and Shaheen's school → the robots and the school’s experts. Moving dots = work happening now: reports going up, approvals coming down, questions going to the experts and lessons coming back to the school." },
   'فرع المعرفة: المدرسة وخبراؤها': { en: "Knowledge branch: the school and its experts" },
   'فرع التشغيل: الأقسام وروبوتاتها': { en: "Operations branch: the departments and their robots" },
   'بيحصل دلوقتي': { en: "Happening now" },

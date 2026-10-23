@@ -7,7 +7,7 @@
  *         ├ الخبير شاهين — المدير العام  (runs the departments)
  *         │    └ الأقسام الخمسة → روبوتات كل قسم
  *         └ وكيل شاهين  (answers visitors: understands, picks the expert, compares the sources)
- *              └ مدرسة شاهين وأكاديميتها → الخبراء السبعتاشر
+ *              └ مدرسة شاهين وأكاديميتها → خبراء المدرسة (واحد لكل مجال، منهم العطور والتجميل)
  *
  * Pure and browser-safe. Every robot of src/utils/shaheenOrg.ts sits under exactly one department; every expert
  * of «وكيل شاهين» (src/utils/shaheenAgent.ts) under the school. Positions are SVG user units (left-to-right; the
@@ -50,7 +50,7 @@ export const deptRoomX = (d: DeptId) => DEPT_X0 - BRANCH_DEPTS.indexOf(d) * DEPT
 /** Robots under a department: two columns of dots. */
 export const BOT_DOT = { gapX: 30, gapY: 30 } as const;
 /** Experts under the school: rows of six on the knowledge branch (left). */
-export const EXPERT_GRID = { x0: 70, gapX: 92, gapY: 78, perRow: 6 } as const;
+export const EXPERT_GRID = { x0: 70, gapX: 92, gapY: 72, perRow: 6 } as const;
 export const SCHOOL_BOTS: BotId[] = ['academy', 'school', 'teacher'];
 /** Robots that are the top seats themselves (the owner's desk, the State's robot): drawn as those seats, not under a department. */
 export const SEAT_BOTS: BotId[] = ['owner_desk', 'state'];

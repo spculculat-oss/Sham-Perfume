@@ -25,7 +25,9 @@ import type { ShaheenMemory } from './core/memory';
 import { isPersonal, isTimeBound, offlineNote } from '../src/utils/shaheenMemory';
 import { libraryAnswer, unknownAnswer, type LibrarySources } from '../src/utils/shaheenLibrary';
 import { designFor } from '../src/utils/shaheenDesigner';
+import { cosmeticFor } from '../src/utils/cosmeticFormulator';
 import { designStoreNote, productAnswer, productLink, storeAnswer, wantsStore, withContext, type Context } from '../src/utils/shaheenBrain';
+import { salesAnswer } from '../src/utils/shaheenSeller';
 import { agentLinkOn, type LinkSource } from '../src/utils/agentLink';
 import { readStateOrders } from '../src/utils/platformState';
 import { readControls } from '../src/utils/ownerAuthority';
@@ -162,6 +164,7 @@ export function systemInstruction(language: SupportedLanguage, extra = '', style
 اكتب السياج باسم sham-formula حرفياً (وليس json)، وضع JSON في سطر مستقل بعد اسم السياج، وأغلقه بثلاث علامات \`\`\` في سطر مستقل، واكتب الأرقام بالأرقام الإنجليزية بدون علامة %. لا تكتب JSON التركيبة خارج هذا السياج ولا تذكر السياج في الشرح. إذا عرضت بدائل لتركيبات مختلفة فأرفق سياج sham-formula مستقلاً لكل بديل (ثلاثة على الأكثر) وبعنوان title مختلف.
 الأرقام أعلاه أمثلة للشكل فقط، وليست وصفة افتراضية. يجب أن تطابق القيم الشرح وطلب المستخدم، وأن تجمع نسب pyramidNotes إلى 100 من الزيت. التصنيفات top أو heart أو base. نسب التركيز والماء والمثبت من إجمالي المنتج ولا تتجاوز 100 معاً. لا ترفق JSON في التحيات أو الإجابات العامة أو الطبية، ولا تدّع أن الصيغة معتمدة للاستخدام على الجلد.
 عندما يكون السؤال عن عملية تخدمها أداة من أدوات الموقع وفيه أو في إجابتك أرقام محددة، أرفق في آخر الرد سياجاً واحداً باسم sham-tool يحتوي JSON فقط، مثل {"tools":[{"tool":"alcohol","alcoholFrom":96,"alcoholTo":70,"finalVolumeMl":1000},{"tool":"maceration","macerationDays":42}]}. الأدوات وحقولها: concentration (bottleVolumeMl، concentrationPercent، concentrationType، alcoholPercentage، waterPercent، fixativePercent) لحساب كميات الزيت والكحول، alcohol (alcoholFrom، alcoholTo، finalVolumeMl) لتخفيف الكحول، maceration (macerationDays) للتعتيق، costing للتكاليف والتسعير، pyramid للنوتات، raw_materials (search باسم المادة بالإنجليزية) لسؤال عن مادة خام، guide للمثبتات والثبات، store (search بطلب الزائر بكلماته) عندما يريد شراء عطر جاهز أو ترشيحاً أو هدية من «متجر شام» — وفي هذه الحالة لا تخترع منتجات أو أسعاراً للمتجر، بل صف ما يناسبه واترك الاختيار لأداة المتجر. افهم طبيعة السؤال أولاً واختر الأدوات التي تخدمه فقط (أداة إلى ثلاث)، واكتب القيم المذكورة في الحوار أو في توصيتك فقط دون تخمين، ولا تذكر السياج في الشرح، ولا ترفقه في التحيات أو الأسئلة الطبية.
+أسلوب «التاجر الأمين» عندما يريد الزائر الشراء: افهم احتياجه بسؤال أو سؤالين فقط (لمين، لإمتى، الطابع، الميزانية)، ثم ركّز على اختيار واحد أساسي وبديلين على الأكثر حتى لا تشتّته، وابدأ بالفائدة التي تهمه (يناسب إيه، ثباته، قيمته مقابل السعر) لا بالمواصفات، واختم بخطوة واحدة واضحة (افتح صفحة المنتج واضغط «شراء مباشر»). إذا قال «غالي» فلا تجادله: اعرض الأوفر بصدق (حجم أصغر من نفس العطر أو عطر قريب بسعر أقل). إذا تردد فاعرض الحقائق وسياسة الإرجاع الفعلية للمنتج المختوم واسأله سؤالاً واحداً يحسم. وبعد أن يقرر الشراء اقترح ما يكمّله (حجم سفر، عطر للموسم الآخر، مسك للطبقات) كاقتراح اختياري. ممنوع تماماً: الخصومات المختلقة، والندرة الكاذبة («فاضل قطعتين»)، والعد التنازلي، و«الناس كلها بتشتريه» بدون تقييمات حقيقية، والضغط على الزائر.
 للمقارنات والنِّسب والخصائص (مثل مقارنة مواد، عائلات عطرية، تركيزات EDP/EDT، مدد التعتيق) اعرضها في جدول Markdown واضح بأعمدة قليلة.
 عندما تفيد الصور أو الفيديو في التوضيح فعلاً (شكل مادة خام أو نبات أو راتنج، أدوات المختبر، طرق الاستخلاص والتقطير والنقع، ورائحة لا تكفيها الكلمات) أو طلبها المستخدم، ابدأ ردك بسياج واحد باسم sham-media يحتوي JSON فقط، ثم اكتب الشرح بعده. وعندما يكون للسؤال بُعد جغرافي (منشأ مادة خام، مزارع الورد أو العود أو اللافندر، مدن ومتاحف وأسواق العطور، أين تُزرع نبتة) أضف places في نفس السياج ليعرضها الموقع على خريطة. السياج إلزامي كلما طلب المستخدم صوراً أو فيديو أو خريطة أو أماكن أو قال «وريني» أو show me. مثال:
 {"images":["agarwood","Aquilaria"],"videos":["steam distillation of essential oils"],"places":["Assam, India","Hainan, China"]}
@@ -507,6 +510,12 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       const history = input.conversationHistory;
       const last = history[history.length - 1];
       const previous = last?.role === 'assistant' && last.text.includes('sham-formula') ? [...history].reverse().find((t) => t.role === 'user')?.text : undefined;
+      // «مصمم تركيبات التجميل»: a cream, serum, balm … formula with its phases, method and safety warnings (no platform).
+      const cosmetic = storeOnly ? undefined : cosmeticFor(input.message, input.language);
+      if (cosmetic) {
+        send(cosmetic.reply, 'designer', { designer: true, cosmetic: true });
+        return { done: true, recorded: false };
+      }
       const design = storeOnly ? undefined : designFor(input.message, input.language, previous);
       if (design) {
         // The linked brain: the ready perfumes of the store that share the formula's notes.
@@ -516,6 +525,12 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       }
       // «الربط المباشر»: the question read with the conversation before it, and a shopping wish answered from the store.
       const ctx: Context = linkOn ? withContext(input.message, history) : { text: input.message, followUp: false };
+      // «شاهين التاجر المحنك»: «هاخده» closes the sale (and offers what completes it), «غالي» and «مش متأكد» are answered.
+      const sale = linkOn ? salesAnswer(await products().catch(() => []), ctx, input.language, link) : undefined;
+      if (sale) {
+        send(sale.reply, 'store', { memory: 'store', store: { picks: sale.picks.map((p) => p.sku), matched: true, followUp: ctx.followUp, sale: true } });
+        return { done: true, recorded: false };
+      }
       // A perfume named from the store, or a wish for one: answered from the catalogue (live prices, no platform needed).
       const named = linkOn ? productAnswer(await products().catch(() => []), ctx, input.language, link) : undefined;
       if (linkOn && (named || wantsStore(ctx.text))) {

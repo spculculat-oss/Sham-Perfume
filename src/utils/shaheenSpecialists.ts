@@ -167,6 +167,8 @@ export const SPECIALISTS: Specialist[] = [
 export const SITE_SECTIONS: SiteSection[] = [
   { id: 'home', titleAr: 'الرئيسية', titleEn: 'Home', consultants: ['specialist_scents', 'specialist_society', 'specialist_tech', 'specialist_health', 'specialist_culture'] },
   { id: 'store', titleAr: 'المتجر', titleEn: 'Store', consultants: ['specialist_scents', 'specialist_business'] },
+  { id: 'perfumes', titleAr: 'قسم العطور', titleEn: 'Perfume section', consultants: ['specialist_scents', 'specialist_science', 'specialist_business'] },
+  { id: 'cosmetics', titleAr: 'قسم مستحضرات التجميل', titleEn: 'Cosmetics section', consultants: ['specialist_health', 'specialist_science', 'specialist_business'] },
   { id: 'productDetail', titleAr: 'صفحة المنتج', titleEn: 'Product page', consultants: ['specialist_scents', 'specialist_business'] },
   { id: 'concentration', titleAr: 'حاسبة التركيز', titleEn: 'Concentration calculator', consultants: ['specialist_scents', 'specialist_science'] },
   { id: 'pyramid', titleAr: 'حاسبة الهرم العطري', titleEn: 'Scent pyramid calculator', consultants: ['specialist_scents'] },

@@ -13,7 +13,7 @@ import type { SciencesFile } from '../../scripts/shaheen-school/sciences';
 /**
  * «غرفة التحكم الحية» (the owner's request, 2026-10-22: «شاشة احترافية فيها شغل حركي بكل اللي بيتم»): the platform's
  * hierarchy (src/utils/opsHierarchy.ts — owner → «دولة المنصة» → Shaheen and his agent → the departments and the school
- * → every robot and the seventeen experts) on a dark screen where the work moves: a robot working glows and pulses, its
+ * → every robot and the school’s experts) on a dark screen where the work moves: a robot working glows and pulses, its
  * report travels up to its department and to Shaheen, the State's approvals travel down, and while the school runs the
  * questions go from the school to the experts and the reviewed lessons come back and enter Shaheen's memory. Counters,
  * what is running this minute, and a live activity log. It reads the same live layer as the map (useOpsLive, no extra
@@ -214,7 +214,7 @@ export default function OpsControlRoom({ live, gh, stepOf, school, sciences, now
           </button>
         </div>
       </div>
-      <p className="mt-1 text-sm text-slate-400">{T('صاحب الموقع فوق الكل ← دولة المنصة ← شاهين المدير العام ووكيله ← الأقسام ومدرسة شاهين ← الروبوتات والخبراء السبعتاشر. النقط المتحركة = شغل ماشي دلوقتي: تقارير طالعة لفوق، وموافقات نازلة، وأسئلة رايحة للخبراء ودروس راجعة للمدرسة.')}</p>
+      <p className="mt-1 text-sm text-slate-400">{T('صاحب الموقع فوق الكل ← دولة المنصة ← شاهين المدير العام ووكيله ← الأقسام ومدرسة شاهين ← الروبوتات وخبراء المدرسة. النقط المتحركة = شغل ماشي دلوقتي: تقارير طالعة لفوق، وموافقات نازلة، وأسئلة رايحة للخبراء ودروس راجعة للمدرسة.')}</p>
 
       <div className="mt-2 grid grid-cols-2 gap-2 text-center sm:grid-cols-5">
         {counters.map((c) => (
@@ -280,7 +280,7 @@ export default function OpsControlRoom({ live, gh, stepOf, school, sciences, now
             );
           })}
 
-          {/* The seventeen experts */}
+          {/* The school’s experts */}
           {HIERARCHY.filter((n) => n.kind === 'expert').map((n, k) => {
             const p = progressOf(n.field); const fresh = freshFields.has(n.field || '');
             const R = 17; const C = 2 * Math.PI * R; const [l1, l2] = twoLines(label(n));

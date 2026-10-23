@@ -8,6 +8,7 @@
  * one short question when the request gives no direction at all instead of guessing. Pure and browser-safe: the
  * same answer in the visitor's browser and on the server.
  */
+import { looksCosmetic } from './cosmeticFormulator';
 import { asciiDigits } from './shaheenQuickApps';
 
 type Layer = 'top' | 'heart' | 'base';
@@ -110,6 +111,8 @@ export function readBrief(text: string, lang: 'ar' | 'en' = 'ar'): DesignBrief |
   // «ازاي اعمل عطر عود؟» asks for a formula (a how-to that names what the perfume should smell of); «ازاي احسب التركيز؟» does not.
   const howToMake = HOW_TO_MAKE.test(clean);
   if (clean.length < 4 || clean.length > 600 || !DESIGN_VERB.test(clean) || (NOT_A_REQUEST.test(clean) && !howToMake)) return undefined;
+  // A cream, serum, lip balm … is the cosmetics formulator's job (src/utils/cosmeticFormulator.ts), not a perfume.
+  if (looksCosmetic(clean)) return undefined;
   const tags = new Set<Tag>(); const moods: string[] = []; let warm = false; let fresh = false;
   for (const m of MOODS) {
     if (!m.re.test(clean)) continue;

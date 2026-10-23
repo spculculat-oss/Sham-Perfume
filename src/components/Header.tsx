@@ -18,9 +18,12 @@ import {
   Store,
   Users,
   Atom,
+  Flower2,
+  Droplets,
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
 import { t } from '../لغات/i18n';
+import { cosmeticsText } from '../لغات/cosmeticsL10n';
 import { LanguageSelector } from './LanguageSelector';
 import { AdminMerchantManagement } from './AdminMerchantManagement';
 import { UserProfile } from '../types/auth';
@@ -130,6 +133,23 @@ export const Header: React.FC<HeaderProps> = ({
       fullLabel: t('nav_home', currentLang),
       icon: Home,
       iconColor: 'text-amber-700',
+    },
+    // The platform's two sections (the home page mixes them).
+    {
+      id: 'perfumes',
+      type: 'single',
+      label: cosmeticsText(currentLang, 'navPerfumes'),
+      fullLabel: cosmeticsText(currentLang, 'navPerfumesFull'),
+      icon: Flower2,
+      iconColor: 'text-amber-700',
+    },
+    {
+      id: 'cosmetics',
+      type: 'single',
+      label: cosmeticsText(currentLang, 'nav'),
+      fullLabel: cosmeticsText(currentLang, 'navFull'),
+      icon: Droplets,
+      iconColor: 'text-rose-600',
     },
     {
       id: 'tools',
@@ -263,7 +283,7 @@ export const Header: React.FC<HeaderProps> = ({
                   aria-current={activeTab === group.id || activeTab.startsWith(`${group.id}/`) ? 'page' : undefined}
                 >
                   <group.icon className={`w-4 h-4 ${group.id === 'community' && (activeTab === 'community' || activeTab.startsWith('community/')) ? 'text-amber-300' : group.iconColor} shrink-0`} />
-                  <span className={`text-xs ${group.id === 'community' ? 'font-black' : 'hidden min-[1700px]:inline font-semibold'}`}>
+                  <span className={`text-xs ${group.id === 'community' ? 'font-black' : group.id === 'perfumes' || group.id === 'cosmetics' ? 'font-bold' : 'hidden min-[1700px]:inline font-semibold'}`}>
                     {group.label}
                   </span>
                   {group.id === 'community' && (
