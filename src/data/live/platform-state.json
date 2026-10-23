@@ -1,7 +1,49 @@
 {
- "updatedAt": "2026-10-23T16:00:12.461Z",
+ "updatedAt": "2026-10-23T16:58:38.665Z",
  "active": true,
  "decisions": [
+  {
+   "at": "2026-10-23T16:58:37.733Z",
+   "number": 295,
+   "kind": "task",
+   "title": "[قسم المتجر والاستيراد] «ابني» اتفهمت «ابنك/بنتك» — مابيعرفش إنه ولد ولا إن المناسبة نجاح",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/295"
+  },
+  {
+   "at": "2026-10-23T16:58:38.207Z",
+   "number": 296,
+   "kind": "task",
+   "title": "[قسم المتجر والاستيراد] بعد نصيحة الهدية «رشحلي» بيسأل من الأول وينسى المستلم والمناسبة",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/296"
+  },
+  {
+   "at": "2026-10-23T16:58:38.665Z",
+   "number": 297,
+   "kind": "task",
+   "title": "[قسم المتجر والاستيراد] «إزاي أطلبه؟» بيكرر قايمة العطور بدل خطوات الطلب",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/297"
+  },
   {
    "at": "2026-10-23T16:00:11.426Z",
    "number": 291,
@@ -157,7 +199,7 @@
  },
  "field": {
   "maneuverAt": "2026-10-23T14:16:34.941Z",
-  "at": "2026-10-23T16:00:08.118Z",
+  "at": "2026-10-23T16:58:35.110Z",
   "items": [
    {
     "id": "productDetail:http",
@@ -251,8 +293,8 @@
     "botAr": "مستشار التسوق «اسأل شاهين»",
     "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
     "action": "task",
-    "seen": 3,
-    "issue": 291
+    "issue": 291,
+    "seen": 3
    },
    {
     "id": "shaheen_chat:gift-pronoun:1:expect",
@@ -267,8 +309,8 @@
     "botAr": "شات الخبير شاهين ومساعد شام",
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
     "action": "task",
-    "seen": 3,
-    "issue": 292
+    "issue": 292,
+    "seen": 3
    },
    {
     "id": "shaheen_chat:gift-boss:0:expect",
@@ -283,8 +325,8 @@
     "botAr": "مستشار التسوق «اسأل شاهين»",
     "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
     "action": "task",
-    "seen": 3,
-    "issue": 293
+    "issue": 293,
+    "seen": 3
    },
    {
     "id": "shaheen_chat:gift-son-graduation:0:expect",
@@ -299,7 +341,8 @@
     "botAr": "مستشار التسوق «اسأل شاهين»",
     "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
     "action": "task",
-    "seen": 3
+    "seen": 3,
+    "issue": 295
    },
    {
     "id": "shaheen_chat:recommend-after-advice:1:expect",
@@ -314,7 +357,8 @@
     "botAr": "مستشار التسوق «اسأل شاهين»",
     "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
     "action": "task",
-    "seen": 3
+    "seen": 3,
+    "issue": 296
    },
    {
     "id": "shaheen_chat:how-to-order:1:expect",
@@ -329,7 +373,8 @@
     "botAr": "مستشار التسوق «اسأل شاهين»",
     "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
     "action": "task",
-    "seen": 3
+    "seen": 3,
+    "issue": 297
    },
    {
     "id": "shaheen_chat:wholesale-quantity:1:expect",
