@@ -1,16 +1,16 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T08:24:24.748Z",
+ "updatedAt": "2026-10-23T08:22:43.881Z",
  "reliance": {
   "score": 100,
-  "covered": 1344,
-  "total": 1344,
-  "fromMemory": 1344,
+  "covered": 1327,
+  "total": 1327,
+  "fromMemory": 1327,
   "fromLibrary": 0,
   "byLang": {
    "ar": {
-    "covered": 1323,
-    "total": 1323
+    "covered": 1306,
+    "total": 1306
    },
    "en": {
     "covered": 21,
@@ -19,12 +19,12 @@
   }
  },
  "studiedTotal": 142,
- "selfTaughtTotal": 1079,
+ "selfTaughtTotal": 1063,
  "history": [
   {
-   "at": "2026-10-23T08:24:24.748Z",
+   "at": "2026-10-23T08:22:43.881Z",
    "score": 100,
-   "studied": 16,
+   "studied": 0,
    "mode": "self"
   },
   {
@@ -476,7 +476,7 @@
  },
  "localTaughtTotal": 85,
  "spelling": {
-  "at": "2026-10-23T08:24:24.748Z",
+  "at": "2026-10-23T08:22:43.881Z",
   "tried": 746,
   "understood": 702,
   "score": 94,
@@ -493,7 +493,7 @@
   }
  },
  "practice": {
-  "at": "2026-10-23T08:24:24.748Z",
+  "at": "2026-10-23T08:22:43.881Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -586,14 +586,14 @@
     "id": "check-curriculum",
     "titleAr": "فحص: المنهج مكتمل بلا تكرار",
     "ok": true,
-    "detail": "فُحص فعلاً: 1031 زوج سؤال وجواب، وكل المعرفات فريدة"
+    "detail": "فُحص فعلاً: 1013 زوج سؤال وجواب، وكل المعرفات فريدة"
    }
   ]
  },
  "tracks": {
   "perfume": {
-   "covered": 185,
-   "total": 185,
+   "covered": 178,
+   "total": 178,
    "score": 100
   },
   "prog_langs": {
@@ -667,8 +667,8 @@
    "score": 100
   },
   "chemistry": {
-   "covered": 28,
-   "total": 28,
+   "covered": 36,
+   "total": 36,
    "score": 100
   },
   "physics": {
@@ -787,8 +787,8 @@
    "score": 100
   },
   "academic": {
-   "covered": 40,
-   "total": 40,
+   "covered": 22,
+   "total": 22,
    "score": 100
   },
   "vocational": {
@@ -813,7 +813,7 @@
   }
  },
  "tools": {
-  "at": "2026-10-23T08:24:24.748Z",
+  "at": "2026-10-23T08:22:43.881Z",
   "items": [
    {
     "id": "finance_agent",
@@ -978,14 +978,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-23T08:24:24.748Z",
+  "at": "2026-10-23T08:22:43.881Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-23T14:24:24.748Z"
+    "next": "2026-10-23T14:22:43.881Z"
    },
    {
     "id": "site-care",
@@ -997,7 +997,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-23T20:24:24.748Z"
+    "next": "2026-10-23T20:22:43.881Z"
    }
   ]
  }
