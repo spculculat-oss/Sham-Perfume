@@ -23,6 +23,9 @@ import {
 } from '../utils/designers/cosmeticLab';
 import { COSMETIC_PRODUCTS, type CosmeticProduct } from '../utils/cosmeticFormulator';
 import { WORLD_PERFUMES } from '../data/worldPerfumes';
+import { DesignerAdvisor } from './DesignerAdvisor';
+import { consultPerfume, perfumeGoal, perfumeSuggestions } from '../utils/designers/perfumeAdvisor';
+import { consultCosmetic, cosmeticGoal, cosmeticSuggestions } from '../utils/designers/cosmeticAdvisor';
 import { loadStoreCatalog, productPageUrl } from '../utils/liveStore';
 import { openFormulaInLab } from '../community/sync';
 import {
@@ -249,6 +252,8 @@ function JournalPanel<D extends { title: string; lines: { label: string; pct: nu
 
 // ── Perfume ────────────────────────────────────────────────────────────────────────────────────────────────────────
 const WORLD: WorldReference[] = WORLD_PERFUMES.map((w) => ({ id: w.id, name: { ar: w.nameAr, en: w.nameEn }, notes: w.pyramidNotes.map((n) => ({ name: `${n.nameAr} ${n.nameEn}`, pct: n.percentageOfOil })) }));
+/** Hands a question to the site's assistant (it uses the AI platforms when they work, its own brain otherwise). */
+const askText = (text: string) => window.dispatchEvent(new CustomEvent('open-sham-assistant', { detail: text }));
 const PERFUME_DRAFT = 'sham_designer_draft_perfume';
 const COSMETIC_DRAFT = 'sham_designer_draft_cosmetic';
 const readDraft = <D,>(key: string, fallback: D): D => { try { const raw = localStorage.getItem(key); return raw ? { ...fallback, ...(JSON.parse(raw) as D) } : fallback; } catch { return fallback; } };
@@ -273,6 +278,9 @@ function PerfumeStudio({ lang, dt, num, onNavigate }: Inner) {
   const setLine = (i: number, patch: Partial<PerfumeDesign['lines'][number]>) => h.set((x) => ({ ...x, lines: x.lines.map((l, j) => (j === i ? { ...l, ...patch } : l)) }));
   const formulaText = () => `${d.title || '—'} · ${loc(lang, TYPE_LABEL[d.type])} ${num(d.concentration)}%\n${d.lines.map((l) => `${nameOf(l)}: ${num(l.pct)}%`).join('\n')}`;
   const verdictText = dt(sim.verdict === 'pass' ? 'verdictPass' : sim.verdict === 'warn' ? 'verdictWarn' : 'verdictFail');
+  const suggestions = useMemo(() => perfumeSuggestions(d, sim), [d, sim]);
+  const consult = useMemo(() => consultPerfume(d, sim), [d, sim]);
+  const formulaLine = () => `${loc(lang, TYPE_LABEL[d.type])} ${num(d.concentration)}% — ${d.lines.map((l) => `${nameOf(l)} ${num(l.pct)}%`).join(dt('listSep')) || '—'}`;
   const ask = () => window.dispatchEvent(new CustomEvent('open-sham-assistant', { detail: fmt(dt('askPerfume'), { formula: d.lines.map((l) => `${nameOf(l)} ${num(l.pct)}%`).join(dt('listSep')), verdict: verdictText }) }));
   const sendToLab = () => openFormulaInLab(d.title || loc(lang, TYPE_LABEL[d.type]), {
     notes: loc(lang, sim.character), macerationDays: sim.macerationDays,
@@ -350,6 +358,9 @@ function PerfumeStudio({ lang, dt, num, onNavigate }: Inner) {
           <Verdict verdict={sim.verdict} dt={dt} />
           <button type="button" onClick={ask} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-stone-900 text-white text-xs font-bold cursor-pointer"><MessageCircle className="w-3.5 h-3.5" /> {dt('askShaheen')}</button>
         </div>
+        <DesignerAdvisor<PerfumeDesign> lang={lang} dt={dt} num={num} accent="amber" hasLines={d.lines.length > 0} design={d} suggestions={suggestions} consult={consult}
+          plan={(g) => perfumeGoal(g, d, WORLD)} goalPlaceholder={dt('goalPhPerfume')} formula={formulaLine} onApply={(x) => h.set(x)} onUndo={h.undo} onAsk={askText}
+          changeName={(c) => { const m = c.id ? perfumeMaterial(c.id) : undefined; return m ? loc(lang, m.name) : c.label; }} />
         <nav className="flex gap-1.5 overflow-x-auto pb-1">
           {TABS.map(({ id, key, icon: Icon }) => (
             <button key={id} type="button" onClick={() => setTab(id)} aria-pressed={tab === id} data-testid={`designer-tab-${id}`}
@@ -491,6 +502,9 @@ function CosmeticStudio({ lang, dt, num, onNavigate }: Inner) {
   const nameOf = (l: CosmeticDesign['lines'][number]) => { const i = l.ingredientId ? labIngredient(l.ingredientId) : undefined; return i ? loc(lang, i.name) : l.label; };
   const setLine = (i: number, pct: number) => h.set((x) => ({ ...x, lines: x.lines.map((l, j) => (j === i ? { ...l, pct } : l)) }));
   const verdictText = dt(sim.verdict === 'pass' ? 'verdictPass' : sim.verdict === 'warn' ? 'verdictWarn' : 'verdictFail');
+  const suggestions = useMemo(() => cosmeticSuggestions(d, sim), [d, sim]);
+  const consult = useMemo(() => consultCosmetic(d, sim), [d, sim]);
+  const formulaLine = () => `${loc(lang, KIND_LABEL[sim.kind])} — ${d.lines.map((l) => `${nameOf(l)} ${num(l.pct)}%`).join(dt('listSep')) || '—'}`;
   const ask = () => window.dispatchEvent(new CustomEvent('open-sham-assistant', { detail: fmt(dt('askCosmetic'), { formula: d.lines.map((l) => `${nameOf(l)} ${num(l.pct)}%`).join(dt('listSep')), verdict: verdictText }) }));
   const formulaText = () => `${d.title || '—'} · ${loc(lang, KIND_LABEL[sim.kind])} · ${num(d.batch, 0)} ${dt('grams')}\n${sim.lines.map((x) => `${loc(lang, COSMETIC_PHASE_TEXT[x.phase]).split(':')[0]} · ${nameOf(x.line)}: ${num(x.pct)}% = ${num(x.grams)} ${dt('grams')}`).join('\n')}`;
 
@@ -555,6 +569,9 @@ function CosmeticStudio({ lang, dt, num, onNavigate }: Inner) {
           <Verdict verdict={sim.verdict} dt={dt} />
           <button type="button" onClick={ask} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-stone-900 text-white text-xs font-bold cursor-pointer"><MessageCircle className="w-3.5 h-3.5" /> {dt('askShaheen')}</button>
         </div>
+        <DesignerAdvisor<CosmeticDesign> lang={lang} dt={dt} num={num} accent="rose" hasLines={d.lines.length > 0} design={d} suggestions={suggestions} consult={consult}
+          plan={(g) => cosmeticGoal(g, d)} goalPlaceholder={dt('goalPhCosmetic')} formula={formulaLine} onApply={(x) => h.set(x)} onUndo={h.undo} onAsk={askText}
+          changeName={(c) => { const i = c.id ? labIngredient(c.id) : undefined; return i ? loc(lang, i.name) : c.label; }} />
         <nav className="flex gap-1.5 overflow-x-auto pb-1">
           {TABS.map(({ id, key, icon: Icon }) => (
             <button key={id} type="button" onClick={() => setTab(id)} aria-pressed={tab === id} data-testid={`designer-tab-${id}`}

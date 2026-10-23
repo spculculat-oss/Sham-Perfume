@@ -1,0 +1,526 @@
+{
+ "updatedAt": "2026-10-23T11:06:37.124Z",
+ "run": {
+  "ms": 773,
+  "browser": false,
+  "browserNoteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده",
+  "pages": 0,
+  "drills": 21,
+  "live": 0,
+  "ai": false
+ },
+ "sections": [
+  {
+   "id": "home",
+   "titleAr": "الرئيسية",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "store",
+   "titleAr": "المتجر",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "perfumes",
+   "titleAr": "قسم العطور",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "cosmetics",
+   "titleAr": "قسم مستحضرات التجميل",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "productDetail",
+   "titleAr": "صفحة المنتج",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "concentration",
+   "titleAr": "حاسبة التركيز",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "pyramid",
+   "titleAr": "حاسبة الهرم العطري",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "costing",
+   "titleAr": "حاسبة التكلفة",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "guide",
+   "titleAr": "دليل صناعة العطور",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "alcohol",
+   "titleAr": "الكحول في العطور",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "maceration_simulator",
+   "titleAr": "محاكي التخمير والنضج",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "master_ai",
+   "titleAr": "الخبير شاهين",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "perfume_news",
+   "titleAr": "أخبار العطور",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "raw_materials",
+   "titleAr": "المواد الخام",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "world_perfumes",
+   "titleAr": "عطور العالم",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "perfume_designers",
+   "titleAr": "قسم المصممين — عطور",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "cosmetic_designers",
+   "titleAr": "قسم المصممين — تجميل",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "molecule_studio",
+   "titleAr": "استوديو الجزيئات",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "library",
+   "titleAr": "مكتبة شاهين",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "community",
+   "titleAr": "المجتمع",
+   "status": "skipped",
+   "errors": 0,
+   "ideas": 0,
+   "noteAr": "فحص الأقسام بالمتصفح متوقف في التشغيل ده"
+  },
+  {
+   "id": "shaheen_chat",
+   "titleAr": "شات الخبير شاهين",
+   "status": "fail",
+   "errors": 19,
+   "ideas": 0
+  }
+ ],
+ "findings": [
+  {
+   "id": "shaheen_chat:card-number:0:expect",
+   "kind": "error",
+   "code": "chat-own",
+   "topic": "safety",
+   "section": "shaheen_chat",
+   "titleAr": "«ابعتلك رقم الكارت؟» مافيش تحذير فوري من شاهين إنه مايبعتش بيانات الكارت",
+   "detailAr": "الزائر: «ممكن أدفع بالفيزا؟ ابعتلك رقم الكارت؟» — شاهين ماعرفش يرد من نفسه والسؤال راح لمنصات الذكاء الاصطناعي",
+   "severity": "high",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  },
+  {
+   "id": "shaheen_chat:knowledge-mid-purchase:1:expect",
+   "kind": "error",
+   "code": "chat-expect",
+   "topic": "knowledge",
+   "section": "shaheen_chat",
+   "titleAr": "سؤال علمي وسط الشراء اتردّ عليه بقايمة عطور بدل الإجابة",
+   "detailAr": "الزائر: «إيه هو التعتيق؟» — الرد فيه «/p/9-am-1181.html»: **فهمت طلبك:** للموسم صيفي **ليه الاتجاه ده؟** - في الحر الريحة بتفوح بسرعة وبتتقل، فالأنسب الحمضيات والمنعش والبحري والمسك النظيف؛ التقيلة ممكن تخنق. **اختياري",
+   "severity": "medium",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  },
+  {
+   "id": "shaheen_chat:discount-on-shown:1:expect",
+   "kind": "error",
+   "code": "chat-expect",
+   "topic": "store",
+   "section": "shaheen_chat",
+   "titleAr": "رد الخصم بيسأل عن اسم العطر وهو لسه معروض قدام الزائر",
+   "detailAr": "الزائر: «فيه خصم عليه؟» — الرد فيه «قولّي اسمه»: سؤالك في محله، وكلنا بنحب نوفّر. بصراحة: مفيش خصومات بتتقال في الشات، وأي كود خصم حقيقي بيظهر في صفحة الدفع نفسها قبل ما تأكد. **بس فيه طرق حقيقية توفّر بيها:**",
+   "severity": "medium",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  },
+  {
+   "id": "shaheen_chat:discount-on-shown:2:expect",
+   "kind": "error",
+   "code": "chat-own",
+   "topic": "store",
+   "section": "shaheen_chat",
+   "titleAr": "بعد رد الخصم «غالي شوية» مابقتش تتفهم من شاهين (البيع اتقطع وراح للمنصات)",
+   "detailAr": "الزائر: «غالي شوية» — شاهين ماعرفش يرد من نفسه والسؤال راح لمنصات الذكاء الاصطناعي",
+   "severity": "medium",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  },
+  {
+   "id": "shaheen_chat:gift-pronoun:1:expect",
+   "kind": "error",
+   "code": "chat-own",
+   "topic": "relations",
+   "section": "shaheen_chat",
+   "titleAr": "سؤال الهدية بالضمير «أهاديه» مابيتفهمش من شاهين",
+   "detailAr": "الزائر: «ينفع أهاديه بعطر؟» — شاهين ماعرفش يرد من نفسه والسؤال راح لمنصات الذكاء الاصطناعي",
+   "severity": "medium",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  },
+  {
+   "id": "shaheen_chat:gift-boss:0:expect",
+   "kind": "error",
+   "code": "chat-expect",
+   "topic": "store",
+   "section": "shaheen_chat",
+   "titleAr": "هدية المدير: سمّاه «زميلك» أو رشّح اسم رومانسي مش لايق",
+   "detailAr": "الزائر: «عايز أجيب لمديري هدية عطر» — الرد فيه «ورد العشاق»: **فهمت طلبك:** لـهدية **ليه الاتجاه ده؟** - في الهدية الأضمن عطر محبوب عند أغلب الناس ومن ماركة معروفة، ومش متطرف في طابعه. **اختياري الأول ليك من متجر شام:** 1",
+   "severity": "medium",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  },
+  {
+   "id": "shaheen_chat:gift-son-graduation:0:expect",
+   "kind": "error",
+   "code": "chat-expect",
+   "topic": "store",
+   "section": "shaheen_chat",
+   "titleAr": "«ابني» اتفهمت «ابنك/بنتك» — مابيعرفش إنه ولد ولا إن المناسبة نجاح",
+   "detailAr": "الزائر: «ابني نجح في الثانوية وعايز أهاديه عطر» — الرد فيه «ابنك/بنتك»: **فهمت طلبك:** لـهدية **ليه الاتجاه ده؟** - في الهدية الأضمن عطر محبوب عند أغلب الناس ومن ماركة معروفة، ومش متطرف في طابعه. **اختياري الأول ليك من متجر شام:** 1",
+   "severity": "medium",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  },
+  {
+   "id": "shaheen_chat:recommend-after-advice:1:expect",
+   "kind": "error",
+   "code": "chat-expect",
+   "topic": "store",
+   "section": "shaheen_chat",
+   "titleAr": "بعد نصيحة الهدية «رشحلي» بيسأل من الأول وينسى المستلم والمناسبة",
+   "detailAr": "الزائر: «تمام رشحلي» — الرد فيه «من غير تخمين»: عشان أرشحلك صح من غير تخمين، قولّي: **لمين** (رجالي/نسائي/للجنسين)؟ **لإمتى** (صيف/شتا/سهرة/شغل)؟ **الطابع** (عود، منعش، حلو، زهري…)؟ و**الميزانية**؟ **ولحد ما ",
+   "severity": "medium",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  },
+  {
+   "id": "shaheen_chat:how-to-order:1:expect",
+   "kind": "error",
+   "code": "chat-expect",
+   "topic": "store",
+   "section": "shaheen_chat",
+   "titleAr": "«إزاي أطلبه؟» بيكرر قايمة العطور بدل خطوات الطلب",
+   "detailAr": "الزائر: «إزاي أطلبه؟» — الرد فيه «فهمت طلبك»: **فهمت طلبك:** نسائي · طابع مسكي **ليه الاتجاه ده؟** - المسك ناعم ونظيف وبيطوّل عمر الريحة على الجلد. **اختياري الأول ليك من متجر شام:** 1. [يارا أو دي بارفان 5",
+   "severity": "medium",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  },
+  {
+   "id": "shaheen_chat:wholesale-quantity:1:expect",
+   "kind": "error",
+   "code": "chat-expect",
+   "topic": "relations",
+   "section": "shaheen_chat",
+   "titleAr": "رد الجملة مابيلتقطش الكمية والمنتج اللي التاجر قالهم",
+   "detailAr": "الزائر: «محتاج 30 زجاجة عود» — الرد ناقصه المطلوب: أهلاً بيك — طلبات الجملة والتجار ليها طريق خاص عندنا بعرض سعر مكتوب، مش أسعار المتجر العادية. **عشان العرض يطلع دقيق، جهّز:** - المنتجات أو الطابع اللي عايزه - ",
+   "severity": "medium",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  },
+  {
+   "id": "shaheen_chat:wholesale-quantity:1:chat-repeat",
+   "kind": "error",
+   "code": "chat-repeat",
+   "topic": "relations",
+   "section": "shaheen_chat",
+   "titleAr": "شاهين كرر نفس الرد بالحرف",
+   "detailAr": "الزائر: «محتاج 30 زجاجة عود»",
+   "severity": "medium",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  },
+  {
+   "id": "shaheen_chat:calm-tracking:0:expect",
+   "kind": "error",
+   "code": "chat-expect",
+   "topic": "relations",
+   "section": "shaheen_chat",
+   "titleAr": "سؤال تتبع هادي اتعامل كشكوى تأخير واعتذر عن حاجة محصلتش",
+   "detailAr": "الزائر: «فين طلبي؟» — الرد فيه «آسف»: الطلب اتأخر عن اللي كنت مستنيه — وأنا آسف على اللي حصل. نحلها كده: 1. افتح «مساعد شام للخدمات» (أيقونة المساعد في الموقع) واكتب رقم الطلب اللي بيبدأ بـ SH- مع ر",
+   "severity": "medium",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  },
+  {
+   "id": "shaheen_chat:calm-tracking:1:expect",
+   "kind": "error",
+   "code": "chat-own",
+   "topic": "relations",
+   "section": "shaheen_chat",
+   "titleAr": "«إزاي أتتبعه؟» مابتتفهمش من شاهين",
+   "detailAr": "الزائر: «إزاي أتتبعه؟» — شاهين ماعرفش يرد من نفسه والسؤال راح لمنصات الذكاء الاصطناعي",
+   "severity": "medium",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  },
+  {
+   "id": "shaheen_chat:competitor-price:0:expect",
+   "kind": "error",
+   "code": "chat-expect",
+   "topic": "relations",
+   "section": "shaheen_chat",
+   "titleAr": "مقارنة السعر بمتجر تاني مش متغطية (بيرد بقايمة أو بيروح للمنصات)",
+   "detailAr": "الزائر: «العطر ده عندكم أغلى من محل تاني» — المسار: store",
+   "severity": "medium",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  },
+  {
+   "id": "shaheen_chat:missing-item:0:expect",
+   "kind": "error",
+   "code": "chat-expect",
+   "topic": "relations",
+   "section": "shaheen_chat",
+   "titleAr": "«الأوردر ناقص» اتردّ عليها كأنها منتج غلط",
+   "detailAr": "الزائر: «الأوردر وصل ناقص منه زجاجة» — الرد فيه «من غير ما تفتحه»: استلامك حاجة غير اللي طلبتها مش مقبول — وأنا آسف على اللي حصل. نحلها كده: 1. سيب المنتج زي ما هو من غير ما تفتحه، وصوّره هو والفاتورة أو تفاصيل الطلب. 2. ابعت ا",
+   "severity": "medium",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  },
+  {
+   "id": "shaheen_chat:refund-sealed:0:expect",
+   "kind": "error",
+   "code": "chat-expect",
+   "topic": "relations",
+   "section": "shaheen_chat",
+   "titleAr": "استرجاع منتج سليم: بيعتذر عن حاجة محصلتش",
+   "detailAr": "الزائر: «عايز أرجع الطلب لسه متفتحش» — الرد فيه «آسف على اللي حصل»: طلبك إنك ترجّع الطلب أو تسترد فلوسك واضح ومن حقك — وأنا آسف على اللي حصل. نحلها كده: 1. المنتج اللي وصل تالف أو غلط من حقك تستبدله أو تسترد تمنه، والمختوم اللي ",
+   "severity": "medium",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  },
+  {
+   "id": "shaheen_chat:group-gifts:0:expect",
+   "kind": "error",
+   "code": "chat-own",
+   "topic": "relations",
+   "section": "shaheen_chat",
+   "titleAr": "«10 هدايا لزمايلي» مابتتفهمش كطلب هدايا جماعي",
+   "detailAr": "الزائر: «محتاج 10 هدايا لزمايلي في الشغل» — شاهين ماعرفش يرد من نفسه والسؤال راح لمنصات الذكاء الاصطناعي",
+   "severity": "medium",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  },
+  {
+   "id": "shaheen_chat:condolence-incense:1:chat-repeat",
+   "kind": "error",
+   "code": "chat-repeat",
+   "topic": "relations",
+   "section": "shaheen_chat",
+   "titleAr": "شاهين كرر نفس الرد بالحرف",
+   "detailAr": "الزائر: «عايز بخور هادي للبيت أيام العزا»",
+   "severity": "medium",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  },
+  {
+   "id": "shaheen_chat:which-lasts-longest:1:chat-lint",
+   "kind": "error",
+   "code": "chat-lint",
+   "topic": "store",
+   "section": "shaheen_chat",
+   "titleAr": "الرد وقع في غلطة من غلطات البيع أو العلاقات",
+   "detailAr": "الزائر: «طب وأنهي واحد فيهم أثبت؟» — no_next_step",
+   "severity": "low",
+   "sources": [
+    "brain"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T11:04:19.314Z",
+   "lastSeen": "2026-10-23T11:06:37.124Z",
+   "seen": 2
+  }
+ ],
+ "resolved": []
+}

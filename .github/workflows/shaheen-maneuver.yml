@@ -1,0 +1,97 @@
+name: Shaheen — specialties field maneuver (live site, every 6 hours)
+
+# «مناورة التخصصات»: every 6 hours the robot opens every public section of the live site (GitHub Pages) in Chrome the
+# way a visitor on a phone does, and talks with Shaheen in real conversations; each section is examined by its own
+# specialist. It records every error (program errors, failed requests, an empty page, raw program text, a page wider
+# than the phone, broken photos, slowness, wrong chat answers) and the improvements each section is missing, then
+# hands everything to «دولة المنصة», which files each one under its sector and robot and turns the serious errors into
+# tasks (scripts/state/run.mts). Minute 41: clear of the State (27), the importer (37), the school clock (47) and the
+# patrol (52). Code: scripts/shaheen-maneuver/. Result: src/data/live/shaheen-maneuver.json (admin → «دولة المنصة»).
+
+on:
+  schedule:
+    - cron: '41 1,7,13,19 * * *'
+  workflow_dispatch:
+  push:
+    branches: ['arena/**']
+    paths: ['scripts/shaheen-maneuver/**', 'src/utils/maneuver.ts', 'src/utils/maneuverDrills.ts', '.github/workflows/shaheen-maneuver.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: shaheen-maneuver-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # «مفتاح صاحب الموقع»: the owner can pause this robot or freeze every robot (src/data/owner/controls.json).
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs maneuver
+
+  maneuver:
+    name: Field maneuver
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      # Branch pushes rehearse: the maneuver runs and shows its findings; nothing is published.
+      MANEUVER_ACT: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      # Branch rehearsals don't spend the AI quota or the live chat's limits.
+      MANEUVER_AI: ${{ github.ref != 'refs/heads/main' && 'false' || '' }}
+      MANEUVER_LIVE: ${{ github.ref != 'refs/heads/main' && 'false' || '' }}
+      PUPPETEER_PATH: /tmp/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Install the phone browser driver (outside the project)
+        run: mkdir -p /tmp/pp && cd /tmp/pp && npm init -y >/dev/null && npm i --no-audit --no-fund puppeteer-core@24 >/dev/null || echo "::warning::puppeteer-core could not be installed — the browser pass will be skipped"
+      - name: Walk the live site and talk with Shaheen
+        id: maneuver
+        run: node --import tsx scripts/shaheen-maneuver/run.mts
+      - name: Publish the maneuver report on main
+        if: env.MANEUVER_ACT == 'true' && steps.maneuver.outputs.publish == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen maneuver bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "مناورة التخصصات: $(date -u +'%Y-%m-%d %H:%M')" src/data/live/shaheen-maneuver.json src/data/live/ai-quota.json \
+            || { echo "::error::Could not push the maneuver report"; exit 1; }

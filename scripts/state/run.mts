@@ -8,6 +8,9 @@
  *      coding agent carries it out), refused → the State closes it itself with the reasons;
  *   2. robots' pull requests waiting for approval: the members vote on the real files and lines; approved → every
  *      check on the newest main, then merged and the site rebuilt; refused or a failed check → closed with the reasons;
+ *   2b. «مناورة التخصصات» (scripts/shaheen-maneuver/run.mts): every finding of the field maneuver filed under its
+ *      sector and robot (src/utils/stateSectors.ts); a serious error becomes a task after the members vote (at most
+ *      3 an hour, never twice for the same finding), the rest is watched or kept in the sector's ideas list;
  *   3. its own orders: a robot whose last check failed is run again (at most once a day per robot);
  *   4. its log and its supervision of the robots → src/data/live/platform-state.json, its orders and the platform's
  *      laws → src/data/owner/state-orders.json (and the robots' handbook, which carries the laws).
@@ -25,11 +28,14 @@ import {
   STATE, STATE_LABELS, STATE_LIMITS, STATE_ORDERS_FILE, readStateOrders, readStateReport, stateActive, stateComment, stateTrailer, stateVote,
   type StateOrders, type StateRecord, type StateReport,
 } from '../../src/utils/platformState';
+import { readManeuverReport } from '../../src/utils/maneuver';
+import { fieldTask, fileField, fieldMarker } from '../../src/utils/stateSectors';
 import { STATE_ISSUE_PREFIX, applyStateOrder, judgeStateOrder, parseStateOrder, stateOrderableBots, type StateOrder } from '../../src/utils/stateRoom';
 
 const REPORT = 'src/data/live/platform-state.json';
 const CONTROLS = 'src/data/owner/controls.json';
 const PRECHECK = 'src/data/live/shaheen-precheck.json';
+const MANEUVER = 'src/data/live/shaheen-maneuver.json';
 const DOCS = ['SHAHEEN_HANDBOOK.md', 'SHAHEEN_ORG.md'];
 interface Issue { number: number; title: string; body: string | null; html_url: string; labels: { name: string }[]; pull_request?: unknown; created_at: string; user?: { login?: string }; author_association?: string }
 interface PrFile { filename: string; status: string; additions: number; deletions: number; patch?: string }
@@ -75,6 +81,14 @@ async function main() {
   // Only the live run decides (branch pushes and local runs rehearse: they read, decide nothing, publish nothing).
   const act = process.env.STATE_ACT === 'true' && Boolean(repo && token);
   const notes: string[] = [];
+  // «مناورة التخصصات»: every finding of the field maneuver filed under its sector and robot (src/utils/stateSectors.ts).
+  const filed = fileField(readManeuverReport(readJson(MANEUVER)), before.field, new Date().toISOString(), STATE_LIMITS.perRun.maneuver);
+  let field = filed.field;
+  if (field && field.maneuverAt !== before.field?.maneuverAt) {
+    const by = new Map<string, number>();
+    for (const i of field.items) by.set(i.deptAr, (by.get(i.deptAr) || 0) + 1);
+    say(`Maneuver report filed: ${[...by].map(([d, n]) => `${d} ${n}`).join('، ') || 'nothing found'}`);
+  }
 
   if (act) {
     const gh = new GitHub(repo, token!);
@@ -169,6 +183,32 @@ async function main() {
         records.push(record); say(`Pull #${p.number}: ${record.outcome}`);
       }
 
+      // 2b. «مناورة التخصصات»: the serious errors become tasks (the members vote first; the marker keeps each one single).
+      if (filed.due.length && field) {
+        await gh.ensureLabel('shaheen-task', '0e8a16', 'مهمة تطوير من شاهين').catch(() => undefined);
+        const open = await gh.api<Issue[]>(`${path}/issues?state=open&per_page=100&labels=shaheen-task`).catch(() => [] as Issue[]);
+        const items = new Map(field.items.map((i) => [i.id, i]));
+        for (const { item, finding } of filed.due) {
+          const existing = open.find((i) => (i.body || '').includes(fieldMarker(item.id)));
+          if (existing) { items.set(item.id, { ...item, issue: existing.number }); continue; }
+          const task = fieldTask(item, finding);
+          const d = stateVote({ kind: 'task', title: task.title.replace(/^مهمة شاهين:\s*/, ''), body: task.body });
+          if (!d.approved) {
+            items.set(item.id, { ...item, refused: true });
+            notes.push(`مناورة التخصصات: مافتحتش مهمة «${item.titleAr.slice(0, 60)}» — ${d.summaryAr}`);
+            continue;
+          }
+          const created = await gh.api<{ number: number; html_url: string }>(`${path}/issues`, {
+            method: 'POST', body: JSON.stringify({ title: task.title, body: `${task.body}\n\n${stateComment(d, ['وكيل البرمجة هينفذها لما صاحب الموقع يكتبله «نفذ مهام شاهين».'])}`, labels: ['shaheen-task', STATE_LABELS.approvedTask, STATE_LABELS.reviewed] }),
+          }).catch((e) => { notes.push(`مقدرتش أفتح مهمة «${item.titleAr.slice(0, 60)}» (${(e as Error).message.slice(0, 60)})`); return undefined; });
+          if (!created) continue;
+          items.set(item.id, { ...item, issue: created.number });
+          records.push({ at: now(), number: created.number, kind: 'task', title: task.title.replace(/^مهمة شاهين:\s*/, '').slice(0, 140), outcome: 'approved', summaryAr: d.summaryAr, tally: d.tally, url: created.html_url });
+          say(`Maneuver task #${created.number}: [${item.deptAr}] ${item.titleAr}`);
+        }
+        field = { ...field, items: field.items.map((i) => items.get(i.id) || i) };
+      }
+
       // 3. Its own orders: run again the robots whose last check failed.
       for (const id of rerunCandidates(precheck, orders, controls)) {
         const done = await carryOut(gh, { action: 'run', target: id, whyAr: 'آخر فحص ليه وقع، فشغّلته تاني بنفسي.' }, '');
@@ -189,11 +229,12 @@ async function main() {
     }
   } else say(active ? 'Rehearsal (not the live run): nothing is decided.' : controls.frozen ? 'All robots are frozen by the owner — the State waits too.' : `The owner keeps the approvals himself (${controls.selfDevelopment}) — nothing to decide.`);
 
-  const report: StateReport = { updatedAt: new Date().toISOString(), active, decisions: [...records, ...before.decisions].slice(0, 40), supervision: supervision(precheck) };
+  const report: StateReport = { updatedAt: new Date().toISOString(), active, decisions: [...records, ...before.decisions].slice(0, 40), supervision: supervision(precheck), ...(field ? { field } : {}) };
   const publish: string[] = [];
   // Published when it decided something, when its state changed, or twice a day (so its report never looks late).
   const stale = Date.now() - Date.parse(before.updatedAt) > 12 * 3600_000;
-  if (records.length || notes.length || before.active !== active || stale || JSON.stringify(before.supervision) !== JSON.stringify(report.supervision)) {
+  if (records.length || notes.length || before.active !== active || stale || JSON.stringify(before.supervision) !== JSON.stringify(report.supervision)
+    || JSON.stringify(before.field?.items ?? null) !== JSON.stringify(report.field?.items ?? null)) {
     writeFileSync(REPORT, `${JSON.stringify(report, null, 1)}\n`); publish.push(REPORT);
   }
   if (JSON.stringify(orders) !== JSON.stringify(ordersBefore)) {
