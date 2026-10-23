@@ -1,26 +1,24 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T21:00:21.324Z",
+ "updatedAt": "2026-10-23T22:43:47.159Z",
  "desk": {
   "nameAr": "مكتب خدمة العملاء الآلي",
   "nameEn": "Automated customer care desk",
-  "modeAr": "دليل الدعم من الموقع — الأرقام الحية مش متاحة"
+  "modeAr": "متصل بالحساب الحي — أرقام حقيقية بس"
  },
  "live": {
-  "checked": false,
-  "at": "2026-10-23T21:00:21.324Z",
-  "failed": [
-   "token:NO_ADMIN_TOKEN"
-  ]
+  "checked": true,
+  "at": "2026-10-23T22:43:47.159Z",
+  "failed": []
  },
  "inbox": {
-  "openHandoffs": null,
+  "openHandoffs": 0,
   "oldestHandoffHours": null,
-  "newRequests": null,
-  "unresolvedRequests": null,
+  "newRequests": 0,
+  "unresolvedRequests": 0,
   "oldestUnresolvedHours": null,
-  "negativeFeedback24h": null,
-  "openGaps": null,
+  "negativeFeedback24h": 0,
+  "openGaps": 0,
   "topGapCount": null
  },
  "knowledge": {
@@ -78,15 +76,11 @@
   }
  ],
  "queue": [],
- "problems": [
-  "مكتب الدعم لسه ما قراش الحساب الحي (token:NO_ADMIN_TOKEN) — الأرقام الحية غير معروفة"
+ "problems": [],
+ "fixes": [],
+ "ideas": [
+  "معلومات الدعم مكتملة — دُرّب عليها قوالب الشات والردود السريعة"
  ],
- "fixes": [
-  "راجع SHAM_ADMIN_TOKEN ومسار الخدمة ثم شغّل روبوت خدمة العملاء"
- ],
- "ideas": [],
- "summaryAr": "مكتب خدمة العملاء: تغطية معلومات الدعم 100% — الحساب الحي مش مقروء (token:NO_ADMIN_TOKEN)، فمفيش أرقام محادثات أو طلبات متخمنة.",
- "nextAr": [
-  "راجع SHAM_ADMIN_TOKEN ومسار الخدمة ثم شغّل روبوت خدمة العملاء"
- ]
+ "summaryAr": "مكتب خدمة العملاء: 0 محادثة مستنية موظف، 0 طلب مفتوح، 0 سؤال من غير إجابة، 0 تقييم سلبي آخر 24 ساعة — تغطية معلومات الدعم 100% — 0 بند في الطابور.",
+ "nextAr": []
 }
