@@ -17,7 +17,8 @@ import { normalize } from './text';
 export type PageId =
   | 'home' | 'store' | 'productDetail' | 'concentration' | 'pyramid' | 'alcohol' | 'costing'
   | 'molecule_studio' | 'maceration_simulator' | 'raw_materials' | 'world_perfumes' | 'perfume_news'
-  | 'master_ai' | 'library' | 'community' | 'community/merchant' | 'community/me' | 'guide' | 'perfumes' | 'cosmetics';
+  | 'master_ai' | 'library' | 'community' | 'community/merchant' | 'community/me' | 'guide' | 'perfumes' | 'cosmetics'
+  | 'perfume_designers' | 'cosmetic_designers';
 
 /** What an answer must contain to count as a sensible answer *on that page*. */
 export type PageExpect =
@@ -150,6 +151,24 @@ export const PAGES: PageGuide[] = [
     ],
   },
   {
+    id: 'perfume_designers', label: { ar: 'قسم المصممين — عطور', en: 'Designers — perfume' },
+    what: { ar: 'الزائر في قسم مصممي العطور: بيكتب تركيبة عطر بنسبها والمعمل بيعمل لها محاكاة كاملة (الطابع والثبات والتشابه والتوافق مع IFRA).', en: 'The visitor is in the perfume designers’ section: writing a perfume formula with its percentages while the lab simulates it fully (character, staying power, resemblance, IFRA compliance).' },
+    offer: { ar: 'ساعده يحسن تركيبته: يوازن الهرم، يصلح المواد اللي فوق حدود IFRA بمواد بديلة، ويزود الثبات — وفكّره إن المحاكاة تقريبية ولازم شهادة IFRA من المورد.', en: 'Help improve the formula: balance the pyramid, replace materials above IFRA limits with alternatives, boost staying power — and remind them the simulation is approximate and the supplier’s IFRA certificate is required.' },
+    questions: [
+      { ar: 'ليه البرغموت المعصور بيطلع غير متوافق؟', en: 'Why is expressed bergamot not compliant?', expect: 'any' },
+      { ar: 'إيه أسعار المنتجات؟', en: 'What are the prices?', expect: 'prices' },
+    ],
+  },
+  {
+    id: 'cosmetic_designers', label: { ar: 'قسم المصممين — تجميل', en: 'Designers — cosmetics' },
+    what: { ar: 'الزائر في قسم مصممي التجميل: بيكتب تركيبة كريم أو سيروم أو زبدة بنسبها والمعمل بيحاكيها (النوع والقوام والحموضة والحافظة وحدود لائحة الاتحاد الأوروبي).', en: 'The visitor is in the cosmetic designers’ section: writing a cream, serum or butter formula while the lab simulates it (type, texture, pH, preservative and EU limits).' },
+    offer: { ar: 'اشرحله سبب أي رفض بأمان: حافظة مع أي ماء، مستحلب كفاية، حدود المواد الفعالة، ومن غير وعود علاج. ماتخترعش منتجات تجميل مش موجودة في المتجر.', en: 'Explain any failure safely: a preservative with any water, enough emulsifier, active-ingredient limits, no treatment claims. Never invent cosmetic products the store does not have.' },
+    questions: [
+      { ar: 'ليه الكريم بتاعي بينفصل؟', en: 'Why does my cream separate?', expect: 'any' },
+      { ar: 'المتجر فيه إيه؟', en: 'What is in the store?', expect: 'prices' },
+    ],
+  },
+  {
     id: 'raw_materials', label: { ar: 'المواد الخام', en: 'Raw materials' },
     what: { ar: 'الزائر في موسوعة المواد الخام: بيدور على مادة عطرية وخصائصها وسعرها الداخلي.', en: 'The visitor is in the raw-materials encyclopedia: looking up a material, its properties and its internal price.' },
     offer: { ar: 'اشرحله المادة وخواصها وثباتها، وما تنشرش أسعار الموردين ولا الهامش.', en: 'Explain the material and its strength; never publish supplier prices or margin.' },
@@ -253,7 +272,7 @@ const PAGE_FEATURE: Partial<Record<PageId, string>> = {
   alcohol: 'alcohol', costing: 'costing', molecule_studio: 'molecule_studio', maceration_simulator: 'maceration',
   raw_materials: 'raw_materials', world_perfumes: 'world_perfumes', perfume_news: 'news', master_ai: 'shaheen',
   library: 'library', community: 'community', 'community/merchant': 'merchant', 'community/me': 'account', guide: 'guide',
-  perfumes: 'guide', cosmetics: 'guide',
+  perfumes: 'guide', cosmetics: 'guide', perfume_designers: 'designers', cosmetic_designers: 'designers',
 };
 
 /** The feature id of the page the visitor is on (undefined for an unknown page). */

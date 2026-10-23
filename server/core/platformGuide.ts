@@ -121,6 +121,20 @@ export const PLATFORM_FEATURES: PlatformFeature[] = [
     tags: ['molecule studio', 'معمل', 'تحليل', 'تركيب'],
   },
   {
+    id: 'designers', group: 'lab', tab: 'perfume_designers', docId: 'kb-platform-designers',
+    name: { ar: 'قسم المصممين (عطور وتجميل)', en: 'Designers’ section (perfume and cosmetics)' },
+    summary: {
+      ar: 'دفتر تفاعلي للمصمم: يكتب تركيبته (عطر أو مستحضر تجميل) فيعمل لها محاكاة كاملة — النتيجة والتشابه والتوافق مع المعايير الدولية وسبب أي رفض — ومعاها معمل وأدوات تخليق.',
+      en: 'An interactive journal for designers: write a perfume or cosmetic formula and get a full simulation — the result, what it resembles, and whether it meets international standards and why — with a lab and creative tools.',
+    },
+    details: {
+      ar: 'في العطور: الطابع والهرم وتطور الريحة ساعة بساعة والثبات والفوحان، وتشابه مع عطور مكتبة العالم والمتجر، وفحص حدود IFRA (الفئة 4) والحمضيات الحساسة للشمس والمواد الممنوعة ومسببات الحساسية اللي لازم تتكتب. في التجميل: نوع المنتج وقوامه والحموضة والحافظة والمستحلب وحدود لائحة الاتحاد الأوروبي. الأدوات: وازن الهرم، صلّح التوافق، زوّد الثبات، كمّل بالماء، إلهام، ونقطة بداية. ورقة تشغيلة بالمل والجرام والنقط، ودفتر نسخ وتقييمات محفوظ على جهاز المصمم. المحاكاة تقريبية ومش شهادة.',
+      en: 'Perfume: character, pyramid, the scent hour by hour, staying power and projection, resemblance to the world library and store perfumes, and checks for IFRA Category 4 limits, sun-sensitising citrus, prohibited materials and allergens to label. Cosmetics: product type, texture, pH, preservative, emulsifier and EU limits. Tools: balance the pyramid, fix compliance, boost staying power, top up with water, inspire, starting points. A batch sheet in ml, grams and drops, and a journal of versions and ratings kept on the designer’s device. The simulation is approximate, not a certificate.',
+    },
+    keywords: ['قسم المصممين', 'دفتر المصمم', 'محاكاة التركيبة', 'محاكاة تركيبة', 'designers section', 'formula simulation', 'perfume simulation'],
+    tags: ['مصممين', 'محاكاة', 'designers', 'simulation'],
+  },
+  {
     id: 'maceration', group: 'lab', tab: 'maceration_simulator', docId: 'kb-maceration',
     name: { ar: 'محاكي التعتيق ودليل المثبتات', en: 'Maceration simulator & fixatives guide' },
     summary: {

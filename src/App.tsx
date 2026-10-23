@@ -78,6 +78,7 @@ import { ErrorBoundary, lazyWithReload } from './utils/lazyRetry';
 // «مجتمع شام» (social, messenger, member and merchant portals): its own bundle, loaded on the first #community visit.
 const CommunityApp = lazyWithReload(() => import('./community/CommunityApp'));
 const CosmeticsHub = lazyWithReload(() => import('./components/CosmeticsHub'));
+const DesignersStudio = lazyWithReload(() => import('./components/DesignersStudio'));
 
 const LOCAL_STORAGE_KEY = 'miyaar_perfume_saved_formulas';
 
@@ -991,6 +992,13 @@ export default function App() {
           {activeTab === 'cosmetics' && (
             <Suspense fallback={<div className="py-16 text-center"><Loader2 className="w-8 h-8 animate-spin mx-auto text-rose-700" /></div>}>
               <CosmeticsHub currentLang={currentLang} onNavigate={(tabId) => navigateToTab(tabId)} />
+            </Suspense>
+          )}
+
+          {/* «قسم المصممين»: the designer's journal + full simulation, in the perfume and the cosmetics sections. */}
+          {(activeTab === 'perfume_designers' || activeTab === 'cosmetic_designers') && (
+            <Suspense fallback={<div className="py-16 text-center"><Loader2 className="w-8 h-8 animate-spin mx-auto text-amber-700" /></div>}>
+              <DesignersStudio key={activeTab} kind={activeTab === 'perfume_designers' ? 'perfume' : 'cosmetic'} currentLang={currentLang} onNavigate={(tabId) => navigateToTab(tabId)} />
             </Suspense>
           )}
 
