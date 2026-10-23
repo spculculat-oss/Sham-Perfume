@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T08:33:38.744Z",
+ "updatedAt": "2026-10-23T08:44:34.461Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,18 @@
  ],
  "runs": [
   {
+   "at": "2026-10-23T08:44:34.461Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "Web search: AI quota used up — the scout continues by himself",
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-23T08:33:38.744Z",
    "mode": "self",
    "found": 0,
@@ -7801,28 +7813,6 @@
     "  ↳ pariscornerperfumes.com: CV 56/100 [age,https,contact,identity,platform,social,authentic] on Shopify (pages: /pages/contact→200 /policies/contact-information→404 /policies/refund-policy→404 /policies/legal-notice→404 /policies/shipping-policy→404 /pages/about-us→200)",
     "✗ pariscornerperfumes.com: ملف الثقة ضعيف (56/100): ينقصه سياسة الإرجاع والاسترداد، وسائل دفع معروفة، سياسة الشحن",
     "✗ pariscornerparfums.com: الموقع لا يفتح"
-   ]
-  },
-  {
-   "at": "2026-10-21T07:16:55.374Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 1,
-   "rejected": 1,
-   "notes": [
-    "✗ alwataniah.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
-    "✗ alwataniahperfumes.com: الموقع لا يفتح",
-    "✗ alwataniahparfums.com: الموقع لا يفتح",
-    "✗ lattafapride.com: الموقع لا يفتح",
-    "✗ lattafaprideperfumes.com: الموقع لا يفتح",
-    "✗ lattafaprideparfums.com: الموقع لا يفتح",
-    "✗ volare.com: ملف الثقة: لا يستخدم اتصالاً آمناً (https)",
-    "  ↳ volareperfumes.com: CV 80/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
-    "✓ volareperfumes.com (CV 80/100): 654 perfumes, 4/6 pages read without AI, AED (1 = 14.8364 EGP) — added to the importer",
-    "✗ volareparfums.com: الموقع لا يفتح",
-    "  ↳ shama.com: CV 62/100 [age,https,identity,returns,privacy,social,authentic]",
-    "✗ shama.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
    ]
   }
  ]
