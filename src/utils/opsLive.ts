@@ -24,6 +24,7 @@ export const SCHEDULES: Record<string, string[]> = {
   'shaheen-doctor.yml': ['*/10 * * * *'],
   'shaheen-finance.yml': ['15 3 * * *'],
   'shaheen-import.yml': ['37 */2 * * *'],
+  'shaheen-inventory.yml': ['5 */6 * * *'],
   'shaheen-lab.yml': ['20 6 * * *'],
   'shaheen-brain.yml': ['20 3 * * 5'],
   'shaheen-languages.yml': ['11 9 * * *', '11 21 * * *'],
@@ -33,6 +34,7 @@ export const SCHEDULES: Record<string, string[]> = {
   'shaheen-patrol.yml': ['52 * * * *'],
   'shaheen-precheck.yml': ['10 6 * * *'],
   'shaheen-school-clock.yml': ['47 * * * *'],
+  'shaheen-service.yml': ['3 */6 * * *'],
   'shaheen-seo.yml': ['23 */6 * * *'],
 };
 /** What starts a workflow that has no timetable (or also starts it besides the timetable). */

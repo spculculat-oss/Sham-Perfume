@@ -212,6 +212,72 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       else f.push({ level: 'note', idea: `الكشف العلني يرصد ${visits} زيارة من ${countries} دولة حول العالم` });
       break;
     }
+    case 'service': {
+      // «مكتب خدمة العملاء»: knowledge coverage + the live desk, aggregated only (no names or contact data).
+      const live = o(r.live);
+      const inbox = o(r.inbox);
+      const knowledge = o(r.knowledge);
+      if (live.checked !== true) {
+        f.push({ level: 'warn', problem: 'مكتب الدعم ما قراش الحساب الحي في آخر دورة — الأرقام الحية غير معروفة', fix: 'راجع SHAM_ADMIN_TOKEN ومسار الخدمة ثم شغّل روبوت خدمة العملاء' });
+      }
+      const handoffs = n(inbox.openHandoffs) ?? 0;
+      const handoffAge = n(inbox.oldestHandoffHours) ?? 0;
+      if (handoffs) {
+        f.push({
+          level: handoffAge >= 6 ? 'warn' : 'note',
+          problem: `${handoffs} محادثة مستنية موظف${handoffAge ? ` (أقدمها ${Math.round(handoffAge)} ساعة)` : ''}`,
+          fix: 'راجع لوحة المحادثات وابعت الرد المناسب؛ الردود الجاهزة في تقرير مكتب الدعم',
+        });
+      }
+      const unresolved = n(inbox.unresolvedRequests) ?? 0;
+      const requestAge = n(inbox.oldestUnresolvedHours) ?? 0;
+      if (unresolved && requestAge >= 24) {
+        f.push({ level: 'warn', problem: `${unresolved} طلب مفتوح وأقدمهم ${Math.round(requestAge)} ساعة (الحد 24 ساعة)`, fix: 'راجع الطلبات المفتوحة وحدّث حالتها بالرد الحقيقي' });
+      }
+      const coverage = n(knowledge.coverage) ?? 0;
+      if (coverage < 100) {
+        f.push({ level: coverage < 70 ? 'fail' : 'warn', problem: `معلومات الدعم ناقصة (${coverage}%)`, fix: 'أكمل محاور الشراء والدفع والشحن والتتبع والإرجاع في دليل المتجر' });
+      }
+      const gaps = n(inbox.openGaps) ?? 0;
+      if (gaps) f.push({ level: 'note', idea: `${gaps} سؤال الزوار مالاقاش إجابة موثقة — يتحول لدرس في مدرسة شاهين` });
+      const negative = n(inbox.negativeFeedback24h) ?? 0;
+      if (negative >= 3) f.push({ level: 'note', idea: `${negative} تقييم سلبي في آخر 24 ساعة — راجع الردود المتكررة وحسّنها` });
+      break;
+    }
+    case 'inventory': {
+      // «إدارة المخزون والتنبؤ»: real stock/catalog numbers, plus a forecast only when real sales exist.
+      const sources = o(r.sources);
+      const catalog = o(r.catalog);
+      const forecast = o(r.forecast);
+      const restock = arr(r.restock).map(o);
+      if (sources.liveStock !== true) {
+        f.push({ level: 'warn', problem: 'المخزون الرقمي مش مقروء — الفحص اعتمد على حالة «متوفر/نفد» في الكتالوج', fix: 'راجع SHAM_ADMIN_TOKEN أو مسار المنتجات؛ الأعداد الحقيقية تظهر أول ما يتقرأ الحساب' });
+      }
+      if (sources.liveSales !== true) {
+        f.push({ level: 'warn', problem: 'سجل الطلبات مش مقروء — التنبؤ بالمبيعات متوقف لحد ما يتقرأ', fix: 'راجع SHAM_ADMIN_TOKEN ومسار الطلبات في السيرفر؛ مفيش أرقام مبيعات متخمنة' });
+      }
+      const published = n(catalog.published) ?? 0;
+      const out = n(catalog.outOfStock) ?? 0;
+      if (published && out > published * 0.4) {
+        f.push({ level: 'warn', problem: `${out} منتج غير متوفر من ${published}`, fix: 'راجع قائمة إعادة التوريد وابدأ بالمنتجات المميزة والأكثر طلباً' });
+      }
+      const featuredOut = n(catalog.featuredOut) ?? 0;
+      if (featuredOut) {
+        f.push({ level: 'warn', problem: `${featuredOut} منتج مميز غير متوفر على واجهة المتجر`, fix: 'أعد توريده أو استبدله بمنتج متوفر من نفس العائلة' });
+      }
+      const urgentRestock = restock.filter((item) => item.priority === 'urgent').length;
+      const future = o(forecast.totals);
+      const urgentForecast = n(future.urgent) ?? 0;
+      if (urgentRestock || urgentForecast) {
+        f.push({ level: 'warn', problem: `${Math.max(urgentRestock, urgentForecast)} منتج محتاج إعادة توريد عاجلة`, fix: 'راجع الكميات المقترحة في تقرير المخزون واطلبها قبل مدة التوريد' });
+      }
+      if (forecast.basis !== 'live') {
+        f.push({ level: 'note', idea: 'التنبؤ بالمبيعات بيشتغل من الطلبات المؤكدة/المكتملة المسجلة بس — أول ما تتسجل أرقام حقيقية يتحسب تلقائياً' });
+      }
+      const plans = arr(r.planAr);
+      if (plans.length) f.push({ level: 'note', idea: String(plans[0]) });
+      break;
+    }
     default:
       break;
   }
@@ -258,6 +324,19 @@ export function findHandoffs(reports: Record<string, unknown>, checks: BotCheck[
   const paused = Object.entries(o(o(reports['ai-quota.json']).engines)).filter(([, e]) => Date.parse(String(o(e).pausedUntil || '')) > now).length;
   if (paused) out.push({ from: 'keys', to: 'secretary', textAr: `${paused} محرك متوقف — السكرتير جاهز ينوب عن شاهين` });
   if (checks.some((c) => c.id === 'finance' && ['warn', 'fail'].includes(c.status))) out.push({ from: 'finance', to: 'secretary', textAr: 'الإدارة المالية تحتاج مراجعة في اللوحة الخاصة؛ لا مبالغ أو بيانات طلبات في التقرير العام' });
+  // «مكتب خدمة العملاء»: waiting conversations → the secretary (aggregated only, never the visitor's data).
+  const desk = o(o(reports['shaheen-service.json']).inbox);
+  const waiting = n(desk.openHandoffs) ?? 0;
+  const late = n(desk.oldestHandoffHours) ?? 0;
+  if (waiting) out.push({ from: 'service', to: 'secretary', textAr: `${waiting} محادثة مستنية موظف${late ? ` (أقدمها ${Math.round(late)} ساعة)` : ''} — المشرف يتأكد إن كل واحدة اترد عليها` });
+  const unanswered = n(desk.openGaps) ?? 0;
+  if (unanswered) out.push({ from: 'service', to: 'catalog', textAr: `${unanswered} سؤال عن المتجر مالاقاش إجابة موثقة — راجع بيانات المنتجات والبدائل` });
+  // «إدارة المخزون»: what ran out → the importer, and the advisor needs in-stock alternatives.
+  const stock = o(reports['shaheen-inventory.json']);
+  const restock = arr(stock.restock).map(o).filter((item) => item.priority === 'urgent');
+  if (restock.length) out.push({ from: 'inventory', to: 'importer', textAr: `${restock.length} منتج عاجل نفد أو قرب يخلص — المستورد يجهز إعادة التوريد من المتاجر المعتمدة` });
+  const outCount = n(o(stock.catalog).outOfStock) ?? 0;
+  if (outCount) out.push({ from: 'inventory', to: 'store_advisor', textAr: `${outCount} منتج غير متوفر — المستشار يرشح البدائل المتاحة من نفس العائلة العطرية` });
   // A late robot whose workflow may be rerun safely: the secretary starts it (once per workflow).
   const started = new Set<string>();
   for (const c of checks) {

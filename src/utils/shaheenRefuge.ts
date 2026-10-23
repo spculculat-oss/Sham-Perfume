@@ -65,6 +65,7 @@ const REPORT_OWNER: Record<string, BotId> = {
   'shaheen-precheck.json': 'precheck', 'shaheen-school.json': 'school', 'shaheen-skills.json': 'importer',
   'platform-state.json': 'state', 'platform-census.json': 'census', 'shaheen-harvest.json': 'academy', 'shaheen-sciences.json': 'academy', 'shaheen-lab.json': 'lab', 'shaheen-brain.json': 'brain',
   'sham-training.json': 'teacher', 'store-catalog.json': 'catalog', 'store-review.json': 'product_pages',
+  'shaheen-inventory.json': 'inventory', 'shaheen-service.json': 'service',
 };
 const REPORT_NAMES: Record<string, [string, string]> = {
   'ai-memory.json': ['ذاكرة محركات الذكاء الاصطناعي', 'AI engines memory'],
@@ -98,6 +99,8 @@ const REPORT_NAMES: Record<string, [string, string]> = {
   'sham-training.json': ['دروس تدريب مساعد شام', 'Sham assistant training lessons'],
   'store-catalog.json': ['كتالوج المتجر', 'Store catalogue'],
   'store-review.json': ['مراجعة صفحات المنتجات', 'Product pages review'],
+  'shaheen-inventory.json': ['إدارة المخزون والتنبؤ بالمبيعات', 'Inventory & sales forecast'],
+  'shaheen-service.json': ['مكتب خدمة العملاء الآلي', 'Automated customer care desk'],
 };
 const reportEntry = (file: string): RefugeEntry => {
   const [nameAr, nameEn] = REPORT_NAMES[file] ?? [file, file];
@@ -119,7 +122,8 @@ const WORKFLOW_OWNER: Record<string, BotId> = {
   'shaheen-keys.yml': 'keys', 'shaheen-languages.yml': 'languages', 'shaheen-manus.yml': 'verifier',
   'shaheen-news.yml': 'news', 'shaheen-patrol.yml': 'patrol', 'shaheen-maneuver.yml': 'maneuver', 'shaheen-precheck.yml': 'precheck',
   'shaheen-seo.yml': 'seo', 'owner-control.yml': 'owner_desk', 'platform-state.yml': 'state', 'platform-census.yml': 'census',
-  'shaheen-school-clock.yml': 'academy', 'shaheen-lab.yml': 'lab', 'shaheen-brain.yml': 'brain',
+  'shaheen-school-clock.yml': 'academy', 'shaheen-lab.yml': 'lab',
+  'shaheen-inventory.yml': 'inventory', 'shaheen-service.yml': 'service', 'shaheen-brain.yml': 'brain',
 };
 const WORKFLOW_NAMES: Record<string, [string, string]> = {
   'aistudio-bridge.yml': ['بوابة استوديو التصميم', 'Design studio bridge'],
@@ -147,6 +151,8 @@ const WORKFLOW_NAMES: Record<string, [string, string]> = {
   'platform-census.yml': ['روبوت التعداد وإحصاء الزيارات', 'Platform state census & visit ledger'],
   'shaheen-school-clock.yml': ['أكاديمية شاهين على مدار الساعة', "Shaheen's academy clock"],
   'shaheen-lab.yml': ['تشغيل معمل شاهين للتجارب', 'Shaheen lab run'],
+  'shaheen-inventory.yml': ['إدارة المخزون والتنبؤ بالمبيعات', 'Inventory & sales forecast'],
+  'shaheen-service.yml': ['مكتب خدمة العملاء الآلي', 'Automated customer care desk'],
   'shaheen-brain.yml': ['مختبر عقل شاهين (ملفات التدريب والامتحان)', "Shaheen's brain lab (training data & exam)"],
 };
 const workflowEntry = (file: string): RefugeEntry => {

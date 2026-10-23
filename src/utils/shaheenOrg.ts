@@ -42,7 +42,8 @@ export type BotId =
   | 'school' | 'doctor' | 'verifier' | 'live_check' | 'keys' | 'intake' | 'studio_bridge' | 'studio_zip' | 'deploy' | 'admin_agent'
   | 'chat_agent' | 'owner_desk' | 'state' | 'academy' | 'platform_owner'
   | 'specialist_scents' | 'specialist_tech' | 'specialist_security' | 'specialist_science' | 'specialist_business' | 'specialist_society'
-  | 'specialist_health' | 'specialist_engineering' | 'specialist_learning' | 'specialist_culture' | 'lab' | 'census' | 'brain';
+  | 'specialist_health' | 'specialist_engineering' | 'specialist_learning' | 'specialist_culture' | 'lab' | 'census'
+  | 'service' | 'inventory' | 'brain';
 
 export interface Bot {
   id: BotId;
@@ -82,6 +83,7 @@ export const BOTS: Bot[] = [
   { id: 'importer', nameAr: 'مستورد شاهين + مراجع الصفحات', nameEn: 'Shaheen importer + page reviewer', dept: 'store', workflow: 'shaheen-import.yml', report: 'store-review.json', everyHours: 2, aiTools: ['store_import'], dutiesAr: 'ينقل منتجات المتاجر المقبولة ويسعّرها ويراجع كل صفحة ويخفي المعيب.' },
   { id: 'images', nameAr: 'منظف الصور', nameEn: 'Photo cleaner', dept: 'store', workflow: 'shaheen-import.yml', report: 'image-clean.json', everyHours: 2, dutiesAr: 'يشيل أرقام وروابط المورد من صور المنتجات.' },
   { id: 'catalog', nameAr: 'مدرّب كتالوج المتجر', nameEn: 'Store catalog trainer', dept: 'store', workflow: 'shaheen-news.yml', report: 'store-catalog.json', everyHours: 12, aiTools: ['store_catalog'], dutiesAr: 'يصحح الأسماء والأوصاف ويضيف العائلة العطرية والنوتات والمواسم.' },
+  { id: 'inventory', nameAr: 'إدارة المخزون والتنبؤ بالمبيعات', nameEn: 'Inventory & sales forecast', dept: 'store', workflow: 'shaheen-inventory.yml', report: 'shaheen-inventory.json', everyHours: 6, dutiesAr: 'يدير مخزون متجر شام ويتنبأ بالمبيعات: يراجع الكتالوج الحقيقي وحالة التوفر، ويقرا المخزون الرقمي والطلبات المؤكدة من الحساب الحي من غير أي بيانات عملاء أو مبالغ، ويحسب تغطية المخزون بالأيام وحركة كل منتج من المبيعات المؤكدة بس (آخر 30 يوم)، ويطلع قائمة إعادة توريد بكميات محسوبة من مدة التوريد + مخزون الأمان، ويرصد العائلات والماركات اللي خلصت. لو مفيش مبيعات مسجلة يقول بصراحة ويفضل يخطط من المخزون والكتالوج من غير أرقام متخمنة.' },
   { id: 'product_pages', nameAr: 'فاحص صفحات المنتجات على الموبايل', nameEn: 'Product pages check (phone)', dept: 'store', workflow: 'product-pages-check.yml', everyHours: 24, dutiesAr: 'يفتح صفحات المنتجات على الموقع الحقيقي زي زائر على الموبايل ويتأكد إنها سليمة.' },
   { id: 'store_advisor', nameAr: 'مستشار التسوق «اسأل شاهين»', nameEn: 'Shopping advisor', dept: 'store', aiTools: ['store_advisor'], dutiesAr: 'يختار للزائر من منتجات المتجر الحقيقية حسب طلبه.' },
   // ── Content & search ──
@@ -98,6 +100,7 @@ export const BOTS: Bot[] = [
   { id: 'design_expert', nameAr: 'خبير التصميم متعدد التخصصات', nameEn: 'Multidisciplinary design expert', dept: 'experience', aiTools: ['design_agent'], dutiesAr: 'يحوّل الموجز إلى خطة عبر تخصصات الهوية والجرافيك والواجهات والتغليف والتصوير والحركة والطباعة والإتاحة والخدمات والمنتجات، ويتعاون مع أدوار وتقارير برامج الذكاء المسجلة تحت شاهين؛ شاهين يراجع الجودة ويوجّه التحسين، ولا تُنفذ تغييرات أو ملفات نهائية تلقائياً.' },
   { id: 'visitor_tour', nameAr: 'جولة الزائر والمستشار الميداني', nameEn: 'Visitor tour & field advisor', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-missions.json', section: 'tour', everyHours: 24, dutiesAr: 'كل يوم بعد الفحص الشامل الوكيل الخلفي يتسوق من الموبايل زي الزبون: المتجر ← منتج ← السلة ← صفحة الدفع (من غير ما يدفع) ← سؤال لشاهين، وبعدين يبص على مشاكل الفحص في الموقع الحي ويقعد في الاجتماع «المستشار الميداني» برأيه واقتراحاته.' },
   { id: 'inspect', nameAr: 'فاحص إجابات شاهين', nameEn: 'Answer inspector', dept: 'experience', workflow: 'shaheen-inspect.yml', dutiesAr: 'يسأل شاهين أسئلة حقيقية ويفحص الرد (عند الطلب).' },
+  { id: 'service', nameAr: 'مكتب خدمة العملاء الآلي', nameEn: 'Automated customer care desk', dept: 'experience', workflow: 'shaheen-service.yml', report: 'shaheen-service.json', everyHours: 6, dutiesAr: 'يقود «مكتب خدمة العملاء الآلي»: كل 6 ساعات يراجع معلومات الدعم المنشورة (الشراء والدفع والشحن والتتبع والإرجاع وأسعار المخزون) ويتأكد إنها كاملة بالعربي والإنجليزي، ويقرا الحساب الحي من غير ما يحفظ أي بيانات شخصية: المحادثات المستنية لموظف، الطلبات المفتوحة، الأسئلة اللي الزوار مالاقوش لها إجابة، والتقييمات الأخيرة — ويجهز طابور الردود والقوالب من الأجوبة الموثقة نفسها، ويصعّد المتأخر للسكرتير. مايرسلش رسالة ولا يغيّر طلب؛ التنفيذ بإيد إنسان.' },
   // ── Reliability & self-reliance ──
   { id: 'school', nameAr: 'مدرسة شاهين (الاعتماد على النفس)', nameEn: "Shaheen's school", dept: 'reliability', workflow: 'shaheen-discover.yml', report: 'shaheen-school.json', everyHours: 6, aiTools: ['shaheen_school'], dutiesAr: 'يمتحن شاهين نفسه على كل المسارات — العطور، جميع لغات البرمجة، بناء بلوكات البرمجة وجدولتها، هندسة البرمجة، الجرافيك والديزاين، صيانة المواقع، والذكاء الاصطناعي بجميع مهاراته وأحدث العلوم، والاختراق الأخلاقي، وكل العلوم — ومجال كل أداة ذكاء اصطناعي — ويذاكر مكثفاً من مكتبته بدون مساعدة ويحفظ في ذاكرته عشان يرد لوحده ويدبر نفسه بدون أي تطبيق ذكاء آخر. ويبني برامجه بالبلوكات ويجدولها ويطوّر كل أداة في مجالها.' },
   { id: 'academy', nameAr: 'أكاديمية شاهين (المدرسة على مدار الساعة)', nameEn: "Shaheen's academy (school around the clock)", dept: 'reliability', workflow: 'shaheen-school-clock.yml', report: 'shaheen-school.json', everyHours: 1, dutiesAr: 'كل ساعة يشوف إيه الباقي على خبراء المدرسة التمنتاشر من منهجهم (من غير ذكاء اصطناعي)، ولو فيه شغل يشغّل المعلم المحلي على جهاز الروبوتات: كل خبير يذاكر أسئلة مجاله من مكتبة شاهين والمصادر المفتوحة، والمراجع الصارم يراجع كل درس بمعايير المجال وحدوده قبل ما يتحفظ في ذاكرة شاهين. لو مفيش حاجة باقية الساعة بتعدي من غير تشغيل، وماشي في نفس حارة الكشّاف عشان محدش يكتب في الذاكرة مع التاني. وكل ساعة كمان «حصّاد شاهين» يجهّز إجابات لأسئلة الزوار اللي ماتجاوبتش والأسئلة اليومية قبل ما الباقة تخلص (آخر ساعتين قبل التجديد من الباقي منها، وباقي اليوم من نماذج مفتوحة ليها حصة منفصلة) ويحفظ الكويس منها بس، عشان شاهين يرد منها لما المنصات تقف.' },
@@ -193,6 +196,15 @@ export const LINKS: Link[] = [
   { from: 'scout', to: 'importer', whyAr: 'متجر موثوق جديد ← ينقل منتجاته' },
   { from: 'importer', to: 'images', whyAr: 'صور منتجات جديدة ← تنظيفها' },
   { from: 'importer', to: 'catalog', whyAr: 'منتجات جديدة ← تصحيح البيانات والنوتات' },
+  { from: 'catalog', to: 'inventory', whyAr: 'العائلة والموسم والبيانات المصححة ← خطة المخزون ترتب الأولويات' },
+  { from: 'inventory', to: 'importer', whyAr: 'منتج نفد أو مخزونه قليل ← المستورد يجهز إعادة التوريد من المصادر المعتمدة' },
+  { from: 'inventory', to: 'store_advisor', whyAr: 'منتجات نافدة ← المستشار يقترح البدائل المتاحة من نفس العائلة' },
+  { from: 'inventory', to: 'council', whyAr: 'نقص متكرر في عائلة كاملة ← مهمة تطوير أو توسيع توريد في الاجتماع' },
+  { from: 'chat', to: 'service', whyAr: 'محادثة محتاجة موظف أو شكوى ← مكتب الدعم يجهز الرد ويصعّدها' },
+  { from: 'service', to: 'chat', whyAr: 'الردود الجاهزة الموثقة ← الشات يستخدمها في الأسئلة المتكررة' },
+  { from: 'service', to: 'secretary', whyAr: 'محادثات أو طلبات متأخرة ← المشرف يتأكد إنها اتغطت' },
+  { from: 'service', to: 'catalog', whyAr: 'سؤال عن منتج أو بديل مالوش إجابة ← الكتالوج يوضح البيانات الناقصة' },
+  { from: 'legal', to: 'service', whyAr: 'أي وعد أو استرجاع خارج السياسة المنشورة ممنوع — الردود من النصوص الموثقة' },
   { from: 'catalog', to: 'seo', whyAr: 'أوصاف أقوى ← ظهور أفضل في البحث' },
   { from: 'seo', to: 'catalog', whyAr: 'صفحات ضعيفة في البحث ← تحسين أوصافها' },
   { from: 'product_pages', to: 'importer', whyAr: 'صفحة منتج مكسورة ← المراجع يخفيها' },

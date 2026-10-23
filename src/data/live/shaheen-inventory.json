@@ -1,0 +1,556 @@
+{
+ "version": 1,
+ "updatedAt": "2026-10-23T21:01:41.569Z",
+ "sources": {
+  "catalogAt": "2026-10-23T19:11:43.669Z",
+  "total": 1212,
+  "published": 1161,
+  "liveStock": false,
+  "liveSales": false,
+  "failed": [
+   "token:NO_ADMIN_TOKEN"
+  ],
+  "salesBasisAr": "سجل الطلبات مش مقروء"
+ },
+ "catalog": {
+  "published": 1161,
+  "inStock": 785,
+  "outOfStock": 376,
+  "featuredOut": 0,
+  "newOut": 376,
+  "families": 14,
+  "brands": 33
+ },
+ "stock": null,
+ "sales": {
+  "windowDays": 30,
+  "orders": 0,
+  "units": 0,
+  "skus": 0
+ },
+ "restockTotal": 376,
+ "restock": [
+  {
+   "sku": "AFN-870",
+   "nameAr": "9 صباحاً بور فيم من أفنان",
+   "brand": "Afnan",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "LAT-287",
+   "nameAr": "آرت أوف يونيفيرس من لطافة برايد",
+   "brand": "Lattafa Pride",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "VOL-596",
+   "nameAr": "أبب آفر ذا كلاودز من فولار للرجال",
+   "brand": "Volare",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "LAT-180",
+   "nameAr": "أثيري من لطافة",
+   "brand": "Lattafa",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "LAT-124",
+   "nameAr": "أجواد بينك تو بينك كريمي إكسير لطافة",
+   "brand": "Lattafa",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "RAY-996",
+   "nameAr": "أدونيس إيكاروس من ريحان",
+   "brand": "Rayhaan",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARD-199",
+   "nameAr": "أرابيان نايت من أرض الزعفران",
+   "brand": "Ard Al Zaafaran",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARD-744",
+   "nameAr": "أرض الزعفران جذاب جولد",
+   "brand": "Ard Al Zaafaran",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARD-665",
+   "nameAr": "أرض الزعفران مسك أبيض",
+   "brand": "Ard Al Zaafaran",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARM-888",
+   "nameAr": "أرماف أوديسي أكوا إيديشن",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARM-600",
+   "nameAr": "أرماف أوديسي هوم للرجال",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARM-868",
+   "nameAr": "أرماف إمبريال",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARM-753",
+   "nameAr": "أرماف بيتش بارتي",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARM-629",
+   "nameAr": "أرماف عود أوديسي للرجال",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARM-800",
+   "nameAr": "أرماف كلوب دي نوي سيلاج",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARM-547",
+   "nameAr": "أرماف كلوب دي نويت أيكونيك",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARM-219",
+   "nameAr": "أرماف كلوب دي نويت ميلستون",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARM-752",
+   "nameAr": "أرماف كينغ تشيك ميت",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "MOO-1072",
+   "nameAr": "أروما مود 100 مل أودو بارفان للجنسين",
+   "brand": "Mood Perfume",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "FRE-972",
+   "nameAr": "أروماتكس تياس مي فرنش أفينيو",
+   "brand": "French Avenue",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "FRE-971",
+   "nameAr": "أروماتكس ماغنيتيك فرنش أفينيو",
+   "brand": "French Avenue",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "MAI-380",
+   "nameAr": "أفانت روبي أو دو بارفان 100 مل من مايسون أهلامبرا",
+   "brand": "Maison Alhambra",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "MAI-895",
+   "nameAr": "أفانت من ميسون ألامبرا للرجال",
+   "brand": "Maison Alhambra",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "AFN-576",
+   "nameAr": "أفنان 9 إيه إم",
+   "brand": "Afnan",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "AFN-532",
+   "nameAr": "أفنان رير باشن",
+   "brand": "Afnan",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "AFN-413",
+   "nameAr": "أفنان سوبريماسي نوار",
+   "brand": "Afnan",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "GRA-817",
+   "nameAr": "أفينتو مزيل عرق بخاخ للجسم من جراندور للرجال",
+   "brand": "Grandeur",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "FRE-964",
+   "nameAr": "أكسيس من فرنش أفنيو",
+   "brand": "French Avenue",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "MAI-805",
+   "nameAr": "أكيلو ميسون الحمراء",
+   "brand": "Maison Alhambra",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "MAI-574",
+   "nameAr": "ألبين هوم سبورت من مايسون الحمراء 100 مل للرجال",
+   "brand": "Maison Alhambra",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "VOL-656",
+   "nameAr": "أمارا من فولار 100 مل",
+   "brand": "Volare",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "LAT-229",
+   "nameAr": "أمير من لطافة",
+   "brand": "Lattafa",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ASD-1084",
+   "nameAr": "أميرة العرب بريف روز من للتافة",
+   "brand": "Asdaaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "LAT-110",
+   "nameAr": "أنا الأبيض بودري لطافة",
+   "brand": "Lattafa",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "LAT-144",
+   "nameAr": "أنجل لا ميوز من لطافة",
+   "brand": "Lattafa",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "LAT-276",
+   "nameAr": "أنسام جولد من لطافة برايد",
+   "brand": "Lattafa Pride",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "LAT-127",
+   "nameAr": "أنغام سكوند سونغ لطافة للنساء",
+   "brand": "Lattafa",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "LAT-270",
+   "nameAr": "أنغام سيلفر من لطافة برايد",
+   "brand": "Lattafa Pride",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "MAI-582",
+   "nameAr": "أوبرا روج من ميزون أهلامبرا",
+   "brand": "Maison Alhambra",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "MAI-464",
+   "nameAr": "أوبرا نوار من ميزون الحمراء",
+   "brand": "Maison Alhambra",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "LAT-102",
+   "nameAr": "أوبولنت ميلانو لطافة الرجالي",
+   "brand": "Lattafa",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "LAT-316",
+   "nameAr": "أوبولينت ريد من لطافة",
+   "brand": "Lattafa",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "MAI-631",
+   "nameAr": "أوبولينس ليذر من ميسون ألهامبرا للجنسين",
+   "brand": "Maison Alhambra",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARM-859",
+   "nameAr": "أوديسي أوم وايت إديشن من أرماف",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARM-815",
+   "nameAr": "أوديسي تايرانت سبيشال إديشن أرماف",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARM-860",
+   "nameAr": "أوديسي كاندي سبيشال إديشن من أرماف",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARM-900",
+   "nameAr": "أوديسي ماندارين سكاي من أرماف للرجال",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARM-811",
+   "nameAr": "أوديسي ميغا مان أرماف",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "OSM-951",
+   "nameAr": "أوسما أمبر إي العنبر والجلد 75 مل",
+   "brand": "Osma",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "OSM-941",
+   "nameAr": "أوسما إس – بيبر أند صندل وود أوسما",
+   "brand": "Osma",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "OSM-946",
+   "nameAr": "أوسما بونجور أورينتال بلوسومز 150 مل",
+   "brand": "Osma",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "PEN-1095",
+   "nameAr": "أولترا مارين من بندورا سنتس",
+   "brand": "Pendora",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "MAI-905",
+   "nameAr": "أوليفيا من ميسون الحمراء",
+   "brand": "Maison Alhambra",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "BUJ-1017",
+   "nameAr": "أونلي إيفر باي بوجيرامي",
+   "brand": "Bujairami",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ZIM-443",
+   "nameAr": "أيقونة من زيمايا",
+   "brand": "Zimaya",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARM-226",
+   "nameAr": "أيلاند بليس باي أرماف",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "MAI-834",
+   "nameAr": "إثنيك عود من ميصون الحمراء",
+   "brand": "Maison Alhambra",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "GRA-579",
+   "nameAr": "إستنكت نوار ديودرنت بخاخ للجسم 200 مل للجنسين",
+   "brand": "Grandeur",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "LAT-266",
+   "nameAr": "إعجاز من لطافة",
+   "brand": "Lattafa",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "MAI-512",
+   "nameAr": "إكسكلوسيف توباكو من ميزون الحمراء",
+   "brand": "Maison Alhambra",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  }
+ ],
+ "coverage": {
+  "familiesOut": [],
+  "brandsOut": [
+   {
+    "brand": "Velixir",
+    "out": 24,
+    "total": 24
+   }
+  ]
+ },
+ "forecast": {
+  "basis": "none",
+  "noteAr": "سجل الطلبات مش مقروء (token:NO_ADMIN_TOKEN) — مفيش تنبؤ متخمن؛ الخطة من المخزون والكتالوج بس.",
+  "methodAr": "متوسط الحركة اليومية = الوحدات المؤكدة ÷ 30؛ تغطية المخزون = المخزون ÷ الحركة؛ إعادة الطلب لما التغطية ≤ 21 يوم توريد + 7 يوم أمان، والكمية تتقرب لأعلى مضاعف 3.",
+  "leadDays": 21,
+  "safetyDays": 7,
+  "items": [],
+  "totals": {
+   "urgent": 0,
+   "soon": 0,
+   "reorderUnits": 0
+  }
+ },
+ "problems": [
+  "المخزون الرقمي مش مقروء — الاعتماد على حالة «متوفر/نفد» في كتالوج المتجر",
+  "سجل الطلبات مش مقروء — التنبؤ بالمبيعات مش هيشتغل من غير قراءة الطلبات",
+  "بعض مصادر المخزون ما اتقرتش (token:NO_ADMIN_TOKEN)"
+ ],
+ "fixes": [
+  "راجع SHAM_ADMIN_TOKEN أو مسار المنتجات في السيرفر؛ الأعداد الحقيقية تظهر أول ما يتقرأ الحساب",
+  "راجع SHAM_ADMIN_TOKEN ومسار الطلبات؛ مفيش أرقام مبيعات متخمنة"
+ ],
+ "ideas": [
+  "1 ماركة كلها غير متوفرة — راجع البدائل المتاحة"
+ ],
+ "summaryAr": "المخزون: 1161 منتج منشور، 785 متوفر و376 غير متوفر — المخزون الرقمي غير مقروء — سجل المبيعات مش مقروء — 376 منتج في قائمة إعادة التوريد",
+ "planAr": [
+  "376 منتج محتاج إعادة توريد — ابدأ بالمميز والأكثر طلباً",
+  "الكميات المقترحة تحتاج مبيعات مؤكدة أو مخزوناً رقمياً",
+  "كل العائلات فيها منتج متوفر",
+  "راجع قراءة سجل الطلبات عشان التنبؤ يشتغل"
+ ]
+}
