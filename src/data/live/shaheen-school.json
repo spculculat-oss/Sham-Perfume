@@ -1,15 +1,15 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T01:24:25.021Z",
+ "updatedAt": "2026-10-23T02:15:30.288Z",
  "reliance": {
-  "score": 99,
-  "covered": 1206,
+  "score": 100,
+  "covered": 1211,
   "total": 1216,
-  "fromMemory": 1206,
+  "fromMemory": 1211,
   "fromLibrary": 0,
   "byLang": {
    "ar": {
-    "covered": 1185,
+    "covered": 1190,
     "total": 1195
    },
    "en": {
@@ -18,9 +18,15 @@
    }
   }
  },
- "studiedTotal": 193,
+ "studiedTotal": 197,
  "selfTaughtTotal": 891,
  "history": [
+  {
+   "at": "2026-10-23T02:15:30.288Z",
+   "score": 100,
+   "studied": 4,
+   "mode": "local"
+  },
   {
    "at": "2026-10-23T01:24:25.021Z",
    "score": 99,
@@ -360,6 +366,30 @@
  ],
  "lastStudied": [
   {
+   "q": "ايه علاقة الملح بضغط الدم؟",
+   "lang": "ar",
+   "at": "2026-10-23T02:15:30.288Z",
+   "variants": 3
+  },
+  {
+   "q": "ازاي بنعمل موقع إنترنت بسيط؟",
+   "lang": "ar",
+   "at": "2026-10-23T02:15:30.288Z",
+   "variants": 0
+  },
+  {
+   "q": "ازاي نحول بين وحدات القياس؟",
+   "lang": "ar",
+   "at": "2026-10-23T02:15:30.288Z",
+   "variants": 0
+  },
+  {
+   "q": "ازاي الحيوانات بتتكيف مع الصحرا؟",
+   "lang": "ar",
+   "at": "2026-10-23T02:15:30.288Z",
+   "variants": 4
+  },
+  {
    "q": "ازاي الدول بتبني السلام بعد النزاعات؟",
    "lang": "ar",
    "at": "2026-10-23T01:24:25.021Z",
@@ -454,38 +484,9 @@
    "lang": "ar",
    "at": "2026-10-23T00:06:43.697Z",
    "variants": 4
-  },
-  {
-   "q": "ايه هو نظام التشغيل ووظيفته؟",
-   "lang": "ar",
-   "at": "2026-10-22T23:12:36.080Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه الفرق بين الهارد ديسك والـSSD؟",
-   "lang": "ar",
-   "at": "2026-10-22T23:12:36.080Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه هي المتتابعات الحسابية والهندسية؟",
-   "lang": "ar",
-   "at": "2026-10-22T23:12:36.080Z",
-   "variants": 3
-  },
-  {
-   "q": "ازاي نرسم دالة خطية ونفهم ميلها؟",
-   "lang": "ar",
-   "at": "2026-10-22T23:12:36.080Z",
-   "variants": 4
   }
  ],
  "pending": [
-  {
-   "q": "ازاي الهوائيات بتشتغل؟",
-   "lang": "ar",
-   "topic": "expert:electronic-warfare"
-  },
   {
    "q": "ازاي المستشفيات بتمنع العدوى بين المرضى؟",
    "lang": "ar",
@@ -500,26 +501,6 @@
    "q": "ايه هو الضغط الجوي؟",
    "lang": "ar",
    "topic": "expert:physics"
-  },
-  {
-   "q": "ازاي الحيوانات بتتكيف مع الصحرا؟",
-   "lang": "ar",
-   "topic": "expert:biology"
-  },
-  {
-   "q": "ازاي نحول بين وحدات القياس؟",
-   "lang": "ar",
-   "topic": "expert:math"
-  },
-  {
-   "q": "ازاي بنعمل موقع إنترنت بسيط؟",
-   "lang": "ar",
-   "topic": "expert:computing"
-  },
-  {
-   "q": "ايه علاقة الملح بضغط الدم؟",
-   "lang": "ar",
-   "topic": "expert:nutrition"
   },
   {
    "q": "ازاي اعرف إن الخبر مضلل منطقياً؟",
@@ -537,9 +518,9 @@
   "aiReadings": 0,
   "localReadings": 25
  },
- "localTaughtTotal": 136,
+ "localTaughtTotal": 140,
  "spelling": {
-  "at": "2026-10-23T01:24:25.021Z",
+  "at": "2026-10-23T02:15:30.288Z",
   "tried": 745,
   "understood": 697,
   "score": 94,
@@ -556,7 +537,7 @@
   }
  },
  "practice": {
-  "at": "2026-10-23T01:24:25.021Z",
+  "at": "2026-10-23T02:15:30.288Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -720,9 +701,9 @@
    "score": 100
   },
   "it_sciences": {
-   "covered": 29,
+   "covered": 30,
    "total": 30,
-   "score": 97
+   "score": 100
   },
   "frontier": {
    "covered": 20,
@@ -740,9 +721,9 @@
    "score": 97
   },
   "math": {
-   "covered": 27,
+   "covered": 28,
    "total": 28,
-   "score": 96
+   "score": 100
   },
   "commerce": {
    "covered": 22,
@@ -800,19 +781,19 @@
    "score": 100
   },
   "biology": {
-   "covered": 35,
+   "covered": 36,
    "total": 36,
-   "score": 97
+   "score": 100
   },
   "medicine": {
-   "covered": 50,
+   "covered": 51,
    "total": 52,
-   "score": 96
+   "score": 98
   },
   "engineering": {
-   "covered": 36,
+   "covered": 37,
    "total": 38,
-   "score": 95
+   "score": 97
   },
   "earth_space": {
    "covered": 34,
@@ -851,7 +832,7 @@
   }
  },
  "tools": {
-  "at": "2026-10-23T01:24:25.021Z",
+  "at": "2026-10-23T02:15:30.288Z",
   "items": [
    {
     "id": "finance_agent",
@@ -1016,14 +997,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-23T01:24:25.021Z",
+  "at": "2026-10-23T02:15:30.288Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-23T07:24:25.021Z"
+    "next": "2026-10-23T08:15:30.288Z"
    },
    {
     "id": "site-care",
@@ -1035,7 +1016,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-23T13:24:25.021Z"
+    "next": "2026-10-23T14:15:30.288Z"
    }
   ]
  }
