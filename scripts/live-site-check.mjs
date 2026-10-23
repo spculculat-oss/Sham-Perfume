@@ -87,16 +87,27 @@ report('Shaheen map places', Boolean(placeOk), `HTTP ${place.status}${placeData 
   placeOk ? undefined : place.status === 400 || place.status === 404 ? 'warning' : undefined);
 
 // Community deployment smoke: read-only, no fake members or production posts.
+// The community is switched off on the live engine by the owner's decision (no database configured): that is a
+// known state, not a failure. Then the member-only routes must still refuse an anonymous visitor — 503
+// COMMUNITY_NOT_CONFIGURED is as safe as 401 (nothing is served). Only a broken database («error») or a route
+// that answers without login fails.
 const communityStatus = await get(`${SITE}/api/community/status`);
-const communityReady = communityStatus.status === 200 && json(communityStatus.text)?.enabled === true;
-report('Community database readiness', communityReady, `HTTP ${communityStatus.status} · enabled=${json(communityStatus.text)?.enabled === true}`);
+const communityInfo = json(communityStatus.text);
+const communityReady = communityStatus.status === 200 && communityInfo?.enabled === true;
+const communityOff = communityStatus.status === 200 && communityInfo?.enabled === false && communityInfo?.reason !== 'error';
+report('Community database readiness', communityReady,
+  communityOff ? `HTTP 200 · switched off on this server (no ${communityInfo?.reason || 'database'} configured) — by decision, member routes stay closed`
+    : `HTTP ${communityStatus.status} · enabled=${communityInfo?.enabled === true}${communityInfo?.reason ? ` · reason=${communityInfo.reason}` : ''}`,
+  communityReady ? undefined : communityOff ? 'warning' : undefined);
 for (const [label, path, method] of [
   ['Saved feed requires login', '/api/community/feed?scope=saved', 'GET'],
   ['Save post requires login', '/api/community/posts/deployment-probe/saved', 'PUT'],
   ['Unsave post requires login', '/api/community/posts/deployment-probe/saved', 'DELETE'],
 ]) {
   const result = await get(`${SITE}${path}`, { method });
-  report(label, result.status === 401, `HTTP ${result.status} · expected 401 (no credentials sent)`);
+  const closed = communityOff && result.status === 503 && json(result.text)?.code === 'COMMUNITY_NOT_CONFIGURED';
+  report(label, result.status === 401 || closed,
+    closed ? 'HTTP 503 COMMUNITY_NOT_CONFIGURED · closed to anonymous visitors (the community is off on this server)' : `HTTP ${result.status} · expected 401 (no credentials sent)`);
 }
 const savePreflight = await get(`${SITE}/api/community/posts/deployment-probe/saved`, {
   method: 'OPTIONS', headers: { origin: PAGES_ORIGIN, 'access-control-request-method': 'PUT', 'access-control-request-headers': 'authorization,content-type' },
