@@ -9,6 +9,7 @@ import { OWNER, readControls, type OwnerControls } from '../utils/ownerAuthority
 import { STATE, STATE_CONSTITUTION, STATE_MEMBERS, STATE_OUTCOMES, readStateOrders, readStateReport, stateActive, type StateOrders, type StateRecord, type StateReport } from '../utils/platformState';
 import { revertDraft } from '../utils/ownerDesk';
 import { sendDeskRequest } from './deskRequest';
+import ManeuverFieldCard from './ManeuverFieldCard';
 
 /**
  * «دولة المنصة» in the owner's suite: whether it holds the approvals right now, its members and constitution, what it
@@ -91,6 +92,8 @@ export default function PlatformStatePanel() {
           </ul>
         )}
       </div>
+
+      <ManeuverFieldCard field={report.field} />
 
       <div className={card}>
         <h3 className="font-bold">{T('الأعضاء (كل واحد بيصوّت لوحده في نطاقه)')}</h3>

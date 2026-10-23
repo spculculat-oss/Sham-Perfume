@@ -34,6 +34,8 @@
     "scripts/doctor/**/*.ts",
     "scripts/doctor/**/*.mts",
     "scripts/shaheen-patrol/**/*.mts",
+    "scripts/shaheen-maneuver/**/*.ts",
+    "scripts/shaheen-maneuver/**/*.mts",
     "scripts/shaheen-news/**/*.ts",
     "scripts/shaheen-news/**/*.mts",
     "scripts/shaheen-supervisor/**/*.ts",

@@ -34,7 +34,7 @@ export const DEPARTMENTS: Department[] = [
 ];
 
 export type BotId =
-  | 'council' | 'secretary' | 'precheck' | 'patrol' | 'finance' | 'legal'
+  | 'council' | 'secretary' | 'precheck' | 'patrol' | 'maneuver' | 'finance' | 'legal'
   | 'contracts'
   | 'scout' | 'importer' | 'images' | 'catalog' | 'product_pages' | 'store_advisor'
   | 'news' | 'seo' | 'librarian' | 'teacher' | 'researcher'
@@ -72,6 +72,7 @@ export const BOTS: Bot[] = [
   { id: 'secretary', nameAr: 'السكرتير — مشرف شاهين', nameEn: 'Secretary — Shaheen\'s supervisor', dept: 'leadership', workflow: 'shaheen-news.yml', report: 'ai-supervisor.json', everyHours: 12, dutiesAr: 'يقيس كل أداة ذكاء اصطناعي ويكتب لها توجيهات، يجهز جدول الأعمال، وينوب عن شاهين في الاجتماع وقت الضغط أو لو مفيش محرك ذكاء اصطناعي.' },
   { id: 'precheck', nameAr: 'الفحص الشامل قبل الاجتماع', nameEn: 'Pre-meeting full check', dept: 'leadership', workflow: 'shaheen-precheck.yml', report: 'shaheen-precheck.json', everyHours: 24, dutiesAr: 'قبل الاجتماع بساعتين: كل روبوت يفحص نفسه ويكتب مشاكله والإصلاح المقترح وأفكار التطوير، والسكرتير يوزع طلبات المساعدة بين الأدوات.' },
   { id: 'patrol', nameAr: 'الدورية بالتناوب (فحص وإصلاح ومراجعة خبير)', nameEn: 'Rotating patrol (check, fix, expert review)', dept: 'leadership', workflow: 'shaheen-patrol.yml', report: 'shaheen-patrol.json', everyHours: 2, dutiesAr: 'تلات ورديات بالتناوب، وردية كل ساعة. الدورية تراجع تقارير وحالة كل دور حسب ورديته، وتجري الاختبارات العملية المحددة لنطاقه كل 3 ساعات من غير ضغط على الموقع. الأدوار الاستشارية اللي مالهاش سير عمل تراقَب من التقارير وتقييم مشرف شاهين ومش بتتشغل تلقائياً. الإصلاحات الآمنة تتعمل، والباقي يروح لشاهين أو لفريق عمل، وكل تشغيل مكتمل يراجعه خبير من نفس النطاق.' },
+  { id: 'maneuver', nameAr: 'مناورة التخصصات (فحص ميداني للموقع الحي)', nameEn: 'Specialties field maneuver (live-site field check)', dept: 'leadership', workflow: 'shaheen-maneuver.yml', report: 'shaheen-maneuver.json', everyHours: 6, dutiesAr: 'كل 6 ساعات بيفتح كل أقسام الموقع الحي زي زائر على الموبايل ويتكلم مع شاهين محادثات حقيقية، وكل قسم يفحصه متخصصه: يرصد كل الأخطاء ويقترح التحسينات الناقصة، ويبعت الكل لدولة المنصة اللي بتحدد كل واحدة تحت أنهي قطاع وأنهي روبوت، والخطير يتحول لمهمة.' },
   { id: 'finance', nameAr: 'أمين شاهين — الإدارة المالية', nameEn: 'Shaheen Finance', dept: 'leadership', workflow: 'shaheen-finance.yml', report: 'ai-supervisor.json', everyHours: 24, aiTools: ['finance_agent'], dutiesAr: 'تحصيل موثّق وتقارير يومية وأسبوعية وشهرية ومراجعة الدفع. التفاصيل داخل لوحة مالية خاصة؛ التقرير العام يحتوي حالة الفحص المنقحة من المشرف فقط. لا تحويلات أو استردادات أو اعتماد حسابات تلقائياً.' },
   { id: 'legal', nameAr: 'المدير القانوني', nameEn: 'Legal manager', dept: 'leadership', dutiesAr: 'يراجع امتثال المنصة للقوانين؛ قراراته ملزمة لشاهين وكل الأدوات، ومحدش يتجاوزها لحد ما المدير القانوني نفسه يغيرها (مثال: وقف نقل المنتجات لحد إذن المورد المكتوب).' },
   { id: 'contracts', nameAr: 'مسؤول التعاقدات', nameEn: 'Contracts officer', dept: 'leadership', aiTools: ['contracts_agent'], dutiesAr: 'يجهز رسائل التعاون مع أصحاب المتاجر (يبعتها عضو من الفريق باسمه الحقيقي)، ويدير الموافقة الإلكترونية على الاتفاقية، ومايفتحش متجر للنقل غير بعد توقيعه واعتماد المدير القانوني (L-40). الهامش مايتكشفش، ورابط المتجر بعد الموافقة بس.' },
@@ -225,6 +226,9 @@ export const LINKS: Link[] = [
   { from: 'researcher', to: 'teacher', whyAr: 'خلاصة المصادر ← مراجع للدرس' },
   { from: 'teacher', to: 'school', whyAr: 'دروس مراجَعة من غير مفتاح ← ذاكرة شاهين' },
   { from: 'council', to: 'chat_agent', whyAr: 'مهمة تطوير مفتوحة ← الوكيل ينفذها ويقفلها بـ PR' },
+  { from: 'maneuver', to: 'state', whyAr: 'كل خطأ وفكرة تطوير من الموقع الحي ← الدولة تحدد القطاع والروبوت المسؤول، والخطير يبقى مهمة' },
+  { from: 'state', to: 'chat_agent', whyAr: 'أخطاء المناورة الخطيرة بعد تصويت الأعضاء ← مهمة تطوير للوكيل' },
+  { from: 'maneuver', to: 'chat', whyAr: 'محادثات تدريب حقيقية مع شاهين ← أي رد غلط بيتسجل ويتصلح' },
   { from: 'patrol', to: 'chat_agent', whyAr: 'عطل ماتصلحش لوحده ← مهمة تطوير للوكيل' },
   { from: 'verifier', to: 'chat_agent', whyAr: 'مهمة اتقفلت ولسه بايظة ← تتنفذ تاني بمراجعة الوكيل' },
   { from: 'chat_agent', to: 'deploy', whyAr: 'إصلاح اتدمج ← نشر الموقع بالنسخة الجديدة' },

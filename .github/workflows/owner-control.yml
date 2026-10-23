@@ -39,6 +39,7 @@ on:
           - news
           - precheck
           - patrol
+          - maneuver
           - finance
           - scout
           - teacher
