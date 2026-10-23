@@ -214,9 +214,9 @@ export function storeBrief(lang: 'ar' | 'en', snapshot: StoreSnapshot): string {
   const range = `${snapshot.minPrice}–${snapshot.maxPrice} ${ar ? 'جنيه مصري' : 'EGP'}`;
   return ar
     ? `المتجر الآن: ${snapshot.total} منتج منشور (${snapshot.inStock} متوفر) — ${snapshot.featuredCount} مميّز و${snapshot.newCount} جديد · نطاق السعر ${range} · ماركات: ${brands} · عائلات: ${families}.\n` +
-      'الأسعار بالجنيه المصري وتُحوّل لعملة الزائر في صفحة الدفع، والشحن يُحسب حسب بلده. لا تذكر هامش المنصة أو سعر المورّد إطلاقاً، ولا تخترع خصماً أو منتجاً أو مدة توصيل.'
+      'الأسعار بالجنيه المصري وتُحوّل لعملة الزائر في صفحة الدفع، والشحن يُحسب حسب بلده. مع الزائر كن مرناً: لا تشدّد على إن الأسعار بالجنيه، بل قل إن الشحن متاح لأي دولة في العالم والأسعار بتظهر بعملته المحلية. لا تذكر هامش المنصة أو سعر المورّد إطلاقاً، ولا تخترع خصماً أو منتجاً أو مدة توصيل.'
     : `Store now: ${snapshot.total} published products (${snapshot.inStock} in stock) — ${snapshot.featuredCount} featured, ${snapshot.newCount} new · price range ${range} · brands: ${brands} · families: ${families}.\n` +
-      'Prices are in EGP and converted to the visitor’s currency at checkout; shipping depends on their country. Never reveal the platform margin or supplier price, and never invent a discount, product or delivery time.';
+      'Prices are in EGP and converted to the visitor’s currency at checkout; shipping depends on their country. Be flexible with the visitor: do not stress that prices are in EGP — say we ship to any country in the world and prices show in their local currency. Never reveal the platform margin or supplier price, and never invent a discount, product or delivery time.';
 }
 
 /** Playbook topics → knowledge documents (kb-store-*): the visitor-facing truth about buying from Sham. */
