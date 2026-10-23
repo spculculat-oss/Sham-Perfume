@@ -115,7 +115,8 @@ export const storeCatalogFallback: CatalogFallback = async (text, lang, history 
   const brain = await import('./shaheenBrain').catch(() => undefined);
   const ctx = brain?.withContext(text, history);
   const seller = ctx ? await import('./shaheenSeller').catch(() => undefined) : undefined;
-  const linked = ctx && (seller?.salesAnswer(products, ctx, lang, link) || brain?.productAnswer(products, ctx, lang, link) || brain?.storeAnswer(products, ctx, lang, link))?.reply;
+  const pitch = ctx ? await import('./shaheenPitch').catch(() => undefined) : undefined;
+  const linked = ctx && (seller?.salesAnswer(products, ctx, lang, link) || pitch?.productAnswer(products, ctx, lang, link) || brain?.storeAnswer(products, ctx, lang, link))?.reply;
   return linked ?? catalogReply(localSuggestion(products, text, lang).picks, lang, link);
 };
 

@@ -3,7 +3,8 @@
  * ولما يشتري حاجة يعرض عليه حاجة تانية» — with every technique of a good merchant, and none of a bad one.
  *
  * What a good merchant does, and what this module does:
- *  1. Focus: one main pick and at most two alternatives, then ONE clear next step (src/utils/shaheenBrain.ts nextStep).
+ *  1. Focus: one main pick and at most two alternatives, then ONE clear next step (src/utils/shaheenBrain.ts nextStep);
+ *     a named product gets a full pitch for the buyer who asks (src/utils/shaheenPitch.ts, src/utils/salesCraft.ts).
  *  2. «هاخده / ازاي اطلبه / I'll take it»: he closes — the product, why it's a good choice, how to order it in a
  *     minute (the real buying steps and payment methods of the store) — then offers what completes it.
  *  3. «غالي / too expensive»: he never argues; he shows the value honestly (price per ml) and the cheaper road:
@@ -20,6 +21,7 @@
 import { closeTo, money, namedProducts, nameOf, scentKey, staying, type Context, type StoreAnswer } from './shaheenBrain';
 import { inferOccasions, inferSeasons } from './storeAdvisor';
 import { FAMILY_LABEL, OCCASION_LABEL, SEASON_LABEL, type StoreProduct } from './storeCatalog';
+import { RECIPIENT_LABEL, readBuyer, type BuyerProfile } from './salesCraft';
 
 type Lang = 'ar' | 'en';
 type Link = (slug: string) => string | undefined;
@@ -155,8 +157,8 @@ export function complementsFor(products: StoreProduct[], bought: StoreProduct[],
   return out.slice(0, limit);
 }
 
-function complementBlock(products: StoreProduct[], bought: StoreProduct[], lang: Lang, link: Link): string[] {
-  const extras = complementsFor(products, bought, 2);
+function complementBlock(products: StoreProduct[], bought: StoreProduct[], lang: Lang, link: Link, limit = 2): string[] {
+  const extras = complementsFor(products, bought, limit);
   if (!extras.length) return [];
   return [
     '', lang === 'ar' ? '**يكمّل معاه (اختياري خالص):**' : '**Goes well with it (entirely optional):**',
@@ -181,7 +183,7 @@ const HOW_TO_ORDER: Record<Lang, string[]> = {
   ],
 };
 
-function buyReply(products: StoreProduct[], p: StoreProduct, lang: Lang, link: Link): string {
+function buyReply(products: StoreProduct[], p: StoreProduct, lang: Lang, link: Link, buyer: BuyerProfile = readBuyer([])): string {
   if (!p.inStock) {
     const instead = otherSizes(products, p)[0] || closeTo(products, p, 1)[0];
     const out = [lang === 'ar' ? `بصراحة «${nameOf(p, lang)}» غير متوفر حالياً في المتجر، ومش هوعدك بميعاد مش متأكد منه.` : `Honestly, “${nameOf(p, lang)}” is out of stock right now, and I won't promise a date I'm not sure of.`];
@@ -195,7 +197,13 @@ function buyReply(products: StoreProduct[], p: StoreProduct, lang: Lang, link: L
   if (value) out.push(`- ${lang === 'ar' ? 'السعر' : 'Price'}: ${value}`);
   const proof = proofLine(p, lang);
   if (proof) out.push(`- ${proof}`);
-  out.push('', ...HOW_TO_ORDER[lang], ...complementBlock(products, [p], lang, link));
+  out.push('', ...HOW_TO_ORDER[lang]);
+  // Said for this buyer: the gift's recipient, the cautious one's guarantee, the date for the one in a hurry.
+  if (buyer.recipient) out.push('', lang === 'ar' ? `ولو هدية لـ${RECIPIENT_LABEL[buyer.recipient].ar}: المنتج المختوم ينفع يتبدل في المدة القانونية لو الذوق ماجاش مظبوط.` : `If it is a gift for ${RECIPIENT_LABEL[buyer.recipient].en}: a sealed item can be exchanged within the legal window if the taste is not right.`);
+  else if (buyer.style === 'cautious') out.push('', lang === 'ar' ? 'وعشان تطمن: المنتج المختوم ليه حق إرجاع أو استبدال في المدة القانونية لبلدك (في مصر 14 يوم للشراء عن بعد).' : 'For peace of mind: a sealed item can be returned or exchanged within your country\'s legal window (Egypt: 14 days for distance selling).');
+  if (buyer.urgent) out.push(lang === 'ar' ? '_محتاجه قريب؟ مدة التوصيل لبلدك بتظهر في صفحة الدفع قبل ما تأكد._' : '_Need it soon? The delivery time to your country shows on the payment page before you confirm._');
+  // «لما يشتري حاجة يعرض عليه حاجة تانية» — one or two optional complements (one for the buyer in a hurry).
+  out.push(...complementBlock(products, [p], lang, link, buyer.style === 'direct' ? 1 : 2));
   return out.join('\n');
 }
 
@@ -254,6 +262,7 @@ export function salesAnswer(products: StoreProduct[], ctx: Context, language: st
   const p = focusOf(products, asked, ctx.lastReply);
   if (!p) return undefined;
   const lang = langOf(language, asked);
-  const reply = move === 'buy' ? buyReply(products, p, lang, link) : move === 'price' ? priceReply(products, p, lang, link) : doubtReply(products, p, lang, link);
+  const buyer = readBuyer(ctx.said || [asked]);
+  const reply = move === 'buy' ? buyReply(products, p, lang, link, buyer) : move === 'price' ? priceReply(products, p, lang, link) : doubtReply(products, p, lang, link);
   return { reply, picks: [p], matched: true };
 }

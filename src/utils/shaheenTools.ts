@@ -208,6 +208,10 @@ const ORDER: ShaheenTool[] = ['store', 'concentration', 'alcohol', 'maceration',
 /** The calculators this answer should open, with the values the question and answer give. */
 export function linkTools({ question, previousQuestion = '', answer, formulas = [] }: LinkInput): ToolLink[] {
   const explicit = explicitToolLinks(answer);
+  // A reply about the store's products (it links their pages) already carries its actions — the page, «شراء مباشر»,
+  // «هاخده». The lab's calculators under it («بكام» read as production cost, «ثبات» as the fixatives guide) only
+  // distract the buyer (the owner, 2026-10-23: «افتح في أدوات المعمل» under a gift set).
+  if (/\/p\/[a-z0-9-]+\.html/.test(answer || '') && !formulas.length) return ORDER.filter((t) => explicit.some((l) => l.tool === t)).map((t) => explicit.find((l) => l.tool === t)!).slice(0, 4);
   const intents = questionIntents(question, previousQuestion);
   if (!explicit.length && !intents.length) return [];
   const q = normalizeDigits(question || '');

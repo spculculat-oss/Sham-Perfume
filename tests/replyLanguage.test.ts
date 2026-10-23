@@ -75,7 +75,9 @@ test('the server: a French visitor gets the store’s answer in French, links ke
     // The «translator»: keeps every link of the text it got and writes French around it.
     const links = [...text.matchAll(/\[([^\]]+)\]\((https?:[^)]+)\)/g)].map((m) => `[${m[1]}](${m[2]})`);
     const numbers = (text.replace(/https?:\/\/\S+/g, '').match(/\d+/g) || []).join(' ');
-    return json({ choices: [{ message: { role: 'assistant', content: `Voici les parfums de la boutique Sham, avec leurs notes et leur tenue : ${links.join(' ; ')} — ${numbers}. Voulez-vous les comparer ?` } }] });
+    // A real translation is about as long as its source (the pitch is prose more than links): so is this one.
+    const prose = ' Le parfum s’ouvre, se pose puis reste sur la peau.'.repeat(Math.max(1, Math.round(text.length / 120)));
+    return json({ choices: [{ message: { role: 'assistant', content: `Voici les parfums de la boutique Sham, avec leurs notes et leur tenue : ${links.join(' ; ')} — ${numbers}.${prose} Voulez-vous les comparer ?` } }] });
   }) as unknown as typeof fetch;
   const { chat, close } = await server(engine);
   try {

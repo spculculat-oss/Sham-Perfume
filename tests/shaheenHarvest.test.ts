@@ -7,7 +7,8 @@ import productsData from '../src/data/products.json';
 import catalogFile from '../src/data/live/store-catalog.json';
 import bankFile from '../src/data/shaheen-harvest-bank.json';
 import { mergeCatalog, type RawProduct, type StoreCatalogFile } from '../src/utils/storeCatalog';
-import { namedProducts, productAnswer, productLink, withContext } from '../src/utils/shaheenBrain';
+import { namedProducts, productLink, withContext } from '../src/utils/shaheenBrain';
+import { productAnswer } from '../src/utils/shaheenPitch';
 import { curateMemory, emptyMemory, remember, worthRemembering } from '../src/utils/shaheenMemory';
 import { bankQuestions, harvestCheck, harvestMode, isHarvestReport, nextReport, pacificHour, pickHarvest, visitorHarvest } from '../scripts/shaheen-harvest/harvest';
 import { createShaheenRouter, learnedQuestion } from '../server/shaheen';
@@ -75,7 +76,7 @@ test('«متجر شام»: a named product is answered from the catalogue — ca
   const a = productAnswer(PRODUCTS, withContext('Hawas Ice كويس؟'), 'ar', link)!;
   assert.match(a.reply, /hawas-ice/);
   assert.equal(namedProducts(PRODUCTS, 'رأيك في هاواس آيس؟')[0]?.slug.startsWith('hawas-ice'), true, 'its Arabic name too');
-  assert.match(a.reply, /الثبات/);
+  assert.match(a.reply, /ثبات/);
   assert.match(a.reply, /\/p\/[a-z0-9-]+\.html/);
   assert.equal(productAnswer(PRODUCTS, withContext('اعملي تركيبة زي Hawas Ice'), 'ar', link), undefined, 'the designer’s job');
 });
