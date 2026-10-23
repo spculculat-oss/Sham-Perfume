@@ -46,6 +46,8 @@
     "scripts/shaheen-discover/**/*.mts",
     "scripts/shaheen-school/**/*.ts",
     "scripts/shaheen-school/**/*.mts",
+    "scripts/shaheen-specialists/**/*.ts",
+    "scripts/shaheen-specialists/**/*.mts",
     "scripts/product-pages/**/*.ts",
     "scripts/product-pages.mts",
     "scripts/seo-agent/**/*.ts",

@@ -2,6 +2,7 @@
  * How Shaheen tests each AI tool: real requests to the live site (the same API GitHub Pages uses), or a
  * look at the files a tool publishes. Questions rotate every run, so answer caches do not hide problems.
  */
+import { TRAINING_CASES } from '../shaheen-specialists/questions';
 import { secretaryLocalSummary } from '../../src/utils/ownerRoom';
 import { readFileSync } from 'node:fs';
 import type { AiToolId } from '../../src/utils/aiTools';
@@ -394,18 +395,20 @@ function platformOwnerProbes(): Probe[] {
 };
 
 /**
- * «وكيل مجلس المتخصصين»: المجلس وأدواته، وأسئلة حقيقية في نطاقات مختلفة — كل سؤال لازم يوصل لمتخصصه،
- * ويشغّل أداة واحدة على الأقل، ويرد من معلومة مكتوبة (مش فجوة) لو السؤال من منهج المدرسة أو الموسوعة أو الحاسبات.
+ * «وكيل مجلس المتخصصين»: المجلس وأدواته، وأسئلة من **بنك تدريب المجلس نفسه** — فأداة الإشراف بتقيس
+ * على الموقع الحي نفس الحالات اللي الوكيل متدرّب عليها في `scripts/shaheen-specialists/questions.ts`،
+ * مش أسئلة تانية. كل سؤال لازم يوصل لمتخصصه، ويشغّل أداة واحدة على الأقل، ويرد من معلومة مكتوبة
+ * (مش فجوة). الحالات اللي محتاجة سياق (سؤال قبلها، أو متخصص اختاره الزائر، أو ذاكرة محفوظة)
+ * بتتقاس في الاختبارات مش هنا — لأن الاستكشاف بيبعت سؤال واحد من غير تاريخ.
  */
-const SPECIALIST_QUESTIONS: { q: string; lang: 'ar' | 'en'; specialist?: string; expect: 'solid' | 'any' }[] = [
-  { q: 'إزاي بيشتغل الجهاز المناعي والتطعيم؟', lang: 'ar', specialist: 'specialist_health', expect: 'solid' },
-  { q: 'قوانين نيوتن للحركة', lang: 'ar', specialist: 'specialist_science', expect: 'solid' },
-  { q: 'احسب مقادير زجاجة 50 مل بتركيز 20%', lang: 'ar', specialist: 'specialist_scents', expect: 'solid' },
-  { q: 'ايه هو الأمبروكسان وبيعمل ايه في العطر؟', lang: 'ar', specialist: 'specialist_scents', expect: 'solid' },
-  { q: 'وين ألاقي تقرير مدرسة شاهين؟', lang: 'ar', expect: 'solid' },
-  { q: 'إزاي أعمل خطة تسويق لعلامة عطور جديدة؟', lang: 'ar', specialist: 'specialist_business', expect: 'any' },
-  { q: 'What is encryption and how does it protect data?', lang: 'en', specialist: 'specialist_security', expect: 'any' },
-];
+const SPECIALIST_QUESTIONS: { q: string; lang: 'ar' | 'en'; specialist?: string; expect: 'solid' | 'any' }[] = TRAINING_CASES
+  .filter((c) => c.expect.ok !== false && !c.previous && !c.specialistId && !c.memory)
+  .map((c) => ({
+    q: c.ask,
+    lang: c.lang || 'ar',
+    ...(typeof c.expect.specialist === 'string' ? { specialist: c.expect.specialist } : {}),
+    expect: 'solid' as const,
+  }));
 
 async function specialistsProbes(ctx: ProbeContext): Promise<Probe[]> {
   const out: Probe[] = [];

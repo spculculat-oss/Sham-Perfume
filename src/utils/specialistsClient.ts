@@ -40,6 +40,12 @@ export interface SpecialistReply {
   ok: boolean;
   /** رد من محرك ذكاء اصطناعي (true) ولا من أدوات الموقع نفسها (false). */
   ai: boolean;
+  /** قد إيه الرد متأكد من مصدره (العقل المدرَّب بيقيسها): عالية/متوسطة/منخفضة. */
+  confidence?: 'high' | 'medium' | 'low';
+  /** المتخصص حوّل السؤال لخبير مدرسة شاهين يذاكره — يرد أوفى المرة الجاية. */
+  studying?: boolean;
+  /** الرد سؤال توضيحي للزائر (السؤال كان غامض) — مش إجابة. */
+  clarify?: boolean;
   tools: ToolTrace[];
   citations: ToolCitation[];
   actions: SpecialistAction[];

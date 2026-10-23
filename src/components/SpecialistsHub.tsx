@@ -50,6 +50,8 @@ const AR = {
   openChat: 'كمّل مع الخبير شاهين',
   handOver: 'سلّم لـ',
   recorded: 'اتسجل السؤال لمدرسة شاهين وهيذاكره',
+  studying: 'المتخصص حوّل سؤالك لخبير المدرسة يذاكره — يرد أوفى المرة الجاية',
+  clarify: 'محتاج توضيح منك — دي مش إجابة',
   offlineNote: 'السيرفر مش متاح دلوقتي — الرد من ذاكرة المتصفح ومكتبة شاهين وملجئه (من غير وكيل).',
   busyNote: 'الخدمة مشغولة دلوقتي — استنى دقيقة وجرّب تاني. الرد ده من المصادر المحلية.',
   failedNote: 'حصل خطأ في الاتصال — الرد ده من المصادر المحلية.',
@@ -89,6 +91,8 @@ const EN = {
   openChat: 'Continue with Master Shaheen',
   handOver: 'Hand over to',
   recorded: 'The question was noted for the school to study',
+  studying: 'The specialist sent your question to the school’s expert to study — a fuller answer next time',
+  clarify: 'Needs your clarification — this is not an answer',
   offlineNote: "The server is unreachable right now — this answer comes from the browser's memory, Shaheen's library and refuge (no agent).",
   busyNote: 'The service is busy — wait a minute and try again. This answer is from the local sources.',
   failedNote: 'A connection error happened — this answer is from the local sources.',
@@ -328,6 +332,8 @@ export default function SpecialistsHub({ section, lang }: SpecialistsHubProps) {
                     <p className={`text-[11px] font-bold ${(turn.reply?.ok ?? turn.local?.ok) ? 'text-emerald-700' : 'text-amber-700'}`}>
                       {turn.reply ? sourceLabel(turn.reply.source) : turn.local ? localSourceLabel(turn.local) : ''}
                       {turn.reply?.recorded ? ` · ${t.recorded}` : ''}
+                      {turn.reply?.studying ? ` · ${t.studying}` : ''}
+                      {turn.reply?.clarify ? ` · ${t.clarify}` : ''}
                     </p>
 
                     {turn.note && (
