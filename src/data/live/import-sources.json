@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T06:55:09.742Z",
+ "updatedAt": "2026-10-23T07:12:45.947Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,17 @@
  ],
  "runs": [
   {
+   "at": "2026-10-23T07:12:45.947Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-23T06:55:09.742Z",
    "mode": "self",
    "found": 0,
@@ -7833,28 +7844,6 @@
     "✓ zimayaperfumes.com (CV 82/100): 106 perfumes, 3/6 pages read without AI, AED (1 = 14.8364 EGP) — added to the importer",
     "✗ zimayaparfums.com: الموقع لا يفتح",
     "✗ grandeur.com: ملف الثقة: لا يستخدم اتصالاً آمناً (https)"
-   ]
-  },
-  {
-   "at": "2026-10-20T19:57:05.380Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 10,
-   "notes": [
-    "  ↳ parfumdreams.de: CV 78/100 [https,contact,identity,returns,shipping,privacy,terms,payment,social]",
-    "✗ parfumdreams.de: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ flaconi.de: الموقع لا يفتح (HTTP 403)",
-    "✗ douglas.de: الموقع لا يفتح (HTTP 403)",
-    "✗ perfume.com: الموقع لا يفتح (HTTP 403)",
-    "✗ essenza-nobile.de: الموقع لا يفتح (HTTP 403)",
-    "  ↳ niche-beauty.com: CV 90/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,social]",
-    "✗ niche-beauty.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "  ↳ beautyhabit.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✗ beautyhabit.com: أغلب منتجاته ليست عطوراً (33%)",
-    "✗ nocibe.fr: الموقع لا يفتح (HTTP 403)",
-    "✗ marionnaud.fr: الموقع لا يفتح (HTTP 403)"
    ]
   }
  ]
