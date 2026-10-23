@@ -42,7 +42,7 @@ export type BotId =
   | 'school' | 'doctor' | 'verifier' | 'live_check' | 'keys' | 'intake' | 'studio_bridge' | 'studio_zip' | 'deploy' | 'admin_agent'
   | 'chat_agent' | 'owner_desk' | 'state' | 'academy' | 'platform_owner'
   | 'specialist_scents' | 'specialist_tech' | 'specialist_security' | 'specialist_science' | 'specialist_business' | 'specialist_society'
-  | 'specialist_health' | 'specialist_engineering' | 'specialist_learning' | 'specialist_culture' | 'lab' | 'census';
+  | 'specialist_health' | 'specialist_engineering' | 'specialist_learning' | 'specialist_culture' | 'lab' | 'census' | 'brain';
 
 export interface Bot {
   id: BotId;
@@ -102,6 +102,7 @@ export const BOTS: Bot[] = [
   { id: 'school', nameAr: 'مدرسة شاهين (الاعتماد على النفس)', nameEn: "Shaheen's school", dept: 'reliability', workflow: 'shaheen-discover.yml', report: 'shaheen-school.json', everyHours: 6, aiTools: ['shaheen_school'], dutiesAr: 'يمتحن شاهين نفسه على كل المسارات — العطور، جميع لغات البرمجة، بناء بلوكات البرمجة وجدولتها، هندسة البرمجة، الجرافيك والديزاين، صيانة المواقع، والذكاء الاصطناعي بجميع مهاراته وأحدث العلوم، والاختراق الأخلاقي، وكل العلوم — ومجال كل أداة ذكاء اصطناعي — ويذاكر مكثفاً من مكتبته بدون مساعدة ويحفظ في ذاكرته عشان يرد لوحده ويدبر نفسه بدون أي تطبيق ذكاء آخر. ويبني برامجه بالبلوكات ويجدولها ويطوّر كل أداة في مجالها.' },
   { id: 'academy', nameAr: 'أكاديمية شاهين (المدرسة على مدار الساعة)', nameEn: "Shaheen's academy (school around the clock)", dept: 'reliability', workflow: 'shaheen-school-clock.yml', report: 'shaheen-school.json', everyHours: 1, dutiesAr: 'كل ساعة يشوف إيه الباقي على خبراء المدرسة التمنتاشر من منهجهم (من غير ذكاء اصطناعي)، ولو فيه شغل يشغّل المعلم المحلي على جهاز الروبوتات: كل خبير يذاكر أسئلة مجاله من مكتبة شاهين والمصادر المفتوحة، والمراجع الصارم يراجع كل درس بمعايير المجال وحدوده قبل ما يتحفظ في ذاكرة شاهين. لو مفيش حاجة باقية الساعة بتعدي من غير تشغيل، وماشي في نفس حارة الكشّاف عشان محدش يكتب في الذاكرة مع التاني. وكل ساعة كمان «حصّاد شاهين» يجهّز إجابات لأسئلة الزوار اللي ماتجاوبتش والأسئلة اليومية قبل ما الباقة تخلص (آخر ساعتين قبل التجديد من الباقي منها، وباقي اليوم من نماذج مفتوحة ليها حصة منفصلة) ويحفظ الكويس منها بس، عشان شاهين يرد منها لما المنصات تقف.' },
   { id: 'lab', nameAr: 'المُجرِّب (معمل شاهين)', nameEn: 'The Experimenter (Shaheen lab)', dept: 'innovation', workflow: 'shaheen-lab.yml', report: 'shaheen-lab.json', everyHours: 24, dutiesAr: 'يقود «معمل شاهين للتجارب والابتكار»: يصمم تجارب كل المجالات بفرضية ومتغيرات وضوابط وسلامة، ويوثّق النتائج صادقة بلا تجميل، ويدير خريطة التعاون بين العلوم ويجرّب التقاطعات، ويقرأ الأبحاث الراسخة ويوثّقها، ويرعى خط إنتاج المنتجات من الفكرة للسوق، ويكتب تقرير المعمل يومياً.' },
+  { id: 'brain', nameAr: 'مختبر عقل شاهين', nameEn: "Shaheen's brain lab", dept: 'innovation', workflow: 'shaheen-brain.yml', report: 'shaheen-brain.json', everyHours: 168, dutiesAr: 'يبني لشاهين عقلاً خاصاً به: كل أسبوع يجهّز ملفات التدريب من ذاكرته المراجَعة ودروسه ومعمله وتمارين التعامل مع الناس (بعد شيل البيانات الشخصية والأسعار وأسماء الشركات)، ويحجز منها ورقة امتحان ثابتة، ثم يمتحن كل عقل جديد اتدرّب على كارت شاشة مجاني قدام العقل الحالي على نفس الورقة على جهاز التشغيل نفسه. لا يعتمد العقل الجديد معلماً لمدرسة شاهين إلا لو ما سرّبش أي اسم شركة وعدّى كل أسئلة الأمانة وجاب درجة مساوية أو أعلى.' },
   { id: 'doctor', nameAr: 'طبيب شاهين (الصيانة)', nameEn: 'Shaheen doctor (maintenance)', dept: 'reliability', workflow: 'shaheen-doctor.yml', dutiesAr: 'كل 10 دقايق يكشف على المنتجات والصور والمتجر والنشر.' },
   { id: 'verifier', nameAr: 'المراجع الخارجي', nameEn: 'External reviewer', dept: 'reliability', workflow: 'shaheen-manus.yml', report: 'manus-missions.json', section: 'verify', everyHours: 84, dutiesAr: 'الاتنين والخميس الوكيل الخلفي يراجع مهام التطوير اللي اتقفلت على الموقع الحي: اتصلحت فعلاً ولا لأ — اللي لسه بايظ يرجع للاجتماع.' },
   { id: 'live_check', nameAr: 'فحص شاهين على الموقع الحي', nameEn: 'Live Shaheen check', dept: 'reliability', workflow: 'live-smoke.yml', everyHours: 24, dutiesAr: 'يكلم شاهين على الموقع الحقيقي كل يوم ويتأكد إنه بيرد.' },
@@ -154,6 +155,9 @@ export interface Link { from: BotId; to: BotId; whyAr: string }
 export const LINKS: Link[] = [
   { from: 'academy', to: 'teacher', whyAr: 'كل ساعة فيها أسئلة باقية: الأكاديمية تشغّل المعلم المحلي يذاكر منهج خبراء المدرسة، والمراجع يراجع كل درس' },
   { from: 'academy', to: 'chat', whyAr: 'الدروس اللي عدّت المراجعة بتوصل لذاكرة شاهين، فوكيل شاهين يرد بيها على الزوار من غير أي منصة' },
+  { from: 'academy', to: 'brain', whyAr: 'ذاكرة شاهين اللي الأكاديمية بتبنيها كل ساعة هي مادة تدريب عقله الخاص في مختبر عقل شاهين' },
+  { from: 'brain', to: 'academy', whyAr: 'العقل الجديد اللي ينجح في الامتحان (أمين ودرجته مساوية أو أعلى) يبقى المعلم المحلي للأكاديمية بدل النموذج العام' },
+  { from: 'lab', to: 'brain', whyAr: 'تجارب المعمل وأبحاثه الموثّقة بتدخل ملفات تدريب عقل شاهين' },
   { from: 'owner_desk', to: 'state', whyAr: 'صاحب الموقع بيسلّم الدولة الموافقات أو يرجّعها لنفسه، وأي قرار ليها يقدر يرجّعه' },
   { from: 'state', to: 'council', whyAr: 'الدولة بتوافق أو ترفض مهام المجلس (بتصويت أعضائها)' },
   { from: 'state', to: 'doctor', whyAr: 'تعديلات الروبوتات المستنية موافقة ← الدولة تصوّت وتفحص وتدمج' },

@@ -19,6 +19,8 @@ name: Shaheen's school around the clock (every hour)
 # Settings (repository variables, optional): SCHOOL_CLOCK_MAX_STUDY (questions per hour, default 8), HARVEST_MAX
 # (harvest questions per hour; default 6, or 40 in the last two hours),
 # TEACHER_MODEL_URL + TEACHER_MODEL_SHA256 + TEACHER_MODEL_NAME (another open GGUF model).
+# Without them the teacher is Shaheen's own brain once «مختبر عقل شاهين» approved it after its exam
+# (src/data/live/shaheen-brain.json, scripts/shaheen-brain/teacher.mts), else Qwen2.5-7B-Instruct.
 
 on:
   schedule:
@@ -27,7 +29,7 @@ on:
   push:
     # Branches: rehearsal only (nothing is committed).
     branches: ['arena/**']
-    paths: ['src/data/sciences/syllabus.ts', 'scripts/shaheen-school/backlog.mts', 'scripts/shaheen-school/teacher.sh', 'scripts/shaheen-harvest/**', 'src/data/shaheen-harvest-bank.json', '.github/workflows/shaheen-school-clock.yml']
+    paths: ['src/data/sciences/syllabus.ts', 'scripts/shaheen-school/backlog.mts', 'scripts/shaheen-school/teacher.sh', 'scripts/shaheen-brain/teacher.mts', 'scripts/shaheen-harvest/**', 'src/data/shaheen-harvest-bank.json', '.github/workflows/shaheen-school-clock.yml']
 
 permissions:
   contents: write
@@ -93,12 +95,20 @@ jobs:
       - name: What is left to study? (no AI)
         id: backlog
         run: node --import tsx scripts/shaheen-school/backlog.mts
+      - name: Which teacher? (the owner's choice, else Shaheen's approved brain, else the default open model)
+        id: pick
+        if: steps.backlog.outputs.todo != '0'
+        env:
+          VAR_URL: ${{ vars.TEACHER_MODEL_URL }}
+          VAR_SHA256: ${{ vars.TEACHER_MODEL_SHA256 }}
+          VAR_NAME: ${{ vars.TEACHER_MODEL_NAME }}
+        run: node --import tsx scripts/shaheen-brain/teacher.mts
       - name: Keep the teacher's model between runs
         if: steps.backlog.outputs.todo != '0'
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ${{ runner.temp }}/teacher-model
-          key: teacher-model-${{ vars.TEACHER_MODEL_URL && vars.TEACHER_MODEL_SHA256 || '65b8fcd92af6b4fefa935c625d1ac27ea29dcb6ee14589c55a8f115ceaaa1423' }}
+          key: teacher-model-${{ steps.pick.outputs.sha256 }}
       - name: «المعلم المحلي» — an open model on this runner (no key, no account)
         id: teacher
         if: steps.backlog.outputs.todo != '0'
@@ -107,9 +117,9 @@ jobs:
         env:
           LLAMA_BUILD: b11790
           LLAMA_SHA256: 0e2b856ca192699fdb5c8dfe591b7896d658760bcdd48f133322236cd311c455
-          TEACHER_MODEL_URL: ${{ vars.TEACHER_MODEL_URL || 'https://huggingface.co/bartowski/Qwen2.5-7B-Instruct-GGUF/resolve/main/Qwen2.5-7B-Instruct-Q4_K_M.gguf' }}
-          TEACHER_MODEL_SHA256: ${{ vars.TEACHER_MODEL_URL && vars.TEACHER_MODEL_SHA256 || '65b8fcd92af6b4fefa935c625d1ac27ea29dcb6ee14589c55a8f115ceaaa1423' }}
-          TEACHER_MODEL_NAME: ${{ vars.TEACHER_MODEL_NAME || 'qwen2.5-7b-instruct' }}
+          TEACHER_MODEL_URL: ${{ steps.pick.outputs.url }}
+          TEACHER_MODEL_SHA256: ${{ steps.pick.outputs.sha256 }}
+          TEACHER_MODEL_NAME: ${{ steps.pick.outputs.name }}
           TEACHER_MODEL_CACHE: ${{ runner.temp }}/teacher-model
         run: bash scripts/shaheen-school/teacher.sh
       - name: «مدرسة شاهين» — the experts' syllabus first, every lesson reviewed

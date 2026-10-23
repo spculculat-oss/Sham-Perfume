@@ -25,6 +25,7 @@ export const SCHEDULES: Record<string, string[]> = {
   'shaheen-finance.yml': ['15 3 * * *'],
   'shaheen-import.yml': ['37 */2 * * *'],
   'shaheen-lab.yml': ['20 6 * * *'],
+  'shaheen-brain.yml': ['20 3 * * 5'],
   'shaheen-languages.yml': ['11 9 * * *', '11 21 * * *'],
   'shaheen-maneuver.yml': ['41 1,7,13,19 * * *'],
   'shaheen-manus.yml': ['0 7 * * *', '15 5 * * 3,6', '30 9 * * 1,4'],

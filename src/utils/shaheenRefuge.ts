@@ -63,7 +63,7 @@ const REPORT_OWNER: Record<string, BotId> = {
   'shaheen-blocks.json': 'school', 'shaheen-council.json': 'council', 'shaheen-languages.json': 'languages',
   'shaheen-memory.json': 'school', 'shaheen-news.json': 'news', 'shaheen-patrol.json': 'patrol', 'shaheen-maneuver.json': 'maneuver',
   'shaheen-precheck.json': 'precheck', 'shaheen-school.json': 'school', 'shaheen-skills.json': 'importer',
-  'platform-state.json': 'state', 'platform-census.json': 'census', 'shaheen-harvest.json': 'academy', 'shaheen-sciences.json': 'academy', 'shaheen-lab.json': 'lab',
+  'platform-state.json': 'state', 'platform-census.json': 'census', 'shaheen-harvest.json': 'academy', 'shaheen-sciences.json': 'academy', 'shaheen-lab.json': 'lab', 'shaheen-brain.json': 'brain',
   'sham-training.json': 'teacher', 'store-catalog.json': 'catalog', 'store-review.json': 'product_pages',
 };
 const REPORT_NAMES: Record<string, [string, string]> = {
@@ -94,6 +94,7 @@ const REPORT_NAMES: Record<string, [string, string]> = {
   'shaheen-harvest.json': ['حصّاد شاهين لإجابات الزوار', "Shaheen's visitor-answers harvester"],
   'shaheen-sciences.json': ['تقرير علوم الأرض عند شاهين', "Shaheen's earth-sciences track report"],
   'shaheen-lab.json': ['تقرير معمل شاهين للتجارب والابتكار', "Shaheen experiments lab report"],
+  'shaheen-brain.json': ['تقرير مختبر عقل شاهين (بيانات التدريب والامتحانات والعقل المعتمد)', "Shaheen's brain lab report"],
   'sham-training.json': ['دروس تدريب مساعد شام', 'Sham assistant training lessons'],
   'store-catalog.json': ['كتالوج المتجر', 'Store catalogue'],
   'store-review.json': ['مراجعة صفحات المنتجات', 'Product pages review'],
@@ -118,7 +119,7 @@ const WORKFLOW_OWNER: Record<string, BotId> = {
   'shaheen-keys.yml': 'keys', 'shaheen-languages.yml': 'languages', 'shaheen-manus.yml': 'verifier',
   'shaheen-news.yml': 'news', 'shaheen-patrol.yml': 'patrol', 'shaheen-maneuver.yml': 'maneuver', 'shaheen-precheck.yml': 'precheck',
   'shaheen-seo.yml': 'seo', 'owner-control.yml': 'owner_desk', 'platform-state.yml': 'state', 'platform-census.yml': 'census',
-  'shaheen-school-clock.yml': 'academy', 'shaheen-lab.yml': 'lab',
+  'shaheen-school-clock.yml': 'academy', 'shaheen-lab.yml': 'lab', 'shaheen-brain.yml': 'brain',
 };
 const WORKFLOW_NAMES: Record<string, [string, string]> = {
   'aistudio-bridge.yml': ['بوابة استوديو التصميم', 'Design studio bridge'],
@@ -146,6 +147,7 @@ const WORKFLOW_NAMES: Record<string, [string, string]> = {
   'platform-census.yml': ['روبوت التعداد وإحصاء الزيارات', 'Platform state census & visit ledger'],
   'shaheen-school-clock.yml': ['أكاديمية شاهين على مدار الساعة', "Shaheen's academy clock"],
   'shaheen-lab.yml': ['تشغيل معمل شاهين للتجارب', 'Shaheen lab run'],
+  'shaheen-brain.yml': ['مختبر عقل شاهين (ملفات التدريب والامتحان)', "Shaheen's brain lab (training data & exam)"],
 };
 const workflowEntry = (file: string): RefugeEntry => {
   const [nameAr, nameEn] = WORKFLOW_NAMES[file] ?? [file, file];
@@ -179,6 +181,7 @@ const ENGINES: RefugeEntry[] = [
   { id: 'engine:research', kind: 'engine', nameAr: 'باحث شاهين (المصادر المفتوحة)', nameEn: 'Shaheen researcher (open sources)', at: 'src/utils/webResearch.ts', noteAr: 'بحث في المصادر المفتوحة مع ذكر المصدر (src/utils/webResearch.ts)', noteEn: 'Open-sources research with citations', owner: 'researcher', keywords: ['باحث', 'بحث', 'research', 'مصادر مفتوحة', 'ويكيبيديا'] },
   { id: 'engine:school', kind: 'engine', nameAr: 'مدرسة شاهين (الاعتماد على النفس)', nameEn: "Shaheen's school", at: 'scripts/shaheen-school/', noteAr: 'الامتحان والمذاكرة والدروس: scripts/shaheen-school/ — والتقرير src/data/live/shaheen-school.json', noteEn: 'Exams, study and lessons: scripts/shaheen-school/', owner: 'school', keywords: ['مدرسة', 'المدرسة', 'school', 'مذاكرة', 'امتحان', 'دروس', 'منهج'] },
   { id: 'engine:teacher', kind: 'engine', nameAr: 'المعلم المحلي ومراجع الدروس', nameEn: 'Local teacher & lesson reviewer', at: 'scripts/shaheen-discover/', noteAr: 'نموذج محلي مفتوح على GitHub يكتب دروس الأسئلة الناقصة ويراجعها', noteEn: 'Open local model writing and reviewing missing lessons', owner: 'teacher', keywords: ['معلم', 'المعلم', 'teacher', 'دروس محلية', 'مراجع دروس'] },
+  { id: 'engine:brain', kind: 'engine', nameAr: 'مختبر عقل شاهين (نموذجه الخاص)', nameEn: "Shaheen's brain lab (his own model)", at: 'scripts/shaheen-brain/', noteAr: 'ملفات التدريب من ذاكرته، والتدريب على كارت شاشة مجاني، والامتحان قبل الاعتماد — scripts/shaheen-brain/ و SHAHEEN_BRAIN.md', noteEn: 'Training data from his memory, LoRA on a free GPU, an exam before approval — scripts/shaheen-brain/, SHAHEEN_BRAIN.md', owner: 'brain', keywords: ['brain', 'model', 'lora', 'gguf', 'عقل', 'نموذج', 'تدريب', 'امتحان'] },
 ];
 
 const STATE: RefugeEntry[] = [
