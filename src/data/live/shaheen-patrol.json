@@ -1,9 +1,9 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T22:08:55.913Z",
- "publishedAt": "2026-10-23T22:08:55.913Z",
- "signature": "1lnrtl5",
- "summaryAr": "وردية المحتوى وتجربة الزائر 22:08 UTC: 7 اختبار عملي (7 سليم)، 11 مشكلة مفتوحة — 0 بتتصلح آلياً، 4 عند شاهين، 1 مهمة تطوير، 3 محتاجة قرارك؛ 5 مراجعة خبير (3 اتقبلت، 2 اترفضت)؛ 2 اتصلحت من آخر دورية.",
+ "updatedAt": "2026-10-23T22:15:03.002Z",
+ "publishedAt": "2026-10-23T22:15:03.002Z",
+ "signature": "1yo0jnn",
+ "summaryAr": "وردية المحتوى وتجربة الزائر 22:15 UTC: 4 اختبار عملي (4 سليم)، 11 مشكلة مفتوحة — 0 بتتصلح آلياً، 4 عند شاهين، 1 مهمة تطوير، 3 محتاجة قرارك؛ 3 مراجعة خبير (3 اتقبلت، 0 اترفضت)؛ 0 اتصلحت من آخر دورية.",
  "health": 83,
  "bots": [
   {
@@ -69,7 +69,7 @@
    "status": "warn",
    "problems": 1,
    "reviewed": "2026-10-23T19:22:32Z",
-   "lastRunAt": "2026-10-23T21:16:30Z",
+   "lastRunAt": "2026-10-23T22:09:09Z",
    "lastRunOk": true
   },
   {
@@ -103,7 +103,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-23T18:56:57Z",
-   "lastRunAt": "2026-10-23T18:56:57Z",
+   "lastRunAt": "2026-10-23T22:12:03Z",
    "lastRunOk": true
   },
   {
@@ -138,7 +138,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-23T21:13:06Z",
-   "lastRunAt": "2026-10-23T21:58:24Z",
+   "lastRunAt": "2026-10-23T22:14:32Z",
    "lastRunOk": true
   },
   {
@@ -169,8 +169,8 @@
    "id": "teacher",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-10-23T18:56:57Z",
-   "lastRunAt": "2026-10-23T18:56:57Z",
+   "reviewed": "2026-10-23T22:12:03Z",
+   "lastRunAt": "2026-10-23T22:12:03Z",
    "lastRunOk": true
   },
   {
@@ -231,8 +231,8 @@
    "id": "school",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-10-23T18:56:57Z",
-   "lastRunAt": "2026-10-23T18:56:57Z",
+   "reviewed": "2026-10-23T22:12:03Z",
+   "lastRunAt": "2026-10-23T22:12:03Z",
    "lastRunOk": true
   },
   {
@@ -246,14 +246,17 @@
   {
    "id": "lab",
    "status": "ok",
-   "problems": 0
+   "problems": 0,
+   "reviewed": "2026-10-23T22:09:33Z",
+   "lastRunAt": "2026-10-23T22:09:33Z",
+   "lastRunOk": true
   },
   {
    "id": "doctor",
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-23T19:57:51Z",
-   "lastRunAt": "2026-10-23T22:08:45Z",
+   "lastRunAt": "2026-10-23T22:11:35Z",
    "lastRunOk": true
   },
   {
@@ -277,7 +280,7 @@
    "status": "warn",
    "problems": 1,
    "reviewed": "2026-10-23T13:13:56Z",
-   "lastRunAt": "2026-10-23T21:53:37Z",
+   "lastRunAt": "2026-10-23T22:09:29Z",
    "lastRunOk": true
   },
   {
@@ -285,7 +288,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-23T13:16:48Z",
-   "lastRunAt": "2026-10-23T21:56:34Z",
+   "lastRunAt": "2026-10-23T22:12:31Z",
    "lastRunOk": true
   },
   {
@@ -306,7 +309,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-23T19:38:49Z",
-   "lastRunAt": "2026-10-23T21:56:03Z",
+   "lastRunAt": "2026-10-23T22:12:02Z",
    "lastRunOk": true
   },
   {
@@ -417,7 +420,7 @@
    "failed": 0,
    "level": "ok",
    "noteAr": "100 لغة كاملة النصوص الأساسية",
-   "at": "2026-10-23T22:08:55.913Z",
+   "at": "2026-10-23T22:15:03.002Z",
    "nameAr": "نصوص المتجر في كل اللغات",
    "nameEn": "Store texts in every language"
   },
@@ -427,7 +430,7 @@
    "checked": 30,
    "failed": 0,
    "noteAr": "30 خبر، آخر تحديث من 10 ساعة",
-   "at": "2026-10-23T22:08:55.913Z",
+   "at": "2026-10-23T22:15:03.002Z",
    "nameAr": "ملف النشرة",
    "nameEn": "News bulletin file"
   },
@@ -469,7 +472,7 @@
    "checked": 1161,
    "failed": 0,
    "noteAr": "1161 صفحة منتج في خريطة الموقع من 1161",
-   "at": "2026-10-23T22:08:55.913Z",
+   "at": "2026-10-23T22:15:03.002Z",
    "nameAr": "خريطة الموقع لمحركات البحث",
    "nameEn": "Sitemap for search engines"
   },
@@ -489,7 +492,7 @@
    "checked": 3,
    "failed": 0,
    "noteAr": "النشرة على الموقع فيها 3 خبر",
-   "at": "2026-10-23T22:08:55.913Z",
+   "at": "2026-10-23T22:15:03.002Z",
    "nameAr": "النشرة على الموقع الحي",
    "nameEn": "News on the live site"
   },
@@ -514,7 +517,7 @@
    "level": "fail",
    "textAr": "نشرة الأخبار ودروس المساعد: آخر تشغيل فشل",
    "since": "2026-10-23T16:22:31.498Z",
-   "lastSeen": "2026-10-23T22:08:55.913Z",
+   "lastSeen": "2026-10-23T22:15:03.002Z",
    "status": "waiting_fix",
    "nextAr": "shaheen-news.yml اتشغل الساعة 16:22 UTC — مستنيين نتيجته قبل أي تشغيل تاني",
    "tries": [
@@ -535,7 +538,7 @@
    "level": "warn",
    "textAr": "تدقيق التصميم واللغات (مرتين في الأسبوع): تقييم التصميم واللغات 42/100 (14 ملاحظة)",
    "since": "2026-10-21T01:24:02.602Z",
-   "lastSeen": "2026-10-23T22:08:55.913Z",
+   "lastSeen": "2026-10-23T22:15:03.002Z",
    "status": "waiting_shaheen",
    "nextAr": "مفيش إصلاح آلي آمن — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)",
    "tries": [],
@@ -571,7 +574,7 @@
    "level": "fail",
    "textAr": "جولة الزائر والمستشار الميداني: جولة الزائر: خطوات واقعة — store: فتح المتجر وتطبيق فلتر الرجال، لاحظت وجود عناصر بالعربية والإنجليزية وتكرار العن، checkout: الانتقال إلى صفحة الدفع يظهر تسجيل الدخول قبل الدفع ولا يوجد خيار زائر حتى الآن.",
    "since": "2026-10-23T07:30:33.909Z",
-   "lastSeen": "2026-10-23T22:08:55.913Z",
+   "lastSeen": "2026-10-23T22:15:03.002Z",
    "status": "task",
    "nextAr": "مهمة تطوير #294 لوكيل البرمجة («نفذ مهام شاهين»)",
    "tries": [],
@@ -1148,6 +1151,66 @@
   }
  ],
  "reviews": [
+  {
+   "bot": "teacher",
+   "reviewerAr": "خبير فحص دروس المعلم المحلي",
+   "reviewerEn": "Local lessons reviewer",
+   "runAt": "2026-10-23T22:12:03Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 0.1 ساعة"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "school",
+   "reviewerAr": "خبير فحص المذاكرة",
+   "reviewerEn": "School reviewer",
+   "runAt": "2026-10-23T22:12:03Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 0.1 ساعة"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "lab",
+   "reviewerAr": "خبير فحص المُجرِّب (معمل شاهين)",
+   "reviewerEn": "The Experimenter (Shaheen lab) reviewer",
+   "runAt": "2026-10-23T22:09:33Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 0.1 ساعة"
+    }
+   ],
+   "defects": []
+  },
   {
    "bot": "news",
    "reviewerAr": "خبير فحص النشرة",
@@ -1876,81 +1939,6 @@
     }
    ],
    "defects": []
-  },
-  {
-   "bot": "doctor",
-   "reviewerAr": "خبير فحص الصيانة",
-   "reviewerEn": "Maintenance reviewer",
-   "runAt": "2026-10-23T17:05:12Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "محرك الموقع (الخادم)",
-     "level": "ok",
-     "noteAr": "الخادم بيرد (1 اختبار)"
-    },
-    {
-     "nameAr": "الموقع الأساسي يفتح",
-     "level": "ok",
-     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "live_check",
-   "reviewerAr": "خبير فحص المحرك",
-   "reviewerEn": "Engine reviewer",
-   "runAt": "2026-10-23T14:26:34Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "محرك الموقع (الخادم)",
-     "level": "ok",
-     "noteAr": "الخادم بيرد (1 اختبار)"
-    },
-    {
-     "nameAr": "النشرة على الموقع الحي",
-     "level": "ok",
-     "noteAr": "النشرة على الموقع فيها 3 خبر (3 اختبار)"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "studio_bridge",
-   "reviewerAr": "خبير فحص بوابة الاستوديو",
-   "reviewerEn": "Studio bridge reviewer",
-   "runAt": "2026-10-23T17:09:11Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 101.7 ساعة"
-    },
-    {
-     "nameAr": "الموقع الأساسي يفتح",
-     "level": "ok",
-     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
-    }
-   ],
-   "defects": []
   }
  ],
  "reviewedRuns": {
@@ -1975,20 +1963,16 @@
   "languages": "2026-10-23T21:36:29Z",
   "design_audit": "2026-10-23T20:23:30Z",
   "visitor_tour": "2026-10-23T20:23:30Z",
-  "school": "2026-10-23T18:56:57Z",
+  "school": "2026-10-23T22:12:03Z",
   "patrol": "2026-10-23T19:22:32Z",
-  "teacher": "2026-10-23T18:56:57Z",
+  "teacher": "2026-10-23T22:12:03Z",
   "owner_desk": "2026-10-23T09:40:26Z",
   "state": "2026-10-23T20:54:47Z",
   "academy": "2026-10-23T21:28:15Z",
-  "maneuver": "2026-10-23T20:02:41Z"
+  "maneuver": "2026-10-23T20:02:41Z",
+  "lab": "2026-10-23T22:09:33Z"
  },
  "reruns": [
-  {
-   "at": "2026-10-21T22:14:28.282Z",
-   "workflow": "shaheen-news.yml",
-   "key": "probe:news_api"
-  },
   {
    "at": "2026-10-22T08:21:05.741Z",
    "workflow": "live-smoke.yml",
