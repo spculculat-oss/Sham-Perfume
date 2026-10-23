@@ -69,7 +69,7 @@ export const STATE_LABELS = {
 export const stateTrailer = (n: number) => `State-Decision: #${n}`;
 
 /** How big a robot's change the State may approve (bigger ones go to the owner). */
-export const STATE_LIMITS = { files: 20, lines: 1000, deletedFiles: 5, perRun: { pulls: 4, tasks: 10, orders: 10, reruns: 2 } } as const;
+export const STATE_LIMITS = { files: 20, lines: 1000, deletedFiles: 5, perRun: { pulls: 4, tasks: 10, orders: 10, reruns: 2, maneuver: 3 }, fieldItems: 60 } as const;
 
 /** The State decides only while the owner handed it the approvals and the robots are not frozen. */
 export const stateActive = (c: OwnerControls) => c.selfDevelopment === 'state' && !c.frozen;
@@ -186,7 +186,37 @@ export interface StateRecord {
   at: string; number: number; kind: 'pull' | 'task'; title: string; outcome: StateOutcome; summaryAr: string;
   tally: StateDecision['tally']; url?: string; sha?: string;
 }
-export interface StateReport { updatedAt: string; active: boolean; decisions: StateRecord[]; supervision: { health?: number; problems: string[] } }
+/**
+ * «مناورة التخصصات» as the State filed it (src/utils/stateSectors.ts): each finding of the field maneuver with the
+ * sector and robot it belongs to, why, and what the State did with it (a task, watched, or the sector's ideas list).
+ */
+export interface FieldItem {
+  id: string; titleAr: string; section: string; sectionAr: string; kind: 'error' | 'idea'; severity: 'high' | 'medium' | 'low';
+  dept: string; deptAr: string; bot?: string; botAr?: string; reasonAr: string; action: 'task' | 'watch' | 'backlog'; issue?: number; refused?: true; seen: number;
+}
+export interface StateField { maneuverAt: string; at: string; items: FieldItem[] }
+export interface StateReport { updatedAt: string; active: boolean; decisions: StateRecord[]; supervision: { health?: number; problems: string[] }; field?: StateField }
+
+const fieldStr = (v: unknown, n = 300) => (typeof v === 'string' ? v.slice(0, n) : '');
+export function readStateField(data: unknown): StateField | undefined {
+  if (!data || typeof data !== 'object') return undefined;
+  const d = data as Record<string, unknown>;
+  if (!fieldStr(d.maneuverAt, 40)) return undefined;
+  const items = (Array.isArray(d.items) ? d.items : []).flatMap((x): FieldItem[] => {
+    if (!x || typeof x !== 'object') return [];
+    const i = x as Record<string, unknown>;
+    const kind = i.kind === 'idea' ? 'idea' : i.kind === 'error' ? 'error' : undefined;
+    const action = i.action === 'task' || i.action === 'watch' || i.action === 'backlog' ? i.action : undefined;
+    if (!kind || !action || !fieldStr(i.id, 160) || !fieldStr(i.titleAr) || !fieldStr(i.dept, 40)) return [];
+    const severity = i.severity === 'high' || i.severity === 'medium' ? i.severity : 'low';
+    return [{
+      id: fieldStr(i.id, 160), titleAr: fieldStr(i.titleAr), section: fieldStr(i.section, 60), sectionAr: fieldStr(i.sectionAr, 120), kind, severity,
+      dept: fieldStr(i.dept, 40), deptAr: fieldStr(i.deptAr, 120), ...(fieldStr(i.bot, 40) ? { bot: fieldStr(i.bot, 40) } : {}), ...(fieldStr(i.botAr, 160) ? { botAr: fieldStr(i.botAr, 160) } : {}),
+      reasonAr: fieldStr(i.reasonAr), action, ...(typeof i.issue === 'number' ? { issue: i.issue } : {}), ...(i.refused === true ? { refused: true as const } : {}), seen: Math.max(1, Number(i.seen) || 1),
+    }];
+  }).slice(0, STATE_LIMITS.fieldItems);
+  return { maneuverAt: fieldStr(d.maneuverAt, 40), at: fieldStr(d.at, 40), items };
+}
 
 export function readStateReport(data: unknown): StateReport {
   const d = (data && typeof data === 'object' ? data : {}) as Partial<StateReport>;
@@ -197,6 +227,7 @@ export function readStateReport(data: unknown): StateReport {
     active: d.active === true,
     decisions,
     supervision: { ...(typeof s.health === 'number' ? { health: s.health } : {}), problems: Array.isArray(s.problems) ? s.problems.filter((p): p is string => typeof p === 'string').slice(0, 10) : [] },
+    ...(readStateField(d.field) ? { field: readStateField(d.field) } : {}),
   };
 }
 export const STATE_OUTCOMES: Record<StateOutcome, string> = { approved: 'وافقت (مهمة)', merged: 'وافقت ونزل الموقع', refused: 'رفضت وقفلته', failed: 'وافقت بس الفحص وقع — اتقفل' };

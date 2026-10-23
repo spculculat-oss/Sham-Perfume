@@ -21,7 +21,7 @@ import { REFUGE_NOTE_AR } from './shaheenRefuge';
 import { BOTS, DEPARTMENTS, LEGAL_DECISIONS, LINKS, botOf, botsIn, type BotId } from './shaheenOrg';
 
 /** Bumped when the policies change (the robots' reports and the admin panel show the edition they read). */
-export const HANDBOOK_EDITION = '2026-10-23b';
+export const HANDBOOK_EDITION = '2026-10-23c';
 export const PAGES_URL = 'https://spculculat-oss.github.io/Sham-Perfume/';
 /** The scenario's price rule (scripts/shaheen-import/transform.ts PRICE_MARKUP — a test keeps them equal). */
 export const HANDBOOK_MARKUP = 1.5;
