@@ -1,15 +1,15 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T00:59:29.834Z",
+ "updatedAt": "2026-10-23T01:24:25.021Z",
  "reliance": {
   "score": 99,
-  "covered": 1200,
+  "covered": 1206,
   "total": 1216,
-  "fromMemory": 1200,
+  "fromMemory": 1206,
   "fromLibrary": 0,
   "byLang": {
    "ar": {
-    "covered": 1179,
+    "covered": 1185,
     "total": 1195
    },
    "en": {
@@ -18,9 +18,15 @@
    }
   }
  },
- "studiedTotal": 187,
+ "studiedTotal": 193,
  "selfTaughtTotal": 891,
  "history": [
+  {
+   "at": "2026-10-23T01:24:25.021Z",
+   "score": 99,
+   "studied": 6,
+   "mode": "local"
+  },
   {
    "at": "2026-10-23T00:59:29.834Z",
    "score": 99,
@@ -354,6 +360,42 @@
  ],
  "lastStudied": [
   {
+   "q": "ازاي الدول بتبني السلام بعد النزاعات؟",
+   "lang": "ar",
+   "at": "2026-10-23T01:24:25.021Z",
+   "variants": 4
+  },
+  {
+   "q": "ايه هو الكسوف والخسوف؟",
+   "lang": "ar",
+   "at": "2026-10-23T01:24:25.021Z",
+   "variants": 0
+  },
+  {
+   "q": "ازاي الصابون الطبيعي بيتعمل علمياً؟",
+   "lang": "ar",
+   "at": "2026-10-23T01:24:25.021Z",
+   "variants": 4
+  },
+  {
+   "q": "ايه هي مغالطة التعميم المتسرع؟",
+   "lang": "ar",
+   "at": "2026-10-23T01:24:25.021Z",
+   "variants": 0
+  },
+  {
+   "q": "ايه دور النحل في الزراعة؟",
+   "lang": "ar",
+   "at": "2026-10-23T01:24:25.021Z",
+   "variants": 4
+  },
+  {
+   "q": "ازاي نحصد ونجفف الأعشاب العطرية؟",
+   "lang": "ar",
+   "at": "2026-10-23T01:24:25.021Z",
+   "variants": 0
+  },
+  {
    "q": "ايه هي الدهون المشبعة وغير المشبعة؟",
    "lang": "ar",
    "at": "2026-10-23T00:59:29.834Z",
@@ -436,55 +478,9 @@
    "lang": "ar",
    "at": "2026-10-22T23:12:36.080Z",
    "variants": 4
-  },
-  {
-   "q": "ازاي الميكروويف بيسخن الأكل؟",
-   "lang": "ar",
-   "at": "2026-10-22T23:12:36.080Z",
-   "variants": 3
-  },
-  {
-   "q": "ليه الأجسام بتطفو أو بتغرق في المية؟",
-   "lang": "ar",
-   "at": "2026-10-22T23:12:36.080Z",
-   "variants": 0
-  },
-  {
-   "q": "ايه هي اتفاقية حظر الأسلحة البيولوجية؟",
-   "lang": "ar",
-   "at": "2026-10-22T23:12:36.080Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه دور غسيل الإيدين في منع العدوى؟",
-   "lang": "ar",
-   "at": "2026-10-22T23:12:36.080Z",
-   "variants": 0
-  },
-  {
-   "q": "ايه هو الاندماج النووي في الشمس؟",
-   "lang": "ar",
-   "at": "2026-10-22T22:14:11.812Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه هي الوكالة الدولية للطاقة الذرية ودورها؟",
-   "lang": "ar",
-   "at": "2026-10-22T22:14:11.812Z",
-   "variants": 0
   }
  ],
  "pending": [
-  {
-   "q": "ايه هو الكسوف والخسوف؟",
-   "lang": "ar",
-   "topic": "expert:space"
-  },
-  {
-   "q": "ازاي الدول بتبني السلام بعد النزاعات؟",
-   "lang": "ar",
-   "topic": "expert:war-studies"
-  },
   {
    "q": "ازاي الهوائيات بتشتغل؟",
    "lang": "ar",
@@ -526,14 +522,14 @@
    "topic": "expert:nutrition"
   },
   {
-   "q": "ازاي نحصد ونجفف الأعشاب العطرية؟",
+   "q": "ازاي اعرف إن الخبر مضلل منطقياً؟",
    "lang": "ar",
-   "topic": "expert:agriculture"
+   "topic": "expert:logic"
   },
   {
-   "q": "ايه دور النحل في الزراعة؟",
+   "q": "ازاي نعرف إن الكريم باظ ولازم يترمي؟",
    "lang": "ar",
-   "topic": "expert:agriculture"
+   "topic": "expert:cosmetics"
   }
  ],
  "importer": {
@@ -541,11 +537,11 @@
   "aiReadings": 0,
   "localReadings": 25
  },
- "localTaughtTotal": 130,
+ "localTaughtTotal": 136,
  "spelling": {
-  "at": "2026-10-23T00:59:29.834Z",
+  "at": "2026-10-23T01:24:25.021Z",
   "tried": 745,
-  "understood": 698,
+  "understood": 697,
   "score": 94,
   "misses": [
    "طبييه → طبيه (طبيعيه)",
@@ -560,7 +556,7 @@
   }
  },
  "practice": {
-  "at": "2026-10-23T00:59:29.834Z",
+  "at": "2026-10-23T01:24:25.021Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -734,9 +730,9 @@
    "score": 100
   },
   "chemistry": {
-   "covered": 34,
+   "covered": 35,
    "total": 36,
-   "score": 94
+   "score": 97
   },
   "physics": {
    "covered": 35,
@@ -769,9 +765,9 @@
    "score": 100
   },
   "history": {
-   "covered": 27,
+   "covered": 28,
    "total": 28,
-   "score": 96
+   "score": 100
   },
   "geography": {
    "covered": 20,
@@ -804,9 +800,9 @@
    "score": 100
   },
   "biology": {
-   "covered": 33,
+   "covered": 35,
    "total": 36,
-   "score": 92
+   "score": 97
   },
   "medicine": {
    "covered": 50,
@@ -819,9 +815,9 @@
    "score": 95
   },
   "earth_space": {
-   "covered": 33,
+   "covered": 34,
    "total": 34,
-   "score": 97
+   "score": 100
   },
   "education": {
    "covered": 16,
@@ -844,9 +840,9 @@
    "score": 100
   },
   "religion": {
-   "covered": 22,
+   "covered": 23,
    "total": 24,
-   "score": 92
+   "score": 96
   },
   "tourism_ir": {
    "covered": 14,
@@ -855,7 +851,7 @@
   }
  },
  "tools": {
-  "at": "2026-10-23T00:59:29.834Z",
+  "at": "2026-10-23T01:24:25.021Z",
   "items": [
    {
     "id": "finance_agent",
@@ -1020,14 +1016,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-23T00:59:29.834Z",
+  "at": "2026-10-23T01:24:25.021Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-23T06:59:29.834Z"
+    "next": "2026-10-23T07:24:25.021Z"
    },
    {
     "id": "site-care",
@@ -1039,7 +1035,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-23T12:59:29.834Z"
+    "next": "2026-10-23T13:24:25.021Z"
    }
   ]
  }
