@@ -27,12 +27,15 @@ import { isPersonal, isTimeBound } from '../../src/utils/shaheenMemory';
 import type { LibrarySources } from '../../src/utils/shaheenLibrary';
 import type { Research } from '../../src/utils/webResearch';
 import {
-  consult, pickSpecialist, specialistOf, type Specialist, type SpecialistId,
+  consult, specialistOf, type Specialist, type SpecialistId,
 } from '../../src/utils/shaheenSpecialists';
 import {
-  planFirstTools, sourceNote, toolOf, toolsFor, TOOL_LIMITS,
+  lessonsInScope, materialsInScope, planFirstTools, sourceNote, toolOf, toolsFor, TOOL_LIMITS,
   type AnswerSource, type SpecialistToolContext, type ToolAction, type ToolCall, type ToolCitation, type ToolName, type ToolObservation,
 } from './tools';
+import { consultBrain, relatedFollowUps, resolveAsked, routeQuestion, type BrainReply } from './brain';
+import { present } from './present';
+import type { Confidence } from '../../src/utils/shaheenAgent';
 
 type Env = Record<string, string | undefined>;
 
@@ -77,6 +80,12 @@ export interface SpecialistConsultResult {
   specialist: SpecialistPublic;
   question: string;
   answer: string;
+  /** قد إيه الرد متأكد من مصدره (العقل المدرَّب بيقيسها): عالية/متوسطة/منخفضة. */
+  confidence?: Confidence;
+  /** المتخصص حوّل السؤال لخبير المدرسة يذاكره عشان يرد أوفى المرة الجاية. */
+  studying?: boolean;
+  /** الرد سؤال توضيحي للزائر (السؤال كان غامض) — مش إجابة. */
+  clarify?: boolean;
   source: AnswerSource;
   /** true = رد من معلومة صلبة؛ false = فجوة صريحة (مفيش تخمين). */
   ok: boolean;
@@ -242,6 +251,53 @@ export function bestEvidence(observations: ToolObservation[], skip: ToolName[] =
     .sort((a, b) => b.strength - a.strength)[0];
 }
 
+/**
+ * أدوات **بيانات الموقع الدقيقة**: أرقامها من حاسبات شام، ومنتجاتها وأسعارها من متجرها، وحدودها
+ * من موسوعة المواد — فتردّها قبل أي كلام عام من الأرشيف. الرقم في القيمة = أقل قوة تقبلها
+ * (`material_card` محتاج مطابقة قوية عشان كارت مادة واحدة ماياخدش مكان مقارنة أو درس).
+ */
+const PRECISE_FLOOR: Partial<Record<ToolName, number>> = {
+  calc_concentration: 0.5, calc_dilution: 0.5, calc_pyramid: 0.5, calc_cost: 0.5, maceration_plan: 0.5,
+  safety_check: 0.5, refuge_way: 0.5, search_store: 0.5, store_overview: 0.5, perfume_news: 0.5,
+  material_card: 0.8,
+};
+export function bestPrecise(observations: ToolObservation[], outOfScope = false): ToolObservation | undefined {
+  return observations
+    .filter((o) => o.answer && (PRECISE_FLOOR[o.tool] ?? 1) <= o.strength)
+    // سؤال خارج النطاق («إيه توقعك لسعر X بكرة؟»): النشرة الحقيقية أو منتج **اتلاقى فعلاً في
+    // المتجر** بس — ملخص أسعار عام مش رد على سؤال عن توقع، والرد عليه بيه يبقى تخمين.
+    .filter((o) => !outOfScope || o.tool === 'perfume_news' || (o.tool === 'search_store' && (o.data as { matched?: boolean } | undefined)?.matched))
+    .sort((a, b) => b.strength - a.strength)[0];
+}
+
+/** مصادر الرد اللي أصلها درس (منهج/مكتبة/علوم/قاعدة معرفة) — دي اللي بيتقال عليها «أقرب حاجة مكتوبة». */
+const LESSON_SOURCES = new Set<string>(['science', 'academy', 'library', 'knowledge']);
+
+/** أقرب درس مش بيرد على السؤال بالظبط: بنقولها بصراحة بدل ما يتقدم على إنه الإجابة. */
+const NEAR_MISS = {
+  ar: 'مافيش مصدر في أرشيف المدرسة بيرد على سؤالك بالظبط — والتخمين ممنوع، فسجلت سؤالك للمدرسة تذاكره. دي أقرب حاجة مكتوبة عندنا (ممكن ماتكونش هي الإجابة):\n\n',
+  en: "Nothing in the school's archive answers your exact question, and guessing is forbidden — so the question is noted for the school. This is the closest written material we have (it may not be the answer):\n\n",
+};
+
+/**
+ * سؤال خارج نطاق العلوم (سعر لحظي، خبر لسه طالع، حالة شخصية): مافيش تخمين فيه، ومافيش وعد إن
+ * المدرسة «هتذاكره» — لأن الإجابة مش معلومة تتذاكر. بنقول للزائر فين الحاجة الحقيقية.
+ */
+const OUT_OF_SCOPE_NOTE = {
+  ar: 'ده سؤال عن سعر لحظي أو خبر لسه طالع أو حالة شخصية — والمجلس مايخمنش في دول، ومافيش درس يتذاكر فيهم. الأرقام الحقيقية في «متجر شام»، وأخبار العطور في نشرتها، والحالة الشخصية مكانها عند مختص.\n\n',
+  en: 'This is a live price, a breaking headline or a personal case — the board does not guess those, and there is no lesson to study for them. Real numbers are in the Sham store, perfume news in its bulletin, and a personal case belongs with a professional.\n\n',
+};
+
+/** العقل مقفول أو وقع: الوكيل يكمل بأدواته من غير ما يوقع الزيارة. */
+const NO_BRAIN: BrainReply = { source: 'library', confidence: 'low', used: [], refer: false, clarify: false, note: '', outOfScope: false, trace: [] };
+
+/** أرشيف المدرسة بيدخل في حقائق المحرك: النموذج يبني على درس مراجَع بدل ما يبدأ من الصفر. */
+function archiveBlock(brain: BrainReply, lang: string): string {
+  if (!brain.answer || brain.clarify) return '';
+  const head = lang === 'en' ? 'FROM THE SCHOOL ARCHIVE (reviewed material — build on it, never invent beyond it)' : 'من أرشيف المدرسة (مادة مراجَعة — ابني عليها وماتزودش عليها من دماغك)';
+  return `\n\n${head}:\n${brain.answer.slice(0, 1400)}`;
+}
+
 /** ترتيب المصادر اللي «consult» بيمشي عليها — نفس رد المجلس من غير إنترنت، بس بأدوات السيرفر. */
 async function localConsult(question: string, lang: 'ar' | 'en', observations: ToolObservation[], section: string | undefined, specialist: Specialist) {
   const find = (tool: ToolName) => observations.find((o) => o.tool === tool && o.answer);
@@ -257,13 +313,36 @@ export async function runSpecialistAgent(input: SpecialistConsultInput, deps: Sp
   const env = deps.env || process.env;
   const started = Date.now();
   const lang: 'ar' | 'en' = input.lang === 'en' ? 'en' : 'ar';
-  const specialist = (input.specialistId && specialistOf(input.specialistId)) || pickSpecialist(input.question, input.section);
   const total = AbortSignal.any([AbortSignal.timeout(AGENT_LIMITS.totalMs)]);
   // آخر سؤال من الزائر: المتابعة القصيرة («طيب ولو 100 مل؟») بتكمل على موضوعه.
   const previous = [...(input.history || [])].reverse().find((t) => t.role === 'user')?.text;
+  // 0) فهم السؤال وتوجيهه: غلطات الكتابة، الكيبورد الإنجليزي، المتابعة، نوع السؤال، ومجاله.
+  const routed = routeQuestion(input.question, { lang, ...(input.section ? { section: input.section } : {}), ...(previous ? { previous } : {}) });
+  const specialist = (input.specialistId && specialistOf(input.specialistId)) || routed.specialist;
+  const asked = routed.asked || resolveAsked(input.question, previous);
+  const understanding = routed.understanding;
+
+  // المكتبة بتتقرا مرة واحدة في الزيارة، وبتيجي **في نطاق المتخصص** (L-32): الأدوات والعقل
+  // المدرَّب والرد المحلي بيشربوا من نفس الكاس، فمفيش حاجة تقدر ترد من مجال متخصص تاني.
+  let cachedLibrary: Promise<LibrarySources> | undefined;
+  const library = () => (cachedLibrary ??= (async (): Promise<LibrarySources> => {
+    try {
+      const src = deps.library ? await deps.library() : { lessons: [], materials: [] };
+      return {
+        lessons: lessonsInScope(src.lessons || [], specialist),
+        materials: materialsInScope(specialist) ? src.materials || [] : [],
+        ...(src.memory ? { memory: src.memory } : {}),
+      };
+    } catch { return { lessons: [], materials: [] }; }
+  })());
+
+  // السؤال اللي قبله بيوصل للأدوات **لو السؤال ده متابعة فعلاً** («طيب ولو 100 مل؟») — سؤال
+  // مستقل بموضوعه («ايه هو المسك؟») ماياخدش حسابة السؤال اللي قبله بالغلط.
+  const followUp = asked.trim() !== input.question.trim();
   const ctx: SpecialistToolContext = {
-    question: input.question, ...(previous ? { previous } : {}), lang, specialist, section: input.section, repo: deps.repo,
-    memory: deps.memory, library: deps.library, research: deps.research, env, fetch: deps.fetch, signal: total,
+    question: asked, raw: input.question, ...(followUp && previous ? { previous } : {}), lang, specialist,
+    section: input.section, repo: deps.repo, memory: deps.memory, library, research: deps.research, env,
+    fetch: deps.fetch, signal: total,
   };
 
   const traces: ToolTrace[] = [];
@@ -295,11 +374,13 @@ export async function runSpecialistAgent(input: SpecialistConsultInput, deps: Sp
   };
 
   // 1) الخطة الأولى: الحقائق على الأرض قبل أي نموذج (ولو المحركات وقفت، الرد يطلع منها).
-  for (const call of planFirstTools(input.question, specialist, input.section, previous)) await runOne(call);
+  for (const call of planFirstTools(asked, specialist, input.section, followUp ? previous : undefined)) await runOne(call);
 
+  // سطر «فهمت سؤالك كده» من العقل المدرَّب — بيتحط بعد ما العقل يشتغل، وقبل أي رد يتبني.
+  let understood = '';
   const finish = (partial: {
     answer: string; source: AnswerSource; ok: boolean; ai: boolean; recorded?: boolean;
-    used?: ToolObservation[]; followUps?: string[];
+    used?: ToolObservation[]; followUps?: string[]; confidence?: Confidence; studying?: boolean; step?: boolean; clarify?: boolean;
   }): SpecialistConsultResult => {
     const used = partial.used || observations.filter((o) => o.answer === partial.answer);
     const actions: ToolAction[] = [];
@@ -309,13 +390,19 @@ export async function runSpecialistAgent(input: SpecialistConsultInput, deps: Sp
       for (const c of o.citations || []) if (!citations.some((x) => x.id === c.id)) citations.push(c);
     }
     const followUps = [...new Set([...(partial.followUps || []), ...used.flatMap((o) => o.followUps || [])])].filter(Boolean).slice(0, 3);
+    // «فهمت سؤالك كده: …» فوق الرد — لو العقل قرا كلمة بشكل مختلف، الزائر يشوف قراها إزاي.
+    const noted = understood && !partial.answer.includes(understood) ? `${understood}\n\n${partial.answer}` : partial.answer;
     return {
       specialist: publicSpecialist(specialist),
       question: input.question,
-      answer: partial.answer.trim(),
+      // العرض: مصدر الرد مكتوب دايمًا، والطول مظبوط، والخطوة الجاية قبل سطر المصدر.
+      answer: present(noted, { source: partial.source, lang, actions, step: partial.step, max: AGENT_LIMITS.maxAnswerChars }).trim(),
       source: partial.source,
       ok: partial.ok,
       ai: partial.ai,
+      ...(partial.confidence ? { confidence: partial.confidence } : {}),
+      ...(partial.studying ? { studying: true } : {}),
+      ...(partial.clarify ? { clarify: true } : {}),
       tools: traces,
       citations: citations.slice(0, 6),
       actions: actions.slice(0, 4),
@@ -329,7 +416,21 @@ export async function runSpecialistAgent(input: SpecialistConsultInput, deps: Sp
 
   // 2) سؤال محفوظ بنفسه في ذاكرة شاهين: يترد فوراً من غير ما ندفع أي رصيد (زي شات شاهين).
   const exact = observations.find((o) => o.tool === 'recall_memory' && (o.data as { exact?: boolean } | undefined)?.exact);
-  if (exact?.answer) return finish({ answer: exact.answer, source: 'memory', ok: true, ai: false, used: [exact] });
+  if (exact?.answer) return finish({ answer: exact.answer, source: 'memory', ok: true, ai: false, used: [exact], confidence: 'high' });
+
+  // 2ب) العقل المدرَّب (من غير أي محرك): يفهم السؤال، يجيب السؤال المقصود من الأرشيف في نطاق
+  //     المتخصص (L-32)، يتأكد إن المصدر بيجاوب النوع المطلوب، ويعرض الرد بمصدره.
+  const sources = await library();
+  const memoryFile = sources.memory ?? (deps.memory ? await deps.memory.all().catch(() => undefined) : undefined);
+  const brain: BrainReply = await consultBrain({
+    question: asked, lang, specialist, lessons: sources.lessons, materials: sources.materials,
+    ...(memoryFile ? { memory: memoryFile } : {}),
+    ...(deps.research ? { research: deps.research } : {}),
+    willRecord: true,
+  }).catch(() => NO_BRAIN);
+  // سطر «فهمت سؤالك كده» من قراءة المجلس للسؤال الأصلي — العقل بياخد السؤال بعد القراءة دي،
+  // فلو اعتمدنا عليه مايبانش أي تصحيح للزائر.
+  understood = routed.understanding.note || brain.note;
 
   // 3) الوكيل بمحرك متاح: يقرا الملاحظات، يطلب أدوات تانية، ويكتب الرد.
   const settings = await deps.repo.settings().catch(() => undefined);
@@ -342,7 +443,7 @@ export async function runSpecialistAgent(input: SpecialistConsultInput, deps: Sp
   const system = specialistSystemPrompt(specialist, lang, guidance);
   const turns: EngineTurn[] = [
     ...(input.history || []).slice(-AGENT_LIMITS.maxHistory),
-    { role: 'user', text: `${lang === 'en' ? 'The visitor asks' : 'الزائر بيسأل'}${input.section ? ` (${lang === 'en' ? 'section' : 'قسم'}: ${input.section})` : ''}: ${input.question}\n\n${factsBlock(observations, lang)}` },
+    { role: 'user', text: `${lang === 'en' ? 'The visitor asks' : 'الزائر بيسأل'}${input.section ? ` (${lang === 'en' ? 'section' : 'قسم'}: ${input.section})` : ''}: ${asked}\n\n${factsBlock(observations, lang)}${archiveBlock(brain, lang)}` },
   ];
 
   let aiAnswer: string | undefined;
@@ -388,12 +489,17 @@ export async function runSpecialistAgent(input: SpecialistConsultInput, deps: Sp
     return !score.issues.some((i) => i.startsWith('ungrounded_price') || i.startsWith('ungrounded_ref') || i === 'empty_output');
   };
 
-  // 5) الرد النهائي: الوكيل لو رده سليم، وإلا نفس الرد من الأدوات نفسها (من غير ذكاء اصطناعي).
+  // 5) الرد النهائي — والترتيب ده هو «التدريب» كله: بيانات الموقع الدقيقة ← العقل المدرَّب ←
+  //    التسليم الصريح ← باقي الأدلة ← الرد المحلي المجرب ← التوضيح ← الفجوة الصادقة. مافيش تخمين.
   const local = await localConsult(input.question, lang, observations, input.section, specialist);
+  const outOfScope = Boolean(understanding.outOfScope);
+  const precise = bestPrecise(observations, outOfScope);
+  const evidence = bestEvidence(observations, CONTROL_TOOLS);
+
   if (aiAnswer && usable(aiAnswer)) {
     const answer = `${aiAnswer.trim()}\n\n_${sourceNote('agent', lang)}._`;
     // مصدر رد الوكيل = مصدر أقوى ملاحظة بني عليها (ولو مفيش ملاحظة صلبة: «وكيل المتخصصين»).
-    const source: AnswerSource = bestEvidence(observations, CONTROL_TOOLS)?.source || 'agent';
+    const source: AnswerSource = evidence?.source || brain.source || 'agent';
     // يتحفظ في ذاكرة شاهين عشان يترد من غير أي محرك المرة الجاية (الاعتماد على النفس).
     if (deps.memory && !isPersonal(input.question) && !isTimeBound(input.question)) {
       await deps.memory.learn({ question: input.question, lang, mode: 'auto', answer }).catch(() => false);
@@ -401,38 +507,91 @@ export async function runSpecialistAgent(input: SpecialistConsultInput, deps: Sp
     return finish({ answer, source, ok: true, ai: true, used: observations.filter((o) => o.strength >= 0.5).slice(0, 4) });
   }
 
-  // طلب أو خدمة صريحة (الخطة شافته): صاحبه أولى بالرد من أي درس قريب — نص التسليم + زره.
+  // (أ) طلب أو خدمة صريحة («عايز أشتري/اطلب/أكلم حد»): مفيش معلومة بترد على طلب — صاحبه أولى،
+  //     فيتحسب قبل أرقام المتجر (قايمة المنتجات مش رد على «عايز أشتري»).
   const service = observations.find((o) => o.tool === 'hand_over' && o.answer && (o.data as { service?: boolean } | undefined)?.service);
   if (service?.answer) return finish({ answer: service.answer, source: 'agent', ok: true, ai: false, used: [service] });
 
-  // من غير محرك: أقوى ملاحظة **صلبة** أولى من رد عام — حاسبة أو كارت مادة أو متجر أو خبر أو درس
-  // بمصدره أحسن من درس قريب في المكتبة (الوكيل بيرد بالرقم المطلوب مش بكلام عام عنه).
-  const evidence = bestEvidence(observations, CONTROL_TOOLS);
-  if (evidence?.answer && evidence.strength >= EVIDENCE_FLOOR) {
-    return finish({ answer: evidence.answer, source: evidence.source || 'science', ok: true, ai: false, used: [evidence] });
+  // (ب) أرقام ومنتجات الموقع نفسها: الحاسبات، موسوعة المواد، المتجر، النشرة، الملجأ، السلامة، التعتيق.
+  //     استثناء: مقارنة بين طرفين («الفرق بين X وY») — العقل بيرد على كل طرف من مصدره أحسن من كارت واحد.
+  if (precise?.answer && !understanding.parts) {
+    return finish({ answer: precise.answer, source: precise.source || 'calculator', ok: true, ai: false, used: [precise], confidence: 'high' });
   }
 
-  // «consult» المجرب: الملجأ ← الذاكرة ← المكتبة ← فجوة (نفس رد المجلس من غير إنترنت).
+  // (ج) العقل المدرَّب: دروس الخبير المراجَعة ← المكتبة والموسوعة ← الذاكرة ← المصادر المفتوحة،
+  //     بعد ما يتأكد إن المصدر بيجاوب **نوع** السؤال وموضوعه (مين←شخص، كام←رقم، ليه←سبب).
+  if (brain.answer && (brain.confidence !== 'low' || brain.clarify)) {
+    // رد العقل من موسوعة المواد ياخد معه زر الأداة اللي فتحت نفس الكارت (الموسوعة) ومراجعها.
+    const support = brain.source === 'material' ? observations.filter((o) => o.tool === 'material_card') : [];
+    return finish({
+      answer: brain.answer, source: brain.source, ok: !brain.clarify, ai: false, used: support,
+      confidence: brain.confidence, ...(brain.refer ? { studying: true } : {}), ...(brain.clarify ? { clarify: true } : {}),
+      followUps: relatedFollowUps(asked, specialist, lang),
+    });
+  }
+
+  // (د) درس قريب من السؤال بس مش بيرد عليه: العقل المدرَّب فحصه ورفضه، فماتقدمش على إنه الإجابة —
+  //     بنقول للزائر إنها أقرب حاجة مكتوبة، وبنسجل السؤال للمدرسة تذاكره (أحسن من درس جانبي).
+  const lesson = evidence?.answer && LESSON_SOURCES.has(evidence.source || '') && !outOfScope
+    && !(lang === 'en' && ARABIC.test(evidence.answer)) ? evidence : undefined;
+  if (lesson?.answer) {
+    for (const tool of GAP_TOOLS) await runOne({ tool, args: { reason: brain.gapReason || 'near_miss' } });
+    const recorded = observations.some((o) => o.tool === 'study_later' && (o.data as { recorded?: boolean } | undefined)?.recorded);
+    return finish({
+      answer: `${NEAR_MISS[lang]}${lesson.answer}`, source: lesson.source || 'library', ok: true, ai: false,
+      used: [lesson], confidence: 'low', recorded, ...(recorded ? { studying: true } : {}),
+    });
+  }
+
+  // (هـ) أقوى ملاحظة صلبة من الأدوات نفسها (ملجأ، وسيلة، مصدر مفتوح — حاجة مش درس).
+  if (evidence?.answer && evidence.strength >= EVIDENCE_FLOOR && !outOfScope) {
+    return finish({ answer: evidence.answer, source: evidence.source || 'science', ok: true, ai: false, used: [evidence], confidence: 'medium' });
+  }
+
+  // (د2) كارت مادة في مقارنة العقل ماكملهاش: طرف واحد بمصدره أحسن من لا شيء.
+  if (precise?.answer) return finish({ answer: precise.answer, source: precise.source || 'material', ok: true, ai: false, used: [precise], confidence: 'medium' });
+
+  // (هـ2) «consult» المجرب: الملجأ ← الذاكرة ← المكتبة ← فجوة (نفس رد المجلس من غير إنترنت).
   const solid = local.source !== 'gap'
     ? { answer: local.answer, source: (local.source === 'refuge' ? 'refuge' : local.source === 'memory' ? 'memory' : 'library') as AnswerSource, ok: true }
     : undefined;
-  if (solid) return finish({ answer: solid.answer, source: solid.source, ok: true, ai: false });
+  if (solid && !outOfScope) return finish({ answer: solid.answer, source: solid.source, ok: true, ai: false, confidence: 'medium' });
 
-  // ملاحظة أضعف (درس قريب، وسيلة، مصدر مفتوح) أحسن من لا شيء — بمصدرها.
-  if (evidence?.answer) {
-    return finish({ answer: evidence.answer, source: evidence.source || 'library', ok: true, ai: false, used: [evidence] });
+  // (و) ملاحظة أضعف (وسيلة، مصدر مفتوح) أحسن من لا شيء — بمصدرها.
+  if (evidence?.answer && !outOfScope) {
+    return finish({ answer: evidence.answer, source: evidence.source || 'library', ok: true, ai: false, used: [evidence], confidence: 'low' });
   }
 
-  // تسليم صريح (سؤال تركيبات أو طلب) أولى من فجوة: النص + زر التسليم لصاحبه.
+  // (ز) تسليم صريح (سؤال تركيبات أو طلب) أولى من فجوة: النص + زر التسليم لصاحبه.
   const handOver = observations.find((o) => o.tool === 'hand_over' && o.answer);
   if (handOver?.answer) return finish({ answer: handOver.answer, source: 'agent', ok: true, ai: false, used: [handOver] });
 
-  // توضيح أو تسليم صريح أولى من فجوة: الوكيل من غير نموذج بياخده من الخطة لو النموذج طلبه.
+  // (ح) توضيح: سؤال غامض يتسأل عنه الزائر أحسن من رد مبني على التخمين.
   const clarify = observations.find((o) => o.tool === 'clarify' && o.answer);
-  if (clarify?.answer) return finish({ answer: clarify.answer, source: 'agent', ok: true, ai: false, used: [clarify] });
+  if (clarify?.answer) return finish({ answer: clarify.answer, source: 'agent', ok: false, ai: false, used: [clarify], clarify: true });
+
+  // (ط) الزائر اختار متخصص بنفسه والسؤال من مجال غيره: مايردش من مجال تاني ولا يوعده بمذاكرة
+  //     حاجة مش عنده — يقوله بصراحة ويحوّله لصاحبه في المجلس بزر.
+  if (input.specialistId) {
+    await runOne({ tool: 'route_specialist', args: { question: asked } });
+    const home = observations.find((o) => o.tool === 'route_specialist' && (o.data as { specialist?: string } | undefined)?.specialist);
+    const target = home && specialistOf((home.data as { specialist: string }).specialist as SpecialistId);
+    if (home && target) {
+      return finish({
+        answer: lang === 'en'
+          ? `That question belongs to ${target.nameEn}. I am ${specialist.nameEn} — my field is ${specialist.fieldEn}, so I will not answer it from another field. Switch to them with the button below and they will answer from their own archive.`
+          : `سؤالك ده من مجال «${target.nameAr}» (${target.fieldAr}) — وأنا ${specialist.nameAr} (${specialist.fieldAr})، فماهردش عليه من مجال غيري ولا هقولك كلام مش من مصدر. حوّل له من الزر اللي تحت الرد، وهو يرد عليك من أرشيفه هو.`,
+        source: 'agent', ok: false, ai: false, used: [home],
+      });
+    }
+  }
 
   // 6) فجوة صريحة: مفيش تخمين، والسؤال يتسجل لمدرسة شاهين يذاكره.
-  for (const tool of GAP_TOOLS) await runOne({ tool, args: { reason: aiOn ? 'engine_no_ground' : 'no_engine' } });
+  const gapReason = outOfScope ? 'out_of_scope' : brain.gapReason || (aiOn ? 'engine_no_ground' : 'no_engine');
+  for (const tool of GAP_TOOLS) await runOne({ tool, args: { reason: gapReason } });
   const recorded = observations.some((o) => o.tool === 'study_later' && (o.data as { recorded?: boolean } | undefined)?.recorded);
-  return finish({ answer: local.answer, source: 'gap', ok: false, ai: false, recorded, used: [] });
+  return finish({
+    answer: outOfScope ? `${OUT_OF_SCOPE_NOTE[lang]}${local.answer}` : local.answer,
+    source: 'gap', ok: false, ai: false, recorded, ...(recorded ? { studying: true } : {}), confidence: 'low', used: [],
+  });
 }

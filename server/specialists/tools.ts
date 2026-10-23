@@ -17,7 +17,8 @@ import { RAW_MATERIALS_DATABASE } from '../../src/data/rawMaterials';
 import { SCIENCE_LESSONS, SCIENCE_TRACKS, type ScienceLesson, type ScienceTrackId } from '../../src/data/sciences';
 import { academyPairs, TRACKS as SCHOOL_TRACKS, type AcademyLesson, type TrackId } from '../../scripts/shaheen-school/curriculum';
 import { buildScienceIndex, scienceHits, type ScienceIndex } from '../../src/utils/scienceIndex';
-import { libraryAnswer, materialCard, type LibraryAnswer, type LibrarySources } from '../../src/utils/shaheenLibrary';
+import { libraryAnswer, materialCard, type LibraryAnswer, type LibraryLesson, type LibrarySources } from '../../src/utils/shaheenLibrary';
+import { fieldsOf, type FieldId } from '../../src/utils/shaheenAgent';
 import { isPersonal, isTimeBound, meaningWords } from '../../src/utils/shaheenMemory';
 import { findRefuge, refugeWay } from '../../src/utils/shaheenRefuge';
 import {
@@ -43,7 +44,10 @@ type Env = Record<string, string | undefined>;
 export const TOOL_LIMITS = { maxCalls: 10, perCallMs: 9000, maxObservationChars: 2600 };
 
 export interface SpecialistToolContext {
+  /** السؤال **بعد الفهم** (تصحيح الغلطات والمتابعة) — الأدوات بتدوّر بيه في الأرشيف. */
   question: string;
+  /** السؤال كما كتبه الزائر بالظبط — بيتسجل في الفجوات وبيروح مع التسليم. */
+  raw?: string;
   /** آخر سؤال من الزائر — المتابعة القصيرة («طيب ولو 100 مل؟») بتكمل على موضوعه. */
   previous?: string;
   lang: 'ar' | 'en';
@@ -141,7 +145,7 @@ const trackTitle = (id: TrackId) => SCHOOL_TRACKS.find((t) => t.id === id)?.titl
  * علوم المدرسة (src/data/sciences) مساراتها غير مسارات الأكاديمية: الجدول ده بيربط كل مسار علمي
  * بمسارات الأكاديمية اللي تملكه — فعِلم المتخصص يفضّل نطاقه هو (L-32) من غير ما يحرمه من درس مكتوب.
  */
-const SCIENCE_TO_TRACKS: Record<ScienceTrackId, TrackId[]> = {
+export const SCIENCE_TO_TRACKS: Record<ScienceTrackId, TrackId[]> = {
   'human-medicine': ['medicine'], veterinary: ['medicine'], nutrition: ['medicine', 'biology'],
   biology: ['biology'], agriculture: ['biology', 'earth_space'], biosafety: ['biology', 'medicine', 'security'],
   space: ['earth_space'], earth: ['earth_space', 'engineering'], semiconductors: ['it_sciences', 'engineering'],
@@ -152,6 +156,45 @@ const SCIENCE_TO_TRACKS: Record<ScienceTrackId, TrackId[]> = {
 };
 const scienceInScope = (lesson: ScienceLesson, specialist: Specialist) =>
   (SCIENCE_TO_TRACKS[lesson.track] || []).some((t) => specialist.tracks.includes(t));
+
+/** هل المتخصص يملك المجال ده؟ (مجال عام = محدش يملكه، ومسار العطور لصاحب العطور وحده.) */
+export function ownsField(specialist: Specialist, field: FieldId | undefined): boolean {
+  if (!field || field === 'general') return false;
+  if (field === 'perfume') return specialist.tracks.includes('perfume');
+  return (SCIENCE_TO_TRACKS[field as ScienceTrackId] || []).some((t) => specialist.tracks.includes(t));
+}
+
+/* ── نطاق المتخصص في مكتبة شاهين (L-32) ─────────────────────────────────────────────────────────
+ * المكتبة فيها دروس عطور ودروس مدرسة. كلمة «المواد» في سؤال عن التجارة («ايه المواد اللي أدرسها
+ * علشان أنجح في المجال ده؟») كانت بتجيب درس «المواد الخام الطبيعية» — رد من مجال تاني خالص.
+ * فكل درس له مجال (من عنوانه وتاجاته)، والمتخصص مايردش إلا من دروس مجاله هو.
+ */
+const lessonFieldsCache = new Map<string, FieldId[]>();
+/** مجالات الدرس — المجال الضعيف (أقل من نص أقوى مجال) بيتشال: «تكلفة زجاجة عطر» عطور مش دراسات حرب. */
+export function lessonFields(lesson: LibraryLesson): FieldId[] {
+  const key = lesson.id || lesson.title;
+  const cached = lessonFieldsCache.get(key);
+  if (cached) return cached;
+  const scored = fieldsOf(`${lesson.title} ${(lesson.tags || []).join(' ')}`);
+  const top = scored[0]?.score || 0;
+  const fields = scored.filter((f) => f.score >= 2 && f.score >= top * 0.5).map((f) => f.field);
+  lessonFieldsCache.set(key, fields);
+  return fields;
+}
+
+/** دروس المكتبة اللي في نطاق المتخصص. درس مجاله مش واضح (مفيش مجال) يفضل متاح: محتوى عام. */
+export function lessonsInScope(lessons: LibraryLesson[], specialist: Specialist): LibraryLesson[] {
+  return lessons.filter((l) => {
+    const fields = lessonFields(l);
+    return fields.length === 0 || fields.some((f) => ownsField(specialist, f));
+  });
+}
+
+/** موسوعة المواد الخام في نطاق المتخصص ده؟ (نفس مسارات أداة «material_card» بالظبط.) */
+export function materialsInScope(specialist: Specialist): boolean {
+  const tracks = SPECIALIST_TOOLS.find((t) => t.name === 'material_card')?.tracks || [];
+  return tracks.some((t) => specialist.tracks.includes(t));
+}
 
 /* ── نصوص الردود الجاهزة (عربي/إنجليزي) — كلها بتقول مصدرها ───────────────────────────────────── */
 const SRC = {
@@ -177,6 +220,82 @@ export const sourceNote = (source: AnswerSource | 'agent', lang: string) => (lan
  * نفس المقياس الموضوعي (كلمات المعنى) في كل الأدوات: مفيش نموذج ولا تخمين.
  */
 type RawMaterial = (typeof RAW_MATERIALS_DATABASE)[number];
+
+/* ── الرد الإنجليزي من موسوعة المواد ────────────────────────────────────────────────────────────
+ * الموسوعة مكتوبة بالعربي (الوصف، نص IFRA، التنبيهات). الرد الإنجليزي بياخد منها **الأرقام
+ * المسجلة** والاسم الإنجليزي والكاس ومكان المادة في الهرم — ومابيت translate كلام ولا بيخترع
+ * تحذير: بيقول للزائر إن النص الكامل بالعربي في الموسوعة والزر بيفتحها.
+ */
+/** كل النسب المئوية المسجلة في نص («2% - 15% من الزيت العطري» ← «2% - 15%»). */
+const percentsIn = (value: unknown): string =>
+  typeof value === 'string'
+    ? (value.match(/\d+(?:[.,]\d+)?\s*(?:-|–|—|إلى|to)?\s*\d*(?:[.,]\d+)?\s*%/g) || []).map((x) => x.replace(/\s+/g, ' ').trim()).join(' · ')
+    : '';
+const PLACEMENT_EN: Record<string, string> = { top: 'top', heart: 'heart', base: 'base', carrier: 'carrier', all: 'all round' };
+const CATEGORY_EN: Record<string, string> = {
+  solvent: 'solvent / carrier', fixative: 'fixative', aromachemical: 'aromachemical',
+  natural_essential: 'natural essential oil', natural_resin: 'natural resin / absolute',
+  animalic: 'animalic note', musk: 'musk', citrus: 'citrus oil', floral: 'floral absolute',
+};
+const enSlug = (slug?: string) => (slug || '').replace(/_/g, ' ');
+const ENCYCLOPAEDIA_EN = 'The scent profile, the full IFRA wording and the precautions are written in Arabic in the encyclopaedia — the button below opens it.';
+
+/** كارت المادة بالإنجليزي: اسم وكاس وأرقام مسجلة ومكان في الهرم — من غير كلام عربي ولا تحذير مخترع. */
+function materialCardEn(m: RawMaterial): string {
+  const usage = percentsIn(m.recommendedUsagePercent);
+  const ifra = percentsIn((m as Record<string, unknown>).ifraLimitPercent);
+  return [
+    `**${m.nameEn}** (CAS ${m.casNumber})`,
+    `- Category: ${CATEGORY_EN[m.category] || enSlug(m.category)} · Place in the pyramid: ${PLACEMENT_EN[m.pyramidPlacement] || enSlug(m.pyramidPlacement)}`,
+    usage ? `- Usage recorded in the encyclopaedia: ${usage}` : '',
+    ifra ? `- IFRA figure recorded in the encyclopaedia: ${ifra}` : '',
+    `- ${ENCYCLOPAEDIA_EN}`,
+  ].filter(Boolean).join('\n');
+}
+/**
+ * الاسم ده فعلاً مادة في موسوعة شام؟ (بالعربي أو بالإنجليزي، بـ«ال» أو من غيرها).
+ */
+function isKnownMaterial(name: string): boolean {
+  const n = name.trim().toLowerCase().replace(/^\u0627\u0644/u, '');
+  if (n.length < 2) return false;
+  return RAW_MATERIALS_DATABASE.some((m) => {
+    const keys = `${m.nameAr} ${m.nameEn}`.toLowerCase();
+    return keys.includes(n) || n.includes(m.nameEn.toLowerCase().replace(/\s*[(\u2014\u2013-].*$/u, ''));
+  });
+}
+
+/**
+ * المادة اللي السؤال بيسأل عنها. `materialIn` العامة بتقبض على أول كلمتين بعد «what is» فبتقول إن
+ * «What is the maximum IFRA concentration for galaxolide?» بيسأل عن مادة اسمها «the maximum» — ودي
+ * مش مادة. فبنقبل الاسم بس لو موجود في الموسوعة، وغير كده بندوّر على اسم المادة **جوه السؤال نفسه**
+ * (galaxolide مكتوبة فيه) — أحسن من إن سؤال حقيقي عن حدود IFRA يرجع فجوة.
+ */
+/**
+ * مادة **اسمها مكتوب في السؤال نفسه** (الاسم الكامل من الموسوعة، مش كلمة من عائلتها أو نوعها) —
+ * أطول اسم يتطابق هو الأدق. «ماء» في سؤال عن الحافظات مش اسم مادة كامل، فماتعتبرش سؤال عن مادة.
+ */
+function materialNamed(text: string): RawMaterial | undefined {
+  const t = ` ${text.toLowerCase()} `;
+  let best: { material: RawMaterial; len: number } | undefined;
+  for (const m of RAW_MATERIALS_DATABASE) {
+    for (const full of [m.nameAr, m.nameEn]) {
+      const name = String(full || '').replace(/\s*[(\u2014\u2013-].*$/u, '').trim().toLowerCase();
+      if (name.length >= 3 && t.includes(name) && (!best || name.length > best.len)) best = { material: m, len: name.length };
+    }
+  }
+  return best?.material;
+}
+
+function materialAsked(text: string): string | undefined {
+  const name = materialIn(text);
+  if (!name) return undefined;
+  if (isKnownMaterial(name)) return name;
+  // الاسم اللي اقبض عليه مش مادة في الموسوعة («What is the maximum…» ← «the maximum»): ندوّر على
+  // اسم المادة الحقيقي جوه السؤال نفسه (galaxolide) بدل ما سؤال عن حدود IFRA يضيع ويرجع فجوة.
+  const named = materialNamed(text);
+  return named ? `${named.nameAr} ${named.nameEn}`.replace(/\s*[(\u2014\u2013-].*$/u, '').trim() : undefined;
+}
+
 function materialHits(text: string, limit = 5): { material: RawMaterial; score: number }[] {
   const asked = (materialIn(text) || text).toLowerCase();
   const q = words(asked);
@@ -361,7 +480,7 @@ export const SPECIALIST_TOOLS: SpecialistTool[] = [
     run: async (args, ctx) => {
       const hit = materialHits(str(args, 'name') || ctx.question, 1)[0];
       if (!hit) return undefined;
-      const card = materialCard(hit.material as never, ctx.lang);
+      const card = ctx.lang === 'en' ? materialCardEn(hit.material) : materialCard(hit.material as never, ctx.lang);
       return {
         tool: 'material_card',
         observation: clip(card),
@@ -384,7 +503,8 @@ export const SPECIALIST_TOOLS: SpecialistTool[] = [
     run: async (args, ctx) => {
       const volume = num(args, 'volumeMl') ?? volumeMl(ctx.question) ?? 50;
       const percent = num(args, 'percent') ?? concentrationPercentIn(ctx.question)
-        ?? (ctx.previous ? concentrationPercentIn(ctx.previous) : undefined) ?? 20;
+        ?? (ctx.previous ? concentrationPercentIn(ctx.previous) : undefined)
+        ?? firstPercentIn(ctx.question) ?? (ctx.previous ? firstPercentIn(ctx.previous) : undefined) ?? 20;
       if (!(volume > 0 && volume <= 100000) || !(percent > 0 && percent <= 100)) return undefined;
       const result = calculatePerfumeFormulation({
         bottleVolumeMl: volume, batchCount: num(args, 'batch') ?? 1, concentrationPercent: percent,
@@ -495,7 +615,7 @@ export const SPECIALIST_TOOLS: SpecialistTool[] = [
     tracks: ['commerce', 'perfume', 'math', 'management'],
     run: async (args, ctx) => {
       const volume = num(args, 'volumeMl') ?? volumeMl(ctx.question) ?? 50;
-      const percent = num(args, 'percent') ?? concentrationPercentIn(ctx.question) ?? 20;
+      const percent = num(args, 'percent') ?? concentrationPercentIn(ctx.question) ?? firstPercentIn(ctx.question) ?? 20;
       const oilCostPerKg = num(args, 'oilCostPerKg');
       if (oilCostPerKg === undefined) return undefined;
       const formulation = calculatePerfumeFormulation({
@@ -591,7 +711,7 @@ export const SPECIALIST_TOOLS: SpecialistTool[] = [
     tracks: ['perfume', 'chemistry', 'medicine', 'biology'],
     run: async (args, ctx) => {
       const names = Array.isArray(args.materials) ? (args.materials as unknown[]).filter((x): x is string => typeof x === 'string').slice(0, 8) : [];
-      const asked = names.length ? names : [materialIn(ctx.question)].filter((x): x is string => Boolean(x));
+      const asked = names.length ? names : [materialAsked(ctx.question)].filter((x): x is string => Boolean(x));
       const q = asked.map((n) => n.toLowerCase());
       const named = q.length
         ? RAW_MATERIALS_DATABASE.filter((m) => q.some((n) => `${m.nameAr} ${m.nameEn}`.toLowerCase().includes(n) || n.includes(m.nameEn.toLowerCase()))).slice(0, 5)
@@ -604,13 +724,15 @@ export const SPECIALIST_TOOLS: SpecialistTool[] = [
       const ar = ctx.lang !== 'en';
       const lines = hits.map((m) => {
         const ifra = (m as Record<string, unknown>).ifraLimitPercent;
+        const usageEn = percentsIn(m.recommendedUsagePercent);
+        const ifraEn = percentsIn(ifra);
         return ar
           ? `- **${m.nameAr.replace(/\s*\(.*$/, '')}**: النسبة المعتادة ${m.recommendedUsagePercent || '—'}${typeof ifra === 'string' ? ` · IFRA: ${ifra}` : ''}${m.precautions ? ` · تنبيه: ${m.precautions}` : ''}`
-          : `- **${m.nameEn}**: usual share ${m.recommendedUsagePercent || '—'}${typeof ifra === 'string' ? ` · IFRA: ${ifra}` : ''}${m.precautions ? ` · note: ${m.precautions}` : ''}`;
+          : `- **${m.nameEn}** (CAS ${m.casNumber}): usage recorded ${usageEn || '—'}${ifraEn ? ` · IFRA figure on record: ${ifraEn}` : ''} · ${PLACEMENT_EN[m.pyramidPlacement] || enSlug(m.pyramidPlacement)} note`;
       });
       const footer = ar
         ? '\n\nالأرقام دي من موسوعة المواد في شام، والمرجع النهائي دائماً أحدث كود IFRA قبل أي تصنيع. جرّب على الجلد مخففاً الأول، وفي حالة الأطفال أو الحمل أو الأمراض المزمنة استشر مختصاً.'
-        : '\n\nThese figures come from the Sham materials encyclopaedia; the final reference is always the latest IFRA code before any production. Patch-test diluted, and for children, pregnancy or chronic illness consult a professional.';
+        : `\n\nThese figures come from the Sham materials encyclopaedia; the final reference is always the latest IFRA code before any production. Patch-test diluted, and for children, pregnancy or chronic illness consult a professional. ${ENCYCLOPAEDIA_EN}`;
       return {
         // فوق رد المكتبة: سؤال السلامة يستاهل حدود IFRA والتنبيهات مش كارت مادة عام.
         tool: 'safety_check', observation: clip(lines.join('\n')), strength: 0.92,
@@ -775,7 +897,10 @@ export const SPECIALIST_TOOLS: SpecialistTool[] = [
       const target = to === 'shaheen' || to === 'sham' ? undefined : specialistOf(to);
       if (to !== 'shaheen' && to !== 'sham' && !target) return undefined;
       const ar = ctx.lang !== 'en';
-      const note = str(args, 'note');
+      // السؤال اللي بيتعرض للزائر يكون بكلامه هو: الملاحظة اللي جاية من خطة الأدوات هي نسخة البحث
+      // المصححة، فترجع لأصل سؤال الزائر (ماينفعش نقول له كلام ماكتبهوش).
+      const noteArg = str(args, 'note');
+      const note = noteArg && ctx.raw && noteArg === ctx.question ? ctx.raw : noteArg;
       const text = to === 'shaheen'
         ? (ar ? 'ده شغل «الخبير شاهين» (تصميم التركيبات والحسابات المعملية) — سلّمته له باسمه.' : 'This is Master Shaheen’s work (formula design and lab calculations) — handed over to him by name.')
         : to === 'sham'
@@ -787,7 +912,7 @@ export const SPECIALIST_TOOLS: SpecialistTool[] = [
         strength: 0.55,
         answer: `${text}${note ? `\n${note}` : ''}`,
         actions: to === 'shaheen'
-          ? [{ type: 'open_chat', prompt: ctx.question, title: ar ? 'الخبير شاهين' : 'Master Shaheen' }]
+          ? [{ type: 'open_chat', prompt: ctx.raw || ctx.question, title: ar ? 'الخبير شاهين' : 'Master Shaheen' }]
           : [{ type: 'hand_over', to, title: target ? (ar ? target.nameAr : target.nameEn) : undefined }],
         data: { to, service: Boolean(args.service) },
       };
@@ -801,9 +926,14 @@ export const SPECIALIST_TOOLS: SpecialistTool[] = [
     descriptionEn: "A question with no solid answer: noted in the knowledge gaps so Shaheen's school studies it — never guessed.",
     args: '{"reason":"ليه مفيش إجابة"}',
     run: async (args, ctx) => {
-      if (isPersonal(ctx.question) || isTimeBound(ctx.question)) return undefined;
-      const reason = `specialists:${ctx.specialist.id}${str(args, 'reason') ? `:${str(args, 'reason')!.slice(0, 60)}` : ''}`;
-      const gap = await ctx.repo.recordGap({ question: ctx.question, source: 'no_answer', reason }).catch(() => undefined);
+      const askedGap = ctx.raw || ctx.question;
+      if (isPersonal(askedGap) || isTimeBound(askedGap)) return undefined;
+      // «expert:chemistry» بتوصل لخبير المجال في المدرسة (scripts/shaheen-school/school.ts بيقرأها) —
+      // وأي سبب تاني يفضل باسم المتخصص عشان تقرير المجلس يعرف فجواته.
+      const why = str(args, 'reason');
+      const reason = why && why.startsWith('expert:') ? why.slice(0, 60)
+        : `specialists:${ctx.specialist.id}${why ? `:${why.slice(0, 60)}` : ''}`;
+      const gap = await ctx.repo.recordGap({ question: askedGap, source: 'no_answer', reason }).catch(() => undefined);
       return {
         tool: 'study_later',
         observation: gap ? `[فجوة] اتسجلت للمذاكرة (${ctx.specialist.nameAr})` : '[فجوة] السؤال مااتسجلش (التخزين مش متاح)',
@@ -844,7 +974,20 @@ export interface ToolCall { tool: ToolName; args: Record<string, unknown> }
 
 const ACCESS_WORDS = /(وين|أين|where|find|ألاقي|الاقي|ادور|أدور|مكان|report|تقرير|روبوت|robot|workflow|سير عمل|قسم|سجل)/i;
 const SHOP_WORDS = /(اشتري|شراء|buy|order|طلب|سعر|price|بكام|متاح|متوفر|stock|available|product|منتج)/i;
+/**
+ * أول نسبة مئوية في السؤال — للزائر اللي كتبها من غير كلمة «تركيز» («how much alcohol for a
+ * 100ml bottle at 15%?»). مش بديلاً عن `concentrationPercentIn` (الأدق): ده آخر محاولة قبل
+ * الافتراضي 20%، عشان الحاسبة ماتردش برقم غير الرقم اللي الزائر كتبه.
+ */
+const firstPercentIn = (text?: string): number | undefined => {
+  const m = (text || '').replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x660)).match(/(\d+(?:[.,]\d+)?)\s*%/);
+  const n = m ? Number(m[1]!.replace(',', '.')) : NaN;
+  return Number.isFinite(n) && n >= 0.5 && n <= 100 ? n : undefined;
+};
+
 const CALC_WORDS = /(احسب|احسبي|كام|كم|calculate|how much|how many|نسبة|تركيز|تخفيف|تكلفة|هرم|مقادير)/i;
+/** سؤال عن الأخبار نفسها (مش «عايز عطر جديد») — النشرة الحقيقية اللي جمعها شاهين هي الرد. */
+const NEWS_WORDS = /(اخبار|أخبار|النشرة|نشرة|ترند|تريند|صيحات|موضه|موضة|\bnews\b|\bheadlines?\b|\btrends?\b|\blatest launch\w*\b)/i;
 /** طلب أو خدمة صريحة — صاحبها «مساعد شام» (طلبات، جملة، شحن، دفع، تتبع). */
 const ORDER_WORDS = /(أطلب|اطلب|اطلبي|هشتري|أشتري|اشتري|بالجملة|جملة|توصيل|شحن|السلة|سلة|دفع|أتتبع|تتبع الطلب|طلبية|\bplace (?:an )?order\b|\bwholesale\b|\bcheckout\b|\bdeliver\w*\b|\btrack (?:my|the) order\b|\bi (?:want|need) to (?:buy|order)\b)/i;
 /** سؤال سلامة (حساسية/حمل/بشرة/IFRA) — موسوعة المواد هي المرجع، مش التخمين. */
@@ -864,18 +1007,23 @@ export function planFirstTools(question: string, specialist: Specialist, section
   push('recall_memory');
   push('school_science', { query: question });
   push('search_library');
-  const material = materialIn(question);
+  const material = materialAsked(question);
   if (material) push('material_card', { name: material });
   const intents = questionIntents(question, previous);
   if (CALC_WORDS.test(question) || intents.some((i) => ['concentration', 'alcohol', 'costing', 'pyramid', 'maceration'].includes(i))) {
-    if (intents.includes('concentration') || concentrationPercentIn(question)) push('calc_concentration');
-    if (intents.includes('alcohol') || alcoholDilutionIn(question).from) push('calc_dilution');
-    if (intents.includes('costing')) push('calc_cost');
-    if (intents.includes('pyramid')) push('calc_pyramid');
+    // الحاسبات اللي بتاخد مقادير من الزائر (حجم/نسبة/تكلفة) ماتشتغلش من غير رقم في السؤال: من غير رقم
+    // هتقول أرقام افتراضية من عندها وتقدمها كأنها إجابة — زي «ما هي أقصى نسبة IFRA للجالاكسوليد؟»
+    // (سؤال سلامة، مش عملية حسابية). أما جدول التعتيق فمعلومات جاهزة من الموقع فبيشتغل من غير رقم.
+    const hasNumber = /[\d٠-٩]/.test(question) || Boolean(previous && /[\d٠-٩]/.test(previous));
+    if (hasNumber && (intents.includes('concentration') || concentrationPercentIn(question))) push('calc_concentration');
+    if (hasNumber && (intents.includes('alcohol') || alcoholDilutionIn(question).from)) push('calc_dilution');
+    if (hasNumber && intents.includes('costing')) push('calc_cost');
+    if (hasNumber && intents.includes('pyramid')) push('calc_pyramid');
     if (intents.includes('maceration') || macerationDaysIn(question)) push('maceration_plan');
   }
   if (SHOP_WORDS.test(question) || intents.includes('store') || section === 'store' || section === 'productDetail') push('search_store', { query: question });
   if (SAFETY_WORDS.test(question)) push('safety_check');
+  if (NEWS_WORDS.test(question)) push('perfume_news');
   if (!plan.some((p) => p.tool === 'knowledge_base')) push('knowledge_base', { query: question });
   // التسليم والوضوح قرار الوكيل (النموذج) — ومن غير نموذج خطة التسليم دي بتبقى آخر رد صادق
   // بدل فجوة مالهاش صاحب. `service: true` = طلب صريح (تصميم تركيبة، أو طلب/جملة/شحن) فصاحبه
