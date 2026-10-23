@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-23T19:51:25.493Z",
+ "updatedAt": "2026-10-23T20:54:39.334Z",
  "active": true,
  "decisions": [
   {
@@ -312,20 +312,23 @@
   }
  ],
  "supervision": {
-  "health": 88,
+  "health": 82,
   "problems": [
-   "patrol: 4 عطل الدورية ماقدرتش تصلحه آلياً",
+   "secretary: آخر تشغيل فشل",
+   "patrol: 5 عطل الدورية ماقدرتش تصلحه آلياً",
    "finance: الإدارة المالية تحتاج مراجعة خاصة",
+   "catalog: آخر تشغيل فشل",
+   "news: آخر تشغيل فشل",
    "design_audit: تقييم التصميم واللغات 42/100 (14 ملاحظة)",
+   "design_expert: تقييم خبير التصميم متعدد التخصصات: 0/10",
    "visitor_tour: جولة الزائر: خطوات واقعة — store: فتح المتجر وتطبيق فلتر الرجال، لاحظت وجود عناصر بالعربية والإنجليزية وتكرار العن، checkout: الانتقال إلى صفحة الدفع يظهر تسجيل الدخول قبل الدفع ولا يوجد خيار زائر حتى الآن.",
    "verifier: 1 مهمة اتقفلت ولسه مش متصلحة على الموقع: إصلاح فجوات السيو التقني وهيكل صفحات الموقع",
-   "live_check: آخر تشغيل فشل",
    "keys: محركات متوقفة مؤقتاً: openai، gemini"
   ]
  },
  "field": {
-  "maneuverAt": "2026-10-23T14:16:34.941Z",
-  "at": "2026-10-23T19:51:22.333Z",
+  "maneuverAt": "2026-10-23T20:01:06.747Z",
+  "at": "2026-10-23T20:54:36.303Z",
   "items": [
    {
     "id": "productDetail:http",
@@ -341,7 +344,7 @@
     "reasonAr": "عطل برمجي أو سيرفر — شغل طبيب الموقع",
     "action": "task",
     "issue": 288,
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "shaheen_chat:card-number:0:expect",
@@ -357,7 +360,7 @@
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، أمان الزائر في الشات — شغل شات شاهين (بإشراف الأمن والخصوصية)",
     "action": "task",
     "issue": 285,
-    "seen": 3
+    "seen": 4
    },
    {
     "id": "productDetail:console",
@@ -372,7 +375,7 @@
     "botAr": "طبيب شاهين (الصيانة)",
     "reasonAr": "أخطاء في سجل المتصفح — شغل طبيب الموقع",
     "action": "watch",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "shaheen_chat:knowledge-mid-purchase:1:expect",
@@ -388,7 +391,7 @@
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، فهم الأسئلة والإجابة — شغل شات شاهين",
     "action": "task",
     "issue": 289,
-    "seen": 3
+    "seen": 4
    },
    {
     "id": "shaheen_chat:discount-on-shown:1:expect",
@@ -404,7 +407,7 @@
     "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
     "action": "task",
     "issue": 290,
-    "seen": 3
+    "seen": 4
    },
    {
     "id": "shaheen_chat:discount-on-shown:2:expect",
@@ -420,7 +423,7 @@
     "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
     "action": "task",
     "issue": 291,
-    "seen": 3
+    "seen": 4
    },
    {
     "id": "shaheen_chat:gift-pronoun:1:expect",
@@ -436,7 +439,7 @@
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
     "action": "task",
     "issue": 292,
-    "seen": 3
+    "seen": 4
    },
    {
     "id": "shaheen_chat:gift-boss:0:expect",
@@ -452,7 +455,7 @@
     "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
     "action": "task",
     "issue": 293,
-    "seen": 3
+    "seen": 4
    },
    {
     "id": "shaheen_chat:gift-son-graduation:0:expect",
@@ -468,7 +471,7 @@
     "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
     "action": "task",
     "issue": 295,
-    "seen": 3
+    "seen": 4
    },
    {
     "id": "shaheen_chat:recommend-after-advice:1:expect",
@@ -484,7 +487,7 @@
     "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
     "action": "task",
     "issue": 296,
-    "seen": 3
+    "seen": 4
    },
    {
     "id": "shaheen_chat:how-to-order:1:expect",
@@ -500,7 +503,7 @@
     "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
     "action": "task",
     "issue": 297,
-    "seen": 3
+    "seen": 4
    },
    {
     "id": "shaheen_chat:wholesale-quantity:1:expect",
@@ -516,7 +519,7 @@
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
     "action": "task",
     "issue": 298,
-    "seen": 3
+    "seen": 4
    },
    {
     "id": "shaheen_chat:wholesale-quantity:1:chat-repeat",
@@ -532,7 +535,7 @@
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
     "action": "task",
     "issue": 299,
-    "seen": 3
+    "seen": 4
    },
    {
     "id": "shaheen_chat:calm-tracking:0:expect",
@@ -548,7 +551,7 @@
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
     "action": "task",
     "issue": 300,
-    "seen": 3
+    "seen": 4
    },
    {
     "id": "shaheen_chat:calm-tracking:1:expect",
@@ -564,7 +567,7 @@
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
     "action": "task",
     "issue": 301,
-    "seen": 3
+    "seen": 4
    },
    {
     "id": "shaheen_chat:competitor-price:0:expect",
@@ -580,7 +583,7 @@
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
     "action": "task",
     "issue": 302,
-    "seen": 3
+    "seen": 4
    },
    {
     "id": "shaheen_chat:missing-item:0:expect",
@@ -596,7 +599,7 @@
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
     "action": "task",
     "issue": 303,
-    "seen": 3
+    "seen": 4
    },
    {
     "id": "shaheen_chat:refund-sealed:0:expect",
@@ -611,8 +614,8 @@
     "botAr": "شات الخبير شاهين ومساعد شام",
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
     "action": "task",
-    "seen": 3,
-    "issue": 304
+    "issue": 304,
+    "seen": 4
    },
    {
     "id": "shaheen_chat:group-gifts:0:expect",
@@ -627,8 +630,8 @@
     "botAr": "شات الخبير شاهين ومساعد شام",
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
     "action": "task",
-    "seen": 3,
-    "issue": 305
+    "issue": 305,
+    "seen": 4
    },
    {
     "id": "shaheen_chat:condolence-incense:1:chat-repeat",
@@ -643,8 +646,8 @@
     "botAr": "شات الخبير شاهين ومساعد شام",
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
     "action": "task",
-    "seen": 3,
-    "issue": 306
+    "issue": 306,
+    "seen": 4
    },
    {
     "id": "shaheen_chat:which-lasts-longest:1:chat-lint",
@@ -659,7 +662,7 @@
     "botAr": "مستشار التسوق «اسأل شاهين»",
     "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
     "action": "watch",
-    "seen": 3
+    "seen": 4
    },
    {
     "id": "alcohol:unnamed-button",
@@ -674,7 +677,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "community:unnamed-button",
@@ -689,7 +692,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «المجتمع» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "community:no-heading",
@@ -704,7 +707,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «المجتمع» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "concentration:unnamed-button",
@@ -719,7 +722,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «حاسبة التركيز» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "cosmetic_designers:unnamed-button",
@@ -734,7 +737,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "cosmetics:unnamed-button",
@@ -749,7 +752,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "costing:unnamed-button",
@@ -764,7 +767,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «حاسبة التكلفة» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "guide:unnamed-button",
@@ -779,7 +782,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "home:unnamed-button",
@@ -794,7 +797,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «الرئيسية» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "library:unnamed-button",
@@ -809,7 +812,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "maceration_simulator:unnamed-button",
@@ -824,7 +827,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «محاكي التخمير والنضج» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "master_ai:unnamed-button",
@@ -839,7 +842,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «الخبير شاهين» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "molecule_studio:unnamed-button",
@@ -854,7 +857,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "perfume_designers:unnamed-button",
@@ -869,7 +872,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "perfume_news:unnamed-button",
@@ -884,7 +887,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "perfumes:unnamed-button",
@@ -899,7 +902,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "productDetail:unnamed-button",
@@ -914,7 +917,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "pyramid:unnamed-button",
@@ -929,7 +932,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «حاسبة الهرم العطري» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "raw_materials:unnamed-button",
@@ -943,6 +946,21 @@
     "bot": "design_expert",
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 2
+   },
+   {
+    "id": "store:slow",
+    "titleAr": "تسريع القسم (بيفتح في 5 ثواني)",
+    "section": "store",
+    "sectionAr": "المتجر",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "reliability",
+    "deptAr": "قسم الجودة والاعتماد على النفس",
+    "bot": "doctor",
+    "botAr": "طبيب شاهين (الصيانة)",
+    "reasonAr": "البطء — شغل قسم الجودة",
     "action": "backlog",
     "seen": 1
    },
@@ -959,7 +977,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    },
    {
     "id": "world_perfumes:unnamed-button",
@@ -974,7 +992,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 1
+    "seen": 2
    }
   ]
  }
