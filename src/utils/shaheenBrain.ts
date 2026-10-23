@@ -196,8 +196,8 @@ function whyLines(w: Wish, lang: Lang): string[] {
   return [...new Set(lines)].slice(0, 3);
 }
 
-const money = (n: number, lang: Lang) => (lang === 'ar' ? `${Math.round(n).toLocaleString('en-US')} جنيه` : `EGP ${Math.round(n).toLocaleString('en-US')}`);
-const nameOf = (p: StoreProduct, lang: Lang) => ((lang === 'ar' ? p.name.ar : p.name.en) || p.name.en || p.name.ar).replace(/[[\]*]/g, '');
+export const money = (n: number, lang: Lang) => (lang === 'ar' ? `${Math.round(n).toLocaleString('en-US')} جنيه` : `EGP ${Math.round(n).toLocaleString('en-US')}`);
+export const nameOf = (p: StoreProduct, lang: Lang) => ((lang === 'ar' ? p.name.ar : p.name.en) || p.name.en || p.name.ar).replace(/[[\]*]/g, '');
 const listNotes = (notes: string[], lang: Lang, max = 4) => notes.slice(0, max).map((n) => noteName(n, lang)).join(lang === 'ar' ? '، ' : ', ');
 
 /** One product as a few lines: link, price, size, concentration, notes by layer, what it suits and why it was picked. */
@@ -239,10 +239,30 @@ function connection(products: StoreProduct[], lang: Lang): string | undefined {
   return parts.length ? parts.join(' ') : undefined;
 }
 
-const CLOSE: Record<Lang, string> = {
-  ar: 'تحب أقارن بينهم في الثبات أو السعر؟ ولا أصمّملك تركيبة خاصة على نفس الاتجاه؟\n\n_الأسعار بالجنيه المصري من غير الشحن، وصفحة كل منتج بتعرضها بعملة بلدك._',
-  en: 'Want me to compare them on staying power or price, or design a custom formula in the same direction?\n\n_Prices in Egyptian pounds before shipping; each product page shows your currency._',
+const PRICE_NOTE: Record<Lang, string> = {
+  ar: '_الأسعار بالجنيه المصري من غير الشحن، وصفحة كل منتج بتعرضها بعملة بلدك._',
+  en: '_Prices in Egyptian pounds before shipping; each product page shows your currency._',
 };
+/**
+ * «التاجر الشاطر»: one clear next step instead of a menu of questions — order the main pick, or tell him what holds
+ * you back (the price, or doubt) and he answers that (src/utils/shaheenSeller.ts). No pressure, no invented offer.
+ */
+export function nextStep(main: StoreProduct | undefined, lang: Lang): string {
+  if (!main) return PRICE_NOTE[lang];
+  const name = nameOf(main, lang);
+  const step = lang === 'ar'
+    ? `**الخطوة الجاية:** افتح صفحة «${name}» واضغط «شراء مباشر» أو ضيفه للسلة — أو اكتبلي «هاخده» وأنا أمشي معاك الطلب خطوة بخطوة. لو السعر مش مريحك قولّي «غالي» وأجيبلك الأوفر، ولو محتار قولّي «مش متأكد» وأوضحلك بصراحة.`
+    : `**Next step:** open the “${name}” page and press “Buy now” or add it to the cart — or tell me “I'll take it” and I'll walk you through the order. If the price doesn't suit you, say “too expensive” and I'll find better value; if you're unsure, say “not sure” and I'll tell you honestly.`;
+  return `${step}\n\n${PRICE_NOTE[lang]}`;
+}
+
+/** An alternative in one line (the main pick gets the full card): link, price, size and why it's here. */
+function altLine(p: StoreProduct, i: number, lang: Lang, link: (slug: string) => string | undefined, why?: string): string {
+  const url = link(p.slug);
+  const title = url ? `[${nameOf(p, lang)}](${url})` : `**${nameOf(p, lang)}**`;
+  const facts = [p.price > 0 ? money(p.price, lang) : '', p.sizeMl ? (lang === 'ar' ? `${p.sizeMl} مل` : `${p.sizeMl} ml`) : '', p.inStock ? '' : (lang === 'ar' ? 'غير متوفر حالياً' : 'out of stock')].filter(Boolean).join(' · ');
+  return `${i}. ${title}${facts ? ` — ${facts}` : ''}${why ? `\n   - ${lang === 'ar' ? 'ليه ممكن يناسبك' : 'Why it may suit you'}: ${why}` : ''}`;
+}
 const ASK_MORE: Record<Lang, string> = {
   ar: 'عشان أرشحلك صح من غير تخمين، قولّي: **لمين** (رجالي/نسائي/للجنسين)؟ **لإمتى** (صيف/شتا/سهرة/شغل)؟ **الطابع** (عود، منعش، حلو، زهري…)؟ و**الميزانية**؟',
   en: 'To recommend without guessing, tell me: **for whom** (men/women/unisex)? **when** (summer/winter/evening/work)? **style** (oud, fresh, sweet, floral…)? and **budget**?',
@@ -279,13 +299,19 @@ export function storeAnswer(products: StoreProduct[], ctx: Context, language: st
     out.push(`${lang === 'ar' ? '**فهمت طلبك:**' : '**Your request:**'} ${wishLine(wish, lang)}`);
     const why = whyLines(wish, lang);
     if (why.length) out.push('', `${lang === 'ar' ? '**ليه الاتجاه ده؟**' : '**Why this direction?**'}`, ...why.map((l) => `- ${l}`));
-    out.push('', matched ? (lang === 'ar' ? '**ترشيحاتي من متجر شام:**' : '**My picks from the Sham store:**')
-      : (lang === 'ar' ? '**مالقيتش حاجة مطابقة بالظبط، ودول الأقرب لطلبك:**' : '**Nothing matches exactly; these are the closest:**'));
+    out.push('', matched ? (lang === 'ar' ? '**اختياري الأول ليك من متجر شام:**' : '**My first pick for you from the Sham store:**')
+      : (lang === 'ar' ? '**مالقيتش حاجة مطابقة بالظبط، ودي الأقرب لطلبك:**' : '**Nothing matches exactly; this is the closest:**'));
   }
-  shown.forEach((p, i) => out.push(productBlock(p.product, i + 1, lang, link, criteria ? pickReasonLine(p, lang) : undefined)));
+  // One main pick with its full card (the focus), at most two alternatives in a line each — no wall of products.
+  const [first, ...rest] = shown;
+  out.push(productBlock(first.product, 1, lang, link, criteria ? pickReasonLine(first, lang) : undefined));
+  if (rest.length) {
+    out.push('', lang === 'ar' ? '**ولو حابب تقارن، بديلين:**' : '**If you want to compare, two alternatives:**');
+    rest.forEach((p, i) => out.push(altLine(p.product, i + 2, lang, link, criteria ? pickReasonLine(p, lang) : undefined)));
+  }
   const link2 = connection(shown.map((p) => p.product), lang);
   if (link2) out.push('', `${lang === 'ar' ? '**الربط بينهم:**' : '**How they compare:**'} ${link2}`);
-  out.push('', CLOSE[lang]);
+  out.push('', nextStep(first.product, lang));
   return { reply: out.join('\n'), picks: shown.map((p) => p.product), matched: criteria && matched };
 }
 
@@ -406,6 +432,12 @@ export function namedProducts(products: StoreProduct[], text: string, limit = 2)
 }
 
 /** «Hawas Ice by Rasasi 100ml EDP» → «hawas ice»: the name without the brand, size, concentration and who it's for. */
+/** The same perfume in every size: brand + core name («Club de Nuit Untold» 10 ml and 105 ml share one key). */
+export const scentKey = (p: StoreProduct) => {
+  const brand = foldName(p.brand && p.brand !== 'Unknown' ? p.brand : '').trim();
+  return `${brand}|${coreName(p.name.en || p.name.ar, brand)}`;
+};
+
 function coreName(raw: string, brand: string): string {
   let n = foldName(raw);
   if (brand) n = n.split(` by ${brand} `).join(' ').split(` ${brand} `).join(' ');
@@ -415,7 +447,7 @@ function coreName(raw: string, brand: string): string {
 }
 
 /** Store perfumes close to one product: the same style and shared base notes (what makes them smell alike). */
-function closeTo(products: StoreProduct[], p: StoreProduct, limit = 2): StoreProduct[] {
+export function closeTo(products: StoreProduct[], p: StoreProduct, limit = 2): StoreProduct[] {
   const base = new Set(p.notes.base.map((n) => n.trim().toLowerCase()));
   const all = new Set([...p.notes.top, ...p.notes.heart, ...p.notes.base].map((n) => n.trim().toLowerCase()));
   return products.filter((q) => q.inStock && q.sku !== p.sku && foldName(q.name.en) !== foldName(p.name.en)).map((q) => {
@@ -452,6 +484,6 @@ export function productAnswer(products: StoreProduct[], ctx: Context, language: 
     out.push('', lang === 'ar' ? '**ولو حابب حاجة قريبة منه في المتجر:**' : '**Close to it in the store:**');
     close.forEach((p, i) => out.push(productBlock(p, i + 1, lang, link)));
   }
-  out.push('', CLOSE[lang]);
+  out.push('', nextStep(main.inStock ? main : close[0], lang));
   return { reply: out.join('\n'), picks: [...named, ...close], matched: true };
 }
