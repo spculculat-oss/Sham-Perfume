@@ -33,6 +33,7 @@ on:
         type: choice
         options:
           - none
+          - census
           - council
           - secretary
           - catalog

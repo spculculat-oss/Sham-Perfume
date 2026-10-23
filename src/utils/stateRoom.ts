@@ -19,6 +19,7 @@ import {
   STATE, STATE_CONSTITUTION, STATE_MEMBERS, STATE_ORDERS_LIMITS, STATE_OUTCOMES, nextLawId, stateActive,
   type StateOrderAction, type StateOrderEntry, type StateOrders, type StateReport,
 } from './platformState';
+import { emptyCensusReport, plainTextStatement, type CensusReport } from './platformCensus';
 
 // ── Orders ──────────────────────────────────────────────────────────────────────────────────────────────────
 export interface StateOrder { action: StateOrderAction; target?: string; textAr?: string; whyAr: string }
@@ -157,6 +158,7 @@ export interface StateRoomContext {
   controls: OwnerControls;
   orders: StateOrders;
   report: StateReport;
+  census?: CensusReport;
   precheck?: { health?: number; bots?: { id: string; status: string; problems?: string[] }[] };
   /** Open requests waiting for the State (from GitHub, when the suite could read them). */
   pending?: { pulls: number; tasks: number };
@@ -216,6 +218,7 @@ function lawsText(ctx: StateRoomContext): string {
 const HELP = [
   'أقدر أعمل معاك الحاجات دي:',
   '- «إيه الوضع؟» أو «إيه المستجدات؟»: تقرير سريع عن قراراتي والروبوتات.',
+  '- «تقرير التعداد والزيارات» أو «الكشف العلني»: إحصاء الزيارات وتوزيعها حول العالم.',
   '- «قراراتك» أو «قوانين المنصة» أو «مين الأعضاء؟».',
   '- «وقف روبوت الأخبار» أو «رجّع روبوت الأخبار» أو «شغّل الدورية دلوقتي»: أوامر بتنفذها الدولة.',
   '- «قانون جديد: …» أو «الغي القانون P-01»: قوانين المنصة.',
@@ -264,6 +267,9 @@ export function stateReply(message: string, ctx: StateRoomContext): StateReplyRe
     return decide({ action, target: bot.id, whyAr: '' });
   }
 
+  if (/(?:تعداد|الزيارات|زيارات|زوار|الزوار|كشف علني|الكشف العلني|خريطه العالم|الخريطه الحراريه|احصاء|احصائيات)/.test(n)) {
+    return { text: plainTextStatement(ctx.census || emptyCensusReport()) };
+  }
   if (/(?:قانون|قوانين|دستور|قواعد|لوايح|لوائح)/.test(n)) return { text: lawsText(ctx) };
   if (/(?:قرار|قرارات|وافقتي|رفضتي|وافقت|رفضت)/.test(n)) {
     const d = ctx.report.decisions.slice(0, 10);
@@ -292,7 +298,7 @@ export const STATE_ROOM_KEY = 'sham_state_room_v1';
 export interface StateRoomMessage { id: string; by: 'owner' | 'state'; text: string; at: string; order?: StateOrder; sent?: boolean }
 export interface StateRoomData { version: 1; messages: StateRoomMessage[] }
 /** Questions the room suggests before the first message (the State speaks Arabic, so they stay Arabic). */
-export const STATE_ROOM_STARTERS = ['إيه المستجدات؟', 'قوانين المنصة', 'مين الروبوتات الواقفة؟', 'مين الأعضاء؟'];
+export const STATE_ROOM_STARTERS = ['إيه المستجدات؟', 'تقرير التعداد والزيارات', 'قوانين المنصة', 'مين الروبوتات الواقفة؟', 'مين الأعضاء؟'];
 export const STATE_ROOM_LIMITS = { messages: 200, chars: 2000 } as const;
 export function readStateRoom(x: unknown): StateRoomData {
   const d = (x && typeof x === 'object' ? x : {}) as Partial<StateRoomData>;

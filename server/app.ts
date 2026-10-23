@@ -278,6 +278,7 @@ app.post('/api/news/refresh', async (req, res) => {
 // Sham Core: provider-independent services assistant + management API.
 app.use('/api/assistant', shamCore.assistant);
 app.use('/api/admin', shamCore.admin);
+app.use('/api/census', shamCore.censusRouter);
 
 app.use('/api', (_req, res) => {
   res.status(404).json({ error: 'API route not found' });

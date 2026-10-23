@@ -6,6 +6,7 @@ import type { FinanceOrder, FinanceSession, FinanceEntry, FinanceAttempt, Financ
 import type { MemoryEntry } from '../../src/utils/shaheenMemory';
 import type { SupportedLanguage } from '../../src/types/i18n';
 import type { SeoState } from '../../src/seo/agentState';
+import type { CensusReport } from '../../src/utils/platformCensus';
 
 export type Lang = SupportedLanguage;
 
@@ -312,5 +313,7 @@ export interface Collections {
   memory: MemoryEntry;
   /** «منارة شاهين»: SEO/media agent state and learning history (one record: id 'state'). */
   seo: SeoState;
+  /** «روبوت التعداد — دولة المنصة»: aggregated, privacy-safe platform visit ledger (one record: id 'state'). */
+  census: CensusReport & { id: string };
 }
 export type CollectionName = keyof Collections;

@@ -21,6 +21,8 @@ import { createLedgerStore, createStore, type Store } from './store';
 import { BankService } from '../finance/bank';
 import { RateLimiter, clientKey } from './rateLimit';
 import { createSeoService } from '../seo/service';
+import { createCensusService } from '../census';
+import { buildPublicStatement } from '../../src/utils/platformCensus';
 import { probeEngines } from '../shaheen';
 import { createDesignBrief, validateDesignRequest } from '../design/assistant';
 import { SHAHEEN_SITE_SETTINGS } from '../config/shaheen';
@@ -75,6 +77,8 @@ export function createShamCore(options: CoreOptions = {}) {
   const notifier = createNotifier(env, options.fetch);
   // «منارة شاهين»: SEO/media agent — its own state, engines follow the admin policy, runs are manual or scheduled.
   const seo = createSeoService({ repo, env, fetch: options.fetch });
+  // «روبوت التعداد — دولة المنصة»: privacy-safe global visit ledger & public statement.
+  const census = createCensusService({ store: durable });
   const seoRunLimiter = new RateLimiter(4, 10 * 60_000);
   const designLimiter = new RateLimiter(8, 10 * 60_000);
   const feedbackLimiter = new RateLimiter(60, 10 * 60_000);
@@ -567,13 +571,24 @@ export function createShamCore(options: CoreOptions = {}) {
     res.status(202).json({ accepted: true, submit, startedAt: new Date().toISOString() });
   }));
 
+  // ---- «روبوت التعداد — دولة المنصة»: global visit census, world heatmap data & public statement ----
+  admin.get('/census', wrap(async (_req, res) => {
+    const report = await census.load();
+    res.json({
+      ok: true,
+      report,
+      statement: buildPublicStatement(report),
+      storage: { kind: durable.kind, persistent: durable.persistent, error: storeError },
+    });
+  }));
+
   admin.get('/export', wrap(async (_req, res) => {
-    const collections: CollectionName[] = ['settings', 'services', 'products', 'knowledge', 'requests', 'conversations', 'gaps', 'visitors'];
+    const collections: CollectionName[] = ['settings', 'services', 'products', 'knowledge', 'requests', 'conversations', 'gaps', 'visitors', 'census'];
     const out: Record<string, unknown> = { exportedAt: new Date().toISOString(), storage: store.kind };
-    for (const c of collections) out[c] = await store.list(c);
+    for (const c of collections) out[c] = await (c === 'census' ? durable : store).list(c);
     res.setHeader('Content-Disposition', `attachment; filename="sham-core-backup-${new Date().toISOString().slice(0, 10)}.json"`);
     res.json(out);
   }));
 
-  return { assistant, admin, repo, orchestrator, store, runtime, memory, seo, finance, bank };
+  return { assistant, admin, repo, orchestrator, store, runtime, memory, seo, finance, bank, census, censusRouter: census.router };
 }

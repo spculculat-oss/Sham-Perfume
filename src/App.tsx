@@ -33,6 +33,7 @@ import { AuthModal } from './components/AuthModal';
 import { DataPrivacyModal } from './components/DataPrivacyModal';
 import { LegalCenter } from './components/LegalCenter';
 import { CookieConsent } from './components/CookieConsent';
+import { trackPlatformVisit } from './utils/visitTracker';
 import { useSeo } from './hooks/useSeo';
 import {
   FormulationState,
@@ -531,6 +532,10 @@ export default function App() {
   useEffect(() => {
     setCurrentEnvironment((prev) => alignEnvironmentToCountry(prev, storeCountry));
   }, [storeCountry]);
+
+  useEffect(() => {
+    trackPlatformVisit({ section: activeTab, country: storeCountry, lang: currentLang });
+  }, [activeTab, storeCountry, currentLang]);
 
   // Check and load shared formula from URL hash or query params
   useEffect(() => {
