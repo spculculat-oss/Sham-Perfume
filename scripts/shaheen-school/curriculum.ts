@@ -22,6 +22,7 @@ import { ARTS_LESSONS, EDUCATION_LESSONS, MEDIA_LESSONS, SPORTS_LESSONS } from '
 import { RELIGION_LESSONS, TOURISM_LESSONS } from './curriculumCulture';
 import { HACKING_LESSONS, THREAT_LESSONS } from './curriculumHacking';
 import { UNIVERSITY_PAIRS } from './curriculumUniversity';
+import { RESEARCH_PAIRS } from './curriculumResearch';
 
 export type TrackId =
   | 'perfume' | 'prog_langs' | 'blocks' | 'software' | 'graphics' | 'web_care' | 'ai_science' | 'security' | 'quantum' | 'ai_tools'
@@ -128,7 +129,7 @@ export function trackOf(topic: string): TrackId {
       'human-medicine': 'medicine', veterinary: 'medicine', biosafety: 'medicine', nutrition: 'medicine',
       space: 'earth_space', earth: 'earth_space', chemistry: 'chemistry', physics: 'physics', nuclear: 'physics',
       math: 'math', biology: 'biology', agriculture: 'biology', semiconductors: 'engineering',
-      'electronic-warfare': 'engineering', computing: 'it_sciences', 'war-studies': 'history', logic: 'religion', cosmetics: 'chemistry',
+      'electronic-warfare': 'engineering', computing: 'it_sciences', 'war-studies': 'history', logic: 'religion',
     };
     return expertTracks[topic.slice('expert:'.length)] ?? 'perfume';
   }
@@ -683,7 +684,7 @@ const PAIRS: AcademyPair[] = [
   ...AI_PROJECT_LESSONS, ...IT_LESSONS, ...FRONTIER_LESSONS, ...CHEM_LESSONS, ...PHYS_LESSONS, ...MATH_LESSONS,
   ...COMMERCE_LESSONS, ...LAW_LESSONS, ...PR_LESSONS, ...MGMT_LESSONS, ...HIST_LESSONS, ...GEO_LESSONS, ...LIT_LESSONS, ...SOC_LESSONS,
   ...PSY_LESSONS, ...CYBERPSY_LESSONS, ...UXPSY_LESSONS, ...PERFUME_SKILLS,
-  ...UNIVERSITY_PAIRS,
+  ...UNIVERSITY_PAIRS, ...RESEARCH_PAIRS,
   ...BIOLOGY_LESSONS, ...MEDICINE_LESSONS,
   ...ENGINEERING_LESSONS, ...EARTH_LESSONS,
   ...EDUCATION_LESSONS, ...MEDIA_LESSONS, ...SPORTS_LESSONS, ...ARTS_LESSONS,
