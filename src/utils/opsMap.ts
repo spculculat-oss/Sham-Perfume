@@ -241,9 +241,9 @@ export function journeyHealth(j: Journey, scores: ToolScore[]): { grade: Grade; 
 }
 
 // ── Layout of the map (SVG user units) ────────────────────────────────────────────────────────────────────
-export const MAP = { width: 1240, height: 920, nodeW: 220, nodeH: 42, top: 210, gap: 54 } as const;
+export const MAP = { width: 1480, height: 920, nodeW: 220, nodeH: 42, top: 210, gap: 54 } as const;
 /** Columns right-to-left (Arabic reading order): leadership first. */
-export const DEPT_ORDER: DeptId[] = ['leadership', 'store', 'content', 'experience', 'reliability'];
+export const DEPT_ORDER: DeptId[] = ['leadership', 'store', 'content', 'experience', 'reliability', 'innovation'];
 export const deptX = (dept: DeptId) => MAP.width - 130 - DEPT_ORDER.indexOf(dept) * 245;
 export const ROOT = { x: MAP.width / 2, y: 52 };
 

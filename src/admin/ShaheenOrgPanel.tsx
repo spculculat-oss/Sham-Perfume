@@ -27,6 +27,7 @@ const DEPT_COLOR: Record<DeptId, string> = {
   content: 'border-sky-700 bg-sky-50 text-sky-900',
   experience: 'border-violet-700 bg-violet-50 text-violet-900',
   reliability: 'border-emerald-700 bg-emerald-50 text-emerald-900',
+  innovation: 'border-teal-700 bg-teal-50 text-teal-900',
 };
 const STATUS: Record<BotStatus, { label: () => string; dot: string }> = {
   ok: { label: () => T('سليمة'), dot: 'bg-emerald-500' },

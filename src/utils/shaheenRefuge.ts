@@ -63,7 +63,7 @@ const REPORT_OWNER: Record<string, BotId> = {
   'shaheen-blocks.json': 'school', 'shaheen-council.json': 'council', 'shaheen-languages.json': 'languages',
   'shaheen-memory.json': 'school', 'shaheen-news.json': 'news', 'shaheen-patrol.json': 'patrol',
   'shaheen-precheck.json': 'precheck', 'shaheen-school.json': 'school', 'shaheen-skills.json': 'importer',
-  'platform-state.json': 'state', 'shaheen-harvest.json': 'academy', 'shaheen-sciences.json': 'academy',
+  'platform-state.json': 'state', 'shaheen-harvest.json': 'academy', 'shaheen-sciences.json': 'academy', 'shaheen-lab.json': 'lab',
   'sham-training.json': 'teacher', 'store-catalog.json': 'catalog', 'store-review.json': 'product_pages',
 };
 const REPORT_NAMES: Record<string, [string, string]> = {
@@ -91,6 +91,7 @@ const REPORT_NAMES: Record<string, [string, string]> = {
   'platform-state.json': ['دولة المنصة — القرارات والتصويتات', 'Platform state — decisions & votes'],
   'shaheen-harvest.json': ['حصّاد شاهين لإجابات الزوار', "Shaheen's visitor-answers harvester"],
   'shaheen-sciences.json': ['تقرير علوم الأرض عند شاهين', "Shaheen's earth-sciences track report"],
+  'shaheen-lab.json': ['تقرير معمل شاهين للتجارب والابتكار', "Shaheen experiments lab report"],
   'sham-training.json': ['دروس تدريب مساعد شام', 'Sham assistant training lessons'],
   'store-catalog.json': ['كتالوج المتجر', 'Store catalogue'],
   'store-review.json': ['مراجعة صفحات المنتجات', 'Product pages review'],
@@ -115,7 +116,7 @@ const WORKFLOW_OWNER: Record<string, BotId> = {
   'shaheen-keys.yml': 'keys', 'shaheen-languages.yml': 'languages', 'shaheen-manus.yml': 'verifier',
   'shaheen-news.yml': 'news', 'shaheen-patrol.yml': 'patrol', 'shaheen-precheck.yml': 'precheck',
   'shaheen-seo.yml': 'seo', 'owner-control.yml': 'owner_desk', 'platform-state.yml': 'state',
-  'shaheen-school-clock.yml': 'academy',
+  'shaheen-school-clock.yml': 'academy', 'shaheen-lab.yml': 'lab',
 };
 const WORKFLOW_NAMES: Record<string, [string, string]> = {
   'aistudio-bridge.yml': ['بوابة استوديو التصميم', 'Design studio bridge'],
@@ -140,6 +141,7 @@ const WORKFLOW_NAMES: Record<string, [string, string]> = {
   'owner-control.yml': ['أوامر صاحب الموقع', 'Owner control'],
   'platform-state.yml': ['دولة المنصة (التصويت)', 'Platform state (voting)'],
   'shaheen-school-clock.yml': ['أكاديمية شاهين على مدار الساعة', "Shaheen's academy clock"],
+  'shaheen-lab.yml': ['تشغيل معمل شاهين للتجارب', 'Shaheen lab run'],
 };
 const workflowEntry = (file: string): RefugeEntry => {
   const [nameAr, nameEn] = WORKFLOW_NAMES[file] ?? [file, file];
