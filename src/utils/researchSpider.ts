@@ -20,6 +20,20 @@ export function createResearchSpider(request: Request, options: SpiderOptions = 
   const concurrency = Math.max(1, Math.min(6, options.concurrency ?? 3));
   const cache = new Map<string, { body: string; expires: number }>();
   const pending = new Map<string, Promise<string>>();
+  // Per-origin backoff: one language's quota does not disable another Wikipedia API.
+  const cooldowns = new Map<string, number>();
+  const deferSource = (origin: string, retryAfter: string | null) => {
+    const seconds = retryAfter?.trim();
+    const deadline = seconds && /^\d+$/.test(seconds)
+      ? now() + Number(seconds) * 1000
+      : seconds ? Date.parse(seconds) : NaN;
+    const until = Number.isFinite(deadline) && deadline > now() ? deadline : now() + 60_000;
+    cooldowns.set(origin, Math.max(cooldowns.get(origin) ?? 0, until));
+  };
+  const checkSource = (origin: string) => {
+    if ((cooldowns.get(origin) ?? 0) > now()) throw new Error('Source cooling down');
+    cooldowns.delete(origin);
+  };
   let active = 0;
   const waiting: Array<() => void> = [];
   const stats = { hits: 0, requests: 0, failures: 0 };
@@ -37,6 +51,7 @@ export function createResearchSpider(request: Request, options: SpiderOptions = 
       return new Response(old.body, { headers: { 'content-type': 'application/json' } });
     }
     cache.delete(key);
+    checkSource(target.origin);
     let work = pending.get(key);
     if (!work) {
       // Hard bound on queued work: fail honestly instead of accumulating visitors indefinitely.
@@ -46,9 +61,16 @@ export function createResearchSpider(request: Request, options: SpiderOptions = 
         else active++;
         try {
           init?.signal?.throwIfAborted();
+          checkSource(target.origin);
           stats.requests++;
           const response = await request(url, { ...init, signal: AbortSignal.timeout(options.timeoutMs ?? 8000) });
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          if (response.status === 429 || response.status === 503) {
+            deferSource(target.origin, response.headers.get('retry-after'));
+          }
+          if (!response.ok) {
+            await response.body?.cancel().catch(() => {});
+            throw new Error(`HTTP ${response.status}`);
+          }
           // Stream with a hard byte budget; never cache unexpectedly large documents.
           const reader = response.body?.getReader();
           if (!reader) throw new Error('Empty response');
@@ -65,7 +87,11 @@ export function createResearchSpider(request: Request, options: SpiderOptions = 
             body += decoder.decode();
           } finally { await reader.cancel().catch(() => {}); }
           const data: unknown = JSON.parse(body);
-          // MediaWiki can return quota/maxlag errors with HTTP 200. Never preserve these as knowledge.
+          // MediaWiki can return quota/maxlag errors with HTTP 200. Respect them too.
+          const code = (data as { error?: { code?: unknown } } | null)?.error?.code;
+          if (code === 'ratelimited' || code === 'maxlag') {
+            deferSource(target.origin, response.headers.get('retry-after'));
+          }
           if (!data || typeof data !== 'object' || 'error' in data || !('query' in data)) {
             throw new Error('Invalid source response');
           }
@@ -97,7 +123,8 @@ export function createResearchSpider(request: Request, options: SpiderOptions = 
       if (!researchQueries(question, lang)) return undefined;
       return research(cachedFetch, question, lang, { userAgent: options.userAgent, timeoutMs: options.timeoutMs });
     },
-    status: () => ({ ...stats, cachedDocuments: cache.size, pending: pending.size, active }),
+    status: () => ({ ...stats, cachedDocuments: cache.size, pending: pending.size, active,
+      coolingSources: [...cooldowns.values()].filter((until) => until > now()).length }),
     clear: () => cache.clear(),
   };
 }

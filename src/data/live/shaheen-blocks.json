@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T08:13:59.835Z",
+ "updatedAt": "2026-10-23T08:20:56.043Z",
  "programs": [
   {
    "id": "school-day",
@@ -8,7 +8,7 @@
    "goal": "امتحان وتسميع وحفظ في الذاكرة كل 6 ساعات",
    "schedule": "every 6 hours",
    "runner": "school",
-   "createdAt": "2026-10-23T08:16:35.003Z",
+   "createdAt": "2026-10-23T07:45:38.958Z",
    "blocks": [
     {
      "kind": "action",
@@ -68,7 +68,7 @@
    "goal": "فحص وصيانة الموقع يومياً قبل الذروة",
    "schedule": "daily 08:00",
    "runner": "patrol",
-   "createdAt": "2026-10-23T08:16:35.003Z",
+   "createdAt": "2026-10-23T07:45:38.959Z",
    "blocks": [
     {
      "kind": "note",
@@ -162,7 +162,7 @@
    "goal": "كل أداة تتطور في مجالها بالتناوب",
    "schedule": "weekly mon 09:00",
    "runner": "school",
-   "createdAt": "2026-10-23T08:16:35.003Z",
+   "createdAt": "2026-10-23T07:45:38.959Z",
    "blocks": [
     {
      "kind": "loop",
@@ -198,7 +198,7 @@
    "goal": "شاهين يدير نفسه بنفسه بدون أي تطبيق ذكاء آخر",
    "schedule": "every 12 hours",
    "runner": "patrol",
-   "createdAt": "2026-10-23T08:16:35.003Z",
+   "createdAt": "2026-10-23T07:45:38.959Z",
    "blocks": [
     {
      "kind": "note",
@@ -263,6 +263,13 @@
   }
  ],
  "runs": [
+  {
+   "program": "site-care",
+   "at": "2026-10-23T08:20:56.043Z",
+   "ok": true,
+   "steps": 12,
+   "failed": 0
+  },
   {
    "program": "ai-self",
    "at": "2026-10-23T07:30:33.909Z",

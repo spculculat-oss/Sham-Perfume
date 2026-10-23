@@ -9,6 +9,7 @@ import {
   Layers,
   Scale,
   Sparkles,
+  PenLine,
   DollarSign,
   Globe,
   Compass,
@@ -27,6 +28,7 @@ import { LText, makeT } from '../لغات/localize';
 import { isRTL } from '../لغات/localizedContent';
 import { uiLabel } from '../لغات/uiTextL10n';
 import { cosmeticsText } from '../لغات/cosmeticsL10n';
+import { designersText } from '../لغات/designersL10n';
 
 
 const S = {
@@ -92,6 +94,8 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
     guide: { label: t('nav_guide', currentLang), icon: BookOpen },
     perfumes: { label: cosmeticsText(currentLang, 'navPerfumes'), icon: Sparkles },
     cosmetics: { label: cosmeticsText(currentLang, 'sectionCosmetics'), icon: Sparkles },
+    perfume_designers: { label: designersText(currentLang, 'navPerfume'), icon: PenLine },
+    cosmetic_designers: { label: designersText(currentLang, 'navCosmetic'), icon: PenLine },
   };
 
   // Deep routes («community/messenger/<id>», «store/<slug>»…) show their section's name, never the raw route.
@@ -104,6 +108,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
   const quickLinks = [
     { id: 'concentration', label: L('ql_concentration'), icon: FlaskConical },
     { id: 'molecule_studio', label: uiLabel('molecule_studio', currentLang), icon: Atom },
+    { id: 'perfume_designers', label: designersText(currentLang, 'hubButton'), icon: PenLine },
     { id: 'maceration_simulator', label: L('ql_maceration'), icon: Hourglass },
     { id: 'pyramid', label: L('ql_pyramid'), icon: Layers },
     { id: 'alcohol', label: L('ql_alcohol'), icon: Hourglass },

@@ -1,8 +1,9 @@
 import React from 'react';
-import { ArrowLeft, ArrowRight, BookOpen, Calculator, Database, FlaskConical, Leaf, Store } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpen, Calculator, Database, FlaskConical, Leaf, PenLine, Store } from 'lucide-react';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../types/i18n';
 import { cosmeticsText, type CosmeticsUiKey } from '../لغات/cosmeticsL10n';
 import { t as ui } from '../لغات/i18n';
+import { designersText } from '../لغات/designersL10n';
 
 interface Props {
   currentLang: SupportedLanguage;
@@ -19,12 +20,14 @@ export function SectionsGateway({ currentLang, onNavigate }: Props) {
   const perfumeTools = [
     { tab: 'concentration', label: ui('nav_calc', currentLang), icon: Calculator },
     { tab: 'raw_materials', label: ui('nav_raw_materials', currentLang), icon: Database },
+    { tab: 'perfume_designers', label: designersText(currentLang, 'hubButton'), icon: PenLine },
     { tab: 'store?section=perfumes', label: ct('sectionPerfumes'), icon: Store },
   ];
   const cosmeticTools = [
     { tab: 'cosmetics', label: ct('tabFormulator'), icon: FlaskConical },
     { tab: 'cosmetics', label: ct('tabLibrary'), icon: Leaf },
     { tab: 'cosmetics', label: ct('tabScience'), icon: BookOpen },
+    { tab: 'cosmetic_designers', label: designersText(currentLang, 'hubButton'), icon: PenLine },
   ];
   const card = (
     tab: string, title: string, text: string, tools: typeof perfumeTools, tone: 'amber' | 'rose', emoji: string, id: string,

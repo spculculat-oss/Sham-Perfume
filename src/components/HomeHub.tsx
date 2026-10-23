@@ -19,6 +19,7 @@ import {
   Layers,
   Wind,
   Atom,
+  PenLine,
   Sliders,
   Wine,
   Gauge,
@@ -70,6 +71,7 @@ import { STATS_BADGE_EN, PORTAL_NEWS_EN } from '../لغات/localizedHub';
 import { isRTL } from '../لغات/localizedContent';
 import { LText, makeT, loc, fmt, LOCALE_MAP } from '../لغات/localize';
 import { uiLabel } from '../لغات/uiTextL10n';
+import { designersText } from '../لغات/designersL10n';
 import { loadLiveNews, relativeTime, type NewsFile } from '../utils/liveNews';
 import { PORTAL_L10N as PORTAL_L10N_BASE, NEWS_L10N_A, NewsL10N } from '../لغات/hubL10n';
 import { NEWS_L10N_B } from '../لغات/hubL10n2';
@@ -1169,6 +1171,15 @@ export const HomeHub: React.FC<HomeHubProps> = ({
             >
               <Atom className="h-4 w-4 text-amber-300" />
               <span>{currentLang === 'ar' ? 'افتح مختبر تركيب وتحليل العطور' : 'Open the perfume composition studio'}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('perfume_designers')}
+              data-testid="home-designers"
+              className="ms-2 inline-flex items-center gap-2 rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-2.5 text-xs font-bold text-amber-100 transition hover:border-amber-300 hover:bg-amber-300/20 focus:outline-none focus:ring-2 focus:ring-amber-300"
+            >
+              <PenLine className="h-4 w-4 text-amber-300" />
+              <span>{designersText(currentLang, 'hubButton')} — {designersText(currentLang, 'hubButtonSub')}</span>
             </button>
 
             {/* Quick Live Stats Strip */}

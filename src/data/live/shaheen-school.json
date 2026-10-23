@@ -1,16 +1,16 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T08:13:59.835Z",
+ "updatedAt": "2026-10-23T07:43:09.055Z",
  "reliance": {
   "score": 100,
-  "covered": 1344,
-  "total": 1344,
-  "fromMemory": 1344,
+  "covered": 1326,
+  "total": 1326,
+  "fromMemory": 1326,
   "fromLibrary": 0,
   "byLang": {
    "ar": {
-    "covered": 1323,
-    "total": 1323
+    "covered": 1305,
+    "total": 1305
    },
    "en": {
     "covered": 21,
@@ -19,12 +19,18 @@
   }
  },
  "studiedTotal": 142,
- "selfTaughtTotal": 1079,
+ "selfTaughtTotal": 1063,
  "history": [
   {
-   "at": "2026-10-23T08:13:59.835Z",
+   "at": "2026-10-23T07:43:09.055Z",
    "score": 100,
-   "studied": 16,
+   "studied": 0,
+   "mode": "self"
+  },
+  {
+   "at": "2026-10-23T07:32:10.796Z",
+   "score": 100,
+   "studied": 0,
    "mode": "self"
   },
   {
@@ -464,7 +470,7 @@
  },
  "localTaughtTotal": 85,
  "spelling": {
-  "at": "2026-10-23T08:13:59.835Z",
+  "at": "2026-10-23T07:43:09.055Z",
   "tried": 746,
   "understood": 702,
   "score": 94,
@@ -481,7 +487,7 @@
   }
  },
  "practice": {
-  "at": "2026-10-23T08:13:59.835Z",
+  "at": "2026-10-23T07:43:09.055Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -574,7 +580,7 @@
     "id": "check-curriculum",
     "titleAr": "فحص: المنهج مكتمل بلا تكرار",
     "ok": true,
-    "detail": "فُحص فعلاً: 1031 زوج سؤال وجواب، وكل المعرفات فريدة"
+    "detail": "فُحص فعلاً: 1013 زوج سؤال وجواب، وكل المعرفات فريدة"
    }
   ]
  },
@@ -775,8 +781,8 @@
    "score": 100
   },
   "academic": {
-   "covered": 40,
-   "total": 40,
+   "covered": 22,
+   "total": 22,
    "score": 100
   },
   "vocational": {
@@ -801,7 +807,7 @@
   }
  },
  "tools": {
-  "at": "2026-10-23T08:13:59.835Z",
+  "at": "2026-10-23T07:43:09.055Z",
   "items": [
    {
     "id": "finance_agent",
@@ -966,18 +972,18 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-23T08:13:59.835Z",
+  "at": "2026-10-23T07:43:09.055Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-23T14:13:59.835Z"
+    "next": "2026-10-23T13:43:09.055Z"
    },
    {
     "id": "site-care",
-    "next": "2026-10-24T08:00:00.000Z"
+    "next": "2026-10-23T08:00:00.000Z"
    },
    {
     "id": "tool-dev",
@@ -985,7 +991,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-23T20:13:59.835Z"
+    "next": "2026-10-23T19:43:09.055Z"
    }
   ]
  }

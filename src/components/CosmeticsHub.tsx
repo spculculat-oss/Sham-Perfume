@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import {
   AlertTriangle, BookOpen, Check, CheckCircle2, ChevronDown, Copy, FlaskConical, Leaf, MessageCircle, Printer, Search,
-  ShieldCheck, Sparkles, Store, Thermometer, Timer, Droplets,
+  ShieldCheck, Sparkles, Store, Thermometer, Timer, Droplets, PenLine,
 } from 'lucide-react';
+import { designersText } from '../لغات/designersL10n';
 import type { SupportedLanguage } from '../types/i18n';
 import { LocalizedNumberInput } from './LocalizedNumberInput';
 import { loc } from '../لغات/localize';
@@ -63,6 +64,10 @@ export default function CosmeticsHub({ currentLang, onNavigate }: Props) {
             <button type="button" onClick={() => onNavigate('master_ai')}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white text-sm font-bold cursor-pointer">
               <MessageCircle className="w-4 h-4" /> {ct('askShaheen')}
+            </button>
+            <button type="button" onClick={() => onNavigate('cosmetic_designers')} data-testid="cosmetics-designers"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-rose-700 hover:bg-rose-800 text-white text-sm font-bold cursor-pointer">
+              <PenLine className="w-4 h-4" /> {designersText(lang, 'hubButton')}
             </button>
           </div>
         </div>

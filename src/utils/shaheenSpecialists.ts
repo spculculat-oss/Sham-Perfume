@@ -180,6 +180,8 @@ export const SITE_SECTIONS: SiteSection[] = [
   { id: 'perfume_news', titleAr: 'أخبار العطور', titleEn: 'Perfume news', consultants: ['specialist_society', 'specialist_business', 'specialist_culture'] },
   { id: 'raw_materials', titleAr: 'المواد الخام', titleEn: 'Raw materials', consultants: ['specialist_scents', 'specialist_health'] },
   { id: 'world_perfumes', titleAr: 'عطور العالم', titleEn: 'World perfumes', consultants: ['specialist_society', 'specialist_scents', 'specialist_culture'] },
+  { id: 'perfume_designers', titleAr: 'قسم المصممين — عطور', titleEn: 'Designers — perfume', consultants: ['specialist_scents', 'specialist_science', 'specialist_health'] },
+  { id: 'cosmetic_designers', titleAr: 'قسم المصممين — تجميل', titleEn: 'Designers — cosmetics', consultants: ['specialist_health', 'specialist_science', 'specialist_business'] },
   { id: 'molecule_studio', titleAr: 'استوديو الجزيئات', titleEn: 'Molecule studio', consultants: ['specialist_science', 'specialist_tech', 'specialist_engineering'] },
   { id: 'library', titleAr: 'مكتبة شاهين', titleEn: "Shaheen's library", consultants: ['specialist_society', 'specialist_scents', 'specialist_learning', 'specialist_culture'] },
   { id: 'community', titleAr: 'المجتمع', titleEn: 'Community', consultants: ['specialist_society', 'specialist_business', 'specialist_health', 'specialist_learning', 'specialist_culture'] },
