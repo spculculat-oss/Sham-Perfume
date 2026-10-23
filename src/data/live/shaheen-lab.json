@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T08:01:59.915Z",
+ "updatedAt": "2026-10-23T22:07:59.327Z",
  "lab": {
   "nameAr": "معمل شاهين للتجارب والابتكار",
   "nameEn": "Shaheen Lab for Experiments & Innovation",
@@ -819,7 +819,7 @@
    "id": "res-14",
    "field": "computing",
    "titleAr": "نظرية المعلومات",
-   "scientistAr": "كلود شانون",
+   "scientistAr": "شانون",
    "yearAr": "1948",
    "findingAr": "البت وحدة المعلومات، وحدود ضغط البيانات — أساس الاتصالات الرقمية."
   },
