@@ -1,15 +1,15 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T02:15:30.288Z",
+ "updatedAt": "2026-10-23T03:16:59.745Z",
  "reliance": {
   "score": 100,
-  "covered": 1211,
+  "covered": 1214,
   "total": 1216,
-  "fromMemory": 1211,
+  "fromMemory": 1214,
   "fromLibrary": 0,
   "byLang": {
    "ar": {
-    "covered": 1190,
+    "covered": 1193,
     "total": 1195
    },
    "en": {
@@ -18,9 +18,15 @@
    }
   }
  },
- "studiedTotal": 197,
+ "studiedTotal": 198,
  "selfTaughtTotal": 891,
  "history": [
+  {
+   "at": "2026-10-23T03:16:59.745Z",
+   "score": 100,
+   "studied": 1,
+   "mode": "local"
+  },
   {
    "at": "2026-10-23T02:15:30.288Z",
    "score": 100,
@@ -366,6 +372,12 @@
  ],
  "lastStudied": [
   {
+   "q": "ازاي المستشفيات بتمنع العدوى بين المرضى؟",
+   "lang": "ar",
+   "at": "2026-10-23T03:16:59.745Z",
+   "variants": 4
+  },
+  {
    "q": "ايه علاقة الملح بضغط الدم؟",
    "lang": "ar",
    "at": "2026-10-23T02:15:30.288Z",
@@ -478,30 +490,9 @@
    "lang": "ar",
    "at": "2026-10-23T00:06:43.697Z",
    "variants": 0
-  },
-  {
-   "q": "ازاي نحافظ على الفيتامينات أثناء الطبخ؟",
-   "lang": "ar",
-   "at": "2026-10-23T00:06:43.697Z",
-   "variants": 4
   }
  ],
  "pending": [
-  {
-   "q": "ازاي المستشفيات بتمنع العدوى بين المرضى؟",
-   "lang": "ar",
-   "topic": "expert:biosafety"
-  },
-  {
-   "q": "ايه هو الليد وازاي بيطلع ضوء؟",
-   "lang": "ar",
-   "topic": "expert:semiconductors"
-  },
-  {
-   "q": "ايه هو الضغط الجوي؟",
-   "lang": "ar",
-   "topic": "expert:physics"
-  },
   {
    "q": "ازاي اعرف إن الخبر مضلل منطقياً؟",
    "lang": "ar",
@@ -518,9 +509,9 @@
   "aiReadings": 0,
   "localReadings": 25
  },
- "localTaughtTotal": 140,
+ "localTaughtTotal": 141,
  "spelling": {
-  "at": "2026-10-23T02:15:30.288Z",
+  "at": "2026-10-23T03:16:59.745Z",
   "tried": 745,
   "understood": 697,
   "score": 94,
@@ -537,7 +528,7 @@
   }
  },
  "practice": {
-  "at": "2026-10-23T02:15:30.288Z",
+  "at": "2026-10-23T03:16:59.745Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -716,9 +707,9 @@
    "score": 97
   },
   "physics": {
-   "covered": 35,
+   "covered": 36,
    "total": 36,
-   "score": 97
+   "score": 100
   },
   "math": {
    "covered": 28,
@@ -786,14 +777,14 @@
    "score": 100
   },
   "medicine": {
-   "covered": 51,
+   "covered": 52,
    "total": 52,
-   "score": 98
+   "score": 100
   },
   "engineering": {
-   "covered": 37,
+   "covered": 38,
    "total": 38,
-   "score": 97
+   "score": 100
   },
   "earth_space": {
    "covered": 34,
@@ -832,7 +823,7 @@
   }
  },
  "tools": {
-  "at": "2026-10-23T02:15:30.288Z",
+  "at": "2026-10-23T03:16:59.745Z",
   "items": [
    {
     "id": "finance_agent",
@@ -997,14 +988,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-23T02:15:30.288Z",
+  "at": "2026-10-23T03:16:59.745Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-23T08:15:30.288Z"
+    "next": "2026-10-23T09:16:59.745Z"
    },
    {
     "id": "site-care",
@@ -1016,7 +1007,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-23T14:15:30.288Z"
+    "next": "2026-10-23T15:16:59.745Z"
    }
   ]
  }
