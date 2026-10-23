@@ -1,4 +1,4 @@
-import { hasSensitiveNumber, isOwnerClaim, ownerClaimReply, sensitiveNumberReply } from './ownerAuthority';
+import { cardOfferReply, hasSensitiveNumber, isOwnerClaim, offersCardDetails, ownerClaimReply, sensitiveNumberReply } from './ownerAuthority';
 import type { SupportedLanguage } from '../types/i18n';
 
 /**
@@ -172,6 +172,8 @@ export function quickAnswer(text: string, language: SupportedLanguage): QuickAns
   // «صاحب الموقع» (src/utils/ownerAuthority.ts): a card/ID number is never sent to any engine or kept, in any
   // language; a claim to be the owner is never believed from a chat (he is proven by GitHub and the admin code).
   if (hasSensitiveNumber(text)) return { app: 'privacy', reply: sensitiveNumberReply(language) };
+  // «ابعتلك رقم الكارت؟» — warned at once, before any engine sees the question.
+  if (offersCardDetails(text)) return { app: 'privacy', reply: cardOfferReply(language) };
   if (isOwnerClaim(text)) return { app: 'owner', reply: ownerClaimReply(language) };
   const lang: Lang | undefined = language === 'ar' ? 'ar' : language === 'en' ? 'en' : undefined;
   if (!lang) return undefined;
