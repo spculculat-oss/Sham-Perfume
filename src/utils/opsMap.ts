@@ -181,6 +181,18 @@ export const JOURNEYS: Journey[] = [
     { bot: 'finance', ar: 'طرق الدفع وتسجيل الطلب', en: 'Payment methods and the order record' },
     { bot: 'visitor_tour', ar: 'جولة شراء تجريبية تتأكد إن الرحلة سليمة', en: 'A test shopping tour checks the journey' },
   ] },
+  { id: 'care', nameAr: 'خدمة بعد البيع', nameEn: 'After-sales care', steps: [
+    { bot: 'chat', ar: 'الزائر بيسأل أو بيشتكي', en: 'A visitor asks or complains' },
+    { bot: 'service', ar: 'مكتب الدعم يجهز الرد ويصعّد المتأخر', en: 'The care desk prepares the reply and escalates late cases' },
+    { bot: 'secretary', ar: 'المشرف يتأكد إن كل حالة اتغطت', en: 'The secretary makes sure every case is covered' },
+    { bot: 'catalog', ar: 'السؤال الناقص يتحول لبيانات أو درس', en: 'A missing answer becomes data or a lesson' },
+  ] },
+  { id: 'stock', nameAr: 'مخزون ناقص', nameEn: 'Stock runs low', steps: [
+    { bot: 'inventory', ar: 'يرصد النفاد والطلب الحقيقي', en: 'Spots the shortage and the real demand' },
+    { bot: 'importer', ar: 'يجهز إعادة التوريد من المتاجر المعتمدة', en: 'Prepares the restock from approved stores' },
+    { bot: 'store_advisor', ar: 'يرشح البدائل المتاحة لحد ما يوصل', en: 'Suggests available alternatives meanwhile' },
+    { bot: 'chat', ar: 'يرد على الزائر بالبدائل', en: 'Answers the visitor with the alternatives' },
+  ] },
   { id: 'news', nameAr: 'خبر جديد', nameEn: 'A news story', steps: [
     { bot: 'news', ar: 'يجمع الأخبار الحقيقية بمصادرها', en: 'Collects real news with sources' },
     { bot: 'secretary', ar: 'يقيّم الجودة ويدي توجيهات', en: 'Scores the quality and guides' },
