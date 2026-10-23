@@ -63,7 +63,7 @@ const REPORT_OWNER: Record<string, BotId> = {
   'shaheen-blocks.json': 'school', 'shaheen-council.json': 'council', 'shaheen-languages.json': 'languages',
   'shaheen-memory.json': 'school', 'shaheen-news.json': 'news', 'shaheen-patrol.json': 'patrol', 'shaheen-maneuver.json': 'maneuver',
   'shaheen-precheck.json': 'precheck', 'shaheen-school.json': 'school', 'shaheen-skills.json': 'importer',
-  'platform-state.json': 'state', 'shaheen-harvest.json': 'academy', 'shaheen-sciences.json': 'academy', 'shaheen-lab.json': 'lab',
+  'platform-state.json': 'state', 'platform-census.json': 'census', 'shaheen-harvest.json': 'academy', 'shaheen-sciences.json': 'academy', 'shaheen-lab.json': 'lab',
   'sham-training.json': 'teacher', 'store-catalog.json': 'catalog', 'store-review.json': 'product_pages',
 };
 const REPORT_NAMES: Record<string, [string, string]> = {
@@ -90,6 +90,7 @@ const REPORT_NAMES: Record<string, [string, string]> = {
   'shaheen-school.json': ['تقرير مدرسة شاهين (الاعتماد على النفس)', "Shaheen's school report"],
   'shaheen-skills.json': ['مهارات قراءة المتاجر', 'Store-reading skills'],
   'platform-state.json': ['دولة المنصة — القرارات والتصويتات', 'Platform state — decisions & votes'],
+  'platform-census.json': ['خانة التعداد — تقرير وكشف زيارات العالم', 'State census — world visits report & open ledger'],
   'shaheen-harvest.json': ['حصّاد شاهين لإجابات الزوار', "Shaheen's visitor-answers harvester"],
   'shaheen-sciences.json': ['تقرير علوم الأرض عند شاهين', "Shaheen's earth-sciences track report"],
   'shaheen-lab.json': ['تقرير معمل شاهين للتجارب والابتكار', "Shaheen experiments lab report"],
@@ -116,7 +117,7 @@ const WORKFLOW_OWNER: Record<string, BotId> = {
   'shaheen-finance.yml': 'finance', 'shaheen-import.yml': 'importer', 'shaheen-inspect.yml': 'inspect',
   'shaheen-keys.yml': 'keys', 'shaheen-languages.yml': 'languages', 'shaheen-manus.yml': 'verifier',
   'shaheen-news.yml': 'news', 'shaheen-patrol.yml': 'patrol', 'shaheen-maneuver.yml': 'maneuver', 'shaheen-precheck.yml': 'precheck',
-  'shaheen-seo.yml': 'seo', 'owner-control.yml': 'owner_desk', 'platform-state.yml': 'state',
+  'shaheen-seo.yml': 'seo', 'owner-control.yml': 'owner_desk', 'platform-state.yml': 'state', 'platform-census.yml': 'census',
   'shaheen-school-clock.yml': 'academy', 'shaheen-lab.yml': 'lab',
 };
 const WORKFLOW_NAMES: Record<string, [string, string]> = {
@@ -142,6 +143,7 @@ const WORKFLOW_NAMES: Record<string, [string, string]> = {
   'shaheen-seo.yml': ['منارة شاهين (SEO)', 'SEO lighthouse'],
   'owner-control.yml': ['أوامر صاحب الموقع', 'Owner control'],
   'platform-state.yml': ['دولة المنصة (التصويت)', 'Platform state (voting)'],
+  'platform-census.yml': ['روبوت التعداد وإحصاء الزيارات', 'Platform state census & visit ledger'],
   'shaheen-school-clock.yml': ['أكاديمية شاهين على مدار الساعة', "Shaheen's academy clock"],
   'shaheen-lab.yml': ['تشغيل معمل شاهين للتجارب', 'Shaheen lab run'],
 };
@@ -181,6 +183,7 @@ const ENGINES: RefugeEntry[] = [
 
 const STATE: RefugeEntry[] = [
   { id: 'state:council', kind: 'state', nameAr: 'الاجتماع اليومي للتطوير (دولة المنظومة الداخلية)', nameEn: 'Daily development council (internal state)', at: 'src/data/live/shaheen-council.json', noteAr: 'الاجتماع 10:15 بتوقيت القاهرة — المحضر src/data/live/shaheen-council.json والكود scripts/shaheen-council/', noteEn: 'Meeting at 10:15 Cairo — minutes at src/data/live/shaheen-council.json', owner: 'council', keywords: ['اجتماع', 'المجلس', 'council', 'محضر', 'الاجتماع اليومي', 'دولة', 'الدولة الداخلية'] },
+  { id: 'state:census', kind: 'state', nameAr: 'خانة التعداد وخريطة العالم الحرارية (دولة المنصة)', nameEn: 'State census & interactive world heatmap', at: 'src/data/live/platform-census.json', noteAr: 'روبوت التعداد في هيكل دولة المنصة: إحصاء الزيارات والكشف العلني وخريطة العالم الحرارية التفاعلية — src/admin/PlatformCensusPanel.tsx والتقرير src/data/live/platform-census.json', noteEn: 'Platform State census robot, open visit ledger & interactive world heatmap — src/data/live/platform-census.json', owner: 'census', keywords: ['تعداد', 'التعداد', 'زيارات', 'الزيارات', 'كشف علني', 'خريطة العالم', 'حرارية', 'census', 'heatmap'] },
   { id: 'state:precheck', kind: 'state', nameAr: 'الفحص الشامل قبل الاجتماع', nameEn: 'Pre-meeting full check', at: 'src/data/live/shaheen-precheck.json', noteAr: 'بيفحص كل أداة وتقرير قبل الاجتماع بساعتين — src/data/live/shaheen-precheck.json', noteEn: 'Checks every tool and report two hours before the meeting', owner: 'precheck', keywords: ['فحص شامل', 'precheck', 'المشاكل', 'قبل الاجتماع'] },
   { id: 'state:maneuver', kind: 'state', nameAr: 'مناورة التخصصات (فحص ميداني)', nameEn: 'Specialties field maneuver', at: 'src/data/live/shaheen-maneuver.json', noteAr: 'كل 6 ساعات: أقسام الموقع الحي على الموبايل ومحادثات تدريب مع شاهين، والكود في scripts/shaheen-maneuver والتصنيف في src/utils/stateSectors.ts', noteEn: 'Every 6 hours: live sections on a phone + chat drills — scripts/shaheen-maneuver', owner: 'maneuver', keywords: ['مناورة', 'المناورة', 'maneuver', 'فحص ميداني', 'التخصصات'] },
   { id: 'state:patrol', kind: 'state', nameAr: 'الدورية بالتناوب (3 ورديات)', nameEn: 'Rotating patrol (3 shifts)', at: 'src/data/live/shaheen-patrol.json', noteAr: 'الدورية كل ساعة والورديات في scripts/shaheen-patrol/shifts.ts والتقرير src/data/live/shaheen-patrol.json', noteEn: 'Hourly patrol — shifts at scripts/shaheen-patrol/shifts.ts', owner: 'patrol', keywords: ['دورية', 'الدورية', 'patrol', 'وردية', 'ورديات', 'تناوب'] },
@@ -192,7 +195,7 @@ const STATE: RefugeEntry[] = [
 ];
 
 const PANELS: RefugeEntry[] = [
-  ['overview', 'نظرة عامة', 'Overview'], ['opsmap', 'خريطة التشغيل', 'Operations map'], ['finance', 'بنك شام والمالية', 'Bank & finance'],
+  ['overview', 'نظرة عامة', 'Overview'], ['census', 'التعداد وخريطة العالم', 'State census & world heatmap'], ['opsmap', 'خريطة التشغيل', 'Operations map'], ['finance', 'بنك شام والمالية', 'Bank & finance'],
   ['community', 'المجتمع', 'Community'], ['contracts', 'التعاقدات', 'Contracts'], ['agent', 'المساعد الإداري', 'Admin agent'],
   ['quality', 'الجودة والتعلّم', 'Quality & learning'], ['requests', 'الطلبات والعروض', 'Requests & quotes'], ['emails', 'إشعارات البريد', 'Email notices'],
   ['conversations', 'المحادثات', 'Conversations'], ['products', 'المنتجات', 'Products'], ['knowledge', 'قاعدة المعرفة', 'Knowledge base'],

@@ -42,7 +42,7 @@ export type BotId =
   | 'school' | 'doctor' | 'verifier' | 'live_check' | 'keys' | 'intake' | 'studio_bridge' | 'studio_zip' | 'deploy' | 'admin_agent'
   | 'chat_agent' | 'owner_desk' | 'state' | 'academy' | 'platform_owner'
   | 'specialist_scents' | 'specialist_tech' | 'specialist_security' | 'specialist_science' | 'specialist_business' | 'specialist_society'
-  | 'specialist_health' | 'specialist_engineering' | 'specialist_learning' | 'specialist_culture' | 'lab';
+  | 'specialist_health' | 'specialist_engineering' | 'specialist_learning' | 'specialist_culture' | 'lab' | 'census';
 
 export interface Bot {
   id: BotId;
@@ -66,6 +66,7 @@ export const BOTS: Bot[] = [
   { id: 'librarian', nameAr: 'أمين مكتبة العطور', nameEn: 'Perfume librarian', dept: 'content', dutiesAr: 'ينظم خطط التأليف المستقل وسجلات الأدلة؛ الاعتماد العلمي والقانوني واعتماد شاهين مطلوبون لكل نسخة قبل النشر. مساعد محلي عند الطلب لفهرسة مراجع العطور وتصنيفها والبحث فيها وتصدير بياناتها. موضعه مبدئي تحت إشراف شاهين؛ لا يرفع كتباً محمية ولا يدّعي وجود نسخ أو ترجمات دون ترخيص.' },
   // ── Leadership ──
   { id: 'state', nameAr: 'دولة المنصة (أعلى سلطة بعد صاحب الموقع)', nameEn: 'The Platform State (highest authority under the owner)', dept: 'leadership', workflow: 'platform-state.yml', report: 'platform-state.json', everyHours: 24, dutiesAr: 'كل الروبوتات وشاهين والمجلس تحت رقابتها، وبيرجعولها في كل الموافقات: كل ساعة أعضاؤها (شاهين، المدير القانوني، الأمن والخصوصية، الجودة، المالية، ورئيس القسم المختص) بيصوّتوا على مهام المجلس وتعديلات الروبوتات المستنية موافقة. القرار لا مركزي بالتصويت، وللقانوني والأمن «فيتو»؛ اللي يتوافق عليه بيعدّي كل الفحوص وبعدين ينزل، واللي يترفض بيروح لصاحب الموقع بالأسباب. عندها كل الصلاحيات ما عدا بيانات صاحب الموقع ومفاتيحه وغرفته ومفاتيح تحكمه، وخاضعة لأوامره في أي وقت (يرجّع الموافقات لنفسه، يوقفها، أو يرجّع أي قرار ليها).' },
+  { id: 'census', nameAr: 'روبوت التعداد وإحصاء الزيارات (دولة المنصة)', nameEn: 'Census & Visit Counter Robot (Platform State)', dept: 'leadership', workflow: 'platform-census.yml', report: 'platform-census.json', everyHours: 12, dutiesAr: 'روبوت في هيكل دولة المنصة مهمته إحصاء الزيارات الحقيقية والزوار الفريدين وتوزيعهم الجغرافي حسب الدول والأقاليم والأقسام والأجهزة، وتقديم تقرير تنفيذي وكشف علني نزيه لصاحب المنصة مع خريطة عالم حرارية تفاعلية، بدون حفظ أي بيانات شخصية أو عناوين IP وبدون أي أرقام وهمية.' },
   { id: 'owner_desk', nameAr: 'مكتب صاحب الموقع (أوامره فوق الكل)', nameEn: "Owner's desk (his orders come first)", dept: 'leadership', workflow: 'owner-control.yml', aiTools: ['owner_room'], dutiesAr: 'ينفذ أوامر صاحب الموقع وحده (حسابه على GitHub بس): يوقف أي روبوت أو يرجعه، يوقف كل الروبوتات بفرامل الطوارئ، ويختار نظام التطوير الذاتي (التصليحات الصغيرة الآمنة تلقائي، أو كل تغيير يستنى موافقته). كل روبوت بيسأل المكتب قبل ما يشتغل، وكل أمر بيتسجل في سجل مايتمسحش. ومعاه «جناح صاحب الموقع» و«غرفة شاهين الخاصة» (صاحب الموقع وشاهين والسكرتير بس، متشفرة على جهازه). وبينفذ كل اللي صاحب الموقع يوافق عليه من «صندوق الموافقات» (تعديلات شاهين، أوامره للروبوتات، تعديلات الروبوتات ومهام المجلس) بعد ما يعدّي كل الفحوص، ويرجّع أي حاجة بزرار «رجّع».' },
   { id: 'platform_owner', nameAr: 'وكيل ملك المنصة', nameEn: 'Platform Owner Agent', dept: 'leadership', aiTools: ['platform_owner_agent'], dutiesAr: 'وكيل مثل وكيل البرمجة في الشات: ينفّذ مهام شاهين والصيانة والتطوير، ويدير المنصة نيابة عن صاحب الموقع تحت رقابة دولة المنصة، وكل تعديل له يقرّه تصويت الدولة قبل النزول، وهو خاضع لأوامر صاحب الموقع في أي وقت.' },
   { id: 'council', nameAr: 'مجلس شاهين (الاجتماع اليومي)', nameEn: "Shaheen's council (daily meeting)", dept: 'leadership', workflow: 'shaheen-council.yml', report: 'shaheen-council.json', everyHours: 24, aiTools: ['shaheen_council'], dutiesAr: 'يجمع رؤساء الأقسام كل يوم 10:15 الصبح (بعد تجديد باقة الذكاء الاصطناعي)، يكتب المحضر، ينفذ الآمن ويحوّل الباقي لمهام تطوير.' },
@@ -265,6 +266,9 @@ export const LINKS: Link[] = [
   { from: 'specialist_engineering', to: 'council', whyAr: 'استشارة داخلية للمجلس والدولة الداخلية ولأي روبوت محتاج معلومة متخصصة من ملجأ شاهين' },
   { from: 'specialist_learning', to: 'council', whyAr: 'استشارة داخلية للمجلس والدولة الداخلية ولأي روبوت محتاج معلومة متخصصة من ملجأ شاهين' },
   { from: 'specialist_culture', to: 'council', whyAr: 'استشارة داخلية للمجلس والدولة الداخلية ولأي روبوت محتاج معلومة متخصصة من ملجأ شاهين' },
+  { from: 'state', to: 'census', whyAr: 'تكليف رسمي بإحصاء زيارات المنصة حول العالم وإصدار التقرير والكشف العلني تحت رقابة الدولة' },
+  { from: 'census', to: 'owner_desk', whyAr: 'تقديم التقرير التنفيذي والكشف العلني وخريطة العالم الحرارية لصاحب المنصة' },
+  { from: 'census', to: 'council', whyAr: 'إمداد مجلس شاهين بأكثر الدول والأقسام نشاطاً لتحسين تجربة الزوار الحقيقيين' },
 ];
 
 export const botOf = (id: string) => BOTS.find((b) => b.id === id);

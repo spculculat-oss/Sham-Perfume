@@ -6,7 +6,7 @@ import {
   BellRing, CheckCircle2, CircleAlert, EyeOff, LayoutDashboard, Lightbulb, Loader2, LogOut, MessagesSquare, Plus, RefreshCw, Save, Send,
   Settings2, Stethoscope, ThumbsDown, ThumbsUp, Trash2, TriangleAlert, Users, Wand2,
   ChevronUp, ChevronDown, Mail, Eye, ExternalLink, Check, Sparkles,
-  Handshake, Palette, Crown,
+  Handshake, Palette, Crown, Globe,
 } from 'lucide-react';
 import UpdatesPanel from './UpdatesPanel';
 import FinancePanel from './FinancePanel';
@@ -20,6 +20,7 @@ import ShaheenOrgPanel from './ShaheenOrgPanel';
 import ShaheenPatrolPanel from './ShaheenPatrolPanel';
 import ShaheenOpsMapPanel from './ShaheenOpsMapPanel';
 import OwnerControlPanel from './OwnerControlPanel';
+import PlatformCensusPanel from './PlatformCensusPanel';
 import ShaheenCouncilPanel from './ShaheenCouncilPanel';
 import { ErrorBoundary } from '../utils/lazyRetry';
 import type {
@@ -31,7 +32,7 @@ import { apiUrl, isStaticHosting } from '../utils/api';
 import { parseDoctorIssue, type DoctorReport } from './doctorReport';
 import { LocalizedNumberInput } from '../components/LocalizedNumberInput';
 
-type Tab = 'owner' | 'finance' | 'overview' | 'opsmap' | 'community' | 'contracts' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'design' | 'emails' | 'doctor' | 'supervisor' | 'seo' | 'sandbox' | 'updates';
+type Tab = 'owner' | 'census' | 'finance' | 'overview' | 'opsmap' | 'community' | 'contracts' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'design' | 'emails' | 'doctor' | 'supervisor' | 'seo' | 'sandbox' | 'updates';
 interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: string }
 /** GET /assistant/pages — «مراجعة الصفحات» (server/core/pageReview.ts). */
 interface PageCheckView { page: string; pageLabel: string; question: string; expected: string; actual: string; ok: boolean; fix: string }
@@ -60,6 +61,7 @@ interface FeedbackItem { conversationId: string; messageId?: string; rating: 'up
 const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'overview', label: T('نظرة عامة'), icon: <LayoutDashboard className="w-4 h-4" /> },
   { id: 'owner', label: T('مركز تحكم صاحب الموقع'), icon: <Crown className="w-4 h-4" /> },
+  { id: 'census', label: T('التعداد وخريطة العالم'), icon: <Globe className="w-4 h-4" /> },
   { id: 'opsmap', label: T('خريطة التشغيل'), icon: <Activity className="w-4 h-4" /> },
   { id: 'finance', label: T('بنك شام والمالية'), icon: <ClipboardList className="w-4 h-4" /> },
   { id: 'community', label: T('المجتمع'), icon: <Users className="w-4 h-4" /> },
@@ -183,6 +185,7 @@ export default function AdminApp() {
           {tab === 'emails' && <EmailsPanel />}
           {tab === 'doctor' && <DoctorPanel />}
           {tab === 'owner' && <OwnerControlPanel />}
+          {tab === 'census' && <PlatformCensusPanel />}
           {tab === 'opsmap' && <ShaheenOpsMapPanel />}
           {tab === 'supervisor' && <><ShaheenOrgPanel /><ShaheenPatrolPanel /><ShaheenCouncilPanel /><SupervisorPanel /></>}
           {tab === 'seo' && <SeoPanel />}

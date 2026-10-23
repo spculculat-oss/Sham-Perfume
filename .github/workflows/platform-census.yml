@@ -1,0 +1,88 @@
+name: Platform census & world visit ledger (every 6 hours)
+
+# «روبوت التعداد وإحصاء الزيارات — دولة المنصة» (bot id: census):
+# روبوت داخل هيكل دولة المنصة مهمته إحصاء الزيارات الحقيقية وتحديث الكشف العلني وتقرير صاحب المنصة
+# (src/data/live/platform-census.json) وخريطة العالم الحرارية التفاعلية بدون أي أرقام وهمية أو بيانات شخصية.
+
+on:
+  schedule:
+    - cron: '15 */6 * * *'
+  workflow_dispatch:
+  push:
+    branches: ['arena/**']
+    paths: ['src/utils/platformCensus.ts', 'scripts/state/census.mts', '.github/workflows/platform-census.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: platform-census-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs census
+
+  census:
+    name: «روبوت التعداد» — visit ledger & open statement
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      SHAM_API_BASE_URL: ${{ vars.VITE_API_BASE_URL || vars.SHAM_API_BASE_URL || '' }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.ref == 'refs/heads/main' && 'main' || github.sha }}
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: «روبوت التعداد» — sync visit ledger & print open statement
+        run: node --import tsx scripts/state/census.mts
+      - name: Regression tests
+        run: |
+          set -o pipefail
+          bun run test 2>&1 | tee /tmp/test.log || { grep -E 'not ok|error:' /tmp/test.log | head -8 | sed 's/^/::error title=test::/'; exit 1; }
+      - name: Publish on main
+        if: env.PUBLISH == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Platform state census bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          before=$(git rev-parse HEAD)
+          node scripts/ci/publish.mjs "تعداد دولة المنصة $(date -u +%Y-%m-%dT%H:%MZ)" \
+            src/data/live/platform-census.json \
+            || { echo "::error::Could not push the census report"; exit 1; }
+          if [ "$(git rev-parse HEAD)" = "$before" ]; then exit 0; fi
+          gh workflow run pages.yml --ref main || echo "::warning::Pages rebuild not started"

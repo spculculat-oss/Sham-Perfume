@@ -1,15 +1,19 @@
-import { T, TP, adminLocale, getAdminLang } from './adminL10n';
+import { T, TP, adminLocale, formatAdminNumber, getAdminLang } from './adminL10n';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Activity, ExternalLink, Link2, Map as MapIcon, RefreshCw, Route, Trophy, TriangleAlert } from 'lucide-react';
+import { Activity, ExternalLink, Flame, Globe, Link2, Map as MapIcon, RefreshCw, Route, Trophy, TriangleAlert } from 'lucide-react';
 import bundledPrecheck from '../data/live/shaheen-precheck.json';
 import bundledSupervisor from '../data/live/ai-supervisor.json';
 import bundledControls from '../data/owner/controls.json';
 import bundledStateOrders from '../data/owner/state-orders.json';
+import bundledCensus from '../data/live/platform-census.json';
 import { readControls, type OwnerControls } from '../utils/ownerAuthority';
 import { readStateOrders, type StateOrders } from '../utils/platformState';
+import { readCensusReport, type CensusReport } from '../utils/platformCensus';
 import { AGENT_LINK, agentLinkOn } from '../utils/agentLink';
 import LiveWorkMap from './LiveWorkMap';
 import OpsControlRoom from './OpsControlRoom';
+import PlatformCensusPanel, { loadLiveCensusSnapshot } from './PlatformCensusPanel';
+import { WorldHeatmapSvgLayer } from './WorldVisitHeatmap';
 import bundledSchool from '../data/live/shaheen-school.json';
 import bundledSciences from '../data/live/shaheen-sciences.json';
 import type { SchoolFile } from '../../scripts/shaheen-school/school';
@@ -36,7 +40,7 @@ import { useOpsLive } from './useOpsLive';
 const RAW = 'https://raw.githubusercontent.com/spculculat-oss/Sham-Perfume/main/src/data/live/';
 const RAW_OWNER = 'https://raw.githubusercontent.com/spculculat-oss/Sham-Perfume/main/src/data/owner/';
 const REPO = 'https://github.com/spculculat-oss/Sham-Perfume';
-const card = 'rounded-2xl border border-stone-200 bg-white p-4 shadow-sm';
+const card = 'rounded-2xl border border-stone-200/85 bg-white/88 backdrop-blur-[2px] p-4 shadow-sm';
 const ar = () => getAdminLang() === 'ar';
 const when = (iso?: string) => (iso && Date.parse(iso) > 0 ? new Date(iso).toLocaleString(adminLocale(), { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Africa/Cairo' }) : '—');
 const name = (id: BotId) => { const b = botOf(id); return b ? (ar() ? b.nameAr : b.nameEn) : id; };
@@ -112,12 +116,16 @@ export default function ShaheenOpsMapPanel() {
   const [sciences, setSciences] = useState<SciencesFile | null>(isSciencesFile(bundledSciences) ? bundledSciences : null);
   const [controls, setControls] = useState<OwnerControls>(() => readControls(bundledControls));
   const [stateOrders, setStateOrders] = useState<StateOrders>(() => readStateOrders(bundledStateOrders));
+  const [censusReport, setCensusReport] = useState<CensusReport>(() => readCensusReport(bundledCensus));
+  const [showBgHeatmap, setShowBgHeatmap] = useState(true);
+  const [openCensusDrawer, setOpenCensusDrawer] = useState(false);
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const t = setInterval(() => setNow(Date.now()), 15_000); return () => clearInterval(t); }, []);
   const detailRef = useRef<HTMLDivElement>(null);
 
   const load = useCallback(() => {
     setLoading(true);
+    void loadLiveCensusSnapshot().then((snap) => setCensusReport(snap.report)).catch(() => {});
     Promise.all([getJson('shaheen-precheck.json'), getJson('shaheen-patrol.json'), getJson('ai-supervisor.json'), getJson('controls.json', RAW_OWNER), getJson('state-orders.json', RAW_OWNER), getJson('shaheen-school.json'), getJson('shaheen-sciences.json')])
       .then(([p, q, s, c, o, sc, sci]) => {
         // The school's latest reports, for «غرفة التحكم الحية».
@@ -153,7 +161,11 @@ export default function ShaheenOpsMapPanel() {
     if (liveFilter === 'waiting' && st !== 'waiting') return false;
     return true;
   };
-  const pick = (id: BotId) => { setSelected(id); setTimeout(() => detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50); };
+  const pick = (id: BotId) => {
+    setSelected(id);
+    if (id === 'census') setOpenCensusDrawer(true);
+    setTimeout(() => detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  };
   const sel = selected ? scoreOf(selected) : null;
   const latest = [precheck?.updatedAt, patrol?.updatedAt, supervisor?.updatedAt].filter(Boolean).sort().pop();
 
@@ -166,7 +178,32 @@ export default function ShaheenOpsMapPanel() {
   const btn = (on: boolean) => `rounded-full border px-2.5 py-1 text-sm font-bold ${on ? 'border-stone-900 bg-stone-900 text-amber-100' : 'border-stone-200 bg-white text-stone-700 hover:bg-stone-50'}`;
 
   return (
-    <div className="space-y-3" dir={ar() ? 'rtl' : 'ltr'}>
+    <div
+      className={`relative overflow-hidden rounded-3xl transition-colors ${
+        showBgHeatmap ? 'border border-cyan-500/35 bg-[#040d1d] p-3 sm:p-5 shadow-2xl' : ''
+      }`}
+      dir={ar() ? 'rtl' : 'ltr'}
+    >
+      {showBgHeatmap && (
+        <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none" aria-hidden="true">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#040d1d] via-[#081b36] to-[#040d1d]" />
+          <svg
+            viewBox="0 0 1000 500"
+            preserveAspectRatio="xMidYMid slice"
+            className="h-full w-full opacity-95"
+          >
+            <WorldHeatmapSvgLayer
+              report={censusReport}
+              width={1000}
+              height={500}
+              theme="dark"
+              idPrefix="ops-panel-shell-hm"
+              showLabels
+            />
+          </svg>
+        </div>
+      )}
+      <div className="relative z-10 space-y-3">
       <div className={card}>
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h3 className="flex items-center gap-2 text-lg font-black text-stone-900"><MapIcon className="h-5 w-5 text-amber-700" />{T('خريطة تشغيل شام')}</h3>
@@ -188,6 +225,46 @@ export default function ShaheenOpsMapPanel() {
             <div key={g} className={`rounded-xl p-2 ${GRADE[g].chip}`}><b className="block text-lg">{sum[g].length}</b><span className="text-[13px]">{GRADE[g].label()}</span></div>
           ))}
         </div>
+
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-cyan-500/30 bg-slate-950 px-3 py-2.5 text-slate-100">
+          <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm">
+            <Flame className="h-4 w-4 text-amber-400 shrink-0" />
+            <b className="text-amber-200">{T('خريطة العالم الحرارية منشورة في خلفية التشغيل')}</b>
+            <span className="rounded-full bg-cyan-500/15 border border-cyan-400/30 px-2 py-0.5 text-xs font-bold text-cyan-200">
+              {TP('{v} زيارة · {c} دولة نشطة', {
+                v: formatAdminNumber(censusReport.totals.visits),
+                c: formatAdminNumber(censusReport.totals.countriesCount),
+              })}
+            </span>
+          </div>
+          <div className="flex flex-wrap items-center gap-1.5 text-xs">
+            <button
+              type="button"
+              onClick={() => setShowBgHeatmap((v) => !v)}
+              className={`inline-flex items-center gap-1 rounded-lg border px-2.5 py-1 font-bold transition ${
+                showBgHeatmap
+                  ? 'border-emerald-400/50 bg-emerald-500/20 text-emerald-200'
+                  : 'border-slate-700 bg-slate-900 text-slate-300 hover:border-slate-500'
+              }`}
+            >
+              <Globe className="h-3.5 w-3.5" />
+              {showBgHeatmap ? T('الخلفية الحرارية: شغّالة') : T('الخلفية الحرارية: مخفية')}
+            </button>
+            <button
+              type="button"
+              onClick={() => setOpenCensusDrawer((v) => !v)}
+              className="inline-flex items-center gap-1 rounded-lg bg-amber-400 px-2.5 py-1 font-bold text-slate-950 hover:bg-amber-300"
+            >
+              {openCensusDrawer ? T('إغلاق التعداد التفاعلي') : T('فتح الخريطة التفاعلية والكشف العلني')}
+            </button>
+          </div>
+        </div>
+
+        {openCensusDrawer && (
+          <div className="mt-3">
+            <PlatformCensusPanel embedded />
+          </div>
+        )}
 
         <OpsControlRoom live={live} gh={gh} stepOf={stepOf} school={school} sciences={sciences} now={gh.at || now} onPick={pick} />
 
@@ -220,15 +297,24 @@ export default function ShaheenOpsMapPanel() {
           </div>
         </div>
 
-        <div className="mt-3 overflow-x-auto rounded-xl border border-stone-100 bg-stone-50/60">
+        <div className={`mt-3 overflow-x-auto rounded-xl border ${showBgHeatmap ? 'border-slate-800 bg-[#081120]' : 'border-stone-100 bg-stone-50/60'}`}>
           <svg viewBox={`0 0 ${MAP.width} ${MAP.height}`} className="block h-auto w-full min-w-[1100px]" role="img" aria-label={T('خريطة تشغيل شام')} direction="ltr" style={{ fontFamily: 'inherit', direction: 'ltr' }}>
             <defs>
               {(['out', 'in', 'journey'] as const).map((k) => (
                 <marker key={k} id={`ops-arrow-${k}`} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                  <path d="M0,0 L10,5 L0,10 z" fill={k === 'out' ? '#b45309' : k === 'in' ? '#0369a1' : '#7c3aed'} />
+                  <path d="M0,0 L10,5 L0,10 z" fill={k === 'out' ? '#f59e0b' : k === 'in' ? '#38bdf8' : '#a78bfa'} />
                 </marker>
               ))}
             </defs>
+            {showBgHeatmap && (
+              <WorldHeatmapSvgLayer
+                report={censusReport}
+                width={MAP.width}
+                height={MAP.height}
+                theme="dark"
+                idPrefix="ops-map-hm"
+              />
+            )}
             {/* Shaheen → departments */}
             <g>
               <rect x={ROOT.x - 150} y={ROOT.y - 28} width={300} height={56} rx={16} fill="#1c1917" />
@@ -249,7 +335,9 @@ export default function ShaheenOpsMapPanel() {
             })}
             {/* Cooperation edges */}
             {edges.map((e, i) => {
-              const color = e.kind === 'out' ? '#b45309' : e.kind === 'in' ? '#0369a1' : '#7c3aed';
+              const color = showBgHeatmap
+                ? (e.kind === 'out' ? '#f59e0b' : e.kind === 'in' ? '#38bdf8' : '#a78bfa')
+                : (e.kind === 'out' ? '#b45309' : e.kind === 'in' ? '#0369a1' : '#7c3aed');
               const p = posOf(e.from); const q = posOf(e.to);
               return (
                 <g key={`${e.from}-${e.to}-${i}`}>
@@ -265,7 +353,7 @@ export default function ShaheenOpsMapPanel() {
                 <g key={p.id} role="button" tabIndex={0} aria-label={`${name(p.id)} — ${s.score ?? T('بدون بيانات')}`} onClick={() => pick(p.id)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(p.id); } }}
                   style={{ cursor: 'pointer' }} opacity={on ? (edges.length && !lit.has(p.id) ? 0.35 : 1) : 0.15}>
                   <title>{`${name(p.id)} — ${s.score ?? T('بدون بيانات')} · ${GRADE[s.grade].label()} · ${LIVE[liveOf(p.id).state].label()}`}</title>
-                  <rect x={p.x - MAP.nodeW / 2} y={p.y - MAP.nodeH / 2} width={MAP.nodeW} height={MAP.nodeH} rx={10} fill={g.fill} stroke={isSel ? '#1c1917' : g.stroke} strokeWidth={isSel ? 3 : 1.5} />
+                  <rect x={p.x - MAP.nodeW / 2} y={p.y - MAP.nodeH / 2} width={MAP.nodeW} height={MAP.nodeH} rx={10} fill={g.fill} stroke={isSel ? (showBgHeatmap ? '#fbbf24' : '#1c1917') : g.stroke} strokeWidth={isSel ? 3 : 1.5} />
                   <text x={p.x + (ar() ? MAP.nodeW / 2 - 10 : -MAP.nodeW / 2 + 10)} y={p.y + 5} textAnchor={ar() ? 'end' : 'start'} fontSize={13.5} fontWeight={700} fill={g.text}>{fit(short(p.id), NODE_CHARS())}</text>
                   <rect x={p.x + (ar() ? -MAP.nodeW / 2 + 6 : MAP.nodeW / 2 - 40)} y={p.y - 11} width={34} height={22} rx={11} fill={g.stroke} />
                   <text x={p.x + (ar() ? -MAP.nodeW / 2 + 23 : MAP.nodeW / 2 - 23)} y={p.y + 5} textAnchor="middle" fontSize={12.5} fontWeight={800} fill="#fff">{s.score ?? '—'}</text>
@@ -304,6 +392,7 @@ export default function ShaheenOpsMapPanel() {
       <div ref={detailRef}>{sel && <Detail s={sel} live={liveOf(sel.id)} step={stepOf(liveOf(sel.id))} now={now} onPick={pick} />}</div>
 
       <Ranking scores={scores} live={liveOf} visible={visible} onPick={pick} />
+      </div>
     </div>
   );
 }

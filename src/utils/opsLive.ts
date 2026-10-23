@@ -16,6 +16,7 @@ import type { StateOrders } from './platformState';
 export const SCHEDULES: Record<string, string[]> = {
   'aistudio-bridge.yml': ['7,37 * * * *'],
   'live-smoke.yml': ['0 6 * * *'],
+  'platform-census.yml': ['15 */6 * * *'],
   'platform-state.yml': ['27 * * * *'],
   'product-pages-check.yml': ['50 5 * * *'],
   'shaheen-council.yml': ['15 8 * * *'],

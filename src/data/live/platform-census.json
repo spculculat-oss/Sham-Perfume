@@ -1,0 +1,56 @@
+{
+ "version": 1,
+ "updatedAt": "2026-10-23T12:26:31.688Z",
+ "startedAt": "2026-10-23T12:00:00.000Z",
+ "totals": {
+  "visits": 0,
+  "uniqueVisitors": 0,
+  "todayVisits": 0,
+  "todayUnique": 0,
+  "last7DaysVisits": 0,
+  "last30DaysVisits": 0,
+  "countriesCount": 0,
+  "regionsCount": 0
+ },
+ "byCountry": [],
+ "byRegion": {
+  "arab": {
+   "visits": 0,
+   "uniqueVisitors": 0,
+   "countries": 0
+  },
+  "europe": {
+   "visits": 0,
+   "uniqueVisitors": 0,
+   "countries": 0
+  },
+  "asia": {
+   "visits": 0,
+   "uniqueVisitors": 0,
+   "countries": 0
+  },
+  "africa": {
+   "visits": 0,
+   "uniqueVisitors": 0,
+   "countries": 0
+  },
+  "americas": {
+   "visits": 0,
+   "uniqueVisitors": 0,
+   "countries": 0
+  },
+  "oceania": {
+   "visits": 0,
+   "uniqueVisitors": 0,
+   "countries": 0
+  }
+ },
+ "byDay": [],
+ "bySection": {},
+ "byDevice": {
+  "mobile": 0,
+  "desktop": 0,
+  "tablet": 0
+ },
+ "byLanguage": {}
+}

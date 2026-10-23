@@ -204,6 +204,14 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       else if (r.status === 'review') f.push({ level: 'note', idea: `تحديث من جوجل استوديو مستني موافقة (${String(last.branch || '')})` });
       break;
     }
+    case 'census': {
+      const totals = o(r.totals);
+      const visits = n(totals.visits) ?? 0;
+      const countries = n(totals.countriesCount) ?? 0;
+      if (visits === 0) f.push({ level: 'note', idea: 'خانة التعداد شغالة وجاهزة — لسه ما تسجلتش زيارات في الكشف العلني (بدون أرقام وهمية)' });
+      else f.push({ level: 'note', idea: `الكشف العلني يرصد ${visits} زيارة من ${countries} دولة حول العالم` });
+      break;
+    }
     default:
       break;
   }

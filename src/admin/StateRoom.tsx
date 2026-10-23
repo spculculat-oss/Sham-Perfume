@@ -5,10 +5,13 @@ import bundledControls from '../data/owner/controls.json';
 import bundledOrders from '../data/owner/state-orders.json';
 import bundledReport from '../data/live/platform-state.json';
 import bundledPrecheck from '../data/live/shaheen-precheck.json';
+import bundledCensus from '../data/live/platform-census.json';
 import { OWNER, OWNER_APPROVAL_LABEL, readControls } from '../utils/ownerAuthority';
 import { TASK_APPROVAL_LABEL } from '../utils/ownerDesk';
 import { isSealedRoom, openData, sealData } from '../utils/ownerRoom';
 import { STATE, readStateOrders, readStateReport, stateActive } from '../utils/platformState';
+import { readCensusReport } from '../utils/platformCensus';
+import { loadLiveCensusSnapshot } from './PlatformCensusPanel';
 import {
   STATE_ORDER_ACTIONS, STATE_ROOM_KEY, STATE_ROOM_STARTERS, STATE_ROOM_LIMITS, readStateRoom, stateOrderUrl, stateReply,
   type StateRoomContext, type StateRoomData, type StateRoomMessage,
@@ -28,6 +31,7 @@ const id = () => `${Date.now().toString(36)}${Math.random().toString(36).slice(2
 
 const bundledContext = (): StateRoomContext => ({
   controls: readControls(bundledControls), orders: readStateOrders(bundledOrders), report: readStateReport(bundledReport),
+  census: readCensusReport(bundledCensus),
   precheck: bundledPrecheck as StateRoomContext['precheck'],
 });
 
@@ -75,11 +79,12 @@ export default function StateRoom({ code }: { code: string }) {
     const count = async (labels: string, pulls: boolean) => {
       try { const r = await fetch(`${API}${encodeURIComponent(labels)}`, { headers: { Accept: 'application/vnd.github+json' } }); return r.ok ? ((await r.json()) as { pull_request?: unknown }[]).filter((i) => Boolean(i.pull_request) === pulls).length : undefined; } catch { return undefined; }
     };
-    const [controls, orders, report, precheck, pulls, tasks] = await Promise.all([get('owner/controls.json'), get('owner/state-orders.json'), get('live/platform-state.json'), get('live/shaheen-precheck.json'), count(OWNER_APPROVAL_LABEL, true), count(`shaheen-task,${TASK_APPROVAL_LABEL}`, false)]);
+    const [controls, orders, report, precheck, censusSnap, pulls, tasks] = await Promise.all([get('owner/controls.json'), get('owner/state-orders.json'), get('live/platform-state.json'), get('live/shaheen-precheck.json'), loadLiveCensusSnapshot().catch(() => undefined), count(OWNER_APPROVAL_LABEL, true), count(`shaheen-task,${TASK_APPROVAL_LABEL}`, false)]);
     setCtx((c) => ({
       controls: controls ? readControls(controls) : c.controls,
       orders: orders ? readStateOrders(orders) : c.orders,
       report: report ? readStateReport(report) : c.report,
+      census: censusSnap?.report || c.census,
       precheck: (precheck as StateRoomContext['precheck']) || c.precheck,
       ...(pulls !== undefined && tasks !== undefined ? { pending: { pulls, tasks } } : c.pending ? { pending: c.pending } : {}),
     }));
