@@ -1,7 +1,49 @@
 {
- "updatedAt": "2026-10-23T20:54:39.334Z",
+ "updatedAt": "2026-10-23T22:52:24.647Z",
  "active": true,
  "decisions": [
+  {
+   "at": "2026-10-23T22:52:19.647Z",
+   "number": 318,
+   "kind": "task",
+   "title": "إصلاح خطوة «checkout» في رحلة الشراء",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/318"
+  },
+  {
+   "at": "2026-10-23T22:52:21.936Z",
+   "number": 319,
+   "kind": "task",
+   "title": "إصلاح عطل: السكرتير — مشرف شاهين",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/319"
+  },
+  {
+   "at": "2026-10-23T22:52:24.359Z",
+   "number": 320,
+   "kind": "task",
+   "title": "إصلاح عطل: مدرّب كتالوج المتجر",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/320"
+  },
   {
    "at": "2026-10-23T19:51:24.637Z",
    "number": 304,
@@ -312,23 +354,23 @@
   }
  ],
  "supervision": {
-  "health": 82,
+  "health": 80,
   "problems": [
    "secretary: آخر تشغيل فشل",
-   "patrol: 5 عطل الدورية ماقدرتش تصلحه آلياً",
+   "patrol: 4 عطل الدورية ماقدرتش تصلحه آلياً",
    "finance: الإدارة المالية تحتاج مراجعة خاصة",
    "catalog: آخر تشغيل فشل",
    "news: آخر تشغيل فشل",
    "design_audit: تقييم التصميم واللغات 42/100 (14 ملاحظة)",
-   "design_expert: تقييم خبير التصميم متعدد التخصصات: 0/10",
    "visitor_tour: جولة الزائر: خطوات واقعة — store: فتح المتجر وتطبيق فلتر الرجال، لاحظت وجود عناصر بالعربية والإنجليزية وتكرار العن، checkout: الانتقال إلى صفحة الدفع يظهر تسجيل الدخول قبل الدفع ولا يوجد خيار زائر حتى الآن.",
+   "academy: آخر تشغيل اتلغى",
    "verifier: 1 مهمة اتقفلت ولسه مش متصلحة على الموقع: إصلاح فجوات السيو التقني وهيكل صفحات الموقع",
    "keys: محركات متوقفة مؤقتاً: openai، gemini"
   ]
  },
  "field": {
   "maneuverAt": "2026-10-23T20:01:06.747Z",
-  "at": "2026-10-23T20:54:36.303Z",
+  "at": "2026-10-23T22:52:16.114Z",
   "items": [
    {
     "id": "productDetail:http",
