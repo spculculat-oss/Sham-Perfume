@@ -31,7 +31,7 @@ test('no school question is left without a lesson (the missing curricula are com
 
 test('every gap question finds EXACTLY its own lesson in the full library', () => {
   const pairs = gapPairs();
-  assert.equal(pairs.length, 222, `the gaps hold ${pairs.length} lessons, expected 222`);
+  assert.equal(pairs.length, 229, `the gaps hold ${pairs.length} lessons, expected 229`);
   const ids = new Set(pairs.map((p) => p.lesson.id));
   assert.equal(ids.size, pairs.length, 'lesson ids are unique');
   for (const { lesson, question } of pairs) {
