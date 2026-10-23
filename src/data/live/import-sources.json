@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T12:53:30.719Z",
+ "updatedAt": "2026-10-23T18:51:56.047Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,17 @@
  ],
  "runs": [
   {
+   "at": "2026-10-23T18:51:56.047Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-23T12:53:30.719Z",
    "mode": "self",
    "found": 0,
@@ -7780,28 +7791,6 @@
     "✗ ardalzaafaranparfums.com: الموقع لا يفتح",
     "  ↳ zimaya.com: CV 42/100 [age,https,identity,authentic] (pages: /contact-us→404 /returns→404)",
     "✗ zimaya.com: ملف الثقة ضعيف (42/100): ينقصه بيانات التواصل، سياسة الإرجاع والاسترداد، وسائل دفع معروفة"
-   ]
-  },
-  {
-   "at": "2026-10-21T12:18:06.563Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 3,
-   "rejected": 0,
-   "notes": [
-    "  ↳ velixirparfums.com: CV 56/100 [age,https,contact,returns,terms,payment,platform,social] on Shopify (pages: /pages/contact→200 /policies/contact-information→200 /policies/refund-policy→200 /policies/legal-notice→404 /policies/shipping-policy→404 /pages/about-us→200)",
-    "✗ velixirparfums.com: ملف الثقة ضعيف (56/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الشحن، سياسة الخصوصية",
-    "✗ afnanperfumesperfumes.com: الموقع لا يفتح",
-    "✗ afnanperfumesparfums.com: الموقع لا يفتح",
-    "✗ ruebroca.com: الموقع لا يفتح",
-    "✗ ruebrocaperfumes.com: الموقع لا يفتح",
-    "  ↳ ruebrocaparfums.com: CV 74/100 [age,https,identity,returns,privacy,platform,social,authentic] on Shopify",
-    "✓ ruebrocaparfums.com (CV 74/100): 44 perfumes, 7/7 pages read without AI, AED (1 = 14.8364 EGP) — added to the importer",
-    "  ↳ khadlaj.com: CV 96/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
-    "✓ khadlaj.com (CV 96/100): 1112 perfumes, 4/7 pages read without AI, AED (1 = 14.8364 EGP) — added to the importer",
-    "  ↳ khadlajperfumes.com: CV 96/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
-    "✓ khadlajperfumes.com (CV 96/100): 1112 perfumes, 4/7 pages read without AI, AED (1 = 14.8364 EGP) — added to the importer"
    ]
   }
  ]

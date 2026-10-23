@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T18:14:57.693Z",
+ "updatedAt": "2026-10-23T18:53:24.258Z",
  "entries": [
   {
    "id": "ar|auto|ايه هي قوانين نيوتن التلاتة للحركة",
@@ -23,6 +23,46 @@
    "hits": 1,
    "source": "study",
    "lastUsed": "2026-10-22T11:05:06.645Z"
+  },
+  {
+   "id": "ar|auto|ايه هي تصميم تركيبة شتوية شرقية",
+   "question": "ايه هي تصميم تركيبة شتوية شرقية؟",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "تركيبة شتوية شرقية — المقدمة: زعفران 10%، فلفل وردي 8%، برغموت 7%؛ القلب: عنبر 18%، ورد 12%؛ القاعدة: عود 20%، فانيليا 15%، باتشولي 10%. المجموع 100%، وتُجرَّب العينة الصغيرة قبل الإنتاج وتُعتَّق ثم تُقيَّم ثباتها.",
+   "at": "2026-10-23T18:53:24.257Z",
+   "hits": 0,
+   "source": "study"
+  },
+  {
+   "id": "ar|auto|ايه هي تصميم تركيبة صيفية حمضية",
+   "question": "ايه هي تصميم تركيبة صيفية حمضية؟",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "تركيبة صيفية حمضية — المقدمة: برغموت 22%، ليمون 18%، نيرولي 10%؛ القلب: لافندر 16%، شاي أبيض 14%؛ القاعدة: مسك أبيض 12%، خشب الأرز 8%. المجموع 100%، وتُجرَّب العينة الصغيرة قبل الإنتاج وتُعتَّق ثم تُقيَّم ثباتها.",
+   "at": "2026-10-23T18:53:24.256Z",
+   "hits": 0,
+   "source": "study"
+  },
+  {
+   "id": "en|auto|suggest a warm oriental perfume formula for winter with percentages",
+   "question": "Suggest a warm oriental perfume formula for winter with percentages",
+   "lang": "en",
+   "style": "auto",
+   "answer": "warm oriental winter formula: top saffron 10%, pink pepper 8%, bergamot 7%; heart amber 18%, rose 12%; base oud 20%, vanilla 15%, patchouli 10%. Total 100%. Test a small sample first, macerate, then evaluate the lasting before any production batch.",
+   "at": "2026-10-23T18:53:24.256Z",
+   "hits": 0,
+   "source": "study"
+  },
+  {
+   "id": "en|auto|suggest a fresh citrus perfume formula for summer with percentages",
+   "question": "Suggest a fresh citrus perfume formula for summer with percentages",
+   "lang": "en",
+   "style": "auto",
+   "answer": "fresh citrus summer formula: top bergamot 22%, lemon 18%, neroli 10%; heart lavender 16%, white tea 14%; base white musk 12%, cedarwood 8%. Total 100%. Test a small sample first, macerate, then evaluate the lasting before any production batch.",
+   "at": "2026-10-23T18:53:24.254Z",
+   "hits": 0,
+   "source": "study"
   },
   {
    "id": "ar|auto|ايه هو المسك وانواعه",
@@ -83,46 +123,6 @@
    "at": "2026-10-23T16:24:08.153Z",
    "hits": 0,
    "source": "harvest"
-  },
-  {
-   "id": "ar|auto|ايه هي تصميم تركيبة شتوية شرقية",
-   "question": "ايه هي تصميم تركيبة شتوية شرقية؟",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "تركيبة شتوية شرقية — المقدمة: زعفران 10%، فلفل وردي 8%، برغموت 7%؛ القلب: عنبر 18%، ورد 12%؛ القاعدة: عود 20%، فانيليا 15%، باتشولي 10%. المجموع 100%، وتُجرَّب العينة الصغيرة قبل الإنتاج وتُعتَّق ثم تُقيَّم ثباتها.",
-   "at": "2026-10-23T18:14:57.692Z",
-   "hits": 0,
-   "source": "study"
-  },
-  {
-   "id": "ar|auto|ايه هي تصميم تركيبة صيفية حمضية",
-   "question": "ايه هي تصميم تركيبة صيفية حمضية؟",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "تركيبة صيفية حمضية — المقدمة: برغموت 22%، ليمون 18%، نيرولي 10%؛ القلب: لافندر 16%، شاي أبيض 14%؛ القاعدة: مسك أبيض 12%، خشب الأرز 8%. المجموع 100%، وتُجرَّب العينة الصغيرة قبل الإنتاج وتُعتَّق ثم تُقيَّم ثباتها.",
-   "at": "2026-10-23T18:14:57.691Z",
-   "hits": 0,
-   "source": "study"
-  },
-  {
-   "id": "en|auto|suggest a warm oriental perfume formula for winter with percentages",
-   "question": "Suggest a warm oriental perfume formula for winter with percentages",
-   "lang": "en",
-   "style": "auto",
-   "answer": "warm oriental winter formula: top saffron 10%, pink pepper 8%, bergamot 7%; heart amber 18%, rose 12%; base oud 20%, vanilla 15%, patchouli 10%. Total 100%. Test a small sample first, macerate, then evaluate the lasting before any production batch.",
-   "at": "2026-10-23T18:14:57.691Z",
-   "hits": 0,
-   "source": "study"
-  },
-  {
-   "id": "en|auto|suggest a fresh citrus perfume formula for summer with percentages",
-   "question": "Suggest a fresh citrus perfume formula for summer with percentages",
-   "lang": "en",
-   "style": "auto",
-   "answer": "fresh citrus summer formula: top bergamot 22%, lemon 18%, neroli 10%; heart lavender 16%, white tea 14%; base white musk 12%, cedarwood 8%. Total 100%. Test a small sample first, macerate, then evaluate the lasting before any production batch.",
-   "at": "2026-10-23T18:14:57.690Z",
-   "hits": 0,
-   "source": "study"
   },
   {
    "id": "ar|auto|ازاي احفظ العطر علشان ميبوظش",
