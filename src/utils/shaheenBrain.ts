@@ -19,6 +19,8 @@ import { questionIntents } from './shaheenTools';
 import { topicWords } from './shaheenLibrary';
 import { greetingKind } from './shaheenGreeting';
 import type { Design } from './shaheenDesigner';
+import { cleanNote, noteAr, readableNotes } from './noteNames';
+import { closeLine, readBuyer, type BuyerProfile } from './salesCraft';
 
 export interface Turn { role: 'user' | 'assistant'; text: string }
 type Lang = 'ar' | 'en';
@@ -32,6 +34,8 @@ export interface Context {
   /** The visitor's question before this one, and Shaheen's reply to it. */
   previous?: string;
   lastReply?: string;
+  /** Everything the visitor said in this conversation, oldest first, this message last — how the seller reads him. */
+  said?: string[];
 }
 
 const LEAD_IN = /^(?:طب|طيب|طبعا|طيب و|طب و|ولو|وبالنسبة|بالنسبة|وماذا عن|وايه عن|وإيه عن|و|بس|يعني|what about|how about|and|also|so|ok(?:ay)?)(?=[\s،,]|$)[\s،,]*/i;
@@ -46,7 +50,8 @@ export function withContext(message: string, history: Turn[] = []): Context {
   const text = message.trim();
   const previous = lastOf(history, 'user');
   const lastReply = history[history.length - 1]?.role === 'assistant' ? history[history.length - 1].text : undefined;
-  const base: Context = { text, followUp: false, ...(previous ? { previous } : {}), ...(lastReply ? { lastReply } : {}) };
+  const said = [...history.filter((t) => t.role === 'user' && t.text.trim()).map((t) => t.text.trim()).slice(-5), text].filter(Boolean);
+  const base: Context = { text, followUp: false, ...(previous ? { previous } : {}), ...(lastReply ? { lastReply } : {}), ...(said.length ? { said } : {}) };
   if (!previous || greetingKind(text) || THANKS.test(text) || greetingKind(previous)) return base;
   const own = topicWords(text.replace(LEAD_IN, ''));
   const lead = LEAD_IN.test(text);
@@ -100,28 +105,7 @@ export function storeWish(ctx: Context): Wish {
   };
 }
 
-/** Common note names in Arabic (the catalogue publishes them in English). */
-const NOTE_AR: Record<string, string> = {
-  musk: 'مسك', 'white musk': 'مسك أبيض', amber: 'عنبر', ambergris: 'عنبر رمادي', amberwood: 'خشب العنبر', ambroxan: 'أمبروكسان',
-  vanilla: 'فانيليا', bergamot: 'برغموت', patchouli: 'باتشولي', jasmine: 'ياسمين', 'jasmine sambac': 'ياسمين سمبك', rose: 'ورد',
-  'turkish rose': 'ورد تركي', 'bulgarian rose': 'ورد بلغاري', 'taif rose': 'ورد طائفي', sandalwood: 'صندل', cedarwood: 'خشب الأرز', cedar: 'أرز',
-  lavender: 'لافندر', saffron: 'زعفران', 'tonka bean': 'تونكا', tonka: 'تونكا', cardamom: 'هيل', oud: 'عود', 'agarwood (oud)': 'عود',
-  agarwood: 'عود', 'orange blossom': 'زهر البرتقال', vetiver: 'فيتيفر', 'pink pepper': 'فلفل وردي', 'black pepper': 'فلفل أسود',
-  pepper: 'فلفل', lemon: 'ليمون', citrus: 'حمضيات', cinnamon: 'قرفة', leather: 'جلد', pear: 'كمثرى', grapefruit: 'جريب فروت',
-  mandarin: 'يوسفي', 'mandarin orange': 'يوسفي', tangerine: 'يوسفي', ginger: 'زنجبيل', 'woody notes': 'نفحات خشبية', woods: 'أخشاب',
-  apple: 'تفاح', caramel: 'كراميل', geranium: 'جيرانيوم', nutmeg: 'جوزة الطيب', pineapple: 'أناناس', mint: 'نعناع', raspberry: 'توت',
-  spices: 'توابل', orange: 'برتقال', peach: 'خوخ', labdanum: 'لابدانوم', peony: 'فاوانيا', incense: 'بخور', violet: 'بنفسج',
-  praline: 'برالين', blackcurrant: 'كشمش أسود', 'black currant': 'كشمش أسود', benzoin: 'جاوي', oakmoss: 'طحلب السنديان', moss: 'طحلب',
-  iris: 'سوسن', orris: 'سوسن', tuberose: 'مسك الروم', coconut: 'جوز الهند', sage: 'مريمية', 'clary sage': 'مريمية', 'guaiac wood': 'خشب الغاياك',
-  'lily of the valley': 'زنبق الوادي', 'white flowers': 'زهور بيضاء', 'floral notes': 'نفحات زهرية', 'ylang-ylang': 'يلانج يلانج',
-  'red berries': 'توت أحمر', coffee: 'قهوة', fig: 'تين', honey: 'عسل', 'marine notes': 'نفحات بحرية', frankincense: 'لبان', olibanum: 'لبان',
-  sugar: 'سكر', heliotrope: 'هليوتروب', myrrh: 'مر', cacao: 'كاكاو', neroli: 'نيرولي', cashmeran: 'كشميران', osmanthus: 'أوسمانثوس',
-  birch: 'بتولا', tobacco: 'تبغ', mango: 'مانجو', lychee: 'ليتشي', litchi: 'ليتشي', juniper: 'عرعر', cherry: 'كرز', plum: 'برقوق',
-  rosemary: 'إكليل الجبل', almond: 'لوز', 'bitter almond': 'لوز مر', strawberry: 'فراولة', lime: 'ليم', apricot: 'مشمش', hazelnut: 'بندق',
-  freesia: 'فريزيا', rhubarb: 'راوند', gardenia: 'جاردينيا', magnolia: 'ماجنوليا', smoke: 'دخان', resin: 'راتنج', 'whipped cream': 'كريمة',
-  marshmallow: 'مارشميلو', 'blood orange': 'برتقال أحمر', davana: 'دافانا', cypress: 'سرو', ambrette: 'بذور المسك',
-};
-const noteName = (note: string, lang: Lang) => (lang === 'ar' ? NOTE_AR[note.trim().toLowerCase()] || note.trim() : note.trim());
+const noteName = (note: string, lang: Lang) => (lang === 'ar' ? noteAr(note) || note.trim() : cleanNote(note));
 
 /** Base notes that make a perfume last (the reason one perfume outlasts another). */
 const FIXATIVE = /musk|amber|oud|agarwood|patchouli|sandalwood|vanilla|tonka|leather|ambroxan|benzoin|labdanum|vetiver|incense|frankincense|olibanum|myrrh|cashmeran|guaiac|resin|ambergris/i;
@@ -198,7 +182,7 @@ function whyLines(w: Wish, lang: Lang): string[] {
 
 export const money = (n: number, lang: Lang) => (lang === 'ar' ? `${Math.round(n).toLocaleString('en-US')} جنيه` : `EGP ${Math.round(n).toLocaleString('en-US')}`);
 export const nameOf = (p: StoreProduct, lang: Lang) => ((lang === 'ar' ? p.name.ar : p.name.en) || p.name.en || p.name.ar).replace(/[[\]*]/g, '');
-const listNotes = (notes: string[], lang: Lang, max = 4) => notes.slice(0, max).map((n) => noteName(n, lang)).join(lang === 'ar' ? '، ' : ', ');
+const listNotes = (notes: string[], lang: Lang, max = 4) => readableNotes(notes, lang, max).join(lang === 'ar' ? '، ' : ', ');
 
 /** One product as a few lines: link, price, size, concentration, notes by layer, what it suits and why it was picked. */
 function productBlock(p: StoreProduct, i: number, lang: Lang, link: (slug: string) => string | undefined, why?: string): string {
@@ -208,7 +192,8 @@ function productBlock(p: StoreProduct, i: number, lang: Lang, link: (slug: strin
     p.concentration ? (lang === 'ar' ? concentrationAr(p.concentration) || p.concentration : p.concentration) : '',
     p.inStock ? '' : (lang === 'ar' ? 'غير متوفر حالياً' : 'out of stock')].filter(Boolean).join(' · ');
   const lines = [`${i}. ${title}${facts ? ` — ${facts}` : ''}`];
-  const { top, heart, base } = p.notes;
+  // Cleaned and translated: «Musky SUPREMACY PURPLE» is an import artefact, never read aloud to a customer.
+  const [top, heart, base] = [p.notes.top, p.notes.heart, p.notes.base].map((l) => (readableNotes(l, lang).length ? l : []));
   if (top.length || heart.length || base.length) {
     const layers = lang === 'ar'
       ? [top.length ? `الافتتاحية: ${listNotes(top, lang)}` : '', heart.length ? `القلب: ${listNotes(heart, lang)}` : '', base.length ? `القاعدة: ${listNotes(base, lang)}` : '']
@@ -244,16 +229,15 @@ const PRICE_NOTE: Record<Lang, string> = {
   en: '_Prices in Egyptian pounds before shipping; each product page shows your currency._',
 };
 /**
- * «التاجر الشاطر»: one clear next step instead of a menu of questions — order the main pick, or tell him what holds
- * you back (the price, or doubt) and he answers that (src/utils/shaheenSeller.ts). No pressure, no invented offer.
+ * «التاجر الشاطر»: one clear next step, said the way this buyer listens (src/utils/salesCraft.ts closeLine) — never a
+ * menu that plants the objections («لو السعر مش مريحك قولّي غالي…», the owner's complaint of 2026-10-23). The seller
+ * still answers «غالي» and «مش متأكد» when the visitor says them (src/utils/shaheenSeller.ts). No pressure, no
+ * invented offer.
  */
-export function nextStep(main: StoreProduct | undefined, lang: Lang): string {
+export function nextStep(main: StoreProduct | undefined, lang: Lang, buyer?: BuyerProfile, alt?: StoreProduct): string {
   if (!main) return PRICE_NOTE[lang];
-  const name = nameOf(main, lang);
-  const step = lang === 'ar'
-    ? `**الخطوة الجاية:** افتح صفحة «${name}» واضغط «شراء مباشر» أو ضيفه للسلة — أو اكتبلي «هاخده» وأنا أمشي معاك الطلب خطوة بخطوة. لو السعر مش مريحك قولّي «غالي» وأجيبلك الأوفر، ولو محتار قولّي «مش متأكد» وأوضحلك بصراحة.`
-    : `**Next step:** open the “${name}” page and press “Buy now” or add it to the cart — or tell me “I'll take it” and I'll walk you through the order. If the price doesn't suit you, say “too expensive” and I'll find better value; if you're unsure, say “not sure” and I'll tell you honestly.`;
-  return `${step}\n\n${PRICE_NOTE[lang]}`;
+  const close = closeLine({ name: nameOf(main, lang), buyer: buyer || readBuyer([]), lang, ...(alt ? { alt: nameOf(alt, lang) } : {}) });
+  return `${lang === 'ar' ? '**الخطوة الجاية:**' : '**Next step:**'} ${close}\n\n${PRICE_NOTE[lang]}`;
 }
 
 /** An alternative in one line (the main pick gets the full card): link, price, size and why it's here. */
@@ -311,7 +295,7 @@ export function storeAnswer(products: StoreProduct[], ctx: Context, language: st
   }
   const link2 = connection(shown.map((p) => p.product), lang);
   if (link2) out.push('', `${lang === 'ar' ? '**الربط بينهم:**' : '**How they compare:**'} ${link2}`);
-  out.push('', nextStep(first.product, lang));
+  out.push('', nextStep(first.product, lang, readBuyer(ctx.said || [ctx.text])));
   return { reply: out.join('\n'), picks: shown.map((p) => p.product), matched: criteria && matched };
 }
 
@@ -420,8 +404,12 @@ export function namedProducts(products: StoreProduct[], text: string, limit = 2)
       if (!raw) continue;
       const core = coreName(raw, brand);
       if (!core) continue;
-      const distinctive = core.includes(' ') ? core.length >= 6 : core.length >= (brandSaid ? 4 : 7);
-      if (distinctive && t.includes(` ${core} `)) best = Math.max(best, core.length + (brandSaid ? 50 : 0));
+      // «سبريماسي نوار اند بيربل» names «طقم هدايا سبريماسي نوار اند بيربل» too: the set's own name without «طقم هدايا».
+      const bare = core.replace(/^(?:gift set|giftset|coffret|set|طقم هدايا|طقم|مجموعه هدايا) /, '').trim();
+      for (const name of new Set([core, bare])) {
+        const distinctive = name.includes(' ') ? name.length >= 6 : name.length >= (brandSaid ? 4 : 7);
+        if (distinctive && t.includes(` ${name} `)) best = Math.max(best, name.length + (brandSaid ? 50 : 0) + (name === core ? 1 : 0));
+      }
     }
     if (best) hits.push({ p, len: best });
   }
@@ -460,30 +448,15 @@ export function closeTo(products: StoreProduct[], p: StoreProduct, limit = 2): S
 }
 
 /**
- * «متجر شام» answering about a product the visitor named — from the catalogue with live prices, so it never needs an
- * AI platform: its page, price, notes, what it suits, how long it lasts, and two close perfumes in the store.
+ * The store products the visitor is asking about by name («لطافة بلاك عود ثابت؟»، «رأيك في طقم سبريماسي؟») — or none
+ * when the question belongs to the designer, the lab or the library. The pitch itself is src/utils/shaheenPitch.ts.
  */
-export function productAnswer(products: StoreProduct[], ctx: Context, language: string, link: (slug: string) => string | undefined): StoreAnswer | undefined {
+export function askedProducts(products: StoreProduct[], ctx: Context): StoreProduct[] {
   const asked = ctx.followUp && ctx.previous ? ctx.text.slice(ctx.previous.length) : ctx.text;
   // «اعملي تركيبة زي …» belongs to the designer and the lab, not to the product card.
-  if (DESIGN_OR_LAB.test(asked)) return undefined;
+  if (DESIGN_OR_LAB.test(asked)) return [];
   // «ازاي استخدم ورد طائفي؟» is a question about the material, not about the product of that name — unless the
   // price or the name in Latin letters says it is the product.
-  if (KNOWLEDGE.test(asked.trim()) && !PRICE.test(asked) && !/[a-z]{3}/i.test(asked)) return undefined;
-  const named = namedProducts(products, asked);
-  if (!named.length) return undefined;
-  const lang = langOf(language, ctx.text);
-  const out: string[] = [lang === 'ar' ? '**من متجر شام:**' : '**From the Sham store:**'];
-  named.forEach((p, i) => out.push(productBlock(p, i + 1, lang, link)));
-  const main = named[0];
-  const s = staying(main);
-  out.push('', `${lang === 'ar' ? '**الثبات:**' : '**Staying power:**'} ${s >= 6 ? (lang === 'ar' ? 'قوي — تركيزه وقاعدته فيها مثبتات.' : 'strong — its concentration and base carry fixatives.')
-    : s >= 4 ? (lang === 'ar' ? 'كويس ومتوسط لطويل.' : 'good, medium to long.') : (lang === 'ar' ? 'خفيف لمتوسط، جدّده في اليوم.' : 'light to medium; reapply during the day.')}`);
-  const close = closeTo(products, main);
-  if (close.length) {
-    out.push('', lang === 'ar' ? '**ولو حابب حاجة قريبة منه في المتجر:**' : '**Close to it in the store:**');
-    close.forEach((p, i) => out.push(productBlock(p, i + 1, lang, link)));
-  }
-  out.push('', nextStep(main.inStock ? main : close[0], lang));
-  return { reply: out.join('\n'), picks: [...named, ...close], matched: true };
+  if (KNOWLEDGE.test(asked.trim()) && !PRICE.test(asked) && !/[a-z]{3}/i.test(asked)) return [];
+  return namedProducts(products, asked);
 }

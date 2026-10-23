@@ -26,8 +26,10 @@ import { isPersonal, isTimeBound, offlineNote } from '../src/utils/shaheenMemory
 import { libraryAnswer, unknownAnswer, type LibrarySources } from '../src/utils/shaheenLibrary';
 import { designFor } from '../src/utils/shaheenDesigner';
 import { cosmeticFor } from '../src/utils/cosmeticFormulator';
-import { designStoreNote, productAnswer, productLink, storeAnswer, wantsStore, withContext, type Context } from '../src/utils/shaheenBrain';
-import { salesAnswer } from '../src/utils/shaheenSeller';
+import { designStoreNote, productLink, storeAnswer, wantsStore, withContext, type Context } from '../src/utils/shaheenBrain';
+import { saleMove, salesAnswer } from '../src/utils/shaheenSeller';
+import { buyerHint, polishSale, readBuyer, salesPromptBlock } from '../src/utils/salesCraft';
+import { productAnswer } from '../src/utils/shaheenPitch';
 import { agentLinkOn, type LinkSource } from '../src/utils/agentLink';
 import { readStateOrders } from '../src/utils/platformState';
 import { readControls } from '../src/utils/ownerAuthority';
@@ -144,6 +146,19 @@ const STYLE: Record<'fast' | 'deep', string> = {
   deep: 'وضع «تحليل معمّق»: حلّل السؤال بعمق. اشرح المنطق، وقارن البدائل، واذكر المخاطر وحدود المعلومة، واعرض الحسابات خطوة بخطوة بأرقام واضحة في نص أو جدول Markdown (لا في سياج كود). إذا كانت الإجابة تركيبة قابلة للنقل للحاسبة فلا تنسَ سياج sham-formula في آخر الرد، واجعل التحليل مركّزاً حتى لا ينقطع الرد قبله.',
 };
 
+/** A buying conversation: a shopping wish, a sale move («هاخده»، «غالي»), or a reply about a store product just before. */
+export function isShoppingTurn(message: string, history: ChatTurn[] = []): boolean {
+  const last = [...history].reverse().find((t) => t.role === 'assistant')?.text || '';
+  return questionIntents(message).includes('store') || Boolean(saleMove(message)) || /\/p\/[a-z0-9-]+\.html/.test(last);
+}
+
+/** «اقرأ الزبون»: how this visitor should be spoken to, from his own words in this conversation. */
+export function shoppingBrief(message: string, history: ChatTurn[], language: SupportedLanguage): string {
+  const said = [...history.filter((t) => t.role === 'user').map((t) => t.text), message];
+  const lang = language === 'ar' || language === 'fa' || /[\u0600-\u06FF]/.test(message) ? 'ar' : 'en';
+  return lang === 'ar' ? `قراءة الزائر من كلامه: ${buyerHint(readBuyer(said), 'ar')}` : `Reading of the visitor from his words: ${buyerHint(readBuyer(said), 'en')}`;
+}
+
 export function systemInstruction(language: SupportedLanguage, extra = '', style?: 'fast' | 'deep'): string {
   const languageName = SUPPORTED_LANGUAGES.find((lang) => lang.code === language)!.name;
   const admin = extra.trim()
@@ -164,7 +179,8 @@ export function systemInstruction(language: SupportedLanguage, extra = '', style
 اكتب السياج باسم sham-formula حرفياً (وليس json)، وضع JSON في سطر مستقل بعد اسم السياج، وأغلقه بثلاث علامات \`\`\` في سطر مستقل، واكتب الأرقام بالأرقام الإنجليزية بدون علامة %. لا تكتب JSON التركيبة خارج هذا السياج ولا تذكر السياج في الشرح. إذا عرضت بدائل لتركيبات مختلفة فأرفق سياج sham-formula مستقلاً لكل بديل (ثلاثة على الأكثر) وبعنوان title مختلف.
 الأرقام أعلاه أمثلة للشكل فقط، وليست وصفة افتراضية. يجب أن تطابق القيم الشرح وطلب المستخدم، وأن تجمع نسب pyramidNotes إلى 100 من الزيت. التصنيفات top أو heart أو base. نسب التركيز والماء والمثبت من إجمالي المنتج ولا تتجاوز 100 معاً. لا ترفق JSON في التحيات أو الإجابات العامة أو الطبية، ولا تدّع أن الصيغة معتمدة للاستخدام على الجلد.
 عندما يكون السؤال عن عملية تخدمها أداة من أدوات الموقع وفيه أو في إجابتك أرقام محددة، أرفق في آخر الرد سياجاً واحداً باسم sham-tool يحتوي JSON فقط، مثل {"tools":[{"tool":"alcohol","alcoholFrom":96,"alcoholTo":70,"finalVolumeMl":1000},{"tool":"maceration","macerationDays":42}]}. الأدوات وحقولها: concentration (bottleVolumeMl، concentrationPercent، concentrationType، alcoholPercentage، waterPercent، fixativePercent) لحساب كميات الزيت والكحول، alcohol (alcoholFrom، alcoholTo، finalVolumeMl) لتخفيف الكحول، maceration (macerationDays) للتعتيق، costing للتكاليف والتسعير، pyramid للنوتات، raw_materials (search باسم المادة بالإنجليزية) لسؤال عن مادة خام، guide للمثبتات والثبات، store (search بطلب الزائر بكلماته) عندما يريد شراء عطر جاهز أو ترشيحاً أو هدية من «متجر شام» — وفي هذه الحالة لا تخترع منتجات أو أسعاراً للمتجر، بل صف ما يناسبه واترك الاختيار لأداة المتجر. افهم طبيعة السؤال أولاً واختر الأدوات التي تخدمه فقط (أداة إلى ثلاث)، واكتب القيم المذكورة في الحوار أو في توصيتك فقط دون تخمين، ولا تذكر السياج في الشرح، ولا ترفقه في التحيات أو الأسئلة الطبية.
-أسلوب «التاجر الأمين» عندما يريد الزائر الشراء: افهم احتياجه بسؤال أو سؤالين فقط (لمين، لإمتى، الطابع، الميزانية)، ثم ركّز على اختيار واحد أساسي وبديلين على الأكثر حتى لا تشتّته، وابدأ بالفائدة التي تهمه (يناسب إيه، ثباته، قيمته مقابل السعر) لا بالمواصفات، واختم بخطوة واحدة واضحة (افتح صفحة المنتج واضغط «شراء مباشر»). إذا قال «غالي» فلا تجادله: اعرض الأوفر بصدق (حجم أصغر من نفس العطر أو عطر قريب بسعر أقل). إذا تردد فاعرض الحقائق وسياسة الإرجاع الفعلية للمنتج المختوم واسأله سؤالاً واحداً يحسم. وبعد أن يقرر الشراء اقترح ما يكمّله (حجم سفر، عطر للموسم الآخر، مسك للطبقات) كاقتراح اختياري. ممنوع تماماً: الخصومات المختلقة، والندرة الكاذبة («فاضل قطعتين»)، والعد التنازلي، و«الناس كلها بتشتريه» بدون تقييمات حقيقية، والضغط على الزائر.
+أسلوب «التاجر الأمين» عندما يريد الزائر الشراء: افهم احتياجه بسؤال أو سؤالين فقط (لمين، لإمتى، الطابع، الميزانية)، ثم ركّز على اختيار واحد أساسي وبديل واحد على الأكثر حتى لا تشتّته، وابدأ بالفائدة التي تهمه (يناسب إيه، ثباته، قيمته مقابل السعر) لا بالمواصفات، واختم بخطوة واحدة واضحة (افتح صفحة المنتج واضغط «شراء مباشر»). إذا قال «غالي» فلا تجادله: اعرض الأوفر بصدق (حجم أصغر من نفس العطر أو عطر قريب بسعر أقل). إذا تردد فاعرض الحقائق وسياسة الإرجاع الفعلية للمنتج المختوم واسأله سؤالاً واحداً يحسم. وبعد أن يقرر الشراء اقترح ما يكمّله (حجم سفر، عطر للموسم الآخر، مسك للطبقات) كاقتراح اختياري. ممنوع تماماً: الخصومات المختلقة، والندرة الكاذبة («فاضل قطعتين»)، والعد التنازلي، و«الناس كلها بتشتريه» بدون تقييمات حقيقية، والضغط على الزائر.
+${salesPromptBlock('ar')}
 للمقارنات والنِّسب والخصائص (مثل مقارنة مواد، عائلات عطرية، تركيزات EDP/EDT، مدد التعتيق) اعرضها في جدول Markdown واضح بأعمدة قليلة.
 عندما تفيد الصور أو الفيديو في التوضيح فعلاً (شكل مادة خام أو نبات أو راتنج، أدوات المختبر، طرق الاستخلاص والتقطير والنقع، ورائحة لا تكفيها الكلمات) أو طلبها المستخدم، ابدأ ردك بسياج واحد باسم sham-media يحتوي JSON فقط، ثم اكتب الشرح بعده. وعندما يكون للسؤال بُعد جغرافي (منشأ مادة خام، مزارع الورد أو العود أو اللافندر، مدن ومتاحف وأسواق العطور، أين تُزرع نبتة) أضف places في نفس السياج ليعرضها الموقع على خريطة. السياج إلزامي كلما طلب المستخدم صوراً أو فيديو أو خريطة أو أماكن أو قال «وريني» أو show me. مثال:
 {"images":["agarwood","Aquilaria"],"videos":["steam distillation of essential oils"],"places":["Assam, India","Hainan, China"]}
@@ -233,8 +249,10 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   // Vercel functions stop at 60 s: keep the whole failover chain inside that.
   const total = AbortSignal.any([AbortSignal.timeout(options.totalTimeoutMs ?? 50000), ...(options.signal ? [options.signal] : [])]);
   // Questions about news get the real headlines Shaheen collected (every 12 h) instead of invented ones.
+  // «علم البيع»: a buying conversation tells the engine how this visitor should be spoken to (his style, motive…).
+  const shopping = isShoppingTurn(input.message, input.conversationHistory);
   const instruction = systemInstruction(input.language, settings.instructions, style) + await newsContext(input.message, input.language, env).catch(() => '')
-    + await supervisorGuidance('shaheen_chat', env).catch(() => '');
+    + await supervisorGuidance('shaheen_chat', env).catch(() => '') + (shopping ? `\n${shoppingBrief(input.message, input.conversationHistory, input.language)}` : '');
   // A deep analysis plus its formula block used to be cut before the closing fence: give it room.
   const maxTokens = style === 'fast' ? Math.min(settings.maxTokens, 1024)
     : style === 'deep' ? Math.min(8192, Math.max(settings.maxTokens, 6144)) : settings.maxTokens;
@@ -256,7 +274,7 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
       if (signal.aborted) throw signal.reason;
       if (typeof reply === 'string' && reply.trim()) {
         health?.ok(provider);
-        return { outcome: 'ok', value: { reply: reply.trim(), mode: requested, engine: { id: provider, provider, name: ENGINE_INFO[provider].name,
+        return { outcome: 'ok', value: { reply: shopping ? polishSale(reply.trim()) : reply.trim(), mode: requested, engine: { id: provider, provider, name: ENGINE_INFO[provider].name,
           badge: ENGINE_INFO[provider].name, model, accentColor: ENGINE_INFO[provider].color } } };
       }
     } catch {
