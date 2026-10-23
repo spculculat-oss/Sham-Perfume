@@ -308,6 +308,20 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
             return true;
           }
         }
+        // «شاهين ابن الناس»: a complaint, an angry visitor, wholesale, corporate gifts, a discount request, thanks, a
+        // condolence or gift etiquette — answered with the store's real channels, in the browser too.
+        if (canAnswerFromMemory(error)) {
+          const [relations, mind] = await Promise.all([import('./shaheenRelations').catch(() => undefined), import('./shaheenBrain').catch(() => undefined)]);
+          const relation = relations && mind ? relations.relationsAnswer(mind.withContext(text, history), options.language) : undefined;
+          if (generation !== token) return false;
+          if (relation) {
+            publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
+              id: id('bot'), role: 'assistant', text: relation.reply, timestamp: timestamp(),
+              aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' },
+            }] });
+            return true;
+          }
+        }
         // «الربط المباشر»: the question read with the conversation before it («طب وللشتا؟»), and a wish for a perfume
         // answered from the store itself before anything else (an old answer from memory knows no product or price).
         const brain = canAnswerFromMemory(error) ? await import('./shaheenBrain').catch(() => undefined) : undefined;

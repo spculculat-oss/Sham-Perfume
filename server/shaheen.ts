@@ -29,6 +29,7 @@ import { cosmeticFor } from '../src/utils/cosmeticFormulator';
 import { designStoreNote, productLink, storeAnswer, wantsStore, withContext, type Context } from '../src/utils/shaheenBrain';
 import { saleMove, salesAnswer } from '../src/utils/shaheenSeller';
 import { buyerHint, polishSale, readBuyer, salesPromptBlock } from '../src/utils/salesCraft';
+import { polishRelations, readSituation, relationsAnswer, relationsPromptBlock, socialHint } from '../src/utils/shaheenRelations';
 import { productAnswer } from '../src/utils/shaheenPitch';
 import { agentLinkOn, type LinkSource } from '../src/utils/agentLink';
 import { readStateOrders } from '../src/utils/platformState';
@@ -159,6 +160,20 @@ export function shoppingBrief(message: string, history: ChatTurn[], language: Su
   return lang === 'ar' ? `قراءة الزائر من كلامه: ${buyerHint(readBuyer(said), 'ar')}` : `Reading of the visitor from his words: ${buyerHint(readBuyer(said), 'en')}`;
 }
 
+/** «شاهين ابن الناس»: how this visitor should be dealt with (anger, formality, age, region), when there is something to say. */
+export function socialBrief(message: string, history: ChatTurn[], language: SupportedLanguage): string {
+  const said = history.filter((t) => t.role === 'user').map((t) => t.text);
+  const lang = language === 'ar' || language === 'fa' || /[\u0600-\u06FF]/.test(message) ? 'ar' : 'en';
+  const hint = socialHint(readSituation(message, said), lang);
+  return hint ? (lang === 'ar' ? `التعامل مع الزائر: ${hint}` : `Dealing with the visitor: ${hint}`) : '';
+}
+
+/** A complaint or an angry turn: the platform's reply is cleaned of what ruins a relationship (blame, denial, lectures …). */
+export function isComplaintTurn(message: string): boolean {
+  const r = readSituation(message);
+  return r.anger >= 2 || ['late', 'damaged', 'wrong_item', 'scent_doubt', 'refund', 'angry'].includes(r.situation || '');
+}
+
 export function systemInstruction(language: SupportedLanguage, extra = '', style?: 'fast' | 'deep'): string {
   const languageName = SUPPORTED_LANGUAGES.find((lang) => lang.code === language)!.name;
   const admin = extra.trim()
@@ -181,6 +196,7 @@ export function systemInstruction(language: SupportedLanguage, extra = '', style
 عندما يكون السؤال عن عملية تخدمها أداة من أدوات الموقع وفيه أو في إجابتك أرقام محددة، أرفق في آخر الرد سياجاً واحداً باسم sham-tool يحتوي JSON فقط، مثل {"tools":[{"tool":"alcohol","alcoholFrom":96,"alcoholTo":70,"finalVolumeMl":1000},{"tool":"maceration","macerationDays":42}]}. الأدوات وحقولها: concentration (bottleVolumeMl، concentrationPercent، concentrationType، alcoholPercentage، waterPercent، fixativePercent) لحساب كميات الزيت والكحول، alcohol (alcoholFrom، alcoholTo، finalVolumeMl) لتخفيف الكحول، maceration (macerationDays) للتعتيق، costing للتكاليف والتسعير، pyramid للنوتات، raw_materials (search باسم المادة بالإنجليزية) لسؤال عن مادة خام، guide للمثبتات والثبات، store (search بطلب الزائر بكلماته) عندما يريد شراء عطر جاهز أو ترشيحاً أو هدية من «متجر شام» — وفي هذه الحالة لا تخترع منتجات أو أسعاراً للمتجر، بل صف ما يناسبه واترك الاختيار لأداة المتجر. افهم طبيعة السؤال أولاً واختر الأدوات التي تخدمه فقط (أداة إلى ثلاث)، واكتب القيم المذكورة في الحوار أو في توصيتك فقط دون تخمين، ولا تذكر السياج في الشرح، ولا ترفقه في التحيات أو الأسئلة الطبية.
 أسلوب «التاجر الأمين» عندما يريد الزائر الشراء: افهم احتياجه بسؤال أو سؤالين فقط (لمين، لإمتى، الطابع، الميزانية)، ثم ركّز على اختيار واحد أساسي وبديل واحد على الأكثر حتى لا تشتّته، وابدأ بالفائدة التي تهمه (يناسب إيه، ثباته، قيمته مقابل السعر) لا بالمواصفات، واختم بخطوة واحدة واضحة (افتح صفحة المنتج واضغط «شراء مباشر»). إذا قال «غالي» فلا تجادله: اعرض الأوفر بصدق (حجم أصغر من نفس العطر أو عطر قريب بسعر أقل). إذا تردد فاعرض الحقائق وسياسة الإرجاع الفعلية للمنتج المختوم واسأله سؤالاً واحداً يحسم. وبعد أن يقرر الشراء اقترح ما يكمّله (حجم سفر، عطر للموسم الآخر، مسك للطبقات) كاقتراح اختياري. ممنوع تماماً: الخصومات المختلقة، والندرة الكاذبة («فاضل قطعتين»)، والعد التنازلي، و«الناس كلها بتشتريه» بدون تقييمات حقيقية، والضغط على الزائر.
 ${salesPromptBlock('ar')}
+${relationsPromptBlock('ar')}
 للمقارنات والنِّسب والخصائص (مثل مقارنة مواد، عائلات عطرية، تركيزات EDP/EDT، مدد التعتيق) اعرضها في جدول Markdown واضح بأعمدة قليلة.
 عندما تفيد الصور أو الفيديو في التوضيح فعلاً (شكل مادة خام أو نبات أو راتنج، أدوات المختبر، طرق الاستخلاص والتقطير والنقع، ورائحة لا تكفيها الكلمات) أو طلبها المستخدم، ابدأ ردك بسياج واحد باسم sham-media يحتوي JSON فقط، ثم اكتب الشرح بعده. وعندما يكون للسؤال بُعد جغرافي (منشأ مادة خام، مزارع الورد أو العود أو اللافندر، مدن ومتاحف وأسواق العطور، أين تُزرع نبتة) أضف places في نفس السياج ليعرضها الموقع على خريطة. السياج إلزامي كلما طلب المستخدم صوراً أو فيديو أو خريطة أو أماكن أو قال «وريني» أو show me. مثال:
 {"images":["agarwood","Aquilaria"],"videos":["steam distillation of essential oils"],"places":["Assam, India","Hainan, China"]}
@@ -253,6 +269,10 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   const shopping = isShoppingTurn(input.message, input.conversationHistory);
   const instruction = systemInstruction(input.language, settings.instructions, style) + await newsContext(input.message, input.language, env).catch(() => '')
     + await supervisorGuidance('shaheen_chat', env).catch(() => '') + (shopping ? `\n${shoppingBrief(input.message, input.conversationHistory, input.language)}` : '');
+  // «شاهين ابن الناس»: an upset, formal, older or foreign visitor is spoken to accordingly; a complaint is cleaned.
+  const social = socialBrief(input.message, input.conversationHistory, input.language);
+  const complaint = isComplaintTurn(input.message);
+  const fullInstruction = social ? `${instruction}\n${social}` : instruction;
   // A deep analysis plus its formula block used to be cut before the closing fence: give it room.
   const maxTokens = style === 'fast' ? Math.min(settings.maxTokens, 1024)
     : style === 'deep' ? Math.min(8192, Math.max(settings.maxTokens, 6144)) : settings.maxTokens;
@@ -267,14 +287,14 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
     const model = useLite ? liteModel(env) : settings.models[provider] || status.model;
     let refusal: { failure: EngineFailure; status: number; detail: string } | undefined;
     try {
-      const reply = await callEngine(provider, instruction, turns, {
+      const reply = await callEngine(provider, fullInstruction, turns, {
         env, fetch: options.fetch, signal, temperature: settings.temperature, model,
         maxTokens: useLite ? Math.min(maxTokens, 1536) : maxTokens, maxChars: 32000, onFailure: (failure, httpStatus, detail) => { refusal = { failure, status: httpStatus, detail }; },
       });
       if (signal.aborted) throw signal.reason;
       if (typeof reply === 'string' && reply.trim()) {
         health?.ok(provider);
-        return { outcome: 'ok', value: { reply: shopping ? polishSale(reply.trim()) : reply.trim(), mode: requested, engine: { id: provider, provider, name: ENGINE_INFO[provider].name,
+        return { outcome: 'ok', value: { reply: complaint ? polishRelations(reply.trim()) : shopping ? polishSale(reply.trim()) : reply.trim(), mode: requested, engine: { id: provider, provider, name: ENGINE_INFO[provider].name,
           badge: ENGINE_INFO[provider].name, model, accentColor: ENGINE_INFO[provider].color } } };
       }
     } catch {
@@ -543,6 +563,13 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       }
       // «الربط المباشر»: the question read with the conversation before it, and a shopping wish answered from the store.
       const ctx: Context = linkOn ? withContext(input.message, history) : { text: input.message, followUp: false };
+      // «شاهين ابن الناس»: a complaint, an angry visitor, wholesale, corporate gifts, a discount request, thanks, a
+      // condolence or gift etiquette — answered with the store's real channels (sociology, public relations, commerce).
+      const relation = linkOn ? relationsAnswer(ctx, input.language) : undefined;
+      if (relation) {
+        send(relation.reply, 'agent', { relations: { situation: relation.situation, anger: relation.reading.anger } });
+        return { done: true, recorded: false };
+      }
       // «شاهين التاجر المحنك»: «هاخده» closes the sale (and offers what completes it), «غالي» and «مش متأكد» are answered.
       const sale = linkOn ? salesAnswer(await products().catch(() => []), ctx, input.language, link) : undefined;
       if (sale) {
