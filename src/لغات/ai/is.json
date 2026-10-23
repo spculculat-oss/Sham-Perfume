@@ -121,6 +121,8 @@
   "rv_write": "Skrifa umsögn",
   "sf_added": "Bætt við ✓",
   "sf_address": "Heimilisfang í heild sinni",
+  "sf_ai_note_quick": "Sjálfvirk uppástunga úr síu verslunarinnar, byggð á þínum orðum — athugaðu vöruupplýsingarnar áður en þ tú kaupir.",
+  "sf_ai_note_shaheen": "AI-gerð uppástunga úr vörum verslunarinnar — athugaðu vöruupplýsingarnar áður en þú kaupir.",
   "sf_all_brands": "Öll vörumerki",
   "sf_all_categories": "Allir flokkar",
   "sf_ask_btn": "Mæla með",

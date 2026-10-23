@@ -1,7 +1,7 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-10-22T21:34:14.276Z",
+  "updatedAt": "2026-10-23T09:40:39.308Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
@@ -9,69 +9,76 @@
   "operatorNumberInputs": [],
   "bareLocaleFormatting": [],
   "languageClamps": [],
-  "score": 66,
+  "score": 65,
   "notes": [
-    "الترجمة مش مكتملة: 14.1% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 187761 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط الأساسية بس هي اللي مكتملة.",
-    "المترجم الذكي: 187761 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3232 — النهارده اتترجم 0 (الباقة خلصت — هيكمل بعد التجديد).",
+    "الترجمة مش مكتملة: 12.3% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 221278 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط الأساسية بس هي اللي مكتملة.",
+    "المترجم الذكي: 221278 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3240 — النهارده اتترجم 8 (الباقة خلصت — هيكمل بعد التجديد).",
     "لغات بلّغ عنها قسم التصميم بتتترجم الأول: is، sq، ps، ja."
   ],
-  "translationCoverage": 14.1,
+  "translationCoverage": 12.3,
   "fullyTranslated": 0,
   "translation": {
-    "at": "2026-10-22T21:34:14.656Z",
+    "at": "2026-10-23T09:40:39.765Z",
     "status": "quota",
-    "remaining": 187761,
-    "covered": 3232,
-    "total": 218834,
+    "remaining": 221278,
+    "covered": 3240,
+    "total": 252448,
     "fullyTranslated": 0,
     "remainingByTier": {
-      "1": 16177,
-      "2": 117144,
-      "3": 54440
+      "1": 16169,
+      "2": 139007,
+      "3": 66102
     },
     "worstLanguages": [
       {
         "lang": "my",
-        "remaining": 2066
+        "remaining": 2409
       },
       {
         "lang": "dz",
-        "remaining": 2066
+        "remaining": 2409
       },
       {
         "lang": "cs",
-        "remaining": 2064
+        "remaining": 2407
       },
       {
         "lang": "ur",
-        "remaining": 2064
+        "remaining": 2407
       },
       {
         "lang": "am",
-        "remaining": 2064
+        "remaining": 2407
       },
       {
         "lang": "ha",
-        "remaining": 2064
+        "remaining": 2407
       },
       {
         "lang": "yo",
-        "remaining": 2064
+        "remaining": 2407
       },
       {
         "lang": "zu",
-        "remaining": 2064
+        "remaining": 2407
       }
     ],
     "run": {
-      "calls": 1,
-      "translated": 0,
+      "calls": 5,
+      "translated": 8,
       "rejected": 0,
       "droppedByReview": 0,
       "reviewed": false,
-      "engines": [],
-      "languages": [],
-      "resumeAt": "2026-10-23T08:05:00.000Z"
+      "engines": [
+        "gemini"
+      ],
+      "languages": [
+        "is",
+        "sq",
+        "ps",
+        "ja"
+      ],
+      "resumeAt": "2026-10-24T08:05:00.000Z"
     },
     "rejectReasons": {},
     "rejectCounts": {
@@ -155,7 +162,7 @@
     }
   },
   "design": {
-    "at": "2026-10-22T21:34:14.276Z",
+    "at": "2026-10-23T09:40:39.308Z",
     "auditAt": "2026-10-21T05:41:54.171Z",
     "auditScore": 42,
     "priorityLanguages": [

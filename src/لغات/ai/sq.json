@@ -122,6 +122,8 @@
   "rv_write": "Shkruani një vlerësim",
   "sf_added": "U shtua ✓",
   "sf_address": "Adresa e plotë",
+  "sf_ai_note_quick": "Sugjerim automatik nga filtri i dyqanit, bazuar në fjalët tuaja — kontrolloni detajet e produktit para se të blini.",
+  "sf_ai_note_shaheen": "Sugjerim i gjeneruar nga AI prej produkteve të dyqanit — kontrolloni detajet e produktit para se të blini.",
   "sf_all_brands": "Të gjitha markat",
   "sf_all_categories": "Të gjitha kategoritë",
   "sf_ask_btn": "Rekomando",
