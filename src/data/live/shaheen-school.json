@@ -1,15 +1,15 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T00:06:43.697Z",
+ "updatedAt": "2026-10-23T00:59:29.834Z",
  "reliance": {
-  "score": 98,
-  "covered": 1193,
+  "score": 99,
+  "covered": 1200,
   "total": 1216,
-  "fromMemory": 1193,
+  "fromMemory": 1200,
   "fromLibrary": 0,
   "byLang": {
    "ar": {
-    "covered": 1172,
+    "covered": 1179,
     "total": 1195
    },
    "en": {
@@ -18,9 +18,15 @@
    }
   }
  },
- "studiedTotal": 181,
+ "studiedTotal": 187,
  "selfTaughtTotal": 891,
  "history": [
+  {
+   "at": "2026-10-23T00:59:29.834Z",
+   "score": 99,
+   "studied": 6,
+   "mode": "local"
+  },
   {
    "at": "2026-10-23T00:06:43.697Z",
    "score": 98,
@@ -348,6 +354,42 @@
  ],
  "lastStudied": [
   {
+   "q": "ايه هي الدهون المشبعة وغير المشبعة؟",
+   "lang": "ar",
+   "at": "2026-10-23T00:59:29.834Z",
+   "variants": 0
+  },
+  {
+   "q": "ازاي النباتات بتشم وتطلع روائح؟",
+   "lang": "ar",
+   "at": "2026-10-23T00:59:29.834Z",
+   "variants": 4
+  },
+  {
+   "q": "ازاي البطارية بتولد كهرباء كيميائياً؟",
+   "lang": "ar",
+   "at": "2026-10-23T00:59:29.834Z",
+   "variants": 0
+  },
+  {
+   "q": "ايه هي الإسترات وليه ريحتها حلوة؟",
+   "lang": "ar",
+   "at": "2026-10-23T00:59:29.834Z",
+   "variants": 4
+  },
+  {
+   "q": "ازاي نهر النيل اتكون؟",
+   "lang": "ar",
+   "at": "2026-10-23T00:59:29.834Z",
+   "variants": 2
+  },
+  {
+   "q": "ايه هي الرياح الموسمية وتأثيرها على الزراعة؟",
+   "lang": "ar",
+   "at": "2026-10-23T00:59:29.834Z",
+   "variants": 0
+  },
+  {
    "q": "ليه صناعة الرقائق محتاجة غرف نظيفة؟",
    "lang": "ar",
    "at": "2026-10-23T00:06:43.697Z",
@@ -430,42 +472,6 @@
    "lang": "ar",
    "at": "2026-10-22T22:14:11.812Z",
    "variants": 0
-  },
-  {
-   "q": "ايه دور الهيئات الدولية في تنظيم الطيف؟",
-   "lang": "ar",
-   "at": "2026-10-22T22:14:11.812Z",
-   "variants": 0
-  },
-  {
-   "q": "ازاي نحمي أنظمة التحكم الصناعية من الهجمات؟",
-   "lang": "ar",
-   "at": "2026-10-22T22:14:11.812Z",
-   "variants": 0
-  },
-  {
-   "q": "ايه هي احتياجات تغذية الإبل؟",
-   "lang": "ar",
-   "at": "2026-10-22T22:14:11.812Z",
-   "variants": 0
-  },
-  {
-   "q": "ليه الأمن الحيوي مهم في مزارع الدواجن؟",
-   "lang": "ar",
-   "at": "2026-10-22T22:14:11.812Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه هي السيراميدات وفايدتها للبشرة؟",
-   "lang": "ar",
-   "at": "2026-10-22T21:34:25.553Z",
-   "variants": 4
-  },
-  {
-   "q": "ايه هو مبدأ نصل أوكام في التفسير؟",
-   "lang": "ar",
-   "at": "2026-10-22T21:34:25.553Z",
-   "variants": 0
   }
  ],
  "pending": [
@@ -485,11 +491,6 @@
    "topic": "expert:electronic-warfare"
   },
   {
-   "q": "ازاي نحمي نفسنا من الإشعاع في المستشفيات؟",
-   "lang": "ar",
-   "topic": "expert:nuclear"
-  },
-  {
    "q": "ازاي المستشفيات بتمنع العدوى بين المرضى؟",
    "lang": "ar",
    "topic": "expert:biosafety"
@@ -500,34 +501,39 @@
    "topic": "expert:semiconductors"
   },
   {
-   "q": "ايه هي الرياح الموسمية وتأثيرها على الزراعة؟",
-   "lang": "ar",
-   "topic": "expert:earth"
-  },
-  {
-   "q": "ازاي نهر النيل اتكون؟",
-   "lang": "ar",
-   "topic": "expert:earth"
-  },
-  {
-   "q": "ايه هي الإسترات وليه ريحتها حلوة؟",
-   "lang": "ar",
-   "topic": "expert:chemistry"
-  },
-  {
-   "q": "ازاي البطارية بتولد كهرباء كيميائياً؟",
-   "lang": "ar",
-   "topic": "expert:chemistry"
-  },
-  {
    "q": "ايه هو الضغط الجوي؟",
    "lang": "ar",
    "topic": "expert:physics"
   },
   {
-   "q": "ازاي النباتات بتشم وتطلع روائح؟",
+   "q": "ازاي الحيوانات بتتكيف مع الصحرا؟",
    "lang": "ar",
    "topic": "expert:biology"
+  },
+  {
+   "q": "ازاي نحول بين وحدات القياس؟",
+   "lang": "ar",
+   "topic": "expert:math"
+  },
+  {
+   "q": "ازاي بنعمل موقع إنترنت بسيط؟",
+   "lang": "ar",
+   "topic": "expert:computing"
+  },
+  {
+   "q": "ايه علاقة الملح بضغط الدم؟",
+   "lang": "ar",
+   "topic": "expert:nutrition"
+  },
+  {
+   "q": "ازاي نحصد ونجفف الأعشاب العطرية؟",
+   "lang": "ar",
+   "topic": "expert:agriculture"
+  },
+  {
+   "q": "ايه دور النحل في الزراعة؟",
+   "lang": "ar",
+   "topic": "expert:agriculture"
   }
  ],
  "importer": {
@@ -535,9 +541,9 @@
   "aiReadings": 0,
   "localReadings": 25
  },
- "localTaughtTotal": 124,
+ "localTaughtTotal": 130,
  "spelling": {
-  "at": "2026-10-23T00:06:43.697Z",
+  "at": "2026-10-23T00:59:29.834Z",
   "tried": 745,
   "understood": 698,
   "score": 94,
@@ -554,7 +560,7 @@
   }
  },
  "practice": {
-  "at": "2026-10-23T00:06:43.697Z",
+  "at": "2026-10-23T00:59:29.834Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -728,14 +734,14 @@
    "score": 100
   },
   "chemistry": {
-   "covered": 32,
-   "total": 36,
-   "score": 89
-  },
-  "physics": {
    "covered": 34,
    "total": 36,
    "score": 94
+  },
+  "physics": {
+   "covered": 35,
+   "total": 36,
+   "score": 97
   },
   "math": {
    "covered": 27,
@@ -798,14 +804,14 @@
    "score": 100
   },
   "biology": {
-   "covered": 32,
+   "covered": 33,
    "total": 36,
-   "score": 89
+   "score": 92
   },
   "medicine": {
-   "covered": 49,
+   "covered": 50,
    "total": 52,
-   "score": 94
+   "score": 96
   },
   "engineering": {
    "covered": 36,
@@ -813,9 +819,9 @@
    "score": 95
   },
   "earth_space": {
-   "covered": 31,
+   "covered": 33,
    "total": 34,
-   "score": 91
+   "score": 97
   },
   "education": {
    "covered": 16,
@@ -849,7 +855,7 @@
   }
  },
  "tools": {
-  "at": "2026-10-23T00:06:43.697Z",
+  "at": "2026-10-23T00:59:29.834Z",
   "items": [
    {
     "id": "finance_agent",
@@ -1014,14 +1020,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-23T00:06:43.697Z",
+  "at": "2026-10-23T00:59:29.834Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-23T06:06:43.697Z"
+    "next": "2026-10-23T06:59:29.834Z"
    },
    {
     "id": "site-care",
@@ -1033,7 +1039,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-23T12:06:43.697Z"
+    "next": "2026-10-23T12:59:29.834Z"
    }
   ]
  }

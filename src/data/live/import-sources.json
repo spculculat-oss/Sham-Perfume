@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-22T21:08:54.861Z",
+ "updatedAt": "2026-10-23T00:58:57.297Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,17 @@
  ],
  "runs": [
   {
+   "at": "2026-10-23T00:58:57.297Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-22T21:08:54.861Z",
    "mode": "self",
    "found": 0,
@@ -7855,28 +7866,6 @@
     "  ↳ luckyscent.com: CV 81/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
     "✗ luckyscent.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
     "✗ notino.co.uk: الموقع لا يفتح (HTTP 403)"
-   ]
-  },
-  {
-   "at": "2026-10-20T12:55:17.748Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 10,
-   "notes": [
-    "  ↳ faces.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
-    "✗ faces.com: أغلب منتجاته ليست عطوراً (50%)",
-    "  ↳ wojooh.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Salesforce Commerce",
-    "✗ wojooh.com: أغلب منتجاته ليست عطوراً (50%)",
-    "✗ fragrancebuy.ca: الموقع لا يفتح (HTTP 403)",
-    "✗ maxaromas.com: الموقع لا يفتح",
-    "✗ theperfumeshop.com: الموقع لا يفتح (HTTP 403)",
-    "✗ perfumehub.com.my: الموقع لا يفتح",
-    "  ↳ goldapple.kz: CV 27/100 [https,returns] (pages: /contact-us→200 /returns→200)",
-    "✗ goldapple.kz: ملف الثقة ضعيف (27/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
-    "  ↳ perfumeconnection.com.au: CV 37/100 [https,returns,privacy,terms] (pages: /contact-us→200 /returns→200)",
-    "✗ perfumeconnection.com.au: ملف الثقة ضعيف (37/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة"
    ]
   }
  ]
