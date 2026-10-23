@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { apiUrl, isStaticHosting } from './api';
 import { BUNDLED_FX, COUNTRY_CODES, currencyFor, guessCountry, isCountry, priceIn, quote, type Quote, type QuoteLine } from './pricing';
 import { LOCALE_MAP } from '../لغات/localize';
+import { budgetsToHome, localizeChatPrices } from './chatPrices';
 import type { SupportedLanguage } from '../types/i18n';
 import { getSessionToken } from '../community/api';
 import type { DirectMethod } from './directPayment';
@@ -25,6 +26,26 @@ export function setStoreCountry(code: string, manual = true) {
   if (!isCountry(code)) return;
   try { localStorage.setItem(COUNTRY_KEY, JSON.stringify({ code, manual })); } catch { /* private mode */ }
   window.dispatchEvent(new CustomEvent(COUNTRY_EVENT, { detail: code }));
+}
+
+/** The visitor's country right now, outside React: his own choice or the server's edge country (saved), else a guess. */
+export function currentStoreCountry(): string {
+  if (typeof window === 'undefined') return 'EG';
+  try { return savedCountry()?.code || guessCountry(navigator.languages || [], Intl.DateTimeFormat().resolvedOptions().timeZone || ''); } catch { return 'EG'; }
+}
+
+/**
+ * «شاهين بعملة بلدك» for a chat window: replies shown in the currency of the country the conversation comes from
+ * (asking the server's edge country once, like the store), and the visitor's own amounts sent to the brain in EGP.
+ */
+export function useChatPrices(lang: SupportedLanguage) {
+  const [country] = useStoreCountry();
+  const currency = currencyFor(country, BUNDLED_FX);
+  return {
+    country, currency,
+    show: (text: string) => localizeChatPrices(text, currency, lang, BUNDLED_FX),
+    outgoing: (text: string) => budgetsToHome(text, currency, lang, BUNDLED_FX),
+  };
 }
 
 let geoAsked = false;

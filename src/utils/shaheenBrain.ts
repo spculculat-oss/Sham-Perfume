@@ -225,8 +225,8 @@ function connection(products: StoreProduct[], lang: Lang): string | undefined {
 }
 
 const PRICE_NOTE: Record<Lang, string> = {
-  ar: '_بنشحن لأي دولة في العالم 🌍 — والأسعار والشحن بيظهرولك بعملة بلدك في صفحة المنتج والدفع._',
-  en: '_We ship to any country in the world 🌍 — prices and shipping show in your local currency on the product and checkout pages._',
+  ar: '_بنشحن لأي دولة في العالم 🌍 — الأسعار هنا بعملة بلدك، وتكلفة الشحن لبلدك بتظهر في صفحة الدفع._',
+  en: '_We ship to any country in the world 🌍 — prices here are in your local currency, and shipping to your country shows at checkout._',
 };
 /**
  * «التاجر الشاطر»: one clear next step, said the way this buyer listens (src/utils/salesCraft.ts closeLine) — never a
