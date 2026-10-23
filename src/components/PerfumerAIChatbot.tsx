@@ -1,3 +1,4 @@
+import { useChatPrices } from '../utils/storeCheckout';
 import React, { useState, useRef, useEffect } from 'react';
 import {
   Send,
@@ -845,6 +846,8 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
 }) => {
   const rtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
+  // «شاهين بعملة بلدك»: prices in Shaheen's replies shown in the currency of the country the visitor writes from.
+  const prices = useChatPrices(currentLang);
 
   const PRESET_QUESTIONS = [
     L('preset_1'),
@@ -1246,7 +1249,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                   msg.id === 'welcome'
                     ? shaheenWelcome(currentLang)
                     : msg.role === 'assistant'
-                    ? stripOpeningGreeting(stripMediaBlock(msg.text), messages.slice(0, msgIndex).filter((x) => x.role === 'user').pop()?.text || '')
+                    ? prices.show(stripOpeningGreeting(stripMediaBlock(msg.text), messages.slice(0, msgIndex).filter((x) => x.role === 'user').pop()?.text || ''))
                     : stripMediaBlock(msg.text);
 
                 const formulas = msg.role === 'assistant' && msg.kind !== 'error' ? extractFormulasFromAIMessage(activeDisplayContent) : [];

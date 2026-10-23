@@ -1,4 +1,7 @@
 import type { SupportedLanguage } from '../types/i18n';
+import { budgetsToHome } from './chatPrices';
+import { currencyFor } from './pricing';
+import { currentStoreCountry } from './storeCheckout';
 import { removeMediaBlocks } from './mediaBlock';
 import { findFormulaBlocks } from './aiFormulaExtractor';
 import { greetingKind, greetingReply } from './shaheenGreeting';
@@ -244,10 +247,12 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
         messages: [...current.messages, { id: id('user'), role: 'user', text, timestamp: timestamp() }] });
       const signal = controller.signal;
       const history = chatHistory(current.messages);
+      // «شاهين بعملة بلدك»: the visitor's own money («moins de 30 €») reaches the brain in the store's pounds.
+      const brainText = budgetsToHome(text, currencyFor(currentStoreCountry()), options.language);
       try {
         // The anonymous visitor id travels in the body, not in a custom header: a custom header needs CORS approval,
         // and a server one deploy behind would then block every question from the GitHub Pages site.
-        const body = JSON.stringify({ message: text, model: options.model, language: options.language,
+        const body = JSON.stringify({ message: brainText, model: options.model, language: options.language,
           conversationHistory: history, visitorId: visitorId() });
         let data: ChatResponse | undefined;
         for (let attempt = 0; ; attempt++) {
@@ -281,7 +286,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
           try {
             const fast = await request<ChatResponse>('/api/chat', {
               method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
-              body: JSON.stringify({ message: text, model: 'fast', language: options.language, conversationHistory: history, visitorId: visitorId() }),
+              body: JSON.stringify({ message: brainText, model: 'fast', language: options.language, conversationHistory: history, visitorId: visitorId() }),
             }, 30_000);
             if (generation !== token) return false;
             const message: ChatMessage = { id: id('bot'), role: 'assistant', text: fast?.reply, timestamp: timestamp(), aiEngine: fast?.engine };
@@ -312,7 +317,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
         // condolence or gift etiquette — answered with the store's real channels, in the browser too.
         if (canAnswerFromMemory(error)) {
           const [relations, mind] = await Promise.all([import('./shaheenRelations').catch(() => undefined), import('./shaheenBrain').catch(() => undefined)]);
-          const relation = relations && mind ? relations.relationsAnswer(mind.withContext(text, history), options.language) : undefined;
+          const relation = relations && mind ? relations.relationsAnswer(mind.withContext(brainText, history), options.language) : undefined;
           if (generation !== token) return false;
           if (relation) {
             publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
@@ -326,13 +331,13 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
         // answered from the store itself before anything else (an old answer from memory knows no product or price).
         const brain = canAnswerFromMemory(error) ? await import('./shaheenBrain').catch(() => undefined) : undefined;
         if (generation !== token) return false;
-        const ctx = brain?.withContext(text, history);
+        const ctx = brain?.withContext(brainText, history);
         // «هاخده / غالي / مش متأكد» right after a reply with store products is the seller's turn.
         const sellerTurn = Boolean(brain && ctx?.lastReply && /\/p\/[a-z0-9-]+\.html/.test(ctx.lastReply) && (await import('./shaheenSeller').catch(() => undefined))?.saleMove(text));
         if (generation !== token) return false;
         const shopping = isShoppingQuestion(text) || sellerTurn || Boolean(ctx && brain?.wantsStore(ctx.text));
         if (canAnswerFromMemory(error) && shopping) {
-          const picks = await catalog(text, options.language, history).catch(() => undefined);
+          const picks = await catalog(brainText, options.language, history).catch(() => undefined);
           if (generation !== token) return false;
           if (picks) {
             publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {

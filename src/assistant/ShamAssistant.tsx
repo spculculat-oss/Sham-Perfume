@@ -8,6 +8,7 @@ import {
 import type { SupportedLanguage } from '../types/i18n';
 import { SUPPORTED_LANGUAGES } from '../types/i18n';
 import { ApiError, ApiUnavailableError, isStaticHosting } from '../utils/api';
+import { useChatPrices } from '../utils/storeCheckout';
 import { fmt, loc, makeT, type LText } from '../لغات/localize';
 import {
   assistantApi, CONVERSATION_KEY, streamChat, type ActionCard, type AssistantConfig, type ChatReply, type FormField, type ProductCard,
@@ -131,6 +132,8 @@ function errorText(lang: SupportedLanguage, error: unknown) {
 export function ShamAssistant({ currentLang }: Props) {
   const L = makeT(currentLang, S);
   const rtl = SUPPORTED_LANGUAGES.find((l) => l.code === currentLang)?.dir === 'rtl';
+  // «شاهين بعملة بلدك»: prices in the replies shown in the currency of the visitor's country.
+  const prices = useChatPrices(currentLang);
   const [open, setOpen] = useState(false);
   const [config, setConfig] = useState<AssistantConfig | null>(null);
   const [messages, setMessages] = useState<UiMessage[]>([]);
@@ -221,16 +224,16 @@ export function ShamAssistant({ currentLang }: Props) {
       let streamed = false;
       let reply: ChatReply;
       try {
-        reply = await streamChat(message, currentLang, conversationId, (event) => {
+        reply = await streamChat(prices.outgoing(message), currentLang, conversationId, (event) => {
           streamed = true;
           if (event.type === 'step') patch((x) => ({ ...x, steps: [...(x.steps || []), event.step] }));
           else if (event.type === 'delta') patch((x) => ({ ...x, text: x.text + event.text }));
           else if (event.type === 'reset') patch((x) => ({ ...x, text: '' }));
-        }, controller.signal, replaces, consulting);
+        }, controller.signal, replaces && prices.outgoing(replaces), consulting);
       } catch (e) {
         const terminal = streamed || controller.signal.aborted || e instanceof ApiUnavailableError || (e instanceof ApiError && e.status < 500 && e.status !== 404);
         if (terminal) throw e;
-        reply = await assistantApi.chat(message, currentLang, conversationId, controller.signal, replaces, consulting);
+        reply = await assistantApi.chat(prices.outgoing(message), currentLang, conversationId, controller.signal, replaces && prices.outgoing(replaces), consulting);
       }
       if (controller.signal.aborted) throw new DOMException('Stopped', 'AbortError');
       setConversationId(reply.conversationId);
@@ -260,7 +263,7 @@ export function ShamAssistant({ currentLang }: Props) {
     if (!canSpeak) return;
     if (speakingId === key) { stopSpeaking(); return; }
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(m.text.replace(/[*_#`>]/g, ''));
+    const utterance = new SpeechSynthesisUtterance(prices.show(m.text).replace(/[*_#`>]/g, ''));
     utterance.lang = speechLang(currentLang);
     utterance.onend = () => setSpeakingId((id) => (id === key ? null : id));
     utterance.onerror = utterance.onend;
@@ -403,7 +406,7 @@ export function ShamAssistant({ currentLang }: Props) {
                         <button className="text-[11px] font-bold rounded-lg bg-stone-900 text-amber-100 px-2.5 py-1">{L('save_edit')}</button>
                       </div>
                     </form>
-                  ) : m.streaming && !m.text ? null : <Bubble role={m.role} text={m.text} engine={m.engine} lang={currentLang} streaming={m.streaming} stopped={m.stopped} />}
+                  ) : m.streaming && !m.text ? null : <Bubble role={m.role} text={prices.show(m.text)} engine={m.engine} lang={currentLang} streaming={m.streaming} stopped={m.stopped} />}
                   {m.role === 'user' && i === lastUserIndex(messages) && editing === null && !busy && status === 'open' && !isStaticHosting && (
                     <div className="flex justify-end px-1 -mt-1">
                       <button type="button" onClick={() => setEditing(m.text)} aria-label={L('edit')} title={L('edit')} className="p-1 rounded-md text-stone-400 hover:text-stone-700 hover:bg-stone-200"><Pencil className="w-3 h-3" /></button>
