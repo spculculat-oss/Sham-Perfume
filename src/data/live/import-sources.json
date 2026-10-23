@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T07:42:46.642Z",
+ "updatedAt": "2026-10-23T08:33:38.744Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,18 @@
  ],
  "runs": [
   {
+   "at": "2026-10-23T08:33:38.744Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "Web search: AI quota used up — the scout continues by himself",
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-23T07:42:46.642Z",
    "mode": "self",
    "found": 0,
@@ -7811,28 +7823,6 @@
     "✗ volareparfums.com: الموقع لا يفتح",
     "  ↳ shama.com: CV 62/100 [age,https,identity,returns,privacy,social,authentic]",
     "✗ shama.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)"
-   ]
-  },
-  {
-   "at": "2026-10-21T06:55:49.085Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 1,
-   "rejected": 1,
-   "notes": [
-    "  ↳ bujairami.com: CV 54/100 [age,https,identity,returns,authentic] (pages: /contact-us→200 /returns→200)",
-    "✗ bujairami.com: ملف الثقة ضعيف (54/100): ينقصه بيانات التواصل، وسائل دفع معروفة، سياسة الشحن",
-    "  ↳ bujairamiperfumes.com: CV 29/100 [age,https,returns] (pages: /contact-us→200 /returns→200)",
-    "✗ bujairamiperfumes.com: ملف الثقة ضعيف (29/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
-    "✗ bujairamiparfums.com: الموقع لا يفتح",
-    "  ↳ armaf.com: CV 90/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
-    "✓ armaf.com (CV 90/100): 494 perfumes, 4/6 pages read without AI, USD (1 = 54.4889 EGP) — added to the importer",
-    "✗ armafperfumes.com: الموقع لا يفتح",
-    "✗ armafparfums.com: الموقع لا يفتح",
-    "✗ rasasiperfumes.com: ملف robots.txt يمنع القراءة الآلية",
-    "  ↳ rasasiparfums.com: CV 29/100 [age,https,returns] (pages: /contact-us→200 /returns→200)",
-    "✗ rasasiparfums.com: ملف الثقة ضعيف (29/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة"
    ]
   }
  ]
