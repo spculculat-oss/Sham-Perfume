@@ -1525,6 +1525,9 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   'المدرسة شغالة: الأسئلة رايحة للخبراء والدروس المراجَعة راجعة لذاكرة شاهين.': { en: "The school is running: questions go to the experts and reviewed lessons come back to Shaheen's memory." },
   'سجل النشاط': { en: "Activity log" },
   'لسه مفيش نشاط متسجل.': { en: "No activity recorded yet." },
+  'خطة تنفيذ ({n} أوامر)': { en: "Execution plan ({n} orders)" },
+  'الوكيل يفهم الأمر…': { en: "Agent understanding command…" },
+  'اكتب للدولة بأسلوبك العادي… (أمر واحد أو عدة أوامر معاً: وقف الأخبار وشغّل الدورية، أو اعمل مهمة: …)': { en: "Write to the State naturally… (single or multi-step orders: pause news and run patrol, or create task: …)" },
 };
 
 let currentLang: SupportedLanguage = 'ar';
