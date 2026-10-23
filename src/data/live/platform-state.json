@@ -1,7 +1,49 @@
 {
- "updatedAt": "2026-10-23T17:52:42.814Z",
+ "updatedAt": "2026-10-23T19:03:46.376Z",
  "active": true,
  "decisions": [
+  {
+   "at": "2026-10-23T19:03:45.391Z",
+   "number": 301,
+   "kind": "task",
+   "title": "[قسم تجربة الزائر والتصميم واللغات] «إزاي أتتبعه؟» مابتتفهمش من شاهين",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/301"
+  },
+  {
+   "at": "2026-10-23T19:03:45.969Z",
+   "number": 302,
+   "kind": "task",
+   "title": "[قسم تجربة الزائر والتصميم واللغات] مقارنة السعر بمتجر تاني مش متغطية (بيرد بقايمة أو بيروح للمنصات)",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/302"
+  },
+  {
+   "at": "2026-10-23T19:03:46.375Z",
+   "number": 303,
+   "kind": "task",
+   "title": "[قسم تجربة الزائر والتصميم واللغات] «الأوردر ناقص» اتردّ عليها كأنها منتج غلط",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/303"
+  },
   {
    "at": "2026-10-23T17:52:41.875Z",
    "number": 298,
@@ -241,7 +283,7 @@
  },
  "field": {
   "maneuverAt": "2026-10-23T14:16:34.941Z",
-  "at": "2026-10-23T17:52:39.675Z",
+  "at": "2026-10-23T19:03:42.306Z",
   "items": [
    {
     "id": "productDetail:http",
@@ -431,8 +473,8 @@
     "botAr": "شات الخبير شاهين ومساعد شام",
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
     "action": "task",
-    "seen": 3,
-    "issue": 298
+    "issue": 298,
+    "seen": 3
    },
    {
     "id": "shaheen_chat:wholesale-quantity:1:chat-repeat",
@@ -447,8 +489,8 @@
     "botAr": "شات الخبير شاهين ومساعد شام",
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
     "action": "task",
-    "seen": 3,
-    "issue": 299
+    "issue": 299,
+    "seen": 3
    },
    {
     "id": "shaheen_chat:calm-tracking:0:expect",
@@ -463,8 +505,8 @@
     "botAr": "شات الخبير شاهين ومساعد شام",
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
     "action": "task",
-    "seen": 3,
-    "issue": 300
+    "issue": 300,
+    "seen": 3
    },
    {
     "id": "shaheen_chat:calm-tracking:1:expect",
@@ -479,7 +521,8 @@
     "botAr": "شات الخبير شاهين ومساعد شام",
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
     "action": "task",
-    "seen": 3
+    "seen": 3,
+    "issue": 301
    },
    {
     "id": "shaheen_chat:competitor-price:0:expect",
@@ -494,7 +537,8 @@
     "botAr": "شات الخبير شاهين ومساعد شام",
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
     "action": "task",
-    "seen": 3
+    "seen": 3,
+    "issue": 302
    },
    {
     "id": "shaheen_chat:missing-item:0:expect",
@@ -509,7 +553,8 @@
     "botAr": "شات الخبير شاهين ومساعد شام",
     "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
     "action": "task",
-    "seen": 3
+    "seen": 3,
+    "issue": 303
    },
    {
     "id": "shaheen_chat:refund-sealed:0:expect",
