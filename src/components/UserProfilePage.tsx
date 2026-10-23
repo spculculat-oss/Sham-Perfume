@@ -1,3 +1,4 @@
+import { isVerifiedCustomer } from '../utils/paymentAccess';
 import React, { useEffect, useMemo } from 'react';
 import {
   User,
@@ -890,8 +891,9 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, currentL
       {showPaymentVault && (
         <PaymentEnvironmentModal
           currentLang={currentLang}
-          customerId={user.id}
+          customerId={isVerifiedCustomer(user) ? user.id : undefined}
           customerName={user.name || user.email}
+          onRequireAuth={() => { setShowPaymentVault(false); window.dispatchEvent(new CustomEvent('sham-require-auth')); }}
           onClose={() => setShowPaymentVault(false)}
         />
       )}

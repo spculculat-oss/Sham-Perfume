@@ -1,3 +1,4 @@
+import { isVerifiedCustomer } from './utils/paymentAccess';
 import { BookLibrary } from './library/BookLibrary';
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { Header } from './components/Header';
@@ -1181,8 +1182,8 @@ export default function App() {
           <Storefront
             onClose={() => navigateToTab('home')}
             currentLang={currentLang}
-            retailerId={currentUser?.id}
-            signedIn={Boolean(currentUser)}
+            retailerId={isVerifiedCustomer(currentUser) ? currentUser?.id : undefined}
+            signedIn={isVerifiedCustomer(currentUser)}
             onRequireAuth={handleOpenAuthModal}
             shaheenQuery={storeQuery}
           />
@@ -1192,7 +1193,7 @@ export default function App() {
           <ProductDetail
             productId={productId}
             currentLang={currentLang}
-            signedIn={Boolean(currentUser)}
+            signedIn={isVerifiedCustomer(currentUser)}
             onRequireAuth={handleOpenAuthModal}
             onClose={() => navigateToTab('store')}
           />

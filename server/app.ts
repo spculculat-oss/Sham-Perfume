@@ -68,6 +68,8 @@ app.use('/api', createContractsRouter(community, { env: process.env, finance: sh
 app.use('/api', createCheckoutRouter({
   finance: shamCore.finance,
   bank: shamCore.bank,
+  // No payment without a real account: the session is checked against the community database (owner's rule).
+  customer: async (req) => community.userFrom(req),
   merchantProducts: async (skus) => { const ctx = await community.ready(); return ctx ? productsForCheckout(ctx, skus) : []; },
   onCheckout: async ({ ref, req, input, shippingUsd, total, currency, catalogLines }) => {
     const hasMerchantItems = input.items.some((i) => i.sku.startsWith('mp_'));

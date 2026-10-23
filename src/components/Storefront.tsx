@@ -31,7 +31,7 @@ import {
 } from 'lucide-react';
 import { ProductPayMethods } from '../bank/ProductPayMethods';
 import { CheckoutPayPanel } from './CheckoutPayPanel';
-import { requireCustomerLogin } from '../utils/paymentAccess';
+import { localOnlyProfile, requireCustomerLogin } from '../utils/paymentAccess';
 import { PaymentEnvironmentModal } from './PaymentEnvironmentModal';
 import { StoreSalesCategoryChart } from './StoreSalesCategoryChart';
 import { saveMerchant } from '../utils/merchantDataStore';
@@ -558,6 +558,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
         if (directPurchase) setDirectPurchase(null); else removePurchasedItems(items);
         setStep('cart');
       } catch (error) {
+        if ((error as { code?: string })?.code === 'LOGIN_REQUIRED') { onRequireAuth?.(); setPayMessage(L.payError); return; }
         setPayMessage(error instanceof Error && ['INVALID_EMAIL', 'INVALID_PHONE', 'MISSING_ADDRESS', 'MISSING_NAME'].includes((error as { code?: string }).code || '') ? L.payInvalid : L.payError);
       } finally { setPaying(false); }
       return;
@@ -567,6 +568,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
     try {
       await startCheckout(summary.lines.map((l) => ({ sku: l.product.sku, qty: l.qty })), money.country, payForm, currentLang, chosenMethod, directPurchase ? 'direct' : 'cart');
     } catch (error) {
+      if (error instanceof CheckoutError && error.code === 'LOGIN_REQUIRED') { onRequireAuth?.(); setPayMessage(L.payError); return; }
       setPayMessage(error instanceof CheckoutError && ['INVALID_EMAIL', 'INVALID_PHONE', 'MISSING_ADDRESS', 'MISSING_NAME'].includes(error.code) ? L.payInvalid : L.payError);
       // Keep the cart and delivery details. A failed redirect or gateway call is NEVER a payment.
     } finally { setPaying(false); }
@@ -1710,7 +1712,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                           onStoreEmail={sendToStore}
                         />
                       ) : (
-                        <button type="button" onClick={() => { requireCustomerLogin(); onRequireAuth?.(); }} className="w-full rounded-xl bg-stone-900 py-2.5 text-sm font-bold text-white" data-testid="checkout-sign-in">{currentLang === 'ar' ? 'سجّل الدخول لحفظ البطاقة أو المحفظة' : 'Sign in to save a card or wallet'}</button>
+                        <><button type="button" onClick={() => { requireCustomerLogin(); onRequireAuth?.(); }} className="w-full rounded-xl bg-stone-900 py-2.5 text-sm font-bold text-white" data-testid="checkout-sign-in">{currentLang === 'ar' ? 'سجّل الدخول لحفظ البطاقة أو المحفظة' : 'Sign in to save a card or wallet'}</button>{localOnlyProfile() && <p className="text-[11px] leading-5 text-amber-900 bg-amber-50 rounded-xl p-2 mt-2" role="status" data-testid="checkout-local-only">{currentLang === 'ar' ? 'دخولك الحالي محفوظ على هذا الجهاز فقط. الدفع يحتاج حساباً مسجّلاً ومؤكَّداً على خادم شام.' : 'Your current sign-in exists on this device only. Paying needs a registered account verified by the Sham server.'}</p>}</>
                       )}
                       {canPay && <fieldset className="rounded-xl border border-stone-200 bg-stone-50 p-3 space-y-3" data-testid="real-payment-methods">
                         <legend className="text-xs font-bold px-1">{currentLang === 'ar' ? 'وسائل الدفع المفعّلة لبلدك' : 'Enabled methods for your country'}</legend>

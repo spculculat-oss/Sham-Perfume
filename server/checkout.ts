@@ -46,6 +46,12 @@ export interface CheckoutRouterOptions {
   }) => Promise<void>;
   /** Called when Kashier confirms a payment (verified server-side). */
   onPaid?: (ref: string) => Promise<void>;
+  /**
+   * The signed-in customer behind the request (a real, server-verified account session).
+   * When given, no payment starts without one: card/wallet sessions and «بنك شام» direct orders answer
+   * 401 LOGIN_REQUIRED for visitors, demo logins and browser-only local profiles.
+   */
+  customer?: (req: express.Request) => Promise<{ id: string } | undefined>;
 }
 
 export const DEFAULT_RETURN_URL = 'https://spculculat-oss.github.io/Sham-Perfume/';
@@ -191,10 +197,20 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     res.json({ enabled: methods.length > 0, mode: cfg.mode, currencies: cfg.currencies, currency, country, methods, direct, offer });
   }));
 
+  /** Payment needs a signed-in account (owner's rule): visitors and local-only profiles are refused here, not just in the page. */
+  const signedIn = async (req: express.Request, res: express.Response) => {
+    if (!options.customer) return true;
+    const who = await options.customer(req).catch(() => undefined);
+    if (who?.id) return true;
+    res.status(401).json({ error: 'Please sign in to your account before paying', code: 'LOGIN_REQUIRED' });
+    return false;
+  };
+
   router.post('/store/checkout', wrap(async (req, res) => {
     res.setHeader('Cache-Control', 'private, no-store');
     const cfg = config();
     if (!cfg) { res.status(503).json({ error: 'Online payment is not configured yet', code: 'PAYMENTS_NOT_CONFIGURED' }); return; }
+    if (!(await signedIn(req, res))) return;
     if (!limiter.allow(clientKey(req))) { res.status(429).json({ error: 'Too many requests, please wait a minute', code: 'RATE_LIMITED' }); return; }
     const input = readCheckout(req.body);
     if ('error' in input) { res.status(400).json({ error: 'Invalid order', code: input.error }); return; }
@@ -249,6 +265,7 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
   router.post('/store/checkout/direct', wrap(async (req, res) => {
     res.setHeader('Cache-Control', 'private, no-store');
     if (!directLimiter.allow(clientKey(req))) { res.status(429).json({ error: 'Too many requests, please wait a minute', code: 'RATE_LIMITED' }); return; }
+    if (!(await signedIn(req, res))) return;
     const { method: _ignored, ...body } = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<string, unknown>;
     const input = readCheckout(body);
     if ('error' in input) { res.status(400).json({ error: 'Invalid order', code: input.error }); return; }
