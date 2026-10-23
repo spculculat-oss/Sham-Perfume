@@ -1,3 +1,4 @@
+import { localOnlyProfile } from '../utils/paymentAccess';
 import React, { useMemo, useState } from 'react';
 import { Lock, ShieldCheck, Trash2 } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
@@ -201,6 +202,7 @@ export function PaymentDesk({
       <div className="rounded-2xl border border-stone-200 bg-stone-50 p-5 space-y-3" data-testid="payment-login-wall">
         <p className="flex items-center gap-2 text-sm font-bold text-stone-900"><Lock className="h-4 w-4" />{t('الدفع يتطلب تسجيل الدخول', 'Payment requires sign-in')}</p>
         <p className="text-xs leading-5 text-stone-600">{t('مثل Stripe وAdyen: لا تُسجَّل بطاقة أو محفظة، ولا يبدأ دفع، إلا من حساب داخل.', 'As with Stripe and Adyen: a card or wallet is saved, and a payment starts, only from a signed-in account.')}</p>
+        {localOnlyProfile() && <p className="text-xs leading-5 text-amber-900 bg-amber-50 rounded-xl p-2" role="status" data-testid="payment-local-only">{t('دخولك الحالي محفوظ على هذا الجهاز فقط، والدفع يحتاج حساباً مسجّلاً ومؤكَّداً على خادم شام. سجّل الدخول بحسابك الحقيقي.', 'Your current sign-in exists on this device only. Paying needs a registered account verified by the Sham server. Sign in with your real account.')}</p>}
         <button type="button" onClick={onRequireAuth} className="w-full rounded-xl bg-stone-900 py-2.5 text-sm font-bold text-white" data-testid="payment-sign-in">{t('تسجيل الدخول', 'Sign in')}</button>
       </div>
     );

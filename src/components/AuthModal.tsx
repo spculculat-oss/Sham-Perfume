@@ -4,7 +4,6 @@ import {
   Lock,
   Mail,
   ShieldCheck,
-  Sparkles,
   X,
   CheckCircle2,
   AlertCircle,
@@ -19,6 +18,7 @@ import { completeTwoFactorLogin, confirmPasswordReset, loginUser, profileFromMem
 import { CommunityApiError, cx, type AuthResult, type PasskeyGetOptions } from '../community/api';
 import { usePasskey, webauthnAvailable } from '../community/passkeys';
 import { WORLD_COUNTRIES } from '../data/worldCountries';
+import { localOnlyProfile } from '../utils/paymentAccess';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
 import { LText, makeT, pickArEn } from '../لغات/localize';
@@ -283,17 +283,17 @@ const S = {
     tr: 'Hesap oluşturmayı onayla',
     fa: 'تأیید ایجاد حساب',
   },
-  demo_login: {
-    ar: 'دخول تجريبي سريع بحساب الخبير معتز (Demo)',
-    en: 'Quick Demo Login with Expert Moataz (Demo)',
-    fr: 'Connexion démo avec l’expert Moataz',
-    es: 'Acceso demo con el experto Moataz',
-    it: 'Accesso demo con l’esperto Moataz',
-    de: 'Schneller Demo-Login mit Experte Moataz',
-    ru: 'Быстрый демо-вход с экспертом Моатазом',
-    zh: '使用专家 Moataz 账号快速体验（Demo）',
-    tr: 'Uzman Moataz ile hızlı demo giriş',
-    fa: 'ورود آزمایشی سریع با حساب خبره معتز (Demo)',
+  pay_needs_account: {
+    ar: 'الدفع يتم من حساب مسجّل ومؤكَّد فقط. دخولك الحالي محفوظ على هذا الجهاز وحده ولا يكفي للدفع.',
+    en: 'Payment is only possible from a registered, verified account. Your current sign-in exists on this device only and cannot pay.',
+    fr: 'Le paiement n’est possible que depuis un compte inscrit et vérifié. Votre connexion actuelle n’existe que sur cet appareil.',
+    es: 'El pago solo es posible desde una cuenta registrada y verificada. Tu sesión actual solo existe en este dispositivo.',
+    it: 'Il pagamento è possibile solo da un account registrato e verificato. L’accesso attuale esiste solo su questo dispositivo.',
+    de: 'Bezahlen ist nur mit einem registrierten, bestätigten Konto möglich. Deine aktuelle Anmeldung gibt es nur auf diesem Gerät.',
+    ru: 'Оплата возможна только из зарегистрированного подтверждённого аккаунта. Текущий вход существует только на этом устройстве.',
+    zh: '只有已注册并验证的账户才能付款。您当前的登录仅保存在本设备上，无法付款。',
+    tr: 'Ödeme yalnızca kayıtlı ve doğrulanmış bir hesapla yapılabilir. Mevcut girişiniz yalnızca bu cihazda.',
+    fa: 'پرداخت فقط از حساب ثبت‌شده و تأییدشده ممکن است. ورود فعلی شما فقط روی این دستگاه است.',
   },
   footer_security: {
     ar: 'بياناتك وخلطاتك محمية ومحفوظة محلياً بتشفير كامل وفق معايير GDPR',
@@ -539,18 +539,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     }
   };
 
-  const handleDemoLogin = async () => {
-    setIsLoading(true);
-    try {
-      const res = await loginUser('perfumer@sham.com', 'sham123456');
-      if (res.success && res.user) {
-        onSuccess(res.user);
-        onClose();
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   /* OAuth (Google/Facebook): start with account you already have */
   const [oauthBusy, setOauthBusy] = useState<'google'|'facebook'|''>('');
@@ -703,6 +691,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs">
+          {localOnlyProfile() && (
+            <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-center gap-2" role="status" data-testid="auth-pay-needs-account">
+              <Lock className="w-4 h-4 shrink-0 text-amber-700" />
+              <span>{L('pay_needs_account')}</span>
+            </div>
+          )}
           {errorMsg && (
             <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
@@ -1069,16 +1063,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </button>
             )}
 
-            {mode === 'login' && stage === 'auth' && (
-              <button
-                type="button"
-                onClick={handleDemoLogin}
-                className="w-full py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium text-xs transition-colors cursor-pointer flex items-center justify-center gap-2"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-amber-700" />
-                <span>{L('demo_login')}</span>
-              </button>
-            )}
           </div>
         </form>
 
