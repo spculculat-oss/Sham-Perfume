@@ -95,7 +95,8 @@ const UNKNOWN: Pick<PerfumeMaterial, 'layer' | 'tags' | 'life' | 'strength' | 'd
 const KEXP = 0.25;
 const KTIME = 0.6;
 const TIMES = [0, 0.25, 1, 2, 4, 6, 8, 12, 24];
-const LAYER_TARGET: Record<Layer, [number, number]> = { top: [15, 30], heart: [30, 50], base: [25, 45] };
+/** The classic share of each layer in the oil, %. */
+export const LAYER_TARGET: Record<Layer, [number, number]> = { top: [15, 30], heart: [30, 50], base: [25, 45] };
 const DIFFUSIVE = new Set(['hedione', 'iso_e', 'ambroxan', 'cetalox', 'calone', 'damascenone', 'ethyl_maltol']);
 
 export function simulatePerfume(d: PerfumeDesign, extra: { world?: WorldReference[]; store?: StoreReference[] } = {}): PerfumeSimulation {
