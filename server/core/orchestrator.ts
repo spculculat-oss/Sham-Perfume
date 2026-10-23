@@ -712,7 +712,7 @@ export class Orchestrator {
             if (buying) parts.push(ar ? CHECKOUT_LINE.ar : CHECKOUT_LINE.en);
           } else if (store?.items.length) {
             parts.push(store.matched
-              ? (ar ? 'من كتالوج المتجر (السعر بالجنيه المصري، والتحويل لعملتك في صفحة الدفع):' : 'From the store catalogue (prices in EGP, converted to your currency at checkout):')
+              ? (ar ? 'من كتالوج المتجر (بنشحن لأي دولة، والسعر بيظهرلك بعملة بلدك في صفحة الدفع):' : 'From the store catalogue (we ship worldwide; prices show in your currency at checkout):')
               : (ar ? 'مش لاقي منتج مطابق بالاسم، ودي منتجات من المتجر:' : 'No exact name match, but these are in the store:'));
             parts.push(store.items.map((p) => storeLine(p, ar ? 'ar' : 'en')).join('\n'));
             if (store.snapshot && !store.matched) parts.push(ar ? `المتجر فيه ${store.snapshot.total} منتج منشور (${store.snapshot.inStock} متوفر) — قولّي الماركة أو العائلة العطرية أو الميزانية وأنا أضيّق البحث.` : `The store has ${store.snapshot.total} published products (${store.snapshot.inStock} in stock) — tell me the brand, family or budget and I will narrow it down.`);
