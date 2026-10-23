@@ -44,8 +44,8 @@ export const TIERS: { id: TierId; y: number; labelAr: string; labelEn: string }[
 const Y = Object.fromEntries(TIERS.map((t) => [t.id, t.y])) as Record<TierId, number>;
 
 /** Department order on the operations branch, right to left (leadership first, as Arabic reads). */
-export const BRANCH_DEPTS: DeptId[] = ['leadership', 'store', 'content', 'experience', 'reliability'];
-const DEPT_X0 = 1195; const DEPT_STEP = 132;
+export const BRANCH_DEPTS: DeptId[] = ['leadership', 'store', 'content', 'experience', 'reliability', 'innovation'];
+const DEPT_X0 = 1195; const DEPT_STEP = 110;
 export const deptRoomX = (d: DeptId) => DEPT_X0 - BRANCH_DEPTS.indexOf(d) * DEPT_STEP;
 /** Robots under a department: two columns of dots. */
 export const BOT_DOT = { gapX: 30, gapY: 30 } as const;

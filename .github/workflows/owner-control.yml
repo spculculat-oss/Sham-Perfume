@@ -44,6 +44,7 @@ on:
           - teacher
           - school
           - academy
+          - lab
           - importer
           - images
           - product_pages
