@@ -1,29 +1,89 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T10:18:58.288Z",
- "nextUpdateAt": "2026-10-23T22:18:58.288Z",
+ "updatedAt": "2026-10-23T11:25:35.362Z",
+ "nextUpdateAt": "2026-10-23T23:25:35.362Z",
  "intervalHours": 12,
- "editor": "shaheen",
+ "editor": "feeds",
  "digest": {
   "ar": "تشهد سوق العطور العالمية نشاطاً ملحوظاً مع إطلاقات جديدة لشركات كبرى مثل Puig وInterparfums وMerit وKayali. كما تتسارع وتيرة الابتكار في العطور الشرقية والنيش، وتتألق الفعاليات الإقليمية والمعارض المعنية بصناعة العطور والعود.",
   "en": "The global fragrance market is witnessing notable activity with major launches from companies like Puig, Interparfums, Merit, and Kayali. Innovation in oriental and niche perfumery continues to accelerate alongside prominent regional exhibitions."
  },
  "sources": [
   {
-   "name": "Premium Beauty News",
-   "count": 2
-  },
-  {
    "name": "Cosmetics Business",
-   "count": 2
+   "count": 3
   },
   {
-   "name": "Now Smell This",
-   "count": 2
+   "name": "Vietnam.vn",
+   "count": 3
   },
   {
-   "name": "CaFleureBon",
-   "count": 2
+   "name": "IMPACT Magazine",
+   "count": 1
+  },
+  {
+   "name": "بوابة الدولة الاخبارية",
+   "count": 1
+  },
+  {
+   "name": "MediaNews4U",
+   "count": 1
+  },
+  {
+   "name": "AOL.co.uk",
+   "count": 1
+  },
+  {
+   "name": "Grazia",
+   "count": 1
+  },
+  {
+   "name": "EIN News",
+   "count": 1
+  },
+  {
+   "name": "The Nation Newspaper",
+   "count": 1
+  },
+  {
+   "name": "Grazia India",
+   "count": 1
+  },
+  {
+   "name": "العربية",
+   "count": 1
+  },
+  {
+   "name": "Marie Claire",
+   "count": 1
+  },
+  {
+   "name": "techafrika",
+   "count": 1
+  },
+  {
+   "name": "L'Éventail",
+   "count": 1
+  },
+  {
+   "name": "cequepensentleshommes.fr",
+   "count": 1
+  },
+  {
+   "name": "The Quint",
+   "count": 1
+  },
+  {
+   "name": "Le Monde.fr",
+   "count": 1
+  },
+  {
+   "name": "Branding in Asia",
+   "count": 1
+  },
+  {
+   "name": "Premium Beauty News",
+   "count": 1
   },
   {
    "name": "PureWow",
@@ -46,75 +106,375 @@
    "count": 1
   },
   {
+   "name": "Now Smell This",
+   "count": 1
+  },
+  {
    "name": "ميوزيك نايشن",
-   "count": 1
-  },
-  {
-   "name": "Gulf News",
-   "count": 1
-  },
-  {
-   "name": "Boursorama",
-   "count": 1
-  },
-  {
-   "name": "WWD",
-   "count": 1
-  },
-  {
-   "name": "Page Six",
-   "count": 1
-  },
-  {
-   "name": "Ville de Versailles",
-   "count": 1
-  },
-  {
-   "name": "E! News",
-   "count": 1
-  },
-  {
-   "name": "Le Journal de Montréal",
-   "count": 1
-  },
-  {
-   "name": "Grazia",
-   "count": 1
-  },
-  {
-   "name": "Trend Hunter",
-   "count": 1
-  },
-  {
-   "name": "Vogue Adria",
-   "count": 1
-  },
-  {
-   "name": "Holler Country",
-   "count": 1
-  },
-  {
-   "name": "Le Figaro",
-   "count": 1
-  },
-  {
-   "name": "Grazia Daily UK",
-   "count": 1
-  },
-  {
-   "name": "جريدة الجريدة الكويتية",
-   "count": 1
-  },
-  {
-   "name": "NewBeauty",
-   "count": 1
-  },
-  {
-   "name": "The Zoe Report",
    "count": 1
   }
  ],
  "items": [
+  {
+   "id": "nbzffj4",
+   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNZkJxYk1sbjJnQy1xdFFwaTZ3TGI3cGhPMnlIUEE0WlVNbEZWaVpsa3RkVnVTYVdoT2tpYlBMZG1wZUFqd0xTcVF1M29aVV9DSXU4eUY1T1lqbmlnY2Z6NFZxcE1rclh3d0VXSHdfV09YRl9VOGRVTHRrM0JlbDN2Q003dVJVS3N2NjZqNzZZUW4zV2w1WWhzeVBSb2hEZ2ZtdGU4Zlg5b1d6ZE5wV0tiTlVB?oc=5",
+   "source": "IMPACT Magazine",
+   "publishedAt": "2026-10-23T11:17:27.000Z",
+   "original": "Mohalla to Metro: Lucknow’s Rumi Fine Fragrances Goes Global",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Mohalla to Metro: Lucknow’s Rumi Fine Fragrances Goes Global",
+    "en": "Mohalla to Metro: Lucknow’s Rumi Fine Fragrances Goes Global"
+   },
+   "summary": {
+    "ar": "Mohalla to Metro: Lucknow’s Rumi Fine Fragrances Goes Global",
+    "en": "Mohalla to Metro: Lucknow’s Rumi Fine Fragrances Goes Global"
+   }
+  },
+  {
+   "id": "n1a9z8uq",
+   "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE1lU1ctWDZWU2U5XzRUNnVFODVLZEhtb1h1QjR1dXFxZGQ4aDMzM01TWHpzb2UwOVZET2pDVUJMODlLdnlOWGRHTDlsMA?oc=5",
+   "source": "بوابة الدولة الاخبارية",
+   "publishedAt": "2026-10-23T11:16:41.000Z",
+   "original": "بعد غد.. حفلان يجمعان نجوم الطرب بمهرجان الموسيقى العربية وتصفيات مسابقة العود تتواصل",
+   "lang": "ar",
+   "category": "events",
+   "importance": 2,
+   "title": {
+    "ar": "بعد غد.. حفلان يجمعان نجوم الطرب بمهرجان الموسيقى العربية وتصفيات مسابقة العود تتواصل",
+    "en": "بعد غد.. حفلان يجمعان نجوم الطرب بمهرجان الموسيقى العربية وتصفيات مسابقة العود تتواصل"
+   },
+   "summary": {
+    "ar": "بعد غد.. حفلان يجمعان نجوم الطرب بمهرجان الموسيقى العربية وتصفيات مسابقة العود تتواصل",
+    "en": "بعد غد.. حفلان يجمعان نجوم الطرب بمهرجان الموسيقى العربية وتصفيات مسابقة العود تتواصل"
+   }
+  },
+  {
+   "id": "n1qdes52",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPblpNbFYwRFB6dHB0VFZaWm93cDJXNUQ5d1lIam9aQ3V3TlREYmhDNXZTSnNrYjRhc2Z4MDNFYXdOQ2dsb2p5SkpZc05ZSW5WY3RiZTB1Y0RlQWJzQzc3MUFheG9rSDhWRXhnT0lIRk1KSlpiaUd1X3RmNHkydEZ0TUFfN0pCM1M1b2V6Z3k1STRadlE?oc=5",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-23T11:14:29.000Z",
+   "original": "Dove launches first fragrance inspired by its Original Beauty Bar due to demand",
+   "lang": "en",
+   "category": "launch",
+   "importance": 2,
+   "title": {
+    "ar": "Dove launches first fragrance inspired by its Original Beauty Bar due to demand",
+    "en": "Dove launches first fragrance inspired by its Original Beauty Bar due to demand"
+   },
+   "summary": {
+    "ar": "Dove launches first fragrance inspired by its Original Beauty Bar due to demand",
+    "en": "Dove launches first fragrance inspired by its Original Beauty Bar due to demand"
+   }
+  },
+  {
+   "id": "n3aijgz",
+   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOWncwdURVaE5QWWhlZ0I0LUJQUUJDQkVqTDV6emJya3hLSV9EeXBSdV83UFRBMkduLTFacjlQN21RYmRXWFBkQ01aMnFUV1owS0FMZG5wWHdhRkFmRkFIamp5MlQzN3QtU09WTWZQNzg4VV9jUVdRbk1YLVc2TmZOd3BVM09PNThvQWs3ZTlPanhpbWFjWGJyZHZPNmN6aFV1eXE2UE5ndmVJTzh3?oc=5",
+   "source": "MediaNews4U",
+   "publishedAt": "2026-10-23T10:59:37.000Z",
+   "original": "Samantha Ruth Prabhu headlines Secret Alchemist’s new signature perfume campaign",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Samantha Ruth Prabhu headlines Secret Alchemist’s new signature perfume campaign",
+    "en": "Samantha Ruth Prabhu headlines Secret Alchemist’s new signature perfume campaign"
+   },
+   "summary": {
+    "ar": "Samantha Ruth Prabhu headlines Secret Alchemist’s new signature perfume campaign",
+    "en": "Samantha Ruth Prabhu headlines Secret Alchemist’s new signature perfume campaign"
+   }
+  },
+  {
+   "id": "npgqss7",
+   "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPS3Y5R2dpdFlRVVBGWkJWaXVkZVprMWFsTmtEUVluMHBBTzJMcVNmRFI2Y2cxX0U0c2lSUFpxcVUwUTBER3o2YTVzNTRicnNMZjMwVE43cTVIMS1uSTEwZW9DQUhORGNSZkNQYWZsUVVnZXRYZTAtNkticE1NTEFiWmh3?oc=5",
+   "source": "AOL.co.uk",
+   "publishedAt": "2026-10-23T10:05:43.000Z",
+   "original": "Britney Spears £28 cult perfume hailed 'best ever' drops to £22 in deal",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Britney Spears £28 cult perfume hailed 'best ever' drops to £22 in deal",
+    "en": "Britney Spears £28 cult perfume hailed 'best ever' drops to £22 in deal"
+   },
+   "summary": {
+    "ar": "Britney Spears £28 cult perfume hailed 'best ever' drops to £22 in deal",
+    "en": "Britney Spears £28 cult perfume hailed 'best ever' drops to £22 in deal"
+   }
+  },
+  {
+   "id": "nnp02f5",
+   "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxPMlRuLWNYSE9rVm96MjgydndyLW9aNTJKRXNnOHpBdXZUd2tMVjFoX255RXlvOXRiNnZ6VFAxUndZNXNPLVkzZVR0VFpsSF9WelZ5dUdXV29PaEpZaFhhVElpdzZVaVhhZjU2NjV3Y3BwT3NMa1BDWWRQcEZBTmZvcXlTOUV4YUV1ODlXc1ZpcVh5UkJBWG10eVRkRVQ0Uzl2LTdKSks5RmJzZlBzQTBRVVd0WGRZaF9ZQm56eXp6MWdiVzl1UjNEb2J2QUlxRENvN05FUTdrUzg1Zw?oc=5",
+   "source": "Grazia",
+   "publishedAt": "2026-10-23T09:32:20.000Z",
+   "original": "Sophie Davant (62 ans) : ce parfum vendu en pharmacie est son préféré, \"c’est tout ce qui m’attire\"",
+   "lang": "fr",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Sophie Davant (62 ans) : ce parfum vendu en pharmacie est son préféré, \"c’est tout ce qui m’attire\"",
+    "en": "Sophie Davant (62 ans) : ce parfum vendu en pharmacie est son préféré, \"c’est tout ce qui m’attire\""
+   },
+   "summary": {
+    "ar": "Sophie Davant (62 ans) : ce parfum vendu en pharmacie est son préféré, \"c’est tout ce qui m’attire\"",
+    "en": "Sophie Davant (62 ans) : ce parfum vendu en pharmacie est son préféré, \"c’est tout ce qui m’attire\""
+   }
+  },
+  {
+   "id": "n104kdfv",
+   "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxPOGJtZk1zajZxR3o5bnJBeUlqNEYxZ1JGbmN0XzJ3VkZjb3NDalJmR0ZYb0FyUVBkNEkxLU9rNVBmOUtfWWRwNmo5emdtWlUyQXppOTA1OHhaaFY5akFNSVJlTWdzVU1LcFA0ZkVqcWNuWVlBeU11NTk4M0JoRzY4SVM4cVZkTFREVF9VdGdrbWxLNGx0NWtZOE8yVV9NZUUtdGFXZ3l4Z1RncldvYjM1SHpXNmpTRF9yMkZGOEVORkl6eGJERWFqRFhGbUNNbW14b0F1eWRKTlRnZ3lu?oc=5",
+   "source": "EIN News",
+   "publishedAt": "2026-10-23T09:00:00.000Z",
+   "original": "10ML Serves More Than 100,000 Customers With 1,059 Original Perfumes From 89 Designer and Niche Houses",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "10ML Serves More Than 100,000 Customers With 1,059 Original Perfumes From 89 Designer and Niche Houses",
+    "en": "10ML Serves More Than 100,000 Customers With 1,059 Original Perfumes From 89 Designer and Niche Houses"
+   },
+   "summary": {
+    "ar": "10ML Serves More Than 100,000 Customers With 1,059 Original Perfumes From 89 Designer and Niche Houses",
+    "en": "10ML Serves More Than 100,000 Customers With 1,059 Original Perfumes From 89 Designer and Niche Houses"
+   }
+  },
+  {
+   "id": "n75pbe",
+   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPek95TmlJVFlHUzFxZlBfMmt1TnlsandZdFB6WE42REZBai1IejB0ZEE0NjJxaWUwNnpjSjI2MWJJdjA4ZFR2UWxyVVZFNkl4V3dpUXU2VU5RaHZRcUxzTmhrVEtlRlprR1RHalJJNHFkaUhEb3hRaUU4ODF5ZEJuODFNcDR4blYxYUtqOUxnRGMtbWwzTERDMXJObWZoVl8xVDBYQlFpeGRQQUN5T0Y5Xzd0d9IBswFBVV95cUxPek95TmlJVFlHUzFxZlBfMmt1TnlsandZdFB6WE42REZBai1IejB0ZEE0NjJxaWUwNnpjSjI2MWJJdjA4ZFR2UWxyVVZFNkl4V3dpUXU2VU5RaHZRcUxzTmhrVEtlRlprR1RHalJJNHFkaUhEb3hRaUU4ODF5ZEJuODFNcDR4blYxYUtqOUxnRGMtbWwzTERDMXJObWZoVl8xVDBYQlFpeGRQQUN5T0Y5Xzd0dw?oc=5",
+   "source": "The Nation Newspaper",
+   "publishedAt": "2026-10-23T08:59:52.000Z",
+   "original": "Seinde Signature set to celebrate 6th Scentiversary with car worth N50 million",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Seinde Signature set to celebrate 6th Scentiversary with car worth N50 million",
+    "en": "Seinde Signature set to celebrate 6th Scentiversary with car worth N50 million"
+   },
+   "summary": {
+    "ar": "Seinde Signature set to celebrate 6th Scentiversary with car worth N50 million",
+    "en": "Seinde Signature set to celebrate 6th Scentiversary with car worth N50 million"
+   }
+  },
+  {
+   "id": "neqzqko",
+   "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNSEJfbnpKbTBSNE16SDRJM0JvWFRwanlMV2NMMlhyZ0FRVTJPRDZqY0N2WVAtMDhPc1hOUWJDeHQtcldUX0MwRHZqSFowRkE1U2RXZ0NveVBaaU05QWo2S1I1di0tNUJuNlhPSVhkdHRtTFhRLVBXOW0xdl8tTW9GTjBCQ1h3dVduU3RKQjNuXzBVQ2pKbG5UZk1WV2tLNGsxOVZ1ZVZ6MkJsVWp2eU93RDVJMkVXTFA3bURwejJZeklKVXJwS28w0gHGAUFVX3lxTE04Tllxa0FRd2Rpcm85d3k0TzVibXBYMW5ORGdvcWVpZ1czS3B1RkxpQ0p2Qm5wM1R0VFVfUUFLZ3FaSTdXYS1DdDhDc01hOTNqdnhnYnp4aFFDT1dXYTZIMzFZQlEweUZVS29VX3BTakhocWFwWC1XeU1Icjc0SVpUYld4NVNPTjlFcVhUUXhYcV85bjREVlpYSGRTVlRLaTlUaUVXTjB3amFGbTZ2Z3RJVng3QkljOTVZbFBpZlBiRnJoaWdSdw?oc=5",
+   "source": "Grazia India",
+   "publishedAt": "2026-10-23T07:47:02.000Z",
+   "original": "Olivier Cresp On Gourmand Fragrances, His New Label Akro & The Art Of Scent | Grazia India",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Olivier Cresp On Gourmand Fragrances, His New Label Akro & The Art Of Scent | Grazia India",
+    "en": "Olivier Cresp On Gourmand Fragrances, His New Label Akro & The Art Of Scent | Grazia India"
+   },
+   "summary": {
+    "ar": "Olivier Cresp On Gourmand Fragrances, His New Label Akro & The Art Of Scent | Grazia India",
+    "en": "Olivier Cresp On Gourmand Fragrances, His New Label Akro & The Art Of Scent | Grazia India"
+   }
+  },
+  {
+   "id": "n1a919w6",
+   "url": "https://news.google.com/rss/articles/CBMiowNBVV95cUxNZ3NleGFvUW84OTVWeDB2blVEdGdiVF9uczE0ekkwVTZzM0VCVVg5TVFwVUVPaGVQbmhhZ2RhajJUVm9ReTR5NjBQNlFmX29kY0Q3YVZ5ck5tb0RVNUtPSzdHZE5LY0FCZ0lrSkpVZFRwb25DejNVazFwWG03T3NXalladk43QkttNXBqcVRRUFhNc0VmYmVHYU9uRmdFSnNUb1MyekNZVmNtdkRLUUxGSnlkQmxnVm1sMmRDbVRmbk4zMmdVTXNCdGhFa0l0S2x5MEJnU2xiaXFWV1FpNmg2VEVGQ3R4SzJyV2pTYzc4R2NDZEIxaDA2OGZ2c3VxWndIMGJWOTdOYXNZM2NGaW9tdXJ3akdrZ0J6OGwtNHh3ay1fRDRqN3UwUGtRdmRXdlNQUUZydmFJV1FQWE9HMlc1OWs5c1MxSUZ3c1lSQWdNRXFWOHFHaHJhOEs5b1otb3V2dXBoajZBaVZERlB6cEwwNUJDUmktQlFCNzN2aXYxTU1nSzF1U0VnX1dyU2xGOF9DdlpOTnlOcUJic1BYVkxBekFkSdIBqANBVV95cUxQcXlwNGV3VFRvMGFISTdPNW9lNmdlX29kaWtfckt1RmFrSDlfV3dRTXRjN2RfdkdzN05iOXlIcmlPajQ1WTVfN2RNZXQ5NW56aWxIOEN1c1RWeXJCN3VXcndmSlhoNVEwb0VYV3otTURHcWh4NGRHSUw2b3B5QUp2SkFNdWc1ZUxyUVdzcjB2SmFCakhpSmdXLWE5NEI5Q29iUGcxa3VwZUg0RElpRHAzLWtpTGZTUFprdzZ0OUhQdVhCLVhkcFJKN01pWGhkMmRqa2dlWnhuWnZIbDVPNEpyQkxlNm1Kc05hZnJQTXMzblNDZldHbE5TNDVsWFBUa0J2Zy1UUU9JbUE1ZWNFTjZSMlp2eGFKVmpRRENZbzNyTTRld1NQRGx3WkNwUW1LU0k0aU5XcnlmNW9CQktuTWVXR1RYRjRBTVhOQ3FJNFZaUnhjcmlMbUV1b2tFSzFwWGtwblVDOHFoS19oVDJoOHpxNmpQV2dscFJZWUFIZ1FWM2dFR051MjJGdnNpZHd1VmV6VFByOFZQSlgxSlVOVkp2M0JMc1dSbldk?oc=5",
+   "source": "العربية",
+   "publishedAt": "2026-10-23T07:46:00.000Z",
+   "original": "عطور الموسم الجديد.. نفحات تتحول إلى حكاية شخصية",
+   "lang": "ar",
+   "category": "launch",
+   "importance": 2,
+   "title": {
+    "ar": "عطور الموسم الجديد.. نفحات تتحول إلى حكاية شخصية",
+    "en": "عطور الموسم الجديد.. نفحات تتحول إلى حكاية شخصية"
+   },
+   "summary": {
+    "ar": "عطور الموسم الجديد.. نفحات تتحول إلى حكاية شخصية",
+    "en": "عطور الموسم الجديد.. نفحات تتحول إلى حكاية شخصية"
+   }
+  },
+  {
+   "id": "n11m1gpu",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPVTNfNW1iUEpRbFVBV3JFMUxlNUZ5TzFCU0ZlZTJjQ0ExdWJZcTFrRGNZNjBPcGltRnkyX2ctNjFhRloyalVnRjg1eWtKcDNtdXpoS1ZGNkpsSENhbGdET1pYSFB1c1B4QnUwVTBRd1F6aThSWTJ4dGR5NGdWTm5IVXZwaHhlN21ZNHVCdVJvRGRnYnptVWFoLW9DZDRJQ2Fyb1RHV0l3?oc=5",
+   "source": "Marie Claire",
+   "publishedAt": "2026-10-23T07:36:08.000Z",
+   "original": "Louane : \"Le parfum de ma vie, c'est l'odeur des cheveux de ma fille\"",
+   "lang": "fr",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Louane : \"Le parfum de ma vie, c'est l'odeur des cheveux de ma fille\"",
+    "en": "Louane : \"Le parfum de ma vie, c'est l'odeur des cheveux de ma fille\""
+   },
+   "summary": {
+    "ar": "Louane : \"Le parfum de ma vie, c'est l'odeur des cheveux de ma fille\"",
+    "en": "Louane : \"Le parfum de ma vie, c'est l'odeur des cheveux de ma fille\""
+   }
+  },
+  {
+   "id": "n1ufic4j",
+   "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNcGhOWk1iRzFqdzIxWk1XdEVCNXFKU2RwdHhOb09IV3dXYWNDODZqcUt6VHNydUR5aDhnSmRUMjlCR3VSTlQxc2pOdkwxenJuMUhad2syaHNSTzU5SXhpT19wM0NVT2NTb1NtbTFPZHpKM3dtb3hyMHd1Wmozc3N5RGk4OTZoUjNnZ2d0RkNseHUtYTU3OUJMQkliMFRuc2R3VmFJdE1fREZ5MXl3QUpzeGhPN2JLVEwxSDdBRURuOXhYY014clhCWGtn?oc=5",
+   "source": "Vietnam.vn",
+   "publishedAt": "2026-10-23T07:35:14.000Z",
+   "original": "وضع الزهور والبخور تكريماً للأبطال والشهداء في الذكرى الحادية والثمانين ليوم المقاومة بين نها ترانج وخان هوا.",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 2,
+   "title": {
+    "ar": "وضع الزهور والبخور تكريماً للأبطال والشهداء في الذكرى الحادية والثمانين ليوم المقاومة بين نها ترانج وخان هوا.",
+    "en": "وضع الزهور والبخور تكريماً للأبطال والشهداء في الذكرى الحادية والثمانين ليوم المقاومة بين نها ترانج وخان هوا."
+   },
+   "summary": {
+    "ar": "وضع الزهور والبخور تكريماً للأبطال والشهداء في الذكرى الحادية والثمانين ليوم المقاومة بين نها ترانج وخان هوا.",
+    "en": "وضع الزهور والبخور تكريماً للأبطال والشهداء في الذكرى الحادية والثمانين ليوم المقاومة بين نها ترانج وخان هوا."
+   }
+  },
+  {
+   "id": "n1eu94qh",
+   "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOTjNnQkNZbWtKNzRWOWpBRzZpYmw4bjVoeVBUMU80SGxISzA0aVpIOEZodWg5MnBtRjBoQlBnWjBHUEcybFhRbGdiOUFIaWdlZUpVWGZZM19PT1pxaTE2Z2tUSVJkWW1BTnlObFh3ZVJqTUZDZi10cXNuaWpUQTdWVDhLaExNOHl1T2VGQkVjbW1wSnU5TGZmQ0RSQnkzMFVwLUJxWEo2WVIyOUFESGhGalA1UjZVRlJtVUh3QUJmMURscnJfVm9SbkRETQ?oc=5",
+   "source": "techafrika",
+   "publishedAt": "2026-10-23T07:31:11.000Z",
+   "original": "Afrique du Sud : TPC Africa Mobile se lance samedi comme opérateur virtuel sur le réseau de MTN",
+   "lang": "fr",
+   "category": "launch",
+   "importance": 2,
+   "title": {
+    "ar": "Afrique du Sud : TPC Africa Mobile se lance samedi comme opérateur virtuel sur le réseau de MTN",
+    "en": "Afrique du Sud : TPC Africa Mobile se lance samedi comme opérateur virtuel sur le réseau de MTN"
+   },
+   "summary": {
+    "ar": "Afrique du Sud : TPC Africa Mobile se lance samedi comme opérateur virtuel sur le réseau de MTN",
+    "en": "Afrique du Sud : TPC Africa Mobile se lance samedi comme opérateur virtuel sur le réseau de MTN"
+   }
+  },
+  {
+   "id": "n1vwhyo2",
+   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQenhxRG45TnloalVrVU1jYnYwbUJSYWlEajVNOWZYYk03UlpzTTRHbTd0ZnI4MjVtOGlEcE52VFluRHdLbi12aDVtSHhTYmh0QURCT3gtdkx6VE1feHptOGNiTWw0amozc2RMd0ljWXJDNE81LTZGRHF3emhxWTZVSzM5eHBhUUlaNnZ0R0tvWUh5c29IUnBmTXNrYWlLX1drZUp0cnhfTQ?oc=5",
+   "source": "Vietnam.vn",
+   "publishedAt": "2026-10-23T07:26:03.000Z",
+   "original": "قدمت الكتيبة 175 البخور لإحياء ذكرى الرئيس هو تشي منه والشهداء الأبطال.",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 2,
+   "title": {
+    "ar": "قدمت الكتيبة 175 البخور لإحياء ذكرى الرئيس هو تشي منه والشهداء الأبطال.",
+    "en": "قدمت الكتيبة 175 البخور لإحياء ذكرى الرئيس هو تشي منه والشهداء الأبطال."
+   },
+   "summary": {
+    "ar": "قدمت الكتيبة 175 البخور لإحياء ذكرى الرئيس هو تشي منه والشهداء الأبطال.",
+    "en": "قدمت الكتيبة 175 البخور لإحياء ذكرى الرئيس هو تشي منه والشهداء الأبطال."
+   }
+  },
+  {
+   "id": "n6sfqrw",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPWGI1NVdwY3NiYzVuWDRoVXp3M2xGUW5vbWlYUUxVNW16NHd5dHFjTVVReUlaSURhem1WNEhJTmJjSXpUQ0h5Mm1CSXdLbnJuVzR4eldSbGczcWlWYV9zd0oxN1E4UG9EcGM0LTZBV29kVzc1dThBYlB1OEQ2SHpFRjBnbUFPc2VtdUpfVUo4cWliQWo0M01McFlNTmJBaEpQdlZPVUJ3?oc=5",
+   "source": "L'Éventail",
+   "publishedAt": "2026-10-23T07:20:43.000Z",
+   "original": "L’Heure Bleue de Guerlain : un parfum mythique réinventé",
+   "lang": "fr",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "L’Heure Bleue de Guerlain : un parfum mythique réinventé",
+    "en": "L’Heure Bleue de Guerlain : un parfum mythique réinventé"
+   },
+   "summary": {
+    "ar": "L’Heure Bleue de Guerlain : un parfum mythique réinventé",
+    "en": "L’Heure Bleue de Guerlain : un parfum mythique réinventé"
+   }
+  },
+  {
+   "id": "nl01zvc",
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNRHZ2cWphYWpMQzVKWlg0YkR6Z05QMXpqYTVtOG9RdkNGZDhWazF6dmVuTklZTzNQNmxHMUV1cFl4SVp0OW5EWDFPeThWQ1poRXo4ZmNFSEI5STdXNnZydjhnVTFGVzFMNXBQdFFYOFEtQVBVc0VaZ2xBeXFRTGk2RDNmenBnMVF6bFpfQWF4VzNNYlF2NHZLVHR0dVhCd2NzdU9lVENZTXJsemNFdmhTVEhJVkhrUTczVURnZGxPTmJ0dw?oc=5",
+   "source": "cequepensentleshommes.fr",
+   "publishedAt": "2026-10-23T07:03:35.000Z",
+   "original": "SCHERRER PARIS: Le retour d’une signature emblématique de la parfumerie française",
+   "lang": "fr",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "SCHERRER PARIS: Le retour d’une signature emblématique de la parfumerie française",
+    "en": "SCHERRER PARIS: Le retour d’une signature emblématique de la parfumerie française"
+   },
+   "summary": {
+    "ar": "SCHERRER PARIS: Le retour d’une signature emblématique de la parfumerie française",
+    "en": "SCHERRER PARIS: Le retour d’une signature emblématique de la parfumerie française"
+   }
+  },
+  {
+   "id": "n15llxlj",
+   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNN0ZmZHotYVpMZUVlVWM2RVNrc2tBTkV5UGMta09tLWN6cE5rSUc2Y09HYW5wZXZSUFpDY2dUOV9GdjEzcDlabldmMUdkOWVxaWJRc0JmcHVJV0dmNkZ5eVhKSWVYMi1yR3d1cVd6QnJoZXZOZnl2b3owcXFvOGlaZ2t3Ti1XYVl5S3lIQtIBmgFBVV95cUxOVXhaS3lab2lqU1JTTGNndy1tLTc4WkI2Y3cyRVNBYk13S0tMTUQ3RXcyZzB3S3d4SE03Nm1NVnp3MlZfZXhxa0lWdXJwa3FHZER6dVNKcEJMTVNnUWZ4R1czRDNfLTd6NFpUdVFsQk5QTlZCd0h4dlhTallKY3pid2lucWpZYVpLMEgzeUhWeWR0bm1HZWhyUXhB?oc=5",
+   "source": "The Quint",
+   "publishedAt": "2026-10-23T06:36:37.000Z",
+   "original": "Aellora Expands International Perfume Collections for Indian Consumers",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Aellora Expands International Perfume Collections for Indian Consumers",
+    "en": "Aellora Expands International Perfume Collections for Indian Consumers"
+   },
+   "summary": {
+    "ar": "Aellora Expands International Perfume Collections for Indian Consumers",
+    "en": "Aellora Expands International Perfume Collections for Indian Consumers"
+   }
+  },
+  {
+   "id": "n77cx2i",
+   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxQelJ4LW5KY0NNVktGc1JxSkg2dVJYbHdTZFdsUlk1ZF9ad25CZjdrZllnd083R3lIRkFpOVFXbE92VlJITmc3bDJ2QWQ2OXN1WUVpMExiZEQ2RnRCajRFb0tJZzd1Q3pQbENfTVRMMHkwNGpmSEtDTjJJUUJzSExoSlh3TW53cS1xVkRERTQ3UGxfME5DVndwVWRNVjhkWmRnUTRZelpsSk00c19tMlVzYk9hUXRZMGVY?oc=5",
+   "source": "Le Monde.fr",
+   "publishedAt": "2026-10-23T05:00:19.000Z",
+   "original": "Les hôtels réinventent la parfumerie de niche",
+   "lang": "fr",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Les hôtels réinventent la parfumerie de niche",
+    "en": "Les hôtels réinventent la parfumerie de niche"
+   },
+   "summary": {
+    "ar": "Les hôtels réinventent la parfumerie de niche",
+    "en": "Les hôtels réinventent la parfumerie de niche"
+   }
+  },
+  {
+   "id": "nd62zoz",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQWGdzbVktVjBCYk1ReHdYUlNRUWRiWjg4Z1NEdkExanRTaEhHdlVxTHNhN0pPLUIzclNtM3VORDh3ZXFDZnlybnIzVFBjU1diS20ta2xCbHFsdVNSTXFsRnctWHZ6eW5kbVlxbkdORmxZeDZzOWlVbnJ3enNnTldUVW9ucUtYOTJ4aW1UR3VQQnRBWS0tTHYwTnVYYy1WMUljUEZ1LS04NVE?oc=5",
+   "source": "Vietnam.vn",
+   "publishedAt": "2026-10-23T03:00:25.000Z",
+   "original": "تقديم البخور لإحياء ذكرى الشهداء الأبطال في النصب التذكاري لمدينة دا نانغ.",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 2,
+   "title": {
+    "ar": "تقديم البخور لإحياء ذكرى الشهداء الأبطال في النصب التذكاري لمدينة دا نانغ.",
+    "en": "تقديم البخور لإحياء ذكرى الشهداء الأبطال في النصب التذكاري لمدينة دا نانغ."
+   },
+   "summary": {
+    "ar": "تقديم البخور لإحياء ذكرى الشهداء الأبطال في النصب التذكاري لمدينة دا نانغ.",
+    "en": "تقديم البخور لإحياء ذكرى الشهداء الأبطال في النصب التذكاري لمدينة دا نانغ."
+   }
+  },
+  {
+   "id": "nmfayd9",
+   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPRnN2UndNa3RHMlloSnl1UHZKQ1E5WUg0YkFBMnNFa2YwSzFYekpOa2VFNVZickRtZE5RZi1xeEd2cVVyTG5xQkt2aUlKQ2RvMGtaZjFVYTZod1NMRzJOZDJpazEwdGl0WWp5RUxIZGRSbTVXQkdvdDAzckFKR1ZSek5DOEppYnlSNmNrSG5qYmxnV3A5dDdqal9LNFVQZw?oc=5",
+   "source": "Branding in Asia",
+   "publishedAt": "2026-10-23T02:59:09.000Z",
+   "original": "Secret Alchemist Campaign With Samantha Ruth Prabhu Celebrates Indian Perfumery",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Secret Alchemist Campaign With Samantha Ruth Prabhu Celebrates Indian Perfumery",
+    "en": "Secret Alchemist Campaign With Samantha Ruth Prabhu Celebrates Indian Perfumery"
+   },
+   "summary": {
+    "ar": "Secret Alchemist Campaign With Samantha Ruth Prabhu Celebrates Indian Perfumery",
+    "en": "Secret Alchemist Campaign With Samantha Ruth Prabhu Celebrates Indian Perfumery"
+   }
+  },
   {
    "id": "nmxdjxe",
    "url": "https://www.premiumbeautynews.com/fr/maquillage-et-parfum-tirent-puig,28393",
@@ -333,422 +693,6 @@
    "note": {
     "ar": "تعاون يربط بين الفن والموسيقى وبين عالم العطور الفاخرة عالمياً ومحلياً.",
     "en": "A collaboration connecting art and music with the global luxury fragrance world."
-   }
-  },
-  {
-   "id": "niuv459",
-   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQQU9qM3NsOHU5aU03LVJscllQSGltNGZvNnFSLWF3M1ozSG1mVlhmajlWRHdlcDhJTG1wb2lTcF9aWXpZUVhIbUpWN0RjMUtrenYxUHlrdGoyVnFhN2JSLTZuWFhJVWhPcHhTcDFlUDVDRFREMHB0Mml1Y2dubm5NSVBhT3JUVDg0SEs4elBPUzFGQVdpWnNfeDhJZ2hTMkpI0gGzAUFVX3lxTE1kWHREYUs3bTlUTmtfdlRvVVZXdG1tRXR4VGY3bHpLeUFxVmpHNmstWEt1c0JoMm54bDVSUC1SU2JySGhEek9CbFduVS1nUFlrZ2RlT2RkRFNxRV9kQWtlZS1UeUN1MzFBVk5RZXFFc1B6bjY0Q2MtNGh4R185N1dDNFpSRWRpdmdjZzJZaGsxbmp1Q0swd2p1UEtzbEtVMWlqQWZHa3F2RG9YZFU3UmFCQ3lV?oc=5",
-   "source": "Gulf News",
-   "publishedAt": "2026-10-22T13:00:00.000Z",
-   "original": "4 Arabian-inspired fragrances to know",
-   "lang": "en",
-   "category": "culture",
-   "importance": 3,
-   "title": {
-    "ar": "تسليط الضوء على أبرز 4 عطور مستوحاة من التراث العربي",
-    "en": "Highlighting 4 Arabian-Inspired Fragrances to Know"
-   },
-   "summary": {
-    "ar": "استعرض تقرير صحفي مجموعة من العطور المستوحاة من الثقافة والعطور العربية الأصيلة التي تلاقي إقبالاً عالمياً متزايداً.",
-    "en": "A press report showcased a selection of Arabian-inspired fragrances gaining increasing global popularity."
-   },
-   "note": {
-    "ar": "يعكس هذا الاهتمام العالمي المتصاعد بجماليات العطور الشرقية والعود والبخور.",
-    "en": "This reflects the growing global appreciation for oriental perfumery, oud, and incense aesthetics."
-   }
-  },
-  {
-   "id": "nctxwkp",
-   "url": "https://cafleurebon.com/dsh-perfumes-pashmina-1810-dawn-spencer-hurwitz-patchouli-plus-postcard-no-1-giveaway/?utm_source=rss&utm_medium=rss&utm_campaign=dsh-perfumes-pashmina-1810-dawn-spencer-hurwitz-patchouli-plus-postcard-no-1-giveaway",
-   "source": "CaFleureBon",
-   "publishedAt": "2026-10-22T20:20:58.000Z",
-   "original": "DSH Perfumes Pashmina 1810 (Dawn Spencer Hurwitz) + Patchouli Postcard No. 1 Giveaway",
-   "lang": "en",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "DSH Perfumes تطلق عطر Pashmina 1810 ضمن مجموعة Patchouli Postcard",
-    "en": "DSH Perfumes Launches Pashmina 1810 in Patchouli Postcard Collection"
-   },
-   "summary": {
-    "ar": "قدمت صانعة العطور داون سبنسر هورويتز (DSH Perfumes) عطرها الجديد Pashmina 1810 المستوحى من نوتات الباتشولي المعقدة.",
-    "en": "Dawn Spencer Hurwitz of DSH Perfumes has released Pashmina 1810 as part of the intricate Patchouli Postcard Collection."
-   },
-   "note": {
-    "ar": "خيار مثالي لمحبي عطور الباتشولي الطبيعية ذات الطابع الفني المستقل (نيش).",
-    "en": "An ideal choice for lovers of natural, artistic niche patchouli fragrances."
-   }
-  },
-  {
-   "id": "nws26ik",
-   "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5oNkdSeWtXSTQtQzBFWFdlUzB5VTVlZWVQczlNUGhIWXVyQTN5V2g5d1FkRC1QMEZfRGpaS0xsZXNDbzdmblFGRjVCczlEbjd3dmc?oc=5",
-   "source": "Boursorama",
-   "publishedAt": "2026-10-23T02:13:51.000Z",
-   "original": "INTERPARFUMS Cours Action ITP, Cotation Bourse Euronext Paris",
-   "lang": "fr",
-   "category": "market",
-   "importance": 5,
-   "title": {
-    "ar": "مجموعة Puig تسجل إيرادات قياسية في الربع الثالث بفضل العطور والمكياج",
-    "en": "Puig Hits Record Q3 Sales on Makeup and Fragrance Growth"
-   },
-   "summary": {
-    "ar": "أعلنت مجموعة التجميل الإسبانية Puig عن تحقيق إيرادات قياسية في الربع الثالث من عام 2026، بلغت 1.39 مليار يورو، مدعومة بنمو قوي في قطاع العطور والمكياج.",
-    "en": "Spanish beauty group Puig delivered record third-quarter sales in 2026, with net revenue reaching EUR 1.39 billion, driven by fragrance and makeup."
-   },
-   "note": {
-    "ar": "يعكس هذا النمو المستمر رغبة المستهلكين المتزايدة في الاستثمار بالعطور الفاخرة.",
-    "en": "This continuous growth reflects consumers' increasing appetite for luxury fragrances."
-   }
-  },
-  {
-   "id": "n1df19q9",
-   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQYjVFS0tqbmZ0a09GdFZEbDNNTHhWdE9veXMwdkNjR1pMamJ5aFMtcWRUWU8tVEU0YVlFUUdJejFtRE84dnpQUENRYU1FRXZRTExnU241aVlnZ3lsTmVZTEgtdnZoSUtMR0I0UEx2WTNyY3VpY05VVkZIOE11OVd4VVh1bmw5bUpWTE5TTGtvT0FxcklldUpqdWJOTzdnaDdtS3N0dmJ4TWFkaXcxeld3SUdscGZmUQ?oc=5",
-   "source": "WWD",
-   "publishedAt": "2026-10-22T22:40:17.000Z",
-   "original": "Scentbird Is Leading the Charge In Personalized Fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 5,
-   "title": {
-    "ar": "علامة Kayali توسع مجموعة Yum بعطر Vanilla Cupcake | 108",
-    "en": "Mona Kattan’s Kayali Expands Gourmand Fragrance Line Yum with Vanilla Cupcake | 108"
-   },
-   "summary": {
-    "ar": "أعلنت منى قطان مؤسسة علامة Kayali عن إضافة عطر Yum Vanilla Cupcake | 108 الجديد إلى مجموعة العطور المستوحاة من الحلويات.",
-    "en": "Kayali CEO Mona Kattan is bolstering its hero House of Yum gourmand fragrance collection with birthday cake-inspired Vanilla Cupcake | 108."
-   },
-   "note": {
-    "ar": "إضافة ممتازة لمحبي النوتات السكرية والحلويات في العطور الشخصية.",
-    "en": "A great addition for lovers of gourmand and sweet notes in personal perfumery."
-   }
-  },
-  {
-   "id": "n1eohta6",
-   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxONDFYUjBBNEtpVkRoU2NaZnQ1aFZfWWk2MXJsZXZuRGo1enJOOGVfd2tLazlUX1pjRlhvVFhXcHdNdlg4WUZvWGlHRDNFN3RBVFhaOTduWEg5VG9wVzdRVUY3SjNjQWZpd01fV1RFWWY5X2MwdmJXRU5pRkY0WEVUbmJicVktQkhqS2lCa0QtMlRqTFB2cTFtTWpJTXIzTlNETW5BU2RxTi1Ndw?oc=5",
-   "source": "Page Six",
-   "publishedAt": "2026-10-22T21:58:00.000Z",
-   "original": "Exclusive | Sai de Silva’s holiday gift picks range from wax-sealed letters to a ‘sensual’ scent",
-   "lang": "en",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "علامة Merit تطلق عطرها الثاني بتركيبة دافئة لفصل الشتاء",
-    "en": "Merit Launches Its Second-Ever Perfume (And It’s Warm & Spicy for Winter)"
-   },
-   "summary": {
-    "ar": "أطلقت علامة Merit عطرها الثاني المخصص لفصل الشتاء بتركيبة دافئة وتوابل غنية بتوقيع العطار الشهير Dominique Ropion.",
-    "en": "Merit has launched its second-ever perfume, bringing a warm and spicy profile for winter crafted by master perfumer Dominique Ropion."
-   },
-   "note": {
-    "ar": "تعاون بارز يجمع بين النمط الفني والبساطة في تصميم العطور المعاصرة.",
-    "en": "A notable collaboration blending artistry and simplicity in modern perfumery."
-   }
-  },
-  {
-   "id": "n1rnch0r",
-   "url": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxQU2NOaGNNblhfT1pWVW52VjZLVF9mS2x0WUhfN1VHbmJkQXN6NUJHYWUwWk81VTFWS3B3b1FlVGJ2QVRKOWdMamNCWC1nY05ZVWlBTWFrTjF3aTVhTS1nUWFweVpjV1JJVzhvcmExdnlUcGh4WndidlpmRXdLZFd0VjNVaHFQMnBFLUo5a05MUUR4U2dpM3JKTUhzNUk4WTVXeHVSNlVyZXZsUXU3Y0lHNlRQb2NnTXl0dUdxaXE5NjVnWVJVSjFVQWE0Ny0welhXVy1nNUdCcU9nQ2tBX2pDVmdiWHhFVHl3dUdkeUVnX1BHZ2RLTHc?oc=5",
-   "source": "Ville de Versailles",
-   "publishedAt": "2026-10-22T20:15:10.000Z",
-   "original": "L'âme de la parfumerie française : voyage au coeur de l'élégance et du savoir-faire",
-   "lang": "fr",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "Brunello Cucinelli تكشف عن ثلاثة عطور استثنائية جديدة",
-    "en": "Brunello Cucinelli Unveils Three Exceptional Fragrances"
-   },
-   "summary": {
-    "ar": "كشف دار الأزياء Brunello Cucinelli عن ثلاثة عطور جديدة تتميز بنوتات الكراميل المالح وجوز الهند وزهر البرتقال.",
-    "en": "Brunello Cucinelli has unveiled three exceptional fragrances featuring notes of salted caramel, coconut, and orange blossom."
-   },
-   "note": {
-    "ar": "تنويع فاخر يدمج أناقة الأزياء الإيطالية مع أرقى مكونات العطور.",
-    "en": "A luxury diversification blending Italian fashion elegance with fine ingredients."
-   }
-  },
-  {
-   "id": "nephys5",
-   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQYi1ZQW95VHA0aTR0QTB2eU1fcjRrQ053ZENUYWV1WWxJZ3VVdnpLQ3VQNWtMRV94YVQ3bUxicFpNQzJOZUNNc0lzOGxjMUpxN2o3LS1WcjNMeUtubjlMbjlfNm1NRXdMQl9CLWY4dEljcGp6UllkOHppbF9xLVc4S0llZDlXaWVPdmxsejlmWURWbFRhNmdfYUwwUGUzLUZlZnhNYm1kc2I?oc=5",
-   "source": "E! News",
-   "publishedAt": "2026-10-22T20:00:00.000Z",
-   "original": "Merit Launches Its Second-Ever Perfume (And It’s Warm & Spicy for Winter)",
-   "lang": "en",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "Lise Watier تطلق عطر Neiges d’Ambre كإصدار محدود جديد",
-    "en": "Lise Watier Launches Neiges d’Ambre New Limited Edition Fragrance"
-   },
-   "summary": {
-    "ar": "أطلقت العلامة الكندية Lise Watier عطر Neiges d’Ambre كإصدار محدود جديد كامتداد لعطر Neiges الشهير الذي صدر عام 1996.",
-    "en": "Canadian beauty brand Lise Watier has launched Neiges d'Ambre, a new limited edition flanker to its 1996 Neiges fragrance."
-   },
-   "note": {
-    "ar": "إصدار يجدد الكلاسيكيات بنفحات دافئة تناسب الأجواء الباردة.",
-    "en": "A release that refreshes classics with warm notes suited for cooler weather."
-   }
-  },
-  {
-   "id": "n1e82p5p",
-   "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE9lVl9mTjZ4RERBTjUwT2YydkJ0VUlBUDVPT2k0Ui14Sm9jS0p5Wm5XX0Z0Z255cE5lenhIT0VneFh1bzlCeUtoNlJGaG1EcmZxaEYxdk5zVUp1NktBeHVad29GeF8tbTNfOEswYm9BVWJPN3d2c0dDYWRnT2M4QQ?oc=5",
-   "source": "Le Journal de Montréal",
-   "publishedAt": "2026-10-22T19:00:00.000Z",
-   "original": "Les 6 meilleurs parfums pour femme (2026)",
-   "lang": "fr",
-   "category": "culture",
-   "importance": 3,
-   "title": {
-    "ar": "دار Santa Maria Novella تستحضر ذكرى مدينة فلورنسا بعطر ماربل موليه",
-    "en": "Santa Maria Novella Remembers Florence with Wet Marble Scent"
-   },
-   "summary": {
-    "ar": "قدمت دار Santa Maria Novella عطراً مستوحى من ذكرى الرخام المبلل كتحية لمدينة فلورنسا وتاريخها.",
-    "en": "Santa Maria Novella presented a fragrance reminiscent of wet marble in memory of Florence."
-   },
-   "note": {
-    "ar": "عطور تحكي قصص المدن والتاريخ تلاقي رواجاً كبيراً لدى عشاق النوتات الفنية.",
-    "en": "Story-driven city fragrances are gaining popularity among niche enthusiasts."
-   }
-  },
-  {
-   "id": "n13fj15p",
-   "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxOZXlzQ0RzU0E2Vk11blA3TmpQS09xNmdIclhNRkgtTXJNSnZJcmtERjIxMlkyNDZOdTZLYjZuVjZtLXpoV3pQb1VYTmE2Um9XaFBnZGVwMFNiR2RwQmtLLWdVczVLcER0aGtRcUZ3V25RRFU5S2dXNDN5dGlHU2ZIdHVGSjEzaXdXczRtREFTbFNtbUtQWHJRYWoyRkdKRXdvLXR2amdtQ0VGZHluSFhmYkZTQU1kUVBQUkFYa3BxaEJaeXJTQkVDUlZtOVV2d2hNbm5tVjdtSFB3MFIyRWFSUmtn?oc=5",
-   "source": "Grazia",
-   "publishedAt": "2026-10-22T18:50:28.000Z",
-   "original": "Margaret Thatcher : voici le parfum Penhaligon's qui ne la quittait jamais, il est toujours aussi culte",
-   "lang": "fr",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "Drake و Better World Fragrance House يطلقان عطر DOSAYDO المستوحى من أجواء رعاة البقر",
-    "en": "Drake and Better World Fragrance House Release DOSAYDO Cowboy-Inspired Perfume"
-   },
-   "summary": {
-    "ar": "أعلن الفنان Drake عبر شرعته للعطور عن إطلاق عطر DOSAYDO الجديد المستوحى من أجواء رعاة البقر.",
-    "en": "Drake and Better World Fragrance House are releasing DOSAYDO, a new cowboy-inspired perfume."
-   },
-   "note": {
-    "ar": "تجربة عطرية غير تقليدية تدمج الثقافة الشعبية بتركيبة خشبية ودخانية.",
-    "en": "An unconventional fragrance experience blending pop culture with woody, smoky profiles."
-   }
-  },
-  {
-   "id": "nxs34ql",
-   "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE40VXdrMjkwV0w1YUpaOHMtVVk1QUE4SG44YU5HeGNPb0s0VG4wOEJ6SmlPOXhBdkRQVmlsTE9HMV9DMmN6SzU1ZFJTSlNfdEZ6Y1pSdEZmcUdsUQ?oc=5",
-   "source": "Trend Hunter",
-   "publishedAt": "2026-10-22T18:01:38.000Z",
-   "original": "Unisex Oud Fragrances",
-   "lang": "en",
-   "category": "market",
-   "importance": 3,
-   "title": {
-    "ar": "شركة البخور الذكي تغلق طرح صكوك بقيمة 50 مليون ريال سعودي",
-    "en": "Smart Incense Completes Sukuk Issuance Worth 50 Million SAR"
-   },
-   "summary": {
-    "ar": "أعلنت شركة البخور الذكي عن نجاحها في إنهاء طرح صكوك بقيمة 50 مليون ريال سعودي بنسبة تغطية عالية.",
-    "en": "Smart Incense has successfully completed its sukuk issuance valued at 50 million SAR with high coverage."
-   },
-   "note": {
-    "ar": "يؤكد هذا النمو قوة سوق العطور والبخور واستثماراته المالية في المنطقة.",
-    "en": "This growth highlights the strength of the incense and fragrance market investments in the region."
-   }
-  },
-  {
-   "id": "n3u3tbn",
-   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBQRU1HX2lPZVUtSzI2S25GdVZGQURFVUZXODVncnY2M2h1R2tacGdJeU5ZbkhKQTBBV1VXcTNmSFBlME9uLTktV24zLWhPbEU3Q3RRTFpLYUpJbmJxNC1Z?oc=5",
-   "source": "Vogue Adria",
-   "publishedAt": "2026-10-22T18:00:13.000Z",
-   "original": "From innovative scalp and body care to a new fragrance haven",
-   "lang": "en",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "سلط الضوء على عطور العود للجنسين ضمن أحدث صيحات السوق",
-    "en": "Highlighting Unisex Oud Fragrances in Latest Market Trends"
-   },
-   "summary": {
-    "ar": "تناولت التقارير الحديثة صعود عطور العود المخصصة للجنسين كأحد أبرز الاتجاهات المطلوبة عالمياً.",
-    "en": "Recent reports covered the rise of unisex oud fragrances as a prominent global trend."
-   },
-   "note": {
-    "ar": "العود يثبت يوماً بعد يوم مكانته في صدارة الخيارات العطرية العالمية.",
-    "en": "Oud continues to solidify its position at the forefront of global fragrance choices."
-   }
-  },
-  {
-   "id": "n1rtctft",
-   "url": "https://cafleurebon.com/wit-west-perfumes-customizable-discovery-set-winner/?utm_source=rss&utm_medium=rss&utm_campaign=wit-west-perfumes-customizable-discovery-set-winner",
-   "source": "CaFleureBon",
-   "publishedAt": "2026-10-22T17:22:20.000Z",
-   "original": "Wit & West Perfumes Customizable Discovery Set Winner",
-   "lang": "en",
-   "category": "events",
-   "importance": 2,
-   "title": {
-    "ar": "فعاليات معرض العطور تشهد إقبالاً واسعاً ومشاركة مميزة",
-    "en": "Perfume Exhibition Witnessing Wide Attendance and Special Participation"
-   },
-   "summary": {
-    "ar": "شهد معرض العطور إقبالاً جماهيرياً واسعاً لعرض أحدث الإصدارات والابتكارات العطرية المحلية والعالمية.",
-    "en": "The perfume exhibition has seen broad public attendance showcasing the latest local and international fragrance releases."
-   },
-   "note": {
-    "ar": "المعارض تتيح للزوار تجربة فريدة لاكتشاف خلطات جديدة ومخصصة.",
-    "en": "Exhibitions offer visitors a unique experience to discover new custom blends."
-   }
-  },
-  {
-   "id": "n7zp7q2",
-   "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNSHIxMXFlQ09XalFBbTlYUHBZLUFCeUp0S0s4dWFld3hKUG9Td0lyeWdkUFA5bTlPM3pEWnlEVElUZllWZnQ2X05wZVhPWFhjbWNUZXVpTE1kbGZZRXktMXYxa0F6d0ZJODZGTTNrQnRiUlR6ZXo2OHQyUzdEQXVYRzU0cGxGd3NSU1J6Z1h4bHhwUzB1Zmd0UWNGbjZhVkNYTkVRNGxXZ3dnZW11T3BPWm9zN1lYX282WkFyZFVHUkFWbFdq?oc=5",
-   "source": "Holler Country",
-   "publishedAt": "2026-10-22T17:18:00.000Z",
-   "original": "Drake and Better World Fragrance House Are Releasing ‘DOSAYDO’, a New Cowboy-Inspired Perfume",
-   "lang": "en",
-   "category": "culture",
-   "importance": 3,
-   "title": {
-    "ar": "تسليط الضوء على عطور الأخشاب والعود وتأثير العلامات الآسيوية على صناعة العطور العالمية",
-    "en": "Spotlight on Unisex Oud Fragrances and the Impact of Asian Brands on Global Perfumery"
-   },
-   "summary": {
-    "ar": "تتناول تقارير حديثة صعود العطور الخشبية للجنسين وتأثير العلامات الآسيوية الشابة في إعادة صياغة قواعد صناعة العطور العالمية.",
-    "en": "Recent reports discuss the rise of unisex wood fragrances and how young Asian brands are reshaping global perfumery codes."
-   },
-   "note": {
-    "ar": "تنوع ثقافي يثري صناعة العطور ويمنح المصممين آفاقاً جديدة خارج القوالب التقليدية.",
-    "en": "Cultural diversity enriches the perfume industry and gives designers new horizons beyond traditional templates."
-   }
-  },
-  {
-   "id": "n1jf7xgw",
-   "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxPR3dydEl4VmNPT1h6M0dkam05YWhXWTdMMnFTTnI4TmxGU1JzNDdhTXFsZXkyZEhNbWVOSXE2NDlSb1YtMjFvZ1VKV1JoQXREb25WWUh2Qzg3UGFuTlJiSENwQ25QcWRCTUJYNk4zMGdPRFB3ZWJCNHdKNjVYYTlTYnExck11M2tDdXZGekJ0NmxiNkJqd28tTTZ0TFAtR3FhQXVIOTRoX0JJc25RZ2hoc2oxR3dTYnlWY3NZbWdmTy1hbFY2Z2RObXlR?oc=5",
-   "source": "Le Figaro",
-   "publishedAt": "2026-10-22T17:00:00.000Z",
-   "original": "Chez Santa Maria Novella, un parfum de marbre mouillé en souvenir à Florence sauvée des eaux",
-   "lang": "fr",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "نظرة على عطور الأيقونات التاريخية مثل مارغريت تاتشر وكاتدرين دينوف ودور Penhaligon's وGuerlain",
-    "en": "A Look at Historical Icons' Signature Scents Like Margaret Thatcher and Catherine Deneuve"
-   },
-   "summary": {
-    "ar": "تستعرض مقالات صحفية عطور الشخصيات التاريخية والفنية الخالدة مثل مارغريت تاتشر وكاتدرين دينوف والمرتبطة بدور عريقة مثل Penhaligon's وGuerlain.",
-    "en": "Press articles review the timeless signature scents of historical and artistic figures associated with heritage houses like Penhaligon's and Guerlain."
-   },
-   "note": {
-    "ar": "تاريخ العطور يعلمنا كيف تتحول بعض التركيبات إلى رموز ثقافية لا تمحى بمرور الزمن.",
-    "en": "Perfume history teaches us how certain formulations turn into indelible cultural icons over time."
-   }
-  },
-  {
-   "id": "n8b0oyi",
-   "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxPNlZ5b0xxbTZyM2xEd1lUc3d1QVBsTFJkaC1jMVJOckkyazdOcUhUeTNzdWhtV3M1a3dJUUFrN3FmemNjVVhUQjA1aHd3ZElfamt5c1lhOHRRaW12SGxiX2xna0V4bE5VX0p3N0FNYnZHeUFRVnY2bHVVcjVyclp4N0llTC1BbkdEQWc?oc=5",
-   "source": "Grazia Daily UK",
-   "publishedAt": "2026-10-22T16:29:41.000Z",
-   "original": "Beauty editors are obsessed with this Parisian-inspired perfume – and it smells like a work of art",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Beauty editors are obsessed with this Parisian-inspired perfume – and it smells like a work of art",
-    "en": "Beauty editors are obsessed with this Parisian-inspired perfume – and it smells like a work of art"
-   },
-   "summary": {
-    "ar": "Beauty editors are obsessed with this Parisian-inspired perfume – and it smells like a work of art",
-    "en": "Beauty editors are obsessed with this Parisian-inspired perfume – and it smells like a work of art"
-   }
-  },
-  {
-   "id": "n1v8ybyq",
-   "url": "https://www.premiumbeautynews.com/en/puig-hits-record-q3-sales-on,28392",
-   "source": "Premium Beauty News",
-   "publishedAt": "2026-10-22T15:08:00.000Z",
-   "original": "Puig hits record Q3 sales on makeup and fragrance growth",
-   "lang": "en",
-   "category": "market",
-   "importance": 2,
-   "title": {
-    "ar": "Puig hits record Q3 sales on makeup and fragrance growth",
-    "en": "Puig hits record Q3 sales on makeup and fragrance growth"
-   },
-   "summary": {
-    "ar": "The Spanish beauty group delivered record third-quarter sales in 2026, with net revenue reaching EUR 1.39 billion (USD 1.12 billion), up 5.6% on a like-for-like (LFL) basis and 7.2% at reported exchange rates. The performance was driven by fragrance and makeup, with growth across all geographical regions. For the first nine months of 2026, the Spanish beauty group generated revenue of EUR 3.74 billion (USD 4.19 billion), up 4.8% LFL and 4.1% on a reported basis. All business segments and... - In",
-    "en": "The Spanish beauty group delivered record third-quarter sales in 2026, with net revenue reaching EUR 1.39 billion (USD 1.12 billion), up 5.6% on a like-for-like (LFL) basis and 7.2% at reported exchange rates. The performance was driven by fragrance and makeup, with growth across all geographical regions. For the first nine months of 2026, the Spanish beauty group generated revenue of EUR 3.74 billion (USD 4.19 billion), up 4.8% LFL and 4.1% on a reported basis. All business segments and... - In"
-   }
-  },
-  {
-   "id": "n1c17qj5",
-   "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE5rYTJxOU9jM1FuXzRFQTBJUFl6QjJGN2dheFp3V3hVYzgzTF9VaUpMUHZGM3drakYyaW1CYnJyUkZUaUlRalZucml6cmFWNUJD0gFWQVVfeXFMUFVob1N6T2xKWWttZzR1RWhVcGhjWE54VFgyTWgtX1M5SmJzMmQzRWZWUXgzN01lYVdVZmNiaDJSTTJTZmp6Y3NTVlROYnBnLU9TNFhWZ0E?oc=5",
-   "source": "جريدة الجريدة الكويتية",
-   "publishedAt": "2026-10-22T14:42:00.000Z",
-   "original": "«أغنيتين بأغنية»... توليفة موسيقية تجمع أربعة فنانين بقيادة العود",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "«أغنيتين بأغنية»... توليفة موسيقية تجمع أربعة فنانين بقيادة العود",
-    "en": "«أغنيتين بأغنية»... توليفة موسيقية تجمع أربعة فنانين بقيادة العود"
-   },
-   "summary": {
-    "ar": "«أغنيتين بأغنية»... توليفة موسيقية تجمع أربعة فنانين بقيادة العود",
-    "en": "«أغنيتين بأغنية»... توليفة موسيقية تجمع أربعة فنانين بقيادة العود"
-   }
-  },
-  {
-   "id": "nfhuipi",
-   "url": "https://nstperfume.com/2026/10/22/perfume-at-heart-x-3/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-22T14:12:01.000Z",
-   "original": "Perfume at heart x 3",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Perfume at heart x 3",
-    "en": "Perfume at heart x 3"
-   },
-   "summary": {
-    "ar": "Three long videos from Guerlain. First up, 24 minutes with perfumer Thierry Wasser, then below the jump, 22ish minutes with perfumer Delphine Jelk, followed by 16 minutes with Production Manager Paulo Dinis.",
-    "en": "Three long videos from Guerlain. First up, 24 minutes with perfumer Thierry Wasser, then below the jump, 22ish minutes with perfumer Delphine Jelk, followed by 16 minutes with Production Manager Paulo Dinis."
-   }
-  },
-  {
-   "id": "nba2a2t",
-   "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE4zSGo3cjAyWThFQWlkWmpyd1NpbHBRV2VZaTBCRGEwOVZVclV2SmRIVkV6YVpWMEhocWk1RDY2LU1DNFJFUzBHYkRtbmNCYlRNQmUyTGpKckh1NXVlakE?oc=5",
-   "source": "NewBeauty",
-   "publishedAt": "2026-10-22T14:11:49.000Z",
-   "original": "Dove Turned Its Classic Beauty Bar Into a Perfume",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Dove Turned Its Classic Beauty Bar Into a Perfume",
-    "en": "Dove Turned Its Classic Beauty Bar Into a Perfume"
-   },
-   "summary": {
-    "ar": "Dove Turned Its Classic Beauty Bar Into a Perfume",
-    "en": "Dove Turned Its Classic Beauty Bar Into a Perfume"
-   }
-  },
-  {
-   "id": "ndrkzom",
-   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE41R2pQUnExT3FJSVFnTUJjcWw4cGZUN1dES3p4bXhTX0RrSUZBalZUbm93WXh0SjYzODFSblVocmZQXy1NM0ZSS3B1dFBEZklTWFpudVBmUThoRWR3RnZPbGhlS3h2cEEzd3BaV19MSFFVX3BORmc?oc=5",
-   "source": "The Zoe Report",
-   "publishedAt": "2026-10-22T14:02:07.000Z",
-   "original": "I Get Non-Stop Compliments When I Wear This New Perfume",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "I Get Non-Stop Compliments When I Wear This New Perfume",
-    "en": "I Get Non-Stop Compliments When I Wear This New Perfume"
-   },
-   "summary": {
-    "ar": "I Get Non-Stop Compliments When I Wear This New Perfume",
-    "en": "I Get Non-Stop Compliments When I Wear This New Perfume"
    }
   }
  ]
