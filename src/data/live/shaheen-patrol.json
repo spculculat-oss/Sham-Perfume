@@ -1,9 +1,9 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T13:26:55.307Z",
- "publishedAt": "2026-10-23T13:26:55.307Z",
- "signature": "4nht44",
- "summaryAr": "وردية المحتوى وتجربة الزائر 13:26 UTC: 7 اختبار عملي (7 سليم)، 8 مشكلة مفتوحة — 0 بتتصلح آلياً، 4 عند شاهين، 1 مهمة تطوير، 3 محتاجة قرارك؛ 7 مراجعة خبير (6 اتقبلت، 1 اترفضت)؛ 0 اتصلحت من آخر دورية.",
+ "updatedAt": "2026-10-23T14:23:35.595Z",
+ "publishedAt": "2026-10-23T14:23:35.595Z",
+ "signature": "rz1s54",
+ "summaryAr": "وردية الجودة والإدارة 14:23 UTC: 4 اختبار عملي (4 سليم)، 8 مشكلة مفتوحة — 1 بتتصلح آلياً، 4 عند شاهين، 0 مهمة تطوير، 3 محتاجة قرارك؛ 10 مراجعة خبير (10 اتقبلت، 0 اترفضت)؛ 0 اتصلحت من آخر دورية.",
  "health": 88,
  "bots": [
   {
@@ -16,7 +16,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-23T11:56:27Z",
-   "lastRunAt": "2026-10-23T13:07:09Z",
+   "lastRunAt": "2026-10-23T14:01:02Z",
    "lastRunOk": true
   },
   {
@@ -44,7 +44,7 @@
    "id": "secretary",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-10-23T10:22:53Z",
+   "reviewed": "2026-10-23T12:09:26Z",
    "lastRunAt": "2026-10-23T12:09:26Z",
    "lastRunOk": true
   },
@@ -52,7 +52,7 @@
    "id": "precheck",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-10-23T09:39:46Z",
+   "reviewed": "2026-10-23T11:25:33Z",
    "lastRunAt": "2026-10-23T11:25:33Z",
    "lastRunOk": true
   },
@@ -60,14 +60,17 @@
    "id": "patrol",
    "status": "warn",
    "problems": 1,
-   "reviewed": "2026-10-23T10:18:36Z",
-   "lastRunAt": "2026-10-23T12:12:53Z",
+   "reviewed": "2026-10-23T13:27:19Z",
+   "lastRunAt": "2026-10-23T13:27:19Z",
    "lastRunOk": true
   },
   {
    "id": "maneuver",
    "status": "ok",
-   "problems": 0
+   "problems": 0,
+   "reviewed": "2026-10-23T14:17:51Z",
+   "lastRunAt": "2026-10-23T14:17:51Z",
+   "lastRunOk": true
   },
   {
    "id": "finance",
@@ -223,7 +226,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-23T12:26:56Z",
-   "lastRunAt": "2026-10-23T12:26:56Z",
+   "lastRunAt": "2026-10-23T13:40:30Z",
    "lastRunOk": true
   },
   {
@@ -235,15 +238,15 @@
    "id": "doctor",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-10-23T11:03:46Z",
-   "lastRunAt": "2026-10-23T13:05:15Z",
+   "reviewed": "2026-10-23T13:46:37Z",
+   "lastRunAt": "2026-10-23T13:46:37Z",
    "lastRunOk": true
   },
   {
    "id": "verifier",
    "status": "warn",
    "problems": 1,
-   "reviewed": "2026-10-23T09:16:44Z",
+   "reviewed": "2026-10-23T11:25:43Z",
    "lastRunAt": "2026-10-23T11:25:43Z",
    "lastRunOk": true
   },
@@ -265,7 +268,7 @@
    "id": "keys",
    "status": "warn",
    "problems": 1,
-   "reviewed": "2026-10-23T09:36:35Z",
+   "reviewed": "2026-10-23T13:13:56Z",
    "lastRunAt": "2026-10-23T13:13:56Z",
    "lastRunOk": true
   },
@@ -273,7 +276,7 @@
    "id": "intake",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-10-23T09:39:41Z",
+   "reviewed": "2026-10-23T13:16:48Z",
    "lastRunAt": "2026-10-23T13:16:48Z",
    "lastRunOk": true
   },
@@ -281,8 +284,8 @@
    "id": "studio_bridge",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-10-23T11:04:30Z",
-   "lastRunAt": "2026-10-23T12:40:30Z",
+   "reviewed": "2026-10-23T13:40:11Z",
+   "lastRunAt": "2026-10-23T13:40:11Z",
    "lastRunOk": true
   },
   {
@@ -294,8 +297,8 @@
    "id": "deploy",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-10-23T11:08:20Z",
-   "lastRunAt": "2026-10-23T13:21:24Z",
+   "reviewed": "2026-10-23T13:44:15Z",
+   "lastRunAt": "2026-10-23T13:44:15Z",
    "lastRunOk": true
   },
   {
@@ -426,7 +429,7 @@
    "checked": 2,
    "failed": 0,
    "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا",
-   "at": "2026-10-23T13:26:55.307Z",
+   "at": "2026-10-23T14:23:35.595Z",
    "nameAr": "الموقع الأساسي يفتح",
    "nameEn": "Main site opens"
   },
@@ -437,7 +440,7 @@
    "failed": 0,
    "deep": true,
    "noteAr": "10 صفحة منتج فتحت بنفس سعر الكتالوج + جدول العملات موجود",
-   "at": "2026-10-23T13:26:55.307Z",
+   "at": "2026-10-23T14:23:35.595Z",
    "nameAr": "صفحات المنتجات على الموقع",
    "nameEn": "Product pages on the site"
   },
@@ -458,7 +461,7 @@
    "checked": 1161,
    "failed": 0,
    "noteAr": "1161 صفحة منتج في خريطة الموقع من 1161",
-   "at": "2026-10-23T13:26:55.307Z",
+   "at": "2026-10-23T14:23:35.595Z",
    "nameAr": "خريطة الموقع لمحركات البحث",
    "nameEn": "Sitemap for search engines"
   },
@@ -468,7 +471,7 @@
    "checked": 1,
    "failed": 0,
    "noteAr": "الخادم بيرد",
-   "at": "2026-10-23T11:16:15.316Z",
+   "at": "2026-10-23T14:23:35.595Z",
    "nameAr": "محرك الموقع (الخادم)",
    "nameEn": "Site engine (server)"
   },
@@ -495,6 +498,113 @@
   }
  ],
  "open": [
+  {
+   "key": "patrol:# عطل الدورية ماقدرتش تصلحه آلياً",
+   "bot": "patrol",
+   "source": "self",
+   "shift": 2,
+   "level": "warn",
+   "textAr": "الدورية بالتناوب (فحص وإصلاح ومراجعة خبير): 2 عطل الدورية ماقدرتش تصلحه آلياً",
+   "since": "2026-10-23T08:20:56.043Z",
+   "lastSeen": "2026-10-23T14:23:35.595Z",
+   "status": "shaheen",
+   "nextAr": "مفيش إصلاح آلي آمن — شاهين شخّصها: فشلت وردية الدورية بالتناوب في معالجة عطل تشغيلي رصده النظام، ولعدم وجود إصلاح آلي آمن متاح ضمن الصلاحيات المباشرة، يتطلب الأمر تدخلاً إشرافياً ومراجعة لتقارير ",
+   "tries": [
+    {
+     "at": "2026-10-23T08:20:56.043Z",
+     "workflow": "shaheen-precheck.yml"
+    }
+   ],
+   "shaheen": {
+    "at": "2026-10-23T08:20:56.043Z",
+    "by": "ai",
+    "diagnosisAr": "فشلت وردية الدورية بالتناوب في معالجة عطل تشغيلي رصده النظام، ولعدم وجود إصلاح آلي آمن متاح ضمن الصلاحيات المباشرة، يتطلب الأمر تدخلاً إشرافياً ومراجعة لتقارير الحالة وفقاً لبروتوكول الصيانة الخاص بالمنصة.",
+    "stepsAr": [
+     "مراجعة سجلات التشغيل الأخيرة المرتبطة بالدورية بالتناوب في ملفات التقارير لتحديد مصدر العطل بدقة.",
+     "التحقق من حالة الأدوار والخدمات المرتبطة عبر ملجأ شاهين والتأكد من عدم وجود تعارض في الصلاحيات أو القوانين الحاكمة (مثل L-03 و L-06).",
+     "رفع تقارير الحالة إلى مشرف شاهين لتقييم الأداء واتخاذ القرار المناسب بشأن إعادة تشغيل سير العمل أو التدخل اليدوي."
+    ],
+    "needsCode": false,
+    "rerun": "shaheen-precheck.yml"
+   }
+  },
+  {
+   "key": "verifier:# مهمة اتقفلت ولسه مش متصلحة على الموقع: إصلاح فجوات السيو التقني وهيكل صفحات ال",
+   "bot": "verifier",
+   "source": "self",
+   "shift": 2,
+   "level": "warn",
+   "textAr": "المراجع الخارجي: 1 مهمة اتقفلت ولسه مش متصلحة على الموقع: إصلاح فجوات السيو التقني وهيكل صفحات الموقع",
+   "since": "2026-10-20T23:12:25.189Z",
+   "lastSeen": "2026-10-23T14:23:35.595Z",
+   "status": "waiting_shaheen",
+   "nextAr": "مفيش إصلاح آلي آمن — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)",
+   "tries": [
+    {
+     "at": "2026-10-22T08:23:56.530Z",
+     "workflow": "pages.yml"
+    }
+   ],
+   "shaheen": {
+    "at": "2026-10-23T11:16:15.316Z",
+    "by": "playbook",
+    "diagnosisAr": "مشكلة في أرقام الأداة نفسها محتاجة تطوير.",
+    "stepsAr": [
+     "تتحول لمهمة تطوير لو استمرت"
+    ],
+    "needsCode": true
+   }
+  },
+  {
+   "key": "live_check:آخر تشغيل فشل",
+   "bot": "live_check",
+   "source": "self",
+   "shift": 2,
+   "level": "fail",
+   "textAr": "فحص شاهين على الموقع الحي: آخر تشغيل فشل",
+   "since": "2026-10-23T08:20:56.043Z",
+   "lastSeen": "2026-10-23T14:23:35.595Z",
+   "status": "task",
+   "nextAr": "مهمة تطوير #199 لوكيل البرمجة («نفذ مهام شاهين»)",
+   "tries": [
+    {
+     "at": "2026-10-23T08:20:56.043Z",
+     "workflow": "live-smoke.yml"
+    },
+    {
+     "at": "2026-10-23T14:23:35.595Z",
+     "workflow": "live-smoke.yml"
+    }
+   ],
+   "issue": 199,
+   "rejectedBy": [
+    "live_check"
+   ]
+  },
+  {
+   "key": "keys:محركات متوقفة مؤقتاً: openai، gemini",
+   "bot": "keys",
+   "source": "self",
+   "shift": 2,
+   "level": "warn",
+   "textAr": "حارس مفاتيح الذكاء الاصطناعي: محركات متوقفة مؤقتاً: openai، gemini",
+   "owner": true,
+   "since": "2026-10-23T11:16:15.316Z",
+   "lastSeen": "2026-10-23T14:23:35.595Z",
+   "status": "owner",
+   "nextAr": "محتاج قرار صاحب المتجر — مش هيتصعد لشاهين ولا يتعمل له إصلاح آلي",
+   "tries": [],
+   "team": [
+    {
+     "bot": "keys",
+     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
+    },
+    {
+     "bot": "secretary",
+     "roleAr": "2 محرك متوقف — السكرتير جاهز ينوب عن شاهين"
+    }
+   ]
+  },
   {
    "key": "design_audit:تقييم التصميم واللغات # (# ملاحظة)",
    "bot": "design_audit",
@@ -614,109 +724,6 @@
    "status": "owner",
    "nextAr": "محتاج قرار صاحب المتجر — مش هيتصعد لشاهين ولا يتعمل له إصلاح آلي",
    "tries": []
-  },
-  {
-   "key": "patrol:# عطل الدورية ماقدرتش تصلحه آلياً",
-   "bot": "patrol",
-   "source": "self",
-   "shift": 2,
-   "level": "warn",
-   "textAr": "الدورية بالتناوب (فحص وإصلاح ومراجعة خبير): 4 عطل الدورية ماقدرتش تصلحه آلياً",
-   "since": "2026-10-23T08:20:56.043Z",
-   "lastSeen": "2026-10-23T11:16:15.316Z",
-   "status": "shaheen",
-   "nextAr": "مفيش إصلاح آلي آمن — شاهين شخّصها: فشلت وردية الدورية بالتناوب في معالجة عطل تشغيلي رصده النظام، ولعدم وجود إصلاح آلي آمن متاح ضمن الصلاحيات المباشرة، يتطلب الأمر تدخلاً إشرافياً ومراجعة لتقارير ",
-   "tries": [
-    {
-     "at": "2026-10-23T08:20:56.043Z",
-     "workflow": "shaheen-precheck.yml"
-    }
-   ],
-   "shaheen": {
-    "at": "2026-10-23T08:20:56.043Z",
-    "by": "ai",
-    "diagnosisAr": "فشلت وردية الدورية بالتناوب في معالجة عطل تشغيلي رصده النظام، ولعدم وجود إصلاح آلي آمن متاح ضمن الصلاحيات المباشرة، يتطلب الأمر تدخلاً إشرافياً ومراجعة لتقارير الحالة وفقاً لبروتوكول الصيانة الخاص بالمنصة.",
-    "stepsAr": [
-     "مراجعة سجلات التشغيل الأخيرة المرتبطة بالدورية بالتناوب في ملفات التقارير لتحديد مصدر العطل بدقة.",
-     "التحقق من حالة الأدوار والخدمات المرتبطة عبر ملجأ شاهين والتأكد من عدم وجود تعارض في الصلاحيات أو القوانين الحاكمة (مثل L-03 و L-06).",
-     "رفع تقارير الحالة إلى مشرف شاهين لتقييم الأداء واتخاذ القرار المناسب بشأن إعادة تشغيل سير العمل أو التدخل اليدوي."
-    ],
-    "needsCode": false,
-    "rerun": "shaheen-precheck.yml"
-   }
-  },
-  {
-   "key": "verifier:# مهمة اتقفلت ولسه مش متصلحة على الموقع: إصلاح فجوات السيو التقني وهيكل صفحات ال",
-   "bot": "verifier",
-   "source": "self",
-   "shift": 2,
-   "level": "warn",
-   "textAr": "المراجع الخارجي: 1 مهمة اتقفلت ولسه مش متصلحة على الموقع: إصلاح فجوات السيو التقني وهيكل صفحات الموقع",
-   "since": "2026-10-20T23:12:25.189Z",
-   "lastSeen": "2026-10-23T11:16:15.316Z",
-   "status": "waiting_shaheen",
-   "nextAr": "مفيش إصلاح آلي آمن — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)",
-   "tries": [
-    {
-     "at": "2026-10-22T08:23:56.530Z",
-     "workflow": "pages.yml"
-    }
-   ],
-   "shaheen": {
-    "at": "2026-10-23T11:16:15.316Z",
-    "by": "playbook",
-    "diagnosisAr": "مشكلة في أرقام الأداة نفسها محتاجة تطوير.",
-    "stepsAr": [
-     "تتحول لمهمة تطوير لو استمرت"
-    ],
-    "needsCode": true
-   }
-  },
-  {
-   "key": "live_check:آخر تشغيل فشل",
-   "bot": "live_check",
-   "source": "self",
-   "shift": 2,
-   "level": "fail",
-   "textAr": "فحص شاهين على الموقع الحي: آخر تشغيل فشل",
-   "since": "2026-10-23T08:20:56.043Z",
-   "lastSeen": "2026-10-23T11:16:15.316Z",
-   "status": "task",
-   "nextAr": "مهمة تطوير #199 لوكيل البرمجة («نفذ مهام شاهين»)",
-   "tries": [
-    {
-     "at": "2026-10-23T08:20:56.043Z",
-     "workflow": "live-smoke.yml"
-    }
-   ],
-   "issue": 199,
-   "rejectedBy": [
-    "live_check"
-   ]
-  },
-  {
-   "key": "keys:محركات متوقفة مؤقتاً: openai، gemini",
-   "bot": "keys",
-   "source": "self",
-   "shift": 2,
-   "level": "warn",
-   "textAr": "حارس مفاتيح الذكاء الاصطناعي: محركات متوقفة مؤقتاً: openai، gemini",
-   "owner": true,
-   "since": "2026-10-23T11:16:15.316Z",
-   "lastSeen": "2026-10-23T11:16:15.316Z",
-   "status": "owner",
-   "nextAr": "محتاج قرار صاحب المتجر — مش هيتصعد لشاهين ولا يتعمل له إصلاح آلي",
-   "tries": [],
-   "team": [
-    {
-     "bot": "keys",
-     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
-    },
-    {
-     "bot": "secretary",
-     "roleAr": "2 محرك متوقف — السكرتير جاهز ينوب عن شاهين"
-    }
-   ]
   }
  ],
  "resolved": [
@@ -1042,6 +1049,232 @@
   }
  ],
  "reviews": [
+  {
+   "bot": "secretary",
+   "reviewerAr": "خبير فحص تقييم الأدوات",
+   "reviewerEn": "Tool-scores reviewer",
+   "runAt": "2026-10-23T12:09:26Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 2.3 ساعة"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "precheck",
+   "reviewerAr": "خبير فحص الفحص الشامل",
+   "reviewerEn": "Full-check reviewer",
+   "runAt": "2026-10-23T11:25:33Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "patrol",
+   "reviewerAr": "خبير فحص الدورية بالتناوب (فحص وإصلاح ومراجعة خبير)",
+   "reviewerEn": "Rotating patrol (check, fix, expert review) reviewer",
+   "runAt": "2026-10-23T13:27:19Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 0.9 ساعة"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "maneuver",
+   "reviewerAr": "خبير فحص مناورة التخصصات (فحص ميداني للموقع الحي)",
+   "reviewerEn": "Specialties field maneuver (live-site field check) reviewer",
+   "runAt": "2026-10-23T14:17:51Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 0.1 ساعة"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "doctor",
+   "reviewerAr": "خبير فحص الصيانة",
+   "reviewerEn": "Maintenance reviewer",
+   "runAt": "2026-10-23T13:46:37Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "محرك الموقع (الخادم)",
+     "level": "ok",
+     "noteAr": "الخادم بيرد (1 اختبار)"
+    },
+    {
+     "nameAr": "الموقع الأساسي يفتح",
+     "level": "ok",
+     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "verifier",
+   "reviewerAr": "خبير فحص المراجعة الخارجية",
+   "reviewerEn": "External review checker",
+   "runAt": "2026-10-23T11:25:43Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 100.3 ساعة"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "keys",
+   "reviewerAr": "خبير فحص المفاتيح",
+   "reviewerEn": "Keys reviewer",
+   "runAt": "2026-10-23T13:13:56Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 4.7 ساعة"
+    },
+    {
+     "nameAr": "محرك الموقع (الخادم)",
+     "level": "ok",
+     "noteAr": "الخادم بيرد (1 اختبار)"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "intake",
+   "reviewerAr": "خبير فحص التحديثات",
+   "reviewerEn": "Updates reviewer",
+   "runAt": "2026-10-23T13:16:48Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 124.5 ساعة"
+    },
+    {
+     "nameAr": "الموقع الأساسي يفتح",
+     "level": "ok",
+     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "studio_bridge",
+   "reviewerAr": "خبير فحص بوابة الاستوديو",
+   "reviewerEn": "Studio bridge reviewer",
+   "runAt": "2026-10-23T13:40:11Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 98.8 ساعة"
+    },
+    {
+     "nameAr": "الموقع الأساسي يفتح",
+     "level": "ok",
+     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "deploy",
+   "reviewerAr": "خبير فحص النشر",
+   "reviewerEn": "Deploy reviewer",
+   "runAt": "2026-10-23T13:44:15Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "الموقع الأساسي يفتح",
+     "level": "ok",
+     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
+    },
+    {
+     "nameAr": "صفحات المنتجات على الموقع",
+     "level": "ok",
+     "noteAr": "10 صفحة منتج فتحت بنفس سعر الكتالوج + جدول العملات موجود (11 اختبار)",
+     "deep": true
+    },
+    {
+     "nameAr": "خريطة الموقع لمحركات البحث",
+     "level": "ok",
+     "noteAr": "1161 صفحة منتج في خريطة الموقع من 1161 (1161 اختبار)"
+    }
+   ],
+   "defects": []
+  },
   {
    "bot": "news",
    "reviewerAr": "خبير فحص النشرة",
@@ -1537,310 +1770,37 @@
     "التشغيل فشل: فشل في خطوة «Site, API and CORS»",
     "آخر تشغيل فشل"
    ]
-  },
-  {
-   "bot": "keys",
-   "reviewerAr": "خبير فحص المفاتيح",
-   "reviewerEn": "Keys reviewer",
-   "runAt": "2026-10-23T09:36:35Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 1.6 ساعة"
-    },
-    {
-     "nameAr": "محرك الموقع (الخادم)",
-     "level": "ok",
-     "noteAr": "الخادم بيرد (1 اختبار)"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "intake",
-   "reviewerAr": "خبير فحص التحديثات",
-   "reviewerEn": "Updates reviewer",
-   "runAt": "2026-10-23T09:39:41Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 121.4 ساعة"
-    },
-    {
-     "nameAr": "الموقع الأساسي يفتح",
-     "level": "ok",
-     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "studio_bridge",
-   "reviewerAr": "خبير فحص بوابة الاستوديو",
-   "reviewerEn": "Studio bridge reviewer",
-   "runAt": "2026-10-23T11:04:30Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 95.7 ساعة"
-    },
-    {
-     "nameAr": "الموقع الأساسي يفتح",
-     "level": "ok",
-     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "deploy",
-   "reviewerAr": "خبير فحص النشر",
-   "reviewerEn": "Deploy reviewer",
-   "runAt": "2026-10-23T11:08:20Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "الموقع الأساسي يفتح",
-     "level": "ok",
-     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
-    },
-    {
-     "nameAr": "صفحات المنتجات على الموقع",
-     "level": "ok",
-     "noteAr": "10 صفحة منتج فتحت بنفس سعر الكتالوج + جدول العملات موجود (11 اختبار)",
-     "deep": true
-    },
-    {
-     "nameAr": "خريطة الموقع لمحركات البحث",
-     "level": "ok",
-     "noteAr": "1161 صفحة منتج في خريطة الموقع من 1161 (1161 اختبار)"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "seo",
-   "reviewerAr": "خبير فحص الظهور في البحث",
-   "reviewerEn": "Search reviewer",
-   "runAt": "2026-10-23T08:46:09Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 1.6 ساعة"
-    },
-    {
-     "nameAr": "خريطة الموقع لمحركات البحث",
-     "level": "ok",
-     "noteAr": "1161 صفحة منتج في خريطة الموقع من 1161 (1161 اختبار)"
-    },
-    {
-     "nameAr": "الموقع الأساسي يفتح",
-     "level": "ok",
-     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "teacher",
-   "reviewerAr": "خبير فحص دروس المعلم المحلي",
-   "reviewerEn": "Local lessons reviewer",
-   "runAt": "2026-10-23T08:49:22Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 0.9 ساعة"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "languages",
-   "reviewerAr": "خبير فحص اللغات",
-   "reviewerEn": "Languages reviewer",
-   "runAt": "2026-10-23T09:42:12Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 0.6 ساعة"
-    },
-    {
-     "nameAr": "نصوص المتجر في كل اللغات",
-     "level": "ok",
-     "noteAr": "100 لغة كاملة النصوص الأساسية (100 اختبار)"
-    },
-    {
-     "nameAr": "عملة كل دولة",
-     "level": "ok",
-     "noteAr": "251 دولة: عملة واحدة في كل مكان (251 اختبار)"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "design_audit",
-   "reviewerAr": "خبير فحص التصميم واللغات",
-   "reviewerEn": "Design & languages reviewer",
-   "runAt": "2026-10-23T09:16:44Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 52.6 ساعة"
-    },
-    {
-     "nameAr": "نصوص المتجر في كل اللغات",
-     "level": "ok",
-     "noteAr": "100 لغة كاملة النصوص الأساسية (100 اختبار)"
-    },
-    {
-     "nameAr": "الموقع الأساسي يفتح",
-     "level": "ok",
-     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "visitor_tour",
-   "reviewerAr": "خبير فحص رحلة الشراء",
-   "reviewerEn": "Purchase journey reviewer",
-   "runAt": "2026-10-23T09:16:44Z",
-   "verdict": "rejected",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 3.5 ساعة"
-    },
-    {
-     "nameAr": "عملة كل دولة",
-     "level": "ok",
-     "noteAr": "251 دولة: عملة واحدة في كل مكان (251 اختبار)"
-    },
-    {
-     "nameAr": "صفحات المنتجات على الموقع",
-     "level": "ok",
-     "noteAr": "10 صفحة منتج فتحت بنفس سعر الكتالوج + جدول العملات موجود (11 اختبار)",
-     "deep": true
-    },
-    {
-     "nameAr": "الموقع الأساسي يفتح",
-     "level": "ok",
-     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
-    }
-   ],
-   "defects": [
-    "جولة الزائر: خطوات واقعة — store: فتح المتجر وتطبيق فلتر الرجال، لاحظت وجود عناصر بالعربية والإنجليزية وتكرار العن، checkout: الانتقال إلى صفحة الدفع يظهر تسجيل الدخول قبل الدفع ولا يوجد خيار زائر حتى الآن."
-   ]
-  },
-  {
-   "bot": "school",
-   "reviewerAr": "خبير فحص المذاكرة",
-   "reviewerEn": "School reviewer",
-   "runAt": "2026-10-23T08:49:22Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 0.9 ساعة"
-    }
-   ],
-   "defects": []
   }
  ],
  "reviewedRuns": {
   "council": "2026-10-23T09:41:25Z",
-  "precheck": "2026-10-23T09:39:46Z",
-  "doctor": "2026-10-23T11:03:46Z",
-  "verifier": "2026-10-23T09:16:44Z",
+  "precheck": "2026-10-23T11:25:33Z",
+  "doctor": "2026-10-23T13:46:37Z",
+  "verifier": "2026-10-23T11:25:43Z",
   "live_check": "2026-10-23T08:23:06Z",
-  "keys": "2026-10-23T09:36:35Z",
-  "intake": "2026-10-23T09:39:41Z",
-  "studio_bridge": "2026-10-23T11:04:30Z",
-  "deploy": "2026-10-23T11:08:20Z",
+  "keys": "2026-10-23T13:13:56Z",
+  "intake": "2026-10-23T13:16:48Z",
+  "studio_bridge": "2026-10-23T13:40:11Z",
+  "deploy": "2026-10-23T13:44:15Z",
   "finance": "2026-10-23T03:43:00Z",
   "scout": "2026-10-23T08:49:22Z",
   "importer": "2026-10-23T11:05:20Z",
   "images": "2026-10-23T11:05:20Z",
   "catalog": "2026-10-23T12:09:26Z",
   "product_pages": "2026-10-23T12:10:37Z",
-  "secretary": "2026-10-23T10:22:53Z",
+  "secretary": "2026-10-23T12:09:26Z",
   "news": "2026-10-23T12:09:26Z",
   "seo": "2026-10-23T13:05:44Z",
   "languages": "2026-10-23T09:42:12Z",
   "design_audit": "2026-10-23T11:25:43Z",
   "visitor_tour": "2026-10-23T11:25:43Z",
   "school": "2026-10-23T12:58:18Z",
-  "patrol": "2026-10-23T10:18:36Z",
+  "patrol": "2026-10-23T13:27:19Z",
   "teacher": "2026-10-23T12:58:18Z",
   "owner_desk": "2026-10-23T09:40:26Z",
   "state": "2026-10-23T11:56:27Z",
-  "academy": "2026-10-23T12:26:56Z"
+  "academy": "2026-10-23T12:26:56Z",
+  "maneuver": "2026-10-23T14:17:51Z"
  },
  "reruns": [
   {
@@ -1882,9 +1842,28 @@
    "at": "2026-10-23T10:18:06.381Z",
    "workflow": "shaheen-news.yml",
    "key": "probe:news_api"
+  },
+  {
+   "at": "2026-10-23T14:23:35.595Z",
+   "workflow": "live-smoke.yml",
+   "key": "live_check:آخر تشغيل فشل"
   }
  ],
  "teams": [
+  {
+   "key": "keys:محركات متوقفة مؤقتاً: openai، gemini",
+   "textAr": "حارس مفاتيح الذكاء الاصطناعي: محركات متوقفة مؤقتاً: openai، gemini",
+   "parts": [
+    {
+     "bot": "keys",
+     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
+    },
+    {
+     "bot": "secretary",
+     "roleAr": "2 محرك متوقف — السكرتير جاهز ينوب عن شاهين"
+    }
+   ]
+  },
   {
    "key": "design_audit:تقييم التصميم واللغات # (# ملاحظة)",
    "textAr": "تدقيق التصميم واللغات (مرتين في الأسبوع): تقييم التصميم واللغات 42/100 (14 ملاحظة)",
@@ -1944,30 +1923,16 @@
      "roleAr": "يتأكد من إعدادات الخادم"
     }
    ]
-  },
-  {
-   "key": "keys:محركات متوقفة مؤقتاً: openai، gemini",
-   "textAr": "حارس مفاتيح الذكاء الاصطناعي: محركات متوقفة مؤقتاً: openai، gemini",
-   "parts": [
-    {
-     "bot": "keys",
-     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
-    },
-    {
-     "bot": "secretary",
-     "roleAr": "2 محرك متوقف — السكرتير جاهز ينوب عن شاهين"
-    }
-   ]
   }
  ],
  "shift": {
-  "index": 1,
-  "nameAr": "وردية المحتوى وتجربة الزائر",
-  "nameEn": "Content & visitor shift",
+  "index": 2,
+  "nameAr": "وردية الجودة والإدارة",
+  "nameEn": "Reliability & leadership shift",
   "next": [
    "2026-10-23T15:00:00.000Z",
    "2026-10-23T16:00:00.000Z",
-   "2026-10-23T14:00:00.000Z"
+   "2026-10-23T17:00:00.000Z"
   ]
  },
  "engine": {
