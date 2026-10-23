@@ -180,4 +180,8 @@ if (env.GITHUB_STEP_SUMMARY) {
   const rows = report.findings.filter((f) => f.kind === 'error').slice(0, 40).map((f) => `| ${f.severity === 'high' ? '🔴' : f.severity === 'medium' ? '🟠' : '🟡'} | ${f.sectionAr} | ${f.titleAr.replace(/\|/g, '/')} |`).join('\n');
   appendFileSync(env.GITHUB_STEP_SUMMARY, `## مناورة التخصصات\n\n${summary}\n\n| | القسم | الخطأ |\n|---|---|---|\n${rows}\n`);
 }
+// Annotations on the run page: the summary, how each pass went, and the serious errors (GitHub shows at most 10 per type).
+const esc = (x: string) => x.replace(/%/g, '%25').replace(/\r/g, '').replace(/\n/g, '%0A');
+say(`::notice title=Maneuver::${esc(`${summary} المتصفح: ${report.run.browser ? `${pages} قسم` : browserNoteAr || 'متوقف'} — الشات الحي: ${liveRuns} محادثة`)}`);
+for (const f of report.findings.filter((x) => x.kind === 'error' && x.severity === 'high').slice(0, 8)) say(`::warning title=${esc(f.sectionAr).replace(/[:,]/g, ' ')}::${esc(`${f.titleAr}${f.detailAr ? ` — ${f.detailAr}` : ''}`)}`);
 output('publish', 'true');
