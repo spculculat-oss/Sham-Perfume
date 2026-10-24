@@ -47,6 +47,12 @@ const TEXT: Record<string, string> = {
   CONFLICT: 'تعارض في الدفتر. أعد المحاولة.',
   INVALID_PRECISION: 'المبلغ أدق من عملته.',
   AMOUNT_TOO_LARGE: 'المبلغ أكبر من حد الدفتر.',
+  CONFIRMATION_REQUIRED: 'أكد العملية من شاشة المراجعة قبل خصم الرصيد.',
+  LIMIT_SINGLE: 'المبلغ أعلى من سقف العملية.',
+  LIMIT_DAILY: 'المبلغ أعلى من سقف اليوم.',
+  COOLING: 'أول تحويل لهذا الحساب أكبر من سقف المستفيد الجديد. أرسل مبلغًا أصغر، ثم انتظر نصف ساعة بعد ترحيله.',
+  ACCOUNT_FROZEN: 'أُوقف الإرسال مؤقتًا لكثرة الحركات. الاستلام ما زال مفتوحًا.',
+  PAYEE_LIMIT: 'وصلت إلى حد المستفيدين الجدد لهذا اليوم.',
 };
 
 function rethrow(error: unknown): never {
@@ -88,6 +94,7 @@ export function readMoneyBody(body: unknown) {
     from: text(record.from, 8).toUpperCase(),
     to: text(record.to, 8).toUpperCase(),
     postingId: text(record.postingId, 90),
+    confirmed: record.confirmed === true,
   };
 }
 
@@ -150,7 +157,11 @@ export class ShamBooks {
   }
 
   private view(state: LedgerState, holderId: string): AccountView {
-    return accountView(state, holderId, this.persistent());
+    return accountView(state, holderId, this.persistent(), this.now());
+  }
+
+  private confirmed(value: boolean) {
+    if (value !== true) throw new ValidationError('CONFIRMATION_REQUIRED', TEXT.CONFIRMATION_REQUIRED, 400);
   }
 
   async open(customerId: string): Promise<AccountView> {
@@ -172,8 +183,9 @@ export class ShamBooks {
     } catch (error) { rethrow(error); }
   }
 
-  async transfer(customerId: string, input: { toAccountNumber: string; currency: string; amount: string; detail: string; idempotencyKey: string }): Promise<AccountView> {
+  async transfer(customerId: string, input: { toAccountNumber: string; currency: string; amount: string; detail: string; idempotencyKey: string; confirmed: boolean }): Promise<AccountView> {
     const holderId = normalizeHolderId(customerId);
+    this.confirmed(input.confirmed);
     return this.withLock(holderId, async () => {
       try {
         const before = await this.load();
@@ -184,8 +196,9 @@ export class ShamBooks {
     });
   }
 
-  async hold(customerId: string, input: { currency: string; amount: string; detail: string; idempotencyKey: string }): Promise<AccountView> {
+  async hold(customerId: string, input: { currency: string; amount: string; detail: string; idempotencyKey: string; confirmed: boolean }): Promise<AccountView> {
     const holderId = normalizeHolderId(customerId);
+    this.confirmed(input.confirmed);
     return this.withLock(holderId, async () => {
       try {
         const before = await this.load();
@@ -208,8 +221,9 @@ export class ShamBooks {
     });
   }
 
-  async convert(customerId: string, input: { from: string; to: string; amount: string; idempotencyKey: string }, fx: FxTable): Promise<AccountView> {
+  async convert(customerId: string, input: { from: string; to: string; amount: string; idempotencyKey: string; confirmed: boolean }, fx: FxTable): Promise<AccountView> {
     const holderId = normalizeHolderId(customerId);
+    this.confirmed(input.confirmed);
     return this.withLock(holderId, async () => {
       try {
         const before = await this.load();

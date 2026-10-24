@@ -9,6 +9,7 @@
 import { decimals, sumMinor, toMinor } from '../finance/money';
 import { convert, type FxTable } from '../utils/pricing';
 import { ACCOUNT_CURRENCIES, isAccountCurrency, type AccountCurrency } from './shamAccount';
+import { guardSnapshot, screenOutbound, type GuardSnapshot } from './shamGuard';
 
 export const PLATFORM_HOLDER = 'sham-platform';
 export const LEDGER_COUNTERPARTY = 'SHAM-LEDGER';
@@ -166,6 +167,7 @@ export interface AccountView {
   balances: BalanceRow[];
   activity: ActivityRow[];
   persistent: boolean;
+  guard: GuardSnapshot;
 }
 
 function copy(state: LedgerState): LedgerState {
@@ -221,7 +223,7 @@ function amountOf(value: string, currency: string): number {
   return minor;
 }
 
-export function accountView(state: LedgerState, holderId: string, persistent = false): AccountView {
+export function accountView(state: LedgerState, holderId: string, persistent = false, at = new Date().toISOString()): AccountView {
   const holder = requireHolder(state, holderId);
   const activity = state.postings
     .filter((row) => row.holderId === holder.id)
@@ -244,6 +246,7 @@ export function accountView(state: LedgerState, holderId: string, persistent = f
     balances: ACCOUNT_CURRENCIES.map((currency) => balanceOf(state, holder.id, currency)),
     activity,
     persistent,
+    guard: guardSnapshot(state.postings, holder.id, at),
   };
 }
 
@@ -315,6 +318,7 @@ export function transfer(state: LedgerState, input: TransferInput): LedgerState 
   if (!isAccountCurrency(currency)) throw new Error('INVALID_CURRENCY');
   const amountMinor = amountOf(input.amount, currency);
   if (balanceOf(next, from.id, currency).availableMinor < amountMinor) throw new Error('INSUFFICIENT_FUNDS');
+  screenOutbound(next.postings, { holderId: from.id, currency, amountMinor, at: input.at, payee: to.accountNumber });
   const detail = input.detail.trim() || 'internal transfer';
   const base = {
     currency, amountMinor, status: 'posted' as const, kind: 'transfer' as const, detail, groupId, createdAt: input.at,
@@ -344,6 +348,7 @@ export function holdWithdrawal(state: LedgerState, input: HoldInput): LedgerStat
   if (!isAccountCurrency(currency)) throw new Error('INVALID_CURRENCY');
   const amountMinor = amountOf(input.amount, currency);
   if (balanceOf(next, id, currency).availableMinor < amountMinor) throw new Error('INSUFFICIENT_FUNDS');
+  screenOutbound(next.postings, { holderId: id, currency, amountMinor, at: input.at });
   push(next, {
     id: `${groupId}_hold`,
     holderId: id,
@@ -425,6 +430,7 @@ export function convertBalance(state: LedgerState, input: ConvertInput): LedgerS
   const holder = requireHolder(next, id);
   const from = input.from.toUpperCase();
   if (balanceOf(next, id, from).availableMinor < quote.debitMinor) throw new Error('INSUFFICIENT_FUNDS');
+  screenOutbound(next.postings, { holderId: id, currency: from, amountMinor: quote.debitMinor, at: input.at, fx: input.fx });
   const detail = quote.rateLabel;
   push(next, {
     id: `${groupId}_out`, holderId: id, accountNumber: holder.accountNumber, currency: from, amountMinor: quote.debitMinor,
