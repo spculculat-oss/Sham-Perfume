@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T22:27:07.290Z",
+ "updatedAt": "2026-10-24T01:01:01.440Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,17 @@
  ],
  "runs": [
   {
+   "at": "2026-10-24T01:01:01.440Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-23T22:27:07.290Z",
    "mode": "self",
    "found": 0,
@@ -7747,28 +7758,6 @@
     "✗ afnanperfumesperfumes.com: الموقع لا يفتح",
     "✗ afnanperfumesparfums.com: الموقع لا يفتح",
     "✗ ruebroca.com: الموقع لا يفتح"
-   ]
-  },
-  {
-   "at": "2026-10-21T14:55:17.636Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)",
-    "✗ alwataniahperfumes.com: الموقع لا يفتح",
-    "✗ alwataniahparfums.com: الموقع لا يفتح",
-    "✗ lattafapride.com: الموقع لا يفتح",
-    "✗ lattafaprideperfumes.com: الموقع لا يفتح",
-    "✗ lattafaprideparfums.com: الموقع لا يفتح",
-    "✗ volareparfums.com: الموقع لا يفتح",
-    "  ↳ shama.com: CV 62/100 [age,https,identity,returns,privacy,social,authentic]",
-    "✗ shama.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ shamaparfums.com: الموقع لا يفتح",
-    "✗ afnanperfumes.com: الموقع لا يفتح",
-    "✗ afnanparfums.com: الموقع لا يفتح"
    ]
   }
  ]
