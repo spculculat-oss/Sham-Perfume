@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-24T15:13:00.061Z",
+ "updatedAt": "2026-10-24T16:10:11.640Z",
  "reliance": {
   "score": 100,
   "covered": 1344,
@@ -19,8 +19,14 @@
   }
  },
  "studiedTotal": 142,
- "selfTaughtTotal": 1066,
+ "selfTaughtTotal": 1067,
  "history": [
+  {
+   "at": "2026-10-24T16:10:11.640Z",
+   "score": 100,
+   "studied": 1,
+   "mode": "self"
+  },
   {
    "at": "2026-10-24T15:13:00.061Z",
    "score": 100,
@@ -374,12 +380,6 @@
    "score": 59,
    "studied": 2,
    "mode": "local"
-  },
-  {
-   "at": "2026-10-22T12:47:27.487Z",
-   "score": 59,
-   "studied": 7,
-   "mode": "local"
   }
  ],
  "lastStudied": [
@@ -512,9 +512,9 @@
  },
  "localTaughtTotal": 85,
  "spelling": {
-  "at": "2026-10-24T15:13:00.061Z",
-  "tried": 744,
-  "understood": 701,
+  "at": "2026-10-24T16:10:11.640Z",
+  "tried": 745,
+  "understood": 704,
   "score": 94,
   "misses": [
    "طبييه → طبيه (طبيعيه)",
@@ -528,7 +528,7 @@
   }
  },
  "practice": {
-  "at": "2026-10-24T15:13:00.061Z",
+  "at": "2026-10-24T16:10:11.640Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -848,7 +848,7 @@
   }
  },
  "tools": {
-  "at": "2026-10-24T15:13:00.061Z",
+  "at": "2026-10-24T16:10:11.640Z",
   "items": [
    {
     "id": "finance_agent",
@@ -1013,14 +1013,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-24T15:13:00.061Z",
+  "at": "2026-10-24T16:10:11.640Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-24T21:13:00.061Z"
+    "next": "2026-10-24T22:10:11.640Z"
    },
    {
     "id": "site-care",
@@ -1032,7 +1032,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-25T03:13:00.061Z"
+    "next": "2026-10-25T04:10:11.640Z"
    }
   ]
  }
