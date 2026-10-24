@@ -1,22 +1,22 @@
 {
  "version": 1,
- "updatedAt": "2026-10-24T07:14:38.444Z",
- "nextUpdateAt": "2026-10-24T19:14:38.444Z",
+ "updatedAt": "2026-10-24T09:14:19.088Z",
+ "nextUpdateAt": "2026-10-24T21:14:19.088Z",
  "editor": "shaheen",
  "entries": {
   "LAT-052": {
    "sourceHash": "m2owzk",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "عود مود لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "أمير العود 30 مل من لطافة",
    "nameEn": "Oud Mood 30ml by Lattafa EDP Unisex",
-   "descriptionAr": "عطر شرقي دافئ ومميز للجنسين، يجمع بين نفحات العود والورد والزعفران مع الكراميل والبخور لترك بصمة عطرية ساحرة.",
-   "descriptionEn": "Oud Mood by Lattafa is a rich oriental unisex fragrance blending rose, saffron, agarwood, caramel, and incense for a smoky finish.",
+   "descriptionAr": "عطر أمير العود بحجم 30 مل من لطافة يجمع بين الورد والزعفران والبهارات في المقدمة. يضم القلب نوتات العود والكراميل والباتشولي، بينما تختتم القاعدة الرائحة بنفحات العنبر والراتنجات والبخور والمسك والأخشاب.",
+   "descriptionEn": "Oud Mood 30ml by Lattafa features a warm opening of rose, saffron, and pimento. The heart combines oud, caramel, and patchouli, leading to a smoky finish of amber, resins, incense, musk, and woods.",
    "gender": "unisex",
    "families": [
-    "oud",
     "oriental",
-    "amber"
+    "oud",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -47,37 +47,38 @@
     "special"
    ],
    "tags": [
-    "عود مود",
     "لطافة",
-    "عطر عود",
+    "عطر أمير العود",
     "عطور شرقية",
-    "عطر للجنسين"
-   ]
+    "عود",
+    "Lattafa"
+   ],
+   "style": 2
   },
   "RAS-053": {
    "sourceHash": "1ue154j",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس آيس من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هاواس آيس من الرصاصي 100 مل",
    "nameEn": "Hawas Ice by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي منعش يفتح بافتتاحية حارسة من التفاح الأخضر والليمون مع لمسة عطرية مميزة. يستقر العطر على قاعدة خشبية وعنبرية تمنحه طابعاً صيفياً بارداً وجذاباً.",
-   "descriptionEn": "Hawas Ice opens with crisp green apple, Italian bergamot and bright lemon, accented by aromatic star anise. Moss, driftwood, amber and musk define the base, offering a cooler, mossy impression.",
+   "descriptionAr": "عطر هاواس آيس من الرصاصي بحجم 100 مل يبدأ بمقدمة منعشة من التفاح الأخضر والبرغموت والليمون واليانسون. يمزج القلب بين زهر البرتقال والنوتات البحرية والخوخ والهيل، وتستند القاعدة إلى الطحالب والأخشاب الطافية والعنبر والمسك.",
+   "descriptionEn": "Hawas Ice by Rasasi opens with green apple, bergamot, lemon, and star anise. The heart features orange blossom, marine notes, plum, and cardamom, over a base of moss, driftwood, amber, and musk.",
    "gender": "men",
    "families": [
     "fresh",
-    "citrus",
+    "fruity",
     "woody"
    ],
    "notes": {
     "top": [
-     "Green apple",
+     "Green Apple",
      "Bergamot",
      "Lemon",
-     "Star anise"
+     "Star Anise"
     ],
     "heart": [
-     "Orange blossom",
-     "Marine notes",
+     "Orange Blossom",
+     "Marine Notes",
      "Plum",
      "Cardamom"
     ],
@@ -97,39 +98,37 @@
     "work"
    ],
    "tags": [
+    "الرصاصي",
     "هاواس آيس",
-    "رصاصي",
-    "عطر رجالي منعش",
-    "عطر صيفي"
-   ]
+    "عطر رجالي",
+    "منعش",
+    "Rasasi Hawas"
+   ],
+   "style": 2
   },
   "RAS-054": {
    "sourceHash": "161s3zs",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس ماليبو من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هاواس ماليبو من الرصاصي 100 مل",
    "nameEn": "Hawas Malibu by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي يجمع بين انتعاش الفواكه الاستوائية كالأناناس ونعومة العنبر والسوسن. يمنحك شعوراً بالحيوية ويناسب الأوقات النهارية والمسائية.",
-   "descriptionEn": "Pineapple gives Hawas Malibu a bright, tropical character, sharpened by orange and grapefruit, leading to a softer centre of amber, iris and lavender.",
+   "descriptionAr": "عطر هاواس ماليبو من الرصاصي بحجم 100 مل يفتتح بنفحات الأناناس والبرتقال والجريب فروت. يتوسطه قلب من العنبر والسوسن والخزامى، ويستقر على قاعدة من حبوب التونكا والمسك والباتشولي.",
+   "descriptionEn": "Hawas Malibu by Rasasi opens with pineapple, orange, and grapefruit. The heart features amber, iris, and lavender, resting on a base of tonka bean, musk, and patchouli.",
    "gender": "men",
    "families": [
+    "fresh",
     "fruity",
-    "amber",
-    "fresh"
+    "amber"
    ],
    "notes": {
-    "top": [
-     "Pineapple",
-     "Orange",
-     "Grapefruit"
-    ],
+    "top": [],
     "heart": [
      "Amber",
      "Iris",
      "Lavender"
     ],
     "base": [
-     "Tonka bean",
+     "Tonka Bean",
      "Musk",
      "Patchouli"
     ]
@@ -143,20 +142,22 @@
     "evening"
    ],
    "tags": [
+    "الرصاصي",
     "هاواس ماليبو",
-    "رصاصي",
-    "عطر استوائي",
-    "عطر فواكه"
-   ]
+    "عطر فواكه",
+    "صيفي",
+    "Rasasi"
+   ],
+   "style": 2
   },
   "RAS-055": {
    "sourceHash": "13wemzq",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس فيردي من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هاواس فيردي من الرصاصي 100 مل",
    "nameEn": "Hawas Verde by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي ينبض بالحيوية بفضل مزيج الليمون وإكليل الجبل والتفاح الأخضر. يتميز بطابع عشبي خشبي فريد يبرز بوضوح ويضفي حضوراً مميزاً.",
-   "descriptionEn": "Lime, rosemary and green apple give Hawas Verde its lively citrus-aromatic character, balanced by patchouli and amber.",
+   "descriptionAr": "عطر هاواس فيردي من الرصاصي بحجم 100 مل يجمع بين نفحات الليمون الأخضر وإكليل الجبل والتفاح الأخضر. يعتمد على قاعدة تضم الباتشولي والعنبر لإضفاء طابع خشبي متوازن.",
+   "descriptionEn": "Hawas Verde by Rasasi combines lime, rosemary, and green apple, supported by a base of patchouli and amber for a balanced green character.",
    "gender": "men",
    "families": [
     "citrus",
@@ -164,40 +165,35 @@
     "woody"
    ],
    "notes": {
-    "top": [
-     "Lime",
-     "Rosemary",
-     "Green apple"
-    ],
+    "top": [],
     "heart": [],
-    "base": [
-     "Patchouli",
-     "Amber"
-    ]
+    "base": []
    },
    "seasons": [
-    "summer",
-    "spring"
+    "spring",
+    "summer"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
+    "الرصاصي",
     "هاواس فيردي",
-    "رصاصي",
-    "عطر عشبي",
-    "عطر منعش"
-   ]
+    "عطر حمضيات",
+    "عشبي",
+    "Rasasi"
+   ],
+   "style": 2
   },
   "RAS-056": {
    "sourceHash": "o8k9oi",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس ماجستيك من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هاواس ماجستيك من الرصاصي 100 مل",
    "nameEn": "Hawas Majestic by Rasasi 100ml EDP",
-   "descriptionAr": "عطر للجنسين يمزج بين الزعفران الفاخر والياسمين مع قاعدة خشبية ومعدنية عميقة. يقدم تجربة عطرية معقدة وجذابة لعشاق العطور الخشبية الفاخرة.",
-   "descriptionEn": "Hawas Majestic combines saffron with citrus, jasmine and green leaves, leading to a textured mineral and woody base.",
+   "descriptionAr": "عطر هاواس ماجستيك من الرصاصي بحجم 100 مل يفتتح بالزعفران والياسمين والأوراق الخضراء. يضم القلب النوتات المعدنية والعنبر الرمادي والأخشاب، بينما تتكون القاعدة من طحالب السنديان والمسك والأرز التنوب.",
+   "descriptionEn": "Hawas Majestic by Rasasi opens with saffron, jasmine, and green leaves. The heart features mineral notes, ambergris, and woody amber, over a base of oakmoss, musk, cedar, and fir.",
    "gender": "unisex",
    "families": [
     "oriental",
@@ -207,15 +203,12 @@
    "notes": {
     "top": [
      "Saffron",
-     "Citrus",
      "Jasmine",
-     "Green leaves"
+     "Green Leaves"
     ],
     "heart": [
-     "Mineral notes",
      "Ambergris",
-     "Woody amber",
-     "Dry woods"
+     "Amber"
     ],
     "base": [
      "Oakmoss",
@@ -233,25 +226,27 @@
     "special"
    ],
    "tags": [
+    "الرصاصي",
     "هاواس ماجستيك",
-    "رصاصي",
-    "عطر زعفران",
-    "عطر خشبي فخم"
-   ]
+    "عطر شرقي",
+    "توابل",
+    "Rasasi"
+   ],
+   "style": 2
   },
   "RAS-057": {
    "sourceHash": "yogwjk",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس رينا من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هاواس رينا من الرصاصي 100 مل",
    "nameEn": "Hawas Reina by Rasasi 100ml EDP",
-   "descriptionAr": "عطر نسائي ساحر يبدأ بنفحات الفواكه المشمشية والكمثرى وينتهي بقاعدة كريمية من الفانيليا والسكر. يناسب الأوقات الرومانسية والمناسبات الخاصة.",
-   "descriptionEn": "Apricot and pear make Hawas Reina fruity at the start, leading to a floral heart and a creamy, sweet base of vanilla, musk and sandalwood.",
+   "descriptionAr": "عطر هاواس رينا من الرصاصي بحجم 100 مل يبدأ بالمشمش والكمثرى والقرفة. يتوسطه قلب من الياسمين والفرانجيباني وزهر البرتقال وجوز الهند والقهوة، وينتهي بقاعدة من الفانيليا والمسك الأبيض والعنبر وخشب الصندل والسكر.",
+   "descriptionEn": "Hawas Reina by Rasasi opens with apricot, pear, and cinnamon. The heart blends jasmine, frangipani, orange blossom, coconut, and coffee, resting on a base of vanilla, white musk, amber, sandalwood, and sugar.",
    "gender": "women",
    "families": [
+    "gourmand",
     "floral",
-    "fruity",
-    "gourmand"
+    "oriental"
    ],
    "notes": {
     "top": [
@@ -262,43 +257,43 @@
     "heart": [
      "Jasmine",
      "Frangipani",
-     "Orange blossom",
+     "Orange Blossom",
      "Coconut",
      "Coffee"
     ],
     "base": [
      "Vanilla",
-     "White musk",
+     "White Musk",
      "Amber",
      "Sandalwood",
      "Sugar"
     ]
    },
    "seasons": [
-    "autumn",
     "winter",
-    "spring"
+    "autumn"
    ],
    "occasions": [
     "evening",
-    "special",
-    "gift"
+    "daily"
    ],
    "tags": [
+    "الرصاصي",
     "هاواس رينا",
-    "رصاصي نسائي",
-    "عطر حلو",
-    "عطر فانيليا"
-   ]
+    "عطر نسائي",
+    "فانيليا",
+    "Rasasi"
+   ],
+   "style": 2
   },
   "RAS-058": {
    "sourceHash": "1qx5wub",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس كروم فور هيم من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هاواس كروم للرجال من الرصاصي 100 مل",
    "nameEn": "Hawas Chrome For Him by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي استوائي يفيض بنكهات الخوخ والمانجو والفاكهة الصفراء المنعشة. يترك انطباعاً ناعماً ومسكياً يناسب الأوقات المشرقة واليومية.",
-   "descriptionEn": "Juicy peach, yellow fruits and sweet orange introduce Hawas Chrome For Him, with mango and passion fruit meeting a watery accord in the heart.",
+   "descriptionAr": "عطر هاواس كروم للرجال من الرصاصي بحجم 100 مل يفتتح بنفحات الخوخ والفواكه الصفراء والبرتقال الحلو. يضم القلب المانجو وفاكهة العاطفة مع نوتة مائية، ويستقر على قاعدة من المسك والعنبر والفانيليا.",
+   "descriptionEn": "Hawas Chrome For Him by Rasasi opens with juicy peach, yellow fruits, and sweet orange. The heart features mango, passion fruit, and a watery accord, over a base of musk, amber, and vanilla.",
    "gender": "men",
    "families": [
     "fruity",
@@ -308,19 +303,13 @@
    "notes": {
     "top": [
      "Peach",
-     "Yellow fruits",
-     "Orange"
+     "Sweet Orange"
     ],
     "heart": [
      "Mango",
-     "Passion fruit",
-     "Watery accord"
+     "Passion Fruit"
     ],
-    "base": [
-     "Musk",
-     "Amber",
-     "Vanilla"
-    ]
+    "base": []
    },
    "seasons": [
     "summer",
@@ -328,23 +317,25 @@
    ],
    "occasions": [
     "daily",
-    "work"
+    "evening"
    ],
    "tags": [
+    "الرصاصي",
     "هاواس كروم",
-    "رصاصي",
-    "عطر استوائي",
-    "عطر مانجو"
-   ]
+    "عطر رجالي",
+    "فواكه",
+    "Rasasi"
+   ],
+   "style": 2
   },
   "RAS-059": {
    "sourceHash": "1me6mlk",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس فيينوم من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هاواس فيينوم من الرصاصي 100 مل",
    "nameEn": "Hawas Venom by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي غامض يسيطر عليه البخور الفاخر ونفحات الجلد المدبوغ العميقة. يمنحك حضوراً قوياً وجذاباً بفضل تركيبته الراتنجية الدافئة.",
-   "descriptionEn": "Incense defines Hawas Venom from the first impression, supported by the resinous warmth of labdanum, leather, and vanilla.",
+   "descriptionAr": "عطر هاواس فيينوم من الرصاصي بحجم 100 مل يرتكز على البخور واللابدانوم في المقدمة. يتوسطه الجلد، ويستقر على قاعدة من البخور والباتشولي والفانيليا.",
+   "descriptionEn": "Hawas Venom by Rasasi is defined by incense and labdanum at the top, a leather heart, and a base of patchouli, vanilla, and incense.",
    "gender": "men",
    "families": [
     "oriental",
@@ -360,34 +351,35 @@
      "Leather"
     ],
     "base": [
-     "Incense",
      "Patchouli",
      "Vanilla"
     ]
    },
    "seasons": [
-    "autumn",
-    "winter"
+    "winter",
+    "autumn"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
+    "الرصاصي",
     "هاواس فيينوم",
-    "رصاصي",
-    "عطر بخور",
-    "عطر جلدي"
-   ]
+    "بخور",
+    "جلد",
+    "Rasasi"
+   ],
+   "style": 2
   },
   "RAS-060": {
    "sourceHash": "1l85ek8",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس نوتيلوس من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هاواس نوتيلوس من الرصاصي 100 مل",
    "nameEn": "Hawas Nautilus by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي مستوحى من أجواء السواحل والبحر بنفحات مالحية ومنعشة. يعتمد على خشب السرو والأرز ليمنحك إحساساً بالطبيعة البحرية الخشبية.",
-   "descriptionEn": "Hawas Nautilus centres on the smell of the coast, with seawater, ambergris, cypress, cedar, and driftwood shaping the base.",
+   "descriptionAr": "عطر هاواس نوتيلوس من الرصاصي بحجم 100 مل يتمحور حول رائحة الساحل بفضل مياه البحر والعنبر الرمادي. يضم القلب السرو والأرز، بينما تتكون القاعدة من الأخشاب الطافية والرمال.",
+   "descriptionEn": "Hawas Nautilus by Rasasi features seawater and ambergris at the top, cypress and cedar in the heart, and driftwood and sand in the base.",
    "gender": "men",
    "families": [
     "aquatic",
@@ -396,7 +388,6 @@
    ],
    "notes": {
     "top": [
-     "Seawater",
      "Ambergris"
     ],
     "heart": [
@@ -404,8 +395,7 @@
      "Cedar"
     ],
     "base": [
-     "Driftwood",
-     "Sand"
+     "Driftwood"
     ]
    },
    "seasons": [
@@ -417,24 +407,27 @@
     "work"
    ],
    "tags": [
+    "الرصاصي",
     "هاواس نوتيلوس",
-    "رصاصي",
-    "عطر بحري",
-    "عطر مالح"
-   ]
+    "عطر مائي",
+    "صيفي",
+    "Rasasi"
+   ],
+   "style": 2
   },
   "RAS-061": {
    "sourceHash": "jj7hzh",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس بريفيت تيرا من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هاواس برييف تيرا من الرصاصي 100 مل إكستريت",
    "nameEn": "Hawas Private Terra by Rasasi Extrait de Parfum 100ml",
-   "descriptionAr": "عطر بتركيز إكستريت دي بارفان للجنسين يجمع بين التوابل الجافة والأخشاب الغنية. يقدم تجربة عطرية ترابية معقدة وأنيقة لعشاق التميز.",
-   "descriptionEn": "Hawas Private Terra begins with saffron, jasmine and cardamom, leading to a structured woody heart and an earthy oakmoss base.",
+   "descriptionAr": "عطر هاواس برييف تيرا من الرصاصي بحجم 100 مل إكستريت يبدأ بالزعفران والياسمين والهيل. يتوسطه الأخشاب الطافية وخشب الأرز والسوسن، ويستقر على طحالب السنديان والسيبرول.",
+   "descriptionEn": "Hawas Private Terra Extrait de Parfum opens with saffron, jasmine, and cardamom. The heart features driftwood, cedarwood, and iris, over a base of oakmoss and cypriol.",
    "gender": "unisex",
    "families": [
     "woody",
-    "spicy"
+    "spicy",
+    "oriental"
    ],
    "notes": {
     "top": [
@@ -461,24 +454,26 @@
     "special"
    ],
    "tags": [
+    "الرصاصي",
     "هاواس تيرا",
-    "رصاصي",
-    "إكستريت دي بارفان",
-    "عطر خشبي فخم"
-   ]
+    "إكستريت",
+    "أخشاب",
+    "Rasasi"
+   ],
+   "style": 2
   },
   "RAS-062": {
    "sourceHash": "1lgp2ey",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس أتلانتس من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هاواس أتلانتيس من الرصاصي 100 مل",
    "nameEn": "Hawas Atlantis by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي يجمع بين انتعاش البرغموت ولمسات الزنجبيل الحارة مع قاعدة خشبية ساحلية. خيار مناسب لمن يبحث عن الانتعاش البحري العصري.",
-   "descriptionEn": "Bergamot and green galbanum open Hawas Atlantis, with ginger bringing a spicy touch to mineral and salty accords, resting on sandalwood and cedarwood.",
+   "descriptionAr": "عطر هاواس أتلانتيس من الرصاصي بحجم 100 مل يفتتح بالبرغموت والصلبان الأخضر. يضم القلب الزنجبيل والنوتات المعدنية والبحرية، ويستقر على قاعدة من خشب الصندل وخشب الأرز.",
+   "descriptionEn": "Hawas Atlantis by Rasasi opens with bergamot and galbanum, featuring a heart of ginger and marine notes, over a base of sandalwood and cedarwood.",
    "gender": "men",
    "families": [
     "aquatic",
-    "citrus",
+    "fresh",
     "woody"
    ],
    "notes": {
@@ -487,8 +482,7 @@
      "Galbanum"
     ],
     "heart": [
-     "Ginger",
-     "Salt"
+     "Ginger"
     ],
     "base": [
      "Sandalwood",
@@ -504,85 +498,90 @@
     "work"
    ],
    "tags": [
-    "هاواس أتلانتس",
-    "رصاصي",
-    "عطر بحري",
-    "عطر زنزبيل"
-   ]
+    "الرصاصي",
+    "هاواس أتلانتيس",
+    "عطر مائي",
+    "صيفي",
+    "Rasasi"
+   ],
+   "style": 2
   },
   "RAS-063": {
    "sourceHash": "1tv9bsa",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس بريفيت دولسي من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هاواس برييف دولسي من الرصاصي 100 مل إكستريت",
    "nameEn": "Hawas Private Dulce by Rasasi Extrait de Parfum 100ml",
-   "descriptionAr": "عطر جورماند فاخر للجنسين يمزج البندق والكاكاو مع لمسات الفواكه الاستوائية والكراميل. تركيبة غنية ومعقدة تأخذك في رحلة عطرية فريدة.",
-   "descriptionEn": "Hawas Private Dulce places hazelnut beside passion fruit and pink pepper, with a heart of cacao and coconut, resting on patchouli, musk and caramel.",
+   "descriptionAr": "عطر هاواس برييف دولسي من الرصاصي بحجم 100 مل إكستريت يفتتح بالبندق وفاكهة العاطفة والفلفل الوردي. يتوسطه الكاكاو وياسمين سامباك وجوز الهند والشوكولاتة، وينتهي بقاعدة من الباتشولي النجيل الهند والمسك وحبوب التونكا والكراميل.",
+   "descriptionEn": "Hawas Private Dulce Extrait de Parfum opens with hazelnut, passion fruit, and pink pepper. The heart blends cacao, jasmine sambac, coconut, and chocolate, resting on patchouli, vetiver, musk, tonka bean, and caramel.",
    "gender": "unisex",
    "families": [
     "gourmand",
-    "fruity",
-    "floral"
+    "floral",
+    "fruity"
    ],
    "notes": {
     "top": [
      "Hazelnut",
-     "Passion fruit",
-     "Pink pepper"
+     "Passion Fruit",
+     "Pink Pepper"
     ],
     "heart": [
      "Cacao",
-     "Jasmine sambac",
-     "Coconut"
+     "Jasmine",
+     "Sambac",
+     "Coconut",
+     "Chocolate"
     ],
     "base": [
      "Patchouli",
      "Vetiver",
      "Musk",
-     "Tonka bean",
+     "Tonka Bean",
      "Caramel"
     ]
    },
    "seasons": [
-    "autumn",
-    "winter"
+    "winter",
+    "autumn"
    ],
    "occasions": [
     "evening",
-    "special",
-    "gift"
+    "special"
    ],
    "tags": [
+    "الرصاصي",
     "هاواس دولسي",
-    "رصاصي",
-    "عطر شوكولاتة",
-    "عطر كراميل"
-   ]
+    "عطور غورماند",
+    "شوكلاته",
+    "Rasasi"
+   ],
+   "style": 2
   },
   "RAS-064": {
    "sourceHash": "kiqu9n",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس غولد ديغر من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هاواس جولد ديجر من الرصاصي 100 مل",
    "nameEn": "Hawas Gold Digger by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي يبدأ بانتعاش الكمثرى والنعناع وينتقل إلى قلب عطري دافئ بالقرفة والميرمية. يستقر على قاعدة من الفانيليا والأخشاب ليمنحك دفئاً راقياً.",
-   "descriptionEn": "Pear and mint give Hawas Gold Digger a bright opening, leading to an aromatic middle of cinnamon and sage, over vanilla, amber and cedarwood.",
+   "descriptionAr": "عطر هاواس جولد ديجر من الرصاصي بحجم 100 مل يبدأ بالكمثرى والنعناع والخزامى والبرغموت والقرفة والميرمية. يستقر العطر على قاعدة من الفانيليا والعنبر وخشب الأرز والباتشولي.",
+   "descriptionEn": "Hawas Gold Digger by Rasasi opens with pear, mint, lavender, bergamot, cinnamon, and sage, resting on a base of vanilla, amber, cedarwood, and patchouli.",
    "gender": "men",
    "families": [
     "woody",
-    "fruity"
+    "fresh",
+    "spicy"
    ],
    "notes": {
     "top": [
      "Pear",
      "Mint",
      "Lavender",
-     "Bergamot"
-    ],
-    "heart": [
+     "Bergamot",
      "Cinnamon",
      "Sage"
     ],
+    "heart": [],
     "base": [
      "Vanilla",
      "Amber",
@@ -592,7 +591,6 @@
    },
    "seasons": [
     "autumn",
-    "winter",
     "spring"
    ],
    "occasions": [
@@ -600,25 +598,27 @@
     "evening"
    ],
    "tags": [
-    "هاواس غولد ديغر",
-    "رصاصي",
-    "عطر فانيليا خشبي",
-    "عطر رجالي دافئ"
-   ]
+    "الرصاصي",
+    "هاواس جولد ديجر",
+    "عطر رجالي",
+    "أخشاب",
+    "Rasasi"
+   ],
+   "style": 2
   },
   "RAS-065": {
    "sourceHash": "1rflpfn",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس ثاندر من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هاواس ثاندر من الرصاصي 100 مل",
    "nameEn": "Hawas Thunder by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي حيوي يجمع بين التفاح والزنجبيل المنعش مع قلب زهري ونفحات خشبية دافئة. يناسب الأوقات اليومية النشطة والاجتماعات غير الرسمية.",
-   "descriptionEn": "Hawas Thunder begins with apple, bergamot and ginger, leading to a floral heart and a warm base of musk, tonka bean, vanilla and ambergris.",
+   "descriptionAr": "عطر هاواس ثاندر من الرصاصي بحجم 100 مل يفتتح بالتفاح والبرغموت والزنجبيل وخشب الأرز واليوسفي وزهر البرتقال والفاوانيا. يضم القلب الباتشولي، بينما تتكون القاعدة من المسك وحبوب التونكا والفانيليا والعنبر الرمادي وخشب الأرز.",
+   "descriptionEn": "Hawas Thunder by Rasasi opens with apple, bergamot, ginger, cedarwood, mandarin, orange blossom, and peony. The heart features patchouli, over a base of musk, tonka bean, vanilla, ambergris, and cedarwood.",
    "gender": "men",
    "families": [
     "fruity",
-    "floral",
-    "woody"
+    "woody",
+    "floral"
    ],
    "notes": {
     "top": [
@@ -626,46 +626,45 @@
      "Bergamot",
      "Ginger",
      "Cedarwood",
-     "Mandarin"
+     "Mandarin",
+     "Orange Blossom",
+     "Peony"
     ],
     "heart": [
-     "Orange blossom",
-     "Peony",
-     "Maté",
      "Patchouli"
     ],
     "base": [
      "Musk",
-     "Tonka bean",
+     "Tonka Bean",
      "Vanilla",
-     "Ambergris",
-     "Cedarwood"
+     "Ambergris"
     ]
    },
    "seasons": [
     "spring",
-    "summer",
-    "autumn"
+    "summer"
    ],
    "occasions": [
     "daily",
     "evening"
    ],
    "tags": [
+    "الرصاصي",
     "هاواس ثاندر",
-    "رصاصي",
-    "عطر تفاح",
-    "عطر رجالي نشط"
-   ]
+    "عطر رجالي",
+    "فواكه وأخشاب",
+    "Rasasi"
+   ],
+   "style": 2
   },
   "RAS-066": {
    "sourceHash": "1vczckj",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
    "nameAr": "هاواس فايبر من رصاصي",
    "nameEn": "Hawas Viper by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي جريء يفتتح بنفحات عشبية وتوابل دافئة، ويتوسطه القهوة والقرفة ليمنحك طابعاً مظلماً وجذاباً. خيار رائع للأمسيات الباردة.",
-   "descriptionEn": "Hawas Viper begins with green notes, davana, saffron and thyme, with coffee and cinnamon in the heart, over a warm base of tonka bean, musk and gurjan balsam.",
+   "descriptionAr": "يبدأ عطر هاواس فايبر بنوتات خضراء ودافانا وزعفران وتعرع. يضم القلب القهوة والقرفة والبنفسج والافندر، بينما تستقر القاعدة على حبوب التونكا والمسك وبلسم السامور.",
+   "descriptionEn": "Hawas Viper begins with green notes, davana, saffron and thyme, leading to a heart of coffee, cinnamon, violet and raspberry, with a base of tonka bean, musk and gurjan balsam.",
    "gender": "men",
    "families": [
     "spicy",
@@ -674,7 +673,7 @@
    ],
    "notes": {
     "top": [
-     "Green notes",
+     "Green Notes",
      "Davana",
      "Saffron",
      "Thyme"
@@ -686,59 +685,57 @@
      "Raspberry"
     ],
     "base": [
-     "Tonka bean",
+     "Tonka Bean",
      "Musk",
-     "Gurjan balsam"
+     "Balsam"
     ]
    },
    "seasons": [
     "autumn",
-    "winter"
+    "winter",
+    "all"
    ],
    "occasions": [
     "evening",
-    "special"
+    "daily"
    ],
    "tags": [
-    "هاواس فايبر",
     "رصاصي",
-    "عطر قهوة",
-    "عطر مسائي دافئ"
-   ]
+    "هاواس فايبر",
+    "عطر رجالي",
+    "توابل",
+    "قهوة"
+   ],
+   "style": 2
   },
   "RAS-067": {
    "sourceHash": "m269lz",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:12:45.806Z",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
    "nameAr": "هاواس كوبرا من رصاصي",
    "nameEn": "Hawas Kobra by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي يجمع بين انتعاش الشاي الأخضر والزنجبيل الدافئ مع قاعدة خشبية فريدة. يمنحك حضوراً عسيراً على النسيان ومناسباً للاستخدام اليومي.",
-   "descriptionEn": "Ginger leads Hawas Kobra with a crisp, spicy bite, while bergamot and tangerine add a citrus lift. The fragrance then makes an unusual turn towards green tea, neroli and cinnamon.",
+   "descriptionAr": "ينطلق عطر هاواس كوبرا بنفحات الزنجبيل والبرغموت واليوسفي. يليه قلب من الشاي وزهر البرتقال والقرفة، مع قاعدة من المسك والأخشاب والعنبر.",
+   "descriptionEn": "Ginger leads Hawas Kobra with a crisp, spicy bite, while bergamot and tangerine add a citrus lift, followed by a heart of tea, neroli and cinnamon and a base of musk, woods and amber.",
    "gender": "men",
    "families": [
+    "oriental",
     "woody",
-    "oriental"
+    "fresh"
    ],
    "notes": {
-    "top": [
-     "Ginger",
-     "Bergamot",
-     "Tangerine"
-    ],
+    "top": [],
     "heart": [
-     "Green tea",
-     "Neroli",
+     "Tea",
      "Cinnamon"
     ],
     "base": [
      "Musk",
-     "Woods",
      "Amber"
     ]
    },
    "seasons": [
     "spring",
-    "autumn",
+    "summer",
     "all"
    ],
    "occasions": [
@@ -746,24 +743,27 @@
     "work"
    ],
    "tags": [
-    "هاواس كوبرا",
     "رصاصي",
+    "هاواس كوبرا",
     "عطر رجالي",
-    "عطور رصاصي"
-   ]
+    "شاي",
+    "توابل خفيفة"
+   ],
+   "style": 2
   },
   "RAS-068": {
    "sourceHash": "11ksy9c",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:12:45.806Z",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
    "nameAr": "هاواس فور هيم لا مير من رصاصي",
    "nameEn": "Hawas For Him La Mer by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي ينبض بالحيوية مستوحى من انتعاش النسيم البحري ولمسات الفواكه الداكنة. يقدم تجربة عطرية منعشة تناسب أوقاتك اليومية والعملية.",
-   "descriptionEn": "The marine feel of Hawas For Him La Mer comes from contrast rather than a listed seawater accord. Peppermint, mandarin and bergamot establish an aromatic citrus opening.",
+   "descriptionAr": "يفتتح عطر هاواس فور هيم لا مير برائحة النعناع واليوسفي والبرغموت. يضم القلب الكشمش الأسود والجزر الياسمين، بينما تستقر القاعدة على التين والعنبر والأخشاب.",
+   "descriptionEn": "Peppermint, mandarin and bergamot establish an aromatic citrus opening, followed by blackcurrant, carrot and jasmine in the heart, and fig, amber and woody notes in the base.",
    "gender": "men",
    "families": [
     "woody",
-    "fresh"
+    "fresh",
+    "aquatic"
    ],
    "notes": {
     "top": [
@@ -773,13 +773,11 @@
     ],
     "heart": [
      "Blackcurrant",
-     "Carrot",
      "Jasmine"
     ],
     "base": [
      "Fig",
-     "Amber",
-     "Woody notes"
+     "Amber"
     ]
    },
    "seasons": [
@@ -791,20 +789,22 @@
     "work"
    ],
    "tags": [
-    "لا مير",
-    "هاواس",
     "رصاصي",
-    "عطر رجالي منعش"
-   ]
+    "لا مير",
+    "عطر رجالي",
+    "نعناع",
+    "منعش"
+   ],
+   "style": 2
   },
   "RAS-069": {
    "sourceHash": "1na4z2c",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:12:45.806Z",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
    "nameAr": "هاواس إيكلا من رصاصي",
    "nameEn": "Hawas Eclat by Rasasi 100ml EDP",
-   "descriptionAr": "عطر نسائي ساحر يمزج بين حلاوة الليتشي وانتعاش البرغموت مع قاعدة عنبرية دافئة. يمنحك إطلالة أنثوية راقية ومميزة في كل المناسبات.",
-   "descriptionEn": "Lychee gives Hawas Eclat a juicy beginning, balanced by bergamot, pear and a small pistachio accent. The heart keeps the composition focused: rose develops beside incense.",
+   "descriptionAr": "يبدأ عطر هاواس إيكلا بالليتشي والبرغموت والكمثرى والفستق. يليه قلب من الورد والبخور، وقاعدة من العنبر والمسك والأخشاب.",
+   "descriptionEn": "Lychee gives Hawas Eclat a juicy beginning balanced by bergamot, pear and pistachio, followed by a heart of rose and incense, and a base of amber, musk and woody notes.",
    "gender": "women",
    "families": [
     "fruity",
@@ -813,9 +813,6 @@
    ],
    "notes": {
     "top": [
-     "Lychee",
-     "Bergamot",
-     "Pear",
      "Pistachio"
     ],
     "heart": [
@@ -824,8 +821,7 @@
     ],
     "base": [
      "Amber",
-     "Musk",
-     "Woody notes"
+     "Musk"
     ]
    },
    "seasons": [
@@ -834,25 +830,26 @@
     "all"
    ],
    "occasions": [
-    "evening",
-    "special",
-    "daily"
+    "daily",
+    "evening"
    ],
    "tags": [
-    "هاواس إيكلا",
-    "عطر نسائي",
     "رصاصي",
-    "عطور نسائية"
-   ]
+    "إيكلا",
+    "عطر نسائي",
+    "فواكه",
+    "زهور"
+   ],
+   "style": 2
   },
   "RAS-070": {
    "sourceHash": "ea0fjb",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:12:45.806Z",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
    "nameAr": "هاواس روج من رصاصي",
    "nameEn": "Hawas Rouge by Rasasi 100ml EDP",
-   "descriptionAr": "عطر نسائي غني بنفحات الفواكه والشوكولاتة الدافئة مع لمسات الأزهار الساحرة. يمنحك دفئاً وجاذبية فريدة تناسب السهرات والأوقات الخاصة.",
-   "descriptionEn": "Hawas Rouge explores a richer fruity-floral gourmand profile. Tangerine and raspberry bring brightness to the opening, while chocolate adds an unusual dark sweetness.",
+   "descriptionAr": "ينطلق عطر هاواس روج باليوسفي والتوت الشوكولاتة. يضم القلب الورد وزهر البرتقال والمسك والزنبق، بينما تستقر القاعدة على الفانيليا والمسك والقهوة والأخشاب.",
+   "descriptionEn": "Tangerine and raspberry bring brightness to the opening with chocolate, followed by rose, orange blossom, tuberose and iris in the heart, and a base of vanilla, musk and coffee.",
    "gender": "women",
    "families": [
     "fruity",
@@ -867,15 +864,14 @@
     ],
     "heart": [
      "Rose",
-     "Orange blossom",
+     "Orange Blossom",
      "Tuberose",
      "Iris"
     ],
     "base": [
      "Vanilla",
      "Musk",
-     "Coffee",
-     "Dry woods"
+     "Coffee"
     ]
    },
    "seasons": [
@@ -887,20 +883,22 @@
     "special"
    ],
    "tags": [
-    "هاواس روج",
-    "عطر نسائي شتوي",
     "رصاصي",
-    "عطور غورماند"
-   ]
+    "هاواس روج",
+    "عطر نسائي",
+    "شوكولاتة",
+    "فانيليا"
+   ],
+   "style": 2
   },
   "RAS-071": {
    "sourceHash": "131cyky",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:12:45.806Z",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
    "nameAr": "هاواس لافا جولد من رصاصي",
    "nameEn": "Hawas Lava Gold by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي فخم يجمع بين الفواكه المشرقة والأخشاب الداكنة والجلود الفاخرة. يعكس قوة الشخصية ويضفي حضوراً طاغياً في المناسبات الخاصة.",
-   "descriptionEn": "The contrast between sparkling fruit and darker woods defines Hawas Lava Gold. Pineapple, grapefruit, apple and lemon establish a bright, juicy introduction.",
+   "descriptionAr": "يفتتح عطر هاواس لافا جولد بالاناناس والجريب فروت والتفاح والليمون. يليه قلب يضم الجلد والزعفران والعود والتوت، وقاعدة من العنبر والباتشولي والكراميل.",
+   "descriptionEn": "Pineapple, grapefruit, apple and lemon establish a bright introduction, followed by leather, saffron, oud and raspberry, with a base of amber, patchouli, moss and caramel.",
    "gender": "men",
    "families": [
     "oriental",
@@ -908,24 +906,9 @@
     "fruity"
    ],
    "notes": {
-    "top": [
-     "Pineapple",
-     "Grapefruit",
-     "Apple",
-     "Lemon"
-    ],
-    "heart": [
-     "Leather",
-     "Saffron",
-     "Oud",
-     "Raspberry"
-    ],
-    "base": [
-     "Amber",
-     "Patchouli",
-     "Moss",
-     "Caramel"
-    ]
+    "top": [],
+    "heart": [],
+    "base": []
    },
    "seasons": [
     "winter",
@@ -936,32 +919,36 @@
     "special"
    ],
    "tags": [
-    "هاواس لافا جولد",
-    "عطر رجالي فخم",
     "رصاصي",
-    "عطور شرقية"
-   ]
+    "لافا جولد",
+    "عطر رجالي",
+    "عود",
+    "جلد"
+   ],
+   "style": 2
   },
   "RAS-072": {
    "sourceHash": "5016zl",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:12:45.806Z",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
    "nameAr": "هاواس فاير من رصاصي",
    "nameEn": "Hawas Fire by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي منعش يجمع بين عبق الأعشاب العطرية ونسيم البحر الدافئ. مناسب لمن يبحث عن الانتعاش البحري المميز مع لمسات عنبرية دافئة.",
-   "descriptionEn": "Fresh French clary sage gives Hawas Fire an aromatic, herbal opening rather than a sweet fruit introduction. Egyptian jasmine and marine notes emerge in the heart.",
+   "descriptionAr": "عطر Hawas Fire by Rasasi 100ml EDP من Rasasi رجالي بطابع مائي وزهري وحلو.",
+   "descriptionEn": "Fresh French clary sage gives Hawas Fire an aromatic opening, followed by Egyptian jasmine and marine notes in the heart, and ambergris and amber in the base.",
    "gender": "men",
    "families": [
+    "fresh",
     "aquatic",
-    "fresh"
+    "spicy"
    ],
    "notes": {
     "top": [
-     "Clary sage"
+     "Clary Sage"
     ],
     "heart": [
-     "Egyptian jasmine",
-     "Marine notes"
+     "Jasmine",
+     "Marine Notes",
+     "White Flowers"
     ],
     "base": [
      "Ambergris",
@@ -977,38 +964,41 @@
     "work"
    ],
    "tags": [
-    "هاواس فاير",
-    "عطر بحري",
     "رصاصي",
-    "عطور صيفية"
-   ]
+    "هاواس فاير",
+    "عطر رجالي",
+    "بحري",
+    "ميرمية"
+   ],
+   "style": 2
   },
   "RAS-073": {
    "sourceHash": "7v3hsf",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:12:45.806Z",
-   "nameAr": "هاواس تروبيكال من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هاواس ترووبيكال من رصاصي",
    "nameEn": "Hawas Tropical by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي استوائي يجمع بين ماء جوز الهند وأوراق التين والنعناع المنعش. يمنحك إحساساً بالحيوية والطاقة في الأيام الدافئة.",
-   "descriptionEn": "Hawas Tropical approaches coconut from a fresh, green angle. Coconut water, fig leaf and ginger create an airy opening, with the ginger adding a lively edge.",
+   "descriptionAr": "ينطلق عطر هاواس ترووبيكال بماء جوز الهند ورقة التين والزنجبيل. يليه قلب من التين والنعناع، وقاعدة من خشب الصندل وحبوب التونكا والمسك.",
+   "descriptionEn": "Coconut water, fig leaf and ginger create an airy opening, followed by fig and mint in the heart, and sandalwood, tonka bean and musk in the base.",
    "gender": "men",
    "families": [
-    "fresh"
+    "fresh",
+    "woody",
+    "fruity"
    ],
    "notes": {
     "top": [
-     "Coconut water",
-     "Fig leaf",
+     "Coconut",
+     "Fig Leaf",
      "Ginger"
     ],
     "heart": [
-     "Coconut",
      "Fig",
      "Mint"
     ],
     "base": [
      "Sandalwood",
-     "Tonka bean",
+     "Tonka Bean",
      "Musk"
     ]
    },
@@ -1021,41 +1011,32 @@
     "work"
    ],
    "tags": [
-    "هاواس تروبيكال",
-    "عطر استوائي",
     "رصاصي",
-    "عطور منعشة"
-   ]
+    "ترووبيكال",
+    "عطر رجالي",
+    "جوز الهند",
+    "منعش"
+   ],
+   "style": 2
   },
   "RAS-074": {
    "sourceHash": "1vn13ax",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:12:45.806Z",
-   "nameAr": "هاواس أيس فريز من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هاواس آيس فريز من رصاصي",
    "nameEn": "Hawas Ice Freeze by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي منعش يبتدئ بانفجار الحمضيات والنعناع البارد وينتهي بأخشاب ناعمة. خيارك المناسب للاستخدام اليومي والأيام الحارة.",
-   "descriptionEn": "Bergamot, mandarin and orange create a lively citrus start for Hawas Ice Freeze. The fruit notes are soon sharpened by ginger and mint.",
+   "descriptionAr": "يفتتح عطر هاواس آيس فريز بالبرغموت واليوسفي والبرتقال والزنجبيل والنعناع. يليه قلب زهرة الوادي، وقاعدة من خشب الصندل والمسك والعنبر الرمادي.",
+   "descriptionEn": "Bergamot, mandarin and orange create a lively citrus start sharpened by ginger and mint, with lily of the valley, leading to a base of sandalwood, musk and ambergris.",
    "gender": "men",
    "families": [
+    "fresh",
     "citrus",
-    "fresh"
+    "musk"
    ],
    "notes": {
-    "top": [
-     "Bergamot",
-     "Mandarin",
-     "Orange"
-    ],
-    "heart": [
-     "Ginger",
-     "Mint",
-     "Lily of the valley"
-    ],
-    "base": [
-     "Sandalwood",
-     "Musk",
-     "Ambergris"
-    ]
+    "top": [],
+    "heart": [],
+    "base": []
    },
    "seasons": [
     "summer",
@@ -1066,20 +1047,22 @@
     "work"
    ],
    "tags": [
-    "هاواس أيس فريز",
-    "عطر حمضيات",
     "رصاصي",
-    "عطور صيفية"
-   ]
+    "آيس فريز",
+    "عطر رجالي",
+    "حمضيات",
+    "نعناع"
+   ],
+   "style": 2
   },
   "RAS-075": {
    "sourceHash": "19rqn64",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:12:45.806Z",
-   "nameAr": "هاواس هايبريس من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هاواس هايغنيس من رصاصي",
    "nameEn": "Hawas Highness by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي فخم يمزج بين دفء العنبر ونعومة الأزهار مع قاعدة خشبية أرضية. يمنحك هيبة وأناقة متفردة في كل أوقاتك.",
-   "descriptionEn": "Hawas Highness by Rasasi – 100ml EDP\nHawas Highness begins with citrus, spice and amber appearing together, so warmth is present from the first impression.",
+   "descriptionAr": "يبدأ عطر هاواس هايغنيس بالحمضيات والتوابل والعنبر. يضم القلب الياسمين والبنفسج والورد، بينما تستقر القاعدة على خشب الأرز وفيتيفير والباتشولي.",
+   "descriptionEn": "Hawas Highness begins with citrus, spice and amber, followed by a floral centre of jasmine, violet and rose, and a dry earthy base of cedarwood, vetiver and patchouli.",
    "gender": "men",
    "families": [
     "oriental",
@@ -1087,59 +1070,47 @@
     "woody"
    ],
    "notes": {
-    "top": [
-     "Citrus",
-     "Spice",
-     "Amber"
-    ],
-    "heart": [
-     "Jasmine",
-     "Violet",
-     "Rose"
-    ],
-    "base": [
-     "Cedarwood",
-     "Vetiver",
-     "Patchouli"
-    ]
+    "top": [],
+    "heart": [],
+    "base": []
    },
    "seasons": [
-    "winter",
     "autumn",
-    "spring"
+    "winter",
+    "all"
    ],
    "occasions": [
     "evening",
-    "special"
+    "work"
    ],
    "tags": [
-    "هاواس هايبريس",
-    "عطر شرقي",
     "رصاصي",
-    "عطور فخمة"
-   ]
+    "هاواس هايغنيس",
+    "عطر رجالي",
+    "توابل",
+    "زهور"
+   ],
+   "style": 2
   },
   "RAS-076": {
    "sourceHash": "19rk2rh",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:12:45.806Z",
-   "nameAr": "هاواس أوفردوز من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هاواس أفرودوز من رصاصي",
    "nameEn": "Hawas Overdose by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي جذاب يأخذك في رحلة من التوابل الدافئة إلى نوتات الشوكولاتة والحلويات الغنية. مناسب للأمسيات الباردة والمناسبات الخاصة.",
-   "descriptionEn": "Hawas Overdose takes an aromatic opening into a sweeter, amber-rich direction. Spicy and herbal impressions lead before orange blossom adds a floral accent.",
+   "descriptionAr": "ينطلق عطر هاواس أفرودوز بنفحات توابل وعنبر وزهر البرتقال. يليه قلب وعاعدة من الفانيليا والشوكولاتة والبرالين والعنبر الرمادي.",
+   "descriptionEn": "Hawas Overdose takes an aromatic opening into an amber-rich direction with orange blossom and warm amber, leading to vanilla, chocolate, praline and ambergris in the base.",
    "gender": "men",
    "families": [
     "oriental",
-    "spicy",
-    "gourmand"
+    "gourmand",
+    "spicy"
    ],
    "notes": {
-    "top": [],
-    "heart": [
-     "Orange blossom",
-     "Amber",
-     "Guaiac wood"
+    "top": [
+     "Amber"
     ],
+    "heart": [],
     "base": [
      "Vanilla",
      "Chocolate",
@@ -1156,43 +1127,32 @@
     "special"
    ],
    "tags": [
-    "هاواس أوفردوز",
-    "عطر شتوي",
     "رصاصي",
-    "عطور سهرة"
-   ]
+    "أفرودوز",
+    "عطر رجالي",
+    "شوكولاتة",
+    "فانيليا"
+   ],
+   "style": 2
   },
   "RAS-077": {
    "sourceHash": "ue2f6s",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "هاواس أديشن من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هاواس أ شن من رصاصي",
    "nameEn": "Hawas Addiction by Rasasi 100ml EDP",
-   "descriptionAr": "عطر شرقي حلو يجمع بين الفانيليا وغزل البنات ونفحات الآيس كريم. يمنحك حضوراً دافئاً ومميزاً بفضل قاعدته الغنية بالعنبر والأخشاب.",
-   "descriptionEn": "Hawas Addiction by Rasasi – 100ml EDP. Vanilla, cotton candy, marshmallow, caramel and an ice-cream accord set a dessert-like tone in Hawas Addiction, with amber and cedarwood in the base.",
+   "descriptionAr": "يبدأ عطر هاواس أ شن بالفانيليا وغزل البنات والمارشميلو والكراميل. يليه قلب من جوز الهند والحليب، وقاعدة من العنبر وخشب الأرز والطحالب.",
+   "descriptionEn": "Vanilla, cotton candy, marshmallow, caramel and an ice-cream accord set a dessert-like tone, followed by coconut milk and vanilla in the heart, and amber, cedarwood and moss in the base.",
    "gender": "unisex",
    "families": [
     "gourmand",
-    "oriental"
+    "oriental",
+    "musk"
    ],
    "notes": {
-    "top": [
-     "Vanilla",
-     "Cotton Candy",
-     "Marshmallow",
-     "Caramel",
-     "Ice-cream accord"
-    ],
-    "heart": [
-     "Coconut milk",
-     "Vanilla",
-     "Milk"
-    ],
-    "base": [
-     "Amber",
-     "Cedarwood",
-     "Moss"
-    ]
+    "top": [],
+    "heart": [],
+    "base": []
    },
    "seasons": [
     "winter",
@@ -1200,24 +1160,25 @@
    ],
    "occasions": [
     "evening",
-    "special"
+    "daily"
    ],
    "tags": [
     "رصاصي",
-    "هاواس أديشن",
-    "عطر فانيليا",
-    "عطر حلو",
-    "عطور شرقية"
-   ]
+    "أدكشن",
+    "عطر للجنسين",
+    "فانيليا",
+    "حلويات"
+   ],
+   "style": 2
   },
   "RAS-078": {
    "sourceHash": "1rslgnj",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
    "nameAr": "هاواس إكزوتيك من رصاصي",
    "nameEn": "Hawas Exotic by Rasasi 100ml EDP",
-   "descriptionAr": "توليفة عطرية فريدة تبدأ بمزيج منعش من جوز الهند والبرغموت والخزامى. تتطور إلى قلب زهري وتستقر على قاعدة عميقة من الأخشاب والعنبر.",
-   "descriptionEn": "Hawas Exotic by Rasasi – 100ml EDP. Coconut meets mugwort, lavender, cardamom, carrot and bergamot in the opening, leading to floral notes and a deep earthy base.",
+   "descriptionAr": "ينطلق عطر هاواس إكزوتيك بجوز الهند والشيح واللافندر والهيل والبرغموت. يضم القلب السوسن والياسمين وزئبق الوادي والفريزيا والقرفة، وقاعدة من السيبريول والمسك والباتشولي والبنزوين.",
+   "descriptionEn": "Hawas Exotic opens with coconut, mugwort, lavender, cardamom, carrot and bergamot, followed by orris, jasmine, lily of the valley, freesia and cinnamon, and a base of cypriol, musk, patchouli, ambergris, benzoin and labdanum.",
    "gender": "men",
    "families": [
     "oriental",
@@ -1227,16 +1188,14 @@
    "notes": {
     "top": [
      "Coconut",
-     "Mugwort",
      "Lavender",
      "Cardamom",
-     "Carrot",
      "Bergamot"
     ],
     "heart": [
      "Orris",
      "Jasmine",
-     "Lily of the Valley",
+     "Lily Of The Valley",
      "Freesia",
      "Cinnamon"
     ],
@@ -1250,29 +1209,31 @@
     ]
    },
    "seasons": [
-    "spring",
-    "summer"
+    "autumn",
+    "winter",
+    "all"
    ],
    "occasions": [
-    "daily",
-    "evening"
+    "evening",
+    "special"
    ],
    "tags": [
     "رصاصي",
-    "هاواس إكزوتيك",
+    "إكزوتيك",
     "عطر رجالي",
-    "عطور شرقية",
-    "جوز الهند"
-   ]
+    "جوز الهند",
+    "توابل"
+   ],
+   "style": 2
   },
   "RAS-079": {
    "sourceHash": "6aqot6",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
    "nameAr": "هاواس بلانش من رصاصي",
    "nameEn": "Hawas Blanche by Rasasi 100ml EDP",
-   "descriptionAr": "عطر فواكه منعش يوازن بين حلاوة التوت الأسود وحمضيات البرغموت واليوسفي. يتميز بقاعدة خشبية وأعشاب عطرية تضفي عليه طابعاً حيوياً.",
-   "descriptionEn": "Hawas Blanche by Rasasi – 100ml EDP. Begins with blackcurrant, mandarin, bergamot and apple, balanced with herbs, geranium, and a structured woody base.",
+   "descriptionAr": "يبدأ عطر هاواس بلانش بالكشمش الأسود واليوسفي والبرغموت والتفاح والأفسنتين والريحان. يضم القلب الجيرانيوم والباتشولي، بينما تستقر القاعدة على خشب الصندل والطحالب والمسك.",
+   "descriptionEn": "Hawas Blanche begins with blackcurrant, mandarin, bergamot, apple, wormwood and basil, followed by geranium and patchouli in the heart, and sandalwood, moss and musk in the base.",
    "gender": "unisex",
    "families": [
     "fruity",
@@ -1284,24 +1245,22 @@
      "Blackcurrant",
      "Mandarin",
      "Bergamot",
-     "Apple"
-    ],
-    "heart": [
-     "Wormwood",
+     "Apple",
      "Basil",
      "Geranium",
      "Patchouli"
     ],
+    "heart": [],
     "base": [
      "Sandalwood",
      "Moss",
-     "Musk",
-     "Dry Woods"
+     "Musk"
     ]
    },
    "seasons": [
+    "summer",
     "spring",
-    "summer"
+    "all"
    ],
    "occasions": [
     "daily",
@@ -1309,25 +1268,25 @@
    ],
    "tags": [
     "رصاصي",
-    "هاواس بلانش",
-    "عطر فواكه",
-    "عطر منعش",
-    "عطور صيفية"
-   ]
+    "بلانش",
+    "عطر للجنسين",
+    "فواكه",
+    "حمضيات"
+   ],
+   "style": 2
   },
   "RAS-080": {
    "sourceHash": "15gqyqb",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "هاواس لوف فور هير من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "رصاصي هاواس لاف فور هير",
    "nameEn": "Hawas Love For Her by Rasasi 100ml EDP",
-   "descriptionAr": "عطر نسائي دافئ يفتتح بنفحات حارة من الفلفل الوردي والهيل مع اليوسفي. يتدفق إلى قلب زهري ناعم وينتهي بقاعدة غنية بالفانيليا وحلاوة البرالين.",
-   "descriptionEn": "Hawas Love For Her by Rasasi – 100ml EDP. Pink pepper, cardamom and mandarin open the scent, followed by orange blossom, jasmine and ylang ylang, with a base of tonka, vanilla and praline.",
+   "descriptionAr": "يفتتح عطر هاواس لاف فور هير من رصاصي بنفحات من التوابل والحمضيات تضم الفلفل الوردي والهيل والماندارين. يليه قلب زفلي غني بزهر البرتقال واليسمين والإيلنغ، ويستقر على قاعدة دافئة من حبوب التونكا والفانيليا والبرالين.",
+   "descriptionEn": "Hawas Love For Her by Rasasi opens with a peppery sparkle of pink pepper, cardamom, and mandarin, transitioning to a floral heart of orange blossom, jasmine, and ylang ylang, with a base of tonka bean, vanilla, and praline.",
    "gender": "women",
    "families": [
     "oriental",
-    "floral",
-    "gourmand"
+    "floral"
    ],
    "notes": {
     "top": [
@@ -1347,46 +1306,44 @@
     ]
    },
    "seasons": [
+    "winter",
     "autumn",
-    "winter"
+    "spring"
    ],
    "occasions": [
     "evening",
-    "special"
+    "daily"
    ],
    "tags": [
     "رصاصي",
     "هاواس نسائي",
-    "عطر زهري",
-    "عطور نسائية",
-    "فانيليا"
-   ]
+    "عطر نسائي",
+    "عطور رصاصي"
+   ],
+   "style": 2
   },
   "RAS-081": {
    "sourceHash": "yd6htl",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "هاواس ديفا من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "رصاصي هاواس ديفا",
    "nameEn": "Hawas Diva by Rasasi 100ml EDP",
-   "descriptionAr": "عطر نسائي جذاب ينبض بالحيوية بفضل الفواكه الحمراء والليتشي. يمتزج بقلب زهري وراتنجي ليترك أثراً دافئاً من الفانيليا والمسك.",
-   "descriptionEn": "Hawas Diva by Rasasi – 100ml EDP. Opens with red fruits, rhubarb and lychee, leading to a rose, frankincense and cedar heart, over a warm base of vanilla, musk and ambergris.",
+   "descriptionAr": "يبدأ عطر هاواس ديفا من رصاصي بمزيج فاكهي منعش من الفواكه الحمراء والراوند والليتشي. ينتقل القلب إلى الورد والبخور وخشب الأدرس، بينما تضم القاعدة الفانيليا والمسك والعنبر الرمادي.",
+   "descriptionEn": "Hawas Diva by Rasasi opens with red fruits, rhubarb, and lychee, leading to a floral-resinous heart of rose, frankincense, and cedar, resting on a base of vanilla, musk, and ambergris.",
    "gender": "women",
    "families": [
-    "oriental",
-    "floral",
-    "fruity"
+    "fruity",
+    "floral"
    ],
    "notes": {
     "top": [
-     "Red Fruits",
      "Rhubarb",
-     "Lychee"
-    ],
-    "heart": [
+     "Lychee",
      "Rose",
      "Frankincense",
      "Cedar"
     ],
+    "heart": [],
     "base": [
      "Vanilla",
      "Musk",
@@ -1395,33 +1352,32 @@
    },
    "seasons": [
     "spring",
-    "autumn"
+    "summer"
    ],
    "occasions": [
-    "evening",
-    "special"
+    "daily",
+    "evening"
    ],
    "tags": [
     "رصاصي",
     "هاواس ديفا",
     "عطر نسائي",
-    "عطور شرقية",
-    "ليتشي"
-   ]
+    "عطور رصاصي"
+   ],
+   "style": 2
   },
   "RAS-082": {
    "sourceHash": "pp604g",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:12:45.806Z",
-   "nameAr": "هاواس فور هيم من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "رصاصي هاواس فور هيم",
    "nameEn": "Hawas For Him by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي أيقوني يجمع بين الفواكه المنعشة والنوتات المائية والتوابل الدافئة. يحقق توازناً مناسباً بين الانتعاش والجاذبية.",
-   "descriptionEn": "Hawas for Him opens with apple, lemon and bergamot, sharpened by cinnamon. Watery notes give the heart its aquatic signature, while plum, orange blossom and cardamom introduce fruit.",
+   "descriptionAr": "يتميز عطر هاواس فور هيم من رصاصي بافتتاحية منعشة من التفاح والليمون والبرغموت مع لمسة قرفة. يضم القلب نوتات مائية مع البرقوق وزهر البرتقال والهيل، وتستقر القاعدة على العنبر الرمادي والمسك والباتشولي والأخشاب.",
+   "descriptionEn": "Hawas For Him by Rasasi opens with apple, lemon, bergamt, and cinnamon, followed by an aquatic heart with plum, orange blossom, and cardamom, anchored by ambergris, musk, patchouli, and driftwood.",
    "gender": "men",
    "families": [
-    "aquatic",
-    "fruity",
-    "spicy"
+    "fresh",
+    "aquatic"
    ],
    "notes": {
     "top": [
@@ -1431,9 +1387,8 @@
      "Cinnamon"
     ],
     "heart": [
-     "Watery notes",
      "Plum",
-     "Orange blossom",
+     "Orange Blossom",
      "Cardamom"
     ],
     "base": [
@@ -1445,93 +1400,87 @@
    },
    "seasons": [
     "summer",
-    "spring",
-    "all"
+    "spring"
    ],
    "occasions": [
     "daily",
-    "work",
-    "evening"
+    "work"
    ],
    "tags": [
-    "هاواس فور هيم",
-    "عطر هاواس",
     "رصاصي",
-    "عطر رجالي مشهور"
-   ]
+    "هاواس رجالي",
+    "عطر رجالي",
+    "عطور رصاصي"
+   ],
+   "style": 2
   },
   "RAS-083": {
    "sourceHash": "10n5ts5",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:12:45.806Z",
-   "nameAr": "هاواس لندن من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "رصاصي هاواس لندن",
    "nameEn": "Hawas London by Rasasi 100ml EDP",
-   "descriptionAr": "عطر للجنسين يمزج بين نفحات الإجاص والزعفران مع قلب غني بالورد والبخور الفاخر. يقدم تجربة عطرية راقية تناسب الأوقات الخاصة.",
-   "descriptionEn": "Hawas London brings pear into an opening shaped by saffron and pink pepper. The fruit adds a gentle contrast to the dry, aromatic spice.",
+   "descriptionAr": "يجمع عطر هاواس لندن من رصاصي بين الكمثرى والزعفران والفلفل الوردي في الافتتاحية. يليه قلب عطري من الورد والبخور والزهور البيضاء، مع قاعدة ناعمة من الأخشاب الفاتحة والعنبر والمسك والفانيليا.",
+   "descriptionEn": "Hawas London by Rasasi features pear, saffron, and pink pepper at the top, a rose and frankincense heart, and a base of pale woods, amber, musk, and vanilla.",
    "gender": "unisex",
    "families": [
     "oriental",
-    "woody",
-    "floral"
+    "woody"
    ],
    "notes": {
     "top": [
      "Pear",
      "Saffron",
-     "Pink pepper"
-    ],
-    "heart": [
+     "Pink Pepper",
      "Rose",
      "Frankincense",
-     "White flowers"
+     "White Flowers"
     ],
-    "base": [
-     "Pale woods",
+    "heart": [
      "Amber",
      "Musk",
-     "Vanilla"
-    ]
+     "Vanilla",
+     "Incense"
+    ],
+    "base": []
    },
    "seasons": [
     "autumn",
-    "winter",
-    "spring"
+    "winter"
    ],
    "occasions": [
     "evening",
-    "special",
-    "daily"
+    "special"
    ],
    "tags": [
+    "رصاصي",
     "هاواس لندن",
     "عطر للجنسين",
-    "رصاصي",
-    "عطور نيش"
-   ]
+    "عطور رصاصي"
+   ],
+   "style": 2
   },
   "RAS-084": {
    "sourceHash": "125gg2h",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:12:45.806Z",
-   "nameAr": "هاواس دريمز من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "رصاصي هاواس دريمز",
    "nameEn": "Hawas Dreams by Rasasi 100ml EDP",
-   "descriptionAr": "عطر نسائي ينبض بحيوية الحمضيات وبرتقال الدم مع قاعدة خشبية ناعمة. يمنحك شعوراً بالانتعاش والأناقة.",
-   "descriptionEn": "Blood orange sets the tone for Hawas Dreams, supported by grapefruit and citrus notes that keep the first impression vibrant. Jasmine and white musk appear in the middle.",
+   "descriptionAr": "ينطلق عطر هاواس دريمز من رصاصي بنفحات حيوية من البرتقال الدموي والجريب فروت والحمضيات. يليه قلب من اليسمين والمسك الأبيض، ويستقر على قاعدة أرضية من نجيل الهند والأخشاب والسوسن.",
+   "descriptionEn": "Hawas Dreams by Rasasi opens with blood orange and grapefruit, leading to a heart of jasmine and white musk, with a grounded base of vetiver, cedar, and iris.",
    "gender": "women",
    "families": [
     "citrus",
-    "woody",
-    "floral"
+    "woody"
    ],
    "notes": {
     "top": [
-     "Blood orange",
-     "Grapefruit",
-     "Citrus notes"
+     "Blood Orange",
+     "Grapefruit"
     ],
     "heart": [
      "Jasmine",
-     "White musk"
+     "White Musk"
     ],
     "base": [
      "Vetiver",
@@ -1540,28 +1489,29 @@
     ]
    },
    "seasons": [
-    "spring",
-    "summer"
+    "summer",
+    "spring"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
-    "هاواس دريمز",
-    "عطر نسائي منعش",
     "رصاصي",
-    "عطور الحمضيات"
-   ]
+    "هاواس دريمز",
+    "عطر نسائي",
+    "عطور رصاصي"
+   ],
+   "style": 2
   },
   "RAS-085": {
    "sourceHash": "18zozmx",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:12:45.806Z",
-   "nameAr": "هاواس بوا من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "رصاصي هاواس بوا",
    "nameEn": "Hawas Boa by Rasasi 100ml EDP",
-   "descriptionAr": "عطر رجالي يجمع بين توليفة فريدة من التين الشوكي والكومري والأخشاب الكريمية. يعكس روح الحداثة والانتعاش في كل إطلالة.",
-   "descriptionEn": "Pomelo and prickly pear distinguish the opening of Hawas Boa, joined by green apple and orange blossom for a bright fruity-floral effect.",
+   "descriptionAr": "يبدأ عطر هاواس بوا من رصاصي بنكهات فاكهية منعشة من البوملي والتين الشوكي والتفاح الأخضر مع زهر البرتقال. يضم القلب حبوب التونكا وخشب الأخشاب الطافية والبخور، مع قاعدة من خشب الصندل ونجيل الهند والفانيليا.",
+   "descriptionEn": "Hawas Boa by Rasasi opens with pomelo, prickly pear, green apple, and orange blossom, transitioning to a middle of tonka bean, driftwood, and frankincense, over a sandalwood, vetiver, and vanilla base.",
    "gender": "men",
    "families": [
     "fresh",
@@ -1570,14 +1520,13 @@
    ],
    "notes": {
     "top": [
-     "Pomelo",
-     "Prickly pear",
-     "Green apple",
-     "Orange blossom"
+     "Pear",
+     "Green Apple",
+     "Orange Blossom",
+     "Tonka Bean",
+     "Driftwood"
     ],
     "heart": [
-     "Tonka bean",
-     "Driftwood",
      "Frankincense"
     ],
     "base": [
@@ -1588,28 +1537,28 @@
    },
    "seasons": [
     "summer",
-    "spring",
-    "all"
+    "spring"
    ],
    "occasions": [
     "daily",
-    "work"
+    "evening"
    ],
    "tags": [
-    "هاواس بوا",
-    "عطر رجالي عصري",
     "رصاصي",
-    "عطور فواكه"
-   ]
+    "هاواس بوا",
+    "عطر رجالي",
+    "عطور رصاصي"
+   ],
+   "style": 2
   },
   "RAS-086": {
    "sourceHash": "1nt3dfl",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس بلاك للرجال من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "رصاصي هاواس بلاك فور هيم",
    "nameEn": "Hawas Black For Him by Rasasi 100ml EDP",
-   "descriptionAr": "يقدم عطر هاواس بلاك للرجال من رصاصي مزيجاً حيوياً يجمع بين الفواكه المنعشة والأخشاب الدافئة. يتميز بتركيبة عميقة توازن بين انتعاش الحمضيات وأناقة خشب الأرز والباتشولي.",
-   "descriptionEn": "Hawas Black For Him by Rasasi – 100ml EDP\nHawas Black For Him starts with pineapple, grapefruit and bergamot, giving its fruity-woody chypre style a vivid citrus edge. Cedarwood, patchouli and jasmine move the fragrance away from that bright opening, while oakmoss, amber and woody notes establish an",
+   "descriptionAr": "يفتتح عطر هاواس بلاك فور هيم من رصاصي بنوتات الأناناس والجريب فروت والبرغموت لمنح طابع شيبر فاكهي خشبي. يضم القلب خشب الأدرز والباتشولي واليسمين، مع قاعدة من طحلب السنديان والعنبر والأخشاب.",
+   "descriptionEn": "Hawas Black For Him by Rasasi opens with pineapple, grapefruit, and bergamot, featuring a heart of cedarwood, patchouli, and jasmine, anchored by oakmoss, amber, and moss.",
    "gender": "men",
    "families": [
     "fruity",
@@ -1619,95 +1568,88 @@
     "top": [
      "Pineapple",
      "Grapefruit",
-     "Bergamot"
-    ],
-    "heart": [
+     "Bergamot",
      "Cedarwood",
      "Patchouli",
-     "Jasmine"
-    ],
-    "base": [
+     "Jasmine",
      "Oakmoss",
-     "Amber",
-     "Woody Notes"
+     "Amber"
+    ],
+    "heart": [],
+    "base": [
+     "Moss"
     ]
    },
    "seasons": [
-    "spring",
-    "summer",
-    "all"
+    "autumn",
+    "winter"
    ],
    "occasions": [
-    "daily",
     "evening",
-    "work"
+    "daily"
    ],
    "tags": [
     "رصاصي",
-    "هاواس",
+    "هاواس اسود",
     "عطر رجالي",
-    "فواكه",
-    "أخشاب"
-   ]
+    "عطور رصاصي"
+   ],
+   "style": 2
   },
   "RAS-087": {
    "sourceHash": "puctao",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس كريستيل من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "رصاصي هاواس كريستيل",
    "nameEn": "Hawas Crystelle by Rasasi 100ml EDP",
-   "descriptionAr": "يأتي عطر هاواس كريستيل من رصاصي بتركيبة عطرية متوازنة تبدأ بانعاش الحمضيات وتتطور نحو توابل دافئة وأخشاب ناعمة. يمنحك حضوراً أنيقاً يجمع بين انتعاش البرغموت وجاذبية الفانيليا والمسك.",
-   "descriptionEn": "Hawas Crystelle by Rasasi – 100ml EDP\nBergamot, grapefruit and elemi give Hawas Crystelle a bright opening with a lightly resinous edge. The middle introduces pepper, lavender, cedarwood and saffron, shifting from citrus into aromatic spice and dry wood. Vanilla, musk, vetiver and tonka bean support",
+   "descriptionAr": "يتميز عطر هاواس كريستيل من رصاصي بافتتاحية مشرقة من البرغموت والجريب فروت والإيليمي. يليه قلب غني بالفلفل والخزامى وخشب الأدرز والزعفران، مع قاعدة دافئة من الفانيليا والمسك ونجيل الهند والتونكا.",
+   "descriptionEn": "Hawas Crystelle by Rasasi opens with bergamot, grapefruit, and elemi, transitioning to a spicy-woody heart of pepper, lavender, cedarwood, and saffron, over a vanilla, musk, vetiver, and tonka base.",
    "gender": "unisex",
    "families": [
     "citrus",
-    "spicy"
+    "spicy",
+    "woody"
    ],
    "notes": {
     "top": [
      "Bergamot",
      "Grapefruit",
-     "Elemi"
-    ],
-    "heart": [
+     "Elemi",
      "Pepper",
      "Lavender",
      "Cedarwood",
      "Saffron"
     ],
+    "heart": [],
     "base": [
      "Vanilla",
-     "Musk",
-     "Vetiver",
-     "Tonka Bean"
+     "Tonka"
     ]
    },
    "seasons": [
-    "spring",
     "autumn",
-    "all"
+    "spring"
    ],
    "occasions": [
     "daily",
-    "work",
     "evening"
    ],
    "tags": [
     "رصاصي",
-    "كريستيل",
+    "هاواس كريستيل",
     "عطر للجنسين",
-    "توابل",
-    "حمضيات"
-   ]
+    "عطور رصاصي"
+   ],
+   "style": 2
   },
   "RAS-088": {
    "sourceHash": "8hq1fw",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس بينك من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "رصاصي هاواس بينك",
    "nameEn": "Hawas Pink by Rasasi 100ml EDP",
-   "descriptionAr": "يقدم عطر هاواس بينك من رصاصي تجربة عطرية ساحرة تمزج بين نفحات الزهور البيضاء ولمسات التوابل الدافئة. ينتهي بقاعدة غنية وجذابة من الفانيليا وحلوى القطن لتجربة فريدة ومميزة.",
-   "descriptionEn": "Hawas Pink by Rasasi – 100ml\nEgyptian neroli, cinnamon and nutmeg give Hawas Pink a floral opening with a spicy twist. Orange blossom and tuberose fill the heart, with a marshmallow accord adding a soft, airy sweetness between the flowers. The base introduces vanilla, cotton candy and tonka bean, tu",
+   "descriptionAr": "يبدأ عطر هاواس بينك من رصاصي بنفحات زهرية وتوابل من النيرولي والقرفة وجوز الطيب. يضم القلب زهر البرتقال ومسك الروم واتفاق المارشميلو، مع قاعدة حلوة من الفانيليا وغزل البنات وحبوب التونكا.",
+   "descriptionEn": "Hawas Pink by Rasasi opens with neroli, cinnamon, and nutmeg, leading to a heart of orange blossom, tuberose, and marshmallow, with a sweet base of vanilla, cotton candy, and tonka bean.",
    "gender": "women",
    "families": [
     "floral",
@@ -1715,47 +1657,44 @@
    ],
    "notes": {
     "top": [
-     "Egyptian Neroli",
+     "Neroli",
      "Cinnamon",
-     "Nutmeg"
+     "Nutmeg",
+     "Vanilla",
+     "Cotton Candy",
+     "Tonka Bean"
     ],
     "heart": [
      "Orange Blossom",
      "Tuberose",
-     "Marshmallow Accord"
+     "Marshmallow"
     ],
-    "base": [
-     "Vanilla",
-     "Cotton Candy",
-     "Tonka Bean"
-    ]
+    "base": []
    },
    "seasons": [
-    "spring",
-    "autumn",
-    "winter"
+    "winter",
+    "autumn"
    ],
    "occasions": [
     "evening",
-    "special",
-    "gift"
+    "special"
    ],
    "tags": [
     "رصاصي",
-    "هاواس بينك",
+    "هاواس وردي",
     "عطر نسائي",
-    "زهور",
-    "حلويات"
-   ]
+    "عطور رصاصي"
+   ],
+   "style": 2
   },
   "RAS-089": {
    "sourceHash": "1h0q2t3",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس سابفاير من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "رصاصي هاواس سافاير إيديشن",
    "nameEn": "Hawas Sapphire FB Fragrances Edition by Rasasi 100ml EDP",
-   "descriptionAr": "يتميز عطر هاواس سابفاير بإصدار خاص يجمع بين انتعاش الفواكه الاستوائية ودفء الأخشاب والمسك. يمنحك طابعاً منعشاً وغنياً بفضل تركيبته المتناغمة.",
-   "descriptionEn": "Hawas Sapphire FB Fragrances Edition by Rasasi – 100ml\nHawas Sapphire FB Fragrances Edition opens with bergamot, blackcurrant and guava, producing a citrus-fruit combination with a tropical twist. Orange blossom softens the transition into the heart, where sandalwood contributes creamy woodiness. Th",
+   "descriptionAr": "يفتتح عطر هاواس سافاير من رصاصي بنوتات البرغموت والكشمش الأسود والجوافة. يليه قلب يجمع بين زهر البرتقال وخشب الصندل، مع قاعدة دافئة من المسك وحبوب التونكا والعنبر الرمادي.",
+   "descriptionEn": "Hawas Sapphire FB Fragrances Edition by Rasasi opens with bergamot, blackcurrant, and guava, transitioning to a heart of orange blossom and sandalwood, resting on a musk, tonka bean, and ambergris base.",
    "gender": "men",
    "families": [
     "citrus",
@@ -1765,8 +1704,7 @@
    "notes": {
     "top": [
      "Bergamot",
-     "Blackcurrant",
-     "Guava"
+     "Blackcurrant"
     ],
     "heart": [
      "Orange Blossom",
@@ -1780,30 +1718,28 @@
    },
    "seasons": [
     "summer",
-    "spring",
-    "all"
+    "spring"
    ],
    "occasions": [
     "daily",
-    "work",
     "evening"
    ],
    "tags": [
     "رصاصي",
-    "سابفاير",
+    "هاواس سافاير",
     "عطر رجالي",
-    "استوائي",
-    "فواكه"
-   ]
+    "عطور رصاصي"
+   ],
+   "style": 2
   },
   "RAS-090": {
    "sourceHash": "13cnjkj",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس إلكسير من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "رصاصي هاواس إلكسير",
    "nameEn": "Hawas Elixir by Rasasi 100ml EDP",
-   "descriptionAr": "يأتي عطر هاواس إلكسير بتوليفة عطرية مبتكرة تجمع بين انتعاش النعناع ودفء الشوكولاتة الداكنة والفانيليا. يقدم تجربة شرقية غنية توازن بين الانتعاش والجاذبية.",
-   "descriptionEn": "Hawas Elixir by Rasasi – 100ml EDP\nSpearmint brings a cool aromatic touch to the opening of Hawas Elixir, joined by bergamot and mugwort. The heart takes a distinctly different direction: dark chocolate and benzoin introduce richness, while lavender maintains a herbal connection to the start. White",
+   "descriptionAr": "يتميز عطر هاواس إلكسير من رصاصي بافتتاحية منعشة من النعناع البرغموت والأفسنتين. يضم القلب الشوكولاتة الداكنة والبنزوين والخزامى، وتستقر القاعدة على المسك الأبيض وحبوب التونكا والفانيليا.",
+   "descriptionEn": "Hawas Elixir by Rasasi opens with spearmint, bergamot, and mugwort, leading to a heart of dark chocolate, benzoin, and lavender, anchored by a base of white musk, tonka bean, vanilla, and chocolate.",
    "gender": "unisex",
    "families": [
     "oriental",
@@ -1811,57 +1747,53 @@
    ],
    "notes": {
     "top": [
-     "Spearmint",
      "Bergamot",
-     "Mugwort"
+     "Lavender"
     ],
     "heart": [
      "Dark Chocolate",
-     "Benzoin",
-     "Lavender"
+     "Benzoin"
     ],
     "base": [
      "White Musk",
      "Tonka Bean",
-     "Vanilla"
+     "Vanilla",
+     "Chocolate"
     ]
    },
    "seasons": [
-    "autumn",
-    "winter"
+    "winter",
+    "autumn"
    ],
    "occasions": [
     "evening",
-    "special",
-    "gift"
+    "special"
    ],
    "tags": [
     "رصاصي",
-    "إلكسير",
+    "هاواس اليكسير",
     "عطر للجنسين",
-    "شوكولاتة",
-    "شرقي"
-   ]
+    "عطور رصاصي"
+   ],
+   "style": 2
   },
   "RAS-091": {
    "sourceHash": "vsk8lu",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس جليتز من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "رصاصي هاواس جليتز",
    "nameEn": "Hawas Glitz by Rasasi 100ml EDP",
-   "descriptionAr": "يجمع عطر هاواس جليتز بين نعومة الفواكه ورقة الزهور في مزيج أنيق وناعم. يتميز بقاعدة غنية من الكراميل والفانيليا تضفي عليه عمقاً كريمياً جذاباً.",
-   "descriptionEn": "Hawas Glitz by Rasasi – 100ml EDP\nHawas Glitz opens with bergamot and pear, given an unexpected twist by a gentle nutty accord. Rose, orris and amber build the floral heart, while orange blossom and geranium add further detail. The finish is softer and more powdery: sandalwood, vanilla, musk and car",
+   "descriptionAr": "ينطلق عطر هاواس جليتز من رصاصي بالبرغموت والكمثرى مع لمسة جوز هندية خفيفة. يضم القلب الورد والسوسن والعنبر وزهر البرتقال والغرنوقي، مع قاعدة ناعمة من خشب الصندل والفانيليا والمسك والكراميل.",
+   "descriptionEn": "Hawas Glitz by Rasasi opens with bergamot and pear, leading to a floral heart of rose, orris, amber, orange blossom, and geranium, over a base of sandalwood, vanilla, musk, and caramel.",
    "gender": "women",
    "families": [
     "oriental",
-    "floral",
-    "powdery"
+    "floral"
    ],
    "notes": {
     "top": [
      "Bergamot",
-     "Pear",
-     "Nutty Accord"
+     "Pear"
     ],
     "heart": [
      "Rose",
@@ -1878,36 +1810,33 @@
     ]
    },
    "seasons": [
-    "spring",
-    "autumn",
-    "winter"
+    "winter",
+    "autumn"
    ],
    "occasions": [
-    "daily",
     "evening",
-    "special"
+    "daily"
    ],
    "tags": [
     "رصاصي",
-    "جليتز",
+    "هاواس جليتز",
     "عطر نسائي",
-    "زهور",
-    "كراميل"
-   ]
+    "عطور رصاصي"
+   ],
+   "style": 2
   },
   "RAS-092": {
    "sourceHash": "18jbtkw",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس برييفات لوسيو من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "رصاصي هاواس برايف لوسيو إكستريت دي بارفان",
    "nameEn": "Hawas Private Luceo by Rasasi Extrait de Parfum 100ml",
-   "descriptionAr": "يُقدم عطر هاواس برييفات لوسيو بتركيز استثنائي يجمع بين انتعاش الحمضيات والتوابل الدافئة والأخشاب العميقة. خيار مناسب لمن يبحث عن الانتعاش المميز مع لمسة ترابية أنيقة.",
-   "descriptionEn": "Hawas Private Luceo by Rasasi – 100ml Extrait de Parfum\nGinger, bergamot and lemon provide Hawas Private Luceo with a lively citrus-spice opening. Cardamom and nutmeg bring warmth to the heart, while magnolia adds a softer floral detail. The base turns woody through vetiver, patchouli and cedarwood,",
+   "descriptionAr": "يفتتح عطر هاواس برايف لوسيو من رصاصي بنفحات حيوية من الزنجبيل والبرغموت والليمون. يليه قلب دافئ من الهيل وجوز الطيب والماغنوليا، مع قاعدة خشبية من نجيل الهند والباتشولي وخشب الأدرز والعنبر.",
+   "descriptionEn": "Hawas Private Luceo by Rasasi opens with ginger, bergamot, and lemon, followed by a heart of cardamom, nutmeg, and magnolia, over a base of vetiver, patchouli, cedarwood, and amber.",
    "gender": "unisex",
    "families": [
     "woody",
-    "spicy",
-    "citrus"
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -1928,83 +1857,74 @@
     ]
    },
    "seasons": [
-    "spring",
     "autumn",
-    "all"
+    "winter"
    ],
    "occasions": [
-    "daily",
-    "work",
-    "evening"
+    "evening",
+    "special"
    ],
    "tags": [
     "رصاصي",
-    "لوسيو",
+    "هاواس لوسيو",
     "عطر اكستريت",
-    "أخشاب",
-    "توابل"
-   ]
+    "عطور رصاصي"
+   ],
+   "style": 2
   },
   "RAS-093": {
    "sourceHash": "mqmoft",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "هاواس فور هيم ألفا من رصاصي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "رصاصي هاواس فور هيم ألفا",
    "nameEn": "Hawas For Him Alpha by Rasasi 100ml EDP",
-   "descriptionAr": "يمزج عطر هاواس فور هيم ألفا بين الجريب فروت المنعش والزنجبيل الحار مع قاعدة فاخرة من الجلود والباتشولي. يمنحك طابعاً رجولياً جريئاً ومميزاً.",
-   "descriptionEn": "Hawas For Him Alpha by Rasasi – 100ml EDP\nHawas For Him Alpha pairs ginger with pink grapefruit and Calabrian bergamot for an opening that is both tart and spicy. Leather then takes a central position, with jasmine offering a softer floral counterpoint. The listed base combines patchouli and ambergr",
+   "descriptionAr": "يبدأ عطر هاواس فور هيم ألفا من رصاصي بمزيج من الزنجبيل والجريب فروت الوردي وبرغموت كالابريا. يليه قلب يبرز فيه الجلد مع لمسة من اليسمين، وتستقر القاعدة على الباتشولي والعنبر الرمادي والجلد.",
+   "descriptionEn": "Hawas For Him Alpha by Rasasi opens with ginger, pink grapefruit, and Calabrian bergamot, featuring a prominent leather heart with jasmine, over a base of patchouli, ambergris, and leather.",
    "gender": "men",
    "families": [
-    "leather",
-    "citrus",
-    "spicy"
+    "leather"
    ],
    "notes": {
     "top": [
      "Ginger",
      "Pink Grapefruit",
-     "Calabrian Bergamot"
+     "Bergamot"
     ],
-    "heart": [
-     "Leather",
-     "Jasmine"
-    ],
+    "heart": [],
     "base": [
      "Patchouli",
-     "Ambergris"
+     "Ambergris",
+     "Leather"
     ]
    },
    "seasons": [
     "autumn",
-    "winter",
-    "all"
+    "winter"
    ],
    "occasions": [
     "evening",
-    "special",
     "work"
    ],
    "tags": [
     "رصاصي",
-    "ألفا",
+    "هاواس ألفا",
     "عطر رجالي",
-    "جلود",
-    "توابل"
-   ]
+    "عطور رصاصي"
+   ],
+   "style": 2
   },
   "LAT-094": {
    "sourceHash": "1jmuxu2",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "أنا الأبيض روج من لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "أنا الأبيض روج لطافة 60 مل",
    "nameEn": "Ana Abiyedh Rouge Lattafa 60ml EDP",
-   "descriptionAr": "يقدم عطر أنا الأبيض روج من لطافة توليفة عطرية ساحرة تبدأ بنفحات الكمثرى والبرغموت وتتطور نحو قلب كراميلي دافئ. ينتهي بقاعدة غنية من المسك والعنبر لتجربة عطرية لا تُنسى.",
-   "descriptionEn": "Ana Abiyedh Rouge by Lattafa – 60 ml Eau De Parfum (Unisex)\nFragrance Notes:Top: Nashi Pear, Kumquat, BergamotHeart: Caramel, GeraniumBase: Ambergris, Musk, Oakmoss",
+   "descriptionAr": "عطر أنا الأبيض روج من لطافة بتركيز ماء عطر بحجم 60 مل للجنسين، يفتتح برائحة الكمثرى والكمكوات والبرغموت، ويضم قلباً من الكراميل وإبرة الراعي، مع قاعدة من عنبر الحوت المسك وطحلب السنديان.",
+   "descriptionEn": "Ana Abiyedh Rouge by Lattafa – 60 ml Eau De Parfum (Unisex) featuring top notes of Nashi Pear, Kumquat, and Bergamot, a heart of Caramel and Geranium, and a base of Ambergris, Musk, and Oakmoss.",
    "gender": "unisex",
    "families": [
-    "amber",
-    "floral",
-    "musk"
+    "fruity",
+    "amber"
    ],
    "notes": {
     "top": [],
@@ -2016,36 +1936,34 @@
     ]
    },
    "seasons": [
-    "all",
-    "spring",
-    "autumn"
+    "all"
    ],
    "occasions": [
     "daily",
-    "evening",
-    "work"
+    "evening"
    ],
    "tags": [
+    "أنا الأبيض",
     "لطافة",
-    "أنا الأبيض روج",
     "عطر للجنسين",
-    "عنبر",
-    "كاراميل"
-   ]
+    "Ana Abiyedh Rouge",
+    "Lattafa"
+   ],
+   "style": 2
   },
   "LAT-095": {
    "sourceHash": "1relo86",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "خمرة ميرا من لطافة",
-   "nameEn": "Khamrah Mira by Lattafa",
-   "descriptionAr": "يأتي عطر خمرة ميرا من لطافة بتوليفة عطرية غنية تجمع بين الفواكه والتوابل الدافئة والأخشاب الشرقية. يمنحك حضوراً فاخراً بفضل قاعدة الفانيليا والبنزوين الجذابة.",
-   "descriptionEn": "Khamrah Mira by Lattafa – Unisex Fragrance\nKhamrah Mira by Lattafa is an aromatic, gourmand and woody fragrance launched in 2026. It opens with red currant, cinnamon and mandarin, giving a fruity-spiced start. The heart blends jasmine sambac, orange flower and chestnut for a floral, creamy and nutty",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "خمري ميرة لطافة 100 مل",
+   "nameEn": "Khamrah Mira by Lattafa 100ml EDP",
+   "descriptionAr": "عطر خمري ميرة من لطافة بتركيز ماء عطر بحجم 100 مل للجنسين، يفتتح بنوتات الكشمش الأحمر والقرفة والماندارين، مع قلب من الياسمين وأزهار البرتقال والكستناء، وقاعدة من الراتنج وفول التونكا والفانيليا والمسك.",
+   "descriptionEn": "Khamrah Mira by Lattafa – Unisex Fragrance featuring top notes of Red Currant, Cinnamon, and Mandarin, a middle of Jasmine Sambac, Orange Flower, and Chestnut, and a base of Benzoin Resin, Tonka Roasted Absolute, Vanilla Madagascar, and Musk.",
    "gender": "unisex",
    "families": [
+    "gourmand",
     "woody",
-    "oriental",
-    "gourmand"
+    "oriental"
    ],
    "notes": {
     "top": [
@@ -2066,30 +1984,30 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "winter"
+    "winter",
+    "autumn"
    ],
    "occasions": [
     "evening",
-    "special",
-    "gift"
+    "special"
    ],
    "tags": [
+    "خمري ميرة",
     "لطافة",
-    "خمرة ميرا",
-    "عطر للجنسين",
-    "شرقي",
-    "فانيليا"
-   ]
+    "عطر شرقي",
+    "Khamrah Mira",
+    "Lattafa"
+   ],
+   "style": 2
   },
   "LAT-096": {
    "sourceHash": "h0e0cl",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "فيرليس من لطافة للرجال",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "فيرلس لطافة 100 مل رجالي",
    "nameEn": "Fearless by Lattafa 100ml EDP Men",
-   "descriptionAr": "يمزج عطر فيرليس للرجال من لطافة بين انتعاش الفواكه والتوابل الدافئة مع قاعدة غنية بالتبغ والأخشاب. خيار مناسب للرجل الباحث عن الجاذبية والقوة.",
-   "descriptionEn": "Fearless by Lattafa – 100ml Eau de Parfum for Men\nFearless by Lattafa is a woody aromatic fragrance for men with a bright fruity opening, a cocoa-spice heart and a warm tobacco base. It opens with passion fruit, grapefruit and juniper berry, giving a fresh, tart and aromatic start. The heart blends",
+   "descriptionAr": "عطر فيرلس من لطافة بتركيز ماء عطر بحجم 100 مل للرجال، يفتتح بنوتات باشن فروت والجريب فروت والتوت البري، مع قلب من الكاكاو واللافندر والقرفة، وقاعدة من التبغ وخشب الأرز والباتشولي والراتنج.",
+   "descriptionEn": "Fearless by Lattafa – 100ml Eau de Parfum for Men featuring top notes of Passion Fruit, Grapefruit, and Juniper Berry, a middle of Cocoa, Lavender, and Cinnamon, and a base of Cedarwood, Patchouli, and Benzoin.",
    "gender": "men",
    "families": [
     "woody",
@@ -2113,35 +2031,33 @@
     ]
    },
    "seasons": [
-    "winter",
-    "spring",
-    "autumn"
+    "autumn",
+    "winter"
    ],
    "occasions": [
     "daily",
-    "evening",
     "work"
    ],
    "tags": [
+    "فيرلس",
     "لطافة",
-    "فيرليس",
     "عطر رجالي",
-    "تبغ",
-    "أخشاب"
-   ]
+    "Fearless",
+    "Lattafa Men"
+   ],
+   "style": 2
   },
   "LAT-097": {
    "sourceHash": "mz1lgh",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "يارا من لطافة للنساء",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "يارا لطافة 100 مل نسائي",
    "nameEn": "Yara by Lattafa 100ml EDP Women",
-   "descriptionAr": "يُعد عطر يارا من لطافة للنساء خياراً أنثوياً ناعماً يجمع بين زهر البرتقال وجوز الهند في الافتتاحية. يتألق بقلب دافئ من الفانيليا والياسمين وقاعدة كريستالية من المسك وخشب الصندل.",
-   "descriptionEn": "Yara by Lattafa – 100 ml Eau de Parfum for Women\nTop Notes: Orange Blossom, Coconut Heart Notes: Vanilla, Jasmine Base Notes: Musk, Sandalwood",
+   "descriptionAr": "عطر يارا من لطافة بتركيز ماء عطر بحجم 100 مل للنساء، يفتتح بنوتات زهر البرتقال وجوز الهند، مع قلب من الفانيليا والياسمين، وقاعدة من المسك وخشب الصندل.",
+   "descriptionEn": "Yara by Lattafa – 100 ml Eau de Parfum for Women featuring top notes of Orange Blossom and Coconut, heart notes of Vanilla and Jasmine, and base notes of Musk and Sandalwood.",
    "gender": "women",
    "families": [
     "floral",
-    "oriental",
     "musk"
    ],
    "notes": {
@@ -2159,34 +2075,34 @@
     ]
    },
    "seasons": [
-    "all",
     "spring",
     "summer"
    ],
    "occasions": [
     "daily",
-    "work",
-    "gift"
+    "work"
    ],
    "tags": [
-    "لطافة",
     "يارا",
+    "لطافة",
     "عطر نسائي",
-    "فانيليا",
-    "جوز الهند"
-   ]
+    "Yara",
+    "Lattafa Women"
+   ],
+   "style": 2
   },
   "LAT-098": {
    "sourceHash": "g76cf9",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "بلو عود إلكسير من لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "بلو عود إكسير لطافة 100 مل",
    "nameEn": "Blue Oud Elixir by Lattafa 100ml EDP Unisex",
-   "descriptionAr": "يقدم عطر بلو عود إلكسير من لطافة تجربة عطرية فريدة تجمع بين انتعاش الحمضيات وعمق العود والأخشاب الدافئة. يمنحك طابعاً شرقياً منعشاً يناسب كل الأوقات.",
-   "descriptionEn": "Blue Oud Elixir by Lattafa – 100ml Eau de Parfum Unisex\nBlue Oud Elixir by Lattafa is an aromatic woody fragrance with a fresh-spicy opening and a warm, deep base. It opens with bergamaot, citrus notes and pepper for a bright, energetic start. The heart combines oud, rosemary and lavender for an aro",
+   "descriptionAr": "عطر بلو عود إكسير من لطافة بتركيز ماء عطر بحجم 100 مل للجنسين، يفتتح بنوتات البرغم الحمضيات والفلفل، مع قلب من العود وإكليل الجبل واللافندر، وقاعدة من العنبر والمسك وخشب الصندل.",
+   "descriptionEn": "Blue Oud Elixir by Lattafa – 100ml Eau de Parfum Unisex featuring top notes of Bergamot, Citrus Notes, and Pepper, a middle of Oud, Rosemary, and Lavender, and a base of Amber, Musk, and Sandalwood.",
    "gender": "unisex",
    "families": [
     "oud",
+    "fresh",
     "woody"
    ],
    "notes": {
@@ -2207,36 +2123,34 @@
     ]
    },
    "seasons": [
-    "all",
-    "autumn",
-    "winter"
+    "all"
    ],
    "occasions": [
     "daily",
-    "work",
     "evening"
    ],
    "tags": [
-    "لطافة",
     "بلو عود",
-    "عطر للجنسين",
-    "عود",
-    "أخشاب"
-   ]
+    "لطافة",
+    "عطر عود",
+    "Blue Oud",
+    "Lattafa"
+   ],
+   "style": 2
   },
   "LAT-099": {
    "sourceHash": "zgxb58",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "بيوند بريشس من لطافة للنساء",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "بيوند بريشس لطافة 100 مل نسائي",
    "nameEn": "Beyond Precious by Lattafa 100ml EDP Women",
-   "descriptionAr": "يتميز عطر بيوند بريشس من لطافة للنساء بتركيبة زهرية شرقية ناعمة تبدأ بنفحات الكمثرى والبرغموت المنعشة. ينتهي بقاعدة دافئة وكريمة من الفانيليا وحبوب التونكا لإطلالة أنثوية ساحرة.",
-   "descriptionEn": "Beyond Precious by Lattafa – 100ml Eau de Parfum for Women\nBeyond Precious by Lattafa is a soft floral-oriental fruity fragrance with a bright pear-citrus opening and a warm vanilla base. It opens with pear, bergamot and neroli, giving a luminous, fresh and gently sweet start. The heart combines ang",
+   "descriptionAr": "عطر بيوند بريشس من لطافة بتركيز ماء عطر بحجم 100 مل للنساء، يفتتح بنوتات الكمثرى والبرغموت وزهر البرتقال المر، مع قلب من حشيشة الملاك والياسمين وزهر البرتقال، وقاعدة من الفانيليا وبذور التونكا وزهرة الخلود.",
+   "descriptionEn": "Beyond Precious by Lattafa – 100ml Eau de Parfum for Women featuring top notes of Pear, Bergamot, and Neroli, a middle of Angelica, Jasmine, and Orange Blossom, and a base of Vanilla, Tonka Bean, and Immortelle.",
    "gender": "women",
    "families": [
     "floral",
-    "oriental",
-    "fruity"
+    "fruity",
+    "oriental"
    ],
    "notes": {
     "top": [
@@ -2257,30 +2171,29 @@
    },
    "seasons": [
     "spring",
-    "summer",
-    "all"
+    "summer"
    ],
    "occasions": [
     "daily",
-    "work",
-    "gift"
+    "work"
    ],
    "tags": [
-    "لطافة",
     "بيوند بريشس",
+    "لطافة",
     "عطر نسائي",
-    "زهور",
-    "فانيليا"
-   ]
+    "Beyond Precious",
+    "Lattafa"
+   ],
+   "style": 2
   },
   "LAT-100": {
    "sourceHash": "v41a7o",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "باديء العود بلاك إكسبوزد لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "بديع العود بلاك إكسبوزد لطافة 100 مل",
    "nameEn": "Bade'e Al Oud Black Exposed Lattafa 100ml",
-   "descriptionAr": "عطر عنبري فانيلي دافئ وجذاب للجنسين، يجمع بين اللبان والتوفي والفلفل الوردي مع قلب من السوسن والكاكاو وخشب العهد لتقديم تجربة عطرية عميقة.",
-   "descriptionEn": "Bade'e Al Oud Black Exposed by Lattafa is a dark, warm amber-vanilla fragrance for women and men, featuring notes of olibanum, toffee, cocoa, and vanilla.",
+   "descriptionAr": "عطر بديع العود بلاك إكسبوزد من لطافة بتركيز ماء عطر بحجم 100 مل للجنسين، يفتتح بنوتات اللبان والتوفي والفلفل الوردي، مع قلب من السوسن والكاكاو وخشب الهيلينغ، وقاعدة من الفانيليا واللابدانوم.",
+   "descriptionEn": "Bade'e Al Oud Black Exposed by Lattafa – 100ml Eau de Parfum Unisex featuring top notes of Olibanum, Toffee, and Pink Pepper, a middle of Orris, Cocoa, and Healingwood, and a base of Vanilla, Edenolide, and Labdanum.",
    "gender": "unisex",
    "families": [
     "oriental",
@@ -2313,21 +2226,22 @@
     "special"
    ],
    "tags": [
+    "بديع العود",
     "لطافة",
-    "باديء العود",
-    "عطر فانيليا",
-    "عطر للجنسين",
-    "عطور شرقية"
-   ]
+    "عطر شرقي",
+    "Bade e Al Oud",
+    "Lattafa"
+   ],
+   "style": 2
   },
   "LAT-101": {
    "sourceHash": "18wunh9",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "جوري لطافة النسائي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "جوري لطافة 100 مل نسائي",
    "nameEn": "Jouri Lattafa Women 100ml EDP",
-   "descriptionAr": "عطر نسائي زهري فواكه منعش يفتتح بنفحات حيوية من التشايا والبرتقال والكرز المحلى، مع قاعدة ناعمة من الفانيليا والتونكا والباتشولي.",
-   "descriptionEn": "Jouri by Lattafa is a Floral Fruity fragrance for women with a bright tropical-fruity opening and a smooth sweet dry down of vanilla and tonka.",
+   "descriptionAr": "عطر جوري من لطافة بتركيز ماء عطر بحجم 100 مل للنساء، يفتتح بنوتات فاكهة التنين والبرتقال والكرز المسكر، مع قلب من الفاوانيا والبلوميريا والتوت وزنبق الماء، وقاعدة من الفانيليا والتونكا والباتشولي.",
+   "descriptionEn": "Jouri by Lattafa – 100ml Eau de Parfum for Women featuring top notes of Pitaya, Orange, and Candied Cherry, a middle of Peony, Frangipani, Raspberry, and Water Lily, and a base of Vanilla, Tonka, and Patchouli.",
    "gender": "women",
    "families": [
     "floral",
@@ -2357,27 +2271,27 @@
    ],
    "occasions": [
     "daily",
-    "work"
+    "gift"
    ],
    "tags": [
-    "جوري لطافة",
+    "جوري",
+    "لطافة",
     "عطر نسائي",
-    "عطور فواكه",
-    "عطر زهري",
-    "لطافة"
-   ]
+    "Jouri",
+    "Lattafa Women"
+   ],
+   "style": 2
   },
   "LAT-102": {
    "sourceHash": "2ws1jx",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "أوبولنت ميلانو لطافة الرجالي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "أوبولنت ميلانو لطافة 100 مل رجالي",
    "nameEn": "Opulent Milano by Lattafa 100ml Men",
-   "descriptionAr": "عطر رجالي منعش وأخضر يتميز بتركيبة أنيقة من الحمضيات والزهور العطرية والأخشاب النظيفة، يضفي طابعاً حيوياً ومميزاً.",
-   "descriptionEn": "Opulent Milano by Lattafa has a fresh, green and polished scent profile built around citrus, aromatic florals and clean woods.",
+   "descriptionAr": "عطر أوبولنت ميلانو من لطافة بتركيز ماء عطر بحجم 100 مل للرجال، يفتتح بنوتات البرغموت والفلفل الوردي والتيمور، مع قلب من الورد والكشمش الأسود وإبرة الراعي، وقاعدة من نجيل الهند وخشب العنبر وخشب الأرز.",
+   "descriptionEn": "Opulent Milano by Lattafa – 100ml for Men featuring top notes of Bergamot, Pink Pepper, and Timur, a middle of Rose, Blackcurrant, and Geranium, and a base of Vetiver, Amberwood, and Cedarwood.",
    "gender": "men",
    "families": [
-    "fresh",
     "woody",
     "floral"
    ],
@@ -2399,8 +2313,7 @@
     ]
    },
    "seasons": [
-    "spring",
-    "summer"
+    "all"
    ],
    "occasions": [
     "daily",
@@ -2408,24 +2321,25 @@
    ],
    "tags": [
     "أوبولنت ميلانو",
-    "عطر رجالي",
-    "عطور منعشة",
     "لطافة",
-    "عطر خشبي"
-   ]
+    "عطر رجالي",
+    "Opulent Milano",
+    "Lattafa Men"
+   ],
+   "style": 2
   },
   "LAT-103": {
    "sourceHash": "1ihjey",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "شيخ الشيوخ سبريم لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "شيخ الشيوخ سبريم لطافة 100 مل",
    "nameEn": "Sheikh Al Shuyukh Supreme by Lattafa 100ml",
-   "descriptionAr": "عطر شرقي خشبي غني بمزيج عميق من العنبر والأخشاب المدخنة والتوابل الدافئة، يناسب أوقات المساء والأجواء الباردة.",
-   "descriptionEn": "Sheikh Al Shuyukh Supreme by Lattafa is a rich oriental-woody fragrance with deep amber, smoky woods and warm spices for evening wear.",
-   "gender": "men",
+   "descriptionAr": "عطر شيخ الشيوخ سبريم من لطافة بتركيز ماء عطر بحجم 100 مل، يفتتح بنوتات القرفة والورد والزعفران والفانيليا، مع قلب من الكراميل والباتشولي، وقاعدة من الأمبروكسان والعنبر.",
+   "descriptionEn": "Sheikh Al Shuyukh Supreme by Lattafa – 100 ml Eau de Parfum featuring top notes of Cinnamon, Rose, Saffron, and Vanilla, a heart of Caramel and Patchouli, and a base of Ambroxan and Amber.",
+   "gender": "unisex",
    "families": [
     "oriental",
-    "woody",
+    "amber",
     "spicy"
    ],
    "notes": {
@@ -2454,25 +2368,26 @@
    ],
    "tags": [
     "شيخ الشيوخ",
-    "عطر رجالي",
-    "عطور شرقية",
     "لطافة",
-    "عطر خشبي"
-   ]
+    "عطر شرقي",
+    "Sheikh Al Shuyukh",
+    "Lattafa"
+   ],
+   "style": 2
   },
   "LAT-104": {
    "sourceHash": "j21snf",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "مهرجان جولد لطافة برايد",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "مهرجان جولد برايد لطافة 100 مل",
    "nameEn": "Maharjan Gold by Lattafa Pride 100ml",
-   "descriptionAr": "عطر دافئ بالتوابل والأخشاب والزهور العطرية مع لمسات من البخور المدخن وقاعدة عنبرية ناعمة تناسب الجنسين.",
-   "descriptionEn": "Maharjan Gold by Lattafa Pride is a warm, spicy and woody fragrance with aromatic florals, smoky incense and a smooth sweet base.",
+   "descriptionAr": "عطر مهرجان جولد من لطافة برايد بتركيز ماء عطر بحجم 100 مل، يفتتح بنوتات اللافندر والفلفل، مع قلب من الياسمين ومسك الروم والنوتات الزهرية البيضاء، وقاعدة من البخور وخشب الأرز والكراميل والكشميران والعنبر.",
+   "descriptionEn": "Maharjan Gold by Lattafa Pride – 100ml Eau de Parfum featuring top notes of Lavender and Pepper, a middle of Jasmine, Tuberose, and White-Floral notes, and a base of Incense, Cedarwood, Caramel, Cashmeran, and Amber.",
    "gender": "unisex",
    "families": [
     "oriental",
-    "woody",
-    "spicy"
+    "amber",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -2494,8 +2409,7 @@
    },
    "seasons": [
     "winter",
-    "autumn",
-    "spring"
+    "autumn"
    ],
    "occasions": [
     "evening",
@@ -2504,19 +2418,20 @@
    "tags": [
     "مهرجان جولد",
     "لطافة برايد",
-    "عطر للجنسين",
-    "عطور شرقية",
-    "عطر توابل"
-   ]
+    "عطر شرقي",
+    "Maharjan Gold",
+    "Lattafa Pride"
+   ],
+   "style": 2
   },
   "LAT-105": {
    "sourceHash": "48zrwx",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "أنا الأبيض ليذر لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "أنا الأبيض ليذر لطافة 60 مل",
    "nameEn": "Ana Abiyedh Leather 60ml by Lattafa Perfumes",
-   "descriptionAr": "عطر شرقي جلدي فاخر يفتتح بمزيج من التوت والزعفران والزعتر، مع قاعدة عميقة من الجلد والعنبر والأخشاب.",
-   "descriptionEn": "Ana Abiyedh Leather by Lattafa Perfumes opens with raspberry, saffron, and thyme, settling into a rich base of leather and amber.",
+   "descriptionAr": "عطر أنا الأبيض ليذر من عطور لطافة بتركيز ماء عطر بحجم 60 مل، يفتتح بنوتات الجلد والتوت البري والزعفران والزعتر، مع قلب من اللبان والياسمين، وقاعدة من الجلد المدبوغ والعنبر.",
+   "descriptionEn": "Ana Abiyedh Leather 60ml by Lattafa Perfumes featuring top notes of Leather, Raspberry, Saffron, and Thyme, a middle of Olibanum and Jasmine, and a base of Suede and Amber.",
    "gender": "unisex",
    "families": [
     "leather",
@@ -2548,26 +2463,27 @@
     "special"
    ],
    "tags": [
-    "أنا الأبيض",
-    "عطر جلدي",
+    "أنا الأبيض ليذر",
     "لطافة",
-    "عطر للجنسين",
-    "عطور شرقية"
-   ]
+    "عطر جلد",
+    "Ana Abiyedh Leather",
+    "Lattafa"
+   ],
+   "style": 2
   },
   "LAT-106": {
    "sourceHash": "9a8h7b",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "ببيان لطافة النسائي",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "بيان لطافة 100 مل نسائي",
    "nameEn": "Bayaan Eau De Parfum 100ml by Lattafa",
-   "descriptionAr": "عطر نسائي راقٍ يجمع بين الفواكه والزهور والعود الناعم، يفتتح بنفحات الكشمش والليتشي ويستقر على قاعدة من الفانيليا والمسك.",
-   "descriptionEn": "Bayaan Eau De Parfum by Lattafa opens with cassis, pink pepper, and lychee, unfolding into an elegant heart of rose and praline.",
+   "descriptionAr": "عطر بيان من لطافة بتركيز ماء عطر بحجم 100 مل للنساء، يفتتح بنوتات الكشمش الأسود والفلفل الوردي والليتشي، مع قلب من الورد والهيل والبرالين، وقاعدة من الفانيليا والطحلب والعود والعنبر.",
+   "descriptionEn": "Bayaan Eau De Parfum 100ml by Lattafa featuring top notes of Cassis, Pink Pepper, and Lychee, a middle of Rose, Cardamom, and Praline, and a base of Vanilla, Moss, Oud, and Amber.",
    "gender": "women",
    "families": [
-    "fruity",
-    "floral",
-    "oud"
+    "woody",
+    "oriental",
+    "fruity"
    ],
    "notes": {
     "top": [
@@ -2588,34 +2504,34 @@
     ]
    },
    "seasons": [
-    "spring",
-    "autumn"
+    "all"
    ],
    "occasions": [
     "daily",
     "evening"
    ],
    "tags": [
-    "ببيان لطافة",
-    "عطر نسائي",
-    "عطور فواكه",
+    "بيان",
     "لطافة",
-    "عطر زهري"
-   ]
+    "عطر نسائي",
+    "Bayaan",
+    "Lattafa Women"
+   ],
+   "style": 2
   },
   "LAT-107": {
    "sourceHash": "1tyhtfz",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "خمرة واحة لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "خمري واحة لطافة 100 مل",
    "nameEn": "Khamrah Waha Lattafa Perfumes 100ml EDP",
-   "descriptionAr": "عطر مائي أروماتك منعش ومودرن يفتتح بالبرغموت واليوزو والزنجبيل، مع قلب منعش من السوسن وملح البحر وقاعدة خشبية دافئة.",
-   "descriptionEn": "Khamrah Waha Lattafa Perfumes is an aromatic aquatic fragrance opening with bergamot, juniper, yuzu and ginger, with a warm woody base.",
+   "descriptionAr": "عطر خمري واحة من عطور لطافة بتركيز ماء عطر بحجم 100 مل، يفتتح بنوتات البرغموت والعرعر واليوزو والزنجبيل، مع قلب من السوسن والميرمية وملح البحر، وقاعدة من التونكا والفانيليا والمسك.",
+   "descriptionEn": "Khamrah Waha Lattafa Perfumes 100ml EDP featuring top notes of Bergamot, Juniper, Yuzu, and Ginger, a middle of Iris, Sage, and Sea Salt, and a base of Tonka, Vanilla, and Musk.",
    "gender": "unisex",
    "families": [
     "aquatic",
     "fresh",
-    "woody"
+    "citrus"
    ],
    "notes": {
     "top": [
@@ -2636,33 +2552,33 @@
     ]
    },
    "seasons": [
-    "summer",
-    "spring"
+    "spring",
+    "summer"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
-    "خمرة واحة",
-    "عطر مائي",
+    "خمري واحة",
     "لطافة",
     "عطر منعش",
-    "عطور للجنسين"
-   ]
+    "Khamrah Waha",
+    "Lattafa"
+   ],
+   "style": 2
   },
   "ALR-108": {
    "sourceHash": "jop8zv",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "شوكو مسك الرحاب",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "شوكو مسك من الرحاب 50 مل ماء عطر للجنسين",
    "nameEn": "Choco Musk by Al Rehab 50ml EDP Unisex",
-   "descriptionAr": "عطر غورماند دافئ يجمع بين الفانيليا الكريمية والشوكولاتة والمسك الناعم مع لمسة خفيفة من التوابل ليمنحك شعوراً مريحاً وجذاباً.",
-   "descriptionEn": "Choco Musk by Al Rehab is a warm gourmand fragrance combining creamy vanilla, chocolate, soft musk and gentle spice for women and men.",
+   "descriptionAr": "عطر دافئ يجمع بين الفانيليا الكريمية والشوكولاتة والمسك الناعم والتوابل الخفيفة. تفتتح الرائحة بنفحات الفانيليا والشوكولاتة، يليه قلب عطري من المسك والقرفة، وتستقر القاعدة على خشب الصندل والأخشاب الشرقية والورد.",
+   "descriptionEn": "A warm gourmand fragrance combining creamy vanilla, chocolate, soft musk and gentle spice with a cozy finish.",
    "gender": "unisex",
    "families": [
     "gourmand",
-    "musk",
     "oriental"
    ],
    "notes": {
@@ -2681,7 +2597,8 @@
    },
    "seasons": [
     "winter",
-    "autumn"
+    "autumn",
+    "all"
    ],
    "occasions": [
     "daily",
@@ -2690,19 +2607,22 @@
    "tags": [
     "شوكو مسك",
     "الرحاب",
-    "عطر شوكولاتة",
     "عطر فانيليا",
-    "عطر للجنسين"
-   ]
+    "عطر شوكولاتة",
+    "عطر للجنسين",
+    "Al Rehab",
+    "Choco Musk"
+   ],
+   "style": 2
   },
   "LAT-109": {
    "sourceHash": "1xkrj90",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "تميمة لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "تميمة من لطافة 100 مل ماء عطر",
    "nameEn": "Tamima by Lattafa 100 ml Eau de Parfum",
-   "descriptionAr": "عطر زهري فواكه مائي منعش يفتتح بمزيج من الكيوي والكشمش الأحمر والراوند، مع قاعدة خشبية مسكية دافئة.",
-   "descriptionEn": "Tamima by Lattafa is a fruity aquatic floral musk fragrance featuring top notes of kiwi and red currant, with a woody musk base.",
+   "descriptionAr": "عطر يجمع بين الفواكه والنوتات المائية والأخشاب والزهور. تبدأ الرائحة بافتتاحية من الكيوي والكشمش الأحمر والراوند والفلفل الوردي، يليه قلب من البطيخ وبخور مريم والياسمين، وتستقر القاعدة على المسك والأرز وخشب الصندل.",
+   "descriptionEn": "A fruity, aquatic, and woody floral fragrance with notes of kiwi, watermelon, and soft woods.",
    "gender": "unisex",
    "families": [
     "fruity",
@@ -2721,28 +2641,31 @@
    },
    "seasons": [
     "summer",
-    "spring"
+    "spring",
+    "all"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
-    "تميمة لطافة",
-    "عطر فواكه",
-    "عطر منعش",
+    "تميمة",
     "لطافة",
-    "عطر للجنسين"
-   ]
+    "عطر فواكه",
+    "عطر مائي",
+    "Lattafa",
+    "Tamima"
+   ],
+   "style": 2
   },
   "LAT-110": {
    "sourceHash": "1v21hnu",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "أنا الأبيض بودري لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "أنا الأبيض بودري من لطافة 60 مل",
    "nameEn": "Ana Abiyedh Poudree by Lattafa 60ml",
-   "descriptionAr": "عطر نسائي أنيق برائحة بودرية زهرية ناعمة، يفتتح ببرعم البرتقال والورد والياسمين مع قاعدة دافئة من الفانيليا والمسك.",
-   "descriptionEn": "Ana Abiyedh Poudree by Lattafa is an elegant floral powdery composition opening with orange blossom, rose, and jasmine.",
+   "descriptionAr": "عطر زهري بودري يبدأ بنفحات زهر البرتقال والورد والياسمين، ثم يكشف عن قلب ناعم من المسك والنوتات البودرية. تستقر القاعدة على الفانيليا وحبوب التونكا وخشب الأرز والعنبر.",
+   "descriptionEn": "An elegant floral powdery composition opening with orange blossom and rose, featuring a soft heart of musk and settling into vanilla and amber.",
    "gender": "women",
    "families": [
     "powdery",
@@ -2766,35 +2689,38 @@
     ]
    },
    "seasons": [
+    "winter",
     "spring",
-    "autumn",
-    "winter"
+    "all"
    ],
    "occasions": [
     "daily",
+    "work",
     "evening"
    ],
    "tags": [
     "أنا الأبيض بودري",
-    "عطر نسائي",
-    "عطور بودرية",
     "لطافة",
-    "عطر زهري"
-   ]
+    "عطر بودري",
+    "عطر نسائي",
+    "Lattafa",
+    "Ana Abiyedh Poudree"
+   ],
+   "style": 2
   },
   "LAT-111": {
    "sourceHash": "q53in2",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T07:24:59.746Z",
-   "nameAr": "مصمم لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "مسمم من لطافة 100 مل ماء عطر",
    "nameEn": "Musamam Eau De Parfum 100ml by Lattafa",
-   "descriptionAr": "عطر خشبي أروماتك فخم يفتتح بالماندرين الإيطالي واللافندر والزعفران، مع قاعدة غنية بالبخور والأخشاب العميقة.",
-   "descriptionEn": "Musamam by Lattafa is a woody aromatic composition opening with Italian mandarin, lavender, and saffron, with a rich incense base.",
+   "descriptionAr": "عطر خشبي عطري يبدأ باليوسفي الإيطالي والخزامى والزعفران، يعقبه قلب من خشب العنبر وأرز فرجينيا وإبرة الراعي المصرية. تستقر القاعدة على البخور الصومالي وأكيغالاود وورد الصخر.",
+   "descriptionEn": "A woody aromatic composition opening with mandarin, lavender, and saffron, with a heart of cedarwood and geranium, over an incense base.",
    "gender": "unisex",
    "families": [
     "woody",
-    "oriental",
-    "spicy"
+    "spicy",
+    "oriental"
    ],
    "notes": {
     "top": [
@@ -2812,33 +2738,37 @@
    },
    "seasons": [
     "winter",
-    "autumn"
+    "autumn",
+    "all"
    ],
    "occasions": [
     "evening",
-    "special"
+    "special",
+    "work"
    ],
    "tags": [
-    "مصمم لطافة",
-    "عطر خشبي",
-    "عطور شرقية",
+    "مسمم",
     "لطافة",
-    "عطر للجنسين"
-   ]
+    "عطر خشبي",
+    "عطر مسمم",
+    "Lattafa",
+    "Musamam"
+   ],
+   "style": 2
   },
   "LAT-112": {
    "sourceHash": "ibtge9",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "خمرا قهوة من لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "خمرة قهوة من لطافة 100 مل ماء عطر للجنسين",
    "nameEn": "Khamrah Qahwa by Lattafa 100ml EDP Unisex",
-   "descriptionAr": "عطر فاخر يجمع بين عبق القهوة الغنية والتوابل الدافئة مع لمسات البرالين والفانيليا. يمنحك حضوراً ساحراً يناسب الأوقات الخاصة والأمسيات الباردة.",
-   "descriptionEn": "Khamrah Qahwa by Lattafa – 100 ml Eau de Parfum. Top Notes: Cardamom, Cinnamon, Coffee. Heart Notes: Nutmeg, Praline, Vanilla. Base Notes: Amber, Tonka Bean, Musk.",
+   "descriptionAr": "عطر شرقي دافئ يفتتح بنفحات الهيل والقرفة والقهوة، ويتوسطه قلب من جوز الطيب والبرالين والفانيليا، بينما تتكون القاعدة من العنبر وحبوب التونكا والمسك.",
+   "descriptionEn": "A warm spicy and gourmand fragrance opening with cardamom, cinnamon, and coffee, with a heart of praline and vanilla, over an amber base.",
    "gender": "unisex",
    "families": [
     "gourmand",
-    "oriental",
-    "spicy"
+    "spicy",
+    "oriental"
    ],
    "notes": {
     "top": [
@@ -2859,34 +2789,37 @@
    },
    "seasons": [
     "winter",
-    "autumn"
+    "autumn",
+    "all"
    ],
    "occasions": [
     "evening",
     "special",
-    "gift"
+    "daily"
    ],
    "tags": [
+    "خمرة قهوة",
     "لطافة",
-    "خمرا قهوة",
     "عطر قهوة",
-    "عطور شرقية",
-    "عطر للجنسين"
-   ]
+    "عطر شتوي",
+    "Lattafa",
+    "Khamrah Qahwa"
+   ],
+   "style": 2
   },
   "LAT-113": {
    "sourceHash": "46sm5h",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "عود مود ريمينيسينس من لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "عود موود ريمينيسنس من لطافة 100 مل",
    "nameEn": "Oud Mood Reminiscence Lattafa 100ml",
-   "descriptionAr": "عطر Oud Mood Reminiscence Lattafa 100ml من Lattafa للجنسين بطابع عنبري وشرقي وعود.",
-   "descriptionEn": "Oud Mood Reminiscence by Lattafa – 100ml Eau de Parfum. A fresh oriental woody and spicy fragrance opening with raspberry, orange and saffron, over a rich woody and oud base.",
+   "descriptionAr": "عطر شرقي خشبي وتوابل منعش يفتتح بالتوت البري والبرتقال والزعفران. يجمع القلب بين العنبر وأوراق الغار وإبرة الراعي والبابونج والخزامى والهيل والكراميل وجوز الطيب، وتضم القاعدة خشب الصندل والأرز والطحلب والراتنجات ونجيل الهند والعود والفانيليا والمسك.",
+   "descriptionEn": "A complex oriental woody and spicy fragrance with fruit, floral and resinous depth, featuring raspberry, spices, woods and oud.",
    "gender": "unisex",
    "families": [
-    "oud",
     "oriental",
-    "woody"
+    "woody",
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -2896,11 +2829,11 @@
     ],
     "heart": [
      "Amber",
-     "Bay Leaves",
      "Geranium",
-     "Chamomile",
      "Lavender",
-     "Cardamom"
+     "Cardamom",
+     "Caramel",
+     "Nutmeg"
     ],
     "base": [
      "Sandalwood",
@@ -2908,78 +2841,81 @@
      "Oakmoss",
      "Resins",
      "Vetiver",
-     "Oud"
+     "Oud",
+     "Vanilla",
+     "Musk"
     ]
    },
    "seasons": [
     "winter",
-    "autumn"
+    "autumn",
+    "all"
    ],
    "occasions": [
     "evening",
-    "special"
+    "special",
+    "daily"
    ],
    "tags": [
+    "عود موود ريمينيسنس",
     "لطافة",
-    "عود مود",
     "عطر عود",
-    "عطور شرقية",
-    "عطر خشبي"
-   ]
+    "عطر شرقي",
+    "Lattafa",
+    "Oud Mood Reminiscence"
+   ],
+   "style": 2
   },
   "ALR-114": {
    "sourceHash": "cvoi5i",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "سبانيش فانيلا من آل رحاب",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "سبانيش فانيلا من الرحاب 100 مل ماء عطر",
    "nameEn": "Spanish Vanilla Eau De Parfum 100ml by Al Rehab",
-   "descriptionAr": "عطر ناعم ومريح يعتمد على نفحات الحليب الكريمية والفانيليا الغنية. ينتهي بقاعدة سكرية رقيقة تمنحه طابعاً لذيذاً ومناسباً للاستخدام اليومي.",
-   "descriptionEn": "Spanish Vanilla Eau De Parfum 100ml by Al Rehab. The fragrance opens with a soft creamy milk accord before transitioning into a rich vanilla heart and a delicate sugary base.",
+   "descriptionAr": "عطر فانيليا شرقي يبدأ بنفحات الحليب الكريمي الناعم، لينتقل إلى قلب غني بالفانيليا، وينتهي بقاعدة سكرية رقيقة تترك أثراً غورماند ناعماً ومريحاً.",
+   "descriptionEn": "A smooth comforting gourmand fragrance opening with creamy milk, transitioning into a rich vanilla heart and a delicate sugary base.",
    "gender": "unisex",
    "families": [
     "gourmand",
-    "powdery"
+    "oriental"
    ],
    "notes": {
-    "top": [
-     "Milk Accord"
-    ],
-    "heart": [
-     "Vanilla"
-    ],
-    "base": [
-     "Sugar"
-    ]
+    "top": [],
+    "heart": [],
+    "base": []
    },
    "seasons": [
-    "all",
-    "winter"
+    "winter",
+    "autumn",
+    "all"
    ],
    "occasions": [
     "daily",
-    "work"
+    "gift"
    ],
    "tags": [
-    "آل رحاب",
     "سبانيش فانيلا",
+    "الرحاب",
     "عطر فانيليا",
-    "عطور يومية",
-    "عطر حليب"
-   ]
+    "عطر حلاوة",
+    "Al Rehab",
+    "Spanish Vanilla"
+   ],
+   "style": 2
   },
   "LAT-115": {
    "sourceHash": "9v5cwh",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "سطور من لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "سطور من لطافة 100 مل ماء عطر للنساء",
    "nameEn": "Sutoor 100ml EDP for Women by Lattafa Perfumes",
-   "descriptionAr": "عطر نسائي فاخر وجذاب يجمع بين حلاوة الفواكه والعمق الدافئ للمشروبات والمسكرات. يرتكز على قاعدة كريمية غنية بالفانيليا والأخشاب الحسية.",
-   "descriptionEn": "Sutoor Eau de Parfum by Lattafa. Top: Peach, Blood Orange, Cardamom, Heliotrope. Heart: Rum, Brandy, Davana, Jasmine. Base: Vanilla, Cashmere Wood, Benzoin, Sandalwood, Tonka Bean, Styrax, Vetiver, Labdanum, Patchouli.",
+   "descriptionAr": "عطر يمزج بين حلاوة الفواكه والعمق الدافئ، يبدأ بنفحات الخوخ البرتقال الأحمر والهيل ورقيب الشمس. يليه قلب من الروم والبراندي والدافانا والياسمين، وتستقر القاعدة على الفانيليا وخشب الكشمير والبنزوين وخشب الصندل وحبوب التونكا ونجيل الهند واللبان والب لي.",
+   "descriptionEn": "A rich fragrance blending fruity sweetness with boozy warmth, featuring peach, rum, vanilla, and various woods and resins.",
    "gender": "women",
    "families": [
     "oriental",
-    "gourmand",
-    "fruity"
+    "fruity",
+    "gourmand"
    ],
    "notes": {
     "top": [
@@ -3014,21 +2950,23 @@
     "special"
    ],
    "tags": [
-    "لطافة",
     "سطور",
+    "لطافة",
     "عطر نسائي",
-    "عطور شرقية",
-    "فانيليا"
-   ]
+    "عطر شرقي",
+    "Lattafa",
+    "Sutoor"
+   ],
+   "style": 2
   },
   "LAT-116": {
    "sourceHash": "trh8bj",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "كونفيدينشال بريڤيت جولد من لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "كونفيدينشال بريفت جولد من لطافة 100 مل ماء عطر للنساء",
    "nameEn": "Confidential Private Gold 100ml EDP for Women by Lattafa",
-   "descriptionAr": "عطر نسائي ساحر ينبض بالحيوية مع افتتاحية غنية بالفواكه الاستوائية والخوخ. يتميز بقلب رقيق وقاعدة دافئة من المسك والفانيليا وخشب الصندل.",
-   "descriptionEn": "Confidential Private Gold Eau de Parfum by Lattafa. Opens with peach, passionfruit, pear, raspberry, and cassis, with lily of the valley, and a base of musk, vanilla, sandalwood, patchouli, and heliotrope.",
+   "descriptionAr": "عطر يجمع بين حلاوة الفواكه والنعومة الكريمية، ويفتتح بنفحات الخوخ وفاكهة العاطفة والكمثرى والتوت والكشمش الأسود. يكشف القلب عن زنابق الوادي الرقيقة، بينما تضيف قاعدة المسك والفانيليا وخشب الصندل والباتشولي ورقيب الشمس الدفء.",
+   "descriptionEn": "A vibrant fragrance opening with juicy peach, passionfruit, pear, raspberry, and cassis, with a heart of lily of the valley and a warm base of musk and vanilla.",
    "gender": "women",
    "families": [
     "fruity",
@@ -3055,34 +2993,36 @@
     ]
    },
    "seasons": [
+    "summer",
     "spring",
-    "summer"
+    "all"
    ],
    "occasions": [
     "daily",
-    "evening",
     "work"
    ],
    "tags": [
+    "كونفيدينشال بريفت جولد",
     "لطافة",
-    "كونفيدينشال جولد",
-    "عطر نسائي",
     "عطر فواكه",
-    "عطور لطافة"
-   ]
+    "عطر نسائي",
+    "Lattafa",
+    "Confidential Private Gold"
+   ],
+   "style": 2
   },
   "LAT-117": {
    "sourceHash": "1d5lect",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "أطلس جلاسيال فالي من لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "أطلس جلاسيال فالي من لطافة 55 مل للجنسين",
    "nameEn": "Atlas Glacial Valley by Lattafa 55ml Unisex",
-   "descriptionAr": "عطر منعش يجمع بين نفحات الأناناس والتين والنعناع ليمنحك إحساساً مائياً بارداً. يتوازن بقلب من زهرة الياسمين وملح البحر وينتهي بقاعدة دافئة من العنبر والمسك.",
-   "descriptionEn": "Atlas Glacial Valley by Lattafa – 55ml Unisex. Oriental Marine fragrance with pineapple, fig and mint top, jasmine, patchouli and sea salt heart, and moss, musk, vanilla and amber base.",
+   "descriptionAr": "عطر شرقي مائي يبدأ بافتتاحية مشرقة من الفواكه والنعناع تشمل الأناناس والتين والنعناع. يجمع القلب بين الياسمين والباتشولي وملح البحر، وتتكون القاعدة من الطحالب والمسك والفانيليا والعنبر لنهاية دافئة وناعمة.",
+   "descriptionEn": "An oriental marine fragrance with a fruity and minty opening, a heart of sea salt and floral notes, and a warm mossy amber base.",
    "gender": "unisex",
    "families": [
-    "fresh",
     "aquatic",
+    "fresh",
     "fruity"
    ],
    "notes": {
@@ -3105,33 +3045,36 @@
    },
    "seasons": [
     "summer",
-    "spring"
+    "spring",
+    "all"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
+    "أطلس جلاسيال فالي",
     "لطافة",
-    "أطلس",
-    "عطر منعش",
     "عطر مائي",
-    "عطور صيفية"
-   ]
+    "عطر منعش",
+    "Lattafa",
+    "Atlas Glacial Valley"
+   ],
+   "style": 2
   },
   "LAT-118": {
    "sourceHash": "1yfxnz2",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "خمرا من لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "خمرة من لطافة 100 مل ماء عطر للجنسين",
    "nameEn": "Khamrah by Lattafa 100ml EDP Unisex",
-   "descriptionAr": "عطر شرقي دافئ يمزج ببراعة بين التوابل الفاخرة ونفحات التمور والبرالين الحلوة. يرتكز على قاعدة عميقة من الفانيليا والعنبر والعود الفاخر.",
-   "descriptionEn": "Khamrah by Lattafa – 100 ml Eau de Parfum. Top Notes: Cinnamon, Nutmeg, Bergamot. Heart Notes: Dates, Praline, Tuberose. Base Notes: Vanilla, Tonka Bean, Amber, Oud.",
+   "descriptionAr": "عطر شرقي دافئ يتميز بنفحات التمور والبرالين ومسك الروم، وتستقر قاعدته العطرية على مزيج غني من الفانيليا وحبوب التونكا والعنبر والعود.",
+   "descriptionEn": "An oriental fragrance featuring heart notes of dates and praline, resting on a base of vanilla, tonka bean, amber and oud.",
    "gender": "unisex",
    "families": [
-    "gourmand",
     "oriental",
-    "oud"
+    "gourmand",
+    "amber"
    ],
    "notes": {
     "top": [],
@@ -3145,34 +3088,37 @@
    },
    "seasons": [
     "winter",
-    "autumn"
+    "autumn",
+    "all"
    ],
    "occasions": [
     "evening",
     "special",
-    "gift"
+    "daily"
    ],
    "tags": [
+    "خمرة",
     "لطافة",
-    "خمرا",
     "عطر شرقي",
-    "عطور لطافة",
-    "فانيليا وعود"
-   ]
+    "عطر عنبر",
+    "Lattafa",
+    "Khamrah"
+   ],
+   "style": 2
   },
   "LAT-119": {
    "sourceHash": "1advre4",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "أنغام من لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "أنغام من لطافة 100 مل ماء عطر للنساء",
    "nameEn": "Angham by Lattafa EDP 100ml Women",
-   "descriptionAr": "عطر نسائي أنيق يوازن بين التوابل الحيوية والزهور الناعمة مع لمسات الفانيليا والكاكاو. يترك أثراً دافئاً ومناسباً لجميع الأوقات والمناسبات.",
-   "descriptionEn": "Angham by Lattafa – 100 ml. Top: Ginger, Mandarin, Pink Pepper. Heart: Lavender, Praline, Cacao, Jasmine. Base: Vanilla, Amber, Musk.",
+   "descriptionAr": "عطر أنيق يمزج بين التوابل والزهور وفانيليا الغورماند. يفتتح بالزنجبيل واليوسفي والفلفل الوردي، يليه قلب من الخزامى والبرالين والكاكاو والياسمين، وتكشف القاعدة عن الفانيليا الدافئة والعنبر والمسك.",
+   "descriptionEn": "An elegant fragrance blending spicy, floral and vanilla gourmand accords with ginger, lavender, praline, and a warm vanilla base.",
    "gender": "women",
    "families": [
-    "oriental",
     "gourmand",
-    "spicy"
+    "spicy",
+    "floral"
    ],
    "notes": {
     "top": [
@@ -3198,8 +3144,9 @@
     ]
    },
    "seasons": [
-    "all",
-    "winter"
+    "winter",
+    "autumn",
+    "all"
    ],
    "occasions": [
     "daily",
@@ -3207,26 +3154,28 @@
     "work"
    ],
    "tags": [
-    "لطافة",
     "أنغام",
+    "لطافة",
+    "عطر فانيليا",
     "عطر نسائي",
-    "عطور شرقية",
-    "فانيليا"
-   ]
+    "Lattafa",
+    "Angham"
+   ],
+   "style": 2
   },
   "LAT-120": {
    "sourceHash": "qp0fey",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "ماهر ليجاسي من لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "ماهر ليجاسي من لطافة 100 مل ماء عطر رجالي",
    "nameEn": "Maahir Legacy by Lattafa 100ml EDP Man",
-   "descriptionAr": "عطر رجالي راقٍ يفتتح بنفحات الزعفران والبرغموت والتوابل الدافئة. يتميز بقلب غني بالعنبر والكراميل ويستقر على قاعدة ناعمة من المسك والصندل والفانيليا.",
-   "descriptionEn": "Maahir Legacy by Lattafa – 100 ml Eau de Parfum for Men. Top Notes: Saffron, Bergamot, Cinnamon. Heart Notes: Amber, Caramel, Patchouli. Base Notes: Musk, Sandalwood, Vanilla.",
+   "descriptionAr": "عطر رجالي يجمع بين التوابل والأخشاب والدفء، ويتميز بقاعدة عطرية تتكون من المسك وخشب الصندل والفانيليا.",
+   "descriptionEn": "A masculine fragrance featuring a warm base of musk, sandalwood, and vanilla.",
    "gender": "men",
    "families": [
-    "oriental",
     "woody",
-    "spicy"
+    "spicy",
+    "oriental"
    ],
    "notes": {
     "top": [],
@@ -3238,35 +3187,37 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "winter",
-    "spring"
+    "summer",
+    "spring",
+    "all"
    ],
    "occasions": [
-    "evening",
-    "work",
-    "daily"
+    "daily",
+    "work"
    ],
    "tags": [
-    "لطافة",
     "ماهر ليجاسي",
+    "لطافة",
     "عطر رجالي",
-    "عطور شرقية",
-    "عطر خشبي"
-   ]
+    "عطر خشبي",
+    "Lattafa",
+    "Maahir Legacy"
+   ],
+   "style": 2
   },
   "LAT-121": {
    "sourceHash": "z34uld",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "نجدية إنتنس لطافة للرجال",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "نادي إنتنس من لطافة للرجال 100 مل ماء عطر",
    "nameEn": "Najdia Intense Lattafa Men 100ml EDP",
-   "descriptionAr": "عطر نجدية إنتنس من لطافة يجمع بين الانتعاش الخشبي والنفحات العطرية الحيوية. يمنحك حضوراً جذاباً يناسب الأوقات اليومية والمناسبات المختلفة بفضل تركيبته المميزة.",
-   "descriptionEn": "Najdia Intense by Lattafa is a fresh woody aromatic fragrance for men starting with pineapple, apple, mint and ginger, a heart of marine notes, lavender and geranium, and a base of sandalwood, tonka bean, musk and patchouli.",
+   "descriptionAr": "عطر خشبي عطري منعش للرجال. يفتتح بالأناناس والتفاح والنعناع والزنجبيل لبداية حيوية، ويمزج القلب بين النوتات المائية والخزامى وإبرة الراعي، بينما تجمع القاعدة بين خشب الصندل وحبوب التونكا والمسك والباتشولي.",
+   "descriptionEn": "A fresh woody aromatic fragrance for men opening with pineapple and apple, with a marine heart and a woody base of sandalwood and patchouli.",
    "gender": "men",
    "families": [
     "fresh",
-    "woody"
+    "woody",
+    "aquatic"
    ],
    "notes": {
     "top": [
@@ -3297,21 +3248,23 @@
     "work"
    ],
    "tags": [
+    "نادي إنتنس",
     "لطافة",
-    "نجدية إنتنس",
     "عطر رجالي",
-    "عطور لطافة",
-    "عطر فريش"
-   ]
+    "عطر منعش",
+    "Lattafa",
+    "Najdia Intense"
+   ],
+   "style": 2
   },
   "LAT-122": {
    "sourceHash": "11oy85",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
    "nameAr": "دلال لطافة للنساء",
    "nameEn": "Dalal Lattafa Women 100ml EDP",
-   "descriptionAr": "عطر دلال من لطافة هو عطر زهري فواكهي جورماند يمنحك شعوراً بالأنوثة والدفء. يتميز بمقدمة فواكه غنية وقاعدة كريمية ناعمة.",
-   "descriptionEn": "Dalal by Lattafa is a Floral Fruity Gourmand fragrance for women with Golden Delicious apple and mandarin, ylang-ylang, jasmine and orange flower, and a soft creamy base of vanilla, musk and oakmoss.",
+   "descriptionAr": "عطر نسائي يجمع بين النفحات الفاكهية المنعشة في المقدمة وقلب زهري أنيق، مستقراً على قاعدة كريمية ناعمة من الفانيليا والمسك.",
+   "descriptionEn": "A women's fragrance combining a fresh fruity opening with an elegant floral heart, resting on a smooth, creamy base of vanilla and musk.",
    "gender": "women",
    "families": [
     "floral",
@@ -3336,33 +3289,35 @@
    },
    "seasons": [
     "spring",
-    "autumn",
+    "summer",
     "all"
    ],
    "occasions": [
     "daily",
-    "evening",
-    "special"
+    "work"
    ],
    "tags": [
-    "دلال",
     "لطافة",
     "عطر نسائي",
-    "عطور لطافة",
-    "عطر حلو"
-   ]
+    "دلال لطافة",
+    "فانيليا",
+    "مسك",
+    "عطور فواكه"
+   ],
+   "style": 2
   },
   "LAT-123": {
    "sourceHash": "3exvl0",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "فخر سيلفر لطافة للرجال",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "فاخر سيلفر لطافة للرجال",
    "nameEn": "Fakhar Silver by Lattafa 100ml EDP Men",
-   "descriptionAr": "عطر فخر سيلفر من لطافة للرجال يعبر عن الأناقة والجاذبية العصرية. يجمع بين الانتعاش والدفء ليمنحك إطلالة فريدة في كل الأوقات.",
-   "descriptionEn": "Fakhar Silver by Lattafa is a refreshing and elegant men's fragrance featuring notes of apple, bergamot, ginger, lavender, sage, juniper, amberwood, musk, and tonka bean.",
+   "descriptionAr": "عطر رجالي يبدأ بمزيج منعش من التفاح والبرغموت والزنجبيل، ويتطور عبر قلب عشبي، ليختتم بقاعدة دافئة من العنبر والمسك والتونكا.",
+   "descriptionEn": "A men's fragrance opening with a fresh blend of apple, bergamot, and ginger, developing through a herbal heart, and finishing with a warm base of amberwood, musk, and tonka bean.",
    "gender": "men",
    "families": [
     "fresh",
+    "spicy",
     "woody"
    ],
    "notes": {
@@ -3381,30 +3336,31 @@
    ],
    "occasions": [
     "daily",
-    "work",
-    "evening"
+    "work"
    ],
    "tags": [
-    "فخر سيلفر",
     "لطافة",
+    "فاخر سيلفر",
     "عطر رجالي",
-    "عطور لطافة",
-    "عطر فريش"
-   ]
+    "عطر منعش",
+    "برغموت",
+    "توابل"
+   ],
+   "style": 2
   },
   "LAT-124": {
    "sourceHash": "1p3khgf",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "أجواد بينك تو بينك كريمي إكسير لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "أجواد بينك تو بينك كريمي إلكسير لطافة",
    "nameEn": "Ajwad Pink 2 Pink Creamy Elixir Lattafa 60ml",
-   "descriptionAr": "عطر أجواد بينك تو بينك كريمي إكسير من لطافة يجمع بين الفواكه المنعشة وحلاوة الشوكولاتة البيضاء. يقدم لك تجربة عطرية مرحة وساحرة تناسب الأوقات الخاصة.",
-   "descriptionEn": "Ajwad Pink 2 Pink Creamy Elixir by Lattafa is a Fruity Gourmand fragrance with frozen raspberry, pear, blackcurrant, white chocolate, vanilla bean, musk and amberwood.",
+   "descriptionAr": "عطر نسائي يمزج بين الفواكه المجمدة المنعشة في البداية ونفحات الشوكولاتة البيضاء في القلب، مستقراً على قاعدة دافئة من الفانيليا والمسك.",
+   "descriptionEn": "A women's fragrance blending refreshing frozen fruits in the opening with white chocolate notes at the heart, resting on a warm base of vanilla bean, musk, and amberwood.",
    "gender": "women",
    "families": [
     "fruity",
     "gourmand",
-    "floral"
+    "oriental"
    ],
    "notes": {
     "top": [
@@ -3423,35 +3379,36 @@
    },
    "seasons": [
     "spring",
-    "winter",
+    "summer",
     "all"
    ],
    "occasions": [
     "daily",
-    "evening",
-    "special"
+    "evening"
    ],
    "tags": [
-    "أجواد بينك",
     "لطافة",
+    "أجواد بينك",
     "عطر نسائي",
-    "عطور لطافة",
-    "عطر فواكه"
-   ]
+    "شوكولاتة بيضاء",
+    "توت",
+    "فانيليا"
+   ],
+   "style": 2
   },
   "LAT-125": {
    "sourceHash": "18xgje0",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
    "nameAr": "أسد لطافة للرجال",
    "nameEn": "Asad Lattafa EDP 100ml Men",
-   "descriptionAr": "عطر أسد من لطافة يجسد القوة والجاذبية بتوليفة فريدة تجمع بين التوابل والدفء الخشبي. خيار مناسب للرجل العصري الباحث عن التميز.",
-   "descriptionEn": "Asad by Lattafa is a bold and elegant men’s fragrance opening with black pepper, tobacco and pineapple, a heart of coffee, patchouli and iris, and a base of amber, benzoin, vanilla and woods.",
+   "descriptionAr": "عطر رجالي يوازن بجرأة بين التوابل والتبغ والنفحات الخشبية، مع قلب غني بالقهوة والباتشولي، وقاعدة عميقة من العنبر والفانيليا.",
+   "descriptionEn": "A bold men's fragrance balancing spice, tobacco, and woody notes, with a rich heart of coffee and patchouli, and a deep base of amber, benzoin, vanilla, and woods.",
    "gender": "men",
    "families": [
-    "spicy",
     "woody",
-    "amber"
+    "spicy",
+    "oriental"
    ],
    "notes": {
     "top": [],
@@ -3470,25 +3427,26 @@
    ],
    "occasions": [
     "evening",
-    "special",
-    "work"
+    "special"
    ],
    "tags": [
+    "لطافة",
     "أسد لطافة",
     "عطر رجالي",
-    "عطور لطافة",
-    "عطر فخم",
-    "عطر توابل"
-   ]
+    "تبغ",
+    "قهوة",
+    "عنبر"
+   ],
+   "style": 2
   },
   "LAT-126": {
    "sourceHash": "10hwfiu",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
    "nameAr": "أسد بوربون لطافة للرجال",
    "nameEn": "Asad Bourbon Lattafa 100ml for Men",
-   "descriptionAr": "عطر أسد بوربون من لطافة يمنحك حضوراً قوياً وغنياً بالنوتات الخشبية والتوابل الدافئة. يعكس أناقة الرجل الثقة بنفسه في مختلف المناسبات.",
-   "descriptionEn": "Asad Bourbon by Lattafa is a Gourmand, Spicy and Woody fragrance for men featuring top notes of pink pepper, lavender and mirabelle plum, a heart of cacao, nutmeg and davana, and a base of bourbon vanilla, amber and vetiver.",
+   "descriptionAr": "عطر رجالي يتميز بمزيج حار وخشبي يجمع بين الفلفل الوردي واللافندر في المقدمة، وقلب غني بالكاكاو وجوزة الطيب، وقاعدة من فانيليا البوربون.",
+   "descriptionEn": "A men's fragrance featuring a spicy and woody blend combining pink pepper and lavender in the opening, a heart rich in cacao and nutmeg, and a base of bourbon vanilla, amber, and vetiver.",
    "gender": "men",
    "families": [
     "gourmand",
@@ -3514,35 +3472,35 @@
    },
    "seasons": [
     "winter",
-    "autumn",
-    "all"
+    "autumn"
    ],
    "occasions": [
     "evening",
-    "special",
-    "work"
+    "special"
    ],
    "tags": [
-    "أسد بوربون",
     "لطافة",
+    "أسد بوربون",
     "عطر رجالي",
-    "عطور لطافة",
-    "عطر شتوي"
-   ]
+    "كاكاو",
+    "فانيليا بوربون",
+    "توابل"
+   ],
+   "style": 2
   },
   "LAT-127": {
    "sourceHash": "g36kky",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "أنغام سكوند سونغ لطافة للنساء",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "أنغام سكوند صونغ لطافة",
    "nameEn": "Angham Second Song by Lattafa 100ml",
-   "descriptionAr": "عطر أنغام سكوند سونغ من لطافة يعبر عن النعومة والأنوثة بتوليفة زهرية ساحرة. يضفي لمسة من البهجة والانتعاش على إطلالتك اليومية والمناسبات الكاجوال.",
-   "descriptionEn": "Angham Second Song by Lattafa is a sweet floral fragrance for women with bergamot, pear blossom, orange blossom, peony, praline, vanilla, tonka bean, ambroxan and musk.",
+   "descriptionAr": "عطر نسائي زهري وحلو يفتتح بنفحات البرغموت وزهر الكمثرى، ويتوسطه زهر البرتقال والفاوانيا، وينتهي بقاعدة كريمية من الفانيليا والمسك.",
+   "descriptionEn": "A sweet floral women's fragrance opening with bergamot and pear blossom, followed by orange blossom, peony, and praline, finishing with a creamy base of vanilla, tonka bean, ambroxan, and musk.",
    "gender": "women",
    "families": [
     "floral",
-    "gourmand",
-    "musk"
+    "oriental",
+    "gourmand"
    ],
    "notes": {
     "top": [
@@ -3568,29 +3526,31 @@
    ],
    "occasions": [
     "daily",
-    "gift"
+    "work"
    ],
    "tags": [
-    "أنغام",
     "لطافة",
+    "أنغام لطافة",
     "عطر نسائي",
-    "عطور لطافة",
-    "عطر زهري"
-   ]
+    "زهور",
+    "فانيليا",
+    "برغموت"
+   ],
+   "style": 2
   },
   "LAT-128": {
    "sourceHash": "15l3btu",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "أطلس كينون لطافة للجنسين",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "أطلس كانيون لطافة للجنسين",
    "nameEn": "Atlas Canyon Lattafa 55ml Unisex",
-   "descriptionAr": "عطر أطلس كينون من لطافة يجمع بين انتعاش الحمضيات ونفحات البحر العميقة بأسلوب راقٍ. يناسب الأوقات اليومية وأجواء الأيام الدافئة بحضور منعش.",
-   "descriptionEn": "Atlas Canyon by Lattafa is a Hesperidic Ambery unisex fragrance with bergamot, ginger, lemon, lily of the valley, sea notes, patchouli, oakmoss, ambroxan and musk.",
+   "descriptionAr": "عطر للجنسين يجمع بين الحمضيات المنعشة في الافتتاحية والنفحات البحرية المائية في القلب، مع قاعدة خشبية مسكية دافئة.",
+   "descriptionEn": "A unisex fragrance combining refreshing citrus in the opening with aquatic sea notes in the heart, resting on a warm woody-musky base.",
    "gender": "unisex",
    "families": [
+    "fresh",
     "citrus",
-    "aquatic",
-    "woody"
+    "aquatic"
    ],
    "notes": {
     "top": [
@@ -3611,38 +3571,39 @@
    },
    "seasons": [
     "summer",
-    "spring",
-    "autumn"
+    "spring"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
-    "أطلس كينون",
     "لطافة",
+    "أطلس كانيون",
     "عطر للجنسين",
-    "عطور لطافة",
-    "عطر صيفي"
-   ]
+    "عطر منعش",
+    "حمضيات",
+    "بحري"
+   ],
+   "style": 2
   },
   "LAT-129": {
    "sourceHash": "1hyq1f1",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "بديع العود أميثست فيوجن لطافة للجنسين",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "بديع العود أميثست فيوجن لطافة",
    "nameEn": "Bade'e Al Oud Amethyst Fusion 100ml by Lattafa",
-   "descriptionAr": "عطر بديع العود أميثست فيوجن من لطافة يجمع بين نفحات الشرق الفاخرة والأخشاب الدافئة. يقدم تجربة عطرية استثنائية تناسب الجنسين وتعكس الفخامة.",
-   "descriptionEn": "Bade'e Al Oud Amethyst Fusion by Lattafa is an Oriental Woody fragrance for women and men featuring Amaretto, Mandarin, Rum, Patchouli, Caramel, Amber, Sandalwood, Vanilla and Benzoin.",
+   "descriptionAr": "عطر شرقي خشبي للجنسين يبدأ بنفحات الأماريتو والمندرين والروم، مروراً بقلب من الباتشولي والكراميل، وينتهي بقاعدة من خشب الصندل والفانيليا.",
+   "descriptionEn": "An oriental woody fragrance for women and men starting with notes of amaretto, mandarin, and rum, passing through a heart of patchouli, caramel, and amber, ending with a base of sandalwood, vanilla, and benzoin.",
    "gender": "unisex",
    "families": [
-    "oud",
     "oriental",
-    "woody"
+    "woody",
+    "amber"
    ],
    "notes": {
     "top": [
-     "Amaretto",
+     "Oud",
      "Mandarin",
      "Rum"
     ],
@@ -3659,30 +3620,30 @@
    },
    "seasons": [
     "winter",
-    "autumn",
-    "all"
+    "autumn"
    ],
    "occasions": [
     "evening",
-    "special",
-    "gift"
+    "special"
    ],
    "tags": [
-    "بديع العود",
     "لطافة",
-    "عطر عود",
-    "عطور لطافة",
-    "عطر شرقي"
-   ]
+    "بديع العود",
+    "عطر شرقي",
+    "عود",
+    "كراميل",
+    "فانيليا"
+   ],
+   "style": 2
   },
   "LAT-130": {
    "sourceHash": "1lojoto",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "عود موود لطافة العربي للرجال",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "عود مود لطافة العربي للرجال",
    "nameEn": "Oud Mood Lattafa Arabian 100ml EDP",
-   "descriptionAr": "عطر عود موود من لطافة يعكس الأصالة الشرقية بلمسات عصرية ساحرة. يجمع بين عبير العود والتوابل والكراميل ليمنحك دفئاً وفخامة لا تضاهى.",
-   "descriptionEn": "Oud Mood by Lattafa is an Arabian unisex Eau de Parfum with top notes of rose, saffron and amber, a heart of patchouli and agarwood (oud), and a base of musk, caramel and resin.",
+   "descriptionAr": "عطر عربي شرقي للرجال يجمع بين الورد والزعفران في الافتتاحية، ويتوسطه الباتشولي وخشب العود، وينتهي بقاعدة دافئة من المسك والكراميل.",
+   "descriptionEn": "An Arabian oriental fragrance for men combining rose and saffron in the opening, followed by patchouli and agarwood (oud), finishing with a warm base of musk, caramel, and resin.",
    "gender": "men",
    "families": [
     "oud",
@@ -3700,30 +3661,30 @@
    },
    "seasons": [
     "winter",
-    "autumn",
-    "all"
+    "autumn"
    ],
    "occasions": [
     "evening",
-    "special",
-    "gift"
+    "special"
    ],
    "tags": [
-    "عود موود",
     "لطافة",
+    "عود مود",
     "عطر رجالي",
-    "عطور لطافة",
-    "عطر عود"
-   ]
+    "عود شرقي",
+    "زعفران",
+    "مسك"
+   ],
+   "style": 2
   },
   "LAT-131": {
    "sourceHash": "ihpw0k",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
    "nameAr": "عود نجدية لطافة للجنسين",
    "nameEn": "Oud Najdia Lattafa 100ml EDP",
-   "descriptionAr": "عطر عود نجدية من لطافة يقدم مزيجاً دخانياً دافئاً يجمع بين العود الناعم والنفحات العنبرية. عطر عربي جريء يناسب الأوقات النهارية والمسائية.",
-   "descriptionEn": "Oud Najdia by Lattafa is an Oriental Woody fragrance with spicy and woody top notes, oud and amber heart, and a base of musk, vanilla and smoky woods.",
+   "descriptionAr": "عطر شرقي خشبي للجنسين يتميز برائحة دخانية دافئة تضم لمسات من العود الخفيف والتوابل والعنبر الكريمي.",
+   "descriptionEn": "An oriental woody unisex fragrance featuring a warm, smoky scent with touches of soft oud, light spices, and creamy amber.",
    "gender": "unisex",
    "families": [
     "oud",
@@ -3752,30 +3713,31 @@
    ],
    "occasions": [
     "daily",
-    "evening",
-    "special"
+    "evening"
    ],
    "tags": [
-    "عود نجدية",
     "لطافة",
+    "عود نجدية",
     "عطر للجنسين",
-    "عطور لطافة",
-    "عطر عود"
-   ]
+    "عود",
+    "توابل",
+    "أخشاب مدخنة"
+   ],
+   "style": 2
   },
   "LAT-132": {
    "sourceHash": "17rt6gg",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
    "nameAr": "قائد الفرسان لطافة للرجال",
    "nameEn": "Qaed Al Fursan Lattafa 90ml for Men",
-   "descriptionAr": "عطر قائد الفرسان من لطافة للرجال يجمع بين الفواكه المنعشة والأخشاب الشرقية الدافئة. يضفي على حضورك طابعاً من الحيوية والثقة.",
-   "descriptionEn": "Qaed Al Fursan by Lattafa is an Oriental Woody Fruity fragrance for men featuring pineapple and saffron on top, jasmine and fir balsam in the heart, and oud wood, cedarwood and amber in the base.",
+   "descriptionAr": "عطر رجالي يجمع بين عبير الأناناس والزعفران في المقدمة، وقلب من الياسمين وبلسم التنوب، مستقراً على قاعدة خشبية من العود والأرز.",
+   "descriptionEn": "A men's fragrance combining pineapple and saffron in the opening, a heart of jasmine and fir balsam, resting on a woody base of oud wood, cedarwood, and amber.",
    "gender": "men",
    "families": [
-    "fruity",
+    "oriental",
     "woody",
-    "oriental"
+    "fruity"
    ],
    "notes": {
     "top": [
@@ -3794,82 +3756,81 @@
    },
    "seasons": [
     "summer",
-    "autumn",
+    "spring",
     "all"
    ],
    "occasions": [
     "daily",
-    "work",
-    "evening"
+    "work"
    ],
    "tags": [
-    "قائد الفرسان",
     "لطافة",
+    "قائد الفرسان",
     "عطر رجالي",
-    "عطور لطافة",
-    "عطر فواكه"
-   ]
+    "أناناس",
+    "أخشاب",
+    "زعفران"
+   ],
+   "style": 2
   },
   "LAT-133": {
    "sourceHash": "12dbpr0",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "أسد إكسير لطافة للرجال",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "أسد إلكسير لطافة للرجال",
    "nameEn": "Asad Elixir Lattafa 100ml for Men",
-   "descriptionAr": "عطر أسد إكسير من لطافة هو تجسيد للثقة والقوة بتوليفة داكنة وخشبية فاخرة. يجمع بين التوابل والبخور والعنبر ليمنحك حضوراً آسراً لا يُنسى.",
-   "descriptionEn": "Asad Elixir by Lattafa is a dark, woody and refined men's fragrance blending spicy, smoky, amber notes, nutmeg, cardamom, myrrh, patchouli, incense and rich woods.",
+   "descriptionAr": "عطر رجالي داكن وخشبي يطور تركيبة أسد الأصلية بنفحات غنية من اللافندر المتبل وجوزة الطيب والهيل، مع طبقات من المر والبخور والعنبر.",
+   "descriptionEn": "A darker, woodier men's fragrance evolving the original Asad composition with rich notes of spiced lavender, nutmeg, and cardamom, layered with myrrh, patchouli, incense, and amber.",
    "gender": "men",
    "families": [
-    "oud",
+    "oriental",
     "spicy",
-    "amber"
+    "woody"
    ],
    "notes": {
     "top": [
+     "Lavender",
+     "Nutmeg",
      "Cardamom",
-     "Nutmeg"
+     "Incense",
+     "Myrrh"
     ],
-    "heart": [
-     "Myrrh",
-     "Patchouli",
-     "Incense"
-    ],
+    "heart": [],
     "base": [
-     "Amber",
-     "Woods"
+     "Amber"
     ]
    },
    "seasons": [
     "winter",
-    "autumn",
-    "all"
+    "autumn"
    ],
    "occasions": [
     "evening",
-    "special",
-    "gift"
+    "special"
    ],
    "tags": [
-    "أسد إكسير",
     "لطافة",
+    "أسد إلكسير",
     "عطر رجالي",
-    "عطور لطافة",
-    "عطر فخم"
-   ]
+    "بخور",
+    "مر",
+    "توابل"
+   ],
+   "style": 2
   },
   "LAT-134": {
    "sourceHash": "t0xz3s",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
    "nameAr": "عفيف لطافة للجنسين",
    "nameEn": "Afeef by Lattafa 100ml EDP",
-   "descriptionAr": "عطر عفيف من لطافة يتميز بطابعه المنعش والنظيف الذي يناسب الاستخدام اليومي. يجمع بين الحمضيات الطازجة والزهور الناعمة مع قاعدة عنبرية دافئة.",
-   "descriptionEn": "Afeef by Lattafa is an Oriental fragrance with top notes of citrus and fresh notes, a heart of soft florals and amber, and a base of musk, vanilla and woody notes.",
+   "descriptionAr": "عطر شرقي للجنسين يتميز برائحة منعشة ونظيفة تجمع بين الحمضيات الطازجة والأزهار الناعمة والعنبر الكريمي.",
+   "descriptionEn": "An oriental unisex fragrance featuring a fresh and clean scent combining bright citrus, soft florals, and creamy amber.",
    "gender": "unisex",
    "families": [
+    "oriental",
     "fresh",
-    "floral",
-    "oriental"
+    "citrus"
    ],
    "notes": {
     "top": [
@@ -3896,26 +3857,28 @@
     "work"
    ],
    "tags": [
-    "عفيف",
     "لطافة",
+    "عفيف لطافة",
     "عطر للجنسين",
-    "عطور لطافة",
-    "عطر يومي"
-   ]
+    "عطر منعش",
+    "حمضيات",
+    "مسك"
+   ],
+   "style": 2
   },
   "LAT-135": {
    "sourceHash": "1bfn695",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "هر كونفشن لطافة",
-   "nameEn": "Her Confession Lattafa",
-   "descriptionAr": "عطر نسائي أنيق يجمع بين نفحات الزهور الدافئة واللمسات الخشبية الساحرة. يمنحك حضوراً جذاباً بفضل توليفته الفريدة من الفانيليا والتونكا والمسك.",
-   "descriptionEn": "Her Confession by Lattafa - 100ml Eau de Parfum for Women with floral, warm and woody notes.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هير كنفشن لطافة للنساء",
+   "nameEn": "Her Confession Lattafa 100ml EDP",
+   "descriptionAr": "عطر نسائي دافئ يفتتح بنفحات القرفة واتفاق متميز، وقلب غني بالياسمين ومسك الروم والبخور، مع قاعدة من الفانيليا والتونكا والمسك.",
+   "descriptionEn": "A warm women's fragrance opening with a mystikal accord and cinnamon, a rich heart of jasmine, tuberose, incense, and mahonial, with a base of vanilla, tonka beans, and musk.",
    "gender": "women",
    "families": [
     "floral",
-    "woody",
-    "gourmand"
+    "amber",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -3931,30 +3894,30 @@
    },
    "seasons": [
     "winter",
-    "autumn",
-    "all"
+    "autumn"
    ],
    "occasions": [
     "evening",
-    "special",
-    "daily"
+    "special"
    ],
    "tags": [
     "لطافة",
+    "هير كنفشن",
     "عطر نسائي",
-    "هر كونفشن",
-    "عطر فانيليا",
-    "عبارات عطرية"
-   ]
+    "قرفة",
+    "فانيليا",
+    "بخور"
+   ],
+   "style": 2
   },
   "LAT-136": {
    "sourceHash": "b9vsri",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "يارا كاندي لطافة",
-   "nameEn": "Yara Candy Lattafa",
-   "descriptionAr": "عطر نسائي مبهج ينبض بنفحات الفواكه المنعشة والزهور الرقيقة مع لمسة حلوة. يضفي على يومك حيوية وبهجة بفضل قاعدة الفانيليا والمسك.",
-   "descriptionEn": "Yara Candy by Lattafa - 100ml Eau de Parfum for Women featuring berry, peach, and sweet caramel notes.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "يارا كاندي من لطافة 100 مل ماء عطر نسائي",
+   "nameEn": "Yara Candy by Lattafa 100ml EDP Women",
+   "descriptionAr": "عطر نسائي يجمع بين نفحات التوت والخوخ في المقدمة، وقلب غني بالورد والياسمين والكراميل، وقاعدة من الفانيليا والمسك والعنبر.",
+   "descriptionEn": "A women's fragrance combining berry and peach top notes, a heart of rose, jasmine, and caramel, and a base of vanilla, musk, and amber.",
    "gender": "women",
    "families": [
     "fruity",
@@ -3971,36 +3934,36 @@
     ]
    },
    "seasons": [
-    "summer",
     "spring",
+    "summer",
     "all"
    ],
    "occasions": [
     "daily",
-    "work",
-    "gift"
+    "evening"
    ],
    "tags": [
     "يارا كاندي",
     "لطافة",
-    "عطر فواكه",
     "عطر نسائي",
-    "عطور حلوة"
-   ]
+    "Yara Candy",
+    "Lattafa"
+   ],
+   "style": 2
   },
   "LAT-137": {
    "sourceHash": "5l8cbo",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "يارا موي لطافة",
-   "nameEn": "Yara Moi Lattafa",
-   "descriptionAr": "عطر نسائي راقٍ يتميز بمزيج ساحر من الخوخ والياسمين والزهور البيضاء. يستقر على قاعدة دافئة من الفانيليا والمسك والعنبر لإطلالة لا تُنسى.",
-   "descriptionEn": "Yara Moi by Lattafa - 100ml Eau de Parfum for Women with white flowers, caramel, and vanilla.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "يارا موي من لطافة 100 مل ماء عطر نسائي",
+   "nameEn": "Yara Moi by Lattafa 100ml EDP Women",
+   "descriptionAr": "عطر نسائي يبدأ ببرعم الخوخ والياسمين، يليه قلب من الزهور البيضاء والكراميل، ويستقر على قاعدة من الفانيليا والمسك والعنبر.",
+   "descriptionEn": "A women's fragrance starting with peach and jasmine, followed by a heart of white flowers and caramel, resting on a base of vanilla, musk, and amber.",
    "gender": "women",
    "families": [
-    "floral",
+    "fruity",
     "gourmand",
-    "amber"
+    "floral"
    ],
    "notes": {
     "top": [
@@ -4020,34 +3983,33 @@
    "seasons": [
     "winter",
     "autumn",
-    "spring"
+    "all"
    ],
    "occasions": [
-    "evening",
-    "special",
-    "daily"
+    "daily",
+    "evening"
    ],
    "tags": [
     "يارا موي",
     "لطافة",
     "عطر نسائي",
-    "عطور شرقية",
-    "كاراميل"
-   ]
+    "Yara Moi",
+    "Lattafa"
+   ],
+   "style": 2
   },
   "LAT-138": {
    "sourceHash": "utlfk8",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "ديناستي لطافة",
-   "nameEn": "Dynasty Lattafa",
-   "descriptionAr": "عطر عشبي وتوابل عصري يناسب الجنسين بتركيبة متوازنة ومميزة. يجمع بين البرغموت والزنجبيل والشاي والجلود ليمنحك حضوراً أنيقاً وواثقاً.",
-   "descriptionEn": "Dynasty by Lattafa - 100ml Eau de Parfum Unisex featuring a modern woody-spicy fragrance profile.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "ديناستي من لطافة 100 مل ماء عطر للجنسين",
+   "nameEn": "Dynasty by Lattafa 100ml EDP Unisex",
+   "descriptionAr": "عطر خشبي حار للجنسين يفتح ببرغموت وزنجبيل وميرمية وتوت أفرنجي وجوزة الطيب، مع قلب من شاي الرويبس والشمواه، وقاعدة من خشب الأرز والكاشميران والعنبر.",
+   "descriptionEn": "A woody-spicy fragrance for women and men opening with bergamot, ginger, clary sage, raspberry, and nutmeg, a heart of rooibos tea and suede, and a cedarwood, cashmeran, and amberwood base.",
    "gender": "unisex",
    "families": [
     "woody",
-    "spicy",
-    "fresh"
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -4073,31 +4035,32 @@
     "all"
    ],
    "occasions": [
-    "work",
     "daily",
+    "work",
     "evening"
    ],
    "tags": [
     "ديناستي",
     "لطافة",
     "عطر للجنسين",
-    "عطر خشبي",
-    "توابل"
-   ]
+    "Dynasty",
+    "Lattafa"
+   ],
+   "style": 2
   },
   "LAT-139": {
    "sourceHash": "uisarb",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "سقراط لطافة",
-   "nameEn": "Suqraat Lattafa",
-   "descriptionAr": "عطر رجالي منعش يجمع ببراعة بين نفحات البرغموت والزنجبيل واللافندر. يمنحك شعوراً بالانتعاش والجاذبية بفضل قاعدته الخشبية الدافئة.",
-   "descriptionEn": "Suqraat by Lattafa - 100ml Eau de Parfum for Men with fresh bergamot, ginger, and lavender notes.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "سقراط من لطافة 100 مل ماء عطر رجالي",
+   "nameEn": "Suqraat by Lattafa 100ml EDP Men",
+   "descriptionAr": "عطر رجالي يبدأ برائحة البرغموت والزنجبيل، يتبعها قلب من اللافندر وأوراق البنفسج، وقاعدة من العنبر والمسك وخشب الصندل.",
+   "descriptionEn": "A men's fragrance featuring top notes of bergamot and ginger, a heart of lavender and violet leaves, and a base of amber, musk, and sandalwood.",
    "gender": "men",
    "families": [
     "fresh",
-    "woody",
-    "spicy"
+    "spicy",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -4115,36 +4078,36 @@
     ]
    },
    "seasons": [
-    "summer",
     "spring",
+    "summer",
     "all"
    ],
    "occasions": [
     "daily",
-    "work",
-    "special"
+    "work"
    ],
    "tags": [
     "سقراط",
     "لطافة",
     "عطر رجالي",
-    "عطر منعش",
-    "صيف وتوابل"
-   ]
+    "Suqraat",
+    "Lattafa"
+   ],
+   "style": 2
   },
   "LAT-140": {
    "sourceHash": "g77g2y",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "قائد الفرسان أنلمتد لطافة",
-   "nameEn": "Qaed Al Fursan Unlimited Lattafa",
-   "descriptionAr": "عطر استثنائي يجمع بين انتعاش الأناناس والحمضيات وعمق الأخشاب. يقدم تجربة عطرية ساحرة تلائم جميع الأوقات بفضل تركيبته الجذابة.",
-   "descriptionEn": "Qaed Al Fursan Unlimited by Lattafa - 90ml Eau De Parfum with pineapple, citrus and rich base notes.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "قائد الفرسان أنلمتد من لطافة 90 مل ماء عطر",
+   "nameEn": "Qaed Al Fursan Unlimited by Lattafa 90ml EDP",
+   "descriptionAr": "عطر يجمع بين نفحات الأناناس والحمضيات في الافتتاحية، وقلب من بتولا الياسمين والباتشولي، وقاعدة من العنبر وطحلب السنديان والمسك.",
+   "descriptionEn": "A fragrance featuring pineapple and citrus top notes, a heart of birch, jasmine, and patchouli, and a base of amber, oakmoss, and musk.",
    "gender": "unisex",
    "families": [
     "fruity",
     "fresh",
-    "woody"
+    "musk"
    ],
    "notes": {
     "top": [],
@@ -4156,36 +4119,35 @@
     ]
    },
    "seasons": [
-    "summer",
     "spring",
+    "summer",
     "all"
    ],
    "occasions": [
     "daily",
-    "work",
-    "gift"
+    "work"
    ],
    "tags": [
     "قائد الفرسان",
     "لطافة",
-    "اناناس",
     "عطر للجنسين",
-    "عطور فواكه"
-   ]
+    "Qaed Al Fursan",
+    "Lattafa"
+   ],
+   "style": 2
   },
   "LAT-141": {
    "sourceHash": "14qh84d",
    "editor": "shaheen",
-   "updatedAt": "2026-10-16T08:33:23.756Z",
-   "nameAr": "إكلير لطافة",
-   "nameEn": "Eclaire Lattafa",
-   "descriptionAr": "عطر نسائي غني بالنوتات الكريمية الحلوة من الكراميل والفانيليا والحليب. يمنحك دفئاً ورونقاً استثنائياً بفضل توليفته الساحرة والمغرية.",
-   "descriptionEn": "Eclaire by Lattafa - 100ml Eau de Parfum for Women featuring rich caramel, vanilla, and milk notes.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "إكلير من لطافة 100 مل ماء عطر نسائي",
+   "nameEn": "Eclaire by Lattafa 100ml EDP Women",
+   "descriptionAr": "عطر نسائي يبدأ بنفحات الكراميل والفانيليا والحليب، مع قلب من اللوز وحبوب التونكا والورد، وقاعدة من المسك والعنبر وخشب الصندل.",
+   "descriptionEn": "A women's fragrance with top notes of caramel, vanilla, and milk, a heart of almond, tonka bean, and rose, and a base of musk, amber, and sandalwood.",
    "gender": "women",
    "families": [
     "gourmand",
-    "powdery",
-    "amber"
+    "powdery"
    ],
    "notes": {
     "top": [],
@@ -4197,31 +4159,30 @@
     ]
    },
    "seasons": [
-    "winter",
     "autumn",
-    "all"
+    "winter"
    ],
    "occasions": [
-    "evening",
-    "special",
-    "daily"
+    "daily",
+    "evening"
    ],
    "tags": [
     "إكلير",
     "لطافة",
-    "عطر فانيليا",
-    "كراميل",
-    "عطور نسائية حلوة"
-   ]
+    "عطر نسائي",
+    "Eclaire",
+    "Lattafa"
+   ],
+   "style": 2
   },
   "LAT-142": {
    "sourceHash": "1095vqr",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "سيمبلي عود من لطافة",
-   "nameEn": "Simply Oud by Lattafa",
-   "descriptionAr": "توليفة خشبية دافئة تجمع بين فخامة العود ودفء التوابل الشرقية في افتتاحية مهيبة. يستقر العطر على قاعدة دخانية عميقة من المسك والأخشاب الجافة لتمنحك حضوراً رجولياً متميزاً.",
-   "descriptionEn": "A bold woody oriental fragrance blending rich oud, spices, smoke, and dry woods.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "سيمبلي عود من لطافة 100 مل ماء عطر رجالي",
+   "nameEn": "Simply Oud by Lattafa 100ml EDP for Men",
+   "descriptionAr": "عطر رجالي يبرز فيه العود والتوابل في البداية، مع قلب من العنبر والأخشاب، وقاعدة دخانية من المسك والأخشاب الجافة.",
+   "descriptionEn": "A men's fragrance featuring top notes of oud and spices, a heart of amber and woods, and a base of smoke, musk, and dry woods.",
    "gender": "men",
    "families": [
     "oud",
@@ -4247,34 +4208,42 @@
    ],
    "tags": [
     "سيمبلي عود",
-    "عطور لطافة",
+    "لطافة",
     "عطر رجالي",
-    "عود شرقي",
     "Simply Oud",
     "Lattafa"
-   ]
+   ],
+   "style": 2
   },
   "ALR-143": {
    "sourceHash": "su0zqh",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "فرنش كوفي من الرحاب",
-   "nameEn": "French Coffee by Al Rehab",
-   "descriptionAr": "عطر ساحر يغمر الحواس بعبير القهوة الفرنسية الغنية الممتزجة بلمسات الكراميل والفانيليا. يمنحك شعوراً فورياً بالدفء والراحة مع طابع سكري شهي.",
-   "descriptionEn": "A delectable gourmand fragrance featuring rich coffee, sweet caramel, and warm vanilla.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "فرنش كوفي من الرحاب 100 مل ماء عطر نسائي",
+   "nameEn": "French Coffee Al Rehab 100ml EDP Women",
+   "descriptionAr": "عطر نسائي ذو طابع غورماند حلو، يرتكز على نوتات القهوة والكراميل والفانيليا والكاكاو والتوابل.",
+   "descriptionEn": "A sweet gourmand women's fragrance built around notes of coffee, caramel, vanilla, cocoa, and spices.",
    "gender": "women",
    "families": [
-    "gourmand",
-    "spicy"
+    "gourmand"
    ],
    "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
+    "top": [
+     "Coffee"
+    ],
+    "heart": [
+     "Caramel",
+     "Vanilla"
+    ],
+    "base": [
+     "Cocoa",
+     "Spices"
+    ]
    },
    "seasons": [
     "winter",
-    "autumn"
+    "autumn",
+    "all"
    ],
    "occasions": [
     "daily",
@@ -4283,20 +4252,20 @@
    "tags": [
     "فرنش كوفي",
     "الرحاب",
-    "عطر قهوة",
-    "عطور نسائية",
+    "عطر نسائي",
     "French Coffee",
     "Al Rehab"
-   ]
+   ],
+   "style": 2
   },
   "LAT-144": {
    "sourceHash": "he6smc",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "أنجل لا ميوز من لطافة",
-   "nameEn": "Angel by LaMuse (Lattafa)",
-   "descriptionAr": "مزيج أنثوي بهيج يفتتح بنفحات منعشة من الخوخ وتوت العليق مع لمسة حمضية مشرقة. ينساب القلب برقة الأزهار والكراميل ليستقر على قاعدة ناعمة من الفانيليا والمسك.",
-   "descriptionEn": "A sweet floral-fruity perfume blending succulent peach, raspberry, caramel, and vanilla.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "أنخيل من لاميوز لطافة 100 مل ماء عطر نسائي",
+   "nameEn": "Angel by LaMuse (Lattafa) – 100 ml for Women",
+   "descriptionAr": "عطر نسائي زهري فاكهي حلو، يفتح بماندرين وخوخ وتوت، مع قلب من الورد والياسمين والكراميل، وقاعدة من الفانيليا والعنبر والمسك.",
+   "descriptionEn": "A floral-fruity-sweet women's fragrance with mandarin, peach, and raspberry top notes, a rose, jasmine, and caramel heart, and a vanilla, amber, and musk base.",
    "gender": "women",
    "families": [
     "floral",
@@ -4323,30 +4292,29 @@
    "seasons": [
     "spring",
     "summer",
-    "autumn"
+    "all"
    ],
    "occasions": [
     "daily",
-    "gift",
-    "special"
+    "evening"
    ],
    "tags": [
-    "أنجل لا ميوز",
+    "أنخيل",
+    "لاميوز",
     "لطافة",
     "عطر نسائي",
-    "عطر فواكه",
-    "Angel LaMuse",
-    "Lattafa"
-   ]
+    "Angel LaMuse"
+   ],
+   "style": 2
   },
   "LAT-145": {
    "sourceHash": "1dzz8r2",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "النشامة كابريس من لطافة",
-   "nameEn": "Al Nashama Caprice by Lattafa",
-   "descriptionAr": "النشامة كابريس من لطافة — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
-   "descriptionEn": "Al Nashama Caprice by Lattafa — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "النشاما كابريس من لطافة 100 مل ماء عطر",
+   "nameEn": "Al Nashama Caprice by Lattafa 100ml EDP",
+   "descriptionAr": "النشاما كابريس من لطافة 100 مل ماء عطر — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Al Nashama Caprice by Lattafa 100ml EDP — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "unisex",
    "families": [],
    "notes": {
@@ -4357,26 +4325,27 @@
    "seasons": [],
    "occasions": [],
    "tags": [
-    "النشامة كابريس",
+    "النشاما كابريس",
     "لطافة",
     "عطر للجنسين",
     "Al Nashama Caprice",
     "Lattafa"
-   ]
+   ],
+   "style": 2
   },
   "LAT-146": {
    "sourceHash": "j7pgo8",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "روعة العود من لطافة",
-   "nameEn": "Rouat Al Oud by Lattafa",
-   "descriptionAr": "إبداع شرقي فاخر يفتتح بنغمات الزعفران والقرفة وتناغم الورد المخملي. يتعمق العطر بطبقات الجلد والعنبر ليرتكز أخيراً على خشب الصندل والعود العريق.",
-   "descriptionEn": "An opulent oriental scent infused with saffron, cinnamon, leather, and deep oud.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "روعة العود من لطافة 100 مل ماء عطر للجنسين",
+   "nameEn": "Rouat Al Oud by Lattafa 100ml EDP Unisex",
+   "descriptionAr": "عطر شرقي خشبي للجنسين يجمع بين الزعفران والورد والقرفة في المقدمة، وقلب من العنبر والجلد والباتشولي، وقاعدة من العود والمسك وخشب الصندل.",
+   "descriptionEn": "An oriental-woody unisex fragrance combining saffron, rose, and cinnamon top notes, an amber, leather, and patchouli heart, and an oud, musk, and sandalwood base.",
    "gender": "unisex",
    "families": [
-    "oud",
     "oriental",
-    "woody"
+    "woody",
+    "oud"
    ],
    "notes": {
     "top": [
@@ -4405,26 +4374,26 @@
    ],
    "tags": [
     "روعة العود",
-    "عطور لطافة",
-    "عطر عود",
+    "لطافة",
     "عطر للجنسين",
     "Rouat Al Oud",
     "Lattafa"
-   ]
+   ],
+   "style": 2
   },
   "LAT-147": {
    "sourceHash": "cbmy0l",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "خالص مسك (بيور مسك) من لطافة",
-   "nameEn": "Pure Musk (Khalis Musk) by Lattafa",
-   "descriptionAr": "تجربة نقية ومريحة تحاكي انتعاش النظافة برائحة المسك الأبيض الناعم ولمسات الأزهار اللطيفة. يستقر بلمسة كريمية رقيقة من العنبر والفانيليا.",
-   "descriptionEn": "A clean and comforting musky perfume enriched with delicate soft florals and gentle amber.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "بيور مسك من لطافة 100 مل ماء عطر",
+   "nameEn": "Pure Musk by Lattafa (Khalis Musk) 100ml EDP",
+   "descriptionAr": "عطر مسكي زهري منعش يفتتح بالمسك الأبيض والزهور الناعمة، مع قلب من الورد والياسمين والزنبق، وقاعدة من المسك والعنبر والفانيليا.",
+   "descriptionEn": "A fresh musky-floral fragrance with white musk and soft floral top notes, a rose, jasmine, and lily heart, and a musk, amber, and vanilla base.",
    "gender": "unisex",
    "families": [
     "musk",
     "floral",
-    "powdery"
+    "fresh"
    ],
    "notes": {
     "top": [
@@ -4443,37 +4412,35 @@
     ]
    },
    "seasons": [
-    "all",
     "spring",
-    "summer"
+    "summer",
+    "all"
    ],
    "occasions": [
     "daily",
-    "work",
-    "gift"
+    "work"
    ],
    "tags": [
-    "خالص مسك",
     "بيور مسك",
-    "مسك لطافة",
-    "عطر نظافة",
+    "خالص مسك",
+    "لطافة",
     "Pure Musk",
-    "Khalis Musk"
-   ]
+    "Lattafa"
+   ],
+   "style": 2
   },
   "LAT-148": {
    "sourceHash": "1b7ig3y",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "ماهر هونور من لطافة",
-   "nameEn": "Maahir Honor by Lattafa",
-   "descriptionAr": "افتتاحية استوائية مشرقة من الأناناس والبرغموت مع لمسة رقيقة من الفلفل الوردي. يتألق قلب العطر بباقة زهرية ساحرة تستقر بهدوء على قاعدة خشبية عنبرية ناعمة.",
-   "descriptionEn": "An elegant floral woody scent opening with pineapple and pink pepper on a rich sandalwood base.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "ماهر أونور من لطافة 100 مل ماء عطر",
+   "nameEn": "Maahir Honor 100ml by Lattafa",
+   "descriptionAr": "عطر يفتح بنفحات الأناناس والبرغموت مع الفلفل الوردي، ويكشف عن قلب من الياسمين ومسك الروم والماغنوليا، ليستقر على قاعدة من خشب الصندل والعنبر والمسك ونجيل الهند.",
+   "descriptionEn": "A fragrance opening with pineapple, bergamot, and pink pepper, revealing a heart of jasmine, tuberose, and magnolia, on a base of sandalwood, amber, musk, and vetiver.",
    "gender": "unisex",
    "families": [
     "floral",
-    "woody",
-    "fruity"
+    "woody"
    ],
    "notes": {
     "top": [
@@ -4500,31 +4467,31 @@
    ],
    "occasions": [
     "daily",
-    "special",
-    "evening"
+    "evening",
+    "work"
    ],
    "tags": [
-    "ماهر هونور",
+    "ماهر أونور",
     "لطافة",
     "عطر للجنسين",
-    "زهري خشبي",
     "Maahir Honor",
     "Lattafa"
-   ]
+   ],
+   "style": 2
   },
   "LAT-149": {
    "sourceHash": "3woqw1",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "القيام جولد من لطافة برايد",
-   "nameEn": "Al Qiam Gold by Lattafa Pride",
-   "descriptionAr": "توليفة شرقية ذهبية تجمع بين عبير الزعفران ونضارة الحمضيات في انسجام فريد. يكتمل الطابع الفاخر بقاعدة أصيلة من العود الفاخر والمسك المحلى بلمسات الفانيليا.",
-   "descriptionEn": "A luxurious oriental woody blend combining saffron, florals, sweet vanilla, and precious oud.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "القيام جولد من لطافة برايد 100 مل ماء عطر",
+   "nameEn": "Al Qiam Gold by Lattafa Pride 100ml EDP",
+   "descriptionAr": "عطر شرقي خشبي يضم مزيجاً من الزعفران والحمضيات في الافتتاحية، وقلب من العنبر والزهور والأخشاب الناعمة، وقاعدة من العود والفانيليا والمسك.",
+   "descriptionEn": "An oriental-woody fragrance featuring saffron and citrus top notes, a heart of amber, floral notes, and soft woods, and a base of oud, vanilla, and musk.",
    "gender": "unisex",
    "families": [
-    "oud",
     "oriental",
-    "amber"
+    "woody",
+    "oud"
    ],
    "notes": {
     "top": [
@@ -4543,8 +4510,9 @@
     ]
    },
    "seasons": [
+    "autumn",
     "winter",
-    "autumn"
+    "all"
    ],
    "occasions": [
     "evening",
@@ -4553,25 +4521,25 @@
    "tags": [
     "القيام جولد",
     "لطافة برايد",
-    "عطر عود",
-    "عطور فاخرة",
+    "عطر للجنسين",
     "Al Qiam Gold",
     "Lattafa Pride"
-   ]
+   ],
+   "style": 2
   },
   "LAT-150": {
    "sourceHash": "1okmy90",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "قائد الفرسان أنتيمد من لطافة",
-   "nameEn": "Qaed Al Fursan Untamed by Lattafa",
-   "descriptionAr": "عطر رجالي قوي يمزج بين حلاوة الأناناس ونفحات الزعفران الجذابة في افتتاحية لا تُنسى. ينبض القلب بالفخامة الجلدية والعنبر ليستقر على دفء العود والباتشولي.",
-   "descriptionEn": "A bold masculine fragrance highlighting juicy pineapple, leather, amber, and rich oud.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "قائد الفرسان أنتاميد لطافة",
+   "nameEn": "Qaed Al Fursan Untamed Lattafa 90ml EDP",
+   "descriptionAr": "عطر رجالي يجمع بين نفحات الأناناس والزعفران، مع قلب من العنبر والفانيليا والجلود، وقاعدة من المسك والعود والباتشولي.",
+   "descriptionEn": "Qaed Al Fursan Untamed by Lattafa – 90 ml Eau de Parfum for Men with notes of pineapple, saffron, amber, vanilla, leather, musk, oud, and patchouli.",
    "gender": "men",
    "families": [
-    "leather",
-    "amber",
-    "spicy"
+    "fruity",
+    "spicy",
+    "oud"
    ],
    "notes": {
     "top": [],
@@ -4583,35 +4551,33 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "winter"
+    "all"
    ],
    "occasions": [
-    "evening",
-    "special"
+    "daily",
+    "evening"
    ],
    "tags": [
     "قائد الفرسان",
-    "أنتيمد",
     "لطافة",
     "عطر رجالي",
-    "Qaed Al Fursan",
-    "Lattafa"
-   ]
+    "اناناس وعود",
+    "للطافة برايد"
+   ],
+   "style": 2
   },
   "LAT-151": {
    "sourceHash": "1t5s8lj",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "نبراس إكسير من لطافة برايد",
-   "nameEn": "Nebras Elixir by Lattafa Pride",
-   "descriptionAr": "عطر نسائي دافئ يغمرك بنفحات الفانيليا والكاكاو المغري مع لمسة من السكر اللذيذ. تتكامل النعومة بقاعدة بلسمية فاخرة تفيض بالكراميل وخشب الصندل الدافئ.",
-   "descriptionEn": "A luscious gourmand amber fragrance composed of cacao, vanilla, tonka bean, and sweet caramel.",
-   "gender": "women",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "نبراس إكسير لطافة",
+   "nameEn": "Nebras Elixir by Lattafa for Her – 100 ml",
+   "descriptionAr": "عطر مختلط يضم مزيجاً من الفانيليا والسكر والكاكاو، مع قلب من العنبر والمسك وبذرة التونكا، وقاعدة من الكراميل وخشب الصندل.",
+   "descriptionEn": "Nebras Elixir by Lattafa – 100 ml Eau de Parfum featuring vanilla, sugar, cacao, amber, musk, tonka bean, caramel, and sandalwood.",
+   "gender": "unisex",
    "families": [
     "gourmand",
-    "amber",
-    "woody"
+    "amber"
    ],
    "notes": {
     "top": [
@@ -4635,30 +4601,29 @@
    ],
    "occasions": [
     "evening",
-    "special",
-    "gift"
+    "special"
    ],
    "tags": [
     "نبراس إكسير",
-    "لطافة برايد",
-    "عطر نسائي",
+    "لطافة",
     "عطر فانيليا",
-    "Nebras Elixir",
-    "Lattafa Pride"
-   ]
+    "كراميل",
+    "عطر للجنسين"
+   ],
+   "style": 2
   },
   "LAT-152": {
    "sourceHash": "funkzi",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "وجود من لطافة برايد",
-   "nameEn": "Wajood by Lattafa Pride",
-   "descriptionAr": "انتعاش بحري آسر يبدأ بنقاء الحمضيات والنوتات البحرية الحيوية ليبعث على النشاط. يهدأ العطر على قلب عشبي من اللافندر وقاعدة خشبية عنبرية تعزز ثبات الإطلالة.",
-   "descriptionEn": "A crisp aquatic and woody fragrance combining refreshing marine notes, lavender, and cedarwood.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "وجود لطافة",
+   "nameEn": "Wajood by Lattafa – 100 ml Eau de Parfum for Men",
+   "descriptionAr": "عطر رجالي يتكون من مقدمة البرغموت والليمون والنفحات البحرية، وقلب من اللافندر والمريمية وخشب الأرز، وقاعدة من العنبر والمسك والباتشولي.",
+   "descriptionEn": "Wajood by Lattafa – 100 ml Eau de Parfum for Men with bergamot, lemon, marine notes, lavender, sage, cedarwood, amber, musk, and patchouli.",
    "gender": "men",
    "families": [
-    "aquatic",
     "fresh",
+    "aquatic",
     "woody"
    ],
    "notes": {
@@ -4687,22 +4652,22 @@
     "work"
    ],
    "tags": [
-    "وجود",
-    "لطافة برايد",
-    "عطر بحري",
+    "وجود لطافة",
+    "عطر رجالي منعش",
+    "نفحات بحرية",
     "عطر صيفي",
-    "Wajood",
-    "Lattafa Pride"
-   ]
+    "لطافة برايد"
+   ],
+   "style": 2
   },
   "LAT-153": {
    "sourceHash": "1rkcs4o",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "شاهين جولد من لطافة برايد",
-   "nameEn": "Shaheen Gold by Lattafa Pride",
-   "descriptionAr": "عطر متألق يجمع بين انتعاش الجريب فروت وحلاوة الأناناس الناضج مع لمسة فريدة من التين. تلتقي النفحات بقاعدة جذابة من حبوب التونكا والباتشولي لتمنحك أثراً مميزاً.",
-   "descriptionEn": "A fruity gourmand fragrance blending pineapple, fig, lavender, and warm tonka bean.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "شاهين جولد لطافة",
+   "nameEn": "Shaheen Gold by Lattafa Perfumes Unisex 100 ml",
+   "descriptionAr": "عطر مختلط يفتتح برائحة الأناناس والجريب فروت، يتوسطه اللافندر والتين، ويستقر على قاعدة من الفانيليا والتونكا والباتشولي.",
+   "descriptionEn": "Shaheen Gold by Lattafa Perfumes – 100 ml Eau de Parfum (Unisex) with pineapple, grapefruit, lavender, fig, vanilla, tonka, and patchouli.",
    "gender": "unisex",
    "families": [
     "fruity",
@@ -4725,31 +4690,29 @@
     ]
    },
    "seasons": [
-    "spring",
-    "summer",
-    "autumn"
+    "all"
    ],
    "occasions": [
     "daily",
-    "special"
+    "evening"
    ],
    "tags": [
     "شاهين جولد",
-    "لطافة برايد",
+    "لطافة",
     "عطر فواكه",
-    "عطر للجنسين",
-    "Shaheen Gold",
-    "Lattafa Pride"
-   ]
+    "تنين وأناناس",
+    "عطر للجنسين"
+   ],
+   "style": 2
   },
   "LAT-154": {
    "sourceHash": "15q2t0w",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "هلا من لطافة برايد",
-   "nameEn": "Hala by Lattafa Pride",
-   "descriptionAr": "عطر رجالي دافئ يستمد سحره من حرارة الفلفل وجوزة الطيب في مقدمة متبلة ومثيرة. تزداد الرائحة عمقاً بفضل أخشاب الأرز والبخور الشرقي الممزوج بصمغ اللابدانوم.",
-   "descriptionEn": "A warm spicy oriental composition pairing nutmeg and pepper with cedarwood and rich incense.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "هالة لطافة",
+   "nameEn": "Hala by Lattafa – 100 ml Eau de Parfum for Men",
+   "descriptionAr": "عطر رجالي يبرز بنفحات الفلفل وجوزة الطيب، يليه قلب من خشب الأرز والعنبر، وينتهي بقاعدة من البخور واللابدانوم.",
+   "descriptionEn": "Hala by Lattafa – 100 ml Eau de Parfum for Men with pepper, nutmeg, cedarwood, amber, incense, and labdanum.",
    "gender": "men",
    "families": [
     "oriental",
@@ -4776,30 +4739,30 @@
    ],
    "occasions": [
     "evening",
-    "special"
+    "work"
    ],
    "tags": [
-    "هلا",
-    "لطافة برايد",
+    "هالة لطافة",
     "عطر شرقي",
-    "عطر بخور",
-    "Hala",
-    "Lattafa Pride"
-   ]
+    "توابل وبخور",
+    "عطر رجالي",
+    "لطافة برايد"
+   ],
+   "style": 2
   },
   "LAT-155": {
    "sourceHash": "1xg652u",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "آفاق جولد من لطافة برايد",
-   "nameEn": "Afaq Gold by Lattafa Pride",
-   "descriptionAr": "تناغم مشرق يجمع بين عبير الفواكه المنعشة وحيوية الحمضيات في إشراقة ساحرة. تتدرج الرائحة بسلاسة نحو قلب عنبري وأخشاب دافئة تمنحك إحساساً بالرقي والراحة.",
-   "descriptionEn": "An alluring amber-woody fragrance featuring bright fruity notes, citrus, and cozy woods.",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "أفاق جولد لطافة",
+   "nameEn": "Afaq Gold by Lattafa EDP 100 ml Unisex",
+   "descriptionAr": "عطر مختلط يضم نفحات فواكهية وحمضيات في المقدمة، مع قلب من العنبر والأخشاب، وقاعدة من المسك والعنبر الناعم والأخشاب الدافئة.",
+   "descriptionEn": "Afaq Gold by Lattafa – 100 ml Eau De Parfum (Unisex) with fruity notes, citrus, amber, woods, musk, soft amber, and warm woods.",
    "gender": "unisex",
    "families": [
+    "fruity",
     "amber",
-    "woody",
-    "fruity"
+    "woody"
    ],
    "notes": {
     "top": [
@@ -4817,36 +4780,33 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "winter",
-    "spring"
+    "all"
    ],
    "occasions": [
-    "daily",
-    "evening",
-    "special"
+    "daily"
    ],
    "tags": [
-    "آفاق جولد",
-    "لطافة برايد",
-    "عطر عنبر",
+    "أفاق جولد",
+    "لطافة",
+    "عطر فواكه خشبية",
     "عطر للجنسين",
-    "Afaq Gold",
-    "Lattafa Pride"
-   ]
+    "لطافة برايد"
+   ],
+   "style": 2
   },
   "LAT-156": {
    "sourceHash": "30gz3t",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "نبراس من لطافة برايد",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "نبراس لطافة",
    "nameEn": "Nebras by Lattafa Pride 100ml EDP Women",
-   "descriptionAr": "عطر نسائي فاخر يجمع بين نفحات الفانيليا والكاكاو الدافئة مع لمسات منعشة من التوت الأحمر. يمنحك حضوراً ساحراً وجذاباً يناسب مختلف الأوقات والمناسبات.",
-   "descriptionEn": "Nebras by Lattafa Pride – 100 ml Eau de Parfum for Women Top Notes: Red Berries, Mandarin Heart Notes: Vanilla, Cacao, Rose Base Notes: Tonka Bean, Amber, Musk",
+   "descriptionAr": "عطر نسائي يضم في افتتاحيته التوت البري والماندارين، وفي قلبه الفانيليا والكاكاو والورد، مع قاعدة من التونكا والعنبر والمسك.",
+   "descriptionEn": "Nebras by Lattafa Pride – 100 ml Eau de Parfum for Women with red berries, mandarin, vanilla, cacao, rose, tonka bean, amber, and musk.",
    "gender": "women",
    "families": [
     "gourmand",
-    "amber"
+    "amber",
+    "floral"
    ],
    "notes": {
     "top": [],
@@ -4863,25 +4823,25 @@
    ],
    "occasions": [
     "evening",
-    "special",
-    "daily"
+    "special"
    ],
    "tags": [
-    "نبراس",
-    "لطافة برايد",
+    "نبراس لطافة",
     "عطر نسائي",
-    "فانيليا",
-    "كاكاو"
-   ]
+    "فانيليا وكاكاو",
+    "عطر حلو",
+    "لطافة برايد"
+   ],
+   "style": 2
   },
   "LAT-157": {
    "sourceHash": "vl2x94",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "العميد من لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "العميد لطافة",
    "nameEn": "Al Ameed by Lattafa EDP 100ml For Him",
-   "descriptionAr": "عطر رجالي جريء يمزج بين الانتعاش الحمضي والأخشاب الغنية والبخور المدخن. يعكس شخصية واثقة وقوية تترك انطباعاً لا ينسى.",
-   "descriptionEn": "Al Ameed by Lattafa – Eau de Parfum 100 ml. A bold men’s fragrance blending fresh aromatics with rich woods and incense, featuring bergamot, rose, cedarwood, oud, and leather.",
+   "descriptionAr": "عطر رجالي يبدأ بنفحات البرغموت وقشر الليمون، ينتقل إلى قلب من الورد والياسمين وخشب الأرز، ويختتم بقاعدة من العود والعنبر والجلود والبخور المدخن.",
+   "descriptionEn": "Al Ameed by Lattafa – Eau de Parfum 100 ml for men featuring bergamot, lime zest, rose, jasmine, cedarwood, oud, amber, leather, and incense.",
    "gender": "men",
    "families": [
     "oud",
@@ -4904,25 +4864,25 @@
    ],
    "occasions": [
     "evening",
-    "work",
     "special"
    ],
    "tags": [
-    "العميد",
-    "لطافة",
-    "عطر رجالي",
-    "عود",
-    "بخور"
-   ]
+    "العميد لطافة",
+    "عطر عود",
+    "عطر رجالي قوي",
+    "بخور وجلود",
+    "لطافة برايد"
+   ],
+   "style": 2
   },
   "LAT-158": {
    "sourceHash": "10d3k4s",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "شيخ الشيوخ من لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "شيخ الشيوخ لطافة",
    "nameEn": "Sheikh Al Shuyukh by Lattafa 50ml EDP Men",
-   "descriptionAr": "عطر شرقي خشبي يجمع بين التوابل الدافئة ونفحات الكراميل الفاخرة والعنبر. خيار مناسب للرجل الباحث عن الفخامة والأناقة.",
-   "descriptionEn": "Sheikh Al Shuyukh by Lattafa – 50 ml Eau de Parfum for Men. Fragrance Family: Oriental • Woody • Amber with notes of Rose, Cinnamon, Saffron, Caramel, Patchouli, Woods, Vanilla, Amber, and Ambroxan.",
+   "descriptionAr": "عطر رجالي يتكون من مقدمة الورد والقرفة والزعفران، وقلب من الكراميل والباتشولي، وقاعدة من الأخشاب والفانيليا والعنبر والأمبروكسان.",
+   "descriptionEn": "Sheikh Al Shuyukh by Lattafa – 50 ml Eau de Parfum for Men with rose, cinnamon, saffron, caramel, patchouli, woods, vanilla, amber, and ambroxan.",
    "gender": "men",
    "families": [
     "oriental",
@@ -4948,34 +4908,33 @@
    },
    "seasons": [
     "winter",
-    "autumn",
-    "spring"
+    "autumn"
    ],
    "occasions": [
-    "daily",
     "evening",
-    "special"
+    "daily"
    ],
    "tags": [
     "شيخ الشيوخ",
     "لطافة",
-    "عطر رجالي",
-    "شرقي",
-    "كراميل"
-   ]
+    "عطر شرقي",
+    "توابل وكراميل",
+    "عطر رجالي"
+   ],
+   "style": 2
   },
   "LAT-159": {
    "sourceHash": "df10q5",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "ليل ملكي من لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "ليل ملكي لطافة",
    "nameEn": "Lail Maleki by Lattafa 100ml EDP Unisex",
-   "descriptionAr": "عطر شرقي للجنسين يجمع بين حلاوة العسل والفواكه ولمسات من الزهور والتوابل الدافئة. يمنحك إحساساً ملكياً مميزاً.",
-   "descriptionEn": "Lail Maleki by Lattafa – 100 ml Eau De Parfum (Unisex). Top: Fruity Notes, Jasmine, Honey. Heart: Rose, Orchid, Spices. Base: Amber, Vanilla, Musk.",
+   "descriptionAr": "عطر مختلط يضم نفحات فواكهية والياسمين والعسل في المقدمة، قلب من الورد والأوركيد والتوابل، وقاعدة من العنبر والفانيليا والمسك.",
+   "descriptionEn": "Lail Maleki by Lattafa – 100 ml Eau De Parfum (Unisex) with fruity notes, jasmine, honey, rose, orchid, spices, amber, vanilla, and musk.",
    "gender": "unisex",
    "families": [
     "oriental",
-    "fruity",
+    "floral",
     "amber"
    ],
    "notes": {
@@ -4996,31 +4955,30 @@
     ]
    },
    "seasons": [
-    "winter",
     "autumn",
-    "spring"
+    "winter"
    ],
    "occasions": [
     "evening",
-    "special",
-    "daily"
+    "special"
    ],
    "tags": [
     "ليل ملكي",
     "لطافة",
-    "عطر للجنسين",
-    "عسل",
-    "شرقي"
-   ]
+    "عطر شرقي",
+    "عسل وزهور",
+    "عطر للجنسين"
+   ],
+   "style": 2
   },
   "LAT-160": {
    "sourceHash": "1qa407h",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "ثروة جولد من لطافة برايد",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "ثروة جولد لطافة",
    "nameEn": "Tharwah Gold by Lattafa Pride 100ml EDP",
-   "descriptionAr": "عطر شرقي دافئ يمزج بين نفحات العنبر الكريمي والأخشاب الناعمة مع لمسات خفيفة من التوابل الفاخرة. تصميم عطري فاخر يناسب الأوقات النهارية والمسائية.",
-   "descriptionEn": "Tharwah Gold by Lattafa Pride – 100 ml Eau de Parfum. Features sweet notes, soft spices, amber, woody notes, vanilla, musk, and creamy woods.",
+   "descriptionAr": "عطر مختلط يفتتح بنفحات سكرية وتوابل خفيفة، مع قلب من العنبر والأخشاب، وقاعدة من الفانيليا والمسك والأخشاب الكريمية.",
+   "descriptionEn": "Tharwah Gold by Lattafa Pride – 100 ml Eau de Parfum with sweet notes, soft spices, amber, woody notes, vanilla, musk, and creamy woods.",
    "gender": "unisex",
    "families": [
     "oriental",
@@ -5044,35 +5002,34 @@
    },
    "seasons": [
     "winter",
-    "autumn",
-    "spring"
+    "autumn"
    ],
    "occasions": [
     "daily",
-    "evening",
     "work"
    ],
    "tags": [
     "ثروة جولد",
-    "لطافة برايد",
-    "عطر فخم",
-    "عنبر",
-    "فانيليا"
-   ]
+    "لطافة",
+    "عطر عنبري",
+    "فانيليا وأخشاب",
+    "لطافة برايد"
+   ],
+   "style": 2
   },
   "LAT-161": {
    "sourceHash": "1p5xc0o",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "ذوق من لطافة برايد",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "ذوق لطافة",
    "nameEn": "Thouq by Lattafa Pride 80ml EDP",
-   "descriptionAr": "عطر عصري ومنعش يجمع بين الحمضيات الحيوية والزهور الناعمة مع قاعدة دافئة من المسك والفانيليا. خيار راقٍ وأنيق للاستخدام اليومي.",
-   "descriptionEn": "Thouq by Lattafa Pride – 80 ml Eau de Parfum. Fresh and modern with citrus, soft florals, creamy amber, musk, vanilla, and woody notes.",
+   "descriptionAr": "عطر مختلط يتميز بنفحات الحمضيات والنفحات المنعشة، وقلب من الزهور الناعمة والعنبر، وقاعدة من المسك والفانيليا والأخشاب.",
+   "descriptionEn": "Thouq by Lattafa Pride – 80 ml Eau de Parfum with citrus, fresh notes, soft florals, amber, musk, vanilla, and woody notes.",
    "gender": "unisex",
    "families": [
     "fresh",
     "floral",
-    "musk"
+    "citrus"
    ],
    "notes": {
     "top": [
@@ -5091,30 +5048,29 @@
    },
    "seasons": [
     "spring",
-    "summer",
-    "all"
+    "summer"
    ],
    "occasions": [
     "daily",
-    "work",
-    "gift"
+    "work"
    ],
    "tags": [
-    "ذوق",
-    "لطافة برايد",
+    "ذوق لطافة",
     "عطر منعش",
-    "حمضيات",
-    "يومي"
-   ]
+    "حمضيات وزهور",
+    "عطر يومي",
+    "لطافة برايد"
+   ],
+   "style": 2
   },
   "LAT-162": {
    "sourceHash": "12o46ii",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "أوراق العود من لطافة",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "أوراق العود لطافة",
    "nameEn": "Awraq Al Oud by Lattafa 100ml Man",
-   "descriptionAr": "عطر رجالي غني بعبير العود الأصيل والتوابل والدخان مع لمسات دافئة من العنبر والأخشاب. يضفي على حضورك هيبة وجاذبية فريدة.",
-   "descriptionEn": "Awraq Al Oud by Lattafa – 100 ml Eau De Parfum for Men. Top: Oud, Spices, Smoke. Heart: Amber, Woods. Base: Dry Woods, Musk, Warm Amber.",
+   "descriptionAr": "عطر مختلط يفتح بنفحات العود والتوابل والدخان، مع قلب من العنبر والأخشاب، وقاعدة من الأخشاب الجافة والمسك والعنبر الدافئ.",
+   "descriptionEn": "Awraq Al Oud by Lattafa – 100 ml Eau De Parfum with oud, spices, smoke, amber, woods, dry woods, musk, and warm amber.",
    "gender": "unisex",
    "families": [
     "oud",
@@ -5143,30 +5099,30 @@
    ],
    "occasions": [
     "evening",
-    "special",
-    "work"
+    "special"
    ],
    "tags": [
     "أوراق العود",
     "لطافة",
     "عطر عود",
-    "أخشاب",
-    "شرقي"
-   ]
+    "دخان وتوابل",
+    "عطر رجالي"
+   ],
+   "style": 2
   },
   "LAT-163": {
    "sourceHash": "esph9u",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T01:12:39.339Z",
-   "nameAr": "بيور كريستال من لطافة برايد",
+   "updatedAt": "2026-10-24T09:14:19.088Z",
+   "nameAr": "بيور كريستال لطافة",
    "nameEn": "Pure Crystal by Lattafa Pride 100ml EDP",
-   "descriptionAr": "عطر عصري يتميز بانتعاش الحمضيات ونعومة الزهور، مع قاعدة كريمية دافئة من الفانيليا والمسك. يمنحك شعوراً بالنظافة والأناقة.",
-   "descriptionEn": "Pure Crystal by Lattafa Pride – 100 ml Eau de Parfum. Fresh and clean modern Arabian perfume with citrus, soft florals, creamy amber, musk, and vanilla.",
+   "descriptionAr": "عطر مختلط يجمع بين الحمضيات والنفحات المنعشة في المقدمة، قلب من الزهور الناعمة والعنبر، وقاعدة من المسك والفانيليا والأخشاب.",
+   "descriptionEn": "Pure Crystal by Lattafa Pride – 100 ml Eau de Parfum with citrus, fresh notes, soft florals, amber, musk, vanilla, and woody notes.",
    "gender": "unisex",
    "families": [
     "fresh",
-    "floral",
-    "musk"
+    "citrus",
+    "floral"
    ],
    "notes": {
     "top": [
@@ -5185,21 +5141,20 @@
    },
    "seasons": [
     "spring",
-    "summer",
-    "all"
+    "summer"
    ],
    "occasions": [
     "daily",
-    "work",
-    "gift"
+    "work"
    ],
    "tags": [
     "بيور كريستال",
-    "لطافة برايد",
-    "عطر نظافة",
-    "منعش",
-    "يومي"
-   ]
+    "لطافة",
+    "عطر منعش",
+    "حمضيات ومسك",
+    "لطافة برايد"
+   ],
+   "style": 2
   },
   "LAT-164": {
    "sourceHash": "avzd56",

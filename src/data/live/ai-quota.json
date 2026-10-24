@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-24T08:06:43.448Z",
+ "updatedAt": "2026-10-24T09:18:26.101Z",
  "engines": {
   "deepseek": {
    "pausedUntil": "2026-10-21T08:05:00.000Z",
@@ -7,7 +7,7 @@
    "key": "8ef0876c"
   },
   "openai": {
-   "pausedUntil": "2026-10-24T08:05:00.000Z",
+   "pausedUntil": "2026-10-25T08:05:00.000Z",
    "reason": "no_credit",
    "key": "2c42a25f"
   }
@@ -15,7 +15,7 @@
  "used": {
   "day": "2026-10-24",
   "counts": {
-   "gemini": 1
+   "gemini": 10
   }
  }
 }

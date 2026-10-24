@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-24T07:13:44.469Z",
+ "updatedAt": "2026-10-24T09:13:26.640Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1212,
@@ -12,7 +12,7 @@
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-10-24T07:13:42.604Z",
+  "at": "2026-10-24T09:13:26.338Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -67,7 +67,7 @@
     }
    ]
   },
-  "durationMs": 1886
+  "durationMs": 315
  },
  "items": [
   {
