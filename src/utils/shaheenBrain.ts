@@ -450,8 +450,15 @@ const foldName = (s: string) => ` ${s.toLowerCase().normalize('NFKD').replace(/[
  * The store products a message names («لطافة بلاك عود ثابت؟», «Rasasi Hawas»): the full name, or the name without the
  * brand when that part is distinctive on its own (two words or more, or a long single word). The longest names win.
  */
+/**
+ * Arabic spellings of one foreign name differ by sound-alike letters and long vowels: «هاواس آيس» and «حواس آيس» are the
+ * same Hawas Ice (the copywriter may write either). Matching compares names with ح read as ه and inner alefs dropped.
+ */
+const soundName = (s: string) => s.replace(/ح/g, 'ه').replace(/(?<=[\u0621-\u064A])ا/g, '');
+
 export function namedProducts(products: StoreProduct[], text: string, limit = 2): StoreProduct[] {
   const t = foldName(text);
+  const heard = soundName(t);
   if (t.trim().length < 4) return [];
   const hits: { p: StoreProduct; len: number }[] = [];
   for (const p of products) {
@@ -466,7 +473,7 @@ export function namedProducts(products: StoreProduct[], text: string, limit = 2)
       const bare = core.replace(/^(?:gift set|giftset|coffret|set|طقم هدايا|طقم|مجموعه هدايا) /, '').trim();
       for (const name of new Set([core, bare])) {
         const distinctive = name.includes(' ') ? name.length >= 6 : name.length >= (brandSaid ? 4 : 7);
-        if (distinctive && t.includes(` ${name} `)) best = Math.max(best, name.length + (brandSaid ? 50 : 0) + (name === core ? 1 : 0));
+        if (distinctive && (t.includes(` ${name} `) || heard.includes(` ${soundName(name)} `))) best = Math.max(best, name.length + (brandSaid ? 50 : 0) + (name === core ? 1 : 0));
       }
     }
     if (best) hits.push({ p, len: best });
