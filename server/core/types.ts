@@ -1,3 +1,4 @@
+import type { CountryPulse } from '../../src/utils/insightsPulse';
 import type { FinanceOrder, FinanceSession, FinanceEntry, FinanceAttempt, FinanceIssue, PaymentRegistration, FinanceReport, FinanceReview, FinanceRun, CollectionAccount, DirectPayment, Payable, Budget, BankAudit } from '../finance/types';
 import type { ShamHolder, ShamImport, ShamLock, ShamPosting } from '../../src/bank/shamLedger';
 /**
@@ -330,6 +331,8 @@ export interface Collections {
   census: CensusReport & { id: string };
   /** «خزنة فهم الزوار»: one behaviour profile per visitor who accepted «التحليل» — the administration's only (server/insights.ts). */
   insightProfiles: InsightProfile;
+  /** «نبض الدول»: anonymous counts per country and month (no visitor id, no text). */
+  insightPulse: CountryPulse;
   /** «إدارة المبيعات» inside «بنك شام»: opportunities by label only (no contacts), monthly targets, study answers, audit. */
   salesDeals: SalesDeal;
   salesTargets: SalesTarget;

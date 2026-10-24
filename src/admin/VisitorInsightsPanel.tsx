@@ -5,13 +5,14 @@
  * Data: GET /api/admin/insights (server/insights.ts); the analysis lives in src/utils/visitorInsights.ts.
  */
 import React, { useCallback, useEffect, useState } from 'react';
-import { Brain, Download, Globe, RefreshCw, ShieldCheck, Trash2, Users } from 'lucide-react';
+import { Activity, Brain, Download, Globe, Package, RefreshCw, ShieldCheck, Trash2, Users } from 'lucide-react';
 import { adminRequest, send } from './adminApi';
 import { T, TP, formatAdminNumber, getAdminLang, useAdminLanguage } from './adminL10n';
 import {
   DECISION_TEXT, MOTIVE_TEXT, PRICE_TEXT, RHYTHM_TEXT, STYLE_TEXT,
   type InsightProfile, type InsightsSummary, type PersonReading,
 } from '../utils/visitorInsights';
+import type { OrderCountry, PulseCountry } from '../utils/insightsPulse';
 import type { BuyerMotive, BuyerStyle } from '../utils/salesCraft';
 
 type Text = { ar: string; en: string };
@@ -44,7 +45,7 @@ function Card({ title, icon, children }: { title: string; icon?: React.ReactNode
 
 export default function VisitorInsightsPanel() {
   useAdminLanguage();
-  const [data, setData] = useState<{ storage: { kind: string; persistent: boolean }; summary: InsightsSummary } | null>(null);
+  const [data, setData] = useState<{ storage: { kind: string; persistent: boolean }; summary: InsightsSummary; pulse?: PulseCountry[]; orders?: OrderCountry[] } | null>(null);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [person, setPerson] = useState<{ profile: InsightProfile; reading: PersonReading } | null>(null);
@@ -112,6 +113,31 @@ export default function VisitorInsightsPanel() {
                   {c.insights.map((line, i) => <p key={i} className="text-xs text-stone-700">• {pick(line)}</p>)}
                   {c.words.length > 0 && <p className="text-[11px] text-stone-500">{T('أكتر كلام بيدوروا عليه:')} {c.words.map((w) => w.word).join(' · ')}</p>}
                   <p className="text-[11px] text-stone-500">{T('أنشط وقت:')} {Object.entries(c.rhythm).sort((a, b) => b[1] - a[1]).slice(0, 2).map(([k]) => rhythmLabel(k)).join(' · ')}</p>
+                </div>
+              ))}
+            </div>
+          </Card>
+          <Card title={T('نبض الدول (عدّ مجهول الهوية — آخر 3 شهور)')} icon={<Activity className="w-4 h-4" />}>
+            <p className="text-[11px] text-stone-500">{T('أرقام عامة من كل الزوار اللي مارفضوش «التحليل»: من غير أي معرّف ولا نص — قانونية من غير موافقة لأنها مستحيل ترجع لشخص.')}</p>
+            {!(data?.pulse || []).length && <p className="text-xs text-stone-500">{T('لسه مافيش بيانات.')}</p>}
+            <div className="grid md:grid-cols-2 gap-3">
+              {(data?.pulse || []).slice(0, 20).map((c) => (
+                <div key={c.country} className="rounded-xl border border-stone-200 p-3 space-y-1">
+                  <p className="text-sm font-bold">{c.country === 'ZZ' ? T('بلد غير معروف') : c.country} · {TP('{n} تفاعل', { n: n(c.events) })}</p>
+                  {c.insights.map((line, i) => <p key={i} className="text-xs text-stone-700">• {pick(line)}</p>)}
+                  {c.families.length > 0 && <p className="text-[11px] text-stone-500">{c.families.map((f) => `${pick(f.label)} ${f.share}%`).join(' · ')}</p>}
+                </div>
+              ))}
+            </div>
+          </Card>
+          <Card title={T('دراسة الطلبات (اللي اتدفع فعلاً)')} icon={<Package className="w-4 h-4" />}>
+            {!(data?.orders || []).length && <p className="text-xs text-stone-500">{T('لسه مافيش طلبات حقيقية.')}</p>}
+            <div className="grid md:grid-cols-2 gap-3">
+              {(data?.orders || []).slice(0, 20).map((c) => (
+                <div key={c.country} className="rounded-xl border border-stone-200 p-3 space-y-1">
+                  <p className="text-sm font-bold">{c.country} · {TP('{n} طلب', { n: n(c.orders) })} · {TP('{n} اتدفع', { n: n(c.paid) })}</p>
+                  {c.insights.map((line, i) => <p key={i} className="text-xs text-stone-700">• {pick(line)}</p>)}
+                  {c.products.length > 0 && <p className="text-[11px] text-stone-500">{T('الأكتر مبيعاً:')} {c.products.map((p) => `${p.name} (${n(p.units)})`).join(' · ')}</p>}
                 </div>
               ))}
             </div>
