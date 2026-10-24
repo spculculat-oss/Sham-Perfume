@@ -13,11 +13,22 @@ function rank(method: PayMethod) {
   return 2;
 }
 
+const ARABIC_LETTERS = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
+/**
+ * One language per label. The research directory stores mixed names («تقسيط البنوك / Bank installments»)
+ * so both sides are citable: an Arabic visitor reads the Arabic side, everyone else the Latin one. A name
+ * without the other script («Apple Pay», «PayPal عبر Stripe») is a brand and stays exactly as it is.
+ */
 function label(method: PayMethod, lang: SupportedLanguage) {
   const raw = pickArEn(lang, method.nameAr, method.nameEn);
-  if (lang === 'ar') return raw;
-  const latin = raw.replace(/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/g, ' ').replace(/\s*\/\s*/g, ' ').replace(/\s+/g, ' ').trim();
-  return latin || method.id;
+  const parts = raw.split('/').map((part) => part.trim()).filter(Boolean);
+  const wanted = parts.filter((part) => (lang === 'ar' ? ARABIC_LETTERS.test(part) : !ARABIC_LETTERS.test(part)));
+  if (wanted.length) return wanted.join(' · ');
+  if (lang !== 'ar') {
+    const latin = raw.replace(/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/g, ' ').replace(/\s*\/\s*/g, ' ').replace(/\s+/g, ' ').trim();
+    return latin || method.id;
+  }
+  return raw;
 }
 
 /** Payment methods tied to one product, or to every product in the current country. Names only — not a charge. */
