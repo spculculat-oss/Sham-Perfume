@@ -10,6 +10,8 @@ export interface GeoDetectionResult {
 export const USER_COUNTRY_STORAGE_KEY = 'sham_perfume_user_country_code';
 export const USER_AUTO_DETECTED_FLAG_KEY = 'sham_perfume_geo_autodetected_once';
 export const USER_LANGUAGE_MANUAL_OVERRIDE_KEY = 'sham_perfume_user_override_lang';
+/** When the visitor last picked the site language himself (ms) — the newest choice (language or store country) sets the currency. */
+export const LANGUAGE_PICKED_AT_KEY = 'sham_perfume_lang_picked_at';
 
 /**
  * Maps standard IANA timezones to ISO country codes

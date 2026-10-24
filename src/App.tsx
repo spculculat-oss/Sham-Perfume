@@ -65,6 +65,7 @@ import {
   detectEntryLanguageAsync,
   forceRedetectLocation,
   USER_LANGUAGE_MANUAL_OVERRIDE_KEY,
+  LANGUAGE_PICKED_AT_KEY,
   saveUserCountryCode,
 } from './utils/geoDetector';
 import { UserProfile } from './types/auth';
@@ -618,6 +619,7 @@ export default function App() {
   const handleSelectLanguage = (lang: SupportedLanguage) => {
     try {
       localStorage.setItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY, 'true');
+      localStorage.setItem(LANGUAGE_PICKED_AT_KEY, String(Date.now())); // the newest choice sets the currency
     } catch (e) {}
     setCurrentLang(lang);
     saveLanguage(lang);

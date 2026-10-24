@@ -1,7 +1,6 @@
 import type { SupportedLanguage } from '../types/i18n';
 import { budgetsToHome } from './chatPrices';
-import { currencyFor } from './pricing';
-import { currentStoreCountry } from './storeCheckout';
+import { currentDisplayCurrency } from './storeCheckout';
 import { removeMediaBlocks } from './mediaBlock';
 import { findFormulaBlocks } from './aiFormulaExtractor';
 import { greetingKind, greetingReply } from './shaheenGreeting';
@@ -248,7 +247,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       const signal = controller.signal;
       const history = chatHistory(current.messages);
       // «شاهين بعملة بلدك»: the visitor's own money («moins de 30 €») reaches the brain in the store's pounds.
-      const brainText = budgetsToHome(text, currencyFor(currentStoreCountry()), options.language);
+      const brainText = budgetsToHome(text, currentDisplayCurrency(options.language), options.language);
       try {
         // The anonymous visitor id travels in the body, not in a custom header: a custom header needs CORS approval,
         // and a server one deploy behind would then block every question from the GitHub Pages site.

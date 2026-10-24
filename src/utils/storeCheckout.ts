@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { apiUrl, isStaticHosting } from './api';
-import { BUNDLED_FX, COUNTRY_CODES, currencyFor, guessCountry, isCountry, priceIn, quote, type Quote, type QuoteLine } from './pricing';
+import { BUNDLED_FX, COUNTRY_CODES, guessCountry, isCountry, priceIn, quote, type Quote, type QuoteLine } from './pricing';
 import { LOCALE_MAP } from '../لغات/localize';
 import { budgetsToHome, localizeChatPrices } from './chatPrices';
+import { displayCurrency, type CurrencyChoices } from './displayCurrency';
+import { LANGUAGE_PICKED_AT_KEY, USER_LANGUAGE_MANUAL_OVERRIDE_KEY } from './geoDetector';
 import type { SupportedLanguage } from '../types/i18n';
 import { getSessionToken } from '../community/api';
 import type { DirectMethod } from './directPayment';
@@ -15,16 +17,16 @@ const COUNTRY_KEY = 'sham-store-country';
 const COUNTRY_EVENT = 'sham-store-country-change';
 const PENDING_KEY = 'sham-store-pending-payment';
 
-function savedCountry(): { code: string; manual: boolean } | undefined {
+function savedCountry(): { code: string; manual: boolean; at?: number } | undefined {
   try {
-    const raw = JSON.parse(localStorage.getItem(COUNTRY_KEY) || 'null') as { code?: string; manual?: boolean } | null;
-    return raw && isCountry(raw.code) ? { code: raw.code, manual: Boolean(raw.manual) } : undefined;
+    const raw = JSON.parse(localStorage.getItem(COUNTRY_KEY) || 'null') as { code?: string; manual?: boolean; at?: number } | null;
+    return raw && isCountry(raw.code) ? { code: raw.code, manual: Boolean(raw.manual), ...(Number(raw.at) > 0 ? { at: Number(raw.at) } : {}) } : undefined;
   } catch { return undefined; }
 }
 
 export function setStoreCountry(code: string, manual = true) {
   if (!isCountry(code)) return;
-  try { localStorage.setItem(COUNTRY_KEY, JSON.stringify({ code, manual })); } catch { /* private mode */ }
+  try { localStorage.setItem(COUNTRY_KEY, JSON.stringify({ code, manual, ...(manual ? { at: Date.now() } : {}) })); } catch { /* private mode */ }
   window.dispatchEvent(new CustomEvent(COUNTRY_EVENT, { detail: code }));
 }
 
@@ -34,13 +36,31 @@ export function currentStoreCountry(): string {
   try { return savedCountry()?.code || guessCountry(navigator.languages || [], Intl.DateTimeFormat().resolvedOptions().timeZone || ''); } catch { return 'EG'; }
 }
 
+/** The visitor's own choices that decide the currency (src/utils/displayCurrency.ts): his country pick, his language pick. */
+export function currencyChoices(): CurrencyChoices {
+  if (typeof window === 'undefined') return {};
+  try {
+    const country = savedCountry();
+    const languageAt = Number(localStorage.getItem(LANGUAGE_PICKED_AT_KEY));
+    return {
+      ...(country?.manual ? { countryPickedAt: country.at ?? 0 } : {}),
+      ...(languageAt > 0 ? { languagePickedAt: languageAt } : {}),
+      languagePicked: Boolean(localStorage.getItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY)),
+    };
+  } catch { return {}; }
+}
+
+/** The currency prices are shown in right now, outside React (the chat's budget conversion). */
+export const currentDisplayCurrency = (lang: SupportedLanguage) => displayCurrency(currentStoreCountry(), lang, currencyChoices(), BUNDLED_FX);
+
 /**
  * «شاهين بعملة بلدك» for a chat window: replies shown in the currency of the country the conversation comes from
  * (asking the server's edge country once, like the store), and the visitor's own amounts sent to the brain in EGP.
  */
 export function useChatPrices(lang: SupportedLanguage) {
   const [country] = useStoreCountry();
-  const currency = currencyFor(country, BUNDLED_FX);
+  // The country's currency — or the currency of the language he chose (an Egyptian reading in French sees euros).
+  const currency = displayCurrency(country, lang, currencyChoices(), BUNDLED_FX);
   return {
     country, currency,
     show: (text: string) => localizeChatPrices(text, currency, lang, BUNDLED_FX),
@@ -97,12 +117,13 @@ export function formatMoney(amount: number, currency: string, lang: SupportedLan
 /** One price function for the whole store page: catalog EGP → the visitor's currency, formatted. */
 export function useStoreMoney(lang: SupportedLanguage, egpLabel: string) {
   const [country, setCountry] = useStoreCountry();
-  const currency = currencyFor(country, BUNDLED_FX);
+  // Same currency as Shaheen's replies: the page, the cart and the chat always agree. Shipping follows the country.
+  const currency = displayCurrency(country, lang, currencyChoices(), BUNDLED_FX);
   return {
     country, setCountry, currency,
     price: (egp: number) => formatMoney(priceIn(egp, currency, BUNDLED_FX), currency, lang, egpLabel),
     money: (amount: number) => formatMoney(amount, currency, lang, egpLabel),
-    quote: (lines: QuoteLine[]): Quote => quote(lines, country, { fx: BUNDLED_FX }),
+    quote: (lines: QuoteLine[]): Quote => quote(lines, country, { fx: BUNDLED_FX, currency }),
   };
 }
 
