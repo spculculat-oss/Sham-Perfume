@@ -1,0 +1,93 @@
+name: Shaheen localization audit — money and words in every language
+
+# «روبوت مراقبة جودة الترجمة واللغات» (experience cell, src/utils/shaheenOrg.ts): every day, after the language agent,
+# it audits the money side of the hundred languages: every country's official currency has a rate (never a silent US
+# dollar), the gateway charges the visitor's own currency, the money words (total, shipping, cart …) exist in every
+# language pack, no hard-coded amount lives in visitor code, and the intentional «language → home currency» display
+# rule is counted (the charge always stays in the visitor's country currency). Result:
+# src/data/live/shaheen-localization.json (pre-meeting check + council).
+
+on:
+  schedule:
+    - cron: '41 9 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main, 'arena/**']
+    paths:
+      - 'scripts/shaheen-localization/**'
+      - 'src/utils/displayCurrency.ts'
+      - 'src/utils/pricing.ts'
+      - 'src/data/live/fx-rates.json'
+      - 'src/data/country-currency.json'
+      - '.github/workflows/shaheen-localization.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: shaheen-localization-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # «مفتاح صاحب الموقع»: the owner (or «دولة المنصة») can pause this robot («localization_audit»).
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs localization_audit
+
+  audit:
+    name: «جودة الترجمة واللغات» — currencies, money words and hard-coded amounts
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      # The gateway's accepted currencies (a repository variable; without it the audit says «no gateway in this run»).
+      KASHIER_CURRENCIES: ${{ vars.KASHIER_CURRENCIES || '' }}
+      PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Write the localization report
+        run: node --import tsx scripts/shaheen-localization/run.mts
+      - name: Behaviour tests
+        run: node --import tsx --test tests/localizationAudit.test.ts
+      - name: Publish on main
+        if: env.PUBLISH == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen localization bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "شاهين: جودة الترجمة واللغات $(date -u +%Y-%m-%dT%H:%MZ)" \
+            src/data/live/shaheen-localization.json \
+            || { echo "::error::Could not push the localization report"; exit 1; }

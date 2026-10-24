@@ -23,6 +23,7 @@ import { BankService } from '../finance/bank';
 import { RateLimiter, clientKey } from './rateLimit';
 import { createSeoService } from '../seo/service';
 import { createCensusService } from '../census';
+import { createLabSignalsService } from '../labSignals';
 import { createInsightsService } from '../insights';
 import { buildPublicStatement } from '../../src/utils/platformCensus';
 import { probeEngines } from '../shaheen';
@@ -83,6 +84,8 @@ export function createShamCore(options: CoreOptions = {}) {
   const seo = createSeoService({ repo, env, fetch: options.fetch });
   // «روبوت التعداد — دولة المنصة»: privacy-safe global visit ledger & public statement.
   const census = createCensusService({ store: durable });
+  // «إشارات المعمل»: anonymous counters the scent-behaviour robot reads (opt-in share only).
+  const labSignals = createLabSignalsService({ store: durable });
   // «خزنة فهم الزوار»: visitors' interactions (with their consent), studied for the administration only.
   const insights = createInsightsService({ store: durable });
   const seoRunLimiter = new RateLimiter(4, 10 * 60_000);
@@ -588,6 +591,11 @@ export function createShamCore(options: CoreOptions = {}) {
   admin.use('/insights', insights.admin);
 
   // ---- «روبوت التعداد — دولة المنصة»: global visit census, world heatmap data & public statement ----
+  // «روبوت سلوك الزائر العطري»: the anonymous lab counters — read by scripts/shaheen-scent with the admin token.
+  admin.get('/lab-signals', wrap(async (_req, res) => {
+    res.json({ ok: true, aggregate: await labSignals.load(), storage: { kind: durable.kind, persistent: durable.persistent } });
+  }));
+
   admin.get('/census', wrap(async (_req, res) => {
     const report = await census.load();
     res.json({
@@ -606,5 +614,10 @@ export function createShamCore(options: CoreOptions = {}) {
     res.json(out);
   }));
 
-  return { assistant, admin, repo, orchestrator, store, runtime, memory, seo, finance, bank, census, censusRouter: census.router, insightsRouter: insights.router };
+  return {
+    assistant, admin, repo, orchestrator, store, runtime, memory, seo, finance, bank, census,
+    censusRouter: census.router,
+    labSignals, labSignalsRouter: labSignals.router,
+    insightsRouter: insights.router,
+  };
 }

@@ -1,0 +1,841 @@
+{
+ "version": 1,
+ "agent": "localization-audit",
+ "updatedAt": "2026-10-24T16:23:23.813Z",
+ "tables": {
+  "countries": 251,
+  "currencies": 154,
+  "languages": 100,
+  "fxUpdatedAt": "2026-10-24T00:02:31Z",
+  "fxAgeHours": 16,
+  "gateway": false
+ },
+ "rateGaps": [
+  {
+   "country": "KP",
+   "currency": "KPW",
+   "shownAs": "USD"
+  }
+ ],
+ "chargeMismatch": [],
+ "invalidCurrencies": [],
+ "moneyTerms": [
+  {
+   "language": "af",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "am",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "as",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "az",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "be",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "bg",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "bn",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "bo",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "bs",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "ca",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "co",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "cs",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "cy",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "da",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "dz",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "el",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "et",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "eu",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "fi",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "ga",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "gd",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "gl",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "gu",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "ha",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "he",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "hi",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "hr",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "hu",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "hy",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "id",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "ig",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "is",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "ja",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "jv",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "ka",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "kk",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "km",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "kn",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "ko",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "ky",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "lb",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "ln",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "lo",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "lt",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "lv",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "mg",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "mi",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "mk",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "ml",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "mn",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "mr",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "ms",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "mt",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "my",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "ne",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "nl",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "no",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "oc",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "om",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "or",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "pa",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "pl",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "ps",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "pt",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "ro",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "rw",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "sd",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "si",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "sk",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "sl",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "sn",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "so",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "sq",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "sr",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "st",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "sv",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "sw",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "ta",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "te",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "tg",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "th",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "ti",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "tk",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "tl",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "uk",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "ur",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "uz",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "vi",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "yo",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  },
+  {
+   "language": "zu",
+   "missing": [
+    "sf_currency",
+    "sf_shipping",
+    "sf_shipping_days"
+   ]
+  }
+ ],
+ "hardcoded": [
+  {
+   "file": "src/components/HomeHub.tsx",
+   "line": 1040,
+   "text": "description: 'نحن نورد العطور من أفضل الموردين مثل لطيفة، الرحاب، وغيرهم. أسعار مميزة مع شحن مجاني للطلبات فوق 500 جنيه.',"
+  }
+ ],
+ "languageSwitch": {
+  "pairs": 23596,
+  "bugs": [],
+  "examples": [
+   {
+    "country": "AD",
+    "language": "ru",
+    "official": "EUR",
+    "shown": "RUB"
+   },
+   {
+    "country": "AD",
+    "language": "zh",
+    "official": "EUR",
+    "shown": "CNY"
+   },
+   {
+    "country": "AD",
+    "language": "tr",
+    "official": "EUR",
+    "shown": "TRY"
+   },
+   {
+    "country": "AD",
+    "language": "fa",
+    "official": "EUR",
+    "shown": "IRR"
+   },
+   {
+    "country": "AD",
+    "language": "hi",
+    "official": "EUR",
+    "shown": "INR"
+   },
+   {
+    "country": "AD",
+    "language": "pt",
+    "official": "EUR",
+    "shown": "BRL"
+   },
+   {
+    "country": "AD",
+    "language": "id",
+    "official": "EUR",
+    "shown": "IDR"
+   },
+   {
+    "country": "AD",
+    "language": "ja",
+    "official": "EUR",
+    "shown": "JPY"
+   },
+   {
+    "country": "AD",
+    "language": "ko",
+    "official": "EUR",
+    "shown": "KRW"
+   },
+   {
+    "country": "AD",
+    "language": "vi",
+    "official": "EUR",
+    "shown": "VND"
+   },
+   {
+    "country": "AD",
+    "language": "th",
+    "official": "EUR",
+    "shown": "THB"
+   },
+   {
+    "country": "AD",
+    "language": "pl",
+    "official": "EUR",
+    "shown": "PLN"
+   }
+  ]
+ },
+ "score": 66,
+ "notes": [
+  "بوابة الدفع مش مضبوطة في التشغيل: الفحص اتأكد من عملة العرض بس، ومش قادر يتأكد من عملة الخصم.",
+  "23596 حالة «لغة تانية → عملة بلد اللغة» (زي الفرنساوي في مصر → يورو) — دي قاعدة مقصودة في العرض، والخصم بيفضل بعملة بلد الزائر، والقرار لصاحب الموقع.",
+  "1 مبلغ مكتوب بعملة ثابتة في كود الزوار — مش هيتبع عملة الزائر."
+ ],
+ "planAr": [
+  "1 دولة عملتها مش في جدول الصرف (KP:KPW): تتضاف في تحديث الأسعار أو يتقال للزائر صراحة إن العرض بالدولار.",
+  "90 لغة ناقصة كلمات فلوس (أكترها af: 3) — المترجم الذكي يكملها.",
+  "1 مبلغ ثابت في الكود (أولها src/components/HomeHub.tsx:1040) — يتشال ويتحسب من محرك التسعير."
+ ],
+ "summaryAr": "فحص اللغات والعملات: 251 دولة و154 عملة و100 لغة — فيه 3 ملاحظة محتاجة شغل."
+}

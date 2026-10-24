@@ -1,4 +1,4 @@
-import { trackInsight } from '../utils/insightsTracker';
+import { trackInsight, viewedForTaste } from '../utils/insightsTracker';
 import { budgetsToHome, localizeChatPrices } from '../utils/chatPrices';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -515,6 +515,14 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
   const [justOrdered, setJustOrdered] = useState<string[]>([]);
   const [boughtBefore, setBoughtBefore] = useState<string[]>(() => (typeof window === 'undefined' ? [] : pastPurchases()));
   const [hideForYou, setHideForYou] = useState(false);
+  // «مختار ليك على ذوقك»: products he viewed, kept on his device only while he accepts «التحليل».
+  const [viewed, setViewed] = useState<string[]>(() => (typeof window === 'undefined' ? [] : viewedForTaste()));
+  useEffect(() => {
+    const refresh = () => setViewed(viewedForTaste());
+    window.addEventListener('hashchange', refresh);
+    window.addEventListener('cookie-consent-updated', refresh);
+    return () => { window.removeEventListener('hashchange', refresh); window.removeEventListener('cookie-consent-updated', refresh); };
+  }, []);
   const ordered = (skus: string[]) => { if (!skus.length) return; setJustOrdered(skus); setBoughtBefore(rememberPurchase(skus)); };
 
   useEffect(() => {
@@ -1153,6 +1161,9 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
         ) : !hideForYou && boughtBefore.length > 0 ? (
           <CompleteYourOrder products={products} basis={products.filter((p) => boughtBefore.slice(0, 3).includes(p.sku))} lang={currentLang} variant="forYou" price={money.price}
             onAdd={add} onOpen={openDetails} added={justAdded} inCart={[...Object.keys(cart), ...boughtBefore]} onDismiss={() => setHideForYou(true)} />
+        ) : !hideForYou && viewed.length > 0 ? (
+          <CompleteYourOrder products={products} basis={products.filter((p) => viewed.slice(0, 3).includes(p.sku))} lang={currentLang} variant="taste" price={money.price}
+            onAdd={add} onOpen={openDetails} added={justAdded} inCart={[...Object.keys(cart), ...viewed.slice(0, 3)]} onDismiss={() => setHideForYou(true)} />
         ) : null}
 
         {/* Haute Parfumerie Hero Presentation */}

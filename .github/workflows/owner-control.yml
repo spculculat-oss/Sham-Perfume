@@ -43,6 +43,7 @@ on:
           - patrol
           - maneuver
           - finance
+          - finance_shield
           - sales
           - scout
           - teacher
@@ -55,6 +56,8 @@ on:
           - product_pages
           - seo
           - languages
+          - localization_audit
+          - scent_behavior
           - design_audit
           - visitor_tour
           - verifier

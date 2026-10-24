@@ -13,6 +13,7 @@ import {
   probePricing, REVIEWERS, reviewerOf, runPatrol, shouldPublish, TEAMS, type PatrolFile, type ProbeResult,
   SHIFTS, shiftAt, shiftOfBot, nextShiftAt, PROBES,
 } from '../scripts/shaheen-patrol/patrol';
+import { MAX_BOTS_PER_SHIFT } from '../scripts/shaheen-patrol/shifts';
 import { abs, liveProbes, probeImages, probeProductPages, sample } from '../scripts/shaheen-patrol/probes';
 
 const NOW = Date.parse('2026-10-20T12:37:00Z');
@@ -215,7 +216,7 @@ test('rotating shifts: one group per hour, every role and probe assigned once; a
   assert.equal(shiftOfBot('design_expert'), 1, 'its supervisor-recorded health belongs to the content/design shift');
   const tests = SHIFTS.flatMap((x) => x.probes);
   assert.deepEqual([...tests].sort(), Object.keys(PROBES).sort());
-  for (const x of SHIFTS) assert.ok(x.bots.length <= 20 && x.probes.length <= 7, x.nameEn);
+  for (const x of SHIFTS) assert.ok(x.bots.length <= MAX_BOTS_PER_SHIFT && x.probes.length <= 7, x.nameEn);
   // Consecutive hours → consecutive shifts; the same shift comes back after 3 hours, also across midnight.
   const h0 = Date.parse('2026-10-20T22:52:00Z');
   const seq = [0, 1, 2, 3, 4, 5].map((i) => shiftAt(h0 + i * H));

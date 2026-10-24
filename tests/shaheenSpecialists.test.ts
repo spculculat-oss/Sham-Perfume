@@ -13,7 +13,7 @@ import {
   consult, pickSpecialist, primaryOf, sectionsOf, SITE_SECTIONS, SPECIALISTS, specialistOf, specialistsOf,
 } from '../src/utils/shaheenSpecialists';
 import { TRACKS } from '../scripts/shaheen-school/curriculum';
-import { SHIFTS } from '../scripts/shaheen-patrol/shifts';
+import { MAX_BOTS_PER_SHIFT, SHIFTS } from '../scripts/shaheen-patrol/shifts';
 import { REVIEWERS } from '../scripts/shaheen-patrol/patrol';
 
 test('the sciences are distributed among the specialists: every school track has exactly one owner', () => {
@@ -96,7 +96,7 @@ test('the specialists are registered robots under Shaheen: links, shifts, review
   const all = SHIFTS.flatMap((x) => x.bots);
   assert.equal(new Set(all).size, all.length, 'a role in two shifts');
   assert.deepEqual([...all].sort(), BOTS.map((b) => b.id).sort(), 'every role has a monitoring shift');
-  for (const x of SHIFTS) assert.ok(x.bots.length <= 20, x.nameEn);
+  for (const x of SHIFTS) assert.ok(x.bots.length <= MAX_BOTS_PER_SHIFT, x.nameEn);
   for (const s of SPECIALISTS) {
     const brief = handbookBrief(s.id);
     assert.ok(brief.length <= 2200 && brief.includes(`«${s.nameAr}»`), `${s.id} meets itself in the brief`);

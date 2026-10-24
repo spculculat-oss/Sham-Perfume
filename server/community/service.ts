@@ -578,123 +578,102 @@ export async function passkeyLoginFinish(ctx: Ctx, input: { challengeId?: unknow
 }
 
 /* ------------------------------------ OAuth (Google/Facebook) -----------------------------------
- * Google & Facebook login: the big-3 let users start with the account they already have.
- * The server verifies the provider's token (or mock in tests) and creates/links a local account.
+ * The browser opens Google's or Facebook's own window. Sham accepts only a token that provider
+ * issued and that this server can verify. A typed e-mail, a JSON blob, or an unsigned JWT is not a link.
  */
 
-function decodeJwtPayload(token: string): Record<string, unknown> | null {
+export interface OAuthProfile { email: string; name: string; picture: string; subject: string }
+
+/** Public client ids only. A provider is offered only when this server can verify its token. */
+export function oauthPublicConfig(env: Record<string, string | undefined>): { googleClientId: string | null; facebookAppId: string | null } {
+  const google = env.GOOGLE_CLIENT_ID?.trim() || '';
+  const facebook = env.FACEBOOK_APP_ID?.trim() && env.FACEBOOK_APP_SECRET?.trim() ? env.FACEBOOK_APP_ID.trim() : '';
+  return { googleClientId: google || null, facebookAppId: facebook || null };
+}
+
+function mockOAuthProfile(token: string): OAuthProfile | null {
+  // Rehearsal only. A real token has dots or no @; a typed address is never accepted outside this flag.
+  if (token.split('.').length >= 3 || !isEmail(token)) return null;
+  const email = token.toLowerCase();
+  return { email, name: email.split('@')[0], picture: '', subject: `mock:${email}` };
+}
+
+async function verifyGoogleToken(idToken: string, env: Record<string, string | undefined>): Promise<OAuthProfile | null> {
+  const cleanToken = clean(idToken, 4000);
+  if (!cleanToken) return null;
+  if (env.SHAM_ALLOW_MOCK_OAUTH === '1') return mockOAuthProfile(cleanToken);
+  const clientId = env.GOOGLE_CLIENT_ID?.trim();
+  if (!clientId) return null;
   try {
-    const parts = token.split('.');
-    if (parts.length < 2) return null;
-    const b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
-    const json = Buffer.from(b64, 'base64').toString('utf8');
-    return JSON.parse(json);
+    const kind = cleanToken.split('.').length === 3 ? 'id_token' : 'access_token';
+    const res = await fetch(`https://oauth2.googleapis.com/tokeninfo?${kind}=${encodeURIComponent(cleanToken)}`);
+    if (!res.ok) return null;
+    const data = await res.json() as { email?: string; name?: string; picture?: string; aud?: string; email_verified?: string | boolean; sub?: string };
+    const verified = data.email_verified === true || data.email_verified === 'true';
+    if (!verified || data.aud !== clientId || !data.email || !isEmail(data.email) || !data.sub) return null;
+    return { email: data.email.toLowerCase(), name: clean(data.name || data.email.split('@')[0], 60) || data.email.split('@')[0], picture: data.picture || '', subject: data.sub };
   } catch { return null; }
 }
 
-async function verifyGoogleToken(idToken: string, env: Record<string, string | undefined>): Promise<{ email: string; name: string; picture?: string } | null> {
-  const cleanToken = clean(idToken, 8000);
-  if (!cleanToken) return null;
-  // Mock mode for tests / local dev: token is plain e-mail or JSON with email
-  if (env.SHAM_ALLOW_MOCK_OAUTH === '1') {
-    if (cleanToken.includes('@') && isEmail(cleanToken)) return { email: cleanToken.toLowerCase(), name: cleanToken.split('@')[0] };
-    try {
-      const obj = JSON.parse(cleanToken);
-      if (obj.email && isEmail(String(obj.email))) return { email: String(obj.email).toLowerCase(), name: clean(obj.name || obj.email.split('@')[0], 60) || String(obj.email).split('@')[0] };
-    } catch {}
-    const payload = decodeJwtPayload(cleanToken);
-    if (payload?.email && isEmail(String(payload.email))) return { email: String(payload.email).toLowerCase(), name: clean(payload.name as string || String(payload.email).split('@')[0], 60) || String(payload.email).split('@')[0], picture: payload.picture as string | undefined };
-  }
-  // Real verification via Google tokeninfo (requires internet + GOOGLE_CLIENT_ID)
-  if (env.GOOGLE_CLIENT_ID?.trim()) {
-    try {
-      const res = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(cleanToken)}`);
-      if (!res.ok) return null;
-      const data = await res.json() as { email?: string; name?: string; picture?: string; aud?: string };
-      if (!data.email || !isEmail(data.email)) return null;
-      if (data.aud && data.aud !== env.GOOGLE_CLIENT_ID.trim()) return null;
-      return { email: data.email.toLowerCase(), name: clean(data.name || data.email.split('@')[0], 60) || data.email.split('@')[0], picture: data.picture };
-    } catch { return null; }
-  }
-  // Fallback mock: treat idToken as e-mail for dev
-  if (cleanToken.includes('@') && isEmail(cleanToken)) return { email: cleanToken.toLowerCase(), name: cleanToken.split('@')[0] };
-  const payload = decodeJwtPayload(cleanToken);
-  if (payload?.email && isEmail(String(payload.email))) return { email: String(payload.email).toLowerCase(), name: clean(payload.name as string || String(payload.email).split('@')[0], 60) || String(payload.email).split('@')[0] };
-  return null;
-}
-
-async function verifyFacebookToken(accessToken: string, env: Record<string, string | undefined>): Promise<{ email: string; name: string; picture?: string } | null> {
-  const token = clean(accessToken, 2000);
+async function verifyFacebookToken(accessToken: string, env: Record<string, string | undefined>): Promise<OAuthProfile | null> {
+  const token = clean(accessToken, 4000);
   if (!token) return null;
-  if (env.SHAM_ALLOW_MOCK_OAUTH === '1') {
-    if (token.includes('@') && isEmail(token)) return { email: token.toLowerCase(), name: token.split('@')[0] };
-    try {
-      const obj = JSON.parse(token);
-      if (obj.email && isEmail(String(obj.email))) return { email: String(obj.email).toLowerCase(), name: clean(obj.name || String(obj.email).split('@')[0], 60) || String(obj.email).split('@')[0] };
-    } catch {}
-    const payload = decodeJwtPayload(token);
-    if (payload?.email && isEmail(String(payload.email))) return { email: String(payload.email).toLowerCase(), name: clean(payload.name as string || String(payload.email).split('@')[0], 60) || String(payload.email).split('@')[0] };
-  }
-  if (env.FACEBOOK_APP_ID?.trim() && env.FACEBOOK_APP_SECRET?.trim()) {
-    try {
-      // Verify via Graph API
-      const appToken = `${env.FACEBOOK_APP_ID}|${env.FACEBOOK_APP_SECRET}`;
-      let res = await fetch(`https://graph.facebook.com/debug_token?input_token=${encodeURIComponent(token)}&access_token=${encodeURIComponent(appToken)}`);
-      if (!res.ok) return null;
-      const dbg = await res.json() as { data?: { is_valid?: boolean; user_id?: string } };
-      if (!dbg.data?.is_valid) return null;
-      res = await fetch(`https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${encodeURIComponent(token)}`);
-      if (!res.ok) return null;
-      const meData = await res.json() as { email?: string; name?: string; picture?: { data?: { url?: string } } };
-      const email = (meData as any).email;
-      if (!email || !isEmail(email)) return null;
-      return { email: email.toLowerCase(), name: clean((meData as any).name || email.split('@')[0], 60) || email.split('@')[0], picture: (meData as any).picture?.data?.url };
-    } catch { return null; }
-  }
-  if (token.includes('@') && isEmail(token)) return { email: token.toLowerCase(), name: token.split('@')[0] };
+  if (env.SHAM_ALLOW_MOCK_OAUTH === '1') return mockOAuthProfile(token);
+  const appId = env.FACEBOOK_APP_ID?.trim();
+  const secret = env.FACEBOOK_APP_SECRET?.trim();
+  if (!appId || !secret) return null;
   try {
-    const obj = JSON.parse(token);
-    if (obj.email && isEmail(String(obj.email))) return { email: String(obj.email).toLowerCase(), name: clean(obj.name || String(obj.email).split('@')[0], 60) || String(obj.email).split('@')[0] };
-  } catch {}
-  return null;
+    const appToken = `${appId}|${secret}`;
+    const debug = await fetch(`https://graph.facebook.com/debug_token?input_token=${encodeURIComponent(token)}&access_token=${encodeURIComponent(appToken)}`);
+    if (!debug.ok) return null;
+    const dbg = await debug.json() as { data?: { is_valid?: boolean; app_id?: string; user_id?: string } };
+    if (!dbg.data?.is_valid || dbg.data.app_id !== appId || !dbg.data.user_id) return null;
+    const meRes = await fetch(`https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${encodeURIComponent(token)}`);
+    if (!meRes.ok) return null;
+    const meData = await meRes.json() as { id?: string; email?: string; name?: string; picture?: { data?: { url?: string } } };
+    if (!meData.email || !isEmail(meData.email) || meData.id !== dbg.data.user_id) return null;
+    return { email: meData.email.toLowerCase(), name: clean(meData.name || meData.email.split('@')[0], 60) || meData.email.split('@')[0], picture: meData.picture?.data?.url || '', subject: dbg.data.user_id };
+  } catch { return null; }
 }
 
-async function oauthFindOrCreate(ctx: Ctx, email: string, name: string, provider: string, avatar?: string): Promise<string> {
-  const emailIdx = ctx.vault.index(email);
-  let [row] = await ctx.sql.query(`SELECT id, status FROM users WHERE email_idx = $1`, [emailIdx]);
+async function oauthFindOrCreate(ctx: Ctx, email: string, name: string, provider: 'google' | 'facebook', subject: string, avatar?: string): Promise<string> {
+  const linked = clean(subject, 120);
+  if (linked.length < 4 || linked === 'google' || linked === 'facebook') fail(401, 'OAUTH_INVALID');
+  const col = provider === 'google' ? 'oauth_google_id' : 'oauth_facebook_id';
+  let [row] = await ctx.sql.query(`SELECT id, status FROM users WHERE ${col} = $1`, [linked]);
+  if (!row) {
+    [row] = await ctx.sql.query(`SELECT id, status FROM users WHERE email_idx = $1`, [ctx.vault.index(email)]);
+  }
   if (row) {
     if (row.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
     if (row.status === 'deleted') fail(401, 'INVALID_LOGIN');
-    // Link OAuth id if column exists
-    const col = provider === 'google' ? 'oauth_google_id' : 'oauth_facebook_id';
-    try { await ctx.sql.query(`UPDATE users SET ${col} = $1 WHERE id = $2`, [provider, row.id]); } catch {}
+    await ctx.sql.query(`UPDATE users SET ${col} = $1 WHERE id = $2`, [linked, row.id]);
     return row.id;
   }
-  // Create new user via OAuth — no password from user, generate secure random one
   const id = newId('u');
   const handle = await uniqueHandle(ctx.sql, email.split('@')[0] || name);
-  const randomPw = `Oauth_${Math.random().toString(36).slice(2)}_${Date.now()}`;
   await ctx.sql.query(
-    `INSERT INTO users (id, handle, name, email_idx, email_enc, pass_hash, country, lang, craft_level, avatar, email_verified_at)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10, now())`,
-    [id, handle, clean(name, 60) || email.split('@')[0], emailIdx, ctx.vault.seal(email), await hashPassword(randomPw + 'A1b!_' + Math.random()), '', 'ar', 'hobbyist', avatar ? clean(avatar, 300) : null],
+    `INSERT INTO users (id, handle, name, email_idx, email_enc, pass_hash, country, lang, craft_level, avatar, email_verified_at, ${col})
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10, now(), $11)`,
+    [id, handle, clean(name, 60) || email.split('@')[0], ctx.vault.index(email), ctx.vault.seal(email), await hashPassword(newToken().token), '', 'ar', 'hobbyist', avatar ? clean(avatar, 300) : null, linked],
   );
-  auditEvent(ctx, id, 'oauth_register', provider, email);
+  auditEvent(ctx, id, 'oauth_register', provider);
   return id;
 }
 
 export async function loginWithGoogle(ctx: Ctx, input: { idToken?: unknown; accessToken?: unknown }, agent = '', ip = ''): Promise<LoginOutcome> {
   const env = envOf(ctx);
+  if (!env.GOOGLE_CLIENT_ID?.trim() && env.SHAM_ALLOW_MOCK_OAUTH !== '1') fail(503, 'OAUTH_NOT_CONFIGURED');
   const token = String(input.idToken || input.accessToken || '');
+  if (!clean(token, 4000)) fail(400, 'INVALID_FIELD', 'idToken');
   const info = await verifyGoogleToken(token, env);
   if (!info) fail(401, 'OAUTH_INVALID', 'google');
-  const userId = await oauthFindOrCreate(ctx, info!.email, info!.name, 'google', info!.picture);
+  const userId = await oauthFindOrCreate(ctx, info!.email, info!.name, 'google', info!.subject, info!.picture);
   const [u] = await ctx.sql.query(`SELECT totp_enabled, phone_2fa_enabled, status FROM users WHERE id = $1`, [userId]);
   if (u?.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
   if (u?.totp_enabled || u?.phone_2fa_enabled) {
     const { token: pending, hash } = newToken();
     await ctx.sql.query(`INSERT INTO pending_logins (token_hash, user_id, agent, ip, expires_at) VALUES ($1,$2,$3,$4,$5)`, [hash, userId, clean(agent, 200), clean(ip, 64), new Date(Date.now() + PENDING_LOGIN_MS).toISOString()]);
-    // If phone 2FA, send code immediately
     if (u?.phone_2fa_enabled) {
       try { await sendPhoneCodeForUser(ctx, userId); } catch {}
     }
@@ -707,10 +686,12 @@ export async function loginWithGoogle(ctx: Ctx, input: { idToken?: unknown; acce
 
 export async function loginWithFacebook(ctx: Ctx, input: { accessToken?: unknown; idToken?: unknown }, agent = '', ip = ''): Promise<LoginOutcome> {
   const env = envOf(ctx);
+  if (!(env.FACEBOOK_APP_ID?.trim() && env.FACEBOOK_APP_SECRET?.trim()) && env.SHAM_ALLOW_MOCK_OAUTH !== '1') fail(503, 'OAUTH_NOT_CONFIGURED');
   const token = String(input.accessToken || input.idToken || '');
+  if (!clean(token, 4000)) fail(400, 'INVALID_FIELD', 'accessToken');
   const info = await verifyFacebookToken(token, env);
   if (!info) fail(401, 'OAUTH_INVALID', 'facebook');
-  const userId = await oauthFindOrCreate(ctx, info!.email, info!.name, 'facebook', info!.picture);
+  const userId = await oauthFindOrCreate(ctx, info!.email, info!.name, 'facebook', info!.subject, info!.picture);
   const [u] = await ctx.sql.query(`SELECT totp_enabled, phone_2fa_enabled, status FROM users WHERE id = $1`, [userId]);
   if (u?.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
   if (u?.totp_enabled || u?.phone_2fa_enabled) {

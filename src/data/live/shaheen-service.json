@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-24T12:33:27.308Z",
+ "updatedAt": "2026-10-24T18:29:22.266Z",
  "desk": {
   "nameAr": "مكتب خدمة العملاء الآلي",
   "nameEn": "Automated customer care desk",
@@ -8,7 +8,7 @@
  },
  "live": {
   "checked": true,
-  "at": "2026-10-24T12:33:27.308Z",
+  "at": "2026-10-24T18:29:22.266Z",
   "failed": []
  },
  "inbox": {

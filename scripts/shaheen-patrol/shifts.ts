@@ -1,7 +1,7 @@
 /**
  * The patrol's shifts — pure data with no Node imports, so the admin panel can show the rota too.
  */
-import type { BotId } from '../../src/utils/shaheenOrg';
+import { BOTS, type BotId } from '../../src/utils/shaheenOrg';
 import type { ProbeId } from './patrol';
 
 export type ShiftIndex = 0 | 1 | 2;
@@ -14,10 +14,16 @@ export interface Shift { index: ShiftIndex; nameAr: string; nameEn: string; bots
  */
 export const SHIFTS: Shift[] = [
   { index: 0, nameAr: 'وردية المتجر والأسعار', nameEn: 'Store & pricing shift', bots: ['scout', 'importer', 'images', 'catalog', 'inventory', 'product_pages', 'store_advisor', 'finance', 'sales', 'contracts', 'admin_agent', 'owner_desk', 'state', 'census', 'platform_owner', 'inspect', 'specialist_scents', 'specialist_business', 'specialist_science', 'specialist_engineering'], probes: ['pricing', 'catalog', 'currency', 'fx', 'images', 'product_pages', 'payments'] },
-  { index: 1, nameAr: 'وردية المحتوى وتجربة الزائر', nameEn: 'Content & visitor shift', bots: ['librarian', 'news', 'seo', 'chat', 'service', 'languages', 'design_audit', 'design_expert', 'visitor_tour', 'school', 'academy', 'teacher', 'researcher', 'library', 'chat_agent', 'specialist_tech', 'specialist_society', 'specialist_health', 'lab', 'brain'], probes: ['l10n', 'news_file', 'news_api', 'sitemap', 'platform_owner'] },
-  { index: 2, nameAr: 'وردية الجودة والإدارة', nameEn: 'Reliability & leadership shift', bots: ['council', 'precheck', 'patrol', 'maneuver', 'legal', 'doctor', 'verifier', 'live_check', 'keys', 'intake', 'studio_bridge', 'studio_zip', 'deploy', 'secretary', 'specialist_security', 'specialist_learning', 'specialist_culture', 'specialists_board'], probes: ['site', 'engine'] },
+  { index: 1, nameAr: 'وردية المحتوى وتجربة الزائر', nameEn: 'Content & visitor shift', bots: ['librarian', 'news', 'seo', 'chat', 'service', 'languages', 'design_audit', 'scent_behavior', 'design_expert', 'visitor_tour', 'school', 'academy', 'teacher', 'researcher', 'library', 'chat_agent', 'specialist_tech', 'specialist_society', 'specialist_health', 'lab', 'brain'], probes: ['l10n', 'news_file', 'news_api', 'sitemap', 'platform_owner'] },
+  { index: 2, nameAr: 'وردية الجودة والإدارة', nameEn: 'Reliability & leadership shift', bots: ['council', 'precheck', 'patrol', 'maneuver', 'legal', 'doctor', 'verifier', 'live_check', 'keys', 'intake', 'studio_bridge', 'studio_zip', 'deploy', 'secretary', 'finance_shield', 'localization_audit', 'specialist_security', 'specialist_learning', 'specialist_culture', 'specialists_board'], probes: ['site', 'engine'] },
 ];
 export const SHIFT_HOURS = SHIFTS.length;
+/**
+ * No shift is heavier than its fair share of the roster (+1 for the odd role): the patrol's point is a light load
+ * every hour, not a fixed 20 — the roster grows with every new robot, and a shift that outgrows its share would slow
+ * the live site down.
+ */
+export const MAX_BOTS_PER_SHIFT = Math.ceil(BOTS.length / SHIFT_HOURS) + 1;
 /** The shift of this hour (UTC hours since the epoch, so it never skips across midnight). */
 export const shiftAt = (now: number): ShiftIndex => (Math.floor(now / 3_600_000) % SHIFT_HOURS) as ShiftIndex;
 export const shiftOfBot = (id: BotId): ShiftIndex => (SHIFTS.find((x) => x.bots.includes(id))?.index ?? 2);
