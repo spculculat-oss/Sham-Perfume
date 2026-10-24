@@ -77,7 +77,7 @@ jobs:
           bun-version-file: package.json
       - name: Install dependencies
         run: bun install --frozen-lockfile || bun install
-      - name: Write the shield report (read-only: no order, no card, no customer data)
+      - name: "Write the shield report (read-only: no order, no card, no customer data)"
         run: node --import tsx scripts/shaheen-finance/shield-run.mts
       - name: Guard tests (the drills must hold offline too)
         run: node --import tsx --test tests/financeShield.test.ts
