@@ -1,10 +1,10 @@
 {
  "version": 1,
  "agent": "scent-behavior",
- "updatedAt": "2026-10-24T16:06:57.232Z",
+ "updatedAt": "2026-10-24T16:23:20.880Z",
  "signals": {
   "read": false,
-  "noteAr": "مفيش مفتاح إدارة (SHAM_ADMIN_TOKEN) في التشغيل — العدّاد الحي مش مقروء.",
+  "noteAr": "تعذّر قراءة العدّاد الحي (HTTP_404) — التحليل من المحتوى بس.",
   "designs": 0,
   "materialsCounted": 0,
   "types": [],
