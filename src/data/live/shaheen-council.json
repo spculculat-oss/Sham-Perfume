@@ -1023,9 +1023,10 @@
    "needsApproval": false,
    "createdAt": "2026-10-20T08:42:15.253Z",
    "meeting": "2026-10-20",
-   "status": "open",
+   "status": "done",
    "issue": 168,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/168"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/168",
+   "closedAt": "2026-10-24T13:30:09Z"
   },
   {
    "id": "2026-10-20-2-إصلاح-رحلة-الشراء-على-ال",
