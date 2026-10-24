@@ -34,6 +34,7 @@ import { ProductPayMethods } from '../bank/ProductPayMethods';
 import { CheckoutPayPanel } from './CheckoutPayPanel';
 import { localOnlyProfile, requireCustomerLogin } from '../utils/paymentAccess';
 import { PaymentEnvironmentModal } from './PaymentEnvironmentModal';
+import { ShamAccountDesk } from './ShamAccountDesk';
 import { StoreSalesCategoryChart } from './StoreSalesCategoryChart';
 import { saveMerchant } from '../utils/merchantDataStore';
 import { FAMILIES, searchText, type Family, type Gender, type StoreProduct } from '../utils/storeCatalog';
@@ -618,6 +619,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
   const [showReg, setShowReg] = useState(false);
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showBank, setShowBank] = useState(false);
   const [form, setForm] = useState({ nameAr: '', email: '', phone: '', pass: '' });
   const register = (e: React.FormEvent) => {
     e.preventDefault();
@@ -1078,6 +1080,17 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
           >
             <TrendingUp className="h-4 w-4 text-amber-600" />
             <span>{currentLang === 'ar' ? 'تحليل المبيعات' : 'Sales Analytics'}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => { if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; } setShowBank(true); }}
+            className="flex shrink-0 items-center gap-2 rounded-2xl border border-stone-200/90 bg-white/90 px-3.5 py-2 text-xs font-bold text-stone-800 transition hover:bg-stone-50 hover:text-amber-800 cursor-pointer shadow-2xs"
+            data-testid="store-bank-button"
+            title={currentLang === 'ar' ? 'حساب بنك شام' : 'Sham Bank account'}
+          >
+            <Landmark className="h-4 w-4 text-stone-800" />
+            <span className="hidden sm:inline">{currentLang === 'ar' ? 'بنك شام' : 'Sham Bank'}</span>
           </button>
 
           {/* Customer Saved Payment Methods / Vault Button */}
@@ -1833,6 +1846,14 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
               currentLang={currentLang}
               currencyCode={L.currency}
             />
+          </div>
+        </div>
+      )}
+
+      {showBank && signedIn && retailerId && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-stone-100 p-3 sm:p-6">
+          <div className="mx-auto max-w-5xl">
+            <ShamAccountDesk lang={currentLang} customerId={retailerId} onClose={() => setShowBank(false)} />
           </div>
         </div>
       )}
