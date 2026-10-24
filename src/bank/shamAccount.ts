@@ -1,10 +1,13 @@
 /**
  * Sham Bank account desk, arranged like a multi-currency receiving account:
  * balances, receiving rails, activity, withdrawal banks, pay, and a card slot.
- * It records requests. It does not issue bank details, move money, or store a full account number.
+ * Withdrawal banks keep a nickname and last 4 only. Spendable money lives in shamLedger.
  */
 
-export const ACCOUNT_CURRENCIES = ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'SGD', 'HKD', 'JPY', 'MXN'] as const;
+export const ACCOUNT_CURRENCIES = [
+  'USD', 'EUR', 'GBP', 'AED', 'SAR', 'EGP', 'KWD', 'QAR', 'BHD', 'OMR', 'JOD',
+  'CAD', 'AUD', 'CHF', 'SGD', 'HKD', 'JPY', 'CNY', 'INR', 'TRY', 'MXN',
+] as const;
 export type AccountCurrency = typeof ACCOUNT_CURRENCIES[number];
 
 export interface ReceivingRail {
@@ -55,8 +58,17 @@ export interface RecordedBalance {
   minor: number;
 }
 
+export interface ShamBeneficiary {
+  id: string;
+  customerId: string;
+  nickname: string;
+  accountNumber: string;
+  createdAt: string;
+}
+
 const REQUESTS = 'sham_account_requests_v1_';
 const BANKS = 'sham_withdrawal_banks_v1_';
+const PAYEES = 'sham_beneficiaries_v1_';
 const LONG_DIGITS = /\d(?:[ -]?\d){7,18}/;
 
 export function isAccountCurrency(value: string): value is AccountCurrency {
@@ -95,7 +107,8 @@ function read<T>(storageKey: string): T[] {
 
 function write(storageKey: string, value: unknown) {
   localStorage.setItem(storageKey, JSON.stringify(value));
-  window.dispatchEvent(new CustomEvent('sham-account-updated'));
+  const host = globalThis as { dispatchEvent?: (event: CustomEvent) => void };
+  host.dispatchEvent?.(new CustomEvent('sham-account-updated'));
 }
 
 export function listAccountRequests(customerId: string): AccountRequest[] {
@@ -124,6 +137,26 @@ export function saveWithdrawalBank(customerId: string, input: { nickname: string
   const next = [bank, ...listWithdrawalBanks(customerId)].slice(0, 12);
   write(key(BANKS, customerId), next);
   return bank;
+}
+
+export function listBeneficiaries(customerId: string): ShamBeneficiary[] {
+  try { return read<ShamBeneficiary>(key(PAYEES, customerId)); }
+  catch { return []; }
+}
+
+export function saveBeneficiary(customerId: string, input: { nickname: string; accountNumber: string }): ShamBeneficiary {
+  const accountNumber = input.accountNumber.replace(/\s+/g, '').toUpperCase();
+  if (!/^SHAM\d{13}$/.test(accountNumber)) throw new Error('INVALID_ACCOUNT');
+  const payee: ShamBeneficiary = {
+    id: `payee_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`,
+    customerId: customerId.trim(),
+    nickname: cleanAccountLabel(input.nickname, 'nickname'),
+    accountNumber,
+    createdAt: new Date().toISOString(),
+  };
+  const next = [payee, ...listBeneficiaries(customerId).filter((row) => row.accountNumber !== accountNumber)].slice(0, 20);
+  write(key(PAYEES, customerId), next);
+  return payee;
 }
 
 export function requestAccountAction(customerId: string, input: {

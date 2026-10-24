@@ -1,3 +1,4 @@
+import { trackInsight } from '../utils/insightsTracker';
 import React, { useEffect, useMemo, useState } from 'react';
 import { contactEmail } from '../config/contact';
 import { ArrowLeft, ArrowRight, ExternalLink, MessageCircle, Package, CreditCard, ShoppingCart, Sparkles, Star } from 'lucide-react';
@@ -57,6 +58,7 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
   const [photo, setPhoto] = useState(0);
   const cart = useCart();
   const product = products.find((p) => String(p.id) === String(productId));
+  useEffect(() => { if (product) trackInsight('product', { sku: product.sku }); }, [product?.sku]); // «خزنة فهم الزوار» (with consent)
   useEffect(() => { setQty(1); setBadThumbs([]); setPhoto(0); window.scrollTo?.({ top: 0 }); }, [productId]);
   const Back = isRTL(currentLang) ? ArrowRight : ArrowLeft;
 

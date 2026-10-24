@@ -1,3 +1,4 @@
+import { setInsightsContext, trackInsight } from './utils/insightsTracker';
 import { isVerifiedCustomer } from './utils/paymentAccess';
 import { BookLibrary } from './library/BookLibrary';
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
@@ -537,6 +538,9 @@ export default function App() {
 
   useEffect(() => {
     trackPlatformVisit({ section: activeTab, country: storeCountry, lang: currentLang });
+    // «خزنة فهم الزوار» (only with the visitor's consent to «التحليل»): the section he opened, his country and language.
+    setInsightsContext({ country: storeCountry, language: currentLang });
+    trackInsight('section', { section: activeTab });
   }, [activeTab, storeCountry, currentLang]);
 
   // Check and load shared formula from URL hash or query params

@@ -315,6 +315,7 @@ app.post('/api/news/refresh', async (req, res) => {
 app.use('/api/assistant', shamCore.assistant);
 app.use('/api/admin', shamCore.admin);
 app.use('/api/census', shamCore.censusRouter);
+app.use('/api/insights', shamCore.insightsRouter);
 
 app.use('/api', (_req, res) => {
   res.status(404).json({ error: 'API route not found' });

@@ -1,4 +1,5 @@
 import type { FinanceOrder, FinanceSession, FinanceEntry, FinanceAttempt, FinanceIssue, PaymentRegistration, FinanceReport, FinanceReview, FinanceRun, CollectionAccount, DirectPayment, Payable, Budget, BankAudit } from '../finance/types';
+import type { ShamHolder, ShamImport, ShamLock, ShamPosting } from '../../src/bank/shamLedger';
 /**
  * Sham Core — shared domain types.
  * Every entity is owned by Sham's own storage; no provider ever owns business data.
@@ -7,6 +8,7 @@ import type { MemoryEntry } from '../../src/utils/shaheenMemory';
 import type { SupportedLanguage } from '../../src/types/i18n';
 import type { SeoState } from '../../src/seo/agentState';
 import type { CensusReport } from '../../src/utils/platformCensus';
+import type { InsightProfile } from '../../src/utils/visitorInsights';
 
 export type Lang = SupportedLanguage;
 
@@ -301,6 +303,11 @@ export interface Collections {
   bankPayables: Payable;
   bankBudgets: Budget;
   bankAudit: BankAudit;
+  /** Internal Sham account books. Not an external bank, and not a stored card. */
+  shamHolders: ShamHolder;
+  shamPostings: ShamPosting;
+  shamImports: ShamImport;
+  shamLocks: ShamLock;
   services: ServiceDef;
   products: Product;
   knowledge: KnowledgeDoc;
@@ -315,5 +322,7 @@ export interface Collections {
   seo: SeoState;
   /** «روبوت التعداد — دولة المنصة»: aggregated, privacy-safe platform visit ledger (one record: id 'state'). */
   census: CensusReport & { id: string };
+  /** «خزنة فهم الزوار»: one behaviour profile per visitor who accepted «التحليل» — the administration's only (server/insights.ts). */
+  insightProfiles: InsightProfile;
 }
 export type CollectionName = keyof Collections;
