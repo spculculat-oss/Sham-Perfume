@@ -89,3 +89,30 @@ test('«مرصد العطور» without an AI engine: the collected headlines, w
   assert.equal(out[1].category, 'trends');
   assert.ok(out.every((a) => !/مولّد|ذكاء اصطناعي/.test(`${a.badge} ${a.source} ${a.author}`)));
 });
+
+test('the product page never repeats its own title or the notes pyramid inside the description', () => {
+  // What the external reviewer saw on a live product page: the name again at the top of «الوصف», and the
+  // supplier's «Fragrance Notes» list — which «الهرم العطري» already shows right underneath.
+  const p: RawProduct = { id: 252, sku: 'LAT-252', nameAr: 'عطر قمة للرجال من لطافة', nameEn: 'Lattafa Qimmah Eau De Parfum for Men 100ml',
+    brand: 'Lattafa', category: 'رجالي', descriptionAr: '', descriptionEn: '', ourPrice: 1200, sizeMl: 100 };
+  const sentence = 'The fragrance opens with lavender, cedarwood and saffron before revealing a heart of myrrh.';
+  const entry = (descriptionAr: string, descriptionEn: string): StoreEntry => ({
+    sourceHash: productHash(p), editor: 'shaheen', updatedAt: '2026-10-24T00:00:00Z',
+    nameAr: 'عطر قمة للرجال من لطافة', nameEn: 'Lattafa Qimmah Eau De Parfum for Men 100ml',
+    descriptionAr, descriptionEn, gender: 'men', families: ['oriental', 'woody'],
+    notes: { top: ['Lavender'], heart: ['Myrrh'], base: ['Oud'] }, seasons: [], occasions: [], tags: [],
+  });
+
+  // Name on its own line, then the same name glued to the sentence.
+  const echoed = mergeProduct(p, entry('عطر قمة للرجال من لطافة يفتتح بالخزامى وخشب الأرز والزعفران ويقود إلى قلب من المر والأعشاب.',
+    `Lattafa Qimmah Eau De Parfum for Men 100ml\nLattafa Qimmah Eau De Parfum for Men 100ml ${sentence}`));
+  assert.equal(echoed.description.en, sentence);
+  assert.doesNotMatch(echoed.description.en, /Qimmah/);
+  assert.match(echoed.description.ar, /الخزامى/, 'the Arabic sentence keeps its own words');
+
+  // Nothing but the name and the notes list: the plain true sentence takes its place.
+  const onlyNotes = mergeProduct(p, entry('', 'Aroma Mood – 100 ml Eau de Parfum Unisex\nFragrance Notes:\nTop: Citrus\nHeart: Musk\nBase: Amber'));
+  assert.ok(onlyNotes.description.en.length > 0);
+  assert.doesNotMatch(onlyNotes.description.en, /Top:|Fragrance Notes/i);
+  assert.doesNotMatch(onlyNotes.description.ar, /Top:|Fragrance Notes/i);
+});
