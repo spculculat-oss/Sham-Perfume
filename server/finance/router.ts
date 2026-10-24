@@ -5,6 +5,8 @@ import { RateLimiter, clientKey } from '../core/rateLimit';
 import { isCountry } from '../../src/utils/pricing';
 import { FinanceService } from './service';
 import type { BankService } from './bank';
+import type { SalesService } from '../sales/service';
+import { createSalesRouter } from '../sales/router';
 import { BUNDLED_FX, isFxTable, type FxTable } from '../../src/utils/pricing';
 import { PLATFORM_HOLDER } from '../../src/bank/shamLedger';
 import { ShamBooks, readMoneyBody } from './shamBooks';
@@ -17,7 +19,7 @@ function periodInput(kind: unknown, offset: unknown): { kind: PeriodKind; offset
   if (!['daily', 'weekly', 'monthly'].includes(k as string) || !Number.isInteger(n) || n > 0 || n < -366) throw new ValidationError('INVALID_PERIOD', 'اختر فترة يومية أو أسبوعية أو شهرية وإزاحة بين 0 و-366.');
   return { kind: k as PeriodKind, offset: n };
 }
-export function createFinanceRouter(finance: FinanceService, bank?: BankService) {
+export function createFinanceRouter(finance: FinanceService, bank?: BankService, sales?: SalesService) {
   const router = express.Router();
   const limiter = new RateLimiter(4, 10 * 60_000);
   const statementLimiter = new RateLimiter(20, 10 * 60_000);
@@ -49,6 +51,8 @@ export function createFinanceRouter(finance: FinanceService, bank?: BankService)
     if (req.body?.confirmed !== true) throw new ValidationError('CONFIRMATION_REQUIRED', 'أكد اكتمال مراجعة المصروفات لهذه الفترة.');
     await finance.reviewExpenses(kind, offset, req.body?.fingerprint); res.json({ ok: true });
   }));
+  // «إدارة المبيعات»: the desk inside «بنك شام» — the pipeline, targets, rhythm and study over the same real figures.
+  if (sales) router.use('/sales', createSalesRouter(sales));
   if (bank) {
     // «بنك شام»: direct collection, statement matching, payables, budgets, analytics and «شاهين المحاسب».
     const bundled = { ...BUNDLED_FX, updatedAt: BUNDLED_FX.updatedAt || '1970-01-01T00:00:00Z' };
@@ -91,7 +95,7 @@ export function createFinanceRouter(finance: FinanceService, bank?: BankService)
     }));
   }
   router.get('/export', wrap(async (_req, res) => {
-    const collections = ['financeOrders', 'financeSessions', 'financeEntries', 'financeReports', 'financeReviews', 'financeIssues', 'financeRuns', 'paymentRegistrations', 'bankAccounts', 'bankDirect', 'bankPayables', 'bankBudgets', 'bankAudit', 'shamHolders', 'shamPostings', 'shamImports'] as const;
+    const collections = ['financeOrders', 'financeSessions', 'financeEntries', 'financeReports', 'financeReviews', 'financeIssues', 'financeRuns', 'paymentRegistrations', 'bankAccounts', 'bankDirect', 'bankPayables', 'bankBudgets', 'bankAudit', 'shamHolders', 'shamPostings', 'shamImports', 'salesDeals', 'salesTargets', 'salesStudy', 'salesAudit'] as const;
     const data: Record<string, unknown> = { exportedAt: new Date().toISOString(), version: 1 };
     for (const c of collections) data[c] = await finance.store.list(c);
     res.setHeader('Content-Disposition', 'attachment; filename="sham-finance-private.json"'); res.json(data);

@@ -8,6 +8,7 @@ import { mailProvider, mailProviderLabel } from './mailer';
 import express from 'express';
 import { FinanceService } from '../finance/service';
 import { createFinanceRouter } from '../finance/router';
+import { SalesService } from '../sales/service';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { reviewSpecialtiesCached } from './specialtyReview';
 import { reviewPagesCached } from './pageReview';
@@ -70,6 +71,7 @@ export function createShamCore(options: CoreOptions = {}) {
   const durable = options.store ? store : createLedgerStore(env, store);
   const finance = new FinanceService(durable, env, { fetch: options.fetch });
   const bank = new BankService(finance, env, options.fetch || fetch);
+  const sales = new SalesService(finance, bank, env);
   // Shared with the Shaheen chat router: outcomes + capacity parts, read by the maintenance agent.
   const runtime = options.runtime || new ShaheenRuntime(runningVersion(env));
   const orchestrator = new Orchestrator(repo, { env, fetch: options.fetch });
@@ -258,7 +260,7 @@ export function createShamCore(options: CoreOptions = {}) {
     next();
   });
 
-  admin.use('/finance', createFinanceRouter(finance, bank));
+  admin.use('/finance', createFinanceRouter(finance, bank, sales));
   // «غرفة شاهين الخاصة»: the owner, Shaheen and the secretary only — nothing is stored on the server.
   admin.use('/owner-room', createOwnerRoomRouter({ env, fetch: options.fetch, health: runtime.health }));
 

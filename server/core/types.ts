@@ -9,6 +9,12 @@ import type { SupportedLanguage } from '../../src/types/i18n';
 import type { SeoState } from '../../src/seo/agentState';
 import type { CensusReport } from '../../src/utils/platformCensus';
 import type { InsightProfile } from '../../src/utils/visitorInsights';
+import type { Deal as SalesDeal } from '../../src/sales/pipeline';
+import type { SalesTarget } from '../../src/sales/targets';
+import type { StudyResult as SalesStudyRecord } from '../../src/sales/playbook';
+
+/** «إدارة المبيعات» audit line — action names only, no personal data. */
+export interface SalesAudit { id: string; at: string; action: string; target: string; detail?: string }
 
 export type Lang = SupportedLanguage;
 
@@ -324,5 +330,10 @@ export interface Collections {
   census: CensusReport & { id: string };
   /** «خزنة فهم الزوار»: one behaviour profile per visitor who accepted «التحليل» — the administration's only (server/insights.ts). */
   insightProfiles: InsightProfile;
+  /** «إدارة المبيعات» inside «بنك شام»: opportunities by label only (no contacts), monthly targets, study answers, audit. */
+  salesDeals: SalesDeal;
+  salesTargets: SalesTarget;
+  salesStudy: SalesStudyRecord;
+  salesAudit: SalesAudit;
 }
 export type CollectionName = keyof Collections;

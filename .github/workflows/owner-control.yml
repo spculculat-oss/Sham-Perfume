@@ -43,6 +43,7 @@ on:
           - patrol
           - maneuver
           - finance
+          - sales
           - scout
           - teacher
           - school

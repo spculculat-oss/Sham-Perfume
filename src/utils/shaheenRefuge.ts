@@ -101,6 +101,7 @@ const REPORT_NAMES: Record<string, [string, string]> = {
   'store-review.json': ['مراجعة صفحات المنتجات', 'Product pages review'],
   'shaheen-inventory.json': ['إدارة المخزون والتنبؤ بالمبيعات', 'Inventory & sales forecast'],
   'shaheen-service.json': ['مكتب خدمة العملاء الآلي', 'Automated customer care desk'],
+  'shaheen-sales.json': ['إدارة المبيعات — خط الأنابيب والهدف والمنهج', 'Sales desk — pipeline, target and curriculum'],
 };
 const reportEntry = (file: string): RefugeEntry => {
   const [nameAr, nameEn] = REPORT_NAMES[file] ?? [file, file];
@@ -123,7 +124,7 @@ const WORKFLOW_OWNER: Record<string, BotId> = {
   'shaheen-news.yml': 'news', 'shaheen-patrol.yml': 'patrol', 'shaheen-maneuver.yml': 'maneuver', 'shaheen-precheck.yml': 'precheck',
   'shaheen-seo.yml': 'seo', 'owner-control.yml': 'owner_desk', 'platform-state.yml': 'state', 'platform-census.yml': 'census',
   'shaheen-school-clock.yml': 'academy', 'shaheen-lab.yml': 'lab',
-  'shaheen-inventory.yml': 'inventory', 'shaheen-service.yml': 'service', 'shaheen-brain.yml': 'brain',
+  'shaheen-inventory.yml': 'inventory', 'shaheen-service.yml': 'service', 'shaheen-brain.yml': 'brain', 'shaheen-sales.yml': 'sales',
 };
 const WORKFLOW_NAMES: Record<string, [string, string]> = {
   'aistudio-bridge.yml': ['بوابة استوديو التصميم', 'Design studio bridge'],
@@ -153,6 +154,7 @@ const WORKFLOW_NAMES: Record<string, [string, string]> = {
   'shaheen-lab.yml': ['تشغيل معمل شاهين للتجارب', 'Shaheen lab run'],
   'shaheen-inventory.yml': ['إدارة المخزون والتنبؤ بالمبيعات', 'Inventory & sales forecast'],
   'shaheen-service.yml': ['مكتب خدمة العملاء الآلي', 'Automated customer care desk'],
+  'shaheen-sales.yml': ['إدارة المبيعات في بنك شام', 'Sales desk in Sham Bank'],
   'shaheen-brain.yml': ['مختبر عقل شاهين (ملفات التدريب والامتحان)', "Shaheen's brain lab (training data & exam)"],
 };
 const workflowEntry = (file: string): RefugeEntry => {
