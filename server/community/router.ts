@@ -223,7 +223,8 @@ export function createCommunityRouter(community: Community, options: { env?: Env
   router.post('/community/me/2fa/phone/disable', member(async (ctx, u, req) => svc.disablePhone2fa(ctx, u.id, req.body?.password, req.body?.code)));
   router.post('/community/auth/login/phone/request', limitedAuth(open((ctx, req) => svc.requestPhoneLoginCode(ctx, String(req.body?.pendingToken || '')))));
   router.post('/community/auth/login/phone/verify', limitedAuth(open((ctx, req) => svc.verifyPhoneLoginCode(ctx, req.body || {}))));
-  /* OAuth (Google/Facebook) — start with the account you already have */
+  /* OAuth (Google/Facebook) — the browser opens the provider window; only a token that provider issued is accepted. */
+  router.get('/community/auth/oauth/config', open(async () => svc.oauthPublicConfig(env)));
   router.post('/community/auth/google', limitedAuth(open((ctx, req) => svc.loginWithGoogle(ctx, req.body || {}, agent(req), ip(req)))));
   router.post('/community/auth/facebook', limitedAuth(open((ctx, req) => svc.loginWithFacebook(ctx, req.body || {}, agent(req), ip(req)))));
 

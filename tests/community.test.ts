@@ -700,3 +700,74 @@ test('bookmarks never bypass visibility changes, moderation, deletion or blockin
   await assert.rejects(social.savePost(ctx, reader.id, blocked.id), { code: 'NOT_FOUND' });
   await social.unsavePost(ctx, reader.id, blocked.id);
 });
+
+/* ------------------------------------------ Google / Facebook ------------------------------------------ */
+
+const jsonResponse = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } });
+
+test('google and facebook login never treats a typed e-mail or an unsigned token as a link', async () => {
+  const before = (await sql.query<{ n: number }>(`SELECT count(*)::int AS n FROM users`))[0].n;
+  await assert.rejects(svc.loginWithGoogle(ctx, { idToken: 'person@example.com' }), { code: 'OAUTH_NOT_CONFIGURED' });
+  await assert.rejects(svc.loginWithFacebook(ctx, { accessToken: 'person@example.com' }), { code: 'OAUTH_NOT_CONFIGURED' });
+  const forged = `${Buffer.from('{"alg":"none"}').toString('base64url')}.${Buffer.from('{"email":"forged@example.com","sub":"evil"}').toString('base64url')}.sig`;
+  await assert.rejects(svc.loginWithGoogle(ctx, { idToken: forged }), { code: 'OAUTH_NOT_CONFIGURED' });
+  await assert.rejects(svc.loginWithGoogle(ctx, { idToken: JSON.stringify({ email: 'forged@example.com' }) }), { code: 'OAUTH_NOT_CONFIGURED' });
+  assert.equal((await sql.query<{ n: number }>(`SELECT count(*)::int AS n FROM users`))[0].n, before, 'a rejected link creates no account');
+  assert.deepEqual(svc.oauthPublicConfig({ GOOGLE_CLIENT_ID: 'gid', FACEBOOK_APP_ID: 'fid', FACEBOOK_APP_SECRET: 'sec' }), { googleClientId: 'gid', facebookAppId: 'fid' });
+  assert.equal(svc.oauthPublicConfig({ FACEBOOK_APP_ID: 'fid' }).facebookAppId, null);
+  assert.equal(JSON.stringify(svc.oauthPublicConfig({ FACEBOOK_APP_SECRET: 'sec' })).includes('sec'), false);
+});
+
+test('a verified provider token links the provider subject, not the word google or facebook', async () => {
+  const original = globalThis.fetch;
+  const address = email('oauthlink');
+  const other = email('oauthother');
+  globalThis.fetch = async (input) => {
+    const url = new URL(String(input));
+    if (url.hostname === 'oauth2.googleapis.com') {
+      const token = url.searchParams.get('access_token') || url.searchParams.get('id_token') || '';
+      if (token === 'good') return jsonResponse({ aud: 'test-google-client', email: address, email_verified: 'true', sub: 'google-sub-42', name: 'Nour' });
+      if (token === 'same-subject') return jsonResponse({ aud: 'test-google-client', email: other, email_verified: 'true', sub: 'google-sub-42', name: 'Nour' });
+      if (token === 'mismatch') return jsonResponse({ aud: 'other-client', email: address, email_verified: 'true', sub: 'google-sub-99' });
+      if (token === 'unverified') return jsonResponse({ aud: 'test-google-client', email: address, email_verified: 'false', sub: 'google-sub-1' });
+      return jsonResponse({ error: 'invalid' }, 400);
+    }
+    if (url.hostname === 'graph.facebook.com' && url.pathname === '/debug_token') {
+      const token = url.searchParams.get('input_token');
+      if (token === 'fb-good') return jsonResponse({ data: { is_valid: true, app_id: 'fb-app', user_id: 'fb-user-9' } });
+      if (token === 'fb-other-app') return jsonResponse({ data: { is_valid: true, app_id: 'other-app', user_id: 'fb-user-9' } });
+      return jsonResponse({ data: { is_valid: false } });
+    }
+    if (url.hostname === 'graph.facebook.com' && url.pathname === '/me') {
+      return jsonResponse({ id: 'fb-user-9', email: address, name: 'Nour' });
+    }
+    return jsonResponse({ error: 'unexpected' }, 404);
+  };
+  try {
+    const google = { ...ctx, env: { GOOGLE_CLIENT_ID: 'test-google-client' } };
+    const facebook = { ...ctx, env: { FACEBOOK_APP_ID: 'fb-app', FACEBOOK_APP_SECRET: 'fb-secret' } };
+    await assert.rejects(svc.loginWithGoogle(google, { accessToken: 'mismatch' }), { code: 'OAUTH_INVALID' });
+    await assert.rejects(svc.loginWithGoogle(google, { accessToken: 'unverified' }), { code: 'OAUTH_INVALID' });
+    await assert.rejects(svc.loginWithGoogle(google, { idToken: address }), { code: 'OAUTH_INVALID' });
+    const existing = await newMember('OAuthExisting', { email: address });
+    const linked = await svc.loginWithGoogle(google, { accessToken: 'good' });
+    if ('pending' in linked) throw new Error('unexpected pending login');
+    assert.equal(linked.me.id, existing.id, 'the provider e-mail links the account that already exists');
+    assert.equal(linked.me.email, address);
+    const row = await sql.query<{ oauth_google_id: string }>(`SELECT oauth_google_id FROM users WHERE id = $1`, [existing.id]);
+    assert.equal(row[0].oauth_google_id, 'google-sub-42');
+    assert.notEqual(row[0].oauth_google_id, 'google');
+    const again = await svc.loginWithGoogle(google, { accessToken: 'same-subject' });
+    if ('pending' in again) throw new Error('unexpected pending login');
+    assert.equal(again.me.id, existing.id, 'the same provider subject stays on the same account');
+    assert.equal(again.me.email, address, 'a different address in a later token does not replace the account');
+    await assert.rejects(svc.loginWithFacebook(facebook, { accessToken: 'fb-other-app' }), { code: 'OAUTH_INVALID' });
+    const fb = await svc.loginWithFacebook(facebook, { accessToken: 'fb-good' });
+    if ('pending' in fb) throw new Error('unexpected pending login');
+    assert.equal(fb.me.id, existing.id);
+    const fbRow = await sql.query<{ oauth_facebook_id: string }>(`SELECT oauth_facebook_id FROM users WHERE id = $1`, [existing.id]);
+    assert.equal(fbRow[0].oauth_facebook_id, 'fb-user-9');
+  } finally {
+    globalThis.fetch = original;
+  }
+});

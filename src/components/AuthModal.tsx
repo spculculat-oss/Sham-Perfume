@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   User,
   Lock,
@@ -15,7 +15,8 @@ import {
 } from 'lucide-react';
 import { UserProfile } from '../types/auth';
 import { completeTwoFactorLogin, confirmPasswordReset, loginUser, profileFromMember, registerUser, requestPasswordReset } from '../utils/authStorage';
-import { CommunityApiError, cx, type AuthResult, type PasskeyGetOptions } from '../community/api';
+import { CommunityApiError, cx, type AuthResult, type PasskeyGetOptions, type PendingLogin } from '../community/api';
+import { facebookAccessToken, googleAccessToken, oauthConfig, prepareFacebook, prepareGoogle, type OAuthPublicConfig } from '../community/oauthLink';
 import { usePasskey, webauthnAvailable } from '../community/passkeys';
 import { WORLD_COUNTRIES } from '../data/worldCountries';
 import { localOnlyProfile } from '../utils/paymentAccess';
@@ -393,7 +394,9 @@ const S = {
   google_btn: { ar: 'متابعة بجوجل', en: 'Continue with Google', fr: 'Continuer avec Google', es: 'Continuar con Google', it: 'Continua con Google', de: 'Mit Google fortfahren', ru: 'Продолжить с Google', zh: '使用 Google 继续', tr: 'Google ile devam et', fa: 'ادامه با گوگل' },
   facebook_btn: { ar: 'متابعة بفيسبوك', en: 'Continue with Facebook', fr: 'Continuer avec Facebook', es: 'Continuar con Facebook', it: 'Continua con Facebook', de: 'Mit Facebook fortfahren', ru: 'Продолжить с Facebook', zh: '使用 Facebook 继续', tr: 'Facebook ile devam et', fa: 'ادامه با فیسبوک' },
   oauth_divider: { ar: 'أو', en: 'or', fr: 'ou', es: 'o', it: 'o', de: 'oder', ru: 'или', zh: '或', tr: 'veya', fa: 'یا' },
-  oauth_coming: { ar: 'تسجيل جوجل/فيسبوك قريب — الإدارة هتفعل مفاتيح OAuth', en: 'Google/Facebook sign-in coming soon — admin will enable OAuth keys', fr: 'Connexion Google/Facebook bientôt — l’admin activera OAuth', es: 'Inicio con Google/Facebook pronto — el admin activará OAuth', it: 'Accesso Google/Facebook presto — l’admin abiliterà OAuth', de: 'Google/Facebook-Anmeldung bald — Admin aktiviert OAuth', ru: 'Вход через Google/Facebook скоро — админ включит OAuth', zh: 'Google/Facebook 登录即将推出 — 管理员将启用 OAuth', tr: 'Google/Facebook girişi yakında — yönetici OAuth’u etkinleştirecek', fa: 'ورود با گوگل/فیسبوک به‌زودی — مدیر OAuth را فعال می‌کند' },
+  oauth_coming: { ar: 'جوجل وفيسبوك مش مربوطين على الخادم. مش هنعمل حساب باسمهم من غير نافذتهم.', en: 'Google and Facebook are not connected on the server. Sham will not invent an account in their name.', fr: 'Google et Facebook ne sont pas reliés au serveur. Aucun compte fictif n’est créé.', es: 'Google y Facebook no están conectados en el servidor. No se crea una cuenta ficticia.', it: 'Google e Facebook non sono collegati al server. Nessun account fittizio.', de: 'Google und Facebook sind auf dem Server nicht verbunden. Es wird kein Scheinkonto angelegt.', ru: 'Google и Facebook не подключены на сервере. Фиктивный аккаунт не создаётся.', zh: '服务器尚未连接 Google 和 Facebook。不会伪造账户。', tr: 'Google ve Facebook sunucuya bağlı değil. Sahte hesap açılmaz.', fa: 'گوگل و فیسبوک به سرور وصل نیستند. حساب ساختگی ساخته نمی‌شود.' },
+  oauth_failed: { ar: 'النافذة اتقفلت أو المزود مرجعش حساب متأكد. مفيش ربط، ومفيش حساب محلي جديد.', en: 'The window closed, or the provider did not return a verified account. Nothing was linked, and no local account was created.', fr: 'La fenêtre s’est fermée, ou le fournisseur n’a pas renvoyé un compte vérifié. Aucun lien, aucun compte local.', es: 'La ventana se cerró o el proveedor no devolvió una cuenta verificada. No hay vínculo ni cuenta local.', it: 'La finestra si è chiusa, o il fornitore non ha restituito un account verificato. Nessun collegamento.', de: 'Das Fenster wurde geschlossen oder der Anbieter hat kein geprüftes Konto zurückgegeben. Nichts wurde verknüpft.', ru: 'Окно закрылось, или провайдер не вернул проверенный аккаунт. Связи нет.', zh: '窗口已关闭，或提供方没有返回已验证账户。没有绑定。', tr: 'Pencere kapandı veya sağlayıcı doğrulanmış hesap döndürmedi. Bağlantı yok.', fa: 'پنجره بسته شد یا ارائه‌دهنده حساب تأییدشده برنگرداند. پیوندی نیست.' },
+  oauth_hint: { ar: 'هتفتح نافذة جوجل أو فيسبوك. الربط يتم بس بعد موافقتك هناك.', en: 'Google or Facebook will open. The account is linked only after you agree there.', fr: 'Google ou Facebook s’ouvre. Le lien se fait seulement après votre accord.', es: 'Se abrirá Google o Facebook. El vínculo ocurre solo después de tu consentimiento.', it: 'Si apre Google o Facebook. Il collegamento avviene solo dopo il consenso.', de: 'Google oder Facebook öffnet sich. Verknüpft wird erst nach Ihrer Zustimmung.', ru: 'Откроется Google или Facebook. Связь только после вашего согласия.', zh: '将打开 Google 或 Facebook。只有在那里同意后才会绑定。', tr: 'Google veya Facebook açılır. Bağlantı yalnızca orada onaydan sonra olur.', fa: 'گوگل یا فیسبوک باز می‌شود. پیوند فقط پس از موافقت آنجاست.' },
   phone_2fa_suggest: { ar: 'عايز أمان أكتر؟ فعّل التحقق بخطوتين برسالة واتساب أو SMS — اختياري ونرشحه لك', en: 'Want extra security? Enable 2-step via WhatsApp or SMS — optional, recommended', fr: 'Sécurité renforcée ? Activez la vérification en 2 étapes par WhatsApp ou SMS — optionnel, recommandé', es: '¿Más seguridad? Activa 2 pasos por WhatsApp o SMS — opcional, recomendado', it: 'Più sicurezza? Attiva 2 passaggi via WhatsApp o SMS — opzionale, consigliato', de: 'Mehr Sicherheit? 2-Schritt per WhatsApp/SMS aktivieren — optional, empfohlen', ru: 'Хотите больше безопасности? Включите 2 шага через WhatsApp/SMS — опционально, рекомендуется', zh: '想要更安全？启用 WhatsApp 或 SMS 两步验证 — 可选，推荐', tr: 'Daha fazla güvenlik? WhatsApp/SMS ile 2 adımı etkinleştir — isteğe bağlı, önerilir', fa: 'امنیت بیشتر؟ تأیید دو مرحله‌ای با واتساپ یا پیامک — اختیاری، پیشنهادی' },
   phone_2fa_whatsapp: { ar: 'رسالة واتساب', en: 'WhatsApp message', fr: 'Message WhatsApp', es: 'Mensaje WhatsApp', it: 'Messaggio WhatsApp', de: 'WhatsApp-Nachricht', ru: 'Сообщение WhatsApp', zh: 'WhatsApp 消息', tr: 'WhatsApp mesajı', fa: 'پیام واتساپ' },
   phone_2fa_sms: { ar: 'رسالة SMS على الموبايل', en: 'SMS to mobile', fr: 'SMS sur mobile', es: 'SMS al móvil', it: 'SMS al cellulare', de: 'SMS aufs Handy', ru: 'SMS на телефон', zh: '手机短信', tr: 'Cep telefonuna SMS', fa: 'پیامک به موبایل' },
@@ -540,43 +543,40 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   };
 
 
-  /* OAuth (Google/Facebook): start with account you already have */
+  /* OAuth: the provider window is the link. A typed e-mail is never sent as a token, and a failure never creates a local account. */
   const [oauthBusy, setOauthBusy] = useState<'google'|'facebook'|''>('');
+  const [oauthCfg, setOauthCfg] = useState<OAuthPublicConfig | null>(null);
+  useEffect(() => {
+    let cancel = false;
+    oauthConfig().then((cfg) => {
+      if (cancel) return;
+      setOauthCfg(cfg);
+      if (cfg.googleClientId) void prepareGoogle().catch(() => {});
+      if (cfg.facebookAppId) void prepareFacebook(cfg.facebookAppId).catch(() => {});
+    }).catch(() => { if (!cancel) setOauthCfg({ googleClientId: null, facebookAppId: null }); });
+    return () => { cancel = true; };
+  }, []);
   const handleOAuth = async (provider: 'google'|'facebook') => {
-    setErrorMsg(null); setOauthBusy(provider);
+    setErrorMsg(null);
+    const clientId = provider === 'google' ? oauthCfg?.googleClientId : oauthCfg?.facebookAppId;
+    if (!clientId) { setErrorMsg(L('oauth_coming')); return; }
+    setOauthBusy(provider);
     try {
-      const token = email.trim() || `demo-${provider}@example.com`;
-      const result = await cx<AuthResult>(`/community/auth/${provider}`, { body: provider === 'google' ? { idToken: token } : { accessToken: token } });
-      if ('pending' in (result as any)) {
-        setPendingToken((result as any).pendingToken || '');
-        toStep('phone');
+      const token = provider === 'google' ? await googleAccessToken(clientId) : await facebookAccessToken(clientId);
+      const result = await cx<AuthResult | PendingLogin>(`/community/auth/${provider}`, { body: { accessToken: token } });
+      if ('pending' in result) {
+        setPendingToken(result.pendingToken || '');
+        toStep(result.method === 'totp' ? 'totp' : 'phone');
         return;
       }
-      finish(profileFromMember((result as AuthResult).me));
-      return;
+      finish(profileFromMember(result.me));
     } catch (e) {
-      const code = (e as any)?.code;
-      // If OAuth not yet configured on server, don't create strange demo account — guide user to normal sign-in (like Google/Apple do: they never invent a random email)
-      if (code === 'OAUTH_NOT_CONFIGURED' || code === 'OAUTH_INVALID') {
+      if (e instanceof Error && e.message === 'cancelled') return;
+      if (e instanceof CommunityApiError && (e.code === 'OAUTH_NOT_CONFIGURED' || e.code === 'COMMUNITY_NOT_CONFIGURED')) {
         setErrorMsg(L('oauth_coming'));
         return;
       }
-      // For any other failure, if user already typed a valid email, try to connect that email seamlessly (no random demo-xxx@sham.local)
-      if (email.trim() && email.includes('@')) {
-        try {
-          const cleanEmail = email.trim().toLowerCase();
-          const mockName = provider === 'google' ? 'Google User' : 'Facebook User';
-          const mockPassword = `OAuth_${provider}_Sham2026!`;
-          let res = await registerUser(mockName, cleanEmail, mockPassword, 'perfumer', 'SA');
-          if (res.success && res.user) { finish(res.user); return; }
-          const loginRes = await loginUser(cleanEmail, mockPassword);
-          if (loginRes.success && loginRes.user) { finish(loginRes.user); return; }
-        } catch {}
-      } else if (email.trim() === '') {
-        setErrorMsg(currentLang === 'ar' ? 'اكتب إيميلك أولاً فوق، وبعدين دوس متابعة بجوجل/فيسبوك' : 'Enter your e-mail above first, then continue with Google/Facebook');
-        return;
-      }
-      setErrorMsg(L('err_login'));
+      setErrorMsg(L('oauth_failed'));
     } finally { setOauthBusy(''); }
   };
   /* Phone 2FA: WhatsApp/SMS code (optional, suggested) */
@@ -1029,7 +1029,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </button>
             )}
 
-            {/* Google / Facebook — global standard (Google Identity / Meta Login) */}
+            {/* Google / Facebook — their window is the link. No local account is invented if it closes. */}
             {mode === 'login' && stage === 'auth' && (
               <div className="space-y-2">
                 <div className="flex items-center gap-3 py-1">
@@ -1055,6 +1055,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <svg className="w-5 h-5 bg-white rounded-full p-1" viewBox="0 0 24 24" fill="#1877F2" aria-hidden="true"><path d="M14 8h3V4h-3c-2.76 0-5 2.24-5 5v3H6v4h3v5h4v-5h3l1-4h-4V9c0-.55.45-1 1-1z"/></svg>
                   <span>{oauthBusy==='facebook' ? '…' : L('facebook_btn')}</span>
                 </button>
+                <p className="text-[10px] text-stone-500 text-center leading-snug px-2">{oauthCfg === null ? '…' : (oauthCfg.googleClientId || oauthCfg.facebookAppId) ? L('oauth_hint') : L('oauth_coming')}</p>
                 <p className="text-[10px] text-stone-500 text-center leading-snug px-2">{L('phone_2fa_suggest')}</p>
               </div>
             )}
