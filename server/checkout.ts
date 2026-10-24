@@ -28,6 +28,8 @@ import { createNotifier } from './core/notify';
 import { liveStoreCatalog, loadLive } from './core/liveData';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { corsOrigins } from './cors';
+import { ShamBooks, readMoneyBody } from './finance/shamBooks';
+import { PLATFORM_HOLDER } from '../src/bank/shamLedger';
 
 type Env = Record<string, string | undefined>;
 export interface CheckoutRouterOptions {
@@ -313,6 +315,59 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
       const e = error instanceof KashierError ? error : new KashierError('FAILED', 502);
       res.status(e.status === 404 || e.status === 400 ? e.status : 502).json({ error: 'Could not read the payment', code: e.code });
     }
+  }));
+
+  const books = new ShamBooks(finance.store, () => new Date().toISOString(), () => finance.persistent);
+  const bookLimiter = new RateLimiter(40, 10 * 60_000);
+  const bookWrap = (work: (req: express.Request, res: express.Response) => Promise<unknown>) => (req: express.Request, res: express.Response) => {
+    res.setHeader('Cache-Control', 'private, no-store');
+    work(req, res).catch((error) => {
+      if (res.headersSent) return;
+      if (error instanceof ValidationError) res.status(error.status).json({ code: error.code, error: error.message });
+      else res.status(503).json({ code: 'FINANCE_UNAVAILABLE', error: 'The Sham books could not be updated. Retry with the same key.' });
+    });
+  };
+  const bookHolder = async (req: express.Request, res: express.Response) => {
+    if (!options.customer) { res.status(401).json({ code: 'LOGIN_REQUIRED', error: 'Sign in first.' }); return; }
+    const who = await options.customer(req).catch(() => undefined);
+    if (!who?.id || who.id === PLATFORM_HOLDER) { res.status(401).json({ code: 'LOGIN_REQUIRED', error: 'Sign in first.' }); return; }
+    return who.id;
+  };
+  router.get('/store/sham-bank', bookWrap(async (req, res) => {
+    const id = await bookHolder(req, res);
+    if (!id) return;
+    res.json(await books.open(id));
+  }));
+  router.get('/store/sham-bank/resolve', bookWrap(async (req, res) => {
+    const id = await bookHolder(req, res);
+    if (!id) return;
+    if (!(await books.exists(String(req.query.number || '')))) { res.status(404).json({ code: 'UNKNOWN_ACCOUNT', error: 'No Sham account with that number.' }); return; }
+    res.json({ ok: true });
+  }));
+  router.post('/store/sham-bank/transfer', bookWrap(async (req, res) => {
+    const id = await bookHolder(req, res);
+    if (!id) return;
+    if (!bookLimiter.allow(clientKey(req))) { res.status(429).json({ code: 'RATE_LIMITED', error: 'Wait a moment before another transfer.' }); return; }
+    res.json(await books.transfer(id, readMoneyBody(req.body)));
+  }));
+  router.post('/store/sham-bank/hold', bookWrap(async (req, res) => {
+    const id = await bookHolder(req, res);
+    if (!id) return;
+    if (!bookLimiter.allow(clientKey(req))) { res.status(429).json({ code: 'RATE_LIMITED', error: 'Wait a moment.' }); return; }
+    res.json(await books.hold(id, readMoneyBody(req.body)));
+  }));
+  router.post('/store/sham-bank/release', bookWrap(async (req, res) => {
+    const id = await bookHolder(req, res);
+    if (!id) return;
+    res.json(await books.release(id, readMoneyBody(req.body).postingId));
+  }));
+  router.post('/store/sham-bank/convert', bookWrap(async (req, res) => {
+    const id = await bookHolder(req, res);
+    if (!id) return;
+    if (!bookLimiter.allow(clientKey(req))) { res.status(429).json({ code: 'RATE_LIMITED', error: 'Wait a moment.' }); return; }
+    const body = readMoneyBody(req.body);
+    const rates = await fx().catch(() => bundledFx);
+    res.json(await books.convert(id, { from: body.from, to: body.to, amount: body.amount, idempotencyKey: body.idempotencyKey }, rates));
   }));
 
   router.post('/store/kashier/webhook', wrap(async (req, res) => {

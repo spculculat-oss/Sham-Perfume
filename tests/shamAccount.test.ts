@@ -2,11 +2,11 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import {
   RECEIVING_RAILS,
-  balanceAfterRequests,
   listAccountRequests,
   requestAccountAction,
   saveWithdrawalBank,
 } from '../src/bank/shamAccount';
+import { balanceOf, emptyLedger, importRecorded } from '../src/bank/shamLedger';
 
 test('receiving rails name the network and never invent an account number', () => {
   assert.equal(RECEIVING_RAILS.length >= 6, true);
@@ -17,7 +17,7 @@ test('receiving rails name the network and never invent an account number', () =
   }
 });
 
-test('a withdrawal request stays requested and does not reduce the recorded balance', () => {
+test('a saved withdrawal bank keeps last 4 only, and a card request does not post money', () => {
   const store = new Map<string, string>();
   const memory = {
     getItem: (key: string) => store.get(key) ?? null,
@@ -36,10 +36,11 @@ test('a withdrawal request stays requested and does not reduce the recorded bala
     assert.throws(() => saveWithdrawalBank('usr-1', { nickname: 'Cairo bank', currency: 'USD', country: 'Egypt', last4: '12345678' }), /INVALID_LAST4/);
     const bank = saveWithdrawalBank('usr-1', { nickname: 'Cairo bank', currency: 'USD', country: 'Egypt', last4: '4321' });
     assert.equal(bank.last4, '4321');
-    const request = requestAccountAction('usr-1', { kind: 'withdraw', currency: 'USD', amountLabel: '25.00', detail: bank.nickname });
+    const request = requestAccountAction('usr-1', { kind: 'card', currency: 'USD', detail: 'card request' });
     assert.equal(request.status, 'requested');
     assert.equal(JSON.stringify(listAccountRequests('usr-1')).includes('succeeded'), false);
-    assert.equal(balanceAfterRequests(5000, listAccountRequests('usr-1')), 5000);
+    const books = importRecorded(emptyLedger(), 'owner', [{ currency: 'USD', minor: 5000 }], '2026-10-24T12:00:00Z');
+    assert.equal(balanceOf(books, 'sham-platform', 'USD').availableMinor, 5000);
     assert.throws(() => requestAccountAction('guest_client', { kind: 'pay', currency: 'EUR', amountLabel: '1', detail: 'Amina' }), /LOGIN_REQUIRED/);
   } finally {
     if (previousWindow === undefined) delete (globalThis as { window?: unknown }).window;
