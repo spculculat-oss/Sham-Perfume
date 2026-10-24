@@ -307,7 +307,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                   <span className="text-sm leading-none">{countryMeta.flag}</span>
                   <span className="font-medium text-amber-200 max-w-[6.5rem] truncate sm:max-w-none">{countryMeta.countryName}</span>
                   <span className="font-mono text-amber-400 font-bold px-1 rounded bg-black/40">
-                    {currentLang === 'ar' ? countryMeta.symbolAr : countryMeta.symbolEn}
+                    {money.currency !== countryMeta.currency ? money.currency : currentLang === 'ar' ? countryMeta.symbolAr : countryMeta.symbolEn}
                   </span>
                   <ChevronDown className="h-3 w-3 text-amber-300/80 transition-transform group-hover:translate-y-0.5" />
                 </button>
@@ -854,7 +854,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1 rounded-full border border-amber-400/30 bg-amber-950/60 px-2 py-0.5 text-[11px] text-amber-200">
               <span>{countryMeta.flag}</span>
-              <span className="font-mono text-amber-400 font-bold">{countryMeta.currency}</span>
+              <span className="font-mono text-amber-400 font-bold">{money.currency}</span>
             </span>
             <button
               type="button"
