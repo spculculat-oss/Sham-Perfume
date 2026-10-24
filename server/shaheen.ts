@@ -48,6 +48,7 @@ import { RAW_MATERIALS_DATABASE } from '../src/data/rawMaterials';
 import { quickAnswer } from '../src/utils/shaheenQuickApps';
 import { hasSensitiveNumber, maskSensitive, offersCardDetails } from '../src/utils/ownerAuthority';
 import { councilAvailable, runCouncil } from './core/council';
+import { sendInVisitorMoney } from './core/replyMoney';
 import type { Repository } from './core/repository';
 import type { CouncilSettings, ModelEngineId, ShaheenSettings } from './core/types';
 import { SHAHEEN_ENGINES, SHAHEEN_MODES, SHAHEEN_MODE_ORDER, SHAHEEN_SITE_SETTINGS, type ShaheenMode } from './config/shaheen';
@@ -509,6 +510,9 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
     const started = Date.now();
     // «مترجم ردود شاهين»: every reply in the visitor's language (his country's or the one he picked on the site).
     const target = typeof req.body?.language === 'string' && SUPPORTED_LANGUAGES.some((l) => l.code === req.body.language) ? req.body.language as SupportedLanguage : undefined;
+    // «دولة الدخول قبل الرد»: the reply leaves in the currency of the country the visitor is entering from — checked on
+    // the translated text (installed first, so it runs last) and on the text the translator gets (installed again below).
+    sendInVisitorMoney(req, res, target || 'ar');
     if (target && target !== 'ar') {
       const send = res.json.bind(res);
       const asked = typeof req.body?.message === 'string' ? req.body.message : '';
@@ -520,6 +524,7 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
           .then((out) => { if (!res.destroyed && !res.headersSent) send(out.changed ? { ...(body as object), reply: out.reply, ...(out.translated ? { translated: target } : {}) } : body); });
         return res;
       }) as typeof res.json;
+      sendInVisitorMoney(req, res, target);
     }
     const controller = new AbortController();
     const cancel = () => { if (!res.writableEnded) controller.abort(); };

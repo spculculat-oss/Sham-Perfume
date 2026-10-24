@@ -19,7 +19,7 @@ export type FindingSource = 'browser' | 'chat-live' | 'brain' | 'rules' | 'ai';
 export type FindingCode =
   | 'page-error' | 'console' | 'http' | 'asset-missing' | 'blank' | 'raw-text' | 'overflow' | 'broken-image' | 'slow'
   | 'no-alt' | 'unnamed-button' | 'no-heading' | 'unreachable'
-  | 'chat-expect' | 'chat-own' | 'chat-repeat' | 'chat-lint' | 'chat-vendor' | 'chat-http' | 'chat-empty' | 'chat-lang'
+  | 'chat-expect' | 'chat-own' | 'chat-repeat' | 'chat-lint' | 'chat-vendor' | 'chat-http' | 'chat-empty' | 'chat-lang' | 'chat-currency'
   | 'ai-idea';
 /** For conversations: whose craft the miss is (store advice, relations, knowledge, safety). */
 export type ChatTopic = 'store' | 'relations' | 'knowledge' | 'safety';
@@ -68,7 +68,7 @@ export interface ManeuverReport {
 export const CHAT_SECTION = { id: 'shaheen_chat', titleAr: 'شات الخبير شاهين', titleEn: 'Chat with Shaheen' };
 /** Private sections a visitor never opens (the admin panel needs the owner's code). */
 export const PRIVATE_SECTIONS = new Set(['admin_panel']);
-export const MANEUVER_LIMITS = { findings: 150, resolved: 30, liveDrills: 3 };
+export const MANEUVER_LIMITS = { findings: 150, resolved: 30, liveDrills: 3, livePrices: 2 };
 
 /** The public sections the maneuver opens, in order (the product page needs a product id). */
 export const fieldSections = () => SITE_SECTIONS.filter((s) => !PRIVATE_SECTIONS.has(s.id));

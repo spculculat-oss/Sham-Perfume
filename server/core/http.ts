@@ -29,6 +29,7 @@ import { SHAHEEN_SITE_SETTINGS } from '../config/shaheen';
 import { engineStatuses } from './engines';
 import { activeSeats, councilAvailable, publicTranscript } from './council';
 import type { CollectionName, RequestStatus, ServiceRequest } from './types';
+import { moneyFor, moneyOut } from './replyMoney';
 import { MAINTENANCE_ACTIONS, ShaheenRuntime, runningVersion, type MaintenanceAction } from './maintenance';
 import {
   sendCustomerStatusEmail,
@@ -123,7 +124,8 @@ export function createShamCore(options: CoreOptions = {}) {
     const key = clientKey(req);
     const output = await orchestrator.chat(input, { signal: controller.signal, councilGate: () => councilLimiter.allow(key) });
     await afterChat(output);
-    res.json(output);
+    // «دولة الدخول قبل الرد»: the stored conversation keeps the catalog's pounds; the reply leaves in the visitor's currency.
+    res.json(moneyOut(output, moneyFor(req, input.language), input.language));
   }));
 
   /**
@@ -140,7 +142,13 @@ export function createShamCore(options: CoreOptions = {}) {
     res.on('close', () => { if (!res.writableFinished) controller.abort(); });
     res.writeHead(200, { 'Content-Type': 'text/event-stream; charset=utf-8', 'Cache-Control': 'no-store, no-transform', Connection: 'keep-alive', 'X-Accel-Buffering': 'no' });
     res.flushHeaders?.();
-    const write = (event: StreamEvent) => { if (!res.writableEnded) res.write(`event: ${event.type}\ndata: ${JSON.stringify(event)}\n\n`); };
+    const money = moneyFor(req, input.language);
+    const lang = input.language;
+    // The live tokens may cut an amount in two (the page converts what it shows); the final answer leaves converted.
+    const write = (event: StreamEvent) => {
+      const out = event.type === 'done' ? { ...event, output: moneyOut(event.output, money, lang) } : event;
+      if (!res.writableEnded) res.write(`event: ${out.type}\ndata: ${JSON.stringify(out)}\n\n`);
+    };
     try {
       const key = clientKey(req);
       const output = await orchestrator.chat(input, { signal: controller.signal, onEvent: write, councilGate: () => councilLimiter.allow(key) });

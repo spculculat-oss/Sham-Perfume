@@ -1,3 +1,4 @@
+import { budgetsToHome, localizeChatPrices } from '../utils/chatPrices';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowUpRight,
@@ -58,6 +59,7 @@ import {
   startCheckout,
   usePayments,
   useStoreMoney,
+  chatMoney,
   type CheckoutForm,
   type PaymentResult,
 } from '../utils/storeCheckout';
@@ -421,9 +423,11 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
     if (message.length < 2) return;
     const id = ++askId.current;
     setWish(message);
-    setAdvice(localSuggestion(products, message, currentLang));
+    // «دولة الدخول»: «under 50 €» reaches the advisor in the catalog's pounds; its answer comes back in his currency.
+    const brainText = budgetsToHome(message, money.currency, currentLang);
+    setAdvice(localSuggestion(products, brainText, currentLang));
     setThinking(true);
-    const better = await askShaheenStore(products, message, currentLang);
+    const better = await askShaheenStore(products, brainText, currentLang, fetch, chatMoney(currentLang));
     if (id !== askId.current) return;
     setThinking(false);
     if (better) setAdvice(better);
@@ -738,7 +742,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
           {why && (
             <p className="text-[11px] leading-relaxed text-amber-950 bg-amber-50/70 border border-amber-200/70 rounded-xl p-2.5 mt-1">
               <Sparkles className="inline w-3 h-3 text-amber-600 me-1.5 shrink-0" />
-              <span>{why}</span>
+              <span>{localizeChatPrices(why, money.currency, currentLang)}</span>
             </p>
           )}
 
@@ -1504,7 +1508,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                   {advice.source === 'shaheen' ? L.byShaheen : L.quick}
                 </span>
                 <p className="text-sm text-stone-800 leading-relaxed font-medium">
-                  {thinking ? L.thinking : advice.reply}
+                  {thinking ? L.thinking : localizeChatPrices(advice.reply, money.currency, currentLang)}
                 </p>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">

@@ -17,17 +17,55 @@ const COUNTRY_KEY = 'sham-store-country';
 const COUNTRY_EVENT = 'sham-store-country-change';
 const PENDING_KEY = 'sham-store-pending-payment';
 
-function savedCountry(): { code: string; manual: boolean; at?: number } | undefined {
+const ENTRY_KEY = 'sham-store-entry';
+const PAGE_OPENED = Date.now();
+
+function savedCountry(): { code: string; manual: boolean; at?: number; entry?: string } | undefined {
   try {
-    const raw = JSON.parse(localStorage.getItem(COUNTRY_KEY) || 'null') as { code?: string; manual?: boolean; at?: number } | null;
-    return raw && isCountry(raw.code) ? { code: raw.code, manual: Boolean(raw.manual), ...(Number(raw.at) > 0 ? { at: Number(raw.at) } : {}) } : undefined;
+    const raw = JSON.parse(localStorage.getItem(COUNTRY_KEY) || 'null') as { code?: string; manual?: boolean; at?: number; entry?: string } | null;
+    return raw && isCountry(raw.code)
+      ? { code: raw.code, manual: Boolean(raw.manual), ...(Number(raw.at) > 0 ? { at: Number(raw.at) } : {}), ...(isCountry(raw.entry) ? { entry: raw.entry } : {}) }
+      : undefined;
   } catch { return undefined; }
+}
+
+/** The country the visitor entered from last time the server looked (its edge), or undefined. */
+function savedEntry(): string | undefined {
+  try { const v = localStorage.getItem(ENTRY_KEY) || ''; return isCountry(v) ? v : undefined; } catch { return undefined; }
 }
 
 export function setStoreCountry(code: string, manual = true) {
   if (!isCountry(code)) return;
-  try { localStorage.setItem(COUNTRY_KEY, JSON.stringify({ code, manual, ...(manual ? { at: Date.now() } : {}) })); } catch { /* private mode */ }
+  // A country he picks himself holds while he enters from the same country; entering from another one (a trip, a VPN)
+  // brings the store, the prices and Shaheen's replies back to where he is now (followEntryCountry).
+  const entry = manual ? savedEntry() : undefined;
+  try { localStorage.setItem(COUNTRY_KEY, JSON.stringify({ code, manual, ...(manual ? { at: Date.now() } : {}), ...(entry ? { entry } : {}) })); } catch { /* private mode */ }
   window.dispatchEvent(new CustomEvent(COUNTRY_EVENT, { detail: code }));
+}
+
+/**
+ * «دولة الدخول»: the server just told us the country this visitor is entering from (GET /api/geo, or the country a
+ * chat reply was written for). Follows it unless he picked a store country himself while entering from that same
+ * country. Returns true when the store country changed.
+ */
+export function followEntryCountry(entry: unknown): boolean {
+  if (typeof window === 'undefined' || typeof entry !== 'string' || !isCountry(entry)) return false;
+  try { localStorage.setItem(ENTRY_KEY, entry); } catch { /* private mode */ }
+  const saved = savedCountry();
+  if (saved?.manual && !saved.entry && (saved.at ?? 0) >= PAGE_OPENED) {
+    // Picked on this very visit, before the server answered: it is his pick for the country he is in now.
+    try { localStorage.setItem(COUNTRY_KEY, JSON.stringify({ ...saved, entry })); } catch { /* private mode */ }
+    return false;
+  }
+  if (saved?.manual && (saved.entry ? saved.entry === entry : saved.code === entry)) return false;
+  if (saved && !saved.manual && saved.code === entry) return false;
+  setStoreCountry(entry, false);
+  return true;
+}
+
+/** What a chat request tells the server about the visitor's money: the page's country, currency, and whether he chose it. */
+export function chatMoney(lang: SupportedLanguage): { country: string; currency: string; countryManual: boolean } {
+  return { country: currentStoreCountry(), currency: currentDisplayCurrency(lang), countryManual: Boolean(savedCountry()?.manual) };
 }
 
 /** The visitor's country right now, outside React: his own choice or the server's edge country (saved), else a guess. */
@@ -78,11 +116,12 @@ export function useStoreCountry(): [string, (code: string) => void] {
   useEffect(() => {
     const sync = () => setCountry(savedCountry()?.code || country);
     window.addEventListener(COUNTRY_EVENT, sync);
-    if (!savedCountry()?.manual && !geoAsked && !isStaticHosting) {
+    // Asked on every visit (even after a pick of his own): a pick holds only while he enters from the same country.
+    if (!geoAsked && !isStaticHosting) {
       geoAsked = true;
       fetch(apiUrl('/api/geo'), { signal: AbortSignal.timeout(4000) })
         .then((r) => (r.ok ? r.json() : null))
-        .then((d: { country?: string } | null) => { if (d && isCountry(d.country)) setStoreCountry(d.country, false); })
+        .then((d: { country?: string } | null) => { if (d) followEntryCountry(d.country); })
         .catch(() => undefined);
     }
     return () => window.removeEventListener(COUNTRY_EVENT, sync);

@@ -281,8 +281,8 @@ export const STORE_PLAYBOOK: PlaybookTopic[] = [
     id: 'kb-store-product-facts',
     title: { ar: 'أسعار المتجر والمخزون والصور', en: 'Store prices, stock and photos' },
     body: {
-      ar: 'الأسعار والمخزون اللي بتشوفها في المتجر وفي ردود المساعد هي اللي في نظام شام لحظة السؤال، وبالجنيه المصري مع التحويل لعملة بلدك في صفحة الدفع. بعض المنتجات بيكون فيها نوتاتها معروفة من مصادر عامة، والبعض الآخر بيظهر بنوعه وعائلته فقط لأن النوتات مش موثقة — ومفيش نوتات مخترعة. لو منتج ظهر «غير متوفر»، تقدر تسأل عن بديل بنفس العائلة العطرية.',
-      en: 'The prices and stock you see in the store and in the assistant’s replies are Sham’s own data at the moment you ask, in EGP with conversion to your currency at checkout. Some products have publicly documented notes; others show only type and family because their notes are not confirmed — no note is ever invented. If an item shows out of stock, ask for an alternative in the same scent family.',
+      ar: 'الأسعار والمخزون اللي بتشوفها في المتجر وفي ردود المساعد هي اللي في نظام شام لحظة السؤال، وبتظهر بعملة البلد اللي داخل منه بنفس سعر صفحة المنتج، والشحن متاح لأي دولة في العالم. بعض المنتجات بيكون فيها نوتاتها معروفة من مصادر عامة، والبعض الآخر بيظهر بنوعه وعائلته فقط لأن النوتات مش موثقة — ومفيش نوتات مخترعة. لو منتج ظهر «غير متوفر»، تقدر تسأل عن بديل بنفس العائلة العطرية.',
+      en: 'The prices and stock you see in the store and in the assistant’s replies are Sham’s own data at the moment you ask, shown in the currency of the country you are visiting from (the same price as the product page), and we ship worldwide. Some products have publicly documented notes; others show only type and family because their notes are not confirmed — no note is ever invented. If an item shows out of stock, ask for an alternative in the same scent family.',
     },
     tags: ['سعر', 'أسعار', 'مخزون', 'متوفر', 'نوتات', 'صور', 'price', 'stock', 'availability', 'notes', 'photos'],
   },

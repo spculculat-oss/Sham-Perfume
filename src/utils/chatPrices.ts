@@ -18,8 +18,15 @@ const ZERO_DECIMALS = new Set(['BIF', 'CLP', 'DJF', 'GNF', 'ISK', 'JPY', 'KMF', 
 const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 /** A number as written in any locale: 1,420 · 1.420 · 1 420 · 1420 · 14.5 · 14,5 · ١٤٢٠. */
-const NUM = String.raw`\d{1,3}(?:[,.\u00a0\u202f ]\d{3})+(?:[.,]\d{1,2})?|\d+(?:[.,]\d{1,2})?`;
-const EGP_WORDS = String.raw`EGP|E£|ج\.م\.?|جنيه(?:اً|ا)?(?:\s*مصري(?:اً)?)?|جنيهات(?:\s*مصرية)?|Egyptian pounds?|livres? égyptiennes?|libras? egipcias?|ägyptische[n]? Pfund|lire egiziane|египетских фунтов|египетский фунт|Mısır lirası|مصری پاؤنڈ`;
+const D = '[0-9٠-٩]';
+const NUM = String.raw`${D}{1,3}(?:[,.\u00a0\u202f ]${D}{3})+(?:[.,]${D}{1,2})?|${D}+(?:[.,]${D}{1,2})?`;
+/**
+ * Egyptian pounds as anyone writes them: «EGP 1,420», «EGP1420», «£E 900», «1,420 جنيه مصرى», «900 ج.م», «900ج»,
+ * «١٤٢٠ جنيهًا», and the names in the site's languages. A pound that is NOT Egyptian (sterling, Sudanese) is never touched.
+ */
+const EGP_WORDS = String.raw`EGP|E£|£E|ج\s?\.\s?م\.?|جنيه(?![\u0600-\u06FF]*\s*(?:استرلين|إسترلين|سودان|جنوب))(?:اتٍ?|اً|ًا|ا)?(?:\s*مصر(?:ية|يه|ي|ى)(?:اً|ًا)?)?|(?<![\u0600-\u06FF])ج(?![\u0600-\u06FF.])|Egyptian pounds?|livres? égyptiennes?|libras? egipcias?|libras? egípcias?|ägyptische[n]? Pfund|Egyptische ponden?|lire egiziane|lira egiziana|египетских фунтов|египетский фунт|египетских фунта|Mısır lirası|pound Mesir|paun Mesir|مصری پاؤنڈ|پوند مصر|埃及镑|エジプト・?ポンド|이집트 파운드`;
+/** «LE 1,420» / «1420 L.E.» — upper case only, so the French «le 15» is never read as money. */
+const LE_WORDS = String.raw`L\.E\.?|LE(?![A-Za-z])`;
 const DASH = String.raw`\s?[–—-]\s?`;
 /** «900–1,500», «من 450 لـ 2,300», «from 450 to 2,300», «de 900 à 1 500»: the connector kept as written. */
 const CONNECT = String.raw`\s?(?:[–—-]|to|à|a|bis|al|до|لـ|لحد|إلى|الى|ل)\s?`;
@@ -63,13 +70,17 @@ export function localizeChatPrices(text: string, currency: string, lang: Support
   if (!text || currency === HOME_CURRENCY || !(Number(fx.rates[currency]) > 0) || !(Number(fx.rates[HOME_CURRENCY]) > 0)) return text;
   const show = (raw: string) => { const n = parseAmount(raw); return Number.isFinite(n) && n > 0 ? formatAmount(inCurrency(n, currency, fx), currency, lang) : raw; };
   const range = (a: string, b: string) => `${show(a)} – ${show(b)}`;
-  return text
-    // Ranges first: «EGP 900–1,500», «900–1,500 EGP», «من 900 لـ 1500 جنيه» stays two prices.
-    .replace(new RegExp(String.raw`(?:${EGP_WORDS})\s?(${NUM})${DASH}(?:(?:${EGP_WORDS})\s?)?(${NUM})(?![\d])`, 'giu'), (_, a: string, b: string) => range(a, b))
-    .replace(new RegExp(String.raw`(?<![\d.,])(${NUM})(${CONNECT})(${NUM})\s?(?:${EGP_WORDS})`, 'giu'), (_, a: string, link: string, b: string) => `${show(a)}${/[–—-]/.test(link) ? ' – ' : link}${show(b)}`)
-    // Single amounts, the currency before or after.
-    .replace(new RegExp(String.raw`(?:${EGP_WORDS})\s?(${NUM})(?![\d])`, 'giu'), (_, a: string) => show(a))
-    .replace(new RegExp(String.raw`(?<![\d.,])(${NUM})\s?(?:${EGP_WORDS})`, 'giu'), (_, a: string) => show(a));
+  let out = text;
+  for (const [words, flags] of [[EGP_WORDS, 'giu'], [LE_WORDS, 'gu']] as const) {
+    out = out
+      // Ranges first: «EGP 900–1,500», «900–1,500 EGP», «من 900 لـ 1500 جنيه» stays two prices.
+      .replace(new RegExp(String.raw`(?:${words})\s?(${NUM})${DASH}(?:(?:${words})\s?)?(${NUM})(?!${D})`, flags), (_, a: string, b: string) => range(a, b))
+      .replace(new RegExp(String.raw`(?<![0-9٠-٩.,])(${NUM})(${CONNECT})(${NUM})\s?(?:${words})`, flags), (_, a: string, link: string, b: string) => `${show(a)}${/[–—-]/.test(link) ? ' – ' : link}${show(b)}`)
+      // Single amounts, the currency before or after.
+      .replace(new RegExp(String.raw`(?:${words})\s?(${NUM})(?!${D})`, flags), (_, a: string) => show(a))
+      .replace(new RegExp(String.raw`(?<![0-9٠-٩.,])(${NUM})\s?(?:${words})`, flags), (_, a: string) => show(a));
+  }
+  return out;
 }
 
 // ── The visitor's own money → EGP for the brain ─────────────────────────────────────────────────────────────────
