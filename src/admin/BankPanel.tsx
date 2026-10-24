@@ -9,9 +9,11 @@ import type { CollectionAccount } from '../../server/finance/types';
 import { ShamAccountDesk } from '../components/ShamAccountDesk';
 
 /**
- * «بنك شام» — the owner's money desk: direct collection (InstaPay, bank transfer, wallets, cash on delivery),
+ * «بنك شام» — the owner's money desk: the internal Sham account (posted transfers between Sham
+ * account numbers), direct collection (InstaPay, bank transfer, wallets, cash on delivery),
  * bank-statement matching, bills we owe, monthly budgets, profitability, cash forecast, audit trail and
- * «شاهين المحاسب». It records and analyses; it never moves money or confirms a payment on its own.
+ * «شاهين المحاسب». Internal Sham transfers move the Sham book. External collection is still confirmed
+ * by the owner; the desk never sends money to a bank outside Sham.
  */
 const f = (ar: string, en: string) => (adminLocale().startsWith('ar') ? ar : en);
 const card = 'rounded-2xl border border-stone-200 bg-white p-4 sm:p-5 shadow-sm';
