@@ -23,6 +23,8 @@ import {
   type SpecialistAction, type SpecialistReply, type SpecialistsBoard, type ToolCitation,
 } from '../utils/specialistsClient';
 import { ShaheenMarkdown } from './ShaheenMarkdown';
+import { useChatPrices } from '../utils/storeCheckout';
+import { SUPPORTED_LANGUAGES } from '../types/i18n';
 import { AIDisclosureBadge } from './LegalDisclaimer';
 import type { SupportedLanguage } from '../types/i18n';
 
@@ -147,6 +149,8 @@ export interface SpecialistsHubProps {
 
 export default function SpecialistsHub({ section, lang }: SpecialistsHubProps) {
   const isEn = (lang ?? 'ar').startsWith('en');
+  // «دولة الدخول قبل الرد»: every price in a specialist's answer in the currency of the country he is entering from.
+  const prices = useChatPrices(SUPPORTED_LANGUAGES.some((l) => l.code === lang) ? lang as SupportedLanguage : isEn ? 'en' : 'ar');
   const t = isEn ? EN : AR;
   const badgeLang: SupportedLanguage = isEn ? 'en' : 'ar';
   const [open, setOpen] = useState(false);
@@ -204,7 +208,7 @@ export default function SpecialistsHub({ section, lang }: SpecialistsHubProps) {
     setTurns((prev) => [...prev, { id: visitorIdTurn, role: 'visitor', question: q }, { id: agentTurn, role: 'agent', pending: true }]);
     const settle = (patch: Partial<Turn>) => setTurns((prev) => prev.map((x) => (x.id === agentTurn ? { ...x, pending: false, ...patch } : x)));
     try {
-      const reply = await askSpecialists({ question: q, lang: isEn ? 'en' : 'ar', ...(section ? { section } : {}), ...(picked ? { specialist: picked } : {}), history });
+      const reply = await askSpecialists({ question: prices.outgoing(q), lang: isEn ? 'en' : 'ar', ...(section ? { section } : {}), ...(picked ? { specialist: picked } : {}), history });
       if (reply) { settle({ reply }); return; }
       settle({ local: await localAnswer(q), note: t.offlineNote });
     } catch (err) {
@@ -326,7 +330,7 @@ export default function SpecialistsHub({ section, lang }: SpecialistsHubProps) {
                     </div>
 
                     <div className="rounded-2xl rounded-ts-sm bg-white border border-stone-200 p-3 text-sm leading-relaxed text-stone-800">
-                      <ShaheenMarkdown text={turn.reply?.answer || turn.local?.answer || ''} className="font-sans" />
+                      <ShaheenMarkdown text={prices.show(turn.reply?.answer || turn.local?.answer || '')} className="font-sans" />
                     </div>
 
                     <p className={`text-[11px] font-bold ${(turn.reply?.ok ?? turn.local?.ok) ? 'text-emerald-700' : 'text-amber-700'}`}>

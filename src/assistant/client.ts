@@ -1,6 +1,7 @@
 /** Browser client for Sham Core. Same-origin relative URLs only (works behind any host/proxy). */
 import { ApiError, ApiUnavailableError, apiUrl, isStaticHosting, requestApi } from '../utils/api';
 import type { SupportedLanguage } from '../types/i18n';
+import { chatMoney } from '../utils/storeCheckout';
 
 export interface FormField { name: string; labelAr: string; labelEn: string; type: 'text' | 'textarea' | 'number' | 'select' | 'email' | 'tel'; required?: boolean; options?: string[] }
 export interface PublicService { id: string; kind: string; nameAr: string; nameEn: string; descriptionAr: string; descriptionEn: string; formFields: FormField[]; siteTab?: string }
@@ -12,7 +13,7 @@ export interface Citation { id: string; title: string; kind: string }
 export interface CouncilInfo { available: boolean; seats: number; auto: string[]; showDiscussion: boolean }
 export interface CouncilView { outcome: 'synthesis' | 'single' | 'failed'; rounds: number; entries: { label: string; role: string; engine: string; opinion: string; reviews: string[]; chair: boolean }[] }
 export interface AssistantConfig { assistantName: { ar: string; en: string }; welcome: { ar: string; en: string }; currency: string; modelEnhanced: boolean; council?: CouncilInfo; services: PublicService[] }
-export interface ChatReply { conversationId: string; messageId: string; steps: PublicStep[]; suggestions: string[]; reply: string; engine: { id: string; name: string }; intent: string; actions: ActionCard[]; citations: Citation[]; status: 'open' | 'handoff' | 'closed'; council?: CouncilView; trace?: { stage: string; detail: string; ms?: number }[] }
+export interface ChatReply { conversationId: string; messageId: string; steps: PublicStep[]; suggestions: string[]; reply: string; engine: { id: string; name: string }; intent: string; actions: ActionCard[]; citations: Citation[]; status: 'open' | 'handoff' | 'closed'; council?: CouncilView; trace?: { stage: string; detail: string; ms?: number }[]; country?: string; currency?: string }
 export interface UiMessage {
   id?: string; role: 'user' | 'assistant'; text: string; at: string; engine?: string; actions?: ActionCard[]; citations?: Citation[];
   steps?: PublicStep[]; suggestions?: string[]; feedback?: { rating: 'up' | 'down' }; streaming?: boolean; stopped?: boolean; council?: CouncilView;
@@ -57,7 +58,7 @@ export function visitorId(): string {
 export const assistantApi = {
   config: () => requestApi<AssistantConfig>('/api/assistant/config', undefined, 15000),
   chat: (message: string, language: SupportedLanguage, conversationId?: string, signal?: AbortSignal, rewind?: string, consult?: boolean) =>
-    requestApi<ChatReply>('/api/assistant/chat', { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined, consult: consult || undefined, ...currentPage() }), signal }, consult ? 70000 : 40000),
+    requestApi<ChatReply>('/api/assistant/chat', { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined, consult: consult || undefined, ...currentPage(), ...chatMoney(language) }), signal }, consult ? 70000 : 40000),
   conversation: (id: string) =>
     requestApi<{ id: string; status: ChatReply['status']; messages: UiMessage[] }>(`/api/assistant/conversations/${encodeURIComponent(id)}?visitorId=${encodeURIComponent(visitorId())}`, undefined, 15000),
   submitRequest: (body: { serviceId: string; contact: { name: string; phone?: string; email?: string }; fields: Record<string, string>; items?: { productId: string; quantity: number }[]; conversationId?: string }) =>
@@ -76,7 +77,7 @@ export const assistantApi = {
  */
 export async function streamChat(message: string, language: SupportedLanguage, conversationId: string | undefined, onEvent: (event: StreamEvent) => void, signal?: AbortSignal, rewind?: string, consult?: boolean): Promise<ChatReply> {
   if (isStaticHosting) throw new ApiUnavailableError();
-  const response = await fetch(apiUrl('/api/assistant/chat/stream'), { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined, consult: consult || undefined, ...currentPage() }), signal });
+  const response = await fetch(apiUrl('/api/assistant/chat/stream'), { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined, consult: consult || undefined, ...currentPage(), ...chatMoney(language) }), signal });
   if (!response.ok) {
     let code: string | undefined;
     try { code = (await response.json())?.code; } catch { /* not JSON */ }

@@ -1,6 +1,6 @@
 import type { SupportedLanguage } from '../types/i18n';
 import { budgetsToHome } from './chatPrices';
-import { currentDisplayCurrency } from './storeCheckout';
+import { chatMoney, currentDisplayCurrency, followEntryCountry } from './storeCheckout';
 import { removeMediaBlocks } from './mediaBlock';
 import { findFormulaBlocks } from './aiFormulaExtractor';
 import { greetingKind, greetingReply } from './shaheenGreeting';
@@ -248,11 +248,14 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       const history = chatHistory(current.messages);
       // «شاهين بعملة بلدك»: the visitor's own money («moins de 30 €») reaches the brain in the store's pounds.
       const brainText = budgetsToHome(text, currentDisplayCurrency(options.language), options.language);
+      // «دولة الدخول قبل الرد»: the page's country and currency travel too; the server checks where he is entering
+      // from and writes the reply's prices in that country's currency (and tells us which country it was).
+      const money = chatMoney(options.language);
       try {
         // The anonymous visitor id travels in the body, not in a custom header: a custom header needs CORS approval,
         // and a server one deploy behind would then block every question from the GitHub Pages site.
         const body = JSON.stringify({ message: brainText, model: options.model, language: options.language,
-          conversationHistory: history, visitorId: visitorId() });
+          conversationHistory: history, visitorId: visitorId(), ...money });
         let data: ChatResponse | undefined;
         for (let attempt = 0; ; attempt++) {
           try {
@@ -269,6 +272,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
           }
         }
         if (generation !== token) return false;
+        followEntryCountry(data?.country);
         const message: ChatMessage = { id: id('bot'), role: 'assistant', text: data?.reply, timestamp: timestamp(),
           aiEngine: data?.engine };
         if (!message.text?.trim() || !isChatMessage(message)) throw new Error('Invalid chat response');
@@ -285,9 +289,10 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
           try {
             const fast = await request<ChatResponse>('/api/chat', {
               method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
-              body: JSON.stringify({ message: brainText, model: 'fast', language: options.language, conversationHistory: history, visitorId: visitorId() }),
+              body: JSON.stringify({ message: brainText, model: 'fast', language: options.language, conversationHistory: history, visitorId: visitorId(), ...money }),
             }, 30_000);
             if (generation !== token) return false;
+            followEntryCountry(fast?.country);
             const message: ChatMessage = { id: id('bot'), role: 'assistant', text: fast?.reply, timestamp: timestamp(), aiEngine: fast?.engine };
             if (message.text?.trim() && isChatMessage(message)) {
               publish({ ...getSnapshot(), messages: [...getSnapshot().messages, message], isLoading: false, busy: false });

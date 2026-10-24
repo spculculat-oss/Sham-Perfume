@@ -58,14 +58,8 @@ export const DEFAULT_RETURN_URL = 'https://spculculat-oss.github.io/Sham-Perfume
 const str = (v: unknown, max: number) => (typeof v === 'string' ? v.replace(/[\u0000-\u001f]+/g, ' ').trim().slice(0, max) : '');
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
 
-/** The visitor's country from the edge (Vercel / Cloudflare headers), or undefined. */
-export function countryFromHeaders(headers: Record<string, string | string[] | undefined>): string | undefined {
-  for (const name of ['x-vercel-ip-country', 'cf-ipcountry', 'x-country-code']) {
-    const value = String(headers[name] || '').toUpperCase();
-    if (isCountry(value)) return value;
-  }
-  return undefined;
-}
+import { countryFromHeaders } from './core/replyMoney';
+export { countryFromHeaders };
 
 export interface CheckoutInput {
   items: { sku: string; qty: number }[]; country: string; lang: 'ar' | 'en'; method?: 'card' | 'wallet';

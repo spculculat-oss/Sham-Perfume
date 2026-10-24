@@ -78,3 +78,20 @@ export function displayCurrency(country: string, lang: SupportedLanguage, choice
   const home = languageHome(lang);
   return home ? currencyFor(home, fx) : own;
 }
+
+/**
+ * «شاهين يتأكد من دولة الدخول قبل ما يرد»: the country and currency one chat reply is written in, decided by the server
+ * for every message. The edge country (the network the visitor is entering from right now) comes first; the page's own
+ * country only when the edge is unknown. A store country the visitor picked himself (and still valid — he did not
+ * travel since) keeps the currency his page sent. The language rule above applies the same way as on the page.
+ */
+export function replyMoney(input: { edgeCountry?: string; country?: unknown; currency?: unknown; countryManual?: unknown; lang: SupportedLanguage; fx?: FxTable }): { country: string; currency: string; source: 'edge' | 'visitor' | 'default' } {
+  const fx = input.fx || BUNDLED_FX;
+  const asked = typeof input.country === 'string' && isCountry(input.country.toUpperCase()) ? input.country.toUpperCase() : undefined;
+  const edge = input.edgeCountry && isCountry(input.edgeCountry.toUpperCase()) ? input.edgeCountry.toUpperCase() : undefined;
+  const sent = typeof input.currency === 'string' && /^[A-Z]{3}$/.test(input.currency) && Number(fx.rates[input.currency]) > 0 ? input.currency : undefined;
+  if (input.countryManual === true && sent) return { country: asked || edge || 'EG', currency: sent, source: 'visitor' };
+  const country = edge || asked;
+  if (!country) return { country: 'EG', currency: sent || currencyFor('EG', fx), source: 'default' };
+  return { country, currency: displayCurrency(country, input.lang, {}, fx), source: edge ? 'edge' : 'visitor' };
+}

@@ -8,7 +8,8 @@ import {
 import type { SupportedLanguage } from '../types/i18n';
 import { SUPPORTED_LANGUAGES } from '../types/i18n';
 import { ApiError, ApiUnavailableError, isStaticHosting } from '../utils/api';
-import { useChatPrices } from '../utils/storeCheckout';
+import { followEntryCountry, formatMoney, useChatPrices, useStoreMoney } from '../utils/storeCheckout';
+import { BUNDLED_FX, priceIn } from '../utils/pricing';
 import { fmt, loc, makeT, type LText } from '../لغات/localize';
 import {
   assistantApi, CONVERSATION_KEY, streamChat, type ActionCard, type AssistantConfig, type ChatReply, type FormField, type ProductCard,
@@ -236,6 +237,7 @@ export function ShamAssistant({ currentLang }: Props) {
         reply = await assistantApi.chat(prices.outgoing(message), currentLang, conversationId, controller.signal, replaces && prices.outgoing(replaces), consulting);
       }
       if (controller.signal.aborted) throw new DOMException('Stopped', 'AbortError');
+      followEntryCountry(reply.country); // the server checked where he is entering from (prices follow it)
       setConversationId(reply.conversationId);
       setStatus(reply.status);
       patch((x) => ({
@@ -740,7 +742,11 @@ function RequestForm({ lang, serviceId, kind, fields, title, products, conversat
   const [done, setDone] = useState<RequestView | null>(null);
   const store = kind === 'store';
   const list = useMemo(() => products || [], [products]);
-  const total = list.reduce((sum, p) => sum + (qty[p.id] || 0) * p.price, 0);
+  // «دولة الدخول»: the catalog's pounds shown in the visitor's currency, like the store page and Shaheen's replies.
+  const money = useStoreMoney(lang, ar ? 'جنيه' : 'EGP');
+  const unit = (p: ProductCard) => (p.currency === 'EGP' ? priceIn(p.price, money.currency, BUNDLED_FX) : p.price);
+  const total = list.reduce((sum, p) => sum + (qty[p.id] || 0) * unit(p), 0);
+  const totalCurrency = list[0]?.currency === 'EGP' ? money.currency : list[0]?.currency || money.currency;
 
   if (done) return null; // the confirmation message is appended to the conversation
 
@@ -768,14 +774,14 @@ function RequestForm({ lang, serviceId, kind, fields, title, products, conversat
             <div key={p.id} className="flex items-center gap-2 rounded-xl border border-stone-200 p-2">
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-semibold truncate">{(ar ? p.nameAr : p.nameEn) || p.nameAr} {p.demo && <span className="text-[9px] bg-stone-200 rounded px-1">{L('demo')}</span>}</p>
-                <p className="text-[11px] text-stone-500">{p.price} {p.currency} / {p.unit}{p.stock <= 0 ? ` · ${L('out')}` : ''}</p>
+                <p className="text-[11px] text-stone-500">{p.currency === 'EGP' ? money.price(p.price) : `${p.price} ${p.currency}`} / {p.unit}{p.stock <= 0 ? ` · ${L('out')}` : ''}</p>
               </div>
               <LocalizedNumberInput lang={lang} integer min={0} max={Math.max(0, p.stock)} disabled={p.stock <= 0} ariaLabel={`${L('qty')} ${p.sku}`}
                 value={qty[p.id] || 0} onValue={(n) => setQty((q) => ({ ...q, [p.id]: Math.max(0, Math.min(p.stock, Math.floor(n || 0))) }))}
                 className="w-16 rounded-lg border border-stone-300 px-2 py-1 text-sm text-center disabled:opacity-40" />
             </div>
           ))}
-          {total > 0 && <p className="text-xs text-stone-700">{L('total')}: <b>{Math.round(total * 100) / 100} {list[0]?.currency}</b></p>}
+          {total > 0 && <p className="text-xs text-stone-700">{L('total')}: <b>{formatMoney(Math.round(total * 100) / 100, totalCurrency, lang, ar ? 'جنيه' : 'EGP')}</b></p>}
         </div>
       )}
       <input className={inputClass} required value={contact.name} onChange={(e) => setContact({ ...contact, name: e.target.value })} placeholder={L('name')} aria-label={L('name')} maxLength={120} />

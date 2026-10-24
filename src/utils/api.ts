@@ -46,6 +46,9 @@ export interface ChatResponse {
   reply: string;
   engine?: ChatMessage['aiEngine'];
   perspectives?: ChatMessage['perspectives'];
+  /** The country the server checked the visitor is entering from, and the currency the reply's prices are in. */
+  country?: string;
+  currency?: string;
 }
 
 /** Same-origin, bounded requests. Abort covers response-body parsing as well as headers. */
