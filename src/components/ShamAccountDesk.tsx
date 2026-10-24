@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowLeftRight, Check, Copy, CreditCard, Download, Landmark, RefreshCw, Send, Wallet } from 'lucide-react';
+import { ArrowLeftRight, Check, Copy, CreditCard, Download, Landmark, RefreshCw, Send, ShieldCheck, Wallet } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { major } from '../finance/money';
 import { getSavedPaymentMethods } from '../utils/customerPaymentVault';
@@ -21,7 +21,7 @@ import {
 import { PLATFORM_HOLDER, formatShamAccount, parseShamAccount, shamAccountNumber, statementLines, type ActivityRow } from '../bank/shamLedger';
 import { bookErrorCode, newBookKey, openShamSession, previewConvert, type DeskAccount, type ShamSession } from '../bank/shamDeskApi';
 
-type Pane = 'home' | 'receive' | 'pay' | 'activity' | 'withdraw' | 'convert' | 'card';
+type Pane = 'home' | 'receive' | 'pay' | 'activity' | 'withdraw' | 'convert' | 'card' | 'guard';
 
 /**
  * Signed-in Sham account. Internal transfers post and move the available balance.
@@ -87,6 +87,12 @@ export function ShamAccountDesk({
       BUSY: ['الحساب مشغول. أعد المحاولة.', 'The account is busy. Try again.'],
       CONFLICT: ['تعارض في الدفتر. أعد المحاولة بنفس المفتاح.', 'The books conflicted. Retry with the same key.'],
       BOOK_FAILED: ['تعذّر تحديث الدفتر.', 'The books could not be updated.'],
+      CONFIRMATION_REQUIRED: ['أكد العملية من شاشة المراجعة أولًا.', 'Confirm the review before the balance can change.'],
+      LIMIT_SINGLE: ['المبلغ أعلى من سقف العملية.', 'That amount is above the per-transfer cap.'],
+      LIMIT_DAILY: ['المبلغ أعلى من المتبقي من سقف اليوم.', 'That amount is above the remaining daily cap.'],
+      COOLING: ['أول تحويل لهذا الحساب أكبر من سقف المستفيد الجديد. أرسل مبلغًا أصغر، ثم انتظر ٣٠ دقيقة بعد ترحيله.', 'The first transfer to this account is above the new-payee cap. Send a smaller amount, then wait 30 minutes after it posts.'],
+      ACCOUNT_FROZEN: ['أُوقف الإرسال مؤقتًا لكثرة الحركات. الاستلام ما زال مفتوحًا.', 'Sending is paused after too many moves. Receiving stays open.'],
+      PAYEE_LIMIT: ['وصلت إلى حد المستفيدين الجدد لهذا اليوم.', 'The daily limit for new payees has been reached.'],
     };
     const pair = text[code] || text.BOOK_FAILED;
     return t(pair[0], pair[1]);
@@ -148,6 +154,7 @@ export function ShamAccountDesk({
     ['withdraw', 'سحب', 'Withdraw'],
     ['convert', 'تحويل عملة', 'Convert'],
     ['card', 'البطاقة', 'Card'],
+    ['guard', 'الحماية', 'Protection'],
   ];
   const kindName = (kind: ActivityRow['kind'] | AccountRequest['kind']) => ({
     import: t('تحصيل مؤكد', 'Confirmed collection'),
@@ -168,6 +175,7 @@ export function ShamAccountDesk({
   }[status] || status);
   const quote = (() => { try { return amount && pane === 'convert' ? previewConvert(amount, currency, toCurrency) : null; } catch { return null; } })();
   const held = view?.activity.filter((row) => row.kind === 'hold' && row.status === 'held') || [];
+  const frozen = view?.guard?.status === 'frozen';
 
   return (
     <div className="overflow-hidden rounded-3xl border border-stone-200 bg-white text-stone-900 shadow-sm" data-testid="sham-account-desk">
@@ -199,7 +207,15 @@ export function ShamAccountDesk({
         ))}
       </div>
       <div className="space-y-3 p-4 sm:p-5">
-        {view?.book === 'browser' && <p className="rounded-xl bg-amber-50 px-3 py-2 text-xs leading-5 text-amber-950" data-testid="sham-book-mode">{t('دفتر هذا المتصفح. التحويل يصل فقط إلى حساب فُتح هنا. دفتر الخادم غير متصل، ولا يخرج مال إلى بنك خارجي.', 'This browser’s books. A transfer reaches only an account opened here. The server books are not connected, and no money leaves to an outside bank.')}</p>}
+        {view?.guard && (
+          <p className={`rounded-xl px-3 py-2 text-xs leading-5 ${frozen ? 'bg-red-50 text-red-800' : 'bg-emerald-50 text-emerald-950'}`} data-testid="sham-guard">
+            <ShieldCheck className="me-1 inline h-3.5 w-3.5" />
+            {frozen
+              ? t('الحماية أوقفت الإرسال مؤقتًا. الاستلام مفتوح، والإرسال يعود بعد انتهاء النافذة.', 'Protection has paused sending. Receiving stays open, and sending returns when the window ends.')
+              : t(`الحماية مفتوحة: سقف العملية $${(view.guard.singleMaxUsdMinor / 100).toLocaleString('en')}، المتبقي اليوم $${(view.guard.dailyLeftUsdMinor / 100).toLocaleString('en')}، وأول تحويل لمستفيد جديد حتى $${view.guard.newPayeeMaxUsdMinor / 100}.`, `Protection is open: $${(view.guard.singleMaxUsdMinor / 100).toLocaleString('en')} per transfer, $${(view.guard.dailyLeftUsdMinor / 100).toLocaleString('en')} left today, and a first transfer to a new payee up to $${view.guard.newPayeeMaxUsdMinor / 100}.`)}
+          </p>
+        )}
+        {view?.book === 'browser' && <p className="rounded-xl bg-amber-50 px-3 py-2 text-xs leading-5 text-amber-950" data-testid="sham-book-mode">{t('دفتر هذا المتصفح. التحويل يصل فقط إلى حساب فُتح هنا. دفتر الخادم غير متصل، ولا يخرج مال إلى بنك خارجي. حدود الحماية تُطبَّق هنا أيضًا.', 'This browser’s books. A transfer reaches only an account opened here. The server books are not connected, and no money leaves to an outside bank. The protection limits apply here too.')}</p>}
         {view?.book === 'server' && <p className="rounded-xl bg-stone-50 px-3 py-2 text-xs leading-5 text-stone-600" data-testid="sham-book-mode">{view.persistent ? t('دفتر شام على الخادم. التحويل الداخلي يُخصم من المرسل ويُضاف للمستلم.', 'Sham’s server books. An internal transfer is deducted from the sender and added to the recipient.') : t('دفتر الخادم على ذاكرة مؤقتة. التحويل يعمل الآن وقد يضيع عند إعادة التشغيل.', 'The server books are in temporary memory. A transfer works now and may be lost on restart.')}</p>}
         {error && <p role="alert" className="rounded-xl bg-red-50 px-3 py-2 text-xs text-red-700">{error}</p>}
         {notice && <p role="status" className="rounded-xl bg-emerald-50 px-3 py-2 text-xs text-emerald-900">{notice}</p>}
@@ -247,7 +263,8 @@ export function ShamAccountDesk({
             const session = sessionRef.current;
             if (!session) return;
             if (!(await session.resolve(number))) throw new Error('UNKNOWN_ACCOUNT');
-            setReview({ kind: 'send', key: newBookKey(), text: t(`سيُخصم ${amount} ${currency} من المتاح ويُرحّل إلى ${formatShamAccount(number)}. المال يبقى داخل شام.`, `${amount} ${currency} will be deducted from available balance and posted to ${formatShamAccount(number)}. The money stays inside Sham.`) });
+            if (frozen) throw new Error('ACCOUNT_FROZEN');
+            setReview({ kind: 'send', key: newBookKey(), text: t(`سيُخصم ${amount} ${currency} من المتاح ويُرحّل إلى ${formatShamAccount(number)} إن كان داخل السقف. المال يبقى داخل شام. أول تحويل لمستفيد جديد له سقف أصغر.`, `${amount} ${currency} will be deducted and posted to ${formatShamAccount(number)} only if it is inside the cap. The money stays inside Sham. A first transfer to a new payee has a smaller cap.`) });
           }); }}>
             <label className="text-xs sm:col-span-2">{t('رقم حساب شام', 'Sham account number')}<input value={target} onChange={(e) => setTarget(e.target.value)} className="mt-1 w-full rounded-xl border px-3 py-2 font-mono text-sm" dir="ltr" placeholder="SHAM 0000 0000 0000 0" data-testid="sham-pay-account" /></label>
             <label className="text-xs">{t('المبلغ', 'Amount')}<input inputMode="decimal" value={amount} onChange={(e) => setAmount(e.target.value)} className="mt-1 w-full rounded-xl border px-3 py-2 text-sm" data-testid="sham-pay-amount" /></label>
@@ -280,7 +297,8 @@ export function ShamAccountDesk({
 
         {pane === 'withdraw' && (
           <form className="grid gap-2 sm:grid-cols-2" data-testid="sham-withdraw" onSubmit={(e) => { e.preventDefault(); const bank = banks.find((row) => row.id === bankId); void run(async () => {
-            setReview({ kind: 'hold', key: newBookKey(), text: t(`سيُحجز ${amount} ${currency} من المتاح لصالح ${bank ? bank.nickname : t('سحب بدون بنك محفوظ', 'a withdrawal with no saved bank')}. لن يُرسل إلى بنك خارجي.`, `${amount} ${currency} will be held from available balance for ${bank ? bank.nickname : 'a withdrawal with no saved bank'}. It will not be sent to an outside bank.`) });
+            if (frozen) throw new Error('ACCOUNT_FROZEN');
+            setReview({ kind: 'hold', key: newBookKey(), text: t(`سيُحجز ${amount} ${currency} من المتاح لصالح ${bank ? bank.nickname : t('سحب بدون بنك محفوظ', 'a withdrawal with no saved bank')}. لن يُرسل إلى بنك خارجي، ويُحتسب ضمن سقف اليوم.`, `${amount} ${currency} will be held from available balance for ${bank ? bank.nickname : 'a withdrawal with no saved bank'}. It will not be sent to an outside bank, and it counts toward the daily cap.`) });
           }); }}>
             <select aria-label={t('العملة', 'Currency')} value={currency} onChange={(e) => setCurrency(e.target.value)} className="rounded-xl border px-3 py-2 text-sm">{ACCOUNT_CURRENCIES.map((code) => <option key={code}>{code}</option>)}</select>
             <input inputMode="decimal" placeholder={t('المبلغ', 'Amount')} value={amount} onChange={(e) => setAmount(e.target.value)} className="rounded-xl border px-3 py-2 text-sm" data-testid="sham-withdraw-amount" />
@@ -306,6 +324,7 @@ export function ShamAccountDesk({
 
         {pane === 'convert' && (
           <form className="grid gap-2 sm:grid-cols-3" onSubmit={(e) => { e.preventDefault(); void run(async () => {
+            if (frozen) throw new Error('ACCOUNT_FROZEN');
             const next = previewConvert(amount, currency, toCurrency);
             setReview({ kind: 'convert', key: newBookKey(), text: t(`سيُخصم ${amount} ${currency} ويُضاف المقابل بسعر الدفتر (${next.rateLabel}). ليس تنفيذ سوق ولا رسماً.`, `${amount} ${currency} will be deducted and the other side added at the book rate (${next.rateLabel}). Not a market trade and not a fee.`) });
           }); }}>
@@ -327,6 +346,26 @@ export function ShamAccountDesk({
           </div>
         )}
 
+        {pane === 'guard' && view?.guard && (
+          <div className="space-y-2">
+            <div className={`rounded-2xl border p-3 ${frozen ? 'border-red-300 bg-red-50' : 'border-emerald-200 bg-emerald-50'}`}>
+              <p className="flex items-center gap-2 text-sm font-bold"><ShieldCheck className="h-4 w-4" />{frozen ? t('الإرسال موقوف مؤقتًا', 'Sending is paused') : t('الحماية مفتوحة', 'Protection is open')}</p>
+              <p className="mt-1 text-xs leading-5">{frozen ? t(`يُستأنف الإرسال بعد ${view.guard.frozenUntil ? new Date(view.guard.frozenUntil).toLocaleString(ar ? 'ar-EG' : 'en', { timeZone: 'Africa/Cairo' }) : '—'}. الاستلام لا يتوقف.`, `Sending resumes after ${view.guard.frozenUntil ? new Date(view.guard.frozenUntil).toLocaleString('en', { timeZone: 'Africa/Cairo' }) : '—'}. Receiving does not stop.`) : t('لا يُخصم رصيد إلا بعد المراجعة، وداخل السقف، ومن حساب موقّع. قفل الدفتر يمنع خصم المبلغ مرتين.', 'A balance is deducted only after review, inside the cap, and from a signed-in account. The ledger lock stops the same amount being deducted twice.')}</p>
+            </div>
+            <div className="grid gap-2 sm:grid-cols-2">
+              <p className="rounded-2xl border px-3 py-2 text-xs"><b>{t('سقف العملية', 'Per transfer')}</b><br /><span dir="ltr">${(view.guard.singleMaxUsdMinor / 100).toLocaleString('en')}</span></p>
+              <p className="rounded-2xl border px-3 py-2 text-xs"><b>{t('سقف اليوم', 'Daily cap')}</b><br /><span dir="ltr">${(view.guard.dailyLeftUsdMinor / 100).toLocaleString('en')} / ${(view.guard.dailyMaxUsdMinor / 100).toLocaleString('en')}</span></p>
+              <p className="rounded-2xl border px-3 py-2 text-xs"><b>{t('مستفيد جديد', 'New payee')}</b><br />{t(`أول تحويل حتى $${view.guard.newPayeeMaxUsdMinor / 100}، ثم انتظار ${view.guard.coolingMinutes} دقيقة.`, `First transfer up to $${view.guard.newPayeeMaxUsdMinor / 100}, then a ${view.guard.coolingMinutes}-minute wait.`)}</p>
+              <p className="rounded-2xl border px-3 py-2 text-xs"><b>{t('حركات سريعة', 'Burst')}</b><br /><span dir="ltr">{view.guard.burstUsed}/{view.guard.burstMax}</span> · {t(`مستفيدون جدد اليوم ${view.guard.newPayeesToday}/${view.guard.newPayeeDayMax}`, `new payees today ${view.guard.newPayeesToday}/${view.guard.newPayeeDayMax}`)}</p>
+            </div>
+            <ul className="space-y-1 text-xs leading-5 text-stone-600">
+              <li>{t('لا يُحفظ رقم بطاقة كامل ولا رمز أمان، ولا يُقال إن البطاقة مفعّلة.', 'A full card number and security code are not stored, and a card is not called active.')}</li>
+              <li>{t('السحب الخارجي يبقى محجوزًا ولا يُعلَّم مُرسَلًا. لا يُختلق آيبان.', 'An external withdrawal stays held and is not marked sent. No IBAN is invented.')}</li>
+              <li>{t('لا يُفتح رصيد من رقم يكتبه المتصفح. التحصيل المؤكد وحده يموّل حساب المنصة.', 'A browser-supplied figure cannot open a balance. Only a confirmed collection funds the platform account.')}</li>
+            </ul>
+          </div>
+        )}
+
         {review && (
           <div className="rounded-2xl border border-stone-900 p-3" data-testid="sham-send-review">
             <p className="text-sm font-bold">{t('تأكيد داخل شام', 'Confirm inside Sham')}</p>
@@ -337,10 +376,10 @@ export function ShamAccountDesk({
                 if (!session) return;
                 const key = review.key;
                 const next = review.kind === 'send'
-                  ? await session.transfer({ toAccountNumber: parseShamAccount(target), currency, amount, detail, idempotencyKey: key })
+                  ? await session.transfer({ toAccountNumber: parseShamAccount(target), currency, amount, detail, idempotencyKey: key, confirmed: true })
                   : review.kind === 'hold'
-                    ? await session.hold({ currency, amount, detail: banks.find((row) => row.id === bankId)?.nickname || detail || 'withdrawal hold', idempotencyKey: key })
-                    : await session.convert({ from: currency, to: toCurrency, amount, idempotencyKey: key });
+                    ? await session.hold({ currency, amount, detail: banks.find((row) => row.id === bankId)?.nickname || detail || 'withdrawal hold', idempotencyKey: key, confirmed: true })
+                    : await session.convert({ from: currency, to: toCurrency, amount, idempotencyKey: key, confirmed: true });
                 apply(next);
                 setReview(null);
                 setAmount('');

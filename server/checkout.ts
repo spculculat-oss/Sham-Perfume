@@ -367,7 +367,7 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     if (!bookLimiter.allow(clientKey(req))) { res.status(429).json({ code: 'RATE_LIMITED', error: 'Wait a moment.' }); return; }
     const body = readMoneyBody(req.body);
     const rates = await fx().catch(() => bundledFx);
-    res.json(await books.convert(id, { from: body.from, to: body.to, amount: body.amount, idempotencyKey: body.idempotencyKey }, rates));
+    res.json(await books.convert(id, { from: body.from, to: body.to, amount: body.amount, idempotencyKey: body.idempotencyKey, confirmed: body.confirmed }, rates));
   }));
 
   router.post('/store/kashier/webhook', wrap(async (req, res) => {

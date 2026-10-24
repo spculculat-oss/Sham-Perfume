@@ -34,10 +34,10 @@ export interface DeskAccount extends AccountView {
 export interface ShamSession {
   view: DeskAccount;
   reload(): Promise<DeskAccount>;
-  transfer(input: { toAccountNumber: string; currency: string; amount: string; detail: string; idempotencyKey: string }): Promise<DeskAccount>;
-  hold(input: { currency: string; amount: string; detail: string; idempotencyKey: string }): Promise<DeskAccount>;
+  transfer(input: { toAccountNumber: string; currency: string; amount: string; detail: string; idempotencyKey: string; confirmed: boolean }): Promise<DeskAccount>;
+  hold(input: { currency: string; amount: string; detail: string; idempotencyKey: string; confirmed: boolean }): Promise<DeskAccount>;
   release(postingId: string): Promise<DeskAccount>;
-  convert(input: { from: string; to: string; amount: string; idempotencyKey: string }): Promise<DeskAccount>;
+  convert(input: { from: string; to: string; amount: string; idempotencyKey: string; confirmed: boolean }): Promise<DeskAccount>;
   resolve(accountNumber: string): Promise<boolean>;
 }
 
@@ -96,10 +96,10 @@ function browserSession(holderId: string, recorded: RecordedBalance[]): ShamSess
   return {
     view,
     reload: async () => finish(load()),
-    transfer: async (input) => mutate((state) => transfer(state, { ...input, fromHolderId: holderId, at: at() })),
-    hold: async (input) => mutate((state) => holdWithdrawal(state, { ...input, holderId, at: at() })),
+    transfer: async (input) => { if (input.confirmed !== true) throw new Error('CONFIRMATION_REQUIRED'); return mutate((state) => transfer(state, { ...input, fromHolderId: holderId, at: at() })); },
+    hold: async (input) => { if (input.confirmed !== true) throw new Error('CONFIRMATION_REQUIRED'); return mutate((state) => holdWithdrawal(state, { ...input, holderId, at: at() })); },
     release: async (postingId) => mutate((state) => releaseHold(state, holderId, postingId, at())),
-    convert: async (input) => mutate((state) => convertBalance(state, { ...input, holderId, at: at(), fx: BUNDLED_FX })),
+    convert: async (input) => { if (input.confirmed !== true) throw new Error('CONFIRMATION_REQUIRED'); return mutate((state) => convertBalance(state, { ...input, holderId, at: at(), fx: BUNDLED_FX })); },
     resolve: async (accountNumber) => {
       try { return Boolean(findByAccount(load(), accountNumber)); } catch { return false; }
     },
