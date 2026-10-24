@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "scent-behavior",
- "updatedAt": "2026-10-24T12:53:07.001Z",
+ "updatedAt": "2026-10-24T16:06:57.232Z",
  "signals": {
   "read": false,
   "noteAr": "مفيش مفتاح إدارة (SHAM_ADMIN_TOKEN) في التشغيل — العدّاد الحي مش مقروء.",
@@ -86,24 +86,6 @@
  "unused": [],
  "unknownTyped": [],
  "proposals": [
-  {
-   "rawId": "mat-oud-cambodi",
-   "nameAr": "دهن عود كمبودي / براشين معتق (Aged Cambodi / Prachin Oud)",
-   "nameEn": "Aquilaria Crassna (Aged Cambodian Oud Oil)",
-   "family": "خشبي سويتي بخوري مدخن عميق",
-   "category": "أخشاب شرقية وأدهان نادرة",
-   "score": 18.3,
-   "reasonAr": "من العائلات اللي عليها طلب (خشبي)"
-  },
-  {
-   "rawId": "mat-sandalwood-mysore",
-   "nameAr": "زيت خشب الصندل الميسوري النقي (Mysore Sandalwood Oil)",
-   "nameEn": "Santalum Album (East Indian Sandalwood)",
-   "family": "خشبي كريمي دافئ حليبي ناعم",
-   "category": "أخشاب كريمية فاخرة",
-   "score": 18.3,
-   "reasonAr": "من العائلات اللي عليها طلب (خشبي)"
-  },
   {
    "rawId": "mat-hojari-frankincense",
    "nameAr": "زيت اللبان الحوجري العماني النقي (Omani Hojari Frankincense)",
@@ -202,7 +184,7 @@
  ],
  "planAr": [
   "أكثر العائلات طلباً في المتجر: خشبي، زهري، شرقي.",
-  "مرشحون للإضافة: دهن عود كمبودي / براشين معتق، زيت خشب الصندل الميسوري النقي، زيت اللبان الحوجري العماني النقي."
+  "مرشحون للإضافة: زيت اللبان الحوجري العماني النقي."
  ],
  "notes": [
   "مفيش عدّاد حي مقروء من المعمل: التقرير مبني على محتوى المعمل والمتجر بس، ومن غير أي أرقام مخترعة."

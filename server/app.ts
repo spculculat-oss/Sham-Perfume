@@ -316,7 +316,7 @@ app.use('/api/assistant', shamCore.assistant);
 app.use('/api/admin', shamCore.admin);
 app.use('/api/census', shamCore.censusRouter);
 // «إشارات المعمل»: the anonymous, opt-in design counters (no personal data, see server/labSignals.ts).
-app.use('/api/lab', shamCore.labSignalsRouter);
+if (shamCore.labSignalsRouter) app.use('/api/lab', shamCore.labSignalsRouter);
 app.use('/api/insights', shamCore.insightsRouter);
 
 app.use('/api', (_req, res) => {

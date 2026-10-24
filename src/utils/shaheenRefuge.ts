@@ -130,7 +130,7 @@ const WORKFLOW_OWNER: Record<string, BotId> = {
   'shaheen-school-clock.yml': 'academy', 'shaheen-lab.yml': 'lab',
   'shaheen-inventory.yml': 'inventory', 'shaheen-service.yml': 'service', 'shaheen-brain.yml': 'brain',
   'shaheen-scent.yml': 'scent_behavior', 'shaheen-localization.yml': 'localization_audit', 'shaheen-finance-shield.yml': 'finance_shield',
-  'shaheen-inventory.yml': 'inventory', 'shaheen-service.yml': 'service', 'shaheen-brain.yml': 'brain', 'shaheen-sales.yml': 'sales',
+  'shaheen-sales.yml': 'sales',
 };
 const WORKFLOW_NAMES: Record<string, [string, string]> = {
   'aistudio-bridge.yml': ['بوابة استوديو التصميم', 'Design studio bridge'],

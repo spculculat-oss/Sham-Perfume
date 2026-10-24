@@ -614,6 +614,10 @@ export function createShamCore(options: CoreOptions = {}) {
     res.json(out);
   }));
 
-  return { assistant, admin, repo, orchestrator, store, runtime, memory, seo, finance, bank, census, censusRouter: census.router, labSignals, labSignalsRouter: labSignals.router };
-  return { assistant, admin, repo, orchestrator, store, runtime, memory, seo, finance, bank, census, censusRouter: census.router, insightsRouter: insights.router };
+  return {
+    assistant, admin, repo, orchestrator, store, runtime, memory, seo, finance, bank, census,
+    censusRouter: census.router,
+    labSignals, labSignalsRouter: labSignals.router,
+    insightsRouter: insights.router,
+  };
 }
