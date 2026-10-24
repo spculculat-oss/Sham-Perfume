@@ -526,7 +526,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
 
   const buyNow = (product: StoreProduct, qty = 1) => {
     if (!product.inStock) return;
-    if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; }
+    // شراء مباشر للدفع لاحقًا عند التاجر: متاح للزائر بدون حساب. الدفع عبر البوابة يحتاج تسجيل دخول.
     setDirectPurchase({ sku: product.sku, qty, at: Date.now() });
     setCartOpen(true); setStep('form'); setPayMessage(''); setSearchFocused(false);
   };
@@ -534,7 +534,6 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
     const receive = () => {
       const intent = takeDirectPurchase();
       if (intent) {
-        if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; }
         setDirectPurchase(intent); setCartOpen(true); setStep('form'); setPayMessage('');
       }
     };
@@ -550,9 +549,8 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
   const pay = async (e: React.FormEvent) => {
     e.preventDefault();
     if (paying) return;
-    if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; }
-    if (!canPay) { setPayMessage(currentLang === 'ar' ? 'استخدم البطاقة أو المحفظة المحفوظة. إرسال الطلب للمتجر آخر خيار بالأسفل.' : 'Use a saved card or wallet. Sending the order to the store is the last option below.'); return; }
     if (chosenDirect) {
+      // الدفع المباشر عند التاجر (إنستاباي، تحويل، محفظة، الدفع عند الاستلام): متاح للزائر، يؤكده التاجر بعد ما يشوف الفلوس.
       setPaying(true); setPayMessage('');
       try {
         const items = summary.lines.map((l) => ({ sku: l.product.sku, qty: l.qty }));
@@ -568,6 +566,8 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
       } finally { setPaying(false); }
       return;
     }
+    // الدفع عبر البوابة (كاشير) يحتاج حسابًا مسجّلاً ومؤكداً.
+    if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; }
     if (!payments?.enabled || !chosenMethod) { setPayMessage(L.payError); return; }
     setPaying(true); setPayMessage('');
     try {
@@ -580,7 +580,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
   };
 
   const sendToStore = () => {
-    if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; }
+    // إرسال الطلب للمتجر متاح للزائر أيضًا (لا عملية دفع فورية).
     if (!summary.lines.length) return;
     const ref = orderRef();
     const mail = orderRequestEmail(summary, currentLang, priced, payForm, countries.find((c) => c.code === money.country)?.name || money.country, ref);
@@ -1784,11 +1784,11 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                     <>
                       <button
                         type="button"
-                        onClick={() => { if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; } setStep('form'); }}
+                        onClick={() => setStep('form')}
                         data-testid="store-pay-start"
                         className="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-bold cursor-pointer transition-all shadow-xs"
                       >
-                        {signedIn ? (currentLang === 'ar' ? 'ادفع بالبطاقة أو المحفظة' : 'Pay by card or wallet') : (currentLang === 'ar' ? 'سجّل الدخول للدفع' : 'Sign in to pay')}
+                        {currentLang === 'ar' ? 'أكمل الطلب' : 'Continue order'}
                       </button>
                       <button
                         type="button"
@@ -1802,8 +1802,8 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                     <div className="space-y-2">
                       {payments === null ? <p className="text-xs text-stone-600" role="status">{L.loading}</p> : <ProductPayMethods lang={currentLang} country={money.country} heading={currentLang === 'ar' ? 'وسائل الدفع المتاحة لطلبك' : 'Payment methods available for this order'} />}
                       {/* #169: the main button continues to the delivery form (the order then goes to the store's inbox), not to the chat. */}
-                      <button type="button" onClick={() => { if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; } setStep('form'); setOrderSent(''); }} disabled={payments === null} data-testid="store-order-start"
-                        className="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 disabled:bg-stone-400 text-white text-sm font-bold cursor-pointer transition-all shadow-xs">{signedIn ? (currentLang === 'ar' ? 'ادفع بالبطاقة أو المحفظة' : 'Pay by card or wallet') : (currentLang === 'ar' ? 'سجّل الدخول للدفع' : 'Sign in to pay')}</button>
+                      <button type="button" onClick={() => { setStep('form'); setOrderSent(''); }} disabled={payments === null} data-testid="store-order-start"
+                        className="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 disabled:bg-stone-400 text-white text-sm font-bold cursor-pointer transition-all shadow-xs">{currentLang === 'ar' ? 'أكمل الطلب' : 'Continue order'}</button>
                       <button type="button" onClick={checkout} className="w-full py-1.5 text-xs text-amber-800 hover:underline cursor-pointer text-center">{L.orAssistant}</button>
                     </div>
                   )}

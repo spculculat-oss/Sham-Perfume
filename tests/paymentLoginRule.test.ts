@@ -9,7 +9,10 @@ import { BankService } from '../server/finance/bank';
 import { createCheckoutRouter } from '../server/checkout';
 import { isVerifiedCustomer } from '../src/utils/paymentAccess';
 
-/** Owner's rule (2026-10-24): no payment without signing in to a real account. No free/demo/guest way around it. */
+/** قرار دولة المنصة (مهمة #272/#318، الاجتماع اليومي 2026-10-24): الدفع المباشر عبر «بنك شام»
+ * (إنستاباي، تحويل بنكي، محفظة، الدفع عند الاستلام) متاح للزائر بدون حساب، والتاجر يؤكد الدفع بعد ما يشوف الفلوس.
+ * الدفع عبر بوابة كاشير ما زال يحتاج حساباً مسجلاً ومؤكداً.
+ */
 
 class Durable extends MemoryStore { override readonly persistent = true; }
 const offline = (async () => { throw new Error('no network'); }) as typeof fetch;
@@ -32,23 +35,25 @@ test('sign-in window: the free demo login is gone', () => {
   assert.doesNotMatch(modal, /handleDemoLogin|demo_login|sham123456|perfumer@sham\.com/);
 });
 
-test('server: a payment cannot start without a signed-in account', async () => {
+test('server: direct checkout works for a visitor; gateway checkout still needs an account', async () => {
   const finance = new FinanceService(new Durable(), {}, { fetch: offline });
   const bank = new BankService(finance, {}, offline);
   const acc = await bank.saveAccount(undefined, instapay);
   const fx = async () => ({ base: 'USD', updatedAt: '2026-10-20T00:00:00Z', rates: { EGP: 50, USD: 1 } });
+  const kashierEnv = { KASHIER_MERCHANT_ID: 'MID-1-1', KASHIER_API_KEY: 'test-key', KASHIER_SECRET_KEY: 'test-secret', KASHIER_MODE: 'test' };
   const app = express(); app.use(express.json());
-  app.use('/visitor/api', createCheckoutRouter({ finance, bank, env: {}, products, catalog: async () => undefined, fx, customer: async () => undefined }));
-  app.use('/member/api', createCheckoutRouter({ finance, bank, env: {}, products, catalog: async () => undefined, fx, customer: async (req) => (req.headers.authorization ? { id: 'u_1' } : undefined) }));
+  app.use('/api', createCheckoutRouter({ finance, bank, env: kashierEnv, products, catalog: async () => undefined, fx, customer: async () => undefined }));
   const server = app.listen(0); const base = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
-  const post = (path: string, headers: Record<string, string> = {}) => fetch(`${base}${path}`, { method: 'POST', headers: { 'Content-Type': 'application/json', ...headers }, body: JSON.stringify(order(acc.id)) });
+  const post = (path: string) => fetch(`${base}${path}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(order(acc.id)) });
   try {
-    const visitor = await post('/visitor/api/store/checkout/direct');
-    assert.equal(visitor.status, 401);
-    assert.equal((await visitor.json() as { code: string }).code, 'LOGIN_REQUIRED');
-    assert.equal((await finance.store.list('financeOrders')).length, 0, 'nothing is reserved for a visitor');
-    assert.equal((await post('/member/api/store/checkout/direct')).status, 401, 'no session header');
-    assert.equal((await post('/member/api/store/checkout/direct', { Authorization: 'Bearer real' })).status, 201, 'a signed-in customer pays');
+    // الدفع المباشر («بنك شام»): الزائر يقنع الطلب والتاجر يؤكد الدفع لاحقًا — لا حساب مطلوب.
+    const direct = await post('/api/store/checkout/direct');
+    assert.equal(direct.status, 201, 'direct checkout reserved for a visitor');
+    assert.equal((await finance.store.list('financeOrders')).length, 1, 'the visitor order is reserved');
+    // الدفع عبر البوابة (كاشير): ما زال يحتاج حساباً مسجلاً ومؤكداً.
+    const gateway = await post('/api/store/checkout');
+    assert.equal(gateway.status, 401, 'gateway checkout requires sign-in');
+    assert.equal((await gateway.json() as { code: string }).code, 'LOGIN_REQUIRED');
   } finally { server.close(); }
 });
 
