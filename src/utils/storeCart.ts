@@ -1,3 +1,4 @@
+import { trackInsight } from './insightsTracker';
 import { useEffect, useState } from 'react';
 import type { StoreProduct } from './storeCatalog';
 import { makeStoreT, storeLocalized } from '../لغات/storeL10n';
@@ -24,6 +25,7 @@ function write(cart: Cart) {
 }
 
 export function addToCart(sku: string, qty = 1) {
+  trackInsight('cart', { sku, qty }); // «خزنة فهم الزوار» (only with the visitor's consent)
   const cart = readCart();
   cart[sku] = Math.min(99, (cart[sku] || 0) + qty);
   write(cart);

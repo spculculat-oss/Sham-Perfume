@@ -22,6 +22,7 @@ import { BankService } from '../finance/bank';
 import { RateLimiter, clientKey } from './rateLimit';
 import { createSeoService } from '../seo/service';
 import { createCensusService } from '../census';
+import { createInsightsService } from '../insights';
 import { buildPublicStatement } from '../../src/utils/platformCensus';
 import { probeEngines } from '../shaheen';
 import { createDesignBrief, validateDesignRequest } from '../design/assistant';
@@ -80,6 +81,8 @@ export function createShamCore(options: CoreOptions = {}) {
   const seo = createSeoService({ repo, env, fetch: options.fetch });
   // «روبوت التعداد — دولة المنصة»: privacy-safe global visit ledger & public statement.
   const census = createCensusService({ store: durable });
+  // «خزنة فهم الزوار»: visitors' interactions (with their consent), studied for the administration only.
+  const insights = createInsightsService({ store: durable });
   const seoRunLimiter = new RateLimiter(4, 10 * 60_000);
   const designLimiter = new RateLimiter(8, 10 * 60_000);
   const feedbackLimiter = new RateLimiter(60, 10 * 60_000);
@@ -579,6 +582,9 @@ export function createShamCore(options: CoreOptions = {}) {
     res.status(202).json({ accepted: true, submit, startedAt: new Date().toISOString() });
   }));
 
+  // ---- «خزنة فهم الزوار»: the owner's studies of visitors, customers and countries ----
+  admin.use('/insights', insights.admin);
+
   // ---- «روبوت التعداد — دولة المنصة»: global visit census, world heatmap data & public statement ----
   admin.get('/census', wrap(async (_req, res) => {
     const report = await census.load();
@@ -598,5 +604,5 @@ export function createShamCore(options: CoreOptions = {}) {
     res.json(out);
   }));
 
-  return { assistant, admin, repo, orchestrator, store, runtime, memory, seo, finance, bank, census, censusRouter: census.router };
+  return { assistant, admin, repo, orchestrator, store, runtime, memory, seo, finance, bank, census, censusRouter: census.router, insightsRouter: insights.router };
 }

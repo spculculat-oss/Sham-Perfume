@@ -3,6 +3,7 @@ import { Cookie, ShieldCheck, X, Settings } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
 import { LText, makeT } from '../لغات/localize';
+import { INSIGHTS_CONSENT_VERSION } from '../utils/visitorInsights';
 
 const S: Record<string, LText> = {
   banner_title: {
@@ -13,18 +14,18 @@ const S: Record<string, LText> = {
     de: 'Wir respektieren Ihre Privatsphäre 🍪',
   },
   banner_msg: {
-    ar: 'نستخدم الكوكيز الضرورية فقط لتشغيل المنصة (حفظ وصفاتك، تسجيل دخولك). الكوكيز التحليلية/التسويقية اختيارية وتتطلب موافقتك الصريحة. لا نتتبعك خارج المنصة أبدًا.',
-    en: 'We use only essential cookies to run the platform (save recipes, login). Analytics/marketing cookies are optional and require your explicit consent. We never track you outside the platform.',
-    fr: 'Nous utilisons uniquement des cookies essentiels. Les cookies analytiques/marketing nécessitent votre consentement explicite.',
-    es: 'Usamos solo cookies esenciales. Las analíticas/marketing requieren tu consentimiento explícito.',
-    de: 'Wir verwenden nur essenzielle Cookies. Analyse-/Marketing-Cookies erfordern Ihre ausdrückliche Zustimmung.',
+    ar: 'نستخدم الضروري بس لتشغيل المنصة. ولو وافقت على «التحليل»، بنسجّل تفاعلك مع المنصة (الأقسام والمنتجات اللي بتشوفها، بحثك، أسئلتك لشاهين، السلة والطلب) ونحلّله عشان نفهم ذوقك وذوق كل بلد ونخدمك أحسن. البيانات دي ملك إدارة شام وحدها: مابنبيعهاش ولا بنشاركها، ومافيهاش مفاتيح ولا كلمات سر ولا أرقام بطاقات، وتقدر تسحب موافقتك وتتمسح في أي وقت.',
+    en: 'We use only what is essential to run the platform. If you accept “Analytics”, we record how you use the platform (sections and products you view, your searches, your questions to Shaheen, cart and orders) and analyse it to understand your taste and each country’s, and serve you better. This data belongs to Sham’s administration alone: never sold or shared, never containing keys, passwords or card numbers, and you can withdraw and have it erased at any time.',
+    fr: 'Essentiels uniquement. Si vous acceptez « Analyse », nous enregistrons et analysons votre utilisation de la plateforme (pages, produits, recherches, questions, panier) pour comprendre vos goûts. Données réservées à l’administration de Sham, jamais vendues ; retrait et effacement à tout moment.',
+    es: 'Solo lo esencial. Si aceptas «Análisis», registramos y analizamos tu uso de la plataforma (secciones, productos, búsquedas, preguntas, carrito) para entender tus gustos. Datos solo para la administración de Sham, nunca vendidos; puedes retirarlo y borrarlo cuando quieras.',
+    de: 'Nur das Notwendige. Wenn Sie „Analyse“ zustimmen, erfassen und analysieren wir Ihre Nutzung (Bereiche, Produkte, Suchen, Fragen, Warenkorb), um Ihren Geschmack zu verstehen. Nur für die Sham-Verwaltung, nie verkauft; Widerruf und Löschung jederzeit.',
   },
   accept_all: { ar: 'قبول الكل', en: 'Accept All', fr: 'Tout accepter', es: 'Aceptar todo', de: 'Alle akzeptieren' },
   reject_all: { ar: 'رفض غير الضروري', en: 'Reject Non-Essential', fr: 'Refuser', es: 'Rechazar', de: 'Ablehnen' },
   customize: { ar: 'تخصيص', en: 'Customize', fr: 'Personnaliser', es: 'Personalizar', de: 'Anpassen' },
   save: { ar: 'حفظ اختياري', en: 'Save Preferences', fr: 'Enregistrer', es: 'Guardar', de: 'Speichern' },
   essential: { ar: 'ضروري (دائمًا نشط)', en: 'Essential (always on)', fr: 'Essentiel', es: 'Esencial', de: 'Essentiell' },
-  analytics: { ar: 'تحليلي (أداء المنصة)', en: 'Analytics (performance)', fr: 'Analytique', es: 'Analítico', de: 'Analyse' },
+  analytics: { ar: 'التحليل (فهم ذوقك وتحسين المنصة)', en: 'Analytics (understanding your taste)', fr: 'Analyse', es: 'Análisis', de: 'Analyse' },
   marketing: { ar: 'تسويقي (لا نستخدمه حاليًا)', en: 'Marketing (not used)', fr: 'Marketing', es: 'Marketing', de: 'Marketing' },
   policy_link: { ar: 'سياسة الكوكيز', en: 'Cookie Policy', fr: 'Politique cookies', es: 'Política cookies', de: 'Cookie-Richtlinie' },
 };
@@ -38,7 +39,8 @@ export type ConsentChoice = {
 };
 
 const CONSENT_KEY = 'sham_cookie_consent_v1';
-const CONSENT_VERSION = '1.0';
+// 1.1: «التحليل» now studies how each visitor uses the platform (src/utils/visitorInsights.ts) — asked again.
+const CONSENT_VERSION = INSIGHTS_CONSENT_VERSION;
 
 export function getConsent(): ConsentChoice | null {
   try {

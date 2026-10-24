@@ -1,3 +1,4 @@
+import { trackInsight } from './insightsTracker';
 import { useEffect, useState } from 'react';
 import { apiUrl, isStaticHosting } from './api';
 import { BUNDLED_FX, COUNTRY_CODES, guessCountry, isCountry, priceIn, quote, type Quote, type QuoteLine } from './pricing';
@@ -193,6 +194,7 @@ export class CheckoutError extends Error { constructor(readonly code: string) { 
 
 /** Opens a Kashier payment page for the cart and sends the visitor there. */
 export async function startCheckout(items: { sku: string; qty: number }[], country: string, form: CheckoutForm, lang: SupportedLanguage, method?: 'card' | 'wallet', context: 'cart' | 'direct' = 'cart'): Promise<void> {
+  trackInsight('checkout', { value: context }); // «خزنة فهم الزوار» (with consent; the form's contact data is never sent there)
   let response: Response;
   try {
     response = await fetch(apiUrl('/api/store/checkout'), {
