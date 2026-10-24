@@ -1173,9 +1173,10 @@
    "needsApproval": true,
    "createdAt": "2026-10-23T08:42:38.144Z",
    "meeting": "2026-10-23",
-   "status": "open",
+   "status": "done",
    "issue": 274,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/274"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/274",
+   "closedAt": "2026-10-24T09:31:45Z"
   },
   {
    "id": "2026-10-24-1-إصلاح-خطوة-checkout-في-ر",
@@ -1186,9 +1187,10 @@
    "needsApproval": true,
    "createdAt": "2026-10-23T22:20:31.152Z",
    "meeting": "2026-10-24",
-   "status": "open",
+   "status": "done",
    "issue": 318,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/318"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/318",
+   "closedAt": "2026-10-24T11:16:30Z"
   },
   {
    "id": "2026-10-24-2-إصلاح-عطل-السكرتير-مشرف-",
@@ -1199,9 +1201,10 @@
    "needsApproval": true,
    "createdAt": "2026-10-23T22:20:31.152Z",
    "meeting": "2026-10-24",
-   "status": "open",
+   "status": "done",
    "issue": 319,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/319"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/319",
+   "closedAt": "2026-10-24T09:31:45Z"
   },
   {
    "id": "2026-10-24-3-إصلاح-عطل-مدر-ب-كتالوج-ا",
@@ -1212,9 +1215,10 @@
    "needsApproval": true,
    "createdAt": "2026-10-23T22:20:31.152Z",
    "meeting": "2026-10-24",
-   "status": "open",
+   "status": "done",
    "issue": 320,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/320"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/320",
+   "closedAt": "2026-10-24T09:31:46Z"
   }
  ],
  "toolGoals": {
