@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-24T20:04:49.124Z",
+ "updatedAt": "2026-10-24T21:07:26.565Z",
  "reliance": {
   "score": 100,
   "covered": 1344,
@@ -21,6 +21,12 @@
  "studiedTotal": 142,
  "selfTaughtTotal": 1067,
  "history": [
+  {
+   "at": "2026-10-24T21:07:26.565Z",
+   "score": 100,
+   "studied": 0,
+   "mode": "self"
+  },
   {
    "at": "2026-10-24T20:04:49.124Z",
    "score": 100,
@@ -374,12 +380,6 @@
    "score": 66,
    "studied": 2,
    "mode": "local"
-  },
-  {
-   "at": "2026-10-22T14:36:25.822Z",
-   "score": 65,
-   "studied": 7,
-   "mode": "ai"
   }
  ],
  "lastStudied": [
@@ -512,7 +512,7 @@
  },
  "localTaughtTotal": 85,
  "spelling": {
-  "at": "2026-10-24T20:04:49.124Z",
+  "at": "2026-10-24T21:07:26.565Z",
   "tried": 745,
   "understood": 704,
   "score": 94,
@@ -528,7 +528,7 @@
   }
  },
  "practice": {
-  "at": "2026-10-24T20:04:49.124Z",
+  "at": "2026-10-24T21:07:26.565Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -848,7 +848,7 @@
   }
  },
  "tools": {
-  "at": "2026-10-24T20:04:49.124Z",
+  "at": "2026-10-24T21:07:26.565Z",
   "items": [
    {
     "id": "finance_agent",
@@ -1013,14 +1013,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-24T20:04:49.124Z",
+  "at": "2026-10-24T21:07:26.565Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-25T02:04:49.124Z"
+    "next": "2026-10-25T03:07:26.565Z"
    },
    {
     "id": "site-care",
@@ -1032,7 +1032,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-25T08:04:49.124Z"
+    "next": "2026-10-25T09:07:26.565Z"
    }
   ]
  }
