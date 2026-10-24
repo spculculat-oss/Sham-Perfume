@@ -1,7 +1,7 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-10-23T21:34:49.371Z",
+  "updatedAt": "2026-10-24T09:37:37.757Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
@@ -16,57 +16,57 @@
   ],
   "score": 60,
   "notes": [
-    "الترجمة مش مكتملة: 11.2% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 244833 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط الأساسية بس هي اللي مكتملة.",
+    "الترجمة مش مكتملة: 11.2% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 245617 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط الأساسية بس هي اللي مكتملة.",
     "تقليل صارم للغة إلى عربي/إنجليزي في 1 موضع — راجع إن كان المقصود زوج بيانات {ar,en} أم لغة واجهة.",
-    "المترجم الذكي: 244833 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3240 — النهارده اتترجم 0 (الباقة خلصت — هيكمل بعد التجديد).",
+    "المترجم الذكي: 245617 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3240 — النهارده اتترجم 0 (الباقة خلصت — هيكمل بعد التجديد).",
     "لغات بلّغ عنها قسم التصميم بتتترجم الأول: is، sq، ps، ja."
   ],
   "translationCoverage": 11.2,
   "fullyTranslated": 0,
   "translation": {
-    "at": "2026-10-23T21:34:49.857Z",
+    "at": "2026-10-24T09:37:38.241Z",
     "status": "quota",
-    "remaining": 244833,
+    "remaining": 245617,
     "covered": 3240,
-    "total": 275968,
+    "total": 276752,
     "fullyTranslated": 0,
     "remainingByTier": {
       "1": 16169,
-      "2": 159230,
+      "2": 160014,
       "3": 69434
     },
     "worstLanguages": [
       {
         "lang": "my",
-        "remaining": 2649
+        "remaining": 2657
       },
       {
         "lang": "dz",
-        "remaining": 2649
+        "remaining": 2657
       },
       {
         "lang": "cs",
-        "remaining": 2647
+        "remaining": 2655
       },
       {
         "lang": "ur",
-        "remaining": 2647
+        "remaining": 2655
       },
       {
         "lang": "am",
-        "remaining": 2647
+        "remaining": 2655
       },
       {
         "lang": "ha",
-        "remaining": 2647
+        "remaining": 2655
       },
       {
         "lang": "yo",
-        "remaining": 2647
+        "remaining": 2655
       },
       {
         "lang": "zu",
-        "remaining": 2647
+        "remaining": 2655
       }
     ],
     "run": {
@@ -77,7 +77,7 @@
       "reviewed": false,
       "engines": [],
       "languages": [],
-      "resumeAt": "2026-10-24T08:05:00.000Z"
+      "resumeAt": "2026-10-25T08:05:00.000Z"
     },
     "rejectReasons": {},
     "rejectCounts": {
@@ -161,9 +161,9 @@
     }
   },
   "design": {
-    "at": "2026-10-23T21:34:49.371Z",
-    "auditAt": "2026-10-21T05:41:54.171Z",
-    "auditScore": 42,
+    "at": "2026-10-24T09:37:37.757Z",
+    "auditAt": "2026-10-24T05:41:40.364Z",
+    "auditScore": 46,
     "priorityLanguages": [
       "is",
       "sq",
@@ -175,9 +175,10 @@
       "SCENT STUDIO",
       "Live Sync",
       "Enter Portal",
-      "Shop this scent",
-      "placeholders",
-      "Search store perfumes"
+      "LIVE SYNC",
+      "ENTER PORTAL",
+      "Hawas London",
+      "Hawas Ice"
     ],
     "physicalDirection": {
       "total": 298,
