@@ -1,0 +1,96 @@
+name: Shaheen sales — the sales desk inside Sham Bank
+
+# «مدير المبيعات»: every 6 hours it reads the sales desk through the admin API (counts only — no amounts,
+# no deal titles, no contacts), studies one lesson of its curriculum (the platform handbook + the selling
+# craft), writes SALES_PLAYBOOK.md and `src/data/live/shaheen-sales.json` (admin → «بنك شام» → «إدارة المبيعات»
+# → «الهيكل الإداري»). It never confirms a payment, never promises a discount and never invents a figure.
+#
+# Minute 33: clear of the State (27), importer (37), school clock (47), patrol (52) and the pre-check (10).
+
+on:
+  schedule:
+    - cron: '33 */6 * * *'
+  workflow_dispatch:
+  push:
+    branches: ['arena/**']
+    paths:
+      - 'scripts/shaheen-sales/**'
+      - 'src/sales/**'
+      - 'src/utils/salesCraft.ts'
+      - 'src/utils/botHandbook.ts'
+      - '.github/workflows/shaheen-sales.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: shaheen-sales-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # «مفتاح صاحب الموقع»: the owner (or «دولة المنصة») can pause this robot («sales»).
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs sales
+
+  desk:
+    name: «إدارة المبيعات» — the sales desk report
+    needs: owner
+    # Never read the live desk from a feature branch: branch rehearsals study the curriculum only.
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      SHAM_SALES_API_URL: ${{ vars.SHAM_SALES_API_URL || 'https://sham-perfume-49bf.vercel.app' }}
+      SHAM_ADMIN_TOKEN: ${{ github.ref == 'refs/heads/main' && secrets.SHAM_ADMIN_TOKEN || '' }}
+      PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Regenerate the playbook (from the handbook and the selling craft)
+        run: node --import tsx scripts/shaheen-sales/playbook-doc.mts
+      - name: Study and write the sales report (real numbers only)
+        run: node --import tsx scripts/shaheen-sales/run.mts
+      - name: Behaviour tests
+        run: node --import tsx --test tests/salesManager.test.ts
+      - name: Publish on main
+        if: env.PUBLISH == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen sales bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "شاهين: مدير المبيعات $(date -u +%Y-%m-%dT%H:%MZ)" \
+            SALES_PLAYBOOK.md \
+            src/data/live/shaheen-sales.json \
+            || { echo "::error::Could not push the sales report"; exit 1; }

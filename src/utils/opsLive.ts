@@ -36,6 +36,7 @@ export const SCHEDULES: Record<string, string[]> = {
   'shaheen-school-clock.yml': ['47 * * * *'],
   'shaheen-service.yml': ['3 */6 * * *'],
   'shaheen-seo.yml': ['23 */6 * * *'],
+  'shaheen-sales.yml': ['33 */6 * * *'],
 };
 /** What starts a workflow that has no timetable (or also starts it besides the timetable). */
 export const TRIGGERS_AR: Record<string, string> = {

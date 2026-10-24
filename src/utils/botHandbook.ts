@@ -21,7 +21,7 @@ import { REFUGE_NOTE_AR } from './shaheenRefuge';
 import { BOTS, DEPARTMENTS, LEGAL_DECISIONS, LINKS, botOf, botsIn, type BotId } from './shaheenOrg';
 
 /** Bumped when the policies change (the robots' reports and the admin panel show the edition they read). */
-export const HANDBOOK_EDITION = '2026-10-24b';
+export const HANDBOOK_EDITION = '2026-10-24c';
 export const PAGES_URL = 'https://spculculat-oss.github.io/Sham-Perfume/';
 /** The scenario's price rule (scripts/shaheen-import/transform.ts PRICE_MARKUP — a test keeps them equal). */
 export const HANDBOOK_MARKUP = 1.5;
@@ -92,6 +92,7 @@ export function handbookSections(): HandbookSection[] {
         '«بنك شام»: تحصيل مباشر من غير بوابة دفع: إنستاباي، تحويل بنكي، محافظ موبايل، والدفع عند الاستلام. صاحب المتجر بيأكد بعد ما يشوف الفلوس، وساعتها بس البيع يتسجل.',
         'النظام عمره ما يحرك فلوس بنفسه، ولا يحفظ بطاقات أو كلمات سر أو كشوف حساب كاملة، ولا يأكد دفع لوحده.',
         'بوابة كاشير موقوفة بقرار صاحب الموقع. «أمين شاهين» بيعمل التقارير المالية جوه لوحة خاصة، والتقرير العام فيه حالة الفحص بس.',
+        '«إدارة المبيعات» قسم جوه «بنك شام»: خط أنابيب الفرص (باسم مختصر من غير بيانات تواصل — التفاصيل في حساب العميل وطلبه)، وهدف الشهر وإيقاعه من التحصيل المؤكد بس، وإيقاع يومي مرتّب (تأكيد التحويلات ← المتابعات ← فجوة الهدف ← مخزون الأكثر مبيعاً ← درس اليوم)، ومنهج يومي مبني على الكتيب ده وعلى «علم البيع». «مدير المبيعات» روبوت مستقل بيذاكر ويسجّل نتيجته، ومايأكدش دفع (ده في البنك)، ومايوعدش بخصم، ومايخترعش رقم ولا استعجال مزيف.',
       ],
     },
     {

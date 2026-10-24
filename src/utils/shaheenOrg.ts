@@ -43,7 +43,7 @@ export type BotId =
   | 'chat_agent' | 'owner_desk' | 'state' | 'academy' | 'platform_owner'
   | 'specialist_scents' | 'specialist_tech' | 'specialist_security' | 'specialist_science' | 'specialist_business' | 'specialist_society'
   | 'specialist_health' | 'specialist_engineering' | 'specialist_learning' | 'specialist_culture' | 'lab' | 'census'
-  | 'service' | 'inventory' | 'brain';
+  | 'service' | 'inventory' | 'brain' | 'sales';
 
 export interface Bot {
   id: BotId;
@@ -100,6 +100,7 @@ export const BOTS: Bot[] = [
   { id: 'design_expert', nameAr: 'خبير التصميم متعدد التخصصات', nameEn: 'Multidisciplinary design expert', dept: 'experience', aiTools: ['design_agent'], dutiesAr: 'يحوّل الموجز إلى خطة عبر تخصصات الهوية والجرافيك والواجهات والتغليف والتصوير والحركة والطباعة والإتاحة والخدمات والمنتجات، ويتعاون مع أدوار وتقارير برامج الذكاء المسجلة تحت شاهين؛ شاهين يراجع الجودة ويوجّه التحسين، ولا تُنفذ تغييرات أو ملفات نهائية تلقائياً.' },
   { id: 'visitor_tour', nameAr: 'جولة الزائر والمستشار الميداني', nameEn: 'Visitor tour & field advisor', dept: 'experience', workflow: 'shaheen-manus.yml', report: 'manus-missions.json', section: 'tour', everyHours: 24, dutiesAr: 'كل يوم بعد الفحص الشامل الوكيل الخلفي يتسوق من الموبايل زي الزبون: المتجر ← منتج ← السلة ← صفحة الدفع (من غير ما يدفع) ← سؤال لشاهين، وبعدين يبص على مشاكل الفحص في الموقع الحي ويقعد في الاجتماع «المستشار الميداني» برأيه واقتراحاته.' },
   { id: 'inspect', nameAr: 'فاحص إجابات شاهين', nameEn: 'Answer inspector', dept: 'experience', workflow: 'shaheen-inspect.yml', dutiesAr: 'يسأل شاهين أسئلة حقيقية ويفحص الرد (عند الطلب).' },
+  { id: 'sales', nameAr: 'مدير المبيعات — قسم «إدارة المبيعات» في بنك شام', nameEn: 'Sales manager — the sales desk inside Sham Bank', dept: 'store', workflow: 'shaheen-sales.yml', report: 'shaheen-sales.json', everyHours: 6, dutiesAr: 'يدير «إدارة المبيعات» اللي جوه «بنك شام»: خط أنابيب الفرص بالمراحل والقيمة الموزونة واحتمالية القفل (من غير أي بيانات تواصل — الفرصة باسم مختصر، والتفاصيل في حساب العميل وطلبه)، وهدف الشهر وإيقاعه من التحصيل المؤكد بس، وإيقاع يومي مرتّب (تأكيد التحويلات المستنية ← متابعات الفرص ← فجوة الهدف ← مخزون الأكثر مبيعاً ← درس اليوم)، ومؤشر صحة المبيعات وأسبابه. بيذاكر كتيب المنصة كلمة بكلمة ومنهج البيع كل يوم (درس + سؤال + نتيجة محفوظة)، ويرد على صاحب المتجر من الأرقام الحقيقية بس. مايأكدش دفع (ده في بنك شام)، ومايوعدش بخصم، ومايخترعش رقم ولا استعجال مزيف، والبيانات الشخصية ممنوعة في سجله.' },
   { id: 'service', nameAr: 'مكتب خدمة العملاء الآلي', nameEn: 'Automated customer care desk', dept: 'experience', workflow: 'shaheen-service.yml', report: 'shaheen-service.json', everyHours: 6, dutiesAr: 'يقود «مكتب خدمة العملاء الآلي»: كل 6 ساعات يراجع معلومات الدعم المنشورة (الشراء والدفع والشحن والتتبع والإرجاع وأسعار المخزون) ويتأكد إنها كاملة بالعربي والإنجليزي، ويقرا الحساب الحي من غير ما يحفظ أي بيانات شخصية: المحادثات المستنية لموظف، الطلبات المفتوحة، الأسئلة اللي الزوار مالاقوش لها إجابة، والتقييمات الأخيرة — ويجهز طابور الردود والقوالب من الأجوبة الموثقة نفسها، ويصعّد المتأخر للسكرتير. مايرسلش رسالة ولا يغيّر طلب؛ التنفيذ بإيد إنسان.' },
   // ── Reliability & self-reliance ──
   { id: 'school', nameAr: 'مدرسة شاهين (الاعتماد على النفس)', nameEn: "Shaheen's school", dept: 'reliability', workflow: 'shaheen-discover.yml', report: 'shaheen-school.json', everyHours: 6, aiTools: ['shaheen_school'], dutiesAr: 'يمتحن شاهين نفسه على كل المسارات — العطور، جميع لغات البرمجة، بناء بلوكات البرمجة وجدولتها، هندسة البرمجة، الجرافيك والديزاين، صيانة المواقع، والذكاء الاصطناعي بجميع مهاراته وأحدث العلوم، والاختراق الأخلاقي، وكل العلوم — ومجال كل أداة ذكاء اصطناعي — ويذاكر مكثفاً من مكتبته بدون مساعدة ويحفظ في ذاكرته عشان يرد لوحده ويدبر نفسه بدون أي تطبيق ذكاء آخر. ويبني برامجه بالبلوكات ويجدولها ويطوّر كل أداة في مجالها.' },
@@ -285,6 +286,15 @@ export const LINKS: Link[] = [
   { from: 'state', to: 'census', whyAr: 'تكليف رسمي بإحصاء زيارات المنصة حول العالم وإصدار التقرير والكشف العلني تحت رقابة الدولة' },
   { from: 'census', to: 'owner_desk', whyAr: 'تقديم التقرير التنفيذي والكشف العلني وخريطة العالم الحرارية لصاحب المنصة' },
   { from: 'census', to: 'council', whyAr: 'إمداد مجلس شاهين بأكثر الدول والأقسام نشاطاً لتحسين تجربة الزوار الحقيقيين' },
+  { from: 'finance', to: 'sales', whyAr: 'التحصيل المؤكد والتحويلات المستنية في بنك شام هي أرقام إدارة المبيعات الوحيدة — الحجز مش إيراد' },
+  { from: 'sales', to: 'finance', whyAr: 'المبيعات ما بتأكدش دفع بنفسها: اللي بيوصل ليها من العميل يتحوّل لطابور تأكيد في البنك، والتأكيد بعين صاحب المتجر' },
+  { from: 'inventory', to: 'sales', whyAr: 'المخزون والأكثر مبيعاً يحددان اللي بيتقدّم في العروض وإعادة التوريد' },
+  { from: 'sales', to: 'inventory', whyAr: 'الفرص والمبيعات المؤكدة أولوية إعادة التوريد للمخزون' },
+  { from: 'service', to: 'sales', whyAr: 'أسئلة الزوار اللي مالقيتش إجابة قد تكون اعتراضاً بيمنع الشراء ← فرصة متابعة بخطوة واحدة' },
+  { from: 'store_advisor', to: 'sales', whyAr: 'طلبات الترشيح اللي ماخلصتش بطلب تفيد في تحسين العرض وأسباب الاعتراض' },
+  { from: 'sales', to: 'council', whyAr: 'صحة المبيعات والمتابعات المتأخرة وفجوة الهدف تدخل الاجتماع اليومي كأرقام حقيقية' },
+  { from: 'sales', to: 'school', whyAr: 'درس المنهج اللي مش واضح أو سؤال اتكرر غلطه يروح لمدرسة شاهين يتذاكر ويتحفظ' },
+  { from: 'council', to: 'sales', whyAr: 'هدف تطوير للمبيعات من الاجتماع اليومي يتنفذ في مكتب المبيعات ويتراجع بالأرقام' },
 ];
 
 export const botOf = (id: string) => BOTS.find((b) => b.id === id);

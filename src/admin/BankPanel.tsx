@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { AlertTriangle, BadgeCheck, Banknote, Bot, Building2, CalendarClock, FileSearch, Landmark, Loader2, PieChart, Plus, ScrollText, Send, Wallet } from 'lucide-react';
+import { AlertTriangle, BadgeCheck, Banknote, Bot, Building2, CalendarClock, FileSearch, Landmark, Loader2, PieChart, Plus, ScrollText, Send, TrendingUp, Wallet } from 'lucide-react';
 import { adminRequest, send } from './adminApi';
 import { adminLocale, getAdminLang } from './adminL10n';
 import { LocalizedNumberInput } from '../components/LocalizedNumberInput';
@@ -7,6 +7,7 @@ import { major } from '../finance/money';
 import type { BankDashboard } from '../../server/finance/bank';
 import type { CollectionAccount } from '../../server/finance/types';
 import { ShamAccountDesk } from '../components/ShamAccountDesk';
+import SalesPanel from './SalesPanel';
 
 /**
  * «بنك شام» — the owner's money desk: the internal Sham account (posted transfers between Sham
@@ -29,7 +30,7 @@ const stateName = (s: string) => ({ awaiting_payment: f('في انتظار ال�
 const stateTone = (s: string) => ({ claimed: 'bg-amber-100 text-amber-900', awaiting_payment: 'bg-sky-50 text-sky-800', paid: 'bg-emerald-100 text-emerald-800', rejected: 'bg-red-50 text-red-700', expired: 'bg-stone-100 text-stone-500' }[s] || 'bg-stone-100');
 const riskName = (r: string) => ({ AMOUNT_MISMATCH: f('المبلغ مختلف', 'Amount differs'), DUPLICATE_REFERENCE: f('رقم عملية مكرر', 'Duplicate reference'), PAID_BEFORE_ORDER: f('التحويل قبل الطلب', 'Paid before order'), MANY_OPEN_ORDERS: f('طلبات مفتوحة كثيرة لنفس العميل', 'Many open orders, same buyer'), HIGH_AMOUNT: f('مبلغ أعلى من المعتاد', 'Unusually high amount') }[r] || r);
 const categoryName = (c: string) => ({ ai: f('الذكاء الاصطناعي', 'AI'), marketing: f('التسويق', 'Marketing'), shipping: f('الشحن', 'Shipping'), salaries: f('المرتبات', 'Salaries'), rent: f('الإيجار', 'Rent'), software: f('البرامج والاستضافة', 'Software & hosting'), fees: f('رسوم وعمولات', 'Fees'), other: f('أخرى', 'Other') }[c] || c);
-const SECTIONS = ['account', 'desk', 'collect', 'reconcile', 'payables', 'budgets', 'insights', 'audit'] as const;
+const SECTIONS = ['account', 'desk', 'sales', 'collect', 'reconcile', 'payables', 'budgets', 'insights', 'audit'] as const;
 type Section = typeof SECTIONS[number];
 const emptyAccount = { kind: 'instapay', label: '', instructions: '', currencies: 'EGP', countries: 'EG', holdHours: '72', active: true };
 
@@ -96,6 +97,7 @@ export default function BankPanel() {
   const tabs: Record<Section, [string, React.ReactNode]> = {
     account: [f('الحساب', 'Account'), <Landmark key="i" className="w-4 h-4" />],
     desk: [f('المكتب', 'Desk'), <Banknote key="i" className="w-4 h-4" />],
+    sales: [f('إدارة المبيعات', 'Sales'), <TrendingUp key="i" className="w-4 h-4" />],
     collect: [f('التحصيل المباشر', 'Direct collection'), <Wallet key="i" className="w-4 h-4" />],
     reconcile: [f('مطابقة كشف الحساب', 'Statement matching'), <FileSearch key="i" className="w-4 h-4" />],
     payables: [f('المستحقات علينا', 'Bills we owe'), <CalendarClock key="i" className="w-4 h-4" />],
@@ -143,6 +145,8 @@ export default function BankPanel() {
           <p className="text-[11px] text-stone-500">{f('الإجابات من أرقام الدفتر الحقيقية فقط، بدون تخمين.', 'Answers come only from the real ledger figures — no guessing.')}</p>
         </form>
       </>}
+
+      {section === 'sales' && <SalesPanel onOpenBank={() => setSection('collect')} />}
 
       {section === 'collect' && <>
         <div className="space-y-3">

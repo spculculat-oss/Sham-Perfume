@@ -57,6 +57,8 @@
     "scripts/shaheen-finance/**/*.mts",
     "scripts/shaheen-service/**/*.ts",
     "scripts/shaheen-service/**/*.mts",
+    "scripts/shaheen-sales/**/*.ts",
+    "scripts/shaheen-sales/**/*.mts",
     "scripts/shaheen-inventory/**/*.ts",
     "scripts/shaheen-inventory/**/*.mts",
     "scripts/seo-build.mts"
