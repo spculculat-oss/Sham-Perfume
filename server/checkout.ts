@@ -48,8 +48,9 @@ export interface CheckoutRouterOptions {
   onPaid?: (ref: string) => Promise<void>;
   /**
    * The signed-in customer behind the request (a real, server-verified account session).
-   * When given, no payment starts without one: card/wallet sessions and «بنك شام» direct orders answer
-   * 401 LOGIN_REQUIRED for visitors, demo logins and browser-only local profiles.
+   * When given, card/wallet payments through the gateway answer 401 LOGIN_REQUIRED for visitors,
+   * demo logins and browser-only local profiles. «بنك شام» direct orders (InstaPay, bank transfer,
+   * wallet, cash on delivery) are open to visitors — the merchant confirms receipt after seeing the money.
    */
   customer?: (req: express.Request) => Promise<{ id: string } | undefined>;
 }
@@ -265,7 +266,7 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
   router.post('/store/checkout/direct', wrap(async (req, res) => {
     res.setHeader('Cache-Control', 'private, no-store');
     if (!directLimiter.allow(clientKey(req))) { res.status(429).json({ error: 'Too many requests, please wait a minute', code: 'RATE_LIMITED' }); return; }
-    if (!(await signedIn(req, res))) return;
+    // «بنك شام» للدفع المباشر متاح للزائر أيضاً: التاجر يؤكد الدفع بعد ما يشوف الفلوس، ولا يطلب حساباً مسجلاً.
     const { method: _ignored, ...body } = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<string, unknown>;
     const input = readCheckout(body);
     if ('error' in input) { res.status(400).json({ error: 'Invalid order', code: input.error }); return; }
