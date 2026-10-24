@@ -44,7 +44,7 @@ import { cosmeticsText } from '../لغات/cosmeticsL10n';
 import DirectPaymentCard from './DirectPaymentCard';
 import { SafeImage, photoSources } from './SafeImage';
 import { reserveDirectOrder, savedDirectOrders, type DirectOrder } from '../utils/directPayment';
-import { makeStoreT, storeFamilyLabel, storeGenderLabel, storeLocalized, storeNumber } from '../لغات/storeL10n';
+import { makeStoreT, storeFamilyLabel, storeGenderLabel, storeLocalized, storeNumber, storeText } from '../لغات/storeL10n';
 import { isRTL } from '../لغات/localizedContent';
 import type { SupportedLanguage } from '../types/i18n';
 import { askShaheenStore, loadStoreCatalog, localSuggestion, storeImageSrc, type StoreSuggestion } from '../utils/liveStore';
@@ -746,7 +746,8 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
             {p.sizeMl ? (
               <>
                 <span aria-hidden="true" className="text-stone-300">·</span>
-                <span>{p.sizeMl}ml</span>
+                {/* «١٠٠ مل» / «100 ml»: the visitor's own numerals and the unit in their own language. */}
+                <span>{storeNumber(p.sizeMl, currentLang)} {storeText(currentLang, 'pd_ml')}</span>
               </>
             ) : null}
           </div>

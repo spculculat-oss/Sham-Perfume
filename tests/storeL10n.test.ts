@@ -215,3 +215,11 @@ test('a first visit to a product page follows the phone\'s language when nothing
   assert.equal(open('', ['xx-YY']), 'en', 'a language the site does not offer reads English');
   assert.equal(open('en', ['ar-EG']), 'en', 'the visitor\'s own choice wins over the phone');
 });
+
+test('a product size reads in the visitor’s own numerals and unit — «١٠٠ مل», not «100ml»', () => {
+  // The store card used to print the Latin unit inside the Arabic page («100ml» next to «رجالي · عود»).
+  const size = (lang: SupportedLanguage, ml: number) => `${storeNumber(ml, lang)} ${storeText(lang, 'pd_ml')}`;
+  assert.equal(size('ar', 100), '١٠٠ مل');
+  assert.equal(size('en', 100), '100 ml');
+  assert.ok(!/[A-Za-z]/.test(size('ar', 100)), 'the Arabic size keeps a Latin letter');
+});
