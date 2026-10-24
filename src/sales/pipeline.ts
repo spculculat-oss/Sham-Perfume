@@ -139,6 +139,42 @@ export function dealActions(deals: readonly Deal[], now: number, timeZone = 'Afr
     .slice(0, Math.max(0, limit));
 }
 
+/** Why the owner loses deals, from the reasons he wrote himself — grouped, counted, never invented. */
+export interface LostReasonGroup {
+  reason: string;
+  count: number;
+  /** The last time a deal was lost for this reason (ISO), for «آخر مرة». */
+  lastAt: string;
+}
+
+const reasonKey = (text: string) => text.replace(/\s+/g, ' ').trim().toLowerCase();
+
+/**
+ * Groups the recorded lost reasons (the owner's own words). An empty reason is skipped, not counted as
+ * «غير معروف» — an unexplained loss is a gap to fix, and counting it would invent a cause.
+ */
+export function lostReasonGroups(deals: readonly Deal[], limit = 5): LostReasonGroup[] {
+  const groups = new Map<string, LostReasonGroup>();
+  for (const deal of deals) {
+    if (deal.stage !== 'lost') continue;
+    const reason = String(deal.lostReason || '').replace(/\s+/g, ' ').trim();
+    if (reason.length < 2) continue;
+    const key = reasonKey(reason);
+    const current = groups.get(key);
+    const at = deal.closedAt || deal.updatedAt;
+    if (current) {
+      current.count += 1;
+      if (at > current.lastAt) current.lastAt = at;
+    } else groups.set(key, { reason, count: 1, lastAt: at });
+  }
+  return [...groups.values()]
+    .sort((a, b) => b.count - a.count || b.lastAt.localeCompare(a.lastAt) || a.reason.localeCompare(b.reason))
+    .slice(0, Math.max(0, limit));
+}
+
+/** Open deals that carry no next step — the quietest way a pipeline dies. */
+export const dealsWithoutNextStep = (deals: readonly Deal[]) => deals.filter((d) => isOpenDeal(d) && !d.nextActionAt).length;
+
 export interface CurrencyPipeline {
   currency: string;
   openCount: number;
@@ -172,6 +208,10 @@ export interface PipelineSummary {
   actions: DealAction[];
   /** How many open deals have no owner-set next step — the quietest way a pipeline dies. */
   withoutNextStep: number;
+  /** The owner's own lost reasons, grouped — what to fix, not a guess. */
+  lostReasons: LostReasonGroup[];
+  /** Lost deals with no reason recorded: a gap, counted separately and never given an invented cause. */
+  lostWithoutReason: number;
 }
 
 export function summarizePipeline(deals: readonly Deal[], now: number, timeZone = 'Africa/Cairo'): PipelineSummary {
@@ -210,7 +250,9 @@ export function summarizePipeline(deals: readonly Deal[], now: number, timeZone 
     lostThisMonth: lost.filter((d) => (d.closedAt ? dayKey(Date.parse(d.closedAt), timeZone).slice(0, 7) === month : false)).length,
     wonThisMonthMinor: wonMonthCurrencies.map((currency) => ({ currency, minor: wonMonth.filter((d) => d.currency === currency).reduce((s, d) => s + d.valueMinor, 0) })),
     actions: dealActions(deals, now, timeZone),
-    withoutNextStep: deals.filter((d) => isOpenDeal(d) && !d.nextActionAt).length,
+    withoutNextStep: dealsWithoutNextStep(deals),
+    lostReasons: lostReasonGroups(deals),
+    lostWithoutReason: lost.filter((d) => String(d.lostReason || '').trim().length < 2).length,
   };
 }
 
@@ -239,7 +281,7 @@ export function moveDeal(deal: Deal, move: DealMove, now: number): Deal {
     if (move.nextActionAr !== undefined) next.nextActionAr = move.nextActionAr;
   }
   if (stage === 'won') { next.closedAt = at; next.lostReason = undefined; }
-  else if (stage === 'lost') { next.closedAt = at; next.lostReason = move.lostReason?.trim() || deal.lostReason || ''; }
+  else if (stage === 'lost') { next.closedAt = at; next.lostReason = move.lostReason?.trim() || deal.lostReason || ''; next.orderRef = ''; }
   else if (reopening) next.closedAt = undefined;
   if (move.orderRef !== undefined) next.orderRef = move.orderRef;
   return next;

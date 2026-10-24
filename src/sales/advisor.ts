@@ -12,6 +12,7 @@ import { STAGE_LABEL } from './pipeline';
 import type { SalesHealth, TargetPace } from './targets';
 import type { SalesTask } from './rhythm';
 import type { StudyProgress } from './playbook';
+import type { WeekCompare } from './review';
 
 export interface SalesSnapshot {
   /** false = the live bank/pipeline figures were not read; answers must say so. */
@@ -29,9 +30,11 @@ export interface SalesSnapshot {
   waitingConfirmation: number;
   awaitingTransfer: number;
   deals: Pick<Deal, 'title' | 'stage' | 'valueMinor' | 'currency' | 'nextActionAt'>[];
+  /** The week against the week before — attached only when the owner asks about the week. */
+  week?: WeekCompare[];
 }
 
-export type SalesTopic = 'today' | 'target' | 'pipeline' | 'sales' | 'products' | 'pending' | 'study' | 'health' | 'help';
+export type SalesTopic = 'today' | 'target' | 'pipeline' | 'sales' | 'products' | 'pending' | 'study' | 'health' | 'loss' | 'week' | 'help';
 
 const TOPICS: [SalesTopic, RegExp][] = [
   ['today', /أعمل إيه|اعمل ايه|النهارده|النهاردة|أبدأ إزاي|ابدأ ازاي|plan|today|what should i do/i],
@@ -41,6 +44,8 @@ const TOPICS: [SalesTopic, RegExp][] = [
   ['products', /منتج|أكثر مبيع|اكتر مبيع|الأكثر|top|best.?sell|product/i],
   ['study', /درس|منهج|أذاكر|اذاكر|تعلم|study|lesson|course/i],
   ['health', /صحة|تقييم|حالة|score|health/i],
+  ['loss', /خسار|بنخسر|خسرنا|أسباب|اسباب|lost|losses?|why.*lose/i],
+  ['week', /أسبوع|اسبوع|الأسبوع|week|weekly/i],
   ['sales', /مبيع|بعنا|تحصيل|دخل|إيراد|ايراد|sales|revenue|collected/i],
 ];
 
@@ -57,6 +62,8 @@ const HELP_AR = [
   '• «إيه الأكثر مبيعاً؟» — من التحصيل المؤكد.',
   '• «أذاكر إيه النهارده؟» — درس المنهج.',
   '• «صحة المبيعات كام؟» — المؤشر وأسبابه.',
+  '• «ليه بنخسر؟» — أسباب الخسارة اللي إنت كتبتها بنفسك.',
+  '• «الأسبوع ده عامل إيه؟» — الأسبوع ده مقابل اللي فات من التحصيل المؤكد.',
   'مش هخمن رقم مش موجود، والخصومات والشراكات قرار صاحب الموقع.',
 ].join('\n');
 
@@ -69,6 +76,8 @@ const HELP_EN = [
   '• “What sells best?” — from confirmed collections.',
   '• “What should I study today?” — the curriculum lesson.',
   '• “How healthy is sales?” — the score and its drivers.',
+  '• “Why are we losing?” — the lost reasons you recorded yourself.',
+  '• “How was this week?” — this week against last week from confirmed collections.',
   'I never invent a missing figure; discounts and partnerships are the owner’s decision.',
 ].join('\n');
 
@@ -146,6 +155,31 @@ export function answerSales(question: string, s: SalesSnapshot, lang: 'ar' | 'en
       answer = !s.live ? notRead : t(`صحة المبيعات ${num(s.health.score)}/١٠٠ — ${s.health.labelAr}.\n${s.health.driversAr.map((d) => `• ${d}`).join('\n')}`,
         `Sales health ${num(s.health.score)}/100 — ${s.health.labelAr}.\n${s.health.driversAr.map((d) => `• ${d}`).join('\n')}`);
       break;
+    case 'loss': {
+      if (!s.live) { answer = notRead; break; }
+      const reasons = s.pipeline.lostReasons;
+      const unreasoned = s.pipeline.lostWithoutReason;
+      if (!reasons.length && !unreasoned) {
+        answer = t('مفيش خسائر مسجلة لسه. أول ما تقفل فرصة بسبب، اكتب السبب بكلامك — ده اللي بيوريك النمط الحقيقي بدل التخمين.', 'No losses recorded yet. When you close an opportunity as lost, write the reason in your own words — that shows the real pattern instead of a guess.');
+        break;
+      }
+      const lines = reasons.map((r) => `• ${r.reason} — ${num(r.count)} ${r.count === 1 ? t('مرة', 'time') : t('مرات', 'times')}`);
+      if (unreasoned) lines.push(t(`• ${num(unreasoned)} خسارة من غير سبب مسجل — فجوة، ومش هنسميها سبب من عندنا.`, `• ${num(unreasoned)} losses with no recorded reason — a gap, and no cause is invented for them.`));
+      answer = [t('أسباب الخسارة اللي إنت كتبتها:', 'The lost reasons you recorded:'), ...lines, '', t(`نسبة الكسب ${s.pipeline.winRate === null ? 'لسه مفيش مقفول' : `${s.pipeline.winRate}%`} من ${num(s.pipeline.closedCount)} فرصة مقفولة. اختار سبب واحد تصلحه الأسبوع الجاي.`,
+        `Win rate ${s.pipeline.winRate === null ? 'not known yet' : `${s.pipeline.winRate}%`} of ${num(s.pipeline.closedCount)} closed opportunities. Pick one cause to fix next week.`)].join('\n');
+      break;
+    }
+    case 'week': {
+      if (!s.live) { answer = notRead; break; }
+      const week = s.week || [];
+      if (!week.length) { answer = t('مفيش تحصيل مؤكد في الأسبوع ده ولا اللي فات، فمفيش مقارنة أقولها من غير اختراع.', 'No confirmed collections this week or last week, so there is no comparison to report without inventing one.'); break; }
+      answer = [t('الأسبوع ده مقابل اللي فات (تحصيل مؤكد من بنك شام):', 'This week against last week (confirmed Sham Bank collections):'),
+        ...week.map((r) => r.changePercent === null
+          ? t(`• ${r.currency}: ${fmt(r.thisWeekMinor, r.currency)} من ${num(r.thisOrders)} طلب — مفيش رقم باعث الأسبوع اللي فات (${num(r.lastOrders)} طلب)، فمفيش نسبة.`, `• ${r.currency}: ${fmt(r.thisWeekMinor, r.currency)} from ${num(r.thisOrders)} orders — last week had nothing to compare (${num(r.lastOrders)} orders), so no percentage.`)
+          : t(`• ${r.currency}: ${fmt(r.thisWeekMinor, r.currency)} من ${num(r.thisOrders)} طلب مقابل ${fmt(r.lastWeekMinor, r.currency)} (${r.changePercent >= 0 ? '+' : ''}${r.changePercent}%).`, `• ${r.currency}: ${fmt(r.thisWeekMinor, r.currency)} from ${num(r.thisOrders)} orders versus ${fmt(r.lastWeekMinor, r.currency)} (${r.changePercent >= 0 ? '+' : ''}${r.changePercent}%).`)),
+        '', t('المراجعة الكاملة وحركة واحدة للأسبوع الجاي في تبويب «المراجعة».', 'The full review and next week’s one move are in the Review tab.')].join('\n');
+      break;
+    }
     default:
       answer = ar ? HELP_AR : HELP_EN;
   }

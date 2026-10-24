@@ -60,6 +60,9 @@ else {
       bestSellers: (desk.live?.bestSellers || []).map((p) => ({ sku: String(p.sku), units: Number(p.units) || 0 })),
       targets: (desk.targetsPace || []).map((t) => ({ currency: String(t.currency), pace: t.pace, daysLeft: Number(t.daysLeft) || 0 })),
       health: { score: Number(desk.health?.score) || 0, labelAr: String(desk.health?.labelAr || '') },
+      // Counts only: the week against the week before, straight from the desk's review.
+      ordersThisWeek: (desk.review?.compare || []).reduce((n, row) => n + Math.max(0, Number(row.thisOrders) || 0), 0),
+      ordersLastWeek: (desk.review?.compare || []).reduce((n, row) => n + Math.max(0, Number(row.lastOrders) || 0), 0),
       studyAnsweredToday: results.some((r) => r.lessonId === todayLesson && String(r.at).slice(0, 10) === todayKey),
     };
   } catch (error) {
