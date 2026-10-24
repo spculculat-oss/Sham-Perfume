@@ -278,6 +278,45 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       if (plans.length) f.push({ level: 'note', idea: String(plans[0]) });
       break;
     }
+    case 'scent_behavior': {
+      // «سلوك الزائر العطري»: honest when the counters are unreadable, and the proposals are the value.
+      const signals = o(r.signals);
+      if (signals.read !== true) {
+        f.push({ level: 'warn', problem: 'عدّاد إشارات المعمل مش مقروء — التحليل من محتوى المعمل والمتجر بس', fix: 'راجع SHAM_ADMIN_TOKEN ومسار /api/admin/lab-signals؛ والسيرفر لازم يكون منشور' });
+      } else if ((n(signals.designs) ?? 0) === 0) {
+        f.push({ level: 'note', idea: 'مفيش تركيبة اتشاركت لحد الآن — نشجع الزائر على زرار «شارك التركيبة مجهولة» في المعمل' });
+      }
+      const proposals = arr(r.proposals).map(o);
+      if (proposals.length) f.push({ level: 'note', idea: `${proposals.length} مادة جديدة مرشحة من الخامات: ${proposals.slice(0, 3).map((p) => String(p.nameAr || '')).join('، ')}` });
+      const score = n(r.score);
+      if (score !== undefined && score < 60) f.push({ level: 'warn', problem: `درجة رضا المعمل ${score}/100 — فيه عائلات ناقصة أو أسماء طلبها الزوار ومش في البنك` });
+      break;
+    }
+    case 'localization_audit': {
+      // «العملات والمصطلحات»: a wrong currency shown to a visitor is a real fault, not a note.
+      const bugs = arr(o(r.languageSwitch).bugs);
+      if (bugs.length) f.push({ level: 'fail', problem: `${bugs.length} حالة بتظهر عملة غير عملة بلد الزائر`, fix: 'راجع src/utils/displayCurrency.ts والحالات في التقرير؛ الخصم لازم يفضل بعملة البلد' });
+      const gaps = arr(r.rateGaps);
+      if (gaps.length) f.push({ level: 'warn', problem: `${gaps.length} عملة رسمية من غير سعر صرف (${gaps.slice(0, 3).map((g) => `${o(g).country}:${o(g).currency}`).join('، ')})`, fix: 'حدّث أسعار الصرف أو وضّح للزائر إن العرض بالدولار' });
+      const terms = arr(r.moneyTerms);
+      if (terms.length) f.push({ level: 'warn', problem: `${terms.length} لغة ناقصة كلمات الفلوس`, fix: 'المترجم الذكي يكمل مفاتيح الفلوس (sf_total، sf_shipping، sf_currency…)' });
+      const hard = arr(r.hardcoded);
+      if (hard.length) f.push({ level: 'warn', problem: `${hard.length} مبلغ مكتوب بعملة ثابتة في كود الزوار`, fix: 'يتشال ويتحسب من محرك التسعير (src/utils/pricing.ts)' });
+      break;
+    }
+    case 'finance_shield': {
+      // «حارس المدفوعات»: the guard must be wired and must still stop every broken cart.
+      const guard = o(r.guard);
+      const drills = o(r.drills);
+      if (guard.wired !== true) f.push({ level: 'fail', problem: 'حارس المدفوعات مش موصول في نقطة الدفع', fix: 'أرجع نداء reviewCharge في مساري الدفع في server/checkout.ts قبل أي مبلغ' });
+      const failed = arr(drills.failed);
+      if (failed.length) f.push({ level: 'fail', problem: `${failed.length} تمرين أمان فشل (${failed.map((x) => String(o(x).nameAr || o(x).id)).join('، ')})`, fix: 'راجع src/finance/shield.ts؛ الحارس لازم يوقف السلة المتلاعب فيها' });
+      const mismatches = arr(o(r.live).mismatches);
+      if (mismatches.length) f.push({ level: 'warn', problem: `${mismatches.length} دولة صفحة الدفع فيها بتخصم بعملة غير عملتها`, fix: 'راجع عملة حساب البوابة وKASHIER_CURRENCIES' });
+      const notes = arr(r.notes);
+      if (notes.length) f.push({ level: 'note', idea: String(notes[0]) });
+      break;
+    }
     default:
       break;
   }

@@ -7,6 +7,7 @@ import type { MemoryEntry } from '../../src/utils/shaheenMemory';
 import type { SupportedLanguage } from '../../src/types/i18n';
 import type { SeoState } from '../../src/seo/agentState';
 import type { CensusReport } from '../../src/utils/platformCensus';
+import type { LabAggregate } from '../../src/utils/labSignals';
 
 export type Lang = SupportedLanguage;
 
@@ -315,5 +316,7 @@ export interface Collections {
   seo: SeoState;
   /** «روبوت التعداد — دولة المنصة»: aggregated, privacy-safe platform visit ledger (one record: id 'state'). */
   census: CensusReport & { id: string };
+  /** «إشارات المعمل»: anonymous counters of the designs visitors chose to share (one record: id 'state'). */
+  labSignals: LabAggregate & { id: string };
 }
 export type CollectionName = keyof Collections;

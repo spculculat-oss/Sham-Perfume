@@ -1,0 +1,93 @@
+name: Shaheen finance shield — payments and commissions guard
+
+# «روبوت حراسة أمان المدفوعات والعمولات» (leadership cell, src/utils/shaheenOrg.ts). The guard itself
+# (src/finance/shield.ts) runs inside the checkout on the server, right before any money moves. This robot proves it
+# every 6 hours: it must still be wired in front of both payment paths, it must still stop deliberately broken carts
+# (tampered totals, a foreign currency, a repeated line, a negative shipping, an impossible quantity, a commission out
+# of range), and the live payment page must charge every probed country in its own currency. Result:
+# src/data/live/finance-shield.json (pre-meeting check + council).
+#
+# Minute 35: clear of the State (27), inventory (5), importer (37), school clock (47), patrol (52), pre-check (10)
+# and the customer-care desk (3).
+
+on:
+  schedule:
+    - cron: '35 */6 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main, 'arena/**']
+    paths:
+      - 'scripts/shaheen-finance/shield*.ts'
+      - 'src/finance/shield.ts'
+      - 'server/checkout.ts'
+      - '.github/workflows/shaheen-finance-shield.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: shaheen-finance-shield-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # «مفتاح صاحب الموقع»: the owner (or «دولة المنصة») can pause this robot («finance_shield»).
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs finance_shield
+
+  shield:
+    name: «حارس المدفوعات والعمولات» — wiring, drills and live currencies
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      SHAM_SHIELD_API_URL: ${{ vars.SHAM_SHIELD_API_URL || 'https://sham-perfume-49bf.vercel.app' }}
+      PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Write the shield report (read-only: no order, no card, no customer data)
+        run: node --import tsx scripts/shaheen-finance/shield-run.mts
+      - name: Guard tests (the drills must hold offline too)
+        run: node --import tsx --test tests/financeShield.test.ts
+      - name: Publish on main
+        if: env.PUBLISH == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen finance shield"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "شاهين: حارس المدفوعات والعمولات $(date -u +%Y-%m-%dT%H:%MZ)" \
+            src/data/live/finance-shield.json \
+            || { echo "::error::Could not push the shield report"; exit 1; }

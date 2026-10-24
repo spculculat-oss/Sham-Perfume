@@ -18,6 +18,7 @@ import { BankService } from './finance/bank';
 import { MemoryStore } from './core/store';
 import { ValidationError } from './core/repository';
 import { toMinor } from '../src/finance/money';
+import { PAYMENT_HELD, reviewCharge } from '../src/finance/shield';
 import productsData from '../src/data/products.json';
 import { mergeCatalog, type RawProduct, type StoreCatalogFile, type StoreProduct } from '../src/utils/storeCatalog';
 import { customerPayOffer } from '../src/bank/worldPay';
@@ -215,6 +216,18 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     const display = quote(lines, input.country, { fx: rates, shipping: options.shipping });
     const charge = quote(lines, input.country, { fx: rates, shipping: options.shipping, currency: chargeCurrency(currencyFor(input.country, rates), cfg.currencies) });
 
+    // «حارس المدفوعات والعمولات»: the cart is reviewed on the server, right before any money moves.
+    const verdict = reviewCharge({
+      country: input.country, displayCurrency: display.currency, chargeCurrency: charge.currency,
+      accepted: cfg.currencies, lines: charge.lines, items: charge.items, shipping: charge.shipping, total: charge.total,
+      officialCurrency: currencyFor(input.country, rates),
+    });
+    if (!verdict.ok) {
+      console.warn('[finance_shield] payment held:', verdict.findings.filter((f) => f.level === 'stop').map((f) => f.code).join(','));
+      res.status(409).json({ error: PAYMENT_HELD.en, code: PAYMENT_HELD.code, message: PAYMENT_HELD.ar });
+      return;
+    }
+
     const methods = await finance.methods(input.country, charge.currency);
     if (!methods.length || (input.method && !methods.some((m) => m.id === input.method))) {
       res.status(409).json({ error: 'No approved payment method for this country and currency', code: 'METHOD_UNAVAILABLE' }); return;
@@ -270,6 +283,17 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     const { list, lines, missing, rates } = await priceItems(input);
     if (missing) { res.status(409).json({ error: 'A product is no longer available', code: 'UNAVAILABLE', sku: missing.sku }); return; }
     const charge = quote(lines, input.country, { fx: rates, shipping: options.shipping, currency: method.currency });
+    // «حارس المدفوعات»: the same instant review before a direct receipt (InstaPay, transfer, wallet, cash).
+    const verdict = reviewCharge({
+      country: input.country, displayCurrency: currencyFor(input.country, rates), chargeCurrency: charge.currency,
+      accepted: [method.currency], lines: charge.lines, items: charge.items, shipping: charge.shipping, total: charge.total,
+      officialCurrency: currencyFor(input.country, rates),
+    });
+    if (!verdict.ok) {
+      console.warn('[finance_shield] direct payment held:', verdict.findings.filter((f) => f.level === 'stop').map((f) => f.code).join(','));
+      res.status(409).json({ error: PAYMENT_HELD.en, code: PAYMENT_HELD.code, message: PAYMENT_HELD.ar });
+      return;
+    }
     const ref = newOrderRef();
     const receipt = await bank.createDirect({ ref, accountId: method.id, country: input.country, currency: charge.currency,
       totalMinor: toMinor(charge.total, charge.currency), shippingChargedMinor: toMinor(charge.shipping, charge.currency),

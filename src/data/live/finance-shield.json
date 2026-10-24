@@ -1,0 +1,46 @@
+{
+ "version": 1,
+ "agent": "finance-shield",
+ "updatedAt": "2026-10-24T12:54:23.168Z",
+ "guard": {
+  "wired": true,
+  "calls": 2,
+  "holdsReasons": [
+   "EMPTY_CART",
+   "BELOW_COST",
+   "TOTAL_MATH",
+   "CHARGE_CURRENCY_NOT_COUNTRY",
+   "DUPLICATE_LINE",
+   "LINE_MATH",
+   "INVALID_SHIPPING",
+   "INVALID_QTY",
+   "ITEMS_MATH",
+   "COMMISSION_RANGE"
+  ],
+  "limits": {
+   "maxLines": 30,
+   "maxQtyPerLine": 99,
+   "maxCommissionRate": 0.5
+  }
+ },
+ "drills": {
+  "total": 10,
+  "passed": 10,
+  "failed": []
+ },
+ "live": {
+  "gateways": {
+   "enabled": false
+  },
+  "probed": 0,
+  "enabledPages": 0,
+  "mismatches": [],
+  "failed": []
+ },
+ "score": 100,
+ "notes": [
+  "مفيش قراءة حية في التشغيل ده (تشغيل بدون شبكة) — الفحص اتحقق من الحارس والتمارين بس."
+ ],
+ "planAr": [],
+ "summaryAr": "حارس المدفوعات سليم: 10 تمرين أمان كلهم عدّوا، والحارس موصول قبل الدفع، والقراءة الحية مش متاحة في التشغيل ده."
+}
