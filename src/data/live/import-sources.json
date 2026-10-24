@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T22:27:07.290Z",
+ "updatedAt": "2026-10-24T06:52:26.239Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,28 @@
  ],
  "runs": [
   {
+   "at": "2026-10-24T06:52:26.239Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-24T01:01:01.440Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-23T22:27:07.290Z",
    "mode": "self",
    "found": 0,
@@ -7725,50 +7747,6 @@
     "✗ ardalzaafaran.com: الموقع لا يفتح",
     "✗ ardalzaafaranperfumes.com: الموقع لا يفتح",
     "✗ ardalzaafaranparfums.com: الموقع لا يفتح"
-   ]
-  },
-  {
-   "at": "2026-10-21T15:48:34.519Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "✗ osmaparfums.com: الموقع لا يفتح",
-    "  ↳ pariscornerperfumes.com: CV 56/100 [age,https,contact,identity,platform,social,authentic] on Shopify (pages: /pages/contact→200 /policies/contact-information→404 /policies/refund-policy→404 /policies/legal-notice→404 /policies/shipping-policy→404 /pages/about-us→200)",
-    "✗ pariscornerperfumes.com: ملف الثقة ضعيف (56/100): ينقصه سياسة الإرجاع والاسترداد، وسائل دفع معروفة، سياسة الشحن",
-    "✗ pariscornerparfums.com: الموقع لا يفتح",
-    "  ↳ velixir.com: CV 54/100 [age,https,identity,returns,authentic] (pages: /contact-us→200 /returns→200)",
-    "✗ velixir.com: ملف الثقة ضعيف (54/100): ينقصه بيانات التواصل، وسائل دفع معروفة، سياسة الشحن",
-    "✗ velixirperfumes.com: الموقع لا يفتح",
-    "  ↳ velixirparfums.com: CV 56/100 [age,https,contact,returns,terms,payment,platform,social] on Shopify (pages: /pages/contact→200 /policies/contact-information→200 /policies/refund-policy→200 /policies/legal-notice→404 /policies/shipping-policy→404 /pages/about-us→200)",
-    "✗ velixirparfums.com: ملف الثقة ضعيف (56/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الشحن، سياسة الخصوصية",
-    "✗ afnanperfumesperfumes.com: الموقع لا يفتح",
-    "✗ afnanperfumesparfums.com: الموقع لا يفتح",
-    "✗ ruebroca.com: الموقع لا يفتح"
-   ]
-  },
-  {
-   "at": "2026-10-21T14:55:17.636Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)",
-    "✗ alwataniahperfumes.com: الموقع لا يفتح",
-    "✗ alwataniahparfums.com: الموقع لا يفتح",
-    "✗ lattafapride.com: الموقع لا يفتح",
-    "✗ lattafaprideperfumes.com: الموقع لا يفتح",
-    "✗ lattafaprideparfums.com: الموقع لا يفتح",
-    "✗ volareparfums.com: الموقع لا يفتح",
-    "  ↳ shama.com: CV 62/100 [age,https,identity,returns,privacy,social,authentic]",
-    "✗ shama.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ shamaparfums.com: الموقع لا يفتح",
-    "✗ afnanperfumes.com: الموقع لا يفتح",
-    "✗ afnanparfums.com: الموقع لا يفتح"
    ]
   }
  ]

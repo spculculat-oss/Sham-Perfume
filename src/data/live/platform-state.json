@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-23T22:52:24.647Z",
+ "updatedAt": "2026-10-24T08:54:18.790Z",
  "active": true,
  "decisions": [
   {
@@ -354,358 +354,22 @@
   }
  ],
  "supervision": {
-  "health": 80,
+  "health": 87,
   "problems": [
-   "secretary: آخر تشغيل فشل",
+   "council: آخر تشغيل فشل",
+   "secretary: أدوات ذكاء اصطناعي ضعيفة: أمين شاهين — الإدارة المالية (4.2)",
    "patrol: 4 عطل الدورية ماقدرتش تصلحه آلياً",
-   "finance: الإدارة المالية تحتاج مراجعة خاصة",
-   "catalog: آخر تشغيل فشل",
-   "news: آخر تشغيل فشل",
-   "design_audit: تقييم التصميم واللغات 42/100 (14 ملاحظة)",
+   "finance: فحص الإدارة المالية غير سليم",
+   "design_audit: تقييم التصميم واللغات 46/100 (12 ملاحظة)",
    "visitor_tour: جولة الزائر: خطوات واقعة — store: فتح المتجر وتطبيق فلتر الرجال، لاحظت وجود عناصر بالعربية والإنجليزية وتكرار العن، checkout: الانتقال إلى صفحة الدفع يظهر تسجيل الدخول قبل الدفع ولا يوجد خيار زائر حتى الآن.",
-   "academy: آخر تشغيل اتلغى",
    "verifier: 1 مهمة اتقفلت ولسه مش متصلحة على الموقع: إصلاح فجوات السيو التقني وهيكل صفحات الموقع",
    "keys: محركات متوقفة مؤقتاً: openai، gemini"
   ]
  },
  "field": {
-  "maneuverAt": "2026-10-23T20:01:06.747Z",
-  "at": "2026-10-23T22:52:16.114Z",
+  "maneuverAt": "2026-10-24T08:03:56.689Z",
+  "at": "2026-10-24T08:54:17.114Z",
   "items": [
-   {
-    "id": "productDetail:http",
-    "titleAr": "طلبات للسيرفر فشلت (1)",
-    "section": "productDetail",
-    "sectionAr": "صفحة المنتج",
-    "kind": "error",
-    "severity": "high",
-    "dept": "reliability",
-    "deptAr": "قسم الجودة والاعتماد على النفس",
-    "bot": "doctor",
-    "botAr": "طبيب شاهين (الصيانة)",
-    "reasonAr": "عطل برمجي أو سيرفر — شغل طبيب الموقع",
-    "action": "task",
-    "issue": 288,
-    "seen": 2
-   },
-   {
-    "id": "shaheen_chat:card-number:0:expect",
-    "titleAr": "«ابعتلك رقم الكارت؟» مافيش تحذير فوري من شاهين إنه مايبعتش بيانات الكارت",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "high",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، أمان الزائر في الشات — شغل شات شاهين (بإشراف الأمن والخصوصية)",
-    "action": "task",
-    "issue": 285,
-    "seen": 4
-   },
-   {
-    "id": "productDetail:console",
-    "titleAr": "أخطاء في سجل المتصفح (1)",
-    "section": "productDetail",
-    "sectionAr": "صفحة المنتج",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "reliability",
-    "deptAr": "قسم الجودة والاعتماد على النفس",
-    "bot": "doctor",
-    "botAr": "طبيب شاهين (الصيانة)",
-    "reasonAr": "أخطاء في سجل المتصفح — شغل طبيب الموقع",
-    "action": "watch",
-    "seen": 2
-   },
-   {
-    "id": "shaheen_chat:knowledge-mid-purchase:1:expect",
-    "titleAr": "سؤال علمي وسط الشراء اتردّ عليه بقايمة عطور بدل الإجابة",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، فهم الأسئلة والإجابة — شغل شات شاهين",
-    "action": "task",
-    "issue": 289,
-    "seen": 4
-   },
-   {
-    "id": "shaheen_chat:discount-on-shown:1:expect",
-    "titleAr": "رد الخصم بيسأل عن اسم العطر وهو لسه معروض قدام الزائر",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "store",
-    "deptAr": "قسم المتجر والاستيراد",
-    "bot": "store_advisor",
-    "botAr": "مستشار التسوق «اسأل شاهين»",
-    "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
-    "action": "task",
-    "issue": 290,
-    "seen": 4
-   },
-   {
-    "id": "shaheen_chat:discount-on-shown:2:expect",
-    "titleAr": "بعد رد الخصم «غالي شوية» مابقتش تتفهم من شاهين (البيع اتقطع وراح للمنصات)",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "store",
-    "deptAr": "قسم المتجر والاستيراد",
-    "bot": "store_advisor",
-    "botAr": "مستشار التسوق «اسأل شاهين»",
-    "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
-    "action": "task",
-    "issue": 291,
-    "seen": 4
-   },
-   {
-    "id": "shaheen_chat:gift-pronoun:1:expect",
-    "titleAr": "سؤال الهدية بالضمير «أهاديه» مابيتفهمش من شاهين",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "task",
-    "issue": 292,
-    "seen": 4
-   },
-   {
-    "id": "shaheen_chat:gift-boss:0:expect",
-    "titleAr": "هدية المدير: سمّاه «زميلك» أو رشّح اسم رومانسي مش لايق",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "store",
-    "deptAr": "قسم المتجر والاستيراد",
-    "bot": "store_advisor",
-    "botAr": "مستشار التسوق «اسأل شاهين»",
-    "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
-    "action": "task",
-    "issue": 293,
-    "seen": 4
-   },
-   {
-    "id": "shaheen_chat:gift-son-graduation:0:expect",
-    "titleAr": "«ابني» اتفهمت «ابنك/بنتك» — مابيعرفش إنه ولد ولا إن المناسبة نجاح",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "store",
-    "deptAr": "قسم المتجر والاستيراد",
-    "bot": "store_advisor",
-    "botAr": "مستشار التسوق «اسأل شاهين»",
-    "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
-    "action": "task",
-    "issue": 295,
-    "seen": 4
-   },
-   {
-    "id": "shaheen_chat:recommend-after-advice:1:expect",
-    "titleAr": "بعد نصيحة الهدية «رشحلي» بيسأل من الأول وينسى المستلم والمناسبة",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "store",
-    "deptAr": "قسم المتجر والاستيراد",
-    "bot": "store_advisor",
-    "botAr": "مستشار التسوق «اسأل شاهين»",
-    "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
-    "action": "task",
-    "issue": 296,
-    "seen": 4
-   },
-   {
-    "id": "shaheen_chat:how-to-order:1:expect",
-    "titleAr": "«إزاي أطلبه؟» بيكرر قايمة العطور بدل خطوات الطلب",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "store",
-    "deptAr": "قسم المتجر والاستيراد",
-    "bot": "store_advisor",
-    "botAr": "مستشار التسوق «اسأل شاهين»",
-    "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
-    "action": "task",
-    "issue": 297,
-    "seen": 4
-   },
-   {
-    "id": "shaheen_chat:wholesale-quantity:1:expect",
-    "titleAr": "رد الجملة مابيلتقطش الكمية والمنتج اللي التاجر قالهم",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "task",
-    "issue": 298,
-    "seen": 4
-   },
-   {
-    "id": "shaheen_chat:wholesale-quantity:1:chat-repeat",
-    "titleAr": "شاهين كرر نفس الرد بالحرف",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "task",
-    "issue": 299,
-    "seen": 4
-   },
-   {
-    "id": "shaheen_chat:calm-tracking:0:expect",
-    "titleAr": "سؤال تتبع هادي اتعامل كشكوى تأخير واعتذر عن حاجة محصلتش",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "task",
-    "issue": 300,
-    "seen": 4
-   },
-   {
-    "id": "shaheen_chat:calm-tracking:1:expect",
-    "titleAr": "«إزاي أتتبعه؟» مابتتفهمش من شاهين",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "task",
-    "issue": 301,
-    "seen": 4
-   },
-   {
-    "id": "shaheen_chat:competitor-price:0:expect",
-    "titleAr": "مقارنة السعر بمتجر تاني مش متغطية (بيرد بقايمة أو بيروح للمنصات)",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "task",
-    "issue": 302,
-    "seen": 4
-   },
-   {
-    "id": "shaheen_chat:missing-item:0:expect",
-    "titleAr": "«الأوردر ناقص» اتردّ عليها كأنها منتج غلط",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "task",
-    "issue": 303,
-    "seen": 4
-   },
-   {
-    "id": "shaheen_chat:refund-sealed:0:expect",
-    "titleAr": "استرجاع منتج سليم: بيعتذر عن حاجة محصلتش",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "task",
-    "issue": 304,
-    "seen": 4
-   },
-   {
-    "id": "shaheen_chat:group-gifts:0:expect",
-    "titleAr": "«10 هدايا لزمايلي» مابتتفهمش كطلب هدايا جماعي",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "task",
-    "issue": 305,
-    "seen": 4
-   },
-   {
-    "id": "shaheen_chat:condolence-incense:1:chat-repeat",
-    "titleAr": "شاهين كرر نفس الرد بالحرف",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "task",
-    "issue": 306,
-    "seen": 4
-   },
-   {
-    "id": "shaheen_chat:which-lasts-longest:1:chat-lint",
-    "titleAr": "الرد وقع في غلطة من غلطات البيع أو العلاقات",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "low",
-    "dept": "store",
-    "deptAr": "قسم المتجر والاستيراد",
-    "bot": "store_advisor",
-    "botAr": "مستشار التسوق «اسأل شاهين»",
-    "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
-    "action": "watch",
-    "seen": 4
-   },
    {
     "id": "alcohol:unnamed-button",
     "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
@@ -719,7 +383,22 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
+   },
+   {
+    "id": "alcohol:ai-idea:مؤشرلونيمباشريوضحأمانترك",
+    "titleAr": "مؤشر لوني مباشر يوضح أمان تركيز الكحول بعد التخفيف",
+    "section": "alcohol",
+    "sectionAr": "الكحول في العطور",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "content",
+    "deptAr": "قسم المحتوى والظهور في البحث",
+    "bot": "teacher",
+    "botAr": "المعلم المحلي ومراجع الدروس",
+    "reasonAr": "قسم «الكحول في العطور» تبعه",
+    "action": "backlog",
+    "seen": 1
    },
    {
     "id": "community:unnamed-button",
@@ -734,7 +413,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «المجتمع» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
    },
    {
     "id": "community:no-heading",
@@ -749,7 +428,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «المجتمع» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
    },
    {
     "id": "concentration:unnamed-button",
@@ -764,7 +443,22 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «حاسبة التركيز» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
+   },
+   {
+    "id": "concentration:ai-idea:أزرارسريعةلاختيارنسبالتر",
+    "titleAr": "أزرار سريعة لاختيار نسب التركيزات الشائعة (EDP, EDT, Parfum)",
+    "section": "concentration",
+    "sectionAr": "حاسبة التركيز",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "قسم «حاسبة التركيز» تبعه",
+    "action": "backlog",
+    "seen": 1
    },
    {
     "id": "cosmetic_designers:unnamed-button",
@@ -779,7 +473,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
    },
    {
     "id": "cosmetics:unnamed-button",
@@ -794,7 +488,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
    },
    {
     "id": "costing:unnamed-button",
@@ -809,7 +503,22 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «حاسبة التكلفة» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
+   },
+   {
+    "id": "costing:ai-idea:زرلإعادةضبطحقولالتكلفةوم",
+    "titleAr": "زر لإعادة ضبط حقول التكلفة ومسح القيم بنقرة واحدة",
+    "section": "costing",
+    "sectionAr": "حاسبة التكلفة",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "قسم «حاسبة التكلفة» تبعه",
+    "action": "backlog",
+    "seen": 1
    },
    {
     "id": "guide:unnamed-button",
@@ -824,7 +533,22 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
+   },
+   {
+    "id": "home:slow",
+    "titleAr": "تسريع القسم (بيفتح في 5 ثواني)",
+    "section": "home",
+    "sectionAr": "الرئيسية",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "reliability",
+    "deptAr": "قسم الجودة والاعتماد على النفس",
+    "bot": "doctor",
+    "botAr": "طبيب شاهين (الصيانة)",
+    "reasonAr": "البطء — شغل قسم الجودة",
+    "action": "backlog",
+    "seen": 1
    },
    {
     "id": "home:unnamed-button",
@@ -839,7 +563,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «الرئيسية» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
    },
    {
     "id": "library:unnamed-button",
@@ -854,7 +578,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
    },
    {
     "id": "maceration_simulator:unnamed-button",
@@ -869,7 +593,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «محاكي التخمير والنضج» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
    },
    {
     "id": "master_ai:unnamed-button",
@@ -884,7 +608,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «الخبير شاهين» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
    },
    {
     "id": "molecule_studio:unnamed-button",
@@ -899,7 +623,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
    },
    {
     "id": "perfume_designers:unnamed-button",
@@ -914,7 +638,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
    },
    {
     "id": "perfume_news:unnamed-button",
@@ -929,7 +653,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
    },
    {
     "id": "perfumes:unnamed-button",
@@ -944,7 +668,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
    },
    {
     "id": "productDetail:unnamed-button",
@@ -959,7 +683,22 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
+   },
+   {
+    "id": "productDetail:ai-idea:زرمباشرلاستشارةالخبيرشاه",
+    "titleAr": "زر مباشر لاستشارة الخبير شاهين حول تفاصيل وخامات هذا المنتج",
+    "section": "productDetail",
+    "sectionAr": "صفحة المنتج",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "store",
+    "deptAr": "قسم المتجر والاستيراد",
+    "bot": "product_pages",
+    "botAr": "فاحص صفحات المنتجات على الموبايل",
+    "reasonAr": "قسم «صفحة المنتج» تبعه",
+    "action": "backlog",
+    "seen": 1
    },
    {
     "id": "pyramid:unnamed-button",
@@ -974,7 +713,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «حاسبة الهرم العطري» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
    },
    {
     "id": "raw_materials:unnamed-button",
@@ -989,20 +728,20 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
    },
    {
-    "id": "store:slow",
-    "titleAr": "تسريع القسم (بيفتح في 5 ثواني)",
-    "section": "store",
-    "sectionAr": "المتجر",
+    "id": "shaheen_chat:ai-idea:اقتراحاتأسئلةجاهزةومختصر",
+    "titleAr": "اقتراحات أسئلة جاهزة ومختصرة فوق شريط إدخال الرسالة",
+    "section": "shaheen_chat",
+    "sectionAr": "شات الخبير شاهين",
     "kind": "idea",
     "severity": "low",
-    "dept": "reliability",
-    "deptAr": "قسم الجودة والاعتماد على النفس",
-    "bot": "doctor",
-    "botAr": "طبيب شاهين (الصيانة)",
-    "reasonAr": "البطء — شغل قسم الجودة",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "chat",
+    "botAr": "شات الخبير شاهين ومساعد شام",
+    "reasonAr": "قسم «شات الخبير شاهين» تبعه",
     "action": "backlog",
     "seen": 1
    },
@@ -1019,7 +758,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
    },
    {
     "id": "world_perfumes:unnamed-button",
@@ -1034,7 +773,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 2
+    "seen": 4
    }
   ]
  }

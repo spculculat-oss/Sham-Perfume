@@ -1,5 +1,36 @@
 {
  "version": 1,
- "updatedAt": "2026-10-24T00:00:00.000Z",
- "exams": []
+ "updatedAt": "2026-10-23T23:48:48.316Z",
+ "exams": [],
+ "dataset": {
+  "builtAt": "2026-10-23T23:48:48.150Z",
+  "train": 4284,
+  "eval": 191,
+  "bySource": {
+   "memory": 4360,
+   "lessons": 20,
+   "lab": 53,
+   "relations": 42
+  },
+  "byLang": {
+   "ar": 4437,
+   "en": 38
+  },
+  "dropped": {
+   "personal": 0,
+   "price": 3,
+   "vendor": 0,
+   "short": 0,
+   "long": 0,
+   "duplicate": 6
+  },
+  "sha256": {
+   "train": "1fb30a7de1a4c528deb6078983e8059fce56f3535732001a7fbefbd6a329f4b8",
+   "eval": "8b64f7b5a8502748ace12ed5dcf6693e85d02bb1502fda0ee0809ae05cac8db6"
+  },
+  "files": {
+   "train": "https://github.com/spculculat-oss/Sham-Perfume/releases/download/shaheen-brain-data/shaheen-train.jsonl",
+   "eval": "https://github.com/spculculat-oss/Sham-Perfume/releases/download/shaheen-brain-data/shaheen-eval.jsonl"
+  }
+ }
 }
