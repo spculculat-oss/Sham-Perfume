@@ -1,3 +1,4 @@
+import { trackInsight } from './insightsTracker';
 import type { SupportedLanguage } from '../types/i18n';
 import { budgetsToHome } from './chatPrices';
 import { chatMoney, currentDisplayCurrency, followEntryCountry } from './storeCheckout';
@@ -248,6 +249,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       const history = chatHistory(current.messages);
       // «شاهين بعملة بلدك»: the visitor's own money («moins de 30 €») reaches the brain in the store's pounds.
       const brainText = budgetsToHome(text, currentDisplayCurrency(options.language), options.language);
+      trackInsight('chat', { text }); // «خزنة فهم الزوار» (with consent; secrets, e-mails and numbers never kept)
       // «دولة الدخول قبل الرد»: the page's country and currency travel too; the server checks where he is entering
       // from and writes the reply's prices in that country's currency (and tells us which country it was).
       const money = chatMoney(options.language);

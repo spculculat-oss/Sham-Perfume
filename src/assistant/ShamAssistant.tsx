@@ -1,3 +1,4 @@
+import { trackInsight } from '../utils/insightsTracker';
 import { LocalizedNumberInput } from '../components/LocalizedNumberInput';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
@@ -206,6 +207,7 @@ export function ShamAssistant({ currentLang }: Props) {
 
   /** `replaces` = text of the latest user message being regenerated/edited (rewind and re-ask). */
   const send = useCallback(async (text: string, replaces?: string) => {
+    if (!replaces) trackInsight('chat', { text }); // «خزنة فهم الزوار» (with consent)
     const message = text.trim();
     if (!message || busy) return;
     setError(''); setNotice('');

@@ -1,3 +1,4 @@
+import { trackInsight } from '../utils/insightsTracker';
 import { budgetsToHome, localizeChatPrices } from '../utils/chatPrices';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -426,6 +427,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
     setWish(message);
     // «دولة الدخول»: «under 50 €» reaches the advisor in the catalog's pounds; its answer comes back in his currency.
     const brainText = budgetsToHome(message, money.currency, currentLang);
+    trackInsight('search', { text: message }); // «خزنة فهم الزوار» (with consent; secrets and numbers are never kept)
     setAdvice(localSuggestion(products, brainText, currentLang));
     setThinking(true);
     const better = await askShaheenStore(products, brainText, currentLang, fetch, chatMoney(currentLang));
@@ -521,6 +523,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
       setPayResult(result);
       if (result.state === 'paid' && result.mode === 'live' && result.cartItems) removePurchasedItems(result.cartItems);
       if (result.state === 'paid' && result.cartItems) ordered(result.cartItems.map((i) => i.sku));
+      if (result.state === 'paid' && result.cartItems) result.cartItems.forEach((i) => trackInsight('purchase', { sku: i.sku, qty: i.qty }));
     });
   }, []);
 

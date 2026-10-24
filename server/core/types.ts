@@ -7,6 +7,7 @@ import type { MemoryEntry } from '../../src/utils/shaheenMemory';
 import type { SupportedLanguage } from '../../src/types/i18n';
 import type { SeoState } from '../../src/seo/agentState';
 import type { CensusReport } from '../../src/utils/platformCensus';
+import type { InsightProfile } from '../../src/utils/visitorInsights';
 
 export type Lang = SupportedLanguage;
 
@@ -315,5 +316,7 @@ export interface Collections {
   seo: SeoState;
   /** «روبوت التعداد — دولة المنصة»: aggregated, privacy-safe platform visit ledger (one record: id 'state'). */
   census: CensusReport & { id: string };
+  /** «خزنة فهم الزوار»: one behaviour profile per visitor who accepted «التحليل» — the administration's only (server/insights.ts). */
+  insightProfiles: InsightProfile;
 }
 export type CollectionName = keyof Collections;
