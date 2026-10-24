@@ -12,7 +12,7 @@ interface Props {
   /** What the visitor bought or put in the cart: the complements are chosen for it. */
   basis: StoreProduct[];
   lang: SupportedLanguage;
-  variant: 'cart' | 'after' | 'forYou';
+  variant: 'cart' | 'after' | 'forYou' | 'taste';
   price: (egp: number) => string;
   onAdd: (p: StoreProduct) => void;
   onOpen: (p: StoreProduct) => void;
@@ -23,7 +23,7 @@ interface Props {
   onDismiss?: () => void;
 }
 
-const TITLE: Record<Props['variant'], SellerUiKey> = { cart: 'cartTitle', after: 'afterTitle', forYou: 'forYouTitle' };
+const TITLE: Record<Props['variant'], SellerUiKey> = { cart: 'cartTitle', after: 'afterTitle', forYou: 'forYouTitle', taste: 'tasteTitle' };
 
 /**
  * «يكمّل طلبك» — شاهين التاجر: after an add to the cart or a placed order, at most three things that complete it
