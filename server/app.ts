@@ -135,6 +135,10 @@ function getTodayArabicDateString(): string {
 }
 
 const NEWS_CATEGORIES = ['trends', 'exhibitions', 'harvests', 'ifra', 'niche'] as const;
+/** The whole daily bulletin has one time budget: no stack of slow engines may hold the response. */
+const NEWS_ENGINE_BUDGET_MS = 14_000;
+/** How long the first visitor of the day waits for the bulletin before the collected headlines answer. */
+const NEWS_FIRST_WAIT_MS = 7_000;
 const text = (value: unknown, max: number, fallback = '') => (typeof value === 'string' && value.trim() ? value.trim().slice(0, max) : fallback);
 
 /**
@@ -148,6 +152,7 @@ async function generateFreshDailyNewsWithShaheen(): Promise<GeneratedNewsItem[]>
   const engines = shaheen.enabled ? shaheen.engines.filter((id) => configured.has(id)) : [];
   if (!engines.length) throw new Error('News refresh requires a configured AI engine.');
   const todayArabic = getTodayArabicDateString();
+  const deadline = Date.now() + NEWS_ENGINE_BUDGET_MS;
 
   const system = 'أنت الخبير شاهين، محرر تحريري تثقيفي في عالم العطور. أخرج فقط مصفوفة JSON صالحة دون أي شرح أو Markdown.'
     + await supervisorGuidance('news_articles', process.env).catch(() => '');
@@ -162,8 +167,11 @@ async function generateFreshDailyNewsWithShaheen(): Promise<GeneratedNewsItem[]>
 
   for (const id of engines) {
     try {
+      // One shared budget for the whole loop: a slow engine must not eat the visitor's patience.
+      const left = deadline - Date.now();
+      if (left < 3000) break;
       const raw = await callEngine(id, system, [{ role: 'user', text: prompt }], {
-        signal: AbortSignal.timeout(25000), temperature: 0.6, model: shaheen.models[id], maxTokens: 4096, maxChars: 40000,
+        signal: AbortSignal.timeout(left), temperature: 0.6, model: shaheen.models[id], maxTokens: 4096, maxChars: 40000,
       });
       if (!raw) continue;
       const json = raw.slice(raw.indexOf('['), raw.lastIndexOf(']') + 1);
@@ -212,9 +220,11 @@ async function generateFreshDailyNewsWithShaheen(): Promise<GeneratedNewsItem[]>
 // and a per-visitor cap on manual refreshes.
 let newsInFlight: Promise<GeneratedNewsItem[]> | null = null;
 let lastNewsGeneratedAt = 0;
+let lastNewsAttemptAt = 0;
 const NEWS_COOLDOWN_MS = 10 * 60_000;
 const newsRefreshLimiter = new RateLimiter(3, 60 * 60_000);
 const generateNewsOnce = () => {
+  lastNewsAttemptAt = Date.now();
   newsInFlight ||= generateFreshDailyNewsWithShaheen()
     .then((articles) => {
       activeDailyNewsList = articles;
@@ -236,23 +246,47 @@ const newsPayload = (extra: Record<string, unknown> = {}) => ({
   ...extra,
 });
 
+/** The real headlines «الخبير شاهين» collected from the web — the honest answer whenever no engine wrote today. */
+const collectedArticles = async (): Promise<{ id: string }[]> => {
+  const news = await liveNews().catch(() => undefined);
+  return news?.items?.length ? articlesFromCollected(news.items, EDITORIAL_NEWS_IMAGES, getTodayArabicDateString()) : [];
+};
+const collectedPayload = (articles: { id: string }[]) => ({
+  success: true, lastRefreshedAt: new Date().toISOString(), dateString: getTodayArabicDateString(),
+  curator: 'نشرة شاهين (أخبار من الويب بمصادرها)', aiGenerated: false, collected: true, count: articles.length, articles,
+});
+/** One generation at a time, off the visitor's clock: the request answers from what is already ready. */
+const newsRefreshInBackground = () => {
+  // A failing engine is not retried on every visit: at most one attempt per cooldown, and never twice at once.
+  if (newsInFlight || Date.now() - lastNewsAttemptAt < NEWS_COOLDOWN_MS) return;
+  void generateNewsOnce().catch(() => undefined);
+};
+
 // GET /api/news - Get active daily news feed
 app.get('/api/news', async (_req, res) => {
+  const unavailable = { success: false, error: 'News service is unavailable. Existing articles have not been changed.' };
   try {
     const todayStr = new Date().toISOString().split('T')[0];
-    if (activeDailyNewsList.length === 0 || lastNewsRefreshDate !== todayStr) await generateNewsOnce();
-    res.json(newsPayload());
+    // Nothing today? Answer at once and let the bulletin refresh behind the scenes, so no visitor (or live
+    // test) ever waits for a model: yesterday's notes first, then the collected headlines with their sources.
+    if (activeDailyNewsList.length === 0 || lastNewsRefreshDate !== todayStr) {
+      if (activeDailyNewsList.length) { newsRefreshInBackground(); res.json(newsPayload({ stale: true })); return; }
+      const ready = await collectedArticles();
+      if (ready.length) { newsRefreshInBackground(); res.json(collectedPayload(ready)); return; }
+      // Nothing at all yet: give the first generation a short, bounded chance — never the whole request.
+      await Promise.race([generateNewsOnce().catch(() => []), new Promise((done) => setTimeout(done, NEWS_FIRST_WAIT_MS))]);
+    }
+    if (activeDailyNewsList.length) { res.json(newsPayload()); return; }
+    const collected = await collectedArticles();
+    if (collected.length) { res.json(collectedPayload(collected)); return; }
+    res.status(503).json(unavailable);
   } catch (error: any) {
     console.error('Error fetching news:', error?.message || error);
     // Yesterday's notes are still worth reading; with none, the real headlines Shaheen collected (with sources).
     if (activeDailyNewsList.length) { res.json(newsPayload({ stale: true })); return; }
-    const collected = await liveNews().then((news) => articlesFromCollected(news.items, EDITORIAL_NEWS_IMAGES, getTodayArabicDateString())).catch(() => []);
-    if (collected.length) {
-      res.json({ success: true, lastRefreshedAt: new Date().toISOString(), dateString: getTodayArabicDateString(), curator: 'نشرة شاهين (أخبار من الويب بمصادرها)',
-        aiGenerated: false, collected: true, count: collected.length, articles: collected });
-      return;
-    }
-    res.status(503).json({ success: false, error: 'News service is unavailable. Existing articles have not been changed.' });
+    const collected = await collectedArticles();
+    if (collected.length) { res.json(collectedPayload(collected)); return; }
+    res.status(503).json(unavailable);
   }
 });
 
