@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AlertTriangle, Banknote, BookOpen, Briefcase, CalendarClock, CheckCircle2, Loader2, MessageCircleQuestion, Plus, Sparkles, Target, Trash2, TrendingUp } from 'lucide-react';
+import { AlertTriangle, Banknote, BookOpen, Briefcase, CalendarClock, CheckCircle2, ClipboardCheck, Loader2, MessageCircleQuestion, Plus, Sparkles, Target, Trash2, TrendingUp } from 'lucide-react';
 import { adminRequest, send } from './adminApi';
 import { adminLocale } from './adminL10n';
 import { major } from '../finance/money';
@@ -27,7 +27,7 @@ const when = (iso?: string) => (iso ? new Date(iso).toLocaleString(adminLocale()
 const paceName = (p: string) => ({ ahead: f('سابق الإيقاع', 'Ahead'), on: f('على الإيقاع', 'On pace'), behind: f('متأخر عن الإيقاع', 'Behind pace'), unset: f('من غير هدف', 'No target') }[p] || p);
 const priorityName = (p: string) => ({ now: f('دلوقتي', 'Now'), today: f('النهارده', 'Today'), week: f('الأسبوع ده', 'This week') }[p] || p);
 const priorityTone = (p: string) => ({ now: 'bg-red-100 text-red-800', today: 'bg-amber-100 text-amber-900', week: 'bg-sky-50 text-sky-800' }[p] || 'bg-stone-100');
-const SECTIONS = ['cockpit', 'pipeline', 'targets', 'rhythm', 'study', 'advisor'] as const;
+const SECTIONS = ['cockpit', 'pipeline', 'targets', 'rhythm', 'review', 'study', 'advisor'] as const;
 type Section = typeof SECTIONS[number];
 const emptyDeal = {
   id: '', title: '', accountLabel: '', currency: 'EGP', value: '', stage: 'lead' as DealStage, source: 'store',
@@ -48,6 +48,9 @@ export default function SalesPanel({ onOpenBank }: { onOpenBank?: () => void }) 
   const [question, setQuestion] = useState('');
   const [quiz, setQuiz] = useState<{ lessonId: string; choice: number } | null>(null);
   const [quizResult, setQuizResult] = useState<string>('');
+  /** Closing a deal as «won»: the owner picks a real paid order, never types a reference from memory. */
+  const [wonFor, setWonFor] = useState<{ id: string; title: string } | null>(null);
+  const [wonRef, setWonRef] = useState('');
 
   useEffect(() => {
     const controller = new AbortController(); setLoading(true);
@@ -79,11 +82,20 @@ export default function SalesPanel({ onOpenBank }: { onOpenBank?: () => void }) 
       setDeal(emptyDeal);
     }, deal.id ? f('تم تعديل الفرصة.', 'Opportunity updated.') : f('تمت إضافة الفرصة.', 'Opportunity added.'));
   };
-  const move = (id: string, stage: DealStage) => {
+  const move = (id: string, stage: DealStage, title = '') => {
     const lostReason = stage === 'lost' ? window.prompt(f('سبب الخسارة بصراحة (ده اللي بيعلّمك):', 'The honest lost reason (this is what teaches you):')) : undefined;
     if (stage === 'lost' && !lostReason) return;
+    // «البيع مايتسجلش غير لما تشوف الفلوس»: a win is closed on a paid order the owner can see.
+    if (stage === 'won') { setWonFor({ id, title }); setWonRef(''); return; }
     const body = { stage, ...(lostReason ? { lostReason } : {}) };
     void act(() => adminRequest(`/finance/sales/deals/${id}/move`, send('POST', body)), f('اتنقلت المرحلة.', 'Stage moved.'));
+  };
+  const confirmWon = () => {
+    if (!wonFor || !wonRef) return;
+    void act(async () => {
+      await adminRequest(`/finance/sales/deals/${wonFor.id}/move`, send('POST', { stage: 'won', orderRef: wonRef }));
+      setWonFor(null); setWonRef('');
+    }, f('اتقفلت كبيع على طلب مدفوع مؤكد.', 'Closed as a sale on a confirmed paid order.'));
   };
   const remove = (id: string) => {
     if (!window.confirm(f('تحذف الفرصة من المكتب؟ السجل بيسجّل الحذف.', 'Delete this opportunity? The audit log records it.'))) return;
@@ -114,6 +126,7 @@ export default function SalesPanel({ onOpenBank }: { onOpenBank?: () => void }) 
     pipeline: [f('خط الأنابيب', 'Pipeline'), <Briefcase key="i" className="w-4 h-4" />],
     targets: [f('الأهداف', 'Targets'), <Target key="i" className="w-4 h-4" />],
     rhythm: [f('إيقاع اليوم', 'Daily rhythm'), <CalendarClock key="i" className="w-4 h-4" />],
+    review: [f('المراجعة الأسبوعية', 'Weekly review'), <ClipboardCheck key="i" className="w-4 h-4" />],
     study: [f('المنهج والتدريب', 'Curriculum'), <BookOpen key="i" className="w-4 h-4" />],
     advisor: [f('اسأل مدير المبيعات', 'Ask sales'), <MessageCircleQuestion key="i" className="w-4 h-4" />],
   };
@@ -202,16 +215,34 @@ export default function SalesPanel({ onOpenBank }: { onOpenBank?: () => void }) 
           </div>)}
         </div>
 
+        {wonFor && <div className={`${card} space-y-2 border-emerald-300`}>
+          <h4 className="font-bold text-sm flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-700" />{f('اقفل كبيع — على طلب مدفوع مؤكد', 'Close as a sale — on a confirmed paid order')}</h4>
+          <p className="text-xs text-stone-600">{f(`«${wonFor.title}» ما تتحولش لبيع غير لما تحدد الطلب اللي الفلوس بتاعته وصلت واتأكدت في بنك شام.`, `“${wonFor.title}” becomes a sale only on the order whose money you confirmed in Sham Bank.`)}</p>
+          {(() => {
+            const open = (data.paidOrders || []).filter((o) => !o.linkedDealId || o.linkedDealId === wonFor.id);
+            return open.length ? <>
+              <select className={field} value={wonRef} onChange={(e) => setWonRef(e.target.value)} aria-label={f('الطلب المدفوع', 'Paid order')}>
+                <option value="">{f('اختار الطلب المدفوع…', 'Pick the paid order…')}</option>
+                {open.map((o) => <option key={o.ref} value={o.ref}>{o.ref} · {money(o.amountMinor, o.currency)} · {when(o.at)}</option>)}
+              </select>
+              <div className="flex gap-2">
+                <button type="button" className={`${button} bg-emerald-700 text-white`} disabled={!wonRef || busy} onClick={confirmWon}>{f('تأكيد البيع', 'Confirm the sale')}</button>
+                <button type="button" className={`${button} border`} onClick={() => { setWonFor(null); setWonRef(''); }}>{f('إلغاء', 'Cancel')}</button>
+              </div>
+            </> : <p className="text-xs rounded-xl bg-amber-50 text-amber-900 p-3">{f('مفيش طلبات مدفوعة متاحة للربط. أكّد التحصيل الأول في «بنك شام ← التحصيل المباشر» بعد ما تشوف الفلوس، وبعدها اقفل الفرصة.', 'No paid orders are free to link. Confirm the collection first in Sham Bank → Direct collection after seeing the money, then close the opportunity.')}</p>;
+          })()}
+        </div>}
+
         <div className={`${card} overflow-x-auto`}>
           <table className="w-full text-xs"><thead><tr className="text-stone-500 border-b">{[f('الفرصة', 'Opportunity'), f('العميل', 'Customer'), f('القيمة', 'Value'), f('المرحلة', 'Stage'), f('الجاية', 'Next'), ''].map((h, i) => <th key={i} className="p-2 text-start">{h}</th>)}</tr></thead><tbody>
             {data.deals.map((d) => <tr key={d.id} className="border-b border-stone-100 align-top">
               <td className="p-2"><b>{d.title}</b>{d.notes && <span className="block text-stone-500">{d.notes}</span>}</td>
               <td className="p-2">{d.accountLabel}<span className="block text-[10px] text-stone-400">{SOURCE_LABEL[d.source] ? f(SOURCE_LABEL[d.source].ar, SOURCE_LABEL[d.source].en) : d.source}</span></td>
               <td className="p-2" dir="ltr">{money(d.valueMinor, d.currency)}<span className="block text-[10px] text-stone-400">{d.probability}%</span></td>
-              <td className="p-2">{f(STAGE_LABEL[d.stage].ar, STAGE_LABEL[d.stage].en)}{d.lostReason ? <span className="block text-red-700">{d.lostReason}</span> : null}{d.closedAt ? <span className="block text-[10px] text-stone-400">{when(d.closedAt)}</span> : null}</td>
+              <td className="p-2">{f(STAGE_LABEL[d.stage].ar, STAGE_LABEL[d.stage].en)}{d.lostReason ? <span className="block text-red-700">{d.lostReason}</span> : null}{d.orderRef ? <span className="block text-[10px] text-emerald-800 font-mono" dir="ltr">{d.orderRef}</span> : null}{d.closedAt ? <span className="block text-[10px] text-stone-400">{when(d.closedAt)}</span> : null}</td>
               <td className="p-2">{d.nextActionAt || '—'}{d.nextActionAr && <span className="block text-stone-500">{d.nextActionAr}</span>}</td>
               <td className="p-2 whitespace-nowrap">
-                <select className={`${field} !w-auto !p-1 text-[11px]`} aria-label={f('نقل المرحلة', 'Move stage')} value="" onChange={(e) => { const stage = e.target.value as DealStage; if (stage) move(d.id, stage); }}>
+                <select className={`${field} !w-auto !p-1 text-[11px]`} aria-label={f('نقل المرحلة', 'Move stage')} value="" onChange={(e) => { const stage = e.target.value as DealStage; if (stage) move(d.id, stage, d.title); }}>
                   <option value="">{f('نقل…', 'Move…')}</option>
                   {DEAL_STAGES.filter((s) => s !== d.stage).map((s) => <option key={s} value={s}>{f(STAGE_LABEL[s].ar, STAGE_LABEL[s].en)}</option>)}
                 </select>
@@ -261,6 +292,44 @@ export default function SalesPanel({ onOpenBank }: { onOpenBank?: () => void }) 
         {!actions.length && <p className={card}>{f('مفيش مهام من أرقام حقيقية دلوقتي.', 'No tasks from real figures right now.')}</p>}
       </div>}
 
+      {section === 'review' && <>
+        <div className={`${card} space-y-2`}>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h4 className="font-bold text-sm flex items-center gap-2"><ClipboardCheck className="w-4 h-4 text-emerald-700" />{f('مراجعة الأسبوع', 'Weekly review')}</h4>
+            <span className="text-[11px] text-stone-500" dir="ltr">{data.review.week.from} → {data.review.week.to}</span>
+          </div>
+          <p className="text-sm whitespace-pre-wrap">{data.review.summaryAr}</p>
+          <p className="text-[11px] text-stone-500">{f('التحصيل من دفتر بنك شام المؤكد بس، والمقارنة مع الأسبوع اللي فات من نفس الدفتر — مفيش نسبة من غير رقم باعث.', 'Collections come from the confirmed Sham Bank ledger only, compared with the same ledger last week — never a percentage without a real base.')}</p>
+        </div>
+
+        <div className={`${card} overflow-x-auto`}>
+          <table className="w-full text-xs"><thead><tr className="text-stone-500 border-b">{[f('العملة', 'Currency'), f('الأسبوع ده', 'This week'), f('اللي فات', 'Last week'), f('التغير', 'Change'), f('طلبات', 'Orders')].map((h) => <th key={h} className="p-2 text-start">{h}</th>)}</tr></thead>
+            <tbody>{data.review.compare.map((row) => <tr key={row.currency} className="border-b border-stone-100">
+              <td className="p-2 font-semibold" dir="ltr">{row.currency}</td>
+              <td className="p-2" dir="ltr">{money(row.thisWeekMinor, row.currency)}</td>
+              <td className="p-2 text-stone-500" dir="ltr">{money(row.lastWeekMinor, row.currency)}</td>
+              <td className={`p-2 ${row.changePercent === null ? 'text-stone-400' : row.changePercent >= 0 ? 'text-emerald-700' : 'text-red-700'}`} dir="ltr">{row.changePercent === null ? '—' : `${row.changePercent > 0 ? '+' : ''}${row.changePercent}%`}</td>
+              <td className="p-2">{num(row.thisOrders)} / {num(row.lastOrders)}</td>
+            </tr>)}</tbody></table>
+          {!data.review.compare.length && <p className="text-xs text-stone-500 p-2">{f('مفيش تحصيل مؤكد في الأسبوعين — مفيش مقارنة من غير أرقام.', 'No confirmed collections in either week — no comparison without figures.')}</p>}
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-3">
+          <div className={`${card} space-y-2`}>
+            <h4 className="font-bold text-sm">{f('أهم حركة الأسبوع الجاي', 'The one move for next week')}</h4>
+            <ul className="space-y-2 text-xs list-disc ps-4">{data.review.movesAr.map((move) => <li key={move}>{move}</li>)}</ul>
+            <p className="text-[11px] text-stone-500">{f('درس المراجعة في المنهج: سبب واحد وحركة واحدة — من غير تحسين وهمي.', 'The review lesson in the curriculum: one cause and one move — no invented improvement.')}</p>
+          </div>
+          <div className={`${card} space-y-2`}>
+            <h4 className="font-bold text-sm">{f('ليه بنخسر؟', 'Why we lose')}</h4>
+            {data.review.lostReasons.length ? <ul className="space-y-1 text-xs list-disc ps-4">{data.review.lostReasons.map((r) => <li key={r.reason}>{r.reason} — <b>{num(r.count)}</b></li>)}</ul>
+              : <p className="text-xs text-stone-500">{f('مفيش خسائر بسبب مسجل لسه.', 'No losses with a recorded reason yet.')}</p>}
+            {data.review.lostWithoutReason > 0 && <p className="text-xs rounded-xl bg-amber-50 text-amber-900 p-2">{f(`${num(data.review.lostWithoutReason)} خسارة من غير سبب مسجل — اكتب السبب، هو اللي بيعلّمك.`, `${num(data.review.lostWithoutReason)} losses have no recorded reason — write it, that is what teaches you.`)}</p>}
+            <p className="text-[11px] text-stone-500">{f('الأسباب بكلامك إنت — المكتب بيجمعها ويكررها، مش بيخترع سبب.', 'The reasons are your own words — the desk counts them, never invents one.')}</p>
+          </div>
+        </div>
+      </>}
+
       {section === 'study' && <>
         <div className={`${card} space-y-3`}>
           <div className="flex flex-wrap items-center justify-between gap-2">
@@ -305,6 +374,7 @@ export default function SalesPanel({ onOpenBank }: { onOpenBank?: () => void }) 
             f('أعمل إيه النهارده؟', 'What should I do today?'), f('إحنا واقفين فين من الهدف؟', 'Where are we against the target?'),
             f('خط الأنابيب عامل إيه؟', 'How is the pipeline?'), f('مستني إيه في البنك؟', 'What is waiting in the bank?'),
             f('إيه الأكثر مبيعاً؟', 'What sells best?'), f('أذاكر إيه النهارده؟', 'What should I study today?'),
+            f('ليه بنخسر؟', 'Why are we losing?'), f('الأسبوع ده عامل إيه؟', 'How was this week?'),
           ].map((q) => <button key={q} type="button" className="text-xs rounded-full border border-stone-200 px-3 py-1.5 hover:bg-stone-50" onClick={() => { setQuestion(q); ask(q); }}>{q}</button>)}</div>
         </div>
         {answer && <div className={card}>

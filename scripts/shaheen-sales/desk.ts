@@ -16,6 +16,9 @@ export interface DeskTargetFact { currency: string; pace: 'unset' | 'ahead' | 'o
 export interface DeskFacts {
   paidOrdersToday: number;
   paidOrdersMonth: number;
+  /** Paid orders this week and last week — counts only, so the robot can report a trend without money. */
+  ordersThisWeek: number;
+  ordersLastWeek: number;
   waitingConfirmation: number;
   awaitingTransfer: number;
   openDeals: number;
@@ -97,6 +100,9 @@ export function buildSalesReport(input: {
     if (!facts.targets.some((t) => t.pace !== 'unset')) findings.push({ level: 'warn', textAr: 'مفيش هدف مبيعات محدد للشهر — القياس متوقف.' });
     if (!facts.overdue && !facts.withoutNextStep && facts.openDeals) findings.push({ level: 'ok', textAr: 'كل الفرص المفتوحة ليها خطوة جاية في وقتها — كمّل على نفس الإيقاع.' });
     if (!facts.openDeals) findings.push({ level: 'note', textAr: 'خط الأنابيب فاضي — سجّل أول ٣ فرص حقيقية بخطوة جاية لكل واحدة.' });
+    if (!facts.ordersThisWeek && !facts.ordersLastWeek) findings.push({ level: 'note', textAr: 'مفيش طلبات مدفوعة في الأسبوع ده ولا اللي فات — الحجز مش إيراد.' });
+    else if (facts.ordersLastWeek > 0 && facts.ordersThisWeek < facts.ordersLastWeek) findings.push({ level: 'note', textAr: `طلبات الأسبوع ده ${facts.ordersThisWeek} مقابل ${facts.ordersLastWeek} الأسبوع اللي فات — راجع سبب واحد وحركة واحدة في «المراجعة».` });
+    else if (facts.ordersThisWeek > facts.ordersLastWeek && facts.ordersLastWeek > 0) findings.push({ level: 'ok', textAr: `طلبات الأسبوع ده ${facts.ordersThisWeek} مقابل ${facts.ordersLastWeek} الأسبوع اللي فات.` });
   }
   if (answeredToday === false) findings.push({ level: 'note', textAr: 'درس النهارده ما اتجاوبش لسه في مكتب المبيعات.' });
   if (answeredToday === null) findings.push({ level: 'note', textAr: 'حالة درس النهارده غير معروفة (المكتب ما اتقراش) — الدرس نفسه موجود في المنهج.' });
@@ -104,7 +110,7 @@ export function buildSalesReport(input: {
 
   const summaryAr = !live.checked || !facts
     ? `مدير المبيعات: راجع منهج الكتيب وعلم البيع (${SALES_LESSONS.length} درساً في ${modules.length} وحدات، ${SALES_PRINCIPLES.length} مبدأ بيع و${SALES_PITFALLS.length} فخ) ودرس النهارده «${lesson.titleAr}»، لكن أرقام بنك شام ما اتقرأتش في آخر دورة — مفيش أرقام متخمنة.`
-    : `مدير المبيعات: ${facts.openDeals} فرصة مفتوحة، ${facts.overdue} متابعة متأخرة، ونسبة الكسب ${facts.winRate === null ? 'لسه مفيش مقفول' : `${facts.winRate}%`}. التحصيل المؤكد ${facts.paidOrdersToday} طلب النهارده و${facts.paidOrdersMonth} طلب الشهر ده (بعدد الطلبات بس — المبالغ في سجل بنك شام الخاص). ${facts.waitingConfirmation} تحويل مستني التأكيد. صحة المبيعات ${facts.health.score}/100 (${facts.health.labelAr}). درس النهارده «${lesson.titleAr}»${answeredToday === true ? ' ونتيجته متسجلة' : answeredToday === false ? ' ولسه ما اتجاوبش' : ''}.`;
+    : `مدير المبيعات: ${facts.openDeals} فرصة مفتوحة، ${facts.overdue} متابعة متأخرة، ونسبة الكسب ${facts.winRate === null ? 'لسه مفيش مقفول' : `${facts.winRate}%`}. التحصيل المؤكد ${facts.paidOrdersToday} طلب النهارده و${facts.paidOrdersMonth} طلب الشهر ده (بعدد الطلبات بس — المبالغ في سجل بنك شام الخاص). ${facts.waitingConfirmation} تحويل مستني التأكيد. الأسبوع ده ${facts.ordersThisWeek} طلب مدفوع مقابل ${facts.ordersLastWeek} الأسبوع اللي فات. صحة المبيعات ${facts.health.score}/100 (${facts.health.labelAr}). درس النهارده «${lesson.titleAr}»${answeredToday === true ? ' ونتيجته متسجلة' : answeredToday === false ? ' ولسه ما اتجاوبش' : ''}.`;
 
   return {
     version: 1, robot: 'sales', updatedAt: new Date(now).toISOString(), edition: HANDBOOK_EDITION,
@@ -117,6 +123,7 @@ export function buildSalesReport(input: {
     },
     facts: facts ? {
       paidOrdersToday: clean(facts.paidOrdersToday), paidOrdersMonth: clean(facts.paidOrdersMonth),
+      ordersThisWeek: clean(facts.ordersThisWeek), ordersLastWeek: clean(facts.ordersLastWeek),
       waitingConfirmation: clean(facts.waitingConfirmation), awaitingTransfer: clean(facts.awaitingTransfer),
       openDeals: clean(facts.openDeals), overdue: clean(facts.overdue), withoutNextStep: clean(facts.withoutNextStep),
       won: clean(facts.won), lost: clean(facts.lost), winRate: facts.winRate,

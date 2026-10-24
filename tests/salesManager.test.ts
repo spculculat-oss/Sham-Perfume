@@ -12,8 +12,9 @@ import { BankService } from '../server/finance/bank';
 import { SalesService } from '../server/sales/service';
 import { financeId } from '../server/finance/report';
 import {
-  DEAL_STAGES, STAGE_PROBABILITY, dayKey, dealActionState, dealActions, daysBetween, moveDeal, monthKey, pipelineHygiene, summarizePipeline, weightedMinor, type Deal,
+  DEAL_STAGES, STAGE_PROBABILITY, dayKey, dealActionState, dealActions, daysBetween, lostReasonGroups, moveDeal, monthKey, pipelineHygiene, summarizePipeline, weightedMinor, type Deal,
 } from '../src/sales/pipeline';
+import { weeklyReview } from '../src/sales/review';
 import { daysInMonth, paceTargets, salesHealth, type SalesTarget } from '../src/sales/targets';
 import { dailyRhythm } from '../src/sales/rhythm';
 import { MODULE_LABEL, SALES_LESSONS, gradeStudy, lessonOfDay, salesPlaybookDoc, studyPlan, studyProgress } from '../src/sales/playbook';
@@ -75,6 +76,20 @@ test('pipeline: stages, weighted forecast, overdue/today/idle actions and the wi
   assert.equal(summary.stages.length, DEAL_STAGES.length);
   assert.ok(pipelineHygiene(summary).score < 100);
   assert.ok(pipelineHygiene(summarizePipeline([], NOW)).notesAr.length);
+
+  // Lost reasons are the owner's own words, grouped and counted — and an unexplained loss stays a gap.
+  const lost = [
+    deal({ id: 'l1', stage: 'lost', lostReason: 'السعر عالي', closedAt: iso('2026-10-11') }),
+    deal({ id: 'l2', stage: 'lost', lostReason: '  السعر   عالي ', closedAt: iso('2026-10-18') }),
+    deal({ id: 'l3', stage: 'lost', lostReason: 'لقى أوفر', closedAt: iso('2026-10-15') }),
+    deal({ id: 'l4', stage: 'lost', lostReason: '', closedAt: iso('2026-10-16') }),
+    deal({ id: 'l5', stage: 'won', lostReason: 'مش خسارة' }),
+  ];
+  const groups = lostReasonGroups(lost);
+  assert.deepEqual(groups.map((g) => [g.reason, g.count]), [['السعر عالي', 2], ['لقى أوفر', 1]]);
+  assert.equal(groups[0].lastAt, iso('2026-10-18'));
+  assert.equal(summarizePipeline(lost, NOW).lostWithoutReason, 1, 'a loss with no reason is a counted gap, not an invented cause');
+  assert.deepEqual(lostReasonGroups([], 3), []);
 });
 
 test('pipeline: moving a deal keeps dates honest and reopens cleanly', () => {
@@ -109,6 +124,30 @@ test('targets: real month days, honest pace, daily need and a labelled projectio
   const health = salesHealth({ targets: [pace], pipelineOverdue: 0, pipelineOpen: 2, waitingConfirmation: 0, winRate: 60 });
   assert.ok(health.score >= 0 && health.score <= 100);
   assert.ok(health.driversAr.length);
+});
+
+test('the weekly review: this week against last, no percentage off a zero, and one move from the real numbers', () => {
+  const pipeline = summarizePipeline([deal({ nextActionAt: '2026-10-20' }), deal({ id: 'z', nextActionAt: '' })], NOW);
+  const thisWeek = [{ currency: 'EGP', collectedMinor: 1200000, paidOrders: 4 }];
+  const lastWeek = [{ currency: 'EGP', collectedMinor: 1000000, paidOrders: 3 }, { currency: 'USD', collectedMinor: 5000, paidOrders: 1 }];
+  const review = weeklyReview({ thisWeek, lastWeek, pipeline, targets: paceTargets([target()], thisWeek, NOW), waitingConfirmation: 2 });
+  const egp = review.compare.find((r) => r.currency === 'EGP')!;
+  assert.equal(egp.changePercent, 20);
+  assert.equal(egp.thisOrders, 4); assert.equal(egp.lastOrders, 3);
+  const usd = review.compare.find((r) => r.currency === 'USD')!;
+  assert.equal(usd.changePercent, -100);
+  assert.match(review.summaryAr, /EGP|ج\.م/);
+  assert.match(review.movesAr.join('\n'), /تحويل/);
+  assert.ok(review.movesAr.length <= 3);
+
+  // A first week with nothing before it: no invented percentage, and the text says so.
+  const first = weeklyReview({ thisWeek, lastWeek: [], pipeline, targets: [], waitingConfirmation: 0 });
+  assert.equal(first.compare[0].changePercent, null);
+  assert.match(first.summaryAr, /مفيش نسبة|مفيش تحصيل مؤكد الأسبوع اللي فات/);
+  const quiet = weeklyReview({ thisWeek: [], lastWeek: [], pipeline: summarizePipeline([], NOW), targets: [], waitingConfirmation: 0 });
+  assert.match(quiet.summaryAr, /مفيش تحصيل مؤكد/);
+  assert.ok(quiet.movesAr.length, 'a quiet week still gets one honest move');
+  assert.match(quiet.movesAr.join('\n'), /هدف الشهر/);
 });
 
 test('the daily rhythm: money first, then follow-ups, the target gap and the lesson — and it never invents a quiet day', () => {
@@ -179,6 +218,22 @@ test('the advisor answers from the desk and asks for nothing it does not know', 
   assert.match(empty, /مش هخترع|لم أقرأ|مقدرتش/);
   assert.match(answerSales('مين أفضل عميل عندي؟', s).answer, /مش هخمن|أقدر أجاوب|I answer/);
   assert.doesNotMatch(answerSales('مين أفضل عميل عندي؟', s).answer, /عميل جملة/, 'never leaks a deal label as a name');
+
+  // «ليه بنخسر؟»: the owner's recorded reasons only — an unexplained loss is a gap, never a guessed cause.
+  assert.equal(salesTopicOf('ليه بنخسر؟'), 'loss');
+  assert.match(answerSales('ليه بنخسر؟', s).answer, /مفيش خسائر/);
+  const lostPipeline = summarizePipeline([deal({ id: 'x', stage: 'lost', lostReason: 'السعر عالي' }), deal({ id: 'y', stage: 'lost', lostReason: '' })], NOW);
+  const lossAnswer = answerSales('ليه بنخسر؟', snapshot({ pipeline: lostPipeline })).answer;
+  assert.match(lossAnswer, /السعر عالي/);
+  assert.match(lossAnswer, /من غير سبب مسجل/);
+  assert.doesNotMatch(lossAnswer, /عميل جملة/);
+
+  // «الأسبوع ده عامل إيه؟»: no comparison is invented when the week was not read.
+  assert.equal(salesTopicOf('الأسبوع ده عامل إيه؟'), 'week');
+  assert.match(answerSales('الأسبوع ده عامل إيه؟', s).answer, /مفيش مقارنة|مفيش تحصيل/);
+  const weekAnswer = answerSales('الأسبوع ده عامل إيه؟', snapshot({ week: [{ currency: 'EGP', thisWeekMinor: 1200000, lastWeekMinor: 1000000, thisOrders: 4, lastOrders: 3, changePercent: 20 }] })).answer;
+  assert.match(weekAnswer, /\+20%/);
+  assert.match(weekAnswer, /EGP|ج\.م/);
 });
 
 test('the public robot report carries counts only — no amounts, no deal labels, no contacts', () => {
@@ -191,7 +246,7 @@ test('the public robot report carries counts only — no amounts, no deal labels
   assert.ok(blind.curriculum.handbookSections.length >= 6);
 
   const facts: DeskFacts = {
-    paidOrdersToday: 3, paidOrdersMonth: 8, waitingConfirmation: 2, awaitingTransfer: 1, openDeals: 4, overdue: 1, withoutNextStep: 1,
+    paidOrdersToday: 3, paidOrdersMonth: 8, ordersThisWeek: 4, ordersLastWeek: 6, waitingConfirmation: 2, awaitingTransfer: 1, openDeals: 4, overdue: 1, withoutNextStep: 1,
     won: 2, lost: 1, winRate: 66.7, bestSellers: [{ sku: 'SKU-1', units: 9 }],
     targets: [{ currency: 'EGP', pace: 'behind', daysLeft: 7 }], health: { score: 62, labelAr: 'ماشية' }, studyAnsweredToday: true,
   };
@@ -205,6 +260,9 @@ test('the public robot report carries counts only — no amounts, no deal labels
   assert.equal(report.live.checked, true);
   assert.equal(report.study.answeredToday, true);
   assert.ok(report.findings.some((fnd) => /متابعتها فات/.test(fnd.textAr)));
+  assert.ok(report.findings.some((fnd) => /الأسبوع ده 4 مقابل 6/.test(fnd.textAr)), 'a falling week is reported from counts, not money');
+  assert.equal(report.facts?.ordersThisWeek, 4);
+  assert.doesNotMatch(JSON.stringify(report), /collectedMinor|amountMinor/, 'the public report stays counts only');
 });
 
 test('the live desk: opportunities without contacts, a target, real study answers and honest flags', async () => {
@@ -245,6 +303,10 @@ test('the live desk: opportunities without contacts, a target, real study answer
   assert.equal(dashboard.study.progress.studied, 2);
   assert.equal(dashboard.health.score >= 0, true);
   assert.ok(dashboard.audit.some((a) => a.action === 'deal.create'));
+  assert.ok(Array.isArray(dashboard.paidOrders));
+  assert.ok(dashboard.review.summaryAr.length > 0);
+  assert.ok(dashboard.review.movesAr.length > 0);
+  assert.ok(dashboard.review.week.from <= dashboard.review.week.to);
 
   const asked = await sales.ask('خط الأنابيب عامل إيه؟');
   assert.match(asked.answer, /فرصة|خط الأنابيب/);
@@ -263,11 +325,35 @@ test('the live desk: opportunities without contacts, a target, real study answer
   const orderRef = 'SP-1001';
   const entryId = financeId('sale', 'live', orderRef);
   await store.create('financeEntries', entryId, { id: entryId, kind: 'sale', mode: 'live', currency: 'EGP', amountMinor: 300000, orderRef, at: new Date(NOW).toISOString(), recordedAt: new Date(NOW).toISOString(), source: 'direct' });
+  // Editing a deal that is already won keeps its own order — it never conflicts with itself.
+  const editedWon = await sales.saveDeal(second.id, { stage: 'won', orderRef, notes: 'اتقفلت على الطلب' });
+  assert.equal(editedWon.orderRef, orderRef);
   const won = await sales.moveDeal(second.id, { stage: 'won', orderRef });
   assert.equal(won.stage, 'won'); assert.equal(won.orderRef, orderRef); assert.equal(won.nextActionAt, '');
   await assert.rejects(() => sales.moveDeal(second.id, { stage: 'lost', lostReason: 'رجوع', orderRef }), /مرجع الطلب/);
   const wonDashboard = await sales.dashboard();
   assert.equal(wonDashboard.pipeline.wonCount, 1);
+  assert.ok(wonDashboard.paidOrders.length >= 1);
+
+  // The paid orders the owner can close a deal on: real refs from the ledger, no contacts.
+  const paid = await sales.paidOrders();
+  assert.equal(paid.length, 1);
+  assert.deepEqual({ ref: paid[0].ref, currency: paid[0].currency, amountMinor: paid[0].amountMinor, linkedDealId: paid[0].linkedDealId },
+    { ref: orderRef, currency: 'EGP', amountMinor: 300000, linkedDealId: second.id });
+  assert.doesNotMatch(JSON.stringify(paid), /01000000000|a@b\.com/);
+  // One order closes one opportunity: a second deal cannot claim the same money.
+  const third = await sales.saveDeal(undefined, { title: 'فرصة تانية', accountLabel: 'متجر تاني', value: '900', stage: 'negotiation' });
+  await assert.rejects(() => sales.moveDeal(third.id, { stage: 'won', orderRef }), /مربوط بفرصة/);
+  // Losing a won deal clears the order reference: confirmed money is not a lost sale.
+  const relost = await sales.moveDeal(second.id, { stage: 'lost', lostReason: 'رجوع عن الطلب' });
+  assert.equal(relost.orderRef, '');
+  assert.equal(relost.stage, 'lost');
+
+  const finalDashboard = await sales.dashboard();
+  assert.equal(finalDashboard.pipeline.wonCount, 0);
+  assert.equal(finalDashboard.pipeline.lostCount, 2);
+  assert.ok(finalDashboard.review.lostReasons.some((r) => r.reason === 'رجوع عن الطلب'));
+  assert.equal(finalDashboard.review.lostWithoutReason, 0, 'every lost deal here has a recorded reason');
 });
 
 test('the robot is registered under Shaheen with a shift, a reviewer, a timetable and a pre-check', () => {
@@ -286,7 +372,7 @@ test('the robot is registered under Shaheen with a shift, a reviewer, a timetabl
 
   // The pre-check reads the report the robot actually writes — not a hand-made shape that happens to match.
   const factsFor = (over: Partial<DeskFacts> = {}): DeskFacts => ({
-    paidOrdersToday: 2, paidOrdersMonth: 9, waitingConfirmation: 0, awaitingTransfer: 0, openDeals: 4, overdue: 0,
+    paidOrdersToday: 2, paidOrdersMonth: 9, ordersThisWeek: 5, ordersLastWeek: 3, waitingConfirmation: 0, awaitingTransfer: 0, openDeals: 4, overdue: 0,
     withoutNextStep: 0, won: 2, lost: 1, winRate: 66.7, bestSellers: [], targets: [{ currency: 'EGP', pace: 'on', daysLeft: 7 }],
     health: { score: 82, labelAr: 'قوية' }, studyAnsweredToday: true, ...over,
   });

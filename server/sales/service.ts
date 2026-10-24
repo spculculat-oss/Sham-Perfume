@@ -19,7 +19,8 @@ import {
 } from '../../src/sales/pipeline';
 import { daysInMonth, paceTargets, salesHealth, type CollectedRow, type SalesTarget } from '../../src/sales/targets';
 import { dailyRhythm } from '../../src/sales/rhythm';
-import { answerSales, type SalesSnapshot } from '../../src/sales/advisor';
+import { answerSales, salesTopicOf, type SalesSnapshot } from '../../src/sales/advisor';
+import { weeklyReview } from '../../src/sales/review';
 import { gradeStudy, lessonById, lessonOfDay, studyPlan, studyProgress, type StudyResult } from '../../src/sales/playbook';
 
 type Env = Record<string, string | undefined>;
@@ -38,6 +39,16 @@ function freeText(value: unknown, min: number, max: number, field: string): stri
 }
 
 export interface SalesAudit { id: string; at: string; action: string; target: string; detail?: string }
+
+/** A paid, confirmed order the owner can close an opportunity on — ref and amount only, never a contact. */
+export interface PaidOrder {
+  ref: string;
+  currency: string;
+  amountMinor: number;
+  at: string;
+  /** The opportunity already closed on this order, or '' when it is free to link. */
+  linkedDealId: string;
+}
 
 export interface SalesDashboardStudy { todayId: string; progress: ReturnType<typeof studyProgress>; results: StudyResult[] }
 
@@ -76,7 +87,7 @@ export class SalesService {
     if (items.some((i) => i.length > 60)) fail('INVALID_ITEMS', 'اسم المنتج في الفرصة أطول من ٦٠ حرفاً.');
     const orderRef = String(b.orderRef ?? previous?.orderRef ?? '').trim();
     if (orderRef && !/^[\w.-]{3,80}$/.test(orderRef)) fail('INVALID_ORDER_REF', 'رقم الطلب/المرجع حروف وأرقام بس — من غير مسافات أو بيانات شخصية.');
-    if (stage === 'won') await this.assertPaidOrder(orderRef);
+    if (stage === 'won') await this.assertPaidOrder(orderRef, previous?.id);
     const at = this.at();
     return {
       id: previous?.id || `deal_${randomUUID().slice(0, 10)}`,
@@ -109,11 +120,13 @@ export class SalesService {
     if (stage === 'lost' && lostReason.length < 3) fail('LOST_REASON_REQUIRED', 'اكتب سبب الخسارة بصراحة — ده اللي بيعلّمك في المرة الجاية.');
     const nextActionAt = String(b.nextActionAt ?? '').trim();
     if (nextActionAt && !DATE.test(nextActionAt)) fail('INVALID_DATE', 'تاريخ المتابعة بصيغة سنة-شهر-يوم.');
-    const orderRef = String(b.orderRef ?? deal.orderRef ?? '').trim();
-    if (orderRef && !/^[\w.-]{3,80}$/.test(orderRef)) fail('INVALID_ORDER_REF', 'رقم الطلب/المرجع حروف وأرقام بس — من غير مسافات أو بيانات شخصية.');
-    // «البيع مايتسجلش غير لما تشوف الفلوس»: won needs a paid order that really exists in the ledger.
-    if (stage === 'won') await this.assertPaidOrder(orderRef);
-    else if (orderRef) fail('ORDER_REF_NEEDS_WON', 'مرجع الطلب بيتسجل بس لما الفرصة تتحول لبيع مؤكد.');
+    const requestedRef = b.orderRef === undefined ? '' : String(b.orderRef).trim();
+    if (requestedRef && !/^[\w.-]{3,80}$/.test(requestedRef)) fail('INVALID_ORDER_REF', 'رقم الطلب/المرجع حروف وأرقام بس — من غير مسافات أو بيانات شخصية.');
+    // «البيع مايتسجلش غير لما تشوف الفلوس»: won needs a paid order that really exists in the ledger —
+    // and that no other opportunity has already claimed.
+    let orderRef = requestedRef;
+    if (stage === 'won') { orderRef = requestedRef || deal.orderRef; await this.assertPaidOrder(orderRef, deal.id); }
+    else if (requestedRef) fail('ORDER_REF_NEEDS_WON', 'مرجع الطلب بيتسجل بس لما الفرصة تتحول لبيع مؤكد.');
     const move: DealMove = { stage, ...(nextActionAt ? { nextActionAt } : {}), ...(b.nextActionAr ? { nextActionAr: String(b.nextActionAr).trim().slice(0, 120) } : {}),
       ...(lostReason ? { lostReason: freeText(lostReason, 3, 200, 'سبب الخسارة') } : {}), ...(orderRef ? { orderRef } : {}) };
     if (b.probability !== undefined) { const p = Number(b.probability); if (!Number.isFinite(p) || p < 0 || p > 100) fail('INVALID_PROBABILITY', 'احتمالية القفل من ٠ إلى ١٠٠.'); move.probability = p; }
@@ -123,11 +136,50 @@ export class SalesService {
     return next;
   }
   /** A win must point at a paid, confirmed order in «بنك شام» — no invented sales, no unconfirmed money. */
-  private async assertPaidOrder(orderRef: string) {
+  private async assertPaidOrder(orderRef: string, dealId = '') {
     if (!orderRef) fail('PAID_ORDER_REQUIRED', 'البيع بيتسجل بعد ما تشوف الفلوس: أكّد التحصيل في بنك شام واكتب رقم الطلب/المرجع.');
     if (!await this.store.get('financeEntries', financeId('sale', 'live', orderRef))) {
       fail('PAID_ORDER_REQUIRED', 'الطلب مش متحصل ومؤكد في بنك شام، فمش ينفع نربطه كبيع. أكّد الدفع الأول.');
     }
+    const other = (await this.store.list('salesDeals')).find((d) => d.orderRef === orderRef && d.id !== dealId);
+    if (other) fail('ORDER_ALREADY_LINKED', 'الطلب ده مربوط بفرصة تانية في المكتب. الفرصة الواحدة بس بتتقفل على الطلب.', 409);
+  }
+
+  /**
+   * The real paid orders in the ledger, so the owner closes an opportunity on an order he can see instead of
+   * typing a reference from memory. Refs and amounts only — the buyer stays a hash in the bank.
+   */
+  async paidOrders(limit = 40): Promise<PaidOrder[]> {
+    const [entries, direct, deals] = await Promise.all([this.store.list('financeEntries'), this.store.list('bankDirect'), this.store.list('salesDeals')]);
+    const linked = new Map(deals.filter((d) => d.orderRef).map((d) => [d.orderRef, d.id]));
+    const rows = new Map<string, PaidOrder>();
+    for (const entry of entries) {
+      if (entry.kind !== 'sale' || entry.mode !== 'live' || !entry.orderRef) continue;
+      rows.set(entry.orderRef, { ref: entry.orderRef, currency: entry.currency, amountMinor: entry.amountMinor, at: entry.at, linkedDealId: linked.get(entry.orderRef) || '' });
+    }
+    // A confirmed direct sale always has an entry; this keeps a paid order visible even if its entry is missing.
+    for (const item of direct) {
+      if (item.state !== 'paid' || rows.has(item.ref)) continue;
+      rows.set(item.ref, { ref: item.ref, currency: item.currency, amountMinor: item.totalMinor, at: item.decidedAt || item.createdAt, linkedDealId: linked.get(item.ref) || '' });
+    }
+    return [...rows.values()].sort((a, b) => b.at.localeCompare(a.at)).slice(0, Math.max(0, limit));
+  }
+
+  /** «مراجعة الأسبوع»: this week against last week from the bank's own periods, plus the recorded lost reasons. */
+  async review() {
+    const [thisWeek, lastWeek, deals, targets] = await Promise.all([
+      this.finance.report(this.finance.period('weekly', 0)), this.finance.report(this.finance.period('weekly', -1)),
+      this.store.list('salesDeals'), this.store.list('salesTargets'),
+    ]);
+    const toRows = (report: Awaited<ReturnType<FinanceService['report']>>): CollectedRow[] => report.currencies.map((c) => ({ currency: c.currency, collectedMinor: c.collectedMinor, paidOrders: c.paidOrders }));
+    const pipeline = summarizePipeline(deals, this.now(), this.timeZone);
+    const targetsRows = paceTargets(targets, toRows(await this.finance.report(this.finance.period('monthly', 0))), this.now(), this.timeZone);
+    const snap = await this.bank.snapshot();
+    const study = await this.studyInfo();
+    return {
+      ...weeklyReview({ thisWeek: toRows(thisWeek), lastWeek: toRows(lastWeek), pipeline, targets: targetsRows, waitingConfirmation: snap.waitingConfirmation, lessonTitleAr: study.today.titleAr }),
+      week: { from: thisWeek.period.localFrom, to: thisWeek.period.localTo, previousFrom: lastWeek.period.localFrom, previousTo: lastWeek.period.localTo },
+    };
   }
   async deleteDeal(id: string) {
     const deal = await this.store.get('salesDeals', String(id));
@@ -197,11 +249,14 @@ export class SalesService {
   }
   async ask(question: unknown) {
     const text = cleanText(question, 2, 300, 'السؤال');
-    return answerSales(text, await this.snapshot());
+    const snap = await this.snapshot();
+    // The week's two reports are read only when the owner actually asks about the week.
+    if (salesTopicOf(text) === 'week') snap.week = (await this.review()).compare;
+    return answerSales(text, snap);
   }
   async dashboard() {
-    const [{ snap, month, targets, rows }, deals, study, audit] = await Promise.all([
-      this.pace(), this.store.list('salesDeals'), this.studyInfo(), this.store.list('salesAudit'),
+    const [{ snap, month, targets, rows }, deals, study, audit, paidOrders] = await Promise.all([
+      this.pace(), this.store.list('salesDeals'), this.studyInfo(), this.store.list('salesAudit'), this.paidOrders(),
     ]);
     const today = snap.today.map((c): CollectedRow => ({ currency: c.currency, collectedMinor: c.collectedMinor, paidOrders: c.paidOrders }));
     const bestSellers = snap.products.slice(0, 6).map((p) => ({ sku: p.sku, units: p.units, currency: p.currency }));
@@ -218,6 +273,8 @@ export class SalesService {
       deals: sorted, targets, targetsPace: rows, pipeline, health, rhythm,
       study: { todayId: study.today.id, plan: studyPlan(this.now(), 7).map((l) => ({ id: l.id, titleAr: l.titleAr, module: l.module })),
         progress: study.progress, results: study.results.slice(0, 20) },
+      paidOrders: paidOrders.slice(0, 20),
+      review: await this.review(),
       audit: [...audit].sort((a, b) => b.at.localeCompare(a.at)).slice(0, 50),
       stages: DEAL_STAGES, sources: DEAL_SOURCES,
     };
