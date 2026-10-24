@@ -1,7 +1,7 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-10-24T09:37:37.757Z",
+  "updatedAt": "2026-10-24T21:31:42.975Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
@@ -14,59 +14,60 @@
       "line": 90
     }
   ],
-  "score": 60,
+  "score": 59,
   "notes": [
-    "الترجمة مش مكتملة: 11.2% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 245617 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط الأساسية بس هي اللي مكتملة.",
+    "الترجمة مش مكتملة: 11% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 251293 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط الأساسية بس هي اللي مكتملة.",
     "تقليل صارم للغة إلى عربي/إنجليزي في 1 موضع — راجع إن كان المقصود زوج بيانات {ar,en} أم لغة واجهة.",
-    "المترجم الذكي: 245617 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3240 — النهارده اتترجم 0 (الباقة خلصت — هيكمل بعد التجديد).",
+    "المترجم الذكي: 251293 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3240 — النهارده اتترجم 0 (الباقة خلصت — هيكمل بعد التجديد).",
+    "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «Hawas Ice» src/utils/priceDrills.ts:34، «Hawas Ice» src/utils/priceDrills.ts:35، «Hawas Ice» src/utils/priceDrills.ts:36.",
     "لغات بلّغ عنها قسم التصميم بتتترجم الأول: is، sq، ps، ja."
   ],
-  "translationCoverage": 11.2,
+  "translationCoverage": 11,
   "fullyTranslated": 0,
   "translation": {
-    "at": "2026-10-24T09:37:38.241Z",
+    "at": "2026-10-24T21:31:43.310Z",
     "status": "quota",
-    "remaining": 245617,
+    "remaining": 251293,
     "covered": 3240,
-    "total": 276752,
+    "total": 282436,
     "fullyTranslated": 0,
     "remainingByTier": {
       "1": 16169,
-      "2": 160014,
-      "3": 69434
+      "2": 165592,
+      "3": 69532
     },
     "worstLanguages": [
       {
         "lang": "my",
-        "remaining": 2657
+        "remaining": 2715
       },
       {
         "lang": "dz",
-        "remaining": 2657
+        "remaining": 2715
       },
       {
         "lang": "cs",
-        "remaining": 2655
+        "remaining": 2713
       },
       {
         "lang": "ur",
-        "remaining": 2655
+        "remaining": 2713
       },
       {
         "lang": "am",
-        "remaining": 2655
+        "remaining": 2713
       },
       {
         "lang": "ha",
-        "remaining": 2655
+        "remaining": 2713
       },
       {
         "lang": "yo",
-        "remaining": 2655
+        "remaining": 2713
       },
       {
         "lang": "zu",
-        "remaining": 2655
+        "remaining": 2713
       }
     ],
     "run": {
@@ -161,7 +162,7 @@
     }
   },
   "design": {
-    "at": "2026-10-24T09:37:37.757Z",
+    "at": "2026-10-24T21:31:42.975Z",
     "auditAt": "2026-10-24T05:41:40.364Z",
     "auditScore": 46,
     "priorityLanguages": [
@@ -170,15 +171,30 @@
       "ps",
       "ja"
     ],
-    "located": [],
+    "located": [
+      {
+        "phrase": "Hawas Ice",
+        "file": "src/utils/priceDrills.ts",
+        "line": 34
+      },
+      {
+        "phrase": "Hawas Ice",
+        "file": "src/utils/priceDrills.ts",
+        "line": 35
+      },
+      {
+        "phrase": "Hawas Ice",
+        "file": "src/utils/priceDrills.ts",
+        "line": 36
+      }
+    ],
     "unlocated": [
       "SCENT STUDIO",
       "Live Sync",
       "Enter Portal",
       "LIVE SYNC",
       "ENTER PORTAL",
-      "Hawas London",
-      "Hawas Ice"
+      "Hawas London"
     ],
     "physicalDirection": {
       "total": 298,
