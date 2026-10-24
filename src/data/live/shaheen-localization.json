@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "localization-audit",
- "updatedAt": "2026-10-24T16:06:57.918Z",
+ "updatedAt": "2026-10-24T16:23:23.813Z",
  "tables": {
   "countries": 251,
   "currencies": 154,
