@@ -8,6 +8,7 @@ import { mailProvider, mailProviderLabel } from './mailer';
 import express from 'express';
 import { FinanceService } from '../finance/service';
 import { createFinanceRouter } from '../finance/router';
+import { SalesService } from '../sales/service';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { reviewSpecialtiesCached } from './specialtyReview';
 import { reviewPagesCached } from './pageReview';
@@ -23,6 +24,7 @@ import { RateLimiter, clientKey } from './rateLimit';
 import { createSeoService } from '../seo/service';
 import { createCensusService } from '../census';
 import { createLabSignalsService } from '../labSignals';
+import { createInsightsService } from '../insights';
 import { buildPublicStatement } from '../../src/utils/platformCensus';
 import { probeEngines } from '../shaheen';
 import { createDesignBrief, validateDesignRequest } from '../design/assistant';
@@ -70,6 +72,7 @@ export function createShamCore(options: CoreOptions = {}) {
   const durable = options.store ? store : createLedgerStore(env, store);
   const finance = new FinanceService(durable, env, { fetch: options.fetch });
   const bank = new BankService(finance, env, options.fetch || fetch);
+  const sales = new SalesService(finance, bank, env);
   // Shared with the Shaheen chat router: outcomes + capacity parts, read by the maintenance agent.
   const runtime = options.runtime || new ShaheenRuntime(runningVersion(env));
   const orchestrator = new Orchestrator(repo, { env, fetch: options.fetch });
@@ -83,6 +86,8 @@ export function createShamCore(options: CoreOptions = {}) {
   const census = createCensusService({ store: durable });
   // «إشارات المعمل»: anonymous counters the scent-behaviour robot reads (opt-in share only).
   const labSignals = createLabSignalsService({ store: durable });
+  // «خزنة فهم الزوار»: visitors' interactions (with their consent), studied for the administration only.
+  const insights = createInsightsService({ store: durable });
   const seoRunLimiter = new RateLimiter(4, 10 * 60_000);
   const designLimiter = new RateLimiter(8, 10 * 60_000);
   const feedbackLimiter = new RateLimiter(60, 10 * 60_000);
@@ -258,7 +263,7 @@ export function createShamCore(options: CoreOptions = {}) {
     next();
   });
 
-  admin.use('/finance', createFinanceRouter(finance, bank));
+  admin.use('/finance', createFinanceRouter(finance, bank, sales));
   // «غرفة شاهين الخاصة»: the owner, Shaheen and the secretary only — nothing is stored on the server.
   admin.use('/owner-room', createOwnerRoomRouter({ env, fetch: options.fetch, health: runtime.health }));
 
@@ -582,6 +587,9 @@ export function createShamCore(options: CoreOptions = {}) {
     res.status(202).json({ accepted: true, submit, startedAt: new Date().toISOString() });
   }));
 
+  // ---- «خزنة فهم الزوار»: the owner's studies of visitors, customers and countries ----
+  admin.use('/insights', insights.admin);
+
   // ---- «روبوت التعداد — دولة المنصة»: global visit census, world heatmap data & public statement ----
   // «روبوت سلوك الزائر العطري»: the anonymous lab counters — read by scripts/shaheen-scent with the admin token.
   admin.get('/lab-signals', wrap(async (_req, res) => {
@@ -607,4 +615,5 @@ export function createShamCore(options: CoreOptions = {}) {
   }));
 
   return { assistant, admin, repo, orchestrator, store, runtime, memory, seo, finance, bank, census, censusRouter: census.router, labSignals, labSignalsRouter: labSignals.router };
+  return { assistant, admin, repo, orchestrator, store, runtime, memory, seo, finance, bank, census, censusRouter: census.router, insightsRouter: insights.router };
 }

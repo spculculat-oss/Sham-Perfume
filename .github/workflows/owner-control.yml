@@ -44,6 +44,7 @@ on:
           - maneuver
           - finance
           - finance_shield
+          - sales
           - scout
           - teacher
           - school

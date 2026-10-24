@@ -317,6 +317,26 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       if (notes.length) f.push({ level: 'note', idea: String(notes[0]) });
       break;
     }
+    case 'sales': {
+      // «مدير المبيعات»: the live desk, the pipeline and the target — from confirmed figures only.
+      const live = o(r.live);
+      const pipeline = o(r.pipeline);
+      const health = o(r.health);
+      const targets = arr(r.targets).map(o);
+      if (live.checked !== true) {
+        f.push({ level: 'warn', problem: 'مكتب المبيعات ما قراش أرقام بنك شام في آخر دورة — الفجوة للهدف غير معروفة', fix: 'راجع SHAM_ADMIN_TOKEN ومسار المالية ثم شغّل روبوت المبيعات؛ مفيش أرقام متخمنة' });
+      }
+      const overdue = n(pipeline.overdueCount) ?? 0;
+      if (overdue) f.push({ level: 'warn', problem: `${overdue} متابعة مبيعات فات موعدها`, fix: 'افتح «بنك شام ← إدارة المبيعات ← إيقاع اليوم» وحدّد خطوة جديدة لكل فرصة، أو أقفلها بسبب مسجل' });
+      const noStep = n(pipeline.withoutNextStep) ?? 0;
+      if (noStep) f.push({ level: 'note', idea: `${noStep} فرصة مفتوحة من غير خطوة جاية — تاريخ وإجراء واحد لكل فرصة بيرفع نسبة الكسب` });
+      const score = n(health.score);
+      if (score !== undefined && score < 50) f.push({ level: score < 30 ? 'fail' : 'warn', problem: `صحة المبيعات ${score}/100 — ${String(health.labelAr || '')}`, fix: 'راجع أسباب الصحة في تقرير المبيعات: الهدف، المتابعات، والتحويلات المستنية' });
+      const behind = targets.filter((t) => t.pace === 'behind');
+      if (behind.length) f.push({ level: 'note', idea: `${behind.length} عملة تحت إيقاع الهدف الشهري — راجع الفجوة اليومية بدل الانتظار لآخر الشهر` });
+      if (!o(r.study).lessonId) f.push({ level: 'warn', problem: 'مفيش درس منهج مسجّل في آخر دورة', fix: 'تأكد إن روبوت المبيعات بيقرا SALES_PLAYBOOK.md ويسجّل درس اليوم وسؤاله في تقريره' });
+      break;
+    }
     default:
       break;
   }

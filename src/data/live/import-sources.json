@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-24T06:52:26.239Z",
+ "updatedAt": "2026-10-24T12:50:33.067Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,17 @@
  ],
  "runs": [
   {
+   "at": "2026-10-24T12:50:33.067Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-24T06:52:26.239Z",
    "mode": "self",
    "found": 0,
@@ -7725,28 +7736,6 @@
     "✗ armafparfums.com: الموقع لا يفتح",
     "  ↳ rasasiparfums.com: CV 29/100 [age,https,returns] (pages: /contact-us→200 /returns→200)",
     "✗ rasasiparfums.com: ملف الثقة ضعيف (29/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة"
-   ]
-  },
-  {
-   "at": "2026-10-21T16:11:30.170Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 5,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)",
-    "✗ ruebrocaperfumes.com: الموقع لا يفتح",
-    "✗ khadlajparfums.com: الموقع لا يفتح",
-    "  ↳ frenchavenue.com: CV 88/100 [age,https,contact,identity,returns,shipping,privacy,terms,platform,social,authentic] on Shopify",
-    "… frenchavenue.com: good, waiting (already 20 active stores)",
-    "✗ frenchavenueperfumes.com: الموقع لا يفتح",
-    "✗ frenchavenueparfums.com: الموقع لا يفتح",
-    "✗ lattafaperfumes.com: الموقع لا يفتح",
-    "✗ lattafaparfums.com: الموقع لا يفتح",
-    "✗ ardalzaafaran.com: الموقع لا يفتح",
-    "✗ ardalzaafaranperfumes.com: الموقع لا يفتح",
-    "✗ ardalzaafaranparfums.com: الموقع لا يفتح"
    ]
   }
  ]

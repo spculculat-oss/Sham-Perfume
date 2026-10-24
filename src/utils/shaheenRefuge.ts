@@ -105,6 +105,7 @@ const REPORT_NAMES: Record<string, [string, string]> = {
   'scent-behavior.json': ['سلوك الزائر العطري — التركيبات المتشاركة ومواد مقترحة', 'Visitor scent behaviour — shared designs & material proposals'],
   'shaheen-localization.json': ['جودة الترجمة واللغات — العملات والمصطلحات', 'Localization audit — currencies & money terms'],
   'finance-shield.json': ['حارس المدفوعات والعمولات — التمارين والأمان', 'Payments & commissions shield — drills & safety'],
+  'shaheen-sales.json': ['إدارة المبيعات — خط الأنابيب والهدف والمنهج', 'Sales desk — pipeline, target and curriculum'],
 };
 const reportEntry = (file: string): RefugeEntry => {
   const [nameAr, nameEn] = REPORT_NAMES[file] ?? [file, file];
@@ -129,6 +130,7 @@ const WORKFLOW_OWNER: Record<string, BotId> = {
   'shaheen-school-clock.yml': 'academy', 'shaheen-lab.yml': 'lab',
   'shaheen-inventory.yml': 'inventory', 'shaheen-service.yml': 'service', 'shaheen-brain.yml': 'brain',
   'shaheen-scent.yml': 'scent_behavior', 'shaheen-localization.yml': 'localization_audit', 'shaheen-finance-shield.yml': 'finance_shield',
+  'shaheen-inventory.yml': 'inventory', 'shaheen-service.yml': 'service', 'shaheen-brain.yml': 'brain', 'shaheen-sales.yml': 'sales',
 };
 const WORKFLOW_NAMES: Record<string, [string, string]> = {
   'aistudio-bridge.yml': ['بوابة استوديو التصميم', 'Design studio bridge'],
@@ -158,6 +160,7 @@ const WORKFLOW_NAMES: Record<string, [string, string]> = {
   'shaheen-lab.yml': ['تشغيل معمل شاهين للتجارب', 'Shaheen lab run'],
   'shaheen-inventory.yml': ['إدارة المخزون والتنبؤ بالمبيعات', 'Inventory & sales forecast'],
   'shaheen-service.yml': ['مكتب خدمة العملاء الآلي', 'Automated customer care desk'],
+  'shaheen-sales.yml': ['إدارة المبيعات في بنك شام', 'Sales desk in Sham Bank'],
   'shaheen-brain.yml': ['مختبر عقل شاهين (ملفات التدريب والامتحان)', "Shaheen's brain lab (training data & exam)"],
   'shaheen-scent.yml': ['سلوك الزائر العطري', 'Scent behaviour'],
   'shaheen-localization.yml': ['جودة الترجمة واللغات', 'Localization audit'],
