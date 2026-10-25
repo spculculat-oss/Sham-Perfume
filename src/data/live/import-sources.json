@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-25T06:53:08.120Z",
+ "updatedAt": "2026-10-25T08:40:09.215Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,17 @@
  ],
  "runs": [
   {
+   "at": "2026-10-25T08:40:09.215Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-25T06:53:08.120Z",
    "mode": "self",
    "found": 0,
@@ -7685,24 +7696,6 @@
    "rejected": 0,
    "notes": [
     "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T05:53:55.961Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 6,
-   "activated": 0,
-   "rejected": 5,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)",
-    "✗ ruebroca.com: الموقع لا يفتح",
-    "✗ ruebrocaperfumes.com: الموقع لا يفتح",
-    "✗ khadlajparfums.com: الموقع لا يفتح",
-    "  ↳ frenchavenue.com: CV 88/100 [age,https,contact,identity,returns,shipping,privacy,terms,platform,social,authentic] on Shopify",
-    "… frenchavenue.com: good, waiting (already 20 active stores)",
-    "✗ frenchavenueperfumes.com: الموقع لا يفتح",
-    "✗ frenchavenueparfums.com: الموقع لا يفتح"
    ]
   }
  ]
