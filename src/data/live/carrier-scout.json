@@ -1,0 +1,174 @@
+{
+ "version": 1,
+ "agent": "carrier-scout",
+ "updatedAt": "2026-10-25T22:19:41.484Z",
+ "rules": {
+  "staleDays": 120,
+  "handlingPercent": 10,
+  "netMarginPercent": 50
+ },
+ "coverage": {
+  "destinations": 74,
+  "priced": 73,
+  "uncovered": [
+   {
+    "code": "MY",
+    "nameAr": "ماليزيا",
+    "zoneFirstItemEgp": 331.69
+   }
+  ]
+ },
+ "carriersInUse": [
+  {
+   "id": "poslaju_intl",
+   "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+   "destinations": 73,
+   "dg": null,
+   "checkedAt": "2026-10-25"
+  }
+ ],
+ "candidates": [
+  {
+   "id": "dhl_express_my",
+   "nameAr": "DHL إكسبريس (ماليزيا)",
+   "originCountry": "MY",
+   "state": "unverified",
+   "whyAr": "مفيش تعريفة مسجلة — الكشّاف قرا الصفحة بس، والرقم محتاج مراجعة بشر",
+   "ratesUrl": "https://www.dhl.com/my-en/home.html",
+   "checkedAt": null,
+   "beatsCurrent": 0,
+   "savingEgp": 0
+  },
+  {
+   "id": "fedex_my",
+   "nameAr": "فيديكس (ماليزيا)",
+   "originCountry": "MY",
+   "state": "unverified",
+   "whyAr": "مفيش تعريفة مسجلة — الكشّاف قرا الصفحة بس، والرقم محتاج مراجعة بشر",
+   "ratesUrl": "https://www.fedex.com/en-my/home.html",
+   "checkedAt": null,
+   "beatsCurrent": 0,
+   "savingEgp": 0
+  },
+  {
+   "id": "aramex_my",
+   "nameAr": "أرامكس (ماليزيا)",
+   "originCountry": "MY",
+   "state": "unverified",
+   "whyAr": "مفيش تعريفة مسجلة — الكشّاف قرا الصفحة بس، والرقم محتاج مراجعة بشر",
+   "ratesUrl": "https://www.aramex.com/my/en",
+   "checkedAt": null,
+   "beatsCurrent": 0,
+   "savingEgp": 0
+  },
+  {
+   "id": "ninja_van_my",
+   "nameAr": "نينجا فان (ماليزيا)",
+   "originCountry": "MY",
+   "state": "unverified",
+   "whyAr": "مفيش تعريفة مسجلة — الكشّاف قرا الصفحة بس، والرقم محتاج مراجعة بشر",
+   "ratesUrl": "https://www.ninjavan.co/en-my",
+   "checkedAt": null,
+   "beatsCurrent": 0,
+   "savingEgp": 0
+  },
+  {
+   "id": "jnt_my",
+   "nameAr": "J&T إكسبريس (ماليزيا)",
+   "originCountry": "MY",
+   "state": "unverified",
+   "whyAr": "مفيش تعريفة مسجلة — الكشّاف قرا الصفحة بس، والرقم محتاج مراجعة بشر",
+   "ratesUrl": "https://www.jtexpress.my",
+   "checkedAt": null,
+   "beatsCurrent": 0,
+   "savingEgp": 0
+  },
+  {
+   "id": "aramex_ae",
+   "nameAr": "أرامكس (الإمارات)",
+   "originCountry": "AE",
+   "state": "unverified",
+   "whyAr": "مفيش تعريفة مسجلة — الكشّاف قرا الصفحة بس، والرقم محتاج مراجعة بشر",
+   "ratesUrl": "https://www.aramex.com/ae/en",
+   "checkedAt": null,
+   "beatsCurrent": 0,
+   "savingEgp": 0
+  }
+ ],
+ "savings": {
+  "rows": [],
+  "destinations": 0,
+  "totalEgp": 0,
+  "medianPercent": null,
+  "bestEgp": null
+ },
+ "errors": [
+  {
+   "kind": "no_rate",
+   "level": "warn",
+   "subject": "MY",
+   "whatAr": "ماليزيا: مفيش تعريفة شحن منشورة — بتاخد سعر المنطقة (331.69 ج.م) ومافيش وعد إنه يغطي التكلفة",
+   "fixAr": "أضف الشركة وتعريفتها بمصدرها وتاريخها في src/data/shipping-lanes.json"
+  },
+  {
+   "kind": "dg_unknown",
+   "level": "warn",
+   "subject": "poslaju_intl",
+   "whatAr": "«بوس لاجو الدولي (بريد ماليزيا)» لسه مش متأكدين إنها بتقبل العطور (UN1266) — وهي اللي بتحمل 73 وجهة",
+   "fixAr": "اقرا صفحة المواد الخطرة عند الشركة أو خد رد مكتوب، وحدّث dg في shipping-lanes.json"
+  },
+  {
+   "kind": "candidate_untested",
+   "level": "note",
+   "subject": "dhl_express_my",
+   "whatAr": "بديل لسه من غير سعر موثّق: «DHL إكسبريس (ماليزيا)» (MY)",
+   "fixAr": "اقرا https://www.dhl.com/my-en/home.html وسجّل التعريفة بمصدرها وتاريخها في src/data/carrier-candidates.json"
+  },
+  {
+   "kind": "candidate_untested",
+   "level": "note",
+   "subject": "fedex_my",
+   "whatAr": "بديل لسه من غير سعر موثّق: «فيديكس (ماليزيا)» (MY)",
+   "fixAr": "اقرا https://www.fedex.com/en-my/home.html وسجّل التعريفة بمصدرها وتاريخها في src/data/carrier-candidates.json"
+  },
+  {
+   "kind": "candidate_untested",
+   "level": "note",
+   "subject": "aramex_my",
+   "whatAr": "بديل لسه من غير سعر موثّق: «أرامكس (ماليزيا)» (MY)",
+   "fixAr": "اقرا https://www.aramex.com/my/en وسجّل التعريفة بمصدرها وتاريخها في src/data/carrier-candidates.json"
+  },
+  {
+   "kind": "candidate_untested",
+   "level": "note",
+   "subject": "ninja_van_my",
+   "whatAr": "بديل لسه من غير سعر موثّق: «نينجا فان (ماليزيا)» (MY)",
+   "fixAr": "اقرا https://www.ninjavan.co/en-my وسجّل التعريفة بمصدرها وتاريخها في src/data/carrier-candidates.json"
+  },
+  {
+   "kind": "candidate_untested",
+   "level": "note",
+   "subject": "jnt_my",
+   "whatAr": "بديل لسه من غير سعر موثّق: «J&T إكسبريس (ماليزيا)» (MY)",
+   "fixAr": "اقرا https://www.jtexpress.my وسجّل التعريفة بمصدرها وتاريخها في src/data/carrier-candidates.json"
+  },
+  {
+   "kind": "candidate_untested",
+   "level": "note",
+   "subject": "aramex_ae",
+   "whatAr": "بديل لسه من غير سعر موثّق: «أرامكس (الإمارات)» (AE)",
+   "fixAr": "اقرا https://www.aramex.com/ae/en وسجّل التعريفة بمصدرها وتاريخها في src/data/carrier-candidates.json"
+  }
+ ],
+ "score": 85,
+ "summaryAr": "كشّاف الشحن: 74 وجهة — 73 بسعر موثّق و1 من غير تعريفة · 1 شركة قبولها للعطور لسه مش متأكد · مفيش بديل أرخص موثّق لسه · صفر شركة بديلة موثّقة",
+ "planAr": [
+  "1 وجهة من غير تعريفة منشورة (ماليزيا) — سعرها منطقة، ومافيش وعد إنه يغطي التكلفة.",
+  "1 شركة شحن لسه مش متأكدين من قبولها للعطور (UN1266): بوس لاجو الدولي (بريد ماليزيا) — قبل أي وعد توصيل دولي لازم رد مكتوب منها.",
+  "لسه مفيش أي بديل بتعريفة موثّقة — الكشّاف بيقرا صفحات الشركات ويطلب من صاحب المتجر يثبّت الأرقام."
+ ],
+ "notesAr": [
+  "الكشّاف مايغيّرش أي سعر: بيقارن ويقترح، والسعر اللي الزائر بيشوفه في shipping.json + shipping-costs.json بس.",
+  "كل رقم في التقرير له مصدر وتاريخ. الشركة اللي قبولها للعطور مش مؤكد بتفضل «مش متأكد»، مش «مقبولة»."
+ ]
+}

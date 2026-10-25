@@ -326,6 +326,20 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       }
       break;
     }
+    case 'carriers': {
+      // «كشّاف الشحن»: أخطاء التسعير اللي بيكررها كل تشغيل + أي بديل أرخص موثّق. الأسعار قرار صاحب المتجر.
+      const errs = arr(r.errors).map(o);
+      const warns = errs.filter((e) => String(e.level) === 'warn');
+      for (const e of warns.slice(0, 4)) f.push({ level: 'warn', problem: String(e.whatAr), fix: String(e.fixAr) });
+      const savings = o(r.savings);
+      const saved = Number(savings.totalEgp) || 0;
+      const saveDest = Number(savings.destinations) || 0;
+      if (saveDest > 0) f.push({ level: 'note', idea: `فيه بديل شحن أرخص موثّق يوفر ${Math.round(saved)} ج.م في ${saveDest} وجهة — القرار لصاحب المتجر` });
+      const coverage = o(r.coverage);
+      const missing = arr(coverage.uncovered).length;
+      if (missing) f.push({ level: 'note', idea: `${missing} وجهة من غير تعريفة شحن منشورة (${arr(coverage.uncovered).slice(0, 3).map((u) => String(o(u).nameAr)).join('، ')})` });
+      break;
+    }
     case 'trade_lanes': {
       // «الشحن والتجارة»: a shipping price that loses money, an unregistered delivery mode, or a missing customs
       // source are findings; everything else is a decision for the merchant.
