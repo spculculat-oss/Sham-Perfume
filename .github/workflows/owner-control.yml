@@ -37,6 +37,7 @@ on:
           - council
           - secretary
           - catalog
+          - catalog_review
           - inventory
           - news
           - precheck

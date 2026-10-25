@@ -1,0 +1,94 @@
+name: Shaheen catalog review — every product, every price, every day
+
+# «روبوت مراجعة المنتجات» (store cell, src/utils/shaheenOrg.ts): every day it reads *all* products in
+# src/data/products.json and reports, from the files themselves: a price that breaks the merchant's rule
+# (cost × 1.5, rounded up to 5 EGP), a product that sells for less than delivering it costs, a price two orders of
+# magnitude under the catalogue (a currency/data error), a name or an Arabic description a visitor cannot read, one
+# photo on several products, what is out of stock, and — zone by zone in EGP — what the free-shipping decision
+# (src/utils/freeShipping.ts) would really cost. It reports; it never changes a price. Result:
+# src/data/live/catalog-review.json (pre-meeting check + council).
+
+on:
+  schedule:
+    - cron: '23 6 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main, 'arena/**']
+    paths:
+      - 'scripts/shaheen-catalog/**'
+      - 'src/data/products.json'
+      - 'src/data/shipping.json'
+      - '.github/workflows/shaheen-catalog-review.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: shaheen-catalog-review-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # «مفتاح صاحب الموقع»: the owner (or «دولة المنصة») can pause this robot («catalog_review»).
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs catalog_review
+
+  review:
+    name: «مراجعة المنتجات» — prices, names, photos and the free-shipping decision
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      IMPORT_MARKUP: ${{ vars.IMPORT_MARKUP || '' }}
+      IMPORT_SHIPPING_EGP: ${{ vars.IMPORT_SHIPPING_EGP || '' }}
+      IMPORT_MAX_PROFIT_EGP: ${{ vars.IMPORT_MAX_PROFIT_EGP || '' }}
+      SHAM_HOME_COUNTRY: ${{ vars.SHAM_HOME_COUNTRY || 'EG' }}
+      PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Write the catalog review
+        run: node --import tsx scripts/shaheen-catalog/run.mts
+      - name: Behaviour tests
+        run: node --import tsx --test tests/catalogReview.test.ts
+      - name: Publish on main
+        if: env.PUBLISH == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen catalog bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "شاهين: مراجعة المنتجات $(date -u +%Y-%m-%dT%H:%MZ)" \
+            src/data/live/catalog-review.json \
+            || { echo "::error::Could not push the catalog review"; exit 1; }
