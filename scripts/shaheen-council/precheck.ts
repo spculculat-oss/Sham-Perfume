@@ -332,6 +332,19 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       const money = o(r.money);
       const loss = Number(money.lossDestinations) || 0;
       if (loss) f.push({ level: 'warn', problem: `${loss} وجهة لو إحنا اللي بنشحن تكلفة الشحن فيها أكبر من اللي بنحصّله`, fix: 'عدّل سعر الشحن أو فعّل ممر الوساطة للمنصات اللي بتشحن بنفسها' });
+      // «مكسبنا 50% تكون صافية»: كام وجهة الهامش فيها اتلمس، وكام منها الشحن بياكله كله.
+      const eaten = Number(money.marginEatenDestinations) || 0;
+      const whole = Number(money.keptWholeDestinations) || 0;
+      const pricedCount = Number(money.pricedDestinations) || 0;
+      if (pricedCount && eaten) {
+        f.push({
+          level: 'warn',
+          problem: `الهامش مش صافي في ${eaten} وجهة من ${pricedCount} (كاملة في ${whole} بس) — سعر الشحن أقل من التكلفة الحقيقية للشركة`,
+          fix: 'ارفع سعر الشحن لسعره الحقيقي (جدول المقترح في تقرير الشحن) — القرار لصاحب المتجر لأنه سعر',
+        });
+      } else if (pricedCount) {
+        f.push({ level: 'note', idea: `الهامش صافي في كل الوجهات المقارَنة (${whole}) — راقب سعر الصرف والشحن` });
+      }
       const over = Number(money.overChargedDestinations) || 0;
       if (over) f.push({ level: 'note', idea: `${over} وجهة بنحصّل فيها شحن أكتر من ضعف تكلفته — تقليلها بيرفع التحويل` });
       const modes = o(r.modes);

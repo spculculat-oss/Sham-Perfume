@@ -22,6 +22,15 @@ export const SOURCES: ImportSource[] = [
     // «Showing 1–24 of 1060 products … Page 1 of 45».
     listing: { url: 'https://www.shamperfume.com/perfumes/?page={page}', maxPages: 80 },
     origin: 'built-in',
+    // Deliveries: the store sells inside Malaysia (its own shipping-policy page 404s, and its only payment
+    // methods are Malaysian wallets) — so we carry its bottles to the rest of the world.
+    delivery: {
+      fulfilment: 'broker',
+      shipsTo: ['MY'],
+      evidenceAr: 'مفيش صفحة سياسة شحن على الموقع (بترجع 404)، وكله مدفوعات محلية ماليزية (Touch n Go · GrabPay · ShopeePay) — يعني بتسلّم جوه ماليزيا بس، وإحنا اللي بنشحن لكل العالم.',
+      source: 'https://www.shamperfume.com/perfumes/policies/shipping-policy/',
+      checkedAt: '2026-10-25',
+    },
   },
 ];
 

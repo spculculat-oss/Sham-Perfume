@@ -36,6 +36,9 @@ test('time-bound and personal questions are never remembered; normal words conta
     assert.ok(isTimeBound(q), q);
   for (const q of ['ما هي خبرة شاهين في العود؟', 'ما المطلوب لعمل عطر', 'لو الزيت سعره 1200 جنيه احسب تكلفة 50 مل', 'كم يوم أعتق عطر مسك؟', 'how to mix oud with rose'])
     assert.ok(!isTimeBound(q), q);
+  // سياسة الشحن والجمارك معرفة تتذاكر، لكن سعرها اللحظي وقتياً زيه زي أي سعر.
+  for (const q of ['إزاي أحسب تكلفة الشحن الدولي؟', 'ينفع أشحن عطر دولياً؟', 'الجمارك بتتحسب إزاي؟']) assert.ok(!isTimeBound(q), q);
+  for (const q of ['الشحن لمصر بكام؟', 'سعر التوصيل كام؟', 'ايه عروض الشحن النهارده']) assert.ok(isTimeBound(q), q);
   assert.ok(isPersonal('رقمي ٠١٠١٢٣٤٥٦٧٨') && isPersonal('my email is a@b.co') && !isPersonal('عطر 50 مل'));
   assert.ok(worthRemembering('صمم لي عطر شرقي', LONG));
   assert.ok(!worthRemembering('صمم لي عطر شرقي', `${LONG} (Gemini)`), 'no AI vendor names');

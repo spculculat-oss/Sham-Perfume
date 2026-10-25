@@ -66,6 +66,8 @@ if (env.GITHUB_STEP_SUMMARY) {
   const gaps = report.gaps.map((g) => `| ${g.kindAr} | ${g.whatAr} | ${g.fixAr} |`);
   const originRows = report.origins.map((o) => `| ${o.nameAr} (${o.code}) | ${o.products} | ${o.platforms.join('، ')} | ${o.localCarrier ? `${o.localCarrier.nameAr}${o.localCarrier.priceEgp ? ` ${o.localCarrier.priceEgp[0]}–${o.localCarrier.priceEgp[1]} ج.م` : ' (مفيش سعر منشور)'}` : '—'} |`);
   const fxRows = report.fx.lines.map((l) => `| ${l.currency} | ${l.rateUsed} | ${l.rateToday} | ${l.driftPercent > 0 ? '+' : ''}${l.driftPercent}% | ${l.products} |`);
+  // «مكسبنا 50% تكون صافية»: الشحن الحقيقي مقابل اللي بنحصّله، والقرار لصاحب المتجر.
+  const priceRows = report.shippingProposal.map((z) => `| ${z.nameAr} | ${z.countries} | ${z.currentFirstItem} ${z.currency} | ${z.typicalRequiredFirstItem} ${z.currency} | ${z.maxRequiredFirstItem} ${z.currency} | ${z.drivenByAr || '—'} |`);
   const lines = [
     '## روبوت الشحن والتجارة الدولية',
     '',
@@ -74,12 +76,18 @@ if (env.GITHUB_STEP_SUMMARY) {
     `- وساطة (المنصة بتشحن): ${report.modes.platform_ships.products} منتج · إحنا بنشحن: ${report.modes.broker.products} · مش معروف: ${report.modes.unknown.products}`,
     `- الدرجة: ${report.score}/100 · متوسط اللي بنحصّله شحن: ${report.money.averageChargedEgp} EGP`,
     `- وجهات بنحصّل فيها أكتر من التكلفة بكثير: ${report.money.overChargedDestinations} · وجهات بنخسر فيها: ${report.money.lossDestinations}`,
+    `- الـ50% كاملة في: ${report.money.keptWholeDestinations} وجهة · الشحن بياكل منها في: ${report.money.marginEatenDestinations} · الطلب بخسارة في: ${report.money.orderLossDestinations}`,
     '',
     '### البضاعة فين',
     '| البلد | عدد المنتجات | المنصات | شركة محلية |',
     '|---|---|---|---|',
     originRows.join('\n') || '| — | — | — | — |',
     ...(fxRows.length ? ['', '### سعر الصرف اللي السعر مبني عليه', '| العملة | السعر المستخدم | سعر النهاردة | الفرق | منتجات |', '|---|---|---|---|---|', fxRows.join('\n')] : []),
+    '',
+    '### الشحن الحقيقي مقابل اللي بنحصّله (القرار لصاحب المتجر)',
+    '| المنطقة | دول | بنحصّل | المتوسط الحقيقي | الأقصى الحقيقي | أغلى وجهة |',
+    '|---|---|---|---|---|---|',
+    priceRows.join('\n') || '| — | — | — | — | — | — |',
     '',
     '### الخطة',
     report.planAr.map((l) => `- ${l}`).join('\n') || '- لا يوجد',
