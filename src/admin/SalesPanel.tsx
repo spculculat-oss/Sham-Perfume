@@ -157,7 +157,7 @@ export default function SalesPanel({ onOpenBank }: { onOpenBank?: () => void }) 
       {section === 'cockpit' && <>
         <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-3">
           <div className={card}><p className="text-xs text-stone-500">{f('صحة المبيعات', 'Sales health')}</p><p className="text-3xl font-bold mt-2" dir="ltr">{data.health.score}<span className="text-base text-stone-400">/100</span></p><p className="text-xs mt-2 text-stone-600">{data.health.labelAr}</p></div>
-          <div className={card}><p className="text-xs text-stone-500">{f('الفرص المفتوحة', 'Open opportunities')}</p><p className="text-3xl font-bold mt-2">{num(data.pipeline.openCount)}</p><p className="text-xs mt-2 text-stone-600">{f('متأخرة:', 'Overdue:')} {num(data.pipeline.overdueCount)} · {f('من غير خطوة:', 'No next step:')} {num(data.pipeline.withoutNextStep)}</p></div>
+          <div className={card}><p className="text-xs text-stone-500">{f('الفرص المفتوحة', 'Open opportunities')}</p><p className="text-3xl font-bold mt-2">{num(data.pipeline.openCount)}</p><p className="text-xs mt-2 text-stone-600">{f('متأخرة:', 'Overdue:')} {num(data.pipeline.overdueCount)} · {f('من غير خطوة:', 'No next step:')} {num(data.pipeline.withoutNextStep)}</p>{data.quiet.length > 0 && <p className="text-xs mt-1 text-amber-800">{f(`${num(data.quiet.length)} ساكتة من أكتر من أسبوع`, `${num(data.quiet.length)} quiet for over a week`)}</p>}</div>
           <div className={card}><p className="text-xs text-stone-500">{f('تحويلات مستنية تأكيدك', 'Transfers awaiting you')}</p><p className="text-3xl font-bold mt-2 text-amber-700">{num(data.live.waitingConfirmation)}</p><button type="button" className="text-xs text-emerald-800 underline mt-2" onClick={onOpenBank}>{f('افتح التحصيل في بنك شام', 'Open direct collection')}</button></div>
           <div className={card}><p className="text-xs text-stone-500">{f('نسبة الكسب', 'Win rate')}</p><p className="text-3xl font-bold mt-2" dir="ltr">{data.pipeline.winRate === null ? '—' : `${data.pipeline.winRate}%`}</p><p className="text-xs mt-2 text-stone-600">{f('كسب', 'Won')} {num(data.pipeline.wonCount)} · {f('خسارة', 'Lost')} {num(data.pipeline.lostCount)}</p></div>
         </div>
@@ -236,7 +236,10 @@ export default function SalesPanel({ onOpenBank }: { onOpenBank?: () => void }) 
         <div className={`${card} overflow-x-auto`}>
           <table className="w-full text-xs"><thead><tr className="text-stone-500 border-b">{[f('الفرصة', 'Opportunity'), f('العميل', 'Customer'), f('القيمة', 'Value'), f('المرحلة', 'Stage'), f('الجاية', 'Next'), ''].map((h, i) => <th key={i} className="p-2 text-start">{h}</th>)}</tr></thead><tbody>
             {data.deals.map((d) => <tr key={d.id} className="border-b border-stone-100 align-top">
-              <td className="p-2"><b>{d.title}</b>{d.notes && <span className="block text-stone-500">{d.notes}</span>}</td>
+              <td className="p-2"><b>{d.title}</b>{d.notes && <span className="block text-stone-500">{d.notes}</span>}{(() => {
+                const q = data.quiet.find((x) => x.id === d.id);
+                return q ? <span className="inline-block mt-1 rounded-full bg-amber-100 text-amber-900 px-2 py-0.5 text-[10px]">{f(`ساكتة ${num(q.silentDays)} يوم`, `quiet ${num(q.silentDays)}d`)}</span> : null;
+              })()}</td>
               <td className="p-2">{d.accountLabel}<span className="block text-[10px] text-stone-400">{SOURCE_LABEL[d.source] ? f(SOURCE_LABEL[d.source].ar, SOURCE_LABEL[d.source].en) : d.source}</span></td>
               <td className="p-2" dir="ltr">{money(d.valueMinor, d.currency)}<span className="block text-[10px] text-stone-400">{d.probability}%</span></td>
               <td className="p-2">{f(STAGE_LABEL[d.stage].ar, STAGE_LABEL[d.stage].en)}{d.lostReason ? <span className="block text-red-700">{d.lostReason}</span> : null}{d.orderRef ? <span className="block text-[10px] text-emerald-800 font-mono" dir="ltr">{d.orderRef}</span> : null}{d.closedAt ? <span className="block text-[10px] text-stone-400">{when(d.closedAt)}</span> : null}</td>
@@ -252,6 +255,7 @@ export default function SalesPanel({ onOpenBank }: { onOpenBank?: () => void }) 
             </tr>)}
           </tbody></table>
           {!data.deals.length && <p className="text-xs text-stone-500 p-2">{f('مفيش فرص مسجلة. سجّل أول ٣ فرص حقيقية، ولكل واحدة خطوة جاية بتاريخ.', 'No opportunities yet. Add the first three real ones, each with a dated next step.')}</p>}
+        <p className="text-[11px] text-stone-500 p-2">{f('«ساكتة» = فرصة مفتوحة خطوتها الجاية لسه قدام، بس مفيش عليها أي حركة من أكتر من أسبوع. المتأخرة واللي من غير خطوة ليهم مكانهم لوحدهم فوق.', '“Quiet” = an open opportunity whose next step is still ahead but nothing has moved on it for over a week. Overdue and no-next-step deals are counted separately above.')}</p>
         </div>
       </>}
 

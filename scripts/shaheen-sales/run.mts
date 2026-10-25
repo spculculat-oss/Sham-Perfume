@@ -56,6 +56,7 @@ else {
       waitingConfirmation: Number(desk.live?.waitingConfirmation) || 0,
       awaitingTransfer: Number(desk.live?.awaitingTransfer) || 0,
       openDeals: desk.pipeline.openCount, overdue: desk.pipeline.overdueCount, withoutNextStep: desk.pipeline.withoutNextStep,
+      silent: Number(desk.pipeline.silentCount) || 0,
       won: desk.pipeline.wonCount, lost: desk.pipeline.lostCount, winRate: desk.pipeline.winRate,
       bestSellers: (desk.live?.bestSellers || []).map((p) => ({ sku: String(p.sku), units: Number(p.units) || 0 })),
       targets: (desk.targetsPace || []).map((t) => ({ currency: String(t.currency), pace: t.pace, daysLeft: Number(t.daysLeft) || 0 })),

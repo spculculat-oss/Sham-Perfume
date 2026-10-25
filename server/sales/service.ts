@@ -15,7 +15,7 @@ import type { FinanceService } from '../finance/service';
 import type { BankService } from '../finance/bank';
 import { HANDBOOK_EDITION } from '../../src/utils/botHandbook';
 import {
-  DEAL_SOURCES, DEAL_STAGES, STAGE_PROBABILITY, dayKey, monthKey, moveDeal as moveDealRecord, summarizePipeline, type Deal, type DealMove, type DealSource, type DealStage,
+  DEAL_SOURCES, DEAL_STAGES, SILENT_AFTER_DAYS, STAGE_PROBABILITY, dayKey, monthKey, moveDeal as moveDealRecord, silentDeals, summarizePipeline, type Deal, type DealMove, type DealSource, type DealStage,
 } from '../../src/sales/pipeline';
 import { daysInMonth, paceTargets, salesHealth, type CollectedRow, type SalesTarget } from '../../src/sales/targets';
 import { dailyRhythm } from '../../src/sales/rhythm';
@@ -245,6 +245,7 @@ export class SalesService {
       lessonTitle: study.today.titleAr, topProducts: bestSellers,
       waitingConfirmation: snap.waitingConfirmation, awaitingTransfer: snap.awaitingTransfer,
       deals: deals.map((d) => ({ title: d.title, stage: d.stage, valueMinor: d.valueMinor, currency: d.currency, nextActionAt: d.nextActionAt })),
+      quiet: silentDeals(deals, this.now(), this.timeZone, SILENT_AFTER_DAYS, 5).map((q) => ({ title: q.deal.title, silentDays: q.silentDays, dueInDays: q.dueInDays })),
     };
   }
   async ask(question: unknown) {
@@ -271,6 +272,7 @@ export class SalesService {
       live: { today, month, waitingConfirmation: snap.waitingConfirmation, awaitingTransfer: snap.awaitingTransfer, bestSellers,
         countries: snap.countries.slice(0, 8).map((c) => ({ country: c.country, currency: c.currency, paidOrders: c.paidOrders, collectedMinor: c.collectedMinor })) },
       deals: sorted, targets, targetsPace: rows, pipeline, health, rhythm,
+      quiet: silentDeals(deals, this.now(), this.timeZone, SILENT_AFTER_DAYS, 200).map((q) => ({ id: q.deal.id, title: q.deal.title, silentDays: q.silentDays, dueInDays: q.dueInDays })),
       study: { todayId: study.today.id, plan: studyPlan(this.now(), 7).map((l) => ({ id: l.id, titleAr: l.titleAr, module: l.module })),
         progress: study.progress, results: study.results.slice(0, 20) },
       paidOrders: paidOrders.slice(0, 20),
@@ -291,6 +293,8 @@ export class SalesService {
       'حدّد هدف الشهر في «بنك شام ← إدارة المبيعات ← الأهداف» — من غير رقم مستهدف مفيش قياس.', 'warning');
     await flag('SALES_NO_NEXT_STEP', pipeline.withoutNextStep > 0, 'فرص مبيعات من غير خطوة جاية',
       `${pipeline.withoutNextStep} فرصة مفتوحة من غير تاريخ ولا إجراء. كل فرصة محتاجة خطوة واحدة بتاريخ.`, 'warning');
+    await flag('SALES_DEAL_SILENT', pipeline.silentCount > 0, 'فرص مبيعات ساكتة',
+      `${pipeline.silentCount} فرصة مفتوحة مفيش عليها حركة من أكتر من ${SILENT_AFTER_DAYS} أيام وخطوتها الجاية لسه بعيدة. لمسة واحدة بقيمة حقيقية تكفي.`, 'warning');
   }
 }
 

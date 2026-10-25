@@ -329,6 +329,8 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       const overdue = n(pipeline.overdueCount) ?? 0;
       if (overdue) f.push({ level: 'warn', problem: `${overdue} متابعة مبيعات فات موعدها`, fix: 'افتح «بنك شام ← إدارة المبيعات ← إيقاع اليوم» وحدّد خطوة جديدة لكل فرصة، أو أقفلها بسبب مسجل' });
       const noStep = n(pipeline.withoutNextStep) ?? 0;
+      const silent = n(pipeline.silentCount) ?? 0;
+      if (silent) f.push({ level: 'note', idea: `${silent} فرصة مفتوحة مفيش عليها حركة من أكتر من أسبوع — لمسة واحدة بقيمة حقيقية لكل واحدة تكفي` });
       if (noStep) f.push({ level: 'note', idea: `${noStep} فرصة مفتوحة من غير خطوة جاية — تاريخ وإجراء واحد لكل فرصة بيرفع نسبة الكسب` });
       const score = n(health.score);
       if (score !== undefined && score < 50) f.push({ level: score < 30 ? 'fail' : 'warn', problem: `صحة المبيعات ${score}/100 — ${String(health.labelAr || '')}`, fix: 'راجع أسباب الصحة في تقرير المبيعات: الهدف، المتابعات، والتحويلات المستنية' });

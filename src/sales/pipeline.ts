@@ -175,6 +175,42 @@ export function lostReasonGroups(deals: readonly Deal[], limit = 5): LostReasonG
 /** Open deals that carry no next step — the quietest way a pipeline dies. */
 export const dealsWithoutNextStep = (deals: readonly Deal[]) => deals.filter((d) => isOpenDeal(d) && !d.nextActionAt).length;
 
+/** After this many untouched days an open deal is «ساكتة», even when its written next step is still far away. */
+export const SILENT_AFTER_DAYS = 7;
+
+export interface SilentDeal {
+  deal: Deal;
+  /** Whole days since the record was last touched. */
+  silentDays: number;
+  /** Days until the written next step — always ≥ 1 by definition (due-today and overdue are already listed). */
+  dueInDays: number;
+  whyAr: string;
+}
+
+/**
+ * «الفرص الساكتة»: open opportunities whose written next step is still in the future but whose record has
+ * not been touched for `days` — the gap the overdue list cannot see («أتابعه بعد ٣ أسابيع» and then nothing).
+ * Deals already overdue, due today or with no next step are left to `dealActions`, so nothing is counted twice.
+ * Nothing is inferred about why the deal is quiet; the number of days is the only claim.
+ */
+export function silentDeals(deals: readonly Deal[], now: number, timeZone = 'Africa/Cairo', days = SILENT_AFTER_DAYS, limit = 5): SilentDeal[] {
+  const today = dayKey(now, timeZone);
+  const rows: SilentDeal[] = [];
+  for (const deal of deals) {
+    if (!isOpenDeal(deal) || !deal.nextActionAt) continue;
+    const dueInDays = daysBetween(today, deal.nextActionAt);
+    if (dueInDays <= 0) continue; // overdue or due today: already in the action list
+    const touched = dayKey(Date.parse(deal.updatedAt), timeZone);
+    if (!touched) continue;
+    const silentDays = daysBetween(touched, today);
+    if (!Number.isFinite(silentDays) || silentDays < Math.max(1, days)) continue;
+    rows.push({ deal, silentDays, dueInDays, whyAr: `مفيش أي حركة على الفرصة من ${silentDays} يوم، وخطوتها الجاية بعد ${dueInDays} يوم — الفترة الطويلة دي هي اللي بتنسّي العميل.` });
+  }
+  return rows
+    .sort((a, b) => b.silentDays - a.silentDays || b.deal.valueMinor - a.deal.valueMinor || a.deal.title.localeCompare(b.deal.title))
+    .slice(0, Math.max(0, limit));
+}
+
 export interface CurrencyPipeline {
   currency: string;
   openCount: number;
@@ -212,6 +248,8 @@ export interface PipelineSummary {
   lostReasons: LostReasonGroup[];
   /** Lost deals with no reason recorded: a gap, counted separately and never given an invented cause. */
   lostWithoutReason: number;
+  /** Open deals untouched for a week while their next step is still ahead — quiet, not yet late. */
+  silentCount: number;
 }
 
 export function summarizePipeline(deals: readonly Deal[], now: number, timeZone = 'Africa/Cairo'): PipelineSummary {
@@ -253,6 +291,7 @@ export function summarizePipeline(deals: readonly Deal[], now: number, timeZone 
     withoutNextStep: dealsWithoutNextStep(deals),
     lostReasons: lostReasonGroups(deals),
     lostWithoutReason: lost.filter((d) => String(d.lostReason || '').trim().length < 2).length,
+    silentCount: silentDeals(deals, now, timeZone, SILENT_AFTER_DAYS, Number.MAX_SAFE_INTEGER).length,
   };
 }
 
@@ -309,6 +348,10 @@ export function pipelineHygiene(summary: PipelineSummary): PipelineHygiene {
   if (summary.withoutNextStep) {
     score -= Math.min(20, summary.withoutNextStep * 5);
     notices.push(`${summary.withoutNextStep} فرصة من غير خطوة جاية — حدّد تاريخ وإجراء لكل واحدة.`);
+  }
+  if (summary.silentCount) {
+    score -= Math.min(15, summary.silentCount * 5);
+    notices.push(`${summary.silentCount} فرصة ساكتة من أكتر من ${SILENT_AFTER_DAYS} أيام — خطوتها الجاية بعيدة والسجل ما اتلمسش.`);
   }
   if (summary.winRate !== null && summary.closedCount >= 5 && summary.winRate < 30) {
     score -= 10;
