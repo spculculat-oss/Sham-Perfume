@@ -1,5 +1,6 @@
 import { SupportedLanguage, SUPPORTED_LANGUAGES } from '../types/i18n';
 import { WORLD_COUNTRIES, WorldCountryData, findCountryByCode } from '../data/worldCountries';
+import { apiUrl, isStaticHosting } from './api';
 
 export interface GeoDetectionResult {
   detectedCountry: WorldCountryData;
@@ -896,28 +897,12 @@ export async function detectUserLocationAsync(): Promise<GeoDetectionResult> {
     // ignore
   }
 
-  // 2. Try online IP-based country detection (fast timeout of 1200ms)
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 1200);
-    const res = await fetch('https://api.country.is/', { signal: controller.signal });
-    clearTimeout(timeoutId);
-    if (res.ok) {
-      const data = await res.json();
-      if (data && data.country) {
-        const match = findCountryByCode(data.country);
-        if (match) {
-          saveUserCountryCode(match.code);
-          return {
-            detectedCountry: match,
-            detectedLanguage: match.primaryLanguage,
-            detectionSource: 'ip',
-          };
-        }
-      }
-    }
-  } catch (e) {
-    // Network error or timeout, proceed to local detection
+  // 2. The network country (our server's edge, else an outside lookup) — a VPN counts, the device clock does not
+  const hit = await detectEntryLanguageAsync();
+  const match = hit ? findCountryByCode(hit.countryCode) : undefined;
+  if (match) {
+    saveUserCountryCode(match.code);
+    return { detectedCountry: match, detectedLanguage: match.primaryLanguage, detectionSource: 'ip' };
   }
 
   // 3. Fallback to synchronous Timezone and Locale detection
@@ -1002,30 +987,65 @@ export function detectEntryLanguage(): SupportedLanguage | null {
 export interface EntryLanguageHit {
   language: SupportedLanguage;
   countryCode: string;
-  source: 'ip';
+  source: 'edge' | 'ip';
+}
+
+/** Where the visitor's country is asked, first answer wins. Our own server (its edge sees the real exit IP, VPN
+ *  included), then an outside lookup as a spare for builds without a server. */
+function entryCountrySources(): { url: string; source: EntryLanguageHit['source'] }[] {
+  return [
+    ...(isStaticHosting ? [] : [{ url: apiUrl('/api/geo'), source: 'edge' as const }]),
+    { url: 'https://api.country.is/', source: 'ip' as const },
+  ];
 }
 
 /**
- * Refines the entry language with an IP-based country lookup (1200ms budget).
- * Returns null on any failure — it never falls back to a stored country,
- * so a failed lookup can never drag the language back to an old visit.
+ * The country the site is being entered from right now, by network (not by the device clock — a VPN changes the
+ * network, never the time zone). Both lookups run together; the first real country wins; 5s budget in all.
+ * Returns null on any failure — it never falls back to a stored country, so a failed lookup can never drag the
+ * language back to an old visit.
  */
-export async function detectEntryLanguageAsync(): Promise<EntryLanguageHit | null> {
+export async function detectEntryLanguageAsync(timeoutMs = 5000): Promise<EntryLanguageHit | null> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  const ask = async ({ url, source }: { url: string; source: EntryLanguageHit['source'] }): Promise<EntryLanguageHit> => {
+    const res = await fetch(url, { signal: controller.signal, cache: 'no-store' });
+    if (!res.ok) throw new Error(String(res.status));
+    const data = await res.json() as { country?: unknown } | null;
+    const countryCode = data && typeof data.country === 'string' ? data.country.toUpperCase() : null;
+    const language = languageForCountryCode(countryCode);
+    if (!language || !countryCode) throw new Error('no country');
+    return { language, countryCode, source };
+  };
   try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 1200);
-    const res = await fetch('https://api.country.is/', { signal: controller.signal });
-    clearTimeout(timeoutId);
-    if (res.ok) {
-      const data = await res.json();
-      const countryCode = data && typeof data.country === 'string' ? data.country.toUpperCase() : null;
-      const language = languageForCountryCode(countryCode);
-      if (language && countryCode) {
-        return { language, countryCode, source: 'ip' };
-      }
-    }
+    return await Promise.any(entryCountrySources().map(ask));
   } catch (e) {
-    // Network error or timeout — keep whatever language is already showing
+    // Every lookup failed or timed out — keep whatever language is already showing
+    return null;
+  } finally {
+    clearTimeout(timeoutId);
+    controller.abort();
   }
-  return null;
+}
+
+/** Ask again when the visitor comes back to the tab or the network changes (a VPN switched on while the page is
+ *  open) — at most once every `gapMs`. Returns the cleanup. */
+export function watchEntryCountry(onCheck: () => void, gapMs = 20_000): () => void {
+  if (typeof window === 'undefined') return () => undefined;
+  let last = Date.now();
+  const check = () => {
+    if (typeof document !== 'undefined' && document.visibilityState === 'hidden') return;
+    if (Date.now() - last < gapMs) return;
+    last = Date.now();
+    onCheck();
+  };
+  const online = () => { last = 0; check(); };
+  window.addEventListener('online', online);
+  window.addEventListener('focus', check);
+  document.addEventListener('visibilitychange', check);
+  return () => {
+    window.removeEventListener('online', online);
+    window.removeEventListener('focus', check);
+    document.removeEventListener('visibilitychange', check);
+  };
 }
