@@ -32,7 +32,7 @@ import {
 } from '../../src/utils/calculations';
 import { researchAnswer, type Research } from '../../src/utils/webResearch';
 import { tools as coreTools } from '../core/tools';
-import { liveNews } from '../core/liveData';
+import { liveNews, liveTradeLanes } from '../core/liveData';
 import type { Repository } from '../core/repository';
 import type { ShaheenMemory } from '../core/memory';
 import { searchImages, searchPlace, searchVideos } from '../media';
@@ -99,7 +99,7 @@ export type AnswerSource =
 export type ToolName =
   | 'school_science' | 'recall_memory' | 'search_library' | 'refuge_way' | 'knowledge_base' | 'open_sources'
   | 'material_card' | 'calc_concentration' | 'calc_dilution' | 'calc_pyramid' | 'calc_cost' | 'maceration_plan'
-  | 'safety_check' | 'search_store' | 'store_overview' | 'perfume_news' | 'media_find'
+  | 'safety_check' | 'search_store' | 'store_overview' | 'perfume_news' | 'media_find' | 'trade_lane'
   | 'open_section' | 'hand_over' | 'route_specialist' | 'study_later' | 'clarify';
 
 export interface SpecialistTool {
@@ -810,6 +810,55 @@ export const SPECIALIST_TOOLS: SpecialistTool[] = [
   },
 
   {
+    name: 'trade_lane',
+    labelAr: 'قرا ممر الشحن والجمارك', labelEn: 'Read the shipping and customs lane',
+    descriptionAr: 'ممر الشحن لبلد معيّن: بنوصّل ولا لأ، سعر الشحن المعلن، والجمارك المتأكدة. من تقرير «الشحن والتجارة» بمصدره وتاريخه — مفيش سعر مخترع.',
+    descriptionEn: 'The shipping lane for a country: do we deliver, the published shipping price, and the verified customs. From the trade-lanes report with its source and date — never an invented price.',
+    args: '{"country":"اسم البلد"}',
+    tracks: ['commerce', 'law', 'perfume', 'management'],
+    run: async (args, ctx) => {
+      const report = await liveTradeLanes(ctx.env, ctx.fetch).catch(() => undefined);
+      if (!report?.destinations?.length) return undefined;
+      const ar = ctx.lang !== 'en';
+      const asked = `${str(args, 'country') || ''} ${ctx.question}`.toLowerCase();
+      const found = report.destinations.find((d) => asked.includes(d.nameAr.toLowerCase()) || asked.includes(d.code.toLowerCase()) || asked.includes(String(d.code).toLowerCase()));
+      const fmt = (n: number) => `${Math.round(n)}`;
+      if (found) {
+        const lines = [
+          ar ? `${found.nameAr} (${found.code}): ${found.promise === 'broker_only' ? 'المنصة المصدر هي اللي بتشحن — دورنا وساطة' : found.promise === 'we_ship' ? 'إحنا اللي بنشحن' : 'طريقة التسليم لسه بتتأكد'}` : `${found.nameAr} (${found.code}): ${found.promise}`,
+          ar ? `سعر الشحن المعلن: ${fmt(found.chargedEgp)} ج.م` : `Published shipping: ${fmt(found.chargedEgp)} EGP`,
+          found.customs.verified
+            ? (ar ? `الجمارك: ضريبة ${found.customs.vatPercent ?? '—'}%${found.customs.dutyPercent ? ` ورسوم ${found.customs.dutyPercent[0]}–${found.customs.dutyPercent[1]}%` : ''}${found.customs.deMinimis ? ` · إعفاء حتى ${found.customs.deMinimis}` : ''} — العميل بيتحملها` : `Customs: VAT ${found.customs.vatPercent ?? '—'}%`)
+            : (ar ? 'الجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع' : 'Customs: not verified yet — confirmed before payment'),
+          ...(found.customs.restricted ? [ar ? `⚠️ ${found.customs.restricted}` : `⚠️ ${found.customs.restricted}`] : []),
+          ar ? 'العطر UN1266 سائل قابل للاشتعال — الشحن الجوي بحدود IATA، والسعر النهائي بيتأكد قبل الدفع.' : 'Perfume is UN1266 flammable — air limits apply, the final price is confirmed before payment.',
+        ];
+        return {
+          tool: 'trade_lane', observation: clip(lines.join('\n')), strength: 0.9,
+          answer: `${lines.join('\n')}\n\n_${sourceNote('knowledge', ctx.lang)}._`,
+          source: 'knowledge',
+        };
+      }
+      // No country named: the policy itself, from the same report — never a made-up destination.
+      const origins = report.origins.map((o) => `${o.nameAr} (${o.products})`).join('، ');
+      const ships = report.platforms
+        .filter((p) => p.fulfilment === 'platform_ships')
+        .map((p) => `${p.nameAr}${Array.isArray(p.shipsTo) && p.shipsTo.length ? ` (${p.shipsTo.join('، ')})` : ''}`);
+      const lines = [
+        ar ? `بنوصّل لأي بلد في العالم: ${report.destinations.length} وجهة مسجّلة في تقرير الشحن.` : `${report.destinations.length} destinations are recorded.`,
+        ar ? `البضاعة بتتجهّز من: ${origins}.` : `Stock ships from: ${origins}.`,
+        ...(ships.length ? [ar ? `ومنصات بتشحن بنفسها (وساطة): ${ships.join('، ')}.` : `Platforms that ship themselves: ${ships.join(', ')}.`] : []),
+        ar ? 'الجمارك والضرائب على العميل، والعطر UN1266 بيتشحن بحدود IATA. اسأل عن بلدك وأنا أقولك سعره وجماركه.' : 'Customs and taxes are the buyer\'s, perfume UN1266 ships within IATA limits. Ask about your country for its price and customs.',
+      ];
+      return {
+        tool: 'trade_lane', observation: clip(lines.join('\n')), strength: 0.7,
+        answer: `${lines.join('\n')}\n\n_${sourceNote('knowledge', ctx.lang)}._`,
+        source: 'knowledge',
+      };
+    },
+  },
+
+  {
     name: 'media_find',
     labelAr: 'دوّر على صورة أو مكان', labelEn: 'Looked for an image or a place',
     descriptionAr: 'صور حرة وفيديوهات ومكان على الخريطة لموضوع في الرد (بحسب ما يطلبه الزائر).',
@@ -988,8 +1037,15 @@ const firstPercentIn = (text?: string): number | undefined => {
 const CALC_WORDS = /(احسب|احسبي|كام|كم|calculate|how much|how many|نسبة|تركيز|تخفيف|تكلفة|هرم|مقادير)/i;
 /** سؤال عن الأخبار نفسها (مش «عايز عطر جديد») — النشرة الحقيقية اللي جمعها شاهين هي الرد. */
 const NEWS_WORDS = /(اخبار|أخبار|النشرة|نشرة|ترند|تريند|صيحات|موضه|موضة|\bnews\b|\bheadlines?\b|\btrends?\b|\blatest launch\w*\b)/i;
-/** طلب أو خدمة صريحة — صاحبها «مساعد شام» (طلبات، جملة، شحن، دفع، تتبع). */
-const ORDER_WORDS = /(أطلب|اطلب|اطلبي|هشتري|أشتري|اشتري|بالجملة|جملة|توصيل|شحن|السلة|سلة|دفع|أتتبع|تتبع الطلب|طلبية|\bplace (?:an )?order\b|\bwholesale\b|\bcheckout\b|\bdeliver\w*\b|\btrack (?:my|the) order\b|\bi (?:want|need) to (?:buy|order)\b)/i;
+/**
+ * طلب أو خدمة صريحة — صاحبها «مساعد شام» (طلبات، جملة، دفع، تتبع). **مش** كلمات الموضوع:
+ * «الشحن» و«التوصيل» و«الجمارك» أسئلة معرفة، ولو اتقروا «طلب» السؤال مايوصلش للمخ ويتسجل فجوة
+ * ويتعلمه — وده اللي كان بيخلي المختص يقول «ده طلب أو خدمة» على أي سؤال شحن.
+ */
+const ORDER_WORDS = /(أطلب|اطلب|اطلبي|هطلب|هشتري|أشتري|اشتري|بالجملة|جملة|السلة|سلة|اتمام الطلب|إتمام الطلب|طلبية|أوردر|اوردر|أتتبع|تتبع الطلب|اشحن لي|أشحن لي|وصّل لي|وصل لي|\bplace (?:an )?order\b|\bwholesale\b|\bcheckout\b|\btrack (?:my|the) order\b|\bi (?:want|need) to (?:buy|order)\b)/i;
+
+/** سؤال عن الشحن أو الجمارك أو التجارة نفسها — بيتقرا من تقرير الشحن، مش طلب. */
+const TRADE_WORDS = /(شحن|الشحن|توصيل|التوصيل|جمارك|الجمارك|تصدير|استيراد|تخليص|منشأ|اتفاقية|رسوم|ضريبة الاستيراد|\bshipping\b|\bcustoms\b|\bdut(?:y|ies)\b|\bexport\w*\b|\bimport\w*\b)/i;
 /** سؤال سلامة (حساسية/حمل/بشرة/IFRA) — موسوعة المواد هي المرجع، مش التخمين. */
 const SAFETY_WORDS = /(حساسية|تحسس|حامل|حمل|رضاعة|رضيع|أطفال|اطفال|ربو|بشرة|جلد|تهيج|آمن|امن|خطر|تسمم|\bifra\b|\balerg\w*\b|\bpregnan\w*\b|\bskin\b|\birritat\w*\b|\bsafe(?:ty)?\b|\btoxic\w*\b)/i;
 
@@ -1021,7 +1077,10 @@ export function planFirstTools(question: string, specialist: Specialist, section
     if (hasNumber && intents.includes('pyramid')) push('calc_pyramid');
     if (intents.includes('maceration') || macerationDaysIn(question)) push('maceration_plan');
   }
-  if (SHOP_WORDS.test(question) || intents.includes('store') || section === 'store' || section === 'productDetail') push('search_store', { query: question });
+  const trade = TRADE_WORDS.test(question);
+  if (!trade && (SHOP_WORDS.test(question) || intents.includes('store') || section === 'store' || section === 'productDetail')) push('search_store', { query: question });
+  // سؤال الشحن/الجمارك بيتقرا من تقرير الشحن قبل أي حاجة — وسعر الشحن مش سعر عطر.
+  if (trade) push('trade_lane', { country: question });
   if (SAFETY_WORDS.test(question)) push('safety_check');
   if (NEWS_WORDS.test(question)) push('perfume_news');
   if (!plan.some((p) => p.tool === 'knowledge_base')) push('knowledge_base', { query: question });

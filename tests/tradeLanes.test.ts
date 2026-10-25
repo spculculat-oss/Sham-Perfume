@@ -186,6 +186,20 @@ test('the real files: every lane, price and duty in the report is traceable and 
   assert.equal(report.agent, 'trade-lanes');
   // Every platform is one of the merchant's two cases (or explicitly unknown — never silently defaulted).
   for (const p of lanesFile.platforms) assert.ok(['platform_ships', 'broker', 'unknown'].includes(p.fulfilment), p.id);
+  // Every registered delivery mode carries its evidence and the date it was checked — a mode is never a guess.
+  for (const p of lanesFile.platforms) {
+    assert.ok(Array.isArray(p.shipsTo), `${p.id}: shipsTo must be a list`);
+    assert.match(String(p.shipmentCheckedAt ?? ''), /^\d{4}-\d{2}-\d{2}$/, `${p.id}: no date on the delivery check`);
+    if (p.fulfilment === 'platform_ships') assert.ok(p.shipsTo.length > 0, `${p.id}: a platform that ships must say where to`);
+  }
+  // The importer and the trade register must tell the same story about the supplier we know most about.
+  const sham = lanesFile.platforms.find((p: { id: string }) => p.id === 'shamperfume');
+  assert.equal(sham.originCountry, 'MY', 'the Malaysian supplier is recorded as Malaysian');
+  assert.equal(sham.fulfilment, 'broker', 'its own shipping policy is missing → we carry it');
+  assert.deepEqual(sham.shipsTo, ['MY']);
+  const afnan = lanesFile.platforms.find((p: { id: string }) => p.id === 'afnan');
+  assert.equal(afnan.fulfilment, 'platform_ships', 'Afnan ships itself');
+  assert.deepEqual(afnan.shipsTo, ['US'], 'and its published policy says the United States only');
   // Every customs figure that is presented as known carries its source and date.
   for (const c of customsFile.countries) {
     if (c.confidence === 'unverified') { assert.equal(c.source, null, `${c.code} must not fake a source`); continue; }
@@ -281,4 +295,47 @@ test('the order’s own verdict: a shipping shortfall is paid by the bottle’s 
   assert.equal(eg.orderVerdict, 'profit');
   assert.equal(report.money.orderLossDestinations, 1);
   assert.equal(report.money.profitPerBottleEgp, 1200);
+});
+
+test('the importer records how each supplier delivers, with its evidence — the lane is read, not guessed', async () => {
+  const { sourceById } = await import('../scripts/shaheen-import/sources');
+  const sham = sourceById('shamperfume')!;
+  assert.ok(sham.delivery, 'the built-in supplier carries its delivery record');
+  assert.equal(sham.delivery!.fulfilment, 'broker');
+  assert.deepEqual(sham.delivery!.shipsTo, ['MY']);
+  assert.match(sham.delivery!.source, /^https:\/\//, 'the evidence is a real page');
+  assert.match(sham.delivery!.checkedAt, /^\d{4}-\d{2}-\d{2}$/, 'and a date');
+  assert.ok(sham.delivery!.evidenceAr.length > 40, 'and the reasoning in Arabic');
+});
+
+test('the 50% stays whole only when the shipping we charge covers the carrier band', () => {
+  const provider = platform({ fulfilment: 'broker', originCountry: 'EG' });
+  const report = review([provider], [LOCAL_EG, INTL], { profitPerBottleEgp: 1000, destinations: ['EG', 'FR'] });
+  const eg = report.destinations.find((d) => d.code === 'EG')!;
+  const fr = report.destinations.find((d) => d.code === 'FR')!;
+  // Egypt: we charge 750, the band is 30–55 → the markup is untouched.
+  assert.equal(eg.marginEatenEgp, 0);
+  assert.ok(eg.keptPercent! >= 100, 'over-charging keeps more than the whole markup');
+  assert.deepEqual(eg.requiredShippingEgp, [30, 55]);
+  // France: we charge 1100, the band is 2000–5000 → the shipping eats 2400 of a 1000 markup.
+  assert.equal(fr.marginEatenEgp, 2400);
+  assert.equal(fr.keptPercent, -140);
+  assert.equal(report.money.keptWholeDestinations, 1);
+  assert.equal(report.money.marginEatenDestinations, 1);
+});
+
+test('the shipping proposal is the real cost, per zone and per destination, and never applied by itself', () => {
+  const provider = platform({ fulfilment: 'broker', originCountry: 'EG' });
+  const report = review([provider], [LOCAL_EG, INTL], { profitPerBottleEgp: 1000, destinations: ['EG', 'FR', 'DE'] });
+  const egypt = report.shippingProposal.find((z) => z.zoneId === 'egypt')!;
+  assert.equal(egypt.currentFirstItem, 15, 'what we charge today');
+  // 30 EGP of real cost = 0.6 USD in the table's own currency, rounded up to a whole dollar.
+  assert.equal(egypt.typicalRequiredFirstItem, 1, 'the carrier band, in the table’s own currency');
+  assert.equal(egypt.covered, 1, 'Egypt already keeps the whole markup');
+  const europe = report.shippingProposal.find((z) => z.zoneId === 'europe')!;
+  assert.equal(europe.typicalRequiredFirstItem, 40, '20 USD band is the real cost for both FR and DE');
+  assert.deepEqual(europe.destinations.map((d) => d.code).sort(), ['DE', 'FR']);
+  // A proposal is data in the report; the live shipping table itself is the owner's to change.
+  const shippingFile = JSON.parse(readFileSync(join(new URL('..', import.meta.url).pathname, 'src/data/shipping.json'), 'utf8'));
+  assert.equal(shippingFile.zones[0].firstItem, 15, 'the robot never rewrites a price');
 });

@@ -1,6 +1,6 @@
 {
  "version": 1,
- "note": "بلد المنشأ متأكد من عملة كل مورد وملف الاستيراد — مش مستنتج من اسم الموقع. أي سعر شحن بيستخدم بس لو محسوب من نفس بلد البضاعة.",
+ "note": "طريقة التسليم مسجّلة لكل منصة بمصدرها وتاريخها: منصة بتشحن = وساطة (مكسبنا صافي)، منصة محلية = إحنا بنشحن لعالم كله.",
  "updatedAt": "2026-10-25",
  "modes": {
   "platform_ships": {
@@ -35,11 +35,15 @@
    "originCountry": "MY",
    "originConfidence": "verified",
    "originEvidenceAr": "متجر ماليزي: أسعاره بالرينجت (MYR) وكل منتج مسجّل بسعر صرفه 13.0813 ج.م/رينجت — نفس مصدر السكرابر الأصلي. مؤكد من ملف الاستيراد نفسه، مش مستنتج من اسم الموقع.",
-   "fulfilment": "unknown",
-   "shipsTo": [],
-   "shipsToNoteAr": "لسه محدش سجل إذا كانت بتشحن لمصر ولأوروبا بنفسها ولا محلية بس — ده أول سؤال لصاحب المتجر.",
+   "fulfilment": "broker",
+   "shipsTo": [
+    "MY"
+   ],
+   "shipsToNoteAr": "مفيش صفحة سياسة شحن على موقعها (بترجع 404)، وكله مدفوعات محلية ماليزية (Touch n Go · GrabPay · ShopeePay) — يعني بتسلّم جوه ماليزيا بس. فإحنا اللي بنشحن لكل العالم.",
    "source": "https://www.shamperfume.com",
-   "checkedAt": "2026-10-25"
+   "checkedAt": "2026-10-25",
+   "shipmentSource": "https://www.shamperfume.com/perfumes/policies/shipping-policy/",
+   "shipmentCheckedAt": "2026-10-25"
   },
   {
    "id": "afnan",
@@ -50,11 +54,15 @@
    "originCountry": "AE",
    "originConfidence": "verified",
    "originEvidenceAr": "أسعار المورد بالدرهم الإماراتي (AED) بسعر صرف 14.5568 ج.م/درهم — أفنان مقرها الشارقة، الإمارات. الموقع (afnan.com) بيع الماركة نفسها.",
-   "fulfilment": "unknown",
-   "shipsTo": [],
-   "shipsToNoteAr": "موقع أفنان مش ناشر سياسة شحن مقروءة (فحص الثقة: سياسة الشحن ❌) — يعني غالباً محلية/منطقة مغلقة، ومحتاج تأكيد.",
+   "fulfilment": "platform_ships",
+   "shipsTo": [
+    "US"
+   ],
+   "shipsToNoteAr": "سياستها المنشورة بتقول «بنشحن لأمريكا بس» (آخر تحديث ١ نوفمبر ٢٠٢٤) — يعني لأمريكا وساطة ومكسبنا صافي، ولأي دولة تانية إحنا اللي بنشحن.",
    "source": "https://afnan.com",
-   "checkedAt": "2026-10-25"
+   "checkedAt": "2026-10-25",
+   "shipmentSource": "https://us.afnan.com/policies/shipping-policy",
+   "shipmentCheckedAt": "2026-10-25"
   },
   {
    "id": "direct",
@@ -71,7 +79,8 @@
    ],
    "shipsToNoteAr": "لما يبقى فيهم بضاعة معروضة فعلاً: بنشحن منها محلياً بشركة محلية (بوستة 30–55 ج.م)، ودولياً بشركة دولية بتقبل العطور.",
    "source": "src/data/products.json",
-   "checkedAt": "2026-10-25"
+   "checkedAt": "2026-10-25",
+   "shipmentCheckedAt": "2026-10-25"
   }
  ],
  "carriers": [

@@ -259,14 +259,14 @@ export function bestEvidence(observations: ToolObservation[], skip: ToolName[] =
 const PRECISE_FLOOR: Partial<Record<ToolName, number>> = {
   calc_concentration: 0.5, calc_dilution: 0.5, calc_pyramid: 0.5, calc_cost: 0.5, maceration_plan: 0.5,
   safety_check: 0.5, refuge_way: 0.5, search_store: 0.5, store_overview: 0.5, perfume_news: 0.5,
-  material_card: 0.8,
+  material_card: 0.8, trade_lane: 0.5,
 };
 export function bestPrecise(observations: ToolObservation[], outOfScope = false): ToolObservation | undefined {
   return observations
     .filter((o) => o.answer && (PRECISE_FLOOR[o.tool] ?? 1) <= o.strength)
     // سؤال خارج النطاق («إيه توقعك لسعر X بكرة؟»): النشرة الحقيقية أو منتج **اتلاقى فعلاً في
     // المتجر** بس — ملخص أسعار عام مش رد على سؤال عن توقع، والرد عليه بيه يبقى تخمين.
-    .filter((o) => !outOfScope || o.tool === 'perfume_news' || (o.tool === 'search_store' && (o.data as { matched?: boolean } | undefined)?.matched))
+    .filter((o) => !outOfScope || o.tool === 'perfume_news' || o.tool === 'trade_lane' || (o.tool === 'search_store' && (o.data as { matched?: boolean } | undefined)?.matched))
     .sort((a, b) => b.strength - a.strength)[0];
 }
 

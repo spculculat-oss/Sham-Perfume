@@ -213,6 +213,12 @@ export interface DestinationPlan {
   netEgp: number | null;
   /** The order itself: does it still make money once the shipping is paid at the published band? */
   orderVerdict: 'profit' | 'thin' | 'loss' | 'unknown';
+  /** How much of the bottle's markup survives the real shipping, in percent (100 = the 50% is untouched). */
+  keptPercent: number | null;
+  /** How much of the markup the real shipping eats, in EGP (0 = nothing eaten). */
+  marginEatenEgp: number | null;
+  /** The shipping we must charge for the 50% to stay whole: the carrier's own band, in EGP. */
+  requiredShippingEgp: [number, number] | null;
   /** What we may tell the visitor: nothing (unknown mode), «المنصة بتشحن», or «إحنا بنشحن». */
   promise: 'broker_only' | 'we_ship' | 'unknown';
   /** The money verdict on the shipping, whether or not we ship it today. */
@@ -234,7 +240,7 @@ export interface TradeReport {
   agent: 'trade-lanes';
   updatedAt: string;
   modes: Record<Fulfilment, { nameAr: string; platforms: string[]; products: number }>;
-  platforms: { id: string; nameAr: string; fulfilment: Fulfilment; originCountry: string | null; originConfidence: string; products: number; noteAr: string }[];
+  platforms: { id: string; nameAr: string; fulfilment: Fulfilment; originCountry: string | null; originConfidence: string; shipsTo: string[]; products: number; noteAr: string }[];
   destinations: DestinationPlan[];
   /** The catalogue counted by whose delivery mode is known — «who ships» in one line. */
   products: { platform_ships: number; broker: number; unknown: number; total: number };
@@ -242,6 +248,24 @@ export interface TradeReport {
   origins: OriginGroup[];
   /** Supplier prices built on an older exchange rate than today's: our real cost is above the price's. */
   fx: { thresholdPercent: number; lines: FxDriftLine[] };
+  /**
+   * What the shipping table should charge so the 50% stays whole — one line per existing zone, in the table's own
+   * currency. A proposal only: the price is the owner's decision (O-06).
+   */
+  shippingProposal: {
+    zoneId: string; nameAr: string; currency: string; countries: number;
+    currentFirstItem: number;
+    /** The middle real cost inside the zone, in the table's currency — what most countries there actually cost. */
+    typicalRequiredFirstItem: number;
+    /** The dearest real cost inside the zone (a zone-wide price must cover it). */
+    maxRequiredFirstItem: number;
+    /** The destination that costs the dearest — named, so the owner sees why. */
+    drivenByAr: string | null;
+    /** Every destination in the zone with its own real cost, in the table's currency. */
+    destinations: { code: string; nameAr: string; requiredFirstItem: number }[];
+    /** Destinations in this zone where the real shipping is below what we charge (no change needed). */
+    covered: number;
+  }[];
   /** What we do not know yet — each line is a question for the merchant or a job for the robot. */
   gaps: { kindAr: string; whatAr: string; fixAr: string }[];
   /** Money at stake, from the catalogue's own numbers. */
@@ -254,6 +278,10 @@ export interface TradeReport {
     orderLossDestinations: number;
     /** The best and worst net per order, in EGP. */
     bestNetEgp: number | null; worstNetEgp: number | null;
+    /** Destinations where the 50% is untouched (the shipping we charge covers the real band). */
+    keptWholeDestinations: number;
+    /** Destinations where the shipping eats part of the markup. */
+    marginEatenDestinations: number;
   };
   score: number;
   notes: string[];
@@ -402,6 +430,9 @@ export function reviewTrade(input: TradeInput): TradeReport {
     const surplus = mid === null ? null : round(charged - mid);
     // The shipping is only half the story: the bottle's own markup is what pays for it.
     const net = surplus === null ? null : round(profit + surplus);
+    // «مكسبنا 50% تكون صافية»: النسبة اللي بتفضل من الهامش بعد ما الشحن الحقيقي ياخد حقه.
+    const keptPercent = net === null || profit <= 0 ? null : round((net / profit) * 100);
+    const marginEaten = surplus === null || surplus >= 0 ? (surplus === null ? null : 0) : round(-surplus);
     const orderVerdict: DestinationPlan['orderVerdict'] = net === null ? 'unknown'
       : net < 0 ? 'loss'
         : profit > 0 && net < profit * 0.25 ? 'thin' : (profit > 0 ? 'profit' : 'thin');
@@ -431,6 +462,9 @@ export function reviewTrade(input: TradeInput): TradeReport {
       surplusEgp: surplus,
       netEgp: net,
       orderVerdict,
+      keptPercent,
+      marginEatenEgp: marginEaten,
+      requiredShippingEgp: band,
       promise,
       costVerdict,
       customs: {
@@ -530,6 +564,42 @@ export function reviewTrade(input: TradeInput): TradeReport {
   const bestNet = nets.length ? Math.max(...nets) : null;
   const worstNet = nets.length ? Math.min(...nets) : null;
   const averageCharged = plans.length ? round(plans.reduce((s, p) => s + p.chargedEgp, 0) / plans.length) : 0;
+  // «الـ٥٠٪ كاملة» = الشحن اللي بنحصّله بيغطي تكلفته الحقيقية، فمفيش مليم بيتخصم من الهامش.
+  const keptWhole = known.filter((p) => (p.marginEatenEgp ?? 1) === 0).length;
+  const marginEaten = known.filter((p) => (p.marginEatenEgp ?? 0) > 0).length;
+
+  // ── what the shipping table should charge so the 50% stays whole ──
+  // Grouped by the table's own zones (so it is directly applicable), and the highest real cost in the zone wins —
+  // a zone price that covers the dearest destination in it never eats the markup anywhere inside it.
+  const shippingProposal: TradeReport['shippingProposal'] = [];
+  const allZones = [...(shipping.zones || []), shipping.default].filter(Boolean) as ShippingZone[];
+  const toTable = (egp: number) => Math.ceil(convert(egp, HOME_CURRENCY, shipping.currency, fx));
+  for (const zone of allZones) {
+    const codes = (zone.countries || []).map((c) => c.toUpperCase()).filter((c) => plans.some((p) => p.code === c));
+    if (!codes.length) continue;
+    const inside = plans.filter((p) => codes.includes(p.code));
+    const priced = inside.filter((p) => p.requiredShippingEgp?.[0] !== null && p.requiredShippingEgp !== null);
+    const required = priced.map((p) => p.requiredShippingEgp![0]).sort((a, b) => a - b);
+    const base = {
+      zoneId: zone.id, nameAr: zone.name?.ar || zone.id, currency: shipping.currency, countries: codes.length,
+      currentFirstItem: zone.firstItem,
+      covered: inside.filter((p) => (p.marginEatenEgp ?? 1) === 0).length,
+    };
+    if (!required.length) {
+      shippingProposal.push({ ...base, typicalRequiredFirstItem: zone.firstItem, maxRequiredFirstItem: zone.firstItem, drivenByAr: null, destinations: [] });
+      continue;
+    }
+    const mid = required[Math.floor(required.length / 2)];
+    const max = required[required.length - 1];
+    const dearest = priced.find((p) => p.requiredShippingEgp![0] === max) || null;
+    shippingProposal.push({
+      ...base,
+      typicalRequiredFirstItem: toTable(mid),
+      maxRequiredFirstItem: toTable(max),
+      drivenByAr: dearest?.nameAr || null,
+      destinations: priced.map((p) => ({ code: p.code, nameAr: p.nameAr, requiredFirstItem: toTable(p.requiredShippingEgp![0]) })),
+    });
+  }
 
   // ── score: what we know, weighted by what costs money ──
   const totalDest = plans.length || 1;
@@ -552,15 +622,21 @@ export function reviewTrade(input: TradeInput): TradeReport {
     notes.push(`${overCharged} وجهة إحنا بنحصّل شحن فيها أكتر من ضعف تكلفته الحقيقية — ده بيقلل التحويل.`);
     planAr.push(`راجع سعر الشحن في ${overCharged} وجهة (الزائر بيدفع أكتر من التكلفة بكثير) — الشحن الزيادة بيطرد العميل.`);
   }
+  if (profit > 0) notes.push(`مكسب الزجاجة (٥٠٪) ${profit} ج.م — والـ٥٠٪ بتفضل كاملة في ${keptWhole} وجهة بس من ${known.length}.`);
   if (loss) {
-    notes.push(`${loss} وجهة لو إحنا اللي بنشحن، تكلفة الشحن أكبر من اللي بنحصّله — فرق بيدفع من مكسب العطر.`);
-    if (orderLoss) notes.push(`وفي ${orderLoss} وجهة الفرق أكبر من مكسب العطر نفسه — الطلب هناك بخسارة حقيقية.`);
-    else if (bestNet !== null && worstNet !== null) notes.push(`مكسب العطر (${profit} ج.م) لسه بيغطي فرق الشحن في كل الوجهات: صافي الطلب من ${worstNet} لـ${bestNet} ج.م.`);
+    notes.push(`${marginEaten} وجهة الشحن فيها بياكل من الهامش — الشحن اللي بنحصّله أقل من تكلفته الحقيقية.`);
+    if (orderLoss) notes.push(`وفي ${orderLoss} وجهة الشحن بياكل الهامش كله وزيادة — الطلب هناك بخسارة حقيقية (أسوأها ${worstNet} ج.م).`);
+    else if (worstNet !== null) notes.push(`أقل صافي طلب ${worstNet} ج.م — لسه موجب، بس مكسبه مش ٥٠٪ كامل.`);
   }
   const pricedPlans = plans.filter((p) => p.costEgp !== null);
   if (pricedPlans.length) {
     const cheapest = [...pricedPlans].sort((a, b) => (a.costEgp![0] - b.costEgp![0])).slice(0, 3);
     planAr.push(`لو إحنا اللي بنشحن، أرخص المسارات: ${cheapest.map((p) => `${p.nameAr} بـ${p.costEgp![0]}–${p.costEgp![1]} ج.م`).join('، ')}.`);
+    planAr.push('عشان الـ٥٠٪ تفضل صافية: الشحن يتاخد بسعره الحقيقي (زي ما في جدول المقترح تحت) — والفرق ده مش بيتحمل من الهامش.');
+  }
+  const needRaise = shippingProposal.filter((z) => z.typicalRequiredFirstItem > z.currentFirstItem);
+  if (needRaise.length) {
+    planAr.push(`الشحن الحقيقي أغلى من اللي بنحصّله في ${needRaise.length} منطقة: ${needRaise.map((z) => `${z.nameAr} بياخد ${z.currentFirstItem} والمتوسط الحقيقي ${z.typicalRequiredFirstItem} ${z.currency}`).join('، ')} — والفرق بيتخصم من الـ٥٠٪. القرار لصاحب المتجر.`);
   }
   const reliefs = plans.filter((p) => p.customs.dutyRelief);
   if (reliefs.length) planAr.push(`${reliefs.length} وجهة ممكن تتلغي جمركها باتفاقية تجارية (${[...new Set(reliefs.map((r) => r.customs.dutyRelief!.id))].join('، ')}) — بس محتاجة ${reliefs[0].customs.dutyRelief!.requires.join(' + ')}.`);
@@ -576,14 +652,16 @@ export function reviewTrade(input: TradeInput): TradeReport {
     modes,
     platforms: platforms.map((p) => ({
       id: p.id, nameAr: p.nameAr, fulfilment: p.fulfilment, originCountry: p.originCountry,
-      originConfidence: p.originConfidence || 'unknown', products: Number(p.products) || 0,
+      originConfidence: p.originConfidence || 'unknown', shipsTo: p.shipsTo || [], products: Number(p.products) || 0,
       noteAr: p.fulfilment === 'unknown' ? 'محتاج قرار صاحب المتجر' : p.fulfilment === 'platform_ships' ? 'وساطة — المنصة بتشحن' : 'إحنا بنشحن',
     })),
     destinations: plans, products, origins, fx: { thresholdPercent: fxThresholdPercent, lines: fxLines }, gaps,
+    shippingProposal,
     money: {
       profitPerBottleEgp: profit, averageChargedEgp: averageCharged, pricedDestinations: known.length,
       overChargedDestinations: overCharged, lossDestinations: loss,
       orderLossDestinations: orderLoss, bestNetEgp: bestNet, worstNetEgp: worstNet,
+      keptWholeDestinations: keptWhole, marginEatenDestinations: marginEaten,
     },
     score, notes, planAr, summaryAr,
   };

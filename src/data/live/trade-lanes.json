@@ -1,47 +1,53 @@
 {
  "version": 1,
  "agent": "trade-lanes",
- "updatedAt": "2026-10-25T20:51:56.410Z",
+ "updatedAt": "2026-10-25T21:30:11.104Z",
  "modes": {
   "platform_ships": {
    "nameAr": "المنصة بتشحن (وساطة)",
-   "platforms": [],
-   "products": 0
+   "platforms": [
+    "afnan"
+   ],
+   "products": 98
   },
   "broker": {
    "nameAr": "إحنا بنشحن",
    "platforms": [
+    "shamperfume",
     "direct"
    ],
-   "products": 51
+   "products": 1114
   },
   "unknown": {
    "nameAr": "مش معروف",
-   "platforms": [
-    "shamperfume",
-    "afnan"
-   ],
-   "products": 1161
+   "platforms": [],
+   "products": 0
   }
  },
  "platforms": [
   {
    "id": "shamperfume",
    "nameAr": "شام بيرفيوم",
-   "fulfilment": "unknown",
+   "fulfilment": "broker",
    "originCountry": "MY",
    "originConfidence": "verified",
+   "shipsTo": [
+    "MY"
+   ],
    "products": 1063,
-   "noteAr": "محتاج قرار صاحب المتجر"
+   "noteAr": "إحنا بنشحن"
   },
   {
    "id": "afnan",
    "nameAr": "أفنان للعطور",
-   "fulfilment": "unknown",
+   "fulfilment": "platform_ships",
    "originCountry": "AE",
    "originConfidence": "verified",
+   "shipsTo": [
+    "US"
+   ],
    "products": 98,
-   "noteAr": "محتاج قرار صاحب المتجر"
+   "noteAr": "وساطة — المنصة بتشحن"
   },
   {
    "id": "direct",
@@ -49,6 +55,9 @@
    "fulfilment": "broker",
    "originCountry": "EG",
    "originConfidence": "inferred",
+   "shipsTo": [
+    "EG"
+   ],
    "products": 51,
    "noteAr": "إحنا بنشحن"
   }
@@ -57,24 +66,24 @@
   {
    "code": "EG",
    "nameAr": "مصر",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "local"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -95,7 +104,13 @@
    "surplusEgp": -1018.29,
    "netEgp": 172.77,
    "orderVerdict": "thin",
-   "promise": "unknown",
+   "keptPercent": 14.51,
+   "marginEatenEgp": 1018.29,
+   "requiredShippingEgp": [
+    1705.4,
+    1989.64
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -113,24 +128,24 @@
   {
    "code": "SA",
    "nameAr": "السعودية",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -151,7 +166,13 @@
    "surplusEgp": -978.83,
    "netEgp": 212.23,
    "orderVerdict": "thin",
-   "promise": "unknown",
+   "keptPercent": 17.82,
+   "marginEatenEgp": 978.83,
+   "requiredShippingEgp": [
+    1515.91,
+    1989.64
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -166,24 +187,24 @@
   {
    "code": "AE",
    "nameAr": "الإمارات",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -204,7 +225,13 @@
    "surplusEgp": -931.45,
    "netEgp": 259.61,
    "orderVerdict": "thin",
-   "promise": "unknown",
+   "keptPercent": 21.8,
+   "marginEatenEgp": 931.45,
+   "requiredShippingEgp": [
+    1515.91,
+    1894.89
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -219,24 +246,24 @@
   {
    "code": "KW",
    "nameAr": "الكويت",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -257,7 +284,13 @@
    "surplusEgp": -836.71,
    "netEgp": 354.35,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 29.75,
+   "marginEatenEgp": 836.71,
+   "requiredShippingEgp": [
+    1421.17,
+    1800.15
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -272,24 +305,24 @@
   {
    "code": "QA",
    "nameAr": "قطر",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -310,7 +343,13 @@
    "surplusEgp": -836.71,
    "netEgp": 354.35,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 29.75,
+   "marginEatenEgp": 836.71,
+   "requiredShippingEgp": [
+    1421.17,
+    1800.15
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -325,24 +364,24 @@
   {
    "code": "BH",
    "nameAr": "البحرين",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -363,7 +402,13 @@
    "surplusEgp": -836.71,
    "netEgp": 354.35,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 29.75,
+   "marginEatenEgp": 836.71,
+   "requiredShippingEgp": [
+    1421.17,
+    1800.15
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -378,24 +423,24 @@
   {
    "code": "OM",
    "nameAr": "عمان",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -416,7 +461,13 @@
    "surplusEgp": -2447.37,
    "netEgp": -1256.31,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -105.48,
+   "marginEatenEgp": 2447.37,
+   "requiredShippingEgp": [
+    2842.34,
+    3600.29
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -431,24 +482,24 @@
   {
    "code": "JO",
    "nameAr": "الأردن",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -469,7 +520,13 @@
    "surplusEgp": -615.59,
    "netEgp": 575.47,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 48.32,
+   "marginEatenEgp": 615.59,
+   "requiredShippingEgp": [
+    1421.17,
+    1800.15
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -484,24 +541,24 @@
   {
    "code": "LB",
    "nameAr": "لبنان",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -522,7 +579,13 @@
    "surplusEgp": -2415.74,
    "netEgp": -1224.68,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -102.82,
+   "marginEatenEgp": 2415.74,
+   "requiredShippingEgp": [
+    3031.83,
+    3789.78
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -537,24 +600,24 @@
   {
    "code": "IQ",
    "nameAr": "العراق",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -575,7 +638,13 @@
    "surplusEgp": -2936.83,
    "netEgp": -1745.77,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -146.57,
+   "marginEatenEgp": 2936.83,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -590,24 +659,24 @@
   {
    "code": "SY",
    "nameAr": "سوريا",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -628,7 +697,13 @@
    "surplusEgp": -2320.99,
    "netEgp": -1129.93,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -94.87,
+   "marginEatenEgp": 2320.99,
+   "requiredShippingEgp": [
+    2937.08,
+    3695.04
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -643,24 +718,24 @@
   {
    "code": "PS",
    "nameAr": "فلسطين",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -681,7 +756,13 @@
    "surplusEgp": -2936.83,
    "netEgp": -1745.77,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -146.57,
+   "marginEatenEgp": 2936.83,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -696,24 +777,24 @@
   {
    "code": "YE",
    "nameAr": "اليمن",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -734,7 +815,13 @@
    "surplusEgp": -2358.89,
    "netEgp": -1167.83,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -98.05,
+   "marginEatenEgp": 2358.89,
+   "requiredShippingEgp": [
+    2974.98,
+    3732.94
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -749,24 +836,24 @@
   {
    "code": "LY",
    "nameAr": "ليبيا",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -787,7 +874,13 @@
    "surplusEgp": -2936.83,
    "netEgp": -1745.77,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -146.57,
+   "marginEatenEgp": 2936.83,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -802,24 +895,24 @@
   {
    "code": "TN",
    "nameAr": "تونس",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -840,7 +933,13 @@
    "surplusEgp": -1184.06,
    "netEgp": 7,
    "orderVerdict": "thin",
-   "promise": "unknown",
+   "keptPercent": 0.59,
+   "marginEatenEgp": 1184.06,
+   "requiredShippingEgp": [
+    1894.89,
+    2463.36
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -855,24 +954,24 @@
   {
    "code": "DZ",
    "nameAr": "الجزائر",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -893,7 +992,13 @@
    "surplusEgp": -2936.83,
    "netEgp": -1745.77,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -146.57,
+   "marginEatenEgp": 2936.83,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -908,24 +1013,24 @@
   {
    "code": "MA",
    "nameAr": "المغرب",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -946,7 +1051,13 @@
    "surplusEgp": -2842.09,
    "netEgp": -1651.03,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -138.62,
+   "marginEatenEgp": 2842.09,
+   "requiredShippingEgp": [
+    3410.8,
+    4263.51
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -961,24 +1072,24 @@
   {
    "code": "SD",
    "nameAr": "السودان",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -999,7 +1110,13 @@
    "surplusEgp": -2936.83,
    "netEgp": -1745.77,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -146.57,
+   "marginEatenEgp": 2936.83,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -1014,24 +1131,24 @@
   {
    "code": "MR",
    "nameAr": "موريتانيا",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -1052,7 +1169,13 @@
    "surplusEgp": -2936.83,
    "netEgp": -1745.77,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -146.57,
+   "marginEatenEgp": 2936.83,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -1067,24 +1190,24 @@
   {
    "code": "SO",
    "nameAr": "الصومال",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -1105,7 +1228,13 @@
    "surplusEgp": -2936.83,
    "netEgp": -1745.77,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -146.57,
+   "marginEatenEgp": 2936.83,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -1120,24 +1249,24 @@
   {
    "code": "DJ",
    "nameAr": "جيبوتي",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -1158,7 +1287,13 @@
    "surplusEgp": -2936.83,
    "netEgp": -1745.77,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -146.57,
+   "marginEatenEgp": 2936.83,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -1173,24 +1308,24 @@
   {
    "code": "KM",
    "nameAr": "جزر القمر",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -1211,7 +1346,13 @@
    "surplusEgp": -2936.83,
    "netEgp": -1745.77,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -146.57,
+   "marginEatenEgp": 2936.83,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -1226,24 +1367,24 @@
   {
    "code": "MY",
    "nameAr": "ماليزيا",
-   "lane": "unknown",
+   "lane": "local",
    "assumedLane": "local",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "local"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "العميل في نفس بلد المنصة (MY) — شحن محلي",
    "carrier": {
     "id": "jt_my",
     "nameAr": "جي آند تي ماليزيا",
@@ -1258,7 +1399,10 @@
    "surplusEgp": null,
    "netEgp": null,
    "orderVerdict": "unknown",
-   "promise": "unknown",
+   "keptPercent": null,
+   "marginEatenEgp": null,
+   "requiredShippingEgp": null,
+   "promise": "we_ship",
    "costVerdict": "unknown",
    "customs": {
     "verified": false,
@@ -1273,24 +1417,24 @@
   {
    "code": "SG",
    "nameAr": "سنغافورة",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -1311,7 +1455,13 @@
    "surplusEgp": -473.64,
    "netEgp": 717.42,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 60.23,
+   "marginEatenEgp": 473.64,
+   "requiredShippingEgp": [
+    757.96,
+    852.7
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -1326,24 +1476,24 @@
   {
    "code": "BN",
    "nameAr": "BN",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -1364,7 +1514,13 @@
    "surplusEgp": -539.96,
    "netEgp": 651.1,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 54.67,
+   "marginEatenEgp": 539.96,
+   "requiredShippingEgp": [
+    814.8,
+    928.5
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -1379,24 +1535,24 @@
   {
    "code": "ID",
    "nameAr": "إندونيسيا",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -1417,7 +1573,13 @@
    "surplusEgp": -577.86,
    "netEgp": 613.2,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 51.48,
+   "marginEatenEgp": 577.86,
+   "requiredShippingEgp": [
+    852.7,
+    966.39
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -1432,24 +1594,24 @@
   {
    "code": "TH",
    "nameAr": "تايلاند",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -1470,7 +1632,13 @@
    "surplusEgp": -577.86,
    "netEgp": 613.2,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 51.48,
+   "marginEatenEgp": 577.86,
+   "requiredShippingEgp": [
+    852.7,
+    966.39
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -1485,24 +1653,24 @@
   {
    "code": "PH",
    "nameAr": "الفلبين",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -1523,7 +1691,13 @@
    "surplusEgp": -786.3,
    "netEgp": 404.76,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 33.98,
+   "marginEatenEgp": 786.3,
+   "requiredShippingEgp": [
+    1042.19,
+    1193.78
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -1538,24 +1712,24 @@
   {
    "code": "VN",
    "nameAr": "فيتنام",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -1576,7 +1750,13 @@
    "surplusEgp": -672.61,
    "netEgp": 518.45,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 43.53,
+   "marginEatenEgp": 672.61,
+   "requiredShippingEgp": [
+    947.45,
+    1061.14
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -1591,24 +1771,24 @@
   {
    "code": "KH",
    "nameAr": "KH",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -1629,7 +1809,13 @@
    "surplusEgp": -710.5,
    "netEgp": 480.56,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 40.35,
+   "marginEatenEgp": 710.5,
+   "requiredShippingEgp": [
+    985.34,
+    1099.04
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -1644,24 +1830,24 @@
   {
    "code": "LA",
    "nameAr": "LA",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -1682,7 +1868,13 @@
    "surplusEgp": -729.45,
    "netEgp": 461.61,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 38.76,
+   "marginEatenEgp": 729.45,
+   "requiredShippingEgp": [
+    985.34,
+    1136.93
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -1697,24 +1889,24 @@
   {
    "code": "MM",
    "nameAr": "ميانمار",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -1735,7 +1927,13 @@
    "surplusEgp": -1373.71,
    "netEgp": -182.65,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -15.34,
+   "marginEatenEgp": 1373.71,
+   "requiredShippingEgp": [
+    1515.91,
+    1894.89
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -1750,24 +1948,24 @@
   {
    "code": "GB",
    "nameAr": "بريطانيا",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -1788,7 +1986,13 @@
    "surplusEgp": -820.81,
    "netEgp": 370.25,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 31.09,
+   "marginEatenEgp": 820.81,
+   "requiredShippingEgp": [
+    1894.89,
+    2179.12
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -1803,24 +2007,24 @@
   {
    "code": "IE",
    "nameAr": "IE",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -1841,7 +2045,13 @@
    "surplusEgp": -820.81,
    "netEgp": 370.25,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 31.09,
+   "marginEatenEgp": 820.81,
+   "requiredShippingEgp": [
+    1894.89,
+    2179.12
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -1856,24 +2066,24 @@
   {
    "code": "FR",
    "nameAr": "FR",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -1894,7 +2104,13 @@
    "surplusEgp": -820.81,
    "netEgp": 370.25,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 31.09,
+   "marginEatenEgp": 820.81,
+   "requiredShippingEgp": [
+    1894.89,
+    2179.12
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -1909,24 +2125,24 @@
   {
    "code": "DE",
    "nameAr": "DE",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -1947,7 +2163,13 @@
    "surplusEgp": -858.71,
    "netEgp": 332.35,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 27.9,
+   "marginEatenEgp": 858.71,
+   "requiredShippingEgp": [
+    1894.89,
+    2254.92
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -1962,24 +2184,24 @@
   {
    "code": "IT",
    "nameAr": "IT",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2000,7 +2222,13 @@
    "surplusEgp": -820.81,
    "netEgp": 370.25,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 31.09,
+   "marginEatenEgp": 820.81,
+   "requiredShippingEgp": [
+    1894.89,
+    2179.12
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -2015,24 +2243,24 @@
   {
    "code": "ES",
    "nameAr": "ES",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2053,7 +2281,13 @@
    "surplusEgp": -1105.04,
    "netEgp": 86.02,
    "orderVerdict": "thin",
-   "promise": "unknown",
+   "keptPercent": 7.22,
+   "marginEatenEgp": 1105.04,
+   "requiredShippingEgp": [
+    2179.12,
+    2463.36
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -2068,24 +2302,24 @@
   {
    "code": "PT",
    "nameAr": "PT",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2106,7 +2340,13 @@
    "surplusEgp": -820.81,
    "netEgp": 370.25,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 31.09,
+   "marginEatenEgp": 820.81,
+   "requiredShippingEgp": [
+    1894.89,
+    2179.12
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -2121,24 +2361,24 @@
   {
    "code": "NL",
    "nameAr": "NL",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2159,7 +2399,13 @@
    "surplusEgp": -1086.1,
    "netEgp": 104.96,
    "orderVerdict": "thin",
-   "promise": "unknown",
+   "keptPercent": 8.81,
+   "marginEatenEgp": 1086.1,
+   "requiredShippingEgp": [
+    2084.38,
+    2520.21
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -2174,24 +2420,24 @@
   {
    "code": "BE",
    "nameAr": "BE",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2212,7 +2458,13 @@
    "surplusEgp": -820.81,
    "netEgp": 370.25,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 31.09,
+   "marginEatenEgp": 820.81,
+   "requiredShippingEgp": [
+    1894.89,
+    2179.12
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -2227,24 +2479,24 @@
   {
    "code": "LU",
    "nameAr": "LU",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2265,7 +2517,13 @@
    "surplusEgp": -1720.88,
    "netEgp": -529.82,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -44.48,
+   "marginEatenEgp": 1720.88,
+   "requiredShippingEgp": [
+    2728.64,
+    3145.52
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -2280,24 +2538,24 @@
   {
    "code": "AT",
    "nameAr": "AT",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2318,7 +2576,13 @@
    "surplusEgp": -962.93,
    "netEgp": 228.13,
    "orderVerdict": "thin",
-   "promise": "unknown",
+   "keptPercent": 19.15,
+   "marginEatenEgp": 962.93,
+   "requiredShippingEgp": [
+    1894.89,
+    2463.36
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -2333,24 +2597,24 @@
   {
    "code": "CH",
    "nameAr": "سويسرا",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2371,7 +2635,13 @@
    "surplusEgp": -1531.4,
    "netEgp": -340.34,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -28.57,
+   "marginEatenEgp": 1531.4,
+   "requiredShippingEgp": [
+    2463.36,
+    3031.83
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -2386,24 +2656,24 @@
   {
    "code": "SE",
    "nameAr": "SE",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2424,7 +2694,13 @@
    "surplusEgp": -1531.4,
    "netEgp": -340.34,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -28.57,
+   "marginEatenEgp": 1531.4,
+   "requiredShippingEgp": [
+    2463.36,
+    3031.83
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -2439,24 +2715,24 @@
   {
    "code": "NO",
    "nameAr": "النرويج",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2477,7 +2753,13 @@
    "surplusEgp": -1294.53,
    "netEgp": -103.47,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -8.69,
+   "marginEatenEgp": 1294.53,
+   "requiredShippingEgp": [
+    2273.87,
+    2747.59
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -2492,24 +2774,24 @@
   {
    "code": "DK",
    "nameAr": "DK",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2530,7 +2812,13 @@
    "surplusEgp": -820.81,
    "netEgp": 370.25,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 31.09,
+   "marginEatenEgp": 820.81,
+   "requiredShippingEgp": [
+    1894.89,
+    2179.12
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -2545,24 +2833,24 @@
   {
    "code": "FI",
    "nameAr": "FI",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2583,7 +2871,13 @@
    "surplusEgp": -820.81,
    "netEgp": 370.25,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 31.09,
+   "marginEatenEgp": 820.81,
+   "requiredShippingEgp": [
+    1894.89,
+    2179.12
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -2598,24 +2892,24 @@
   {
    "code": "IS",
    "nameAr": "IS",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2636,7 +2930,13 @@
    "surplusEgp": -1304.01,
    "netEgp": -112.95,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -9.48,
+   "marginEatenEgp": 1304.01,
+   "requiredShippingEgp": [
+    2330.72,
+    2709.69
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -2651,24 +2951,24 @@
   {
    "code": "PL",
    "nameAr": "PL",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2689,7 +2989,13 @@
    "surplusEgp": -2194.61,
    "netEgp": -1003.55,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -84.26,
+   "marginEatenEgp": 2194.61,
+   "requiredShippingEgp": [
+    3031.83,
+    3789.78
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -2704,24 +3010,24 @@
   {
    "code": "CZ",
    "nameAr": "CZ",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2742,7 +3048,13 @@
    "surplusEgp": -2137.76,
    "netEgp": -946.7,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -79.48,
+   "marginEatenEgp": 2137.76,
+   "requiredShippingEgp": [
+    2974.98,
+    3732.94
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -2757,24 +3069,24 @@
   {
    "code": "SK",
    "nameAr": "SK",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2795,7 +3107,13 @@
    "surplusEgp": -2137.76,
    "netEgp": -946.7,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -79.48,
+   "marginEatenEgp": 2137.76,
+   "requiredShippingEgp": [
+    2974.98,
+    3732.94
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -2810,24 +3128,24 @@
   {
    "code": "HU",
    "nameAr": "HU",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2848,7 +3166,13 @@
    "surplusEgp": -2156.71,
    "netEgp": -965.65,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -81.07,
+   "marginEatenEgp": 2156.71,
+   "requiredShippingEgp": [
+    3031.83,
+    3713.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -2863,24 +3187,24 @@
   {
    "code": "RO",
    "nameAr": "RO",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2901,7 +3225,13 @@
    "surplusEgp": -2715.7,
    "netEgp": -1524.64,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -128.01,
+   "marginEatenEgp": 2715.7,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -2916,24 +3246,24 @@
   {
    "code": "BG",
    "nameAr": "BG",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -2954,7 +3284,13 @@
    "surplusEgp": -2137.76,
    "netEgp": -946.7,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -79.48,
+   "marginEatenEgp": 2137.76,
+   "requiredShippingEgp": [
+    2974.98,
+    3732.94
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -2969,24 +3305,24 @@
   {
    "code": "GR",
    "nameAr": "GR",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3007,7 +3343,13 @@
    "surplusEgp": -868.18,
    "netEgp": 322.88,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 27.11,
+   "marginEatenEgp": 868.18,
+   "requiredShippingEgp": [
+    1894.89,
+    2273.87
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -3022,24 +3364,24 @@
   {
    "code": "HR",
    "nameAr": "HR",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3060,7 +3402,13 @@
    "surplusEgp": -2715.7,
    "netEgp": -1524.64,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -128.01,
+   "marginEatenEgp": 2715.7,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -3075,24 +3423,24 @@
   {
    "code": "SI",
    "nameAr": "SI",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3113,7 +3461,13 @@
    "surplusEgp": -2715.7,
    "netEgp": -1524.64,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -128.01,
+   "marginEatenEgp": 2715.7,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -3128,24 +3482,24 @@
   {
    "code": "RS",
    "nameAr": "RS",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3166,7 +3520,13 @@
    "surplusEgp": -2715.7,
    "netEgp": -1524.64,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -128.01,
+   "marginEatenEgp": 2715.7,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -3181,24 +3541,24 @@
   {
    "code": "BA",
    "nameAr": "BA",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3219,7 +3579,13 @@
    "surplusEgp": -2715.7,
    "netEgp": -1524.64,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -128.01,
+   "marginEatenEgp": 2715.7,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -3234,24 +3600,24 @@
   {
    "code": "ME",
    "nameAr": "ME",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3272,7 +3638,13 @@
    "surplusEgp": -2715.7,
    "netEgp": -1524.64,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -128.01,
+   "marginEatenEgp": 2715.7,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -3287,24 +3659,24 @@
   {
    "code": "MK",
    "nameAr": "MK",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3325,7 +3697,13 @@
    "surplusEgp": -2715.7,
    "netEgp": -1524.64,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -128.01,
+   "marginEatenEgp": 2715.7,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -3340,24 +3718,24 @@
   {
    "code": "AL",
    "nameAr": "AL",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3378,7 +3756,13 @@
    "surplusEgp": -2715.7,
    "netEgp": -1524.64,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -128.01,
+   "marginEatenEgp": 2715.7,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -3393,24 +3777,24 @@
   {
    "code": "EE",
    "nameAr": "EE",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3431,7 +3815,13 @@
    "surplusEgp": -2137.76,
    "netEgp": -946.7,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -79.48,
+   "marginEatenEgp": 2137.76,
+   "requiredShippingEgp": [
+    2974.98,
+    3732.94
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -3446,24 +3836,24 @@
   {
    "code": "LV",
    "nameAr": "LV",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3484,7 +3874,13 @@
    "surplusEgp": -2715.7,
    "netEgp": -1524.64,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -128.01,
+   "marginEatenEgp": 2715.7,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -3499,24 +3895,24 @@
   {
    "code": "LT",
    "nameAr": "LT",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3537,7 +3933,13 @@
    "surplusEgp": -2715.7,
    "netEgp": -1524.64,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -128.01,
+   "marginEatenEgp": 2715.7,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -3552,24 +3954,24 @@
   {
    "code": "CY",
    "nameAr": "CY",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3590,7 +3992,13 @@
    "surplusEgp": -2137.76,
    "netEgp": -946.7,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -79.48,
+   "marginEatenEgp": 2137.76,
+   "requiredShippingEgp": [
+    2974.98,
+    3732.94
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -3605,24 +4013,24 @@
   {
    "code": "MT",
    "nameAr": "MT",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3643,7 +4051,13 @@
    "surplusEgp": -2715.7,
    "netEgp": -1524.64,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -128.01,
+   "marginEatenEgp": 2715.7,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -3658,24 +4072,24 @@
   {
    "code": "UA",
    "nameAr": "أوكرانيا",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3696,7 +4110,13 @@
    "surplusEgp": -2099.86,
    "netEgp": -908.8,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -76.3,
+   "marginEatenEgp": 2099.86,
+   "requiredShippingEgp": [
+    2937.08,
+    3695.04
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -3711,24 +4131,24 @@
   {
    "code": "MD",
    "nameAr": "MD",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3749,7 +4169,13 @@
    "surplusEgp": -2715.7,
    "netEgp": -1524.64,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -128.01,
+   "marginEatenEgp": 2715.7,
+   "requiredShippingEgp": [
+    3410.8,
+    4452.99
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -3764,24 +4190,24 @@
   {
    "code": "TR",
    "nameAr": "تركيا",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3802,7 +4228,13 @@
    "surplusEgp": -299.71,
    "netEgp": 891.35,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 74.84,
+   "marginEatenEgp": 299.71,
+   "requiredShippingEgp": [
+    1326.42,
+    1705.4
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -3817,24 +4249,24 @@
   {
    "code": "US",
    "nameAr": "أمريكا",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "platform"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3855,7 +4287,13 @@
    "surplusEgp": -702.34,
    "netEgp": 488.72,
    "orderVerdict": "profit",
-   "promise": "unknown",
+   "keptPercent": 41.03,
+   "marginEatenEgp": 702.34,
+   "requiredShippingEgp": [
+    1894.89,
+    2273.87
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": true,
@@ -3870,24 +4308,24 @@
   {
    "code": "CA",
    "nameAr": "كندا",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3908,7 +4346,13 @@
    "surplusEgp": -910.78,
    "netEgp": 280.28,
    "orderVerdict": "thin",
-   "promise": "unknown",
+   "keptPercent": 23.53,
+   "marginEatenEgp": 910.78,
+   "requiredShippingEgp": [
+    2084.38,
+    2501.26
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -3923,24 +4367,24 @@
   {
    "code": "MX",
    "nameAr": "المكسيك",
-   "lane": "unknown",
+   "lane": "international",
    "assumedLane": "international",
    "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "afnan",
-     "lane": "unknown"
+     "lane": "international"
     },
     {
      "platform": "direct",
      "lane": "international"
     }
    ],
-   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
    "carrier": {
     "id": "poslaju_intl",
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
@@ -3961,7 +4405,13 @@
    "surplusEgp": -1498.19,
    "netEgp": -307.13,
    "orderVerdict": "loss",
-   "promise": "unknown",
+   "keptPercent": -25.79,
+   "marginEatenEgp": 1498.19,
+   "requiredShippingEgp": [
+    2596,
+    3164.47
+   ],
+   "promise": "we_ship",
    "costVerdict": "loss",
    "customs": {
     "verified": false,
@@ -3975,9 +4425,9 @@
   }
  ],
  "products": {
-  "platform_ships": 0,
-  "broker": 51,
-  "unknown": 1161,
+  "platform_ships": 98,
+  "broker": 1114,
+  "unknown": 0,
   "total": 1212
  },
  "origins": [
@@ -3989,7 +4439,7 @@
     "shamperfume"
    ],
    "fulfilment": [
-    "unknown"
+    "broker"
    ],
    "localCarrier": {
     "id": "jt_my",
@@ -4005,7 +4455,7 @@
     "afnan"
    ],
    "fulfilment": [
-    "unknown"
+    "platform_ships"
    ],
    "localCarrier": {
     "id": "aramex_ae",
@@ -4056,16 +4506,6 @@
  },
  "gaps": [
   {
-   "kindAr": "طريقة التسليم",
-   "whatAr": "«شام بيرفيوم» (1063 منتج): بتشحن للعالم ولا محلية بس؟",
-   "fixAr": "صاحب المتجر يحدد الوضع في src/data/shipping-lanes.json (platform_ships أو broker)"
-  },
-  {
-   "kindAr": "طريقة التسليم",
-   "whatAr": "«أفنان للعطور» (98 منتج): بتشحن للعالم ولا محلية بس؟",
-   "fixAr": "صاحب المتجر يحدد الوضع في src/data/shipping-lanes.json (platform_ships أو broker)"
-  },
-  {
    "kindAr": "الجمارك",
    "whatAr": "34 دولة من الوجهات مفيهاش بيانات جمركية متأكد منها (SA، AE، KW، QA، BH…)",
    "fixAr": "الروبوت يجيب المصدر الرسمي لكل دولة ويسجله بتاريخه"
@@ -4101,6 +4541,451 @@
    "fixAr": "الروبوت يبحث عن أفضل شركة محلية في كل دولة بسعر منشور"
   }
  ],
+ "shippingProposal": [
+  {
+   "zoneId": "egypt",
+   "nameAr": "مصر",
+   "currency": "USD",
+   "countries": 1,
+   "currentFirstItem": 15,
+   "covered": 0,
+   "typicalRequiredFirstItem": 31,
+   "maxRequiredFirstItem": 31,
+   "drivenByAr": "مصر",
+   "destinations": [
+    {
+     "code": "EG",
+     "nameAr": "مصر",
+     "requiredFirstItem": 31
+    }
+   ]
+  },
+  {
+   "zoneId": "gulf",
+   "nameAr": "دول الخليج",
+   "currency": "USD",
+   "countries": 6,
+   "currentFirstItem": 14,
+   "covered": 0,
+   "typicalRequiredFirstItem": 28,
+   "maxRequiredFirstItem": 52,
+   "drivenByAr": "عمان",
+   "destinations": [
+    {
+     "code": "SA",
+     "nameAr": "السعودية",
+     "requiredFirstItem": 28
+    },
+    {
+     "code": "AE",
+     "nameAr": "الإمارات",
+     "requiredFirstItem": 28
+    },
+    {
+     "code": "KW",
+     "nameAr": "الكويت",
+     "requiredFirstItem": 26
+    },
+    {
+     "code": "QA",
+     "nameAr": "قطر",
+     "requiredFirstItem": 26
+    },
+    {
+     "code": "BH",
+     "nameAr": "البحرين",
+     "requiredFirstItem": 26
+    },
+    {
+     "code": "OM",
+     "nameAr": "عمان",
+     "requiredFirstItem": 52
+    }
+   ]
+  },
+  {
+   "zoneId": "arab",
+   "nameAr": "باقي الدول العربية",
+   "currency": "USD",
+   "countries": 15,
+   "currentFirstItem": 18,
+   "covered": 0,
+   "typicalRequiredFirstItem": 62,
+   "maxRequiredFirstItem": 62,
+   "drivenByAr": "العراق",
+   "destinations": [
+    {
+     "code": "JO",
+     "nameAr": "الأردن",
+     "requiredFirstItem": 26
+    },
+    {
+     "code": "LB",
+     "nameAr": "لبنان",
+     "requiredFirstItem": 55
+    },
+    {
+     "code": "IQ",
+     "nameAr": "العراق",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "SY",
+     "nameAr": "سوريا",
+     "requiredFirstItem": 54
+    },
+    {
+     "code": "PS",
+     "nameAr": "فلسطين",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "YE",
+     "nameAr": "اليمن",
+     "requiredFirstItem": 54
+    },
+    {
+     "code": "LY",
+     "nameAr": "ليبيا",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "TN",
+     "nameAr": "تونس",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "DZ",
+     "nameAr": "الجزائر",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "MA",
+     "nameAr": "المغرب",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "SD",
+     "nameAr": "السودان",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "MR",
+     "nameAr": "موريتانيا",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "SO",
+     "nameAr": "الصومال",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "DJ",
+     "nameAr": "جيبوتي",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "KM",
+     "nameAr": "جزر القمر",
+     "requiredFirstItem": 62
+    }
+   ]
+  },
+  {
+   "zoneId": "southeast_asia",
+   "nameAr": "جنوب شرق آسيا",
+   "currency": "USD",
+   "countries": 10,
+   "currentFirstItem": 6,
+   "covered": 0,
+   "typicalRequiredFirstItem": 18,
+   "maxRequiredFirstItem": 28,
+   "drivenByAr": "ميانمار",
+   "destinations": [
+    {
+     "code": "SG",
+     "nameAr": "سنغافورة",
+     "requiredFirstItem": 14
+    },
+    {
+     "code": "BN",
+     "nameAr": "BN",
+     "requiredFirstItem": 15
+    },
+    {
+     "code": "ID",
+     "nameAr": "إندونيسيا",
+     "requiredFirstItem": 16
+    },
+    {
+     "code": "TH",
+     "nameAr": "تايلاند",
+     "requiredFirstItem": 16
+    },
+    {
+     "code": "PH",
+     "nameAr": "الفلبين",
+     "requiredFirstItem": 19
+    },
+    {
+     "code": "VN",
+     "nameAr": "فيتنام",
+     "requiredFirstItem": 18
+    },
+    {
+     "code": "KH",
+     "nameAr": "KH",
+     "requiredFirstItem": 18
+    },
+    {
+     "code": "LA",
+     "nameAr": "LA",
+     "requiredFirstItem": 18
+    },
+    {
+     "code": "MM",
+     "nameAr": "ميانمار",
+     "requiredFirstItem": 28
+    }
+   ]
+  },
+  {
+   "zoneId": "europe",
+   "nameAr": "أوروبا",
+   "currency": "USD",
+   "countries": 39,
+   "currentFirstItem": 22,
+   "covered": 0,
+   "typicalRequiredFirstItem": 54,
+   "maxRequiredFirstItem": 62,
+   "drivenByAr": "RO",
+   "destinations": [
+    {
+     "code": "GB",
+     "nameAr": "بريطانيا",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "IE",
+     "nameAr": "IE",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "FR",
+     "nameAr": "FR",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "DE",
+     "nameAr": "DE",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "IT",
+     "nameAr": "IT",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "ES",
+     "nameAr": "ES",
+     "requiredFirstItem": 40
+    },
+    {
+     "code": "PT",
+     "nameAr": "PT",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "NL",
+     "nameAr": "NL",
+     "requiredFirstItem": 38
+    },
+    {
+     "code": "BE",
+     "nameAr": "BE",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "LU",
+     "nameAr": "LU",
+     "requiredFirstItem": 50
+    },
+    {
+     "code": "AT",
+     "nameAr": "AT",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "CH",
+     "nameAr": "سويسرا",
+     "requiredFirstItem": 45
+    },
+    {
+     "code": "SE",
+     "nameAr": "SE",
+     "requiredFirstItem": 45
+    },
+    {
+     "code": "NO",
+     "nameAr": "النرويج",
+     "requiredFirstItem": 42
+    },
+    {
+     "code": "DK",
+     "nameAr": "DK",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "FI",
+     "nameAr": "FI",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "IS",
+     "nameAr": "IS",
+     "requiredFirstItem": 43
+    },
+    {
+     "code": "PL",
+     "nameAr": "PL",
+     "requiredFirstItem": 55
+    },
+    {
+     "code": "CZ",
+     "nameAr": "CZ",
+     "requiredFirstItem": 54
+    },
+    {
+     "code": "SK",
+     "nameAr": "SK",
+     "requiredFirstItem": 54
+    },
+    {
+     "code": "HU",
+     "nameAr": "HU",
+     "requiredFirstItem": 55
+    },
+    {
+     "code": "RO",
+     "nameAr": "RO",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "BG",
+     "nameAr": "BG",
+     "requiredFirstItem": 54
+    },
+    {
+     "code": "GR",
+     "nameAr": "GR",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "HR",
+     "nameAr": "HR",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "SI",
+     "nameAr": "SI",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "RS",
+     "nameAr": "RS",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "BA",
+     "nameAr": "BA",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "ME",
+     "nameAr": "ME",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "MK",
+     "nameAr": "MK",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "AL",
+     "nameAr": "AL",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "EE",
+     "nameAr": "EE",
+     "requiredFirstItem": 54
+    },
+    {
+     "code": "LV",
+     "nameAr": "LV",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "LT",
+     "nameAr": "LT",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "CY",
+     "nameAr": "CY",
+     "requiredFirstItem": 54
+    },
+    {
+     "code": "MT",
+     "nameAr": "MT",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "UA",
+     "nameAr": "أوكرانيا",
+     "requiredFirstItem": 54
+    },
+    {
+     "code": "MD",
+     "nameAr": "MD",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "TR",
+     "nameAr": "تركيا",
+     "requiredFirstItem": 24
+    }
+   ]
+  },
+  {
+   "zoneId": "north_america",
+   "nameAr": "أمريكا الشمالية",
+   "currency": "USD",
+   "countries": 3,
+   "currentFirstItem": 25,
+   "covered": 0,
+   "typicalRequiredFirstItem": 38,
+   "maxRequiredFirstItem": 47,
+   "drivenByAr": "المكسيك",
+   "destinations": [
+    {
+     "code": "US",
+     "nameAr": "أمريكا",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "CA",
+     "nameAr": "كندا",
+     "requiredFirstItem": 38
+    },
+    {
+     "code": "MX",
+     "nameAr": "المكسيك",
+     "requiredFirstItem": 47
+    }
+   ]
+  }
+ ],
  "money": {
   "profitPerBottleEgp": 1191.06,
   "averageChargedEgp": 1017.48,
@@ -4109,21 +4994,25 @@
   "lossDestinations": 73,
   "orderLossDestinations": 41,
   "bestNetEgp": 891.35,
-  "worstNetEgp": -1745.77
+  "worstNetEgp": -1745.77,
+  "keptWholeDestinations": 0,
+  "marginEatenDestinations": 73
  },
- "score": 35,
+ "score": 75,
  "notes": [
-  "1161 منتج من منصة لسه مش مسجل بتشحن ولا محلية بس — مفيش وعد توصيل ليهم.",
-  "73 وجهة لو إحنا اللي بنشحن، تكلفة الشحن أكبر من اللي بنحصّله — فرق بيدفع من مكسب العطر.",
-  "وفي 41 وجهة الفرق أكبر من مكسب العطر نفسه — الطلب هناك بخسارة حقيقية.",
+  "مكسب الزجاجة (٥٠٪) 1191.06 ج.م — والـ٥٠٪ بتفضل كاملة في 0 وجهة بس من 73.",
+  "73 وجهة الشحن فيها بياكل من الهامش — الشحن اللي بنحصّله أقل من تكلفته الحقيقية.",
+  "وفي 41 وجهة الشحن بياكل الهامش كله وزيادة — الطلب هناك بخسارة حقيقية (أسوأها -1745.77 ج.م).",
   "سعر الصرف: 1063 منتج سعره مبني على 13.081 ج.م/MYR وسعر النهاردة 13.5349 — تكلفة الشراء بقت أغلى 3.5% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي.",
   "سعر الصرف: 98 منتج سعره مبني على 14.5568 ج.م/AED وسعر النهاردة 15.0529 — تكلفة الشراء بقت أغلى 3.4% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي."
  ],
  "planAr": [
-  "حدد طريقة تسليم shamperfume، afnan (وساطة أو إحنا بنشحن) — أكبر بند ناقص.",
   "لو إحنا اللي بنشحن، أرخص المسارات: سنغافورة بـ757.96–852.7 ج.م، BN بـ814.8–928.5 ج.م، إندونيسيا بـ852.7–966.39 ج.م.",
+  "عشان الـ٥٠٪ تفضل صافية: الشحن يتاخد بسعره الحقيقي (زي ما في جدول المقترح تحت) — والفرق ده مش بيتحمل من الهامش.",
+  "الشحن الحقيقي أغلى من اللي بنحصّله في 6 منطقة: مصر بياخد 15 والمتوسط الحقيقي 31 USD، دول الخليج بياخد 14 والمتوسط الحقيقي 28 USD، باقي الدول العربية بياخد 18 والمتوسط الحقيقي 62 USD، جنوب شرق آسيا بياخد 6 والمتوسط الحقيقي 18 USD، أوروبا بياخد 22 والمتوسط الحقيقي 54 USD، أمريكا الشمالية بياخد 25 والمتوسط الحقيقي 38 USD — والفرق بيتخصم من الـ٥٠٪. القرار لصاحب المتجر.",
   "5 شركة دولية: تأكد قبول العطور (UN1266) قبل أي بيع دولي — الرفض بعد البيع = إلغاء وسمعة.",
+  "98 منتج من منصات بتشحن بنفسها — الوساطة بس، والتأكد إن المنصة بترجع وتتعوض لو حصلت مشكلة.",
   "البضاعة في: ماليزيا — 1063 منتج (مفيش سعر محلي منشور)، الإمارات — 98 منتج (مفيش سعر محلي منشور)، مصر — 51 منتج (محلي: بوستة 30–55 ج.م)."
  ],
- "summaryAr": "الشحن والتجارة: 74 وجهة — 0 وجهة ممرها معروف، 30 دولة بجمارك متأكد منها، 73 وجهة بسعر شحن مقارن، و73 وجهة لو إحنا بنشحن بتخسر · البضاعة في MY، AE، EG · 2 عملة سعر صرفها قديم."
+ "summaryAr": "الشحن والتجارة: 74 وجهة — 74 وجهة ممرها معروف، 30 دولة بجمارك متأكد منها، 73 وجهة بسعر شحن مقارن، و73 وجهة لو إحنا بنشحن بتخسر · البضاعة في MY، AE، EG · 2 عملة سعر صرفها قديم."
 }
