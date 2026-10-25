@@ -39,6 +39,7 @@ on:
           - catalog
           - catalog_review
           - trade_lanes
+          - carriers
           - inventory
           - news
           - precheck
