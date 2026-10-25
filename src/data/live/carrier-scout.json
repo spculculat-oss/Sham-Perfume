@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "carrier-scout",
- "updatedAt": "2026-10-25T22:19:41.484Z",
+ "updatedAt": "2026-10-25T22:24:05.998Z",
  "rules": {
   "staleDays": 120,
   "handlingPercent": 10,
@@ -170,5 +170,44 @@
  "notesAr": [
   "الكشّاف مايغيّرش أي سعر: بيقارن ويقترح، والسعر اللي الزائر بيشوفه في shipping.json + shipping-costs.json بس.",
   "كل رقم في التقرير له مصدر وتاريخ. الشركة اللي قبولها للعطور مش مؤكد بتفضل «مش متأكد»، مش «مقبولة»."
+ ],
+ "probes": [
+  {
+   "id": "dhl_express_my",
+   "url": "https://www.dhl.com/my-en/home.html",
+   "status": 200,
+   "reached": true,
+   "signals": [
+    "فيه أسعار/آلة حساب على الصفحة",
+    "فيه صفحة/بند تتبع"
+   ],
+   "noteAr": "قراية صفحة الشركة نفسها — الأرقام مش بتتقرا آلياً، بتتسجل بإيد بمصدرها وتاريخها"
+  },
+  {
+   "id": "fedex_my",
+   "url": "https://www.fedex.com/en-my/home.html",
+   "status": 200,
+   "reached": true,
+   "signals": [],
+   "noteAr": "قراية صفحة الشركة نفسها — الأرقام مش بتتقرا آلياً، بتتسجل بإيد بمصدرها وتاريخها"
+  },
+  {
+   "id": "aramex_my",
+   "url": "https://www.aramex.com/my/en",
+   "status": 403,
+   "reached": false,
+   "signals": [],
+   "noteAr": "قراية صفحة الشركة نفسها — الأرقام مش بتتقرا آلياً، بتتسجل بإيد بمصدرها وتاريخها"
+  },
+  {
+   "id": "ninja_van_my",
+   "url": "https://www.ninjavan.co/en-my",
+   "status": 200,
+   "reached": true,
+   "signals": [
+    "فيه أسعار/آلة حساب على الصفحة"
+   ],
+   "noteAr": "قراية صفحة الشركة نفسها — الأرقام مش بتتقرا آلياً، بتتسجل بإيد بمصدرها وتاريخها"
+  }
  ]
 }
