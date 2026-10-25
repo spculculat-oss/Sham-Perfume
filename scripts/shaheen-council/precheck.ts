@@ -326,6 +326,28 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       }
       break;
     }
+    case 'synapse': {
+      // «سينابس»: درجة العقل وأضعف حلقة فيه — الفرصة الحقيقية إن الحلقة الضعيفة تتحوّل لدراسة.
+      const score = Number(o(r.score).total) || 0;
+      const why = String(o(r.score).whyAr || '');
+      if (score < 100) f.push({ level: score < 70 ? 'warn' : 'note', problem: `درجة العقل ${score}/100 — ${why}`, fix: 'الحلقة الأضعف بتتحول لخطة دراسة في المدرسة (كل تشغيل)' });
+      const stats = o(r.stats);
+      const orphans = arr(stats.orphans).length;
+      if (orphans) f.push({ level: 'warn', problem: `${orphans} عقدة في شبكة العقل معلّقة لوحدها — معرفة مش موصولة بحاجة`, fix: 'سينابس يربطها أو يشيلها من الشبكة' });
+      const nodes = Number(stats.nodes) || 0;
+      const edges = Number(stats.edges) || 0;
+      if (nodes) f.push({ level: 'note', idea: `الشبكة فيها ${nodes} عقدة و${edges} حافة — كل حافة جديدة بتزود قدرة شاهين على الاستنتاج` });
+      break;
+    }
+    case 'immune': {
+      // «مناعة»: أي تعارض خطير بين أجزاء العقل لازم يبان في الاجتماع قبل ما الزائر يشوفه.
+      const findings = arr(r.findings).map(o);
+      for (const fnd of findings.filter((x) => String(x.severity) === 'high').slice(0, 4))
+        f.push({ level: 'warn', problem: String(fnd.whatAr), fix: String(fnd.fixAr) });
+      const health = Number(r.health);
+      if (Number.isFinite(health) && health < 100) f.push({ level: health < 70 ? 'warn' : 'note', problem: `صحة العقل ${health}/100 — ${String(r.summaryAr || '')}`, fix: 'كل تعارض في تقرير المناعة بيسمّي طرفيه والإصلاح' });
+      break;
+    }
     case 'carriers': {
       // «كشّاف الشحن»: أخطاء التسعير اللي بيكررها كل تشغيل + أي بديل أرخص موثّق. الأسعار قرار صاحب المتجر.
       const errs = arr(r.errors).map(o);

@@ -40,6 +40,8 @@ on:
           - catalog_review
           - trade_lanes
           - carriers
+          - synapse
+          - immune
           - inventory
           - news
           - precheck

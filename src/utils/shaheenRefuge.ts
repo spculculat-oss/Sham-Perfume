@@ -89,6 +89,8 @@ const REPORT_NAMES: Record<string, [string, string]> = {
   'shaheen-news.json': ['نشرة الأخبار الحقيقية', 'Real-news bulletin'],
   'shaheen-patrol.json': ['تقرير الدورية بالتناوب', 'Rotating patrol report'],
   'carrier-scout.json': ['تقرير كشّاف الشحن (أخطاء التسعير والبدائل)', 'Carrier scout report (shipping errors and alternatives)'],
+  'shaheen-graph.json': ['شبكة عقل شاهين (العقد والحواف ودرجة العقل)', "Shaheen's mind graph (nodes, edges, brain score)"],
+  'shaheen-immune.json': ['تقرير مناعة شاهين (تعارضات العقل)', 'Shaheen immune report (contradictions in the mind)'],
   'shaheen-maneuver.json': ['تقرير مناورة التخصصات', 'Specialties field maneuver report'],
   'shaheen-precheck.json': ['الفحص الشامل قبل الاجتماع', 'Pre-meeting full check'],
   'shaheen-school.json': ['تقرير مدرسة شاهين (الاعتماد على النفس)', "Shaheen's school report"],
@@ -133,7 +135,7 @@ const WORKFLOW_OWNER: Record<string, BotId> = {
   'shaheen-seo.yml': 'seo', 'owner-control.yml': 'owner_desk', 'platform-state.yml': 'state', 'platform-census.yml': 'census',
   'shaheen-school-clock.yml': 'academy', 'shaheen-lab.yml': 'lab',
   'shaheen-inventory.yml': 'inventory', 'shaheen-service.yml': 'service', 'shaheen-brain.yml': 'brain',
-  'shaheen-scent.yml': 'scent_behavior', 'shaheen-localization.yml': 'localization_audit', 'shaheen-finance-shield.yml': 'finance_shield', 'shaheen-catalog-review.yml': 'catalog_review', 'shaheen-trade.yml': 'trade_lanes', 'shaheen-carriers.yml': 'carriers',
+  'shaheen-scent.yml': 'scent_behavior', 'shaheen-localization.yml': 'localization_audit', 'shaheen-finance-shield.yml': 'finance_shield', 'shaheen-catalog-review.yml': 'catalog_review', 'shaheen-trade.yml': 'trade_lanes', 'shaheen-carriers.yml': 'carriers', 'shaheen-synapse.yml': 'synapse',
   'shaheen-sales.yml': 'sales',
 };
 const WORKFLOW_NAMES: Record<string, [string, string]> = {
@@ -172,6 +174,7 @@ const WORKFLOW_NAMES: Record<string, [string, string]> = {
   'shaheen-catalog-review.yml': ['مراجعة المنتجات', 'Catalog review'],
   'shaheen-trade.yml': ['الشحن والتجارة الدولية', 'Trade lanes'],
   'shaheen-carriers.yml': ['كشّاف الشحن', 'Carrier scout'],
+  'shaheen-synapse.yml': ['سينابس — شبكة العقل', 'Synapse — the mind graph'],
 };
 const workflowEntry = (file: string): RefugeEntry => {
   const [nameAr, nameEn] = WORKFLOW_NAMES[file] ?? [file, file];
