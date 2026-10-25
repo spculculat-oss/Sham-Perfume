@@ -1,0 +1,231 @@
+{
+ "version": 1,
+ "agent": "catalog-review",
+ "updatedAt": "2026-10-25T18:19:29.299Z",
+ "counts": {
+  "products": 1212,
+  "onSale": 1161,
+  "hidden": 51,
+  "priced": 1161,
+  "outOfStock": 376,
+  "brands": 33,
+  "categories": 4,
+  "withPhoto": 1161,
+  "withSourcePage": 1161
+ },
+ "ruleBreaks": [],
+ "prices": {
+  "min": 750,
+  "median": 3300,
+  "max": 7830,
+  "average": 3567.88
+ },
+ "belowShipping": [
+  {
+   "sku": "GRA-217",
+   "price": 750,
+   "shippingEgp": 829.23,
+   "sellable": false
+  },
+  {
+   "sku": "GRA-221",
+   "price": 750,
+   "shippingEgp": 829.23,
+   "sellable": false
+  },
+  {
+   "sku": "GRA-386",
+   "price": 750,
+   "shippingEgp": 829.23,
+   "sellable": false
+  },
+  {
+   "sku": "GRA-426",
+   "price": 750,
+   "shippingEgp": 829.23,
+   "sellable": false
+  },
+  {
+   "sku": "GRA-545",
+   "price": 750,
+   "shippingEgp": 829.23,
+   "sellable": false
+  },
+  {
+   "sku": "GRA-566",
+   "price": 750,
+   "shippingEgp": 829.23,
+   "sellable": false
+  },
+  {
+   "sku": "GRA-579",
+   "price": 750,
+   "shippingEgp": 829.23,
+   "sellable": false
+  },
+  {
+   "sku": "GRA-590",
+   "price": 750,
+   "shippingEgp": 829.23,
+   "sellable": false
+  },
+  {
+   "sku": "GRA-591",
+   "price": 750,
+   "shippingEgp": 829.23,
+   "sellable": false
+  },
+  {
+   "sku": "GRA-593",
+   "price": 750,
+   "shippingEgp": 829.23,
+   "sellable": false
+  },
+  {
+   "sku": "GRA-594",
+   "price": 750,
+   "shippingEgp": 829.23,
+   "sellable": false
+  },
+  {
+   "sku": "GRA-597",
+   "price": 750,
+   "shippingEgp": 829.23,
+   "sellable": false
+  },
+  {
+   "sku": "GRA-807",
+   "price": 750,
+   "shippingEgp": 829.23,
+   "sellable": false
+  },
+  {
+   "sku": "GRA-809",
+   "price": 750,
+   "shippingEgp": 829.23,
+   "sellable": false
+  },
+  {
+   "sku": "GRA-817",
+   "price": 750,
+   "shippingEgp": 829.23,
+   "sellable": false
+  },
+  {
+   "sku": "GRA-837",
+   "price": 750,
+   "shippingEgp": 829.23,
+   "sellable": false
+  },
+  {
+   "sku": "GRA-889",
+   "price": 750,
+   "shippingEgp": 829.23,
+   "sellable": false
+  }
+ ],
+ "outliers": [],
+ "garbledNames": [],
+ "arabic": {
+  "namesInLatin": 1161,
+  "genericDescriptions": 1161,
+  "examples": [
+   {
+    "sku": "LAT-052",
+    "nameAr": "Oud Mood 30ml by Lattafa EDP Unisex"
+   },
+   {
+    "sku": "RAS-053",
+    "nameAr": "Hawas Ice by Rasasi 100ml EDP"
+   },
+   {
+    "sku": "RAS-054",
+    "nameAr": "Hawas Malibu by Rasasi 100ml EDP"
+   },
+   {
+    "sku": "RAS-055",
+    "nameAr": "Hawas Verde by Rasasi 100ml EDP"
+   },
+   {
+    "sku": "RAS-056",
+    "nameAr": "Hawas Majestic by Rasasi 100ml EDP"
+   }
+  ]
+ },
+ "duplicateImages": [],
+ "missing": {
+  "noPhoto": [],
+  "noSourcePage": 0
+ },
+ "freeShipping": {
+  "on": false,
+  "thresholdEgp": null,
+  "reachedByProducts": 0,
+  "safeShippingShare": 0.16666666666666666,
+  "zones": [
+   {
+    "id": "egypt",
+    "nameAr": "مصر",
+    "shippingEgp": 829.23,
+    "safeOrderEgp": 4975.38,
+    "productsAbove": 222
+   },
+   {
+    "id": "gulf",
+    "nameAr": "دول الخليج",
+    "shippingEgp": 773.95,
+    "safeOrderEgp": 4643.7,
+    "productsAbove": 283
+   },
+   {
+    "id": "arab",
+    "nameAr": "باقي الدول العربية",
+    "shippingEgp": 995.07,
+    "safeOrderEgp": 5970.42,
+    "productsAbove": 64
+   },
+   {
+    "id": "southeast_asia",
+    "nameAr": "جنوب شرق آسيا",
+    "shippingEgp": 331.69,
+    "safeOrderEgp": 1990.14,
+    "productsAbove": 1031
+   },
+   {
+    "id": "europe",
+    "nameAr": "أوروبا",
+    "shippingEgp": 1216.2,
+    "safeOrderEgp": 7297.2,
+    "productsAbove": 4
+   },
+   {
+    "id": "north_america",
+    "nameAr": "أمريكا الشمالية",
+    "shippingEgp": 1382.04,
+    "safeOrderEgp": 8292.24,
+    "productsAbove": 0
+   },
+   {
+    "id": "world",
+    "nameAr": "باقي دول العالم",
+    "shippingEgp": 1547.89,
+    "safeOrderEgp": 9287.34,
+    "productsAbove": 0
+   }
+  ]
+ },
+ "score": 69,
+ "notes": [
+  "17 منتج سعره أقل من تكلفة توصيله لنفس البلد (829.23 EGP) — كل بيعة بتخسر، وكلهم خلص مخزونهم دلوقتي.",
+  "1161 منتج اسمه العربي مكتوب بحروف لاتينية بس.",
+  "1161 منتج وصفه العربي هو الجملة العامة — مش وصف حقيقي.",
+  "376 منتج من 1161 نفد مخزونه (32%).",
+  "51 منتج مخفي مش للبيع (مراجع الصفحات شالته) — مش داخل حسابات المتجر.",
+  "الشحن المجاني مقفول: مفيش رقم موافق عليه في src/data/shipping.json — والباقر مش بيوعد بيه."
+ ],
+ "planAr": [
+  "17 منتج تحت تكلفة الشحن (أرخصهم 750 EGP، 0 معروض للبيع) — يتأكد السعر أو يتوقف العرض.",
+  "لو عايز شحن مجاني يبقى الطلب 4975.38 EGP على الأقل في مصر (الشحن 829.23 = سُدس الطلب) — 222 منتج بيوصل الرقم ده لوحده."
+ ],
+ "summaryAr": "مراجعة المنتجات: 1161 منتج معروض (1161 بسعر) — 17 محتاج قرار من صاحب المتجر، 0 اسم تالف، 376 نفد مخزونه."
+}

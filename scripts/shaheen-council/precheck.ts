@@ -304,6 +304,28 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       if (hard.length) f.push({ level: 'warn', problem: `${hard.length} مبلغ مكتوب بعملة ثابتة في كود الزوار`, fix: 'يتشال ويتحسب من محرك التسعير (src/utils/pricing.ts)' });
       break;
     }
+    case 'catalog_review': {
+      // «مراجعة المنتجات»: a price that loses money is a real fault, the rest is the owner's decision.
+      const below = arr(r.belowShipping).filter((x) => o(x).sellable === true);
+      if (below.length) f.push({ level: 'fail', problem: `${below.length} منتج معروض سعره أقل من تكلفة توصيله — خسارة في كل بيعة`, fix: 'ارفع سعر المنتج أو أوقف عرضه لحد ما صاحب المتجر يقرر (src/data/products.json)' });
+      const breaks = arr(r.ruleBreaks);
+      if (breaks.length) f.push({ level: 'warn', problem: `${breaks.length} منتج سعره مش على قاعدة السعر (التكلفة × 1.5)`, fix: 'أعد تسعير المنتجات دي بمستورد شاهين أو صحّح السعر يدوي' });
+      const outliers = arr(r.outliers);
+      if (outliers.length) f.push({ level: 'warn', problem: `${outliers.length} سعر أقل من 1% من متوسط المتجر — غالباً عملة غلط`, fix: 'اتأكد السعر بالجنيه قبل ما يفضل معروض' });
+      const garbled = arr(r.garbledNames);
+      if (garbled.length) f.push({ level: 'warn', problem: `${garbled.length} اسم منتج فيه حروف تالفة`, fix: 'مدرّب الكتالوج يكتب الاسم العربي الصحيح' });
+      const generic = Number(o(r.arabic).genericDescriptions) || 0;
+      if (generic) f.push({ level: 'note', idea: `${generic} منتج وصفه العربي لسه الجملة العامة — مدرّب الكتالوج يكتب وصف حقيقي` });
+      const missing = Number(o(r.missing).noSourcePage) || 0;
+      if (missing) f.push({ level: 'note', idea: `${missing} منتج مالوش صفحة مصدر — مراجع الصفحات يراجع مصدره` });
+      const fs = o(r.freeShipping);
+      if (fs.on !== true) f.push({ level: 'note', idea: 'الشحن المجاني مقفول — القرار في سطر واحد في src/data/shipping.json لما صاحب المتجر يوافق' });
+      else {
+        const zones = arr(fs.zones).filter((z) => Number(o(z).productsAbove) === 0);
+        if (zones.length) f.push({ level: 'note', idea: `الشحن المجاني فوق ${fs.thresholdEgp} مش بيوصله أي منتج في ${zones.map((z) => String(o(z).nameAr)).slice(0, 3).join('، ')} — راجع الرقم` });
+      }
+      break;
+    }
     case 'finance_shield': {
       // «حارس المدفوعات»: the guard must be wired and must still stop every broken cart.
       const guard = o(r.guard);

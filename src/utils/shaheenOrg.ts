@@ -43,7 +43,7 @@ export type BotId =
   | 'chat_agent' | 'owner_desk' | 'state' | 'academy' | 'platform_owner'
   | 'specialist_scents' | 'specialist_tech' | 'specialist_security' | 'specialist_science' | 'specialist_business' | 'specialist_society'
   | 'specialist_health' | 'specialist_engineering' | 'specialist_learning' | 'specialist_culture' | 'lab' | 'census'
-  | 'service' | 'inventory' | 'brain' | 'sales';
+  | 'service' | 'inventory' | 'brain' | 'sales' | 'catalog_review';
 
 export interface Bot {
   id: BotId;
@@ -85,6 +85,7 @@ export const BOTS: Bot[] = [
   { id: 'images', nameAr: 'منظف الصور', nameEn: 'Photo cleaner', dept: 'store', workflow: 'shaheen-import.yml', report: 'image-clean.json', everyHours: 2, dutiesAr: 'يشيل أرقام وروابط المورد من صور المنتجات.' },
   { id: 'catalog', nameAr: 'مدرّب كتالوج المتجر', nameEn: 'Store catalog trainer', dept: 'store', workflow: 'shaheen-news.yml', report: 'store-catalog.json', everyHours: 12, aiTools: ['store_catalog'], dutiesAr: 'يصحح الأسماء والأوصاف ويضيف العائلة العطرية والنوتات والمواسم.' },
   { id: 'inventory', nameAr: 'إدارة المخزون والتنبؤ بالمبيعات', nameEn: 'Inventory & sales forecast', dept: 'store', workflow: 'shaheen-inventory.yml', report: 'shaheen-inventory.json', everyHours: 6, dutiesAr: 'يدير مخزون متجر شام ويتنبأ بالمبيعات: يراجع الكتالوج الحقيقي وحالة التوفر، ويقرا المخزون الرقمي والطلبات المؤكدة من الحساب الحي من غير أي بيانات عملاء أو مبالغ، ويحسب تغطية المخزون بالأيام وحركة كل منتج من المبيعات المؤكدة بس (آخر 30 يوم)، ويطلع قائمة إعادة توريد بكميات محسوبة من مدة التوريد + مخزون الأمان، ويرصد العائلات والماركات اللي خلصت. لو مفيش مبيعات مسجلة يقول بصراحة ويفضل يخطط من المخزون والكتالوج من غير أرقام متخمنة.' },
+  { id: 'catalog_review', nameAr: 'روبوت مراجعة المنتجات (الأسعار والأسماء والصور)', nameEn: 'Catalog review robot (prices, names, photos)', dept: 'store', workflow: 'shaheen-catalog-review.yml', report: 'catalog-review.json', everyHours: 24, dutiesAr: 'قال صاحب المتجر «راجع جميع المنتجات»، فبيمرّ كل يوم على كل منتج في ملف المنتجات ويقوله بالأرقام من الملفات نفسها: منتج سعره مش على قاعدة السعر اللي اتسعّر بيها (التكلفة × 1.5 مقرّبة لفوق لأقرب 5 جنيه)، منتج بيتباع بأقل من تكلفة توصيله لنفس البلد (خسارة في كل بيعة)، سعر أقل من 1% من متوسط المتجر (غالباً السعر اتكتب بعملة تانية)، اسم فيه حروف تالفة أو مكتوب بحروف لاتينية بس، وصف عربي لسه الجملة العامة مش وصف حقيقي، صورة واحدة على أكتر من منتج، اللي نفد مخزونه، واللي مالوش صفحة مصدر. وكمان بيحسب قرار الشحن المجاني لكل منطقة بالجنيه: الشحن بيكلّف كام، الطلب لازم يوصل كام عشان الشحن يفضل تحت سُدس قيمته، وكام منتج بيوصل الرقم ده. بيراجع ومايغيّرش سعر ولا اسم ولا صورة — القرار لصاحب المتجر. تقريره src/data/live/catalog-review.json.' },
   { id: 'product_pages', nameAr: 'فاحص صفحات المنتجات على الموبايل', nameEn: 'Product pages check (phone)', dept: 'store', workflow: 'product-pages-check.yml', everyHours: 24, dutiesAr: 'يفتح صفحات المنتجات على الموقع الحقيقي زي زائر على الموبايل ويتأكد إنها سليمة.' },
   { id: 'store_advisor', nameAr: 'مستشار التسوق «اسأل شاهين»', nameEn: 'Shopping advisor', dept: 'store', aiTools: ['store_advisor'], dutiesAr: 'يختار للزائر من منتجات المتجر الحقيقية حسب طلبه.' },
   // ── Content & search ──
@@ -226,6 +227,11 @@ export const LINKS: Link[] = [
   { from: 'visitor_tour', to: 'council', whyAr: 'رأي واقتراحات المستشار الميداني + خطوات الشراء الواقعة ← بنود في الاجتماع' },
   { from: 'visitor_tour', to: 'product_pages', whyAr: 'صفحات منتجات أو صور مكسورة' },
   { from: 'verifier', to: 'council', whyAr: 'مهمة اتقفلت ولسه مش متصلحة ← تتفتح تاني' },
+  { from: 'catalog_review', to: 'importer', whyAr: 'منتج سعره أو اسمه أو وصفه محتاج تصحيح ← المستورد ومراجع الصفحات يتظبط' },
+  { from: 'catalog_review', to: 'council', whyAr: 'قرار الشحن المجاني وأسعار تحت تكلفة الشحن ← بنود في الاجتماع بموافقة صاحب المتجر' },
+  { from: 'catalog_review', to: 'catalog', whyAr: 'أوصاف عربية لسه الجملة العامة ← مدرّب الكتالوج يكتب وصف حقيقي لكل منتج' },
+  { from: 'catalog_review', to: 'localization_audit', whyAr: 'سعر مش طبيعي غالباً عملة غلط في الاستيراد ← تدقيق العملات يأكد' },
+  { from: 'inventory', to: 'catalog_review', whyAr: 'المنتجات اللي خلصت أو رجعت للمخزن ← مراجعة السعر قبل ما تتعرض تاني' },
   { from: 'languages', to: 'localization_audit', whyAr: 'حزم اللغة الناقصة والكلمات اللي لسه بالإنجليزي ← تدقيق العملات والمصطلحات يتأكد منها' },
   { from: 'localization_audit', to: 'languages', whyAr: 'كلمات الفلوس الناقصة في أي لغة ← المترجم الذكي يكملها' },
   { from: 'localization_audit', to: 'council', whyAr: 'حالات عرض عملة غير عملة بلد الزائر وملاحظات الأسعار ← بنود في الاجتماع' },
