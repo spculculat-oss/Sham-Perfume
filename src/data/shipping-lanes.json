@@ -1,0 +1,344 @@
+{
+ "version": 1,
+ "note": "«ممرات الشحن» — كل منصة بنعرض منها ليها طريقة تسليم واحدة من اتنين: (platform_ships) المنصة بتشحن لكل العالم ودورنا وساطة بس، أو (broker) المنصة محلية بس وإحنا اللي بنشحن ونختار الشركة. اللي لسه مش متأكد منه بيتسجل unknown ومايتعرضش للزائر كوعد. كل سعر شحن بمصدره وتاريخه.",
+ "updatedAt": "2026-10-25",
+ "modes": {
+  "platform_ships": {
+   "nameAr": "المنصة بتشحن (وساطة)",
+   "meaningAr": "المنصة المصدر مسؤولة عن التوصيل لأي دولة. دورنا: نعرض ونبيع ونتابع، وناخد مكسبنا بس. الشحن بيتحسب بسعر المنصة، ومفيش أي وعد توصيل من عندنا.",
+   "weArrangeShipping": false,
+   "wePayCustoms": false,
+   "riskAr": "الخطر الأكبر: لو المنصة اتأخرت أو رفضت ترجع، العميل بيحاسبنا إحنا."
+  },
+  "broker": {
+   "nameAr": "إحنا بنشحن (وسيط بيسلّم)",
+   "meaningAr": "المنصة بتسلّم محلياً بس. إحنا بنستلم وبنشحن للعميل: محلي لو العميل في نفس بلد المنصة، ودولي لو في بلد تاني — وبنختار الشركة الأنسب لكل ممر.",
+   "weArrangeShipping": true,
+   "wePayCustoms": false,
+   "riskAr": "الخطر: سعر الشحن بيتغير بالوزن والوجهة، والجمارك على العميل. لازم السعر يتأكد قبل الدفع."
+  },
+  "unknown": {
+   "nameAr": "مش معروف (لازم يتأكد)",
+   "meaningAr": "لسه مش مسجل: المنصة بتشحن ولا محلية بس؟ لحد ما يتأكد مفيش وعد توصيل للزائر، والطلب يتأكد بالكلام مع صاحب المتجر.",
+   "weArrangeShipping": null,
+   "wePayCustoms": null,
+   "riskAr": "وعد توصيل من غير معرفة = شكوى. ممنوع."
+  }
+ },
+ "platforms": [
+  {
+   "id": "shamperfume",
+   "nameAr": "شام بيرفيوم",
+   "nameEn": "Sham Perfume",
+   "host": "www.shamperfume.com",
+   "products": 1063,
+   "originCountry": "EG",
+   "originConfidence": "inferred",
+   "originEvidenceAr": "الأسعار في الكتالوج بالجنيه المصري والمنصة مصرية — بلد المنشأ مستنتج، محتاج تأكيد من صاحب المتجر.",
+   "fulfilment": "unknown",
+   "shipsTo": [],
+   "shipsToNoteAr": "لسه محدش سجل إذا كانت المنصة بتشحن للعالم ولا محلية بس — ده أول سؤال.",
+   "source": "https://www.shamperfume.com",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "afnan",
+   "nameAr": "أفنان للعطور",
+   "nameEn": "Afnan Perfumes",
+   "host": "afnan.com",
+   "products": 98,
+   "originCountry": null,
+   "originConfidence": "unknown",
+   "originEvidenceAr": "بلد المنشأ مش مسجل في الملف. غالباً الخليج — لازم يتأكد قبل أي حساب شحن.",
+   "fulfilment": "unknown",
+   "shipsTo": [],
+   "shipsToNoteAr": "محتاج سؤال: بتشحن للعالم ولا محلية بس؟",
+   "source": "https://afnan.com",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "direct",
+   "nameAr": "منتجات مباشرة بدون رابط مصدر",
+   "nameEn": "Direct products (no source page)",
+   "host": null,
+   "products": 51,
+   "originCountry": "EG",
+   "originConfidence": "inferred",
+   "originEvidenceAr": "مخزون محلي عندنا.",
+   "fulfilment": "broker",
+   "shipsTo": [
+    "EG"
+   ],
+   "shipsToNoteAr": "مخزوننا في مصر — بنشحن منه محلياً، ودولياً بشركة دولية.",
+   "source": "src/data/products.json",
+   "checkedAt": "2026-10-25"
+  }
+ ],
+ "carriers": [
+  {
+   "id": "bosta",
+   "nameAr": "بوستة",
+   "nameEn": "Bosta",
+   "country": "EG",
+   "scope": "local",
+   "dg": null,
+   "cod": true,
+   "priceBandEgp": {
+    "cairo": [
+     30,
+     55
+    ],
+    "governorates": [
+     60,
+     90
+    ]
+   },
+   "speedAr": "اليوم التالي",
+   "noteAr": "الأشهر والأرخص للتجارة الإلكترونية في مصر، وفيها دفع عند الاستلام.",
+   "source": "https://www.easyorders.eg/blog/أفضل-شركات-الشحن-الداخلي-في-مصر/",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "mylerz",
+   "nameAr": "مايلرز",
+   "nameEn": "Mylerz",
+   "country": "EG",
+   "scope": "local",
+   "dg": null,
+   "cod": true,
+   "priceBandEgp": {
+    "cairo": [
+     40,
+     70
+    ],
+    "governorates": [
+     80,
+     110
+    ]
+   },
+   "speedAr": "2–3 أيام",
+   "noteAr": "تغطي مصر والمغرب والأردن وتونس والجزائر.",
+   "source": "https://www.easyorders.eg/blog/أفضل-شركات-الشحن-الداخلي-في-مصر/",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "shipblu",
+   "nameAr": "شيب بلو",
+   "nameEn": "ShipBlu",
+   "country": "EG",
+   "scope": "local",
+   "dg": null,
+   "cod": true,
+   "priceBandEgp": {
+    "cairo": [
+     35,
+     55
+    ],
+    "governorates": [
+     65,
+     90
+    ]
+   },
+   "speedAr": "1–3 أيام",
+   "noteAr": "شركة مصرية حديثة، قوية في القاهرة.",
+   "source": "https://www.easyorders.eg/blog/أفضل-شركات-الشحن-الداخلي-في-مصر/",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "weevo",
+   "nameAr": "ويفو",
+   "nameEn": "Weevo",
+   "country": "EG",
+   "scope": "local",
+   "dg": null,
+   "cod": true,
+   "priceBandEgp": {
+    "cairo": [
+     30,
+     50
+    ],
+    "governorates": [
+     70,
+     100
+    ]
+   },
+   "speedAr": "1–3 أيام",
+   "noteAr": "أرخص فئة في القاهرة.",
+   "source": "https://www.easyorders.eg/blog/أفضل-شركات-الشحن-الداخلي-في-مصر/",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "aramex_eg",
+   "nameAr": "أرامكس مصر",
+   "nameEn": "Aramex Egypt",
+   "country": "EG",
+   "scope": "local",
+   "dg": null,
+   "cod": true,
+   "priceBandEgp": {
+    "cairo": [
+     70,
+     100
+    ],
+    "governorates": [
+     105,
+     140
+    ]
+   },
+   "speedAr": "1–2 يوم",
+   "noteAr": "الأغلى محلياً بس عندها شبكة دولية وخدمة مواد خطرة (يتأكد).",
+   "source": "https://www.aramex.com/eg/en/ship/calculate-rates",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "egypt_post",
+   "nameAr": "البريد المصري",
+   "nameEn": "Egypt Post",
+   "country": "EG",
+   "scope": "local",
+   "dg": null,
+   "cod": true,
+   "priceBandEgp": null,
+   "speedAr": "2–5 أيام",
+   "noteAr": "أوسع تغطية (4,238 مكتب) وأرخص للمناطق النائية، بس أبطأ ومفيش سعر منشور متأكد منه.",
+   "source": "https://www.mordorintelligence.com/industry-reports/egypt-courier-express-and-parcel-cep-market",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "aramex_intl",
+   "nameAr": "أرامكس الدولية",
+   "nameEn": "Aramex International",
+   "country": "*",
+   "scope": "international",
+   "dg": null,
+   "cod": false,
+   "priceBandUsd": {
+    "gulf": [
+     20,
+     55
+    ],
+    "europe_north_america": [
+     40,
+     100
+    ]
+   },
+   "speedAr": "3–7 أيام",
+   "noteAr": "الأرخص للشرق الأوسط من مصر. لازم يتأكد إنها بتقبل العطور (UN1266) على المسار ده.",
+   "source": "https://zabroker.com/blog/egypt-shipping-companies",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "dhl_express",
+   "nameAr": "دي إتش إل إكسبريس",
+   "nameEn": "DHL Express",
+   "country": "*",
+   "scope": "international",
+   "dg": null,
+   "cod": false,
+   "priceBandUsd": null,
+   "speedAr": "2–5 أيام",
+   "noteAr": "أقوى تغطية عالمية. سعرها بيتحسب بالوزن الحجمي ونوع المادة — مفيش فئة منشورة. لازم اتفاقية مواد خطرة للعطور.",
+   "source": "https://www.dhl.com/",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "fedex",
+   "nameAr": "فيديكس",
+   "nameEn": "FedEx",
+   "country": "*",
+   "scope": "international",
+   "dg": null,
+   "cod": false,
+   "priceBandUsd": null,
+   "speedAr": "2–5 أيام",
+   "noteAr": "مناسبة للطرود الأكبر. نفس ملاحظة المواد الخطرة.",
+   "source": "https://www.fedex.com/",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "ups",
+   "nameAr": "يو بي إس",
+   "nameEn": "UPS",
+   "country": "*",
+   "scope": "international",
+   "dg": null,
+   "cod": false,
+   "priceBandUsd": null,
+   "speedAr": "2–5 أيام",
+   "noteAr": "بديل لفيديكس. نفس ملاحظة المواد الخطرة.",
+   "source": "https://www.ups.com/",
+   "checkedAt": "2026-10-25"
+  }
+ ],
+ "candidates": [
+  {
+   "country": "SA",
+   "names": [
+    "SMSA",
+    "Naqel",
+    "Aramex",
+    "J&T Express"
+   ],
+   "verified": false
+  },
+  {
+   "country": "AE",
+   "names": [
+    "Aramex",
+    "Emirates Post",
+    "Quiqup"
+   ],
+   "verified": false
+  },
+  {
+   "country": "MY",
+   "names": [
+    "Ninja Van",
+    "J&T Express",
+    "Pos Malaysia",
+    "DHL eCommerce"
+   ],
+   "verified": false
+  },
+  {
+   "country": "GB",
+   "names": [
+    "Royal Mail",
+    "Evri",
+    "DPD",
+    "DHL Parcel UK"
+   ],
+   "verified": false
+  },
+  {
+   "country": "DE",
+   "names": [
+    "DHL Paket",
+    "Hermes",
+    "DPD",
+    "GLS"
+   ],
+   "verified": false
+  },
+  {
+   "country": "FR",
+   "names": [
+    "Colissimo",
+    "Chronopost",
+    "Mondial Relay",
+    "DPD France"
+   ],
+   "verified": false
+  },
+  {
+   "country": "US",
+   "names": [
+    "UPS",
+    "FedEx",
+    "USPS",
+    "OnTrac"
+   ],
+   "verified": false
+  }
+ ]
+}

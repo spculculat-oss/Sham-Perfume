@@ -38,6 +38,7 @@ on:
           - secretary
           - catalog
           - catalog_review
+          - trade_lanes
           - inventory
           - news
           - precheck

@@ -326,6 +326,23 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       }
       break;
     }
+    case 'trade_lanes': {
+      // «الشحن والتجارة»: a shipping price that loses money, an unregistered delivery mode, or a missing customs
+      // source are findings; everything else is a decision for the merchant.
+      const money = o(r.money);
+      const loss = Number(money.lossDestinations) || 0;
+      if (loss) f.push({ level: 'warn', problem: `${loss} وجهة لو إحنا اللي بنشحن تكلفة الشحن فيها أكبر من اللي بنحصّله`, fix: 'عدّل سعر الشحن أو فعّل ممر الوساطة للمنصات اللي بتشحن بنفسها' });
+      const over = Number(money.overChargedDestinations) || 0;
+      if (over) f.push({ level: 'note', idea: `${over} وجهة بنحصّل فيها شحن أكتر من ضعف تكلفته — تقليلها بيرفع التحويل` });
+      const modes = o(r.modes);
+      const unknown = Number(o(modes.unknown).products) || 0;
+      if (unknown) f.push({ level: 'warn', problem: `${unknown} منتج من منصة طريقة تسليمها مش مسجلة (وساطة ولا إحنا بنشحن)`, fix: 'صاحب المتجر يحدد fulfilment لكل منصة في src/data/shipping-lanes.json' });
+      const gaps = arr(r.gaps).filter((g) => String(o(g).kindAr) === 'الجمارك');
+      if (gaps.length) f.push({ level: 'warn', problem: String(o(gaps[0]).whatAr), fix: String(o(gaps[0]).fixAr) });
+      const dg = arr(r.gaps).filter((g) => String(o(g).kindAr) === 'المواد الخطرة');
+      if (dg.length) f.push({ level: 'warn', problem: String(o(dg[0]).whatAr), fix: 'اتأكد من قبول العطور UN1266 مع كل شركة قبل عرض الشحن الدولي' });
+      break;
+    }
     case 'finance_shield': {
       // «حارس المدفوعات»: the guard must be wired and must still stop every broken cart.
       const guard = o(r.guard);
