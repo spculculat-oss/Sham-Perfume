@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "trade-lanes",
- "updatedAt": "2026-10-25T21:30:50.214Z",
+ "updatedAt": "2026-10-25T21:55:03.818Z",
  "modes": {
   "platform_ships": {
    "nameAr": "المنصة بتشحن (وساطة)",
@@ -96,22 +96,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 829.23,
+   "chargedEgp": 1876.22,
+   "zoneChargedEgp": 829.23,
    "costEgp": [
     1705.4,
     1989.64
    ],
-   "surplusEgp": -1018.29,
-   "netEgp": 172.77,
-   "orderVerdict": "thin",
-   "keptPercent": 14.51,
-   "marginEatenEgp": 1018.29,
+   "surplusEgp": 170.82,
+   "netEgp": 1361.88,
+   "orderVerdict": "profit",
+   "keptPercent": 114.34,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1705.4,
     1989.64
    ],
+   "costExtraEgp": 284.23,
+   "proposedChargedEgp": 1876.22,
+   "proposedMarginEgp": 170.82,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": null,
@@ -158,22 +162,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 773.95,
+   "chargedEgp": 1667.38,
+   "zoneChargedEgp": 773.95,
    "costEgp": [
     1515.91,
     1989.64
    ],
-   "surplusEgp": -978.83,
-   "netEgp": 212.23,
-   "orderVerdict": "thin",
-   "keptPercent": 17.82,
-   "marginEatenEgp": 978.83,
+   "surplusEgp": 151.47,
+   "netEgp": 1342.53,
+   "orderVerdict": "profit",
+   "keptPercent": 112.72,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1515.91,
     1989.64
    ],
+   "costExtraEgp": 473.72,
+   "proposedChargedEgp": 1667.38,
+   "proposedMarginEgp": 151.47,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -217,22 +225,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 773.95,
+   "chargedEgp": 1667.38,
+   "zoneChargedEgp": 773.95,
    "costEgp": [
     1515.91,
     1894.89
    ],
-   "surplusEgp": -931.45,
-   "netEgp": 259.61,
-   "orderVerdict": "thin",
-   "keptPercent": 21.8,
-   "marginEatenEgp": 931.45,
+   "surplusEgp": 151.47,
+   "netEgp": 1342.53,
+   "orderVerdict": "profit",
+   "keptPercent": 112.72,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1515.91,
     1894.89
    ],
+   "costExtraEgp": 378.98,
+   "proposedChargedEgp": 1667.38,
+   "proposedMarginEgp": 151.47,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -276,22 +288,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 773.95,
+   "chargedEgp": 1563.24,
+   "zoneChargedEgp": 773.95,
    "costEgp": [
     1421.17,
     1800.15
    ],
-   "surplusEgp": -836.71,
-   "netEgp": 354.35,
+   "surplusEgp": 142.07,
+   "netEgp": 1333.13,
    "orderVerdict": "profit",
-   "keptPercent": 29.75,
-   "marginEatenEgp": 836.71,
+   "keptPercent": 111.93,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1421.17,
     1800.15
    ],
+   "costExtraEgp": 378.98,
+   "proposedChargedEgp": 1563.24,
+   "proposedMarginEgp": 142.07,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -335,22 +351,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 773.95,
+   "chargedEgp": 1563.24,
+   "zoneChargedEgp": 773.95,
    "costEgp": [
     1421.17,
     1800.15
    ],
-   "surplusEgp": -836.71,
-   "netEgp": 354.35,
+   "surplusEgp": 142.07,
+   "netEgp": 1333.13,
    "orderVerdict": "profit",
-   "keptPercent": 29.75,
-   "marginEatenEgp": 836.71,
+   "keptPercent": 111.93,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1421.17,
     1800.15
    ],
+   "costExtraEgp": 378.98,
+   "proposedChargedEgp": 1563.24,
+   "proposedMarginEgp": 142.07,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -394,22 +414,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 773.95,
+   "chargedEgp": 1563.24,
+   "zoneChargedEgp": 773.95,
    "costEgp": [
     1421.17,
     1800.15
    ],
-   "surplusEgp": -836.71,
-   "netEgp": 354.35,
+   "surplusEgp": 142.07,
+   "netEgp": 1333.13,
    "orderVerdict": "profit",
-   "keptPercent": 29.75,
-   "marginEatenEgp": 836.71,
+   "keptPercent": 111.93,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1421.17,
     1800.15
    ],
+   "costExtraEgp": 378.98,
+   "proposedChargedEgp": 1563.24,
+   "proposedMarginEgp": 142.07,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -453,22 +477,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 773.95,
+   "chargedEgp": 3118.75,
+   "zoneChargedEgp": 773.95,
    "costEgp": [
     2842.34,
     3600.29
    ],
-   "surplusEgp": -2447.37,
-   "netEgp": -1256.31,
-   "orderVerdict": "loss",
-   "keptPercent": -105.48,
-   "marginEatenEgp": 2447.37,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     2842.34,
     3600.29
    ],
+   "costExtraEgp": 757.96,
+   "proposedChargedEgp": 3118.75,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -512,22 +540,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 995.07,
+   "chargedEgp": 1563.24,
+   "zoneChargedEgp": 995.07,
    "costEgp": [
     1421.17,
     1800.15
    ],
-   "surplusEgp": -615.59,
-   "netEgp": 575.47,
+   "surplusEgp": 142.07,
+   "netEgp": 1333.13,
    "orderVerdict": "profit",
-   "keptPercent": 48.32,
-   "marginEatenEgp": 615.59,
+   "keptPercent": 111.93,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1421.17,
     1800.15
    ],
+   "costExtraEgp": 378.98,
+   "proposedChargedEgp": 1563.24,
+   "proposedMarginEgp": 142.07,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "200 JOD",
@@ -571,22 +603,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 995.07,
+   "chargedEgp": 3308.24,
+   "zoneChargedEgp": 995.07,
    "costEgp": [
     3031.83,
     3789.78
    ],
-   "surplusEgp": -2415.74,
-   "netEgp": -1224.68,
-   "orderVerdict": "loss",
-   "keptPercent": -102.82,
-   "marginEatenEgp": 2415.74,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3031.83,
     3789.78
    ],
+   "costExtraEgp": 757.96,
+   "proposedChargedEgp": 3308.24,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -630,22 +666,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 995.07,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 995.07,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2936.83,
-   "netEgp": -1745.77,
-   "orderVerdict": "loss",
-   "keptPercent": -146.57,
-   "marginEatenEgp": 2936.83,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -689,22 +729,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 995.07,
+   "chargedEgp": 3213.49,
+   "zoneChargedEgp": 995.07,
    "costEgp": [
     2937.08,
     3695.04
    ],
-   "surplusEgp": -2320.99,
-   "netEgp": -1129.93,
-   "orderVerdict": "loss",
-   "keptPercent": -94.87,
-   "marginEatenEgp": 2320.99,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     2937.08,
     3695.04
    ],
+   "costExtraEgp": 757.96,
+   "proposedChargedEgp": 3213.49,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -748,22 +792,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 995.07,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 995.07,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2936.83,
-   "netEgp": -1745.77,
-   "orderVerdict": "loss",
-   "keptPercent": -146.57,
-   "marginEatenEgp": 2936.83,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -807,22 +855,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 995.07,
+   "chargedEgp": 3251.39,
+   "zoneChargedEgp": 995.07,
    "costEgp": [
     2974.98,
     3732.94
    ],
-   "surplusEgp": -2358.89,
-   "netEgp": -1167.83,
-   "orderVerdict": "loss",
-   "keptPercent": -98.05,
-   "marginEatenEgp": 2358.89,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     2974.98,
     3732.94
    ],
+   "costExtraEgp": 757.96,
+   "proposedChargedEgp": 3251.39,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -866,22 +918,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 995.07,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 995.07,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2936.83,
-   "netEgp": -1745.77,
-   "orderVerdict": "loss",
-   "keptPercent": -146.57,
-   "marginEatenEgp": 2936.83,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -925,22 +981,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 995.07,
+   "chargedEgp": 2084.51,
+   "zoneChargedEgp": 995.07,
    "costEgp": [
     1894.89,
     2463.36
    ],
-   "surplusEgp": -1184.06,
-   "netEgp": 7,
-   "orderVerdict": "thin",
-   "keptPercent": 0.59,
-   "marginEatenEgp": 1184.06,
+   "surplusEgp": 189.62,
+   "netEgp": 1380.68,
+   "orderVerdict": "profit",
+   "keptPercent": 115.92,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1894.89,
     2463.36
    ],
+   "costExtraEgp": 568.47,
+   "proposedChargedEgp": 2084.51,
+   "proposedMarginEgp": 189.62,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -984,22 +1044,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 995.07,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 995.07,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2936.83,
-   "netEgp": -1745.77,
-   "orderVerdict": "loss",
-   "keptPercent": -146.57,
-   "marginEatenEgp": 2936.83,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1043,22 +1107,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 995.07,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 995.07,
    "costEgp": [
     3410.8,
     4263.51
    ],
-   "surplusEgp": -2842.09,
-   "netEgp": -1651.03,
-   "orderVerdict": "loss",
-   "keptPercent": -138.62,
-   "marginEatenEgp": 2842.09,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4263.51
    ],
+   "costExtraEgp": 852.7,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1102,22 +1170,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 995.07,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 995.07,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2936.83,
-   "netEgp": -1745.77,
-   "orderVerdict": "loss",
-   "keptPercent": -146.57,
-   "marginEatenEgp": 2936.83,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1161,22 +1233,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 995.07,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 995.07,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2936.83,
-   "netEgp": -1745.77,
-   "orderVerdict": "loss",
-   "keptPercent": -146.57,
-   "marginEatenEgp": 2936.83,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1220,22 +1296,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 995.07,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 995.07,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2936.83,
-   "netEgp": -1745.77,
-   "orderVerdict": "loss",
-   "keptPercent": -146.57,
-   "marginEatenEgp": 2936.83,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1279,22 +1359,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 995.07,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 995.07,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2936.83,
-   "netEgp": -1745.77,
-   "orderVerdict": "loss",
-   "keptPercent": -146.57,
-   "marginEatenEgp": 2936.83,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1338,22 +1422,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 995.07,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 995.07,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2936.83,
-   "netEgp": -1745.77,
-   "orderVerdict": "loss",
-   "keptPercent": -146.57,
-   "marginEatenEgp": 2936.83,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1395,6 +1483,7 @@
    },
    "alternative": null,
    "chargedEgp": 331.69,
+   "zoneChargedEgp": 331.69,
    "costEgp": null,
    "surplusEgp": null,
    "netEgp": null,
@@ -1402,6 +1491,9 @@
    "keptPercent": null,
    "marginEatenEgp": null,
    "requiredShippingEgp": null,
+   "costExtraEgp": null,
+   "proposedChargedEgp": null,
+   "proposedMarginEgp": null,
    "promise": "we_ship",
    "costVerdict": "unknown",
    "customs": {
@@ -1447,22 +1539,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 331.69,
+   "chargedEgp": 833.7,
+   "zoneChargedEgp": 331.69,
    "costEgp": [
     757.96,
     852.7
    ],
-   "surplusEgp": -473.64,
-   "netEgp": 717.42,
+   "surplusEgp": 75.74,
+   "netEgp": 1266.8,
    "orderVerdict": "profit",
-   "keptPercent": 60.23,
-   "marginEatenEgp": 473.64,
+   "keptPercent": 106.36,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     757.96,
     852.7
    ],
+   "costExtraEgp": 94.74,
+   "proposedChargedEgp": 833.7,
+   "proposedMarginEgp": 75.74,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1506,22 +1602,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 331.69,
+   "chargedEgp": 896.06,
+   "zoneChargedEgp": 331.69,
    "costEgp": [
     814.8,
     928.5
    ],
-   "surplusEgp": -539.96,
-   "netEgp": 651.1,
+   "surplusEgp": 81.26,
+   "netEgp": 1272.32,
    "orderVerdict": "profit",
-   "keptPercent": 54.67,
-   "marginEatenEgp": 539.96,
+   "keptPercent": 106.82,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     814.8,
     928.5
    ],
+   "costExtraEgp": 113.69,
+   "proposedChargedEgp": 896.06,
+   "proposedMarginEgp": 81.26,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1565,22 +1665,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 331.69,
+   "chargedEgp": 937.83,
+   "zoneChargedEgp": 331.69,
    "costEgp": [
     852.7,
     966.39
    ],
-   "surplusEgp": -577.86,
-   "netEgp": 613.2,
+   "surplusEgp": 85.13,
+   "netEgp": 1276.19,
    "orderVerdict": "profit",
-   "keptPercent": 51.48,
-   "marginEatenEgp": 577.86,
+   "keptPercent": 107.15,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     852.7,
     966.39
    ],
+   "costExtraEgp": 113.69,
+   "proposedChargedEgp": 937.83,
+   "proposedMarginEgp": 85.13,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1624,22 +1728,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 331.69,
+   "chargedEgp": 937.83,
+   "zoneChargedEgp": 331.69,
    "costEgp": [
     852.7,
     966.39
    ],
-   "surplusEgp": -577.86,
-   "netEgp": 613.2,
+   "surplusEgp": 85.13,
+   "netEgp": 1276.19,
    "orderVerdict": "profit",
-   "keptPercent": 51.48,
-   "marginEatenEgp": 577.86,
+   "keptPercent": 107.15,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     852.7,
     966.39
    ],
+   "costExtraEgp": 113.69,
+   "proposedChargedEgp": 937.83,
+   "proposedMarginEgp": 85.13,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1683,22 +1791,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 331.69,
+   "chargedEgp": 1146.67,
+   "zoneChargedEgp": 331.69,
    "costEgp": [
     1042.19,
     1193.78
    ],
-   "surplusEgp": -786.3,
-   "netEgp": 404.76,
+   "surplusEgp": 104.48,
+   "netEgp": 1295.54,
    "orderVerdict": "profit",
-   "keptPercent": 33.98,
-   "marginEatenEgp": 786.3,
+   "keptPercent": 108.77,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1042.19,
     1193.78
    ],
+   "costExtraEgp": 151.59,
+   "proposedChargedEgp": 1146.67,
+   "proposedMarginEgp": 104.48,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1742,22 +1854,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 331.69,
+   "chargedEgp": 1041.98,
+   "zoneChargedEgp": 331.69,
    "costEgp": [
     947.45,
     1061.14
    ],
-   "surplusEgp": -672.61,
-   "netEgp": 518.45,
+   "surplusEgp": 94.53,
+   "netEgp": 1285.59,
    "orderVerdict": "profit",
-   "keptPercent": 43.53,
-   "marginEatenEgp": 672.61,
+   "keptPercent": 107.94,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     947.45,
     1061.14
    ],
+   "costExtraEgp": 113.69,
+   "proposedChargedEgp": 1041.98,
+   "proposedMarginEgp": 94.53,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1801,22 +1917,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 331.69,
+   "chargedEgp": 1083.74,
+   "zoneChargedEgp": 331.69,
    "costEgp": [
     985.34,
     1099.04
    ],
-   "surplusEgp": -710.5,
-   "netEgp": 480.56,
+   "surplusEgp": 98.4,
+   "netEgp": 1289.46,
    "orderVerdict": "profit",
-   "keptPercent": 40.35,
-   "marginEatenEgp": 710.5,
+   "keptPercent": 108.26,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     985.34,
     1099.04
    ],
+   "costExtraEgp": 113.69,
+   "proposedChargedEgp": 1083.74,
+   "proposedMarginEgp": 98.4,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1860,22 +1980,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 331.69,
+   "chargedEgp": 1083.74,
+   "zoneChargedEgp": 331.69,
    "costEgp": [
     985.34,
     1136.93
    ],
-   "surplusEgp": -729.45,
-   "netEgp": 461.61,
+   "surplusEgp": 98.4,
+   "netEgp": 1289.46,
    "orderVerdict": "profit",
-   "keptPercent": 38.76,
-   "marginEatenEgp": 729.45,
+   "keptPercent": 108.26,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     985.34,
     1136.93
    ],
+   "costExtraEgp": 151.59,
+   "proposedChargedEgp": 1083.74,
+   "proposedMarginEgp": 98.4,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1919,22 +2043,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 331.69,
+   "chargedEgp": 1667.38,
+   "zoneChargedEgp": 331.69,
    "costEgp": [
     1515.91,
     1894.89
    ],
-   "surplusEgp": -1373.71,
-   "netEgp": -182.65,
-   "orderVerdict": "loss",
-   "keptPercent": -15.34,
-   "marginEatenEgp": 1373.71,
+   "surplusEgp": 151.47,
+   "netEgp": 1342.53,
+   "orderVerdict": "profit",
+   "keptPercent": 112.72,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1515.91,
     1894.89
    ],
+   "costExtraEgp": 378.98,
+   "proposedChargedEgp": 1667.38,
+   "proposedMarginEgp": 151.47,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1978,22 +2106,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 2084.51,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     1894.89,
     2179.12
    ],
-   "surplusEgp": -820.81,
-   "netEgp": 370.25,
+   "surplusEgp": 189.62,
+   "netEgp": 1380.68,
    "orderVerdict": "profit",
-   "keptPercent": 31.09,
-   "marginEatenEgp": 820.81,
+   "keptPercent": 115.92,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1894.89,
     2179.12
    ],
+   "costExtraEgp": 284.23,
+   "proposedChargedEgp": 2084.51,
+   "proposedMarginEgp": 189.62,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": "135 GBP",
@@ -2037,22 +2169,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 2084.51,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     1894.89,
     2179.12
    ],
-   "surplusEgp": -820.81,
-   "netEgp": 370.25,
+   "surplusEgp": 189.62,
+   "netEgp": 1380.68,
    "orderVerdict": "profit",
-   "keptPercent": 31.09,
-   "marginEatenEgp": 820.81,
+   "keptPercent": 115.92,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1894.89,
     2179.12
    ],
+   "costExtraEgp": 284.23,
+   "proposedChargedEgp": 2084.51,
+   "proposedMarginEgp": 189.62,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -2096,22 +2232,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 2084.51,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     1894.89,
     2179.12
    ],
-   "surplusEgp": -820.81,
-   "netEgp": 370.25,
+   "surplusEgp": 189.62,
+   "netEgp": 1380.68,
    "orderVerdict": "profit",
-   "keptPercent": 31.09,
-   "marginEatenEgp": 820.81,
+   "keptPercent": 115.92,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1894.89,
     2179.12
    ],
+   "costExtraEgp": 284.23,
+   "proposedChargedEgp": 2084.51,
+   "proposedMarginEgp": 189.62,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -2155,22 +2295,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 2084.51,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     1894.89,
     2254.92
    ],
-   "surplusEgp": -858.71,
-   "netEgp": 332.35,
+   "surplusEgp": 189.62,
+   "netEgp": 1380.68,
    "orderVerdict": "profit",
-   "keptPercent": 27.9,
-   "marginEatenEgp": 858.71,
+   "keptPercent": 115.92,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1894.89,
     2254.92
    ],
+   "costExtraEgp": 360.03,
+   "proposedChargedEgp": 2084.51,
+   "proposedMarginEgp": 189.62,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -2214,22 +2358,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 2084.51,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     1894.89,
     2179.12
    ],
-   "surplusEgp": -820.81,
-   "netEgp": 370.25,
+   "surplusEgp": 189.62,
+   "netEgp": 1380.68,
    "orderVerdict": "profit",
-   "keptPercent": 31.09,
-   "marginEatenEgp": 820.81,
+   "keptPercent": 115.92,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1894.89,
     2179.12
    ],
+   "costExtraEgp": 284.23,
+   "proposedChargedEgp": 2084.51,
+   "proposedMarginEgp": 189.62,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -2273,22 +2421,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 2396.93,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     2179.12,
     2463.36
    ],
-   "surplusEgp": -1105.04,
-   "netEgp": 86.02,
-   "orderVerdict": "thin",
-   "keptPercent": 7.22,
-   "marginEatenEgp": 1105.04,
+   "surplusEgp": 217.81,
+   "netEgp": 1408.87,
+   "orderVerdict": "profit",
+   "keptPercent": 118.29,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     2179.12,
     2463.36
    ],
+   "costExtraEgp": 284.23,
+   "proposedChargedEgp": 2396.93,
+   "proposedMarginEgp": 217.81,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -2332,22 +2484,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 2084.51,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     1894.89,
     2179.12
    ],
-   "surplusEgp": -820.81,
-   "netEgp": 370.25,
+   "surplusEgp": 189.62,
+   "netEgp": 1380.68,
    "orderVerdict": "profit",
-   "keptPercent": 31.09,
-   "marginEatenEgp": 820.81,
+   "keptPercent": 115.92,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1894.89,
     2179.12
    ],
+   "costExtraEgp": 284.23,
+   "proposedChargedEgp": 2084.51,
+   "proposedMarginEgp": 189.62,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -2391,22 +2547,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 2292.79,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     2084.38,
     2520.21
    ],
-   "surplusEgp": -1086.1,
-   "netEgp": 104.96,
-   "orderVerdict": "thin",
-   "keptPercent": 8.81,
-   "marginEatenEgp": 1086.1,
+   "surplusEgp": 208.41,
+   "netEgp": 1399.47,
+   "orderVerdict": "profit",
+   "keptPercent": 117.5,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     2084.38,
     2520.21
    ],
+   "costExtraEgp": 435.82,
+   "proposedChargedEgp": 2292.79,
+   "proposedMarginEgp": 208.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -2450,22 +2610,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 2084.51,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     1894.89,
     2179.12
    ],
-   "surplusEgp": -820.81,
-   "netEgp": 370.25,
+   "surplusEgp": 189.62,
+   "netEgp": 1380.68,
    "orderVerdict": "profit",
-   "keptPercent": 31.09,
-   "marginEatenEgp": 820.81,
+   "keptPercent": 115.92,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1894.89,
     2179.12
    ],
+   "costExtraEgp": 284.23,
+   "proposedChargedEgp": 2084.51,
+   "proposedMarginEgp": 189.62,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -2509,22 +2673,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3001.73,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     2728.64,
     3145.52
    ],
-   "surplusEgp": -1720.88,
-   "netEgp": -529.82,
-   "orderVerdict": "loss",
-   "keptPercent": -44.48,
-   "marginEatenEgp": 1720.88,
+   "surplusEgp": 273.09,
+   "netEgp": 1464.15,
+   "orderVerdict": "profit",
+   "keptPercent": 122.93,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     2728.64,
     3145.52
    ],
+   "costExtraEgp": 416.88,
+   "proposedChargedEgp": 3001.73,
+   "proposedMarginEgp": 273.09,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -2568,22 +2736,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 2084.51,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     1894.89,
     2463.36
    ],
-   "surplusEgp": -962.93,
-   "netEgp": 228.13,
-   "orderVerdict": "thin",
-   "keptPercent": 19.15,
-   "marginEatenEgp": 962.93,
+   "surplusEgp": 189.62,
+   "netEgp": 1380.68,
+   "orderVerdict": "profit",
+   "keptPercent": 115.92,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1894.89,
     2463.36
    ],
+   "costExtraEgp": 568.47,
+   "proposedChargedEgp": 2084.51,
+   "proposedMarginEgp": 189.62,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -2627,22 +2799,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 2709.92,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     2463.36,
     3031.83
    ],
-   "surplusEgp": -1531.4,
-   "netEgp": -340.34,
-   "orderVerdict": "loss",
-   "keptPercent": -28.57,
-   "marginEatenEgp": 1531.4,
+   "surplusEgp": 246.56,
+   "netEgp": 1437.62,
+   "orderVerdict": "profit",
+   "keptPercent": 120.7,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     2463.36,
     3031.83
    ],
+   "costExtraEgp": 568.47,
+   "proposedChargedEgp": 2709.92,
+   "proposedMarginEgp": 246.56,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -2686,22 +2862,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 2709.92,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     2463.36,
     3031.83
    ],
-   "surplusEgp": -1531.4,
-   "netEgp": -340.34,
-   "orderVerdict": "loss",
-   "keptPercent": -28.57,
-   "marginEatenEgp": 1531.4,
+   "surplusEgp": 246.56,
+   "netEgp": 1437.62,
+   "orderVerdict": "profit",
+   "keptPercent": 120.7,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     2463.36,
     3031.83
    ],
+   "costExtraEgp": 568.47,
+   "proposedChargedEgp": 2709.92,
+   "proposedMarginEgp": 246.56,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -2745,22 +2925,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 2501.08,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     2273.87,
     2747.59
    ],
-   "surplusEgp": -1294.53,
-   "netEgp": -103.47,
-   "orderVerdict": "loss",
-   "keptPercent": -8.69,
-   "marginEatenEgp": 1294.53,
+   "surplusEgp": 227.21,
+   "netEgp": 1418.27,
+   "orderVerdict": "profit",
+   "keptPercent": 119.08,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     2273.87,
     2747.59
    ],
+   "costExtraEgp": 473.72,
+   "proposedChargedEgp": 2501.08,
+   "proposedMarginEgp": 227.21,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -2804,22 +2988,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 2084.51,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     1894.89,
     2179.12
    ],
-   "surplusEgp": -820.81,
-   "netEgp": 370.25,
+   "surplusEgp": 189.62,
+   "netEgp": 1380.68,
    "orderVerdict": "profit",
-   "keptPercent": 31.09,
-   "marginEatenEgp": 820.81,
+   "keptPercent": 115.92,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1894.89,
     2179.12
    ],
+   "costExtraEgp": 284.23,
+   "proposedChargedEgp": 2084.51,
+   "proposedMarginEgp": 189.62,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -2863,22 +3051,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 2084.51,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     1894.89,
     2179.12
    ],
-   "surplusEgp": -820.81,
-   "netEgp": 370.25,
+   "surplusEgp": 189.62,
+   "netEgp": 1380.68,
    "orderVerdict": "profit",
-   "keptPercent": 31.09,
-   "marginEatenEgp": 820.81,
+   "keptPercent": 115.92,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1894.89,
     2179.12
    ],
+   "costExtraEgp": 284.23,
+   "proposedChargedEgp": 2084.51,
+   "proposedMarginEgp": 189.62,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -2922,22 +3114,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 2564.01,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     2330.72,
     2709.69
    ],
-   "surplusEgp": -1304.01,
-   "netEgp": -112.95,
-   "orderVerdict": "loss",
-   "keptPercent": -9.48,
-   "marginEatenEgp": 1304.01,
+   "surplusEgp": 233.29,
+   "netEgp": 1424.35,
+   "orderVerdict": "profit",
+   "keptPercent": 119.59,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     2330.72,
     2709.69
    ],
+   "costExtraEgp": 378.98,
+   "proposedChargedEgp": 2564.01,
+   "proposedMarginEgp": 233.29,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -2981,22 +3177,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3308.24,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     3031.83,
     3789.78
    ],
-   "surplusEgp": -2194.61,
-   "netEgp": -1003.55,
-   "orderVerdict": "loss",
-   "keptPercent": -84.26,
-   "marginEatenEgp": 2194.61,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3031.83,
     3789.78
    ],
+   "costExtraEgp": 757.96,
+   "proposedChargedEgp": 3308.24,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -3040,22 +3240,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3251.39,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     2974.98,
     3732.94
    ],
-   "surplusEgp": -2137.76,
-   "netEgp": -946.7,
-   "orderVerdict": "loss",
-   "keptPercent": -79.48,
-   "marginEatenEgp": 2137.76,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     2974.98,
     3732.94
    ],
+   "costExtraEgp": 757.96,
+   "proposedChargedEgp": 3251.39,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -3099,22 +3303,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3251.39,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     2974.98,
     3732.94
    ],
-   "surplusEgp": -2137.76,
-   "netEgp": -946.7,
-   "orderVerdict": "loss",
-   "keptPercent": -79.48,
-   "marginEatenEgp": 2137.76,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     2974.98,
     3732.94
    ],
+   "costExtraEgp": 757.96,
+   "proposedChargedEgp": 3251.39,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -3158,22 +3366,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3308.24,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     3031.83,
     3713.99
    ],
-   "surplusEgp": -2156.71,
-   "netEgp": -965.65,
-   "orderVerdict": "loss",
-   "keptPercent": -81.07,
-   "marginEatenEgp": 2156.71,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3031.83,
     3713.99
    ],
+   "costExtraEgp": 682.16,
+   "proposedChargedEgp": 3308.24,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -3217,22 +3429,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2715.7,
-   "netEgp": -1524.64,
-   "orderVerdict": "loss",
-   "keptPercent": -128.01,
-   "marginEatenEgp": 2715.7,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -3276,22 +3492,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3251.39,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     2974.98,
     3732.94
    ],
-   "surplusEgp": -2137.76,
-   "netEgp": -946.7,
-   "orderVerdict": "loss",
-   "keptPercent": -79.48,
-   "marginEatenEgp": 2137.76,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     2974.98,
     3732.94
    ],
+   "costExtraEgp": 757.96,
+   "proposedChargedEgp": 3251.39,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -3335,22 +3555,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 2084.51,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     1894.89,
     2273.87
    ],
-   "surplusEgp": -868.18,
-   "netEgp": 322.88,
+   "surplusEgp": 189.62,
+   "netEgp": 1380.68,
    "orderVerdict": "profit",
-   "keptPercent": 27.11,
-   "marginEatenEgp": 868.18,
+   "keptPercent": 115.92,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1894.89,
     2273.87
    ],
+   "costExtraEgp": 378.98,
+   "proposedChargedEgp": 2084.51,
+   "proposedMarginEgp": 189.62,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -3394,22 +3618,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2715.7,
-   "netEgp": -1524.64,
-   "orderVerdict": "loss",
-   "keptPercent": -128.01,
-   "marginEatenEgp": 2715.7,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -3453,22 +3681,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2715.7,
-   "netEgp": -1524.64,
-   "orderVerdict": "loss",
-   "keptPercent": -128.01,
-   "marginEatenEgp": 2715.7,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -3512,22 +3744,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2715.7,
-   "netEgp": -1524.64,
-   "orderVerdict": "loss",
-   "keptPercent": -128.01,
-   "marginEatenEgp": 2715.7,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -3571,22 +3807,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2715.7,
-   "netEgp": -1524.64,
-   "orderVerdict": "loss",
-   "keptPercent": -128.01,
-   "marginEatenEgp": 2715.7,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -3630,22 +3870,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2715.7,
-   "netEgp": -1524.64,
-   "orderVerdict": "loss",
-   "keptPercent": -128.01,
-   "marginEatenEgp": 2715.7,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -3689,22 +3933,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2715.7,
-   "netEgp": -1524.64,
-   "orderVerdict": "loss",
-   "keptPercent": -128.01,
-   "marginEatenEgp": 2715.7,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -3748,22 +3996,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2715.7,
-   "netEgp": -1524.64,
-   "orderVerdict": "loss",
-   "keptPercent": -128.01,
-   "marginEatenEgp": 2715.7,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -3807,22 +4059,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3251.39,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     2974.98,
     3732.94
    ],
-   "surplusEgp": -2137.76,
-   "netEgp": -946.7,
-   "orderVerdict": "loss",
-   "keptPercent": -79.48,
-   "marginEatenEgp": 2137.76,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     2974.98,
     3732.94
    ],
+   "costExtraEgp": 757.96,
+   "proposedChargedEgp": 3251.39,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -3866,22 +4122,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2715.7,
-   "netEgp": -1524.64,
-   "orderVerdict": "loss",
-   "keptPercent": -128.01,
-   "marginEatenEgp": 2715.7,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -3925,22 +4185,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2715.7,
-   "netEgp": -1524.64,
-   "orderVerdict": "loss",
-   "keptPercent": -128.01,
-   "marginEatenEgp": 2715.7,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -3984,22 +4248,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3251.39,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     2974.98,
     3732.94
    ],
-   "surplusEgp": -2137.76,
-   "netEgp": -946.7,
-   "orderVerdict": "loss",
-   "keptPercent": -79.48,
-   "marginEatenEgp": 2137.76,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     2974.98,
     3732.94
    ],
+   "costExtraEgp": 757.96,
+   "proposedChargedEgp": 3251.39,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -4043,22 +4311,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2715.7,
-   "netEgp": -1524.64,
-   "orderVerdict": "loss",
-   "keptPercent": -128.01,
-   "marginEatenEgp": 2715.7,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 EUR",
@@ -4102,22 +4374,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3213.49,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     2937.08,
     3695.04
    ],
-   "surplusEgp": -2099.86,
-   "netEgp": -908.8,
-   "orderVerdict": "loss",
-   "keptPercent": -76.3,
-   "marginEatenEgp": 2099.86,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     2937.08,
     3695.04
    ],
+   "costExtraEgp": 757.96,
+   "proposedChargedEgp": 3213.49,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -4161,22 +4437,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 3687.21,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     3410.8,
     4452.99
    ],
-   "surplusEgp": -2715.7,
-   "netEgp": -1524.64,
-   "orderVerdict": "loss",
-   "keptPercent": -128.01,
-   "marginEatenEgp": 2715.7,
+   "surplusEgp": 276.41,
+   "netEgp": 1467.47,
+   "orderVerdict": "profit",
+   "keptPercent": 123.21,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     3410.8,
     4452.99
    ],
+   "costExtraEgp": 1042.19,
+   "proposedChargedEgp": 3687.21,
+   "proposedMarginEgp": 276.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -4220,22 +4500,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1216.2,
+   "chargedEgp": 1459.1,
+   "zoneChargedEgp": 1216.2,
    "costEgp": [
     1326.42,
     1705.4
    ],
-   "surplusEgp": -299.71,
-   "netEgp": 891.35,
+   "surplusEgp": 132.68,
+   "netEgp": 1323.74,
    "orderVerdict": "profit",
-   "keptPercent": 74.84,
-   "marginEatenEgp": 299.71,
+   "keptPercent": 111.14,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1326.42,
     1705.4
    ],
+   "costExtraEgp": 378.98,
+   "proposedChargedEgp": 1459.1,
+   "proposedMarginEgp": 132.68,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -4279,22 +4563,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1382.04,
+   "chargedEgp": 2084.51,
+   "zoneChargedEgp": 1382.04,
    "costEgp": [
     1894.89,
     2273.87
    ],
-   "surplusEgp": -702.34,
-   "netEgp": 488.72,
+   "surplusEgp": 189.62,
+   "netEgp": 1380.68,
    "orderVerdict": "profit",
-   "keptPercent": 41.03,
-   "marginEatenEgp": 702.34,
+   "keptPercent": 115.92,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     1894.89,
     2273.87
    ],
+   "costExtraEgp": 378.98,
+   "proposedChargedEgp": 2084.51,
+   "proposedMarginEgp": 189.62,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": true,
     "deMinimis": "0 USD",
@@ -4338,22 +4626,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1382.04,
+   "chargedEgp": 2292.79,
+   "zoneChargedEgp": 1382.04,
    "costEgp": [
     2084.38,
     2501.26
    ],
-   "surplusEgp": -910.78,
-   "netEgp": 280.28,
-   "orderVerdict": "thin",
-   "keptPercent": 23.53,
-   "marginEatenEgp": 910.78,
+   "surplusEgp": 208.41,
+   "netEgp": 1399.47,
+   "orderVerdict": "profit",
+   "keptPercent": 117.5,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     2084.38,
     2501.26
    ],
+   "costExtraEgp": 416.88,
+   "proposedChargedEgp": 2292.79,
+   "proposedMarginEgp": 208.41,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -4397,22 +4689,26 @@
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1382.04,
+   "chargedEgp": 2855.82,
+   "zoneChargedEgp": 1382.04,
    "costEgp": [
     2596,
     3164.47
    ],
-   "surplusEgp": -1498.19,
-   "netEgp": -307.13,
-   "orderVerdict": "loss",
-   "keptPercent": -25.79,
-   "marginEatenEgp": 1498.19,
+   "surplusEgp": 259.82,
+   "netEgp": 1450.88,
+   "orderVerdict": "profit",
+   "keptPercent": 121.81,
+   "marginEatenEgp": 0,
    "requiredShippingEgp": [
     2596,
     3164.47
    ],
+   "costExtraEgp": 568.47,
+   "proposedChargedEgp": 2855.82,
+   "proposedMarginEgp": 259.82,
    "promise": "we_ship",
-   "costVerdict": "loss",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -4548,7 +4844,7 @@
    "currency": "USD",
    "countries": 1,
    "currentFirstItem": 15,
-   "covered": 0,
+   "covered": 1,
    "typicalRequiredFirstItem": 31,
    "maxRequiredFirstItem": 31,
    "drivenByAr": "مصر",
@@ -4566,7 +4862,7 @@
    "currency": "USD",
    "countries": 6,
    "currentFirstItem": 14,
-   "covered": 0,
+   "covered": 6,
    "typicalRequiredFirstItem": 28,
    "maxRequiredFirstItem": 52,
    "drivenByAr": "عمان",
@@ -4609,7 +4905,7 @@
    "currency": "USD",
    "countries": 15,
    "currentFirstItem": 18,
-   "covered": 0,
+   "covered": 15,
    "typicalRequiredFirstItem": 62,
    "maxRequiredFirstItem": 62,
    "drivenByAr": "العراق",
@@ -4697,7 +4993,7 @@
    "currency": "USD",
    "countries": 10,
    "currentFirstItem": 6,
-   "covered": 0,
+   "covered": 9,
    "typicalRequiredFirstItem": 18,
    "maxRequiredFirstItem": 28,
    "drivenByAr": "ميانمار",
@@ -4755,7 +5051,7 @@
    "currency": "USD",
    "countries": 39,
    "currentFirstItem": 22,
-   "covered": 0,
+   "covered": 39,
    "typicalRequiredFirstItem": 54,
    "maxRequiredFirstItem": 62,
    "drivenByAr": "RO",
@@ -4963,7 +5259,7 @@
    "currency": "USD",
    "countries": 3,
    "currentFirstItem": 25,
-   "covered": 0,
+   "covered": 3,
    "typicalRequiredFirstItem": 38,
    "maxRequiredFirstItem": 47,
    "drivenByAr": "المكسيك",
@@ -4988,31 +5284,33 @@
  ],
  "money": {
   "profitPerBottleEgp": 1191.06,
-  "averageChargedEgp": 1017.48,
+  "averageChargedEgp": 2613.58,
   "pricedDestinations": 73,
   "overChargedDestinations": 0,
-  "lossDestinations": 73,
-  "orderLossDestinations": 41,
-  "bestNetEgp": 891.35,
-  "worstNetEgp": -1745.77,
-  "keptWholeDestinations": 0,
-  "marginEatenDestinations": 73
+  "lossDestinations": 0,
+  "orderLossDestinations": 0,
+  "bestNetEgp": 1467.47,
+  "worstNetEgp": 1266.8,
+  "keptWholeDestinations": 73,
+  "marginEatenDestinations": 0,
+  "costBasedDestinations": 73,
+  "uncoveredDestinations": 1,
+  "medianShippingMarginEgp": 246.56
  },
- "score": 75,
+ "score": 85,
  "notes": [
-  "مكسب الزجاجة (٥٠٪) 1191.06 ج.م — والـ٥٠٪ بتفضل كاملة في 0 وجهة بس من 73.",
-  "73 وجهة الشحن فيها بياكل من الهامش — الشحن اللي بنحصّله أقل من تكلفته الحقيقية.",
-  "وفي 41 وجهة الشحن بياكل الهامش كله وزيادة — الطلب هناك بخسارة حقيقية (أسوأها -1745.77 ج.م).",
+  "مكسب الزجاجة (٥٠٪) 1191.06 ج.م — والـ٥٠٪ بتفضل كاملة في 73 وجهة بس من 73.",
   "سعر الصرف: 1063 منتج سعره مبني على 13.081 ج.م/MYR وسعر النهاردة 13.5349 — تكلفة الشراء بقت أغلى 3.5% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي.",
   "سعر الصرف: 98 منتج سعره مبني على 14.5568 ج.م/AED وسعر النهاردة 15.0529 — تكلفة الشراء بقت أغلى 3.4% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي."
  ],
  "planAr": [
   "لو إحنا اللي بنشحن، أرخص المسارات: سنغافورة بـ757.96–852.7 ج.م، BN بـ814.8–928.5 ج.م، إندونيسيا بـ852.7–966.39 ج.م.",
-  "عشان الـ٥٠٪ تفضل صافية: الشحن يتاخد بسعره الحقيقي (زي ما في جدول المقترح تحت) — والفرق ده مش بيتحمل من الهامش.",
-  "الشحن الحقيقي أغلى من اللي بنحصّله في 6 منطقة: مصر بياخد 15 والمتوسط الحقيقي 31 USD، دول الخليج بياخد 14 والمتوسط الحقيقي 28 USD، باقي الدول العربية بياخد 18 والمتوسط الحقيقي 62 USD، جنوب شرق آسيا بياخد 6 والمتوسط الحقيقي 18 USD، أوروبا بياخد 22 والمتوسط الحقيقي 54 USD، أمريكا الشمالية بياخد 25 والمتوسط الحقيقي 38 USD — والفرق بيتخصم من الـ٥٠٪. القرار لصاحب المتجر.",
+  "الشحن بقى بيتحصّل بتكلفته الحقيقية + هامش تجهيز صغير (الجدول تحت) — فالـ٥٠٪ تفضل صافية ومش متحمّلة على الهامش. الزجاجة = أول ٥٠٠ جم، والزجاجة الزيادة بسعر شريحتها.",
+  "الأسعار القديمة في 6 منطقة كانت أقل من التكلفة الحقيقية: مصر كان بياخد 15 والمتوسط الحقيقي 31 USD، دول الخليج كان بياخد 14 والمتوسط الحقيقي 28 USD، باقي الدول العربية كان بياخد 18 والمتوسط الحقيقي 62 USD، جنوب شرق آسيا كان بياخد 6 والمتوسط الحقيقي 18 USD، أوروبا كان بياخد 22 والمتوسط الحقيقي 54 USD، أمريكا الشمالية كان بياخد 25 والمتوسط الحقيقي 38 USD — التسعير الجديد بيحصّل التكلفة + الهامش.",
+  "1 وجهة مفيش لها تعريفة شحن منشورة (ماليزيا) — بتاخد سعر منطقتها، ومافيش وعد إنه يغطي التكلفة.",
   "5 شركة دولية: تأكد قبول العطور (UN1266) قبل أي بيع دولي — الرفض بعد البيع = إلغاء وسمعة.",
   "98 منتج من منصات بتشحن بنفسها — الوساطة بس، والتأكد إن المنصة بترجع وتتعوض لو حصلت مشكلة.",
   "البضاعة في: ماليزيا — 1063 منتج (مفيش سعر محلي منشور)، الإمارات — 98 منتج (مفيش سعر محلي منشور)، مصر — 51 منتج (محلي: بوستة 30–55 ج.م)."
  ],
- "summaryAr": "الشحن والتجارة: 74 وجهة — 74 وجهة ممرها معروف، 30 دولة بجمارك متأكد منها، 73 وجهة بسعر شحن مقارن، و73 وجهة لو إحنا بنشحن بتخسر · البضاعة في MY، AE، EG · 2 عملة سعر صرفها قديم."
+ "summaryAr": "الشحن والتجارة: 74 وجهة — 74 وجهة ممرها معروف، 30 دولة بجمارك متأكد منها، 73 وجهة بسعر شحن مقارن · البضاعة في MY، AE، EG · 2 عملة سعر صرفها قديم."
 }

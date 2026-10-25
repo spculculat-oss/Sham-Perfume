@@ -826,7 +826,9 @@ export const SPECIALIST_TOOLS: SpecialistTool[] = [
       if (found) {
         const lines = [
           ar ? `${found.nameAr} (${found.code}): ${found.promise === 'broker_only' ? 'المنصة المصدر هي اللي بتشحن — دورنا وساطة' : found.promise === 'we_ship' ? 'إحنا اللي بنشحن' : 'طريقة التسليم لسه بتتأكد'}` : `${found.nameAr} (${found.code}): ${found.promise}`,
-          ar ? `سعر الشحن المعلن: ${fmt(found.chargedEgp)} ج.م` : `Published shipping: ${fmt(found.chargedEgp)} EGP`,
+          ar
+            ? `سعر الشحن: ${fmt(found.proposedChargedEgp ?? found.chargedEgp)} ج.م (تكلفة الشركة الحقيقية${found.proposedChargedEgp ? ' + هامش التجهيز — المكسب 50% صافي' : ''})`
+            : `Shipping: ${fmt(found.proposedChargedEgp ?? found.chargedEgp)} EGP (the carrier's real cost${found.proposedChargedEgp ? ' + the handling margin — the 50% stays net' : ''})`,
           found.customs.verified
             ? (ar ? `الجمارك: ضريبة ${found.customs.vatPercent ?? '—'}%${found.customs.dutyPercent ? ` ورسوم ${found.customs.dutyPercent[0]}–${found.customs.dutyPercent[1]}%` : ''}${found.customs.deMinimis ? ` · إعفاء حتى ${found.customs.deMinimis}` : ''} — العميل بيتحملها` : `Customs: VAT ${found.customs.vatPercent ?? '—'}%`)
             : (ar ? 'الجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع' : 'Customs: not verified yet — confirmed before payment'),
@@ -844,7 +846,13 @@ export const SPECIALIST_TOOLS: SpecialistTool[] = [
       const ships = report.platforms
         .filter((p) => p.fulfilment === 'platform_ships')
         .map((p) => `${p.nameAr}${Array.isArray(p.shipsTo) && p.shipsTo.length ? ` (${p.shipsTo.join('، ')})` : ''}`);
+      // «أعمل إيه عشان الـ50% تفضل صافية؟» — القاعدة اللي صاحب المتجر اعتمدها (2026-10-26)، من التقرير نفسه.
+      const money = report.money;
+      const policyAr = money
+        ? `قاعدة صاحب المتجر: الشحن بيتحصّل بتكلفته الحقيقية من تعريفة الشركة + هامش تجهيز (متوسط ${Math.round(Number(money.medianShippingMarginEgp) || 0)} ج.م للطرد) — فالمكسب 50% (${Math.round(Number(money.profitPerBottleEgp) || 0)} ج.م للزجاجة) بيفضل صافي على العميل. مغطّى بتعريفة منشورة: ${money.costBasedDestinations} وجهة${money.uncoveredDestinations ? `، و${money.uncoveredDestinations} لسه بأسعار المنطقة` : ''}.`
+        : undefined;
       const lines = [
+        ...(policyAr && ar ? [policyAr] : []),
         ar ? `بنوصّل لأي بلد في العالم: ${report.destinations.length} وجهة مسجّلة في تقرير الشحن.` : `${report.destinations.length} destinations are recorded.`,
         ar ? `البضاعة بتتجهّز من: ${origins}.` : `Stock ships from: ${origins}.`,
         ...(ships.length ? [ar ? `ومنصات بتشحن بنفسها (وساطة): ${ships.join('، ')}.` : `Platforms that ship themselves: ${ships.join(', ')}.`] : []),
@@ -1045,7 +1053,9 @@ const NEWS_WORDS = /(اخبار|أخبار|النشرة|نشرة|ترند|تري
 const ORDER_WORDS = /(أطلب|اطلب|اطلبي|هطلب|هشتري|أشتري|اشتري|بالجملة|جملة|السلة|سلة|اتمام الطلب|إتمام الطلب|طلبية|أوردر|اوردر|أتتبع|تتبع الطلب|اشحن لي|أشحن لي|وصّل لي|وصل لي|\bplace (?:an )?order\b|\bwholesale\b|\bcheckout\b|\btrack (?:my|the) order\b|\bi (?:want|need) to (?:buy|order)\b)/i;
 
 /** سؤال عن الشحن أو الجمارك أو التجارة نفسها — بيتقرا من تقرير الشحن، مش طلب. */
-const TRADE_WORDS = /(شحن|الشحن|توصيل|التوصيل|جمارك|الجمارك|تصدير|استيراد|تخليص|منشأ|اتفاقية|رسوم|ضريبة الاستيراد|\bshipping\b|\bcustoms\b|\bdut(?:y|ies)\b|\bexport\w*\b|\bimport\w*\b)/i;
+const TRADE_WORDS = /(شحن|الشحن|توصيل|التوصيل|جمارك|الجمارك|تصدير|استيراد|تخليص|منشأ|اتفاقية|رسوم|ضريبة الاستيراد|هامش|الهامش|هامشي|مكسب|مكسبنا|ربح|خسارة|خسران|صافي|صافية|وجهة|وجهات|\bshipping\b|\bcustoms\b|\bdut(?:y|ies)\b|\bexport\w*\b|\bimport\w*\b|\bmargin\b|\bprofit\w*\b)/i;
+/** سؤال تحليل فلوس (هامش، مكسب، خسارة، وجهة) — مش بحث عن منتج، حتى لو فيه كلمة «طلب» أو «سعر». */
+const MONEY_ANALYSIS = /(هامش|الهامش|هامشي|مكسب|مكسبنا|ربح|خسارة|خسران|خسرانة|صافي|صافية|وجهة|وجهات|تقرير|إحصائيات|احصائيات|\bdestinations?\b|\bmargin\b|\bprofit\w*\b)/i;
 /** سؤال سلامة (حساسية/حمل/بشرة/IFRA) — موسوعة المواد هي المرجع، مش التخمين. */
 const SAFETY_WORDS = /(حساسية|تحسس|حامل|حمل|رضاعة|رضيع|أطفال|اطفال|ربو|بشرة|جلد|تهيج|آمن|امن|خطر|تسمم|\bifra\b|\balerg\w*\b|\bpregnan\w*\b|\bskin\b|\birritat\w*\b|\bsafe(?:ty)?\b|\btoxic\w*\b)/i;
 
@@ -1078,7 +1088,9 @@ export function planFirstTools(question: string, specialist: Specialist, section
     if (intents.includes('maceration') || macerationDaysIn(question)) push('maceration_plan');
   }
   const trade = TRADE_WORDS.test(question);
-  if (!trade && (SHOP_WORDS.test(question) || intents.includes('store') || section === 'store' || section === 'productDetail')) push('search_store', { query: question });
+  // سؤال فلوس («أعمل إيه في الوجهات اللي فيها خسران؟») مايتجاوبش بقايمة منتجات — بيتقري من تقرير الشحن.
+  const moneyQuestion = MONEY_ANALYSIS.test(question);
+  if (!trade && !moneyQuestion && (SHOP_WORDS.test(question) || intents.includes('store') || section === 'store' || section === 'productDetail')) push('search_store', { query: question });
   // سؤال الشحن/الجمارك بيتقرا من تقرير الشحن قبل أي حاجة — وسعر الشحن مش سعر عطر.
   if (trade) push('trade_lane', { country: question });
   if (SAFETY_WORDS.test(question)) push('safety_check');

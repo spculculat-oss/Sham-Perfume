@@ -15,6 +15,10 @@
     "ar": "الأسعار لا تشمل ضريبة القيمة المضافة (VAT) أو الرسوم الجمركية في بلدك. مثال: مصر 14%، السعودية 15%، الإمارات 5%، أوروبا ~20%. الفاتورة الضريبية تُصدر إلكترونيًا (مصر EDA، السعودية ZATCA). الرسوم الجمركية تقديرية عند الدفع، والعميل يتحمل الفرق.",
     "en": "Prices exclude VAT/customs in your country. e.g., Egypt 14%, Saudi 15%, UAE 5%, EU ~20%. E-invoice issued (Egypt EDA, Saudi ZATCA). Customs duties are estimates at checkout; customer bears difference."
   },
+  "netMarginPercent": 50,
+  "netNoteAr": "قاعدة صاحب المتجر (2026-10-26): الـ50% مكسب صافي — الشحن ماياكلش منها حاجة. عشان كده الشحن لوجهة معروفة التكلفة بيتحسب: تكلفة الشركة الحقيقية (src/data/shipping-costs.json، تعريفة منشورة بتاريخها) + هامش التجهيز اللي تحت. الوجهة اللي مفيش لها تعريفة منشورة بتاخد سعر منطقتها اللي تحت، ومافيش وعد إنه يغطي التكلفة.",
+  "handling": { "percent": 10, "capUsd": 5 },
+  "handlingNoteAr": "هامش التجهيز على الشحن: 10% من التكلفة الحقيقية بحد أقصى 5 دولار للطرد (تغليف + ورق + إجراءات الشحن). ده اللي بيخلي الشحن مصدر مكسب صغير مش عبء على الـ50%. غيّر percent أو capUsd هنا في أي وقت — الأسعار كلها بتتحدّث لوحدها.",
   "zones": [
     { "id": "egypt", "name": { "ar": "مصر", "en": "Egypt" }, "countries": ["EG"], "firstItem": 15, "extraItem": 3, "days": "7-14" },
     { "id": "gulf", "name": { "ar": "دول الخليج", "en": "Gulf countries" }, "countries": ["SA", "AE", "KW", "QA", "BH", "OM"], "firstItem": 14, "extraItem": 3, "days": "5-10" },

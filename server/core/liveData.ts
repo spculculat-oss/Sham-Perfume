@@ -105,10 +105,24 @@ export async function supervisorGuidance(tool: AiToolId, env: Env = process.env,
 /** «الشحن والتجارة»: the trade robot's own report — the only source the board may quote for a shipping price. */
 export interface TradeLanesFile {
   updatedAt: string;
-  destinations: { code: string; nameAr: string; lane: string; promise: string; chargedEgp: number; customs: { verified: boolean; vatPercent: number | null; dutyPercent: [number, number] | null; deMinimis: string | null; restricted: string | null; noteAr: string } }[];
+  destinations: {
+    code: string; nameAr: string; lane: string; promise: string;
+    /** What the visitor paid with the old zone prices (kept for the comparison). */
+    chargedEgp: number;
+    /** What the visitor pays now: the carrier's real cost + the merchant's handling margin (`null` = no published rate). */
+    proposedChargedEgp?: number | null;
+    /** The carrier's real cost for the first bottle; `[low, high]` for 500 g → 1 kg. */
+    costEgp?: [number, number] | null;
+    customs: { verified: boolean; vatPercent: number | null; dutyPercent: [number, number] | null; deMinimis: string | null; restricted: string | null; noteAr: string };
+  }[];
   platforms: { id: string; nameAr: string; fulfilment: string; originCountry: string | null; shipsTo: string[]; products: number }[];
   origins: { code: string; nameAr: string; products: number }[];
   shippingProposal: { nameAr: string; currentFirstItem: number; currency: string }[];
+  money?: {
+    profitPerBottleEgp: number; pricedDestinations: number; keptWholeDestinations: number;
+    marginEatenDestinations: number; costBasedDestinations: number; uncoveredDestinations: number;
+    medianShippingMarginEgp: number | null;
+  };
 }
 
 export async function liveTradeLanes(env: Env = process.env, request: typeof fetch = fetch): Promise<TradeLanesFile | undefined> {

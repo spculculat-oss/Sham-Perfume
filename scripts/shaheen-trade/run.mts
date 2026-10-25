@@ -8,7 +8,7 @@
  * and the council. It arranges nothing and promises nothing on its own.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
-import type { FxTable, ShippingTable } from '../../src/utils/pricing';
+import { convert, handlingFee, shippingCost, type FxTable, type ShippingCosts, type ShippingTable } from '../../src/utils/pricing';
 import { reviewTrade, type Carrier, type CustomsCountry, type Platform, type TradeAgreement } from './review';
 
 const env = process.env;
@@ -16,7 +16,10 @@ const read = (rel: string) => JSON.parse(readFileSync(new URL(`../../${rel}`, im
 
 const lanes = read('src/data/shipping-lanes.json') as { platforms: Platform[]; carriers: Carrier[] };
 const customs = read('src/data/customs.json') as { countries: CustomsCountry[]; agreements: TradeAgreement[] };
-const shipping = read('src/data/shipping.json') as ShippingTable;
+const shippingFile = read('src/data/shipping.json') as ShippingTable;
+// تكلفة الشحن الحقيقية لكل وجهة = نفس الملف اللي الموقع بيحسب منه، مش نسخة تانية في التقرير.
+const existingCosts = read('src/data/shipping-costs.json') as ShippingCosts;
+const shipping: ShippingTable = { ...shippingFile, costs: existingCosts };
 const fx = read('src/data/live/fx-rates.json') as FxTable;
 const catalog = read('src/data/products.json') as {
   products: { ourPrice?: number; supplierPrice?: number; published?: boolean; supplierCurrency?: string; exchangeRate?: number }[];
@@ -56,10 +59,62 @@ const report = reviewTrade({
 
 writeFileSync(new URL('../../src/data/live/trade-lanes.json', import.meta.url), `${JSON.stringify(report, null, 1)}\n`);
 
+// ── «الشحن بسعره الحقيقي»: جدول تكلفة الشحن لكل وجهة، بيتكتب من التقرير نفسه ────────────────────────────
+// الموقع بيقراه (`src/utils/pricing.ts`) ويحسب اللي بيتحصّل = التكلفة + هامش التجهيز اللي صاحب المتجر حاطه.
+// الرقم هنا مبني على تعريفة منشورة بتاريخها (كارير الوجهة في التقرير) — مفيش رقم بيتألف.
+const round2 = (n: number) => Math.round(n * 100) / 100;
+const costs: {
+  version: 1; currency: string; source: string; checkedAt: string; noteAr: string;
+  countries: Record<string, { firstItem: number; extraItem: number; carrier: string }>;
+} = {
+  version: 1,
+  currency: 'USD',
+  source: 'تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد',
+  checkedAt: new Date(report.updatedAt).toISOString().slice(0, 10),
+  noteAr: 'تكلفة الشحن الحقيقية لأول زجاجة (أول ٥٠٠ جم) لكل وجهة، بالدولار، من تعريفة منشورة. الملف ده بيتولّد من تقرير الشحن — متعدّلوش بإيدك؛ عدّل الهامش في shipping.json والشركات في shipping-lanes.json.',
+  countries: {},
+};
+for (const d of report.destinations) {
+  if (!d.costEgp || !d.assumedLane || !d.carrier) continue;
+  const usd = (egp: number) => round2(egp / (fx.rates.EGP || 1));
+  costs.countries[d.code] = {
+    firstItem: usd(d.costEgp[0]),
+    extraItem: usd(d.costExtraEgp ?? d.costEgp[0]),
+    carrier: d.carrier.id,
+  };
+}
+writeFileSync(new URL('../../src/data/shipping-costs.json', import.meta.url), `${JSON.stringify(costs, null, 1)}\n`);
+
+// ── «الـ50% تفضل صافية»: الشحن بسعره الحقيقي + هامش التجهيز، محسوب بمحرك السعر نفسه ──────────────────
+// الأرقام دي هي اللي الزائر هيشوفها بعد التعديل، مش حساب في تقرير لوحده.
+const costTable: ShippingCosts = { version: 1, currency: costs.currency, source: costs.source, checkedAt: costs.checkedAt, countries: costs.countries };
+const priced = report.destinations.filter((d) => costTable.countries[d.code]);
+const liveTable: ShippingTable = { ...shipping, costs: costTable };
+const chargedAfter = priced.map((d) => ({ d, chargedEgp: convert(shippingCost(d.code, 1, liveTable), shipping.currency, 'EGP', fx) }));
+const feeEgp = (code: string) => {
+  const real = costTable.countries[code].firstItem;
+  return convert(handlingFee(real, shipping), shipping.currency, 'EGP', fx);
+};
+const netOf = (d: (typeof priced)[number], chargedEgp: number) => report.money.profitPerBottleEgp + chargedEgp - (d.costEgp ? d.costEgp[0] : chargedEgp);
+
 console.log(report.summaryAr);
 for (const line of report.planAr) console.log(`- ${line}`);
 for (const note of report.notes) console.log(`! ${note}`);
 for (const gap of report.gaps) console.log(`? ${gap.kindAr}: ${gap.whatAr}`);
+
+// الجدول اللي بيجاوب على سؤاله: الشحن بكام، والمكسب الصافي كام.
+console.log('\n====== الشحن بعد التعديل: تكلفة حقيقية + هامش تجهيز ======');
+for (const zone of report.shippingProposal) {
+  const inZone = chargedAfter.filter((x) => zone.destinations.some((z) => z.code === x.d.code));
+  if (!inZone.length) continue;
+  const avg = Math.round((inZone.reduce((s, x) => s + x.chargedEgp, 0) / inZone.length) * 100) / 100;
+  const worstNet = Math.min(...inZone.map((x) => netOf(x.d, x.chargedEgp)));
+  console.log(`${zone.nameAr}: ${inZone.length} وجهة · الشحن بيبدأ من ${Math.round(Math.min(...inZone.map((x) => x.chargedEgp)))} ج.م (متوسط ${Math.round(avg)} ج.م) · أضعف مكسب صافي للزجاجة ${Math.round(worstNet)} ج.م (${Math.round((worstNet / (report.money.profitPerBottleEgp / 0.5)) * 100)}% من التكلفة)`);
+}
+const guaranteed = chargedAfter.filter((x) => netOf(x.d, x.chargedEgp) >= report.money.profitPerBottleEgp * 0.999).length;
+const noRate = report.destinations.filter((d) => !costTable.countries[d.code]);
+console.log(`✔ الـ50% صافية في ${guaranteed} من ${priced.length} وجهة عندها تعريفة منشورة · متوسط هامش التجهيز ${report.money.medianShippingMarginEgp} ج.م للطرد`);
+if (noRate.length) console.log(`? ${noRate.length} وجهة مفيهاش تعريفة منشورة (${noRate.map((d) => d.nameAr).join('، ')}) — سعر المنطقة بيفضل، ومافيش وعد إنه يغطي التكلفة.`);
 
 if (env.GITHUB_STEP_SUMMARY) {
   const rows = report.destinations.map((d) => `| ${d.nameAr} (${d.code}) | ${d.lane} | ${d.assumedOrigin || '—'} | ${d.carrier?.nameAr || '—'} | ${d.chargedEgp} | ${d.costEgp ? `${d.costEgp[0]}–${d.costEgp[1]}` : '—'} | ${d.costVerdict} | ${d.promise} | ${d.customs.verified ? '✅' : '—'} |`);
@@ -76,7 +131,8 @@ if (env.GITHUB_STEP_SUMMARY) {
     `- وساطة (المنصة بتشحن): ${report.modes.platform_ships.products} منتج · إحنا بنشحن: ${report.modes.broker.products} · مش معروف: ${report.modes.unknown.products}`,
     `- الدرجة: ${report.score}/100 · متوسط اللي بنحصّله شحن: ${report.money.averageChargedEgp} EGP`,
     `- وجهات بنحصّل فيها أكتر من التكلفة بكثير: ${report.money.overChargedDestinations} · وجهات بنخسر فيها: ${report.money.lossDestinations}`,
-    `- الـ50% كاملة في: ${report.money.keptWholeDestinations} وجهة · الشحن بياكل منها في: ${report.money.marginEatenDestinations} · الطلب بخسارة في: ${report.money.orderLossDestinations}`,
+    `- الـ50% صافية في: ${report.money.keptWholeDestinations} وجهة · الشحن بياكل منها في: ${report.money.marginEatenDestinations} · الطلب بخسارة في: ${report.money.orderLossDestinations}`,
+    `- الشحن بسعره الحقيقي + هامش في ${report.money.costBasedDestinations} وجهة (متوسط الهامش ${report.money.medianShippingMarginEgp} ج.م) · ${report.money.uncoveredDestinations} وجهة بأسعار المنطقة`,
     '',
     '### البضاعة فين',
     '| البلد | عدد المنتجات | المنصات | شركة محلية |',
