@@ -1,16 +1,16 @@
 {
  "version": 1,
- "updatedAt": "2026-10-25T21:08:59.557Z",
+ "updatedAt": "2026-10-25T21:31:33.333Z",
  "reliance": {
   "score": 100,
-  "covered": 1344,
-  "total": 1344,
-  "fromMemory": 1344,
+  "covered": 1350,
+  "total": 1350,
+  "fromMemory": 1350,
   "fromLibrary": 0,
   "byLang": {
    "ar": {
-    "covered": 1323,
-    "total": 1323
+    "covered": 1329,
+    "total": 1329
    },
    "en": {
     "covered": 21,
@@ -19,8 +19,14 @@
   }
  },
  "studiedTotal": 142,
- "selfTaughtTotal": 1069,
+ "selfTaughtTotal": 1075,
  "history": [
+  {
+   "at": "2026-10-25T21:31:33.333Z",
+   "score": 100,
+   "studied": 6,
+   "mode": "self"
+  },
   {
    "at": "2026-10-25T21:08:59.557Z",
    "score": 100,
@@ -374,12 +380,6 @@
    "score": 100,
    "studied": 0,
    "mode": "self"
-  },
-  {
-   "at": "2026-10-23T20:11:17.990Z",
-   "score": 100,
-   "studied": 0,
-   "mode": "self"
   }
  ],
  "lastStudied": [
@@ -512,7 +512,7 @@
  },
  "localTaughtTotal": 85,
  "spelling": {
-  "at": "2026-10-25T21:08:59.557Z",
+  "at": "2026-10-25T21:31:33.333Z",
   "tried": 744,
   "understood": 703,
   "score": 94,
@@ -528,7 +528,7 @@
   }
  },
  "practice": {
-  "at": "2026-10-25T21:08:59.557Z",
+  "at": "2026-10-25T21:31:33.333Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -621,7 +621,7 @@
     "id": "check-curriculum",
     "titleAr": "فحص: المنهج مكتمل بلا تكرار",
     "ok": true,
-    "detail": "فُحص فعلاً: 1031 زوج سؤال وجواب، وكل المعرفات فريدة"
+    "detail": "فُحص فعلاً: 1037 زوج سؤال وجواب، وكل المعرفات فريدة"
    }
   ]
  },
@@ -717,8 +717,8 @@
    "score": 100
   },
   "commerce": {
-   "covered": 22,
-   "total": 22,
+   "covered": 28,
+   "total": 28,
    "score": 100
   },
   "law": {
@@ -848,7 +848,7 @@
   }
  },
  "tools": {
-  "at": "2026-10-25T21:08:59.557Z",
+  "at": "2026-10-25T21:31:33.333Z",
   "items": [
    {
     "id": "finance_agent",
@@ -1013,14 +1013,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-10-25T21:08:59.557Z",
+  "at": "2026-10-25T21:31:33.333Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-10-26T03:08:59.557Z"
+    "next": "2026-10-26T03:31:33.333Z"
    },
    {
     "id": "site-care",
@@ -1032,7 +1032,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-10-26T09:08:59.557Z"
+    "next": "2026-10-26T09:31:33.333Z"
    }
   ]
  }
