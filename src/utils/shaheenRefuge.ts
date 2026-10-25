@@ -67,7 +67,7 @@ const REPORT_OWNER: Record<string, BotId> = {
   'sham-training.json': 'teacher', 'store-catalog.json': 'catalog', 'store-review.json': 'product_pages',
   'shaheen-inventory.json': 'inventory', 'shaheen-service.json': 'service',
   'scent-behavior.json': 'scent_behavior', 'shaheen-localization.json': 'localization_audit', 'finance-shield.json': 'finance_shield',
-  'catalog-review.json': 'catalog_review',
+  'catalog-review.json': 'catalog_review', 'trade-lanes.json': 'trade_lanes',
 };
 const REPORT_NAMES: Record<string, [string, string]> = {
   'ai-memory.json': ['ذاكرة محركات الذكاء الاصطناعي', 'AI engines memory'],
@@ -107,6 +107,7 @@ const REPORT_NAMES: Record<string, [string, string]> = {
   'shaheen-localization.json': ['جودة الترجمة واللغات — العملات والمصطلحات', 'Localization audit — currencies & money terms'],
   'finance-shield.json': ['حارس المدفوعات والعمولات — التمارين والأمان', 'Payments & commissions shield — drills & safety'],
   'catalog-review.json': ['مراجعة المنتجات — الأسعار والأسماء والصور وقرار الشحن المجاني', 'Catalog review — prices, names, photos & the free-shipping decision'],
+  'trade-lanes.json': ['الشحن والتجارة الدولية — الممرات المحلية والدولية والجمارك وشركات الشحن', 'Trade lanes — local & international shipping, customs and carriers'],
   'shaheen-sales.json': ['إدارة المبيعات — خط الأنابيب والهدف والمنهج', 'Sales desk — pipeline, target and curriculum'],
 };
 const reportEntry = (file: string): RefugeEntry => {
@@ -131,7 +132,7 @@ const WORKFLOW_OWNER: Record<string, BotId> = {
   'shaheen-seo.yml': 'seo', 'owner-control.yml': 'owner_desk', 'platform-state.yml': 'state', 'platform-census.yml': 'census',
   'shaheen-school-clock.yml': 'academy', 'shaheen-lab.yml': 'lab',
   'shaheen-inventory.yml': 'inventory', 'shaheen-service.yml': 'service', 'shaheen-brain.yml': 'brain',
-  'shaheen-scent.yml': 'scent_behavior', 'shaheen-localization.yml': 'localization_audit', 'shaheen-finance-shield.yml': 'finance_shield', 'shaheen-catalog-review.yml': 'catalog_review',
+  'shaheen-scent.yml': 'scent_behavior', 'shaheen-localization.yml': 'localization_audit', 'shaheen-finance-shield.yml': 'finance_shield', 'shaheen-catalog-review.yml': 'catalog_review', 'shaheen-trade.yml': 'trade_lanes',
   'shaheen-sales.yml': 'sales',
 };
 const WORKFLOW_NAMES: Record<string, [string, string]> = {
@@ -168,6 +169,7 @@ const WORKFLOW_NAMES: Record<string, [string, string]> = {
   'shaheen-localization.yml': ['جودة الترجمة واللغات', 'Localization audit'],
   'shaheen-finance-shield.yml': ['حارس المدفوعات والعمولات', 'Payments & commissions shield'],
   'shaheen-catalog-review.yml': ['مراجعة المنتجات', 'Catalog review'],
+  'shaheen-trade.yml': ['الشحن والتجارة الدولية', 'Trade lanes'],
 };
 const workflowEntry = (file: string): RefugeEntry => {
   const [nameAr, nameEn] = WORKFLOW_NAMES[file] ?? [file, file];

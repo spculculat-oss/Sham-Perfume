@@ -1,0 +1,4040 @@
+{
+ "version": 1,
+ "agent": "trade-lanes",
+ "updatedAt": "2026-10-25T20:09:39.859Z",
+ "modes": {
+  "platform_ships": {
+   "nameAr": "المنصة بتشحن (وساطة)",
+   "platforms": [],
+   "products": 0
+  },
+  "broker": {
+   "nameAr": "إحنا بنشحن",
+   "platforms": [
+    "direct"
+   ],
+   "products": 51
+  },
+  "unknown": {
+   "nameAr": "مش معروف",
+   "platforms": [
+    "shamperfume",
+    "afnan"
+   ],
+   "products": 1161
+  }
+ },
+ "platforms": [
+  {
+   "id": "shamperfume",
+   "nameAr": "شام بيرفيوم",
+   "fulfilment": "unknown",
+   "originCountry": "EG",
+   "originConfidence": "inferred",
+   "products": 1063,
+   "noteAr": "محتاج قرار صاحب المتجر"
+  },
+  {
+   "id": "afnan",
+   "nameAr": "أفنان للعطور",
+   "fulfilment": "unknown",
+   "originCountry": null,
+   "originConfidence": "unknown",
+   "products": 98,
+   "noteAr": "محتاج قرار صاحب المتجر"
+  },
+  {
+   "id": "direct",
+   "nameAr": "منتجات مباشرة بدون رابط مصدر",
+   "fulfilment": "broker",
+   "originCountry": "EG",
+   "originConfidence": "inferred",
+   "products": 51,
+   "noteAr": "إحنا بنشحن"
+  }
+ ],
+ "destinations": [
+  {
+   "code": "EG",
+   "nameAr": "مصر",
+   "lane": "unknown",
+   "assumedLane": "local",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "local"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "bosta",
+    "nameAr": "بوستة",
+    "speedAr": "اليوم التالي",
+    "priceEgp": [
+     30,
+     55
+    ],
+    "dg": null,
+    "source": "https://www.easyorders.eg/blog/أفضل-شركات-الشحن-الداخلي-في-مصر/"
+   },
+   "alternative": {
+    "id": "weevo",
+    "nameAr": "ويفو",
+    "priceEgp": [
+     30,
+     50
+    ]
+   },
+   "chargedEgp": 829.23,
+   "costEgp": [
+    30,
+    55
+   ],
+   "surplusEgp": 786.73,
+   "promise": "unknown",
+   "costVerdict": "over_charging",
+   "customs": {
+    "verified": true,
+    "deMinimis": null,
+    "vatPercent": 14,
+    "dutyPercent": [
+     0,
+     60
+    ],
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "التعريفة من 0% إلى 60% حسب البند، وتضاف ضريبة قيمة مضافة 14% ورسم تنمية موارد ورسوم خدمات جمركية. إعفاء المسافر 15,000 جنيه للأشياء الشخصية والهدايا (مش للطرود التجارية)."
+   }
+  },
+  {
+   "code": "SA",
+   "nameAr": "السعودية",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     1105.64,
+     3040.5
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 773.95,
+   "costEgp": [
+    1105.64,
+    3040.5
+   ],
+   "surplusEgp": -1299.12,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "AE",
+   "nameAr": "الإمارات",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     1105.64,
+     3040.5
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 773.95,
+   "costEgp": [
+    1105.64,
+    3040.5
+   ],
+   "surplusEgp": -1299.12,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "KW",
+   "nameAr": "الكويت",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     1105.64,
+     3040.5
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 773.95,
+   "costEgp": [
+    1105.64,
+    3040.5
+   ],
+   "surplusEgp": -1299.12,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "QA",
+   "nameAr": "قطر",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     1105.64,
+     3040.5
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 773.95,
+   "costEgp": [
+    1105.64,
+    3040.5
+   ],
+   "surplusEgp": -1299.12,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "BH",
+   "nameAr": "البحرين",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     1105.64,
+     3040.5
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 773.95,
+   "costEgp": [
+    1105.64,
+    3040.5
+   ],
+   "surplusEgp": -1299.12,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "OM",
+   "nameAr": "عمان",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     1105.64,
+     3040.5
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 773.95,
+   "costEgp": [
+    1105.64,
+    3040.5
+   ],
+   "surplusEgp": -1299.12,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "JO",
+   "nameAr": "الأردن",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     1105.64,
+     3040.5
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 995.07,
+   "costEgp": [
+    1105.64,
+    3040.5
+   ],
+   "surplusEgp": -1078,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "200 JOD",
+    "vatPercent": 16,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "قرار مجلس الوزراء: إعفاء جمركي كامل للطرود حتى 200 دينار + 16% ضريبة مبيعات."
+   }
+  },
+  {
+   "code": "LB",
+   "nameAr": "لبنان",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 995.07,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "IQ",
+   "nameAr": "العراق",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 995.07,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "SY",
+   "nameAr": "سوريا",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 995.07,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": "عقوبات — الشحن ممنوع",
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "PS",
+   "nameAr": "فلسطين",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 995.07,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "YE",
+   "nameAr": "اليمن",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 995.07,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "LY",
+   "nameAr": "ليبيا",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 995.07,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "TN",
+   "nameAr": "تونس",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 995.07,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "DZ",
+   "nameAr": "الجزائر",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 995.07,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "MA",
+   "nameAr": "المغرب",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 995.07,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "SD",
+   "nameAr": "السودان",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 995.07,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "MR",
+   "nameAr": "موريتانيا",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 995.07,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "SO",
+   "nameAr": "الصومال",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 995.07,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "DJ",
+   "nameAr": "جيبوتي",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 995.07,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "KM",
+   "nameAr": "جزر القمر",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 995.07,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "GAFTA",
+     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+     "requires": [
+      "شهادة منشأ عربية",
+      "قيمة مضافة ≥ 40%",
+      "شحن مباشر"
+     ]
+    },
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "MY",
+   "nameAr": "ماليزيا",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 331.69,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "SG",
+   "nameAr": "سنغافورة",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 331.69,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "BN",
+   "nameAr": "BN",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 331.69,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "ID",
+   "nameAr": "إندونيسيا",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 331.69,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "TH",
+   "nameAr": "تايلاند",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 331.69,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "PH",
+   "nameAr": "الفلبين",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 331.69,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "VN",
+   "nameAr": "فيتنام",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 331.69,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "KH",
+   "nameAr": "KH",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 331.69,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "LA",
+   "nameAr": "LA",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 331.69,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "MM",
+   "nameAr": "ميانمار",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": null,
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 331.69,
+   "costEgp": null,
+   "surplusEgp": null,
+   "promise": "unknown",
+   "costVerdict": "unknown",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "GB",
+   "nameAr": "بريطانيا",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": "135 GBP",
+    "vatPercent": 20,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "بريطانيا مش في الاتحاد الأوروبي — حدودها مختلفة، وأرقامها محتاجة تأكيد من مصدر رسمي قبل الاعتماد عليها."
+   }
+  },
+  {
+   "code": "IE",
+   "nameAr": "IE",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "FR",
+   "nameAr": "FR",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "DE",
+   "nameAr": "DE",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "IT",
+   "nameAr": "IT",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "ES",
+   "nameAr": "ES",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "PT",
+   "nameAr": "PT",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "NL",
+   "nameAr": "NL",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "BE",
+   "nameAr": "BE",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "LU",
+   "nameAr": "LU",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "AT",
+   "nameAr": "AT",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "CH",
+   "nameAr": "سويسرا",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "SE",
+   "nameAr": "SE",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "NO",
+   "nameAr": "النرويج",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "DK",
+   "nameAr": "DK",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "FI",
+   "nameAr": "FI",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "IS",
+   "nameAr": "IS",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "PL",
+   "nameAr": "PL",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "CZ",
+   "nameAr": "CZ",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "SK",
+   "nameAr": "SK",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "HU",
+   "nameAr": "HU",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "RO",
+   "nameAr": "RO",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "BG",
+   "nameAr": "BG",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "GR",
+   "nameAr": "GR",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "HR",
+   "nameAr": "HR",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "SI",
+   "nameAr": "SI",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "RS",
+   "nameAr": "RS",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "BA",
+   "nameAr": "BA",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "ME",
+   "nameAr": "ME",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "MK",
+   "nameAr": "MK",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "AL",
+   "nameAr": "AL",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "EE",
+   "nameAr": "EE",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "LV",
+   "nameAr": "LV",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "LT",
+   "nameAr": "LT",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "CY",
+   "nameAr": "CY",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "MT",
+   "nameAr": "MT",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": {
+     "id": "EU_EGYPT",
+     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+     "requires": [
+      "شهادة EUR.1",
+      "منشأ مصري/أوروبي بالقواعد"
+     ]
+    },
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "UA",
+   "nameAr": "أوكرانيا",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "MD",
+   "nameAr": "MD",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "TR",
+   "nameAr": "تركيا",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1216.2,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2653.53,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "US",
+   "nameAr": "أمريكا",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1382.04,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2487.69,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 USD",
+    "vatPercent": 0,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش إعفاء. الأمريكان بيحسبوا ضريبة مبيعات الولاية على المشتري مش علينا. أرخص طريقة: شحن تجاري مسجّل (Entry) مش بريد."
+   }
+  },
+  {
+   "code": "CA",
+   "nameAr": "كندا",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1382.04,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2487.69,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "MX",
+   "nameAr": "المكسيك",
+   "lane": "unknown",
+   "assumedLane": "international",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "unknown"
+    },
+    {
+     "platform": "afnan",
+     "lane": "unknown"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
+   "carrier": {
+    "id": "aramex_intl",
+    "nameAr": "أرامكس الدولية",
+    "speedAr": "3–7 أيام",
+    "priceEgp": [
+     2211.27,
+     5528.18
+    ],
+    "dg": null,
+    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+   },
+   "alternative": null,
+   "chargedEgp": 1382.04,
+   "costEgp": [
+    2211.27,
+    5528.18
+   ],
+   "surplusEgp": -2487.69,
+   "promise": "unknown",
+   "costVerdict": "loss",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  }
+ ],
+ "products": {
+  "platform_ships": 0,
+  "broker": 51,
+  "unknown": 1161,
+  "total": 1212
+ },
+ "gaps": [
+  {
+   "kindAr": "طريقة التسليم",
+   "whatAr": "«شام بيرفيوم» (1063 منتج): بتشحن للعالم ولا محلية بس؟",
+   "fixAr": "صاحب المتجر يحدد الوضع في src/data/shipping-lanes.json (platform_ships أو broker)"
+  },
+  {
+   "kindAr": "طريقة التسليم",
+   "whatAr": "«أفنان للعطور» (98 منتج): بتشحن للعالم ولا محلية بس؟",
+   "fixAr": "صاحب المتجر يحدد الوضع في src/data/shipping-lanes.json (platform_ships أو broker)"
+  },
+  {
+   "kindAr": "بلد المنشأ",
+   "whatAr": "«أفنان للعطور»: بلد المنشأ مش مسجل — من غيرها مفيش تقسيم محلي/دولي",
+   "fixAr": "يتسجل originCountry للمنصة"
+  },
+  {
+   "kindAr": "الجمارك",
+   "whatAr": "34 دولة من الوجهات مفيهاش بيانات جمركية متأكد منها (SA، AE، KW، QA، BH…)",
+   "fixAr": "الروبوت يجيب المصدر الرسمي لكل دولة ويسجله بتاريخه"
+  },
+  {
+   "kindAr": "المواد الخطرة",
+   "whatAr": "4 شركة شحن دولية لسه مش متأكدين إنها بتقبل العطور (UN1266)",
+   "fixAr": "يتأكد من كل شركة قبل ما نعرض توصيل دولي — العطر سائل قابل للاشتعال"
+  },
+  {
+   "kindAr": "شركات محلية",
+   "whatAr": "مفيش شركة شحن محلية مسجلة لـ 73 وجهة (SA، AE، KW، QA، BH…)",
+   "fixAr": "الروبوت يبحث عن أفضل شركة محلية في كل دولة بسعر منشور"
+  }
+ ],
+ "money": {
+  "profitPerBottleEgp": 1191.06,
+  "averageChargedEgp": 1017.48,
+  "pricedDestinations": 50,
+  "overChargedDestinations": 1,
+  "lossDestinations": 49
+ },
+ "score": 24,
+ "notes": [
+  "1161 منتج من منصة لسه مش مسجل بتشحن ولا محلية بس — مفيش وعد توصيل ليهم.",
+  "1 وجهة إحنا بنحصّل شحن فيها أكتر من ضعف تكلفته الحقيقية — ده بيقلل التحويل.",
+  "49 وجهة لو إحنا اللي بنشحن، تكلفة الشحن أكبر من اللي بنحصّله — خسارة في كل طلب."
+ ],
+ "planAr": [
+  "حدد طريقة تسليم shamperfume، afnan (وساطة أو إحنا بنشحن) — أكبر بند ناقص.",
+  "راجع سعر الشحن في 1 وجهة (الزائر بيدفع أكتر من التكلفة بكثير) — الشحن الزيادة بيطرد العميل.",
+  "لو إحنا اللي بنشحن، أرخص المسارات: مصر بـ30–55 ج.م، السعودية بـ1105.64–3040.5 ج.م، الإمارات بـ1105.64–3040.5 ج.م.",
+  "48 وجهة ممكن تتلغي جمركها باتفاقية تجارية (GAFTA، EU_EGYPT) — بس محتاجة شهادة منشأ عربية + قيمة مضافة ≥ 40% + شحن مباشر.",
+  "4 شركة دولية: تأكد قبول العطور (UN1266) قبل أي بيع دولي — الرفض بعد البيع = إلغاء وسمعة."
+ ],
+ "summaryAr": "الشحن والتجارة: 74 وجهة — 0 وجهة ممرها معروف، 30 دولة بجمارك متأكد منها، undefined وجهة بسعر شحن مقارن، و49 وجهة لو إحنا بنشحن بتخسر."
+}

@@ -43,7 +43,7 @@ export type BotId =
   | 'chat_agent' | 'owner_desk' | 'state' | 'academy' | 'platform_owner'
   | 'specialist_scents' | 'specialist_tech' | 'specialist_security' | 'specialist_science' | 'specialist_business' | 'specialist_society'
   | 'specialist_health' | 'specialist_engineering' | 'specialist_learning' | 'specialist_culture' | 'lab' | 'census'
-  | 'service' | 'inventory' | 'brain' | 'sales' | 'catalog_review';
+  | 'service' | 'inventory' | 'brain' | 'sales' | 'catalog_review' | 'trade_lanes';
 
 export interface Bot {
   id: BotId;
@@ -86,6 +86,7 @@ export const BOTS: Bot[] = [
   { id: 'catalog', nameAr: 'مدرّب كتالوج المتجر', nameEn: 'Store catalog trainer', dept: 'store', workflow: 'shaheen-news.yml', report: 'store-catalog.json', everyHours: 12, aiTools: ['store_catalog'], dutiesAr: 'يصحح الأسماء والأوصاف ويضيف العائلة العطرية والنوتات والمواسم.' },
   { id: 'inventory', nameAr: 'إدارة المخزون والتنبؤ بالمبيعات', nameEn: 'Inventory & sales forecast', dept: 'store', workflow: 'shaheen-inventory.yml', report: 'shaheen-inventory.json', everyHours: 6, dutiesAr: 'يدير مخزون متجر شام ويتنبأ بالمبيعات: يراجع الكتالوج الحقيقي وحالة التوفر، ويقرا المخزون الرقمي والطلبات المؤكدة من الحساب الحي من غير أي بيانات عملاء أو مبالغ، ويحسب تغطية المخزون بالأيام وحركة كل منتج من المبيعات المؤكدة بس (آخر 30 يوم)، ويطلع قائمة إعادة توريد بكميات محسوبة من مدة التوريد + مخزون الأمان، ويرصد العائلات والماركات اللي خلصت. لو مفيش مبيعات مسجلة يقول بصراحة ويفضل يخطط من المخزون والكتالوج من غير أرقام متخمنة.' },
   { id: 'catalog_review', nameAr: 'روبوت مراجعة المنتجات (الأسعار والأسماء والصور)', nameEn: 'Catalog review robot (prices, names, photos)', dept: 'store', workflow: 'shaheen-catalog-review.yml', report: 'catalog-review.json', everyHours: 24, dutiesAr: 'قال صاحب المتجر «راجع جميع المنتجات»، فبيمرّ كل يوم على كل منتج في ملف المنتجات ويقوله بالأرقام من الملفات نفسها: منتج سعره مش على قاعدة السعر اللي اتسعّر بيها (التكلفة × 1.5 مقرّبة لفوق لأقرب 5 جنيه)، منتج بيتباع بأقل من تكلفة توصيله لنفس البلد (خسارة في كل بيعة)، سعر أقل من 1% من متوسط المتجر (غالباً السعر اتكتب بعملة تانية)، اسم فيه حروف تالفة أو مكتوب بحروف لاتينية بس، وصف عربي لسه الجملة العامة مش وصف حقيقي، صورة واحدة على أكتر من منتج، اللي نفد مخزونه، واللي مالوش صفحة مصدر. وكمان بيحسب قرار الشحن المجاني لكل منطقة بالجنيه: الشحن بيكلّف كام، الطلب لازم يوصل كام عشان الشحن يفضل تحت سُدس قيمته، وكام منتج بيوصل الرقم ده. بيراجع ومايغيّرش سعر ولا اسم ولا صورة — القرار لصاحب المتجر. تقريره src/data/live/catalog-review.json.' },
+  { id: 'trade_lanes', nameAr: 'روبوت الشحن والتجارة الدولية (محلي ودولي وجمارك)', nameEn: 'Trade lanes robot (local, international, customs)', dept: 'store', workflow: 'shaheen-trade.yml', report: 'trade-lanes.json', everyHours: 24, dutiesAr: 'إحنا وسيط: بنعرض منتجات من منصات تانية. لكل منصة حالة من اتنين — (١) المنصة مكلفة بنقل منتجاتها لأي دولة، ودورنا الوساطة وناخد ربحنا بس وما نوعدش بتوصيل من عندنا؛ (٢) المنصة محلية بس، فإحنا اللي بنشحن: محلي لو العميل في نفس بلد المنصة (شركة محلية بأرخص سعر منشور) ودولي لو في بلد تاني (شركة بتغطي الوجهة وبتقبل العطور UN1266). بيقرا كل يوم ملفات الشحن الحقيقية ويطلع: ممر كل وجهة، وسعر الشركة مقارنة باللي بنحصّله من الزائر، وجمارك كل دولة بمصدرها وتاريخها، وأي اتفاقية تجارية ممكن تلغي الجمرك (GAFTA، الشراكة المصرية الأوروبية) وشروطها، والدول الممنوعة. مايخترعش سعر شحن ولا نسبة جمرك ولا يوعد بتوصيل: اللي مش متأكد منه بيتسجل «يتأكد» وبيتحول لسؤال لصاحب المتجر. تقريره src/data/live/trade-lanes.json.' },
   { id: 'product_pages', nameAr: 'فاحص صفحات المنتجات على الموبايل', nameEn: 'Product pages check (phone)', dept: 'store', workflow: 'product-pages-check.yml', everyHours: 24, dutiesAr: 'يفتح صفحات المنتجات على الموقع الحقيقي زي زائر على الموبايل ويتأكد إنها سليمة.' },
   { id: 'store_advisor', nameAr: 'مستشار التسوق «اسأل شاهين»', nameEn: 'Shopping advisor', dept: 'store', aiTools: ['store_advisor'], dutiesAr: 'يختار للزائر من منتجات المتجر الحقيقية حسب طلبه.' },
   // ── Content & search ──
@@ -232,6 +233,11 @@ export const LINKS: Link[] = [
   { from: 'catalog_review', to: 'catalog', whyAr: 'أوصاف عربية لسه الجملة العامة ← مدرّب الكتالوج يكتب وصف حقيقي لكل منتج' },
   { from: 'catalog_review', to: 'localization_audit', whyAr: 'سعر مش طبيعي غالباً عملة غلط في الاستيراد ← تدقيق العملات يأكد' },
   { from: 'inventory', to: 'catalog_review', whyAr: 'المنتجات اللي خلصت أو رجعت للمخزن ← مراجعة السعر قبل ما تتعرض تاني' },
+  { from: 'trade_lanes', to: 'importer', whyAr: 'منصة مبتشحنش أو مش مسجل بلد منشأها ← المستورد يظبط بياناتها قبل العرض' },
+  { from: 'trade_lanes', to: 'council', whyAr: 'قرار الوساطة/الشحن وأسعار الشحن اللي بتخسر ← بنود في الاجتماع بموافقة صاحب المتجر' },
+  { from: 'trade_lanes', to: 'finance_shield', whyAr: 'الشحن والجمارك اللي بتتدفع في الطلب ← الحارس يتأكد إنها محسوبة قبل الخصم' },
+  { from: 'trade_lanes', to: 'sales', whyAr: 'الوجهات اللي الشحن فيها بيخسر ← قرار التسعير والتوسع' },
+  { from: 'catalog_review', to: 'trade_lanes', whyAr: 'منتج سعره أقل من تكلفة توصيله ← ممر الشحن والتكلفة الحقيقية' },
   { from: 'languages', to: 'localization_audit', whyAr: 'حزم اللغة الناقصة والكلمات اللي لسه بالإنجليزي ← تدقيق العملات والمصطلحات يتأكد منها' },
   { from: 'localization_audit', to: 'languages', whyAr: 'كلمات الفلوس الناقصة في أي لغة ← المترجم الذكي يكملها' },
   { from: 'localization_audit', to: 'council', whyAr: 'حالات عرض عملة غير عملة بلد الزائر وملاحظات الأسعار ← بنود في الاجتماع' },
