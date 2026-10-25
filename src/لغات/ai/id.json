@@ -122,6 +122,8 @@
   "rv_write": "Tulis ulasan",
   "sf_added": "Ditambahkan ✓",
   "sf_address": "Alamat lengkap",
+  "sf_ai_note_quick": "Saran otomatis dari filter toko, berdasarkan kata-kata Anda — periksa detail produk sebelum membeli.",
+  "sf_ai_note_shaheen": "Saran yang dihasilkan AI dari produk toko — periksa detail produk sebelum membeli.",
   "sf_all_brands": "Semua merek",
   "sf_all_categories": "Semua kategori",
   "sf_ask_hint": "Beri tahu Shaheen apa yang Anda cari — untuk acara apa, musim apa, pria atau wanita, dan anggaran Anda — lalu ia akan memilihkan dari toko.",
