@@ -336,7 +336,25 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       const eaten = Number(money.marginEatenDestinations) || 0;
       const whole = Number(money.keptWholeDestinations) || 0;
       const pricedCount = Number(money.pricedDestinations) || 0;
-      if (pricedCount && eaten) {
+      // التسعير الجديد (2026-10-26): الشحن بيتحصّل بتكلفته الحقيقية + هامش، فالـ50% صافية في الوجهات المغطاة.
+      const based = Number(money.costBasedDestinations) || 0;
+      const uncovered = Number(money.uncoveredDestinations) || 0;
+      const shipMargin = Number(money.medianShippingMarginEgp) || 0;
+      if (based) {
+        f.push({
+          level: 'note',
+          problem: `الشحن بسعره الحقيقي في ${based} وجهة، وهامش التجهيز ${Math.round(shipMargin)} ج.م للطرد — الـ50% صافية فيها ومش متحمّلة على الهامش`,
+          fix: `الأسعار في shipping.json، والتكلفة الحقيقية في shipping-costs.json (بتتولّد من تقرير الشحن)`,
+        });
+      }
+      if (uncovered) {
+        f.push({
+          level: 'warn',
+          problem: `${uncovered} وجهة لسه بأسعار المنطقة (مفيش تعريفة شحن منشورة لها) — مافيش وعد إنها تغطي التكلفة`,
+          fix: 'أضف تعريفة الشركة للمسار في shipping-lanes.json بمصدرها وتاريخها',
+        });
+      }
+      if (pricedCount && eaten && !based) {
         f.push({
           level: 'warn',
           problem: `الهامش مش صافي في ${eaten} وجهة من ${pricedCount} (كاملة في ${whole} بس) — سعر الشحن أقل من التكلفة الحقيقية للشركة`,

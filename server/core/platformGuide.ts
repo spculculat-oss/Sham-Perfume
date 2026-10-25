@@ -427,14 +427,17 @@ export function platformCatalog(lang: 'ar' | 'en' = 'ar'): string {
     .join('\n');
 }
 
-/** The live shipping table (same file the storefront and the payment server use) as one prompt block. */
+/** The live shipping rule (same files the storefront and the payment server use) as one prompt block. */
 export function shippingBrief(lang: 'ar' | 'en' = 'ar'): string {
   const zones = [...SHIPPING.zones, SHIPPING.default]
     .map((z) => `${z.name[lang]}: ${z.firstItem} ${SHIPPING.currency} ${lang === 'ar' ? 'لأول زجاجة' : 'first bottle'} + ${z.extraItem} ${SHIPPING.currency} ${lang === 'ar' ? 'لكل زجاجة زيادة' : 'each extra bottle'}${z.days ? ` (${z.days} ${lang === 'ar' ? 'يوم تقديرياً' : 'days approx.'})` : ''}`)
     .join('; ');
+  const pct = Number(SHIPPING.handling?.percent) || 0;
+  const cap = Number(SHIPPING.handling?.capUsd) || 0;
+  const fee = pct > 0 ? `${pct}%${cap > 0 ? ` ${lang === 'ar' ? 'بحد أقصى' : 'max'} ${cap} USD` : ''}` : (lang === 'ar' ? 'من غير هامش' : 'none');
   return lang === 'ar'
-    ? `جدول الشحن الحالي (بالدولار، ويتحوّل لعملة الزائر في صفحة الدفع): ${zones}. العطور مواد قابلة للاشتعال UN1266 Class 3، وبعض الدول تمنع أو تقيّد الاستيراد.`
-    : `Current shipping table (USD, converted to the visitor's currency at checkout): ${zones}. Perfume is flammable (UN1266 Class 3); some countries restrict imports.`;
+    ? `قاعدة الشحن (قرار صاحب المتجر، 2026-10-26): المكسب 50% صافي، والشحن ماياكلش منه. عشان كده الشحن لبلد الزائر = تعريفة الشركة المنشورة للمسار ده + هامش تجهيز ${fee} (بيتأكد قبل الدفع). الدول اللي لسه مفيش لها تعريفة منشورة بتاخد سعر منطقتها — وسعر أول زجاجة/الزجاجة الزيادة لكل منطقة: ${zones}. العطور مواد قابلة للاشتعال UN1266 Class 3، وبعض الدول تمنع أو تقيّد الاستيراد.`
+    : `Shipping rule (the merchant's decision, 2026-10-26): the 50% margin is net — shipping never eats it. So shipping to the visitor's country = the carrier's published rate for that lane + ${fee} handling fee (confirmed before payment). Countries without a published rate take their zone price — first bottle / extra bottle per zone: ${zones}. Perfume is flammable (UN1266 Class 3); some countries restrict imports.`;
 }
 
 /** The whole map, grouped, for the built-in answer when no AI key is configured. */

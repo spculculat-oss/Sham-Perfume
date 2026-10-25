@@ -28,7 +28,7 @@
  *
  * Pure: platforms, carriers, customs, shipping and rates are parameters (`tests/tradeLanes.test.ts`).
  */
-import { HOME_CURRENCY, convert, type FxTable, type ShippingTable, type ShippingZone } from '../../src/utils/pricing';
+import { HOME_CURRENCY, convert, handlingFee, type FxTable, type ShippingTable, type ShippingZone } from '../../src/utils/pricing';
 
 export type Fulfilment = 'platform_ships' | 'broker' | 'unknown';
 export type Lane = 'platform' | 'local' | 'international' | 'unknown';
@@ -203,8 +203,10 @@ export interface DestinationPlan {
   becauseAr: string;
   carrier: { id: string; nameAr: string; speedAr?: string; priceEgp: [number, number] | null; dg: boolean | null; source: string | null } | null;
   alternative: { id: string; nameAr: string; priceEgp: [number, number] | null } | null;
-  /** What the visitor is charged for shipping today (first bottle), in EGP. */
+  /** What the visitor is charged for shipping now (first bottle), in EGP — real cost + the merchant's margin. */
   chargedEgp: number;
+  /** What the zone table alone charged before the real-cost pricing (for the before/after comparison only). */
+  zoneChargedEgp: number;
   /** What the carrier really costs us (band), in EGP, or `null` when unpublished. */
   costEgp: [number, number] | null;
   /** charged − cost at the band's midpoint (positive = we over-charge, negative = we lose), as if we ship it. */
@@ -219,6 +221,12 @@ export interface DestinationPlan {
   marginEatenEgp: number | null;
   /** The shipping we must charge for the 50% to stay whole: the carrier's own band, in EGP. */
   requiredShippingEgp: [number, number] | null;
+  /** The carrier's charge for each extra bottle (the next 500 g), in EGP — the price of the 2nd bottle, not the 1st. */
+  costExtraEgp: number | null;
+  /** What the visitor will be charged once shipping = real cost + the merchant's margin (EGP, first bottle). */
+  proposedChargedEgp: number | null;
+  /** What the shipping itself leaves after the carrier takes its real cost (EGP) — the merchant's margin on shipping. */
+  proposedMarginEgp: number | null;
   /** What we may tell the visitor: nothing (unknown mode), «المنصة بتشحن», or «إحنا بنشحن». */
   promise: 'broker_only' | 'we_ship' | 'unknown';
   /** The money verdict on the shipping, whether or not we ship it today. */
@@ -282,6 +290,12 @@ export interface TradeReport {
     keptWholeDestinations: number;
     /** Destinations where the shipping eats part of the markup. */
     marginEatenDestinations: number;
+    /** With shipping priced at its real cost + margin: destinations where the carrier's cost is covered (the 50% is net). */
+    costBasedDestinations: number;
+    /** With that pricing: destinations where the 50% still gets eaten (no published cost, so nothing is guaranteed). */
+    uncoveredDestinations: number;
+    /** The merchant's margin on the shipping, median over the priced destinations, in EGP per parcel. */
+    medianShippingMarginEgp: number | null;
   };
   score: number;
   notes: string[];
@@ -309,6 +323,19 @@ export function chargedEgp(country: string, shipping: ShippingTable, fx: FxTable
   if (!zone) return 0;
   const home = Math.round(convert(zone.firstItem, shipping.currency, HOME_CURRENCY, fx) * 100) / 100;
   return home;
+}
+
+/** What one more bottle (the next 500 g) costs on this carrier to this destination, in EGP — or `null`. */
+export function carrierExtraEgp(carrier: Carrier, destination: string, fx: FxTable, from?: string | null): number | null {
+  const quotedFrom = (carrier.originCountry || '*').toUpperCase();
+  if (from && quotedFrom !== '*' && quotedFrom !== from.toUpperCase()) return null;
+  const per = carrier.perCountryBand;
+  if (!per) return null;
+  const row = per.rates[destination.toUpperCase()] || per.rates['*'];
+  if (!row || !(Number(row[1]) > 0)) return null;
+  const lift = 1 + (Number(per.surchargePercent) || 0) / 100;
+  const egp = convert(Number(row[1]) * lift, per.currency, HOME_CURRENCY, fx);
+  return Math.round(egp * 100) / 100;
 }
 
 /** A carrier's published band for this destination, in EGP — or `null` when it publishes none. */
@@ -385,6 +412,12 @@ export function shippingDestinations(shipping: ShippingTable): string[] {
 }
 
 const round = (n: number) => Math.round(n * 100) / 100;
+const median = (values: number[]): number | null => {
+  if (!values.length) return null;
+  const sorted = [...values].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return round(sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2);
+};
 
 export function reviewTrade(input: TradeInput): TradeReport {
   const { platforms, carriers, customs, shipping, fx } = input;
@@ -425,9 +458,20 @@ export function reviewTrade(input: TradeInput): TradeReport {
       .filter((x) => x.band)
       .sort((a, b) => (a.band![0] - b.band![0]));
     const band = carrier && assumedLane ? carrierBandEgp(carrier, code, fx, home) : null;
-    const charged = chargedEgp(code, shipping, fx);
-    const mid = band ? round((band[0] + band[1]) / 2) : null;
-    const surplus = mid === null ? null : round(charged - mid);
+    const zoneCharged = chargedEgp(code, shipping, fx);
+    // التسعير الجديد (2026-10-26): الشحن = تكلفة الشركة المنشورة + هامش التجهيز. الوجهة اللي مفيش لها
+    // تعريفة بتفضل على سعر منطقتها — ومافيش وعد إنه يغطي التكلفة.
+    const costBased = Boolean(shipping.costs?.countries?.[code]);
+    const lowUsdNow = band && costBased ? round(convert(band[0], HOME_CURRENCY, shipping.currency, fx)) : null;
+    const feeUsdNow = lowUsdNow === null ? null : handlingFee(lowUsdNow, shipping);
+    const proposedChargedNow = band && feeUsdNow !== null ? round(band[0] + convert(feeUsdNow, shipping.currency, HOME_CURRENCY, fx)) : null;
+    const proposedMarginNow = proposedChargedNow === null || band === null ? null : round(proposedChargedNow - band[0]);
+    const charged = proposedChargedNow ?? zoneCharged;
+    // المرجع: لو التسعير مبني على تعريفة (سعر حقيقي + هامش) المرجع هو أول ٥٠٠ جم — إحنا بنحصّل لكل شريحة وزن.
+    // ولو مفيش تعريفة (سعر منطقة زي الأول)، المرجع منتصف الشريحة زي ما كان — عشان المقارنة تفضل عادلة.
+    const bandMid = band ? round((band[0] + band[1]) / 2) : null;
+    const reference = proposedChargedNow !== null && band ? band[0] : bandMid;
+    const surplus = reference === null ? null : round(charged - reference);
     // The shipping is only half the story: the bottle's own markup is what pays for it.
     const net = surplus === null ? null : round(profit + surplus);
     // «مكسبنا 50% تكون صافية»: النسبة اللي بتفضل من الهامش بعد ما الشحن الحقيقي ياخد حقه.
@@ -441,6 +485,7 @@ export function reviewTrade(input: TradeInput): TradeReport {
     const costVerdict: DestinationPlan['costVerdict'] = !assumedLane || surplus === null ? 'unknown'
       : surplus < 0 ? 'loss'
         : surplus > charged * 0.5 ? 'over_charging' : 'ok';
+    const extraBand = carrier && assumedLane ? carrierExtraEgp(carrier, code, fx, home) : null;
     const relief = dutyReliefFor(customs.agreements, platform?.originCountry || null, code);
     const verified = Boolean(country && country.confidence !== 'unverified');
     return {
@@ -458,6 +503,7 @@ export function reviewTrade(input: TradeInput): TradeReport {
       carrier: carrier ? { id: carrier.id, nameAr: carrier.nameAr, speedAr: carrier.speedAr, priceEgp: band, dg: carrier.dg, source: carrier.source || null } : null,
       alternative: others[0] ? { id: others[0].c.id, nameAr: others[0].c.nameAr, priceEgp: others[0].band! } : null,
       chargedEgp: charged,
+      zoneChargedEgp: zoneCharged,
       costEgp: band,
       surplusEgp: surplus,
       netEgp: net,
@@ -465,6 +511,9 @@ export function reviewTrade(input: TradeInput): TradeReport {
       keptPercent,
       marginEatenEgp: marginEaten,
       requiredShippingEgp: band,
+      costExtraEgp: extraBand,
+      proposedChargedEgp: proposedChargedNow,
+      proposedMarginEgp: proposedMarginNow,
       promise,
       costVerdict,
       customs: {
@@ -632,12 +681,14 @@ export function reviewTrade(input: TradeInput): TradeReport {
   if (pricedPlans.length) {
     const cheapest = [...pricedPlans].sort((a, b) => (a.costEgp![0] - b.costEgp![0])).slice(0, 3);
     planAr.push(`لو إحنا اللي بنشحن، أرخص المسارات: ${cheapest.map((p) => `${p.nameAr} بـ${p.costEgp![0]}–${p.costEgp![1]} ج.م`).join('، ')}.`);
-    planAr.push('عشان الـ٥٠٪ تفضل صافية: الشحن يتاخد بسعره الحقيقي (زي ما في جدول المقترح تحت) — والفرق ده مش بيتحمل من الهامش.');
+    planAr.push('الشحن بقى بيتحصّل بتكلفته الحقيقية + هامش تجهيز صغير (الجدول تحت) — فالـ٥٠٪ تفضل صافية ومش متحمّلة على الهامش. الزجاجة = أول ٥٠٠ جم، والزجاجة الزيادة بسعر شريحتها.');
   }
   const needRaise = shippingProposal.filter((z) => z.typicalRequiredFirstItem > z.currentFirstItem);
   if (needRaise.length) {
-    planAr.push(`الشحن الحقيقي أغلى من اللي بنحصّله في ${needRaise.length} منطقة: ${needRaise.map((z) => `${z.nameAr} بياخد ${z.currentFirstItem} والمتوسط الحقيقي ${z.typicalRequiredFirstItem} ${z.currency}`).join('، ')} — والفرق بيتخصم من الـ٥٠٪. القرار لصاحب المتجر.`);
+    planAr.push(`الأسعار القديمة في ${needRaise.length} منطقة كانت أقل من التكلفة الحقيقية: ${needRaise.map((z) => `${z.nameAr} كان بياخد ${z.currentFirstItem} والمتوسط الحقيقي ${z.typicalRequiredFirstItem} ${z.currency}`).join('، ')} — التسعير الجديد بيحصّل التكلفة + الهامش.`);
   }
+  const uncovered = plans.filter((p) => p.proposedChargedEgp === null);
+  if (uncovered.length) planAr.push(`${uncovered.length} وجهة مفيش لها تعريفة شحن منشورة (${uncovered.map((p) => p.nameAr).join('، ')}) — بتاخد سعر منطقتها، ومافيش وعد إنه يغطي التكلفة.`);
   const reliefs = plans.filter((p) => p.customs.dutyRelief);
   if (reliefs.length) planAr.push(`${reliefs.length} وجهة ممكن تتلغي جمركها باتفاقية تجارية (${[...new Set(reliefs.map((r) => r.customs.dutyRelief!.id))].join('، ')}) — بس محتاجة ${reliefs[0].customs.dutyRelief!.requires.join(' + ')}.`);
   if (noDg.length) planAr.push(`${noDg.length} شركة دولية: تأكد قبول العطور (UN1266) قبل أي بيع دولي — الرفض بعد البيع = إلغاء وسمعة.`);
@@ -662,6 +713,9 @@ export function reviewTrade(input: TradeInput): TradeReport {
       overChargedDestinations: overCharged, lossDestinations: loss,
       orderLossDestinations: orderLoss, bestNetEgp: bestNet, worstNetEgp: worstNet,
       keptWholeDestinations: keptWhole, marginEatenDestinations: marginEaten,
+      costBasedDestinations: plans.filter((p) => p.proposedMarginEgp !== null && p.proposedMarginEgp >= 0).length,
+      uncoveredDestinations: plans.filter((p) => p.proposedMarginEgp === null).length,
+      medianShippingMarginEgp: median(plans.map((p) => p.proposedMarginEgp).filter((v): v is number => v !== null)),
     },
     score, notes, planAr, summaryAr,
   };

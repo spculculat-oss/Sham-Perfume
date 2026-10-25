@@ -371,8 +371,18 @@ export function routeQuestion(question: string, opts: { lang?: string; section?:
       specialist = prev.specialist; score = prev.score; via = ' · كمّل على مجال السؤال اللي قبله';
     }
   }
-  const chosen = specialist || pickSpecialist(asked, opts.section);
-  const trace = `routed: ${chosen.id} (${score.toFixed(1)} = كلمات المتخصصين + مجالات السؤال${opts.section ? ' + استشاريّو القسم' : ''})${via}${read.note ? ' · typos read back' : ''}`;
+  const firstChoice = specialist || pickSpecialist(asked, opts.section);
+  // سؤال فلوس الشحن والتجارة (شحن/جمارك + رقم أو «أغلى/أرخص/هامش») شغل متخصص التجارة — مش العلوم.
+  // قبل كده سؤال «الشحن أغلى من اللي بنحصّله، أعمل إيه؟» كان بيروح لـ«د. هند العلوم» لمجرد «50%»،
+  // والملاحظات بتتسجل فجوة والسؤال مالوش صاحب. الاختيار هنا بيحترم نطاق كل متخصص (L-32).
+  // بنقرا السؤال الأصلي كمان: مصحّح الكتابة بيحوّل «وجهة» لـ«واجهة» (كلمة حقيقية اتقرت غلط)،
+  // فالسؤال كان بيتحوّل للمتخصص التقني بدل التجارة.
+  const raw = `${question} ${asked}`;
+  const tradeMoney = /(شحن|توصيل|جمارك|تصدير|استيراد|لوجستيات|وجهة|وجهات|هامش|الهامش|هامشي)/i.test(raw) && /(هامش|مكسب|ربح|خسارة|خسران|صافي|بكام|كام|أغلى|ارخص|أرخص|تكلفة|سعر|%|دولار|جنيه|فاتورة)/i.test(raw);
+  const business = tradeMoney && firstChoice.id !== 'specialist_business' ? SPECIALISTS.find((x) => x.id === 'specialist_business') : undefined;
+  const chosen = business || firstChoice;
+  const tradeNote = business ? ' · سؤال شحن/فلوس → متخصص التجارة' : '';
+  const trace = `routed: ${chosen.id} (${score.toFixed(1)} = كلمات المتخصصين + مجالات السؤال${opts.section ? ' + استشاريّو القسم' : ''})${via}${tradeNote}${read.note ? ' · typos read back' : ''}`;
   return { specialist: chosen, asked, understanding, score, trace };
 }
 
