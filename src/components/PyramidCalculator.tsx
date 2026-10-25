@@ -1076,7 +1076,7 @@ export const PyramidCalculator: React.FC<PyramidCalculatorProps> = ({
 
           {/* Compounding Visual Card */}
           <div className="rounded-2xl overflow-hidden border border-stone-200 shadow-xs relative aspect-[4/3]">
-            <img
+            <img loading="lazy" decoding="async"
               src={compoundingImg}
               alt="Laboratory Balance Compounding"
               referrerPolicy="no-referrer"

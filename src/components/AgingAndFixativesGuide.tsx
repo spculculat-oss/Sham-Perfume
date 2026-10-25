@@ -681,7 +681,7 @@ export const AgingAndFixativesGuide: React.FC<AgingAndFixativesGuideProps> = ({
             </p>
           </div>
           <div className="md:col-span-5 h-64 md:h-full relative">
-            <img
+            <img loading="lazy" decoding="async"
               src={ingredientsImg}
               alt={L('img_alt')}
               referrerPolicy="no-referrer"

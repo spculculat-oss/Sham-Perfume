@@ -30,6 +30,7 @@ import {
   Wallet,
   CheckCircle2,
   Building,
+  ShoppingBag,
 } from 'lucide-react';
 import { ProductPayMethods } from '../bank/ProductPayMethods';
 import { CheckoutPayPanel } from './CheckoutPayPanel';
@@ -51,8 +52,18 @@ import { askShaheenStore, loadStoreCatalog, localSuggestion, storeImageSrc, type
 import { LegalDisclaimer } from './LegalDisclaimer';
 import { StoreInvoiceBreakdown } from './StoreInvoiceBreakdown';
 import CompleteYourOrder from './CompleteYourOrder';
+import TasteQuiz from './TasteQuiz';
+import { fmt, loc } from '../لغات/localize';
+import { QUIZ_UI, hasTaste, rankForTaste, savedAnswers, tasteFromAnswers, withViewed, type QuizAnswers } from '../utils/tasteQuiz';
+import { variantOf } from '../utils/experiments';
+import { priceYardstick } from '../utils/visitorInsights';
+
+const CART_NUDGE = {
+  text: { ar: 'سلتك لسه فيها {n} منتج مستنيين — تكمل طلبك؟', en: 'Your basket still has {n} item(s) waiting — finish your order?' },
+  open: { ar: 'افتح السلة', en: 'Open basket' },
+};
 import { pastPurchases, rememberPurchase } from '../utils/purchaseMemory';
-import { addToCart, cartSummary, clearCart, orderMessage, orderRef, orderRequestEmail, removePurchasedItems, setCartQty, useCart, type PricedOrder } from '../utils/storeCart';
+import { addToCart, cartTouchedAt, cartSummary, clearCart, orderMessage, orderRef, orderRequestEmail, removePurchasedItems, setCartQty, useCart, type PricedOrder } from '../utils/storeCart';
 import { contactEmail, contactMailto } from '../config/contact';
 import {
   CheckoutError,
@@ -202,7 +213,7 @@ function extraLabel(key: string, lang: SupportedLanguage): string {
   return isAr ? item.ar : item.en;
 }
 
-type Sort = 'new' | 'priceLow' | 'priceHigh' | 'rating';
+type Sort = 'new' | 'priceLow' | 'priceHigh' | 'rating' | 'taste';
 type PriceFilter = 'all' | 'under200' | '200to500' | 'above500';
 
 interface Props {
@@ -323,7 +334,29 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
   const [newOnly, setNewOnly] = useState(false);
   const [inStockOnly, setInStockOnly] = useState(false);
   const [priceRange, setPriceRange] = useState<PriceFilter>('all');
-  const [sort, setSort] = useState<Sort>('new');
+  const [sort, setSort] = useState<Sort>(() => (typeof window !== 'undefined' && hasTaste(tasteFromAnswers(savedAnswers() || {})) ? 'taste' : 'new'));
+  // «مختار ليك على ذوقك»: products he viewed, kept on his device only while he accepts «التحليل».
+  const [viewed, setViewed] = useState<string[]>(() => (typeof window === 'undefined' ? [] : viewedForTaste()));
+  useEffect(() => {
+    const refresh = () => setViewed(viewedForTaste());
+    window.addEventListener('hashchange', refresh);
+    window.addEventListener('cookie-consent-updated', refresh);
+    return () => { window.removeEventListener('hashchange', refresh); window.removeEventListener('cookie-consent-updated', refresh); };
+  }, []);
+  // «اختبار ذوقك» (his own answers, on his device) + what he viewed = «الأنسب لذوقك», his personal order of the store.
+  const [answers, setAnswers] = useState<QuizAnswers>(() => (typeof window === 'undefined' ? {} : savedAnswers() || {}));
+  const [quizOpen, setQuizOpen] = useState(false);
+  useEffect(() => {
+    const refresh = () => { setAnswers(savedAnswers() || {}); setSort('taste'); };
+    window.addEventListener('sham-taste-updated', refresh);
+    return () => window.removeEventListener('sham-taste-updated', refresh);
+  }, []);
+  const yardstick = useMemo(() => priceYardstick(products), [products]);
+  const taste = useMemo(() => withViewed(tasteFromAnswers(answers), products.filter((p) => viewed.includes(p.sku))), [answers, viewed, products]);
+  const tasteReady = hasTaste(taste);
+  const quizPrompt = useMemo(() => variantOf('quiz_prompt'), []);
+  const [quizCardHidden, setQuizCardHidden] = useState(() => { try { return localStorage.getItem('sham_quiz_card_hidden') === '1'; } catch { return false; } });
+  const hideQuizCard = () => { setQuizCardHidden(true); try { localStorage.setItem('sham_quiz_card_hidden', '1'); } catch { /* private mode */ } };
 
   const categories = useMemo(() => [...new Set(products.map((p) => p.category).filter(Boolean))].sort(), [products]);
   const brands = useMemo(() => [...new Set(products.map((p) => p.brand).filter(Boolean))].sort(), [products]);
@@ -351,6 +384,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
     });
 
     const time = (p: StoreProduct) => (p.createdAt ? Date.parse(p.createdAt) || 0 : 0);
+    if (sort === 'taste' && tasteReady) return rankForTaste(list.sort((a, b) => time(b) - time(a)), taste, yardstick);
     return list.sort((a, b) =>
       sort === 'priceLow'
         ? a.price - b.price
@@ -360,7 +394,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
         ? (b.rating || 0) - (a.rating || 0)
         : time(b) - time(a)
     );
-  }, [products, search, section, gender, family, category, brand, newOnly, inStockOnly, priceRange, sort]);
+  }, [products, search, section, gender, family, category, brand, newOnly, inStockOnly, priceRange, sort, taste, tasteReady, yardstick]);
 
   useEffect(() => {
     setLimit(ALL);
@@ -515,14 +549,9 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
   const [justOrdered, setJustOrdered] = useState<string[]>([]);
   const [boughtBefore, setBoughtBefore] = useState<string[]>(() => (typeof window === 'undefined' ? [] : pastPurchases()));
   const [hideForYou, setHideForYou] = useState(false);
-  // «مختار ليك على ذوقك»: products he viewed, kept on his device only while he accepts «التحليل».
-  const [viewed, setViewed] = useState<string[]>(() => (typeof window === 'undefined' ? [] : viewedForTaste()));
-  useEffect(() => {
-    const refresh = () => setViewed(viewedForTaste());
-    window.addEventListener('hashchange', refresh);
-    window.addEventListener('cookie-consent-updated', refresh);
-    return () => { window.removeEventListener('hashchange', refresh); window.removeEventListener('cookie-consent-updated', refresh); };
-  }, []);
+  // «سلتك لسه مستنياك»: he left products in his basket more than two hours ago (his device only; no e-mail, no discount).
+  const [cartNudge, setCartNudge] = useState(() => typeof window !== 'undefined' && cartTouchedAt() > 0 && Date.now() - cartTouchedAt() > 2 * 3_600_000);
+  const cartCount = Object.values(cart).reduce((a, b) => a + b, 0);
   const ordered = (skus: string[]) => { if (!skus.length) return; setJustOrdered(skus); setBoughtBefore(rememberPurchase(skus)); };
 
   useEffect(() => {
@@ -1156,6 +1185,28 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
           </div>
         )}
 
+        {cartNudge && cartCount > 0 && (
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-3 flex items-center gap-3" data-testid="cart-nudge">
+            <ShoppingBag className="w-5 h-5 text-emerald-700 shrink-0" />
+            <p className="text-sm text-emerald-950 flex-1">{fmt(loc(currentLang, CART_NUDGE.text), { n: cartCount })}</p>
+            <button type="button" onClick={() => { setCartNudge(false); setDirectPurchase(null); setStep('cart'); setCartOpen(true); }} className="px-3 py-1.5 rounded-xl bg-emerald-700 text-white text-xs font-bold cursor-pointer">{loc(currentLang, CART_NUDGE.open)}</button>
+            <button type="button" onClick={() => setCartNudge(false)} className="p-1 rounded-lg hover:bg-emerald-100 text-emerald-800 cursor-pointer" aria-label={loc(currentLang, QUIZ_UI.close)}><X className="w-4 h-4" /></button>
+          </div>
+        )}
+
+        {quizPrompt === 'card' && !quizCardHidden && (
+          <div className="rounded-2xl border border-amber-300 bg-gradient-to-br from-amber-50 to-white p-4 flex items-center gap-3" data-testid="quiz-card">
+            <Sparkles className="w-6 h-6 text-amber-600 shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="font-extrabold text-stone-900 text-sm">{loc(currentLang, QUIZ_UI.open)}</p>
+              <p className="text-xs text-stone-600">{loc(currentLang, QUIZ_UI.openHint)}</p>
+            </div>
+            <button type="button" onClick={() => setQuizOpen(true)} className="px-3 py-2 rounded-xl bg-stone-900 text-white text-xs font-bold shrink-0 cursor-pointer">{loc(currentLang, QUIZ_UI.chip)}</button>
+            <button type="button" onClick={hideQuizCard} className="p-1 rounded-lg hover:bg-amber-100 text-stone-500 cursor-pointer" aria-label={loc(currentLang, QUIZ_UI.close)}><X className="w-4 h-4" /></button>
+          </div>
+        )}
+        {quizOpen && <TasteQuiz products={products} lang={currentLang} price={money.price} onAdd={add} onOpen={(p) => { setQuizOpen(false); openDetails(p); }} onClose={() => setQuizOpen(false)} />}
+
         {justOrdered.length > 0 ? (
           <CompleteYourOrder products={products} basis={products.filter((p) => justOrdered.includes(p.sku))} lang={currentLang} variant="after" price={money.price}
             onAdd={add} onOpen={openDetails} added={justAdded} inCart={[...Object.keys(cart), ...justOrdered]} onDismiss={() => setJustOrdered([])} />
@@ -1402,7 +1453,14 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
               <option value="priceLow">{L.sortPriceLow}</option>
               <option value="priceHigh">{L.sortPriceHigh}</option>
               <option value="rating">{L.sortRating}</option>
+              {tasteReady && <option value="taste">{loc(currentLang, QUIZ_UI.sortTaste)}</option>}
             </select>
+            {(quizPrompt === 'chip' || quizCardHidden) && (
+              <button type="button" onClick={() => setQuizOpen(true)} data-testid="quiz-chip"
+                className="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 flex items-center gap-1 cursor-pointer">
+                <Sparkles className="w-3.5 h-3.5" />{loc(currentLang, QUIZ_UI.chip)}
+              </button>
+            )}
 
             {countryPicker('store-country')}
 

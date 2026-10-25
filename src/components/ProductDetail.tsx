@@ -1,4 +1,8 @@
 import { trackInsight } from '../utils/insightsTracker';
+import { peopleAlsoViewed } from '../utils/peopleAlsoViewed';
+import { loc } from '../لغات/localize';
+
+const TOGETHER_TITLE = { ar: 'ناس ذوقهم قريب من ذوقك شافوا كمان', en: 'People with a taste like yours also viewed' };
 import React, { useEffect, useMemo, useState } from 'react';
 import { contactEmail } from '../config/contact';
 import { ArrowLeft, ArrowRight, ExternalLink, MessageCircle, Package, CreditCard, ShoppingCart, Sparkles, Star } from 'lucide-react';
@@ -60,6 +64,44 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
   const product = products.find((p) => String(p.id) === String(productId));
   useEffect(() => { if (product) trackInsight('product', { sku: product.sku }); }, [product?.sku]); // «خزنة فهم الزوار» (with consent)
   useEffect(() => { setQty(1); setBadThumbs([]); setPhoto(0); window.scrollTo?.({ top: 0 }); }, [productId]);
+  // How deeply he looked (with consent only — trackInsight drops it otherwise): seconds on the page while it was
+  // visible, how far he read, whether he went through the photos. Interest a click count cannot see.
+  useEffect(() => {
+    const sku = product?.sku;
+    if (!sku || typeof window === 'undefined') return;
+    let shown = document.visibilityState === 'visible' ? Date.now() : 0;
+    let seconds = 0; let deepest = 0;
+    const onVisibility = () => {
+      if (document.visibilityState === 'hidden' && shown) { seconds += (Date.now() - shown) / 1000; shown = 0; }
+      else if (document.visibilityState === 'visible' && !shown) shown = Date.now();
+    };
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (max > 0) deepest = Math.max(deepest, Math.round((window.scrollY / max) * 100));
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility);
+      window.removeEventListener('scroll', onScroll);
+      if (shown) seconds += (Date.now() - shown) / 1000;
+      const s = Math.min(900, Math.round(seconds));
+      if (s >= 3) trackInsight('engage', { sku, value: `dwell:${s}` });
+      if (deepest >= 75) trackInsight('engage', { sku, value: `scroll:${Math.min(100, deepest)}` });
+    };
+  }, [product?.sku]);
+  const [lookedPhotos, setLookedPhotos] = useState('');
+  const lookAtPhoto = (i: number) => {
+    setPhoto(i);
+    if (product && lookedPhotos !== product.sku) { setLookedPhotos(product.sku); trackInsight('engage', { sku: product.sku, value: 'zoom' }); }
+  };
+  const [together, setTogether] = useState<string[]>([]);
+  useEffect(() => {
+    let live = true;
+    setTogether([]);
+    if (product?.sku) void peopleAlsoViewed(product.sku).then((skus) => { if (live) setTogether(skus); });
+    return () => { live = false; };
+  }, [product?.sku]);
   const Back = isRTL(currentLang) ? ArrowRight : ArrowLeft;
 
   if (!product && loading) return <div className="min-h-[60vh] flex items-center justify-center text-stone-500" data-testid="product-loading">{L.loading}</div>;
@@ -75,7 +117,8 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
 
   const current = product.images[photo] || product.imageUrl;
   const price = money.price;
-  const related = products.filter((p) => p.sku !== product.sku).map((p) => ({ p, s: closeness(product, p) }))
+  const alsoViewed = together.map((sku) => products.find((p) => p.sku === sku)).filter((p): p is StoreProduct => Boolean(p && p.sku !== product.sku)).slice(0, 4);
+  const related = products.filter((p) => p.sku !== product.sku && !alsoViewed.some((a) => a.sku === p.sku)).map((p) => ({ p, s: closeness(product, p) }))
     .filter((r) => r.s > 0).sort((a, b) => b.s - a.s).slice(0, 4).map((r) => r.p);
   const notes = ([['top', product.notes.top], ['heart', product.notes.heart], ['base', product.notes.base]] as const).filter(([, list]) => list.length);
   const askShaheen = () => {
@@ -108,7 +151,7 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
           {product.images.filter((src) => !badThumbs.includes(src)).length > 1 && (
             <div className="flex gap-2 overflow-x-auto pb-1" data-testid="product-gallery">
               {product.images.map((src, i) => badThumbs.includes(src) ? null : (
-                <button type="button" key={src} onClick={() => setPhoto(i)} aria-label={`${L.photo} ${i + 1}`}
+                <button type="button" key={src} onClick={() => lookAtPhoto(i)} aria-label={`${L.photo} ${i + 1}`}
                   className={`shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 bg-white cursor-pointer ${i === photo ? 'border-amber-600' : 'border-transparent'}`}>
                   <img src={storeImageSrc(src)} alt="" loading="lazy" onError={() => setBadThumbs((b) => (b.includes(src) ? b : [...b, src]))} className="w-full h-full object-contain" />
                 </button>
@@ -196,6 +239,23 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
           </div>
         )}
       </div>
+
+      {alsoViewed.length >= 2 && (
+        <div className="max-w-6xl mx-auto px-4 pb-6" data-testid="people-also-viewed">
+          <h2 className="text-xl font-bold mb-3">{loc(currentLang, TOGETHER_TITLE)}</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {alsoViewed.map((p) => (
+              <button type="button" key={p.sku} onClick={() => { window.location.hash = `#product=${p.id}`; }} className="bg-white rounded-2xl border overflow-hidden text-start hover:shadow-md transition cursor-pointer">
+                <SafeImage sources={photoSources(p.imageUrl, p.images)} alt={p.name.ar} className="w-full aspect-square" />
+                <div className="p-3">
+                  <p className="text-sm font-semibold line-clamp-2">{storeLocalized(p.name, currentLang)}</p>
+                  <p className="text-sm font-bold text-amber-900 mt-1">{price(p.price)}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {related.length > 0 && (
         <div className="max-w-6xl mx-auto px-4 pb-10">

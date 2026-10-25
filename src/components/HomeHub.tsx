@@ -1254,7 +1254,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
           {/* Right Showcase Card */}
           <div className="lg:col-span-5 relative">
             <div className="relative rounded-2xl overflow-hidden border border-amber-600/30 shadow-xl aspect-16/10 group bg-stone-950">
-              <img
+              <img decoding="async" fetchPriority="high"
                 src={heroImg}
                 alt={L('alt_hero')}
                 referrerPolicy="no-referrer"

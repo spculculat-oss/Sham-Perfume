@@ -602,7 +602,7 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, currentL
                   </span>
                 )}
                 {user.avatar && (
-                  <img src={user.avatar} alt="avatar" className="object-cover rounded-full" style={{ width: 64, height: 64 }} />
+                  <img loading="lazy" decoding="async" src={user.avatar} alt="avatar" className="object-cover rounded-full" style={{ width: 64, height: 64 }} />
                 )}
                 <span className="text-[10px] text-stone-500">
                   {L('member_since')}: {localeDate(currentLang, new Date(user.createdAt || Date.now()))}

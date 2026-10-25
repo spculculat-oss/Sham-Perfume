@@ -109,7 +109,8 @@ async function main(): Promise<void> {
   const audit = readJson<{ updatedAt?: string; score?: number }>(join(LIVE_DIR, 'manus-audit.json'));
   const priority = auditLanguages(audit, languages);
   const phrases = auditPhrases(audit);
-  const screens = sources.filter(({ file }) => !file.startsWith('src/لغات/'));
+  // Test fixtures (price drills etc.) are never shown to visitors — a product name quoted there is not untranslated copy.
+  const screens = sources.filter(({ file }) => !file.startsWith('src/لغات/') && !/Drills?\.ts$/.test(file));
   const located = locatePhrases(phrases, screens);
   const direction = screens.map(({ file, source }) => ({ file, count: findPhysicalDirection(source) })).filter((x) => x.count);
   const design: DesignSection = {

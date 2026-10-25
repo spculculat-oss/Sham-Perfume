@@ -381,7 +381,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
           {/* Master Shaheen Daily Refresh Action Box */}
           <div className="w-full lg:w-auto shrink-0 bg-stone-900/80 backdrop-blur-md p-5 rounded-2xl border border-amber-500/30 shadow-xl flex flex-col items-center sm:items-stretch text-center sm:text-right space-y-3">
             <div className="flex items-center gap-3">
-              <img
+              <img loading="lazy" decoding="async"
                 src={masterShaheenImg}
                 alt={L('shahin_name')}
                 className="w-12 h-12 rounded-full object-cover border-2 border-amber-400 shadow-md"
@@ -466,7 +466,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
         <div className="bg-white rounded-3xl border border-stone-200 overflow-hidden shadow-lg hover:shadow-xl transition-all">
           <div className="grid grid-cols-1 lg:grid-cols-12">
             <div className="lg:col-span-5 relative aspect-[16/10] lg:aspect-auto overflow-hidden group">
-              <img
+              <img loading="lazy" decoding="async"
                 src={resolveArticleImage(featuredHotNews, 0)}
                 alt={featuredHotNews.titleAr}
                 className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
@@ -643,7 +643,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
               <div>
                 {/* Article Image Container */}
                 <div className="relative aspect-[16/10] overflow-hidden bg-stone-100 cursor-pointer" onClick={() => openArticleReader(item)}>
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={imageSrc}
                     alt={loc.titleAr}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -788,7 +788,7 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
               
               {/* Header Image with overlays */}
               <div className="relative aspect-[16/9] w-full overflow-hidden bg-stone-900">
-                <img
+                <img loading="lazy" decoding="async"
                   src={modalImg}
                   alt={modalLoc.titleAr}
                   className="w-full h-full object-cover"

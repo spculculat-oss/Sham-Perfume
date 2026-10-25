@@ -9,7 +9,12 @@ test('Arabic: the claim goes, the scent stays', () => {
   assert.equal(stripClaims('عطر يجمع بين العود والعنبر. يترك أثراً دخانياً خشبياً دافئاً يدوم طويلاً.', 'ar'),
     'عطر يجمع بين العود والعنبر. يترك أثراً دخانياً خشبياً دافئاً.');
   assert.equal(stripClaims('عطر غني يجمع بين الشوكولاتة والعود. يمنحك ثباتاً طويلاً وجاذبية فريدة تناسب الجنسين.', 'ar'),
-    'عطر غني يجمع بين الشوكولاتة والعود. يمنحك جاذبية فريدة تناسب الجنسين.');
+    'عطر غني يجمع بين الشوكولاتة والعود.');
+  // Council task #183: a promise about the wearer and promotional adjectives go; the scent stays.
+  assert.equal(stripClaims('عطر شرقي خشبي ساحر يجمع بين الزعفران والكراميل ليمنحك شعوراً بالفخامة.', 'ar'), 'عطر شرقي خشبي يجمع بين الزعفران والكراميل.');
+  assert.equal(stripClaims('عطر فاخر يمزج بين الجلود الراقية والأخشاب المدخنة.', 'ar'), 'عطر يمزج بين الجلود والأخشاب المدخنة.');
+  assert.equal(stripClaims('عطر نسائي زهري بالورد والياسمين. يمنحك إطلالة أنثوية جذابة.', 'ar'), 'عطر نسائي زهري بالورد والياسمين.');
+  assert.equal(stripClaims('يمنح الهيل العطر عمقاً دافئاً.', 'ar'), 'يمنح الهيل العطر عمقاً دافئاً.', 'what a note gives the scent is a description');
   assert.equal(stripClaims('عطر منعش بالحمضيات. خيار مثالي للاستخدام اليومي.', 'ar'), 'عطر منعش بالحمضيات. خيار مناسب للاستخدام اليومي.');
   assert.equal(stripClaims('يحقق توازناً مثالياً بين الانتعاش والجاذبية طوال اليوم.', 'ar'), 'يحقق توازناً مناسباً بين الانتعاش والجاذبية.');
   assert.equal(stripClaims('عطر حلو يجمع الفانيليا والمارشميلو في مزيج لا يقاوم.', 'ar'), 'عطر حلو يجمع الفانيليا والمارشميلو.');
@@ -47,12 +52,12 @@ test('the store shows the description without claims, and a plain true sentence 
   const base = mergeProduct(p);
   const entry: StoreEntry = {
     sourceHash: '', editor: 'shaheen', updatedAt: '2026-10-20T00:00:00Z', nameAr: 'عطر سما', nameEn: 'Sama',
-    descriptionAr: 'عطر زهري بالورد والمسك. يمنحك شعوراً بالأنوثة يدوم طوال اليوم.', descriptionEn: 'The best perfume. Buy it online now.',
+    descriptionAr: 'عطر زهري بالورد والمسك الأبيض والفانيليا. يمنحك شعوراً بالأنوثة يدوم طوال اليوم.', descriptionEn: 'The best perfume. Buy it online now.',
     gender: 'women', families: ['floral'], notes: { top: [], heart: [], base: [] }, seasons: [], occasions: [], tags: [],
   };
   entry.sourceHash = productHash(p);
   const shown = mergeProduct(p, entry);
-  assert.equal(shown.description.ar, 'عطر زهري بالورد والمسك. يمنحك شعوراً بالأنوثة.');
+  assert.equal(shown.description.ar, 'عطر زهري بالورد والمسك الأبيض والفانيليا.');
   assert.equal(shown.description.en, 'Sama by Lattafa for women with a floral character.');
   assert.ok(base.description.ar.length > 0);
 });

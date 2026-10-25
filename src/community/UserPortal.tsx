@@ -320,7 +320,7 @@ function Orders({ lang }: { lang: Lang }) {
               <div className="flex flex-wrap items-center gap-2"><span className="font-mono text-sm font-bold">#{o.number}</span>{o.store && <span className="text-xs text-stone-500">🏪 {o.store}</span>}
                 <span className={`ms-auto rounded-full px-2.5 py-1 text-[11px] font-bold ${s[2]}`}>{lang === 'ar' ? s[0] : s[1]}</span></div>
               <ul className="mt-3 space-y-2">{o.items.map((i) => (
-                <li key={i.sku} className="flex items-center gap-3 text-sm">{i.image ? <img src={i.image} alt="" className="h-11 w-11 rounded-lg object-cover" /> : <span className="h-11 w-11 rounded-lg bg-stone-100" />}<span className="flex-1">{i.name}</span><span className="text-stone-500">×{i.qty}</span></li>
+                <li key={i.sku} className="flex items-center gap-3 text-sm">{i.image ? <img loading="lazy" decoding="async" src={i.image} alt="" className="h-11 w-11 rounded-lg object-cover" /> : <span className="h-11 w-11 rounded-lg bg-stone-100" />}<span className="flex-1">{i.name}</span><span className="text-stone-500">×{i.qty}</span></li>
               ))}</ul>
               <div className="mt-3 flex justify-between border-t border-stone-100 pt-2 text-sm"><span className="text-stone-500">{timeAgo(o.createdAt, lang)}</span>{o.total != null && <span className="font-bold">{money(o.total, o.currency, lang)}</span>}</div>
             </Card>

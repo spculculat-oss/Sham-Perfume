@@ -1,3 +1,4 @@
+import { makeStoreT } from '../لغات/storeL10n';
 import React from 'react';
 import {
   Home,
@@ -21,6 +22,7 @@ import {
   Bot,
   Users,
   Atom,
+  ShoppingBag,
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
 import { t } from '../لغات/i18n';
@@ -96,6 +98,8 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
     cosmetics: { label: cosmeticsText(currentLang, 'sectionCosmetics'), icon: Sparkles },
     perfume_designers: { label: designersText(currentLang, 'navPerfume'), icon: PenLine },
     cosmetic_designers: { label: designersText(currentLang, 'navCosmetic'), icon: PenLine },
+    store: { label: makeStoreT(currentLang)('sf_store_name'), icon: ShoppingBag },
+    productDetail: { label: makeStoreT(currentLang)('sf_store_name'), icon: ShoppingBag },
   };
 
   // Deep routes («community/messenger/<id>», «store/<slug>»…) show their section's name, never the raw route.

@@ -46,7 +46,7 @@ export default function MerchantPortal({ lang, session, section, go, toast }: Pr
     <div className="space-y-4">
       <Card className="overflow-hidden">
         <div className="flex flex-wrap items-center gap-4 bg-gradient-to-br from-stone-950 to-stone-800 p-5 text-white">
-          {m.logo ? <img src={m.logo} alt="" className="h-16 w-16 rounded-2xl bg-white object-cover" /> : <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500 text-2xl">🏪</span>}
+          {m.logo ? <img loading="lazy" decoding="async" src={m.logo} alt="" className="h-16 w-16 rounded-2xl bg-white object-cover" /> : <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500 text-2xl">🏪</span>}
           <div className="min-w-[11rem] flex-1"><p className="text-xs text-amber-300">{t('بوابة التاجر', 'Merchant portal')}</p><h2 className="truncate text-xl font-black sm:text-2xl">{m.storeName}</h2><p className="text-sm text-stone-300">{merchantStatus(m.status, lang)}</p></div>
           {m.status === 'approved' && <Btn variant="soft" onClick={() => go(`store/${m.slug}`)}><ExternalLink className="h-4 w-4" />{t('صفحة متجري', 'My store page')}</Btn>}
         </div>
@@ -158,7 +158,7 @@ function StoreForm({ lang, initial, toast, onDone }: { lang: Lang; initial?: Mer
       <Card className="p-5">
         <h3 className="mb-4 flex items-center gap-2 font-bold"><Store className="h-4 w-4 text-amber-600" />{t('واجهة المتجر — يشوفها العملاء', 'Storefront — visible to buyers')}</h3>
         <div className="mb-4 flex items-center gap-4">
-          {f.logo ? <img src={f.logo} alt="" className="h-20 w-20 rounded-2xl object-cover" /> : <span className="flex h-20 w-20 items-center justify-center rounded-2xl bg-stone-100 text-3xl">🏪</span>}
+          {f.logo ? <img loading="lazy" decoding="async" src={f.logo} alt="" className="h-20 w-20 rounded-2xl object-cover" /> : <span className="flex h-20 w-20 items-center justify-center rounded-2xl bg-stone-100 text-3xl">🏪</span>}
           <input ref={logo} type="file" accept="image/*" hidden onChange={(e) => { const x = e.target.files?.[0]; e.target.value = ''; if (x) void resizeImage(x, 400, 0.85).then((d) => setF((v) => ({ ...v, logo: d }))); }} />
           <Btn small variant="soft" onClick={() => logo.current?.click()}><ImagePlus className="h-4 w-4" />{t('شعار المتجر', 'Store logo')}</Btn>
         </div>
@@ -225,7 +225,7 @@ function Products({ lang, toast, onChange }: { lang: Lang; toast: (s: string) =>
           const st = PRODUCT_STATUS[p.status] || [p.status, p.status, 'bg-stone-100'];
           return (
             <Card key={p.id} className="flex gap-3 p-3">
-              {p.images[0] ? <img src={p.images[0]} alt="" className="h-24 w-24 shrink-0 rounded-xl object-cover" /> : <span className="flex h-24 w-24 shrink-0 items-center justify-center rounded-xl bg-stone-100"><Box className="h-8 w-8 text-stone-300" /></span>}
+              {p.images[0] ? <img loading="lazy" decoding="async" src={p.images[0]} alt="" className="h-24 w-24 shrink-0 rounded-xl object-cover" /> : <span className="flex h-24 w-24 shrink-0 items-center justify-center rounded-xl bg-stone-100"><Box className="h-8 w-8 text-stone-300" /></span>}
               <div className="min-w-0 flex-1">
                 <div className="flex items-start gap-2"><p className="line-clamp-2 flex-1 font-bold text-stone-900">{p.name}</p><span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold ${st[2]}`}>{lang === 'ar' ? st[0] : st[1]}</span></div>
                 <p className="mt-1 text-xs text-stone-600">{t('سعرك', 'Your price')}: <b>{money(p.price, p.currency, lang)}</b> · {t('للعميل', 'Buyer')} ≈ <b className="text-amber-800">{money(salePrice(p.price, p.currency), 'EGP', lang)}</b></p>
@@ -274,7 +274,7 @@ function ProductSheet({ lang, product, onClose, onSaved, toast }: { lang: Lang; 
           <p className="mb-2 text-xs font-semibold text-stone-700">{t('صور المنتج (حتى 6)', 'Photos (up to 6)')}</p>
           <div className="flex flex-wrap gap-2">
             {f.images.map((src, i) => (
-              <span key={i} className="relative"><img src={src} alt="" className="h-20 w-20 rounded-xl object-cover" />
+              <span key={i} className="relative"><img loading="lazy" decoding="async" src={src} alt="" className="h-20 w-20 rounded-xl object-cover" />
                 <button type="button" onClick={() => setF({ ...f, images: f.images.filter((_, j) => j !== i) })} className="absolute -top-1.5 -end-1.5 rounded-full bg-stone-900 p-0.5 text-white cursor-pointer"><X className="h-3.5 w-3.5" /></button></span>
             ))}
             {f.images.length < 6 && <button type="button" onClick={() => pics.current?.click()} className="flex h-20 w-20 flex-col items-center justify-center rounded-xl border-2 border-dashed border-stone-300 text-xs text-stone-500 hover:border-amber-400 cursor-pointer"><ImagePlus className="h-5 w-5" />{t('رفع', 'Upload')}</button>}

@@ -7,6 +7,7 @@
  *   GET    /api/admin/insights/profiles/:id  one person's profile and behavioural reading
  *   DELETE /api/admin/insights/profiles/:id  erase one record (a request by e-mail, a mistake)
  *   GET    /api/admin/insights/export      everything, as JSON, for the administration's own studies
+ *   GET    /api/insights/together?sku=…  «ناس ذوقهم زيك شافوا كمان»: product codes shared by 3+ people (anonymous)
  *   POST   /api/insights/pulse             «نبض الدول»: anonymous counts from a visitor who has not refused (no id, no text)
  *
  * The summary also carries «نبض الدول» and «دراسة الطلبات» (src/utils/insightsPulse.ts).
@@ -22,7 +23,7 @@ import { countryFromHeaders } from './core/replyMoney';
 import { isBotUserAgent } from './census';
 import { mergeCatalog, type RawProduct, type StoreProduct } from '../src/utils/storeCatalog';
 import { applyPulse, orderStudies, pulseCountries, pulseExpired, pulseId, readPulse, type PulseBatch, type StudyEntry, type StudyOrder } from '../src/utils/insightsPulse';
-import { applyBatch, expired, insightsSummary, priceYardstick, readBatch, readPerson, type InsightProfile } from '../src/utils/visitorInsights';
+import { togetherIndex, applyBatch, expired, insightsSummary, priceYardstick, readBatch, readPerson, type InsightProfile } from '../src/utils/visitorInsights';
 
 export interface InsightsOptions { store: Store; products?: RawProduct[]; now?: () => Date }
 
@@ -106,6 +107,18 @@ export function createInsightsService(options: InsightsOptions) {
       console.error('[insights] store', error instanceof Error ? error.message : error);
       res.status(503).json({ error: 'Storage unavailable', code: 'STORAGE_UNAVAILABLE' });
     }
+  });
+
+  // «ناس ذوقهم زيك شافوا كمان»: product codes only, from pairs at least 3 people share; rebuilt every 10 minutes.
+  let together: { at: number; index: Map<string, string[]> } | undefined;
+  router.get('/together', async (req, res) => {
+    const sku = String(req.query.sku || '');
+    if (!/^[A-Za-z0-9_.:@-]{1,80}$/.test(sku)) { res.status(400).json({ error: 'sku required', code: 'INVALID_SKU' }); return; }
+    try {
+      if (!together || now().getTime() - together.at > 600_000) together = { at: now().getTime(), index: togetherIndex(await all()) };
+      res.setHeader('Cache-Control', 'public, max-age=600');
+      res.json({ sku, skus: (together.index.get(sku) || []).filter((s) => bySku.has(s)) });
+    } catch { res.json({ sku, skus: [] }); }
   });
 
   router.delete('/me', async (req, res) => {

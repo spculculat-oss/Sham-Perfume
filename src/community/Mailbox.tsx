@@ -370,7 +370,7 @@ function DetailPane({ id, lang, folder, onBack, onAction, onDelete, onChanged, r
           {mail.attachment && (
             <div className="mt-3">
               <a href={mail.attachment} target="_blank" rel="noreferrer" title={t('افتح الصورة في تبويب جديد', 'Open the picture in a new tab')}>
-                <img src={mail.attachment} alt={t('مرفق', 'attachment')} className="max-h-72 cursor-zoom-in rounded-2xl border border-stone-200 object-cover" />
+                <img loading="lazy" decoding="async" src={mail.attachment} alt={t('مرفق', 'attachment')} className="max-h-72 cursor-zoom-in rounded-2xl border border-stone-200 object-cover" />
               </a>
             </div>
           )}
@@ -571,7 +571,7 @@ function ComposeSheet({ lang, initial, onClose, toast }: { lang: Lang; initial: 
         {/* Attachment */}
         {attachment && (
           <div className="flex items-center gap-2 rounded-xl border border-stone-200 bg-stone-50 p-2">
-            <img src={attachment} alt="" className="h-14 w-14 rounded-lg object-cover" />
+            <img loading="lazy" decoding="async" src={attachment} alt="" className="h-14 w-14 rounded-lg object-cover" />
             <span className="text-xs text-stone-500">{t('صورة مرفقة ✓', 'Picture attached ✓')}</span>
             <button type="button" onClick={() => setAttachment(null)} className="ms-auto rounded-full p-1.5 text-stone-500 hover:bg-stone-200 cursor-pointer"><X className="h-4 w-4" /></button>
           </div>
