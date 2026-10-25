@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-24T18:44:34.141Z",
+ "updatedAt": "2026-10-25T00:52:04.650Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7366,6 +7366,17 @@
  ],
  "runs": [
   {
+   "at": "2026-10-25T00:52:04.650Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-24T18:44:34.141Z",
    "mode": "self",
    "found": 0,
@@ -7703,28 +7714,6 @@
     "✗ velixirparfums.com: ملف الثقة ضعيف (56/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الشحن، سياسة الخصوصية",
     "✗ afnanperfumesperfumes.com: الموقع لا يفتح",
     "✗ afnanperfumesparfums.com: الموقع لا يفتح"
-   ]
-  },
-  {
-   "at": "2026-10-21T18:51:52.675Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 10,
-   "notes": [
-    "  ↳ alwataniah.com: CV 88/100 [age,https,contact,identity,returns,shipping,privacy,terms,platform,social,authentic] on Shopify",
-    "✗ alwataniah.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
-    "✗ alwataniahperfumes.com: الموقع لا يفتح",
-    "✗ alwataniahparfums.com: الموقع لا يفتح",
-    "✗ lattafapride.com: الموقع لا يفتح",
-    "✗ lattafaprideperfumes.com: الموقع لا يفتح",
-    "✗ lattafaprideparfums.com: الموقع لا يفتح",
-    "✗ volareparfums.com: الموقع لا يفتح",
-    "  ↳ shama.com: CV 62/100 [age,https,identity,returns,privacy,social,authentic]",
-    "✗ shama.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ shamaparfums.com: الموقع لا يفتح",
-    "✗ afnanperfumes.com: الموقع لا يفتح"
    ]
   }
  ]
