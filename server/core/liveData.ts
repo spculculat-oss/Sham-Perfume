@@ -8,7 +8,9 @@ import bundledTraining from '../../src/data/live/sham-training.json';
 import bundledSupervisor from '../../src/data/live/ai-supervisor.json';
 import bundledStore from '../../src/data/live/store-catalog.json';
 import bundledTrade from '../../src/data/live/trade-lanes.json';
+import bundledGraph from '../../src/data/live/shaheen-graph.json';
 import { isCatalogFile, type StoreCatalogFile } from '../../src/utils/storeCatalog';
+import { isShaheenGraph, type ShaheenGraph } from '../../src/utils/shaheenGraph';
 import { guidanceBlock, type AiToolId } from '../../src/utils/aiTools';
 import type { KnowledgeDoc } from './types';
 
@@ -127,6 +129,12 @@ export interface TradeLanesFile {
 
 export async function liveTradeLanes(env: Env = process.env, request: typeof fetch = fetch): Promise<TradeLanesFile | undefined> {
   const file = await load('trade-lanes.json', bundledTrade as TradeLanesFile, (d): d is TradeLanesFile => Boolean(d && typeof d === 'object' && typeof (d as TradeLanesFile).updatedAt === 'string' && Array.isArray((d as TradeLanesFile).destinations)), env, request);
+  return file;
+}
+
+/** «شبكة عقل شاهين»: the mind itself — nodes, edges (each with its source and date) and the mind's score. */
+export async function liveMindGraph(env: Env = process.env, request: typeof fetch = fetch): Promise<ShaheenGraph | undefined> {
+  const file = await load('shaheen-graph.json', bundledGraph as ShaheenGraph, isShaheenGraph, env, request);
   return file;
 }
 

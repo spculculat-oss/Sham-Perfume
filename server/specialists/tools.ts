@@ -32,7 +32,8 @@ import {
 } from '../../src/utils/calculations';
 import { researchAnswer, type Research } from '../../src/utils/webResearch';
 import { tools as coreTools } from '../core/tools';
-import { liveNews, liveTradeLanes } from '../core/liveData';
+import { liveMindGraph, liveNews, liveTradeLanes } from '../core/liveData';
+import { explain, findNode } from '../../src/utils/shaheenGraph';
 import type { Repository } from '../core/repository';
 import type { ShaheenMemory } from '../core/memory';
 import { searchImages, searchPlace, searchVideos } from '../media';
@@ -99,7 +100,7 @@ export type AnswerSource =
 export type ToolName =
   | 'school_science' | 'recall_memory' | 'search_library' | 'refuge_way' | 'knowledge_base' | 'open_sources'
   | 'material_card' | 'calc_concentration' | 'calc_dilution' | 'calc_pyramid' | 'calc_cost' | 'maceration_plan'
-  | 'safety_check' | 'search_store' | 'store_overview' | 'perfume_news' | 'media_find' | 'trade_lane'
+  | 'safety_check' | 'search_store' | 'store_overview' | 'perfume_news' | 'media_find' | 'trade_lane' | 'mind_link'
   | 'open_section' | 'hand_over' | 'route_specialist' | 'study_later' | 'clarify';
 
 export interface SpecialistTool {
@@ -810,6 +811,34 @@ export const SPECIALIST_TOOLS: SpecialistTool[] = [
   },
 
   {
+    name: 'mind_link',
+    labelAr: 'مشى في شبكة عقل شاهين', labelEn: "Walk Shaheen's mind graph",
+    descriptionAr: 'بيربط الحاجات ببعضها: منتج ← ماركة ← مورد ← بلد الشحن ← الوجهة ← شركة الشحن ← الجمارك ← الدرس اللي بيشرحها. كل حافة في السلسلة معاها مصدرها وتاريخها — من شبكة العقل الحقيقية، مش تخمين.',
+    descriptionEn: 'Connects things: product → brand → supplier → origin → destination → carrier → customs → the lesson that explains it. Every hop carries its own source and date — from the real mind graph, never a guess.',
+    args: '{"about":"اسم حاجة (بلد/منتج/ماركة/شركة) أو السؤال نفسه"}',
+    tracks: ['commerce', 'law', 'perfume', 'management', 'math'],
+    run: async (args, ctx) => {
+      const graph = await liveMindGraph(ctx.env, ctx.fetch).catch(() => undefined);
+      if (!graph?.nodes?.length) return undefined;
+      const ar = ctx.lang !== 'en';
+      const hint = str(args, 'about') || ctx.question;
+      const start = findNode(graph, hint) || graph.nodes.find((n) => hint.toLowerCase().includes(String(n.facts?.code || n.labelAr).toLowerCase()));
+      if (!start) return undefined;
+      const lines = explain(graph, start.id, 1).slice(0, 9);
+      if (lines.length < 2) return undefined;
+      const head = ar
+        ? `من شبكة عقل شاهين (${graph.stats.nodes} عقدة و${graph.stats.edges} حافة، محدّثة ${String(graph.updatedAt).slice(0, 10)}):`
+        : `From Shaheen's mind graph (${graph.stats.nodes} nodes, ${graph.stats.edges} edges, updated ${String(graph.updatedAt).slice(0, 10)}):`;
+      return {
+        // سلسلة فيها ٣ حاجات أو أكتر = ربط حقيقي في الشبكة، فبترد قبل أي قراية مفردة.
+        tool: 'mind_link', observation: clip([head, ...lines].join('\n')), strength: lines.length >= 3 ? 0.95 : 0.8,
+        answer: `${[head, ...lines].join('\n')}\n\n_${sourceNote('knowledge', ctx.lang)}._`,
+        source: 'knowledge',
+      };
+    },
+  },
+
+  {
     name: 'trade_lane',
     labelAr: 'قرا ممر الشحن والجمارك', labelEn: 'Read the shipping and customs lane',
     descriptionAr: 'ممر الشحن لبلد معيّن: بنوصّل ولا لأ، سعر الشحن المعلن، والجمارك المتأكدة. من تقرير «الشحن والتجارة» بمصدره وتاريخه — مفيش سعر مخترع.',
@@ -1056,6 +1085,8 @@ const ORDER_WORDS = /(أطلب|اطلب|اطلبي|هطلب|هشتري|أشتر�
 const TRADE_WORDS = /(شحن|الشحن|توصيل|التوصيل|جمارك|الجمارك|تصدير|استيراد|تخليص|منشأ|اتفاقية|رسوم|ضريبة الاستيراد|هامش|الهامش|هامشي|مكسب|مكسبنا|ربح|خسارة|خسران|صافي|صافية|وجهة|وجهات|\bshipping\b|\bcustoms\b|\bdut(?:y|ies)\b|\bexport\w*\b|\bimport\w*\b|\bmargin\b|\bprofit\w*\b)/i;
 /** سؤال تحليل فلوس (هامش، مكسب، خسارة، وجهة) — مش بحث عن منتج، حتى لو فيه كلمة «طلب» أو «سعر». */
 const MONEY_ANALYSIS = /(هامش|الهامش|هامشي|مكسب|مكسبنا|ربح|خسارة|خسران|خسرانة|صافي|صافية|وجهة|وجهات|تقرير|إحصائيات|احصائيات|\bdestinations?\b|\bmargin\b|\bprofit\w*\b)/i;
+/** سؤال ربط: «إيه علاقة X بـY؟» / «حكاية الوجهة دي إيه؟» / «بيتصنع فين؟» — الشبكة هي اللي بتجاوبه. */
+const MIND_WORDS = /(علاق|حكايه|حكاية|بيتصنع فين|بيروح فين|بيتباع فين|مين مورده|مصدره ايه|مصدرها ايه|بيفرق ايه|مرتبط|مربوط|خريطه|خريطة|شبكه|شبكة|بيتطبق على|\bgraph\b|\bconnected\b|\brelation\b)/i;
 /** سؤال سلامة (حساسية/حمل/بشرة/IFRA) — موسوعة المواد هي المرجع، مش التخمين. */
 const SAFETY_WORDS = /(حساسية|تحسس|حامل|حمل|رضاعة|رضيع|أطفال|اطفال|ربو|بشرة|جلد|تهيج|آمن|امن|خطر|تسمم|\bifra\b|\balerg\w*\b|\bpregnan\w*\b|\bskin\b|\birritat\w*\b|\bsafe(?:ty)?\b|\btoxic\w*\b)/i;
 
@@ -1093,6 +1124,8 @@ export function planFirstTools(question: string, specialist: Specialist, section
   if (!trade && !moneyQuestion && (SHOP_WORDS.test(question) || intents.includes('store') || section === 'store' || section === 'productDetail')) push('search_store', { query: question });
   // سؤال الشحن/الجمارك بيتقرا من تقرير الشحن قبل أي حاجة — وسعر الشحن مش سعر عطر.
   if (trade) push('trade_lane', { country: question });
+  // سؤال ربط بين حاجتين بيتجاوب من شبكة العقل (منتج ← مورد ← وجهة ← شركة ← درس) بمصدر كل حافة.
+  if (MIND_WORDS.test(question)) push('mind_link', { about: question });
   if (SAFETY_WORDS.test(question)) push('safety_check');
   if (NEWS_WORDS.test(question)) push('perfume_news');
   if (!plan.some((p) => p.tool === 'knowledge_base')) push('knowledge_base', { query: question });

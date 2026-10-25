@@ -1,0 +1,52 @@
+{
+ "version": 1,
+ "agent": "immune",
+ "updatedAt": "2026-10-25T22:33:02.003Z",
+ "findings": [
+  {
+   "kind": "promise",
+   "severity": "low",
+   "subject": "vat-varies",
+   "whatAr": "27 وجهة ضريبتها بتتغير من بلد لبلد (زي أوروبا) — لازم تُقال للزائر كده، مش برقم واحد",
+   "fixAr": "الرد بيقول «الضريبة بتتغير حسب البلد وبتتأكد قبل الدفع» — راجع نص الرد في tools.ts"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "high",
+   "subject": "pricing-rule",
+   "whatAr": "36 منتج سعره أقل من قاعدة صاحب المتجر (التكلفة × ١.٥)",
+   "sides": [
+    {
+     "valueAr": "مثال: عطر لطافة سوداء بـ52.5 ج.م وتكلفته 35",
+     "source": "src/data/products.json"
+    },
+    {
+     "valueAr": "القاعدة: التكلفة × ١.٥ مقرّبة لفوق",
+     "source": "scripts/shaheen-import/transform.ts"
+    }
+   ],
+   "fixAr": "القرار لصاحب المتجر: يا يعدّل السعر، يا يعتمد استثناء مكتوب"
+  },
+  {
+   "kind": "untraceable",
+   "severity": "low",
+   "subject": "suppliers",
+   "whatAr": "51 منتج سعره منشور ومورده مش مسجل — يعني بلد شحنه مش معروف",
+   "sides": [
+    {
+     "valueAr": "مثال: عطر لطافة سوداء",
+     "source": "src/data/products.json"
+    }
+   ],
+   "fixAr": "سجّل supplierId الصح للمنتجات دي في المستورد، أو شيلها من البيع لحد ما مصدرها يتعرف"
+  }
+ ],
+ "counts": {
+  "contradiction": 1,
+  "promise": 1,
+  "untraceable": 1,
+  "stale": 0
+ },
+ "health": 83,
+ "summaryAr": "مناعة شاهين: 3 مشكلة (1 تعارض رقم · 1 وعد مش مدعوم · 1 رقم بلا مصدر · 0 قديم) — الصحة 83/100"
+}
