@@ -16,7 +16,11 @@ import fxData from '../data/live/fx-rates.json';
 
 export interface FxTable { base: string; updatedAt?: string; source?: string; rates: Record<string, number> }
 export interface ShippingZone { id: string; name: { ar: string; en: string }; countries?: string[]; firstItem: number; extraItem: number; days?: string }
-export interface ShippingTable { currency: string; zones: ShippingZone[]; default: ShippingZone }
+export interface ShippingTable {
+  currency: string; zones: ShippingZone[]; default: ShippingZone;
+  /** Free shipping for orders whose catalog value (EGP) reaches this. Absent = the merchant gives no free shipping. */
+  freeShippingAboveEgp?: number;
+}
 
 /** The currency of the catalog's own prices (`price` / `ourPrice` in products.json). */
 export const HOME_CURRENCY = 'EGP';
@@ -72,11 +76,30 @@ export function shippingCost(country: string, bottles: number, table: ShippingTa
   return zone.firstItem + zone.extraItem * (bottles - 1);
 }
 
+/**
+ * The merchant's free-shipping rule, in EGP (the catalog's own currency), or `null` when he has approved none.
+ * Nothing ever promises free shipping by itself: no rule → the visitor is told nothing and pays the zone price.
+ */
+export function freeShippingAbove(table: ShippingTable = SHIPPING): number | null {
+  const value = Number(table.freeShippingAboveEgp);
+  return Number.isFinite(value) && value > 0 ? value : null;
+}
+
+/** Does an order worth `itemsEgp` (catalog value) ship free under the merchant's rule? */
+export function shipsFree(itemsEgp: number, table: ShippingTable = SHIPPING): boolean {
+  const above = freeShippingAbove(table);
+  return above !== null && Number.isFinite(itemsEgp) && itemsEgp >= above;
+}
+
 export interface QuoteLine { sku: string; price: number; qty: number }
 export interface Quote {
   country: string; currency: string; zone: ShippingZone;
   lines: { sku: string; qty: number; unit: number; subtotal: number }[];
   items: number; shipping: number; total: number;
+  /** The rule applied to this order: its EGP threshold, or `null` when the merchant has none. */
+  freeShippingAboveEgp: number | null;
+  /** Did this order actually ship free? */
+  freeShipping: boolean;
 }
 
 /**
@@ -87,15 +110,23 @@ export function quote(lines: QuoteLine[], country: string, options: { currency?:
   const fx = options.fx || BUNDLED_FX;
   const table = options.shipping || SHIPPING;
   const currency = options.currency || currencyFor(country, fx);
-  const priced = lines.filter((l) => l.qty > 0 && l.price > 0).map((l) => {
+  const wanted = lines.filter((l) => l.qty > 0 && l.price > 0);
+  const priced = wanted.map((l) => {
     const unit = priceIn(l.price, currency, fx);
     return { sku: l.sku, qty: l.qty, unit, subtotal: Math.round(unit * l.qty * 100) / 100 };
   });
   const bottles = priced.reduce((s, l) => s + l.qty, 0);
-  const shipUsd = shippingCost(country, bottles, table);
+  // The rule compares the order's catalog value (EGP) — the same number the visitor sees on the products.
+  const itemsEgp = wanted.reduce((s, l) => s + l.price * l.qty, 0);
+  const freeShipping = priced.length > 0 && shipsFree(itemsEgp, table);
+  const shipUsd = freeShipping ? 0 : shippingCost(country, bottles, table);
   const shipping = shipUsd ? (currency === HOME_CURRENCY ? Math.ceil(convert(shipUsd, table.currency, currency, fx) / 5) * 5 : tidy(convert(shipUsd, table.currency, currency, fx))) : 0;
   const items = Math.round(priced.reduce((s, l) => s + l.subtotal, 0) * 100) / 100;
-  return { country, currency, zone: shippingZone(country, table), lines: priced, items, shipping, total: Math.round((items + shipping) * 100) / 100 };
+  return {
+    country, currency, zone: shippingZone(country, table), lines: priced, items, shipping,
+    total: Math.round((items + shipping) * 100) / 100,
+    freeShippingAboveEgp: freeShippingAbove(table), freeShipping,
+  };
 }
 
 /** The currency the payment gateway is asked to charge: the visitor's if the gateway accepts it, else EGP. */

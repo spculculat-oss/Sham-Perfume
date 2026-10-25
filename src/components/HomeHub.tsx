@@ -77,6 +77,8 @@ import { PORTAL_L10N as PORTAL_L10N_BASE, NEWS_L10N_A, NewsL10N } from '../لغ�
 import { NEWS_L10N_B } from '../لغات/hubL10n2';
 import { NEWS_L10N_C } from '../لغات/hubL10n3';
 import { mergeHubL10n } from '../لغات/hubL10nExt';
+import { freeShippingOffer, freeShippingSentence } from '../utils/freeShipping';
+import { useStoreMoney } from '../utils/storeCheckout';
 
 interface PortalNewsItem {
   id: string;
@@ -180,6 +182,15 @@ export const HomeHub: React.FC<HomeHubProps> = ({
 }) => {
   const isRtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
+
+  // «شحن مجاني» is a promise with money behind it: it is only shown when the merchant approved it in
+  // src/data/shipping.json (`freeShippingAboveEgp`), the threshold is shown in the visitor's own currency,
+  // and the same table makes checkout charge it. No approved offer → the banner says nothing about it.
+  const storeMoney = useStoreMoney(currentLang, currentLang === 'ar' ? 'ج.م' : 'EGP');
+  const freeShipping = freeShippingOffer();
+  const freeShippingLine = freeShipping
+    ? freeShippingSentence(freeShipping, storeMoney.price(freeShipping.thresholdEgp), currentLang)
+    : '';
 
   const SUBTITLE_EN_MAP: Record<string, string> = {
     portal_concentration: 'Gravimetric molecular weight calculation at 0.01g precision',
@@ -1026,7 +1037,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
       category: 'business',
       titleAr: '🛍️ المتجر | عطور أصيلة بأسعار مميزة',
       titleEn: '🛍️ SHOP | Authentic Perfumes at Special Prices',
-      subtitleAr: 'مئات العطور من أفضل الموردين - شحن مجاني - دفع آمن',
+      subtitleAr: `مئات العطور من أفضل الموردين - دفع آمن${freeShippingLine ? ` - ${freeShippingLine}` : ''}`,
       accentColor: 'from-amber-500 to-orange-600 text-amber-600 bg-amber-500/10',
       borderGlow: 'hover:border-amber-500/80 hover:shadow-amber-900/20 hover:scale-[1.02] transition-transform',
       icons: [Store, Sparkles, Gift, Award],
@@ -1037,7 +1048,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
           id: 's1',
           badge: '🔥 عرض حصري',
           title: 'اكتشف مجموعة واسعة من العطور الأصلية',
-          description: 'نحن نورد العطور من أفضل الموردين مثل لطيفة، الرحاب، وغيرهم. أسعار مميزة مع شحن مجاني للطلبات فوق 500 جنيه.',
+          description: `نحن نورد العطور من أفضل الموردين مثل لطيفة، الرحاب، وغيرهم. أسعار مميزة ودفع آمن${freeShippingLine ? `. ${freeShippingLine}` : ''}.`,
           metric: '100+ منتج',
           timestamp: 'مجموعة متنوعة',
           actionHint: 'تصفح المتجر الآن',
