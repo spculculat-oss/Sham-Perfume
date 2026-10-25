@@ -1249,9 +1249,10 @@
    "needsApproval": true,
    "createdAt": "2026-10-22T03:39:12.003Z",
    "meeting": "2026-10-22",
-   "status": "open",
+   "status": "done",
    "issue": 221,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/221"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/221",
+   "closedAt": "2026-10-25T18:40:56Z"
   },
   {
    "id": "2026-10-23-1-إتاحة-خيار-الدفع-كزائر-و",
@@ -1358,9 +1359,10 @@
    "needsApproval": true,
    "createdAt": "2026-10-25T08:38:35.381Z",
    "meeting": "2026-10-25",
-   "status": "open",
+   "status": "done",
    "issue": 347,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/347"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/347",
+   "closedAt": "2026-10-25T18:40:55Z"
   },
   {
    "id": "2026-10-25-5-مراجعة-النصوص-الإنجليزي-",
@@ -1371,9 +1373,10 @@
    "needsApproval": true,
    "createdAt": "2026-10-25T08:38:35.381Z",
    "meeting": "2026-10-25",
-   "status": "open",
+   "status": "done",
    "issue": 348,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/348"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/348",
+   "closedAt": "2026-10-25T18:40:55Z"
   }
  ],
  "toolGoals": {
