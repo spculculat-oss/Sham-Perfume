@@ -12,7 +12,7 @@ import { BankService } from '../server/finance/bank';
 import { SalesService } from '../server/sales/service';
 import { financeId } from '../server/finance/report';
 import {
-  DEAL_STAGES, STAGE_PROBABILITY, dayKey, dealActionState, dealActions, daysBetween, lostReasonGroups, moveDeal, monthKey, pipelineHygiene, summarizePipeline, weightedMinor, type Deal,
+  DEAL_STAGES, SILENT_AFTER_DAYS, STAGE_PROBABILITY, dayKey, dealActionState, dealActions, daysBetween, lostReasonGroups, moveDeal, monthKey, pipelineHygiene, silentDeals, summarizePipeline, weightedMinor, type Deal,
 } from '../src/sales/pipeline';
 import { weeklyReview } from '../src/sales/review';
 import { daysInMonth, paceTargets, salesHealth, type SalesTarget } from '../src/sales/targets';
@@ -150,6 +150,41 @@ test('the weekly review: this week against last, no percentage off a zero, and o
   assert.match(quiet.movesAr.join('\n'), /هدف الشهر/);
 });
 
+test('quiet opportunities: not late, not unscheduled — just untouched for a week, counted once and never blamed', () => {
+  // NOW is 2026-10-24. A next step in the future with no touch for a week is “quiet”; nothing else is.
+  const quietOne = deal({ id: 'q1', nextActionAt: '2026-10-30', updatedAt: iso('2026-10-15') });
+  const fresh = deal({ id: 'f1', nextActionAt: '2026-10-30', updatedAt: iso('2026-10-22') });
+  const overdue = deal({ id: 'o1', nextActionAt: '2026-10-20', updatedAt: iso('2026-10-01') });
+  const today = deal({ id: 't1', nextActionAt: '2026-10-24', updatedAt: iso('2026-10-01') });
+  const idle = deal({ id: 'i1', nextActionAt: '', updatedAt: iso('2026-10-01') });
+  const closed = deal({ id: 'c1', stage: 'won', nextActionAt: '2026-10-30', updatedAt: iso('2026-10-01') });
+  const quiet = silentDeals([quietOne, fresh, overdue, today, idle, closed], NOW, 'Africa/Cairo', SILENT_AFTER_DAYS, 10);
+  assert.deepEqual(quiet.map((q) => q.deal.id), ['q1'], 'only the untouched-future one is quiet — the rest are already listed elsewhere');
+  assert.equal(quiet[0].silentDays, 9);
+  assert.equal(quiet[0].dueInDays, 6);
+  assert.match(quiet[0].whyAr, /9 يوم/);
+
+  // The boundary is the week, and a deal exactly at it is included.
+  assert.equal(silentDeals([deal({ id: 'edge', nextActionAt: '2026-11-01', updatedAt: iso('2026-10-17') })], NOW).length, 1);
+  assert.equal(silentDeals([deal({ id: 'just-under', nextActionAt: '2026-11-01', updatedAt: iso('2026-10-18') })], NOW).length, 0);
+
+  // Sorting: the longest silence first, then the larger value.
+  const many = silentDeals([
+    deal({ id: 'a', nextActionAt: '2026-11-01', updatedAt: iso('2026-10-10'), valueMinor: 1000 }),
+    deal({ id: 'b', nextActionAt: '2026-11-01', updatedAt: iso('2026-10-10'), valueMinor: 5000 }),
+    deal({ id: 'c', nextActionAt: '2026-11-01', updatedAt: iso('2026-10-01'), valueMinor: 100 }),
+  ], NOW);
+  assert.deepEqual(many.map((q) => q.deal.id), ['c', 'b', 'a']);
+  assert.equal(silentDeals([], NOW).length, 0);
+
+  // The summary counts them once, and the hygiene score notices without inventing a cause.
+  const summary = summarizePipeline([quietOne, fresh, overdue, today, idle, closed], NOW);
+  assert.equal(summary.silentCount, 1);
+  assert.equal(summary.overdueCount, 1, 'the late one is counted as overdue, not as quiet');
+  assert.equal(summary.withoutNextStep, 1);
+  assert.ok(pipelineHygiene(summary).notesAr.some((n) => /ساكتة/.test(n)));
+});
+
 test('the daily rhythm: money first, then follow-ups, the target gap and the lesson — and it never invents a quiet day', () => {
   const live = { today: [{ currency: 'EGP', collectedMinor: 500000, paidOrders: 3 }], month: [{ currency: 'EGP', collectedMinor: 2000000, paidOrders: 8 }],
     waitingConfirmation: 2, awaitingTransfer: 1, bestSellers: [{ sku: 'SKU-1', units: 9, currency: 'EGP' }] };
@@ -160,6 +195,11 @@ test('the daily rhythm: money first, then follow-ups, the target gap and the les
   assert.ok(rhythm.some((t) => t.id === 'target-EGP'));
   assert.ok(rhythm.some((t) => t.id === 'study-today'));
   assert.ok(rhythm.every((t) => t.link && t.whyAr && t.titleAr));
+  const withQuiet = dailyRhythm({ now: NOW, live, deals: [deal({ id: 'q', nextActionAt: '2026-11-01', updatedAt: iso('2026-10-05') })], targets, lessonTitleAr: 'درس' });
+  const quietTask = withQuiet.find((t) => t.id === 'deals-silent');
+  assert.ok(quietTask, 'a quiet opportunity reaches the daily rhythm');
+  assert.match(quietTask!.titleAr, /ساكتة/);
+  assert.equal(quietTask!.link, 'pipeline');
   const blind = dailyRhythm({ now: NOW, live: null, deals: [], targets: [], lessonTitleAr: 'درس' });
   assert.equal(blind[0].id, 'live-not-read');
   assert.ok(blind.some((t) => t.id === 'target-missing'));
@@ -228,6 +268,15 @@ test('the advisor answers from the desk and asks for nothing it does not know', 
   assert.match(lossAnswer, /من غير سبب مسجل/);
   assert.doesNotMatch(lossAnswer, /عميل جملة/);
 
+  // «إيه الفرص الساكتة؟»: from the quiet list, and an honest empty answer when nothing is quiet.
+  assert.equal(salesTopicOf('إيه الفرص الساكتة؟'), 'silent');
+  assert.equal(salesTopicOf('which opportunities went quiet?'), 'silent');
+  assert.match(answerSales('إيه الفرص الساكتة؟', s).answer, /مفيش فرصة ساكتة/);
+  const quietAnswer = answerSales('إيه الفرص الساكتة؟', snapshot({ quiet: [{ title: 'عرض جملة', silentDays: 9, dueInDays: 6 }] })).answer;
+  assert.match(quietAnswer, /عرض جملة/);
+  assert.match(quietAnswer, /(9|٩) يوم بدون حركة/);
+  assert.doesNotMatch(quietAnswer, /01000000000|@/);
+
   // «الأسبوع ده عامل إيه؟»: no comparison is invented when the week was not read.
   assert.equal(salesTopicOf('الأسبوع ده عامل إيه؟'), 'week');
   assert.match(answerSales('الأسبوع ده عامل إيه؟', s).answer, /مفيش مقارنة|مفيش تحصيل/);
@@ -246,7 +295,7 @@ test('the public robot report carries counts only — no amounts, no deal labels
   assert.ok(blind.curriculum.handbookSections.length >= 6);
 
   const facts: DeskFacts = {
-    paidOrdersToday: 3, paidOrdersMonth: 8, ordersThisWeek: 4, ordersLastWeek: 6, waitingConfirmation: 2, awaitingTransfer: 1, openDeals: 4, overdue: 1, withoutNextStep: 1,
+    paidOrdersToday: 3, paidOrdersMonth: 8, ordersThisWeek: 4, ordersLastWeek: 6, waitingConfirmation: 2, awaitingTransfer: 1, openDeals: 4, overdue: 1, withoutNextStep: 1, silent: 2,
     won: 2, lost: 1, winRate: 66.7, bestSellers: [{ sku: 'SKU-1', units: 9 }],
     targets: [{ currency: 'EGP', pace: 'behind', daysLeft: 7 }], health: { score: 62, labelAr: 'ماشية' }, studyAnsweredToday: true,
   };
@@ -261,6 +310,9 @@ test('the public robot report carries counts only — no amounts, no deal labels
   assert.equal(report.study.answeredToday, true);
   assert.ok(report.findings.some((fnd) => /متابعتها فات/.test(fnd.textAr)));
   assert.ok(report.findings.some((fnd) => /الأسبوع ده 4 مقابل 6/.test(fnd.textAr)), 'a falling week is reported from counts, not money');
+  assert.ok(report.findings.some((fnd) => /فرصة ساكتة/.test(fnd.textAr)), 'quiet opportunities are reported from counts');
+  assert.equal(report.facts?.silent, 2);
+  assert.equal(report.pipeline?.silentCount, 2);
   assert.equal(report.facts?.ordersThisWeek, 4);
   assert.doesNotMatch(JSON.stringify(report), /collectedMinor|amountMinor/, 'the public report stays counts only');
 });
@@ -318,6 +370,17 @@ test('the live desk: opportunities without contacts, a target, real study answer
   assert.ok(flags.some((f) => f.code === 'SALES_FOLLOW_UP_OVERDUE' && f.condition), 'the overdue deal is flagged');
   assert.ok(flags.some((f) => f.code === 'SALES_NO_TARGET' && !f.condition), 'a target exists this month');
   assert.ok(flags.some((f) => f.code === 'SALES_NO_NEXT_STEP' && !f.condition), 'the second deal has a next step');
+  // «SALES_DEAL_SILENT» fires only for a deal whose next step is still ahead and untouched for a week.
+  assert.ok(flags.some((f) => f.code === 'SALES_DEAL_SILENT' && !f.condition), 'no quiet deal in this fixture yet');
+  const quietDeal = await sales.saveDeal(undefined, { title: 'فرصة ساكتة', accountLabel: 'متجر ساكت', value: '700', nextActionAt: '2026-11-05' });
+  await store.put('salesDeals', quietDeal.id, { ...quietDeal, updatedAt: iso('2026-10-10') });
+  const quietFlags: { code: string; condition: boolean }[] = [];
+  for (const check of finance.checks) await check(async (code, condition) => { quietFlags.push({ code, condition }); });
+  assert.ok(quietFlags.some((f) => f.code === 'SALES_DEAL_SILENT' && f.condition), 'the untouched deal is flagged');
+  const quietDash = await sales.dashboard();
+  assert.ok(quietDash.quiet.some((q) => q.id === quietDeal.id));
+  assert.ok(!JSON.stringify(quietDash.quiet).includes('01000000000'));
+  await sales.deleteDeal(quietDeal.id);
 
   // «البيع مايتسجلش غير لما تشوف الفلوس»: a win without a paid order in the ledger is refused, and a real one lands.
   await assert.rejects(() => sales.moveDeal(second.id, { stage: 'won' }), /PAID_ORDER_REQUIRED|البيع بيتسجل/);
@@ -373,7 +436,7 @@ test('the robot is registered under Shaheen with a shift, a reviewer, a timetabl
   // The pre-check reads the report the robot actually writes — not a hand-made shape that happens to match.
   const factsFor = (over: Partial<DeskFacts> = {}): DeskFacts => ({
     paidOrdersToday: 2, paidOrdersMonth: 9, ordersThisWeek: 5, ordersLastWeek: 3, waitingConfirmation: 0, awaitingTransfer: 0, openDeals: 4, overdue: 0,
-    withoutNextStep: 0, won: 2, lost: 1, winRate: 66.7, bestSellers: [], targets: [{ currency: 'EGP', pace: 'on', daysLeft: 7 }],
+    withoutNextStep: 0, silent: 0, won: 2, lost: 1, winRate: 66.7, bestSellers: [], targets: [{ currency: 'EGP', pace: 'on', daysLeft: 7 }],
     health: { score: 82, labelAr: 'قوية' }, studyAnsweredToday: true, ...over,
   });
   const report = (facts: DeskFacts | null, checked = true) => buildSalesReport({

@@ -7,7 +7,7 @@
  * If the live desk was not read, the list says so instead of pretending the day is clean.
  */
 import { major } from '../finance/money';
-import { dealActions, type DealAction, type Deal } from './pipeline';
+import { SILENT_AFTER_DAYS, dealActions, silentDeals, type DealAction, type Deal } from './pipeline';
 import type { CollectedRow, TargetPace } from './targets';
 
 export type TaskPriority = 'now' | 'today' | 'week';
@@ -99,6 +99,20 @@ export function dailyRhythm(input: RhythmInput): SalesTask[] {
       titleEn: `${noNext} opportunities with no next step`,
       whyAr: 'اختر لكل واحدة تاريخ وإجراء واحد واضح. الفرصة اللي مالهاش خطوة بتنسى.',
       whyEn: 'Give each one a date and one clear action. An opportunity with no step is forgotten.',
+    });
+  }
+
+  // «الفرص الساكتة»: not late yet, but nothing moved on them for a week while their next step is still far.
+  const silent = silentDeals(input.deals, input.now, 'Africa/Cairo', SILENT_AFTER_DAYS, Math.max(1, input.deals.length));
+  const silentCount = silent.length;
+  if (silent.length) {
+    const first = silent[0];
+    tasks.push({
+      id: 'deals-silent', priority: 'today', link: 'pipeline',
+      titleAr: `${silentCount} فرصة ساكتة — أقدمها «${first.deal.title}» من ${first.silentDays} يوم`,
+      titleEn: `${silentCount} quiet opportunit${silentCount === 1 ? 'y' : 'ies'} — oldest “${first.deal.title}” untouched for ${first.silentDays} days`,
+      whyAr: 'خطوتها الجاية لسه بعيدة، بس مفيش أي حركة عليها من أكتر من أسبوع. لمستها واحدة بقيمة حقيقية النهارده أحسن من استنى الميعاد.',
+      whyEn: 'Their next step is still ahead, but nothing has moved for over a week. One useful touch today beats waiting for the date.',
     });
   }
 

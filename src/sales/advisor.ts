@@ -7,7 +7,7 @@
  * the owner by name.
  */
 import { major } from '../finance/money';
-import type { PipelineSummary, Deal } from './pipeline';
+import { SILENT_AFTER_DAYS, type PipelineSummary, type Deal } from './pipeline';
 import { STAGE_LABEL } from './pipeline';
 import type { SalesHealth, TargetPace } from './targets';
 import type { SalesTask } from './rhythm';
@@ -32,14 +32,17 @@ export interface SalesSnapshot {
   deals: Pick<Deal, 'title' | 'stage' | 'valueMinor' | 'currency' | 'nextActionAt'>[];
   /** The week against the week before — attached only when the owner asks about the week. */
   week?: WeekCompare[];
+  /** «الفرص الساكتة»: open deals untouched for over a week whose next step is still ahead. */
+  quiet?: { title: string; silentDays: number; dueInDays: number }[];
 }
 
-export type SalesTopic = 'today' | 'target' | 'pipeline' | 'sales' | 'products' | 'pending' | 'study' | 'health' | 'loss' | 'week' | 'help';
+export type SalesTopic = 'today' | 'target' | 'pipeline' | 'sales' | 'products' | 'pending' | 'study' | 'health' | 'loss' | 'week' | 'silent' | 'help';
 
 const TOPICS: [SalesTopic, RegExp][] = [
   ['today', /أعمل إيه|اعمل ايه|النهارده|النهاردة|أبدأ إزاي|ابدأ ازاي|plan|today|what should i do/i],
   ['pending', /مستني|منتظر|تحويل|تأكيد|مدفوعات|pending|transfer|confirm/i],
   ['target', /هدف|تارجت|مستهدف|فاضل|target|quota|goal/i],
+  ['silent', /ساكت|ساكتة|ساكتين|مش لامس|مش اتحرك|silent|quiet|stale|stuck|idle/i],
   ['pipeline', /فرص|أنابيب|انابيب|خط الأنابيب|خط الانابيب|متابع|pipeline|deals?|follow/i],
   ['products', /منتج|أكثر مبيع|اكتر مبيع|الأكثر|top|best.?sell|product/i],
   ['study', /درس|منهج|أذاكر|اذاكر|تعلم|study|lesson|course/i],
@@ -64,6 +67,7 @@ const HELP_AR = [
   '• «صحة المبيعات كام؟» — المؤشر وأسبابه.',
   '• «ليه بنخسر؟» — أسباب الخسارة اللي إنت كتبتها بنفسك.',
   '• «الأسبوع ده عامل إيه؟» — الأسبوع ده مقابل اللي فات من التحصيل المؤكد.',
+  '• «إيه الفرص الساكتة؟» — فرص مفتوحة مفيش عليها حركة من أكتر من أسبوع.',
   'مش هخمن رقم مش موجود، والخصومات والشراكات قرار صاحب الموقع.',
 ].join('\n');
 
@@ -78,6 +82,7 @@ const HELP_EN = [
   '• “How healthy is sales?” — the score and its drivers.',
   '• “Why are we losing?” — the lost reasons you recorded yourself.',
   '• “How was this week?” — this week against last week from confirmed collections.',
+  '• “Which opportunities went quiet?” — open ones untouched for over a week.',
   'I never invent a missing figure; discounts and partnerships are the owner’s decision.',
 ].join('\n');
 
@@ -167,6 +172,18 @@ export function answerSales(question: string, s: SalesSnapshot, lang: 'ar' | 'en
       if (unreasoned) lines.push(t(`• ${num(unreasoned)} خسارة من غير سبب مسجل — فجوة، ومش هنسميها سبب من عندنا.`, `• ${num(unreasoned)} losses with no recorded reason — a gap, and no cause is invented for them.`));
       answer = [t('أسباب الخسارة اللي إنت كتبتها:', 'The lost reasons you recorded:'), ...lines, '', t(`نسبة الكسب ${s.pipeline.winRate === null ? 'لسه مفيش مقفول' : `${s.pipeline.winRate}%`} من ${num(s.pipeline.closedCount)} فرصة مقفولة. اختار سبب واحد تصلحه الأسبوع الجاي.`,
         `Win rate ${s.pipeline.winRate === null ? 'not known yet' : `${s.pipeline.winRate}%`} of ${num(s.pipeline.closedCount)} closed opportunities. Pick one cause to fix next week.`)].join('\n');
+      break;
+    }
+    case 'silent': {
+      if (!s.live) { answer = notRead; break; }
+      // Only deals whose written next step is still ahead — overdue and no-step deals are already in the list.
+      const quiet = s.quiet || [];
+      answer = !quiet.length
+        ? t(`مفيش فرصة ساكتة: كل الفرص المفتوحة اتلمست في آخر ${num(SILENT_AFTER_DAYS)} أيام، أو إن خطوتها الجاية فاتت وموجودة في إيقاع اليوم.`,
+          `No quiet opportunities: every open one was touched in the last ${num(SILENT_AFTER_DAYS)} days, or its next step is already due and listed in today’s rhythm.`)
+        : [t(`في ${num(quiet.length)} فرصة ساكتة — خطوتها الجاية لسه بعيدة ومفيش عليها حركة:`, `${num(quiet.length)} quiet opportunit${quiet.length === 1 ? 'y' : 'ies'} — next step still ahead, nothing moved:`),
+          ...quiet.map((q) => t(`• «${q.title}» — ${num(q.silentDays)} يوم بدون حركة، والخطوة الجاية بعد ${num(q.dueInDays)} يوم.`, `• “${q.title}” — ${num(q.silentDays)} days untouched, next step in ${num(q.dueInDays)} days.`)),
+          '', t('لمسة واحدة بقيمة حقيقية (إجابة سؤال، بديل، توضيح شحن) كفاية — مش رسالة «إيه الأخبار؟».', 'One genuinely useful touch (an answer, an alternative, shipping clarity) is enough — not an “any news?” message.')].join('\n');
       break;
     }
     case 'week': {

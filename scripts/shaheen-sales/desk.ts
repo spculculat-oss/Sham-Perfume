@@ -24,6 +24,8 @@ export interface DeskFacts {
   openDeals: number;
   overdue: number;
   withoutNextStep: number;
+  /** Open deals untouched for over a week while their next step is still ahead — counts only. */
+  silent: number;
   won: number;
   lost: number;
   winRate: number | null;
@@ -61,7 +63,7 @@ export interface SalesReport {
   };
   facts: DeskFacts | null;
   /** The same counts the pre-check reads — counts only, never amounts or labels. */
-  pipeline: { openCount: number; overdueCount: number; withoutNextStep: number; won: number; lost: number; winRate: number | null } | null;
+  pipeline: { openCount: number; overdueCount: number; withoutNextStep: number; silentCount: number; won: number; lost: number; winRate: number | null } | null;
   targets: DeskTargetFact[];
   health: { score: number; labelAr: string } | null;
   findings: SalesFinding[];
@@ -93,12 +95,13 @@ export function buildSalesReport(input: {
   } else {
     if (facts.overdue) findings.push({ level: 'warn', textAr: `${facts.overdue} فرصة موعد متابعتها فات — كل يوم تأخير بيقلل احتمال القفل.` });
     if (facts.withoutNextStep) findings.push({ level: 'note', textAr: `${facts.withoutNextStep} فرصة مفتوحة من غير خطوة جاية بتاريخ.` });
+    if (facts.silent) findings.push({ level: 'note', textAr: `${facts.silent} فرصة ساكتة من أكتر من أسبوع وخطوتها الجاية لسه بعيدة — لمسة واحدة بقيمة حقيقية لكل واحدة.` });
     if (facts.waitingConfirmation) findings.push({ level: 'note', textAr: `${facts.waitingConfirmation} تحويل مستني تأكيد صاحب المتجر بعد رؤية الفلوس — الحجز مش إيراد.` });
     if (facts.health.score < 50) findings.push({ level: facts.health.score < 30 ? 'fail' : 'warn', textAr: `صحة المبيعات ${facts.health.score}/100 (${facts.health.labelAr}).` });
     const behind = facts.targets.filter((t) => t.pace === 'behind');
     if (behind.length) findings.push({ level: 'note', textAr: `${behind.length} عملة تحت إيقاع الهدف الشهري — الفجوة اليومية أهم من رقم الشهر.` });
     if (!facts.targets.some((t) => t.pace !== 'unset')) findings.push({ level: 'warn', textAr: 'مفيش هدف مبيعات محدد للشهر — القياس متوقف.' });
-    if (!facts.overdue && !facts.withoutNextStep && facts.openDeals) findings.push({ level: 'ok', textAr: 'كل الفرص المفتوحة ليها خطوة جاية في وقتها — كمّل على نفس الإيقاع.' });
+    if (!facts.overdue && !facts.withoutNextStep && !facts.silent && facts.openDeals) findings.push({ level: 'ok', textAr: 'كل الفرص المفتوحة ليها خطوة جاية في وقتها واتلمست في آخر أسبوع — كمّل على نفس الإيقاع.' });
     if (!facts.openDeals) findings.push({ level: 'note', textAr: 'خط الأنابيب فاضي — سجّل أول ٣ فرص حقيقية بخطوة جاية لكل واحدة.' });
     if (!facts.ordersThisWeek && !facts.ordersLastWeek) findings.push({ level: 'note', textAr: 'مفيش طلبات مدفوعة في الأسبوع ده ولا اللي فات — الحجز مش إيراد.' });
     else if (facts.ordersLastWeek > 0 && facts.ordersThisWeek < facts.ordersLastWeek) findings.push({ level: 'note', textAr: `طلبات الأسبوع ده ${facts.ordersThisWeek} مقابل ${facts.ordersLastWeek} الأسبوع اللي فات — راجع سبب واحد وحركة واحدة في «المراجعة».` });
@@ -110,7 +113,7 @@ export function buildSalesReport(input: {
 
   const summaryAr = !live.checked || !facts
     ? `مدير المبيعات: راجع منهج الكتيب وعلم البيع (${SALES_LESSONS.length} درساً في ${modules.length} وحدات، ${SALES_PRINCIPLES.length} مبدأ بيع و${SALES_PITFALLS.length} فخ) ودرس النهارده «${lesson.titleAr}»، لكن أرقام بنك شام ما اتقرأتش في آخر دورة — مفيش أرقام متخمنة.`
-    : `مدير المبيعات: ${facts.openDeals} فرصة مفتوحة، ${facts.overdue} متابعة متأخرة، ونسبة الكسب ${facts.winRate === null ? 'لسه مفيش مقفول' : `${facts.winRate}%`}. التحصيل المؤكد ${facts.paidOrdersToday} طلب النهارده و${facts.paidOrdersMonth} طلب الشهر ده (بعدد الطلبات بس — المبالغ في سجل بنك شام الخاص). ${facts.waitingConfirmation} تحويل مستني التأكيد. الأسبوع ده ${facts.ordersThisWeek} طلب مدفوع مقابل ${facts.ordersLastWeek} الأسبوع اللي فات. صحة المبيعات ${facts.health.score}/100 (${facts.health.labelAr}). درس النهارده «${lesson.titleAr}»${answeredToday === true ? ' ونتيجته متسجلة' : answeredToday === false ? ' ولسه ما اتجاوبش' : ''}.`;
+    : `مدير المبيعات: ${facts.openDeals} فرصة مفتوحة، ${facts.overdue} متابعة متأخرة، ${facts.silent} فرصة ساكتة من أكتر من أسبوع، ونسبة الكسب ${facts.winRate === null ? 'لسه مفيش مقفول' : `${facts.winRate}%`}. التحصيل المؤكد ${facts.paidOrdersToday} طلب النهارده و${facts.paidOrdersMonth} طلب الشهر ده (بعدد الطلبات بس — المبالغ في سجل بنك شام الخاص). ${facts.waitingConfirmation} تحويل مستني التأكيد. الأسبوع ده ${facts.ordersThisWeek} طلب مدفوع مقابل ${facts.ordersLastWeek} الأسبوع اللي فات. صحة المبيعات ${facts.health.score}/100 (${facts.health.labelAr}). درس النهارده «${lesson.titleAr}»${answeredToday === true ? ' ونتيجته متسجلة' : answeredToday === false ? ' ولسه ما اتجاوبش' : ''}.`;
 
   return {
     version: 1, robot: 'sales', updatedAt: new Date(now).toISOString(), edition: HANDBOOK_EDITION,
@@ -125,7 +128,7 @@ export function buildSalesReport(input: {
       paidOrdersToday: clean(facts.paidOrdersToday), paidOrdersMonth: clean(facts.paidOrdersMonth),
       ordersThisWeek: clean(facts.ordersThisWeek), ordersLastWeek: clean(facts.ordersLastWeek),
       waitingConfirmation: clean(facts.waitingConfirmation), awaitingTransfer: clean(facts.awaitingTransfer),
-      openDeals: clean(facts.openDeals), overdue: clean(facts.overdue), withoutNextStep: clean(facts.withoutNextStep),
+      openDeals: clean(facts.openDeals), overdue: clean(facts.overdue), withoutNextStep: clean(facts.withoutNextStep), silent: clean(facts.silent),
       won: clean(facts.won), lost: clean(facts.lost), winRate: facts.winRate,
       bestSellers: facts.bestSellers.slice(0, 5).map((p) => ({ sku: String(p.sku).slice(0, 60), units: clean(p.units) })),
       targets: facts.targets.slice(0, 5).map((t) => ({ currency: t.currency, pace: t.pace, daysLeft: clean(t.daysLeft) })),
@@ -133,7 +136,7 @@ export function buildSalesReport(input: {
       studyAnsweredToday: answeredToday,
     } : null,
     pipeline: facts ? {
-      openCount: clean(facts.openDeals), overdueCount: clean(facts.overdue), withoutNextStep: clean(facts.withoutNextStep),
+      openCount: clean(facts.openDeals), overdueCount: clean(facts.overdue), withoutNextStep: clean(facts.withoutNextStep), silentCount: clean(facts.silent),
       won: clean(facts.won), lost: clean(facts.lost), winRate: facts.winRate,
     } : null,
     targets: facts ? facts.targets.slice(0, 5).map((t) => ({ currency: t.currency, pace: t.pace, daysLeft: clean(t.daysLeft) })) : [],
