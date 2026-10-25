@@ -60,10 +60,11 @@ import {
   getInitialUserEnvironment,
   alignEnvironmentToCountry,
 } from './utils/environmentAdapter';
-import { setStoreCountry, useStoreCountry } from './utils/storeCheckout';
+import { followEntryCountry, setStoreCountry, useStoreCountry } from './utils/storeCheckout';
 import { loadDetailedAddress } from './utils/addressStorage';
 import {
   detectEntryLanguageAsync,
+  watchEntryCountry,
   forceRedetectLocation,
   USER_LANGUAGE_MANUAL_OVERRIDE_KEY,
   LANGUAGE_PICKED_AT_KEY,
@@ -584,26 +585,32 @@ export default function App() {
     };
   }, []);
 
-  // The opening language already comes from the entry country
-  // (getInitialLanguage -> detectEntryLanguage). Refine it once with the
-  // IP-based country, unless the visitor picked a language themselves.
+  // The opening language comes from the device (getInitialLanguage -> detectEntryLanguage: time zone, browser).
+  // The network then says where the visit really comes from (a VPN changes that, never the clock): asked on entry,
+  // and again when he comes back to the tab or the network changes — so no refresh is needed. A language he picked
+  // himself always stays.
+  const langRef = React.useRef(currentLang);
+  langRef.current = currentLang;
   useEffect(() => {
-    detectEntryLanguageAsync()
-      .then((hit) => {
-        if (!hit) return;
-        if (hit.countryCode) {
-          saveUserCountryCode(hit.countryCode);
-        }
+    let live = true;
+    const refine = () => {
+      void detectEntryLanguageAsync().then((hit) => {
+        if (!hit || !live) return;
+        saveUserCountryCode(hit.countryCode);
+        followEntryCountry(hit.countryCode); // prices follow the country he is entering from now
         let hasOverride = false;
         try {
           hasOverride = !!localStorage.getItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY);
         } catch (e) {}
-        if (!hasOverride && hit.language !== currentLang) {
+        if (!hasOverride && hit.language !== langRef.current) {
           setCurrentLang(hit.language);
           saveLanguage(hit.language);
         }
-      })
-      .catch(() => {});
+      }).catch(() => {});
+    };
+    refine();
+    const stop = watchEntryCountry(refine);
+    return () => { live = false; stop(); };
   }, []);
 
   // Sync document direction and language code whenever language changes
