@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-25T14:51:44.365Z",
+ "updatedAt": "2026-10-25T18:56:40.697Z",
  "active": true,
  "decisions": [
   {
@@ -396,18 +396,19 @@
   }
  ],
  "supervision": {
-  "health": 94,
+  "health": 93,
   "problems": [
    "finance: الإدارة المالية تحتاج مراجعة خاصة",
    "localization_audit: 1 عملة رسمية من غير سعر صرف (KP:KPW)",
    "design_audit: تقييم التصميم واللغات 46/100 (12 ملاحظة)",
    "verifier: 1 مهمة اتقفلت ولسه مش متصلحة على الموقع: إصلاح فجوات السيو التقني وهيكل صفحات الموقع",
-   "keys: محركات متوقفة مؤقتاً: openai، gemini"
+   "keys: محركات متوقفة مؤقتاً: openai، gemini",
+   "deploy: آخر تشغيل اتلغى"
   ]
  },
  "field": {
   "maneuverAt": "2026-10-25T14:00:56.664Z",
-  "at": "2026-10-25T14:51:42.950Z",
+  "at": "2026-10-25T18:56:39.191Z",
   "items": [
    {
     "id": "alcohol:unnamed-button",
