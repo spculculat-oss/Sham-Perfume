@@ -341,6 +341,29 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       if (gaps.length) f.push({ level: 'warn', problem: String(o(gaps[0]).whatAr), fix: String(o(gaps[0]).fixAr) });
       const dg = arr(r.gaps).filter((g) => String(o(g).kindAr) === 'المواد الخطرة');
       if (dg.length) f.push({ level: 'warn', problem: String(o(dg[0]).whatAr), fix: 'اتأكد من قبول العطور UN1266 مع كل شركة قبل عرض الشحن الدولي' });
+      // The order's own verdict: the shipping shortfall after the bottle's markup has paid for it.
+      const orderLoss = Number(money.orderLossDestinations) || 0;
+      if (orderLoss) f.push({ level: 'warn', problem: `${orderLoss} وجهة الطلب فيها بخسارة حتى بعد مكسب العطر (أسوأ صافي ${Number(money.worstNetEgp) || 0} ج.م)`, fix: 'ارفع سعر الشحن في الوجهات دي أو أوقف الشحن لها لحد ما سعر الشحن يتأكد' });
+      else if (loss) f.push({ level: 'note', idea: `${loss} وجهة الشحن فيها أغلى من اللي بنحصّله، بس مكسب العطر لسه بيغطيه — راقب الفرق` });
+      // Where the goods sit, and whether the rate we charge was even quoted from there.
+      const origins = arr(r.origins) as Record<string, unknown>[];
+      const distant = origins.filter((x) => String(x.code) !== 'EG');
+      if (distant.length) {
+        f.push({ level: 'note', idea: `البضاعة متنوعة المصادر: ${origins.map((x) => `${String(x.nameAr)} ${Number(x.products)} منتج`).join('، ')} — الممر المحلي والدولي بيتحدد بكل بلد لوحده` });
+      }
+      const noRate = arr(r.gaps).filter((g) => String(o(g).kindAr) === 'سعر الشحن الدولي');
+      if (noRate.length) f.push({ level: 'warn', problem: String(o(noRate[0]).whatAr), fix: 'يتجاب سعر منشور من الشركة اللي بتشحن من بلد البضاعة نفسها' });
+      // A supplier price built on an old exchange rate is a cost the price does not show.
+      const fxLines = arr(o(r.fx).lines);
+      if (fxLines.length) {
+        const worst = fxLines.map((l) => Number(o(l).driftPercent) || 0).sort((a, b) => Math.abs(b) - Math.abs(a))[0] || 0;
+        f.push({
+          level: Math.abs(worst) >= 5 ? 'warn' : 'note',
+          ...(Math.abs(worst) >= 5
+            ? { problem: `سعر الصرف اتحرك ${worst}% من يوم ما السعر اتحسب — التكلفة الحقيقية أعلى من المسجلة`, fix: 'إعادة تسعير المنتجات على سعر الصرف الحالي' }
+            : { idea: `سعر الصرف اتحرك ${worst}% من يوم ما السعر اتحسب — تحت حد الخطر، بس راقبه` } as { idea: string }),
+        });
+      }
       break;
     }
     case 'finance_shield': {

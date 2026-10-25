@@ -54,6 +54,11 @@ export interface Carrier {
   nameEn?: string;
   /** The carrier's own country, or `'*'` for an international carrier usable from anywhere. */
   country: string;
+  /**
+   * The country the published band was quoted **from** (`'*'`/absent = any origin). A rate calculated for parcels
+   * leaving Egypt says nothing about parcels leaving Malaysia — using it there would invent a price.
+   */
+  originCountry?: string | null;
   scope: 'local' | 'international';
   /** Does it take perfume (UN1266 class 3)? `null` = not verified yet — never assume yes. */
   dg: boolean | null;
@@ -62,6 +67,16 @@ export interface Carrier {
   priceBandEgp?: { cairo?: [number, number]; governorates?: [number, number] } | null;
   /** Published international band, in USD, per region key. */
   priceBandUsd?: Record<string, [number, number]> | null;
+  /**
+   * A published **per-country** band: first 500 g plus each extra 500 g in the source's own currency, and the
+   * published surcharge that sits on top of it. `'*'` is the source's own «rest of world» row — never a guess.
+   */
+  perCountryBand?: {
+    currency: string;
+    rates: Record<string, [number, number]>;
+    surchargePercent?: number;
+    sourceAr?: string;
+  } | null;
   speedAr?: string;
   noteAr?: string;
   source?: string | null;
@@ -95,6 +110,67 @@ export interface TradeAgreement {
   checkedAt?: string | null;
 }
 
+/** The exchange rate a supplier price was converted with, and how many products stand on it. */
+export interface RateUsed {
+  currency: string;
+  rateUsed: number;
+  products: number;
+}
+
+/** One currency whose supplier prices were built on an older rate than today's. */
+export interface FxDriftLine {
+  currency: string;
+  rateUsed: number;
+  rateToday: number;
+  /** today ÷ used − 1, in percent: positive = the goods now cost us more than the price says. */
+  driftPercent: number;
+  products: number;
+  stateAr: string;
+}
+
+/**
+ * Where is the goods, and how many products are there? The lane depends on it, so it is never inferred from
+ * «the site is ours» — only from what the import file recorded about the supplier.
+ */
+export interface OriginGroup {
+  code: string;
+  nameAr: string;
+  products: number;
+  platforms: string[];
+  fulfilment: Fulfilment[];
+  /** The local carrier that could deliver inside this country, if one is registered with a price. */
+  localCarrier: { id: string; nameAr: string; priceEgp: [number, number] | null } | null;
+}
+
+/** The gap between the rate a supplier price was built on and today's rate — a cost the price does not show. */
+export function fxDrift(rates: RateUsed[], fx: FxTable, thresholdPercent = 2): FxDriftLine[] {
+  // The table is quoted per one `base`: 1 unit of `c` = rates[HOME] / rates[c] units of the home currency.
+  const homePer = (currency: string) => {
+    const per = Number(fx.rates[currency.toUpperCase()]);
+    const one = Number(fx.rates[HOME_CURRENCY]);
+    return per > 0 && one > 0 ? one / per : null;
+  };
+  const lines: FxDriftLine[] = [];
+  for (const r of rates) {
+    if (!(r.rateUsed > 0)) continue;
+    const now = homePer(r.currency);
+    if (now === null) continue;
+    const drift = Math.round(((now / r.rateUsed) - 1) * 1000) / 10;
+    if (Math.abs(drift) < thresholdPercent) continue;
+    lines.push({
+      currency: r.currency.toUpperCase(),
+      rateUsed: r.rateUsed,
+      rateToday: Math.round(now * 10000) / 10000,
+      driftPercent: drift,
+      products: r.products,
+      stateAr: drift > 0
+        ? `تكلفة الشراء بقت أغلى ${Math.abs(drift)}% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي`
+        : `تكلفة الشراء بقت أرخص ${Math.abs(drift)}% من اللي السعر مبني عليه — ممكن تنزّل السعر وتكسب أكتر`,
+    });
+  }
+  return lines.sort((a, b) => Math.abs(b.driftPercent) - Math.abs(a.driftPercent));
+}
+
 export interface TradeInput {
   now: number;
   platforms: Platform[];
@@ -106,6 +182,10 @@ export interface TradeInput {
   destinations?: string[];
   /** What a product earns us: the catalogue's markup (ourPrice − supplierPrice), in EGP. */
   profitPerBottleEgp?: number;
+  /** The rate each supplier price was converted with, from the import file. Absent = not measured. */
+  ratesUsed?: RateUsed[];
+  /** Below this percent the rate difference is noise and is not reported. */
+  fxThresholdPercent?: number;
 }
 
 /** A destination's lane, price comparison and customs picture. */
@@ -115,6 +195,8 @@ export interface DestinationPlan {
   lane: Lane;
   /** The lane if **we** take over the shipping (what the merchant asked to price): local or international. */
   assumedLane: 'local' | 'international' | null;
+  /** The country the goods leave from, as the import file recorded it (`null` = unknown, so nothing is priced). */
+  assumedOrigin: string | null;
   /** The lane of every platform that has a known mode, so nothing is hidden behind one number. */
   lanesByPlatform: { platform: string; lane: Lane }[];
   /** Why this lane (which platform, which mode). */
@@ -127,6 +209,10 @@ export interface DestinationPlan {
   costEgp: [number, number] | null;
   /** charged − cost at the band's midpoint (positive = we over-charge, negative = we lose), as if we ship it. */
   surplusEgp: number | null;
+  /** What one order really leaves us after the carrier's real band: the bottle's markup + `surplusEgp`. */
+  netEgp: number | null;
+  /** The order itself: does it still make money once the shipping is paid at the published band? */
+  orderVerdict: 'profit' | 'thin' | 'loss' | 'unknown';
   /** What we may tell the visitor: nothing (unknown mode), «المنصة بتشحن», or «إحنا بنشحن». */
   promise: 'broker_only' | 'we_ship' | 'unknown';
   /** The money verdict on the shipping, whether or not we ship it today. */
@@ -152,6 +238,10 @@ export interface TradeReport {
   destinations: DestinationPlan[];
   /** The catalogue counted by whose delivery mode is known — «who ships» in one line. */
   products: { platform_ships: number; broker: number; unknown: number; total: number };
+  /** The catalogue counted by **where the goods are** — the first thing a lane needs, and where to ask first. */
+  origins: OriginGroup[];
+  /** Supplier prices built on an older exchange rate than today's: our real cost is above the price's. */
+  fx: { thresholdPercent: number; lines: FxDriftLine[] };
   /** What we do not know yet — each line is a question for the merchant or a job for the robot. */
   gaps: { kindAr: string; whatAr: string; fixAr: string }[];
   /** Money at stake, from the catalogue's own numbers. */
@@ -160,6 +250,10 @@ export interface TradeReport {
     /** Destinations where the carrier's published band is known, so the comparison is real. */
     pricedDestinations: number;
     overChargedDestinations: number; lossDestinations: number;
+    /** Destinations where the shipping alone eats the whole markup: each order there is a real loss. */
+    orderLossDestinations: number;
+    /** The best and worst net per order, in EGP. */
+    bestNetEgp: number | null; worstNetEgp: number | null;
   };
   score: number;
   notes: string[];
@@ -190,7 +284,20 @@ export function chargedEgp(country: string, shipping: ShippingTable, fx: FxTable
 }
 
 /** A carrier's published band for this destination, in EGP — or `null` when it publishes none. */
-export function carrierBandEgp(carrier: Carrier, destination: string, fx: FxTable): [number, number] | null {
+export function carrierBandEgp(carrier: Carrier, destination: string, fx: FxTable, from?: string | null): [number, number] | null {
+  // A band quoted from another origin country is not a price for this route.
+  const quotedFrom = (carrier.originCountry || '*').toUpperCase();
+  if (from && quotedFrom !== '*' && quotedFrom !== from.toUpperCase()) return null;
+  if (carrier.perCountryBand) {
+    const { currency, rates, surchargePercent } = carrier.perCountryBand;
+    const row = rates[destination.toUpperCase()] || rates['*'];
+    if (!row) return null;
+    const lift = 1 + (Number(surchargePercent) || 0) / 100;
+    // One bottle: the first 500 g is the floor, up to 1 kg is the ceiling (a 100 ml bottle + its box).
+    const low = convert(row[0] * lift, currency, HOME_CURRENCY, fx);
+    const high = convert((row[0] + row[1]) * lift, currency, HOME_CURRENCY, fx);
+    return [Math.round(low * 100) / 100, Math.round(high * 100) / 100];
+  }
   if (carrier.priceBandEgp) {
     const cairo = carrier.priceBandEgp.cairo;
     const gov = carrier.priceBandEgp.governorates;
@@ -216,11 +323,11 @@ export function carrierBandEgp(carrier: Carrier, destination: string, fx: FxTabl
  * The best carrier for a lane: the cheapest published band wins, and a carrier that only *might* take perfume is
  * never presented as able to (its `dg` stays `null`, and the destination is marked «يتأكد»).
  */
-export function pickCarrier(carriers: Carrier[], lane: Lane, destination: string, fx: FxTable): Carrier | null {
+export function pickCarrier(carriers: Carrier[], lane: Lane, destination: string, fx: FxTable, from?: string | null): Carrier | null {
   if (lane !== 'local' && lane !== 'international') return null;
   const code = destination.toUpperCase();
   const pool = carriers.filter((c) => (lane === 'local' ? c.scope === 'local' && c.country.toUpperCase() === code : c.scope === 'international'));
-  const scored = pool.map((c) => ({ c, band: carrierBandEgp(c, destination, fx) }));
+  const scored = pool.map((c) => ({ c, band: carrierBandEgp(c, destination, fx, from) }));
   // A published price first (unknown prices cannot be compared), then the cheapest, then a verified DG carrier.
   scored.sort((a, b) => {
     const ap = a.band ? 0 : 1;
@@ -279,19 +386,25 @@ export function reviewTrade(input: TradeInput): TradeReport {
     const platform = dominant;
     const lane: Lane = platform ? laneFor(platform, code) : 'unknown';
     const lanesByPlatform = platforms.map((p) => ({ platform: p.id, lane: laneFor(p, code) }));
-    // If we take the shipping over: home country → local carrier, everywhere else → international one.
-    const home = (platforms.find((p) => p.originCountry && p.originConfidence !== 'unknown')?.originCountry || null)?.toUpperCase() || null;
+    // If we take the shipping over: home country → local carrier, everywhere else → international one. The home is
+    // the **dominant platform's** recorded origin (the goods we actually sell), never «our own country» by default.
+    const home = (platform?.originCountry || platforms.find((p) => p.originCountry)?.originCountry || null)?.toUpperCase() || null;
     const assumedLane: 'local' | 'international' | null = home ? (home === code ? 'local' : 'international') : null;
-    const carrier: Carrier | null = pickCarrier(carriers, assumedLane || 'international', code, fx);
+    const carrier: Carrier | null = pickCarrier(carriers, assumedLane || 'international', code, fx, home);
     const others = carriers
       .filter((c) => c.id !== carrier?.id && (assumedLane === 'local' ? c.scope === 'local' && c.country.toUpperCase() === code : c.scope === 'international'))
-      .map((c) => ({ c, band: carrierBandEgp(c, code, fx) }))
+      .map((c) => ({ c, band: carrierBandEgp(c, code, fx, home) }))
       .filter((x) => x.band)
       .sort((a, b) => (a.band![0] - b.band![0]));
-    const band = carrier && assumedLane ? carrierBandEgp(carrier, code, fx) : null;
+    const band = carrier && assumedLane ? carrierBandEgp(carrier, code, fx, home) : null;
     const charged = chargedEgp(code, shipping, fx);
     const mid = band ? round((band[0] + band[1]) / 2) : null;
     const surplus = mid === null ? null : round(charged - mid);
+    // The shipping is only half the story: the bottle's own markup is what pays for it.
+    const net = surplus === null ? null : round(profit + surplus);
+    const orderVerdict: DestinationPlan['orderVerdict'] = net === null ? 'unknown'
+      : net < 0 ? 'loss'
+        : profit > 0 && net < profit * 0.25 ? 'thin' : (profit > 0 ? 'profit' : 'thin');
     const promise: DestinationPlan['promise'] = lane === 'platform' ? 'broker_only' : lane === 'local' || lane === 'international' ? 'we_ship' : 'unknown';
     // The money verdict stands on its own: it is the carrier's published band against what we charge today.
     const costVerdict: DestinationPlan['costVerdict'] = !assumedLane || surplus === null ? 'unknown'
@@ -304,17 +417,20 @@ export function reviewTrade(input: TradeInput): TradeReport {
       nameAr: country?.nameAr || code,
       lane,
       assumedLane,
+      assumedOrigin: home,
       lanesByPlatform,
       becauseAr: !platform ? 'مفيش منصة مسجلة'
         : platform.fulfilment === 'unknown' ? `طريقة تسليم «${platform.nameAr}» لسه مش مسجلة — مفيش وعد توصيل`
           : platform.fulfilment === 'platform_ships' && lane === 'platform' ? `«${platform.nameAr}» بتشحن للعالم — دورنا وساطة بس`
             : lane === 'local' ? `العميل في نفس بلد المنصة (${platform.originCountry}) — شحن محلي`
-              : `العميل في بلد تاني عن المنصة — شحن دولي`,
+              : `البضاعة في ${home || 'بلد مش مسجل'} والعميل في بلد تاني — شحن دولي${home ? '' : ' (بلد الشحن مش مسجل)'}`,
       carrier: carrier ? { id: carrier.id, nameAr: carrier.nameAr, speedAr: carrier.speedAr, priceEgp: band, dg: carrier.dg, source: carrier.source || null } : null,
       alternative: others[0] ? { id: others[0].c.id, nameAr: others[0].c.nameAr, priceEgp: others[0].band! } : null,
       chargedEgp: charged,
       costEgp: band,
       surplusEgp: surplus,
+      netEgp: net,
+      orderVerdict,
       promise,
       costVerdict,
       customs: {
@@ -338,6 +454,30 @@ export function reviewTrade(input: TradeInput): TradeReport {
     total: platforms.reduce((s2, p) => s2 + (Number(p.products) || 0), 0),
   };
 
+  // ── where the goods are: the first thing a lane needs ──
+  const originMap = new Map<string, { products: number; platforms: string[]; fulfilment: Fulfilment[] }>();
+  for (const p of platforms) {
+    const raw = (p.originCountry || '').toUpperCase();
+    if (!raw || p.originConfidence === 'unknown') continue;
+    const row = originMap.get(raw) || { products: 0, platforms: [], fulfilment: [] };
+    row.products += Number(p.products) || 0;
+    row.platforms.push(p.id);
+    row.fulfilment.push(p.fulfilment);
+    originMap.set(raw, row);
+  }
+  const customsName = (code: string) => customsOf(code)?.nameAr || code;
+  const localFor = (code: string) => {
+    const c = pickCarrier(carriers, 'local', code, fx, code);
+    return c ? { id: c.id, nameAr: c.nameAr, priceEgp: carrierBandEgp(c, code, fx, code) } : null;
+  };
+  const origins: OriginGroup[] = [...originMap.entries()]
+    .map(([code, row]) => ({ code, nameAr: customsName(code), ...row, localCarrier: localFor(code) }))
+    .sort((a, b) => b.products - a.products);
+
+  // ── the rate the supplier price was built on, against today's ──
+  const fxThresholdPercent = Number(input.fxThresholdPercent) > 0 ? Number(input.fxThresholdPercent) : 2;
+  const fxLines = fxDrift(input.ratesUsed || [], fx, fxThresholdPercent);
+
   // ── gaps: what we still do not know ──
   const gaps: TradeReport['gaps'] = [];
   for (const p of platforms.filter((x) => x.fulfilment === 'unknown')) {
@@ -350,14 +490,45 @@ export function reviewTrade(input: TradeInput): TradeReport {
   if (unverified.length) gaps.push({ kindAr: 'الجمارك', whatAr: `${unverified.length} دولة من الوجهات مفيهاش بيانات جمركية متأكد منها (${unverified.slice(0, 5).map((c) => c.code).join('، ')}${unverified.length > 5 ? '…' : ''})`, fixAr: 'الروبوت يجيب المصدر الرسمي لكل دولة ويسجله بتاريخه' });
   const noDg = carriers.filter((c) => c.scope === 'international' && c.dg === null);
   if (noDg.length) gaps.push({ kindAr: 'المواد الخطرة', whatAr: `${noDg.length} شركة شحن دولية لسه مش متأكدين إنها بتقبل العطور (UN1266)`, fixAr: 'يتأكد من كل شركة قبل ما نعرض توصيل دولي — العطر سائل قابل للاشتعال' });
-  const localCodes = ['EG', ...new Set(carriers.filter((c) => c.scope === 'local').map((c) => c.country))];
-  const missingLocal = destinations.filter((c) => !localCodes.includes(c));
-  if (missingLocal.length) gaps.push({ kindAr: 'شركات محلية', whatAr: `مفيش شركة شحن محلية مسجلة لـ ${missingLocal.length} وجهة (${missingLocal.slice(0, 5).join('، ')}…)`, fixAr: 'الروبوت يبحث عن أفضل شركة محلية في كل دولة بسعر منشور' });
+  // The local carriers that matter are the ones in the countries where the goods actually sit — not for all 74.
+  const missingLocalOrigin = origins.filter((o) => !o.localCarrier || !o.localCarrier.priceEgp);
+  if (missingLocalOrigin.length) {
+    gaps.push({
+      kindAr: 'شركات محلية',
+      whatAr: `البضاعة في ${missingLocalOrigin.map((o) => `${o.nameAr} (${o.products} منتج)`).join('، ')} ومفيش سعر شحن محلي منشور فيها — يعني مفيش سعر توصيل جوّه البلد دي`,
+      fixAr: 'يتسجل سعر منشور لشركة محلية في كل بلد فيها بضاعة، وإلا التوصيل الداخلي يبقى «يتأكد»',
+    });
+  }
+  const quotedFrom = (c: Carrier, origin: string) => {
+    const from = (c.originCountry || '*').toUpperCase();
+    return from === '*' || from === origin.toUpperCase();
+  };
+  const noIntlFromOrigin = origins.filter((o) => !carriers.some((c) => c.scope === 'international' && quotedFrom(c, o.code) && (c.priceBandUsd || c.priceBandEgp || c.perCountryBand)));
+  if (noIntlFromOrigin.length) {
+    gaps.push({
+      kindAr: 'سعر الشحن الدولي',
+      whatAr: `مفيش سعر شحن دولي منشور من ${noIntlFromOrigin.map((o) => o.nameAr).join('، ')} — كل أسعار الشحن المسجلة محسوبة من مصر`,
+      fixAr: 'يتجاب سعر منشور من شركة دولية بتشحن من بلد البضاعة (ومصدره وتاريخه) — أي رقم من غير مصدر يبقى «مش متاح»',
+    });
+  }
+  for (const line of fxLines) {
+    gaps.push({
+      kindAr: 'سعر الصرف',
+      whatAr: `${line.products} منتج سعره مبني على ${line.rateUsed} ج.م/${line.currency}، وسعر النهاردة ${line.rateToday} (فرق ${line.driftPercent > 0 ? '+' : ''}${line.driftPercent}%)`,
+      fixAr: 'إعادة تسعير المنتجات دي على سعر الصرف الحالي — أو شرح إن التكلفة تغيّرت',
+    });
+  }
+  const noLocalDest = destinations.filter((c) => !carriers.some((x) => x.scope === 'local' && x.country.toUpperCase() === c) && !origins.some((o) => o.code === c));
+  if (noLocalDest.length) gaps.push({ kindAr: 'شركات محلية', whatAr: `${noLocalDest.length} وجهة مفيهاش شركة شحن محلية مسجلة`, fixAr: 'الروبوت يبحث عن أفضل شركة محلية في كل دولة بسعر منشور' });
 
   // ── money ──
   const known = plans.filter((p) => p.costVerdict !== 'unknown');
   const overCharged = known.filter((p) => p.costVerdict === 'over_charging').length;
   const loss = known.filter((p) => p.costVerdict === 'loss').length;
+  const orderLoss = known.filter((p) => p.orderVerdict === 'loss').length;
+  const nets = known.map((p) => p.netEgp).filter((n): n is number => n !== null);
+  const bestNet = nets.length ? Math.max(...nets) : null;
+  const worstNet = nets.length ? Math.min(...nets) : null;
   const averageCharged = plans.length ? round(plans.reduce((s, p) => s + p.chargedEgp, 0) / plans.length) : 0;
 
   // ── score: what we know, weighted by what costs money ──
@@ -365,8 +536,10 @@ export function reviewTrade(input: TradeInput): TradeReport {
   const knownCustoms = plans.filter((p) => p.customs.verified).length;
   const laneKnown = plans.filter((p) => p.promise !== 'unknown').length;
   const priced = plans.filter((p) => p.costEgp !== null).length;
+  const originKnown = platforms.length ? platforms.filter((p) => p.originCountry && p.originConfidence !== 'unknown').length / platforms.length : 0;
   const score = Math.max(0, Math.min(100, Math.round(
-    (laneKnown / totalDest) * 40 + (knownCustoms / totalDest) * 25 + (priced / totalDest) * 20 + (loss === 0 ? 15 : 0),
+    (laneKnown / totalDest) * 40 + (knownCustoms / totalDest) * 25 + (priced / totalDest) * 20
+      + (loss === 0 ? 10 : 0) + originKnown * 5,
   )));
 
   const notes: string[] = [];
@@ -379,7 +552,11 @@ export function reviewTrade(input: TradeInput): TradeReport {
     notes.push(`${overCharged} وجهة إحنا بنحصّل شحن فيها أكتر من ضعف تكلفته الحقيقية — ده بيقلل التحويل.`);
     planAr.push(`راجع سعر الشحن في ${overCharged} وجهة (الزائر بيدفع أكتر من التكلفة بكثير) — الشحن الزيادة بيطرد العميل.`);
   }
-  if (loss) notes.push(`${loss} وجهة لو إحنا اللي بنشحن، تكلفة الشحن أكبر من اللي بنحصّله — خسارة في كل طلب.`);
+  if (loss) {
+    notes.push(`${loss} وجهة لو إحنا اللي بنشحن، تكلفة الشحن أكبر من اللي بنحصّله — فرق بيدفع من مكسب العطر.`);
+    if (orderLoss) notes.push(`وفي ${orderLoss} وجهة الفرق أكبر من مكسب العطر نفسه — الطلب هناك بخسارة حقيقية.`);
+    else if (bestNet !== null && worstNet !== null) notes.push(`مكسب العطر (${profit} ج.م) لسه بيغطي فرق الشحن في كل الوجهات: صافي الطلب من ${worstNet} لـ${bestNet} ج.م.`);
+  }
   const pricedPlans = plans.filter((p) => p.costEgp !== null);
   if (pricedPlans.length) {
     const cheapest = [...pricedPlans].sort((a, b) => (a.costEgp![0] - b.costEgp![0])).slice(0, 3);
@@ -389,8 +566,10 @@ export function reviewTrade(input: TradeInput): TradeReport {
   if (reliefs.length) planAr.push(`${reliefs.length} وجهة ممكن تتلغي جمركها باتفاقية تجارية (${[...new Set(reliefs.map((r) => r.customs.dutyRelief!.id))].join('، ')}) — بس محتاجة ${reliefs[0].customs.dutyRelief!.requires.join(' + ')}.`);
   if (noDg.length) planAr.push(`${noDg.length} شركة دولية: تأكد قبول العطور (UN1266) قبل أي بيع دولي — الرفض بعد البيع = إلغاء وسمعة.`);
   if (modes.platform_ships.products) planAr.push(`${modes.platform_ships.products} منتج من منصات بتشحن بنفسها — الوساطة بس، والتأكد إن المنصة بترجع وتتعوض لو حصلت مشكلة.`);
+  if (origins.length) planAr.push(`البضاعة في: ${origins.map((o) => `${o.nameAr} — ${o.products} منتج${o.localCarrier?.priceEgp ? ` (محلي: ${o.localCarrier.nameAr} ${o.localCarrier.priceEgp[0]}–${o.localCarrier.priceEgp[1]} ج.م)` : ' (مفيش سعر محلي منشور)'}`).join('، ')}.`);
+  for (const line of fxLines) notes.push(`سعر الصرف: ${line.products} منتج سعره مبني على ${line.rateUsed} ج.م/${line.currency} وسعر النهاردة ${line.rateToday} — ${line.stateAr}.`);
 
-  const summaryAr = `الشحن والتجارة: ${plans.length} وجهة — ${laneKnown} وجهة ممرها معروف، ${knownCustoms} دولة بجمارك متأكد منها، ${known.length} وجهة بسعر شحن مقارن${loss ? `، و${loss} وجهة لو إحنا بنشحن بتخسر` : ''}.`;
+  const summaryAr = `الشحن والتجارة: ${plans.length} وجهة — ${laneKnown} وجهة ممرها معروف، ${knownCustoms} دولة بجمارك متأكد منها، ${known.length} وجهة بسعر شحن مقارن${loss ? `، و${loss} وجهة لو إحنا بنشحن بتخسر` : ''}${origins.length ? ` · البضاعة في ${origins.map((o) => o.code).join('، ')}` : ''}${fxLines.length ? ` · ${fxLines.length} عملة سعر صرفها قديم` : ''}.`;
 
   return {
     version: 1, agent: 'trade-lanes', updatedAt: now,
@@ -400,8 +579,12 @@ export function reviewTrade(input: TradeInput): TradeReport {
       originConfidence: p.originConfidence || 'unknown', products: Number(p.products) || 0,
       noteAr: p.fulfilment === 'unknown' ? 'محتاج قرار صاحب المتجر' : p.fulfilment === 'platform_ships' ? 'وساطة — المنصة بتشحن' : 'إحنا بنشحن',
     })),
-    destinations: plans, products, gaps,
-    money: { profitPerBottleEgp: profit, averageChargedEgp: averageCharged, pricedDestinations: known.length, overChargedDestinations: overCharged, lossDestinations: loss },
+    destinations: plans, products, origins, fx: { thresholdPercent: fxThresholdPercent, lines: fxLines }, gaps,
+    money: {
+      profitPerBottleEgp: profit, averageChargedEgp: averageCharged, pricedDestinations: known.length,
+      overChargedDestinations: overCharged, lossDestinations: loss,
+      orderLossDestinations: orderLoss, bestNetEgp: bestNet, worstNetEgp: worstNet,
+    },
     score, notes, planAr, summaryAr,
   };
 }
