@@ -1037,7 +1037,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
           <span className="absolute -inset-1 rounded-full bg-amber-500/20 blur-md group-hover:bg-amber-500/40 transition-all animate-pulse" />
           
           <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-amber-300/80">
-            <img
+            <img loading="lazy" decoding="async"
               src={perfumerImg}
               alt={L('header_alt')}
               className="w-full h-full object-cover object-top"
@@ -1072,7 +1072,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
             <div className="px-4 py-3 bg-stone-900 text-white flex items-center justify-between border-b border-stone-800 shrink-0">
               <div className="flex items-center gap-2.5">
                 <div className="relative w-9 h-9 rounded-full overflow-hidden border border-amber-400/80 shrink-0">
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={perfumerImg}
                     alt={L('header_alt')}
                     className="w-full h-full object-cover object-top"
@@ -1274,7 +1274,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                     {/* Avatar */}
                     {msg.role === 'assistant' ? (
                       <div className="w-8 h-8 rounded-full overflow-hidden border border-amber-600/50 shrink-0 mt-0.5 shadow-xs">
-                        <img
+                        <img loading="lazy" decoding="async"
                           src={perfumerImg}
                           alt={L('shahin_alt')}
                           className="w-full h-full object-cover object-top"
@@ -1561,7 +1561,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
               {isLoading && (
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-full overflow-hidden border border-amber-600/50 shrink-0">
-                    <img
+                    <img loading="lazy" decoding="async"
                       src={perfumerImg}
                       alt={L('shahin_alt')}
                       className="w-full h-full object-cover object-top"

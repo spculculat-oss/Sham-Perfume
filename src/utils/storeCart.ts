@@ -19,8 +19,14 @@ export function readCart(): Cart {
   } catch { return {}; }
 }
 
+const AT_KEY = 'sham-store-cart-at';
+/** When the basket last changed (ms), on this device — for «سلتك لسه مستنياك» when he comes back. */
+export function cartTouchedAt(): number {
+  try { return Number(localStorage.getItem(AT_KEY)) || 0; } catch { return 0; }
+}
+
 function write(cart: Cart) {
-  try { localStorage.setItem(KEY, JSON.stringify(cart)); } catch { /* private mode: in-memory only */ }
+  try { localStorage.setItem(KEY, JSON.stringify(cart)); localStorage.setItem(AT_KEY, String(Date.now())); } catch { /* private mode: in-memory only */ }
   window.dispatchEvent(new CustomEvent(EVENT, { detail: cart }));
 }
 

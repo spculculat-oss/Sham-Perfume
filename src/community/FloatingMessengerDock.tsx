@@ -109,7 +109,7 @@ export function FloatingMessengerDock({ lang, userId, onClose, onExpand, toast }
           <div key={m.id} className={`flex ${m.mine ? 'justify-end' : 'justify-start'}`}>
             <div className={`max-w-[80%] rounded-2xl px-3 py-1.5 text-sm ${m.mine ? 'rounded-ee-sm bg-amber-700 text-white' : 'rounded-es-sm border border-stone-200 bg-white text-stone-800'}`}>
               {m.deleted ? <p className="italic opacity-70">{t('الرسالة اتمسحت', 'Message deleted')}</p>
-                : m.kind === 'image' && m.attachment ? <img src={m.attachment} alt="" className="max-h-48 rounded-xl" />
+                : m.kind === 'image' && m.attachment ? <img loading="lazy" decoding="async" src={m.attachment} alt="" className="max-h-48 rounded-xl" />
                 : m.kind === 'voice' ? <audio controls src={m.attachment || undefined} className="h-8 w-48" />
                 : m.kind === 'recipe' ? <p>🧪 {m.text}</p>
                 : <p className="whitespace-pre-wrap break-words">{m.text}</p>}

@@ -28,7 +28,12 @@ import { FAMILY_LABEL, type Family, type StoreProduct } from './storeCatalog';
 export const INSIGHTS_CONSENT_VERSION = '1.1';
 export const INSIGHTS_RETENTION_DAYS = 365;
 
-export const INSIGHT_EVENT_TYPES = ['section', 'product', 'search', 'chat', 'cart', 'checkout', 'purchase', 'language', 'country'] as const;
+/**
+ * engage = how deeply a product was looked at (value `dwell:<seconds>`, `scroll:<percent>`, `zoom`); quiz = an answer
+ * he gave «اختبار ذوقك» himself (value `family:oud`, `gender:men`, `occasion:evening`, `season:summer`, `price:mid`);
+ * exp = the version of a page test he was shown (value `<test>:<version>`, src/utils/experiments.ts).
+ */
+export const INSIGHT_EVENT_TYPES = ['section', 'product', 'search', 'chat', 'cart', 'checkout', 'purchase', 'language', 'country', 'engage', 'quiz', 'exp'] as const;
 export type InsightEventType = typeof INSIGHT_EVENT_TYPES[number];
 export interface InsightEvent { type: InsightEventType; at?: number; section?: string; sku?: string; text?: string; qty?: number; value?: string }
 export interface InsightBatch {
@@ -49,6 +54,12 @@ export interface InsightProfile {
   hours: number[];
   recent: { at: string; type: InsightEventType; ref?: string }[];
   consent: { version: string; at: string };
+  /** How deeply he looks (seconds on product pages, pages read to the end, photos zoomed). */
+  engagement?: { dwellSec: number; views: number; deep: number; zooms: number };
+  /** What he said about his own taste in «اختبار ذوقك» (`family:oud` → count). */
+  declared?: Counter;
+  /** The page tests he is part of: test → version. */
+  experiments?: Record<string, string>;
 }
 
 const VISITOR = /^[A-Za-z0-9_-]{8,80}$/;
@@ -169,6 +180,37 @@ export function applyBatch(previous: InsightProfile | undefined, batch: InsightB
     if (e.type === 'checkout') p.funnel.checkouts += 1;
     if (e.type === 'purchase') p.funnel.purchases += 1;
     if (e.type === 'language' || e.type === 'country') ref = e.value;
+    if (e.type === 'engage' && e.value) {
+      const g = p.engagement || (p.engagement = { dwellSec: 0, views: 0, deep: 0, zooms: 0 });
+      const [kind, raw] = e.value.split(':');
+      const amount = Math.max(0, Math.min(900, Number(raw) || 0));
+      if (kind === 'dwell') {
+        g.dwellSec += amount; g.views += 1;
+        // Twenty seconds or more on a product is real interest: its families count double a glance.
+        const product = amount >= 20 && e.sku ? ctx.product?.(e.sku) : undefined;
+        product?.families.forEach((f) => bump(p.families, f, 2));
+      }
+      if (kind === 'scroll' && amount >= 75) g.deep += 1;
+      if (kind === 'zoom') g.zooms += 1;
+      ref = e.sku || kind;
+    }
+    if (e.type === 'quiz' && e.value) {
+      const [kind, answer] = e.value.split(':');
+      if (kind && answer) {
+        bump(p.declared || (p.declared = {}), `${kind}:${answer}`);
+        // What he says about himself weighs more than what he happened to open.
+        if (kind === 'family') bump(p.families, answer, 4);
+        if (kind === 'gender') bump(p.genders, answer, 4);
+        if (kind === 'occasion') bump(p.occasions, answer, 4);
+        if (kind === 'season') bump(p.seasons, answer, 4);
+      }
+      ref = e.value;
+    }
+    if (e.type === 'exp' && e.value) {
+      const [test, version] = e.value.split(':');
+      if (test && version) { p.experiments = p.experiments || {}; if (!p.experiments[test]) p.experiments[test] = version; }
+      ref = e.value;
+    }
     if (e.type === 'search' || e.type === 'chat') {
       if (e.text) {
         (e.type === 'search' ? p.searches : p.chats).push(e.text);
@@ -363,6 +405,29 @@ export interface InsightsSummary {
   funnel: { products: number; carts: number; checkouts: number; purchases: number };
   decisions: Counter; styles: Counter; prices: Counter; motives: Counter; families: { id: string; label: Text; share: number }[];
   countries: CountryCulture[]; recent: ProfileRow[];
+  engagement: { avgDwellSec: number; deepShare: number; zoomers: number; quizTakers: number; declared: { id: string; share: number }[] };
+  experiments: ExperimentResult[];
+}
+
+export interface ExperimentResult { test: string; versions: { version: string; people: number; carted: number; bought: number; cartRate: number; buyRate: number }[]; leader?: string; enough: boolean }
+
+/** Page tests, read like Facebook reads its tests: people per version, the share who carted and who bought. */
+export function experimentResults(profiles: InsightProfile[]): ExperimentResult[] {
+  const by = new Map<string, Map<string, InsightProfile[]>>();
+  for (const p of profiles) for (const [test, version] of Object.entries(p.experiments || {})) {
+    const t = by.get(test) || new Map<string, InsightProfile[]>(); by.set(test, t);
+    t.set(version, [...(t.get(version) || []), p]);
+  }
+  return [...by].map(([test, versions]) => {
+    const rows = [...versions].map(([version, list]) => {
+      const carted = list.filter((p) => p.funnel.carts > 0).length; const bought = list.filter((p) => p.funnel.purchases > 0).length;
+      return { version, people: list.length, carted, bought, cartRate: Math.round((carted / list.length) * 100), buyRate: Math.round((bought / list.length) * 100) };
+    }).sort((a, b) => a.version.localeCompare(b.version));
+    // No winner is called before every version has 30 people — a small sample only looks like a result.
+    const enough = rows.length > 1 && rows.every((r) => r.people >= 30);
+    const best = [...rows].sort((a, b) => b.buyRate - a.buyRate || b.cartRate - a.cartRate)[0];
+    return { test, versions: rows, enough, ...(enough && best ? { leader: best.version } : {}) };
+  });
 }
 
 export function profileRow(p: InsightProfile, yardstick: { low: number; high: number }): ProfileRow {
@@ -397,6 +462,43 @@ export function insightsSummary(profiles: InsightProfile[], products: Pick<Store
     decisions, styles, prices, motives,
     families: topN(families, 8).map(([id, n]) => ({ id, label: FAMILY_LABEL[id as Family] || { ar: id, en: id }, share: famTotal ? Math.round((n / famTotal) * 100) : 0 })),
     countries: countryCultures(live, yardstick),
+    engagement: (() => {
+      const g = live.map((p) => p.engagement).filter((x): x is NonNullable<InsightProfile['engagement']> => Boolean(x));
+      const views = g.reduce((a, b) => a + b.views, 0);
+      const declared: Counter = {};
+      live.forEach((p) => Object.entries(p.declared || {}).forEach(([k, v]) => bump(declared, k, v)));
+      const dTotal = total(declared);
+      return {
+        avgDwellSec: views ? Math.round(g.reduce((a, b) => a + b.dwellSec, 0) / views) : 0,
+        deepShare: views ? Math.round((g.reduce((a, b) => a + b.deep, 0) / views) * 100) : 0,
+        zoomers: g.filter((x) => x.zooms > 0).length,
+        quizTakers: live.filter((p) => p.declared && Object.keys(p.declared).length).length,
+        declared: topN(declared, 10).map(([id, v]) => ({ id, share: dTotal ? Math.round((v / dTotal) * 100) : 0 })),
+      };
+    })(),
+    experiments: experimentResults(live),
     recent: [...live].sort((a, b) => b.lastSeen.localeCompare(a.lastSeen)).slice(0, 60).map((p) => profileRow(p, yardstick)),
   };
+}
+
+// ── «ناس ذوقهم زيك شافوا كمان» ──────────────────────────────────────────────────────────────────────────────────
+/**
+ * Products looked at by the same people, from the vault — published only as product codes, and only for a pair that
+ * at least `minPeople` different visitors share (default 3), so no answer can point to one person.
+ */
+export function togetherIndex(profiles: InsightProfile[], minPeople = 3, perProduct = 8): Map<string, string[]> {
+  const pairs = new Map<string, Map<string, number>>();
+  for (const p of profiles) {
+    const mine = topN(p.products, 20).map(([sku]) => sku);
+    for (const a of mine) {
+      const row = pairs.get(a) || new Map<string, number>(); pairs.set(a, row);
+      for (const b of mine) if (a !== b) row.set(b, (row.get(b) || 0) + 1);
+    }
+  }
+  const out = new Map<string, string[]>();
+  for (const [sku, row] of pairs) {
+    const list = [...row].filter(([, n]) => n >= minPeople).sort((x, y) => y[1] - x[1]).slice(0, perProduct).map(([b]) => b);
+    if (list.length) out.set(sku, list);
+  }
+  return out;
 }

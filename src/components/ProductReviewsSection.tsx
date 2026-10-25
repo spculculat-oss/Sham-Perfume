@@ -144,7 +144,7 @@ export function ProductReviewsSection({ sku, currentLang }: { sku: string; curre
               <article key={r.id} className={`rounded-2xl border p-4 ${r.mine ? 'border-amber-300 bg-amber-50/30' : 'border-stone-100'}`}>
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-amber-400 to-amber-700 text-xs font-bold text-white">
-                    {r.author.avatar ? <img src={r.author.avatar} alt="" className="h-full w-full object-cover" /> : r.author.name.trim()[0] || '?'}
+                    {r.author.avatar ? <img loading="lazy" decoding="async" src={r.author.avatar} alt="" className="h-full w-full object-cover" /> : r.author.name.trim()[0] || '?'}
                   </span>
                   <span className="text-sm font-bold text-stone-900">{r.mine ? t('rv_mine') : r.author.name}</span>
                   <Stars value={r.rating} size={14} />

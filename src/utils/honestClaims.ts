@@ -22,6 +22,11 @@ const AR_DROP: RegExp[] = [
   /\s*لا\s+(?:يقاوم|يُقاوم|تقاوم|تُقاوم)/gu,
   /\s*(?:ال)?أصلي\s*100\s*[%٪]/gu,
   /\s*(?:وأناقة|و?جاذبية)\s+لا\s+تُنسى/gu,
+  // «… ليمنحك حضوراً جذاباً» · «يمنحك إطلالة فريدة» — a promise about the wearer, not the scent (council task #183).
+  /\s*(?:،\s*)?(?:و|ل)?(?:يمنحك|تمنحك|يمنحكِ|تمنحكِ)\s+[^.،!؟]*/gu,
+  // Promotional adjectives (the store's style-2 rule): «فاخر» «ساحر» «آسر» «راقٍ» go; the noun stays («عطر شرقي»).
+  /\s+و?(?:ال)?(?:فاخر|ساحر|آسر)(?:ة|ًا|اً|ا)?(?=[\s.،!؟]|$)/gu,
+  /\s+و?(?:ال)?راق(?:ٍ|ي|ية|ياً|يًا)(?=[\s.،!؟]|$)/gu,
 ];
 const AR_SOFTEN: [RegExp, string][] = [
   [/(?:ال)?أكثر\s+مبيعاً?/gu, 'رائج'],
@@ -63,6 +68,7 @@ const EN_SOFTEN: Swap[] = [
 
 const tidy = (s: string) => s
   .replace(/\s+([،,.!؟?])/g, '$1')
+  .replace(/([.!؟?])\.+/g, '$1')
   .replace(/([،,])\s*([.!؟?])/g, '$2')
   .replace(/(^|[.!؟?]\s*)[،,]\s*/g, '$1')
   .replace(/\s+و(?=[.،!؟]|$)/gu, '')

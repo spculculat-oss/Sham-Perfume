@@ -5,7 +5,7 @@
  * Data: GET /api/admin/insights (server/insights.ts); the analysis lives in src/utils/visitorInsights.ts.
  */
 import React, { useCallback, useEffect, useState } from 'react';
-import { Activity, Brain, Download, Globe, Package, RefreshCw, ShieldCheck, Trash2, Users } from 'lucide-react';
+import { Activity, Brain, Download, Eye, FlaskConical, Globe, Package, RefreshCw, ShieldCheck, Trash2, Users } from 'lucide-react';
 import { adminRequest, send } from './adminApi';
 import { T, TP, formatAdminNumber, getAdminLang, useAdminLanguage } from './adminL10n';
 import {
@@ -117,6 +117,26 @@ export default function VisitorInsightsPanel() {
               ))}
             </div>
           </Card>
+          <div className="grid md:grid-cols-2 gap-3">
+            <Card title={T('عمق الاهتمام (زي فيسبوك)')} icon={<Eye className="w-4 h-4" />}>
+              <p className="text-xs text-stone-700">{TP('متوسط الوقت على صفحة المنتج: {n} ثانية', { n: n(s.engagement?.avgDwellSec || 0) })}</p>
+              <p className="text-xs text-stone-700">{TP('قرأوا الصفحة لآخرها: {n}%', { n: n(s.engagement?.deepShare || 0) })} · {TP('قلّبوا في الصور: {n} شخص', { n: n(s.engagement?.zoomers || 0) })}</p>
+              <p className="text-xs text-stone-700">{TP('عملوا «اختبار ذوقك»: {n} شخص', { n: n(s.engagement?.quizTakers || 0) })}</p>
+              {(s.engagement?.declared || []).length > 0 && <p className="text-[11px] text-stone-500">{T('قالوا عن ذوقهم:')} {s.engagement.declared.map((d) => `${d.id.split(':')[1]} ${d.share}%`).join(' · ')}</p>}
+            </Card>
+            <Card title={T('تجارب الصفحات (نسختين قدام بعض)')} icon={<FlaskConical className="w-4 h-4" />}>
+              {!(s.experiments || []).length && <p className="text-xs text-stone-500">{T('لسه مافيش بيانات.')}</p>}
+              {(s.experiments || []).map((x) => (
+                <div key={x.test} className="space-y-1">
+                  <p className="text-xs font-bold">{x.test === 'quiz_prompt' ? T('طريقة عرض «اختبار ذوقك»') : x.test}</p>
+                  {x.versions.map((v) => (
+                    <p key={v.version} className="text-xs text-stone-700">• {v.version === 'card' ? T('بطاقة دعوة') : v.version === 'chip' ? T('زرار صغير') : v.version}: {TP('{p} شخص — {c}% حطوا في السلة — {b}% اشتروا', { p: n(v.people), c: n(v.cartRate), b: n(v.buyRate) })}{x.leader === v.version ? ' 🏆' : ''}</p>
+                  ))}
+                  {!x.enough && <p className="text-[11px] text-stone-500">{T('لسه بدري نحكم — محتاجين 30 شخص على الأقل في كل نسخة.')}</p>}
+                </div>
+              ))}
+            </Card>
+          </div>
           <Card title={T('نبض الدول (عدّ مجهول الهوية — آخر 3 شهور)')} icon={<Activity className="w-4 h-4" />}>
             <p className="text-[11px] text-stone-500">{T('أرقام عامة من كل الزوار اللي مارفضوش «التحليل»: من غير أي معرّف ولا نص — قانونية من غير موافقة لأنها مستحيل ترجع لشخص.')}</p>
             {!(data?.pulse || []).length && <p className="text-xs text-stone-500">{T('لسه مافيش بيانات.')}</p>}

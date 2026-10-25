@@ -23,7 +23,7 @@ export function Avatar({ user, size = 40, ring = false }: { user: Pick<PublicUse
   return (
     <span className="relative inline-flex shrink-0" style={{ width: size, height: size }}>
       {user.avatar
-        ? <img src={user.avatar} alt="" className={`h-full w-full rounded-full object-cover ${ring ? 'ring-2 ring-amber-400' : ''}`} />
+        ? <img loading="lazy" decoding="async" src={user.avatar} alt="" className={`h-full w-full rounded-full object-cover ${ring ? 'ring-2 ring-amber-400' : ''}`} />
         : <span className={`flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br ${PALETTE[hash(user.id) % PALETTE.length]} font-bold text-white ${ring ? 'ring-2 ring-amber-400' : ''}`} style={{ fontSize: size * 0.38 }}>{initials}</span>}
       {user.online && <span className="absolute bottom-0 end-0 h-3 w-3 rounded-full border-2 border-white bg-emerald-500" />}
     </span>
