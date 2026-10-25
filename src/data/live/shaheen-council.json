@@ -1,7 +1,51 @@
 {
  "version": 1,
- "updatedAt": "2026-10-25T08:38:35.381Z",
+ "updatedAt": "2026-10-25T21:30:53.428Z",
  "meetings": [
+  {
+   "date": "2026-10-26",
+   "at": "2026-10-25T21:30:53.428Z",
+   "mode": "self",
+   "summaryAr": "السكرتير (مشرف شاهين) أدار الاجتماع بالنيابة عن شاهين (مفيش محرك ذكاء اصطناعي متاح)، من تقارير الأدوات: 4 ملاحظة، منها 0 عاجلة. لا قرارات جديدة اليوم.",
+   "decisions": [],
+   "toolGoals": {},
+   "seats": [
+    {
+     "seat": "manager",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "store",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "content",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "experience",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "reliability",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "field",
+     "ok": false,
+     "text": ""
+    }
+   ],
+   "chair": "secretary",
+   "deputyReasons": [
+    "مفيش محرك ذكاء اصطناعي متاح"
+   ]
+  },
   {
    "date": "2026-10-25",
    "at": "2026-10-25T08:38:35.381Z",
@@ -1469,6 +1513,14 @@
  ],
  "seeds": [],
  "delegations": [
+  {
+   "date": "2026-10-26",
+   "at": "2026-10-25T21:30:53.428Z",
+   "reasons": [
+    "مفيش محرك ذكاء اصطناعي متاح"
+   ],
+   "decisions": []
+  },
   {
    "date": "2026-10-25",
    "at": "2026-10-25T08:38:35.381Z",
