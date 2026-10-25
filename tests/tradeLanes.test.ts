@@ -12,7 +12,7 @@ import { BOTS } from '../src/utils/shaheenOrg';
 import { refugeIndex } from '../src/utils/shaheenRefuge';
 import { freeShippingAbove, type FxTable, type ShippingTable } from '../src/utils/pricing';
 import {
-  carrierBandEgp, chargedEgp, dutyReliefFor, laneFor, pickCarrier, reviewTrade, shippingDestinations,
+  carrierBandEgp, chargedEgp, dutyReliefFor, fxDrift, laneFor, pickCarrier, reviewTrade, shippingDestinations,
   type Carrier, type CustomsCountry, type Platform, type TradeAgreement,
 } from '../scripts/shaheen-trade/review';
 
@@ -194,8 +194,20 @@ test('the real files: every lane, price and duty in the report is traceable and 
   }
   // Every carrier price band is traceable too.
   for (const c of lanesFile.carriers) {
-    if (c.priceBandEgp || c.priceBandUsd) assert.ok(c.source, `${c.id} publishes a price without a source`);
+    if (c.priceBandEgp || c.priceBandUsd || c.perCountryBand) assert.ok(c.source, `${c.id} publishes a price without a source`);
+    if (c.scope === 'international' && c.perCountryBand) {
+      assert.equal(c.dg, null, `${c.id}: perfume is UN1266 — a carrier is never marked as accepting it without proof`);
+      assert.ok(c.perCountryBand.currency, `${c.id} prices in no currency`);
+      assert.ok(Object.keys(c.perCountryBand.rates).length > 0);
+    }
   }
+  // The goods' origin is what the import file recorded, never «the site is ours, so Egypt».
+  const originsInReport = report.origins.map((o: { code: string }) => o.code);
+  assert.ok(originsInReport.includes('MY'), 'the Malaysian supplier is counted as an origin');
+  assert.ok(originsInReport.includes('AE'), 'the UAE supplier is counted as an origin');
+  for (const o of report.origins) assert.ok(o.products > 0, o.code);
+  // The rate a supplier price was built on is never silently assumed to be today's.
+  assert.ok(Array.isArray(report.fx.lines));
   // The report's own destinations are the shipping table's countries, and the money verdicts add up.
   assert.ok(report.destinations.length > 0);
   for (const d of report.destinations) assert.ok(Number(d.chargedEgp) >= 0, d.code);
@@ -203,4 +215,70 @@ test('the real files: every lane, price and duty in the report is traceable and 
   assert.equal(report.money.pricedDestinations, report.destinations.filter((d: { costEgp: unknown }) => d.costEgp !== null).length);
   // Free shipping and the lanes read the same shipping table — one truth for the promise and the money.
   assert.equal(typeof freeShippingAbove(shipping), 'number' === typeof freeShippingAbove(shipping) ? 'number' : 'object');
+});
+
+test('the origin decides the lane: stock in Malaysia makes an Egyptian buyer an international lane', () => {
+  const malaysia = platform({ id: 'sham', fulfilment: 'broker', originCountry: 'MY', originConfidence: 'verified', products: 1063 });
+  const report = review([malaysia], undefined, { destinations: ['EG', 'MY'] });
+  const eg = report.destinations.find((d) => d.code === 'EG')!;
+  const my = report.destinations.find((d) => d.code === 'MY')!;
+  assert.equal(eg.assumedOrigin, 'MY', 'the goods leave from the supplier’s country');
+  assert.equal(eg.assumedLane, 'international', 'a buyer in Egypt is abroad when the stock is in Malaysia');
+  assert.equal(my.assumedLane, 'local', 'only a buyer in Malaysia gets the domestic carrier');
+  assert.match(eg.becauseAr, /شحن دولي/);
+  assert.deepEqual(report.origins.map((o) => o.code), ['MY']);
+  assert.equal(report.origins[0].products, 1063);
+});
+
+test('a rate quoted from another origin country is not a price for this route', () => {
+  const fromEgypt: Carrier = { ...INTL, id: 'aramex_eg', originCountry: 'EG' };
+  assert.deepEqual(carrierBandEgp(fromEgypt, 'SA', FX, 'EG'), [1000, 2750], 'from Egypt it is its own rate');
+  assert.equal(carrierBandEgp(fromEgypt, 'SA', FX, 'MY'), null, 'the same rate says nothing about a parcel leaving Malaysia');
+  const anywhere: Carrier = { ...INTL, id: 'dhl', originCountry: '*' };
+  assert.deepEqual(carrierBandEgp(anywhere, 'SA', FX, 'MY'), [1000, 2750], 'a worldwide rate is usable from anywhere');
+  const picked = pickCarrier([fromEgypt, anywhere], 'international', 'SA', FX, 'MY');
+  assert.equal(picked?.id, 'dhl', 'only a carrier that quotes from that origin is offered');
+});
+
+test('a per-country published band with a published surcharge is read as a band, and never borrowed', () => {
+  const poslaju: Carrier = {
+    id: 'poslaju', nameAr: 'بوس لاجو', country: '*', originCountry: 'MY', scope: 'international', dg: null,
+    perCountryBand: { currency: 'MYR', rates: { EG: [90, 15], SA: [80, 25], '*': [180, 55] }, surchargePercent: 40 },
+    source: 'https://example.test/poslaju', checkedAt: '2026-10-25',
+  };
+  const fxMyr: FxTable = { base: 'USD', updatedAt: '2026-10-25T00:00:00Z', rates: { USD: 1, EGP: 50, MYR: 4 } };
+  // 90 RM × 1.4 = 126 RM → 1575 EGP; up to 1 kg (105 RM × 1.4 = 147 RM) → 1837.5 EGP.
+  assert.deepEqual(carrierBandEgp(poslaju, 'EG', fxMyr, 'MY'), [1575, 1837.5]);
+  assert.deepEqual(carrierBandEgp(poslaju, 'SA', fxMyr, 'MY'), [1400, 1837.5]);
+  assert.deepEqual(carrierBandEgp(poslaju, 'JP', fxMyr, 'MY'), [3150, 4112.5], 'an unlisted country takes the source’s own «rest of world» row');
+  assert.equal(carrierBandEgp(poslaju, 'EG', fxMyr, 'AE'), null, 'and none of it is a price from the UAE');
+});
+
+test('the exchange rate the supplier price was built on is compared with today’s, not assumed', () => {
+  const fxToday: FxTable = { base: 'USD', updatedAt: '2026-10-25T00:00:00Z', rates: { USD: 1, EGP: 55, MYR: 4 } };
+  const lines = fxDrift([{ currency: 'MYR', rateUsed: 13.0813, products: 1063 }, { currency: 'AED', rateUsed: 13.75, products: 98 }], fxToday, 2);
+  assert.equal(lines.length, 1, 'MYR moved enough to be reported, AED barely moved and is not noise');
+  assert.equal(lines[0].currency, 'MYR');
+  assert.equal(lines[0].rateToday, 13.75, '1 MYR = 55 / 4 EGP');
+  assert.equal(lines[0].driftPercent, 5.1);
+  assert.equal(lines[0].products, 1063);
+  assert.match(lines[0].stateAr, /أغلى/, 'the goods cost us more than the price says');
+  // Same rate → no line at all.
+  assert.equal(fxDrift([{ currency: 'MYR', rateUsed: 13.75, products: 10 }], fxToday, 2).length, 0);
+});
+
+test('the order’s own verdict: a shipping shortfall is paid by the bottle’s markup, unless it is bigger', () => {
+  const provider = platform({ fulfilment: 'broker', originCountry: 'EG' });
+  const report = review([provider], [LOCAL_EG, INTL], { profitPerBottleEgp: 1200, destinations: ['EG', 'FR'] });
+  const fr = report.destinations.find((d) => d.code === 'FR')!;
+  // Charged 1100, band 2000–5000 → mid 3500 → −2400; markup 1200 → net −1200 = a real loss.
+  assert.equal(fr.surplusEgp, -2400);
+  assert.equal(fr.netEgp, -1200);
+  assert.equal(fr.orderVerdict, 'loss');
+  const eg = report.destinations.find((d) => d.code === 'EG')!;
+  assert.equal(eg.surplusEgp, 750 - 42.5);
+  assert.equal(eg.netEgp, 1200 + (750 - 42.5));
+  assert.equal(eg.orderVerdict, 'profit');
+  assert.equal(report.money.orderLossDestinations, 1);
+  assert.equal(report.money.profitPerBottleEgp, 1200);
 });

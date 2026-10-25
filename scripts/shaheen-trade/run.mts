@@ -18,11 +18,30 @@ const lanes = read('src/data/shipping-lanes.json') as { platforms: Platform[]; c
 const customs = read('src/data/customs.json') as { countries: CustomsCountry[]; agreements: TradeAgreement[] };
 const shipping = read('src/data/shipping.json') as ShippingTable;
 const fx = read('src/data/live/fx-rates.json') as FxTable;
-const catalog = read('src/data/products.json') as { products: { ourPrice?: number; supplierPrice?: number; published?: boolean }[] };
+const catalog = read('src/data/products.json') as {
+  products: { ourPrice?: number; supplierPrice?: number; published?: boolean; supplierCurrency?: string; exchangeRate?: number }[];
+};
 
 // What one bottle earns us, from the catalogue's own two numbers (never a guess).
 const sold = (catalog.products || []).filter((p) => p.published !== false && Number(p.ourPrice) > 0 && Number(p.supplierPrice) > 0);
 const profitPerBottleEgp = sold.length ? Math.round((sold.reduce((s, p) => s + (Number(p.ourPrice) - Number(p.supplierPrice)), 0) / sold.length) * 100) / 100 : 0;
+
+// The rate every supplier price was converted with, straight from the import file — the catalogue's own memory of it.
+const rateGroups = new Map<string, { rateUsed: number; products: number; weight: Map<number, number> }>();
+for (const p of catalog.products || []) {
+  const currency = String(p.supplierCurrency || '').toUpperCase();
+  const rate = Number(p.exchangeRate);
+  if (!currency || !(rate > 0)) continue;
+  const g = rateGroups.get(currency) || { rateUsed: rate, products: 0, weight: new Map<number, number>() };
+  g.products += 1;
+  g.weight.set(rate, (g.weight.get(rate) || 0) + 1);
+  rateGroups.set(currency, g);
+}
+const ratesUsed = [...rateGroups.entries()].map(([currency, g]) => {
+  // The rate most of the products were actually priced with.
+  const rateUsed = [...g.weight.entries()].sort((a, b) => b[1] - a[1])[0][0];
+  return { currency, rateUsed, products: g.products };
+});
 
 const report = reviewTrade({
   now: Date.now(),
@@ -32,6 +51,7 @@ const report = reviewTrade({
   shipping,
   fx,
   profitPerBottleEgp,
+  ratesUsed,
 });
 
 writeFileSync(new URL('../../src/data/live/trade-lanes.json', import.meta.url), `${JSON.stringify(report, null, 1)}\n`);
@@ -42,8 +62,10 @@ for (const note of report.notes) console.log(`! ${note}`);
 for (const gap of report.gaps) console.log(`? ${gap.kindAr}: ${gap.whatAr}`);
 
 if (env.GITHUB_STEP_SUMMARY) {
-  const rows = report.destinations.map((d) => `| ${d.nameAr} (${d.code}) | ${d.lane} | ${d.carrier?.nameAr || '—'} | ${d.chargedEgp} | ${d.costEgp ? `${d.costEgp[0]}–${d.costEgp[1]}` : '—'} | ${d.verdict} | ${d.customs.verified ? '✅' : '—'} |`);
+  const rows = report.destinations.map((d) => `| ${d.nameAr} (${d.code}) | ${d.lane} | ${d.assumedOrigin || '—'} | ${d.carrier?.nameAr || '—'} | ${d.chargedEgp} | ${d.costEgp ? `${d.costEgp[0]}–${d.costEgp[1]}` : '—'} | ${d.costVerdict} | ${d.promise} | ${d.customs.verified ? '✅' : '—'} |`);
   const gaps = report.gaps.map((g) => `| ${g.kindAr} | ${g.whatAr} | ${g.fixAr} |`);
+  const originRows = report.origins.map((o) => `| ${o.nameAr} (${o.code}) | ${o.products} | ${o.platforms.join('، ')} | ${o.localCarrier ? `${o.localCarrier.nameAr}${o.localCarrier.priceEgp ? ` ${o.localCarrier.priceEgp[0]}–${o.localCarrier.priceEgp[1]} ج.م` : ' (مفيش سعر منشور)'}` : '—'} |`);
+  const fxRows = report.fx.lines.map((l) => `| ${l.currency} | ${l.rateUsed} | ${l.rateToday} | ${l.driftPercent > 0 ? '+' : ''}${l.driftPercent}% | ${l.products} |`);
   const lines = [
     '## روبوت الشحن والتجارة الدولية',
     '',
@@ -53,12 +75,18 @@ if (env.GITHUB_STEP_SUMMARY) {
     `- الدرجة: ${report.score}/100 · متوسط اللي بنحصّله شحن: ${report.money.averageChargedEgp} EGP`,
     `- وجهات بنحصّل فيها أكتر من التكلفة بكثير: ${report.money.overChargedDestinations} · وجهات بنخسر فيها: ${report.money.lossDestinations}`,
     '',
+    '### البضاعة فين',
+    '| البلد | عدد المنتجات | المنصات | شركة محلية |',
+    '|---|---|---|---|',
+    originRows.join('\n') || '| — | — | — | — |',
+    ...(fxRows.length ? ['', '### سعر الصرف اللي السعر مبني عليه', '| العملة | السعر المستخدم | سعر النهاردة | الفرق | منتجات |', '|---|---|---|---|---|', fxRows.join('\n')] : []),
+    '',
     '### الخطة',
     report.planAr.map((l) => `- ${l}`).join('\n') || '- لا يوجد',
     '',
     '### الممرات',
-    '| الوجهة | الممر | الشركة | بنحصّل (EGP) | التكلفة (EGP) | الحكم | جمارك متأكدة |',
-    '|---|---|---|---|---|---|---|',
+    '| الوجهة | الممر | من بلد | الشركة | بنحصّل (EGP) | التكلفة (EGP) | الحكم | الوعد | جمارك متأكدة |',
+    '|---|---|---|---|---|---|---|---|---|',
     rows.join('\n'),
     '',
     '### الناقص',

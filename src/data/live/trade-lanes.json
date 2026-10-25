@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "trade-lanes",
- "updatedAt": "2026-10-25T20:19:06.530Z",
+ "updatedAt": "2026-10-25T20:47:23.769Z",
  "modes": {
   "platform_ships": {
    "nameAr": "المنصة بتشحن (وساطة)",
@@ -29,8 +29,8 @@
    "id": "shamperfume",
    "nameAr": "شام بيرفيوم",
    "fulfilment": "unknown",
-   "originCountry": "EG",
-   "originConfidence": "inferred",
+   "originCountry": "MY",
+   "originConfidence": "verified",
    "products": 1063,
    "noteAr": "محتاج قرار صاحب المتجر"
   },
@@ -38,8 +38,8 @@
    "id": "afnan",
    "nameAr": "أفنان للعطور",
    "fulfilment": "unknown",
-   "originCountry": null,
-   "originConfidence": "unknown",
+   "originCountry": "AE",
+   "originConfidence": "verified",
    "products": 98,
    "noteAr": "محتاج قرار صاحب المتجر"
   },
@@ -58,7 +58,8 @@
    "code": "EG",
    "nameAr": "مصر",
    "lane": "unknown",
-   "assumedLane": "local",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -75,32 +76,27 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "bosta",
-    "nameAr": "بوستة",
-    "speedAr": "اليوم التالي",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     30,
-     55
+     1705.4,
+     1989.64
     ],
     "dg": null,
-    "source": "https://www.easyorders.eg/blog/أفضل-شركات-الشحن-الداخلي-في-مصر/"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
-   "alternative": {
-    "id": "weevo",
-    "nameAr": "ويفو",
-    "priceEgp": [
-     30,
-     50
-    ]
-   },
+   "alternative": null,
    "chargedEgp": 829.23,
    "costEgp": [
-    30,
-    55
+    1705.4,
+    1989.64
    ],
-   "surplusEgp": 786.73,
+   "surplusEgp": -1018.29,
+   "netEgp": 172.77,
+   "orderVerdict": "thin",
    "promise": "unknown",
-   "costVerdict": "over_charging",
+   "costVerdict": "loss",
    "customs": {
     "verified": true,
     "deMinimis": null,
@@ -119,6 +115,7 @@
    "nameAr": "السعودية",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -135,23 +132,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1105.64,
-     3040.5
+     1515.91,
+     1989.64
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 773.95,
    "costEgp": [
-    1105.64,
-    3040.5
+    1515.91,
+    1989.64
    ],
-   "surplusEgp": -1299.12,
+   "surplusEgp": -978.83,
+   "netEgp": 212.23,
+   "orderVerdict": "thin",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -160,15 +159,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -177,6 +168,7 @@
    "nameAr": "الإمارات",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -193,23 +185,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1105.64,
-     3040.5
+     1515.91,
+     1894.89
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 773.95,
    "costEgp": [
-    1105.64,
-    3040.5
+    1515.91,
+    1894.89
    ],
-   "surplusEgp": -1299.12,
+   "surplusEgp": -931.45,
+   "netEgp": 259.61,
+   "orderVerdict": "thin",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -218,15 +212,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -235,6 +221,7 @@
    "nameAr": "الكويت",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -251,23 +238,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1105.64,
-     3040.5
+     1421.17,
+     1800.15
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 773.95,
    "costEgp": [
-    1105.64,
-    3040.5
+    1421.17,
+    1800.15
    ],
-   "surplusEgp": -1299.12,
+   "surplusEgp": -836.71,
+   "netEgp": 354.35,
+   "orderVerdict": "profit",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -276,15 +265,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -293,6 +274,7 @@
    "nameAr": "قطر",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -309,23 +291,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1105.64,
-     3040.5
+     1421.17,
+     1800.15
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 773.95,
    "costEgp": [
-    1105.64,
-    3040.5
+    1421.17,
+    1800.15
    ],
-   "surplusEgp": -1299.12,
+   "surplusEgp": -836.71,
+   "netEgp": 354.35,
+   "orderVerdict": "profit",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -334,15 +318,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -351,6 +327,7 @@
    "nameAr": "البحرين",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -367,23 +344,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1105.64,
-     3040.5
+     1421.17,
+     1800.15
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 773.95,
    "costEgp": [
-    1105.64,
-    3040.5
+    1421.17,
+    1800.15
    ],
-   "surplusEgp": -1299.12,
+   "surplusEgp": -836.71,
+   "netEgp": 354.35,
+   "orderVerdict": "profit",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -392,15 +371,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -409,6 +380,7 @@
    "nameAr": "عمان",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -425,23 +397,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1105.64,
-     3040.5
+     2842.34,
+     3600.29
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 773.95,
    "costEgp": [
-    1105.64,
-    3040.5
+    2842.34,
+    3600.29
    ],
-   "surplusEgp": -1299.12,
+   "surplusEgp": -2447.37,
+   "netEgp": -1256.31,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -450,15 +424,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -467,6 +433,7 @@
    "nameAr": "الأردن",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -483,23 +450,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1105.64,
-     3040.5
+     1421.17,
+     1800.15
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 995.07,
    "costEgp": [
-    1105.64,
-    3040.5
+    1421.17,
+    1800.15
    ],
-   "surplusEgp": -1078,
+   "surplusEgp": -615.59,
+   "netEgp": 575.47,
+   "orderVerdict": "profit",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -508,15 +477,7 @@
     "vatPercent": 16,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "قرار مجلس الوزراء: إعفاء جمركي كامل للطرود حتى 200 دينار + 16% ضريبة مبيعات."
    }
   },
@@ -525,6 +486,7 @@
    "nameAr": "لبنان",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -541,34 +503,34 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3031.83,
+     3789.78
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 995.07,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    3031.83,
+    3789.78
+   ],
+   "surplusEgp": -2415.74,
+   "netEgp": -1224.68,
+   "orderVerdict": "loss",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -577,6 +539,7 @@
    "nameAr": "العراق",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -593,34 +556,34 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3410.8,
+     4452.99
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 995.07,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    3410.8,
+    4452.99
+   ],
+   "surplusEgp": -2936.83,
+   "netEgp": -1745.77,
+   "orderVerdict": "loss",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -629,6 +592,7 @@
    "nameAr": "سوريا",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -645,34 +609,34 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2937.08,
+     3695.04
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 995.07,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    2937.08,
+    3695.04
+   ],
+   "surplusEgp": -2320.99,
+   "netEgp": -1129.93,
+   "orderVerdict": "loss",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": "عقوبات — الشحن ممنوع",
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -681,6 +645,7 @@
    "nameAr": "فلسطين",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -697,34 +662,34 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3410.8,
+     4452.99
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 995.07,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    3410.8,
+    4452.99
+   ],
+   "surplusEgp": -2936.83,
+   "netEgp": -1745.77,
+   "orderVerdict": "loss",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -733,6 +698,7 @@
    "nameAr": "اليمن",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -749,34 +715,34 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2974.98,
+     3732.94
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 995.07,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    2974.98,
+    3732.94
+   ],
+   "surplusEgp": -2358.89,
+   "netEgp": -1167.83,
+   "orderVerdict": "loss",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -785,6 +751,7 @@
    "nameAr": "ليبيا",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -801,34 +768,34 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3410.8,
+     4452.99
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 995.07,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    3410.8,
+    4452.99
+   ],
+   "surplusEgp": -2936.83,
+   "netEgp": -1745.77,
+   "orderVerdict": "loss",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -837,6 +804,7 @@
    "nameAr": "تونس",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -853,34 +821,34 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1894.89,
+     2463.36
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 995.07,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    1894.89,
+    2463.36
+   ],
+   "surplusEgp": -1184.06,
+   "netEgp": 7,
+   "orderVerdict": "thin",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -889,6 +857,7 @@
    "nameAr": "الجزائر",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -905,34 +874,34 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3410.8,
+     4452.99
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 995.07,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    3410.8,
+    4452.99
+   ],
+   "surplusEgp": -2936.83,
+   "netEgp": -1745.77,
+   "orderVerdict": "loss",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -941,6 +910,7 @@
    "nameAr": "المغرب",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -957,34 +927,34 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3410.8,
+     4263.51
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 995.07,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    3410.8,
+    4263.51
+   ],
+   "surplusEgp": -2842.09,
+   "netEgp": -1651.03,
+   "orderVerdict": "loss",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -993,6 +963,7 @@
    "nameAr": "السودان",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1009,34 +980,34 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3410.8,
+     4452.99
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 995.07,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    3410.8,
+    4452.99
+   ],
+   "surplusEgp": -2936.83,
+   "netEgp": -1745.77,
+   "orderVerdict": "loss",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -1045,6 +1016,7 @@
    "nameAr": "موريتانيا",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1061,34 +1033,34 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3410.8,
+     4452.99
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 995.07,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    3410.8,
+    4452.99
+   ],
+   "surplusEgp": -2936.83,
+   "netEgp": -1745.77,
+   "orderVerdict": "loss",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -1097,6 +1069,7 @@
    "nameAr": "الصومال",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1113,34 +1086,34 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3410.8,
+     4452.99
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 995.07,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    3410.8,
+    4452.99
+   ],
+   "surplusEgp": -2936.83,
+   "netEgp": -1745.77,
+   "orderVerdict": "loss",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -1149,6 +1122,7 @@
    "nameAr": "جيبوتي",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1165,34 +1139,34 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3410.8,
+     4452.99
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 995.07,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    3410.8,
+    4452.99
+   ],
+   "surplusEgp": -2936.83,
+   "netEgp": -1745.77,
+   "orderVerdict": "loss",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -1201,6 +1175,7 @@
    "nameAr": "جزر القمر",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1217,34 +1192,34 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3410.8,
+     4452.99
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 995.07,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    3410.8,
+    4452.99
+   ],
+   "surplusEgp": -2936.83,
+   "netEgp": -1745.77,
+   "orderVerdict": "loss",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "GAFTA",
-     "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
-     "requires": [
-      "شهادة منشأ عربية",
-      "قيمة مضافة ≥ 40%",
-      "شحن مباشر"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
    }
   },
@@ -1252,7 +1227,8 @@
    "code": "MY",
    "nameAr": "ماليزيا",
    "lane": "unknown",
-   "assumedLane": "international",
+   "assumedLane": "local",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1269,17 +1245,19 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "jt_my",
+    "nameAr": "جي آند تي ماليزيا",
+    "speedAr": "1–3 أيام",
     "priceEgp": null,
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://www.jtexpress.my/"
    },
    "alternative": null,
    "chargedEgp": 331.69,
    "costEgp": null,
    "surplusEgp": null,
+   "netEgp": null,
+   "orderVerdict": "unknown",
    "promise": "unknown",
    "costVerdict": "unknown",
    "customs": {
@@ -1297,6 +1275,7 @@
    "nameAr": "سنغافورة",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1313,19 +1292,27 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     757.96,
+     852.7
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 331.69,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    757.96,
+    852.7
+   ],
+   "surplusEgp": -473.64,
+   "netEgp": 717.42,
+   "orderVerdict": "profit",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1341,6 +1328,7 @@
    "nameAr": "BN",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1357,19 +1345,27 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     814.8,
+     928.5
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 331.69,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    814.8,
+    928.5
+   ],
+   "surplusEgp": -539.96,
+   "netEgp": 651.1,
+   "orderVerdict": "profit",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1385,6 +1381,7 @@
    "nameAr": "إندونيسيا",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1401,19 +1398,27 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     852.7,
+     966.39
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 331.69,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    852.7,
+    966.39
+   ],
+   "surplusEgp": -577.86,
+   "netEgp": 613.2,
+   "orderVerdict": "profit",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1429,6 +1434,7 @@
    "nameAr": "تايلاند",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1445,19 +1451,27 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     852.7,
+     966.39
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 331.69,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    852.7,
+    966.39
+   ],
+   "surplusEgp": -577.86,
+   "netEgp": 613.2,
+   "orderVerdict": "profit",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1473,6 +1487,7 @@
    "nameAr": "الفلبين",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1489,19 +1504,27 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1042.19,
+     1193.78
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 331.69,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    1042.19,
+    1193.78
+   ],
+   "surplusEgp": -786.3,
+   "netEgp": 404.76,
+   "orderVerdict": "profit",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1517,6 +1540,7 @@
    "nameAr": "فيتنام",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1533,19 +1557,27 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     947.45,
+     1061.14
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 331.69,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    947.45,
+    1061.14
+   ],
+   "surplusEgp": -672.61,
+   "netEgp": 518.45,
+   "orderVerdict": "profit",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1561,6 +1593,7 @@
    "nameAr": "KH",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1577,19 +1610,27 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     985.34,
+     1099.04
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 331.69,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    985.34,
+    1099.04
+   ],
+   "surplusEgp": -710.5,
+   "netEgp": 480.56,
+   "orderVerdict": "profit",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1605,6 +1646,7 @@
    "nameAr": "LA",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1621,19 +1663,27 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     985.34,
+     1136.93
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 331.69,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    985.34,
+    1136.93
+   ],
+   "surplusEgp": -729.45,
+   "netEgp": 461.61,
+   "orderVerdict": "profit",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1649,6 +1699,7 @@
    "nameAr": "ميانمار",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1665,19 +1716,27 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
-    "priceEgp": null,
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1515.91,
+     1894.89
+    ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 331.69,
-   "costEgp": null,
-   "surplusEgp": null,
+   "costEgp": [
+    1515.91,
+    1894.89
+   ],
+   "surplusEgp": -1373.71,
+   "netEgp": -182.65,
+   "orderVerdict": "loss",
    "promise": "unknown",
-   "costVerdict": "unknown",
+   "costVerdict": "loss",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -1693,6 +1752,7 @@
    "nameAr": "بريطانيا",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1709,23 +1769,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     1894.89,
+     2179.12
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    1894.89,
+    2179.12
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -820.81,
+   "netEgp": 370.25,
+   "orderVerdict": "profit",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -1743,6 +1805,7 @@
    "nameAr": "IE",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1759,23 +1822,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     1894.89,
+     2179.12
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    1894.89,
+    2179.12
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -820.81,
+   "netEgp": 370.25,
+   "orderVerdict": "profit",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -1784,14 +1849,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -1800,6 +1858,7 @@
    "nameAr": "FR",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1816,23 +1875,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     1894.89,
+     2179.12
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    1894.89,
+    2179.12
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -820.81,
+   "netEgp": 370.25,
+   "orderVerdict": "profit",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -1841,14 +1902,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -1857,6 +1911,7 @@
    "nameAr": "DE",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1873,23 +1928,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     1894.89,
+     2254.92
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    1894.89,
+    2254.92
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -858.71,
+   "netEgp": 332.35,
+   "orderVerdict": "profit",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -1898,14 +1955,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -1914,6 +1964,7 @@
    "nameAr": "IT",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1930,23 +1981,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     1894.89,
+     2179.12
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    1894.89,
+    2179.12
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -820.81,
+   "netEgp": 370.25,
+   "orderVerdict": "profit",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -1955,14 +2008,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -1971,6 +2017,7 @@
    "nameAr": "ES",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -1987,23 +2034,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     2179.12,
+     2463.36
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    2179.12,
+    2463.36
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -1105.04,
+   "netEgp": 86.02,
+   "orderVerdict": "thin",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -2012,14 +2061,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -2028,6 +2070,7 @@
    "nameAr": "PT",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -2044,23 +2087,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     1894.89,
+     2179.12
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    1894.89,
+    2179.12
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -820.81,
+   "netEgp": 370.25,
+   "orderVerdict": "profit",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -2069,14 +2114,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -2085,6 +2123,7 @@
    "nameAr": "NL",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -2101,23 +2140,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     2084.38,
+     2520.21
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    2084.38,
+    2520.21
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -1086.1,
+   "netEgp": 104.96,
+   "orderVerdict": "thin",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -2126,14 +2167,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -2142,6 +2176,7 @@
    "nameAr": "BE",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -2158,23 +2193,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     1894.89,
+     2179.12
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    1894.89,
+    2179.12
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -820.81,
+   "netEgp": 370.25,
+   "orderVerdict": "profit",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -2183,14 +2220,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -2199,6 +2229,7 @@
    "nameAr": "LU",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -2215,23 +2246,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     2728.64,
+     3145.52
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    2728.64,
+    3145.52
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -1720.88,
+   "netEgp": -529.82,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -2240,14 +2273,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -2256,6 +2282,7 @@
    "nameAr": "AT",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -2272,23 +2299,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     1894.89,
+     2463.36
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    1894.89,
+    2463.36
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -962.93,
+   "netEgp": 228.13,
+   "orderVerdict": "thin",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -2297,14 +2326,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -2313,6 +2335,7 @@
    "nameAr": "سويسرا",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -2329,23 +2352,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     2463.36,
+     3031.83
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    2463.36,
+    3031.83
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -1531.4,
+   "netEgp": -340.34,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -2363,6 +2388,7 @@
    "nameAr": "SE",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -2379,23 +2405,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     2463.36,
+     3031.83
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    2463.36,
+    3031.83
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -1531.4,
+   "netEgp": -340.34,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -2404,14 +2432,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -2420,6 +2441,7 @@
    "nameAr": "النرويج",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -2436,23 +2458,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     2273.87,
+     2747.59
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    2273.87,
+    2747.59
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -1294.53,
+   "netEgp": -103.47,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -2470,6 +2494,7 @@
    "nameAr": "DK",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -2486,23 +2511,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     1894.89,
+     2179.12
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    1894.89,
+    2179.12
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -820.81,
+   "netEgp": 370.25,
+   "orderVerdict": "profit",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -2511,14 +2538,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -2527,6 +2547,7 @@
    "nameAr": "FI",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -2543,23 +2564,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     1894.89,
+     2179.12
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    1894.89,
+    2179.12
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -820.81,
+   "netEgp": 370.25,
+   "orderVerdict": "profit",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -2568,14 +2591,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -2584,6 +2600,7 @@
    "nameAr": "IS",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -2600,23 +2617,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     2330.72,
+     2709.69
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    2330.72,
+    2709.69
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -1304.01,
+   "netEgp": -112.95,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -2634,6 +2653,7 @@
    "nameAr": "PL",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -2650,23 +2670,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     3031.83,
+     3789.78
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    3031.83,
+    3789.78
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2194.61,
+   "netEgp": -1003.55,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -2675,14 +2697,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -2691,6 +2706,7 @@
    "nameAr": "CZ",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -2707,23 +2723,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     2974.98,
+     3732.94
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    2974.98,
+    3732.94
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2137.76,
+   "netEgp": -946.7,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -2732,14 +2750,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -2748,6 +2759,7 @@
    "nameAr": "SK",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -2764,23 +2776,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     2974.98,
+     3732.94
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    2974.98,
+    3732.94
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2137.76,
+   "netEgp": -946.7,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -2789,14 +2803,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -2805,6 +2812,7 @@
    "nameAr": "HU",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -2821,23 +2829,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     3031.83,
+     3713.99
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    3031.83,
+    3713.99
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2156.71,
+   "netEgp": -965.65,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -2846,14 +2856,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -2862,6 +2865,7 @@
    "nameAr": "RO",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -2878,23 +2882,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     3410.8,
+     4452.99
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    3410.8,
+    4452.99
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2715.7,
+   "netEgp": -1524.64,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -2903,14 +2909,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -2919,6 +2918,7 @@
    "nameAr": "BG",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -2935,23 +2935,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     2974.98,
+     3732.94
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    2974.98,
+    3732.94
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2137.76,
+   "netEgp": -946.7,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -2960,14 +2962,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -2976,6 +2971,7 @@
    "nameAr": "GR",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -2992,23 +2988,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     1894.89,
+     2273.87
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    1894.89,
+    2273.87
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -868.18,
+   "netEgp": 322.88,
+   "orderVerdict": "profit",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3017,14 +3015,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -3033,6 +3024,7 @@
    "nameAr": "HR",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -3049,23 +3041,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     3410.8,
+     4452.99
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    3410.8,
+    4452.99
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2715.7,
+   "netEgp": -1524.64,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3074,14 +3068,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -3090,6 +3077,7 @@
    "nameAr": "SI",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -3106,23 +3094,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     3410.8,
+     4452.99
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    3410.8,
+    4452.99
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2715.7,
+   "netEgp": -1524.64,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3131,14 +3121,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -3147,6 +3130,7 @@
    "nameAr": "RS",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -3163,23 +3147,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     3410.8,
+     4452.99
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    3410.8,
+    4452.99
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2715.7,
+   "netEgp": -1524.64,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3197,6 +3183,7 @@
    "nameAr": "BA",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -3213,23 +3200,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     3410.8,
+     4452.99
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    3410.8,
+    4452.99
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2715.7,
+   "netEgp": -1524.64,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3247,6 +3236,7 @@
    "nameAr": "ME",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -3263,23 +3253,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     3410.8,
+     4452.99
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    3410.8,
+    4452.99
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2715.7,
+   "netEgp": -1524.64,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3297,6 +3289,7 @@
    "nameAr": "MK",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -3313,23 +3306,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     3410.8,
+     4452.99
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    3410.8,
+    4452.99
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2715.7,
+   "netEgp": -1524.64,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3347,6 +3342,7 @@
    "nameAr": "AL",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -3363,23 +3359,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     3410.8,
+     4452.99
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    3410.8,
+    4452.99
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2715.7,
+   "netEgp": -1524.64,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3397,6 +3395,7 @@
    "nameAr": "EE",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -3413,23 +3412,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     2974.98,
+     3732.94
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    2974.98,
+    3732.94
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2137.76,
+   "netEgp": -946.7,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3438,14 +3439,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -3454,6 +3448,7 @@
    "nameAr": "LV",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -3470,23 +3465,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     3410.8,
+     4452.99
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    3410.8,
+    4452.99
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2715.7,
+   "netEgp": -1524.64,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3495,14 +3492,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -3511,6 +3501,7 @@
    "nameAr": "LT",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -3527,23 +3518,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     3410.8,
+     4452.99
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    3410.8,
+    4452.99
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2715.7,
+   "netEgp": -1524.64,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3552,14 +3545,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -3568,6 +3554,7 @@
    "nameAr": "CY",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -3584,23 +3571,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     2974.98,
+     3732.94
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    2974.98,
+    3732.94
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2137.76,
+   "netEgp": -946.7,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3609,14 +3598,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -3625,6 +3607,7 @@
    "nameAr": "MT",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -3641,23 +3624,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     3410.8,
+     4452.99
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    3410.8,
+    4452.99
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2715.7,
+   "netEgp": -1524.64,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3666,14 +3651,7 @@
     "vatPercent": null,
     "dutyPercent": null,
     "restricted": null,
-    "dutyRelief": {
-     "id": "EU_EGYPT",
-     "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
-     "requires": [
-      "شهادة EUR.1",
-      "منشأ مصري/أوروبي بالقواعد"
-     ]
-    },
+    "dutyRelief": null,
     "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
    }
   },
@@ -3682,6 +3660,7 @@
    "nameAr": "أوكرانيا",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -3698,23 +3677,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     2937.08,
+     3695.04
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    2937.08,
+    3695.04
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2099.86,
+   "netEgp": -908.8,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3732,6 +3713,7 @@
    "nameAr": "MD",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -3748,23 +3730,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     3410.8,
+     4452.99
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    3410.8,
+    4452.99
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -2715.7,
+   "netEgp": -1524.64,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3782,6 +3766,7 @@
    "nameAr": "تركيا",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -3798,23 +3783,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     1326.42,
+     1705.4
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1216.2,
    "costEgp": [
-    2211.27,
-    5528.18
+    1326.42,
+    1705.4
    ],
-   "surplusEgp": -2653.53,
+   "surplusEgp": -299.71,
+   "netEgp": 891.35,
+   "orderVerdict": "profit",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3832,6 +3819,7 @@
    "nameAr": "أمريكا",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -3848,23 +3836,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     1894.89,
+     2273.87
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1382.04,
    "costEgp": [
-    2211.27,
-    5528.18
+    1894.89,
+    2273.87
    ],
-   "surplusEgp": -2487.69,
+   "surplusEgp": -702.34,
+   "netEgp": 488.72,
+   "orderVerdict": "profit",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3882,6 +3872,7 @@
    "nameAr": "كندا",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -3898,23 +3889,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     2084.38,
+     2501.26
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1382.04,
    "costEgp": [
-    2211.27,
-    5528.18
+    2084.38,
+    2501.26
    ],
-   "surplusEgp": -2487.69,
+   "surplusEgp": -910.78,
+   "netEgp": 280.28,
+   "orderVerdict": "thin",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3932,6 +3925,7 @@
    "nameAr": "المكسيك",
    "lane": "unknown",
    "assumedLane": "international",
+   "assumedOrigin": "MY",
    "lanesByPlatform": [
     {
      "platform": "shamperfume",
@@ -3948,23 +3942,25 @@
    ],
    "becauseAr": "طريقة تسليم «شام بيرفيوم» لسه مش مسجلة — مفيش وعد توصيل",
    "carrier": {
-    "id": "aramex_intl",
-    "nameAr": "أرامكس الدولية",
-    "speedAr": "3–7 أيام",
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2211.27,
-     5528.18
+     2596,
+     3164.47
     ],
     "dg": null,
-    "source": "https://zabroker.com/blog/egypt-shipping-companies"
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
    "chargedEgp": 1382.04,
    "costEgp": [
-    2211.27,
-    5528.18
+    2596,
+    3164.47
    ],
-   "surplusEgp": -2487.69,
+   "surplusEgp": -1498.19,
+   "netEgp": -307.13,
+   "orderVerdict": "loss",
    "promise": "unknown",
    "costVerdict": "loss",
    "customs": {
@@ -3984,6 +3980,80 @@
   "unknown": 1161,
   "total": 1212
  },
+ "origins": [
+  {
+   "code": "MY",
+   "nameAr": "ماليزيا",
+   "products": 1063,
+   "platforms": [
+    "shamperfume"
+   ],
+   "fulfilment": [
+    "unknown"
+   ],
+   "localCarrier": {
+    "id": "jt_my",
+    "nameAr": "جي آند تي ماليزيا",
+    "priceEgp": null
+   }
+  },
+  {
+   "code": "AE",
+   "nameAr": "الإمارات",
+   "products": 98,
+   "platforms": [
+    "afnan"
+   ],
+   "fulfilment": [
+    "unknown"
+   ],
+   "localCarrier": {
+    "id": "aramex_ae",
+    "nameAr": "أرامكس الإمارات",
+    "priceEgp": null
+   }
+  },
+  {
+   "code": "EG",
+   "nameAr": "مصر",
+   "products": 51,
+   "platforms": [
+    "direct"
+   ],
+   "fulfilment": [
+    "broker"
+   ],
+   "localCarrier": {
+    "id": "bosta",
+    "nameAr": "بوستة",
+    "priceEgp": [
+     30,
+     55
+    ]
+   }
+  }
+ ],
+ "fx": {
+  "thresholdPercent": 2,
+  "lines": [
+   {
+    "currency": "MYR",
+    "rateUsed": 13.081,
+    "rateToday": 13.5349,
+    "driftPercent": 3.5,
+    "products": 1063,
+    "stateAr": "تكلفة الشراء بقت أغلى 3.5% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي"
+   },
+   {
+    "currency": "AED",
+    "rateUsed": 14.5568,
+    "rateToday": 15.0529,
+    "driftPercent": 3.4,
+    "products": 98,
+    "stateAr": "تكلفة الشراء بقت أغلى 3.4% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي"
+   }
+  ]
+ },
  "gaps": [
   {
    "kindAr": "طريقة التسليم",
@@ -3996,45 +4066,64 @@
    "fixAr": "صاحب المتجر يحدد الوضع في src/data/shipping-lanes.json (platform_ships أو broker)"
   },
   {
-   "kindAr": "بلد المنشأ",
-   "whatAr": "«أفنان للعطور»: بلد المنشأ مش مسجل — من غيرها مفيش تقسيم محلي/دولي",
-   "fixAr": "يتسجل originCountry للمنصة"
-  },
-  {
    "kindAr": "الجمارك",
    "whatAr": "34 دولة من الوجهات مفيهاش بيانات جمركية متأكد منها (SA، AE، KW، QA، BH…)",
    "fixAr": "الروبوت يجيب المصدر الرسمي لكل دولة ويسجله بتاريخه"
   },
   {
    "kindAr": "المواد الخطرة",
-   "whatAr": "4 شركة شحن دولية لسه مش متأكدين إنها بتقبل العطور (UN1266)",
+   "whatAr": "5 شركة شحن دولية لسه مش متأكدين إنها بتقبل العطور (UN1266)",
    "fixAr": "يتأكد من كل شركة قبل ما نعرض توصيل دولي — العطر سائل قابل للاشتعال"
   },
   {
    "kindAr": "شركات محلية",
-   "whatAr": "مفيش شركة شحن محلية مسجلة لـ 73 وجهة (SA، AE، KW، QA، BH…)",
+   "whatAr": "البضاعة في ماليزيا (1063 منتج)، الإمارات (98 منتج) ومفيش سعر شحن محلي منشور فيها — يعني مفيش سعر توصيل جوّه البلد دي",
+   "fixAr": "يتسجل سعر منشور لشركة محلية في كل بلد فيها بضاعة، وإلا التوصيل الداخلي يبقى «يتأكد»"
+  },
+  {
+   "kindAr": "سعر الشحن الدولي",
+   "whatAr": "مفيش سعر شحن دولي منشور من الإمارات — كل أسعار الشحن المسجلة محسوبة من مصر",
+   "fixAr": "يتجاب سعر منشور من شركة دولية بتشحن من بلد البضاعة (ومصدره وتاريخه) — أي رقم من غير مصدر يبقى «مش متاح»"
+  },
+  {
+   "kindAr": "سعر الصرف",
+   "whatAr": "1063 منتج سعره مبني على 13.081 ج.م/MYR، وسعر النهاردة 13.5349 (فرق +3.5%)",
+   "fixAr": "إعادة تسعير المنتجات دي على سعر الصرف الحالي — أو شرح إن التكلفة تغيّرت"
+  },
+  {
+   "kindAr": "سعر الصرف",
+   "whatAr": "98 منتج سعره مبني على 14.5568 ج.م/AED، وسعر النهاردة 15.0529 (فرق +3.4%)",
+   "fixAr": "إعادة تسعير المنتجات دي على سعر الصرف الحالي — أو شرح إن التكلفة تغيّرت"
+  },
+  {
+   "kindAr": "شركات محلية",
+   "whatAr": "71 وجهة مفيهاش شركة شحن محلية مسجلة",
    "fixAr": "الروبوت يبحث عن أفضل شركة محلية في كل دولة بسعر منشور"
   }
  ],
  "money": {
   "profitPerBottleEgp": 1191.06,
   "averageChargedEgp": 1017.48,
-  "pricedDestinations": 50,
-  "overChargedDestinations": 1,
-  "lossDestinations": 49
+  "pricedDestinations": 73,
+  "overChargedDestinations": 0,
+  "lossDestinations": 73,
+  "orderLossDestinations": 41,
+  "bestNetEgp": 891.35,
+  "worstNetEgp": -1745.77
  },
- "score": 24,
+ "score": 35,
  "notes": [
   "1161 منتج من منصة لسه مش مسجل بتشحن ولا محلية بس — مفيش وعد توصيل ليهم.",
-  "1 وجهة إحنا بنحصّل شحن فيها أكتر من ضعف تكلفته الحقيقية — ده بيقلل التحويل.",
-  "49 وجهة لو إحنا اللي بنشحن، تكلفة الشحن أكبر من اللي بنحصّله — خسارة في كل طلب."
+  "73 وجهة لو إحنا اللي بنشحن، تكلفة الشحن أكبر من اللي بنحصّله — فرق بيدفع من مكسب العطر.",
+  "وفي 41 وجهة الفرق أكبر من مكسب العطر نفسه — الطلب هناك بخسارة حقيقية.",
+  "سعر الصرف: 1063 منتج سعره مبني على 13.081 ج.م/MYR وسعر النهاردة 13.5349 — تكلفة الشراء بقت أغلى 3.5% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي.",
+  "سعر الصرف: 98 منتج سعره مبني على 14.5568 ج.م/AED وسعر النهاردة 15.0529 — تكلفة الشراء بقت أغلى 3.4% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي."
  ],
  "planAr": [
   "حدد طريقة تسليم shamperfume، afnan (وساطة أو إحنا بنشحن) — أكبر بند ناقص.",
-  "راجع سعر الشحن في 1 وجهة (الزائر بيدفع أكتر من التكلفة بكثير) — الشحن الزيادة بيطرد العميل.",
-  "لو إحنا اللي بنشحن، أرخص المسارات: مصر بـ30–55 ج.م، السعودية بـ1105.64–3040.5 ج.م، الإمارات بـ1105.64–3040.5 ج.م.",
-  "48 وجهة ممكن تتلغي جمركها باتفاقية تجارية (GAFTA، EU_EGYPT) — بس محتاجة شهادة منشأ عربية + قيمة مضافة ≥ 40% + شحن مباشر.",
-  "4 شركة دولية: تأكد قبول العطور (UN1266) قبل أي بيع دولي — الرفض بعد البيع = إلغاء وسمعة."
+  "لو إحنا اللي بنشحن، أرخص المسارات: سنغافورة بـ757.96–852.7 ج.م، BN بـ814.8–928.5 ج.م، إندونيسيا بـ852.7–966.39 ج.م.",
+  "5 شركة دولية: تأكد قبول العطور (UN1266) قبل أي بيع دولي — الرفض بعد البيع = إلغاء وسمعة.",
+  "البضاعة في: ماليزيا — 1063 منتج (مفيش سعر محلي منشور)، الإمارات — 98 منتج (مفيش سعر محلي منشور)، مصر — 51 منتج (محلي: بوستة 30–55 ج.م)."
  ],
- "summaryAr": "الشحن والتجارة: 74 وجهة — 0 وجهة ممرها معروف، 30 دولة بجمارك متأكد منها، 50 وجهة بسعر شحن مقارن، و49 وجهة لو إحنا بنشحن بتخسر."
+ "summaryAr": "الشحن والتجارة: 74 وجهة — 0 وجهة ممرها معروف، 30 دولة بجمارك متأكد منها، 73 وجهة بسعر شحن مقارن، و73 وجهة لو إحنا بنشحن بتخسر · البضاعة في MY، AE، EG · 2 عملة سعر صرفها قديم."
 }
