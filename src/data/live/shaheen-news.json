@@ -1,36 +1,68 @@
 {
  "version": 1,
- "updatedAt": "2026-10-25T16:11:51.783Z",
- "nextUpdateAt": "2026-10-26T04:11:51.783Z",
+ "updatedAt": "2026-10-26T10:26:18.442Z",
+ "nextUpdateAt": "2026-10-26T22:26:18.442Z",
  "intervalHours": 12,
  "editor": "shaheen",
  "digest": {
-  "ar": "تضمنت نشرة اليوم إطلاقات عطور جديدة بارزة مثل عطر دايك بمناسبة عيد ميلاده الأربعين وعطور دوڤ المستوحاة من الصابون، إلى جانب نمو سوق العطور المتخصصة عالمياً واستعدادات معارض العطور الكبرى، وتغطيات لفعاليات تراثية وثقافية مرتبطة بالعود والبخور.",
-  "en": "Today's digest highlights major fragrance launches including Drake's 40th birthday scent and Dove's soap-inspired line, alongside global growth in niche perfumery, upcoming major perfume exhibitions, and cultural events celebrating oud and incense."
+  "ar": "تشهد صناعة العطور حراكاً واسعاً يجمع بين إعادة إحياء الكلاسيكيات والابتكارات البيئية في قطاع التعبئة والتغليف، إلى جانب إطلاق مجموعات جديدة من دور العطور العالمية والنيش. كما تبرز اهتمامات الأسواق بالتجارب العطرية الفردية والمستدامة في شتى أنحاء العالم.",
+  "en": "The fragrance industry is witnessing dynamic developments combining the revival of vintage classics, eco-friendly packaging innovations, and major new launches from global and niche perfume houses, alongside a growing focus on personalized and sustainable scent experiences worldwide."
  },
  "sources": [
   {
-   "name": "Now Smell This",
+   "name": "Premium Beauty News",
    "count": 3
+  },
+  {
+   "name": "CaFleureBon",
+   "count": 2
+  },
+  {
+   "name": "WWD",
+   "count": 2
   },
   {
    "name": "Vietnam.vn",
    "count": 2
   },
   {
-   "name": "Assabah news",
-   "count": 2
+   "name": "Harper's BAZAAR",
+   "count": 1
   },
   {
-   "name": "Cosmetics Business",
-   "count": 2
+   "name": "Parade Magazine",
+   "count": 1
+  },
+  {
+   "name": "selecta bisso",
+   "count": 1
+  },
+  {
+   "name": "BusinessToday Malaysia",
+   "count": 1
+  },
+  {
+   "name": "Ynetnews",
+   "count": 1
+  },
+  {
+   "name": "The Indian Express",
+   "count": 1
+  },
+  {
+   "name": "The Korea Herald",
+   "count": 1
+  },
+  {
+   "name": "Yanko Design",
+   "count": 1
   },
   {
    "name": "ANFASPRESS",
    "count": 1
   },
   {
-   "name": "Harper's BAZAAR",
+   "name": "Assabah news",
    "count": 1
   },
   {
@@ -58,7 +90,11 @@
    "count": 1
   },
   {
-   "name": "Ynetnews",
+   "name": "Cosmetics Business",
+   "count": 1
+  },
+  {
+   "name": "Now Smell This",
    "count": 1
   },
   {
@@ -72,45 +108,339 @@
   {
    "name": "Grazia India",
    "count": 1
-  },
-  {
-   "name": "selecta bisso",
-   "count": 1
-  },
-  {
-   "name": "WWD",
-   "count": 1
-  },
-  {
-   "name": "شبابيك",
-   "count": 1
-  },
-  {
-   "name": "https://www.youlyou.com/",
-   "count": 1
-  },
-  {
-   "name": "News of Bahrain",
-   "count": 1
-  },
-  {
-   "name": "BFM",
-   "count": 1
-  },
-  {
-   "name": "Le Temps",
-   "count": 1
-  },
-  {
-   "name": "Yanko Design",
-   "count": 1
-  },
-  {
-   "name": "Kansas City Star",
-   "count": 1
   }
  ],
  "items": [
+  {
+   "id": "n5a8k8d",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxORzJVNHdYbVB5aW16aVRYbndvSkFYQVdNWERuV1dxTlNTLWxucGxhTjc4OU9kZ0laWWo3NENvd2lESnlIN29XQVdINUZzWVJEU3d4TmhoT2hCSHJreFh0Zjl0UEh1d2RrWDAyMGhjdENPSVVXMUxyMDB3Tml4Ty1GejlNbU9LVWhLZ2xRYm5kTVU0RlZpaDl3VmtMaw?oc=5",
+   "source": "Harper's BAZAAR",
+   "publishedAt": "2026-10-25T12:05:30.000Z",
+   "original": "Dior Restored 13 of Its Vintage Scents in Its Most Ambitious Fragrance Project Yet",
+   "lang": "en",
+   "category": "launch",
+   "importance": 5,
+   "title": {
+    "ar": "دار Dior تعيد إحياء 13 من عطورها الكلاسيكية في أضخم مشروع عطري لها",
+    "en": "Dior Restored 13 of Its Vintage Scents in Its Most Ambitious Fragrance Project Yet"
+   },
+   "summary": {
+    "ar": "أقدمت دار Dior على إعادة إحياء 13 من عطورها التاريخية القديمة في أضخم مشروع عطري لها حتى الآن.",
+    "en": "Dior has restored 13 of its vintage scents in its most ambitious fragrance project to date."
+   },
+   "note": {
+    "ar": "فرصة رائعة لعشاق العطور الكلاسيكية لاستكشاف الجذور التاريخية للدار وكيف تطورت تركيبة العطور عبر الزمن.",
+    "en": "A wonderful opportunity for vintage fragrance lovers to explore the historical roots of the house."
+   }
+  },
+  {
+   "id": "nyychfe",
+   "url": "https://www.premiumbeautynews.com/en/dsm-firmenich-opens-new-fine,28406",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-10-24T21:51:00.000Z",
+   "original": "dsm-firmenich opens new Fine Fragrance flagship in Chelsea, New York",
+   "lang": "en",
+   "category": "industry",
+   "importance": 5,
+   "title": {
+    "ar": "شركة dsm-firmenich تفتتح مقرها الرئيسي الجديد للعطور الفاخرة في نيويورك",
+    "en": "dsm-firmenich opens new Fine Fragrance flagship in Chelsea, New York"
+   },
+   "summary": {
+    "ar": "افتتحت شركة dsm-firmenich مركزاً رئيسياً جديداً للعطور الفاخرة بمساحة ضخمة في منطقة تشيلسي بنيويورك، يجمع صانعي العطور وفرق التطوير والتقنيات الرقمية تحت سقف واحد.",
+    "en": "Fragrance maker dsm-firmenich has opened a new 44,000-square-foot Fine Fragrance flagship in Chelsea, New York City, uniting perfumers and development teams."
+   },
+   "note": {
+    "ar": "يؤكد هذا التوسع على دور الابتكار التكنولوجي والتطوير المشترك في رسم مستقبل الروائح العطرية العالمية.",
+    "en": "Highlights the role of technological innovation and collaborative development in shaping the future of global scents."
+   }
+  },
+  {
+   "id": "n192fya1",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOaE1jUm8wVjZ2Q0dQUUpIQlpkc3pRUUpZU05QRk1hWlpid0FiMGNuRFI1dy1HYXdEVWdCYUlDSzBPYzRPaFJ0S3Q0cVRZWDhYc3c2MnFGWTE4c2FWRjJwVlk3bVROeTIwbjZzRldWbGw4QVA4NnJZZkZrUHdKenRxYUFyZVgwXzVRSDE4V2RiVU1aYllEVkVzbmlMUXFyZkNUV3BPamM4M2xobVA5VEVF?oc=5",
+   "source": "Parade Magazine",
+   "publishedAt": "2026-10-23T21:19:32.000Z",
+   "original": "Dove Is Launching Its First-Ever Perfume and It Smells Just Like the Iconic Beauty Bar",
+   "lang": "en",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "علامة Dove تطلق أول عطر لها برائحة صابونها الأيقوني الشهير",
+    "en": "Dove Is Launching Its First-Ever Perfume and It Smells Just Like the Iconic Beauty Bar"
+   },
+   "summary": {
+    "ar": "تستعد علامة Dove لإطلاق أول عطر يحمل بصمتها الخاصة ويحاكي رائحة قالب الصابون الكلاسيكي الشهير.",
+    "en": "Dove is launching its first-ever perfume that smells just like its iconic beauty bar."
+   },
+   "note": {
+    "ar": "يعكس هذا الإطلاق توجه نحو الروائح النظيفة والمريحة التي تثير ذكريات الطفولة والعناية اليومية البسيطة.",
+    "en": "Reflects a growing trend toward clean, comforting scents that evoke nostalgia and everyday simplicity."
+   }
+  },
+  {
+   "id": "n7k4irq",
+   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPczk5Q0hQWUdKVUF1OTFIQ0JBWjgtMkI1c1VhZjczeHVib0xCMGZ4Y0VZYVFoaUtwaG11TTdLLXMxVXgtVVB4MnhFaE5xODNndk1hRkIzT1F3U3NvblM3SDg5UTVzWDBmSExyUWplQTl4dWllbkNuYXM0Vl9DTnhuMjRBUE5FQTJpLVdvR0lNNEpQeW5kWHNXbndVRW9pUkdKOHVfQ2VXZ3gtNUNVc0xjVS1jNHBiWldE?oc=5",
+   "source": "selecta bisso",
+   "publishedAt": "2026-10-25T01:31:32.000Z",
+   "original": "BETTER WORLD FRAGRANCE HOUSE x OVO « DOSAYDO » : DRAKE CÉLÈBRE SES 40 ANS AVEC UN PARFUM EXCLUSIF",
+   "lang": "fr",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "النجم Drake يحتفل بعيد ميلاده الـ 40 بإطلاق عطر حصري بالتعاون مع OVO",
+    "en": "BETTER WORLD FRAGRANCE HOUSE x OVO « DOSAYDO » : DRAKE CÉLÈBRE SES 40 ANS AVEC UN PARFUM EXCLUSIF"
+   },
+   "summary": {
+    "ar": "أطلق النجم Drake عطراً حصرياً جديداً بالتعاون بين Better World Fragrance House و OVO احتفالاً بعيد ميلاده الأربعين.",
+    "en": "Drake is celebrating his 40th birthday with an exclusive fragrance in collaboration with Better World Fragrance House and OVO."
+   },
+   "note": {
+    "ar": "شراكات المشاهير تعزز من جاذبية العطور الحصرية وتخلق طلباً عالياً بين المعجبين وهواة الاقتناء.",
+    "en": "Celebrity partnerships boost the appeal of exclusive fragrances and drive high demand among collectors."
+   }
+  },
+  {
+   "id": "n1zjnfd",
+   "url": "https://www.premiumbeautynews.com/fr/albea-devoile-ses-innovations,28409",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-10-26T09:27:31.000Z",
+   "original": "Albéa dévoile ses innovations packaging skincare, maquillage, et parfum",
+   "lang": "en",
+   "category": "industry",
+   "importance": 4,
+   "title": {
+    "ar": "شركة Albéa تستعرض أحدث ابتكاراتها في تعبئة وتغليف العطور بمؤتمر Luxe Pack Monaco",
+    "en": "Albéa dévoile ses innovations packaging skincare, maquillage, et parfum | Premium Beauty News"
+   },
+   "summary": {
+    "ar": "كشفت شركة Albéa عن حلول جديدة للتغليف وأدوات التطبيق الخاصة بقطاع العطور ضمن فعاليات معرض Luxe Pack Monaco 2026.",
+    "en": "Albéa showcased new packaging solutions, applicators, and decoration solutions for fragrances at Luxe Pack Monaco 2026."
+   },
+   "note": {
+    "ar": "تصميم زجاجات العطور وأغطيتها يلعب دوراً حاسماً في حماية التركيبة وجذب المستهلك في سوق النيش والفاخر.",
+    "en": "Bottle design and packaging play a crucial role in protecting the formula and attracting consumers."
+   }
+  },
+  {
+   "id": "n1y6dfpx",
+   "url": "https://cafleurebon.com/future-society-wandering-rain-review-michael-nordstand-2026-artistic-vision-and-scientific-precision/?utm_source=rss&utm_medium=rss&utm_campaign=future-society-wandering-rain-review-michael-nordstand-2026-artistic-vision-and-scientific-precision",
+   "source": "CaFleureBon",
+   "publishedAt": "2026-10-25T19:10:20.000Z",
+   "original": "Future Society Wandering Rain Review (Michael Nordstand) 2026 “artistic vision and scientific precision”",
+   "lang": "en",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "مراجعة عطر Wandering Rain من Future Society: التقاء الرؤية الفنية بالدقة العلمية",
+    "en": "Future Society Wandering Rain Review (Michael Nordstand) 2026 “artistic vision and scientific precision”"
+   },
+   "summary": {
+    "ar": "سلطت تقييمات عطور النيش الضوء على عطر Wandering Rain الذي ابتكرته علامة Future Society ليحاكي رائحة المطر قبل هطوله.",
+    "en": "Future Society and independent perfumer Michael Nordstand have captured the scent of rain before it falls in Wandering Rain."
+   },
+   "note": {
+    "ar": "الروائح الطبيعية المستوحاة من الظواهر البيئية تفتح آفاقاً جديدة للمصممين الباحثين عن التميز.",
+    "en": "Natural scents inspired by environmental phenomena open new horizons for designers seeking uniqueness."
+   }
+  },
+  {
+   "id": "n1ysalbs",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNWnJjT0ZQVTVsUmxqRndiTUhtc19VSHB3T05PdV80Wll1RW1yaWZBYXg3bU16QnNWNnlTTmlGZ1JVLXkxbzBPVmRwV0hrazgxREpRbnJpcU5pUjRyUVBpaVBaWHlad0d3NVM5TU5hVFFRdEd6M1lQWWJVVHlhMTFiNDFaWmUxenNEMDV5a0FXZXVqNGhWOTZDMmJmbnk3Y1FJNW9WZWhuOGkwTHVDT1R3?oc=5",
+   "source": "WWD",
+   "publishedAt": "2026-10-25T13:53:55.000Z",
+   "original": "Esxence’s 16th Annual Event Returns With Focus on the World Of Artistic Fragrances",
+   "lang": "en",
+   "category": "events",
+   "importance": 4,
+   "title": {
+    "ar": "معرض Esxence يعلن عن تفاصيل دورته السادسة عشرة المخصصة للعطور الفنية",
+    "en": "Esxence’s 16th Annual Event Returns With Focus on the World Of Artistic Fragrances"
+   },
+   "summary": {
+    "ar": "أعلن معرض Esxence السنوي عن عودته في دورته الـ 16 مسلطاً الضوء على أحدث ابتكارات ومفاهيم العطور الفنية والنيش.",
+    "en": "Esxence has announced its 16th annual event focusing on the world of artistic and niche fragrances."
+   },
+   "note": {
+    "ar": "يعتبر المعرض الوجهة الأهم لصناع العطور المستقلة لتبادل الخبرات وعرض أحدث الابتكارات.",
+    "en": "Considered the premier destination for independent perfumers to showcase innovations."
+   }
+  },
+  {
+   "id": "nc2349o",
+   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPalBsSVFhbjdfRzdEU1dnQ2xoa3htcVJfWjVRUXJPUDdVZTJYQXE0UWFBa1JwWEdUbU53bEJQR2dZemplMWplS2E3ZGgzcDB0T0lVd3JpVy15anQ0NnUxZ0cxV1NONWFpZkVEdjZyQXVGNnZja19PeVpSSHJGanU5QUNLTHBYOU9PejZZc0dUcVh0cTV4SVRuZzVQbVQtdw?oc=5",
+   "source": "BusinessToday Malaysia",
+   "publishedAt": "2026-10-26T08:27:26.000Z",
+   "original": "Merit Adds A Second Scent To Its Fragrance Portfolio",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "علامة Merit تضيف عطرها الثاني إلى محفظتها العطرية",
+    "en": "Merit Adds A Second Scent To Its Fragrance Portfolio"
+   },
+   "summary": {
+    "ar": "أعلنت علامة Merit عن توسيع محفظتها العطرية عبر إطلاق عطرها الثاني المصمم ليناسب الاستخدام اليومي.",
+    "en": "Merit has expanded its fragrance portfolio by introducing its second scent designed for everyday wear."
+   },
+   "note": {
+    "ar": "توسيع المحافظ العطرية للعلامات البسيطة يساعد في تعزيز ولاء العملاء وتقديم خيارات مرنة.",
+    "en": "Expanding fragrance portfolios helps brands build customer loyalty and offer versatile choices."
+   }
+  },
+  {
+   "id": "n13og6zy",
+   "url": "https://cafleurebon.com/tutto-caramello-by-profumo-di-firenze-winner/?utm_source=rss&utm_medium=rss&utm_campaign=tutto-caramello-by-profumo-di-firenze-winner",
+   "source": "CaFleureBon",
+   "publishedAt": "2026-10-25T17:55:30.000Z",
+   "original": "Tutto Caramello! by Profumo Di Firenze Winner",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "فوز عطر Tutto Caramello من Profumo Di Firenze بجوائز عطور الجورماند",
+    "en": "Tutto Caramello! by Profumo Di Firenze Winner"
+   },
+   "summary": {
+    "ar": "حصد عطر Tutto Caramello من دار Profumo Di Firenze إشادة واسعة بفضل طابعه الغورماند الغني الذي يشبه الكراميل الذائب.",
+    "en": "Tutto Caramello! by Profumo Di Firenze is an extrait de parfum capturing a rich gourmand character like melted caramel."
+   },
+   "note": {
+    "ar": "عطور الكراميل والحلويات تواصل سيطرتها على تفضيلات محبي الروائح الدافئة واللذيذة.",
+    "en": "Caramel and dessert-like fragrances continue to dominate the preferences of warm scent lovers."
+   }
+  },
+  {
+   "id": "n1dqicoc",
+   "url": "https://www.premiumbeautynews.com/fr/un-jardin-de-plantes-a-parfum-sur,28407",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-10-24T21:55:00.000Z",
+   "original": "Un jardin de plantes à parfum sur le toit de Paris Expo Porte de Versailles",
+   "lang": "en",
+   "category": "events",
+   "importance": 3,
+   "title": {
+    "ar": "افتتاح أول حديقة نباتية عطرية على سطح مبنى في مركز Paris Expo بفرنسا",
+    "en": "Un jardin de plantes à parfum sur le toit de Paris Expo Porte de Versailles | Premium Beauty News"
+   },
+   "summary": {
+    "ar": "شهد معرض Paris Expo Porte de Versailles افتتاح أول حديقة نباتية مخصصة لنباتات صناعة العطور على أسطحه.",
+    "en": "Paris Expo Porte de Versailles inaugurated the first rooftop botanical garden dedicated to fragrance plants."
+   },
+   "note": {
+    "ar": "مبادرة بيئية متميزة تقرب زوار المدن من مصادر المواد الخام العطرية الطبيعية.",
+    "en": "An eco-friendly initiative that brings urban visitors closer to natural raw fragrance materials."
+   }
+  },
+  {
+   "id": "nj0nx64",
+   "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1mSTNORmFGQk12cWFNSmszbGJUWmxXeURkcER4R2xObVR3SkRjcGUyQ2VjMnBWTHhWdzN0ekEtc1FlQlA0R0M4bUU0OWNqQXBPVjRKR2MzNnlCY25IeVdlTmhxNEJHbVpEYkJN?oc=5",
+   "source": "Ynetnews",
+   "publishedAt": "2026-10-25T06:49:22.000Z",
+   "original": "Favorite perfume suddenly smells awful? How weight-loss drugs may affect taste and smell",
+   "lang": "en",
+   "category": "market",
+   "importance": 3,
+   "title": {
+    "ar": "دراسة تبحث تأثير أدوية إنقاص الوزن على حاستي الشم والتذوق وعلاقتها بالعطور المفضلة",
+    "en": "Favorite perfume suddenly smells awful? How weight-loss drugs may affect taste and smell | Ynetnews"
+   },
+   "summary": {
+    "ar": "ناقشت تقارير طبية تأثير أدوية إنقاص الوزن على إدراك حاسة الشم والتذوق، مما قد يتسبب في تغير تفضيلات الأشخاص تجاه عطورهم المفضلة.",
+    "en": "Medical reports discussed how weight-loss drugs may affect taste and smell perception, altering preferences for favorite perfumes."
+   },
+   "note": {
+    "ar": "تغير إدراك الشم لدى الأفراد يمثل جانباً مثيراً للاهتمام لمن يعملون على تركيب وتطوير العطور الشخصية.",
+    "en": "Changes in scent perception represent an interesting factor for those developing personal fragrances."
+   }
+  },
+  {
+   "id": "n1czuiao",
+   "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNNTlzQkR2YTVlNzVMZEhIT242UEtZTVhiOU1zUElITGllOTlab2pfYXpfV3B0ZE5GY0VrY1VWaEZxdGhhaVJBR0tMazB2NXMydnJPQmIwUGQ4NkdtWDZVdnBJSjBfd2JOMTU2cnBtLW9LMVE1a0huUG1yT3B0ZkNRSzhDMHZZM3U0R0RhT2VaQl9feG1uOHBRXzU4bkFkZlVzOHpRQmx1RG1peEdJMXV2YV96ZDh0cHloaWpBMHNlRG95YXM0OGM2QdIBzwFBVV95cUxPaWY2YXlvRXJxbnp4S0tDbHhuenkweU5mVlNfNzNIalA3WGRzQUhMSnR3d2dROFlZbEtOWUZqdl94ZWtMYUhON3ZpUGR5azVjeGNZZEUwaUJkeHA0cTlhUi1kYndocFZqR3dTcFZjbFFUenFQdGFvbHNRWFJOdzkxS05GVDlwVXpYRFZXWmFBdjQwTnhxRC1PcGhwTzdLNU1qb2w4dF93S3hNeUdSY2wyeEphNy1PSVl4TllWd3k2TFpWanFFT2hmbjI4WjliSzQ?oc=5",
+   "source": "The Indian Express",
+   "publishedAt": "2026-10-25T03:58:01.000Z",
+   "original": "Why Kannauj, India’s perfume capital, smells nothing like you’d expect",
+   "lang": "en",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "جولة في مدينة قانوج الهندية، عاصمة العطور التقليدية",
+    "en": "Why Kannauj, India’s perfume capital, smells nothing like you’d expect"
+   },
+   "summary": {
+    "ar": "سلط تقرير الضوء على مدينة قانوج الهندية العريقة وطرق تقطير العطور التقليدية العميقة الجذور التي تميزها.",
+    "en": "A report highlighted the ancient Indian city of Kannauj and its deep-rooted traditional perfume distillation methods."
+   },
+   "note": {
+    "ar": "استكشاف أساليب استخلاص الزيوت العطرية العريقة يثري ثقافة صانعي العطور ويعزز تقدير الحرف اليدوية.",
+    "en": "Exploring ancient extraction methods enriches perfumers' culture and appreciates craftsmanship."
+   }
+  },
+  {
+   "id": "ncfdz6j",
+   "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE01bGlIVVp0TzV4LU5PMlVLeEtJMUR3RWpLZVMtVEk1amh2bUVtdW9wSEZDLURQeHFlak5rSDZPcEF2aThRTW9GYnNiMGtUQzFYNnlQSFRaSQ?oc=5",
+   "source": "The Korea Herald",
+   "publishedAt": "2026-10-26T06:03:20.000Z",
+   "original": "Is tradition the next Korean scent?",
+   "lang": "en",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "هل تصبح التقاليد الكورية الهوية القادمة لعالم العطور الآسيوي؟",
+    "en": "Is tradition the next Korean scent?"
+   },
+   "summary": {
+    "ar": "تستكشف كوريا الجنوبية إمكانية دمج عناصر التراث والتقاليد المحلية في ابتكار توجهات عطرية جديدة ومميزة.",
+    "en": "South Korea is exploring the integration of local heritage and traditions into unique new fragrance trends."
+   },
+   "note": {
+    "ar": "استخدام المكونات المحلية التقليدية يفتح أبواباً واسعة لتنوع الهويات العطرية في الأسواق العالمية.",
+    "en": "Using traditional local ingredients opens wide doors for diverse fragrance identities globally."
+   }
+  },
+  {
+   "id": "n1r9wv9t",
+   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQMUZ2MTVHSlJqcmY4dHRGRlktV0hxTWxVWFNSNFFMQzloWmVzeEJTbEg4UE9CUFhmVU43azNGWmpjRm1fTVpBYmFZZjd3WTl4dDFpekVUZS12REUtNmVTVjRjcURuQ1R1RUJjUHZpTm51S294bmswRXhJaGR1RHhlTmRvZ25ncjl5Vno0ZWN4b3pITGhQR0RiZ0NuYmFiQXk5aFdENUFTMNIBrAFBVV95cUxOUE41NTRGUWc0a1NpZ0RsZFpSczlXSnloTHFkVkhnNVNtM01ieWNrSk9BNGpMbUlIQWEyV0Q0TkY1QjJZMGw1ek0zQ1dRTEh0bkNDR3BKcEx2cG9oaG9LSllIY1c0aWFFa2R1emZtVTBxcE9FSlhVMDRYa3gyeVZZSUNINTlRd3hZclZTWDIyamV6Y0ZEd1Q5SGg2RU1tNWRHdnpQa29DSjhuNXQ3?oc=5",
+   "source": "Yanko Design",
+   "publishedAt": "2026-10-24T13:20:58.000Z",
+   "original": "BYREDO’s Steel Spheres Reveal Hidden Landscapes Inspired by Scent",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "علامة BYREDO تطلق كرات فولاذية تكشف عن مناظر طبيعية خفية مستوحاة من العطور",
+    "en": "BYREDO’s Steel Spheres Reveal Hidden Landscapes Inspired by Scent | Yanko Design"
+   },
+   "summary": {
+    "ar": "كشفت علامة BYREDO عن تصميم مبتكر لكرات فولاذية تعكس مناظر طبيعية مستوحاة من عوالم العطور وتجربتها الحسية.",
+    "en": "BYREDO revealed steel spheres that reveal hidden landscapes inspired by scent and sensory experiences."
+   },
+   "note": {
+    "ar": "دمج التصميم البصري والفني مع الروائح يعزز التجربة التفاعلية لمحبي العلامة.",
+    "en": "Integrating visual and artistic design with scents enhances the interactive experience for fans."
+   }
+  },
+  {
+   "id": "n1df19q9",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQYjVFS0tqbmZ0a09GdFZEbDNNTHhWdE9veXMwdkNjR1pMamJ5aFMtcWRUWU8tVEU0YVlFUUdJejFtRE84dnpQUENRYU1FRXZRTExnU241aVlnZ3lsTmVZTEgtdnZoSUtMR0I0UEx2WTNyY3VpY05VVkZIOE11OVd4VVh1bmw5bUpWTE5TTGtvT0FxcklldUpqdWJOTzdnaDdtS3N0dmJ4TWFkaXcxeld3SUdscGZmUQ?oc=5",
+   "source": "WWD",
+   "publishedAt": "2026-10-26T00:53:31.000Z",
+   "original": "Scentbird Is Leading the Charge In Personalized Fragrance",
+   "lang": "en",
+   "category": "market",
+   "importance": 3,
+   "title": {
+    "ar": "منصة Scentbird تقود نمو قطاع العطور المخصصة والاشتراكات العطرية",
+    "en": "Scentbird Is Leading the Charge In Personalized Fragrance | WWD"
+   },
+   "summary": {
+    "ar": "تواصل منصة Scentbird تصدر المشهد في سوق العطور المخصصة عبر نظام الاشتراكات الذي يتيح تجربة الروائح المتنوعة.",
+    "en": "Scentbird continues to lead the personalized fragrance market through its subscription model offering diverse scents."
+   },
+   "note": {
+    "ar": "خدمات الاشتراكات العطرية تمنح المستهلكين مرونة عالية لاستكشاف عطور جديدة دون شراء زجاجات كاملة.",
+    "en": "Subscription services give consumers high flexibility to explore new scents without buying full bottles."
+   }
+  },
   {
    "id": "n1n8qf1v",
    "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9FTlF3MFB0NGx6c01aS0psSnVxLWFjc2ZkeE1lNEZHMjMyN3pzTkRLdHlnT2lCaFBaT25LRDFmWlNlckgwajItWFhQbmZETFNpSHB2TzVaa2gySGRIY1J1ZkY3eDk5RVFaeGNHRm1QVEU4UEpaRTBaeg?oc=5",
@@ -175,28 +505,6 @@
    "note": {
     "ar": "يعكس استمرار الإقبال المتصاعد على العطور المستقلة والنخبويّة في السوق العالمي.",
     "en": "Reflects the ongoing surge in demand for niche and independent perfumery globally."
-   }
-  },
-  {
-   "id": "n5a8k8d",
-   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxORzJVNHdYbVB5aW16aVRYbndvSkFYQVdNWERuV1dxTlNTLWxucGxhTjc4OU9kZ0laWWo3NENvd2lESnlIN29XQVdINUZzWVJEU3d4TmhoT2hCSHJreFh0Zjl0UEh1d2RrWDAyMGhjdENPSVVXMUxyMDB3Tml4Ty1GejlNbU9LVWhLZ2xRYm5kTVU0RlZpaDl3VmtMaw?oc=5",
-   "source": "Harper's BAZAAR",
-   "publishedAt": "2026-10-25T12:05:30.000Z",
-   "original": "Dior Restored 13 of Its Vintage Scents in Its Most Ambitious Fragrance Project Yet",
-   "lang": "en",
-   "category": "events",
-   "importance": 4,
-   "title": {
-    "ar": "التحضيرات تنطلق لمعرض العطور في الكويت وسط ترقب واسع",
-    "en": "Kuwait Perfume Exhibition Preparations Underway"
-   },
-   "summary": {
-    "ar": "تتواصل الاستعدادات لمعرض العطور في الكويت وسط اهتمام جماهيري وتجاري واسع.",
-    "en": "Anticipation builds as Kuwait prepares for its major international perfume exhibition."
-   },
-   "note": {
-    "ar": "حدث إقليمي مهم لعشاق ومصممي العطور لاستكشاف أحدث الإصدارات الشرقية والغربية.",
-    "en": "An essential regional event for fragrance lovers and makers to explore new releases."
    }
   },
   {
@@ -354,28 +662,6 @@
    }
   },
   {
-   "id": "nj0nx64",
-   "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1mSTNORmFGQk12cWFNSmszbGJUWmxXeURkcER4R2xObVR3SkRjcGUyQ2VjMnBWTHhWdzN0ekEtc1FlQlA0R0M4bUU0OWNqQXBPVjRKR2MzNnlCY25IeVdlTmhxNEJHbVpEYkJN?oc=5",
-   "source": "Ynetnews",
-   "publishedAt": "2026-10-25T06:49:22.000Z",
-   "original": "Favorite perfume suddenly smells awful? How weight-loss drugs may affect taste and smell",
-   "lang": "en",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "استخدام الدخان العطري لجذور الثقافة في فيتنام",
-    "en": "Rediscovering cultural roots through aromatic smoke in Vietnam"
-   },
-   "summary": {
-    "ar": "إضاءة ثقافية على دور الدخان العطري والبخور في الحفاظ على الجذور التراثية في فيتنام.",
-    "en": "A cultural look at how aromatic smoke and incense preserve traditional roots in Vietnam."
-   },
-   "note": {
-    "ar": "يذكرنا بالأهمية التاريخية والروحية للبخور في مختلف الثقافات الإنسانية.",
-    "en": "Reminds us of the historical and spiritual importance of incense across human cultures."
-   }
-  },
-  {
    "id": "n1kytm0l",
    "url": "https://cosmeticsbusiness.com/dove-launches-fragrance-inspired-by-original-beauty-bar",
    "source": "Cosmetics Business",
@@ -483,280 +769,6 @@
    "note": {
     "ar": "كريسب هو عراب فئة الجورماند عالمياً، ومتابعته تعطي مصمم العطور فهماً عميقاً لكيفية توظيف النوتات الحلوة والشهية بأسلوب ناضج وغير مبتذل.",
     "en": "كريسب هو عراب فئة الجورماند عالمياً، ومتابعته تعطي مصمم العطور فهماً عميقاً لكيفية توظيف النوتات الحلوة والشهية بأسلوب ناضج وغير مبتذل."
-   }
-  },
-  {
-   "id": "n1wlx8up",
-   "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxNQjhiRVZSQ21ObVYxeS1WQXk0SGJKRm9ZRWlIVEFPQWlCZkN6dHVPc3hTdGZ0d1VVd3VtekhiV08zSU1feVIyVkMxNHVrZmh5T1NNLVV0cmp4blRuQTRqM3lGTThIbEhPaUFUckJRTW5JRjAyWWNGWHZWWjBEVUNwLUtYczB5WUpBZmtNdG5qZVZQbUdaVlg5RjIxOEtSc1R4VHMxNHQ2X2NIYzdwSTBNb2xOaDRaX21ubHIzZEVXdlJ5ZGNVR3Uxa3dxNU1oWTVHbDZn?oc=5",
-   "source": "selecta bisso",
-   "publishedAt": "2026-10-25T00:55:00.000Z",
-   "original": "BETTER WORLD FRAGRANCE HOUSE x OVO “DOSAYDO”: DRAKE CELEBRATES 40 YEARS WITH AN EXCLUSIVE FRAGRANCE",
-   "lang": "en",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "دريك يطلق عطر DOSAYDO بالتعاون مع Better World Fragrance House بمناسبة يوم ميلاده",
-    "en": "Drake Celebrates 40 Years with Exclusive Perfume DOSAYDO via Better World Fragrance House"
-   },
-   "summary": {
-    "ar": "كشف الفنان Drake بالتعاون مع علامته Better World Fragrance House وOVO عن عطر جديد باسم DOSAYDO مستوحى من طابع رعاة البقر احتفالاً بعامه الأربعين.",
-    "en": "Artist Drake and his Better World Fragrance House, alongside OVO, unveiled DOSAYDO, an exclusive cowboy-inspired fragrance marking his 40th birthday."
-   },
-   "note": {
-    "ar": "تواصل خطوط عطور المشاهير التوجه نحو الثيمات المفاهيمية المعقدة كطابع الغرب الأمريكي والجلود بدلاً من التركيبات الفاكهية التقليدية السريعة.",
-    "en": "تواصل خطوط عطور المشاهير التوجه نحو الثيمات المفاهيمية المعقدة كطابع الغرب الأمريكي والجلود بدلاً من التركيبات الفاكهية التقليدية السريعة."
-   }
-  },
-  {
-   "id": "n1df19q9",
-   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQYjVFS0tqbmZ0a09GdFZEbDNNTHhWdE9veXMwdkNjR1pMamJ5aFMtcWRUWU8tVEU0YVlFUUdJejFtRE84dnpQUENRYU1FRXZRTExnU241aVlnZ3lsTmVZTEgtdnZoSUtMR0I0UEx2WTNyY3VpY05VVkZIOE11OVd4VVh1bmw5bUpWTE5TTGtvT0FxcklldUpqdWJOTzdnaDdtS3N0dmJ4TWFkaXcxeld3SUdscGZmUQ?oc=5",
-   "source": "WWD",
-   "publishedAt": "2026-10-24T23:53:55.000Z",
-   "original": "Scentbird Is Leading the Charge In Personalized Fragrance",
-   "lang": "en",
-   "category": "industry",
-   "importance": 3,
-   "title": {
-    "ar": "Scentbird تقود الابتكار في تخصيص تجارب العطور للمستهلكين",
-    "en": "Scentbird Leads the Charge in Personalized Fragrance Subscriptions"
-   },
-   "summary": {
-    "ar": "تبرز منصة Scentbird كنموذج رائد في إتاحة تجربة العطور الفاخرة باشتراكات دورية مخصصة تساعد المستخدمين على استكشاف النوتات الملائمة لذوقهم.",
-    "en": "Scentbird is pioneering consumer access to personalized luxury fragrance discovery through targeted curation and discovery subscriptions."
-   },
-   "note": {
-    "ar": "العينات والاشتراكات المصغرة هي مستقبل تجربة العطور؛ فهي تحمي المشتري من الشراء الأعمى وتتيح لمصممي العطور وصولاً أسهل للجمهور.",
-    "en": "العينات والاشتراكات المصغرة هي مستقبل تجربة العطور؛ فهي تحمي المشتري من الشراء الأعمى وتتيح لمصممي العطور وصولاً أسهل للجمهور."
-   }
-  },
-  {
-   "id": "n19r7ome",
-   "url": "https://news.google.com/rss/articles/CBMiR0FVX3lxTE92MEEyeXNOdmlmYTI2VVZlU1BqczNXa1J6UFdNczN2dlczQ3Y2WFJVY0xlWldtVTZoY2J4eWdQN3RfVXVRdUFV?oc=5",
-   "source": "شبابيك",
-   "publishedAt": "2026-10-23T18:08:30.000Z",
-   "original": "موعد ومكان معرض العطور الكويت 2026",
-   "lang": "ar",
-   "category": "events",
-   "importance": 3,
-   "title": {
-    "ar": "ترقب لانطلاق معرض العطور الدولي في الكويت لعام 2026",
-    "en": "Anticipation Builds for Kuwait International Perfumes Exhibition 2026"
-   },
-   "summary": {
-    "ar": "تستعد الكويت لتنظيم الدورة الجديدة من معرض العطور الدولي بأرض المعارض بمشرف، والذي يجمع أبرز بيوت العطور الشرقية والغربية ووكلاء المواد الخام.",
-    "en": "Kuwait prepares for the upcoming edition of its international perfumes exhibition, gathering major Middle Eastern and global perfume houses and suppliers."
-   },
-   "note": {
-    "ar": "معرض الكويت يعتبر من أضخم التجمعات لعشاق العطور وصناعها في الشرق الأوسط ومؤشراً رئيسياً لاتجاهات السوق الخليجي.",
-    "en": "معرض الكويت يعتبر من أضخم التجمعات لعشاق العطور وصناعها في الشرق الأوسط ومؤشراً رئيسياً لاتجاهات السوق الخليجي."
-   }
-  },
-  {
-   "id": "neu243v",
-   "url": "https://news.google.com/rss/articles/CBMiQ0FVX3lxTE5wVVFDZVJoY3lLZUJKWHJCSUxNczdVXzdoNGFKanRkNTJCemcybGFaWW92c29DWmg2OXE3a21BbjhKVjA?oc=5",
-   "source": "https://www.youlyou.com/",
-   "publishedAt": "2026-10-23T15:08:02.000Z",
-   "original": "كايالي تفاجئ عشاق العطور برائحة كعكة الفانيليا.. هذا موعد طرحها",
-   "lang": "ar",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "Kayali تستعد لطرح عطر جديد بنفحات كعكة الفانيليا الشهية",
-    "en": "Kayali Teases Fragrance Lovers with Upcoming Vanilla Cake Scent"
-   },
-   "summary": {
-    "ar": "تستعد دار Kayali لإطلاق عطر جورماند جديد يحاكي رائحة كعكة الفانيليا الدافئة، في استكمال للنجاح الكبير الذي تحققه العلامة في خطوط الفانيليا.",
-    "en": "Perfume house Kayali is set to launch a new gourmand fragrance capturing warm vanilla cake notes, continuing its viral success with vanilla compositions."
-   },
-   "note": {
-    "ar": "نوتة الفانيليا ما زالت تتصدر رغبات جيل الشباب كأكثر النوتات طلباً، وإعادة ابتكارها برائحة المخبوزات تمنح العطر بعداً حسياً جذاباً ومألوفاً.",
-    "en": "نوتة الفانيليا ما زالت تتصدر رغبات جيل الشباب كأكثر النوتات طلباً، وإعادة ابتكارها برائحة المخبوزات تمنح العطر بعداً حسياً جذاباً ومألوفاً."
-   }
-  },
-  {
-   "id": "nqwvnjw",
-   "url": "https://nstperfume.com/2026/10/23/paco-rabanne-fame-gummies-new-fragrances/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-23T14:11:29.000Z",
-   "original": "Paco Rabanne Fame Gummies ~ new fragrances",
-   "lang": "en",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "Paco Rabanne تطلق تشكيلة Fame Gummies بإصدار محدود من ثلاثة عطور",
-    "en": "Paco Rabanne Debuts Fame Gummies: Three Limited-Edition Fruity Flankers"
-   },
-   "summary": {
-    "ar": "أعلنت دار Paco Rabanne عن طرح ثلاثة عطور فرعية جديدة ضمن خط Fame باسم Fame Gummies، تشمل إصدارات بنكهات حلوة وفاكهية هي Citrus Sweety وMarshmallow Baby وPeachy Girl.",
-    "en": "Paco Rabanne announced three new limited-edition flankers under the Fame Gummies line: Citrus Sweety, Marshmallow Baby, and Peachy Girl."
-   },
-   "note": {
-    "ar": "الإصدارات الجانبية المرتكزة على نوتات المارشميلو والحلوى تعكس توسع الدار في مخاطبة عشاق العطور الفاكهية السكرية المرحة.",
-    "en": "الإصدارات الجانبية المرتكزة على نوتات المارشميلو والحلوى تعكس توسع الدار في مخاطبة عشاق العطور الفاكهية السكرية المرحة."
-   }
-  },
-  {
-   "id": "nthf64f",
-   "url": "https://nstperfume.com/2026/10/24/alternative-readings/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-24T15:41:10.000Z",
-   "original": "Alternative readings",
-   "lang": "en",
-   "category": "industry",
-   "importance": 3,
-   "title": {
-    "ar": "العطارة البريطانية Lyn Harris تترجم اللوحات الفنية إلى نوتات عطرية",
-    "en": "Perfumer Lyn Harris Teases Alternative Olfactory Readings of Fine Art"
-   },
-   "summary": {
-    "ar": "تستعرض خبيرة العطور لين هاريس منهجيتها في قراءة الأعمال الفنية الكلاسيكية وتحويل عناصر الطبيعة والمسافرين في لوحات القرون الوسطى إلى صياغات عطرية غير مألوفة.",
-    "en": "Renowned perfumer Lyn Harris explores translating classic historical paintings into evocative fragrances by teasing out nature and landscape nuances."
-   },
-   "note": {
-    "ar": "دمج الفنون البصرية مع التركيب العطري يلهم صناع العطور لاستخلاص روائح الغابات والتربة وتجسيد القصص عبر المكونات الطبيعية.",
-    "en": "دمج الفنون البصرية مع التركيب العطري يلهم صناع العطور لاستخلاص روائح الغابات والتربة وتجسيد القصص عبر المكونات الطبيعية."
-   }
-  },
-  {
-   "id": "nxtr0mv",
-   "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNWGZuLUVOTFp6LUw5M0NGY2dvcW5xT1FuZHJUZ0ZSeWNVNndUcjhLeUhyVDNvazBpSWIySWtKbDlxWnlkWkRUbVpFam5BY0pWZ3hKX0dSVWVwVGF3cTRpbGVyNzZhQnVWWFZrM2RpbllnLTE3RWktOWtyUWlCNXEtRVFtVTVpdlQzbXU0WnR4VHdWeHJOSG5nbno0QkhVWlNWQzBLXw?oc=5",
-   "source": "News of Bahrain",
-   "publishedAt": "2026-10-24T12:48:22.000Z",
-   "original": "From Vanilla to Pistachio: The Sweet Scent Taking Over Perfume",
-   "lang": "en",
-   "category": "ingredients",
-   "importance": 3,
-   "title": {
-    "ar": "من الفانيليا إلى الفستق: النغمات السكرية والمكسرات تسيطر على صناعة العطور",
-    "en": "From Vanilla to Pistachio: The Sweet and Nutty Scents Dominating Modern Perfumery"
-   },
-   "summary": {
-    "ar": "تسلط التقارير الضوء على التحول في رغبات المستهلكين من روائح الفانيليا الصريحة نحو نوتات المكسرات مثل الفستق واللوز كاتجاه رئيسي جديد في العطور المعاصرة.",
-    "en": "Reports highlight a rising transition in consumer preferences from pure vanilla to nutty notes like pistachio and almond as dominating fragrance trends."
-   },
-   "note": {
-    "ar": "نوتة الفستق تمنح العطور قواماً دهنياً مخملياً رائعاً، وتجمع بين الانتعاش الأخضر والدفء الجورماندي وتستحق التجربة في تركيباتكم الخاصة.",
-    "en": "نوتة الفستق تمنح العطور قواماً دهنياً مخملياً رائعاً، وتجمع بين الانتعاش الأخضر والدفء الجورماندي وتستحق التجربة في تركيباتكم الخاصة."
-   }
-  },
-  {
-   "id": "nt2c77j",
-   "url": "https://news.google.com/rss/articles/CBMitgJBVV95cUxOM3FWSXVaMVlXdjUxUEpxSGNDSUE4d0FKbmtRR2laQ1dGR0pKSWd2Wl9Lc29uUFB1bmwtX1BVUmhhREU2bTAxUTgydUpCRlRSSDBwUGM2TkduV1F6czcxcXlvRWgwNjh3N1J1S0s2SDJlRzVUblZ3WHd5NHR1al9VVno5M2xxTVRHdHliWmZsSzVub2tsSWQ2SGowd2pHeEtPWTJQS3ZxNmdNc2IxV1dGWHJza05XR3dvYWtCem5RNTVOTldEd3E3cUFYV1Vtb2ZkWUZYNlFIUHRlMGs4UjVZdmlVQ01obG5KQWg5UzlGRWQ0ZVNKZXhsRDBvREp4LTN2T1U2T0Z4am9sTDhaQWJyaW9RYVRpa3RYamdTSG9ZMF9qSUpwZWp1SnBFMDlwQ09YNk1wYi1R?oc=5",
-   "source": "BFM",
-   "publishedAt": "2026-10-24T14:34:41.000Z",
-   "original": "Elle a vendu sa maison pour lancer sa marque, elle n’est pas nez, mais \"orchestre le parfum\": comment cette créatrice veut développer une parfumerie de niche plus écolo",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 3,
-   "title": {
-    "ar": "رائدة أعمال تطلق علامة عطور نيش مستدامة دون أن تكون عطّارة محترفة",
-    "en": "Entrepreneur Sells Home to Launch Eco-Friendly Niche Perfume Brand"
-   },
-   "summary": {
-    "ar": "تناول تقرير فرنسي قصة صانعة علامة نيش جديدة باعت منزلها لتمويل مشروعها كـ 'منسقة عطور' تتعاون مع كبار الأنوف لابتكار عطور فاخرة صديقة للبيئة.",
-    "en": "A feature covers how an entrepreneur funded an eco-conscious niche fragrance brand, working as a creative orchestrator alongside master noses."
-   },
-   "note": {
-    "ar": "لست بحاجة لأن تكون أنفاً دارساً لتبتكر علامتك؛ الرؤية الإبداعية واختيار المكونات المستدامة وإدارة المشروع هي جوهر صناعة النيش اليوم.",
-    "en": "لست بحاجة لأن تكون أنفاً دارساً لتبتكر علامتك؛ الرؤية الإبداعية واختيار المكونات المستدامة وإدارة المشروع هي جوهر صناعة النيش اليوم."
-   }
-  },
-  {
-   "id": "n1gs7icx",
-   "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxPdHJmVFg2Z1VXeE85NHZBdDRiM21GVTlLS3NXYVVSMGdZa2dRN3prbjAxS3VmYnR4eFZyblZHaXRLRW9OQmxtcVhUR3JKMkJ3UnRpelZ1NFVhc2V3WDhVWUUxc0E0aHVITTMwTjk4dDVsVVE0RWtJWlA1eHU0ZmJhM1owYnd6R05ySUdYampvNGx6MVRta1hfem5sVElPdjFUdkUwMV9XUFM2RnZ1QWluZ0R3ekl2YVU0bHhKMjhEeWFvdm4zQnF4REVsMXZUQjUzVU0tUC1HMTU3RXNiS0k5X1BmdHpxUk0?oc=5",
-   "source": "Le Temps",
-   "publishedAt": "2026-10-24T13:11:17.000Z",
-   "original": "Comment rendre visible une odeur? La photographe Christelle Boulé révèle en images la signature olfactive des parfums",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 3,
-   "title": {
-    "ar": "المصورة Christelle Boulé تكشف البصمة البصرية غير المرئية لروائح العطور",
-    "en": "Photographer Christelle Boulé Visualizes the Olfactory Signature of Perfumes"
-   },
-   "summary": {
-    "ar": "طورت الفنانة كريستيل بولي تقنية تصوير مبتكرة تعتمد على إسقاط قطرات العطر مباشرة على أوراق حساسة للضوء لإظهار الأثر البصري الفريد لكل عطر.",
-    "en": "Artist Christelle Boulé uses specialized photographic processes exposing fragrance droplets to photosensitive paper, making perfume signatures visible."
-   },
-   "note": {
-    "ar": "مشروع رائع يثبت أن لكل تركيبة عطرية روحاً وبنية فيزيائية يمكن إدراكها بحواس أخرى غير الشم.",
-    "en": "مشروع رائع يثبت أن لكل تركيبة عطرية روحاً وبنية فيزيائية يمكن إدراكها بحواس أخرى غير الشم."
-   }
-  },
-  {
-   "id": "n17ns8ri",
-   "url": "https://cosmeticsbusiness.com/armani-beauty-ambassador-jonathan-bailey-fronts-new-the",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-10-23T11:22:00.000Z",
-   "original": "Armani Beauty ambassador Jonathan Bailey fronts new ‘The Power of Will’ interview series",
-   "lang": "en",
-   "category": "launch",
-   "importance": 2,
-   "title": {
-    "ar": "Armani Beauty تطلق سلسلة حوارات ملهمة لعطرها الرجالي I Will",
-    "en": "Armani Beauty Debuts 'The Power of Will' Video Series for Men's Fragrance"
-   },
-   "summary": {
-    "ar": "أطلقت أرماني سلسلة فيديو جديدة لعطرها I Will يقودها الممثل جوناثان بيلي إلى جانب سفراء العلامة من الرياضيين والفنانين لتجسيد مفهوم الإرادة والقوة في العطر.",
-    "en": "Armani Beauty launched 'The Power of Will' series featuring Jonathan Bailey, J Balvin, and Carlos Sainz to promote its men's fragrance line."
-   },
-   "note": {
-    "ar": "الربط بين العطور الرجالية ومفاهيم الطموح والإرادة أسلوب تسويقي تقليدي لكنه يظل فعالاً جداً في قطاع العطور المصممة.",
-    "en": "الربط بين العطور الرجالية ومفاهيم الطموح والإرادة أسلوب تسويقي تقليدي لكنه يظل فعالاً جداً في قطاع العطور المصممة."
-   }
-  },
-  {
-   "id": "nnvyqps",
-   "url": "https://news.google.com/rss/articles/CBMikwRBVV95cUxNSFdUZGRwLWR4LVFkbGJNM05xSEFCaFoxTHFEb2ZRaUxpaFdyTFRRSjJobzV2VHlacEVHT0U1YzFhVFJNaXo5UzEtSmxqaGRrUnV2eE9UYk1kMHkwUGdNUnJuT0Y0MnlRV016RmhkdVFmLU1nQkZJWmRJVzJEdnV4NFVBUEY3aW81MHVzMFA4SkdQcDdyRjhfZ0dNYkN1VWhRRkxJTDY0T0h3ak9pMlVSRDE0Z2h4ZC03UEJMTGliX2VzeVNUa2x6VUs2c3FfRzFibmlSZG9hUmdjbUZId3JoQVN0RXpObExvaWRXUzNOZ29aTHpnSG9NOGhhaGI0cWJBekdyaUZtTzhUQ215NUFTUlM5RXJxQm1xS2dhS2ZQWFFkZ3ZldElsYUY1eXBXMDBZMVhjbkpjanFnM3ZqWmpGc0t2clBRZEZKMXY4NmR0LTNjbEh6aGJvb1p2S0ctSTlfbmw3ODBKUFVIbVhJU2NxR0owTjNLRVluMkFucmR3R0pRbDNxZVZITEpqYmxZSjVZdVo4UUdycUo5RkhhZ1I4aGVlVWg0SHRwZ1JyR0JiMHFVcWZSSWpLbzVEU2JrR1B6bl9ZTHFlNG9UMXFKS01nbFpybm1PNnQyaEZlckF5a1dwTlE2NXItOWEwcnRNeGZuSktyLWtiY1VQb09xM0dkTWNJZ2t6ZzdxQi1PQTQ4SzZVV1k?oc=5",
-   "source": "Assabah news",
-   "publishedAt": "2026-10-24T15:13:43.000Z",
-   "original": "عباس المقدّم.. عاشق العود وحارس \"ريبرتوار\" محمد عبد الوهاب",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "عباس المقدّم.. عاشق العود وحارس \"ريبرتوار\" محمد عبد الوهاب",
-    "en": "عباس المقدّم.. عاشق العود وحارس \"ريبرتوار\" محمد عبد الوهاب"
-   },
-   "summary": {
-    "ar": "عباس المقدّم.. عاشق العود وحارس \"ريبرتوار\" محمد عبد الوهاب",
-    "en": "عباس المقدّم.. عاشق العود وحارس \"ريبرتوار\" محمد عبد الوهاب"
-   }
-  },
-  {
-   "id": "n1ef863b",
-   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOUE41NTRGUWc0a1NpZ0RsZFpSczlXSnloTHFkVkhnNVNtM01ieWNrSk9BNGpMbUlIQWEyV0Q0TkY1QjJZMGw1ek0zQ1dRTEh0bkNDR3BKcEx2cG9oaG9LSllIY1c0aWFFa2R1emZtVTBxcE9FSlhVMDRYa3gyeVZZSUNINTlRd3hZclZTWDIyamV6Y0ZEd1Q5SGg2RU1tNWRHdnpQa29DSjhuNXQ30gGsAUFVX3lxTE5QTjU1NEZRZzRrU2lnRGxkWlJzOVdKeWhMcWRWSGc1U20zTWJ5Y2tKT0E0akxtSUhBYTJXRDRORjVCMlkwbDV6TTNDV1FMSHRuQ0NHcEpwTHZwb2hob0tKWUhjVzRpYUVrZHV6Zm1VMHFwT0VKWFUwNFhreDJ5VllJQ0g1OVF3eFlyVlNYMjJqZXpjRkR3VDlIaDZFTW01ZEd2elBrb0NKOG41dDc?oc=5",
-   "source": "Yanko Design",
-   "publishedAt": "2026-10-24T13:39:26.000Z",
-   "original": "BYREDO’s Steel Spheres Reveal Hidden Landscapes Inspired by Scent",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "BYREDO’s Steel Spheres Reveal Hidden Landscapes Inspired by Scent",
-    "en": "BYREDO’s Steel Spheres Reveal Hidden Landscapes Inspired by Scent"
-   },
-   "summary": {
-    "ar": "BYREDO’s Steel Spheres Reveal Hidden Landscapes Inspired by Scent",
-    "en": "BYREDO’s Steel Spheres Reveal Hidden Landscapes Inspired by Scent"
-   }
-  },
-  {
-   "id": "n1h93jy6",
-   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOcnNHN0VuZ3JXRGpHTjJ0NnNqSzhkVnRGUWxNNmduSE1MZ0M2YUxrVTdnd3VwbGU3Y1JCdVdjdHp5UjJCQ1hZajdUUjMta2pPMnZPYVZxbXZnd2hNWWoxU3hUTXlLUFk4WUZBNGZVWWVMQjI2aTV1aC15UVFvejVESDdEc3QtdGvSAYcBQVVfeXFMUDRVWnNKNS1lYWNQekEwYzJual9CZzJWVHQzOU13LVlQZmhaUFA3ODhYbVFaSWxlbmcxaTVjdDlJdXh6M0NETWs2U3d6SHNaYnF6MzJOVHl1eVN0UWxQSmxhV3NrRVZ4LTIxc0N3VHhCbGhWeld1Zl9SZnRkMkZIR1psajZ6aS0w?oc=5",
-   "source": "Kansas City Star",
-   "publishedAt": "2026-10-24T13:00:00.000Z",
-   "original": "Step inside Kansas City’s niche fragrance shop to find your own ‘really unique’ scent",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Step inside Kansas City’s niche fragrance shop to find your own ‘really unique’ scent",
-    "en": "Step inside Kansas City’s niche fragrance shop to find your own ‘really unique’ scent"
-   },
-   "summary": {
-    "ar": "Step inside Kansas City’s niche fragrance shop to find your own ‘really unique’ scent",
-    "en": "Step inside Kansas City’s niche fragrance shop to find your own ‘really unique’ scent"
    }
   }
  ]
