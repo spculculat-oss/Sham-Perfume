@@ -93,6 +93,8 @@ export interface AuthResponse {
   /** Two-factor login: the password passed; the authenticator or phone code finishes it. */
   pendingToken?: string;
   method?: 'totp' | 'phone';
+  /** TOTP secret returned once at registration when enable2fa was chosen. */
+  totpSecret?: string;
 }
 
 export function getCurrentUserSession(): { user: UserProfile | null } {
@@ -178,11 +180,12 @@ export async function registerUser(
   email: string,
   password: string,
   craftLevel: CraftLevel = 'perfumer',
-  regionId?: string
+  regionId?: string,
+  enable2fa?: boolean
 ): Promise<AuthResponse> {
   try {
     try {
-      const result = await cx<AuthResult>('/community/auth/register', { body: { name, email, password, craftLevel, lang: document.documentElement.lang || 'ar' } });
+      const result = await cx<AuthResult>('/community/auth/register', { body: { name, email, password, craftLevel, lang: document.documentElement.lang || 'ar', enable2fa } });
       setSessionToken(result.token);
       const user = { ...profileFromMember(result.me), regionId };
       localStorage.setItem(USER_AUTH_STORAGE_KEY, JSON.stringify(user));

@@ -133,6 +133,8 @@ export interface RegisterInput {
   name?: unknown; email?: unknown; password?: unknown; handle?: unknown; country?: unknown; lang?: unknown; craftLevel?: unknown;
   /** Private data kept encrypted: phone, city, address. */
   phone?: unknown; city?: unknown;
+  /** Optional: enable two-factor (TOTP) at registration. */
+  enable2fa?: unknown;
 }
 
 export function passwordPolicy(password: unknown): string {
@@ -158,12 +160,21 @@ export async function register(ctx: Ctx, input: RegisterInput, agent = '', ip = 
   const handle = await uniqueHandle(ctx.sql, clean(input.handle, 30) || email.split('@')[0] || name);
   const privateData = { phone: clean(input.phone, 40), city: clean(input.city, 120) };
   await ctx.sql.query(
-    `INSERT INTO users (id, handle, name, email_idx, email_enc, pass_hash, country, lang, craft_level, private_enc)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+    `INSERT INTO users (id, handle, name, email_idx, email_enc, pass_hash, country, lang, craft_level, private_enc, totp_enabled, totp_last)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,'0')`,
     [id, handle, name, emailIdx, ctx.vault.seal(email), await hashPassword(password), isCountry(country) ? country : '', LANG.test(lang) ? lang : 'ar', craft,
-      privateData.phone || privateData.city ? ctx.vault.sealJson(privateData) : null],
+      privateData.phone || privateData.city ? ctx.vault.sealJson(privateData) : null,
+      typeof input.enable2fa === 'boolean' && input.enable2fa],
   ).catch((error) => { if (/unique|duplicate/i.test(String(error?.message))) fail(409, 'EMAIL_EXISTS'); throw error; });
   auditEvent(ctx, id, 'register', '', `${name} <${email}>`);
+  // Optional two-factor at sign-up: generate and seal a TOTP secret so the member can set up
+  // their authenticator app. Returned once — never stored plain.
+  let totpSecret: string | undefined;
+  if (typeof input.enable2fa === 'boolean' && input.enable2fa) {
+    totpSecret = newTotpSecret();
+    await ctx.sql.query(`UPDATE users SET totp_secret_enc = $1 WHERE id = $2`, [ctx.vault.seal(totpSecret), id]);
+    auditEvent(ctx, id, 'totp_setup_started');
+  }
   // E-mail verification (Google/Meta verify the contact at sign-up). Soft: the account works, but
   // the portal shows «verify your e-mail» until the code is entered — and nothing is faked when the
   // server has no e-mail provider configured.
@@ -174,7 +185,7 @@ export async function register(ctx: Ctx, input: RegisterInput, agent = '', ip = 
       'To verify your e-mail on your new Sham account, enter this code: My portal → Security.'), envOf(ctx));
     if (!sent.delivered) console.warn('[community] verification e-mail not delivered:', sent.error || sent.provider);
   } catch (error) { console.warn('[community] verification code failed:', error instanceof Error ? error.message : error); }
-  return { ...(await startSession(ctx, id, agent, ip)), me: await me(ctx, id) };
+  return { ...(await startSession(ctx, id, agent, ip)), me: await me(ctx, id), ...(totpSecret ? { totpSecret } : {}) };
 }
 
 export interface LoginPending { pending: true; pendingToken: string; expiresIn: number; method?: 'totp' | 'phone' }
