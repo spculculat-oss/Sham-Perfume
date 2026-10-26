@@ -10,7 +10,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { mergeCatalog, type RawProduct, type StoreCatalogFile } from '../src/utils/storeCatalog';
 import {
-  buildSitemapEntries, injectHomeFallback, injectHomeHead, renderFeed, renderLlmsTxt, renderRobots, renderSeoBuildReport, renderSitemap,
+  buildSitemapEntries, injectHomeFallback, injectHomeHead, renderFeed, renderLlmsTxt, renderMediaKit, renderRobots, renderSeoBuildReport, renderSitemap,
   renderToolPage, renderToolsIndex, verificationFiles,
 } from '../src/seo/artifacts';
 import { copyOverride, readPagesFile } from '../src/seo/agentState';
@@ -55,6 +55,7 @@ for (const page of SEO_PAGES) {
   write(page.path, renderToolPage(page, { siteUrl, override, now: new Date() }));
 }
 write('tools/index.html', renderToolsIndex(SEO_PAGES, { siteUrl, now: new Date() }));
+write('media/index.html', renderMediaKit({ siteUrl, productsCount: products.length, env, now: new Date() }));
 
 // ---- home head (idempotent; 404.html must stay identical for GitHub Pages) ----
 const indexPath = new URL(`${outDir}/index.html`, root);

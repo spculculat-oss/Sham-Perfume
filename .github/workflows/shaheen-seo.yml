@@ -28,6 +28,7 @@ on:
 permissions:
   contents: write
   actions: write
+  issues: write
 
 concurrency:
   group: shaheen-seo-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
@@ -79,6 +80,10 @@ jobs:
       BING_WEBMASTER_API_KEY: ${{ secrets.BING_WEBMASTER_API_KEY }}
       GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
       GSC_SITE_URL: ${{ vars.GSC_SITE_URL }}
+      YANDEX_WEBMASTER_TOKEN: ${{ secrets.YANDEX_WEBMASTER_TOKEN }}
+      YANDEX_WEBMASTER_USER_ID: ${{ vars.YANDEX_WEBMASTER_USER_ID }}
+      YANDEX_WEBMASTER_HOST_ID: ${{ vars.YANDEX_WEBMASTER_HOST_ID }}
+      SEO_SAME_AS: ${{ vars.SEO_SAME_AS }}
       # Optional: comma-separated WebSub hubs. Empty uses the public defaults.
       WEBSUB_HUBS: ${{ vars.WEBSUB_HUBS }}
     steps:
@@ -99,6 +104,11 @@ jobs:
         run: bun install --frozen-lockfile || bun install
       - name: Run one Manaret Shaheen cycle
         run: node --import tsx scripts/seo-agent/run.mts
+      - name: Write visibility and growth summary
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SEO_WEEKLY_ISSUE: ${{ github.ref == 'refs/heads/main' && '1' || '0' }}
+        run: node --import tsx scripts/seo-agent/weekly-report.mts
       - name: Regression tests with the new state
         # Never publish copy/state that would turn main red.
         run: bun run test
